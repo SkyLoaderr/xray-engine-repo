@@ -29,7 +29,7 @@ end
 function decide (npc, sos)
 
     local wpn_code = this.check_weapon (npc)
-    local health = self.object.health
+    local health = npc.health
     local rel = npc:relation (sos)
     
     --≈сли у нас нет оружи€ или патронов, то пошел он подальше
@@ -73,7 +73,7 @@ end
 -- Ёвалуатор включени€ схемы
 class "evaluator_enabled" (property_evaluator)
 -----------------------
-function evaluator_enabled:__init (storage, name) super ()
+function evaluator_enabled:__init (name, storage) super ()
     self.a = storage
 end
 -----------------------
@@ -87,7 +87,7 @@ end
 -- Ёвалуатор доступности сообщени€ SOS
 class "evaluator_pda" (property_evaluator)
 -----------------------
-function evaluator_pda:__init (storage, name) super ()
+function evaluator_pda:__init (name, storage) super ()
     self.a = storage
 end
 -----------------------
@@ -105,7 +105,7 @@ end
 -- Ёвалуатор выбора действи€
 class "evaluator_action" (property_evaluator)
 -----------------------
-function evaluator_action:__init (storage, name) super ()
+function evaluator_action:__init (name, storage) super ()
     self.a = storage
 end
 -----------------------
@@ -120,7 +120,7 @@ end
 -- Ёвалуатор, который говорит, что была (или не была) инициирована система помощи.
 class "evaluator_init" (property_evaluator)
 -----------------------
-function evaluator_init:__init (storage, name) super ()
+function evaluator_init:__init (name, storage) super ()
     self.a = storage
 end
 -----------------------
@@ -140,8 +140,10 @@ end
 -----------------------
 function action_initialize:initialize ()
     action_base.initialize (self)
-    self.a.code = decide (self.object, self.a.npc)
+    self.a.code = this.decide (self.object, self.a.npc)
+    printf ("RETURNED CODE %d", self.a.code)
     if self.a.code == sos_ignore then
+       self.object:send_pda_message(4, self.a.npc)
        self.a.npc = nil
     else
        self.a.initialized = true
@@ -207,6 +209,8 @@ end
 function add_to_binder (obj, char_ini)
 
     if char_ini == nil or char_ini:section_exist ("sos") == false then return end
+    this.set_sos (obj)
+    
 
 	local operators		= {}
 	local properties	= {}
@@ -235,13 +239,34 @@ function add_to_binder (obj, char_ini)
    	action:add_effect           	(world_property (properties["init"],            true))
    	manager:add_action              (operators["init"], action)
   	
-  	action = this.action_kill
+  	action = this.action_kill ("action_kill", xr_motivator.storage[obj:id()].sos)
+   	action:add_precondition     	(world_property (stalker_ids.property_alive,    true))
+   	action:add_precondition     	(world_property (stalker_ids.property_enemy,    false))
+   	action:add_precondition     	(world_property (properties["enabled"],         true))
+    action:add_precondition         (world_property (properties["pda"],             true))
+	action:add_precondition		    (world_property (properties["action"], 	        true))
+	action:add_precondition		    (world_property (properties["init"], 	        true))
+   	action:add_effect           	(world_property (properties["pda"],             false))
+   	manager:add_action              (operators["kill"], action)
+
+  	action = this.action_help ("action_help", xr_motivator.storage[obj:id()].sos)
+   	action:add_precondition     	(world_property (stalker_ids.property_alive,    true))
+   	action:add_precondition     	(world_property (stalker_ids.property_enemy,    false))
+   	action:add_precondition     	(world_property (properties["enabled"],         true))
+    action:add_precondition         (world_property (properties["pda"],             true))
+	action:add_precondition		    (world_property (properties["init"], 	        true))
+	action:add_precondition		    (world_property (properties["action"], 	        false))
+   	action:add_effect           	(world_property (properties["pda"],             false))
+   	manager:add_action              (operators["help"], action)
+
+   	action = manager:action (stalker_ids.action_puzzle_solver)
+   	action:add_precondition (world_property (properties["pda"],  false))
 	
 end
 -----------------------------------------------------------------------
 function set_sos (npc, enabled)
 	local char_ini = npc:spawn_ini()
-	local st = xr_motivator.storage[npc:id()].patrol
+	local st = xr_motivator.storage[npc:id()].sos
     if enabled == nil then
        if char_ini:section_exist ("sos") == true and char_ini:line_exist("sos", "enabled") == true then
           st.enabled = char_ini:r_bool("sos", "enabled")
