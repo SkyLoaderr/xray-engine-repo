@@ -340,11 +340,7 @@ void __fastcall TfraLeftBar::Checknewtextures1Click(TObject *Sender)
 }
 //---------------------------------------------------------------------------
 
-#include "SHEngineTools.h"
-void __fastcall TfraLeftBar::PreviewObjClick(TObject *Sender)
-{
-	CSHEngineTools* tools = (CSHEngineTools*)Tools.FindTools(aeEngine); R_ASSERT(tools);
-    tools->PreviewObjClick(Sender);
-}
-//---------------------------------------------------------------------------
+//.#include "SHEngineTools.h"
+//	CSHEngineTools* tools = (CSHEngineTools*)Tools.FindTools(aeEngine); R_ASSERT(tools);
+//    tools->PreviewObjClick(Sender);
 

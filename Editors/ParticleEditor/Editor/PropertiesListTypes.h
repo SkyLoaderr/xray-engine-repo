@@ -64,7 +64,7 @@ typedef void 	__fastcall (__closure *TBeforeEdit)			(PropItem* sender, LPVOID ed
 typedef void 	__fastcall (__closure *TAfterEdit)			(PropItem* sender, LPVOID edit_val);
 typedef void 	__fastcall (__closure *TOnDrawTextEvent)	(PropValue* sender, LPVOID draw_val);
 typedef void 	__fastcall (__closure *TOnChange)			(PropValue* sender);
-typedef void 	__fastcall (__closure *TOnClick)			(PropValue* sender);
+typedef void 	__fastcall (__closure *TOnClick)			(PropItem* sender);
 typedef void 	__fastcall (__closure *TOnBtnClick)			(PropValue* sender, bool& bDataModified);
 typedef void 	__fastcall (__closure *TOnCloseEvent)		(void);
 typedef void 	__fastcall (__closure *TOnModifiedEvent)	(void);
@@ -149,7 +149,7 @@ public:
     TBeforeEdit			OnBeforeEditEvent;
     TOnDrawTextEvent	OnDrawTextEvent;
     TOnPropItemFocused	OnItemFocused;
-//.    TOnClick			OnClickEvent;
+    TOnClick			OnClickEvent;
 public:
     TRect				draw_rect;
     int 				tag;
@@ -165,7 +165,7 @@ public:
     };
     Flags32				m_Flags;
 public:
-						PropItem		(EPropType _type):type(_type),item(0),key(0),tag(0),subitem(1),/*OnClickEvent(0),*/OnAfterEditEvent(0),OnBeforeEditEvent(0),OnDrawTextEvent(0),OnItemFocused(0){m_Flags.zero();}
+						PropItem		(EPropType _type):type(_type),item(0),key(0),tag(0),subitem(1),OnClickEvent(0),OnAfterEditEvent(0),OnBeforeEditEvent(0),OnDrawTextEvent(0),OnItemFocused(0){m_Flags.zero();}
 	virtual 			~PropItem		()
     {
     	for (PropValueIt it=values.begin(); it!=values.end(); it++)
@@ -237,13 +237,6 @@ public:
     {
     	for (PropValueIt it=values.begin(); it!=values.end(); it++)
         	if ((*it)->OnChangeEvent) 	(*it)->OnChangeEvent(*it);
-    }
-	IC void				OnClick			()
-    {
-/*
-    	for (PropValueIt it=values.begin(); it!=values.end(); it++)
-        	if ((*it)->OnClickEvent) 	(*it)->OnClickEvent(*it);
-*/
     }
 };
 

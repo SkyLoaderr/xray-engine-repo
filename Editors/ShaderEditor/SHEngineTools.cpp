@@ -9,7 +9,7 @@
 #include "LeftBar.h"
 #include "xr_trims.h"
 #include "folderlib.h"
-#include "EditObject.h"
+#include "SceneObject.h"
 #include "EditMesh.h"
 #include "Library.h"
 #include "ChoseForm.h"
@@ -54,7 +54,8 @@ static CRemoveBlender	ST_RemoveBlender;
 //------------------------------------------------------------------------------
 CSHEngineTools::CSHEngineTools(ISHInit& init):ISHTools(init)
 {
-	m_EditObject		= 0;
+	m_PreviewObjectType	= pvoNone;
+	m_PreviewObject		= NULL;
     m_bCustomEditObject	= FALSE;
     m_bFreezeUpdate		= FALSE;
     m_CurrentBlender 	= 0;
@@ -71,12 +72,13 @@ bool CSHEngineTools::OnCreate()
 {
 	IBlender::CreatePalette(m_TemplatePalette);
     Load();
+	m_PreviewObject = xr_new<CSceneObject>((LPVOID)NULL, "Test");
     return true;
 }
 
 void CSHEngineTools::OnDestroy()
 {
-    Lib.RemoveEditObject(m_EditObject);
+	xr_delete(m_PreviewObject);
 	// free palette
 	for (TemplateIt it=m_TemplatePalette.begin(); it!=m_TemplatePalette.end(); it++)
     	xr_delete(*it);
@@ -85,6 +87,55 @@ void CSHEngineTools::OnDestroy()
     ClearData();
 
     m_bModified = FALSE;
+}
+
+xr_token preview_obj_token[]={
+	{ "None",			pvoNone		},
+	{ "-",				pvoNone		},
+	{ "Plane",			pvoPlane	},
+	{ "Box",			pvoBox 		},
+	{ "Sphere",			pvoSphere 	},
+	{ "Teapot",			pvoTeapot	},
+	{ "-",				pvoNone		},
+    { "Custom...",		pvoCustom	},
+	{ 0,				0			}
+};
+
+void CSHEngineTools::OnPreviewObjectRefChange(PropItem* sender, LPVOID edit_val)
+{                                                                              
+	EPreviewObj new_val = EPreviewObj(*(u32*)edit_val);
+    LPCSTR fn=0;
+    m_bCustomEditObject = false; 
+	switch (new_val){
+    case pvoPlane: 	fn	= "editor\\ShaderTest_Plane"; 	break;
+    case pvoBox: 	fn	= "editor\\ShaderTest_Box"; 	break;
+    case pvoSphere:	fn	= "editor\\ShaderTest_Sphere";	break;
+    case pvoTeapot:	fn	= "editor\\ShaderTest_Teapot";	break;
+    case pvoCustom:	fn	= m_PreviewObject->GetRefName(); if (!TfrmChoseItem::SelectItem(TfrmChoseItem::smObject,fn)) return; m_bCustomEditObject = true; break;
+    }
+    if (AnsiString(fn).LowerCase()!=AnsiString(m_PreviewObject->GetRefName()).LowerCase()){
+	    m_PreviewObject->SetReference(fn);
+        m_PreviewObject->UpdateTransform(true);
+        ZoomObject			(false);
+        UpdateObjectShader	();
+        UI.RedrawScene		();
+    }
+}
+
+void CSHEngineTools::OnActivate()
+{
+	PropItemVec items;
+//    m_PreviewObject->FillProp			("Object",items);
+    PropValue* V						= PHelper.CreateToken	(items,FHelper.PrepareKey("Object","Reference"), &m_PreviewObjectType, preview_obj_token, sizeof(m_PreviewObjectType)); 
+    V->Owner()->OnAfterEditEvent 		= OnPreviewObjectRefChange;
+    Ext.m_PreviewProps->AssignItems		(items,true);
+    Ext.m_PreviewProps->ShowProperties	();
+}
+//---------------------------------------------------------------------------
+
+void CSHEngineTools::OnDeactivate()
+{
+	Ext.m_PreviewProps->ClearProperties();
 }
 
 void CSHEngineTools::ClearData()
@@ -121,18 +172,20 @@ void CSHEngineTools::OnFrame()
     	RenameItem(m_RenBlenderOldName.c_str(),m_RenBlenderNewName.c_str());
         m_RemoteRenBlender=FALSE;
     }
-	if (m_EditObject) m_EditObject->OnFrame();
+	if (m_PreviewObject) m_PreviewObject->OnFrame();
 }
 
 void CSHEngineTools::OnRender()
 {
-	if (m_EditObject) m_EditObject->RenderSingle(Fidentity);
+	m_PreviewObject->RenderSingle();
 }
 
 void CSHEngineTools::ZoomObject(bool bOnlySel)
 {
-	if (m_EditObject){
-        Device.m_Camera.ZoomExtents(m_EditObject->GetBox());
+	if (m_PreviewObject->GetReference()){
+    	Fbox bb;
+        m_PreviewObject->GetBox(bb);
+        Device.m_Camera.ZoomExtents(bb);
     }else{
     	ISHTools::ZoomObject(bOnlySel);
     }
@@ -742,54 +795,28 @@ void CSHEngineTools::OnDeviceCreate()
 	ResetShaders		();
 }
 
-void __fastcall CSHEngineTools::PreviewObjClick(TObject *Sender)
-{
-	int p = dynamic_cast<TMenuItem*>(Sender)->Tag;
-    LPCSTR fn;
-    m_bCustomEditObject	= false;
-    switch(p){
-        case 0: fn="editor\\ShaderTest_Plane"; 	break;
-        case 1: fn="editor\\ShaderTest_Box"; 	break;
-        case 2: fn="editor\\ShaderTest_Sphere"; break;
-        case 3: fn="editor\\ShaderTest_Teapot";	break;
-        case 4: fn=0;							break;
-        case -1: fn=m_EditObject?m_EditObject->GetName():""; if (!TfrmChoseItem::SelectItem(TfrmChoseItem::smObject,fn)) return; m_bCustomEditObject = true; break;
-        case -2: fn=0; 							break;
-        default: THROW2("Failed select test object.");
-    }
-    Lib.RemoveEditObject(m_EditObject);
-    if (fn){
-        m_EditObject = Lib.CreateEditObject(fn);
-        if (!m_EditObject)
-            ELog.DlgMsg(mtError,"Object '%s.object' can't find in object library. Preview disabled.",fn);
-    }
-    ZoomObject(false);
-    UpdateObjectShader();
-    UI.RedrawScene();
-}
-//---------------------------------------------------------------------------
-
 void CSHEngineTools::UpdateObjectShader()
 {
     // apply this shader to non custom object
-	if (m_EditObject&&!m_bCustomEditObject){
-    	CSurface* surf = *m_EditObject->FirstSurface(); R_ASSERT(surf);
+    CEditableObject* E = m_PreviewObject->GetReference();
+	if (E&&!m_bCustomEditObject){
+    	CSurface* surf = *E->FirstSurface(); R_ASSERT(surf);
         string512 tex; strcpy(tex,surf->_Texture());
         for (int i=0; i<7; i++){ strcat(tex,","); strcat(tex,surf->_Texture());}
         if (m_CurrentBlender)	surf->SetShader(m_CurrentBlender->getName());
         else					surf->SetShader("editor\\wire");
         UI.RedrawScene();
-		m_EditObject->OnDeviceDestroy();
+		E->OnDeviceDestroy();
     }
 }
 
 void CSHEngineTools::OnShowHint(AStringVec& ss)
 {
-	if (m_EditObject){
+	if (m_PreviewObject->GetReference()){
 	    Fvector p;
         float dist=UI.ZFar();
         SRayPickInfo pinf;
-    	if (m_EditObject->RayPick(dist,UI.m_CurrentRStart,UI.m_CurrentRNorm,Fidentity,&pinf)){
+    	if (m_PreviewObject->GetReference()->RayPick(dist,UI.m_CurrentRStart,UI.m_CurrentRNorm,Fidentity,&pinf)){
         	R_ASSERT(pinf.e_mesh);
             CSurface* surf=pinf.e_mesh->GetSurfaceByFaceID(pinf.inf.id);
             ss.push_back(AnsiString("Surface: ")+AnsiString(surf->_Name()));

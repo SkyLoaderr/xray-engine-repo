@@ -762,7 +762,7 @@ void __fastcall TProperties::tvPropertiesMouseDown(TObject *Sender,
                     break;
                 };
             }
-	        if (prop) prop->OnClick();
+	        if (prop&&prop->OnClickEvent) prop->OnClickEvent(prop);
         }else if (Button==mbRight){
             TPoint P; P.x = X; P.y = Y;
             P=tvProperties->ClientToScreen(P);

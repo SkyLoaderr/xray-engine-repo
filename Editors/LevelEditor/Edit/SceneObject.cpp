@@ -7,14 +7,16 @@
 
 #include "SceneObject.h"
 #include "bottombar.h"
-#include "scene.h"
 #include "library.h"
 #include "EditMesh.h"
-#include "motion.h"
 #include "ui_main.h"
 #include "d3dutils.h"
-#include "render.h"
 #include "PropertiesListHelper.h"
+
+#ifdef _LEVEL_EDITOR
+	#include "scene.h"
+#endif
+
 
 #define BLINK_TIME 300.f
 
@@ -115,7 +117,9 @@ void CSceneObject::Render(int priority, bool strictB2F)
 {
 	inherited::Render(priority,strictB2F);
     if (!m_pReference) return;
+#ifdef _LEVEL_EDITOR
     Scene.TurnLightsForObject(this);
+#endif
 	m_pReference->Render(_Transform(), priority, strictB2F);
     if (Selected()){
     	if (1==priority){

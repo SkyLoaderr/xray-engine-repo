@@ -181,7 +181,7 @@ CParticleEffect::CParticleEffect():IRender_Visual()
 {
 	m_HandleEffect 			= pGenParticleEffects(1, 1);
     m_HandleActionList		= pGenActionLists();
-    m_Flags.zero			();
+    m_RT_Flags.zero			();
     m_Def					= 0;
     m_ElapsedLimit			= 0;
 	m_MemDT					= 0;
@@ -206,16 +206,17 @@ void CParticleEffect::OnDeviceDestroy()
 
 void CParticleEffect::Play()
 {
-	m_Flags.set			(flPlaying,TRUE);
+	m_RT_Flags.zero		();
+	m_RT_Flags.set		(flRT_Playing,TRUE);
    	pStartPlaying		(m_HandleActionList);
 }
 void CParticleEffect::Stop(BOOL bFinishPlaying)
 {
 	if (bFinishPlaying){
-		m_Flags.set		(flDefferedStop,TRUE);
+		m_RT_Flags.set	(flRT_DefferedStop,TRUE);
     	pStopPlaying	(m_HandleActionList);
     }else{
-    	m_Flags.set		(flPlaying,FALSE);
+    	m_RT_Flags.set	(flRT_Playing,FALSE);
 		ResetParticles	();
     }
 }
@@ -242,11 +243,11 @@ static const u32	uDT_STEP = 33;
 static const float	fDT_STEP = float(uDT_STEP)/1000.f;
 void CParticleEffect::OnFrame(u32 frame_dt)
 {
-	if (m_Def && m_Flags.is(flPlaying)){
+	if (m_Def && m_RT_Flags.is(flRT_Playing)){
 		m_MemDT			+= frame_dt;
 		for (;m_MemDT>=uDT_STEP; m_MemDT-=uDT_STEP){
             if (m_Def->m_Flags.is(CPEDef::dfTimeLimit)){ 
-				if (!m_Flags.is(flDefferedStop)){
+				if (!m_RT_Flags.is(flRT_DefferedStop)){
                     m_ElapsedLimit 	-= uDT_STEP;
                     if (m_ElapsedLimit<0){
                         m_ElapsedLimit 	= m_Def->m_TimeLimit;
@@ -281,8 +282,8 @@ void CParticleEffect::OnFrame(u32 frame_dt)
 				vis.box.grow		(p_size);
 				vis.box.getsphere	(vis.sphere.P,vis.sphere.R);
 			}
-            if (m_Flags.is(flDefferedStop)&&(0==pg->p_count)){
-				m_Flags.set		(flPlaying|flDefferedStop,FALSE);
+            if (m_RT_Flags.is(flRT_DefferedStop)&&(0==pg->p_count)){
+				m_RT_Flags.set		(flRT_Playing|flRT_DefferedStop,FALSE);
                 break;
             }
 		}

@@ -581,9 +581,8 @@ void CPEDef::Compile()
 	pDeleteParticleEffects	(effect_handle);
 	pDeleteActionLists		(action_list_handle);
 
-    if (m_ShaderName&&m_ShaderName[0]&&m_TextureName&&m_TextureName[0]){
-	    m_CachedShader		= Device.Shader.Create(m_ShaderName,m_TextureName);
-    }
+    if (m_ShaderName&&m_ShaderName[0]&&m_TextureName&&m_TextureName[0])
+	    m_CachedShader.create(m_ShaderName,m_TextureName);
 }
 
 

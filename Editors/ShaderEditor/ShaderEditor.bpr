@@ -76,7 +76,8 @@
       Intermediate\SHGameMtlPairTools.obj Intermediate\SHGameMtlTools.obj 
       Intermediate\SHSoundEnvTools.obj Intermediate\SHToolsInterface.obj 
       Intermediate\Splash.obj Intermediate\stdafx.obj 
-      Intermediate\UI_MainExtern.obj Intermediate\UI_MainShader.obj"/>
+      Intermediate\UI_MainExtern.obj Intermediate\UI_MainShader.obj 
+      Intermediate\SceneObject.obj Intermediate\SceneObjectIO.obj"/>
     <RESFILES value="ShaderEditor.res resource.res"/>
     <IDLFILES value=""/>
     <IDLGENFILES value=""/>
@@ -277,6 +278,8 @@
       <FILE FILENAME="UI_MainShader.cpp" FORMNAME="" UNITNAME="UI_MainShader.cpp" CONTAINERID="CCompiler" DESIGNCLASS="" LOCALCOMMAND=""/>
       <FILE FILENAME="ShaderEditor.res" FORMNAME="" UNITNAME="ShaderEditor.res" CONTAINERID="ResTool" DESIGNCLASS="" LOCALCOMMAND=""/>
       <FILE FILENAME="resource.res" FORMNAME="" UNITNAME="resource.res" CONTAINERID="ResTool" DESIGNCLASS="" LOCALCOMMAND=""/>
+      <FILE FILENAME="Editor\SceneObject.cpp" FORMNAME="" UNITNAME="SceneObject" CONTAINERID="CCompiler" DESIGNCLASS="" LOCALCOMMAND=""/>
+      <FILE FILENAME="Editor\SceneObjectIO.cpp" FORMNAME="" UNITNAME="SceneObjectIO" CONTAINERID="CCompiler" DESIGNCLASS="" LOCALCOMMAND=""/>
   </FILELIST>
   <BUILDTOOLS>
   </BUILDTOOLS>

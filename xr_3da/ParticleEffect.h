@@ -127,10 +127,10 @@ protected:
 	Fvector				m_InitialPosition;
 public:
     enum{
-    	flPlaying		= (1<<0),
-        flDefferedStop	= (1<<1)
+    	flRT_Playing		= (1<<0),
+        flRT_DefferedStop	= (1<<1)
     };
-    Flags32				m_Flags;
+    Flags8				m_RT_Flags;
 protected:
 	void				ResetParticles		();
 
@@ -158,7 +158,7 @@ public:
 
 	void				Play				();
     void				Stop				(BOOL bFinishPlaying=TRUE);
-    BOOL				IsPlaying			(){return m_Flags.is(flPlaying);}
+    BOOL				IsPlaying			(){return m_RT_Flags.is(flRT_Playing);}
 };
 DEFINE_VECTOR			(PS::CPEDef*,PEDVec,PEDIt);
 }

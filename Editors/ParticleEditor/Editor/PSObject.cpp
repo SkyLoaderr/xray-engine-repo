@@ -42,12 +42,14 @@ void CPSObject::Construct(LPVOID data){
 }
 //----------------------------------------------------
 
-CPSObject::~CPSObject(){
-	if (m_Shader) Device.Shader.Delete(m_Shader);
+CPSObject::~CPSObject()
+{
+	m_Shader.destroy();
 }
 //----------------------------------------------------
 
-bool CPSObject::GetBox( Fbox& box ){
+bool CPSObject::GetBox( Fbox& box )
+{
 	box.set( m_Emitter.m_Position, m_Emitter.m_Position );
 	box.min.x -= PSOBJECT_SIZE;
 	box.min.y -= PSOBJECT_SIZE;
@@ -278,8 +280,8 @@ bool CPSObject::Compile(PS::SDef* source){
 	if (!source) return false;
 	VERIFY(!m_Shader&&!m_Definition);
 	m_Definition= source;
-    if (source->m_ShaderName[0]&&source->m_TextureName[0]) 	m_Shader = Device.Shader.Create(source->m_ShaderName,source->m_TextureName);
-    else    												m_Shader = 0;
+    if (source->m_ShaderName[0]&&source->m_TextureName[0]) 	m_Shader.create(source->m_ShaderName,source->m_TextureName);
+    else    												m_Shader._clear();
     m_Emitter.Compile(&source->m_DefaultEmitter);
     return true;
 }
@@ -353,12 +355,12 @@ void CPSObject::Save(IWriter& F){
 void CPSObject::OnDeviceCreate(){
 	// создать заново shaders
     if (m_Definition&&m_Definition->m_ShaderName[0]&&m_Definition->m_TextureName[0])
-    	m_Shader = Device.Shader.Create(m_Definition->m_ShaderName,m_Definition->m_TextureName);
+    	m_Shader.create(m_Definition->m_ShaderName,m_Definition->m_TextureName);
 }
 
 void CPSObject::OnDeviceDestroy(){
 	// удалить shaders
-    Device.Shader.Delete(m_Shader);
+    m_Shader.destroy();
 }
 
 

@@ -61,7 +61,7 @@ void CEditableObject::BoxQuery(const Fmatrix& parent, const Fmatrix& inv_parent,
         (*m)->BoxQuery(parent, inv_parent, pinf);
 }
 
-#ifdef _LEVEL_EDITOR
+#ifdef _EDITOR
 bool CEditableObject::FrustumPick(const CFrustum& frustum, const Fmatrix& parent){
 	for(EditMeshIt m = m_Meshes.begin();m!=m_Meshes.end();m++)
 		if((*m)->FrustumPick(frustum, parent))	return true;
@@ -76,6 +76,31 @@ bool CEditableObject::BoxPick(CSceneObject* obj, const Fbox& box, const Fmatrix&
             picked = true;
         }
 	return picked;
+}
+bool CEditableObject::GetSummaryInfo(SSceneSummary* inf)
+{
+	if (IsStatic()||IsMUStatic()){
+        for(SurfaceIt 	s_it=m_Surfaces.begin(); s_it!=m_Surfaces.end(); s_it++)
+            inf->textures.insert(ChangeFileExt((*s_it)->m_Texture,"").LowerCase());
+        if (m_Flags.is(eoUsingLOD)){
+            inf->textures.insert(GetLODTextureName());
+            inf->lod_objects.insert(m_LibName);
+            inf->object_lod_ref_cnt++;
+        }
+        if (m_Flags.is(eoMultipleUsage)){
+            inf->mu_objects.insert(m_LibName);
+            inf->object_mu_ref_cnt++;
+        }
+
+        inf->face_cnt		+= GetFaceCount	();
+        inf->vert_cnt		+= GetVertexCount();
+    }
+	if (m_Flags.is(eoHOM)){
+    	inf->hom_face_cnt	+= GetFaceCount	();
+    	inf->hom_vert_cnt	+= GetVertexCount();
+    }
+
+	return true;
 }
 #endif
 
@@ -366,32 +391,4 @@ bool CEditableObject::CheckShaderCompatible()
 }
 //---------------------------------------------------------------------------
 
-#ifdef _LEVEL_EDITOR
-#include "Scene.h"
-bool CEditableObject::GetSummaryInfo(SSceneSummary* inf)
-{
-	if (IsStatic()||IsMUStatic()){
-        for(SurfaceIt 	s_it=m_Surfaces.begin(); s_it!=m_Surfaces.end(); s_it++)
-            inf->textures.insert(ChangeFileExt((*s_it)->m_Texture,"").LowerCase());
-        if (m_Flags.is(eoUsingLOD)){
-            inf->textures.insert(GetLODTextureName());
-            inf->lod_objects.insert(m_LibName);
-            inf->object_lod_ref_cnt++;
-        }
-        if (m_Flags.is(eoMultipleUsage)){
-            inf->mu_objects.insert(m_LibName);
-            inf->object_mu_ref_cnt++;
-        }
-
-        inf->face_cnt		+= GetFaceCount	();
-        inf->vert_cnt		+= GetVertexCount();
-    }
-	if (m_Flags.is(eoHOM)){
-    	inf->hom_face_cnt	+= GetFaceCount	();
-    	inf->hom_vert_cnt	+= GetVertexCount();
-    }
-
-	return true;
-}
-#endif
 

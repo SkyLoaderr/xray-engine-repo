@@ -17,7 +17,7 @@ class CPSObject: public CCustomObject{
 	PS::SDef*			m_Definition;
 
 	PS::Particles	  	m_Particles;
-    Shader*				m_Shader;
+    ref_shader			m_Shader;
 
     float				m_fEmissionResidue;
 

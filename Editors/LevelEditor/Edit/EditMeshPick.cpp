@@ -113,8 +113,7 @@ bool CEditableMesh::RayPick(float& distance, const Fvector& start, const Fvector
 	return false;
 }
 //----------------------------------------------------
-#ifdef _LEVEL_EDITOR
-
+#ifdef _EDITOR
 bool CEditableMesh::CHullPickMesh(PlaneVec& pl, const Fmatrix& parent){
 	u32 i=0;
 	Fvector p;

@@ -30,10 +30,10 @@ void __fastcall PS::CPEDef::OnControlClick(PropValue* sender, bool& bDataModifie
 void PS::CPEDef::FillProp(LPCSTR pref, ::PropItemVec& items, ::ListItem* owner)
 {
 	ButtonValue* B;
-	B=::PHelper.CreateButton(items,FHelper.PrepareKey(pref,"Control"),"Play,Stop,Stop...");
+	B=::PHelper.CreateButton(items,FHelper.PrepareKey(pref,"Control"),"Play (F5),Stop,Stop...",ButtonValue::flFirstOnly);
     B->OnBtnClickEvent		= OnControlClick;
 	::PHelper.CreateName	(items,FHelper.PrepareKey(pref,"Name"),m_Name,sizeof(m_Name),owner);
-    B=::PHelper.CreateButton(items,FHelper.PrepareKey(pref,"Source Text"),"Edit");
+    B=::PHelper.CreateButton(items,FHelper.PrepareKey(pref,"Source Text"),"Edit",ButtonValue::flFirstOnly);
     B->OnBtnClickEvent		= OnSourceTextEdit;
 }
 #endif

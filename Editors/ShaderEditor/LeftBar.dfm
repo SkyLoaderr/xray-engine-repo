@@ -2,7 +2,7 @@ object fraLeftBar: TfraLeftBar
   Left = 0
   Top = 0
   Width = 443
-  Height = 617
+  Height = 277
   HorzScrollBar.Visible = False
   VertScrollBar.Increment = 34
   VertScrollBar.Size = 13
@@ -22,7 +22,7 @@ object fraLeftBar: TfraLeftBar
     Left = 0
     Top = 0
     Width = 260
-    Height = 617
+    Height = 277
     Align = alLeft
     BevelInner = bvLowered
     BevelOuter = bvNone
@@ -32,7 +32,7 @@ object fraLeftBar: TfraLeftBar
     TabOrder = 0
     object Splitter1: TSplitter
       Left = 1
-      Top = 378
+      Top = 38
       Width = 258
       Height = 2
       Cursor = crVSplit
@@ -1277,7 +1277,7 @@ object fraLeftBar: TfraLeftBar
     end
     object paShaderProperties: TPanel
       Left = 1
-      Top = 380
+      Top = 40
       Width = 258
       Height = 236
       Align = alBottom
@@ -1386,19 +1386,11 @@ object fraLeftBar: TfraLeftBar
         ParentFont = False
         OnClick = PanelMimimizeClick
       end
-      object Bevel7: TBevel
+      object paPreviewProps: TPanel
         Left = 1
         Top = 14
         Width = 256
-        Height = 1
-        Align = alTop
-        Shape = bsLeftLine
-      end
-      object paPreviewProps: TPanel
-        Left = 1
-        Top = 15
-        Width = 256
-        Height = 69
+        Height = 70
         Align = alClient
         BevelOuter = bvNone
         Color = 10528425
@@ -1456,22 +1448,18 @@ object fraLeftBar: TfraLeftBar
       Caption = 'Preview Object'
       object Plane2: TMenuItem
         Caption = 'Plane'
-        OnClick = PreviewObjClick
       end
       object Box2: TMenuItem
         Tag = 1
         Caption = 'Box'
-        OnClick = PreviewObjClick
       end
       object Ball2: TMenuItem
         Tag = 2
         Caption = 'Ball'
-        OnClick = PreviewObjClick
       end
       object Teapot2: TMenuItem
         Tag = 3
         Caption = 'Teapot'
-        OnClick = PreviewObjClick
       end
       object N8: TMenuItem
         Caption = '-'
@@ -1479,7 +1467,6 @@ object fraLeftBar: TfraLeftBar
       object Custom2: TMenuItem
         Tag = -1
         Caption = 'Custom...'
-        OnClick = PreviewObjClick
       end
       object N9: TMenuItem
         Caption = '-'
@@ -1487,7 +1474,6 @@ object fraLeftBar: TfraLeftBar
       object Clear2: TMenuItem
         Tag = -2
         Caption = 'Clear'
-        OnClick = PreviewObjClick
       end
     end
     object N7: TMenuItem

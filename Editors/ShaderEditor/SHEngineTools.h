@@ -18,9 +18,19 @@ public:
 	virtual void Parse(CSHEngineTools* owner, DWORD type, LPCSTR key, LPVOID data)=0;
 };
 
+enum EPreviewObj{
+	pvoNone,
+	pvoPlane,
+    pvoBox,
+    pvoSphere,
+    pvoTeapot,
+    pvoCustom
+};
+
 class CSHEngineTools: public ISHTools
 {
-	CEditableObject*		m_EditObject;
+	EPreviewObj				m_PreviewObjectType;
+	CSceneObject*			m_PreviewObject;
     bool					m_bCustomEditObject;
 
 	BOOL					m_bFreezeUpdate;
@@ -91,6 +101,8 @@ friend class TfrmShaderProperties;
 
     void					ResetShaders		(bool bForced=false){m_bNeedResetShaders=true; if (bForced) RealResetShaders(); }
     void					UpdateObjectShader	();
+
+    void __fastcall			OnPreviewObjectRefChange(PropItem* sender, LPVOID edit_val); 
 public:
 	CMemoryWriter			m_RenderShaders;
 
@@ -108,7 +120,7 @@ public:
     void					UpdateObjectFromStream();
 
     void 					ClearData			();
-	void __fastcall 		PreviewObjClick		(TObject *Sender);
+//.	void __fastcall 		PreviewObjClick		(TObject *Sender);
 public:
 							CSHEngineTools		(ISHInit& init);
     virtual 				~CSHEngineTools		();
@@ -121,8 +133,8 @@ public:
 
     virtual bool			OnCreate			();
     virtual void			OnDestroy			();
-    virtual void			OnActivate			(){;}
-    virtual void			OnDeactivate		(){;}
+    virtual void			OnActivate			();
+    virtual void			OnDeactivate		();
 
     // misc
     virtual void			ResetCurrentItem	();

@@ -48,7 +48,6 @@ void CPSLibrary::OnDeviceDestroy		()
 	for (PS::PEDIt e_it = m_PEDs.begin(); e_it!=m_PEDs.end(); e_it++)
 		(*e_it)->m_CachedShader.destroy	();
 }
-
 PS::SDef* CPSLibrary::FindPS			(LPCSTR Name)
 {
 	for (PS::PSIt it=m_PSs.begin(); it!=m_PSs.end(); it++)
@@ -180,8 +179,10 @@ bool CPSLibrary::Load(const char* nm)
 //----------------------------------------------------
 void CPSLibrary::Reload()
 {
+	OnDeviceDestroy();
 	OnDestroy();
     OnCreate();
+	OnDeviceCreate();  
 	Msg( "PS Library was succesfully reloaded." );
 }
 //----------------------------------------------------

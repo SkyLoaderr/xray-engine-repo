@@ -6,16 +6,6 @@
 #pragma hdrstop
 
 #include "SceneObject.h"
-#include "Library.h"
-#include "Shader.h"
-#include "EditMesh.h"
-#include "bone.h"
-#include "motion.h"
-// export spawn
-#include "xrServer_Objects_ALife_All.h"
-#include "net_utils.h"
-#include "xrMessages.h"
-#include "builder.h"
 
 //----------------------------------------------------
 #define SCENEOBJ_CURRENT_VERSION		0x0011

@@ -118,7 +118,6 @@ __published:	// IDE-managed Components
 	TPanel *paPreview;
 	TLabel *Label2;
 	TExtBtn *ExtBtn9;
-	TBevel *Bevel7;
 	TPanel *paPreviewProps;
 	TSplitter *Splitter2;
     void __fastcall ebSaveClick(TObject *Sender);
@@ -156,7 +155,6 @@ __published:	// IDE-managed Components
 	void __fastcall Checknewtextures1Click(TObject *Sender);
 	void __fastcall ebEngineFileMouseDown(TObject *Sender,
           TMouseButton Button, TShiftState Shift, int X, int Y);
-	void __fastcall PreviewObjClick(TObject *Sender);
 private:	// User declarations
 	void __fastcall RenameItem			(LPCSTR p0, LPCSTR p1);
 	BOOL __fastcall RemoveItem			(LPCSTR p0);

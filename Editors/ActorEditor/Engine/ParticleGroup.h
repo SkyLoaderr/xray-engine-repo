@@ -12,22 +12,23 @@ class ENGINE_API CPGDef
 public:
     string64			m_Name;
     Flags32				m_Flags;
+    float				m_fTimeLimit;
 	struct SEffect{
         enum{
             flDeferredStop	= (1<<0),
             flRandomizeTime	= (1<<1),
+            flEnabled		= (1<<2),
         };
     	enum EEffType{
         	etStopEnd		= 0,
-        	etPeriodic		= 1,
             etMaxType		= u32(-1)
         };
         EEffType		m_Type;
         Flags32			m_Flags;
     	string64		m_EffectName;  
-        u32				m_Time0;
-        u32				m_Time1;
-		SEffect(){m_Flags.zero();m_Type=etStopEnd;m_EffectName[0]=0;m_Time0=0;m_Time1=0;}
+        float			m_Time0;
+        float			m_Time1;
+		SEffect(){m_Flags.set(flEnabled);m_Type=etStopEnd;m_EffectName[0]=0;m_Time0=0;m_Time1=0;}
     };
     DEFINE_VECTOR(SEffect,EffectVec,EffectIt);
     EffectVec			m_Effects;
@@ -51,12 +52,14 @@ DEFINE_VECTOR(CPGDef*,PGDVec,PGDIt);
 
 class CParticleGroup: public FHierrarhyVisual{
 	const CPGDef*		m_Def;
-    u32					m_CurrentTime;
+    float				m_CurrentTime;
+	Fvector				m_InitialPosition;
 public:
     enum{
-    	flPlaying		= (1<<0),
+    	flRT_Playing		= (1<<0),
+    	flRT_DefferedStop	= (1<<1),
     };
-    Flags32				m_Flags;
+    Flags8				m_RT_Flags;
 public:
 						CParticleGroup	();
 						~CParticleGroup	(){;}
@@ -75,6 +78,7 @@ public:
 
 	void				Play			();
     void				Stop			(bool bFinishPlaying=true);
+    BOOL				IsPlaying		(){return m_RT_Flags.is(flRT_Playing);}
 };
 
 }
@@ -84,6 +88,7 @@ public:
 #define PGD_CHUNK_NAME			0x0002
 #define PGD_CHUNK_FLAGS			0x0003
 #define PGD_CHUNK_EFFECTS		0x0004
+#define PGD_CHUNK_TIME_LIMIT	0x0005
 
 //---------------------------------------------------------------------------
 #endif
