@@ -5,6 +5,14 @@
 #include "detailformat.h"
 #include "xrhemisphere.h"
 #include "cl_intersect.h"
+#include "ftimer.h"
+
+#define NUM_THREADS		3
+#define NUM_SUBDIVS		128
+
+//-----------------------------------------------------------------------------------------------------------------
+const int	LIGHT_Count				=	6;
+const int	LIGHT_Total				=	(2*LIGHT_Count+1)*(2*LIGHT_Count+1);
 
 //-----------------------------------------------------------------
 #define LT_DIRECT		0
@@ -25,6 +33,7 @@ struct R_Light
 	
 	Fvector			tri[3];				// Cached triangle for ray-testing
 };
+typedef	svector<R_Light*,4*1024>	LSelection;
 
 DEF_VECTOR		(Lights,R_Light);
 //-----------------------------------------------------------------
@@ -36,6 +45,10 @@ CVirtualFileStreamRW*	dtFS=0;
 DetailHeader			dtH;
 DetailSlot*				dtS;
 b_transfer				Header;
+
+__declspec(thread)		u64			t_start	= 0;
+__declspec(thread)		u64			t_time	= 0;
+__declspec(thread)		u64			t_count	= 0;
 
 //-----------------------------------------------------------------
 // hemi
@@ -205,12 +218,6 @@ void xrLoad(LPCSTR name)
 	}
 }
 
-//-----------------------------------------------------------------------------------------------------------------
-const int	LIGHT_Count			=	6;
-const int	LIGHT_Total			=	(2*LIGHT_Count+1)*(2*LIGHT_Count+1);
-
-typedef	svector<R_Light*,4*1024>	LSelection;
-
 IC bool RayPick(CDB::COLLIDER& DB, Fvector& P, Fvector& D, float r, R_Light& L)
 {
 	// 1. Check cached polygon
@@ -221,9 +228,12 @@ IC bool RayPick(CDB::COLLIDER& DB, Fvector& P, Fvector& D, float r, R_Light& L)
 	}
 
 	// 2. Polygon doesn't pick - real database query
-	// DB.RayPick(0,&Level,P,D,r);
+	t_start			= CPU::GetCycleCount();
 	DB.ray_query	(&Level,P,D,r);
+	t_time			+=	CPU::GetCycleCount()-t_start-CPU::cycles_overhead;
+	t_count			+=	1;
 	
+	// 3. Analyze
 	if (0==DB.r_count()) {
 		return false;
 	} else {
@@ -322,6 +332,7 @@ public:
 				DB.box_query		(&Level,bbC,bbD);
 				DWORD	triCount	= DB.r_count	();
 				if (0==triCount)	continue;
+
 				CDB::TRI* tris		= Level.get_tris();
 				
 				// select lights
@@ -340,37 +351,37 @@ public:
 				float amount[4]	= {0,0,0,0};
 				DWORD count[4]	= {0,0,0,0};
 				float coeff		= 0.5f*DETAIL_SLOT_SIZE/float(LIGHT_Count);
+				FPU::m64r		();
 				for (int x=-LIGHT_Count; x<=LIGHT_Count; x++) 
 				{
 					Fvector		P;
-					P.x			= S.P.x + coeff*float(x);
+					P.x			= bbC.x + coeff*float(x);
 
 					for (int z=-LIGHT_Count; z<=LIGHT_Count; z++) 
 					{
 						// compute position
 						Fvector t_n;  t_n.set(0,1,0);
-						P.z			= S.P.z + coeff*float(z);
-						P.y			= BB.max.y;
-						float y		= BB.min.y-5;
-						Fvector	dir; dir.set(0,-1,0);
+						P.z			= bbC.z + coeff*float(z);
+						P.y			= BB.min.y-5;
+						Fvector	dir;	dir.set		(0,-1,0);
+						Fvector start;	start.set	(P.x,BB.max.y+EPS,P.z);
 						
 						float		r_u,r_v,r_range;
 						for (DWORD tid=0; tid<triCount; tid++)
 						{
 							CDB::TRI&	T	= tris	[DB.r_begin()[tid].id];
-							if (CDB::TestRayTri(P,dir,T.verts,r_u,r_v,r_range,TRUE))
+							if (CDB::TestRayTri(start,dir,T.verts,r_u,r_v,r_range,TRUE))
 							{
-								if (r_range>=0)	{
-									float y_test	= P.y - r_range;
-									if (y_test>y)	{
-										y = y_test;
-										t_n.mknormal_non_normalized	(*T.verts[0],*T.verts[1],*T.verts[2]);
+								if (r_range>=0.f)	{
+									float y_test	= start.y - r_range;
+									if (y_test>P.y)	{
+										P.y = y_test;
+										t_n.mknormal(*T.verts[0],*T.verts[1],*T.verts[2]);
 									}
 								}
 							}
 						}
-						if (y<BB.min.y)	continue;
-						P.y		= y;
+						if (P.y<BB.min.y)	continue;
 						
 						// select part of slot
 						int pid = 0;
@@ -384,14 +395,15 @@ public:
 						}
 
 						// light point
-						t_n.normalize	();
-						t_n.y			+= 1.f;
-						t_n.normalize	();
 						amount	[pid]	+= LightPoint(DB,P,t_n,Selected);
 						count	[pid]	+= 1;
 					}
 				}
 				
+				// 
+//				if ((0==count[0]) || (0==count[1]) || (0==count[2]) || (0==count[3]))
+//					Msg("* failed to calculate slot X%d:Z%d",_x,_z);
+
 				// calculation of luminocity
 				DetailPalette* dc = (DetailPalette*)&DS.color;	int LL; float	res;
 				float amb		= Header.params.m_lm_amb_color.magnitude_rgb();
@@ -402,12 +414,12 @@ public:
 				res				= (amount[2]/float(count[2]))*f_inv + amb*f; LL = iFloor(15.f * res); clamp(LL,0,15); dc->a2	= LL;
 				res				= (amount[3]/float(count[3]))*f_inv + amb*f; LL = iFloor(15.f * res); clamp(LL,0,15); dc->a3	= LL;
 				thProgress		= float(_z-Nstart)/float(Nend-Nstart);
+				thPerformance	= float(double(t_count)/double(t_time*CPU::cycles2seconds))/1000.f;
 			}
 		}
 	}
 };
 
-#define NUM_THREADS	8
 void	xrLight			()
 {
 	DWORD	range			= dtH.size_z;
@@ -418,7 +430,12 @@ void	xrLight			()
 	DWORD	stride			= range/NUM_THREADS;
 	DWORD	last			= range-stride*(NUM_THREADS-1);
 	for (DWORD thID=0; thID<NUM_THREADS; thID++)
-		Threads.start(new LightThread(thID,thID*stride,thID*stride+((thID==(NUM_THREADS-1))?last:stride)));
+	{
+		CThread*	T		= new LightThread(thID,thID*stride,thID*stride+((thID==(NUM_THREADS-1))?last:stride));
+		T->thMessages		= FALSE;
+		T->thMonitor		= TRUE;
+		Threads.start		(T);
+	}
 	Threads.wait			();
 	Msg("%d seconds elapsed.",(timeGetTime()-start_time)/1000);
 }

@@ -8,6 +8,8 @@ public:
 	volatile float		thProgress;
 	volatile BOOL		thCompleted;
 	volatile BOOL		thMessages;
+	volatile BOOL		thMonitor;
+	volatile float		thPerformance;
 
 	CThread				(DWORD _ID)	
 	{
@@ -15,6 +17,7 @@ public:
 		thProgress		= 0;
 		thCompleted		= FALSE;
 		thMessages		= TRUE;
+		thMonitor		= FALSE;
 	}
 	void				Start	()
 	{
