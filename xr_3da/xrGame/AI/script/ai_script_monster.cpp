@@ -28,34 +28,7 @@ CScriptMonster::~CScriptMonster()
 
 void CScriptMonster::Init()
 {
-	while (!m_tpActionQueue.empty()) {
-		xr_delete	(m_tpActionQueue.front());
-		m_tpActionQueue.erase(m_tpActionQueue.begin());
-	}
 	// animation
-	m_tpScriptAnimation		= 0;
-	m_tpCurrentEntityAction	= 0;
-	m_tpNextAnimation		= 0;
-
-	for (u32 i=(u32)eActionTypeMovement; i<(u32)eActionTypeCount; ++i) {
-		xr_delete			(m_tpCallbacks[i].m_lua_function);
-		xr_delete			(m_tpCallbacks[i].m_lua_object);
-		m_tpCallbacks[i].m_method_name	= "";
-	}
-
-	xr_delete				(m_tSoundCallback.m_lua_function);
-	xr_delete				(m_tSoundCallback.m_lua_object);
-	m_tSoundCallback.m_method_name	= "";
-
-	xr_delete				(m_tHitCallback.m_lua_function);
-	xr_delete				(m_tHitCallback.m_lua_object);
-	m_tHitCallback.m_method_name	= "";
-}
-
-void CScriptMonster::reinit()
-{
-	inherited::reinit				();
-
 	for (u32 i=(u32)eActionTypeMovement; i<(u32)eActionTypeCount; ++i) {
 		m_tpCallbacks[i].m_lua_function = 0;
 		m_tpCallbacks[i].m_lua_object	= 0;
@@ -72,6 +45,45 @@ void CScriptMonster::reinit()
 
 	m_caScriptName					= "";
 	m_bScriptControl				= false;
+	
+	m_tpScriptAnimation				= 0;
+	m_tpCurrentEntityAction			= 0;
+	m_tpNextAnimation				= 0;
+}
+
+void CScriptMonster::ResetScriptData(void *pointer)
+{
+	while (!m_tpActionQueue.empty()) {
+		xr_delete						(m_tpActionQueue.front());
+		m_tpActionQueue.erase			(m_tpActionQueue.begin());
+	}
+
+	for (u32 i=(u32)eActionTypeMovement; i<(u32)eActionTypeCount; ++i) {
+		xr_delete						(m_tpCallbacks[i].m_lua_function);
+		xr_delete						(m_tpCallbacks[i].m_lua_object);
+		m_tpCallbacks[i].m_method_name	= "";
+	}
+
+	xr_delete							(m_tSoundCallback.m_lua_function);
+	xr_delete							(m_tSoundCallback.m_lua_object);
+	m_tSoundCallback.m_method_name		= "";
+
+	xr_delete							(m_tHitCallback.m_lua_function);
+	xr_delete							(m_tHitCallback.m_lua_object);
+	m_tHitCallback.m_method_name		= "";
+
+	m_caScriptName						= "";
+	m_bScriptControl					= false;
+
+	m_tpScriptAnimation					= 0;
+	m_tpCurrentEntityAction				= 0;
+	m_tpNextAnimation					= 0;
+}
+
+void CScriptMonster::reinit()
+{
+	inherited::reinit				();
+	ResetScriptData					();
 }
 
 void CScriptMonster::SetScriptControl(const bool bScriptControl, ref_str caSciptName)
@@ -433,11 +445,6 @@ bool CScriptMonster::bfAssignMovement(CEntityAction *tpEntityAction)
 		l_tMovementAction.m_bCompleted = true;
 
 	return		(!l_tMovementAction.m_bCompleted);
-}
-
-void CScriptMonster::ResetScriptData(void * /**P/**/)
-{
-	Init					();
 }
 
 void CScriptMonster::net_Destroy()
