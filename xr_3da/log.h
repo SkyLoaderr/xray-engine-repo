@@ -17,5 +17,7 @@ typedef void (__stdcall * LogCallback) (LPCSTR string);
 void CreateLog					(LogCallback cb=0);
 void CloseLog					();
 
+extern 		XRCORE_API	std::vector <LPCSTR>		LogFile;
+
 #endif
 
