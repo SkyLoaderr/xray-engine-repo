@@ -344,6 +344,7 @@ void vfRemoveIncoherentGraphPoints(CLevelGraph *tpAI_Map, u32 &dwVertexCount)
 				break;
 			}
 	}
+	
 	for (int i=0, k=0; i<n; i++, k++)
 		if (tDisconnected[k]) {
 			tpaGraph.erase(tpaGraph.begin() + i);
@@ -405,6 +406,20 @@ void vfRemoveIncoherentGraphPoints(CLevelGraph *tpAI_Map, u32 &dwVertexCount)
 //	tGraph.save_to				(fName);
 //}
 //
+struct sort_by_node_id_predicate {
+	IC	bool	operator()	(const SDynamicGraphVertex &v0, const SDynamicGraphVertex &v1) const
+	{
+		return				(v0.tNodeID < v1.tNodeID);
+	}
+};
+
+struct compare_by_node_id_predicate {
+	IC	bool	operator()	(const SDynamicGraphVertex &v0, const SDynamicGraphVertex &v1) const
+	{
+		return				(v0.tNodeID == v1.tNodeID);
+	}
+};
+
 void xrBuildGraph(LPCSTR name)
 {
 	CThreadManager			tThreadManager;		// multithreading
@@ -437,6 +452,11 @@ void xrBuildGraph(LPCSTR name)
 	Progress(1.0f);
 	Msg("%d points don't have corresponding nodes (they are removed)",dwfErasePoints());
 	FlushLog();
+
+	std::sort			(tpaGraph.begin(),tpaGraph.end(),sort_by_node_id_predicate());
+	I					= std::unique(tpaGraph.begin(),tpaGraph.end(),compare_by_node_id_predicate());
+	Msg					("%d points have the same corresponding nodes (they are removed)",tpaGraph.size() - (I - tpaGraph.begin()));
+	tpaGraph.erase		(I,tpaGraph.end());
 
 	dwGraphPoints = tpaGraph.size();
 	Phase("Removing incoherent graph points");
