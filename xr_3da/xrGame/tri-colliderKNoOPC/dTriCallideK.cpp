@@ -21,8 +21,8 @@ extern "C" int dTriBox (
 						)
 {
 
- // dIASSERT (skip >= (int)sizeof(dContactGeom));
- // dIASSERT (o1->_class->num == dBoxClass);
+  dIASSERT (skip >= (int)sizeof(dContactGeom));
+  dIASSERT (o1->_class->num == dBoxClass);
   
 
   dxBox *box = (dxBox*) CLASSDATA(o1);
@@ -868,9 +868,9 @@ if (maxc == 1) goto done;
 //because it need to check if additional points are in the triangle but it seems cause no problem
 
 #define FOO(i,j,op) \
-  CONTACT(contact,i*skip)->pos[0] = p[0] op side[j] * R[0+j]; \
-  CONTACT(contact,i*skip)->pos[1] = p[1] op side[j] * R[4+j]; \
-  CONTACT(contact,i*skip)->pos[2] = p[2] op side[j] * R[8+j];
+  CONTACT(contact,i*skip)->pos[0] = pos[0] op side[j] * R[0+j]; \
+  CONTACT(contact,i*skip)->pos[1] = pos[1] op side[j] * R[4+j]; \
+  CONTACT(contact,i*skip)->pos[2] = pos[2] op side[j] * R[8+j];
 #define BAR(ctact,side,sideinc) \
   depth -= B ## sideinc; \
   if (depth < 0) goto done; \

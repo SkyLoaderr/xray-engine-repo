@@ -98,6 +98,7 @@ int FUNCCALL dCollideBTL(dxGeom* TriList, dxGeom* Box, int Flags, dContactGeom* 
 		return 	(dColliderFn*)&dCollideBTL;
 	   }
 	   if (num == 3/*dSphereClass*/) {
+		   dSphereClass=dSphereClass;
 		return (dColliderFn*)&dCollideSTL;
 	   }
 	

@@ -23,7 +23,7 @@ public:
 	virtual void			applyForce				(const Fvector& dir, float val)				= 0;
 	virtual void			applyImpulse			(const Fvector& dir, float val)				= 0;
 
-	virtual ~CPhysicsBase	()																	= 0;
+	virtual ~CPhysicsBase	()																	{};
 };
 
 // ABSTRACT:

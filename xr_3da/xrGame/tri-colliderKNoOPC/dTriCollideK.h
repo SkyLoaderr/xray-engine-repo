@@ -7,16 +7,6 @@ extern "C" int dTriBox (
 						const dReal* v0,const dReal* v1,const dReal* v2,
 						const dxGeom *o1, const dxGeom *o2,
 						int flags, dContactGeom *contact, int skip
-						
-						
-						
-						
-						
-					//	const dReal* R,
-					//	const dReal* side
-					//	const dReal* p,
-						//dVector3 normal,// dReal *depth, //int *code,
-						//int maxc, dContactGeom *contact, int skip
 						);
 
 struct dxBox {

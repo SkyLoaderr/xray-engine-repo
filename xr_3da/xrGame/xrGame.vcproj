@@ -1221,6 +1221,12 @@
 			<File
 				RelativePath="Physics.h">
 			</File>
+			<File
+				RelativePath="dCylinder\dCylinder.cpp">
+			</File>
+			<File
+				RelativePath="dCylinder\dCylinder.h">
+			</File>
 			<Filter
 				Name="Tri-Collider"
 				Filter="">
