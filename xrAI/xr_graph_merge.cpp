@@ -116,17 +116,18 @@ public:
 								break;
 						}
 					}
-					///R_ASSERT(fMinDistance < EPS_L);
-					SConnectionVertex				T;
-					LPSTR							S;
-					S								= (char *)xr_malloc((strlen(tpGraphPoint->s_name_replace) + 1)*sizeof(char));
-					T.caConnectName					= (char *)xr_malloc((strlen(tpGraphPoint->m_caConnectionPointName) + 1)*sizeof(char));
-					T.dwLevelID						= tpGraphPoint->m_tLevelID;
-					T.tGraphID						= i;
-					Memory.mem_copy					(S,tpGraphPoint->s_name_replace,strlen(tpGraphPoint->s_name_replace) + 1);
-					Memory.mem_copy					(T.caConnectName,tpGraphPoint->m_caConnectionPointName,strlen(tpGraphPoint->m_caConnectionPointName) + 1);
-					m_tVertexMap.insert				(make_pair(S,T));
-					i++;
+					if (fMinDistance < EPS_L) {
+						SConnectionVertex				T;
+						LPSTR							S;
+						S								= (char *)xr_malloc((strlen(tpGraphPoint->s_name_replace) + 1)*sizeof(char));
+						T.caConnectName					= (char *)xr_malloc((strlen(tpGraphPoint->m_caConnectionPointName) + 1)*sizeof(char));
+						T.dwLevelID						= tpGraphPoint->m_tLevelID;
+						T.tGraphID						= i;
+						Memory.mem_copy					(S,tpGraphPoint->s_name_replace,strlen(tpGraphPoint->s_name_replace) + 1);
+						Memory.mem_copy					(T.caConnectName,tpGraphPoint->m_caConnectionPointName,strlen(tpGraphPoint->m_caConnectionPointName) + 1);
+						m_tVertexMap.insert				(make_pair(S,T));
+						i++;
+					}
 				}
 				xr_delete							(E);
 			}
