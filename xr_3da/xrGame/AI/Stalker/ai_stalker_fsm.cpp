@@ -310,7 +310,7 @@ void CAI_Stalker::ForwardCover()
 
 	switch (m_tActionState) {
 		case eActionStateWatchGo : {
-			WRITE_TO_LOG			("WatchGo : Detour");
+			WRITE_TO_LOG			("WatchGo : Forward cover");
 			if (bBackMove)
 				vfSetParameters			(&m_tSelectorCover,0,true,eWeaponStatePrimaryFire,ePathTypeDodgeCriteria,eBodyStateStand,eMovementTypeRun,eStateTypeDanger,eLookTypeDirection);
 			else
@@ -322,7 +322,7 @@ void CAI_Stalker::ForwardCover()
 			break;
 		}
 		case eActionStateWatchLook : {
-			WRITE_TO_LOG			("WatchLook : Detour");
+			WRITE_TO_LOG			("WatchLook : Forward cover");
 			float					fDistance = m_tEnemy.Enemy->Position().distance_to(vPosition);
 			CWeapon					*tpWeapon = dynamic_cast<CWeapon*>(m_inventory.ActiveItem());
 			if (tpWeapon)
