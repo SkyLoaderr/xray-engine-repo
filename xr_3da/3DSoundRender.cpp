@@ -59,7 +59,7 @@ void C3DSoundRender::OnMove()
 				Device.Statistic.dwSND_Played++;
 				pSnd->dwLastTimeActive = Device.dwTimeGlobal;
 			} else {
-				if (j && (Device.dwTimeGlobal-pSnd->dwLastTimeActive) > psSoundRelaxTime*1000)
+				if (j && (Device.dwTimeGlobal-pSnd->dwLastTimeActive) > DWORD(psSoundRelaxTime*1000))
 				{
 					_DELETE			(pSnd);
 					sounds[i].erase	(sounds[i].begin()+j);

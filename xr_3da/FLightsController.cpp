@@ -91,14 +91,6 @@ void	CLightsController::SelectDynamic(Fvector &pos, float fRadius)
 	}
 }
 
-void CLightsController::LoadKeyframes(CStream *fs) 
-{
-	DWORD size	= fs->Length();
-	DWORD count	= size/sizeof(Flight);
-	R_ASSERT(count*sizeof(Flight) == size);
-	Keyframes.resize(count);
-	fs->Read(Keyframes.begin(),size);
-}
 void CLightsController::Load(CStream *fs) 
 {
 	DWORD size	= fs->Length();
@@ -112,6 +104,7 @@ void CLightsController::Load(CStream *fs)
 
 	for (DWORD i=0; i<count; i++) 
 	{
+		/*
 		if (Lights[i].flags&XRLIGHT_PROCEDURAL) {
 			DWORD first_key = Lights[i].p_key_start; 
 			R_ASSERT(first_key<Keyframes.size());
@@ -120,6 +113,7 @@ void CLightsController::Load(CStream *fs)
 				&Keyframes[first_key],
 				sizeof(Flight));
 		}
+		*/
 
 		Lights[i].specular.set(Lights[i].diffuse);
 		Lights[i].specular.mul_rgb(0.2f);
@@ -187,7 +181,9 @@ void	CLightsController::add_sector_lights(vector<WORD> &L)
 		xrLIGHT&  T	= Lights[ID];
 		if (T.dwFrame==Device.dwFrame) continue;
 		
-		if ((T.type == D3DLIGHT_DIRECTIONAL)||(::Render.View->visibleSphereNC(T.position, T.range))) {
+		if ((T.type == D3DLIGHT_DIRECTIONAL)||(::Render.View->visibleSphereNC(T.position, T.range))) 
+		{
+			/*
 			if (T.flags&XRLIGHT_PROCEDURAL)
 			{
 				SelectedProcedural.push_back(ID);
@@ -196,6 +192,8 @@ void	CLightsController::add_sector_lights(vector<WORD> &L)
 			} else {
 				Selected.push_back(ID);
 			}
+			*/
+			Selected.push_back(ID);
 			T.dwFrame=Device.dwFrame;
 		}
 	}

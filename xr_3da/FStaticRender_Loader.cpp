@@ -156,11 +156,13 @@ void CRender::LoadLights(CStream *fs)
 	CStream* chunk;
 
 	// keys
+	/*
 	chunk = fs->OpenChunk(fsL_LIGHT_KEYS);
 	if (chunk) {
 		Lights.LoadKeyframes(chunk);
 		chunk->Close();
 	}
+	*/
 
 	// lights
 	chunk = fs->OpenChunk(fsL_LIGHTS);
