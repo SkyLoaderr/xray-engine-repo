@@ -51,7 +51,6 @@ end
 
 function main()
 	local dlg = test_avi_dlg()
-	level.add_dialog_to_render(dlg)
 	
 	local snd = sound_object(
 		"characters_voice\\human_01\\scenario\\gunslinger\\start_dream",
@@ -66,9 +65,10 @@ function main()
 		wait(1000)
 	end
 	
+	level.add_dialog_to_render(dlg)
 	snd:play_at_pos(actor,snd_pos)
-	
-	wait(13000)
+
+	wait(16000)
 	level.remove_dialog_to_render(dlg)
 	
 end
