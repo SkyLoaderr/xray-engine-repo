@@ -1,0 +1,185 @@
+<?xml version='1.0' encoding='utf-8' ?>
+<!-- C++Builder XML Project -->
+<PROJECT>
+  <MACROS>
+    <VERSION value="BCB.05.03"/>
+    <PROJECT value="!run\ed.exe"/>
+    <OBJFILES value="ed.obj ui_tools.obj BuildProgress.obj main.obj edit\UI_D3D.obj 
+      edit\UI_Main.obj edit\Texture.obj edit\StaticMesh.obj edit\Library.obj 
+      edit\SObject2.obj edit\SceneObject.obj edit\Scene.obj edit\SceneUndo.obj 
+      edit\FileSystem.obj edit\SceneUtil.obj edit\Light.obj edit\D3DUtils.obj 
+      edit\Log.obj UI_LightTools.obj SelectLight.obj AddLight.obj MoveLight.obj 
+      PropertiesLight.obj UI_ObjectTools.obj SelectObject.obj MoveObject.obj 
+      PropertiesObject.obj RotateObject.obj AddObject.obj ChoseObject.obj 
+      ui_control.obj EDIT\Ffileops.obj edit\Builder.obj edit\SceneCopyPaste.obj 
+      EDIT\SceneClassList.obj edit\BuilderCore.obj SceneProperties.obj 
+      edit\BuilderRemote.obj PropertiesSubObject.obj AddSound.obj 
+      SelectSound.obj MoveSound.obj PropertiesSound.obj UI_SoundTools.obj 
+      edit\Sound.obj edit\BuilderTexFiles.obj edit\BuilderLTX.obj ObjectList.obj 
+      Splash.obj visibilitytester.obj vt_sphere.obj Statistic.obj edit\LzHuf.obj 
+      Rapid\cl_raypick.obj Rapid\cl_collide.obj Rapid\cl_intersect.obj 
+      Rapid\cl_overlap.obj Rapid\cl_RAPID.obj Rapid\cl_build.obj 
+      edit\Primitives.obj SelectPClipper.obj MovePClipper.obj RotatePClipper.obj 
+      AddPClipper.obj UI_PClipperTools.obj PropertiesPClipper.obj 
+      edit\PClipper.obj ScalePClipper.obj ui_scenetools.obj MoveScene.obj 
+      EditLibrary.obj edit\gizmo.obj SelectTexturing.obj edit\texturizer.obj 
+      UI_TexturingTools.obj TopBar.obj"/>
+    <RESFILES value="ed.res"/>
+    <IDLFILES value=""/>
+    <IDLGENFILES value=""/>
+    <DEFFILE value=""/>
+    <RESDEPEN value="$(RESFILES) BuildProgress.dfm main.dfm SelectLight.dfm AddLight.dfm 
+      MoveLight.dfm PropertiesLight.dfm SelectObject.dfm MoveObject.dfm 
+      PropertiesObject.dfm RotateObject.dfm AddObject.dfm ChoseObject.dfm 
+      SceneProperties.dfm PropertiesSubObject.dfm AddSound.dfm SelectSound.dfm 
+      MoveSound.dfm PropertiesSound.dfm ObjectList.dfm Splash.dfm 
+      SelectPClipper.dfm MovePClipper.dfm RotatePClipper.dfm AddPClipper.dfm 
+      PropertiesPClipper.dfm ScalePClipper.dfm MoveScene.dfm EditLibrary.dfm 
+      SelectTexturing.dfm TopBar.dfm"/>
+    <LIBFILES value="lib\ddraw.lib D:\USERS\Alexmx\bcb\CBuilder5\Lib\cg32.lib lib\CreateDX.lib"/>
+    <LIBRARIES value="ELTREEB5.lib dclusr50.lib"/>
+    <SPARELIBS value="Vcl50.lib bcbsmp50.lib VCLX50.lib dclusr50.lib ELTREEB5.lib"/>
+    <PACKAGES value="Vcl50.bpi Vclx50.bpi bcbsmp50.bpi TeeUI50.bpi Tee50.bpi Vclbde50.bpi 
+      TeeDB50.bpi"/>
+    <PATHCPP value=".;edit;Rapid"/>
+    <PATHPAS value=".;"/>
+    <PATHRC value=".;"/>
+    <PATHASM value=".;"/>
+    <DEBUGLIBPATH value="$(BCB)\lib\debug"/>
+    <RELEASELIBPATH value="$(BCB)\lib\release"/>
+    <LINKER value="tlink32"/>
+    <USERDEFINES value="_DEBUG"/>
+    <SYSDEFINES value="NO_STRICT;USEPACKAGES"/>
+    <MAINSOURCE value="ed.cpp"/>
+    <INCLUDEPATH value="Rapid;c:\rad\borland\components\extbtn\;C:\RAD\bcb5\Components\ElTree\Code\Source\;C:\RAD\bcb5\Components\ElTree\Code\;c:\rad\borland\components\mstree\;c:\rad\borland\components\enhtree\;$(BCB)\Imports;c:\rad\bcb5\CBuilder5\Projects\;c:\rad\borland\components\multi\;edit;c:\rad\borland\CBuilder5\Projects\;$(BCB)\include;$(BCB)\include\vcl;C:\RAD\borland\Components\RX\Units\;C:\RAD\bcb5\Components\rx\Units\;C:\RAD\bcb5\Components\Multi\;C:\RAD\borland\Components\ElTree\Code\Source\;&quot;C:\RAD\bcb5\Components\ExtBtn\&quot;"/>
+    <LIBPATH value="Rapid;c:\rad\borland\components\extbtn\;C:\RAD\bcb5\Components\ElTree\Code\Source\;C:\RAD\bcb5\Components\ElTree\Code\;c:\rad\borland\components\mstree\;c:\rad\borland\components\enhtree\;$(BCB)\Imports;c:\rad\bcb5\CBuilder5\Projects\;$(BCB)\Projects\Lib;c:\rad\borland\components\multi\;edit;c:\rad\borland\CBuilder5\Projects\;$(BCB)\lib\obj;$(BCB)\lib;C:\RAD\borland\Components\RX\Units\;C:\RAD\bcb5\Components\rx\Units\;C:\RAD\bcb5\Components\Multi\;C:\RAD\borland\Components\ElTree\Code\Source\;&quot;C:\RAD\bcb5\Components\ExtBtn\&quot;"/>
+    <WARNINGS value="-w-par"/>
+  </MACROS>
+  <OPTIONS>
+    <IDLCFLAGS value="-IRapid -Ic:\rad\borland\components\extbtn\. 
+      -IC:\RAD\bcb5\Components\ElTree\Code\Source\. 
+      -IC:\RAD\bcb5\Components\ElTree\Code\. 
+      -Ic:\rad\borland\components\mstree\. -Ic:\rad\borland\components\enhtree\. 
+      -I$(BCB)\Imports -Ic:\rad\bcb5\CBuilder5\Projects\. 
+      -Ic:\rad\borland\components\multi\. -Iedit 
+      -Ic:\rad\borland\CBuilder5\Projects\. -I$(BCB)\include 
+      -I$(BCB)\include\vcl -IC:\RAD\borland\Components\RX\Units\. 
+      -IC:\RAD\bcb5\Components\rx\Units\. -IC:\RAD\bcb5\Components\Multi\. 
+      -IC:\RAD\borland\Components\ElTree\Code\Source\. 
+      -I&quot;C:\RAD\bcb5\Components\ExtBtn\.&quot; -src_suffix cpp -D_DEBUG -no_tie -boa"/>
+    <CFLAG1 value="-Od -H=$(BCB)\lib\vcl50.csm -Hc -Q -Vx -Ve -VF -ff -X- -r- -a8 -6 -b- -d 
+      -k -y -v -vi- -c -tW -tWM"/>
+    <PFLAGS value="-$Y+ -$W -$Q -$O- -$C- -v -JPHNE -M"/>
+    <RFLAGS value=""/>
+    <AFLAGS value="/mx /mv24 /m2 /kh32768 /w2 /zi"/>
+    <LFLAGS value="-D&quot;&quot; -aa -Tpe -x -Gn -v"/>
+  </OPTIONS>
+  <LINKER>
+    <ALLOBJ value="c0w32.obj $(PACKAGES) sysinit.obj $(OBJFILES)"/>
+    <ALLRES value="$(RESFILES)"/>
+    <ALLLIB value="$(LIBFILES) $(LIBRARIES) import32.lib cp32mt.lib"/>
+  </LINKER>
+  <IDEOPTIONS>
+[Version Info]
+IncludeVerInfo=1
+AutoIncBuild=1
+MajorVer=1
+MinorVer=0
+Release=0
+Build=10
+Debug=1
+PreRelease=0
+Special=0
+Private=0
+DLL=0
+Locale=1058
+CodePage=1251
+
+[Version Info Keys]
+CompanyName=
+FileDescription=
+FileVersion=1.0.0.10
+InternalName=
+LegalCopyright=
+LegalTrademarks=
+OriginalFilename=
+ProductName=
+ProductVersion=1.0.0.0
+Comments=
+
+[HistoryLists\hlIncludePath]
+Count=19
+Item0=Rapid;c:\rad\borland\components\extbtn\;C:\RAD\bcb5\Components\ElTree\Code\Source\;C:\RAD\bcb5\Components\ElTree\Code\;c:\rad\borland\components\mstree\;c:\rad\borland\components\enhtree\;$(BCB)\Imports;c:\rad\bcb5\CBuilder5\Projects\;c:\rad\borland\components\multi\;edit;c:\rad\borland\CBuilder5\Projects\;$(BCB)\include;$(BCB)\include\vcl;C:\RAD\borland\Components\RX\Units\;C:\RAD\bcb5\Components\rx\Units\;C:\RAD\bcb5\Components\Multi\;C:\RAD\borland\Components\ElTree\Code\Source\;C:\RAD\bcb5\Components\ExtBtn\
+Item1=Rapid;c:\rad\borland\components\extbtn\;C:\RAD\bcb5\Components\ElTree\Code\Source\;C:\RAD\bcb5\Components\ElTree\Code\;c:\rad\borland\components\mstree\;c:\rad\borland\components\enhtree\;$(BCB)\Imports;c:\rad\bcb5\CBuilder5\Projects\;c:\rad\borland\components\multi\;edit;c:\rad\borland\CBuilder5\Projects\;$(BCB)\include;$(BCB)\include\vcl;C:\RAD\borland\Components\RX\Units\;C:\RAD\bcb5\Components\rx\Units\;C:\RAD\bcb5\Components\Multi\;C:\RAD\borland\Components\ElTree\Code\Source\;C:\RAD\bcb5\Components\ExtBtn
+Item2=Rapid;c:\rad\borland\components\extbtn\;C:\RAD\bcb5\Components\ElTree\Code\Source\;C:\RAD\bcb5\Components\ElTree\Code\;c:\rad\borland\components\mstree\;c:\rad\borland\components\enhtree\;$(BCB)\Imports;c:\rad\bcb5\CBuilder5\Projects\;c:\rad\borland\components\multi\;edit;c:\rad\borland\CBuilder5\Projects\;$(BCB)\include;$(BCB)\include\vcl;C:\RAD\borland\Components\RX\Units\;C:\RAD\bcb5\Components\rx\Units\;C:\RAD\bcb5\Components\Multi\;C:\RAD\borland\Components\ElTree\Code\Source\
+Item3=c:\rad\borland\components\extbtn;C:\RAD\bcb5\Components\ElTree\Code\Source\;C:\RAD\bcb5\Components\ElTree\Code\;c:\rad\borland\components\mstree\;c:\rad\borland\components\enhtree\;$(BCB)\Imports;c:\rad\bcb5\CBuilder5\Projects\;c:\rad\borland\components\multi\;edit;c:\rad\borland\CBuilder5\Projects\;$(BCB)\include;$(BCB)\include\vcl;C:\RAD\borland\Components\RX\Units\;C:\RAD\bcb5\Components\rx\Units\;C:\RAD\bcb5\Components\Multi\;C:\RAD\borland\Components\ElTree\Code\Source\
+Item4=C:\RAD\bcb5\Components\ElTree\Code\Source\;C:\RAD\bcb5\Components\ElTree\Code\;c:\rad\borland\components\mstree\;c:\rad\borland\components\enhtree\;$(BCB)\Imports;c:\rad\bcb5\CBuilder5\Projects\;c:\rad\borland\components\multi\;edit;c:\rad\borland\CBuilder5\Projects\;$(BCB)\include;$(BCB)\include\vcl;C:\RAD\borland\Components\RX\Units\;C:\RAD\bcb5\Components\rx\Units\;C:\RAD\bcb5\Components\Multi\;C:\RAD\borland\Components\ElTree\Code\Source\
+Item5=C:\RAD\bcb5\Components\ElTree\Code\Source;C:\RAD\bcb5\Components\ElTree\Code;c:\rad\borland\components\mstree;c:\rad\borland\components\enhtree;$(BCB)\Imports;c:\rad\bcb5\CBuilder5\Projects\;c:\rad\borland\components\multi\;edit;c:\rad\borland\CBuilder5\Projects\;$(BCB)\include;$(BCB)\include\vcl;C:\RAD\borland\Components\RX\Units\;C:\RAD\bcb5\Components\rx\Units\;C:\RAD\bcb5\Components\Multi\;C:\RAD\borland\Components\ElTree\Code\Source
+Item6=C:\RAD\bcb5\Components\ElTree\Code\Source;C:\RAD\bcb5\Components\ElTree\Code;c:\rad\borland\components\mstree;c:\rad\borland\components\enhtree;$(BCB)\Imports;c:\rad\bcb5\CBuilder5\Projects\;c:\rad\borland\components\multi\;edit;c:\rad\borland\CBuilder5\Projects\;$(BCB)\include;$(BCB)\include\vcl;C:\RAD\borland\Components\RX\Units\;C:\RAD\bcb5\Components\rx\Units\;C:\RAD\bcb5\Components\Multi\
+Item7=$(BCB)\Imports;c:\rad\bcb5\CBuilder5\Projects\;c:\rad\borland\components\multi\;edit;c:\rad\borland\CBuilder5\Projects\;$(BCB)\include;$(BCB)\include\vcl;C:\RAD\borland\Components\RX\Units\;C:\RAD\bcb5\Components\rx\Units\;C:\RAD\bcb5\Components\Multi\
+Item8=c:\rad\bcb5\CBuilder5\Projects\;c:\rad\borland\components\multi\;edit;c:\rad\borland\CBuilder5\Projects\;$(BCB)\include;$(BCB)\include\vcl;C:\RAD\borland\Components\RX\Units\;C:\RAD\bcb5\Components\rx\Units\;C:\RAD\bcb5\Components\Multi\
+Item9=c:\rad\bcb5\CBuilder5\Projects;c:\rad\borland\components\multi\;edit;c:\rad\borland\CBuilder5\Projects\;$(BCB)\include;$(BCB)\include\vcl;C:\RAD\borland\Components\RX\Units\;C:\RAD\bcb5\Components\rx\Units\;C:\RAD\bcb5\Components\Multi\
+Item10=c:\rad\borland\components\multi\;edit;c:\rad\borland\CBuilder5\Projects\;$(BCB)\include;$(BCB)\include\vcl;C:\RAD\borland\Components\RX\Units\;C:\RAD\bcb5\Components\rx\Units\;C:\RAD\bcb5\Components\Multi\;C:\RAD\bcb5\CBuilder5\Include
+Item11=c:\rad\borland\components\multi\;edit;c:\rad\borland\CBuilder5\Projects\;$(BCB)\include;$(BCB)\include\vcl;C:\RAD\borland\Components\RX\Units\;C:\RAD\bcb5\Components\rx\Units\;C:\RAD\bcb5\Components\Multi\
+Item12=c:\rad\borland\components\multi\;edit;c:\rad\borland\CBuilder5\Projects\;$(BCB)\include;$(BCB)\include\vcl;C:\RAD\borland\Components\RX\Units\;C:\RAD\bcb5\Components\rx\Units;C:\RAD\bcb5\Components\Multi;C:\RAD\bcb5\CBuilder5\Include
+Item13=c:\rad\borland\components\multi\;edit;c:\rad\borland\CBuilder5\Projects\;$(BCB)\include;$(BCB)\include\vcl;C:\RAD\borland\Components\RX\Units\
+Item14=c:\rad\borland\components\multi;edit;c:\rad\borland\CBuilder5\Projects\;$(BCB)\include;$(BCB)\include\vcl;C:\RAD\borland\Components\RX\Units\
+Item15=edit;c:\rad\borland\CBuilder5\Projects\;$(BCB)\include;$(BCB)\include\vcl;C:\RAD\borland\Components\RX\Units\
+Item16=c:\rad\borland\CBuilder5\Projects\;$(BCB)\include;$(BCB)\include\vcl;C:\RAD\borland\Components\RX\Units\
+Item17=c:\rad\borland\CBuilder5\Projects\;$(BCB)\include;$(BCB)\include\vcl;C:\RAD\borland\Components\RX\Units
+Item18=c:\rad\borland\CBuilder5\Projects\;$(BCB)\include;$(BCB)\include\vcl
+
+[HistoryLists\hlLibraryPath]
+Count=17
+Item0=Rapid;c:\rad\borland\components\extbtn\;C:\RAD\bcb5\Components\ElTree\Code\Source\;C:\RAD\bcb5\Components\ElTree\Code\;c:\rad\borland\components\mstree\;c:\rad\borland\components\enhtree\;$(BCB)\Imports;c:\rad\bcb5\CBuilder5\Projects\;$(BCB)\Projects\Lib;c:\rad\borland\components\multi\;edit;c:\rad\borland\CBuilder5\Projects\;$(BCB)\lib\obj;$(BCB)\lib;C:\RAD\borland\Components\RX\Units\;C:\RAD\bcb5\Components\rx\Units\;C:\RAD\bcb5\Components\Multi\;C:\RAD\borland\Components\ElTree\Code\Source\;C:\RAD\bcb5\Components\ExtBtn\
+Item1=Rapid;c:\rad\borland\components\extbtn\;C:\RAD\bcb5\Components\ElTree\Code\Source\;C:\RAD\bcb5\Components\ElTree\Code\;c:\rad\borland\components\mstree\;c:\rad\borland\components\enhtree\;$(BCB)\Imports;c:\rad\bcb5\CBuilder5\Projects\;$(BCB)\Projects\Lib;c:\rad\borland\components\multi\;edit;c:\rad\borland\CBuilder5\Projects\;$(BCB)\lib\obj;$(BCB)\lib;C:\RAD\borland\Components\RX\Units\;C:\RAD\bcb5\Components\rx\Units\;C:\RAD\bcb5\Components\Multi\;C:\RAD\borland\Components\ElTree\Code\Source\;C:\RAD\bcb5\Components\ExtBtn
+Item2=Rapid;c:\rad\borland\components\extbtn\;C:\RAD\bcb5\Components\ElTree\Code\Source\;C:\RAD\bcb5\Components\ElTree\Code\;c:\rad\borland\components\mstree\;c:\rad\borland\components\enhtree\;$(BCB)\Imports;c:\rad\bcb5\CBuilder5\Projects\;$(BCB)\Projects\Lib;c:\rad\borland\components\multi\;edit;c:\rad\borland\CBuilder5\Projects\;$(BCB)\lib\obj;$(BCB)\lib;C:\RAD\borland\Components\RX\Units\;C:\RAD\bcb5\Components\rx\Units\;C:\RAD\bcb5\Components\Multi\;C:\RAD\borland\Components\ElTree\Code\Source\
+Item3=c:\rad\borland\components\extbtn;C:\RAD\bcb5\Components\ElTree\Code\Source\;C:\RAD\bcb5\Components\ElTree\Code\;c:\rad\borland\components\mstree\;c:\rad\borland\components\enhtree\;$(BCB)\Imports;c:\rad\bcb5\CBuilder5\Projects\;$(BCB)\Projects\Lib;c:\rad\borland\components\multi\;edit;c:\rad\borland\CBuilder5\Projects\;$(BCB)\lib\obj;$(BCB)\lib;C:\RAD\borland\Components\RX\Units\;C:\RAD\bcb5\Components\rx\Units\;C:\RAD\bcb5\Components\Multi\;C:\RAD\borland\Components\ElTree\Code\Source\
+Item4=C:\RAD\bcb5\Components\ElTree\Code\Source\;C:\RAD\bcb5\Components\ElTree\Code\;c:\rad\borland\components\mstree\;c:\rad\borland\components\enhtree\;$(BCB)\Imports;c:\rad\bcb5\CBuilder5\Projects\;$(BCB)\Projects\Lib;c:\rad\borland\components\multi\;edit;c:\rad\borland\CBuilder5\Projects\;$(BCB)\lib\obj;$(BCB)\lib;C:\RAD\borland\Components\RX\Units\;C:\RAD\bcb5\Components\rx\Units\;C:\RAD\bcb5\Components\Multi\;C:\RAD\borland\Components\ElTree\Code\Source\
+Item5=C:\RAD\bcb5\Components\ElTree\Code\Source;C:\RAD\bcb5\Components\ElTree\Code;c:\rad\borland\components\mstree;c:\rad\borland\components\enhtree;$(BCB)\Imports;c:\rad\bcb5\CBuilder5\Projects\;$(BCB)\Projects\Lib;c:\rad\borland\components\multi\;edit;c:\rad\borland\CBuilder5\Projects\;$(BCB)\lib\obj;$(BCB)\lib;C:\RAD\borland\Components\RX\Units\;C:\RAD\bcb5\Components\rx\Units\;C:\RAD\bcb5\Components\Multi\;C:\RAD\borland\Components\ElTree\Code\Source
+Item6=C:\RAD\bcb5\Components\ElTree\Code\Source;C:\RAD\bcb5\Components\ElTree\Code;c:\rad\borland\components\mstree;c:\rad\borland\components\enhtree;$(BCB)\Imports;c:\rad\bcb5\CBuilder5\Projects\;$(BCB)\Projects\Lib;c:\rad\borland\components\multi\;edit;c:\rad\borland\CBuilder5\Projects\;$(BCB)\lib\obj;$(BCB)\lib;C:\RAD\borland\Components\RX\Units\;C:\RAD\bcb5\Components\rx\Units\;C:\RAD\bcb5\Components\Multi\
+Item7=$(BCB)\Imports;c:\rad\bcb5\CBuilder5\Projects\;$(BCB)\Projects\Lib;c:\rad\borland\components\multi\;edit;c:\rad\borland\CBuilder5\Projects\;$(BCB)\lib\obj;$(BCB)\lib;C:\RAD\borland\Components\RX\Units\;C:\RAD\bcb5\Components\rx\Units\;C:\RAD\bcb5\Components\Multi\
+Item8=c:\rad\bcb5\CBuilder5\Projects\;$(BCB)\Projects\Lib;c:\rad\borland\components\multi\;edit;c:\rad\borland\CBuilder5\Projects\;$(BCB)\lib\obj;$(BCB)\lib;C:\RAD\borland\Components\RX\Units\;C:\RAD\bcb5\Components\rx\Units\;C:\RAD\bcb5\Components\Multi\
+Item9=c:\rad\bcb5\CBuilder5\Projects;$(BCB)\Projects\Lib;c:\rad\borland\components\multi\;edit;c:\rad\borland\CBuilder5\Projects\;$(BCB)\lib\obj;$(BCB)\lib;C:\RAD\borland\Components\RX\Units\;C:\RAD\bcb5\Components\rx\Units\;C:\RAD\bcb5\Components\Multi\
+Item10=$(BCB)\Projects\Lib;c:\rad\borland\components\multi\;edit;c:\rad\borland\CBuilder5\Projects\;$(BCB)\lib\obj;$(BCB)\lib;C:\RAD\borland\Components\RX\Units\;C:\RAD\bcb5\Components\rx\Units\;C:\RAD\bcb5\Components\Multi\
+Item11=$(BCB)\Projects\Lib;c:\rad\borland\components\multi\;edit;c:\rad\borland\CBuilder5\Projects\;$(BCB)\lib\obj;$(BCB)\lib;C:\RAD\borland\Components\RX\Units\;C:\RAD\bcb5\Components\rx\Units;C:\RAD\bcb5\Components\Multi
+Item12=$(BCB)\Projects\Lib;c:\rad\borland\components\multi\;edit;c:\rad\borland\CBuilder5\Projects\;$(BCB)\lib\obj;$(BCB)\lib;C:\RAD\borland\Components\RX\Units\
+Item13=$(BCB)\Projects\Lib;c:\rad\borland\components\multi;edit;c:\rad\borland\CBuilder5\Projects\;$(BCB)\lib\obj;$(BCB)\lib;C:\RAD\borland\Components\RX\Units\
+Item14=edit;c:\rad\borland\CBuilder5\Projects\;$(BCB)\lib\obj;$(BCB)\lib;C:\RAD\borland\Components\RX\Units\
+Item15=c:\rad\borland\CBuilder5\Projects\;$(BCB)\lib\obj;$(BCB)\lib;C:\RAD\borland\Components\RX\Units
+Item16=c:\rad\borland\CBuilder5\Projects\;$(BCB)\lib\obj;$(BCB)\lib
+
+[HistoryLists\hlDebugSourcePath]
+Count=1
+Item0=$(BCB)\source\vcl
+
+[HistoryLists\hlConditionals]
+Count=1
+Item0=_DEBUG
+
+[HistoryLists\hlFinalOutputDir]
+Count=2
+Item0=!run\
+Item1=P:\Editor\!run
+
+[Debugging]
+DebugSourceDirs=$(BCB)\source\vcl
+
+[Parameters]
+RunParams=
+HostApplication=
+RemoteHost=
+RemotePath=
+RemoteDebug=0
+
+[Compiler]
+ShowInfoMsgs=0
+LinkDebugVcl=0
+LinkCGLIB=0
+
+[CORBA]
+AddServerUnit=0
+AddClientUnit=0
+PrecompiledHeaders=0
+  </IDEOPTIONS>
+</PROJECT>
