@@ -80,6 +80,8 @@ public:
 	void SetItemHeight(int iItemHeight); 
 	int GetItemHeight() {return m_iItemHeight;}
 
+	virtual void SetHeight(int height);
+
 	//подготовить все элементы заново
 	void Reset();
 

@@ -94,6 +94,16 @@ void CUIListWnd::Init(int x, int y, int width, int height, int item_height)
 									 m_iItemWidth%ACTIVE_BACKGROUND_WIDTH, 
 									 m_iItemHeight%ACTIVE_BACKGROUND_HEIGHT);
 }
+//////////////////////////////////////////////////////////////////////////
+
+/*was made within plan of dinamic changing of appea*/
+void CUIListWnd::SetHeight(int height){
+	CUIWindow::SetHeight(height);
+	m_iRowNum = height/m_iItemHeight;
+	m_ScrollBar.SetHeight(height);
+	this->UpdateList();
+	this->UpdateScrollBar();
+}
 
 //////////////////////////////////////////////////////////////////////////
 
