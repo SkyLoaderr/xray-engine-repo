@@ -88,12 +88,18 @@ void CCopyFilesTaskPropDlg::OnBnClickedBtnAddFile()
 void CCopyFilesTaskPropDlg::OnBnClickedBtnRemoveFile()
 {
 	CFileNamesArray new_fl;
-	for(int i=0;	i<m_files_list_box.GetCount();++i )
+	int c = m_task->file_list()->size();
+	for(int i=0;	i<m_files_list_box.GetCount();++i ){
 		if(!m_files_list_box.GetSel(i))
 			new_fl.push_back(m_task->file_list()->at(i));
-
+		else
+			Msg("Removed file %s index=%d from task %s",*m_task->file_list()->at(i), i, m_task->name());
+	};
+	c = m_task->file_list()->size();
 	m_task->file_list()->clear();
+	c = m_task->file_list()->size();
 	*(m_task->file_list()) = new_fl;
+	c = m_task->file_list()->size();
 	redrawFileList();
 }
 
@@ -107,10 +113,13 @@ void CCopyFilesTaskPropDlg::redrawFileList()
 {
 	m_files_list_box.ResetContent();
 	CFileNamesArray* fl = m_task->file_list();
+	int c = m_task->file_list()->size();
 	CFileNamesArray::iterator it = fl->begin();
 	for(;it!=fl->end();++it){
 		m_files_list_box.AddString(*(*it));
 	}
+	int cc = m_files_list_box.GetCount();
+
 }
 
 void CCopyFilesTaskPropDlg::OnEnChangeEditDstFolder()
