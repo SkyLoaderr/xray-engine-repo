@@ -254,6 +254,9 @@ private:
 	CBitingHide			*stateHide;
 	CBitingDetour		*stateDetour;
 	CBitingPanic		*statePanic;
+	CBitingExploreDNE	*stateExploreDNE;
+	CBitingExploreDE	*stateExploreDE;
+	CBitingExploreNDE	*stateExploreNDE;
 
 	friend	class CBitingMotion;
 	
@@ -264,6 +267,10 @@ private:
 	friend	class CBitingHide;
 	friend	class CBitingDetour;
 	friend	class CBitingPanic;
+	friend	class CBitingExploreDNE;
+	friend	class CBitingExploreDE;
+	friend	class CBitingExploreNDE;
+
 
 	void SetState(IState *pS, bool bSkipInertiaCheck = false);
 	

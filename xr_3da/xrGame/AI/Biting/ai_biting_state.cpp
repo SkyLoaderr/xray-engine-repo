@@ -178,6 +178,10 @@ void CBitingAttack::Reset()
 	m_fDistMin			= 0.f;	
 	m_fDistMax			= 0.f;
 
+	m_dwFaceEnemyLastTime = 0;
+	m_dwFaceEnemyLastTimeInterval = 1200;
+	
+	nStartStop = nDoDamage = 0;
 }
 
 void CBitingAttack::Init()
@@ -202,6 +206,7 @@ void CBitingAttack::Init()
 		m_fDistMin = 2.4f;
 		m_fDistMax = 3.8f;
 	}
+	
 
 	// Test
 	Msg("_ Attack Init _");
@@ -215,7 +220,7 @@ void CBitingAttack::Run()
 	if (pEnemy != ve.obj) {
 		Reset();
 		Init();
-	}
+	} 
 
 	// Выбор состояния
 	bool bAttackMelee = (m_tAction == ACTION_ATTACK_MELEE);
@@ -224,9 +229,21 @@ void CBitingAttack::Run()
 		m_tAction = ACTION_ATTACK_MELEE;
 	else 
 		m_tAction = ((pEnemy->Position().distance_to(pMonster->Position()) > m_fDistMin) ? ACTION_RUN : ACTION_ATTACK_MELEE);
-	
+
+	// вычисление частоты старт-стопов
+	if (bAttackMelee && m_tAction == ACTION_RUN) {
+		nStartStop++;
+	}
+	if (nStartStop > nDoDamage*2) {
+		if (nDoDamage != 0) {
+			nStartStop = nDoDamage = 0;
+			m_fDistMin -= 0.3f;
+		} else nDoDamage = 1;
+	}
+
+
 	// Выполнение состояния
-	switch (m_tAction) {
+	switch (m_tAction) {	
 		case ACTION_RUN:		// бежать на врага
 			pMonster->AI_Path.DestNode = pEnemy->AI_NodeID;
 			pMonster->vfChoosePointAndBuildPath(0,&pEnemy->Position(), false, 0);
@@ -236,17 +253,42 @@ void CBitingAttack::Run()
 
 			break;
 		case ACTION_ATTACK_MELEE:		// атаковать вплотную
-			if (m_bAttackRat) pMonster->Motion.m_tParams.SetParams(eMotionAttackRat,0,0,0,0,MASK_ANIM | MASK_SPEED | MASK_R_SPEED);
-			else pMonster->Motion.m_tParams.SetParams(eMotionAttack,0,0,0,0,MASK_ANIM | MASK_SPEED | MASK_R_SPEED);			
-			pMonster->Motion.m_tTurn.Clear();
+			float yaw, pitch;
+
+			if (m_dwFaceEnemyLastTime + m_dwFaceEnemyLastTimeInterval < m_dwCurrentTime) {
+				// Смотреть на врага 
+				m_dwFaceEnemyLastTime = m_dwCurrentTime;
+				pMonster->AI_Path.TravelPath.clear();
+				
+				Fvector EnemyCenter;
+				Fvector MyCenter;
+
+				pEnemy->Center(EnemyCenter);
+				pMonster->Center(MyCenter);
+
+				EnemyCenter.sub(MyCenter);
+				EnemyCenter.getHP(yaw,pitch);
+				yaw *= -1;
+				yaw = angle_normalize(yaw);
+			} else yaw = pMonster->r_torso_target.yaw;
+
+			if (m_bAttackRat) pMonster->Motion.m_tParams.SetParams(eMotionAttackRat,0,m_cfBitingRunRSpeed,yaw,0,MASK_ANIM | MASK_SPEED | MASK_R_SPEED | MASK_YAW);
+			else pMonster->Motion.m_tParams.SetParams(eMotionAttack,0,m_cfBitingRunRSpeed,yaw,0,MASK_ANIM | MASK_SPEED | MASK_R_SPEED | MASK_YAW);			
+			pMonster->Motion.m_tTurn.Set(eMotionFastTurnLeft, eMotionFastTurnLeft, 0, m_cfBitingAttackFastRSpeed,m_cfBitingRunAttackMinAngle);
+
+			if (pMonster->AttackMelee(pEnemy,false)) {
+				pMonster->DoDamage(pEnemy);
+				nDoDamage++; 
+			}
+
 			break;
 	}
 }
 
 bool CBitingAttack::CheckCompletion() 
 {
-	// если враг убит
-	if (!pEnemy || !pEnemy->g_Alive()) return true;
+//// если враг убит
+//	if (!pEnemy || !pEnemy->g_Alive()) return true;
 	return false;
 }	
 
@@ -396,8 +438,6 @@ void CBitingHide::Run()
 
 bool CBitingHide::CheckCompletion()
 {	
-	// если большая дистанция || враг забыт
-	if (!m_tEnemy.obj) return true;
 	return false;
 }
 
@@ -515,8 +555,177 @@ bool CBitingPanic::CheckCompletion()
 	return false;
 }
 
-//---------------------------------------------------------------------------------------------------------
+///////////////////////////////////////////////////////////////////////////////////////////////////////////
+// CBitingExploreDNE class
+///////////////////////////////////////////////////////////////////////////////////////////////////////////
 
+CBitingExploreDNE::CBitingExploreDNE(CAI_Biting *p)
+{
+	pMonster = p;
+	Reset();
+	SetHighPriority();
+}
+
+void CBitingExploreDNE::Reset()
+{
+	inherited::Reset();
+	m_tEnemy.obj = 0;
+}
+
+void CBitingExploreDNE::Init()
+{
+	// Test
+	Msg("_ ExploreDNE Init _");
+
+	inherited::Init();
+
+	R_ASSERT(pMonster->IsRememberSound());
+
+	SoundElem se;
+	bool bDangerous;
+	pMonster->GetMostDangerousSound(se,bDangerous);	// возвращает самый опасный звук
+	m_tEnemy.obj = dynamic_cast<CEntity *>(se.who);
+	m_tEnemy.position = se.Position;
+
+	// проиграть анимацию испуга
+	float yaw = angle_normalize(pMonster->r_torso_target.yaw + PI_DIV_2);
+
+	pMonster->Motion.m_tSeq.Add(eMotionFastTurnLeft,0,m_cfBitingScaredRSpeed,yaw,0,MASK_ANIM | MASK_SPEED | MASK_R_SPEED | MASK_YAW);
+	pMonster->Motion.m_tSeq.Add(eMotionScared,0,0,0,0,MASK_ANIM | MASK_SPEED | MASK_R_SPEED);
+	pMonster->Motion.m_tSeq.Switch();
+
+	SetInertia(20000);
+}
+
+void CBitingExploreDNE::Run()
+{
+	// Тикать нафиг
+	VisionElem tempEnemy;
+
+	pMonster->m_tSelectorFreeHunting.m_fMaxEnemyDistance = m_tEnemy.position.distance_to(pMonster->Position()) + pMonster->m_tSelectorFreeHunting.m_fSearchRange;
+	pMonster->m_tSelectorFreeHunting.m_fOptEnemyDistance = pMonster->m_tSelectorFreeHunting.m_fMaxEnemyDistance;
+	pMonster->m_tSelectorFreeHunting.m_fMinEnemyDistance = m_tEnemy.position.distance_to(pMonster->Position()) + 3.f;
+
+	pMonster->vfChoosePointAndBuildPath(&pMonster->m_tSelectorFreeHunting, 0, true, 0);
+
+	pMonster->Motion.m_tParams.SetParams(eMotionRun,m_cfBitingRunAttackSpeed,m_cfBitingRunRSpeed,0,0,MASK_ANIM | MASK_SPEED | MASK_R_SPEED);
+	pMonster->Motion.m_tTurn.Set(eMotionRunTurnLeft,eMotionRunTurnRight, m_cfBitingRunAttackTurnSpeed,m_cfBitingRunAttackTurnRSpeed,m_cfBitingRunAttackMinAngle);
+}
+
+
+///////////////////////////////////////////////////////////////////////////////////////////////////////////
+// CBitingExploreDE class  
+///////////////////////////////////////////////////////////////////////////////////////////////////////////
+
+CBitingExploreDE::CBitingExploreDE(CAI_Biting *p)
+{
+	pMonster = p;
+	Reset();
+	SetNormalPriority();
+}
+
+void CBitingExploreDE::Reset()
+{
+	inherited::Reset();
+	m_tEnemy.obj = 0;
+	m_tAction = ACTION_LOOK_AROUND;
+}
+
+void CBitingExploreDE::Init()
+{
+	// Test
+	Msg("_ ExploreDE Init _");
+
+	inherited::Init();
+
+	R_ASSERT(pMonster->IsRememberSound());
+
+	SoundElem se;
+	bool bDangerous;
+	pMonster->GetMostDangerousSound(se,bDangerous);	// возвращает самый опасный звук
+	m_tEnemy.obj = dynamic_cast<CEntity *>(se.who);
+	m_tEnemy.position = se.Position;
+
+	pMonster->r_torso_target.yaw = angle_normalize(pMonster->r_torso_target.yaw + PI_DIV_2);
+
+	// проиграть анимацию испуга
+	SetInertia(20000);
+}
+
+void CBitingExploreDE::Run()
+{
+	// определение состояния
+	if (m_tAction == ACTION_LOOK_AROUND && (m_dwStateStartedTime + 2000 < m_dwCurrentTime)) m_tAction = ACTION_HIDE;
+	
+	switch(m_tAction) {
+	case ACTION_LOOK_AROUND:
+		pMonster->Motion.m_tParams.SetParams(eMotionStandTurnLeft,0,m_cfBitingStandTurnRSpeed, pMonster->r_torso_target.yaw, 0, MASK_ANIM | MASK_SPEED | MASK_R_SPEED | MASK_YAW);
+		pMonster->Motion.m_tTurn.Clear();
+		break;
+	case ACTION_HIDE:
+		pMonster->m_tSelectorCover.m_fMaxEnemyDistance = m_tEnemy.position.distance_to(pMonster->Position()) + pMonster->m_tSelectorCover.m_fSearchRange;
+		pMonster->m_tSelectorCover.m_fOptEnemyDistance = pMonster->m_tSelectorCover.m_fMaxEnemyDistance;
+		pMonster->m_tSelectorCover.m_fMinEnemyDistance = m_tEnemy.position.distance_to(pMonster->Position()) + 3.f;
+
+		pMonster->vfChoosePointAndBuildPath(&pMonster->m_tSelectorCover, 0, true, 0);
+
+		// Установить параметры движения
+		pMonster->Motion.m_tParams.SetParams	(eMotionWalkFwd,m_cfBitingWalkSpeed,m_cfBitingWalkRSpeed,0,0,MASK_ANIM | MASK_SPEED | MASK_R_SPEED);
+		pMonster->Motion.m_tTurn.Set			(eMotionWalkTurnLeft, eMotionWalkTurnRight,m_cfBitingWalkTurningSpeed,m_cfBitingWalkTurnRSpeed,m_cfBitingWalkMinAngle);
+		break;
+	}
+}
+
+
+///////////////////////////////////////////////////////////////////////////////////////////////////////////
+// CBitingExploreNDE class  
+///////////////////////////////////////////////////////////////////////////////////////////////////////////
+
+CBitingExploreNDE::CBitingExploreNDE(CAI_Biting *p)
+{
+	pMonster = p;
+	Reset();
+	SetLowPriority();
+}
+
+void CBitingExploreNDE::Reset()
+{
+	inherited::Reset();
+	m_tEnemy.obj = 0;
+}
+
+void CBitingExploreNDE::Init()
+{
+	// Test
+	Msg("_ ExploreNDE Init _");
+
+	inherited::Init();
+
+	R_ASSERT(pMonster->IsRememberSound());
+
+	SoundElem se;
+	bool bDangerous;
+	pMonster->GetMostDangerousSound(se,bDangerous);	// возвращает самый опасный звук
+	m_tEnemy.obj = dynamic_cast<CEntity *>(se.who);
+	m_tEnemy.position = se.Position;
+
+	// проиграть анимацию испуга
+	SetInertia(6000);
+}
+
+void CBitingExploreNDE::Run()
+{
+	pMonster->vfChoosePointAndBuildPath(0, &m_tEnemy.position, false, 0);
+
+	// Установить параметры движения
+	pMonster->Motion.m_tParams.SetParams	(eMotionWalkFwd,m_cfBitingWalkSpeed,m_cfBitingWalkRSpeed,0,0,MASK_ANIM | MASK_SPEED | MASK_R_SPEED);
+	pMonster->Motion.m_tTurn.Set			(eMotionWalkTurnLeft, eMotionWalkTurnRight,m_cfBitingWalkTurningSpeed,m_cfBitingWalkTurnRSpeed,m_cfBitingWalkMinAngle);
+}
+
+
+
+
+//---------------------------------------------------------------------------------------------------------
 
 ///////////////////////////////////////////////////////////////////////////////////////////////////////////
 // CAI_Biting state-specific functions
@@ -550,6 +759,15 @@ void CAI_Biting::ControlAnimation()
 	} 
 
 	if (!Motion.m_tSeq.Playing) {
+		
+		// Если нет пути и есть анимация движения, то играть анимацию отдыха
+		if (AI_Path.TravelPath.empty() || ((AI_Path.TravelPath.size() - 1) < AI_Path.TravelStart)) {
+			if (m_tAnim == eMotionWalkFwd || m_tAnim == eMotionRun) {
+				m_tAnim = eMotionStandIdle;
+			}
+		}
+		
+		// если анимация изменилась, переназначить анимацию
 		if (m_tAnimPrevFrame != m_tAnim) {
 			FORCE_ANIMATION_SELECT();
 		}	

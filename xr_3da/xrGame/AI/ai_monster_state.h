@@ -157,6 +157,7 @@ class IState {
 
 protected:
 	TTime			m_dwCurrentTime;					//!< текущее время
+	TTime			m_dwStateStartedTime;					//!< время перехода в это состояние
 	TTime			m_dwNextThink;						//!< время следующего выполнения состояния
 	TTime			m_dwTimeLocked;						//!< время заблокировки состояния
 

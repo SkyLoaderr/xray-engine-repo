@@ -27,6 +27,9 @@ const float m_cfBitingRunAttackTurnSpeed	=	3.5f;
 const float m_cfBitingRunAttackTurnRSpeed	=	5* PI_DIV_6;
 const float m_cfBitingRunRSpeed				=	PI_DIV_2;
 const float m_cfBitingRunAttackMinAngle		=   PI_DIV_6;
+const float m_cfBitingAttackFastRSpeed		=	3*PI_DIV_4;
+
+const float m_cfBitingScaredRSpeed			=	3*PI_DIV_4;
 
 ///////////////////////////////////////////////////////////////////////////////////////////////////////////
 // CBitingMotion class
@@ -94,6 +97,12 @@ class CBitingAttack : public IState {
 	float			m_fDistMin;						//!< минимально допустимое рассто€ни€ дл€ аттаки
 	float			m_fDistMax;						//!< максимально допустимое рассто€ние дл€ аттаки
 
+	TTime			m_dwFaceEnemyLastTime;
+	TTime			m_dwFaceEnemyLastTimeInterval;
+
+	u32				nStartStop;						
+	u32				nDoDamage;						//!<  оличество нанесЄнных повреждений
+
 public:
 	CBitingAttack(CAI_Biting *p);
 
@@ -144,11 +153,7 @@ class CBitingHide : public IState {
 
 	VisionElem		m_tEnemy;
 
-	TTime			m_dwReplanTime;						//!< врем€ через, которое делать планирование
-	TTime			m_dwLastPlanTime;					//!< последнее врем€ планировани€
-
 	typedef IState inherited;
-
 public:
 					CBitingHide			(CAI_Biting *p);
 
@@ -199,4 +204,65 @@ public:
 private:
 	virtual void	Init			();
 	virtual void	Run				();
+};
+
+///////////////////////////////////////////////////////////////////////////////////////////////////////////
+// CBitingExploreDNE class	// Explore danger-non-expedient enemy
+///////////////////////////////////////////////////////////////////////////////////////////////////////////
+class CBitingExploreDNE : public IState {
+	CAI_Biting		*pMonster;
+	VisionElem		m_tEnemy;
+
+	typedef IState inherited;
+public:
+					CBitingExploreDNE	(CAI_Biting *p);
+
+	virtual void	Reset				();	
+
+private:
+	virtual void	Init				();
+	virtual void	Run					();
+};
+
+///////////////////////////////////////////////////////////////////////////////////////////////////////////
+// CBitingExploreDE class	// Explore danger-expedient enemy //  ѕосмотреть по сторонам, укрытьс€	
+///////////////////////////////////////////////////////////////////////////////////////////////////////////
+class CBitingExploreDE : public IState {
+	CAI_Biting		*pMonster;
+	VisionElem		m_tEnemy;
+
+	enum {
+		ACTION_LOOK_AROUND,
+		ACTION_HIDE,
+	} m_tAction;
+
+
+	typedef IState inherited;
+public:
+					CBitingExploreDE	(CAI_Biting *p);
+
+	virtual void	Reset				();	
+
+private:
+	virtual void	Init				();
+	virtual void	Run					();
+};
+
+
+///////////////////////////////////////////////////////////////////////////////////////////////////////////
+// CBitingExploreNDE class	// Explore non-danger enemy //  »дти в сторону звука	
+///////////////////////////////////////////////////////////////////////////////////////////////////////////
+class CBitingExploreNDE : public IState {
+	CAI_Biting		*pMonster;
+	VisionElem		m_tEnemy;
+
+	typedef IState inherited;
+public:
+					CBitingExploreNDE	(CAI_Biting *p);
+
+	virtual void	Reset				();	
+
+private:
+	virtual void	Init				();
+	virtual void	Run					();
 };

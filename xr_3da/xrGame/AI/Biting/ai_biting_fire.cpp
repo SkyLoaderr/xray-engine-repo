@@ -161,16 +161,16 @@ bool CAI_Biting::AttackMelee(CObject *obj, bool bAttackRat)
 		} 
 
 
-		if(g_pGameLevel->ObjectSpace.RayPick(vCenter, dir, 1.5f, l_rq)) {
+		if (g_pGameLevel->ObjectSpace.RayPick(vCenter, dir, 1.5f, l_rq)) {
 			if ((l_rq.O == obj) && (l_rq.range < 1.0)) {
 				m_dwAttackMeleeTime = m_dwCurrentUpdate;
+				this->setEnabled(true);
 				return true;
 			}
 		}
 		this->setEnabled(true);
 	}
 	
-	// если RayPick успешный
 	return false;
 }	
 

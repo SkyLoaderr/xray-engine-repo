@@ -31,6 +31,8 @@ void CAI_Biting::vfInitSelector(IBaseAI_NodeEvaluator &S, CSquad &Squad)
 
 	VisionElem ve;
 	GetEnemy(ve);
+	//R_ASSERT(ve.obj);
+	if (!ve.obj) return;
 
 	S.m_tEnemy			= ve.obj;
 	S.m_tEnemyPosition	= ve.position;

@@ -155,6 +155,7 @@ void CMotionSequence::Cycle(u32 cur_time)
 ///////////////////////////////////////////////////////////////////////////////////////////////////////////
 IState::IState() 
 {
+	m_tPriority			= PRIORITY_NONE;
 }
 
 void IState::Reset()
@@ -167,7 +168,6 @@ void IState::Reset()
 	m_bLocked			= false;
 
 	m_dwInertia			= 0;
-	m_tPriority			= PRIORITY_NONE;
 }
 
 
@@ -196,8 +196,9 @@ void IState::Execute(TTime cur_time)
 
 void IState::Init()
 {
-	m_dwNextThink = m_dwCurrentTime;
-	m_tState = STATE_RUN;
+	m_dwNextThink			= m_dwCurrentTime;
+	m_tState				= STATE_RUN;
+	m_dwStateStartedTime	= m_dwCurrentTime;
 }
 void IState::Run()
 {

@@ -22,6 +22,9 @@ CAI_Biting::CAI_Biting()
 	stateHide			= xr_new<CBitingHide>		(this);
 	stateDetour			= xr_new<CBitingDetour>		(this);
 	statePanic			= xr_new<CBitingPanic>		(this);
+	stateExploreDNE		= xr_new<CBitingExploreDNE>	(this);
+	stateExploreDE		= xr_new<CBitingExploreDE>	(this);
+	stateExploreNDE		= xr_new<CBitingExploreNDE>	(this);
 	CurrentState		= stateRest;
 }
 
@@ -33,6 +36,9 @@ CAI_Biting::~CAI_Biting()
 	xr_delete(stateHide);
 	xr_delete(stateDetour);
 	xr_delete(statePanic);
+	xr_delete(stateExploreDNE);
+	xr_delete(stateExploreDE);
+	xr_delete(stateExploreNDE);
 }
 
 void CAI_Biting::Init()

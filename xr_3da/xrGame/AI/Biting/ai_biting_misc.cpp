@@ -158,7 +158,7 @@ void CAI_Biting::vfUpdateParameters()
 //		D = C = false;
 //		E = true;
 //	}
-	H = false;
+	H = true;
 }
 
 
