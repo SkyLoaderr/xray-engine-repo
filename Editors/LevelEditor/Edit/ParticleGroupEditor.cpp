@@ -33,7 +33,7 @@ void CParticleGroup::Render(float)
             Fcolor c;
             p.set(m.pos.x,m.pos.y,m.pos.z);
             c.set(m.color.x,m.color.y,m.color.z,m.alpha);
-            if (m_Def->m_Flags.is(CPGDef::flFramed)){
+            if (m_Def->m_Flags.is(CPGDef::dfFramed)){
                 Fvector2 lt,rb;
                 m_Def->m_Frame.CalculateTC(m.frame,lt,rb);
                 m_Sprite.Render(p,c.get(),m.size.x,m.rot.x,lt,rb);

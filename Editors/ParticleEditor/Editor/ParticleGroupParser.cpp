@@ -386,7 +386,6 @@ static LPCSTR PActionCommands[]={
 	"pSource(float particle_rate, PDomainEnum dtype, float a0 = 0.0f, float a1 = 0.0f, float a2 = 0.0f, float a3 = 0.0f, float a4 = 0.0f, float a5 = 0.0f, float a6 = 0.0f, float a7 = 0.0f, float a8 = 0.0f, BOOL allow_transform=TRUE);",
 	"pSpeedLimit(float min_speed, float max_speed = P_MAXFLOAT);",
 	"pTargetColor(float color_x, float color_y, float color_z, float alpha, float scale);",
-	"pTargetColorD(float color_x, float color_y, float color_z, float alpha, float scale);",
 	"pTargetSize(float size_x, float size_y, float size_z, float scale_x = 0.0f, float scale_y = 0.0f, float scale_z = 0.0f);",
 	"pTargetRotate(float rot_x, float rot_y, float rot_z, float scale = 0.0f);",
 	"pTargetRotateD(float scale, PDomainEnum dtype, float a0 = 0.0f, float a1 = 0.0f, float a2 = 0.0f, float a3 = 0.0f, float a4 = 0.0f, float a5 = 0.0f, float a6 = 0.0f, float a7 = 0.0f, float a8 = 0.0f);",

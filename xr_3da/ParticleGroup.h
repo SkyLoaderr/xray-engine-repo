@@ -49,14 +49,14 @@ class ENGINE_API CPGDef
 {
 public:
     enum{
-    	flSprite		= (1<<0),
-    	flModel			= (1<<1),
+    	dfSprite		= (1<<0),
+    	dfModel			= (1<<1),
 
-    	flFramed		= (1<<10),
-    	flAnimated		= (1<<11),
-        flRandomFrame   = (1<<12),
-        flRandomPlayback= (1<<13),
-        flTimeLimit		= (1<<14),
+    	dfFramed		= (1<<10),
+    	dfAnimated		= (1<<11),
+        dfRandomFrame   = (1<<12),
+        dfRandomPlayback= (1<<13),
+        dfTimeLimit		= (1<<14),
     };
 
     string64			m_Name;
@@ -89,7 +89,7 @@ public:
 	void 				pTimeLimit			(float time_limit);
     // action
     void				pFrameInitExecute	(PAPI::ParticleGroup *group);
-    void				pAnimateExecute		(PAPI::ParticleGroup *group);
+    void				pAnimateExecute		(PAPI::ParticleGroup *group, float dt);
 protected:
 	BOOL 				SaveActionList		(IWriter& F);
 	BOOL 				LoadActionList		(IReader& F);
