@@ -719,18 +719,7 @@ bool CAI_Soldier::bfCheckForNodeVisibility(DWORD dwNodeID, bool bIfRayPick)
 	tDirection.normalize_safe();
 	SRotation tRotation;
 	mk_rotation(tDirection,tRotation);
-	
-	if (r_current.yaw >= tRotation.yaw) {
-		while (r_current.yaw - tRotation.yaw > PI)
-			tRotation.yaw += PI_MUL_2;
-	}
-	else
-		if (tRotation.yaw >= r_current.yaw) {
-			while (tRotation.yaw - r_current.yaw > PI)
-				r_current.yaw += PI_MUL_2;
-		}
-	
-	if (fabsf(r_current.yaw - tRotation.yaw) <= eye_fov*PI/180.f/2.f)
+	if (bfTooBigAngle(r_current.yaw,tRotation.yaw,eye_fov*PI/180.f/2.f))
 		return(Level().AI.bfCheckNodeInDirection(AI_NodeID,vPosition,dwNodeID));
 	else
 		return(false);

@@ -136,7 +136,6 @@ public:
 	DWORD				m_dwLoopCount;
 	int					m_iCurrentPatrolIndex;
 	bool				m_bPatrolPathInverted;
-	bool				m_bWaitingForMembers;
 
 
 	// movement
@@ -231,12 +230,11 @@ public:
 		return(-1);
 	};
 
-	IC		void		vfRestPatrolData()
+	IC		void		vfResetPatrolData()
 	{
 		m_dwLoopCount = 0;
 		m_iCurrentPatrolIndex = -1;
 		m_bPatrolPathInverted = false;
-		m_bWaitingForMembers = false;
 	};
 	
 public:
