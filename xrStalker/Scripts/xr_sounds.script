@@ -372,10 +372,11 @@ function load_common (obj, sounds_base)
 
     themes["barman"] =
                {
-               -- lets_go
+               -- misc
                {
                sounds_base,
-               obj:add_sound ("script_replics\\stalker_1\\talk\\stalker_talk_",     30, snd_type.talk, 2, 1, id ()),
+               obj:add_sound ("script_replics\\stalker_1\\talk\\stalker_talk_",     30, snd_type.talk, 2, 1, id ()), -- lets go
+               obj:add_sound ("script_replics\\trader\\trader_script1a_1",           1, snd_type.talk, 2, 1, id ())
                },
                -- idle_bar
                {
