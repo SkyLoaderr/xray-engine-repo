@@ -70,6 +70,8 @@ function HeliManager:Start()
    if state == CHelicopter.eIdleState then
       self.m_heliObject:GoPatrolByPatrolPath("heli_way_1",0) --0==from_idx
       self.m_heliObject:SetCurrVelocity(5.0) -- m/sec (max)
+      printf("------------HELI GO----------------------")
+	  
    end
 
    local health = self.m_heliObject:GetfHealth()
@@ -108,7 +110,9 @@ end
 function main()
 
 local heli_mngr = HeliManager()
+   printf("------------HELI INIT----------------------")
 heli_mngr:Init()
+   printf("------------HELI START----------------------")
 heli_mngr:Start()
 
 --		heli:heli_go_by_patrol_path( "heli_way_1" )
