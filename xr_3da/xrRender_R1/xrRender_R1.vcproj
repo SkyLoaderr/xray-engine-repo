@@ -301,10 +301,10 @@
 				RelativePath=".\r__dsgraph.cpp">
 			</File>
 			<File
-				RelativePath=".\r__dsgraph.h">
+				RelativePath=".\r__dsgraph_structure.h">
 			</File>
 			<File
-				RelativePath=".\r__dsgraph_structure.h">
+				RelativePath=".\r__dsgraph_types.h">
 			</File>
 		</Filter>
 		<Filter
