@@ -779,6 +779,11 @@ Shader*	CShaderManager::Create(LPCSTR s_shader, LPCSTR s_textures, LPCSTR s_cons
 	C.bDetail			= FALSE;
 	S.E[2]				= _CreateElement	(C);
 
+	// Compile element
+	C.iElement			= 3;
+	C.bDetail			= FALSE;
+	S.E[3]				= _CreateElement	(C);
+
 	// Search equal in shaders array
 	for (u32 it=0; it<v_shaders.size(); it++)
 	{
@@ -828,6 +833,11 @@ Shader*	CShaderManager::Create_B	(CBlender* B, LPCSTR s_shader, LPCSTR s_texture
 	C.iElement			= 2;
 	C.bDetail			= FALSE;
 	S.E[2]				= _CreateElement	(C);
+
+	// Compile element
+	C.iElement			= 3;
+	C.bDetail			= FALSE;
+	S.E[3]				= _CreateElement	(C);
 
 	// Search equal in shaders array
 	for (u32 it=0; it<v_shaders.size(); it++)
