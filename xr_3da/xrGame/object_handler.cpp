@@ -31,7 +31,7 @@ CObjectHandler::~CObjectHandler	()
 {
 }
 
-void CObjectHandler::init	()
+void CObjectHandler::init		()
 {
 }
 
