@@ -17,6 +17,9 @@ public:
 	{
 		u32 m;
 
+		// Priority
+		SetThreadPriority	(GetCurrentThread(), THREAD_PRIORITY_BELOW_NORMAL);
+
 		// Light models
 		for (m=0; m<pBuild->mu_models.size(); m++)
 			pBuild->mu_models[m]->calc_lighting	();
@@ -102,7 +105,7 @@ void CBuild::Light()
 	for				(u32 dit = 0; dit<g_deflectors.size(); dit++)	task_pool.push_back(dit);
 
 	// Main process (4 threads)
-	Status	("Lighting...");
+	Status			("Lighting...");
 	CThreadManager	threads;
 	const	DWORD	thNUM	= 4;
 	u32	dwTimeStart	= timeGetTime();
