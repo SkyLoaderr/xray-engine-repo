@@ -179,10 +179,12 @@ BOOL CWeaponList::TakeItem(CLASS_ID cls, int iAmmoCount){
 	case CLSID_OBJECT_A_PROTECTA:	idx = FindWeapon(CLSID_OBJECT_W_PROTECTA);	break;
 	case CLSID_OBJECT_A_RAIL:		idx = FindWeapon(CLSID_OBJECT_W_RAIL);		break;
 	case CLSID_OBJECT_A_ROCKET:		idx = FindWeapon(CLSID_OBJECT_W_ROCKET);	break;
+
 	case CLSID_OBJECT_W_M134:	
 	case CLSID_OBJECT_W_GROZA:	
 	case CLSID_OBJECT_W_PROTECTA:
 	case CLSID_OBJECT_W_RAIL:	
+	case CLSID_OBJECT_W_M134_en:	
 	case CLSID_OBJECT_W_ROCKET:		idx = FindWeapon(cls); bTakeWeapon = true; break;
 	}
 	if (idx>=0){
