@@ -625,7 +625,7 @@ function  add_to_binder(obj)
     manager:add_action          (operators["raid"], action)
     
     
-    action = manager:action     (stalker_ids.action_free_no_alife)
+    action = manager:action     (stalker_ids.action_puzzle_solver)
     action:add_precondition     (world_property (properties["follow"],  true))
 
     --xr_report.AddScheme (obj)
