@@ -95,6 +95,10 @@ function action_kill:execute ()
 	function id(npc)
 		return npc:id()
 	end
+
+	if self.enemy ~= nil and self.object:memory(self.enemy) ~= true then
+		self.enemy = nil
+	end
 	
 	if self.enemy == nil or
 	  self.enemy:id() ~= id(self.object:best_enemy()) then
