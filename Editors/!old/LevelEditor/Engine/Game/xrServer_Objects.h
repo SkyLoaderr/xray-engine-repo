@@ -64,6 +64,7 @@
 // 46 - xrSE_ALifeObjectSearchLight		appended with property 'guid_bone', 
 //										appended with property 'rotation_bone'
 // 47 - CSE_ALifeItemWeapon				appended with ammo type index
+// 48 - CSE_ALifeObjectSearchlight		appended with property 'cone_bone'
 //------------------------------------------------------------------------------
 
 class CPureServerObject : public IPureServerObject {
