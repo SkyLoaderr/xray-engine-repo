@@ -26,6 +26,10 @@ public:
 	R_dsgraph::mapHUD_T											mapHUD;
 	R_dsgraph::mapLOD_T											mapLOD;
 
+#if RENDER==R_R2
+	R_dsgraph::mapEmissive_T									mapEmissive;
+#endif
+
 	// Runtime structures
 	xr_vector<R_dsgraph::mapNormalVS::TNode*>					nrmVS;
 	xr_vector<R_dsgraph::mapNormalPS::TNode*>					nrmPS;

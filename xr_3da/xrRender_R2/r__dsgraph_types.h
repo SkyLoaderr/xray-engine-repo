@@ -50,6 +50,9 @@ namespace R_dsgraph
 	typedef FixedMAP<float,_MatrixItemS>			mapSorted_T;
 	typedef mapSorted_T::TNode						mapSorted_Node;
 
+	typedef FixedMAP<float,_MatrixItemS>			mapEmissive_T;
+	typedef mapEmissive_T::TNode					mapEmissive_Node;
+
 	typedef FixedMAP<float,_MatrixItemS>			mapHUD_T;
 	typedef mapHUD_T::TNode							mapHUD_Node;
 
