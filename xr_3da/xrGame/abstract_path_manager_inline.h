@@ -131,7 +131,7 @@ IC	_vertex_id_type CPathManagerTemplate::dest_vertex_id() const
 TEMPLATE_SPECIALIZATION
 IC	void CPathManagerTemplate::set_dest_vertex(const _vertex_id_type vertex_id)
 {
-	VERIFY					(m_graph->valid_vertex_id(vertex_id));
+	VERIFY					(m_graph->valid_vertex_id(vertex_id) && (!m_restricted_object || m_restricted_object->accessible(vertex_id)));
 	m_actuality				= m_actuality && (dest_vertex_id() == vertex_id);
 	m_dest_vertex_id		= vertex_id;
 }
