@@ -12,7 +12,9 @@ void xrServer::Perform_destroy	(CSE_Abstract* tpSE_Abstract, u32 mode, BOOL Recu
 		xr_vector<u16>::const_iterator	E = tpSE_Abstract->children.end		();
 		for ( ; I != E; ++I) {
 			CSE_Abstract	*e_dest	= game->get_entity_from_eid(*I);
-			Perform_destroy	(e_dest,mode, Recursive);
+			//. hack
+			if (e_dest)
+				Perform_destroy	(e_dest,mode, Recursive);
 		}
 	};
 
