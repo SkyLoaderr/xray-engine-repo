@@ -179,10 +179,8 @@ function load_dialog:OnMsgNo()
 	msg_box:Hide()
 end
 
-function load_dialog:OnButton_ok_clicked()	
-	local edit_box = self:GetEditBox("edit_filename")
-	local txt = edit_box:GetText()
-	self:AddItemToList(txt)
+function load_dialog:OnButton_ok_clicked()		
+	
 end
 
 function load_dialog:OnButton_cancel_clicked()
