@@ -10,7 +10,7 @@
 
 #define RPOINT_SIZE 0.5f
 
-DEFINE_MAP(AnsiString,Shader*,ShaderMap,ShaderPairIt);
+DEFINE_MAP(AnsiString,ref_shader,ShaderMap,ShaderPairIt);
 
 class CSpawnPoint : public CCustomObject {
 	typedef CCustomObject inherited;
@@ -53,8 +53,8 @@ public:
     u32			m_dwTeamID;
 
     static ShaderMap m_Icons;
-    static Shader* 	CreateIcon(LPCSTR name);
-    static Shader* 	GetIcon(LPCSTR name);
+    static ref_shader 	CreateIcon(LPCSTR name);
+    static ref_shader 	GetIcon(LPCSTR name);
 
     bool 			OnAppendObject	(CCustomObject* object);
 protected:

@@ -145,9 +145,9 @@ void CDrawUtilities::OnDeviceCreate()
     	boxvert[i*6+5].set(p.x,p.y,p.z-S.z*0.25f);
     }
     // create render stream
-	vs_L 		= Device.Shader.CreateGeom(FVF::F_L,RCache.Vertex.Buffer(),RCache.Index.Buffer());
-    vs_TL		= Device.Shader.CreateGeom(FVF::F_TL,RCache.Vertex.Buffer(),RCache.Index.Buffer());
-    vs_LIT		= Device.Shader.CreateGeom(FVF::F_LIT,RCache.Vertex.Buffer(),RCache.Index.Buffer());
+	vs_L.create		(FVF::F_L,RCache.Vertex.Buffer(),RCache.Index.Buffer());
+    vs_TL.create	(FVF::F_TL,RCache.Vertex.Buffer(),RCache.Index.Buffer());
+    vs_LIT.create	(FVF::F_LIT,RCache.Vertex.Buffer(),RCache.Index.Buffer());
 }
 
 void CDrawUtilities::OnDeviceDestroy()
@@ -158,9 +158,9 @@ void CDrawUtilities::OnDeviceDestroy()
     m_SolidBox.Destroy	();
     m_WireBox.Destroy	();
 
-	Device.Shader.DeleteGeom(vs_L);
-	Device.Shader.DeleteGeom(vs_TL);
-	Device.Shader.DeleteGeom(vs_LIT);
+	vs_L.destroy		();
+	vs_TL.destroy		();
+	vs_LIT.destroy		();
 }
 //----------------
 
@@ -226,7 +226,7 @@ void CDrawUtilities::DrawPointLight(const Fvector& p, float radius, u32 c)
 	DrawCross(p, radius,radius,radius, radius,radius,radius, c, true);
 }
 
-void CDrawUtilities::DrawEntity(u32 clr, Shader* s)
+void CDrawUtilities::DrawEntity(u32 clr, ref_shader s)
 {
 	// fill VB
 	_VertexStream*	Stream	= &RCache.Vertex;

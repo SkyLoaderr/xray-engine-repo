@@ -2,8 +2,8 @@
 #pragma hdrstop
 
 #include "cl_intersect.h"
-#include "ESceneAIMapTools_MotionSimulator.h"
 #include "scene.h"
+#include "ESceneAIMapTools.h"
 
 struct cl_tri 
 {
@@ -204,6 +204,8 @@ IC bool CheckPointInIdentitySphere(const Fvector& point) {
 	return (point.square_magnitude() <= 1);
 }
 // -----------------------------------------------------------------------  
+extern CStatTimer g_tm;
+
 void msimulator_CheckCollision(SCollisionData& cl) 
 {
 	// from package
@@ -245,7 +247,7 @@ void msimulator_CheckCollision(SCollisionData& cl)
 				// plane is embedded in ellipsoid / sphere
 				// find plane intersection point by shooting a ray from the 
 				// sphere intersection point along the planes normal.
-				bInsideTri = CDB::TestRayTri2(sIPoint,T.N,T.p,distToPlaneIntersection);
+				bInsideTri = ETOOLS::TestRayTri2(sIPoint,T.N,T.p,distToPlaneIntersection);
 				
 				// calculate plane intersection point
 				pIPoint.mad(sIPoint,T.N,distToPlaneIntersection);
@@ -253,7 +255,7 @@ void msimulator_CheckCollision(SCollisionData& cl)
 			else
 			{ 
 				// shoot ray along the velocity vector
-				bInsideTri = CDB::TestRayTri2(sIPoint,normalizedVelocity,T.p,distToPlaneIntersection);
+				bInsideTri = ETOOLS::TestRayTri2(sIPoint,normalizedVelocity,T.p,distToPlaneIntersection);
 				
 				// calculate plane intersection point
 				pIPoint.mad(sIPoint,normalizedVelocity,distToPlaneIntersection);
@@ -449,7 +451,7 @@ IC void create_bb(Fbox& B, Fvector& P, float r, float h)
 {
 	B.set(P.x-r, P.y, P.z-r, P.x+r, P.y+h, P.z+r);
 }
-void msimulator_Simulate(Fvector& result, Fvector& start, Fvector& end, float _radius, float _height, ObjectList* snap_list)
+void ESceneAIMapTools::MotionSimulate(Fvector& result, Fvector& start, Fvector& end, float _radius, float _height)
 {
 	SCollisionData	cl_data;
 	float			half_height	= _height/2;
@@ -465,7 +467,8 @@ void msimulator_Simulate(Fvector& result, Fvector& start, Fvector& end, float _r
 	Fvector			bbC,bbD;
 	bb.get_CD		(bbC,bbD);
     static SPickQuery PQ;
-    Scene.BoxQuery	(PQ,bb,0,snap_list);
+    if (m_CFModel)	Scene.BoxQuery(PQ,bb,CDB::OPT_FULL_TEST,m_CFModel);
+    else			Scene.BoxQuery(PQ,bb,CDB::OPT_FULL_TEST,&GetSnapList());
 	
 	// XForm everything to ellipsoid space
 	Fvector			xf;
@@ -480,7 +483,7 @@ void msimulator_Simulate(Fvector& result, Fvector& start, Fvector& end, float _r
 	target.set		(end);
 	target.y		+= half_height;
 	target.mul		(xf);
-
+                                                        
 	Fvector			Lvelocity;
 	Lvelocity.sub	(end,start);
 	Lvelocity.mul	(xf);
@@ -495,11 +498,11 @@ void msimulator_Simulate(Fvector& result, Fvector& start, Fvector& end, float _r
 		vel_dir.normalize_safe	(Lvelocity);
 		for (int i_t=0; i_t<tri_count; i_t++){
 			cl_tri& T			= clContactedT[i_t];
-			Fvector* V			= (PQ.r_begin()+i_t)->verts;
+			Fvector** V			= (PQ.r_begin()+i_t)->verts;
 
-			T.p[0].mul			(V[0],xf);
-			T.p[1].mul			(V[1],xf);
-			T.p[2].mul			(V[2],xf);
+			T.p[0].mul			(*V[0],xf);
+			T.p[1].mul			(*V[1],xf);
+			T.p[2].mul			(*V[2],xf);                 
 			T.N.mknormal		(T.p[0],T.p[1],T.p[2]);
 			
 			T.d = -T.N.dotproduct(T.p[0]);

@@ -8,57 +8,22 @@
 #include "scene.h"
 //---------------------------------------------------------------------------
 
-TUI_DOTools::TUI_DOTools():TUI_CustomTools(OBJCLASS_DO,false){
-    AddControlCB(xr_new<TUI_ControlDOAdd>(estDefault,eaAdd,		this));
+TUI_DOTools::TUI_DOTools():TUI_CustomTools(OBJCLASS_DO,false)
+{
+    AddControlCB(xr_new<TUI_CustomControl>		(estDefault,	eaSelect, 	this));
 }
 
-void TUI_DOTools::OnActivate(){
-    pFrame = xr_new<TfraDetailObject>((TComponent*)0);
+void TUI_DOTools::OnActivate()
+{
+    pFrame = xr_new<TfraDetailObject>((TComponent*)0,dynamic_cast<EDetailManager*>(Scene.GetMTools(OBJCLASS_DO)));
     ((TfraDetailObject*)pFrame)->OnEnter();
 	TUI_CustomTools::OnActivate();
 }
-void TUI_DOTools::OnDeactivate(){
+void TUI_DOTools::OnDeactivate()
+{
     ((TfraDetailObject*)pFrame)->OnExit();
 	TUI_CustomTools::OnDeactivate();
     xr_delete(pFrame);
 }
 //--------------------------------------------------------------------------------------------------
-__fastcall TUI_ControlDOAdd::TUI_ControlDOAdd(int st, int act, TUI_CustomTools* parent):TUI_CustomControl(st,act,parent){
-	fraDO = 0;
-}
-
-void __fastcall TUI_ControlDOAdd::OnEnter()
-{
-    fraDO = (TfraDetailObject*)parent_tool->pFrame; VERIFY(fraDO);
-}
-
-void __fastcall TUI_ControlDOAdd::OnExit()
-{
-	fraDO = 0;
-}
-
-bool __fastcall TUI_ControlDOAdd::Start(TShiftState Shift){
-/*	if (Shift==ssRBOnly){ UI.Command(COMMAND_SHOWCONTEXTMENU,OBJCLASS_DOCLUSTER); return 0;}
-    Fvector p;
-    if (UI.PickGround(p,UI.m_CurrentRStart,UI.m_CurrentRNorm)){
-        char namebuffer[MAX_OBJ_NAME];
-        CDOCluster* obj=0;
-        Scene.GenObjectName(OBJCLASS_DOCLUSTER, namebuffer);
-        obj = (CDOCluster*)NewObjectFromClassID(OBJCLASS_DOCLUSTER);
-        strcpy(obj->GetName(),namebuffer);
-        obj->Move( p );
-        Scene.SelectObjects(false,OBJCLASS_DOCLUSTER);
-//        if (obj->AppendCluster(fraDO->seClusterDensity->Value)){
-//            Scene.AddObject(obj);
-//            if (Shift.Contains(ssCtrl)) UI.Command(COMMAND_SHOWPROPERTIES);
-//            if (!Shift.Contains(ssAlt)) ResetActionToSelect();
-//        }else{
-            xr_delete(obj);
-//        }
-
-    }
-*/
-    return false;
-}
-
 

@@ -33,20 +33,22 @@ protected:
 	Fvector m_MovingXVector;
 	Fvector m_MovingYVector;
 	Fvector m_MovingReminder;
-    bool MovingStart	(TShiftState _Shift);
-    void MovingProcess	(TShiftState _Shift);
-    bool MovingEnd		(TShiftState _Shift);
+    bool 				MovingStart		(TShiftState _Shift);
+    void 				MovingProcess	(TShiftState _Shift);
+    bool 				MovingEnd		(TShiftState _Shift);
 // scale
-    bool ScaleStart		(TShiftState _Shift);
-    void ScaleProcess	(TShiftState _Shift);
-    bool ScaleEnd		(TShiftState _Shift);
+    bool 				ScaleStart		(TShiftState _Shift);
+    void				ScaleProcess	(TShiftState _Shift);
+    bool 				ScaleEnd		(TShiftState _Shift);
 // rotate
 	Fvector m_RotateVector;
     float m_fRotateSnapAngle;
-    bool RotateStart	(TShiftState _Shift);
-    void RotateProcess	(TShiftState _Shift);
-    bool RotateEnd		(TShiftState _Shift);
+    bool 				RotateStart		(TShiftState _Shift);
+    void 				RotateProcess	(TShiftState _Shift);
+    bool 				RotateEnd		(TShiftState _Shift);
 protected:
+	bool				CheckSnapList 	(TShiftState Shift);
+
     CCustomObject*		DefaultAddObject(TShiftState Shift, TBeforeAppendCallback before=0, TAfterAppendCallback after=0);
     bool				DefaultMovingProcess(TShiftState Shift, Fvector& amount);
 public:

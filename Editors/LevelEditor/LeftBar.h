@@ -86,7 +86,7 @@ __published:	// IDE-managed Components
 	TPanel *paSnapList;
 	TLabel *Label1;
 	TExtBtn *ExtBtn16;
-	TExtBtn *ebEnableSnapList;
+	TExtBtn *ebUseSnapList;
 	TExtBtn *ExtBtn1;
 	TMxPopupMenu *pmSnapListCommand;
 	TMenuItem *MenuItem3;
@@ -177,6 +177,13 @@ __published:	// IDE-managed Components
 	TMenuItem *MenuItem15;
 	TMenuItem *MenuItem14;
 	TMenuItem *UpdateEnvironmentGeometry1;
+	TMenuItem *RemoveSelectedFromList1;
+	TMenuItem *SelectObjectFromList1;
+	TMenuItem *N9;
+	TMenuItem *N14;
+	TExtBtn *ebSnapListMode;
+	TExtBtn *ebModeInvert;
+	TBevel *Bevel2;
     void __fastcall ebClearClick(TObject *Sender);
     void __fastcall ebLoadClick(TObject *Sender);
     void __fastcall ebSaveClick(TObject *Sender);
@@ -230,7 +237,7 @@ __published:	// IDE-managed Components
 	void __fastcall ExtBtn1MouseDown(TObject *Sender, TMouseButton Button,
           TShiftState Shift, int X, int Y);
 	void __fastcall miAddSelectedToListClick(TObject *Sender);
-	void __fastcall ebEnableSnapListClick(TObject *Sender);
+	void __fastcall ebUseSnapListClick(TObject *Sender);
 	void __fastcall RefreshObjects1Click(TObject *Sender);
 	void __fastcall Checknewtextures1Click(TObject *Sender);
 	void __fastcall MakeDetailsClick(TObject *Sender);
@@ -262,6 +269,9 @@ __published:	// IDE-managed Components
 	void __fastcall MakeAIMap1Click(TObject *Sender);
 	void __fastcall ebCompileMouseDown(TObject *Sender, TMouseButton Button,
           TShiftState Shift, int X, int Y);
+	void __fastcall SelectObjectFromList1Click(TObject *Sender);
+	void __fastcall RemoveSelectedFromList1Click(TObject *Sender);
+	void __fastcall ebSnapListModeClick(TObject *Sender);
 private:	// User declarations
 public:		// User declarations
         __fastcall TfraLeftBar(TComponent* Owner);

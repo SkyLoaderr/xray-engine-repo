@@ -43,7 +43,7 @@ class XRayMtl;
 class CSurface
 {
     u32				m_GameMtlID;
-    Shader*			m_Shader;
+    ref_shader		m_Shader;
 	enum ERTFlags{
          rtValidShader	= (1<<0),
 	};
@@ -92,7 +92,7 @@ public:
 	IC void			CopyFrom		(CSurface* surf){*this = *surf; m_Shader=0;}
     IC int			_Priority		()	{return _Shader()?_Shader()->E[0]->Flags.iPriority:1;}
     IC bool			_StrictB2F		()	{return _Shader()?_Shader()->E[0]->Flags.bStrictB2F:false;}
-	IC Shader*		_Shader			()	{if (!m_RTFlags.is(rtValidShader)) OnDeviceCreate(); return m_Shader;}
+	IC ref_shader	_Shader			()	{if (!m_RTFlags.is(rtValidShader)) OnDeviceCreate(); return m_Shader;}
 #endif
     IC LPCSTR		_Name			()const {return m_Name.c_str();}
     IC LPCSTR		_ShaderName		()const {return m_ShaderName.c_str();}
@@ -127,13 +127,13 @@ public:
     IC void			OnDeviceCreate	()
     { 
         R_ASSERT(!m_RTFlags.is(rtValidShader));
-    	if (m_ShaderName.Length()&&m_Texture.Length()) 	m_Shader = Device.Shader.Create(m_ShaderName.c_str(),m_Texture.c_str()); 
-        else                                       		m_Shader = Device.Shader.Create("editor\\wire");
+    	if (m_ShaderName.Length()&&m_Texture.Length()) 	m_Shader.create(m_ShaderName.c_str(),m_Texture.c_str()); 
+        else                                       		m_Shader.create("editor\\wire");
         m_RTFlags.set(rtValidShader,TRUE);
     }
     IC void			OnDeviceDestroy	()
     {
-    	Device.Shader.Delete(m_Shader);
+    	m_Shader.destroy();
         m_RTFlags.set(rtValidShader,FALSE);
     }
 	// properties
@@ -180,7 +180,7 @@ class CEditableObject{
 
 #ifdef _EDITOR
     IRender_Visual*	m_Visual;
-	SGeometry* 		vs_SkeletonGeom;
+	ref_geom 		vs_SkeletonGeom;
 #endif
 // general
 	AnsiString		m_ClassScript;
@@ -188,7 +188,7 @@ class CEditableObject{
 	SurfaceVec		m_Surfaces;
 	EditMeshVec		m_Meshes;
 
-    Shader*			m_LODShader;
+    ref_shader		m_LODShader;
 
 	// skeleton
 	BoneVec			m_Bones;

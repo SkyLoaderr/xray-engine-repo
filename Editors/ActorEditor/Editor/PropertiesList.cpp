@@ -260,10 +260,15 @@ void __fastcall TProperties::AssignItems(PropItemVec& items, bool full_expand, c
         prop->item->CheckBoxEnabled = prop->m_Flags.is(PropItem::flShowCB);
         prop->item->ShowCheckBox 	= prop->m_Flags.is(PropItem::flShowCB);
         prop->item->CheckBoxState 	= (TCheckBoxState)prop->m_Flags.is(PropItem::flCBChecked);
-        // set flags
+        // if thumbnail draw
         if (prop->m_Flags.is(PropItem::flDrawThumbnail)){
         	prop->item->Height 		= 64;
         	prop->item->OwnerHeight = !miDrawThumbnails->Checked;
+        }                             
+        // if canvas value
+        if (PROP_CANVAS==prop->type){
+        	prop->item->Height 		= ((CanvasValue*)prop->GetFrontValue())->height;
+        	prop->item->OwnerHeight = false;
         }
         // set style
         TElCellStyle* CS    = prop->item->AddStyle();
@@ -378,14 +383,14 @@ void __fastcall TProperties::tvPropertiesItemDraw(TObject *Sender,
         u32 type 					= prop->type;
         if (prop->Enabled()){
             Surface->Font->Color 	= clBlack;
-            Surface->Font->Style 	= TFontStyles();
+            Surface->Font->Style 	= TFontStyles();           
         }else{
             Surface->Font->Color 	= clSilver;
             Surface->Font->Style 	= TFontStyles()<< fsBold;
         }
         // check mixed
         prop->CheckMixed();
-		// out caption mixed 
+        // out caption mixed 
         if (prop->m_Flags.is(PropItem::flMixed)){
             TColor C 		= Surface->Brush->Color;
             TBrushStyle S 	= Surface->Brush->Style;
@@ -404,7 +409,7 @@ void __fastcall TProperties::tvPropertiesItemDraw(TObject *Sender,
             DrawText	(Surface->Handle, prop->GetText(), -1, &R, DT_LEFT | DT_SINGLELINE | DT_VCENTER);
         }else{
             TRect src_rect 	= R;
-			prop->draw_rect	= R;
+            prop->draw_rect	= R;
             switch(type){
             case PROP_BUTTON:{
                 ButtonValue* V			= dynamic_cast<ButtonValue*>(prop->GetFrontValue()); R_ASSERT(V);
@@ -416,6 +421,15 @@ void __fastcall TProperties::tvPropertiesItemDraw(TObject *Sender,
                 R.Left += 1;
                 DrawText	(Surface->Handle, prop->GetText(), -1, &R, DT_LEFT | DT_SINGLELINE | DT_VCENTER);
             break;
+            case PROP_CANVAS:{
+                Surface->Font->Color 	= clSilver;
+                R.Right-= 1;
+                R.Left += 1;
+                CanvasValue* val = dynamic_cast<CanvasValue*>(prop->GetFrontValue()); R_ASSERT(val);
+                if (val->OnDrawCanvasEvent)
+	                val->OnDrawCanvasEvent(val,Surface,R);
+                DrawText	(Surface->Handle, prop->GetText(), -1, &R, DT_LEFT | DT_SINGLELINE | DT_VCENTER);
+            }break;
             case PROP_FCOLOR:{
                 Surface->Brush->Style = bsSolid;
                 Surface->Brush->Color = TColor(0x00000000);
@@ -443,25 +457,25 @@ void __fastcall TProperties::tvPropertiesItemDraw(TObject *Sender,
             }break;
             case PROP_FLAG8:{
                 Flag8Value* V		= dynamic_cast<Flag8Value*>(prop->GetFrontValue()); R_ASSERT(V);
-            	OutBOOL				(V->GetValueEx(),Surface,R,prop->Enabled());
+                OutBOOL				(V->GetValueEx(),Surface,R,prop->Enabled());
             }break;
             case PROP_FLAG16:{
                 Flag16Value* V		= dynamic_cast<Flag16Value*>(prop->GetFrontValue()); R_ASSERT(V);
-            	OutBOOL				(V->GetValueEx(),Surface,R,prop->Enabled());
+                OutBOOL				(V->GetValueEx(),Surface,R,prop->Enabled());
             }break;
             case PROP_FLAG32:{
                 Flag32Value* V		= dynamic_cast<Flag32Value*>(prop->GetFrontValue()); R_ASSERT(V);
-            	OutBOOL				(V->GetValueEx(),Surface,R,prop->Enabled());
+                OutBOOL				(V->GetValueEx(),Surface,R,prop->Enabled());
             }break;
             case PROP_BOOLEAN:{
                 BOOLValue* V		= dynamic_cast<BOOLValue*>(prop->GetFrontValue()); R_ASSERT(V);
-            	OutBOOL				(V->GetValue(),Surface,R,prop->Enabled());
+                OutBOOL				(V->GetValue(),Surface,R,prop->Enabled());
             }break;
             case PROP_TEXTURE:
             case PROP_TEXTURE2:
             case PROP_A_TEXTURE:
                 OutText(prop->GetText(),Surface,R,prop->Enabled(),m_BMEllipsis);
-            	if (miDrawThumbnails->Checked){ 
+                if (miDrawThumbnails->Checked){ 
                     R.top+=tvProperties->ItemIndent;
                     PHelper.DrawThumbnail	(Surface,R,prop->GetText());
                 }
@@ -476,7 +490,7 @@ void __fastcall TProperties::tvPropertiesItemDraw(TObject *Sender,
             case PROP_GAMEOBJECT:
             case PROP_ENTITY:
             case PROP_SCENE_ITEM:
-			case PROP_GAMEMTL:
+            case PROP_GAMEMTL:
             case PROP_A_LIBOBJECT:
             case PROP_A_GAMEMTL:
             case PROP_A_LIBPS:
@@ -499,7 +513,7 @@ void __fastcall TProperties::tvPropertiesItemDraw(TObject *Sender,
             case PROP_A_TEXT:
             case PROP_TEXT:
                 if (edText->Tag!=(int)Item)
-	                OutText(prop->GetText(),Surface,R,prop->Enabled(),m_BMEllipsis);
+                    OutText(prop->GetText(),Surface,R,prop->Enabled(),m_BMEllipsis);
             break;
             case PROP_VECTOR:
                 OutText(prop->GetText(),Surface,R,prop->Enabled());
@@ -512,11 +526,11 @@ void __fastcall TProperties::tvPropertiesItemDraw(TObject *Sender,
             case PROP_S32:
             case PROP_FLOAT:
                 if (seNumber->Tag!=(int)Item)
-	                OutText(prop->GetText(),Surface,R,prop->Enabled());
+                    OutText(prop->GetText(),Surface,R,prop->Enabled());
             break;
             default:
-				THROW2("Unknown prop type");
-	        };
+                THROW2("Unknown prop type");
+            };
         }
         // show LW edit
         if (!prop->m_Flags.is(PropItem::flDisabled)){
@@ -560,6 +574,7 @@ void __fastcall TProperties::tvPropertiesMouseDown(TObject *Sender,
                 pmEnum->Tag = (int)item;
                 switch(prop->type){
                 case PROP_CAPTION: break;
+                case PROP_CANVAS: break;
                 case PROP_BUTTON:{
                     ButtonValue* FV				= dynamic_cast<ButtonValue*>(prop->GetFrontValue()); R_ASSERT(FV);
                     int btn_num					= iFloor((X-prop->draw_rect.left)*(float(FV->value.size())/float(prop->draw_rect.Width())));
@@ -795,14 +810,17 @@ void __fastcall TProperties::tvPropertiesMouseUp(TObject *Sender,
         switch(prop->type){
         case PROP_BUTTON:{
         	if (Button==mbLeft){
-                ButtonValue* V		= dynamic_cast<ButtonValue*>(prop->GetFrontValue()); R_ASSERT(V);
-                if (V->btn_num!=-1){
-	                if (V->OnBtnClick()){
-    	                Modified			();
-        	            RefreshForm			();
-            	    }
+				bool bRes = false;
+                for (PropItem::PropValueIt it=prop->Values().begin(); it!=prop->Values().end(); it++){
+                    ButtonValue* V			= dynamic_cast<ButtonValue*>(*it); R_ASSERT(V);
+                    bRes 					|= V->OnBtnClick();
+                    V->btn_num				= -1;
+                    if (V->m_Flags.is(ButtonValue::flFrontOnly)) break;
                 }
-                V->btn_num			= -1;
+                if (bRes){
+                    Modified			();
+                    RefreshForm			();
+                }
                 item->RedrawItem	(true);
             }
         }break;
@@ -1048,6 +1066,7 @@ void TProperties::CancelLWNumber()
 
 void TProperties::HideLWNumber()
 {
+    if (seNumber->Visible&&Visible) 	tvProperties->SetFocus();
     seNumber->Tag	= 0;
     seNumber->Hide	();
 }
@@ -1270,6 +1289,7 @@ void TProperties::CancelLWText()
 
 void TProperties::HideLWText()
 {
+    if (edText->Visible&&Visible) 	tvProperties->SetFocus();
     edText->Tag		= 0;
     edText->Hide	();
 }
@@ -1481,7 +1501,7 @@ void __fastcall TProperties::pbExtBtnClick(TObject *Sender)
 {
 	TElPopupButton* btn = dynamic_cast<TElPopupButton*>(Sender);
 	PropItem* prop = (PropItem*)btn->Tag; R_ASSERT(prop);//&&prop->OnExtBtnClick);
-	prop->OnExtClick();
+//.	prop->OnExtClick();
 }
 //---------------------------------------------------------------------------
 

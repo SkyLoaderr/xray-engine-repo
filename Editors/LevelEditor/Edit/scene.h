@@ -5,6 +5,7 @@
 #define SceneH
 
 #include "SceneGraph.h"
+#include "SceneCustomMTools.h"
 #include "Communicate.h"
 #include "pure.h"
 #include "ElTree.hpp"
@@ -82,11 +83,7 @@ class EScene:
 {
 public:
 	// addition objects
-    EDetailManager*		m_DetailObjects;
-    ESceneAIMapTools*	m_AIMap;
     CSceneObject*		m_SkyDome;
-
-    ObjectList			m_SnapObjects;
 
 	typedef	FixedMAP<float,CSceneObject*>   mapObject_D;
 	typedef mapObject_D::TNode	 	    mapObject_Node;
@@ -101,12 +98,15 @@ protected:
 
 	int m_LastAvailObject;
 
-	ObjectMap  m_Objects;
+	ObjectMap  		m_Objects;
+    SceneToolsMap   m_SceneTools;
 
 	xr_deque<UndoItem> m_UndoStack;
 	xr_deque<UndoItem> m_RedoStack;
 
 	TProperties* m_SummaryInfo;
+
+    ObjectList			m_ESO_SnapObjects; // временно здесь а вообще нужно перенести в ESceneTools
 public:
     struct ERR{
 	    struct Face{
@@ -151,101 +151,110 @@ public:
     };
     ERR				m_CompilerErrors;
 protected:
-    bool OnLoadAppendObject			(CCustomObject* O);
-    bool OnLoadSelectionAppendObject(CCustomObject* O);
+    bool 			OnLoadAppendObject			(CCustomObject* O);
+    bool 			OnLoadSelectionAppendObject(CCustomObject* O);
 public:
-    bool m_Modified;
+    bool			 m_Modified;
 
 	typedef bool (__closure *TAppendObject)(CCustomObject* object);
 
-	bool ReadObject					(IReader& F, CCustomObject*& O);
-	bool ReadObjects				(IReader& F, u32 chunk_id, TAppendObject on_append);
-	void SaveObject					(CCustomObject* O,IWriter& F);
-	void SaveObjects				(ObjectList& lst, u32 chunk_id, IWriter& F);
+	bool 			ReadObject			(IReader& F, CCustomObject*& O);
+	bool 			ReadObjects			(IReader& F, u32 chunk_id, TAppendObject on_append);
+	void 			SaveObject			(CCustomObject* O,IWriter& F);
+	void 			SaveObjects			(ObjectList& lst, u32 chunk_id, IWriter& F);
 public:
-	bool Load						(char *_FileName);
-	void Save						(char *_FileName, bool bUndo);
-	bool LoadSelection				(const char *_FileName);
-	void SaveSelection				(int classfilter, char *_FileName);
-	void Unload						();
-	void ClearObjects				(bool bDestroy);
-	void LoadCompilerError			(LPCSTR fn);
-    void ClearCompilerErrors		(){m_CompilerErrors.Clear();}
+	bool 			Load				(char *_FileName);
+	void 			Save				(char *_FileName, bool bUndo);
+	bool 			LoadSelection		(const char *_FileName);
+	void 			SaveSelection		(int classfilter, char *_FileName);
+	void 			Unload				();
+	void 			ClearObjects		(bool bDestroy);
+	void 			LoadCompilerError	(LPCSTR fn);
+    void 			ClearCompilerErrors	(){m_CompilerErrors.Clear();}
 
-	IC bool valid					()           	{ return m_Valid; }
+	IC bool 		valid				()           	{ return m_Valid; }
 
-	IC bool locked					()          	{ return m_Locked!=0; }
-	IC void lock					()            	{ m_Locked++; }
-	IC void unlock					()          	{ m_Locked--; }
-	IC void waitlock				()        		{ while( locked() ) Sleep(0); }
+	IC bool 		locked				()          	{ return m_Locked!=0; }
+	IC void 		lock				()            	{ m_Locked++; }
+	IC void 		unlock				()          	{ m_Locked--; }
+	IC void 		waitlock			()        		{ while( locked() ) Sleep(0); }
 
-	IC ObjectList& ListObj    		(EObjClass cat)	{ VERIFY((cat>=0)&&(cat<OBJCLASS_COUNT));
-                                        			return m_Objects[cat]; }
-	IC ObjectIt FirstObj      		(EObjClass cat)	{ return ListObj(cat).begin(); }
-	IC ObjectIt LastObj       		(EObjClass cat)	{ return ListObj(cat).end(); }
-	IC ObjectPairIt FirstClass		()				{ return m_Objects.begin(); }
-	IC ObjectPairIt LastClass 		()				{ return m_Objects.end(); }
-	IC int ObjCount           		(EObjClass cat)	{ return ListObj(cat).size(); }
-	int ObjCount 			        ();
+	IC ESceneCustomMTools* GetMTools	(EObjClass cat)	{ VERIFY((cat>=0)&&(cat<OBJCLASS_COUNT)); return m_SceneTools[cat]; }
+	IC ObjectList& 	ListObj    			(EObjClass cat)	{ VERIFY((cat>=0)&&(cat<OBJCLASS_COUNT)); return m_Objects[cat]; }
+	IC ObjectIt 	FirstObj      		(EObjClass cat)	{ return ListObj(cat).begin(); }
+	IC ObjectIt 	LastObj       		(EObjClass cat)	{ return ListObj(cat).end(); }
+	IC ObjectPairIt FirstClass			()				{ return m_Objects.begin(); }
+	IC ObjectPairIt LastClass 			()				{ return m_Objects.end(); }
+	IC int 			ObjCount           	(EObjClass cat)	{ return ListObj(cat).size(); }
+	int 			ObjCount 			();
 
-	void RenderSky					(const Fmatrix& camera);
-	void Render                     (const Fmatrix& camera);
-	void OnFrame					(float dT);
+	void 			RenderSky			(const Fmatrix& camera);
+	void 			Render              (const Fmatrix& camera);
+	void 			OnFrame				(float dT);
 
-	int AddToSnapList				();
-    int SetSnapList					();
-    void ClearSnapList				();
-    void UpdateSnapList 			();
+	void 			AddObject           (CCustomObject* object, bool bExecUndo=true);
+	bool 			RemoveObject        (CCustomObject* object, bool bExecUndo=true);
+    bool 			ContainsObject      (CCustomObject* object, EObjClass classfilter);
 
-	void AddObject                  (CCustomObject* object, bool bExecUndo=true);
-	void RemoveObject               (CCustomObject* object, bool bExecUndo=true);
-    bool ContainsObject             (CCustomObject* object, EObjClass classfilter);
+    // Snap List Part
+	bool 			FindObjectInSnapList(CCustomObject* O);
+	bool 			AddToSnapList		(CCustomObject* O, bool bUpdateScene=true);
+    bool			DelFromSnapList		(CCustomObject* O, bool bUpdateScene=true);
+	int 			AddSelToSnapList	();
+    int 			DelSelFromSnapList	();
+    int 			SetSnapList			();
+    void 			RenderSnapList		();
+    void 			ClearSnapList		(bool bCurrentOnly);
+    void 			SelectSnapList		();
+    void 			UpdateSnapList 	   	();
+	ObjectList* 	GetSnapList			(bool bIgnoreUse);
 
-	ObjectList* GetSnapList			();
-	CCustomObject *RayPick   		(const Fvector& start, const Fvector& dir, EObjClass classfilter, SRayPickInfo* pinf, bool bDynamicTest, ObjectList* snap_list);
-	int BoxPick						(const Fbox& box, SBoxPickInfoVec& pinf, ObjectList* snap_list=0);
-    int RayQuery					(SPickQuery& RQ, const Fvector& start, const Fvector& dir, float dist, u32 flags, ObjectList* snap_list);
-    int BoxQuery					(SPickQuery& RQ, const Fbox& bb, u32 flags, ObjectList* snap_list);
+	CCustomObject*	RayPick   			(const Fvector& start, const Fvector& dir, EObjClass classfilter, SRayPickInfo* pinf, bool bDynamicTest, ObjectList* snap_list);
+	int 			BoxPick				(const Fbox& box, SBoxPickInfoVec& pinf, ObjectList* snap_list=0);
+    int				RayQuery			(SPickQuery& RQ, const Fvector& start, const Fvector& dir, float dist, u32 flags, ObjectList* snap_list);
+    int 			BoxQuery			(SPickQuery& RQ, const Fbox& bb, u32 flags, ObjectList* snap_list);
+    int				RayQuery			(SPickQuery& RQ, const Fvector& start, const Fvector& dir, float dist, u32 flags, CDB::MODEL* model);
+    int 			BoxQuery			(SPickQuery& RQ, const Fbox& bb, u32 flags, CDB::MODEL* model);
 
-	int RaySelect               	(int flag, EObjClass classfilter=OBJCLASS_DUMMY, bool bOnlyNearest=true); // flag=0,1,-1 (-1 invert)
-	int FrustumSelect               (int flag, EObjClass classfilter=OBJCLASS_DUMMY);
-	int SelectObjects               (bool flag, EObjClass classfilter=OBJCLASS_DUMMY);
-	int LockObjects               	(bool flag, EObjClass classfilter=OBJCLASS_DUMMY, bool bAllowSelectionFlag=false, bool bSelFlag=true);
-	int ShowObjects                 (bool flag, EObjClass classfilter=OBJCLASS_DUMMY, bool bAllowSelectionFlag=false, bool bSelFlag=true);
-	int InvertSelection             (EObjClass classfilter);
-	int SelectionCount              (bool testflag, EObjClass classfilter);
-	int RemoveSelection             (EObjClass classfilter);
-	int CutSelection                (EObjClass classfilter);
-	int CopySelection               (EObjClass classfilter);
-	int PasteSelection              ();
+	int 			RaySelect           (int flag, EObjClass classfilter=OBJCLASS_DUMMY, bool bOnlyNearest=true); // flag=0,1,-1 (-1 invert)
+	int 			FrustumSelect       (int flag, EObjClass classfilter=OBJCLASS_DUMMY);
+	int 			SelectObjects       (bool flag, EObjClass classfilter=OBJCLASS_DUMMY);
+	int 			LockObjects         (bool flag, EObjClass classfilter=OBJCLASS_DUMMY, bool bAllowSelectionFlag=false, bool bSelFlag=true);
+	int 			ShowObjects         (bool flag, EObjClass classfilter=OBJCLASS_DUMMY, bool bAllowSelectionFlag=false, bool bSelFlag=true);
+	int 			InvertSelection     (EObjClass classfilter);
+	int 			SelectionCount      (bool testflag, EObjClass classfilter);
+	int 			RemoveSelection     (EObjClass classfilter);
+	int 			CutSelection        (EObjClass classfilter);
+	int 			CopySelection       (EObjClass classfilter);
+	int 			PasteSelection      ();
 
-    void ResetAnimation				();
-    void ZoomExtents				(BOOL bSelectedOnly);
+    void 			ResetAnimation		();
+    void 			ZoomExtents			(BOOL bSelectedOnly);
 
-	int FrustumPick					(const CFrustum& frustum, EObjClass classfilter, ObjectList& ol);
-	int SpherePick					(const Fvector& center, float radius, EObjClass classfilter, ObjectList& ol);
+	int 			FrustumPick			(const CFrustum& frustum, EObjClass classfilter, ObjectList& ol);
+	int 			SpherePick			(const Fvector& center, float radius, EObjClass classfilter, ObjectList& ol);
 
-	void GenObjectName				(EObjClass cls_id, char *buffer, const char* prefix=NULL);
-	CCustomObject* FindObjectByName	(LPCSTR name, EObjClass classfilter);
-    CCustomObject* FindObjectByName	(LPCSTR name, CCustomObject* pass_object);
-    bool FindDuplicateName          ();
+	void 			GenObjectName		(EObjClass cls_id, char *buffer, const char* prefix=NULL);
+	CCustomObject* 	FindObjectByName	(LPCSTR name, EObjClass classfilter);
+    CCustomObject* 	FindObjectByName	(LPCSTR name, CCustomObject* pass_object);
+    bool 			FindDuplicateName   ();
 
-	void UndoClear					();
-	void UndoSave					();
-	bool Undo						();
-	bool Redo						();
+	void 			UndoClear			();
+	void 			UndoSave			();
+	bool 			Undo				();
+	bool 			Redo				();
 
-	void SetLights					();
-	void ClearLights				();
-    void TurnLightsForObject		(CSceneObject* obj);
+	void 			SetLights			();
+	void 			ClearLights			();
+    void 			TurnLightsForObject	(CSceneObject* obj);
 
-    bool GetBox						(Fbox& box, EObjClass classfilter);
-    bool GetBox						(Fbox& box, ObjectList& lst);
-	void UpdateSkydome				();
-    void WriteToLTX					(CInifile* pIni);
+    bool 			GetBox				(Fbox& box, EObjClass classfilter);
+    bool 			GetBox				(Fbox& box, ObjectList& lst);
+	void 			UpdateSkydome		();
+    void 			WriteToLTX			(CInifile* pIni);
 
 public:
-	int  GetQueryObjects			(ObjectList& objset, EObjClass classfilter, int iSel=1, int iVis=1, int iLock=0);
+	int  			GetQueryObjects		(ObjectList& objset, EObjClass classfilter, int iSel=1, int iVis=1, int iLock=0);
     template <class Predicate>
     int  GetQueryObjects_if			(ObjectList& dest, EObjClass classfilter, Predicate cmp){
         for(ObjectPairIt it=FirstClass(); it!=LastClass(); it++){

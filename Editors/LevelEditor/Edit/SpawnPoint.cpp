@@ -286,7 +286,7 @@ void CSpawnPoint::Render( int priority, bool strictB2F )
                 RCache.set_xform_world(FTransformRP);
                 if (m_SpawnData.Valid()){
                     // render icon
-				    Shader* s 			= GetIcon(m_SpawnData.m_Data->s_name);
+				    ref_shader s 	   	= GetIcon(m_SpawnData.m_Data->s_name);
 				    DU.DrawEntity		(0xffffffff,s);
                 }else{
                 	float k = 1.f/(float(m_dwTeamID+1)/float(MAX_TEAM));
@@ -489,17 +489,17 @@ void CSpawnPoint::OnDeviceDestroy()
 	m_SpawnData.OnDeviceDestroy	();
 	if (m_Icons.empty()) return;
 	for (ShaderPairIt it=m_Icons.begin(); it!=m_Icons.end(); it++)
-    	Device.Shader.Delete(it->second);
+    	it->second.destroy();
     m_Icons.clear();
 }
 //----------------------------------------------------
 
-Shader* CSpawnPoint::CreateIcon(LPCSTR name)
+ref_shader CSpawnPoint::CreateIcon(LPCSTR name)
 {
-    Shader* S = 0;
+    ref_shader S;
     if (pSettings->line_exist(name,"$ed_icon")){
 	    LPCSTR tex_name = pSettings->r_string(name,"$ed_icon");
-    	S = Device.Shader.Create("editor\\spawn_icon",tex_name);
+    	S.create("editor\\spawn_icon",tex_name);
         m_Icons[name] = S;
     }else{
         S = 0;
@@ -507,7 +507,7 @@ Shader* CSpawnPoint::CreateIcon(LPCSTR name)
     return S;
 }
 
-Shader* CSpawnPoint::GetIcon(LPCSTR name)
+ref_shader CSpawnPoint::GetIcon(LPCSTR name)
 {
 	ShaderPairIt it = m_Icons.find(name);
 	if (it==m_Icons.end())	return CreateIcon(name);

@@ -19,12 +19,10 @@
 #pragma resource "*.dfm"
 
 //---------------------------------------------------------------------------
-__fastcall TfraAIMap::TfraAIMap(TComponent* Owner)
+__fastcall TfraAIMap::TfraAIMap(TComponent* Owner, ESceneAIMapTools* _tools)
         : TFrame(Owner)
-{
-	ebCurrentEmitter->Tag 	= estAIMapEmitter;
-	ebCurrentNode->Tag 		= estAIMapNode;
-	ebDrawSnapObjects->Down	= Scene.m_AIMap->m_Flags.is(ESceneAIMapTools::flDrawSnapObjects);
+{   
+	tools = _tools;  R_ASSERT(tools);
 }
 //---------------------------------------------------------------------------
 void __fastcall TfraAIMap::PanelMinClick(TObject *Sender)
@@ -39,33 +37,27 @@ void __fastcall TfraAIMap::ExpandClick(TObject *Sender)
 }
 //---------------------------------------------------------------------------
 
-void __fastcall TfraAIMap::ebFillSnapListClick(TObject *Sender)
-{
-	Scene.m_AIMap->FillSnapList(Scene.GetSnapList());
-}
-//---------------------------------------------------------------------------
-
 void __fastcall TfraAIMap::ebGenerateMapClick(TObject *Sender)
 {
-	Scene.m_AIMap->GenerateMap();
+	tools->GenerateMap();
 }
 //---------------------------------------------------------------------------
 
 void __fastcall TfraAIMap::ebSmoothNodesClick(TObject *Sender)
 {
-	Scene.m_AIMap->SmoothNodes();
+	tools->SmoothNodes();
 }
 //---------------------------------------------------------------------------
 
 void __fastcall TfraAIMap::ebRemove0LNodesClick(TObject *Sender)
 {
-	Scene.m_AIMap->RemoveInvalidNodes(0); 
+	tools->RemoveInvalidNodes(0); 
 }
 //---------------------------------------------------------------------------
 
 void __fastcall TfraAIMap::ebRemove1LNodesClick(TObject *Sender)
 {
-	Scene.m_AIMap->RemoveInvalidNodes(1); 
+	tools->RemoveInvalidNodes(1); 
 }
 //---------------------------------------------------------------------------
 
@@ -77,23 +69,20 @@ void __fastcall TfraAIMap::ebChangeCurrentClick(TObject *Sender)
 
 void __fastcall TfraAIMap::fsStorageRestorePlacement(TObject *Sender)
 {
-	if (ebCurrentEmitter->Down)		Tools.SetSubTarget(estAIMapEmitter);
-    else if (ebCurrentNode->Down)	Tools.SetSubTarget(estAIMapNode);
-    else THROW;
-	Scene.m_AIMap->m_VisRadius		= seVisRadius->Value;
+//.	Tools.SetSubTarget				(estAIMapNode);
+	tools->m_VisRadius		= seVisRadius->Value;
 }
 //---------------------------------------------------------------------------
 
 void __fastcall TfraAIMap::ebDrawSnapObjectsClick(TObject *Sender)
 {
-	Scene.m_AIMap->m_Flags.set(ESceneAIMapTools::flDrawSnapObjects,ebDrawSnapObjects->Down);
     UI.RedrawScene();
 }
 //---------------------------------------------------------------------------
 
 void __fastcall TfraAIMap::ebInvertLinkClick(TObject *Sender)
 {
-	Scene.m_AIMap->InvertLinks();
+	tools->InvertLinks();
     Scene.UndoSave();
     UI.RedrawScene();
 }
@@ -131,7 +120,7 @@ void __fastcall TfraAIMap::ebSideClick(TObject *Sender)
     else if (ebModeRemove->Down)	mode = ESceneAIMapTools::mdRemove;
     else if (ebModeInvert->Down)	mode = ESceneAIMapTools::mdInvert;
     TExtBtn* btn = dynamic_cast<TExtBtn*>(Sender); R_ASSERT(btn);
-	Scene.m_AIMap->MakeLinks(fl[ConvertV2L(btn->Tag)], mode);
+	tools->MakeLinks(fl[ConvertV2L(btn->Tag)], mode);
     Scene.UndoSave();
     UI.RedrawScene();      
 }
@@ -139,7 +128,7 @@ void __fastcall TfraAIMap::ebSideClick(TObject *Sender)
 
 void __fastcall TfraAIMap::seVisRadiusChange(TObject *Sender)
 {
-	Scene.m_AIMap->m_VisRadius		= seVisRadius->Value;
+	tools->m_VisRadius		= seVisRadius->Value;
     UI.RedrawScene					();
 }
 //---------------------------------------------------------------------------

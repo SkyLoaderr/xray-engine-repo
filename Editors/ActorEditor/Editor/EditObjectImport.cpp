@@ -10,7 +10,7 @@
 #include "LW_SHADERDEF.h"
 #include "EditMesh.h"
 //#include "Texture.h"
-//#include "Shader.h"
+#include "ResourceManager.h"
 
 extern "C" {
 #include "lwo2.h"
@@ -73,7 +73,7 @@ bool CEditableObject::Import_LWO(const char* fn, bool bNeedOptimize){
                     }else
 						ELog.Msg(mtError,"CEditableObject: Shader not found on surface '%s'.",Osf->_Name());
 #ifdef _EDITOR
-					if (!Device.Shader._FindBlender(en_name.c_str())){
+					if (!Device.Resources->_FindBlender(en_name.c_str())){
 						ELog.Msg(mtError,"CEditableObject: Render shader '%s' - can't find in library.\nUsing 'default' shader on surface '%s'.", en_name.c_str(), Osf->_Name());
 	                    en_name = "default";
 					}

@@ -135,6 +135,7 @@ public:
 	virtual bool 	GetUTBox		(Fbox& box){return false;}
 	virtual void 	OnSceneUpdate	(){;}
     virtual void 	OnObjectRemove	(const CCustomObject* object){;}
+    virtual bool 	OnSelectionRemove(){return true;} // возвращает можно ли его удалять вообще
 
 	virtual void 	OnDeviceCreate	(){;}
 	virtual void 	OnDeviceDestroy	(){;}

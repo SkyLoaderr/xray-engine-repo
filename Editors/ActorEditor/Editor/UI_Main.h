@@ -182,6 +182,7 @@ public:
 
     void 			OutCameraPos		();
     void 			SetStatus			(LPSTR s, bool bOutLog=true);
+    void 			ResetStatus			();
 
 	// direct input
 	virtual void 	IR_OnMouseMove		(int x, int y);

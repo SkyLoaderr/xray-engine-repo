@@ -8,6 +8,7 @@
 #include "ui_customtools.h"
 #include "bottombar.h"
 #include "ui_main.h"
+#include "leftbar.h"
 
 TUI_CustomControl::TUI_CustomControl(int st, int act, TUI_CustomTools* parent){
 	parent_tool		= parent; VERIFY(parent);
@@ -103,12 +104,36 @@ bool __fastcall TUI_CustomControl::AddEnd(TShiftState _Shift)
     return true;
 }
 
+bool TUI_CustomControl::CheckSnapList(TShiftState Shift)
+{
+	if (fraLeftBar->ebSnapListMode->Down){
+	    CCustomObject* O=Scene.RayPick(UI.m_CurrentRStart,UI.m_CurrentRNorm,OBJCLASS_SCENEOBJECT,0,false,0);
+        if (Scene.FindObjectInSnapList(O)){
+			if (Shift.Contains(ssAlt)){
+            	Scene.DelFromSnapList(O);
+            }else if (Shift.Contains(ssCtrl)){
+            	Scene.DelFromSnapList(O);
+            }
+		}else{
+            if (!Shift.Contains(ssCtrl)&&!Shift.Contains(ssAlt)){
+                Scene.AddToSnapList(O);
+            }else if (Shift.Contains(ssCtrl)){
+            	Scene.AddToSnapList(O);
+            }
+        }
+        return true;
+    }
+    return false;
+}
+
 //------------------------------------------------------------------------------
 // total select
 //------------------------------------------------------------------------------
-bool __fastcall TUI_CustomControl::SelectStart(TShiftState Shift){
+bool __fastcall TUI_CustomControl::SelectStart(TShiftState Shift)
+{
 	EObjClass cls = Tools.CurrentClassID();
 
+	if (CheckSnapList(Shift)) return false;
     if (Shift==ssRBOnly){ UI.Command(COMMAND_SHOWCONTEXTMENU,parent_tool->objclass); return false;}
     if (!(Shift.Contains(ssCtrl)||Shift.Contains(ssAlt))) Scene.SelectObjects( false, cls);
 

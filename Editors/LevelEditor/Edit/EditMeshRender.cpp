@@ -48,7 +48,7 @@ void CEditableMesh::CreateRenderBuffers()
 //			IDirect3DIndexBuffer9*	pIB=0;
 			R_CHK(HW.pDevice->CreateVertexBuffer(buf_size, D3DUSAGE_WRITEONLY, 0, D3DPOOL_MANAGED, &pVB, 0));
 //            R_CHK(HW.pDevice->CreateIndexBuffer(i_cnt*sizeof(u16),D3DUSAGE_WRITEONLY,D3DFMT_INDEX16,D3DPOOL_MANAGED,&pIB,NULL));
-			rb.pGeom	 		= Device.Shader.CreateGeom(_S->_FVF(),pVB,0);
+			rb.pGeom.create		(_S->_FVF(),pVB,0);
 
 			R_CHK				(pVB->Lock(0,0,(LPVOID*)&bytes,0));
 			FillRenderBuffer	(face_lst,start_face,num_face,_S,bytes);
@@ -73,7 +73,7 @@ void CEditableMesh::ClearRenderBuffers()
             if (rb_it->pGeom){
                 _RELEASE		(rb_it->pGeom->vb);
                 _RELEASE		(rb_it->pGeom->ib);
-                Device.Shader.DeleteGeom(rb_it->pGeom);
+                rb_it->pGeom.destroy();
             }
     }
     m_RenderBuffers.clear();

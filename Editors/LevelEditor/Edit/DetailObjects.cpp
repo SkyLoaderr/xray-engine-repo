@@ -23,6 +23,7 @@
 #include "ImageManager.h"
 #include "d3dutils.h"
 #include "render.h"
+#include "PropertiesListHelper.h"
 
 static Fvector down_vec	={0.f,-1.f,0.f};
 static Fvector left_vec	={-1.f,0.f,0.f};
@@ -50,7 +51,6 @@ const u32	vs_size				= 3000;
 EDetailManager::EDetailManager()
 {
 	dtSlots				= 0;
-	m_fDensity			= 0.1f;
     ZeroMemory			(&dtH,sizeof(dtH));
     m_Selected.clear	();
     InitRender			();
@@ -83,7 +83,7 @@ void EDetailManager::ClearBase()
     m_Base.Clear		();
     m_SnapObjects.clear	();
 }
-void EDetailManager::Clear()
+void EDetailManager::Clear(bool bSpecific)
 {
 	ClearBase			();
 	ClearColorIndices	();
@@ -113,7 +113,7 @@ void EDetailManager::InitRender()
 }
 //------------------------------------------------------------------------------
 
-void EDetailManager::Render(int priority, bool strictB2F)
+void EDetailManager::OnRender(int priority, bool strictB2F)
 {
 	if (dtSlots){
     	if (1==priority){
@@ -174,7 +174,7 @@ void EDetailManager::OnDeviceDestroy(){
 }
 
 
-void EDetailManager::RemoveFromSnapList(CCustomObject* O)
+void EDetailManager::OnObjectRemove(CCustomObject* O)
 {
 	m_SnapObjects.remove(O);
 }
@@ -290,15 +290,11 @@ bool EDetailManager::Load(IReader& F){
             	if (!O)		ELog.Msg(mtError,"DetailManager: Can't find object '%s' in scene.",buf);
 	            else		m_SnapObjects.push_back(O);
     	    }
-        }else{
-	    	m_SnapObjects= Scene.m_SnapObjects;
         }
-    }else{
-    	m_SnapObjects	= Scene.m_SnapObjects;
     }
 
     if (F.find_chunk(DETMGR_CHUNK_DENSITY))
-		m_fDensity 			= F.r_float();
+		psDetailDensity		= F.r_float();
 
 	// base texture
 	if(F.find_chunk(DETMGR_CHUNK_BASE_TEXTURE)){
@@ -345,11 +341,11 @@ void EDetailManager::Save(IWriter& F){
 	    F.close_chunk	();
     }
     F.open_chunk		(DETMGR_CHUNK_DENSITY);
-    F.w_float			(m_fDensity);
+    F.w_float			(psDetailDensity);
     F.close_chunk		();
 	// snap objects
 	F.open_chunk		(DETMGR_CHUNK_SNAP_OBJECTS);
-    F.w_u32			(m_SnapObjects.size());
+    F.w_u32				(m_SnapObjects.size());
     for (ObjectIt o_it=m_SnapObjects.begin(); o_it!=m_SnapObjects.end(); o_it++)
     	F.w_stringZ		((*o_it)->Name);
     F.close_chunk		();
@@ -398,4 +394,15 @@ bool EDetailManager::Export(LPCSTR fn)
     return bRes;
 }
 
+void __fastcall	EDetailManager::OnDensityChange(PropValue* prop)
+{
+	InvalidateCache		();
+}	
+
+void EDetailManager::FillProp(LPCSTR pref, PropItemVec& values)
+{
+	PropValue* P;
+    P=PHelper.CreateFloat	(values, FHelper.PrepareKey(pref,"Objects per square"),	&psDetailDensity);
+    P->OnChangeEvent		= OnDensityChange;
+}
 

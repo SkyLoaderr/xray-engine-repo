@@ -31,6 +31,7 @@ struct SAINode					// definition of "patch" or "node"
     enum{
     	flSelected 	= (1<<0),
     	flHLSelected= (1<<1),
+    	flHide		= (1<<2),
 
     	flN1		= (1<<4),
     	flN2		= (1<<5),
@@ -58,17 +59,6 @@ struct SAINode					// definition of "patch" or "node"
 #pragma pack(pop)
 DEFINE_VECTOR(SAINode*,AINodeVec,AINodeIt);
 
-struct SAIEmitter{
-    enum{
-        flSelected = (1<<0),
-    };
-    Fvector			pos;
-    Flags32			flags;
-    SAIEmitter		(){pos.set(0,0,0); flags.zero();}
-    SAIEmitter		(const Fvector& p, u32 fl){pos.set(p); flags.set(fl);}
-};
-DEFINE_VECTOR(SAIEmitter,AIEmitterVec,AIEmitterIt);
-
 const int				HDIM_X	= 128;
 const int				HDIM_Z	= 128;
 class ESceneAIMapTools: public ESceneCustomMTools
@@ -80,13 +70,13 @@ class ESceneAIMapTools: public ESceneCustomMTools
 	AINodeVec			m_HASH[HDIM_X+1][HDIM_Z+1];
     AINodeVec			m_Nodes;
 
-	AIEmitterVec 		m_Emitters;
-
     SAIParams			m_Params;
-    Fbox				m_BBox;
+	Fbox				m_AIBBox;
 
-	SGeometry*			m_RGeom;
-    Shader*				m_Shader;
+	ref_geom			m_RGeom;
+    ref_shader			m_Shader;
+
+    CDB::MODEL*			m_CFModel;
 protected:    
     void 				hash_FillFromNodes		();
     void 				hash_Initialize			();
@@ -96,6 +86,7 @@ protected:
 	AINodeVec*			HashMap					(Fvector& V);
 	SAINode*			FindNode				(Fvector& vAt, float eps=0.05f);
 	SAINode* 			FindNeighbor			(SAINode* N, int side);
+	void 				MotionSimulate			(Fvector& result, Fvector& start, Fvector& end, float _radius, float _height);
 
     void				RemoveNode				(AINodeIt N);
 	SAINode* 			BuildNode				(Fvector& vFrom, Fvector& vAt, bool bIgnoreConstraints, bool bSuperIgnoreConstraints=false);
@@ -113,6 +104,11 @@ protected:
     
     void				EnumerateNodes			();
     void				DenumerateNodes			();
+
+    bool				RealUpdateSnapList		();
+	int 				RemoveOutOfBoundsNodes	();
+
+    void				CalculateNodesBBox		(Fbox& bb);
 public:
 	enum EMode{
     	mdAppend,
@@ -120,7 +116,7 @@ public:
     	mdInvert,
     };
 	enum{
-    	flDrawSnapObjects 	= (1<<0),
+    	flUpdateSnapList	= (1<<0),
     	flUpdateHL 			= (1<<15),
     };
     Flags32				m_Flags;
@@ -130,10 +126,12 @@ public:
 						ESceneAIMapTools 	   	();
 	virtual        	 	~ESceneAIMapTools 		();
 
-    virtual	void		RemoveFromSnapList		(CCustomObject* object);
+    virtual void		OnObjectRemove			(CCustomObject* O);
+    virtual	void		UpdateSnapList			(){m_Flags.set(flUpdateSnapList,TRUE);}
+	virtual ObjectList&	GetSnapList				(){return m_SnapObjects;}
+
 	// selection manipulate
     SAINode*			PickNode				(const Fvector& start, const Fvector& dir, float dist);
-    SAIEmitter*			PickEmitter				(const Fvector& start, const Fvector& dir, float dist);
     virtual bool		PickGround				(Fvector& dest, const Fvector& start, const Fvector& dir, float dist);
 	virtual int			RaySelect				(bool flag, float& distance, const Fvector& start, const Fvector& direction);
 	virtual int	   		FrustumSelect			(bool flag);
@@ -141,8 +139,9 @@ public:
 	virtual int    		InvertSelection         ();
 	virtual int 		RemoveSelection         ();
 	virtual int    		SelectionCount          (bool testflag);
+	virtual int 		ShowObjects				(bool flag, bool bAllowSelectionFlag=false, bool bSelFlag=true);
 
-    virtual void		Clear					(bool bOnlyNodes=false);
+    virtual void		Clear					(bool bOnlyNodes=false); 
 
     // validation
     virtual bool   		Valid					();
@@ -166,13 +165,12 @@ public:
     // utils
     bool				GenerateMap				();
 
-    void				AddEmitter				(const Fvector& pos);
+	// properties
+    virtual void		FillProp          		(LPCSTR pref, PropItemVec& items);
+
+    // other
     int					AddNode					(const Fvector& pos, bool bIgnoreConstraints, bool bAutoLink, int cnt);
 
-    ObjectList&			SnapObjects				(){return m_SnapObjects;}
-    bool				FillSnapList			(ObjectList* lst);
-
-    AIEmitterVec&		Emitters				(){return m_Emitters;}
     AINodeVec&			Nodes					(){return m_Nodes;}
     
     void				MakeLinks				(u8 side_flag, EMode mode);

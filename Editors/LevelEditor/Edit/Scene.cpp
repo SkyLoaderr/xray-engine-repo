@@ -89,33 +89,36 @@ void st_LevelOptions::Reset(){
 
 #define MAX_VISUALS 16384
 
-EScene::EScene(){
+EScene::EScene()
+{
 	m_Valid = false;
 	m_Locked = 0;
     for (int i=0; i<OBJCLASS_COUNT; i++){
         ObjectList lst;
         EObjClass cls = (EObjClass)i;
         m_Objects.insert(mk_pair(cls,lst));
+        m_SceneTools.insert(mk_pair(cls,(ESceneCustomMTools*)NULL));
     }
     // first init scene graph for objects
     mapRenderObjects.init(MAX_VISUALS);
 // Build options
     m_SkyDome 		= 0;
     m_SummaryInfo	= 0;
-    ClearSnapList	();
+    ClearSnapList	(false);
 }
 
-EScene::~EScene(){
+EScene::~EScene()
+{
 	VERIFY( m_Valid == false );
-    m_SnapObjects.clear();
+    m_ESO_SnapObjects.clear	();
 }
 
 void EScene::OnCreate()
 {
 	Device.seqDevCreate.Add	(this,REG_PRIORITY_NORMAL);
 	Device.seqDevDestroy.Add(this,REG_PRIORITY_NORMAL);
-    m_DetailObjects			= xr_new<EDetailManager>();
-    m_AIMap					= xr_new<ESceneAIMapTools>();
+    m_SceneTools[OBJCLASS_DO] 	= xr_new<EDetailManager>();
+    m_SceneTools[OBJCLASS_AIMAP]= xr_new<ESceneAIMapTools>();
 	m_LastAvailObject 		= 0;
     m_LevelOp.Reset			();
 	ELog.Msg				( mtInformation, "Scene: initialized" );
@@ -135,9 +138,11 @@ void EScene::OnDestroy()
 	ELog.Msg				( mtInformation, "Scene: cleared" );
 	m_LastAvailObject 		= 0;
 	m_Valid 				= false;
-    xr_delete				(m_DetailObjects);
-    xr_delete				(m_AIMap);
     xr_delete				(m_SkyDome);
+
+    for (int i=0; i<OBJCLASS_COUNT; i++)
+    	xr_delete			(m_SceneTools[(EObjClass)i]);
+    m_SceneTools.clear		();
 }
 
 void EScene::AddObject( CCustomObject* object, bool bUndo ){
@@ -152,16 +157,22 @@ void EScene::AddObject( CCustomObject* object, bool bUndo ){
     }
 }
 
-void EScene::RemoveObject( CCustomObject* object, bool bUndo ){
+bool EScene::RemoveObject( CCustomObject* object, bool bUndo )
+{
 	VERIFY( object );
 	VERIFY( m_Valid );
     ObjectList& lst = ListObj(object->ClassID);
     // remove object from Snap List if exists
-    if ((object->ClassID==OBJCLASS_SCENEOBJECT)&&!m_SnapObjects.empty()){
-    	m_SnapObjects.remove(object);
-		m_DetailObjects->RemoveFromSnapList	(object);
-		m_AIMap->RemoveFromSnapList			(object);
+    if (object->ClassID==OBJCLASS_SCENEOBJECT){
+    	// remove froom snap list 
+    	m_ESO_SnapObjects.remove			(object);
+        for (int i=0; i<OBJCLASS_COUNT; i++){
+            ESceneCustomMTools* mt = m_SceneTools[(EObjClass)i];
+            if (mt) mt->OnObjectRemove(object);
+        }
+        
 		UpdateSnapList						();
+        
         // signal everyone "I'm deleting"
 	    for(ObjectPairIt it=m_Objects.begin(); it!=m_Objects.end(); it++){
     	    ObjectList& lst = (*it).second;
@@ -170,9 +181,9 @@ void EScene::RemoveObject( CCustomObject* object, bool bUndo ){
         }
     }
     // remove from scene list
-    lst.remove( object );
-    UI.UpdateScene();
-	if (bUndo) UndoSave();
+    lst.remove		(object);
+    UI.UpdateScene	();
+	if (bUndo) 		UndoSave();
 }
 
 bool EScene::ContainsObject( CCustomObject* object, EObjClass classfilter ){
@@ -196,8 +207,8 @@ int EScene::FrustumSelect( int flag, EObjClass classfilter ){
 	int count = 0;
     if (!UI.SelectionFrustum(frustum)) return 0;
                                                                               
-	if (classfilter==OBJCLASS_DO) 		return m_DetailObjects->FrustumSelect(flag);
-	if (classfilter==OBJCLASS_AIMAP)	return m_AIMap->FrustumSelect(flag);
+	if (classfilter==OBJCLASS_DO) 		return GetMTools(OBJCLASS_DO)->FrustumSelect(flag);
+	if (classfilter==OBJCLASS_AIMAP)	return GetMTools(OBJCLASS_AIMAP)->FrustumSelect(flag);
 
     for(ObjectPairIt it=m_Objects.begin(); it!=m_Objects.end(); it++){
         ObjectList& lst = (*it).second;
@@ -239,8 +250,8 @@ int EScene::SpherePick( const Fvector& center, float radius, EObjClass classfilt
 
 int EScene::SelectObjects( bool flag, EObjClass classfilter ){
 	int count = 0;
-	if (classfilter==OBJCLASS_DO) 		return m_DetailObjects->SelectObjects(flag);
-	if (classfilter==OBJCLASS_AIMAP) 	return m_AIMap->SelectObjects(flag);
+	if (classfilter==OBJCLASS_DO) 		return GetMTools(OBJCLASS_DO)->SelectObjects(flag);
+	if (classfilter==OBJCLASS_AIMAP)	return GetMTools(OBJCLASS_AIMAP)->SelectObjects(flag);
 
     for(ObjectPairIt it=m_Objects.begin(); it!=m_Objects.end(); it++){
         ObjectList& lst = (*it).second;
@@ -275,8 +286,10 @@ int EScene::LockObjects( bool flag, EObjClass classfilter, bool bAllowSelectionF
 	return count;
 }
 
-int EScene::ShowObjects( bool flag, EObjClass classfilter, bool bAllowSelectionFlag, bool bSelFlag ){
+int EScene::ShowObjects( bool flag, EObjClass classfilter, bool bAllowSelectionFlag, bool bSelFlag )
+{
 	int count = 0;
+	if (classfilter==OBJCLASS_AIMAP)	return GetMTools(OBJCLASS_AIMAP)->ShowObjects(flag,bAllowSelectionFlag,bSelFlag);
     for(ObjectPairIt it=m_Objects.begin(); it!=m_Objects.end(); it++){
         ObjectList& lst = (*it).second;
         if ((classfilter==OBJCLASS_DUMMY)||(classfilter==(*it).first))
@@ -298,15 +311,15 @@ int EScene::ShowObjects( bool flag, EObjClass classfilter, bool bAllowSelectionF
 
 int EScene::InvertSelection( EObjClass classfilter ){
 	int count = 0;
-    if (classfilter==OBJCLASS_DO)		return m_DetailObjects->InvertSelection	();
-    if (classfilter==OBJCLASS_AIMAP)	return m_AIMap->InvertSelection			();
+    if (classfilter==OBJCLASS_DO)		return GetMTools(OBJCLASS_DO)->InvertSelection	();
+	if (classfilter==OBJCLASS_AIMAP)	return GetMTools(OBJCLASS_AIMAP)->InvertSelection();
 
     for(ObjectPairIt it=m_Objects.begin(); it!=m_Objects.end(); it++){
         ObjectList& lst = (*it).second;
         if ((classfilter==OBJCLASS_DUMMY)||(classfilter==(*it).first))
 			for(ObjectIt _F = lst.begin();_F!=lst.end();_F++)
                 if((*_F)->Visible()){
-                    (*_F)->Select( !(*_F)->Selected() );
+                    (*_F)->Select(-1);
                     count++;
                 }
     }
@@ -318,7 +331,8 @@ int EScene::InvertSelection( EObjClass classfilter ){
 int EScene::RemoveSelection( EObjClass classfilter )
 {
 	int count = 0;
-    if (OBJCLASS_AIMAP==classfilter) return m_AIMap->RemoveSelection();
+    ESceneCustomMTools* mt = GetMTools(classfilter);
+	if (mt)	return mt->RemoveSelection();
     
     for(ObjectPairIt it=m_Objects.begin(); it!=m_Objects.end(); it++){
         ObjectList& lst = (*it).second;
@@ -327,22 +341,16 @@ int EScene::RemoveSelection( EObjClass classfilter )
             while(_F!=lst.end()){
             	if((*_F)->Selected()){
                     count ++;
-                    ObjectIt _D = _F; _F++;
-                 	RemoveObject(*_D,false);
-                    xr_delete((*_D));
+                    if ((*_F)->OnSelectionRemove()){
+	                    ObjectIt _D = _F; _F++;
+    	             	RemoveObject(*_D,false);
+        	            xr_delete((*_D));
+                    }else{
+                    	_F++;
+                    }
             	}else{
                 	_F++;
                 }
-/*
-                if( (*_F)->Selected() && !(*_F)->Locked() ){
-                    count ++;
-                    xr_delete((*_F));
-                    ObjectIt _D = _F; _F++;
-                    lst.remove((*_D));
-                }else{
-                    _F++;
-                }
-*/
             }
         }
     }
@@ -371,6 +379,29 @@ int EScene::BoxQuery(SPickQuery& PQ, const Fbox& bb, u32 flags, ObjectList* snap
 	return PQ.r_count();
 }
 
+int EScene::RayQuery(SPickQuery& PQ, const Fvector& start, const Fvector& dir, float dist, u32 flags, CDB::MODEL* model)
+{
+    PQ.prepare_rq	(start,dir,dist,flags);
+	XRC.ray_options	(flags);
+    XRC.ray_query	(model,start,dir,dist);
+    for (int r=0; r<XRC.r_count(); r++)
+        PQ.append	(model,XRC.r_begin()+r);
+	return PQ.r_count();
+}
+
+int EScene::BoxQuery(SPickQuery& PQ, const Fbox& bb, u32 flags, CDB::MODEL* model)
+{
+    PQ.prepare_bq	(bb,flags);
+	XRC.box_options	(flags);
+    Fvector c,d;
+    bb.getcenter	(c);
+    bb.getradius	(d);
+    XRC.box_query	(model,c,d);
+    for (int r=0; r<XRC.r_count(); r++)
+        PQ.append	(model,XRC.r_begin()+r);
+	return PQ.r_count();
+}
+
 CCustomObject *EScene::RayPick(const Fvector& start, const Fvector& direction, EObjClass classfilter, SRayPickInfo* pinf, bool bDynamicTest, ObjectList* snap_list)
 {
 	if( !valid() )
@@ -386,9 +417,9 @@ CCustomObject *EScene::RayPick(const Fvector& start, const Fvector& direction, E
         else lst=&(it->second);
         if ((classfilter==OBJCLASS_DUMMY)||(classfilter==(*it).first)){
             if (classfilter==OBJCLASS_DO){
-                m_DetailObjects->RaySelect(true,nearest_dist,start,direction);
+                GetMTools(OBJCLASS_DO)->RaySelect(true,nearest_dist,start,direction);
             }else if (classfilter==OBJCLASS_AIMAP){
-                m_AIMap->RaySelect(true,nearest_dist,start,direction);
+				GetMTools(OBJCLASS_AIMAP)->RaySelect(true,nearest_dist,start,direction);
             }else{
                 for(ObjectIt _F=lst->begin();_F!=lst->end();_F++){
                     if((*_F)->Visible()){
@@ -413,8 +444,8 @@ int EScene::RaySelect(int flag, EObjClass classfilter, bool bOnlyNearest){
 	Fvector& start		= UI.m_CurrentRStart;
     Fvector& direction	= UI.m_CurrentRNorm;
 
-	if (classfilter==OBJCLASS_DO) 		return m_DetailObjects->RaySelect(flag,nearest_dist,start,direction);
-	if (classfilter==OBJCLASS_AIMAP) 	return m_AIMap->RaySelect(flag,nearest_dist,start,direction);
+	if (classfilter==OBJCLASS_DO) 		return GetMTools(OBJCLASS_DO)->RaySelect(flag,nearest_dist,start,direction);
+	if (classfilter==OBJCLASS_AIMAP)	return GetMTools(OBJCLASS_AIMAP)->RaySelect(flag,nearest_dist,start,direction);
 
     for(ObjectPairIt it=m_Objects.begin(); it!=m_Objects.end(); it++){
         ObjectList& lst = (*it).second;
@@ -439,8 +470,8 @@ int EScene::BoxPick(const Fbox& box, SBoxPickInfoVec& pinf, ObjectList* snap_lis
 
 int EScene::SelectionCount(bool testflag, EObjClass classfilter){
 	int count = 0;
-    if (classfilter==OBJCLASS_DO)		return m_DetailObjects->SelectionCount(testflag);
-    if (classfilter==OBJCLASS_AIMAP)	return m_AIMap->SelectionCount(testflag);
+    if (classfilter==OBJCLASS_DO)		return GetMTools(OBJCLASS_DO)->SelectionCount(testflag);
+	if (classfilter==OBJCLASS_AIMAP)	return GetMTools(OBJCLASS_AIMAP)->SelectionCount(testflag);
 
     for(ObjectPairIt it=m_Objects.begin(); it!=m_Objects.end(); it++){
         ObjectList& lst = (*it).second;
@@ -521,7 +552,7 @@ void EScene::Render( const Fmatrix& camera )
 	RENDER_CLASS			(0,OBJCLASS_GROUP,		false);
 
     // draw detail objects (normal)
-    m_DetailObjects->Render	(0,false);
+    GetMTools(OBJCLASS_DO)->OnRender	(0,false);
 	RENDER_CLASS			(0,OBJCLASS_GROUP,		true);
 
 // priority #1
@@ -536,12 +567,12 @@ void EScene::Render( const Fmatrix& camera )
     RENDER_CLASS_NORMAL		(1,OBJCLASS_PS);
 	RENDER_CLASS_NORMAL		(1,OBJCLASS_PORTAL);
 	RENDER_CLASS			(1,OBJCLASS_GROUP,		false);
-    m_DetailObjects->Render	(1,false);
-    m_AIMap->OnRender		(1,false);
+    GetMTools(OBJCLASS_DO)->OnRender		(1,false);
+    GetMTools(OBJCLASS_AIMAP)->OnRender		(1,false);
 
     mapRenderObjects.traverseRL(object_StrictB2F_1);
-    m_DetailObjects->Render	(1,true);
-    m_AIMap->OnRender		(1,true);
+    GetMTools(OBJCLASS_DO)->OnRender		(1,true);
+    GetMTools(OBJCLASS_AIMAP)->OnRender		(1,true);
 	// draw clip planes, glows, event, sectors, portals
 	RENDER_CLASS_ALPHA		(1,OBJCLASS_LIGHT);
     RENDER_CLASS			(1,OBJCLASS_SOUND_SRC,	true);
@@ -553,28 +584,27 @@ void EScene::Render( const Fmatrix& camera )
 
 // priority #2
     mapRenderObjects.traverseLR(object_Normal_2);
-    m_DetailObjects->Render	(2,						false);
+    GetMTools(OBJCLASS_DO)->OnRender(2,				false);
     RENDER_CLASS_NORMAL		(2,OBJCLASS_SECTOR);
 	RENDER_CLASS			(2,OBJCLASS_GROUP,		false);
     mapRenderObjects.traverseRL(object_StrictB2F_2);
-    m_DetailObjects->Render	(2,						true);
+    GetMTools(OBJCLASS_DO)->OnRender(2,				true);
 	RENDER_CLASS_ALPHA		(2,OBJCLASS_SECTOR);
 	RENDER_CLASS			(2,OBJCLASS_GROUP,		true);
 
 // priority #3
     mapRenderObjects.traverseLR(object_Normal_3);
-    m_DetailObjects->Render	(3,						false);
+    GetMTools(OBJCLASS_DO)->OnRender(3,				false);
 	RENDER_CLASS			(3,OBJCLASS_GROUP,		false);
     mapRenderObjects.traverseRL(object_StrictB2F_3);
-    m_DetailObjects->Render	(3,						true);
+    GetMTools(OBJCLASS_DO)->OnRender(3,				true);
 	RENDER_CLASS			(3,OBJCLASS_GROUP,		true);
 
 	// draw lights (flares)
     RENDER_CLASS			(3,OBJCLASS_LIGHT,		true);
 
     // render snap
-    if (fraLeftBar->ebEnableSnapList->Down)
-		for(_F=m_SnapObjects.begin();_F!=m_SnapObjects.end();_F++) if((*_F)->Visible()) ((CSceneObject*)(*_F))->RenderSelection();
+    RenderSnapList			();
 
 	// draw PS
     RCache.set_xform_world(Fidentity);
@@ -630,7 +660,8 @@ void EScene::UpdateSkydome()
     }
 }
 
-void EScene::OnFrame( float dT ){
+void EScene::OnFrame( float dT )
+{
 	if( !valid() ) return;
 	if( locked() ) return;
 
@@ -639,7 +670,7 @@ void EScene::OnFrame( float dT ){
     	for(ObjectIt _F = lst.begin();_F!=lst.end();_F++)
     		(*_F)->OnFrame();
     }
-    m_AIMap->OnFrame();
+    GetMTools(OBJCLASS_AIMAP)->OnFrame();
 }
 
 void EScene::ClearObjects(bool bDestroy){
@@ -649,11 +680,11 @@ void EScene::ClearObjects(bool bDestroy){
             for(ObjectIt _F = lst.begin();_F!=lst.end();_F++) delete (*_F);
         lst.clear();
     }
-    m_DetailObjects->Clear	();
-    m_AIMap->Clear			();
+    GetMTools(OBJCLASS_DO)->Clear	();
+    GetMTools(OBJCLASS_AIMAP)->Clear();
 
     xr_delete				(m_SkyDome);
-    ClearSnapList			();
+    ClearSnapList			(false);
     m_CompilerErrors.Clear	();
 }
 //----------------------------------------------------
@@ -820,8 +851,8 @@ void EScene::OnDeviceCreate()
     	for(ObjectIt _F = lst.begin();_F!=lst.end();_F++)
         	(*_F)->OnDeviceCreate();
 	}
-    m_AIMap->OnDeviceCreate();
-    m_DetailObjects->OnDeviceCreate();
+    GetMTools(OBJCLASS_AIMAP)->OnDeviceCreate();
+    GetMTools(OBJCLASS_DO)->OnDeviceCreate();
 }
 
 void EScene::OnDeviceDestroy()
@@ -831,8 +862,8 @@ void EScene::OnDeviceDestroy()
     	for(ObjectIt _F = lst.begin();_F!=lst.end();_F++)
         	(*_F)->OnDeviceDestroy();
 	}
-    m_AIMap->OnDeviceDestroy();
-    m_DetailObjects->OnDeviceDestroy();
+    GetMTools(OBJCLASS_AIMAP)->OnDeviceDestroy();
+    GetMTools(OBJCLASS_DO)->OnDeviceDestroy();
 }
 
 int EScene::GetQueryObjects(ObjectList& objset, EObjClass classfilter, int iSel, int iVis, int iLock){
@@ -884,51 +915,6 @@ void EScene::ResetAnimation(){
 }
 //--------------------------------------------------------------------------------------------------
 
-int EScene::AddToSnapList(){
-    ObjectList lst;
-    int count = GetQueryObjects(lst, OBJCLASS_SCENEOBJECT, 1, 1, 0);
-    if (count){
-    	count = 0;
-	    for(ObjectIt _F = lst.begin();_F!=lst.end();_F++)
-    		if (std::find(m_SnapObjects.begin(),m_SnapObjects.end(),*_F)==m_SnapObjects.end()){
-				m_SnapObjects.push_back(*_F);
-	            count++;
-    	    }
-        if (count){
-		    UI.RedrawScene();
-    		UpdateSnapList();
-        }
-    }
-	return count;
-}
-//--------------------------------------------------------------------------------------------------
-
-int EScene::SetSnapList(){
-	ClearSnapList();
-	int count = 0;
-    ObjectList& lst = ListObj(OBJCLASS_SCENEOBJECT);
-    for(ObjectIt _F = lst.begin();_F!=lst.end();_F++)
-        if((*_F)->Visible()&&(*_F)->Selected()){
-	        m_SnapObjects.push_back(*_F);
-            count++;
-        }
-    UI.RedrawScene();
-    UpdateSnapList();
-	return count;
-}
-//--------------------------------------------------------------------------------------------------
-
-void EScene::ClearSnapList(){
-    m_SnapObjects.clear();
-    UpdateSnapList();
-}
-//--------------------------------------------------------------------------------------------------
-
-void EScene::UpdateSnapList(){
-	if (fraLeftBar) fraLeftBar->UpdateSnapList();
-}
-//--------------------------------------------------------------------------------------------------
-
 void EScene::SynchronizeObjects()
 {
     for(ObjectPairIt it=FirstClass(); it!=LastClass(); it++){
@@ -936,7 +922,7 @@ void EScene::SynchronizeObjects()
     	for(ObjectIt _F = lst.begin();_F!=lst.end();_F++)
             (*_F)->OnSynchronize();
 	}
-	m_AIMap->OnSynchronize();
+    GetMTools(OBJCLASS_AIMAP)->OnSynchronize();
 }
 //--------------------------------------------------------------------------------------------------
 
@@ -944,12 +930,6 @@ void EScene::OnShowHint(AStringVec& dest)
 {
     CCustomObject* obj = RayPick(UI.m_CurrentRStart,UI.m_CurrentRNorm,Tools.CurrentClassID(),0,true,0);
     if (obj) obj->OnShowHint(dest);
-}
-//--------------------------------------------------------------------------------------------------
-
-ObjectList* EScene::GetSnapList()
-{
-	return (fraLeftBar->ebEnableSnapList->Down&&!Scene.m_SnapObjects.empty())?&Scene.m_SnapObjects:0;
 }
 //--------------------------------------------------------------------------------------------------
 

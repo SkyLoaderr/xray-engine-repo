@@ -31,8 +31,13 @@ void ESceneAIMapTools::PackPosition(NodePosition& Dest, Fvector& Src, Fbox& bb, 
 
 bool ESceneAIMapTools::Export(LPCSTR fn)
 {
-	R_ASSERT(Valid());
+//.?	if (!RealUpdateSnapList()) return false;
+	if (!Valid()) return false;
 
+    // calculate bbox
+    Fbox bb;		CalculateNodesBBox(bb);
+    
+    // export
     IWriter* F		= FS.w_open(fn);
     
 	F->open_chunk	(E_AIMAP_CHUNK_VERSION);
@@ -40,7 +45,7 @@ bool ESceneAIMapTools::Export(LPCSTR fn)
 	F->close_chunk	();
 
 	F->open_chunk	(E_AIMAP_CHUNK_BOX);
-    F->w			(&m_BBox,sizeof(m_BBox));
+	F->w			(&bb,sizeof(bb));
 	F->close_chunk	();
 
 	F->open_chunk	(E_AIMAP_CHUNK_PARAMS);
@@ -60,7 +65,7 @@ bool ESceneAIMapTools::Export(LPCSTR fn)
         id = (*it)->n3?(u32)(*it)->n3->idx:InvalidNode;  	F->w(&id,3);
         id = (*it)->n4?(u32)(*it)->n4->idx:InvalidNode;  	F->w(&id,3);
         pl = pvCompress ((*it)->Plane.n);	 				F->w_u16(pl);
-        PackPosition	(np,(*it)->Pos,m_BBox,m_Params); 	F->w(&np,sizeof(np));
+        PackPosition	(np,(*it)->Pos,bb,m_Params); 	F->w(&np,sizeof(np));
     }
 	F->close_chunk	();
 

@@ -1,5 +1,5 @@
-#if !defined(SHA__INCLUDED_)
-#define SHA__INCLUDED_
+#ifndef sh_atomicH
+#define sh_atomicH
 #pragma once
 #pragma pack(push,4)
 
@@ -41,4 +41,4 @@ struct	ENGINE_API		SDeclaration	: public xr_resource									{
 typedef	resptr_core<SDeclaration,resptr_base<SDeclaration> >								ref_declaration;
 
 #pragma pack(pop)
-#endif
+#endif //sh_atomicH

@@ -1,3 +1,5 @@
+#ifndef xr_resourceH
+#define xr_resourceH
 #pragma once
 
 // resource itself, the base class for all derived resources
@@ -98,3 +100,5 @@ template<class T, typename D> T * get_pointer(resptr_core<T,D> const & p)							
 // casting
 template<class T, class U, typename D> resptr_core<T,D> static_pointer_cast(resptr_core<U,D> const & p)						{ return static_cast<T *>(p.get());				}
 template<class T, class U, typename D> resptr_core<T,D> dynamic_pointer_cast(resptr_core<U,D> const & p)					{ return dynamic_cast<T *>(p.get());			}
+
+#endif //xr_resourceH

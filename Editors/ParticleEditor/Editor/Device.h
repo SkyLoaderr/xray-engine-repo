@@ -4,17 +4,18 @@
 #include "ui_camera.h"
 #include "hwcaps.h"
 #include "hw.h"
-#include "texturemanager.h"
 #include "pure.h"
 #include "ftimer.h"
 #include "estats.h"
 #include "shader_xrlc.h"
 #include "ModelPool.h"
+#include "shader.h"
 #include "R_Backend.h"
 //---------------------------------------------------------------------------
 // refs
 class CGameFont;
 class CInifile;
+class CResourceManager;
 
 //------------------------------------------------------------------------------
 class ENGINE_API CRenderDevice{
@@ -27,13 +28,13 @@ class ENGINE_API CRenderDevice{
 	CTimer					Timer;
 	CTimer					TimerGlobal;
 
-    Shader*					m_CurrentShader;
+    ref_shader				m_CurrentShader;
 
 	void					_Create		(IReader* F);
 	void					_Destroy	(BOOL	bKeepTextures);
 public:
-    Shader*					m_WireShader;
-    Shader*					m_SelectionShader;
+    ref_shader				m_WireShader;
+    ref_shader				m_SelectionShader;
 
     Fmaterial				m_DefaultMat;
 
@@ -73,6 +74,8 @@ public:
     float					fFOV;
 	float					fASPECT;
 
+	// Dependent classes
+	CResourceManager*		Resources;	  
 	CStats					Statistic;
 
 	CGameFont* 				pSystemFont;
@@ -110,9 +113,9 @@ public:
     { return (y+1)*m_RenderHeight_2;}
 
 	// draw
-	void			   		SetShader		(Shader* sh){m_CurrentShader = sh;}
-	void			   		DP				(D3DPRIMITIVETYPE pt, SGeometry* geom, u32 startV, u32 pc);
-	void 					DIP				(D3DPRIMITIVETYPE pt, SGeometry* geom, u32 baseV, u32 startV, u32 countV, u32 startI, u32 PC);
+	void			   		SetShader		(ref_shader sh){m_CurrentShader = sh;}
+	void			   		DP				(D3DPRIMITIVETYPE pt, ref_geom geom, u32 startV, u32 pc);
+	void 					DIP				(D3DPRIMITIVETYPE pt, ref_geom geom, u32 baseV, u32 startV, u32 countV, u32 startI, u32 PC);
 
     IC void					SetRS			(D3DRENDERSTATETYPE p1, u32 p2)
     { VERIFY(bReady); CHK_DX(HW.pDevice->SetRenderState(p1,p2)); }
@@ -142,7 +145,6 @@ public:
 	IC u32	 				TimerAsyncMM	(void)
     { return TimerAsync()+Timer_MM_Delta; }
 public:
-	CShaderManager			Shader;
     Shader_xrLC_LIB			ShaderXRLC;
 };
 

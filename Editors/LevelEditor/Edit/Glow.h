@@ -17,7 +17,7 @@ public:
     	gfFixedSize	= (1<<0),
     	gfForce_u8	= u8(-1)
     };
-    Shader*       	m_GShader;
+    ref_shader     	m_GShader;
     AnsiString		m_ShaderName;
     AnsiString		m_TexName;
     float           m_fRadius;

@@ -161,15 +161,15 @@ void EScene::Save(char *_FileName, bool bUndo){
 	F.close_chunk	();
 
 //	Msg("3: %d",F.tell());
-    if (m_DetailObjects->Valid()){
+    if (GetMTools(OBJCLASS_DO)->Valid()){
 		F.open_chunk	(CHUNK_DETAILOBJECTS);
-    	m_DetailObjects->Save(F);
+    	GetMTools(OBJCLASS_DO)->Save(F);
 		F.close_chunk	();
     }
 
-    if (m_AIMap->IsNeedSave()){
+    if (GetMTools(OBJCLASS_AIMAP)->IsNeedSave()){
         F.open_chunk	(CHUNK_AIMAP);
-        m_AIMap->Save	(F);
+        GetMTools(OBJCLASS_AIMAP)->Save	(F);
         F.close_chunk	();
     }
 
@@ -184,8 +184,8 @@ void EScene::Save(char *_FileName, bool bUndo){
 //	Msg("5: %d",F.tell());
 	// snap list
     F.open_chunk	(CHUNK_SNAPOBJECTS);
-    F.w_u32		(m_SnapObjects.size());
-    for(ObjectIt _F=m_SnapObjects.begin();_F!=m_SnapObjects.end();_F++)
+    F.w_u32			(m_ESO_SnapObjects.size());
+    for(ObjectIt _F=m_ESO_SnapObjects.begin();_F!=m_ESO_SnapObjects.end();_F++)
         F.w_stringZ	((*_F)->Name);
     F.close_chunk	();
 
@@ -330,11 +330,11 @@ bool EScene::Load(char *_FileName)
 
         // snap list
         if (F->find_chunk(CHUNK_SNAPOBJECTS)){
-        	m_SnapObjects.resize(F->r_u32());
-		    char buf[4096];
-		   	for(ObjectIt _F=m_SnapObjects.begin();_F!=m_SnapObjects.end();_F++){
+        	m_ESO_SnapObjects.resize(F->r_u32());
+		    AnsiString buf;
+		   	for(ObjectIt _F=m_ESO_SnapObjects.begin();_F!=m_ESO_SnapObjects.end();_F++){
     	    	F->r_stringZ(buf);
-                *_F 	= FindObjectByName(buf,OBJCLASS_SCENEOBJECT);
+                *_F 	= FindObjectByName(buf.c_str(),OBJCLASS_SCENEOBJECT);
                 VERIFY	(*_F);
             }
             UpdateSnapList();
@@ -344,13 +344,13 @@ bool EScene::Load(char *_FileName)
         // объ€зательно после загрузки snap листа
 	    IReader* DO = F->open_chunk(CHUNK_DETAILOBJECTS);
 		if (DO){
-	    	m_DetailObjects->Load(*DO);
+	    	GetMTools(OBJCLASS_DO)->Load(*DO);
             DO->close();
         }
 
 	    IReader* AIM = F->open_chunk(CHUNK_AIMAP);
 		if (AIM){
-	    	m_AIMap->Load(*AIM);
+	    	GetMTools(OBJCLASS_AIMAP)->Load(*AIM);
             AIM->close();
         }
 

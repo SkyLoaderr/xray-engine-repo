@@ -5,6 +5,7 @@
 #include "ESound_Source.h"
 #include "d3dutils.h"
 #include "PropertiesListHelper.h"
+#include "ui_main.h"
 //----------------------------------------------------
 
 #define VIS_RADIUS 0.25f
@@ -175,13 +176,14 @@ void __fastcall ESoundSource::OnControlClick(PropValue* sender, bool& bModif)
     case 0: Play();	break;
     case 1: Stop();	break;
 	}
+    UI.RedrawScene();
     bModif = false;
 }
 
 void ESoundSource::FillProp(LPCSTR pref, PropItemVec& values)
 {
 	ButtonValue* B;
-    B=PHelper.CreateButton		(values, FHelper.PrepareKey(pref,"Controls"), 	"Play,Stop");
+    B=PHelper.CreateButton		(values, FHelper.PrepareKey(pref,"Controls"), 	"Play,Stop",0);
     B->OnBtnClickEvent			= OnControlClick;
     PropValue* V;
     V=PHelper.CreateASoundSrc	(values,FHelper.PrepareKey(pref,"WAVE name"),	&m_WAVName);

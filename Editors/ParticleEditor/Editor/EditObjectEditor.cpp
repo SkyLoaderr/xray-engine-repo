@@ -12,6 +12,7 @@
 #include "render.h"
 #include "PropertiesListHelper.h"
 #include "bottombar.h"
+#include "ResourceManager.h"
 
 const float tex_w	= LOD_SAMPLE_COUNT*LOD_IMAGE_SIZE;
 const float tex_h	= 1*LOD_IMAGE_SIZE;
@@ -257,7 +258,7 @@ void CEditableObject::DefferedLoadRP()
 
     // skeleton
 	if (IsSkeleton())
-		vs_SkeletonGeom = Device.Shader.CreateGeom(FVF_SV,RCache.Vertex.Buffer(),RCache.Index.Buffer());
+		vs_SkeletonGeom.create(FVF_SV,RCache.Vertex.Buffer(),RCache.Index.Buffer());
 /*    
     CMemoryWriter 	F;
     PrepareOGF		(F);
@@ -270,16 +271,16 @@ void CEditableObject::DefferedLoadRP()
 	// создать LOD shader
 	AnsiString l_name = GetLODTextureName();
     AnsiString fname = l_name+AnsiString(".tga");
-    Device.Shader.Delete(m_LODShader);
+    m_LODShader.destroy();
     if (FS.exist(_textures_,fname.c_str()))
-    	m_LODShader = Device.Shader.Create(GetLODShaderName(),l_name.c_str());
+    	m_LODShader.create(GetLODShaderName(),l_name.c_str());
     m_LoadState.set(LS_RBUFFERS,TRUE);
 }
 void CEditableObject::DefferedUnloadRP()
 {
 	if (!(m_LoadState.is(LS_RBUFFERS))) return;
     // skeleton
-	Device.Shader.DeleteGeom(vs_SkeletonGeom);
+	vs_SkeletonGeom.destroy();
     // удалить буфера
 	for (EditMeshIt _M=m_Meshes.begin(); _M!=m_Meshes.end(); _M++)
     	if (*_M) (*_M)->ClearRenderBuffers();
@@ -287,7 +288,7 @@ void CEditableObject::DefferedUnloadRP()
     for(SurfaceIt s_it=m_Surfaces.begin(); s_it!=m_Surfaces.end(); s_it++)
         (*s_it)->OnDeviceDestroy();
     // LOD
-    Device.Shader.Delete(m_LODShader);
+    m_LODShader.destroy();
     m_LoadState.set(LS_RBUFFERS,FALSE);
 }
 void CEditableObject::EvictObject(){
@@ -353,7 +354,7 @@ bool CEditableObject::CheckShaderCompatible()
 	bool bRes 			= true;
 	for(SurfaceIt s_it=m_Surfaces.begin(); s_it!=m_Surfaces.end(); s_it++)
     {
-    	IBlender* 		B = Device.Shader._FindBlender((*s_it)->m_ShaderName.c_str()); 
+    	IBlender* 		B = Device.Resources->_FindBlender((*s_it)->m_ShaderName.c_str()); 
         Shader_xrLC* 	C = Device.ShaderXRLC.Get((*s_it)->m_ShaderXRLCName.c_str());
         R_ASSERT(B&&C);
     	if (!BE(B->canBeLMAPped(),!C->flags.bLIGHT_Vertex)){ 

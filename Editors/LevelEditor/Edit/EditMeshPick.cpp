@@ -76,7 +76,7 @@ void CEditableMesh::RayQuery(const Fmatrix& parent, const Fmatrix& inv_parent, S
     if (!m_CFModel) GenerateCFModel();
     XRC.ray_query	(inv_parent, m_CFModel, pinf.m_Start, pinf.m_Direction, pinf.m_Dist);
     for (int r=0; r<XRC.r_count(); r++)
-        pinf.append(parent,m_CFModel,XRC.r_begin()+r);
+        pinf.append_mtx(parent,m_CFModel,XRC.r_begin()+r);
 }
 
 void CEditableMesh::BoxQuery(const Fmatrix& parent, const Fmatrix& inv_parent, SPickQuery& pinf)
@@ -84,7 +84,7 @@ void CEditableMesh::BoxQuery(const Fmatrix& parent, const Fmatrix& inv_parent, S
     if (!m_CFModel) GenerateCFModel();
     XRC.box_query(inv_parent, m_CFModel, pinf.m_BB);
     for (int r=0; r<XRC.r_count(); r++)
-        pinf.append(parent,m_CFModel,XRC.r_begin()+r);
+        pinf.append_mtx(parent,m_CFModel,XRC.r_begin()+r);
 }
 
 bool CEditableMesh::RayPick(float& distance, const Fvector& start, const Fvector& direction, const Fmatrix& inv_parent, SRayPickInfo* pinf)

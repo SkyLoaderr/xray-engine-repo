@@ -11,7 +11,8 @@
 
 TUI_CustomTools::TUI_CustomTools(EObjClass cls, bool bCreateDefaultControls)
 {
-	objclass = cls;
+	objclass 	= cls;
+	scene_tools	= Scene.GetMTools(objclass);
     sub_target	= 0;
     pCurControl = 0;
     pFrame		= 0;

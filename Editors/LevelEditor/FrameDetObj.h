@@ -16,6 +16,7 @@
 #include "multi_color.hpp"
 // refs
 struct SDOClusterDef;
+class EDetailManager;
 //---------------------------------------------------------------------------
 class TfraDetailObject : public TFrame
 {
@@ -31,9 +32,6 @@ __published:	// IDE-managed Components
 	TExtBtn *ebReinitializeSlotObjects;
 	TExtBtn *ExtBtn6;
 	TExtBtn *ExtBtn4;
-	TLabel *Label2;
-	TMultiObjSpinEdit *seDensity;
-	TBevel *Bevel2;
 	TExtBtn *ebResetSlots;
 	TExtBtn *ExtBtn7;
 	TExtBtn *ebClearDetails;
@@ -48,16 +46,13 @@ __published:	// IDE-managed Components
 	void __fastcall ebUpdateObjectsClick(TObject *Sender);
 	void __fastcall ebReinitializeSlotObjectsClick(TObject *Sender);
 	void __fastcall ExtBtn6Click(TObject *Sender);
-	void __fastcall seDensityExit(TObject *Sender);
-	void __fastcall seDensityKeyDown(TObject *Sender, WORD &Key,
-          TShiftState Shift);
-	void __fastcall seDensityLWChange(TObject *Sender, int Val);
 	void __fastcall ebInvalidateCacheClick(TObject *Sender);
 	void __fastcall ebResetSlotsClick(TObject *Sender);
 	void __fastcall ebClearDetailsClick(TObject *Sender);
 private:	// User declarations
+	EDetailManager* DM;
 public:		// User declarations
-	__fastcall TfraDetailObject(TComponent* Owner);
+	__fastcall TfraDetailObject(TComponent* Owner, EDetailManager* dm_tools);
     void __fastcall OnEnter();
     void __fastcall OnExit();
 };

@@ -20,6 +20,7 @@
 #include "GameMtlLib.h"
 #include "soundrender_source.h"
 #include "render.h"
+#include "ResourceManager.h"
 
 #ifdef _LEVEL_EDITOR
  #include "Scene.h"
@@ -185,9 +186,9 @@ void __fastcall TfrmChoseItem::FillLAnim()
 void __fastcall TfrmChoseItem::FillShader()
 {
     form->Caption					= "Select Engine Shader";
-    CShaderManager::map_Blender& blenders = Device.Shader._GetBlenders();
-	CShaderManager::map_BlenderIt _S = blenders.begin();
-	CShaderManager::map_BlenderIt _E = blenders.end();
+    CResourceManager::map_Blender& blenders = Device.Resources->_GetBlenders();
+	CResourceManager::map_BlenderIt _S = blenders.begin();
+	CResourceManager::map_BlenderIt _E = blenders.end();
 	for (; _S!=_E; _S++)AppendItem(_S->first);
 }
 //---------------------------------------------------------------------------

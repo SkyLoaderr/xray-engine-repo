@@ -11,6 +11,7 @@
 #include "customobject.h"
 #include "DetailManager.h"
 #include "Custom2DProjector.h"
+#include "SceneCustomMTools.H"
 
 class CFrustum;
 class CEditableObject;
@@ -32,6 +33,7 @@ DEFINE_MAP			(u32,DOVec,ColorIndexMap,ColorIndexPairIt);
 
 class EDetailManager:
 	public CDetailManager,
+    public ESceneCustomMTools,
 	public pureDeviceCreate,
 	public pureDeviceDestroy
 {
@@ -41,8 +43,8 @@ class EDetailManager:
 
     Fbox				m_BBox;
 
-	IC u32			toSlotX			(float x)	{return (x/DETAIL_SLOT_SIZE+0.5f)+dtH.offs_x;}
-	IC u32			toSlotZ			(float z)	{return (z/DETAIL_SLOT_SIZE+0.5f)+dtH.offs_z;}
+	IC u32				toSlotX			(float x)	{return (x/DETAIL_SLOT_SIZE+0.5f)+dtH.offs_x;}
+	IC u32				toSlotZ			(float z)	{return (z/DETAIL_SLOT_SIZE+0.5f)+dtH.offs_z;}
 	IC float			fromSlotX		(int x)		{return (x-dtH.offs_x)*DETAIL_SLOT_SIZE+DETAIL_SLOT_SIZE_2;}
 	IC float			fromSlotZ		(int z)		{return (z-dtH.offs_z)*DETAIL_SLOT_SIZE+DETAIL_SLOT_SIZE_2;}
 
@@ -50,13 +52,15 @@ class EDetailManager:
 
     void				GetSlotRect		(Frect& rect, int sx, int sz);
     void				GetSlotTCRect	(Irect& rect, int sx, int sz);
-    u8				GetRandomObject	(u32 color_index);
-    u8				GetObject		(ColorIndexPairIt& CI, u8 id);
+    u8					GetRandomObject	(u32 color_index);
+    u8					GetObject		(ColorIndexPairIt& CI, u8 id);
 
 	void 				CalcClosestCount(int part, const Fcolor& C, SIndexDistVec& best);
 	void 				FindClosestIndex(const Fcolor& C, SIndexDistVec& best);
 
     DetailSlot&			GetSlot			(u32 sx, u32 sz);
+
+    void __fastcall		OnDensityChange	(PropValue* prop);
 public:
 // render part -----------------------------------------------------------------
     void 				InitRender				();
@@ -68,18 +72,49 @@ public:
 	U8Vec				m_Selected;
     CCustom2DProjector	m_Base;
 
-    float				m_fDensity;
-
     void				SaveColorIndices		(IWriter&);
     bool				LoadColorIndices		(IReader&);
 public:
 						EDetailManager			();
     virtual 			~EDetailManager			();
 
-    bool				Load            		(IReader&);
-    void				Save            		(IWriter&);
-    bool				Export          		(LPCSTR fn);
+    // snap 
+	virtual ObjectList& GetSnapList				(){return m_SnapObjects;}
+    virtual void		UpdateSnapList			(){};
 
+	// selection manipulate
+    virtual bool		PickGround				(Fvector& dest, const Fvector& start, const Fvector& dir, float dist){return false;}
+	virtual int			RaySelect				(bool flag, float& distance, const Fvector& start, const Fvector& direction);
+	virtual int			FrustumSelect			(bool flag);
+	virtual int			SelectObjects           (bool flag);
+	virtual int			InvertSelection         ();
+	virtual int 		RemoveSelection         (){return 0;};
+	virtual int			SelectionCount          (bool testflag);
+	virtual int 		ShowObjects				(bool flag, bool bAllowSelectionFlag=false, bool bSelFlag=true){return 0;};
+
+    virtual void		Clear					(bool bSpecific=false);
+
+    // validation
+    virtual bool		Valid					(){return dtSlots||objects.size();}
+
+    // events
+	virtual void		OnDeviceCreate			();
+	virtual void		OnDeviceDestroy			();
+	virtual void		OnSynchronize			(){};
+    virtual void		OnObjectRemove			(CCustomObject* O);
+	virtual void		OnFrame					(){};
+    virtual void		OnRender				(int priority, bool strictB2F);
+
+    // IO
+    virtual bool   		IsNeedSave				(){return Valid();}
+    virtual bool		Load            		(IReader&);
+    virtual void		Save            		(IWriter&);
+    virtual bool		Export          		(LPCSTR fn);
+
+	// properties
+    virtual void		FillProp          		(LPCSTR pref, PropItemVec& items);
+
+    // other
     bool				UpdateHeader			();
     bool				UpdateSlots  			();
     bool				UpdateBaseTexture		(LPCSTR tex_name=0);
@@ -100,25 +135,11 @@ public:
     void				ExportColorIndices		(LPCSTR fname);
     void				ImportColorIndices		(LPCSTR fname);
 
-    void				Render					(int priority, bool strictB2F);
     void				ClearColorIndices		();
     void				ClearSlots				();
     void				ClearBase				();
-    void				Clear					();
 
-	int					RaySelect				(bool flag, float& distance, const Fvector& start, const Fvector& direction);
-	int					FrustumSelect			(bool flag);
-	int 				SelectObjects           (bool flag);
-	int 				InvertSelection         ();
-	int 				SelectionCount          (bool testflag);
-
-    bool				Valid					(){return dtSlots||objects.size();}
-
-    void				RemoveFromSnapList		(CCustomObject* O);
-	virtual ObjectList*	GetSnapObjects			(){return &m_SnapObjects;}
-
-	virtual void		OnDeviceCreate			();
-	virtual void		OnDeviceDestroy			();
 };
+extern float psDetailDensity;
 #endif /*_INCDEF_DetailObjects_H_*/
 

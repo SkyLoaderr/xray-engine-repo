@@ -16,6 +16,7 @@
 #include "xrLevel.h"
 #include "ui_main.h"
 #include "xrHemisphere.h"
+#include "ResourceManager.h"
 
 //------------------------------------------------------------------------------
 // !!! использовать prefix если нужно имя !!! (Связано с группами)
@@ -108,7 +109,8 @@ void SceneBuilder::SaveBuild()
     F.save_to		(fn.c_str());
 }
 
-int SceneBuilder::CalculateSector(const Fvector& P, float R){
+int SceneBuilder::CalculateSector(const Fvector& P, float R)
+{
     ObjectIt _F = Scene.FirstObj(OBJCLASS_SECTOR);
     ObjectIt _E = Scene.LastObj(OBJCLASS_SECTOR);
     for(;_F!=_E;_F++){
@@ -524,7 +526,7 @@ BOOL SceneBuilder::BuildLight(CLight* e)
 //------------------------------------------------------------------------------
 // Glow build functions
 //------------------------------------------------------------------------------
-void SceneBuilder::BuildGlow(CGlow* e)
+BOOL SceneBuilder::BuildGlow(CGlow* e)
 {
 	l_glows.push_back(b_glow());
     b_glow& b 		= l_glows.back();
@@ -532,10 +534,11 @@ void SceneBuilder::BuildGlow(CGlow* e)
     b_material mtl; ZeroMemory(&mtl,sizeof(mtl));
     int mtl_idx;
     VERIFY(!e->m_ShaderName.IsEmpty());
-	mtl.surfidx		= BuildTexture		(e->m_TexName.c_str());
+	mtl.surfidx		= BuildTexture		(e->m_TexName.c_str());		
     mtl.shader      = BuildShader		(e->m_ShaderName.c_str());
     mtl.sector		= CalculateSector	(e->PPosition,e->m_fRadius);
     mtl.shader_xrlc	= -1;
+    if ((u16(-1)==mtl.surfidx)||(u16(-1)==mtl.shader)) return FALSE;
 
     mtl_idx 		= FindInMaterials(&mtl);
     if (mtl_idx<0){
@@ -548,6 +551,7 @@ void SceneBuilder::BuildGlow(CGlow* e)
     b.size        	= e->m_fRadius;
 	b.dwMaterial   	= mtl_idx;
     b.flags			= e->m_Flags.is(CGlow::gfFixedSize)?0x01:0x00;	// 0x01 - non scalable
+    return TRUE;
 }
 //------------------------------------------------------------------------------
 
@@ -571,12 +575,13 @@ int SceneBuilder::FindInShaders(b_shader* s){
 }
 //------------------------------------------------------------------------------
 
-int SceneBuilder::BuildShader(const char * s){
+int SceneBuilder::BuildShader(const char * s)
+{
     b_shader sh;
     strcpy(sh.name,s);
     int sh_id = FindInShaders(&sh);
     if (sh_id<0){
-        if (!Device.Shader._FindBlender(sh.name)){
+        if (!Device.Resources->_FindBlender(sh.name)){
         	ELog.DlgMsg(mtError,"Can't find engine shader: %s",sh.name);
             return -1;
         }
@@ -623,15 +628,19 @@ int SceneBuilder::FindInTextures(const char* name){
 }
 //------------------------------------------------------------------------------
 
-int SceneBuilder::BuildTexture(const char* name){
-    int tex_idx     = FindInTextures(name);
+int SceneBuilder::BuildTexture(const char* name)
+{
+	if (!(name&&name[0])){
+		ELog.DlgMsg(mtError,"Invalid texture name found.");
+        return -1;
+    }
+    int tex_idx     	= FindInTextures(name);
     if(tex_idx<0){
 		b_texture       tex;
         ZeroMemory(&tex,sizeof(tex));
 		strcpy          (tex.name,name);
     	l_textures.push_back(tex);
 		tex_idx         = l_textures.size()-1;
-		AddUniqueTexName(name);
     }
     return tex_idx;
 }
@@ -656,6 +665,7 @@ int	SceneBuilder::BuildObjectLOD(const Fmatrix& parent, CEditableObject* e, int 
     mtl.shader      = BuildShader		(e->GetLODShaderName());
     mtl.sector		= sector_num;
     mtl.shader_xrlc	= -1;
+    if ((u16(-1)==mtl.surfidx)||(u16(-1)==mtl.shader)) return -2;
 
     int mtl_idx		= FindInMaterials(&mtl);
     if (mtl_idx<0){
@@ -694,18 +704,18 @@ int SceneBuilder::FindInMaterials(b_material* m)
 }
 //------------------------------------------------------------------------------
 
-int SceneBuilder::BuildMaterial(CSurface* surf, int sector_num){
+int SceneBuilder::BuildMaterial(CSurface* surf, int sector_num)
+{
     b_material mtl; ZeroMemory(&mtl,sizeof(mtl));
     VERIFY(sector_num>=0);
     int mtl_idx;
 	u32 tex_cnt 	= ((surf->_FVF()&D3DFVF_TEXCOUNT_MASK)>>D3DFVF_TEXCOUNT_SHIFT); VERIFY(tex_cnt==1);
-    int en_sh_idx	= BuildShader(surf->_ShaderName());
-    int cl_sh_idx	= BuildShaderXRLC(surf->_ShaderXRLCName());
-    if ((en_sh_idx<0)||(cl_sh_idx<0)) return -1;
-    mtl.shader      = en_sh_idx;
-    mtl.shader_xrlc	= cl_sh_idx;
+    mtl.shader      = BuildShader(surf->_ShaderName());
+    mtl.shader_xrlc	= BuildShaderXRLC(surf->_ShaderXRLCName());
     mtl.sector		= sector_num;
 	mtl.surfidx		= BuildTexture(surf->_Texture());
+    if ((u16(-1)==mtl.shader)||(u16(-1)==mtl.shader_xrlc)||(u16(-1)==mtl.surfidx)) return -1;
+
     mtl_idx 		= FindInMaterials(&mtl);
     if (mtl_idx<0){
         l_materials.push_back(mtl);
@@ -726,7 +736,7 @@ BOOL SceneBuilder::ParseStaticObjects(ObjectList& lst, LPCSTR prefix)
             bResult = BuildLight((CLight*)(*_F));
             break;
         case OBJCLASS_GLOW:
-            BuildGlow((CGlow*)(*_F));
+            bResult = BuildGlow((CGlow*)(*_F));
             break;
         case OBJCLASS_PORTAL:
             l_portals.push_back(b_portal());

@@ -93,6 +93,10 @@ public:
 public:
     IC CaptionValue*	CreateCaption	(PropItemVec& items, AnsiString key, AnsiString val)
     {	return			(CaptionValue*)	AppendValue		(items,key,xr_new<CaptionValue>(val),PROP_CAPTION);		}
+    IC CanvasValue*		CreateCanvas	(PropItemVec& items, AnsiString key, AnsiString val, int height)
+    {	return			(CanvasValue*)	AppendValue		(items,key,xr_new<CanvasValue>(val,height),PROP_CANVAS);		}
+    IC ButtonValue*		CreateButton	(PropItemVec& items, AnsiString key, AnsiString val, u32 flags)
+    {	return			(ButtonValue*)	AppendValue		(items,key,xr_new<ButtonValue>(val,flags),PROP_BUTTON);		}
     IC S8Value* 		CreateS8		(PropItemVec& items, AnsiString key, s8* val, s8 mn=0, s8 mx=100, s8 inc=1)
     {	return			(S8Value*)		AppendValue		(items,key,xr_new<S8Value>(val,mn,mx,inc,0),PROP_S8);	}
     IC S16Value* 		CreateS16		(PropItemVec& items, AnsiString key, s16* val, s16 mn=0, s16 mx=100, s16 inc=1)
@@ -183,8 +187,6 @@ public:
     {	return			(WaveValue*)	AppendValue		(items,key,xr_new<WaveValue>(val),PROP_WAVE);           }
     IC TextValue* 		CreateGameMtl	(PropItemVec& items, AnsiString key, LPSTR val, int lim)
     {	return			(TextValue*)	AppendValue		(items,key,xr_new<TextValue>(val,lim),PROP_GAMEMTL);    }
-    IC ButtonValue*		CreateButton	(PropItemVec& items, AnsiString key, AnsiString val)
-    {	return			(ButtonValue*)	AppendValue		(items,key,xr_new<ButtonValue>(val),PROP_BUTTON);		}
     
     IC FloatValue* 		CreateAngle		(PropItemVec& items, AnsiString key, float* val, float mn=0.f, float mx=PI_MUL_2, float inc=0.01f, int decim=2)
     {   FloatValue* V	= (FloatValue*)	AppendValue		(items,key,xr_new<FloatValue>(val,mn,mx,inc,decim),PROP_FLOAT);

@@ -7,6 +7,7 @@
 #include "ui_main.h"
 #include "render.h"
 #include "GameMtlLib.h"
+#include "ResourceManager.h"
 
 #pragma package(smart_init)
 
@@ -136,6 +137,7 @@ bool CRenderDevice::Create(){
     IReader* F			= 0;
 	if (FS.exist(sh.c_str()))
 		F				= FS.r_open(0,sh.c_str());
+	Resources			= xr_new<CResourceManager>	();
     _Create				(F);
 	FS.r_close			(F);
 
@@ -154,6 +156,7 @@ void CRenderDevice::Destroy(){
 
 	// before destroy
 	_Destroy					(FALSE);
+	xr_delete					(Resources);
 
 	// real destroy
 	HW.DestroyDevice			();
@@ -164,12 +167,6 @@ void CRenderDevice::Destroy(){
 void CRenderDevice::_Create(IReader* F)
 {
 	bReady				= TRUE;
-
-	// Shaders part
-	Shader.OnDeviceCreate(F);
-
-    m_WireShader 		= Shader.Create("editor\\wire");
-    m_SelectionShader 	= Shader.Create("editor\\selection");
 
 	// General Render States
 	HW.Caps.Update();
@@ -195,6 +192,11 @@ void CRenderDevice::_Create(IReader* F)
     ResetMaterial();
 
     RCache.OnDeviceCreate		();
+	Resources->OnDeviceCreate	(F);
+
+    m_WireShader.create			("editor\\wire");
+    m_SelectionShader.create	("editor\\selection");
+
 	// signal another objects
 	seqDevCreate.Process		(rp_DeviceCreate);
     UI.OnDeviceCreate			();
@@ -211,13 +213,13 @@ void CRenderDevice::_Destroy(BOOL	bKeepTextures)
 
     UI.OnDeviceDestroy			();
 
-	if (m_WireShader) Shader.Delete(m_WireShader);
-	if (m_SelectionShader) Shader.Delete(m_SelectionShader);
+	m_WireShader.destroy		();
+	m_SelectionShader.destroy	();
 
 	seqDevDestroy.Process		(rp_DeviceDestroy);
 	Models.OnDeviceDestroy		();
 
-	Shader.OnDeviceDestroy		(bKeepTextures);
+	Resources->OnDeviceDestroy	(bKeepTextures);
 
 	RCache.OnDeviceDestroy		();
 }
@@ -315,9 +317,9 @@ void CRenderDevice::UpdateTimer()
     m_Camera.Update(fTimeDelta);
 }
 
-void CRenderDevice::DP(D3DPRIMITIVETYPE pt, SGeometry* geom, u32 vBase, u32 pc)
+void CRenderDevice::DP(D3DPRIMITIVETYPE pt, ref_geom geom, u32 vBase, u32 pc)
 {
-	::Shader* S 			= m_CurrentShader?m_CurrentShader:m_WireShader;
+	ref_shader S 			= m_CurrentShader?m_CurrentShader:m_WireShader;
     u32 dwRequired			= S->E[0]->Passes.size();
     RCache.set_Geometry		(geom);
     for (u32 dwPass = 0; dwPass<dwRequired; dwPass++){
@@ -326,9 +328,9 @@ void CRenderDevice::DP(D3DPRIMITIVETYPE pt, SGeometry* geom, u32 vBase, u32 pc)
     }
 }
 
-void CRenderDevice::DIP(D3DPRIMITIVETYPE pt, SGeometry* geom, u32 baseV, u32 startV, u32 countV, u32 startI, u32 PC)
+void CRenderDevice::DIP(D3DPRIMITIVETYPE pt, ref_geom geom, u32 baseV, u32 startV, u32 countV, u32 startI, u32 PC)
 {
-	::Shader* S 			= m_CurrentShader?m_CurrentShader:m_WireShader;
+	ref_shader S 			= m_CurrentShader?m_CurrentShader:m_WireShader;
     u32 dwRequired			= S->E[0]->Passes.size();
     RCache.set_Geometry		(geom);
     for (u32 dwPass = 0; dwPass<dwRequired; dwPass++){
@@ -340,26 +342,28 @@ void CRenderDevice::DIP(D3DPRIMITIVETYPE pt, SGeometry* geom, u32 baseV, u32 sta
 void CRenderDevice::ReloadTextures()
 {
 	UI.SetStatus("Reload textures...");
-	Shader.ED_UpdateTextures(0);
+	Resources->ED_UpdateTextures(0);
 	UI.SetStatus("");
 }
 //------------------------------------------------------------------------------
 // если передан параметр modif - обновляем DX-Surface only и только из списка
 // иначе полная синхронизация
 //------------------------------------------------------------------------------
-void CRenderDevice::RefreshTextures(AStringVec* modif){
+void CRenderDevice::RefreshTextures(AStringVec* modif)
+{
 	UI.SetStatus("Refresh textures...");
-    if (modif) Shader.ED_UpdateTextures(modif);
+    if (modif) Resources->ED_UpdateTextures(modif);
 	else{
     	AStringVec modif_files;
     	ImageManager.SynchronizeTextures(true,true,false,0,&modif_files);
-        Shader.ED_UpdateTextures(&modif_files);
+        Resources->ED_UpdateTextures(&modif_files);
     }
 	UI.SetStatus("");
 }
 
-void CRenderDevice::UnloadTextures(){
-    Shader.DeferredUnload();
+void CRenderDevice::UnloadTextures()
+{
+    Resources->DeferredUnload();
 }
 
 bool CRenderDevice::MakeScreenshot(U32Vec& pixels, u32& width, u32& height)
@@ -367,7 +371,7 @@ bool CRenderDevice::MakeScreenshot(U32Vec& pixels, u32& width, u32& height)
 	if (!bReady) return false;
 
     // free managed resource
-    Shader.Evict();
+    Resources->Evict();
 
     IDirect3DSurface9* 	poldZB=0;
     IDirect3DSurface9* 	pZB=0;

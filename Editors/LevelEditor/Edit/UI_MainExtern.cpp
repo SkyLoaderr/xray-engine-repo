@@ -72,7 +72,7 @@ bool TUI::CommandExt(int _Command, int p1, int p2)
             	Command			(COMMAND_CLEAR);
 				Scene.Load		(filebuffer);
 				strcpy			(m_LastFileName,filebuffer);
-                SetStatus		("");
+				ResetStatus		();
               	Scene.UndoClear	();
 				Scene.UndoSave	();
                 Scene.m_Modified= false;
@@ -105,7 +105,7 @@ bool TUI::CommandExt(int _Command, int p1, int p2)
 			if( m_LastFileName[0] ){
                 SetStatus("Level saving...");
 				Scene.Save( m_LastFileName, false );
-                SetStatus("");
+				ResetStatus();
                 Scene.m_Modified = false;
 			    Command(COMMAND_UPDATE_CAPTION);
 			}else{
@@ -128,7 +128,7 @@ bool TUI::CommandExt(int _Command, int p1, int p2)
             	if (p1)	strcpy(filebuffer,(LPCSTR)p1);
                 SetStatus("Level saving...");
 				Scene.Save( filebuffer, false );
-                SetStatus("");
+				ResetStatus();
                 Scene.m_Modified = false;
 				// unlock
     	        EFS.UnlockFile(0,m_LastFileName);
@@ -340,7 +340,7 @@ bool TUI::CommandExt(int _Command, int p1, int p2)
 	case COMMAND_INVERT_SELECTION_ALL:
 		if( !Scene.locked() ){
 			Scene.InvertSelection(Tools.CurrentClassID());
-			Scene.UndoSave();
+//.			Scene.UndoSave();
 		} else {
 			ELog.DlgMsg( mtError, "Scene sharing violation" );
 			bRes = false;
@@ -350,7 +350,7 @@ bool TUI::CommandExt(int _Command, int p1, int p2)
 	case COMMAND_SELECT_ALL:
 		if( !Scene.locked() ){
 			Scene.SelectObjects(true,Tools.CurrentClassID());
-			Scene.UndoSave();
+//.			Scene.UndoSave();
 		} else {
 			ELog.DlgMsg( mtError, "Scene sharing violation" );
 			bRes = false;
@@ -360,7 +360,7 @@ bool TUI::CommandExt(int _Command, int p1, int p2)
 	case COMMAND_DESELECT_ALL:
 		if( !Scene.locked() ){
 			Scene.SelectObjects(false,Tools.CurrentClassID());
-			Scene.UndoSave();
+//			Scene.UndoSave();
 		} else {
 			ELog.DlgMsg( mtError, "Scene sharing violation" );
 			bRes = false;
@@ -444,19 +444,23 @@ bool TUI::CommandExt(int _Command, int p1, int p2)
 		break;
     case COMMAND_SET_SNAP_OBJECTS:
 		if( !Scene.locked() ){
-	    	int cnt=Scene.SetSnapList();
- 			Scene.UndoSave();
-        	ELog.Msg( mtInformation, "%d snap object(s) selected.", cnt );
+	    	Scene.SetSnapList();
 		}else{
         	ELog.DlgMsg( mtError, "Scene sharing violation" );
 			bRes = false;
         }
         break;
-    case COMMAND_ADD_SNAP_OBJECTS:
+    case COMMAND_ADD_SEL_SNAP_OBJECTS:
 		if( !Scene.locked() ){
-	    	int cnt=Scene.AddToSnapList();
- 			Scene.UndoSave();
-        	ELog.Msg( mtInformation, "%d object(s) appended.", cnt );
+	    	Scene.AddSelToSnapList();
+		}else{
+        	ELog.DlgMsg( mtError, "Scene sharing violation" );
+			bRes = false;
+        }
+    	break;
+    case COMMAND_DEL_SEL_SNAP_OBJECTS:
+		if( !Scene.locked() ){
+	    	Scene.DelSelFromSnapList();
 		}else{
         	ELog.DlgMsg( mtError, "Scene sharing violation" );
 			bRes = false;
@@ -464,14 +468,20 @@ bool TUI::CommandExt(int _Command, int p1, int p2)
     	break;
     case COMMAND_CLEAR_SNAP_OBJECTS:
 		if( !Scene.locked() ){
-	    	Scene.ClearSnapList();
- 			Scene.UndoSave();
-	       	ELog.Msg( mtInformation, "Snap list empty.");
+	    	Scene.ClearSnapList(true);
 		}else{
         	ELog.DlgMsg( mtError, "Scene sharing violation" );
 			bRes = false;
         }
     	break;
+    case COMMAND_SELECT_SNAP_OBJECTS:
+		if( !Scene.locked() ){
+	    	Scene.SelectSnapList();
+		}else{
+        	ELog.DlgMsg( mtError, "Scene sharing violation" );
+			bRes = false;
+        }
+        break;
     case COMMAND_REFRESH_SOUND_ENVS:
     	::Sound->refresh_env_library();
 //		::Sound->_restart();
@@ -577,7 +587,7 @@ bool TUI::PickGround(Fvector& hitpoint, const Fvector& start, const Fvector& dir
 	    EEditorState est = GetEState();
         switch(est){
         case esEditLibrary:		bPickObject = !!TfrmEditLibrary::RayPick(start,direction,&pinf); break;
-        case esEditScene:		bPickObject = !!Scene.RayPick(start,direction,OBJCLASS_SCENEOBJECT,&pinf,false,Scene.GetSnapList()); break;
+        case esEditScene:		bPickObject = !!Scene.RayPick(start,direction,OBJCLASS_SCENEOBJECT,&pinf,false,Scene.GetSnapList(false)); break;
         default: return false;
         }
         if (bPickObject){

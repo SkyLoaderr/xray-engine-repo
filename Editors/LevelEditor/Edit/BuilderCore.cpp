@@ -61,7 +61,8 @@ bool SceneBuilder::GetBounding()
 }
 //------------------------------------------------------------------------------
 
-bool SceneBuilder::RenumerateSectors(){
+bool SceneBuilder::RenumerateSectors()
+{
 	m_iDefaultSectorNum	= -1;
 
 	UI.ProgressStart(Scene.ObjCount(OBJCLASS_SECTOR), "Renumerate sectors...");

@@ -30,7 +30,7 @@ void __fastcall TfraWayPoint::ExpandClick(TObject *Sender)
 
 void __fastcall TfraWayPoint::ebAdd1LinksClick(TObject *Sender)
 {
-	if (!ebPointMode->Down){
+	if (!ebModePoint->Down){
     	ELog.DlgMsg(mtInformation,"Before editing enter Point Mode.");
     	return;
     }
@@ -44,7 +44,7 @@ void __fastcall TfraWayPoint::ebAdd1LinksClick(TObject *Sender)
 
 void __fastcall TfraWayPoint::ebAdd2LinkClick(TObject *Sender)
 {
-	if (!ebPointMode->Down){
+	if (!ebModePoint->Down){
     	ELog.DlgMsg(mtInformation,"Before editing enter Point Mode.");
     	return;
     }
@@ -58,7 +58,7 @@ void __fastcall TfraWayPoint::ebAdd2LinkClick(TObject *Sender)
 
 void __fastcall TfraWayPoint::ebRemoveLinksClick(TObject *Sender)
 {
-	if (!ebPointMode->Down){
+	if (!ebModePoint->Down){
     	ELog.DlgMsg(mtInformation,"Before editing enter Point Mode.");
     	return;
     }
@@ -72,7 +72,7 @@ void __fastcall TfraWayPoint::ebRemoveLinksClick(TObject *Sender)
 
 void __fastcall TfraWayPoint::ebInvertLinkClick(TObject *Sender)
 {
-	if (!ebPointMode->Down){
+	if (!ebModePoint->Down){
     	ELog.DlgMsg(mtInformation,"Before editing enter Point Mode.");
     	return;
     }
@@ -84,17 +84,4 @@ void __fastcall TfraWayPoint::ebInvertLinkClick(TObject *Sender)
 }
 //---------------------------------------------------------------------------
 
-void __fastcall TfraWayPoint::ebRemoveSelectedClick(TObject *Sender)
-{
-	if (!ebPointMode->Down){
-    	ELog.DlgMsg(mtInformation,"Before editing enter Point Mode.");
-    	return;
-    }
-	ObjectList lst;
-    int cnt = Scene.GetQueryObjects(lst, OBJCLASS_WAY, 1, 1, 0);
-    for (ObjectIt it=lst.begin(); it!=lst.end(); it++)
-    	((CWayObject*)(*it))->RemoveSelectedPoints();
-	if (cnt) Scene.UndoSave();
-}
-//---------------------------------------------------------------------------
 

@@ -51,7 +51,7 @@ class SceneBuilder{
 
     void    GetBBox         (u32 st_fid, u32 cnt, Fbox& box);
 
-    void    BuildGlow       (CGlow* e);
+    BOOL    BuildGlow       (CGlow* e);
     void    BuildPortal   	(b_portal* b, CPortal* e);
     BOOL    BuildMesh       (const Fmatrix& parent, CEditableObject* object, CEditableMesh* mesh, int sector_num,
     						b_vertex* verts, int& vert_cnt, int& vert_it,
@@ -89,8 +89,6 @@ protected:
     friend class TfrmBuildProgress;
 
 	Fbox 	m_LevelBox;
-
-	AStringVec m_TexNames;
 public:
 	AnsiString m_LevelPath;
 protected:
@@ -104,9 +102,6 @@ protected:
 	BOOL 	BuildLTX                ();
     BOOL	ParseGAME				(IWriter& game, IWriter& spawn, ObjectList& lst, LPCSTR prefix=0);
     BOOL 	BuildGame				();
-
-	bool 	WriteTextures           ();
-	void 	AddUniqueTexName        (const char *name);
 
     bool 	BuildSkyModel			();
     bool 	BuildHOMModel			();

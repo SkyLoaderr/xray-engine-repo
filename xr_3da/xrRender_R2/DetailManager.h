@@ -84,14 +84,14 @@ public:
 
 	PSS								poolSI;
 public:
-
 #ifdef _EDITOR
-	virtual ObjectList*				GetSnapObjects	()=0;
+	virtual ObjectList& 			GetSnapList		()=0;
 #endif
+
 	IC bool							UseVS			()		{ return HW.Caps.vertex.dwVersion >= CAP_VERSION(1,1); }
 
 	// Software processor
-	ref_geom						soft_Geom;
+    ref_geom						soft_Geom;
 	void							soft_Load		();
 	void							soft_Unload		();
 	void							soft_Render		();

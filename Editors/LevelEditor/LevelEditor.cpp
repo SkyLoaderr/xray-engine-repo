@@ -35,7 +35,6 @@ USEFORM("OneEnvironment.cpp", frmOneEnvironment);
 USEFORM("previewimage.cpp", frmPreviewImage);
 USEFORM("PropertiesEObject.cpp", frmPropertiesEObject);
 USEFORM("PropertiesList.cpp", Properties);
-USEFORM("PropertiesWayPoint.cpp", frmPropertiesWayPoint);
 USEFORM("SceneProperties.cpp", frmSceneProperties);
 USEFORM("ShaderFunction.cpp", frmShaderFunction);
 USEFORM("Splash.cpp", frmSplash);
@@ -60,7 +59,7 @@ WINAPI WinMain(HINSTANCE hInst, HINSTANCE, LPSTR, int)
 
 // startup create
 		Application->Title 			= _EDITOR_NAME_;
-        Application->CreateForm		(__classid(TfrmMain), &frmMain);
+        Application->CreateForm(__classid(TfrmMain), &frmMain);
 		frmMain->SetHInst			(hInst);
 
         xr_delete					(frmSplash);

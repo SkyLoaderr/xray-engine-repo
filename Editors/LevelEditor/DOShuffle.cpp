@@ -28,9 +28,10 @@ SDOData::SDOData(){
 //---------------------------------------------------------------------------
 // Constructors
 //---------------------------------------------------------------------------
-bool __fastcall TfrmDOShuffle::Run(){
+bool __fastcall TfrmDOShuffle::Run()
+{
 	VERIFY(!form);
-	form = xr_new<TfrmDOShuffle>((TComponent*)0);
+	form = xr_new<TfrmDOShuffle>((TComponent*)0,dynamic_cast<EDetailManager*>(Scene.GetMTools(OBJCLASS_DO)));
 	// show
     return (form->ShowModal()==mrOk);
 }
@@ -45,14 +46,12 @@ void __fastcall TfrmDOShuffle::FormShow(TObject *Sender)
 }
 //---------------------------------------------------------------------------
 
-void TfrmDOShuffle::GetInfo(){
+void TfrmDOShuffle::GetInfo()
+{
 	// init
     tvItems->IsUpdating = true;
     tvItems->Selected = 0;
     tvItems->Items->Clear();
-    // fill
-    EDetailManager* DM=Scene.m_DetailObjects;
-    VERIFY(DM);
     // objects
     for (DOIt d_it=DM->objects.begin(); d_it!=DM->objects.end(); d_it++){
     	SDOData* dd 			= xr_new<SDOData>();
@@ -81,9 +80,8 @@ void TfrmDOShuffle::GetInfo(){
 }
 //---------------------------------------------------------------------------
 
-void TfrmDOShuffle::ApplyInfo(){
-    EDetailManager* DM=Scene.m_DetailObjects;
-    VERIFY(DM);
+void TfrmDOShuffle::ApplyInfo()
+{
     bool bNeedUpdate = false;
     // update objects
     DM->MarkAllObjectsAsDel();
@@ -132,10 +130,11 @@ void TfrmDOShuffle::ClearInfo()
 //---------------------------------------------------------------------------
 // implementation
 //---------------------------------------------------------------------------
-__fastcall TfrmDOShuffle::TfrmDOShuffle(TComponent* Owner)
+__fastcall TfrmDOShuffle::TfrmDOShuffle(TComponent* Owner, EDetailManager* dm_tools)
     : TForm(Owner)
 {
     DEFINE_INI(fsStorage);
+    DM = dm_tools; VERIFY(DM);
 }
 //---------------------------------------------------------------------------
 TElTreeItem* TfrmDOShuffle::FindItem(const char* s)
@@ -179,7 +178,7 @@ void __fastcall TfrmDOShuffle::FormClose(TObject *Sender, TCloseAction &Action)
 	ClearInfo();
 
     if (ModalResult==mrOk)
-		Scene.m_DetailObjects->InvalidateCache();
+		DM->InvalidateCache();
 
 	Action = caFree;
     form = 0;
@@ -370,7 +369,7 @@ void __fastcall TfrmDOShuffle::ebSaveListClick(TObject *Sender)
 {
 	AnsiString fname;
 	if (EFS.GetSaveName(_detail_objects_,fname)){
-		Scene.m_DetailObjects->ExportColorIndices(fname.c_str());
+		DM->ExportColorIndices(fname.c_str());
     }
 }
 //---------------------------------------------------------------------------
@@ -379,8 +378,8 @@ void __fastcall TfrmDOShuffle::ebLoadListClick(TObject *Sender)
 {
 	AnsiString fname;
 	if (EFS.GetOpenName(_detail_objects_,fname)){
-        Scene.m_DetailObjects->InvalidateSlots();
-		Scene.m_DetailObjects->ImportColorIndices(fname.c_str());
+        DM->InvalidateSlots();
+		DM->ImportColorIndices(fname.c_str());
 		ClearInfo();
         GetInfo();
     }

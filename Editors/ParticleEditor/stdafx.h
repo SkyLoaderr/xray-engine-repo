@@ -77,6 +77,7 @@ __inline float expf	(float val)                           	{ return ::exp(val);}
 #include "engine\_d3d_extensions.h"
 
 #include "D3DX_Wrapper.h"
+#include "ETools.h"
 
 DEFINE_VECTOR(AnsiString,AStringVec,AStringIt);
 DEFINE_VECTOR(AnsiString*,LPAStringVec,LPAStringIt);

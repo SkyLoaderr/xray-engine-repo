@@ -132,7 +132,7 @@ void __fastcall TfrmEditLibrary::FormClose(TObject *Sender, TCloseAction &Action
 		FS_QueryPairIt _E=modif_map.end();
         for (;it!=_E;it++)
         	Lib.ReloadObject(it->first.c_str());
-        UI.SetStatus("");
+        UI.ResetStatus();
     }
     xr_delete(form->m_pEditObject);
 

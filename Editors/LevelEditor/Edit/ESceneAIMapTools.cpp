@@ -14,11 +14,10 @@
 // chunks
 #define AIMAP_VERSION  				0x0002
 //----------------------------------------------------
-#define AIMAP_CHUNK_VERSION			0x0001
+#define AIMAP_CHUNK_VERSION			0x0001       
 #define AIMAP_CHUNK_FLAGS			0x0002
 #define AIMAP_CHUNK_BOX				0x0003
 #define AIMAP_CHUNK_PARAMS			0x0004
-#define AIMAP_CHUNK_EMITTERS		0x0005
 #define AIMAP_CHUNK_NODES			0x0006
 #define AIMAP_CHUNK_SNAP_OBJECTS	0x0007
 //----------------------------------------------------
@@ -73,7 +72,7 @@ void SAINode::Load(IReader& F, ESceneAIMapTools* tools)
     F.r				(&id,3); 			n3 = (SAINode*)tools->UnpackLink(id);
     F.r				(&id,3); 			n4 = (SAINode*)tools->UnpackLink(id);
 	pl				= F.r_u16(); 		pvDecompress(Plane.n,pl);
-    F.r				(&np,sizeof(np)); 	tools->UnpackPosition(Pos,np,tools->m_BBox,tools->m_Params);
+    F.r				(&np,sizeof(np)); 	tools->UnpackPosition(Pos,np,tools->m_AIBBox,tools->m_Params);
 	Plane.build		(Pos,Plane.n);
     flags.set		(F.r_u8());
 }
@@ -89,7 +88,7 @@ void SAINode::Save(IWriter& F, ESceneAIMapTools* tools)
     id = n3?(u32)n3->idx:InvalidNode; F.w(&id,3);
     id = n4?(u32)n4->idx:InvalidNode; F.w(&id,3);
     pl = pvCompress (Plane.n);	 F.w_u16(pl);
-	tools->PackPosition	(np,Pos,tools->m_BBox,tools->m_Params); F.w(&np,sizeof(np));
+	tools->PackPosition(np,Pos,tools->m_AIBBox,tools->m_Params); F.w(&np,sizeof(np));
     F.w_u8			(flags.get());
 }
 
@@ -99,10 +98,11 @@ ESceneAIMapTools::ESceneAIMapTools()
     m_Shader	= 0;
     m_Flags.zero();
     
-    m_BBox.invalidate	();
+    m_AIBBox.invalidate	();
 //    m_Header.size_y				= m_Header.aabb.max.y-m_Header.aabb.min.y+EPS_L;
 	hash_Initialize();
     m_VisRadius	= 30;
+    m_CFModel	= 0;
 }
 //----------------------------------------------------
 
@@ -119,8 +119,15 @@ void ESceneAIMapTools::Clear(bool bOnlyNodes)
 	m_Nodes.clear		();
 	if (!bOnlyNodes){
 	    m_SnapObjects.clear	();
-    	m_Emitters.clear	();
     }
+}
+//----------------------------------------------------
+
+void ESceneAIMapTools::CalculateNodesBBox(Fbox& bb)
+{
+    bb.invalidate();
+	for (AINodeIt b_it=m_Nodes.begin(); b_it!=m_Nodes.end(); b_it++) 
+    	bb.modify((*b_it)->Pos);
 }
 //----------------------------------------------------
 
@@ -194,15 +201,11 @@ bool ESceneAIMapTools::Load(IReader& F)
     F.r				(&m_Flags,sizeof(m_Flags));
     
     R_ASSERT(F.find_chunk(AIMAP_CHUNK_BOX));
-    F.r				(&m_BBox,sizeof(m_BBox));
+    F.r				(&m_AIBBox,sizeof(m_AIBBox));
 
     R_ASSERT(F.find_chunk(AIMAP_CHUNK_PARAMS));
     F.r				(&m_Params,sizeof(m_Params));
 
-    R_ASSERT(F.find_chunk(AIMAP_CHUNK_EMITTERS));
-    m_Emitters.resize(F.r_u32());
-    F.r				(m_Emitters.begin(),m_Emitters.size()*sizeof(SAIEmitter));
-    
     R_ASSERT(F.find_chunk(AIMAP_CHUNK_NODES));
     m_Nodes.resize	(F.r_u32());
 	for (AINodeIt it=m_Nodes.begin(); it!=m_Nodes.end(); it++){
@@ -224,21 +227,16 @@ bool ESceneAIMapTools::Load(IReader& F)
     	    }
         }
     }
-    
+
+    hash_FillFromNodes		();
+
     return true;
 }
 //----------------------------------------------------
 
 void ESceneAIMapTools::OnSynchronize()
 {
-    // update bounding volume if object changed
-    Fbox bb;
-    Scene.GetBox(bb,m_SnapObjects);
-    if (!m_BBox.similar(bb)){
-    	ELog.Msg(mtError,"AIMap: Bounding volume changed. Please verify map.");
-        m_BBox.set(bb);
-    }
-    hash_FillFromNodes();
+	RealUpdateSnapList	();
 }
 //----------------------------------------------------
 
@@ -253,18 +251,13 @@ void ESceneAIMapTools::Save(IWriter& F)
 	F.close_chunk	();
 
 	F.open_chunk	(AIMAP_CHUNK_BOX);
-    F.w				(&m_BBox,sizeof(m_BBox));
+    F.w				(&m_AIBBox,sizeof(m_AIBBox));
 	F.close_chunk	();
 
 	F.open_chunk	(AIMAP_CHUNK_PARAMS);
     F.w				(&m_Params,sizeof(m_Params));
 	F.close_chunk	();
 
-	F.open_chunk	(AIMAP_CHUNK_EMITTERS);
-    F.w_u32			(m_Emitters.size());
-    F.w				(m_Emitters.begin(),m_Emitters.size()*sizeof(SAIEmitter));
-	F.close_chunk	();
-    
     EnumerateNodes	();
 	F.open_chunk	(AIMAP_CHUNK_NODES);
     F.w_u32			(m_Nodes.size());
@@ -287,19 +280,17 @@ bool ESceneAIMapTools::Valid()
 
 bool ESceneAIMapTools::IsNeedSave()
 {
-	return (!m_Nodes.empty())||(!m_SnapObjects.empty())||(!m_Emitters.empty());
+	return (!m_Nodes.empty()||!m_SnapObjects.empty());
 }
 
-void ESceneAIMapTools::RemoveFromSnapList(CCustomObject* O)
+void ESceneAIMapTools::OnObjectRemove(CCustomObject* O)
 {
-	m_SnapObjects.remove(O);
-}
-
-void ESceneAIMapTools::AddEmitter(const Fvector& pos)
-{
-	m_Emitters.push_back(SAIEmitter(pos,SAIEmitter::flSelected));
-    m_Emitters.back().flags.set(SAIEmitter::flSelected,TRUE);
-    Scene.UndoSave();
+	if (OBJCLASS_SCENEOBJECT==O->ClassID){
+    	if (find(m_SnapObjects.begin(),m_SnapObjects.end(),O)!=m_SnapObjects.end()){
+			m_SnapObjects.remove(O);
+	    	RealUpdateSnapList();
+        }
+    }
 }
 
 int ESceneAIMapTools::AddNode(const Fvector& pos, bool bIgnoreConstraints, bool bAutoLink, int sz)
@@ -366,14 +357,10 @@ int ESceneAIMapTools::SelectObjects(bool flag)
 	int count = 0;
 
     switch (Tools.GetSubTarget()){
-    case estAIMapEmitter:{
-	    for (AIEmitterIt it=m_Emitters.begin(); it!=m_Emitters.end(); it++)
-        	it->flags.set(SAIEmitter::flSelected,flag);
-		count = m_Emitters.size();
-    }break;
     case estAIMapNode:{
         for (AINodeIt it=m_Nodes.begin(); it!=m_Nodes.end(); it++)
-            (*it)->flags.set(SAINode::flSelected,flag);
+			if (!(*it)->flags.is(SAINode::flHide))
+	            (*it)->flags.set(SAINode::flSelected,flag);
 		count = m_Nodes.size();
     }break;
     }
@@ -386,18 +373,10 @@ int ESceneAIMapTools::RemoveSelection()
 {
 	int count=0;
     switch (Tools.GetSubTarget()){
-    case estAIMapEmitter:{
-	    for (int k=0; k<(int)m_Emitters.size(); k++){
-        	if (m_Emitters[k].flags.is(SAIEmitter::flSelected)){
-            	m_Emitters.erase(m_Emitters.begin()+k);
-				count++;
-                k--;
-            }
-        }
-    }break;
     case estAIMapNode:{
     	if (m_Nodes.size()==(u32)SelectionCount(true)){
-        	Clear(true);
+        	count 	= m_Nodes.size();
+        	Clear	(true);
         }else{
         	// remove link to sel nodes
 	        for (AINodeIt it=m_Nodes.begin(); it!=m_Nodes.end(); it++){
@@ -427,14 +406,10 @@ int ESceneAIMapTools::InvertSelection()
 {
 	int count=0;
     switch (Tools.GetSubTarget()){
-    case estAIMapEmitter:{
-	    for (AIEmitterIt it=m_Emitters.begin(); it!=m_Emitters.end(); it++)
-        	it->flags.invert(SAIEmitter::flSelected);
-		count = m_Emitters.size();
-    }break;
     case estAIMapNode:{
         for (AINodeIt it=m_Nodes.begin(); it!=m_Nodes.end(); it++)
-            (*it)->flags.invert(SAINode::flSelected);
+			if (!(*it)->flags.is(SAINode::flHide))
+	            (*it)->flags.invert(SAINode::flSelected);
 	    count = m_Nodes.size();
     }break;
     }
@@ -447,11 +422,6 @@ int ESceneAIMapTools::SelectionCount(bool testflag)
 {
 	int count = 0;
     switch (Tools.GetSubTarget()){
-    case estAIMapEmitter:{
-	    for (AIEmitterIt it=m_Emitters.begin(); it!=m_Emitters.end(); it++)
-            if (it->flags.is(SAIEmitter::flSelected)==testflag)
-				count++;
-    }break;
     case estAIMapNode:{
         for (AINodeIt it=m_Nodes.begin(); it!=m_Nodes.end(); it++)
             if ((*it)->flags.is(SAINode::flSelected)==testflag)
@@ -459,5 +429,28 @@ int ESceneAIMapTools::SelectionCount(bool testflag)
     }break;
     }
     return count;
+}
+
+int ESceneAIMapTools::ShowObjects(bool flag, bool bAllowSelectionFlag, bool bSelFlag)
+{
+	int count=0;
+    for (AINodeIt it=m_Nodes.begin(); it!=m_Nodes.end(); it++)
+        if (bAllowSelectionFlag){
+	        if ((*it)->flags.is(SAINode::flSelected)==bSelFlag){
+                (*it)->flags.set(SAINode::flHide,!flag);
+                if (false==flag) (*it)->flags.set(SAINode::flSelected,FALSE);
+                count++;
+            }
+        }else{
+            (*it)->flags.set(SAINode::flHide,!flag);
+            if (false==flag) (*it)->flags.set(SAINode::flSelected,FALSE);
+            count++;
+        }
+    UpdateHLSelected();
+    return count;
+}
+
+void ESceneAIMapTools::FillProp(LPCSTR pref, PropItemVec& items)
+{
 }
 

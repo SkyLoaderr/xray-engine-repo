@@ -20,6 +20,7 @@
 #include "LightAnimLibrary.h"
 
 #include "SoundManager.h"
+#include "ResourceManager.h"
 
 bool TUI::Command( int _Command, int p1, int p2 ){
 	if ((_Command!=COMMAND_INITIALIZE)&&!m_bReady) return false;
@@ -94,7 +95,7 @@ bool TUI::Command( int _Command, int p1, int p2 ){
     	Lib.EvictObjects();
     	break;
     case COMMAND_EVICT_TEXTURES:
-    	Device.Shader.Evict();
+    	Device.Resources->Evict();
     	break;
     case COMMAND_CHECK_MODIFIED:
     	bRes = Tools.IsModified();

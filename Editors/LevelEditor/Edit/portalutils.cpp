@@ -575,7 +575,7 @@ int CPortalUtils::CalculateAllPortals()
 		ELog.DlgMsg(mtError,"*ERROR: Scene has non associated face!");
     }
 
-	UI.SetStatus("...");
+	UI.ResetStatus();
     return iPCount;
 }
 
@@ -595,6 +595,6 @@ int CPortalUtils::CalculatePortals(CSector* SF, CSector* SB)
 		ELog.DlgMsg(mtError,"*ERROR: Scene has non associated face!");
     }
 
-	UI.SetStatus("...");
+	UI.ResetStatus();
     return iPCount;
 }

@@ -261,6 +261,8 @@ void __fastcall TfraLeftBar::TargetClick(TObject *Sender)
 {
     TExtBtn* btn=dynamic_cast<TExtBtn*>(Sender);    VERIFY(btn);
     UI.Command(COMMAND_CHANGE_TARGET, btn->Tag);
+    // turn off snap mode
+    ebSnapListMode->Down = false;
 }
 //---------------------------------------------------------------------------
 
@@ -490,7 +492,8 @@ void __fastcall TfraLeftBar::ebLightAnimationEditorClick(TObject *Sender)
 
 void __fastcall TfraLeftBar::ebClearSnapClick(TObject *Sender)
 {
-	UI.Command(COMMAND_CLEAR_SNAP_OBJECTS);
+	if (ELog.DlgMsg(mtConfirmation,TMsgDlgButtons() << mbYes << mbNo,"Are you sure to clear snap objects?")==mrYes)
+		UI.Command(COMMAND_CLEAR_SNAP_OBJECTS);
 }
 //---------------------------------------------------------------------------
 
@@ -501,17 +504,30 @@ void __fastcall TfraLeftBar::ebSetSnapClick(TObject *Sender)
 //---------------------------------------------------------------------------
 void __fastcall TfraLeftBar::miAddSelectedToListClick(TObject *Sender)
 {
-	UI.Command(COMMAND_ADD_SNAP_OBJECTS);
+	UI.Command(COMMAND_ADD_SEL_SNAP_OBJECTS);
+}
+//---------------------------------------------------------------------------
+
+void __fastcall TfraLeftBar::SelectObjectFromList1Click(TObject *Sender)
+{
+	UI.Command(COMMAND_SELECT_SNAP_OBJECTS);
+}
+//---------------------------------------------------------------------------
+
+void __fastcall TfraLeftBar::RemoveSelectedFromList1Click(TObject *Sender)
+{
+	UI.Command(COMMAND_DEL_SEL_SNAP_OBJECTS);
 }
 //---------------------------------------------------------------------------
 
 void __fastcall TfraLeftBar::UpdateSnapList()
 {
 	lbSnapList->Items->Clear();
-    if (!Scene.m_SnapObjects.empty()){
+    ObjectList* lst = Scene.GetSnapList(true);
+    if (lst&&!lst->empty()){
     	int idx=0;
-        ObjectIt _F=Scene.m_SnapObjects.begin();
-    	for (;_F!=Scene.m_SnapObjects.end(); _F++,idx++){
+        ObjectIt _F=lst->begin();
+    	for (;_F!=lst->end(); _F++,idx++){
         	AnsiString s; s.sprintf("%d: %s",idx,(*_F)->Name);
         	lbSnapList->Items->Add(s);
         }
@@ -525,7 +541,7 @@ void __fastcall TfraLeftBar::ExtBtn1MouseDown(TObject *Sender,
 }
 //---------------------------------------------------------------------------
 
-void __fastcall TfraLeftBar::ebEnableSnapListClick(TObject *Sender)
+void __fastcall TfraLeftBar::ebUseSnapListClick(TObject *Sender)
 {
 	UI.RedrawScene();
 }
@@ -586,4 +602,13 @@ void __fastcall TfraLeftBar::miClearErrorListClick(TObject *Sender)
 //---------------------------------------------------------------------------
 
 
+void __fastcall TfraLeftBar::ebSnapListModeClick(TObject *Sender)
+{
+    TExtBtn* E = dynamic_cast<TExtBtn*>(Sender); VERIFY(E);
+	if (E->Down&&(eaSelect!=Tools.GetAction())){
+    	ELog.Msg(mtError,"Before modify snap list activate select mode!");
+        E->Down = false;
+    }
+}
+//---------------------------------------------------------------------------
 

@@ -12,7 +12,7 @@ object fraDetailObject: TfraDetailObject
   TabOrder = 0
   object paSelect: TPanel
     Left = 0
-    Top = 161
+    Top = 140
     Width = 123
     Height = 34
     Align = alTop
@@ -76,7 +76,7 @@ object fraDetailObject: TfraDetailObject
     Left = 0
     Top = 0
     Width = 123
-    Height = 161
+    Height = 140
     Align = alTop
     Constraints.MaxWidth = 123
     Constraints.MinWidth = 123
@@ -175,19 +175,6 @@ object fraDetailObject: TfraDetailObject
       ParentFont = False
       OnClick = ebUpdateObjectsClick
     end
-    object Label2: TLabel
-      Left = 16
-      Top = 122
-      Width = 38
-      Height = 13
-      Caption = 'Density:'
-    end
-    object Bevel2: TBevel
-      Left = 1
-      Top = 117
-      Width = 121
-      Height = 2
-    end
     object ebResetSlots: TExtBtn
       Left = 2
       Top = 87
@@ -265,7 +252,7 @@ object fraDetailObject: TfraDetailObject
     end
     object ExtBtn5: TExtBtn
       Left = 1
-      Top = 144
+      Top = 122
       Width = 119
       Height = 15
       Align = alNone
@@ -286,34 +273,15 @@ object fraDetailObject: TfraDetailObject
     end
     object Bevel1: TBevel
       Left = 1
-      Top = 140
+      Top = 118
       Width = 121
       Height = 2
-    end
-    object seDensity: TMultiObjSpinEdit
-      Left = 56
-      Top = 120
-      Width = 65
-      Height = 19
-      LWSensitivity = 0.01
-      ButtonKind = bkLightWave
-      Increment = 0.01
-      MaxValue = 0.5
-      MinValue = 0.01
-      ValueType = vtFloat
-      Value = 0.02
-      AutoSize = False
-      Color = 10526880
-      TabOrder = 0
-      OnLWChange = seDensityLWChange
-      OnExit = seDensityExit
-      OnKeyDown = seDensityKeyDown
     end
   end
   object fsStorage: TFormStorage
     IniSection = 'FrameDO'
     Options = []
-    Version = 11
+    Version = 12
     StoredProps.Strings = (
       'paSelect.Height'
       'paSelect.Tag'

@@ -7,7 +7,7 @@
 //----------------------------------------------------
 
 struct SPrimitiveBuffer{
-    SGeometry*				pGeom;
+    ref_geom				pGeom;
     u32						v_cnt;
     u32						i_cnt;
     D3DPRIMITIVETYPE 		p_type;
@@ -41,14 +41,14 @@ public:
         }else{
             OnRender		= RenderDP;
         }
-        pGeom				= Device.Shader.CreateGeom(FVF,pVB,pIB);
+        pGeom.create		(FVF,pVB,pIB);
     }
     void					Destroy()
     {                       
     	if (pGeom){
 	        _RELEASE		(pGeom->vb);
     	    _RELEASE		(pGeom->ib);
-        	Device.Shader.DeleteGeom(pGeom);
+        	pGeom.destroy	();
         }
     }
     void					Render(){OnRender();}
@@ -64,9 +64,9 @@ class CDrawUtilities{
     SPrimitiveBuffer		m_SolidBox;
     SPrimitiveBuffer		m_WireBox;
 public:
-	SGeometry* 	vs_L;
-	SGeometry* 	vs_TL;
-	SGeometry* 	vs_LIT;
+	ref_geom 	vs_L;
+	ref_geom 	vs_TL;
+	ref_geom 	vs_LIT;
 public:
 	CDrawUtilities()
     {
@@ -84,7 +84,7 @@ public:
 
     //----------------------------------------------------
     void DrawCross(const Fvector& p, float szx1, float szy1, float szz1, float szx2, float szy2, float szz2, u32 clr, bool bRot45=false);
-    void DrawEntity(u32 clr, Shader* s);
+    void DrawEntity(u32 clr, ref_shader s);
     void DrawFlag(const Fvector& p, float heading, float height, float sz, float sz_fl, u32 clr, bool bDrawEntity);
     void DrawRomboid(const Fvector& p, float radius, u32 clr);
     void DrawJoint(const Fvector& p, float radius, u32 clr);

@@ -49,7 +49,7 @@ void CCustom2DProjector::CreateRMFromObjects(const Fbox& box, ObjectList& lst)
             }
         }
     }
-	geom	= Device.Shader.CreateGeom(FVF::F_V,RCache.Vertex.Buffer(),0);
+	geom.create(FVF::F_V,RCache.Vertex.Buffer(),0);
 }
 
 void CCustom2DProjector::Render()
@@ -80,15 +80,15 @@ void CCustom2DProjector::CreateShader()
 {
 	DestroyShader		();
 	if (Valid()){
-		shader_blended 	= Device.Shader.Create("editor\\do_base",name);
-		shader_overlap 	= Device.Shader.Create("default",name);
-		geom			= Device.Shader.CreateGeom(FVF::F_V,RCache.Vertex.Buffer(),0);
+		shader_blended.create	("editor\\do_base",name);
+		shader_overlap.create	("default",name);
+		geom.create				(FVF::F_V,RCache.Vertex.Buffer(),0);
 	}
 }
 
 void CCustom2DProjector::DestroyShader()
 {
-	Device.Shader.DeleteGeom(geom);
-	Device.Shader.Delete	(shader_blended);
-	Device.Shader.Delete	(shader_overlap);
+	geom.destroy();
+	shader_blended.destroy();
+	shader_overlap.destroy();
 }

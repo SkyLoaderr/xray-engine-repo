@@ -8,6 +8,7 @@
 #include "GroupObject.h"
 #include "Scene.h"
 #include "d3dutils.h"
+#include "PropertiesListHelper.h"
 //----------------------------------------------------
 //------------------------------------------------------------------------------
 // !!! при разворачивании груп использовать prefix если нужно имя !!!
@@ -334,6 +335,15 @@ bool CGroupObject::ExportGame(SExportStreams& data)
 	for (ObjectIt it=m_Objects.begin(); it!=m_Objects.end(); it++)
     	(*it)->ExportGame(data);
 	return true;
+}
+//----------------------------------------------------
+
+void CGroupObject::FillProp(LPCSTR pref, PropItemVec& items)
+{
+	inherited::FillProp(pref, items);
+
+	for (ObjectIt it=m_Objects.begin(); it!=m_Objects.end(); it++)
+	    PHelper.CreateCaption	(items,	FHelper.PrepareKey(pref,AnsiString().sprintf("%s: objects",Name).c_str(),GetClassNameByClassID((*it)->ClassID),(*it)->Name), "");
 }
 //----------------------------------------------------
 

@@ -12,25 +12,54 @@ class CSceneObject;
 class TUI_CustomTools;
 
 #ifdef _EDITOR
-	struct SPickQuery{
+	class SPickQuery{
+    	Flags32				m_Flags;
+    public:
         Fvector				m_Start;
         Fvector				m_Direction;
         float				m_Dist;
         Fbox 				m_BB; 
-    	Flags32				m_Flags;
-    	struct SResult{
-        	Fvector			verts[3];
+    public:
+    	class SResult{
+        	Fvector			_verts[3];      
+		public:            
+        	Fvector*		verts[3];
             float			range;
-            SResult			(const Fmatrix& parent, CDB::TRI& t, float r){
-                parent.transform_tiny(verts[0],*t.verts[0]);
-                parent.transform_tiny(verts[1],*t.verts[1]);
-                parent.transform_tiny(verts[2],*t.verts[2]);
+            SResult			(const SResult& F)
+            {
+            	if (F.verts[0]==&F._verts[0]){
+	            	verts[0]	=&_verts[0];
+    	            verts[1]	=&_verts[1];
+        	        verts[2]	=&_verts[2];
+                    _verts[0]	= F._verts[0];
+                    _verts[1]	= F._verts[1];
+                    _verts[2]	= F._verts[2];
+                }else{
+	            	verts[0]	=F.verts[0];
+    	            verts[1]	=F.verts[1];
+        	        verts[2]	=F.verts[2];
+                }
+                range		= F.range;
+            }
+            SResult			(const Fmatrix& parent, CDB::TRI& t, float r)
+            {
+                parent.transform_tiny(_verts[0],*t.verts[0]); verts[0]	=&_verts[0];
+                parent.transform_tiny(_verts[1],*t.verts[1]); verts[1]	=&_verts[1];
+                parent.transform_tiny(_verts[2],*t.verts[2]); verts[2]	=&_verts[2];
+                range		= r;
+            }
+            SResult			(CDB::TRI* t, float r)
+            { 
+                verts[0]	= t->verts[0];
+                verts[1]	= t->verts[1];
+                verts[2]	= t->verts[2];
                 range		= r;
             }
         };
 		DEFINE_VECTOR(SResult,ResultVec,ResultIt);
-    public:
+    protected:
     	ResultVec			results;
+    public:
         IC void	prepare_rq	(const Fvector& start, const Fvector& dir, float dist, u32 flags)
         {
             m_Start.set		(start);
@@ -45,10 +74,19 @@ class TUI_CustomTools;
             m_Flags.set		(flags);
         	results.clear	();
         }
-		IC void append		(const Fmatrix& parent, CDB::MODEL* M, CDB::RESULT* R)
+		IC void append_mtx	(const Fmatrix& parent, CDB::MODEL* M, CDB::RESULT* R)
         {
         	CDB::TRI* T		= M->get_tris()+R->id;
             SResult	D		(parent, *T, R->range);
+            if (m_Flags.is(CDB::OPT_ONLYNEAREST)&&!results.empty()){
+	            SResult& S	= results.back();
+                if (D.range<S.range) S = D;
+            }else			results.push_back	(D);
+        }
+		IC void append		(CDB::MODEL* M, CDB::RESULT* R)
+        {
+        	CDB::TRI* T		= M->get_tris()+R->id;
+            SResult	D		(T, R->range);
             if (m_Flags.is(CDB::OPT_ONLYNEAREST)&&!results.empty()){
 	            SResult& S	= results.back();
                 if (D.range<S.range) S = D;

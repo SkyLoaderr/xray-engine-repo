@@ -15,7 +15,7 @@ class CWayPoint{
     friend class CWayObject;
     friend class TfrmPropertiesWayPoint;
     Fvector		m_vPosition;
-    DWORD		m_dwFlags;
+    Flags32		m_Flags;
     BOOL		m_bSelected;
     WPVec		m_Links;
     void		AppendLink		(CWayPoint* P);
@@ -81,6 +81,10 @@ public:
     virtual bool	ExportGame		(SExportStreams& data);
 
     static bool		IsPointMode		();
+
+	virtual void	FillProp		(LPCSTR pref, PropItemVec& items);
+
+    virtual bool 	OnSelectionRemove();
 };
 #endif /*_INCDEF_WayPoint_H_*/
 

@@ -352,6 +352,13 @@ void TUI::ShowObjectHint(){
     if (!ShowHint(SS)&&m_pHintWindow) HideHint();
 }
 //---------------------------------------------------------------------------
+void TUI::ResetStatus()
+{
+	VERIFY(m_bReady);
+    if (fraBottomBar->paStatus->Caption!=""){
+	    fraBottomBar->paStatus->Caption=""; fraBottomBar->paStatus->Repaint();
+    }
+}
 void TUI::SetStatus(LPSTR s, bool bOutLog)
 {
 	VERIFY(m_bReady);

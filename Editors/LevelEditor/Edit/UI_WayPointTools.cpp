@@ -27,10 +27,11 @@ void TUI_WayPointTools::OnDeactivate(){
 __fastcall TUI_ControlWayPointAdd::TUI_ControlWayPointAdd(int st, int act, TUI_CustomTools* parent):TUI_CustomControl(st,act,parent){
 }
 
-bool __fastcall TUI_ControlWayPointAdd::Start(TShiftState Shift){
+bool __fastcall TUI_ControlWayPointAdd::Start(TShiftState Shift)
+{
 	ObjectList lst; Scene.GetQueryObjects(lst,OBJCLASS_WAY,1,1,-1);
 	TfraWayPoint* frame=(TfraWayPoint*)parent_tool->pFrame;
-	if (frame->ebPointMode->Down){
+	if (CWayObject::IsPointMode()){
     	if (1!=lst.size()){
         	ELog.DlgMsg(mtInformation,"Select one WayObject.");
             return false;
@@ -41,7 +42,7 @@ bool __fastcall TUI_ControlWayPointAdd::Start(TShiftState Shift){
 	        CWayPoint* last_wp=obj->GetFirstSelected();
 	        CWayPoint* wp=obj->AppendWayPoint();
     	    wp->MoveTo(p);
-			if (((TfraWayPoint*)parent_tool->pFrame)->ebAutoLink->Down){
+			if (frame->ebAutoLink->Down){
 	        	if (last_wp) last_wp->AddSingleLink(wp);
             }
             Scene.UndoSave();

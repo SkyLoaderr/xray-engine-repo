@@ -109,6 +109,8 @@ LPSTR GetClassNameByClassID(EObjClass cls_id)
     case OBJCLASS_SECTOR: 		return "Sector";
     case OBJCLASS_PORTAL: 		return "Portal";
     case OBJCLASS_PS:			return "Particle System";
+    case OBJCLASS_DO:			return "Detail Objects";
+    case OBJCLASS_AIMAP:		return "AI Map";
     default: THROW2("Gen empty name"); return 0;
     }
 }
@@ -147,7 +149,7 @@ EObjClass ClassIDFromTargetID( int cls_id ){
     case etPS:			return OBJCLASS_PS;
 	case etDO: 			return OBJCLASS_DO;
     case etAIMap:		return OBJCLASS_AIMAP;
-    default: throw -1;
+    default: return OBJCLASS_DUMMY;
 	}
 }
 bool IsObjectListClassID(EObjClass cls_id){

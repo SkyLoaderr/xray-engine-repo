@@ -59,7 +59,6 @@ BOOL SceneBuilder::Compile()
             VERIFY_COMPILE(BuildLTX(),					"Failed to build level description.");
             VERIFY_COMPILE(BuildGame(),					"Failed to build game.");
             VERIFY_COMPILE(BuildSkyModel(),				"Failed to build sky model.");
-            VERIFY_COMPILE(WriteTextures(),				"Failed to write textures."); 				// only implicit lighted
             BuildHOMModel();
 			BuildAIMap();
         } while(0);
@@ -146,7 +145,7 @@ BOOL SceneBuilder::MakeDetails()
 		VERIFY_COMPILE(PreparePath(),				"Failed to prepare level path.");
         AnsiString fn			= m_LevelPath+"level.details";
         // save details
-		VERIFY_COMPILE(Scene.m_DetailObjects->Export(fn.c_str()), "Export failed.");
+		VERIFY_COMPILE(Scene.GetMTools(OBJCLASS_DO)->Export(fn.c_str()), "Export failed.");
     }while(0);
     if (!error_text.IsEmpty()) 	ELog.DlgMsg(mtError,error_text.c_str());
     else if (UI.NeedAbort())	ELog.DlgMsg(mtInformation,"Building terminated.");

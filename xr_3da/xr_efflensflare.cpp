@@ -1,7 +1,6 @@
 #include "stdafx.h"
 #pragma hdrstop
 
-#include "xr_object.h"
 #include "xr_efflensflare.h"
 
 #ifdef _LEVEL_EDITOR
@@ -9,6 +8,7 @@
 	#include "scene.h"
 	#include "ui_main.h"
 #else
+	#include "xr_object.h"
 	#include "igame_level.h"
 	#include "Environment.h"
 #endif

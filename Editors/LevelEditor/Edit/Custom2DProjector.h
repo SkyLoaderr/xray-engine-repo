@@ -4,15 +4,15 @@
 
 class CCustom2DProjector{
 protected:
-    Shader*			shader_blended;
-    Shader*			shader_overlap;
+    ref_shader		shader_blended;
+    ref_shader		shader_overlap;
     string128		name;
     u32 			w;
     u32 			h;
     U32Vec			data;
     DEFINE_VECTOR	(FVF::V,TVertVec,TVertIt);
     TVertVec		mesh;
-    SGeometry*		geom;
+    ref_geom		geom;
 public:
                     CCustom2DProjector	();
     IC bool			Valid				(){return (w>0)&&(h>0)&&(!!data.size());}

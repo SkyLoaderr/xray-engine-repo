@@ -38,35 +38,26 @@ static t_node_tc node_tc[16]=
 
 void ESceneAIMapTools::OnDeviceCreate()
 {
-	m_Shader	= Device.Shader.Create("editor\\ai_node","ed\\ed_ai_arrows_01");
-    m_RGeom = Device.Shader.CreateGeom(FVF::F_LIT,RCache.Vertex.Buffer(),RCache.Index.Buffer());        
+	m_Shader.create("editor\\ai_node","ed\\ed_ai_arrows_01");
+    m_RGeom.create(FVF::F_LIT,RCache.Vertex.Buffer(),RCache.Index.Buffer());        
 }
 
 void ESceneAIMapTools::OnDeviceDestroy()
 {
-	Device.Shader.Delete(m_Shader);
-    Device.Shader.DeleteGeom(m_RGeom);
+	m_Shader.destroy();
+    m_RGeom.destroy();
 }
 
-static const u32 block_size = 2000;
+static const u32 block_size = 0x2000;
 void ESceneAIMapTools::OnRender(int priority, bool strictB2F)
 {
-	if (OBJCLASS_AIMAP!=Tools.CurrentClassID()) return;
     if (1==priority){
         if (false==strictB2F){
-            // render emitters
-            Device.SetShader	(Device.m_WireShader);
             RCache.set_xform_world(Fidentity);
-            for (AIEmitterIt it=m_Emitters.begin(); it!=m_Emitters.end(); it++){
-                if (Render->ViewBase.testSphere_dirty(it->pos,1.f)){
-                    DU.DrawFlag(it->pos, 0, 1.f, 0.5f, 0.25f, 0xffff0000, false);
-                    if (it->flags.is(SAIEmitter::flSelected)){
-                        Fbox bb; bb.set(it->pos.x-0.5f,it->pos.y,it->pos.z-0.5f, it->pos.x+0.5f,it->pos.y+1.f,it->pos.z+0.5f);
-                        u32 clr = 0xFFFFFFFF;
-                        Device.SetShader(Device.m_WireShader);
-                        DU.DrawSelectionBox(bb,&clr);
-                    }
-                }
+			if (OBJCLASS_AIMAP==Tools.CurrentClassID()){
+	            u32 clr = 0xffffc000;
+	            Device.SetShader	(Device.m_WireShader);
+    	        DU.DrawSelectionBox	(m_AIBBox,&clr);
             }
             if (Valid()){
                 // render nodes
@@ -79,16 +70,15 @@ void ESceneAIMapTools::OnRender(int priority, bool strictB2F)
                 _VertexStream* Stream= &RCache.Vertex;
                 FVF::LIT* pv		= (FVF::LIT*)Stream->Lock(block_size,m_RGeom->vb_stride,vBase);
                 u32	cnt				= 0;
-                Device.Statistic.TEST0.Begin();
-                Device.Statistic.TEST1.Begin();
-                Device.Statistic.TEST1.End();
-                Device.Statistic.TEST2.Begin();
+//				Device.Statistic.TEST0.Begin();
+//				Device.Statistic.TEST2.Begin();
                 for (int x=rect.x1; x<=rect.x2; x++){
                     for (int z=rect.y1; z<=rect.y2; z++){
                         AINodeVec* nodes	= HashMap(x,z);
                         if (nodes){
                             for (AINodeIt it=nodes->begin(); it!=nodes->end(); it++){
                                 SAINode& N = **it;
+                                if (N.flags.is(SAINode::flHide)) continue;
                                 if (Render->ViewBase.testSphere_dirty(N.Pos,m_Params.fPatchSize)){
                                     u32 clr;
                                     if (N.flags.is(SAINode::flSelected))clr = 0xffffffff;
@@ -125,18 +115,18 @@ void ESceneAIMapTools::OnRender(int priority, bool strictB2F)
                         }
                     }
                 }
-                Device.Statistic.TEST2.End();
-                Device.Statistic.TEST0.End();
+//                Device.Statistic.TEST2.End();
+//                Device.Statistic.TEST0.End();
 				Stream->Unlock		(cnt,m_RGeom->vb_stride);
                 if (cnt) Device.DP	(D3DPT_TRIANGLELIST,m_RGeom,vBase,cnt/3);
                 Device.SetRS		(D3DRS_CULLMODE,		D3DCULL_CCW);
             }
         }else{
-            // render snap
+/*            // render snap
             if (m_Flags.is(flDrawSnapObjects))
                 for(ObjectIt _F=m_SnapObjects.begin();_F!=m_SnapObjects.end();_F++) 
                     if((*_F)->Visible()) ((CSceneObject*)(*_F))->RenderSelection(0x4046B646);
-        }
+*/        }
     }
 }
 //----------------------------------------------------

@@ -114,8 +114,8 @@ void EDetailManager::FindClosestIndex(const Fcolor& C, SIndexDistVec& best){
 
 bool EDetailManager::Initialize(LPCSTR tex_name)
 {
-	if (!fraLeftBar->ebEnableSnapList->Down||Scene.m_SnapObjects.empty()){
-    	ELog.DlgMsg(mtError,"Fill snap list and activate before generating slots!");
+	if (m_SnapObjects.empty()){
+    	ELog.DlgMsg(mtError,"Fill snap list before generating slots!");
     	return false;
     }
 
@@ -123,9 +123,6 @@ bool EDetailManager::Initialize(LPCSTR tex_name)
     	ELog.DlgMsg(mtError,"Fill object list before generating slots!");
     	return false;
     }
-
-    m_SnapObjects.clear();
-    m_SnapObjects = Scene.m_SnapObjects;
 
     if (!UpdateHeader())                return false;
 	if (!UpdateBaseTexture(tex_name))	return false;

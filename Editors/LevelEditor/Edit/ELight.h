@@ -81,7 +81,7 @@ public:
         }
         void		Load(IReader& F)
         {
-        	m_ShapeType		= F.r_u8();
+        	m_ShapeType		= (EShapeType)F.r_u8();
         	m_SphereRadius	= F.r_float();
             F.r_fvector3	(m_BoxDimension);
             m_PointCount	= F.r_s16();
@@ -108,6 +108,10 @@ public:
     void __fastcall	OnFuzzyGenerateClick(PropValue* value, bool& bModif);
     void __fastcall	OnAutoClick		(PropValue* value, bool& bModif);
     void __fastcall	OnNeedUpdate	(PropValue* value);
+
+    void __fastcall	OnPointDataChange(PropValue* value);
+    void __fastcall OnAttenuationDraw(PropValue* sender, TCanvas* canvas, const TRect& rect);
+    bool __fastcall	OnPointDataTestEqual(PropValue* a, PropValue* b);
 protected:
     virtual Fvector& GetPosition	()						{ return m_D3D.position; 	}
     virtual void 	SetPosition		(const Fvector& pos)	{ m_D3D.position.set(pos);	UpdateTransform();}

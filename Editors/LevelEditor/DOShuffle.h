@@ -23,6 +23,7 @@
 // refs
 class TfrmOneColor;
 class EImageThumbnail;
+class EDetailManager;
 
 class TfrmDOShuffle : public TForm
 {
@@ -89,6 +90,7 @@ private:	// User declarations
     TElTreeItem* FDragItem;
 
     EImageThumbnail* m_Thm;
+	EDetailManager* DM;
 
     xr_vector<TfrmOneColor*> color_indices;
 
@@ -103,7 +105,7 @@ private:	// User declarations
     bool bColorIndModif;
     void ModifColorInd(){bColorIndModif=true;}
 public:		// User declarations
-    __fastcall TfrmDOShuffle(TComponent* Owner);
+    __fastcall TfrmDOShuffle(TComponent* Owner, EDetailManager* dm_tools);
 // static function
     static bool __fastcall Run ();
     static bool __fastcall Visible(){return !!form;}

@@ -7,8 +7,10 @@
 #include "ui_main.h"
 #include "ui_tools.h"
 #include "cl_intersect.h"
-#include "motion_simulator.h"
 #include "MgcAppr3DPlaneFit.h"
+#include "sceneobject.h"
+#include "EditObject.h"
+#include "EditMesh.h"
 
 static SPickQuery	PQ;
 
@@ -18,15 +20,16 @@ IC void SnapXZ	(Fvector&	V, float ps)
 	V.z = snapto(V.z,ps);
 }
 struct tri	{
-	Fvector v[3];
+	Fvector* v[3];
 	Fvector	N;
 };
 
 const int	RCAST_MaxTris	= (2*1024);
-const int	RCAST_Count		= 6;
+const int	RCAST_Count		= 4;
 const int	RCAST_Total		= (2*RCAST_Count+1)*(2*RCAST_Count+1);
 const float	RCAST_Depth		= 1.f;
 const float RCAST_VALID 	= 0.55f;
+
 BOOL ESceneAIMapTools::CreateNode(Fvector& vAt, SAINode& N, bool bIC)
 {
 	// *** Query and cache polygons for ray-casting
@@ -36,7 +39,8 @@ BOOL ESceneAIMapTools::CreateNode(Fvector& vAt, SAINode& N, bool bIC)
 	Fbox	BB;				BB.set	(PointUp,PointUp);		BB.grow(m_Params.fPatchSize/2);	// box 1
 	Fbox	B2;				B2.set	(PointDown,PointDown);	B2.grow(m_Params.fPatchSize/2);	// box 2
 	BB.merge				(B2);   
-	Scene.BoxQuery			(PQ,BB,CDB::OPT_FULL_TEST,&m_SnapObjects);
+    if (m_CFModel)	Scene.BoxQuery(PQ,BB,CDB::OPT_FULL_TEST,m_CFModel);
+    else			Scene.BoxQuery(PQ,BB,CDB::OPT_FULL_TEST,&GetSnapList());
 	DWORD	dwCount 		= PQ.r_count();
 	if (dwCount==0){
 //		Log("chasm1");
@@ -49,12 +53,12 @@ BOOL ESceneAIMapTools::CreateNode(Fvector& vAt, SAINode& N, bool bIC)
 	for (DWORD i=0; i<dwCount; i++)
 	{
 		tri&		D = tris.last();
-		Fvector*	V = (PQ.r_begin()+i)->verts;
+		Fvector**	V = (PQ.r_begin()+i)->verts;   
 
-		D.v[0].set	(V[0]);
-		D.v[1].set	(V[1]);
-		D.v[2].set	(V[2]);
-		D.N.mknormal(D.v[0],D.v[1],D.v[2]);
+		D.v[0]		= V[0];
+		D.v[1]		= V[1];
+		D.v[2]		= V[2];
+		D.N.mknormal(*D.v[0],*D.v[1],*D.v[2]);
 		if (D.N.y<=0)	continue;
 
 		tris.inc	();
@@ -72,7 +76,7 @@ BOOL ESceneAIMapTools::CreateNode(Fvector& vAt, SAINode& N, bool bIC)
 
 	for (int x=-RCAST_Count; x<=RCAST_Count; x++) 
 	{
-		P.x = vAt.x + coeff*float(x);
+		P.x = vAt.x + coeff*float(x); 
 		for (int z=-RCAST_Count; z<=RCAST_Count; z++) {
 			P.z = vAt.z + coeff*float(z);
 			P.y = vAt.y + 10.f;
@@ -82,7 +86,7 @@ BOOL ESceneAIMapTools::CreateNode(Fvector& vAt, SAINode& N, bool bIC)
 			float	range,u,v;
 			for (i=0; i<DWORD(tris.size()); i++) 
 			{
-				if (CDB::TestRayTri(P,D,tris[i].v,u,v,range,false)) 
+				if (ETOOLS::TestRayTriA(P,D,tris[i].v,u,v,range,false)) 
 				{
 					if (range<tri_min_range) {
 						tri_min_range	= range;
@@ -183,7 +187,7 @@ BOOL ESceneAIMapTools::CreateNode(Fvector& vAt, SAINode& N, bool bIC)
 				int		tri_selected	= -1;
 				float	range,u,v;
 				for (i=0; i<tris.size(); i++){
-					if (CDB::TestRayTri(P,D,tris[i].v,u,v,range,false)){
+					if (ETOOLS::TestRayTriA(P,D,tris[i].v,u,v,range,false)){
 						if (range<tri_min_range){
 							tri_min_range	= range;
 							tri_selected	= i;
@@ -240,7 +244,7 @@ void ESceneAIMapTools::HashRect(const Fvector& v, float radius, Irect& result)
 {
 	Fvector				VMmin,	VMscale, VMeps, scale;
 
-	Fbox&				bb = m_BBox;
+	Fbox&				bb = m_AIBBox;
 	VMscale.set			(bb.max.x-bb.min.x, bb.max.y-bb.min.y, bb.max.z-bb.min.z);
 	VMmin.set			(bb.min);
 	VMeps.set			(float(VMscale.x/HDIM_X/2.f),float(0),float(VMscale.z/HDIM_Z/2.f));
@@ -267,7 +271,7 @@ AINodeVec* ESceneAIMapTools::HashMap(Fvector& V)
 	// Calculate offset,scale,epsilon
 	Fvector				VMmin,	VMscale, VMeps, scale;
 
-	Fbox&				bb = m_BBox;
+	Fbox&				bb = m_AIBBox;
 	VMscale.set			(bb.max.x-bb.min.x, bb.max.y-bb.min.y, bb.max.z-bb.min.z);
 	VMmin.set			(bb.min);
 	VMeps.set			(float(VMscale.x/HDIM_X/2.f),float(0),float(VMscale.z/HDIM_Z/2.f));
@@ -305,12 +309,12 @@ BOOL ESceneAIMapTools::CanTravel(Fvector _from, Fvector _at)
 	Fvector Result; float radius = m_Params.fPatchSize/_sqrt(2.f);
 
 	// 1
-	msimulator_Simulate(Result,_from,_at,radius,0.7f,&m_SnapObjects);
+	MotionSimulate(Result,_from,_at,radius,0.7f);
 	BOOL b1 = fsimilar(Result.x,_at.x,eps)&&fsimilar(Result.z,_at.z,eps)&&fsimilar(Result.y,_at.y,eps_y);
 	if (b1) return TRUE;
 
 	// 2
-	msimulator_Simulate(Result,_from,_at,radius,2.f,&m_SnapObjects);
+	MotionSimulate(Result,_from,_at,radius,2.f);
 	BOOL b2 = fsimilar(Result.x,_at.x,eps)&&fsimilar(Result.z,_at.z,eps)&&fsimilar(Result.y,_at.y,eps_y);
 	if (b2) return TRUE;
 
@@ -319,6 +323,7 @@ BOOL ESceneAIMapTools::CanTravel(Fvector _from, Fvector _at)
 
 SAINode* ESceneAIMapTools::BuildNode(Fvector& vFrom, Fvector& vAt, bool bIC, bool bSuperIC)	// return node's index
 {
+	if (m_Flags.is(flUpdateSnapList)) RealUpdateSnapList();
 	// *** Test if we can travel this path
 	SnapXZ			(vAt,m_Params.fPatchSize);
 
@@ -361,8 +366,11 @@ int ESceneAIMapTools::BuildNodes(const Fvector& pos, int sz, bool bIC)
     SnapXZ			(Pos,m_Params.fPatchSize);
     Pos.y			+= 1;
     Fvector			Dir; Dir.set(0,-1,0);
-		
-    if (Scene.RayQuery(PQ,Pos,Dir,3,CDB::OPT_ONLYNEAREST|CDB::OPT_CULL,&m_SnapObjects)==0) {
+
+	int cnt			= 0;		
+    if (m_CFModel)	cnt=Scene.RayQuery(PQ,Pos,Dir,3,CDB::OPT_ONLYNEAREST|CDB::OPT_CULL,m_CFModel);
+    else			cnt=Scene.RayQuery(PQ,Pos,Dir,3,CDB::OPT_ONLYNEAREST|CDB::OPT_CULL,&GetSnapList());
+    if (0==cnt) {
         ELog.Msg	(mtInformation,"Can't align position.");
         return		0;
     } else {
@@ -435,75 +443,53 @@ void ESceneAIMapTools::BuildNodes()
 	// Initialize hash
 //	hash_Initialize ();
 
-	for (DWORD em=0; em<m_Emitters.size(); em++) 
-	{
-		// Align emitter
-		Fvector			Pos = m_Emitters[em].pos;
-		SnapXZ			(Pos,m_Params.fPatchSize);
-		Pos.y			+=1;
-		Fvector			Dir; Dir.set(0,-1,0);
-		
-		if (Scene.RayQuery(PQ,Pos,Dir,3,CDB::OPT_ONLYNEAREST|CDB::OPT_CULL,&m_SnapObjects)==0) {
-            ELog.Msg	(mtInformation,"Can't align position.");
-            continue;
-		} else {
-			Pos.y = Pos.y - PQ.r_begin()->range;
-		}
-		
-		// Build first node
-		int oldcount 	= m_Nodes.size();
-		SAINode* start 	= BuildNode(Pos,Pos,false);
-		if (!start)							continue;
-		if ((0==oldcount)&&(int(m_Nodes.size())<=oldcount))	continue;
-	}
-    if (!m_Nodes.empty()){
-		// Estimate nodes
-		Fvector	Pos,LevelSize;
-		m_BBox.getsize	(LevelSize);
-		float estimated_nodes	= (LevelSize.x/m_Params.fPatchSize)*(LevelSize.z/m_Params.fPatchSize);
+    R_ASSERT(!m_Nodes.empty());
+    // Estimate nodes
+    Fvector	Pos,LevelSize;
+    m_AIBBox.getsize	(LevelSize);
+    float estimated_nodes	= (LevelSize.x/m_Params.fPatchSize)*(LevelSize.z/m_Params.fPatchSize);
 
-		UI.ProgressStart		(1, "Building nodes...");
-		// General cycle
-    	for (int k=0; k<(int)m_Nodes.size(); k++){
-	        SAINode* N 			= m_Nodes[k];
-			// left 
-			if (0==N->n1){
-				Pos.set			(N->Pos);
-				Pos.x			-=	m_Params.fPatchSize;
-				N->n1			=	BuildNode(N->Pos,Pos,false);
-			}
-			// fwd
-			if (0==N->n2){
-				Pos.set			(N->Pos);
-				Pos.z			+=	m_Params.fPatchSize;
-				N->n2			=	BuildNode(N->Pos,Pos,false);
-			}
-			// right
-			if (0==N->n3){
-				Pos.set			(N->Pos);
-				Pos.x			+=	m_Params.fPatchSize;
-				N->n3			=	BuildNode(N->Pos,Pos,false);
-			}
-			// back
-			if (0==N->n4){
-				Pos.set			(N->Pos);
-				Pos.z			-=	m_Params.fPatchSize;
-				N->n4			=	BuildNode(N->Pos,Pos,false);
-			}
-			if (k%512==0) {
-				float	p1	= float(k)/float(m_Nodes.size());
-				float	p2	= float(m_Nodes.size())/estimated_nodes;
-				float	p	= 0.1f*p1+0.9f*p2;
+    UI.ProgressStart		(1, "Building nodes...");
+    // General cycle
+    for (int k=0; k<(int)m_Nodes.size(); k++){
+        SAINode* N 			= m_Nodes[k];
+        // left 
+        if (0==N->n1){
+            Pos.set			(N->Pos);
+            Pos.x			-=	m_Params.fPatchSize;
+            N->n1			=	BuildNode(N->Pos,Pos,false);
+        }
+        // fwd
+        if (0==N->n2){
+            Pos.set			(N->Pos);
+            Pos.z			+=	m_Params.fPatchSize;
+            N->n2			=	BuildNode(N->Pos,Pos,false);
+        }
+        // right
+        if (0==N->n3){
+            Pos.set			(N->Pos);
+            Pos.x			+=	m_Params.fPatchSize;
+            N->n3			=	BuildNode(N->Pos,Pos,false);
+        }
+        // back
+        if (0==N->n4){
+            Pos.set			(N->Pos);
+            Pos.z			-=	m_Params.fPatchSize;
+            N->n4			=	BuildNode(N->Pos,Pos,false);
+        }
+        if (k%512==0) {
+            float	p1	= float(k)/float(m_Nodes.size());
+            float	p2	= float(m_Nodes.size())/estimated_nodes;
+            float	p	= 0.1f*p1+0.9f*p2;
 
-				clamp	(p,0.f,1.f);
-				UI.ProgressUpdate(p);
-                // check need abort && redraw
-				if (k%32768==0) UI.RedrawScene(true);
-                if (UI.NeedAbort()) break;
-			}
-		}
-		UI.ProgressEnd();
-	}
+            clamp	(p,0.f,1.f);
+            UI.ProgressUpdate(p);
+            // check need abort && redraw
+            if (k%32768==0) UI.RedrawScene(true);
+            if (UI.NeedAbort()) break;
+        }
+    }
+    UI.ProgressEnd();
 }
 
 SAINode* ESceneAIMapTools::GetNode(Fvector vAt, bool bIC)	// return node's index
@@ -563,45 +549,110 @@ void ESceneAIMapTools::UpdateLinks(SAINode* N, bool bIC)
 bool ESceneAIMapTools::GenerateMap()
 {
 	bool bRes = false;
-	if (!m_SnapObjects.empty()){
-        if (!m_Emitters.empty()){
-            // clear
-            if (!m_Nodes.empty()&&(mrNo==ELog.DlgMsg(mtConfirmation,TMsgDlgButtons() << mbYes << mbNo,"Leave existing nodes?")))
-	            Clear			(true);
-                
-            // building
-            Scene.lock			();
-            BuildNodes			();
-            Scene.unlock		();
-                
-            Scene.UndoSave		();
-            bRes = true;
-        }else{
-            ELog.DlgMsg(mtError,"Append at least one emitter and try again!");
+	if (!GetSnapList().empty()){
+	    if (!RealUpdateSnapList()) return false;
+	    if (m_Nodes.empty()){
+			ELog.DlgMsg(mtError,"Append at least one node.");
+            return false;
         }
+        if (mrNo==ELog.DlgMsg(mtConfirmation,TMsgDlgButtons() << mbYes << mbNo,"Continue generate nodes?"))
+        	return false;
+
+        UI.SetStatus("Prepare collision model...");
+        // prepare collision model
+        CDB::CollectorPacked* CL = xr_new<CDB::CollectorPacked>(m_AIBBox);
+        Fvector verts[3];
+        for (ObjectIt o_it=m_SnapObjects.begin(); o_it!=m_SnapObjects.end(); o_it++){
+        	CSceneObject* 		S = dynamic_cast<CSceneObject*>(*o_it); VERIFY(S);
+            CEditableObject*    E = S->GetReference(); VERIFY(E);
+            EditMeshVec& 		_meshes = E->Meshes();
+            for (EditMeshIt m_it=_meshes.begin(); m_it!=_meshes.end(); m_it++){
+            	SurfFaces&	_sfaces = (*m_it)->GetSurfFaces();
+//            	FaceVec&	_faces 	= (*m_it)->GetFaces();
+                for (SurfFacesPairIt sp_it=_sfaces.begin(); sp_it!=_sfaces.end(); sp_it++){
+                    IntVec& face_lst = sp_it->second;
+                    for (IntIt it=face_lst.begin(); it!=face_lst.end(); it++){
+//                        st_Face&	F = _faces[*it];
+			        	S->GetFaceWorld	(*m_it,*it,verts);
+                        CL->add_face(verts[0],verts[1],verts[2], 0,0,0, 0,0,*it);
+                        if (sp_it->first->m_Flags.is(CSurface::sf2Sided))
+                            CL->add_face(verts[2],verts[1],verts[0], 0,0,0, 0,0,*it);
+                    }
+                }
+            }
+        }
+
+        // create CFModel
+		m_CFModel 			= xr_new<CDB::MODEL>();    VERIFY(m_CFModel);
+	    m_CFModel->build	(CL->getV(), CL->getVS(), CL->getT(), CL->getTS());
+		xr_delete			(CL);        
+        
+        UI.SetStatus		("Building nodes...");
+        // building
+        Scene.lock			();
+CTimer tm;
+tm.Start();
+        BuildNodes			();
+tm.Stop();
+        Scene.unlock		();
+//.        Log("-test time: ",	g_tm.GetElapsed_sec());
+		Log("-building time: ",tm.GetElapsed_sec());
+//.        Msg("-Rate: %3.2f Count: %d",(g_tm.GetElapsed_sec()/tm.GetElapsed_sec())*100.f,g_tm.count);
+
+        // unload CFModel        
+		xr_delete(m_CFModel);
+	
+        Scene.UndoSave		();
+        bRes = true;
     }else{ 
-    	ELog.DlgMsg(mtError,"Fill snap list and activate before generating slots!");
+    	ELog.DlgMsg(mtError,"Fill snap list before generating slots!");
     }
     return bRes;
 }
 
-bool ESceneAIMapTools::FillSnapList(ObjectList* lst)
+int ESceneAIMapTools::RemoveOutOfBoundsNodes()
 {
-    hash_Clear					();
-	if (lst){ 	
-    	m_SnapObjects = *lst;
-        Fbox bb;
-        Scene.GetBox(bb,m_SnapObjects);
-        if (!m_BBox.similar(bb)){
-            ELog.Msg(mtError,"AIMap: Bounding volume changed. Please verify map.");
-            m_BBox.set(bb);
+	int count = 0;
+	for (int k=0; k<(int)m_Nodes.size(); k++){
+    	SAINode* N 		= m_Nodes[k];
+    	AINodeVec* V 	= HashMap(N->Pos);
+        if (!V){
+        	m_Nodes.erase(m_Nodes.begin()+k);
+            k--;
+            count++;
         }
-	    hash_FillFromNodes		();
-    }else{
-    	m_BBox.invalidate		();
-    	m_SnapObjects.clear		();
     }
-    return true;
+    return count;
+}
+
+bool ESceneAIMapTools::RealUpdateSnapList()
+{
+	m_Flags.set					(flUpdateSnapList,FALSE);
+    Fbox nodes_bb;				CalculateNodesBBox(nodes_bb);
+	if (!GetSnapList().empty()){
+        Fbox snap_bb;			Scene.GetBox(snap_bb,GetSnapList());
+        Fbox bb;				bb.merge(snap_bb,nodes_bb);
+        if (!m_AIBBox.similar(bb)){
+            m_AIBBox.set		(bb);
+            if (Valid()){
+//				int cnt		   	= RemoveOutOfBoundsNodes	();
+//                if (cnt) ELog.Msg	(mtError,"AIMap: Bounding volume changed. Remove %d out of bounds node(s).",cnt);
+				ELog.Msg	   	(mtError,"AIMap: Bounding volume changed.");
+            }
+            hash_Clear		   	();
+		    hash_FillFromNodes 	();
+        }
+	    return true;
+    }else{
+    	m_AIBBox.set			(nodes_bb);
+        if (Valid()){
+//        	Clear				(true);
+            ELog.Msg			(mtError,"AIMap: Snap list empty."/* All nodes removed."*/);
+        }
+        hash_Clear		   		();
+        hash_FillFromNodes 		();
+        return false;
+    }
 }
 
 void ESceneAIMapTools::RemoveLinks()

@@ -23,8 +23,8 @@ void CCustomObject::SnapMove(Fvector& pos, Fvector& rot, const Fmatrix& rotRP, c
     s2.mad(s1,up,frmEditPrefs->seSnapMoveTo->Value);
 
     pinf.inf.range=frmEditPrefs->seSnapMoveTo->Value;
-    if (Scene.RayPick( s1, dn, OBJCLASS_SCENEOBJECT, &pinf, false, Scene.GetSnapList())||
-        Scene.RayPick( s2, dn, OBJCLASS_SCENEOBJECT, &pinf, false, Scene.GetSnapList())){
+    if (Scene.RayPick( s1, dn, OBJCLASS_SCENEOBJECT, &pinf, false, Scene.GetSnapList(false))||
+        Scene.RayPick( s2, dn, OBJCLASS_SCENEOBJECT, &pinf, false, Scene.GetSnapList(false))){
             pos.set(pinf.pt);
             if (fraTopBar->ebNormalAlignment->Down){
                 Fvector verts[3];

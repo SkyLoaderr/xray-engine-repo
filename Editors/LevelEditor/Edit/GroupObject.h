@@ -53,6 +53,8 @@ public:
     // device dependent routine
 	virtual void 	OnDeviceCreate 	();
 	virtual void 	OnDeviceDestroy	();
+
+	virtual void	FillProp		(LPCSTR pref, PropItemVec& items);
 };
 //----------------------------------------------------
 #endif /* _INCDEF_GroupObject_H_ */

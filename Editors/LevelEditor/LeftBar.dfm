@@ -2,7 +2,7 @@ object fraLeftBar: TfraLeftBar
   Left = 0
   Top = 0
   Width = 443
-  Height = 277
+  Height = 785
   HorzScrollBar.Visible = False
   VertScrollBar.Increment = 34
   VertScrollBar.Size = 13
@@ -1472,10 +1472,18 @@ object fraLeftBar: TfraLeftBar
       Left = 1
       Top = 513
       Width = 123
-      Height = 106
+      Height = 124
       Align = alTop
       Color = 10528425
       TabOrder = 3
+      object Bevel2: TBevel
+        Left = 2
+        Top = 46
+        Width = 119
+        Height = 18
+        Shape = bsTopLine
+        Style = bsRaised
+      end
       object Label1: TLabel
         Left = 1
         Top = 1
@@ -1512,7 +1520,7 @@ object fraLeftBar: TfraLeftBar
         ParentFont = False
         OnClick = PanelMimimizeClickClick
       end
-      object ebEnableSnapList: TExtBtn
+      object ebUseSnapList: TExtBtn
         Left = 2
         Top = 31
         Width = 120
@@ -1525,8 +1533,7 @@ object fraLeftBar: TfraLeftBar
         BtnColor = 10528425
         CloseButton = False
         GroupIndex = 1
-        Down = True
-        Caption = 'Enable Snap List'
+        Caption = 'Use Snap List'
         Font.Charset = DEFAULT_CHARSET
         Font.Color = clWindowText
         Font.Height = -11
@@ -1534,7 +1541,7 @@ object fraLeftBar: TfraLeftBar
         Font.Style = []
         Margin = 13
         ParentFont = False
-        OnClick = ebEnableSnapListClick
+        OnClick = ebUseSnapListClick
       end
       object ExtBtn1: TExtBtn
         Left = 2
@@ -1569,13 +1576,86 @@ object fraLeftBar: TfraLeftBar
       end
       object Bevel1: TBevel
         Left = 2
-        Top = 47
+        Top = 64
         Width = 119
         Height = 57
       end
+      object ebSnapListMode: TExtBtn
+        Left = 15
+        Top = 49
+        Width = 68
+        Height = 14
+        Hint = 'Append to snap list'
+        Align = alNone
+        AllowAllUp = True
+        BevelShow = False
+        HotTrack = True
+        HotColor = 15790320
+        CloseButton = False
+        GroupIndex = 2
+        Caption = 'Mode'
+        Font.Charset = DEFAULT_CHARSET
+        Font.Color = clWindowText
+        Font.Height = -11
+        Font.Name = 'MS Sans Serif'
+        Font.Style = []
+        Glyph.Data = {
+          B6010000424DB601000000000000360000002800000010000000080000000100
+          18000000000080010000120B0000120B00000000000000000000FFFFFFFFFFFF
+          FFFFFFFFFFFFFFFFFFFFFFFF000000FFFFFFFFFFFFFFFFFFFFFFFFFFFFFFFFFF
+          FFFFFFFFFFFFFFFFFFFFFFFFFFFFFFFF1C1C1C1C1C1CFFFFFFFFFFFF03030300
+          0000FFFFFFFFFFFFFFFFFFFFFFFFFFFFFFFFFFFFFFFFFFFFFFFFFFFFFFFFFFFF
+          191919191919FFFFFFFFFFFFFFFFFF000000FFFFFFFFFFFFFFFFFFFFFFFFFFFF
+          FFFFFFFFFFFFFFFFFFFF1B1B1B1717170303030303031717171B1B1BFFFFFF01
+          0101000000FFFFFF0B0B0B0B0B0B0B0B0B0B0B0B0B0B0B0B0B0B1B1B1B171717
+          0303030303031717171B1B1BFFFFFFFFFFFF000000FFFFFF0B0B0B0B0B0B0B0B
+          0B0B0B0B0B0B0B0B0B0BFFFFFFFFFFFF191919191919FFFFFFFFFFFFFFFFFFFF
+          FFFF040404000000FFFFFFFFFFFFFFFFFFFFFFFFFFFFFFFFFFFFFFFFFFFFFFFF
+          1C1C1C1C1C1CFFFFFFFFFFFFFFFFFFFFFFFFFFFFFF000000FFFFFFFFFFFFFFFF
+          FFFFFFFFFFFFFFFFFFFFFFFFFFFFFFFFFFFFFFFFFFFFFFFFFFFFFFFFFFFFFFFF
+          FFFFFFFFFF000000000000FFFFFFFFFFFFFFFFFFFFFFFFFFFFFF}
+        Margin = 2
+        ParentFont = False
+        ParentShowHint = False
+        ShowHint = True
+        OnClick = ebSnapListModeClick
+      end
+      object ebModeInvert: TExtBtn
+        Left = 83
+        Top = 49
+        Width = 37
+        Height = 14
+        Hint = 'Clear snap list'
+        Align = alNone
+        BevelShow = False
+        HotTrack = True
+        HotColor = 15790320
+        CloseButton = False
+        Font.Charset = DEFAULT_CHARSET
+        Font.Color = clWindowText
+        Font.Height = -11
+        Font.Name = 'MS Sans Serif'
+        Font.Style = []
+        Glyph.Data = {
+          56010000424D560100000000000036000000280000000A000000090000000100
+          18000000000020010000120B0000120B00000000000000000000C8D0D4C8D0D4
+          C8D0D4C8D0D4C8D0D4C8D0D4C8D0D4C8D0D4C8D0D4C8D0D40000C8D0D4000000
+          000000C8D0D4C8D0D4C8D0D4C8D0D4000000000000C8D0D40000C8D0D4C8D0D4
+          000000000000C8D0D4C8D0D4000000000000C8D0D4C8D0D40000C8D0D4C8D0D4
+          C8D0D4000000000000000000000000C8D0D4C8D0D4C8D0D40000C8D0D4C8D0D4
+          C8D0D4C8D0D4000000000000C8D0D4C8D0D4C8D0D4C8D0D40000C8D0D4C8D0D4
+          C8D0D4000000000000000000000000C8D0D4C8D0D4C8D0D40000C8D0D4C8D0D4
+          000000000000C8D0D4C8D0D4000000000000C8D0D4C8D0D40000C8D0D4000000
+          000000C8D0D4C8D0D4C8D0D4C8D0D4000000000000C8D0D40000C8D0D4C8D0D4
+          C8D0D4C8D0D4C8D0D4C8D0D4C8D0D4C8D0D4C8D0D4C8D0D40000}
+        ParentFont = False
+        ParentShowHint = False
+        ShowHint = True
+        OnClick = ebClearSnapClick
+      end
       object lbSnapList: TListBox
         Left = 4
-        Top = 49
+        Top = 66
         Width = 115
         Height = 52
         BorderStyle = bsNone
@@ -1608,7 +1688,7 @@ object fraLeftBar: TfraLeftBar
     IniSection = 'Left Bar'
     Options = []
     RegistryRoot = prLocalMachine
-    Version = 11
+    Version = 12
     StoredProps.Strings = (
       'paEdit.Tag'
       'paEdit.Height'
@@ -1616,7 +1696,7 @@ object fraLeftBar: TfraLeftBar
       'paScene.Height'
       'paTarget.Tag'
       'paTarget.Height'
-      'ebEnableSnapList.Down'
+      'ebUseSnapList.Down'
       'paSnapList.Tag'
       'paSnapList.Height'
       'ebIgnoreMode.Down')
@@ -1895,9 +1975,23 @@ object fraLeftBar: TfraLeftBar
       Caption = 'Make List From Selected'
       OnClick = ebSetSnapClick
     end
+    object SelectObjectFromList1: TMenuItem
+      Caption = 'Select Object From List'
+      OnClick = SelectObjectFromList1Click
+    end
+    object N9: TMenuItem
+      Caption = '-'
+    end
     object miAddSelectedToList: TMenuItem
-      Caption = 'AddSelected To List'
+      Caption = 'Add Selected To List'
       OnClick = miAddSelectedToListClick
+    end
+    object RemoveSelectedFromList1: TMenuItem
+      Caption = 'Remove Selected From List'
+      OnClick = RemoveSelectedFromList1Click
+    end
+    object N14: TMenuItem
+      Caption = '-'
     end
     object MenuItem4: TMenuItem
       Caption = 'Clear List'

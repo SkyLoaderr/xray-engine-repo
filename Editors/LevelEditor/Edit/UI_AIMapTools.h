@@ -4,8 +4,10 @@
 #include "ui_control.h"
 #include "ui_customtools.h"
 
+// refs
+class ESceneAIMapTools;
+
 #define estAIMapNode 	0
-#define estAIMapEmitter	1
 //---------------------------------------------------------------------------
 class TUI_AIMapTools:public TUI_CustomTools{
 public:
@@ -24,14 +26,6 @@ public:
 	virtual void Move   (TShiftState _Shift);
 };
 //---------------------------------------------------------------------------
-class TUI_ControlAIMapEmitterAdd: public TUI_CustomControl{
-public:
-    TUI_ControlAIMapEmitterAdd(int st, int act, TUI_CustomTools* parent);
-	virtual bool Start  (TShiftState _Shift);
-	virtual bool End    (TShiftState _Shift){return true;}
-	virtual void Move   (TShiftState _Shift){;}
-};
-//---------------------------------------------------------------------------
 class TUI_ControlAIMapNodeSelect: public TUI_CustomControl{
 public:
     TUI_ControlAIMapNodeSelect(int st, int act, TUI_CustomTools* parent);
@@ -40,25 +34,9 @@ public:
 	virtual void Move   (TShiftState _Shift);
 };
 //---------------------------------------------------------------------------
-class TUI_ControlAIMapEmitterSelect: public TUI_CustomControl{
-public:
-    TUI_ControlAIMapEmitterSelect(int st, int act, TUI_CustomTools* parent);
-	virtual bool Start  (TShiftState _Shift);
-	virtual bool End    (TShiftState _Shift);
-	virtual void Move   (TShiftState _Shift);
-};
-//---------------------------------------------------------------------------
 class TUI_ControlAIMapNodeMove: public TUI_CustomControl{
 public:
     TUI_ControlAIMapNodeMove(int st, int act, TUI_CustomTools* parent);
-	virtual bool Start  (TShiftState _Shift);
-	virtual bool End    (TShiftState _Shift);
-	virtual void Move   (TShiftState _Shift);
-};
-//---------------------------------------------------------------------------
-class TUI_ControlAIMapEmitterMove: public TUI_CustomControl{
-public:
-    TUI_ControlAIMapEmitterMove(int st, int act, TUI_CustomTools* parent);
 	virtual bool Start  (TShiftState _Shift);
 	virtual bool End    (TShiftState _Shift);
 	virtual void Move   (TShiftState _Shift);

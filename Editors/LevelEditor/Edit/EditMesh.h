@@ -149,7 +149,7 @@ class CSector;
 	struct st_RenderBuffer{
 		u32			dwStartVertex;
 	    u32			dwNumVertex;
-        SGeometry* 	pGeom;
+        ref_geom 	pGeom;
 		st_RenderBuffer	(u32 sv, u32 nv):dwStartVertex(sv),dwNumVertex(nv),pGeom(0){;}
 	};
 	DEFINE_VECTOR(st_RenderBuffer,RBVector,RBVecIt);

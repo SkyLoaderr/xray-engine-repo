@@ -52,6 +52,7 @@ enum EPropType{
     PROP_ENTITY,
 	PROP_WAVE,
     PROP_SCENE_ITEM,
+    PROP_CANVAS,
 };
 // refs
 struct 	xr_token;        
@@ -62,7 +63,6 @@ class PropItem;
 typedef void 	__fastcall (__closure *TBeforeEdit)			(PropItem* sender, LPVOID edit_val);
 typedef void 	__fastcall (__closure *TAfterEdit)			(PropItem* sender, LPVOID edit_val);
 typedef void 	__fastcall (__closure *TOnDrawTextEvent)	(PropValue* sender, LPVOID draw_val);
-typedef void 	__fastcall (__closure *TOnDrawCanvasEvent)	(PropValue* sender, TCanvas* canvas, const TRect& rect);
 typedef void 	__fastcall (__closure *TOnChange)			(PropValue* sender);
 typedef void 	__fastcall (__closure *TOnClick)			(PropValue* sender);
 typedef void 	__fastcall (__closure *TOnBtnClick)			(PropValue* sender, bool& bDataModified);
@@ -70,6 +70,8 @@ typedef void 	__fastcall (__closure *TOnCloseEvent)		(void);
 typedef void 	__fastcall (__closure *TOnModifiedEvent)	(void);
 typedef void 	__fastcall (__closure *TOnItemFocused)		(TElTreeItem* item);
 typedef void 	__fastcall (__closure *TOnPropItemFocused)	(PropItem* sender);
+typedef void 	__fastcall (__closure *TOnDrawCanvasEvent)	(PropValue* sender, TCanvas* canvas, const TRect& rect);
+typedef bool 	__fastcall (__closure *TOnTestEqual)		(PropValue* a, PropValue* b);
 //------------------------------------------------------------------------------
 
 class PropValue{
@@ -77,13 +79,14 @@ class PropValue{
     friend class		PropItem;
 protected:
 	PropItem*			m_Owner;
+public:
+	LPVOID				tag;
+public:
 	// base events
-public:
     TOnChange			OnChangeEvent;
-    TOnClick			OnExtClickEvent;
-    TOnClick			OnClickEvent;
+    TOnTestEqual		OnTestEqual;
 public:
-						PropValue		():m_Owner(0),OnChangeEvent(0),OnClickEvent(0),OnExtClickEvent(0){;}
+						PropValue		():tag(0),m_Owner(0),OnChangeEvent(0),OnTestEqual(0){;}
     virtual LPCSTR		GetText			(TOnDrawTextEvent OnDrawText)=0;
     virtual void		ResetValue		()=0;
     virtual bool		Equal			(PropValue* prop)=0;
@@ -113,9 +116,10 @@ public:
     	set_value		(init_value,*val);
     };
     virtual LPCSTR		GetText			(TOnDrawTextEvent OnDrawText){return 0;}
-    virtual bool		Equal			(PropValue* _prop)
+    virtual bool		Equal			(PropValue* val)
     {
-    	CustomValue<T>* prop = (CustomValue<T>*)_prop;
+    	if (OnTestEqual) return OnTestEqual(this,val);
+    	CustomValue<T>* prop = (CustomValue<T>*)val;
         return (*value==*prop->value);
     }
     virtual const T&	GetValue		(){return *value; }
@@ -144,8 +148,8 @@ public:
     TAfterEdit			OnAfterEditEvent;
     TBeforeEdit			OnBeforeEditEvent;
     TOnDrawTextEvent	OnDrawTextEvent;
-    TOnDrawCanvasEvent	OnDrawCanvasEvent;
     TOnPropItemFocused	OnItemFocused;
+//.    TOnClick			OnClickEvent;
 public:
     TRect				draw_rect;
     int 				tag;
@@ -158,11 +162,10 @@ public:
         flMixed			= (1<<3),
         flShowExtBtn	= (1<<4),
         flDrawThumbnail	= (1<<5),
-        flDrawCanvas	= (1<<6),
     };
     Flags32				m_Flags;
 public:
-						PropItem		(EPropType _type):type(_type),item(0),key(0),tag(0),subitem(1),OnAfterEditEvent(0),OnBeforeEditEvent(0),OnDrawTextEvent(0),OnDrawCanvasEvent(0),OnItemFocused(0){m_Flags.zero();}
+						PropItem		(EPropType _type):type(_type),item(0),key(0),tag(0),subitem(1),/*OnClickEvent(0),*/OnAfterEditEvent(0),OnBeforeEditEvent(0),OnDrawTextEvent(0),OnItemFocused(0){m_Flags.zero();}
 	virtual 			~PropItem		()
     {
     	for (PropValueIt it=values.begin(); it!=values.end(); it++)
@@ -213,6 +216,7 @@ public:
         if (bChanged)	m_Flags.set(flMixed,FALSE);
         return bChanged;
     }
+    IC PropValueVec&	Values			(){return values;}
     IC PropValue*		GetFrontValue	(){VERIFY(!values.empty()); return values.front(); };
     IC EPropType		Type			(){return type;}
 	IC TElTreeItem*		Item			(){return item;}
@@ -236,13 +240,10 @@ public:
     }
 	IC void				OnClick			()
     {
+/*
     	for (PropValueIt it=values.begin(); it!=values.end(); it++)
         	if ((*it)->OnClickEvent) 	(*it)->OnClickEvent(*it);
-    }
-	IC void				OnExtClick			()
-    {
-    	for (PropValueIt it=values.begin(); it!=values.end(); it++)
-        	if ((*it)->OnExtClickEvent) 	(*it)->OnExtClickEvent(*it);
+*/
     }
 };
 
@@ -257,8 +258,29 @@ public:
 						CaptionValue	(AnsiString val){value=val;}
     virtual LPCSTR		GetText			(TOnDrawTextEvent){return value.c_str();}
     virtual	void		ResetValue		(){;}
-    virtual	bool		Equal			(PropValue* val){ return (value==((CaptionValue*)val)->value); }
+    virtual	bool		Equal			(PropValue* val)
+    { 
+    	if (OnTestEqual) return OnTestEqual(this,val);
+    	return (value==((CaptionValue*)val)->value); 
+    }
     virtual	bool		ApplyValue		(LPVOID val){value=*(AnsiString*)val; return false;}
+};
+
+class CanvasValue: public PropValue{
+	AnsiString			value;
+public:
+    int					height;
+    TOnDrawCanvasEvent	OnDrawCanvasEvent;
+public:
+						CanvasValue		(AnsiString val, int h):OnDrawCanvasEvent(0),height(h){value=val;}
+    virtual LPCSTR		GetText			(TOnDrawTextEvent){return value.c_str();}
+    virtual	void		ResetValue		(){;}
+    virtual	bool		Equal			(PropValue* val)
+    {
+    	if (OnTestEqual) return OnTestEqual(this,val);
+    	return false;
+    }
+    virtual	bool		ApplyValue		(LPVOID val){return false;}
 };
 
 class ButtonValue: public PropValue{
@@ -266,9 +288,14 @@ public:
 	AStringVec			value;
     int					btn_num;
     TOnBtnClick			OnBtnClickEvent;
+    enum{
+    	flFrontOnly		= (1<<0)
+    };
+    Flags8				m_Flags;
 public:
-						ButtonValue		(AnsiString val)
+						ButtonValue		(AnsiString val, u32 flags)
 	{
+    	m_Flags.set		(flags);
     	OnBtnClickEvent	= 0;
     	btn_num			= -1;
     	AnsiString 		v;
@@ -278,9 +305,13 @@ public:
     }
     virtual LPCSTR		GetText			(TOnDrawTextEvent){return 0;}
     virtual	void		ResetValue		(){;}
-    virtual	bool		Equal			(PropValue* val){return true;}
+    virtual	bool		Equal			(PropValue* val)
+    {
+    	if (OnTestEqual) return OnTestEqual(this,val);
+    	return true;
+    }
     virtual	bool		ApplyValue		(LPVOID val){return false;}
-    bool				OnBtnClick		(){if(OnBtnClickEvent){ bool bDModif=true; OnBtnClickEvent(this,bDModif); return bDModif;}else return false;}
+    bool				OnBtnClick		(){if(OnBtnClickEvent)	{ bool bDModif=true; OnBtnClickEvent(this,bDModif); return bDModif;}else return false;}
 };
 
 class TextValue: public PropValue{
@@ -290,7 +321,11 @@ public:
 	int					lim;
 						TextValue		(LPSTR val, int _lim):value(val),init_value(val),lim(_lim){};
     virtual LPCSTR		GetText			(TOnDrawTextEvent OnDrawText);
-    virtual bool		Equal			(PropValue* prop){ return (0==strcmp((LPSTR)value,((TextValue*)prop)->value)); }
+    virtual bool		Equal			(PropValue* val)
+    { 
+    	if (OnTestEqual) return OnTestEqual(this,val);
+    	return (0==strcmp((LPSTR)value,((TextValue*)val)->value)); 
+    }
     virtual bool		ApplyValue		(LPVOID val)
     {
         if (0!=strcmp(value,LPCSTR(val))){
@@ -426,7 +461,11 @@ public:
     	init_value		= *val;
     };
     virtual LPCSTR		GetText			(TOnDrawTextEvent OnDrawText){return 0;}
-    virtual bool		Equal			(PropValue* prop){return value->equal(*((FlagValue<T>*)prop)->value,mask);}
+    virtual bool		Equal			(PropValue* val)
+    {
+    	if (OnTestEqual) return OnTestEqual(this,val);
+    	return value->equal(*((FlagValue<T>*)val)->value,mask);
+    }
     virtual const T&	GetValue		(){return *value; }
     virtual void		ResetValue		(){value->set(mask,init_value.is(mask));}
     bool				GetValueEx		(){return value->is(mask);}
@@ -453,7 +492,11 @@ public:
 	xr_token* 			token;
 						TokenValue		(u32* val, xr_token* _token, int p_sz):CustomValue<u32>(val),token(_token),p_size(p_sz){R_ASSERT((p_size>0)&&(p_size<=4));};
 	virtual LPCSTR 		GetText			(TOnDrawTextEvent OnDrawText);
-	virtual bool		Equal			(PropValue* prop){return (0==memcmp(value,((TokenValue*)prop)->value,p_size));}
+	virtual bool		Equal			(PropValue* val)
+    {
+    	if (OnTestEqual) return OnTestEqual(this,val);
+    	return (0==memcmp(value,((TokenValue*)val)->value,p_size));
+    }
     virtual bool		ApplyValue		(LPVOID val)
     {
         if (0!=memcmp(val,value,p_size)){
@@ -501,7 +544,11 @@ public:
 public:
 						TokenValue4		(u32* val, const ItemVec* _items, int p_sz):CustomValue<u32>(val),items(_items),p_size(p_sz){R_ASSERT((p_size>0)&&(p_size<=4));};
 	virtual LPCSTR 		GetText			(TOnDrawTextEvent OnDrawText);
-	virtual bool		Equal			(PropValue* prop){return (0==memcmp(value,((TokenValue*)prop)->value,p_size));}
+	virtual bool		Equal			(PropValue* val)
+    {
+    	if (OnTestEqual) return OnTestEqual(this,val);
+    	return (0==memcmp(value,((TokenValue*)val)->value,p_size));
+    }
     virtual bool		ApplyValue		(LPVOID val)
     {
         if (0!=memcmp(val,value,p_size)){
@@ -520,13 +567,14 @@ public:
 public:                                   
 						ListValue		(LPSTR val, int lim, AStringVec* _items):TextValue(val,lim),items(*_items){};
 						ListValue		(LPSTR val, int lim, u32 cnt, LPCSTR* _items):TextValue(val,lim){items.resize(cnt); int i=0; for (AStringIt it=items.begin(); it!=items.end(); it++,i++) *it=_items[i]; };
-	virtual bool		Equal			(PropValue* prop)
+	virtual bool		Equal			(PropValue* val)
     {
+    	if (OnTestEqual) return OnTestEqual(this,val);
     	AStringIt s_it	= items.begin();
-    	AStringIt d_it	= ((ListValue*)prop)->items.begin();
+    	AStringIt d_it	= ((ListValue*)val)->items.begin();
     	for (; s_it!=items.end(); s_it++,d_it++)
         	if ((*s_it)!=(*d_it)) {m_Owner->m_Flags.set(PropItem::flDisabled,TRUE); return false;}
-        return TextValue::Equal(prop);
+        return TextValue::Equal(val);
     }
 };
 //------------------------------------------------------------------------------
@@ -537,13 +585,14 @@ public:
 	AnsiString			specific;
 public:
 						SceneItemValue	(LPSTR val, int lim, EObjClass class_id, LPCSTR _type):TextValue(val,lim),clsID(class_id){if(_type) specific=_type;};
-	virtual bool		Equal			(PropValue* prop)
+	virtual bool		Equal			(PropValue* val)
     {
-    	if ((clsID!=((SceneItemValue*)prop)->clsID)||(specific!=((SceneItemValue*)prop)->specific)){
+    	if (OnTestEqual) return OnTestEqual(this,val);
+    	if ((clsID!=((SceneItemValue*)val)->clsID)||(specific!=((SceneItemValue*)val)->specific)){
         	m_Owner->m_Flags.set(PropItem::flDisabled,TRUE); 
             return false;
         }
-        return TextValue::Equal(prop);
+        return TextValue::Equal(val);
     }
 };
 //------------------------------------------------------------------------------

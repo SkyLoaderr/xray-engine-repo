@@ -341,7 +341,8 @@ void CLight::FillProp(LPCSTR pref, PropItemVec& items)
     V->OnChangeEvent		= OnTypeChange;
     V=PHelper.CreateFColor	(items,	FHelper.PrepareKey(pref,"Color"),			&m_D3D.diffuse);
 	V->OnChangeEvent		= OnNeedUpdate;
-    PHelper.CreateFloat		(items,	FHelper.PrepareKey(pref,"Brightness"),		&m_Brightness,-3.f,3.f,0.1f,2);
+    V=PHelper.CreateFloat	(items,	FHelper.PrepareKey(pref,"Brightness"),		&m_Brightness,-3.f,3.f,0.1f,2);
+    V->OnChangeEvent 		= OnPointDataChange;
     PHelper.CreateBOOL		(items,	FHelper.PrepareKey(pref,"Use In D3D"),		&m_UseInD3D);
     PHelper.CreateFlag32	(items,	FHelper.PrepareKey(pref,"Usage\\LightMap"),	&m_Flags,	CLight::flAffectStatic);
     PHelper.CreateFlag32	(items,	FHelper.PrepareKey(pref,"Usage\\Dynamic"),	&m_Flags,	CLight::flAffectDynamic);
@@ -407,6 +408,7 @@ void __fastcall	CLight::OnAutoClick(PropValue* value, bool& bModif)
     }
     }
     bModif = true;
+	OnPointDataChange(value);
 }
 
 void __fastcall	CLight::OnFuzzyGenerateClick(PropValue* value, bool& bModif)
@@ -433,6 +435,67 @@ void __fastcall	CLight::OnFuzzyDataChange(PropValue* value)
     	m_FuzzyData.Generate(*it);
 }
 
+#define X_GRID 14
+#define Y_GRID 6
+
+void __fastcall CLight::OnAttenuationDraw(PropValue* sender, TCanvas* canvas, const TRect& rect)
+{
+//	canvas
+    int w = rect.Width();
+    int h = rect.Height();
+    int x0= rect.left;
+    int y0= rect.top;
+
+    canvas->Brush->Color = clBlack;
+    canvas->FillRect(rect);
+    canvas->Pen->Color = TColor(0x00006600);
+    canvas->MoveTo(x0,y0);
+    for (int i=0; i<X_GRID+1; i++){
+        canvas->LineTo(x0+i*w/X_GRID,y0+h);
+        canvas->MoveTo(x0+(i+1)*w/X_GRID,y0+0);
+    }
+    canvas->MoveTo(x0+0,y0+0);
+    for (int j=0; j<Y_GRID+1; j++){
+        canvas->LineTo(x0+w,y0+j*h/Y_GRID);
+        canvas->MoveTo(x0+0,y0+(j+1)*h/Y_GRID);
+    }
+    canvas->Pen->Color = clYellow;
+    canvas->MoveTo(x0+0,y0+h/2);
+    canvas->LineTo(x0+w,y0+h/2);
+
+    float d_cost = m_D3D.range/w;
+    AnsiString temp;
+    float v = m_D3D.range;
+//    temp.sprintf("Range = %.2f",v); lbRange->Caption = temp;
+    canvas->Pen->Color = clLime;
+    if (!(fis_zero(m_D3D.attenuation0)&&fis_zero(m_D3D.attenuation1)&&fis_zero(m_D3D.attenuation2))){
+        for (int d=1; d<w; d++){
+            float R = d*d_cost;
+            float b = m_Brightness/(m_D3D.attenuation0+m_D3D.attenuation1*R+m_D3D.attenuation2*R*R);
+            float bb = h-((h/(/*br_max*/3.f*2))*b + h/2);
+            int y = iFloor(y0+bb); clamp(y,int(rect.Top),int(rect.Bottom));
+            if (1==d)	canvas->MoveTo(x0+d,y);
+            else		canvas->LineTo(x0+d,y);
+        }
+    }
+}
+
+void __fastcall	CLight::OnPointDataChange(PropValue* value)
+{
+	UI.Command(COMMAND_UPDATE_PROPERTIES);
+}
+
+bool __fastcall	CLight::OnPointDataTestEqual(PropValue* a, PropValue* b)
+{
+	CLight* A = (CLight*)(a->tag); VERIFY(A);
+	CLight* B = (CLight*)(b->tag); VERIFY(B);
+	return (fsimilar(A->m_D3D.range,B->m_D3D.range)&&
+    		fsimilar(A->m_D3D.attenuation0,B->m_D3D.attenuation0)&&
+    		fsimilar(A->m_D3D.attenuation1,B->m_D3D.attenuation1)&&
+    		fsimilar(A->m_D3D.attenuation2,B->m_D3D.attenuation2)&&
+    		fsimilar(A->m_Brightness,B->m_Brightness));
+}
+
 xr_token fuzzy_shape_types[]={
 	{ "Sphere",			CLight::SFuzzyData::fstSphere	},
 	{ "Box",			CLight::SFuzzyData::fstBox		},
@@ -440,20 +503,30 @@ xr_token fuzzy_shape_types[]={
 };
 void CLight::FillPointProp(LPCSTR pref, PropItemVec& items)
 {
-    PHelper.CreateFloat		(items,	FHelper.PrepareKey(pref, "Point\\Range"),					&m_D3D.range,		0.1f,1000.f);
-    PHelper.CreateFloat		(items,	FHelper.PrepareKey(pref, "Point\\Attenuation\\Constant"),	&m_D3D.attenuation0,0.f,1.f,0.0001f,6);
-    PHelper.CreateFloat		(items,	FHelper.PrepareKey(pref, "Point\\Attenuation\\Linear"),		&m_D3D.attenuation1,0.f,1.f,0.0001f,6);
-    PHelper.CreateFloat		(items,	FHelper.PrepareKey(pref, "Point\\Attenuation\\Quadratic"),	&m_D3D.attenuation2,0.f,1.f,0.0001f,6);
+	PropValue* V;
+    V=PHelper.CreateFloat	(items,	FHelper.PrepareKey(pref, "Point\\Range"),					&m_D3D.range,		0.1f,1000.f);
+    V->OnChangeEvent 		= OnPointDataChange;
+    V=PHelper.CreateFloat	(items,	FHelper.PrepareKey(pref, "Point\\Attenuation\\Constant"),	&m_D3D.attenuation0,0.f,1.f,0.0001f,6);
+    V->OnChangeEvent 		= OnPointDataChange;
+    V=PHelper.CreateFloat	(items,	FHelper.PrepareKey(pref, "Point\\Attenuation\\Linear"),		&m_D3D.attenuation1,0.f,1.f,0.0001f,6);
+    V->OnChangeEvent 		= OnPointDataChange;
+    V=PHelper.CreateFloat	(items,	FHelper.PrepareKey(pref, "Point\\Attenuation\\Quadratic"),	&m_D3D.attenuation2,0.f,1.f,0.0001f,6);
+    V->OnChangeEvent 		= OnPointDataChange;
 	ButtonValue* B=0;
-    B=PHelper.CreateButton	(items,	FHelper.PrepareKey(pref, "Point\\Attenuation\\Auto"),"Linear,Quadratic");
+    B=PHelper.CreateButton	(items,	FHelper.PrepareKey(pref, "Point\\Attenuation\\Auto"),"Linear,Quadratic",0);
     B->OnBtnClickEvent		= OnAutoClick;
+	CanvasValue* C=0;
+    C=PHelper.CreateCanvas	(items,	FHelper.PrepareKey(pref, "Point\\Attenuation\\Graphic"),	"", 64);
+    C->tag					= this;
+    C->OnDrawCanvasEvent 	= OnAttenuationDraw;
+    C->OnTestEqual			= OnPointDataTestEqual;
     PropValue* P=0;
     P=PHelper.CreateFlag32	(items,	FHelper.PrepareKey(pref, "Point\\Fuzzy"),					&m_Flags,	CLight::flPointFuzzy);
     P->OnChangeEvent		= OnFuzzyTypeChange;           
 	if (m_Flags.is(CLight::flPointFuzzy)){
         P=PHelper.CreateS16		(items,	FHelper.PrepareKey(pref, "Point\\Fuzzy\\Count"),			&m_FuzzyData.m_PointCount,0,100);
         P->OnChangeEvent		= OnFuzzyDataChange;
-	    B=PHelper.CreateButton	(items,	FHelper.PrepareKey(pref, "Point\\Fuzzy\\Generate"),"Random");
+	    B=PHelper.CreateButton	(items,	FHelper.PrepareKey(pref, "Point\\Fuzzy\\Generate"),"Random",0);
     	B->OnBtnClickEvent		= OnFuzzyGenerateClick;
         P=PHelper.CreateToken	(items,	FHelper.PrepareKey(pref, "Point\\Fuzzy\\Shape"),				&m_FuzzyData.m_ShapeType,	fuzzy_shape_types, 1);
         P->OnChangeEvent		= OnFuzzyTypeChange;
@@ -562,7 +635,7 @@ void CEditFlare::Load(IReader& F){
 	    DeleteShaders();
 	    u32 deFCnt	= F.r_u32(); VERIFY(deFCnt==6);
 	   	F.r				(m_Flares.begin(),m_Flares.size()*sizeof(SFlare));
-    	for (FlareIt it=m_Flares.begin(); it!=m_Flares.end(); it++) it->hShader._object=0;
+    	for (FlareIt it=m_Flares.begin(); it!=m_Flares.end(); it++) it->hShader._clear();
     	CreateShaders();
     }
 }

@@ -4,6 +4,7 @@
 // refs
 class TUI_CustomControl;
 class TUI_Control;
+class ESceneCustomMTools;
 
 #include "UI_Tools.h"
 
@@ -20,6 +21,7 @@ class TUI_CustomTools{
     int				sub_target;
 
     EObjClass		objclass;
+	ESceneCustomMTools* scene_tools;
 
     TUI_CustomControl* FindControl	(int subtarget, int action);
     void            UpdateControl	();
@@ -45,5 +47,6 @@ public:
     virtual void 	SetNumScale		(CCustomObject* O);
 
 	const EObjClass	ObjClass		()const {return objclass;}
+	ESceneCustomMTools* SceneTools	(){return scene_tools;}
 };
 #endif //ui_customtoolsH

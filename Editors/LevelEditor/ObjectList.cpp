@@ -2,10 +2,9 @@
 #pragma hdrstop
 
 #include "ObjectList.h"
-#include "ELight.h"
+#include "GroupObject.h"
 #include "UI_Tools.h"
 #include "Scene.h"
-#include "leftbar.h"
 #include "ui_main.h"
 #include "folderlib.h"
 //---------------------------------------------------------------------------
@@ -114,8 +113,17 @@ void __fastcall TfrmObjectList::InitListBox()
                 TElTreeItem* node = FindFolderByType(it->first);
                 if (!node) node = AddFolder(it->first);
                 VERIFY(node);
-                for(ObjectIt _F = lst.begin();_F!=lst.end();_F++)
-                    AddObject(node,(*_F)->Name,(void*)(*_F));
+            	if (OBJCLASS_GROUP==it->first){
+                    for(ObjectIt _F = lst.begin();_F!=lst.end();_F++){
+                        TElTreeItem* grp_node = AddObject(node,(*_F)->Name,(void*)(*_F));
+                        ObjectList& grp_lst = ((CGroupObject*)(*_F))->GetObjects();
+                        for (ObjectIt _G=grp_lst.begin(); _G!=grp_lst.end(); _G++)
+	                        AddObject(grp_node,(*_G)->Name,(void*)(*_F));
+                    }
+                }else{
+                    for(ObjectIt _F = lst.begin();_F!=lst.end();_F++)
+                        AddObject(node,(*_F)->Name,(void*)(*_F));
+                }
             }
         }
     }

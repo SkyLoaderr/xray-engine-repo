@@ -45,7 +45,7 @@ void CGlow::OnDeviceCreate()
 {
 	if (m_bDefLoad) return;
 	// создать заново shaders
-	if (!m_TexName.IsEmpty()&&!m_ShaderName.IsEmpty()) m_GShader = Device.Shader.Create(m_ShaderName.c_str(),m_TexName.c_str());
+	if (!m_TexName.IsEmpty()&&!m_ShaderName.IsEmpty()) m_GShader.create(m_ShaderName.c_str(),m_TexName.c_str());
 	m_bDefLoad = true;
 }
 
@@ -53,7 +53,7 @@ void CGlow::OnDeviceDestroy()
 {
 	m_bDefLoad = false;
 	// удалить shaders
-	Device.Shader.Delete(m_GShader);
+	m_GShader.destroy();
 }
 
 void __fastcall	CGlow::ShaderChange(PropValue* value)

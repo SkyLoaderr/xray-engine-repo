@@ -49,11 +49,11 @@ bool TUI_Tools::OnCreate()
     paParent = fraLeftBar->paFrames;   VERIFY(paParent);
     m_Flags.set(flChangeAction,FALSE);
     m_Flags.set(flChangeTarget,FALSE);
-// create tools
-    for (int tgt=etFirstTool; tgt<etMaxTarget; tgt++)
-		m_pTools[tgt]=NewToolFromTarget(tgt);
     // scene creating
 	Scene.OnCreate	();
+	// create tools
+    for (int tgt=etFirstTool; tgt<etMaxTarget; tgt++)
+		m_pTools[tgt]=NewToolFromTarget(tgt);
     // change target to Object
 	UI.Command		(COMMAND_CHANGE_TARGET, etObject);
 	m_Props 		= TProperties::CreateForm(0,alClient,OnPropsModified,0,OnPropsClose);
@@ -171,6 +171,7 @@ void __fastcall TUI_Tools::SetTarget   (int tgt,bool bForced)
     }
     UI.RedrawScene();
     fraLeftBar->ChangeTarget(tgt);
+    fraLeftBar->UpdateSnapList();
     UI.Command(COMMAND_UPDATE_TOOLBAR);
     m_Flags.set(flChangeTarget,FALSE);
 }
@@ -236,12 +237,14 @@ void __fastcall PanelMaximizeOnlyClick(TObject *Sender)
 }
 //---------------------------------------------------------------------------
 
-EObjClass TUI_Tools::CurrentClassID(){
-	return (fraLeftBar->ebIgnoreMode->Down)?OBJCLASS_DUMMY:GetTargetClassID();
+EObjClass TUI_Tools::CurrentClassID()
+{
+	return (fraLeftBar&&fraLeftBar->ebIgnoreMode->Down)?OBJCLASS_DUMMY:GetTargetClassID();
 }
 //---------------------------------------------------------------------------
 
-void TUI_Tools::OnShowHint(AStringVec& ss){
+void TUI_Tools::OnShowHint(AStringVec& ss)
+{
 	Scene.OnShowHint(ss);
 }
 //---------------------------------------------------------------------------
@@ -261,8 +264,6 @@ bool TUI_Tools::Pick(TShiftState Shift)
 }
 //---------------------------------------------------------------------------
 
-#include "PropertiesWayPoint.h"
-
 void TUI_Tools::RefreshProperties()
 {
 	m_Props->RefreshForm();
@@ -270,19 +271,9 @@ void TUI_Tools::RefreshProperties()
 
 void TUI_Tools::ShowProperties()
 {
-    ObjectList lst;
-    EObjClass cls_id				= CurrentClassID();
-    if (Scene.GetQueryObjects		(lst,cls_id)){
-        bool bChange				= false;
-        switch(cls_id){
-        case OBJCLASS_WAY:   		TfrmPropertiesWayPoint::Run(&lst,bChange);	break;
-        default:
-            m_Props->ShowProperties	();
-            UpdateProperties		(false);
-        }
-        if (bChange) Scene.UndoSave();
-        UI.RedrawScene();
-    }
+    m_Props->ShowProperties	();
+    UpdateProperties		(false);
+    UI.RedrawScene			();
 }
 //---------------------------------------------------------------------------
 
@@ -303,6 +294,16 @@ void TUI_Tools::RealUpdateProperties()
                 LPCSTR pref				= GetClassNameByClassID((*it)->ClassID);
                 (*it)->FillProp	 		(pref,items);
             }
+        }
+
+        if (OBJCLASS_DUMMY==cls_id){
+            for (int i=0; i<OBJCLASS_COUNT; i++){
+                ESceneCustomMTools* mt 	= Scene.GetMTools(EObjClass(i));
+                if (mt)	mt->FillProp	(GetClassNameByClassID(cls_id),items);
+            }
+        }else{
+            ESceneCustomMTools* mt		= Scene.GetMTools(cls_id);
+            if (mt) mt->FillProp		(GetClassNameByClassID(cls_id),items);
         }
 
 		m_Props->AssignItems		(items,true,"Object Inspector");
