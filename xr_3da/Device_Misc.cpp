@@ -39,7 +39,7 @@ static struct _DF {
 	{"rsWireframe",		rsWireframe		},
 	{"rsAntialias",		rsAntialias		},
 	{"rsNormalize",		rsNormalize		},
-	{"rsOverdrawView",	rsOverdrawView	},
+	{"rsCompressLMAPs",	rsCompressLMAPs	},
     {NULL,0}
 };
 
