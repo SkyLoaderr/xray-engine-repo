@@ -35,7 +35,7 @@ CLevelGraph::CLevelGraph					(LPCSTR filename)
 	// m_header & data
 	m_reader->r					(&m_header,sizeof(m_header));
 	R_ASSERT					(header().version() == XRAI_CURRENT_VERSION);
-	m_row_length				= iFloor((header().box().max.z - header().box().min.z)/header().cell_size() + EPS_L + .5f);
+	m_row_length				= iFloor((header().box().max.z - header().box().min.z)/header().cell_size() + EPS_L + 1.5f);
 	m_palette_size				= m_reader->r_u32();
 	m_cover_palette				= (Cover*)m_reader->pointer();
 	m_reader->advance			(m_palette_size*sizeof(Cover));

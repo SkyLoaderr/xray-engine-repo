@@ -77,12 +77,12 @@ void xrCompiler(LPCSTR name)
 //	mem_Optimize();
 	
 	Phase("Lighting nodes...");
-///	xrLight		();
+	xrLight		();
 //	xrDisplay	();
 	mem_Optimize();
 	
 	Phase("Calculating coverage...");
-//	xrCover		();
+	xrCover		();
 	mem_Optimize();
 	
 	/////////////////////////////////////

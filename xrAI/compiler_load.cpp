@@ -38,10 +38,6 @@ IC CNodePositionConverter::CNodePositionConverter(const SNodePositionOld &Psrc, 
 	np.y		(Psrc.y);
 }
 
-extern bool neighbour(const vertex &v0, const vertex &v1);
-extern bool neighbour(u32 index);
-extern bool neighbour();
-
 void xrLoad(LPCSTR name)
 {
 	// Load CFORM
@@ -195,21 +191,9 @@ void xrLoad(LPCSTR name)
 			CNodePositionConverter(_np,H,np);
 			g_nodes[i].Pos	= vertex_position(np,LevelBB,g_params);
 
-			Fvector			Pdest;
-			Pdest.x			= float(_np.x)*H.size;
-			Pdest.y			= 0;
-			Pdest.z			= float(_np.z)*H.size;
-
-			if (Pdest.distance_to_xz(g_nodes[i].Pos) > (H.size + EPS_L)) {
-				CNodePositionConverter(_np,H,np);
-				g_nodes[i].Pos	= vertex_position(np,LevelBB,g_params);
-			}
-
 			g_nodes[i].Plane.build(g_nodes[i].Pos,g_nodes[i].Plane.n);
 		}
 
 		F->close			();
-
-		neighbour			();
 	}
 }
