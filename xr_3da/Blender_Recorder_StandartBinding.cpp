@@ -178,7 +178,7 @@ class cl_hemi_color	: public R_constant_setup {
 	virtual void setup	(R_constant* C)	{
 		if (marker!=Device.dwFrame)	{
 			CEnvDescriptor&	desc	= g_pGamePersistent->Environment.CurrentEnv;
-			result.set				(desc.hemi_color.x, desc.hemi_color.y, desc.hemi_color.z, 0);
+			result.set				(desc.hemi_color.x, desc.hemi_color.y, desc.hemi_color.z, desc.hemi_color.w);
 		}
 		RCache.set_c	(C,result);
 	}
