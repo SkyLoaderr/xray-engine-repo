@@ -123,13 +123,13 @@ class CAI_Soldier : public CCustomMonster
 		#define MIN_PATROL_DISTANCE				1.f
 		#define MIN_SPINE_TURN_ANGLE			PI_DIV_6
 		
-		#define ASSIGN_SPINE_BONE \
-			if (fabsf(r_torso_target.yaw - r_target.yaw) < MIN_SPINE_TURN_ANGLE) {\
+		#define ASSIGN_SPINE_BONE {\
+			r_target.yaw -= PI_DIV_6;\
+			if (fabsf(r_torso_target.yaw - r_target.yaw) < MIN_SPINE_TURN_ANGLE)\
 				r_spine_target.yaw = r_target.yaw;\
-			}\
-			else {\
+			else\
 				r_target.yaw = r_spine_target.yaw =  (r_torso_target.yaw + r_target.yaw)/2;\
-			}
+		}
 				
 		#define LOOK_AT_DIRECTION(A) {\
 			mk_rotation(A,r_torso_target);\
