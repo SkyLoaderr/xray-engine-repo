@@ -508,15 +508,15 @@ int CLocatorAPI::file_list(FS_QueryMap& dest, LPCSTR path, u32 flags, LPCSTR mas
 			if ((flags&FS_RootOnly)&&strstr(entry_begin,"\\"))	continue;	// folder in folder
 			// check extension
 			if (b_mask){
-                string128 tmp;
-                ref_str nm 			= _GetItem(entry_begin,0,tmp,'.');
-				ref_str ext 		= strext(entry_begin);
+                std::string 		nm;
+                _GetItem			(entry_begin,0,nm,'.');
+				LPCSTR ext			= strext(entry_begin);
                 bool bOK			= false;
                 for (FLMaskVecIt it=masks.begin(); it!=masks.end(); it++){
                 	bool bNM		= true;
                     bool bEXT		= true;
-                    if (it->b_cmp_nm)	if (nm!=it->nm) 	bNM =false;
-                    if (it->b_cmp_ext)	if (ext!=it->ext) 	bEXT=false;
+                    if (it->b_cmp_nm)	if (nm!=*it->nm) 					bNM =false;
+                    if (it->b_cmp_ext)	if (!ext||(0!=strcmp(ext,*it->ext)))bEXT=false;
                     bOK				= bNM&&bEXT;
                     if (bOK)		break;
                 }
