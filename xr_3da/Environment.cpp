@@ -47,9 +47,9 @@ CEnvironment::CEnvironment()
 CEnvironment::~CEnvironment()
 {
 	for(DWORD i=0; i<Suns.size(); i++) delete Suns[i];
-	Device.seqDevCreate.Remove(this);
-	Device.seqDevDestroy.Remove(this);
-	if (Device.bReady) OnDeviceDestroy();
+	Device.seqDevCreate.Remove	(this);
+	Device.seqDevDestroy.Remove	(this);
+	OnDeviceDestroy				();
 }
 
 void CEnvironment::Load(CInifile *pIni, char *section)
@@ -94,7 +94,6 @@ void CEnvironment::Load(CInifile *pIni, char *section)
 
 	// update suns
 	for(DWORD i=0; i<Suns.size(); i++) Suns[i]->Update();
-
 	if (Device.bReady) OnDeviceCreate();
 }
 
@@ -197,8 +196,8 @@ void CEnvironment::OnDeviceCreate()
 	if (pCreator->pLevel->LineExists("environment","sky"))
 	{
 		LPCSTR S = pCreator->pLevel->ReadSTRING("environment","sky");
-		pSkydome = Render->model_Create(S);
-	} else pSkydome = NULL;
+		if (0==pSkydome)	pSkydome = Render->model_Create(S);
+	} else pSkydome			= NULL;
 	
 	c_Invalidate	();
 }
