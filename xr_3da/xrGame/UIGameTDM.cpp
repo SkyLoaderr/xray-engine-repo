@@ -168,7 +168,7 @@ void CUIGameTDM::SetCurrentBuyMenu	()
 		};
 	};
 
-	if (pCurBuyMenu) pCurBuyMenu->SetSkin(pCurSkinMenu->GetActiveIndex());
+	if (pCurBuyMenu) pCurBuyMenu->SetSkin(m_game->local_player->skin);// pCurSkinMenu->GetActiveIndex());
 	if (!pCurBuyMenu) return;
 
 	game_cl_GameState::Player* P = m_game->local_player;
@@ -186,6 +186,7 @@ void		CUIGameTDM::SetCurrentSkinMenu	()
 		if (pCurSkinMenu && pCurSkinMenu->IsShown()) StartStopMenu(pCurSkinMenu);
 
 	pCurSkinMenu = pNewSkinMenu;
+	pCurSkinMenu->SwitchSkin(m_game->local_player->skin);
 };
 
 bool		CUIGameTDM::CanBeReady				()

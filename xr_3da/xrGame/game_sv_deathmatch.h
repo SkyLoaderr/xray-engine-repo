@@ -100,11 +100,12 @@ protected:
 
 
 	void							AllowDeadBodyRemove		(u32 id);
-	void							SpawnActor				(u32 id, LPCSTR N);
+	void							SpawnPlayer				(u32 id, LPCSTR N);
 	bool							GetPosAngleFromActor	(u32 id, Fvector& Pos, Fvector &Angle);
 //	void							SpawnItem4Actor			(u32 actorId, LPCSTR N);
 	void							SpawnWeapon4Actor		(u32 actorId,  LPCSTR N, u8 Addons = 0);
 	void							KillPlayer				(u32 id_who);
+	virtual		void				RespawnPlayer			(u32 id_who, bool NoSpectator);
 
 	game_sv_Deathmatch::TeamStruct*	GetTeamData				(u8 Team);
 

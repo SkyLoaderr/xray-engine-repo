@@ -21,6 +21,9 @@ protected:
 	BOOL							m_delayedRoundEnd;
 	u32								m_roundEndDelay;
 
+	int								m_iReinforcementTime;		//0 - Immediate, -1 - after artefact spawn , other - reinforcement
+	u32								m_dwNextReinforcementTime;
+
 	u32								m_dwArtefactRespawnDelta;
 	u32								m_dwArtefactStayTime;
 
@@ -40,6 +43,8 @@ protected:
 	u16								artefactBearerID;//ah,ZoneMap
 	u8								teamInPossession;//ah,ZoneMap
 
+	bool							bNoLostMessage;
+
 	void							Artefact_PrepareForSpawn	();
 	void							Artefact_PrepareForRemove	();
 
@@ -56,6 +61,7 @@ public:
 	// Events	
 	virtual		void				OnRoundStart			();							// старт раунда
 	virtual		void				OnPlayerKillPlayer		(u32 id_killer, u32 id_killed);
+	virtual		void				OnPlayerReady			(u32 id_who);
 
 	virtual		void				OnTimelimitExceed		();
 
@@ -87,4 +93,6 @@ public:
 
 	virtual		void				net_Export_State		(NET_Packet& P, u32 id_to);				// full state
 				bool				ArtefactSpawn_Allowed	();
+	//-------------------------------------------------------------------------------
+	virtual		void				RespawnAllNotAlivePlayers	();
 };

@@ -39,6 +39,7 @@ void	game_PlayerState::net_Export		(NET_Packet& P)
 	P.w_u16			(	ping	);
 
 	P.w_u16			(	GameID	);
+	P.w_u8			(	skin	);
 };
 
 void	game_PlayerState::net_Import		(NET_Packet& P)
@@ -52,6 +53,7 @@ void	game_PlayerState::net_Import		(NET_Packet& P)
 	P.r_u16			(	ping	);
 
 	P.r_u16			(	GameID	);
+	P.r_u8			(	skin	);
 };
 
 game_TeamState::game_TeamState()

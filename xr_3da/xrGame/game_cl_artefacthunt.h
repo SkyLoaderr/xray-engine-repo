@@ -19,6 +19,7 @@ public:
 	u16									artefactBearerID;//ah,ZoneMap
 	u8									teamInPossession;//ah,ZoneMap
 	u16									artefactID;
+	s32									dReinforcementTime;
 
 public :
 										game_cl_ArtefactHunt	();

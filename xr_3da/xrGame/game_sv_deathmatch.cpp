@@ -54,7 +54,7 @@ void	game_sv_Deathmatch::OnRoundStart			()
 		//---------------------------------------
 
 		if (ps->Skip) continue;
-		SpawnActor(get_it_2_id(it), "spectator");
+		SpawnPlayer(get_it_2_id(it), "spectator");
 	}
 	///////////////////////////////////////////
 	m_CorpseList.clear();
@@ -65,7 +65,10 @@ void	game_sv_Deathmatch::OnPlayerKillPlayer		(u32 id_killer, u32 id_killed)
 	game_PlayerState*	ps_killer	=	get_id	(id_killer);
 	game_PlayerState*	ps_killed	=	get_id	(id_killed);
 	if (!ps_killed || !ps_killer) return;
+	
 	ps_killed->flags				|=	GAME_PLAYER_FLAG_VERY_VERY_DEAD;
+//	ps_killed->flags				&= ~GAME_PLAYER_FLAG_READY;
+
 	ps_killed->deaths				+=	1;
 	TeamStruct* pTeam		= GetTeamData(u8(ps_killer->team));
 	if (ps_killer == ps_killed)	
@@ -249,47 +252,9 @@ void	game_sv_Deathmatch::OnPlayerReady			(u32 id)
 //			LPCSTR	options			=	get_name_id	(id);
 			game_PlayerState*	ps	=	get_id	(id);
 			if (ps->Skip) break;
-			
-			//------------------------------------------------------------
-			xrClientData* xrCData	=	m_server->ID_to_client(id);
-			if (!xrCData || !xrCData->owner) break;
-			CSE_Abstract* pOwner = xrCData->owner;
-			CSE_ALifeCreatureActor	*pA	=	dynamic_cast<CSE_ALifeCreatureActor*>(pOwner);
-			CSE_Spectator			*pS =	dynamic_cast<CSE_Spectator*>(pOwner);
 
-			if (pA)
-			{
-				//------------------------------------------------------------			
-				AllowDeadBodyRemove(id);
-				//------------------------------------------------------------
-				m_CorpseList.push_back(pOwner->ID);
-				//------------------------------------------------------------
-				SpawnActor(id, "spectator");
-				//------------------------------------------------------------
-			}
-			else
-			{
-				R_ASSERT2	(pS,"Respawned Client is not Actor nor Spectator");
-				if (pS)
-				{
-					//------------------------------------------------------------
-					if (pS->owner != m_server->GetServer_client())
-					{
-						pS->owner = m_server->GetServer_client();
-					};
-					//------------------------------------------------------------
-					//remove spectator entity
-					NET_Packet			P;
-					u_EventGen			(P,GE_DESTROY,pS->ID);
-					//		pObject->u_EventSend		(P);
-					Level().Send(P,net_flags(TRUE,TRUE));
-					//------------------------------------------------------------
-					SpawnActor(id, "mp_actor");
-					//------------------------------------------------------------
-					SpawnWeaponsForActor(xrCData->owner, ps);
-					//------------------------------------------------------------
-				};				
-			};			
+			//------------------------------------------------------------
+			RespawnPlayer(id, false);
 		}break;
 	};
 }
@@ -311,7 +276,7 @@ void game_sv_Deathmatch::OnPlayerConnect	(u32 id_who)
 		return;
 	}
 	ps_who->Skip = false;
-	SpawnActor(id_who, "spectator");
+	SpawnPlayer(id_who, "spectator");
 
 	// Send Message About Client Connected
 	if (xrCData)
@@ -395,7 +360,7 @@ void	game_sv_Deathmatch::AllowDeadBodyRemove		(u32 id)
 	};	
 };
 
-void	game_sv_Deathmatch::SpawnActor				(u32 id, LPCSTR N)
+void	game_sv_Deathmatch::SpawnPlayer				(u32 id, LPCSTR N)
 {
 	xrClientData* CL	= m_server->ID_to_client(id);
 	game_PlayerState*	ps_who	=	&CL->ps;//get_id	(id);
@@ -1228,3 +1193,52 @@ void game_sv_Deathmatch::SetTeamScore(u32 idx, int val)
 	VERIFY( (idx>=0) && (idx<teams.size()) );
 	teams[idx].score = val;
 }
+
+void	game_sv_Deathmatch::RespawnPlayer			(u32 id_who, bool NoSpectator)
+{
+	//------------------------------------------------------------
+	xrClientData* xrCData	=	m_server->ID_to_client(id_who);
+	if (!xrCData || !xrCData->owner) return;
+	game_PlayerState*	ps	=	&(xrCData->ps);
+	CSE_Abstract* pOwner = xrCData->owner;
+	CSE_ALifeCreatureActor	*pA	=	dynamic_cast<CSE_ALifeCreatureActor*>(pOwner);
+	CSE_Spectator			*pS =	dynamic_cast<CSE_Spectator*>(pOwner);
+
+	if (pA)
+	{
+		//------------------------------------------------------------			
+		AllowDeadBodyRemove(id_who);
+		//------------------------------------------------------------
+		m_CorpseList.push_back(pOwner->ID);
+		//------------------------------------------------------------
+	};
+
+	if (pA && !NoSpectator)
+	{
+		//------------------------------------------------------------
+		SpawnPlayer(id_who, "spectator");
+		//------------------------------------------------------------
+	}
+	else
+	{
+		//------------------------------------------------------------
+		if (pOwner->owner != m_server->GetServer_client())
+		{
+			pOwner->owner = m_server->GetServer_client();
+		};
+		//------------------------------------------------------------
+		//remove spectator entity
+		if (pS)
+		{
+			NET_Packet			P;
+			u_EventGen			(P,GE_DESTROY,pS->ID);
+			//		pObject->u_EventSend		(P);
+			Level().Send(P,net_flags(TRUE,TRUE));
+		};
+		//------------------------------------------------------------
+		SpawnPlayer(id_who, "mp_actor");
+		//------------------------------------------------------------
+		SpawnWeaponsForActor(xrCData->owner, ps);
+		//------------------------------------------------------------
+	};
+};

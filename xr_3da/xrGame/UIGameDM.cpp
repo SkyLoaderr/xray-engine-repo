@@ -36,9 +36,7 @@ CUIGameDM::CUIGameDM()
 
 	m_bBuyEnabled	= TRUE;
 
-	m_bSkinSelected	= FALSE;
-
-	m_bSkinSelected	= FALSE;
+	m_bSkinSelected	= TRUE;
 
 /*
 	TimeMsgStatic.SetFont			(HUD().pFontDI);

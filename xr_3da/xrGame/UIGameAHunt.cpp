@@ -16,6 +16,7 @@
 
 #define BUY_MSG_COLOR		0xffffff00
 #define SCORE_MSG_COLOR		0xffffffff
+#define REINFORCEMENT_MSG_COLOR		0xff8080ff
 #define ROUND_RESULT_COLOR	0xfff0fff0
 #define TODO_MSG_COLOR		0xff00ff00
 //--------------------------------------------------------------------
@@ -93,17 +94,18 @@ void CUIGameAHunt::Init	()
 	pSkinMenuTeam2 = InitSkinMenu(2);
 	//----------------------------------------------------------------
 
+	m_reinforcement_caption			=	"ah_reinforcement";		
+	m_gameCaptions.addCustomMessage(m_reinforcement_caption, 0.0f, -0.9f, 0.02f, HUD().pFontDI, REINFORCEMENT_MSG_COLOR, "");
 
 	m_score_caption					=	"ah_score";		
-	m_gameCaptions.addCustomMessage(m_score_caption, 0.0f, -0.9f, 0.02f, HUD().pFontDI, SCORE_MSG_COLOR, "");
+	m_gameCaptions.addCustomMessage(m_score_caption, 0.0f, -0.85f, 0.02f, HUD().pFontDI, SCORE_MSG_COLOR, "");
 
 	m_round_result_caption			=	"ah_round_result";
 	m_gameCaptions.addCustomMessage(m_round_result_caption, 0.0f, 0.0f, 0.02f, HUD().pFontDI, ROUND_RESULT_COLOR, "");
 
 	m_todo_caption					=	"ah_todo";
-	m_gameCaptions.addCustomMessage(m_todo_caption, 0.0f, -0.85f, 0.02f, HUD().pFontDI, TODO_MSG_COLOR, "");
+	m_gameCaptions.addCustomMessage(m_todo_caption, 0.0f, -0.8f, 0.02f, HUD().pFontDI, TODO_MSG_COLOR, "");
 	m_gameCaptions.customizeMessage(m_todo_caption, CUITextBanner::tbsFlicker)->fPeriod = 0.5f;
-	
 
 	m_buy_msg_caption				=	"ah_buy";
 	m_gameCaptions.addCustomMessage(m_buy_msg_caption, 0.0f, 0.9f, 0.02f, HUD().pFontDI, BUY_MSG_COLOR, "");
@@ -240,6 +242,11 @@ bool		CUIGameAHunt::CanBeReady				()
 
 	return true;
 };
+
+void CUIGameAHunt::SetReinforcementCaption(LPCSTR str)
+{
+	m_gameCaptions.setCaption(m_reinforcement_caption, str, REINFORCEMENT_MSG_COLOR, true);
+}
 
 void CUIGameAHunt::SetScoreCaption(LPCSTR str)
 {

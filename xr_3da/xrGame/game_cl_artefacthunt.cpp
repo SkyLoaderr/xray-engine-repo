@@ -40,6 +40,14 @@ void game_cl_ArtefactHunt::net_import_state	(NET_Packet& P)
 	P.r_u16	(artefactBearerID);
 	P.r_u8	(teamInPossession);
 	P.r_u16	(artefactID);
+
+	if (P.r_u8() != 0)
+	{
+		P.r_s32	(dReinforcementTime);
+		dReinforcementTime += Level().timeServer();
+	}
+	else
+		dReinforcementTime = 0;
 }
 
 
@@ -207,6 +215,7 @@ void game_cl_ArtefactHunt::shedule_Update			(u32 dt)
 	inherited::shedule_Update		(dt);
 
 	//out game information
+	m_gameUI->SetReinforcementCaption("");
 	m_gameUI->SetBuyMsgCaption		("");
 	m_gameUI->SetScoreCaption		("");
 	m_gameUI->SetTodoCaption		("");
@@ -232,15 +241,36 @@ void game_cl_ArtefactHunt::shedule_Update			(u32 dt)
 				game_TeamState team1 = teams[1];
 
 				string256 S;
+				
+				if (dReinforcementTime != 0 && Level().CurrentEntity())
+				{
+					u32 CurTime = Level().timeServer();
+					u32 dTime;
+					if (s32(CurTime) > dReinforcementTime) dTime = 0;
+					else dTime = iCeil(float(dReinforcementTime - CurTime) / 1000);
+
+					sprintf(S,		"Next reinforcement will arrive at . . .%d", dTime);
+					 
+					CActor* pActor = NULL;
+					if (Level().CurrentEntity()->SUB_CLS_ID == CLSID_OBJECT_ACTOR)
+						pActor = dynamic_cast<CActor*>(Level().CurrentEntity());
+
+					if (Level().CurrentEntity()->SUB_CLS_ID == CLSID_SPECTATOR || 
+						(pActor && !pActor->g_Alive()))
+							m_gameUI->SetReinforcementCaption(S);
+					else
+						m_gameUI->SetReinforcementCaption("");
+
+				};
+
 				s16 lt = local_player->team;
 				sprintf(S,		"Your Team : %3d - Enemy Team %3d - from %3d Artefacts",
-								teams[lt].score, 
+								teams[lt-1].score, 
 								teams[(lt==1)?0:1].score, 
 								artefactsNum);
 				m_gameUI->SetScoreCaption(S);
-
 	
-			if ( (artefactBearerID==0) && (artefactID!=0) )
+			if ( (artefactBearerID==0))// && (artefactID!=0) )
 				{
 					m_gameUI->SetTodoCaption("Grab the Artefact");
 				}

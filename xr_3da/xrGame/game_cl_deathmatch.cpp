@@ -77,6 +77,5 @@ void game_cl_Deathmatch::net_import_state	(NET_Packet& P)
 		game_TeamState	ts;
 		P.r				(&ts,sizeof(game_TeamState));
 		teams.push_back	(ts);
-	}
-	
+	};
 }
