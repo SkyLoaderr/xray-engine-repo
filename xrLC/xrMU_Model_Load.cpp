@@ -5,7 +5,10 @@ void xrMU_Reference::Load(CStream& F)
 {
 	b_mu_reference		R;
 	F.Read				(&R,sizeof(R));
-	model				= pBuild->mu_models[R]
+	model				= pBuild->mu_models[R.model_index];
+	xform				= R.transform;
+	flags				= R.flags;
+	sector				= R.sector;
 }
 
 void xrMU_Model::Load(CStream& F)
