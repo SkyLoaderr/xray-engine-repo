@@ -115,7 +115,7 @@ namespace PS
 
 	struct  	SParams
 	{
-		ref_str			m_Name;
+		string64			m_Name;
 		// params
 		float			m_fLife;
 		Pair<float>		m_Size;
@@ -147,18 +147,18 @@ namespace PS
 	{
 		ref_shader			m_CachedShader;
 		u8					m_Reserved	[60];
-		ref_str				m_Computer;
-		ref_str				m_ShaderName;
-		ref_str				m_TextureName;
+		string64			m_Computer;
+		string64			m_ShaderName;
+		string64			m_TextureName;
 		u32  				m_dwCreationTime;
 		SEmitterDef			m_DefaultEmitter;
 
 		void 				Reset()
 		{
 			m_Reserved[0]	= 0;
-			m_Computer		= 0;
-			m_ShaderName	= 0;
-			m_TextureName	= 0;
+			m_Computer[0]	= 0;
+			m_ShaderName[0]	= 0;
+			m_TextureName[0]= 0;
 			m_dwCreationTime= 0;
 			m_DefaultEmitter.Reset();
 		}
@@ -205,11 +205,12 @@ namespace PS
 			string64 new_name;
 			strcpy(new_name,N);
 			strlwr(new_name);
-			if (strcmp(*m_Name,new_name)!=0){
-				m_Name		= new_name;
+			if (strcmp(m_Name,new_name)!=0){
+				strcpy(m_Name,new_name);
 
 				// Computer
-				m_Computer	= Core.CompName;
+				strcpy(m_Computer,Core.CompName);
+				strlwr(m_Computer);
 
 				// Time
 				_tzset(); time( (long*)&m_dwCreationTime );
@@ -219,11 +220,13 @@ namespace PS
 		};
 		void				SetShader(const char* sh)
 		{
-			m_ShaderName	= sh;
+			VERIFY(xr_strlen(sh)<64);
+			strcpy(m_ShaderName,sh);
 		}
 		void				SetTexture(const char* tx)
 		{
-			m_TextureName	= tx;
+			VERIFY(xr_strlen(tx)<64);
+			strcpy(m_TextureName,tx);
 		}
 #ifdef _EDITOR
 		void 				FillProp(LPCSTR pref, PropItemVec& items);
