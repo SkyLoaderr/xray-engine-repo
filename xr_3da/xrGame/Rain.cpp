@@ -100,7 +100,7 @@ void CEffect_Rain::p_create		()
 		Particle&	P	= particle_pool[it];
 		P.prev			= it?(&particle_pool[it-1]):0;
 		P.next			= (it<(particle_pool.size()-1))?(&particle_pool[it+1]):0;
-		P.visual		= (CPSVisual*) ::Render.Models.CreatePS("rain_drops",&P.emitter);
+		P.visual		= (CPSVisual*) ::Render.Models.CreatePS("effects\\rain",&P.emitter);
 	}
 	
 	// active and idle lists
