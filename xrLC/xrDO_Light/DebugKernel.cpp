@@ -25,6 +25,7 @@ static BOOL CALLBACK verifyProc( HWND hw, UINT msg, WPARAM wp, LPARAM lp )
 			SetWindowText(GetDlgItem(hw,IDC_LINE),dlgLine);
 
 			// Stack
+			/*
 			for (DWORD i=0; i<Debug.GetCount(); i++)
 			{
 				Log(Debug.GetName(i));
@@ -32,6 +33,7 @@ static BOOL CALLBACK verifyProc( HWND hw, UINT msg, WPARAM wp, LPARAM lp )
 					GetDlgItem(hw,IDC_STACK), LB_ADDSTRING,
 					0, (LPARAM) Debug.GetName(i));
 			}
+			*/
 		}
 		break;
 	case WM_DESTROY:

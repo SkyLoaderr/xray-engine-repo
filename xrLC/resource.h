@@ -1,5 +1,5 @@
 //{{NO_DEPENDENCIES}}
-// Microsoft Developer Studio generated include file.
+// Microsoft Visual C++ generated include file.
 // Used by resource.rc
 //
 #define ID_VIEW_NDEPTH                  2
@@ -22,6 +22,7 @@
 #define IDC_LINE                        1002
 #define IDC_DESC                        1003
 #define IDSTOP                          1004
+#define IDSTOP2                         1005
 #define IDC_STACK                       1006
 #define IDC_PROGRESS                    1008
 #define IDC_STAGE                       1010
