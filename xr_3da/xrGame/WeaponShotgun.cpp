@@ -8,8 +8,6 @@
 CWeaponShotgun::CWeaponShotgun(void) : CWeaponCustomPistol("TOZ34")
 {
     m_eSoundShotBoth	= ESoundTypes(SOUND_TYPE_WEAPON_SHOOTING);
-	
-	m_pFlameParticles2 = NULL;
 }
 
 CWeaponShotgun::~CWeaponShotgun(void)
@@ -53,7 +51,7 @@ void CWeaponShotgun::OnShot ()
 
 void CWeaponShotgun::Fire2Start () 
 {
-	if(bPending) return;
+	if(m_bPending) return;
 
 	inherited::Fire2Start();
 
@@ -213,22 +211,7 @@ bool CWeaponShotgun::Action(s32 cmd, u32 flags)
 	return false;
 }
 
-void CWeaponShotgun::StartFlameParticles2	()
-{
-	StartParticles (m_pFlameParticles2, m_sFlameParticles, vLastFP2);
-}
-void CWeaponShotgun::StopFlameParticles2	()
-{
-	StopParticles (m_pFlameParticles2);
-}
-void CWeaponShotgun::UpdateFlameParticles2	()
-{
-	UpdateParticles (m_pFlameParticles2, vLastFP2);
-}
-
 void  CWeaponShotgun::UpdateCL	()
 {
 	inherited::UpdateCL();
-
-	if(m_pFlameParticles2) UpdateFlameParticles2	();
 }

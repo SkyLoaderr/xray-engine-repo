@@ -128,14 +128,14 @@ void CWeaponMagazined::TryReload()
 		
 		if(IsMisfire())
 		{
-			bPending = true;
+			m_bPending = true;
 			SwitchState(eReload); 
 			return;
 		}
 
 		if(m_pAmmo) 
 		{
-			bPending = true;
+			m_bPending = true;
 			SwitchState(eReload); 
 			return;
 		} 
@@ -146,7 +146,7 @@ void CWeaponMagazined::TryReload()
 			if(m_pAmmo) 
 			{ 
 				m_ammoType = i; 
-				bPending = true;
+				m_bPending = true;
 				SwitchState(eReload); 
 				return; 
 			}
@@ -179,7 +179,10 @@ bool CWeaponMagazined::IsAmmoAvailable()
 
 void CWeaponMagazined::OnMagazineEmpty() 
 {
-	bPending = true;
+	m_bPending = true;
+
+	FireEnd();	
+
 	SwitchState(eMagEmpty); 
 	inherited::OnMagazineEmpty();
 }
@@ -477,7 +480,6 @@ void CWeaponMagazined::OnShot		()
 	OnShellDrop					();
 	
 	// ќгонь из ствола
-	if(m_pFlameParticles && !m_pFlameParticles->IsLooped()) StopFlameParticles();
 	StartFlameParticles	();
 
 	//дым из ствола
@@ -549,7 +551,7 @@ void CWeaponMagazined::OnAnimationEnd()
 }
 void CWeaponMagazined::switch2_Idle	()
 {
-	bPending = false;
+	m_bPending = false;
 	PlayAnimIdle();
 }
 void CWeaponMagazined::switch2_Fire	()
@@ -565,7 +567,7 @@ void CWeaponMagazined::switch2_Reload()
 	///if (sndReload.feedback)	sndReload.feedback->set_volume(.2f);
 	
 	PlayAnimReload();
-	bPending = true;
+	m_bPending = true;
 }
 void CWeaponMagazined::switch2_Hiding()
 {
@@ -576,7 +578,7 @@ void CWeaponMagazined::switch2_Hiding()
 	
 
 	PlayAnimHide();
-	bPending = true;
+	m_bPending = true;
 
 	if (Local()) Level().Cameras.RemoveEffector	(cefShot);
 }
@@ -589,7 +591,7 @@ void CWeaponMagazined::switch2_Showing()
 	Sound->play_at_pos		(sndShow,H_Root(),vLastFP);
 	//if (sndShow.feedback)	sndShow.feedback->set_volume(.3f);
 
-	bPending = true;
+	m_bPending = true;
 	PlayAnimShow();
 }
 

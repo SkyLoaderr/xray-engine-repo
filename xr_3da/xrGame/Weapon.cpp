@@ -5,11 +5,12 @@
 #include "stdafx.h"
 #include "effectorshot.h"
 #include "Weapon.h"
-#include "WeaponHUD.h"
+
 
 #include "ParticlesObject.h"
 
 #include "HUDManager.h"
+#include "WeaponHUD.h"
 #include "entity_alive.h"
 #include "actor.h"
 
@@ -43,14 +44,11 @@ CWeapon::CWeapon(LPCSTR name)
 	STATE				= NEXT_STATE		= eHidden;
 
 	SetDefaults			();
-	m_pHUD				= xr_new<CWeaponHUD> (this);
 
 	m_WpnName			= name;
 	m_Offset.identity	();
 
-	pstrWallmark		= 0;
 	hUIIcon				= 0;
-	hWallmark			= 0;
 
 	vLastFP.set			(0,0,0);
 	vLastFP2.set		(0,0,0);
@@ -68,7 +66,6 @@ CWeapon::CWeapon(LPCSTR name)
 	m_ammoName			= NULL;
 
 	m_pPhysicsShell		= 0;
-	hud_mode			= FALSE;
 	
 	eHandDependence		= hdNone;
 
@@ -81,19 +78,18 @@ CWeapon::CWeapon(LPCSTR name)
 	m_shotLight = true;
 
 
-	m_sFlameParticles = m_sSmokeParticles = NULL;
+	m_sFlameParticles = m_sFlameParticles2 = NULL;
+	m_sSmokeParticles = NULL;
 	m_sShellParticles = NULL;
+
 }
 
 CWeapon::~CWeapon		()
 {
 	::Render->light_destroy	(light_render);
 
-	xr_delete			(m_pHUD);
 	xr_delete			(m_pPhysicsShell);
-
 	hUIIcon.destroy		();
-	hWallmark.destroy	();
 }
 
 void CWeapon::Hit(float P, Fvector &dir,	
@@ -106,19 +102,6 @@ void CWeapon::Hit(float P, Fvector &dir,
 }
 
 
-void CWeapon::animGet	(MotionSVec& lst, LPCSTR prefix)
-{
-	CMotionDef* M		= m_pHUD->animGet(prefix);
-	if (M)				lst.push_back(M);
-	for (int i=0; i<MAX_ANIM_COUNT; ++i)
-	{
-		string128		sh_anim;
-		sprintf			(sh_anim,"%s%d",prefix,i);
-		M				= m_pHUD->animGet(sh_anim);
-		if (M)			lst.push_back(M);
-	}
-	R_ASSERT2(!lst.empty(),prefix);
-}
 
 void CWeapon::ShaderCreate	(ref_shader &dest, LPCSTR S, LPCSTR T)
 {
@@ -242,20 +225,22 @@ void CWeapon::UpdateFP		()
 			Fmatrix& parent			= m_pHUD->Transform	();
 
 			Fvector& fp				= m_pHUD->vFirePoint;
+			Fvector& fp2			= m_pHUD->vFirePoint2;
 			Fvector& sp				= m_pHUD->vShellPoint;
 			//Fvector& sd				= m_pHUD->vShellDir;
 
 			fire_mat.transform_tiny	(vLastFP,fp);
 			parent.transform_tiny	(vLastFP);
+			fire_mat.transform_tiny	(vLastFP2,fp2);
+			parent.transform_tiny	(vLastFP2);
+
+			
 			fire_mat.transform_tiny	(vLastSP,sp);
 			parent.transform_tiny	(vLastSP);
 
 			vLastSD.set				(0.f,0.f,1.f);
 			parent.transform_dir	(vLastSD);
 
-			Fvector& fp2			= m_pHUD->vFirePoint2;
-			fire_mat.transform_tiny	(vLastFP2,fp2);
-			parent.transform_tiny	(vLastFP2);
 			
 			vLastFD.set				(0.f,0.f,1.f);
 			parent.transform_dir	(vLastFD);
@@ -263,10 +248,11 @@ void CWeapon::UpdateFP		()
 			// 3rd person or no parent
 			Fmatrix& parent			= XFORM();
 			Fvector& fp				= vFirePoint;
+			Fvector& fp2			= vFirePoint2;
 			Fvector& sp				= vShellPoint;
-			//Fvector& sd				= vShellDir;
 
 			parent.transform_tiny	(vLastFP,fp);
+			parent.transform_tiny	(vLastFP2,fp2);
 			parent.transform_tiny	(vLastSP,sp);
 			
 			vLastFD.set				(0.f,0.f,1.f);
@@ -276,8 +262,7 @@ void CWeapon::UpdateFP		()
 			vLastSD.set				(0.f,0.f,1.f);
 			parent.transform_dir	(vLastSD);
 
-			Fvector& fp2			= vFirePoint2;
-			parent.transform_tiny	(vLastFP2,fp2);
+					
 
 /*			HUD().pHUDFont->Color	(0xffffffff);
 			HUD().pHUDFont->OutSet	(400,300);
@@ -318,12 +303,7 @@ void CWeapon::Load		(LPCSTR section)
 	fTimeToFire			= pSettings->r_float		(section,"rpm");
 	fTimeToFire			= 60 / fTimeToFire;
 
-	LPCSTR	name		= pSettings->r_string		(section,"wm_name");
-	pstrWallmark		= name;
 	fWallmarkSize		= pSettings->r_float		(section,"wm_size");
-
-	hud_sect			= pSettings->r_string		(section,"hud");
-	m_pHUD->Load		(*hud_sect);
 
 	// load ammo classes
 	m_ammoTypes.clear	(); 
@@ -403,6 +383,8 @@ void CWeapon::Load		(LPCSTR section)
 	// flames
 	if(pSettings->line_exist(section,"flame_particles"))
 		m_sFlameParticles	= pSettings->r_string		(section,"flame_particles" );
+	if(pSettings->line_exist(section,"flame_particles_2"))
+		m_sFlameParticles2 = pSettings->r_string(section, "flame_particles_2");
 
 	if(pSettings->line_exist(section,"smoke_particles"))
 			m_sSmokeParticles = pSettings->r_string (section,"smoke_particles" );
@@ -417,9 +399,6 @@ void CWeapon::Load		(LPCSTR section)
 
 	// hands
 	eHandDependence		= EHandDependence(pSettings->r_s32(section,"hand_dependence"));
-
-	// slot
-	iSlotBinding = m_slot = pSettings->r_s32		(section,"slot");
 
 	m_fMinRadius		= pSettings->r_float		(section,"min_radius");
 	m_fMaxRadius		= pSettings->r_float		(section,"max_radius");
@@ -471,6 +450,21 @@ void CWeapon::Load		(LPCSTR section)
 	}
 }
 
+void CWeapon::animGet	(MotionSVec& lst, LPCSTR prefix)
+{
+	CMotionDef* M		= m_pHUD->animGet(prefix);
+	if (M)				lst.push_back(M);
+	for (int i=0; i<MAX_ANIM_COUNT; ++i)
+	{
+		string128		sh_anim;
+		sprintf			(sh_anim,"%s%d",prefix,i);
+		M				= m_pHUD->animGet(sh_anim);
+		if (M)			lst.push_back(M);
+	}
+	R_ASSERT2(!lst.empty(),prefix);
+}
+
+
 BOOL CWeapon::net_Spawn		(LPVOID DC)
 {
 	BOOL bResult					= inherited::net_Spawn	(DC);
@@ -497,8 +491,6 @@ BOOL CWeapon::net_Spawn		(LPVOID DC)
 
 	ShaderCreate				(hUIIcon,"hud\\default","");
 
-	if (0==pstrWallmark)		hWallmark			= 0; 
-	else						hWallmark.create	("effects\\wallmark",*pstrWallmark);
 	VERIFY						(m_pPhysicsShell);
 	CSE_Abstract *l_pE = (CSE_Abstract*)DC;
 	if(l_pE->ID_Parent==0xffff) m_pPhysicsShell->Activate(XFORM(),0,XFORM());
@@ -528,7 +520,17 @@ BOOL CWeapon::net_Spawn		(LPVOID DC)
 	}
 */
 	UpdateAddonsVisibility();
-	StopFlameParticles();
+
+	//подготовить объекты партиклов
+	if(m_sFlameParticles)
+	{
+		for(int i=0; i<PARTICLES_CACHE_SIZE; i++)
+		{
+			m_pFlameParticlesCache[i] = 
+				xr_new<CParticlesObject>(m_sFlameParticles,Sector(),false);
+		}
+		m_iNextParticle = 0;
+	}
 
 	return bResult;
 }
@@ -541,7 +543,19 @@ void CWeapon::net_Destroy	()
 	xr_delete				(m_pPhysicsShell);
 
 	hUIIcon.destroy			();
-	hWallmark.destroy		();
+
+
+	//удалить объекты партиклов
+	if(m_sFlameParticles)
+	{
+		for(int i=0; i<PARTICLES_CACHE_SIZE; i++)
+		{
+			m_pFlameParticlesCache[i]->Stop();
+			m_pFlameParticlesCache[i]->PSI_destroy();
+			m_pFlameParticlesCache[i] = NULL;
+		}
+		m_iNextParticle = 0;
+	}
 }
 
 void CWeapon::net_Export	(NET_Packet& P)
@@ -593,7 +607,7 @@ void CWeapon::OnH_B_Independent	()
 
 	//завершить принудительно все процессы что шли
 	FireEnd();
-	bPending = false;
+	m_bPending = false;
 	SwitchState(eIdle);
 
 	hud_mode					= FALSE;
@@ -698,7 +712,8 @@ void CWeapon::UpdateCL		()
 
 	//нарисовать партиклы
 	UpdateFP();
-	if(m_pFlameParticles) UpdateFlameParticles();
+	if(m_pFlameParticles)UpdateFlameParticles();
+	if(m_pFlameParticles2) UpdateFlameParticles2();
 
 	make_Interpolation();
 }
@@ -724,14 +739,13 @@ void CWeapon::renderable_Render		()
 		UpdateFP	();
 		Light_Render(vLastFP);
 	}
-	if (m_pHUD /*&& hud_mode*/)	
-		PSkeletonAnimated(m_pHUD->Visual())->Update	();
+	inherited::renderable_Render		();
 }
 
 void CWeapon::signal_HideComplete()
 {
 	if(H_Parent()) setVisible(FALSE);
-	bPending = false;
+	m_bPending = false;
 	if(m_pHUD) m_pHUD->Hide();
 }
 
@@ -739,8 +753,9 @@ void CWeapon::SetDefaults()
 {
 	bWorking			= false;
 	bWorking2			= false;
-	bPending			= false;
+	m_bPending			= false;
 	m_pFlameParticles	= NULL;
+	m_pFlameParticles2	= NULL;
 
 	m_bUsingCondition = true;
 	bMisfire = false;

@@ -85,9 +85,6 @@ public:
 	bool m_bGrenadeMode;
 
 
-	//имя пратиклов для огня из подствольника
-	LPCSTR m_sGrenadeFlameParticles;
-
 
 	Fvector* m_pGrenadePoint;
 	CWeaponFakeGrenade* m_pGrenade;

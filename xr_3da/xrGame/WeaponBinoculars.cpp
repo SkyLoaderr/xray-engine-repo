@@ -59,9 +59,6 @@ void CWeaponBinoculars::Load	(LPCSTR section)
 	dispCrouchFactor	= pSettings->r_float	(section,"disp_crouch_factor");
 	eHandDependence		= CWeapon::EHandDependence(pSettings->r_s32(section,"hand_dependence"));
 
-	// slot
-	iSlotBinding		= pSettings->r_s32		(section,"slot");
-
 	setVisible			(FALSE);
 
 	// Sounds
@@ -139,7 +136,7 @@ void CWeaponBinoculars::UpdateCL	()
 	}
 
 	// setVisible			(TRUE);
-	bPending			= FALSE;
+	m_bPending			= FALSE;
 	
 	// ref_sound fire loop
 	UpdateFP					();
@@ -154,7 +151,7 @@ void CWeaponBinoculars::Hide	()
 {
 	if (Local())	SwitchState						(eHiding);
 	//FireEnd							();
-	//bPending						= TRUE;
+	//m_bPending						= TRUE;
 
 	//// add shot effector
 	//if (Local())					
@@ -233,7 +230,7 @@ void CWeaponBinoculars::switch2_Idle	()
 void CWeaponBinoculars::switch2_Hiding	()
 {
 	FireEnd					();
-	bPending				= TRUE;
+	m_bPending				= TRUE;
 	Sound->play_at_pos		(sndHide,H_Root(),vLastFP);
 	m_pHUD->animPlay		(mhud_hide[Random.randI(mhud_hide.size())],TRUE,this);
 	if (Local())			Level().Cameras.RemoveEffector	(cefShot);

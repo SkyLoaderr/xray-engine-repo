@@ -148,10 +148,7 @@ BOOL __stdcall CShootingObject::firetrace_callback(Collide::rq_result& result, L
 		pThisWeapon->StaticObjectHit(result, hit_material_id);
 	}
 
-	SGameMtl* mtl = GMLib.GetMaterialByIdx(hit_material_id);
-
-	pThisWeapon->m_fCurrentHitPower*= mtl->fShootFactor;
-
+	//проверить достаточно ли силы хита, чтобы двигаться дальше
 	if(pThisWeapon->m_fCurrentHitPower>HIT_POWER_EPSILON)
 		return TRUE;
 	else
@@ -163,9 +160,13 @@ void CShootingObject::DynamicObjectHit (Collide::rq_result& R, u16 target_materi
 	//только для динамических объектов
 	R_ASSERT(R.O);
 
+	SGameMtl* mtl = GMLib.GetMaterialByIdx(target_material);
+	float shoot_factor = mtl->fShootFactor;
+	float pierce = (m_pCurrentCartridge?m_pCurrentCartridge->m_kPierce:1.f);
 
     //получить силу хита выстрела с учетом патрона
-	float power = float(m_fCurrentHitPower) * (m_pCurrentCartridge?m_pCurrentCartridge->m_kHit:1.f);
+	float power = m_fCurrentHitPower * pierce *
+				  (m_pCurrentCartridge?m_pCurrentCartridge->m_kHit:1.f);
 				
 	//коэффициент уменьшение силы с расстоянием
 	float scale = 1-(R.range/(m_fCurrentFireDist*
@@ -175,7 +176,11 @@ void CShootingObject::DynamicObjectHit (Collide::rq_result& R, u16 target_materi
 	power *= scale;
 
 	//сила хита физического импульса
-	float impulse = m_fCurrentHitImpulse * 
+	//вычисляется с учетом пробиваемости материалов
+	float material_pierce = 1.f - shoot_factor * pierce;
+	clamp(material_pierce, 0.f, 1.f);
+	float impulse = m_fCurrentHitImpulse*
+					material_pierce*
 					(m_pCurrentCartridge?m_pCurrentCartridge->m_kImpulse:1.f)
 					*scale;
 
@@ -223,12 +228,28 @@ void CShootingObject::DynamicObjectHit (Collide::rq_result& R, u16 target_materi
 	//визуальное обозначение попадание на объекте
 	FireShotmark(m_vCurrentShootDir, m_vEndPoint, R, target_material);
 
-	//уменьшить хит и импульс передать его дальше 
+
+
+	//уменьшить хит и импульс перед тем как передать его дальше 
 	m_fCurrentHitPower *= scale;
 	m_fCurrentHitImpulse *= scale;
+		
+	m_fCurrentHitPower *= (shoot_factor*pierce);
+	m_fCurrentHitImpulse *= material_pierce;
 }
 
 void CShootingObject::StaticObjectHit(Collide::rq_result& R, u16 target_material)
 {
 	FireShotmark(m_vCurrentShootDir, m_vEndPoint, R, target_material);
+
+	SGameMtl* mtl = GMLib.GetMaterialByIdx(target_material);
+
+	float shoot_factor = mtl->fShootFactor;
+	float pierce = (m_pCurrentCartridge?m_pCurrentCartridge->m_kPierce:1.f);
+	float material_pierce = 1.f - shoot_factor * pierce;
+	clamp(material_pierce, 0.f, 1.f);
+	
+	m_fCurrentHitPower*= mtl->fShootFactor;
+	m_fCurrentHitPower *= (shoot_factor*pierce);
+	m_fCurrentHitImpulse *= material_pierce;
 }

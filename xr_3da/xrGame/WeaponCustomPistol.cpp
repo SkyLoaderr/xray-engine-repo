@@ -17,7 +17,7 @@ void CWeaponCustomPistol::switch2_Fire	()
 {
 	if (fTime<=0)
 	{
-		bPending = true;
+		m_bPending = true;
 		UpdateFP					();
 
 		// Fire
@@ -77,7 +77,7 @@ void CWeaponCustomPistol::FireEnd()
 	
 	if(fTime<=0) 
 	{
-		bPending = false;
+		m_bPending = false;
 		inherited::FireEnd();
 	}
 }

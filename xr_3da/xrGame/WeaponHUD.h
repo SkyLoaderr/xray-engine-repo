@@ -6,7 +6,7 @@ class ENGINE_API IRender_Visual;
 class ENGINE_API CInifile;
 class ENGINE_API CMotionDef;
 class CEntity;
-class CWeapon;
+class CHudItem;
 class CInventoryItem;
 
 class CWeaponHUD
@@ -18,7 +18,7 @@ class CWeaponHUD
 	IRender_Visual*		pVisual;
 
 	//родительский объект оружия
-	CWeapon*			m_pParentWeapon;		
+	CHudItem*			m_pParentWeapon;		
 
 
 	//флаг, если hud спрятан не показывается
@@ -33,7 +33,7 @@ public:
 	Fvector				vShellPoint;
 public:
 						CWeaponHUD		();
-						CWeaponHUD		(CWeapon* pWeapon);
+						CWeaponHUD		(CHudItem* pHudItem);
 	virtual				~CWeaponHUD		();
 
 	// misc

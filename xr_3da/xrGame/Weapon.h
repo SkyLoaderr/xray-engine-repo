@@ -13,10 +13,10 @@
 #include "PHShellCreator.h"
 
 #include "ShootingObject.h"
+#include "HudItem.h"
 
 // refs
 class CEntity;
-class CWeaponHUD;
 class ENGINE_API CMotionDef;
 
 
@@ -24,12 +24,12 @@ class ENGINE_API CMotionDef;
 #include "xrServer_Objects_ALife_Items.h"
 
 
-class CWeapon : public CInventoryItem,
+class CWeapon : public CHudItem,
 				public CPHShellSimpleCreator,
 				public CShootingObject
 {
 private:
-	typedef CInventoryItem		inherited;
+	typedef CHudItem inherited;
 	friend BOOL __stdcall firetrace_callback(Collide::rq_result& result, LPVOID params);
 public:
 	enum					{ MAX_ANIM_COUNT = 8 };
@@ -44,7 +44,6 @@ public:
 protected:
 	EHandDependence			eHandDependence;		// 0-используется без участия рук, 1-одна рука, 2-две руки
 	bool					bWorking, bWorking2;	// Weapon fires now
-	bool					bPending;				// Weapon needs some time to update itself, even if hidden
 	ref_str					m_WpnName;
 
 
@@ -57,21 +56,10 @@ protected:
 	Fvector					vFirePoint;
 	Fvector					vFirePoint2;
 
-	void					animGet					(MotionSVec& lst, LPCSTR prefix);
 protected:
-	//CPhysicsShell*			m_pPhysicsShell;
-	CWeaponHUD*				m_pHUD;
-	BOOL					hud_mode;
-	ref_str					hud_sect;
-	int						iSlotBinding;
-
-	ref_str					pstrWallmark;
-	ref_shader				hWallmark;
 	ref_shader				hUIIcon;
 	float					fWallmarkSize;
 									
-	////int						iAmmoLimit;			// maximum ammo we can have
-	////int						iAmmoCurrent;		// ammo we have now
 	int						iAmmoElapsed;		// ammo in magazine, currently
 	int						iMagazineSize;		// size (in bullets) of magazine
 	int						iBuckShot;
@@ -125,11 +113,7 @@ protected:
 	float					light_time;
 	bool					m_shotLight;
 
-	u32						dwFP_Frame;
-	u32						dwXF_Frame;
-
 	float					fZoomFactor;
-
 
 	//возможность подключения различных аддонов
 	CSE_ALifeItemWeapon::EAddonStatus			m_eScopeStatus;
@@ -162,12 +146,13 @@ protected:
 	void					Light_Render		(Fvector& P);
 
 	virtual void			UpdatePosition		(const Fmatrix& transform);
+	virtual void			UpdateFP			();
+	virtual void			UpdateXForm			();
+
 
 	//трассирование полета пули
 	virtual BOOL			FireTrace			(const Fvector& P, const Fvector& Peff,	Fvector& D);
 
-	virtual void			UpdateFP			();
-	virtual void			UpdateXForm			();
 protected:
 	// Utilities
 	void					ShaderCreate		(ref_shader&	dest, LPCSTR S, LPCSTR T);
@@ -216,6 +201,12 @@ public:
 	virtual void			StartFlameParticles	();
 	virtual void			StopFlameParticles	();
 	virtual void			UpdateFlameParticles();
+	//для второго ствола
+	virtual void			StartFlameParticles2();
+	virtual void			StopFlameParticles2	();
+	virtual void			UpdateFlameParticles2();
+
+
 	//партиклы дыма
 	virtual void			StartSmokeParticles	();
 	//партиклы гильз
@@ -265,10 +256,9 @@ public:
 	IC BOOL					IsWorking			()	const		{	return bWorking;							}
 	IC BOOL					IsValid				()	const		{	return iAmmoElapsed;						}
 	IC BOOL					IsVisible			()	const		{	return getVisible();						}	// Weapon change occur only after visibility change
-	IC BOOL					IsUpdating			()	const		{	return bWorking || bPending || getVisible();}	// Does weapon need's update?
+	IC BOOL					IsUpdating			()	const		{	return bWorking || m_bPending || getVisible();}	// Does weapon need's update?
 	virtual bool			IsHidden			()				{	return STATE == eHidden;}						// Does weapon is in hidden state
-	virtual bool			IsPending			()				{   return bPending;}
-	
+		
 	IC EHandDependence		HandDependence		()				{	return eHandDependence;}
 	virtual float			GetZoomFactor		()				{	return fZoomFactor;							}
 
@@ -285,11 +275,10 @@ public:
 
 
 	IC ref_shader			GetUIIcon			()				{	return hUIIcon;								}
-	IC void					SetHUDmode			(BOOL H)		{	hud_mode = H;								}
-	IC BOOL					GetHUDmode			()				{	return hud_mode;							}
-	IC int					GetSlot				()				{	return iSlotBinding;						}
-
 	virtual void			OnEvent				(NET_Packet& P, u16 type);
+
+	
+	void					animGet	(MotionSVec& lst, LPCSTR prefix);
 
 	// Inventory
 	virtual bool Activate();
@@ -335,8 +324,17 @@ public:
 
 	//имя пратиклов для огня
 	LPCSTR				m_sFlameParticles;
+	LPCSTR				m_sFlameParticles2;
+	
+	#define PARTICLES_CACHE_SIZE 4
 	//объект партиклов огня
 	CParticlesObject*	m_pFlameParticles;
+	CParticlesObject*	m_pFlameParticlesCache[PARTICLES_CACHE_SIZE];
+	int					m_iNextParticle;
+
+
+	//объект партиклов для стрельбы из 2-го ствола
+	CParticlesObject*	m_pFlameParticles2;
 
 	//имя пратиклов для дыма
 	LPCSTR				m_sSmokeParticles;

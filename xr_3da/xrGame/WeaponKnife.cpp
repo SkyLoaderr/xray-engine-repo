@@ -193,27 +193,27 @@ void CWeaponKnife::state_Attacking	(float /**dt/**/)
 
 void CWeaponKnife::switch2_Attacking	()
 {
-	if(bPending) return;
+	if(m_bPending) return;
 
 	m_pHUD->animPlay(mhud_attack[Random.randI(mhud_attack.size())], FALSE, this);
 	m_attackStart = true;
-	bPending = true;
+	m_bPending = true;
 }
 
 void CWeaponKnife::switch2_Attacking2	()
 {
-	if(bPending) return;
+	if(m_bPending) return;
 
 	m_pHUD->animPlay(mhud_attack2[Random.randI(mhud_attack2.size())], FALSE, this);
 	m_attackStart = true;
-	bPending = true;
+	m_bPending = true;
 }
 
 
 void CWeaponKnife::switch2_Idle	()
 {
 	m_pHUD->animPlay(mhud_idle[Random.randI(mhud_idle.size())]);
-	bPending = false;
+	m_bPending = false;
 }
 
 void CWeaponKnife::switch2_Hiding	()
@@ -223,7 +223,7 @@ void CWeaponKnife::switch2_Hiding	()
 	m_pHUD->animPlay		(mhud_hide[Random.randI(mhud_hide.size())],TRUE,this);
 	if (Local())			Level().Cameras.RemoveEffector	(cefShot);
 
-	bPending				= true;
+	m_bPending				= true;
 }
 
 void CWeaponKnife::switch2_Hidden()
@@ -236,7 +236,7 @@ void CWeaponKnife::switch2_Showing	()
 	setVisible				(TRUE);
 	m_pHUD->animPlay		(mhud_show[Random.randI(mhud_show.size())],FALSE,this);
 
-	bPending				= true;
+	m_bPending				= true;
 }
 
 

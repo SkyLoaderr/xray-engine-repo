@@ -29,7 +29,8 @@ void CWeaponMagazinedWGrenade::Load	(LPCSTR section)
 	sndShotG.create(TRUE, pSettings->r_string(section,"snd_shoot_grenade"), m_eSoundShot);
 	sndReloadG.create(TRUE, pSettings->r_string(section,"snd_reload_grenade"), m_eSoundReload);
 	
-	m_sGrenadeFlameParticles = pSettings->r_string(section, "grenade_flame_particles");
+	m_sFlameParticles2 = pSettings->r_string(section, "grenade_flame_particles");
+
 	
 	// HUD :: Anims
 	R_ASSERT			(m_pHUD);
@@ -123,7 +124,7 @@ BOOL CWeaponMagazinedWGrenade::net_Spawn(LPVOID DC)
 	}
 */
 
-	bPending = false;
+	m_bPending = false;
 
 	return l_res;
 }
@@ -138,7 +139,7 @@ void CWeaponMagazinedWGrenade::switch2_Reload()
 		///if (sndReloadG.feedback) sndReloadG.feedback->set_volume(.2f);
 		Sound->play_at_pos		(sndReloadG,H_Root(),vLastFP2);
 		m_pHUD->animPlay(mhud_reload_g[Random.randI(mhud_reload_g.size())],FALSE,this);
-		bPending = true;
+		m_bPending = true;
 	}
 	else 
 	     inherited::switch2_Reload();
@@ -160,7 +161,8 @@ void CWeaponMagazinedWGrenade::OnShot		()
 		}
 		
 		//партиклы огня вылета гранаты из подствольника
-		CParticlesObject* pStaticPG;
+		StartFlameParticles2();
+		/*CParticlesObject* pStaticPG;
 		pStaticPG = xr_new<CParticlesObject>(m_sGrenadeFlameParticles,Sector());
 		Fmatrix pos; 
 		pos.set(XFORM()); 
@@ -171,18 +173,18 @@ void CWeaponMagazinedWGrenade::OnShot		()
 		//vel.sub(Position(),ps_Element(0).vPosition); 
 		//vel.div((Level().timeServer()-ps_Element(0).dwTime)/1000.f);
 		pStaticPG->UpdateParent(pos, vel); 
-		pStaticPG->Play();
+		pStaticPG->Play();*/
 	} 
 	else inherited::OnShot();
 }
 //переход в режим подствольника или выход из него
 void CWeaponMagazinedWGrenade::SwitchMode() 
 {
-	if(!IsGrenadeLauncherAttached() || eIdle != STATE || bPending)
+	if(!IsGrenadeLauncherAttached() || eIdle != STATE || m_bPending)
 	{
 		return;
 	}
-	bPending = true;
+	m_bPending = true;
 
 	m_bGrenadeMode = !m_bGrenadeMode;
 
@@ -353,12 +355,12 @@ void CWeaponMagazinedWGrenade::OnH_B_Independent()
 {
 	inherited::OnH_B_Independent();
 
-	bPending = false;
+	m_bPending = false;
 	if(m_bGrenadeMode)
 	{
 		STATE = eIdle;
 		SwitchMode();
-		bPending = false;
+		m_bPending = false;
 	}
 }
 

@@ -19,14 +19,14 @@ CWeaponHUD::CWeaponHUD		()
 	m_pParentWeapon				= NULL;
 	m_bHidden = true;
 }
-CWeaponHUD::CWeaponHUD(CWeapon* pWeapon)
+CWeaponHUD::CWeaponHUD(CHudItem* pHudItem)
 {
 	mTransform.identity			();
 	m_Offset.identity			();
 	pVisualName					= 0;
 	iFireBone					= -1;
 	
-	m_pParentWeapon				= pWeapon;
+	m_pParentWeapon				= pHudItem;
 
 	m_bHidden = true;
 }

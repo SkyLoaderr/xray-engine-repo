@@ -202,7 +202,7 @@ void CWeaponM134::Update	(u32 T)
 
 		switch(st_target){
 		case eM134Spinup:
-			bPending		= TRUE;
+			m_bPending		= TRUE;
 			fTime			= 0;
 			// play start fire ref_sound
 			pSounds->play_at_pos(sndFireStart,	this,vLastFP,false);
@@ -218,7 +218,7 @@ void CWeaponM134::Update	(u32 T)
 			pSounds->play_at_pos	(sndServo,this,vLastFP,true);
 			break;
 		case eM134Idle:
-			bPending		= FALSE;
+			m_bPending		= FALSE;
 			if (st_current==eM134Brake) {
 				sndServo.stop();
 			}
