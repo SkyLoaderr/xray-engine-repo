@@ -10,6 +10,7 @@
 #include "ai_stalker.h"
 #include "..\\ai_monsters_misc.h"
 #include "..\\..\\hudmanager.h"
+#include "..\\..\\actor.h"
 
 #define LOG_PARAMETERS
 #define MIN_SOUND_VOLUME				.05f
@@ -44,7 +45,7 @@ bool CAI_Stalker::bfCheckForVisibility(CEntity* tpEntity)
 //	if (Level().iGetKeyState(DIK_RCONTROL))
 //		return(false);
 #ifdef LOG_PARAMETERS
-	bool		bMessage = !!Level().iGetKeyState(DIK_LALT);
+	bool		bMessage = g_Alive() && !!dynamic_cast<CActor*>(tpEntity);//!!Level().iGetKeyState(DIK_LALT);
 //	int			iLogParameters = Level().iGetKeyState(DIK_1) ? 2 : Level().iGetKeyState(DIK_0) ? 1 : 0;
 //	string4096	S = "";
 #endif
