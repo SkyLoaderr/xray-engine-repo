@@ -49,6 +49,14 @@
 		<!-- список диалогов, который может инициировать InfoPortion -->
 	</info_portion>
 
+	<info_portion id="actor_start04">
+		<location >
+			<level>0</level>
+			<object>quest_case_01</object>
+			<icon name="Case" x="2" y="8" width="1" height="1"></icon>
+		</location>
+	</info_portion>
+
 
 	<info_portion id="trader_start1">
 		<location >
