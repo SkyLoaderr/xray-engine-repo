@@ -222,10 +222,6 @@ function main()
 		wait()			
 	end
 
-	while stalker1:action() and stalker2:action() do
-	    wait	()
-	end
-
 	stalker1:script	(false, this.script_name())
 	stalker2:script	(false, this.script_name())
 
