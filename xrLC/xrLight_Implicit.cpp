@@ -222,69 +222,30 @@ void CBuild::ImplicitLighting()
 		Status	("Processing lightmap...");
 		for (u32 ref=254; ref>0; ref--)	if (!ApplyBorders(defl.lmap,ref)) break;
 
-		Status	("Mixing lighting with texture...");
-		u32*	markup = (u32*)(xr_malloc(defl.Height()*defl.Width()*4));
-		{
-			for (u32 V=0; V<defl.Height(); V++)
-			{
-				for (u32 U=0; U<defl.Width(); U++)
-				{
-					// Retreive Texel
-					u32 &OLD	= defl.Texel(U,V);
-					Fcolor		cccT;
-					cccT.set	(OLD);
-
-					// Retreive Lumel
-					base_color&	L = defl.Lumel(U,V);
-					
-					// Modulate & save
-					cccT.r		*= L.color.x;
-					cccT.g		*= L.color.y;
-					cccT.b		*= L.color.z;
-					OLD			= cccT.get	();
-
-					// Marker table
-					markup[V*defl.Width()+U]	= D3DCOLOR_XRGB(L.marker,L.marker,L.marker);
-				}
-			}
-		}
-		
 		Status	("Saving...");
+
 		// Save local copy of the map
 		{
-			char	name[256];
-			sscanf(strstr(GetCommandLine(),"-f")+2,"%s",name);
-			b_BuildTexture& TEX		= *defl.texture;
-			char	out_name[256];	strconcat(out_name,"gamedata\\levels\\",name,"\\",TEX.name,".dds");
-			clMsg		("Saving texture '%s'...",out_name);
+			xr_vector<u32>			packed;
+			defl.lmap.Pack			(packed);
+
+			string256				name, out_name;
+			sscanf					(strstr(GetCommandLine(),"-f")+2,"%s",name);
+			b_BuildTexture& TEX		=	*defl.texture;
+			strconcat				(out_name,"gamedata\\levels\\",name,"\\",TEX.name,"_lm.dds");
+			clMsg					("Saving texture '%s'...",out_name);
 			VerifyPath				(out_name);
-			BYTE*	raw_data		= LPBYTE(TEX.pSurface);
+			BYTE* raw_data			= LPBYTE(&*packed.begin());
 			u32	w					= TEX.dwWidth;
 			u32	h					= TEX.dwHeight;
 			u32	pitch				= w*4;
-			STextureParams* fmt		= &(TEX.THM);
-			DXTCompress				(out_name,raw_data,w,h,pitch,fmt,4);
+			STextureParams fmt;
+			fmt.fmt					= STextureParams::tfDXT5;
+			fmt.flags.set			(STextureParams::flDitherColor,		FALSE);
+			fmt.flags.set			(STextureParams::flGenerateMipMaps,	FALSE);
+			fmt.flags.set			(STextureParams::flBinaryAlpha,		FALSE);
+			DXTCompress				(out_name,raw_data,w,h,pitch,&fmt,4);
 		}
-		/*
-		// Save markup
-		{
-			char	name[256];
-			sscanf(strstr(GetCommandLine(),"-f")+2,"%s",name);
-			b_BuildTexture& TEX		= *defl.texture;
-			char	out_name[256];	strconcat(out_name,"\\",TEX.name,"_m");
-			clMsg		("Saving markup '%s'...",out_name);
-
-			TGAdesc			p;
-			p.format		= IMG_24B;
-			p.scanlenght	= TEX.dwWidth*4;
-			p.width			= TEX.dwWidth;
-			p.height		= TEX.dwHeight;
-			p.data			= markup;
-			p.maketga		(out_name);
-		}
-		xr_free(markup)
-		*/
-		xr_free						(markup);
 		defl.Deallocate				();
 	}
 
