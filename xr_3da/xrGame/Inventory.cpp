@@ -312,7 +312,7 @@ bool CInventory::Action(s32 cmd, u32 flags) {
 		case kUSE : {
 			if(flags&CMD_START && m_pTarget && m_pTarget->Useful()) {
 				// Generate event
-				CActor *l_pA = dynamic_cast<CActor*>(Level().CurrentEntity());
+				CActor *l_pA = dynamic_cast<CActor*>(m_pOwner);
 				if(l_pA) {
 					NET_Packet P;
 					l_pA->u_EventGen(P,GE_OWNERSHIP_TAKE,l_pA->ID());
@@ -335,11 +335,14 @@ void CInventory::Update(u32 deltaT) {
 		}
 	}
 	// Смотрим, что тут можно подобрать
-	pCreator->CurrentEntity()->setEnabled(false);
-	Collide::ray_query	l_rq;
-	if(pCreator->ObjectSpace.RayPick(Device.vCameraPosition, Device.vCameraDirection, m_takeDist, l_rq)) m_pTarget = dynamic_cast<PIItem>(l_rq.O);
-	else m_pTarget = NULL;
-	pCreator->CurrentEntity()->setEnabled(true);
+	CActor *l_pA = dynamic_cast<CActor*>(m_pOwner);
+	if(l_pA) {
+		l_pA->setEnabled(false);
+		Collide::ray_query	l_rq;
+		if(pCreator->ObjectSpace.RayPick(Device.vCameraPosition, Device.vCameraDirection, m_takeDist, l_rq)) m_pTarget = dynamic_cast<PIItem>(l_rq.O);
+		else m_pTarget = NULL;
+		l_pA->setEnabled(true);
+	}
 	//
 	for(int i = 0; i < 2; i++) {
 		TIItemList &l_list = i?m_ruck:m_belt;
@@ -395,7 +398,9 @@ f32 CInventory::TotalWeight() {
 
 // CInventoryOwner class //////////////////////////////////////////////////////////////////////////
 
-CInventoryOwner::CInventoryOwner() {}
+CInventoryOwner::CInventoryOwner() {
+	m_inventory.m_pOwner = this;
+}
 
 CInventoryOwner::~CInventoryOwner() {}
 
