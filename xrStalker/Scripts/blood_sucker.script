@@ -596,7 +596,7 @@ end
 function CStateAmbush:execute()
     if(self.npc:action() == nil) then
 		if(self.npc:position():distance_to(self.ambush_way:point(0)) > 1) then
-			action(self.npc, move(move.walk_fwd, self.ambush_way:point(0), move.force), sound(sound.idle), cond(cond.move_end))
+			action(self.npc, move(move.walk_fwd, self.ambush_way:point(0), 0.3, move.force), sound(sound.idle), cond(cond.move_end))
         else
 			action(self.npc, look(look.point, self.ambush_way:point(1)), anim(anim.turn, 0), sound(sound.attack), cond(cond.look_end))
             action(self.npc, anim(anim.stand_idle, 0), sound(sound.attack), cond(cond.time_end, 50000))
