@@ -9,7 +9,7 @@ XRCORE_API	extern		str_container*	g_pStringContainer	= NULL;
 
 str_value*	str_container::dock		(str_c value)
 {
-	if ((0==value) || (0==value[0]))	return 0;
+	if (0==value)				return 0;
 
 	cs.Enter					();
 
