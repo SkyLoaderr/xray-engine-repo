@@ -9,7 +9,6 @@
 
 #include "fcontroller.h"
 #include "xr_options.h"
-#include "xr_list.h"
 
 enum _buttons { b_none=0, b_usr_up, b_usr_down, b_usr_new, b_usr_del, b_lev_down, b_lev_up, b_exit, b_ok, ba_options, ba_users, ba_levels, b_last };
 

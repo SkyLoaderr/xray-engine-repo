@@ -20,7 +20,7 @@ class ENGINE_API CCameraDebug :
     D3DXVECTOR3		g_vecAngularVelocity;
 	Fvector			savedP,savedD,savedN;
 	ECameraStyle	savedStyle;
-	u32			savedDF;
+	Flags32			savedDF;
 public:
 	virtual	void	OnMove				(void);
 	virtual	void	OnCameraActivate	( CCameraBase* old_cam );

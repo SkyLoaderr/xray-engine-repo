@@ -7,7 +7,6 @@
 
 #include "ftimer.h"
 #include "effector.h"
-#include "xr_list.h"
 #include "ObjectAnimator.h"
 
 // refs

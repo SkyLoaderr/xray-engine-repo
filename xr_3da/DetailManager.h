@@ -6,7 +6,6 @@
 #define AFX_DETAILMANAGER_H__2C7B9CBD_4751_4D3E_8020_4792B800E4E2__INCLUDED_
 #pragma once
 
-#include "xr_list.h"
 #include "xrpool.h"
 #include "detailformat.h"
 #include "detailmodel.h"

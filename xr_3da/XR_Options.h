@@ -7,7 +7,6 @@
 #pragma once
 
 #include "FController.h"
-#include "xr_list.h"
 
 enum	_menu_item { mi_unknown=0, mi_cmd, mi_switch, mi_scroll, mi_list, mi_kbd };
 struct	_menu_command {
