@@ -7,6 +7,8 @@
 #include <stdlib.h>
 #include "xrHemisphere.h"
 
+#pragma comment(lib,"x:\\xrCore.lib")
+
 BOOL APIENTRY DllMain( HANDLE hModule, 
                        u32  ul_reason_for_call, 
                        LPVOID lpReserved

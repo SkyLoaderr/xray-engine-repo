@@ -4,6 +4,8 @@
 #include "stdafx.h"
 #include "close.h"
 
+#pragma comment(lib,"x:\\xrCore.lib")
+
 bool WriteSlot	(char *name, char* dest, char *msg) 
 {
 	HANDLE	hFile; 
