@@ -74,32 +74,6 @@ void CRender::Screenshot		()
 			);
 	}
 
-	/*
-	Fmatrix	mInv;	mInv.invert	(Device.mView);
-	float	fFAR	= 100.f;
-	XRC.ray_options	(CDB::OPT_CULL|CDB::OPT_ONLYNEAREST);
-	for (u32 y=0; y<Device.dwHeight; y++)
-	{
-		for (u32 x=0; x<Device.dwWidth; x++)
-		{
-			DWORD* p			= ((DWORD*)D.pBits) + y*Device.dwWidth+x;
-
-			Fvector D;
-			MouseRayFromPoint	(D,x,y,mInv);
-			XRC.ray_query		(pCreator->ObjectSpace.GetStaticModel(), Device.vCameraPosition, D, fFAR);
-			if (XRC.r_count())	{
-				float	R		= XRC.r_begin()[0].range;
-				clamp	(R,0.f,fFAR);
-				R/=fFAR;
-				DWORD	A		= iFloor(R*255.f);
-				*p		= D3DCOLOR_XRGB(A,A,A);
-			} else {
-				*p		= D3DCOLOR_XRGB(0,0,255);
-			}
-		}
-	}
-	*/
-
 	// 
     TGAdesc			p;
     p.format		= IMG_24B;

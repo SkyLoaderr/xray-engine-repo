@@ -525,6 +525,7 @@ void	CRender::Render		()
 	Device.Statistic.RenderDUMP_HUD.Begin	();
 	pCreator->pHUD->Render_Affected			();
 	Device.Statistic.RenderDUMP_HUD.End		();
+	HOM.Debug				();
 
 	// Patches
 	if (vecPatches.size())  {
