@@ -1945,10 +1945,25 @@
 				RelativePath="PHDynamicData.h">
 			</File>
 			<File
+				RelativePath="PHElement.cpp">
+			</File>
+			<File
+				RelativePath="PHElement.h">
+			</File>
+			<File
 				RelativePath="PHInterpolation.cpp">
 			</File>
 			<File
 				RelativePath="PHInterpolation.h">
+			</File>
+			<File
+				RelativePath="PHJeep.h">
+			</File>
+			<File
+				RelativePath="PHJoint.cpp">
+			</File>
+			<File
+				RelativePath="PHJoint.h">
 			</File>
 			<File
 				RelativePath="PHMovementControl.cpp">
@@ -1958,6 +1973,15 @@
 			</File>
 			<File
 				RelativePath="PHObject.h">
+			</File>
+			<File
+				RelativePath="PHShell.cpp">
+			</File>
+			<File
+				RelativePath="PHShell.h">
+			</File>
+			<File
+				RelativePath="PHjeep.cpp">
 			</File>
 			<File
 				RelativePath="Physics.cpp">

@@ -2,9 +2,12 @@
 #include "entity.h"
 #include "PHDynamicData.h"
 #include "Physics.h"
+#include "PHJeep.h"
+
 // refs
 class ENGINE_API			CBoneInstance;
 class						CActor;
+
 // defs
 class CCar :				public CEntity,public CPHObject
 {

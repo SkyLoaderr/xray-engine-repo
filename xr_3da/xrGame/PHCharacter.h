@@ -114,7 +114,6 @@ protected:
 	dVector3 m_depart_position;
 	dVector3 m_wall_contact_position;
 	dVector3 m_ground_contact_position;
-	dReal	 m_jump_depart_hight;
 	dReal	 jump_up_velocity;//=6.0f;//5.6f;
 
 	dReal m_max_velocity;
@@ -192,7 +191,7 @@ virtual		void		SetJupmUpVelocity					(dReal velocity)	{jump_up_velocity=velocity
 virtual		float		ContactVelocity						()					{ dReal ret= m_contact_velocity; m_contact_velocity=0; return ret;}
 
 virtual		void		SetMas								(dReal mass)		;
-virtual		bool		TryPosition							(Fvector pos)		;
+
 virtual		void		SetPhysicsRefObject					(CPhysicsRefObject* ref_object);
 private:
 			void		ApplyAcceleration					()					;
@@ -233,15 +232,13 @@ typedef CPHSimpleCharacter	inherited;
 Fvector m_vDesiredPosition;
 public:
 virtual		void		SetPosition							(Fvector pos);
-virtual		void		SetDesiredPosition					(const Fvector& pos){m_vDesiredPosition.set(pos);}
-virtual		void		GetDesiredPosition					(Fvector& dpos)
-{
-	dpos.set(m_vDesiredPosition);
-}
-virtual		void		BringToDesired						(float time,float force=1.f);
-//virtual void Calculate();
+virtual		void		SetDesiredPosition					(const Fvector& pos)									{m_vDesiredPosition.set(pos);}
+virtual		void		GetDesiredPosition					(Fvector& dpos)											{dpos.set(m_vDesiredPosition);}
+virtual		void		BringToDesired						(float time,float force=1.f)							;
+virtual		bool		TryPosition							(Fvector pos)											;
+
 #ifdef DEBUG
-virtual		void		OnRender							()					;
+virtual		void		OnRender							()														;
 #endif
 
 };

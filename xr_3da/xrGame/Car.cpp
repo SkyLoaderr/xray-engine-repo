@@ -6,6 +6,7 @@
 #include "camerafirsteye.h"
 #include "Actor.h"
 
+
 static float car_snd_volume=1.f;
 static float car_drive_force					= 1000.f;
 static float car_drive_speed_accel				= M_PI*15;
