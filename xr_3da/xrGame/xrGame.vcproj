@@ -684,6 +684,12 @@
 								<Tool
 									Name="VCCLCompilerTool"/>
 							</FileConfiguration>
+							<FileConfiguration
+								Name="Mixed|Win32"
+								ExcludedFromBuild="TRUE">
+								<Tool
+									Name="VCCLCompilerTool"/>
+							</FileConfiguration>
 						</File>
 						<File
 							RelativePath=".\Ai\Chimera\ai_chimera_state.cpp">
