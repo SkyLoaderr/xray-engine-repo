@@ -188,7 +188,11 @@ function sound_update(npc, sound, now)
 		end
 
 		if npc:active_sound_count() > 0 then
-			return
+			if now then
+				stop_play_sound(npc)
+			else
+				return
+			end
 		end
 
 		-- получить id-шки пачек звуков, которые могут быть проиграны
