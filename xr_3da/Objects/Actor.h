@@ -20,9 +20,6 @@ class CWeaponList;
 class CEffectorBobbing;
 
 class CActor: 
-#ifdef DEBUG
-	public pureRender,
-#endif
 	public CEntityAlive, 
 	public Feel::Touch
 {

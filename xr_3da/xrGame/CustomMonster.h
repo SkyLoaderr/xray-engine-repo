@@ -18,9 +18,7 @@ class CCustomMonster :
 	public Feel::Vision, 
 	public Feel::Sound, 
 	public Feel::Touch
-#ifdef DEBUG
-	, public pureRender
-#endif
+
 {
 private:
 	typedef	CEntityAlive	inherited;
@@ -206,7 +204,9 @@ public:
 	virtual void		SelectAnimation			( const Fvector& _view, const Fvector& _move, float speed );
 
 	// debug
+#ifdef DEBUG
 	virtual void		OnRender				( );
+#endif
 
 	// HUD
 	virtual void		OnHUDDraw				(CCustomHUD* hud);

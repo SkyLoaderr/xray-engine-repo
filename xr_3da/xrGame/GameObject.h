@@ -9,6 +9,9 @@
 #include "net_queue.h"
 
 class CGameObject : public CObject  
+#ifdef DEBUG
+	, public pureRender
+#endif
 {
 	typedef CObject inherited;
 public:
@@ -42,6 +45,10 @@ public:
 	// Game-specific events
 	CGameObject();
 	virtual ~CGameObject();
+
+#ifdef DEBUG
+	virtual void			OnRender			();
+#endif
 };
 
 #endif // !defined(AFX_GAMEOBJECT_H__3DA72D03_C759_4688_AEBB_89FA812AA873__INCLUDED_)

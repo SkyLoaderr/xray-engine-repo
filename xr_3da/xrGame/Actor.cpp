@@ -131,17 +131,10 @@ CActor::CActor() : CEntityAlive()
 	m_fCrouchFactor			= 0.2f;
 
 	m_fFallTime				= s_fFallTime;
-	
-#ifdef DEBUG
-	Device.seqRender.Add	(this,REG_PRIORITY_LOW-999);
-#endif
 }
 
 CActor::~CActor()
 {
-#ifdef DEBUG
-	Device.seqRender.Remove	(this);
-#endif
 	_DELETE(Weapons);
 	for (int i=0; i<eacMaxCam; i++) _DELETE(cameras[i]);
 

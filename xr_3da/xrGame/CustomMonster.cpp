@@ -36,10 +36,6 @@ void __stdcall CCustomMonster::TorsoSpinCallback(CBoneInstance* B)
 
 CCustomMonster::CCustomMonster()
 {
-#ifdef DEBUG
-	Device.seqRender.Add	(this,REG_PRIORITY_LOW-999);
-#endif
-
 	Weapons				= 0;
 	tWatchDirection		= Direction();
 	m_cBodyState		= BODY_STATE_STAND;
@@ -57,10 +53,6 @@ CCustomMonster::CCustomMonster()
 CCustomMonster::~CCustomMonster	()
 {
 	_DELETE		(Weapons);
-
-#ifdef DEBUG
-	Device.seqRender.Remove	(this);
-#endif
 }
 
 void CCustomMonster::OnDeviceCreate()
@@ -464,6 +456,7 @@ void CCustomMonster::Exec_Visibility	( )
 }
 
 extern void dbg_draw_frustum (float FOV, float _FAR, float A, Fvector &P, Fvector &D, Fvector &U);
+#ifdef DEBUG
 void CCustomMonster::OnRender()
 {
 	if (0 == (psAI_Flags&aiDebug)) return;
@@ -567,6 +560,7 @@ void CCustomMonster::OnRender()
 	}
 	if (bDebug) PKinematics(pVisual)->DebugRender(clTransform);
 }
+#endif
 
 void CCustomMonster::HitSignal(float perc, Fvector& vLocalDir, CObject* who)
 {

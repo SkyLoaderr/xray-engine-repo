@@ -12,7 +12,7 @@
 // refs
 class CCameraBase;
 
-class CFlyer : public CEntity, public pureRender  
+class CFlyer : public CEntity
 {
 	enum EMoveCommand{
 		mcFwd		= 0x0001,
@@ -82,7 +82,9 @@ public:
 	virtual void		OnKeyboardRelease	(int dik);
 	virtual void		OnKeyboardHold		(int dik);
 
+#ifdef DEBUG
 	virtual void		OnRender			();
+#endif
 };
 
 #endif // !defined(AFX_FLYER_H__06360CF2_1B3F_4F82_814D_F7BF5E4F601C__INCLUDED_)

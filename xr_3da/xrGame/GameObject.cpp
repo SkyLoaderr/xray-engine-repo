@@ -15,11 +15,16 @@ CGameObject::CGameObject()
 	AI_NodeID	= 0;
 	AI_Node		= 0;
 	setActive	(FALSE);
+#ifdef DEBUG
+	Device.seqRender.Add	(this,REG_PRIORITY_LOW-999);
+#endif
 }
 
 CGameObject::~CGameObject()
 {
-	
+#ifdef DEBUG
+	Device.seqRender.Remove	(this);
+#endif
 }
 
 void CGameObject::net_Destroy	()
@@ -179,3 +184,15 @@ void CGameObject::u_EventSend(NET_Packet& P, BOOL sync)
 {
 	Level().Send(P,net_flags(TRUE,TRUE));
 }
+
+#ifdef DEBUG
+void CGameObject::OnRender()
+{
+	if (Visual()){
+		Fvector bc,bd; 
+		Visual()->bv_BBox.get_CD(bc,bd);
+		Fmatrix	M = clXFORM();	M.c.add (bc);
+		Device.Primitive.dbg_DrawOBB (M,bd,D3DCOLOR_RGBA(0,0,255,255));
+	}
+}
+#endif

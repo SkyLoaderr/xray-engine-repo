@@ -262,8 +262,9 @@ void CFlyer::Update(DWORD DT)
 //	pApp->pFont->Out(-1,0.93f,"Fly D: %.3f, %.3f, %.3f",mRotate.k.x,mRotate.k.y,mRotate.k.z);
 }
 
+#ifdef DEBUG
 void CFlyer::OnRender()
 {
 	Movement.dbg_Draw();
 }
-
+#endif
