@@ -26,7 +26,7 @@ function options_profiles_tab:InitControls(x_pos, y_pos)
 	--<<<<<<<<<<<<<<<<<<<<<<<<<<<<<<<<<<<<<<<<<<< INIT DATA
 	local info_rect = {x = self.left_align_x,
 					   y = self.top_align_y,
-					   width = self.btn_rect.width,
+					   width = 300,
 					   height = self.btn_rect.height}
 	--local lst_rect  = {x}
 	
