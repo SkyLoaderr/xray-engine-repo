@@ -41,8 +41,8 @@ function evaluator_timeout:__init (name, leader_name) super ()
 end
 ----------------------
 function evaluator_timeout:evaluate ()
+    local leader = level.object (self.leader_name)
     if (device ():time_global () - self.time) > timeout then
-       local leader = level.object (self.leader_name)
        if leader ~= nil and leader:alive () == true then
           if distance_between (leader, self.object) < dist_for_report then 
              leader:motivation_action_manager ():evaluator (properties["leader_report"]).npc = self.object
@@ -52,6 +52,9 @@ function evaluator_timeout:evaluate ()
              return false
           end   
        end    
+    else if leader ~= nil and leader:alive () == true then   
+            leader:motivation_action_manager ():evaluator (properties["leader_report"]).npc = nil
+         end      
     end   
     return false
 end
@@ -149,6 +152,10 @@ function action_report_soldier:stage1 ()
        self.object:set_dest_level_vertex_id     (self.leader:level_vertex_id ())
        return
     end   
+    local o_pos = self.object:position ()
+    local l_pos = self.leader:position ()
+    local dir = vector ():set (l_pos.x - o_pos.x, 0, l_pos.z - o_pos.z)
+    self.object:set_sight (look.direction, dir, 0)
     self.stage = 1
     self.sub_stage = 0
     self.object:set_movement_type (move.stand)
@@ -224,9 +231,9 @@ function action_report_soldier:create_report ()
           table.remove (self.phrases, 1)
     end
     table.insert (self.phrases, {namespace = report_soldier_start,   phrase = 0,   our = true})
-    table.insert (self.phrases, {namespace = report_commander_start, phrase = 0,   our = true})
+    table.insert (self.phrases, {namespace = report_commander_start, phrase = 0,   our = false})
     table.insert (self.phrases, {namespace = report_soldier,         phrase = 0,   our = true})
-    table.insert (self.phrases, {namespace = report_commander,       phrase = 0,   our = true})
+    table.insert (self.phrases, {namespace = report_commander,       phrase = 0,   our = false})
     table.insert (self.phrases, {namespace = report_soldier_end,     phrase = 0,   our = true})
 
     self.object:set_sound_mask (2147483647)
@@ -274,11 +281,20 @@ function action_report_leader:execute ()
     
     if self.stage == 0 then 
        if distance_between (self.object, self.npc) < min_dist_to_report then
+          local o_pos = self.object:position ()
+          local l_pos = self.npc:position ()
+          local dir = vector ():set (l_pos.x - o_pos.x, 0, l_pos.z - o_pos.z)
+          self.object:set_sight (look.direction, dir, 0)
+       
           self.object:set_movement_type (move.stand)
           self.stage = 1
           self.object:add_animation ("chest_1", false)
           self.object:add_animation ("chest_2", false)
           self.object:add_animation ("chest_1", false)
+       else
+          self.object:set_item                     (object.deactivate, self.object:best_weapon ())
+          self.object:set_path_type                (game_object.level_path)
+          self.object:set_dest_level_vertex_id     (self.npc:level_vertex_id ())
        end   
        return 
     end    
@@ -296,6 +312,7 @@ function action_report_leader:execute ()
           self.object:add_animation ("chest_2", false)
           self.object:add_animation ("chest_3", false)
           self.stage = 2
+          printf ("STAGE = 2")
        else
           if self.object:animation_count () == 1 then
              self.object:add_animation ("chest_1", false)
@@ -327,6 +344,7 @@ function AddScheme (obj, property_id)
     obj:add_sound ("script_replics\\radio\\commander\\radio_commander_", 30, snd_type.talk, 2, 1, report_commander)
     obj:add_sound ("script_replics\\radio\\commander\\radio_commander_", 30, snd_type.talk, 2, 1, report_soldier_end)
 
+    printf ("REPORT BASE %d", xr_evaluators_id.sidor_report_leader)
     
 	local manager  = obj:motivation_action_manager ()
 
