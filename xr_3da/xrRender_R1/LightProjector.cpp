@@ -103,9 +103,10 @@ void CLightProjector::setup		(int id)
 	float			dist		= receivers[id].C.distance_to	(Device.vCameraPosition)+receivers[id].O->renderable.visual->vis.sphere.R;
 	float			factor		= _sqr(dist/P_distance);
 	RCache.set_c	(c_xform,	receivers[id].UVgen);
-	RCache.set_c	(c_factor,	factor,factor,factor,factor);
-	RCache.set_ca	(c_clamp,	0,receivers[id].UVclamp_min);
-	RCache.set_ca	(c_clamp,	1,receivers[id].UVclamp_max);
+	Fvector&	m	= receivers[id].UVclamp_min;
+	RCache.set_ca	(c_clamp,	0,m.x,m.y,m.z,factor);
+	Fvector&	M	= receivers[id].UVclamp_max;
+	RCache.set_ca	(c_clamp,	1,M.x,M.y,M.z,0);
 }
 
 /*
