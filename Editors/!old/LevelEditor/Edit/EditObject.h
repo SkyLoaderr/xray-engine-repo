@@ -179,6 +179,7 @@ class ECORE_API CEditableObject{
     CSMotion*		m_ActiveSMotion;
 public:
     SAnimParams		m_SMParam;
+    AnsiString		m_SMotionRefs;
 public:
 	// options
 	Flags32			m_Flags;
@@ -273,6 +274,8 @@ public:
     IC SMotionIt	LastSMotion				()	{return m_SMotions.end();}
 	SMotionVec&		SMotions				()	{return m_SMotions;}
     IC int			SMotionCount 			()	{return m_SMotions.size();}
+    IC bool			IsAnimated	 			()	{return SMotionCount()||(!m_SMotionRefs.IsEmpty());}
+    IC LPCSTR		SMotionRefs				()	{return m_SMotionRefs.c_str(); }
     IC void			SkeletonPlay 			()	{m_SMParam.Play();}
     IC void			SkeletonStop 			()	{m_SMParam.Stop();}
     IC void			SkeletonPause 			()	{m_SMParam.Pause();}
@@ -399,6 +402,9 @@ public:
 	// ogf
     bool			PrepareOGF				(IWriter& F);
 	bool			ExportOGF				(LPCSTR fname);
+    // omf
+    bool			PrepareOMF				(IWriter& F);
+	bool			ExportOMF				(LPCSTR fname);
     // HOM
     bool			ExportHOMPart			(const Fmatrix& parent, IWriter& F);
     bool			ExportHOM				(LPCSTR fname);
@@ -448,6 +454,7 @@ public:
 #define EOBJ_CHUNK_BONES2			0x0921
 #define EOBJ_CHUNK_DESC				0x0922
 #define EOBJ_CHUNK_BONEPARTS2		0x0923
+#define EOBJ_CHUNK_SMOTIONS2		0x0924
 //----------------------------------------------------
 
 

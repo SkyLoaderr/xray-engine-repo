@@ -84,6 +84,7 @@ __published:	// IDE-managed Components
 	TMenuItem *MenuItem2;
 	TMenuItem *MenuItem3;
 	TMenuItem *MenuItem4;
+	TMenuItem *miExportOMF;
     void __fastcall ebSaveClick(TObject *Sender);
     void __fastcall PanelMimimizeClick(TObject *Sender);
     void __fastcall PanelMaximizeClick(TObject *Sender);
@@ -125,6 +126,7 @@ __published:	// IDE-managed Components
           TShiftState Shift, int X, int Y);
 	void __fastcall MenuItem2Click(TObject *Sender);
 	void __fastcall MenuItem4Click(TObject *Sender);
+	void __fastcall miExportOMFClick(TObject *Sender);
 private:	// User declarations
 	void __fastcall ShowPPMenu		(TMxPopupMenu* M, TObject* btn);
 	void __fastcall RenameItem		(LPCSTR p0, LPCSTR p1, EItemType tp);

@@ -151,13 +151,19 @@ bool CActorMain::Command(int _Command, int p1, int p2)
     case COMMAND_EXPORT_DM:{
     	AnsiString fn;
     	if (EFS.GetSaveName("$game_dm$",fn))
-            if (ATools->ExportDM(fn.c_str()))		ELog.DlgMsg(mtInformation,"Export complete.");
+            if (ATools->ExportDM(fn.c_str()))	ELog.DlgMsg(mtInformation,"Export complete.");
             else		        		    	ELog.DlgMsg(mtError,"Export failed.");
     	}break;
     case COMMAND_EXPORT_OGF:{
     	AnsiString fn;
-    	if (EFS.GetSaveName("$game_meshes$",fn))
+    	if (EFS.GetSaveName("$game_meshes$",fn,0,0))
             if (ATools->ExportOGF(fn.c_str()))	ELog.DlgMsg(mtInformation,"Export complete.");
+            else		        		    	ELog.DlgMsg(mtError,"Export failed.");
+    	}break;
+    case COMMAND_EXPORT_OMF:{
+    	AnsiString fn;
+    	if (EFS.GetSaveName("$game_meshes$",fn,0,1))
+            if (ATools->ExportOMF(fn.c_str()))	ELog.DlgMsg(mtInformation,"Export complete.");
             else		        		    	ELog.DlgMsg(mtError,"Export failed.");
     	}break;
 	case COMMAND_CLEAR:

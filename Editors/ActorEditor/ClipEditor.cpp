@@ -258,12 +258,13 @@ void __fastcall TClipMaker::ClipDragDrop(TObject *Sender,
         if (tv->SelectedCount){
             for (TElTreeItem* item 	= tv->GetNextSelected(0); item; item = tv->GetNextSelected(item)){
                 ListItem* prop		= (ListItem*)item->Tag; VERIFY(prop);
-                CSMotion* SM 		= (CSMotion*)prop->m_Object;
-                LPCSTR mname 		= SM->Name();
-                if (!SM->m_Flags.is(esmFX)){
-                    tgt->SetCycle	(mname,SM->m_BoneOrPart);
+                CMotionDef* SM 		= (CMotionDef*)prop->m_Object;
+                LPCSTR m_name		= prop->Key()+xr_strlen(MOTIONS_PREFIX);
+                if (m_name[0]=='\\')m_name++;
+                if (SM->flags&esmFX){
+                	tgt->SetFX		(m_name);
                 }else{
-                	tgt->SetFX		(mname);
+                    tgt->SetCycle	(m_name,SM->bone_or_part);
                 }
             }
         }
@@ -489,10 +490,11 @@ void TClipMaker::RealUpdateProperties()
         V->OnChangeEvent		= OnClipLengthChange;
         for (u32 k=0; k<4; k++){
             AnsiString mname	= sel_clip->CycleName(k);	
-            CSMotion* SM		= m_CurrentObject->FindSMotionByName(mname.c_str());
+            CMotionDef* MD		= ATools->m_RenderObject.FindMotionDef	(mname.c_str());
+            CMotion* MI			= ATools->m_RenderObject.FindMotionKeys	(mname.c_str());
             SBonePart* BP		= (k<m_CurrentObject->BoneParts().size())?&m_CurrentObject->BoneParts()[k]:0;
-            AnsiString tmp="-";
-            if (SM)				tmp.sprintf("%s [%3.2fs, %s]",SM->Name(),float(SM->Length())/SM->FPS(),SM->m_Flags.is(esmStopAtEnd)?"stop at end":"looped");
+            AnsiString tmp		= "-";
+            if (MI)				tmp.sprintf("%s [%3.2fs, %s]",mname.c_str(),MI->GetLength(),MD->bone_or_part?"stop at end":"looped");
             if (BP)				PHelper.CreateCaption	(p_items,FHelper.PrepareKey("Current Clip\\Cycles",BP->alias.c_str()), tmp);
 		}            
         if (*sel_clip->fx)		PHelper.CreateFloat		(p_items,FHelper.PrepareKey("Current Clip\\FXs",*sel_clip->fx), &sel_clip->fx_power, 0.f, 1000.f);
@@ -812,7 +814,7 @@ void TClipMaker::PlayAnimation(CUIClip* clip)
     for (u32 k=0; k<m_CurrentObject->BoneParts().size(); k++)
     	if (*clip->cycles[k])
         	ATools->m_RenderObject.PlayCycle(*clip->cycles[k],k);
-    if (*clip->fx) ATools->m_RenderObject.PlayFX(*clip->fx,clip->fx_power);
+    if (clip->fx.size()) ATools->m_RenderObject.PlayFX(*clip->fx,clip->fx_power);
 }
 //---------------------------------------------------------------------------
 
@@ -867,6 +869,23 @@ void __fastcall TClipMaker::ebLoadClipsClick(TObject *Sender)
 void __fastcall TClipMaker::ebSaveClipsClick(TObject *Sender)
 {
 	SaveClips		();
+}
+//---------------------------------------------------------------------------
+
+void __fastcall TClipMaker::ebSyncClick(TObject *Sender)
+{
+    for (UIClipIt c_it=clips.begin(); c_it!=clips.end(); c_it++){
+    	float len = 0.f;
+        for (u32 k=0; k<4; k++){
+            AnsiString mname	= (*c_it)->CycleName(k);	
+            CMotionDef* MD		= ATools->m_RenderObject.FindMotionDef	(mname.c_str());
+            CMotion* MI			= ATools->m_RenderObject.FindMotionKeys	(mname.c_str());
+            SBonePart* BP		= (k<m_CurrentObject->BoneParts().size())?&m_CurrentObject->BoneParts()[k]:0;
+            if (MI&&(len<MI->GetLength())) len = MI->GetLength();
+		}            
+    	(*c_it)->length = fis_zero(len)?2.f:len;
+    }
+    UpdateClips		();
 }
 //---------------------------------------------------------------------------
 
@@ -979,4 +998,5 @@ void __fastcall TClipMaker::ebTrashDragDrop(TObject *Sender,
     }
 }
 //---------------------------------------------------------------------------
+
 

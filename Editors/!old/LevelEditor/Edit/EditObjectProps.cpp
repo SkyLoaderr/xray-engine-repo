@@ -105,6 +105,7 @@ void CEditableObject::FillMotionList(LPCSTR pref, ListItemsVec& items, int modeI
 {
     SMotionVec&	m_lst	= SMotions();
 	if (pref) LHelper.CreateItem(items, pref,  modeID, ListItem::flSorted);
+
     for (SMotionIt m_it=m_lst.begin(); m_it!=m_lst.end(); m_it++)
         LHelper.CreateItem(items, FHelper.PrepareKey(pref, (*m_it)->Name()).c_str(), modeID, 0, *m_it);
 }

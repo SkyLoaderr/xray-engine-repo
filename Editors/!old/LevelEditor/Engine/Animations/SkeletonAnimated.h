@@ -164,7 +164,11 @@ class ENGINE_API	CSkeletonAnimated	: public CKinematics
 	friend class								CSkeletonX;
 public: 
 	typedef xr_map<ref_str,CMotionDef,str_pred>	mdef;
+#ifdef _EDITOR
+public:
+#else
 private:
+#endif
 	CBlendInstance*								blend_instances;
 
 	// Fast search
@@ -188,6 +192,7 @@ protected:
 	void						IBlend_Startup			();
 	CBlend*						IBlend_Create			();
 
+	void						LoadMotions				(LPCSTR N, IReader *data);
 public:
 #ifdef DEBUG
 	LPCSTR						LL_MotionDefName_dbg	(u16	ID);
@@ -200,6 +205,8 @@ public:
 
 	accel_map*					LL_Motions		(){return motion_map;}
 
+    u32							LL_CycleCount	(){return m_cycle->size();}
+    u32							LL_FXCount		(){return m_fx->size();}
 	CBlend*						LL_PlayFX		(u16 bone,		u16		motion, float blendAccrue,	float blendFalloff, float Speed, float Power);
 	CBlend*						LL_PlayCycle	(u16 partition, u16		motion, BOOL  bMixing,		float blendAccrue,	float blendFalloff, float Speed, BOOL noloop, PlayCallback Callback, LPVOID Callback_Param);
 	void						LL_FadeCycle	(u16 partition, float	falloff);

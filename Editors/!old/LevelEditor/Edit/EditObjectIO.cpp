@@ -124,8 +124,14 @@ void CEditableObject::Save(IWriter& F)
     // skeleton motions
     if (!m_SMotions.empty()){
         F.open_chunk	(EOBJ_CHUNK_SMOTIONS);
-        F.w_u32		(m_SMotions.size());
+        F.w_u32			(m_SMotions.size());
         for (SMotionIt s_it=m_SMotions.begin(); s_it!=m_SMotions.end(); s_it++) (*s_it)->Save(F);
+        F.close_chunk	();
+    }
+    // skeleton motions refs
+    if (!m_SMotionRefs.IsEmpty()){
+        F.open_chunk	(EOBJ_CHUNK_SMOTIONS2);
+        F.w_stringZ		(m_SMotionRefs.c_str());
         F.close_chunk	();
     }
 //    Log("5: ",F.tell());
@@ -307,6 +313,9 @@ bool CEditableObject::Load(IReader& F)
                     }
                 }
             }
+            if (F.find_chunk(EOBJ_CHUNK_SMOTIONS2)){
+                F.r_stringZ		(m_SMotionRefs);
+            }
         }
 
 		// bone parts
@@ -368,9 +377,20 @@ bool CEditableObject::Load(IReader& F)
 	return bRes;
 }
 
-bool CEditableObject::ExportOGF(LPCSTR fn){
+bool CEditableObject::ExportOGF(LPCSTR fn)
+{
 	CMemoryWriter F;
     if (PrepareOGF(F)){
+    	F.save_to(fn);
+        return true;
+    }
+    return false;
+}
+//------------------------------------------------------------------------------
+bool CEditableObject::ExportOMF(LPCSTR fn)
+{
+	CMemoryWriter F;
+    if (PrepareOMF(F)){
     	F.save_to(fn);
         return true;
     }

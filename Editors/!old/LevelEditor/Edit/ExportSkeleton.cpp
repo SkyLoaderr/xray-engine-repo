@@ -347,7 +347,7 @@ bool CExportSkeleton::ExportGeometry(IWriter& F)
     // Header
     ogf_header 		H;
     H.format_version= xrOGF_FormatVersion;
-    H.type			= m_Source->SMotionCount()?MT_SKELETON_ANIM:MT_SKELETON_RIGID;
+    H.type			= m_Source->IsAnimated()?MT_SKELETON_ANIM:MT_SKELETON_RIGID;
     H.shader_id		= 0;
     F.w_chunk		(OGF_HEADER,&H,sizeof(H));
 
@@ -418,7 +418,7 @@ bool CExportSkeleton::ExportMotionKeys(IWriter& F)
 {
     if (m_Source->SMotionCount()<1){
     	ELog.Msg(mtError,"Object doesn't have any motion.");
-     	return false;
+     	return !m_Source->m_SMotionRefs.IsEmpty();
     }
 
     UI->ProgressStart(1+m_Source->SMotionCount(),"Export skeleton motions keys...");
@@ -562,8 +562,8 @@ bool CExportSkeleton::ExportMotionKeys(IWriter& F)
 
 bool CExportSkeleton::ExportMotionDefs(IWriter& F)
 {
-    if (m_Source->SMotionCount()<1){ 
-    	ELog.Msg(mtError,"Object doesn't have any motion.");
+    if (!m_Source->IsAnimated()){ 
+    	ELog.Msg(mtError,"Object doesn't have any motion or motion refs.");
     	return false;
     }
 
@@ -571,60 +571,68 @@ bool CExportSkeleton::ExportMotionDefs(IWriter& F)
 
     UI->ProgressStart	(3,"Export skeleton motions defs...");
     UI->ProgressInc		();
-    // save smparams
-    F.open_chunk		(OGF_SMPARAMS2);
-    F.w_u16				(xrOGF_SMParamsVersion);
-    // bone parts
-    BPVec& bp_lst 		= m_Source->BoneParts();
-    if (bp_lst.size()){
-		if (m_Source->VerifyBoneParts()){
-            F.w_u16(bp_lst.size());
-            for (BPIt bp_it=bp_lst.begin(); bp_it!=bp_lst.end(); bp_it++){
-                F.w_stringZ(bp_it->alias.c_str());
-                F.w_u16(bp_it->bones.size());
-                for (int i=0; i<int(bp_it->bones.size()); i++){
-		        	int idx = m_Source->FindBoneByNameIdx(bp_it->bones[i].c_str()); VERIFY(idx>=0);
-                    F.w_u32	(idx);
+
+    if (!m_Source->m_SMotionRefs.IsEmpty()){
+	    F.open_chunk	(OGF_MOTION_REFS);
+    	F.w_stringZ		(m_Source->m_SMotionRefs.c_str());
+	    F.close_chunk	();
+        UI->ProgressInc	();
+    }else{
+        // save smparams
+        F.open_chunk	(OGF_SMPARAMS2);
+        F.w_u16			(xrOGF_SMParamsVersion);
+        // bone parts
+        BPVec& bp_lst 	= m_Source->BoneParts();
+        if (bp_lst.size()){
+            if (m_Source->VerifyBoneParts()){
+                F.w_u16(bp_lst.size());
+                for (BPIt bp_it=bp_lst.begin(); bp_it!=bp_lst.end(); bp_it++){
+                    F.w_stringZ(bp_it->alias.c_str());
+                    F.w_u16(bp_it->bones.size());
+                    for (int i=0; i<int(bp_it->bones.size()); i++){
+                        int idx = m_Source->FindBoneByNameIdx(bp_it->bones[i].c_str()); VERIFY(idx>=0);
+                        F.w_u32	(idx);
+                    }
                 }
+            }else{
+                ELog.Msg(mtError,"Invalid bone parts (missing or duplicate bones).");
+                bRes 	= false;
             }
         }else{
-            ELog.Msg	(mtError,"Invalid bone parts (missing or duplicate bones).");
-            bRes 		= false;
+            F.w_u16(1);
+            F.w_stringZ("default");
+            F.w_u16(m_Source->BoneCount());
+            for (int i=0; i<m_Source->BoneCount(); i++) F.w_u32(i);
         }
-    }else{
-		F.w_u16(1);
-		F.w_stringZ("default");
-		F.w_u16(m_Source->BoneCount());
-        for (int i=0; i<m_Source->BoneCount(); i++) F.w_u32(i);
-    }
-    UI->ProgressInc		();
-    // motion defs
-    SMotionVec& sm_lst 		= m_Source->SMotions();
-	F.w_u16(sm_lst.size());
-    for (SMotionIt motion_it=sm_lst.begin(); motion_it!=sm_lst.end(); motion_it++){
-        CSMotion* motion = *motion_it;
-        // verify
-        if (!motion->m_Flags.is(esmFX)){
-            if (!((motion->m_BoneOrPart==BI_NONE)||(motion->m_BoneOrPart<bp_lst.size()))){
-                ELog.Msg(mtError,"Invalid Bone Part of motion: '%s'.",motion->Name());
-                bRes=false;
-                continue;
+        UI->ProgressInc	();
+        // motion defs
+        SMotionVec& sm_lst	= m_Source->SMotions();
+        F.w_u16(sm_lst.size());
+        for (SMotionIt motion_it=sm_lst.begin(); motion_it!=sm_lst.end(); motion_it++){
+            CSMotion* motion = *motion_it;
+            // verify
+            if (!motion->m_Flags.is(esmFX)){
+                if (!((motion->m_BoneOrPart==BI_NONE)||(motion->m_BoneOrPart<bp_lst.size()))){
+                    ELog.Msg(mtError,"Invalid Bone Part of motion: '%s'.",motion->Name());
+                    bRes=false;
+                    continue;
+                }
+            }
+            if (bRes){
+                // export
+                F.w_stringZ	(motion->Name());
+                F.w_u32		(motion->m_Flags.get());
+                F.w_u16		(motion->m_BoneOrPart);
+                F.w_u16		(motion_it-sm_lst.begin());
+                F.w_float	(motion->fSpeed);
+                F.w_float	(motion->fPower);
+                F.w_float	(motion->fAccrue);
+                F.w_float	(motion->fFalloff);
             }
         }
-        if (bRes){
-	    	// export
-            F.w_stringZ	(motion->Name());
-            F.w_u32		(motion->m_Flags.get());
-            F.w_u16		(motion->m_BoneOrPart);
-            F.w_u16		(motion_it-sm_lst.begin());
-            F.w_float	(motion->fSpeed);
-            F.w_float	(motion->fPower);
-            F.w_float	(motion->fAccrue);
-            F.w_float	(motion->fFalloff);
-        }
+        UI->ProgressInc		();
+        F.close_chunk();
     }
-    UI->ProgressInc		();
-    F.close_chunk();
     UI->ProgressEnd();
     return bRes;
 }
@@ -640,7 +648,7 @@ bool CExportSkeleton::ExportMotions(IWriter& F)
 bool CExportSkeleton::Export(IWriter& F)
 {
     if (!ExportGeometry(F)) 						return false;
-    if (m_Source->SMotionCount()&&!ExportMotions(F))return false;
+    if (m_Source->IsAnimated()&&!ExportMotions(F))	return false;
     return true;
 };
 //----------------------------------------------------

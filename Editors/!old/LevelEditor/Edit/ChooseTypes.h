@@ -16,6 +16,7 @@ enum EChooseMode{
     smGameObject,
     smGameMaterial,
     smGameAnim,
+    smGameSMotions,
 };
 
 struct SChooseItem{

@@ -33,6 +33,9 @@ CCustomObject::CCustomObject(LPVOID data, LPCSTR name)
     m_RT_Flags.set	(flRT_UpdateTransform,TRUE); //.???? было FALSE, нужно когда создается 
     m_Motion		= NULL;
     m_MotionParams 	= NULL;
+    FPosition.set	(0,0,0);
+    FScale.set		(1,1,1);
+    FRotation.set	(0,0,0);
 }
 
 CCustomObject::CCustomObject(CCustomObject* source)

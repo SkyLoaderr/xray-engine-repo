@@ -355,15 +355,14 @@ void 	CModelPool::Render(IRender_Visual* m_pVisual, const Fmatrix& mTransform, i
     case MT_SKELETON_ANIM:
     case MT_SKELETON_RIGID:
     case MT_HIERRARHY:{
-        FHierrarhyVisual* pV			= dynamic_cast<FHierrarhyVisual*>(m_pVisual); R_ASSERT(pV);
-        I = pV->children.begin			();
-        E = pV->children.end			();
-        for (; I!=E; I++){
-            IRender_Visual* V			= *I;
-			if (_IsRender(V,mTransform,priority,strictB2F)){
-		        RCache.set_Shader		(V->hShader?V->hShader:Device.m_WireShader);
-			    RCache.set_xform_world	(mTransform);
-	            V->Render		 		(m_fLOD);
+        if (_IsRender(m_pVisual,mTransform,priority,strictB2F)){
+            FHierrarhyVisual* pV		= dynamic_cast<FHierrarhyVisual*>(m_pVisual); R_ASSERT(pV);
+            I = pV->children.begin		();
+            E = pV->children.end		();
+            for (; I!=E; I++){
+                RCache.set_Shader		((*I)->hShader?(*I)->hShader:Device.m_WireShader);
+                RCache.set_xform_world	(mTransform);
+                (*I)->Render		 	(m_fLOD);
             }
         }
     }break;

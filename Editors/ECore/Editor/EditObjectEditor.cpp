@@ -354,6 +354,12 @@ bool CEditableObject::PrepareSkeletonOGF(IWriter& F)
     CExportSkeleton E(this);
     return E.Export(F);
 }
+
+bool CEditableObject::PrepareOMF(IWriter& F)
+{
+    CExportSkeleton E(this);
+    return E.ExportMotions(F);
+}
 //---------------------------------------------------------------------------
 
 void __fastcall CEditableObject::OnChangeTransform(PropValue* sender)

@@ -117,7 +117,7 @@ void CEditorPreferences::Edit()
 
     PHelper.CreateFloat	(props,"Sounds\\Rolloff Factor",		&sound_rolloff, 	0.f,	10.f);
     PHelper.CreateFlag<Flags32>	(props,"Sounds\\Use Hardware",					&psSoundFlags, 	ssHardware);
-    PHelper.CreateFlag<Flags32>	(props,"Sounds\\Use FX",						&psSoundFlags, 	ssFX);
+    PHelper.CreateFlag<Flags32>	(props,"Sounds\\Use EAX",						&psSoundFlags, 	ssEAX);
 
     PHelper.CreateFlag<Flags32>	(props,"Objects\\Show Hint",					&object_flags, 	epoShowHint);
     PHelper.CreateFlag<Flags32>	(props,"Objects\\Draw Pivot",					&object_flags, 	epoDrawPivot);

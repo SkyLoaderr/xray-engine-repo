@@ -509,25 +509,24 @@ CBlend*	CSkeletonAnimated::IBlend_Create	()
 	return 0;
 }
 
-void CSkeletonAnimated::Load(const char* N, IReader *data, u32 dwFlags)
+void CSkeletonAnimated::LoadMotions(LPCSTR N, IReader *data)
 {
-	inherited::Load	(N, data, dwFlags);
-
-	// Globals
-	motion_map		= xr_new<accel_map>		();
-	partition		= xr_new<CPartition>	();
-	blend_instances	= NULL;
-
 	// Load animation
-	IReader*	MS		= data->open_chunk(OGF_MOTIONS2); R_ASSERT3(MS,"Unsupported motions version.",N);
+	IReader*	MS		= data->open_chunk(OGF_MOTIONS2);
+    if (!MS) 	return;
+    
     u32			dwCNT	= 0;
     MS->r_chunk_safe	(0,&dwCNT,sizeof(dwCNT));
     for (u32 M=0; M<dwCNT; M++)
     {
         string128			mname;
-        R_ASSERT			(MS->find_chunk(M+1));
+        R_ASSERT			(MS->find_chunk(M+1));             
         MS->r_stringZ		(mname);
-        motion_map->insert	(mk_pair(ref_str(strlwr(mname)),M));
+
+        ref_str	m_key		= ref_str(strlwr(mname));
+//		CKinematics::accel_map::iterator it = motion_map->find(m_key);
+//		if (it!=motion_map->end())	xr_delete (it->second);
+        motion_map->insert	(mk_pair(m_key,M));
 
         u32 dwLen			= MS->r_u32();
         for (u32 i=0; i<bones->size(); i++)
@@ -616,6 +615,37 @@ void CSkeletonAnimated::Load(const char* N, IReader *data, u32 dwFlags)
         }else{
 			Debug.fatal				("Old skinned model version unsupported! (%s)",N);
         }
+    }
+}
+
+void CSkeletonAnimated::Load(const char* N, IReader *data, u32 dwFlags)
+{
+	inherited::Load	(N, data, dwFlags);
+
+	// Globals
+	motion_map		= xr_new<accel_map>		();
+	partition		= xr_new<CPartition>	();
+	blend_instances	= NULL;
+
+	// Load animation
+    if (data->find_chunk(OGF_MOTION_REFS)){
+    	string_path	fn,nm;
+        data->r_stringZ	(nm);
+        if (!FS.exist(fn, "$level$", nm, ".omf")){
+            if (!FS.exist(fn, "$game_meshes$", nm, ".omf")){
+#ifdef _EDITOR
+                Msg			("!Can't find motion file '%s'.",nm);
+                return;
+#else            
+                Debug.fatal("Can't find motion file '%s'.",nm);
+#endif
+            }
+		}
+		IReader* MS	= FS.r_open(fn);
+	    LoadMotions	(nm,MS);
+        MS->close	();
+    }else{
+	    LoadMotions		(N,data);
     }
 
 	// Init blend pool

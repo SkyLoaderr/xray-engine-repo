@@ -9,6 +9,8 @@
 #include "ItemList.h"
 #include "motion.h"
 #include "bone.h"
+#include "leftbar.h"
+#include "SkeletonAnimated.h"
 //------------------------------------------------------------------------------
 
 void __fastcall CActorTools::OnObjectItemFocused(ListItemsVec& items)
@@ -34,9 +36,10 @@ void __fastcall CActorTools::OnObjectItemFocused(ListItemsVec& items)
                     FillObjectProperties(props,MOTIONS_PREFIX,prop);
                 break;
                 case emMotion:{ 	
+                	LPCSTR m_name		= prop->Key()+xr_strlen(MOTIONS_PREFIX);
+                    if (m_name[0]=='\\')m_name++;
                     FillMotionProperties(props,MOTIONS_PREFIX,prop);
-                    CSMotion* MOT		= ((CSMotion*)prop->m_Object);
-                    SetCurrentMotion	(MOT?MOT->Name():"");
+                    SetCurrentMotion	(m_name);
                 }break;
                 case emBone:{
                     FillBoneProperties	(props,BONES_PREFIX,prop);
@@ -140,7 +143,11 @@ void CActorTools::RealUpdateProperties()
         m_pEditObject->FillSurfaceList		(SURFACES_PREFIX,items,emSurface);
         // skin
         if (m_pEditObject->IsSkeleton()){
-	        m_pEditObject->FillMotionList	(MOTIONS_PREFIX,items,emMotion);
+            if (m_pEditObject->m_SMotionRefs.IsEmpty()){
+            	m_pEditObject->FillMotionList(MOTIONS_PREFIX,items,emMotion);
+            }else{ 
+		        m_RenderObject.FillMotionList(MOTIONS_PREFIX,items,emMotion);
+            }
             m_pEditObject->FillBoneList		(BONES_PREFIX,items,emBone);
         }
 	}
@@ -182,12 +189,33 @@ void __fastcall CActorTools::OnMotionControlClick(PropValue* sender, bool& bModi
 //------------------------------------------------------------------------------
 static TokenValue3Custom::ItemVec bone_parts;
 
+void __fastcall CActorTools::OnMotionRefsChange(PropValue* sender)
+{
+    OnMotionKeysModified	();
+	UI->Command				(COMMAND_UPDATE_PROPERTIES);
+}
+
 void CActorTools::FillMotionProperties(PropItemVec& items, LPCSTR pref, ListItem* sender)
 {
 	R_ASSERT(m_pEditObject);
-	CSMotion* SM = (CSMotion*)sender->m_Object;
+	CSMotion* SM = m_pEditObject->m_SMotionRefs.IsEmpty()?(CSMotion*)sender->m_Object:0;
+    PropValue* V;
 
-    PHelper.CreateCaption	(items, FHelper.PrepareKey(pref,"Global\\Motion count"),	m_pEditObject->SMotionCount());
+    AnsiString m_cnt;
+    if (m_pEditObject->m_SMotionRefs.IsEmpty()){ 
+    	m_cnt 				= m_pEditObject->SMotionCount();
+    }else{
+	    if (fraLeftBar->ebRenderEngineStyle->Down){
+            CSkeletonAnimated* V	= dynamic_cast<CSkeletonAnimated*>(m_RenderObject.m_pVisual);
+            if (V) m_cnt	= V->LL_CycleCount()+V->LL_FXCount();
+        }else{
+        	m_cnt	 		= AnsiString(m_pEditObject->SMotionCount())+" (Inaccessible)";
+        }
+    }
+    
+    PHelper.CreateCaption	(items, FHelper.PrepareKey(pref,"Global\\Motion count"),	m_cnt);
+    V=PHelper.CreateChoose	(items, FHelper.PrepareKey(pref,"Global\\Motion reference"),&m_pEditObject->m_SMotionRefs, smGameSMotions);
+    V->OnChangeEvent		= OnMotionRefsChange;
     ButtonValue* B;                         
     B=PHelper.CreateButton	(items, FHelper.PrepareKey(pref,"Global\\Edit"),			"Append,Delete,Save",ButtonValue::flFirstOnly);
     B->OnBtnClickEvent		= OnMotionEditClick; 

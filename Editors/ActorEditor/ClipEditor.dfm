@@ -1,6 +1,6 @@
 object ClipMaker: TClipMaker
-  Left = 258
-  Top = 246
+  Left = 488
+  Top = 355
   Width = 500
   Height = 299
   HorzScrollBar.Style = ssFlat
@@ -29,9 +29,9 @@ object ClipMaker: TClipMaker
   PixelsPerInch = 96
   TextHeight = 13
   object paB: TPanel
-    Left = 104
+    Left = 129
     Top = 0
-    Width = 388
+    Width = 363
     Height = 272
     Align = alClient
     BevelOuter = bvNone
@@ -40,7 +40,7 @@ object ClipMaker: TClipMaker
     object paBase: TPanel
       Left = 0
       Top = 0
-      Width = 388
+      Width = 363
       Height = 137
       Align = alTop
       BevelOuter = bvNone
@@ -49,7 +49,7 @@ object ClipMaker: TClipMaker
       object sbBase: TScrollBox
         Left = 0
         Top = 0
-        Width = 388
+        Width = 363
         Height = 137
         HorzScrollBar.Style = ssFlat
         HorzScrollBar.Tracking = True
@@ -272,14 +272,14 @@ object ClipMaker: TClipMaker
     object paClipProps: TPanel
       Left = 0
       Top = 137
-      Width = 388
+      Width = 363
       Height = 135
       Align = alClient
       BevelOuter = bvNone
       Color = 6908265
       TabOrder = 1
       object Bevel20: TBevel
-        Left = 387
+        Left = 362
         Top = 1
         Width = 1
         Height = 134
@@ -290,7 +290,7 @@ object ClipMaker: TClipMaker
       object Bevel15: TBevel
         Left = 0
         Top = 0
-        Width = 388
+        Width = 363
         Height = 1
         Align = alTop
         Shape = bsBottomLine
@@ -301,7 +301,7 @@ object ClipMaker: TClipMaker
   object paA: TPanel
     Left = 0
     Top = 0
-    Width = 104
+    Width = 129
     Height = 272
     Align = alLeft
     BevelOuter = bvNone
@@ -310,7 +310,7 @@ object ClipMaker: TClipMaker
     object Bevel16: TBevel
       Left = 0
       Top = 118
-      Width = 104
+      Width = 129
       Height = 1
       Align = alTop
       Shape = bsBottomLine
@@ -319,7 +319,7 @@ object ClipMaker: TClipMaker
     object Panel1: TPanel
       Left = 0
       Top = 0
-      Width = 104
+      Width = 129
       Height = 118
       Align = alTop
       BevelOuter = bvNone
@@ -385,7 +385,7 @@ object ClipMaker: TClipMaker
       object Bevel4: TBevel
         Left = 0
         Top = 18
-        Width = 103
+        Width = 128
         Height = 1
         Shape = bsBottomLine
         Style = bsRaised
@@ -393,7 +393,7 @@ object ClipMaker: TClipMaker
       object Bevel5: TBevel
         Left = 0
         Top = 82
-        Width = 103
+        Width = 128
         Height = 1
         Shape = bsBottomLine
         Style = bsRaised
@@ -401,7 +401,7 @@ object ClipMaker: TClipMaker
       object Bevel10: TBevel
         Left = 30
         Top = 34
-        Width = 73
+        Width = 98
         Height = 1
         Shape = bsBottomLine
         Style = bsRaised
@@ -409,7 +409,7 @@ object ClipMaker: TClipMaker
       object Bevel11: TBevel
         Left = 30
         Top = 50
-        Width = 73
+        Width = 98
         Height = 1
         Shape = bsBottomLine
         Style = bsRaised
@@ -417,7 +417,7 @@ object ClipMaker: TClipMaker
       object Bevel12: TBevel
         Left = 30
         Top = 66
-        Width = 73
+        Width = 98
         Height = 1
         Shape = bsBottomLine
         Style = bsRaised
@@ -454,7 +454,7 @@ object ClipMaker: TClipMaker
         ShadowPos = spRightBottom
       end
       object Bevel13: TBevel
-        Left = 103
+        Left = 128
         Top = 0
         Width = 1
         Height = 118
@@ -552,7 +552,7 @@ object ClipMaker: TClipMaker
       object Bevel14: TBevel
         Left = 0
         Top = 98
-        Width = 103
+        Width = 128
         Height = 1
         Shape = bsBottomLine
         Style = bsRaised
@@ -577,7 +577,7 @@ object ClipMaker: TClipMaker
     object Panel2: TPanel
       Left = 0
       Top = 119
-      Width = 104
+      Width = 129
       Height = 19
       Align = alTop
       BevelOuter = bvNone
@@ -586,7 +586,7 @@ object ClipMaker: TClipMaker
       object ebPrevClip: TExtBtn
         Left = 0
         Top = 2
-        Width = 20
+        Width = 24
         Height = 15
         Hint = 'Prev Clip'
         Align = alNone
@@ -626,9 +626,9 @@ object ClipMaker: TClipMaker
         OnClick = ebPrevClipClick
       end
       object ebPlay: TExtBtn
-        Left = 21
+        Left = 24
         Top = 2
-        Width = 20
+        Width = 26
         Height = 15
         Hint = 'Play'
         Align = alNone
@@ -666,9 +666,9 @@ object ClipMaker: TClipMaker
         OnClick = ebPlayClick
       end
       object ebPlayCycle: TExtBtn
-        Left = 41
+        Left = 50
         Top = 2
-        Width = 20
+        Width = 26
         Height = 15
         Hint = 'Play Looped'
         Align = alNone
@@ -713,9 +713,9 @@ object ClipMaker: TClipMaker
         OnClick = ebPlayCycleClick
       end
       object ebStop: TExtBtn
-        Left = 61
+        Left = 76
         Top = 2
-        Width = 20
+        Width = 26
         Height = 15
         Hint = 'Stop'
         Align = alNone
@@ -752,9 +752,9 @@ object ClipMaker: TClipMaker
         OnClick = ebStopClick
       end
       object ebNextClip: TExtBtn
-        Left = 81
+        Left = 102
         Top = 2
-        Width = 20
+        Width = 26
         Height = 15
         Hint = 'Next Clip'
         Align = alNone
@@ -796,13 +796,13 @@ object ClipMaker: TClipMaker
       object Bevel17: TBevel
         Left = 0
         Top = 18
-        Width = 104
+        Width = 130
         Height = 1
         Shape = bsBottomLine
         Style = bsRaised
       end
       object Bevel19: TBevel
-        Left = 103
+        Left = 128
         Top = 0
         Width = 1
         Height = 19
@@ -814,7 +814,7 @@ object ClipMaker: TClipMaker
     object paClipList: TPanel
       Left = 0
       Top = 138
-      Width = 103
+      Width = 128
       Height = 134
       Align = alClient
       BevelOuter = bvNone
@@ -823,7 +823,7 @@ object ClipMaker: TClipMaker
       object Panel4: TPanel
         Left = 0
         Top = 104
-        Width = 103
+        Width = 128
         Height = 30
         Align = alBottom
         BevelOuter = bvNone
@@ -832,7 +832,7 @@ object ClipMaker: TClipMaker
         object ebInsertClip: TExtBtn
           Left = 1
           Top = 0
-          Width = 51
+          Width = 42
           Height = 15
           Align = alNone
           BevelShow = False
@@ -852,9 +852,9 @@ object ClipMaker: TClipMaker
           OnClick = ebInsertClipClick
         end
         object ebAppendClip: TExtBtn
-          Left = 52
+          Left = 43
           Top = 0
-          Width = 51
+          Width = 42
           Height = 15
           Align = alNone
           BevelShow = False
@@ -876,7 +876,7 @@ object ClipMaker: TClipMaker
         object ebLoadClips: TExtBtn
           Left = 1
           Top = 15
-          Width = 51
+          Width = 42
           Height = 15
           Align = alNone
           BevelShow = False
@@ -896,9 +896,9 @@ object ClipMaker: TClipMaker
           OnClick = ebLoadClipsClick
         end
         object ebSaveClips: TExtBtn
-          Left = 52
+          Left = 43
           Top = 15
-          Width = 51
+          Width = 42
           Height = 15
           Align = alNone
           BevelShow = False
@@ -917,10 +917,54 @@ object ClipMaker: TClipMaker
           FlatAlwaysEdge = True
           OnClick = ebSaveClipsClick
         end
+        object ebSync: TExtBtn
+          Left = 85
+          Top = 0
+          Width = 42
+          Height = 15
+          Align = alNone
+          BevelShow = False
+          HotTrack = True
+          HotColor = 15790320
+          BtnColor = 10528425
+          CloseButton = False
+          Caption = 'Sync'
+          Font.Charset = DEFAULT_CHARSET
+          Font.Color = clWindowText
+          Font.Height = -11
+          Font.Name = 'MS Sans Serif'
+          Font.Style = []
+          ParentFont = False
+          Transparent = False
+          FlatAlwaysEdge = True
+          OnClick = ebSyncClick
+        end
+        object ExtBtn2: TExtBtn
+          Left = 85
+          Top = 15
+          Width = 42
+          Height = 15
+          Align = alNone
+          BevelShow = False
+          HotTrack = True
+          HotColor = 15790320
+          BtnColor = 10528425
+          CloseButton = False
+          Caption = '-'
+          Enabled = False
+          Font.Charset = DEFAULT_CHARSET
+          Font.Color = clWindowText
+          Font.Height = -11
+          Font.Name = 'MS Sans Serif'
+          Font.Style = []
+          ParentFont = False
+          Transparent = False
+          FlatAlwaysEdge = True
+        end
       end
     end
     object Panel3: TPanel
-      Left = 103
+      Left = 128
       Top = 138
       Width = 1
       Height = 134

@@ -50,6 +50,7 @@ enum OGF_Chuncks {
 	OGF_MOTIONS2	= 26,	// * For skeletons only
 	OGF_DESC		= 27,	// * 
 	OGF_IKDATA2		= 28,	// * For skeletons only
+	OGF_MOTION_REFS	= 29,	// * For skeletons only
     OGF_forcedword	= 0xFFFFFFFF
 };
 

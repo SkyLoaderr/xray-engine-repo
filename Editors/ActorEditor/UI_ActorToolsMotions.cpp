@@ -14,8 +14,51 @@
 #include "fmesh.h"
 #include "folderlib.h"
 #include "ItemList.h"
+#include "leftbar.h"
 //---------------------------------------------------------------------------
+CMotionDef*	CActorTools::EngineModel::FindMotionDef(LPCSTR name)
+{
+	CSkeletonAnimated* VA = PSkeletonAnimated(m_pVisual);
+    if (VA){
+        CMotionDef* M	= VA->ID_Cycle_Safe	(name);
+        if (!M) M 		= VA->ID_FX_Safe	(name);
+	    return M;
+    }
+    return 0;
+}
+CMotion*	CActorTools::EngineModel::FindMotionKeys(LPCSTR name)
+{
+	CSkeletonAnimated* VA = PSkeletonAnimated(m_pVisual);
+    if (VA){
+        CMotionDef* MD	= FindMotionDef(name);	
+        if (MD){
+            CBoneDataAnimated* BD	= (CBoneDataAnimated*)(&VA->LL_GetData(VA->LL_GetBoneRoot()));
+            return 		&(BD->Motions[MD->motion]);
+        }
+    }
+    return 0;
+}
 
+void CActorTools::EngineModel::FillMotionList(LPCSTR pref, ListItemsVec& items, int modeID)
+{
+    LHelper.CreateItem			(items, pref,  modeID, ListItem::flSorted);
+    if (IsRenderable()&&fraLeftBar->ebRenderEngineStyle->Down){
+    	CSkeletonAnimated* V	= dynamic_cast<CSkeletonAnimated*>(m_pVisual);
+		if (V){
+            // cycles
+            CSkeletonAnimated::mdef::const_iterator I,E;
+            I = V->m_cycle->begin(); 
+            E = V->m_cycle->end(); 
+            for ( ; I != E; ++I) 
+                LHelper.CreateItem(items, FHelper.PrepareKey(pref, *(*I).first).c_str(), modeID, 0, (void*)&I->second);
+            // fxs
+            I = V->m_fx->begin(); 
+            E = V->m_fx->end(); 
+            for ( ; I != E; ++I)
+                LHelper.CreateItem(items, FHelper.PrepareKey(pref, *(*I).first).c_str(), modeID, 0, (void*)&I->second);
+        }
+    }
+}
 void CActorTools::EngineModel::PlayCycle(LPCSTR name, int part)
 {
     CMotionDef* D = PSkeletonAnimated(m_pVisual)->ID_Cycle_Safe(name);
@@ -71,10 +114,8 @@ bool CActorTools::EngineModel::UpdateVisual(CEditableObject* source, bool bUpdGe
         F.w(m_GeometryStream.pointer(),m_GeometryStream.size());
         if (bUpdKeys) UpdateMotionKeysStream(source);
         if (bUpdDefs) UpdateMotionDefsStream(source);
-        if (m_MotionKeysStream.size()&&m_MotionDefsStream.size()){
-	        F.w(m_MotionKeysStream.pointer(),m_MotionKeysStream.size());
-    	    F.w(m_MotionDefsStream.pointer(),m_MotionDefsStream.size());
-        }
+        if (m_MotionKeysStream.size())	F.w(m_MotionKeysStream.pointer(),m_MotionKeysStream.size());
+        if (m_MotionDefsStream.size())	F.w(m_MotionDefsStream.pointer(),m_MotionDefsStream.size());
     }else{
         bool bRes = true;
         if (bUpdGeom) 	bRes = UpdateGeometryStream(source);
@@ -94,10 +135,40 @@ bool CActorTools::EngineModel::UpdateVisual(CEditableObject* source, bool bUpdGe
 
 //---------------------------------------------------------------------------
 
-void CActorTools::EngineModel::PlayMotion(CSMotion* M)
+void CActorTools::EngineModel::PlayMotion(LPCSTR name)
 {
+    CMotionDef* M	= FindMotionDef(name);
     if (M&&IsRenderable()){
-        if (M->m_Flags.is(esmFX)){
+        if (M->flags&esmFX){
+			for (int k=0; k<MAX_PARTS; k++){
+            	if (!m_BPPlayCache[k].IsEmpty()){
+                	CMotionDef* D = PSkeletonAnimated(m_pVisual)->ID_Cycle_Safe(m_BPPlayCache[k].c_str());
+                    if (D) D->PlayCycle(PSkeletonAnimated(m_pVisual),k,false,0,0);
+    	    	}
+            }        
+        	m_pBlend = M->PlayFX(PSkeletonAnimated(m_pVisual),1.f);
+        }else{	
+            u16 idx 		= M->bone_or_part;
+        	R_ASSERT((idx==BI_NONE)||(idx<MAX_PARTS));
+        	if (BI_NONE==idx)for (int k=0; k<MAX_PARTS; k++) m_BPPlayCache[k] = name;
+            else			m_BPPlayCache[idx] = name;
+            m_pBlend		= 0;
+
+			for (int k=0; k<MAX_PARTS; k++){
+            	if (!m_BPPlayCache[k].IsEmpty()){
+                	CMotionDef* D = PSkeletonAnimated(m_pVisual)->ID_Cycle_Safe(m_BPPlayCache[k].c_str());
+                    CBlend* B=0;
+                    if (D){
+                    	B = D->PlayCycle(PSkeletonAnimated(m_pVisual),k,(idx==k)?!(D->flags&esmNoMix):FALSE,0,0);
+						if (idx==k) m_pBlend = B;
+                    }
+    	    	}
+            }        
+        }
+    }
+/*
+    if (M&&IsRenderable()){
+        if (M->flags&esmFX){
 			for (int k=0; k<MAX_PARTS; k++){
             	if (!m_BPPlayCache[k].IsEmpty()){
                 	CMotionDef* D = PSkeletonAnimated(m_pVisual)->ID_Cycle_Safe(m_BPPlayCache[k].c_str());
@@ -124,6 +195,7 @@ void CActorTools::EngineModel::PlayMotion(CSMotion* M)
             }        
         }
     }
+*/
 }
 void CActorTools::EngineModel::RestoreParams(TFormStorage* s)
 {          
@@ -244,7 +316,7 @@ void CActorTools::PlayMotion()
         	if (m_Flags.is(flUpdateMotionKeys))	{ OnMotionKeysModified();	}
         	if (m_Flags.is(flUpdateMotionDefs))	{ OnMotionDefsModified(); 	}
         	if (m_Flags.is(flUpdateGeometry))	{ OnGeometryModified(); 	}
-            m_RenderObject.PlayMotion(m_pEditObject->GetActiveSMotion());
+            m_RenderObject.PlayMotion(m_CurrentMotion.c_str());
         }
     }
 }

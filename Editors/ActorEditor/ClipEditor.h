@@ -83,6 +83,8 @@ __published:	// IDE-managed Components
 	TMxLabel *MxLabel5;
 	TMxPanel *paFXs;
 	TBevel *Bevel21;
+	TExtBtn *ebSync;
+	TExtBtn *ExtBtn2;
 	void __fastcall ebInsertClipClick(TObject *Sender);
 	void __fastcall gtClipPaint(TObject *Sender);
 	void __fastcall ebAppendClipClick(TObject *Sender);
@@ -132,6 +134,7 @@ __published:	// IDE-managed Components
           TDragObject *&DragObject);
 	void __fastcall ClipEndDrag(TObject *Sender, TObject *Target, int X,
           int Y);
+	void __fastcall ebSyncClick(TObject *Sender);
 public:
 	class CUIClip: public CClip{
     public:                               

@@ -261,6 +261,13 @@ void __fastcall TfraLeftBar::miExportOGFClick(TObject *Sender)
 }
 //---------------------------------------------------------------------------
 
+void __fastcall TfraLeftBar::miExportOMFClick(TObject *Sender)
+{
+	UI->Command( COMMAND_EXPORT_OMF );
+}
+//---------------------------------------------------------------------------
+
+
 void __fastcall TfraLeftBar::ebRenderStyleClick(TObject *Sender)
 {
 	if (Sender==ebRenderEngineStyle){
@@ -268,7 +275,8 @@ void __fastcall TfraLeftBar::ebRenderStyleClick(TObject *Sender)
         if (!ATools->IsVisualPresent()) SetRenderStyle(false);
         else						  SetRenderStyle(true);
     }
-    UI->RedrawScene();
+    UI->Command		(COMMAND_UPDATE_PROPERTIES);
+    UI->RedrawScene	();
 }
 //---------------------------------------------------------------------------
 
@@ -336,6 +344,8 @@ void TfraLeftBar::RefreshBar()
     miRecentFiles->Enabled = miRecentFiles->Count;
 }
 //---------------------------------------------------------------------------
+
+
 
 
 

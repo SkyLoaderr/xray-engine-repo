@@ -329,6 +329,7 @@ void CActorTools::OnDeviceDestroy(){
 
 void CActorTools::Clear()
 {
+    m_CurrentMotion		= "";
     // delete visuals
     xr_delete(m_pEditObject);
     m_RenderObject.Clear();
@@ -405,6 +406,13 @@ bool CActorTools::ExportOGF(LPCSTR name)
 {
 	VERIFY(m_bReady);
     if (m_pEditObject&&m_pEditObject->ExportOGF(name)) return true;
+    return false;
+}
+
+bool CActorTools::ExportOMF(LPCSTR name)
+{
+	VERIFY(m_bReady);
+    if (m_pEditObject&&m_pEditObject->ExportOMF(name)) return true;
     return false;
 }
 
@@ -591,8 +599,8 @@ void __fastcall CActorTools::MouseMove(TShiftState Shift)
 
 void CActorTools::WorldMotionRotate(const Fvector& R)
 {
-	R_ASSERT(m_pEditObject&&m_pEditObject->GetActiveSMotion());
-	CSMotion* M = m_pEditObject->GetActiveSMotion();
+	R_ASSERT(m_pEditObject&&(!m_CurrentMotion.IsEmpty()));
+	CSMotion* M = m_pEditObject->FindSMotionByName(m_CurrentMotion.c_str());
     int rootId = m_pEditObject->GetRootBoneID();
     M->WorldRotate(rootId,R.y,R.x,R.z);
     OnMotionKeysModified();
@@ -600,7 +608,7 @@ void CActorTools::WorldMotionRotate(const Fvector& R)
 
 CSMotion* CActorTools::GetCurrentMotion()
 {
-	return m_pEditObject?m_pEditObject->GetActiveSMotion():0;
+	return m_pEditObject?m_pEditObject->FindSMotionByName(m_CurrentMotion.c_str()):0;
 }
 
 CSMotion* CActorTools::FindMotion(LPCSTR name)
@@ -611,10 +619,11 @@ CSMotion* CActorTools::FindMotion(LPCSTR name)
 void CActorTools::SetCurrentMotion(LPCSTR name)
 {
 	if (m_pEditObject){
-    	CSMotion* M = m_pEditObject->FindSMotionByName(name);
-    	if (m_pEditObject->GetActiveSMotion()!=M){
-	    	m_pEditObject->SetActiveSMotion(M);
-    	    PlayMotion();
+        if (m_CurrentMotion!=name){
+        	m_CurrentMotion	= name;
+            CSMotion* M 	= m_pEditObject->FindSMotionByName(name);
+            if (M)			m_pEditObject->SetActiveSMotion(M);
+            PlayMotion		();
         }
     }
 }
