@@ -19,7 +19,7 @@
 #include "xr_input.h"
 
 
-bool TUI::PickGround(Fvector& hitpoint, const Fvector& start, const Fvector& direction, int bSnap){
+bool TUI::PickGround(Fvector& hitpoint, const Fvector& start, const Fvector& direction, int bSnap, Fvector* hitnormal){
 	VERIFY(m_bReady);
     // pick object geometry
     if ((bSnap==-1)||(fraTopBar->ebOSnap->Down&&(bSnap==1))){
@@ -28,7 +28,7 @@ bool TUI::PickGround(Fvector& hitpoint, const Fvector& start, const Fvector& dir
 	    EEditorState est = GetEState();
         switch(est){
         case esEditLibrary:		bPickObject = !!TfrmEditLibrary::RayPick(start,direction,&pinf); break;
-        case esEditScene:		bPickObject = !!Scene.RayPick(start,direction,OBJCLASS_SCENEOBJECT,&pinf,false,true); break;
+        case esEditScene:		bPickObject = !!Scene.RayPick(start,direction,OBJCLASS_SCENEOBJECT,&pinf,false,Scene.GetSnapList()); break;
         default: THROW;
         }
         if (bPickObject){
@@ -47,7 +47,12 @@ bool TUI::PickGround(Fvector& hitpoint, const Fvector& start, const Fvector& dir
             }else{
             	hitpoint.set(pinf.pt);
             }
-            return true;
+            if (hitnormal){
+	            Fvector verts[3];
+    	        pinf.s_obj->GetFaceWorld(pinf.e_mesh,pinf.inf.id,verts);
+        	    hitnormal->mknormal(verts[0],verts[1],verts[2]);
+            }
+			return true;
         }
     }
 
@@ -94,7 +99,7 @@ bool TUI::SelectionFrustum(CFrustum& frustum){
 	    Device.m_Camera.MouseRayFromPoint(st, d, pt[i]);
         if (frmEditorPreferences->cbBoxPickLimitedDepth->Checked){
 			pinf.inf.range = Device.m_Camera.m_Zfar; // max pick range
-            if (Scene.RayPick(st, d, OBJCLASS_SCENEOBJECT, &pinf, false, false))
+            if (Scene.RayPick(st, d, OBJCLASS_SCENEOBJECT, &pinf, false, 0))
 	            if (pinf.inf.range > depth) depth = pinf.inf.range;
         }
     }

@@ -63,14 +63,14 @@ bool TUI_CustomControl::HiddenMode(){
 //------------------------------------------------------------------------------
 CCustomObject* __fastcall TUI_CustomControl::DefaultAddObject(TShiftState Shift){
     if (Shift==ssRBOnly){ UI.Command(COMMAND_SHOWCONTEXTMENU,parent_tool->objclass); return 0;}
-    Fvector p;
+    Fvector p,n;
     CCustomObject* obj=0;
-    if (UI.PickGround(p,UI.m_CurrentRStart,UI.m_CurrentRNorm)){
+    if (UI.PickGround(p,UI.m_CurrentRStart,UI.m_CurrentRNorm,1,&n)){
 		char namebuffer[MAX_OBJ_NAME];
 		Scene.GenObjectName(parent_tool->objclass, namebuffer);
 		obj = NewObjectFromClassID(parent_tool->objclass);
         strcpy(obj->Name,namebuffer);
-		obj->PPosition = p;
+		obj->MoveTo(p,n);
         Scene.SelectObjects(false,parent_tool->objclass);
 		Scene.AddObject(obj);
 		if (Shift.Contains(ssCtrl)) UI.Command(COMMAND_SHOWPROPERTIES);
@@ -101,7 +101,7 @@ bool __fastcall TUI_CustomControl::SelectStart(TShiftState Shift){
     if (Shift==ssRBOnly){ UI.Command(COMMAND_SHOWCONTEXTMENU,parent_tool->objclass); return false;}
     if (!Shift.Contains(ssCtrl)) Scene.SelectObjects( false, cls);
 
-    CCustomObject *obj = Scene.RayPick( UI.m_CurrentRStart,UI.m_CurrentRNorm, cls, 0, true, false);
+    CCustomObject *obj = Scene.RayPick( UI.m_CurrentRStart,UI.m_CurrentRNorm, cls, 0, true, 0);
     bBoxSelection    = (obj && Shift.Contains(ssCtrl)) || !obj;
 
     if( bBoxSelection ){
@@ -144,18 +144,38 @@ bool __fastcall TUI_CustomControl::MovingStart(TShiftState Shift){
     if(Shift==ssRBOnly){ UI.Command(COMMAND_SHOWCONTEXTMENU,parent_tool->objclass); return false;}
     if(Scene.SelectionCount(true,cls)==0) return false;
 
-    if (fraTopBar->ebAxisY->Down){
-		m_MovingXVector.set(0,0,0);
-		m_MovingYVector.set(0,1,0);
-	}else{
-		m_MovingXVector.set( Device.m_Camera.GetRight() );
-		m_MovingXVector.y = 0;
-		m_MovingYVector.set( Device.m_Camera.GetDirection() );
-		m_MovingYVector.y = 0;
-		m_MovingXVector.normalize_safe();
-		m_MovingYVector.normalize_safe();
-	}
-	m_MovingReminder.set(0,0,0);
+    if (Shift.Contains(ssCtrl)){
+	    Fvector p,n;
+    	if (UI.PickGround(p,UI.m_CurrentRStart,UI.m_CurrentRNorm,1,&n)){
+            EObjClass cls = Tools.CurrentClassID();
+            bool flt = cls!=OBJCLASS_DUMMY;
+            for(ObjectPairIt it=Scene.FirstClass(); it!=Scene.LastClass(); it++){
+                ObjectList& lst = (*it).second;
+                if ((cls==OBJCLASS_DUMMY)||(parent_tool->objclass==(*it).first))
+                    for(ObjectIt _F = lst.begin();_F!=lst.end();_F++){
+                        if((*_F)->Locked()){
+                            ELog.Msg(mtError,"Object %s - locked.", (*_F)->Name);
+                            continue;
+                        }
+                        if((*_F)->Visible()&&(*_F)->Selected()) (*_F)->MoveTo(p,n);
+                    }
+            }
+        }
+        return false;
+    }else{
+        if (fraTopBar->ebAxisY->Down){
+            m_MovingXVector.set(0,0,0);
+            m_MovingYVector.set(0,1,0);
+        }else{
+            m_MovingXVector.set( Device.m_Camera.GetRight() );
+            m_MovingXVector.y = 0;
+            m_MovingYVector.set( Device.m_Camera.GetDirection() );
+            m_MovingYVector.y = 0;
+            m_MovingXVector.normalize_safe();
+            m_MovingYVector.normalize_safe();
+        }
+        m_MovingReminder.set(0,0,0);
+    }
     return true;
 }
 

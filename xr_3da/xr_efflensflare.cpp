@@ -221,7 +221,7 @@ void CLensFlare::OnMove()
 	vecY.crossproduct(vecX, vecDir);
 
 #ifdef _LEVEL_EDITOR
-	if ( Scene.RayPick(Device.m_Camera.GetPosition(), vSunDir, OBJCLASS_SCENEOBJECT, 0, false, false))
+	if ( Scene.RayPick(Device.m_Camera.GetPosition(), vSunDir, OBJCLASS_SCENEOBJECT, 0, false, 0))
 #else
 	pCreator->CurrentEntity()->CFORM()->Enable( pCreator->CurrentEntity()->bVisible );
 	if ( pCreator->ObjectSpace.RayTest( Device.vCameraPosition, vSunDir) )

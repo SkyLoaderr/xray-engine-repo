@@ -134,7 +134,7 @@ public:
     void EnableSelectionRect	( bool flag );
     void UpdateSelectionRect	( const Ipoint& from, const Ipoint& to );
 //	bool MouseBox( ICullPlane *planes, const Fvector2& point1, const Fvector2& point2 );
-	bool PickGround				(Fvector& hitpoint, const Fvector& start, const Fvector& direction, int bSnap=1);
+	bool PickGround				(Fvector& hitpoint, const Fvector& start, const Fvector& direction, int bSnap=1, Fvector* hitnormal=0);
     bool SelectionFrustum		(CFrustum& frustum);
 
     void MouseMultiClickCapture (bool b){m_MouseMultiClickCaptured = b;}

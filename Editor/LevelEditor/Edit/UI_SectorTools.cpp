@@ -55,7 +55,7 @@ void TUI_ControlSectorAdd::AddMesh(){
     CSector* sector=PortalUtils.GetSelectedSector();
     if (!sector) return;
     SRayPickInfo pinf;
-    if (Scene.RayPick( UI.m_CurrentRStart,UI.m_CurrentRNorm, OBJCLASS_SCENEOBJECT, &pinf, false, false))
+    if (Scene.RayPick( UI.m_CurrentRStart,UI.m_CurrentRNorm, OBJCLASS_SCENEOBJECT, &pinf, false, 0))
 		sector->AddMesh(pinf.s_obj,pinf.e_mesh);
 }
 
@@ -64,7 +64,7 @@ void TUI_ControlSectorAdd::DelMesh(){
     CSector* sector=PortalUtils.GetSelectedSector();
     if (!sector) return;
     SRayPickInfo pinf;
-    if (Scene.RayPick( UI.m_CurrentRStart,UI.m_CurrentRNorm, OBJCLASS_SCENEOBJECT, &pinf, false, false))
+    if (Scene.RayPick( UI.m_CurrentRStart,UI.m_CurrentRNorm, OBJCLASS_SCENEOBJECT, &pinf, false, 0))
 		sector->DelMesh(pinf.s_obj,pinf.e_mesh);
 }
 
@@ -73,7 +73,7 @@ bool TUI_ControlSectorAdd::AddSector(){
 	Scene.GenObjectName( OBJCLASS_SECTOR, namebuffer );
 	CSector* _O = new CSector(namebuffer);
     SRayPickInfo pinf;
-    if (Scene.RayPick( UI.m_CurrentRStart,UI.m_CurrentRNorm, OBJCLASS_SCENEOBJECT, &pinf, false, false)&&
+    if (Scene.RayPick( UI.m_CurrentRStart,UI.m_CurrentRNorm, OBJCLASS_SCENEOBJECT, &pinf, false, 0)&&
     	(_O->AddMesh(pinf.s_obj,pinf.e_mesh)))
     {
         Scene.SelectObjects(false,OBJCLASS_SECTOR);

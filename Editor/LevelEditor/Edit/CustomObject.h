@@ -72,6 +72,7 @@ public:
     virtual void 	UpdateTransform	(bool bForced=false){m_bUpdateTransform=TRUE;if(bForced)OnUpdateTransform();}
 
     // change position/orientation methods
+	virtual void 	MoveTo			(const Fvector& pos, const Fvector& up);
 	virtual void 	Move			(Fvector& amount);
 	virtual void 	Rotate			(Fvector& center, Fvector& axis, float angle );
 	virtual void 	Scale			(Fvector& center, Fvector& amount );

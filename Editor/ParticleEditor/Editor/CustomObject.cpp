@@ -128,8 +128,8 @@ void CCustomObject::Move(Fvector& amount){
         bool bVis=m_bVisible;
         m_bVisible=false;
         pinf.inf.range=frmEditorPreferences->seSnapMoveTo->Value;
-        if (Scene.RayPick( s1, dn, OBJCLASS_SCENEOBJECT, &pinf, false, true)||
-        	Scene.RayPick( s2, dn, OBJCLASS_SCENEOBJECT, &pinf, false, true)){
+        if (Scene.RayPick( s1, dn, OBJCLASS_SCENEOBJECT, &pinf, false, Scene.GetSnapList())||
+        	Scene.RayPick( s2, dn, OBJCLASS_SCENEOBJECT, &pinf, false, Scene.GetSnapList())){
 	            v.set(pinf.pt);
     			if (fraTopBar->ebNormalAlignment->Down){
 					Fvector verts[3];
@@ -156,6 +156,26 @@ void CCustomObject::Move(Fvector& amount){
 	    v.add(amount);
     }
 
+    PPosition = v;
+}
+
+void CCustomObject::MoveTo(const Fvector& pos, const Fvector& up){
+	R_ASSERT(!Locked());
+    UI.UpdateScene();
+    Fvector v=PPosition;
+    v.set(pos);
+    if (fraTopBar->ebNormalAlignment->Down){
+		Fmatrix	mR;
+        Fvector vR,vD,vN,r;
+        vN.set(up);
+        vD.set(0,0,1);
+		if (fabsf(vN.z)>0.99f) vD.set(1,0,0);
+		vR.crossproduct(vN,vD); vR.normalize();
+        vD.crossproduct(vR,vN); vD.normalize();
+        mR.set(vR,vN,vD,vR);
+        mR.getXYZ(r);
+        PRotate = r;
+    }
     PPosition = v;
 }
 

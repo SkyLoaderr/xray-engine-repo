@@ -338,7 +338,7 @@ int EScene::RemoveSelection( EObjClass classfilter ){
 	return count;
 }
 
-CCustomObject *EScene::RayPick(const Fvector& start, const Fvector& direction, EObjClass classfilter, SRayPickInfo* pinf, bool bDynamicTest, bool bUseSnapList){
+CCustomObject *EScene::RayPick(const Fvector& start, const Fvector& direction, EObjClass classfilter, SRayPickInfo* pinf, bool bDynamicTest, ObjectList* snap_list){
 	if( !valid() )
 		return 0;
 
@@ -348,7 +348,7 @@ CCustomObject *EScene::RayPick(const Fvector& start, const Fvector& direction, E
     for(ObjectPairIt it=m_Objects.begin(); it!=m_Objects.end(); it++){
 		ObjectList* lst=0;
     	if (it->first==OBJCLASS_SCENEOBJECT)
-        	 lst=(bUseSnapList&&fraLeftBar->ebEnableSnapList->Down&&!m_SnapObjects.empty())?&m_SnapObjects:&(it->second);
+        	 lst=(snap_list)?snap_list:&(it->second);
         else lst=&(it->second);
         if ((classfilter==OBJCLASS_DUMMY)||(classfilter==(*it).first)){
             if (classfilter==OBJCLASS_DO){
@@ -951,7 +951,11 @@ void EScene::SynchronizeObjects(){
 }
 
 void EScene::OnShowHint(AStringVec& dest){
-    CCustomObject* obj = RayPick(UI.m_CurrentRStart,UI.m_CurrentRNorm,Tools.CurrentClassID(),0,true,false);
+    CCustomObject* obj = RayPick(UI.m_CurrentRStart,UI.m_CurrentRNorm,Tools.CurrentClassID(),0,true,0);
     if (obj) obj->OnShowHint(dest);
+}
+
+ObjectList* EScene::GetSnapList(){
+	return (fraLeftBar->ebEnableSnapList->Down&&!Scene.m_SnapObjects.empty())?&Scene.m_SnapObjects:0;
 }
 
