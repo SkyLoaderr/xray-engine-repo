@@ -3,6 +3,7 @@
 #include "Physics.h"
 #include "tri-colliderknoopc/dTriList.h"
 //#include "c:\sdk\odeLast\ode\ode\src\collision_kernel.h"
+#include <../ode/src/joint.h>
 //#include "dRay/include/dRay.h"
 #include "ExtendedGeom.h"
 union dInfBytes dInfinityValue = {{0,0,0x80,0x7f}};
@@ -13,10 +14,10 @@ union dInfBytes dInfinityValue = {{0,0,0x80,0x7f}};
 
 //void _stdcall dGeomTransformSetInfo (dGeomID g, int mode);
 /////////////////////////////////////////
-static dContact bulletContact;
-static bool isShooting;
-static dVector3 RayD;
-static dVector3 RayO;
+//static dContact bulletContact;
+//static bool isShooting;
+//static dVector3 RayD;
+//static dVector3 RayO;
 
 dWorldID phWorld;
 /////////////////////////////////////
@@ -688,18 +689,18 @@ void CPHWorld::Step(dReal step)
 	}
 
 	m_delay+=(it_number-m_reduce_delay-1);
-	*/
-	//for(u32 i=0;i<(m_reduce_delay+1);i++)
-	for(u32 i=0; i<it_number;i++)
-	{
-
-		disable_count++;		
-		if(disable_count==dis_frames+1) disable_count=0;
-
-		m_steps_num++;
-		float dif=m_frame_sum-Time();
-		if(_abs(dif)>fixed_step) 
-			m_start_time+=dif;
+*/
+	//for(UINT i=0;i<(m_reduce_delay+1);i++)
+	for(UINT i=0; i<it_number;i++)
+		{
+				
+			disable_count++;		
+			if(disable_count==dis_frames+1) disable_count=0;
+			
+			m_steps_num++;
+			//double dif=m_frame_sum-Time();
+			//if(fabs(dif)>fixed_step) 
+			//	m_start_time+=dif;
 
 		//	dWorldSetERP(phWorld,  fixed_step*k_p / (fixed_step*k_p + k_d));
 		//	dWorldSetCFM(phWorld,  1.f / (fixed_step*k_p + k_d));
@@ -718,11 +719,14 @@ void CPHWorld::Step(dReal step)
 
 		Device.Statistic.ph_core.Begin		();
 		dWorldStep			(phWorld, fixed_step);
-		dJointGroupEmpty	(ContactGroup);
 		Device.Statistic.ph_core.End		();
 
 		for(iter=m_objects.begin();iter!=m_objects.end();iter++)
-			(*iter)->PhDataUpdate(fixed_step);
+				(*iter)->PhDataUpdate(fixed_step);
+		dJointGroupEmpty(ContactGroup);
+
+
+
 
 
 		//	for(iter=m_objects.begin();iter!=m_objects.end();iter++)
@@ -954,7 +958,8 @@ void CPHElement::			create_Sphere	(Fsphere&	V){
 void CPHElement::			build	(dSpaceID space){
 
 m_body=dBodyCreate(phWorld);
-
+m_saved_contacts=dJointGroupCreate (0);
+b_contacts_saved=false;
 dBodyDisable(m_body);
 //dBodySetFiniteRotationMode(m_body,1);
 //dBodySetFiniteRotationAxis(m_body,0,0,0);
@@ -1297,6 +1302,7 @@ void CPHElement::PhDataUpdate(dReal step){
 					if(previous_p[0]!=dInfinity) previous_p[0]=dInfinity;
 					return;
 				}
+	ReEnable();
    ////////////////////////////////////////////////////////////////////
   //limit velocity of the main body///////////////////////////////////
  ////////////////////////////////////////////////////////////////////
@@ -1350,7 +1356,7 @@ void CPHElement::PhDataUpdate(dReal step){
 				}
 				//const dReal k_w=0.1f;
 				//dBodyAddTorque(m_body,-rot[0]*k_w,-rot[1]*k_w,-rot[2]*k_w);
-				Disable();
+				Disabling();
 
 	
 				//const dReal k_w=0.05f;
@@ -1369,7 +1375,7 @@ void CPHElement::PhDataUpdate(dReal step){
 
 }
 
-void	CPHElement::Disable(){
+void	CPHElement::Disabling(){
 //return;
 /////////////////////////////////////////////////////////////////////////////////////
 ////////disabling main body//////////////////////////////////////////////////////////
@@ -1433,7 +1439,7 @@ void	CPHElement::Disable(){
 
 					deviation/=dis_count_f;
 					if(mag_v<0.001f* dis_frames && deviation<0.00001f*dis_frames)
-						dBodyDisable(m_body);
+						Disable();//dBodyDisable(m_body);//
 					if((previous_dev>deviation&&previous_v>mag_v)
 					  ) 
 					{
@@ -1492,6 +1498,35 @@ void	CPHElement::Disable(){
 
 }
 
+void CPHElement::Disable(){
+
+		int num=dBodyGetNumJoints(m_body);
+		for(int i=0;i<num;i++){
+		dJointID joint=	dBodyGetJoint (m_body, i);
+		if(dJointGetType (joint)==dJointTypeContact){
+			dxJointContact* contact=(dxJointContact*) joint;
+			dBodyID b1=dGeomGetBody(contact->contact.geom.g1);
+			dBodyID b2=dGeomGetBody(contact->contact.geom.g2);
+			if(b1==0 || b2==0){
+				dJointID c = dJointCreateContact(phWorld, m_saved_contacts, &(contact->contact));
+				dJointAttach(c, b1, b2);
+				b_contacts_saved=true;
+			}
+
+		}
+
+	}
+		dBodyDisable(m_body);
+}
+
+
+void CPHElement::ReEnable(){
+	if(b_contacts_saved)
+	{
+		dJointGroupEmpty(m_saved_contacts);
+		b_contacts_saved=false;
+	}
+}
 
 void CPHShell::PhTune(dReal step){
 }
@@ -1605,30 +1640,18 @@ void CPHElement::CallBack(CBoneInstance* B){
 	//previous_f[0]=dInfinity;
 	return;
 	}
-	
-	//if(attached) return;
-//	Fmatrix bone,inv_shell;
-//	InterpolateGlobalTransform(&bone);
-//	inv_shell.set(m_shell->mXFORM);
-//	inv_shell.invert();
-//	bone.mulB(inv_shell);
-//	B->mTransform.set(bone);
+
+
 	Fmatrix parent;
-	//if(!dBodyIsEnabled(m_body)) return;
+	//if(!dBodyIsEnabled(m_body)){}
+
 	if(m_parent_element){
-	//if(m_parent_element->bActivating || !m_parent_element->bActive) return;
 	InterpolateGlobalTransform(&B->mTransform);
 	parent.set(m_shell->mXFORM);
-	//m_parent_element->InterpolateGlobalTransform(&parent);
 	parent.invert();
 	B->mTransform.mulA(parent);
 	}
 	else{
-		//InterpolateGlobalTransform(&B->mTransform);
-		//parent.set(m_shell->mXFORM);
-		//parent.invert();
-		//B->mTransform.mulA(parent);
-
 
 		InterpolateGlobalTransform(&m_shell->mXFORM);
 		parent.set(B->mTransform);
@@ -1878,6 +1901,10 @@ dJointSetHingeAxis(m_joint,axis.x,axis.y,axis.z);
 
 dJointSetHingeParam(m_joint,dParamLoStop ,lo);
 dJointSetHingeParam(m_joint,dParamHiStop ,hi);
+if(axes[0].force>0.f){
+dJointSetHingeParam(m_joint,dParamFMax ,axes[0].force);
+dJointSetHingeParam(m_joint,dParamVel ,axes[0].velocity);
+}
 }
 
 
@@ -1996,8 +2023,11 @@ dJointSetAMotorAxis (m_joint1, 0, 1, axis.x, axis.y, axis.z);
 
 dJointSetAMotorParam(m_joint1,dParamLoStop ,lo);
 dJointSetAMotorParam(m_joint1,dParamHiStop ,hi);
-//dJointSetAMotorParam(m_joint1,dParamFMax ,0.f);
-//dJointSetAMotorParam(m_joint1,dParamVel ,0.f);
+
+if(axes[0].force>0.f){
+dJointSetAMotorParam(m_joint1,dParamFMax ,axes[0].force);
+dJointSetAMotorParam(m_joint1,dParamVel ,axes[0].velocity);
+}
 
 //dJointSetAMotorAngle (m_joint1, 0, 0.0f);
 
@@ -2042,9 +2072,14 @@ if(hi<0.f) {
 			}
 
 //dJointSetAMotorAxis (m_joint1, 1, 2, axis.x, axis.y, axis.z);
-dJointSetAMotorAngle (m_joint1, 1, 0.f);
+//dJointSetAMotorAngle (m_joint1, 1, 0.f);
+
 dJointSetAMotorParam(m_joint1,dParamLoStop2 ,lo);
-dJointSetAMotorParam(m_joint1,dParamHiStop2 ,hi);	
+dJointSetAMotorParam(m_joint1,dParamHiStop2 ,hi);
+if(axes[1].force>0.f){
+dJointSetAMotorParam(m_joint1,dParamFMax2 ,axes[1].force);
+dJointSetAMotorParam(m_joint1,dParamVel2 ,axes[1].velocity);
+}
 //////////////////////////////////////////////////////////////////
 switch(axes[2].vs){
 
@@ -2087,10 +2122,14 @@ if(hi<0.f) {
 			}
 
 dJointSetAMotorAxis (m_joint1, 2, 2, axis.x, axis.y, axis.z);
-dJointSetAMotorAngle (m_joint1, 2, 0.f);
+//dJointSetAMotorAngle (m_joint1, 2, 0.f);
+
 dJointSetAMotorParam(m_joint1,dParamLoStop3 ,lo);
 dJointSetAMotorParam(m_joint1,dParamHiStop3 ,hi);	
-
+if(axes[2].force>0.f){
+dJointSetAMotorParam(m_joint1,dParamFMax3 ,axes[2].force);
+dJointSetAMotorParam(m_joint1,dParamVel3 ,axes[2].velocity);
+}
 
 }
 
@@ -2344,6 +2383,60 @@ if(!bActive) return;
 bActive=false;
 }
 
+void CPHJoint::SetForceAndVelocity		(const float force,const float velocity,const int axis_num){
+int ax;
+ax=axis_num;
+if(ax<-1) ax=-1;
+
+	if(ax==-1) 
+	switch(eType){
+					case welding:				; 
+					case ball:					break;
+					case hinge:					axes[0].force=force;
+												axes[0].velocity=velocity;
+												break;
+					case hinge2:				;
+					case universal_hinge:		;
+					case shoulder1:				;
+					case shoulder2:				;
+					case car_wheel:				axes[0].force=force;
+												axes[0].velocity=velocity;
+												axes[1].force=force;
+												axes[1].velocity=velocity;
+												break;
+	
+					case full_control:			axes[0].force=force;
+												axes[0].velocity=velocity;
+												axes[1].force=force;
+												axes[1].velocity=velocity;
+												axes[2].force=force;
+												axes[2].velocity=velocity;
+												break;
+					}
+
+	else{
+		switch(eType){
+
+						case welding:				; 
+						case ball:					break;
+						case hinge:					ax=0;
+													break;
+						case hinge2:				;
+						case universal_hinge:		;
+						case shoulder1:				;
+						case shoulder2:				;
+						case car_wheel:				ax= axis_num>1 ? 1 : axis_num; 
+													break;
+	
+						case full_control:			ax= axis_num>2 ? 2 : axis_num; 
+													break;
+						}
+		axes[ax].force=force;
+		axes[ax].velocity=velocity;
+		}
+
+}
+
 
 void CPHShell::SetTransform(Fmatrix m){
 Fmatrix init;
@@ -2358,6 +2451,14 @@ Fmatrix element_transform;
 for( ;i!=elements.end(); i++)
 {
 (*i)->InterpolateGlobalTransform(&element_transform);
+element_transform.mulA(add);
+(*i)->SetTransform(element_transform);
+}
+
+
+ }
+
+orm(&element_transform);
 element_transform.mulA(add);
 (*i)->SetTransform(element_transform);
 }
