@@ -9,7 +9,7 @@
 #include "xr_collide_defs.h"
 
 const float					lt_inc			= 8.f;
-const float					lt_dec			= 8.f;
+const float					lt_dec			= 4.f;
 
 class ENGINE_API CLightTrack  
 {
