@@ -1,12 +1,12 @@
 <?xml version="1.0" encoding="windows-1251" ?>
 <encyclopedia>
     <article id="storyline_gunslinger" name="Gunslinger" group="Diary">
-        <texture x="250" y="250" width="250" height="100">ui\ui_icon_photo</texture>
+        <texture x="0" y="0" width="350" height="250">ui\ui_icon_photo</texture>
         <text>enc_social_stalker-clans_gunslinger-clan</text>
     </article>
     
     <article id="storyline_fox_flash_info" name="Fox Flash" group="Diary">
-        <texture x="200" y="550" width="150" height="100">ui\ui_icon_photo</texture>    
+        <texture x="200" y="650" width="200" height="150">ui\ui_icon_photo</texture>    
         <text>storyline_fox_flash_info</text>
     </article>
 
@@ -16,12 +16,12 @@
     </article>
 
     <article id="storyline_gunslinger_cache_info" name="Krot Flash" group="Diary">
-        <texture x="200" y="550" width="150" height="100">ui\ui_icon_photo</texture>    
+        <texture x="400" y="250" width="200" height="150">ui\ui_icon_photo</texture>    
         <text>storyline_gunslinger_cache_info</text>
     </article>
 
     <article id="storyline_gunslinger_flash_info" name="Gunslinger Flash" group="Diary">
-        <texture x="200" y="550" width="150" height="100">ui\ui_icon_photo</texture>    
+        <texture x="0" y="0" width="350" height="250">ui\ui_icon_photo</texture>    
         <text>storyline_gunslinger_flash_info</text>
     </article>
  
