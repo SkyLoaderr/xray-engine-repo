@@ -121,6 +121,8 @@ function action_bodyguard_activity:look_at_waypoint(pt)
 end
 
 function action_bodyguard_activity:execute()
+	action_base.execute(self)
+
 	self.object:set_item(object.idle, self.object:best_weapon())
 
 	if self.state == state_standing then
