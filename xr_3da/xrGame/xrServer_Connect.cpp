@@ -3,6 +3,7 @@
 #include "game_sv_single.h"
 #include "game_sv_deathmatch.h"
 #include "game_sv_teamdeathmatch.h"
+#include "game_sv_artefacthunt.h"
 #include "game_sv_cs.h"
 
 xr_token					game_type_token						[ ]={
