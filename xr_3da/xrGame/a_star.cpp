@@ -8,17 +8,18 @@
 
 #include "stdafx.h"
 #include "a_star.h"
+#include "ai_alife_graph.h"
 
 CAStar::CAStar(u32 dwMaxNodes)
 {
 	m_tpHeap					= 0;
 	m_tpIndexes					= 0;
 	m_dwAStarStaticCounter		= 0;
-	m_tpaNodes.					clear();
-	u32 S1						= (_min(dwMaxNodes,_max(Level().AI.bfCheckIfMapLoaded() ? Level().AI.Header().count : 0,Level().AI.bfCheckIfGraphLoaded() ? Level().AI.GraphHeader().dwVertexCount : 0)) + 2)*sizeof(SNode);
+	m_tpaNodes.clear			();
+	u32 S1						= (_min(dwMaxNodes,_max(Level().AI.bfCheckIfMapLoaded() ? Level().AI.Header().count : 0,Level().AI.bfCheckIfGraphLoaded() ? Level().AI.m_tpGraph->Header().dwVertexCount : 0)) + 2)*sizeof(SNode);
 	m_tpHeap					= (SNode *)xr_malloc(S1);
 	ZeroMemory					(m_tpHeap,S1);
-	u32 S2						= _max(Level().AI.bfCheckIfMapLoaded() ? Level().AI.Header().count : 0,Level().AI.bfCheckIfGraphLoaded() ? Level().AI.GraphHeader().dwVertexCount : 0)*sizeof(SIndexNode);
+	u32 S2						= _max(Level().AI.bfCheckIfMapLoaded() ? Level().AI.Header().count : 0,Level().AI.bfCheckIfGraphLoaded() ? Level().AI.m_tpGraph->Header().dwVertexCount : 0)*sizeof(SIndexNode);
 	m_tpIndexes					= (SIndexNode *)xr_malloc(S2);
 	ZeroMemory					(m_tpIndexes,S2);
 	Msg							("* AI path-finding structures: %d K",(S1 + S2)/(1024));
@@ -26,12 +27,12 @@ CAStar::CAStar(u32 dwMaxNodes)
 	m_tpLCDPath					= xr_new<CAStarSearch<CAIMapLCDPathNode,SAIMapDataL> >			(_min(dwMaxNodes,Level().AI.Header().count) + 2);
 	m_tpEnemyPath				= xr_new<CAStarSearch<CAIMapEnemyPathNode,SAIMapDataE> >		(_min(dwMaxNodes,Level().AI.Header().count) + 2);
 	m_tpEnemyPositionPath		= xr_new<CAStarSearch<CAIMapEnemyPositionPathNode,SAIMapDataF> >(_min(dwMaxNodes,Level().AI.Header().count) + 2);
-	m_tpGraphPath				= xr_new<CAStarSearch<CAIGraphShortestPathNode,SAIMapData> >    (_min(dwMaxNodes,Level().AI.GraphHeader().dwVertexCount) + 2);
-	m_tAIGraphData.tpAI_Space	= 
+	m_tpGraphPath				= xr_new<CAStarSearch<CAIGraphShortestPathNode,SAIMapDataG> >   (Level().AI.m_tpGraph->Header().dwVertexCount + 2);
 	m_tAIMapData.tpAI_Space		= 
 	m_tAIMapDataL.tpAI_Space	= 
 	m_tAIMapDataE.tpAI_Space	= 
 	m_tAIMapDataF.tpAI_Space	= &(Level().AI);
+	m_tAIGraphData.tpGraph		= Level().AI.m_tpGraph;
 }
 
 CAStar::~CAStar()
@@ -57,8 +58,8 @@ float CAStar::ffFindMinimalPath(u32 dwStartNode, u32 dwGoalNode)
 float CAStar::ffFindMinimalPath(u32 dwStartNode, u32 dwGoalNode, AI::DWORD_VECTOR &tpaNodes)
 {
 	float									fDistance;
-	m_tAIMapData.dwFinishNode				= dwGoalNode;
-	m_tpGraphPath->vfFindOptimalPath		(m_tpHeap,m_tpIndexes,m_dwAStarStaticCounter,m_tAIMapData,dwStartNode,dwGoalNode,40000.f,fDistance,tpaNodes,false);
+	m_tAIGraphData.dwFinishNode				= dwGoalNode;
+	m_tpGraphPath->vfFindOptimalPath		(m_tpHeap,m_tpIndexes,m_dwAStarStaticCounter,m_tAIGraphData,dwStartNode,dwGoalNode,40000.f,fDistance,tpaNodes,false);
 	return									(fDistance);
 }
 

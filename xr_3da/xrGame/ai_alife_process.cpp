@@ -17,53 +17,79 @@ void CAI_ALife::Update(u32 dt)
 	if (!m_bLoaded)
 		return;
 	
-//	switch (m_tZoneState) {
-//		case eZoneStateSurge : {
-//			vfGenerateArtefacts			();
-//			TRADER_P_IT					I = m_tpTraders.begin();
-//			TRADER_P_IT					E = m_tpTraders.end();
-//			for ( ; I != E; I++) {
-//				vfSellArtefacts			(**I);
-//				vfUpdateArtefactOrders	(**I);
-//				vfGiveMilitariesBribe	(**I);
-//				vfBuySupplies			(**I);
-//				vfAssignPrices			(**I);
-//			}
-//			vfBallanceCreatures			();
-//			vfUpdateCreatures			();
-//			Save						();
-//			m_tTimeAfterSurge			= 0;
-//			m_tZoneState				= eZoneStateAfterSurge;
-//			break;
-//		}
-//		case eZoneStateAfterSurge : {
-//			u64							qwStartTime	= CPU::GetCycleCount();
-//			if (m_tpScheduledObjects.size()) {
-//				int						i=0;
-//				do {
-//					i++;
-//					m_dwObjectsBeingProcessed = ((m_dwObjectsBeingProcessed + 1) % m_tpScheduledObjects.size());
-//					vfProcessNPC		(m_tpScheduledObjects[m_dwObjectsBeingProcessed]);
-//				}
-//				while (((CPU::GetCycleCount() - qwStartTime)*(i + 1)/i < m_qwMaxProcessTime) && (i < (int)m_tpScheduledObjects.size()));
-//			}
-//			break;
-//		}
-//		default : NODEFAULT;
-//	}
-	
-//	ALIFE_ENTITY_P_VECTOR_PAIR_IT J = m_tLevelMap.find(Level().AI.m_tpaGraph[m_tpActor->m_tGraphID].tLevelID);
-//	R_ASSERT(J != m_tLevelMap.end());
-//	ALIFE_ENTITY_P_IT				I = (*J).second->begin();
-//	ALIFE_ENTITY_P_IT				E = (*J).second->end();
+	switch (m_tZoneState) {
+		case eZoneStateSurge : {
+			vfGenerateArtefacts			();
+			TRADER_P_IT					I = m_tpTraders.begin();
+			TRADER_P_IT					E = m_tpTraders.end();
+			for ( ; I != E; I++) {
+				vfSellArtefacts			(**I);
+				vfUpdateArtefactOrders	(**I);
+				vfGiveMilitariesBribe	(**I);
+				vfBuySupplies			(**I);
+				vfAssignPrices			(**I);
+			}
+			vfBallanceCreatures			();
+			vfUpdateCreatures			();
+			Save						();
+			m_tTimeAfterSurge			= 0;
+			m_tZoneState				= eZoneStateAfterSurge;
+			break;
+		}
+		case eZoneStateAfterSurge : {
+			u64								qwStartTime	= CPU::GetCycleCount();
 
-	ALIFE_ENTITY_P_IT				I = m_tpCurrentLevel->begin();
-	ALIFE_ENTITY_P_IT				E = m_tpCurrentLevel->end();
-	CObject							*tpObject = Level().Objects.net_Find(m_tpActor->ID);
-	if (!tpObject)
-		return;
-	for ( ;I != E; I++)
-		ProcessOnlineOfflineSwitches(tpObject, *I);
+			// processing online/offline switches
+			ALIFE_ENTITY_P_IT			B = m_tpCurrentLevel->begin();
+			ALIFE_ENTITY_P_IT			M = B + m_dwObjectsBeingSwitched, I;
+			ALIFE_ENTITY_P_IT			E = m_tpCurrentLevel->end();
+			int i=1;
+			for (I = M ; I != E; I++, i++) {
+				ProcessOnlineOfflineSwitches(*I);
+				if ((CPU::GetCycleCount() - qwStartTime)*(i + 1)/i >= m_qwMaxProcessTime) {
+					m_dwObjectsBeingSwitched = I - B;
+					return;
+				}
+			}
+			for (I = B; I != M; I++, i++) {
+				ProcessOnlineOfflineSwitches(*I);
+				if ((CPU::GetCycleCount() - qwStartTime)*(i + 1)/i >= m_qwMaxProcessTime) {
+					m_dwObjectsBeingSwitched = I - B;
+					return;
+				}
+			}
+			
+			if (CPU::GetCycleCount() - qwStartTime >= m_qwMaxProcessTime)
+				return;
+			
+			u64								qwMaxProcessTime = m_qwMaxProcessTime - qwStartTime;
+			qwStartTime						= CPU::GetCycleCount();
+			
+			// updating objects being scheduled
+			if (m_tpScheduledObjects.size()) {
+				ALIFE_MONSTER_P_IT			B = m_tpScheduledObjects.begin();
+				ALIFE_MONSTER_P_IT			M = B + m_dwObjectsBeingProcessed, I;
+				ALIFE_MONSTER_P_IT			E = m_tpScheduledObjects.end();
+				int i=1;
+				for (I = M ; I != E; I++, i++) {
+					vfProcessNPC			(*I);
+					if ((CPU::GetCycleCount() - qwStartTime)*(i + 1)/i >= qwMaxProcessTime) {
+						m_dwObjectsBeingProcessed = I - B;
+						return;
+					}
+				}
+				for (I = B; I != M; I++, i++) {
+					vfProcessNPC			(*I);
+					if ((CPU::GetCycleCount() - qwStartTime)*(i + 1)/i >= qwMaxProcessTime) {
+						m_dwObjectsBeingProcessed = I - B;
+						return;
+					}
+				}
+			}
+			break;
+		}
+		default : NODEFAULT;
+	}
 }
 
 void CAI_ALife::vfProcessNPC(CALifeMonsterAbstract	*tpALifeMonsterAbstract)

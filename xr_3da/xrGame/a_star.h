@@ -13,11 +13,11 @@
 
 class CAStar {
 private:
-	SAIMapData												m_tAIGraphData;
 	SAIMapData												m_tAIMapData;
 	SAIMapDataL												m_tAIMapDataL;
 	SAIMapDataE												m_tAIMapDataE;
 	SAIMapDataF												m_tAIMapDataF;
+	SAIMapDataG												m_tAIGraphData;
 public:
 	
 	SNode													*m_tpHeap;
@@ -29,7 +29,7 @@ public:
 	CAStarSearch<CAIMapLCDPathNode,SAIMapDataL>				*m_tpLCDPath;
 	CAStarSearch<CAIMapEnemyPathNode,SAIMapDataE>			*m_tpEnemyPath;
 	CAStarSearch<CAIMapEnemyPositionPathNode,SAIMapDataF>   *m_tpEnemyPositionPath;
-	CAStarSearch<CAIGraphShortestPathNode,SAIMapData>       *m_tpGraphPath;
+	CAStarSearch<CAIGraphShortestPathNode,SAIMapDataG>      *m_tpGraphPath;
 					CAStar(u32 dwMaxNodes);
 	virtual			~CAStar();
 			float	ffFindMinimalPath(u32 dwStartNode, u32 dwGoalNode);

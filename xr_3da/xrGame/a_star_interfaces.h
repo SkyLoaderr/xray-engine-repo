@@ -8,6 +8,8 @@
 
 #pragma once
 
+#include "ai_alife_graph.h"
+
 class CAI_Space;
 
 typedef struct tagSAIMapData {
@@ -45,6 +47,12 @@ typedef struct tagSAIMapDataF {
 	float		fEnemyView;
 } SAIMapDataF;
 
+typedef struct tagSAIMapDataG {
+	CALifeGraph	*tpGraph;
+	u32			dwFinishNode;
+} SAIMapDataG;
+
+
 class CAIMapTemplateNode {
 public:
 	float		x1;
@@ -63,7 +71,7 @@ public:
 class CAIGraphTemplateNode {
 public:
 	u32			m_dwLastBestNode;
-	typedef		AI::SGraphEdge* iterator;
+	typedef		CALifeGraph::SGraphEdge* iterator;
 	u32			get_value				(iterator &tIterator)
 	{
 		return(tIterator->dwVertexNumber);
@@ -129,8 +137,9 @@ public:
 
 class CAIGraphShortestPathNode : public CAIGraphTemplateNode {
 public:
-	SAIMapData	tData;
-				CAIGraphShortestPathNode(SAIMapData &tAIMapData);
+	SAIMapDataG	tData;
+	CALifeGraph::SGraphVertex	*m_tpaGraph;
+				CAIGraphShortestPathNode(SAIMapDataG &tAIMapData);
 	void		begin					(u32 dwNode, iterator &tStart, iterator &tEnd);
 	bool		bfCheckIfAccessible		(u32 dwNode);
 	float		ffEvaluate				(u32 dwStartNode, u32 dwFinishNode, iterator &tIterator);

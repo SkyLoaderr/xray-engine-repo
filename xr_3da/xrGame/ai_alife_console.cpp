@@ -76,16 +76,16 @@ void vfPrintLargeString(const char *S1, const char *S, const int j, const u32 u)
 
 void CAI_ALife::vfListObjects()
 {
-//	OBJECT_PAIR_IT	I = m_tObjectRegistry.begin();
-//	OBJECT_PAIR_IT	E = m_tObjectRegistry.end();
-//	string64		tString;
-//	Msg("%s->Listing objects :",cName());
-//	for (int i=0; I != E; I++, i++) {
-//		Memory.mem_copy(tString,&((*I).second->m_tClassID),sizeof((*I).second->m_tClassID));
-//		tString[sizeof((*I).second->m_tClassID)] = 0;
-//		Msg("* %4d : %8s[m_tObjectID=%4d][MDL=%10s][CNT=%3d][GID=%4d][UPD=%d]",i,tString,(*I).first,m_tpSpawnPoints[(*I).second->m_tSpawnID]->m_caModel,(*I).second->m_wCount,(*I).second->m_tGraphID,(*I).second->m_tTimeID);
-//	}
-//	Msg("Total %d objects",i);
+	OBJECT_PAIR_IT	I = m_tObjectRegistry.begin();
+	OBJECT_PAIR_IT	E = m_tObjectRegistry.end();
+	string64		tString;
+	Msg("%s->Listing objects :",cName());
+	for (int i=0; I != E; I++, i++) {
+		Memory.mem_copy(tString,&((*I).second->m_tClassID),sizeof((*I).second->m_tClassID));
+		tString[sizeof((*I).second->m_tClassID)] = 0;
+		Msg("* %4d : %8s[m_tObjectID=%4d][MDL=%10s][CNT=%3d][GID=%4d][UPD=%d]",i,tString,(*I).first,(*I).second->s_name,(*I).second->m_wCount,(*I).second->m_tGraphID,(*I).second->m_tTimeID);
+	}
+	Msg("Total %d objects",i);
 }
 
 void CAI_ALife::vfListEvents()
@@ -487,12 +487,12 @@ void CAI_ALife::vfSpawnPointInfo(_SPAWN_ID &tSpawnID)
 
 void CAI_ALife::vfGraphVertexInfo(_GRAPH_ID &tGraphID)
 {
-	SGraphVertex &tGraphVertex = Level().AI.m_tpaGraph[tGraphID];
+	SGraphVertex &tGraphVertex = m_tpaGraph[tGraphID];
 	Msg("%s->Graph vertex information :",cName());
 	Msg("* Level point                : [%7.2f][%7.2f][%7.2f]",tGraphVertex.tGlobalPoint.x,tGraphVertex.tGlobalPoint.y,tGraphVertex.tGlobalPoint.z);
 	Msg("* Location m_tObjectID                : %d",tGraphVertex.tVertexType);
 	Msg("* Neighbours                 :");
-	SGraphEdge	*tpaEdges = (SGraphEdge *)((BYTE *)Level().AI.m_tpaGraph + tGraphVertex.dwEdgeOffset);
+	SGraphEdge	*tpaEdges = (SGraphEdge *)((BYTE *)m_tpaGraph + tGraphVertex.dwEdgeOffset);
 	for (int i=0; i<(int)tGraphVertex.tNeighbourCount; i++)
 		Msg("*   Vertex %d -> distance %7.2f",tpaEdges[i].dwVertexNumber, tpaEdges[i].fPathDistance);
 }

@@ -8,7 +8,7 @@ void	game_sv_Single::Create			(LPCSTR options)
 
 BOOL	game_sv_Single::OnTouch			(u16 eid_who, u16 eid_what)
 {
-	xrServer*			S		= Level().Server;
+	xrServer*			S		= m_tpServer;
 	xrServerEntity*		e_who	= S->ID_to_entity(eid_who);		VERIFY(e_who	);
 	xrServerEntity*		e_what	= S->ID_to_entity(eid_what);	VERIFY(e_what	);
 
@@ -46,12 +46,16 @@ BOOL	game_sv_Single::OnTouch			(u16 eid_who, u16 eid_what)
 
 BOOL	game_sv_Single::OnDetach		(u16 eid_who, u16 eid_what)
 {
-	return TRUE;
+	OBJECT_PAIR_IT			I = m_tpALife->m_tObjectRegistry.find(eid_what);
+	R_ASSERT				(I != m_tpALife->m_tObjectRegistry.end());
+	(*I).second->ID_Parent	= 0xfffe;
+	return					(TRUE);
 }
 
 void	game_sv_Single::OnRoundStart	()
 {
-	m_tALife.Load();
+	m_tpALife				= xr_new<CAI_ALife>(m_tpServer);
+	m_tpALife->Load			();
 }
 
 void	game_sv_Single::Update			()

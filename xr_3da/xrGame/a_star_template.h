@@ -31,7 +31,7 @@ typedef struct tagSIndexNode {
 } SIndexNode;
 #pragma pack(pop)
 
-template<class CTemplateNode, class SData> class CAStarSearch {
+template<class CTemplateNode, typename SData> class CAStarSearch {
 private:
 	u32			m_dwMaxNodeCount;
 public:

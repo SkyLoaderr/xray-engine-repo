@@ -9,35 +9,17 @@
 #include "stdafx.h"
 #include "ai_alife.h"
 #include "game_sv_single.h"
-#include "GameObject.h"
 
-#define SAVE_PATH	""//"SavedGames\\"
-#define SAVE_NAME	"game.sav"
-
-//#define DYNAMIC_ALLOCATION
-
-// temporary
-#define TOTAL_COUNT			  50
-#define MONSTER_FACTOR		.40f
-#define HUMAN_FACTOR		.10f
-#define WEAPON_FACTOR		.10f
-#define WEAPON_CH_FACTOR	.10f
-#define EQUIPMENT_FACTOR	.10f
-#define ARTEFACT_FACTOR		.20f
-
-FLOAT_VECTOR				fpFactors;
-// end of temporary
-
-CAI_ALife::CAI_ALife()
+CAI_ALife::CAI_ALife(xrServer *tpServer)
 {
 	m_bLoaded			= false;
 	m_tpActor			= 0;
+	m_tpServer			= tpServer;
 }
 
 CAI_ALife::~CAI_ALife()
 {
 	shedule_Unregister	();
-	//Save				();
 }
 
 void CAI_ALife::vfInitTerrain()
@@ -49,8 +31,8 @@ void CAI_ALife::vfInitTerrain()
 		for ( ; I != E; I++)
 			(*I).clear();
 	}
-	for (_GRAPH_ID i=0; i<(_GRAPH_ID)Level().AI.GraphHeader().dwVertexCount; i++)
-		m_tpTerrain[Level().AI.m_tpaGraph[i].tVertexType].push_back(i);
+	for (_GRAPH_ID i=0; i<(_GRAPH_ID)CALifeGraph::Header().dwVertexCount; i++)
+		m_tpTerrain[m_tpaGraph[i].tVertexType].push_back(i);
 }
 
 void CAI_ALife::vfNewGame()
@@ -78,15 +60,18 @@ void CAI_ALife::vfNewGame()
 		}
 		xrServerEntity			*tpServerEntity = F_entity_Create	((*I)->s_name);
 		R_ASSERT2				(tpServerEntity,"Can't create entity.");
-		CALifeObject			*i = dynamic_cast<CALifeObject*>(tpServerEntity);
+		CALifeDynamicObject			*i = dynamic_cast<CALifeDynamicObject*>(tpServerEntity);
 		R_ASSERT				(i);
-		(*I)->m_tObjectID = (*I)->ID;
-		*i = **I;
-		I = m;	
-		
-		vfCreateObject(i);
+		(*I)->m_tObjectID		= (*I)->ID;
+		*i						= **I;
+		I						= m;	
+		i->ID					= 0xffff;
+		vfCreateObject			(i);
+		i->m_tObjectID			= i->ID;
 		m_tObjectRegistry.insert(make_pair(i->m_tObjectID,i));
 	}
+	m_tALifeVersion				= ALIFE_VERSION;
+	m_tGameTime					= u64(Device.dwTimeGlobal);
 }
 
 void CAI_ALife::Save()
@@ -107,22 +92,22 @@ void CAI_ALife::Load()
 	shedule_Min					=     1;
 	shedule_Max					=    20;
 	m_dwObjectsBeingProcessed	=     0;
+	m_dwObjectsBeingSwitched	=	  0;
 	m_qwMaxProcessTime			=  100*CPU::cycles_per_microsec;
 	m_fOnlineDistance			=    10.f;
-
-	if (!Level().AI.m_tpaGraph)
-		return;
+	m_tpActor					=	  0;
+	m_tALifeVersion				= ALIFE_VERSION;
+	m_tGameTime					=	  0;
 
 #ifdef USE_SINGLE_PLAYER
-	vfInitTerrain				();
-	CStream						*tpStream;
 	FILE_NAME					caFileName;
-	R_ASSERT					(Engine.FS.Exist(caFileName, ::Path.GameData, "game.spawn"));
-	tpStream					= Engine.FS.Open(caFileName);
-	CALifeSpawnRegistry::Load	(*tpStream);
-	Engine.FS.Close				(tpStream);
-
 	if (!Engine.FS.Exist(caFileName,SAVE_PATH,SAVE_NAME)) {
+		CStream					*tpStream;
+		R_ASSERT				(Engine.FS.Exist(caFileName, ::Path.GameData, SPAWN_NAME));
+		tpStream				= Engine.FS.Open(caFileName);
+		Log						("* Loading spawn registry");
+		CALifeSpawnRegistry::Load(*tpStream);
+		Engine.FS.Close			(tpStream);
 		vfNewGame();
 		Save();
 		R_ASSERT(false);
@@ -134,16 +119,15 @@ void CAI_ALife::Load()
 	CALifeObjectRegistry::Load	(*tpStream);
 	CALifeEventRegistry::Load	(*tpStream);
 	CALifeTaskRegistry::Load	(*tpStream);
-	vfUpdateDynamicData();
+	vfUpdateDynamicData			();
+	vfInitTerrain				();
 
 	m_bLoaded = true;
 #endif
 }
 
-void CAI_ALife::vfUpdateDynamicData(CALifeObject *tpALifeObject)
+void CAI_ALife::vfUpdateDynamicData(CALifeDynamicObject *tpALifeObject)
 {
-	vfCreateObject					(tpALifeObject);
-	tpALifeObject->m_bOnline		= true;
 	CALifeGraphRegistry::Update		(tpALifeObject);
 	CALifeTraderRegistry::Update	(tpALifeObject);
 	CALifeScheduleRegistry::Update	(tpALifeObject);
@@ -172,50 +156,6 @@ void CAI_ALife::vfUpdateDynamicData()
 	}
 }
 
-void CAI_ALife::vfCreateNewDynamicObject(SPAWN_P_IT I, bool bUpdateDynamicData)
-{
-//	CALifeDynamicObject	*tpALifeDynamicObject = 0;
-//	if (pSettings->LineExists((*I)->m_caModel, "scheduled") && pSettings->ReadBOOL((*I)->m_caModel, "scheduled")) {
-//		if (pSettings->LineExists((*I)->m_caModel, "human") && pSettings->ReadBOOL((*I)->m_caModel, "human")) {
-//			CALifeCreatureSpawnPoint *tpALifeCreatureSpawnPoint	= dynamic_cast<CALifeCreatureSpawnPoint *>(*I);
-//			VERIFY(tpALifeCreatureSpawnPoint);
-//			if ((tpALifeCreatureSpawnPoint->m_wCount > 1) && pSettings->LineExists(tpALifeCreatureSpawnPoint->m_caModel, "single") && pSettings->ReadBOOL(tpALifeCreatureSpawnPoint->m_caModel, "single"))
-//				tpALifeDynamicObject	= xr_new<CALifeHumanGroup>();
-//			else
-//				if (pSettings->LineExists(tpALifeCreatureSpawnPoint->m_caModel, "trader") && pSettings->ReadBOOL(tpALifeCreatureSpawnPoint->m_caModel, "trader"))
-//					tpALifeDynamicObject	= xr_new<CALifeTrader>();
-//				else
-//					tpALifeDynamicObject	= xr_new<CALifeHuman>();
-//		}
-//		else
-//			if (pSettings->LineExists((*I)->m_caModel, "monster") && pSettings->ReadBOOL((*I)->m_caModel, "monster")) {
-//				CALifeCreatureSpawnPoint *tpALifeCreatureSpawnPoint	= dynamic_cast<CALifeCreatureSpawnPoint *>(*I);
-//				VERIFY(tpALifeCreatureSpawnPoint);
-//				if ((tpALifeCreatureSpawnPoint->m_wCount > 1) && pSettings->LineExists(tpALifeCreatureSpawnPoint->m_caModel, "single") && pSettings->ReadBOOL(tpALifeCreatureSpawnPoint->m_caModel, "single"))
-//					tpALifeDynamicObject	= xr_new<CALifeMonsterGroup>();
-//				else
-//					tpALifeDynamicObject	= xr_new<CALifeMonster>();
-//			}
-//			else
-//				if (pSettings->LineExists((*I)->m_caModel, "zone") && pSettings->ReadBOOL((*I)->m_caModel, "zone"))
-//					tpALifeDynamicObject	= xr_new<CALifeDynamicAnomalousZone>();
-//				else {
-//					Msg("!Unspecified ALife monster type!");
-//					R_ASSERT(false);
-//				}
-//	}
-//	else
-//		if (pSettings->LineExists((*I)->m_caModel, "zone") && pSettings->ReadBOOL((*I)->m_caModel, "zone"))
-//			tpALifeDynamicObject			= xr_new<CALifeAnomalousZone>();
-//		else
-//			tpALifeDynamicObject			= xr_new<CALifeItem>();
-//
-//	tpALifeDynamicObject->Init			(_SPAWN_ID(I - m_tpSpawnPoints.begin()),m_tpSpawnPoints);
-//	CALifeObjectRegistry::Add			(tpALifeDynamicObject);
-//	if (bUpdateDynamicData)
-//		vfUpdateDynamicData				(tpALifeDynamicObject);
-}
-
 void CAI_ALife::vfCreateNewTask(CALifeTrader *tpTrader)
 {
 	OBJECT_PAIR_IT	I = m_tObjectRegistry.begin();
@@ -225,7 +165,7 @@ void CAI_ALife::vfCreateNewTask(CALifeTrader *tpTrader)
 		if (tpALifeItem && !tpALifeItem->m_bAttached) {
 			CALifeTask					*tpTask = xr_new<CALifeTask>();
 			tpTask->m_tCustomerID		= tpTrader->m_tObjectID;
-			tpTask->m_tLocationID		= _LOCATION_ID(Level().AI.m_tpaGraph[tpALifeItem->m_tGraphID].tVertexType);
+			tpTask->m_tLocationID		= _LOCATION_ID(m_tpaGraph[tpALifeItem->m_tGraphID].tVertexType);
 			tpTask->m_tObjectID			= tpALifeItem->m_tObjectID;
 			tpTask->m_tTimeID			= tfGetGameTime();
 			tpTask->m_tTaskType			= eTaskTypeSearchForItemOL;
@@ -236,9 +176,27 @@ void CAI_ALife::vfCreateNewTask(CALifeTrader *tpTrader)
 	}
 }
 
+CALifeTrader* CAI_ALife::tpfGetNearestSuitableTrader(CALifeHuman *tpALifeHuman)
+{
+	float			fBestDistance = MAX_NODE_ESTIMATION_COST;
+	CALifeTrader *	tpBestTrader = 0;
+	TRADER_P_IT		I = m_tpTraders.begin();
+	TRADER_P_IT		E = m_tpTraders.end();
+	Fvector			&tGlobalPoint = m_tpaGraph[tpALifeHuman->m_tGraphID].tGlobalPoint;
+	for ( ; I != E; I++) {
+		if ((*I)->m_tRank != tpALifeHuman->m_tRank)
+			break;
+		float fCurDistance = m_tpaGraph[(*I)->m_tGraphID].tGlobalPoint.distance_to(tGlobalPoint);
+		if (fCurDistance < fBestDistance) {
+			fBestDistance = fCurDistance;
+			tpBestTrader = *I;
+		}
+	}
+	return(tpBestTrader);
+}
+
 void CAI_ALife::vfGenerateAnomalousZones()
 {
-
 }
 
 void CAI_ALife::vfGenerateArtefacts()

@@ -69,7 +69,7 @@ xrSE_EDITOR_METHODS\
 };
 
 //***** Weapon
-xrSE_DECLARE_BEGIN(xrSE_Weapon,CALifeObject)
+xrSE_DECLARE_BEGIN(xrSE_Weapon,CALifeItem)
 	u32						timestamp;
 	u8						flags;
 	u8						state;
@@ -89,7 +89,7 @@ xrSE_DECLARE_BEGIN(xrSE_Weapon,CALifeObject)
 xrSE_DECLARE_END
 
 //***** Teamed
-xrSE_DECLARE_BEGIN(xrSE_Teamed,CALifeObject)
+xrSE_DECLARE_BEGIN(xrSE_Teamed,CALifeDynamicObject)
 	u8						s_team;
 	u8						s_squad;
 	u8						s_group;
@@ -133,7 +133,7 @@ xrSE_DECLARE_BEGIN(xrSE_Crow,xrServerEntity)
 xrSE_DECLARE_END
 
 //***** Health
-xrSE_DECLARE_BEGIN(xrSE_Health,CALifeObject)
+xrSE_DECLARE_BEGIN(xrSE_Health,CALifeDynamicObject)
 	u8						amount;
 xrSE_DECLARE_END
 
@@ -277,15 +277,15 @@ xrSE_DECLARE_BEGIN(xrSE_Dog,xrSE_Enemy)
 xrSE_DECLARE_END
 
 //***** Zone
-//xrSE_DECLARE_BEGIN(xrSE_Zone,CALifeObject)
-class xrSE_Zone : public CALifeObject, public xrSE_CFormed { typedef CALifeObject inherited; public:
+//xrSE_DECLARE_BEGIN(xrSE_Zone,CALifeDynamicObject)
+class xrSE_Zone : public CALifeDynamicObject, public xrSE_CFormed { typedef CALifeDynamicObject inherited; public:
 	xrSE_Zone();
 	f32 m_maxPower, m_attn;
 	u32 m_period;
 xrSE_DECLARE_END
 
 //***** Detector
-xrSE_DECLARE_BEGIN(xrSE_Detector,CALifeObject)
+xrSE_DECLARE_BEGIN(xrSE_Detector,CALifeDynamicObject)
 xrSE_DECLARE_END
 
 xrSE_DECLARE_BEGIN(xrGraphPoint,xrServerEntity)

@@ -134,8 +134,8 @@ public:
 			int id1=-1, id2=-1;
 			sscanf(args ,"%d %d",&id1,&id2);
 			if ((id1 != -1) && (id2 != -1))
-				if (_max(id1,id2) > (int)Level().AI.GraphHeader().dwVertexCount - 1)
-					Msg("! there are only %d vertexes!",Level().AI.GraphHeader().dwVertexCount);
+				if (_max(id1,id2) > (int)Level().AI.m_tpGraph->Header().dwVertexCount - 1)
+					Msg("! there are only %d vertexes!",Level().AI.m_tpGraph->Header().dwVertexCount);
 				else
 					if (min(id1,id2) < 0)
 						Msg("! invalid vertex number (%d)!",min(id1,id2));
@@ -159,8 +159,8 @@ public:
 	virtual void Execute(LPCSTR args) {
 		if (Level().game.type == GAME_SINGLE) {
 			game_sv_Single *tpGame = dynamic_cast<game_sv_Single *>(Level().Server->game);
-			if (tpGame && tpGame->m_tALife.m_bLoaded) {
-				tpGame->m_tALife.Save();
+			if (tpGame && tpGame->m_tpALife->m_bLoaded) {
+				tpGame->m_tpALife->Save();
 				Log("* ALife simulation is successfully saved!");
 			}
 			else
@@ -178,12 +178,12 @@ public:
 	virtual void Execute(LPCSTR args) {
 		if (Level().game.type == GAME_SINGLE) {
 			game_sv_Single *tpGame = dynamic_cast<game_sv_Single *>(Level().Server->game);
-			if (tpGame && tpGame->m_tALife.m_bLoaded) {
-				tpGame->m_tALife.vfListObjects();
-				tpGame->m_tALife.vfListEvents();
-				tpGame->m_tALife.vfListTasks();
-				tpGame->m_tALife.vfListTerrain();
-				tpGame->m_tALife.vfListSpawnPoints();
+			if (tpGame && tpGame->m_tpALife->m_bLoaded) {
+				tpGame->m_tpALife->vfListObjects();
+				tpGame->m_tpALife->vfListEvents();
+				tpGame->m_tpALife->vfListTasks();
+				tpGame->m_tpALife->vfListTerrain();
+				tpGame->m_tpALife->vfListSpawnPoints();
 			}
 			else
 				Log("!ALife simulation cannot be saved!");
@@ -199,8 +199,8 @@ public:
 	virtual void Execute(LPCSTR args) {
 		if (Level().game.type == GAME_SINGLE) {
 			game_sv_Single *tpGame = dynamic_cast<game_sv_Single *>(Level().Server->game);
-			if (tpGame && tpGame->m_tALife.m_bLoaded) {
-				tpGame->m_tALife.vfListObjects();
+			if (tpGame && tpGame->m_tpALife->m_bLoaded) {
+				tpGame->m_tpALife->vfListObjects();
 			}
 			else
 				Log("!ALife simulation cannot be saved!");
@@ -216,8 +216,8 @@ public:
 	virtual void Execute(LPCSTR args) {
 		if (Level().game.type == GAME_SINGLE) {
 			game_sv_Single *tpGame = dynamic_cast<game_sv_Single *>(Level().Server->game);
-			if (tpGame && tpGame->m_tALife.m_bLoaded) {
-				tpGame->m_tALife.vfListEvents();
+			if (tpGame && tpGame->m_tpALife->m_bLoaded) {
+				tpGame->m_tpALife->vfListEvents();
 			}
 			else
 				Log("!ALife parameters are not loaded!");
@@ -233,8 +233,8 @@ public:
 	virtual void Execute(LPCSTR args) {
 		if (Level().game.type == GAME_SINGLE) {
 			game_sv_Single *tpGame = dynamic_cast<game_sv_Single *>(Level().Server->game);
-			if (tpGame && tpGame->m_tALife.m_bLoaded) {
-				tpGame->m_tALife.vfListTasks();
+			if (tpGame && tpGame->m_tpALife->m_bLoaded) {
+				tpGame->m_tpALife->vfListTasks();
 			}
 			else
 				Log("!ALife parameters are not loaded!");
@@ -250,8 +250,8 @@ public:
 	virtual void Execute(LPCSTR args) {
 		if (Level().game.type == GAME_SINGLE) {
 			game_sv_Single *tpGame = dynamic_cast<game_sv_Single *>(Level().Server->game);
-			if (tpGame && tpGame->m_tALife.m_bLoaded) {
-				tpGame->m_tALife.vfListTerrain();
+			if (tpGame && tpGame->m_tpALife->m_bLoaded) {
+				tpGame->m_tpALife->vfListTerrain();
 			}
 			else
 				Log("!ALife parameters are not loaded!");
@@ -267,8 +267,8 @@ public:
 	virtual void Execute(LPCSTR args) {
 		if (Level().game.type == GAME_SINGLE) {
 			game_sv_Single *tpGame = dynamic_cast<game_sv_Single *>(Level().Server->game);
-			if (tpGame && tpGame->m_tALife.m_bLoaded) {
-				tpGame->m_tALife.vfListSpawnPoints();
+			if (tpGame && tpGame->m_tpALife->m_bLoaded) {
+				tpGame->m_tpALife->vfListSpawnPoints();
 			}
 			else
 				Log("!ALife parameters are not loaded!");
@@ -284,13 +284,13 @@ public:
 	virtual void Execute(LPCSTR args) {
 		if (Level().game.type == GAME_SINGLE) {
 			game_sv_Single *tpGame = dynamic_cast<game_sv_Single *>(Level().Server->game);
-			if (tpGame && tpGame->m_tALife.m_bLoaded) {
+			if (tpGame && tpGame->m_tpALife->m_bLoaded) {
 				ALife::_OBJECT_ID id1 = ALife::_OBJECT_ID(-1);
 				sscanf(args ,"%d",&id1);
-//				if (id1 >= tpGame->m_tALife.m_tObjectID)
+//				if (id1 >= tpGame->m_tpALife->m_tObjectID)
 //					Msg("Invalid object ID! (%d)",id1);
 //				else
-					tpGame->m_tALife.vfObjectInfo(id1);
+					tpGame->m_tpALife->vfObjectInfo(id1);
 			}
 			else
 				Log("!ALife parameters are not loaded!");
@@ -306,13 +306,13 @@ public:
 	virtual void Execute(LPCSTR args) {
 		if (Level().game.type == GAME_SINGLE) {
 			game_sv_Single *tpGame = dynamic_cast<game_sv_Single *>(Level().Server->game);
-			if (tpGame && tpGame->m_tALife.m_bLoaded) {
+			if (tpGame && tpGame->m_tpALife->m_bLoaded) {
 				ALife::_EVENT_ID id1 = ALife::_EVENT_ID(-1);
 				sscanf(args ,"%d",&id1);
-				if (id1 >= tpGame->m_tALife.m_tEventID)
+				if (id1 >= tpGame->m_tpALife->m_tEventID)
 					Msg("Invalid event ID! (%d)",id1);
 				else
-					tpGame->m_tALife.vfEventInfo(id1);
+					tpGame->m_tpALife->vfEventInfo(id1);
 			}
 			else
 				Log("!ALife parameters are not loaded!");
@@ -328,13 +328,13 @@ public:
 	virtual void Execute(LPCSTR args) {
 		if (Level().game.type == GAME_SINGLE) {
 			game_sv_Single *tpGame = dynamic_cast<game_sv_Single *>(Level().Server->game);
-			if (tpGame && tpGame->m_tALife.m_bLoaded) {
+			if (tpGame && tpGame->m_tpALife->m_bLoaded) {
 				ALife::_TASK_ID id1 = ALife::_TASK_ID(-1);
 				sscanf(args ,"%d",&id1);
-				if (id1 >= tpGame->m_tALife.m_tTaskID)
+				if (id1 >= tpGame->m_tpALife->m_tTaskID)
 					Msg("Invalid task ID! (%d)",id1);
 				else
-					tpGame->m_tALife.vfTaskInfo(id1);
+					tpGame->m_tpALife->vfTaskInfo(id1);
 			}
 			else
 				Log("!ALife parameters are not loaded!");
@@ -350,14 +350,14 @@ public:
 	virtual void Execute(LPCSTR args) {
 //		if (Level().game.type == GAME_SINGLE) {
 //			game_sv_Single *tpGame = dynamic_cast<game_sv_Single *>(Level().Server->game);
-//			if (tpGame && tpGame->m_tALife.m_bLoaded) {
+//			if (tpGame && tpGame->m_tpALife->m_bLoaded) {
 //				u32 id1 = u32(-1);
 //				sscanf(args ,"%d",&id1);
-//				if (id1 >= tpGame->m_tALife.m_tpSpawnPoints.size())
+//				if (id1 >= tpGame->m_tpALife->m_tpSpawnPoints.size())
 //					Msg("Invalid task ID! (%d)",id1);
 //				else {
 //					ALife::_SPAWN_ID id = ALife::_SPAWN_ID(id1);
-//					tpGame->m_tALife.vfSpawnPointInfo(id);
+//					tpGame->m_tpALife->vfSpawnPointInfo(id);
 //				}
 //			}
 //			else
@@ -374,14 +374,14 @@ public:
 	virtual void Execute(LPCSTR args) {
 		if (Level().game.type == GAME_SINGLE) {
 			game_sv_Single *tpGame = dynamic_cast<game_sv_Single *>(Level().Server->game);
-			if (Level().AI.m_tpaGraph) {
+			if (Level().AI.m_tpGraph) {
 				u32 id1 = u32(-1);
 				sscanf(args ,"%d",&id1);
-				if (id1 >= Level().AI.GraphHeader().dwVertexCount)
+				if (id1 >= Level().AI.m_tpGraph->Header().dwVertexCount)
 					Msg("Invalid task ID! (%d)",id1);
 				else {
 					ALife::_GRAPH_ID id = ALife::_GRAPH_ID(id1);
-					tpGame->m_tALife.vfGraphVertexInfo(id);
+					tpGame->m_tpALife->vfGraphVertexInfo(id);
 				}
 			}
 			else
@@ -398,13 +398,13 @@ public:
 	virtual void Execute(LPCSTR args) {
 		if (Level().game.type == GAME_SINGLE) {
 			game_sv_Single *tpGame = dynamic_cast<game_sv_Single *>(Level().Server->game);
-			if (tpGame && tpGame->m_tALife.m_bLoaded) {
+			if (tpGame && tpGame->m_tpALife->m_bLoaded) {
 				float id1 = 0.0f;
 				sscanf(args ,"%f",&id1);
 				if (id1 < EPS_L)
 					Msg("Invalid time factor! (%.4f)",id1);
 				else
-					tpGame->m_tALife.vfSetTimeFactor(id1);
+					tpGame->m_tpALife->vfSetTimeFactor(id1);
 			}
 			else
 				Log("!ALife parameters are not loaded!");

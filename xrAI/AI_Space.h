@@ -14,34 +14,6 @@ namespace AI {
 	DEFINE_VECTOR	(float,						FLOAT_VECTOR,			FLOAT_IT);
 	DEFINE_VECTOR	(bool,						BOOL_VECTOR,			BOOL_IT);
 
-	#pragma pack(push,4)
-	typedef struct tagSGraphEdge {
-		u32		dwVertexNumber;
-		float	fPathDistance;
-	} SGraphEdge;
-
-	typedef struct tagSGraphVertex {
-		Fvector	tLocalPoint;
-		Fvector	tGlobalPoint;
-		u8		tLevelID;
-		u16		tVertexType;
-		u8		tNeighbourCount;
-		u32		dwEdgeOffset;
-	} SGraphVertex;
-
-	typedef struct tagSLevel {
-		string256	caLevelName;
-		Fvector		tOffset;
-	} SLevel;
-
-	typedef struct tagSGraphHeader {
-		u32				dwVersion;
-		u32				dwVertexCount;
-		u32				dwLevelCount;
-		vector<SLevel>	tpLevels;
-	} SGraphHeader;
-	#pragma pack(pop)
-
 	class	NodeEstimator
 	{
 	public:
@@ -73,6 +45,7 @@ namespace AI {
 	#define	DEFAULT_ENEMY_VIEW_WEIGHT	100.f
 };
 
+class CALifeGraph;
 class CAStar;
 
 class CAI_Space	: public pureDeviceCreate, pureDeviceDestroy
@@ -87,14 +60,8 @@ private:
 	// Debug
 	Shader*				sh_debug;
 
-#ifndef DEBUG
-	CStream*			m_tpGraphVFS;	// virtual file
-#endif
-	AI::SGraphHeader	m_tGraphHeader;	// graph header
 public:
-#ifdef DEBUG
-	CStream*			m_tpGraphVFS;	// virtual file
-#endif
+	CALifeGraph			*m_tpGraph;
 	// Query
 	vector<bool>		q_mark_bit;		// temporal usage mark for queries
 	vector<bool>		q_mark_bit_x;		// temporal usage mark for queries
@@ -115,10 +82,7 @@ public:
 	void			q_Range_Bit_X	(u32 StartNode, const Fvector& BasePos, float Range, NodePosition* QueryPosition, u32 &BestNode, float &BestCost);
 	int				q_LoadSearch	(const Fvector& Pos);	// <0 - failure
 
-	// graph
-	AI::SGraphVertex	*m_tpaGraph;
-	IC	const AI::SGraphHeader& GraphHeader()	{return m_tGraphHeader;}
-	IC	bool			bfCheckIfGraphLoaded()	{return(m_tpGraphVFS != 0);}
+	IC	bool			bfCheckIfGraphLoaded()	{return(m_tpGraph != 0);}
 	IC	bool			bfCheckIfMapLoaded()	{return(vfs != 0);}
 
 	// a* algorithm		interfaces

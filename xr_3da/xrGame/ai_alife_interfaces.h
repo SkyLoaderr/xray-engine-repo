@@ -23,15 +23,7 @@ public:
 	virtual void					Save(CFS_Memory	&tMemoryStream) = 0;
 };
 
-interface IPureALifeIObject {
-public:
-	virtual void					Init(_SPAWN_ID	tSpawnID, SPAWN_P_VECTOR &tpSpawnPoints) = 0;
-};
-
-class IPureALifeLSObject : public IPureALifeLObject, public IPureALifeSObject {
-};
-
-interface IPureALifeLSIObject : public IPureALifeLSObject, public IPureALifeIObject {
+interface IPureALifeLSObject : public IPureALifeLObject, public IPureALifeSObject {
 };
 
 interface IPureServerObject {

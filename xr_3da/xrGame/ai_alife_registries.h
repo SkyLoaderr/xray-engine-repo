@@ -8,9 +8,9 @@
 
 #pragma once
 
-#include "ai_alife_spawn.h"
 #include "ai_alife_server_objects.h"
 #include "ai_alife_predicates.h"
+#include "ai_alife_graph.h"
 
 using namespace ALife;
 
@@ -70,18 +70,18 @@ public:
 			// create entity
 			xrServerEntity			*tpServerEntity = F_entity_Create	(s_name);
 			R_ASSERT2				(tpServerEntity,"Can't create entity.");
-			CALifeObject			*tpALifeObject = dynamic_cast<CALifeObject*>(tpServerEntity);
-			R_ASSERT				(tpALifeObject);
-			tpALifeObject->Spawn_Read(tNetPacket);
+			CALifeDynamicObject			*tpALifeDynamicObject = dynamic_cast<CALifeDynamicObject*>(tpServerEntity);
+			R_ASSERT				(tpALifeDynamicObject);
+			tpALifeDynamicObject->Spawn_Read(tNetPacket);
 
 			// Update
 			tNetPacket.B.count		= tFileStream.Rword();
 			tFileStream.Read		(tNetPacket.B.data,tNetPacket.B.count);
 			tNetPacket.r_begin		(u_id);
 			R_ASSERT				(M_UPDATE==u_id);
-			tpALifeObject->UPDATE_Read(tNetPacket);
+			tpALifeDynamicObject->UPDATE_Read(tNetPacket);
 
-			m_tObjectRegistry.insert(make_pair(tpALifeObject->m_tObjectID,tpALifeObject));
+			m_tObjectRegistry.insert(make_pair(tpALifeDynamicObject->m_tObjectID,tpALifeDynamicObject));
 		}
 	};
 
@@ -197,17 +197,22 @@ public:
 	};
 };
 
-class CALifeGraphRegistry {
+class CALifeGraphRegistry : public CALifeGraph {
 public:
+	typedef CALifeGraph	inherited;
 	GRAPH_POINT_VECTOR				m_tpGraphObjects;		// по точке графа получить все 
 															//  динамические объекты
 	ALIFE_ENTITY_P_VECTOR_MAP		m_tLevelMap;
-	CALifeObject					*m_tpActor;
+	CALifeDynamicObject					*m_tpActor;
 	ALIFE_ENTITY_P_VECTOR			*m_tpCurrentLevel;
 
 	void							Init()
 	{
-		m_tpGraphObjects.resize		(Level().AI.GraphHeader().dwVertexCount);
+		FILE_NAME					caFileName;
+		strconcat					(caFileName,::Path.GameData,GRAPH_NAME);
+		inherited::Load				(caFileName);
+
+		m_tpGraphObjects.resize		(CALifeGraph::Header().dwVertexCount);
 		{
 			GRAPH_POINT_IT				I = m_tpGraphObjects.begin();
 			GRAPH_POINT_IT				E = m_tpGraphObjects.end();
@@ -220,59 +225,59 @@ public:
 		m_tpActor					= 0;
 	};
 
-	IC void							Update(CALifeObject *tpALifeObject)
+	IC void							Update(CALifeDynamicObject *tpALifeDynamicObject)
 	{
-		if (tpALifeObject->s_flags.is(M_SPAWN_OBJECT_ASPLAYER))
-			m_tpActor = tpALifeObject;
+		if (tpALifeDynamicObject->s_flags.is(M_SPAWN_OBJECT_ASPLAYER))
+			m_tpActor = tpALifeDynamicObject;
 		
-		u8 dwLevelID = Level().AI.m_tpaGraph[tpALifeObject->m_tGraphID].tLevelID;
+		u8 dwLevelID = m_tpaGraph[tpALifeDynamicObject->m_tGraphID].tLevelID;
 		
 		ALIFE_ENTITY_P_VECTOR_PAIR_IT I = m_tLevelMap.find(dwLevelID);
 		if (I == m_tLevelMap.end()) {
 			ALIFE_ENTITY_P_VECTOR *tpTemp = xr_new<ALIFE_ENTITY_P_VECTOR>();
-			tpTemp->push_back(tpALifeObject);
+			tpTemp->push_back(tpALifeDynamicObject);
 			m_tLevelMap.insert(make_pair(dwLevelID,tpTemp));
 		}
 		else
-			(*I).second->push_back(tpALifeObject);
+			(*I).second->push_back(tpALifeDynamicObject);
 		
 		if (m_tpActor && !m_tpCurrentLevel) {
-			I = m_tLevelMap.find(Level().AI.m_tpaGraph[m_tpActor->m_tGraphID].tLevelID);
+			I = m_tLevelMap.find(m_tpaGraph[m_tpActor->m_tGraphID].tLevelID);
 			R_ASSERT(I != m_tLevelMap.end());
 			m_tpCurrentLevel = (*I).second;
 		}
 		
-		CALifeItem *tpALifeItem = dynamic_cast<CALifeItem *>(tpALifeObject);
+		CALifeItem *tpALifeItem = dynamic_cast<CALifeItem *>(tpALifeDynamicObject);
 		if (tpALifeItem) {
 			if (!tpALifeItem->m_bAttached)
 				m_tpGraphObjects[tpALifeItem->m_tGraphID].tpObjects.push_back(tpALifeItem);
 			return;
 		}
 	
-		if (!dynamic_cast<CALifeTrader *>(tpALifeObject))
-			m_tpGraphObjects[tpALifeObject->m_tGraphID].tpObjects.push_back(tpALifeObject);
+		if (!dynamic_cast<CALifeTrader *>(tpALifeDynamicObject))
+			m_tpGraphObjects[tpALifeDynamicObject->m_tGraphID].tpObjects.push_back(tpALifeDynamicObject);
 	}
 
-	IC void vfRemoveObjectFromGraphPoint(CALifeObject *tpALifeObject, _GRAPH_ID tGraphID)
+	IC void vfRemoveObjectFromGraphPoint(CALifeDynamicObject *tpALifeDynamicObject, _GRAPH_ID tGraphID)
 	{
 		ALIFE_ENTITY_P_IT				I = m_tpGraphObjects[tGraphID].tpObjects.begin();
 		ALIFE_ENTITY_P_IT				E = m_tpGraphObjects[tGraphID].tpObjects.end();
 		for ( ; I != E; I++)
-			if ((*I) == tpALifeObject) {
+			if ((*I) == tpALifeDynamicObject) {
 				m_tpGraphObjects[tGraphID].tpObjects.erase(I);
 				break;
 			}
 	};
 	
-	IC void vfAddObjectToGraphPoint(CALifeObject *tpALifeObject, _GRAPH_ID tNextGraphPointID)
+	IC void vfAddObjectToGraphPoint(CALifeDynamicObject *tpALifeDynamicObject, _GRAPH_ID tNextGraphPointID)
 	{
-		m_tpGraphObjects[tNextGraphPointID].tpObjects.push_back(tpALifeObject);
+		m_tpGraphObjects[tNextGraphPointID].tpObjects.push_back(tpALifeDynamicObject);
 	};
 
-	IC void vfChangeObjectGraphPoint(CALifeObject *tpALifeObject, _GRAPH_ID tGraphPointID, _GRAPH_ID tNextGraphPointID)
+	IC void vfChangeObjectGraphPoint(CALifeDynamicObject *tpALifeDynamicObject, _GRAPH_ID tGraphPointID, _GRAPH_ID tNextGraphPointID)
 	{
-		vfRemoveObjectFromGraphPoint	(tpALifeObject,tGraphPointID);
-		vfAddObjectToGraphPoint			(tpALifeObject,tNextGraphPointID);
+		vfRemoveObjectFromGraphPoint	(tpALifeDynamicObject,tGraphPointID);
+		vfAddObjectToGraphPoint			(tpALifeDynamicObject,tNextGraphPointID);
 	};
 
 	// events
@@ -329,32 +334,13 @@ public:
 		m_tpTraders.clear			();
 	};
 	
-	IC void							Update(CALifeObject *tpALifeObject)
+	IC void							Update(CALifeDynamicObject *tpALifeDynamicObject)
 	{
-		CALifeTrader *tpALifeTrader = dynamic_cast<CALifeTrader *>(tpALifeObject);
+		CALifeTrader *tpALifeTrader = dynamic_cast<CALifeTrader *>(tpALifeDynamicObject);
 		if (tpALifeTrader) {
 			m_tpTraders.push_back(tpALifeTrader);
 			sort(m_tpTraders.begin(),m_tpTraders.end(),CCompareTraderRanksPredicate());
 		}
-	};
-
-	IC CALifeTrader *				tpfGetNearestSuitableTrader(CALifeHuman *tpALifeHuman)
-	{
-		float			fBestDistance = MAX_NODE_ESTIMATION_COST;
-		CALifeTrader *	tpBestTrader = 0;
-		TRADER_P_IT		I = m_tpTraders.begin();
-		TRADER_P_IT		E = m_tpTraders.end();
-		Fvector			&tGlobalPoint = Level().AI.m_tpaGraph[tpALifeHuman->m_tGraphID].tGlobalPoint;
-		for ( ; I != E; I++) {
-			if ((*I)->m_tRank != tpALifeHuman->m_tRank)
-				break;
-			float fCurDistance = Level().AI.m_tpaGraph[(*I)->m_tGraphID].tGlobalPoint.distance_to(tGlobalPoint);
-			if (fCurDistance < fBestDistance) {
-				fBestDistance = fCurDistance;
-				tpBestTrader = *I;
-			}
-		}
-		return(tpBestTrader);
 	};
 };
 
@@ -367,9 +353,9 @@ public:
 		m_tpScheduledObjects.clear	();
 	};
 
-	IC void							Update(CALifeObject *tpALifeObject)
+	IC void							Update(CALifeDynamicObject *tpALifeDynamicObject)
 	{
-		CALifeMonsterAbstract *tpALifeMonsterAbstract = dynamic_cast<CALifeMonsterAbstract *>(tpALifeObject);
+		CALifeMonsterAbstract *tpALifeMonsterAbstract = dynamic_cast<CALifeMonsterAbstract *>(tpALifeDynamicObject);
 		if (tpALifeMonsterAbstract)
 			m_tpScheduledObjects.push_back	(tpALifeMonsterAbstract);
 	};	
@@ -380,7 +366,6 @@ public:
 	typedef CALifeSpawnHeader inherited;
 	
 	ALIFE_ENTITY_P_VECTOR			m_tpSpawnPoints;
-	ALIFE_ENTITY_P_VECTOR_MAP		m_tLevelEntities;
 	
 	virtual							~CALifeSpawnRegistry()
 	{
@@ -420,20 +405,7 @@ public:
 			E->Init					(E->s_name);
 
 			R_ASSERT				((E->s_gameid == GAME_SINGLE) || (E->s_gameid == GAME_ANY));
-			R_ASSERT				((*I = dynamic_cast<CALifeObject*>(E)) != 0);
-		}
-		m_tLevelEntities.clear		();
-		I							= m_tpSpawnPoints.begin();
-		for ( ; I != E; I++) {
-			u8						tLevelID = Level().AI.m_tpaGraph[(*I)->m_tGraphID].tLevelID;
-			ALIFE_ENTITY_P_VECTOR_PAIR_IT	K = m_tLevelEntities.find(tLevelID);
-			if (K == m_tLevelEntities.end()) {
-				ALIFE_ENTITY_P_VECTOR	*T = xr_new<ALIFE_ENTITY_P_VECTOR>();
-				T->push_back		(*I);
-				m_tLevelEntities.insert(make_pair(tLevelID,T));
-			}
-			else
-				(*K).second->push_back(*I);
+			R_ASSERT				((*I = dynamic_cast<CALifeDynamicObject*>(E)) != 0);
 		}
 	};
 };

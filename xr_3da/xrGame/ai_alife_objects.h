@@ -10,7 +10,6 @@
 
 #include "ai_alife_interfaces.h"
 #include "ai_alife_templates.h"
-//#include "ai_alife_spawn.h"
 
 class CALifeGameTime : public IPureALifeLSObject {
 public:
@@ -22,7 +21,7 @@ public:
 	virtual void					Save(CFS_Memory	&tMemoryStream)
 	{
 		m_tGameTime					= tfGetGameTime();
-		m_dwStartTime				= Level().timeServer();
+		m_dwStartTime				= Device.dwTimeGlobal;
 		tMemoryStream.open_chunk	(GAME_TIME_CHUNK_DATA);
 		tMemoryStream.write			(&m_tGameTime,		sizeof(m_tGameTime));
 		tMemoryStream.write			(&m_tTimeAfterSurge,sizeof(m_tTimeAfterSurge));
@@ -36,19 +35,19 @@ public:
 		tFileStream.Read			(&m_tGameTime,		sizeof(m_tGameTime));
 		tFileStream.Read			(&m_tTimeAfterSurge,sizeof(m_tTimeAfterSurge));
 		m_fTimeFactor				= tFileStream.Rfloat();
-		m_dwStartTime				= Level().timeServer();
+		m_dwStartTime				= Device.dwTimeGlobal;
 	};
 	
 	IC void							vfSetTimeFactor(float fTimeFactor)
 	{
 		m_tGameTime					= tfGetGameTime();
-		m_dwStartTime				= Level().timeServer();
+		m_dwStartTime				= Device.dwTimeGlobal;
 		m_fTimeFactor				= fTimeFactor;
 	};
 
 	IC _TIME_ID						tfGetGameTime()
 	{
-		return(m_tGameTime + iFloor(m_fTimeFactor*float(Level().timeServer() - m_dwStartTime)));
+		return(m_tGameTime + iFloor(m_fTimeFactor*float(Device.dwTimeGlobal - m_dwStartTime)));
 	};
 };
 
@@ -78,5 +77,22 @@ public:
 		if (m_tALifeVersion != ALIFE_VERSION)
 			THROW;
 		tFileStream.Read			(&m_tZoneState,		sizeof(m_tZoneState));
+	};
+};
+
+class CALifeSpawnHeader : public IPureALifeLObject {
+public:
+	u32								m_tSpawnVersion;
+	u32								m_dwSpawnCount;
+	u32								m_dwLevelCount;
+	
+	virtual void					Load(CStream	&tFileStream)
+	{
+		R_ASSERT(tFileStream.FindChunk(SPAWN_POINT_CHUNK_VERSION));
+		m_tSpawnVersion				= tFileStream.Rdword();
+		if (m_tSpawnVersion != XRAI_CURRENT_VERSION)
+			THROW;
+		m_dwSpawnCount				= tFileStream.Rdword();
+		m_dwLevelCount				= tFileStream.Rdword();
 	};
 };

@@ -9,8 +9,13 @@ class	game_sv_Single				: public game_sv_GameState
 {
 private:
 public:
-	CAI_ALife						m_tALife;
-									game_sv_Single			(){};
+	CAI_ALife						*m_tpALife;
+	xrServer						*m_tpServer;
+									game_sv_Single			(xrServer *tpServer) : game_sv_GameState()
+	{
+		m_tpServer					= tpServer;
+	};
+
 	virtual							~game_sv_Single			(){};
 	virtual		void				Create					(LPCSTR options);
 
