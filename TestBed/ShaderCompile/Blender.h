@@ -15,6 +15,7 @@
 #define		BP_R_MARKER()	R_ASSERT(BPID_MARKER==BP_read_c(FS))
 #define		BP_READ(a,c)	R_ASSERT(a==BP_read_c(FS)); FS.Read(&c,sizeof(c))
 
+#pragma pack(push,4)
 class ENGINE_API CBlender_DESC
 {
 public:
@@ -52,6 +53,7 @@ public:
 		_tzset(); time( (long*)&cTime );
 	};
 };
+#pragma pack(push,4)
 
 class ENGINE_API CBlender
 {
