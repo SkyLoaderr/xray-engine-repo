@@ -341,6 +341,7 @@
 			[spawn] \n
 			wpn_spas12 \n
 			ammo_12x70_buck = 1 \n
+			bar_ecolog_flash \n
 		</supplies>
 				
 		<start_dialog>bar_ecolog_crush_professor_start</start_dialog>

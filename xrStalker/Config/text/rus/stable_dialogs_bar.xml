@@ -21,6 +21,15 @@
     <string id="aa_0">
         <text>default text</text>
     </string>
+    <string id="bar_bar_barman_ecolog_flash_done_0">
+        <text>Держи флешку. На ней все то, что наиследовал профессор Шариков.</text>
+    </string>
+    <string id="bar_bar_barman_ecolog_flash_done_21">
+        <text>Спасибо. Наверняка там что-то полезное. Держи обещанные выпивку и закусон. И еще кое что от моих покровителей в "Долге".</text>
+    </string>
+    <string id="bar_bar_barman_ecolog_flash_done_31">
+        <text>Так так. Угу, информация говоришь на флешке? И одновременно на всех ПДА "Свободы" в радиусе 10 километров! И какая теперь от этого польза? За такую работу ты у меня получишь долю с маком.</text>
+    </string>
     <string id="bar_bar_barmen_jobs_0">
         <text>Работенка для меня найдется?</text>
     </string>

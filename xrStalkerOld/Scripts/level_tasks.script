@@ -144,8 +144,10 @@ function proceed(actor)
 	-- Bar Rostok
 	if actor:has_info("bar_resque_research_start") and
 	   actor:dont_has_info("bar_resque_research_gain") and
-	   actor:object("bar_ecolog_flash") then
-		actor:give_info_portion("bar_resque_research_gain") 
+	   actor:object("bar_ecolog_flash") 
+	then
+		actor:give_info_portion("bar_resque_research_gain")
+		set_task_state(task.completed, "bar_resque_information", 1)
 	end
 	
 	
@@ -361,6 +363,11 @@ function process_map_spot(info_id)
 		remove_location(503, "bar_ecolog_crush_location")
 		add_location(500, "bar_barman_location")
 		
+	elseif info_id == "bar_resque_research_done" then
+		remove_location(500, "bar_barman_location")
+
+	elseif info_id == "bar_resque_research_fail" then
+		remove_location(500, "bar_barman_location")
 
 	-- military	
 	elseif info_id == "mil_max_job" then

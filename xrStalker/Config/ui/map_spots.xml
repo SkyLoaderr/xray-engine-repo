@@ -48,6 +48,11 @@
 	</esc_wolf_location>
 	
 <!-- bar rostok locations and spots -->
+	<bar_barman_location hint="bar_barman">
+		<level_map spot="bar_barman_spot" pointer="quest_pointer"></level_map>
+		<mini_map spot="bar_barman_spot" pointer="quest_pointer"></mini_map>
+	</bar_barman_location>
+
 	<bar_hunter_toz_location hint="bar_hunter_toz">
 		<level_map spot="bar_hunter_rifle_spot" pointer="quest_pointer"></level_map>
 		<mini_map spot="bar_hunter_rifle_spot" pointer="quest_pointer"></mini_map>
@@ -59,6 +64,10 @@
 	</bar_ecolog_crush_location>
 
 	<!-- spots -->
+	<bar_barman_spot x="0" y="0" width="32" height="32" alignment="c">
+		<texture x="32" y="128" width="32" height="32">ui\ui_icons_map</texture>
+	</bar_barman_spot>
+
 	<bar_hunter_rifle_spot x="0" y="0" width="32" height="32" alignment="c">
 		<texture x="96" y="128" width="32" height="32">ui\ui_icons_map</texture>
 	</bar_hunter_rifle_spot>
