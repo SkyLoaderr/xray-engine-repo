@@ -124,6 +124,8 @@ void	CBuild::xrPhase_UVmap()
 		g_XSplit[SP].clear	();
 		g_XSplit[SP].reserve(temp.size());
 		g_XSplit[SP].insert	(g_XSplit[SP].begin(),temp.begin(),temp.end());
+		_heapmin			();
+		HeapCompact			(GetProcessHeap(),0);
 	}
 	Msg("%d ms for memory compacting...",timeGetTime()-dwT);
 }
