@@ -21,7 +21,7 @@ CDetailPathManager::~CDetailPathManager	()
 
 void CDetailPathManager::Init			()
 {
-	m_detail_path_actual		= true;
+	m_detail_path_actual		= false;
 	m_detail_start_position		= Fvector();
 	m_detail_dest_position		= Fvector().set(0,0,0);
 	m_detail_cur_point_index	= u32(-1);

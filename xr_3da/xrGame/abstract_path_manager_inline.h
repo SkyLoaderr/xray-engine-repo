@@ -27,7 +27,7 @@ template <
 	typename _VertexEvaluator,
 	typename _vertex_id_type
 >
-IC	CAbstractPathManager<_Graph,_VertexEvaluator,_vertex_id_type>::~CAbstractPathManager		()
+IC	CAbstractPathManager<_Graph,_VertexEvaluator,_vertex_id_type>::~CAbstractPathManager	()
 {
 }
 
@@ -36,10 +36,13 @@ template <
 	typename _VertexEvaluator,
 	typename _vertex_id_type
 >
-IC	void CAbstractPathManager<_Graph,_VertexEvaluator,_vertex_id_type>::Init			()
+IC	void CAbstractPathManager<_Graph,_VertexEvaluator,_vertex_id_type>::Init				(_Graph *graph)
 {
-	m_path_actuality		= false;
+	m_actuality				= false;
 	m_intermediate_index	= u32(-1);
+	m_path.clear			();
+	m_evaluator				= 0;
+	m_graph					= graph;
 }
 
 template <
@@ -49,11 +52,13 @@ template <
 >
 IC	void CAbstractPathManager<_Graph,_VertexEvaluator,_vertex_id_type>::build_path	(const _vertex_id_type start_vertex_id, const _vertex_id_type dest_vertex_id)
 {
+	VERIFY					(m_graph);
+	VERIFY					(m_evaluator);
 	if (!path_actual(start_vertex_id, dest_vertex_id) && m_graph->valid_vertex_id(start_vertex_id) && m_graph->valid_vertex_id(dest_vertex_id)) {
-		m_path_actuality	= ai().graph_search_engine().build_path(*m_graph,start_vertex_id,dest_vertex_id,&m_path,*m_path_evaluator);
-		if (m_path_actuality)
+		m_actuality			= ai().graph_search_engine().build_path(*m_graph,start_vertex_id,dest_vertex_id,&m_path,*m_evaluator);
+		if (m_actuality)
 			m_intermediate_index = 0;
-		m_path_actuality	= true;
+		m_actuality			= true;
 	}
 }
 
@@ -95,7 +100,7 @@ template <
 >
 IC	bool CAbstractPathManager<_Graph,_VertexEvaluator,_vertex_id_type>::path_actual(const _vertex_id_type start_vertex_id, const _vertex_id_type dest_vertex_id) const
 {
-	return				(true);
+	return				(!m_path.empty());
 }
 
 template <
@@ -116,4 +121,25 @@ template <
 IC	bool CAbstractPathManager<_Graph,_VertexEvaluator,_vertex_id_type>::path_failed() const
 {
 	return				(false);
+}
+
+template <
+	typename _Graph,
+	typename _VertexEvaluator,
+	typename _vertex_id_type
+>
+IC	void CAbstractPathManager<_Graph,_VertexEvaluator,_vertex_id_type>::set_evaluator(_VertexEvaluator *evaluator)
+{
+	m_evaluator			= evaluator;
+}
+
+template <
+	typename _Graph,
+	typename _VertexEvaluator,
+	typename _vertex_id_type
+>
+IC	const xr_vector<_vertex_id_type> &
+CAbstractPathManager<_Graph,_VertexEvaluator,_vertex_id_type>::path	() const
+{
+	return				(m_path);
 }

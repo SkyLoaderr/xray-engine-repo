@@ -13,22 +13,30 @@
 
 CMovementManager::CMovementManager	()
 {
-	Init					();
+	m_base_game_selector			= xr_new<CGraphSearchEngine::CBaseParameters>();
+	m_base_level_selector			= xr_new<CGraphSearchEngine::CBaseParameters>();
+	Init							();
 }
 
 CMovementManager::~CMovementManager	()
 {
+	xr_delete						(m_base_game_selector);
+	xr_delete						(m_base_level_selector);
 }
 
 void CMovementManager::Init			()
 {
 	m_time_work						= 300*CPU::cycles_per_microsec;
-	CGameLocationSelector::Init		();
-	CGamePathManager::Init			();
-	CLevelLocationSelector::Init	();
-	CLevelPathManager::Init			();
+	
+	CGameLocationSelector::Init		(&ai().game_graph());
+	CGamePathManager::Init			(&ai().game_graph());
+	CLevelLocationSelector::Init	(&ai().level_graph());
+	CLevelPathManager::Init			(&ai().level_graph());
 	CDetailPathManager::Init		();
 	CEnemyLocationPredictor::Init	();
+
+	CGamePathManager::set_evaluator	(m_base_game_selector);
+	CLevelPathManager::set_evaluator(m_base_level_selector);
 }
 
 void CMovementManager::move_along_path	(CPHMovementControl *movement_control, float time_delta)
@@ -212,7 +220,7 @@ void CMovementManager::process_game_path()
 		}
 		case ePathStateBuildDetailPath : {
 			CDetailPathManager::build_path(
-				CLevelPathManager::m_path,
+				CLevelPathManager::path(),
 				CLevelPathManager::get_intermediate_index(),
 				ai().level_graph().vertex_position(
 					CLevelPathManager::get_intermediate_vertex_id()
@@ -285,7 +293,7 @@ void CMovementManager::process_level_path()
 		case ePathStateBuildDetailPath : {
 			if (CLevelLocationSelector::selector_used())
                 CDetailPathManager::build_path(
-					CLevelPathManager::m_path,
+					CLevelPathManager::path(),
 					CLevelPathManager::get_intermediate_index(),
 					ai().level_graph().vertex_position(
 						CLevelPathManager::get_intermediate_vertex_id()
@@ -293,7 +301,7 @@ void CMovementManager::process_level_path()
 				);
 			else
                 CDetailPathManager::build_path(
-					CLevelPathManager::m_path,
+					CLevelPathManager::path(),
 					CLevelPathManager::get_intermediate_index(),
 					m_detail_dest_position
 				);
@@ -361,7 +369,7 @@ void CMovementManager::process_enemy_search()
 		}
 		case ePathStateBuildDetailPath : {
 			CDetailPathManager::build_path	(
-				CLevelPathManager::m_path,
+				CLevelPathManager::path(),
 				CLevelPathManager::get_intermediate_index(),
 				ai().level_graph().vertex_position(
 					CLevelPathManager::get_intermediate_vertex_id()

@@ -32,14 +32,14 @@ template <
 	typename _VertexEvaluator,
 	typename _vertex_id_type
 >
-IC	void CAbstractLocationSelector<_Graph,_VertexEvaluator,_vertex_id_type>::Init					()
+IC	void CAbstractLocationSelector<_Graph,_VertexEvaluator,_vertex_id_type>::Init					(_Graph *graph)
 {
 	m_selector_failed		= true;
 	m_selected_vertex_id	= _vertex_id_type(-1);
 	m_selector_evaluator	= 0;
 	m_last_query_time		= 0;
 	m_query_interval		= 0;
-	m_graph					= 0;
+	m_graph					= graph;
 }
 
 template <
