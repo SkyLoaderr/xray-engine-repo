@@ -107,6 +107,18 @@
 	<info_portion id="test_info">
 		<!-- задание -->
 		<task>
+			<objective>
+				<text>test task primary</text>
+				<script_condition>info_test1.test_task1</script_condition>
+			</objective>
+			<objective>
+				<text>test task secondary 01</text>
+				<script_condition>info_test1.test_task2</script_condition>
+			</objective>
+			<objective>
+				<text>test task secondary 01</text>
+				<script_condition>info_test1.test_task3</script_condition>
+			</objective>
 		</task>
 	</info_portion>
 
