@@ -34,7 +34,7 @@ CUIXmlInit::~CUIXmlInit()
 {
 }
 
-bool CUIXmlInit::InitWindow(CUIXml& xml_doc, const char* path, 	
+bool CUIXmlInit::InitWindow(CUIXml& xml_doc, LPCSTR path, 	
 							int index, CUIWindow* pWnd)
 {
 	R_ASSERT2(xml_doc.NavigateToNode(path,index), "XML node not found");
@@ -46,7 +46,7 @@ bool CUIXmlInit::InitWindow(CUIXml& xml_doc, const char* path,
 	pWnd->Init(x, y, width, height);
 	return true;
 }
-bool CUIXmlInit::InitFrameWindow(CUIXml& xml_doc, const char* path, 
+bool CUIXmlInit::InitFrameWindow(CUIXml& xml_doc, LPCSTR path, 
 									int index, CUIFrameWindow* pWnd)
 {
 	R_ASSERT2(xml_doc.NavigateToNode(path,index), "XML node not found");
@@ -90,7 +90,7 @@ bool CUIXmlInit::InitFrameWindow(CUIXml& xml_doc, const char* path,
 }
 
 
-bool CUIXmlInit::InitStatic(CUIXml& xml_doc, const char* path, 
+bool CUIXmlInit::InitStatic(CUIXml& xml_doc, LPCSTR path, 
 									int index, CUIStatic* pWnd)
 {
 	R_ASSERT2(xml_doc.NavigateToNode(path,index), "XML node not found");
@@ -142,7 +142,7 @@ bool CUIXmlInit::InitStatic(CUIXml& xml_doc, const char* path,
 	return true;
 }
 
-bool CUIXmlInit::InitButton(CUIXml& xml_doc, const char* path, 
+bool CUIXmlInit::InitButton(CUIXml& xml_doc, LPCSTR path, 
 						int index, CUIButton* pWnd)
 {
 	R_ASSERT2(xml_doc.NavigateToNode(path,index), "XML node not found");
@@ -155,7 +155,7 @@ bool CUIXmlInit::InitButton(CUIXml& xml_doc, const char* path,
 	int height = xml_doc.ReadAttribInt(path, index, "height");
 	u32 accel = static_cast<u32>(xml_doc.ReadAttribInt(path, index, "accel", -1));
 	
-	char* texture = xml_doc.Read(strconcat(buf,path,":texture"), index, NULL);
+	LPCSTR  texture = xml_doc.Read(strconcat(buf,path,":texture"), index, NULL);
 
 	if(!texture) return false;
 	
@@ -174,13 +174,13 @@ bool CUIXmlInit::InitButton(CUIXml& xml_doc, const char* path,
 		pWnd->SetTextColor(cl);
 	}
 
-	char* text = xml_doc.Read(buf, index, NULL);
+	LPCSTR  text = xml_doc.Read(buf, index, NULL);
 	pWnd->SetText(text);
 
 	return true;
 }
 
-bool CUIXmlInit::InitDragDropList(CUIXml& xml_doc, const char* path, 
+bool CUIXmlInit::InitDragDropList(CUIXml& xml_doc, LPCSTR path, 
 						int index, CUIDragDropList* pWnd)
 {
 	R_ASSERT2(xml_doc.NavigateToNode(path,index), "XML node not found");
@@ -214,7 +214,7 @@ bool CUIXmlInit::InitDragDropList(CUIXml& xml_doc, const char* path,
 	return true;
 }
 
-bool CUIXmlInit::InitListWnd(CUIXml& xml_doc, const char* path, 
+bool CUIXmlInit::InitListWnd(CUIXml& xml_doc, LPCSTR path, 
 										   int index, CUIListWnd* pWnd)
 {
 	R_ASSERT2(xml_doc.NavigateToNode(path,index), "Node not found");
@@ -245,7 +245,7 @@ bool CUIXmlInit::InitListWnd(CUIXml& xml_doc, const char* path,
 	return true;
 }
 
-bool CUIXmlInit::InitProgressBar(CUIXml& xml_doc, const char* path, 
+bool CUIXmlInit::InitProgressBar(CUIXml& xml_doc, LPCSTR path, 
 						int index, CUIProgressBar* pWnd)
 {
 	R_ASSERT2(xml_doc.NavigateToNode(path,index), "XML node not found");
@@ -269,7 +269,7 @@ bool CUIXmlInit::InitProgressBar(CUIXml& xml_doc, const char* path,
 	
 	strconcat(buf,path,":texture");
 
-	char* texture = xml_doc.Read(buf, index, NULL);
+	LPCSTR texture = xml_doc.Read(buf, index, NULL);
 	if(!texture) return false;
 
 	int progress_length = xml_doc.ReadAttribInt(buf, index, "length");
@@ -292,7 +292,7 @@ bool CUIXmlInit::InitProgressBar(CUIXml& xml_doc, const char* path,
 	return true;
 }
 
-bool CUIXmlInit::InitAutoStatic(CUIXml& xml_doc, const char* tag_name, CUIWindow* pParentWnd)
+bool CUIXmlInit::InitAutoStatic(CUIXml& xml_doc, LPCSTR tag_name, CUIWindow* pParentWnd)
 {
 	int items_num = xml_doc.GetNodesNum(xml_doc.GetRoot(), tag_name);
 
@@ -308,7 +308,7 @@ bool CUIXmlInit::InitAutoStatic(CUIXml& xml_doc, const char* tag_name, CUIWindow
 	return true;
 }
 
-bool CUIXmlInit::InitFont(CUIXml &xml_doc, const char *path, int index, u32 &color, CGameFont *&pFnt)
+bool CUIXmlInit::InitFont(CUIXml &xml_doc, LPCSTR path, int index, u32 &color, CGameFont *&pFnt)
 {
 	ref_str font_name = xml_doc.ReadAttrib(path, index, "font");
 
@@ -373,7 +373,7 @@ bool CUIXmlInit::InitFont(CUIXml &xml_doc, const char *path, int index, u32 &col
 	return true;
 }
 
-bool CUIXmlInit::InitTabControl(CUIXml &xml_doc, const char *path, int index, CUITabControl *pWnd)
+bool CUIXmlInit::InitTabControl(CUIXml &xml_doc, LPCSTR path, int index, CUITabControl *pWnd)
 {
 	R_ASSERT2(xml_doc.NavigateToNode(path,index), "XML node not found");
 	
