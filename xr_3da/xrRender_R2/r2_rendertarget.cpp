@@ -240,6 +240,7 @@ void	CRenderTarget::OnDeviceCreate	()
 		s_bloom_dbg_1.create		("effects\\screen_set",		r2_RT_bloom1);
 		s_bloom_dbg_2.create		("effects\\screen_set",		r2_RT_bloom2);
 		s_bloom.create				(b_bloom,					"r2\\bloom");
+		f_bloom_factor				= 0.5f;
 	}
 
 	// TONEMAP

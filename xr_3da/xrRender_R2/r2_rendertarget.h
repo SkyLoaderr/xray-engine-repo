@@ -91,6 +91,7 @@ private:
 	ref_shader					s_bloom_dbg_1;
 	ref_shader					s_bloom_dbg_2;
 	ref_shader					s_bloom;
+	float						f_bloom_factor;
 
 	// Luminance
 	ref_shader					s_luminance;
