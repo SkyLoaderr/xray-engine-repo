@@ -20,7 +20,7 @@
 	<static x="12" y="10" width="50" height="50"></static>
 	<!-- power bar static -->
 	<!--<power_bar_static x="110" y="635" width="50" height="100"></power_bar_static>-->
-	<power_bar_static x="100" y="645" width="20" height="70" align="lb">
+	<power_bar_static x="100" y="655" width="20" height="70" align="lb">
 	<!--	<text x="80" y="5" font="small" r="255" g="255" b="255" a="130">health</text>
 	<!--	<texture>ui\ui_mn_health</texture>>-->
 	</power_bar_static>
