@@ -383,28 +383,26 @@ void CObjectHandlerGOAP::add_operators		(CEatableItem *eatable_item)
 {
 }
 
-void CObjectHandlerGOAP::remove_evaluators	(CWeapon *weapon)
+void CObjectHandlerGOAP::remove_evaluators	(CObject *object)
 {
+#pragma todo("Dima to Dima : safe, but not optimal!")
+	for (;;) {
+		EVALUATOR_MAP::iterator	I = std::lower_bound(m_evaluators.begin(),m_evaluators.end(),object->ID(),CMapLocator<EVALUATOR_MAP>());
+		if (!object_action((*I).first,object))
+			break;
+		remove_evaluator((*I).first);
+	}
 }
 
-void CObjectHandlerGOAP::remove_operators	(CWeapon *weapon)
+void CObjectHandlerGOAP::remove_operators	(CObject *object)
 {
-}
-
-void CObjectHandlerGOAP::remove_evaluators	(CMissile *missile)
-{
-}
-
-void CObjectHandlerGOAP::remove_operators	(CMissile *missile)
-{
-}
-
-void CObjectHandlerGOAP::remove_evaluators	(CEatableItem *eatable_item)
-{
-}
-
-void CObjectHandlerGOAP::remove_operators	(CEatableItem *eatable_item)
-{
+#pragma todo("Dima to Dima : safe, but not optimal!")
+	for (;;) {
+		OPERATOR_VECTOR::iterator	I = std::lower_bound(m_operators.begin(),m_operators.end(),object->ID());
+		if (!object_action((*I).m_operator_id,object))
+			break;
+		remove_operator	((*I).m_operator_id);
+	}
 }
 
 void CObjectHandlerGOAP::set_goal	(MonsterSpace::EObjectAction object_action, CGameObject *game_object)

@@ -12,6 +12,14 @@
 #include "inventoryowner.h"
 #include "action_planner.h"
 
+template<typename _container_type>
+struct CMapLocator {
+	bool operator()(const typename _container_type::value_type &I, u32 id) const
+	{
+		return		(I.first < id);
+	}
+};
+
 class CAI_Stalker;
 class CWeapon;
 class CMissile;
@@ -104,12 +112,8 @@ protected:
 			void			add_operators			(CMissile		*missile);
 			void			add_evaluators			(CEatableItem	*eatable_item);
 			void			add_operators			(CEatableItem	*eatable_item);
-			void			remove_evaluators		(CWeapon		*weapon);
-			void			remove_operators		(CWeapon		*weapon);
-			void			remove_evaluators		(CMissile		*missile);
-			void			remove_operators		(CMissile		*missile);
-			void			remove_evaluators		(CEatableItem	*eatable_item);
-			void			remove_operators		(CEatableItem	*eatable_item);
+			void			remove_evaluators		(CObject		*object);
+			void			remove_operators		(CObject		*object);
 
 public:
 							CObjectHandlerGOAP		();
