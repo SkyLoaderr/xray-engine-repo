@@ -258,31 +258,31 @@ function add_novice(obj)
 
     local operators     = {}
     local properties    = {}
-    local st            = {
-    					    path 	 = nil,			--Путь, по которому ходить
-                            rest	 = nil,         --Места для сидения
-                            curState = 1,
-                            time     = nil,
-                            index    = 0,			--Index точки, к которой идем, чтоб посидеть
-                            enabled  = true
-                          }
-    --Чтение данных из кастом даты
-    local char_ini = obj:spawn_ini()
-    if( char_ini:section_exist ("novice") == true ) then
-        if( char_ini:line_exist("novice", "path") == true ) then
-			st.path = char_ini:r_string("novice", "path")
-        end
-        if( char_ini:line_exist("novice", "rest") == true ) then
-            st.rest = char_ini:r_string("novice", "rest")
-        end
-    end
+--    local st            = {
+--    					    path 	 = nil,			--Путь, по которому ходить
+--                            rest	 = nil,         --Места для сидения
+--                            curState = 1,
+--                            time     = nil,
+--                            index    = 0,			--Index точки, к которой идем, чтоб посидеть
+--                            enabled  = true
+--                          }
+--    --Чтение данных из кастом даты
+--    local char_ini = obj:spawn_ini()
+--    if( char_ini:section_exist ("novice") == true ) then
+--        if( char_ini:line_exist("novice", "path") == true ) then
+--			st.path = char_ini:r_string("novice", "path")
+--        end
+--        if( char_ini:line_exist("novice", "rest") == true ) then
+--            st.rest = char_ini:r_string("novice", "rest")
+--        end
+--    end
+--
+--    xr_motivator.storage[obj:id()] = { novice = {} }
+--    xr_motivator.storage[obj:id()].novice = st
 
-    xr_motivator.storage[obj:id()] = { novice = {} }
-    xr_motivator.storage[obj:id()].novice = st
 
-
-    properties[ "work" ]              = xr_evaluators_id.jon_stalker_zombe
-    operators [ "stalker_novice" ]    = xr_actions_id.jon_stalker_zombe
+    properties[ "work" ]              = xr_evaluators_id.jon_stalker_novice
+    operators [ "stalker_novice" ]    = xr_actions_id.jon_stalker_novice
 
     local manager  = obj:motivation_action_manager ()
     manager:add_evaluator ( properties[ "work" ], this.enabled_evaluator( xr_motivator.storage[obj:id()].novice ) )
