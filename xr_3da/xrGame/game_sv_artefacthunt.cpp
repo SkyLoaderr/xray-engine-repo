@@ -402,6 +402,12 @@ void		game_sv_ArtefactHunt::OnArtefactOnBase		(u32 id_who)
 	P.w_u16				(ps->team);
 	u_EventSend(P);
 	//-----------------------------------------------
+	CActor* pActor = dynamic_cast<CActor*> (Level().Objects.net_Find(ps->GameID));
+	if (pActor)
+	{
+		pActor->SetfHealth(100.0f);
+	};
+	//-----------------------------------------------
 	signal_Syncronize();
 	//-----------------------------------------------
 	Artefact_PrepareForSpawn();
