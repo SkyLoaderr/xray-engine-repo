@@ -322,7 +322,11 @@ function action_help:initialize ()
     self.object:set_movement_type         (move.stand)
     self.first = false
     self.object:enable_talk ()
-    self.object:set_start_dialog ("stalker_wounded_friend")
+    if self.a.dialog == nil then
+       self.object:set_start_dialog ("stalker_wounded_friend")
+    else
+       self.object:set_start_dialog (self.a.dialog)    
+    end   
     xr_meet.override_meet (self.object, true)
 end
 ------------
@@ -457,6 +461,7 @@ function add_to_binder (object, char_ini)
     local properties    = {}
     
     xr_motivator.storage[object:id()].wounded.on_medikit = xr_logic.cfg_get_condlist (char_ini, "wounded", "on_medikit", object)
+	xr_motivator.storage[object:id()].wounded.dialog  = utils.cfg_get_string (char_ini, "wounded", "dialog", object, false, nil, nil)
     
     properties["enable"]        =   xr_evaluators_id.sidor_wounded_base + 0
     properties["wound"]         =   xr_evaluators_id.sidor_wounded_base + 1
