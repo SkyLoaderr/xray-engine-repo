@@ -89,56 +89,53 @@ void CUIStatic::Init(int x, int y, int width, int height)
 
 void  CUIStatic::Draw()
 {
-	if(m_bClipper){
+	if(m_bClipper)
+	{
 		Irect clip_rect;
-		if (-1 == m_ClipRect.left && -1 == m_ClipRect.right &&
-			-1 == m_ClipRect.top && -1 == m_ClipRect.left){
-			Irect our_rect	= GetAbsoluteRect();
-			clip_rect		= our_rect;
-			if(GetParent())
-				clip_rect.intersection(our_rect,GetParent()->GetAbsoluteRect());
-			
-		}else				clip_rect = m_ClipRect;
+		if (-1 == m_ClipRect.left && -1 == m_ClipRect.right && -1 == m_ClipRect.top && -1 == m_ClipRect.left)
+		{
+				Irect our_rect	= GetAbsoluteRect();
+				clip_rect		= our_rect;
+				if(GetParent())
+					clip_rect.intersection(our_rect,GetParent()->GetAbsoluteRect());			
+		}
+		else				
+			clip_rect = m_ClipRect;
+
 		UI()->PushScissor	(clip_rect);
 	}
+
+	DrawTexture();	
+	inherited::Draw();
+	DrawText();
+
+	if(m_bClipper)	UI()->PopScissor();
+}
+
+void CUIStatic::DrawText(){
+	if (GetFont()){
+		GetFont()->SetAligment(GetTextAlign());
+		GetFont()->SetColor(m_dwFontColor);
+		Irect r = GetAbsoluteRect();
+		DrawString(r);
+	}
+}
+
+void CUIStatic::DrawTexture(){
 
 	if(m_bAvailableTexture && m_bTextureEnable)
 	{
 
 		Irect rect = GetAbsoluteRect();
-//		m_UIStaticItem.SetPos(rect.left + m_iTexOffsetX, rect.top + m_iTexOffsetY);
-
-/*		if(m_bClipper)
-		{
-			if (-1 == m_ClipRect.left && -1 == m_ClipRect.right &&
-				-1 == m_ClipRect.top && -1 == m_ClipRect.left)
-				TextureClipper();
-			else
-				TextureClipper(0, 0, &m_ClipRect);
-		}*/
-
 		m_UIStaticItem.SetPos	(rect.left + m_iTexOffsetX, rect.top + m_iTexOffsetY);
 
-		if(m_bStretchTexture){
-/*			Fvector2 lt, rb;
-			int W			= GetWidth();
-			int H			= GetHeight();
-			Irect vis_rect	= m_UIStaticItem.GetRect();
-			lt.x			= float(vis_rect.x1)/W;
-			lt.y			= float(vis_rect.y1)/H;
-			rb.x			= float(vis_rect.x2)/W;
-			rb.y			= float(vis_rect.y2)/H;
-
-			m_UIStaticItem.Render(lt.x, lt.y, lt.x, rb.y, rb.x, rb.y, rb.x, lt.y);
-*/
-//			m_UIStaticItem.Render(0, 0, rect.right-rect.left, rect.bottom-rect.top);
-
+		if(m_bStretchTexture)
 			m_UIStaticItem.SetRect(0, 0, rect.width(), rect.height());
-//			m_UIStaticItem.Render(0, 0, rect.width(), rect.height());
-		}else{
+		else
+		{
 			Irect r={0,0,
-						m_UIStaticItem.GetOriginalRectScaled().width(),
-						m_UIStaticItem.GetOriginalRectScaled().height()};
+				m_UIStaticItem.GetOriginalRectScaled().width(),
+				m_UIStaticItem.GetOriginalRectScaled().height()};
 			m_UIStaticItem.SetRect(r);
 		}
 
@@ -146,19 +143,7 @@ void  CUIStatic::Draw()
 			m_UIStaticItem.Render( GetHeading() );
 		}else
 			m_UIStaticItem.Render();
-		}
-	
-	inherited::Draw();
-
-	//форматированный вывод текста
-	if (GetFont()){
-		GetFont()->SetAligment(GetTextAlign());
-		GetFont()->SetColor(m_dwFontColor);
-		Irect r = GetAbsoluteRect();
-		DrawString(r);
 	}
-
-	if(m_bClipper)	UI()->PopScissor();
 }
 
 //////////////////////////////////////////////////////////////////////////

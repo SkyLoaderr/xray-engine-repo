@@ -34,6 +34,8 @@ public:
 	
 	//прорисовка окна
 	virtual void	Draw					();
+IC	virtual void	DrawTexture				();
+IC	virtual void	DrawText				();
 	virtual void	Update					();
 	virtual void	OnMouse					(int x, int y, EUIMessages mouse_action);
 	virtual void	OnFocusReceive();
@@ -82,8 +84,9 @@ public:
 	void			SetShader				(const ref_shader& sh);
 	CUIStaticItem&	GetUIStaticItem			()						{return m_UIStaticItem;}
 
-	virtual void SetTextX					(int text_x)			{m_iTextOffsetX = text_x;}
-	virtual void SetTextY					(int text_y)			{m_iTextOffsetY = text_y;}
+	virtual	void SetTextX					(int text_x)			{m_iTextOffsetX = text_x;}
+	virtual	void SetTextY					(int text_y)			{m_iTextOffsetY = text_y;}
+	virtual	void SetTextPos					(int x, int y)			{SetTextX(x); SetTextY(y);}
 	int			 GetTextX					()						{return m_iTextOffsetX;}
 	int			 GetTextY					()						{return m_iTextOffsetY;}
 
@@ -101,7 +104,7 @@ public:
 	// Работа с маской
 	void SetMask							(CUIFrameWindow *pMask);
 	// Cмещение текстуры кнопки
-	void		SetTextureOffset			(int x, int y)		{ m_iTexOffsetX = x; m_iTexOffsetY = y; }
+	virtual void SetTextureOffset			(int x, int y)		{ m_iTexOffsetX = x; m_iTexOffsetY = y; }
 	Ivector2	GetTextureOffeset			() const			{ Ivector2 v; return v.set(m_iTexOffsetX, m_iTexOffsetY); }
 	// Анализируем текст на помещаемость его по длинне в заданную ширину, и если нет, то всталяем 
 	// "\n" реализуем таким образом wordwrap
