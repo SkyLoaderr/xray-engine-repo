@@ -22,11 +22,20 @@
 #ifdef ALIFE_LOG
 void CSE_ALifeSimulator::vfPrintItems(CSE_ALifeHumanAbstract *tpALifeHumanAbstract, ITEM_P_VECTOR &tpItemVector)
 {
-	Msg				("%s",tpALifeHumanAbstract->s_name_replace);
+	Msg					("%s",tpALifeHumanAbstract->s_name_replace);
 	ITEM_P_IT			I = tpItemVector.begin();
 	ITEM_P_IT			E = tpItemVector.end();
 	for ( ; I != E; I++)
 		Msg				(" %s",(*I)->s_name_replace);
+}
+
+void CSE_ALifeSimulator::vfPrintItems(CSE_ALifeHumanAbstract *tpALifeHumanAbstract)
+{
+	Msg					("%s",tpALifeHumanAbstract->s_name_replace);
+	OBJECT_IT			I = tpALifeHumanAbstract->children.begin();
+	OBJECT_IT			E = tpALifeHumanAbstract->children.end();
+	for ( ; I != E; I++)
+		Msg				(" %s",tpfGetObjectByID(*I)->s_name_replace);
 }
 #endif
 
@@ -35,12 +44,8 @@ u32	 CSE_ALifeSimulator::dwfComputeItemCost(ITEM_P_VECTOR &tpItemVector)
 	u32					l_dwItemCost = 0;
 	ITEM_P_IT			I = tpItemVector.begin();
 	ITEM_P_IT			E = tpItemVector.end();
-	for ( ; I != E; I++) {
+	for ( ; I != E; I++)
 		l_dwItemCost	+= (*I)->m_dwCost;
-#ifdef ALIFE_LOG
-		Msg				(" %s",(*I)->s_name_replace);
-#endif
-	}
 	return				(l_dwItemCost);
 }
 
@@ -574,6 +579,11 @@ void CSE_ALifeSimulator::vfPerformTrading(CSE_ALifeHumanAbstract *tpALifeHumanAb
 		}
 	}
 
+#ifdef ALIFE_LOG
+	vfPrintItems		(tpALifeHumanAbstract1);
+	vfPrintItems		(tpALifeHumanAbstract2);
+#endif
+
 	int					l_iItemCount1 = tpALifeHumanAbstract1->children.size();
 	int					l_iItemCount2 = tpALifeHumanAbstract2->children.size();
 
@@ -595,6 +605,11 @@ void CSE_ALifeSimulator::vfPerformTrading(CSE_ALifeHumanAbstract *tpALifeHumanAb
 		vfAttachGatheredItems(tpALifeHumanAbstract2,m_tpBlockedItems2);
 	}
 	
+#ifdef ALIFE_LOG
+	vfPrintItems		(tpALifeHumanAbstract1);
+	vfPrintItems		(tpALifeHumanAbstract2);
+#endif
+
 	tpALifeHumanAbstract1->m_dwTotalMoney = u32(-1);
 	tpALifeHumanAbstract2->m_dwTotalMoney = u32(-1);
 }

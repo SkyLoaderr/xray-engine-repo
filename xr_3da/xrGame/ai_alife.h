@@ -106,6 +106,7 @@ class CSE_ALifeSimulator :
 	// trading routines
 #ifdef ALIFE_LOG
 			void					vfPrintItems				(CSE_ALifeHumanAbstract		*tpALifeHumanAbstract,		ITEM_P_VECTOR			&tpItemVector);
+			void					vfPrintItems				(CSE_ALifeHumanAbstract		*tpALifeHumanAbstract);
 #endif
 			u32						dwfComputeItemCost			(ITEM_P_VECTOR				&tpItemVector);
 			void					vfRunFunctionByIndex		(CSE_ALifeHumanAbstract		*tpALifeHumanAbstract,		OBJECT_VECTOR			&tpBlockedItems,				ITEM_P_VECTOR	&tpItems,					int						i,						int						&j);

@@ -157,7 +157,7 @@ public:
 				else
 					return				(tpALifeInventoryItem1->ID < tpALifeInventoryItem2->ID);
 		else
-			return						(tpALifeInventoryItem1->m_dwCost < tpALifeInventoryItem2->m_dwCost);
+			return						(tpALifeInventoryItem1->m_dwCost > tpALifeInventoryItem2->m_dwCost);
 	}
 };
 
