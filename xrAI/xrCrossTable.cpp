@@ -66,6 +66,7 @@ CCrossTableBuilder::CCrossTableBuilder(LPCSTR caProjectName)
 	Phase				("Building dynamic objects");
 	FLOAT_VECTOR_VECTOR	tDistances;
 	int					iVertexCount	= tGraph.header().vertex_count();
+	R_ASSERT2			(iVertexCount > 0,"There are no graph points in the graph!");
 	int					iNodeCount		= tMap.header().vertex_count();
 	xr_vector<bool>		tMarks;
 	tMarks.assign		(tMap.header().vertex_count(),false);
