@@ -1,7 +1,6 @@
+#ifndef PhysicsShellH
+#define PhysicsShellH
 #pragma once
-
-
-
 typedef void __stdcall BoneCallbackFun(CBoneInstance* B);
 typedef  void __stdcall ContactCallbackFun(CDB::TRI* T,dContactGeom* c);
 typedef	 void __stdcall ObjectContactCallbackFun(bool& do_colide,dContact& c);
@@ -191,3 +190,5 @@ public:
 CPhysicsJoint*				P_create_Joint			(CPhysicsJoint::enumType type ,CPhysicsElement* first,CPhysicsElement* second);
 CPhysicsElement*			P_create_Element		();
 CPhysicsShell*				P_create_Shell			();
+
+#endif // PhysicsShellH

@@ -1,10 +1,7 @@
 /////////////////////////////////////////////////////////////////////////////
 /////////////CPHJeep////////////////////////////////////////////////////////
 ///////////////////////////////////////////////////////////////////////////
-typedef void __stdcall BoneCallbackFun(CBoneInstance* B);
-typedef  void __stdcall ContactCallbackFun(CDB::TRI* T,dContactGeom* c);
-typedef	 void __stdcall ObjectContactCallbackFun(bool& do_colide,dContact& c);
-struct Fcylinder;
+
 #include "StdAfx.h"
 #include "PHDynamicData.h"
 #include "Physics.h"
