@@ -105,6 +105,13 @@ void CUIPdaContactsWnd::AddContact(CPda* pda)
 {
 	VERIFY(pda);
 
+
+	if(!pda->GetOwnerObject())
+	{
+		Msg("[PDA] pda %d, has contacted without a parent", pda->ID());
+		return;
+	}
+		
 	CUIPdaListItem* pItem = NULL;
 	pItem = xr_new<CUIPdaListItem>();
 	UIListWnd.AddItem<CUIListItem>(pItem); 
