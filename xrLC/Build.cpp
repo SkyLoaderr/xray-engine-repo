@@ -235,12 +235,12 @@ void CBuild::Run()
 	BuildUVmap		();
 	
 	FPU::m24r();
-	Phase	("Merging lightmaps...");
-	MergeLM			();
+	Phase	("Soften lights...");
+	SoftenLights	();
 
 	FPU::m24r();
-	Phase	("Soften lights...");
-	SoftenLights();
+	Phase	("Merging lightmaps...");
+	MergeLM			();
 
 	FPU::m24r();
 	Phase	("Implicit lighting...");
