@@ -269,7 +269,7 @@ void CEntityCondition::UpdateCondition()
 	UpdateCircumspection();
 	UpdateEntityMorale();
 
-	m_fHealth		+= m_fDeltaHealth;
+	m_fHealth		+= (OnClient())?0:m_fDeltaHealth;
 	m_fPower		+= m_fDeltaPower;
 	m_fSatiety		+= m_fDeltaSatiety;
 	m_fRadiation	+= m_fDeltaRadiation;
