@@ -224,7 +224,7 @@ class ENGINE_API CKinematics	: public FHierrarhyVisual
 	friend class					CMotionDef;
 	friend class					CSkeletonX;
 private:
-	struct str_pred : public binary_function<char*, char*, bool> 
+	struct str_pred : public std::binary_function<char*, char*, bool> 
 	{	
 		IC bool operator()(const char* x, const char* y) const
 		{	return strcmp(x,y)<0;	}
