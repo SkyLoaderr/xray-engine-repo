@@ -93,6 +93,7 @@ void CUI::OnMove(){
 			SUIMessage* M = messages[i];
 			M->life_time-=Device.dwTimeDelta;
 			if (M->life_time<0){
+				_DELETE(messages[i]);
 				messages.erase(i);
 				i--;
 				continue;

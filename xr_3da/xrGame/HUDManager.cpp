@@ -28,6 +28,7 @@ CHUDManager::~CHUDManager()
 	_DELETE			(pUI);
 	_DELETE			(pGameFont);
 	_DELETE			(pSmallFont);
+	_DELETE			(pHUDFont);
 }
 //--------------------------------------------------------------------
 

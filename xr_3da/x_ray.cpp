@@ -171,7 +171,13 @@ BOOL StartGame(DWORD num)
 void CApplication::OnEvent(EVENT E, DWORD P1, DWORD P2)
 {
 	if (E==eQuit)	{
-		PostQuitMessage(0);
+		PostQuitMessage	(0);
+		
+		for (DWORD i=0; i<Levels.size(); i++)
+		{
+			_FREE(Levels[i].folder	);
+			_FREE(Levels[i].name	);
+		}
 	} else if (E==eStartServer) {
 		Console.Hide();
 		LPSTR		Name = LPSTR(P1);
