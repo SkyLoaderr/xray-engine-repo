@@ -723,9 +723,9 @@ void CAI_Soldier::OnRecharge()
 
 	CGroup &Group = Squad.Groups[g_Group()];
 	
+	/**
 	vfInitSelector(SelectorReload,Squad,Leader);
 
-	/**
 	if (Enemy.Enemy) {
 		if (AI_Path.bNeedRebuild)
 			vfBuildPathToDestinationPoint(0);
@@ -734,7 +734,7 @@ void CAI_Soldier::OnRecharge()
 	}
 	/**/
 	
-	SetDirectionLook();
+	//SetDirectionLook();
 	
 	vfSetFire(false,Group);
 	
@@ -1300,7 +1300,7 @@ void CAI_Soldier::OnAttackFireAlone()
 	else
 		vfSetMovementType(BODY_STATE_CROUCH,0);
 	
-	vfSetMovementType(BODY_STATE_STAND,m_fMinSpeed);
+	//vfSetMovementType(BODY_STATE_STAND,m_fMinSpeed);
 }
 
 void CAI_Soldier::OnSteal()
@@ -1352,6 +1352,56 @@ void CAI_Soldier::OnSteal()
 	vfSetFire(false,Group);
 	
 	vfSetMovementType(BODY_STATE_STAND,m_fMinSpeed);
+}
+
+void CAI_Soldier::OnAttackAim()
+{
+	WRITE_TO_LOG("Aiming...");
+
+	CHECK_IF_SWITCH_TO_NEW_STATE(g_Health() <= 0,aiSoldierDie)
+		
+	SelectEnemy(Enemy);
+	
+	DWORD dwCurTime = Level().timeServer();
+	
+	INIT_SQUAD_AND_LEADER;
+
+	CGroup &Group = Squad.Groups[g_Group()];
+	
+	if (m_bStateChanged)
+		m_dwLastRangeSearch = dwCurTime;
+	else
+		if (dwCurTime - m_dwLastRangeSearch >= 500)
+			GO_TO_PREV_STATE;
+	
+	vfSetFire(m_bFiring = false,Group);
+
+	vfSetMovementType(m_cBodyState,0);
+}
+
+void CAI_Soldier::OnPointAtSmth()
+{
+	WRITE_TO_LOG("Pointing at something...");
+
+	CHECK_IF_SWITCH_TO_NEW_STATE(g_Health() <= 0,aiSoldierDie)
+		
+	SelectEnemy(Enemy);
+	
+	DWORD dwCurTime = Level().timeServer();
+	
+	INIT_SQUAD_AND_LEADER;
+
+	CGroup &Group = Squad.Groups[g_Group()];
+	
+	if (m_bStateChanged)
+		m_dwLastRangeSearch = dwCurTime;
+	else
+		if (dwCurTime - m_dwLastRangeSearch >= 1500)
+			GO_TO_PREV_STATE;
+	
+	vfSetFire(m_bFiring = false,Group);
+
+	vfSetMovementType(m_cBodyState,0);
 }
 
 void CAI_Soldier::Think()
@@ -1480,6 +1530,14 @@ void CAI_Soldier::Think()
 			}
 			case aiSoldierSteal : {
 				OnSteal();
+				break;
+			}
+			case aiSoldierAttackAim : {
+				OnAttackAim();
+				break;
+			}
+			case aiSoldierPointAtSmth : {
+				OnPointAtSmth();
 				break;
 			}
 		}

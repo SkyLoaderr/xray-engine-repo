@@ -32,7 +32,6 @@ class CAI_Soldier : public CCustomMonster
 		aiSoldierFreeHunting,
 		aiSoldierInjuring,
 		
-		aiSoldierStandingUp,
 		aiSoldierSitting,
 
 		aiSoldierMoreDeadThanAlive,
@@ -47,8 +46,6 @@ class CAI_Soldier : public CCustomMonster
 		aiSoldierUnderFire,
 		
 		aiSoldierJumping,
-		aiSoldierLyingDown,
-		aiSoldierRecharge,
 		/**/
 		aiSoldierDie,
 		aiSoldierPatrolReturnToRoute,
@@ -61,6 +58,10 @@ class CAI_Soldier : public CCustomMonster
 		aiSoldierRecharge,
 		aiSoldierNoWeapon,
 		aiSoldierSteal,
+		aiSoldierStandingUp,
+		aiSoldierLyingDown,
+		aiSoldierAttackAim,
+		aiSoldierPointAtSmth,
 	};
 	
 	enum EGestureStates {
@@ -339,7 +340,6 @@ class CAI_Soldier : public CCustomMonster
 		void OnInjuring();
 		void OnMoreDeadThanAlive();
 
-		void OnStandingUp();
 		void OnSitting();
 
 		void OnPatrolHurt();
@@ -351,7 +351,6 @@ class CAI_Soldier : public CCustomMonster
 		void OnRetreat();
 		void OnUnderFire();
 		void OnJumping();
-		void OnLyingDown();
 		/**/
 		void Test();
 		void Die();
@@ -365,6 +364,12 @@ class CAI_Soldier : public CCustomMonster
 		void OnRecharge();
 		void OnNoWeapon();
 		void OnSteal();
+		void OnLyingDown();
+		void OnStandingUp();
+		void OnAttackAim();
+		void OnPointAtSmth();
+
+
 		// miscellanious funtions	
 		void SelectSound(int &iIndex);
 		void vfUpdateSounds(DWORD dwTimeDelta);

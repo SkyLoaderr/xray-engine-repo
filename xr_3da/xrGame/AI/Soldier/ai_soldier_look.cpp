@@ -14,7 +14,7 @@
 #define	MAX_HEAD_TURN_ANGLE				(PI/3.f)
 #define MIN_SPINE_TURN_ANGLE			PI_DIV_6
 #define EYE_WEAPON_DELTA				(0*PI/30.f)
-#define WEAPON_DISTANCE					(.0925f)
+#define WEAPON_DISTANCE					(.30f)
 #define SQUARE_WEAPON_DISTANCE			(WEAPON_DISTANCE*WEAPON_DISTANCE)
 
 bool CAI_Soldier::bfCheckForVisibility(CEntity* tpEntity)
@@ -193,32 +193,6 @@ void CAI_Soldier::SetSmartLook(NodeCompressed *tNode, Fvector &tEnemyDirection)
 	q_look.o_look_speed=8*_FB_look_speed;
 	}
 	/**/
-}
-
-void CAI_Soldier::vfAimAtEnemy()
-{
-	Fvector	pos1, pos2;
-	if (!Enemy.Enemy)
-		return;
-	Enemy.Enemy->svCenter(pos1);
-	svCenter(pos2);
-	tWatchDirection.sub(pos1,pos2);
-	mk_rotation(tWatchDirection,r_torso_target);
-	r_target.yaw = r_torso_target.yaw;
-	// turning model a bit more for precise weapon shooting
-	if (tWatchDirection.magnitude() > EPS_L) {
-		m_fAddWeaponAngle = SQUARE_WEAPON_DISTANCE/tWatchDirection.magnitude();
-		clamp(m_fAddWeaponAngle,-.99999f,+.99999f);
-		m_fAddWeaponAngle = asinf(m_fAddWeaponAngle);
-	}
-	else
-		m_fAddWeaponAngle = 0;
-	
-	r_torso_target.yaw -= m_fAddWeaponAngle - 0*PI/180;
-
-	ASSIGN_SPINE_BONE;
-	//r_torso_target.yaw = r_torso_target.yaw - 2*PI_DIV_6;//EYE_WEAPON_DELTA;
-	//q_look.o_look_speed=_FB_look_speed;
 }
 
 static BOOL __fastcall SoldierQualifier(CObject* O, void* P)
@@ -466,3 +440,34 @@ bool CAI_Soldier::bfCheckForEntityVisibility(CEntity *tpEntity)
 	return(bVisible);
 }
 /**/
+
+void CAI_Soldier::vfAimAtEnemy()
+{
+	Fvector	pos1, pos2;
+	
+	if (!Enemy.Enemy)
+		return;
+
+	Enemy.Enemy->svCenter(pos1);
+	svCenter(pos2);
+	tWatchDirection.sub(pos1,pos2);
+	float fDistance = tWatchDirection.magnitude();
+	mk_rotation(tWatchDirection,r_torso_target);
+	/**/
+	r_target.yaw = r_torso_target.yaw;
+	// turning model a bit more for precise weapon shooting
+	if (fDistance > EPS_L) {
+		m_fAddWeaponAngle = WEAPON_DISTANCE/fDistance;
+		clamp(m_fAddWeaponAngle,-.99999f,+.99999f);
+		m_fAddWeaponAngle = asinf(m_fAddWeaponAngle);
+	}
+	else
+		m_fAddWeaponAngle = 0;
+	
+	//m_fAddWeaponAngle = 0;
+	r_torso_target.yaw -= m_fAddWeaponAngle - 0*PI/180;
+	ASSIGN_SPINE_BONE;
+	//r_torso_target.yaw = r_torso_target.yaw - 2*PI_DIV_6;//EYE_WEAPON_DELTA;
+	//q_look.o_look_speed=_FB_look_speed;
+	/**/
+}
