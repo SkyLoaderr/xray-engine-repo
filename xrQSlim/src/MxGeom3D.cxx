@@ -14,12 +14,12 @@
 void mx3d_box_corners(const Vec3& min, const Vec3& max, Vec3 *v)
 {
     v[0] = min;
-    v[1] = Vec3(min[X], max[Y], min[Z]);
-    v[2] = Vec3(max[X], min[Y], min[Z]);
-    v[3] = Vec3(max[X], max[Y], min[Z]);
-    v[4] = Vec3(min[X], min[Y], max[Z]);
-    v[5] = Vec3(min[X], max[Y], max[Z]);
-    v[6] = Vec3(max[X], min[Y], max[Z]);
+    v[1] = Vec3(min[0], max[1], min[2]);
+    v[2] = Vec3(max[0], min[1], min[2]);
+    v[3] = Vec3(max[0], max[1], min[2]);
+    v[4] = Vec3(min[0], min[1], max[2]);
+    v[5] = Vec3(min[0], max[1], max[2]);
+    v[6] = Vec3(max[0], min[1], max[2]);
     v[7] = max;
 }
 
@@ -31,7 +31,7 @@ void mx3d_box_corners(const Vec3& min, const Vec3& max, Vec3 *v)
 
 void MxBounds::reset()
 {
-    center[X] = center[Y] = center[Z] = 0.0;
+    center[0] = center[1] = center[2] = 0.0;
     radius = 0.0;
 
     points = 0;
@@ -42,20 +42,20 @@ void MxBounds::add_point(const double *v, bool will_update)
 {
     if( !is_initialized )
     {
-	min[X] = max[X] = v[X];
-	min[Y] = max[Y] = v[Y];
-	min[Z] = max[Z] = v[Z];
+	min[0] = max[0] = v[0];
+	min[1] = max[1] = v[1];
+	min[2] = max[2] = v[2];
 	is_initialized = true;
     }
     else
     {
-	if( v[X] < min[X] ) min[X] = v[X];
-	if( v[Y] < min[Y] ) min[Y] = v[Y];
-	if( v[Z] < min[Z] ) min[Z] = v[Z];
+	if( v[0] < min[0] ) min[0] = v[0];
+	if( v[1] < min[1] ) min[1] = v[1];
+	if( v[2] < min[2] ) min[2] = v[2];
 
-	if( v[X] > max[X] ) max[X] = v[X];
-	if( v[Y] > max[Y] ) max[Y] = v[Y];
-	if( v[Z] > max[Z] ) max[Z] = v[Z];
+	if( v[0] > max[0] ) max[0] = v[0];
+	if( v[1] > max[1] ) max[1] = v[1];
+	if( v[2] > max[2] ) max[2] = v[2];
     }
 
     if( will_update )
@@ -69,20 +69,20 @@ void MxBounds::add_point(const float *v, bool will_update)
 {
     if( !is_initialized )
     {
-	min[X] = max[X] = v[X];
-	min[Y] = max[Y] = v[Y];
-	min[Z] = max[Z] = v[Z];
+	min[0] = max[0] = v[0];
+	min[1] = max[1] = v[1];
+	min[2] = max[2] = v[2];
 	is_initialized = true;
     }
     else
     {
-	if( v[X] < min[X] ) min[X] = v[X];
-	if( v[Y] < min[Y] ) min[Y] = v[Y];
-	if( v[Z] < min[Z] ) min[Z] = v[Z];
+	if( v[0] < min[0] ) min[0] = v[0];
+	if( v[1] < min[1] ) min[1] = v[1];
+	if( v[2] < min[2] ) min[2] = v[2];
 
-	if( v[X] > max[X] ) max[X] = v[X];
-	if( v[Y] > max[Y] ) max[Y] = v[Y];
-	if( v[Z] > max[Z] ) max[Z] = v[Z];
+	if( v[0] > max[0] ) max[0] = v[0];
+	if( v[1] > max[1] ) max[1] = v[1];
+	if( v[2] > max[2] ) max[2] = v[2];
     }
 
     if( will_update )

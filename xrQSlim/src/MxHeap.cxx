@@ -97,7 +97,7 @@ void MxHeap::insert(MxHeapable *t, float v)
 
 void MxHeap::update(MxHeapable *t, float v)
 {
-    SanityCheck( t->is_in_heap() );
+    VERIFY( t->is_in_heap() );
     t->heap_key(v);
 
     unsigned int i = t->get_heap_pos();

@@ -85,12 +85,6 @@ public:
     operator       T*()       { return block; }
     int length() const { return N; }
 
-#ifndef HAVE_CASTING_LIMITS
-    T&       operator[](int i)       { return block[i]; }
-    const T& operator[](int i) const { return block[i]; }
-    operator const T*()       { return block; }
-#endif
-
     // These parenthesized accessors are included for backwards
     // compatibility.  Their continued use is discouraged.
     //
