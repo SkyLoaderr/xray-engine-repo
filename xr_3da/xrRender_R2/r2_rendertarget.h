@@ -37,7 +37,6 @@ public:
 	ref_rt						rt_Generic;		// 32bit		(r,g,b,a)				// post-process, intermidiate results, etc.
 	ref_rt						rt_Bloom_1;		// 32bit, dim/4	(r,g,b,?)
 	ref_rt						rt_Bloom_2;		// 32bit, dim/4	(r,g,b,?)
-	IDirect3DSurface9*			rt_Bloom_ZB;	// $$$ dumb ZB for nv3xx
 
 	// D-smap
 	ref_rt						rt_smap_d_surf;	// 32bit, depth 

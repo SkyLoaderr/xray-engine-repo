@@ -33,6 +33,11 @@ void CLight_DB::Load			(IReader *fs)
 			light*		L				= Create	();
 			L->flags.bStatic			= true;
 			L->set_type					(IRender_Light::POINT);
+
+/*			L->set_type					(IRender_Light::SPOT);
+
+			Fvector	tmp_D; tmp_D.set	(0,-1,0);
+			L->set_direction			(tmp_D);*/
 #if RENDER==R_R1
 			L->set_shadow				(false);
 #else
@@ -127,6 +132,7 @@ void			CLight_DB::add_light		(light* L)
 	if (Device.dwFrame==L->dwFrame)	return;
 	L->dwFrame	=	Device.dwFrame;
 
+	// L->flags.bShadow	= FALSE;	//.
 	if (L->flags.bShadow)			{
 		switch (L->flags.type)	{
 			case IRender_Light::POINT:

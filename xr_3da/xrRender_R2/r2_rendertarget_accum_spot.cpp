@@ -23,10 +23,10 @@ void CRenderTarget::accum_spot_shadow	(light* L)
 		L_up.crossproduct		(L_dir,L_right);		L_up.normalize		();
 
 		Fmatrix		mR;
-		mR.i					= L_right;		mR._14		= 0;
-		mR.j					= L_up;			mR._24		= 0;
-		mR.k					= L_dir;		mR._34		= 0;
-		mR.c					= L->position;	mR._44		= 1;
+		mR.i					= L_right;		mR._14	= 0;
+		mR.j					= L_up;			mR._24	= 0;
+		mR.k					= L_dir;		mR._34	= 0;
+		mR.c					= L->position;	mR._44	= 1;
 
 		// final xform
 		Fmatrix		xf;			xf.mul			(mR,mScale);
@@ -43,7 +43,7 @@ void CRenderTarget::accum_spot_shadow	(light* L)
 		RCache.set_Element				(shader->E[0]);			// masker
 		RCache.set_Geometry				(g_accum_spot);
 
-		// backfaces: if (stencil>=1 && zfail)	stencil = light_id
+		// backfaces: if (stencil>=1 && zfail)			stencil = light_id
 		RCache.set_CullMode				(CULL_CW);
 		RCache.set_Stencil				(TRUE,D3DCMP_LESSEQUAL,dwLightMarkerID,0x01,0xff,D3DSTENCILOP_KEEP,D3DSTENCILOP_KEEP,D3DSTENCILOP_REPLACE);
 		RCache.Render					(D3DPT_TRIANGLELIST,0,0,DU_CONE_NUMVERTEX,0,DU_CONE_NUMFACES);
@@ -60,13 +60,11 @@ void CRenderTarget::accum_spot_shadow	(light* L)
 	{
 		Fmatrix& M						= RCache.xforms.m_wvp;
 		BOOL	bIntersect				= FALSE;
-		for (u32 vit=0; vit<DU_CONE_NUMVERTEX; vit++)
-		{
+		for (u32 vit=0; vit<DU_CONE_NUMVERTEX; vit++)	{
 			Fvector&	v	= du_cone_vertices[vit];
 			float _z = v.x*M._13 + v.y*M._23 + v.z*M._33 + M._43;
 			float _w = v.x*M._14 + v.y*M._24 + v.z*M._34 + M._44;
-			if (_z<=0 || _w<=0)
-			{
+			if (_z<=0 || _w<=0)	{
 				bIntersect	= TRUE;
 				break;
 			}
@@ -95,16 +93,17 @@ void CRenderTarget::accum_spot_shadow	(light* L)
 	// Shadow xform (+texture adjustment matrix)
 	Fmatrix			m_Shadow;
 	{
-		float			fTexelOffs			= (.5f / DSM_size);
-		u32				uRange				= 1; 
-		float			fRange				= float(uRange);
+		float			fTexelOffs			= (.5f / RImplementation.LR.S_size);
+		float			view_dim			= float(RImplementation.LR.S_size)/float(DSM_size);
+		float			view_sx				= float(RImplementation.LR.S_posX)/float(DSM_size);
+		float			view_sy				= float(RImplementation.LR.S_posY)/float(DSM_size);
+		float			fRange				= float(1.f);
 		float			fBias				= -0.0003f*fRange;
-		Fmatrix			m_TexelAdjust		= 
-		{
-			0.5f,				0.0f,				0.0f,			0.0f,
-			0.0f,				-0.5f,				0.0f,			0.0f,
-			0.0f,				0.0f,				fRange,			0.0f,
-			0.5f + fTexelOffs,	0.5f + fTexelOffs,	fBias,			1.0f
+		Fmatrix			m_TexelAdjust		= {
+			view_dim,							0.0f,								0.0f,		0.0f,
+			0.0f,								-view_dim,							0.0f,		0.0f,
+			0.0f,								0.0f,								fRange,		0.0f,
+			view_dim + view_sx + fTexelOffs,	view_dim + view_sy + fTexelOffs,	fBias,		1.0f
 		};
 
 		// compute xforms
@@ -151,7 +150,7 @@ void CRenderTarget::accum_spot_shadow	(light* L)
 		RCache.set_c				("m_shadow",		m_Shadow);
 
 		// Shader + constants
-		float circle				= ps_r2_ls_ssm_kernel / DSM_size;
+		float circle				= ps_r2_ls_ssm_kernel / RImplementation.LR.S_size;
 		Fvector4 J; float scale		= circle/11.f;
 		R_constant* _C				= RCache.get_c			("J_spot");
 		if (_C)

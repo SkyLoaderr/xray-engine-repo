@@ -45,6 +45,10 @@ void CRT::Create	(LPCSTR Name, u32 w, u32 h,	D3DFORMAT f)
 	// Select usage
 	u32 usage	= 0;
 	if (D3DFMT_D24X8==fmt)				usage = D3DUSAGE_DEPTHSTENCIL;
+	else if (D3DFMT_D24S8		==fmt)	usage = D3DUSAGE_DEPTHSTENCIL;
+	else if (D3DFMT_D15S1		==fmt)	usage = D3DUSAGE_DEPTHSTENCIL;
+	else if (D3DFMT_D16			==fmt)	usage = D3DUSAGE_DEPTHSTENCIL;
+	else if (D3DFMT_D16_LOCKABLE==fmt)	usage = D3DUSAGE_DEPTHSTENCIL;
 	else								usage = D3DUSAGE_RENDERTARGET;
 
 	// Validate render-target usage

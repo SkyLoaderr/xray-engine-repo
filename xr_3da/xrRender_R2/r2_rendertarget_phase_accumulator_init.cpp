@@ -42,8 +42,8 @@ void CRenderTarget::phase_accumulator_init()
 		// 1. nv3x - ZB doesn't help
 		// 2. nv3x - Viewport doesn't help
 		// 3. nv3x - ZEnable doesn't help
-		u_setrt								(rt_Bloom_2,NULL,NULL,rt_Bloom_ZB);				// No need for ZBuffer at all
-		CHK_DX	(HW.pDevice->SetRenderState	( D3DRS_ZENABLE,			FALSE				));
+		u_setrt								(rt_Bloom_2,NULL,NULL,NULL);				// No need for ZBuffer at all
+		CHK_DX	(HW.pDevice->SetRenderState	( D3DRS_ZENABLE,	FALSE				));
 		RCache.set_CullMode					(CULL_NONE);
 		RCache.set_Stencil					(FALSE);
 

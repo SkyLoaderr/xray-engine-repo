@@ -443,9 +443,11 @@ void CLightShadows::render	()
 			CI->L					= S.L;
 			CI->Lp					= CI->L->position;
 			CI->tcnt				= tess.size();
-			xr_free					(CI->tris);
+			Msg						("---free--- %x",u32(CI->tris));
+			xr_free					(CI->tris);	VERIFY(0==CI->tris);	
 			if (tess.size())		{
 				CI->tris			= xr_alloc<tess_tri>(CI->tcnt);
+				Msg					("---alloc--- %x",u32(CI->tris));
 				Memory.mem_copy		(CI->tris,&*tess.begin(),CI->tcnt * sizeof(tess_tri));
 			}
 		}
@@ -491,7 +493,8 @@ void CLightShadows::render	()
 		cache_item&		ci		= cache[cit];
 		u32				time	= Device.dwTimeGlobal - ci.time;
 		if				(time > cache_old)	{
-			xr_free		(ci.tris);
+			Msg			("---free--- %x",u32(ci.tris));
+			xr_free		(ci.tris);	VERIFY(0==ci.tris);
 			cache.erase (cache.begin()+cit);
 			cit			--;
 		}

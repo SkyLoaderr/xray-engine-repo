@@ -2,6 +2,8 @@
 
 void	CRenderTarget::phase_decompress		()
 {
+	if (RImplementation.b_fp16)	return;
+
 	// Common
 	RCache.set_CullMode			(CULL_NONE);
 	RCache.set_Stencil			(TRUE,D3DCMP_LESSEQUAL,0x01,0xff,0x00);
@@ -50,7 +52,7 @@ void	CRenderTarget::phase_decompress		()
 			void		set			(Fmatrix& mUnwarp, float x, float y, float u0, float v0, float u1, float v1)	{
 				p.set	(x,y,EPS_S,1);
 				uv0.set	(u0,v0);
-				uv1.set	(u1*mUnwarp._11*VIEWPORT_NEAR,	v1*mUnwarp._22*VIEWPORT_NEAR,	VIEWPORT_NEAR,	0);
+				uv1.set	(u1*mUnwarp._11,	v1*mUnwarp._22,	1,	0);
 				// Msg		("[%+1.3f]-[%+1.3f] : dx(%f),dy(%f),dz(%f)",u1,v1,uv1.x,uv1.y,uv1.z);
 			}                                                                                                                                                                                                           
 		};
@@ -72,21 +74,19 @@ void	CRenderTarget::phase_decompress		()
 		RCache.Vertex.Unlock		(4,g_decompress->vb_stride);
 		RCache.set_Geometry			(g_decompress);
 		
-		/*
-		Fvector			test;	
-		test.set		(-0.589866,0.491592,0.640621);	test.mul(VIEWPORT_NEAR/test.z);			
-		Msg				("[0,0]      : dx(%f),dy(%f),dz(%f)",test.x,test.y,test.z);
-		test.set		(0.589143,0.491897,0.641052);	test.mul(VIEWPORT_NEAR/test.z);
-		Msg				("[1023,0]   : dx(%f),dy(%f),dz(%f)",test.x,test.y,test.z);
-		test.set		(-0.590263,-0.490583,0.641029);	test.mul(VIEWPORT_NEAR/test.z);
-		Msg				("[0,767]    : dx(%f),dy(%f),dz(%f)",test.x,test.y,test.z);
-		test.set		(0.589506,-0.490919,0.641468);	test.mul(VIEWPORT_NEAR/test.z);
-		Msg				("[1023,767] : dx(%f),dy(%f),dz(%f)",test.x,test.y,test.z);
-		*/
-
 		// Decompress
-		u_setrt						(rt_Position,rt_Normal,NULL,HW.pBaseZB);
-		RCache.set_Shader			(s_decompress);
-		RCache.Render				(D3DPT_TRIANGLELIST,Offset,0,4,0,2);
+		if (RImplementation.b_decompress_2pass)
+		{
+			u_setrt						(rt_Position,	NULL,NULL,HW.pBaseZB);
+			RCache.set_Element			(s_decompress->E[1]);
+			RCache.Render				(D3DPT_TRIANGLELIST,Offset,0,4,0,2);
+			u_setrt						(rt_Normal,		NULL,NULL,HW.pBaseZB);
+			RCache.set_Element			(s_decompress->E[2]);
+			RCache.Render				(D3DPT_TRIANGLELIST,Offset,0,4,0,2);
+		} else {
+			u_setrt						(rt_Position,rt_Normal,NULL,HW.pBaseZB);
+			RCache.set_Shader			(s_decompress);
+			RCache.Render				(D3DPT_TRIANGLELIST,Offset,0,4,0,2);
+		}
 	}
 }

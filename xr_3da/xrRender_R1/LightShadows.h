@@ -44,6 +44,8 @@ public:
 		u32					time;
 		tess_tri*			tris;
 		u32					tcnt;
+	
+		cache_item()		{ O=0; L=0; tris=0; }
 	};
 private:
 	IRenderable*			current;

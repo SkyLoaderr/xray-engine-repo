@@ -31,8 +31,8 @@ void	CBlender_deffer_model::Compile(CBlender_Compile& C)
 		C.r_End			();
 		break;
 	case 1:		// smap-direct
-		if (RImplementation.b_nv3x)	C.r_Pass	("shadow_direct_base","shadow_direct_base",FALSE,TRUE,TRUE,TRUE,D3DBLEND_ZERO,D3DBLEND_ONE);
-		else						C.r_Pass	("shadow_direct_base","shadow_direct_base",FALSE);
+		if (RImplementation.b_HW_smap)	C.r_Pass	("shadow_direct_base","null",FALSE,TRUE,TRUE,TRUE,D3DBLEND_ZERO,D3DBLEND_ONE);
+		else							C.r_Pass	("shadow_direct_base","shadow_direct_base",FALSE);
 		C.r_Sampler		("s_base",C.L_textures[0]);
 		C.r_End			();
 		break;
@@ -43,8 +43,8 @@ void	CBlender_deffer_model::Compile(CBlender_Compile& C)
 		C.r_End			();
 		break;
 	case 3:		// smap-spot
-		if (RImplementation.b_nv3x)	C.r_Pass			("shadow_direct_base","shadow_direct_base",FALSE,TRUE,TRUE,TRUE,D3DBLEND_ZERO,D3DBLEND_ONE);
-		else						C.r_Pass			("shadow_direct_base","shadow_direct_base",FALSE);
+		if (RImplementation.b_HW_smap)	C.r_Pass	("shadow_direct_base","null",FALSE,TRUE,TRUE,TRUE,D3DBLEND_ZERO,D3DBLEND_ONE);
+		else							C.r_Pass	("shadow_direct_base","shadow_direct_base",FALSE);
 		C.r_Sampler		("s_base",C.L_textures[0]);
 		C.r_End			();
 		break;

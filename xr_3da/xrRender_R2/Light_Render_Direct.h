@@ -6,13 +6,18 @@ public:
 	Fmatrix							D_view;
 	Fmatrix							D_project;
 	Fmatrix							D_combine;
+
 	Fmatrix							P_world;
 	Fmatrix							P_view;
 	Fmatrix							P_project;
 	Fmatrix							P_combine;
+
 	Fmatrix							S_view;
 	Fmatrix							S_project;
 	Fmatrix							S_combine;
+	u32								S_size;
+	u32								S_posX;
+	u32								S_posY;
 public:
 	void							Create			();
 	void							Destroy			();

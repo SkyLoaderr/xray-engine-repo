@@ -175,7 +175,14 @@ void					CRender::rmNormal			()
 //////////////////////////////////////////////////////////////////////
 CRender::CRender()
 {
-	b_nv3x	= (strstr(Core.Params,"-nv3x"))?TRUE:FALSE;
+	b_nv3x				= (strstr(Core.Params,"-nv3x"))?TRUE:FALSE;
+	b_decompress_2pass	= (strstr(Core.Params,"-nv2pdec"))?TRUE:FALSE;
+	b_HW_smap			= (strstr(Core.Params,"-hw_smap"))?TRUE:FALSE;
+
+	//  gk
+#if FP16_FILTER_AND_BLEND
+	b_fp16 = (strstr(Core.Params,"-fp16"))?TRUE:FALSE;  // this should be done using a Caps check...
+#endif
 }
 
 CRender::~CRender()

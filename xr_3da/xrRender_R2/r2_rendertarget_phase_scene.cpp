@@ -3,7 +3,8 @@
 void	CRenderTarget::phase_scene		()
 {
 	// Targets
-	u_setrt								(rt_Depth,rt_Accumulator,rt_Color,HW.pBaseZB);
+	if (RImplementation.b_fp16)	u_setrt	(rt_Position,rt_Normal,rt_Color,HW.pBaseZB);
+	else						u_setrt	(rt_Depth,rt_Accumulator,rt_Color,HW.pBaseZB);
 
 	// Clear
 	CHK_DX(HW.pDevice->Clear			( 0L, NULL, D3DCLEAR_ZBUFFER|D3DCLEAR_STENCIL, 0x01, 1.0f, 0L));
@@ -15,3 +16,4 @@ void	CRenderTarget::phase_scene		()
 	CHK_DX(HW.pDevice->SetRenderState	( D3DRS_TWOSIDEDSTENCILMODE,FALSE				));
 	RCache.set_CullMode					( CULL_CCW );
 }
+	

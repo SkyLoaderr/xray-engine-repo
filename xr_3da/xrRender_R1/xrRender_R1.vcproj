@@ -381,67 +381,6 @@
 			</File>
 		</Filter>
 		<Filter
-			Name="Lights"
-			Filter="">
-			<File
-				RelativePath=".\light.cpp">
-			</File>
-			<File
-				RelativePath=".\light.h">
-			</File>
-			<File
-				RelativePath=".\Light_DB.cpp">
-			</File>
-			<File
-				RelativePath=".\Light_DB.h">
-			</File>
-			<File
-				RelativePath="LightPPA.cpp">
-			</File>
-			<File
-				RelativePath="LightPPA.h">
-			</File>
-			<File
-				RelativePath="LightProjector.cpp">
-			</File>
-			<File
-				RelativePath="LightProjector.h">
-			</File>
-			<File
-				RelativePath=".\LightProjector_Cache.cpp">
-				<FileConfiguration
-					Name="Debug|Win32"
-					ExcludedFromBuild="TRUE">
-					<Tool
-						Name="VCCLCompilerTool"/>
-				</FileConfiguration>
-				<FileConfiguration
-					Name="Release|Win32"
-					ExcludedFromBuild="TRUE">
-					<Tool
-						Name="VCCLCompilerTool"/>
-				</FileConfiguration>
-				<FileConfiguration
-					Name="Mixed|Win32"
-					ExcludedFromBuild="TRUE">
-					<Tool
-						Name="VCCLCompilerTool"/>
-				</FileConfiguration>
-			</File>
-			<File
-				RelativePath="LightShadows.cpp">
-			</File>
-			<File
-				RelativePath="LightShadows.h">
-			</File>
-			<File
-				RelativePath="LightTrack.cpp">
-			</File>
-			<File
-				RelativePath="LightTrack.h">
-			</File>
-		</Filter>
-		<Filter
 			Name="Glows"
 			Filter="">
 			<File
@@ -646,6 +585,67 @@
 					RelativePath="occRasterizer_core.cpp">
 				</File>
 			</Filter>
+		</Filter>
+		<Filter
+			Name="Lights"
+			Filter="">
+			<File
+				RelativePath=".\light.cpp">
+			</File>
+			<File
+				RelativePath=".\light.h">
+			</File>
+			<File
+				RelativePath=".\Light_DB.cpp">
+			</File>
+			<File
+				RelativePath=".\Light_DB.h">
+			</File>
+			<File
+				RelativePath="LightPPA.cpp">
+			</File>
+			<File
+				RelativePath="LightPPA.h">
+			</File>
+			<File
+				RelativePath="LightProjector.cpp">
+			</File>
+			<File
+				RelativePath="LightProjector.h">
+			</File>
+			<File
+				RelativePath=".\LightProjector_Cache.cpp">
+				<FileConfiguration
+					Name="Debug|Win32"
+					ExcludedFromBuild="TRUE">
+					<Tool
+						Name="VCCLCompilerTool"/>
+				</FileConfiguration>
+				<FileConfiguration
+					Name="Release|Win32"
+					ExcludedFromBuild="TRUE">
+					<Tool
+						Name="VCCLCompilerTool"/>
+				</FileConfiguration>
+				<FileConfiguration
+					Name="Mixed|Win32"
+					ExcludedFromBuild="TRUE">
+					<Tool
+						Name="VCCLCompilerTool"/>
+				</FileConfiguration>
+			</File>
+			<File
+				RelativePath="LightShadows.cpp">
+			</File>
+			<File
+				RelativePath="LightShadows.h">
+			</File>
+			<File
+				RelativePath="LightTrack.cpp">
+			</File>
+			<File
+				RelativePath="LightTrack.h">
+			</File>
 		</Filter>
 		<File
 			RelativePath=".\Pipeline.txt">

@@ -10,11 +10,15 @@ void R_constants::flush_cache()
 		// fp
 		R_constant_array::t_f&	F	= a_pixel.c_f;
 		{
-			u32		count		= F.r_hi()-F.r_lo();
-			if (count)			{
-				PGO		(Msg("PGO:P_CONST:%d",count));
-				CHK_DX	(HW.pDevice->SetPixelShaderConstantF	(F.r_lo(), (float*)F.access(F.r_lo()),count));
-				F.flush	();
+			if (F.r_lo() <= 32) // .
+			{		
+				u32		count		= F.r_hi()-F.r_lo();
+				count = (count>31)?31:count;
+				if (count)			{
+					PGO		(Msg("PGO:P_CONST:%d",count));
+					CHK_DX	(HW.pDevice->SetPixelShaderConstantF	(F.r_lo(), (float*)F.access(F.r_lo()),count));
+					F.flush	();
+				}
 			}
 		}
 		a_pixel.b_dirty		= false;

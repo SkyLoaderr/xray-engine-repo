@@ -8,6 +8,7 @@ void CRenderDevice::Begin	()
 	HW.Validate	();
     if (HW.pDevice->TestCooperativeLevel()!=D3D_OK)
 	{
+		::OutputDebugString("TCL!=D3D_OK\n");
 		Sleep	(500);
 		Destroy	();
 		Create	();
@@ -111,6 +112,8 @@ void __cdecl	mt_Thread	(void *ptr)	{
 void CRenderDevice::PreCache	(u32 amount)
 {
 	if (HW.Caps.bForceGPU_REF)	amount=0;
+	//.
+	amount			= 0;
 	// Msg			("* PCACHE: start for %d...",amount);
 	dwPrecacheFrame	= dwPrecacheTotal = amount;
 }

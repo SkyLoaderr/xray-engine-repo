@@ -139,7 +139,7 @@ void CDetailManager::hw_Unload()
 void CDetailManager::hw_Render()
 {
 	// Render-prepare
-	CEnvDescriptor&	desc	= g_pGamePersistent->Environment.CurrentEnv;
+	// CEnvDescriptor&	desc	= g_pGamePersistent->Environment.CurrentEnv;
 	Fvector4	dir1,dir2;
 	Fvector3	wnd;
 	float	tm_rot1			= PI_MUL_2*Device.fTimeGlobal/ps_r__Detail_w_rot1;

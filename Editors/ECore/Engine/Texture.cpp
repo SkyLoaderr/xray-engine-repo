@@ -39,7 +39,8 @@ IC void	Reduce				(int& w, int& h, int& l, int& skip)
 void				TW_Save	(IDirect3DTexture9* T, LPCSTR name, LPCSTR prefix, LPCSTR postfix)
 {
 	string256		fn;		strconcat	(fn,name,"_",prefix,"-",postfix);
-	for (int it=0; it<xr_strlen(fn); it++)	if ('\\'==fn[it])	fn[it]	= '_';
+	for (int it=0; it<xr_strlen(fn); it++)	
+		if ('\\'==fn[it])	fn[it]	= '_';
 	string256		fn2;	strconcat	(fn2,"debug\\",fn,".dds");
 	Log						("* debug texture save: ",fn2);
 	R_CHK					(D3DXSaveTextureToFile	(fn2,D3DXIFF_DDS,T,0));
@@ -237,7 +238,6 @@ _DDS:
 		// Load and get header
 		D3DXIMAGE_INFO			IMG;
 		IReader*	S			= FS.r_open	(fn);
-		u32			mem			= S->length	();
 		R_ASSERT				(S);
 		R_CHK					(D3DXGetImageInfoFromFileInMemory	(S->pointer(),S->length(),&IMG));
 		if (IMG.ResourceType	== D3DRTYPE_CUBETEXTURE)			goto _DDS_CUBE;

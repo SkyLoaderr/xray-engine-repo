@@ -42,7 +42,7 @@ R2:
 	* transluency						(again + experiment)		-	1day - 1week
 	* reverse culling for spot/point with initial clears - should avoid most biasing (?)	- 1day - but can just not work :)
 	* 4*32bit	RT(s) / emissive									-	1day + emissive shaders (as need them)
-	* perspective shadow maps and all that stuff Gary talks about	-	1month...			1year :)))
+	* perspective shadow maps and all that stuff Gary talks about	-	1month...	1year :)))
 	* wallmarks :)	(?)												-	?
 	* generated bumpmaps leaks
 	* surface material:

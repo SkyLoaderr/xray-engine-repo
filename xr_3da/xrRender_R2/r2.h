@@ -28,8 +28,14 @@ public:
 		PHASE_SMAP_P	= 2,	// E[2]
 		PHASE_SMAP_S	= 3		// E[3]
 	};
-	BOOL														b_nv3x;
 
+	// gk
+#if FP16_FILTER_AND_BLEND
+	BOOL                                                        b_fp16;
+#endif
+	BOOL														b_nv3x;
+	BOOL														b_HW_smap;
+	BOOL														b_decompress_2pass;
 public:
 	// Sector detection and visibility
 	CSector*													pLastSector;

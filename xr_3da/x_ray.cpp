@@ -207,7 +207,7 @@ int APIENTRY WinMain(HINSTANCE hInstance,
 
 	// test_rtc				();
 
-	Startup					();
+	Startup	 				();
 	
 	Core._destroy			();
 
@@ -321,6 +321,7 @@ void CApplication::LoadTitle	(char *S, char *S2)
 {
 	VERIFY(ll_dwReference);
 
+	Device.dwFrame				+= 1;
 	Device.Begin();
 
 	// Draw logo

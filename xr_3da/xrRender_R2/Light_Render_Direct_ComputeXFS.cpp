@@ -13,6 +13,15 @@ void CLight_Render_Direct::compute_xfs_1	(u32 m_phase, light* L)
 	S_view.build_camera_dir		(L_pos,L_dir,L_up);
 	S_project.build_projection	(L->cone,1.f,SSM_near_plane,L->range+EPS_S);
 	S_combine.mul				(S_project,S_view);
+
+	// Compute approximate screen area (treating it as an point light) - R*R/dist_sq
+	float	dist				= Device.vCameraPosition.distance_to(L->position)-L->range;
+	float	ssa					= L->range*L->range / (dist<=EPS)?EPS:dist*dist;
+	if		(ssa >= 1)			S_size	= DSM_size;
+	else	{
+		// ssa is quadratic
+		S_size					= _sqrt(ssa) * DSM_size;
+	}
 }
 
 void CLight_Render_Direct::compute_xfs_2	(u32 m_phase, light* L)

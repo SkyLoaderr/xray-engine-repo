@@ -14,6 +14,7 @@ void	CRenderTarget::u_setrt			(const ref_rt& _1, const ref_rt& _2, const ref_rt&
 	VERIFY									(_1);
 	dwWidth									= _1->dwWidth;
 	dwHeight								= _1->dwHeight;
+
 	if (RImplementation.b_nv3x)
 	{
 		VERIFY								(!_2);
@@ -28,6 +29,7 @@ void	CRenderTarget::u_setrt			(const ref_rt& _1, const ref_rt& _2, const ref_rt&
 		if (_3) RCache.set_RT(_3->pRT,	2); else RCache.set_RT(NULL,2);
 		RCache.set_ZB						(zb);
 	}
+
 	RImplementation.rmNormal				();
 }
 
@@ -128,6 +130,18 @@ void	CRenderTarget::OnDeviceCreate	()
 	b_decompress					= xr_new<CBlender_decompress>			();
 
 	//	NORMAL
+	//  gk
+#if FP16_FILTER_AND_BLEND
+	if (RImplementation.b_fp16)
+	{
+		u32	w=Device.dwWidth, h=Device.dwHeight;
+		rt_Position.create			(r2_RT_P,		w,h,D3DFMT_A16B16G16R16F);
+		rt_Normal.create			(r2_RT_N_H,		w,h,D3DFMT_A16B16G16R16F);
+		rt_Color.create				(r2_RT_D_G,		w,h,D3DFMT_A16B16G16R16F);
+		rt_Accumulator.create		(r2_RT_accum,	w,h,D3DFMT_A16B16G16R16F);
+	}
+	else
+#endif
 	{
 		u32	w=Device.dwWidth, h=Device.dwHeight;
 		rt_Depth.create				(r2_RT_depth,	w,h,D3DFMT_R32F			);
@@ -146,18 +160,23 @@ void	CRenderTarget::OnDeviceCreate	()
 	}
 	else
 	{
-		u32 _fvf					= (u32)D3DFVF_XYZRHW|D3DFVF_TEX2|D3DFVF_TEXCOORDSIZE2(0)|D3DFVF_TEXCOORDSIZE4(1);
-		s_decompress.create			(b_decompress,	"r2\\rt32x64decode");
-		g_decompress.create			(_fvf,			RCache.Vertex.Buffer(), RCache.QuadIB);
+#if FP16_FILTER_AND_BLEND
+		if (!RImplementation.b_fp16)
+#endif
+		{
+			u32 _fvf					= (u32)D3DFVF_XYZRHW|D3DFVF_TEX2|D3DFVF_TEXCOORDSIZE2(0)|D3DFVF_TEXCOORDSIZE4(1);
+			s_decompress.create			(b_decompress,	"r2\\rt32x64decode");
+			g_decompress.create			(_fvf,			RCache.Vertex.Buffer(), RCache.QuadIB);
+		}
 	}
 
 	// DIRECT
-	if (RImplementation.b_nv3x)
+	if (RImplementation.b_HW_smap)
 	{
 		u32	w=DSM_size, h=DSM_size;
 
 		rt_smap_d_surf.create		(r2_RT_smap_d_surf,			w,h,D3DFMT_A8R8G8B8);
-		rt_smap_d_depth.create		(r2_RT_smap_d_depth,		w,h,D3DFMT_D24X8);
+		rt_smap_d_depth.create		(r2_RT_smap_d_depth,		w,h,D3DFMT_D24S8);	//.
 		rt_smap_d_ZB				= NULL;
 		s_accum_mask.create			(b_accum_mask,				"r2\\accum_mask");
 		s_accum_direct.create		(b_accum_direct,			"r2\\accum_direct");
@@ -166,7 +185,8 @@ void	CRenderTarget::OnDeviceCreate	()
 	{
 		u32	w=DSM_size, h=DSM_size;
 
-		rt_smap_d_surf.create		(r2_RT_smap_d_surf,			w,h,D3DFMT_R32F);
+		if (strstr(Core.Params, "-nv4xwar"))	rt_smap_d_surf.create		(r2_RT_smap_d_surf,			w,h,D3DFMT_A8R8G8B8);
+		else									rt_smap_d_surf.create		(r2_RT_smap_d_surf,			w,h,D3DFMT_R32F);
 		rt_smap_d_depth				= NULL;
 		R_CHK						(HW.pDevice->CreateDepthStencilSurface	(w,h,HW.Caps.fDepth,D3DMULTISAMPLE_NONE,0,TRUE,&rt_smap_d_ZB,NULL));
 		s_accum_mask.create			(b_accum_mask,				"r2\\accum_mask");
@@ -212,15 +232,12 @@ void	CRenderTarget::OnDeviceCreate	()
 		s_bloom_dbg_1.create		("effects\\screen_set",		r2_RT_bloom1);
 		s_bloom_dbg_2.create		("effects\\screen_set",		r2_RT_bloom2);
 		s_bloom.create				(b_bloom,					"r2\\bloom");
-		rt_Bloom_ZB					= NULL;
-		if (RImplementation.b_nv3x)
-			R_CHK					(HW.pDevice->CreateDepthStencilSurface	(w,h,HW.Caps.fDepth,D3DMULTISAMPLE_NONE,0,TRUE,&rt_Bloom_ZB,NULL));
 	}
 
 	// COMBINE
 	{
 		s_combine.create					(b_combine,					"r2\\combine");
-		s_combine_dbg_Normal.create			("effects\\screen_set",		r2_RT_N_H);
+		s_combine_dbg_Normal.create			("effects\\screen_set",		r2_RT_smap_d_surf);
 		s_combine_dbg_Accumulator.create	("effects\\screen_set",		r2_RT_accum);
 		s_combine_dbg_DepthD.create			("effects\\screen_set",		r2_RT_generic);
 		g_combine.create					(FVF::F_TL,		RCache.Vertex.Buffer(), RCache.QuadIB);
@@ -254,7 +271,7 @@ void	CRenderTarget::OnDeviceCreate	()
 							ls	*=	powf		(ld,1/32.f);						// minimize specular where diffuse near zero
 					s32		_d	=	iFloor		(ld*255.5f);						clamp(_d,0,255);
 					s32		_s	=	iFloor		(powf(ls,ps_r2_ls_spower)*255.5f);	clamp(_s,0,255);
-					*p			=	_s*256 + _d;	// color_rgba	(_d,_d,_d,_s);
+					*p			=	u16			(_s*256 + _d);						// color_rgba	(_d,_d,_d,_s);
 				}
 			}
 			R_CHK						(t_material_surf->UnlockRect	(0));
@@ -393,7 +410,6 @@ void	CRenderTarget::OnDeviceDestroy	()
 	t_encodeB->surface_set		(NULL);
 	_RELEASE					(t_encodeB_surf);
 
-	_RELEASE					(rt_Bloom_ZB			);
 	_RELEASE					(rt_smap_p_ZB			);
 	_RELEASE					(rt_smap_d_ZB			);
 
