@@ -367,6 +367,9 @@ function action_stand:initialize ()
     action_base.initialize (self)
     self.first = false
     xr_meet.override_meet (self.object, true)
+    if self.a.on_medikit ~= nil then
+       xr_logic.pick_section_from_condlist (level.actor (), self.object, self.a.on_medikit.condlist) 
+    end   
 end
 ------------
 function action_stand:execute ()
@@ -390,9 +393,6 @@ function action_stand:finalize ()
     action_base.finalize (self)
     xr_meet.override_meet (self.object, false)
     self.a.sit = false
-    if self.a.on_medikit ~= nil then
-       xr_logic.pick_section_from_condlist (level.actor (), self.object, self.a.on_medikit.condlist) 
-    end   
 end    
 ------------------------------------------------------------------------------------------
 
