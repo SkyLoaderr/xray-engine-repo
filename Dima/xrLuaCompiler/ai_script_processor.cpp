@@ -34,6 +34,7 @@ CScriptProcessor::CScriptProcessor(LPCSTR caCaption, LPCSTR caScriptString)
 #else
 //	lua_pop			(m_tpLuaVirtualMachine,4);
 #endif
+	lua_setgcthreshold	(m_tpLuaVirtualMachine,64);
 
 	Script::vfExportToLua(m_tpLuaVirtualMachine);
 
