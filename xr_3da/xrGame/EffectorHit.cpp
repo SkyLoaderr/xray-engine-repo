@@ -19,9 +19,9 @@ BOOL CEffectorHit::Process(Fvector &p, Fvector &d, Fvector &n, float& fFov, floa
 	M.i.crossproduct(n,d);
 	M.c.set		(p);
 
-	Fvector dangle;
-	dangle.x = m_x * fLifeTime / fTime;
-	dangle.y = m_y * fLifeTime / fTime;
+	Fvector dangle; float k = fLifeTime/fTime; k = k*k*k*k;
+	dangle.x = m_x * k;
+	dangle.y = m_y * k;
 	dangle.z = dangle.x /*+ dangle.y*/;
 
 	Fmatrix		R;

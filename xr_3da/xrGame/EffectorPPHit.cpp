@@ -18,7 +18,8 @@ CEffectorPPHit::~CEffectorPPHit	()
 BOOL CEffectorPPHit::Process	(SPPInfo& pp)
 {
 	fLifeTime -= Device.fTimeDelta; if(fLifeTime<0) return FALSE;
-	pp.duality.h	= m_x * fLifeTime / fTime;
-	pp.duality.v	= m_y * fLifeTime / fTime;
+	float k = fLifeTime/fTime; k = k*k*k*k;
+	pp.duality.h	= m_x * k;
+	pp.duality.v	= m_y * k;
 	return TRUE;
 }
