@@ -71,7 +71,7 @@ BOOL	ValidateMerge	(DWORD f1, Fbox& bb_base, DWORD f2, Fbox& bb, float& volume)
 	float	v1	= bb_base.getvolume	();
 	float	v2	= bb.getvolume		();
 	volume		= merge.getvolume	();// / Cuboid(merge);
-//	if (volume > 2*2*2*(v1+v2))						return FALSE;	// Don't merge too distant groups (8 vol)
+	if (volume > 2*2*2*(v1+v2))						return FALSE;	// Don't merge too distant groups (8 vol)
 
 	// OK
 	return TRUE;
