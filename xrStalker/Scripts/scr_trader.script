@@ -199,16 +199,16 @@ function Trader:animation()
     if( self.mem.state == self.mem.new_state ) then
 
         if( self.mem.anim_snd == nil ) then                 --Проигруем анимацию без звука
-            action( self.npc, anim( self.mem.last_anim ), cond( cond.anim_end ) )
+            this.action2( self.npc, anim( self.mem.last_anim ), cond( cond.anim_end ) )
 --            printf( "Anim   %s", self.mem.last_anim )
             self.mem.repeats = self.mem.repeats - 1
         else                                           --Проигруем анимацию со звуком
 	        if( self.mem.all_anim ) then                        --Анимация, где двигается все тело
-    	        action( self.npc, anim( self.mem.last_anim ), sound( self.mem.anim_snd, "bip01_head"),
+    	        this.action2( self.npc, anim( self.mem.last_anim ), sound( self.mem.anim_snd, "bip01_head"),
         		                                                    cond( cond.sound_end ) )
             	self.mem.all_anim = false
             else
-	            action( self.npc, anim( self.mem.last_anim ), sound( self.mem.anim_snd, "bip01_head", MonsterSpace.head_anim_normal ),
+	            this.action2( self.npc, anim( self.mem.last_anim ), sound( self.mem.anim_snd, "bip01_head", MonsterSpace.head_anim_normal ),
     	                                                            cond( cond.sound_end ) )
      		end
 
@@ -220,18 +220,18 @@ function Trader:animation()
     else
      --Устанавливаем торговца в нужное положение
         if( self.mem.state == spinka ) then
-            action( self.npc, anim( "spinka_idle" ), cond( cond.anim_end ) )
+            this.action2( self.npc, anim( "spinka_idle" ), cond( cond.anim_end ) )
             self.mem.state = idle
         elseif( self.mem.state == idle ) then
             if( self.mem.new_state == spinka ) then
-                action( self.npc, anim( "idle_spinka" ), cond( cond.anim_end ) )
+                this.action2( self.npc, anim( "idle_spinka" ), cond( cond.anim_end ) )
                 self.mem.state = spinka
             else
-                action( self.npc, anim( "idle_chitaet" ), cond( cond.anim_end ) )
+                this.action2( self.npc, anim( "idle_chitaet" ), cond( cond.anim_end ) )
                 self.mem.state = chitaet
             end
         else          --state == chitaet
-            action( self.npc, anim( "chitaet_idle" ), cond( cond.anim_end ) )
+            this.action2( self.npc, anim( "chitaet_idle" ), cond( cond.anim_end ) )
             self.mem.state = idle
         end
     end
@@ -551,4 +551,22 @@ function t_Life:sound_with_anim()
     end
 
     return false
+end
+
+
+function action2(obj,...)
+    local act = entity_action()
+    local i = 1
+    while true do
+        if (arg[i] ~= nil) then
+            act:set_action(arg[i])
+        else
+            break
+        end
+        i = i + 1
+    end
+    if (obj ~= nil) then
+        obj:command(act,false)
+    end
+    return  entity_action(act)
 end
