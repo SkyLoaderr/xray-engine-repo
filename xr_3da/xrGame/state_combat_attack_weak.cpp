@@ -61,7 +61,9 @@ void CStateAttackWeak::execute			()
 
 	if (m_object->visible(m_object->enemy())) {
 		m_object->CObjectHandler::set_dest_state(eObjectActionFire1,m_object->best_weapon());
-		m_object->CSightManager::update			(eLookTypeFirePoint,&mem_object.m_object_params.m_position);
+		Fvector									position;
+		m_object->enemy()->Center				(position);
+		m_object->CSightManager::update			(eLookTypeFirePoint,&position);
 	}
 	else {
 		if (!dynamic_cast<CMissile*>(m_object->best_weapon()))
