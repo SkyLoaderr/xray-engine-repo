@@ -53,7 +53,7 @@ void CHUDCursor::Render()
 	dir = Device.vCameraDirection;
 	
 	// Render cursor
-	float		dist=Level().Environment->Current.far_plane*0.99f;
+	float		dist=g_pGamePersistent->Environment.Current.far_plane*0.99f;
 	
 	g_pGameLevel->CurrentEntity()->setEnabled(false);
 	u32 C			= C_DEFAULT;
