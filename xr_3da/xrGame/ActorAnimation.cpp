@@ -13,6 +13,8 @@ static const float p_spin_factor		= 0.2f;
 static const float p_shoulder_factor	= 0.7f;
 static const float p_head_factor		= 0.1f;
 
+#define OLD_ANIM_NAMES
+
 void __stdcall CActor::SpinCallback(CBoneInstance* B)
 {
 	CActor*	A			= dynamic_cast<CActor*>(static_cast<CObject*>(B->Callback_Param));	R_ASSERT(A);
@@ -55,34 +57,60 @@ void __stdcall CActor::HeadCallback(CBoneInstance* B)
 void CActor::SActorMotions::SActorState::STorsoWpn::Create(CKinematics* K, LPCSTR base0, LPCSTR base1)
 {
 	char			buf[128];
+#ifdef OLD_ANIM_NAMES
 	aim				= K->ID_Cycle(strconcat(buf,base0,"_torso_aim",		base1));
 	holster			= K->ID_Cycle(strconcat(buf,base0,"_torso_holster",	base1));
 	draw			= K->ID_Cycle(strconcat(buf,base0,"_torso_draw",	base1));
 	reload			= K->ID_Cycle(strconcat(buf,base0,"_torso_reload",	base1));
 	drop			= K->ID_Cycle(strconcat(buf,base0,"_torso_drop",	base1));
 	attack			= K->ID_Cycle(strconcat(buf,base0,"_torso_attack",	base1));
+#else
+	aim				= K->ID_Cycle(strconcat(buf,base0,"_torso",base1,"_aim_0"));
+	holster			= K->ID_Cycle(strconcat(buf,base0,"_torso",base1,"_holster_0"));
+	draw			= K->ID_Cycle(strconcat(buf,base0,"_torso",base1,"_draw_0"));
+	reload			= K->ID_Cycle(strconcat(buf,base0,"_torso",base1,"_reload_0"));
+	drop			= K->ID_Cycle(strconcat(buf,base0,"_torso",base1,"_drop_0"));
+	attack			= K->ID_Cycle(strconcat(buf,base0,"_torso",base1,"_attack_0"));
+#endif
 }
 void CActor::SActorMotions::SActorState::SAnimState::Create(CKinematics* K, LPCSTR base0, LPCSTR base1)
 {
 	char			buf[128];
+#ifdef OLD_ANIM_NAMES
 	legs_fwd		= K->ID_Cycle(strconcat(buf,base0,base1,"_fwd"));
 	legs_back		= K->ID_Cycle(strconcat(buf,base0,base1,"_back"));
 	legs_ls			= K->ID_Cycle(strconcat(buf,base0,base1,"_ls"));
 	legs_rs			= K->ID_Cycle(strconcat(buf,base0,base1,"_rs"));
+#else
+	legs_fwd		= K->ID_Cycle(strconcat(buf,base0,base1,"_fwd_0"));
+	legs_back		= K->ID_Cycle(strconcat(buf,base0,base1,"_back_0"));
+	legs_ls			= K->ID_Cycle(strconcat(buf,base0,base1,"_ls_0"));
+	legs_rs			= K->ID_Cycle(strconcat(buf,base0,base1,"_rs_0"));
+#endif
 }
 
 void CActor::SActorMotions::SActorState::Create(CKinematics* K, LPCSTR base)
 {
 	string128		buf;//,buf1;
-	legs_idle		= K->ID_Cycle(strconcat(buf,base,"_idle"));
 	legs_turn		= K->ID_Cycle(strconcat(buf,base,"_turn"));
+#ifdef OLD_ANIM_NAMES
+	legs_idle		= K->ID_Cycle(strconcat(buf,base,"_idle"));
 	death			= K->ID_Cycle(strconcat(buf,base,"_death"));
+#else
+	legs_idle		= K->ID_Cycle(strconcat(buf,base,"_idle_1"));
+	death			= K->ID_Cycle(strconcat(buf,base,"_death_0"));
+#endif
 	m_walk.Create	(K,base,"_walk");
 	m_run.Create	(K,base,"_run");
 	m_torso[0].Create(K,base,"_1");
 	m_torso[1].Create(K,base,"_2");
 //	m_torso[2].Create(K,base,"_3");
-	m_torso_idle	= K->ID_Cycle(strconcat(buf,base,"_torso_idle"));;
+#ifdef OLD_ANIM_NAMES
+	m_torso_idle	= K->ID_Cycle(strconcat(buf,base,"_torso_idle"));
+#else
+	m_torso_idle	= K->ID_Cycle(strconcat(buf,base,"_torso_0_aim_0"));
+#endif
+
 
 	jump_begin		= K->ID_Cycle(strconcat(buf,base,"_jump_begin"));
 	jump_idle		= K->ID_Cycle(strconcat(buf,base,"_jump_idle"));
