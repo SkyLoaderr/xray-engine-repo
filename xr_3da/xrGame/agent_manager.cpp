@@ -15,7 +15,8 @@
 
 using namespace AgentManager;
 
-#define SECTION "agent_manager"
+#define SECTION				"agent_manager"
+#define IMPORTANT_BUILD
 
 CAgentManager::CAgentManager		()
 {
@@ -69,7 +70,12 @@ void CAgentManager::add				(CEntity *member)
 	VERIFY2						(sizeof(squad_mask_type)*8 > members().size(),"Too many stalkers in squad!");
 
 	iterator					I = std::find_if(m_members.begin(),m_members.end(), CMemberPredicate(stalker));
+#ifndef IMPORTANT_BUILD
 	VERIFY						(I == m_members.end());
+#else
+	if (I != m_members.end())
+		return;
+#endif
 	
 	m_members.push_back			(CMemberOrder(stalker));
 }
@@ -82,7 +88,9 @@ void CAgentManager::remove			(CEntity *member, bool no_assert)
 
 	iterator					I = std::find_if(m_members.begin(),m_members.end(), CMemberPredicate(stalker));
 	if (I == m_members.end()) {
+#ifndef IMPORTANT_BUILD
 		R_ASSERT				(no_assert);
+#endif
 		return;
 	}
 	m_members.erase				(I);

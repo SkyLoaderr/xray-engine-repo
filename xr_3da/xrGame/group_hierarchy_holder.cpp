@@ -14,6 +14,8 @@
 #include "agent_manager.h"
 #include "ai/stalker/ai_stalker.h"
 
+#define IMPORTANT_BUILD
+
 CGroupHierarchyHolder::~CGroupHierarchyHolder			()
 {
 	VERIFY						(m_members.empty());
@@ -39,7 +41,12 @@ void CGroupHierarchyHolder::register_in_group			(CEntity *member)
 {
 	VERIFY						(member);
 	MEMBER_REGISTRY::iterator	I = std::find(m_members.begin(),m_members.end(),member);
+#ifndef IMPORTANT_BUILD
 	VERIFY3						(I == m_members.end(),"Specified group member has already been found",*member->cName());
+#else
+	if (I != m_members.end())
+		return;
+#endif
 
 	if (m_members.empty()) {
 		m_visible_objects		= xr_new<VISIBLE_OBJECTS>();
@@ -86,8 +93,13 @@ void CGroupHierarchyHolder::unregister_in_group			(CEntity *member)
 {
 	VERIFY						(member);
 	MEMBER_REGISTRY::iterator	I = std::find(m_members.begin(),m_members.end(),member);
+#ifndef IMPORTANT_BUILD
 	VERIFY3						(I != m_members.end(),"Specified group member cannot be found",*member->cName());
 	m_members.erase				(I);
+#else
+	if (I != m_members.end())
+		m_members.erase			(I);
+#endif
 
 	if (!m_members.empty())
 		return;
