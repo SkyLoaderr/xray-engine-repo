@@ -75,7 +75,7 @@ void xrServer::Process_event_destroy	(NET_Packet& P, ClientID sender, u32 time, 
 	if (e_dest->m_bALifeControl && ai().get_alife()) {
 		game_sv_Single				*_game = smart_cast<game_sv_Single*>(game);
 		VERIFY						(_game);
-		if (ai().alife().objects().object(id_dest,true))
+		if (ai().alife().objects().object(e_dest,true))
 			_game->alife().release	(e_dest,false);
 	}
 
