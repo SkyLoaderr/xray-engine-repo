@@ -999,6 +999,18 @@
 					<File
 						RelativePath=".\config\scripts\mil\mil_dolg_zoneguard.ltx">
 					</File>
+					<File
+						RelativePath=".\config\scripts\mil\mil_freedom_bodyguard1.ltx">
+					</File>
+					<File
+						RelativePath=".\config\scripts\mil\mil_freedom_bodyguard2.ltx">
+					</File>
+					<File
+						RelativePath=".\config\scripts\mil\mil_freedom_bodyguard3.ltx">
+					</File>
+					<File
+						RelativePath=".\config\scripts\mil\mil_freedom_leader.ltx">
+					</File>
 				</Filter>
 			</Filter>
 		</Filter>

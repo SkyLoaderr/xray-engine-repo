@@ -105,11 +105,17 @@
     <string id="mil_dolg_dialog_600100">
         <text>Не премину :)</text>
     </string>
+    <string id="mil_dolg_dialog_7000">
+        <text>Как прошла охота ?</text>
+    </string>
+    <string id="mil_dolg_dialog_7001">
+        <text>Могло быть и хуже.</text>
+    </string>
     <string id="mil_lukash_dialog_0">
         <text>Привет, кабан !</text>
     </string>
     <string id="mil_lukash_dialog_1">
-        <text>А не пошел бы ты  на х.. ?</text>
+        <text>А не пошел бы ты на х.. ?</text>
     </string>
     <string id="mil_lukash_dialog_2">
         <text>Пошел :(</text>
