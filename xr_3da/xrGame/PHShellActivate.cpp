@@ -191,6 +191,7 @@ void CPHShell::PresetActive()
 void CPHShell::Deactivate(){
 	if(!bActive)
 		return;
+	vis_update_activate();
 	ELEMENT_I i;
 	for(i=elements.begin();elements.end() != i;++i)
 		(*i)->Deactivate();
