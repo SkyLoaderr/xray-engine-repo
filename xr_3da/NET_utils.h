@@ -100,6 +100,17 @@ public:
 		w_vec3	(M.k);
 		w_vec3	(M.c);
 	}
+	IC u32	w_chunk_open8	(u32& position)
+	{
+		position			= w_tell	();
+		w_u8				(0);
+	}
+	IC void w_chunk_close8	(u32 position)
+	{
+		u32 size			= u32		(w_tell()-position)-sizeof(u8);
+		R_ASSERT			(size<256	);
+		w_seek				(position,&size,sizeof(u8));
+	}
 	
 	// reading
 	IC DWORD	r_begin			( u16& type	)	// returns time of receiving
@@ -122,6 +133,11 @@ public:
 	IC DWORD	r_elapsed		()
 	{
 		return B.count-r_pos;
+	}
+	IC void		r_advance		(u32 size)
+	{
+		r_pos		+= size;
+		VERIFY		(r_pos<=B.count);
 	}
 	
 	// reading - utilities

@@ -94,8 +94,9 @@ void xrServer::Process_event	(NET_Packet& P, DPNID sender)
 
 			// Perfrom real destroy
 			Log					("~~~!!!~~~ SV: destroy ",e_entity->s_name);
-			entity_Destroy		(e_entity);
-			entities.erase		(id_entity);
+
+			entity_Destroy		(e_entity	);
+			entities.erase		(id_entity	);
 		}
 		break;
 	case GE_HIT:

@@ -80,10 +80,13 @@ void xrServer::Update	()
 			if (Test.owner == Client)					continue;	// Can't be relevant
 			if (Test.s_flags&M_SPAWN_OBJECT_PHANTOM)	continue;	// Surely: phantom
 
-//			if (Test.RelevantTo(Base))	{
-				Packet.w_u16		(Test.ID);
-				Test.UPDATE_Write	(Packet	);
-//			}
+			// write specific data
+			{
+				Packet.w_u16			(Test.ID		);
+				Packet.w_chunk_open8	(position		);
+				Test.UPDATE_Write		(Packet			);
+				Packet.w_chunk_close8	(position		);
+			}
 		}
 		if (Packet.B.count > 2)	
 		{

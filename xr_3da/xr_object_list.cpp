@@ -118,30 +118,36 @@ void CObjectList::net_Unregister(CObject* O)
 	if ((it!=map_NETID.end()) && (it->second == O))	map_NETID.erase(it);
 }
 
-void CObjectList::net_Export	(NET_Packet* Packet)
+void CObjectList::net_Export	(NET_Packet* _Packet)
 {
+	NET_Packet& Packet	= *_Packet;
+	u32			position;
 	for (OBJ_IT O=objects.begin(); O!=objects.end(); O++) 
 	{
 		CObject* P = *O;
 		if (P->net_Relevant() && !P->getDestroy())	
 		{
-			Packet->w_u16			(u16(P->ID()));
-			P->net_Export			(*Packet);
+			Packet.w_u16			(u16(P->ID())	);
+			Packet.w_chunk_open8	(position);
+			P->net_Export			(Packet);
+			Packet.w_chunk_close8	(position);
 		}
 	}
 }
 
-void CObjectList::net_Import	(NET_Packet* Packet)
+void CObjectList::net_Import		(NET_Packet* Packet)
 {
 	while (!Packet->r_eof())
 	{
 		u16 ID;		Packet->r_u16	(ID);
+		u8  size;	Packet->r_u8	(size);
 		CObject* P  = net_Find		(DWORD(ID));
-		if (P) P->net_Import		(*Packet);
+		if (P)	P->net_Import		(*Packet);
+		else	Packet->r_advance	(size);
 	}
 }
 
-CObject* CObjectList::net_Find	(u32 ID)
+CObject* CObjectList::net_Find			(u32 ID)
 {
 	map<u32,CObject*>::iterator	it = map_NETID.find(ID);
 	return (it==map_NETID.end())?0:it->second;

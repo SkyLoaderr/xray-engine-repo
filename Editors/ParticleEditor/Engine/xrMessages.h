@@ -7,7 +7,7 @@
 // SV	== server 2 client message
 
 enum {
-	M_UPDATE				=0,	// DUAL: Update state
+	M_UPDATE			= 0,	// DUAL: Update state
 	M_SPAWN,					// DUAL: Spawning, full state
 
 	M_SV_CONFIG_GAME,
@@ -184,6 +184,12 @@ M_SPAWN
 M_UPDATE
 {
 	DWORD	server_time;	// only for server2client update
+
+	header
+	{
+		u16		id;
+		u8		size
+	}
 	actor 
 	{
 		DWORD		timestamp;
