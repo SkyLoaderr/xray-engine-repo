@@ -17,7 +17,7 @@ CAI_Stalker::CAI_Stalker()
 CAI_Stalker::~CAI_Stalker()
 {
 	Msg("FSM report for %s :",cName());
-	for (int i=0; i<(int)m_tStateList.size(); i++)
+	for (int i=0; i<(int)m_tStateStack.size(); i++)
 		Msg("%3d %6d",m_tStateList[i].eState,m_tStateList[i].dwTime);
 	Msg("Total updates : %d",m_dwUpdateCount);
 	xr_delete(Weapons);

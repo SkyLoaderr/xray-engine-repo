@@ -58,7 +58,7 @@ CAI_Zombie::~CAI_Zombie()
 void CAI_Zombie::Die()
 {
 	inherited::Death( );
-	eCurrentState = aiZombieDie;
+	m_eCurrentState = aiZombieDie;
 	
 	///Fvector	dir;
 	//AI_Path.Direction(dir);
@@ -70,7 +70,7 @@ void CAI_Zombie::Die()
 	CGroup &Group = Level().get_group(g_Team(),g_Squad(),g_Group());
 	vfRemoveActiveMember();
 	Group.m_dwAliveCount--;
-	eCurrentState = aiZombieDie;
+	m_eCurrentState = aiZombieDie;
 	m_dwDeathTime = Level().timeServer();
 //	Msg("%s : Death signal %d",cName(),Level().timeServer());
 }
@@ -157,7 +157,7 @@ BOOL CAI_Zombie::net_Spawn	(LPVOID DC)
 	m_tOldPosition.set(vPosition);
 	m_tSpawnPosition.set(Level().get_squad(g_Team(),g_Squad()).Leader->Position());
 	m_tSafeSpawnPosition.set(m_tSpawnPosition);
-	tStateStack.push(eCurrentState = aiZombieFreeHuntingActive);
+	m_tStateStack.push(m_eCurrentState = aiZombieFreeHuntingActive);
 	vfAddActiveMember(true);
 	m_bStateChanged = true;
 

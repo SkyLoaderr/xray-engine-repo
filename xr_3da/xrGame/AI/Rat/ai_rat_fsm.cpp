@@ -11,7 +11,7 @@
 #include "..\\ai_monsters_misc.h"
 
 #undef	WRITE_TO_LOG
-#define WRITE_TO_LOG(s) bStopThinking = true;
+#define WRITE_TO_LOG(s) m_bStopThinking = true;
 /**
 #define WRITE_TO_LOG(s) {\
 	Msg("Monster %s : \n* State : %s\n* Time delta : %7.3f\n* Global time : %7.3f",cName(),s,m_fTimeUpdateDelta,float(Level().timeServer())/1000.f);\
@@ -30,22 +30,22 @@
 				Msg("*   %s (distance %7.2fm)",m_tpaVisibleObjects[i]->cName(),vPosition.distance_to(m_tpaVisibleObjects[i]->Position()));\
 		}\
 	}\
-	bStopThinking = true;\
+	m_bStopThinking = true;\
 }
 /**/
 
 #ifndef DEBUG
 	#undef	WRITE_TO_LOG
-	#define WRITE_TO_LOG(s) bStopThinking = true;
+	#define WRITE_TO_LOG(s) m_bStopThinking = true;
 #endif
 
 void CAI_Rat::Think()
 {
 	vfUpdateMorale();
-	bStopThinking = false;
+	m_bStopThinking = false;
 	do {
-		m_ePreviousState = eCurrentState;
-		switch(eCurrentState) {
+		m_ePreviousState = m_eCurrentState;
+		switch(m_eCurrentState) {
 			case aiRatDie : {
 				Death();
 				break;
@@ -95,9 +95,9 @@ void CAI_Rat::Think()
 				break;
 			}
 		}
-		m_bStateChanged = m_ePreviousState != eCurrentState;
+		m_bStateChanged = m_ePreviousState != m_eCurrentState;
 	}
-	while (!bStopThinking);
+	while (!m_bStopThinking);
 //	if (m_fSpeed > EPS_L) {
 //		AI_Path.TravelPath.resize(3);
 //		AI_Path.TravelPath[0].floating = AI_Path.TravelPath[1].floating = AI_Path.TravelPath[2].floating = FALSE;
@@ -122,7 +122,7 @@ void CAI_Rat::Death()
 	//WRITE_TO_LOG("Dying...");
 	vfSetFire(false,Level().get_group(g_Team(),g_Squad(),g_Group()));
 
-	bStopThinking = true;
+	m_bStopThinking = true;
 
 	CGroup &Group = Level().Teams[g_Team()].Squads[g_Squad()].Groups[g_Group()];
 	vfSetFire(false,Group);
@@ -260,19 +260,19 @@ void CAI_Rat::FreeHuntingPassive()
 	if (m_Enemy.Enemy) {
 		m_fGoalChangeTime = 0;
 		vfAddActiveMember(true);
-		bStopThinking = false;
+		m_bStopThinking = false;
 		return;
 	}
 
 	if (m_fMorale < m_fMoraleNormalValue) {
 		vfAddActiveMember(true);
-		bStopThinking = false;
+		m_bStopThinking = false;
 		return;
 	}
 	
 	if ((m_tLastSound.dwTime >= m_dwLastUpdateTime) && ((!m_tLastSound.tpEntity) || (m_tLastSound.tpEntity->g_Team() != g_Team()))) {
 		vfAddActiveMember(true);
-		bStopThinking = false;
+		m_bStopThinking = false;
 		return;
 	}
 	
@@ -339,8 +339,8 @@ void CAI_Rat::AttackFire()
 
 	SelectEnemy(m_Enemy);
 	
-	//ERatStates eState = ERatStates(dwfChooseAction(m_dwActionRefreshRate,m_fAttackSuccessProbability,g_Team(),g_Squad(),g_Group(),eCurrentState,eCurrentState,aiRatRetreat));
-	//if (eState != eCurrentState)
+	//ERatStates eState = ERatStates(dwfChooseAction(m_dwActionRefreshRate,m_fAttackSuccessProbability,g_Team(),g_Squad(),g_Group(),m_eCurrentState,m_eCurrentState,aiRatRetreat));
+	//if (eState != m_eCurrentState)
 	//	GO_TO_NEW_STATE_THIS_UPDATE(eState);
 
 	if (m_Enemy.Enemy)
@@ -391,8 +391,8 @@ void CAI_Rat::AttackRun()
 
 	SelectEnemy(m_Enemy);
 
-	ERatStates eState = ERatStates(dwfChooseAction(m_dwActionRefreshRate,m_fAttackSuccessProbability,g_Team(),g_Squad(),g_Group(),eCurrentState,eCurrentState,aiRatRetreat));
-	if (eState != eCurrentState) {
+	ERatStates eState = ERatStates(dwfChooseAction(m_dwActionRefreshRate,m_fAttackSuccessProbability,g_Team(),g_Squad(),g_Group(),m_eCurrentState,m_eCurrentState,aiRatRetreat));
+	if (eState != m_eCurrentState) {
 		GO_TO_NEW_STATE_THIS_UPDATE(eState);
 	}
 
@@ -443,7 +443,7 @@ void CAI_Rat::Retreat()
 	if (m_Enemy.Enemy && m_Enemy.Enemy->g_Alive()) {
 		vfSaveEnemy();
 		ERatStates eState = ERatStates(dwfChooseAction(m_dwActionRefreshRate,m_fAttackSuccessProbability,g_Team(),g_Squad(),g_Group(),aiRatAttackRun,aiRatAttackRun,aiRatRetreat));
-		if (eState != eCurrentState)
+		if (eState != m_eCurrentState)
 			GO_TO_NEW_STATE_THIS_UPDATE(eState);
 		m_dwLostEnemyTime = Level().timeServer();
 		

@@ -321,112 +321,112 @@ class CAI_Soldier : public CCustomMonster
 			SLieAnimations		tLie;
 		} SSoldierAnimations;
 
-		SSoldierAnimations	tSoldierAnimations;
-		CMotionDef*			m_tpCurrentGlobalAnimation;
-		CMotionDef*			m_tpCurrentTorsoAnimation;
-		CMotionDef*			m_tpCurrentLegsAnimation;
-		CMotionDef*			m_tpAnimationBeingWaited;
-		CBlend*				m_tpCurrentGlobalBlend;
-		CBlend*				m_tpCurrentTorsoBlend;
-		CBlend*				m_tpCurrentLegsBlend;
-		char				m_cGestureState;
-		//float				m_fAddAngle;
-		u32				m_dwTimeBeingWaited;
-		EMovementTypes		m_cMovementType;
-		CMotionDef*			m_tpaMovementAnimations[3][WALK_NO];
-		sound*				m_tpSoundBeingPlayed;
-		u32				m_dwLastSoundRefresh;
-		float				m_fMinRadioIinterval;
-		float				m_fMaxRadioIinterval;
-		float				m_fRadioRefreshRate;
-		u32				m_dwLastRadioTalk;
-		float				m_fDistanceWent;
-		char				m_cStep;
+		SSoldierAnimations		tSoldierAnimations;
+		CMotionDef*				m_tpCurrentGlobalAnimation;
+		CMotionDef*				m_tpCurrentTorsoAnimation;
+		CMotionDef*				m_tpCurrentLegsAnimation;
+		CMotionDef*				m_tpAnimationBeingWaited;
+		CBlend*					m_tpCurrentGlobalBlend;
+		CBlend*					m_tpCurrentTorsoBlend;
+		CBlend*					m_tpCurrentLegsBlend;
+		char					m_cGestureState;
+		//float					m_fAddAngle;
+		u32						m_dwTimeBeingWaited;
+		EMovementTypes			m_cMovementType;
+		CMotionDef*				m_tpaMovementAnimations[3][WALK_NO];
+		sound*					m_tpSoundBeingPlayed;
+		u32						m_dwLastSoundRefresh;
+		float					m_fMinRadioIinterval;
+		float					m_fMaxRadioIinterval;
+		float					m_fRadioRefreshRate;
+		u32						m_dwLastRadioTalk;
+		float					m_fDistanceWent;
+		char					m_cStep;
 
 		// head turns
 		static void __stdcall HeadSpinCallback(CBoneInstance*);
 		static void	__stdcall LegsSpinCallback(CBoneInstance*);
 		
 		// mea
-		sound			sndHit[SND_HIT_COUNT];
-		sound			sndDie[SND_DIE_COUNT];
-		sound			sndRadio[SND_RADIO_COUNT];
-		sound			sndSteps[SND_STEP_COUNT];
+		sound					sndHit[SND_HIT_COUNT];
+		sound					sndDie[SND_DIE_COUNT];
+		sound					sndRadio[SND_RADIO_COUNT];
+		sound					sndSteps[SND_STEP_COUNT];
 		
 		// events
-		EVENT			m_tpEventSay;
-		EVENT			m_tpEventAssignPath;
+		EVENT					m_tpEventSay;
+		EVENT					m_tpEventAssignPath;
 		
 		// ai
-		ESoldierStates	eCurrentState;
-		ESoldierStates	m_ePreviousState;
-		bool			bStopThinking;
-		u32			m_dwLastUpdate;
-		u32			m_dwCurrentUpdate;
-		u32			m_dwUpdateCount;
+		ESoldierStates			m_eCurrentState;
+		ESoldierStates			m_ePreviousState;
+		bool					m_bStopThinking;
+		u32						m_dwLastUpdate;
+		u32						m_dwCurrentUpdate;
+		u32						m_dwUpdateCount;
 //		float			m_fAddAngle;
 		
 		// action data
-		bool			m_bJumping;
+		bool					m_bJumping;
 		
 		// hit data
-		u32			dwHitTime;
-		Fvector			tHitDir;
-		Fvector			tHitPosition;
+		u32						dwHitTime;
+		Fvector					tHitDir;
+		Fvector					tHitPosition;
 		
 		// visual data
-		objSET			tpaVisibleObjects;
+		objSET					tpaVisibleObjects;
 		
 		// saved enemy
-		SEnemySelected		Enemy;
-		CEntity*			tSavedEnemy;
-		Fvector				tSavedEnemyPosition;
-		u32				dwLostEnemyTime;
-		NodeCompressed*		tpSavedEnemyNode;
-		u32				dwSavedEnemyNodeID;
-		bool				bBuildPathToLostEnemy;
-		int					m_iCurrentSuspiciousNodeIndex;
-		SuspiciousPoints	m_tpaSuspiciousPoints;
-		SuspiciousForces	m_tpaSuspiciousForces;
-		vector<u32>		m_tpaNodeStack;
+		SEnemySelected			Enemy;
+		CEntity*				tSavedEnemy;
+		Fvector					tSavedEnemyPosition;
+		u32						dwLostEnemyTime;
+		NodeCompressed*			tpSavedEnemyNode;
+		u32						dwSavedEnemyNodeID;
+		bool					bBuildPathToLostEnemy;
+		int						m_iCurrentSuspiciousNodeIndex;
+		SuspiciousPoints		m_tpaSuspiciousPoints;
+		SuspiciousForces		m_tpaSuspiciousForces;
+		vector<u32>				m_tpaNodeStack;
 
 		
 		// performance data
-		u32			m_dwLastRangeSearch;
-		u32			m_dwLastSuccessfullSearch;
+		u32						m_dwLastRangeSearch;
+		u32						m_dwLastSuccessfullSearch;
 		
 		// characteristics
-		float			m_fAggressiveness;
-		float			m_fTimorousness;
+		float					m_fAggressiveness;
+		float					m_fTimorousness;
 		
 		// visibility constants
-		u32			m_dwMovementIdleTime;
-		float			m_fMaxInvisibleSpeed;
-		float			m_fMaxViewableSpeed;
-		float			m_fMovementSpeedWeight;
-		float			m_fDistanceWeight;
-		float			m_fSpeedWeight;
-		float			m_fCrouchVisibilityMultiplier;
-		float			m_fLieVisibilityMultiplier;
-		float			m_fVisibilityThreshold;
-		float			m_fLateralMultiplier;
-		float			m_fShadowWeight;
+		u32						m_dwMovementIdleTime;
+		float					m_fMaxInvisibleSpeed;
+		float					m_fMaxViewableSpeed;
+		float					m_fMovementSpeedWeight;
+		float					m_fDistanceWeight;
+		float					m_fSpeedWeight;
+		float					m_fCrouchVisibilityMultiplier;
+		float					m_fLieVisibilityMultiplier;
+		float					m_fVisibilityThreshold;
+		float					m_fLateralMultiplier;
+		float					m_fShadowWeight;
 		
 		// firing
-		bool			m_bFiring;
-		u32			m_dwStartFireAmmo;
-		u32			m_dwNoFireTime;
-		float			m_fAddWeaponAngle;
+		bool					m_bFiring;
+		u32						m_dwStartFireAmmo;
+		u32						m_dwNoFireTime;
+		float					m_fAddWeaponAngle;
 		
 		// fire  constants
-		u32			m_dwFireRandomMin;
-		u32			m_dwFireRandomMax;
-		u32			m_dwNoFireTimeMin;
-		u32			m_dwNoFireTimeMax;
-		float			m_fMinMissDistance;
-		float			m_fMinMissFactor;
-		float			m_fMaxMissDistance;
-		float			m_fMaxMissFactor;
+		u32						m_dwFireRandomMin;
+		u32						m_dwFireRandomMax;
+		u32						m_dwNoFireTimeMin;
+		u32						m_dwNoFireTimeMax;
+		float					m_fMinMissDistance;
+		float					m_fMinMissFactor;
+		float					m_fMaxMissDistance;
+		float					m_fMaxMissFactor;
 
 		// patrol structures
 		bool					m_bLessCoverLook;
@@ -434,7 +434,7 @@ class CAI_Soldier : public CCustomMonster
 		float					m_fMaxPatrolDistance;
 
 		// finite state machine
-		stack<ESoldierStates>	tStateStack;
+		stack<ESoldierStates>	m_tStateStack;
 		svector<SSoldierStates,MAX_STATE_LIST_SIZE>	tStateList;
 		bool					m_bStateChanged;
 		

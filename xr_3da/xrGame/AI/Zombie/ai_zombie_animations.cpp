@@ -122,7 +122,7 @@ void CAI_Zombie::SelectAnimation(const Fvector& _view, const Fvector& _move, flo
 		}
 	}
 	else
-		if (eCurrentState == aiZombieResurrect) {
+		if (m_eCurrentState == aiZombieResurrect) {
 			for (int i=0; i<3; i++)
 				if (m_tZombieAnimations.tNormal.tGlobal.tpaStandUp[i] == m_tpCurrentGlobalAnimation) {
 					tpGlobalAnimation = m_tpCurrentGlobalAnimation;
@@ -155,7 +155,7 @@ void CAI_Zombie::SelectAnimation(const Fvector& _view, const Fvector& _move, flo
 					tpGlobalAnimation = m_tZombieAnimations.tNormal.tGlobal.tpaAttack[::Random.randI(0,3)];
 			}
 			else
-				if (eCurrentState == aiZombieTurn)
+				if (m_eCurrentState == aiZombieTurn)
 					if (_abs(r_torso_target.yaw - r_torso_current.yaw) <= PI)
 						if (r_torso_target.yaw - r_torso_current.yaw >= 0)
 							tpGlobalAnimation = m_tZombieAnimations.tNormal.tGlobal.tpTurnRight;

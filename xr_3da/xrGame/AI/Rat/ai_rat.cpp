@@ -57,7 +57,7 @@ CAI_Rat::~CAI_Rat()
 void CAI_Rat::Die()
 {
 	inherited::Death( );
-	eCurrentState = aiRatDie;
+	m_eCurrentState = aiRatDie;
 	
 	Fvector	dir;
 	AI_Path.Direction(dir);
@@ -71,7 +71,7 @@ void CAI_Rat::Die()
 	vfRemoveActiveMember();
 	vfRemoveStandingMember();
 	Group.m_dwAliveCount--;
-	eCurrentState = aiRatDie;
+	m_eCurrentState = aiRatDie;
 	m_dwDeathTime = Level().timeServer();
 	CreateSkeleton();
 	
@@ -179,7 +179,7 @@ BOOL CAI_Rat::net_Spawn	(LPVOID DC)
 	m_tOldPosition.set				(vPosition);
 	m_tSpawnPosition.set			(Level().get_squad(g_Team(),g_Squad()).Leader->Position());
 	m_tSafeSpawnPosition.set		(m_tSpawnPosition);
-	tStateStack.push				(eCurrentState = aiRatFreeHuntingActive);
+	m_tStateStack.push				(m_eCurrentState = aiRatFreeHuntingActive);
 	vfAddActiveMember				(true);
 	m_bStateChanged					= true;
 

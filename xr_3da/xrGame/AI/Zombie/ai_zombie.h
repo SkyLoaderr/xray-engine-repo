@@ -83,10 +83,10 @@ class CAI_Zombie : public CCustomMonster
 		//////////////////////////
 		
 		// FSM
-		stack<EZombieStates>tStateStack;
-		EZombieStates		eCurrentState;
+		stack<EZombieStates>m_tStateStack;
+		EZombieStates		m_eCurrentState;
 		EZombieStates		m_ePreviousState;
-		bool				bStopThinking;
+		bool				m_bStopThinking;
 		bool				m_bStateChanged;
 
 		// ANIMATIONS
@@ -243,7 +243,7 @@ class CAI_Zombie : public CCustomMonster
 			CGroup &Group = Level().Teams[g_Team()].Squads[g_Squad()].Groups[g_Group()];
 			if (!m_bActive && (bForceActive || (Group.m_dwAliveCount*m_dwActiveCountPercent/100 >= Group.m_dwActiveCount))) {
 				m_bActive = true;
-				eCurrentState = aiZombieFreeHuntingActive;
+				m_eCurrentState = aiZombieFreeHuntingActive;
 				Group.m_dwActiveCount++;
 				shedule_Min	= m_dwActiveScheduleMin;
 				shedule_Max	= m_dwActiveScheduleMax;
@@ -258,7 +258,7 @@ class CAI_Zombie : public CCustomMonster
 				R_ASSERT(Group.m_dwActiveCount > 0);
 				Group.m_dwActiveCount--;
 				m_bActive = false;
-				eCurrentState = aiZombieFreeHuntingPassive;
+				m_eCurrentState = aiZombieFreeHuntingPassive;
 				shedule_Min	= m_dwPassiveScheduleMin;
 				shedule_Max	= m_dwPassiveScheduleMax;
 			}

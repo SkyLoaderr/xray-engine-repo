@@ -31,7 +31,7 @@ class CBaseFunction;
 		#define WRITE_TO_LOG(S) {\
 			Msg("%s,%s,%d,p[%.2f,%.2f,%.2f],%.2f,h[%.2f,%.2f],t[%.2f,%.2f]",cName(),S,Level().timeServer(),vPosition.x,vPosition.y,vPosition.z,m_fCurSpeed,r_current.yaw,r_target.yaw,r_torso_current.yaw,r_torso_target.yaw);\
 			vfUpdateDynamicObjects();\
-			bStopThinking = true;\
+			m_bStopThinking = true;\
 		}
 		#define WRITE_QUERY_TO_LOG(S) ;//Msg(S);
 			//	Msg("%d",Level().Teams[g_Team()].Squads[g_Squad()].Groups[g_Group()].m_tpaSuspiciousNodes.size());\
@@ -40,23 +40,23 @@ class CBaseFunction;
 		#define WRITE_QUERY_TO_LOG(S)
 		#define WRITE_TO_LOG(S) {\
 			vfUpdateDynamicObjects();\
-			bStopThinking = true;\
+			m_bStopThinking = true;\
 		}
 	#endif
 
 	#define GO_TO_NEW_STATE(a) {\
-		tStateStack.top() = eCurrentState = a;\
+		m_tStateStack.top() = m_eCurrentState = a;\
 		return;\
 	}
 
 	#define GO_TO_PREV_STATE {\
-		tStateStack.pop();\
-		eCurrentState = tStateStack.top();\
+		m_tStateStack.pop();\
+		m_eCurrentState = m_tStateStack.top();\
 		return;\
 	}
 
 	#define SWITCH_TO_NEW_STATE(a) {\
-		tStateStack.push(a);\
+		m_tStateStack.push(a);\
 		GO_TO_NEW_STATE(a);\
 	}
 
@@ -77,7 +77,7 @@ class CBaseFunction;
 	
 	//////////////////////////////////////////////////////////////////////////
 	#define SWITCH_TO_NEW_STATE_AND_UPDATE(a) {\
-		tStateStack.push(a);\
+		m_tStateStack.push(a);\
 		vfAddStateToList(a);\
 		GO_TO_NEW_STATE(a);\
 	}
@@ -88,17 +88,17 @@ class CBaseFunction;
 	}
 	//////////////////////////////////////////////////////////////////////////
 	#define GO_TO_NEW_STATE_THIS_UPDATE(a) {\
-		bStopThinking = false;\
+		m_bStopThinking = false;\
 		GO_TO_NEW_STATE(a);\
 	}
 
 	#define GO_TO_PREV_STATE_THIS_UPDATE {\
-		bStopThinking = false;\
+		m_bStopThinking = false;\
 		GO_TO_PREV_STATE;\
 	}
 
 	#define SWITCH_TO_NEW_STATE_THIS_UPDATE(a) {\
-		tStateStack.push(eCurrentState = a);\
+		m_tStateStack.push(m_eCurrentState = a);\
 		GO_TO_NEW_STATE_THIS_UPDATE(a);\
 	}
 
@@ -118,7 +118,7 @@ class CBaseFunction;
 	
 	//////////////////////////////////////////////////////////////////////////
 	#define SWITCH_TO_NEW_STATE_THIS_UPDATE_AND_UPDATE(a) {\
-		tStateStack.push(a);\
+		m_tStateStack.push(a);\
 		vfAddStateToList(a);\
 		GO_TO_NEW_STATE_THIS_UPDATE(a);\
 	}

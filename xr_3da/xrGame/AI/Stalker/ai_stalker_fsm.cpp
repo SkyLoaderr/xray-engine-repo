@@ -8,9 +8,10 @@
 
 #include "stdafx.h"
 #include "ai_stalker.h"
+#include "..\\ai_monsters_misc.h"
 
 #undef	WRITE_TO_LOG
-//#define WRITE_TO_LOG(s) bStopThinking = true;
+//#define WRITE_TO_LOG(s) m_bStopThinking = true;
 	//Msg("Monster %s : \n* State : %s\n* Time delta : %7.3f\n* Global time : %7.3f",cName(),s,m_fTimeUpdateDelta,float(Level().timeServer())/1000.f);
 #define WRITE_TO_LOG(s) {\
 	m_bStopThinking = true;\
@@ -18,7 +19,7 @@
 
 #ifndef DEBUG
 	#undef	WRITE_TO_LOG
-	#define WRITE_TO_LOG(s) bStopThinking = true;
+	#define WRITE_TO_LOG(s) m_bStopThinking = true;
 #endif
 
 void CAI_Stalker::Think()
@@ -87,9 +88,20 @@ void CAI_Stalker::WaitForTime()
 void CAI_Stalker::Recharge()
 {
 	WRITE_TO_LOG("Recharge");
+	VERIFY(Weapons->ActiveWeapon());
+	Weapons->ActiveWeapon()->Reload();
+	CHECK_IF_GO_TO_PREV_STATE(Weapons->ActiveWeapon()->GetAmmoCurrent());
 }
 
 void CAI_Stalker::LookingOver()
 {
 	WRITE_TO_LOG("Looking over");
+	
+	if (Weapons->ActiveWeapon())
+		Weapons->ActiveWeapon()->FireEnd();
+	if (!::Random.randI(100))
+		if (Weapons->ActiveWeapon()) {
+			CHECK_IF_SWITCH_TO_NEW_STATE(!Weapons->ActiveWeapon()->GetAmmoCurrent(),eStalkerStateRecharge);
+			Weapons->ActiveWeapon()->FireStart();
+		}
 }

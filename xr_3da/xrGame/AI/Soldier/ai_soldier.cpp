@@ -84,7 +84,7 @@ void CAI_Soldier::Death()
 	inherited::Death( );
 	CGroup &Group = Level().Teams[g_Team()].Squads[g_Squad()].Groups[g_Group()];
 	vfSetFire(false,Group);
-	eCurrentState = aiSoldierDie;
+	m_eCurrentState = aiSoldierDie;
 	
 	// removing from group
 	//Level().Teams[g_Team()].Squads[g_Squad()].Groups[g_Group()].Member_Remove(this);
@@ -171,8 +171,8 @@ BOOL CAI_Soldier::net_Spawn	(LPVOID DC)
 	if (!inherited::net_Spawn(DC))	return FALSE;
 
 	//tSavedEnemyPosition = vPosition;
-	tStateStack.push(eCurrentState = aiSoldierLookingOver);
-	vfAddStateToList(eCurrentState);
+	m_tStateStack.push(m_eCurrentState = aiSoldierLookingOver);
+	vfAddStateToList(m_eCurrentState);
 	return TRUE;
 }
 
@@ -192,7 +192,7 @@ void CAI_Soldier::Exec_Movement	( float dt )
 	}
 	AI_Path.Calculate(this,vPosition,vPosition,m_fCurSpeed,dt);
 	/**
-	if (eCurrentState != aiSoldierJumping)
+	if (m_eCurrentState != aiSoldierJumping)
 		AI_Path.Calculate(this,vPosition,vPosition,m_fCurSpeed,dt);
 	else {
 		UpdateTransform();

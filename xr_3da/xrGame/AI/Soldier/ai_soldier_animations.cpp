@@ -260,7 +260,7 @@ void CAI_Soldier::SelectAnimation(const Fvector& _view, const Fvector& _move, fl
 		}
 	}
 		/**/
-		switch (eCurrentState) {
+		switch (m_eCurrentState) {
 			case aiSoldierWaitForAnimation : {
 				tpGlobalAnimation = m_tpAnimationBeingWaited;
 				tpTorsoAnimation = tpLegsAnimation = 0;
@@ -437,7 +437,7 @@ void CAI_Soldier::SelectAnimation(const Fvector& _view, const Fvector& _move, fl
 									}
 								}
 						else
-//							switch (eCurrentState) {
+//							switch (m_eCurrentState) {
 //								/**
 //								case aiSoldierHurtAloneDefend : {
 //									switch (m_cBodyState) {
@@ -460,7 +460,7 @@ void CAI_Soldier::SelectAnimation(const Fvector& _view, const Fvector& _move, fl
 //								/**/
 //								default : {
 //									/**
-//									if ((eCurrentState == aiSoldierHurtAloneDefend) && (!AI_Path.TravelPath.size() || (AI_Path.TravelPath.size() - 1 > AI_Path.TravelStart))) {
+//									if ((m_eCurrentState == aiSoldierHurtAloneDefend) && (!AI_Path.TravelPath.size() || (AI_Path.TravelPath.size() - 1 > AI_Path.TravelStart))) {
 //										switch (m_cBodyState) {
 //											case BODY_STATE_STAND : {
 //												tpGlobalAnimation = tSoldierAnimations.tNormal.tGlobal.tpAim;
@@ -544,7 +544,7 @@ void CAI_Soldier::SelectAnimation(const Fvector& _view, const Fvector& _move, fl
 								}
 						else
 							/**
-							if ((eCurrentState == aiSoldierHurtAloneDefend) && (!AI_Path.TravelPath.size() || (AI_Path.TravelPath.size() - 1 > AI_Path.TravelStart))) {
+							if ((m_eCurrentState == aiSoldierHurtAloneDefend) && (!AI_Path.TravelPath.size() || (AI_Path.TravelPath.size() - 1 > AI_Path.TravelStart))) {
 								switch (m_cBodyState) {
 									case BODY_STATE_STAND : {
 										tpGlobalAnimation = tSoldierAnimations.tNormal.tGlobal.tpAim;
@@ -595,7 +595,7 @@ void CAI_Soldier::SelectAnimation(const Fvector& _view, const Fvector& _move, fl
 		//Msg("restarting animation..."); 
 		m_tpCurrentGlobalAnimation = tpGlobalAnimation;
 		if (tpGlobalAnimation) {
-			if (eCurrentState == aiSoldierWaitForAnimation)
+			if (m_eCurrentState == aiSoldierWaitForAnimation)
 				m_tpCurrentGlobalBlend = tpVisualObject->PlayCycle(tpGlobalAnimation,TRUE,vfPlayCallBack,this);
 			else
 				m_tpCurrentGlobalBlend = tpVisualObject->PlayCycle(tpGlobalAnimation);

@@ -187,7 +187,7 @@ void CAI_Dog::vfUpdateMorale()
 		m_dwMoraleLastUpdateTime = dwCurTime;
 		float fDistance = vPosition.distance_to(m_tSafeSpawnPosition);
 		fDistance = fDistance < 1.f ? 1.f : fDistance;
-		switch (eCurrentState) {
+		switch (m_eCurrentState) {
 			case aiDogFreeHuntingActive :
 			case aiDogFreeHuntingPassive : {
 				if (m_fMorale < m_fMoraleNormalValue) {

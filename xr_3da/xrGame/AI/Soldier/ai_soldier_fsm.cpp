@@ -1088,8 +1088,8 @@ void CAI_Soldier::Die()
 	AI_Path.Direction(dir);
 	SelectAnimation(clTransform.k,dir,AI_Path.fSpeed);
 
-	//while (tStateStack.size())
-	//	tStateStack.pop();
+	//while (m_tStateStack.size())
+	//	m_tStateStack.pop();
 
 	vfAddStateToList(aiSoldierDie);
 	
@@ -1106,10 +1106,10 @@ void CAI_Soldier::OnTurnOver()
 	CHECK_IF_SWITCH_TO_NEW_STATE_THIS_UPDATE_AND_UPDATE(bfCheckForDanger(),aiSoldierFight)
 
 	if (getAI().bfTooSmallAngle(r_torso_target.yaw,r_torso_current.yaw,PI_DIV_6)) {
-		ESoldierStates eDummy = tStateStack.top();
-		tStateStack.pop();
-		m_ePreviousState = tStateStack.top();
-		tStateStack.push(eDummy);
+		ESoldierStates eDummy = m_tStateStack.top();
+		m_tStateStack.pop();
+		m_ePreviousState = m_tStateStack.top();
+		m_tStateStack.push(eDummy);
 		GO_TO_PREV_STATE_THIS_UPDATE
 	}
 
@@ -1217,10 +1217,10 @@ void CAI_Soldier::OnPatrolReturn()
 
 //	if (getAI().bfInsideNode(AI_Node,m_tpPath->tpaVectors[iPatrolPathIndex][m_iCurrentPatrolIndex],getAI().Header().size*.5f) || ((m_tpPath->tpaVectors[iPatrolPathIndex][m_iCurrentPatrolIndex].distance_to(vPosition) < 5.f) && (AI_Path.fSpeed < EPS_L))) {
 //		if (m_tpPath->tpaVectors[iPatrolPathIndex][m_iCurrentPatrolIndex].distance_to(vPosition) < EPS_L) {
-//			ESoldierStates eDummy = tStateStack.top();
-//			tStateStack.pop();
-//			m_ePreviousState = tStateStack.top();
-//			tStateStack.push(eDummy);
+//			ESoldierStates eDummy = m_tStateStack.top();
+//			m_tStateStack.pop();
+//			m_ePreviousState = m_tStateStack.top();
+//			m_tStateStack.push(eDummy);
 //			GO_TO_PREV_STATE_THIS_UPDATE
 //		}
 //		if (AI_Path.TravelPath.empty() || (AI_Path.TravelPath[AI_Path.TravelPath.size() - 1].P.distance_to(m_tpPath->tpaVectors[iPatrolPathIndex][m_iCurrentPatrolIndex]) > EPS_L)) {
@@ -1484,7 +1484,7 @@ void CAI_Soldier::OnPatrol()
 		mk_rotation(tTemp,tRotation);
 		r_torso_target.yaw = tRotation.yaw;
 		if (getAI().bfTooSmallAngle(r_torso_current.yaw,tRotation.yaw,EPS_L)) {
-			tStateStack.push(aiSoldierPatrolWait);
+			m_tStateStack.push(aiSoldierPatrolWait);
 			vfAddStateToList(aiSoldierPatrolWait);
 			SWITCH_TO_NEW_STATE(aiSoldierTurnOver);
 		}
@@ -1508,7 +1508,7 @@ void CAI_Soldier::OnPatrolWait()
 		for (int i=0; i<(int)Group.Members.size(); i++)
 			if (Group.Members[i]->g_Health() > 0) {
 				CAI_Soldier *tpSoldier = dynamic_cast<CAI_Soldier *>(Group.Members[i]);
-				if (tpSoldier && (tpSoldier->eCurrentState != aiSoldierPatrolWait)) {
+				if (tpSoldier && (tpSoldier->m_eCurrentState != aiSoldierPatrolWait)) {
 					bOk = false;
 					break;
 				}
@@ -1518,7 +1518,7 @@ void CAI_Soldier::OnPatrolWait()
 				if (Group.Members[i]->g_Health() > 0) {
 					CAI_Soldier *tpSoldier = dynamic_cast<CAI_Soldier *>(Group.Members[i]);
 					if (tpSoldier)
-						tpSoldier->vfAddStateToList(tpSoldier->tStateStack.top() = tpSoldier->eCurrentState = aiSoldierPatrolRoute);
+						tpSoldier->vfAddStateToList(tpSoldier->m_tStateStack.top() = tpSoldier->m_eCurrentState = aiSoldierPatrolRoute);
 				}
 			vfAddStateToList(aiSoldierPatrolRoute);
 			GO_TO_NEW_STATE_THIS_UPDATE(aiSoldierPatrolRoute);
@@ -1602,10 +1602,10 @@ void CAI_Soldier::Think()
 	m_dwUpdateCount++;
 	m_dwLastUpdate = m_dwCurrentUpdate;
 	m_dwCurrentUpdate = Level().timeServer();
-	bStopThinking = false;
+	m_bStopThinking = false;
 	do {
-		m_ePreviousState = eCurrentState;
-		switch(eCurrentState) {
+		m_ePreviousState = m_eCurrentState;
+		switch(m_eCurrentState) {
 			case aiSoldierDie : {
 				Die();
 				break;
@@ -1923,7 +1923,7 @@ void CAI_Soldier::Think()
 				break;
 			}
 		}
-		m_bStateChanged = m_ePreviousState != eCurrentState;
+		m_bStateChanged = m_ePreviousState != m_eCurrentState;
 	}
-	while (!bStopThinking);
+	while (!m_bStopThinking);
 }

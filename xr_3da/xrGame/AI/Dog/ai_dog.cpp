@@ -54,7 +54,7 @@ CAI_Dog::~CAI_Dog()
 void CAI_Dog::Die()
 {
 	inherited::Death( );
-	eCurrentState = aiDogDie;
+	m_eCurrentState = aiDogDie;
 	
 	Fvector	dir;
 	AI_Path.Direction(dir);
@@ -68,7 +68,7 @@ void CAI_Dog::Die()
 	vfRemoveActiveMember();
 	vfRemoveStandingMember();
 	Group.m_dwAliveCount--;
-	eCurrentState = aiDogDie;
+	m_eCurrentState = aiDogDie;
 	m_dwDeathTime = Level().timeServer();
 }
 
@@ -173,7 +173,7 @@ BOOL CAI_Dog::net_Spawn	(LPVOID DC)
 	m_tOldPosition.set(vPosition);
 	m_tSpawnPosition.set(Level().get_squad(g_Team(),g_Squad()).Leader->Position());
 	m_tSafeSpawnPosition.set(m_tSpawnPosition);
-	tStateStack.push(eCurrentState = aiDogFreeHuntingActive);
+	m_tStateStack.push(m_eCurrentState = aiDogFreeHuntingActive);
 	vfAddActiveMember(true);
 	m_bStateChanged = true;
 

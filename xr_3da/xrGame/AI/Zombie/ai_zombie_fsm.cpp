@@ -11,7 +11,7 @@
 #include "..\\ai_monsters_misc.h"
 
 #undef WRITE_TO_LOG
-#define WRITE_TO_LOG(s) bStopThinking = true;
+#define WRITE_TO_LOG(s) m_bStopThinking = true;
 /**
 #define WRITE_TO_LOG(s) {\
 	Msg("Monster %s : \n* State : %s\n* Time delta : %7.3f\n* Global time : %7.3f",cName(),s,m_fTimeUpdateDelta,float(Level().timeServer())/1000.f);\
@@ -30,7 +30,7 @@
 				Msg("*   %s (distance %7.2fm)",m_tpaVisibleObjects[i]->cName(),vPosition.distance_to(m_tpaVisibleObjects[i]->Position()));\
 		}\
 	}\
-	bStopThinking = true;\
+	m_bStopThinking = true;\
 }
 /**/
 
@@ -41,10 +41,10 @@
 
 void CAI_Zombie::Think()
 {
-	bStopThinking = false;
+	m_bStopThinking = false;
 	do {
-		m_ePreviousState = eCurrentState;
-		switch(eCurrentState) {
+		m_ePreviousState = m_eCurrentState;
+		switch(m_eCurrentState) {
 			case aiZombieDie : {
 				Death();
 				break;
@@ -82,9 +82,9 @@ void CAI_Zombie::Think()
 				break;
 			}
 		}
-		m_bStateChanged = m_ePreviousState != eCurrentState;
+		m_bStateChanged = m_ePreviousState != m_eCurrentState;
 	}
-	while (!bStopThinking);
+	while (!m_bStopThinking);
 //	if (m_fSpeed > EPS_L) {
 //		AI_Path.TravelPath.resize(3);
 //		AI_Path.TravelPath[0].floating = AI_Path.TravelPath[1].floating = AI_Path.TravelPath[2].floating = FALSE;
@@ -106,7 +106,7 @@ void CAI_Zombie::Think()
 void CAI_Zombie::Death()
 {
 	WRITE_TO_LOG("Dying...");
-	bStopThinking = true;
+	m_bStopThinking = true;
 
 	CGroup &Group = Level().Teams[g_Team()].Squads[g_Squad()].Groups[g_Group()];
 	vfSetFire(false,Group);
@@ -163,7 +163,7 @@ void CAI_Zombie::FreeHuntingActive()
 {
 	WRITE_TO_LOG("Free hunting active");
 
-	bStopThinking = true;
+	m_bStopThinking = true;
 	
 	if (!g_Alive()) {
 		m_fSpeed = m_fSafeSpeed = 0;
@@ -244,11 +244,11 @@ void CAI_Zombie::FreeHuntingPassive()
 {
 	WRITE_TO_LOG("Free hunting passive");
 
-	bStopThinking = true;
+	m_bStopThinking = true;
 	
 	if (!g_Alive()) {
 		vfAddActiveMember(true);
-		bStopThinking = false;
+		m_bStopThinking = false;
 		return;
 	}
 
@@ -257,13 +257,13 @@ void CAI_Zombie::FreeHuntingPassive()
 	if (m_Enemy.Enemy) {
 		m_fGoalChangeTime = 0;
 		vfAddActiveMember(true);
-		bStopThinking = false;
+		m_bStopThinking = false;
 		return;
 	}
 
 	if ((m_tLastSound.dwTime >= m_dwLastUpdateTime) && (m_tLastSound.tpEntity) && (m_tLastSound.tpEntity->g_Team() != g_Team())) {
 		vfAddActiveMember(true);
-		bStopThinking = false;
+		m_bStopThinking = false;
 		return;
 	}
 	
@@ -324,7 +324,7 @@ void CAI_Zombie::AttackFire()
 void CAI_Zombie::AttackRun()
 {
 	WRITE_TO_LOG("Attack enemy");
-	bStopThinking = true;
+	m_bStopThinking = true;
 
 	if (!g_Alive()) {
 		m_fSpeed = m_fSafeSpeed = 0;
@@ -442,7 +442,7 @@ void CAI_Zombie::ReturnHome()
 {
 	WRITE_TO_LOG("Returning home");
 
-	bStopThinking = true;
+	m_bStopThinking = true;
 	
 	if (!g_Alive()) {
 		m_fSpeed = m_fSafeSpeed = 0;
@@ -480,7 +480,7 @@ void CAI_Zombie::Resurrect()
 {
 	WRITE_TO_LOG("Resurrecting");
 
-	bStopThinking = true;
+	m_bStopThinking = true;
 
 	if (!g_Alive())
 		return;

@@ -74,10 +74,10 @@ class CAI_Dog : public CCustomMonster
 		//////////////////////////
 		
 		// FSM
-		stack<EDogStates>	tStateStack;
-		EDogStates			eCurrentState;
+		stack<EDogStates>	m_tStateStack;
+		EDogStates			m_eCurrentState;
 		EDogStates			m_ePreviousState;
-		bool				bStopThinking;
+		bool				m_bStopThinking;
 		bool				m_bStateChanged;
 
 		// ANIMATIONS
@@ -249,7 +249,7 @@ class CAI_Dog : public CCustomMonster
 			CGroup &Group = Level().Teams[g_Team()].Squads[g_Squad()].Groups[g_Group()];
 			if (!m_bActive && (bForceActive || (Group.m_dwAliveCount*m_dwActiveCountPercent/100 >= Group.m_dwActiveCount))) {
 				m_bActive = true;
-				eCurrentState = aiDogFreeHuntingActive;
+				m_eCurrentState = aiDogFreeHuntingActive;
 				Group.m_dwActiveCount++;
 				shedule_Min	= m_dwActiveScheduleMin;
 				shedule_Max	= m_dwActiveScheduleMax;
@@ -265,7 +265,7 @@ class CAI_Dog : public CCustomMonster
 				R_ASSERT(Group.m_dwActiveCount > 0);
 				Group.m_dwActiveCount--;
 				m_bActive = false;
-				eCurrentState = aiDogFreeHuntingPassive;
+				m_eCurrentState = aiDogFreeHuntingPassive;
 				shedule_Min	= m_dwPassiveScheduleMin;
 				shedule_Max	= m_dwPassiveScheduleMax;
 			}

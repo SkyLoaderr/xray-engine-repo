@@ -79,7 +79,39 @@ void CAI_Stalker::SelectAnimation(const Fvector& _view, const Fvector& _move, fl
 	}
 	else {
 		if (!tpTorsoAnimation)
-			tpTorsoAnimation = m_tAnims.A[1]->m_tTorso.A[0]->A[0]->A[0];
+			if (Weapons->ActiveWeapon())
+				if (m_eCurrentState == eStalkerStateRecharge) {
+					switch (Weapons->ActiveWeaponID()) {
+						case 0 : {
+							tpTorsoAnimation = m_tAnims.A[1]->m_tTorso.A[1]->A[5]->A[0];
+							break;
+						}
+						case 1 : {
+							tpTorsoAnimation = m_tAnims.A[1]->m_tTorso.A[3]->A[5]->A[0];
+							break;
+						}
+						case 2 : {
+							tpTorsoAnimation = m_tAnims.A[1]->m_tTorso.A[2]->A[5]->A[0];
+							break;
+						}
+					}
+				}
+				else {
+					switch (Weapons->ActiveWeaponID()) {
+						case 0 : {
+							tpTorsoAnimation = m_tAnims.A[1]->m_tTorso.A[1]->A[0]->A[0];
+							break;
+						}
+						case 1 : {
+							tpTorsoAnimation = m_tAnims.A[1]->m_tTorso.A[3]->A[0]->A[0];
+							break;
+						}
+						case 2 : {
+							tpTorsoAnimation = m_tAnims.A[1]->m_tTorso.A[2]->A[0]->A[0];
+							break;
+						}
+					}
+				}
 
 		if (!tpLegsAnimation)
 			tpLegsAnimation = m_tAnims.A[1]->m_tInPlace.A[0];
@@ -124,7 +156,7 @@ void CAI_Stalker::SelectAnimation(const Fvector& _view, const Fvector& _move, fl
 //		}
 //	}
 //	else
-//		switch (eCurrentState) {
+//		switch (m_eCurrentState) {
 //			case aiStalkerWaitForAnimation : {
 //				tpGlobalAnimation = m_tpAnimationBeingWaited;
 //				tpTorsoAnimation = tpLegsAnimation = 0;
@@ -301,7 +333,7 @@ void CAI_Stalker::SelectAnimation(const Fvector& _view, const Fvector& _move, fl
 //		//Msg("restarting animation..."); 
 //		m_tpCurrentGlobalAnimation = tpGlobalAnimation;
 //		if (tpGlobalAnimation) {
-//			if (eCurrentState == aiStalkerWaitForAnimation)
+//			if (m_eCurrentState == aiStalkerWaitForAnimation)
 //				m_tpCurrentGlobalBlend = tpVisualObject->PlayCycle(tpGlobalAnimation,TRUE,vfPlayCallBack,this);
 //			else
 //				m_tpCurrentGlobalBlend = tpVisualObject->PlayCycle(tpGlobalAnimation);
