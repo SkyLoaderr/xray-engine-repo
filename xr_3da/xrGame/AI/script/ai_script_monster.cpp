@@ -238,7 +238,7 @@ void CScriptMonster::ProcessScripts()
 	while (!m_tpActionQueue.empty()) {
 		l_tpEntityAction= m_tpActionQueue.front();
 		R_ASSERT	(l_tpEntityAction);
-		Msg			("%6d Processing action : %s",Level().timeServer(),*l_tpEntityAction->m_tAnimationAction.m_caAnimationToPlay);
+//		Msg			("%6d Processing action : %s",Level().timeServer(),*l_tpEntityAction->m_tAnimationAction.m_caAnimationToPlay);
 		
 		if (m_tpCurrentEntityAction != l_tpEntityAction)
 			l_tpEntityAction->initialize	();
@@ -248,7 +248,7 @@ void CScriptMonster::ProcessScripts()
 		if (!l_tpEntityAction->CheckIfActionCompleted())
 			break;
 
-		Msg			("%6d Action completed : %s",Level().timeServer(),*l_tpEntityAction->m_tAnimationAction.m_caAnimationToPlay);
+//		Msg			("%6d Action completed : %s",Level().timeServer(),*l_tpEntityAction->m_tAnimationAction.m_caAnimationToPlay);
 
 		vfFinishAction(l_tpEntityAction);
 
