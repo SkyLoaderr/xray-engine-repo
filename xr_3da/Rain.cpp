@@ -94,9 +94,9 @@ BOOL CEffect_Rain::RayPick(const Fvector& s, const Fvector& d, float& range)
 #else
 	Collide::ray_query	RQ;
 	CObject* E 			= g_pGameLevel->CurrentViewEntity();
-	E->setEnabled		(FALSE);
+	if (E)				E->setEnabled		(FALSE);
 	bRes 				= g_pGameLevel->ObjectSpace.RayPick(s,d,range,RQ);	
-	E->setEnabled		(TRUE);
+	if (E)				E->setEnabled		(TRUE);
     if (bRes) range 	= RQ.range;
 #endif
     return bRes;
