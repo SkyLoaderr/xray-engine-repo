@@ -78,10 +78,6 @@ public:
 
 	virtual void OnEvent			(NET_Packet& P, u16 type);
 
-#ifdef DEBUG
-	virtual void OnRender			();
-#endif
-
 	float GetMaxPower() {return m_fMaxPower;}
 
 	//вычисление силы хита в зависимости от расстояния до центра зоны

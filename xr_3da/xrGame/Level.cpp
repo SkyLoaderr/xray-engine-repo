@@ -331,7 +331,7 @@ void CLevel::OnFrame	()
 	Device.Statistic.TEST0.End			();
 }
 
-#include "CustomZone.h"
+#include "space_restrictor.h"
 void CLevel::OnRender()
 {
 	inherited::OnRender	();
@@ -355,13 +355,9 @@ void CLevel::OnRender()
 		xr_vector<CObject*>::iterator	I = Level().Objects.objects.begin();
 		xr_vector<CObject*>::iterator	E = Level().Objects.objects.end();
 		for ( ; I != E; ++I) {
-			CTeamBaseZone	*team_base_zone = dynamic_cast<CTeamBaseZone*>(*I);
-			if (team_base_zone)
-				team_base_zone->OnRender();
-			
-			CCustomZone	*pCustomZone = dynamic_cast<CCustomZone*>(*I);
-			if (pCustomZone)
-				pCustomZone->OnRender();
+			CSpaceRestrictor	*space_restrictor = dynamic_cast<CSpaceRestrictor*>(*I);
+			if (space_restrictor)
+				space_restrictor->OnRender();
 		}
 		if (GameID() != GAME_SINGLE)
 		{
@@ -580,6 +576,7 @@ u8 CLevel::GetDayTime()
 	VERIFY	(hours<256);
 	return	u8(hours); 
 }
+
 float CLevel::GetGameDayTimeSec()
 {
 	return	(float(s64(GetGameTime() % (24*60*60*1000)))/1000.f);

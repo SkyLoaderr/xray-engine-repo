@@ -21,6 +21,9 @@ public:
 			bool	inside				(const Fvector &position, float radius = EPS_L) const;
 	virtual void	Center				(Fvector &C) const;
 	virtual float	Radius				() const;
+#ifdef DEBUG
+	virtual void	OnRender			();
+#endif
 };
 
 #include "space_restrictor_inline.h"
