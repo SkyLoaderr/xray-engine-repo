@@ -287,7 +287,7 @@ void CMotionManager::ProcessAction()
 		cur_anim = MI.anim;
 
 		// установить target.yaw
-		if (!pMonster->CDetailPathManager::m_path.empty()) pMonster->SetDirectionLook( ((spec_params & ASP_MOVE_BKWD) == ASP_MOVE_BKWD) );
+		if (pMonster->valid()) pMonster->SetDirectionLook( ((spec_params & ASP_MOVE_BKWD) == ASP_MOVE_BKWD) );
 
 		// если новая анимация не совпадает с предыдущей, проверить переход
 		if (prev_anim != cur_anim) CheckTransition(prev_anim, cur_anim);
@@ -362,7 +362,7 @@ void CMotionManager::FixBadState()
 	TTime cur_time = Level().timeServer();
 
 	// если конец пути и монстр идёт - исправить
-	if (!pMonster->CDetailPathManager::m_path.empty() && ((pMonster->CDetailPathManager::m_path.size() - 1 ) <= pMonster->CDetailPathManager::m_current_travel_point) && is_moving_action) {
+	if (!pMonster->valid() && is_moving_action) {
 		cur_anim = eAnimStandIdle;
 		return;
 	}

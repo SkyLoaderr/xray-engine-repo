@@ -131,13 +131,14 @@ class CAI_Biting : public CCustomMonster,
 				   public CMonsterSound,
 				   public CSharedClass<_biting_shared> {
 
-	typedef	CCustomMonster	inherited;
-	typedef CSharedClass<_biting_shared> _sd_biting;
+	typedef	CCustomMonster					inherited;
+	typedef CSharedClass<_biting_shared>	_sd_biting;
+	typedef CMovementManager				MoveMan;
 
 public:
 	
 	// friend definitions
-	friend	class			CBitingMotion;
+	friend	class			CMotionManager;
 	friend	class			IState;
 
 							CAI_Biting						();
@@ -309,7 +310,6 @@ public:
 	bool					flagEatNow;				// true - сейчас монстр ест
 
 	CMotionManager			MotionMan; 
-
 
 	// -------------------------------------------------------
 	// attack stops

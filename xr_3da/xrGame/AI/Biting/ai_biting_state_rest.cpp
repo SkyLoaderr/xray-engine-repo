@@ -34,9 +34,9 @@ void CBitingRest::Init()
 	IState::Init();
 
 	// если есть путь - дойти до конца (последствия преследования врага)
-	if (!pMonster->path_completed()) {
-		m_bFollowPath = true;
-	} else m_bFollowPath = false;
+//	if (!pMonster->path_completed()) {
+//		m_bFollowPath = true;
+//	} else m_bFollowPath = false;
 }
 
 
@@ -59,10 +59,14 @@ void CBitingRest::Replanning()
 			m_tAction = ACTION_WALK;
 
 			// Построить путь обхода точек графа, поиск пищи
-			pMonster->enable_movement(false);
-			pMonster->vfUpdateDetourPoint();	
-			pMonster->set_level_dest_vertex(ai().game_graph().vertex(pMonster->m_tNextGP)->level_vertex_id());
+			u32 vertex_id = ::Random.randI(ai().level_graph().header().vertex_count());
+			pMonster->set_level_dest_vertex(vertex_id);
+			pMonster->set_dest_position(ai().level_graph().vertex_position(vertex_id));
 
+
+//			if (!pMonster->CDetailPathManager::valid()) {
+//			}
+			
 			dwMinRand = pMonster->_sd->m_timeFreeWalkMin;  dwMaxRand = pMonster->_sd->m_timeFreeWalkMax;
 		}
 	} else { // ночь
@@ -82,9 +86,9 @@ void CBitingRest::Replanning()
 
 			m_tAction = ACTION_WALK_CIRCUMSPECTION;
 
-			pMonster->enable_movement(false);
-			pMonster->vfUpdateDetourPoint();	
-			pMonster->set_level_dest_vertex	(ai().game_graph().vertex(pMonster->m_tNextGP)->level_vertex_id());
+			u32 vertex_id = ::Random.randI(ai().level_graph().header().vertex_count());
+			pMonster->set_level_dest_vertex(vertex_id);
+			pMonster->set_dest_position(ai().level_graph().vertex_position(vertex_id));
 
 			dwMinRand = pMonster->_sd->m_timeFreeWalkMin; dwMaxRand = pMonster->_sd->m_timeFreeWalkMax;
 		}
@@ -96,23 +100,25 @@ void CBitingRest::Replanning()
 
 void CBitingRest::Run()
 {
-	if (m_bFollowPath) {
-		if ((pMonster->CDetailPathManager::path().size() - 1) <= pMonster->CDetailPathManager::curr_travel_point_index()) m_bFollowPath = false;
-	}
+//	if (m_bFollowPath) {
+//		if ((pMonster->CDetailPathManager::path().size() - 1) <= pMonster->CDetailPathManager::curr_travel_point_index()) m_bFollowPath = false;
+//	}
 
-	if (m_bFollowPath) {
-		m_tAction = ACTION_WALK_PATH_END;
-	} else {
-		// проверить нужно ли провести перепланировку
+//	if (m_bFollowPath) {
+//		m_tAction = ACTION_WALK_PATH_END;
+//	} else {
+//		// проверить нужно ли провести перепланировку
 		DO_IN_TIME_INTERVAL_BEGIN(m_dwLastPlanTime, m_dwReplanTime);
 			Replanning();
 		DO_IN_TIME_INTERVAL_END();
-	}
+//	}
 
 	// FSM 2-го уровня
 	switch (m_tAction) {
 		case ACTION_WALK:		// обход точек графа
-			pMonster->vfChoosePointAndBuildPath(0,0, false, 0,2000);
+
+
+			//pMonster->vfChoosePointAndBuildPath(0,0, false, 0,2000);
 			pMonster->MotionMan.m_tAction = ACT_WALK_FWD;
 			break;
 		case ACTION_SATIETY_GOOD:     // стоять, ничего не делать

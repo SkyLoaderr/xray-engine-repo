@@ -47,10 +47,8 @@ void CAI_Biting::Init()
 
 	m_dwPathBuiltLastTime			= 0;
 	
-//	CDetailPathManager::m_path.clear				();
-//	m_level_path.clear				();
-//	CDetailPathManager::m_current_travel_point		= 0;
-//	m_level_dest_vertex_id				= u32(-1);
+	CDetailPathManager::Init();
+
 	m_pPhysics_support				->in_Init();
 
 	flagEatNow						= false;

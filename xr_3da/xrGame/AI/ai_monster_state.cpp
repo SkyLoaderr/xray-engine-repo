@@ -38,7 +38,7 @@ void IState::Execute(TTime cur_time)
 			Init();
 		case STATE_RUN:
 			if (!CheckCompletion()) {
-				if (m_dwNextThink < m_dwCurrentTime) {
+				if (m_dwNextThink <= m_dwCurrentTime) {
 					Run();
 				}
 				break;

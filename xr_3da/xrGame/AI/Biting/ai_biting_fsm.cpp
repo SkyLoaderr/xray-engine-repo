@@ -9,7 +9,7 @@
 #include "stdafx.h"
 #include "ai_biting.h"
 
-#include "../ai_monster_jump.h"
+#include "..\\..\\actor.h"
 
 void CAI_Biting::Think()
 {
@@ -20,11 +20,16 @@ void CAI_Biting::Think()
 
 	vfUpdateParameters		();
 
+	
+//	if (m_tEnemy.obj) {
+//		CGameObject				*pG = dynamic_cast<CGameObject *>(m_tEnemy.obj);;
+//		VERIFY					(PG);
+//		set_level_dest_vertex	(pG->level_vertex_id());
+//		set_dest_position		(pG->Position());
+//	}
 
-//#ifndef SILENCE
-//	if (g_Alive())
-//		Msg("%s : [A=%d][B=%d][C=%d][D=%d][E=%d][F=%d][H=%d][I=%d][J=%d][K=%d]",cName(),A,B,C,D,E,F,H,I,J,K);
-//#endif
+	// Pre Update path parameters
+	enable_movement(true);
 	
 	if ((flagsEnemy & FLAG_ENEMY_GO_OFFLINE) == FLAG_ENEMY_GO_OFFLINE) {
 		CurrentState->Reset();
@@ -32,9 +37,13 @@ void CAI_Biting::Think()
 	}
 
 	StateSelector			();
-	CurrentState->Execute	(m_current_update);
+//	CurrentState->Execute	(m_current_update);
 
 	MotionMan.ProcessAction();
+
+	// Update path
+	set_path_type			(ePathTypeLevelPath);
+	build_path				();
 
 	// process sound
 	ControlSound(m_current_update);

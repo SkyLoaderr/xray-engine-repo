@@ -108,7 +108,10 @@ void CBitingAttack::Run()
 	CJumping *pJumping = dynamic_cast<CJumping *>(pMonster);
 	if (pJumping) pJumping->Check(pMonster->Position(),m_tEnemy.obj->Position(),m_tEnemy.obj);
 	
-	if (pMonster->m_PhysicMovementControl.JumpState()) return;
+	if (pMonster->m_PhysicMovementControl.JumpState()) {
+		pMonster->enable_movement(false);
+		return;
+	}
 
 	if ((pMonster->flagsEnemy & FLAG_ENEMY_DOESNT_SEE_ME) != FLAG_ENEMY_DOESNT_SEE_ME) bEnemyDoesntSeeMe = false;
 	if (((pMonster->flagsEnemy & FLAG_ENEMY_GO_FARTHER_FAST) == FLAG_ENEMY_GO_FARTHER_FAST) && (m_dwStateStartedTime + 4000 < m_dwCurrentTime)) bEnemyDoesntSeeMe = false;
@@ -137,12 +140,14 @@ void CBitingAttack::Run()
 		case ACTION_RUN:		 // бежать на врага
 			delay = ((m_bAttackRat)? 0: 300);
 
-			pMonster->set_level_dest_vertex	(m_tEnemy.obj->level_vertex_id());
-			pMonster->vfChoosePointAndBuildPath(0,&m_tEnemy.obj->Position(), true, 0, delay);
+			pMonster->set_level_dest_vertex(m_tEnemy.obj->level_vertex_id());
+			pMonster->set_dest_position(m_tEnemy.obj->Position());
 
 			pMonster->MotionMan.m_tAction = ACT_RUN;
 			break;
 		case ACTION_ATTACK_MELEE:		// атаковать вплотную
+			pMonster->enable_movement(false);			
+			
 			bCanThreaten	= false;
 
 			// если враг крыса под монстром подпрыгнуть и убить
@@ -162,7 +167,6 @@ void CBitingAttack::Run()
 				float yaw, pitch;
 				Fvector dir;
 				yaw = pMonster->m_body.target.yaw;
-				pMonster->enable_movement(false);
 				dir.sub(m_tEnemy.obj->Position(), pMonster->Position());
 				dir.getHP(yaw,pitch);
 				yaw *= -1;
@@ -177,20 +181,20 @@ void CBitingAttack::Run()
 		case ACTION_STEAL:
 			if (dist < (m_fDistMax + 2.f)) bEnemyDoesntSeeMe = false;
 
-			pMonster->set_level_dest_vertex	(m_tEnemy.obj->level_vertex_id());
-			pMonster->vfChoosePointAndBuildPath(0,&m_tEnemy.obj->Position(), true, 0, 2000);
+			pMonster->set_level_dest_vertex(m_tEnemy.obj->level_vertex_id());
+			pMonster->set_dest_position(m_tEnemy.obj->Position());
 
 			pMonster->MotionMan.m_tAction = ACT_STEAL;
 			break;
 		case ACTION_THREATEN: 
 			// Смотреть на врага 
 			LOG_EX("ACTION THREATEN!!!");
+			pMonster->enable_movement(false);
 
 			DO_IN_TIME_INTERVAL_BEGIN(m_dwFaceEnemyLastTime, m_dwFaceEnemyLastTimeInterval);
 				float yaw, pitch;
 				Fvector dir;
 				yaw = pMonster->m_body.target.yaw;
-				pMonster->enable_movement(false);
 				dir.sub(m_tEnemy.obj->Position(), pMonster->Position());
 				dir.getHP(yaw,pitch);
 				yaw *= -1;
