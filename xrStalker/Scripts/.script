@@ -259,7 +259,7 @@ function reset_action (npc, script_name)
 	npc:script (true, script_name)
 end
 
-class script_object
+class "script_object"
 
 function script_object:__init(name,script,...)
 	self.action			= action(nil,unpack(arg))
