@@ -264,7 +264,7 @@ u32 CPSVisual::RenderTO	(FVF::TL* dest)
 		vis.box.getsphere	(vis.sphere.P,vis.sphere.R);
 	}
 	
-	return pv-pv_start;
+	return u32(pv-pv_start);
 }
 
 //----------------------------------------------------
