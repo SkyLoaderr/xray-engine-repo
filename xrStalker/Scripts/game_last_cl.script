@@ -68,6 +68,8 @@ function game_cl_LastStanding:shedule_Update (dt)
 end
 
 function game_cl_LastStanding:createGameUI ()
+	game_cl_mp_script.createGameUI	(self)
+
    self.m_game_ui = game_last_ui.ui_game_LastStanding()
    self.m_game_ui:SetClGame(self)
    self.m_game_ui:Init()
