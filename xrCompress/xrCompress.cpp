@@ -7,6 +7,8 @@
 CFS_File*				fs=0;
 CFS_Memory				fs_desc;
 
+DWORD					bytesSRC=0,bytesDST=0;
+
 void Compress			(const char* path)
 {
 	printf				("\n%-80s   ",path);
@@ -18,7 +20,9 @@ void Compress			(const char* path)
 	unsigned	c_size	= 0;
 	_compressLZ			(&c_data,&c_size,src.Pointer(),src.Length());
 	fs->write			(c_data,c_size);
-	printf				("%%%3.1f",100.f*float(c_size)/float(src.Length()));
+	printf				("%3.1f%%",100.f*float(c_size)/float(src.Length()));
+	bytesSRC			+= src.Length();
+	bytesDST			+= c_size;
 
 	// Write description
 	fs_desc.WstringZ	(path);
@@ -73,6 +77,7 @@ int main			(int argc, char* argv[])
 	printf			("Scanning files...");
 	if (0==chdir(argv[1]))
 	{
+		DWORD			dwTimeStart	= timeGetTime();
 		string256		fname;
 		strconcat		(fname,"..\\",argv[1],".xrp");
 		fs				= new CFS_File(fname);
@@ -81,6 +86,11 @@ int main			(int argc, char* argv[])
 		fs->close_chunk	();
 		fs->write_chunk	(1|CFS_CompressMark, fs_desc.pointer(),fs_desc.size());
 		delete fs;
+		DWORD			dwTimeEnd	= timeGetTime();
+		printf			("\n\nOveral ratio: %3.1f%%\nElapsed time: %d min\n",
+			100.f*float(bytesDST)/float(bytesSRC),
+			((dwTimeEnd-dwTimeStart)/1000)/60
+			);
 	} else {
 		printf("ERROR: folder not found.\n");
 		return 3;
