@@ -78,6 +78,7 @@
 
 		bugs/features:
 		*	проверить transluency на деревьях (test_light) 
+		*	BUG: full path inside FS - should be relative!
 
 		to think:
 		*	солнце (lmaps) / дождь / туман (возможно scattering) / небо (тучи) / ветер+порывы (трава, деревья) / flare+sun effs
