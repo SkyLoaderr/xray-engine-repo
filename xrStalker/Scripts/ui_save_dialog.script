@@ -14,6 +14,9 @@ end
 function save_dialog:InitControls()
 	self:Init(100,100,257,271) --init self position and size
 	
+	local screen_height = get_device():height
+	local screen_width  = get_device():width
+	
 	
 	local txt_main   = CUIStatic()
 	txt_main:SetAutoDelete(true)              --parent will delete this item on destructor
@@ -50,4 +53,12 @@ end
 function save_dialog:InitCallBacks()
 	self:AddCallback("button_ok",ui_events.BUTTON_CLICKED,self,"OnButton_ok_clicked")
 	self:AddCallback("button_cancel",ui_events.BUTTON_CLICKED,self,"OnButton_cancel_clicked")
+end
+
+function save_dialog:OnButton_ok_clicked()
+
+end
+
+function save_dialog:OnButton_cansel_clicked()
+
 end

@@ -90,7 +90,7 @@ function game_cl_LastStanding:createGameUI ()
    self.m_header_wnd = game_last_header_wnd.header_wnd()
    self.m_game_ui:AddDialogToRender(self.m_header_wnd)  --always visible.use RemoveDialogToRender to hide this window
 
-   --self.m_save_dlg = ui_save_dialog.save_dialog()
+   self.m_save_dlg = ui_save_dialog.save_dialog()
    return self.m_game_ui
 end
 
