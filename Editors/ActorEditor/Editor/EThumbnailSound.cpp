@@ -5,12 +5,15 @@
 #include "ImageManager.h"
 
 //------------------------------------------------------------------------------
-#define THM_SOUND_VERSION				0x0012
+#define THM_SOUND_VERSION				0x0013
 //------------------------------------------------------------------------------
-
+#define THM_CHUNK_SOUNDPARAM			0x1000
 //------------------------------------------------------------------------------
 ESoundThumbnail::ESoundThumbnail(LPCSTR src_name, bool bLoad):ECustomThumbnail(src_name,ETSound)
 {
+    m_fQuality 			= 0.f;
+    m_GD.m_fMinDist 	= 1.f;
+    m_GD.m_uGameType	= 0;
     if (bLoad) 	Load();
 }
 //------------------------------------------------------------------------------
@@ -42,7 +45,8 @@ bool ESoundThumbnail::Load(LPCSTR src_name, LPCSTR path)
 
     R_ASSERT		(F->find_chunk(THM_CHUNK_SOUNDPARAM));
     m_fQuality 		= F->r_float();
-    m_fMinDist	 	= F->r_float();
+    m_GD.m_fMinDist	= F->r_float();
+    m_GD.m_uGameType= F->r_u32();
 	
     m_Age 			= FS.get_file_age(fn.c_str());
 
@@ -67,7 +71,8 @@ void ESoundThumbnail::Save(int age, LPCSTR path)
 
     F.open_chunk	(THM_CHUNK_SOUNDPARAM);
     F.w_float		(m_fQuality);
-    F.w_float		(m_fMinDist);
+    F.w_float		(m_GD.m_fMinDist);
+    F.w_u32			(m_GD.m_uGameType);
     F.close_chunk	();
 
 	AnsiString fn 	= m_Name;
@@ -82,7 +87,8 @@ void ESoundThumbnail::Save(int age, LPCSTR path)
 void ESoundThumbnail::FillProp(PropItemVec& items)
 {
     PHelper.CreateFloat	(items, "Quality", 	&m_fQuality);
-    PHelper.CreateFloat	(items, "Min Dist",	&m_fMinDist, 0.f,10000.f);
+    PHelper.CreateFloat	(items, "Min Dist",	&m_GD.m_fMinDist, 0.f,10000.f);
+    PHelper.CreateU32	(items, "Game Type",&m_GD.m_uGameType);
 }
 //------------------------------------------------------------------------------
 

@@ -115,15 +115,14 @@ class ESoundThumbnail: public ECustomThumbnail{
 	typedef ECustomThumbnail inherited;
 private:
 	float			m_fQuality;
-    float			m_fMinDist;
+    struct SGameData{
+        float		m_fMinDist;
+        u32			m_uGameType;
+    };
+    SGameData		m_GD;
 public:
 					ESoundThumbnail	(LPCSTR src_name, bool bLoad=true);
 	virtual			~ESoundThumbnail();
-
-    // Object routines
-	void 			CreateFromData	(float quality, float min_dist){m_fQuality=quality; m_fMinDist=min_dist;}
-    IC float		_Quality		(){return m_fQuality;}
-    IC float		_MinDist		(){return m_fMinDist;}
 
     // thumbnail public routines
 	virtual bool 	Load			(LPCSTR src_name=0, LPCSTR path=0);

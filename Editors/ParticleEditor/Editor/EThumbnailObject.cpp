@@ -7,7 +7,7 @@
 //------------------------------------------------------------------------------
 #define THM_OBJECT_VERSION				0x0012
 //------------------------------------------------------------------------------
-
+#define THM_CHUNK_OBJECTPARAM			0x0816
 //------------------------------------------------------------------------------
 EObjectThumbnail::EObjectThumbnail(LPCSTR src_name, bool bLoad):EImageThumbnail(src_name,ETObject)
 {

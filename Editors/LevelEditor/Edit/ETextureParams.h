@@ -119,10 +119,7 @@ extern xr_token	ttype_token[];
 #define THM_CHUNK_TYPE					0x0813
 #define THM_CHUNK_TEXTURE_TYPE			0x0814
 #define THM_CHUNK_DETAIL_EXT			0x0815
-#define THM_CHUNK_OBJECTPARAM			0x0816
-#define THM_CHUNK_SOUNDPARAM			0x0817
 //----------------------------------------------------
-#define THM_SIGN 		"THM_FILE"
 #define THUMB_WIDTH 	128
 #define THUMB_HEIGHT 	128
 #define THUMB_SIZE 		THUMB_HEIGHT*THUMB_WIDTH
