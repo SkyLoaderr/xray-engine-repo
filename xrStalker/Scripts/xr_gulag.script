@@ -2,6 +2,7 @@
 -- Доделка:   Чугай Александр (Chugai)
 
 fraction = {}
+restrictors = {}
 
 local i
 
@@ -205,7 +206,6 @@ function fract:setJob(npc, job)
 	--' Смена тим, сквад, груп
 	job.object:change_team(job.object:team(), job.squad or job.object:squad(), job.group or job.object:group())
 	--' Спейс рестрикторы
-	job.object:remove_all_restrictions()
 	self:add_restrictor(job.object, job.out_rest, job.in_rest)
 end
 
@@ -218,19 +218,29 @@ function fract:add_restrictor(npc, r_out, r_in)
 	if string.find(npc:out_restrictions(), r_out) then
 		r_out	= ""
 	end
-	
-	printf		("RESTR HOLD       : %s", npc:name())
-	printf		("RESTR HAVE (IN)  : %s", npc:in_restrictions())
-	printf		("RESTR HAVE (OUT) : %s", npc:out_restrictions())
-	printf		("RESTR NEED (IN)  : %s", r_in)
-	printf		("RESTR NEED (OUT) : %s", r_out)
-	
-	if r_in ~= "" or r_out ~= "" then
-		npc:add_restrictions(r_out,r_in)
+
+	--' Удаляем старые рестрикторы
+	if restrictors[npc:id()] ~= nil and (restrictors[npc:id()].r_in ~= "" or 
+										restrictors[npc:id()].r_out ~= "") 
+	then
+		npc:remove_restrictions(restrictors[npc:id()].r_out, restrictors[npc:id()].r_in)
 	end
 
-	printf		("RESTR AFTER (IN) : %s", npc:in_restrictions())
-	printf		("RESTR AFTER (OUT): %s", npc:out_restrictions())
+	restrictors[npc:id()] = {r_in = r_in, r_out = r_out}
+
+--	printf		("RESTR HOLD       : %s", npc:name())
+--	printf		("RESTR HAVE (IN)  : %s", npc:in_restrictions())
+--	printf		("RESTR HAVE (OUT) : %s", npc:out_restrictions())
+--	printf		("RESTR NEED (IN)  : %s", r_in)
+--	printf		("RESTR NEED (OUT) : %s", r_out)
+
+	--' Добавляем новые рестрикторы	
+	if r_in ~= "" or r_out ~= "" then
+		npc:add_restrictions(r_out, r_in)
+	end
+
+--	printf		("RESTR AFTER (IN) : %s", npc:in_restrictions())
+--	printf		("RESTR AFTER (OUT): %s", npc:out_restrictions())
 end
 
 function fract:getJob(npc)
