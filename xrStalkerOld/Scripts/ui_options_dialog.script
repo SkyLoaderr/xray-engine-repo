@@ -5,12 +5,6 @@
 -- Author:      Serhiy Vynnychenko (narrator@gsc-game.kiev.ua)
 -- Version:     0.1
 
-module("ui_options_base_tab")
-module("ui_options_video_tab")
-module("ui_options_sound_tab")
-module("ui_options_game_tab")
-module("ui_options_controls_tab")
-module("ui_options_profiles_tab")
 
 function main()
 	local dlg = ui_options_dialog.options_dialog()

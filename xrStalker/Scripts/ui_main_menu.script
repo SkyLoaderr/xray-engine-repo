@@ -4,18 +4,6 @@
 -- Copyright:   2004 GSC Game World
 -- Author:      Serhiy Vynnychenko (narrator@gsc-game.kiev.ua)
 -- Version:     0.7
-module("ui_base_dialog")
-module("ui_spawn_dialog")
-module("ui_load_dialog")
-module("ui_save_dialog")
-module("ui_new_game_dialog")
-module("ui_multiplayer_base")
-module("ui_multiplayer_dialog")
-module("ui_main_base_tab")
-module("ui_main_main_tab")
-module("ui_main_new_tab")
-module("ui_main_multi_tab")
-module("ui_options_dialog")
 
 function main()
 	local dlg = ui_main_menu.main_menu()
