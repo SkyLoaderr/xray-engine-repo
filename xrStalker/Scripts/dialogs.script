@@ -8,8 +8,13 @@ function kickass(first_speaker, second_speaker)
 end
 
 function helper_init(first_speaker, second_speaker)
-    if xr_motivator.storage[second_speaker:id()].sos.npc == nil and 
-       second_speaker:relation (first_speaker) ~= game_object.enemy then
-       xr_motivator.storage[second_speaker:id()].sos.npc = first_speaker
-    end
+	if xr_motivator.storage[second_speaker:id()].sos.npc == nil and 
+	   second_speaker:relation (first_speaker) ~= game_object.enemy then
+		xr_motivator.storage[second_speaker:id()].sos.npc = first_speaker
+	end
 end
+
+function get_money_then_leave(first_speaker, second_speaker)
+	printf("get_money_then_leave")
+end
+
