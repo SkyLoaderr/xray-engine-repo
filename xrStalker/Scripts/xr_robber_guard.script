@@ -1,0 +1,204 @@
+
+-- Грабители. Разработчик: Andrey Fidrya (Zmey) af@svitonline.com
+
+
+-- Переменные ниже - не настроечные, их менять нельзя :-)
+
+local state_walking = 1
+local state_standing = 2
+local state_waiting_for_teammates_to_rob_plr = 3
+
+---------------------------------------------------------------------------------------------------------------------
+class "evaluator_need_robber_guard" (property_evaluator)
+
+function evaluator_need_robber_guard:__init(storage) super ()
+	self.stor = storage
+end
+
+function evaluator_need_robber_guard:evaluate ()
+	return self.stor.enabled
+end
+
+----------------------------------------------------------------------------------------------------------------------
+class "action_robber_guard_activity" (action_base)
+
+function action_robber_guard_activity:__init(npc_name, action_name, storage) super(nil, action_name)
+	self.stor = storage
+end
+
+function action_robber_guard_activity:initialize()
+	action_base.initialize(self)
+	self.object:set_node_evaluator()
+	self.object:set_path_evaluator()
+	self.object:set_desired_position()
+	self.object:set_desired_direction()
+
+	self:reset_scheme()
+end
+
+function action_robber_guard_activity:reset_scheme()
+	--utils.trace(this.script_name(), "xr_robber_guard:reset_scheme called: self.object:name()='%s'", self.object:name())
+
+	self.object:set_detail_path_type(move.line)
+	self.object:set_body_state(move.standing)
+	--self.object:set_movement_type(move.stand)
+	--self.object:set_sight(look.danger, nil, 0)
+	self.object:set_sight(look.search, nil, 0)
+	self.object:set_mental_state(anim.danger)
+	self.object:set_movement_type(move.walk)
+
+	--xr_reactions.add_rule(self.object, "ignore")
+
+	self.patrol_robber_guard = patrol(self.stor.path_robber_guard)
+	if not self.patrol_robber_guard then
+		utils.abort("%s", "xr_robber_guard: unable to find patrol path '" .. self.stor.path_robber_guard .. "'")
+	end
+
+	self.cur_waypoint = nil
+	self.state = state_standing
+
+	--utils.trace(this.script_name(), "_bp: xr_robber_guard [%s]: 1 state change: %s", self.object:name(), utils.to_str(self.state))
+end
+
+function action_robber_guard_activity:say(what)
+	self.object:play_sound(xr_sounds_id.zmey_robber_guard_base, 1, 0, 1, 0, what)
+end
+
+function action_robber_guard_activity:nearest_waypoint()
+	local nearest_pt = nil
+	local nearest_dist = 1000000
+	for i = 0, self.patrol_robber_guard:count() - 1 do
+		local distance = self.object:position():distance_to(self.patrol_robber_guard:point(i))
+		if distance < nearest_dist then
+			nearest_pt = i
+			nearest_dist = distance
+		end
+	end
+
+	if not nearest_pt then
+		utils.abort("%s", "xr_robber_guard: unable to nearest point in patrol path '" .. self.stor.path_robber_guard .. "'")
+	end
+
+	return nearest_pt
+end
+
+function action_robber_guard_activity:execute()
+	local team = xr_robbers.teams[self.stor.team]
+	if team.rob_state == true then
+		self.stor.enabled = false
+		xr_motivator.storage[self.object:id()].robber.enabled = true
+	end
+
+	local actor = get_actor()
+	if not actor then
+		return
+	end
+
+	local dist = distance_between(self.object, actor)
+	if self.state == state_walking and dist >= 10 and device():time_global() >= self.stop_allowed_at then
+		utils.stalker_stop(self.object)
+		self.state = state_standing
+	elseif self.state == state_standing and dist < 10 then
+		if self.cur_waypoint then
+			utils.stalker_go_to_waypoint(self.object, self.patrol_robber_guard, self.cur_waypoint)
+		end
+		self.stop_allowed_at = device():time_global() + 2000
+		self.state = state_walking
+	end
+	
+	if self.state == state_standing then
+		utils.stalker_look_at_stalker(self.object, actor)
+		return
+	end
+
+	if self.state == state_waiting_for_teammates_to_rob_plr then
+		-- Этот шаг нужен, чтобы дать тиммейтам возможность напасть первыми
+		utils.stalker_look_at_stalker(self.object, actor)
+		if device():time_global() >= self.expiration_time then
+			team.rob_state = true
+		end
+		return
+	end
+
+	if self.state == state_walking then
+		if not self.cur_waypoint or utils.stalker_at_waypoint(self.object, self.patrol_robber_guard, self.cur_waypoint) then
+			if not self.cur_waypoint then
+				self.cur_waypoint = self:nearest_waypoint()
+			else
+				self.cur_waypoint = self.cur_waypoint + 1
+			end
+	
+			if self.cur_waypoint >= self.patrol_robber_guard:count() then
+				utils.stalker_stop(self.object)
+				self.expiration_time = device():time_global() + 5000
+				self.state = state_waiting_for_teammates_to_rob_plr
+			else
+				utils.stalker_go_to_waypoint(self.object, self.patrol_robber_guard, self.cur_waypoint)
+			end
+		end
+		return
+	end
+end
+	
+function action_robber_guard_activity:finalize()
+	self.object:clear_animations()
+
+	action_base.finalize(self)
+end
+
+----------------------------------------------------------------------------------------------------------------------
+function add_to_binder(npc, char_ini)
+	printf("xr_robber_guard: add_to_binder")
+	if not (char_ini == nil or char_ini:section_exist("robber_guard") == true) then
+		return
+	end
+
+	local operators    = {}
+	local properties  = {}
+
+	-- FIXME: тут будет robber_guard
+	npc:add_sound([[script_replics\bandit_1\replics\bandit_ambush_]],
+			20, snd_type.talk, 2, 1, xr_sounds_id.zmey_robber_guard_base)
+
+	local manager = npc:motivation_action_manager()
+
+	properties["need_robber_guard"] = xr_evaluators_id.zmey_robber_guard_base + 1
+	operators["action_robber_guard"] = xr_actions_id.zmey_robber_guard_base + 1
+
+	-- // evaluators
+	manager:add_evaluator(properties["need_robber_guard"], this.evaluator_need_robber_guard(xr_motivator.storage[npc:id()].robber_guard))
+
+	local new_action = this.action_robber_guard_activity(npc, "action_robber_guard_activity", xr_motivator.storage[npc:id()].robber_guard)
+	new_action:add_precondition(world_property(stalker_ids.property_alive, true))
+	new_action:add_precondition(world_property(stalker_ids.property_enemy, false))
+	new_action:add_precondition(world_property(properties["need_robber_guard"], true))
+	new_action:add_effect(world_property(properties["need_robber_guard"], false))
+	manager:add_action(operators["action_robber_guard"], new_action)
+
+	new_action = manager:action(stalker_ids.action_puzzle_solver)
+	new_action:add_precondition(world_property(properties["need_robber_guard"], false))
+
+	if char_ini ~= nil then
+		--printf("_bp: calling set_robber_guard")
+		xr_robber_guard.set_robber_guard(npc)
+	end
+end
+
+-- Включение поводыря
+function set_robber_guard(object, enabled, team, path_robber_guard)
+	--utils.trace(this.script_name(), "set_robber_guard called: object:name()='%s', team='%s', path_rob='%s'",
+	--	utils.to_str(object:name()), utils.to_str(team), utils.to_str(path_rob) )
+
+	local char_ini = object:spawn_ini()
+	local st = xr_motivator.storage[object:id()].robber_guard
+
+	st.enabled = utils.conf_get_bool(char_ini, "robber_guard", "enabled", enabled, object, true)
+	st.team = utils.conf_get_string(char_ini, "robber_guard", "team", team, object, true)
+	st.path_robber_guard = utils.conf_get_string(char_ini, "robber_guard", "path_robber_guard", path_robber_guard, object, true)
+
+	if st.action ~= nil then
+		st.action.reset_scheme(st.action)
+	end
+	xr_motivator.checkStorage(object)
+end
+
