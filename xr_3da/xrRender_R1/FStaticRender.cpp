@@ -39,13 +39,13 @@ IRender_Visual*			CRender::model_CreatePS			(LPCSTR name, PS::SEmitter* E)
 { 
 	PS::SDef*	source		= PSLibrary.FindPS	(name);
 	VERIFY					(source);
-	return Models.CreatePS	(source,E);
+	return Models->CreatePS	(source,E);
 }
 IRender_Visual*			CRender::model_CreatePE			(LPCSTR name)	
 { 
 	PS::CPEDef*	source		= PSLibrary.FindPED	(name);
 	VERIFY					(source);
-	return Models.CreatePE	(source);
+	return Models->CreatePE	(source);
 }
 
 int						CRender::getVisualsCount		()					{ return Visuals.size();								}
@@ -56,10 +56,10 @@ IRender_Visual*			CRender::getVisual				(int id)			{ VERIFY(id<int(Visuals.size(
 D3DVERTEXELEMENT9*		CRender::getVB_Format			(int id)			{ VERIFY(id<int(DCL.size()));		return DCL[id].begin();	}
 IDirect3DVertexBuffer9*	CRender::getVB					(int id)			{ VERIFY(id<int(VB.size()));		return VB[id];		}
 IDirect3DIndexBuffer9*	CRender::getIB					(int id)			{ VERIFY(id<int(IB.size()));		return IB[id];		}
-IRender_Target*			CRender::getTarget				()					{ return &Target;										}
+IRender_Target*			CRender::getTarget				()					{ return Target;										}
 
-IRender_Light*			CRender::light_create			()					{ return L_Dynamic.Create();							}
-void					CRender::light_destroy			(IRender_Light* &L)	{ if (L) { L_Dynamic.Destroy((CLightPPA*)L); L=0; }		}
+IRender_Light*			CRender::light_create			()					{ return L_Dynamic->Create();							}
+void					CRender::light_destroy			(IRender_Light* &L)	{ if (L) { L_Dynamic->Destroy((CLightPPA*)L); L=0; }		}
 
 void					CRender::flush					()					{ flush_Models();									}
 			
@@ -86,9 +86,9 @@ void		CRender::add_Wallmark		(ref_shader& S, const Fvector& P, float s, CDB::TRI
 void		CRender::set_Object			(IRenderable*		O )	
 {
 	val_pObject				= O;		// NULL is OK, trust me :)
-	L_Shadows.set_object	(O);
-	L_Projector.set_object	(O);
-	L_DB.Track				(O);
+	L_Shadows->set_object	(O);
+	L_Projector->set_object	(O);
+	L_DB->Track				(O);
 	if (O)					VERIFY	(O->renderable.ROS);
 }
 
@@ -152,7 +152,7 @@ IC		void		gm_SetLighting		(IRenderable* O)
 		// shadowing
 		if (LT.Shadowed_dwFrame==Device.dwFrame)	{
 			gm_SetAmbient		(0);
-			RImplementation.L_Projector.setup	(LT.Shadowed_Slot);
+			RImplementation.L_Projector->setup	(LT.Shadowed_Slot);
 		} else {
 			gm_SetAmbient		(iFloor(LT.ambient)/2);
 		}
@@ -346,10 +346,10 @@ void CRender::Calculate()
 
 		// Calculate miscelaneous stuff
 		calc_DetailTexturing								();
-		L_Shadows.calculate									();
-		L_Projector.calculate								();
+		L_Shadows->calculate								();
+		L_Projector->calculate								();
 	}
-	else 
+	else
 	{
 		set_Object											(0);
 		g_pGameLevel->pHUD->Render_First					();	
@@ -619,7 +619,7 @@ void	CRender::Render		()
 	Device.Statistic.RenderDUMP.Begin();
 
 	// Target.set_gray					(.5f+_sin(Device.fTimeGlobal)/2.f);
-	Target.Begin					();
+	Target->Begin					();
 
 	// if (psDeviceFlags.test(rsWarmHZB))	HOM.Render_ZB	();
 
@@ -734,7 +734,7 @@ void	CRender::Render		()
 
 		if (1==pr)			{
 			RCache.set_xform_world	(Fidentity);
-			Details.Render			(Device.vCameraPosition);
+			Details->Render			(Device.vCameraPosition);
 
 			g_pGameLevel->Environment->RenderFirst	();
 
@@ -746,10 +746,10 @@ void	CRender::Render		()
 			Wallmarks->Render		();		// Wallmarks has priority as normal geometry
 
 			RCache.set_xform_world	(Fidentity);
-			L_Dynamic.Render		();		// L_DB has priority the same as normal geom
+			L_Dynamic->Render		();		// L_DB has priority the same as normal geom
 
 			RCache.set_xform_world	(Fidentity);
-			L_Shadows.render		();
+			L_Shadows->render		();
 		}
 	}
 
@@ -761,7 +761,7 @@ void	CRender::Render		()
 	mapSorted.clear			();
 
 	// Glows
-	Glows.Render			();
+	Glows->Render			();
 
 	// Patches
 	if (vecPatches.size())  {
@@ -772,8 +772,8 @@ void	CRender::Render		()
 	// L_Projector.render					();
 	
 	// Postprocess
-	Target.End				();
-	L_Projector.finalize	();
+	Target->End				();
+	L_Projector->finalize	();
 	
 	// HUD
 	Device.Statistic.RenderDUMP_HUD.Begin	();
@@ -787,14 +787,14 @@ void	CRender::Render		()
 void CRender::OnDeviceCreate	()
 {
 	REQ_CREATE					();
-	Target.OnDeviceCreate		();
-	L_Shadows.OnDeviceCreate	();
-	L_Projector.OnDeviceCreate	();
+	Target->OnDeviceCreate		();
+	L_Shadows->OnDeviceCreate	();
+	L_Projector->OnDeviceCreate	();
 
 	PSLibrary.OnCreate			();
 	PSLibrary.OnDeviceCreate	();
 	level_Load					();
-	L_Dynamic.Initialize		();
+	L_Dynamic->Initialize		();
 
 	gm_Nearer					= FALSE;
 	rmNormal					();
@@ -810,7 +810,7 @@ void CRender::OnDeviceDestroy	()
 	Device.Resources->_DeleteMatrix	(matFogPass);
 	Device.Resources->_DeleteMatrix	(matDetailTexturing);
 
-	L_Dynamic.Destroy			();
+	L_Dynamic->Destroy			();
 	level_Unload				();
 	PSLibrary.OnDeviceDestroy	();
 	PSLibrary.OnDestroy			();

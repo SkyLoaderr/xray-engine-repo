@@ -62,20 +62,20 @@ void CLightShadows::OnDeviceCreate	()
 void CLightShadows::OnDeviceDestroy	()
 {
 	// Debug
-	Device.Resources->Delete					(sh_Screen	);
-	Device.Resources->DeleteGeom				(geom_Screen	);
+	sh_Screen.destroy					();
+	geom_Screen.destroy					();
 	
-	// 
-	Device.Resources->DeleteGeom				(geom_Blur);
-	Device.Resources->DeleteGeom				(geom_World);
+	
+	geom_Blur.destroy					();
+	geom_World.destroy					();
 
-	// 
-	Device.Resources->Delete					(sh_BlurRT	);
-	Device.Resources->Delete					(sh_BlurTR	);
-	Device.Resources->Delete					(sh_World	);
-	Device.Resources->Delete					(sh_Texture	);
-	Device.Resources->_DeleteRT					(RT_temp	);
-	Device.Resources->_DeleteRT					(RT			);
+	
+	sh_BlurRT.destroy					();
+	sh_BlurTR.destroy					();
+	sh_World.destroy					();
+	sh_Texture.destroy					();
+	RT_temp.destroy						();
+	RT.destroy							();
 }
 
 void CLightShadows::set_object	(IRenderable* O)

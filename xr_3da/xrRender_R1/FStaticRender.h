@@ -73,8 +73,8 @@ public:
 
 	CRenderTarget*											Target;			// Render-target
 
-	CMatrix*												matDetailTexturing;
-	CMatrix*												matFogPass;
+	ref_matrix												matDetailTexturing;
+	ref_matrix												matFogPass;
 private:
 	// Loading / Unloading
 	void							LoadBuffers				(IReader	*fs);
