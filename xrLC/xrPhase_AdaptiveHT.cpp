@@ -1,8 +1,16 @@
 #include "stdafx.h"
 #include "build.h"
 
-const	float	aht_min_edge	= 16.0f;		// 50 cm
+const	float	aht_min_edge	= 2.0f;			// 50 cm
 const	float	aht_min_err		= 64.f/255.f;	// ~10% error
+
+bool	is_CCW	(int _1, int _2)
+{
+	if (0==_1 && 1==_2)	return true;
+	if (1==_1 && 2==_2) return true;
+	if (2==_1 && 0==_2)	return true;
+	return	false;
+}
 
 void CBuild::xrPhase_AdaptiveHT	()
 {
@@ -57,7 +65,7 @@ void CBuild::xrPhase_AdaptiveHT	()
 				if (!F->flags.bLocked)	FacePool.destroy	(g_faces[I]);
 				continue;
 			}
-			if (F->CalcArea()<EPS_L)continue;
+			if (F->CalcArea()<EPS_L)	continue;
 
 			Progress				(float(I)/float(g_faces.size()));
 
@@ -128,25 +136,38 @@ void CBuild::xrPhase_AdaptiveHT	()
 				int id2				= AF->VIndex(V2);
 				int idB				= 3-(id1+id2);
 
-				// F1
+				// Create F1 & F2
 				Face* F1			= FacePool.create();
 				F1->flags.bSplitted	= false;
 				F1->flags.bLocked	= false;
 				F1->dwMaterial		= AF->dwMaterial;
 				F1->dwMaterialGame	= AF->dwMaterialGame;
-				F1->SetVertices		(AF->v[idB],AF->v[id1],V);
-				F1->AddChannel		(AF->tc.front().uv[idB],AF->tc.front().uv[id1],UV);
-				F1->CalcNormal		();
-
-				// F2
 				Face* F2			= FacePool.create();
 				F2->flags.bSplitted	= false;
 				F2->flags.bLocked	= false;
 				F2->dwMaterial		= AF->dwMaterial;
 				F2->dwMaterialGame	= AF->dwMaterialGame;
-				F2->SetVertices		(AF->v[idB],V,AF->v[id2]);
-				F2->AddChannel		(AF->tc.front().uv[idB],UV,AF->tc.front().uv[id2]);
-				F2->CalcNormal		();
+
+				if (is_CCW(id1,id2))	
+				{
+					// F1
+					F1->SetVertices		(AF->v[idB],AF->v[id1],V);
+					F1->AddChannel		(AF->tc.front().uv[idB],AF->tc.front().uv[id1],UV);
+					// F2
+					F2->SetVertices		(AF->v[idB],V,AF->v[id2]);
+					F2->AddChannel		(AF->tc.front().uv[idB],UV,AF->tc.front().uv[id2]);
+				} else {
+					// F1
+					F1->SetVertices		(AF->v[idB],V,AF->v[id1]);
+					F1->AddChannel		(AF->tc.front().uv[idB],UV,AF->tc.front().uv[id1]);
+					// F2
+					F2->SetVertices		(AF->v[idB],AF->v[id2],V);
+					F2->AddChannel		(AF->tc.front().uv[idB],AF->tc.front().uv[id2],UV);
+				}
+
+				// Normals and checkpoint
+				F1->N				= AF->N;
+				F2->N				= AF->N;
 
 				// don't destroy old face	(it can be used as occluder during ray-trace)
 				// if (AF->bLocked)	continue;
