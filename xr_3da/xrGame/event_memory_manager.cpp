@@ -1,18 +1,18 @@
 ////////////////////////////////////////////////////////////////////////////
-//	Module 		: enemy_predictor.cpp
+//	Module 		: event_memory.cpp
 //	Created 	: 02.10.2001
 //  Modified 	: 19.11.2003
 //	Author		: Dmitriy Iassenev
-//	Description : Enemy predictor
+//	Description : Event memory
 ////////////////////////////////////////////////////////////////////////////
 
 #include "stdafx.h"
-#include "enemy_predictor.h"
+#include "event_memory.h"
 
-CEnemyPredictor::CEnemyPredictor		()
+CEventMemoryManager::CEventMemoryManager		()
 {
 }
 
-CEnemyPredictor::~CEnemyPredictor		()
+CEventMemoryManager::~CEventMemoryManager		()
 {
 }

@@ -184,7 +184,7 @@ void CMovementManager::find_location(PathManagers::CNodeEvaluator<flags> *node_e
 //	Device.Statistic.AI_Path.End();
 //}
 
-void CMovementManager::build_path(PathManagers::CAbstractNodeEvaluator *node_evaluator, Fvector *tpDestinationPosition, bool bSearchForNode)
+void CMovementManager::build_path(PathManagers::CAbstractNodeEvaluator *node_evaluator, const Fvector *target_position)
 {
 	if (node_evaluator)
 		init_evaluator			(node_evaluator);

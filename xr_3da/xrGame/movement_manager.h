@@ -47,6 +47,6 @@ public:
 					CMovementManager		();
 	virtual			~CMovementManager		();
 	virtual void	init					();
-			void	build_path				(PathManagers::CAbstractNodeEvaluator *node_evaluator, Fvector *target_position);
+			void	build_path				(PathManagers::CAbstractNodeEvaluator *node_evaluator, const Fvector *target_position);
 			void	move_along_path			(CPHMovementControl *movement_control, float time_delta);
 };

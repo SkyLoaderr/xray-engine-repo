@@ -1,18 +1,18 @@
 ////////////////////////////////////////////////////////////////////////////
-//	Module 		: enemy_predictor.cpp
+//	Module 		: sound_memory.cpp
 //	Created 	: 02.10.2001
 //  Modified 	: 19.11.2003
 //	Author		: Dmitriy Iassenev
-//	Description : Enemy predictor
+//	Description : Sound memory
 ////////////////////////////////////////////////////////////////////////////
 
 #include "stdafx.h"
-#include "enemy_predictor.h"
+#include "sound_memory.h"
 
-CEnemyPredictor::CEnemyPredictor		()
+CSoundMemoryManager::CSoundMemoryManager		()
 {
 }
 
-CEnemyPredictor::~CEnemyPredictor		()
+CSoundMemoryManager::~CSoundMemoryManager		()
 {
 }
