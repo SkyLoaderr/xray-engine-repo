@@ -10,7 +10,7 @@
 	#include "LogForm.h"
 	#include "splash.h"
 	#include "ui_main.h"
-	void ELogCallback(LPCSTR string)
+	void __stdcall ELogCallback(LPCSTR string)
 	{
     	if (string[0]=='!') TfrmLog::AddMessage(mtError,AnsiString(string+1));
 		else				TfrmLog::AddMessage(mtInformation,AnsiString(string));
@@ -26,18 +26,19 @@
 #endif
 #ifdef _MAX_EXPORT
 	#include "NetDeviceLog.h"
-	void ELogCallback(LPCSTR string)
+	void __stdcall ELogCallback(LPCSTR string)
 	{
 //		MessageBox(0,buf,"Information",	MB_OK|MB_ICONINFORMATION);
 	}
 #endif
 #ifdef _MAYA_EXPORT
-confirmDialog -title "Confirm" -message "Are you sure?"
-	-button "OK" -button "Cancel" -defaultButton "OK"
-	-cancelButton "Cancel" -dismissString "Cancel";
-
+	void __stdcall ELogCallback(LPCSTR string)
+	{
+		if (string[0]=='!') cerr << "XR-Error: " << string+1 << "\n";
+		else				cerr << "XR-Info:  " << string << "\n";
+	}
 #endif
-//----------------------------------------------------
+	//----------------------------------------------------
 
 CLog ELog;
 //----------------------------------------------------

@@ -400,8 +400,8 @@ public:
 	bool			Export_LW				(LWObjectImport *local);
 #endif
 #ifdef _MAYA_EXPORT
-	BOOL			ParseMAMaterial			(CSurface* dest, LPCSTR mname);
-	CSurface*		CreateSurface			(LPCSTR name);
+	BOOL			ParseMAMaterial			(CSurface* dest, LPCSTR m_name, LPCSTR tex_name);
+	CSurface*		CreateSurface			(LPCSTR m_name, LPCSTR tex_name);
 #endif
 	bool			ExportLWO				(LPCSTR fname);
 };
