@@ -74,9 +74,10 @@ function generic_physics_binder:net_spawn(data)
 end
 
 function generic_physics_binder:net_destroy()
-	if self.object:clsid() == clsid.projector then
-		db.del_sl(self.object)
-	end
+	--if self.object:clsid() == clsid.projector then
+	--	db.del_sl(self.object)
+	--end
+	db.del_sl(self.object)
 
 	object_binder.net_destroy(self)
 end

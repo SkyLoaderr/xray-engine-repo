@@ -52,4 +52,8 @@
 <info_portion id="val_rob_no_thanx"></info_portion>
 <info_portion id="val_rob_no_money"></info_portion>
 
+<!-- Самоубийца -->
+<info_portion id="val_suicide_quest_start"></info_portion>
+<info_portion id="val_suicide_artefact_given"></info_portion>
+
 </game_information_portions>

@@ -996,6 +996,12 @@
 				<File
 					RelativePath=".\Config\scripts\val_sos_bs.ltx">
 				</File>
+				<File
+					RelativePath=".\Config\scripts\val_suicide_and_escort_start_zone.ltx">
+				</File>
+				<File
+					RelativePath=".\Config\scripts\val_suicide_stalker.ltx">
+				</File>
 				<Filter
 					Name="Military"
 					Filter="">
