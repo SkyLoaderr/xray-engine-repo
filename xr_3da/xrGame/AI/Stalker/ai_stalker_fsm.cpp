@@ -494,11 +494,11 @@ void CAI_Stalker::Think()
 	
 	if (E && H && I) {
 		m_dwRandomFactor	= 0;
-		BackCover	(true);
+		ForwardCover	();
 	} else
 	if (E && H && !I) {
 		m_dwRandomFactor	= 0;
-		BackCover	(true);
+		ForwardCover	();
 	} else
 	if (E && !H && I) {
 		Detour			();
