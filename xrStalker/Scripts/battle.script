@@ -1,0 +1,22 @@
+local actor_id = 0
+
+function on_enter (zone, obj)
+    printf ("ENTERED")
+    if obj:id () ~= actor_id then return end
+    printf ("ACTOR_ENTERED")
+    bandits.set_attack ()
+    zone:clear_callback (true)
+end
+
+function main ()
+    actor_id = get_actor ():id ()
+    printf ("ACTOR_ID = %d", actor_id)
+    
+    local zone = get_level_object ("battle_zone")
+    if zone ~= nil then printf ("ZONE FOUNDED") 
+    else printf ("ZONE NOT FOUNDED") end
+    
+    zone:set_callback (this.on_enter, true)
+    printf ("SET ZONE CALLBACK")
+    while true do wait () end
+end
