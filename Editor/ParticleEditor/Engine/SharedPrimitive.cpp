@@ -7,15 +7,16 @@
 // Construction/Destruction
 //////////////////////////////////////////////////////////////////////
 
-int		rsDVB_Size		= 512;
-int		rsDIB_Size		= 512;
+int		rsDVB_Size			= 512;
+int		rsDIB_Size			= 512;
 
 void CVertexStream::Create	()
 {
+	mDiscardID				= 0;
 	Device.Shader.Evict		();
 
 	// Get vertex size
-	mStride		= D3DXGetFVFVertexSize(mFVF);
+	mStride					= D3DXGetFVFVertexSize(mFVF);
 	
 	// Calc size
 	R_ASSERT	(mCount);
@@ -44,6 +45,7 @@ void CVertexStream::Destroy	()
 
 void CIndexStream::Create	()
 {
+	mDiscardID				= 0;
 	Device.Shader.Evict		();
 	
 	// Calc size

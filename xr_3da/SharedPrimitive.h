@@ -28,6 +28,7 @@ private :
 	DWORD						mCount;		// requisted count
 	DWORD						mSize;		// real size (usually mCount, aligned on 512b boundary)
 	DWORD						mPosition;
+	DWORD						mDiscardID;
 private:
 	void						_clear	()
 	{ ZeroMemory	(this,sizeof(*this)); }
@@ -103,6 +104,7 @@ private :
 	DWORD						mCount;		// requisted count
 	DWORD						mSize;		// real size (usually mCount, aligned on 512b boundary)
 	DWORD						mPosition;
+	DWORD						mDiscardID;
 private:
 	void						_clear	()
 	{ 
