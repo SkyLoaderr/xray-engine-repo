@@ -34,6 +34,7 @@ end
 function FSM:stop()
 	printf("stoping FSM for %s", self.npc:name())
 	self.machine_running = false
+	self:reset_script_control()
 end
 
 
@@ -118,7 +119,6 @@ end
 function if_see_actor(npc, fsm)
 	if npc:see(actor) == true then
 		log("saw a fucking actor")
-		fsm:stop()
 		return true
 	end
 
@@ -128,6 +128,7 @@ end
 function dont_see_actor(npc)
 	if npc:see(actor) == false then
 		log("i lost a trace of this fucking actor")
+		fsm:stop()
 		return true
 	end
 
