@@ -194,7 +194,7 @@ void CActor::Load(CInifile* ini, const char* section )
 
 	Weapons				= new CWeaponList(this);
 	Weapons->Init		();
-//	Weapons->TakeItem	(CLSID_OBJECT_W_M134,0);
+	Weapons->TakeItem	(CLSID_OBJECT_W_M134,0);
 	Weapons->TakeItem	(CLSID_OBJECT_W_GROZA,0);
 //	Weapons->TakeItem	(CLSID_OBJECT_W_EMSRIFLE,0);
 
@@ -728,9 +728,9 @@ void CActor::g_wpn_Set(DWORD id)
 {
 	switch (id)
 	{
-	case 1: Weapons->ActivateWeapon(CLSID_OBJECT_W_M134);		break; 
-	case 2: Weapons->ActivateWeapon(CLSID_OBJECT_W_GROZA);		break; 
-	case 3: Weapons->ActivateWeapon(CLSID_OBJECT_W_PROTECTA);	break; 
+	case 0: Weapons->ActivateWeapon(CLSID_OBJECT_W_M134);		break; 
+	case 1: Weapons->ActivateWeapon(CLSID_OBJECT_W_GROZA);		break; 
+	case 2: Weapons->ActivateWeapon(CLSID_OBJECT_W_PROTECTA);	break; 
 	}
 	
 	if (Local()) {
