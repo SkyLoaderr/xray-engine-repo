@@ -20,8 +20,8 @@ void	uber_deffer	(CBlender_Compile& C, LPCSTR _vspec, LPCSTR _pspec, BOOL _aref)
 
 
 	string256		ps,vs,dt;
-	strconcat		(vs,"deffer_", _vspec, lmap?"lmh":""	);
-	strconcat		(ps,"deffer_", _pspec, lmap?"lmh":""	);
+	strconcat		(vs,"deffer_", _vspec, lmap?"_lmh":""	);
+	strconcat		(ps,"deffer_", _pspec, lmap?"_lmh":""	);
 	strcpy			(dt,C.detail_texture?C.detail_texture:"");
 
 	if	(_aref)		{ strcat(ps,"_aref");	}
