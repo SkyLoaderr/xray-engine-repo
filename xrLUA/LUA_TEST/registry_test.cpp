@@ -104,10 +104,10 @@ struct TestClear {
 //	registry_container.get<eR8_Registry>().add	(2,std::vector<u8>());
 //	registry_container.get((r8*)0).add	(2,std::vector<u8>());
 
-	registry_container.registry(info_portions).add	(0,std::vector<u8 >());
-	registry_container.registry(tasks).add			(0,std::vector<u16>());
-	registry_container.registry(dairy).add			(0,std::vector<u32>());
-	registry_container.registry(relations).add		(0,std::vector<u64>());
+//	registry_container.registry(info_portions).add	(0,std::vector<u8 >());
+//	registry_container.registry(tasks).add			(0,std::vector<u16>());
+//	registry_container.registry(dairy).add			(0,std::vector<u32>());
+//	registry_container.registry(relations).add		(0,std::vector<u64>());
 //	registry_container
 
 typedef TestLoad		r8;

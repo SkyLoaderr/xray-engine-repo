@@ -1,39 +1,8 @@
 #include "stdafx.h"
 #include <stdio.h>
+#include "FastDelegate.h"
 
-class Delegate
-{
-public:
-    template<typename T> Delegate(T* pObject, void (T::*pMemberFunction)())
-        : pUnknownObject_(pObject)
-        , pUnknownMemberFunction_(reinterpret_cast<UnknownMemberFunction>(pMemberFunction))
-    {
-		pProxyFunction_ = proxy<T>;
-	}
-
-    void operator()()
-    {
-        pProxyFunction_(pUnknownObject_, pUnknownMemberFunction_);
-    }
-private:
-    void* pUnknownObject_;
-
-    class Unknown {};
-    typedef void (Unknown::*UnknownMemberFunction)();
-    UnknownMemberFunction pUnknownMemberFunction_;
-
-    void (*pProxyFunction_)(void*, UnknownMemberFunction);
-
-    template<typename T> static void proxy(void* pUnknownObject, UnknownMemberFunction pUnknownMemberFunction)
-    {
-        typedef void (T::*MemberFunction)();
-
-        T* pObject = static_cast<T*>(pUnknownObject);
-        MemberFunction pMemberFunction = reinterpret_cast<MemberFunction>(pUnknownMemberFunction);
-
-        (pObject->*pMemberFunction)();
-    }
-};
+using namespace fastdelegate;
 
 struct A{
 	virtual ~A(){}
@@ -61,7 +30,7 @@ struct C : public A, public B {
 
 void delegate_test()
 {
-	B			c;
-	Delegate	delegate(&c,&B::test);
-	delegate	();
+	B				c;
+	FastDelegate0	delegate(&c,&B::test);
+	delegate		();
 }

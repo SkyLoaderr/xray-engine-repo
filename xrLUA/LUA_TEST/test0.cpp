@@ -1058,7 +1058,8 @@ extern void registry_test();
 
 void test1()
 {
-	registry_test();
+//	registry_test();
+	delegate_test();
 //	script_test();
 ////	printf	("%s\n",typeid(final::Head).name());
 ////	printf	("%s\n",typeid(final::Tail::Head).name());
