@@ -6,8 +6,8 @@
 
 #pragma once
 
-#include "..\\inventory.h"
-#include "..\\gameobject.h"
+#include "../inventory.h"
+#include "../gameobject.h"
 
 
 #include "UIDialogWnd.h"

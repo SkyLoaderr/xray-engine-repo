@@ -10,7 +10,7 @@
 #include "UIXmlInit.h"
 
 
-#include "..\\HUDManager.h"
+#include "../HUDManager.h"
 
 
 
@@ -45,7 +45,7 @@ void CUIDiaryWnd::InitDiary()
 }
 
 
-void CUIDiaryWnd::SendMessage(CUIWindow* pWnd, s16 msg, void* pData)
+void CUIDiaryWnd::SendMessage(CUIWindow* /**pWnd/**/, s16 /**msg/**/, void* /**pData/**/)
 {
 /*	if(pWnd == &UIDiaryContactsWnd)
 	{
