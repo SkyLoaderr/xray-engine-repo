@@ -512,7 +512,8 @@ float CAI_Rat::get_custom_pitch_speed	(float def_speed)
 			else
 				if (fsimilar(m_fSpeed,m_fAttackSpeed))
 					return	(PI_DIV_2);
-	NODEFAULT;
+
+	Debug.fatal				("Impossible RAT speed!");
 #ifdef DEBUG
 	return					(PI_DIV_2);
 #endif
