@@ -28,14 +28,13 @@ extern XRCORE_API	xrMemory	Memory;
 #define CopyMemory(a,b,c) Memory.mem_copy(a,b,c)
 #define FillMemory(a,b,c) Memory.mem_fill(a,c,b)
 
-// new
+// new(0)
 template <class T>
 IC	T*		xr_new		()
 {
 	T* ptr	= (T*)Memory.mem_alloc(sizeof(T));
 	return new (ptr) T();
 }
-
 // new(1)
 template <class T, class P1>
 IC	T*		xr_new		(P1 p1)
@@ -43,13 +42,26 @@ IC	T*		xr_new		(P1 p1)
 	T* ptr	= (T*)Memory.mem_alloc(sizeof(T));
 	return new (ptr) T(p1);
 }
-
-// new(1)
+// new(2)
 template <class T, class P1, class P2>
 IC	T*		xr_new		(P1 p1, P2 p2)
 {
 	T* ptr	= (T*)Memory.mem_alloc(sizeof(T));
 	return new (ptr) T(p1,p2);
+}
+// new(3)
+template <class T, class P1, class P2, class P3>
+IC	T*		xr_new		(P1 p1, P2 p2, P3 p3)
+{
+	T* ptr	= (T*)Memory.mem_alloc(sizeof(T));
+	return new (ptr) T(p1,p2,p3);
+}
+// new(4)
+template <class T, class P1, class P2, class P3, class P4>
+IC	T*		xr_new		(P1 p1, P2 p2, P3 p3, P4 p4)
+{
+	T* ptr	= (T*)Memory.mem_alloc(sizeof(T));
+	return new (ptr) T(p1,p2,p3,p4);
 }
 
 // delete
