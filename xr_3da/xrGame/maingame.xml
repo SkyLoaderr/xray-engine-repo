@@ -19,7 +19,7 @@
 	<!-- weapon icon -->
 	<static x="12" y="10" width="50" height="50"></static>
 	<!-- power bar static -->
-	<power_bar_static x="110" y="685" width="50" height="100"></power_bar_static>
+	<power_bar_static x="110" y="635" width="50" height="100"></power_bar_static>
 
 	<!-- pda online icon -->
 	<static x="1" y="187" width="200" height="32">
