@@ -610,7 +610,7 @@ void CSE_ALifeItemPDA::STATE_Read		(NET_Packet	&tNetPacket, u16 size)
 
 	if (m_wVersion > 89)
 
-	if ( (m_wVersion > 89)&&(m_wVersion < 97)  )
+	if ( (m_wVersion > 89)&&(m_wVersion < 98)  )
 	{
 		int tmp,tmp2;
 		tNetPacket.r			(&tmp,		sizeof(int));
@@ -672,7 +672,7 @@ void CSE_ALifeItemDocument::STATE_Read		(NET_Packet	&tNetPacket, u16 size)
 {
 	inherited::STATE_Read		(tNetPacket,size);
 
-	if ( m_wVersion < 97  ){
+	if ( m_wVersion < 98  ){
 		u16 tmp;
 		tNetPacket.r_u16			(tmp);
 		m_wDoc = NULL;

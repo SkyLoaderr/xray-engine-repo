@@ -185,7 +185,7 @@ void CSE_ALifeTraderAbstract::STATE_Read	(NET_Packet &tNetPacket, u16 size)
 			load_data			(l_tpTaskIDs,tNetPacket);
 		if (m_wVersion > 62)
 			tNetPacket.r_u32	(m_dwMoney);
-		if ((m_wVersion > 75) && (m_wVersion < 97)){
+		if ((m_wVersion > 75) && (m_wVersion < 98)){
 			int tmp;
 			tNetPacket.r_s32	(tmp);
 #ifndef AI_COMPILER
