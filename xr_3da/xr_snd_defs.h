@@ -23,7 +23,7 @@ struct	sound
 struct 	sound_defer
 {
 	LPDIRECTSOUNDBUFFER	P;
-	u32				F;
+	u32					F;
 
 	sound_defer(LPDIRECTSOUNDBUFFER _P, u32 _F) : P(_P), F(_F) {};
 };
