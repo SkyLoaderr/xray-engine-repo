@@ -32,7 +32,7 @@ function get_game_clsid(game_type_option,is_server)
 	if(game_type_option == "new_dm") then 
 		res_sv = "SV_NEWDM" end
 
-if(is_server==0) then
+if(is_server==false) then
 		local res_cl = string.gsub(res_sv,"SV_", "CL_")
 		return res_cl else
 		return res_sv
