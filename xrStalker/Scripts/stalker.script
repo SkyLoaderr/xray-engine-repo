@@ -1,6 +1,3 @@
---[[
-]]
-
 class "stalker_script" (object_binder)
 
 function stalker_script:__init		(object) super(object)
@@ -10,12 +7,13 @@ function stalker_script:reinit		()
 	object_binder.reinit	(self)
 end
 
+--[[
 function stalker_script:reload		(section)
 end
 
 function stalker_script:net_spawn	(server_object)
---	if (object_binder.net_spawn(self,server_object) == false)
---		return		false
+	if (object_binder.net_spawn(self,server_object) == false)
+		return		false
 	return			true
 end
 
@@ -27,6 +25,7 @@ end
 
 function stalker_script:net_import	(packet)
 end
+]]
 
 function init		(obj)
 	printf			("stalker.init is called with %s!",obj:name())
