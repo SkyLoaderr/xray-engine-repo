@@ -12,6 +12,8 @@ struct xr_token;
 	AnsiString&				_ListToSequence			( const AStringVec& lst );
 	AnsiString&				_ListToSequence2			( const AStringVec& lst );
 	void 					_SequenceToList			( AStringVec& lst, LPCSTR in, char separator=',' );
+#else
+	DEFINE_VECTOR(LPSTR,LPSTRVec,LPSTRIt);
 #endif
 
 ENGINE_API int				_GetItemCount			( LPCSTR , char separator=',');
