@@ -1421,7 +1421,7 @@ xrSE_PhysicObject::~xrSE_PhysicObject() {
 }
 void xrSE_PhysicObject::STATE_Read		(NET_Packet& P, u16 size) {
 	visual_read				(P);
-	//P.r_u32					(type);
+	P.r_u32					(type);
 }
 void xrSE_PhysicObject::STATE_Write		(NET_Packet& P)
 {
