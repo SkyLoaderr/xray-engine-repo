@@ -23,10 +23,11 @@ public:
 	IGame_ObjectPool				ObjectPool;
 #endif
 	CEnvironment					Environment;
+	BOOL							bDedicatedServer	;
 
-	virtual	void					OnAppCycleStart	();
-	virtual void					OnAppCycleEnd	();
-	virtual void					OnFrame			();
+	virtual	void					OnAppCycleStart		();
+	virtual void					OnAppCycleEnd		();
+	virtual void					OnFrame				();
 
 	virtual void					RegisterModel	(IRender_Visual* V)
 #ifndef _EDITOR

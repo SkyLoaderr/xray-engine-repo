@@ -30,6 +30,9 @@ void IGame_Persistent::OnAppCycleStart()
 	ObjectPool.load					();
 #endif
 	Environment.load				();
+
+	if (strstr(Core.Params,"-dedicated"))	bDedicatedServer	= TRUE;
+	else									bDedicatedServer	= FALSE;
 }
 
 void IGame_Persistent::OnAppCycleEnd()
