@@ -16,19 +16,19 @@ public:
 	{
 		CL.ray_options(f);
 	}
-	IC void			ray_query		(const CDB::MODEL *m_def, const Fvector& r_start,  const Fvector& r_dir, float r_range = 10000.f)
+	IC void			ray_query		(const CDB::MODEL *m_def, const Fvector& r_start,  const Fvector& r_dir, float r_range)
 	{
 		Device.Statistic.clRAY.Begin();
         CL.ray_query(m_def,r_start,r_dir,r_range);
 		Device.Statistic.clRAY.End	();
 	}
-	IC void			ray_query		(const Fmatrix& inv_parent, const CDB::MODEL *m_def, const Fvector& r_start,  const Fvector& r_dir, float r_range = 10000.f)
+	IC void			ray_query		(const Fmatrix& inv_parent, const CDB::MODEL *m_def, const Fvector& r_start,  const Fvector& r_dir, float r_range)
 	{
     	// transform
         Fvector S,D;
 	    inv_parent.transform_tiny	(S,r_start);
     	inv_parent.transform_dir	(D,r_dir);
-		ray_query					(m_def,S,D,D.magnitude()*r_range);
+		ray_query					(m_def,S,D,r_range);
 	}
 
 	IC void			box_options		(DWORD f)
