@@ -98,9 +98,9 @@ function CSE_NewAttachableItem:__init		(section) super(section)
 	self._token32_0				= self.tokens32:id("token32_0")
 	// list
 	self.list					= rtoken_list()
-	self.list:add				("listitem_0",0)
-	self.list:add				("listitem_1",1)
-	self.list:add				("listitem_2",2)
+	self.list:add				("listitem_0")
+	self.list:add				("listitem_1")
+	self.list:add				("listitem_2")
 	self._listvalue_0			= ""
 end
 
