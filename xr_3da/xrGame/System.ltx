@@ -1318,7 +1318,7 @@ walk_accel              = 17 ;40 ;17  ;54 ;40
 pickup_info_radius		= 5
 
 ; attach params
-attachable_items		= device_torch,attachable_item
+attachable_items		= device_torch,attachable_item,hand_radio
 
 ph_box0_center 			= 0.0,  0.9,  0.0
 ph_box0_size 			= 0.35, 0.9,  0.35
@@ -1566,7 +1566,7 @@ max_item_mass		 = 40.0
 MaxHealthValue		 = 100			; range [0..200]
 
 ; attach params
-attachable_items		= device_torch,attachable_item
+attachable_items		= device_torch,attachable_item,hand_radio
 
 ; State                = 7
 ; 0 - бежать прямо на врага
@@ -1724,7 +1724,7 @@ max_item_mass				 = 40.0
 MaxHealthValue		     = 100			; range [0..200]
 
 ; attach params
-attachable_items		= device_torch,attachable_item
+attachable_items		= device_torch,attachable_item,hand_radio
 
 State                = 7
 ; 0 - бежать прямо на врага
@@ -2708,3 +2708,21 @@ color_add		= 0,0,0
 time			= 1
 time_attack		= 0.2		; fade in
 time_release	= 0.5		; fade out
+
+[hand_radio]
+GroupControlSection		= spawn_group
+discovery_dependency	= 
+$spawn					= "equipment\hand_radio"
+cform                   = skeleton
+class					= II_ATTCH
+cost					= 100
+inv_name				= "hand_radio"
+inv_name_short			= "hand_radio"
+inv_weight				= .5
+inv_grid_width			= 2
+inv_grid_height			= 1
+inv_grid_x				= 16
+inv_grid_y				= 12
+attach_angle_offset		= 0, -3.14, 1.6
+attach_position_offset	= 0.105, 0.00, 0.085
+attach_bone_name		= bip01_head
