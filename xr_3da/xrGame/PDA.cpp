@@ -130,9 +130,12 @@ void CPda::feel_touch_delete(CObject* O)
 		if(pInvOwner->GetPDA())
 		{
 			if(bDebug) HUD().outMessage(0xffffffff,cName(),"a PDA left radius of sight");
-			m_PDAList.erase(std::find(m_PDAList.begin(), 
+			PDA_LIST_it it = std::find(m_PDAList.begin(), 
 										m_PDAList.end(), 
-										pInvOwner->GetPDA()));
+										pInvOwner->GetPDA());
+			if(it !=m_PDAList.end())
+			m_PDAList.erase(it);
+
 			if (!pInvOwner->GetPDA()->getDestroy()) 
 			{
 				m_DeletedPDAList.push_back(pInvOwner->GetPDA());
@@ -159,9 +162,7 @@ void CPda::feel_touch_delete(CObject* O)
 			for(PDA_LIST_it it = m_PDAList.begin();	m_PDAList.end() != it; 	++it)
 			{
 				CPda* pPda = (*it);
-				//if(O == pPda->H_Parent())
 				if(O->ID() == pPda->GetOriginalOwnerID())
-		//		if(!pPda->GetOriginalOwner())
 				{
 					m_PDAList.erase(it);
 					if (!O->getDestroy()) {

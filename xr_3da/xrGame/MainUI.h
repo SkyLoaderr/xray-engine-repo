@@ -25,8 +25,9 @@ struct S2DVert{
 #define UI_FRUSTUM_SAFE			(UI_FRUSTUM_MAXPLANES*4)
 typedef svector<S2DVert,UI_FRUSTUM_SAFE>		sPoly2D;
 
-class C2DFrustum{
+class C2DFrustum{//only rect form
 	svector<Fplane2,FRUSTUM_MAXPLANES> planes;
+	Frect						m_rect;
 public:
 	void		CreateFromRect	(const Irect& rect);
 	sPoly2D*	ClipPoly		(sPoly2D& S, sPoly2D& D) const;
@@ -90,8 +91,8 @@ public:
 
 	void			OnDeviceCreate					();
 
-	float			GetScaleX						()							{return float(Device.dwWidth)/float(UI_BASE_WIDTH);   }
-	float			GetScaleY						()							{return float(Device.dwHeight)/float(UI_BASE_HEIGHT); }
+	IC float		GetScaleX						()							{return float(Device.dwWidth)/float(UI_BASE_WIDTH);   }
+	IC float		GetScaleY						()							{return float(Device.dwHeight)/float(UI_BASE_HEIGHT); }
 //	void			SetScaleXY						(float f_x, float f_y);
 
 	void			ClientToScreenScaled			(Irect& r, u32 align);

@@ -21,7 +21,7 @@
 class CInventoryOwner;
 class CPda;
 
-DEF_LIST (PDA_LIST, CPda*);
+DEF_VECTOR (PDA_LIST, CPda*);
 
 class CPda :
 	public CInventoryItemObject,
