@@ -64,6 +64,7 @@ void CVisualMemoryManager::Load					(LPCSTR section)
 	m_always_visible_distance_danger	= pSettings->r_float(section,"always_visible_distance_danger");
 	m_always_visible_distance_free		= pSettings->r_float(section,"always_visible_distance_free");
 	m_time_quant						= pSettings->r_float(section,"time_quant");
+	m_decrease_value					= pSettings->r_float(section,"decrease_value");
 	m_velocity_factor					= pSettings->r_float(section,"velocity_factor");
 }
 
@@ -193,15 +194,24 @@ bool CVisualMemoryManager::visible				(const CGameObject *game_object, float tim
 
 	float						object_distance, distance = object_visible_distance(game_object,object_distance);
 
+	CNotYetVisibleObject		*object = not_yet_visible_object(game_object);
+	
 	if (distance < object_distance) {
 #ifdef VISIBILITY_TEST
 		if (dynamic_cast<const CActor*>(game_object))
 			Msg					("Object %s IS NOT visible",*game_object->cName());
 #endif
+		if (object) {
+			object->m_value		-= m_decrease_value;
+			if (object->m_value < 0.f)
+				object->m_value	= 0.f;
+			else
+				object->m_updated = true;
+			return				(object->m_value >= m_visibility_threshold);
+		}
 		return					(false);
 	}
 
-	CNotYetVisibleObject		*object = not_yet_visible_object(game_object);
 	if (!object) {
 		CNotYetVisibleObject	new_object;
 		new_object.m_object		= game_object;

@@ -61,6 +61,7 @@ private:
 	float							m_always_visible_distance_danger;
 	float							m_always_visible_distance_free;
 	float							m_time_quant;
+	float							m_decrease_value;
 	float							m_velocity_factor;
 
 protected:
