@@ -20,7 +20,7 @@ public:
 		tris		= T;
 		F			= _F;
 	}
-	IC EFC_Visible	_box		(Fvector& C, Fvector& E, BYTE& mask)
+	IC EFC_Visible	_box		(Fvector& C, Fvector& E, DWORD& mask)
 	{
 		Fvector		m,M;
 		m.sub		(C,E);
@@ -46,7 +46,7 @@ public:
 		}
 	}
 	
-	void			_stab		(const AABBNoLeafNode* node, BYTE mask)
+	void			_stab		(const AABBNoLeafNode* node, DWORD mask)
 	{
 		// Actual frustum/aabb test
 		EFC_Visible	result		= _box((Fvector&)node->mAABB.mCenter,(Fvector&)node->mAABB.mExtents,mask);
@@ -70,7 +70,7 @@ void COLLIDER::frustum_query(const MODEL *m_def, const CFrustum& F)
 	// Get nodes
 	const AABBNoLeafTree*	T	= (const AABBNoLeafTree*)m_def->tree->GetTree();
 	const AABBNoLeafNode*	N	= T->GetNodes();
-	const BYTE				mask= F.getMask();
+	const DWORD				mask= F.getMask();
 	r_clear	();
 	
 	// Binary dispatcher
