@@ -7,7 +7,7 @@
 ////////////////////////////////////////////////////////////////////////////
 
 #include "stdafx.h"
-#include "enemy_predictor.h"
+#include "enemy_location_predictor.h"
 
 CEnemyLocationPredictor::CEnemyLocationPredictor		()
 {
