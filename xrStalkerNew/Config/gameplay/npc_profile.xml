@@ -1,0 +1,188 @@
+<?xml version='1.0' encoding="UTF-8"?>
+
+<xml>
+	<character id="default">
+		<class>Stalker_general</class>
+	</character>
+	
+	<!-- Stalker  -->	
+	<character id="stalker">
+		<class>Stalker_general</class>
+	</character>
+	<character id="stalker_novice">
+		<class>Stalker_novice</class>
+	</character>
+	<character id="stalker_general">
+		<class>Stalker_general</class>
+	</character>
+	<character id="stalker_veteran">
+		<class>Stalker_veteran</class>
+	</character>
+	<character id="stalker_master">
+		<class>Stalker_master</class>
+	</character>
+
+	<!-- Bandit  -->	
+	<character id="bandit">
+		<class>Bandit_general</class>
+	</character>
+	<character id="bandit_novice">
+		<class>Bandit_novice</class>
+	</character>
+	<character id="bandit_general">
+		<class>Bandit_general</class>
+	</character>
+	<character id="bandit_veteran">
+		<class>Bandit_veteran</class>
+	</character>
+	<character id="bandit_master">
+		<class>Bandit_master</class>
+	</character>
+
+	<!-- Soldier  -->
+	<character id="soldier">
+		<class>Soldier_regular</class>
+	</character>
+	<character id="soldier_regular">
+		<class>Soldier_regular</class>
+	</character>
+	<character id="soldier_sniper">
+		<class>Soldier_sniper</class>
+	</character>
+	<character id="soldier_specnaz">
+		<class>Soldier_specnaz</class>
+	</character>
+	<character id="soldier_military">
+		<class>Soldier_military</class>
+	</character>
+
+	<!-- Dolg  -->
+	<character id="dolg">
+		<class>Dolg_regular</class>
+	</character>
+	<character id="dolg_regular">
+		<class>Dolg_regular</class>
+	</character>
+	<character id="dolg_sniper">
+		<class>Dolg_sniper</class>
+	</character>
+	<character id="dolg_specnaz">
+		<class>Dolg_specnaz</class>
+	</character>
+	<character id="dolg_master">
+		<class>Dolg_master</class>
+	</character>
+
+	<!-- Svoboda -->
+	<character id="svoboda">
+		<class>Svoboda_regular</class>
+	</character>
+	<character id="svoboda_regular">
+		<class>Svoboda_regular</class>
+	</character>
+	<character id="svoboda_sniper">
+		<class>Svoboda_sniper</class>
+	</character>
+	<character id="svoboda_specnaz">
+		<class>Svoboda_specnaz</class>
+	</character>
+	<character id="svoboda_master">
+		<class>Svoboda_master</class>
+	</character>
+
+	<!-- Monolit -->
+	<character id="monolit">
+		<class>Monolit_regular</class>
+	</character>
+	<character id="monolit_regular">
+		<class>Monolit_regular</class>
+	</character>
+	<character id="monolit_sniper">
+		<class>Monolit_sniper</class>
+	</character>
+	<character id="monolit_specnaz">
+		<class>Monolit_specnaz</class>
+	</character>
+	<character id="monolit_master">
+		<class>Monolit_master</class>
+	</character>
+
+	<!-- Killer -->
+	<character id="killer">
+		<class>Killer_regular</class>
+	</character>
+	<character id="killer_regular">
+		<class>Killer_regular</class>
+	</character>
+	<character id="killer_sniper">
+		<class>Killer_sniper</class>
+	</character>
+	<character id="killer_specnaz">
+		<class>Killer_specnaz</class>
+	</character>
+	<character id="killer_master">
+		<class>Killer_master</class>
+	</character>
+
+	<!-- Ecolog -->
+	<character id="ecolog">
+		<class>Ecolog_general</class>
+	</character>
+	<character id="ecolog_guard">
+		<class>Ecolog_guard</class>
+	</character>
+
+	<character id="escape_trader">
+		<class>Trader</class>
+		<specific_character>escape_trader</specific_character>
+	</character>
+	
+	<character id="rostok_barman">
+		<class>Barman</class>
+		<specific_character>rostok_barman</specific_character>
+	</character>
+
+	<character id="actor">
+		<class>Actor</class>
+		<specific_character>actor</specific_character>
+	</character>
+
+	<character id="bolota_izgoy">
+		<class>Izgoy</class>
+		<specific_character>doctor_izgoy</specific_character>
+	</character>
+
+	<character id="zombied">
+		<class>Zombied</class>
+	</character>
+
+	<character id="dolg_leader">
+		<class>Dolg_leader</class>
+		<specific_character>dolg_leader</specific_character>
+	</character>
+
+	<character id="killer_leader">
+		<class>Killer_leader</class>
+		<specific_character>killer_leader</specific_character>
+	</character>
+
+	<character id="svoboda_leader">
+		<class>Svoboda_leader</class>
+		<specific_character>svoboda_leader</specific_character>
+	</character>
+
+	<character id="monolit_leader">
+		<class>Monolit_leader</class>
+		<specific_character>monolit_leader</specific_character>
+	</character>
+
+	<character id="monolit_left_hand">
+		<class>Monolit_left_hand</class>
+		<specific_character>monolit_left_hand</specific_character>
+	</character>
+
+	<character id="monolit_right_hand">
+		<class>Monolit_right_hand</class>
+		<specific_character>monolit_right_hand</specific_character>
+	</character>				
+</xml>

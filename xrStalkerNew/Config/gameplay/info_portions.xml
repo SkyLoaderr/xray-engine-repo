@@ -1,0 +1,29 @@
+<?xml version='1.0' encoding="windows-1251"?>
+
+<game_information_portions>
+  <info_portion id="dolg_territory">
+    <text>Вы находитесь на территории группировки "Долг".</text>
+  </info_portion>
+
+
+  <info_portion id="storyline_actor_start">
+    <task>storyline_eliminate_gunslinger</task>
+    <dialog>actor_break_dialog</dialog>
+  </info_portion>
+
+
+  <info_portion id="encyclopedy">
+	<article>social_stalker-clans_gunslinger-clan</article>
+  </info_portion>
+
+  <!-- Чтоб не изпользовать сохранения, используются следующие инфо-поршены -->
+
+  <!-- Торговец рассказал начальнею историю актеру -->
+  <info_portion id="trader_tell_history_to_actor">
+  </info_portion>
+
+  <!-- В темной лаборатории кровосос видел актера -->
+  <info_portion id="dark_lab_bloodsucker">
+  </info_portion>
+
+</game_information_portions>
