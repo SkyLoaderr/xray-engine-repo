@@ -57,7 +57,6 @@ BOOL CHangingLamp::net_Spawn(LPVOID DC)
 {
 	CSE_Abstract			*e		= (CSE_Abstract*)(DC);
 	CSE_ALifeObjectHangingLamp	*lamp	= dynamic_cast<CSE_ALifeObjectHangingLamp*>(e);
-	return FALSE;
 	R_ASSERT				(lamp);
 	inherited::net_Spawn	(DC);
 	Fcolor					clr;
