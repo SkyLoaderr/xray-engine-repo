@@ -42,6 +42,9 @@ void	CBlender::Save(	CFS_Base& FS )
 	BP_W_MARKER ("General");
 	BP_WRITE	("Priority",		BPID_INTEGER,	oPriority);
 	BP_WRITE	("Strict sorting",	BPID_BOOL,		oStrictSorting);
+	BP_W_MARKER	("Base Texture");
+	BP_WRITE	("TC source",		BPID_TCS,		oTCS);
+	BP_WRITE	("TC modifier",		BPID_TCM,		oTCM);
 }
 
 void	CBlender::Load(	CStream& FS )
@@ -49,4 +52,7 @@ void	CBlender::Load(	CStream& FS )
 	BP_R_MARKER	();
 	BP_READ		(BPID_INTEGER,	oPriority);
 	BP_READ		(BPID_BOOL,		oStrictSorting);
+	BP_R_MARKER	();
+	BP_READ		(BPID_TCS,		oTCS);
+	BP_READ 	(BPID_TCM,		oTCM);
 }

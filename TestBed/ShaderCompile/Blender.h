@@ -19,6 +19,8 @@ class ENGINE_API CBlender
 {
 	BP_Integer	oPriority;
 	BP_BOOL		oStrictSorting;
+	BP_TCS		oTCS;
+	BP_TCM		oTCM;
 protected:
 	DWORD		BC			(BOOL v)		{ return v?0xff:0; }
 
