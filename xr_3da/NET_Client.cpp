@@ -551,11 +551,12 @@ void	IPureClient::Sync_Thread	()
 			if (net_DeltaArray.size()>=syncSamples)	{
 				net_Syncronised	= TRUE;
 				net_TimeDelta	= net_TimeDelta_Calculated;
+				Msg				("* CL_TimeSync: DELTA: %d",net_TimeDelta);
 			}
 		}
 	}
 }
- 
+
 void	IPureClient::Sync_Average	()
 {
 	//***** Analyze results
@@ -582,7 +583,8 @@ void __cdecl		sync_thread(void* P)
 }
 void	IPureClient::net_Syncronize	()
 {
-	net_Syncronised	= FALSE;
-	net_TimeDelta	= 0;
-	_beginthread	(sync_thread,0,this);
+	net_Syncronised		= FALSE;
+	net_TimeDelta		= 0;
+	net_DeltaArray.clear();
+	_beginthread		(sync_thread,0,this);
 }
