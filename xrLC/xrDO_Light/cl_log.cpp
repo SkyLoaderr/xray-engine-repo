@@ -149,7 +149,7 @@ void __cdecl logThread(void *dummy)
 
 	BOOL		bHighPriority	= FALSE;
 	string256	u_name;
-	u32		u_size	= sizeof(u_name)-1;
+	unsigned long		u_size	= sizeof(u_name)-1;
 	GetUserName	(u_name,&u_size);
 	_strlwr		(u_name);
 	if ((0==strcmp(u_name,"oles"))||(0==strcmp(u_name,"alexmx")))	bHighPriority	= TRUE;
