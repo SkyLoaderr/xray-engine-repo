@@ -103,6 +103,7 @@ void CStalkerActionGatherItems::execute		()
 
 	m_object->set_level_dest_vertex	(m_object->item()->level_vertex_id());
 	
+	m_object->set_level_dest_vertex	(m_object->level_vertex_id());
 	m_object->set_node_evaluator	(0);
 	m_object->set_path_evaluator	(0);
 	m_object->set_desired_position	(&m_object->item()->Position());
@@ -221,8 +222,9 @@ void CStalkerActionGetKillDistance::finalize	()
 
 void CStalkerActionGetKillDistance::execute	()
 {
-	inherited::finalize		();
+	inherited::execute		();
 
+	m_object->set_level_dest_vertex	(m_object->level_vertex_id());
 	m_object->set_node_evaluator	(0);
 	m_object->set_path_evaluator	(0);
 	m_object->set_desired_position	(&m_object->Position());
@@ -264,8 +266,12 @@ void CStalkerActionGetReadyToKill::finalize	()
 
 void CStalkerActionGetReadyToKill::execute	()
 {
-	inherited::finalize		();
+	inherited::execute		();
 
+	if (!m_object->m_best_item_to_kill)
+		return;
+
+	m_object->set_level_dest_vertex	(m_object->level_vertex_id());
 	m_object->set_node_evaluator	(0);
 	m_object->set_path_evaluator	(0);
 	m_object->set_desired_position	(&m_object->Position());
@@ -277,10 +283,11 @@ void CStalkerActionGetReadyToKill::execute	()
 	m_object->set_mental_state		(eMentalStateDanger);
 
 	m_object->CSightManager::update				(eLookTypePathDirection);
+	if (!dynamic_cast<CMissile*>(m_object->best_weapon()))
 #ifdef OLD_OBJECT_HANDLER
-	m_object->CObjectHandler::set_dest_state	(eObjectActionNoItems);
+		m_object->CObjectHandler::set_dest_state	(eObjectActionNoItems);
 #else
-	m_object->CObjectHandlerGOAP::set_goal		(eObjectActionIdle);
+		m_object->CObjectHandlerGOAP::set_goal		(eObjectActionAimReady1,m_object->best_weapon());
 #endif
 }
 
@@ -307,8 +314,9 @@ void CStalkerActionGetEnemy::finalize	()
 
 void CStalkerActionGetEnemy::execute	()
 {
-	inherited::finalize		();
+	inherited::execute		();
 
+	m_object->set_level_dest_vertex	(m_object->level_vertex_id());
 	m_object->set_node_evaluator	(0);
 	m_object->set_path_evaluator	(0);
 	m_object->set_desired_position	(&m_object->Position());
@@ -355,23 +363,38 @@ void CStalkerActionGetEnemySeen::finalize	()
 
 void CStalkerActionGetEnemySeen::execute	()
 {
-	inherited::finalize		();
+	inherited::execute		();
 
-	m_object->set_node_evaluator	(0);
-	m_object->set_path_evaluator	(0);
-	m_object->set_desired_position	(&m_object->Position());
-	m_object->set_desired_direction	(0);
+	if (!m_object->m_best_item_to_kill)
+		return;
+
+	if (!m_object->enemy())
+		return;
+
+	
+	
+	CMemoryInfo									mem_object = m_object->memory(m_object->enemy());
+
+	if (!mem_object.m_object)
+		return;
+
+	m_object->set_level_dest_vertex	(mem_object.m_object_params.m_level_vertex_id);
+	m_object->set_desired_position	(&mem_object.m_object_params.m_position);
 	m_object->set_path_type			(CMovementManager::ePathTypeLevelPath);
 	m_object->set_detail_path_type	(CMovementManager::eDetailPathTypeSmooth);
 	m_object->set_body_state		(eBodyStateStand);
 	m_object->set_movement_type		(eMovementTypeWalk);
 	m_object->set_mental_state		(eMentalStateDanger);
 
-	m_object->CSightManager::update				(eLookTypePathDirection);
+	Fvector							direction;
+	direction.sub					(mem_object.m_object_params.m_position,m_object->Position());
+	m_object->CSightManager::update	(eLookTypeDirection,&direction);
+
+	if (!dynamic_cast<CMissile*>(m_object->best_weapon()))
 #ifdef OLD_OBJECT_HANDLER
-	m_object->CObjectHandler::set_dest_state	(eObjectActionNoItems);
+		m_object->CObjectHandler::set_dest_state	(eObjectActionNoItems);
 #else
-	m_object->CObjectHandlerGOAP::set_goal		(eObjectActionIdle);
+		m_object->CObjectHandlerGOAP::set_goal		(eObjectActionAimReady1,m_object->best_weapon());
 #endif
 }
 
@@ -398,11 +421,15 @@ void CStalkerActionGetItemToKill::finalize	()
 
 void CStalkerActionGetItemToKill::execute	()
 {
-	inherited::finalize		();
+	inherited::execute		();
 
+	if (!m_object->m_best_found_item_to_kill)
+		return;
+
+	m_object->set_level_dest_vertex	(m_object->m_best_found_item_to_kill->level_vertex_id());
 	m_object->set_node_evaluator	(0);
 	m_object->set_path_evaluator	(0);
-	m_object->set_desired_position	(&m_object->Position());
+	m_object->set_desired_position	(&m_object->m_best_found_item_to_kill->Position());
 	m_object->set_desired_direction	(0);
 	m_object->set_path_type			(CMovementManager::ePathTypeLevelPath);
 	m_object->set_detail_path_type	(CMovementManager::eDetailPathTypeSmooth);
@@ -410,7 +437,7 @@ void CStalkerActionGetItemToKill::execute	()
 	m_object->set_movement_type		(eMovementTypeWalk);
 	m_object->set_mental_state		(eMentalStateDanger);
 
-	m_object->CSightManager::update				(eLookTypePathDirection);
+	m_object->CSightManager::update				(eLookTypePoint,&m_object->m_best_found_item_to_kill->Position());
 #ifdef OLD_OBJECT_HANDLER
 	m_object->CObjectHandler::set_dest_state	(eObjectActionNoItems);
 #else
@@ -441,8 +468,9 @@ void CStalkerActionFindItemToKill::finalize	()
 
 void CStalkerActionFindItemToKill::execute	()
 {
-	inherited::finalize		();
+	inherited::execute		();
 
+	m_object->set_level_dest_vertex	(m_object->level_vertex_id());
 	m_object->set_node_evaluator	(0);
 	m_object->set_path_evaluator	(0);
 	m_object->set_desired_position	(&m_object->Position());
@@ -484,8 +512,9 @@ void CStalkerActionMakeItemKilling::finalize	()
 
 void CStalkerActionMakeItemKilling::execute	()
 {
-	inherited::finalize		();
+	inherited::execute		();
 
+	m_object->set_level_dest_vertex	(m_object->level_vertex_id());
 	m_object->set_node_evaluator	(0);
 	m_object->set_path_evaluator	(0);
 	m_object->set_desired_position	(&m_object->Position());
@@ -527,8 +556,9 @@ void CStalkerActionFindAmmo::finalize	()
 
 void CStalkerActionFindAmmo::execute	()
 {
-	inherited::finalize		();
+	inherited::execute		();
 
+	m_object->set_level_dest_vertex	(m_object->level_vertex_id());
 	m_object->set_node_evaluator	(0);
 	m_object->set_path_evaluator	(0);
 	m_object->set_desired_position	(&m_object->Position());

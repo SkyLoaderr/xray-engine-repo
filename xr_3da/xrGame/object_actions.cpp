@@ -40,6 +40,8 @@ void CObjectActionShow::initialize		()
 {
 	inherited::initialize			();
 	VERIFY							(m_item);
+	if (m_object->inventory().ActiveItem() && m_object->inventory().ActiveItem()->GetSlot() == m_item->GetSlot())
+		m_object->inventory().Ruck	(m_object->inventory().ActiveItem());
 	m_object->inventory().Slot		(m_item);
 	m_object->inventory().Activate	(m_item->GetSlot());
 }

@@ -3,6 +3,8 @@
 #include "PhysicsShell.h"
 #include "xrserver_objects_alife_items.h"
 #include "Actor_Flags.h"
+#include "inventory.h"
+#include "weapon.h"
 
 CCartridge::CCartridge() 
 {
@@ -182,4 +184,22 @@ void CWeaponAmmo::net_Import(NET_Packet& P)
 	inherited::net_Import(P);
 
 	P.r_u16(m_boxCurr);
+}
+
+const CInventoryItem *CWeaponAmmo::can_make_killing	(const CInventory *inventory) const
+{
+	VERIFY					(inventory);
+
+	xr_set<PIItem>::const_iterator	I = inventory->m_all.begin();
+	xr_set<PIItem>::const_iterator	E = inventory->m_all.end();
+	for ( ; I != E; ++I) {
+		const CWeapon		*weapon = dynamic_cast<const CWeapon*>(*I);
+		if (!weapon)
+			continue;
+		xr_vector<ref_str>::const_iterator	i = std::find(weapon->m_ammoTypes.begin(),weapon->m_ammoTypes.end(),cNameSect());
+		if (i != weapon->m_ammoTypes.end())
+			return			(weapon);
+	}
+
+	return					(0);
 }

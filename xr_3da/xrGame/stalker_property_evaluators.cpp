@@ -64,7 +64,7 @@ _value_type CStalkerPropertyEvaluatorSeeEnemy::evaluate	()
 
 _value_type CStalkerPropertyEvaluatorItemToKill::evaluate	()
 {
-	return				(true);
+	return				(!!m_object->item_to_kill());
 }
 
 //////////////////////////////////////////////////////////////////////////
@@ -73,7 +73,7 @@ _value_type CStalkerPropertyEvaluatorItemToKill::evaluate	()
 
 _value_type CStalkerPropertyEvaluatorItemCanKill::evaluate	()
 {
-	return				(true);
+	return				(m_object->item_can_kill());
 }
 
 //////////////////////////////////////////////////////////////////////////
@@ -82,7 +82,7 @@ _value_type CStalkerPropertyEvaluatorItemCanKill::evaluate	()
 
 _value_type CStalkerPropertyEvaluatorFoundItemToKill::evaluate	()
 {
-	return				(true);
+	return				(m_object->remember_item_to_kill());
 }
 
 //////////////////////////////////////////////////////////////////////////
@@ -91,7 +91,7 @@ _value_type CStalkerPropertyEvaluatorFoundItemToKill::evaluate	()
 
 _value_type CStalkerPropertyEvaluatorFoundAmmo::evaluate	()
 {
-	return				(true);
+	return				(m_object->remember_ammo());
 }
 
 //////////////////////////////////////////////////////////////////////////
@@ -100,7 +100,7 @@ _value_type CStalkerPropertyEvaluatorFoundAmmo::evaluate	()
 
 _value_type CStalkerPropertyEvaluatorReadyToKill::evaluate	()
 {
-	return				(true);
+	return				(m_object->ready_to_kill());
 }
 
 //////////////////////////////////////////////////////////////////////////
@@ -109,6 +109,6 @@ _value_type CStalkerPropertyEvaluatorReadyToKill::evaluate	()
 
 _value_type CStalkerPropertyEvaluatorKillDistance::evaluate	()
 {
-	return				(true);
+	return				(m_object->kill_distance());
 }
 

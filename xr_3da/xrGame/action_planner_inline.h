@@ -129,7 +129,7 @@ void CPlanner::update				(u32 time_delta)
 
 #ifdef LOG_ACTION
 	// printing solution
-	if (m_use_log) {
+	if (m_use_log && m_solution_changed) {
 		Msg						("%6d : Solution",Level().timeServer());
 		for (int i=0; i<(int)solution().size(); ++i)
 			Msg					("%s",action2string(solution()[i]));

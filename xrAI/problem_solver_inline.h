@@ -61,6 +61,7 @@ void CProblemSolverAbstract::reinit						(bool clear_all)
 	m_temp.clear			();
 	m_solution.clear		();
 	m_applied				= false;
+	m_solution_changed		= false;
 
 	if (!clear_all)
 		return;
@@ -247,6 +248,7 @@ TEMPLATE_SPECIALIZATION
 IC	void CProblemSolverAbstract::solve			()
 {
 #ifndef AI_COMPILER
+	m_solution_changed			= true;
 	if (m_actuality) {
 		bool			actual = true;
 		xr_vector<COperatorCondition>::const_iterator	I = current_state().conditions().begin();
@@ -263,6 +265,7 @@ IC	void CProblemSolverAbstract::solve			()
 			return;
 	}
 
+	m_solution_changed			= true;
 	m_current_state.clear		();
 	bool						successful = ai().graph_engine().search(*this,target_state(),CState(),&m_solution,CGraphEngine::CSolverBaseParameters());
 	m_actuality					= successful;

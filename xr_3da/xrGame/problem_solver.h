@@ -63,6 +63,7 @@ protected:
 	mutable CState				m_temp;
 	mutable bool				m_applied;
 	bool						m_actuality;
+	bool						m_solution_changed;
 
 public:
 	// common interface

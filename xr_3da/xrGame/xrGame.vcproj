@@ -451,7 +451,7 @@
 						</Filter>
 					</Filter>
 					<Filter
-						Name="MotivationActionManagers"
+						Name="StalkerMotivationActionManager"
 						Filter="">
 						<File
 							RelativePath=".\motivation_action_manager_stalker.cpp">

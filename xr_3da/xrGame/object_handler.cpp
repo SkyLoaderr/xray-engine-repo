@@ -833,6 +833,7 @@ CInventoryItem *CObjectHandler::best_weapon() const
 				best_weapon_type = current_weapon_type;
 				best_weapon		 = *I;
 			}
+			ai().ef_storage().m_tpGameObject	= 0;
 			continue;
 		}
 		CMissile	*missile = dynamic_cast<CMissile*>(*I);
@@ -843,6 +844,7 @@ CInventoryItem *CObjectHandler::best_weapon() const
 				best_weapon_type = current_weapon_type;
 				best_weapon		 = *I;
 			}
+			ai().ef_storage().m_tpGameObject	= 0;
 		}
 	}
 	return			(best_weapon);

@@ -28,6 +28,9 @@ CObjectHandlerGOAP::~CObjectHandlerGOAP	()
 
 void CObjectHandlerGOAP::init	()
 {
+#ifdef LOG_ACTION
+	m_use_log						= true;
+#endif
 }
 
 void CObjectHandlerGOAP::Load			(LPCSTR section)
@@ -110,6 +113,7 @@ CInventoryItem *CObjectHandlerGOAP::best_weapon() const
 				best_weapon_type = current_weapon_type;
 				best_weapon		 = *I;
 			}
+			ai().ef_storage().m_tpGameObject	= 0;
 			continue;
 		}
 		CMissile	*missile = dynamic_cast<CMissile*>(*I);
@@ -120,6 +124,7 @@ CInventoryItem *CObjectHandlerGOAP::best_weapon() const
 				best_weapon_type = current_weapon_type;
 				best_weapon		 = *I;
 			}
+			ai().ef_storage().m_tpGameObject	= 0;
 		}
 	}
 	return			(best_weapon);
@@ -230,6 +235,8 @@ LPCSTR CObjectHandlerGOAP::action2string(const _action_id_type &id)
 		case CObjectHandlerGOAP::eWorldOperatorReload2		: {strcat(S,"Reload2");		break;}
 		case CObjectHandlerGOAP::eWorldOperatorFire1		: {strcat(S,"Fire1");		break;}
 		case CObjectHandlerGOAP::eWorldOperatorFire2		: {strcat(S,"Fire2");		break;}
+		case CObjectHandlerGOAP::eWorldOperatorAimingReady1	: {strcat(S,"AimingReady1");break;}
+		case CObjectHandlerGOAP::eWorldOperatorAimingReady2	: {strcat(S,"AimingReady2");break;}
 		case CObjectHandlerGOAP::eWorldOperatorSwitch1		: {strcat(S,"Switch1");		break;}
 		case CObjectHandlerGOAP::eWorldOperatorSwitch2		: {strcat(S,"Switch2");		break;}
 		case CObjectHandlerGOAP::eWorldOperatorQueueWait1	: {strcat(S,"QueueWait1");	break;}
@@ -271,6 +278,8 @@ LPCSTR CObjectHandlerGOAP::property2string(const _condition_type &id)
 		case CObjectHandlerGOAP::eWorldPropertyReady2		: {strcat(S,"Ready2");		break;}
 		case CObjectHandlerGOAP::eWorldPropertyFiring1		: {strcat(S,"Firing1");		break;}
 		case CObjectHandlerGOAP::eWorldPropertyFiring2		: {strcat(S,"Firing2");		break;}
+		case CObjectHandlerGOAP::eWorldPropertyAimingReady1	: {strcat(S,"AimingReady1");break;}
+		case CObjectHandlerGOAP::eWorldPropertyAimingReady2	: {strcat(S,"AimingReady2");break;}
 		case CObjectHandlerGOAP::eWorldPropertyAmmo1		: {strcat(S,"Ammo1");		break;}
 		case CObjectHandlerGOAP::eWorldPropertyAmmo2		: {strcat(S,"Ammo2");		break;}
 		case CObjectHandlerGOAP::eWorldPropertyIdle			: {strcat(S,"Idle");		break;}
@@ -278,7 +287,7 @@ LPCSTR CObjectHandlerGOAP::property2string(const _condition_type &id)
 		case CObjectHandlerGOAP::eWorldPropertyDropped		: {strcat(S,"Dropped");		break;}
 		case CObjectHandlerGOAP::eWorldPropertyQueueWait1	: {strcat(S,"QueueWait1");	break;}
 		case CObjectHandlerGOAP::eWorldPropertyQueueWait2	: {strcat(S,"QueueWait2");	break;}
-		case CObjectHandlerGOAP::eWorldPropertyThrowStarted	: {strcat(S,"ThrowStarted");	break;}
+		case CObjectHandlerGOAP::eWorldPropertyThrowStarted	: {strcat(S,"ThrowStarted");break;}
 		case CObjectHandlerGOAP::eWorldPropertyThrowIdle	: {strcat(S,"ThrowIdle");	break;}
 		case CObjectHandlerGOAP::eWorldPropertyThrow		: {strcat(S,"Throwing");	break;}
 		case CObjectHandlerGOAP::eWorldPropertyThreaten		: {strcat(S,"Threaten");	break;}
@@ -320,6 +329,8 @@ void CObjectHandlerGOAP::add_evaluators		(CWeapon *weapon)
 	add_evaluator		(uid(id,eWorldPropertyDropped)		,xr_new<CObjectPropertyEvaluatorConst>(false));
 	add_evaluator		(uid(id,eWorldPropertyAiming1)		,xr_new<CObjectPropertyEvaluatorConst>(false));
 	add_evaluator		(uid(id,eWorldPropertyAiming2)		,xr_new<CObjectPropertyEvaluatorConst>(false));
+	add_evaluator		(uid(id,eWorldPropertyAimingReady1)	,xr_new<CObjectPropertyEvaluatorConst>(false));
+	add_evaluator		(uid(id,eWorldPropertyAimingReady2)	,xr_new<CObjectPropertyEvaluatorConst>(false));
 }
 
 void CObjectHandlerGOAP::add_operators		(CWeapon *weapon)
@@ -422,6 +433,7 @@ void CObjectHandlerGOAP::add_operators		(CWeapon *weapon)
 	// fire1
 	action				= xr_new<CObjectActionFire>(weapon,m_object,&m_storage,0,"fire1");
 	add_condition		(action,id,eWorldPropertyHidden,	false);
+	add_condition		(action,id,eWorldPropertyReady1,	true);
 	add_condition		(action,id,eWorldPropertyEmpty1,	false);
 	add_condition		(action,id,eWorldPropertyAimed1,	true);
 	add_condition		(action,id,eWorldPropertySwitch1,	true);
@@ -432,6 +444,7 @@ void CObjectHandlerGOAP::add_operators		(CWeapon *weapon)
 	// fire2
 	action				= xr_new<CObjectActionFire>(weapon,m_object,&m_storage,1,"fire2");
 	add_condition		(action,id,eWorldPropertyHidden,	false);
+	add_condition		(action,id,eWorldPropertyReady2,	true);
 	add_condition		(action,id,eWorldPropertyEmpty2,	false);
 	add_condition		(action,id,eWorldPropertyAimed2,	true);
 	add_condition		(action,id,eWorldPropertySwitch2,	true);
@@ -445,6 +458,7 @@ void CObjectHandlerGOAP::add_operators		(CWeapon *weapon)
 	add_condition		(action,id,eWorldPropertyReady1,	false);
 	add_condition		(action,id,eWorldPropertyAmmo1,		true);
 	add_effect			(action,id,eWorldPropertyEmpty1,	false);
+	add_effect			(action,id,eWorldPropertyReady1,	true);
 	add_effect			(action,id,eWorldPropertyAimed1,	false);
 	add_effect			(action,id,eWorldPropertyAimed2,	false);
 	add_operator		(uid(id,eWorldOperatorReload1),		action);
@@ -455,6 +469,7 @@ void CObjectHandlerGOAP::add_operators		(CWeapon *weapon)
 	add_condition		(action,id,eWorldPropertyReady2,	false);
 	add_condition		(action,id,eWorldPropertyAmmo2,		true);
 	add_effect			(action,id,eWorldPropertyEmpty2,	false);
+	add_effect			(action,id,eWorldPropertyReady2,	true);
 	add_effect			(action,id,eWorldPropertyAimed1,	false);
 	add_effect			(action,id,eWorldPropertyAimed2,	false);
 	add_operator		(uid(id,eWorldOperatorReload2),		action);
@@ -479,8 +494,29 @@ void CObjectHandlerGOAP::add_operators		(CWeapon *weapon)
 	add_effect			(action,id,eWorldPropertyAimed2,	false);
 	add_operator		(uid(id,eWorldOperatorSwitch2),		action);
 
+	// aiming ready1
+	action				= xr_new<CObjectActionMember<CInventoryItem> >(weapon,m_object,&m_storage,eWorldPropertyAimed1,true,"aim_ready1");
+	add_condition		(action,id,eWorldPropertyHidden,	false);
+	add_condition		(action,id,eWorldPropertySwitch1,	true);
+	add_condition		(action,id,eWorldPropertyReady1,	true);
+	add_effect			(action,id,eWorldPropertyAimed1,	true);
+	add_effect			(action,id,eWorldPropertyAimingReady1,true);
+	add_effect			(action,id,eWorldPropertyAimed2,	false);
+	add_operator		(uid(id,eWorldOperatorAimingReady1),action);
+
+	// aiming ready2
+	action				= xr_new<CObjectActionMember<CInventoryItem> >(weapon,m_object,&m_storage,eWorldPropertyAimed2,true,"aim_ready2");
+	add_condition		(action,id,eWorldPropertyHidden,	false);
+	add_condition		(action,id,eWorldPropertySwitch2,	true);
+	add_effect			(action,id,eWorldPropertyAimed2,	true);
+	add_effect			(action,id,eWorldPropertyAimingReady2,true);
+	add_effect			(action,id,eWorldPropertyAimed1,	false);
+	add_operator		(uid(id,eWorldOperatorAimingReady2),action);
+
 	this->action(uid(id,eWorldOperatorAim1)).set_inertia_time(1000);
 	this->action(uid(id,eWorldOperatorAim2)).set_inertia_time(1000);
+	this->action(uid(id,eWorldOperatorAimingReady1)).set_inertia_time(1000);
+	this->action(uid(id,eWorldOperatorAimingReady2)).set_inertia_time(1000);
 }
 
 void CObjectHandlerGOAP::add_evaluators		(CMissile *missile)
@@ -585,8 +621,10 @@ void CObjectHandlerGOAP::set_goal	(MonsterSpace::EObjectAction object_action, CG
 		condition_id		= u32(eWorldPropertyNoItemsIdle);
 
 #ifdef LOG_ACTION
-	if (m_use_log)
+	if (m_use_log) {
+		Msg					("%6d : Active item %s",Level().timeServer(),inventory().ActiveItem() ? *inventory().ActiveItem()->cName() : "no active items");
 		Msg					("%6d : Goal %s",Level().timeServer(),property2string(condition_id));
+	}
 #endif
 	CState					condition;
 	condition.add_condition	(CWorldProperty(condition_id,true));

@@ -381,6 +381,9 @@ public:
 	virtual void			create_physic_shell	();
 	virtual void			activate_physic_shell();
 	virtual void			setup_physic_shell	();
+	virtual bool			can_kill			(const CInventory *inventory) const;
+	virtual const CInventoryItem *can_kill		(const xr_set<const CGameObject*> &items) const;
+	virtual bool			ready_to_kill		() const;
 };
 
 #endif // !defined(AFX_WEAPON_H__7C42AD7C_0EBD_4AD1_90DE_2F972BF538B9__INCLUDED_)

@@ -41,3 +41,8 @@ void CAI_Stalker::Exec_Look(float dt)
 	mXFORM.c.set					(Position());
 	XFORM().set						(mXFORM);
 }
+
+bool CAI_Stalker::bfCheckForNodeVisibility(u32 dwNodeID, bool /**bIfRayPick/**/)
+{
+	return				(CVisualMemoryManager::visible(dwNodeID,m_head.current.yaw,ffGetFov()));
+}

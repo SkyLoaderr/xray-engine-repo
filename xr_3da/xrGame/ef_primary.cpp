@@ -201,6 +201,10 @@ u32 CPersonalWeaponTypeFunction::dwfGetWeaponType()
 float CPersonalWeaponTypeFunction::ffGetTheBestWeapon() 
 {
 	u32 dwBestWeapon = 0;
+	
+	if (ai().ef_storage().m_tpCurrentMember && ai().ef_storage().m_tpGameObject)
+		return			(float(dwfGetWeaponType()));
+
 	if (ai().ef_storage().m_tpCurrentMember) {
 		const CInventoryOwner *tpInventoryOwner = dynamic_cast<const CInventoryOwner*>(ai().ef_storage().m_tpCurrentMember);
 		if (tpInventoryOwner) {
@@ -214,12 +218,13 @@ float CPersonalWeaponTypeFunction::ffGetTheBestWeapon()
 						u32 dwCurrentBestWeapon = dwfGetWeaponType();
 						if (dwCurrentBestWeapon > dwBestWeapon)
 							dwBestWeapon = dwCurrentBestWeapon;
+						ai().ef_storage().m_tpGameObject	= 0;
 					}
 				}
 		}	
 	}
 	else {
-		if (!ai().ef_storage().m_tpCurrentALifeMember->m_tpCurrentBestWeapon)
+		if (!ai().ef_storage().m_tpCurrentALifeMember || !ai().ef_storage().m_tpCurrentALifeMember->m_tpCurrentBestWeapon)
 			return(0);
 		ai().ef_storage().m_tpCurrentALifeObject	= ai().ef_storage().m_tpCurrentALifeMember->m_tpCurrentBestWeapon;
 		dwBestWeapon			= dwfGetWeaponType();
@@ -470,11 +475,11 @@ float CEnemyWeaponTypeFunction::ffGetValue()
 		return							(m_fLastValue);
 	if (ai().ef_storage().m_tpCurrentMember) {
 		const CEntityAlive					*tpEntity = ai().ef_storage().m_tpCurrentMember;
-		const CGameObject						*l_tpGameObject = ai().ef_storage().m_tpGameObject;
-		ai().ef_storage().m_tpCurrentMember		= ai().ef_storage().m_tpCurrentEnemy;
-		m_fLastValue					= ai().ef_storage().m_pfPersonalWeaponType->ffGetValue();
-		ai().ef_storage().m_tpCurrentMember		= tpEntity;
-		ai().ef_storage().m_tpGameObject			= l_tpGameObject;
+		const CGameObject					*l_tpGameObject = ai().ef_storage().m_tpGameObject;
+		ai().ef_storage().m_tpCurrentMember	= ai().ef_storage().m_tpCurrentEnemy;
+		m_fLastValue						= ai().ef_storage().m_pfPersonalWeaponType->ffGetValue();
+		ai().ef_storage().m_tpCurrentMember	= tpEntity;
+		ai().ef_storage().m_tpGameObject	= l_tpGameObject;
 	}
 	else {
 		CSE_ALifeSchedulable						*l_tpALifeSchedulable = ai().ef_storage().m_tpCurrentALifeMember;

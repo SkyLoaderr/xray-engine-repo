@@ -77,6 +77,8 @@ namespace MonsterSpace {
 		eObjectActionIdle,
 		eObjectActionStrapped,
 		eObjectActionDrop,
+		eObjectActionAimReady1,
+		eObjectActionAimReady2,
 		// for scripts only
 		eObjectActionActivate,
 		eObjectActionDeactivate,

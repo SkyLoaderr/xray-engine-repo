@@ -1080,3 +1080,49 @@ ALife::_TIME_ID	 CWeapon::TimePassedAfterIndependant()
 	else
 		return 0;
 }
+
+bool CWeapon::can_kill	(const CInventory *inventory) const
+{
+	if (GetAmmoCurrent() || m_ammoTypes.empty())
+		return				(true);
+
+	VERIFY					(inventory);
+
+	xr_set<PIItem>::const_iterator	I = inventory->m_all.begin();
+	xr_set<PIItem>::const_iterator	E = inventory->m_all.end();
+	for ( ; I != E; ++I) {
+		xr_vector<ref_str>::const_iterator	i = std::find(m_ammoTypes.begin(),m_ammoTypes.end(),(*I)->cNameSect());
+		if (i != m_ammoTypes.end())
+			return			(true);
+	}
+
+	return					(false);
+}
+
+const CInventoryItem *CWeapon::can_kill	(const xr_set<const CGameObject*> &items) const
+{
+	if (m_ammoTypes.empty())
+		return				(this);
+
+	xr_set<const CGameObject*>::const_iterator I = items.begin();
+	xr_set<const CGameObject*>::const_iterator E = items.end();
+	for ( ; I != E; ++I) {
+		const CInventoryItem	*inventory_item = dynamic_cast<const CInventoryItem*>(*I);
+		if (!inventory_item)
+			continue;
+		xr_vector<ref_str>::const_iterator	i = std::find(m_ammoTypes.begin(),m_ammoTypes.end(),inventory_item->cNameSect());
+		if (i != m_ammoTypes.end())
+			return			(inventory_item);
+	}
+
+	return					(0);
+}
+
+bool CWeapon::ready_to_kill	() const
+{
+	return					(
+		!IsMisfire() && 
+		((STATE == eIdle) || (STATE == eFire) || (STATE == eFire2)) && 
+		GetAmmoElapsed()
+	);
+}

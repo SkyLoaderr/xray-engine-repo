@@ -10,6 +10,8 @@
 #include "ai_stalker.h"
 #include "../../WeaponMagazined.h"
 #include "../../ai_script_actions.h"
+#include "../../inventory.h"
+#include "../../ef_storage.h"
 
 float CAI_Stalker::HitScale	(int element)
 {
@@ -51,10 +53,162 @@ void CAI_Stalker::HitSignal(float amount, Fvector& vLocalDir, CObject* who, s16 
 		float				power_factor = 3.f*amount/100.f; clamp(power_factor,0.f,1.f);
 		tpKinematics->PlayFX(tpMotionDef,power_factor);
 	}
-	add_hit_object		(amount,vLocalDir,who,element);
+	add_hit_object			(amount,vLocalDir,who,element);
 }
 
-bool CAI_Stalker::bfCheckForNodeVisibility(u32 dwNodeID, bool /**bIfRayPick/**/)
+void CAI_Stalker::OnItemTake			(CInventoryItem *inventory_item)
 {
-	return				(CVisualMemoryManager::visible(dwNodeID,m_head.current.yaw,ffGetFov()));
+#ifdef OLD_OBJECT_HANDLER
+	CObjectHandler::OnItemTake		(inventory_item);
+#else
+	CObjectHandlerGOAP::OnItemTake	(inventory_item);
+#endif
+	m_last_best_item_frame	= 0;
+}
+
+void CAI_Stalker::OnItemDrop			(CInventoryItem *inventory_item)
+{
+#ifdef OLD_OBJECT_HANDLER
+	CObjectHandler::OnItemDrop		(inventory_item);
+#else
+	CObjectHandlerGOAP::OnItemDrop	(inventory_item);
+#endif
+	m_last_best_item_frame	= 0;
+}
+
+void CAI_Stalker::update_best_item_info	()
+{
+	// check if we already updated
+	if (!frame_check(m_last_best_item_frame))
+		return;
+
+	// initialize parameters
+	ai().ef_storage().m_tpCurrentMember			= this;
+	ai().ef_storage().m_tpCurrentALifeMember	= 0;
+	ai().ef_storage().m_tpCurrentEnemy			= enemy() ? enemy() : this;
+	m_best_item_to_kill			= 0;
+	m_best_ammo					= 0;
+	m_best_found_item_to_kill	= 0;
+	m_best_found_ammo			= 0;
+	float						best_value = 0;
+
+	// try to find the best item which can kill
+	{
+		PSPIItem					I = inventory().m_all.begin();
+		PSPIItem					E = inventory().m_all.end();
+		for ( ; I != E; ++I) {
+			if ((*I)->can_kill(&inventory())) {
+				ai().ef_storage().m_tpGameObject	= *I;
+				float value							= ai().ef_storage().m_pfWeaponEffectiveness->ffGetValue();
+				if (value > best_value) {
+					best_value			= value;
+					m_best_item_to_kill = *I;
+				}
+			}
+		}
+	}
+
+	// check if we found
+	if (m_best_item_to_kill) {
+		m_best_ammo				= m_best_item_to_kill;
+		return;
+	}
+
+	// so we do not have such an item
+	// check if we remember we saw item which can kill
+	// or items which can make my item killing
+	{
+		xr_set<const CGameObject*>::const_iterator	I = items().begin();
+		xr_set<const CGameObject*>::const_iterator	E = items().end();
+		for ( ; I != E; ++I) {
+			const CInventoryItem	*inventory_item = dynamic_cast<const CInventoryItem*>(*I);
+			if (!inventory_item)
+				continue;
+			if (inventory_item->can_kill(&inventory())) {
+				ai().ef_storage().m_tpGameObject	= inventory_item;
+				float value							= ai().ef_storage().m_pfWeaponEffectiveness->ffGetValue();
+				if (value > best_value) {
+					best_value						= value;
+					m_best_found_item_to_kill		= inventory_item;
+					m_best_found_ammo				= 0;
+				}
+			}
+			else {
+				const CInventoryItem				*item = inventory_item->can_make_killing(&inventory());
+				if (!item)
+					continue;
+
+				ai().ef_storage().m_tpGameObject	= item;
+				float value							= ai().ef_storage().m_pfWeaponEffectiveness->ffGetValue();
+				if (value > best_value) {
+					best_value						= value;
+					m_best_found_item_to_kill		= 0;
+					m_best_found_ammo				= inventory_item;
+				}
+			}
+		}
+	}
+
+	// check if we found such an item
+	if (m_best_found_item_to_kill || m_best_found_ammo)
+		return;
+
+	// check if we remember we saw item to kill
+	// and item which can make this item killing
+	xr_set<const CGameObject*>::const_iterator	I = items().begin();
+	xr_set<const CGameObject*>::const_iterator	E = items().end();
+	for ( ; I != E; ++I) {
+		const CInventoryItem	*inventory_item = dynamic_cast<const CInventoryItem*>(*I);
+		if (!inventory_item)
+			continue;
+		const CInventoryItem	*item = inventory_item->can_kill(items());
+		if (item) {
+			ai().ef_storage().m_tpGameObject	= inventory_item;
+			float value							= ai().ef_storage().m_pfWeaponEffectiveness->ffGetValue();
+			if (value > best_value) {
+				best_value					= value;
+				m_best_found_item_to_kill	= inventory_item;
+				m_best_found_ammo			= item;
+			}
+		}
+	}
+}
+
+bool CAI_Stalker::item_to_kill			()
+{
+	update_best_item_info	();
+	return					(!!m_best_item_to_kill);
+}
+
+bool CAI_Stalker::item_can_kill			()
+{
+	update_best_item_info	();
+	return					(!!m_best_ammo);
+}
+
+bool CAI_Stalker::remember_item_to_kill	()
+{
+	update_best_item_info	();
+	return					(!!m_best_found_item_to_kill);
+}
+
+bool CAI_Stalker::remember_ammo			()
+{
+	update_best_item_info	();
+	return					(!!m_best_found_ammo);
+}
+
+bool CAI_Stalker::ready_to_kill			()
+{
+	return					(
+		m_best_item_to_kill && 
+		inventory().ActiveItem() && 
+		(inventory().ActiveItem()->ID() == m_best_item_to_kill->ID()) &&
+		m_best_item_to_kill->ready_to_kill()
+	);
+}
+
+bool CAI_Stalker::kill_distance			()
+{
+	return					(true);
 }

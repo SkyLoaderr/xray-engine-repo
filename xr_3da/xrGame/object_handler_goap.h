@@ -56,6 +56,8 @@ public:
 		eWorldPropertyDropped,
 		eWorldPropertyQueueWait1,
 		eWorldPropertyQueueWait2,
+		eWorldPropertyAimingReady1,
+		eWorldPropertyAimingReady2,
 		
 		eWorldPropertyThrowStarted,
 		eWorldPropertyThrowIdle,
@@ -85,6 +87,8 @@ public:
 		eWorldOperatorSwitch2,
 		eWorldOperatorQueueWait1,
 		eWorldOperatorQueueWait2,
+		eWorldOperatorAimingReady1,
+		eWorldOperatorAimingReady2,
 
 		eWorldOperatorThrowStart,
 		eWorldOperatorThrowIdle,

@@ -73,6 +73,8 @@ IC	CObjectHandlerGOAP::EWorldProperties CObjectHandlerGOAP::object_property(Mons
 		case MonsterSpace::eObjectActionDrop		: return(eWorldPropertyDropped);
 		case MonsterSpace::eObjectActionActivate	: return(eWorldPropertyIdle);
 		case MonsterSpace::eObjectActionDeactivate	: return(eWorldPropertyNoItemsIdle);
+		case MonsterSpace::eObjectActionAimReady1	: return(eWorldPropertyAimingReady1);
+		case MonsterSpace::eObjectActionAimReady2	: return(eWorldPropertyAimingReady2);
 		default							: NODEFAULT;
 	}
 #ifdef DEBUG

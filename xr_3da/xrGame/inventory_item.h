@@ -173,6 +173,10 @@ public:
 	virtual void	renderable_Render	();
 	virtual void	reload				(LPCSTR section);
 	virtual void	reinit				();
+	virtual bool	can_kill			(const CInventory *inventory) const;
+	virtual const CInventoryItem *can_kill			(const xr_set<const CGameObject*> &items) const;
+	virtual const CInventoryItem *can_make_killing	(const CInventory *inventory) const;
+	virtual bool	ready_to_kill		() const;
 };
 
 #include "inventory_item_inline.h"
