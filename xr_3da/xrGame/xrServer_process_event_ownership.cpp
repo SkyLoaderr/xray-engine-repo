@@ -16,41 +16,18 @@ void xrServer::Process_event_ownership(NET_Packet& P, DPNID sender, u32 time, u1
 	xrClientData*		c_from		= ID_to_client	(sender);
 	R_ASSERT			(c_parent == c_from);		// assure client only send request for local units
 
-	switch (game->type)	
+
+	if (game->OnTargetTouched(sender,id_entity))
 	{
-	case GAME_SINGLE:
-	case GAME_DEATHMATCH:
-		{
-			// Perform migration if needed
-			if (c_parent != c_entity)		PerformMigration(e_entity,c_entity,c_parent);
+		// Game allows ownership of entity
 
-			// Rebuild parentness
-			e_entity->ID_Parent	= id_parent;
+		// Perform migration if needed
+		if (c_parent != c_entity)		PerformMigration(e_entity,c_entity,c_parent);
 
-			// Signal to everyone (including sender)
-			SendBroadcast		(0xffffffff,P,MODE);
-		}
-		break;
-	case GAME_ASSAULT:
-		{
-			// Check if it's special game-play item
-			xrSE_Target_Assault*	T	= dynamic_cast<xrSE_Target_Assault*> (e_entity);
-			if (T && (0==T->g_team()) && (1==e_parent->g_team()))
-			{
-				// Task acomplished
+		// Rebuild parentness
+		e_entity->ID_Parent	= id_parent;
 
-				// ???????????????????????????????????????????
-			} else {
-				// It's some generic item - perform migration if needed
-				if (c_parent != c_entity)		PerformMigration(e_entity,c_entity,c_parent);
-
-				// Rebuild parentness
-				e_entity->ID_Parent	= id_parent;
-
-				// Signal to everyone (including sender)
-				SendBroadcast		(0xffffffff,P,MODE);
-			}
-		}
-		break;
+		// Signal to everyone (including sender)
+		SendBroadcast		(0xffffffff,P,MODE);
 	}
 }
