@@ -16,6 +16,7 @@
 
 class CRestrictedObject;
 class CScriptCallback;
+class CGameObject;
 
 using namespace PatrolPathManager;
 
@@ -37,6 +38,9 @@ private:
 	Fvector						m_dest_position;
 	CScriptCallback				*m_callback;
 	CRestrictedObject			*m_object;
+#ifdef DEBUG
+	CGameObject					*m_game_object;
+#endif
 
 protected:
 	IC			bool				random					() const;
