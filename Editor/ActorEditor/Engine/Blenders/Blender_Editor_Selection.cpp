@@ -48,7 +48,7 @@ void	CBlender_Editor_Selection::Compile	(CBlender_Recorder& RS, sh_list& L_textu
 			RS.StageSET_Alpha	(D3DTA_TFACTOR,	  D3DTOP_MODULATE,		D3DTA_DIFFUSE);
 			RS.Stage_Texture	(oT_Name,	L_textures);
 			RS.Stage_Matrix		(oT_xform,	L_matrices,	0);
-			RS.Stage_Constant	(oT_Factor,	L_constants);
+			RS.Stage_Constant	("$null",	L_constants);
 		}
 		RS.StageEnd			();
 	}
