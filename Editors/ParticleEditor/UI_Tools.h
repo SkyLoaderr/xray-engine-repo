@@ -126,7 +126,7 @@ public:
     bool __fastcall 	KeyUp       		(WORD Key, TShiftState Shift){return false;}
     bool __fastcall 	KeyPress    		(WORD Key, TShiftState Shift){return false;}
 
-    bool				Pick				(){return false;}
+    bool				Pick				(TShiftState Shift){return false;}
 
     void				GetCurrentFog		(u32& fog_color, float& s_fog, float& e_fog);
     LPCSTR				GetInfo				();
@@ -135,7 +135,7 @@ public:
 	void				SetNumScale			(CCustomObject* p1){;}
 
     void				ShowProperties		(){;}
-    void				UpdateProperties	(){;}
+    void				UpdateProperties	(bool bForced=false){;}
     void				RefreshProperties	(){;}
 };
 extern CParticleTools	Tools;
