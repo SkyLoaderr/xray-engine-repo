@@ -135,13 +135,6 @@ void CSpectator::OnKeyboardHold(int cmd)
 
 	switch(cmd)
 	{
-	case kFWD:			
-		Fvector vmove;
-		vmove.set( clTransform.k );
-		vmove.mul( 5.f*Device.fTimeDelta );
-		svTransform.c.add( vmove );
-		Log("T",svTransform.c);
-		break;
 	case kUP:
 	case kDOWN: 
 	case kCAM_ZOOM_IN: 
@@ -150,6 +143,29 @@ void CSpectator::OnKeyboardHold(int cmd)
 	case kLEFT:
 	case kRIGHT:
 		if (cam_active!=eacFreeLook) cameras[cam_active]->Move(cmd); break;
+	}
+	if (cam_active==eacFirstEye){
+		CCameraBase* C	= cameras	[cam_active];
+		Fvector vmove={0,0,0};
+		switch(cmd){
+		case kFWD:			
+			vmove.mad( C->vDirection, 4.f*Device.fTimeDelta );
+			break;
+		case kBACK:
+			vmove.mad( C->vDirection, -4.f*Device.fTimeDelta );
+			break;
+		case kR_STRAFE:{
+			Fvector right;
+			right.crossproduct(C->vNormal,C->vDirection);
+			vmove.mad( right, 4.f*Device.fTimeDelta );
+			}break;
+		case kL_STRAFE:{
+			Fvector right;
+			right.crossproduct(C->vNormal,C->vDirection);
+			vmove.mad( right, -4.f*Device.fTimeDelta );
+			}break;
+		}
+		svTransform.c.add( vmove );
 	}
 }
 
