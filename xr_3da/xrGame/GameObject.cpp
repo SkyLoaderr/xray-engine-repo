@@ -49,5 +49,4 @@ void CGameObject::Sector_Detect	()
 			Sector_Move	(P);
 		}
 	}
-	break;
 }
