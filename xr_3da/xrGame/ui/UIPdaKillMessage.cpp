@@ -12,7 +12,7 @@
 
 using namespace InventoryUtilities;
 
-const int INDENT = 10;
+const int INDENT = 3;
 
 CUIPdaKillMessage::CUIPdaKillMessage(){
 	AttachChild(&m_victim_name);
@@ -64,6 +64,9 @@ int CUIPdaKillMessage::InitText(CUIStatic& refStatic, int x, PlayerInfo& info){
 	int height = (int)pFont->CurrentHeight();
 	y = (selfHeight - height)/2;
 
+	if (width > 100)
+		width = 100;
+
 	refStatic.Init(x, y, width + 1, height);
 	refStatic.SetText(*info.m_name);
 	refStatic.SetTextColor(info.m_color);
@@ -97,7 +100,7 @@ int CUIPdaKillMessage::InitIcon(CUIStatic& refStatic, int x, IconInfo& info){
 	int width = rect.width();
 	int height = rect.height();
 	
-	scale = ((float)selfHeight)/((float)INV_GRID_HEIGHT*2);
+	scale = 1;
 	width  = (int)((float)width*scale);
 	height = (int)((float)height*scale);
 	y = (selfHeight - height) /2;
