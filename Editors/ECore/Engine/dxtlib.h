@@ -17,9 +17,8 @@
 
 #include "nvdxt_options.h"
 
-typedef void (*MIPFiltercallback)(int miplevel, int TotalMIPs);
-typedef HRESULT (__cdecl *MIPcallback)(void * data, int miplevel, DWORD size, int width, int height, void * user_data);
-void set_mip_filter_callback(MIPFiltercallback callback);
+typedef HRESULT (*MIPcallback)(void * data, int miplevel, DWORD size, int width, int height, void * user_data);
+
 
 // call back
 // pointer to data
@@ -28,24 +27,7 @@ void set_mip_filter_callback(MIPFiltercallback callback);
 
  
 
-#ifndef TRGBA
-#define TRGBA
-typedef	struct	
-{
-	BYTE	rgba[4];
-} rgba_t;
-#endif
 
-#ifndef TPIXEL
-#define TPIXEL
-union tPixel
-{
-  unsigned long u;
-  rgba_t c;
-};
-#endif
-
-#ifndef ISPOWER2
 inline bool IsPower2(unsigned int x)
 {              
     if ( x < 1 )
@@ -59,8 +41,20 @@ inline bool IsPower2(unsigned int x)
 
     return true;
 }
-#define ISPOWER2
-#endif
+
+
+
+
+inline bool IsMultiple4(unsigned int x)
+{              
+    if ( x == 0 )
+        return false;
+
+    if ((x % 4) == 0)
+        return true;
+    else
+        return false;
+}
 
 
 /*
@@ -73,7 +67,8 @@ extern "C" {
 #endif
 
 
-HRESULT __cdecl nvDXTcompress(unsigned char * raw_data, // pointer to data (24 or 32 bit)
+// define color order
+HRESULT nvDXTcompressRGBA(unsigned char * raw_data, // pointer to data (24 or 32 bit)
                 unsigned long w, // width in texels
                 unsigned long h, // height in texels
                 DWORD byte_pitch,
@@ -82,6 +77,51 @@ HRESULT __cdecl nvDXTcompress(unsigned char * raw_data, // pointer to data (24 o
                 MIPcallback callback = NULL,  // callback for generated levels
                 RECT * rect = NULL);   // subrect to operate on, NULL is whole image
 
+
+
+HRESULT nvDXTcompressBGRA(unsigned char * image_data, 
+                      unsigned long image_width,
+                      unsigned long image_height, 
+                      DWORD byte_pitch,
+                      CompressionOptions * options,
+                      DWORD planes,
+                      MIPcallback callback = 0,
+                      RECT * rect = 0);
+
+
+HRESULT nvDXTcompressVolumeBGRA(unsigned char * raw_data, // pointer to data (24 or 32 bit)
+                unsigned long w, // width in texels
+                unsigned long h, // height in texels
+                unsigned long depth, // depth of volume texture
+                DWORD byte_pitch,
+                CompressionOptions * options,
+                DWORD planes, // 3 or 4
+                MIPcallback callback = NULL,  // callback for generated levels
+                RECT * rect = NULL);   // subrect to operate on, NULL is whole image
+
+
+HRESULT nvDXTcompressVolumeRGBA(unsigned char * raw_data, // pointer to data (24 or 32 bit)
+                unsigned long w, // width in texels
+                unsigned long h, // height in texels
+                unsigned long depth, // depth of volume texture
+                DWORD byte_pitch,
+                CompressionOptions * options,
+                DWORD planes, // 3 or 4
+                MIPcallback callback = NULL,  // callback for generated levels
+                RECT * rect = NULL);   // subrect to operate on, NULL is whole image
+
+
+// floating point input
+HRESULT nvDXTcompress32F(fpImage & srcImage,
+                CompressionOptions * options,
+                MIPcallback callback = NULL,  // callback for generated levels
+                RECT * rect = NULL);   // subrect to operate on, NULL is whole image
+
+
+HRESULT nvDXTcompress(RGBAImage & image,
+                      CompressionOptions * options,
+                      MIPcallback callback,
+                      RECT * rect);
 #ifdef  NVDXTC
 }
 #endif
@@ -89,13 +129,13 @@ HRESULT __cdecl nvDXTcompress(unsigned char * raw_data, // pointer to data (24 o
 // if callback is == 0 (or not specified), then WriteDTXnFile is called with all file info
 //
 // You must write the routines (or provide stubs)
-// void WriteDTXnFile(count, buffer);
-// void ReadDTXnFile(count, buffer);
+// void WriteDTXnFile(count, buffer, userData);
+// void ReadDTXnFile(count, buffer, userData);
 // 
 //
 #ifdef  NVDXTDLL
 
-typedef void (*DXTDataTransfer)(DWORD count, void *buffer);
+typedef void (*DXTDataTransfer)(DWORD count, void *buffer, void *);
 
 #ifdef  NVDXTC
 extern "C" {
@@ -111,18 +151,61 @@ void SetWriteDTXnFile(DXTDataTransfer UserWriteDTXnFile);
 
 #else
 
-void __cdecl WriteDTXnFile(DWORD count, void * buffer);
-void __cdecl ReadDTXnFile(DWORD count, void * buffer);
+void WriteDTXnFile(DWORD count, void * buffer, void * userData);
+void ReadDTXnFile(DWORD count, void * buffer, void * userData);
 
-/*
-#pragma message("Note: including lib: nvDXTlibMTDLL.lib") 
-#pragma comment(lib, "nvDXTlibMTDLL.lib")
 
 #ifndef EXCLUDE_LIBS
 
-//#if _DEBUG
+/*
+#if _DEBUG
 
-//#else // _DEBUG
+ #if _MSC_VER >=1300
+  #ifdef _MT
+   #ifdef _DLL
+    #ifdef _STATIC_CPPLIB
+     #pragma message("Note: including lib: nvDXTlibMTDLL_Sd.lib") 
+     #pragma comment(lib, "nvDXTlibMTDLL_Sd.lib")
+    #else
+     #pragma message("Note: including lib: nvDXTlibMTDLLd.lib") 
+     #pragma comment(lib, "nvDXTlibMTDLLd.lib")
+    #endif
+   #else // DLL
+    #ifdef _STATIC_CPPLIB
+     #pragma message("Note: including lib: nvDXTlibMT_Sd.lib") 
+     #pragma comment(lib, "nvDXTlibMT_Sd.lib")
+    #else
+     #pragma message("Note: including lib: nvDXTlibMTd.lib") 
+     #pragma comment(lib, "nvDXTlibMTd.lib")
+    #endif
+   #endif //_DLL
+  #else // MT
+    #ifdef _STATIC_CPPLIB
+     #pragma message("Note: including lib: nvDXTlib_Sd.lib") 
+     #pragma comment(lib, "nvDXTlib_Sd.lib")
+    #else
+     #pragma message("Note: including lib: nvDXTlibd.lib") 
+     #pragma comment(lib, "nvDXTlibd.lib")
+    #endif
+  #endif // _MT
+ #else // _MSC_VER
+
+  #ifdef _MT
+   #ifdef _DLL                         
+    #pragma message("Note: including lib: nvDXTlibMTDLL6.lib") 
+    #pragma comment(lib, "nvDXTlibMTDLL6.lib")
+   #else // _DLL
+    #pragma message("Note: including lib: nvDXTlibMT6.lib") 
+    #pragma comment(lib, "nvDXTlibMT6.lib")
+   #endif //_DLL
+  #else // _MT
+   #pragma message("Note: including lib: nvDXTlib6.lib") 
+   #pragma comment(lib, "nvDXTlib6.lib")
+  #endif // _MT
+ 
+ #endif // _MSC_VER
+
+#else // _DEBUG
 
 
  #if _MSC_VER >=1300
@@ -169,10 +252,13 @@ void __cdecl ReadDTXnFile(DWORD count, void * buffer);
   #endif // _MT
  
  #endif // _MSC_VER
-//#endif // _DEBUG
+#endif // _DEBUG
+*/
+
+
+
 
 #endif
-*/
 
 
 #endif // NVDXTC
@@ -183,6 +269,8 @@ void __cdecl ReadDTXnFile(DWORD count, void * buffer);
 #define DXTERR_INPUT_POINTER_ZERO -1
 #define DXTERR_DEPTH_IS_NOT_3_OR_4 -2
 #define DXTERR_NON_POWER_2 -3
+#define DXTERR_INCORRECT_NUMBER_OF_PLANES -4
+#define DXTERR_NON_MUL4 -5
 
 
 /* example
