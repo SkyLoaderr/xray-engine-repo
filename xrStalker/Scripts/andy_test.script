@@ -8,7 +8,7 @@ function fe(item, parent)
 	parent:drop_item(item,p)
 end
 
-function  main()
+function  main0005()
 	local news_id = "general_new_task"
     db.actor:give_game_news(news_id, "ui\\ui_icons_task", 0,100,50,50)
 //    db.actor:set_news_show_time(news_id, 0)
@@ -57,10 +57,10 @@ end
 
 
 
-function main03 ()
+function main ()
 
-	local object 	= level.debug_object ("vagon")
-	level.map_add_object_spot(object:id(), "hit_sector_location", "hit" )
+--	local object 	= level.debug_object ("vagon")
+	level.map_add_object_spot(db.actor:id(), "rad_antenna_location", "hit" )
 	
 --	local object 	= level.debug_object ("level_prefix_m_car")
 --	level.map_add_object_spot(object:id(), "enemy_location", "tractor" )
