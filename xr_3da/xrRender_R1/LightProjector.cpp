@@ -117,7 +117,11 @@ public:
 // 
 void CLightProjector::setup		(int id)
 {
-	VERIFY				(id<int(receivers.size()));
+	if (id>=int(receivers.size()))
+	{
+		Log		("! CLightProjector::setup - ID out of range");
+		return;
+	}
 	RCache.set_xform	(D3DTS_TEXTURE0,receivers[id].UVgen);
 }
 
