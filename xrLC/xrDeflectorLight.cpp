@@ -346,6 +346,7 @@ IC DWORD convert(float a)
 	else if (a>=1)	return 255;
 	else			return iFloor(a*255.f);
 }
+
 void CDeflector::Save()
 {
 	static int		deflNameID = 0; ++deflNameID;
