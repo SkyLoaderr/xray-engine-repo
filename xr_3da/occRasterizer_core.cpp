@@ -124,9 +124,9 @@ void i_section	(occRasterizer* OCC, float *A, float *B, float *C, occTri* T, int
 	float	E1[3], E2[3];
 
 	if (Sect == BOTTOM) { 
-		startY	= minPixel(A[1]); endY = maxPixel(B[1]); 
+		startY	= minPixel(A[1]); endY = maxPixel(B[1])-1; 
 		startp1 = startp2 = A;
-		if (!bMiddle)	endY --;
+		if (bMiddle)	endY ++;
 		
 		// check 'endY' for out-of-tiangle 
 		int test = maxPixel(C[1]);
@@ -141,7 +141,7 @@ void i_section	(occRasterizer* OCC, float *A, float *B, float *C, occTri* T, int
 	else { 
 		startY  = minPixel(B[1]); endY = maxPixel(C[1]); 
 		startp1 = A; startp2 = B;
-		if (!bMiddle)	startY --;
+		if (bMiddle)	startY --;
 		
 		// check 'startY' for out-of-tiangle 
 		int test = minPixel(A[1]);
