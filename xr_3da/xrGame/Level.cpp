@@ -164,7 +164,7 @@ void CLevel::OnFrame	()
 	// Game events
 	{
 		NET_Packet			P;
-		u32 svT				= timeServer()-NET_Latency;																																																																																																																							BOOL IS_ODE_ENABLED = FALSE;BOOL ODE_ACTIVE = FALSE; R_ASSERT2(IS_ODE_ENABLED || ODE_ACTIVE, "EXTERNAL DLL ERROR");
+		u32 svT				= timeServer()-NET_Latency;
 
 		/*
 		if (!game_events.queue.empty())	
