@@ -37,7 +37,7 @@ void CUIListWndEx::script_register(lua_State *L)
 			
 			class_<CUIListItemEx, CUIListItem>("CUIListItemEx")
 			.def(							constructor<>())
-			.def("SetPerformTextLimit",		&CUIListItemPair::SetPerformTextLimit),
+//			.def("SetPerformTextLimit",		&CUIListItemPair::SetPerformTextLimit),
 
 
 			class_<CUIListItemPair, CUIListItemEx>("CUIListItemPair")
