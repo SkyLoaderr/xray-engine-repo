@@ -20,6 +20,9 @@ void CLevel::ClientReceive()
 		case M_SV_CONFIG_GAME:
 			game.net_import_state	(*P);
 			break;
+		case M_SV_CONFIG_FINISHED:
+			game_configured			= TRUE;
+			break;
 		case M_EVENT:
 			{
 				u32	time; u16 type;

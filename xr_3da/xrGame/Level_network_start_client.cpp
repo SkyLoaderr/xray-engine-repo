@@ -33,11 +33,11 @@ BOOL CLevel::net_Start_client	( LPCSTR name_of_server )
 		ph_world							= new CPHWorld;
 		ph_world->Create					();
 
-		// Waiting for connection completition
+		// Waiting for connection/configuration completition
 		pApp->LoadTitle						("CLIENT: Spawning...");
 		while (!net_isCompleted_Connect())	Sleep(5);
 		while (!net_isCompleted_Sync())		{ ClientReceive(); Sleep(5); }
-		ClientReceive						();
+		while (!game_configured)			{ ClientReceive(); Sleep(5); }
 
 		// Textures
 		pApp->LoadTitle						("Loading textures...");

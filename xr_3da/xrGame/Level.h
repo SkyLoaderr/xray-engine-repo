@@ -56,6 +56,7 @@ protected:
 	EVENT						eEntitySpawn;
 public:
 	game_cl_GameState			game;
+	BOOL						game_configured;
 
 	CAI_DDD*					m_tpAI_DDD;
 	xrServer*					Server;

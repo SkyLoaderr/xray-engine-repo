@@ -24,6 +24,8 @@ CLevel::CLevel()
 {
 	Server						= NULL;
 
+	game_configured				= FALSE;
+
 	eChangeRP					= Engine.Event.Handler_Attach	("LEVEL:ChangeRP",this);
 	eDemoPlay					= Engine.Event.Handler_Attach	("LEVEL:PlayDEMO",this);
 	eChangeTrack				= Engine.Event.Handler_Attach	("LEVEL:PlayMusic",this);

@@ -1,5 +1,9 @@
 #include "stdafx.h"
 
+game_cl_GameState::game_cl_GameState()
+{
+}
+
 void	game_cl_GameState::Create			(LPCSTR options)
 {
 }
