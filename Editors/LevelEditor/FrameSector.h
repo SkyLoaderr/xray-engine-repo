@@ -20,7 +20,7 @@ __published:	// IDE-managed Components
 	TPanel *paSectorActions;
 	TExtBtn *ebAddMesh;
 	TExtBtn *ebDelMesh;
-    TExtBtn *ebFaceBoxPick;
+	TExtBtn *ebBoxPick;
 	TLabel *RxLabel1;
 	TPanel *paCommands;
 	TExtBtn *ebValidate;
@@ -40,6 +40,7 @@ __published:	// IDE-managed Components
 	void __fastcall ebCreateDefaultClick(TObject *Sender);
 	void __fastcall ebRemoveDefaultClick(TObject *Sender);
 	void __fastcall ebValidateClick(TObject *Sender);
+	void __fastcall ebBoxPickClick(TObject *Sender);
 private:	// User declarations
 public:		// User declarations
         __fastcall TfraSector(TComponent* Owner);

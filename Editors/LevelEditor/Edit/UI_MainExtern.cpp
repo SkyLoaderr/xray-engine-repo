@@ -32,6 +32,7 @@ bool TUI::CommandExt(int _Command, int p1, int p2)
 	switch (_Command){
 	case COMMAND_CHANGE_TARGET:
 	  	Tools.ChangeTarget(p1);
+        Command(COMMAND_UPDATE_PROPERTIES);
         break;
 	case COMMAND_SHOW_OBJECTLIST:
         if (GetEState()==esEditScene) Tools.ShowObjectList();
@@ -68,9 +69,7 @@ bool TUI::CommandExt(int _Command, int p1, int p2)
                 }
                 SetStatus("Level loading...");
             	Command( COMMAND_CLEAR );
-	            BeginEState(esSceneLocked);
 				Scene.Load( filebuffer );
-                EndEState();
 				strcpy(m_LastFileName,filebuffer);
                 SetStatus("");
               	Scene.UndoClear();
@@ -103,13 +102,11 @@ bool TUI::CommandExt(int _Command, int p1, int p2)
 	case COMMAND_SAVE:
 		if( !Scene.locked() ){
 			if( m_LastFileName[0] ){
-	            BeginEState(esSceneLocked);
                 SetStatus("Level saving...");
 				Scene.Save( m_LastFileName, false );
                 SetStatus("");
                 Scene.m_Modified = false;
 			    Command(COMMAND_UPDATE_CAPTION);
-                EndEState();
 			}else{
 				bRes = Command( COMMAND_SAVEAS ); }
 		} else {
@@ -128,7 +125,6 @@ bool TUI::CommandExt(int _Command, int p1, int p2)
 			filebuffer[0] = 0;
 			if(p1 || Engine.FS.GetSaveName( Engine.FS.m_Maps, filebuffer, sizeof(filebuffer) ) ){
             	if (p1)	strcpy(filebuffer,(LPCSTR)p1);
-	            BeginEState(esSceneLocked);
                 SetStatus("Level saving...");
 				Scene.Save( filebuffer, false );
                 SetStatus("");
@@ -139,7 +135,6 @@ bool TUI::CommandExt(int _Command, int p1, int p2)
                 Engine.FS.LockFile(0,filebuffer);
 				strcpy(m_LastFileName,filebuffer);
 			    bRes = Command(COMMAND_UPDATE_CAPTION);
-	            EndEState();
                 fraLeftBar->AppendRecentFile(filebuffer);
 			}else
             	bRes = false;
@@ -152,14 +147,12 @@ bool TUI::CommandExt(int _Command, int p1, int p2)
 	case COMMAND_CLEAR:
 		if( !Scene.locked() ){
             if (!Scene.IfModified()) return false;
-            BeginEState(esSceneLocked);
 			// unlock
 			Engine.FS.UnlockFile(0,m_LastFileName);
 			Device.m_Camera.Reset();
 			Scene.Unload();
             Scene.m_LevelOp.Reset();
 			m_LastFileName[0] = 0;
-            EndEState();
            	Scene.UndoClear();
             Scene.m_Modified = false;
 			Command(COMMAND_UPDATE_CAPTION);
@@ -179,6 +172,10 @@ bool TUI::CommandExt(int _Command, int p1, int p2)
         }
     	break;
 
+	case COMMAND_CLEAR_COMPILER_ERROR:
+    	Scene.ClearCompilerErrors();
+        break;
+        
     case COMMAND_IMPORT_COMPILER_ERROR:{
     	AnsiString fn;
     	if(Engine.FS.GetOpenName(Engine.FS.m_ServerRoot, fn)){
@@ -210,9 +207,7 @@ bool TUI::CommandExt(int _Command, int p1, int p2)
 
 	case COMMAND_CUT:
 		if( !Scene.locked() ){
-        	BeginEState(esSceneLocked);
 			Scene.CutSelection(Tools.CurrentClassID());
-        	EndEState();
             fraLeftBar->miPaste->Enabled = true;
             fraLeftBar->miPaste2->Enabled = true;
 			Scene.UndoSave();
@@ -224,9 +219,7 @@ bool TUI::CommandExt(int _Command, int p1, int p2)
 
 	case COMMAND_COPY:
 		if( !Scene.locked() ){
-        	BeginEState(esSceneLocked);
 			Scene.CopySelection(Tools.CurrentClassID());
-        	EndEState();
             fraLeftBar->miPaste->Enabled = true;
             fraLeftBar->miPaste2->Enabled = true;
 		} else {
@@ -237,9 +230,7 @@ bool TUI::CommandExt(int _Command, int p1, int p2)
 
 	case COMMAND_PASTE:
 		if( !Scene.locked() ){
-        	BeginEState(esSceneLocked);
 			Scene.PasteSelection();
-        	EndEState();
 			Scene.UndoSave();
 		} else {
 			ELog.DlgMsg( mtError, "Scene sharing violation" );

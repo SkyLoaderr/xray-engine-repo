@@ -258,6 +258,7 @@ void CEditableObject::OnDeviceDestroy()
 void CEditableObject::DefferedLoadRP()
 {
 	if (m_LoadState&EOBJECT_LS_DEFFEREDRP) return;
+/*    
     EditMeshIt _M=m_Meshes.begin();
     EditMeshIt _E=m_Meshes.end();
     AnsiString tmp;
@@ -267,6 +268,7 @@ void CEditableObject::DefferedLoadRP()
 	    UI.ProgressInc();
     	(*_M)->CreateRenderBuffers();
     }
+*/
 	// создать заново shaders
     for(SurfaceIt s_it=m_Surfaces.begin(); s_it!=m_Surfaces.end(); s_it++)
        (*s_it)->OnDeviceCreate();

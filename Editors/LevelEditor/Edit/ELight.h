@@ -2,8 +2,8 @@
 // file: ELight.h
 //----------------------------------------------------
 
-#ifndef _INCDEF_Light_H_
-#define _INCDEF_Light_H_                                                      
+#ifndef LightH
+#define LightH                                                      
 
 #include "xr_efflensflare.h"
 
@@ -59,6 +59,7 @@ public:
     
     void __fastcall	OnAutoA1Click	(PropItem* value);
     void __fastcall	OnAutoA2Click	(PropItem* value);
+    void __fastcall	OnTextureChange	(PropValue* value);
 protected:                 
     virtual Fvector& GetPosition	()						{ return m_D3D.position; 	}
     virtual void 	SetPosition		(const Fvector& pos)	{ m_D3D.position.set(pos);	UpdateTransform();}

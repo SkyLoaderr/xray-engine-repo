@@ -18,8 +18,12 @@
 //----------------------------------------------------
 void CEditableMesh::CreateRenderBuffers()
 {
-    if (!(m_LoadState&EMESH_LS_PNORMALS)) GeneratePNormals();
+    if (m_LoadState.is(LS_RBUFFERS)) return;
+    if (!m_LoadState.is(LS_PNORMALS)) GeneratePNormals();
     R_ASSERT2(m_RenderBuffers.empty(),"Render buffer already exist.");
+
+    UI.ProgressStart((float)m_SurfFaces.size(),"Loading RB...");
+    
     VERIFY(m_PNormals.size());
 
 	UI.Command(COMMAND_EVICT_TEXTURES);
@@ -54,7 +58,8 @@ void CEditableMesh::CreateRenderBuffers()
 		UI.ProgressInc();
     }
     UnloadPNormals();
-	UI.ProgressEnd();
+    m_LoadState.set(LS_RBUFFERS,TRUE);
+    UI.ProgressEnd();
 }
 //----------------------------------------------------
 
@@ -66,6 +71,7 @@ void CEditableMesh::ClearRenderBuffers(){
         }
     }
     m_RenderBuffers.clear();
+    m_LoadState.set(LS_RBUFFERS,FALSE);
 }
 //----------------------------------------------------
 
@@ -150,6 +156,7 @@ void CEditableMesh::FillRenderBuffer(IntVec& face_lst, int start_face, int num_f
 //----------------------------------------------------
 void CEditableMesh::Render(const Fmatrix& parent, CSurface* S)
 {
+    if (!m_LoadState.is(LS_RBUFFERS)) CreateRenderBuffers();
 	// visibility test
     if (!m_Visible) return;
 	// frustum test
@@ -172,6 +179,7 @@ static RB_cnt=0;
 void CEditableMesh::RenderList(const Fmatrix& parent, DWORD color, bool bEdge, DWORDVec& fl)
 {
 //	if (!m_Visible) return;
+    if (!m_LoadState.is(LS_RBUFFERS)) CreateRenderBuffers();
 
 	if (fl.size()==0) return;
 	Device.SetTransform(D3DTS_WORLD,parent);
@@ -198,6 +206,7 @@ void CEditableMesh::RenderList(const Fmatrix& parent, DWORD color, bool bEdge, D
 //----------------------------------------------------
 
 void CEditableMesh::RenderEdge(const Fmatrix& parent, DWORD color){
+    if (!m_LoadState.is(LS_RBUFFERS)) CreateRenderBuffers();
 //	if (!m_Visible) return;
 	Device.SetTransform(D3DTS_WORLD,parent);
 	Device.SetShader(Device.m_WireShader);
@@ -219,6 +228,7 @@ void CEditableMesh::RenderEdge(const Fmatrix& parent, DWORD color){
 //----------------------------------------------------
 
 void CEditableMesh::RenderSelection(const Fmatrix& parent, DWORD color){
+    if (!m_LoadState.is(LS_RBUFFERS)) CreateRenderBuffers();
 //	if (!m_Visible) return;
     Fbox bb; bb.set(m_Box);
     bb.xform(parent);

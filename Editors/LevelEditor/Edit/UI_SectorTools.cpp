@@ -77,7 +77,6 @@ bool TUI_ControlSectorAdd::AddSector(){
     {
         Scene.SelectObjects(false,OBJCLASS_SECTOR);
         Scene.AddObject( _O );
-		_O->UpdateVolume();
         return true;
     }else{
     	xr_delete(_O);
@@ -93,8 +92,7 @@ bool __fastcall TUI_ControlSectorAdd::Start(TShiftState Shift)
         return false;
     }
 	if (fraSector->ebAddMesh->Down||fraSector->ebDelMesh->Down){
-		bool bBoxSelection = Shift.Contains(ssCtrl) || fraSector->ebFaceBoxPick->Down;
-
+		bool bBoxSelection = fraSector->ebBoxPick->Down;
         if( bBoxSelection ){
             UI.EnableSelectionRect( true );
             UI.UpdateSelectionRect(UI.m_StartCp,UI.m_CurrentCp);
@@ -124,7 +122,6 @@ bool __fastcall TUI_ControlSectorAdd::End(TShiftState _Shift)
 	if (sector){
         if (m_Action==saMeshBoxSelection){
             UI.EnableSelectionRect( false );
-            DWORDVec fl;
             Fmatrix matrix;
             CSceneObject* O_ref=NULL;
             CEditableObject* O_lib=NULL;
@@ -137,10 +134,11 @@ bool __fastcall TUI_ControlSectorAdd::End(TShiftState _Shift)
                     O_ref = (CSceneObject*)(*_F);
                     O_lib = O_ref->GetReference();
                     for(EditMeshIt m_def = O_lib->m_Meshes.begin();m_def!=O_lib->m_Meshes.end();m_def++){
-                        fl.clear();
                         O_ref->GetFullTransformToWorld(matrix);
-                        if (fraSector->ebAddMesh->Down)	sector->AddMesh(O_ref,*m_def);
-                        if (fraSector->ebDelMesh->Down)	if (!sector->DelMesh(O_ref,*m_def)) break;
+                    	if ((*m_def)->FrustumPick(frustum,matrix)){
+	                        if (fraSector->ebAddMesh->Down)	sector->AddMesh(O_ref,*m_def);
+    	                    if (fraSector->ebDelMesh->Down)	if (!sector->DelMesh(O_ref,*m_def)) break;
+                        }
                     }
                 }
             }

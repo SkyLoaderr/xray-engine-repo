@@ -15,6 +15,7 @@
 #include "bottombar.h"
 #include "d3dutils.h"
 #include "ui_main.h"
+#include "SceneObject.h"
 
 #define PORTAL_VERSION   					0x0010
 //------------------------------------------------------------------------------
@@ -93,6 +94,12 @@ void CPortal::Render(int priority, bool strictB2F){
         Device.ResetNearer	();
         DU::DrawFaceNormal	(m_Center,m_Normal,1,0xFFFFFFFF);
         DU::DrawFaceNormal	(m_Center,m_Normal,1,0x00000000);
+/*		for (int k=0; k<1000; k++){
+        	Fvector dir;
+            dir.random_dir(m_Normal,deg2rad(45.f));
+	        DU::DrawFaceNormal	(m_Center,dir,1,0x00FF0000);
+    	}    
+*/
    	}
 }
 //------------------------------------------------------------------------------
@@ -152,14 +159,63 @@ bool CPortal::Update(bool bLoadMode){
     	m_Normal.add(temp);
     }
     float m=m_Normal.magnitude();
-    if (fabsf(m)<=EPS){
-    	ELog.DlgMsg(mtError,"Portal: Some error found at pos: [%3.2f,%3.2f,%3.2f].",m_Vertices[0].x,m_Vertices[0].x,m_Vertices[0].x);
+    if (fabsf(m)<=EPS_S){
+		Scene.m_CompilerErrors.AppendFace(m_Vertices[0],m_Vertices[1],m_Vertices[2]);
+    	ELog.Msg(mtError,"Portal: Degenerate portal found.");
         SetValid(false);
 		return false;
     }
     m_Normal.div(m);
+    
+    // simplify portal
+	Simplify();
 
     if (!bLoadMode){
+        map<CSector*,int> A,B;
+        Fvector SF_dir, SB_dir;
+        Fvector InvNorm;
+        InvNorm.invert(m_Normal);
+        for (int k=0; k<100; k++){
+	        SF_dir.random_dir(m_Normal,PI_DIV_4);
+	        SB_dir.random_dir(InvNorm,PI_DIV_4);
+	        if (m_SectorFront->RayPick(1000,m_Center,SF_dir)) 	A[m_SectorFront] += 1;
+	        if (m_SectorBack->RayPick(1000,m_Center,SB_dir))	A[m_SectorBack] += 1;
+	        if (m_SectorFront->RayPick(1000,m_Center,SB_dir)) 	B[m_SectorFront] += 1;
+	        if (m_SectorBack->RayPick(1000,m_Center,SF_dir))	B[m_SectorBack] += 1;
+        }
+        if ((A[m_SectorFront]>B[m_SectorFront])&&(A[m_SectorBack]>B[m_SectorBack])); 
+        else if ((A[m_SectorFront]<B[m_SectorFront])&&(A[m_SectorBack]<B[m_SectorBack])) InvertOrientation();
+        else ELog.Msg(mtError, "Check portal orientation: '%s'",Name);
+/*    
+        map<CSector*,int> counters;
+        for (DWORD i=0; i<m_Vertices.size()-1; i++){
+            Fbox bb; bb.set(m_Vertices[i],m_Vertices[i]); bb.grow(0.01f);
+            SBoxPickInfoVec result;
+	        if (Scene.BoxPick(bb,result)!=2) continue;
+            CSector* s1 = PortalUtils.FindSector(result[0].s_obj,result[0].e_mesh);
+            CSector* s2 = PortalUtils.FindSector(result[1].s_obj,result[1].e_mesh);
+            if (s1==s2) continue;
+            if (((s1==m_SectorFront)&&(s2==m_SectorBack))||((s2==m_SectorFront)&&(s1==m_SectorBack))){
+                for (SBoxPickInfoIt it=result.begin(); it!=result.end(); it++){
+                    for (int k=0; k<it->inf.size(); k++){
+                        CDB::RESULT& r = it->inf[k];
+                        Fvector v[3];
+                        it->s_obj->GetFaceWorld(it->e_mesh,r.id,v);
+                        for (int i=0; i<3; i++){
+                        	for (int y=0; y<m_Vertices.size(); y++)
+                            	if (m_Vertices[y].similar(v[i])) continue;
+                        	if (P.classify(v[i])>0.f)	counters[m_SectorFront] += 1;
+                        	else						counters[m_SectorBack] += 1;
+                        }
+                    }
+                }
+            }
+        }
+        if (counters[m_SectorFront]<=counters[m_SectorBack])
+        	InvertOrientation();
+//    	m_Normal
+//    	m_Center
+/*    
         float step=0.05f;
         float delta_step=0.05f;
 
@@ -194,9 +250,9 @@ bool CPortal::Update(bool bLoadMode){
         }else{
             if (SF!=m_SectorFront) InvertOrientation();
         }
+*/        
     }
 
-	Simplify();
     return true;
 }
 //------------------------------------------------------------------------------
@@ -319,7 +375,7 @@ void CPortal::Simplify()
     }
     // compute 2D Convex Hull
     Mgc::ConvexHull2D Hull(points.size(),(const Mgc::Vector2*)points.begin());
-    Hull.ByIncremental();
+    Hull.ByDivideAndConquer();//ByIncremental();
     Hull.RemoveCollinear();
 	int Count   	= Hull.GetQuantity();
 	if (Count<=0) return;

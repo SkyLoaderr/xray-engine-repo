@@ -241,7 +241,7 @@ bool CExportObjectOGF::ExportGeometry(CFS_Base& F)
     for(EditMeshIt mesh_it=m_Source->FirstMesh();mesh_it!=m_Source->LastMesh();mesh_it++){
         CEditableMesh* MESH = *mesh_it;
         // generate normals
-        if (!(MESH->m_LoadState&EMESH_LS_PNORMALS)) MESH->GeneratePNormals();
+        if (!MESH->m_LoadState.is(CEditableMesh::LS_PNORMALS)) MESH->GeneratePNormals();
         // fill faces
         for (SurfFacesPairIt sp_it=MESH->m_SurfFaces.begin(); sp_it!=MESH->m_SurfFaces.end(); sp_it++){
             IntVec& face_lst = sp_it->second;

@@ -575,3 +575,9 @@ void __fastcall TfraLeftBar::ebIgnoreModeClick(TObject *Sender)
 }
 //---------------------------------------------------------------------------
 
+void __fastcall TfraLeftBar::miClearErrorListClick(TObject *Sender)
+{
+	UI.Command(COMMAND_CLEAR_COMPILER_ERROR);
+}
+//---------------------------------------------------------------------------
+

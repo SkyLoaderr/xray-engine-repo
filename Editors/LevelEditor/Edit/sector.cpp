@@ -19,6 +19,7 @@
 #include "MgcConvexHull3D.h"
 #include "ui_main.h"
 #include "PropertiesListHelper.h"
+#include "d3dutils.h"
 
 #define SECTOR_VERSION   					0x0011
 //----------------------------------------------------
@@ -44,21 +45,33 @@ bool CSectorItem::IsItem(const char* O, const char* M){
 }
 //------------------------------------------------------------------------------
 
-CSector::CSector(LPVOID data, LPCSTR name):CCustomObject(data,name){
+CSector::CSector(LPVOID data, LPCSTR name):CCustomObject(data,name)
+{
 	Construct(data);
 }
 
-void CSector::Construct(LPVOID data){
+void CSector::Construct(LPVOID data)
+{
 	ClassID			= OBJCLASS_SECTOR;
     sector_color.set(1,1,1,0);
 	m_bDefault		= false;
 	sector_num		= -1;
 	m_bHasLoadError = false;
+    m_Flags.zero	();
 }
 
-CSector::~CSector(){
+CSector::~CSector()
+{
 	OnDestroy();
 }
+
+void CSector::OnFrame()
+{
+	inherited::OnFrame();
+    if (m_Flags.is(flNeedUpdateVolume)) 
+    	UpdateVolume();
+}
+
 
 bool CSector::FindSectorItem(const char* O, const char* M, SItemIt& it){
 	for (it=sector_items.begin();it!=sector_items.end();it++)
@@ -72,12 +85,14 @@ bool CSector::FindSectorItem(CSceneObject* o, CEditableMesh* m, SItemIt& it){
     return false;
 }
 
-bool CSector::AddMesh	(CSceneObject* O, CEditableMesh* M){
+bool CSector::AddMesh	(CSceneObject* O, CEditableMesh* M)
+{
 	SItemIt it;
+	if (!(O->IsStatic()||O->IsMUStatic())) return false;
 	if (!PortalUtils.FindSector(O,M))
 	    if (!FindSectorItem(O, M, it)){
     	 	sector_items.push_back(CSectorItem(O, M));
-            UpdateVolume();
+		    m_Flags.set(flNeedUpdateVolume,TRUE);
             return true;
         }
     return false;
@@ -87,7 +102,7 @@ bool CSector::DelMesh	(CSceneObject* O, CEditableMesh* M){
 	SItemIt it;
     if (FindSectorItem(O, M, it)){
     	sector_items.erase(it);
-		UpdateVolume();
+	    m_Flags.set(flNeedUpdateVolume,TRUE);
     }
 	if (sector_items.empty()){
     	ELog.Msg(mtInformation,"Last mesh deleted.\nSector has no meshes and will be removed.");
@@ -134,8 +149,10 @@ void CSector::Render(int priority, bool strictB2F){
             }
 	        Device.SetRS(D3DRS_CULLMODE,D3DCULL_CCW);
         }
-
-//        DU::DrawSelectionBox(m_Box);
+        if (Selected()){
+		    Device.SetTransform(D3DTS_WORLD,Fidentity);
+    	    DU::DrawSelectionBox(m_Box);
+        }
     }
 }
 
@@ -160,7 +177,8 @@ bool CSector::RayPick(float& distance, const Fvector& start, const Fvector& dire
 }
 //----------------------------------------------------
 
-void CSector::UpdateVolume(){
+void CSector::UpdateVolume()
+{
     Fbox bb;
     Fvector pt;
     m_Box.invalidate();
@@ -175,6 +193,8 @@ void CSector::UpdateVolume(){
     m_Box.getsphere(m_SectorCenter,m_SectorRadius);
 
     UI.RedrawScene();
+    
+    m_Flags.set(flNeedUpdateVolume,FALSE);
 }
 //----------------------------------------------------
 void CSector::OnDestroy( ){
@@ -193,7 +213,8 @@ void CSector::OnDestroy( ){
     }
 }
 
-void CSector::OnSceneUpdate(){
+void CSector::OnSceneUpdate()
+{
 	bool bUpdate=false;
     for(SItemIt it = sector_items.begin();it!=sector_items.end();it++){
     	if (!(Scene.ContainsObject(it->object,OBJCLASS_SCENEOBJECT)&&it->object->GetReference()->ContainsMesh(it->mesh))){
@@ -201,10 +222,8 @@ void CSector::OnSceneUpdate(){
             bUpdate=true;
         }
     }
-    if (bUpdate){
-        PortalUtils.RemoveSectorPortal(this);
-    }
-	UpdateVolume();
+    if (bUpdate) PortalUtils.RemoveSectorPortal(this);
+	m_Flags.set(flNeedUpdateVolume,TRUE);
 }
 //----------------------------------------------------
 
@@ -247,7 +266,7 @@ void CSector::CaptureInsideVolume(){
         // ignore dynamic objects
 		for(ObjectIt _F = lst.begin();_F!=lst.end();_F++){
 	        obj = (CSceneObject*)(*_F);
-	        if (!obj->IsStatic()) continue;
+	        if (!(obj->IsStatic()||obj->IsMUStatic())) continue;
 	        EditMeshVec* M = obj->Meshes();
             R_ASSERT(M);
             for(EditMeshIt m_def = M->begin();m_def!=M->end();m_def++){
@@ -260,7 +279,7 @@ void CSector::CaptureInsideVolume(){
 					AddMesh(obj,*m_def);
             }
         }
-        UpdateVolume();
+		m_Flags.set(flNeedUpdateVolume,TRUE);
 		UI.RedrawScene();
     }
 }
@@ -275,7 +294,7 @@ void CSector::CaptureAllUnusedMeshes(){
     for(ObjectIt _F = lst.begin();_F!=lst.end();_F++){
 		UI.ProgressInc();
         obj = (CSceneObject*)(*_F);
-        if (!obj->IsStatic()) continue;
+        if (!(obj->IsStatic()||obj->IsMUStatic())) continue;
         EditMeshVec* M = obj->Meshes();
         R_ASSERT(M);
         for(EditMeshIt m_def = M->begin(); m_def!=M->end();m_def++)
@@ -335,7 +354,7 @@ void CSector::LoadSectorDef( CStream* F ){
         m_bHasLoadError = true;
         return;
     }
-    if (!sitem.object->IsStatic()){
+    if (!(sitem.object->IsStatic()||sitem.object->IsMUStatic())){
     	ELog.Msg(mtError,"Sector Item contains object '%s' - can't load.\nObject is dynamic.",o_name);
         m_bHasLoadError = true;
         return;
@@ -387,7 +406,7 @@ bool CSector::Load(CStream& F){
 
     if (sector_items.empty()) return false;
 
-    UpdateVolume();
+    m_Flags.set(flNeedUpdateVolume,TRUE);
     return true;
 }
 
@@ -423,6 +442,11 @@ void CSector::FillProp(LPCSTR pref, PropItemVec& items)
 {
 	inherited::FillProp(pref,items);
     PHelper.CreateFColor(items, PHelper.PrepareKey(pref,"Color"), &sector_color);
+    int faces, objects, meshes;
+    GetCounts(&objects,&meshes,&faces);
+    PHelper.CreateCaption(items,PHelper.PrepareKey(pref,Name,"Contents\\Objects"), AnsiString(objects).c_str());
+    PHelper.CreateCaption(items,PHelper.PrepareKey(pref,Name,"Contents\\Meshes"), AnsiString(meshes).c_str());
+    PHelper.CreateCaption(items,PHelper.PrepareKey(pref,Name,"Contents\\Faces"), AnsiString(faces).c_str());
 }
 //----------------------------------------------------
 

@@ -23,15 +23,11 @@ TShiftState ssRBOnly;
 //---------------------------------------------------------------------------
 TUI_Tools::TUI_Tools()
 {
-	m_Props = TProperties::CreateForm(0,alClient,OnPropsModified,0,OnPropsClose);
     m_Flags.zero();
-    pObjectListForm = TfrmObjectList::CreateForm();
 }
 //---------------------------------------------------------------------------
 TUI_Tools::~TUI_Tools()
 {
-    TfrmObjectList::DestroyForm(pObjectListForm);
-	TProperties::DestroyForm(m_Props);
     for (DWORD i=0; i<etMaxTarget; i++) xr_delete(m_pTools[i]);
 }
 //---------------------------------------------------------------------------
@@ -59,12 +55,16 @@ bool TUI_Tools::OnCreate()
 	Scene.OnCreate	();
     // change target to Object
 	UI.Command		(COMMAND_CHANGE_TARGET, etObject);
+	m_Props 		= TProperties::CreateForm(0,alClient,OnPropsModified,0,OnPropsClose);
+    pObjectListForm = TfrmObjectList::CreateForm();
     return true;
 }
 //---------------------------------------------------------------------------
 
 void TUI_Tools::OnDestroy()
 {
+    TfrmObjectList::DestroyForm(pObjectListForm);
+	TProperties::DestroyForm(m_Props);
     // scene destroing
 	Scene.OnDestroy		();
     pCurTools->OnDeactivate();
@@ -414,18 +414,24 @@ void __fastcall TUI_Tools::OnFrame()
     }
 }
 //---------------------------------------------------------------------------
-
-void __fastcall TUI_Tools::Render()
+#include "d3dutils.h"
+void __fastcall TUI_Tools::RenderEnvironment()
 {
-	// Render update
-    ::Render->Calculate		();
-    ::Render->Render		();
     // draw sky
     EEditorState est 		= UI.GetEState();
     switch(est){
     case esEditLightAnim:
     case esEditScene:		Scene.RenderSky(Device.m_Camera.GetTransform()); break;
     }
+}
+
+void __fastcall TUI_Tools::Render()
+{
+	// Render update
+    ::Render->Calculate		();
+    ::Render->Render		();
+
+    EEditorState est 		= UI.GetEState();
     // draw scene
     switch(est){
     case esEditLibrary: 	TfrmEditLibrary::OnRender(); break;
@@ -439,13 +445,13 @@ void __fastcall TUI_Tools::Render()
 
 void TUI_Tools::ShowObjectList()
 {
-	pObjectListForm->ShowObjectList();
+	if (pObjectListForm) pObjectListForm->ShowObjectList();
 }
 //---------------------------------------------------------------------------
 
 void TUI_Tools::RealUpdateObjectList()
 {
-	pObjectListForm->UpdateObjectList();
+	if (pObjectListForm) pObjectListForm->UpdateObjectList();
 	m_Flags.set(flUpdateObjectList,FALSE);
 }
 //---------------------------------------------------------------------------

@@ -250,7 +250,7 @@ void CSceneObject::OnFrame()
         UpdateTransform(true);
 	}
 	if (psDeviceFlags.is(rsStatistic)){
-    	if (IsStatic()){
+    	if (IsStatic()||IsMUStatic()){
 		    Device.Statistic.dwLevelFaceCount 	+= GetFaceCount();
 		    Device.Statistic.dwLevelVertexCount += GetVertexCount();
             if (Selected()){

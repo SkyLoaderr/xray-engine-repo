@@ -445,6 +445,7 @@ public:
 //------------------------------------------------------------------------------
 
 class TokenValue4: public CustomValue<u32>{
+    int 				p_size;
 public:
 	struct Item {
 		u32				ID;
@@ -453,8 +454,18 @@ public:
     DEFINE_VECTOR		(Item,ItemVec,ItemIt);
     const ItemVec*		items;
 public:
-						TokenValue4		(u32* val, const ItemVec* _items):CustomValue<u32>(val),items(_items){};
+						TokenValue4		(u32* val, const ItemVec* _items, int p_sz):CustomValue<u32>(val),items(_items),p_size(p_sz){R_ASSERT((p_size>0)&&(p_size<=4));};
 	virtual LPCSTR 		GetText			(TOnDrawEvent OnDraw);
+	virtual bool		Equal			(PropValue* prop){return (0==memcmp(value,((TokenValue*)prop)->value,p_size));}
+    virtual bool		ApplyValue		(LPVOID val)
+    {
+        if (0!=memcmp(val,value,p_size)){
+            CopyMemory(value,val,p_size);
+            return		true;
+        }
+        return 			false;
+    }
+    virtual void		ResetValue		(){CopyMemory(value,&init_value,p_size);}
 };
 //------------------------------------------------------------------------------
 

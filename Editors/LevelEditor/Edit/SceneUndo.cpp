@@ -63,10 +63,8 @@ bool EScene::Undo(){
         }
 
 		if( !m_UndoStack.empty() ){
-	        UI.BeginEState(esSceneLocked);
 			Unload();
          	Load( m_UndoStack.back().m_FileName );
-	    	UI.EndEState(esSceneLocked);
         }
 
         UI.UpdateScene();
@@ -79,10 +77,8 @@ bool EScene::Undo(){
 
 bool EScene::Redo(){
 	if( !m_RedoStack.empty() ){
-        UI.BeginEState(esSceneLocked);
         Unload();
 		Load( m_RedoStack.back().m_FileName );
-        UI.EndEState(esSceneLocked);
 
 		m_UndoStack.push_back( m_RedoStack.back() );
 		m_RedoStack.pop_back();

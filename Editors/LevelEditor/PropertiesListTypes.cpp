@@ -54,7 +54,7 @@ LPCSTR TokenValue4::GetText(TOnDrawEvent OnDraw)
 	u32 draw_val 	= GetValue();
     if (OnDraw)OnDraw(this, &draw_val);
 	for (ItemVec::const_iterator it=items->begin(); it!=items->end(); it++)
-    	if (draw_val==it->ID) return it->str.c_str();
+    	if (0==memcmp(&it->ID,&draw_val,p_size)) return it->str.c_str();
     return 0;
 }
 //------------------------------------------------------------------------------

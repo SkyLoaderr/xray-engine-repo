@@ -168,7 +168,7 @@ BOOL SceneBuilder::BuildMesh(const Fmatrix& parent, CEditableObject* object, CEd
 
     if (object->IsDynamic()){
 	    // update mesh
-	    if (!(mesh->m_LoadState&EMESH_LS_FNORMALS)) mesh->GenerateFNormals();
+	    if (!mesh->m_LoadState.is(CEditableMesh::LS_FNORMALS)) mesh->GenerateFNormals();
 		Fvector N;
         for(FvectorIt pt=mesh->m_Points.begin();pt!=mesh->m_Points.end();pt++){
             N.set(0,0,0);

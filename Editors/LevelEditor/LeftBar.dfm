@@ -1628,6 +1628,10 @@ object fraLeftBar: TfraLeftBar
       Caption = 'Errors List'
       Enabled = False
     end
+    object miClearErrorList: TMenuItem
+      Caption = 'Clear Error List'
+      OnClick = miClearErrorListClick
+    end
   end
   object pmSceneCommands: TMxPopupMenu
     Alignment = paCenter

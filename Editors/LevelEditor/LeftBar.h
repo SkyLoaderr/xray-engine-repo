@@ -160,6 +160,7 @@ __published:	// IDE-managed Components
 	TMenuItem *ImportCompilerErrors;
 	TMenuItem *NextError1;
 	TExtBtn *ebTargetShape;
+	TMenuItem *miClearErrorList;
     void __fastcall ebClearClick(TObject *Sender);
     void __fastcall ebLoadClick(TObject *Sender);
     void __fastcall ebSaveClick(TObject *Sender);
@@ -236,6 +237,7 @@ __published:	// IDE-managed Components
 	void __fastcall UpdateSceneTextures1Click(TObject *Sender);
 	void __fastcall ImportCompilerErrorsClick(TObject *Sender);
 	void __fastcall ebIgnoreModeClick(TObject *Sender);
+	void __fastcall miClearErrorListClick(TObject *Sender);
 private:	// User declarations
 public:		// User declarations
         __fastcall TfraLeftBar(TComponent* Owner);

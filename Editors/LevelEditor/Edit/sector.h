@@ -50,9 +50,16 @@ class CSector : public CCustomObject {
 	bool 			FindSectorItem(const char* O, const char* M, SItemIt& it);
 	void 			LoadSectorDef( CStream* F );
 
+    enum{
+    	flNeedUpdateVolume = (1<<0)
+    };
+    
+    Flags32			m_Flags;
+    
     // only for build
     int				sector_num;
 	void 			OnDestroy	();
+    void			UpdateVolume();
 public:
 					CSector		(LPVOID data, LPCSTR name);
 	void 			Construct	(LPVOID data);
@@ -66,7 +73,6 @@ public:
 	virtual bool 	GetBox		(Fbox& box);
 	virtual void 	Move		( Fvector& amount ); // need for Shift Level
 	virtual void 	OnSceneUpdate();
-    void			UpdateVolume();
 
     // file system function
   	virtual bool 	Load		(CStream&);
@@ -84,6 +90,8 @@ public:
     void			GetCounts	(int* objects, int* meshes, int* faces);
     bool			IsEmpty		();
 
+	virtual void 	OnFrame		();
+    
     EVisible		Intersect	(const Fvector& center, float radius);
 	EVisible 		Intersect	(const Fbox& box);
 };

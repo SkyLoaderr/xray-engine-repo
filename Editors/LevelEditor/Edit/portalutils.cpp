@@ -32,8 +32,6 @@ CSector* CPortalUtils::GetSelectedSector()
 }
 
 void CPortalUtils::RemoveSectorPortal(CSector* S){
-	UI.BeginEState(esSceneLocked);
-
     // remove existence sector portal
     ObjectList& lst = Scene.ListObj(OBJCLASS_PORTAL);
     ObjectIt _F = lst.begin();
@@ -47,13 +45,10 @@ void CPortalUtils::RemoveSectorPortal(CSector* S){
             _F++;
         }
     }
-
-	UI.EndEState();
 }
 
-int CPortalUtils::CalculateSelectedPortals(){
-	UI.BeginEState(esSceneLocked);
-
+int CPortalUtils::CalculateSelectedPortals()
+{
     int iPCount=0;
     if (Validate(false)){
         // get selected sectors
@@ -80,26 +75,21 @@ int CPortalUtils::CalculateSelectedPortals(){
     }
 
 	UI.SetStatus("...");
-	UI.EndEState();
     return iPCount;
 }
 //---------------------------------------------------------------------------
 
-void CPortalUtils::RemoveAllPortals(){
-	UI.BeginEState(esSceneLocked);
-
+void CPortalUtils::RemoveAllPortals()
+{
     // remove all existence portal
 	ObjectList& p_lst = Scene.ListObj(OBJCLASS_PORTAL);
     for (ObjectIt _F=p_lst.begin(); _F!=p_lst.end(); _F++) delete (*_F);
 	p_lst.erase(p_lst.begin(),p_lst.end());
-
-	UI.EndEState();
 }
 //---------------------------------------------------------------------------
 
-bool CPortalUtils::CreateDefaultSector(){
-	UI.BeginEState(esSceneLocked);
-
+bool CPortalUtils::CreateDefaultSector()
+{
     Fbox box;
 	if (Scene.GetBox(box,OBJCLASS_SCENEOBJECT)){
 		CSector* sector_def=xr_new<CSector>((LPVOID)0,DEFAULT_SECTOR_NAME);
@@ -110,34 +100,29 @@ bool CPortalUtils::CreateDefaultSector(){
          	Scene.AddObject(sector_def,false);
             Scene.UndoSave();
 	        UI.UpdateScene();
-			UI.EndEState();
             return true;
         } else delete sector_def;
     }
-	UI.EndEState();
     return false;
 }
 //---------------------------------------------------------------------------
 
-bool CPortalUtils::RemoveDefaultSector(){
-	UI.BeginEState(esSceneLocked);
+bool CPortalUtils::RemoveDefaultSector()
+{
     CCustomObject* O=Scene.FindObjectByName(DEFAULT_SECTOR_NAME,OBJCLASS_SECTOR);
     if (O){
     	Scene.RemoveObject(O,false);
         xr_delete(O);
 		Scene.UndoSave();
-		UI.EndEState();
         UI.UpdateScene();
         return true;
     }
-	UI.EndEState();
     return false;
 }
 //---------------------------------------------------------------------------
 
-int CPortalUtils::CalculateAllPortals2(){
-	UI.BeginEState(esSceneLocked);
-
+int CPortalUtils::CalculateAllPortals2()
+{
     int bResult=0;
     if (Validate(false)){
         RemoveAllPortals();
@@ -165,7 +150,6 @@ int CPortalUtils::CalculateAllPortals2(){
     }
 
 	UI.SetStatus("...");
-	UI.EndEState();
     return bResult;
 }
 //---------------------------------------------------------------------------
@@ -178,9 +162,8 @@ CSector* CPortalUtils::FindSector(CSceneObject* o, CEditableMesh* m){
     return 0;
 }
 
-bool CPortalUtils::Validate(bool bMsg){
-	UI.BeginEState(esSceneLocked);
-
+bool CPortalUtils::Validate(bool bMsg)
+{
     Fbox box;
     bool bResult = false;
 	if (Scene.GetBox(box,OBJCLASS_SCENEOBJECT)){
@@ -218,7 +201,6 @@ bool CPortalUtils::Validate(bool bMsg){
     }else{
 		if (bMsg) ELog.DlgMsg(mtInformation,"Validation failed! Can't compute bbox.");
     }
-	UI.EndEState();
     return bResult;
 }
 //--------------------------------------------------------------------------------------------------
@@ -446,12 +428,12 @@ public:
         qsort(edges.begin(),edges.size(),sizeof(sEdge),sEdge::compare);
         sEdgeIt NewEnd = std::unique(edges.begin(),edges.end(),sEdge::c_equal);
         edges.erase(NewEnd,edges.end());
-		dump_edges();
+		//dump_edges();
     }
     void make_portals() {
         for(DWORD e_it=0; e_it<edges.size(); e_it++)
         {
-        	ELog.Msg(mtInformation,"%d: %d,%d",e_it,edges[e_it].v[0],edges[e_it].v[1]);
+//        	ELog.Msg(mtInformation,"%d: %d,%d",e_it,edges[e_it].v[0],edges[e_it].v[1]);
         	if (edges[e_it].used) continue;
 
             sPortal current;
@@ -485,6 +467,7 @@ public:
     }
     void export_portals()
     {
+	    Scene.ClearCompilerErrors();
     	for (sPortalIt p_it=portals.begin(); p_it!=portals.end(); p_it++){
 		    if (p_it->e.size()>1)
             {
@@ -513,10 +496,18 @@ public:
 	 	            Scene.AddObject(_O);
                 }else{
                 	delete _O;
-				    ELog.DlgMsg(mtError,"Can't simplify Portal :(\nPlease check geometry once more.\n'%s'<->'%s'",p_it->s[0]->Name,p_it->s[1]->Name);
+				    ELog.Msg(mtError,"Can't simplify Portal :(\nPlease check geometry.\n'%s'<->'%s'",p_it->s[0]->Name,p_it->s[1]->Name);
                 }
             }else
-			    ELog.DlgMsg(mtError,"Can't create Portal from one edge :(\nPlease check geometry once more.\n'%s'<->'%s'",p_it->s[0]->Name,p_it->s[1]->Name);
+            	if (p_it->e.size()==0){
+				    ELog.Msg(mtError,"Can't create Portal from 0 edge :(\nPlease check geometry.\n'%s'<->'%s'\n",p_it->s[0]->Name,p_it->s[1]->Name);
+                }else{
+                	Fvector& v0=verts[edges[p_it->e[0]].v[0]];
+                	Fvector& v1=verts[edges[p_it->e[0]].v[1]];
+				    ELog.Msg(mtError,"Can't create Portal from one edge :(\nPlease check geometry.\n'%s'<->'%s'", p_it->s[0]->Name, p_it->s[1]->Name);
+                    Scene.m_CompilerErrors.AppendEdge(v0,v1);
+                }
+
         }
     }
 };
@@ -572,9 +563,8 @@ int CPortalUtils::CalculateSelectedPortals(ObjectList& sectors){
     return iRes;
 }
 
-int CPortalUtils::CalculateAllPortals(){
-	UI.BeginEState(esSceneLocked);
-
+int CPortalUtils::CalculateAllPortals()
+{
     int iPCount=0;
     if (Validate(false)){
 		UI.SetStatus("Prepare...");
@@ -586,13 +576,11 @@ int CPortalUtils::CalculateAllPortals(){
     }
 
 	UI.SetStatus("...");
-	UI.EndEState();
     return iPCount;
 }
 
-int CPortalUtils::CalculatePortals(CSector* SF, CSector* SB){
-	UI.BeginEState(esSceneLocked);
-
+int CPortalUtils::CalculatePortals(CSector* SF, CSector* SB)
+{
     int iPCount=0;
     if (Validate(false)){
 		UI.SetStatus("Prepare...");
@@ -608,6 +596,5 @@ int CPortalUtils::CalculatePortals(CSector* SF, CSector* SB){
     }
 
 	UI.SetStatus("...");
-	UI.EndEState();
     return iPCount;
 }

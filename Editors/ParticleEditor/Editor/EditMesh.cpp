@@ -20,7 +20,7 @@ void CEditableMesh::Construct(){
     m_Visible	= 1;
     m_Locked	= 0;
     m_Name[0]	= 0;
-    m_LoadState	= 0;
+    m_LoadState.zero();
 #ifdef _EDITOR
     m_CFModel	= 0;
 #endif
@@ -43,33 +43,39 @@ void CEditableMesh::Clear(){
     UnloadPNormals		();
 }
 
-void CEditableMesh::UnloadCForm     (){
-	if (!(m_LoadState&EMESH_LS_CF_MODEL)) return;
+void CEditableMesh::UnloadCForm     ()
+{
+	if (!m_LoadState.is(LS_CF_MODEL)) return;
 #ifdef _EDITOR
 	cdb_model_destroy(m_CFModel);
     m_CFModel = 0;
 #endif
-    m_LoadState &=~ EMESH_LS_CF_MODEL;
+    m_LoadState.set(LS_CF_MODEL,FALSE);
 }
 
-void CEditableMesh::UnloadFNormals   (){
-	if (!(m_LoadState&EMESH_LS_FNORMALS)) return;
+void CEditableMesh::UnloadFNormals   ()
+{
+	if (!m_LoadState.is(LS_FNORMALS)) return;
 	m_FNormals.clear	();
-    m_LoadState &=~ EMESH_LS_FNORMALS;
+    m_LoadState.set(LS_FNORMALS,FALSE);
 }
 
-void CEditableMesh::UnloadPNormals   (){
-	if (!(m_LoadState&EMESH_LS_PNORMALS)) return;
+void CEditableMesh::UnloadPNormals   ()
+{
+	if (!m_LoadState.is(LS_PNORMALS)) return;
 	m_PNormals.clear	();
-    m_LoadState &=~ EMESH_LS_PNORMALS;
+    m_LoadState.set(LS_PNORMALS);
 }
 
-void CEditableMesh::UnloadSVertices	 (){
+void CEditableMesh::UnloadSVertices	 ()
+{
+	if (!m_LoadState.is(LS_SVERTICES)) return;
 	m_SVertices.clear	();
-    m_LoadState &=~ EMESH_LS_SVERTICES;
+    m_LoadState.set(LS_SVERTICES,FALSE);
 }
 
-void CEditableMesh::RecomputeBBox(){
+void CEditableMesh::RecomputeBBox()
+{
 	if( m_Points.empty() ){
 		m_Box.set(0,0,0, 0,0,0);
 		return;
@@ -79,7 +85,8 @@ void CEditableMesh::RecomputeBBox(){
 		m_Box.modify(*pt);
 }
 
-void CEditableMesh::GenerateFNormals(){
+void CEditableMesh::GenerateFNormals()
+{
     m_FNormals.resize	(m_Faces.size());
     // face normals
 	FaceIt 		f_it	= m_Faces.begin();
@@ -98,11 +105,12 @@ void CEditableMesh::GenerateFNormals(){
                     m_Points[F.pv[2].pindex]);
     }
 */
-    m_LoadState |= EMESH_LS_FNORMALS;
+    m_LoadState.set(LS_FNORMALS,TRUE);
 }
 
-void CEditableMesh::GeneratePNormals(){
-	if (!(m_LoadState&EMESH_LS_FNORMALS)) GenerateFNormals();
+void CEditableMesh::GeneratePNormals()
+{
+	if (!m_LoadState.is(LS_FNORMALS)) GenerateFNormals();
     m_PNormals.resize	(m_Faces.size()*3);
 	// vertex normals
     float m_fSoftAngle = cosf(deg2rad(60.f));
@@ -122,7 +130,7 @@ void CEditableMesh::GeneratePNormals(){
             N.normalize_safe();
         }
     }
-    m_LoadState |= EMESH_LS_PNORMALS;
+    m_LoadState.set(LS_PNORMALS,TRUE);
 }
 
 #ifdef _EDITOR
@@ -203,7 +211,7 @@ void CEditableMesh::GenerateSVertices()
 		if (!bRes) THROW2("Can't find weight for skel vertex.");
     }
 
-    m_LoadState |= EMESH_LS_SVERTICES;
+    m_LoadState.set(LS_SVERTICES,TRUE);
 }
 #endif
 

@@ -1160,7 +1160,7 @@ void TProperties::ApplyLWText()
             edText->MaxLength	= V->lim;
 			AnsiString new_val	= edText->Text;
 			prop->OnAfterEdit	(&new_val);
-            if (V->ApplyValue(new_val.c_str())){ 
+            if (prop->ApplyValue(new_val.c_str())){ 
 	            Modified		();
             }
             item->ColumnText->Strings[0] = prop->GetText();

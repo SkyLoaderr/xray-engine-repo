@@ -37,7 +37,9 @@ static float		m_fSoftAngle;
 //----------------------------------------------------
 // номер face должен соответствовать списку
 //----------------------------------------------------
-void CEditableMesh::GenerateCFModel(){
+void CEditableMesh::GenerateCFModel()
+{
+    UI.ProgressStart((float)m_SurfFaces.size()*2,"Generating CFModel...");
 	UnloadCForm();
 
 	m_CFModel = (CDB::MODEL*)cdb_model_create();    VERIFY(m_CFModel);
@@ -46,6 +48,7 @@ void CEditableMesh::GenerateCFModel(){
 	CDB::Collector CL;
 	// double sided
 	for (SurfFacesPairIt sp_it=m_SurfFaces.begin(); sp_it!=m_SurfFaces.end(); sp_it++){
+    	UI.ProgressInc();
 		IntVec& face_lst = sp_it->second;
 		for (IntIt it=face_lst.begin(); it!=face_lst.end(); it++){
 			st_Face&	F = m_Faces[*it];
@@ -65,7 +68,8 @@ void CEditableMesh::GenerateCFModel(){
 	}
 */
     cdb_model_build(m_CFModel,CL.getV(), CL.getVS(), CL.getT(), CL.getTS());
-	m_LoadState |= EMESH_LS_CF_MODEL;
+	m_LoadState.set(LS_CF_MODEL,TRUE);
+    UI.ProgressEnd();
 }
 
 bool CEditableMesh::RayPick(float& distance, const Fvector& start, const Fvector& direction, const Fmatrix& inv_parent, SRayPickInfo* pinf){
@@ -134,7 +138,7 @@ void CEditableMesh::RecurseTri(int id)
 void CEditableMesh::GetTiesFaces(int start_id, DWORDVec& fl, float fSoftAngle, bool bRecursive){
     R_ASSERT(start_id<int(m_Faces.size()));
     m_fSoftAngle=cosf(deg2rad(fSoftAngle));
-    if (!(m_LoadState&EMESH_LS_FNORMALS)) GenerateFNormals();
+    if (!m_LoadState.is(LS_FNORMALS)) GenerateFNormals();
     VERIFY(m_FNormals.size());
     if (bRecursive){
     	sml_processed.clear();

@@ -106,6 +106,7 @@ protected:
 	deque<UndoItem> m_UndoStack;
 	deque<UndoItem> m_RedoStack;
 
+public:
     struct ERR{
 	    struct Face{
     		Fvector		p[3];
@@ -128,9 +129,27 @@ protected:
 	    	m_MultiEdges.clear	();
 	    	m_TJVerts.clear		();
         }
+        void AppendPoint(const Fvector& p0)
+        {
+        	m_TJVerts.push_back(Vert());
+            m_TJVerts.back().p[0].set(p0);
+        }
+        void AppendEdge	(const Fvector& p0, const Fvector& p1)
+        {
+        	m_MultiEdges.push_back(Edge());
+        	m_MultiEdges.back().p[0].set(p0);
+        	m_MultiEdges.back().p[1].set(p1);
+        }
+        void AppendFace	(const Fvector& p0, const Fvector& p1, const Fvector& p2)
+        {
+        	m_InvalidFaces.push_back(Face());
+        	m_InvalidFaces.back().p[0].set(p0);
+        	m_InvalidFaces.back().p[1].set(p1);
+        	m_InvalidFaces.back().p[2].set(p2);
+        }
     };
     ERR				m_CompilerErrors;
-
+protected:
     void OnLoadAppendObject			(CCustomObject* O);
     void OnLoadSelectionAppendObject(CCustomObject* O);
 public:
@@ -150,6 +169,7 @@ public:
 	void Unload						();
 	void ClearObjects				(bool bDestroy);
 	void LoadCompilerError			(LPCSTR fn);
+    void ClearCompilerErrors		(){m_CompilerErrors.Clear();}
 
 	IC bool valid					()           	{ return m_Valid; }
 

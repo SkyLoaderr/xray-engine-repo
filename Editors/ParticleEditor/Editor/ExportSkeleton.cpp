@@ -266,9 +266,9 @@ bool CExportSkeleton::ExportGeometry(CFS_Base& F)
     for(EditMeshIt mesh_it=m_Source->FirstMesh();mesh_it!=m_Source->LastMesh();mesh_it++){
         CEditableMesh* MESH = *mesh_it;
         // generate vertex offset
-        if (!(MESH->m_LoadState&EMESH_LS_SVERTICES)) MESH->GenerateSVertices();
+        if (!MESH->m_LoadState.is(CEditableMesh::LS_SVERTICES)) MESH->GenerateSVertices();
         // generate normals
-        if (!(MESH->m_LoadState&EMESH_LS_FNORMALS)) MESH->GenerateFNormals();
+        if (!MESH->m_LoadState.is(CEditableMesh::LS_FNORMALS)) MESH->GenerateFNormals();
         vnormals.clear();
         Fvector N;
         for(FvectorIt pt=MESH->m_Points.begin();pt!=MESH->m_Points.end();pt++){

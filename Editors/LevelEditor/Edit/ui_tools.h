@@ -96,6 +96,7 @@ public:
 
     void __fastcall OnFrame			();
     void __fastcall Render			();
+    void __fastcall RenderEnvironment();
 
     IC int          GetTarget   	(){return target;}
     IC EObjClass    GetTargetClassID(){return ClassIDFromTargetID(target);}

@@ -80,9 +80,9 @@ bool CCustomObject::Load(CStream& F)
         F.Rvector	(FScale);
     }
 
-//	UpdateTransform	(true);
-//	m_bUpdateTransform = TRUE;
+//	UpdateTransform	(true); // нужно для секторов, иначе неправильный бокс
 	UpdateTransform	();
+//	m_bUpdateTransform = TRUE;
 
 	return true;
 }

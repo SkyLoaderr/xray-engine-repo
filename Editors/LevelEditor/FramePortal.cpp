@@ -32,14 +32,21 @@ void __fastcall TfraPortal::TopClick(TObject *Sender)
 
 void __fastcall TfraPortal::ebComputeAllPortalsClick(TObject *Sender)
 {
-	int cnt=PortalUtils.CalculateAllPortals();
-	if (cnt) ELog.DlgMsg(mtInformation,"Calculated '%d' portal(s).",cnt);
+	if (mrYes==ELog.DlgMsg(mtConfirmation,TMsgDlgButtons() << mbYes << mbNo,"Are you sure want to destroy all existing portals and compute them again?"))
+    {
+		int cnt=PortalUtils.CalculateAllPortals();
+		if (cnt) ELog.DlgMsg(mtInformation,"Calculated '%d' portal(s).",cnt);
+    }
 }
 //---------------------------------------------------------------------------
 
 void __fastcall TfraPortal::ebComputeClick(TObject *Sender)
 {
-	PortalUtils.CalculateSelectedPortals();
+	if (mrYes==ELog.DlgMsg(mtConfirmation,TMsgDlgButtons() << mbYes << mbNo,"Are you sure want to destroy selected portals and compute them again?"))
+    {
+		int cnt = PortalUtils.CalculateSelectedPortals();
+		if (cnt) ELog.DlgMsg(mtInformation,"Calculated '%d' portal(s).",cnt);
+    }
 }
 //---------------------------------------------------------------------------
 

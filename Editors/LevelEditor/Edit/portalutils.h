@@ -1,5 +1,5 @@
-#ifndef _INCDEF_PortalUtils_H_
-#define _INCDEF_PortalUtils_H_
+#ifndef PortalUtilsH
+#define PortalUtilsH
 
 
 //refs

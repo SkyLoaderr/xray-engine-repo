@@ -15,7 +15,6 @@ class C3DCursor;
 
 enum EEditorState{
 	esNone,
-	esSceneLocked,
     esEditScene,
     esEditLibrary,
     esEditLightAnim,

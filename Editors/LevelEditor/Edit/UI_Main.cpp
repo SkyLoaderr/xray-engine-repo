@@ -464,6 +464,8 @@ void TUI::Redraw(){
         Device.SetRS			(D3DRS_FILLMODE, Device.dwFillMode);
 		Device.SetRS			(D3DRS_SHADEMODE,Device.dwShadeMode);
 
+        Tools.RenderEnvironment	();
+
     	// draw grid
     	if (psDeviceFlags.is(rsDrawGrid)){
 	        DU::DrawGrid		();

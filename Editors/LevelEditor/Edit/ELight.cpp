@@ -316,25 +316,35 @@ void CLight::FillProp(LPCSTR pref, PropItemVec& items)
 }
 //----------------------------------------------------
 
+void __fastcall	CLight::OnTextureChange	(PropValue* value)
+{
+	Update();
+}
+//----------------------------------------------------
+
 void CLight::FillSunProp(LPCSTR pref, PropItemVec& items)
 {
 	CEditFlare& F 			= m_LensFlare;
+    PropValue* prop			= 0;
     PHelper.CreateFlag32	(items, PHelper.PrepareKey(pref,"Sun\\Source\\Enabled"),		&F.m_Flags,				CEditFlare::flSource);
     PHelper.CreateFloat		(items, PHelper.PrepareKey(pref,"Sun\\Source\\Radius"),		&F.m_Source.fRadius,	0.f,10.f);
-    PHelper.CreateTexture	(items, PHelper.PrepareKey(pref,"Sun\\Source\\Texture"),		F.m_Source.texture,		sizeof(F.m_Source.texture));
+    prop 					= PHelper.CreateTexture	(items, PHelper.PrepareKey(pref,"Sun\\Source\\Texture"),		F.m_Source.texture,		sizeof(F.m_Source.texture));
+	prop->OnChangeEvent		= OnTextureChange;
 
     PHelper.CreateFlag32	(items, PHelper.PrepareKey(pref,"Sun\\Gradient\\Enabled"),	&F.m_Flags,				CEditFlare::flGradient);
     PHelper.CreateFloat		(items, PHelper.PrepareKey(pref,"Sun\\Gradient\\Radius"),	&F.m_Gradient.fRadius,	0.f,100.f);
     PHelper.CreateFloat		(items, PHelper.PrepareKey(pref,"Sun\\Gradient\\Opacity"),	&F.m_Gradient.fOpacity,	0.f,1.f);
-    PHelper.CreateTexture	(items, PHelper.PrepareKey(pref,"Sun\\Gradient\\Texture"),	F.m_Gradient.texture,	sizeof(F.m_Gradient.texture));
-
+	prop					= PHelper.CreateTexture	(items, PHelper.PrepareKey(pref,"Sun\\Gradient\\Texture"),	F.m_Gradient.texture,	sizeof(F.m_Gradient.texture));
+	prop->OnChangeEvent		= OnTextureChange;
+                      
     PHelper.CreateFlag32	(items, PHelper.PrepareKey(pref,"Sun\\Flares\\Enabled"),		&F.m_Flags,				CEditFlare::flFlare);
 	for (CEditFlare::FlareIt it=F.m_Flares.begin(); it!=F.m_Flares.end(); it++){
 		AnsiString nm; nm.sprintf("%s\\Sun\\Flares\\Flare %d",pref,it-F.m_Flares.begin());
-		PHelper.CreateFloat		(items, PHelper.PrepareKey(nm.c_str(),"Radius"), 	&it->fRadius,  	0.f,10.f);
-        PHelper.CreateFloat		(items, PHelper.PrepareKey(nm.c_str(),"Opacity"),	&it->fOpacity,	0.f,1.f);
-        PHelper.CreateFloat		(items, PHelper.PrepareKey(nm.c_str(),"Position"),	&it->fPosition,	-10.f,10.f);
-        PHelper.CreateTexture	(items, PHelper.PrepareKey(nm.c_str(),"Texture"),	it->texture,	sizeof(it->texture));
+		PHelper.CreateFloat	(items, PHelper.PrepareKey(nm.c_str(),"Radius"), 	&it->fRadius,  	0.f,10.f);
+        PHelper.CreateFloat	(items, PHelper.PrepareKey(nm.c_str(),"Opacity"),	&it->fOpacity,	0.f,1.f);
+        PHelper.CreateFloat	(items, PHelper.PrepareKey(nm.c_str(),"Position"),	&it->fPosition,	-10.f,10.f);
+        prop				= PHelper.CreateTexture	(items, PHelper.PrepareKey(nm.c_str(),"Texture"),	it->texture,	sizeof(it->texture));
+        prop->OnChangeEvent	= OnTextureChange;
 	}
 }
 //----------------------------------------------------
@@ -404,10 +414,6 @@ void __fastcall	CLight::OnTypeChange(PropValue* value)
 	UI.Command		(COMMAND_UPDATE_PROPERTIES);
 
 	Update			();
-/*    
-	OnDeviceDestroy	();
-	OnDeviceCreate	();
-*/
 }
 
 void CLight::OnDeviceCreate()

@@ -115,11 +115,6 @@ class CSector;
 	DEFINE_MAP(CSurface*,RBVector,RBMap,RBMapPairIt);
 #endif
 
-#define EMESH_LS_CF_MODEL	0x0001
-#define EMESH_LS_FNORMALS 	0x0002
-#define EMESH_LS_PNORMALS 	0x0004
-#define EMESH_LS_SVERTICES 	0x0008
-
 class CEditableMesh {
 	friend class MeshExpUtility;
 	friend class CEditableObject;
@@ -156,8 +151,15 @@ class CEditableMesh {
     BYTE			m_Locked;
 public:
 	st_MeshOptions	m_Ops;
-    DWORD 			m_LoadState;
 
+    enum{
+        LS_CF_MODEL 	= (1<<0),
+        LS_FNORMALS 	= (1<<1),
+        LS_PNORMALS 	= (1<<2),
+		LS_SVERTICES 	= (1<<3),
+        LS_RBUFFERS		= (1<<4)
+    };
+    Flags32			m_LoadState;
 protected:
 	Fbox			m_Box;
     FvectorVec		m_Points;	// |
@@ -170,6 +172,7 @@ protected:
     VMapVec			m_VMaps;
     VMRefsVec		m_VMRefs;
 
+	void 			CreateRenderBuffers		();
 	void 			FillRenderBuffer		(IntVec& face_lst, int start_face, int num_face, const CSurface* surf, LPBYTE& data);
 
 	void 			RecurseTri				(int id);
@@ -243,7 +246,6 @@ public:
 
     // device dependent routine
 	void 			ClearRenderBuffers		();
-	void 			CreateRenderBuffers		();
 };
 //----------------------------------------------------
 #endif /*_INCDEF_EditableMesh_H_*/
