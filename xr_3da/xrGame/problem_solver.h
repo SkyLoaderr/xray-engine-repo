@@ -80,9 +80,7 @@ public:
 	IC		void						remove_operator			(const _edge_type	&operator_id);
 	IC		const _edge_type			&current_operator		() const;
 	IC		const OPERATOR_VECTOR		&operators				() const;
-	IC		void						set_current_operator	(const _edge_type	&operator_id);
 	// state interface
-	IC		void						set_current_state		(const CState		&state);
 	IC		void						set_target_state		(const CState		&state);
 	IC		const CState				&current_state			() const;
 	IC		const CState				&target_state			() const;

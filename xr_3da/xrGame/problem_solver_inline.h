@@ -64,21 +64,7 @@ IC	const typename CProblemSolverAbstract::OPERATOR_VECTOR &CProblemSolverAbstrac
 	return					(m_operators);
 }
 
-TEMPLATE_SPECIALIZATION
-IC	void CProblemSolverAbstract::set_current_operator	(const _edge_type &operator_id)
-{
-	OPERATOR_VECTOR::const_iterator	I = std::lower_bound(m_operators.begin(), m_operators.end(),operator_id);
-	VERIFY					((m_operators.end() != E) && ((*I)m_operator_id == operator_id));
-	m_current_operator		= operator_id;
-}
-
 // states
-TEMPLATE_SPECIALIZATION
-IC	void CProblemSolverAbstract::set_current_state		(const CState &state)
-{
-	m_current_state			= state;
-}
-
 TEMPLATE_SPECIALIZATION
 IC	void CProblemSolverAbstract::set_target_state		(const CState &state)
 {

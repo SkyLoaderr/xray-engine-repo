@@ -1,0 +1,13 @@
+////////////////////////////////////////////////////////////////////////////
+//	Module 		: action_base.h
+//	Created 	: 28.01.2004
+//  Modified 	: 10.03.2004
+//	Author		: Dmitriy Iassenev
+//	Description : Base action
+////////////////////////////////////////////////////////////////////////////
+
+#pragma once
+
+#include "action_management_config.h"
+
+#include "action_base_inline.h"

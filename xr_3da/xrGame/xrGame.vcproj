@@ -278,6 +278,65 @@
 				Name="AComponents"
 				Filter="">
 				<Filter
+					Name="ActionManagement"
+					Filter="">
+					<File
+						RelativePath=".\action_management_config.h">
+					</File>
+					<Filter
+						Name="ActionBase"
+						Filter="">
+						<File
+							RelativePath=".\action_base.cpp">
+						</File>
+						<File
+							RelativePath=".\action_base.h">
+						</File>
+						<File
+							RelativePath=".\action_base_inline.h">
+						</File>
+					</Filter>
+					<Filter
+						Name="ActionPlanner"
+						Filter="">
+						<File
+							RelativePath=".\action_planner.cpp">
+						</File>
+						<File
+							RelativePath=".\action_planner.h">
+						</File>
+						<File
+							RelativePath=".\action_planner_inline.h">
+						</File>
+					</Filter>
+					<Filter
+						Name="ActionManager"
+						Filter="">
+						<File
+							RelativePath=".\action_manager.cpp">
+						</File>
+						<File
+							RelativePath=".\action_manager.h">
+						</File>
+						<File
+							RelativePath=".\action_manager_inline.h">
+						</File>
+					</Filter>
+					<Filter
+						Name="ActionManagerAction"
+						Filter="">
+						<File
+							RelativePath=".\action_manager_action.cpp">
+						</File>
+						<File
+							RelativePath=".\action_manager_action.h">
+						</File>
+						<File
+							RelativePath=".\action_manager_action_inline.h">
+						</File>
+					</Filter>
+				</Filter>
+				<Filter
 					Name="DamageManager"
 					Filter="">
 					<File
