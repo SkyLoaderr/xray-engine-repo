@@ -29,7 +29,7 @@ function main()
 		while monster2:action() do
 			wait()
 		end
-		action(monster, anim("idle_non_stop"), sound(snd, "bip01_head",
+		action(monster, anim("idle_non_stop"), sound("trader_come_here2", "bip01_head",
 			MonsterSpace.head_anim_normal), cond(cond.sound_end))
 		while monster:action() do
 			wait()
