@@ -23,29 +23,34 @@ CLocationSelector::~CLocationSelector		()
 void CLocationSelector::init_evaluator		(PathManagers::CAbstractNodeEvaluator *node_evaluator)
 {
 	CEntity								*l_tpEntity = dynamic_cast<CEntity*>(this);
+	
 	VERIFY								(l_tpEntity);
+	
 	CSquad								&Squad = Level().Teams[l_tpEntity->g_Team()].Squads[l_tpEntity->g_Squad()];
 	CEntity								*Leader = Squad.Leader;
 	if (Leader->g_Health() <= 0)
 		Leader							= l_tpEntity;
-	R_ASSERT							(Leader);
-	node_evaluator->m_tHitDir			= m_tHitDirection;
-	node_evaluator->m_dwHitTime			= m_dwHitTime;
-	node_evaluator->m_dwCurTime			= m_dwCurrentUpdate;
+
+	R_ASSERT2							(Leader,"Leader is not assigned!");
+	R_ASSERT2							(ai().level_graph().valid_vertex_id(m_dwLevelVertexID), "Invalid enemy vertex");
+
+	node_evaluator->m_hit_direction		= m_hit_direction;
+	node_evaluator->m_hit_time			= m_hit_time;
+	node_evaluator->m_dwCurTime			= m_current_update;
 	node_evaluator->m_tMe				= l_tpEntity;
 	node_evaluator->m_tpMyNode			= m_tpLevelVertex;
 	node_evaluator->m_tMyPosition		= Position();
-	node_evaluator->m_tEnemy			= m_tSelectedEnemy.Enemy;
-	node_evaluator->m_tEnemyPosition	= m_tSelectedEnemy.Enemy->Position();
+	node_evaluator->m_tEnemy			= m_selected_enemy.m_enemy;
+	node_evaluator->m_tEnemyPosition	= m_selected_enemy.m_enemy->Position();
 	node_evaluator->m_dwEnemyNode		= m_dwLevelVertexID;
-	R_ASSERT2							(ai().level_graph().valid_vertex_id(m_dwLevelVertexID), "Invalid enemy vertex");
-	node_evaluator->m_tpEnemyNode		= m_tSelectedEnemy.Enemy->m_tpLevelVertex;
+	node_evaluator->m_tpEnemyNode		= m_selected_enemy.m_enemy->m_tpLevelVertex;
 	node_evaluator->m_taMembers			= &(Squad.Groups[l_tpEntity->g_Group()].Members);
 	node_evaluator->m_dwStartNode		= m_dwLevelVertexID;
 	node_evaluator->m_tStartPosition	= Position();
 }
 
-void CLocationSelector::select_location		(PathManagers::CAbstractNodeEvaluator *node_evaluator)
+template <u64 flags>
+void CLocationSelector::select_location(PathManagers::CNodeEvaluator<flags> *node_evaluator)
 {
 	CEntity						*l_tpEntity = dynamic_cast<CEntity*>(this);
 	VERIFY						(l_tpEntity);
@@ -53,23 +58,29 @@ void CLocationSelector::select_location		(PathManagers::CAbstractNodeEvaluator *
 	CEntity						*Leader = Squad.Leader;
 	if (Leader->g_Health() <= 0)
 		Leader					= l_tpEntity;
+	
 	R_ASSERT					(Leader);
 
 	Device.Statistic.AI_Range.Begin();
+
+	m_dwLastLocationSelectionTime = node_evaluator->m_dwCurTime;
 	
-//	if ((!m_dwLastLocationSelectionTime) || (m_detail_path.empty()) || (int(m_detail_cur_point_index) > int(m_detail_path.size()) - 4) || (speed() < EPS_L) || ((node_evaluator->m_dwCurTime - m_dwLastRangeSearch > MIN_RANGE_SEARCH_TIME_INTERVAL))) 
-	{
-		
-		m_dwLastLocationSelectionTime = node_evaluator->m_dwCurTime;
-		
-		Squad.Groups[l_tpEntity->g_Group()].GetAliveMemberInfo(node_evaluator->m_taMemberPositions, node_evaluator->m_taMemberNodes, node_evaluator->m_taDestMemberPositions, node_evaluator->m_taDestMemberNodes, l_tpEntity);
-		
-//		ai().graph_search_engine().build_path(ai().level_graph(),m_dwLevelVertexID,m_dwLevelVertexID,0,PathManagers::);
-//		node_evaluator->vfShallowGraphSearch(ai().q_mark_bit);
+	float fOldCost = dInfinity;
 	
+	if (m_level_dest_node != u32(-1)) {
+		node_evaluator->m_tpCurrentNode	= ai().level_graph().vertex(m_level_dest_node);
+		node_evaluator->m_fDistance		= Position().distance_to(ai().level_graph().vertex_position(m_level_dest_node));
+		fOldCost						= node_evaluator->ffEvaluateNode();
+	}
+
+	Squad.Groups[l_tpEntity->g_Group()].GetAliveMemberInfo(node_evaluator->m_taMemberPositions, node_evaluator->m_taMemberNodes, node_evaluator->m_taDestMemberPositions, node_evaluator->m_taDestMemberNodes, l_tpEntity);
+	
+	ai().graph_search_engine().build_path(ai().level_graph(),m_dwLevelVertexID,m_dwLevelVertexID,0,*node_evaluator);
+
+//	if ((!m_dwLastLocationSelectionTime) || (m_detail_path.empty()) || (int(m_detail_cur_point_index) > int(m_detail_path.size()) - 4) || (speed() < EPS_L) || ((node_evaluator->m_dwCurTime - m_previous_query_time > MIN_RANGE_SEARCH_TIME_INTERVAL))) 
 //		if ((m_level_dest_node != node_evaluator->m_dwBestNode) && (node_evaluator->m_fBestCost < fOldCost - 0.f)){
 //			m_level_dest_node		= node_evaluator->m_dwBestNode;
-//			if (!m_level_dest_node) {
+//			if (ai().level_graph().valid_vertex_id(m_level_dest_node)) {
 //				Msg("! Invalid vertex Evaluator vertex");
 //			}
 //			m_level_path.clear		();
@@ -78,7 +89,6 @@ void CLocationSelector::select_location		(PathManagers::CAbstractNodeEvaluator *
 //		} 
 //		else
 //			m_bIfSearchFailed		= true;
-	}
 
 	Device.Statistic.AI_Range.End();
 }

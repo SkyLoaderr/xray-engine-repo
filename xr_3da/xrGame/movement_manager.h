@@ -35,8 +35,7 @@ private:
 	EPathState								m_path_state;
 	EPathState								m_path_state_previous;
 
-	void			init_selector			(PathManagers::CAbstractNodeEvaluator &node_evaluator, CSquad &squad) const;
-	void			find_position			(PathManagers::CAbstractNodeEvaluator &node_evaluator, CSquad &squad);
+	void			find_location			(PathManagers::CAbstractNodeEvaluator &node_evaluator);
 
 protected:
 	float									m_speed;

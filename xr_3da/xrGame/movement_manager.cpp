@@ -27,8 +27,6 @@ void CMovementManager::init			()
 	CDetailPathManager::init();
 }
 
-//#define NO_PHYSICS_IN_AI_MOVE
-
 void CMovementManager::move_along_path	(CPHMovementControl *movement_control, float time_delta)
 {
 	Fvector				motion;

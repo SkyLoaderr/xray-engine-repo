@@ -45,7 +45,10 @@
 namespace PathManagers {
 	const Fvector	tLeft	= Fvector().set(-1,0,0);
 	const Fvector	tRight	= Fvector().set(1,0,0);
-	class CAbstractNodeEvaluator {
+	
+	typedef SBaseParameters<float,u32,u32> CBaseParameters;
+
+	class CAbstractNodeEvaluator : public CBaseParameters {
 		static const u32		dwSelectorVarCount	= 23;
 	public:
 		float		    m_fBestCost,                    //  0
@@ -78,8 +81,8 @@ namespace PathManagers {
 		Fvector			m_tStartPosition;
 
 		// hit information
-		Fvector			m_tHitDir;
-		u32				m_dwHitTime;
+		Fvector			m_hit_direction;
+		u32				m_hit_time;
 
 		// current update time
 		u32				m_dwCurTime;
@@ -129,9 +132,7 @@ namespace PathManagers {
 		virtual	void	vfShallowGraphSearch				(xr_vector<u32> &tpaStack, xr_vector<bool> &tpaMask) = 0;
 	};
 
-	typedef SBaseParameters<float,u32,u32> CBaseParameters;
-
-	template <const u64 qwFlags> class CNodeEvaluator : public CAbstractNodeEvaluator, public CBaseParameters {
+	template <const u64 qwFlags> class CNodeEvaluator : public CAbstractNodeEvaluator {
 	private:
 		IC void vfNormalizeSafe(Fvector& Vector)
 		{
@@ -409,8 +410,8 @@ namespace PathManagers {
 
 		IC		void vfAddEnemyLookCost						()
 		{
-			if (_abs(s32(m_dwCurTime - m_dwHitTime)) < ATTACK_HIT_REACTION_TIME) {
-				Fvector tTempDirection0, tTempDirection1 = m_tHitDir;
+			if (_abs(s32(m_dwCurTime - m_hit_time)) < ATTACK_HIT_REACTION_TIME) {
+				Fvector tTempDirection0, tTempDirection1 = m_hit_direction;
 				tTempDirection0.sub(m_tEnemyPosition,m_tCurrentPosition);
 				vfNormalizeSafe(tTempDirection0);
 				vfNormalizeSafe(tTempDirection1);
@@ -421,8 +422,8 @@ namespace PathManagers {
 
 		IC		void vfAddEnemyLookCost						(float fAngle)
 		{
-			if (_abs(m_dwCurTime - m_dwHitTime) < ATTACK_HIT_REACTION_TIME) {
-				Fvector tTempDirection0, tTempDirection1 = m_tHitDir;
+			if (_abs(m_dwCurTime - m_hit_time) < ATTACK_HIT_REACTION_TIME) {
+				Fvector tTempDirection0, tTempDirection1 = m_hit_direction;
 				tTempDirection0.sub(m_tEnemyPosition,m_tCurrentPosition);
 				vfNormalizeSafe(tTempDirection0);
 				vfNormalizeSafe(tTempDirection1);
