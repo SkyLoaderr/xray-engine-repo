@@ -161,39 +161,39 @@ void CAI_Space::Render()
 		if (Level().game.type == GAME_SINGLE) {
 			game_sv_Single *tpGame = dynamic_cast<game_sv_Single *>(Level().Server->game);
 			if (tpGame->m_tALife.m_bLoaded) {
-				for ( i=0; i<(int)tpGame->m_tALife.m_tpNPC.size(); i++)
-					for (int j=0; j<(int)tpGame->m_tALife.m_tpSpawnPoint[tpGame->m_tALife.m_tpNPC[i].wSpawnPoint].ucRoutePointCount; j++) {
-						Fvector t2 = m_tpaGraph[tpGame->m_tALife.m_tpSpawnPoint[tpGame->m_tALife.m_tpNPC[i].wSpawnPoint].wpRouteGraphPoints[j]].tPoint;
-						t2.y += .6f;
-						NORMALIZE_VECTOR(t2);
-						Device.Primitive.dbg_DrawAABB(t2,.05f,.05f,.05f,D3DCOLOR_XRGB(255,255,0));
-					}
-				for ( i=0; i<(int)tpGame->m_tALife.m_tpNPC.size(); i++) {
-					{
-						Fvector t1 = m_tpaGraph[tpGame->m_tALife.m_tpSpawnPoint[tpGame->m_tALife.m_tpNPC[i].wSpawnPoint].wNearestGraphPoint].tPoint;
-						t1.y += .6f;
-						NORMALIZE_VECTOR(t1);
-						Device.Primitive.dbg_DrawAABB(t1,.05f,.05f,.05f,D3DCOLOR_XRGB(0,0,0));
-					}
-					{
-						if (tpGame->m_tALife.m_tpNPC[i].fDistanceToPoint > EPS_L) {
-							Fvector t1 = m_tpaGraph[tpGame->m_tALife.m_tpNPC[i].wGraphPoint].tPoint;
-							Fvector t2 = m_tpaGraph[tpGame->m_tALife.m_tpNPC[i].wNextGraphPoint].tPoint;
-							t2.sub(t1);
-							t2.mul(tpGame->m_tALife.m_tpNPC[i].fDistanceFromPoint/tpGame->m_tALife.m_tpNPC[i].fDistanceToPoint);
-							t1.add(t2);
-							t1.y += .6f;
-							NORMALIZE_VECTOR(t1);
-							Device.Primitive.dbg_DrawAABB(t1,.05f,.05f,.05f,D3DCOLOR_XRGB(255,0,0));
-						}
-						else {
-							Fvector t1 = m_tpaGraph[tpGame->m_tALife.m_tpNPC[i].wGraphPoint].tPoint;
-							t1.y += .6f;
-							NORMALIZE_VECTOR(t1);
-							Device.Primitive.dbg_DrawAABB(t1,.05f,.05f,.05f,D3DCOLOR_XRGB(255,0,0));
-						}
-					}
-				}
+//				for ( i=0; i<(int)tpGame->m_tALife.m_tpNPC.size(); i++)
+//					for (int j=0; j<(int)tpGame->m_tALife.m_tpSpawnPoints[tpGame->m_tALife.m_tpNPC[i].wSpawnPoint].ucRoutePointCount; j++) {
+//						Fvector t2 = m_tpaGraph[tpGame->m_tALife.m_tpSpawnPoints[tpGame->m_tALife.m_tpNPC[i].wSpawnPoint].wpRouteGraphPoints[j]].tPoint;
+//						t2.y += .6f;
+//						NORMALIZE_VECTOR(t2);
+//						Device.Primitive.dbg_DrawAABB(t2,.05f,.05f,.05f,D3DCOLOR_XRGB(255,255,0));
+//					}
+//				for ( i=0; i<(int)tpGame->m_tALife.m_tpNPC.size(); i++) {
+//					{
+//						Fvector t1 = m_tpaGraph[tpGame->m_tALife.m_tpSpawnPoints[tpGame->m_tALife.m_tpNPC[i].wSpawnPoint].wNearestGraphPoint].tPoint;
+//						t1.y += .6f;
+//						NORMALIZE_VECTOR(t1);
+//						Device.Primitive.dbg_DrawAABB(t1,.05f,.05f,.05f,D3DCOLOR_XRGB(0,0,0));
+//					}
+//					{
+//						if (tpGame->m_tALife.m_tpNPC[i].fDistanceToPoint > EPS_L) {
+//							Fvector t1 = m_tpaGraph[tpGame->m_tALife.m_tpNPC[i].wGraphPoint].tPoint;
+//							Fvector t2 = m_tpaGraph[tpGame->m_tALife.m_tpNPC[i].wNextGraphPoint].tPoint;
+//							t2.sub(t1);
+//							t2.mul(tpGame->m_tALife.m_tpNPC[i].fDistanceFromPoint/tpGame->m_tALife.m_tpNPC[i].fDistanceToPoint);
+//							t1.add(t2);
+//							t1.y += .6f;
+//							NORMALIZE_VECTOR(t1);
+//							Device.Primitive.dbg_DrawAABB(t1,.05f,.05f,.05f,D3DCOLOR_XRGB(255,0,0));
+//						}
+//						else {
+//							Fvector t1 = m_tpaGraph[tpGame->m_tALife.m_tpNPC[i].wGraphPoint].tPoint;
+//							t1.y += .6f;
+//							NORMALIZE_VECTOR(t1);
+//							Device.Primitive.dbg_DrawAABB(t1,.05f,.05f,.05f,D3DCOLOR_XRGB(255,0,0));
+//						}
+//					}
+//				}
 			}
 		}
 	}
