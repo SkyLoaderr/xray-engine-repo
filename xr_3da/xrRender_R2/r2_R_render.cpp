@@ -211,6 +211,7 @@ void CRender::Render	()
 		{
 			SceneGraph::mapNormalPS::TNode*	Nps			= lstPS[ps_id];
 			RCache.set_PS					(Nps->key);	
+			RCache.set_Constants			();
 
 			SceneGraph::mapNormalStates&	states		= Nps->val;		states.ssa	= 0;
 			states.getANY_P					(lstStates);

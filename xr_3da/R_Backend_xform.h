@@ -38,8 +38,11 @@ public:
 	{
 		if (C && !C->empty)
 		{
-			mapping	=	C;
-			flags	|=	dirty_M;
+			if (C!=mapping)
+			{
+				mapping	=	C;
+				flags	|=	dirty_M;
+			}
 		} 
 		else 
 		{
