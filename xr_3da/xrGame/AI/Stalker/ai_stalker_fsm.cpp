@@ -528,7 +528,7 @@ void CAI_Stalker::Think()
 		// going via graph nodes
 		vfUpdateSearchPosition	();
 		AI_Path.DestNode		= getAI().m_tpaGraph[m_tNextGP].tNodeID;
-		vfSetParameters(0,0,false,eWeaponStateIdle,ePathTypeStraight,eBodyStateStand,eMovementTypeRun,eStateTypeNormal,eLookTypeSearch);
+		vfSetParameters(0,0,false,eWeaponStateIdle,ePathTypeStraight,eBodyStateStand,eMovementTypeWalk,eStateTypeNormal,eLookTypeSearch);
 	}
 	
 	m_bStateChanged			= m_ePreviousState != m_eCurrentState;
