@@ -184,10 +184,16 @@ IC u32 it_difference	(u32 d, u32 orig, u32 ucomp)	{	return	color_rgba(
 	128+(int(color_get_A(orig))-int(color_get_A(ucomp)))*2	);	// A-error	
 }
 IC u32 it_height_rev	(u32 d, u32 s)	{	return	color_rgba	(
-	color_get_A(d),		// diff x
-	color_get_R(d),		// diff y
-	color_get_G(d),		// diff z
-	color_get_R(s)	);	// height
+	color_get_A(d),					// diff x
+	color_get_B(d),					// diff y
+	color_get_G(d),					// diff z
+	color_get_R(s)	);				// height
+}
+IC u32 it_height_rev_base(u32 d, u32 s)	{	return	color_rgba	(
+	color_get_A(d),					// diff x
+	color_get_B(d),					// diff y
+	color_get_G(d),					// diff z
+	(color_get_R(s)+color_get_G(s)+color_get_B(s))/3	);	// height
 }
 
 IDirect3DBaseTexture9*	CRender::texture_load(LPCSTR fRName)
@@ -303,7 +309,7 @@ _BUMP:
 		fmt								= D3DFMT_DXT5;
 		IDirect3DTexture9*	T_normal_1C	= TW_LoadTextureFromTexture(T_normal_1,fmt,psTextureLOD,dwWidth,dwHeight);
 		
-#if RENDER==R_R2		
+#if RENDER==R_R2
 		if (ps_r2_ls_flags.test(R2FLAG_PARALLAX))
 		{
 			// Decompress (back)
@@ -381,7 +387,7 @@ _BUMP_from_base:
 			TW_Iterate_2OP		(T_normal_1D,T_normal_1,T_normal_1U,it_difference);
 
 			// Reverse channels back + transfer heightmap
-			TW_Iterate_1OP		(T_normal_1D,T_height_gloss,it_height_rev);
+			TW_Iterate_1OP		(T_normal_1D,T_base,it_height_rev_base);
 
 			// Compress
 			fmt								= D3DFMT_DXT5;
