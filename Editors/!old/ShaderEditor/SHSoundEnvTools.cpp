@@ -13,32 +13,32 @@
 
 //------------------------------------------------------------------------------
 xr_token eax_environment[]		= {
-	{"Generic",			   	EAX_ENVIRONMENT_GENERIC			},
-	{"Padded Cell",		    EAX_ENVIRONMENT_PADDEDCELL		},
-	{"Room",                EAX_ENVIRONMENT_ROOM			},
-	{"Bathroom",            EAX_ENVIRONMENT_BATHROOM		},                             
-	{"Livingroom",          EAX_ENVIRONMENT_LIVINGROOM		},                               
-	{"Stone Room",          EAX_ENVIRONMENT_STONEROOM		},                               
-	{"Auditorium",          EAX_ENVIRONMENT_AUDITORIUM		},                               
-	{"Concert Hall",        EAX_ENVIRONMENT_CONCERTHALL		},                                 
-	{"Cave",                EAX_ENVIRONMENT_CAVE			},                         
-	{"Arena",               EAX_ENVIRONMENT_ARENA			},                          
-	{"Hangar",              EAX_ENVIRONMENT_HANGAR			},                           
-	{"Carpeted Hallway",    EAX_ENVIRONMENT_CARPETEDHALLWAY	},                                     
-	{"Hallway",             EAX_ENVIRONMENT_HALLWAY			},                            
-	{"Stone Corridor",      EAX_ENVIRONMENT_STONECORRIDOR	},                                   
 	{"Alley",               EAX_ENVIRONMENT_ALLEY			},                          
-	{"Forest",              EAX_ENVIRONMENT_FOREST			},                           
+	{"Arena",               EAX_ENVIRONMENT_ARENA			},                          
+	{"Auditorium",          EAX_ENVIRONMENT_AUDITORIUM		},                               
+	{"Bathroom",            EAX_ENVIRONMENT_BATHROOM		},                             
+	{"Carpeted Hallway",    EAX_ENVIRONMENT_CARPETEDHALLWAY	},                                     
+	{"Cave",                EAX_ENVIRONMENT_CAVE			},                         
 	{"City",                EAX_ENVIRONMENT_CITY			},                         
-	{"Mountains",           EAX_ENVIRONMENT_MOUNTAINS		},                              
-	{"Quarry",              EAX_ENVIRONMENT_QUARRY			},                           
-	{"Plain",               EAX_ENVIRONMENT_PLAIN			},                          
-	{"Parkinglot",          EAX_ENVIRONMENT_PARKINGLOT		},                               
-	{"Sewer Pipe",          EAX_ENVIRONMENT_SEWERPIPE		},                               
-	{"Under Water",         EAX_ENVIRONMENT_UNDERWATER		},                                
-	{"Drugged",             EAX_ENVIRONMENT_DRUGGED			},                            
+	{"Concert Hall",        EAX_ENVIRONMENT_CONCERTHALL		},                                 
 	{"Dizzy",               EAX_ENVIRONMENT_DIZZY			},                          
+	{"Drugged",             EAX_ENVIRONMENT_DRUGGED			},                            
+	{"Forest",              EAX_ENVIRONMENT_FOREST			},                           
+	{"Generic",			   	EAX_ENVIRONMENT_GENERIC			},
+	{"Hallway",             EAX_ENVIRONMENT_HALLWAY			},                            
+	{"Hangar",              EAX_ENVIRONMENT_HANGAR			},                           
+	{"Livingroom",          EAX_ENVIRONMENT_LIVINGROOM		},                               
+	{"Mountains",           EAX_ENVIRONMENT_MOUNTAINS		},                              
+	{"Padded Cell",		    EAX_ENVIRONMENT_PADDEDCELL		},
+	{"Parkinglot",          EAX_ENVIRONMENT_PARKINGLOT		},                               
+	{"Plain",               EAX_ENVIRONMENT_PLAIN			},                          
 	{"Psychotic",           EAX_ENVIRONMENT_PSYCHOTIC		},
+	{"Quarry",              EAX_ENVIRONMENT_QUARRY			},                           
+	{"Room",                EAX_ENVIRONMENT_ROOM			},
+	{"Sewer Pipe",          EAX_ENVIRONMENT_SEWERPIPE		},                               
+	{"Stone Corridor",      EAX_ENVIRONMENT_STONECORRIDOR	},                                   
+	{"Stone Room",          EAX_ENVIRONMENT_STONEROOM		},                               
+	{"Under Water",         EAX_ENVIRONMENT_UNDERWATER		},                                
     {0,						0								}
 };
 //------------------------------------------------------------------------------
@@ -221,7 +221,6 @@ void CSHSoundEnvTools::SetCurrentItem(LPCSTR name, bool bView)
 	if (m_Env!=S){
         m_Env 			= S;
         m_EnvSrc		= *m_Env;
-        m_SrcEnvName	= *m_Env->name;
 	    UI->Command(COMMAND_UPDATE_PROPERTIES);
 		if (bView) ViewSetCurrentItem(name);
     }
@@ -234,31 +233,12 @@ void CSHSoundEnvTools::ResetCurrentItem()
 	UseEnvironment	();
 }
 
-void __fastcall CSHSoundEnvTools::FillChooseEnv(ChooseItemVec& items)
-{
-    for (int k=0; eax_environment[k].name; k++)
-	    items.push_back	(SChooseItem(eax_environment[k].name,""));
-}
-
 void __fastcall CSHSoundEnvTools::OnRevResetClick(PropValue* sender, bool& bModif, bool& bSafe)
 {
 	ButtonValue* V = dynamic_cast<ButtonValue*>(sender); R_ASSERT(V);
     switch (V->btn_num){
-    case 0: m_Env->set_default();	break;
-    case 1: m_Env->set_identity();	break;
-    case 1:{
-        LPCSTR MP=0;
-        if (TfrmChoseItem::SelectItem(smCustom,MP,1,0,FillChooseEnv)&&MP){
-            for (int k=0; eax_environment[k].name; k++)
-            	if (0==strcmp(eax_environment[k].name,MP)){
-                	Sound->set_environment(eax_environment[k].id,m_Env);
-                    m_SrcEnvName= MP;
-			        m_EnvSrc	= *m_Env;
-				    UI->Command	(COMMAND_UPDATE_PROPERTIES);
-                	break;
-                }
-        }
-    }break;
+    case 0: m_Env->set_identity();	break;
+    case 1: OnEnvChange(sender);    break;
 	}
     Ext.m_ItemProps->RefreshForm();
     Modified();
@@ -273,13 +253,16 @@ void __fastcall CSHSoundEnvTools::OnEnvSizeChange(PropValue* sender)
     test_env.ReflectionsDelay	= m_EnvSrc.ReflectionsDelay;
     test_env.Reverb				= m_EnvSrc.Reverb;
     test_env.ReverbDelay 		= m_EnvSrc.ReverbDelay;
-	Sound->test_env_size		(&test_env,m_Env);
+    CSound_environment* E		= m_Env;
+	Sound->set_environment_size	(&test_env,&E);
     UI->Command					(COMMAND_UPDATE_PROPERTIES);
 }
 
 void __fastcall CSHSoundEnvTools::OnEnvChange(PropValue* sender)
 {
-    Sound->set_environment		(m_Env->Environment,m_Env);
+    CSound_environment* E		= m_Env;
+    Sound->set_environment		(m_Env->Environment,&E);
+    m_EnvSrc					= *m_Env;
     UI->Command					(COMMAND_UPDATE_PROPERTIES);
 }
 
@@ -291,26 +274,25 @@ void CSHSoundEnvTools::RealUpdateProperties()
         // fill environment
 		CSoundRender_Environment& S	= *m_Env;
         ButtonValue* B			= 0;
-        PHelper.CreateRName		(items, "Environment\\Name",								&S.name,  				m_CurrentItem);
-        B=PHelper.CreateButton	(items, "Environment\\Set",	"Default,Identity",				ButtonValue::flFirstOnly);
+        PHelper.CreateRName		(items, "Name",									&S.name,  				m_CurrentItem);
+        B=PHelper.CreateButton	(items, "Environment\\Set",	"Identity,Reset", 	ButtonValue::flFirstOnly);
         B->OnBtnClickEvent 		= OnRevResetClick;
-        PHelper.CreateCaption	(items, "Environment\\Source Name",							m_SrcEnvName);
         PropValue* V=0;
-        V=PHelper.CreateToken<u32>(items,"Environment\\Environment\\Preset",				&S.Environment	       ,eax_environment);
+        V=PHelper.CreateToken<u32>(items,"Environment\\Preset",					&S.Environment	       ,eax_environment);
         V->OnChangeEvent		= OnEnvChange;
-        V=PHelper.CreateFloat	(items, "Environment\\Environment\\EnvironmentSize",		&S.EnvironmentSize     ,EAXLISTENER_MINENVIRONMENTSIZE, 	EAXLISTENER_MAXENVIRONMENTSIZE			,0.01f,	3);
+        V=PHelper.CreateFloat	(items, "Environment\\Size",					&S.EnvironmentSize     ,EAXLISTENER_MINENVIRONMENTSIZE, 	EAXLISTENER_MAXENVIRONMENTSIZE			,0.01f,	3);
         V->OnChangeEvent		= OnEnvSizeChange;
-        PHelper.CreateFloat		(items, "Environment\\Environment\\EnvironmentDiffusion",	&S.EnvironmentDiffusion,EAXLISTENER_MINENVIRONMENTDIFFUSION,EAXLISTENER_MAXENVIRONMENTDIFFUSION		,0.01f,	3);
-        PHelper.CreateFloat		(items, "Environment\\Room\\Room",							&S.Room                ,(float)EAXLISTENER_MINROOM, 	  	(float)EAXLISTENER_MAXROOM				,1.f,	0);
-        PHelper.CreateFloat		(items, "Environment\\Room\\RoomHF",						&S.RoomHF              ,(float)EAXLISTENER_MINROOMHF, 	  	(float)EAXLISTENER_MAXROOMHF			,1.f,	0);
-        PHelper.CreateFloat		(items, "Environment\\Distance Effects\\RoomRolloffFactor",	&S.RoomRolloffFactor   ,EAXLISTENER_MINROOMROLLOFFFACTOR, 	EAXLISTENER_MAXROOMROLLOFFFACTOR		,0.01f,	3);
-        PHelper.CreateFloat		(items, "Environment\\Distance Effects\\AirAbsorptionHF",  	&S.AirAbsorptionHF     ,EAXLISTENER_MINAIRABSORPTIONHF, 	EAXLISTENER_MAXAIRABSORPTIONHF			,0.01f,	3);
-        PHelper.CreateFloat		(items, "Environment\\Reflections\\Reflections",			&S.Reflections         ,(float)EAXLISTENER_MINREFLECTIONS,	(float)EAXLISTENER_MAXREFLECTIONS		,1.f,	0);
-        PHelper.CreateFloat		(items, "Environment\\Reflections\\ReflectionsDelay",		&S.ReflectionsDelay    ,EAXLISTENER_MINREFLECTIONSDELAY, 	EAXLISTENER_MAXREFLECTIONSDELAY			,0.01f,	3);
-        PHelper.CreateFloat		(items, "Environment\\Reverb\\Reverb",						&S.Reverb              ,(float)EAXLISTENER_MINREVERB, 	  	(float)EAXLISTENER_MAXREVERB			,1.f,	0);
-        PHelper.CreateFloat		(items, "Environment\\Reverb\\ReverbDelay",					&S.ReverbDelay         ,EAXLISTENER_MINREVERBDELAY, 		EAXLISTENER_MAXREVERBDELAY				,0.01f,	3);
-        PHelper.CreateFloat		(items, "Environment\\Decay\\DecayTime",					&S.DecayTime           ,EAXLISTENER_MINDECAYTIME, 			EAXLISTENER_MAXDECAYTIME				,0.01f,	3);
-        PHelper.CreateFloat		(items, "Environment\\Decay\\DecayHFRatio",					&S.DecayHFRatio        ,EAXLISTENER_MINDECAYHFRATIO, 		EAXLISTENER_MAXDECAYHFRATIO				,0.01f,	3);
+        PHelper.CreateFloat		(items, "Environment\\Diffusion",				&S.EnvironmentDiffusion,EAXLISTENER_MINENVIRONMENTDIFFUSION,EAXLISTENER_MAXENVIRONMENTDIFFUSION		,0.01f,	3);
+        PHelper.CreateFloat		(items, "Room\\Room",							&S.Room                ,(float)EAXLISTENER_MINROOM, 	  	(float)EAXLISTENER_MAXROOM				,1.f,	0);
+        PHelper.CreateFloat		(items, "Room\\RoomHF",							&S.RoomHF              ,(float)EAXLISTENER_MINROOMHF, 	  	(float)EAXLISTENER_MAXROOMHF			,1.f,	0);
+        PHelper.CreateFloat		(items, "Distance Effects\\RoomRolloffFactor",	&S.RoomRolloffFactor   ,EAXLISTENER_MINROOMROLLOFFFACTOR, 	EAXLISTENER_MAXROOMROLLOFFFACTOR		,0.01f,	3);
+        PHelper.CreateFloat		(items, "Distance Effects\\AirAbsorptionHF",  	&S.AirAbsorptionHF     ,EAXLISTENER_MINAIRABSORPTIONHF, 	EAXLISTENER_MAXAIRABSORPTIONHF			,0.01f,	3);
+        PHelper.CreateFloat		(items, "Reflections\\Reflections",				&S.Reflections         ,(float)EAXLISTENER_MINREFLECTIONS,	(float)EAXLISTENER_MAXREFLECTIONS		,1.f,	0);
+        PHelper.CreateFloat		(items, "Reflections\\ReflectionsDelay",		&S.ReflectionsDelay    ,EAXLISTENER_MINREFLECTIONSDELAY, 	EAXLISTENER_MAXREFLECTIONSDELAY			,0.01f,	3);
+        PHelper.CreateFloat		(items, "Reverb\\Reverb",						&S.Reverb              ,(float)EAXLISTENER_MINREVERB, 	  	(float)EAXLISTENER_MAXREVERB			,1.f,	0);
+        PHelper.CreateFloat		(items, "Reverb\\ReverbDelay",					&S.ReverbDelay         ,EAXLISTENER_MINREVERBDELAY, 		EAXLISTENER_MAXREVERBDELAY				,0.01f,	3);
+        PHelper.CreateFloat		(items, "Decay\\DecayTime",						&S.DecayTime           ,EAXLISTENER_MINDECAYTIME, 			EAXLISTENER_MAXDECAYTIME				,0.01f,	3);
+        PHelper.CreateFloat		(items, "Decay\\DecayHFRatio",					&S.DecayHFRatio        ,EAXLISTENER_MINDECAYHFRATIO, 		EAXLISTENER_MAXDECAYHFRATIO				,0.01f,	3);
     }
     Ext.m_ItemProps->AssignItems		(items);
     Ext.m_ItemProps->SetModifiedEvent	(Modified);

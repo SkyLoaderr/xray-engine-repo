@@ -41,6 +41,7 @@ void ESoundSource::Construct(LPVOID data)
     m_Params.freq			= 1.f;
     m_Params.min_distance   = 1.f;
     m_Params.max_distance   = 300.f;
+    m_Params.position.set	(0,0,0);
 
     m_Flags.set				(flLooped,TRUE);
 	m_Command				= stNothing; 
