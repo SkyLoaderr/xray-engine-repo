@@ -91,7 +91,7 @@ private:
 	IC		_edge_value_type			estimate_edge_weight_impl(const _index_type	&vertex_index, bool) const;
 
 protected:
-#ifdef DEBUG
+#ifdef _DEBUG
 	IC		void						validate_properties		(const CState &conditions) const;
 #endif
 

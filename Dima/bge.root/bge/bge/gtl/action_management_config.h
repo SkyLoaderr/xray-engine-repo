@@ -8,7 +8,7 @@
 
 #pragma once
 
-#ifdef DEBUG
-#define LOG_ACTION
+#ifdef _DEBUG
+#	define LOG_ACTION
 #endif
 

@@ -122,7 +122,7 @@ IC	typename CHashFixedVertexManager::CGraphVertex &CHashFixedVertexManager::get_
 		if (vertex->m_vertex->index() == vertex_id)
 			return			(*vertex->m_vertex);
 	NODEFAULT;
-#ifdef DEBUG
+#ifdef _DEBUG
 	return					(*vertex->m_vertex);
 #endif
 }

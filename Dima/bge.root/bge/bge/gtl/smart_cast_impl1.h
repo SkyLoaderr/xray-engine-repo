@@ -11,7 +11,7 @@
 #include <_type_traits.h>
 #include "object_type_traits.h"
 
-#ifdef DEBUG
+#ifdef _DEBUG
 	void add_smart_cast_stats	(LPCSTR,LPCSTR);
 #endif
 
@@ -404,7 +404,7 @@ namespace SmartDynamicCast {
 #ifdef SHOW_SMART_CAST_UNOPTIMIZED_CASES
 #pragma todo("Dima to all : this smart_cast is not optimized!")
 #endif
-#ifdef DEBUG
+#ifdef _DEBUG
 			add_smart_cast_stats(typeid(T2*).name(),typeid(T1*).name());
 #endif
 			return		(dynamic_cast<T1*>(p));
@@ -440,7 +440,7 @@ namespace SmartDynamicCast {
 			STATIC_CHECK		(!object_type_traits::is_const<T2>::value || object_type_traits::is_const<T1>::value,Cannot_use_smart_cast_to_convert_const_to_non_const);
 			typedef object_type_traits::remove_const<T1>::type _T1;
 			typedef object_type_traits::remove_const<T2>::type _T2;
-#ifdef DEBUG
+#ifdef _DEBUG
 			T1					*temp = SmartDynamicCast::smart_cast<_T1>(const_cast<_T2*>(p));
 			T1					*test = dynamic_cast<T1*>(p);
 			VERIFY2				(temp == test,"SmartCast FAILED (result differs from the dynamic_cast) or object is CORRUPTED!");
@@ -456,7 +456,7 @@ namespace SmartDynamicCast {
 #ifdef SHOW_SMART_CAST_UNOPTIMIZED_CASES
 #pragma todo("Dima to all : this smart_cast is not optimized!")
 #endif
-#ifdef DEBUG
+#ifdef _DEBUG
 			add_smart_cast_stats(typeid(T2*).name(),typeid(void*).name());
 #endif
 			if (!p)
