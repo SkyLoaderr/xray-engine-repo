@@ -6,17 +6,17 @@
 #pragma once
 #include "InfoPortion.h"
 #include "PdaMsg.h"
+#include "attachment_owner.h"
 
 class CInventory;
 class CInventoryItem;
 class CTrade;
 class CPda;
-class CAttachableItem;
 
-class CInventoryOwner {							
+class CInventoryOwner : public CAttachmentOwner {							
 public:
-	CInventoryOwner();
-	virtual ~CInventoryOwner();
+					CInventoryOwner				();
+	virtual			~CInventoryOwner			();
 
 	virtual BOOL	net_Spawn					(LPVOID DC);
 			void	Init						();
@@ -25,7 +25,7 @@ public:
 	virtual void	reload						(LPCSTR section);
 
 	//обновление
-	virtual void UpdateInventoryOwner(u32 deltaT);
+	virtual void	UpdateInventoryOwner		(u32 deltaT);
 
 	// свойства
 	u32					m_dwMoney;
@@ -77,7 +77,6 @@ public:
 protected:
 	// торговля
 	CTrade				*m_pTrade;
-
 	bool				m_bTalking; 
 	CInventoryOwner		*m_pTalkPartner;
 
@@ -87,16 +86,6 @@ public:
 	virtual void			OnItemDrop				(CInventoryItem *inventory_item);
 	virtual void			OnItemDropUpdate		() {}
 	virtual bool			use_bolts				() const {return(true);}
-
-			void			attach					(CInventoryItem *inventory_item);
-			void			detach					(CInventoryItem *inventory_item);
-	virtual	bool			can_attach				(const CInventoryItem *inventory_item) const;
-			bool			attached				(const CInventoryItem *inventory_item) const;
-	IC		const xr_vector<CAttachableItem*> &attached_objects() const;
-
-protected:
-	xr_vector<ref_str>			m_attach_item_sections;
-	xr_vector<CAttachableItem*>	m_attached_objects;
 };
 
 #include "inventory_owner_inline.h"

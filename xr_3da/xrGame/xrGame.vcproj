@@ -2990,6 +2990,19 @@
 								RelativePath=".\attachable_item_inline.h">
 							</File>
 						</Filter>
+						<Filter
+							Name="AttachmentOwner"
+							Filter="">
+							<File
+								RelativePath=".\attachment_owner.cpp">
+							</File>
+							<File
+								RelativePath=".\attachment_owner.h">
+							</File>
+							<File
+								RelativePath=".\attachment_owner_inline.h">
+							</File>
+						</Filter>
 					</Filter>
 					<Filter
 						Name="_lift"
