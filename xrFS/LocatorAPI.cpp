@@ -212,12 +212,13 @@ void CLocatorAPI::ProcessArchive(const char* _path)
 	// Read headers
 	IReader* hdr		= open_chunk(A.hSrcFile,1); R_ASSERT(hdr);
 //	IReader*	hdr		= A.vfs->open_chunk(1);
+//	RStringVec	fv;
 	while (!hdr->eof())
 	{
 		string_path		name,full;
 		hdr->r_stringZ	(name);
 		strconcat		(full,base,name);
-
+//		fv.push_back(full);
 		size_t vfs		= archives.size()-1;
 		u32 ptr			= hdr->r_u32();
 		u32 size_real	= hdr->r_u32();
