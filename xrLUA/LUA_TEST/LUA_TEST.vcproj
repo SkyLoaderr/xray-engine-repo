@@ -520,19 +520,16 @@
 				RelativePath=".\object_destroyer.h">
 			</File>
 			<File
-				RelativePath=".\object_destroyer_inline.h">
+				RelativePath=".\object_equality_checker.h">
 			</File>
 			<File
 				RelativePath=".\object_loader.h">
 			</File>
 			<File
-				RelativePath=".\object_loader_inline.h">
-			</File>
-			<File
 				RelativePath=".\object_saver.h">
 			</File>
 			<File
-				RelativePath=".\object_saver_inline.h">
+				RelativePath=".\object_type_traits.h">
 			</File>
 		</Filter>
 		<File

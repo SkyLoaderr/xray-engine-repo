@@ -81,7 +81,7 @@ struct CTestObject : public IPureServerObject {
 	}
 };
 
-#define USE_WRITER
+//#define USE_WRITER
 //#define USE_REF_STR
 
 #define verify(data) {\
@@ -164,11 +164,14 @@ struct CMapPredicate {
 template <typename T>
 struct CTemplate {};
 
+//#define TEST_SAVE_LOAD_DELETE
+
 void broker_test()
 {
-//	printf	("%s : %d\n",typeid(xr_vector<u16>).name(),object_type_traits::has_iterator<xr_vector<u16> >::value);
+	printf	("%s : %d\n",typeid(xr_vector<u16>).name(),object_type_traits::is_stl_container<xr_multimap<u16,u16> >::value);
 //	printf	("%s : %d\n",typeid(CTemplate<u16>).name(),object_type_traits::has_iterator<CTemplate<u16> >::value);
 //	traits_test();
+#ifdef TEST_SAVE_LOAD_DELETE
 	{
 #ifdef INIT_CORE
 		Core._initialize			("lua-test",NULL);
@@ -468,6 +471,7 @@ void broker_test()
 	VERIFY							(!inequality_count);
 	VERIFY							(!update_count);
 	VERIFY							(!save_count);
+#endif // TEST_SAVE_LOAD_DELETE
 }
 
 #define pointer_type(a)				typeid(a).name(),object_type_traits::is_pointer<a >::value
