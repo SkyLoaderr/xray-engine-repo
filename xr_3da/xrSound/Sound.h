@@ -15,15 +15,15 @@ class	XRSOUND_API					CSound_stream_interface;
 //
 XRSOUND_API extern u32				psSoundFreq				;
 XRSOUND_API extern u32				psSoundModel			;
-XRSOUND_API extern float				psSoundVMaster			;
-XRSOUND_API extern float				psSoundVEffects			;
-XRSOUND_API extern float				psSoundVMusic			;
-XRSOUND_API extern float				psSoundRolloff			;
-XRSOUND_API extern float				psSoundDoppler			;
-XRSOUND_API extern float				psSoundOcclusionScale	;
-XRSOUND_API extern float				psSoundCull				;
-XRSOUND_API extern Flags32				psSoundFlags			;
-XRSOUND_API extern int					psSoundRelaxTime		;
+XRSOUND_API extern float			psSoundVMaster			;
+XRSOUND_API extern float			psSoundVEffects			;
+XRSOUND_API extern float			psSoundVMusic			;
+XRSOUND_API extern float			psSoundRolloff			;
+XRSOUND_API extern float			psSoundDoppler			;
+XRSOUND_API extern float			psSoundOcclusionScale	;
+XRSOUND_API extern float			psSoundCull				;
+XRSOUND_API extern Flags32			psSoundFlags			;
+XRSOUND_API extern int				psSoundRelaxTime		;
 
 // Flags
 enum {
@@ -110,7 +110,7 @@ public:
 	virtual void					play_at_pos_unlimited	( sound& S, CObject* O,		const Fvector &pos,		BOOL bLoop=false)					= 0;
 	virtual void					set_geometry			( CDB::MODEL* M )																		= 0;
 
-	virtual void					update					( )																						= 0;
+	virtual void					update					( const Fvector& P, const Fvector& D, const Fvector& N, float dt )						= 0;
 };
 extern XRSOUND_API CSound_manager_interface*		Sound;
 

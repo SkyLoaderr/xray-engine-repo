@@ -13,7 +13,7 @@ CSoundRender_Emitter*	CSoundRender_Core::i_play(sound* S, BOOL _loop )
 	return E;
 }
 
-void CSoundRender_Core::update	()
+void CSoundRender_Core::update	( const Fvector& P, const Fvector& D, const Fvector& N, float dt )
 {
 	u32 it;
 
@@ -47,11 +47,12 @@ void CSoundRender_Core::update	()
 	}
 
 	// Update listener
-	Listener.vVelocity.sub				(Device.vCameraPosition, Listener.vPosition );
-	Listener.vVelocity.div				(Device.fTimeDelta+EPS_S);
-	Listener.vPosition.set				(Device.vCameraPosition);
-	Listener.vOrientFront.set			(Device.vCameraDirection);
-	Listener.vOrientTop.set				(Device.vCameraTop);
+	clamp								(dt,EPS_S,1.f/10.f);
+	Listener.vVelocity.sub				(P, Listener.vPosition );
+	Listener.vVelocity.div				(dt);
+	Listener.vPosition.set				(P);
+	Listener.vOrientFront.set			(D);
+	Listener.vOrientTop.set				(N);
 	Listener.fDopplerFactor				= psSoundDoppler;
 	Listener.fRolloffFactor				= psSoundRolloff;
 	pListener->SetAllParameters			((DS3DLISTENER*)&Listener, DS3D_DEFERRED );
@@ -67,7 +68,7 @@ BOOL	CSoundRender_Core::get_occlusion(Fvector& P, float R, Fvector* occ)
 	if (0==geom_MODEL)		return FALSE;
 
 	// Calculate RAY params
-	Fvector base			= Device.vCameraPosition;
+	Fvector base			= Listener.vPosition;
 	Fvector	pos,dir;
 	float	range;
 	pos.random_dir			();
