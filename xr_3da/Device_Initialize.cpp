@@ -43,7 +43,7 @@ void CRenderDevice::Initialize()
     GetClientRect( m_hWnd, &m_rcWindowClient );
 
 	// Command line
-	char *lpCmdLine		= Engine.Params;
+	char *lpCmdLine		= Core.Params;
 	if (strstr(lpCmdLine,"-multipass")!=NULL)	HW.Caps.bForceMultipass		= TRUE;
 	else										HW.Caps.bForceMultipass		= FALSE;
 	if (strstr(lpCmdLine,"-emu_fog")!=NULL)		HW.Caps.bForceVertexFog		= TRUE;

@@ -2,7 +2,7 @@
 
 void CRenderDevice::_Create	(LPCSTR shName)
 {
-	Engine.mem_Compact		();
+	Memory.mem_compact		();
 
 	// after creation
 	bReady					= TRUE;

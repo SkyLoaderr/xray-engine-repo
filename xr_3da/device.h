@@ -44,9 +44,6 @@ public:
 	float									fWidth_2, fHeight_2;
 	BOOL									bReady;
 	BOOL									bActive;
-
-	void __cdecl							Fatal		(const char* F,...);
-	void									Error		(HRESULT,LPCSTR,int);
 public:
 	// Registrators
 	CRegistrator	<pureDeviceDestroy	 >	seqDevDestroy;

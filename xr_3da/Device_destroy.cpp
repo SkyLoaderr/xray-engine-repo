@@ -11,7 +11,7 @@ void CRenderDevice::_Destroy	(BOOL bKeepTextures)
 	Streams.OnDeviceDestroy		();
 	Shader.OnDeviceDestroy		(bKeepTextures);
 
-	Engine.mem_Compact			();
+	Memory.mem_compact			();
 }
 
 void CRenderDevice::Destroy	(void) {
@@ -31,10 +31,10 @@ void CRenderDevice::Destroy	(void) {
 void CRenderDevice::Reset		(LPCSTR shName, BOOL bKeepTextures)
 {
 	u32 tm_start		= TimerAsync();
-	Engine.mem_Compact	();
+	Memory.mem_compact	();
 	_Destroy			(bKeepTextures);
 	_Create				(shName);
-	Engine.mem_Compact	();
+	Memory.mem_compact	();
 	u32 tm_end			= TimerAsync();
 	Msg					("*** RESET [%d ms]",tm_end-tm_start);
 }
