@@ -3,6 +3,8 @@
 #include "stdafx.h"
 #include "xrCore.h"
 
+#include <string>
+ 
 #pragma comment(lib,"winmm.lib")
 
 XRCORE_API		xrCore Core;

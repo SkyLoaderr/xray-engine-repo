@@ -5,6 +5,12 @@
 #include "stdafx.h"
 #pragma hdrstop
 
+#pragma warning(disable:4995)
+#include <io.h>
+#include <fcntl.h>
+#include <sys\stat.h>
+#pragma warning(default:4995)
+
 #include "FS_internal.h"
 
 CLocatorAPI	FS;

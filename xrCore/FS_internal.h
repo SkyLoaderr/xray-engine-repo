@@ -29,4 +29,50 @@ public:
 	virtual u32		tell		()			{	return ftell(hf);			};
 };
 
+// It automatically frees memory after destruction
+class CTempReader : public IReader
+{
+public:
+	CTempReader(void *_data, int _size) : IReader(_data,_size)
+	{}
+	virtual ~CTempReader();
+};
+class CFileReader : public IReader
+{
+public:
+	CFileReader(const char *name);
+	virtual ~CFileReader();
+};
+class CCompressedReader : public IReader
+{
+public:
+	CCompressedReader(const char *name, const char *sign);
+	virtual ~CCompressedReader();
+};
+class CVirtualFileReader : public IReader
+{
+private:
+   HANDLE	hSrcFile,hSrcMap;
+public:
+	CVirtualFileReader(const char *cFileName) {
+		// Open the file
+		hSrcFile = CreateFile(cFileName, GENERIC_READ, FILE_SHARE_READ,
+			0, OPEN_EXISTING, 0, 0);
+		R_ASSERT(hSrcFile!=INVALID_HANDLE_VALUE);
+		Size = (int)GetFileSize(hSrcFile, NULL);
+		R_ASSERT(Size);
+
+		hSrcMap = CreateFileMapping (hSrcFile, 0, PAGE_READONLY, 0, 0, 0);
+		R_ASSERT(hSrcMap!=INVALID_HANDLE_VALUE);
+
+		data = (char*)MapViewOfFile (hSrcMap, FILE_MAP_READ, 0, 0, 0);
+		R_ASSERT(data);
+	}
+	virtual ~CVirtualFileReader() {
+        UnmapViewOfFile ((void*)data);
+		CloseHandle		(hSrcMap);
+		CloseHandle		(hSrcFile);
+	}
+};
+
 #endif

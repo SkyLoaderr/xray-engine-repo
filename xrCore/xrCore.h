@@ -72,11 +72,6 @@
 #include <assert.h>
 #include <typeinfo.h>
 
-// io
-#include <io.h>
-#include <fcntl.h>
-#include <sys\stat.h>
-
 #ifndef DEBUG
 	#ifdef _DEBUG
     	#define DEBUG

@@ -103,7 +103,7 @@ public:
 	};
 	struct	archive
 	{
-		CVirtualFileReader*		vfs;
+		IReader*	vfs;
 	};
 	DEFINE_MAP_PRED(LPCSTR,FS_Path*,PathMap,PathPairIt,pred_str);
 	PathMap						pathes;
