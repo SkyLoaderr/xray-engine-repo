@@ -3,12 +3,12 @@
 #include "ActorAnimation.h"
 #include "..\xr_level_controller.h"
 
-static const float y_spin_factor		= 0.3f;
-static const float y_shoulder_factor	= 0.6f;
-static const float y_head_factor		= 0.1f;
-static const float p_spin_factor		= 0.2f;
-static const float p_shoulder_factor	= 0.7f;
-static const float p_head_factor		= 0.1f;
+static const float y_spin_factor		= 1;//0.3f;
+static const float y_shoulder_factor	= 0;//0.6f;
+static const float y_head_factor		= 0;//0.1f;
+static const float p_spin_factor		= 1;//0.2f;
+static const float p_shoulder_factor	= 0;//0.7f;
+static const float p_head_factor		= 0;//0.1f;
 
 #include "hudmanager.h"
 
@@ -20,7 +20,7 @@ void __stdcall CActor::SpinCallback(CBoneInstance* B)
 	float				bone_yaw	= angle_normalize_signed(A->r_torso.yaw - A->r_model_yaw - A->r_model_yaw_delta)*y_spin_factor;
 	float				bone_pitch	= angle_normalize_signed(A->r_torso.pitch)*p_spin_factor;
 	spin.setXYZ			(bone_yaw,bone_pitch,0);
-	B->mTransform.mulB_43(spin);
+	B->mTransform		= mulB_43(spin);
 /*
 	CHUDManager* HUD	= (CHUDManager*)Level().HUD();
 	string128 buf;
