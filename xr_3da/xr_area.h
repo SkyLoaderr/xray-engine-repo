@@ -21,9 +21,9 @@ private:
 	Fvector								Static_Shift;
 	Fbox								m_BoundingVolume;
 	xrXRC								xrc;
-	xr_vector<ISpatial*>				r_spatial;
 	Collide::rq_results					r_temp;
 public:
+	xr_vector<ISpatial*>				r_spatial;
 	xr_vector<CObject*>					q_nearest;
 	clQueryCollision					q_result;
 

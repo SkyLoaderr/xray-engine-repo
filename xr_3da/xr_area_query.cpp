@@ -37,7 +37,7 @@ void CObjectSpace::BoxQuery(const Fbox& B, const Fmatrix& M, u32 flags)
 		g_SpatialSpace->q_box	(r_spatial,0,STYPE_COLLIDEABLE,bc,bd);
 
 		// Determine visibility for dynamic part of scene
-		for (u32 o_it=0; o_it<g_SpatialSpace->q_result.size(); o_it++)
+		for (u32 o_it=0; o_it<r_spatial.size(); o_it++)
 		{
 			ISpatial*	spatial						= r_spatial[o_it];
 			CObject*	collidable					= dynamic_cast<CObject*>	(spatial);

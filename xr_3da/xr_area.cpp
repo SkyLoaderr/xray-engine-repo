@@ -71,13 +71,12 @@ IC int	CObjectSpace::GetNearest ( const Fvector &point, float range )
 	q_nearest.clear		( );
 	Fsphere				Q;	Q.set(point,range);
 	Fvector				B;	B.set(range,range,range);
-	g_SpatialSpace->q_box(0,STYPE_COLLIDEABLE,point,B);
+	g_SpatialSpace->q_box(r_spatial,0,STYPE_COLLIDEABLE,point,B);
 
 	// Iterate
-	xr_vector<ISpatial*>::iterator	it	= g_SpatialSpace->q_result.begin	();
-	xr_vector<ISpatial*>::iterator	end	= g_SpatialSpace->q_result.end	();
-	for (; it!=end; it++)
-	{
+	xr_vector<ISpatial*>::iterator	it	= r_spatial.begin	();
+	xr_vector<ISpatial*>::iterator	end	= r_spatial.end		();
+	for (; it!=end; it++)		{
 		CObject* O				= dynamic_cast<CObject*>(*it);
 		if (0==O)				continue;
 		Fsphere mS				= { O->spatial.center, O->spatial.radius	};
