@@ -75,7 +75,6 @@ IC	u32	CSQuadTree::neighbour_index	(const Fvector &position, Fvector &center, fl
 			center.z	+= distance;
 			return		(3);
 		}
-	NODEFAULT;
 }
 
 TEMPLATE_SPECIALIZATION
@@ -103,7 +102,6 @@ IC	void CSQuadTree::insert		(_object_type *object)
 		
 		node			= (*node)->m_neighbours + index;
 	}
-	NODEFAULT;
 }
 
 TEMPLATE_SPECIALIZATION
