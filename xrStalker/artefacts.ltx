@@ -917,3 +917,34 @@ lights_enabled = false
 
 ; " Холодец артефакт"
 ; "Жгучий Пух аномалия"
+
+[af_fuzz kolobok]
+GroupControlSection	= spawn_group
+$spawn 			= "artifacts\rusty sea-urchin"
+$npc			= on				; option for Level Editor
+;$prefetch 		= 3
+cform           = skeleton
+class   		= ARTEFACT
+
+visual				= physics\anomaly\artefact_rusty_hairs.ogf
+inv_name			= "kolobok"
+inv_name_short		= 
+inv_weight			= 1
+
+food_value			= 0
+health_value		= 0
+
+inv_grid_width		= 1
+inv_grid_height		= 1
+inv_grid_x			= 15
+inv_grid_y			= 17
+
+cost				= 300	;100
+jump_height			= .5
+
+energy				= 1
+detector_dist		= 8
+
+detector_sound		= zone_mosquito_bald
+particles			= anomaly2\artefact\artefact_puxx
+lights_enabled = false
