@@ -223,7 +223,7 @@ LPCSTR	CUICustomMap::GetHint()
 	Ivector2 cursor_pos = GetUICursor()->GetPos();
 	LPCSTR hint = NULL;
 	WINDOW_LIST& wl = GetChildWndList();
-	xr_list<CUIWindow*>::reverse_iterator it = wl.rbegin();
+	WINDOW_LIST::reverse_iterator it = wl.rbegin();
 	for(;it!=wl.rend();++it)
 		if( (*it)->GetAbsoluteRect().in(cursor_pos) ){
 			hint=(*it)->GetHint();

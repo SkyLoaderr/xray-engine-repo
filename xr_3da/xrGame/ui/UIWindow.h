@@ -105,19 +105,19 @@ public:
 
 	//убрать/показать окно и его дочерние окна
 	virtual void			Show				(bool status)									{m_bIsShown= status; Enable(status); }
-	virtual bool			IsShown				()												{return m_bIsShown;}
+	IC		bool			IsShown				()												{return m_bIsShown;}
 	
 	////////////////////////////////////
 	//положение и размеры окна
 
 	//относительные координаты
-	const Ivector2&			GetWndPos			() 									{return m_iWndPos;}
-	void					SetWndPos			(int x, int y)						{m_iWndPos.set(x, y); }
-	void					SetWndPos			(const Ivector2& pos)				{SetWndPos(pos.x, pos.y);}
+	IC const Ivector2&		GetWndPos			() 									{return m_iWndPos;}
+	IC void					SetWndPos			(int x, int y)						{m_iWndPos.set(x, y); }
+	IC void					SetWndPos			(const Ivector2& pos)				{SetWndPos(pos.x, pos.y);}
 
 	Irect					GetWndRect			()									;//	{return Irect().set(m_iWndPos.x,m_iWndPos.y,m_iWndPos.x+m_iWndSize.x,m_iWndPos.y+m_iWndSize.y);}
 	void					SetWndRect			(int x, int y, int width, int height);//{m_iWndPos.set(x,y); m_iWndSize.set(width,height); }
-	void					SetWndRect			(Irect r)							{SetWndRect(r.x1,r.y1,r.width(),r.height());}
+	IC void					SetWndRect			(Irect r)							{SetWndRect(r.x1,r.y1,r.width(),r.height());}
 
 	virtual void			MoveWndDelta		(int dx, int dy)					{m_iWndPos.x+=dx;m_iWndPos.y+=dy;}
 	virtual void			MoveWndDelta		(const Ivector2& d)					{ MoveWndDelta(d.x, d.y);	};
@@ -153,11 +153,12 @@ public:
 																					return  m_pParentWnd->GetFont();}
 
 	DEF_LIST (WINDOW_LIST, CUIWindow*);
+//	DEF_VECTOR (WINDOW_LIST, CUIWindow*);
 	WINDOW_LIST&			GetChildWndList		()							{return m_ChildWndList; }
 
 
-	bool					IsAutoDelete		()							{return m_bAutoDelete;}
-	void					SetAutoDelete		(bool auto_delete)			{m_bAutoDelete = auto_delete;}
+	IC bool					IsAutoDelete		()							{return m_bAutoDelete;}
+	IC void					SetAutoDelete		(bool auto_delete)			{m_bAutoDelete = auto_delete;}
 
 	// Name of the window
 	const shared_str		WindowName			() const					{ return m_windowName; }
@@ -165,9 +166,9 @@ public:
 	LPCSTR					WindowName_script	()							{return *m_windowName;}
 	CUIWindow*				FindChild			(const shared_str name);
 
-	void					EnableDoubleClick	(bool value)				{ m_bDoubleClickEnabled = value; }
-	bool					IsDBClickEnabled	() const					{ return m_bDoubleClickEnabled; }
-	void					SetAlignment		(EWindowAlignment al)		{m_alignment = al;}
+	IC void					EnableDoubleClick	(bool value)				{ m_bDoubleClickEnabled = value; }
+	IC bool					IsDBClickEnabled	() const					{ return m_bDoubleClickEnabled; }
+	IC void					SetAlignment		(EWindowAlignment al)		{m_alignment = al;}
 protected:
 	shared_str				m_windowName;
 	//список дочерних окон
@@ -223,6 +224,11 @@ protected:
 
 	// Если курсор над окном
 	bool					m_bCursorOverWindow;
+
+	IC void					SafeRemoveChild(CUIWindow* child){
+								WINDOW_LIST_it it = std::find(m_ChildWndList.begin(),m_ChildWndList.end(),child);
+								if(it!=m_ChildWndList.end())m_ChildWndList.erase(it);
+	};
 private:
 	EWindowAlignment		m_alignment;
 public:

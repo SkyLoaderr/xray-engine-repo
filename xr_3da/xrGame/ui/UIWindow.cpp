@@ -99,7 +99,8 @@ void CUIWindow::DetachChild(CUIWindow* pChild)
 	if(m_pMouseCapturer == pChild)
 		SetCapture(pChild, false);
 
-	m_ChildWndList.remove(pChild);
+	SafeRemoveChild(pChild);
+//	m_ChildWndList.remove(pChild);
 	pChild->SetParent(NULL);
 
 	if(pChild->IsAutoDelete())
@@ -394,8 +395,8 @@ bool CUIWindow::BringToTop(CUIWindow* pChild)
 	if( !IsChild(pChild) ) return false;
 
 	//удалить со старого места
-//	m_ChildWndList.erase(it);
-	m_ChildWndList.remove(pChild);
+	SafeRemoveChild(pChild);
+//	m_ChildWndList.remove(pChild);
 	//поместить на вершину списка
 	m_ChildWndList.push_back(pChild);
 
