@@ -390,10 +390,12 @@ void CDetailManager::UpdateCache	(int limit)
 		
 		// Prepare to selection
 		float		density		= 0.1f;
+		float		jitter		= density/2.f;
 		DWORD		d_size		= iCeil	(slot_size/density);
 		svector<int,dm_obj_in_slot>		selected;
 		
 		CRandom				r_selection	(0x12071980);
+		CRandom				r_jitter	(0x12071980);
 		CRandom				r_yaw		(DS.r_yaw);
 		CRandom				r_scale		(DS.r_scale);
 		
@@ -421,7 +423,7 @@ void CDetailManager::UpdateCache	(int limit)
 				// Position
 				float		rx = (float(x)/float(d_size))*slot_size + D.BB.min.x;
 				float		rz = (float(z)/float(d_size))*slot_size + D.BB.min.z;
-				Item.P.set	(rx,0,rz);
+				Item.P.set	(rx + r_jitter.randFs(jitter), 0, rz + r_jitter.randFs(jitter));
 				
 				// Angles and scale
 				Item.yaw	= r_yaw.randF		(0,PI_MUL_2);
