@@ -123,11 +123,9 @@ void CLightPPA_Manager::Destroy		()
 
 void CLightPPA_Manager::Render()
 {
-	const float	clip	= 4.f / 255.f;
-
 	// Projection
-	float _43			 = Device.mProject._43;
-	Device.mProject._43 -= 0.001f; 
+	float _43					 = Device.mProject._43;
+	Device.mProject._43			-= 0.001f; 
 	RCache.set_xform_project	(Device.mProject);
 
 	RCache.set_Shader	(hShader);

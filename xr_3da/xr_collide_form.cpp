@@ -330,7 +330,6 @@ void CCF_Rigid::BuildState()
 	dwFrame			= Device.dwFrame;
 	FHierrarhyVisual* pH= dynamic_cast<FHierrarhyVisual*>(owner->Visual());
 	if (pH){
-		const Fmatrix &L2W	= owner->clXFORM();
 		for (u32 i=0; i<model.size(); i++)
 			UpdateModel		(model[i],pH->children[i]->vis.box);
 	}else{

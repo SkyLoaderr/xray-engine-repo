@@ -221,12 +221,12 @@ void CSMotion::Save(IWriter& F)
 	CCustomMotion::Save(F);
 	F.w_u16		(EOBJ_SMOTION_VERSION);
 	F.w_s8		(m_Flags.get());
-    F.w_s16		(iBoneOrPart);
+    F.w_s16		((s16)iBoneOrPart);
     F.w_float	(fSpeed);           
     F.w_float	(fAccrue);
     F.w_float	(fFalloff);
     F.w_float	(fPower);
-	F.w_u16		(bone_mots.size());
+	F.w_u16		((u16)bone_mots.size());
 	for(BoneMotionIt bm_it=bone_mots.begin(); bm_it!=bone_mots.end(); bm_it++){
     	F.w_stringZ(bm_it->name);
 		F.w_u8	(bm_it->m_Flags.get());

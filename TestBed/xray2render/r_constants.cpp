@@ -50,7 +50,6 @@ BOOL	R_constant_table::parse	(void* _desc, u16 destination)
 
 		// Rindex,Rcount
 		u16		r_index		=	it->RegisterIndex;
-		u16		r_count		=	it->RegisterCount;
 		u16		r_type		=	u16(-1);
 
 		// TypeInfo + class

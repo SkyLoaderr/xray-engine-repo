@@ -89,7 +89,6 @@ u32 CParticleGroup::RenderTO	(FVF::TL* dest)
 	float	h_2					= float(::Render->getTarget()->get_height()) / 2;
 	float	fov_scale			= float(::Render->getTarget()->get_width()) / (Device.fFOV/90.f);
 
-	float			p_size	= 0;
 	FVF::TL*		pv_start= dest;
 	FVF::TL*		pv		= pv_start;
 
