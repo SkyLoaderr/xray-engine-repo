@@ -63,6 +63,7 @@ function eva_state_mgr_animation_locked:__init(name, st) super (nil, name)
 	self.st = st
 end
 function eva_state_mgr_animation_locked:evaluate()
+--	printf("animstate %s", utils.to_str(self.st.animation:state()))
 	return self.st.animation:state() == "wait" or
 		   self.st.animation:state() == "new"
 end
@@ -505,22 +506,23 @@ end
 function animation:update()
 --	printf("update")
 --	printf("		time %s", device():time_global())				
---	printf("		%s", utils.to_str(self.states.current_state))
+--	printf("		current state %s", utils.to_str(self.states.current_state))
+--	printf("		target state %s", utils.to_str(self.states.target_state))
 --	printf("		anims %s", self.npc:animation_count())
 	self.is_called = false
 	if self.states.current_state == nil then
 		self:callback_process()
 		return
 	end
-
+	
 	-- обрубить анимации и экстренно начать сразу
 	if self.mgr.emerg ~= nil and  
 	   self.mgr.emerg.animation == true then
 		
 		--если мы уже
-		if self.states.target_state ~= state_lib.states[self.mgr.target_state].animation then
+		if self.states.target_state ~= state_lib.states[self.mgr.target_state].animation 
+		then
 			self.npc:clear_animations()
-			printf("333")		   
 			self:set_state(nil)
 			self.states.current_state = nil
 		end	
@@ -672,6 +674,10 @@ end
 --' в каком состоянии мы находимся
 function animation:state()
 	return self.states.current_state
+end
+--' в каком состоянии мы находимся
+function animation:target_state()
+	return self.states.target_state
 end
 --' оружейный слот
 function animation:weapon_slot()
