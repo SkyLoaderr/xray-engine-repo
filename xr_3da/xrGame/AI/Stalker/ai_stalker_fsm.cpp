@@ -921,9 +921,9 @@ void CAI_Stalker::Think()
 	m_tMovementType		= eMovementTypeWalk;
 	m_tMentalState		= eMentalStateDanger;
 //	set_selection_type	(eSelectionTypeRandomBranching);
-	set_game_dest_vertex(34);
-	set_path_type		(ePathTypeGamePath);
-	build_path			();
+//	set_game_dest_vertex(34);
+//	set_path_type		(ePathTypeGamePath);
+//	build_path			();
 	return;
 
 //	if (!m_dwLastUpdate) {
