@@ -190,14 +190,14 @@ void CDetailManager::Render		(Fvector& vecEYE)
 			if (fcvNone==res)							continue;	// invisible-view frustum
 			if (!RImplementation.occ_visible(S.vis))	continue;	// invisible-occlusion
 
-			// Calc fade factor	(for slot)
+			// Calc fade factor	(per slot)
 			float	dist_sq		= EYE.distance_to_sqr	(S.vis.sphere.P);
 			if		(dist_sq>fade_limit)				continue;
 			float	alpha		= (dist_sq<fade_start)?0.f:(dist_sq-fade_start)/fade_range;
 			float	alpha_i		= 1.f - alpha;
 			float	dist_sq_rcp	= 1.f / dist_sq;
 
-			// Add 
+			// Add to visibility structures
 			for (int sp_id=0; sp_id<dm_obj_in_slot; sp_id++)
 			{
 				SlotPart&			sp	= S.G		[sp_id];
