@@ -76,6 +76,7 @@ void CActor::use_Vehicle()
 
 CCar* CActor::pick_VehicleObject(int& element)
 {
+	CCar* car=0;
 	setEnabled(false);
 	Collide::ray_query	l_rq;
 	l_rq.O=NULL;
@@ -83,6 +84,8 @@ CCar* CActor::pick_VehicleObject(int& element)
 	
 	if (l_rq.O)
 	{
+		car=dynamic_cast<CCar*>(l_rq.O);
+		/*
 		ICollisionForm::RayPickResult result;
 		if (l_rq.O->collidable.model->_RayPick	(result,Device.vCameraPosition, Device.vCameraDirection, 3.f, 0)) // CDB::OPT_ONLYFIRST CDB::OPT_ONLYNEAREST
 		{
@@ -94,7 +97,10 @@ CCar* CActor::pick_VehicleObject(int& element)
 				R=0;
 			}
 		}
+		*/
+		
 	}
+	
 	
 	setEnabled(true);
 	element=l_rq.element;
