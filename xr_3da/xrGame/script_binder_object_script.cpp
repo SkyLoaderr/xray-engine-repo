@@ -28,5 +28,7 @@ void CScriptBinderObject::script_register(lua_State *L)
 			.def("net_import",					&CScriptBinderObject::net_Import,		&CScriptBinderObjectWrapper::net_Import_static)
 			.def("net_export",					&CScriptBinderObject::net_Export,		&CScriptBinderObjectWrapper::net_Export_static)
 			.def("update",						&CScriptBinderObject::shedule_Update,	&CScriptBinderObjectWrapper::shedule_Update_static)
+			.def("save",						&CScriptBinderObject::save,				&CScriptBinderObjectWrapper::save_static)
+			.def("load",						&CScriptBinderObject::load,				&CScriptBinderObjectWrapper::load_static)
 	];
 }
