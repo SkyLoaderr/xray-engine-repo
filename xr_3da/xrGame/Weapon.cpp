@@ -144,11 +144,12 @@ void CWeapon::FireShotmark	(const Fvector& vDir, const Fvector &vEnd, Collide::r
 		CPSObject* PS		= new CPSObject(ps_gibs,S,true);
 		PS->m_Emitter.m_ConeDirection.set(D);
 		PS->PlayAtPos		(vEnd);
-
+/*
 		// smoke
 		PS					= new CPSObject("smokepuffs_1",S,true);
 		PS->m_Emitter.m_ConeDirection.set(D);
 		PS->PlayAtPos		(vEnd);
+*/
 	}else{
 		::Render.Wallmarks.AddWallmark(
 			pCreator->ObjectSpace.GetStaticTris()+R.element,
