@@ -1,39 +1,43 @@
-// BlenderDefault.cpp: implementation of the CBlender_complex2 class.
+// BlenderDefault.cpp: implementation of the CBlender_2tex_add class.
 //
 //////////////////////////////////////////////////////////////////////
 
 #include "stdafx.h"
 #pragma hdrstop
 
-#include "blender_complex2.h"
+#include "blender_2tex_add.h"
 
 //////////////////////////////////////////////////////////////////////
 // Construction/Destruction
 //////////////////////////////////////////////////////////////////////
 
-CBlender_complex2::CBlender_complex2	()
+CBlender_2tex_add::CBlender_2tex_add	()
 {
 	description.CLS		= B_2TEX_ADD;
 }
 
-CBlender_complex2::~CBlender_complex2	()
+CBlender_2tex_add::~CBlender_2tex_add	()
 {
 
 }
 
-void	CBlender_complex2::Save(	CFS_Base& FS )
+void	CBlender_2tex_add::Save(	CFS_Base& FS )
 {
 	CBlender::Save	(FS);
+	xrPWRITE_PROP	(FS,"Constant",			xrPID_CONSTANT,	oT1_Constant);
 	xrPWRITE_MARKER	(FS,"Secondary texture");
-	xrPWRITE_PROP	(FS,"Name",				xrPID_TEXTURE,	oT_Name);
-	xrPWRITE_PROP	(FS,"Transform",		xrPID_MATRIX,	oT_xform);
-	xrPWRITE_PROP	(FS,"Constant",			xrPID_CONSTANT,	oT_xform);
+	xrPWRITE_PROP	(FS,"Name",				xrPID_TEXTURE,	oT2_Name);
+	xrPWRITE_PROP	(FS,"Transform",		xrPID_MATRIX,	oT2_xform);
 }
-void	CBlender_complex2::Load(	CStream& FS )
+void	CBlender_2tex_add::Load(	CStream& FS )
 {
 	CBlender::Load	(FS);
+	xrPREAD_PROP	(FS,xrPID_CONSTANT,	oT1_Constant);
+	xrPREAD_MARKER	(FS);
+	xrPREAD_PROP	(FS,xrPID_TEXTURE,	oT2_Name);
+	xrPREAD_PROP	(FS,xrPID_MATRIX,	oT2_xform);
 }
-void	CBlender_complex2::Compile(CBlender_Recorder& RS, sh_list& L_textures, sh_list& L_constants, sh_list& L_matrices, int param, BOOL bEditor)
+void	CBlender_2tex_add::Compile(CBlender_Recorder& RS, sh_list& L_textures, sh_list& L_constants, sh_list& L_matrices, int param, BOOL bEditor)
 {
 	if (bEditor)	{
 		RS.PassBegin		();
@@ -47,11 +51,11 @@ void	CBlender_complex2::Compile(CBlender_Recorder& RS, sh_list& L_textures, sh_l
 			RS.StageBegin		();
 			{
 				RS.StageSET_Address	(D3DTADDRESS_WRAP);
-				RS.StageSET_Color	(D3DTA_TEXTURE,	  D3DTOP_MODULATE,		D3DTA_DIFFUSE);
-				RS.StageSET_Alpha	(D3DTA_TEXTURE,	  D3DTOP_MODULATE,		D3DTA_DIFFUSE);
-				RS.Stage_Texture	(oT_Name,	L_textures		);
-				RS.Stage_Matrix		(oT_xform,	L_matrices,		0);
-				RS.Stage_Constant	("$null",	L_constants		);
+				RS.StageSET_Color	(D3DTA_TEXTURE,	  D3DTOP_MODULATE,		D3DTA_TFACTOR);
+				RS.StageSET_Alpha	(D3DTA_TEXTURE,	  D3DTOP_MODULATE,		D3DTA_TFACTOR);
+				RS.Stage_Texture	(oT_Name,		L_textures		);
+				RS.Stage_Matrix		(oT_xform,		L_matrices,		0);
+				RS.Stage_Constant	(oT1_Constant,	L_constants		);
 			}
 			RS.StageEnd			();
 
