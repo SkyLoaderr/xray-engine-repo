@@ -598,12 +598,6 @@ void CParticleEffect::Render(float LOD)
 	ParticleEffect *pe 		= _GetEffectPtr(m_HandleEffect);
 	if((pe!=NULL)&&(pe->p_count>0)){
 		if (m_Def->m_Flags.is(CPEDef::dfSprite)){
-			// build transform matrix
-			Fmatrix mSpriteTransform;
-
-			if (m_RT_Flags.is(flRT_XFORM))	mSpriteTransform.mul(Device.mFullTransform,m_XFORM);
-			else							mSpriteTransform.set(Device.mFullTransform);
-
 			FVF::LIT* pv_start	= (FVF::LIT*)RCache.Vertex.Lock(pe->p_count*4*4,hGeom->vb_stride,dwOffset);
 			FVF::LIT* pv		= pv_start;
 
