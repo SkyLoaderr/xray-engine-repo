@@ -50,5 +50,6 @@ void CDestroyablePhysicsObject::Hit							(float P,Fvector &dir,CObject *who,s16
 void CDestroyablePhysicsObject::InitServerObject(CSE_Abstract* D)
 {
 	CPHDestroyable::InitServerObject(D);
-	smart_cast<CSE_ALifeObjectPhysic*>(D)->type=epotSkeleton;
+	CSE_ALifeObjectPhysic			*PO = smart_cast<CSE_ALifeObjectPhysic*>(D);
+	if(PO)PO->type=epotSkeleton;
 }
