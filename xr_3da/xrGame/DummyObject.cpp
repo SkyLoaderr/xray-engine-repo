@@ -23,7 +23,7 @@ CDummyObject::CDummyObject	()
 
 CDummyObject::~CDummyObject	()
 {
-	pSounds->Delete			(s_sound);
+	::Sound->Delete			(s_sound);
 	::Render->model_Delete	(s_particles);
 	_DELETE					(s_animator);
 	_DELETE					(m_pPhysicsShell);
@@ -44,7 +44,7 @@ void CDummyObject::Load		(LPCSTR section)
 	if (pSettings->LineExists(section,"sound"))
 	{
 		LPCSTR N = pSettings->ReadSTRING(section,"sound");
-		pSounds->Create(sndDummy,TRUE,N);
+		::Sound->Create(sndDummy,TRUE,N);
 	}
 
 	Sector_Detect();
@@ -85,8 +85,8 @@ BOOL CDummyObject::net_Spawn(LPVOID DC)
 	}
 	if (style&esSound)			{
 		// Load sound
-		pSounds->Create			(s_sound,TRUE,E->s_Sound);
-		pSounds->PlayAtPos		(s_sound,0,Position(),true);
+		::Sound->Create			(s_sound,TRUE,E->s_Sound);
+		::Sound->PlayAtPos		(s_sound,0,Position(),true);
 	}
 
 	return TRUE;

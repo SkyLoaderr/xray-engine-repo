@@ -23,7 +23,7 @@ CCustomItem::CCustomItem() : CObject()
 
 CCustomItem::~CCustomItem()
 {
-	pSounds->Delete	(sndTake);
+	::Sound->Delete	(sndTake);
 }
 
 void	CCustomItem::SetState(EItemState e)
@@ -43,7 +43,7 @@ void	CCustomItem::SetState(EItemState e)
 		setVisible			(true);
 		break;
 	case esHidding:	
-		pSounds->PlayAtPos	(sndTake,this,vPosition);
+		::Sound->PlayAtPos	(sndTake,this,vPosition);
 		vScale.set			(SM,SM,SM);
 		UpdateTransform		();
 		setVisible			(true);
@@ -63,7 +63,7 @@ void	CCustomItem::Load	(LPCSTR section)
 	clsid_target	= TEXT2CLSID(pSettings->ReadSTRING(section, "target"));
 	iValue			= pSettings->ReadINT(section, "value");
 	start_pos.set	(vPosition);
-	pSounds->Create	(sndTake, TRUE, pSettings->ReadSTRING(section, "snd_take"));
+	::Sound->Create	(sndTake, TRUE, pSettings->ReadSTRING(section, "snd_take"));
 }
 
 void	CCustomItem::OnMove()

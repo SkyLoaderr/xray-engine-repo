@@ -11,7 +11,7 @@ CCustomDoor::CCustomDoor()
 
 CCustomDoor::~CCustomDoor()
 {	
-	pSounds->Delete(sndOpenClose);
+	::Sound->Delete(sndOpenClose);
 }
 
 void CCustomDoor::Load			(LPCSTR section)
@@ -24,20 +24,20 @@ void CCustomDoor::Load			(LPCSTR section)
 	if (pSettings->LineExists(section,"sound"))
 	{
 		LPCSTR N	= pSettings->ReadSTRING(section,"sound");
-		pSounds->Create(sndOpenClose,TRUE,N);
+		::Sound->Create(sndOpenClose,TRUE,N);
 	}
 }
 
 void CCustomDoor::Open(){
 	PKinematics(pVisual)->PlayCycle("open");
 	Fsphere& S = CFORM()->GetSphere();
-	pSounds->PlayAtPos(sndOpenClose,this,S.P);
+	::Sound->PlayAtPos(sndOpenClose,this,S.P);
 }
 
 void CCustomDoor::Close(){
 	PKinematics(pVisual)->PlayCycle("close");
 	Fsphere& S = CFORM()->GetSphere();
-	pSounds->PlayAtPos(sndOpenClose,this,S.P);
+	::Sound->PlayAtPos(sndOpenClose,this,S.P);
 }
 
 void CCustomDoor::OnMove()

@@ -145,7 +145,7 @@ void CAI_Soldier::HitSignal	(float amount, Fvector& vLocalDir, CObject* who)
 		
 		if (S.feedback)			
 			return;
-		pSounds->PlayAtPos	(S,this,vPosition);
+		::Sound->PlayAtPos	(S,this,vPosition);
 	}
 }
 

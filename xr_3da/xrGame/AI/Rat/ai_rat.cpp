@@ -60,7 +60,7 @@ void CAI_Rat::Die()
 	AI_Path.Direction(dir);
 	SelectAnimation(clTransform.k,dir,AI_Path.fSpeed);
 	
-	pSounds->PlayAtPos(m_tpaSoundDie[Random.randI(SND_DIE_COUNT)],this,vPosition);
+	::Sound->PlayAtPos(m_tpaSoundDie[Random.randI(SND_DIE_COUNT)],this,vPosition);
 
 	vfUpdateMoraleBroadcast(m_fMoraleDeathQuant,m_fMoraleDeathDistance);
 	

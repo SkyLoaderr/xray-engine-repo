@@ -30,14 +30,14 @@ void CAI_Crow::SSound::Load(LPCSTR prefix)
 	string128 fn;
 	if (Engine.FS.Exist(fn,Path.Sounds,prefix,".wav")){
 		m_Sounds.push_back(sound());
-		pSounds->Create(m_Sounds.back(),TRUE,prefix,false,0);
+		::Sound->Create(m_Sounds.back(),TRUE,prefix,false,0);
 	}
 	for (int i=0; (i<MAX_SND_COUNT)&&(m_Sounds.size()<MAX_SND_COUNT); i++){
 		string64		name;
 		sprintf			(name,"%s_%d",prefix,i);
 		if (Engine.FS.Exist(fn,Path.Sounds,name,".wav")){
 			m_Sounds.push_back(sound());
-			pSounds->Create(m_Sounds.back(),TRUE,name,false,0);
+			::Sound->Create(m_Sounds.back(),TRUE,name,false,0);
 		}
 	}
 	R_ASSERT(m_Sounds.size());
@@ -52,7 +52,7 @@ void CAI_Crow::SSound::SetPosition(const Fvector& pos)
 void CAI_Crow::SSound::Unload()
 {
 	for (int i=0; i<(int)m_Sounds.size(); i++)
-		pSounds->Delete	(m_Sounds[i]);
+		::Sound->Delete	(m_Sounds[i]);
 }
 
 void __stdcall	cb_OnHitEndPlaying			(CBlend* B)
@@ -184,7 +184,7 @@ void CAI_Crow::Update(u32 DT)
 		if (fIdleSoundTime<=0){
 			fIdleSoundTime = fIdleSoundDelta+fIdleSoundDelta*Random.randF(-0.5f,0.5f);
 			//if (st_current==eFlyIdle)
-			pSounds->PlayAtPos(m_Sounds.m_idle.GetRandom(),H_Root(),vPosition);
+			::Sound->PlayAtPos(m_Sounds.m_idle.GetRandom(),H_Root(),vPosition);
 		}
 		fIdleSoundTime-=float(DT)/1000.f;
 	}

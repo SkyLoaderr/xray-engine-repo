@@ -264,7 +264,7 @@ void CAI_Soldier::vfSetMovementType(EMovementTypes cMovementType,float fMultplie
 	/**/
 	m_fDistanceWent += m_fTimeUpdateDelta*AI_Path.fSpeed;
 	if (m_fDistanceWent >= DISTANCE_TO_STEP) {
-		Sound->PlayAtPos(sndSteps[m_cStep ^= char(1)],this,vPosition);
+		::Sound->PlayAtPos(sndSteps[m_cStep ^= char(1)],this,vPosition);
 		m_fDistanceWent = 0.f;		
 	}
 	/**/

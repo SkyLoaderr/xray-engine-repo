@@ -25,7 +25,7 @@ void CAI_Zombie::Exec_Action(float dt)
 					}
 			}
 			if (!bOk)
-				Sound->PlayAtPos(m_tpaSoundAttack[Random.randI(SND_ATTACK_COUNT)],this,eye_matrix.c);
+				::Sound->PlayAtPos(m_tpaSoundAttack[Random.randI(SND_ATTACK_COUNT)],this,eye_matrix.c);
 			else
 				m_tpSoundBeingPlayed->feedback->SetPosition(eye_matrix.c);
 			u32 dwTime = Level().timeServer();
@@ -73,7 +73,7 @@ void CAI_Zombie::HitSignal(float amount, Fvector& vLocalDir, CObject* who)
 			return;
 		if (Random.randI(2))
 			return;
-		Sound->PlayAtPos		(S,this,vPosition);
+		::Sound->PlayAtPos		(S,this,vPosition);
 	}
 	if (g_Health() - amount <= 0) {
 		if ((m_tpCurrentGlobalAnimation) && (!m_tpCurrentGlobalBlend->playing))

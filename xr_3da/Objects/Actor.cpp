@@ -83,15 +83,15 @@ CActor::~CActor()
 	for (int i=0; i<eacMaxCam; i++) _DELETE(cameras[i]);
 
 	// sounds 2D
-	pSounds->Delete(sndStep[0]);
-	pSounds->Delete(sndStep[1]);
-	pSounds->Delete(sndLanding);
-	pSounds->Delete(sndZoneHeart);
-	pSounds->Delete(sndZoneDetector);
+	::Sound->Delete(sndStep[0]);
+	::Sound->Delete(sndStep[1]);
+	::Sound->Delete(sndLanding);
+	::Sound->Delete(sndZoneHeart);
+	::Sound->Delete(sndZoneDetector);
 
 	// sounds 3D
-	for (i=0; i<SND_HIT_COUNT; i++) pSounds->Delete(sndHit[i]);
-	for (i=0; i<SND_DIE_COUNT; i++) pSounds->Delete(sndDie[i]);
+	for (i=0; i<SND_HIT_COUNT; i++) ::Sound->Delete(sndHit[i]);
+	for (i=0; i<SND_DIE_COUNT; i++) ::Sound->Delete(sndDie[i]);
 }
 
 void CActor::Load		(LPCSTR section )
@@ -109,19 +109,19 @@ void CActor::Load		(LPCSTR section )
 
 	// sounds
 	char buf[256];
-	pSounds->Create		(sndStep[0],		TRUE,	strconcat(buf,cName(),"\\stepL"),0,SOUND_TYPE_MONSTER_WALKING_HUMAN);
-	pSounds->Create		(sndStep[1],		TRUE,	strconcat(buf,cName(),"\\stepR"),0,SOUND_TYPE_MONSTER_WALKING_HUMAN);
-	pSounds->Create		(sndLanding,		TRUE,	strconcat(buf,cName(),"\\landing"),0,SOUND_TYPE_MONSTER_FALLING_HUMAN);
-	pSounds->Create		(sndZoneHeart,		TRUE,	"heart\\4");
-	pSounds->Create		(sndZoneDetector,	TRUE,	"detectors\\geiger",	TRUE);
-	pSounds->Create		(sndHit[0],			TRUE,	strconcat(buf,cName(),"\\hurt1"),0,SOUND_TYPE_MONSTER_INJURING_HUMAN);
-	pSounds->Create		(sndHit[1],			TRUE,	strconcat(buf,cName(),"\\hurt2"),0,SOUND_TYPE_MONSTER_INJURING_HUMAN);
-	pSounds->Create		(sndHit[2],			TRUE,	strconcat(buf,cName(),"\\hurt3"),0,SOUND_TYPE_MONSTER_INJURING_HUMAN);
-	pSounds->Create		(sndHit[3],			TRUE,	strconcat(buf,cName(),"\\hurt4"),0,SOUND_TYPE_MONSTER_INJURING_HUMAN);
-	pSounds->Create		(sndDie[0],			TRUE,	strconcat(buf,cName(),"\\die0"),0,SOUND_TYPE_MONSTER_DYING_HUMAN);
-	pSounds->Create		(sndDie[1],			TRUE,	strconcat(buf,cName(),"\\die1"),0,SOUND_TYPE_MONSTER_DYING_HUMAN);
-	pSounds->Create		(sndDie[2],			TRUE,	strconcat(buf,cName(),"\\die2"),0,SOUND_TYPE_MONSTER_DYING_HUMAN);
-	pSounds->Create		(sndDie[3],			TRUE,	strconcat(buf,cName(),"\\die3"),0,SOUND_TYPE_MONSTER_DYING_HUMAN);
+	::Sound->Create		(sndStep[0],		TRUE,	strconcat(buf,cName(),"\\stepL"),0,SOUND_TYPE_MONSTER_WALKING_HUMAN);
+	::Sound->Create		(sndStep[1],		TRUE,	strconcat(buf,cName(),"\\stepR"),0,SOUND_TYPE_MONSTER_WALKING_HUMAN);
+	::Sound->Create		(sndLanding,		TRUE,	strconcat(buf,cName(),"\\landing"),0,SOUND_TYPE_MONSTER_FALLING_HUMAN);
+	::Sound->Create		(sndZoneHeart,		TRUE,	"heart\\4");
+	::Sound->Create		(sndZoneDetector,	TRUE,	"detectors\\geiger",	TRUE);
+	::Sound->Create		(sndHit[0],			TRUE,	strconcat(buf,cName(),"\\hurt1"),0,SOUND_TYPE_MONSTER_INJURING_HUMAN);
+	::Sound->Create		(sndHit[1],			TRUE,	strconcat(buf,cName(),"\\hurt2"),0,SOUND_TYPE_MONSTER_INJURING_HUMAN);
+	::Sound->Create		(sndHit[2],			TRUE,	strconcat(buf,cName(),"\\hurt3"),0,SOUND_TYPE_MONSTER_INJURING_HUMAN);
+	::Sound->Create		(sndHit[3],			TRUE,	strconcat(buf,cName(),"\\hurt4"),0,SOUND_TYPE_MONSTER_INJURING_HUMAN);
+	::Sound->Create		(sndDie[0],			TRUE,	strconcat(buf,cName(),"\\die0"),0,SOUND_TYPE_MONSTER_DYING_HUMAN);
+	::Sound->Create		(sndDie[1],			TRUE,	strconcat(buf,cName(),"\\die1"),0,SOUND_TYPE_MONSTER_DYING_HUMAN);
+	::Sound->Create		(sndDie[2],			TRUE,	strconcat(buf,cName(),"\\die2"),0,SOUND_TYPE_MONSTER_DYING_HUMAN);
+	::Sound->Create		(sndDie[3],			TRUE,	strconcat(buf,cName(),"\\die3"),0,SOUND_TYPE_MONSTER_DYING_HUMAN);
 
 	Movement.ActivateBox(0);
 	
@@ -279,7 +279,7 @@ void CActor::HitSignal(float perc, Fvector& vLocalDir, CObject* who)
 		if (S.feedback) return;
 
 		// Play hit-sound
-		pSounds->PlayAtPos	(S,this,vPosition);
+		::Sound->PlayAtPos	(S,this,vPosition);
 
 		// hit marker
 		if (Local() && (who!=this))	
@@ -307,7 +307,7 @@ void CActor::HitSignal(float perc, Fvector& vLocalDir, CObject* who)
 void CActor::Die	( )
 {
 	// Play sound
-	pSounds->PlayAtPos		(sndDie[Random.randI(SND_DIE_COUNT)],this,vPosition);
+	::Sound->PlayAtPos		(sndDie[Random.randI(SND_DIE_COUNT)],this,vPosition);
 	cam_Set					(eacFreeLook);
 	g_fireEnd				();
 	mstate_wishful	&=		~mcAnyMove;
@@ -343,7 +343,7 @@ void CActor::g_Physics			(Fvector& _accel, float jump, float dt)
 	// Check ground-contact
 	if (Movement.gcontact_Was) 
 	{
-		pSounds->PlayAtPos					(sndLanding,this,Position());
+		::Sound->PlayAtPos					(sndLanding,this,Position());
 
 		Fvector correctV					= Movement.GetVelocity	();
 		correctV.x							*= 0.1f;
@@ -399,8 +399,8 @@ void CActor::ZoneEffect	(float z_amount)
 	// Sounds
 	Fvector				P;
 	clCenter			(P);
-	if (0==sndZoneHeart.feedback)		pSounds->PlayAtPos	(sndZoneHeart,		this,Position(),true);
-//	if (0==sndZoneDetector.feedback)	pSounds->PlayAtPos	(sndZoneDetector,	this,Position(),true);
+	if (0==sndZoneHeart.feedback)		::Sound->PlayAtPos	(sndZoneHeart,		this,Position(),true);
+//	if (0==sndZoneDetector.feedback)	::Sound->PlayAtPos	(sndZoneDetector,	this,Position(),true);
 	sndZoneHeart.feedback->SetVolume			(z_amount);
 	sndZoneHeart.feedback->SetPosition			(P);
 //	sndZoneDetector.feedback->SetFrequencyScale	(.1f+z_amount);
@@ -607,7 +607,7 @@ void CActor::Update	(u32 DT)
 	// sound step
 	if ((mstate_real&mcAnyMove)&&(!(mstate_real&(mcJump|mcFall|mcLanding|mcLanding2)))){
 		if(m_fTimeToStep<0){
-			pSounds->PlayAtPos	(sndStep[bStep],this,Position());
+			::Sound->PlayAtPos	(sndStep[bStep],this,Position());
 			bStep = !bStep;
 			float k				= (mstate_real&mcCrouch)?0.75f:1.f;
 			float tm			= isAccelerated(mstate_real)?(PI/(k*10.f)):(PI/(k*7.f));
