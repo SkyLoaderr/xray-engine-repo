@@ -3,8 +3,6 @@
 --	автор: Диденко Руслан (Stohe)
 --	TODO: 
 ----------------------------------------------------------------------------------------------------------------------
-module("state_lib")
-
 --' Эвалуатор, который синхронизирует менеджер.
 class "evaluator_state_mgr" (property_evaluator)
 function evaluator_state_mgr:__init(name, manager) super (nil, name)

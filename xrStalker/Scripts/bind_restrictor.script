@@ -7,9 +7,6 @@ Space restrictor binder
 	- callbacks вызывается только на актёра
 --------------------------------------------------------------------------------------------------]]
 
-module "level_tips"
-module "zone_no_weapon"
-
 local updatable_binders = {}    -- биндеры, которые требуют обновлений (update)
 
 function update( actor )

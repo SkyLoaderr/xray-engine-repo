@@ -1,5 +1,3 @@
-module("game_types")
-
 class "C_new_game_sv_Deathmatch" (game_sv_Deathmatch)
 
 function C_new_game_sv_Deathmatch:__init() super()

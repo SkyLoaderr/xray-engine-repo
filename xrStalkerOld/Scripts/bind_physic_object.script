@@ -5,10 +5,6 @@
 -- Доработки: Andrey Fidrya (Zmey) af@svitonline.com
 ----------------------------------------------------------------------------------------------------
 
-module("xr_motivator")
-module("xr_logic")
-module("modules")
-
 function init(obj)
 	db.storage[obj:id()] = { }
 

@@ -1,5 +1,3 @@
-module "bind_restrictor"
-
 function init    (obj)
 	xr_motivator.AddToMotivator(obj)
 end

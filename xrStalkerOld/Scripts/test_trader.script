@@ -1,5 +1,3 @@
-module("scr_trader")
-
 function main()
          scr_trader.init()
          while(true) do

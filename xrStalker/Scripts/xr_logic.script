@@ -210,17 +210,17 @@ end
 -- бмняъ хглемемхъ б щрс тсмйжхч, ме гюашбюире днаюбкърэ яннрберярбсчыхе ярпнйх х б дбе нярюкэмше
 ------------------------------------------------------------------------------------------------------------
 function load_generic_schemes(npc, stype)
-	if stype == modules.stype_stalker then
-		module(schemes["combat"])
-		module(schemes["death"])
-		module(schemes["hit"])
-		module(schemes["actor_dialogs"])
-		module(schemes["wounded"])
-		module(schemes["heli_hunter"])
-	elseif stype == modules.stype_mobile then
-		module(schemes["mob_death"])
-		module(schemes["mob_trade"])
-	end
+//	if stype == modules.stype_stalker then
+//		module(schemes["combat"])
+//		module(schemes["death"])
+//		module(schemes["hit"])
+//		module(schemes["actor_dialogs"])
+//		module(schemes["wounded"])
+//		module(schemes["heli_hunter"])
+//	elseif stype == modules.stype_mobile then
+//		module(schemes["mob_death"])
+//		module(schemes["mob_trade"])
+//	end
 end
 
 ------------------------------------------------------------------------------------------------------------
@@ -325,7 +325,6 @@ function activate_by_section(npc, ini, section)
 			utils.abort("xr_logic: scheme '%s' is not registered in modules.script", scheme)
 		end
 		printf("_bp: calling module('%s')", filename)
-		module(filename)
 		if not _G[filename] then
 			utils.abort("xr_logic: can't call %s.set_scheme() - a nil value", filename)
 		end

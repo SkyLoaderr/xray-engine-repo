@@ -1,5 +1,3 @@
-module("m_monster_ai")
-
 function main1()
 	local dog = m_monster_ai.m_MonsterBobik("dog", this.script_name(), "way")
 

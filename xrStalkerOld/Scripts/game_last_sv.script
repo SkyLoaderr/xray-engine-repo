@@ -1,9 +1,3 @@
-
-module("game_types")
-module("game_last_ps")
-
-
-
 class "game_sv_LastStanding" (game_sv_mp_script)
 
 ---------------------------------------------------------

@@ -1,5 +1,3 @@
---module "xr_events"
-
 function main()
 --[[    local actor = get_actor()
 

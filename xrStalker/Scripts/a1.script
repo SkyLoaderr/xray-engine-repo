@@ -1,5 +1,3 @@
-module("a2")
-
 function main()
 	printf( "start" )
 	local dog = get_level_object("m_dog1")
