@@ -9,7 +9,7 @@ function main ()
     local bar = get_level_object ("barricade")
 
     zone:clear_callback (true)
-    zone:set_callback (bar.on_enter, true)
+    zone:set_callback (barricade.on_enter, true)
 
     while entered == false do  wait () end
 
