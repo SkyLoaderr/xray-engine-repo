@@ -66,14 +66,9 @@ void CHUDCursor::Load		()
 	HUDCrosshair.Load();
 }
 
-IC u32 subst_alpha(u32 val, u8 a){ return u32(val&0x00FFFFFF)|u32(a<<24); }
-
-
-
-ICF BOOL pick_trace_callback(collide::rq_result& result, LPVOID params)
+ICF static BOOL pick_trace_callback(collide::rq_result& result, LPVOID params)
 {
 	collide::rq_result* RQ = (collide::rq_result*)params;
-	//динамический объект
 	if(result.O){	
 		*RQ				= result;
 		return FALSE;
@@ -86,7 +81,6 @@ ICF BOOL pick_trace_callback(collide::rq_result& result, LPVOID params)
 	*RQ					= result;
 	return FALSE;
 }
-
 
 void CHUDCursor::CursorOnFrame ()
 {

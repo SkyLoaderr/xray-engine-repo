@@ -9,6 +9,7 @@
 #include "UsableScriptObject.h"
 #include "customzone.h"
 #include "level.h"
+#include "GameMtlLib.h"
 
 #define PICKUP_INFO_COLOR 0xFFAAAAAA
 
@@ -64,6 +65,44 @@ void CActor::PickupModeOff()
 {
 	m_bPickupMode = false;
 }
+
+ICF static BOOL info_trace_callback(collide::rq_result& result, LPVOID params)
+{
+	BOOL& bOverlaped	= *(BOOL*)params;
+	if(result.O){	
+		bOverlaped		= TRUE;
+		return			FALSE;
+	}else{
+		//получить треугольник и узнать его материал
+		CDB::TRI* T		= Level().ObjectSpace.GetStaticTris()+result.element;
+		if (GMLib.GetMaterialByIdx(T->material)->Flags.is(SGameMtl::flPassable)) 
+			return TRUE;
+	}	
+	bOverlaped			= TRUE;
+	return				FALSE;
+}
+
+BOOL CanPickItem(const CFrustum& frustum, const Fvector& from, CObject* item)
+{
+	BOOL	bOverlaped		= FALSE;
+	Fvector dir,to; 
+	item->Center			(to);
+	float range				= dir.sub(to,from).magnitude();
+	if (range>0.25f){
+		if (frustum.testSphere_dirty(to,item->Radius())){
+			dir.div	(range);
+			bool item_en		= item->getEnabled();
+			item->setEnabled	(false);
+			Level().CurrentEntity()->setEnabled(false);
+			collide::ray_defs RD(from, dir, range, 0, collide::rqtBoth);
+			Level().ObjectSpace.RayQuery(RD, info_trace_callback, &bOverlaped);
+			Level().CurrentEntity()->setEnabled(true);
+			item->setEnabled	(item_en);
+		}
+	}
+	return !bOverlaped;
+}
+
 void CActor::PickupModeUpdate()
 {
 	if(!m_bPickupMode) return;
@@ -80,12 +119,12 @@ void CActor::PickupModeUpdate()
 
 	// ????? GetNearest ?????
 	feel_touch_update(Position(), /*inventory().GetTakeDist()*/m_fPickupInfoRadius);
-
-	for(xr_vector<CObject*>::iterator it = feel_touch.begin();
-							it != feel_touch.end(); it++)
-	{
-		PickupInfoDraw(*it);
-	}
+	
+	CFrustum frustum;
+	frustum.CreateFromMatrix(Device.mFullTransform,FRUSTUM_P_LRTB|FRUSTUM_P_FAR);
+	//. slow (ray-query test)
+	for(xr_vector<CObject*>::iterator it = feel_touch.begin(); it != feel_touch.end(); it++)
+		if (CanPickItem(frustum,Device.vCameraPosition,*it)) PickupInfoDraw(*it);
 }
 
 void CActor::PickupInfoDraw(CObject* object)
