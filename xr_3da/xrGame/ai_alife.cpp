@@ -98,8 +98,8 @@ CAI_ALife::~CAI_ALife()
 void CAI_ALife::vfInitTerrain()
 {
 	m_tpTerrain.resize(LOCATION_COUNT);
-	for (u16 i=0; i<Level().AI.GraphHeader().dwVertexCount; i++)
-		m_tpTerrain[Level().AI.m_tpaGraph[i].ucVertexType].push_back(i);
+	for (_GRAPH_ID i=0; i<(_GRAPH_ID)Level().AI.GraphHeader().dwVertexCount; i++)
+		m_tpTerrain[Level().AI.m_tpaGraph[i].tVertexType].push_back(i);
 }
 
 // temporary
@@ -178,6 +178,7 @@ void CAI_ALife::vfGenerateSpawnPoints(const u32 dwTotalCount, FLOAT_VECTOR &fpFa
 			m_tpSpawnPoints[ii].tpRouteGraphPoints.clear();
 			if (I == B) {
 				m_tpSpawnPoints[ii].tpRouteGraphPoints.push_back(m_tpSpawnPoints[ii].tNearestGraphPointID);
+				tpMarks[m_tpSpawnPoints[ii].tNearestGraphPointID] = true;
 				u16				wPoint = m_tpSpawnPoints[ii].tNearestGraphPointID;
 				int				wCount = tpaGraph[wPoint].dwNeighbourCount;
 				AI::SGraphEdge	*tpaEdges = (AI::SGraphEdge *)((BYTE *)tpaGraph + tpaGraph[wPoint].dwEdgeOffset);
@@ -288,6 +289,33 @@ void CAI_ALife::vfSaveSpawnPoints()
 	tStream.close_chunk	();
 	tStream.SaveTo		("game.spawn",0);
 }
+
+void CAI_ALife::vfRandomizeGraphTerrain()
+{
+	SGraphVertex *tpaGraph = (SGraphVertex *)malloc(Level().AI.m_tpGraphVFS->Length());
+	memcpy(tpaGraph,(BYTE *)Level().AI.m_tpaGraph - sizeof(SGraphHeader),Level().AI.m_tpGraphVFS->Length());
+	tpaGraph = (SGraphVertex *)((BYTE *)tpaGraph + sizeof(SGraphHeader));
+	for (int i=0, m=0; i<(int)Level().AI.GraphHeader().dwVertexCount; i++)
+		if (!tpaGraph[i].tVertexType) {
+			m = (m + 1) & 0xff;
+			tpaGraph[i].tVertexType = (u32)m;
+			int			wCount = tpaGraph[i].dwNeighbourCount;
+			SGraphEdge	*tpaEdges = (SGraphEdge *)((BYTE *)tpaGraph + tpaGraph[i].dwEdgeOffset);
+			for (int j=0; j<(int)wCount; j++)
+				if (!tpaGraph[tpaEdges[j].dwVertexNumber].tVertexType) {
+					tpaGraph[tpaEdges[j].dwVertexNumber].tVertexType = m;
+					int			wCount1 = tpaGraph[tpaEdges[j].dwVertexNumber].dwNeighbourCount;
+					SGraphEdge	*tpaEdges1 = (SGraphEdge *)((BYTE *)tpaGraph + tpaGraph[tpaEdges[j].dwVertexNumber].dwEdgeOffset);
+					for (int k=0; k<wCount1; k++)
+						if (!tpaGraph[tpaEdges1[k].dwVertexNumber].tVertexType)
+							tpaGraph[tpaEdges1[k].dwVertexNumber].tVertexType = m;
+				}
+		}
+	tpaGraph = (SGraphVertex *)((BYTE *)tpaGraph - sizeof(SGraphHeader));
+	FILE *F = fopen("level.graph","wb");
+	fwrite(tpaGraph,1,Level().AI.m_tpGraphVFS->Length(),F);
+	fclose(F);
+}
 // end of temporary
 void CAI_ALife::vfLoadSpawnPoints(CStream *tpStream)
 {
@@ -351,6 +379,7 @@ void CAI_ALife::Load()
 		fpFactors.push_back(ARTEFACT_FACTOR);
 		vfGenerateSpawnPoints(TOTAL_COUNT,fpFactors);
 		vfSaveSpawnPoints();
+		vfRandomizeGraphTerrain();
 #else
 		return;
 #endif

@@ -95,8 +95,11 @@ namespace ALife {
 	};
 
 	enum ETaskType {
-		eTaskTypeSearchForArtefact = u32(0),
-		eTaskTypeSearchForItem,
+		eTaskTypeNone = u32(0),
+		eTaskTypeSearchForItemCG,
+		eTaskTypeSearchForItemCL,
+		eTaskTypeSearchForItemOG,
+		eTaskTypeSearchForItemOL,
 		eTaskTypeDummy = u32(-1),
 	};
 
@@ -120,9 +123,14 @@ namespace ALife {
 	typedef struct tagSTask {
 		_TASK_ID					tTaskID;
 		_TIME_ID					tTimeID;
-		_GRAPH_ID					tGraphID;
-		_OBJECT_ID					tCustomerID;
-		_CLASS_ID					tClassID;
+		union {
+			_CLASS_ID				tClassID;
+			_OBJECT_ID				tCustomerID;
+		};
+		union {
+			_LOCATION_ID			tLocationID;
+			_GRAPH_ID				tGraphID;
+		};
 		ETaskType					tTaskType;
 	} STask;
 

@@ -181,15 +181,8 @@ public:
 		tMemoryStream.Wdword		(m_tpMap.size());
 		TASK_PAIR_IT it				= m_tpMap.begin();
 		TASK_PAIR_IT E				= m_tpMap.end();
-		for ( ; it != E; it++) {
-			STask					&tTask = (*it).second;
-			tMemoryStream.write		(&tTask.tTaskID,		sizeof(tTask.tTaskID	));
-			tMemoryStream.write		(&tTask.tTimeID,		sizeof(tTask.tTimeID	));
-			tMemoryStream.write		(&tTask.tGraphID,		sizeof(tTask.tGraphID	));
-			tMemoryStream.write		(&tTask.tCustomerID,	sizeof(tTask.tCustomerID));
-			tMemoryStream.write		(&tTask.tClassID,		sizeof(tTask.tClassID	));
-			tMemoryStream.write		(&tTask.tTaskType,		sizeof(tTask.tTaskType	));
-		}
+		for ( ; it != E; it++)
+			tMemoryStream.write		(&((*it).second),		sizeof((*it).second));
 	};
 	
 	virtual	void					Load(CStream	&tFileStream)
@@ -198,12 +191,7 @@ public:
 		u32 dwCount = tFileStream.Rdword();
 		for (u32 i=0; i<dwCount; i++) {
 			STask					tTask;
-			tFileStream.Read		(&tTask.tTaskID,		sizeof(tTask.tTaskID	));
-			tFileStream.Read		(&tTask.tTimeID,		sizeof(tTask.tTimeID	));
-			tFileStream.Read		(&tTask.tGraphID,		sizeof(tTask.tGraphID	));
-			tFileStream.Read		(&tTask.tCustomerID,	sizeof(tTask.tCustomerID));
-			tFileStream.Read		(&tTask.tClassID,		sizeof(tTask.tClassID	));
-			tFileStream.Read		(&tTask.tTaskType,		sizeof(tTask.tTaskType	));
+			tFileStream.Read		(&tTask,		sizeof(tTask));
 			m_tpMap.insert			(make_pair(tTask.tTaskID,tTask));
 		}
 	};

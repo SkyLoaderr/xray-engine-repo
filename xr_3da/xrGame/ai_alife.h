@@ -197,7 +197,7 @@ public:
 				tTask.tGraphID				= tpALifeItem->m_tGraphID;
 				tTask.tClassID				= tpALifeItem->m_tClassID;
 				tTask.tTimeID				= Level().timeServer();
-				tTask.tTaskType				= eTaskTypeSearchForArtefact;
+				tTask.tTaskType				= eTaskTypeSearchForItemCG;
 				m_tTaskRegistry.Add			(tTask);
 				tpTrader->m_tpTaskIDs.push_back(tTask.tTaskID);
 				break;
@@ -222,8 +222,9 @@ public:
 	void							vfInitTerrain			();
 	void							vfLoadSpawnPoints		(CStream *tpStream);
 	// temporary
-	void							vfGenerateSpawnPoints	(const u32 dwTotalCount, FLOAT_VECTOR &fpFactors);
+	void							vfRandomizeGraphTerrain	();
 	void							vfSaveSpawnPoints		();
+	void							vfGenerateSpawnPoints	(const u32 dwTotalCount, FLOAT_VECTOR &fpFactors);
 	//
 public:
 									CAI_ALife				();
