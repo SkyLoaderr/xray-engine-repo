@@ -108,16 +108,24 @@ void CDetailManager::VS_Unload()
 
 void CDetailManager::VS_Render()
 {
-	// Render itself
+	// Phase
 	float	fPhaseRange	= PI/16;
 	float	fPhaseX		= sinf(Device.fTimeGlobal*0.1f)	*fPhaseRange;
 	float	fPhaseZ		= sinf(Device.fTimeGlobal*0.11f)*fPhaseRange;
 
-	Fmatrix		mXform,mTemp;
+	// Render-prepare
+	CVS_Constants& VSC	=	Device.Shader.VSC;
+	VSC.set						(0,255,255,255,255);
+	VSC.flush					(0,1);
+	Device.Primitive.setVertices(VS_Code,(3+1+2)*4,VS_VB);
+	
+	// Matrices and offsets
+	Fmatrix		mXform,	mTemp;
+	Fmatrix		mScreen	=	Device.mFullTransform;
 	DWORD		vOffset	=	0;
 	DWORD		iOffset	=	0;
-	Fmatrix		mScreen	=	Device.mFullTransform;
-	Fvector4	vConst	[5*4];
+	
+	// Iterate
 	for (DWORD O=0; O<dm_max_objects; O++)
 	{
 		CList<SlotItem*>&	vis = visible	[O];
@@ -126,12 +134,15 @@ void CDetailManager::VS_Render()
 		if (!vis.empty())
 		{
 			// Setup matrices + colors (and flush it as nesessary)
-			Device.Shader.set_Shader	(Object.shader);
+			Device.Shader.set_Shader		(Object.shader);
+			Device.Primitive.setIndicesUC	(vOffset, VS_IB);
+
 			DWORD dwBatch	= 0;
 			for (DWORD item = 0; item<vis.size(); item++)
 			{
 				SlotItem&	Instance	= *(vis[item]);
 				float	scale			= Instance.scale_calculated;
+				DWORD	cBase			= dwBatch*5+1;
 				
 				// Build matrix
 				if (scale>0.7f)	
@@ -150,59 +161,39 @@ void CDetailManager::VS_Render()
 					mXform._31=M._31;		mXform._32=M._32;		mXform._33=M._33*scale;	mXform._34=M._34;
 					mXform._41=P.x;			mXform._42=P.y;			mXform._43=P.z;			mXform._44=1;
 				}
-				mTemp.mul							(mScreen,mXform);
-				((Fmatrix*)&vConst[0])->transpose	();
-
-				mXform.transpose		(mScreen,mXform);
-				Fcolor c;	c.set		(Instance.C);
-				DWORD	cBase			= dwBatch*5+1;
+				mTemp.mul				(mScreen,mXform);
+				VSC.set					(cBase,		mTemp);
+				VSC.set					(cBase+4,	Instance.C);
 				
-
-				// Transfer vertices
+				dwBatch	++;
+				if (dwBatch == VS_BatchSize)	
 				{
-					DWORD					C = Instance.C;
-					CDetail::fvfVertexIn	*srcIt = Object.vertices, *srcEnd = Object.vertices+Object.number_vertices;
-					CDetail::fvfVertexOut	*dstIt = vDest;
-					for	(; srcIt!=srcEnd; srcIt++, dstIt++)
-					{
-						mXform.transform_tiny	(dstIt->P,srcIt->P);
-						dstIt->C	= C;
-						dstIt->u	= srcIt->u;
-						dstIt->v	= srcIt->v;
-					}
+					// flush
+					VSC.flush						(1,dwBatch*5);
+					DWORD dwCNT_verts				= dwBatch * Object.number_vertices;
+					DWORD dwCNT_prims				= (dwBatch * Object.number_indices)/3;
+					Device.Primitive.Render			(D3DPT_TRIANGLELIST,0,dwCNT_verts,iOffset,dwCNT_prims);
+					UPDATEC							(dwCNT_verts,dwCNT_prims,2);
+					
+					// restart
+					dwBatch							= 0;
 				}
-				
-				// Transfer indices (in 32bit lines)
-				VERIFY	(iOffset<65535);
-				{
-					DWORD	item	= (iOffset<<16) | iOffset;
-					DWORD	count	= Object.number_indices/2;
-					LPDWORD	sit		= LPDWORD(Object.indices);
-					LPDWORD	send	= sit+count;
-					LPDWORD	dit		= LPDWORD(iDest);
-					for		(; sit!=send; dit++,sit++)	*dit=*sit+item;
-					if		(Object.number_indices&1)	
-						iDest[Object.number_indices-1]=Object.indices[Object.number_indices-1]+WORD(iOffset);
-				}
-				
-				// Increment counters
-				vDest					+=	vCount_Object;
-				iDest					+=	iCount_Object;
-				iOffset					+=	vCount_Object;
 			}
 			
-			// Render
-			Device.Primitive.setVertices	(soft_VS->getFVF(),soft_VS->getStride(),soft_VS->getBuffer());
-			Device.Primitive.setIndicesUC	(vBase, IS->getBuffer());
-			DWORD	dwNumPrimitives			= iCount_Lock/3;
-			Device.Primitive.Render			(D3DPT_TRIANGLELIST,0,vCount_Lock,iBase,dwNumPrimitives);
-			UPDATEC							(vCount_Lock,dwNumPrimitives,2);
+			// flush if nessecary
+			if (dwBatch)
+			{
+				VSC.flush						(1,dwBatch*5);
+				DWORD dwCNT_verts				= dwBatch * Object.number_vertices;
+				DWORD dwCNT_prims				= (dwBatch * Object.number_indices)/3;
+				Device.Primitive.Render			(D3DPT_TRIANGLELIST,0,dwCNT_verts,iOffset,dwCNT_prims);
+				UPDATEC							(dwCNT_verts,dwCNT_prims,2);
+			}
 			
 			// Clean up
 			vis.clear	();
 		}
 		vOffset		+=	VS_BatchSize * Object.number_vertices;
 		iOffset		+=	VS_BatchSize * Object.number_indices;
-		
 	}
 }
