@@ -541,14 +541,9 @@ void ScriptCallBack(CBlend* B)
 	CScriptEntity	*l_tpScriptMonster = static_cast<CScriptEntity*>(B->CallbackParam);
 	VERIFY			(l_tpScriptMonster);
 	if (l_tpScriptMonster->GetCurrentAction() && !B->bone_or_part) {
-		if (!l_tpScriptMonster->GetCurrentAction()->m_tAnimationAction.m_bCompleted) {
+		if (!l_tpScriptMonster->GetCurrentAction()->m_tAnimationAction.m_bCompleted)
 			l_tpScriptMonster->object().callback(GameObject::eActionTypeAnimation)(l_tpScriptMonster->object().lua_game_object(),u32(eActionTypeAnimation));
-		}
 			
-#ifdef _DEBUG
-//		if (!xr_strcmp("m_stalker_wounded",*l_tpScriptMonster->cName()))
-//			Msg			("Completed %s",*l_tpScriptMonster->GetCurrentAction()->m_tAnimationAction.m_caAnimationToPlay);
-#endif
 		l_tpScriptMonster->m_tpScriptAnimation = 0;
 		l_tpScriptMonster->GetCurrentAction()->m_tAnimationAction.m_bCompleted = true;
 		if (l_tpScriptMonster->GetActionCount())

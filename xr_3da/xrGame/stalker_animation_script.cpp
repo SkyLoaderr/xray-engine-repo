@@ -10,6 +10,8 @@
 #include "stalker_animation_manager.h"
 #include "ai/stalker/ai_stalker.h"
 #include "script_engine.h"
+#include "game_object_space.h"
+#include "script_callback_ex.h"
 
 void	CStalkerAnimationManager::script_play_callback(CBlend *blend)
 {
@@ -25,6 +27,7 @@ void	CStalkerAnimationManager::script_play_callback(CBlend *blend)
 			)
 		)
 		animation_manager.pop_script_animation();
+	object->callback(GameObject::eScriptAnimation)();
 }
 
 void CStalkerAnimationManager::add_script_animation	(LPCSTR animation, bool hand_usage)
