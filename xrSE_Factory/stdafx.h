@@ -15,6 +15,7 @@
 #define ENGINE_API
 #define ECORE_API
 #define DLL_API					__declspec(dllexport)
+#define TIXML_USE_STL
 
 #include "clsid_game.h"
 
