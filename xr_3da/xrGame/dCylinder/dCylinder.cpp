@@ -1251,14 +1251,13 @@ static  void dCylinderAABB (dxGeom *geom, dReal aabb[6])
   dGeomCylinderGetParams(geom,&radius,&lz);
 const dReal* R= dGeomGetRotation(geom);
 const dReal* pos= dGeomGetPosition(geom);
-  dReal xrange =  dFabs (R[0] *radius) +
-    REAL(0.5) *dFabs (R[1] * lz) + dFabs (R[2] * radius);
 
-  dReal yrange = dFabs (R[4] *radius) +
-    REAL(0.5) * dFabs (R[5] * lz) + dFabs (R[6] * radius);
+	
+  dReal xrange = REAL(0.5) * dFabs (R[1] * lz) + (dSqrt(R[0]*R[0]+R[2]*R[2]) * radius);
 
-  dReal zrange =  dFabs (R[8] * radius) +
-    REAL(0.5) *dFabs (R[9] * lz) + dFabs (R[10] * radius);
+  dReal yrange = REAL(0.5) * dFabs (R[5] * lz) + (dSqrt(R[4]*R[4]+R[6]*R[6]) * radius);
+
+  dReal zrange = REAL(0.5) * dFabs (R[9] * lz) + (dSqrt(R[8]*R[8]+R[10]*R[10]) * radius);
 
   aabb[0] = pos[0] - xrange;
   aabb[1] = pos[0] + xrange;
