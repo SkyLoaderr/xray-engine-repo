@@ -228,7 +228,13 @@ public:
 		TNode*	_end		= end();
 		for (TNode* cur = begin(); cur!=_end; cur++,_it++) *_it = cur;
 	}
-
+	IC void		getANY_P	(std::vector<void*>&	D)
+	{
+		D.resize			(size());
+		void** _it			= &*D.begin();
+		TNode*	_end		= end();
+		for (TNode* cur = begin(); cur!=_end; cur++,_it++) *_it = cur;
+	}
 	IC void		setup(callback CB) {
 		for (int i=0; i<limit; i++)
 			CB(nodes+i);
