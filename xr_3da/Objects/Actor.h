@@ -124,6 +124,10 @@ private:
 	
 	float					m_fTimeToStep;
 
+	// Dropping
+	BOOL					b_DropActivated;
+	float					f_DropPower;
+
 	// Cameras
 	CCameraBase*			cameras[eacMaxCam];
 	EActorCameras			cam_active;
@@ -144,8 +148,6 @@ private:
 		Fvector				p_pos;					// in world coords
 		Fvector				p_accel;				// in world coords
 		Fvector				p_velocity;				// in world coords
-		Fvector				f_pos;
-		Fvector				f_dir;
 		DWORD				mstate;
 		int					weapon;
 
@@ -212,8 +214,7 @@ public:
 
 	// Fire control
 	virtual void			g_fireParams		(Fvector& P, Fvector& D);
-	virtual void			g_cl_fireStart		( );
-	virtual void			g_sv_fireStart		(NET_Packet* P);
+	virtual void			g_fireStart			( );
 	virtual void			g_fireEnd			( );
 	virtual BOOL			g_State				(SEntityState& state)
 	{
@@ -222,9 +223,10 @@ public:
 		state.fVelocity		= Movement.GetVelocityActual();
 		return TRUE;
 	}
+	virtual void			g_PerformDrop		( );
 	virtual void			g_WeaponBones		( int& L, int& R);
 	
-	SRotation				Orientation()		{return r_torso;};
+	SRotation				Orientation()		{ return r_torso; };
 
 	virtual void			OnMouseMove			(int x, int y);
 	virtual void			OnKeyboardPress		(int dik);
@@ -232,12 +234,11 @@ public:
 	virtual void			OnKeyboardHold		(int dik);
 
 	virtual void			Update				( DWORD T ); 
-	virtual void			OnVisible			( ); 
+	virtual void			OnVisible			( );
 
 	void					ZoneEffect			(float z_amount);
 
 	void					Statistic			( );
-	virtual void			OnRender			( );
 
 	// HUD
 	virtual void			OnHUDDraw			(CCustomHUD* hud);

@@ -10,19 +10,21 @@ enum {
 	M_UPDATE				=0,	// DUAL: Update state
 	M_SPAWN,					// DUAL: Spawning, full state
 	M_DESTROY,					// TO:   Destroying
-	M_OWNERSHIP_TAKE,			// DUAL: Client request for ownership of an item
-	M_OWNERSHIP_REJECT,			// DUAL: Client request ownership rejection
-	M_MIGRATE_DEACTIVATE,		// TO:   Changing server, just deactivate
-	M_MIGRATE_ACTIVATE,			// TO:   Changing server, full state
-	M_HIT,						// 
-	M_DIE,						// 
-
-	M_CHAT,						// DUAL:
-
 	M_SV_CONFIG,
 	M_SV_CONFIG_FINISHED,
+	M_MIGRATE_DEACTIVATE,		// TO:   Changing server, just deactivate
+	M_MIGRATE_ACTIVATE,			// TO:   Changing server, full state
+	M_CHAT,						// DUAL:
 
+	M_EVENT,					// Game Event
 	MSG_FORCEDWORD				= DWORD(-1)
+};
+
+enum {
+	GE_OWNERSHIP_TAKE,			// DUAL: Client request for ownership of an item
+	GE_OWNERSHIP_REJECT,		// DUAL: Client request ownership rejection
+	GE_HIT,						// 
+	GE_DIE,						// 
 };
 
 enum
@@ -42,16 +44,13 @@ enum
 };
 
 /*
-M_REQUEST_OWNERSHIP
+M_EVENT
 {
-	u16			id_parent;
-	u16			id_entity;
+	u32			dwTimestamp;
+	u16			type;
+	u16			destination;
 }
-M_REQUEST_REJECTION
-{
-	u16			id_parent;
-	u16			id_entity;
-}
+
 M_SPAWN
 {	
 	stringZ		Name_section;		// section in SYSTEM.LTX
@@ -195,18 +194,31 @@ M_UPDATE
 	}
 }
 
-M_HIT
-{  
-		P.w_begin	(M_HIT		);
-		P.w_u16		(net_ID		);
-		P.w_u16		(who->net_ID);
-		P.w_u8		(perc		);
-		P.w_dir		(dir		);
+GE_OWNERSHIP_TAKE
+{
+	u16			id_entity;			
 }
 
-M_DIE
+GE_OWNERSHIP_REJECT
 {
+	u16			id_entity;
+	direction	dir;
+	float		impulse;
+}
+GE_HIT									// попадание (пулей)
+{
+	u16			id_entity;
+	direction	dir;
+	float		impulse;
+	float		power;
+}
+GE_PUSH
+{
+	u16			id_entity;
+	direction	dir;
+	float		impulse;
 }
 */
+
 #endif /*_INCDEF_XRMESSAGES_H_*/
 

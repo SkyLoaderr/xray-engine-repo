@@ -113,16 +113,21 @@ BOOL CWeaponList::ActivateWeaponNext(BOOL ignore)
 	return false;
 }
 
+BOOL CWeaponList::ActivateWeaponID(int id)
+{
+	return WeaponChange(id);
+}
+
+BOOL CWeaponList::ActivateWeaponHistory()
+{
+	return ActivateWeaponNext(TRUE);
+}
+
 int	CWeaponList::FindWeapon(CLASS_ID cls)
 {
 	WeaponIt W=find_if(m_Weapons.begin(),m_Weapons.end(),fClassEQ(cls));
 	if (W!=m_Weapons.end()) return W-m_Weapons.begin();
 	return -1;
-}
-
-BOOL CWeaponList::ActivateWeaponID(int id)
-{
-	return WeaponChange(id);
 }
 
 void CWeaponList::Zoom(BOOL bZoom)

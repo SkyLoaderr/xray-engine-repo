@@ -115,6 +115,8 @@ CActor::CActor() : CEntityAlive()
 	m_fTimeToStep			= 0;
 	bStep					= FALSE;
 
+	b_DropActivated			= 0;
+
 	m_fRunFactor			= 2.f;
 	m_fCrouchFactor			= 0.2f;
 }
@@ -339,7 +341,7 @@ void CActor::net_OwnershipReject	(CObject* O)
 		R_ASSERT							(BE(Local(),W->Local()));	// remote can't take local
 		W->H_SetParent						(0);
 		int id	= Weapons->weapon_remove	(W);
-		Weapons->ActivateWeaponID			(id-1);
+		Weapons->ActivateWeaponHistory		(id-1);
 		return;
 	}
 }
@@ -379,8 +381,6 @@ void CActor::net_update::lerp(CActor::net_update& A, CActor::net_update& B, floa
 	p_pos.lerp		(A.p_pos,B.p_pos,f);
 	p_accel			= (f<0.5f)?A.p_accel:B.p_accel;
 	p_velocity.lerp	(A.p_velocity,B.p_velocity,f);
-	f_pos.lerp		(A.f_pos,B.f_pos,f);
-	f_dir.lerp		(A.f_dir,B.f_dir,f);	f_dir.normalize_safe();
 	mstate			= (f<0.5f)?A.mstate:B.mstate;
 	weapon			= (f<0.5f)?A.weapon:B.weapon;
 }
@@ -462,7 +462,13 @@ void CActor::Update	(DWORD DT)
 		feel_touch_update		(C,R);
 		g_cl_ValidateMState		(mstate_wishful);
 		g_SetAnimation			(mstate_real);
-		// Level().HUD()->outMessage(0xffffffff,cName(),"%d",AI_NodeID);
+		
+		// Dropping
+		if (b_DropActivated)	{
+			f_DropPower			+= dt*0.1f;
+		} else {
+			f_DropPower			= 0.f;
+		}
 	} else {
 		// distinguish interpolation/extrapolation
 		DWORD	dwTime		= Level().timeServer()-NET_Latency;
@@ -748,51 +754,26 @@ void CActor::g_fireParams	(Fvector &fire_pos, Fvector &fire_dir)
 	}
 }
 
-void CActor::g_cl_fireStart	( )
+void CActor::g_fireStart	( )
 {
-	VERIFY	(Local());
-	Weapons->FireStart	( );
-
-	/*
-	NET_Packet	P;
-	P.w_begin	(M_FIRE_BEGIN);
-	P.w_u8		(u8(net_ID));
-
-	Fvector		pos,dir;
-	g_fireParams(pos,dir);
-	P.w_vec3	(pos);
-	P.w_dir		(dir);
-
-	Level().Send(P,net_flags(TRUE));
-	*/
-}
-
-void CActor::g_sv_fireStart	(NET_Packet* P)
-{
-	VERIFY	(Remote());
-
-	// Correct last packet if available
-	/*
-	if (!NET.empty())	
-	{
-		P->r_vec3		(NET.back().f_pos);
-		P->r_dir		(NET.back().f_dir);
-	}
-	*/
 	Weapons->FireStart	( );
 }
-
 void CActor::g_fireEnd	( )
 {
-	/*
-	if (Local())	{
-		NET_Packet	P;
-		P.w_begin	(M_FIRE_END);
-		P.w_u8		(u8(net_ID));
-		Level().Send(P,net_flags(TRUE));
-	}
-	*/
 	Weapons->FireEnd	( );
+}
+
+void CActor::g_PerformDrop	( )
+{
+	VERIFY	(b_DropActivated);
+	b_DropActivated			= FALSE;
+
+	// We doesn't have similar weapon - pick up it
+	NET_Packet		P;
+	P.w_begin		(M_E_OWNERSHIP_REJECT);
+	P.w_u16			(u16(ID()));
+	P.w_u16			(u16(W->ID()));
+	Level().Send	(P,net_flags(TRUE,TRUE));
 }
 
 void CActor::g_WeaponBones	(int& L, int& R)
@@ -818,12 +799,6 @@ void CActor::Statistic	( )
 	pApp->pFont->OutNext("CamPos:   %f,%f,%f",VPUSH(Device.vCameraPosition));
 	pApp->pFont->OutNext("Sleep?:   %s",Movement.bSleep?"TRUE":"FALSE");
 	//-------------------------------------------------------------------
-}
-
-void CActor::OnRender	()
-{
-	Movement.dbg_Draw	();
-	PKinematics(pVisual)->DebugRender(svTransform);
 }
 
 // HUD

@@ -23,24 +23,30 @@ void CActor::OnKeyboardPress(int cmd)
 	case kCAM_2:	cam_Set			(eacLookAt);				break;
 	case kCAM_3:	cam_Set			(eacFreeLook);				break;
 
-	case kWPN_FIRE:	g_cl_fireStart(); 							break;
-	case kWPN_ZOOM:	Weapons->Zoom(TRUE);						break;
+	case kWPN_FIRE:	g_cl_fireStart	(); 						break;
+	case kWPN_ZOOM:	Weapons->Zoom	(TRUE);						break;
 	case kWPN_1:	
 	case kWPN_2:	
 	case kWPN_3:	
 	case kWPN_4:	
 	case kWPN_5:	
 	case kWPN_6:	
-//	case kWPN_7:	
-//	case kWPN_8:	
-//	case kWPN_9:	
-		Weapons->ActivateWeaponID(cmd-kWPN_1);			
+	case kWPN_7:	
+	case kWPN_8:	
+	case kWPN_9:	
+		Weapons->ActivateWeaponID	(cmd-kWPN_1);			
 		break;
 	case kBINOCULARS:
-		Weapons->ActivateWeaponID(Weapons->WeaponCount()-1);
+		Weapons->ActivateWeaponID	(Weapons->WeaponCount()-1);
 		break;
 	case kWPN_RELOAD:
 		Weapons->Reload			();
+		break;
+	case kUSE:
+		break;
+	case kDROP:
+		b_DropActivated			= TRUE;
+		f_DropPower				= 0;
 		break;
 	}
 }
@@ -59,6 +65,8 @@ void CActor::OnKeyboardRelease(int cmd){
 
 	case kWPN_FIRE:	g_fireEnd();					break;
 	case kWPN_ZOOM:	Weapons->Zoom(FALSE);			break;
+
+	case kDROP:		g_PerformDrop();				break;
 	}
 }
 

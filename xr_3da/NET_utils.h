@@ -100,22 +100,26 @@ public:
 	}
 	
 	// reading
-	IC DWORD r_begin	( u16& type	)	// returns time of receiving
+	IC DWORD	r_begin			( u16& type	)	// returns time of receiving
 	{
 		r_pos		= 0;
 		r_u16		(type);
 		return		timeReceive;
 	}
-	IC void r		( void* p, DWORD count)
+	IC void		r				( void* p, DWORD count)
 	{
 		VERIFY		(p && count);
 		CopyMemory	(p,&B.data[r_pos],count);
 		r_pos		+= count;
 		VERIFY		(r_pos<=B.count);
 	}
-	IC BOOL r_eof	()
+	IC BOOL		r_eof			()
 	{
 		return r_pos>=B.count;
+	}
+	IC DWORD	r_elapsed		()
+	{
+		return B.count-r_pos;
 	}
 	
 	// reading - utilities
@@ -172,6 +176,7 @@ public:
 		r_vec3	(M.c);	M._44_	= 1;
 	}
 };
+
 #pragma pack(pop)
 
 #endif /*_INCDEF_NETUTILS_H_*/
