@@ -37,7 +37,7 @@ private:
 	int						look_idx;
 	//------------------------------
 	void					cam_Set					(EActorCameras style);
-	void					cam_Update				(CCameraBase* C=0);
+	void					cam_Update				(const Fmatrix* M=0);
 public:
 							CSpectator				( );
 	virtual					~CSpectator				( );
