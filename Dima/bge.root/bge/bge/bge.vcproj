@@ -298,7 +298,7 @@
 					Name="in_stream"
 					>
 					<File
-						RelativePath=".\gtl\in_stream.h"
+						RelativePath=".\in_stream.h"
 						>
 					</File>
 				</Filter>
@@ -306,7 +306,7 @@
 					Name="out_stream"
 					>
 					<File
-						RelativePath=".\gtl\out_stream.h"
+						RelativePath=".\out_stream.h"
 						>
 					</File>
 				</Filter>
@@ -2513,6 +2513,14 @@
 				<File
 					RelativePath=".\gtl\smart_container.cpp"
 					>
+					<FileConfiguration
+						Name="Debug|Win32"
+						ExcludedFromBuild="TRUE"
+						>
+						<Tool
+							Name="VCCLCompilerTool"
+						/>
+					</FileConfiguration>
 				</File>
 				<File
 					RelativePath=".\gtl\smart_container.h"

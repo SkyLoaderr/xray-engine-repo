@@ -8,7 +8,7 @@
 
 #pragma once
 
-//#define USE_LOKI
+#define USE_LOKI
 // you can uncomment this define, 
 // but all the loki routines are already hand-written
 
@@ -59,6 +59,10 @@
 //		completely_inequal,
 //		logical_and,		
 //		logical_or	
+
+// these header are needed for serialization only
+#include "../in_stream.h"
+#include "../out_stream.h"
 
 #include "object_broker.h"
 
@@ -400,7 +404,7 @@ struct vertex_hierarchy_helper : public vertex_container<_type>, public _base
 };
 
 template <typename _type>
-struct vertex_hierarchy_helper<_type,Loki::EmptyType> : public vertex_container<_type>, public IPureSerializeObject
+struct vertex_hierarchy_helper<_type,Loki::EmptyType> : public vertex_container<_type>, public IPureSerializeObject<IReader,IWriter>
 {
 	using vertex_container<_type>::add;
 	using vertex_container<_type>::remove;

@@ -9,10 +9,6 @@
 #include "stdafx.h"	
 #include "smart_container.h"
 
-// these header are needed for serialization only
-#include "in_stream.h"
-#include "out_stream.h"
-
 int __cdecl main()
 {
 	smart_container		container0, container1;
