@@ -1,15 +1,22 @@
 local s_walk	= 7
 
 class "CStateWalk"
-function CStateWalk:__init(_data, _mem)
+function CStateWalk:__init(_data, _mem, _path)
 	self.data	= _data
 	self.memory = _mem
-	self.path	= nil
+	self.path	= _path
+end
+
+function CStateWalk:set_data(_data, _mem)			// это не правильно, но по другому ни как
+	self.data	= _data
+	self.memory = _mem
 end
 
 function CStateWalk:initialize()
 	reset_action(self.data.npc, self.data.scr_name)
-	self.path	= self.data.npc:spawn_ini():r_string("monster", "walk_path")
+	if(self.path == nil) then															// Если когда создавли, не передали путь, то читаем из custom data
+		self.path	= self.data.npc:spawn_ini():r_string("monster", "walk_path")
+	end
 end
 
 function CStateWalk:execute()

@@ -1,3 +1,5 @@
+module("script_zone")
+
 --[[------------------------------------------------------------------------------------------------------------------
 ”правление скриптовыми зонами
 „угай —аша
@@ -153,6 +155,18 @@ function zone_binder:reload( section )
 			end
 		end
 	end
+	
+   if zone_ini:section_exist( "monster" ) then
+		if not z.monster then
+			z.monster = script_zone.monster_zone(self.object, zone_ini)
+
+			-- если ошибка инициализации, то прибить
+			if not z.monster.ini_ok then
+				z.monster = nil
+			end
+		end
+  end
+
 end
 
 -- callback на вход в зону

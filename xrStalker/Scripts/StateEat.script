@@ -7,6 +7,11 @@ function CStateEat:__init(_data, _mem)
 	self.corpse_id	= 0
 end
 
+function CStateEat:set_data(_data, _mem)			// это не правильно, но по другому ни как
+	self.data	= _data
+	self.memory = _mem
+end
+
 function CStateEat:initialize()
 	reset_action(self.data.npc, self.data.scr_name)
 	self.corpse_id	= self.memory.corpse:id()

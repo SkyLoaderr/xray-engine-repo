@@ -77,3 +77,24 @@ function CStateRest:finalize()
 		self.curState	= nil
 	end
 end
+
+//' Класс для монстров, которые биндятся
+class "CStateRestBind" (CStateRest)
+function CStateRestBind:__init(_data, _mem, sWalk) super(_data, _mem)
+	if(sWalk) then
+		self.stateWalk	= sWalk
+	else
+		self.stateWalk	= statewalk.CStateWalk(self.data, self.memory)
+	end
+	//написать код, который читает из кастом даты следующие : может ли монстр кушать
+	self.can_eat	= true
+	self.curState	= nil
+end
+
+function CStateRestBind:set_data(_data, _mem)
+	self.data	= _data
+	self.memory = _mem
+	
+	self.stateEat:set_data(_data, _mem)
+	self.stateWalk:set_data(_data, _mem)
+end
