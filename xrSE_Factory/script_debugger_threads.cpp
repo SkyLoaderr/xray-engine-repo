@@ -14,13 +14,13 @@ u32 CDbgScriptThreads::Fill()
 #ifdef XRGAME_EXPORTS
 	CScriptProcess* sp = ai().script_engine().script_process("game");
 
-	if (!sp)
-		return	res;
-
-	res += FillFrom(sp);
-	VERIFY(sp);
+	if (sp)
+		res += FillFrom(sp);
+	
 	sp = ai().script_engine().script_process("level");
-	res += FillFrom(sp);
+	if (sp)
+		res += FillFrom(sp);
+
 	return res;
 #else
 	return res;
