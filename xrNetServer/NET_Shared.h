@@ -15,6 +15,8 @@ XRNETSERVER_API extern int		psNET_ClientUpdate;
 XRNETSERVER_API extern int		psNET_ClientPending;
 XRNETSERVER_API extern char		psNET_Name[];
 XRNETSERVER_API extern int		psNET_Port;
+XRNETSERVER_API extern int		psNET_ServerUpdate;
+XRNETSERVER_API extern int		psNET_ServerPending;
 
 IC u32 TimeGlobal(CTimer* timer)
 {
