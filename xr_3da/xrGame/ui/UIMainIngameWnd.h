@@ -15,9 +15,7 @@
 #include "UIWpnDragDropItem.h"
 #include "UIListWnd.h"
 
-
 #include "../UIZoneMap.h"
-#include "../UIWeapon.h"
 
 #include "../actor.h"
 #include "../weapon.h"

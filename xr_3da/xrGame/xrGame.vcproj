@@ -3141,6 +3141,10 @@
 					<File
 						RelativePath=".\ai_script_lua_export_actions.cpp">
 					</File>
+				</Filter>
+				<Filter
+					Name="ScriptProcessor"
+					Filter="">
 					<File
 						RelativePath=".\ai_script_lua_export_extension.cpp">
 					</File>
@@ -3298,6 +3302,9 @@
 							RelativePath="Actor.h">
 						</File>
 						<File
+							RelativePath=".\actor_defs.h">
+						</File>
+						<File
 							RelativePath="Actor_Events.cpp">
 						</File>
 						<File
@@ -3305,6 +3312,9 @@
 						</File>
 						<File
 							RelativePath=".\Actor_Flags.h">
+						</File>
+						<File
+							RelativePath=".\Actor_Network.cpp">
 						</File>
 						<File
 							RelativePath=".\ActorAnimation.cpp">
@@ -3522,19 +3532,6 @@
 							</File>
 						</Filter>
 						<Filter
-							Name="InventoryItem"
-							Filter="">
-							<File
-								RelativePath=".\inventory_item.cpp">
-							</File>
-							<File
-								RelativePath=".\inventory_item.h">
-							</File>
-							<File
-								RelativePath=".\inventory_item_inline.h">
-							</File>
-						</Filter>
-						<Filter
 							Name="InventoryOwner"
 							Filter="">
 							<File
@@ -3568,6 +3565,19 @@
 							</File>
 							<File
 								RelativePath="trade.h">
+							</File>
+						</Filter>
+						<Filter
+							Name="InventoryItem"
+							Filter="">
+							<File
+								RelativePath=".\inventory_item.cpp">
+							</File>
+							<File
+								RelativePath=".\inventory_item.h">
+							</File>
+							<File
+								RelativePath=".\inventory_item_inline.h">
 							</File>
 						</Filter>
 					</Filter>
@@ -3626,6 +3636,9 @@
 										RelativePath=".\Weapon.h">
 									</File>
 									<File
+										RelativePath=".\WeaponDispersion.cpp">
+									</File>
+									<File
 										RelativePath=".\WeaponFire.cpp">
 									</File>
 								</Filter>
@@ -3638,16 +3651,6 @@
 									<File
 										RelativePath="WeaponAmmo.h">
 									</File>
-									<Filter
-										Name="Silencer"
-										Filter="">
-										<File
-											RelativePath=".\Silencer.cpp">
-										</File>
-										<File
-											RelativePath=".\Silencer.h">
-										</File>
-									</Filter>
 								</Filter>
 								<Filter
 									Name="HUD"
@@ -3713,6 +3716,16 @@
 										RelativePath="WeaponMagazinedWGrenade.h">
 									</File>
 								</Filter>
+								<Filter
+									Name="Silencer"
+									Filter="">
+									<File
+										RelativePath=".\Silencer.cpp">
+									</File>
+									<File
+										RelativePath=".\Silencer.h">
+									</File>
+								</Filter>
 							</Filter>
 							<Filter
 								Name="Effectors"
@@ -3722,6 +3735,12 @@
 								</File>
 								<File
 									RelativePath=".\EffectorShot.h">
+								</File>
+								<File
+									RelativePath=".\EffectorZoomInertion.cpp">
+								</File>
+								<File
+									RelativePath=".\EffectorZoomInertion.h">
 								</File>
 							</Filter>
 							<Filter
@@ -5218,6 +5237,9 @@
 						<File
 							RelativePath=".\PHShellNetState.cpp">
 						</File>
+						<File
+							RelativePath=".\PHShellNetState.cpp">
+						</File>
 					</Filter>
 					<Filter
 						Name="BaseShell"
@@ -5618,12 +5640,6 @@
 						RelativePath=".\ui\UIPdaMsgListItem.h">
 					</File>
 					<File
-						RelativePath=".\UIWeapon.cpp">
-					</File>
-					<File
-						RelativePath=".\UIWeapon.h">
-					</File>
-					<File
 						RelativePath=".\UIZoneMap.cpp">
 					</File>
 					<File
@@ -5859,6 +5875,12 @@
 				</File>
 				<File
 					RelativePath=".\ContextMenu.h">
+				</File>
+				<File
+					RelativePath=".\HUDCrosshair.cpp">
+				</File>
+				<File
+					RelativePath=".\HUDCrosshair.h">
 				</File>
 				<File
 					RelativePath=".\HUDCursor.cpp">

@@ -155,7 +155,7 @@ void CUIMainIngameWnd::Draw()
 	}
 
 	//отрендерить текстуру объектива снайперского прицела или бинокля
-	if(m_pWeapon && m_pWeapon->IsZoomed() && m_pWeapon->ZoomTexture())
+	if(m_pActor->HUDview() && m_pWeapon && m_pWeapon->IsZoomed() && m_pWeapon->ZoomTexture())
 	{
 		m_pWeapon->ZoomTexture()->SetPos(0,0);
 		m_pWeapon->ZoomTexture()->Render(0,0, Device.dwWidth, Device.dwHeight);
@@ -267,7 +267,7 @@ void CUIMainIngameWnd::Update()
 	}
     
 
-	if(m_pWeapon && m_pWeapon->IsZoomed() && m_pWeapon->ZoomTexture()) return;
+	if(m_pActor->HUDview() && m_pWeapon && m_pWeapon->IsZoomed() && m_pWeapon->ZoomTexture()) return;
 
 
     // radar
@@ -310,8 +310,6 @@ void CUIMainIngameWnd::Update()
 	}
 
 	// weapon
-	//CWeaponList* wpns = m_Actor->GetItemList();
-	//if (wpns) UIWeapon.Out(wpns->ActiveWeapon());
 		
 	//Wounds bleeding speed
 	if(m_pActor->BleedingSpeed()>0)
@@ -328,8 +326,6 @@ void CUIMainIngameWnd::Update()
 	}
 
 
-
-	
 	for(int i=0; i<UIPdaMsgListWnd.GetSize(); i++)
 	{
 		CUIPdaMsgListItem* pItem = dynamic_cast<CUIPdaMsgListItem*>(UIPdaMsgListWnd.GetItem(i));
