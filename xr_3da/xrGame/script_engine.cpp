@@ -10,6 +10,7 @@
 #include "script_engine.h"
 #include "ai_script_processor.h"
 #include "ai_space.h"
+#include "object_factory.h"
 
 CScriptEngine::CScriptEngine	()
 {
@@ -59,38 +60,38 @@ void CScriptEngine::lua_cast_failed(CLuaVirtualMachine *L, LUABIND_TYPE_INFO inf
 
 void CScriptEngine::export()
 {
-	luabind::open				(lua());
+	luabind::open						(lua());
 	
 	luabind::set_error_callback			(CScriptEngine::lua_error);
 	luabind::set_cast_failed_callback	(CScriptEngine::lua_cast_failed);
 	lua_atpanic							(lua(),CScriptEngine::lua_panic);
 
-	export_globals				();
-	export_fvector				();
-	export_fmatrix				();
-	export_game					();
-	export_level				();
-	export_device				();
-	export_particles			();
-	export_sound				();
-	export_hit					();
-	export_actions				();
-	export_ini					();
-	export_object				();
-	export_effector				();
-	export_artifact_merger		();
-	export_memory_objects		();
-	export_action_management	();
-	export_motivation_management();
-	export_monster_info			();
-	script_register				(lua());
+	export_globals						();
+	export_fvector						();
+	export_fmatrix						();
+	export_game							();
+	export_level						();
+	export_device						();
+	export_particles					();
+	export_sound						();
+	export_hit							();
+	export_actions						();
+	export_ini							();
+	export_object						();
+	export_effector						();
+	export_artifact_merger				();
+	export_memory_objects				();
+	export_action_management			();
+	export_motivation_management		();
+	export_monster_info					();
+	object_factory().script_register	();
 
 #ifdef DEBUG
-	lua_sethook					(lua(),CScriptEngine::lua_hook_call,	LUA_HOOKCALL | LUA_HOOKRET | LUA_HOOKLINE | LUA_HOOKTAILRET,	0);
+	lua_sethook							(lua(),CScriptEngine::lua_hook_call,	LUA_HOOKCALL | LUA_HOOKRET | LUA_HOOKLINE | LUA_HOOKTAILRET,	0);
 #endif
 
-	load_common_scripts			();
-	m_stack_level				= lua_gettop(lua());
+	load_common_scripts					();
+	m_stack_level						= lua_gettop(lua());
 }
 
 bool CScriptEngine::load_file(LPCSTR caScriptName, bool bCall)

@@ -128,7 +128,7 @@
 #endif
 /////////////////////////////////////////////////////////////////////////
 
-CCLSID_Holder::~CCLSID_Holder		()
+CObjectFactory::~CObjectFactory			()
 {
 	delete_data					(m_clsids);
 }
@@ -139,7 +139,7 @@ CCLSID_Holder::~CCLSID_Holder		()
 #include "ai_space.h"
 #include "script_engine.h"
 
-void CCLSID_Holder::script_register	() const
+void CObjectFactory::script_register	() const
 {
 	luabind::class_<CInternal>	instance("clsid");
 	
@@ -158,7 +158,7 @@ void CCLSID_Holder::script_register	() const
 #	define ADD(a,b,c,d) add<b>(c,d)
 #endif
 
-CCLSID_Holder::CCLSID_Holder		()
+CObjectFactory::CObjectFactory			()
 {
 #ifndef _EDITOR
 	// client entities

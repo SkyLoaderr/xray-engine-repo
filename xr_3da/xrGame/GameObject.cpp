@@ -18,6 +18,7 @@
 #include "ai_script_classes.h"
 #include "xrserver_objects_alife.h"
 #include "game_cl_base.h"
+#include "object_factory.h"
 
 #define OBJECT_REMOVE_TIME 180000
 //////////////////////////////////////////////////////////////////////
@@ -84,7 +85,7 @@ void CGameObject::reload	(LPCSTR section)
 {
 	if (!frame_check(m_dwFrameReload))
 		return;
-	m_script_clsid			= ai().script_engine().clsid(SUB_CLS_ID);
+	m_script_clsid			= object_factory().script_clsid(SUB_CLS_ID);
 }
 
 void CGameObject::net_Destroy	()

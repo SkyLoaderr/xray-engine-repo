@@ -13,7 +13,7 @@
 #endif
 #include "xrServer_Objects.h"
 
-class CCLSID_Holder {
+class CObjectFactory {
 private:
 	typedef DLL_Pure				CLIENT_BASE_CLASS;
 	typedef CSE_Abstract			SERVER_BASE_CLASS;
@@ -46,7 +46,7 @@ private:
 #endif
 
 protected:
-	class ICLSID_Item {
+	class CObjectItemAbstract {
 	protected:
 		CLASS_ID					m_clsid;
 #ifndef _EDITOR
@@ -54,8 +54,8 @@ protected:
 #endif
 
 	public:
-		IC							ICLSID_Item			(const CLASS_ID &clsid, LPCSTR script_clsid);
-		IC		CLASS_ID			clsid				() const;
+		IC							CObjectItemAbstract	(const CLASS_ID &clsid, LPCSTR script_clsid);
+		IC		const CLASS_ID		&clsid				() const;
 #ifndef _EDITOR
 		IC		ref_str				script_clsid		() const;
 		virtual CLIENT_BASE_CLASS	*client_object		() const = 0;
@@ -64,16 +64,16 @@ protected:
 	};
 
 	template <typename _client_type, typename _server_type>
-	class CCLSID_Item : public ICLSID_Item {
+	class CObjectItem : public CObjectItemAbstract {
 	protected:
-		typedef ICLSID_Item			inherited;
+		typedef CObjectItemAbstract			inherited;
 #ifndef _EDITOR
 		typedef _client_type		CLIENT_TYPE;
 #endif
 		typedef _server_type		SERVER_TYPE;
 
 	public:
-		IC							CCLSID_Item			(const CLASS_ID &clsid, LPCSTR script_clsid);
+		IC							CObjectItem			(const CLASS_ID &clsid, LPCSTR script_clsid);
 #ifndef _EDITOR
 		virtual CLIENT_BASE_CLASS	*client_object		() const;
 #endif
@@ -85,9 +85,9 @@ protected:
 
 		IC							ICLSID_ItemPredicate(const CLASS_ID &clsid);
 		IC							ICLSID_ItemPredicate();
-		IC	bool					operator()			(const ICLSID_Item *item) const;
-		IC	bool					operator()			(const ICLSID_Item *item1, const ICLSID_Item *item2) const;
-		IC	bool					operator()			(const ICLSID_Item *item1, const CLASS_ID &clsid) const;
+		IC	bool					operator()			(const CObjectItemAbstract *item) const;
+		IC	bool					operator()			(const CObjectItemAbstract *item1, const CObjectItemAbstract *item2) const;
+		IC	bool					operator()			(const CObjectItemAbstract *item1, const CLASS_ID &clsid) const;
 	};
 
 #ifndef _EDITOR
@@ -108,7 +108,7 @@ protected:
 #endif
 
 public:
-	typedef xr_vector<ICLSID_Item*>			CLSID_STORAGE;
+	typedef xr_vector<CObjectItemAbstract*>			CLSID_STORAGE;
 	typedef CLSID_STORAGE::iterator			iterator;
 	typedef CLSID_STORAGE::const_iterator	const_iterator;
 
@@ -116,23 +116,23 @@ protected:
 	CLSID_STORAGE					m_clsids;
 
 protected:
-	IC		void					add					(ICLSID_Item *item);
+	IC		void					add					(CObjectItemAbstract *item);
 	IC		const CLSID_STORAGE		&clsids				() const;
 #ifndef _EDITOR
-	IC		const ICLSID_Item		&item				(const CLASS_ID &clsid) const;
+	IC		const CObjectItemAbstract		&item				(const CLASS_ID &clsid) const;
 #else
-	IC		const ICLSID_Item		*item				(const CLASS_ID &clsid, bool no_assert) const;
+	IC		const CObjectItemAbstract		*item				(const CLASS_ID &clsid, bool no_assert) const;
 #endif
 
 public:
-									CCLSID_Holder		();
-	virtual							~CCLSID_Holder		();
+									CObjectFactory		();
+	virtual							~CObjectFactory		();
 	template <typename _unknown_type>
 	IC		void					add					(const CLASS_ID &clsid, LPCSTR script_clsid);
 #ifndef _EDITOR
 	template <typename _client_type, typename _server_type>
 	IC		void					add					(const CLASS_ID &clsid, LPCSTR script_clsid);
-	IC		ref_str					script_clsid		(const CLASS_ID &clsid) const;
+	IC		int						script_clsid		(const CLASS_ID &clsid) const;
 			void					script_register		() const;
 	IC		CLIENT_BASE_CLASS		*client_object		(const CLASS_ID &clsid) const;
 	IC		SERVER_BASE_CLASS		*server_object		(const CLASS_ID &clsid, LPCSTR section) const;
@@ -141,9 +141,9 @@ public:
 #endif
 };
 
-IC	const CCLSID_Holder &object_factory()
+IC	const CObjectFactory &object_factory()
 {
-	static CCLSID_Holder object_factory;
+	static CObjectFactory object_factory;
 	return	(object_factory);
 }
 

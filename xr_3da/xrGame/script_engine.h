@@ -9,15 +9,11 @@
 #pragma once
 
 #include "script_storage.h"
-#include "script_class_id.h"
 
 class CScriptProcessor;
 class CScript;
 
-class CScriptEngine : 
-	public CScriptStorage,
-	public CLSID_Holder
-{
+class CScriptEngine : public CScriptStorage {
 public:
 	typedef CScriptStorage inherited;
 	typedef xr_map<LPCSTR,CScriptProcessor*,pred_str> CScriptProcessorStorage;

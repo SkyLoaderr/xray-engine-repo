@@ -3783,19 +3783,6 @@
 					<File
 						RelativePath=".\script_engine_inline.h">
 					</File>
-					<Filter
-						Name="ScriptClassID"
-						Filter="">
-						<File
-							RelativePath=".\script_class_id.cpp">
-						</File>
-						<File
-							RelativePath=".\script_class_id.h">
-						</File>
-						<File
-							RelativePath=".\script_class_id_inline.h">
-						</File>
-					</Filter>
 				</Filter>
 				<Filter
 					Name="ScriptExport"
@@ -3886,6 +3873,30 @@
 		<Filter
 			Name="Core"
 			Filter="">
+			<File
+				RelativePath=".\StdAfx.cpp">
+				<FileConfiguration
+					Name="Debug|Win32">
+					<Tool
+						Name="VCCLCompilerTool"
+						UsePrecompiledHeader="1"/>
+				</FileConfiguration>
+				<FileConfiguration
+					Name="Mixed|Win32">
+					<Tool
+						Name="VCCLCompilerTool"
+						UsePrecompiledHeader="1"/>
+				</FileConfiguration>
+				<FileConfiguration
+					Name="Release|Win32">
+					<Tool
+						Name="VCCLCompilerTool"
+						UsePrecompiledHeader="1"/>
+				</FileConfiguration>
+			</File>
+			<File
+				RelativePath=".\StdAfx.h">
+			</File>
 			<Filter
 				Name="Client"
 				Filter="">
@@ -5600,51 +5611,6 @@
 				Name="Global"
 				Filter="">
 				<File
-					RelativePath=".\clsid_game.h">
-				</File>
-				<File
-					RelativePath="GamePersistent.cpp">
-				</File>
-				<File
-					RelativePath="GamePersistent.h">
-				</File>
-				<File
-					RelativePath=".\StatGraph.cpp">
-				</File>
-				<File
-					RelativePath=".\StatGraph.h">
-				</File>
-				<File
-					RelativePath=".\StdAfx.cpp">
-					<FileConfiguration
-						Name="Debug|Win32">
-						<Tool
-							Name="VCCLCompilerTool"
-							UsePrecompiledHeader="1"/>
-					</FileConfiguration>
-					<FileConfiguration
-						Name="Mixed|Win32">
-						<Tool
-							Name="VCCLCompilerTool"
-							UsePrecompiledHeader="1"/>
-					</FileConfiguration>
-					<FileConfiguration
-						Name="Release|Win32">
-						<Tool
-							Name="VCCLCompilerTool"
-							UsePrecompiledHeader="1"/>
-					</FileConfiguration>
-				</File>
-				<File
-					RelativePath=".\StdAfx.h">
-				</File>
-				<File
-					RelativePath="xr_level_controller.cpp">
-				</File>
-				<File
-					RelativePath="xr_level_controller.h">
-				</File>
-				<File
 					RelativePath=".\xrGame.cpp">
 				</File>
 				<Filter
@@ -5660,6 +5626,9 @@
 				<Filter
 					Name="ObjectFactory"
 					Filter="">
+					<File
+						RelativePath=".\clsid_game.h">
+					</File>
 					<File
 						RelativePath=".\object_factory.cpp">
 					</File>
@@ -5685,6 +5654,36 @@
 					Filter="">
 					<File
 						RelativePath=".\shared_data.h">
+					</File>
+				</Filter>
+				<Filter
+					Name="GamePersistent"
+					Filter="">
+					<File
+						RelativePath="GamePersistent.cpp">
+					</File>
+					<File
+						RelativePath="GamePersistent.h">
+					</File>
+				</Filter>
+				<Filter
+					Name="StatGraph"
+					Filter="">
+					<File
+						RelativePath=".\StatGraph.cpp">
+					</File>
+					<File
+						RelativePath=".\StatGraph.h">
+					</File>
+				</Filter>
+				<Filter
+					Name="LevelController"
+					Filter="">
+					<File
+						RelativePath="xr_level_controller.cpp">
+					</File>
+					<File
+						RelativePath="xr_level_controller.h">
 					</File>
 				</Filter>
 			</Filter>

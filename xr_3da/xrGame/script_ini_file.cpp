@@ -10,6 +10,7 @@
 #include "script_ini_file.h"
 #include "script_engine.h"
 #include "ai_space.h"
+#include "object_factory.h"
 
 CScriptIniFile::CScriptIniFile		(IReader *F, LPCSTR path) :
 	inherited	(F,path)
@@ -44,7 +45,7 @@ bool CScriptIniFile::section_exist	(LPCSTR S)
 
 int	 CScriptIniFile::r_clsid		(LPCSTR S, LPCSTR L)
 {
-	return		(ai().script_engine().clsid(inherited::r_clsid(S,L)));
+	return		(object_factory().script_clsid(inherited::r_clsid(S,L)));
 }
 
 bool CScriptIniFile::r_bool			(LPCSTR S, LPCSTR L)

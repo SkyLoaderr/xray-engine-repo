@@ -2,7 +2,7 @@
 //	Module 		: id_generator.h
 //	Created 	: 28.08.2003
 //  Modified 	: 28.08.2003
-//	Author		: Dmitriy Iassenev and Oles' Shishkovtsov
+//	Author		: Dmitriy Iassenev and Oles' Shyshkovtsov
 //	Description : ID generation class template
 ////////////////////////////////////////////////////////////////////////////
 
