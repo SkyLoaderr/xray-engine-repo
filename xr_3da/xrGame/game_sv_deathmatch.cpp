@@ -229,9 +229,11 @@ void game_sv_Deathmatch::OnPlayerConnect	(u32 id_who)
 	__super::OnPlayerConnect	(id_who);
 
 	game_PlayerState*	ps_who	=	get_id	(id_who);
+	LPCSTR	options			=	get_name_id	(id_who);
 
 	ps_who->kills				=	0;
 	ps_who->deaths				=	0;
+	ps_who->team				=	u8(get_option_i(options,"team",0));
 
 	SpawnActor(id_who, "spectator");
 }
@@ -338,7 +340,7 @@ void	game_sv_Deathmatch::SpawnActor				(u32 id, LPCSTR N)
 	
 	if (pA) 
 	{
-		pA->s_team				=	u8(0);																	// no-team
+		pA->s_team				=	u8(ps_who->team);
 		assign_RP				(E);
 	}
 	else
