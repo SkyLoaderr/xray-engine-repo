@@ -55,10 +55,12 @@ function save_dialog:InitControls()
 	self:AttachChild(main_frame)
 	
 	-- CAPTION --
---[[	local wnd_caption = CUIStatic()
+	local wnd_caption = CUIStatic()
 	wnd_caption:SetAutoDelete(true)
-	wnd_caption:SetWindowName("")
-	]]
+	wnd_caption:SetWindowName("wnd_caption")
+	wnd_caption:Init("ui\\ui_pop_up",caption_rect.x, caption_rect.y, caption_rect.width, caption_rect.height)
+	main_frame:AttachChild(main_frame)
+
 
 	------------LIST-----------------
     local txt_list   = CUIFrameWindow()  --background for ListView
