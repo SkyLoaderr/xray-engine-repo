@@ -45,6 +45,12 @@ struct b_texture
 };
 struct b_light : public xrLIGHT
 {
+	struct {
+		DWORD			bAffectStatic	: 1;
+		DWORD			bAffectDynamic	: 1;
+		DWORD			bProcedural		: 1;
+	}					flags;
+	string64			name;
 	svector<WORD,16>	sectors;
 };
 struct b_glow
