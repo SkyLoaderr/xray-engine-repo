@@ -8,6 +8,8 @@
 
 const int	RAIN_max_particles	= 300;
 
+class ENGINE_API	CPSVisual;
+
 class CEffect_Rain	: public CEventBase, public pureDeviceDestroy, public pureDeviceCreate
 {
 private:
@@ -21,7 +23,7 @@ private:
 	struct	Particle
 	{
 		Particle		*next,*prev;
-		CPSVisual		visual;
+		CPSVisual*		visual;
 		PS::SEmitter	emitter;
 	};
 	enum	States
@@ -55,8 +57,10 @@ private:
 	float				snd_Ambient_volume;
 
 	// Utilities
+	void				p_remove		(Particle* P, Particle* &LST);
+	void				p_insert		(Particle* P, Particle* &LST);
 	Particle*			p_allocate		();
-	Particle*			p_free			();
+	void				p_free			(Particle* P);
 
 	// Some methods
 	void				Born			(Item& dest, float radius, float height);

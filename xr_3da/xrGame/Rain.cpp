@@ -85,6 +85,40 @@ void	CEffect_Rain::Born		(Item& dest, float radius, float height)
 	dest.fLifetime		= (height*2)/dest.fSpeed;
 }
 
+// delete node from list
+void CEffect_Rain::p_remove	(Particle* P, Particle* &LST)
+{
+	VERIFY		(P);
+	Particle*	prev		= P->prev;
+	Particle*	next		= P->next;
+	if (prev) prev->next	= next;
+	if (next) next->prev	= prev;
+	if ((0==prev) && (0==next))	LST = 0;
+}
+void CEffect_Rain::p_insert	(Particle* P, Particle* &LST)
+{
+	VERIFY		(P);
+	P->prev					= 0;
+	P->next					= LST;
+	if (LST)	LST->prev	= P;
+	LST						= P;
+}
+
+CEffect_Rain::Particle*	CEffect_Rain::p_allocate	()
+{
+	Particle*	P			= particle_idle;
+	if (0==P)				return NULL;
+	p_remove	(P,particle_idle);
+	p_insert	(P,particle_active);
+	return		P;
+}
+
+void	CEffect_Rain::p_free(Particle* P)
+{
+	p_remove	(P,particle_active);
+	p_insert	(P,particle_idle);
+}
+
 void	CEffect_Rain::Hit		(Fvector& pos)
 {
 }
