@@ -21,7 +21,6 @@ $Id: MxPropSlim.h,v 1.6 1998/10/26 21:09:15 garland Exp $
 class MxPropSlim : public MxStdSlim
 {
 private:
-public:
 	unsigned int D;
 
 	bool use_color;
