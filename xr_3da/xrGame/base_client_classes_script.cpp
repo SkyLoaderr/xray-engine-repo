@@ -50,8 +50,8 @@ void ISheduledScript::script_register	(lua_State *L)
 	[
 		class_<ISheduled,CISheduledWrapper>("ISheduled")
 			.def(constructor<>())
-			.def("shedule_Scale",		&ISheduled::shedule_Scale,		&CISheduledWrapper::shedule_Scale_static)
-			.def("shedule_Update",		&ISheduled::shedule_Update,		&CISheduledWrapper::shedule_Update_static)
+//			.def("shedule_Scale",		&ISheduled::shedule_Scale,		&CISheduledWrapper::shedule_Scale_static)
+//			.def("shedule_Update",		&ISheduled::shedule_Update,		&CISheduledWrapper::shedule_Update_static)
 	];
 }
 
@@ -91,8 +91,8 @@ void CObjectScript::script_register		(lua_State *L)
 			.def("dcast_FeelSound",		&CObject::dcast_FeelSound,		&CObjectWrapper::dcast_FeelSound_static)
 			.def("dcast_Light",			&CObject::dcast_Light,			&CObjectWrapper::dcast_Light_static)
 */			
-			.def("shedule_Scale",		&CObject::shedule_Scale,		&CObjectWrapper::shedule_Scale_static)
-			.def("shedule_Update",		&CObject::shedule_Update,		&CObjectWrapper::shedule_Update_static)
+//			.def("shedule_Scale",		&CObject::shedule_Scale,		&CObjectWrapper::shedule_Scale_static)
+//			.def("shedule_Update",		&CObject::shedule_Update,		&CObjectWrapper::shedule_Update_static)
 
 //			.def("renderable_Render"		,&CObject::renderable_Render,&CObjectWrapper::renderable_Render_static)
 //			.def("renderable_ShadowGenerate",&CObject::renderable_ShadowGenerate,&CObjectWrapper::renderable_ShadowGenerate_static)
@@ -110,8 +110,8 @@ void CObjectScript::script_register		(lua_State *L)
 			.def("dcast_FeelSound",		&CGameObject::dcast_FeelSound,		&CGameObjectWrapper::dcast_FeelSound_static)
 			.def("dcast_Light",			&CGameObject::dcast_Light,			&CGameObjectWrapper::dcast_Light_static)
 */
-			.def("shedule_Scale",		&CGameObject::shedule_Scale,		&CGameObjectWrapper::shedule_Scale_static)
-			.def("shedule_Update",		&CGameObject::shedule_Update,		&CGameObjectWrapper::shedule_Update_static)
+//			.def("shedule_Scale",		&CGameObject::shedule_Scale,		&CGameObjectWrapper::shedule_Scale_static)
+//			.def("shedule_Update",		&CGameObject::shedule_Update,		&CGameObjectWrapper::shedule_Update_static)
 
 //			.def("renderable_Render"		,&CGameObject::renderable_Render,&CGameObjectWrapper::renderable_Render_static)
 //			.def("renderable_ShadowGenerate",&CGameObject::renderable_ShadowGenerate,&CGameObjectWrapper::renderable_ShadowGenerate_static)
@@ -120,6 +120,8 @@ void CObjectScript::script_register		(lua_State *L)
 			.def("net_Export",			&CGameObject::net_Export,		&CGameObjectWrapper::net_Export_static)
 			.def("net_Import",			&CGameObject::net_Import,		&CGameObjectWrapper::net_Import_static)
 			.def("net_Spawn",			&CGameObject::net_Spawn,	&CGameObjectWrapper::net_Spawn_static)
+
+			.def("use",					&CGameObject::use,	&CGameObjectWrapper::use_static)
 
 			.def("setVisible",			&CGameObject::setVisible)
 			.def("getVisible",			&CGameObject::getVisible)

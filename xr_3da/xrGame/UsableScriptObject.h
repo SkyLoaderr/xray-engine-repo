@@ -10,7 +10,7 @@ class CUsableScriptObject
 public:
 							CUsableScriptObject		();
 							~CUsableScriptObject	();
-		bool				use						(CGameObject* who_use);
+		virtual bool		use						(CGameObject* who_use);
 		void				set_callback			(const luabind::object &lua_object, LPCSTR method);
 		void				set_callback			(const luabind::functor<void> &lua_function);
 		void				clear_callback			();

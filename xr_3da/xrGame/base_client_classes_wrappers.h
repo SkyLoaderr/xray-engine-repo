@@ -153,24 +153,27 @@ public:
 	
 	virtual float			shedule_Scale			()
 	{
-		return	(call_member<float>(this,"shedule_Scale"));
+		return 1;
+//		return	(call_member<float>(this,"shedule_Scale"));
 	}
 
-	static float			shedule_Scale_static	(base *self)
+/*	static float			shedule_Scale_static	(base *self)
 	{
 		ai().script_engine().script_log(eLuaMessageTypeError,"You are trying to call a pure virtual function ISheduled::shedule_Scale!\nReturning default value 1000.0");
 		return	(1000.f);
 	}
-
+*/
 	virtual void			shedule_Update			(u32 dt)
 	{
-		call_member<void>(this,"shedule_Update");
+		base::shedule_Update			(dt);
+//		call_member<void>(this,"shedule_Update");
 	}
 
-	static  void			shedule_Update_static	(base *self, u32 dt)
+/*	static  void			shedule_Update_static	(base *self, u32 dt)
 	{
 		self->base::shedule_Update(dt);
 	}
+*/
 };
 
 typedef ISheduledWrapper<ISheduled,luabind::wrap_base> CISheduledWrapper;
@@ -262,6 +265,16 @@ class CGameObjectWrapper : public CGameObjectIRenderable {
 public:
 	IC						CGameObjectWrapper	() {};
 	virtual					~CGameObjectWrapper	() {};
+	virtual bool			use					(CGameObject* who_use)
+	{
+		return call<bool>("use",who_use);
+	}
+
+	static bool			use_static			(CGameObject *self, CGameObject* who_use)
+	{
+		return self->CGameObject::use(who_use);
+	}
+
 
 	virtual void			net_Import			(NET_Packet &packet)
 	{
