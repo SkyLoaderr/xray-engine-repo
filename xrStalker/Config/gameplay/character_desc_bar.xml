@@ -306,7 +306,7 @@
 		<rank>30</rank>
 		<reputation>0</reputation>
  
-		<<visual>actors\killer\stalker_ki_mask</visual>
+		<visual>actors\killer\stalker_ki_mask</visual>
 		<supplies>
 			[spawn] \n
 			wpn_beretta \n
@@ -317,8 +317,6 @@
 		</supplies>
 		
 		<start_dialog>hello_dialog</start_dialog>
-		<actor_dialog>general_pda_talk</actor_dialog>
-		<actor_dialog>esc_stalker_talk_level</actor_dialog>
 	</specific_character>	
 
 
