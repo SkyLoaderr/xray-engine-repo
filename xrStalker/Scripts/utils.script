@@ -254,7 +254,7 @@ function parse_waypoint_data(pathname, wpname)
 					pathname, wpname, param)
 			end
 
-			if not val then
+			if not val or val == "" then
 				val = "true"
 			end
 
