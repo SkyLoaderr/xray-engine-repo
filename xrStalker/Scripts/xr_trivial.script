@@ -312,6 +312,7 @@ function add_novice(obj)
     properties["state_end"]     	  = xr_evaluators_id.state_change
     properties[ "work" ]              = xr_evaluators_id.jon_stalker_novice
     properties["contact"]           = xr_evaluators_id.stohe_meet_base + 1
+    properties["event"]             = xr_evaluators_id.reaction
 
     operators [ "stalker_novice" ]    = xr_actions_id.jon_stalker_novice
 
@@ -472,6 +473,7 @@ function add_novice2(obj)
 
     properties[ "novice2_alife" ]      = xr_evaluators_id.jon_stalker_novice2
     properties["contact"]           = xr_evaluators_id.stohe_meet_base + 1
+    properties["event"]             = xr_evaluators_id.reaction
 
     operators [ "stalker_novice2" ]    = xr_actions_id.jon_stalker_novice2
 
@@ -757,7 +759,6 @@ function add_novice3(obj)
     properties["work"]              = xr_evaluators_id.jon_stalker_novice3
     properties["attack"]            = xr_evaluators_id.jon_stalker_attack
     properties["contact"]       	= xr_evaluators_id.stohe_meet_base + 1
-
     properties["event"]             = xr_evaluators_id.reaction
 
     operators [ "stalker_novice" ]  = xr_actions_id.jon_stalker_novice3
