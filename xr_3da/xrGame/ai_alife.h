@@ -97,7 +97,7 @@ public:
 	void							vfInitScheduledObjects	();
 	void							vfLoadSpawnPoints		(CStream *tpStream);
 	// temporary
-	void							vfGenerateSpawnPoints	(u32 dwSpawnCount);
+	void							vfGenerateSpawnPoints	(const u32 dwTotalCount, const FLOAT_VECTOR &fpFactors);
 	void							vfSaveSpawnPoints		();
 	//
 public:

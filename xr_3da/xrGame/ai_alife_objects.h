@@ -188,7 +188,10 @@ public:
 		inherited::Init		(tSpawnID,tpSpawnPoints);
 		m_fMass				= pSettings->ReadFLOAT(tpSpawnPoints[tSpawnID].caModel, "ph_mass");
 		m_fPrice			= pSettings->ReadFLOAT(tpSpawnPoints[tSpawnID].caModel, "cost");
-		m_fHealthValue		= pSettings->ReadFLOAT(tpSpawnPoints[tSpawnID].caModel, "health_value");
+		if (pSettings->LineExists(tpSpawnPoints[tSpawnID].caModel, "health_value"))
+			m_fHealthValue		= pSettings->ReadFLOAT(tpSpawnPoints[tSpawnID].caModel, "health_value");
+		else
+			m_fHealthValue		= 0;
 	};
 };
 
