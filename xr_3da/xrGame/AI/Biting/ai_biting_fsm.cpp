@@ -33,6 +33,11 @@ void CAI_Biting::Think()
 	CurrentState->Execute	(m_dwCurrentUpdate);
 
 	MotionMan.ProcessAction();
+
+	// process sound
+	ControlSound();
+	if (sndCurrent && sndCurrent->feedback) sndCurrent->feedback->set_position(eye_matrix.c); 
+
 }
 
 

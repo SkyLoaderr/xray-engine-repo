@@ -29,8 +29,7 @@
 #define FLAG_ENEMY_GO_OFFLINE			( 1 << 10 )
 #define FLAG_ENEMY_DOESNT_SEE_ME		( 1 << 11 )
 
-
-
+#define SET_SOUND_ONCE(pmt) {SetSound(pmt, 0, true); ControlSound();}
 
 // logging
 #define SILENCE
@@ -43,8 +42,6 @@
 	Msg("%s",s);\
 }
 #endif
-
-
 
 class CCharacterPhysicsSupport;
 
@@ -260,4 +257,35 @@ public:
 	float					m_fMinSatiety;
 	float					m_fMaxSatiety;
 
+	// sound
+	enum ESoundType {
+		SND_TYPE_IDLE,
+		SND_TYPE_EAT,
+		SND_TYPE_ATTACK,
+		SND_TYPE_ATTACK_HIT,
+		SND_TYPE_TAKE_DAMAGE,
+		SND_TYPE_DIE
+	};	
+	
+	SOUND_VECTOR 			sndIdle;
+	SOUND_VECTOR 			sndEat;
+	SOUND_VECTOR 			sndAttack;
+	SOUND_VECTOR 			sndAttackHit;
+	SOUND_VECTOR 			sndTakeDamage;
+	SOUND_VECTOR			sndDie;
+
+	ref_sound				*sndCurrent;
+
+	ESoundType				sndCurType, sndPrevType;
+	TTime					sndDelay, sndTimeNextPlay;
+	bool					sndForcePlay;
+
+	void					LoadSounds	(LPCTSTR section);
+	void					PlaySound	(ESoundType sound_type);
+	void					SetSound	(ESoundType sound_type, TTime delay, bool force_play);
+	void					ControlSound();
+
+	TTime					m_dwIdleSndDelay;
+	TTime					m_dwEatSndDelay;
+	TTime					m_dwAttackSndDelay;
 };

@@ -43,6 +43,8 @@ void CBitingDetour::Run()
 	pMonster->Path_CoverFromPoint	(m_tEnemy.obj,m_tEnemy.obj->Position(),2000);
 
 	pMonster->MotionMan.m_tAction = ACT_WALK_FWD;
+
+	pMonster->SetSound(pMonster->SND_TYPE_IDLE, pMonster->m_dwIdleSndDelay, false);
 }
 
 

@@ -98,4 +98,6 @@ void CBitingExploreDNE::Run()
 		pMonster->MotionMan.m_tAction = ACT_LOOK_AROUND;
 		break;
 	}
+	
+	pMonster->SetSound(pMonster->SND_TYPE_IDLE, pMonster->m_dwIdleSndDelay, false);
 }

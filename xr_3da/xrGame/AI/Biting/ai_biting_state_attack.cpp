@@ -169,5 +169,7 @@ void CBitingAttack::Run()
 			pMonster->MotionMan.m_tAction = ACT_JUMP;
 			break;
 	}
+
+	pMonster->SetSound(pMonster->SND_TYPE_ATTACK, pMonster->m_dwAttackSndDelay, false);
 }
 

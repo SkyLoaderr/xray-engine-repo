@@ -73,6 +73,8 @@ void CBitingPanic::Run()
 		}
 	}
 
+	pMonster->SetSound(pMonster->SND_TYPE_ATTACK, pMonster->m_dwAttackSndDelay, false);
+
 
 	if (!cur_pos.similar(prev_pos)) {
 		bFacedOpenArea = false;

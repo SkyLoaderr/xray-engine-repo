@@ -59,6 +59,8 @@ void CAI_Biting::Die()
 	inherited::Die( );
 
 	DeinitMemory();
+
+	SET_SOUND_ONCE(SND_TYPE_DIE);
 }
 
 void CAI_Biting::Load(LPCSTR section)
@@ -145,6 +147,8 @@ void CAI_Biting::Load(LPCSTR section)
 	m_fDistToCorpse					= pSettings->r_float(section,"distance_to_corpse");
 	m_fMinAttackDist				= pSettings->r_float(section,"MinAttackDist");
 	m_fMaxAttackDist				= pSettings->r_float(section,"MaxAttackDist");
+
+	LoadSounds						(section);
 
 	m_pPhysics_support				->in_Load(section);
 	R_ASSERT2 ((m_dwProbRestWalkFree + m_dwProbRestStandIdle + m_dwProbRestLieIdle + m_dwProbRestTurnLeft) == 100, "Probability sum isn't 1");
@@ -272,6 +276,8 @@ void CAI_Biting::Hit(float P,Fvector &dir,CObject*who,s16 element,Fvector p_in_o
 {
 	if(m_pPhysics_support->isAlive())inherited::Hit(P,dir,who,element,p_in_object_space,impulse,hit_type);
 	m_pPhysics_support->in_Hit(P,dir,who,element,p_in_object_space,impulse);
+
+	SET_SOUND_ONCE(SND_TYPE_TAKE_DAMAGE);
 }
 
 CBoneInstance *CAI_Biting::GetBone(LPCTSTR bone_name)

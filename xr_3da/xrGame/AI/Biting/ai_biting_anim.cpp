@@ -33,6 +33,8 @@ void CAI_Biting::CheckAttackHit()
 	bool bGoodTime = MotionMan.AA_CheckTime(cur_time,apt_anim);
 
 	if (bGoodTime) {
+		SET_SOUND_ONCE(SND_TYPE_ATTACK_HIT);
+
 		VisionElem ve;
 		if (!GetEnemy(ve)) return;
 		CObject *obj = dynamic_cast<CObject *>(ve.obj);

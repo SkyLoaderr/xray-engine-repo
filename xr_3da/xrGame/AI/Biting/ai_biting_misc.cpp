@@ -184,6 +184,74 @@ bool CAI_Biting::IsStanding (TTime time)
 	return (bStanding && (time_start_stand + time < Level().timeServer()));
 }
 
+////////////////////////////////////////////////////////////////////////////////////////////
+// Sounds
+void CAI_Biting::LoadSounds(LPCTSTR section)
+{
+	g_vfLoadSounds(sndIdle,			pSettings->r_string(section,"sound_idle"),			100);
+	g_vfLoadSounds(sndEat,			pSettings->r_string(section,"sound_eat"),			100);
+	g_vfLoadSounds(sndAttack,		pSettings->r_string(section,"sound_attack"),		100);
+	g_vfLoadSounds(sndAttackHit,	pSettings->r_string(section,"sound_attack_hit"),	100);
+	g_vfLoadSounds(sndTakeDamage,	pSettings->r_string(section,"sound_take_damage"),	100);
+	g_vfLoadSounds(sndDie,			pSettings->r_string(section,"sound_die"),			100);
+
+	m_dwIdleSndDelay		= pSettings->r_u32(section,"idle_sound_delay");
+	m_dwEatSndDelay			= pSettings->r_u32(section,"eat_sound_delay");
+	m_dwAttackSndDelay		= pSettings->r_u32(section,"attack_sound_delay");
+
+}
+
+void CAI_Biting::PlaySound(ESoundType sound_type)
+{
+	SOUND_VECTOR *sv = &sndIdle;
+
+	switch(sound_type) {
+		case SND_TYPE_IDLE:			sv = &sndIdle;			break;
+		case SND_TYPE_EAT:			sv = &sndEat;			break;
+		case SND_TYPE_ATTACK:		sv = &sndAttack;		break;
+		case SND_TYPE_ATTACK_HIT:	sv = &sndAttackHit;		break;
+		case SND_TYPE_TAKE_DAMAGE:	sv = &sndTakeDamage;	break;
+		case SND_TYPE_DIE:			sv = &sndDie;			break;
+	}
+
+	sndCurrent = &sv->at(::Random.randI((int)sv->size()));
+	sndCurrent->play_at_pos(this,eye_matrix.c);
+	sndCurrent->feedback->set_volume(1.f);
+
+	sndDelay		= 0;
+	sndForcePlay	= false;
+	sndTimeNextPlay	= 0;
+}
+
+void CAI_Biting::SetSound(ESoundType sound_type, TTime delay, bool force_play)
+{
+	sndPrevType		= sndCurType;
+	sndCurType		= sound_type;
+
+	sndDelay		= delay;
+	sndForcePlay	= force_play;
+}
+
+void CAI_Biting::ControlSound()
+{
+	if (sndForcePlay || (sndPrevType != sndCurType)) {
+		PlaySound(sndCurType);
+		return;
+	}
+	
+	// если звук сейчас играет
+	if (sndCurrent && sndCurrent->feedback) return;
+
+	// не нужно играть никаких звуков
+	if (sndDelay == 0) return;
+
+	TTime cur_time = Level().timeServer();
+	if (sndTimeNextPlay == 0) sndTimeNextPlay = cur_time + ::Random.randI(sndDelay);
+	
+	if (sndTimeNextPlay < cur_time) {
+		PlaySound(sndCurType);
+	}
+}
 
 ////////////////////////////////////////////////////////////////////////////////////////////
 // обработка скриптов

@@ -89,9 +89,8 @@ struct remove_dead_objects_pred {
 		if (x.who) {
 			CEntityAlive *pE = dynamic_cast<CEntityAlive*> (x.who);
 			if (pE && pE->g_Alive()) return false;
-			else return true;
 		}
-		return false;
+		return true;
 	}
 };
 
