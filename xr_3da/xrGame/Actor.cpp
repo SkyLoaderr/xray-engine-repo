@@ -392,10 +392,10 @@ void CActor::UpdateCL()
 	// Analyze Die-State
 	if (!g_Alive())			
 	{
+		float dt			=	Device.fTimeDelta;
 		setEnabled	(FALSE);
 		if (die_hide>0)		
 		{
-			float dt			=	Device.fTimeDelta;
 			die_hide			-=	.01f*dt;
 			if (die_hide>0)		{
 				Fmatrix					mScale,mTranslate;

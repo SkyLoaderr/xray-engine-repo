@@ -1,5 +1,8 @@
 #include "stdafx.h"
 #include "actor.h"
+#include "weapon.h"
+#include "xr_weapon_list.h"
+#include "targetassault.h"
 
 void CActor::feel_touch_new				(CObject* O)
 {
