@@ -57,7 +57,8 @@
       Intermediate\Engine.obj Intermediate\PropertiesList.obj 
       Intermediate\SHEngineToolsProperties.obj 
       Intermediate\SHCompilerToolsProperties.obj 
-      Intermediate\Blender_Shadow_Texture.obj"/>
+      Intermediate\Blender_Shadow_Texture.obj 
+      Intermediate\Blender_Shadow_World.obj"/>
     <RESFILES value="ShaderEditor.res resource.res"/>
     <IDLFILES value=""/>
     <IDLGENFILES value=""/>
