@@ -211,7 +211,7 @@ CSE_ALifeItemWeapon::CSE_ALifeItemWeapon	(LPCSTR caSection) : CSE_ALifeItem(caSe
 	if (pSettings->section_exist(caSection) && pSettings->line_exist(caSection,"visual"))
         set_visual				(pSettings->r_string(caSection,"visual"));
 
-	m_addon_flags = 0;
+	m_addon_flags.zero			();
 }
 
 CSE_ALifeItemWeapon::~CSE_ALifeItemWeapon	()
@@ -232,7 +232,7 @@ void CSE_ALifeItemWeapon::UPDATE_Read		(NET_Packet	&tNetPacket)
 	tNetPacket.r_angle8			(o_Angle.y	);
 	tNetPacket.r_angle8			(o_Angle.z	);
 
-	tNetPacket.r_u8				(m_addon_flags);
+	tNetPacket.r_u8				(m_addon_flags.flags);
 }
 
 void CSE_ALifeItemWeapon::UPDATE_Write		(NET_Packet	&tNetPacket)
@@ -249,7 +249,7 @@ void CSE_ALifeItemWeapon::UPDATE_Write		(NET_Packet	&tNetPacket)
 	tNetPacket.w_angle8			(o_Angle.y	);
 	tNetPacket.w_angle8			(o_Angle.z	);
 
-	tNetPacket.w_u8				(m_addon_flags);
+	tNetPacket.w_u8				(m_addon_flags.get());
 }
 
 void CSE_ALifeItemWeapon::STATE_Read		(NET_Packet	&tNetPacket, u16 size)
@@ -260,7 +260,7 @@ void CSE_ALifeItemWeapon::STATE_Read		(NET_Packet	&tNetPacket, u16 size)
 	tNetPacket.r_u8				(state);
 	
 	if (m_wVersion > 40)
-		tNetPacket.r_u8				(m_addon_flags);
+		tNetPacket.r_u8			(m_addon_flags.flags);
 }
 
 void CSE_ALifeItemWeapon::STATE_Write		(NET_Packet	&tNetPacket)
@@ -269,7 +269,7 @@ void CSE_ALifeItemWeapon::STATE_Write		(NET_Packet	&tNetPacket)
 	tNetPacket.w_u16			(a_current);
 	tNetPacket.w_u16			(a_elapsed);
 	tNetPacket.w_u8				(state);
-	tNetPacket.w_u8				(m_addon_flags);
+	tNetPacket.w_u8				(m_addon_flags.get());
 }
 
 void CSE_ALifeItemWeapon::OnEvent			(NET_Packet	&tNetPacket, u16 type, u32 time, u32 sender )
@@ -314,12 +314,14 @@ u16	 CSE_ALifeItemWeapon::get_ammo_magsize	()
 void CSE_ALifeItemWeapon::FillProp			(LPCSTR pref, PropItemVec& items)
 {
 	inherited::FillProp			(pref, items);
-	PHelper.CreateU16			(items,FHelper.PrepareKey(pref,s_name,"Ammo: total"),			&a_current,0,1000,1);
+	PHelper.CreateU16			(items,FHelper.PrepareKey(pref,s_name,"Ammo: total"),		&a_current,0,1000,1);
 	PHelper.CreateU16			(items,FHelper.PrepareKey(pref,s_name,"Ammo: in magazine"),	&a_elapsed,0,30,1);
-	
-	PHelper.CreateFlag8			(items,FHelper.PrepareKey(pref,s_name,"Scope"), &m_addon_flags, 0x01);
-	PHelper.CreateFlag8			(items,FHelper.PrepareKey(pref,s_name,"Silencer"), &m_addon_flags, 0x02);
-	PHelper.CreateFlag8			(items,FHelper.PrepareKey(pref,s_name,"Podstvolnik"), &m_addon_flags, 0x04);
+
+	if (1){
+        PHelper.CreateFlag8		(items,FHelper.PrepareKey(pref,s_name,"Addons\\Scope"), 	&m_addon_flags, 0x01);
+        PHelper.CreateFlag8		(items,FHelper.PrepareKey(pref,s_name,"Addons\\Silencer"), 	&m_addon_flags, 0x02);
+        PHelper.CreateFlag8		(items,FHelper.PrepareKey(pref,s_name,"Addons\\Podstvolnik"),&m_addon_flags,0x04);
+    }
 }
 #endif
 

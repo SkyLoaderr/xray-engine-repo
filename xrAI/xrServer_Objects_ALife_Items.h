@@ -60,7 +60,6 @@ SERVER_ENTITY_DECLARE_BEGIN(CSE_ALifeItemAmmo,CSE_ALifeItem)
 SERVER_ENTITY_DECLARE_END
 
 SERVER_ENTITY_DECLARE_BEGIN(CSE_ALifeItemWeapon,CSE_ALifeItem)
-
 	u32								timestamp;
 	u8								flags;
 	u8								state;
@@ -71,7 +70,7 @@ SERVER_ENTITY_DECLARE_BEGIN(CSE_ALifeItemWeapon,CSE_ALifeItem)
 	LPCSTR							m_caAmmoSections;
 	u32								m_dwAmmoAvailable;
 	u32								m_dwSlot;
-	u8								m_addon_flags;
+	Flags8							m_addon_flags;
 
 									CSE_ALifeItemWeapon(LPCSTR caSection);
 	virtual							~CSE_ALifeItemWeapon();
