@@ -220,12 +220,14 @@ void xrLoad(LPCSTR name)
 
 IC bool RayPick(CDB::COLLIDER& DB, Fvector& P, Fvector& D, float r, R_Light& L)
 {
+	/*
 	// 1. Check cached polygon
 	float _u,_v,range;
 	bool res = CDB::TestRayTri(P,D,L.tri,_u,_v,range,true);
 	if (res) {
 		if (range>0 && range<r) return true;
 	}
+	*/
 
 	// 2. Polygon doesn't pick - real database query
 	t_start			= CPU::GetCycleCount();
@@ -299,7 +301,7 @@ public:
 	virtual void		Execute()
 	{
 		CDB::COLLIDER	DB;
-		DB.ray_options	(CDB::OPT_ONLYFIRST|CDB::OPT_CULL);
+		DB.ray_options	(CDB::OPT_ONLYNEAREST | CDB::OPT_CULL);
 
 		vector<R_Light>	Lights = g_lights;
 
