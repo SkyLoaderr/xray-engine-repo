@@ -198,7 +198,7 @@ void CRender::Render		()
 
 	// Directional light - fucking sun
 	if (ps_r2_ls_flags.test(R2FLAG_SUN))	{
-		Lights_LastFrame.push_back			(Lights.sun_adapted);
+//		Lights_LastFrame.push_back			(Lights.sun_adapted);
 		render_sun_near						();
 		render_sun							();
 	}

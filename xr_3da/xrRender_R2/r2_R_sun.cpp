@@ -489,7 +489,7 @@ void CRender::render_sun				()
 		phase									= PHASE_SMAP_D;
 		if (RImplementation.o.Tshadows)	r_pmask	(true,true	);
 		else							r_pmask	(true,false	);
-		fuckingsun->svis.begin					();
+//		fuckingsun->svis.begin					();
 	}
 
 	// Fill the database
@@ -815,7 +815,7 @@ void CRender::render_sun				()
 
 	// End SMAP-render
 	{
-		fuckingsun->svis.end					();
+//		fuckingsun->svis.end					();
 		r_pmask									(true,false);
 	}
 
@@ -965,7 +965,7 @@ void CRender::render_sun_near	()
 		phase									= PHASE_SMAP_D;
 		if (RImplementation.o.Tshadows)	r_pmask	(true,true	);
 		else							r_pmask	(true,false	);
-		fuckingsun->svis.begin					();
+//		fuckingsun->svis.begin					();
 	}
 
 	// Fill the database
@@ -1003,7 +1003,7 @@ void CRender::render_sun_near	()
 
 	// End SMAP-render
 	{
-		fuckingsun->svis.end					();
+//		fuckingsun->svis.end					();
 		r_pmask									(true,false);
 	}
 
