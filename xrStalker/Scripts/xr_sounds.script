@@ -116,21 +116,21 @@ end
 -----------------------------------------------------------------------------------------------------------------------------------
 --  Пример конструктора, описывающего звуки
 --
---	self.sound = {idle = 0,    	-- служебное поле
---		     begin = nil,	-- служебное поле
---		     maxidle = 10, 	-- максимальное время между звуками
---		     sumidle = 10,	-- надбавочное время, добавляется к рандомно выбранному от 1 до максимального.
---   		     rnd = 100,		-- вероятность, с которой будет проигран звук, если пришло время
---		     lastsound = nil,	-- служебное поле
---		 	sounds = {      {pack = sounds["idle"], id = 0},	-- пачка звуков, из которых будет выбираться
---					{pack = sounds["idle"], id = 1},
---					{pack = sounds["idle"], id = 3},
---					{pack = sounds["idle"], id = 4},
---					{pack = sounds["idle"], id = 7},
---					{pack = sounds["idle"], id = 9},
---					{pack = sounds["idle"], id = 11},
---					{pack = sounds["idle"], id = 12},
---					{pack = sounds["idle"], id = 14} 	}}
+--  self.sound = {idle = 0,     -- служебное поле
+--           begin = nil,   -- служебное поле
+--           maxidle = 10,  -- максимальное время между звуками
+--           sumidle = 10,  -- надбавочное время, добавляется к рандомно выбранному от 1 до максимального.
+--               rnd = 100,     -- вероятность, с которой будет проигран звук, если пришло время
+--           lastsound = nil,   -- служебное поле
+--          sounds = {      {pack = sounds["idle"], id = 0},    -- пачка звуков, из которых будет выбираться
+--                  {pack = sounds["idle"], id = 1},
+--                  {pack = sounds["idle"], id = 3},
+--                  {pack = sounds["idle"], id = 4},
+--                  {pack = sounds["idle"], id = 7},
+--                  {pack = sounds["idle"], id = 9},
+--                  {pack = sounds["idle"], id = 11},
+--                  {pack = sounds["idle"], id = 12},
+--                  {pack = sounds["idle"], id = 14}    }}
 --
 --
 -- Проигрыш саундов (By Stohe)
@@ -139,30 +139,30 @@ end
 -- now - если звук отыграть надо прямо сейчас
 -----------------------------------------------------------------------------------------------------------------------------------
 function set_sound(npc, sound, now)
-	local a = now
+    local a = now
 
-	if sound.begin == nil or
-	   (device():time_global()/1000 - sound.begin) > sound.idle then
-		sound.begin = device():time_global()/1000
-		sound.idle = math.random(sound.maxidle) + sound.sumidle
-		a = true
-	end
+    if sound.begin == nil or
+       (device():time_global()/1000 - sound.begin) > sound.idle then
+        sound.begin = device():time_global()/1000
+        sound.idle = math.random(sound.maxidle) + sound.sumidle
+        a = true
+    end
 
-	if a == true then
-		if math.random(100) < sound.rnd or now == true then
-			local r
-			if sound.lastsound == nil then
-				r = math.random(table.getn(sound.sounds))
-			else
-				r = math.random(table.getn(sound.sounds)-1)
-				if r >= sound.lastsound then
-					r = r + 1
-				end
-			end
-			sound.lastsound = r
-			npc:play_sound (sound.sounds[r].pack , 1, 0, 1, 0, sound.sounds[r].id)
-		end
-	end
+    if a == true then
+        if math.random(100) < sound.rnd or now == true then
+            local r
+            if sound.lastsound == nil then
+                r = math.random(table.getn(sound.sounds))
+            else
+                r = math.random(table.getn(sound.sounds)-1)
+                if r >= sound.lastsound then
+                    r = r + 1
+                end
+            end
+            sound.lastsound = r
+            npc:play_sound (sound.sounds[r].pack , 1, 0, 1, 0, sound.sounds[r].id)
+        end
+    end
 end
 -----------------------------------------------------------------------------------------------------------------------------------
 function load_common (obj, sounds_base)
@@ -229,6 +229,29 @@ function load_common (obj, sounds_base)
     sounds_base = sounds_base + table.getn (themes["trivial"][3])
     sounds_base = sounds_base + table.getn (themes["trivial"][4])
 
+    themes["escape_blockpost_commander"] =
+              {
+              {
+              sounds_base,
+              obj:add_sound ("script_replics\\comandir_1\\drunk\\comandir_song_",         13, snd_type.talk, 2, 1, sounds_base + 0)
+              obj:add_sound ("script_replics\\comandir_1\\drunk\\comandir_outside_",      13, snd_type.talk, 2, 1, sounds_base + 1)
+              obj:add_sound ("script_replics\\comandir_1\\normal\\comandir_to_soldier_",  13, snd_type.talk, 2, 1, sounds_base + 2)
+              obj:add_sound ("script_replics\\comandir_1\\drunk\\comandir_see_enemy_",    13, snd_type.talk, 2, 1, sounds_base + 3)
+              obj:add_sound ("script_replics\\comandir_1\\normal\\comandir_alarm_",       13, snd_type.talk, 2, 1, sounds_base + 4)
+              obj:add_sound ("script_replics\\comandir_1\\normal\\comandir_walking_",     13, snd_type.talk, 2, 1, sounds_base + 5)
+              obj:add_sound ("script_replics\\comandir_1\\normal\\comandir_lostbox_",     13, snd_type.talk, 2, 1, sounds_base + 6)
+              obj:add_sound ("script_replics\\comandir_1\\drunk\\comandir_lostbox_",      13, snd_type.talk, 2, 1, sounds_base + 7)
+              obj:add_sound ("script_replics\\comandir_1\\drunk\\comandir_dronk_",        13, snd_type.talk, 2, 1, sounds_base + 8)
+              obj:add_sound ("script_replics\\comandir_1\\drunk\\comandir_sleep_",        13, snd_type.talk, 2, 1, sounds_base + 9)
+
+              obj:add_sound ("script_replics\\radio\\commander\\radio_commander_",        30, snd_type.talk, 2, 1, sounds_base + 10)
+              obj:add_sound ("script_replics\\radio\\message\\radio_noise_",               5, snd_type.talk, 2, 1, sounds_base + 11)
+              obj:add_sound ("script_replics\\radio\\message\\radio_voice_",               5, snd_type.talk, 2, 1, sounds_base + 12)
+              obj:add_sound ("script_replics\\radio\\message\\radio_turn_on_",             5, snd_type.talk, 2, 1, sounds_base + 13)
+              obj:add_sound ("script_replics\\radio\\message\\radio_turn_off_",            5, snd_type.talk, 2, 1, sounds_base + 14)
+              }
+              }
+    sounds_base = sounds_base + table.getn (themes["escape_blockpost_commander"][1])
 
     return sounds_base
 end
