@@ -174,7 +174,7 @@ BOOL	CResourceManager::_lua_HasShader	(LPCSTR s_shader)
 {
 	string256	undercorated;
 	for (int i=0, l=xr_strlen(s_shader)+1; i<l; i++)
-		undercorated[i]=('//'==s_shader[i])?'_':s_shader[i];
+		undercorated[i]=('\\'==s_shader[i])?'_':s_shader[i];
 
 #ifdef _EDITOR
 	return Script::bfIsObjectPresent(LSVM,undercorated,"editor",LUA_TFUNCTION);
