@@ -216,6 +216,7 @@ class CAI_Rat : public CCustomMonster
 					break;
 				}
 			}
+			m_fSpeed = m_fMaxSpeed;
 			m_fSafeSpeed = m_fSpeed;
 		};
 

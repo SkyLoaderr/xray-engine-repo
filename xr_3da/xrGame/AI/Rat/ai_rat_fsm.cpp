@@ -147,6 +147,32 @@ void CAI_Rat::Turn()
 void CAI_Rat::FreeHunting()
 {
 	//WRITE_TO_LOG("Free hunting");
+	DWORD dwTime = Level().timeServer();
+	CEntity *tpLeader = Level().Teams[g_Team()].Squads[g_Squad()].Leader;
+	if (this == tpLeader) {
+		if ((dwTime - m_dwLastRangeSearch) > 30000) {
+			m_dwLastRangeSearch = dwTime;
+			Fvector tTemp;
+			tTemp.set(1,0,0);
+			tTemp.normalize_safe();
+			tTemp.mul(30.f);
+			m_tSpawnPosition.add(tTemp);
+			m_tVarGoal.set(0.5,0.0,0.5);
+			m_fGoalChangeDelta = 5.f;
+			Msg("%d",dwTime);
+		}
+		if (dwTime > 30000)
+			m_dwLastRangeSearch = dwTime;
+	}
+	else {
+		CAI_Rat *tpRatLeader = dynamic_cast<CAI_Rat*>(tpLeader);
+		if (tpRatLeader) {
+			m_tSpawnPosition = tpRatLeader->m_tSpawnPosition;
+			m_tVarGoal.set(tpRatLeader->m_tVarGoal);
+			m_fGoalChangeDelta = tpRatLeader->m_fGoalChangeDelta;
+		}
+	}
+	
 	bStopThinking = true;
 	
 	CHECK_IF_SWITCH_TO_NEW_STATE(g_Health() <= 0,aiRatDie)
@@ -160,124 +186,104 @@ void CAI_Rat::FreeHunting()
 
 	vfUpdateTime(m_fTimeUpdateDelta);
 
-	//if (fabsf(m_fSpeed) > EPS_L) 
-	{
-		// Update position and orientation of the planes
-		float fAT = m_fASpeed * m_fTimeUpdateDelta;
+	// Update position and orientation of the planes
+	float fAT = m_fASpeed * m_fTimeUpdateDelta;
 
-		Fvector& tDirection = mRotate.k;
+	Fvector& tDirection = mRotate.k;
 
-		// Tweak orientation based on last position and goal
-		Fvector tOffset;
-		tOffset.sub(m_tGoalDir,vPosition);
+	// Tweak orientation based on last position and goal
+	Fvector tOffset;
+	tOffset.sub(m_tGoalDir,vPosition);
 
-		// First, tweak the pitch
-		if( tOffset.y > 1.0){			// We're too low
-			m_tHPB.y += fAT;
-			if( m_tHPB.y > 0.8f )	m_tHPB.y = 0.8f;
-		}else if( tOffset.y < -1.0){	// We're too high
-			m_tHPB.y -= fAT;
-			if( m_tHPB.y < -0.8f )m_tHPB.y = -0.8f;
-		}else							// Add damping
-			m_tHPB.y *= 0.95f;
+	// First, tweak the pitch
+	if( tOffset.y > 1.0){			// We're too low
+		m_tHPB.y += fAT;
+		if( m_tHPB.y > 0.8f )	m_tHPB.y = 0.8f;
+	}else if( tOffset.y < -1.0){	// We're too high
+		m_tHPB.y -= fAT;
+		if( m_tHPB.y < -0.8f )m_tHPB.y = -0.8f;
+	}else							// Add damping
+		m_tHPB.y *= 0.95f;
 
-		// Now figure out yaw changes
-		tOffset.y           = 0.0f;
-		tDirection.y		= 0.0f;
+	// Now figure out yaw changes
+	tOffset.y           = 0.0f;
+	tDirection.y		= 0.0f;
 
-		tDirection.normalize();
-		tOffset.normalize	();
+	tDirection.normalize();
+	tOffset.normalize	();
 
-		float fDot = tDirection.dotproduct(tOffset);
-		fDot = (1.0f-fDot)/2.0f * fAT * 10.0f;
+	float fDot = tDirection.dotproduct(tOffset);
+	fDot = (1.0f-fDot)/2.0f * fAT * 10.0f;
 
-		tOffset.crossproduct(tOffset,tDirection);
+	tOffset.crossproduct(tOffset,tDirection);
 
-		if( tOffset.y > 0.01f )		m_fDHeading = ( m_fDHeading * 9.0f + fDot ) * 0.1f;
-		else if( tOffset.y < 0.01f )m_fDHeading = ( m_fDHeading * 9.0f - fDot ) * 0.1f;
+	if( tOffset.y > 0.01f )		m_fDHeading = ( m_fDHeading * 9.0f + fDot ) * 0.1f;
+	else if( tOffset.y < 0.01f )m_fDHeading = ( m_fDHeading * 9.0f - fDot ) * 0.1f;
 
-		m_tHPB.x  +=  m_fDHeading;
-		m_tHPB.z  = -m_fDHeading * 9.0f;
+	m_tHPB.x  +=  m_fDHeading;
+	m_tHPB.z  = -m_fDHeading * 9.0f;
 
-		m_tHPB.x = angle_normalize_signed(m_tHPB.x);
-		m_tHPB.y = angle_normalize_signed(m_tHPB.y);
-		m_tHPB.z = angle_normalize_signed(m_tHPB.z);
+	m_tHPB.x = angle_normalize_signed(m_tHPB.x);
+	m_tHPB.y = angle_normalize_signed(m_tHPB.y);
+	m_tHPB.z = angle_normalize_signed(m_tHPB.z);
 
-		// Build the local matrix for the pplane
-		if (m_fSpeed > EPS_L) {
-			mRotate.setHPB(m_tHPB.x,m_tHPB.y,m_tHPB.z);
-			r_target.yaw = -m_tHPB.x;
-		}
-		else
-			r_target.yaw = r_torso_target.yaw;
-
-		UpdateTransform();
-
-		// Update position
-		Fvector tTemp;
-		tTemp.set(vPosition);
-		vPosition.mad(tDirection,m_fSpeed*m_fTimeUpdateDelta);
-		DWORD dwNewNode = AI_NodeID;
-		NodeCompressed *tpNewNode = AI_Node;
-		NodePosition	QueryPos;
-		Level().AI.PackPosition	(QueryPos,vPosition);
-
-		if (!AI_NodeID || !Level().AI.u_InsideNode(*AI_Node,QueryPos)) {
-			dwNewNode = Level().AI.q_Node(0,vPosition);
-			tpNewNode = Level().AI.Node(dwNewNode);
-		}
-		if (dwNewNode && Level().AI.u_InsideNode(*tpNewNode,QueryPos)) {
-			vPosition.y = ffGetY(*tpNewNode,vPosition.x,vPosition.z);
-			m_tOldPosition.set(tTemp);
-		}
-		else {
-			vPosition.set(m_tOldPosition);
-			m_fSafeSpeed = m_fSpeed = EPS_S;
-		}
-
-		SetDirectionLook();
-
-		if (!Level().AI.bfTooSmallAngle(r_torso_target.yaw, r_torso_current.yaw,PI_DIV_8))
-			m_fSpeed = EPS_S;
-		else 
-			if (m_fSafeSpeed != m_fSpeed) {
-				int iRandom = ::Random.randI(0,2);
-				switch (iRandom) {
-					case 0 : {
-						m_fSpeed = m_fMaxSpeed;
-						break;
-					}
-					case 1 : {
-						m_fSpeed = m_fMinSpeed;
-						break;
-					}
-					case 2 : {
-						if (::Random.randI(0,4) == 0)
-							m_fSpeed = EPS_S;
-						break;
-					}
-				}
-				m_fSafeSpeed = m_fSpeed;
-			}
-
-		AI_Path.TravelPath.clear();
-		if (fabsf(m_fSpeed) < EPS_L) {
-	//		AI_Path.TravelPath.resize(2);
-	//		AI_Path.TravelStart = 0;
-	//		AI_Path.TravelPath[0].floating = FALSE;
-	//		AI_Path.TravelPath[0].P = vPosition;
-	//		AI_Path.TravelPath[1].floating = FALSE;
-	//		AI_Path.TravelPath[1].P.mad(vPosition,tDirection,10.f);
-	//		AI_Path.TravelPath.resize(11);
-	//		AI_Path.TravelStart = 0;
-	//		AI_Path.TravelPath[0].floating = FALSE;
-	//		AI_Path.TravelPath[0].P = vPosition;
-	//		for (int i=1; i<11; i++) {
-	//			AI_Path.TravelPath[i].floating = FALSE;
-	//			AI_Path.TravelPath[i].P.mad(vPosition,tDirection,(float)i);
-	//		}
-		}
+	// Build the local matrix for the pplane
+	if (m_fSpeed > EPS_L) {
+		mRotate.setHPB(m_tHPB.x,m_tHPB.y,m_tHPB.z);
+		r_target.yaw = -m_tHPB.x;
 	}
+	else
+		r_target.yaw = r_torso_target.yaw;
+
+	UpdateTransform();
+
+	// Update position
+	Fvector tTemp;
+	tTemp.set(vPosition);
+	vPosition.mad(tDirection,m_fSpeed*m_fTimeUpdateDelta);
+	DWORD dwNewNode = AI_NodeID;
+	NodeCompressed *tpNewNode = AI_Node;
+	NodePosition	QueryPos;
+	Level().AI.PackPosition	(QueryPos,vPosition);
+
+	if (!AI_NodeID || !Level().AI.u_InsideNode(*AI_Node,QueryPos)) {
+		dwNewNode = Level().AI.q_Node(0,vPosition);
+		tpNewNode = Level().AI.Node(dwNewNode);
+	}
+	if (dwNewNode && Level().AI.u_InsideNode(*tpNewNode,QueryPos)) {
+		vPosition.y = ffGetY(*tpNewNode,vPosition.x,vPosition.z);
+		m_tOldPosition.set(tTemp);
+	}
+	else {
+		vPosition.set(m_tOldPosition);
+		m_fSafeSpeed = m_fSpeed = EPS_S;
+	}
+
+	SetDirectionLook();
+
+	if (!Level().AI.bfTooSmallAngle(r_torso_target.yaw, r_torso_current.yaw,PI_DIV_8))
+		m_fSpeed = EPS_S;
+	else 
+		if (m_fSafeSpeed != m_fSpeed) {
+			int iRandom = ::Random.randI(0,2);
+			switch (iRandom) {
+				case 0 : {
+					m_fSpeed = m_fMaxSpeed;
+					break;
+				}
+				case 1 : {
+					m_fSpeed = m_fMinSpeed;
+					break;
+				}
+				case 2 : {
+					if (::Random.randI(0,4) == 0)
+						m_fSpeed = EPS_S;
+					break;
+				}
+			}
+			m_fSafeSpeed = m_fSpeed;
+		}
+	AI_Path.TravelPath.clear();
 }
 
 void CAI_Rat::Think()

@@ -41,6 +41,7 @@ CAI_Rat::CAI_Rat()
 	m_dwLastVoiceTalk = 0;
 	m_tpSoundBeingPlayed = 0;
 	m_dwLastSoundRefresh = 0;
+	m_dwLastRangeSearch  = 0;
 	m_tpPath = 0;
 	// test parameters
 	m_tGoalDir.set			(10.0f*(Random.randF()-Random.randF()),10.0f*(Random.randF()-Random.randF()),10.0f*(Random.randF()-Random.randF()));
