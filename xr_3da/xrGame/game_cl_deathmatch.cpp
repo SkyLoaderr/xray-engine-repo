@@ -389,6 +389,7 @@ void game_cl_Deathmatch::OnVoteEnd				(NET_Packet& P)
 
 void game_cl_Deathmatch::GetMapEntities(xr_vector<SZoneMapEntityData>& dst)
 {
+	/*
 	SZoneMapEntityData D;
 	u32 color_self_team		=		0xff00ff00;
 	D.color					=		color_self_team;
@@ -407,4 +408,5 @@ void game_cl_Deathmatch::GetMapEntities(xr_vector<SZoneMapEntityData>& dst)
 		D.pos = pObject->Position();
 		dst.push_back(D);
 	}
+	*/
 }
