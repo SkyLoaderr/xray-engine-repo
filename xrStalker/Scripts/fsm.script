@@ -37,9 +37,9 @@ end
 
 -- запускает на выполнение функцию проверки и перехода
 -- в  новое состояние 
-function FSM:check_condition(cond_func, to_state_num)
+function FSM:check_condition(to_state_num, to_state_num1, cond_func)
 
-	printf("check_condition %d", to_state_num)
+	printf("check_condition %d", to_state_num1)
 
 	if cond_func(self.npc) == true then
 		self.current_state = to_state_num
