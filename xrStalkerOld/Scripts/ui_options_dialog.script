@@ -144,19 +144,19 @@ function options_dialog:InitControls()
 	--------- >> TABS
 	---- >> VIDEO
 	self.tab_video = ui_options_video_tab.options_video_tab()
-	self.tab_video:InitControls(btn_video_rect.x + btn_video_rect.width + self.indent, self.top_alingn_y)
+	self.tab_video:InitControls(btn_video_rect.x + btn_video_rect.width + self.indent, self.top_align_y)
 	self.main_frame:AttachChild(self.tab_video)
 	---- >> SOUND
 	self.tab_sound = ui_options_sound_tab.options_sound_tab()
-	self.tab_sound:InitControls(btn_sound_rect.x + btn_sound_rect.width + self.indent, self.top_alingn_y)
+	self.tab_sound:InitControls(btn_sound_rect.x + btn_sound_rect.width + self.indent, self.top_align_y)
 	self.main_frame:AttachChild(self.tab_sound)
 	---- >> GAME
 	self.tab_game = ui_options_game_tab.options_game_tab()
-	self.tab_game:InitControls(btn_sound_rect.x + btn_sound_rect.width + self.indent, self.top_alingn_y)
+	self.tab_game:InitControls(btn_sound_rect.x + btn_sound_rect.width + self.indent, self.top_align_y)
 	self.main_frame:AttachChild(self.tab_game)
 	---- >> CONTROLS
 	self.tab_controls = ui_options_controls_tab.options_controls_tab()
-	self.tab_controls:InitControls(btn_sound_rect.x + btn_sound_rect.width + self.indent, self.top_alingn_y)
+	self.tab_controls:InitControls(btn_sound_rect.x + btn_sound_rect.width + self.indent, self.top_align_y)
 	self.main_frame:AttachChild(self.tab_controls)
 end
 
