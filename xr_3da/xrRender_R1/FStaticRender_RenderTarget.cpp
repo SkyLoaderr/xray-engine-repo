@@ -47,7 +47,7 @@ BOOL CRenderTarget::Create	()
 	Msg				("* SSample: %dx%d",rtWidth,rtHeight);
 
 	// Bufferts
-	RT				= Device.Shader._CreateRT		(RTname,rtWidth,rtHeight);
+	RT				= Device.Shader._CreateRT		(RTname,rtWidth,rtHeight,HW.Caps.fTarget);
 	if ((rtHeight!=Device.dwHeight) || (rtWidth!=Device.dwWidth))
 	{
 		R_CHK		(HW.pDevice->CreateDepthStencilSurface	(rtWidth,rtHeight,HW.Caps.fDepth,D3DMULTISAMPLE_NONE,0,TRUE,&ZB,NULL));
