@@ -83,9 +83,6 @@ bool CShaderTools::OnCreate()
 	AnsiString gm_fn;
     FS.update_path		(gm_fn,_game_data_,GAMEMTL_FILENAME);
 	if (EFS.CheckLocking(0,gm_fn.c_str(),false,true)) return false;
-	//
-    Device.seqDevCreate.Add(this);
-    Device.seqDevDestroy.Add(this);
 
     // create tools
     RegisterTools		();
@@ -111,8 +108,6 @@ void CShaderTools::OnDestroy()
     EFS.UnlockFile(_game_data_,"shaders_xrlc.xr");
     EFS.UnlockFile(_game_data_,GAMEMTL_FILENAME);
 	//
-    Device.seqDevCreate.Remove(this);
-    Device.seqDevDestroy.Remove(this);
 	for (ToolsPairIt it=m_Tools.begin(); it!=m_Tools.end(); it++)
     	it->second->OnDestroy();
 
@@ -168,13 +163,13 @@ void CShaderTools::OnDeviceCreate()
 	Device.LightEnable(4,true);
 
 	for (ToolsPairIt it=m_Tools.begin(); it!=m_Tools.end(); it++)
-    	it->second->OnDeviceCreate();
+    	if (it->second) it->second->OnDeviceCreate();
 }
 
 void CShaderTools::OnDeviceDestroy()
 {
 	for (ToolsPairIt it=m_Tools.begin(); it!=m_Tools.end(); it++)
-    	it->second->OnDeviceDestroy();
+    	if (it->second) it->second->OnDeviceDestroy();
 }
 
 void CShaderTools::OnShowHint(AStringVec& ss)
