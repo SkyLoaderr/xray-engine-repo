@@ -204,7 +204,6 @@ namespace SmartDynamicCast {
 #else
 			return				(SmartDynamicCast::smart_cast<_T1>(const_cast<_T2*>(p)));
 #endif
-			return				(SmartDynamicCast::smart_cast<_T1>(const_cast<_T2*>(p)));
 		}
 
 		template <>
