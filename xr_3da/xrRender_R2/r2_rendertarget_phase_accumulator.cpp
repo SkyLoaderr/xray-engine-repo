@@ -22,6 +22,7 @@ void	CRenderTarget::phase_accumulator()
 
 	// Restore targets
 	u_setrt								(rt_Accumulator,NULL,NULL,HW.pBaseZB);
+	RImplementation.rmNormal			();
 
 	// Stencil	- draw only where stencil >= 0x1
 	RCache.set_Stencil					(TRUE,D3DCMP_LESSEQUAL,0x01,0xff,0x00);
