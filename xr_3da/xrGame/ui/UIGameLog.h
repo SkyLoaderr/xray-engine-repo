@@ -24,6 +24,8 @@ class CUIGameLog: public CUIDialogWnd
 	typedef CUIDialogWnd inherited;
 
 public:
+	CUIGameLog();
+	virtual ~CUIGameLog();
 	void					AddLogMessage	(const shared_str& msg);
 	void					AddLogMessage	(KillMessageStruct& msg);
 	CUIListWnd &			GetLogList		()	{ return UILogList; }

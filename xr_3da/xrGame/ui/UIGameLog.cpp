@@ -12,13 +12,18 @@
 #include "UIPdaMsgListItem.h"
 #include "UIPdaKillMessage.h"
 
-//////////////////////////////////////////////////////////////////////////
-
 extern const char * const	CHAT_MP_WND_XML;
 extern const int			fadeDelay;
 const char * const	CHAT_LOG_ITEMS_ANIMATION	= "ui_mp_chat";
 
-//////////////////////////////////////////////////////////////////////////
+CUIGameLog::CUIGameLog(){
+
+}
+
+CUIGameLog::~CUIGameLog(){
+
+}
+
 
 void CUIGameLog::AddLogMessage(const shared_str &msg)
 {
@@ -36,8 +41,8 @@ void CUIGameLog::AddLogMessage(const shared_str &msg)
 	int h = pItem->GetHeight();
 	int h2 = (int)pItem->UIMsgText.GetFont()->CurrentHeight();
 	int y = (h - h2)/2;	
-	pItem->UIMsgText.SetTextPos(pItem->UIMsgText.GetTextX(), y);
-	pItem->UIMsgText.SetWndPos(pItem->UIMsgText.GetWndPos().x, 0);	
+	pItem->UIMsgText.SetTextPos(0, y);
+	pItem->UIMsgText.SetWndPos(0, 0);	
 	pItem->SetData(animation);
 
 	item->Show(true);
@@ -59,6 +64,7 @@ void CUIGameLog::AddLogMessage(KillMessageStruct& msg){
 	pItem->SetData(animation);
 
 	pItem->Show(true);
+
 	animation->SetColorToModify(&pItem->GetTextColorRef());
 	animation->Cyclic(false);	
 }
