@@ -146,12 +146,18 @@ u32 xrServer::OnMessage(NET_Packet& P, DPNID sender)			// Non-Zero means broadca
 {
 	u16			type;
 	P.r_begin	(type);
+	xrClientData* CL		= ID_to_client(sender);
 
 	csPlayers.Enter				();
 	switch (type)
 	{
 	case M_UPDATE:	Process_update		(P,sender);	break;		// No broadcast
-	case M_SPAWN:	Process_spawn		(P,sender);	break;
+	case M_SPAWN:	
+		{
+//			R_ASSERT(CL->flags.bLocal);
+			if (CL->flags.bLocal)
+				Process_spawn		(P,sender);	
+		}break;
 	case M_EVENT:	Process_event		(P,sender); break;	
 	case M_CL_INPUT:
 		{

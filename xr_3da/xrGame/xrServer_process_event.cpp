@@ -200,6 +200,10 @@ void xrServer::Process_event	(NET_Packet& P, DPNID sender)
 			SendBroadcast		(0xffffffff,P,MODE);
 		}
 		break;
+	case GE_GRENADE_EXPLODE:
+		{
+			SendBroadcast		(sender,P,MODE);
+		}break;
 	default:
 		R_ASSERT2	(0,"Game Event not implemented!!!");
 		break;
