@@ -32,21 +32,34 @@ void cb(CBoneInstance* B)
 {
 
 }
-CPHStaticGeomShell* P_BuildStaticGeomShell(CGameObject* obj,ObjectContactCallbackFun* object_contact_callback)
+
+
+CPHStaticGeomShell* P_BuildStaticGeomShell(CGameObject* obj,ObjectContactCallbackFun* object_contact_callback,Fobb &b)
 {
 	CPHStaticGeomShell* pUnbrokenObject=xr_new<CPHStaticGeomShell>();
-	Fobb			b;
-	IRender_Visual* V=obj->Visual();
-	smart_cast<CKinematics*>(V)->CalculateBones	();		//. bForce - was TRUE
-	//m_saved_box.set				(V->vis.box);
-	V->vis.box.getradius	(b.m_halfsize);
-	b.xform_set					(Fidentity);
 	pUnbrokenObject->add_Box	(b);
 	pUnbrokenObject->Activate	(obj->XFORM());
 
 	pUnbrokenObject->set_PhysicsRefObject(smart_cast<CPhysicsShellHolder*>(obj));
 	//m_pUnbrokenObject->SetPhObjectInGeomData(m_pUnbrokenObject);
 	pUnbrokenObject->set_ObjectContactCallback(object_contact_callback);
+
+	return pUnbrokenObject;
+}
+
+CPHStaticGeomShell* P_BuildStaticGeomShell(CGameObject* obj,ObjectContactCallbackFun* object_contact_callback)
+{
+	Fobb			b;
+	IRender_Visual* V=obj->Visual();
+	R_ASSERT2(V,"need visual to build");
+
+	smart_cast<CKinematics*>(V)->CalculateBones	();		//. bForce - was TRUE
+	V->vis.box.getradius	(b.m_halfsize);
+
+	b.xform_set					(Fidentity);
+	CPHStaticGeomShell* pUnbrokenObject =P_BuildStaticGeomShell(obj,object_contact_callback,b);
+
+	
 	CKinematics* K=smart_cast<CKinematics*>(V); VERIFY(K);
 	K->CalculateBones();
 	for (u16 k=0; k<K->LL_BoneCount(); k++){
