@@ -6,13 +6,13 @@ end
 
 function main ()
 
---    local niva = get_level_object ("niva")
+    local niva = get_level_object ("niva")
 
---    niva:script (true, s_test.script_name ())
+    niva:script (true, s_test.script_name ())
 
-
---    action (niva, move (move.on + move.up + move.fwd, 0.1), object ("right_light", object.activate),
---            object ("left_light", object.activate), cond (cond.time_end, 8200))
+	action (niva, object ("left_light", object.activate), cond (cond.time_end, 1000))
+	action (niva, object ("right_light", object.activate), cond (cond.time_end, 1000))
+    action (niva, move (move.on + move.up + move.fwd, 1.0), cond (cond.time_end, 1000000000))
 
 --    while niva:action () do wait () end
 
@@ -21,7 +21,7 @@ function main ()
 	local boar = get_level_object ("boar")
 	boar:script (true, s_test.script_name ())
 	boar:set_callback (s_test.boarcallback, game_object.movement)
-	action (boar, move (move.act_walk_fwd, patrol ("boarway"), cond (cond.time_end, 100000000))
+	action (boar, move (move.act_walk_fwd, patrol ("boarway")), cond (cond.time_end, 100000000))
 
 	local t = {
 			  get_level_object ("m_stalker_e0000"),
@@ -44,6 +44,17 @@ function main ()
 		action (t[a], move (move.standing, move.run, move.line, paths[a]),
 			    anim (anim.danger), cond (cond.move_end))
 		end
+
+
+	wait (5000)
+	local h = hit ()
+    h.power = 1
+    h.direction:set (-1, 0, 0)
+    h:bone ("bip01_head")
+    h.draftsman = get_actor ()
+    h.impulse = 1000
+    h.type  = hit.strike
+    t[a]:hit (h)
 
 	while t[1]:action () do wait () end 
 
