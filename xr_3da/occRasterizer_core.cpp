@@ -71,6 +71,7 @@ and current color
 */
 void i_scan	(occRasterizer* OCC, occTri* T, int curY, float startT, float endT, float startX, float endX, float startR, float endR, float startZ, float endZ)
 {
+//	if (13==curY)	__asm int 3;
 	occTri**	pFrame	= OCC->get_frame();
 	float*		pDepth	= OCC->get_depth();
 
@@ -82,6 +83,7 @@ void i_scan	(occRasterizer* OCC, occTri* T, int curY, float startT, float endT, 
 	Vclamp		(minT,1,occ_dim0-1);
 	Vclamp		(maxT,1,occ_dim0-1);
 	if (minT >= maxT)		return;
+	if (minX >  maxX)		return;
 
 	// interpolate
 	float lenR	= endR - startR;
