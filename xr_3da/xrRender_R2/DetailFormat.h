@@ -98,6 +98,25 @@ public:
 	float			r_qclr		(u32 v,   u32 range)	{	return float(v)/float(range); }
 
 	static void		verify		()						{	VERIFY(16==sizeof(DetailSlot));	}
+    void			color_editor(){c_dir=w_qclr(0.5f,15);c_hemi=w_qclr(0.5f,15);c_r=w_qclr(0.f,15);c_g=w_qclr(0.f,15);c_b=w_qclr(0.f,15);}
+    u8				r_id		(u8 id){	
+        switch(id){
+        case 0: return id0;
+        case 1: return id1;
+        case 2: return id2;
+        case 3: return id3;
+        default: NODEFAULT;
+        }
+    }
+    void			w_id		(u8 id, u8 val){	
+        switch(id){
+        case 0: id0=val; break;
+        case 1: id1=val; break;
+        case 2: id2=val; break;
+        case 3: id3=val; break;
+        default: NODEFAULT;
+        }
+    }
 };
 
 #pragma pack(pop)
