@@ -798,48 +798,130 @@ void vfCreatePointSequence(CLevel::SPatrolPath &tpPatrolPath,vector<Fvector> &tp
 	while(!bStop);
 }
 
-float ffCalcSquare(float fAngle, float fAngleOfView, float _b0, float _b1, float _b2, float _b3)
+IC	float ffGetSquare(float a1, float b1, float fAlpha = PI_DIV_2)
 {
-	fAngle = fAngle >= PI ? fAngle - 2*PI : fAngle;
-	float fSquare = 0.f;
-	if ((fAngle >= -PI/2 + fAngleOfView/2) && (fAngle < fAngleOfView/2))
-		if (fAngle < PI/2 - fAngleOfView/2) {
-			float b0 = _b0, b1 = _b1, b2 = _b2, b3 = _b3, a1 = (b1 - b0)/(PI/2.f), a2 = (b1 - b2)/(PI/2.f), fKsi = fAngleOfView - fAngle;
-			fSquare = (CUBE(PI)*(_sqr(a1) + _sqr(a2))/24.f + _sqr(PI)*(a1*b1 + a2*b2)/4.f + PI*(_sqr(b1) + _sqr(b2))/2.f - (CUBE(fAngle)*_sqr(a1)/3.f + _sqr(fAngle)*a1*b1 + fAngle*_sqr(b1) + CUBE(fKsi)*_sqr(a2)/3.f + _sqr(fKsi)*a2*b2 + fKsi*_sqr(b2)))/2.f;
-		}
-		else {
-			float b0 = _b1, b1 = _b2, b2 = _b3, b3 = _b0, a1 = (b1 - b0)/(PI/2.f), a2 = (b1 - b2)/(PI/2.f), a3 = (b1 - b3)/(PI/2.f), fKsi = PI- fAngleOfView - fAngle;
-			fSquare = (CUBE(PI)*(_sqr(a3) + _sqr(a2))/24.f + _sqr(PI)*(a3*b3 + a2*b2)/4.f + PI*(_sqr(b3) + _sqr(b2))/2.f - (CUBE(fAngle)*_sqr(a1)/3.f + _sqr(fAngle)*a1*b1 + fAngle*_sqr(b1) + CUBE(fKsi)*_sqr(a3)/3.f + _sqr(fKsi)*a3*b3 + fKsi*_sqr(b3)))/2.f;
-		}
-	else
-		if ((fAngle - PI/2 >= -PI/2 + fAngleOfView/2) && (fAngle - PI/2 < fAngleOfView/2))
-			if (fAngle - PI/2 < PI/2 - fAngleOfView/2) {
-				float b0 = _b1, b1 = _b2, b2 = _b3, b3 = _b0, a1 = (b1 - b0)/(PI/2.f), a2 = (b1 - b2)/(PI/2.f), fKsi = fAngleOfView - fAngle;;
-				fSquare = (CUBE(PI)*(_sqr(a1) + _sqr(a2))/24.f + _sqr(PI)*(a1*b1 + a2*b2)/4.f + PI*(_sqr(b1) + _sqr(b2))/2.f - (CUBE(fAngle)*_sqr(a1)/3.f + _sqr(fAngle)*a1*b1 + fAngle*_sqr(b1) + CUBE(fKsi)*_sqr(a2)/3.f + _sqr(fKsi)*a2*b2 + fKsi*_sqr(b2)))/2.f;
+	float a = 2*(b1 - a1)/PI, b = a1;	
+	return(fAlpha*fAlpha*fAlpha*a*a/6 + fAlpha*fAlpha*a*b/2 + fAlpha*b*b/2);
+}
+
+float ffCalcSquare(float fAngle, float fAngleOfView, float b0, float b1, float b2, float b3)
+{
+	while (fAngle >= PI_MUL_2)
+		fAngle -= PI_MUL_2;
+	
+	while (fAngle < 0)
+		fAngle += PI_MUL_2;
+	
+	float fSquare, bx;
+	
+	if (fAngle < PI_DIV_2) {
+		if (fAngle + fAngleOfView >= PI_DIV_2) {
+			if (fAngle - fAngleOfView < 0) {
+				fSquare = ffGetSquare(b2,b1);
+				fSquare += ffGetSquare(b1,b0,fAngle + fAngleOfView - PI_DIV_2);
+				fSquare += ffGetSquare(b3,b2,-(fAngle - fAngleOfView));
 			}
 			else {
-				float b0 = _b2, b1 = _b3, b2 = _b0, b3 = _b1, a1 = (b1 - b0)/(PI/2.f), a2 = (b1 - b2)/(PI/2.f), a3 = (b1 - b3)/(PI/2.f), fKsi = PI- fAngleOfView - fAngle;
-				fSquare = (CUBE(PI)*(_sqr(a3) + _sqr(a2))/24.f + _sqr(PI)*(a3*b3 + a2*b2)/4.f + PI*(_sqr(b3) + _sqr(b2))/2.f - (CUBE(fAngle)*_sqr(a1)/3.f + _sqr(fAngle)*a1*b1 + fAngle*_sqr(b1) + CUBE(fKsi)*_sqr(a3)/3.f + _sqr(fKsi)*a3*b3 + fKsi*_sqr(b3)))/2.f;
+				fSquare = ffGetSquare(b1,b2,PI_DIV_2 - (fAngle - fAngleOfView));
+				fSquare += ffGetSquare(b1,b0,fAngle + fAngleOfView - PI_DIV_2);
 			}
+		}
 		else
-			if ((fAngle - PI >= -PI/2 + fAngleOfView/2) && (fAngle - PI < fAngleOfView/2))
-				if (fAngle - PI < PI/2 - fAngleOfView/2) {
-					float b0 = _b2, b1 = _b3, b2 = _b0, b3 = _b1, a1 = (b1 - b0)/(PI/2.f), a2 = (b1 - b2)/(PI/2.f), fKsi = fAngleOfView - fAngle;;
-					fSquare = (CUBE(PI)*(_sqr(a1) + _sqr(a2))/24.f + _sqr(PI)*(a1*b1 + a2*b2)/4.f + PI*(_sqr(b1) + _sqr(b2))/2.f - (CUBE(fAngle)*_sqr(a1)/3.f + _sqr(fAngle)*a1*b1 + fAngle*_sqr(b1) + CUBE(fKsi)*_sqr(a2)/3.f + _sqr(fKsi)*a2*b2 + fKsi*_sqr(b2)))/2.f;
+			if (fAngle - fAngleOfView < 0) {
+				fSquare = ffGetSquare(b2,b1,fAngle + fAngleOfView);
+				fSquare += ffGetSquare(b3,b2,-(fAngle - fAngleOfView));
+			}
+			else {
+				fSquare = ffGetSquare(b2,b1,fAngle + fAngleOfView);
+				fSquare -= ffGetSquare(b1,b0,fAngle - fAngleOfView);
+			}
+	}
+	else
+		if (fAngle < PI) {
+			fAngle -= PI_DIV_2;
+			bx = b2;
+			b2 = b1;
+			b1 = b0;
+			b0 = b3;
+			b3 = bx;
+			if (fAngle + fAngleOfView >= PI_DIV_2) {
+				if (fAngle - fAngleOfView < 0) {
+					fSquare = ffGetSquare(b2,b1);
+					fSquare += ffGetSquare(b1,b0,fAngle + fAngleOfView - PI_DIV_2);
+					fSquare += ffGetSquare(b3,b2,-(fAngle - fAngleOfView));
 				}
 				else {
-					float b0 = _b3, b1 = _b0, b2 = _b1, b3 = _b2, a1 = (b1 - b0)/(PI/2.f), a2 = (b1 - b2)/(PI/2.f), a3 = (b1 - b3)/(PI/2.f), fKsi = PI- fAngleOfView - fAngle;
-					fSquare = (CUBE(PI)*(_sqr(a3) + _sqr(a2))/24.f + _sqr(PI)*(a3*b3 + a2*b2)/4.f + PI*(_sqr(b3) + _sqr(b2))/2.f - (CUBE(fAngle)*_sqr(a1)/3.f + _sqr(fAngle)*a1*b1 + fAngle*_sqr(b1) + CUBE(fKsi)*_sqr(a3)/3.f + _sqr(fKsi)*a3*b3 + fKsi*_sqr(b3)))/2.f;
+					fSquare = ffGetSquare(b1,b2,PI_DIV_2 - (fAngle - fAngleOfView));
+					fSquare += ffGetSquare(b1,b0,fAngle + fAngleOfView - PI_DIV_2);
 				}
+			}
 			else
-				if (fAngle - 3*PI/2 < PI/2 - fAngleOfView/2) {
-					float b0 = _b3, b1 = _b0, b2 = _b1, b3 = _b2, a1 = (b1 - b0)/(PI/2.f), a2 = (b1 - b2)/(PI/2.f), fKsi = fAngleOfView - fAngle;;
-					fSquare = (CUBE(PI)*(_sqr(a1) + _sqr(a2))/24.f + _sqr(PI)*(a1*b1 + a2*b2)/4.f + PI*(_sqr(b1) + _sqr(b2))/2.f - (CUBE(fAngle)*_sqr(a1)/3.f + _sqr(fAngle)*a1*b1 + fAngle*_sqr(b1) + CUBE(fKsi)*_sqr(a2)/3.f + _sqr(fKsi)*a2*b2 + fKsi*_sqr(b2)))/2.f;
+				if (fAngle - fAngleOfView < 0) {
+					fSquare = ffGetSquare(b2,b1,fAngle + fAngleOfView);
+					fSquare += ffGetSquare(b3,b2,-(fAngle - fAngleOfView));
 				}
 				else {
-					float b0 = _b0, b1 = _b1, b2 = _b2, b3 = _b3, a1 = (b1 - b0)/(PI/2.f), a2 = (b1 - b2)/(PI/2.f), a3 = (b1 - b3)/(PI/2.f), fKsi = PI- fAngleOfView - fAngle;
-					fSquare = (CUBE(PI)*(_sqr(a3) + _sqr(a2))/24.f + _sqr(PI)*(a3*b3 + a2*b2)/4.f + PI*(_sqr(b3) + _sqr(b2))/2.f - (CUBE(fAngle)*_sqr(a1)/3.f + _sqr(fAngle)*a1*b1 + fAngle*_sqr(b1) + CUBE(fKsi)*_sqr(a3)/3.f + _sqr(fKsi)*a3*b3 + fKsi*_sqr(b3)))/2.f;
+					fSquare = ffGetSquare(b2,b1,fAngle + fAngleOfView);
+					fSquare -= ffGetSquare(b1,b0,fAngle - fAngleOfView);
 				}
+		}
+		else
+			if (fAngle < 3*PI_DIV_2) {
+				fAngle -= PI;
+				bx = b2;
+				b2 = b0;
+				b1 = b3;
+				b0 = bx;
+				b3 = b1;
+				if (fAngle + fAngleOfView >= PI_DIV_2) {
+					if (fAngle - fAngleOfView < 0) {
+						fSquare = ffGetSquare(b2,b1);
+						fSquare += ffGetSquare(b1,b0,fAngle + fAngleOfView - PI_DIV_2);
+						fSquare += ffGetSquare(b3,b2,-(fAngle - fAngleOfView));
+					}
+					else {
+						fSquare = ffGetSquare(b1,b2,PI_DIV_2 - (fAngle - fAngleOfView));
+						fSquare += ffGetSquare(b1,b0,fAngle + fAngleOfView - PI_DIV_2);
+					}
+				}
+				else
+					if (fAngle - fAngleOfView < 0) {
+						fSquare = ffGetSquare(b2,b1,fAngle + fAngleOfView);
+						fSquare += ffGetSquare(b3,b2,-(fAngle - fAngleOfView));
+					}
+					else {
+						fSquare = ffGetSquare(b2,b1,fAngle + fAngleOfView);
+						fSquare -= ffGetSquare(b1,b0,fAngle - fAngleOfView);
+					}
+			}
+			else {
+				fAngle -= 3*PI_DIV_2;
+				bx = b2;
+				b2 = b3;
+				b1 = bx;
+				b0 = b1;
+				b3 = b0;
+				if (fAngle + fAngleOfView >= PI_DIV_2) {
+					if (fAngle - fAngleOfView < 0) {
+						fSquare = ffGetSquare(b2,b1);
+						fSquare += ffGetSquare(b1,b0,fAngle + fAngleOfView - PI_DIV_2);
+						fSquare += ffGetSquare(b3,b2,-(fAngle - fAngleOfView));
+					}
+					else {
+						fSquare = ffGetSquare(b1,b2,PI_DIV_2 - (fAngle - fAngleOfView));
+						fSquare += ffGetSquare(b1,b0,fAngle + fAngleOfView - PI_DIV_2);
+					}
+				}
+				else
+					if (fAngle - fAngleOfView < 0) {
+						fSquare = ffGetSquare(b2,b1,fAngle + fAngleOfView);
+						fSquare += ffGetSquare(b3,b2,-(fAngle - fAngleOfView));
+					}
+					else {
+						fSquare = ffGetSquare(b2,b1,fAngle + fAngleOfView);
+						fSquare -= ffGetSquare(b1,b0,fAngle - fAngleOfView);
+					}
+			}
 	return(fSquare);
 }
 
