@@ -87,8 +87,6 @@ void CJumpingAbility::update_frame()
 	m_object->CMonsterMovement::set_velocity_from_path	();
 }
 
-#define LAND_TRACE_RANGE 1.0f
-
 bool CJumpingAbility::is_landing()
 {
 	if (m_time_started == 0) return false;
@@ -104,8 +102,8 @@ bool CJumpingAbility::is_landing()
 	Collide::rq_result	l_rq;
 
 	bool on_the_ground = false;
-	if (Level().ObjectSpace.RayPick(trace_from, direction, LAND_TRACE_RANGE, Collide::rqtStatic, l_rq)) {
-		if (l_rq.range < LAND_TRACE_RANGE) on_the_ground = true;
+	if (Level().ObjectSpace.RayPick(trace_from, direction, m_trace_ground_range, Collide::rqtStatic, l_rq)) {
+		if (l_rq.range < m_trace_ground_range) on_the_ground = true;
 	}
 
 	m_object->setEnabled(true);			
@@ -120,7 +118,7 @@ void CJumpingAbility::build_line()
 	if (m_velocity_mask == u32(-1)) return;
 	
 	Fvector target_position;
-	target_position.mad(m_object->Position(), m_object->Direction(), 6.f);
+	target_position.mad(m_object->Position(), m_object->Direction(), m_build_line_distance);
 
 	if (!m_object->CMonsterMovement::build_special(target_position, u32(-1), m_velocity_mask)) stop();
 	else m_object->CMonsterMovement::enable_path();

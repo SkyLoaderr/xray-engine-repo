@@ -22,9 +22,9 @@ CStateManagerChimera::CStateManagerChimera(CChimera *obj) : inherited(obj)
 	add_state(eStateInterestingSound,	xr_new<CStateMonsterHearInterestingSound<CChimera> >	(obj));
 	add_state(eStateDangerousSound,		xr_new<CStateMonsterHearDangerousSound<CChimera> >		(obj));
 	add_state(eStateHitted,				xr_new<CStateMonsterHitted<CChimera> >					(obj));
-	add_state(eStateThreaten,			xr_new<CStateChimeraThreaten<CChimera> >				(obj));
+	//add_state(eStateThreaten,			xr_new<CStateChimeraThreaten<CChimera> >				(obj));
 
-	//add_state(eStateThreaten,			xr_new<CStateMonsterLookActor<CChimera> >				(obj));
+	add_state(eStateThreaten,			xr_new<CStateMonsterLookActor<CChimera> >				(obj));
 }
 
 CStateManagerChimera::~CStateManagerChimera()
@@ -68,6 +68,8 @@ void CStateManagerChimera::execute()
 		if (can_eat)	state_id = eStateEat;
 		else			state_id = eStateRest;
 	}
+
+	state_id = eStateThreaten;
 
 	select_state(state_id); 
 
