@@ -53,7 +53,7 @@ public:
 		FILE_NAME				caFileName;
 		// updating cross-table
 		{
-			strconcat			(caFileName,S,CROSS_TABLE_NAME);
+			strconcat			(caFileName,S,CROSS_TABLE_NAME_RAW);
 			CALifeCrossTable	*tpCrossTable = xr_new<CALifeCrossTable>(caFileName);
 			vector<CALifeCrossTable::SCrossTableCell> tCrossTableUpdate;
 			tCrossTableUpdate.resize(tpCrossTable->m_tCrossTableHeader.dwNodeCount);
@@ -80,6 +80,7 @@ public:
 				tMemoryStream.write(&(tCrossTableUpdate[i]),sizeof(tCrossTableUpdate[i]));
 			tMemoryStream.close_chunk();
 			
+			strconcat			(caFileName,S,CROSS_TABLE_NAME);
 			tMemoryStream.SaveTo(caFileName,0);
 		}
 
