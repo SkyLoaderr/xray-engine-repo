@@ -169,20 +169,49 @@ void CAI_ALife::vfObjectInfo(_OBJECT_ID	&tObjectID)
 	}
 	
 	CALifeMonster *tpALifeMonster = dynamic_cast<CALifeMonster *>(tpALifeDynamicObject);
-	VERIFY(tpALifeMonster);
-	Msg("* Graph ID next : %d",tpALifeMonster->m_tNextGraphID);
-	Msg("* Graph ID prev : %d",tpALifeMonster->m_tPrevGraphID);
-	Msg("* Current speed : %7.2f",tpALifeMonster->m_fCurSpeed);
-	Msg("* Minimum speed : %7.2f",tpALifeMonster->m_fMinSpeed);
-	Msg("* Maximum speed : %7.2f",tpALifeMonster->m_fMaxSpeed);
-	Msg("* Distance from : %7.2f",tpALifeMonster->m_fDistanceFromPoint);
-	Msg("* Distance to   : %7.2f",tpALifeMonster->m_fDistanceToPoint);
-	//Msg("* Health        : %d",tpALifeMonster->m_iHealth);
-
-	CALifeHuman *tpALifeHuman = dynamic_cast<CALifeHuman *>(tpALifeMonster);
+	if (tpALifeMonster) {
+		Msg("* Graph ID next : %d",tpALifeMonster->m_tNextGraphID);
+		Msg("* Graph ID prev : %d",tpALifeMonster->m_tPrevGraphID);
+		Msg("* Current speed : %7.2f",tpALifeMonster->m_fCurSpeed);
+		Msg("* Minimum speed : %7.2f",tpALifeMonster->m_fMinSpeed);
+		Msg("* Maximum speed : %7.2f",tpALifeMonster->m_fMaxSpeed);
+		Msg("* Distance from : %7.2f",tpALifeMonster->m_fDistanceFromPoint);
+		Msg("* Distance to   : %7.2f",tpALifeMonster->m_fDistanceToPoint);
+		Msg("* Health        : %d",tpALifeMonster->m_tMonsterParams.m_iHealth);
+		return;
+	}
+		
+	CALifeMonsterGroup *tpALifeMonsterGroup = dynamic_cast<CALifeMonsterGroup *>(tpALifeDynamicObject);
+	if (tpALifeMonsterGroup) {
+		Msg("* Graph ID next : %d",tpALifeMonsterGroup->m_tNextGraphID);
+		Msg("* Graph ID prev : %d",tpALifeMonsterGroup->m_tPrevGraphID);
+		Msg("* Current speed : %7.2f",tpALifeMonsterGroup->m_fCurSpeed);
+		Msg("* Minimum speed : %7.2f",tpALifeMonsterGroup->m_fMinSpeed);
+		Msg("* Maximum speed : %7.2f",tpALifeMonsterGroup->m_fMaxSpeed);
+		Msg("* Distance from : %7.2f",tpALifeMonsterGroup->m_fDistanceFromPoint);
+		Msg("* Distance to   : %7.2f",tpALifeMonsterGroup->m_fDistanceToPoint);
+		{
+			MONSTER_PARAMS_IT		I = tpALifeMonsterGroup->m_tpMembers.begin();
+			MONSTER_PARAMS_IT		E = tpALifeMonsterGroup->m_tpMembers.end();
+			for (int i=0; I != E; I++, i++)
+				Msg("* Member ID [%d]: %d",i,(*I).m_iHealth);
+		}
+		return;
+	}
+	
+	CALifeHuman *tpALifeHuman = dynamic_cast<CALifeHuman *>(tpALifeDynamicObject);
 	if (tpALifeHuman) {
+		Msg("* Graph ID next : %d",tpALifeHuman->m_tNextGraphID);
+		Msg("* Graph ID prev : %d",tpALifeHuman->m_tPrevGraphID);
+		Msg("* Current speed : %7.2f",tpALifeHuman->m_fCurSpeed);
+		Msg("* Minimum speed : %7.2f",tpALifeHuman->m_fMinSpeed);
+		Msg("* Maximum speed : %7.2f",tpALifeHuman->m_fMaxSpeed);
+		Msg("* Distance from : %7.2f",tpALifeHuman->m_fDistanceFromPoint);
+		Msg("* Distance to   : %7.2f",tpALifeHuman->m_fDistanceToPoint);
+		Msg("* Max item mass : %7.2f",tpALifeHuman->m_fMaxItemMass);
+		
+		Msg("* Health        : %d",tpALifeHuman->m_tHumanParams.m_iHealth);
 		Msg("* Item mass     : %7.2f",tpALifeHuman->m_tHumanParams.m_fCumulativeItemMass);
-		//Msg("* Max item mass : %7.2f",tpALifeHuman->m_fMaxItemMass);
 		Msg("* Items         :");
 		{
 			OBJECT_IT it			= tpALifeHuman->m_tHumanParams.m_tpItemIDs.begin();
@@ -204,6 +233,49 @@ void CAI_ALife::vfObjectInfo(_OBJECT_ID	&tObjectID)
 			for (int i=0; it != E; it++, i++)
 				Msg("* Task ID [%d] : %d",i,*it);
 		}
+		return;
+	}
+	
+	CALifeHumanGroup *tpALifeHumanGroup = dynamic_cast<CALifeHumanGroup *>(tpALifeDynamicObject);
+	VERIFY(tpALifeHumanGroup);
+	Msg("* Graph ID next : %d",tpALifeHumanGroup->m_tNextGraphID);
+	Msg("* Graph ID prev : %d",tpALifeHumanGroup->m_tPrevGraphID);
+	Msg("* Current speed : %7.2f",tpALifeHumanGroup->m_fCurSpeed);
+	Msg("* Minimum speed : %7.2f",tpALifeHumanGroup->m_fMinSpeed);
+	Msg("* Maximum speed : %7.2f",tpALifeHumanGroup->m_fMaxSpeed);
+	Msg("* Distance from : %7.2f",tpALifeHumanGroup->m_fDistanceFromPoint);
+	Msg("* Distance to   : %7.2f",tpALifeHumanGroup->m_fDistanceToPoint);
+	Msg("* Max item mass : %7.2f",tpALifeHumanGroup->m_fMaxItemMass);
+	Msg("* Members       :");
+	{
+		HUMAN_PARAMS_IT		I = tpALifeHumanGroup->m_tpMembers.begin();
+		HUMAN_PARAMS_IT		E = tpALifeHumanGroup->m_tpMembers.begin();
+		for (int i=0; I != E; I++, i++) {
+			Msg("* Member ID [%d]: %d",i,*I);
+			Msg("* Health        : %d",(*I).m_iHealth);
+			Msg("* Item mass     : %7.2f",(*I).m_fCumulativeItemMass);
+			Msg("* Items         :");
+			{
+				OBJECT_IT it			= (*I).m_tpItemIDs.begin();
+				OBJECT_IT e				= (*I).m_tpItemIDs.end();
+				for (int i=0; it != e; it++, i++)
+					Msg("* Item ID [%d]  : %d",i,*it);
+			}
+		}
+	}
+	Msg("* Events        :");
+	{
+		PERSONAL_EVENT_IT it	= tpALifeHumanGroup->m_tpEvents.begin();
+		PERSONAL_EVENT_IT E		= tpALifeHumanGroup->m_tpEvents.end();
+		for (int i=0; it != E; it++, i++)
+			Msg("* Event ID [%d] : %d",i,*it);
+	}
+	Msg("* Tasks        :");
+	{
+		TASK_IT it				= tpALifeHumanGroup->m_tpTaskIDs.begin();
+		TASK_IT E				= tpALifeHumanGroup->m_tpTaskIDs.end();
+		for (int i=0; it != E; it++, i++)
+			Msg("* Task ID [%d] : %d",i,*it);
 	}
 }
 
