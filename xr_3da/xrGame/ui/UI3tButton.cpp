@@ -10,6 +10,7 @@
 #include "StdAfx.h"
 #include "UI3tButton.h"
 #include "../MainUI.h"
+#include "../sound.h"
 
 CUI3tButton::CUI3tButton(){
 	m_iPushOffsetX = 0;
@@ -29,6 +30,33 @@ CUI3tButton::CUI3tButton(){
 
 CUI3tButton::~CUI3tButton(){
 
+}
+ void CUI3tButton::OnClick(){
+    CUIButton::OnClick();
+    PlaySoundT();
+}
+
+void CUI3tButton::OnFocusReceive(){
+	CUIButton::OnFocusReceive();
+	PlaySoundH();
+}
+
+void CUI3tButton::InitSoundH(LPCSTR sound_file){
+	::Sound->create(m_sound_h, true, sound_file);
+}
+
+void CUI3tButton::InitSoundT(LPCSTR sound_file){
+	::Sound->create(m_sound_t, true, sound_file); 
+}
+
+void CUI3tButton::PlaySoundT(){
+	if (m_sound_t.handle)
+        m_sound_t.play(NULL, sm_2D);
+}
+
+void CUI3tButton::PlaySoundH(){
+	if (m_sound_h.handle)
+		m_sound_h.play(NULL, sm_2D);
 }
 
 void CUI3tButton::Init(int x, int y, int width, int height){

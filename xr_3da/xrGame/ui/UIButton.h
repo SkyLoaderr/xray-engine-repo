@@ -30,6 +30,7 @@ public:
 	virtual void	Init(int x, int y, int width, int height);
 
 	virtual void	OnMouse(int x, int y, EUIMessages mouse_action);
+	virtual void	OnClick();
 
 	//прорисовка окна
 	virtual void	DrawTexture();
@@ -37,13 +38,13 @@ public:
 	virtual void	DrawHighlightedText();
 	//обновление перед прорисовкой
 	virtual void	Update();
+	virtual void	Enable(bool status);
 
 
 	//режимы в которых можно нажимать кнопку
 	typedef enum{NORMAL_PRESS, //кнопка нажимается при 
 							   //нажатии и отпускании на ней мыши
-				 DOWN_PRESS,   //сразу при нажатии
-				 UP_PRESS      //сразу при отпускании
+				 DOWN_PRESS    //сразу при нажатии
 			} E_PRESS_MODE;
 
 	void			SetPressMode(E_PRESS_MODE ePressMode) {m_ePressMode = ePressMode;}

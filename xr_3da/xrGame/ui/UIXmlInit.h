@@ -54,6 +54,7 @@ static bool InitTextBanner			(CUIXml &xml_doc, const char *path,	int index, CUIT
 static bool InitMultiTextStatic		(CUIXml &xml_doc, const char *path,	int index, CUIMultiTextStatic *pWnd);
 static bool InitAnimatedStatic		(CUIXml &xml_doc, const char *path,	int index, CUIAnimatedStatic *pWnd);
 static bool InitTextureOffset		(CUIXml &xml_doc, const char *path, int index, CUIStatic* pWnd);
+static bool InitSound				(CUIXml &xml_doc, const char *path, int index, CUI3tButton* pWnd);
 static bool InitMultiTexture		(CUIXml &xml_doc, const char *path, int index, CUI3tButton* pWnd);
 static bool InitMultiText			(CUIXml &xml_doc, const char *path, int index, CUI3tButton* pWnd);
 static bool InitTexture				(CUIXml &xml_doc, const char *path,	int index, CUIStatic *pWnd);

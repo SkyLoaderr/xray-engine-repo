@@ -214,6 +214,7 @@ bool CUIXmlInit::Init3tButton(CUIXml& xml_doc, const char* path, int index, CUI3
 	InitMultiText		(xml_doc, path, index, pWnd);
 	InitMultiTexture	(xml_doc, path, index, pWnd);
 	InitTextureOffset	(xml_doc, path, index, pWnd);
+	InitSound			(xml_doc, path, index, pWnd);
 
 	u32 accel = static_cast<u32>(xml_doc.ReadAttribInt(path, index, "accel", -1));
 	pWnd->SetAccelerator(accel);
@@ -222,6 +223,26 @@ bool CUIXmlInit::Init3tButton(CUIXml& xml_doc, const char* path, int index, CUI3
 	int shadowOffsetY	= xml_doc.ReadAttribInt(path, index, "shadow_offset_y", 0);
 
 	pWnd->SetShadowOffset(shadowOffsetX, shadowOffsetY);
+
+	return true;
+}
+
+bool CUIXmlInit::InitSound(CUIXml& xml_doc, const char* path, int index, CUI3tButton* pWnd){
+	string256 sound_h;
+	string256 sound_t;
+	strconcat(sound_h, path, ":sound_h");
+	strconcat(sound_t, path, ":sound_t");
+
+
+
+	shared_str sound_h_result = xml_doc.Read(sound_h, index);
+	shared_str sound_t_result = xml_doc.Read(sound_t, index);
+
+	if (xr_strlen(sound_h_result) != 0)
+		pWnd->InitSoundH(*sound_h_result);
+
+	if (xr_strlen(sound_t_result) != 0)
+		pWnd->InitSoundT(*sound_t_result);
 
 	return true;
 }

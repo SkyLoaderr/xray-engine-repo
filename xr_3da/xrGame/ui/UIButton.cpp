@@ -70,22 +70,24 @@ void CUIButton::Init(int x, int y, int width, int height)
 	CUIStatic::Init(x, y, width, height);
 }
 
+void CUIButton::Enable(bool status){
+	CUIStatic::Enable(status);
+
+	if (!status)
+		m_bCursorOverWindow = false;
+}
+
 void  CUIButton::OnMouse(int x, int y, EUIMessages mouse_action)
 {
-	inherited::OnMouse(x, y, mouse_action);
-
 	m_bButtonClicked = false;
 
+	inherited::OnMouse(x, y, mouse_action);
+    
 	if(mouse_action == WINDOW_MOUSE_MOVE && m_eButtonState == BUTTON_NORMAL)
 		GetParent()->SetCapture(this, m_bCursorOverWindow);
 
-	switch(m_ePressMode)
+	switch (m_ePressMode)
 	{
-	//////////////////////////
-	//нормальный режим нажатия
-	//
-	// Поведение кнопки как переключателя реализовано пока только в режиме NORMAL_PRESS
-	// Отжатие производить в ручную вызовом SetButtonMode(BUTTON_NORMAL)
 	case NORMAL_PRESS:
 		if(m_eButtonState == BUTTON_NORMAL)
 		{
@@ -101,20 +103,16 @@ void  CUIButton::OnMouse(int x, int y, EUIMessages mouse_action)
 			if(mouse_action == WINDOW_LBUTTON_UP)
 			{
 				if(m_bCursorOverWindow)
-				{
-					GetMessageTarget()->SendMessage(this, BUTTON_CLICKED);
-					m_bButtonClicked = true;
-				}
+					OnClick();
 			
 				if (!m_bIsSwitch)
 					m_eButtonState = BUTTON_NORMAL;
 			
-				//освободить мышь
 				GetParent()->SetCapture(this, false);
 			}
 			else if(mouse_action == WINDOW_MOUSE_MOVE)
 			{
-				if(!m_bCursorOverWindow)
+				if(!m_bCursorOverWindow && !m_bIsSwitch)
 					m_eButtonState = BUTTON_UP;
 			}
 		}
@@ -132,64 +130,32 @@ void  CUIButton::OnMouse(int x, int y, EUIMessages mouse_action)
 			}
 		}
 		break;
-	////////////////////////////////
-	//нужно только подвести и нажать
+
 	case DOWN_PRESS:
         if(mouse_action == WINDOW_MOUSE_MOVE)
 		{
 			if(m_bCursorOverWindow)
 			{
 				m_eButtonState = BUTTON_PUSHED;
-				//захватить мышь
 				GetParent()->SetCapture(this, true);
 			}
 			else
 			{
 				m_eButtonState = BUTTON_NORMAL;
-				//освободить мышь
 				GetParent()->SetCapture(this, false);
-
 			}
 		}
 		else if(mouse_action == WINDOW_LBUTTON_DOWN || mouse_action == WINDOW_LBUTTON_DB_CLICK)
-		{
 			if(m_bCursorOverWindow)
-			{
-				GetMessageTarget()->SendMessage(this, BUTTON_CLICKED);
-				m_bButtonClicked = true;
-			}
-		}
+				OnClick();
 
-		break;
-	///////////////////////////////////
-	//нужно только подвести и отпустить
-	case UP_PRESS:
-        if(mouse_action == WINDOW_MOUSE_MOVE)
-		{
-			if(m_bCursorOverWindow)
-			{
-				m_eButtonState = BUTTON_PUSHED;
-				//захватить мышь
-				GetParent()->SetCapture(this, true);
-			}
-			else
-			{
-				m_eButtonState = BUTTON_NORMAL;
-				//освободить мышь
-				GetParent()->SetCapture(this, false);
-			}
-		}
-		else if(mouse_action == WINDOW_LBUTTON_UP)
-		{
-			if(m_bCursorOverWindow)
-			{
-				GetMessageTarget()->SendMessage(this, BUTTON_CLICKED);
-				m_bButtonClicked = true;
-			}	
-		} 
 		break;
 	}
+}
 
+void CUIButton::OnClick(){
+	GetMessageTarget()->SendMessage(this, BUTTON_CLICKED);
+	m_bButtonClicked = true;
 }
 
 void CUIButton::DrawTexture()
@@ -199,21 +165,11 @@ void CUIButton::DrawTexture()
 	if(m_bAvailableTexture && m_bTextureEnable)
 	{
 		if(m_eButtonState == BUTTON_UP || m_eButtonState == BUTTON_NORMAL)
-		{
 			m_UIStaticItem.SetPos(rect.left + m_iTexOffsetX, rect.top + m_iTexOffsetY);
-		}
 		else
-		{
-			m_UIStaticItem.SetPos(rect.left + m_iPushOffsetX + m_iTexOffsetX, 
-				rect.top + m_iPushOffsetY + m_iTexOffsetY);
-		}
+			m_UIStaticItem.SetPos(rect.left + m_iPushOffsetX + m_iTexOffsetX, rect.top + m_iPushOffsetY + m_iTexOffsetY);
 
-//.		if(m_bStretchTexture)
-//.			//растягиваем текстуру, Clipper в таком случае игнорируется (пока)
-#pragma todo("ALEXMX -> SATAN")
-//.			m_UIStaticItem.Render(0, 0, rect.right-rect.left, rect.bottom-rect.top);
-//.		else
-			m_UIStaticItem.Render();
+		m_UIStaticItem.Render();
 	}
 }
 

@@ -33,7 +33,8 @@ void CUITabButton::ShowAssociatedWindow(bool bShow){
 }
 
 void CUITabButton::OnMouse(int x, int y, EUIMessages mouse_action){
-	m_bCursorOverWindow = (0 <= x) && (GetWidth() >= x) && (0 <= y) && (GetHeight() >= y);
+	CUI3tButton::OnMouse(x, y, mouse_action);
+//	m_bCursorOverWindow = (0 <= x) && (GetWidth() >= x) && (0 <= y) && (GetHeight() >= y);
     
 	// we ends capturing if cursor is out of window
     GetParent()->SetCapture(this, m_bCursorOverWindow);	

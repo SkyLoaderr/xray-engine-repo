@@ -30,6 +30,11 @@ public:
 			void SetTextColorD(u32 color);
 			void SetTextColorT(u32 color);
 	virtual void SetTextureOffset(int x, int y);	
+			void InitSoundH(LPCSTR sound_file);
+			void InitSoundT(LPCSTR sound_file);
+
+	virtual void OnClick();
+	virtual void OnFocusReceive();
 	
 	// behavior
 	virtual void DrawTexture();
@@ -39,7 +44,11 @@ public:
 	virtual void SendMessage(CUIWindow* pWnd, s16 msg, void* pData = 0);
 
 private:	
+			void PlaySoundH();
+			void PlaySoundT();
 	CUI_IB_Static	m_background;
+	ref_sound		m_sound_h;
+	ref_sound		m_sound_t;
 
     // text color
 	bool m_bUseTextColorD;

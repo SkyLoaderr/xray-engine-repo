@@ -9904,6 +9904,16 @@
 						RelativePath=".\ui\UIStalkersRankingWnd.h">
 					</File>
 				</Filter>
+				<Filter
+					Name="Lines"
+					Filter="">
+					<File
+						RelativePath=".\ui\UILines.cpp">
+					</File>
+					<File
+						RelativePath=".\ui\UILines.h">
+					</File>
+				</Filter>
 			</Filter>
 			<Filter
 				Name="UIWindows"
