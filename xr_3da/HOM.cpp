@@ -78,3 +78,20 @@ void CHOM::Unload		()
 	_FREE		(m_pTris);
 }
 
+void CHOM::Render		(CFrustum& base)
+{
+	if (0==m_pModel)	return;
+
+	// Clear buffers
+	Raster.clear		();
+
+	// Query DB
+	XRC.frustum_options	(0);
+	XRC.frustum_query	(m_pModel,base);
+	CDB::RESULT*	it	= XRC.r_begin();
+	CDB::RESULT*	end	= XRC.r_end();
+	for (; it!=end; it++)
+	{
+		
+	}
+}

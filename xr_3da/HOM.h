@@ -16,6 +16,7 @@ private:
 public:
 	void					Load	();
 	void					Unload	();
+	void					Render	(CFrustum& base);
 	
 	CHOM();
 	~CHOM();
