@@ -696,7 +696,7 @@ public:
 	CCC_FlushLog(LPCSTR N) : IConsole_Command(N)  { bEmptyArgsHandled = true; };
 	virtual void Execute(LPCSTR /**args/**/) {
 		FlushLog();
-		Msg		("! Log file has been saved successfully!");
+		Msg		("* Log file has been saved successfully!");
 	}
 };
 
