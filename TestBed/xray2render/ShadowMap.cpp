@@ -360,7 +360,7 @@ HRESULT CMyD3DApplication::InitDeviceObjects()
 	// Create overlay VB
 	{
 		m_pd3dDevice->CreateVertexBuffer	(4 * sizeof(TVERTEX), D3DUSAGE_WRITEONLY, 0, D3DPOOL_MANAGED, &m_pQuadVB, NULL);
-		m_pOverlayVB->Lock					(0, 0, (void**)&pDstT, 0);
+		m_pQuadVB->Lock						(0, 0, (void**)&pDstT, 0);
 		pDstT[0].p	= D3DXVECTOR4(-1, +1, 0.0f, 1.0f);
 		pDstT[0].tu = 0.0f;
 		pDstT[0].tv = 1.0f;
@@ -370,10 +370,10 @@ HRESULT CMyD3DApplication::InitDeviceObjects()
 		pDstT[2].p	= D3DXVECTOR4(-1, -1, 0.0f, 1.0f);
 		pDstT[2].tu = 0.0f;
 		pDstT[2].tv = 0.0f;
-		pDstT[3].p	= D3DXVECTOR4(+1, -1, 4.5f, 0.0f, 1.0f);
+		pDstT[3].p	= D3DXVECTOR4(+1, -1, 0.0f, 1.0f);
 		pDstT[3].tu = 1.0f;
 		pDstT[3].tv = 0.0f;
-		m_pOverlayVB->Unlock();
+		m_pQuadVB->Unlock					();
 	}
 
 	// Create shader declaration(s)
@@ -483,7 +483,8 @@ HRESULT CMyD3DApplication::DeleteDeviceObjects()
     SAFE_RELEASE(m_pModelVB);
     SAFE_RELEASE(m_pModelIB);
     SAFE_RELEASE(m_pFloorVB);
-    SAFE_RELEASE(m_pVertDecl);
+    SAFE_RELEASE(m_pDeclVert);
+	SAFE_RELEASE(m_pDeclVert2D);
 
     SAFE_RELEASE(m_pOverlayVB);
 
@@ -574,7 +575,7 @@ HRESULT CMyD3DApplication::RenderShadowMap()
 	// Set shadow map shader
 	m_pd3dDevice->SetPixelShader			(m_pShadowMapPS);
 	m_pd3dDevice->SetVertexShader			(m_pShadowMapVS);
-	m_pd3dDevice->SetVertexDeclaration		(m_pVertDecl);
+	m_pd3dDevice->SetVertexDeclaration		(m_pDeclVert);
 
 	D3DXVECTOR4	vRange						= D3DXVECTOR4	(1.0f / DEPTH_RANGE, 0.0f, 0.0f, 0.0f);
 	m_pd3dDevice->SetVertexShaderConstantF	(12, vRange, 1);
@@ -637,7 +638,7 @@ HRESULT CMyD3DApplication::RenderScene	()
 
 	// Vertex Shader
 	m_pd3dDevice->SetVertexShader			(m_pSceneVS);
-	m_pd3dDevice->SetVertexDeclaration		(m_pVertDecl);
+	m_pd3dDevice->SetVertexDeclaration		(m_pDeclVert);
 
 	m_pd3dDevice->SetVertexShaderConstantF	(31, vDiffuseModel, 1);
 	D3DXVECTOR4	vZBias = D3DXVECTOR4(0.1f, -0.01f, 1.0f, 0.0f);
@@ -697,7 +698,7 @@ HRESULT CMyD3DApplication::RenderFAT	()
 	// Shader and params
 	m_pd3dDevice->SetPixelShader			(s_Scene2fat.ps);
 	m_pd3dDevice->SetVertexShader			(s_Scene2fat.vs);
-	m_pd3dDevice->SetVertexDeclaration		(m_pVertDecl);
+	m_pd3dDevice->SetVertexDeclaration		(m_pDeclVert);
 	cc.set									(s_Scene2fat.constants.get("m_model2view"),				*((Fmatrix*)&dm_model2world2view));
 	cc.set									(s_Scene2fat.constants.get("m_model2view2projection"),	*((Fmatrix*)&dm_model2world2view2projection));
 	cc.flush								(m_pd3dDevice);
@@ -719,7 +720,9 @@ HRESULT CMyD3DApplication::RenderCombine	(COMBINE_MODE M)
 {
 	m_pd3dDevice->Clear						(0L, NULL, D3DCLEAR_TARGET, 0x00, 1.0f, 0L);
 
-	if (M==CM_DBG_NORMALS)					RenderCombineDBG_Normals();
+	if (M==CM_DBG_NORMALS)					return RenderCombineDBG_Normals();
+
+	return E_FAIL;
 }
 
 //-----------------------------------------------------------------------------
@@ -737,21 +740,12 @@ HRESULT CMyD3DApplication::RenderCombineDBG_Normals	()
 	// Shader and params
 	m_pd3dDevice->SetPixelShader			(s_CombineDBG_Normals.ps);
 	m_pd3dDevice->SetVertexShader			(s_CombineDBG_Normals.vs);
-	m_pd3dDevice->SetVertexDeclaration		(m_pVert2D_Decl);
+	m_pd3dDevice->SetVertexDeclaration		(m_pDeclVert2D);
 	cc.flush								(m_pd3dDevice);
 
 	// Render Quad
-	m_pd3dDevice->SetStreamSource			(0, m_pModelVB, 0, sizeof(VERTEX));
-	m_pd3dDevice->SetIndices				(m_pModelIB);
-	m_pd3dDevice->DrawIndexedPrimitive		(D3DPT_TRIANGLELIST, 0, 0, m_dwModelNumVerts, 0, m_dwModelNumFaces);
-
-	m_pd3dDevice->SetFVF					(TVERTEX_FVF);
-	m_pd3dDevice->SetStreamSource			(0, m_pOverlayVB, 0, sizeof(TVERTEX));
-	m_pd3dDevice->SetTexture				(0, m_pShadowMap);
-	m_pd3dDevice->SetTextureStageState		(0, D3DTSS_COLORARG1, D3DTA_TEXTURE);
-	m_pd3dDevice->SetTextureStageState		(0, D3DTSS_COLOROP, D3DTOP_SELECTARG1);
+	m_pd3dDevice->SetStreamSource			(0, m_pQuadVB, 0, sizeof(TVERTEX));
 	m_pd3dDevice->DrawPrimitive				(D3DPT_TRIANGLESTRIP, 0, 2);
-	m_pd3dDevice->SetTexture				(0, NULL);
 
 	// Cleanup
 	m_pd3dDevice->SetTexture				(0, NULL);
