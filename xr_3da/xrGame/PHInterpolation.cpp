@@ -45,7 +45,8 @@ void CPHInterpolation::InterpolatePosition(Fvector& pos)
 
 void CPHInterpolation::InterpolateRotation(Fmatrix& rot){
 	Fquaternion q;
-	float t=ph_world->m_frame_time/fixed_step;
+	float	t = ph_world->m_frame_time/fixed_step;
+	VERIFY		(t>=0.f && t<=1.f);
 	q.slerp(qRotations[0],qRotations[1],t);
 	rot.rotation(q);
 }
