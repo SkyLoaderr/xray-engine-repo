@@ -293,7 +293,7 @@ void CWeaponMagazined::MediaLOAD		()
 	if (hFlames.size())		return;
 
 	// flame textures
-	LPCSTR S		= pSettings->ReadSTRING	(cName(),"flame");
+	LPCSTR S		= pSettings->ReadSTRING	(cNameSect(),"flame");
 	DWORD scnt		= _GetItemCount(S);
 	string256		name;
 	for (DWORD i=0; i<scnt; i++)

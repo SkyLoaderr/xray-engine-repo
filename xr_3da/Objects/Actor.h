@@ -242,9 +242,10 @@ public:
 	virtual void			OnKeyboardHold		(int dik);
 
 	virtual void			Update				( DWORD T ); 
-	virtual void			UpdateCL			();
+	virtual void			UpdateCL			( );
 	virtual void			OnVisible			( );
 	virtual void			OnEvent				( NET_Packet& P, u16 type		);
+	virtual void			OnDeviceCreate		( );
 
 	void					ZoneEffect			(float z_amount);
 

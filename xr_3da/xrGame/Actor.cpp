@@ -154,8 +154,6 @@ void CActor::Load		(LPCSTR section )
 	m_fRunFactor		= pSettings->ReadFLOAT(section,"run_coef");
 	m_fCrouchFactor		= pSettings->ReadFLOAT(section,"crouch_coef");
 
-	R_ASSERT			(pVisual->Type==MT_SKELETON);
-
 	Weapons				= new CWeaponList(this);
 	Weapons->Init		("bip01_r_hand","bip01_l_finger1");
 
@@ -175,26 +173,15 @@ void CActor::Load		(LPCSTR section )
 	pSounds->Create		(sndDie[2],			TRUE,	strconcat(buf,cName(),"\\die2"),0,SOUND_TYPE_MONSTER_DYING_HUMAN);
 	pSounds->Create		(sndDie[3],			TRUE,	strconcat(buf,cName(),"\\die3"),0,SOUND_TYPE_MONSTER_DYING_HUMAN);
 
-	// take index spine bone
-	int spine_bone		= PKinematics(pVisual)->LL_BoneID("bip01_spine1");
-	int shoulder_bone	= PKinematics(pVisual)->LL_BoneID("bip01_spine2");
-	int head_bone		= PKinematics(pVisual)->LL_BoneID("bip01_head");
-	PKinematics(pVisual)->LL_GetInstance(spine_bone).set_callback	(SpinCallback,this);
-	PKinematics(pVisual)->LL_GetInstance(shoulder_bone).set_callback(ShoulderCallback,this);
-	PKinematics(pVisual)->LL_GetInstance(head_bone).set_callback	(HeadCallback,this);
-
 	Movement.ActivateBox(0);
 	
 	cam_Set				(eacFirstEye);
 
 	// motions
-	CKinematics* V		= PKinematics(pVisual);
 	m_current_legs_blend= 0;
 	m_current_jump_blend= 0;
 	m_current_legs		= 0;
 	m_current_torso		= 0;
-	m_normal.Create		(V,"norm");
-	m_crouch.Create		(V,"cr");
 
 	// sheduler
 	shedule_Min			= shedule_Max = 1;
@@ -919,4 +906,22 @@ void CActor::OnHUDDraw	(CCustomHUD* hud)
 	HUD->pHUDFont->Out	(400,340,"Vel:           %3.2f",Movement.GetVelocity());
 	HUD->pHUDFont->Out	(400,350,"Vel Magnitude: %3.2f",Movement.GetVelocityMagnitude());
 */
+}
+
+void CActor::OnDeviceCreate()
+{
+	inherited::OnDeviceCreate();
+
+	// take index spine bone
+	CKinematics* V		= PKinematics(pVisual);
+	R_ASSERT			(V);
+	int spine_bone		= V->LL_BoneID("bip01_spine1");
+	int shoulder_bone	= V->LL_BoneID("bip01_spine2");
+	int head_bone		= V->LL_BoneID("bip01_head");
+	V->LL_GetInstance(spine_bone).set_callback		(SpinCallback,this);
+	V->LL_GetInstance(shoulder_bone).set_callback	(ShoulderCallback,this);
+	V->LL_GetInstance(head_bone).set_callback		(HeadCallback,this);
+
+	m_normal.Create		(V,"norm");
+	m_crouch.Create		(V,"cr");
 }
