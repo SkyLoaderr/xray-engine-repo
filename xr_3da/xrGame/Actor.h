@@ -146,16 +146,8 @@ protected:
 	u32						patch_frame;
 	Fvector					patch_position;
 
-	//skeleton
-	float					skel_density_factor;
-	float					skel_airr_lin_factor;
-	float					skel_airr_ang_factor;
-	float					hinge_force_factor;
-	float					hinge_force_factor1;
-	float					hinge_force_factor2;
-	float					hinge_vel;
-	float					skel_fatal_impulse_factor;
-	int						skel_ddelay;
+
+int								skel_ddelay;
 							
 	///////////////////////////////////////////////////
 	static void	__stdcall	SpinCallback	(CBoneInstance*);

@@ -17,6 +17,17 @@ const u32		patch_frames	= 50;
 const float		respawn_delay	= 1.f;
 const float		respawn_auto	= 7.f;
 
+
+	//skeleton
+static	float					skel_density_factor;
+static	float					skel_airr_lin_factor;
+static	float					skel_airr_ang_factor;
+static	float					hinge_force_factor;
+static	float					hinge_force_factor1;
+static	float					hinge_force_factor2;
+static	float					hinge_vel;
+static	float					skel_fatal_impulse_factor;
+
 // breakpoints
 #include "..\xr_input.h"
 
@@ -532,7 +543,7 @@ void CActor::g_Physics			(Fvector& _accel, float jump, float dt)
 	//ph_Movement.SetContactSpeed(ph_Movement.GetContactSpeed());
 	//velocity.y=0.f;
 //	ph_Movement.SetActualVelocity(velocity.magnitude());
-	ph_Movement.bSleep=false;
+	//ph_Movement.bSleep=false;
 	//ph_Movement.gcontact_HealthLost=ph_Movement.gcontact_HealthLost;
 	//ph_Movement.gcontact_Power=ph_Movement.gcontact_Power;
 
