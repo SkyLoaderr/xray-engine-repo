@@ -4,14 +4,11 @@
 
 #include "stdafx.h"
 #include "Portal.h"
-#include "render.h"
-#include "xrLevel.h"
-#include "xr_object.h"
-#include "tempobject.h"
-#include "fbasicvisual.h"
+#include "..\xr_object.h"
+#include "..\tempobject.h"
+#include "..\fbasicvisual.h"
 
-#include "xr_creator.h"
-#include "std_classes.h"
+//#include "std_classes.h"
 
 static u32 COLORS[8] = 
 {

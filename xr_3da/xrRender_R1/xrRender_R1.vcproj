@@ -297,6 +297,16 @@
 				RelativePath="WallmarksEngine.h">
 			</File>
 		</Filter>
+		<Filter
+			Name="Sector/Portal"
+			Filter="">
+			<File
+				RelativePath="Portal.cpp">
+			</File>
+			<File
+				RelativePath="Portal.h">
+			</File>
+		</Filter>
 	</Files>
 	<Globals>
 	</Globals>

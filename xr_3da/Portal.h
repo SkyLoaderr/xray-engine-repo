@@ -8,14 +8,15 @@
 
 #include "frustum.h"
 
-class ENGINE_API CPortal;
-class ENGINE_API CSector;
 class ENGINE_API CVisual;
 class ENGINE_API CObject;
 class ENGINE_API CTempObject;
 
+class CPortal;
+class CSector;
+
 // Connector
-class ENGINE_API CPortal
+class CPortal
 {
 private:
 	vector<Fvector>			poly;
@@ -23,11 +24,11 @@ private:
 public:
 	Fplane					P;
 	Fsphere					S;
-	u32					dwFrame;
-	u32					dwFrameObject;
+	u32						dwFrame;
+	u32						dwFrameObject;
 	BOOL					bDualRender;
 
-	void					Setup(Fvector* V, int vcnt, CSector* face, CSector* back);
+	void					Setup						(Fvector* V, int vcnt, CSector* face, CSector* back);
 
 	vector<Fvector>&		getPoly()					{ return poly;		}
 	CSector*				Back()						{ return pBack;		}
@@ -51,12 +52,12 @@ public:
 // Main 'Sector' class
 typedef svector<CObject*,256>	objSET;
 typedef BOOL	__fastcall		objQualifier(CObject* O, void* P);
-class ENGINE_API CSector
+class CSector
 {
 public:
 	struct	objQuery
 	{
-		u32			dwMark;
+		u32				dwMark;
 		objSET*			Collector;
 		objQualifier*	Qualifier;
 		void*			Param;
