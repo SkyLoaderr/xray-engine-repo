@@ -20,6 +20,9 @@ IC	CObjectActionBase<_item_type>::CObjectActionBase(_item_type *item, CAI_Stalke
 	m_item					(item)
 {
 	m_storage				= storage;
+#ifdef LOG_ACTION
+	m_switched				= false;
+#endif
 }
 
 template <typename _item_type>
