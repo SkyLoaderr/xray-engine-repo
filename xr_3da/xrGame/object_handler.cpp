@@ -695,30 +695,10 @@ void CObjectHandler::add_item			(CInventoryItem *inventory_item)
 	// нож, (еда, питьё), приборы
 
 	//
-//	PSPIItem				I = inventory().m_all.begin();
-//	PSPIItem				E = inventory().m_all.end();
-//	for ( ; I != E; ++I)
-//		if (*I != inventory_item) {
-//			// hide_i -> show_new
-//			if (graph().vertex(uid(eObjectActionHide,inventory_item->ID())) && graph().vertex(uid(eObjectActionShow,(*I)->ID())))
-//				add_transition	(uid(eObjectActionHide,inventory_item->ID()),	uid(eObjectActionShow,(*I)->ID()),1.f);
-//			// hide_new -> show_i
-//			if (graph().vertex(uid(eObjectActionHide,(*I)->ID())) && graph().vertex(uid(eObjectActionShow,inventory_item->ID())))
-//				add_transition	(uid(eObjectActionHide,(*I)->ID()),				uid(eObjectActionShow,inventory_item->ID()),1.f);
-//			// drop_i -> show_new
-//			if (graph().vertex(uid(eObjectActionDrop,inventory_item->ID())) && graph().vertex(uid(eObjectActionShow,(*I)->ID())))
-//				add_transition	(uid(eObjectActionDrop,inventory_item->ID()),	uid(eObjectActionShow,(*I)->ID()),1.f);
-//			// drop_new -> show_i
-//			if (graph().vertex(uid(eObjectActionDrop,(*I)->ID())) && graph().vertex(uid(eObjectActionShow,inventory_item->ID())))
-//				add_transition	(uid(eObjectActionDrop,(*I)->ID()),				uid(eObjectActionShow,inventory_item->ID()),1.f);
-//		}
-
 	if (graph().vertex(uid(eObjectActionHide,inventory_item->ID())))
 		add_transition		(uid(eObjectActionHide,inventory_item->ID()),u32(eObjectActionNoItems),1.f);
 	if (graph().vertex(uid(eObjectActionShow,inventory_item->ID())))
 		add_transition		(u32(eObjectActionNoItems),uid(eObjectActionShow,inventory_item->ID()),1.f);
-//	if (graph().vertex(uid(eObjectActionDrop,inventory_item->ID())))
-//		add_transition		(uid(eObjectActionDrop,inventory_item->ID()),u32(eObjectActionNoItems),1.f);
 }
 
 void CObjectHandler::remove_item		(CInventoryItem *inventory_item)
