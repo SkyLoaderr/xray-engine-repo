@@ -217,12 +217,14 @@ void CAI_ALife::vfCommunicateWithTrader(CALifeHuman *tpALifeHuman, CALifeHuman *
 			OBJECT_IT	E = tpALifeHuman->m_tHumanParams.m_tpItemIDs.end();
 			for ( ; I != E; I++)
 				if (m_tObjectRegistry.m_tppMap[*I]->m_tClassID == tCurTask.tClassID) {
+					tpALifeHuman->m_tTaskState = eTaskStateNone;
+
 					tpTrader->m_tHumanParams.m_tpItemIDs.push_back(*I);
 					tpALifeHuman->m_tHumanParams.m_tpItemIDs.erase(I);
-					tpALifeHuman->m_tTaskState = eTaskStateNone;
 					CALifeItem *tpALifeItem = dynamic_cast<CALifeItem *>(m_tObjectRegistry.m_tppMap[*I]);
 					tpTrader->m_tHumanParams.m_fCumulativeItemMass += tpALifeItem->m_fMass;
 					tpALifeHuman->m_tHumanParams.m_fCumulativeItemMass -= tpALifeItem->m_fMass;
+					tpTrader->m_tHumanParams.m_dwMoney -= tpALifeItem->m_dwCost;
 					tpALifeHuman->m_tHumanParams.m_dwMoney += tpALifeItem->m_dwCost;
 				}
 			m_tTaskRegistry.m_tpMap.erase(T);
