@@ -457,6 +457,7 @@ CSE_ALifeTrader *CSE_ALifeTraderRegistry::tpfGetNearestSuitableTrader(CSE_ALifeH
 			tpBestTrader	= *I;
 		}
 	}
+	R_ASSERT2		(tpBestTrader,"There is no traders in the game");
 	return			(tpBestTrader);
 }
 
