@@ -91,13 +91,15 @@ void CLocatorAPI::Register		(LPCSTR name, u32 vfs, u32 ptr, u32 size, BOOL bComp
 	
 	// Try to register folder(s)
 	string256			temp;	strcpy(temp,desc.name);
+	string256			path;
 	string256			folder;
 	while (temp[0]) 
 	{
-		_splitpath			(temp, 0, folder, 0, 0 );
-		if (!exist(folder))	
+		_splitpath		(temp, path, folder, 0, 0 );
+        strcat			(path,folder);
+		if (!exist(path))	
 		{
-			desc.name			= xr_strdup(folder);
+			desc.name			= xr_strdup(path);
 			desc.vfs			= 0xffffffff;
 			desc.ptr			= 0;
 			desc.size			= 0;
@@ -185,10 +187,16 @@ bool CLocatorAPI::Recurse		(const char* path)
 	FFVec			rec_files;
 	rec_files.reserve(256);
 
+	// insert self
+    if (path&&path[0])
+		Register	(path,0xffffffff,0,0,0,0);
+
+	// find all files    
 	if (-1==(hFile=_findfirst(N, &sFile))){
     	Log			("Wrong path: ",path);
     	return		false;
     }
+    // загоняем в вектор для того *.xp* приходили в сортированном порядке
 	rec_files.push_back(sFile);
 	while			( _findnext( hFile, &sFile ) == 0 )
 		rec_files.push_back(sFile);
@@ -522,7 +530,11 @@ void CLocatorAPI::set_file_age(LPCSTR nm, int age)
         _utimbuf	tm;
         tm.actime	= age;
         tm.modtime	= age;
-        _utime		(nm,&tm);
+        R_ASSERT2	(0==_utime(nm,&tm),"Can't set file age.");
+/*
+        string256 err;
+        strcpy(err,_sys_errlist[errno]);
+*/
     }
 }
 
