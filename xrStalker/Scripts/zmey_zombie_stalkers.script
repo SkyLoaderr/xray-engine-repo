@@ -1,0 +1,36 @@
+
+local zombied_stalker_names = {
+	"m_stalker_zombie1",
+	"m_stalker_zombie2",
+	"m_stalker_zombie3",
+	"m_stalker_zombie4"
+}
+
+local release_distance = 10
+
+function main()
+	local actor = get_actor()
+	local zombies = {}
+	local num_stalkers = table.getn(zombied_stalker_names)
+
+	for i = 1, num_stalkers do
+		zombies[i] = get_level_object(zombied_stalker_names[i])
+		zombies[i]:script(true, zmey_zombie_stalkers.script_name())
+		action( zombies[i], anim("norm_dmg_torso_1_idle_0"), cond(cond.anim_end, time_infinite) )
+	end
+
+	local anyone_there = false
+	repeat
+		for i = 1, num_stalkers do
+			if zombies[i] ~= nil then
+				anyone_there = true
+				if distance_between(zombies[i], actor) < release_distance then
+					zombies[i]:script(false, zmey_zombie_stalkers.script_name())
+					zombies[i] = nil
+				end
+			end
+		end
+		wait()
+	until not anyone_there
+end
+

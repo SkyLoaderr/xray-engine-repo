@@ -604,7 +604,7 @@ function Camper:nothing_happened_yet()
 		return
 	end
 
-	if distance_between(self.c_npc.npc, self.c_enemy.npc) <= 15 then
+	if distance_between(self.c_npc.npc, self.c_enemy.npc) <= 25 then
 		if not self.c_npc:is_talking() and not self.c_npc:is_shooting() then
 			printf("_bp: nothing_happened_yet: Distance OK, not talking, not shooting: %d", game.time())
 			self.c_npc:talk_dialogue(self.c_enemy.npc)
@@ -637,7 +637,7 @@ function Camper:see_enemy()
 	end
 
 	if not self.c_npc:is_shooting() and
-	   (distance_between(self.c_npc.npc, self.c_enemy.npc) <= 100000 or self.c_npc.npc.health < 0.99) then -- distance was 10
+	   (distance_between(self.c_npc.npc, self.c_enemy.npc) <= 40 or self.c_npc.npc.health < 0.99) then -- distance was 10
 		if self.c_npc:is_talking() or self.c_npc:is_looking() then
 			interrupt_action(self.c_npc.npc, self.script_name)
 		end

@@ -6,7 +6,7 @@ function boar_callback (obj, action_type, index)
 
 	if first_call == true then return end
 
-    local ptr = patrol (obj:patrol ())
+	local ptr = patrol (obj:patrol ())
 
 	if ptr:flag (index, 1) == false then return end
 
@@ -14,88 +14,92 @@ function boar_callback (obj, action_type, index)
 	obj:clear_callback (game_object.movement)
 	reset_action (obj, m_attack_wave.script_name ())
 	action (obj, move (move.act_stand_idle, move.force_type, patrol ("way0001")), anim ("stand_attack_1"), 
-			sound ("monsters\\boar\\attack_0", "bip01_head", vector():set(0,0,0), vector():set(0,0,0), false),	cond (cond.anim_end))
-    action (obj, move (move.act_run, move.force_type, patrol ("way0001")), cond (cond.move_end))
-
+	        sound ("monsters\\boar\\attack_0", "bip01_head", vector():set(0,0,0), vector():set(0,0,0), false),
+	        cond (cond.anim_end))
+	action (obj, move (move.act_run, move.force_type, patrol ("way0001_cont")), cond (cond.move_end))
+	--[[
+	action_first (obj, move (move.act_stand_idle, move.force_type, patrol ("way0001")), anim ("stand_attack_1"), 
+	        sound ("monsters\\boar\\attack_0", "bip01_head", vector():set(0,0,0), vector():set(0,0,0), false),
+	        cond (cond.anim_end))
+	--]]
 end
 
-
 function main ()
+	local t = {
+		get_level_object ("m_boar_e0000"),
+		get_level_object ("m_boar_e0001"),
+		get_level_object ("m_boar_e0002"),
+		get_level_object ("m_dog_e0000"),
+		get_level_object ("m_dog_e0001"),
+		get_level_object ("m_dog_e0002"),
+		get_level_object ("m_dog_e0003"),
+		get_level_object ("m_dog_e0004"),
+		get_level_object ("m_pseudodog_e0000"),
+		get_level_object ("m_pseudodog_e0001"),
+		get_level_object ("m_pseudodog_e0003"),
+		get_level_object ("m_flesh_e0000"),
+		get_level_object ("m_flesh_e0001"),
+		get_level_object ("m_flesh_e0002"),
+		get_level_object ("m_boar_e0003"),
+		get_level_object ("m_flesh_e0003"),
+		get_level_object ("m_flesh_e0004"),
+		get_level_object ("m_dog_e0005"),
+		get_level_object ("m_pseudodog_e0002")
+	}
+	local tways = {
+		patrol ("way0000"),            --m_boar_e0000
+		patrol ("way0001"),            --m_boar_e0001
+		patrol ("way0002"),            --m_boar_e0002
+		patrol ("way0004"),            --m_dog_e0000
+		patrol ("way0005"),            --m_dog_e0001
+		patrol ("way0006"),            --m_dog_e0002
+		patrol ("way0007"),            --m_dog_e0003
+		patrol ("way0008"),            --m_dog_e0004
+		patrol ("way0001_dog"),        --m_pseudodog_e0000
+		patrol ("way0005"),            --m_pseudodog_e0001
+		patrol ("way0002"),            --m_pseudodog_e0003
+		patrol ("way0010"),            --m_flesh_e0000
+		patrol ("way0011"),            --m_flesh_e0001
+		patrol ("way0003"),            --m_flesh_e0002
+		patrol ("way0003"),            --m_boar_e0003
+		patrol ("way0009"),            --m_flesh_e0003
+		patrol ("way0012"),            --m_flesh_e0004
+		patrol ("way0009"),            --m_dog_e0005
+		patrol ("way0003")             --m_pseudodog_e0002
+	}
 
-    local t = {
-               get_level_object ("m_boar_e0000"),
-               get_level_object ("m_boar_e0001"),
-               get_level_object ("m_boar_e0002"),
-               get_level_object ("m_dog_e0000"),
-               get_level_object ("m_dog_e0001"),
-               get_level_object ("m_dog_e0002"),
-               get_level_object ("m_dog_e0003"),
-               get_level_object ("m_dog_e0004"),
-               get_level_object ("m_pseudodog_e0000"),
-               get_level_object ("m_pseudodog_e0001"),
-               get_level_object ("m_pseudodog_e0003"),
-               get_level_object ("m_flesh_e0000"),
-               get_level_object ("m_flesh_e0001"),
-               get_level_object ("m_flesh_e0002"),
-               get_level_object ("m_boar_e0003"),
-               get_level_object ("m_flesh_e0003"),
-               get_level_object ("m_flesh_e0004"),
-               get_level_object ("m_dog_e0005"),
-               get_level_object ("m_pseudodog_e0002")
-               }
-    local tways = {
-                  patrol ("way0000"),            --m_boar_e0000
-                  patrol ("way0001"),            --m_boar_e0001
-                  patrol ("way0002"),            --m_boar_e0002
-                  patrol ("way0004"),            --m_dog_e0000
-                  patrol ("way0005"),            --m_dog_e0001
-                  patrol ("way0006"),            --m_dog_e0002
-                  patrol ("way0007"),            --m_dog_e0003
-                  patrol ("way0008"),            --m_dog_e0004
-                  patrol ("way0001"),            --m_pseudodog_e0000
-                  patrol ("way0005"),            --m_pseudodog_e0001
-                  patrol ("way0002"),            --m_pseudodog_e0003
-                  patrol ("way0010"),            --m_flesh_e0000
-                  patrol ("way0011"),            --m_flesh_e0001
-                  patrol ("way0003"),            --m_flesh_e0002
-                  patrol ("way0003"),            --m_boar_e0003
-                  patrol ("way0009"),            --m_flesh_e0003
-                  patrol ("way0012"),            --m_flesh_e0004
-                  patrol ("way0009"),            --m_dog_e0005
-                  patrol ("way0003")             --m_pseudodog_e0002
-                  }
-
-    for a = 1, table.getn (t), 1 do
-        t[a]:script (true, m_attack_wave.script_name ())
-        action (t[a], move (move.act_stand_idle, move.default, tways[a]), cond (cond.time_end, 1000000000))
-        end
+	for a = 1, table.getn (t), 1 do
+		t[a]:script (true, m_attack_wave.script_name ())
+		action (t[a], move (move.act_stand_idle, move.default, tways[a]), cond (cond.time_end, 1000000000))
+	end
 
 	t[2]:set_callback (m_attack_wave.boar_callback, game_object.movement)
 
-    wait (20000)
+	wait (20000)
 
 
-    for a = 1, 13, 1 do
-        reset_action (t[a], m_attack_wave.script_name ())
-        action (t[a], move (move.act_run, move.force_type, tways[a]), cond (cond.move_end))
-        end
+	for a = 1, 13, 1 do
+		reset_action (t[a], m_attack_wave.script_name ())
+		action (t[a], move (move.act_run, move.force_type, tways[a]), cond (cond.move_end))
+	end
 
-    wait (8000)
+	wait (8000)
 
 	local time = game.time ()
 	local called = false
 
 	while true do 
-  		  if called == false and game.time () - time > 3000 then
-		     called = true
-		     for b = 14, 19, 1 do
-                 reset_action (t[b], m_attack_wave.script_name ())
-                 action (t[b], move (move.act_run, move.force_type, tways[b]), cond (cond.move_end))
-   		     end
-		  end	
-     	  wait () 
+		if called == false and game.time () - time > 3000 then
+			called = true
+			for b = 14, 19, 1 do
+				reset_action (t[b], m_attack_wave.script_name ())
+				action (t[b], move (move.act_run, move.force_type, tways[b]), cond (cond.move_end))
+			end
+		end	
+		wait () 
 	end
 
 --    t[a]:script (false, m_attack_wave.script_name ())
 
 end
+
