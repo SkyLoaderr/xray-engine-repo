@@ -116,6 +116,27 @@
 			Name="behaviour"
 			Filter="">
 			<File
+				RelativePath=".\StateAttack.script">
+			</File>
+			<File
+				RelativePath=".\StateDangerSound.script">
+			</File>
+			<File
+				RelativePath=".\StateEat.script">
+			</File>
+			<File
+				RelativePath=".\StateHit.script">
+			</File>
+			<File
+				RelativePath=".\StateNotDangerSound.script">
+			</File>
+			<File
+				RelativePath=".\StateRest.script">
+			</File>
+			<File
+				RelativePath=".\StateWalk.script">
+			</File>
+			<File
 				RelativePath=".\xr_ambush.script">
 			</File>
 			<File
@@ -298,6 +319,9 @@
 			<File
 				RelativePath=".\xr_gulag.script">
 			</File>
+			<File
+				RelativePath=".\xr_zones.script">
+			</File>
 		</Filter>
 		<Filter
 			Name="levels"
@@ -426,6 +450,9 @@
 			Name="others"
 			Filter="">
 			<File
+				RelativePath=".\_test.script">
+			</File>
+			<File
 				RelativePath=".\alife_test.script">
 			</File>
 			<File
@@ -456,6 +483,27 @@
 				RelativePath=".\game_last.script">
 			</File>
 			<File
+				RelativePath=".\game_last_charselect_dlg.script">
+			</File>
+			<File
+				RelativePath=".\game_last_cl.script">
+			</File>
+			<File
+				RelativePath=".\game_last_dialog.script">
+			</File>
+			<File
+				RelativePath=".\game_last_ps.script">
+			</File>
+			<File
+				RelativePath=".\game_last_sv.script">
+			</File>
+			<File
+				RelativePath=".\game_last_tmp.script">
+			</File>
+			<File
+				RelativePath=".\game_last_ui.script">
+			</File>
+			<File
 				RelativePath=".\game_registrator.script">
 			</File>
 			<File
@@ -477,13 +525,43 @@
 				RelativePath=".\info_test.script">
 			</File>
 			<File
+				RelativePath=".\l_rostok.script">
+			</File>
+			<File
+				RelativePath=".\manager.script">
+			</File>
+			<File
+				RelativePath=".\mizlom.script">
+			</File>
+			<File
+				RelativePath=".\MonsterAi.script">
+			</File>
+			<File
+				RelativePath=".\move_mgr.script">
+			</File>
+			<File
+				RelativePath=".\mtest.script">
+			</File>
+			<File
 				RelativePath=".\particle_flame.script">
 			</File>
 			<File
 				RelativePath=".\particle_test.script">
 			</File>
 			<File
+				RelativePath=".\physic_object.script">
+			</File>
+			<File
+				RelativePath=".\s_black_devil_walk.script">
+			</File>
+			<File
+				RelativePath=".\s_zombie_walk.script">
+			</File>
+			<File
 				RelativePath=".\se_new_attachable_item.script">
+			</File>
+			<File
+				RelativePath=".\sound_megafon.script">
 			</File>
 			<File
 				RelativePath=".\stalker_test.script">
@@ -492,10 +570,22 @@
 				RelativePath=".\test.script">
 			</File>
 			<File
+				RelativePath=".\test_heli.script">
+			</File>
+			<File
+				RelativePath=".\test_heli_2.script">
+			</File>
+			<File
 				RelativePath=".\trader_job.script">
 			</File>
 			<File
 				RelativePath=".\ui_registrator.script">
+			</File>
+			<File
+				RelativePath=".\xr_guide.script">
+			</File>
+			<File
+				RelativePath=".\xr_walker.script">
 			</File>
 		</Filter>
 		<Filter
