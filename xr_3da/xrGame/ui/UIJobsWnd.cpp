@@ -9,7 +9,7 @@
 #include "xrXMLParser.h"
 #include "UIXmlInit.h"
 #include "UIPdaWnd.h"
-#include "UIIconedListItem.h"
+#include "UIJobItem.h"
 #include "../GameTask.h"
 #include "UIStatsWnd.h"
 
@@ -19,10 +19,12 @@
 
 //////////////////////////////////////////////////////////////////////////
 
-const char * const	JOBS_XML			= "jobs.xml";
-const u32			uTaskIconSize		= 10;
-const u32			clTaskSubItemColor	= 0xffe1e1fa;
-const u32			clTaskHeaderColor	= 0xffffffff;
+const char * const	JOBS_XML						= "jobs.xml";
+const u32			uTaskIconSize					= 10;
+const u32			clTaskSubItemColor				= 0xffe1e1fa;
+const u32			clTaskHeaderColor				= 0xffffffff;
+const float			secondaryObjectiveScaleFactor	= 0.8f;
+const int			subitemsOffset					= 30;
 
 //////////////////////////////////////////////////////////////////////////
 
@@ -55,7 +57,7 @@ void CUIJobsWnd::Init()
 
 	AttachChild(&UIList);
 	xml_init.InitListWnd(uiXml, "list", 0, &UIList);
-	UIList.ActivateList(false);
+	UIList.ActivateList(true);
 	UIList.EnableScrollBar(true);
 	UIList.EnableActiveBackground(false);
 }
@@ -72,87 +74,66 @@ void CUIJobsWnd::AddTask(CGameTask * const task)
 	// Проверим на фильтре
 	if (filter != eTaskStateDummy && task->ObjectiveState(0) != filter) return;
 
-	// Так как AddParsedItem добавляет несколько UIIconedListItem'ов, то мы запоминаем индекс первого
-	// для того чтобы только ему присвоить иконку соответсвующую состоянию задания
-	int			iconedItemIdx	= 0; 
-	const int	subitemsOffset	= 20;
+	CStringTable		stbl;
+	SGameTaskObjective	*obj = NULL;
+	Irect				r;
+	CUIJobItem			*pJobItem = NULL;
+	u32					color = 0xffffffff;
 
-	// Массив с именами текстурок - иконок состояний задания
-	static shared_str iconsTexturesArr[3] =
+	// Устанавливаем цвет иконок
+	switch (task->ObjectiveState(0))
 	{
-		"ui\\ui_pda_icon_mission_failed",
-		"ui\\ui_pda_icon_mission_in_progress",
-		"ui\\ui_pda_icon_mission_completed"
-	};
-
-	// Первый таск у нас являет собой заголовок задания
-	CUIIconedListItem	*pHeader2 = xr_new<CUIIconedListItem>();
-	UIList.AddItem<CUIIconedListItem>(pHeader2);
-	pHeader2->SetIcon(iconsTexturesArr[task->ObjectiveState(0)], uTaskIconSize);
-	pHeader2->SetFont(pHeaderFnt);
-	pHeader2->SetTextColor(clTaskHeaderColor);
-	pHeader2->SetNewRenderMethod(true);
-
-	CStringTable stbl;
-	pHeader2->SetText(*stbl(task->ObjectiveTitle()));
-	pHeader2->SetTextX(15);
-
-	// Теперь добавляем инфу о таске
-	CUIStatsListItem *pNewItem = xr_new<CUIStatsListItem>();
-	UIList.AddItem<CUIListItem>(pNewItem); 
-
-	CUIXml uiXml;
-	bool xml_result = uiXml.Init("$game_data$", JOBS_XML);
-	R_ASSERT(xml_result);
-
-	pNewItem->XmlInit("job_info", uiXml);
-
-	pNewItem->FieldsVector[0]->SetText(*stbl("Received:"));
-	string64 buf;
-	::ZeroMemory(buf, 64);
-	strconcat(buf, *InventoryUtilities::GetDateAsString(task->m_ReceiveTime, InventoryUtilities::edpDateToDay), " ",
-				   *InventoryUtilities::GetTimeAsString(task->m_ReceiveTime, InventoryUtilities::etpTimeToMinutes));
-	pNewItem->FieldsVector[1]->SetText(buf);
-	pNewItem->FieldsVector[2]->SetText(*stbl("Finished:"));
-
-	::ZeroMemory(buf, 64);
-	if (task->ObjectiveState(0) != eTaskStateInProgress)
-	{
-		strconcat(buf, *InventoryUtilities::GetDateAsString(task->m_FinishTime, InventoryUtilities::edpDateToDay), " ",
-					   *InventoryUtilities::GetTimeAsString(task->m_FinishTime, InventoryUtilities::etpTimeToMinutes));
+	case eTaskStateCompleted:
+		color = 0xff00ff00;
+		break;
+	case eTaskStateFail:
+		color = 0xffff0000;
+		break;
+	case eTaskStateInProgress:
+		color = 0xffffffff;
+		break;
+	default:
+		NODEFAULT;
 	}
-	else
-		strcpy(buf, "--");
 
-	pNewItem->FieldsVector[3]->SetText(buf);
+	// Пробегаемся по таскам и заносим их как задания
+	int tmp = 0;
 
-	// Description
-	CUIString str;
-	str.SetText(*stbl(task->ObjectiveDesc(0)));
-//	CUIStatic::PreprocessText(str.m_str, UIList.GetItemWidth() - 10, pSubTasksFnt);
-	UIList.AddParsedItem<CUIListItem>(str, 0, clTaskSubItemColor, pSubTasksFnt);
-    
-	// Теперь пробегаемся по остальным таскам и заносим их как задания
+	CActor* pActor = smart_cast<CActor*>(Level().CurrentEntity());
 
-	for (u32 i = 1; i < task->ObjectivesNum(); ++i)
+	for (u32 i = 0; i < task->ObjectivesNum(); ++i)
 	{
-		iconedItemIdx = UIList.GetSize();
-		UIList.AddParsedItem<CUIIconedListItem>(*stbl(task->ObjectiveDesc(i)), subitemsOffset, clTaskSubItemColor, pSubTasksFnt);
+		if (i > 0) tmp = subitemsOffset;
 
-		R_ASSERT(iconedItemIdx < UIList.GetSize());
-		CUIIconedListItem * pTask = smart_cast<CUIIconedListItem*>(UIList.GetItem(iconedItemIdx));
+		pJobItem = xr_new<CUIJobItem>(tmp);
+		obj = &task->data()->m_Objectives[i];
+		UIList.AddItem<CUIListItem>(pJobItem);
+		r.set(obj->icon_x, obj->icon_y, obj->icon_width, obj->icon_height);
+//		r.set(500, 800, 50, 50);
+		if (0 != obj->icon_texture_name.size())
+			pJobItem->SetPicture			(*obj->icon_texture_name, r, color);
+//		pJobItem->SetPicture				("ui\\ui_icon_equipment", r);
+		pJobItem->SetCaption				(*stbl(task->ObjectiveTitle()));
+		pJobItem->SetDescription			(*stbl(task->ObjectiveDesc(i)));
+		pJobItem->SetAdditionalMaterialID	(40);//task->ObjectiveArticle(i));
+		if (i > 0) pJobItem->ScalePicture	(secondaryObjectiveScaleFactor);
 
-		R_ASSERT(pTask);
-		if (pTask)
+		if(pActor && pActor->encyclopedia_registry.objects_ptr())
 		{
-			pTask->SetIcon(iconsTexturesArr[task->ObjectiveState(i)], uTaskIconSize);
-			pTask->SetTextX(15);
-			pTask->SetNewRenderMethod(true);
+			for(ARTICLE_VECTOR::iterator it = pActor->encyclopedia_registry.objects().begin();
+				it != pActor->encyclopedia_registry.objects().end(); it++)
+			{
+				if (task->ObjectiveArticle(i) == it->index)
+				{
+					if (ARTICLE_DATA::eEncyclopediaArticle == it->article_type)
+						pJobItem->SetCallbackMessage(PDA_OPEN_ENCYCLOPEDIA_ARTICLE);
+					else if (ARTICLE_DATA::eDiaryArticle == it->article_type)
+						pJobItem->SetCallbackMessage(PDA_OPEN_DIARY_ARTICLE);
+					break;
+				}
+			}
 		}
 	}
-
-	// Добавляем пустую строчку-разделитель
-	UIList.AddItem<CUIListItem>("\n");
 }
 
 //////////////////////////////////////////////////////////////////////////

@@ -14,6 +14,7 @@
 #include "UIFrameLineWnd.h"
 #include "UIEncyclopediaWnd.h"
 #include "UIPdaAux.h"
+#include "../encyclopedia_article_defs.h"
 
 class CInventoryOwner;
 
@@ -46,7 +47,7 @@ public:
 //	typedef enum { PDA_MAP_SET_ACTIVE_POINT = 8010 } E_MESSAGE;
 	// Переключиться на карту и сфокусироваться на заданной точке
 	void				FocusOnMap(const int x, const int y, const int z);
-	void				SetActiveSubdialog(EPdaSections section);
+	void				SetActiveSubdialog(EPdaSections section, int addiotionalValue = NO_ARTICLE);
 
 protected:
 	// Бэкграунд
@@ -78,4 +79,12 @@ protected:
 
 	// Установить игровое время
 	void UpdateDateTime();
+
+	enum EPdaTabs
+	{
+		eptEvents = 0,
+		eptComm,
+		eptMap,
+		eptEncyclopedia
+	};
 };

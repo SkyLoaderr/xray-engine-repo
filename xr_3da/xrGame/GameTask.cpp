@@ -12,6 +12,7 @@
 #include "script_space.h"
 #include "object_broker.h"
 #include "ui/xrXMLParser.h"
+#include "encyclopedia_article.h"
 
 TASK_DATA::TASK_DATA():index(NO_TASK),receive_time(0),finish_time(0)
 {
@@ -106,7 +107,7 @@ void CGameTask::load_shared	(LPCSTR)
 		LPCSTR tag_text = uiXml.Read(task_node, "objective:text", i, NULL);
 		objective.description = tag_text;
 		tag_text = uiXml.Read(task_node, "objective:article", i, NULL);
-		objective.article_id = tag_text;
+		objective.article_index = tag_text?CEncyclopediaArticle::IdToIndex(tag_text):NO_ARTICLE;
 		objective.icon_texture_name = uiXml.Read(task_node, "objective:icon", i, NULL);
 		objective.icon_x = uiXml.ReadAttribInt(task_node, "objective:icon", i, "x");
 		objective.icon_y = uiXml.ReadAttribInt(task_node, "objective:icon", i, "y");
@@ -133,9 +134,9 @@ shared_str		CGameTask::ObjectiveDesc	(u32 index)
 	return data()->m_Objectives[index].description;
 }
 
-shared_str		CGameTask::ObjectiveArticle	(u32 index)
+ARTICLE_INDEX		CGameTask::ObjectiveArticle	(u32 index)
 {
-	return data()->m_Objectives[index].article_id;
+	return data()->m_Objectives[index].article_index;
 }
 
 ETaskState	CGameTask::ObjectiveState  (u32 index)

@@ -30,18 +30,18 @@ class CUIEncyclopediaCore: public CUIWindow
 private:
 	typedef CUIWindow inherited;
 public:
-	CUIEncyclopediaCore();
-
-	void			Init(CUIListWnd *infoList, CUIListWnd *idxList);
-
+					CUIEncyclopediaCore();
+	void			Init			(CUIListWnd *infoList, CUIListWnd *idxList);
 	// Контролы и алгоритмы которые используются для вывода информации
 	// Добавляем статью и возвращаем путь к ней
-	shared_str			SetCurrentArtice(CUITreeViewItem *pTVItem);
+	shared_str		SetCurrentArtice(CUITreeViewItem *pTVItem);
 	// Добавлем 1 энциклопедиционную статью
-	void			AddArticle(ARTICLE_INDEX);
-	void			DeleteArticles();
-	virtual void	SendMessage(CUIWindow* pWnd, s16 msg, void* pData);
-	virtual void	Show(bool status);
+	void			AddArticle		(ARTICLE_INDEX, bool bReaded);
+	void			DeleteArticles	();
+	virtual void	SendMessage		(CUIWindow* pWnd, s16 msg, void* pData);
+	virtual void	Show			(bool status);
+	// Opens tree at item with specified value
+	void			OpenTree		(int value);
 
 
 	// Хранилище статей
@@ -54,7 +54,8 @@ public:
 	u32				m_uTreeItemColor;
 
 private:
-	void			AdjustImagePos(CUIStatic &s);
+	void			AdjustImagePos	(CUIStatic &s);
+	void			OpenTree		(CUITreeViewItem *pItem);
 
 	CUIListWnd		*pInfoList, *pIdxList;
 	ArticlesDB		m_ArticlesDB;

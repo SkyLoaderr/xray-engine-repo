@@ -16,14 +16,18 @@
 // —мещение относительно родител€
 const int				subShift					= 1;
 const char * const		treeItemBackgroundTexture	= "ui\\ui_pda_over_list";
+// ÷вет непрочитанного элемента
+static const u32		unreadColor					= 0xff00ff00;
 
 //////////////////////////////////////////////////////////////////////////
 
 CUITreeViewItem::CUITreeViewItem()
-	:	isRoot			(false),
-		isOpened		(false),
-		iTextShift		(0),
-		pOwner			(NULL)
+	:	isRoot				(false),
+		isOpened			(false),
+		iTextShift			(0),
+		pOwner				(NULL),
+		m_uUnreadedColor	(0xff00ff00),
+		m_uReadedColor		(0xffffffff)
 {
 	AttachChild(&UIBkg);
 	UIBkg.InitTexture(treeItemBackgroundTexture);
@@ -249,6 +253,10 @@ void CUITreeViewItem::SendMessage(CUIWindow* pWnd, s16 msg, void* pData)
 		{
 			IsOpened() ? Close() : Open();
 		}
+		else
+		{
+			MarkArticleAsRead(true);
+		}
 	}
 	else if (pWnd == this && STATIC_FOCUS_RECEIVED == msg)
 	{
@@ -301,6 +309,25 @@ CUITreeViewItem * CUITreeViewItem::Find(LPCSTR text) const
 
 //////////////////////////////////////////////////////////////////////////
 
+CUITreeViewItem * CUITreeViewItem::Find(int value) const
+{
+	CUITreeViewItem *pResult = NULL;
+
+	for (SubItems::const_iterator it = vSubItems.begin(); it != vSubItems.end(); ++it)
+	{
+		if ((*it)->GetValue() == value) pResult = *it;
+
+		if ((*it)->IsRoot() && !pResult)
+			pResult = (*it)->Find(value);
+
+		if (pResult) break;
+	}
+
+	return pResult;
+}
+
+//////////////////////////////////////////////////////////////////////////
+
 CUITreeViewItem * CUITreeViewItem::Find(CUITreeViewItem * pItem) const
 {
 	CUITreeViewItem *pResult = NULL;
@@ -343,11 +370,68 @@ std::string CUITreeViewItem::GetHierarchyAsText()
 }
 
 //////////////////////////////////////////////////////////////////////////
+
+void CUITreeViewItem::MarkArticleAsRead(bool value)
+{
+	// ≈сли элемент рутовый, то мы его маркаем его, и все чилды
+	if (IsRoot())
+	{
+		m_bArticleRead = value;
+		SetItemColor();
+
+		for (SubItems_it it = vSubItems.begin(); it != vSubItems.end(); ++it)
+		{
+			(*it)->m_bArticleRead = value;
+			(*it)->SetItemColor();
+			if ((*it)->IsRoot())
+				(*it)->MarkArticleAsRead(value);
+		}
+	}
+	else
+	{
+		// ≈сли же нет, то маркаем себ€ и говорим проверить свой парентовый элемент
+		m_bArticleRead	= value;
+		SetItemColor();
+		CheckParentMark(GetOwner());
+	}
+}
+
+//////////////////////////////////////////////////////////////////////////
+
+void CUITreeViewItem::CheckParentMark(CUITreeViewItem *pOwner)
+{
+	// Ѕерем рута, смотрим на его чилдов, и если среди них есть хоть 1
+	// непрочитанный, то маркаем себ€ как непрочитанный, и  говорим проверитьс€ выше.
+	bool f = false;
+	if (pOwner && pOwner->IsRoot())
+	{
+		for (SubItems_it it = pOwner->vSubItems.begin(); it != pOwner->vSubItems.end(); ++it)
+		{
+			if (!(*it)->IsArticleReaded())
+			{
+				pOwner->m_bArticleRead = false;
+				pOwner->SetItemColor();
+				f = true;
+			}
+		}
+
+		if (!f)
+		{
+			// ≈сли мы тут, то все артиклы прочитанны, и можно маркнуть себ€ как прочитанна€ ветвь
+			pOwner->m_bArticleRead = true;
+			pOwner->SetItemColor();
+		}
+
+		pOwner->CheckParentMark(pOwner->GetOwner());
+	}
+}
+
+//////////////////////////////////////////////////////////////////////////
 // Standalone function for tree hierarchy creation
 //////////////////////////////////////////////////////////////////////////
 
 void CreateTreeBranch(shared_str nesting, shared_str leafName, CUIListWnd *pListToAdd, int leafProperty,
-					  CGameFont *pRootFont, u32 rootColor, CGameFont *pLeafFont, u32 leafColor)
+					  CGameFont *pRootFont, u32 rootColor, CGameFont *pLeafFont, u32 leafColor, bool markRead)
 {
 	// Nested function emulation
 	class AddTreeTail_
@@ -372,7 +456,7 @@ void CreateTreeBranch(shared_str nesting, shared_str leafName, CUIListWnd *pList
 				pItemToIns->AddItem(pNewItem);
 				pNewItem->SetFont(pRootFnt);
 				pNewItem->SetText(*(*it2));
-				pNewItem->SetTextColor(rootItemColor);
+				pNewItem->SetReadedColor(rootItemColor);
 				pNewItem->SetRoot(true);
 				pItemToIns = pNewItem;
 			}
@@ -459,7 +543,7 @@ void CreateTreeBranch(shared_str nesting, shared_str leafName, CUIListWnd *pList
 		pTVItemChilds = xr_new<CUITreeViewItem>();
 		pTVItemChilds->SetFont(pRootFont);
 		pTVItemChilds->SetText(*groupTree.front());
-		pTVItemChilds->SetTextColor(rootColor);
+		pTVItemChilds->SetReadedColor(rootColor);
 		pTVItemChilds->SetRoot(true);
 		pListToAdd->AddItem<CUITreeViewItem>(pTVItemChilds);
 
@@ -476,9 +560,10 @@ void CreateTreeBranch(shared_str nesting, shared_str leafName, CUIListWnd *pList
 	//	{
 	pTVItem		= xr_new<CUITreeViewItem>();
 	pTVItem->SetFont(pLeafFont);
-	pTVItem->SetTextColor(leafColor);
+	pTVItem->SetReadedColor(leafColor);
 	pTVItem->SetText(*CStringTable()(*leafName));
 	pTVItem->SetValue(leafProperty);
 	pTVItemChilds->AddItem(pTVItem);
+	pTVItem->MarkArticleAsRead(markRead);
 	//	}
 }

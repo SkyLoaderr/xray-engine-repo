@@ -60,7 +60,8 @@ CUIDiaryWnd::CUIDiaryWnd()
 		m_pLeftHorisontalLine	(NULL),
 		m_pActorDiaryRoot		(NULL),
 		m_pActiveJobs			(NULL),
-		m_pJobsRoot				(NULL)
+		m_pJobsRoot				(NULL),
+		m_pNews					(NULL)
 {
 	Show(false);
 }
@@ -114,6 +115,7 @@ void CUIDiaryWnd::Init()
 	// Поддиалоги
 	UIJobsWnd.Init();
 	UINewsWnd.Init();
+	UINewsWnd.SetMessageTarget(this);
 	UIContractsWnd.Init();
 	UIActorDiaryWnd.Init(&UITreeView);
 	UIActorDiaryWnd.m_pCore->m_pTreeRootFont	= m_pTreeRootFont;
@@ -242,6 +244,11 @@ void CUIDiaryWnd::SendMessage(CUIWindow* pWnd, s16 msg, void* pData)
 	{
 		pPrtevTVItem = NULL;
 	}
+	else if (pWnd == &UINewsWnd && DIARY_SET_NEWS_AS_UNREAD == msg)
+	{
+		R_ASSERT(m_pNews);
+		m_pNews->MarkArticleAsRead(false);
+	}
 
 	inherited::SendMessage(pWnd, msg, pData);
 }
@@ -291,7 +298,8 @@ void CUIDiaryWnd::InitTreeView()
 	pTVItem->SetText(*stbl("Jobs"));
 	pTVItem->SetRoot(true);
 	pTVItem->SetFont(m_pTreeRootFont);
-	pTVItem->SetTextColor(m_uTreeRootColor);
+	pTVItem->SetReadedColor(m_uTreeRootColor);
+//	pTVItem->SetUnreadedColor(m_uTreeRootColor);
 	UITreeView.AddItem(pTVItem);
 	m_pJobsRoot = pTVItem;
 
@@ -299,7 +307,8 @@ void CUIDiaryWnd::InitTreeView()
 	pTVItemSub->SetText(*stbl("Current"));
 	pTVItemSub->SetValue(idJobsCurrent);
 	pTVItemSub->SetFont(m_pTreeItemFont);
-	pTVItemSub->SetTextColor(m_uTreeItemColor);
+	pTVItemSub->SetReadedColor(m_uTreeItemColor);
+//	pTVItemSub->SetUnreadedColor(m_uTreeItemColor);
 	pTVItem->AddItem(pTVItemSub);
 	m_pActiveJobs = pTVItemSub;
 
@@ -307,48 +316,60 @@ void CUIDiaryWnd::InitTreeView()
 	pTVItemSub->SetText(*stbl("Accomplished"));
 	pTVItemSub->SetValue(idJobsAccomplished);
 	pTVItemSub->SetFont(m_pTreeItemFont);
-	pTVItemSub->SetTextColor(m_uTreeItemColor);
+	pTVItemSub->SetReadedColor(m_uTreeItemColor);
+	pTVItemSub->SetUnreadedColor(m_uTreeItemColor);
 	pTVItem->AddItem(pTVItemSub);
 
 	pTVItemSub = xr_new<CUITreeViewItem>();
 	pTVItemSub->SetText(*stbl("Failed"));
 	pTVItemSub->SetValue(idJobsFailed);
 	pTVItemSub->SetFont(m_pTreeItemFont);
-	pTVItemSub->SetTextColor(m_uTreeItemColor);
+	pTVItemSub->SetReadedColor(m_uTreeItemColor);
+//	pTVItemSub->SetUnreadedColor(m_uTreeItemColor);
 	pTVItem->AddItem(pTVItemSub);
+
+	pTVItem->MarkArticleAsRead(true);
 
 	// Contracts section
 	pTVItem = xr_new<CUITreeViewItem>();
 	pTVItem->SetText(*stbl("Contracts"));
 	pTVItem->SetRoot(true);
 	pTVItem->SetFont(m_pTreeRootFont);
-	pTVItem->SetTextColor(m_uTreeRootColor);
+	pTVItem->SetReadedColor(m_uTreeRootColor);
+//	pTVItem->SetUnreadedColor(m_uTreeRootColor);
 	UITreeView.AddItem(pTVItem);
 	m_pContractsTreeItem = pTVItem;
+	pTVItem->MarkArticleAsRead(true);
 
 	// Actor diary section
 	pTVItem = xr_new<CUITreeViewItem>();
 	pTVItem->SetText(*stbl("Diary"));
 	pTVItem->SetRoot(true);
 	pTVItem->SetFont(m_pTreeRootFont);
-	pTVItem->SetTextColor(m_uTreeRootColor);
+	pTVItem->SetReadedColor(m_uTreeRootColor);
+//	pTVItem->SetUnreadedColor(m_uTreeRootColor);
 	UITreeView.AddItem(pTVItem);
 	m_pActorDiaryRoot = pTVItem;
+	pTVItem->MarkArticleAsRead(true);
 
 	// News section
 	pTVItem = xr_new<CUITreeViewItem>();
 	pTVItem->SetText(*stbl("News & Events"));
 	pTVItem->SetRoot(true);
 	pTVItem->SetFont(m_pTreeRootFont);
-	pTVItem->SetTextColor(m_uTreeRootColor);
+	pTVItem->SetReadedColor(m_uTreeRootColor);
+//	pTVItem->SetUnreadedColor(m_uTreeRootColor);
 	UITreeView.AddItem(pTVItem);
+	m_pNews = pTVItem;
 
 	pTVItemSub = xr_new<CUITreeViewItem>();
 	pTVItemSub->SetFont(m_pTreeItemFont);
-	pTVItemSub->SetTextColor(m_uTreeItemColor);
-	pTVItemSub->SetText(*stbl("News"));
 	pTVItemSub->SetValue(idNews);
+	pTVItemSub->SetReadedColor(m_uTreeItemColor);
+//	pTVItemSub->SetUnreadedColor(m_uTreeItemColor);
+	pTVItemSub->SetText(*stbl("News"));
 	pTVItem->AddItem(pTVItemSub);
+	pTVItem->MarkArticleAsRead(false);
 }
 
 //////////////////////////////////////////////////////////////////////////
@@ -414,7 +435,7 @@ void CUIDiaryWnd::InitDiary()
 		{
 			if (ARTICLE_DATA::eDiaryArticle == it->article_type)
 			{
-				UIActorDiaryWnd.AddArticle((*it).index);
+				UIActorDiaryWnd.AddArticle((*it).index, true);
 			}
 		}
 	}
@@ -439,6 +460,12 @@ void CUIDiaryWnd::SetActiveSubdialog(EPdaSections section)
 			UITreeView.SendMessage(m_pJobsRoot, BUTTON_CLICKED, NULL);
 		SendMessage(this, DIARY_RESET_PREV_ACTIVE_ITEM, NULL);
 		UITreeView.SendMessage(m_pActiveJobs, BUTTON_CLICKED, NULL);
+		break;
+	case epsDiaryArticle:
+//		if (!m_pJobsRoot->IsOpened())
+//			UITreeView.SendMessage(m_pJobsRoot, BUTTON_CLICKED, NULL);
+//		SendMessage(this, DIARY_RESET_PREV_ACTIVE_ITEM, NULL);
+		UITreeView.SendMessage(m_pActorDiaryRoot, BUTTON_CLICKED, NULL);
 		break;
 	default:
 		NODEFAULT;

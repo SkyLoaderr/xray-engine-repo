@@ -99,6 +99,10 @@ void CUIEncyclopediaWnd::Init()
 	xml_init.InitAutoStatic(uiXml, "left_auto_static", &UIEncyclopediaInfoBkg);
 	xml_init.InitAutoStatic(uiXml, "right_auto_static", &UIEncyclopediaIdxBkg);
 
+	// Кнопка возврата
+	AttachChild(&UIBack);
+	xml_init.InitButton(uiXml, "back_button", 0, &UIBack);
+	UIBack.Show(false);
 }
 
 //////////////////////////////////////////////////////////////////////////
@@ -141,6 +145,11 @@ void CUIEncyclopediaWnd::SendMessage(CUIWindow *pWnd, s16 msg, void* pData)
 //			m_pCurrArticle = m_ArticlesDB[pTVItem->GetValue()];
 //		}
 	}
+	else if (&UIBack == pWnd && BUTTON_CLICKED == msg)
+	{
+		UIBack.Show(false);
+		GetTop()->SendMessage(this, PDA_GO_BACK, NULL);
+	}
 
 	inherited::SendMessage(pWnd, msg, pData);
 }
@@ -158,19 +167,23 @@ void CUIEncyclopediaWnd::Show(bool status)
 {
 	if (status)
 	{
-		DeleteArticles();
+//		DeleteArticles();
 
+		static u32 prevArticlesCount = 0;
 		CActor *pActor = smart_cast<CActor*>(Level().CurrentEntity());
-		if(pActor && pActor->encyclopedia_registry.objects_ptr())
+		if(pActor && pActor->encyclopedia_registry.objects_ptr() && pActor->encyclopedia_registry.objects_ptr()->size() > prevArticlesCount)
 		{
-			for(ARTICLE_VECTOR::const_iterator it = pActor->encyclopedia_registry.objects_ptr()->begin();
-				it != pActor->encyclopedia_registry.objects_ptr()->end(); it++)
+			ARTICLE_VECTOR::const_iterator it = pActor->encyclopedia_registry.objects_ptr()->begin();
+			std::advance(it, prevArticlesCount);
+			for(; it != pActor->encyclopedia_registry.objects_ptr()->end(); it++)
 			{
 				if (ARTICLE_DATA::eEncyclopediaArticle == it->article_type)
 				{
-					UIInfo.AddArticle((*it).index);
+					UIInfo.AddArticle(it->index, it->readed);
 				}
 			}
+
+			prevArticlesCount = pActor->encyclopedia_registry.objects_ptr()->size();
 		}
 	}
 
@@ -180,9 +193,9 @@ void CUIEncyclopediaWnd::Show(bool status)
 
 //////////////////////////////////////////////////////////////////////////
 
-void CUIEncyclopediaWnd::AddArticle(ARTICLE_INDEX idx)
+void CUIEncyclopediaWnd::AddArticle(ARTICLE_INDEX idx, bool bReaded)
 {
-	UIInfo.AddArticle(idx);
+	UIInfo.AddArticle(idx, bReaded);
 }
 
 //////////////////////////////////////////////////////////////////////////

@@ -9,6 +9,7 @@
 
 #include "xrXMLParser.h"
 #include "UIXmlInit.h"
+#include "UIJobItem.h"
 
 #include "../HUDManager.h"
 #include "../level.h"
@@ -146,6 +147,26 @@ void CUIPdaWnd::SendMessage(CUIWindow* pWnd, s16 msg, void* pData)
 			Game().StartStopMenu(this,true);
 			//HUD().GetUI()->UIGame()->StartStopMenu(this);
 	}
+	else if (PDA_OPEN_ENCYCLOPEDIA_ARTICLE == msg)
+	{
+		CUIJobItem *pItem = smart_cast<CUIJobItem*>(pWnd);
+		if (pItem)
+		{
+			SetActiveSubdialog(epsEncyclopedia, pItem->GetAdditionalMaterialID());
+		}
+	}
+	else if (PDA_OPEN_DIARY_ARTICLE == msg)
+	{
+		CUIJobItem *pItem = smart_cast<CUIJobItem*>(pWnd);
+		if (pItem)
+		{
+			SetActiveSubdialog(epsDiaryArticle, pItem->GetAdditionalMaterialID());
+		}
+	}
+	else if (PDA_GO_BACK == msg)
+	{
+		UITabControl.SetNewActiveTab	(eptEvents);
+	}
 	else
 	{
 		R_ASSERT(m_pActiveDialog);
@@ -205,27 +226,30 @@ void CUIPdaWnd::Update()
 
 //////////////////////////////////////////////////////////////////////////
 
-void CUIPdaWnd::SetActiveSubdialog(EPdaSections section)
+void CUIPdaWnd::SetActiveSubdialog(EPdaSections section, int addiotionalValue)
 {
-	enum EPdaTabs
-	{
-		eptEvents = 0,
-		eptComm,
-		eptMap,
-		eptNews
-	};
-
 	switch (section)
 	{
 	case epsActiveJobs:
-		UITabControl.SetNewActiveTab(eptEvents);
-		UIDiaryWnd.SetActiveSubdialog(section);
+		UITabControl.SetNewActiveTab	(eptEvents);
+		UIDiaryWnd.SetActiveSubdialog	(section);
 		break;
 	case epsMap:
-		UITabControl.SetNewActiveTab(eptMap);
+		UITabControl.SetNewActiveTab	(eptMap);
 		break;
 	case epsContacts:
-		UITabControl.SetNewActiveTab(eptComm);
+		UITabControl.SetNewActiveTab	(eptComm);
+		break;
+	case epsEncyclopedia:
+		UITabControl.SetNewActiveTab	(eptEncyclopedia);
+		UIEncyclopediaWnd.OpenTree		(addiotionalValue);
+		UIEncyclopediaWnd.UIBack.Show	(true);
+		break;
+	case epsDiaryArticle:
+		UITabControl.SetNewActiveTab	(eptEvents);
+		UIDiaryWnd.SetActiveSubdialog	(section);
+		UIDiaryWnd.OpenDiaryTree		(addiotionalValue);
+		UIEncyclopediaWnd.UIBack.Show	(true);
 		break;
 	default:
 		NODEFAULT;

@@ -60,12 +60,24 @@ void CUINewsWnd::AddNews()
 	UIListWnd.RemoveAll();
 	CActor *pActor = smart_cast<CActor*>(Level().CurrentEntity());
 
+	static u32 lastNewsCount = 0;
+
 	if (pActor)
 	{
 		GAME_NEWS_VECTOR& news_vector = pActor->game_news_registry.objects();
-		for (GAME_NEWS_VECTOR::reverse_iterator it = news_vector.rbegin(); it != news_vector.rend(); ++it)
+		if (lastNewsCount < news_vector.size())
+		{
+			lastNewsCount = news_vector.size();
+			GetMessageTarget()->SendMessage(this, DIARY_SET_NEWS_AS_UNREAD, NULL);
+		}
+		
+		// Показать только 15 последних ньюсов
+		int currentNews = 0;
+
+		for (GAME_NEWS_VECTOR::reverse_iterator it = news_vector.rbegin(); it != news_vector.rend() && currentNews < 15 ; ++it)
 		{
 			AddNewsItem(it->FullText());
+			++currentNews;
 		}
 	}
 }

@@ -25,14 +25,14 @@ class CUIActorDiaryWnd: public CUIWindow
 	typedef CUIWindow inherited;
 
 public:
-	CUIActorDiaryWnd();
-	~CUIActorDiaryWnd();
-	void			Init(CUIListWnd *idxList);
+					CUIActorDiaryWnd	();
+					~CUIActorDiaryWnd	();
+	void			Init				(CUIListWnd *idxList);
 
-	void			AddArticle(ARTICLE_INDEX idx)			{ m_pCore->AddArticle(idx); }
-	void			DeleteArticles(CUITreeViewItem *pRoot);
-	void			ShowArticle(CUITreeViewItem *pItem);
-	virtual void	Show(bool status);
+	void			AddArticle			(ARTICLE_INDEX idx, bool bReaded)	{ m_pCore->AddArticle(idx, bReaded); }
+	void			DeleteArticles		(CUITreeViewItem *pRoot);
+	void			ShowArticle			(CUITreeViewItem *pItem);
+	virtual void	Show				(bool status);
 
 	CUIEncyclopediaCore *m_pCore;
 private:

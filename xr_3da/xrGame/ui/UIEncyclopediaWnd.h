@@ -33,17 +33,20 @@ private:
 	// »зменить размер статика по размеру текстуры
 	void RescaleStatic(CUIStatic &s);
 public:
-	CUIEncyclopediaWnd();
-	virtual ~CUIEncyclopediaWnd();
+					CUIEncyclopediaWnd();
+	virtual			~CUIEncyclopediaWnd();
 
-	virtual void Init();
-	virtual void Show(bool status);
-	virtual void SendMessage(CUIWindow *pWnd, s16 msg, void* pData = NULL);
-	virtual void Draw();
+	virtual void	Init();
+	virtual void	Show(bool status);
+	virtual void	SendMessage(CUIWindow *pWnd, s16 msg, void* pData = NULL);
+	virtual void	Draw();
 
-	void AddArticle(ARTICLE_INDEX);
-	void DeleteArticles();
+	void			AddArticle(ARTICLE_INDEX, bool bReaded);
+	void			DeleteArticles();
 
+	void			OpenTree(int idx) { UIInfo.OpenTree(idx); }
+	//  нопка возврата в меню заданий
+	CUIButton			UIBack;
 protected:
 
 	// Ёлементы графического оформлени€

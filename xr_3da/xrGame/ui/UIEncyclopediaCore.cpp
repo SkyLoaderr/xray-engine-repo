@@ -103,6 +103,26 @@ shared_str CUIEncyclopediaCore::SetCurrentArtice(CUITreeViewItem *pTVItem)
 
 		// Запоминаем текущий эдемент
 		m_pCurrArticle = m_ArticlesDB[pTVItem->GetValue()];
+
+		// Пометим как прочитанную
+		if (!pTVItem->IsArticleReaded())
+		{
+			CActor* pActor = smart_cast<CActor*>(Level().CurrentEntity());
+
+			if(pActor && pActor->encyclopedia_registry.objects_ptr())
+			{
+				for(ARTICLE_VECTOR::iterator it = pActor->encyclopedia_registry.objects().begin();
+					it != pActor->encyclopedia_registry.objects().end(); it++)
+				{
+					if (ARTICLE_DATA::eEncyclopediaArticle == it->article_type &&
+						m_pCurrArticle->Index() == it->index)
+					{
+						it->readed = true;
+						break;
+					}
+				}
+			}
+		}
 	}
 
 	return pTVItem->GetHierarchyAsText().c_str();
@@ -123,7 +143,7 @@ void CUIEncyclopediaCore::DeleteArticles()
 
 //////////////////////////////////////////////////////////////////////////
 
-void CUIEncyclopediaCore::AddArticle(ARTICLE_INDEX article_index)
+void CUIEncyclopediaCore::AddArticle(ARTICLE_INDEX article_index, bool bReaded)
 {
 	for(std::size_t i = 0; i<m_ArticlesDB.size(); i++)
 	{
@@ -144,7 +164,7 @@ void CUIEncyclopediaCore::AddArticle(ARTICLE_INDEX article_index)
 	// Теперь создаем иерархию вещи по заданному пути
 
 	CreateTreeBranch(a->data()->group, a->data()->name, pIdxList, m_ArticlesDB.size() - 1, 
-		m_pTreeRootFont, m_uTreeRootColor, m_pTreeItemFont, m_uTreeItemColor);
+		m_pTreeRootFont, m_uTreeRootColor, m_pTreeItemFont, m_uTreeItemColor, bReaded);
 }
 
 //////////////////////////////////////////////////////////////////////////
@@ -167,7 +187,7 @@ void CUIEncyclopediaCore::AdjustImagePos(CUIStatic &s)
 
 void CUIEncyclopediaCore::SendMessage(CUIWindow* pWnd, s16 msg, void* pData)
 {
-	if (pInfoList == pWnd && SCROLLBAR_VSCROLL == msg)
+	if (pInfoList == pWnd && SCROLLBAR_VSCROLL == msg && m_pCurrArticle)
 	{
 		RECT r = m_pCurrArticle->data()->image.GetWndRect();
 		m_pCurrArticle->data()->image.MoveWindow(r.left,
@@ -197,4 +217,47 @@ void CUIEncyclopediaCore::Show(bool status)
 	}
 
 	m_iCurrentInfoListPos = 0;
+}
+
+//////////////////////////////////////////////////////////////////////////
+
+void CUIEncyclopediaCore::OpenTree(int value)
+{
+	R_ASSERT(pIdxList);
+	// Find tree item
+
+	CUITreeViewItem *pItem	= NULL;
+	CUITreeViewItem *result	= NULL;
+
+	for (int i = 0; i < pIdxList->GetSize(); ++i)
+	{
+		pItem = smart_cast<CUITreeViewItem*>(pIdxList->GetItem(i));
+		if (pItem)
+		{
+			result = pItem->Find(value);
+			if (result) break;
+		}
+	}
+
+	if (result)
+	{
+		OpenTree(result);
+		pIdxList->SendMessage(result, BUTTON_CLICKED, NULL);
+		result->SendMessage(result, BUTTON_CLICKED, NULL);
+		pIdxList->ScrollToPos(result->GetIndex());
+	}
+}
+
+//////////////////////////////////////////////////////////////////////////
+
+void CUIEncyclopediaCore::OpenTree(CUITreeViewItem *pItem)
+{
+	R_ASSERT(pItem);
+	if (pItem->GetOwner())
+	{
+		OpenTree(pItem->GetOwner());
+	}
+
+	if (pItem->IsRoot())
+		pItem->Open();
 }

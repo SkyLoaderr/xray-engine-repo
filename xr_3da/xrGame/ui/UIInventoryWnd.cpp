@@ -1312,6 +1312,7 @@ bool CUIInventoryWnd::UndressOutfit()
 		m_pCurrentDragDropItem = UIOutfitSlot.GetCurrentOutfit();
 
 		status = ToBag();
+		m_pCurrentDragDropItem->Rescale(UIBagList.GetItemsScale());
 
 		// восстанавливам предыдущее состояние
 		SetCurrentItem(pCurrentItem);

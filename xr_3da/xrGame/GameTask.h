@@ -10,6 +10,7 @@
 #include "shared_data.h"
 #include "xml_str_id_loader.h"
 
+#include "encyclopedia_article_defs.h"
 #include "GameTaskDefs.h"
 
 class  CGameObject;
@@ -21,8 +22,8 @@ struct SGameTaskObjective
 	SGameTaskObjective() {}
 	//текстовое описание
 	shared_str description;
-	//id статьи в энциклопедии или дневнике (если есть)
-	shared_str article_id;
+	//index статьи в энциклопедии или дневнике (если есть)
+	ARTICLE_INDEX article_index;
 	//прикрипленна€ иконка
 	shared_str icon_texture_name;
 	int icon_x, icon_y, icon_width, icon_height;
@@ -72,7 +73,7 @@ public:
 	virtual u32				ObjectivesNum	();
 	virtual shared_str		ObjectiveDesc	(u32 index);
 	virtual shared_str		ObjectiveTitle	() {return data()->title;}
-	virtual shared_str		ObjectiveArticle(u32 index);
+	virtual ARTICLE_INDEX	ObjectiveArticle(u32 index);
 	virtual ETaskState		ObjectiveState  (u32 index);
 	virtual void			ObjectiveIcon	(u32 index, shared_str& tex_name, int& x, int& y, int& width, int& height);
 	//инициализируетс€ значени€ми из реестра актера

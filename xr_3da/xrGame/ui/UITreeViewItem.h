@@ -65,6 +65,9 @@ public:
 	// Найти элемент с заданным именем
 	// Return:	указатель на элемент, если нашли, либо NULL в противном случае
 	CUITreeViewItem * Find(LPCSTR text) const;
+	// Найти элемент с заданным значением
+	// Return:	указатель на элемент, если нашли, либо NULL в противном случае
+	CUITreeViewItem * Find(int value) const;
 	// Найти заданный элемент
 	// Return:	указатель на элемент, если нашли, либо NULL в противном случае
 	CUITreeViewItem * Find(CUITreeViewItem *pItem) const;
@@ -81,6 +84,30 @@ public:
 	// Ctor and Dtor
 	CUITreeViewItem();
 	~CUITreeViewItem();
+
+	// Устанавливаем цвет текста в зависимости от того, прочитан ли артикл
+	void	MarkArticleAsRead(bool value);
+	bool	IsArticleReaded() { return m_bArticleRead; }
+	// Цвет текста когда артикл не прочитан и не прочитан
+	void	SetReadedColor(u32 cl)		{ m_uReadedColor = cl;		}
+	void	SetUnreadedColor(u32 cl)	{ m_uUnreadedColor = cl;	}
+
+private:
+	friend class CUITreeViewItem;
+
+	// Устанавливаем цвет в зависимости от состояния элемента
+	void	SetItemColor()
+	{
+		m_bArticleRead ? SetTextColor(m_uReadedColor) :SetTextColor(m_uUnreadedColor);
+	}
+	// Применить состояние вверх по иерархии
+	void	CheckParentMark(CUITreeViewItem *pOwner);
+	// Цвет текста когда артикл не прочитан
+	u32		m_uUnreadedColor;
+	// Цвет текста когда артикл не прочитан
+	u32		m_uReadedColor;
+	// Флажек состояния прочитки
+	bool	m_bArticleRead;
 };
 
 //////////////////////////////////////////////////////////////////////////
@@ -92,6 +119,6 @@ DEF_VECTOR(GroupTree, shared_str);
 //////////////////////////////////////////////////////////////////////////
 
 void CreateTreeBranch(shared_str nestingTree, shared_str leafName, CUIListWnd *pListToAdd, int leafProperty,
-					  CGameFont *pRootFont, u32 rootColor, CGameFont *pLeafFont, u32 leafColor);
+					  CGameFont *pRootFont, u32 rootColor, CGameFont *pLeafFont, u32 leafColor, bool markRead);
 
 #endif	//UI_TREE_VIEW_ITEM_H_

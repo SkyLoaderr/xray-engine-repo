@@ -18,7 +18,9 @@ enum EPdaSections
 {
 	epsActiveJobs	= 0,
 	epsMap,
-	epsContacts
+	epsContacts,
+	epsEncyclopedia,
+	epsDiaryArticle
 };
 
 #endif	//UI_PDA_AUX_H_

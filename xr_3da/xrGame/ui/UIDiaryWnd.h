@@ -36,6 +36,7 @@ public:
 
 	// Открыть соответсвующий раздел ПДА
 	void				SetActiveSubdialog(EPdaSections section);
+	void				OpenDiaryTree(int idx) { UIActorDiaryWnd.m_pCore->OpenTree(idx); }
 
 protected:
 	// Дочерние окна входящие в окно информации
@@ -66,6 +67,7 @@ protected:
 	u32					m_uTreeRootColor;
 	CGameFont			*m_pTreeItemFont;
 	u32					m_uTreeItemColor;
+	u32					m_uUnreadColor;
 
 	// Левая горизонтальня линия
 	CUIStatic			*m_pLeftHorisontalLine;
@@ -77,6 +79,7 @@ protected:
 	// Указатели на разделы с заданиями
 	CUITreeViewItem		*m_pJobsRoot;
 	CUITreeViewItem		*m_pActiveJobs;
+	CUITreeViewItem		*m_pNews;
 
 	// Инициализируем TreeView
 	void				InitTreeView();

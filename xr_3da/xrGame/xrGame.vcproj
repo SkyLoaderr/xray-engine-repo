@@ -8693,6 +8693,12 @@
 						RelativePath=".\ui\UIIconedListItem.h">
 					</File>
 					<File
+						RelativePath=".\ui\UIJobItem.cpp">
+					</File>
+					<File
+						RelativePath=".\ui\UIJobItem.h">
+					</File>
+					<File
 						RelativePath=".\ui\UIJobsWnd.cpp">
 					</File>
 					<File

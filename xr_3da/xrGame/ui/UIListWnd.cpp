@@ -34,6 +34,8 @@ CUIListWnd::CUIListWnd()
 	m_iRightIndention			= 0;
 }
 
+//////////////////////////////////////////////////////////////////////////
+
 CUIListWnd::~CUIListWnd()
 {
 	//очистить список и удалить все элементы
@@ -46,10 +48,14 @@ CUIListWnd::~CUIListWnd()
 	m_ItemList.clear();
 }
 
+//////////////////////////////////////////////////////////////////////////
+
 void CUIListWnd::Init(int x, int y, int width, int height)
 {
 	Init(x, y, width, height, DEFAULT_ITEM_HEIGHT);
 }
+
+//////////////////////////////////////////////////////////////////////////
 
 void CUIListWnd::Init(int x, int y, int width, int height, int item_height)
 {
@@ -84,6 +90,8 @@ void CUIListWnd::Init(int x, int y, int width, int height, int item_height)
 									 m_iItemHeight%ACTIVE_BACKGROUND_HEIGHT);
 }
 
+//////////////////////////////////////////////////////////////////////////
+
 void CUIListWnd::SetWidth(int width)
 {
 	inherited::SetWidth(width);
@@ -93,8 +101,9 @@ void CUIListWnd::SetWidth(int width)
 									 m_iItemHeight%ACTIVE_BACKGROUND_HEIGHT);
 }
 
-
+//////////////////////////////////////////////////////////////////////////
 //добавляет элемент созданный извне
+//////////////////////////////////////////////////////////////////////////
 
 void CUIListWnd::RemoveItem(int index)
 {
@@ -136,6 +145,8 @@ void CUIListWnd::RemoveItem(int index)
 
 }
 
+//////////////////////////////////////////////////////////////////////////
+
 CUIListItem* CUIListWnd::GetItem(int index)
 {
 	if(index<0 || index>=(int)m_ItemList.size()) return NULL;
@@ -151,7 +162,10 @@ CUIListItem* CUIListWnd::GetItem(int index)
 	return (*it);
 }
 
+//////////////////////////////////////////////////////////////////////////
 //убрать все элементы из списка
+//////////////////////////////////////////////////////////////////////////
+
 void CUIListWnd::RemoveAll()
 {
 	if(m_ItemList.empty()) return;
@@ -182,6 +196,8 @@ void CUIListWnd::RemoveAll()
 
 	UpdateScrollBar();
 }
+
+//////////////////////////////////////////////////////////////////////////
 
 void CUIListWnd::UpdateList()
 {
@@ -226,8 +242,7 @@ void CUIListWnd::UpdateList()
 	UpdateScrollBar();
 }
 
-
-
+//////////////////////////////////////////////////////////////////////////
 
 void CUIListWnd::SendMessage(CUIWindow *pWnd, s16 msg, void *pData)
 {
@@ -306,6 +321,8 @@ void CUIListWnd::SendMessage(CUIWindow *pWnd, s16 msg, void *pData)
 	CUIWindow::SendMessage(pWnd, msg, pData);
 }
 
+//////////////////////////////////////////////////////////////////////////
+
 void CUIListWnd::Draw()
 {
 	WINDOW_LIST_it it;
@@ -332,22 +349,29 @@ void CUIListWnd::Draw()
 	CUIWindow::Draw();
 }
 
+//////////////////////////////////////////////////////////////////////////
+
 int CUIListWnd::GetSize()
 {
 	return (int)m_ItemList.size();
 }
 
+//////////////////////////////////////////////////////////////////////////
 
 void CUIListWnd::SetItemWidth(int iItemWidth)
 {
 	m_iItemWidth = iItemWidth;
 }
 
+//////////////////////////////////////////////////////////////////////////
+
 void CUIListWnd::SetItemHeight(int iItemHeight)
 {
 	m_iItemHeight = iItemHeight;
 	m_iRowNum = GetHeight()/iItemHeight;
 }
+
+//////////////////////////////////////////////////////////////////////////
 
 void CUIListWnd::Reset()
 {
@@ -361,7 +385,10 @@ void CUIListWnd::Reset()
 	inherited::Reset();
 }
 
+//////////////////////////////////////////////////////////////////////////
 //находит первый элемент с заданной pData, иначе -1
+//////////////////////////////////////////////////////////////////////////
+
 int CUIListWnd::FindItem(void* pData)
 {
 	int i=0;
@@ -372,6 +399,8 @@ int CUIListWnd::FindItem(void* pData)
 	return -1;
 }
 
+//////////////////////////////////////////////////////////////////////////
+
 void CUIListWnd::OnMouse(int x, int y, EUIMessages mouse_action)
 {
 	if(mouse_action == WINDOW_LBUTTON_DB_CLICK) 
@@ -381,6 +410,8 @@ void CUIListWnd::OnMouse(int x, int y, EUIMessages mouse_action)
 
 	inherited::OnMouse(x, y, mouse_action);
 }
+
+//////////////////////////////////////////////////////////////////////////
 
 int CUIListWnd::GetLongestSignWidth()
 {
@@ -396,6 +427,8 @@ int CUIListWnd::GetLongestSignWidth()
 	return max_width;
 }
 
+//////////////////////////////////////////////////////////////////////////
+
 void CUIListWnd::UpdateScrollBar()
 {
 	//спрятать скорлинг, если он не нужен
@@ -406,6 +439,8 @@ void CUIListWnd::UpdateScrollBar()
 			m_ScrollBar.Show(true);
 	
 }
+
+//////////////////////////////////////////////////////////////////////////
 
 void CUIListWnd::EnableScrollBar(bool enable)
 {
@@ -430,12 +465,17 @@ void CUIListWnd::ActivateList(bool activity)
 	m_bListActivity = activity;
 }
 
+//////////////////////////////////////////////////////////////////////////
+
 void CUIListWnd::ScrollToBegin()
 {
 	m_ScrollBar.SetScrollPos((s16)m_ScrollBar.GetMinRange());
 	m_iFirstShownIndex = m_ScrollBar.GetScrollPos();
 	UpdateList();
 }
+
+//////////////////////////////////////////////////////////////////////////
+
 void CUIListWnd::ScrollToEnd()
 {
 	int pos = m_ScrollBar.GetMaxRange()- m_ScrollBar.GetPageSize() + 1;
@@ -448,6 +488,22 @@ void CUIListWnd::ScrollToEnd()
 	m_iFirstShownIndex = m_ScrollBar.GetScrollPos();
 	UpdateList();
 }
+
+//////////////////////////////////////////////////////////////////////////
+
+void CUIListWnd::ScrollToPos(int position)
+{
+	if (IsScrollBarEnabled())
+	{
+		int pos = position;
+		clamp(pos, m_ScrollBar.GetMinRange(), m_ScrollBar.GetMaxRange() - m_ScrollBar.GetPageSize() + 1);
+		m_ScrollBar.SetScrollPos(static_cast<s16>(pos));
+		m_iFirstShownIndex = m_ScrollBar.GetScrollPos();
+		UpdateList();
+	}
+}
+
+//////////////////////////////////////////////////////////////////////////
 
 void CUIListWnd::Update()
 {

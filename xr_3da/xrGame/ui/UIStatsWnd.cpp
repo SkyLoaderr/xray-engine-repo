@@ -63,6 +63,7 @@ CUIStatsListItem * CUIStatsWnd::AddItem()
 {
 	CUIStatsListItem *pNewItem = xr_new<CUIStatsListItem>();
 	UIStatsList.AddItem<CUIListItem>(pNewItem); 
+	UIStatsList.ScrollToBegin();
 
 	CUIXml uiXml;
 	bool xml_result = uiXml.Init("$game_data$", STATS_XML);
@@ -99,7 +100,6 @@ void CUIStatsWnd::RemoveItemFrom(const u32 beg_pos, const char *strCaption)
 	if (CUIStatsListItem *pSLItem = FindFrom(beg_pos, strCaption))
 	{
 		UIStatsList.RemoveItem(pSLItem->GetIndex());
-		UIStatsList.UpdateScrollBar();
 	}
 }
 
