@@ -61,12 +61,12 @@ v2p_out v_main	( a2v  	IN )
 								IN.T.x,IN.B.y,IN.N.z) 
 							);
 	*/							
-	float3x3 xform	= float3x3(
-							1,0,0,
-							0,1,0,
-							0,0,1 
-							);
-  
+	float3x3 xform	= float3x3	(
+								IN.T.x,IN.B.y,IN.N.z,
+								IN.T.x,IN.B.y,IN.N.z,
+								IN.T.x,IN.B.y,IN.N.z
+								);
+								  
 	// Feed this transform to pixel shader
 	OUT.M1 			= xform[0]; 
 	OUT.M2 			= xform[1]; 
