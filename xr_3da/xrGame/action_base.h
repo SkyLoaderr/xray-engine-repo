@@ -43,7 +43,7 @@ protected:
 	ALife::_TIME_ID				m_start_game_time;
 	u32							m_inertia_time;
 	bool						m_log;
-	_edge_value_type			m_weight;
+	mutable _edge_value_type	m_weight;
 
 #ifdef LOG_ACTION
 public:

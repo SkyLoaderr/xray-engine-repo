@@ -200,7 +200,9 @@ IC	void CBaseAction::set_weight	(const _edge_value_type &weight)
 TEMPLATE_SPECIALIZATION
 typename CBaseAction::_edge_value_type CBaseAction::weight	(const CSConditionState &condition0, const CSConditionState &condition1) const
 {
-	VERIFY					(m_weight >= min_weight());
+	_edge_value_type		_min_weight = min_weight();
+	if (m_weight < _min_weight)
+		m_weight			= _min_weight;
 	return					(m_weight);
 }
 
