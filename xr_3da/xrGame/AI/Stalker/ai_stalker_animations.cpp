@@ -228,7 +228,7 @@ void CAI_Stalker::vfAssignTorsoAnimation(CMotionDef *&tpTorsoAnimation)
 			}
 			case CLSID_OBJECT_W_SHOTGUN		:
 			case CLSID_OBJECT_W_SVD			:
-			case CLSID_OBJECT_W_SVU			: {7
+			case CLSID_OBJECT_W_SVU			: {
 				dwCurrentAniSlot = 3;
 				break;
 			}
