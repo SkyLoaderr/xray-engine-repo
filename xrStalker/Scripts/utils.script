@@ -163,12 +163,15 @@ function stalker_look_at_waypoint(stalker, patrol_path, path_point)
 end
 
 function stalker_look_at_stalker(stalker, whom)
-	--local pos = whom:position()
-	--pos.y = pos.y + 0.8
-	--stalker:set_sight(look.fire_point, whom, 0)
-
 	local look_pt = this.vector_copy_by_val(whom:position()):sub(stalker:position())
 	stalker:set_sight(look.direction, look_pt, 0)
+end
+
+function stalker_look_at_stalker_angle(stalker, whom, angle)
+    --stalker - killer
+    --whom - killed :)
+	local look_pt = this.vector_copy_by_val(whom:position()):sub(stalker:position())
+	stalker:set_sight (look.direction, vector_rotate_y (look_pt, angle), 0)
 end
 
 local function door_default_callback(door, actor)
