@@ -2,7 +2,7 @@
 #include "entity.h"
 #include "PHDynamicData.h"
 #include "PhysicsShell.h"
-#include "ai\\script\\ai_script_monster.h"
+#include "ai/script/ai_script_monster.h"
 
 #include "inventory.h"
 
@@ -22,8 +22,8 @@ class CCar :
 	static BONE_P_MAP bone_map; //interface for PhysicsShell
 	virtual void PhDataUpdate(dReal step);
 	virtual void PhTune(dReal step);
-	virtual void InitContact(dContact* c){};
-	virtual void StepFrameUpdate(dReal step){};
+	virtual void InitContact(dContact* /**c/**/){};
+	virtual void StepFrameUpdate(dReal /**step/**/){};
 protected:
 	enum ECarCamType{
 		ectFirst	= 0,
@@ -400,10 +400,10 @@ public:
 	virtual void			ResetScriptData			(void *P=0);
 
 	// Hits
-	virtual void			HitSignal			(float HitAmount,	Fvector& local_dir, CObject* who, s16 element)	{};
-	virtual void			HitImpulse			(float amount,		Fvector& vWorldDir, Fvector& vLocalDir)			{};
+	virtual void			HitSignal			(float /**HitAmount/**/,	Fvector& /**local_dir/**/, CObject* /**who/**/, s16 /**element/**/)	{};
+	virtual void			HitImpulse			(float /**amount/**/,		Fvector& /**vWorldDir/**/, Fvector& /**vLocalDir/**/)			{};
 	virtual void			Die					()																	{};
-	virtual void			g_fireParams		(Fvector& P, Fvector& D)											{};
+	virtual void			g_fireParams		(Fvector& /**P/**/, Fvector& /**D/**/)											{};
 
 	// HUD
 	virtual void			OnHUDDraw			(CCustomHUD* hud);
@@ -422,7 +422,7 @@ private:
 		CKinematics* pKinematics	=PKinematics(Visual());
 		string64					S1;
 		int count =					_GetItemCount(S);
-		for (int i=0 ;i<count; i++) 
+		for (int i=0 ;i<count; ++i) 
 		{
 			_GetItem					(S,i,S1);
 
@@ -453,7 +453,7 @@ private:
 		CKinematics* pKinematics	=PKinematics(Visual());
 		string64					S1;
 		int count =					_GetItemCount(S);
-		for (int i=0 ;i<count; i++) 
+		for (int i=0 ;i<count; ++i) 
 		{
 			_GetItem					(S,i,S1);
 
@@ -476,7 +476,7 @@ private:
 		CKinematics* pKinematics	=PKinematics(Visual());
 		string64					S1;
 		int count =					_GetItemCount(S);
-		for (int i=0 ;i<count; i++) 
+		for (int i=0 ;i<count; ++i) 
 		{
 			_GetItem					(S,i,S1);
 

@@ -6,7 +6,7 @@
 #include "cameralook.h"
 #include "camerafirsteye.h"
 
-void	CCar::cam_Update			(float dt)
+void	CCar::cam_Update			(float /**dt/**/)
 {
 	Fvector							P,Da;
 	Da.set							(0,0,0);
