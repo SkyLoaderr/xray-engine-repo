@@ -423,6 +423,15 @@
     <string id="mil_max_dialog_7001">
         <text>Что ты хочешь знать ?</text>
     </string>
+    <string id="mil_max_dialog_8001">
+        <text>Здорово, сталкер ! Чего к нам зашел ?</text>
+    </string>
+    <string id="mil_max_dialog_8002">
+        <text>По делам. Не подскажешь, куда обратиться ?</text>
+    </string>
+    <string id="mil_max_dialog_8003">
+        <text>К Лукашу - он у нас старший. Иди в главное здание.</text>
+    </string>
     <string id="mil_max_dialog_common1_0">
         <text>Расскажи мне о деревне.</text>
     </string>
