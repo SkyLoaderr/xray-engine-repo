@@ -869,24 +869,6 @@ function action_security_stand:execute ()
     end
 
     self.object:set_item            (object.idle, self.object:best_weapon () )
---	if(device():time_global() < self.time + 1000) then return end
-
---	if(self.object:is_body_turning() == false) then
---    	return
---    end
-
---	self.animation:update("idle")
---    if(level.actor() and distance_between(level.actor(), self.object) < 5) then
---        local pos = level.actor():position()
---        pos.y     = pos.y + 1.4
---        self.object:set_sight               (look.point, pos, 0)
---    else
---        self.object:set_sight                   (look.point, self.a.path:point(1), 0)
---    end
-
---    self.object:set_movement_type           (move.stand)
---    self.object:set_mental_state    (anim.free)
---    action_base.execute (self)
 end
 ---------------------------------------------------------------------------------------------------------------------
 function action_security_stand:on_position()
@@ -896,7 +878,7 @@ function action_security_stand:on_position()
 	--Если точно не поворачиваемя, то: если актер далеко проигруем анимации, если рядом и угол между направлением
     --наблюдения и актером меньше величины, то смотрим на актера, в противном случае - в наблюдаемую точку
     if(device():time_global() > self.time) then
-		if(level.actor() and distance_between(level.actor(), self.object) > 5) then
+		if(level.actor() and distance_between(level.actor(), self.object) > 8) then
 			self.animations:update("idle")
 			self.object:set_sight               (look.point, self.a.path:point(1), 0)
         else
