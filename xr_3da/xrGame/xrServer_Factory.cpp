@@ -50,6 +50,12 @@ CSE_Abstract *F_entity_Create			(LPCSTR caSection)
 		// Zones
 		case CLSID_ZONE:
 		case CLSID_Z_MBALD:
+		case CLSID_Z_ACIDF:
+		case CLSID_Z_GALANT:
+		case CLSID_Z_RADIO:
+		case CLSID_Z_BFUZZ:
+		case CLSID_Z_RUSTYH:
+		case CLSID_Z_DEAD:
 		case CLSID_Z_MINCER:			return xr_new<CSE_ALifeAnomalousZone>			(caSection);
 			
 		case CLSID_LEVEL_CHANGER:		return xr_new<CSE_ALifeLevelChanger>			(caSection);
