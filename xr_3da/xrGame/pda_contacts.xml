@@ -19,11 +19,11 @@
 	<!-- AUTOSTATICS -->
 	
 	<!-- LEFT LADDER -->
-	<auto_static x="8" y="40" width="4" height="430">
+	<auto_static x="7" y="40" width="4" height="430">
 		<texture>ui\ui_pda_vertical_line_r_l</texture>
 	</auto_static>
 	<!-- RIGHT LADDER -->
-	<auto_static x="420" y="80" width="4" height="430">
+	<auto_static x="416" y="77" width="4" height="430">
 		<texture>ui\ui_pda_vertical_line_l_r</texture>
 	</auto_static>
 
