@@ -9,7 +9,6 @@
 #ifdef _EDITOR
 #else
 	#include "environment.h"
-	#include "xr_effsun.h"
 #endif
 
 // matrices

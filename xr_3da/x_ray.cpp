@@ -125,7 +125,7 @@ static BOOL CALLBACK logDlgProc( HWND hw, UINT msg, WPARAM wp, LPARAM lp )
 	}
 	return TRUE;
 }
-
+/*
 void	test_rtc	()
 {
 	CStatTimer		tMc,tM,tC,tD;
@@ -178,6 +178,7 @@ void	test_rtc	()
 	Msg				("* compression:   %5.2f M/s (%3.1f%%)",rC,100.f*rC/rMc);
 	Msg				("* decompression: %5.2f M/s (%3.1f%%)",rD,100.f*rD/rMc);
 }
+*/
 
 int APIENTRY WinMain(HINSTANCE hInstance,
                      HINSTANCE hPrevInstance,
