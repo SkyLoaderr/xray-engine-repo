@@ -81,6 +81,16 @@ class cl_fog_color	: public R_constant_setup {
 	}
 };	static cl_fog_color		binder_fog_color;
 
+// times
+class cl_times		: public R_constant_setup {
+	virtual void setup(R_constant* C)
+	{
+		float 		t	= Device.fTimeGlobal;
+		RCache.set_c	(C,t,t*10,t/10,_sin(t))	;
+	}
+};
+static cl_times		binder_times;
+
 // eye-params
 class cl_eye_P		: public R_constant_setup {
 	virtual void setup(R_constant* C)
@@ -200,6 +210,9 @@ void	CBlender_Compile::SetMapping	()
 	r_Constant				("fog_plane",		&binder_fog_plane);
 	r_Constant				("fog_params",		&binder_fog_params);
 	r_Constant				("fog_color",		&binder_fog_color);
+
+	// time
+	r_Constant				("timers",			&binder_times);
 
 	// eye-params
 	r_Constant				("eye_position",	&binder_eye_P);
