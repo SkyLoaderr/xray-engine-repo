@@ -11,6 +11,7 @@ Shader_xrLC&	base_Face::Shader		()
 }
 void			base_Face::CacheOpacity	()
 {
+	bDisableShadowCast	= false;
 	bOpaque				= false;
 
 	b_material& M		= pBuild->materials		[dwMaterial];

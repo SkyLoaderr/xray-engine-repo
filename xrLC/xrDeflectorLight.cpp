@@ -104,9 +104,9 @@ BOOL ApplyBorders(b_texture &lm, u32 ref)
 	return bNeedContinue;
 }
 
-float getLastRP_Scale(CDB::COLLIDER* DB, R_Light& L, Face* skip)
+float getLastRP_Scale(CDB::COLLIDER* DB, R_Light& L, Face* skip, BOOL bUseFaceDisable)
 {
-	u32	tris_count  = DB->r_count();
+	u32		tris_count	= DB->r_count();
 	float	scale		= 1.f;
 	Fvector B;
 
@@ -117,13 +117,14 @@ float getLastRP_Scale(CDB::COLLIDER* DB, R_Light& L, Face* skip)
 			CDB::RESULT& rpinf = DB->r_begin()[I];
 			
 			// Access to texture
-			CDB::TRI& clT								= RCAST_Model->get_tris()[rpinf.id];
-			base_Face* F								= (base_Face*) clT.dummy;
-			if (0==F)									continue;
-			if (skip==F)								continue;
+			CDB::TRI& clT									= RCAST_Model->get_tris()[rpinf.id];
+			base_Face* F									= (base_Face*) clT.dummy;
+			if (0==F)										continue;
+			if (skip==F)									continue;
+			if (bUseFaceDisable && F->bDisableShadowCast)	continue;
 			
-			Shader_xrLC&	SH							= F->Shader();
-			if (!SH.flags.bLIGHT_CastShadow)			continue;
+			Shader_xrLC&	SH								= F->Shader();
+			if (!SH.flags.bLIGHT_CastShadow)				continue;
 			
 			if (F->bOpaque)		{
 				// Opaque poly - cache it
@@ -165,7 +166,7 @@ float getLastRP_Scale(CDB::COLLIDER* DB, R_Light& L, Face* skip)
 	return scale;
 }
 
-float rayTrace	(CDB::COLLIDER* DB, R_Light& L, Fvector& P, Fvector& D, float R, Face* skip)
+float rayTrace	(CDB::COLLIDER* DB, R_Light& L, Fvector& P, Fvector& D, float R, Face* skip, BOOL bUseFaceDisable)
 {
 	R_ASSERT	(DB);
 	
@@ -183,12 +184,12 @@ float rayTrace	(CDB::COLLIDER* DB, R_Light& L, Fvector& P, Fvector& D, float R, 
 	if (0==DB->r_count()) {
 		return 1;
 	} else {
-		return getLastRP_Scale(DB,L,skip);
+		return getLastRP_Scale(DB,L,skip,bUseFaceDisable);
 	}
 	return 0;
 }
 
-void LightPoint(CDB::COLLIDER* DB, Fcolor &C, Fvector &P, Fvector &N, R_Light* begin, R_Light* end, Face* skip)
+void LightPoint(CDB::COLLIDER* DB, Fcolor &C, Fvector &P, Fvector &N, R_Light* begin, R_Light* end, Face* skip, BOOL bUseFaceDisable)
 {
 	Fvector		Ldir,Pnew;
 	Pnew.mad	(P,N,0.01f);
@@ -203,7 +204,7 @@ void LightPoint(CDB::COLLIDER* DB, Fcolor &C, Fvector &P, Fvector &N, R_Light* b
 			if( D <=0 ) continue;
 			
 			// Trace Light
-			float scale	= D*L->energy*rayTrace(DB,*L,Pnew,Ldir,1000.f,skip);
+			float scale	= D*L->energy*rayTrace(DB,*L,Pnew,Ldir,1000.f,skip,bUseFaceDisable);
 			C.r += scale * L->diffuse.r; 
 			C.g += scale * L->diffuse.g;
 			C.b += scale * L->diffuse.b;
@@ -220,7 +221,7 @@ void LightPoint(CDB::COLLIDER* DB, Fcolor &C, Fvector &P, Fvector &N, R_Light* b
 			
 			// Trace Light
 			float R		= _sqrt(sqD);
-			float scale = D*L->energy*rayTrace(DB,*L,Pnew,Ldir,R,skip);
+			float scale = D*L->energy*rayTrace(DB,*L,Pnew,Ldir,R,skip,bUseFaceDisable);
 			float A		= scale / (L->attenuation0 + L->attenuation1*R + L->attenuation2*sqD);
 			
 			C.r += A * L->diffuse.r;

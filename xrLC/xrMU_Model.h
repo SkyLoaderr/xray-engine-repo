@@ -93,7 +93,7 @@ public:
 	void				calc_normals		();
 	void				calc_materials		();
 	void				calc_faceopacity	();
-	void				calc_lighting		(vector<Fcolor>& dest, Fmatrix& xform, CDB::MODEL* M, LPCSTR L_layer);
+	void				calc_lighting		(vector<Fcolor>& dest, Fmatrix& xform, CDB::MODEL* M, LPCSTR L_layer, BOOL bDisableFaces);
 	void				calc_lighting		();
 	void				calc_ogf			();
 	void				export_geometry		();

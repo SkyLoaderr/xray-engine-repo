@@ -35,12 +35,13 @@ var _x	= var(x);
 */
 
 //-----------------------------------------------------------------------
-void xrMU_Model::calc_lighting	(vector<Fcolor>& dest, Fmatrix& xform, CDB::MODEL* M, LPCSTR L_layer)
+void xrMU_Model::calc_lighting	(vector<Fcolor>& dest, Fmatrix& xform, CDB::MODEL* M, LPCSTR L_layer, BOOL bDisableFaces)
 {
 	// trans-map
 	typedef	multimap<float,v_vertices>	mapVert;
 	typedef	mapVert::iterator			mapVertIt;
 	mapVert								g_trans;
+	u32									I;
 
 	// trans-epsilons
 	const float eps			= EPS_L;
@@ -59,7 +60,12 @@ void xrMU_Model::calc_lighting	(vector<Fcolor>& dest, Fmatrix& xform, CDB::MODEL
 	vector<R_Light>	Lights = pBuild->L_layers.front().lights;
 	if (Lights.empty())		return;
 
-	for (DWORD I = 0; I<m_vertices.size(); I++)
+	// Disable faces if needed
+	if	(bDisableFaces)
+		for (I=0; I<m_faces.size(); I++)	m_faces[I]->bDisableShadowCast	= TRUE;
+
+	// Perform lighting
+	for (I = 0; I<m_vertices.size(); I++)
 	{
 		_vertex*	V	= m_vertices[I];
 
@@ -94,7 +100,7 @@ void xrMU_Model::calc_lighting	(vector<Fcolor>& dest, Fmatrix& xform, CDB::MODEL
 
 			Fcolor					C;
 			C.set					(0,0,0,0);
-			LightPoint				(&DB, C, P, N, Lights.begin(), Lights.end(), 0);
+			LightPoint				(&DB, C, P, N, Lights.begin(), Lights.end(), 0, TRUE);
 			vC.r					+=	C.r;
 			vC.g					+=	C.g;
 			vC.b					+=	C.b;
@@ -134,6 +140,10 @@ void xrMU_Model::calc_lighting	(vector<Fcolor>& dest, Fmatrix& xform, CDB::MODEL
 		ins->second.reserve		(32);
 		ins->second.push_back	(V);
 	}
+
+	// Enable faces if needed
+	if	(bDisableFaces)
+		for (I=0; I<m_faces.size(); I++)	m_faces[I]->bDisableShadowCast	= FALSE;
 
 	// Process all groups
 	for (mapVertIt it=g_trans.begin(); it!=g_trans.end(); it++)
@@ -211,11 +221,10 @@ void xrMU_Model::calc_lighting		()
 
 void xrMU_Reference::calc_lighting	()
 {
-	model->calc_lighting	(color,xform,RCAST_Model,0);
+	model->calc_lighting	(color,xform,RCAST_Model,0,TRUE);
 
 	// A*C + D = B
 	// build data
-	clMsg("-----------------");
 	{
 		vector<vector<REAL> >	A(color.size());
 		vector<vector<REAL> >	B(color.size());
@@ -246,9 +255,11 @@ void xrMU_Reference::calc_lighting	()
 		c_bias.y			= D[1];
 		c_bias.z			= D[2];
 		c_bias.w			= 1;
+		/*
 		clMsg				("scale[%2.2f, %2.2f, %2.2f], bias[%2.2f, %2.2f, %2.2f]",
 			c_scale.x,c_scale.y,c_scale.z,
 			c_bias.x,c_bias.y,c_bias.z
 			);
+		*/
 	}
  }

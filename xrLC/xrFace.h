@@ -19,6 +19,7 @@ public:
 		bool				bOpaque;		// For ray-tracing speedup
 		bool				bProcessed;
 	};
+	bool					bDisableShadowCast;
 
 	virtual	Shader_xrLC&	Shader				( );
 	virtual void			CacheOpacity		( );

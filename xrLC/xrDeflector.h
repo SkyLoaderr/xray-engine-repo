@@ -108,4 +108,4 @@ typedef vector<UVtri>::iterator UVIt;
 extern void		Jitter_Select	(Fvector2* &Jitter, u32& Jcount);
 extern void		blit			(u32* dest, u32 ds_x, u32 ds_y, u32* src, u32 ss_x, u32 ss_y, u32 px, u32 py, u32 aREF);
 extern void		blit_r			(u32* dest, u32 ds_x, u32 ds_y, u32* src, u32 ss_x, u32 ss_y, u32 px, u32 py, u32 aREF);
-extern void		LightPoint		(CDB::COLLIDER* DB, Fcolor &C, Fvector &P, Fvector &N, R_Light* begin, R_Light* end, Face* skip);
+extern void		LightPoint		(CDB::COLLIDER* DB, Fcolor &C, Fvector &P, Fvector &N, R_Light* begin, R_Light* end, Face* skip, BOOL bUseFaceDisable=FALSE);
