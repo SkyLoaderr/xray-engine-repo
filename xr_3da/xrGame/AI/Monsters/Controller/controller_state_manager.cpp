@@ -116,16 +116,9 @@ void CStateManagerController::execute()
 	} else if (corpse && can_eat){
 		state_id = eStateEat;
 
-#ifdef DEBUG
-		//object->HDebug->M_Add(0, "[Eat State]", D3DCOLOR_XRGB(255,0,0));	
-#endif
-		
 	} else {
 		state_id = eStateRest;
 
-#ifdef DEBUG
-		//object->HDebug->M_Add(0, "[Rest State]", D3DCOLOR_XRGB(255,0,0));	
-#endif
 		//object->set_controlled_task(eTaskFollow);
 	}
 

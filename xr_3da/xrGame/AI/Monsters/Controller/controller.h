@@ -29,6 +29,6 @@ public:
 			void	UpdateControlled	();
 
 			void	set_controlled_task (u32 task);
-	
+
 };
 

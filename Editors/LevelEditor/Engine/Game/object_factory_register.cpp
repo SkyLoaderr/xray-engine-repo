@@ -38,6 +38,7 @@
 #	include "ai/monsters/Burer/burer.h"
 #	include "ai/monsters/PseudoGigant/pseudo_gigant.h"
 #	include "ai/monsters/controller/controller.h"
+#	include "ai/monsters/poltergeist/poltergeist.h"
 
 #	include "ai/trader/ai_trader.h"
 
@@ -174,6 +175,7 @@ void CObjectFactory::register_classes	()
 	ADD(CBurer					,CSE_ALifeMonsterBiting			,CLSID_AI_BURER				,"burer");
 	ADD(CPseudoGigant			,CSE_ALifeMonsterBiting			,CLSID_AI_GIANT				,"pseudo_gigant");
 	ADD(CController				,CSE_ALifeMonsterBiting			,CLSID_AI_CONTROLLER		,"controller");
+	ADD(CPoltergeist			,CSE_ALifeMonsterBiting			,CLSID_AI_PHANTOM			,"poltergeist");
 
 	// Trader
 	ADD(CAI_Trader				,CSE_ALifeTrader				,CLSID_AI_TRADER			,"trader");

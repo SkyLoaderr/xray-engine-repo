@@ -69,10 +69,6 @@ void CController::Load(LPCSTR section)
 
 bool CController::UpdateStateManager()
 {
-	string128 s;
-	sprintf(s,"Satiety = [%.3f] Min[%.3f] Max[%.3f]",GetSatiety(),get_sd()->m_fMinSatiety,get_sd()->m_fMaxSatiety);
-	HDebug->M_Add(1,s, D3DCOLOR_XRGB(0,255,255));
-
 	UpdateControlled	();
 	StateMan->execute	();
 	return true;
@@ -101,6 +97,31 @@ void CController::UpdateControlled()
 				m_controlled_objects.pop_back();
 			}  
 		}
+
+
+#ifdef DEBUG
+	// Draw Controlled Lines
+	HDebug->L_Clear();
+	Fvector my_pos = Position();
+	my_pos.y += 1.5f;
+	
+
+	for (u32 i=0; i < m_controlled_objects.size(); i++) {
+		Fvector enemy_pos	= m_controlled_objects[i]->Position();
+		
+		Fvector dir;
+		dir.sub(enemy_pos, Position());
+		dir.div(2.f);
+		Fvector new_pos;
+		new_pos.add(Position(),dir);
+		new_pos.y += 10.f;
+
+		enemy_pos.y += 1.0f;
+		HDebug->L_AddLine(my_pos,		new_pos, D3DCOLOR_XRGB(0,255,255));
+		HDebug->L_AddLine(enemy_pos,	new_pos, D3DCOLOR_XRGB(0,255,255));
+	}
+
+#endif
 }
 
 void CController::set_controlled_task(u32 task)
