@@ -10,11 +10,11 @@ class "Trader"
 function Trader:__init (npc, zone, script_name)
     self.npc = npc
     self.zone = zone
-    self.zone:set_callback (self, "on_enter", true)
-    self.zone:set_callback (self, "on_exit", false)
-    self.npc:set_callback (self, "on_start_trade", true)    
-    self.npc:set_callback (self, "on_end_trade", false)   
-    self.npc:set_trade_callback (self, "on_trade")
+    --self.zone:set_callback (self, "on_enter", true)
+    --self.zone:set_callback (self, "on_exit", false)
+    --self.npc:set_callback (self, "on_start_trade", true)    
+    --self.npc:set_callback (self, "on_end_trade", false)   
+    --self.npc:set_trade_callback (self, "on_trade")
     
     self.last_npc = nil
     self.already = false
