@@ -13,6 +13,7 @@ class ENGINE_API CInifile;
 // CLASS
 class ENGINE_API C3DSoundRender
 {
+private:
 	LPDIRECTSOUND3DLISTENER		pListener;
 	F3dlistener					Listener;
 	LPKSPROPERTYSET				pExtensions;
@@ -20,17 +21,12 @@ class ENGINE_API C3DSoundRender
 	vector <vector<C3DSound*> >	sounds;
 	vector <int>				refcounts;
 
-	vector <FIntersectionQuad>	clip_planes;
-
-	C3DSound*					GetFreeSound	(int hSound);
-	int							FindByName		(LPCSTR name, BOOL bFreq);
-	int							FindEmptySlot	();
-	int							Append			(C3DSound *p);
+private:
+	C3DSound*					GetFreeSound		(int hSound);
+	int							FindByName			(LPCSTR name, BOOL bFreq);
+	int							FindEmptySlot		();
+	int							Append				(C3DSound *p);
 public:
-	void						LoadClipPlanes		(CInifile *pIni, LPCSTR section);
-	void						UnloadClipPlanes	( ) { clip_planes.clear(); }
-	void						RenderClipPlanes	( );
-
 	int							CreateSound	(LPCSTR name, BOOL bCtrlFreq=FALSE, BOOL bNotClip=FALSE );
 	int							CreateSound	(CInifile *pIni, LPCSTR section);
 	void						DeleteSound	(int& hSound);
