@@ -81,7 +81,7 @@ public:
 	IC void								clCenter		(Fvector& C) const	{ VERIFY(pVisual); clTransform.transform_tiny(C,pVisual->bv_Position);	}
 
 	IC float							Radius			() const			{ VERIFY(pVisual); return pVisual->bv_Radius;}
-	IC virtual Fvector&					Position		() 					{ return vPosition; }
+	virtual Fvector&					Position		() 					{ return vPosition; }
 	IC Fvector&							Direction		() 					{ return mRotate.k; }
 	IC Fmatrix&							Rotation		()					{ return mRotate;	}
 	IC FBasicVisual*					Visual			()					{ return pVisual;   }
