@@ -16,7 +16,7 @@
 	// Fuzzy State Machine
 	#define ASSIGN_PROPORTIONAL_POWER(a,b)	if ((eType & a) == a) power*=b;
 
-	//#define WRITE_LOG
+	#define WRITE_LOG
 
 	#ifdef WRITE_LOG
 		#define WRITE_TO_LOG(S) {\
@@ -90,10 +90,9 @@
 	#define ASSIGN_SPINE_BONE {\
 		if (fabsf(r_torso_target.yaw - r_target.yaw) < MIN_SPINE_TURN_ANGLE) {\
 			r_spine_target.yaw = r_target.yaw;\
-			r_target.yaw -= PI_DIV_6;\
 		}\
 		else\
-			r_target.yaw = r_spine_target.yaw =  (r_torso_target.yaw + r_target.yaw)/2;\
+			r_target.yaw = r_spine_target.yaw =  r_torso_target.yaw;\
 	}
 			
 	#define LOOK_AT_DIRECTION(A) {\

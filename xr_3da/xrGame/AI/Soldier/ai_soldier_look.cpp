@@ -11,7 +11,7 @@
 #include "..\\..\\xr_weapon_list.h"
 #include "..\\..\\actor.h"
 
-#define	MAX_HEAD_TURN_ANGLE				(PI/2.f)
+#define	MAX_HEAD_TURN_ANGLE				PI_DIV_2
 #define MIN_SPINE_TURN_ANGLE			PI_DIV_6
 #define EYE_WEAPON_DELTA				(0*PI/30.f)
 #define WEAPON_DISTANCE					(.35f)
@@ -128,9 +128,9 @@ void CAI_Soldier::SetLessCoverLook(NodeCompressed *tNode, bool bSpine)
 			}
 			
 			r_target.yaw = fBestAngle;
-			if (bSpine) {
-				ASSIGN_SPINE_BONE;
-			}
+			//if (bSpine) {
+				//ASSIGN_SPINE_BONE;
+			//}
 			//q_look.o_look_speed = PI_DIV_4;
 			//r_torso_speed = _FB_look_speed;//(r_torso_target.yaw - r_torso_current.yaw);
 			//r_target.yaw += PI_DIV_6;

@@ -1039,7 +1039,7 @@ void CAI_Soldier::OnPatrolReturn()
 	}
 
 	StandUp();
-	vfSetLookAndFireMovement(false, Leader != this ? WALK_FORWARD_3 : WALK_FORWARD_3,1.0f,Group,dwCurTime);
+	vfSetLookAndFireMovement(false, Leader != this ? WALK_FORWARD_2 : WALK_FORWARD_2,1.0f,Group,dwCurTime);
 }
 
 void CAI_Soldier::OnFollowLeaderPatrol()
@@ -1214,18 +1214,18 @@ void CAI_Soldier::OnFollowLeaderPatrol()
 	if (acosf(tWatchDirection.dotproduct(tTemp0)) < PI_DIV_2) {
 		float fDistance = Leader->Position().distance_to(Position());
 		if (fDistance >= m_fMaxPatrolDistance) {
-			vfSetLookAndFireMovement(false, WALK_FORWARD_3,1.1f,Group,dwCurTime);
+			vfSetLookAndFireMovement(false, WALK_FORWARD_2,1.1f,Group,dwCurTime);
 		}
 		else
 			if (fDistance <= m_fMinPatrolDistance) {
-				vfSetLookAndFireMovement(false, WALK_FORWARD_3,0.9f,Group,dwCurTime);
+				vfSetLookAndFireMovement(false, WALK_FORWARD_2,0.9f,Group,dwCurTime);
 			}
 			else {
-				vfSetLookAndFireMovement(false, WALK_FORWARD_3,float(((fDistance - (m_fMaxPatrolDistance + m_fMinPatrolDistance)*.5f)/((m_fMaxPatrolDistance - m_fMinPatrolDistance)*.5f)*.1f + m_fMinPatrolDistance)),Group,dwCurTime);
+				vfSetLookAndFireMovement(false, WALK_FORWARD_2,float(((fDistance - (m_fMaxPatrolDistance + m_fMinPatrolDistance)*.5f)/((m_fMaxPatrolDistance - m_fMinPatrolDistance)*.5f)*.1f + m_fMinPatrolDistance)),Group,dwCurTime);
 			}
 	}
 	else {
-		vfSetLookAndFireMovement(false, WALK_FORWARD_3,0.9f,Group,dwCurTime);
+		vfSetLookAndFireMovement(false, WALK_FORWARD_2,0.9f,Group,dwCurTime);
 	}
 }
 
@@ -1355,7 +1355,7 @@ void CAI_Soldier::OnPatrol()
 	}
 	
 	StandUp();
-	vfSetLookAndFireMovement(false, WALK_FORWARD_3,1.0f,Group,dwCurTime);
+	vfSetLookAndFireMovement(false, WALK_FORWARD_2,1.0f,Group,dwCurTime);
 }
 
 void CAI_Soldier::OnAttackFireAlone()
