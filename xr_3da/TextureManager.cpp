@@ -324,9 +324,15 @@ void	CShaderManager::OnDeviceDestroy(void)
 void	CShaderManager::OnDeviceCreate(void) 
 {
 	if (!Device.bReady) return;
+	cache.Invalidate	();
+	
+}
 
-	cache.Invalidate();
-
+void	CShaderManager::OnFrameEnd	()
+{
+	for (DWORD stage=0; stage<HW.Caps.dwNumBlendStages; stage++)
+		CHK_DX(HW.pDevice->SetTexture(0,0));
+	cache.Invalidate	();
 }
 
 void CShaderManager::TexturesLoad	()

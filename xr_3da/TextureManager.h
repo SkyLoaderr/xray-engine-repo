@@ -85,7 +85,7 @@ public:
 
 	void	OnDeviceDestroy	(void);
 	void	OnDeviceCreate	(void);
-	IC void	OnFrameEnd		()
+	void	OnFrameEnd		();
 	{
 		cache.Invalidate	();
 	}
