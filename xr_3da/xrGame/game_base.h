@@ -96,6 +96,8 @@ struct	game_PlayerState
 	DEF_VECTOR(PLAYER_ITEMS_LIST, PlayersItem);
 
 	PLAYER_ITEMS_LIST	pItemList;
+
+	s16					LastBuyAcount;
 };
 
 struct	game_TeamState

@@ -10,6 +10,8 @@
 #include "game_cl_base.h"
 #include "Spectator.h"
 #include "Inventory.h"
+#include "xrserver_objects_alife_items.h"
+
 
 #define MSGS_OFFS 510
 
@@ -357,7 +359,10 @@ bool		CUIGameDM::CanBeReady				()
 	u8 res = 0xff;
 
 	SetCurrentSkinMenu();
-	SetCurrentBuyMenu();	
+
+	SetCurrentBuyMenu();
+	if (pCurBuyMenu && !pCurBuyMenu->IsShown())
+		SetBuyMenuItems		();
 
 	if (!m_bSkinSelected)
 	{
@@ -477,9 +482,7 @@ void		CUIGameDM::SetBuyMenuItems		()
 	game_cl_GameState::Player* P = Game().local_player;
 	if (!P) return;
 	pCurBuyMenu->SetMoneyAmount(P->money_for_round);
-
-	CActor* pCurActor = dynamic_cast<CActor*> (Level().Objects.net_Find	(P->GameID));
-	if (!pCurActor) return;
+	
 	//---------------------------------------------------------
 	pCurBuyMenu->ClearSlots();
 	pCurBuyMenu->ClearRealRepresentationFlags();
@@ -494,31 +497,47 @@ void		CUIGameDM::SetBuyMenuItems		()
 	//---------------------------------------------------------
 	pCurBuyMenu->IgnoreMoney(true);
 
-	TIItemSet::const_iterator	I = pCurActor->inventory().m_all.begin();
-	TIItemSet::const_iterator	E = pCurActor->inventory().m_all.end();
-	pCurBuyMenu->IgnoreMoney(true);
-	for ( ; I != E; ++I) 
+	CActor* pCurActor = dynamic_cast<CActor*> (Level().Objects.net_Find	(P->GameID));
+	if (pCurActor)
 	{
-		PIItem pItem = (*I);
-		if ((*I)->getDestroy() || (*I)->m_drop) continue;
-		u8 SlotID, ItemID;
-		pCurBuyMenu->GetWeaponIndexByName(*pItem->cNameSect(), SlotID, ItemID);
-		if (SlotID == 0xff || ItemID == 0xff) continue;
-
-//		pCurBuyMenu->SectionToSlot(*pItem->cNameSect(), true);
-		pCurBuyMenu->SectionToSlot(SlotID, ItemID, true);
-		//-----------------------------------------------------
-		s16 BigID = (s16(SlotID) << 0x08) | s16(ItemID);
-		It = TmpPresetItems.begin();
-		Et = TmpPresetItems.end();
-		for ( ; It != Et; ++It) 
+		TIItemSet::const_iterator	I = pCurActor->inventory().m_all.begin();
+		TIItemSet::const_iterator	E = pCurActor->inventory().m_all.end();
+		pCurBuyMenu->IgnoreMoney(true);
+		for ( ; I != E; ++I) 
 		{
-			if (BigID == ((*It)& 0xff1f))
+			PIItem pItem = (*I);
+			if ((*I)->getDestroy() || (*I)->m_drop) continue;
+			u8 SlotID, ItemID;
+			pCurBuyMenu->GetWeaponIndexByName(*pItem->cNameSect(), SlotID, ItemID);
+			if (SlotID == 0xff || ItemID == 0xff) continue;
+			//-----------------------------------------------------
+			CWeapon* pWeapon = dynamic_cast<CWeapon*> (pItem);
+			if (pWeapon)
 			{
-				TmpPresetItems.erase(It);
-				break;
+				u8 Addons = 0;
+				if (pWeapon->IsGrenadeLauncherAttached())
+					Addons |= CSE_ALifeItemWeapon::eWeaponAddonGrenadeLauncher;
+				if (pWeapon->IsScopeAttached())
+					Addons |= CSE_ALifeItemWeapon::eWeaponAddonScope;
+				if (pWeapon->IsSilencerAttached())
+					Addons |= CSE_ALifeItemWeapon::eWeaponAddonSilencer;
+
+				ItemID |= Addons << 0x05;
+			};
+			pCurBuyMenu->SectionToSlot(SlotID, ItemID, true);
+			//-----------------------------------------------------
+			s16 BigID = (s16(SlotID) << 0x08) | s16(ItemID);
+			It = TmpPresetItems.begin();
+			Et = TmpPresetItems.end();
+			for ( ; It != Et; ++It) 
+			{
+				if (BigID == ((*It)& 0xff1f))
+				{
+					TmpPresetItems.erase(It);
+					break;
+				}
 			}
-		}
+		};
 	};
 	pCurBuyMenu->IgnoreMoney(false);
 	//---------------------------------------------------------

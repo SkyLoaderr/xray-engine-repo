@@ -569,8 +569,7 @@ void	game_sv_Deathmatch::OnPlayerBuyFinished		(u32 id_who, NET_Packet& P)
 	if (!ps || ps->Skip) return;
 
 	s16 MoneyDelta;
-	P.r_s16(MoneyDelta);
-	ps->money_for_round = ps->money_for_round + MoneyDelta;
+	P.r_s16(ps->LastBuyAcount);
 
 	xr_vector<s16>		ItemsDesired;
 
@@ -811,15 +810,12 @@ void	game_sv_Deathmatch::SpawnWeaponsForActor(CSE_Abstract* pE, game_PlayerState
 		pItem = &(ps->pItemList[i]);
 		TEAM_WPN_LIST_it pWpnI	= std::find(WpnList.begin(), WpnList.end(), (pItem->ItemID & 0xFF1f));
 
-//		WeaponDataStruct* pWpn = &(*pWpnI);
 		if (pWpnI == WpnList.end() || !((*pWpnI) == (pItem->ItemID & 0xFF1f))) continue;
 
-		SpawnWeapon4Actor(pA->ID, (*pWpnI).WeaponName.c_str(), u8(pItem->ItemID & 0x00FF)>>0x05);//GetItemAddonsForSlot(u8((cID & 0xFF00)>>8), u8(cID & 0x00FF),  ps));
-		ps->money_for_round = ps->money_for_round - pItem->ItemCost;
-
-//		game_PlayerState::BeltItem	pBeltItem = ps->BeltItems[i]; 
-//		SpawnWeapon4Actor(pA->ID, GetItemForSlot(ps->BeltItems[i].SlotID, ps->BeltItems[i].ItemID,  ps), GetItemAddonsForSlot(ps->BeltItems[i].SlotID, ps->BeltItems[i].ItemID,  ps));
+		SpawnWeapon4Actor(pA->ID, (*pWpnI).WeaponName.c_str(), u8(pItem->ItemID & 0x00FF)>>0x05);
 	};
+
+	ps->money_for_round = ps->money_for_round + ps->LastBuyAcount;
 };
 void	game_sv_Deathmatch::LoadWeaponsForTeam		(char* caSection, TEAM_WPN_LIST *pTeamWpnList)
 {
