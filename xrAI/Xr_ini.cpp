@@ -6,7 +6,7 @@
 CInifile *pSettings	= NULL;
 
 CInifile* CInifile::Create(const char* szFileName, BOOL ReadOnly)
-{	return xr_new<CInifile>(szFileName,ReadOnly); }
+{	return 0/*xr_new<CInifile>(szFileName,ReadOnly)*/; }
 
 void CInifile::Destroy(CInifile* ini)
 {	xr_delete(ini); }
@@ -63,7 +63,8 @@ BOOL	CInifile::Sect::line_exist( LPCSTR L, LPCSTR* val )
 	return FALSE;
 }
 //------------------------------------------------------------------------------
-CInifile::CInifile(IReader& F)
+
+CInifile::CInifile(IReader* F)
 {
 	fName		= 0;
 	bReadOnly	= TRUE;
@@ -79,7 +80,7 @@ CInifile::CInifile( LPCSTR szFileName, BOOL ReadOnly, BOOL bLoad, BOOL SaveAtEnd
 	if (bLoad)
 	{	
 		IReader* R = FS.r_open(szFileName);
-		Load	(*R);
+		Load	(R);
 		FS.r_close(R);
 	}
 }
@@ -102,15 +103,15 @@ CInifile::~CInifile( )
 	}
 }
 
-void	CInifile::Load(IReader& F)
+void	CInifile::Load(IReader* F)
 {
 	Sect	Current;	Current.Name = 0;
 	char	str			[1024];
 	char	str2		[1024];
 
-	while (!F.eof())
+	while (!F->eof())
 	{
-		F.r_string		(str);
+		F->r_string		(str);
 		_Trim			(str);
 		LPSTR semi		= strchr(str,';');
 		LPSTR comment	= 0;
