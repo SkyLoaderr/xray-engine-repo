@@ -12,7 +12,7 @@ enum
 	LOCKFLAGS_APPEND	= /* D3DLOCK_NOSYSLOCK | */ D3DLOCK_NOOVERWRITE
 };
 
-class ENGINE_API CVertexStream  
+class ENGINE_API _VertexStream  
 {
 	friend class				CSharedStreams;
 	friend class				CDraw;
@@ -28,8 +28,8 @@ private:
 	void						Create	();
 	void						Destroy	();
 public:
-	IC IDirect3DVertexBuffer8*	getBuffer()		{ return pVB;			}
-	IC DWORD					getDiscard()	{ return mDiscardID;	}
+	IC IDirect3DVertexBuffer8*	Buffer()		{ return pVB;			}
+	IC DWORD					DiscardID()		{ return mDiscardID;	}
 	IC void						Flush()			{ mPosition=mSize;		}
 
 	IC void*					Lock			( DWORD Count, DWORD Stride, DWORD& vOffset )
@@ -70,11 +70,11 @@ public:
 		pVB->Unlock			();
 	}
 
-	CVertexStream()			{ _clear();				};
-	~CVertexStream()		{ Destroy();			};
+	_VertexStream()			{ _clear();				};
+	~_VertexStream()		{ Destroy();			};
 };
 
-class ENGINE_API CIndexStream  
+class ENGINE_API _IndexStream  
 {
 	friend class				CSharedStreams;
 	friend class				CDraw;
@@ -90,8 +90,8 @@ private:
 	void						Create	();
 	void						Destroy	();
 public:
-	IC IDirect3DIndexBuffer8*	getBuffer()		{ return pIB;			}
-	IC DWORD					getDiscard()	{ return mDiscardID;	}
+	IC IDirect3DIndexBuffer8*	Buffer()		{ return pIB;			}
+	IC DWORD					DiscardID()		{ return mDiscardID;	}
 	void						Flush()			{ mPosition=mSize;		}
 
 	IC WORD*					Lock			( DWORD Count, DWORD& vOffset )
@@ -126,15 +126,15 @@ public:
 		pIB->Unlock				();
 	}
 
-	CIndexStream()				{ _clear();				};
-	~CIndexStream()				{ Destroy();			};
+	_IndexStream()				{ _clear();				};
+	~_IndexStream()				{ Destroy();			};
 };
 
 class ENGINE_API CSharedStreams
 {
 public:
-	CVertexStream			Vertex;
-	CIndexStream			Index;
+	_VertexStream			Vertex;
+	_IndexStream			Index;
 public:
 	void	OnDeviceCreate	()
 	{

@@ -18,7 +18,8 @@ public:
 	DWORD					dwFrame;				// mark
 
 	// Common data for rendering
-	Shader*					hShader;				// shared
+	Shader*					hShader;				// pipe state, shared
+	CVS*					hVS;					// vertex shader, shared
 	Fvector					bv_Position;
 	float					bv_Radius;
 	Fbox					bv_BBox;

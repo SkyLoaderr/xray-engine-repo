@@ -9,7 +9,6 @@
 class ENGINE_API CPSVisual: public CVisual
 {
 protected:
-	CVertexStream*		m_Stream;
 	PS::Particles	  	m_Particles;
 	PS::SParams*		m_Definition;
 public:
