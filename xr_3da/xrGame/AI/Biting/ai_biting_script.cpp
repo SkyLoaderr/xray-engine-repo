@@ -20,7 +20,6 @@ bool CAI_Biting::bfAssignMovement (CEntityAction *tpEntityAction)
 	case eMA_Steal:		MotionMan.m_tAction = ACT_STEAL;		break;
 	}
 
-	//TranslateActionToVelocityMasks(l_tMovementAction.m_tSpeedParam == eSP_ForceSpeed);
 	CMonsterMovement::set_path_targeted();
 		
 	return			(true);		
@@ -162,9 +161,6 @@ void CAI_Biting::ProcessScripts()
 
 	MotionMan.Update						();
 	
-//	MotionMan.RetrieveAnimation				();
-//	MotionMan.ApplyAnimation				();
-
 	// установить текущую скорость
 	CMonsterMovement::Frame_Finalize			();
 }

@@ -54,7 +54,6 @@ public:
 	
 	EAction					m_tAction;
 	CMotionDef				*m_tpCurAnim;
-	bool					b_ignore_path_velocity_check;
 
 public:
 
@@ -184,12 +183,13 @@ public:
 	void		Update					();
 
 private:
-	void		RetrieveAnimation		();
+	void		SelectAnimation			();
+	void		SelectVelocities		();
+	
 	EAction		GetActionFromPath		();
-
 	EAction		VelocityIndex2Action	(u32 velocity_index);
 	
-	void		ApplyAnimation			();
+	bool		CheckBraking			(float before_interval);
 
 //////////////////////////////////////////////////////////////////////////
 // DEBUG

@@ -65,6 +65,7 @@ void CAI_Biting::Init()
 	cur_blend						= 0;
 
 	mental_state					= MS_Calm;
+	b_acceleration					= false;
 
 }
 
@@ -547,9 +548,23 @@ float CAI_Biting::get_custom_pitch_speed(float def_speed)
 	return cur_speed;
 }
 
+bool CAI_Biting::GetAcceleration(float &acc)
+{
+	if (!b_acceleration) return false;
+
+	if (mental_state == MS_Aggressive) acc = _sd->m_accel.aggressive;
+	else acc = _sd->m_accel.generic;
+
+	return true;
+}
+
 float CAI_Biting::GetAcceleration()
 {
-	if (mental_state == MS_Aggressive) return _sd->m_accel.aggressive;
-	else return _sd->m_accel.generic;
+	return (mental_state == MS_Aggressive) ?  _sd->m_accel.aggressive : _sd->m_accel.generic;
+}
+
+void CAI_Biting::SetAcceleration(bool pmt_accel)
+{
+	b_acceleration = pmt_accel;
 }
 

@@ -815,6 +815,7 @@ bool CMotionManager::IsStandCurAnim()
 	return false;
 }
 
+
 //////////////////////////////////////////////////////////////////////////
 // m_tAction processing
 //////////////////////////////////////////////////////////////////////////
@@ -822,57 +823,42 @@ bool CMotionManager::IsStandCurAnim()
 void CMotionManager::Update()
 {
 	// Установка Yaw
-	if (pMonster->IsMovingOnPath()) {
-		pMonster->SetDirectionLook( ((spec_params & ASP_MOVE_BKWD) == ASP_MOVE_BKWD) );
-		Msg("Apply set direction look. Cur yaw = [%.3f], Target yaw = [%.3f]", pMonster->m_body.current.yaw, pMonster->m_body.target.yaw);
-	}
+	if (pMonster->IsMovingOnPath()) pMonster->SetDirectionLook( ((spec_params & ASP_MOVE_BKWD) == ASP_MOVE_BKWD) );
 
-	RetrieveAnimation	();
-	ApplyAnimation		();
+	SelectAnimation		();
+	SelectVelocities	();
 }
 
 
-// есть путь и m_tAction - получить анимацию
-void CMotionManager::RetrieveAnimation()
+
+//////////////////////////////////////////////////////////////////////////
+// SelectAnimation
+// In:	path, target_yaw, m_tAction
+// Out:	установить cur_anim
+void CMotionManager::SelectAnimation()
 {
-	Msg("--- RETRIVE ANIMATION -----------------------------------------------------");
-	
-	Msg("Input m_tAction = [%s]",	GetActionName(m_tAction));
-	
 	EAction							action = m_tAction;
-	if (pMonster->IsMovingOnPath()) {
-		action = GetActionFromPath();
-		Msg(" __ if path - Get Action  from path action = [%s]", GetActionName(action));	
-	}
+	if (pMonster->IsMovingOnPath()) action = GetActionFromPath();
 
 	cur_anim						= _sd->m_tMotions[action].anim;
 	
-	Msg("Transform action [%s] to anim = [%s]", GetActionName(action), GetAnimationName(cur_anim));
-
-	if (prev_anim != cur_anim) {
-		Msg("Check Transition here ... ");
-		CheckTransition(prev_anim, cur_anim);
-	}
+	if (prev_anim != cur_anim)		CheckTransition(prev_anim, cur_anim);
 
 	pMonster->CheckSpecParams		(spec_params);	
-	Msg("cur_anim after SpecParams: [%s]", GetAnimationName(cur_anim));
-	CheckReplacedAnim				();
-	Msg("cur_anim after ReplacedAnim: [%s]", GetAnimationName(cur_anim));
 
-	
-	Msg("Processing custom defined TURN");
+	CheckReplacedAnim				();
+
 	pMonster->ProcessTurn			();
-	Msg("cur_anim after PreocessTurn: [%s]", GetAnimationName(cur_anim));
 }
 
 
-// есть анимация и параметры движения по пути
-// выбрать и установить финальную анимацию, её скорость и скорости движения
-void CMotionManager::ApplyAnimation()
+//////////////////////////////////////////////////////////////////////////
+// SelectVelocities
+// In:	path, target_yaw, анимация
+// Out:	установить linear и angular velocities, 
+//		по скорости движения выбрать финальную анимацию из Velocity_Chain
+void CMotionManager::SelectVelocities()
 {
-	b_ignore_path_velocity_check = false;
-	
-	Msg("--- APPLY ANIMATION -----------------------------------------");
 	// получить скорости движения по пути
 	bool		b_moving = pMonster->IsMovingOnPath();
 	SMotionVel	path_vel;	path_vel.set(0.f,0.f);
@@ -880,7 +866,6 @@ void CMotionManager::ApplyAnimation()
 
 	if (b_moving) {
 		
-		Msg(" __ Moving on path, so get velocities from path...");
 		u32 cur_point_velocity_index = pMonster->CDetailPathManager::path()[pMonster->curr_travel_point_index()].velocity;
 
 		u32 next_point_velocity_index = u32(-1);
@@ -890,22 +875,14 @@ void CMotionManager::ApplyAnimation()
 		// если сейчас стоит на месте и есть след точка (т.е. должен быть в движении),
 		// то реализовать поворот на месте, а дальше форсировать скорость со следующей точки
 		if ((cur_point_velocity_index == pMonster->eVelocityParameterStand) && (next_point_velocity_index != u32(-1))) {
-			if (angle_difference(pMonster->m_body.current.yaw, pMonster->m_body.target.yaw) < deg(1)) {
+			if (angle_difference(pMonster->m_body.current.yaw, pMonster->m_body.target.yaw) < deg(1)) 
 				cur_point_velocity_index = next_point_velocity_index;
-				Msg(" __ __ I'm standing and on PATH DIR - so take next point velocity");
-			} else {
-				Msg(" __ __ I'm just standing and try to turn to the PATH DIR");
-			}
-		} else {
-			Msg(" __ __ I'm NOT standing BUT Moving - get cur_point velocity");
-		}
-
+		} 
+		
 		xr_map<u32,CDetailPathManager::STravelParams>::const_iterator it = pMonster->m_movement_params.find(cur_point_velocity_index);
 		R_ASSERT(it != pMonster->m_movement_params.end());
 
 		path_vel.set(_abs((*it).second.linear_velocity), (*it).second.angular_velocity);
-
-		Msg(" __ Velocities from path: [L = %f, A = %f]", path_vel.linear, path_vel.angular);
 	}
 
 	ANIM_ITEM_MAP_IT	item_it = _sd->m_tAnims.find(cur_anim);
@@ -914,17 +891,19 @@ void CMotionManager::ApplyAnimation()
 	// получить скорости движения по анимации
 	anim_vel.set(item_it->second.velocity->velocity.linear, item_it->second.velocity->velocity.angular);
 
-	Msg("Get Velocities from Cur Anim: [L = %f, A = %f]", anim_vel.linear,anim_vel.angular);
+//	// проверить на совпадение
+//	R_ASSERT(fsimilar(path_vel.linear,	anim_vel.linear));
+//	R_ASSERT(fsimilar(path_vel.angular,	anim_vel.angular));
 
-	// проверить на совпадение
-	if (b_ignore_path_velocity_check) {
-		R_ASSERT(fsimilar(path_vel.linear,	anim_vel.linear));
-		R_ASSERT(fsimilar(path_vel.angular,	anim_vel.angular));
-	}
 
 	// установка линейной скорости	
-	pMonster->m_velocity_linear.target	= _abs(anim_vel.linear);
-	if (fis_zero(pMonster->m_velocity_linear.target)) pMonster->m_velocity_linear.current = 0.f;
+	// - проверить на возможность торможения
+	if (!CheckBraking(0.f)) {
+		pMonster->m_velocity_linear.target	= _abs(anim_vel.linear);
+		if (fis_zero(pMonster->m_velocity_linear.target)) pMonster->m_velocity_linear.current = 0.f;
+	} else {
+		pMonster->m_velocity_linear.target	= 0.1f;
+	}
 
 	// финальная корректировка анимации по физической скорости
 	float  real_speed = pMonster->m_fCurSpeed;
@@ -941,7 +920,6 @@ void CMotionManager::ApplyAnimation()
 	R_ASSERT(_sd->m_tAnims.end() != item_it);
 
 	pMonster->m_velocity_angular.target	= pMonster->m_velocity_angular.current = item_it->second.velocity->velocity.angular;
-	Msg("Angular velocity = [%f]", pMonster->m_velocity_angular.current);
 	
 	// применить 
 	// если установленная анимация отличается от предыдущей - установить новую анимацию
@@ -949,7 +927,6 @@ void CMotionManager::ApplyAnimation()
 
 	prev_anim	= cur_anim;
 }
-
 
 EAction CMotionManager::VelocityIndex2Action(u32 velocity_index)
 {
@@ -963,6 +940,8 @@ EAction CMotionManager::VelocityIndex2Action(u32 velocity_index)
 		case pMonster->eVelocityParameterDrag:			return ACT_DRAG;
 		default:										NODEFAULT;
 	}
+
+	return ACT_STAND_IDLE;
 }
 
 
@@ -977,8 +956,6 @@ EAction CMotionManager::GetActionFromPath()
 	if (pMonster->CDetailPathManager::path().size() > pMonster->curr_travel_point_index() + 1) 
 		next_point_velocity_index = pMonster->CDetailPathManager::path()[pMonster->curr_travel_point_index() + 1].velocity;
 
-	Msg("Try to get action from path: cur_point_vel_index [%u]", cur_point_velocity_index);
-
 	if ((cur_point_velocity_index == pMonster->eVelocityParameterStand) && (next_point_velocity_index != u32(-1))) {
 		if (angle_difference(pMonster->m_body.current.yaw, pMonster->m_body.target.yaw) < deg(1)) 
 			action = VelocityIndex2Action(next_point_velocity_index);
@@ -986,6 +963,33 @@ EAction CMotionManager::GetActionFromPath()
 
 	return action;
 }
+
+bool CMotionManager::CheckBraking(float before_interval)
+{
+	if (!pMonster->IsMovingOnPath()) return false;
+
+	float acceleration;
+	if (!pMonster->GetAcceleration(acceleration)) return false;
+
+	float braking_dist	= (pMonster->m_velocity_linear.current * pMonster->m_velocity_linear.current) / acceleration;
+	braking_dist += before_interval;
+
+	// проверить точки пути, где необходимо остановиться
+	float dist = 0.f;	// дистанция до найденной точки	
+	for (u32 i=pMonster->curr_travel_point_index()+1; i < pMonster->CDetailPathManager::path().size(); i++) {
+		dist += pMonster->CDetailPathManager::path()[i].position.distance_to(pMonster->CDetailPathManager::path()[i-1].position);
+		
+		if ((pMonster->CDetailPathManager::path()[i].velocity == pMonster->eVelocityParameterStand) && (dist < braking_dist)) {
+			return true;
+		}
+	}
+
+	if (pMonster->CMonsterMovement::IsPathEnd(braking_dist)) return true;
+
+	return false;
+}
+
+
 
 
 

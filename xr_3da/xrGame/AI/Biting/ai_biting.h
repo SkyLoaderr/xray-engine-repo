@@ -262,7 +262,10 @@ public:
 	CBlend					*cur_blend;
 	
 	EActivityState			mental_state;
+	bool					GetAcceleration			(float &acc);
 	float					GetAcceleration			();
+	void					SetAcceleration			(bool pmt_accel = true);
+	bool					b_acceleration;
 
 	bool					b_script_state_must_execute;
 

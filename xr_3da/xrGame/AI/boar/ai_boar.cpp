@@ -250,7 +250,6 @@ void CAI_Boar::ProcessTurn()
 		default:
 			if (delta_yaw > deg(30)) {
 				(turn_left) ? MotionMan.SetCurAnim(eAnimStandTurnLeft) : MotionMan.SetCurAnim(eAnimStandTurnRight);
-				MotionMan.b_ignore_path_velocity_check = true;
 			}
 			return;
 	}

@@ -10,16 +10,17 @@
 
 #include "../../CustomMonster.h"
 #include "../../inventoryowner.h"
-#include "../../ai_space.h"
+#include "../../ai_script_space.h"
+#include "../script/ai_script_monster.h"
 #include "../script/ai_script_monster.h"
 #include "../ai_monster_bones.h"
 
 class CInventoryItem;
 
 class CAI_Trader : public CEntityAlive, public CInventoryOwner, public CScriptMonster {
-	luabind::functor<void>	*m_tpOnStart;
-	luabind::functor<void>	*m_tpOnStop;
-	luabind::functor<void>	*m_tpOnTrade;
+	SMemberCallback	m_tpOnStart;
+	SMemberCallback	m_tpOnStop;
+	SMemberCallback	m_tpOnTrade;
 
 public:
 	typedef CEntityAlive inherited;
@@ -79,10 +80,12 @@ public:
 			void			LookAtActor				(CBoneInstance *B);
 
 
-			void			set_callback			(const luabind::functor<void> &tpTradeCallback, bool bOnStart);
+			void			set_callback			(const luabind::functor<void> &lua_function, bool bOnStart);
+			void			set_callback			(const luabind::object &lua_object, LPCSTR method, bool bOnStart);
 			void			clear_callback			(bool bOnStart);
 
-			void			set_trade_callback		(const luabind::functor<void> &tpTradeCallback);
+			void			set_trade_callback		(const luabind::functor<void> &lua_function);
+			void			set_trade_callback		(const luabind::object &lua_object, LPCSTR method);
 			void			clear_trade_callback	();
 
 			void			OnStartTrade			();

@@ -277,7 +277,7 @@ public:
 		CAI_Trader	*l_tpTrader		= dynamic_cast<CAI_Trader*>	(m_tpGameObject);
 
 		if (!l_tpScriptZone && !l_tpTrader)
-			LuaOut			(Lua::eLuaMessageTypeError,"CScriptZone : cannot access class member set_callback!");
+			LuaOut			(Lua::eLuaMessageTypeError,"CScriptZone or CTrader: cannot access class member set_callback!");
 		else if (l_tpScriptZone) l_tpScriptZone->set_callback(tpZoneCallback,bOnEnter);
 		else l_tpTrader->set_callback(tpZoneCallback,bOnEnter);
 	}
@@ -285,11 +285,12 @@ public:
 	void SetCallback(const luabind::object &object, LPCSTR method, bool bOnEnter)
 	{
 		CScriptZone	*l_tpScriptZone = dynamic_cast<CScriptZone*>(m_tpGameObject);
+		CAI_Trader	*l_tpTrader		= dynamic_cast<CAI_Trader*>	(m_tpGameObject);
 
-		if (!l_tpScriptZone)
-			LuaOut			(Lua::eLuaMessageTypeError,"CScriptZone : cannot access class member set_callback!");
-		else
-			l_tpScriptZone->set_callback(object,method,bOnEnter);
+		if (!l_tpScriptZone && !l_tpTrader)
+			LuaOut			(Lua::eLuaMessageTypeError,"CScriptZone or CTrader: cannot access class member set_callback!");
+		else if (l_tpScriptZone) l_tpScriptZone->set_callback(object,method,bOnEnter);
+		else l_tpTrader->set_callback(object,method,bOnEnter);
 	}
 
 	void ClearCallback(bool bOnEnter)
@@ -311,6 +312,15 @@ public:
 		else l_tpTrader->set_trade_callback(tpTradeCallback);
 	}
 	
+	void SetTradeCallback(const luabind::object &object, LPCSTR method) {
+		CAI_Trader	*l_tpTrader	= dynamic_cast<CAI_Trader*>	(m_tpGameObject);
+
+		if (!l_tpTrader) 
+			LuaOut			(Lua::eLuaMessageTypeError,"CAI_Trader : cannot access class member set_trade_callback!");
+		else l_tpTrader->set_trade_callback(object, method);
+	}
+
+
 	void ClearTradeCallback() {
 		CAI_Trader	*l_tpTrader		= dynamic_cast<CAI_Trader*>	(m_tpGameObject);
 

@@ -54,36 +54,11 @@ void CAI_Biting::Think()
 	// построить путь
 	CMonsterMovement::Frame_Update			();
 	
-	// ¬ыбрать анимацию и соотв. параметры согласно текущему действию
-	//MotionMan.RetrieveAnimation				();
-	//MotionMan.ApplyAnimation				();
-
 	MotionMan.Update						();
 
 	// установить текущую скорость
 	CMonsterMovement::Frame_Finalize		();
 
-//	if (MotionMan.Seq_Active()) disable_path();
-//	else {
-//		// ¬ыбор текущего состо€ни€
-//		StateSelector						();
-//		CurrentState->Execute				(m_current_update);
-//	}
-//	// ќбработать action
-//	MotionMan.ProcessAction					();
-//
-//	UpdatePathWithAction					();
-//
-//	if (CMonsterMovement::is_path_targeted())
-//		UpdateTargetVelocityWithPath		();
-//	
-//	// построить путь
-//	CMonsterMovement::Frame_Update			();
-//
-//	MotionMan.FinalizeProcessing			();
-//
-//	// установить текущую скорость
-//	CMonsterMovement::Frame_Finalize		();
 
 	// Debuging
 #ifdef DEBUG
@@ -161,22 +136,22 @@ bool CAI_Biting::UpdateVelocityWithPath()
 
 void CAI_Biting::UpdatePathWithAction()
 {
-	if (MotionMan.IsStandCurAnim() && !fis_zero(m_velocity_linear.current)) {
-		disable_path();
-		m_velocity_linear.current = 0.f;
-	} else enable_path();
+//	if (MotionMan.IsStandCurAnim() && !fis_zero(m_velocity_linear.current)) {
+//		disable_path();
+//		m_velocity_linear.current = 0.f;
+//	} else enable_path();
 }
-
+//
 void CAI_Biting::UpdateTargetVelocityWithPath(float before_interval)
 {
-	float acceleration	= GetAcceleration();
-	float dist_to_end	= (m_velocity_linear.current * m_velocity_linear.current) / acceleration;
-
-	dist_to_end += before_interval;
-	
-	if (IsPathEnd(dist_to_end) && IsMovingOnPath()) {
-		m_velocity_linear.target = 0.f;
-	}
+//	float acceleration	= GetAcceleration();
+//	float dist_to_end	= (m_velocity_linear.current * m_velocity_linear.current) / acceleration;
+//
+//	dist_to_end += before_interval;
+//	
+//	if (IsPathEnd(dist_to_end) && IsMovingOnPath()) {
+//		m_velocity_linear.target = 0.f;
+//	}
 }
 
 
