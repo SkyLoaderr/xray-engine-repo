@@ -13,8 +13,8 @@ function CDeadFlesh:reload(section)
 	
 	self.char_ini	= self.object:spawn_ini()
 	
-	self.rest_way	= utils.conf_get_string(self.char_ini, "gameplay", "path", nil, obj, true)
-	self.dead_way	= utils.conf_get_string(self.char_ini, "gameplay", "dead_point", nil, obj, true)
+	self.rest_way	= utils.mob_get_string(self.char_ini, "gameplay", "path", nil, obj, true)
+	self.dead_way	= utils.mob_get_string(self.char_ini, "gameplay", "dead_point", nil, obj, true)
 
 	self.end_work	= false
 	self.actor_near = false
@@ -78,8 +78,8 @@ function CBoarPlayWithCorpse:reload(section)
 	
 	self.ini        = self.object:spawn_ini()
 
-	self.path		= patrol(utils.conf_get_string(self.ini, "gameplay", "path", nil, self.object, true))
-	self.corpse		= utils.conf_get_string(self.ini, "gameplay", "corpse", nil, self.object, true)
+	self.path		= patrol(utils.mob_get_string(self.ini, "gameplay", "path", nil, self.object, true))
+	self.corpse		= utils.mob_get_string(self.ini, "gameplay", "corpse", nil, self.object, true)
 	self.end_work	= false
 	self.actor_near = false
 	
@@ -219,7 +219,45 @@ function CBoarPlayWithCorpse:test_to_dead()
 	return (true)
 end
 
-class "CDangerDogs"
+------------------------------------------------------------------------------------------------
+// Скрипт: собаки, которые пытаются атаковать раненого
+
+// Менеджер, который управляет очередностью атак собак
+local pDogs_manager = nil
+
+class "CDogsManager"
+function CDogsManager:__init()
+	self.attack		= false
+	self.time		= 0
+end
+
+// Атакует сейчас кто-то 
+function CDogsManager:attack_stalker()
+	if(self.attack) then return true end
+	
+	if(device():time_global() > self.time + 5000) then		// следущий атакует, только через 5 секунд, после того, как предъидущий закончил
+		return false
+	end
+	
+	return true
+end
+
+function CDogsManager:monster_attack(param)
+	self.attack		= param
+end
+
+function dog_manager()
+	if(pDogs_manager == nil) then
+		pDogs_manager = CDogsManager()
+	end
+	
+	return (pDogs_manager)
+end
+
+
+
+// Собака, которая будет биндится
+class "CDangerDogs" (object_binder)
 
 function CDangerDogs:__init(obj) super(obj)
 end 
@@ -229,11 +267,13 @@ function CDangerDogs:reload(section)
 	
 	self.char_ini	= self.object:spawn_ini()
 	
-	self.rest_way	= utils.conf_get_string(self.char_ini, "gameplay", "path", nil, obj, true)
-	self.dead_way	= utils.conf_get_string(self.char_ini, "gameplay", "dead_point", nil, obj, true)
+	self.rest_way	= patrol(utils.mob_get_string(self.char_ini, "gameplay", "path_walk", nil, self.object, true))
+	self.dead_way	= patrol(utils.mob_get_string(self.char_ini, "gameplay", "path_attack", nil, self.object, true))
+	self.enemy_name	= utils.mob_get_string(self.char_ini, "gameplay", "enemy", nil, self.object, true)
 
 	self.end_work	= false
 	self.actor_near = false
+	self.freed		= false
 end
 
 function CDangerDogs:update(delta)
@@ -241,7 +281,7 @@ function CDangerDogs:update(delta)
 	
 	if(self.end_work) then return end
 	
-	if(self:test_to_dead()) then return end
+	if(self:test_to_end_work()) then return end
 	
 	// Если еще не взяли под скрипт, то берем
 	if(self.object:get_script() == false) then
@@ -252,28 +292,104 @@ function CDangerDogs:update(delta)
 end
 
 function CDangerDogs:set_action()
-	if(dog_manager():attack_actor() == false) then
+	// Спрашиваем у менеджера, может мне начать атаковать
+	if(dog_manager():attack_stalker() == false) then
 		self.attack	= true
 		dog_manager():monster_attack(true)
 		reset_action(self.object, script_name())
 	end
+	
+	// Если пока еще есть действия, то нечего не делаем
+	if(self.object:action()) then return end
+	
+	if(self.attack) then 
+		// идем пугать сталкера
+		self.dist = distance_between(self.enemy, self.object)
+		if(self.dist <= 5) then
+			action(self.object, look(look.point, self.enemy:position()), anim(anim.turn, 0), sound(sound.threaten), cond(cond.look_end))
+			action(self.object, anim(anim.attack, 0), sound(sound.attack), cond(cond.time_end, 5000))		
+			action(self.object, anim(anim.stand_idle, 0), sound(sound.threaten), cond(cond.time_end, 1500))		
+		else
+			// еще далеко от сталкера, подходим, но учитываем расстояния. Когда не сильно далеко, то подкрадуемся
+			if(self.object:position():distance_to(self.dead_way:point(0)) < 2) then
+				action(self.object, move(move.steal, self.enemy:position(), 4.5), sound(sound.threaten), cond(cond.move_end))
+			else
+				action(self.object, move(move.walk_fwd, self.dead_way:point(0), 1), sound(sound.threaten), cond(cond.move_end))
+			end
+		end
+	else
+		// не атакуем, а ходим вокруг дома
+		action(self.object, move(move.walk_fwd, self.rest_way), sound(sound.attack), cond(cond.move_end))
+	end
 end
 
-// Проверяем, не умер ли монстр
-function CDangerDogs:test_to_dead()
+// Проверяем, надо ли работать скрипту, или его отключить
+function CDangerDogs:test_to_end_work()
+	
+	self.enemy		= level.object(self.enemy_name)
+	
+	// Если нет инфопоршена, либо нет врага, то пока не работаем
+	if(self.object:alive() and level.actor():dont_has_info("escape_stalker_help") or self.enemy == nil) then
+		self:freeded()
+		return (true)
+	end
+	
+	// Учитываем, хиты и наличие врага рядом. Если это присуствует, то атакуем
+	if(self.object:alive() and self:need_attack()) then return (true) end
+	
+	// Если мертвый, то больше скрипт не работает
 	if(self.object:alive()) then return (false) end
 	
+	// Мертвый, заканчиваем работу
 	self.end_work		= true
 	
 	// если атаковали актера, то сообщаем менеджеру, что уже больше не атакуем
-	if(self.attack) then
-		dog_manager():monster_attack(false)
-		self.attack 	= false
-	end
+	self:freeded()
 	
+	return (true)
+end
+
+function CDangerDogs:freeded()
 	if(self.object:get_script()) then
 		self.object:script(false, script_name())
 	end
 	
-	return (true)
+	if(self.attack) then
+		dog_manager():monster_attack(false)
+		self.attack		= false
+	end
+end
+
+// Эта функции смотрит, надо ли отпустить монстра из под скрипта и начать атаковать
+function CDangerDogs:need_attack()
+	if(self.freed) then
+		// Пока отпущен, смотрим, может порае его взять под контроль
+		if(self.object:get_enemy() == nil and self.object:get_monster_hit_info().time == 0 and distance_between_safe(self.object, level.actor()) >= 5) then
+			self.freed	= false
+		end
+	else
+		// Проверяем, может надо отпустить монстра. Враг очень рядом или монстр получит хит
+		if(distance_between_safe(self.object, level.actor()) < 5 or
+		   (self.object:get_monster_hit_info().who and self.object:get_monster_hit_info().who:id() == get_actor_id())
+		) then
+			// К гадалке не ходи, надо отпускать монстра
+			self.freed	= true
+		end
+	end      
+	
+	// Если надо отпустить, то отпускаем
+	if(self.freed) then self:freeded() end
+	
+	return (self.freed)	   
+end
+
+
+// Если проподаем и в это время атаковали, то сообщаем менеджеру, что больше не атакуем
+function CDangerDogs:net_destroy()
+	object_binder.net_destroy(self)
+
+	if(self.attack) then
+		dog_manager():monster_attack(false)
+		self.attack 	= false
+	end
 end

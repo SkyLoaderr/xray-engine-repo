@@ -11,9 +11,9 @@ function CRostokBloodSucker:reload(section)
 	object_binder.reload(self, section)
 	
 	local char_ini		= self.object:spawn_ini()
-	self.path       	= patrol(utils.conf_get_string(char_ini, "rostok_bloodsuceker", "path", nil, self.object, true))
-	self.add_time		= utils.conf_get_number(char_ini, "rostok_bloodsuceker", "time", nil, self.object, false, 60)
-	self.zone			= utils.conf_get_string(char_ini, "rostok_bloodsuceker", "zone", nil, self.object, false)
+	self.path       	= patrol(utils.mob_get_string(char_ini, "rostok_bloodsuceker", "path", nil, self.object, true))
+	self.add_time		= utils.mob_get_number(char_ini, "rostok_bloodsuceker", "time", nil, self.object, false, 60)
+	self.zone			= utils.mob_get_string(char_ini, "rostok_bloodsuceker", "zone", nil, self.object, false)
 	
 	self.not_working	= false
 	self.on_position	= false
