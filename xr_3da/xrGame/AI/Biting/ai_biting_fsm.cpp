@@ -72,56 +72,67 @@ void CAI_Biting::Think()
 //		
 //	vfSetAnimation();
 
+//	m_fCurSpeed				= 1.0f;	
+//
+//#ifndef _ATTACK_TEST_ON
+//
+//	// RUN TESTING
+//
+//	vfUpdateDetourPoint();	
+//	vfSetMotionActionParams(eBodyStateStand, eMovementTypeWalk, 
+//					eMovementDirectionForward, eStateTypeNormal, eActionTypeWalk);
+//	
+//	
+//	AI_Path.DestNode		= getAI().m_tpaGraph[m_tNextGP].tNodeID;
+//	vfSetParameters(0, 0, false, 0);
+//
+//#else
+//	//////////////////////////////////////////////////////////////////////////
+//	// ATTACK TESTING
+//
+//	vfSetMotionActionParams(eBodyStateStand, eMovementTypeRun, 
+//		eMovementDirectionForward, eStateTypeNormal, eActionTypeRun);
+//
+//	CActor *pActor = dynamic_cast <CActor*> (Level().CurrentEntity());
+//	if (pActor) {
+//
+//
+//		if (pActor->Position().distance_to(vPosition) <= tempAttackDistance) {
+//			//AI_Path.TravelPath.clear();
+//
+//			AI_Path.DestNode = AI_NodeID;
+//
+//			vfSetMotionActionParams(eBodyStateStand, eMovementTypeStand, 
+//				eMovementDirectionNone, eStateTypeDanger, eActionTypeAttack);
+//
+//			vfSetParameters(0, &pActor->Position(), false, 0);
+//			
+//			if (m_tActionType == eActionTypeAttack) {
+//				m_fCurSpeed				= 0.01f;		
+//				r_torso_speed			= min_angle;
+//			}
+//		}  else {
+//			AI_Path.DestNode = pActor->AI_NodeID;
+//			vfSetParameters(0, &Level().CurrentEntity()->Position(), false, 0);
+//		}
+//	}
+//	//////////////////////////////////////////////////////////////////////////
+//
+//#endif
+//
+//	if (m_tActionType == eActionTypeAttack) vfSetAnimation(false);
+//	else vfSetAnimation(true);
+
 	m_fCurSpeed				= 1.0f;	
 
-#ifndef _ATTACK_TEST_ON
-
-	// RUN TESTING
-
-	vfUpdateDetourPoint();	
-	vfSetMotionActionParams(eBodyStateStand, eMovementTypeWalk, 
-					eMovementDirectionForward, eStateTypeNormal, eActionTypeWalk);
-	
-	
-	AI_Path.DestNode		= getAI().m_tpaGraph[m_tNextGP].tNodeID;
-	vfSetParameters(0, 0, false, 0);
-
-#else
-	//////////////////////////////////////////////////////////////////////////
-	// ATTACK TESTING
-
-	vfSetMotionActionParams(eBodyStateStand, eMovementTypeRun, 
-		eMovementDirectionForward, eStateTypeNormal, eActionTypeRun);
-
-	CActor *pActor = dynamic_cast <CActor*> (Level().CurrentEntity());
-	if (pActor) {
-
-
-		if (pActor->Position().distance_to(vPosition) <= tempAttackDistance) {
-			//AI_Path.TravelPath.clear();
-
-			AI_Path.DestNode = AI_NodeID;
-
-			vfSetMotionActionParams(eBodyStateStand, eMovementTypeStand, 
-				eMovementDirectionNone, eStateTypeDanger, eActionTypeAttack);
-
-			vfSetParameters(0, &pActor->Position(), false, 0);
-			
-			if (m_tActionType == eActionTypeAttack) {
-				m_fCurSpeed				= 0.01f;		
-				r_torso_speed			= min_angle;
-			}
-		}  else {
-			AI_Path.DestNode = pActor->AI_NodeID;
-			vfSetParameters(0, &Level().CurrentEntity()->Position(), false, 0);
-		}
+	switch (m_tStateFSM) {
+		case eNoState : InitRest();
+			break;
+		case eRestIdle:
+		case eWalkAround: Rest();
+			break;
 	}
-	//////////////////////////////////////////////////////////////////////////
-
-#endif
-
-	if (m_tActionType == eActionTypeAttack) vfSetAnimation(false);
-	else vfSetAnimation(true);
+	vfSetAnimation(true);
 }
 
 // Развернуть объект в направление движения
@@ -272,13 +283,37 @@ void CAI_Biting::vfSetMotionActionParams(AI_Biting::EBodyState l_body_state, AI_
 	m_tActionType		= l_action_type;
 }
 
-/*
+
 void CAI_Biting::InitRest()
 {
-	fTimeRestStarted = Level().timeServer();
-	fTimeToRest;
+	m_tPrevStateFSM = m_tStateFSM;
+	(::Random.randI(0,1)) ? m_tStateFSM	= eRestIdle : m_tStateFSM = eWalkAround;
+
+	if (m_tStateFSM == eWalkAround) {
+		vfUpdateDetourPoint();	
+		vfSetMotionActionParams(eBodyStateStand, eMovementTypeWalk, 
+				eMovementDirectionForward, eStateTypeNormal, eActionTypeWalk);
+
+		
+		AI_Path.DestNode		= getAI().m_tpaGraph[m_tNextGP].tNodeID;
+		vfSetParameters(0, 0, false, 0);
+	}
+
+	fTimeToRestTill = Level().timeServer() + ::Random.randF(5000.f,30000.f);
 }
+
+
 void CAI_Biting::Rest()
 {
-	
-}*/
+	if (m_dwCurrentUpdate < fTimeToRestTill) {
+		if (m_tStateFSM == eRestIdle) {
+			vfSetMotionActionParams(eBodyStateStand, eMovementTypeStand, 
+				eMovementDirectionNone, eStateTypeNormal, eActionTypeStand);
+			vfSetParameters(0, 0, false, 0);
+		} else {
+			vfSetMotionActionParams(eBodyStateStand, eMovementTypeWalk, 
+				eMovementDirectionForward, eStateTypeNormal, eActionTypeWalk);
+			vfSetParameters(0, 0, false, 0);
+		}
+	} else m_tStateFSM = eNoState;
+}

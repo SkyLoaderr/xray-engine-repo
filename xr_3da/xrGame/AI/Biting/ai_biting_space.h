@@ -92,8 +92,10 @@ namespace AI_Biting {
 	};
 
 	enum EStateFSM {
-		eRest, // стоять/лежать/сидеть на месте, отдыхать
-
+		eNoState, 
+		eRestIdle,			// стоять/лежать/сидеть на месте, отдыхать
+		eWalkAround,	    // обход территории
+		
 	};
 
 };

@@ -53,6 +53,8 @@ void CAI_Biting::Init()
 
 	m_tPathType				= ePathTypeStraight;
 
+	m_tStateFSM				= eNoState;
+
 }
 
 void CAI_Biting::Die()

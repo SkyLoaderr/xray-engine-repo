@@ -141,14 +141,13 @@ private:
 	//////////////////////////////////////////////////////////////////////////
 	// FSM
 	AI_Biting::EStateFSM	m_tStateFSM;
+	AI_Biting::EStateFSM	m_tPrevStateFSM;
 		// Rest
-/*	void		InitRest();
+	void		InitRest();
 	void		Rest();
-	float		fTimeToRest;
-	float		fTimeRestStarted;
+	float		fTimeToRestTill;
 	float		fTimeRestStand;
 	float		fTimeRestSit;
 	float		fTimeRestLie;
-*/	
 
 };
