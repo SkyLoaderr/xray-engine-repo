@@ -56,7 +56,7 @@ void CRender::Screenshot		(LPCSTR postfix, BOOL bSquare)
 	u32* pEnd		= pPixel+(Device.dwWidth*Device.dwHeight);
 
 	D3DGAMMARAMP G;
-	Device.Gamma.GenLUT(G);
+	Device.Gamma->GenLUT(G);
 	for (int i=0; i<256; i++) {
 		G.red	[i]	/= 256;
 		G.green	[i]	/= 256;

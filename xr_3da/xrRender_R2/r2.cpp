@@ -22,6 +22,14 @@ LPCSTR					r2v(LPCSTR name)
 	return				path;
 }
 
+//
+void					CRender::create					()
+{
+}
+void					CRender::destroy				()
+{
+}
+
 // Implementation
 IRender_ObjectSpecific*	CRender::ros_create				(IRenderable* parent)			{ return 0;								}
 void					CRender::ros_destroy			(IRender_ObjectSpecific* &p)	{ xr_delete(p);							}
