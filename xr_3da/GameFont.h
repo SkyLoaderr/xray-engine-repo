@@ -60,8 +60,9 @@ public:
 							CGameFont		(LPCSTR shader, LPCSTR texture, u32 flags=0);
 							~CGameFont		();
 
-	IC void					SetColor		(u32 C)	{dwCurrentColor=C;};
+	IC void					SetColor		(u32 C)		{dwCurrentColor=C;};
 	IC void					SetSize			(float S)	{fCurrentSize=S;};
+	IC float				GetSize			()			{return fCurrentSize;};
 	IC void					SetInterval		(float x, float y) {vInterval.set(x,y);};
 	IC void					SetInterval		(const Fvector2& v) {vInterval.set(v);};
 	IC void					SetAligment		(EAligment aligment){ eCurrentAlignment=aligment; }
