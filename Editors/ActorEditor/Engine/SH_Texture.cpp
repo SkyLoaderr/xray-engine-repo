@@ -26,10 +26,7 @@ CTexture::CTexture		()
 
 CTexture::~CTexture()
 {
-	//.
-	//if (0!=strstr(cName,"hud_group_back"))	__asm int 3;
-
-	Unload	();
+	Unload				();
 
 	// release external reference
 	Device.Resources->_DeleteTexture	(this);	
@@ -50,6 +47,7 @@ IDirect3DBaseTexture9*	CTexture::surface_get	()
 
 void CTexture::Apply	(u32 dwStage)
 {
+	if (0==pSurface)	Load	();
 	if (pAVI && pAVI->NeedUpdate())
 	{
 		R_ASSERT(D3DRTYPE_TEXTURE == pSurface->GetType());

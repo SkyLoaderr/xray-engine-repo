@@ -19,9 +19,6 @@ BOOL CLevel::net_Start_client	( LPCSTR options )
 	sprintf						(temp,"CLIENT: Connecting to '%s'...",name_of_server);
 	pApp->LoadTitle				(temp);
 
-	// HUD
-	Device.Resources->DeferredLoad	(TRUE);
-
 	if (Connect(options)) 
 	{
 		// Determine internal level-ID
@@ -52,8 +49,8 @@ BOOL CLevel::net_Start_client	( LPCSTR options )
 
 		// Textures
 		pApp->LoadTitle						("Loading textures...");
-		Device.Resources->DeferredLoad			(FALSE);
-		Device.Resources->DeferredUpload		();
+		Device.Resources->DeferredLoad		(FALSE);
+		Device.Resources->DeferredUpload	();
 		LL_CheckTextures					();
 
 		// Sync
@@ -66,8 +63,6 @@ BOOL CLevel::net_Start_client	( LPCSTR options )
 		pApp->LoadEnd	();
 		return TRUE;
 	}
-	Device.Resources->DeferredLoad	(FALSE);
-	Device.Resources->DeferredUpload();
 
 	pApp->LoadEnd				(); 
 	return FALSE;

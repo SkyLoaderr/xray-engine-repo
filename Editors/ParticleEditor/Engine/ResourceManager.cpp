@@ -251,7 +251,7 @@ void	CResourceManager::ED_UpdateTextures(AStringVec* names)
 	}
 
 	// 2. Load
-	DeferredUpload	();
+	// DeferredUpload	();
 }
 #endif
 
