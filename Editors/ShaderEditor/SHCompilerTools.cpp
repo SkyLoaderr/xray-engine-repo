@@ -70,13 +70,13 @@ void CSHCompilerTools::Reload(){
 }
 
 void CSHCompilerTools::Load(){
-	AnsiString fn = "shaders_xrlc.xr";
-    Engine.FS.m_GameRoot.Update(fn);
+	AnsiString fn;
+    FS.update_path(fn,_game_data_,"shaders_xrlc.xr");
 
     m_bUpdateCurrent	= false;
     fraLeftBar->tvCompiler->IsUpdating = true;
 
-    if (Engine.FS.Exist(fn.c_str())){
+    if (FS.exist(fn.c_str())){
     	m_Library.Load(fn.c_str());
 
         Shader_xrLCVec lst = m_Library.Library();
@@ -100,16 +100,15 @@ void CSHCompilerTools::Save(){
 	m_bUpdateCurrent			= false;
 
     // save
-	AnsiString fn = "shaders_xrlc.xr";
+	AnsiString fn;
+    FS.update_path				(fn,_game_data_,"shaders_xrlc.xr");
     // backup file
-    Engine.FS.BackupFile		(&Engine.FS.m_GameRoot,fn);
-
-    Engine.FS.m_GameRoot.Update	(fn);
+    EFS.BackupFile				(0,fn);
 
     // save new file
-    Engine.FS.UnlockFile		(0,fn.c_str(),false);
+    EFS.UnlockFile				(0,fn.c_str(),false);
     m_Library.Save				(fn.c_str());
-    Engine.FS.LockFile			(0,fn.c_str(),false);
+    EFS.LockFile				(0,fn.c_str(),false);
 	m_bUpdateCurrent			= true;
 	SetCurrentShader			(name.c_str());
 

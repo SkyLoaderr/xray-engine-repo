@@ -102,6 +102,8 @@ __published:	// IDE-managed Components
 	TExtBtn *ebMaterialPairClone;
 	TExtBtn *ExtBtn6;
 	TExtBtn *ebMaterialPairCreate;
+	TMenuItem *Clear1;
+	TMenuItem *N5;
     void __fastcall ebSaveClick(TObject *Sender);
     void __fastcall ebReloadClick(TObject *Sender);
     void __fastcall PanelMimimizeClick(TObject *Sender);

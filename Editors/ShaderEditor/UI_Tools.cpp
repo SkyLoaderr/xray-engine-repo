@@ -63,16 +63,19 @@ bool CShaderTools::OnCreate(){
     // create props
     m_Props = TProperties::CreateForm(fraLeftBar->paShaderProps,alClient);
 	// shader test locking
-	AnsiString sh_fn = "shaders.xr"; Engine.FS.m_GameRoot.Update(sh_fn);
-	if (Engine.FS.CheckLocking(0,sh_fn.c_str(),false,true))
+	AnsiString sh_fn;
+    FS.update_path		(sh_fn,_game_data_,"shaders.xr");
+	if (EFS.CheckLocking(0,sh_fn.c_str(),false,true))
     	return false;
 	// shader test locking
-	AnsiString lc_fn = "shaders_xrlc.xr"; Engine.FS.m_GameRoot.Update(lc_fn);
-	if (Engine.FS.CheckLocking(0,lc_fn.c_str(),false,true))
+	AnsiString lc_fn;
+    FS.update_path		(lc_fn,_game_data_,"shaders_xrlc.xr");
+	if (EFS.CheckLocking(0,lc_fn.c_str(),false,true))
     	return false;
 	// material test locking
-	AnsiString gm_fn = "gamemtl.xr"; Engine.FS.m_GameRoot.Update(gm_fn);
-	if (Engine.FS.CheckLocking(0,gm_fn.c_str(),false,true))
+	AnsiString gm_fn;
+    FS.update_path		(gm_fn,_game_data_,"gamemtl.xr");
+	if (EFS.CheckLocking(0,gm_fn.c_str(),false,true))
     	return false;
 	//
     Device.seqDevCreate.Add(this);
@@ -81,9 +84,9 @@ bool CShaderTools::OnCreate(){
     SCompiler.OnCreate();
     SMaterial.OnCreate();
 	// lock
-    Engine.FS.LockFile(0,sh_fn.c_str());
-    Engine.FS.LockFile(0,lc_fn.c_str());
-    Engine.FS.LockFile(0,gm_fn.c_str());
+    EFS.LockFile(0,sh_fn.c_str());
+    EFS.LockFile(0,lc_fn.c_str());
+    EFS.LockFile(0,gm_fn.c_str());
     return true;
 }
 
@@ -92,8 +95,9 @@ void CShaderTools::OnDestroy()
 	// destroy props
 	TProperties::DestroyForm(m_Props);
 	// unlock
-    Engine.FS.UnlockFile(&Engine.FS.m_GameRoot,"shaders.xr");
-    Engine.FS.UnlockFile(&Engine.FS.m_GameRoot,"shaders_xrlc.xr");
+    EFS.UnlockFile(_game_data_,"shaders.xr");
+    EFS.UnlockFile(_game_data_,"shaders_xrlc.xr");
+    EFS.UnlockFile(_game_data_,"gamemtl.xr");
 	//
     Lib.RemoveEditObject(m_EditObject);
     Device.seqDevCreate.Remove(this);
@@ -177,13 +181,16 @@ void CShaderTools::SelectPreviewObject(int p){
         case 1: fn="editor\\ShaderTest_Box"; 	break;
         case 2: fn="editor\\ShaderTest_Sphere"; break;
         case 3: fn="editor\\ShaderTest_Teapot";	break;
+        case 4: fn=0;							break;
         case -1: fn=m_EditObject?m_EditObject->GetName():""; if (!TfrmChoseItem::SelectItem(TfrmChoseItem::smObject,fn)) return; m_bCustomEditObject = true; break;
         default: THROW2("Failed select test object.");
     }
     Lib.RemoveEditObject(m_EditObject);
-    m_EditObject = Lib.CreateEditObject(fn);
-    if (!m_EditObject)
-        ELog.DlgMsg(mtError,"Object '%s.object' can't find in object library. Preview disabled.",fn);
+    if (fn){
+	    m_EditObject = Lib.CreateEditObject(fn);
+	    if (!m_EditObject)
+    	    ELog.DlgMsg(mtError,"Object '%s.object' can't find in object library. Preview disabled.",fn);
+    }
 	ZoomObject();
     UpdateObjectShader();
     UI.RedrawScene();

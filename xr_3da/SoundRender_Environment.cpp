@@ -1,4 +1,6 @@
 #include "stdafx.h"
+#pragma hdrstop
+
 #include "soundrender_environment.h"
 
 CSoundRender_Environment::CSoundRender_Environment(void)

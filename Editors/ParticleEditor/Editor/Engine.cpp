@@ -63,8 +63,8 @@ void CEngine::Initialize(void)
 #endif
 
     // game configure
-    string256 si_name		= "system.ltx";
-    FS.update_path			(si_name,_game_data_,si_name);
+    string256 si_name;
+    FS.update_path			(si_name,_game_data_,"system.ltx");
 	pSettings				= xr_new<CInifile>(si_name,TRUE);// FALSE,TRUE,TRUE);
 }
 

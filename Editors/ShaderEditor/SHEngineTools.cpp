@@ -173,21 +173,22 @@ void CSHEngineTools::Reload(){
     Load();
 }
 
-void CSHEngineTools::Load(){
-	AnsiString fn = "shaders.xr";
-    Engine.FS.m_GameRoot.Update(fn);
+void CSHEngineTools::Load()
+{
+	AnsiString fn;
+    FS.update_path(fn,_game_data_,"shaders.xr");
 
     m_bFreezeUpdate		= TRUE;
     m_bUpdateCurrent	= false;
 
     fraLeftBar->tvEngine->IsUpdating = true;
-    if (Engine.FS.Exist(fn.c_str())){
-        CFileReader		FS(fn.c_str());
+    if (FS.exist(fn.c_str())){
+        IReader* F		= FS.r_open(fn.c_str());
         char			name[256];
 
         // Load constants
         {
-            IReader*	fs		= FS.open_chunk(0);
+            IReader*	fs		= F->open_chunk(0);
             while (fs&&!fs->eof())	{
                 fs->r_stringZ	(name);
                 CConstant*		C = xr_new<CConstant>();
@@ -199,7 +200,7 @@ void CSHEngineTools::Load(){
 
         // Load matrices
         {
-            IReader*	fs		= FS.open_chunk(1);
+            IReader*	fs		= F->open_chunk(1);
             while (fs&&!fs->eof())	{
                 fs->r_stringZ	(name);
                 CMatrix*		M = xr_new<CMatrix>();
@@ -211,7 +212,7 @@ void CSHEngineTools::Load(){
 
         // Load blenders
         {
-            IReader*	fs		= FS.open_chunk(2);
+            IReader*	fs		= F->open_chunk(2);
             IReader*	chunk	= NULL;
             int			chunk_id= 0;
 
@@ -293,12 +294,11 @@ void CSHEngineTools::Save(CMemoryWriter& F)
 void CSHEngineTools::Save()
 {
     // set name
-	AnsiString fn 				= "shaders.xr";
+	AnsiString fn;
+    FS.update_path				(fn,_game_data_,"shaders.xr");
 
     // backup file
-    Engine.FS.BackupFile		(&Engine.FS.m_GameRoot,fn);
-
-    Engine.FS.m_GameRoot.Update	(fn);
+    EFS.BackupFile				(0,fn);
 
     // collapse reference
 	CollapseReferences();
@@ -309,9 +309,9 @@ void CSHEngineTools::Save()
     Save(F);
 
     // save new file
-    Engine.FS.UnlockFile		(0,fn.c_str(),false);
-    F.save_to					(fn.c_str(), 0);
-    Engine.FS.LockFile			(0,fn.c_str(),false);
+    EFS.UnlockFile				(0,fn.c_str(),false);
+    F.save_to					(fn.c_str());
+    EFS.LockFile				(0,fn.c_str(),false);
 
     m_bModified	= FALSE;
 	Tools.m_Props->ResetModified();

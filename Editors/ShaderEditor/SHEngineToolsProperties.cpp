@@ -6,8 +6,6 @@
 #include "Blender.h"
 #include "UI_Tools.h"
 #include "PropertiesList.h"
-#include "xr_tokens.h"
-#include "xr_trims.h"
 #include "leftbar.h"
 #include "folderlib.h"
 

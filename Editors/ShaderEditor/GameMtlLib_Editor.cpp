@@ -16,7 +16,7 @@ void SGameMtl::FillProp		(PropItemVec& items)
 	PropValue* P=0;
     P=PHelper.CreateText	(items,	"Name",					name,	sizeof(name));
     P->SetEvents			(FHelper.NameAfterEdit,FHelper.NameBeforeEdit,Tools.SMaterial.OnMaterialNameChange);
-    P->Owner()->OnDrawEvent	= FHelper.NameDraw;
+    P->Owner()->SetEvents	(FHelper.NameDraw);
     P->Owner()->tag			= (int)FHelper.FindObject(fraLeftBar->tvMaterial,name); VERIFY(P->Owner()->tag);
 	// flags
     PHelper.CreateFlag32	(items,	"Flags\\Breakable",		&Flags,	flBreakable);
@@ -126,13 +126,13 @@ void SGameMtlPair::FillProp(PropItemVec& items)
     propHitParticles->Owner()->m_Flags.set	(SetMask(show_CB,OwnProps,flHitParticles));
     propHitMarks->Owner()->m_Flags.set		(SetMask(show_CB,OwnProps,flHitMarks));
 
-    propFlotation->OnChangeEvent 		= OnChange;
-    propBreakingSounds->OnChangeEvent 	= OnChange;
-    propStepSounds->OnChangeEvent 		= OnChange;
-    propCollideSounds->OnChangeEvent 	= OnChange;
-    propHitSounds->OnChangeEvent 		= OnChange;
-    propHitParticles->OnChangeEvent 	= OnChange;
-    propHitMarks->OnChangeEvent 		= OnChange;
+    propFlotation->SetEvents				(0,0,OnChange);
+    propBreakingSounds->SetEvents			(0,0,OnChange);
+    propStepSounds->SetEvents				(0,0,OnChange);
+    propCollideSounds->SetEvents			(0,0,OnChange);
+    propHitSounds->SetEvents				(0,0,OnChange);
+    propHitParticles->SetEvents				(0,0,OnChange);
+    propHitMarks->SetEvents					(0,0,OnChange);
 
     propBreakingSounds->Owner()->subitem= GAMEMTL_SUBITEM_COUNT;
     propStepSounds->Owner()->subitem	= GAMEMTL_SUBITEM_COUNT;
@@ -412,6 +412,6 @@ void CGameMtlLibrary::Save(LPCSTR name)
     }
 	fs.close_chunk		();
 
-    fs.save_to			(name,0);
+    fs.save_to			(name);
 }
 

@@ -183,8 +183,8 @@ void EFS_Utils::MarkFile(const AnsiString& fn, bool bDeleteSource)
 
 void EFS_Utils::BackupFile(LPCSTR initial, const AnsiString& fname)
 {
-	AnsiString src_name; 
-    FS.update_path(src_name,initial,fname.c_str());
+	AnsiString src_name=fname.c_str(); 
+    if (initial) FS.update_path(src_name,initial,fname.c_str());
     if (FS.exist(src_name.c_str())){
         AnsiString 			dst_name;
         FS_Path* P 			= FS.get_path(initial);

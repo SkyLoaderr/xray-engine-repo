@@ -551,13 +551,13 @@ void __fastcall TfraLeftBar::OnDragDrop(TObject *Sender,
 
 void __fastcall TfraLeftBar::fsStorageRestorePlacement(TObject *Sender)
 {
-	Tools.m_Props->RestoreColumnWidth(fsStorage);
+	Tools.m_Props->RestoreParams(fsStorage);
 }
 //---------------------------------------------------------------------------
 
 void __fastcall TfraLeftBar::fsStorageSavePlacement(TObject *Sender)
 {
-	Tools.m_Props->SaveColumnWidth(fsStorage);
+	Tools.m_Props->SaveParams(fsStorage);
 }
 //---------------------------------------------------------------------------
 
@@ -579,6 +579,7 @@ void __fastcall TfraLeftBar::Checknewtextures1Click(TObject *Sender)
 
 }
 //---------------------------------------------------------------------------
+
 
 
 

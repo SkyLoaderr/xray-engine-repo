@@ -1,3 +1,5 @@
+#ifndef soundrender_environmentH
+#define soundrender_environmentH
 #pragma once
 
 #include "soundrender.h"
@@ -30,8 +32,8 @@ public:
 	void			load			(IReader* fs);
 	void			save			(IWriter* fs);
 
-	CSoundRender_Environment(void);
-	~CSoundRender_Environment(void);
+	CSoundRender_Environment		(void);
+	~CSoundRender_Environment		(void);
 };
 
 class SoundEnvironment_LIB
@@ -52,3 +54,4 @@ public:
 	void						Remove	(int id);
 	SE_VEC&						Library	();
 };
+#endif

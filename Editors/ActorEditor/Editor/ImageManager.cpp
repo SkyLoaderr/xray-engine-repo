@@ -188,7 +188,7 @@ void CImageManager::SafeCopyLocalToServer(FS_QueryMap& files)
 // sync_list - реально сохраненные файлы (после использования освободить)
 //------------------------------------------------------------------------------
 void CImageManager::SynchronizeTextures(bool sync_thm, bool sync_game, bool bForceGame, FS_QueryMap* source_list, AStringVec* sync_list, FS_QueryMap* modif_map)
-{
+{        
 	FS_QueryMap M_BASE;
 	FS_QueryMap M_THUM;
     FS_QueryMap M_GAME;
@@ -199,6 +199,9 @@ void CImageManager::SynchronizeTextures(bool sync_thm, bool sync_game, bool bFor
     if (sync_thm) 	FS.file_list(M_THUM,_textures_,FS_ListFiles|FS_ClampExt,".thm");
     if (sync_game) 	FS.file_list(M_GAME,_game_textures_,FS_ListFiles|FS_ClampExt,".dds");
 
+    // lock rescanning
+    FS.lock_rescan	();
+    
     // sync assoc
 	AnsiString ltx_nm;
     FS.update_path(ltx_nm,_game_textures_,"textures.ltx");
@@ -263,6 +266,8 @@ void CImageManager::SynchronizeTextures(bool sync_thm, bool sync_game, bool bFor
     xr_delete(ltx_ini);
     
     UI.ProgressEnd();
+    // lock rescanning
+    FS.unlock_rescan	();
 }
 
 void CImageManager::SynchronizeTexture(LPCSTR tex_name, int age)

@@ -12,14 +12,13 @@
       Intermediate\BottomBar.obj Intermediate\EditorPref.obj 
       Intermediate\Splash.obj Intermediate\main.obj 
       Intermediate\EditObjectIO.obj Intermediate\EditObjectMotions.obj 
-      Intermediate\xr_trims.obj Intermediate\interp.obj 
-      Intermediate\Envelope.obj Intermediate\motion.obj Intermediate\bone.obj 
-      Intermediate\clsid.obj Intermediate\xr_ini.obj 
-      Intermediate\ColorPicker.obj Intermediate\UI_Camera.obj 
-      Intermediate\HWCaps.obj Intermediate\EditObject.obj 
-      Intermediate\Xr_input.obj Intermediate\fcontroller.obj 
-      Intermediate\pure.obj Intermediate\xrImage_Resampler.obj 
-      Intermediate\LeftBar.obj Intermediate\LogForm.obj Intermediate\Library.obj 
+      Intermediate\interp.obj Intermediate\Envelope.obj Intermediate\motion.obj 
+      Intermediate\bone.obj Intermediate\ColorPicker.obj 
+      Intermediate\UI_Camera.obj Intermediate\HWCaps.obj 
+      Intermediate\EditObject.obj Intermediate\Xr_input.obj 
+      Intermediate\fcontroller.obj Intermediate\pure.obj 
+      Intermediate\xrImage_Resampler.obj Intermediate\LeftBar.obj 
+      Intermediate\LogForm.obj Intermediate\Library.obj 
       Intermediate\ChoseForm.obj Intermediate\xr_avi.obj 
       Intermediate\SH_Constant.obj Intermediate\SH_Matrix.obj 
       Intermediate\SH_Texture.obj Intermediate\Shader.obj 
@@ -67,9 +66,10 @@
       Intermediate\ParticleGroup.obj Intermediate\R_Backend.obj 
       Intermediate\R_Backend_Runtime.obj Intermediate\R_DStreams.obj 
       Intermediate\r_constants_cache.obj Intermediate\R_Backend_DBG.obj 
-      Intermediate\r_shader.obj Intermediate\r_constants.obj 
-      Intermediate\Blender_detail_still.obj Intermediate\Blender_tree.obj 
-      Intermediate\ELog.obj"/>
+      Intermediate\r_constants.obj Intermediate\Blender_detail_still.obj 
+      Intermediate\Blender_tree.obj Intermediate\ELog.obj 
+      Intermediate\SHSoundEnvToolsProperties.obj 
+      Intermediate\SHSoundEnvTools.obj Intermediate\SoundRender_Environment.obj"/>
     <RESFILES value="ShaderEditor.res resource.res"/>
     <IDLFILES value=""/>
     <IDLGENFILES value=""/>
@@ -89,7 +89,7 @@
     <DEBUGLIBPATH value="$(BCB)\lib\debug"/>
     <RELEASELIBPATH value="$(BCB)\lib\release"/>
     <LINKER value="ilink32"/>
-    <USERDEFINES value="_EDITOR;_SHADER_EDITOR"/>
+    <USERDEFINES value="_EDITOR;_SHADER_EDITOR;_DEBUG"/>
     <SYSDEFINES value="NO_STRICT;_RTLDLL;USEPACKAGES"/>
     <MAINSOURCE value="ShaderEditor.cpp"/>
     <INCLUDEPATH value="C:\Rad\Borland\CBuilder6\Projects;Engine\Animations;Engine\BLENDERS;r:\borland\components6\alexmx;editor;R:\SDK\DirectX9.0\include;$(BCB)\include;$(BCB)\include\vcl;engine;P:\MagicFM_Borland\Sdk\Include;R:\Borland\Components6\Elpack\Code;R:\Borland\Components6\Elpack\Code\Source;P:\xrCore"/>
@@ -103,13 +103,13 @@
       -I$(BCB)\include -I$(BCB)\include\vcl -Iengine 
       -IP:\MagicFM_Borland\Sdk\Include -IR:\Borland\Components6\Elpack\Code 
       -IR:\Borland\Components6\Elpack\Code\Source -IP:\xrCore -src_suffix cpp 
-      -D_EDITOR -D_SHADER_EDITOR -no_tie -boa"/>
-    <CFLAG1 value="-O2 -H=$(BCB)\lib\vcl60.csm -Hc -Q -Vx -Ve -xf -xp -VF -ff -X- -ps -a4 -6 
-      -b- -k -vi -He -c -tW -tWM"/>
-    <PFLAGS value="-N2Intermediate -N0Intermediate -$Y- -$R -$Q -$L- -$D- -$A8 -v -JPHNE -M"/>
+      -D_EDITOR -D_SHADER_EDITOR -D_DEBUG -no_tie -boa"/>
+    <CFLAG1 value="-Od -H=$(BCB)\lib\vcl60.csm -Hc -Q -Vx -Ve -xf -xp -VF -ff -X- -r- -ps -a4 
+      -6 -b- -k -y -v -vi- -He -c -tW -tWM"/>
+    <PFLAGS value="-N2Intermediate -N0Intermediate -$Y+ -$W -$R -$Q -$O- -$A8 -v -JPHNE -M"/>
     <RFLAGS value=""/>
-    <AFLAGS value="/mx /w2 /zn"/>
-    <LFLAGS value="-IIntermediate -D&quot;&quot; -aa -Tpe -GD -x"/>
+    <AFLAGS value="/mx /w2 /zi"/>
+    <LFLAGS value="-IIntermediate -D&quot;&quot; -aa -Tpe -GD -x -v"/>
     <OTHERFILES value=""/>
   </OPTIONS>
   <LINKER>
@@ -141,13 +141,10 @@
       <FILE FILENAME="editor\EditObjectIO.cpp" FORMNAME="" UNITNAME="EditObjectIO" CONTAINERID="CCompiler" DESIGNCLASS="" LOCALCOMMAND=""/>
       <FILE FILENAME="editor\EditObjectMotions.cpp" FORMNAME="" UNITNAME="EditObjectMotions" CONTAINERID="CCompiler" DESIGNCLASS="" LOCALCOMMAND=""/>
       <FILE FILENAME="engine\nvdxt_options.h" FORMNAME="" UNITNAME="nvdxt_options" CONTAINERID="" DESIGNCLASS="" LOCALCOMMAND=""/>
-      <FILE FILENAME="editor\xr_trims.cpp" FORMNAME="" UNITNAME="xr_trims" CONTAINERID="CCompiler" DESIGNCLASS="" LOCALCOMMAND=""/>
       <FILE FILENAME="engine\interp.cpp" FORMNAME="" UNITNAME="interp" CONTAINERID="CCompiler" DESIGNCLASS="" LOCALCOMMAND=""/>
       <FILE FILENAME="engine\Envelope.cpp" FORMNAME="" UNITNAME="Envelope" CONTAINERID="CCompiler" DESIGNCLASS="" LOCALCOMMAND=""/>
       <FILE FILENAME="engine\motion.cpp" FORMNAME="" UNITNAME="motion" CONTAINERID="CCompiler" DESIGNCLASS="" LOCALCOMMAND=""/>
       <FILE FILENAME="engine\bone.cpp" FORMNAME="" UNITNAME="bone" CONTAINERID="CCompiler" DESIGNCLASS="" LOCALCOMMAND=""/>
-      <FILE FILENAME="engine\clsid.cpp" FORMNAME="" UNITNAME="clsid" CONTAINERID="CCompiler" DESIGNCLASS="" LOCALCOMMAND=""/>
-      <FILE FILENAME="engine\xr_ini.cpp" FORMNAME="" UNITNAME="xr_ini" CONTAINERID="CCompiler" DESIGNCLASS="" LOCALCOMMAND=""/>
       <FILE FILENAME="editor\ColorPicker.cpp" FORMNAME="" UNITNAME="ColorPicker" CONTAINERID="CCompiler" DESIGNCLASS="" LOCALCOMMAND=""/>
       <FILE FILENAME="editor\UI_Camera.cpp" FORMNAME="" UNITNAME="UI_Camera" CONTAINERID="CCompiler" DESIGNCLASS="" LOCALCOMMAND=""/>
       <FILE FILENAME="engine\HWCaps.cpp" FORMNAME="" UNITNAME="HWCaps" CONTAINERID="CCompiler" DESIGNCLASS="" LOCALCOMMAND=""/>
@@ -250,11 +247,13 @@
       <FILE FILENAME="Engine\R_DStreams.cpp" FORMNAME="" UNITNAME="R_DStreams" CONTAINERID="CCompiler" DESIGNCLASS="" LOCALCOMMAND=""/>
       <FILE FILENAME="Engine\r_constants_cache.cpp" FORMNAME="" UNITNAME="r_constants_cache" CONTAINERID="CCompiler" DESIGNCLASS="" LOCALCOMMAND=""/>
       <FILE FILENAME="Engine\R_Backend_DBG.cpp" FORMNAME="" UNITNAME="R_Backend_DBG" CONTAINERID="CCompiler" DESIGNCLASS="" LOCALCOMMAND=""/>
-      <FILE FILENAME="Engine\r_shader.cpp" FORMNAME="" UNITNAME="r_shader" CONTAINERID="CCompiler" DESIGNCLASS="" LOCALCOMMAND=""/>
       <FILE FILENAME="Engine\r_constants.cpp" FORMNAME="" UNITNAME="r_constants" CONTAINERID="CCompiler" DESIGNCLASS="" LOCALCOMMAND=""/>
       <FILE FILENAME="Engine\Blenders\Blender_detail_still.cpp" FORMNAME="" UNITNAME="Blender_detail_still" CONTAINERID="CCompiler" DESIGNCLASS="" LOCALCOMMAND=""/>
       <FILE FILENAME="Engine\Blenders\Blender_tree.cpp" FORMNAME="" UNITNAME="Blender_tree" CONTAINERID="CCompiler" DESIGNCLASS="" LOCALCOMMAND=""/>
       <FILE FILENAME="Editor\ELog.cpp" FORMNAME="" UNITNAME="ELog" CONTAINERID="CCompiler" DESIGNCLASS="" LOCALCOMMAND=""/>
+      <FILE FILENAME="SHSoundEnvToolsProperties.cpp" FORMNAME="" UNITNAME="SHSoundEnvToolsProperties.cpp" CONTAINERID="CCompiler" DESIGNCLASS="" LOCALCOMMAND=""/>
+      <FILE FILENAME="SHSoundEnvTools.cpp" FORMNAME="" UNITNAME="SHSoundEnvTools.cpp" CONTAINERID="CCompiler" DESIGNCLASS="" LOCALCOMMAND=""/>
+      <FILE FILENAME="Engine\SoundRender_Environment.cpp" FORMNAME="" UNITNAME="SoundRender_Environment" CONTAINERID="CCompiler" DESIGNCLASS="" LOCALCOMMAND=""/>
   </FILELIST>
   <BUILDTOOLS>
   </BUILDTOOLS>
@@ -266,7 +265,7 @@ AutoIncBuild=1
 MajorVer=1
 MinorVer=0
 Release=2
-Build=57
+Build=59
 Debug=1
 PreRelease=0
 Special=0
@@ -278,7 +277,7 @@ CodePage=1252
 [Version Info Keys]
 CompanyName=
 FileDescription=
-FileVersion=1.0.2.57
+FileVersion=1.0.2.59
 InternalName=
 LegalCopyright=
 LegalTrademarks=
@@ -361,8 +360,8 @@ Item2=$(BCB)\source\vcl
 
 [HistoryLists\hlConditionals]
 Count=12
-Item0=_EDITOR;_SHADER_EDITOR
-Item1=_EDITOR;_SHADER_EDITOR;_DEBUG
+Item0=_EDITOR;_SHADER_EDITOR;_DEBUG
+Item1=_EDITOR;_SHADER_EDITOR
 Item2=_EDITORS;_SHADER_EDITOR;_DEBUG
 Item3=_EDITOR_FAMILY;_SHADER_EDITOR;_DEBUG
 Item4=_SHADER_EDITOR;_DEBUG

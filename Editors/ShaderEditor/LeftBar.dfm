@@ -1210,7 +1210,7 @@ object fraLeftBar: TfraLeftBar
     LeftMargin = 10
     Style = msOwnerDraw
     Left = 117
-    Top = 18
+    Top = 16
     object Plane1: TMenuItem
       Caption = 'Plane'
       OnClick = PreviewClick
@@ -1230,12 +1230,20 @@ object fraLeftBar: TfraLeftBar
       Caption = 'Teapot'
       OnClick = PreviewClick
     end
-    object N3: TMenuItem
+    object N5: TMenuItem
       Caption = '-'
     end
     object Custom1: TMenuItem
       Tag = -1
       Caption = 'Custom...'
+      OnClick = PreviewClick
+    end
+    object N3: TMenuItem
+      Caption = '-'
+    end
+    object Clear1: TMenuItem
+      Tag = 4
+      Caption = 'Clear'
       OnClick = PreviewClick
     end
   end
