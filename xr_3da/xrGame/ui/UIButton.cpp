@@ -62,12 +62,7 @@ void CUIButton::Reset()
 
 void CUIButton::Init(LPCSTR tex_name, int x, int y, int width, int height)
 {
-	m_eButtonState = BUTTON_NORMAL;
-	m_ePressMode = NORMAL_PRESS;
-	m_bButtonClicked = false;
-	m_bCursorOverWindow = false;
-
-	inherited::Init(tex_name, x, y, width, height);
+	CUIStatic::Init(tex_name, x, y, width, height);
 }
 
 void CUIButton::Init(int x, int y, int width, int height)
@@ -77,9 +72,8 @@ void CUIButton::Init(int x, int y, int width, int height)
 	m_bButtonClicked = false;
 	m_bCursorOverWindow = false;
 
-	inherited::Init(x, y, width, height);
+	CUIStatic::Init(x, y, width, height);
 }
-
 
 void  CUIButton::OnMouse(int x, int y, EUIMessages mouse_action)
 {
