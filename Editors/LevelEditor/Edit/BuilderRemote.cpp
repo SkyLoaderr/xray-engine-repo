@@ -214,7 +214,7 @@ BOOL SceneBuilder::BuildMesh(const Fmatrix& parent, CEditableObject* object, CEd
                 }
             }
 
-	        if (surf->GetFlag(CSurface::sf2Sided)){
+	        if (surf->IsFlag(CSurface::sf2Sided)){
 		    	R_ASSERT(l_faces_it<l_faces_cnt);
                 b_face& new_face 	= l_faces[l_faces_it++];
                 new_face.dwMaterial = l_faces[l_faces_it-2].dwMaterial;

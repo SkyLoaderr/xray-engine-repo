@@ -117,6 +117,7 @@ void TfrmPropertiesLight::GetObjectsInfo(){
 
 	CLight *_L = 0;
 	ObjectIt _F = m_Objects->begin();
+    LPCSTR pref						= GetClassNameByClassID((*_F)->ClassID);
 
 	VERIFY( (*_F)->ClassID==OBJCLASS_LIGHT );
 	_L = (CLight *)(*_F);
@@ -137,12 +138,12 @@ void TfrmPropertiesLight::GetObjectsInfo(){
         _L->FillSunProp				(GetClassNameByClassID(_L->ClassID),sun_values);
         _L->FillPointProp			(GetClassNameByClassID(_L->ClassID),point_values);
 	}
-	flBrightness 					= (FloatValue*)PROP::FindProp(values,"Brightness"); R_ASSERT(flBrightness);
+	flBrightness 					= (FloatValue*)PROP::FindProp(values,pref,"Brightness"); R_ASSERT(flBrightness);
     flBrightness->OnChange			= OnBrightnessChange;
-    flPointRange					= (FloatValue*)PROP::FindProp(point_values,"Range");					R_ASSERT(flPointRange);
-    flPointA0						= (FloatValue*)PROP::FindProp(point_values,"Attenuation\\Constant"); 	R_ASSERT(flPointA0);
-    flPointA1						= (FloatValue*)PROP::FindProp(point_values,"Attenuation\\Linear"); 		R_ASSERT(flPointA1);
-    flPointA2						= (FloatValue*)PROP::FindProp(point_values,"Attenuation\\Quadratic"); 	R_ASSERT(flPointA2);
+    flPointRange					= (FloatValue*)PROP::FindProp(point_values,pref,"Range");					R_ASSERT(flPointRange);
+    flPointA0						= (FloatValue*)PROP::FindProp(point_values,pref,"Attenuation\\Constant"); 	R_ASSERT(flPointA0);
+    flPointA1						= (FloatValue*)PROP::FindProp(point_values,pref,"Attenuation\\Linear"); 	 R_ASSERT(flPointA1);
+    flPointA2						= (FloatValue*)PROP::FindProp(point_values,pref,"Attenuation\\Quadratic"); 	R_ASSERT(flPointA2);
     m_Props->AssignValues			(values,true);
     m_SunProps->AssignValues		(sun_values,false);
     m_PointProps->AssignValues		(point_values,true);

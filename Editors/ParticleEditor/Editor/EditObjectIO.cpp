@@ -319,7 +319,7 @@ bool CEditableObject::ExportHOMPart(CFS_Base& F)
 {
     for (EditMeshIt m_it=m_Meshes.begin(); m_it!=m_Meshes.end(); m_it++){
         for (SurfFacesPairIt sf_it=(*m_it)->m_SurfFaces.begin(); sf_it!=(*m_it)->m_SurfFaces.end(); sf_it++){
-            BOOL b2Sided = sf_it->first->GetFlag(CSurface::sf2Sided);
+            BOOL b2Sided = sf_it->first->IsFlag(CSurface::sf2Sided);
             IntVec& i_lst= sf_it->second;
             for (IntIt i_it=i_lst.begin(); i_it!=i_lst.end(); i_it++){
                 st_Face& face = (*m_it)->m_Faces[*i_it];
