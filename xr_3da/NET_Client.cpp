@@ -208,7 +208,7 @@ BOOL IPureClient::Connect(LPCSTR options)
 		string4096				dpSessionName;
 		if( dpServerDesc->pwszSessionName)	{
 			R_CHK(WideCharToMultiByte(CP_ACP,0,dpServerDesc->pwszSessionName,-1,dpSessionName,sizeof(NODE.dpSessionName),0,0));
-			NODE.dpSessionName	= dpSessionName;
+			NODE.dpSessionName	= (char*)(&dpSessionName[0]);
 		}
 		net_Hosts.push_back		(NODE);
 	} else {
