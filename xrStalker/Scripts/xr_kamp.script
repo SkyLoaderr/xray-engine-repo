@@ -3,7 +3,6 @@
 --	автор: Диденко Руслан (Stohe)
 --	TODO: 
 ----------------------------------------------------------------------------------------------------------------------
-
 local sounds = {}
 local speeks = {} -- говорит ли кто либо в лагере, чтобы вместе не болтали
 
@@ -88,7 +87,6 @@ function evaluator_need_patrol:evaluate()
 --	end              
 	return tt
 end
-
 ----------------------------------------------------------------------------------------------------------------------
 --Actions
 ----------------------------------------------------------------------------------------------------------------------
@@ -341,35 +339,13 @@ function action_wait:__init (npc_name,action_name,storage) super (nil,action_nam
 		       maxidle = 20,
 		       sumidle = 10 }
 
-	self.sound_good = {idle = 0,
+	self.sound = {idle = 0,
 		     begin = nil,
 		     maxidle = 10, 
 		     sumidle = 10,
    		     rnd = 60,
-		     lastsound = nil,
-		 	sounds = {      {pack = sounds["idle"], id = 0},
-					{pack = sounds["idle"], id = 1}, 
-					{pack = sounds["idle"], id = 3}, 
-					{pack = sounds["idle"], id = 4}, 
-					{pack = sounds["idle"], id = 7}, 
- 					{pack = sounds["idle"], id = 9}, 
-					{pack = sounds["idle"], id = 11}, 
-					{pack = sounds["idle"], id = 12}, 
-					{pack = sounds["idle"], id = 14} 	}}
-	self.sound_bad = {idle = 0,
-		     begin = nil,
-		     maxidle = 10, 
-		     sumidle = 10,
-   		     rnd = 60,
-		     lastsound = nil,
-		 	sounds = {      {pack = sounds["idle"], id = 2},
-					{pack = sounds["idle"], id = 3}, 
-					{pack = sounds["idle"], id = 5}, 
-					{pack = sounds["idle"], id = 6}, 
-					{pack = sounds["idle"], id = 10}, 
- 					{pack = sounds["idle"], id = 11}, 
-					{pack = sounds["idle"], id = 12}, 
-					{pack = sounds["idle"], id = 14} 	}}
+		     lastsound = nil,	
+		     sounds = nil }
 
 	self.anim = {	idle = 0,
 			begin = nil,
@@ -456,12 +432,8 @@ function action_wait:execute()
 				end
 			else
 				-- Саунды
-				speeks[self.a.center_point] = self.object:id()
-				if level.rain_factor() < 0.0006 then
-					globals.set_sound(self.object, self.sound_good, false)
-				else
-					globals.set_sound(self.object, self.sound_bad, false)
-				end
+				self.sound.sounds = xr_sound.construct_sound(self.object, {"weather","state"})
+                        	xr_sound.set_sound(self.object, self.sound, false)
 			end
 		else
 			self.a.action = 0
@@ -498,6 +470,7 @@ end
 ----------------------------------------------------------------------------------------------------------------------
 function add_to_binder(object, char_ini)
     if char_ini == nil or char_ini:section_exist ("kamp") == true then
+	
 	local operators		= {}
 	local properties	= {}
 
@@ -513,11 +486,11 @@ function add_to_binder(object, char_ini)
 	properties["event"] 		= xr_evaluators_id.reaction
 	properties["kamp_end"]		= xr_evaluators_id.stohe_kamp_base + 1
 	properties["on_position"]	= xr_evaluators_id.stohe_kamp_base + 2
-	properties["need_patrol"]	= xr_evaluators_id.stohe_kamp_base + 4
+	properties["need_patrol"]	= xr_evaluators_id.stohe_kamp_base + 3
 
-	operators["go_position"]	= xr_actions_id.stohe_kamp_base + 2
-	operators["go_patrol"]		= xr_actions_id.stohe_kamp_base + 3
-	operators["wait"]		= xr_actions_id.stohe_kamp_base + 4
+	operators["go_position"]	= xr_actions_id.stohe_kamp_base + 1
+	operators["go_patrol"]		= xr_actions_id.stohe_kamp_base + 2
+	operators["wait"]		= xr_actions_id.stohe_kamp_base + 3
 
 	-- Evaluators                                                                            
 	manager:add_evaluator (properties["kamp_end"], 		this.evaluator_kamp_end		(xr_motivator.storage[object:id()].kamp))

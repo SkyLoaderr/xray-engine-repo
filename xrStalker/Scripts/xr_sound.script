@@ -2,6 +2,7 @@
 --	Схема озвучки
 --	автор: Диденко Руслан (Stohe)
 ----------------------------------------------------------------------------------------------------------------------
+local nstl = 10
 
 theme = {}
 -----------------------------------------------------------------------------------------------------------------------------------
@@ -15,23 +16,149 @@ function load_sound(obj)
 	-- загрузка звуков, возвращает ИД пачки и количество звуков в пачке.
 	function load_theme(name, sid)
 		if name == "weather_bad_soldier" then
-	               	return { id = sid, max = obj:add_sound("script_sound\\weather\\bad\\soldier\\soldier_bad_weather_",  10, snd_type.talk, 2, 1, sid)}
+	               	return { id = sid, max = obj:add_sound("script_sound\\weather\\bad\\soldier\\soldier_bad_weather_", nstl, snd_type.talk, 2, 1, sid)}
 		elseif name == "weather_good_soldier" then
-	               	return { id = sid, max = obj:add_sound("script_sound\\weather\\good\\soldier\\soldier_good_weather_",  10, snd_type.talk, 2, 1, sid)}
+	               	return { id = sid, max = obj:add_sound("script_sound\\weather\\good\\soldier\\soldier_good_weather_", nstl, snd_type.talk, 2, 1, sid)}
+		elseif name == "state_idle_soldier" then
+	               	return { id = sid, max = obj:add_sound("script_sound\\states\\idle\\soldier\\soldier_idle_", nstl, snd_type.talk, 2, 1, sid)}
+		elseif name == "state_health_soldier" then
+	               	return { id = sid, max = obj:add_sound("script_sound\\states\\health\\soldier\\soldier_health_", nstl, snd_type.talk, 2, 1, sid)}
+		elseif name == "state_fatique_soldier" then
+	               	return { id = sid, max = obj:add_sound("script_sound\\states\\fatique\\soldier\\soldier_fatique_", nstl, snd_type.talk, 2, 1, sid)}
+		elseif name == "state_starvation_soldier" then
+	               	return { id = sid, max = obj:add_sound("script_sound\\states\\starvation\\soldier\\soldier_starvation_", nstl, snd_type.talk, 2, 1, sid)}
+		elseif name == "state_sleep_soldier" then
+	               	return { id = sid, max = obj:add_sound("script_sound\\states\\sleep\\soldier\\soldier_sleep_", nstl, snd_type.talk, 2, 1, sid)}
+		elseif name == "help_soldier" then
+	               	return { id = sid, max = obj:add_sound("script_sound\\help\\soldier\\soldier_help_", nstl, snd_type.talk, 2, 1, sid)}
+		elseif name == "hail_soldier" then
+	               	return { id = sid, max = obj:add_sound("script_sound\\hail\\soldier\\soldier_hail_", nstl, snd_type.talk, 2, 1, sid)}
+		elseif name == "wait_soldier" then
+	               	return { id = sid, max = obj:add_sound("script_sound\\waiting\\soldier\\soldier_wait_", nstl, snd_type.talk, 2, 1, sid)}
+		elseif name == "threat_weap_soldier" then
+	               	return { id = sid, max = obj:add_sound("script_sound\\threat\\drop_weapon\\soldier\\soldier_dropweapon_", nstl, snd_type.talk, 2, 1, sid)}
+		elseif name == "threat_back_soldier" then
+	               	return { id = sid, max = obj:add_sound("script_sound\\threat\\backoff\\soldier\\soldier_backoff_", nstl, snd_type.talk, 2, 1, sid)}
+		elseif name == "threat_stop_soldier" then
+	               	return { id = sid, max = obj:add_sound("script_sound\\threat\\stop\\soldier\\soldier_stop_", nstl, snd_type.talk, 2, 1, sid)}
+		elseif name == "reac_hear_soldier" then
+	               	return { id = sid, max = obj:add_sound("script_sound\\reactions\\hear_something\\soldier\\soldier_hear_", nstl, snd_type.talk, 2, 1, sid)}
+		elseif name == "reac_see_soldier" then
+	               	return { id = sid, max = obj:add_sound("script_sound\\reactions\\see_something\\soldier\\soldier_see_", nstl, snd_type.talk, 2, 1, sid)}
+		elseif name == "reac_search_soldier" then
+	               	return { id = sid, max = obj:add_sound("script_sound\\reactions\\search_enemy\\soldier\\soldier_search_", nstl, snd_type.talk, 2, 1, sid)}
+		elseif name == "reac_monstr_soldier" then
+	               	return { id = sid, max = obj:add_sound("script_sound\\reactions\\mutants\\soldier\\soldier_mutants_", nstl, snd_type.talk, 2, 1, sid)}
+		elseif name == "reac_enemy_soldier" then
+	               	return { id = sid, max = obj:add_sound("script_sound\\reactions\\enemy\\soldier\\soldier_enemy_", nstl, snd_type.talk, 2, 1, sid)}
+		elseif name == "reac_cmonstr_soldier" then
+	               	return { id = sid, max = obj:add_sound("script_sound\\reactions\\dead_mutant\\soldier\\soldier_dead_mutant_", nstl, snd_type.talk, 2, 1, sid)}
+		elseif name == "reac_cenemy_soldier" then
+	               	return { id = sid, max = obj:add_sound("script_sound\\reactions\\dead_enemy\\soldier\\soldier_dead_enemy_", nstl, snd_type.talk, 2, 1, sid)}
+		elseif name == "reac_cneutral_soldier" then
+	               	return { id = sid, max = obj:add_sound("script_sound\\reactions\\dead_neutral\\soldier\\soldier_dead_neutral_", nstl, snd_type.talk, 2, 1, sid)}
+		elseif name == "reac_cfriend_soldier" then
+	               	return { id = sid, max = obj:add_sound("script_sound\\reactions\\dead_friend\\soldier\\soldier_dead_friend_", nstl, snd_type.talk, 2, 1, sid)}
+		elseif name == "reac_nothing_soldier" then
+	               	return { id = sid, max = obj:add_sound("script_sound\\reactions\\nothing\\soldier\\soldier_nothing_", nstl, snd_type.talk, 2, 1, sid)}
+		elseif name == "talk_hello_soldier" then
+	               	return { id = sid, max = obj:add_sound("script_sound\\talk\\greeting\\soldier\\soldier_greeting_", nstl, snd_type.talk, 2, 1, sid)}
+		elseif name == "talk_bye_soldier" then
+	               	return { id = sid, max = obj:add_sound("script_sound\\talk\\leave\\soldier\\soldier_leave_", nstl, snd_type.talk, 2, 1, sid)}
+		elseif name == "talk_accept_soldier" then
+	               	return { id = sid, max = obj:add_sound("script_sound\\talk\\accept\\soldier\\soldier_accept_", nstl, snd_type.talk, 2, 1, sid)}
+		elseif name == "talk_reject_soldier" then
+	               	return { id = sid, max = obj:add_sound("script_sound\\talk\\rejection\\soldier\\soldier_rejection_", nstl, snd_type.talk, 2, 1, sid)}
+		elseif name == "talk_abuse_soldier" then
+	               	return { id = sid, max = obj:add_sound("script_sound\\talk\\abuse\\soldier\\soldier_abuse_", nstl, snd_type.talk, 2, 1, sid)}
+		elseif name == "trade_yes_soldier" then
+	               	return { id = sid, max = obj:add_sound("script_sound\\talk\\trade\\yes\\soldier\\soldier_trade_", nstl, snd_type.talk, 2, 1, sid)}
+		elseif name == "trade_no_soldier" then
+	               	return { id = sid, max = obj:add_sound("script_sound\\talk\\trade\\no\\soldier\\soldier_tradeno_", nstl, snd_type.talk, 2, 1, sid)}
 		end
 		return nil
 	end
 
     	-- фразы о погоде
-    	this.theme["weather"] = { exec = this.weather_class,
-				  types = {}}
-	this.theme["weather"].types["bad"] = { exec = this.npc_class,
-					 	types = {}}
+    	this.theme["weather"] = { exec = this.weather_class, types = {}}
+	this.theme["weather"].types["bad"] = { exec = this.npc_class, types = {}}
 	this.theme["weather"].types["bad"].types["soldier"] = load_theme("weather_bad_soldier", id())
-	this.theme["weather"].types["good"] = { exec = this.npc_class,
-						types = {}}
+	this.theme["weather"].types["good"] = { exec = this.npc_class, types = {}}
 	this.theme["weather"].types["good"].types["soldier"] = load_theme("weather_good_soldier", id())
 
+	-- состояния тела
+    	this.theme["state"] = { exec = this.state_class, types = {}}
+	this.theme["state"].types["health"] = { exec = this.npc_class, types = {}}
+	this.theme["state"].types["health"].types["soldier"] = load_theme("state_health_soldier", id())
+	this.theme["state"].types["fatique"] = { exec = this.npc_class, types = {}}
+	this.theme["state"].types["fatique"].types["soldier"] = load_theme("state_fatique_soldier", id())
+	this.theme["state"].types["starvation"] = { exec = this.npc_class, types = {}}
+	this.theme["state"].types["starvation"].types["soldier"] = load_theme("state_starvation_soldier", id())
+	this.theme["state"].types["sleep"] = { exec = this.npc_class, types = {}}
+	this.theme["state"].types["sleep"].types["soldier"] = load_theme("state_sleep_soldier", id())
+	this.theme["state"].types["idle"] = { exec = this.npc_class, types = {}}
+	this.theme["state"].types["idle"].types["soldier"] = load_theme("state_idle_soldier", id())
+
+	-- просьба о помощи
+	this.theme["help"] = { exec = this.npc_class, types = {}}
+	this.theme["help"].types["soldier"] = load_theme("help_soldier", id())
+
+	-- окрик
+	this.theme["hail"] = { exec = this.npc_class, types = {}}
+	this.theme["hail"].types["soldier"] = load_theme("hail_soldier", id())
+
+	-- ожидание
+	this.theme["wait"] = { exec = this.npc_class, types = {}}
+	this.theme["wait"].types["soldier"] = load_theme("wait_soldier", id())
+
+	-- угрозы
+	this.theme["threat_weap"] = { exec = this.npc_class, types = {}}
+	this.theme["threat_weap"].types["soldier"] = load_theme("threat_weap_soldier", id())
+	this.theme["threat_back"] = { exec = this.npc_class, types = {}}
+	this.theme["threat_back"].types["soldier"] = load_theme("threat_back_soldier", id())
+	this.theme["threat_stop"] = { exec = this.npc_class, types = {}}
+	this.theme["threat_stop"].types["soldier"] = load_theme("threat_stop_soldier", id())
+
+	-- реакции
+	this.theme["reac_hear"] = { exec = this.npc_class, types = {}}
+	this.theme["reac_hear"].types["soldier"] = load_theme("reac_hear_soldier", id())
+	this.theme["reac_see"] = { exec = this.npc_class, types = {}}
+	this.theme["reac_see"].types["soldier"] = load_theme("reac_see_soldier", id())
+	this.theme["reac_search"] = { exec = this.npc_class, types = {}}
+	this.theme["reac_search"].types["soldier"] = load_theme("reac_search_soldier", id())
+    	this.theme["reac_find_monstr"] = { exec = this.state_class, types = {}}
+	this.theme["reac_find_monstr"].types["soldier"] = load_theme("reac_monstr_soldier", id())
+    	this.theme["reac_find_enemy"] = { exec = this.state_class, types = {}}
+	this.theme["reac_find_enemy"].types["soldier"] = load_theme("reac_enemy_soldier", id())
+    	this.theme["reac_crps_monstr"] = { exec = this.state_class, types = {}}
+	this.theme["reac_crps_monstr"].types["soldier"] = load_theme("reac_cmonstr_soldier", id())
+    	this.theme["reac_crps_enemy"] = { exec = this.state_class, types = {}}
+	this.theme["reac_crps_enemy"].types["soldier"] = load_theme("reac_cenemy_soldier", id())
+    	this.theme["reac_crps_neutral"] = { exec = this.state_class, types = {}}
+	this.theme["reac_crps_neutral"].types["soldier"] = load_theme("reac_cneutral_soldier", id())
+    	this.theme["reac_crps_friend"] = { exec = this.state_class, types = {}}
+	this.theme["reac_crps_friend"].types["soldier"] = load_theme("reac_cfriend_soldier", id())
+    	this.theme["reac_nothing"] = { exec = this.state_class, types = {}}
+	this.theme["reac_nothing"].types["soldier"] = load_theme("reac_nothing_soldier", id())
+
+	-- болтовня
+	this.theme["talk_hello"] = { exec = this.npc_class, types = {}}
+	this.theme["talk_hello"].types["soldier"] = load_theme("talk_hello_soldier", id())
+	this.theme["talk_bye"] = { exec = this.npc_class, types = {}}
+	this.theme["talk_bye"].types["soldier"] = load_theme("talk_bye_soldier", id())
+	this.theme["talk_accept"] = { exec = this.npc_class, types = {}}
+	this.theme["talk_accept"].types["soldier"] = load_theme("talk_accept_soldier", id())
+	this.theme["talk_reject"] = { exec = this.npc_class, types = {}}
+	this.theme["talk_reject"].types["soldier"] = load_theme("talk_reject_soldier", id())
+	this.theme["talk_abuse"] = { exec = this.npc_class, types = {}}
+	this.theme["talk_abuse"].types["soldier"] = load_theme("talk_abus_soldier", id())
+
+	-- торговля
+	this.theme["trade_yes"] = { exec = this.npc_class, types = {}}
+	this.theme["trade_yes"].types["soldier"] = load_theme("trade_yes_soldier", id())
+	this.theme["trade_no"] = { exec = this.npc_class, types = {}}
+	this.theme["trade_no"].types["soldier"] = load_theme("trade_no_soldier", id())
+	         
 	print_table(this.theme)
 	printf("All sounds loaded for %s, section %s", obj:name(), obj:section())
 end
@@ -75,27 +202,43 @@ function set_sound(npc, sound, now)
 	if a == true then
 		if math.random(100) < sound.rnd or now == true then
 			local r
-			if sound.lastsound == nil then
-				r = math.random(table.getn(sound.sounds))
-			else
-				r = math.random(table.getn(sound.sounds)-1)
-				if r >= sound.lastsound then
-					r = r + 1
+			local l = table.getn(sound.sounds)
+			if l > 0 then
+				if sound.lastsound == nil then
+					r = math.random(l)
+				else
+					r = math.random(l-1)
+					if r >= sound.lastsound then
+						r = r + 1
+					end
 				end
+				if l > 1 then 
+					sound.lastsound = r
+				else
+					sound.lastsound = nil
+				end
+				npc:play_sound (sound.sounds[r].pack , 1, 0, 1, 0, sound.sounds[r].id)
 			end
-			sound.lastsound = r
-			npc:play_sound (sound.sounds[r].pack , 1, 0, 1, 0, sound.sounds[r].id)
 		end
 	end
 end
 
-function construct_sound(npc, themes)
-	function get_sound(path)
+function construct_sound(npc, themes, target)
+	function get_sound(path, st)
 		if path == nil then return nil end
 		if path.exec == nil then
-			return path
+	      		for i=0,path.max-1 do
+				table.insert(st, {pack = path.id, id = i})
+			end
 		else
-			return get_sound(path.types[path.exec(path.types, npc)])
+			local pe = path.exec(path.types, npc, target)
+			if type(pe) == "table" then
+				for k,v in pe do
+					get_sound(path.types[v], st)
+				end
+			else
+				get_sound(path.types[pe], st)
+			end
 		end
 	end
 
@@ -103,12 +246,7 @@ function construct_sound(npc, themes)
 
 	if themes ~= nil then
 		for k,v in themes do
-			local st = get_sound(this.theme[v])
-			if st ~= nil then
-		      		for i=0,st.max-1 do
-					table.insert(sounds, {pack = st.id, id = i})
-				end
-			end
+			get_sound(this.theme[v], sounds)
 		end
 	end
 	return sounds
@@ -116,7 +254,7 @@ end
 -----------------------------------------------------------------------------------------------------------------------------------
 --	Theme  functions
 -----------------------------------------------------------------------------------------------------------------------------------
-function npc_class(avail_types, npc)
+function npc_class(avail_types, npc, target)
 	local snpc = npc:section()
 	local type = "soldier"
 	if snpc == "m_army_soldier" or
@@ -141,12 +279,28 @@ function npc_class(avail_types, npc)
 	end
 	return type
 end
-function weather_class(avail_types, npc)
+function weather_class(avail_types, npc, target)
 	local type = "good"
 	if level.rain_factor() < 0.07 then
 		type = "good"
 	else
 		type = "bad"
+	end
+	return type
+end          
+function state_class(avail_types, npc, target)
+	local type = {"idle"}
+	if npc.health < 0.5 then
+		table.insert(type, "health")
+	end
+	if npc.satiety < 0.5 then
+		table.insert(type, "starvation")
+	end
+	if npc.power < 0.5 then
+		table.insert(type, "fatique")
+	end
+	if xr_motivator.storage[npc:id()].state.body_state == xr_state.sleep then
+		type = {"sleep"}
 	end
 	return type
 end
