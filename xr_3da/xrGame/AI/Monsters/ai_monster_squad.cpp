@@ -6,7 +6,6 @@ void CMonsterSquad::RegisterMember(CEntity *pE)
 {
 	// Добавить цель
 	SMemberGoal			G;
-	G.type				= MG_None;
 	m_goals.insert		(mk_pair(pE, G));
 	
 	// Добавить команду

@@ -19,6 +19,11 @@ struct SMemberGoal {
 	CEntity				*entity;
 	Fvector				position;
 	u32					node;
+
+	SMemberGoal			() {
+		type			= MG_None;
+		entity			= 0;
+	}
 };
 
 //////////////////////////////////////////////////////////////////////////
