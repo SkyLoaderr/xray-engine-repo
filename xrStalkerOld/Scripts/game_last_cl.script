@@ -7,7 +7,11 @@ module("game_last_charselect_dlg")
 module("game_last_header_wnd")
 --include
 module("ui_base_dialog")
+
 module("ui_options_dialog")
+module("ui_options_base_tab")
+module("ui_options_video_tab")
+
 module("ui_save_dialog")
 module("ui_load_dialog")
 module("ui_main_menu")
