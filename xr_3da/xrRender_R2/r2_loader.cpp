@@ -46,10 +46,19 @@ void CRender::level_Load(IReader* fs)
 	if	(!g_pGamePersistent->bDedicatedServer)	{
 		// VB,IB,SWI
 		pApp->LoadTitle				("Loading geometry...");
-		IReader*	geom			= FS.r_open	("$level$","level.geom");
-		LoadBuffers					(geom);
-		LoadSWIs					(geom);
-		FS.r_close					(geom);
+		{
+			IReader*	geom			= FS.r_open	("$level$","level.geom");
+			LoadBuffers					(geom,FALSE);
+			LoadSWIs					(geom);
+			FS.r_close					(geom);
+		}
+
+		//...and alternate/fast geometry
+		{
+			IReader*	geom			= FS.r_open	("$level$","level.geomx");
+			LoadBuffers					(geom,TRUE);
+			FS.r_close					(geom);
+		}
 
 		// Visuals
 		pApp->LoadTitle				("Loading spatial-DB...");
@@ -114,11 +123,13 @@ void CRender::level_Unload()
 	Visuals.clear			();
 
 	//*** VB/IB
-	for (I=0; I<VB.size(); I++)	_RELEASE(VB[I]);
-	for (I=0; I<IB.size(); I++)	_RELEASE(IB[I]);
-	DCL.clear					();
-	VB.clear					();
-	IB.clear					();
+	for (I=0; I<nVB.size(); I++)	_RELEASE(nVB[I]);
+	for (I=0; I<xVB.size(); I++)	_RELEASE(xVB[I]);
+	nVB.clear(); xVB.clear();
+	for (I=0; I<nIB.size(); I++)	_RELEASE(nIB[I]);
+	for (I=0; I<xIB.size(); I++)	_RELEASE(xIB[I]);
+	nIB.clear(); xIB.clear();
+	nDC.clear(); xDC.clear();
 
 	//*** Components
 	xr_delete					(Details);
@@ -129,26 +140,29 @@ void CRender::level_Unload()
 	Shaders.clear_and_free		();
 }
 
-void CRender::LoadBuffers	(IReader *base_fs)
+void CRender::LoadBuffers		(IReader *base_fs,	BOOL _alternative)
 {
 	Device.Resources->Evict		();
 	u32	dwUsage					= D3DUSAGE_WRITEONLY;
 
+	xr_vector<VertexDeclarator>				&_DC	= _alternative?xDC:nDC;
+	xr_vector<IDirect3DVertexBuffer9*>		&_VB	= _alternative?xVB:nVB;
+	xr_vector<IDirect3DIndexBuffer9*>		&_IB	= _alternative?xIB:nIB;
+
 	// Vertex buffers
-	if (base_fs->find_chunk(fsL_VB))
 	{
 		// Use DX9-style declarators
 		destructor<IReader>		fs	(base_fs->open_chunk(fsL_VB));
 		u32 count				= fs().r_u32();
-		DCL.resize				(count);
-		VB.resize				(count);
+		_DC.resize				(count);
+		_VB.resize				(count);
 		for (u32 i=0; i<count; i++)
 		{
 			// decl
 			D3DVERTEXELEMENT9*	dcl		= (D3DVERTEXELEMENT9*) fs().pointer();
 			u32 dcl_len			= D3DXGetDeclLength		(dcl)+1;
-			DCL[i].resize		(dcl_len);
-			fs().r				(DCL[i].begin(),dcl_len*sizeof(D3DVERTEXELEMENT9));
+			_DC[i].resize		(dcl_len);
+			fs().r				(_DC[i].begin(),dcl_len*sizeof(D3DVERTEXELEMENT9));
 
 			// count, size
 			u32 vCount			= fs().r_u32	();
@@ -157,23 +171,20 @@ void CRender::LoadBuffers	(IReader *base_fs)
 
 			// Create and fill
 			BYTE*	pData		= 0;
-			R_CHK				(HW.pDevice->CreateVertexBuffer(vCount*vSize,dwUsage,0,D3DPOOL_MANAGED,&VB[i],0));
-			R_CHK				(VB[i]->Lock(0,0,(void**)&pData,0));
+			R_CHK				(HW.pDevice->CreateVertexBuffer(vCount*vSize,dwUsage,0,D3DPOOL_MANAGED,&_VB[i],0));
+			R_CHK				(_VB[i]->Lock(0,0,(void**)&pData,0));
 			Memory.mem_copy		(pData,fs().pointer(),vCount*vSize);
-			VB[i]->Unlock		();
+			_VB[i]->Unlock		();
 
 			fs().advance		(vCount*vSize);
 		}
-	} else {
-		Debug.fatal				("DX7-style FVFs unsupported");
 	}
 
 	// Index buffers
-	if (base_fs->find_chunk(fsL_IB))
 	{
 		destructor<IReader>		fs	(base_fs->open_chunk	(fsL_IB));
 		u32 count				= fs().r_u32();
-		IB.resize				(count);
+		_IB.resize				(count);
 		for (u32 i=0; i<count; i++)
 		{
 			u32 iCount		= fs().r_u32	();
@@ -181,10 +192,10 @@ void CRender::LoadBuffers	(IReader *base_fs)
 
 			// Create and fill
 			BYTE*	pData		= 0;
-			R_CHK				(HW.pDevice->CreateIndexBuffer(iCount*2,dwUsage,D3DFMT_INDEX16,D3DPOOL_MANAGED,&IB[i],0));
-			R_CHK				(IB[i]->Lock(0,0,(void**)&pData,0));
+			R_CHK				(HW.pDevice->CreateIndexBuffer(iCount*2,dwUsage,D3DFMT_INDEX16,D3DPOOL_MANAGED,&_IB[i],0));
+			R_CHK				(_IB[i]->Lock(0,0,(void**)&pData,0));
 			Memory.mem_copy		(pData,fs().pointer(),iCount*2);
-			IB[i]->Unlock		();
+			_IB[i]->Unlock		();
 
 			fs().advance		(iCount*2);
 		}

@@ -81,9 +81,9 @@ public:
 	xr_vector<FSlideWindowItem>									SWIs;
 	xr_vector<ref_shader>										Shaders;
 	typedef svector<D3DVERTEXELEMENT9,MAXD3DDECLLENGTH+1>		VertexDeclarator;
-	xr_vector<VertexDeclarator>									DCL;
-	xr_vector<IDirect3DVertexBuffer9*>							VB;
-	xr_vector<IDirect3DIndexBuffer9*>							IB;
+	xr_vector<VertexDeclarator>									nDC,xDC;
+	xr_vector<IDirect3DVertexBuffer9*>							nVB,xVB;
+	xr_vector<IDirect3DIndexBuffer9*>							nIB,xIB;
 	xr_vector<IRender_Visual*>									Visuals;
 	CPSLibrary													PSLibrary;
 
@@ -109,7 +109,7 @@ public:
 	IDirect3DQuery9*											q_sync_point	;
 private:
 	// Loading / Unloading
-	void							LoadBuffers					(IReader	*fs);
+	void							LoadBuffers					(IReader	*fs,	BOOL	_alternative);
 	void							LoadVisuals					(IReader	*fs);
 	void							LoadLights					(IReader	*fs);
 	void							LoadPortals					(IReader	*fs);
@@ -134,7 +134,10 @@ public:
 public:
 	ShaderElement*					rimp_select_sh_static		(IRender_Visual	*pVisual, float cdist_sq);
 	ShaderElement*					rimp_select_sh_dynamic		(IRender_Visual	*pVisual, float cdist_sq);
-
+	D3DVERTEXELEMENT9*				getVB_Format				(int id);
+	IDirect3DVertexBuffer9*			getVB						(int id);
+	IDirect3DIndexBuffer9*			getIB						(int id);
+	FSlideWindowItem*				getSWI						(int id);
 	IRender_Portal*					getPortal					(int id);
 	IRender_Sector*					getSectorActive				();
 	IRender_Visual*					model_CreatePE				(LPCSTR name);
@@ -200,10 +203,6 @@ public:
 	virtual ref_shader				getShader					(int id);
 	virtual IRender_Sector*			getSector					(int id);
 	virtual IRender_Visual*			getVisual					(int id);
-	virtual D3DVERTEXELEMENT9*		getVB_Format				(int id);
-	virtual IDirect3DVertexBuffer9*	getVB						(int id);
-	virtual IDirect3DIndexBuffer9*	getIB						(int id);
-	virtual FSlideWindowItem*		getSWI						(int id);
 	virtual IRender_Sector*			detectSector				(const Fvector& P);
 	virtual IRender_Target*			getTarget					();
 

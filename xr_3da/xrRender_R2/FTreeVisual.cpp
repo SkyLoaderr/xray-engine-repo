@@ -199,7 +199,7 @@ void FTreeVisual_PM::Load		(const char* N, IReader *data, u32 dwFlags)
 	inherited::Load				(N,data,dwFlags);
 	R_ASSERT					(data->find_chunk(OGF_SWICONTAINER));
 	{
-		u32 ID					= data->r_u32		();
+		u32 ID					= data->r_u32				();
 		pSWI					= RImplementation.getSWI	(ID);
 	}
 }
