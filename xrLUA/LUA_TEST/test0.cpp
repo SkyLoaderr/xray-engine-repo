@@ -822,6 +822,13 @@ struct CClassA {
 	}
 };
 
+struct CClassB {
+	CClassB()
+	{
+		printf	("constructor CClassB\n");
+	}
+};
+
 void register_smth0	(module_ &module_ref)
 {
 	module_ref
@@ -829,6 +836,15 @@ void register_smth0	(module_ &module_ref)
 		class_<CClassA>("ClassA")
 			.def(		constructor<>())
 	];
+}
+
+void register_smth1	(module_ &module_ref)
+{
+	module_ref
+		[
+			class_<CClassB>("ClassB")
+			.def(		constructor<>())
+		];
 }
 
 void test1()
@@ -852,12 +868,7 @@ void test1()
 
 	module_			game_engine = module(L,"game_engine");
 	register_smth0	(game_engine);
-//	register_smth1	(game_engine);
-
-//	module(L,"game_engine")
-//	[
-//		register_class()
-//	];
+	register_smth1	(game_engine);
 
 	lua_dofile		(L,"x:\\split_test.script");
 	if (xr_strlen(SSS)) {
