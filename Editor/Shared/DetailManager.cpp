@@ -318,6 +318,7 @@ void CDetailManager::Render		(Fvector& EYE)
 			DWORD	vBase,iBase,iOffset=0;
 			CDetail::fvfVertexOut* vDest	= (CDetail::fvfVertexOut*)	VS->Lock(vCount_Lock,vBase);
 			WORD*	iDest					= (WORD*)					IS->Lock(iCount_Lock,iBase);
+			WORD*	dbgIndices				= iDest;
 
 			// Filling itself
 			for (DWORD item=item_start; item<item_end; item++)
@@ -350,6 +351,10 @@ void CDetailManager::Render		(Fvector& EYE)
 				vCount_Lock,vBase,
 				iCount_Lock,iBase
 				);
+			{
+				for (DWORD t=0; t<iCount_Lock; t++)
+					Msg("%4d: %d",t,dbgIndices[t]);
+			}
 			Device.Primitive.setVertices	(VS->getFVF(),VS->getStride(),VS->getBuffer());
 			Device.Primitive.setIndicesUC	(vBase, IS->getBuffer());
 			DWORD	dwNumPrimitives			= iCount_Lock/3;
