@@ -6,7 +6,7 @@
 	#include "xr_ini.h"
 	#include "clsid_game.h"
 	#include "xr_tokens.h"
-	#include "game_type.h"
+	#include "game_base.h"
 #else
 	#include "xrServer.h"
 #endif
