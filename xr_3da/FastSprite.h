@@ -20,7 +20,7 @@ struct ENGINE_API FSprite
 
 typedef vector<FSprite>	VSprites;
 
-class ENGINE_API CFastSprite : public CVisual
+class ENGINE_API CFastSprite : public IVisual
 {
 protected:
 	CVertexStream*			Stream;
@@ -31,7 +31,7 @@ protected:
 public:
 	// Visual
 	virtual void			Render			(float LOD);
-	virtual void			Copy			(CVisual* pFrom);
+	virtual void			Copy			(IVisual* pFrom);
 
 	// Functionality
 	BOOL					isReadyForDestroy()	{ return fTTL<=0; }

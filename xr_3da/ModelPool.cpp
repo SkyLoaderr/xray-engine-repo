@@ -16,9 +16,9 @@
 
 #include "x_ray.h"
 
-CVisual*	CModelPool::Instance_Create(u32 type)
+IVisual*	CModelPool::Instance_Create(u32 type)
 {
-	CVisual *V = NULL;
+	IVisual *V = NULL;
 
 	// Check types
 	switch (type) {
@@ -61,17 +61,17 @@ CVisual*	CModelPool::Instance_Create(u32 type)
 	return		V;
 }
 
-CVisual*	CModelPool::Instance_Duplicate	(CVisual* V)
+IVisual*	CModelPool::Instance_Duplicate	(IVisual* V)
 {
 	R_ASSERT(V);
-	CVisual* N = Instance_Create(V->Type);
+	IVisual* N = Instance_Create(V->Type);
 	N->Copy	(V);
 	return N;
 }
 
-CVisual*	CModelPool::Instance_Load		(const char* N)
+IVisual*	CModelPool::Instance_Load		(const char* N)
 {
-	CVisual	*V;
+	IVisual	*V;
 	string256		fn;
 	string256		name;
 
@@ -103,9 +103,9 @@ CVisual*	CModelPool::Instance_Load		(const char* N)
 	return V;
 }
 
-CVisual*	CModelPool::Instance_Load(LPCSTR name, IReader* data)
+IVisual*	CModelPool::Instance_Load(LPCSTR name, IReader* data)
 {
-	CVisual	*V;
+	IVisual	*V;
 	
 	// Actual loading
 	ogf_header			H;
@@ -118,7 +118,7 @@ CVisual*	CModelPool::Instance_Load(LPCSTR name, IReader* data)
 	return V;
 }
 
-void		CModelPool::Instance_Register(LPCSTR N, CVisual* V)
+void		CModelPool::Instance_Register(LPCSTR N, IVisual* V)
 {
 	// Registration
 	ModelDef			M;
@@ -151,9 +151,9 @@ CModelPool::~CModelPool()
 	Destroy	();
 }
 
-CVisual* CModelPool::Instance_Find(LPCSTR N)
+IVisual* CModelPool::Instance_Find(LPCSTR N)
 {
-	CVisual*				Model=0;
+	IVisual*				Model=0;
 	vector<ModelDef>::iterator	I;
 	for (I=Models.begin(); I!=Models.end(); I++)
 	{
@@ -165,14 +165,14 @@ CVisual* CModelPool::Instance_Find(LPCSTR N)
 	return Model;
 }
 
-CVisual* CModelPool::Create(const char* name)
+IVisual* CModelPool::Create(const char* name)
 {
 	// Msg					("-CREATE %s",name);
 	string128 low_name;		R_ASSERT(strlen(name)<128);
 	strcpy(low_name,name);	strlwr(low_name);
 
 	// 1. Search for already loaded model
-	CVisual* Model	= Instance_Find(low_name);
+	IVisual* Model	= Instance_Find(low_name);
 
 	// 2. If found - return reference
 	if (0!=Model) return Instance_Duplicate(Model);
@@ -181,14 +181,14 @@ CVisual* CModelPool::Create(const char* name)
 	return Instance_Duplicate(Instance_Load(low_name));
 }
 
-CVisual* CModelPool::Create(LPCSTR name, IReader* data)
+IVisual* CModelPool::Create(LPCSTR name, IReader* data)
 {
 	// Msg					("-CREATE_STREAM- %s",name);
 	string128 low_name;		R_ASSERT(strlen(name)<128);
 	strcpy(low_name,name);	strlwr(low_name);
 
 	// 1. Search for already loaded model
-	CVisual* Model	= Instance_Find(low_name);
+	IVisual* Model	= Instance_Find(low_name);
 
 	// 2. If found - return reference
 	if (0!=Model) return Instance_Duplicate(Model);
@@ -197,12 +197,12 @@ CVisual* CModelPool::Create(LPCSTR name, IReader* data)
 	return Instance_Duplicate(Instance_Load(name,data));
 }
 
-void	CModelPool::Delete(CVisual* &V)
+void	CModelPool::Delete(IVisual* &V)
 {
 	xr_delete			(V);
 }
 
-CVisual* CModelPool::CreatePS	(PS::SDef_RT* source, PS::SEmitter* E)
+IVisual* CModelPool::CreatePS	(PS::SDef_RT* source, PS::SEmitter* E)
 {
 	CPSVisual* V	= (CPSVisual*)Instance_Create(MT_PARTICLE_SYSTEM);
 	V->Compile		(source,E);

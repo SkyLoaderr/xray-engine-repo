@@ -337,12 +337,12 @@ public:
 	void						DebugRender		(Fmatrix& XFORM);
 
 	// General "Visual" stuff
-	virtual void				Copy			(CVisual *pFrom);
+	virtual void				Copy			(IVisual *pFrom);
 	virtual void				Load			(const char* N, IReader *data, u32 dwFlags);
 	virtual void				Release			();
 	virtual						~CKinematics	();
 };
-IC CKinematics* PKinematics		(CVisual* V) { return dynamic_cast<CKinematics*>(V); }
+IC CKinematics* PKinematics		(IVisual* V) { return dynamic_cast<CKinematics*>(V); }
 
 
 #endif // !defined(AFX_BODYINSTANCE_H__68A83E66_CEC3_4207_84A0_B7997A253B87__INCLUDED_)

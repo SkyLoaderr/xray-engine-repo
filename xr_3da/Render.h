@@ -5,7 +5,7 @@
 #include "vis_common.h"
 
 // refs
-class ENGINE_API	CVisual;
+class ENGINE_API	IVisual;
 class ENGINE_API	CTempObject;
 class ENGINE_API	CObject;
 class ENGINE_API	xrLIGHT;
@@ -127,7 +127,7 @@ public:
 	virtual IRender_Portal*			getPortal				(int id)						= 0;
 	virtual IRender_Sector*			getSector				(int id)						= 0;
 	virtual IRender_Sector*			getSectorActive			()								= 0;
-	virtual CVisual*				getVisual				(int id)						= 0;
+	virtual IVisual*				getVisual				(int id)						= 0;
 	virtual D3DVERTEXELEMENT9*		getVB_Format			(int id)						= 0;
 	virtual IDirect3DVertexBuffer9*	getVB					(int id)						= 0;
 	virtual IDirect3DIndexBuffer9*	getIB					(int id)						= 0;
@@ -141,8 +141,8 @@ public:
 	IC		BOOL					get_HUD					()								{ return val_bHUD;					}
 	virtual void					flush					()								= 0;	
 	virtual void					set_Object				(CObject*	O	)				= 0;
-	virtual void					add_Visual				(CVisual*	V	)				= 0;	// add visual leaf	(no culling performed at all)
-	virtual void					add_Geometry			(CVisual*	V	)				= 0;	// add visual(s)	(all culling performed)
+	virtual void					add_Visual				(IVisual*	V	)				= 0;	// add visual leaf	(no culling performed at all)
+	virtual void					add_Geometry			(IVisual*	V	)				= 0;	// add visual(s)	(all culling performed)
 	virtual void					add_Lights				(vector<WORD> &V)				= 0;
 	virtual void					add_Glows				(vector<WORD> &V)				= 0;
 	virtual void					add_Patch				(Shader* S, const Fvector& P, float s, float a, BOOL bNearer)	= 0;
@@ -152,12 +152,12 @@ public:
 	virtual void					L_select				(Fvector &pos, float fRadius, vector<xrLIGHT*>&	dest)			= 0;
 
 	// Models
-	virtual CVisual*				model_CreatePS			(LPCSTR name, PS::SEmitter* E)			= 0;
+	virtual IVisual*				model_CreatePS			(LPCSTR name, PS::SEmitter* E)			= 0;
 	virtual IRender_DetailModel*	model_CreateDM			(IReader*	F)							= 0;
-	virtual CVisual*				model_Create			(LPCSTR name)							= 0;
-	virtual CVisual*				model_Create			(LPCSTR name, IReader* data)			= 0;
-	virtual CVisual*				model_Duplicate			(CVisual*	V)							= 0;
-	virtual void					model_Delete			(CVisual* &	V)							= 0;
+	virtual IVisual*				model_Create			(LPCSTR name)							= 0;
+	virtual IVisual*				model_Create			(LPCSTR name, IReader* data)			= 0;
+	virtual IVisual*				model_Duplicate			(IVisual*	V)							= 0;
+	virtual void					model_Delete			(IVisual* &	V)							= 0;
 	virtual void 					model_Delete			(IRender_DetailModel* & F)				= 0;
 
 	virtual IRender_Light*			light_create			()										= 0;

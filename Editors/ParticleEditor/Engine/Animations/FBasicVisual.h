@@ -13,7 +13,7 @@
 #define VLOAD_FORCESOFTWARE		(1<<2)
 
 // The class itself
-class ENGINE_API			CVisual
+class ENGINE_API			IVisual
 {
 public:
 	u32						Type;					// visual's type
@@ -26,10 +26,10 @@ public:
 	virtual void			Render					(float LOD)		{};		// LOD - Level Of Detail  [0..1], Ignored
 	virtual void			Load					(const char* N, IReader *data, u32 dwFlags);
 	virtual void			Release					();						// Shared memory release
-	virtual void			Copy					(CVisual* from);
+	virtual void			Copy					(IVisual* from);
 
-	CVisual			();
-	virtual ~CVisual();
+	IVisual			();
+	virtual ~IVisual();
 };
 
 #endif // !defined(AFX_FBASICVISUAL_H__2DCBE980_AF27_11D3_B4E3_4854E82A090D__INCLUDED_)

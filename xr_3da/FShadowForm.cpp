@@ -29,7 +29,7 @@ FShadowForm::~FShadowForm()
 
 void FShadowForm::Load(IReader *data)
 {
-	CVisual::Load(data);
+	IVisual::Load(data);
 
 	// read vertices
 	if (data->find_chunk(OGF_VERTICES)) {

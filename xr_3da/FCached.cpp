@@ -94,14 +94,14 @@ FCached::~FCached()
 
 void FCached::Release()
 {
-	CVisual::Release();
+	IVisual::Release();
 	xr_free			(pVertices);
 	xr_free			(pIndices);
 }
 
 void FCached::Load(const char* N, IReader *data, u32 dwFlags)
 {
-	CVisual::Load(N,data,dwFlags);
+	IVisual::Load(N,data,dwFlags);
 
 	// read vertices
 	if ((dwFlags&VLOAD_NOVERTICES)==0) {
@@ -135,9 +135,9 @@ void FCached::Load(const char* N, IReader *data, u32 dwFlags)
 }
 
 #define PCOPY(a)	a = pFrom->a
-void FCached::Copy	(CVisual *pSrc)
+void FCached::Copy	(IVisual *pSrc)
 {
-	CVisual::Copy(pSrc);
+	IVisual::Copy(pSrc);
 
 	FCached	*pFrom = (FCached *)pSrc;
 	PCOPY	(vCount);

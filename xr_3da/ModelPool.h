@@ -7,7 +7,7 @@
 #pragma once
 
 // refs
-class ENGINE_API CVisual;
+class ENGINE_API IVisual;
 namespace PS	{ 
 	struct ENGINE_API SDef_RT;
 	struct ENGINE_API SEmitter; 
@@ -21,24 +21,24 @@ class ENGINE_API CModelPool
 	struct ModelDef
 	{
 		string128		name;
-		CVisual*		model;
+		IVisual*		model;
 	};
 
 	vector<ModelDef>	Models;
 
 	void				Destroy	();
 public:
-	CVisual*			Instance_Create		(u32 Type);
-	CVisual*			Instance_Duplicate	(CVisual* V);
-	CVisual*			Instance_Load		(LPCSTR N);
-	CVisual*			Instance_Load		(LPCSTR N, IReader* data);
-	void				Instance_Register	(LPCSTR N, CVisual* V);
-	CVisual*			Instance_Find		(LPCSTR N);
+	IVisual*			Instance_Create		(u32 Type);
+	IVisual*			Instance_Duplicate	(IVisual* V);
+	IVisual*			Instance_Load		(LPCSTR N);
+	IVisual*			Instance_Load		(LPCSTR N, IReader* data);
+	void				Instance_Register	(LPCSTR N, IVisual* V);
+	IVisual*			Instance_Find		(LPCSTR N);
 
-	CVisual*			CreatePS			(PS::SDef_RT* source, PS::SEmitter* E);
-	CVisual*			Create				(LPCSTR name);
-	CVisual*			Create				(LPCSTR name, IReader* data);
-	void				Delete				(CVisual* &V);
+	IVisual*			CreatePS			(PS::SDef_RT* source, PS::SEmitter* E);
+	IVisual*			Create				(LPCSTR name);
+	IVisual*			Create				(LPCSTR name, IReader* data);
+	void				Delete				(IVisual* &V);
 
 	CModelPool			();
 	virtual ~CModelPool	();

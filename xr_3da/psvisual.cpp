@@ -9,7 +9,7 @@
 #include "PSRuntime.h"
 #include "PSLibrary.h"
 
-CPSVisual::CPSVisual():CVisual()
+CPSVisual::CPSVisual():IVisual()
 {
 	m_Definition= 0;
 	m_Emitter	= 0;
@@ -21,7 +21,7 @@ CPSVisual::~CPSVisual()
 	m_Particles.clear();
 }
 //----------------------------------------------------
-void CPSVisual::Copy(CVisual* pFrom)
+void CPSVisual::Copy(IVisual* pFrom)
 {
 	Debug.fatal("Can't duplicate particle system - NOT IMPLEMENTED");
 }

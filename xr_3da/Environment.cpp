@@ -205,12 +205,12 @@ void CEnvironment::RenderFirst()
 		case MT_HIERRARHY:
 			{
 				FHierrarhyVisual* pV	= (FHierrarhyVisual*)pSkydome;
-				vector<CVisual*>::iterator I,E;
+				vector<IVisual*>::iterator I,E;
 				I = pV->children.begin	();
 				E = pV->children.end	();
 				for (; I!=E; I++)		
 				{
-					CVisual* V				= *I;
+					IVisual* V				= *I;
 					RCache.set_Shader	(V->hShader);
 					CHK_DX						(HW.pDevice->SetRenderState(D3DRS_TEXTUREFACTOR,Current.Sky.get()));
 					V->Render					(1.f);

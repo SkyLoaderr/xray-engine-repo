@@ -12,7 +12,7 @@
 // Construction/Destruction
 //////////////////////////////////////////////////////////////////////
 
-CFastSprite::CFastSprite(char *tex_name) : CVisual()
+CFastSprite::CFastSprite(char *tex_name) : IVisual()
 {
 	Type		= MT_SPRITE;
 	Stream		= RCache.Create(FVF::F_TL,MAX_SPRITES*4);
@@ -109,9 +109,9 @@ void CFastSprite::Update()
 }
 
 #define PCOPY(a)	a = pFrom->a
-void CFastSprite::Copy(CVisual* pSrc)
+void CFastSprite::Copy(IVisual* pSrc)
 {
-	CVisual::Copy	(pSrc);
+	IVisual::Copy	(pSrc);
 
 	CFastSprite* pFrom = (CFastSprite*) pSrc;
 	PCOPY	(Stream		);

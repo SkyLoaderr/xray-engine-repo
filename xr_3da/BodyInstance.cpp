@@ -487,7 +487,7 @@ void	CKinematics::IBoneInstances_Destroy()
 }
 
 #define PCOPY(a)	a = pFrom->a
-void CKinematics::Copy(CVisual *P) 
+void CKinematics::Copy(IVisual *P) 
 {
 	inherited::Copy	(P);
 
@@ -505,7 +505,7 @@ void CKinematics::Copy(CVisual *P)
 
 	for (u32 i=0; i<children.size(); i++) 
 	{
-		CVisual*	V = children[i];
+		IVisual*	V = children[i];
 		CSkeletonX*		B = NULL;
 		switch (V->Type)
 		{

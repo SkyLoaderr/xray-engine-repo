@@ -5,7 +5,7 @@
 #include "xrSheduler.h"
 
 // refs
-class	ENGINE_API CVisual;
+class	ENGINE_API IVisual;
 class	ENGINE_API CCFModel;
 class	ENGINE_API CInifile;
 class	ENGINE_API IRender_Sector;
@@ -63,7 +63,7 @@ protected:
 	svector<SavedPosition,4>			PositionStack;
 	
 	// Model
-	CVisual*							pVisual;
+	IVisual*							pVisual;
 
 	// Information and status
 	void								StatusBegin			();
@@ -113,7 +113,7 @@ public:
 	virtual void						SLS_Load			(IReader& fs)		{};
 	
 	// Accessors
-	IC CVisual*							Visual				()					{ return pVisual;			}
+	IC IVisual*							Visual				()					{ return pVisual;			}
 	IC CCFModel*						CFORM				() const			{ return cfModel;			}
 
 	// Name management

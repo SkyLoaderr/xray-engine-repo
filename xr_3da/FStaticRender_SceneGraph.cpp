@@ -25,14 +25,14 @@ float r_ssaLOD_B;
 
 float r_ssaHZBvsTEX;
 
-IC	float	CalcSSA(float& distSQ, Fvector& C, CVisual* V)
+IC	float	CalcSSA(float& distSQ, Fvector& C, IVisual* V)
 {
 	float R	= V->vis.sphere.R;
 	distSQ	= Device.vCameraPosition.distance_to_sqr(C);
 	return	R*R/distSQ;
 }
 
-void CRender::InsertSG_Dynamic	(CVisual *pVisual, Fvector& Center)
+void CRender::InsertSG_Dynamic	(IVisual *pVisual, Fvector& Center)
 {
 	float distSQ;	if (CalcSSA(distSQ,Center,pVisual)<=r_ssaDISCARD)	return;
 
@@ -62,7 +62,7 @@ void CRender::InsertSG_Dynamic	(CVisual *pVisual, Fvector& Center)
 	}
 }
 
-void CRender::InsertSG_Static(CVisual *pVisual)
+void CRender::InsertSG_Static(IVisual *pVisual)
 {
 	if (pVisual->vis.frame != Device.dwFrame) 
 	{
@@ -125,10 +125,10 @@ void CRender::InsertSG_Static(CVisual *pVisual)
 ////////////////////////////////////////////////////////////////////////////////////////////////////
 ////////////////////////////////////////////////////////////////////////////////////////////////////
 ////////////////////////////////////////////////////////////////////////////////////////////////////
-void CRender::add_leafs_Dynamic(CVisual *pVisual)
+void CRender::add_leafs_Dynamic(IVisual *pVisual)
 {
 	// Visual is 100% visible - simply add it
-	vector<CVisual*>::iterator I,E;	// it may be useful for 'hierrarhy' visual
+	vector<IVisual*>::iterator I,E;	// it may be useful for 'hierrarhy' visual
 
 	switch (pVisual->Type) {
 	case MT_HIERRARHY:
@@ -162,12 +162,12 @@ void CRender::add_leafs_Dynamic(CVisual *pVisual)
 	}
 }
 
-void CRender::add_leafs_Static(CVisual *pVisual)
+void CRender::add_leafs_Static(IVisual *pVisual)
 {
 	if (!HOM.visible(pVisual->vis))		return;
 
 	// Visual is 100% visible - simply add it
-	vector<CVisual*>::iterator I,E;	// it may be usefull for 'hierrarhy' visuals
+	vector<IVisual*>::iterator I,E;	// it may be usefull for 'hierrarhy' visuals
 
 	switch (pVisual->Type) {
 	case MT_HIERRARHY:
@@ -221,7 +221,7 @@ void CRender::add_leafs_Static(CVisual *pVisual)
 ////////////////////////////////////////////////////////////////////////////////////////////////////
 ////////////////////////////////////////////////////////////////////////////////////////////////////
 ////////////////////////////////////////////////////////////////////////////////////////////////////
-BOOL CRender::add_Dynamic(CVisual *pVisual, u32 planes)
+BOOL CRender::add_Dynamic(IVisual *pVisual, u32 planes)
 {
 	// Check frustum visibility and calculate distance to visual's center
 	Fvector		Tpos;	// transformed position
@@ -232,7 +232,7 @@ BOOL CRender::add_Dynamic(CVisual *pVisual, u32 planes)
 	if (fcvNone==VIS) return FALSE;
 
 	// If we get here visual is visible or partially visible
-	vector<CVisual*>::iterator I,E;	// it may be usefull for 'hierrarhy' visuals
+	vector<IVisual*>::iterator I,E;	// it may be usefull for 'hierrarhy' visuals
 
 	switch (pVisual->Type) {
 	case MT_HIERRARHY:
@@ -272,7 +272,7 @@ BOOL CRender::add_Dynamic(CVisual *pVisual, u32 planes)
 	return TRUE;
 }
 
-void CRender::add_Static(CVisual *pVisual, u32 planes)
+void CRender::add_Static(IVisual *pVisual, u32 planes)
 {
 	// Check frustum visibility and calculate distance to visual's center
 	EFC_Visible	VIS;
@@ -287,7 +287,7 @@ void CRender::add_Static(CVisual *pVisual, u32 planes)
 	if (!HOM.visible(vis))	return;
 	
 	// If we get here visual is visible or partially visible
-	vector<CVisual*>::iterator I,E;	// it may be usefull for 'hierrarhy' visuals
+	vector<IVisual*>::iterator I,E;	// it may be usefull for 'hierrarhy' visuals
 
 	switch (pVisual->Type) {
 	case MT_HIERRARHY:

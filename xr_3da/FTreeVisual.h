@@ -1,7 +1,7 @@
 #pragma once
 #include "fbasicvisual.h"
 
-class ENGINE_API FTreeVisual :	public CVisual
+class ENGINE_API FTreeVisual :	public IVisual
 {
 protected:
 	IDirect3DVertexBuffer9*		pVertices;
@@ -31,7 +31,7 @@ protected:
 public:
 	virtual void Render			(float LOD		);									// LOD - Level Of Detail  [0.0f - min, 1.0f - max], Ignored
 	virtual void Load			(LPCSTR N, IReader *data, u32 dwFlags);
-	virtual void Copy			(CVisual *pFrom	);
+	virtual void Copy			(IVisual *pFrom	);
 	virtual void Release		();
 
 	FTreeVisual(void);

@@ -82,7 +82,7 @@ void CAI_Rat::Load(LPCSTR section)
 	inherited::Load(section);
 
 	/*
-	CVisual*	temp;
+	IVisual*	temp;
 	temp = ::Render->model_Create("aaa");	::Render->model_Delete(temp);
 	temp = ::Render->model_Create("bbb");	::Render->model_Delete(temp);
 	temp = ::Render->model_Create("ccc");	::Render->model_Delete(temp);

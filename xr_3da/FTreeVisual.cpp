@@ -19,14 +19,14 @@ FTreeVisual::~FTreeVisual	(void)
 
 void FTreeVisual::Release	()
 {
-	CVisual::Release	();
+	IVisual::Release	();
 	_RELEASE			(pVertices);
 	_RELEASE			(pIndices);
 }
 
 void FTreeVisual::Load		(const char* N, IReader *data, u32 dwFlags)
 {
-	CVisual::Load		(N,data,dwFlags);
+	IVisual::Load		(N,data,dwFlags);
 
 	D3DVERTEXELEMENT9*	vFormat	= NULL;
 
@@ -158,9 +158,9 @@ void FTreeVisual::Render	(float LOD)
 }
 
 #define PCOPY(a)	a = pFrom->a
-void	FTreeVisual::Copy			(CVisual *pSrc)
+void	FTreeVisual::Copy			(IVisual *pSrc)
 {
-	CVisual::Copy				(pSrc);
+	IVisual::Copy				(pSrc);
 
 	FTreeVisual	*pFrom				= dynamic_cast<FTreeVisual*> (pSrc);
 

@@ -29,7 +29,7 @@ private:
 	u8									style;
 private:
 	CObjectAnimator*					s_animator;
-	CVisual*							s_particles;
+	IVisual*							s_particles;
 	sound								s_sound;
 	PS::SEmitter						s_emitter;
 	//CPhysicsShell*						m_pPhysicsShell;

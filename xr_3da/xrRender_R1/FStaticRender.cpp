@@ -14,10 +14,10 @@
 CRender										Render_Implementation;
 
 // Implementation
-CVisual*				CRender::model_Create			(LPCSTR name)					{ return Models.Create(name);			}
-CVisual*				CRender::model_Create			(LPCSTR name, IReader* data)	{ return Models.Create(name,data);		}
-CVisual*				CRender::model_Duplicate		(CVisual* V)					{ return Models.Instance_Duplicate(V);	}
-void					CRender::model_Delete			(CVisual* &V)					{ Models.Delete(V);						}
+IVisual*				CRender::model_Create			(LPCSTR name)					{ return Models.Create(name);			}
+IVisual*				CRender::model_Create			(LPCSTR name, IReader* data)	{ return Models.Create(name,data);		}
+IVisual*				CRender::model_Duplicate		(IVisual* V)					{ return Models.Instance_Duplicate(V);	}
+void					CRender::model_Delete			(IVisual* &V)					{ Models.Delete(V);						}
 IRender_DetailModel*	CRender::model_CreateDM			(IReader*	F)
 {
 	CDetail*	D		= xr_new<CDetail> ();
@@ -39,7 +39,7 @@ int						CRender::getVisualsCount		()					{ return Visuals.size();								}
 IRender_Portal*			CRender::getPortal				(int id)			{ VERIFY(id<int(Portals.size()));	return Portals[id];	}
 IRender_Sector*			CRender::getSector				(int id)			{ VERIFY(id<int(Sectors.size()));	return Sectors[id];	}
 IRender_Sector*			CRender::getSectorActive		()					{ return pLastSector;									}
-CVisual*				CRender::getVisual				(int id)			{ VERIFY(id<int(Visuals.size()));	return Visuals[id];	}
+IVisual*				CRender::getVisual				(int id)			{ VERIFY(id<int(Visuals.size()));	return Visuals[id];	}
 D3DVERTEXELEMENT9*		CRender::getVB_Format			(int id)			{ VERIFY(id<int(DCL.size()));		return DCL[id].begin();	}
 IDirect3DVertexBuffer9*	CRender::getVB					(int id)			{ VERIFY(id<int(VB.size()));		return VB[id];		}
 IDirect3DIndexBuffer9*	CRender::getIB					(int id)			{ VERIFY(id<int(IB.size()));		return IB[id];		}
@@ -55,8 +55,8 @@ BOOL		CRender::occ_visible		(vis_data& P)		{ return HOM.visible(P);							}
 BOOL		CRender::occ_visible		(sPoly& P)			{ return HOM.visible(P);							}
 BOOL		CRender::occ_visible		(Fbox& P)			{ return HOM.visible(P);							}
 
-void		CRender::add_Visual			(CVisual*		V )	{ add_leafs_Dynamic(V);								}
-void		CRender::add_Geometry		(CVisual*		V )	{ add_Static(V,View->getMask());					}
+void		CRender::add_Visual			(IVisual*		V )	{ add_leafs_Dynamic(V);								}
+void		CRender::add_Geometry		(IVisual*		V )	{ add_Static(V,View->getMask());					}
 void		CRender::add_Lights			(vector<WORD> &	V )	{ L_DB.add_sector_lights(V);						}
 void		CRender::add_Glows			(vector<WORD> &	V )	{ Glows.add(V);										}
 void		CRender::add_Patch			(Shader* S, const Fvector& P1, float s, float a, BOOL bNearer)
@@ -80,7 +80,7 @@ void		CRender::set_Object			(CObject*		O )
 	L_Projector.set_object	(O);
 	L_DB.Track				(O);
 }
-CVisual*	CRender::model_CreatePS		(LPCSTR name, PS::SEmitter* E)	
+IVisual*	CRender::model_CreatePS		(LPCSTR name, PS::SEmitter* E)	
 { 
 	PS::SDef_RT*	source	= PSystems.FindPS	(name);
 	VERIFY					(source);
@@ -263,9 +263,9 @@ IC float calcLOD	(float fDistSq, float R)
 }
 
 // NORMAL
-void __fastcall normal_L2(FixedMAP<float,CVisual*>::TNode *N)
+void __fastcall normal_L2(FixedMAP<float,IVisual*>::TNode *N)
 {
-	CVisual *V = N->val;
+	IVisual *V = N->val;
 	V->Render(calcLOD(N->key,V->vis.sphere.R));
 }
 
@@ -279,11 +279,11 @@ void __fastcall mapNormal_Render	(SceneGraph::mapNormalItems& N)
 		N.sorted.clear			();
 		
 		// DIRECT:UNSORTED
-		vector<CVisual*>&	L			= N.unsorted;
-		CVisual **I=&*L.begin(), **E = &*L.end();
+		vector<IVisual*>&	L			= N.unsorted;
+		IVisual **I=&*L.begin(), **E = &*L.end();
 		for (; I!=E; I++)
 		{
-			CVisual *V = *I;
+			IVisual *V = *I;
 			V->Render	(0);	// zero lod 'cause it is too small onscreen
 		}
 		L.clear	();
@@ -293,7 +293,7 @@ void __fastcall mapNormal_Render	(SceneGraph::mapNormalItems& N)
 // MATRIX
 void __fastcall matrix_L2	(SceneGraph::mapMatrixItem::TNode *N)
 {
-	CVisual *V				= N->val.pVisual;
+	IVisual *V				= N->val.pVisual;
 	RCache.set_xform_world	(N->val.Matrix);
 	gm_SetLighting			(N->val.pObject);
 	V->Render				(calcLOD(N->key,V->vis.sphere.R));
@@ -309,7 +309,7 @@ void __fastcall matrix_L1	(SceneGraph::mapMatrix_Node *N)
 // ALPHA
 void __fastcall sorted_L1	(SceneGraph::mapSorted_Node *N)
 {
-	CVisual *V = N->val.pVisual;
+	IVisual *V = N->val.pVisual;
 	RCache.set_Shader		(V->hShader);
 	RCache.set_xform_world	(N->val.Matrix);
 	gm_SetLighting			(N->val.pObject);

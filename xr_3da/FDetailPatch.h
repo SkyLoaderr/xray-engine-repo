@@ -18,7 +18,7 @@ struct DPatch {
 };
 #pragma pack(pop)
 
-class FDetailPatch : public CVisual  
+class FDetailPatch : public IVisual  
 {
 	vector<DPatch>	patches;
 public:

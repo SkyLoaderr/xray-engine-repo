@@ -11,7 +11,7 @@ ENGINE_API extern Flags32		psHUD_Flags;
 #define HUD_INFO				(1<<3)
 #define HUD_DRAW				(1<<4)
 
-class ENGINE_API CVisual;
+class ENGINE_API IVisual;
 class CUI;
 
 class ENGINE_API CCustomHUD:

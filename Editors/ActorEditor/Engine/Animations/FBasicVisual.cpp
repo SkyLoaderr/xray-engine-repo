@@ -1,4 +1,4 @@
-// CVisual.cpp: implementation of the CVisual class.
+// IVisual.cpp: implementation of the IVisual class.
 //
 //////////////////////////////////////////////////////////////////////
 
@@ -15,7 +15,7 @@
 // Construction/Destruction
 //////////////////////////////////////////////////////////////////////
 
-CVisual::CVisual		()
+IVisual::IVisual		()
 {
 	Type				= 0;
 	hShader				= 0;
@@ -24,17 +24,17 @@ CVisual::CVisual		()
 	vis.clear			();
 }
 
-CVisual::~CVisual		()
+IVisual::~IVisual		()
 {
 }
 
-void CVisual::Release	()
+void IVisual::Release	()
 {
 	Device.Shader.Delete		(hShader);
 	Device.Shader.DeleteGeom	(hGeom	);
 }
 
-void CVisual::Load		(const char* N, IReader *data, u32 dwFlags)
+void IVisual::Load		(const char* N, IReader *data, u32 dwFlags)
 {
 	// header
 	VERIFY(data);
@@ -88,7 +88,7 @@ void CVisual::Load		(const char* N, IReader *data, u32 dwFlags)
 }
 
 #define PCOPY(a)	a = pFrom->a
-void	CVisual::Copy(CVisual *pFrom)
+void	IVisual::Copy(IVisual *pFrom)
 {
 	PCOPY(Type);
 	PCOPY(hShader);

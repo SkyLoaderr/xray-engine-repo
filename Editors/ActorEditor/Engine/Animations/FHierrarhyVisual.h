@@ -9,14 +9,14 @@
 
 #include "fbasicvisual.h"
 
-class ENGINE_API FHierrarhyVisual : public CVisual
+class ENGINE_API FHierrarhyVisual : public IVisual
 {
 public:
-	vector<CVisual*>		children;
+	vector<IVisual*>		children;
 	BOOL					bDontDelete;
 
 	virtual void	Load	(const char* N, IReader *data, u32 dwFlags);
-	virtual void	Copy	(CVisual *pFrom);
+	virtual void	Copy	(IVisual *pFrom);
 
 	FHierrarhyVisual();
 	virtual ~FHierrarhyVisual();
