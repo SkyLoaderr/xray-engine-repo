@@ -23,7 +23,7 @@
 		<disable>tutorial_artefact_start</disable>
 	</info_portion>
 	<info_portion id="tutorial_artefact_done">
-		<disable>tutorial_artefact_gain</disable>
+		<disable>tutorial_artefact_gain</disable>	
 		<disable>tutorial_artefact_start</disable>
 	</info_portion>
 
