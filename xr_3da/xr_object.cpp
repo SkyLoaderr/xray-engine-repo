@@ -158,6 +158,7 @@ BOOL CObject::net_Spawn			(CSE_Abstract* data)
 
 void CObject::net_Destroy		()
 {
+	VERIFY						(getDestroy());
 	xr_delete					(collidable.model);
 	shedule_unregister			();
 	spatial_unregister			();
