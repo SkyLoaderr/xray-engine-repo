@@ -37,6 +37,7 @@ public:
 	virtual		BOOL				OnTouch					(u16 eid_who, u16 eid_target){return true;};			// TRUE=allow ownership, FALSE=denied
 	virtual		BOOL				OnDetach				(u16 eid_who, u16 eid_target){return true;};			// TRUE=allow ownership, FALSE=denied
 	virtual		void				OnPlayerKillPlayer		(ClientID id_killer, ClientID id_killed){SendPlayerKilledMessage(id_killer, id_killed);};
+	virtual		void				OnPlayerEnteredGame		(ClientID id_who);
 
 	virtual		void				OnDestroyObject			(u16 eid_who);			
 

@@ -49,6 +49,7 @@ struct	game_PlayerState
 	//---------------------------
 	u8			m_bCurrentVoteAgreed;
 	//---------------------------
+
 /*
 private:
 	game_PlayerState(const game_PlayerState&);

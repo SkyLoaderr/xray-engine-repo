@@ -53,6 +53,7 @@ public:
 	virtual		void				OnPlayerConnect			(ClientID id_who);
 	virtual		void				OnPlayerDisconnect		(ClientID id_who, LPSTR Name, u16 GameID);
 	virtual		void				OnPlayerReady			(ClientID id_who)							   {};
+	virtual		void				OnPlayerEnteredGame		(ClientID id_who)	{};
 				void				GenerateGameMessage		(NET_Packet &P);
 
 	virtual		void				OnRoundStart			();									// старт раунда

@@ -1420,6 +1420,7 @@ bool CActor:: ActivateBox(DWORD id)
 	}
 	else	return false;
 	*/
+	if(PPhysicsShell())return false;
 	DWORD old_id=m_PhysicMovementControl->BoxID();
 	bool  character_exist=m_PhysicMovementControl->CharacterExist();
 	if(character_exist&&id==old_id)return true;

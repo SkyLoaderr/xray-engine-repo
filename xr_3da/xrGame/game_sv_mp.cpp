@@ -189,7 +189,6 @@ void	game_sv_mp::SendPlayerKilledMessage	(ClientID id_killer, ClientID id_killed
 	};
 
 	u_EventSend(P);
-
 };
 
 void game_sv_mp::Create (shared_str &options)
@@ -278,6 +277,10 @@ void	game_sv_mp::SpawnPlayer				(ClientID id, LPCSTR N)
 		assign_RP				(pA, ps_who);
 		SetSkin(E, pA->s_team, ps_who->skin);
 		ps_who->resetFlag(GAME_PLAYER_FLAG_VERY_VERY_DEAD);
+		if (!ps_who->RespawnTime)
+		{
+			OnPlayerEnteredGame(id);
+		};
 		ps_who->RespawnTime = Device.dwTimeGlobal;
 	}
 	else
@@ -663,4 +666,16 @@ void		game_sv_mp::OnVoteStop				()
 	u_EventSend(P);
 	//-----------------------------------------------------------------
 	signal_Syncronize();
+};
+
+void		game_sv_mp::OnPlayerEnteredGame		(ClientID id_who)
+{
+	xrClientData* xrCData	=	m_server->ID_to_client(id_who);
+	if (!xrCData) return;
+
+	NET_Packet			P;
+	GenerateGameMessage (P);
+	P.w_u32				(GAME_EVENT_PLAYER_ENTERED_GAME);
+	P.w_stringZ			(get_option_s(*xrCData->Name,"name",*xrCData->Name));
+	u_EventSend(P);
 };

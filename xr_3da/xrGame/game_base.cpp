@@ -27,6 +27,7 @@ game_PlayerState::game_PlayerState()
 	m_bCurrentVoteAgreed = 0;
 	m_s16LastSRoint = -1;
 	DeathTime = 0;
+	RespawnTime = 0;
 }
 
 void game_PlayerState::clear()

@@ -834,8 +834,6 @@ void	CActor::ResetCallbacks()
 
 void	CActor::OnChangeVisual()
 {
-	m_pPhysics_support->in_ChangeVisual();
-	//-------------------------------------------------------------------------------
 	CSkeletonAnimated* V= smart_cast<CSkeletonAnimated*>(Visual());
 	VERIFY				(V);
 	SetCallbacks		();
@@ -850,9 +848,13 @@ void	CActor::OnChangeVisual()
 	//-------------------------------------------------------------------------------
 	reattach_items();
 	//-------------------------------------------------------------------------------
-	m_current_head = 0;
-	m_current_legs = 0;
-	m_current_torso = 0;
+	m_pPhysics_support->in_ChangeVisual();
+	//-------------------------------------------------------------------------------
+	SetCallbacks		();
+	//-------------------------------------------------------------------------------
+//	m_current_head = 0;
+//	m_current_legs = 0;
+//	m_current_torso = 0;
 };
 
 void	CActor::ChangeVisual			( shared_str NewVisual )

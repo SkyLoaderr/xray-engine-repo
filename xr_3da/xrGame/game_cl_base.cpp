@@ -166,6 +166,14 @@ void game_cl_GameState::TranslateGameMessage	(u32 msg, NET_Packet& P)
 			sprintf(Text, "%sPlayer %s%s %sdisconnected",Color_Main,Color_Teams[0],PlayerName,Color_Main);
 			CommonMessageOut(Text);
 		}break;
+	case GAME_EVENT_PLAYER_ENTERED_GAME:
+		{
+			string64 PlayerName;
+			P.r_stringZ(PlayerName);
+
+			sprintf(Text, "%sPlayer %s%s %sentered the game",Color_Main,Color_Teams[0],PlayerName,Color_Main);
+			CommonMessageOut(Text);
+		}break;
 	case GAME_EVENT_ROUND_STARTED:
 		{
 			sprintf(Text, "%sRound started !!!",Color_Main);
