@@ -3,8 +3,10 @@ function init    (obj)
 end
 
 function actor_init    (obj)
-	obj:give_info_portion("encyclopedy")
-    obj:give_info_portion("storyline_actor_start")
+	if obj:dont_has_info("storyline_actor_start") then
+		obj:give_info_portion("encyclopedy")
+		obj:give_info_portion("storyline_actor_start")
+	end
 end
 
 function object_init    (obj)
