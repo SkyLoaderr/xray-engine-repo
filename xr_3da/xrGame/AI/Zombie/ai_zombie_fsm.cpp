@@ -275,7 +275,7 @@ void CAI_Zombie::Pursuit()
 	
 	mk_rotation(tHitDir,r_torso_target);
 
-	CHECK_IF_SWITCH_TO_NEW_STATE(r_torso_target.yaw - );
+	//CHECK_IF_SWITCH_TO_NEW_STATE(r_torso_target.yaw - );
 	
 	vfInitSelector(SelectorFreeHunting,Squad,Leader);
 
@@ -323,11 +323,11 @@ void CAI_Zombie::Pursuit()
 	vfSetMovementType(m_cBodyState,m_fMaxSpeed);
 }
 
-void CAI_Soldier::TurnOver()
+void CAI_Zombie::TurnOver()
 {
 	WRITE_TO_LOG("Turning over...");
 
-	CHECK_IF_SWITCH_TO_NEW_STATE(g_Health() <= 0,aiSoldierDie)
+	CHECK_IF_SWITCH_TO_NEW_STATE(g_Health() <= 0,aiZombieDie)
 		
 	DWORD dwCurTime = Level().timeServer();
 	
@@ -340,7 +340,7 @@ void CAI_Soldier::TurnOver()
 		GO_TO_PREV_STATE
 	}
 
-	vfSetFire(m_bFiring = false,Group);
+	vfSetFire(false,Group);
 
 	if (!AI_Path.TravelPath.empty())
 		AI_Path.TravelStart = AI_Path.TravelPath.size() - 1;
