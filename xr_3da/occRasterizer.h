@@ -14,18 +14,21 @@ const int	occ_dim3	= 8;
 class occTri
 {
 public:	
-	occTri*		adjacent[3];
+	occTri*			adjacent	[3];
 };
 
 class occRasterizer  
 {
 private:
-	occTri*		bufFrame	[occ_dim0][occ_dim0];
-	float		bufDepth0	[occ_dim0][occ_dim0];
-	float		bufDepth1	[occ_dim1][occ_dim1];
-	float		bufDepth2	[occ_dim2][occ_dim2];
-	float		bufDepth3	[occ_dim3][occ_dim3];
+	occTri*			bufFrame	[occ_dim0][occ_dim0];
+	float			bufDepth0	[occ_dim0][occ_dim0];
+	float			bufDepth1	[occ_dim1][occ_dim1];
+	float			bufDepth2	[occ_dim2][occ_dim2];
+	float			bufDepth3	[occ_dim3][occ_dim3];
 public:
+	void			clear		();
+	void			propagade	();
+
 	occRasterizer	();
 	~occRasterizer	();
 };
