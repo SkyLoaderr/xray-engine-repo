@@ -133,12 +133,12 @@ void	CResourceManager::OnDeviceCreate	(IReader* F)
 				float				s;
 
 				CInifile::Item& item	= *I;
-				sscanf					(item.second,"%[^,],%f",T,&s);
+				sscanf					(*item.second,"%[^,],%f",T,&s);
 
 				//
 				D.T				= xr_strdup				(T);
 				D.cs			= xr_new<cl_dt_scaler>	(s);
-				LPSTR N			= xr_strdup				(item.first);
+				LPSTR N			= xr_strdup				(*item.first);
 				m_td.insert		(mk_pair(N,D));
 			}
 		}

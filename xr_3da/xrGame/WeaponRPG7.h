@@ -41,7 +41,7 @@ public:
 	};
 	EState				m_state;
 
-	LPSTR				pstrWallmark;
+	ref_str				pstrWallmark;
 	ref_shader			hWallmark;
 	float				fWallmarkSize;
 	ref_sound			sndRicochet[SND_RIC_COUNT], sndExplode;

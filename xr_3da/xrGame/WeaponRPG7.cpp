@@ -120,7 +120,7 @@ void CWeaponRPG7Grenade::Load(LPCSTR section)
 	m_fragHit = pSettings->r_float(section,"frag_hit");
 
 	LPCSTR	name = pSettings->r_string(section,"wm_name");
-	pstrWallmark = xr_strdup(name);
+	pstrWallmark = name;
 	fWallmarkSize = pSettings->r_float(section,"wm_size");
 
 	m_mass = pSettings->r_float(section,"ph_mass");

@@ -42,8 +42,9 @@ void CRenderDevice::End		(void)
 		CHK_DX			(HW.pDevice->Clear(0,0,D3DCLEAR_TARGET,D3DCOLOR_ARGB(0,0,0,0),1,0));
 		if (0==dwPrecacheFrame)
 		{
-			Memory.mem_compact	();
-			Msg					("* MEMORY USAGE: %d K",Memory.mem_usage()/1024);
+			Memory.mem_compact		();
+			Msg						("* MEMORY USAGE: %d K",Memory.mem_usage()/1024);
+			g_pStringContainer->dump();
 		}
 	}
 

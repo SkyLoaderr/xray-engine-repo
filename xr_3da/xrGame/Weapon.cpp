@@ -46,7 +46,7 @@ CWeapon::CWeapon(LPCSTR name)
 
 	SetDefaults			();
 	m_pHUD				= xr_new<CWeaponHUD> ();
-	m_WpnName			= strupr(xr_strdup(name));
+	m_WpnName			= name;
 	m_Offset.identity	();
 
 	pstrWallmark		= 0;
@@ -324,7 +324,7 @@ void CWeapon::Load		(LPCSTR section)
 	fTimeToFire			= 60 / fTimeToFire;
 
 	LPCSTR	name		= pSettings->r_string		(section,"wm_name");
-	pstrWallmark		= xr_strdup(name);
+	pstrWallmark		= name;
 	fWallmarkSize		= pSettings->r_float		(section,"wm_size");
 
 	LPCSTR hud_sect		= pSettings->r_string		(section,"hud");

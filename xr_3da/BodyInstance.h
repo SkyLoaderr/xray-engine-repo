@@ -175,7 +175,7 @@ public:
 class ENGINE_API	CPartDef
 {
 public:
-	LPSTR			Name;
+	ref_str			Name;
 	xr_vector<int>	bones;
 	CPartDef()		: Name(0) {};
 };
@@ -193,15 +193,15 @@ class ENGINE_API CKinematics	: public FHierrarhyVisual
 	friend class								CMotionDef;
 	friend class								CSkeletonX;
 private:
-	struct str_pred : public std::binary_function<char*, char*, bool>	{	
-		IC bool operator()(const char* x, const char* y) const
-		{	return strcmp(x,y)<0;	}
+	struct str_pred : public std::binary_function<ref_str, ref_str, bool>	{	
+		IC bool operator()(const ref_str& x, const ref_str& y) const
+		{	return strcmp(*x,*y)<0;	}
 	};
 
 	typedef FHierrarhyVisual					inherited;
 public:
-	typedef xr_map<LPSTR,int,str_pred>			accel;
-	typedef xr_map<LPSTR,CMotionDef,str_pred>	mdef;
+	typedef xr_map<ref_str,int,str_pred>		accel;
+	typedef xr_map<ref_str,CMotionDef,str_pred>	mdef;
 private:
 	// Globals
     CInifile*									pUserData;

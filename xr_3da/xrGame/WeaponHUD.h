@@ -14,7 +14,7 @@ class CWeaponHUD
 	Fmatrix				m_Offset;
 	Fmatrix				m_CamAssist;
 	Fmatrix				mTransform;
-	LPSTR				pVisualName;
+	ref_str				pVisualName;
 	IRender_Visual*		pVisual;
 public:	
 	int					iFireBone;

@@ -16,9 +16,9 @@ void CContextMenu::Load(CInifile* INI, LPCSTR SECT){
 	for (CInifile::SectIt I=S.begin(); I!=S.end(); I++){
 		char	Event[128],Param[128];
 		Event[0]=0; Param[0]=0;
-		sscanf	(I->second,"%[^,],%s",Event,Param);
+		sscanf		(*I->second,"%[^,],%s",Event,Param);
 		MenuItem	Item;
-		Item.Name	= xr_strdup(I->first);
+		Item.Name	= xr_strdup(*I->first);
 		Item.Event	= Engine.Event.Create(Event);
 		Item.Param	= xr_strdup(Param);
 		Items.push_back(Item);

@@ -40,13 +40,13 @@ public:
 	s32 m_frags;
 	xr_list<CGameObject*> m_blasted;
 
-	LPSTR pstrWallmark;
-	ref_shader hWallmark;
-	float fWallmarkSize;
-	ref_sound sndRicochet[SND_RIC_COUNT], sndExplode, sndCheckout;
+	ref_str		pstrWallmark;
+	ref_shader	hWallmark;
+	float		fWallmarkSize;
+	ref_sound	sndRicochet[SND_RIC_COUNT], sndExplode, sndCheckout;
 	ESoundTypes m_eSoundRicochet, m_eSoundExplode, m_eSoundCheckout;
-	u32 m_expoldeTime;
-	char m_effectsSTR[255];
+	u32			m_expoldeTime;
+	char		m_effectsSTR[255];
 	xr_vector<LPCSTR> m_effects;
 	IRender_Light* m_pLight;
 	Fcolor m_lightColor;

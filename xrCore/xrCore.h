@@ -184,6 +184,7 @@
 #include "xrDebug.h"
 
 #include "_stl_extensions.h"
+#include "xrstring.h"
 #include "rt_compressor.h"
 
 #include "FS.h"

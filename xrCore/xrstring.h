@@ -25,38 +25,45 @@ private:
 public:
 	str_value*			dock			(str_c value);
 	void				clean			();
+	void				dump			();
 						~str_container	();
 };
 XRCORE_API	extern		str_container*	g_pStringContainer;
 
 //////////////////////////////////////////////////////////////////////////
-class		XRCORE_API	str_ref
+class		XRCORE_API	ref_str
 {
 private:
 	str_value*			p_;
 protected:
 	// ref-counting
 	void				_inc		()								{	if (0==p_) return;	p_->dwReference++;														}
-	void				_dec		()								{	if (0==p_) return;	p_->dwReference--; 														}
+	void				_dec		()								{	if (0==p_) return;	p_->dwReference--; 	if (0==p_->dwReference)	p_=0;						}
 public:
 	void				_set		(str_c rhs) 					{	str_value* v = g_pStringContainer->dock(rhs); if (0!=v) v->dwReference++; _dec(); p_ = v;	}
-	void				_set		(str_ref const &rhs)			{	str_value* v = rhs.p_; if (0!=v) v->dwReference++; _dec(); p_ = v;							}
+	void				_set		(ref_str const &rhs)			{	str_value* v = rhs.p_; if (0!=v) v->dwReference++; _dec(); p_ = v;							}
 	const str_value*	_get		()	const						{	return p_;																					}
 public:
 	// construction
-						str_ref		()								{	p_ = 0;											}
-						str_ref		(str_c rhs) 					{	_set(rhs);										}
-						str_ref		(str_ref const &rhs)			{	_set(rhs);										}
-						~str_ref	()								{	_dec();											}
+						ref_str		()								{	p_ = 0;											}
+						ref_str		(str_c rhs) 					{	p_ = 0;	_set(rhs);								}
+						ref_str		(ref_str const &rhs)			{	p_ = 0;	_set(rhs);								}
+						~ref_str	()								{	_dec();											}
 
 	// assignment & accessors
-	str_ref&			operator=	(str_c rhs)						{	_set(rhs);	return (str_ref&)*this;				}
-	str_ref&			operator=	(str_ref rhs)					{	_set(rhs);	return (str_ref&)*this;				}
-	str_c				operator*	() const						{	return p_->value;								}
+	ref_str&			operator=	(str_c rhs)						{	_set(rhs);	return (ref_str&)*this;				}
+	ref_str&			operator=	(ref_str rhs)					{	_set(rhs);	return (ref_str&)*this;				}
+	str_c				operator*	() const						{	return p_?p_->value:0;							}
 	bool				operator!	() const						{	return p_ == 0;									}
+	char				operator[]	(size_t id)						{	return p_->value[id];							}
 
 	// fast swapping
-	void				swap		(str_ref & rhs)					{	str_value* tmp = p_; p_ = rhs.p_; rhs.p_ = tmp;	}
+	void				swap		(ref_str & rhs)					{	str_value* tmp = p_; p_ = rhs.p_; rhs.p_ = tmp;	}
+	bool				equal		(ref_str & rhs)					
+	{
+		if (p_ == rhs.p_)	return true;
+		return	0==strcmp	(p_->value,rhs.p_->value);
+	}
 };
 
 // res_ptr == res_ptr
@@ -67,12 +74,12 @@ public:
 // ptr != const res_ptr
 // res_ptr < res_ptr
 // res_ptr > res_ptr
-inline bool operator	==	(str_ref const & a, str_ref const & b)		{ return a._get() == b._get();					}
-inline bool operator	!=	(str_ref const & a, str_ref const & b)		{ return a._get() != b._get();					}
-inline bool operator	<	(str_ref const & a, str_ref const & b)		{ return a._get() <  b._get();					}
-inline bool operator	>	(str_ref const & a, str_ref const & b)		{ return a._get() >  b._get();					}
+inline bool operator	==	(ref_str const & a, ref_str const & b)		{ return a._get() == b._get();					}
+inline bool operator	!=	(ref_str const & a, ref_str const & b)		{ return a._get() != b._get();					}
+inline bool operator	<	(ref_str const & a, ref_str const & b)		{ return a._get() <  b._get();					}
+inline bool operator	>	(ref_str const & a, ref_str const & b)		{ return a._get() >  b._get();					}
 
 // externally visible swap
-inline void swap			(str_ref & lhs, str_ref & rhs)				{ lhs.swap(rhs);	}
+inline void swap			(ref_str & lhs, ref_str & rhs)				{ lhs.swap(rhs);	}
 
 #pragma pack(pop)

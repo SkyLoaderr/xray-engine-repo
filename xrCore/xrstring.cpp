@@ -5,6 +5,8 @@ XRCORE_API	extern		str_container*	g_pStringContainer	= NULL;
 
 str_value*	str_container::dock		(str_c value)
 {
+	if ((0==value) || (0==value[0]))	return 0;
+
 	cs.Enter					();
 
 	str_value*	result			= 0;
@@ -54,9 +56,17 @@ void		str_container::clean	()
 	}
 	cs.Leave	();
 }
-
+void		str_container::dump	()
+{
+	cs.Enter	();
+	cdb::iterator	it	= container.begin	();
+	cdb::iterator	end	= container.end		();
+	for (; it!=end; it++)
+		Msg	("%4d : %s",(*it)->dwReference,(*it)->value);
+	cs.Leave	();
+}
 str_container::~str_container		()
 {
 	clean	();
-	R_ASSERT(container.empty());
+	//R_ASSERT(container.empty());
 }

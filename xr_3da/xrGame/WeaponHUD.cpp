@@ -37,8 +37,8 @@ void CWeaponHUD::Load			(LPCSTR section)
 	m_Offset.translate_over		(pos);
 
 	// Visual
-	pVisualName					= xr_strdup(pSettings->r_string(section, "visual"));
-	pVisual						= ::Render->model_Create(pVisualName);
+	pVisualName					= pSettings->r_string(section, "visual");
+	pVisual						= ::Render->model_Create(*pVisualName);
 	R_ASSERT					(pVisual->Type==MT_SKELETON);
 
 	// fire bone	

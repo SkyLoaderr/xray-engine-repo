@@ -54,9 +54,9 @@ private:
 	u32									chk_update_cl;
 
 	// Some property variables
-	LPSTR								NameObject;
-	LPSTR								NameSection;
-	LPSTR								NameVisual;
+	ref_str								NameObject;
+	ref_str								NameSection;
+	ref_str								NameVisual;
 protected:
 	// Parentness
 	CObject*							Parent;
@@ -110,11 +110,11 @@ public:
 	IC ICollisionForm*					CFORM				() const			{ return collidable.model;			}
 
 	// Name management
-	IC LPCSTR							cName				()					{ return NameObject;		}
+	IC LPCSTR							cName				()					{ return *NameObject;				}
 	void								cName_set			(LPCSTR N);
-	IC LPCSTR							cNameSect			()					{ return NameSection;		}
+	IC LPCSTR							cNameSect			()					{ return *NameSection;				}
 	void								cNameSect_set		(LPCSTR N);
-	IC LPCSTR							cNameVisual			()					{ return NameVisual;		}
+	IC LPCSTR							cNameVisual			()					{ return *NameVisual;				}
 	void								cNameVisual_set		(LPCSTR N);
 	
 	// Properties

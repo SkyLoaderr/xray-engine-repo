@@ -21,28 +21,22 @@ void CObject::StatusBegin	()
 
 void CObject::cName_set			(LPCSTR N)
 { 
-	xr_free							(NameObject);
-	if (N)	NameObject=xr_strdup	(N); 
+	NameObject	=	N; 
 }
 void CObject::cNameSect_set		(LPCSTR N)
 { 
-	xr_free					(NameSection);
-	if (N) NameSection=xr_strdup	(N); 
+	NameSection	=	N; 
 }
 void CObject::cNameVisual_set	(LPCSTR N)
 { 
 	// check if equal
-	if (N && NameVisual)
-		if (0==stricmp(N,NameVisual))	return;
+	if (N && *NameVisual)
+		if (0==stricmp(N,*NameVisual))	return;
+	NameVisual	= N; 
 
 	// replace model
-	xr_free					(NameVisual);
 	::Render->model_Delete	(renderable.visual);
-	if (N) 
-	{
-		NameVisual=xr_strdup	(N); 
-		if (NameVisual[0]) renderable.visual	= Render->model_Create	(NameVisual);
-	}
+	if (N && NameVisual[0]) renderable.visual	= Render->model_Create	(*NameVisual);
 }
 
 // flagging

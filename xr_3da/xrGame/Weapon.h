@@ -28,12 +28,12 @@ public:
 		hd2Hand	= 2
 	};
 protected:
-	EHandDependence			eHandDependence;// 0-используется без участия рук, 1-одна рука, 2-две руки
-	BOOL					bWorking, bWorking2;		// Weapon fires now
-	BOOL					bPending;		// Weapon needs some time to update itself, even if hidden
-	LPSTR					m_WpnName;
+	EHandDependence			eHandDependence;		// 0-используется без участия рук, 1-одна рука, 2-две руки
+	BOOL					bWorking, bWorking2;	// Weapon fires now
+	BOOL					bPending;				// Weapon needs some time to update itself, even if hidden
+	ref_str					m_WpnName;
 
-	BOOL					bMisfire;		//a misfire happens, you'll need to rearm weapon
+	BOOL					bMisfire;				// a misfire happens, you'll need to rearm weapon
 
 	Fmatrix					m_Offset;
 
@@ -56,7 +56,7 @@ protected:
 	BOOL					hud_mode;
 	int						iSlotBinding;
 
-	LPSTR					pstrWallmark;
+	ref_str					pstrWallmark;
 	ref_shader				hWallmark;
 	ref_shader				hUIIcon;
 	float					fWallmarkSize;

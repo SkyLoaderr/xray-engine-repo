@@ -15,16 +15,16 @@ class XRCORE_API CInifile
 public:
 	struct XRCORE_API Item
 	{
-		LPSTR	first;
-		LPSTR	second;
-		LPSTR	comment;
+		ref_str	first;
+		ref_str	second;
+		ref_str	comment;
 
 		Item() : first(0), second(0), comment(0) {};
 	};
 	typedef xr_vector<Item>			Items;
 	typedef Items::iterator			SectIt;
     struct XRCORE_API Sect {
-		LPSTR			Name;
+		ref_str			Name;
 		Items			Data;
 
 		IC SectIt		begin()		{ return Data.begin();	}
@@ -36,17 +36,15 @@ public:
 	typedef	xr_vector<Sect>		Root;
 	typedef Root::iterator		RootIt;
 
-	struct sect_pred : public std::binary_function<Sect&, Sect&, bool>
-	{
+	struct sect_pred : public std::binary_function<Sect&, Sect&, bool>	{
 		IC bool operator() (const Sect& x, const Sect& y) const
-		{	return strcmp(x.Name,y.Name)<0;	}
+		{	return strcmp(*x.Name,*y.Name)<0;	}
 	};
-	struct item_pred : public std::binary_function<Item&, Item&, bool>
-	{
+	struct item_pred : public std::binary_function<Item&, Item&, bool>	{
 		IC bool operator() (const Item& x, const Item& y) const
 		{
-			if ((0==x.first) || (0==y.first))	return x.first<y.first;
-			else								return strcmp(x.first,y.first)<0;
+			if ((!x.first) || (!y.first))	return x.first<y.first;
+			else							return strcmp(*x.first,*y.first)<0;
 		}
 	};
 

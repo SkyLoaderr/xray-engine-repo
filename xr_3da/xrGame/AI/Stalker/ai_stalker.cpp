@@ -277,14 +277,14 @@ BOOL CAI_Stalker::net_Spawn			(LPVOID DC)
 		CInifile::Sect& dam_sect	= pSettings->r_section(pSettings->r_string(cNameSect(),"damage"));
 		for (CInifile::SectIt it=dam_sect.begin(); it!=dam_sect.end(); it++)
 		{
-			if (0==strcmp(it->first,"default")){
-				m_fHitFactor	= (float)atof(it->second);
+			if (0==strcmp(*it->first,"default")){
+				m_fHitFactor	= (float)atof(*it->second);
 			}else{
-				int bone	= PKinematics(Visual())->LL_BoneID(it->first); 
-				R_ASSERT2(bone!=BONE_NONE,it->first);
+				int bone	= PKinematics(Visual())->LL_BoneID(*it->first); 
+				R_ASSERT2(bone!=BONE_NONE,*it->first);
 				CBoneInstance& B = PKinematics(Visual())->LL_GetInstance(bone);
-				B.set_param(0,(float)atof(_GetItem(it->second,0,buf)));
-				B.set_param(1,(float)atoi(_GetItem(it->second,1,buf)));
+				B.set_param(0,(float)atof(_GetItem(*it->second,0,buf)));
+				B.set_param(1,(float)atoi(_GetItem(*it->second,1,buf)));
 			}
 		}
 	}
