@@ -119,6 +119,12 @@ function move_mgr:standing_on_terminal_waypoint()
 	return false
 end
 
+-- Может быть вызвано внешним скриптом после вызова reset() и до вызова finalize()
+-- Возвращает true, если персонаж прибыл в конечную точку пути
+function move_mgr:at_terminal_waypoint()
+	return self.at_terminal_waypoint_flag
+end
+
 -- Из move_cb вернуть true, чтобы приостановить работу схемы. Чтобы продолжить движение,
 -- нужно вызвать метод set_movement_state, который включит перемещение по вейпоинтам с нужной
 -- скоростью.
@@ -165,8 +171,7 @@ function move_mgr:reset(path_walk, path_walk_info, path_look, path_look_info, te
 
 	self.pt_wait_time = default_wait_time -- сколько ждать в точке, где играем анимацию 
 
-	self.shall_shoot = nil
-	self.is_shooting = false
+	self.at_terminal_waypoint_flag = false
 
 	-- Запоминаем массив целиком на случай, если придется себя сбросить, повторно
 	-- вызвав reset():
@@ -340,6 +345,8 @@ function move_mgr:finalize(npc)
 	self.object:set_callback(game_object.movement, nil)
 
 	self:reset_sl() -- отпустить прожектор
+	
+	self.at_terminal_waypoint_flag = false
 end
 
 function move_mgr:reset_sl()
@@ -503,6 +510,10 @@ function move_mgr:waypoint_callback(obj, action_type, index)
 	end
 
 	self.last_index = index
+
+	if self.patrol_walk:terminal(index) then
+		self.at_terminal_waypoint_flag = true
+	end
 
 	-- <ЗВУК>
 	local suggested_snd = self.path_walk_info[index]["s"]
