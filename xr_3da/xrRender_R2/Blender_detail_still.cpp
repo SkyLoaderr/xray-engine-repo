@@ -34,6 +34,7 @@ void	CBlender_Detail_Still::Load		(IReader& fs, u16 version )
 	xrPREAD_PROP		(fs,xrPID_BOOL,		oBlend);
 }
 
+#if RENDER==R_R1
 void	CBlender_Detail_Still::Compile	(CBlender_Compile& C)
 {
 	IBlender::Compile	(C);
@@ -77,3 +78,21 @@ void	CBlender_Detail_Still::Compile	(CBlender_Compile& C)
 		}
 	}
 }
+#else
+void	CBlender_Detail_Still::Compile	(CBlender_Compile& C)
+{
+	IBlender::Compile	(C);
+
+	switch(C.iElement) 
+	{
+	case 0: 	// deffer
+		uber_deffer		(C,"detail","base",true);
+		break;
+	case CRender::PHASE_SMAP_D:	// smap-direct
+	case CRender::PHASE_SMAP_P:	// smap-point
+	case CRender::PHASE_SMAP_S:	// smap-spot
+	case 4: 					// deffer-EMAP
+		break;
+	}
+}
+#endif
