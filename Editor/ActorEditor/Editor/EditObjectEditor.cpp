@@ -170,7 +170,19 @@ void CEditableObject::LightenObject(){
     ClearRenderBuffers();
 }
 
-bool CEditableObject::PrepareSkeletonVisual(CFS_Base& F)
+bool CEditableObject::PrepareSVGeometry(CFS_Base& F)
+{
+    CExportSkeleton E(this);
+    return E.ExportGeometry(F);
+}
+
+bool CEditableObject::PrepareSVMotions(CFS_Base& F)
+{
+    CExportSkeleton E(this);
+    return E.ExportMotions(F);
+}
+
+bool CEditableObject::PrepareSV(CFS_Base& F)
 {
     CExportSkeleton E(this);
     return E.Export(F);

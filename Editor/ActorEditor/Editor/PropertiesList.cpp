@@ -49,9 +49,15 @@ LPCSTR 	TokenValue::GetText(){
 LPCSTR 	TokenValue2::GetText(){
 	DWORD draw_val 	= *val;
     if (OnDrawValue)OnDrawValue(this, &draw_val);
+    if ((draw_val<0)||(draw_val>items.size())) return "";
 	return items[draw_val].c_str();
-    return 0;
 }
+LPCSTR	ListValue::GetText(){
+    static AnsiString draw_text = val;
+    if (OnDrawValue)OnDrawValue(this, &draw_text);
+    return draw_text.c_str();
+}
+
 //---------------------------------------------------------------------------
 void __fastcall TfrmProperties::BeginFillMode(const AnsiString& title, LPCSTR section)
 {
@@ -213,11 +219,18 @@ void __fastcall TfrmProperties::tvPropertiesItemDraw(TObject *Sender,
 		    Surface->Brush->Color = rgb2bgr(*(LPDWORD)Item->Data);
             Surface->FillRect(R);
         }break;
+        case PROP_BOOL:
+            R.Right	-=	10;
+            R.Left 	+= 	1;
+    		DrawText	(Surface->Handle, AnsiString(Item->ColumnText->Strings[0]).c_str(), -1, &R, DT_LEFT | DT_SINGLELINE | DT_VCENTER);
+            R.Left 	= 	R.Right;
+            R.Right += 	10;
+            DrawArrow	(Surface, eadDown, R, clWindowText, true);
+        break;
         case PROP_FLAG:
 		case PROP_TOKEN:
         case PROP_TOKEN2:
         case PROP_LIST:
-        case PROP_BOOL:
             R.Right	-=	10;
             R.Left 	+= 	1;
     		DrawText	(Surface->Handle, ((PropValue*)Item->Data)->GetText(), -1, &R, DT_LEFT | DT_SINGLELINE | DT_VCENTER);
@@ -371,7 +384,7 @@ void __fastcall TfrmProperties::PMItemClick(TObject *Sender)
 			if (V->OnAfterEdit) V->OnAfterEdit(V,&new_val);
             if (*V->val	!= new_val){
     	        *V->val		= mi->MenuIndex;
-                Modified();
+                Modified();                          
             }
 			item->ColumnText->Strings[0]= V->GetText();
         }break;

@@ -10,6 +10,7 @@
 #include "estats.h"
 #include "primitivesR.h"
 #include "shader_xrlc.h"
+#include "ModelPool.h"
 //---------------------------------------------------------------------------
 // refs
 class CFontHUD;
@@ -38,6 +39,8 @@ public:
     Fmaterial				m_DefaultMat;
 
     CFrustum    			m_Frustum;
+
+    CModelPool				Models;
 public:
     int 					dwWidth, dwHeight;
     int 					m_RenderWidth_2, m_RenderHeight_2;
@@ -164,10 +167,6 @@ public:
 public:
 	CShaderManager			Shader;
     Shader_xrLC_LIB			ShaderXRLC;
-
-    FBasicVisual*			CreateVisual	(CStream* data, CInifile* ini=0);
-    FBasicVisual*			CreateVisual	(LPCSTR fn);
-    void					DeleteVisual	(FBasicVisual*& V);
 };
 
 extern ENGINE_API CRenderDevice Device;

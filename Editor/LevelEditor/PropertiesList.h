@@ -94,12 +94,7 @@ public:
 	LPSTR				val;
 	AStringVec 			items;
 						ListValue		(LPSTR value, AStringVec* _items, TAfterEdit after, TBeforeEdit before, TOnDrawValue draw):val(value),items(*_items),PropValue(after,before,draw){};
-	virtual LPCSTR		GetText			()
-    {
-    	static AnsiString draw_text = val;
-        if (OnDrawValue)OnDrawValue(this, &draw_text);
-        return draw_text.c_str();
-    }
+	virtual LPCSTR		GetText			();
 };
 //---------------------------------------------------------------------------
 DEFINE_VECTOR(PropValue*,PropValVec,PropValIt)
@@ -176,13 +171,13 @@ public:		// User declarations
 	}
     void __fastcall SaveColumnWidth			(TFormStorage* fs)
     {
-		fs->WriteInteger("props_column0_width",tvProperties->HeaderSections->Item[0]->Width);
-		fs->WriteInteger("props_column1_width",tvProperties->HeaderSections->Item[1]->Width);
+		fs->WriteInteger(AnsiString().sprintf("%s_column0_width",Name.c_str()),tvProperties->HeaderSections->Item[0]->Width);
+		fs->WriteInteger(AnsiString().sprintf("%s_column1_width",Name.c_str()),tvProperties->HeaderSections->Item[1]->Width);
     }
     void __fastcall RestoreColumnWidth			(TFormStorage* fs)
     {
-		tvProperties->HeaderSections->Item[0]->Width = fs->ReadInteger("props_column0_width",tvProperties->HeaderSections->Item[0]->Width);
-		tvProperties->HeaderSections->Item[1]->Width = fs->ReadInteger("props_column1_width",tvProperties->HeaderSections->Item[1]->Width);
+		tvProperties->HeaderSections->Item[0]->Width = fs->ReadInteger(AnsiString().sprintf("%s_column0_width",Name.c_str()),tvProperties->HeaderSections->Item[0]->Width);
+		tvProperties->HeaderSections->Item[1]->Width = fs->ReadInteger(AnsiString().sprintf("%s_column1_width",Name.c_str()),tvProperties->HeaderSections->Item[1]->Width);
     }
 
 	FlagValue* 		MakeFlagValue			(LPVOID val, DWORD mask, TAfterEdit after=0, TBeforeEdit before=0, TOnDrawValue draw=0)

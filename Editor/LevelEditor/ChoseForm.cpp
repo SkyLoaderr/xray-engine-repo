@@ -343,7 +343,7 @@ void __fastcall TfrmChoseItem::pbImagePaint(TObject *Sender)
 
 void __fastcall TfrmChoseItem::tvItemsDblClick(TObject *Sender)
 {
-	if (!bMultiSel) sbSelectClick(Sender);
+	if (!bMultiSel&&FOLDER::IsObject(tvItems->Selected)) sbSelectClick(Sender);
 }
 //---------------------------------------------------------------------------
 

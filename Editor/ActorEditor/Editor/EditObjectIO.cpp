@@ -185,29 +185,22 @@ bool CEditableObject::Load(CStream& F){
         }
 
         // bone parts
-        if (F.FindChunk(EOBJ_CHUNK_BONEPARTS)){
+        if (0){//F.FindChunk(EOBJ_CHUNK_BONEPARTS)){
             m_BoneParts.resize(F.Rdword());
 	        for (BPIt bp_it=m_BoneParts.begin(); bp_it!=m_BoneParts.end(); bp_it++){
     	        F.RstringZ	(buf); bp_it->alias=buf;
 	            bp_it->bones.resize(F.Rdword());
-                F.Read(bp_it->bones.begin(),bp_it->bones.size()*sizeof(WORD));
+                F.Read(bp_it->bones.begin(),bp_it->bones.size()*sizeof(int));
 	        }
     	}
-
-        ResetAnimation(false);
-		if (F.FindChunk	(EOBJ_CHUNK_ACTIVE_OMOTION)){
-        	F.RstringZ	(buf);
-            SetActiveOMotion(FindOMotionByName(buf));
-        }
-		if (F.FindChunk	(EOBJ_CHUNK_ACTIVE_SMOTION)){
-        	F.RstringZ	(buf);
-            SetActiveSMotion(FindSMotionByName(buf));
-        }
 
 		if (F.FindChunk	(EOBJ_CHUNK_ACTORTRANSFORM)){
 	        F.Rvector	(a_vPosition);
     	    F.Rvector	(a_vRotate);
 		}
+
+        ResetAnimation();
+
         if (!bRes) break;
         UpdateBox();
     }while(0);
@@ -288,22 +281,10 @@ void CEditableObject::Save(CFS_Base& F){
         for (BPIt bp_it=m_BoneParts.begin(); bp_it!=m_BoneParts.end(); bp_it++){
             F.WstringZ	(bp_it->alias.c_str());
             F.Wdword	(bp_it->bones.size());
-            F.write		(bp_it->bones.begin(),bp_it->bones.size()*sizeof(WORD));
+            F.write		(bp_it->bones.begin(),bp_it->bones.size()*sizeof(int));
         }
         F.close_chunk	();
     }                                 
-
-
-    if (m_ActiveOMotion){
-	    F.open_chunk	(EOBJ_CHUNK_ACTIVE_OMOTION);
-    	F.WstringZ		(m_ActiveOMotion->Name());
-	    F.close_chunk	();
-    }
-    if (m_ActiveSMotion){
-	    F.open_chunk	(EOBJ_CHUNK_ACTIVE_SMOTION);
-    	F.WstringZ		(m_ActiveSMotion->Name());
-	    F.close_chunk	();
-    }
 
     if (IsFlag(eoDynamic)){
 		F.open_chunk	(EOBJ_CHUNK_ACTORTRANSFORM);
@@ -341,8 +322,7 @@ COMotion* CEditableObject::LoadOMotion(const char* fname){
 #ifdef _EDITOR
 bool CEditableObject::ExportSkeletonOGF(LPCSTR fn){
 	CFS_Memory F;
-    CExportSkeleton E(this);
-    if (E.Export(F)){
+    if (PrepareSV(F)){
     	F.SaveTo(fn,0);
         return true;
     }

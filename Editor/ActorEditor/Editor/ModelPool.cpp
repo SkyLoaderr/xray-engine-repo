@@ -3,6 +3,8 @@
 //////////////////////////////////////////////////////////////////////
   
 #include "stdafx.h"
+#pragma hdrstop
+
 #include "ModelPool.h"
 #include "fmesh.h"
 #include "fvisual.h"
@@ -10,11 +12,6 @@
 #include "fprogressive.h"
 #include "fhierrarhyvisual.h"
 #include "bodyinstance.h"
-#include "fdetailpatch.h"
-#include "PSVisual.h"
-#include "fcached.h"
-
-#include "x_ray.h"
 
 FBasicVisual*	CModelPool::Instance_Create(DWORD type)
 {
@@ -31,9 +28,6 @@ FBasicVisual*	CModelPool::Instance_Create(DWORD type)
 	case MT_PROGRESSIVE:		// dynamic-resolution visual
 		V	= new FProgressiveFixedVisual;
 		break;
-//	case MT_SHOTMARK:
-//		V	= new FShotMarkVisual;
-//		break;
 	case MT_SKELETON:
 		V	= new CKinematics;
 		break;
@@ -42,15 +36,6 @@ FBasicVisual*	CModelPool::Instance_Create(DWORD type)
 		break;
 	case MT_SKELETON_PART_STRIPPED:
 		V	= new CSkeletonX_ST;
-		break;
-	case MT_DETAIL_PATCH:
-		V	= new FDetailPatch;
-		break;
-	case MT_PARTICLE_SYSTEM:
-		V	= new CPSVisual;
-		break;
-	case MT_CACHED:
-		V	= new FCached;
 		break;
 	case MT_PROGRESSIVE_STRIPS:
 		V	= new FProgressive;
@@ -82,12 +67,9 @@ FBasicVisual*	CModelPool::Instance_Load		(const char* N)
 	else				strcpy		(name,N);
 
 	// Load data from MESHES or LEVEL
-	if (!Engine.FS.Exist(N))	{
-		if (!Engine.FS.Exist(fn, Path.Current, name))
-			if (!Engine.FS.Exist(fn, Path.Meshes, name)){
-				Msg("Can't find model file '%s'.",name);
-				THROW;
-			}
+	if (!Engine.FS.Exist(N)){
+		Msg("Can't find model file '%s'.",name);
+		THROW;
 	} else {
 		strcpy			(fn,N);
 	}
@@ -131,7 +113,7 @@ FBasicVisual*	CModelPool::Instance_Load(CStream* data)
 // Construction/Destruction
 //////////////////////////////////////////////////////////////////////
 
-void CModelPool::Destroy()
+void CModelPool::OnDestroy()
 {
 	vector<ModelDef>::iterator	I;
 	for (I=Models.begin(); I!=Models.end(); I++) 
@@ -143,15 +125,13 @@ void CModelPool::Destroy()
 }
 void CModelPool::OnDeviceDestroy()
 {
-	Destroy();
+	OnDestroy();
 }
 CModelPool::CModelPool()
 {
-	Device.seqDevDestroy.Add	(this,REG_PRIORITY_LOW);
 }
 CModelPool::~CModelPool()
 {
-	Device.seqDevDestroy.Remove	(this);
 }
 
 FBasicVisual* CModelPool::Create(const char* name)
@@ -190,9 +170,3 @@ void	CModelPool::Delete(FBasicVisual* &V)
 	}
 }
 
-FBasicVisual* CModelPool::CreatePS(const char* name, PS::SEmitter* E)
-{
-	CPSVisual* V	= (CPSVisual*)Instance_Create(MT_PARTICLE_SYSTEM);
-	V->Compile		(name,E);
-	return V;
-}

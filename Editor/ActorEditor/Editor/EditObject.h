@@ -221,7 +221,8 @@ public:
 	void			SetActiveSMotion		(CSMotion* mot);
 	bool 			CheckBoneCompliance		(CSMotion* M);
 
-	void 			ResetAnimation			(bool upd_t=true);
+	void 			ResetAnimation			();
+	CSMotion*		ResetSAnimation			();
     void			CalculateAnimation		(bool bGenInvMat=false);
 
     // statistics methods
@@ -299,7 +300,9 @@ public:
 	void 			OnDeviceDestroy			();
 
 	bool			ExportSkeletonOGF		(LPCSTR fname);
-    bool			PrepareSkeletonVisual	(CFS_Base& F);
+    bool			PrepareSVGeometry		(CFS_Base& F);
+    bool			PrepareSVMotions		(CFS_Base& F);
+    bool			PrepareSV				(CFS_Base& F);
 #ifdef _MAX_EXPORT
 	CSurface*		CreateSurface			(Mtl* M, DWORD m_id);
 	LPCSTR			GenerateSurfaceName		(const char* base_name);
@@ -323,9 +326,7 @@ public:
 #define EOBJ_CHUNK_CLASSSCRIPT     	0x0912
 #define EOBJ_CHUNK_BONES			0x0913
 #define EOBJ_CHUNK_OMOTIONS			0x0914
-#define EOBJ_CHUNK_ACTIVE_OMOTION	0x0915
 #define EOBJ_CHUNK_SMOTIONS			0x0916
-#define EOBJ_CHUNK_ACTIVE_SMOTION	0x0917
 #define EOBJ_CHUNK_SURFACES_XRLC	0x0918
 #define EOBJ_CHUNK_BONEPARTS		0x0919
 #define EOBJ_CHUNK_ACTORTRANSFORM	0x0920

@@ -39,7 +39,6 @@ public:
     void				SetCurrentObject	(LPCSTR T);
     LPCSTR				GetCurrentObject	(){return m_Current.IsEmpty()?0:m_Current.c_str();}
     CEditableObject*	CreateEditObject	(LPCSTR name,int* age=0);
-    CEditableObject*	CreateEditObject	(LPCSTR name);
     void				RemoveEditObject	(CEditableObject*& object);
 
 	int 				ObjectCount        	();

@@ -8,7 +8,7 @@
 
 class ENGINE_API FBasicVisual;
 
-class ENGINE_API CModelPool : public pureDeviceDestroy
+class ENGINE_API CModelPool
 {
 	friend class CRender;
 
@@ -20,20 +20,18 @@ class ENGINE_API CModelPool : public pureDeviceDestroy
 
 	vector<ModelDef>	Models;
 
-	void				Destroy	();
+	void				OnDestroy			();
 public:
 	FBasicVisual*		Instance_Create		(DWORD Type);
 	FBasicVisual*		Instance_Duplicate	(FBasicVisual* V);
 	FBasicVisual*		Instance_Load		(const char* N);
 	FBasicVisual*		Instance_Load		(CStream* data);
 
-	virtual void		OnDeviceDestroy		();
+	void				OnDeviceDestroy		();
 
 	FBasicVisual*		Create				(const char* name);
 	FBasicVisual*		Create				(CStream* data);
 	void				Delete				(FBasicVisual* &V);
-
-	FBasicVisual*		CreatePS			(const char* name, PS::SEmitter* E);
 
 	CModelPool			();
 	~CModelPool			();

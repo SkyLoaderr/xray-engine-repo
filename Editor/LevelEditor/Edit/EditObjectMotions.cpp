@@ -77,9 +77,15 @@ void CEditableObject::RTL_Update( float dT ){
 }
 #endif
 
-void CEditableObject::ResetAnimation(bool upd_t){
-	SetActiveOMotion(0,false);
+CSMotion* CEditableObject::ResetSAnimation(){
+	CSMotion* M=m_ActiveSMotion;
 	SetActiveSMotion(0);
+    return M;
+}
+
+void CEditableObject::ResetAnimation(){
+	SetActiveOMotion(0,false);
+    ResetSAnimation();
 }
 
 //----------------------------------------------------

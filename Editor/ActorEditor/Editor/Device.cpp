@@ -258,6 +258,7 @@ void CRenderDevice::_Destroy(BOOL	bKeepTextures){
 	if (m_SelectionShader) Shader.Delete(m_SelectionShader);
 
 	seqDevDestroy.Process		(rp_DeviceDestroy);
+	Models.OnDeviceDestroy		();
 
 	Shader.OnDeviceDestroy		(bKeepTextures);
 
@@ -478,79 +479,5 @@ void CRenderDevice::Reset(LPCSTR shName, BOOL bKeepTextures)
 	_Create			(shName);
 	u32 tm_end		= TimerAsync();
 	Msg				("*** RESET [%d ms]",tm_end-tm_start);
-}
-
-FBasicVisual* CRenderDevice::CreateVisual(CStream* data, CInifile* ini)
-{
-	FBasicVisual* 		V=0;
-	ogf_header			H;
-	data->ReadChunkSafe	(OGF_HEADER,&H,sizeof(H));
-//-----
-	// Check types
-	switch (H.type) {
-	case MT_NORMAL:				// our base visual
-		V	= new Fvisual;
-		break;
-	case MT_HIERRARHY:
-		V	= new FHierrarhyVisual;
-		break;
-	case MT_PROGRESSIVE:		// dynamic-resolution visual
-		V	= new FProgressiveFixedVisual;
-		break;
-	case MT_SKELETON:
-		V	= new CKinematics;
-		break;
-	case MT_SKELETON_PART:
-		V	= new CSkeletonX_PM;
-		break;
-	case MT_SKELETON_PART_STRIPPED:
-		V	= new CSkeletonX_ST;
-		break;
-	case MT_PROGRESSIVE_STRIPS:
-		V	= new FProgressive;
-		break;
-	default:
-		R_ASSERT(0=="Unknown visual type");
-		break;
-	}
-	R_ASSERT(V);
-	V->Type = H.type;
-//-----
-	V->Load				(0,data,0);
-    return V;
-}
-
-FBasicVisual* CRenderDevice::CreateVisual(LPCSTR file_name)
-{
-	// 1. Search for already loaded model
-	char N[64]; R_ASSERT(strlen(file_name)<64);
-	strcpy(N,file_name); strlwr(N);
-
-	FILE_NAME		fn;
-	FILE_NAME		name;
-
-	// Add default ext if no ext at all
-	if (0==strext(N))	strconcat	(name,N,".ogf");
-	else				strcpy		(name,N);
-
-	// Load data from MESHES or LEVEL
-	if (!Engine.FS.Exist(N))	{
-		Msg("Can't find model file '%s'.",name);
-		THROW;
-	} else {
-		strcpy			(fn,N);
-	}
-
-	// Actual loading
-	destructor<CStream> data(new CFileStream(fn));
-    return CreateVisual(&data());
-}
-
-void CRenderDevice::DeleteVisual(FBasicVisual*& V)
-{
-	if (V){
-		V->Release();
-		_DELETE(V);
-    }
 }
 
