@@ -52,6 +52,8 @@
 
 
 	<info_portion id="encyclopedy">
+		<article>mutant_crow_general</article>
+		<article>mutant_rat_general</article>
 		<article>mutant_flesh_evolution</article>
 		<article>mutant_flesh_eco</article>
 		<article>mutant_flesh_skin</article>
@@ -59,6 +61,40 @@
 		<article>mutant_flesh_eat</article>
 		<article>mutant_flesh_nerve</article>
 		<article>mutant_flesh_list1</article>
+		<article>mutant_blind_general</article>
+		<article>mutant_pseudodog_general</article>
+		<article>mutant_pseudodog_area</article>
+		<article>mutant_bloodsucker_general</article>
+		<article>mutant_bloodsucker_area</article>
+		<article>mutant_bloodsucker_tentacles</article>
+		<article>mutant_bloodsucker_meet</article>
+		<article>mutant_controller_general</article>
+		<article>mutant_boar_general</article>
+		<article>mutant_pseudogiant_general</article>
+		<article>mutant_zombie_general</article>
+		<article>mutant_burer_general</article>
+		<article>mutant_chimera_general</article>
+		<article>mutant_poltergeist_general</article>
+		<article>mutant_fracture_general</article>
+		<article>zone_artifact_grav</article>
+		<article>zone_artifact_bubl</article>
+		<article>zone_artifact_magnet</article>
+		<article>zone_artifact_cotton</article>
+		<article>zone_artifact_jelly</article>
+		<article>zone_artifact_mercury</article>
+		<article>zone_artifact_drops</article>
+		<article>zone_artifact_empty</article>
+		<article>zone_artifact_needles</article>
+		<article>zone_anomalies_bald</article>
+		<article>zone_anomalies_meat</article>
+		<article>zone_anomalies_radiation</article>
+		<article>zone_anomalies_fog</article>
+		<article>zone_anomalies_anomjelly</article>
+		<article>zone_anomalies_fuzz</article>
+		<article>zone_anomalies_hair</article>
+		<article>zone_anomalies_heat</article>
+		<article>zone_anomalies_deadzone</article>
+		<article>zone_locations_escape</article>
 	</info_portion>
 
 </game_information_portions>
