@@ -142,7 +142,7 @@ void CLightShadows::calculate	()
 {
 	if (id.empty())	return;
 
-	Device.Statistic.TEST.Begin	();
+	Device.Statistic.RenderDUMP_Scalc.Begin	();
 	Device.Shader.set_RT		(RT_temp->pRT,0);
 	HW.pDevice->Clear			(0,0,D3DCLEAR_TARGET,D3DCOLOR_XRGB(255,255,255),1,0);
 	
@@ -261,7 +261,7 @@ void CLightShadows::calculate	()
 	}
 	
 	// Finita la comedia
-	Device.Statistic.TEST.End	();
+	Device.Statistic.RenderDUMP_Scalc.End	();
 	
 	Device.set_xform_project	(Device.mProject);
 	Device.set_xform_view		(Device.mView);
@@ -269,6 +269,7 @@ void CLightShadows::calculate	()
 
 void CLightShadows::render	()
 {
+	Device.Statistic.RenderDUMP_Srender.Begin	();
 	// Gain access to collision-DB
 	CDB::MODEL*		DB		= pCreator->ObjectSpace.GetStaticModel();
 	CDB::TRI*		TRIS	= DB->get_tris();
@@ -402,4 +403,5 @@ void CLightShadows::render	()
 	// Projection
 	Device.mProject._43 = _43;
 	Device.set_xform_project	(Device.mProject);
+	Device.Statistic.RenderDUMP_Srender.End	();
 }
