@@ -48,13 +48,14 @@ void xrLauncher_benchmark_res_frm::Init()
 			continue;
 
 		CInifile res_ini(s);
-		LPCSTR s_min,s_max,s_avg;
-		s_min = res_ini.r_string("general","min");
-		s_max = res_ini.r_string("general","max");
-		s_avg = res_ini.r_string("general","avg");
-		mins[config_no]->Text = String::Format("{0} fps.",new String(s_min));
-		maxs[config_no]->Text = String::Format("{0} fps.",new String(s_max));
-		avgs[config_no]->Text = String::Format("{0} fps.",new String(s_avg));
+		float f_min,f_max,f_avg;
+		f_min = res_ini.r_float("general","min");
+		f_max = res_ini.r_float("general","max");
+		f_avg = res_ini.r_float("general","average");
+
+		mins[config_no]->Text = String::Format("min {0} fps.", __box(f_min));
+		maxs[config_no]->Text = String::Format("max {0} fps.", __box(f_max));
+		avgs[config_no]->Text = String::Format("avg {0} fps.", __box(f_avg));
 	}
 
 }

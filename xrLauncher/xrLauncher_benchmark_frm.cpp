@@ -88,6 +88,7 @@ void xrLauncher_benchmark_frm::prepareBenchmarkFile(LPCSTR file_name)
 	string32 test_num;
 	string512 test_cmd;
 	string512 config_file;
+	ZeroMemory(&config_file,sizeof(config_file));
 	convert((static_cast<xrComboBoxItem*>(qualityComboBox->SelectedItem))->m_conf, config_file);
 	LPCSTR nosound = (nosoundCheckBox->Checked)?"-nosound":"";
 	CInifile ini(s,false,true,true);
@@ -97,6 +98,8 @@ void xrLauncher_benchmark_frm::prepareBenchmarkFile(LPCSTR file_name)
 		if(!tests[i]->Checked)
 			continue;
 		
+		ZeroMemory(&command,sizeof(command));
+		ZeroMemory(&test_cmd,sizeof(test_cmd));
 		convert(m_test_cmds->Item[i]->ToString(), test_cmd);
 		sprintf(command,"\"-ltx %s %s %s\"", config_file, nosound, test_cmd);
 

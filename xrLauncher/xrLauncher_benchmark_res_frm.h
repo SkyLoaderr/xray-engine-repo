@@ -7,7 +7,7 @@ using namespace System::Windows::Forms;
 using namespace System::Data;
 using namespace System::Drawing;
 
-
+#undef GetObject
 namespace xrLauncher
 {
 	/// <summary> 
@@ -79,7 +79,9 @@ namespace xrLauncher
 		/// </summary>
 		void InitializeComponent(void)
 		{
+			System::Resources::ResourceManager *  resources = new System::Resources::ResourceManager(__typeof(xrLauncher::xrLauncher_benchmark_res_frm));
 			this->panel1 = new System::Windows::Forms::Panel();
+			this->label2 = new System::Windows::Forms::Label();
 			this->OK_button = new System::Windows::Forms::Button();
 			this->c4_avg_lbl = new System::Windows::Forms::Label();
 			this->c4_max_lbl = new System::Windows::Forms::Label();
@@ -97,7 +99,6 @@ namespace xrLauncher
 			this->c1_max_lbl = new System::Windows::Forms::Label();
 			this->c1_min_lbl = new System::Windows::Forms::Label();
 			this->label1 = new System::Windows::Forms::Label();
-			this->label2 = new System::Windows::Forms::Label();
 			this->panel1->SuspendLayout();
 			this->SuspendLayout();
 			// 
@@ -106,6 +107,7 @@ namespace xrLauncher
 			this->panel1->Anchor = (System::Windows::Forms::AnchorStyles)(((System::Windows::Forms::AnchorStyles::Top | System::Windows::Forms::AnchorStyles::Bottom) 
 				| System::Windows::Forms::AnchorStyles::Left) 
 				| System::Windows::Forms::AnchorStyles::Right);
+			this->panel1->BackgroundImage = (__try_cast<System::Drawing::Image *  >(resources->GetObject(S"panel1.BackgroundImage")));
 			this->panel1->BorderStyle = System::Windows::Forms::BorderStyle::FixedSingle;
 			this->panel1->Controls->Add(this->label2);
 			this->panel1->Controls->Add(this->OK_button);
@@ -130,8 +132,20 @@ namespace xrLauncher
 			this->panel1->Size = System::Drawing::Size(256, 296);
 			this->panel1->TabIndex = 0;
 			// 
+			// label2
+			// 
+			this->label2->BackColor = System::Drawing::Color::Transparent;
+			this->label2->Font = new System::Drawing::Font(S"Microsoft Sans Serif", 12.25F, System::Drawing::FontStyle::Regular, System::Drawing::GraphicsUnit::Point, (System::Byte)204);
+			this->label2->Location = System::Drawing::Point(16, 8);
+			this->label2->Name = S"label2";
+			this->label2->Size = System::Drawing::Size(224, 24);
+			this->label2->TabIndex = 17;
+			this->label2->Text = S"Benchmark results:";
+			this->label2->TextAlign = System::Drawing::ContentAlignment::MiddleCenter;
+			// 
 			// OK_button
 			// 
+			this->OK_button->BackColor = System::Drawing::Color::Transparent;
 			this->OK_button->FlatStyle = System::Windows::Forms::FlatStyle::Flat;
 			this->OK_button->Location = System::Drawing::Point(160, 264);
 			this->OK_button->Name = S"OK_button";
@@ -142,6 +156,7 @@ namespace xrLauncher
 			// 
 			// c4_avg_lbl
 			// 
+			this->c4_avg_lbl->BackColor = System::Drawing::Color::Transparent;
 			this->c4_avg_lbl->Location = System::Drawing::Point(144, 240);
 			this->c4_avg_lbl->Name = S"c4_avg_lbl";
 			this->c4_avg_lbl->Size = System::Drawing::Size(100, 16);
@@ -151,6 +166,7 @@ namespace xrLauncher
 			// 
 			// c4_max_lbl
 			// 
+			this->c4_max_lbl->BackColor = System::Drawing::Color::Transparent;
 			this->c4_max_lbl->Location = System::Drawing::Point(144, 224);
 			this->c4_max_lbl->Name = S"c4_max_lbl";
 			this->c4_max_lbl->Size = System::Drawing::Size(100, 16);
@@ -160,6 +176,7 @@ namespace xrLauncher
 			// 
 			// c4_min_lbl
 			// 
+			this->c4_min_lbl->BackColor = System::Drawing::Color::Transparent;
 			this->c4_min_lbl->Location = System::Drawing::Point(144, 208);
 			this->c4_min_lbl->Name = S"c4_min_lbl";
 			this->c4_min_lbl->Size = System::Drawing::Size(100, 16);
@@ -169,6 +186,7 @@ namespace xrLauncher
 			// 
 			// label13
 			// 
+			this->label13->BackColor = System::Drawing::Color::Transparent;
 			this->label13->Location = System::Drawing::Point(24, 224);
 			this->label13->Name = S"label13";
 			this->label13->Size = System::Drawing::Size(64, 16);
@@ -177,6 +195,7 @@ namespace xrLauncher
 			// 
 			// c3_avg_lbl
 			// 
+			this->c3_avg_lbl->BackColor = System::Drawing::Color::Transparent;
 			this->c3_avg_lbl->Location = System::Drawing::Point(144, 184);
 			this->c3_avg_lbl->Name = S"c3_avg_lbl";
 			this->c3_avg_lbl->Size = System::Drawing::Size(100, 16);
@@ -186,6 +205,7 @@ namespace xrLauncher
 			// 
 			// c3_max_lbl
 			// 
+			this->c3_max_lbl->BackColor = System::Drawing::Color::Transparent;
 			this->c3_max_lbl->Location = System::Drawing::Point(144, 168);
 			this->c3_max_lbl->Name = S"c3_max_lbl";
 			this->c3_max_lbl->Size = System::Drawing::Size(100, 16);
@@ -195,6 +215,7 @@ namespace xrLauncher
 			// 
 			// c3_min_lbl
 			// 
+			this->c3_min_lbl->BackColor = System::Drawing::Color::Transparent;
 			this->c3_min_lbl->Location = System::Drawing::Point(144, 152);
 			this->c3_min_lbl->Name = S"c3_min_lbl";
 			this->c3_min_lbl->Size = System::Drawing::Size(100, 16);
@@ -204,6 +225,7 @@ namespace xrLauncher
 			// 
 			// label9
 			// 
+			this->label9->BackColor = System::Drawing::Color::Transparent;
 			this->label9->Location = System::Drawing::Point(24, 168);
 			this->label9->Name = S"label9";
 			this->label9->Size = System::Drawing::Size(64, 16);
@@ -212,6 +234,7 @@ namespace xrLauncher
 			// 
 			// c2_avg_lbl
 			// 
+			this->c2_avg_lbl->BackColor = System::Drawing::Color::Transparent;
 			this->c2_avg_lbl->Location = System::Drawing::Point(144, 128);
 			this->c2_avg_lbl->Name = S"c2_avg_lbl";
 			this->c2_avg_lbl->Size = System::Drawing::Size(100, 16);
@@ -221,6 +244,7 @@ namespace xrLauncher
 			// 
 			// c2_max_lbl
 			// 
+			this->c2_max_lbl->BackColor = System::Drawing::Color::Transparent;
 			this->c2_max_lbl->Location = System::Drawing::Point(144, 112);
 			this->c2_max_lbl->Name = S"c2_max_lbl";
 			this->c2_max_lbl->Size = System::Drawing::Size(100, 16);
@@ -230,6 +254,7 @@ namespace xrLauncher
 			// 
 			// c2_min_lbl
 			// 
+			this->c2_min_lbl->BackColor = System::Drawing::Color::Transparent;
 			this->c2_min_lbl->Location = System::Drawing::Point(144, 96);
 			this->c2_min_lbl->Name = S"c2_min_lbl";
 			this->c2_min_lbl->Size = System::Drawing::Size(100, 16);
@@ -239,6 +264,7 @@ namespace xrLauncher
 			// 
 			// label5
 			// 
+			this->label5->BackColor = System::Drawing::Color::Transparent;
 			this->label5->Location = System::Drawing::Point(24, 112);
 			this->label5->Name = S"label5";
 			this->label5->Size = System::Drawing::Size(64, 16);
@@ -247,6 +273,7 @@ namespace xrLauncher
 			// 
 			// c1_avg_lbl
 			// 
+			this->c1_avg_lbl->BackColor = System::Drawing::Color::Transparent;
 			this->c1_avg_lbl->Location = System::Drawing::Point(144, 72);
 			this->c1_avg_lbl->Name = S"c1_avg_lbl";
 			this->c1_avg_lbl->Size = System::Drawing::Size(100, 16);
@@ -256,6 +283,7 @@ namespace xrLauncher
 			// 
 			// c1_max_lbl
 			// 
+			this->c1_max_lbl->BackColor = System::Drawing::Color::Transparent;
 			this->c1_max_lbl->Location = System::Drawing::Point(144, 56);
 			this->c1_max_lbl->Name = S"c1_max_lbl";
 			this->c1_max_lbl->Size = System::Drawing::Size(100, 16);
@@ -265,6 +293,7 @@ namespace xrLauncher
 			// 
 			// c1_min_lbl
 			// 
+			this->c1_min_lbl->BackColor = System::Drawing::Color::Transparent;
 			this->c1_min_lbl->Location = System::Drawing::Point(144, 40);
 			this->c1_min_lbl->Name = S"c1_min_lbl";
 			this->c1_min_lbl->Size = System::Drawing::Size(100, 16);
@@ -274,21 +303,12 @@ namespace xrLauncher
 			// 
 			// label1
 			// 
+			this->label1->BackColor = System::Drawing::Color::Transparent;
 			this->label1->Location = System::Drawing::Point(24, 56);
 			this->label1->Name = S"label1";
 			this->label1->Size = System::Drawing::Size(64, 16);
 			this->label1->TabIndex = 0;
 			this->label1->Text = S"Config1";
-			// 
-			// label2
-			// 
-			this->label2->Font = new System::Drawing::Font(S"Microsoft Sans Serif", 12.25F, System::Drawing::FontStyle::Regular, System::Drawing::GraphicsUnit::Point, (System::Byte)204);
-			this->label2->Location = System::Drawing::Point(16, 8);
-			this->label2->Name = S"label2";
-			this->label2->Size = System::Drawing::Size(224, 24);
-			this->label2->TabIndex = 17;
-			this->label2->Text = S"Benchmark results:";
-			this->label2->TextAlign = System::Drawing::ContentAlignment::MiddleCenter;
 			// 
 			// xrLauncher_benchmark_res_frm
 			// 

@@ -7,7 +7,7 @@ using namespace System::Windows::Forms;
 using namespace System::Data;
 using namespace System::Drawing;
 
-
+#undef GetObject
 namespace xrLauncher
 {
 	/// <summary> 
@@ -70,6 +70,7 @@ namespace xrLauncher
 		/// </summary>
 		void InitializeComponent(void)
 		{
+			System::Resources::ResourceManager *  resources = new System::Resources::ResourceManager(__typeof(xrLauncher::xrLauncher_benchmark_frm));
 			this->panel1 = new System::Windows::Forms::Panel();
 			this->config4checkBox = new System::Windows::Forms::CheckBox();
 			this->config3checkBox = new System::Windows::Forms::CheckBox();
@@ -86,6 +87,7 @@ namespace xrLauncher
 			// 
 			// panel1
 			// 
+			this->panel1->BackColor = System::Drawing::Color::Transparent;
 			this->panel1->BorderStyle = System::Windows::Forms::BorderStyle::FixedSingle;
 			this->panel1->Controls->Add(this->config4checkBox);
 			this->panel1->Controls->Add(this->config3checkBox);
@@ -142,6 +144,7 @@ namespace xrLauncher
 			// 
 			// qualityComboBox
 			// 
+			this->qualityComboBox->BackColor = System::Drawing::Color::Silver;
 			this->qualityComboBox->DropDownStyle = System::Windows::Forms::ComboBoxStyle::DropDownList;
 			this->qualityComboBox->Location = System::Drawing::Point(168, 16);
 			this->qualityComboBox->Name = S"qualityComboBox";
@@ -150,6 +153,7 @@ namespace xrLauncher
 			// 
 			// nosoundCheckBox
 			// 
+			this->nosoundCheckBox->BackColor = System::Drawing::Color::Transparent;
 			this->nosoundCheckBox->FlatStyle = System::Windows::Forms::FlatStyle::Flat;
 			this->nosoundCheckBox->Location = System::Drawing::Point(168, 56);
 			this->nosoundCheckBox->Name = S"nosoundCheckBox";
@@ -160,6 +164,7 @@ namespace xrLauncher
 			// 
 			// runBenchmarkBtn
 			// 
+			this->runBenchmarkBtn->BackColor = System::Drawing::Color::Transparent;
 			this->runBenchmarkBtn->FlatStyle = System::Windows::Forms::FlatStyle::Flat;
 			this->runBenchmarkBtn->Location = System::Drawing::Point(208, 128);
 			this->runBenchmarkBtn->Name = S"runBenchmarkBtn";
@@ -170,6 +175,7 @@ namespace xrLauncher
 			// 
 			// cancelBtn
 			// 
+			this->cancelBtn->BackColor = System::Drawing::Color::Transparent;
 			this->cancelBtn->FlatStyle = System::Windows::Forms::FlatStyle::Flat;
 			this->cancelBtn->Location = System::Drawing::Point(80, 128);
 			this->cancelBtn->Name = S"cancelBtn";
@@ -180,6 +186,8 @@ namespace xrLauncher
 			// 
 			// panel2
 			// 
+			this->panel2->BackColor = System::Drawing::Color::FromArgb((System::Byte)224, (System::Byte)224, (System::Byte)224);
+			this->panel2->BackgroundImage = (__try_cast<System::Drawing::Image *  >(resources->GetObject(S"panel2.BackgroundImage")));
 			this->panel2->BorderStyle = System::Windows::Forms::BorderStyle::FixedSingle;
 			this->panel2->Controls->Add(this->cancelBtn);
 			this->panel2->Controls->Add(this->runBenchmarkBtn);

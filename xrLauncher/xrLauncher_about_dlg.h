@@ -7,7 +7,7 @@ using namespace System::Windows::Forms;
 using namespace System::Data;
 using namespace System::Drawing;
 
-
+#undef GetObject
 namespace xrLauncher
 {
 	/// <summary> 
@@ -36,15 +36,16 @@ namespace xrLauncher
 			}
 			__super::Dispose(disposing);
 		}
-	private: System::Windows::Forms::ListBox *  modCreditsList;
+
 	private: System::Windows::Forms::Label *  modVersionLbl;
 	private: System::Windows::Forms::LinkLabel *  modLinkLbl;
 	private: System::Windows::Forms::Label *  modLongDescrLbl;
 	private: System::Windows::Forms::Label *  modShortDescrLbl;
 	private: System::Windows::Forms::Button *  button1;
-	private: System::Windows::Forms::Label *  label1;
+
 	private: System::Windows::Forms::Label *  modNameLbl;
 	private: System::Windows::Forms::Panel *  panel1;
+	private: System::Windows::Forms::Label *  creditsLbl;
 
 	private:
 		/// <summary>
@@ -58,31 +59,21 @@ namespace xrLauncher
 		/// </summary>
 		void InitializeComponent(void)
 		{
-			this->modCreditsList = new System::Windows::Forms::ListBox();
+			System::Resources::ResourceManager *  resources = new System::Resources::ResourceManager(__typeof(xrLauncher::xrLauncher_about_dlg));
 			this->modVersionLbl = new System::Windows::Forms::Label();
 			this->modLinkLbl = new System::Windows::Forms::LinkLabel();
 			this->modLongDescrLbl = new System::Windows::Forms::Label();
 			this->modShortDescrLbl = new System::Windows::Forms::Label();
 			this->button1 = new System::Windows::Forms::Button();
-			this->label1 = new System::Windows::Forms::Label();
+			this->creditsLbl = new System::Windows::Forms::Label();
 			this->modNameLbl = new System::Windows::Forms::Label();
 			this->panel1 = new System::Windows::Forms::Panel();
 			this->panel1->SuspendLayout();
 			this->SuspendLayout();
 			// 
-			// modCreditsList
-			// 
-			this->modCreditsList->BackColor = System::Drawing::SystemColors::Control;
-			this->modCreditsList->BorderStyle = System::Windows::Forms::BorderStyle::None;
-			this->modCreditsList->Font = new System::Drawing::Font(S"Microsoft Sans Serif", 8.24F, System::Drawing::FontStyle::Regular, System::Drawing::GraphicsUnit::Point, (System::Byte)204);
-			this->modCreditsList->Location = System::Drawing::Point(10, 184);
-			this->modCreditsList->Name = S"modCreditsList";
-			this->modCreditsList->SelectionMode = System::Windows::Forms::SelectionMode::None;
-			this->modCreditsList->Size = System::Drawing::Size(296, 104);
-			this->modCreditsList->TabIndex = 13;
-			// 
 			// modVersionLbl
 			// 
+			this->modVersionLbl->BackColor = System::Drawing::Color::Transparent;
 			this->modVersionLbl->Location = System::Drawing::Point(10, 16);
 			this->modVersionLbl->Name = S"modVersionLbl";
 			this->modVersionLbl->Size = System::Drawing::Size(392, 16);
@@ -91,6 +82,7 @@ namespace xrLauncher
 			// 
 			// modLinkLbl
 			// 
+			this->modLinkLbl->BackColor = System::Drawing::Color::Transparent;
 			this->modLinkLbl->Location = System::Drawing::Point(10, 136);
 			this->modLinkLbl->Name = S"modLinkLbl";
 			this->modLinkLbl->Size = System::Drawing::Size(392, 16);
@@ -100,6 +92,7 @@ namespace xrLauncher
 			// 
 			// modLongDescrLbl
 			// 
+			this->modLongDescrLbl->BackColor = System::Drawing::Color::Transparent;
 			this->modLongDescrLbl->Location = System::Drawing::Point(10, 64);
 			this->modLongDescrLbl->Name = S"modLongDescrLbl";
 			this->modLongDescrLbl->Size = System::Drawing::Size(392, 64);
@@ -108,6 +101,7 @@ namespace xrLauncher
 			// 
 			// modShortDescrLbl
 			// 
+			this->modShortDescrLbl->BackColor = System::Drawing::Color::Transparent;
 			this->modShortDescrLbl->Location = System::Drawing::Point(10, 40);
 			this->modShortDescrLbl->Name = S"modShortDescrLbl";
 			this->modShortDescrLbl->Size = System::Drawing::Size(392, 16);
@@ -116,25 +110,28 @@ namespace xrLauncher
 			// 
 			// button1
 			// 
+			this->button1->BackColor = System::Drawing::Color::Transparent;
 			this->button1->DialogResult = System::Windows::Forms::DialogResult::OK;
 			this->button1->FlatStyle = System::Windows::Forms::FlatStyle::Flat;
-			this->button1->Location = System::Drawing::Point(328, 264);
+			this->button1->Location = System::Drawing::Point(328, 232);
 			this->button1->Name = S"button1";
 			this->button1->Size = System::Drawing::Size(88, 24);
 			this->button1->TabIndex = 14;
 			this->button1->Text = S"Ok";
 			this->button1->Click += new System::EventHandler(this, button1_Click);
 			// 
-			// label1
+			// creditsLbl
 			// 
-			this->label1->Location = System::Drawing::Point(10, 160);
-			this->label1->Name = S"label1";
-			this->label1->Size = System::Drawing::Size(48, 16);
-			this->label1->TabIndex = 15;
-			this->label1->Text = S"credits:";
+			this->creditsLbl->BackColor = System::Drawing::Color::Transparent;
+			this->creditsLbl->Location = System::Drawing::Point(10, 160);
+			this->creditsLbl->Name = S"creditsLbl";
+			this->creditsLbl->Size = System::Drawing::Size(310, 96);
+			this->creditsLbl->TabIndex = 15;
+			this->creditsLbl->Text = S"credits:";
 			// 
 			// modNameLbl
 			// 
+			this->modNameLbl->BackColor = System::Drawing::Color::Transparent;
 			this->modNameLbl->Location = System::Drawing::Point(10, 0);
 			this->modNameLbl->Name = S"modNameLbl";
 			this->modNameLbl->Size = System::Drawing::Size(392, 16);
@@ -143,13 +140,13 @@ namespace xrLauncher
 			// 
 			// panel1
 			// 
+			this->panel1->BackgroundImage = (__try_cast<System::Drawing::Image *  >(resources->GetObject(S"panel1.BackgroundImage")));
 			this->panel1->BorderStyle = System::Windows::Forms::BorderStyle::FixedSingle;
 			this->panel1->Controls->Add(this->modLinkLbl);
 			this->panel1->Controls->Add(this->modLongDescrLbl);
 			this->panel1->Controls->Add(this->modShortDescrLbl);
-			this->panel1->Controls->Add(this->modCreditsList);
 			this->panel1->Controls->Add(this->modNameLbl);
-			this->panel1->Controls->Add(this->label1);
+			this->panel1->Controls->Add(this->creditsLbl);
 			this->panel1->Controls->Add(this->button1);
 			this->panel1->Controls->Add(this->modVersionLbl);
 			this->panel1->Location = System::Drawing::Point(1, 0);
@@ -160,7 +157,7 @@ namespace xrLauncher
 			// xrLauncher_about_dlg
 			// 
 			this->AutoScaleBaseSize = System::Drawing::Size(5, 13);
-			this->ClientSize = System::Drawing::Size(424, 296);
+			this->ClientSize = System::Drawing::Size(424, 264);
 			this->Controls->Add(this->panel1);
 			this->FormBorderStyle = System::Windows::Forms::FormBorderStyle::None;
 			this->Name = S"xrLauncher_about_dlg";

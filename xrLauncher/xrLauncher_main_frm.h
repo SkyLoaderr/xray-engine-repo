@@ -63,13 +63,16 @@ namespace xrLauncher
 	private: System::Windows::Forms::Button *  playBtn;
 	private: System::Windows::Forms::Button *  settingsBtn;
 	private: System::Windows::Forms::Button *  benchmarkBtn;
-	private: System::Windows::Forms::RichTextBox *  mainTextBox;
 
 
-	private: System::Windows::Forms::ListBox *  modList;
+
+
 	private: System::Windows::Forms::ImageList *  imageList1;
 	private: System::Windows::Forms::Button *  aboutBtn;
 	private: System::Windows::Forms::ImageList *  imageList2;
+	private: System::Windows::Forms::Label *  label1;
+	private: System::Windows::Forms::ComboBox *  modListCombo;
+
 	private: System::ComponentModel::IContainer *  components;
 
 	private:
@@ -87,10 +90,10 @@ namespace xrLauncher
 			this->components = new System::ComponentModel::Container();
 			System::Resources::ResourceManager *  resources = new System::Resources::ResourceManager(__typeof(xrLauncher::xrLauncher_main_frm));
 			this->panel1 = new System::Windows::Forms::Panel();
+			this->modListCombo = new System::Windows::Forms::ComboBox();
+			this->label1 = new System::Windows::Forms::Label();
 			this->aboutBtn = new System::Windows::Forms::Button();
 			this->imageList1 = new System::Windows::Forms::ImageList(this->components);
-			this->modList = new System::Windows::Forms::ListBox();
-			this->mainTextBox = new System::Windows::Forms::RichTextBox();
 			this->benchmarkBtn = new System::Windows::Forms::Button();
 			this->settingsBtn = new System::Windows::Forms::Button();
 			this->playBtn = new System::Windows::Forms::Button();
@@ -104,27 +107,52 @@ namespace xrLauncher
 			this->panel1->Anchor = (System::Windows::Forms::AnchorStyles)(((System::Windows::Forms::AnchorStyles::Top | System::Windows::Forms::AnchorStyles::Bottom) 
 				| System::Windows::Forms::AnchorStyles::Left) 
 				| System::Windows::Forms::AnchorStyles::Right);
+			this->panel1->BackgroundImage = (__try_cast<System::Drawing::Image *  >(resources->GetObject(S"panel1.BackgroundImage")));
 			this->panel1->BorderStyle = System::Windows::Forms::BorderStyle::FixedSingle;
+			this->panel1->Controls->Add(this->modListCombo);
+			this->panel1->Controls->Add(this->label1);
 			this->panel1->Controls->Add(this->aboutBtn);
-			this->panel1->Controls->Add(this->modList);
-			this->panel1->Controls->Add(this->mainTextBox);
 			this->panel1->Controls->Add(this->benchmarkBtn);
 			this->panel1->Controls->Add(this->settingsBtn);
 			this->panel1->Controls->Add(this->playBtn);
 			this->panel1->Controls->Add(this->pictureBox1);
 			this->panel1->Location = System::Drawing::Point(0, 0);
 			this->panel1->Name = S"panel1";
-			this->panel1->Size = System::Drawing::Size(442, 256);
+			this->panel1->Size = System::Drawing::Size(512, 256);
 			this->panel1->TabIndex = 0;
+			// 
+			// modListCombo
+			// 
+			this->modListCombo->BackColor = System::Drawing::Color::Silver;
+			this->modListCombo->Location = System::Drawing::Point(144, 224);
+			this->modListCombo->Name = S"modListCombo";
+			this->modListCombo->Size = System::Drawing::Size(256, 21);
+			this->modListCombo->TabIndex = 16;
+			this->modListCombo->SelectedIndexChanged += new System::EventHandler(this, modList_SelectedIndexChanged);
+			// 
+			// label1
+			// 
+			this->label1->BackColor = System::Drawing::Color::Transparent;
+			this->label1->Location = System::Drawing::Point(144, 8);
+			this->label1->Name = S"label1";
+			this->label1->Size = System::Drawing::Size(256, 136);
+			this->label1->TabIndex = 15;
+			this->label1->Text = S"Chernobyl zone was lit by an intolerably bright light. The clouds were evaporatin" 
+				S"g in the silver bright sky with a thunder and earthquake to follow. People fell " 
+				S"on the ground facedown closing their bleeding eyes and ears. The glow spread ove" 
+				S"r an immense territory which was subsequently called the Zone. People ran away s" 
+				S"aving their lives. It looked like a radioactive explosion at the nuclear plant o" 
+				S"ccurred.";
+			this->label1->TextAlign = System::Drawing::ContentAlignment::MiddleCenter;
 			// 
 			// aboutBtn
 			// 
 			this->aboutBtn->Anchor = (System::Windows::Forms::AnchorStyles)(System::Windows::Forms::AnchorStyles::Top | System::Windows::Forms::AnchorStyles::Right);
-			this->aboutBtn->BackColor = System::Drawing::SystemColors::Control;
+			this->aboutBtn->BackColor = System::Drawing::Color::Transparent;
 			this->aboutBtn->FlatStyle = System::Windows::Forms::FlatStyle::Flat;
 			this->aboutBtn->ForeColor = System::Drawing::SystemColors::ControlText;
 			this->aboutBtn->ImageList = this->imageList1;
-			this->aboutBtn->Location = System::Drawing::Point(344, 128);
+			this->aboutBtn->Location = System::Drawing::Point(416, 224);
 			this->aboutBtn->Name = S"aboutBtn";
 			this->aboutBtn->Size = System::Drawing::Size(86, 26);
 			this->aboutBtn->TabIndex = 14;
@@ -137,41 +165,13 @@ namespace xrLauncher
 			this->imageList1->ImageStream = (__try_cast<System::Windows::Forms::ImageListStreamer *  >(resources->GetObject(S"imageList1.ImageStream")));
 			this->imageList1->TransparentColor = System::Drawing::SystemColors::Control;
 			// 
-			// modList
-			// 
-			this->modList->Anchor = (System::Windows::Forms::AnchorStyles)((System::Windows::Forms::AnchorStyles::Top | System::Windows::Forms::AnchorStyles::Left) 
-				| System::Windows::Forms::AnchorStyles::Right);
-			this->modList->BackColor = System::Drawing::SystemColors::Control;
-			this->modList->BorderStyle = System::Windows::Forms::BorderStyle::FixedSingle;
-			this->modList->Location = System::Drawing::Point(120, 162);
-			this->modList->Name = S"modList";
-			this->modList->Size = System::Drawing::Size(330, 93);
-			this->modList->TabIndex = 4;
-			this->modList->SelectedIndexChanged += new System::EventHandler(this, modList_SelectedIndexChanged);
-			// 
-			// mainTextBox
-			// 
-			this->mainTextBox->Anchor = (System::Windows::Forms::AnchorStyles)((System::Windows::Forms::AnchorStyles::Top | System::Windows::Forms::AnchorStyles::Left) 
-				| System::Windows::Forms::AnchorStyles::Right);
-			this->mainTextBox->BackColor = System::Drawing::SystemColors::Control;
-			this->mainTextBox->BorderStyle = System::Windows::Forms::BorderStyle::None;
-			this->mainTextBox->Location = System::Drawing::Point(128, 6);
-			this->mainTextBox->Name = S"mainTextBox";
-			this->mainTextBox->Size = System::Drawing::Size(208, 146);
-			this->mainTextBox->TabIndex = 3;
-			this->mainTextBox->Text = S"Chernobyl zone was lit by an intolerably bright light. The clouds were evaporatin" 
-				S"g in the silver bright sky with a thunder and earthquake to follow. People fell " 
-				S"on the ground facedown closing their bleeding eyes and ears. The glow spread ove" 
-				S"r an immense territory which was subsequently called the Zone. People ran away s" 
-				S"aving their lives. It looked like a radioactive explosion at the nuclear plant o" 
-				S"ccurred.";
-			// 
 			// benchmarkBtn
 			// 
 			this->benchmarkBtn->Anchor = (System::Windows::Forms::AnchorStyles)(System::Windows::Forms::AnchorStyles::Top | System::Windows::Forms::AnchorStyles::Right);
+			this->benchmarkBtn->BackColor = System::Drawing::Color::Transparent;
 			this->benchmarkBtn->FlatStyle = System::Windows::Forms::FlatStyle::Flat;
 			this->benchmarkBtn->ImageList = this->imageList1;
-			this->benchmarkBtn->Location = System::Drawing::Point(344, 88);
+			this->benchmarkBtn->Location = System::Drawing::Point(416, 184);
 			this->benchmarkBtn->Name = S"benchmarkBtn";
 			this->benchmarkBtn->Size = System::Drawing::Size(86, 26);
 			this->benchmarkBtn->TabIndex = 2;
@@ -181,10 +181,10 @@ namespace xrLauncher
 			// settingsBtn
 			// 
 			this->settingsBtn->Anchor = (System::Windows::Forms::AnchorStyles)(System::Windows::Forms::AnchorStyles::Top | System::Windows::Forms::AnchorStyles::Right);
-			this->settingsBtn->BackColor = System::Drawing::SystemColors::Control;
+			this->settingsBtn->BackColor = System::Drawing::Color::Transparent;
 			this->settingsBtn->FlatStyle = System::Windows::Forms::FlatStyle::Flat;
 			this->settingsBtn->ForeColor = System::Drawing::SystemColors::ControlText;
-			this->settingsBtn->Location = System::Drawing::Point(344, 48);
+			this->settingsBtn->Location = System::Drawing::Point(416, 144);
 			this->settingsBtn->Name = S"settingsBtn";
 			this->settingsBtn->Size = System::Drawing::Size(86, 26);
 			this->settingsBtn->TabIndex = 1;
@@ -194,9 +194,10 @@ namespace xrLauncher
 			// playBtn
 			// 
 			this->playBtn->Anchor = (System::Windows::Forms::AnchorStyles)(System::Windows::Forms::AnchorStyles::Top | System::Windows::Forms::AnchorStyles::Right);
+			this->playBtn->BackColor = System::Drawing::Color::Transparent;
 			this->playBtn->FlatStyle = System::Windows::Forms::FlatStyle::Flat;
 			this->playBtn->ImageList = this->imageList1;
-			this->playBtn->Location = System::Drawing::Point(344, 8);
+			this->playBtn->Location = System::Drawing::Point(416, 104);
 			this->playBtn->Name = S"playBtn";
 			this->playBtn->Size = System::Drawing::Size(86, 26);
 			this->playBtn->TabIndex = 0;
@@ -206,11 +207,11 @@ namespace xrLauncher
 			// 
 			// pictureBox1
 			// 
+			this->pictureBox1->BackColor = System::Drawing::Color::Transparent;
 			this->pictureBox1->BackgroundImage = (__try_cast<System::Drawing::Image *  >(resources->GetObject(S"pictureBox1.BackgroundImage")));
-			this->pictureBox1->BorderStyle = System::Windows::Forms::BorderStyle::FixedSingle;
-			this->pictureBox1->Location = System::Drawing::Point(1, 1);
+			this->pictureBox1->Location = System::Drawing::Point(8, 8);
 			this->pictureBox1->Name = S"pictureBox1";
-			this->pictureBox1->Size = System::Drawing::Size(120, 256);
+			this->pictureBox1->Size = System::Drawing::Size(120, 240);
 			this->pictureBox1->TabIndex = 0;
 			this->pictureBox1->TabStop = false;
 			// 
@@ -223,7 +224,7 @@ namespace xrLauncher
 			// xrLauncher_main_frm
 			// 
 			this->AutoScaleBaseSize = System::Drawing::Size(5, 13);
-			this->ClientSize = System::Drawing::Size(442, 256);
+			this->ClientSize = System::Drawing::Size(512, 256);
 			this->Controls->Add(this->panel1);
 			this->FormBorderStyle = System::Windows::Forms::FormBorderStyle::None;
 			this->Name = S"xrLauncher_main_frm";

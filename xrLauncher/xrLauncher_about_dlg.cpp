@@ -10,7 +10,8 @@ void xrLauncher_about_dlg::Init(const SmodInfo& info)
 	modLongDescrLbl->Text	= S"Long description: ";
 	modLinkLbl->Text		= S"Website: ";
 	modVersionLbl->Text		= S"Version: ";
-	modCreditsList->Items->Clear();
+//	modCreditsList->Items->Clear();
+	creditsLbl->Text = S"Credits\n";
 
 	modShortDescrLbl->Text = String::Concat(modShortDescrLbl->Text, new String(*info.m_descr_short) );
 	modLongDescrLbl->Text = String::Concat(modLongDescrLbl->Text, new String(*info.m_descr_long) );
@@ -19,8 +20,9 @@ void xrLauncher_about_dlg::Init(const SmodInfo& info)
 
 	modNameLbl->Text = String::Concat(modNameLbl->Text, new String(*info.m_mod_name) );
 
-	for(u32 i=0; i<info.m_credits->size();++i)
-		modCreditsList->Items->Add(new String(*(info.m_credits->at(i))) );
+//	for(u32 i=0; i<info.m_credits->size();++i)
+//		modCreditsList->Items->Add(new String(*(info.m_credits->at(i))) );
+creditsLbl->Text = String::Concat(creditsLbl->Text, new String(*(info.m_credits_l)) );
 
 }
 

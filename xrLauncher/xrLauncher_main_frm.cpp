@@ -25,7 +25,7 @@ void xrLauncher_main_frm::addFileInfo(LPCSTR fn)
 
 		if(ini.line_exist("general","name")){
 			info.m_mod_name = ini.r_string_wb("general","name");
-			this->modList->Items->Add(new String(*info.m_mod_name) );
+			modListCombo->Items->Add(new String(*info.m_mod_name) );
 		};
 		if(ini.line_exist("general","description_short")){
 			info.m_descr_short = ini.r_string_wb("general","description_short");
@@ -59,7 +59,12 @@ void xrLauncher_main_frm::addFileInfo(LPCSTR fn)
 			info.m_picture_name = pic_name;
 		}else
 			info.m_picture_name = "";
-		
+
+
+		if(ini.line_exist("general","creator")){
+			info.m_credits_l = ini.r_string_wb("general","creator");
+		};
+/*
 		info.m_credits->clear();
 		if(ini.section_exist("creator")){
 			int lc = ini.line_count("creator");
@@ -73,6 +78,7 @@ void xrLauncher_main_frm::addFileInfo(LPCSTR fn)
 				info.m_credits->at(i) = ini.r_string_wb( "creator", name);
 			}
 		}
+*/
 		info.m_archieves->clear();
 		if(ini.section_exist("packages")){
 			int lc = ini.line_count("packages");
@@ -91,7 +97,7 @@ void xrLauncher_main_frm::addFileInfo(LPCSTR fn)
 void xrLauncher_main_frm::InitMod()
 {
 	m_mod_info->clear();
-	this->modList->Items->Clear();
+	modListCombo->Items->Clear();
 
 	const CLocatorAPI::file* fn = NULL;
 	string_path s;
@@ -116,13 +122,14 @@ void xrLauncher_main_frm::InitMod()
 
 
 	FS.file_list_close(dirs);
+	modListCombo->SelectedIndex = 0;
 	modList_SelectedIndexChanged(0,0);
 }
 
 
 System::Void xrLauncher_main_frm::modList_SelectedIndexChanged(System::Object *  sender, System::EventArgs *  e)
 {
-	int index = modList->SelectedIndex;
+	int index = modListCombo->SelectedIndex;
 	if (-1 == index){
 		playBtn->Enabled = false;
 		return;
@@ -144,7 +151,8 @@ System::Void xrLauncher_main_frm::modList_SelectedIndexChanged(System::Object * 
 
 System::Void xrLauncher_main_frm::playBtn_Click(System::Object *  sender, System::EventArgs *  e)
 {
-	int index = modList->SelectedIndex;
+//	int index = modList->SelectedIndex;
+	int index = modListCombo->SelectedIndex;
 	  if (-1 == index)
 		  return;
 
@@ -180,7 +188,8 @@ System::Void xrLauncher_main_frm::aboutBtn_Click(System::Object *  sender, Syste
 		m_about_dlg = new xrLauncher_about_dlg();
 	
 
-	int index = modList->SelectedIndex;
+//	int index = modList->SelectedIndex;
+	int index = modListCombo->SelectedIndex;
 	  if (-1 == index)
 		  return;
 
