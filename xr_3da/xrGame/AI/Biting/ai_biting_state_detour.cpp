@@ -1,6 +1,7 @@
 #include "stdafx.h"
 #include "ai_biting.h"
 #include "ai_biting_state.h"
+#include "../game_graph.h"
 
 ///////////////////////////////////////////////////////////////////////////////////////////////////////////
 // CBitingDetour class
@@ -39,7 +40,7 @@ void CBitingDetour::Run()
 	if (pMonster->GetEnemy(tempEnemy)) m_tEnemy = tempEnemy;
 
 	pMonster->vfUpdateDetourPoint	();
-	pMonster->AI_Path.DestNode		= getAI().m_tpaGraph[pMonster->m_tNextGP].tNodeID;
+	pMonster->set_level_dest_vertex	(ai().game_graph().vertex(pMonster->m_tNextGP)->level_vertex_id());
 	pMonster->Path_CoverFromPoint	(m_tEnemy.obj,m_tEnemy.obj->Position(),2000);
 
 	pMonster->MotionMan.m_tAction = ACT_WALK_FWD;

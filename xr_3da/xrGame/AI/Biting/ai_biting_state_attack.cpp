@@ -2,10 +2,10 @@
 #include "ai_biting.h"
 #include "ai_biting_state.h"
 
-#include "..\\rat\\ai_rat.h"
-#include "..\\bloodsucker\\ai_bloodsucker.h"
-#include "..\\..\\actor.h"
-#include "..\\ai_monster_jump.h"
+#include "../rat/ai_rat.h"
+#include "../bloodsucker/ai_bloodsucker.h"
+#include "../../actor.h"
+#include "../ai_monster_jump.h"
 
 ///////////////////////////////////////////////////////////////////////////////////////////////////////////
 // CBitingAttack implementation
@@ -79,7 +79,7 @@ void CBitingAttack::Init()
 void CBitingAttack::Run()
 {
 	// Если враг изменился, инициализировать состояние
-//	if (!pMonster->m_tEnemy.obj) R_ASSERT("Enemy undefined!!!");
+//	if (!pMonster->m_tEnemy.obj) R_ASSERT("m_enemy undefined!!!");
 	if (pMonster->m_tEnemy.obj != m_tEnemy.obj) Init();
 	else m_tEnemy = pMonster->m_tEnemy;
 
@@ -90,7 +90,7 @@ void CBitingAttack::Run()
 	}
 
 	// Выбор состояния
-	bool bAttackMelee = (m_tAction == ACTION_ATTACK_MELEE);
+	bool bAttackMelee = (ACTION_ATTACK_MELEE == m_tAction);
 
 	dist = m_tEnemy.obj->Position().distance_to(pMonster->Position());
 
@@ -98,7 +98,7 @@ void CBitingAttack::Run()
 	else m_tAction = ((dist > m_fDistMin) ? ACTION_RUN : ACTION_ATTACK_MELEE);
 
 	// если враг не виден на протяжении 1 сек - бежать к нему
-	if (m_tAction == ACTION_ATTACK_MELEE && (m_tEnemy.time + 1000 < m_dwCurrentTime)) {
+	if (ACTION_ATTACK_MELEE == m_tAction && (m_tEnemy.time + 1000 < m_dwCurrentTime)) {
 		m_tAction = ACTION_RUN;
 	}
 
@@ -108,16 +108,16 @@ void CBitingAttack::Run()
 	CJumping *pJumping = dynamic_cast<CJumping *>(pMonster);
 	if (pJumping) pJumping->Check(pMonster->Position(),m_tEnemy.obj->Position(),m_tEnemy.obj);
 	
-	if (pMonster->Movement.JumpState()) return;
+	if (pMonster->m_PhysicMovementControl.JumpState()) return;
 
 	if ((pMonster->flagsEnemy & FLAG_ENEMY_DOESNT_SEE_ME) != FLAG_ENEMY_DOESNT_SEE_ME) bEnemyDoesntSeeMe = false;
 	if (((pMonster->flagsEnemy & FLAG_ENEMY_GO_FARTHER_FAST) == FLAG_ENEMY_GO_FARTHER_FAST) && (m_dwStateStartedTime + 4000 < m_dwCurrentTime)) bEnemyDoesntSeeMe = false;
-	if ((m_tAction == ACTION_RUN) && bEnemyDoesntSeeMe) m_tAction = ACTION_STEAL;
+	if ((ACTION_RUN == m_tAction) && bEnemyDoesntSeeMe) m_tAction = ACTION_STEAL;
 
 	if (CheckThreaten()) m_tAction = ACTION_THREATEN;
 
 #pragma todo("Jim to Jim: fix nesting: Bloodsucker in Biting state")
-	if (m_bInvisibility && m_tAction != ACTION_THREATEN) {
+	if (m_bInvisibility && ACTION_THREATEN != m_tAction) {
 		CAI_Bloodsucker *pBS =	dynamic_cast<CAI_Bloodsucker *>(pMonster);
 		CActor			*pA  =  dynamic_cast<CActor*>(Level().CurrentEntity());
 
@@ -137,7 +137,7 @@ void CBitingAttack::Run()
 		case ACTION_RUN:		 // бежать на врага
 			delay = ((m_bAttackRat)? 0: 300);
 
-			pMonster->AI_Path.DestNode = m_tEnemy.obj->AI_NodeID;
+			pMonster->set_level_dest_vertex	(m_tEnemy.obj->level_vertex_id());
 			pMonster->vfChoosePointAndBuildPath(0,&m_tEnemy.obj->Position(), true, 0, delay);
 
 			pMonster->MotionMan.m_tAction = ACT_RUN;
@@ -161,13 +161,13 @@ void CBitingAttack::Run()
 			DO_IN_TIME_INTERVAL_BEGIN(m_dwFaceEnemyLastTime, m_dwFaceEnemyLastTimeInterval);
 				float yaw, pitch;
 				Fvector dir;
-				yaw = pMonster->r_torso_target.yaw;
-				pMonster->AI_Path.TravelPath.clear();
+				yaw = pMonster->m_body.target.yaw;
+				pMonster->enable_movement(false);
 				dir.sub(m_tEnemy.obj->Position(), pMonster->Position());
 				dir.getHP(yaw,pitch);
 				yaw *= -1;
 				yaw = angle_normalize(yaw);
-				pMonster->r_torso_target.yaw = yaw;
+				pMonster->m_body.target.yaw = yaw;
 			DO_IN_TIME_INTERVAL_END();
 			
 			if (m_bAttackRat) pMonster->MotionMan.SetSpecParams(ASP_ATTACK_RAT);
@@ -177,7 +177,7 @@ void CBitingAttack::Run()
 		case ACTION_STEAL:
 			if (dist < (m_fDistMax + 2.f)) bEnemyDoesntSeeMe = false;
 
-			pMonster->AI_Path.DestNode = m_tEnemy.obj->AI_NodeID;
+			pMonster->set_level_dest_vertex	(m_tEnemy.obj->level_vertex_id());
 			pMonster->vfChoosePointAndBuildPath(0,&m_tEnemy.obj->Position(), true, 0, 2000);
 
 			pMonster->MotionMan.m_tAction = ACT_STEAL;
@@ -249,4 +249,5 @@ bool CBitingAttack::CheckThreaten()
 
 	return true;
 }
+
 
