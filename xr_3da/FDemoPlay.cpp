@@ -24,8 +24,6 @@ CDemoPlay::CDemoPlay(const char *name, float ms, BOOL bc, float life_time) : CEf
 	strcpy	(nm,name);	if (strext(nm))	strcpy(strext(nm),".anm");
 	if (Engine.FS.Exist(fn,Path.Current,nm))
 	{
-		char anim_name[255];
-		_GetFileName(name,anim_name);
 		m_pMotion	= new COMotion();
 		m_pMotion->LoadMotion(fn);
 		m_MParam.Set(m_pMotion, true);
