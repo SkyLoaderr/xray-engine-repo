@@ -27,6 +27,7 @@ object fraSector: TfraSector
     Align = alTop
     Color = 10528425
     TabOrder = 1
+    Visible = False
     object ebAddMesh: TExtBtn
       Left = 87
       Top = 36
@@ -221,7 +222,7 @@ object fraSector: TfraSector
       Height = 13
       Align = alTop
       Alignment = taCenter
-      Caption = 'Add'
+      Caption = 'Edit'
       Color = clGray
       ParentColor = False
       OnClick = TopClick

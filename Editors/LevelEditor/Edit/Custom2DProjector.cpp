@@ -23,7 +23,7 @@ CCustom2DProjector::CCustom2DProjector()
 bool CCustom2DProjector::LoadImage(LPCSTR nm)
 {
 	strcpy(name,nm);
-    ImageManager.LoadTextureData(nm,data,w,h);
+    ImageLib.LoadTextureData(nm,data,w,h);
     return Valid();
 }
 

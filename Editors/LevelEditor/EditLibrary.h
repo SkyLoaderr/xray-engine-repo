@@ -23,10 +23,11 @@
 #include "MxMenus.hpp"
 #include "ElTreeAdvEdit.hpp"
 #include "ItemList.h"
+#include "MXCtrls.hpp"
 //---------------------------------------------------------------------------
 // refs
 class TObjectPreview;
-class EImageThumbnail;
+class EObjectThumbnail;
 //---------------------------------------------------------------------------
 
 class TfrmEditLibrary : public TForm
@@ -37,8 +38,6 @@ __published:	// IDE-managed Components
 	TFormStorage *fsStorage;
 	TExtBtn *ebProperties;
 	TCheckBox *cbPreview;
-	TPanel *paImage;
-	TPaintBox *pbImage;
 	TExtBtn *ebMakeLOD;
 	TPanel *Panel3;
 	TLabel *lbFaces;
@@ -54,6 +53,7 @@ __published:	// IDE-managed Components
 	TExtBtn *ebCancel;
 	TExtBtn *ExtBtn1;
 	TExtBtn *ExtBtn2;
+	TMxPanel *paImage;
     void __fastcall ebSaveClick(TObject *Sender);
     void __fastcall ebCancelClick(TObject *Sender);
     void __fastcall FormShow(TObject *Sender);
@@ -64,7 +64,7 @@ __published:	// IDE-managed Components
     void __fastcall tvItemsDblClick(TObject *Sender);
     void __fastcall cbPreviewClick(TObject *Sender);
 	void __fastcall ebMakeThmClick(TObject *Sender);
-	void __fastcall pbImagePaint(TObject *Sender);
+	void __fastcall paImagePaint(TObject *Sender);
 	void __fastcall ebImportClick(TObject *Sender);
 	void __fastcall FormCloseQuery(TObject *Sender, bool &CanClose);
 	void __fastcall ebMakeLODClick(TObject *Sender);
@@ -77,7 +77,7 @@ __published:	// IDE-managed Components
 	void __fastcall ExtBtn2Click(TObject *Sender);
 private:	// User declarations
     void InitObjects();
-    EImageThumbnail* 		m_Thm;
+    EObjectThumbnail* 		m_Thm;
 	static TfrmEditLibrary*	form;
     CSceneObject* 			m_pEditObject;
     static FS_QueryMap		modif_map;

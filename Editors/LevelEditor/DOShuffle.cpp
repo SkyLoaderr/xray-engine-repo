@@ -5,7 +5,7 @@
 
 #include "DOShuffle.h"
 #include "ChoseForm.h"
-#include "ImageThumbnail.h"
+#include "EThumbnail.h"
 #include "xr_trims.h"
 #include "Library.h"
 #include "DOOneColor.h"
@@ -14,6 +14,7 @@
 #include "folderlib.h"
 #include "DetailObjects.h"
 #include "ui_main.h"
+#include "ImageManager.h"
 //---------------------------------------------------------------------------
 #pragma package(smart_init)
 #pragma resource "*.dfm"
@@ -180,7 +181,7 @@ void __fastcall TfrmDOShuffle::tvItemsItemFocused(TObject *Sender)
     PropItemVec items;
 	if (Item&&Item->Data){
 		AnsiString nm 		= Item->Text;
-    	m_Thm 				= xr_new<EImageThumbnail>(nm.c_str(),EImageThumbnail::EITObject);
+        EImageThumbnail* T 	= ImageLib.CreateThumbnail(nm.c_str(),EImageThumbnail::ETObject);
         EDetail* dd			= (EDetail*)Item->Data;
 		PHelper.CreateCaption	(items,"Ref Name",	dd->GetName());
 		PHelper.CreateFloat		(items,"Density",	&dd->m_fDensityFactor, 	0.1f, 1.0f);
@@ -189,14 +190,13 @@ void __fastcall TfrmDOShuffle::tvItemsItemFocused(TObject *Sender)
 		PHelper.CreateFlag32	(items,"No Waving",	&dd->m_Flags, DO_NO_WAVING);
     }
     m_ObjectProps->AssignItems	(items,true);
-    if (m_Thm&&m_Thm->Valid())	pbImagePaint(Sender);
-    else                        pbImage->Repaint();
+    paImage->Repaint			();
 }
 //---------------------------------------------------------------------------
 
-void __fastcall TfrmDOShuffle::pbImagePaint(TObject *Sender)
+void __fastcall TfrmDOShuffle::paImagePaint(TObject *Sender)
 {
-	if (m_Thm) m_Thm->Draw(pbImage);
+	if (m_Thm) m_Thm->Draw(paImage);
 }
 //---------------------------------------------------------------------------
 

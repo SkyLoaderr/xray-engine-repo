@@ -140,7 +140,7 @@ void EDetailManager::OnRender(int priority, bool strictB2F)
 				RCache.set_xform_world(Fidentity);
                 if (fraBottomBar->miDrawDOBaseTexture->Checked)	m_Base.Render();
                 Fvector EYE = Device.m_Camera.GetPosition();
-                if (fraBottomBar->miDODrawObjects->Checked) CDetailManager::Render(EYE);
+                if (fraBottomBar->miDODrawObjects->Checked) CDetailManager::Render();
             }
         }
     }
@@ -405,12 +405,12 @@ bool EDetailManager::Export(LPCSTR fn)
         
     AnsiString 			do_tex_name = ChangeFileExt(fn,"_details.dds");
     int res;
-    if (0==(res=ImageManager.CreateMergedTexture(textures,do_tex_name.c_str(),256,256,offsets,scales,rotated)))
-        if (0==(res=ImageManager.CreateMergedTexture(textures,do_tex_name.c_str(),512,256,offsets,scales,rotated)))
-            if (0==(res=ImageManager.CreateMergedTexture(textures,do_tex_name.c_str(),512,512,offsets,scales,rotated)))
-                if (0==(res=ImageManager.CreateMergedTexture(textures,do_tex_name.c_str(),1024,256,offsets,scales,rotated)))
-                    if (0==(res=ImageManager.CreateMergedTexture(textures,do_tex_name.c_str(),1024,512,offsets,scales,rotated)))
-                        res=ImageManager.CreateMergedTexture(textures,do_tex_name.c_str(),1024,1024,offsets,scales,rotated);
+    if (0==(res=ImageLib.CreateMergedTexture(textures,do_tex_name.c_str(),256,256,offsets,scales,rotated)))
+        if (0==(res=ImageLib.CreateMergedTexture(textures,do_tex_name.c_str(),512,256,offsets,scales,rotated)))
+            if (0==(res=ImageLib.CreateMergedTexture(textures,do_tex_name.c_str(),512,512,offsets,scales,rotated)))
+                if (0==(res=ImageLib.CreateMergedTexture(textures,do_tex_name.c_str(),1024,256,offsets,scales,rotated)))
+                    if (0==(res=ImageLib.CreateMergedTexture(textures,do_tex_name.c_str(),1024,512,offsets,scales,rotated)))
+                        res=ImageLib.CreateMergedTexture(textures,do_tex_name.c_str(),1024,1024,offsets,scales,rotated);
     if (1!=res)		bRes=FALSE;
 
 	UI.ProgressInc		("export geometry");

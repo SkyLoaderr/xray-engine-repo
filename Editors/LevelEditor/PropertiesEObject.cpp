@@ -5,7 +5,7 @@
 #include "SceneObject.h"
 #include "EditObject.h"
 #include "EditMesh.h"
-#include "ImageThumbnail.h"
+#include "EThumbnail.h"
 #include "FolderLib.h"
 #include "ui_main.h"
 //---------------------------------------------------------------------------
@@ -122,12 +122,12 @@ void __fastcall TfrmPropertiesEObject::OnSurfaceFocused(TElTreeItem* item)
         	case PROP_A_TEXTURE:{
             	LPCSTR nm = TProperties::GetItemColumn(item,0);
             	if (nm&&nm[0]){
-	                m_Thumbnail = xr_new<EImageThumbnail>(nm,EImageThumbnail::EITTexture);
+	                m_Thumbnail = xr_new<ETextureThumbnail>(nm);
                     lbWidth->Caption 	= m_Thumbnail->_Width();
                     lbHeight->Caption 	= m_Thumbnail->_Height();
                     lbAlpha->Caption 	= (m_Thumbnail->_Alpha())?"present":"absent";
                     if (m_Thumbnail->_Width()!=m_Thumbnail->_Height()) paImage->Repaint();
-                    pbImagePaint(item);
+                    paImage->Repaint	();
                 }
             }break;
         }
@@ -141,9 +141,9 @@ void __fastcall TfrmPropertiesEObject::OnSurfaceFocused(TElTreeItem* item)
 }
 //---------------------------------------------------------------------------
 
-void __fastcall TfrmPropertiesEObject::pbImagePaint(TObject *Sender)
+void __fastcall TfrmPropertiesEObject::paImagePaint(TObject *Sender)
 {
-	if (m_Thumbnail) m_Thumbnail->Draw(pbImage);
+	if (m_Thumbnail) m_Thumbnail->Draw(paImage);
 }
 //---------------------------------------------------------------------------
 

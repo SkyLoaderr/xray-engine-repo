@@ -95,25 +95,6 @@ object frmEditLibrary: TfrmEditLibrary
       TabOrder = 0
       OnClick = cbPreviewClick
     end
-    object paImage: TPanel
-      Left = 0
-      Top = 0
-      Width = 132
-      Height = 132
-      Align = alTop
-      BevelOuter = bvLowered
-      Caption = '<no image>'
-      ParentColor = True
-      TabOrder = 1
-      object pbImage: TPaintBox
-        Left = 1
-        Top = 1
-        Width = 130
-        Height = 130
-        Align = alClient
-        OnPaint = pbImagePaint
-      end
-    end
     object Panel3: TPanel
       Left = 0
       Top = 134
@@ -122,7 +103,7 @@ object frmEditLibrary: TfrmEditLibrary
       Align = alTop
       BevelOuter = bvNone
       Color = 10528425
-      TabOrder = 2
+      TabOrder = 1
       object lbFaces: TLabel
         Left = 81
         Top = 2
@@ -184,7 +165,7 @@ object frmEditLibrary: TfrmEditLibrary
       Align = alBottom
       BevelOuter = bvNone
       ParentColor = True
-      TabOrder = 3
+      TabOrder = 2
       object ebImport: TExtBtn
         Left = 2
         Top = 40
@@ -270,6 +251,18 @@ object frmEditLibrary: TfrmEditLibrary
         FlatAlwaysEdge = True
         OnClick = ExtBtn2Click
       end
+    end
+    object paImage: TMxPanel
+      Left = 0
+      Top = 0
+      Width = 132
+      Height = 132
+      Align = alTop
+      BevelOuter = bvLowered
+      Caption = '<no image>'
+      ParentColor = True
+      TabOrder = 3
+      OnPaint = paImagePaint
     end
   end
   object paItems: TPanel

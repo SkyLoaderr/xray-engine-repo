@@ -79,6 +79,7 @@ private:	// User declarations
 	ref_sound			m_Snd;
     void				PlaySound			(LPCSTR name, u32& size, u32& time);
 	void __fastcall 	OnControlClick		(PropValue* sender, bool& bModif);
+	void __fastcall 	OnControl2Click		(PropValue* sender, bool& bModif);
 public:		// User declarations
     __fastcall 			TfrmSoundLib		(TComponent* Owner);
 // static function

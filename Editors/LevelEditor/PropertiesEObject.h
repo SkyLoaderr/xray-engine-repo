@@ -17,7 +17,7 @@
 #include "MXCtrls.hpp"
 //refs
 class CSceneObject;
-class EImageThumbnail;
+class ETextureThumbnail;
 struct SRayPickInfo;
 
 class TfrmPropertiesEObject : public TForm
@@ -37,18 +37,17 @@ __published:	// IDE-managed Components
 	TLabel *lbWidth;
 	TLabel *lbHeight;
 	TLabel *lbAlpha;
-	TPanel *paImage;
-	TPaintBox *pbImage;
 	TPanel *Panel1;
 	TExtBtn *ebSortByImage;
 	TExtBtn *ebSortByName;
 	TExtBtn *ebDropper;
 	TExtBtn *ebSortByShader;
 	TLabel *Label1;
+	TMxPanel *paImage;
 	void __fastcall FormDestroy(TObject *Sender);
 	void __fastcall fsStorageRestorePlacement(TObject *Sender);
 	void __fastcall fsStorageSavePlacement(TObject *Sender);
-	void __fastcall pbImagePaint(TObject *Sender);
+	void __fastcall paImagePaint(TObject *Sender);
 	void __fastcall FormShow(TObject *Sender);
 private:	// User declarations
     TProperties* 	m_BasicProp;
@@ -56,7 +55,7 @@ private:	// User declarations
     bool			bModified;
     TOnModifiedEvent OnModifiedEvent;
     void __fastcall	OnSurfaceFocused	   	(TElTreeItem* item);
-    EImageThumbnail*m_Thumbnail;
+    ETextureThumbnail* m_Thumbnail;
     CSceneObject* 	m_pEditObject;
     void			FillBasicProps			();
     void			FillSurfProps			();

@@ -22,13 +22,13 @@ void __fastcall TUI_ControlSectorAdd::OnEnter()
 {
     m_Action = saNone;
     TfraSector* fraSector = (TfraSector*)parent_tool->pFrame; VERIFY(fraSector);
-//    fraSector->paSectorActions->Show();
+    fraSector->paSectorActions->Show();
 }
 
 void __fastcall TUI_ControlSectorAdd::OnExit()
 {
     TfraSector* fraSector = (TfraSector*)parent_tool->pFrame; VERIFY(fraSector);
-//    fraSector->paSectorActions->Hide();
+    fraSector->paSectorActions->Hide();
 	fraSector = 0;
 }
 

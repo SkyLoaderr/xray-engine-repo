@@ -75,9 +75,9 @@
       intermediate\ExportObjectOGF.obj intermediate\ExportSkeleton.obj 
       intermediate\FolderLib.obj intermediate\FS2.obj intermediate\Glow.obj 
       intermediate\GroupObject.obj intermediate\ImageManager.obj 
-      intermediate\ImageThumbnail.obj intermediate\ItemList.obj 
-      intermediate\ItemListHelper.obj intermediate\ItemListTypes.obj 
-      intermediate\Library.obj intermediate\LightAnimLibrary.obj 
+      intermediate\ItemList.obj intermediate\ItemListHelper.obj 
+      intermediate\ItemListTypes.obj intermediate\Library.obj 
+      intermediate\LightAnimLibrary.obj 
       intermediate\ESceneAIMapTools_MotionSimulator.obj 
       intermediate\ParticleEffectEditor.obj intermediate\portal.obj 
       intermediate\portalutils.obj intermediate\PSLibrary.obj 
@@ -136,7 +136,9 @@
       intermediate\FrameSpawn.obj intermediate\UI_SectorTools.obj 
       intermediate\thunderbolt.obj intermediate\ModelPool.obj 
       intermediate\SkeletonCustom.obj intermediate\SkeletonAnimated.obj 
-      intermediate\SkeletonRigid.obj"/>
+      intermediate\SkeletonRigid.obj intermediate\SoundEditor.obj 
+      intermediate\EThumbnailTexture.obj intermediate\EThumbnail.obj 
+      intermediate\EThumbnailObject.obj intermediate\EThumbnailSound.obj"/>
     <RESFILES value="resource.res LevelEditor.res"/>
     <IDLFILES value=""/>
     <IDLGENFILES value=""/>
@@ -148,7 +150,7 @@
       FrameWayPoint.dfm ImageEditor.dfm LeftBar.dfm LogForm.dfm main.dfm 
       NumericVector.dfm ObjectList.dfm previewimage.dfm PropertiesEObject.dfm 
       PropertiesList.dfm SceneProperties.dfm ShaderFunction.dfm Splash.dfm 
-      TextForm.dfm FrameObject.dfm FrameSpawn.dfm"/>
+      TextForm.dfm FrameObject.dfm FrameSpawn.dfm edit\SoundEditor.dfm"/>
     <LIBFILES value=""/>
     <LIBRARIES value="elpackB6.lib editor.lib bcbsmp.lib"/>
     <SPARELIBS value="rtl.lib vcl.lib bcbsmp.lib vclx.lib editor.lib elpackB6.lib"/>
@@ -333,7 +335,6 @@
       <FILE FILENAME="edit\Glow.cpp" FORMNAME="" UNITNAME="Glow.cpp" CONTAINERID="CCompiler" DESIGNCLASS="" LOCALCOMMAND=""/>
       <FILE FILENAME="edit\GroupObject.cpp" FORMNAME="" UNITNAME="GroupObject.cpp" CONTAINERID="CCompiler" DESIGNCLASS="" LOCALCOMMAND=""/>
       <FILE FILENAME="edit\ImageManager.cpp" FORMNAME="" UNITNAME="ImageManager.cpp" CONTAINERID="CCompiler" DESIGNCLASS="" LOCALCOMMAND=""/>
-      <FILE FILENAME="edit\ImageThumbnail.cpp" FORMNAME="" UNITNAME="ImageThumbnail.cpp" CONTAINERID="CCompiler" DESIGNCLASS="" LOCALCOMMAND=""/>
       <FILE FILENAME="edit\ItemList.cpp" FORMNAME="ItemList" UNITNAME="ItemList" CONTAINERID="CCompiler" DESIGNCLASS="" LOCALCOMMAND=""/>
       <FILE FILENAME="edit\ItemListHelper.cpp" FORMNAME="" UNITNAME="ItemListHelper.cpp" CONTAINERID="CCompiler" DESIGNCLASS="" LOCALCOMMAND=""/>
       <FILE FILENAME="edit\ItemListTypes.cpp" FORMNAME="" UNITNAME="ItemListTypes.cpp" CONTAINERID="CCompiler" DESIGNCLASS="" LOCALCOMMAND=""/>
@@ -452,6 +453,11 @@
       <FILE FILENAME="Engine\Animations\SkeletonCustom.cpp" FORMNAME="" UNITNAME="SkeletonCustom" CONTAINERID="CCompiler" DESIGNCLASS="" LOCALCOMMAND=""/>
       <FILE FILENAME="Engine\Animations\SkeletonAnimated.cpp" FORMNAME="" UNITNAME="SkeletonAnimated" CONTAINERID="CCompiler" DESIGNCLASS="" LOCALCOMMAND=""/>
       <FILE FILENAME="Engine\Animations\SkeletonRigid.cpp" FORMNAME="" UNITNAME="SkeletonRigid" CONTAINERID="CCompiler" DESIGNCLASS="" LOCALCOMMAND=""/>
+      <FILE FILENAME="edit\SoundEditor.cpp" FORMNAME="frmSoundLib" UNITNAME="SoundEditor" CONTAINERID="CCompiler" DESIGNCLASS="" LOCALCOMMAND=""/>
+      <FILE FILENAME="edit\EThumbnailTexture.cpp" FORMNAME="" UNITNAME="EThumbnailTexture.cpp" CONTAINERID="CCompiler" DESIGNCLASS="" LOCALCOMMAND=""/>
+      <FILE FILENAME="edit\EThumbnail.cpp" FORMNAME="" UNITNAME="EThumbnail.cpp" CONTAINERID="CCompiler" DESIGNCLASS="" LOCALCOMMAND=""/>
+      <FILE FILENAME="edit\EThumbnailObject.cpp" FORMNAME="" UNITNAME="EThumbnailObject.cpp" CONTAINERID="CCompiler" DESIGNCLASS="" LOCALCOMMAND=""/>
+      <FILE FILENAME="edit\EThumbnailSound.cpp" FORMNAME="" UNITNAME="EThumbnailSound.cpp" CONTAINERID="CCompiler" DESIGNCLASS="" LOCALCOMMAND=""/>
   </FILELIST>
   <BUILDTOOLS>
   </BUILDTOOLS>
@@ -463,7 +469,7 @@ AutoIncBuild=1
 MajorVer=1
 MinorVer=0
 Release=2
-Build=72
+Build=100
 Debug=1
 PreRelease=0
 Special=0
@@ -475,7 +481,7 @@ CodePage=1252
 [Version Info Keys]
 CompanyName=
 FileDescription=
-FileVersion=1.0.2.72
+FileVersion=1.0.2.100
 InternalName=
 LegalCopyright=
 LegalTrademarks=

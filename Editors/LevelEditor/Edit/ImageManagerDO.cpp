@@ -3,7 +3,7 @@
 
 #include "ImageManager.h"
 #include "ETextureParams.h"
-#include "ImageThumbnail.h"
+#include "EThumbnail.h"
 #include "xrImage_Resampler.h"
 #include "freeimage.h"
 #include "Image.h"

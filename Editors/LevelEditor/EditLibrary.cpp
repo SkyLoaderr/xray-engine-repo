@@ -16,7 +16,7 @@
 #include "BottomBar.h"
 #include "FolderLib.h"
 #include "ImageManager.h"
-#include "ImageThumbnail.h"
+#include "EThumbnail.h"
 #include "DetailObjects.h"
 #include "xr_trims.h"
 #include "SceneObject.h"
@@ -35,6 +35,7 @@
 #pragma link "mxPlacemnt"
 #pragma link "MxMenus"
 #pragma link "ElTreeAdvEdit"
+#pragma link "MXCtrls"
 #pragma resource "*.dfm"
 
 TfrmEditLibrary* TfrmEditLibrary::form=0;
@@ -213,7 +214,7 @@ void __fastcall TfrmEditLibrary::OnItemFocused(TElTreeItem* item)
         	// если версии совпадают
             int obj_age 		= FS.get_file_age(obj_fn.c_str());
             int thm_age 		= FS.get_file_age(thm_fn.c_str());
-            m_Thm 				= xr_new<EImageThumbnail>(nm.c_str(),EImageThumbnail::EITObject);
+            m_Thm 				= xr_new<EObjectThumbnail>(nm.c_str());
             if (obj_age&&(obj_age==thm_age)){
             }else{
             	ELog.Msg(mtError,"Update object thumbnail. Stale data.");
@@ -230,14 +231,13 @@ void __fastcall TfrmEditLibrary::OnItemFocused(TElTreeItem* item)
 		ChangeReference(0);
     }
     if (m_Thm&&m_Thm->Valid()){
-        pbImagePaint		(0);
         lbFaces->Caption 	= m_Thm->_FaceCount()?AnsiString(m_Thm->_FaceCount()):AnsiString("?");
         lbVertices->Caption = m_Thm->_VertexCount()?AnsiString(m_Thm->_VertexCount()):AnsiString("?");
     }else{
-        pbImage->Repaint	();
         lbFaces->Caption 	= "?";
         lbVertices->Caption = "?";
     }
+    paImage->Repaint	();
     UpdateObjectProperties();
     UI.RedrawScene();
     ebMakeThm->Enabled	= mt;
@@ -325,7 +325,7 @@ void __fastcall TfrmEditLibrary::ebMakeThmClick(TObject *Sender)
     	if (obj&&cbPreview->Checked){
             AnsiString tex_name;
             tex_name = ChangeFileExt(obj->GetName(),".thm");
-            if (ImageManager.CreateOBJThumbnail(tex_name.c_str(),obj,obj->m_Version)){
+            if (ImageLib.CreateOBJThumbnail(tex_name.c_str(),obj,obj->m_Version)){
 	            ELog.Msg(mtInformation,"Thumbnail successfully created.");
                 AnsiString full_name;
                 FHelper.MakeFullName(node,0,full_name);
@@ -352,8 +352,8 @@ void __fastcall TfrmEditLibrary::ebMakeLODClick(TObject *Sender)
             tex_name = ChangeFileExt(name,".tga");
             string256 nm; strcpy(nm,tex_name.c_str()); _ChangeSymbol(nm,'\\','_');
             tex_name = "lod_"+AnsiString(nm);
-            tex_name = EFS.UpdateTextureNameWithFolder(tex_name);
-            ImageManager.CreateLODTexture(O->GetBox(), tex_name.c_str(),LOD_IMAGE_SIZE,LOD_IMAGE_SIZE,LOD_SAMPLE_COUNT,O->m_Version);
+            tex_name = EFS.AppendFolderToName(tex_name);
+            ImageLib.CreateLODTexture(O->GetBox(), tex_name.c_str(),LOD_IMAGE_SIZE,LOD_IMAGE_SIZE,LOD_SAMPLE_COUNT,O->m_Version);
             m_pEditObject->GetReference()->OnDeviceDestroy();
 //.        	tvItemsItemFocused(Sender);
         	O->m_Flags.set(CEditableObject::eoUsingLOD,bLod);
@@ -408,9 +408,9 @@ void __fastcall TfrmEditLibrary::RefreshSelected()
     }
 }
 //---------------------------------------------------------------------------
-void __fastcall TfrmEditLibrary::pbImagePaint(TObject *Sender)
+void __fastcall TfrmEditLibrary::paImagePaint(TObject *Sender)
 {
-    if (m_Thm) m_Thm->Draw(pbImage);
+    if (m_Thm) m_Thm->Draw(paImage);
 }
 //---------------------------------------------------------------------------
 

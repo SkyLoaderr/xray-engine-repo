@@ -2,7 +2,7 @@ object fraLeftBar: TfraLeftBar
   Left = 0
   Top = 0
   Width = 443
-  Height = 902
+  Height = 277
   HorzScrollBar.ButtonSize = 1
   HorzScrollBar.ParentColor = False
   HorzScrollBar.Visible = False
@@ -2667,7 +2667,7 @@ object fraLeftBar: TfraLeftBar
     IniSection = 'Left Bar'
     Options = []
     RegistryRoot = prLocalMachine
-    Version = 17
+    Version = 18
     StoredProps.Strings = (
       'paEdit.Tag'
       'paEdit.Height'
@@ -3225,7 +3225,7 @@ object fraLeftBar: TfraLeftBar
     end
     object MenuItem10: TMenuItem
       Caption = 'Check New Textures'
-      OnClick = Checknewtextures1Click
+      OnClick = CheckNewTexturesClick
     end
   end
   object pmSounds: TMxPopupMenu
@@ -3248,9 +3248,20 @@ object fraLeftBar: TfraLeftBar
     end
     object MenuItem12: TMenuItem
       Caption = 'Sound Editor'
-      Enabled = False
+      OnClick = MenuItem12Click
     end
     object MenuItem15: TMenuItem
+      Caption = '-'
+    end
+    object SynchronizeSounds1: TMenuItem
+      Caption = 'Synchronize Sounds'
+      OnClick = SynchronizeSounds1Click
+    end
+    object CheckNewSounds: TMenuItem
+      Caption = 'Check New Sounds'
+      OnClick = CheckNewSoundsClick
+    end
+    object N23: TMenuItem
       Caption = '-'
     end
     object MenuItem14: TMenuItem

@@ -191,6 +191,9 @@ __published:	// IDE-managed Components
 	TMenuItem *N21;
 	TMenuItem *ebOpenSel;
 	TMenuItem *ebSaveSel;
+	TMenuItem *N23;
+	TMenuItem *SynchronizeSounds1;
+	TMenuItem *CheckNewSounds;
     void __fastcall ebClearClick(TObject *Sender);
     void __fastcall ebLoadClick(TObject *Sender);
     void __fastcall ebSaveClick(TObject *Sender);
@@ -244,7 +247,7 @@ __published:	// IDE-managed Components
 	void __fastcall miAddSelectedToListClick(TObject *Sender);
 	void __fastcall ebUseSnapListClick(TObject *Sender);
 	void __fastcall RefreshObjects1Click(TObject *Sender);
-	void __fastcall Checknewtextures1Click(TObject *Sender);
+	void __fastcall CheckNewTexturesClick(TObject *Sender);
 	void __fastcall MakeDetailsClick(TObject *Sender);
 	void __fastcall miPropertiesClick(TObject *Sender);
 	void __fastcall RefreshLibrary1Click(TObject *Sender);
@@ -276,6 +279,9 @@ __published:	// IDE-managed Components
 	void __fastcall ebOpenSelClick(TObject *Sender);
 	void __fastcall ebSaveSelClick(TObject *Sender);
 	void __fastcall ebViewClick(TObject *Sender);
+	void __fastcall MenuItem12Click(TObject *Sender);
+	void __fastcall CheckNewSoundsClick(TObject *Sender);
+	void __fastcall SynchronizeSounds1Click(TObject *Sender);
 private:	// User declarations
     void RefreshBar();
 public:		// User declarations

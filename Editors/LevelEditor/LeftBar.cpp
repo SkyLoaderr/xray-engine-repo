@@ -277,7 +277,7 @@ void __fastcall TfraLeftBar::RefreshLibrary1Click(TObject *Sender)
 }
 //---------------------------------------------------------------------------
 
-void __fastcall TfraLeftBar::Checknewtextures1Click(TObject *Sender)
+void __fastcall TfraLeftBar::CheckNewTexturesClick(TObject *Sender)
 {
 	UI.Command( COMMAND_CHECK_TEXTURES );
 }
@@ -654,4 +654,21 @@ void __fastcall TfraLeftBar::ebSnapListModeClick(TObject *Sender)
 }
 //---------------------------------------------------------------------------
 
+void __fastcall TfraLeftBar::MenuItem12Click(TObject *Sender)
+{
+	UI.Command(COMMAND_SOUND_EDITOR);
+}
+//---------------------------------------------------------------------------
+
+void __fastcall TfraLeftBar::CheckNewSoundsClick(TObject *Sender)
+{
+	UI.Command(COMMAND_CHECK_SOUNDS);
+}
+//---------------------------------------------------------------------------
+
+void __fastcall TfraLeftBar::SynchronizeSounds1Click(TObject *Sender)
+{
+	UI.Command(COMMAND_SYNC_SOUNDS);
+}
+//---------------------------------------------------------------------------
 

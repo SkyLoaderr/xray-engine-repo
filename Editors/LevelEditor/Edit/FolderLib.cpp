@@ -327,6 +327,7 @@ void CFolderHelper::DragDrop(TObject *Sender, TObject *Source, int X, int Y, TOn
     // move objects
     TElTreeItem* item 	= DragItem;
     bool bFolderMove	= IsFolder(item);
+
     do{
     	// проверяем есть ли в таргете такой элемент
     	EItemType type 	= EItemType(item->Data);
@@ -339,7 +340,7 @@ void CFolderHelper::DragDrop(TObject *Sender, TObject *Source, int X, int Y, TOn
 		// если нет добавляем
         if (!pNode){ 
         	pNode 				= (type==TYPE_FOLDER)?LL_CreateFolder(tv,cur_folder,item->Text):LL_CreateObject(tv,cur_folder,item->Text);
-            pNode->Assign		(item);
+            if (type==TYPE_OBJECT) pNode->Assign(item);
         }
 		if (IsFolder(item)){
         	cur_folder 			= pNode;

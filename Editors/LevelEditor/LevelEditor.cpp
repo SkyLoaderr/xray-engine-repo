@@ -38,6 +38,7 @@ USEFORM("Splash.cpp", frmSplash);
 USEFORM("TextForm.cpp", frmText);
 USEFORM("FrameObject.cpp", fraObject); /* TFrame: File Type */
 USEFORM("FrameSpawn.cpp", fraSpawn);
+USEFORM("edit\SoundEditor.cpp", frmSoundLib);
 //---------------------------------------------------------------------------
 WINAPI WinMain(HINSTANCE hInst, HINSTANCE, LPSTR, int)
 {

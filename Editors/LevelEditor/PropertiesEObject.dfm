@@ -1,6 +1,6 @@
 object frmPropertiesEObject: TfrmPropertiesEObject
-  Left = 813
-  Top = 631
+  Left = 338
+  Top = 222
   Width = 467
   Height = 363
   BiDiMode = bdRightToLeft
@@ -165,23 +165,16 @@ object frmPropertiesEObject: TfrmPropertiesEObject
             Font.Style = [fsBold]
             ParentFont = False
           end
-          object paImage: TPanel
-            Left = 3
+          object paImage: TMxPanel
+            Left = 2
             Top = 60
-            Width = 130
-            Height = 130
+            Width = 132
+            Height = 132
             BevelOuter = bvLowered
-            Caption = '<image>'
-            Color = 10528425
+            Caption = '<no image>'
+            ParentColor = True
             TabOrder = 0
-            object pbImage: TPaintBox
-              Left = 1
-              Top = 1
-              Width = 128
-              Height = 128
-              Align = alClient
-              OnPaint = pbImagePaint
-            end
+            OnPaint = paImagePaint
           end
         end
       end

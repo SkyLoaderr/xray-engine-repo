@@ -52,6 +52,7 @@ public:
 	virtual			~EImageThumbnail();
 	virtual void 	Draw			(TCanvas* pCanvas, const TRect& R, bool bUseAlpha=false)=0;
 	virtual void 	Draw			(TMxPanel* panel, bool bUseAlpha=false)=0;
+    virtual	int		MemoryUsage		()=0;
 };
 
 class ETextureThumbnail: public EImageThumbnail{
@@ -77,7 +78,8 @@ public:
 	virtual void 	Draw			(TCanvas* pCanvas, const TRect& R, bool bUseAlpha=false){inherited::Draw(pCanvas,R,_Width(),_Height(),bUseAlpha);}
 	virtual void 	Draw			(TMxPanel* panel, bool bUseAlpha=false){inherited::Draw(panel,_Width(),_Height(),bUseAlpha);}
 
-    int				MemoryUsage		();
+    virtual int		MemoryUsage		();
+    LPCSTR			FormatString	();
 };
 //------------------------------------------------------------------------------
 
@@ -103,6 +105,8 @@ public:
 	virtual void	FillProp		(PropItemVec& values);
 	virtual void 	Draw			(TCanvas* pCanvas, const TRect& R, bool bUseAlpha=false){inherited::Draw(pCanvas,R,0,0,false);}
 	virtual void 	Draw			(TMxPanel* panel, bool bUseAlpha=false){inherited::Draw(panel,0,0,false);}
+
+    virtual int		MemoryUsage		(){return 0;}
 };
 //------------------------------------------------------------------------------
 

@@ -4,7 +4,7 @@ object frmSoundLib: TfrmSoundLib
   Width = 350
   Height = 455
   BorderIcons = [biSystemMenu, biMinimize]
-  Caption = 'Image Editor'
+  Caption = 'Sound Editor'
   Color = 10528425
   Constraints.MinHeight = 400
   Constraints.MinWidth = 350
@@ -136,7 +136,7 @@ object frmSoundLib: TfrmSoundLib
       Align = alBottom
       Alignment = taLeftJustify
       BevelOuter = bvNone
-      Caption = 'Textures: 123'
+      Caption = 'Sound: 123'
       Color = 10528425
       TabOrder = 0
     end

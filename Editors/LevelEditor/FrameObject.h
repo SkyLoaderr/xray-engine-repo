@@ -31,7 +31,6 @@ __published:	// IDE-managed Components
 	TBevel *Bevel1;
 	TLabel *Label2;
 	TExtBtn *ebMultiSelectByRefAppend;
-	TMultiObjSpinEdit *seSelPercent;
 	TLabel *Label3;
 	TPanel *paSelectObject;
 	TLabel *Label1;
@@ -44,7 +43,6 @@ __published:	// IDE-managed Components
 	TLabel *Label4;
 	TExtBtn *ExtBtn7;
 	TLabel *Label6;
-	TMultiObjSpinEdit *MultiObjSpinEdit1;
 	TPanel *paCommands;
 	TExtBtn *ebMultiAppend;
 	TLabel *APHeadLabel1;
@@ -58,6 +56,7 @@ __published:	// IDE-managed Components
 	TPanel *paItems;
 	TPanel *Panel1;
 	TExtBtn *ExtBtn4;
+	TMultiObjSpinEdit *seSelPercent;
     void __fastcall PaneMinClick(TObject *Sender);
     void __fastcall ebSelectByRefsClick(TObject *Sender);
     void __fastcall ebDeselectByRefsClick(TObject *Sender);

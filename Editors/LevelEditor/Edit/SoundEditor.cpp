@@ -232,6 +232,25 @@ void __fastcall TfrmSoundLib::OnControlClick(PropValue* sender, bool& bModif)
     switch (V->btn_num){
     case 0: m_Snd.play_at_pos(0,Device.m_Camera.GetPosition(),FALSE); 	break;
     case 1: m_Snd.stop(); 												break;
+    case 2:{ 
+    	ButtonValue* B = dynamic_cast<ButtonValue*>(sender); VERIFY(B);
+    	bAutoPlay=!bAutoPlay; 
+        B->value[V->btn_num] = AnsiString().sprintf("Auto (%s)",bAutoPlay?"on":"off");
+    }break;
+	}
+    bModif = false;
+}
+//------------------------------------------------------------------------------
+
+void __fastcall TfrmSoundLib::OnControl2Click(PropValue* sender, bool& bModif)
+{
+	ButtonValue* V = dynamic_cast<ButtonValue*>(sender); R_ASSERT(V);
+    switch (V->btn_num){
+    case 0:{
+    	ButtonValue* B = dynamic_cast<ButtonValue*>(sender); VERIFY(B);
+    	bAutoPlay=!bAutoPlay; 
+        B->value[V->btn_num] = bAutoPlay?"on":"off";
+    }break;
 	}
     bModif = false;
 }
@@ -272,12 +291,13 @@ void __fastcall TfrmSoundLib::OnItemsFocused(ListItemsVec& items)
         u32 size=0;
         u32 time=0;
 		PlaySound(thm->SrcName(), size, time);
-        PHelper.CreateCaption(props,"File length",	AnsiString().sprintf("%.2f Kb",float(size)/1024.f));
-        PHelper.CreateCaption(props,"Total time",	AnsiString().sprintf("%.2f sec",float(time)/1000.f));
+        PHelper.CreateCaption(props,"File Length",	AnsiString().sprintf("%.2f Kb",float(size)/1024.f));
+        PHelper.CreateCaption(props,"Total Time",	AnsiString().sprintf("%.2f sec",float(time)/1000.f));
         if (!bImportMode){
             ButtonValue* B=PHelper.CreateButton	(props, "Control",	"Play,Stop",ButtonValue::flFirstOnly);
             B->OnBtnClickEvent		= OnControlClick;
-            PHelper.CreateBOOL		(props, "Auto Play", &bAutoPlay);
+            B=PHelper.CreateButton	(props, "Auto Play",bAutoPlay?"on":"off",ButtonValue::flFirstOnly);
+            B->OnBtnClickEvent		= OnControl2Click;
         }
     }
     
@@ -287,7 +307,7 @@ void __fastcall TfrmSoundLib::OnItemsFocused(ListItemsVec& items)
 
 void TfrmSoundLib::PlaySound(LPCSTR name, u32& size, u32& time)
 {
-	if (bImportMode&&bAutoPlay) return;
+	if (bImportMode) return;
     const CLocatorAPI::file* file	= FS.exist(_game_sounds_,ChangeFileExt(name,".ogg").c_str());
     if (file){
         m_Snd.create		(TRUE,name);
@@ -296,6 +316,7 @@ void TfrmSoundLib::PlaySound(LPCSTR name, u32& size, u32& time)
         CSoundRender_Source* src= (CSoundRender_Source*)m_Snd.handle;
         size				= file->size_real;
         time				= src->dwTimeTotal;
+    	if (!bAutoPlay)		m_Snd.stop();
     }
 }
 

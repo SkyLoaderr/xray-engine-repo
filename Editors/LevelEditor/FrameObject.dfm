@@ -126,22 +126,6 @@ object fraObject: TfraObject
     Caption = 'Select by Selected:'
     WordWrap = True
   end
-  object seSelPercent: TMultiObjSpinEdit
-    Left = 145
-    Top = 30
-    Width = 38
-    Height = 13
-    LWSensitivity = 1
-    ButtonKind = bkLightWave
-    MaxValue = 100
-    MinValue = 1
-    Value = 100
-    AutoSize = False
-    BorderStyle = bsNone
-    Color = 12698049
-    TabOrder = 0
-    OnKeyPress = seSelPercentKeyPress
-  end
   object paSelectObject: TPanel
     Left = 0
     Top = 0
@@ -149,7 +133,13 @@ object fraObject: TfraObject
     Height = 46
     Align = alTop
     Color = 10528425
-    TabOrder = 1
+    TabOrder = 0
+    object Bevel3: TBevel
+      Left = 144
+      Top = 28
+      Width = 40
+      Height = 16
+    end
     object Label1: TLabel
       Left = 5
       Top = 16
@@ -248,12 +238,6 @@ object fraObject: TfraObject
       ParentFont = False
       OnClick = ebMultiSelectByRefMoveClick
     end
-    object Bevel3: TBevel
-      Left = 144
-      Top = 28
-      Width = 40
-      Height = 16
-    end
     object Label4: TLabel
       Left = 186
       Top = 30
@@ -293,7 +277,7 @@ object fraObject: TfraObject
       Caption = 'Select by Selected:'
       WordWrap = True
     end
-    object MultiObjSpinEdit1: TMultiObjSpinEdit
+    object seSelPercent: TMultiObjSpinEdit
       Left = 145
       Top = 30
       Width = 38
@@ -317,7 +301,7 @@ object fraObject: TfraObject
     Height = 55
     Align = alTop
     Color = 10528425
-    TabOrder = 2
+    TabOrder = 1
     object ebMultiAppend: TExtBtn
       Left = 2
       Top = 16
@@ -471,7 +455,7 @@ object fraObject: TfraObject
     Align = alClient
     Color = 10528425
     Constraints.MinHeight = 175
-    TabOrder = 3
+    TabOrder = 2
     OnResize = paCurrentObjectResize
     object APHeadLabel2: TLabel
       Left = 1

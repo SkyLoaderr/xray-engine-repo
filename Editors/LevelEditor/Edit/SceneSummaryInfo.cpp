@@ -2,7 +2,8 @@
 #pragma hdrstop
 
 #include "SceneSummaryInfo.h"
-#include "ImageThumbnail.h"
+#include "ImageManager.h"
+#include "EThumbnail.h"
 #include "SceneSummaryInfo.h"
 #include "Scene.h"
 #include "SceneObject.h"
@@ -42,7 +43,7 @@ void SSceneSummary::FillProp(PropItemVec& items)
     UI.ProgressStart(textures.size(),"Collect base textures info: ");
     for (AStringSetIt t_it=textures.begin(); t_it!=textures.end(); t_it++){
         UI.ProgressInc	(t_it->c_str());
-        EImageThumbnail* T 	= xr_new<EImageThumbnail>(t_it->c_str(),EImageThumbnail::EITTexture,true);
+        ETextureThumbnail* T 	= (ETextureThumbnail*)ImageLib.CreateThumbnail(t_it->c_str(),ECustomThumbnail::ETTexture,true);
         if (!T->Valid()){
         	ELog.Msg(mtError,"Can't get info from texture: '%s'",t_it->c_str());
         }else{
@@ -72,7 +73,7 @@ void SSceneSummary::FillProp(PropItemVec& items)
     UI.ProgressStart(det_textures.size(),"Collect detail textures info: ");
     for (t_it=det_textures.begin(); t_it!=det_textures.end(); t_it++){
         UI.ProgressInc	(t_it->c_str());
-        EImageThumbnail* T = xr_new<EImageThumbnail>(t_it->c_str(),EImageThumbnail::EITTexture,true);
+        ETextureThumbnail* T = (ETextureThumbnail*)ImageLib.CreateThumbnail(t_it->c_str(),ECustomThumbnail::ETTexture,true);
         if (!T->Valid()){
         	ELog.Msg(mtError,"Can't get info from texture: '%s'",t_it->c_str());
         }else{
@@ -103,7 +104,7 @@ void SSceneSummary::FillProp(PropItemVec& items)
     UI.ProgressStart(do_textures.size(),"Collect detail object textures info: ");
     for (t_it=do_textures.begin(); t_it!=do_textures.end(); t_it++){
         UI.ProgressInc		(t_it->c_str());
-        EImageThumbnail* T 	= xr_new<EImageThumbnail>(t_it->c_str(),EImageThumbnail::EITTexture,true);
+        ETextureThumbnail* T = (ETextureThumbnail*)ImageLib.CreateThumbnail(t_it->c_str(),ECustomThumbnail::ETTexture,true);
         if (!T->Valid()){
         	ELog.Msg(mtError,"Can't get info from texture: '%s'",t_it->c_str());
         }else{

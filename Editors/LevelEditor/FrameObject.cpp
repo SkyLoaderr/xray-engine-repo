@@ -10,7 +10,7 @@
 #include "library.h"
 #include "ChoseForm.h"
 #include "ESceneObjectTools.h"
-#include "ImageThumbnail.h"
+#include "EThumbnail.h"
 #include "Scene.h"
 //---------------------------------------------------------------------------
 #pragma package(smart_init)
@@ -29,7 +29,7 @@ __fastcall TfraObject::TfraObject(TComponent* Owner,ESceneObjectTools* parent_to
 //---------------------------------------------------------------------------
 bool __fastcall TfraObject::OnDrawObjectThumbnail(ListItem* sender, TCanvas *Surface, TRect &R)
 {
-	return FHelper.DrawThumbnail(Surface,R,sender->Key(),EImageThumbnail::EITObject);
+	return FHelper.DrawThumbnail(Surface,R,sender->Key(),ECustomThumbnail::ETObject);
 }
 //---------------------------------------------------------------------------
 void __fastcall TfraObject::OnItemFocused(ListItemsVec& items)

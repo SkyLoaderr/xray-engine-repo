@@ -39,8 +39,6 @@ __published:	// IDE-managed Components
 	TPanel *Panel2;
 	TElTree *tvItems;
 	TPanel *paObject;
-	TPanel *paImage;
-	TPaintBox *pbImage;
 	TPanel *Panel1;
 	TExtBtn *ebAddObject;
 	TExtBtn *ebDelObject;
@@ -49,10 +47,11 @@ __published:	// IDE-managed Components
 	TExtBtn *ebClearList;
 	TPanel *paObjectProps;
 	TSplitter *Splitter1;
+	TMxPanel *paImage;
     void __fastcall FormKeyDown(TObject *Sender, WORD &Key,
           TShiftState Shift);
     void __fastcall FormClose(TObject *Sender, TCloseAction &Action);
-	void __fastcall pbImagePaint(TObject *Sender);
+	void __fastcall paImagePaint(TObject *Sender);
 	void __fastcall tvItemsKeyPress(TObject *Sender, char &Key);
 	void __fastcall tvMultiDragDrop(TObject *Sender, TObject *Source, int X,
           int Y);
