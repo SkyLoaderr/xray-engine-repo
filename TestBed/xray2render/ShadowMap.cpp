@@ -1623,7 +1623,10 @@ HRESULT CMyD3DApplication::RenderCombine_Bloom	()
 
 	// Shader-params
 	for (o_it=0; o_it<7; o_it++)
-		cc.seta								(O,o_it,bloom_H[o_it].x,bloom_H[o_it].y,bloom_H[o_it].z,bloom_H[o_it].w);
+	{
+		D3DXVECTOR4 offs = bloom_H[o_it];
+		cc.seta								(O,o_it,offs.x,offs.y,offs.z,offs.w);
+	}
 
 	// Filter over-bright information to BLOOM-2
 	cc.flush								(m_pd3dDevice);
@@ -1636,7 +1639,10 @@ HRESULT CMyD3DApplication::RenderCombine_Bloom	()
 
 	// Shader-params
 	for (o_it=0; o_it<7; o_it++)
-		cc.seta								(O,o_it,bloom_V[o_it].x,bloom_V[o_it].y,bloom_V[o_it].z,bloom_V[o_it].w);
+	{
+		D3DXVECTOR4 offs = bloom_V[o_it];
+		cc.seta								(O,o_it,offs.x,offs.y,offs.z,offs.w);
+	}
 
 	// Filter over-bright information to BLOOM-2
 	cc.flush								(m_pd3dDevice);

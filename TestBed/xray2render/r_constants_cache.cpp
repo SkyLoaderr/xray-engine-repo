@@ -18,6 +18,7 @@ void R_constants::flush_cache(IDirect3DDevice9* D)
 				F.flush			();
 			}
 		}
+		a_pixel.b_dirty		= false;
 	}
 	if (a_vertex.b_dirty)
 	{
@@ -30,5 +31,6 @@ void R_constants::flush_cache(IDirect3DDevice9* D)
 				F.flush			();
 			}
 		}
+		a_vertex.b_dirty	= false;
 	}
 }
