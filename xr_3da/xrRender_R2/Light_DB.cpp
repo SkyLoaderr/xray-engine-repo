@@ -37,9 +37,11 @@ void CLight_DB::Load			(IReader *fs)
 #if RENDER==R_R1
 			L->set_shadow				(false);
 #else
+			/*
 			L->set_type					(IRender_Light::SPOT);
 			Fvector	tmpD,tmpR; tmpD.set(0,-1,0);tmpR.set(1,0,0);
 			L->set_rotation				(tmpD,tmpR);
+			*/
 			L->set_shadow				(true);
 #endif
 			u32 controller				= 0;
