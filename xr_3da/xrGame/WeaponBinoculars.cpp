@@ -77,7 +77,6 @@ void CWeaponBinoculars::Load	(LPCSTR section)
 
 void CWeaponBinoculars::renderable_Render	()
 {
-	inherited::renderable_Render			();
 	UpdateXForm						();
 	if (hud_mode && m_pHUD)
 	{ 
@@ -86,11 +85,7 @@ void CWeaponBinoculars::renderable_Render	()
 		::Render->add_Visual		(m_pHUD->Visual());
 	}
 	else
-	{
-		// Actor render
-		::Render->set_Transform		(&XFORM());
-		::Render->add_Visual		(Visual());
-	}
+		inherited::renderable_Render();
 }
 
 void CWeaponBinoculars::OnStateSwitch	(u32 S)

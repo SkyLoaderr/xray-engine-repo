@@ -164,10 +164,7 @@ void CTorch::UpdateCL()
 
 void CTorch::renderable_Render	() 
 {
-	if (getVisible()) {
-		::Render->set_Transform	(&XFORM());
-		::Render->add_Visual	(Visual());
-	}
+	inherited::renderable_Render();
 }
 
 void CTorch::reinit				()

@@ -164,11 +164,6 @@ void CProjector::UpdateCL	()
 void CProjector::renderable_Render()
 {
 	inherited::renderable_Render	();
-
-	if(getVisible()) {
-		::Render->set_Transform		(&XFORM());
-		::Render->add_Visual		(Visual());
-	}
 }
 
 BOOL CProjector::UsedAI_Locations()

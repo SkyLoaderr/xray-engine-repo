@@ -39,23 +39,16 @@ void CWeaponKnife::Load	(LPCSTR section)
 
 void CWeaponKnife::renderable_Render()
 {
-	inherited::renderable_Render	();
 	UpdateXForm						();
-	
-	
+
 	CActor *pActor = dynamic_cast<CActor*>(H_Parent());
-	if (pActor && pActor->HUDview() && m_pHUD && !m_pHUD->IsHidden())
-	{ 
+	if (pActor && pActor->HUDview() && m_pHUD && !m_pHUD->IsHidden()) { 
 		// HUD render
 		::Render->set_Transform		(&m_pHUD->Transform());
 		::Render->add_Visual		(m_pHUD->Visual());
 	}
-	else if(!pActor || !pActor->HUDview())
-	{
-		// Actor render
-		::Render->set_Transform		(&XFORM());
-		::Render->add_Visual		(Visual());
-	}
+	else
+		inherited::renderable_Render();
 }
 
 void CWeaponKnife::OnStateSwitch	(u32 S)

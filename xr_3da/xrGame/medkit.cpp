@@ -55,9 +55,5 @@ void CMedkit::OnH_B_Independent()
 
 void CMedkit::renderable_Render() 
 {
-	if(getVisible() && !H_Parent()) 
-	{
-		::Render->set_Transform		(&XFORM());
-		::Render->add_Visual		(Visual());
-	}
+	inherited::renderable_Render();
 }
