@@ -124,14 +124,7 @@ void CBuild::PreOptimize()
 	Status("Removing isolated vertices...");
 	g_bUnregister = true;
 	for (it = 0; it<int(g_vertices.size()); it++)
-	{
-		R_ASSERT(it>=0 && it<(int)g_vertices.size());
-		if (g_vertices[it] && g_vertices[it]->adjacent.empty()) {
-			// isolated
-			_DELETE(g_vertices[it]);
-			it--;
-		}
-	}
+		if (g_vertices[it] && g_vertices[it]->adjacent.empty()) _DELETE(g_vertices[it]);
 	vecVertexIt	_end	= std::remove	(g_vertices.begin(),g_vertices.end(),(Vertex*)0);
 	g_vertices.erase	(_end,g_vertices.end());
 	g_bUnregister		= true;

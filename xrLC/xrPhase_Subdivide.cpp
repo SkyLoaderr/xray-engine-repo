@@ -121,10 +121,7 @@ void CBuild::xrPhase_Subdivide()
 			Progress(1.f - float(it)/float(g_vertices.size()));
 			
 			Vertex* V = g_vertices[it];
-			if (V && V->adjacent.empty())	{
-				_DELETE			(V);
-				it --;
-			}
+			if (V && V->adjacent.empty())	_DELETE			(V);
 		}
 		vecVertexIt	_end	= std::remove	(g_vertices.begin(),g_vertices.end(),(Vertex*)0);
 		g_vertices.erase	(_end,g_vertices.end());
