@@ -105,8 +105,8 @@ void __fastcall CSHEngineTools::ConstOnAfterEdit(PropItem* sender, LPVOID edit_v
 //------------------------------------------------------------------------------
 void __fastcall CSHEngineTools::NameOnAfterEdit(PropItem* sender, LPVOID edit_val)
 {
-	TextValue* V = dynamic_cast<TextValue*>(sender->GetFrontValue()); R_ASSERT(V);
-    AnsiString* new_name = (AnsiString*)edit_val;
+	TextValue* V 			= dynamic_cast<TextValue*>(sender->GetFrontValue()); R_ASSERT(V);
+    AnsiString* new_name 	= (AnsiString*)edit_val;
 	if (FHelper.NameAfterEdit(View()->Selected,V->GetValue(),*new_name))
     	RemoteRenameBlender(V->GetValue(),new_name->c_str());
 }

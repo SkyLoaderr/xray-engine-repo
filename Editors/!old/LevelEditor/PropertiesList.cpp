@@ -1269,6 +1269,7 @@ void TProperties::ShowLWNumber(TRect& R)
 void TProperties::ApplyLWNumber()
 {
 	TElTreeItem* item 			= (TElTreeItem*)seNumber->Tag;
+    seNumber->Tag				= 0;
     if (item){
 		PropItem* prop 			= (PropItem*)item->Tag;
         seNumber->Update();
@@ -1440,6 +1441,7 @@ void TProperties::ShowLWText(TRect& R)
 void TProperties::ApplyLWText()
 {
 	TElTreeItem* item 			= (TElTreeItem*)edText->Tag;
+    edText->Tag					= 0;
     if (item){
 		PropItem* prop 			= (PropItem*)item->Tag;
         edText->Update();
