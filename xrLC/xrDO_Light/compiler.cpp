@@ -322,7 +322,7 @@ public:
 				DB.box_query		(&Level,bbC,bbD);
 				DWORD	triCount	= DB.r_count	();
 				if (0==triCount)	continue;
-				CDB::tri* tris	= Level.GetTris();
+				CDB::TRI* tris		= Level.get_tris();
 				
 				// select lights
 				Selected.clear();
@@ -357,7 +357,7 @@ public:
 						float		r_u,r_v,r_range;
 						for (DWORD tid=0; tid<triCount; tid++)
 						{
-							CDB::tri&	T		= tris[DB.BBoxContact[tid].id];
+							CDB::TRI&	T	= tris	[DB.r_begin()[tid].id];
 							if (CDB::TestRayTri(P,dir,T.verts,r_u,r_v,r_range,TRUE))
 							{
 								if (r_range>=0)	{
