@@ -8,8 +8,6 @@
 
 #pragma once
 
-#include "gameobject.h"
-
 #define NPC_SPAWN_POINT_VERSION			0x0001
 #define NPC_SPAWN_POINT_CHUNK_VERSION	0x0001
 #define NPC_SPAWN_POINT_CHUNK_DATA		0x0002
@@ -20,7 +18,7 @@
 	
 class CAI_ALife : public CSheduled {
 private:
-	typedef CSheduled inherited;
+	typedef CSheduled	inherited;
 	
 	typedef struct tagSSpawnHeader {
 		u32				dwVersion;
@@ -50,6 +48,7 @@ private:
 	typedef struct tagSALifeNPC {
 		u16				wCount;
 		u16				wSpawnPoint;
+		u32				dwLastUpdateTime;
 	} SALifeNPC;
 
 	SSpawnHeader		m_tSpawnHeader;
@@ -57,15 +56,17 @@ private:
 	SNPCHeader			m_tNPCHeader;
 	vector<SALifeNPC>	m_tpNPC;
 	u32					m_dwNPCBeingProcessed;
+	u64					m_qwMaxProcessTime;
+	void				vfProcessNPC		(u32 dwNPCIndex);
 
 public:
-					CAI_ALife();
-	virtual			~CAI_ALife();
-	virtual void	Load				();
-	virtual void	Update				(u32 dt);	
-			void	Save();
-			void	Generate();
-	virtual float	shedule_Scale		()			{return .5f;};
-	virtual BOOL	Ready				()			{return TRUE;};
-	virtual LPCSTR	cName				()			{return "ALife simulator";}; 
+						CAI_ALife();
+	virtual				~CAI_ALife();
+	virtual void		Load				();
+	virtual void		Update				(u32 dt);	
+			void		Save();
+			void		Generate();
+	virtual float		shedule_Scale		()			{return .5f;};
+	virtual BOOL		Ready				()			{return TRUE;};
+	virtual LPCSTR		cName				()			{return "ALife simulator";}; 
 };

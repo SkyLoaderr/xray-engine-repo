@@ -16,7 +16,7 @@ CAI_ALife::CAI_ALife()
 CAI_ALife::~CAI_ALife()
 {
 	shedule_Unregister	();
-//	Save				();
+	Save				();
 }
 
 void CAI_ALife::Load()
@@ -24,6 +24,7 @@ void CAI_ALife::Load()
 	shedule_Min					=   100;
 	shedule_Max					= 10000;
 	m_dwNPCBeingProcessed		=     0;
+	m_qwMaxProcessTime			=   100*CPU::cycles_per_microsec;
 
 	FILE_NAME	caFileName;
 	if (!Engine.FS.Exist(caFileName, Path.GameData, "game.spawn"))
@@ -70,8 +71,9 @@ void CAI_ALife::Load()
 	R_ASSERT(tpStream->FindChunk(ALIFE_CHUNK_DATA));
 	m_tpNPC.resize(m_tNPCHeader.dwCount);
 	for (int i=0; i<(int)m_tNPCHeader.dwCount; i++) {
-		m_tpNPC[i].wCount		= tpStream->Rword();
-		m_tpNPC[i].wSpawnPoint	= tpStream->Rword();
+		m_tpNPC[i].wCount			= tpStream->Rword();
+		m_tpNPC[i].wSpawnPoint		= tpStream->Rword();
+		m_tpNPC[i].dwLastUpdateTime	= tpStream->Rdword();
 	}
 	Engine.FS.Close(tpStream);
 }
@@ -90,12 +92,11 @@ void CAI_ALife::Save()
 	for (int i=0; i<(int)m_tNPCHeader.dwCount; i++) {
 		tStream.Wword		(m_tpNPC[i].wCount);
 		tStream.Wword		(m_tpNPC[i].wSpawnPoint);
+		tStream.Wdword		(m_tpNPC[i].dwLastUpdateTime);
 	}
 	tStream.close_chunk	();
 	
-	FILE_NAME	caFileName;
-	strconcat(caFileName, Path.GameData, "game.alife");
-	tStream.SaveTo(caFileName,0);
+	tStream.SaveTo	("game.alife",0);
 }
 
 void CAI_ALife::Generate()
@@ -129,4 +130,16 @@ void CAI_ALife::Update(u32 dt)
 {
 	inherited::Update(dt);
 	Msg("* %7.2fs",Level().timeServer()/1000.f);
+	u64	qwStartTime = CPU::GetCycleCount();
+	if (m_tNPCHeader.dwCount)
+		for (int i=1; ; i++, m_dwNPCBeingProcessed = (m_dwNPCBeingProcessed + 1) % m_tNPCHeader.dwCount) {
+			vfProcessNPC(m_dwNPCBeingProcessed);
+			if ((CPU::GetCycleCount() - qwStartTime)*(i + 1)/i > m_qwMaxProcessTime)
+				break;
+		}
+}
+
+void CAI_ALife::vfProcessNPC(u32 dwNPCIndex)
+{
+	
 }
