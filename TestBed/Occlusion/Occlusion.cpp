@@ -87,9 +87,32 @@ void edges(occTri& T)
 }
 extern	void i_edge ( occRasterizer* OCC, float x1, float y1, float x2, float y2);
 
+CTimer	TM;
+
+class	AAA
+{
+private:
+	CTimer	TM;
+public:	
+	void test()
+	{
+		void*	p1		= &::TM;
+		void*	p2		= &TM;
+		
+	}
+};
+
 int __cdecl main	(int argc, char* argv[])
 {
 	CTimer			TM;
+	AAA				A;
+	
+	A.test			();
+
+	void*	p1		= &::TM;
+	void*	p2		= &TM;
+	
+
 	u64				total=0;
 	int				count=0;
 
