@@ -1275,7 +1275,7 @@ CObject* CPHSimpleCharacter::DamageInitiator() const
 	if(m_collision_damage_info.m_dmc_type==SCollisionDamageInfo::ctStatic) return (CObject*) (m_phys_ref_object);
 	CObject* ret = (CObject*) (m_collision_damage_info.m_object);
 	u16 initiator_id=m_collision_damage_info.DamageInitiatorID();
-	if(initiator_id!=u16())
+	if(initiator_id!=u16(-1))
 	{
 		ret=Level().Objects.net_Find(initiator_id);
 	}
