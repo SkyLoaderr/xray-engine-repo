@@ -42,8 +42,7 @@ Image *	new_image(int xsize, int ysize)		/* create a blank image */
 {
 	Image *image;
 
-	if((image = (Image *)xr_malloc(sizeof(Image)))
-	&& (image->data = (Pixel *)xr_malloc(ysize*xsize*sizeof(Pixel)))) 
+	if((image = (Image *)xr_malloc(sizeof(Image))) && (image->data = (Pixel *)xr_malloc(ysize*xsize*sizeof(Pixel)))) 
 	{
 		ZeroMemory(image->data,ysize*xsize*sizeof(Pixel));
 		image->xsize	= xsize;
@@ -241,14 +240,14 @@ void	imf_Process	(u32* dstI, u32 dstW, u32 dstH, u32* srcI, u32 srcW, u32 srcH, 
 
 
 	//
-	Image	*tmp;					/* intermediate image */
-	double	xscale, yscale;			/* zoom scale factors */
+	Image	*tmp	= 0;			/* intermediate image */
+	double	xscale	= 0, yscale = 0;/* zoom scale factors */
 	int		i, j, k;				/* loop variables */
 	int		n;						/* pixel number */
 	double	center, left,	right;	/* filter calculation variables */
 	double	width,	fscale, weight;	/* filter calculation variables */
-	Pixel	*raster;				/* a row or column of pixels */
-	CLIST	*contrib;				/* array of contribution lists */
+	Pixel	*raster	= 0;			/* a row or column of pixels */
+	CLIST	*contrib= 0;			/* array of contribution lists */
 
 	/* create intermediate image to hold horizontal zoom */
 	try	{
