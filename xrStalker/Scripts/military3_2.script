@@ -1,3 +1,5 @@
+--sidya_kurit_1
+--sidya_kurit_2
 -- сталкеры у костра
 function main ()
 
@@ -11,7 +13,7 @@ function main ()
 	stalker3:script (true, military3_2.script_name ())
 
 	action (stalker1, --move (move.standing, move.stand, move.line, patrol ("way_sh")),
-			anim ("kurit sidya_ 0"), cond (cond.time_end, 10000000))
+			anim ("sidya_kurit_2"), cond (cond.anim_end))
 
 	action (stalker2, --move (move.standing, move.stand, move.line, patrol ("way_sh")),
 			anim ("sidya_boltaet_ 0"), cond (cond.time_end, 10000000))
@@ -19,12 +21,17 @@ function main ()
 	action (stalker3, --move (move.standing, move.stand, move.line, patrol ("way_sh")),
 			anim ("spit_ 0"), cond (cond.time_end, 10000000))
 
-	while stalker1:action () do wait () end
+	while true do
+		  if stalker1:action () == nil then
+			 reset_action (stalker1, military3_2.script_name ())
+			 action (stalker1, anim ("sidya_kurit_2"), cond (cond.anim_end))
+		  end	
+		  wait () 
+	end
 
 	stalker1:script (false, military3_2.script_name ())
 	stalker2:script (false, military3_2.script_name ())
 	stalker3:script (false, military3_2.script_name ())
 
-	printf ("end call military3_2");
 
 end
