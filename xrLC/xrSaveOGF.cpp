@@ -7,11 +7,12 @@ vector<string>			g_Strings;
 vector<string>			g_S;
 
 int	RegisterString(string &T) {
-	vector<string>::iterator W = find(g_T.begin(), g_T.end(), T);
-	if (W!=g_T.end()) return W-g_T.begin();
-	g_T.push_back(T);
-	return g_T.size()-1;
+	vector<string>::iterator W = find(g_Strings.begin(), g_Strings.end(), T);
+	if (W!=g_Strings.end()) return W-g_Strings.begin();
+	g_Strings.push_back(T);
+	return g_Strings.size()-1;
 }
+
 void CBuild::SaveTREE(CFS_Base &fs)
 {
 	CFS_Memory MFS;
@@ -36,20 +37,10 @@ void CBuild::SaveTREE(CFS_Base &fs)
 	fs.write_compressed(MFS.pointer(),MFS.size());
 	fs.close_chunk	();
 
-	Status("Texture links...");
+	Status("String table...");
 	fs.open_chunk	(fsL_TEXTURES);
-	fs.Wdword		(g_T.size());
-	for (vector<string>::iterator T=g_T.begin(); T!=g_T.end(); T++)
+	fs.Wdword		(g_Strings.size());
+	for (vector<string>::iterator T=g_Strings.begin(); T!=g_Strings.end(); T++)
 		fs.write(T->c_str(),T->length()+1);
 	fs.close_chunk	();
-
-	Status("Shader links...");
-	fs.open_chunk	(fsL_SHADERS);
-	fs.Wdword		(g_S.size());
-	for (vector<string>::iterator S=g_S.begin(); S!=g_S.end(); S++)
-		fs.write(S->c_str(),S->length()+1);
-	fs.close_chunk	();
-
-	g_T.clear		();
-	g_S.clear		();
 }

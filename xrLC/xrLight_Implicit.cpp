@@ -9,20 +9,8 @@ BOOL	hasImplicitLighting(Face* F)
 {
 	if (0==F)									return FALSE;
 	
-	SH_ShaderDef&	SH							= F->Shader();
-	if (0==SH.Passes_Count)						return FALSE;
-	
-	SH_PassDef&		Pass						= SH.Passes		[0];
-	if (0==Pass.Stages_Count)					return FALSE;
-	
-	SH_StageDef&	Stage						= Pass.Stages	[0];
-	if (Stage.tcs!=SH_StageDef::tcsGeometry)	return FALSE;
-	if (Stage.tcm!=0)							return FALSE;
-	
 	b_material& M = pBuild->materials			[F->dwMaterial];
-	if (0==M.dwTexCount)						return FALSE;
-	
-	b_BuildTexture&	T  = pBuild->textures		[M.surfidx[0]];
+	b_BuildTexture&	T  = pBuild->textures		[M.surfidx];
 	return (T.THM.flag & EF_IMPLICIT_LIGHTED);
 }
 
@@ -275,7 +263,7 @@ void CBuild::ImplicitLighting()
 		
 		Progress (float(I-g_faces.begin())/float(g_faces.size()));
 		b_material&		M	= materials		[F->dwMaterial];
-		DWORD			Tid = M.surfidx[0];
+		DWORD			Tid = M.surfidx;
 		b_BuildTexture*	T	= &(textures[Tid]);
 		
 		Implicit_it		it	= calculator.find(Tid);

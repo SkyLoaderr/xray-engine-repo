@@ -58,7 +58,7 @@ void CBuild::BuildCForm(CFS_Base &fs)
 		for (vecFaceIt I=g_faces.begin(); I!=g_faces.end(); I++)
 		{
 			Face* F = *I;
-			if (F->Shader().C.bCollision) 
+			if (F->Shader().flags.bCollision) 
 			{
 				cfFaces.push_back(F);
 				cfVertexMarks[GetVertexIndex(F->v[0])] = true;

@@ -263,19 +263,7 @@ void CBuild::SoftenLights()
 					T.direction.invert		();
 					T.direction.normalize	();
 					
-					T.diffuse.set			(g_params.areaDark);
-					
-					/*
-					float dot				= base.dotproduct(T.direction);
-					float factor			= (dot+1)/2;
-					
-					Fcolor					cDirect;
-					cDirect.mul_rgb			(cLight,factor);
-
-					T.diffuse.r				= cDirect.r;
-					T.diffuse.g				= cDirect.g;
-					T.diffuse.b				= cDirect.b;
-					*/
+					T.diffuse.set			(g_params.area_color);
 					
 					lights_soften.push_back	(T);
 				}

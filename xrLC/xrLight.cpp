@@ -109,7 +109,7 @@ public:
 			if (F->pDeflector)				continue;
 			if (hasImplicitLighting(F))		continue;
 			
-			float v_amb	= F->Shader().cl_VC_Ambient;
+			float v_amb	= 0.f; // F->Shader().cl_VC_Ambient;
 			float v_inv = 1.f-v_amb;
 			for (int v=0; v<3; v++)
 			{

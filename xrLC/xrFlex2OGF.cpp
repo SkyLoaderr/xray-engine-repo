@@ -28,20 +28,19 @@ void CBuild::Flex2OGF()
 
 		// Collect textures
 		OGF_Texture			T;
-		pOGF->shader		= &F->Shader();
+		pOGF->shader		= M->shader;
+		pOGF->shader_xrlc	= &F->Shader();
+
+		strcpy				(T.name,textures[M->surfidx].name);
+		T.pSurface			= &(textures[M->surfidx]);
+		pOGF->textures.push_back(T);
 		if (F->pDeflector)
 		{
 			// If lightmaps persist
 			CDeflector* D = (CDeflector*)F->pDeflector;
-
+			
 			strcpy(T.name, D->lm.name);
 			T.pSurface = &(D->lm);
-			pOGF->textures.push_back(T);
-		}
-		for (int i=0; i<M->dwTexCount; i++)
-		{
-			strcpy(T.name,	textures[M->surfidx[i]].name);
-			T.pSurface = &(textures[M->surfidx[i]]);
 			pOGF->textures.push_back(T);
 		}
 

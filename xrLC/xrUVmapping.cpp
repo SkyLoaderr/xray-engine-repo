@@ -136,7 +136,7 @@ void CBuild::BuildUVmap()
 		// Detect vertex-lighting and avoid this subdivision
 		R_ASSERT(!g_XSplit[SP].empty());
 		Face*		Fvl = g_XSplit[SP][0];
-		if (Fvl->Shader().CL != SH_ShaderDef::clLightmap) 	continue; // do-not touch (skip)
+		if (Fvl->Shader().flags.bLIGHT_Vertex) 	continue;	// do-not touch (skip)
 		if (hasImplicitLighting(Fvl))
 		{
 			continue;

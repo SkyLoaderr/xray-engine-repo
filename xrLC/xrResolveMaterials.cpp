@@ -121,7 +121,7 @@ void CBuild::ResolveMaterials()
 			bb.merge	(bbox[guid]);
 			bb.getsize	(size);
 			if (size.x>merge_lim || size.y>merge_lim || size.z>merge_lim)	continue;
-			if (fTest->Shader().R.bStrictB2F)								continue;
+//			if (fTest->Shader().R.bStrictB2F)								continue;
 
 			// ok, merge face lists
 			BB.set	(bb);
