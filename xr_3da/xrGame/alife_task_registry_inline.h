@@ -67,5 +67,6 @@ IC	const ALife::OBJECT_TASK_MAP &CALifeTaskRegistry::cross	() const
 IC	void CALifeTaskRegistry::clear	()
 {
 	delete_data					(m_tasks);
+	m_cross.clear				();
 	m_id						= 0;
 }

@@ -193,6 +193,10 @@ CSE_ALifeObject::~CSE_ALifeObject			()
     fp_data.dec					();
 }
 
+void CSE_ALifeObject::on_surge				()
+{
+}
+
 void CSE_ALifeObject::STATE_Write			(NET_Packet &tNetPacket)
 {
 	tNetPacket.w_float			(m_fProbability);

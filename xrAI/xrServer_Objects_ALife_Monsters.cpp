@@ -1484,6 +1484,16 @@ const CSE_Abstract *CSE_ALifeHumanAbstract::base	() const
 	return						(inherited2::base());
 }
 
+void CSE_ALifeHumanAbstract::on_surge				()
+{
+	inherited2::on_surge		();
+	m_dwCurTaskID				= u32(-1);
+	m_tTaskState				= eTaskStateChooseTask;
+	m_baVisitedVertices.clear	();
+	m_tpPath.clear				();
+	m_dwCurNode					= u32(-1);
+}
+
 void CSE_ALifeHumanAbstract::STATE_Write	(NET_Packet &tNetPacket)
 {
 	inherited1::STATE_Write		(tNetPacket);

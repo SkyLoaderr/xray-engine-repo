@@ -27,7 +27,7 @@ void CALifeStoryRegistry::add				(ALife::_STORY_ID id, CSE_ALifeDynamicObject *o
 
 	ALife::STORY_P_PAIR_IT	I = m_objects.find(id);
 	if (I != m_objects.end()) {
-		R_ASSERT2			(no_assert,"Specified subject object is already in the Story registry!");
+		R_ASSERT2			(no_assert,"Specified story object is already in the Story registry!");
 		return;
 	} 
 

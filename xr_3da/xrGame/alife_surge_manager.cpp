@@ -33,14 +33,20 @@ CALifeSurgeManager::~CALifeSurgeManager	()
 
 void CALifeSurgeManager::surge		()
 {
-	m_alive_spawn_objects.assign		(spawns().header().count(),false);
 #ifdef DEBUG
 	if (psAI_Flags.test(aiALife)) {
 		Msg								("[LSS] Surge is started...");
 	}
 #endif
 	
-	time_manager().last_surge_time		(time_manager().game_time());
+	m_alive_spawn_objects.assign		(spawns().header().count(),false);
+	
+	D_OBJECT_P_MAP::const_iterator		I = objects().objects().begin();
+	D_OBJECT_P_MAP::const_iterator		E = objects().objects().end();
+	for ( ; I != E; ++I)
+		(*I).second->on_surge			();
+
+	tasks().clear						();
 
 	random().seed						(u32(CPU::GetCycleCount() & 0xffffffff));
 	
@@ -67,6 +73,8 @@ void CALifeSurgeManager::surge		()
 	}
 	update_tasks						();
 	assign_stalker_customers			();
+
+	time_manager().last_surge_time		(time_manager().game_time());
 
 #ifdef DEBUG
 	if (psAI_Flags.test(aiALife)) {
@@ -202,14 +210,14 @@ void CALifeSurgeManager::generate_anomaly_map	()
 
 void CALifeSurgeManager::ballance_creatures()
 {
-	Msg									("BALLANCING OBJECTS");
+//	Msg									("BALLANCING OBJECTS");
 #pragma todo("Dima to Dima : Respawn the objects in the spawn groups only")
 	// filling array of the survived creatures
 	{
 		D_OBJECT_P_MAP::const_iterator	I = objects().objects().begin();
 		D_OBJECT_P_MAP::const_iterator	E = objects().objects().end();
 		for ( ; I != E; ++I) {
-			Msg							("object %s, spawn group %d",(*I).second->s_name_replace,(*I).second->m_tSpawnID);
+//			Msg							("object %s, spawn group %d",(*I).second->s_name_replace,(*I).second->m_tSpawnID);
 			CSE_ALifeCreatureAbstract	*l_tpALifeCreatureAbstract = smart_cast<CSE_ALifeCreatureAbstract*>((*I).second);
 			CSE_ALifeGroupAbstract		*l_tpALifeGroupAbstract = smart_cast<CSE_ALifeGroupAbstract*>((*I).second);
 			if (l_tpALifeCreatureAbstract) {

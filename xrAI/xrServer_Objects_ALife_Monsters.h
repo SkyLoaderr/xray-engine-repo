@@ -331,7 +331,7 @@ SERVER_ENTITY_DECLARE_BEGIN2(CSE_ALifeHumanAbstract,CSE_ALifeTraderAbstract,CSE_
 	u32								m_dwCurTaskLocation;
 	u32								m_dwCurTaskID;
 	float							m_fSearchSpeed;
-	shared_str							m_caKnownCustomers;
+	shared_str						m_caKnownCustomers;
 	ALife::OBJECT_VECTOR			m_tpKnownCustomers;
 	svector<char,5>					m_cpEquipmentPreferences;
 	svector<char,4>					m_cpMainWeaponPreferences;
@@ -344,6 +344,7 @@ SERVER_ENTITY_DECLARE_BEGIN2(CSE_ALifeHumanAbstract,CSE_ALifeTraderAbstract,CSE_
 	virtual CSE_Abstract			*init					();
 	virtual CSE_Abstract			*base					();
 	virtual const CSE_Abstract		*base					() const;
+	virtual void					on_surge				();
 #ifdef XRGAME_EXPORTS
 	virtual	void					update					();
 			// FSM

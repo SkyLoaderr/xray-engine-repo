@@ -96,6 +96,7 @@ public:
 	virtual bool					can_switch_online	() const;
 	virtual bool					can_switch_offline	() const;
 	virtual bool					interactive			() const;
+	virtual void					on_surge			();
 			void					can_switch_online	(bool value);
 			void					can_switch_offline	(bool value);
 			void					interactive			(bool value);
