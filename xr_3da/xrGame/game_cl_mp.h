@@ -43,9 +43,14 @@ protected:
 //-----------------------------------------------------------------------------------
 	ref_shader				m_EquipmentIconsShader;
 	ref_shader				m_KillEventIconsShader;
+	ref_shader				m_RadiationIconsShader;
+	ref_shader				m_BloodLossIconsShader;
 
 	virtual ref_shader		GetEquipmentIconsShader	();
 	virtual ref_shader		GetKillEventIconsShader	();
+	virtual ref_shader		GetRadiationIconsShader	();
+	virtual ref_shader		GetBloodLossIconsShader	();
+
 	virtual void			OnPlayerKilled			(NET_Packet& P);
 
 public:

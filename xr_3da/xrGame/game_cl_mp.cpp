@@ -13,9 +13,15 @@
 #include <dinput.h>
 #include "UIGameCustom.h"
 #include "ui/UIInventoryUtilities.h"
+#include "CustomZone.h"
 
 #define EQUIPMENT_ICONS "ui\\ui_icon_equipment"
-#define KILLEVENT_ICONS "ui\\ui_icon_equipment"
+#define KILLEVENT_ICONS "ui\\ui_hud_mp_icon_death"
+#define RADIATION_ICONS "ui\\ui_mn_radiations_hard"
+#define BLOODLOSS_ICONS "ui\\ui_mn_wounds_hard"
+
+#define KILLEVENT_GRID_WIDTH	64
+#define KILLEVENT_GRID_HEIGHT	64
 
 game_cl_mp::game_cl_mp()
 {
@@ -410,6 +416,22 @@ ref_shader game_cl_mp::GetKillEventIconsShader	()
 	return m_KillEventIconsShader;
 }
 
+ref_shader game_cl_mp::GetRadiationIconsShader	()
+{
+	if (m_RadiationIconsShader) return m_RadiationIconsShader;
+
+	m_RadiationIconsShader.create("hud\\default", RADIATION_ICONS);
+	return m_RadiationIconsShader;
+}
+
+ref_shader game_cl_mp::GetBloodLossIconsShader	()
+{
+	if (m_BloodLossIconsShader) return m_BloodLossIconsShader;
+
+	m_BloodLossIconsShader.create("hud\\default", BLOODLOSS_ICONS);
+	return m_BloodLossIconsShader;
+}
+
 void game_cl_mp::OnPlayerKilled			(NET_Packet& P)
 {
 	//-----------------------------------------------------------
@@ -461,8 +483,6 @@ void game_cl_mp::OnPlayerKilled			(NET_Packet& P)
 					KMS.m_initiator.m_rect.y1 = pIItem->GetYPos()*INV_GRID_HEIGHT;
 					KMS.m_initiator.m_rect.x2 = KMS.m_initiator.m_rect.x1 + pIItem->GetGridWidth()*INV_GRID_WIDTH;
 					KMS.m_initiator.m_rect.y2 = KMS.m_initiator.m_rect.y1 + pIItem->GetGridHeight()*INV_GRID_HEIGHT;
-
-///					KMS.m_ext_info = KMS.m_initiator;
 				};
 			}
 			else
@@ -480,6 +500,20 @@ void game_cl_mp::OnPlayerKilled			(NET_Packet& P)
 						pKiller ? Color_Teams[pKiller->team] : Color_Neutral,
 						pKiller ? pKiller->name : *(pOKiller->cNameSect()));
 				std::strcat(Text, KillerText);
+				
+				if (!pKiller)
+				{
+					CCustomZone* pAnomaly = smart_cast<CCustomZone*>(pOKiller);
+					if (pAnomaly)
+					{
+						KMS.m_initiator.m_shader = GetKillEventIconsShader();
+						KMS.m_initiator.m_rect.x1 = 0*KILLEVENT_GRID_WIDTH;
+						KMS.m_initiator.m_rect.y1 = 0*KILLEVENT_GRID_HEIGHT;
+						KMS.m_initiator.m_rect.x2 = KMS.m_initiator.m_rect.x1 + 1*KILLEVENT_GRID_WIDTH;
+						KMS.m_initiator.m_rect.y2 = KMS.m_initiator.m_rect.y1 + 1*KILLEVENT_GRID_HEIGHT;
+						break;
+					}
+				};
 
 				KMS.m_killer.m_name = pKiller ? pKiller->name : *(pOKiller->cNameSect());
 				KMS.m_killer.m_color = pKiller ? Color_Teams_u32[pKiller->team] : Color_Neutral_u32;
@@ -497,6 +531,12 @@ void game_cl_mp::OnPlayerKilled			(NET_Packet& P)
 					sprintf(SpecialKillText, "%swith %sHEADSHOT!",
 						Color_Main,
 						Color_Weapon);					
+
+					KMS.m_ext_info.m_shader = GetKillEventIconsShader();
+					KMS.m_ext_info.m_rect.x1 = 2*KILLEVENT_GRID_WIDTH;
+					KMS.m_ext_info.m_rect.y1 = 0*KILLEVENT_GRID_HEIGHT;
+					KMS.m_ext_info.m_rect.x2 = KMS.m_ext_info.m_rect.x1 + 1*KILLEVENT_GRID_WIDTH;
+					KMS.m_ext_info.m_rect.y2 = KMS.m_ext_info.m_rect.y1 + 1*KILLEVENT_GRID_HEIGHT;
 				}break;
 			case 2:		// BackStab
 				{
@@ -504,10 +544,28 @@ void game_cl_mp::OnPlayerKilled			(NET_Packet& P)
 					sprintf(SpecialKillText, "%swith %sBACKSTAB!",
 						Color_Main,
 						Color_Weapon);
+
+					KMS.m_ext_info.m_shader = GetKillEventIconsShader();
+					KMS.m_ext_info.m_rect.x1 = 3*KILLEVENT_GRID_WIDTH;
+					KMS.m_ext_info.m_rect.y1 = 0*KILLEVENT_GRID_HEIGHT;
+					KMS.m_ext_info.m_rect.x2 = KMS.m_ext_info.m_rect.x1 + 1*KILLEVENT_GRID_WIDTH;
+					KMS.m_ext_info.m_rect.y2 = KMS.m_ext_info.m_rect.y1 + 1*KILLEVENT_GRID_HEIGHT;
 					
 				}break;
 			}
 			std::strcat(Text, SpecialKillText);
+
+			//suicide
+			if (KilledID == KillerID)
+			{
+				KMS.m_killer.m_name = NULL;
+
+				KMS.m_ext_info.m_shader = GetKillEventIconsShader();
+				KMS.m_ext_info.m_rect.x1 = 1*KILLEVENT_GRID_WIDTH;
+				KMS.m_ext_info.m_rect.y1 = 0*KILLEVENT_GRID_HEIGHT;
+				KMS.m_ext_info.m_rect.x2 = KMS.m_ext_info.m_rect.x1 + 1*KILLEVENT_GRID_WIDTH;
+				KMS.m_ext_info.m_rect.y2 = KMS.m_ext_info.m_rect.y1 + 1*KILLEVENT_GRID_HEIGHT;
+			};
 
 		}break;
 		//-----------------------------------------------------------
@@ -520,6 +578,26 @@ void game_cl_mp::OnPlayerKilled			(NET_Packet& P)
 				pKiller ? Color_Teams[pKiller->team] : Color_Neutral,
 				pKiller ? pKiller->name : *(pOKiller->cName()));
 
+			KMS.m_initiator.m_shader = GetBloodLossIconsShader();
+			KMS.m_initiator.m_rect.x1 = 0*KILLEVENT_GRID_WIDTH;
+			KMS.m_initiator.m_rect.y1 = 0*KILLEVENT_GRID_HEIGHT;
+			KMS.m_initiator.m_rect.x2 = KMS.m_initiator.m_rect.x1 + 1*KILLEVENT_GRID_WIDTH;
+			KMS.m_initiator.m_rect.y2 = KMS.m_initiator.m_rect.y1 + 1*KILLEVENT_GRID_HEIGHT;
+
+			if (!pKiller)
+			{
+				CCustomZone* pAnomaly = smart_cast<CCustomZone*>(pOKiller);
+				if (pAnomaly)
+				{
+					KMS.m_ext_info.m_shader = GetKillEventIconsShader();
+					KMS.m_ext_info.m_rect.x1 = 0*KILLEVENT_GRID_WIDTH;
+					KMS.m_ext_info.m_rect.y1 = 0*KILLEVENT_GRID_HEIGHT;
+					KMS.m_ext_info.m_rect.x2 = KMS.m_ext_info.m_rect.x1 + 1*KILLEVENT_GRID_WIDTH;
+					KMS.m_ext_info.m_rect.y2 = KMS.m_ext_info.m_rect.y1 + 1*KILLEVENT_GRID_HEIGHT;
+					break;
+				}
+			};
+
 			KMS.m_killer.m_name = pKiller ? pKiller->name : *(pOKiller->cNameSect());
 			KMS.m_killer.m_color = pKiller ? Color_Teams_u32[pKiller->team] : Color_Neutral_u32;
 		}break;
@@ -529,12 +607,20 @@ void game_cl_mp::OnPlayerKilled			(NET_Packet& P)
 			sprintf(Text, "%shas died from %sradiation",
 				Color_Main,
 				Color_Radiation);
+
+			KMS.m_initiator.m_shader = GetRadiationIconsShader();
+			KMS.m_initiator.m_rect.x1 = 0*KILLEVENT_GRID_WIDTH;
+			KMS.m_initiator.m_rect.y1 = 0*KILLEVENT_GRID_HEIGHT;
+			KMS.m_initiator.m_rect.x2 = KMS.m_initiator.m_rect.x1 + 1*KILLEVENT_GRID_WIDTH;
+			KMS.m_initiator.m_rect.y2 = KMS.m_initiator.m_rect.y1 + 1*KILLEVENT_GRID_HEIGHT;
+
 		}break;
 	default:
 		break;
 	}
 	std::strcat(PlayerText, Text);
-	CommonMessageOut(PlayerText);
+//	CommonMessageOut(PlayerText);
+
 	if (pGameLog) pGameLog->AddLogMessage(KMS);
 //---------------------------------------------------------------	
 };
