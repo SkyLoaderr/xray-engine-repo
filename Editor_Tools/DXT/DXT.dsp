@@ -113,16 +113,16 @@ SOURCE=.\nvdxt_options.h
 # PROP Default_Filter ""
 # Begin Source File
 
+SOURCE=.\ETextureParams.h
+# End Source File
+# Begin Source File
+
 SOURCE=.\xr_tokens.h
 # End Source File
 # End Group
 # Begin Source File
 
 SOURCE=.\dds.h
-# End Source File
-# Begin Source File
-
-SOURCE=.\ETextureParams.h
 # End Source File
 # Begin Source File
 

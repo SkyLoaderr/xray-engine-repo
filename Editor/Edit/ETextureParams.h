@@ -86,7 +86,7 @@ struct STextureParams{
 };
 #pragma pack( pop )
 
-xr_token							tparam_token					[ ]={
+xr_token							tparam_tokens					[ ]={
 	{ "Box",				STextureParams::dMIPFilterBox				},
 	{ "Cubic",				STextureParams::dMIPFilterCubic				},
 	{ "Full DFT",			STextureParams::dMIPFilterFullDFT			},
