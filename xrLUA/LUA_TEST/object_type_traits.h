@@ -68,6 +68,12 @@
 			typedef T type; 
 		};
 
+		template <typename P>
+		struct is_void		 { enum { value = false}; };
+		
+		template <>
+		struct is_void<void> { enum { value = true}; };
+
 		template <typename T>
 		struct is_pointer {
 			template <typename P> static detail::yes select(P*);
