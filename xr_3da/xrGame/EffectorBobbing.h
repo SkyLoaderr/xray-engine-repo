@@ -2,7 +2,7 @@
 #define _EFFECTOR_BOBBING_H
 #pragma once
 
-#include "..\effector.h"
+#include "../effector.h"
 
 class CEffectorBobbing : public CEffector  
 {

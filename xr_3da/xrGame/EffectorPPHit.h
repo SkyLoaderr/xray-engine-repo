@@ -2,7 +2,7 @@
 #define _EFFECTOR_PP_HIT_H
 #pragma once
 
-#include "..\effectorPP.h"
+#include "../effectorPP.h"
 
 class CEffectorPPHit : public CEffectorPP
 {

@@ -1,7 +1,7 @@
 #pragma once
 
 
-#include "..\effector.h"
+#include "../effector.h"
 class CEffectorHit :
 	public CEffector
 {

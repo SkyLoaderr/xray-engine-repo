@@ -6,7 +6,6 @@
  
 #include "hudmanager.h"
 #include "Entity.h"
-#include "ai_funcs.h"
 #include "inventory.h"
 
 #define MAX_ARMOR		200
@@ -43,7 +42,7 @@ void CEntity::OnEvent		(NET_Packet& P, u16 type)
 			P.r_u16			(id);
 			P.r_u32			(cl);
 			CObject* who	= Level().Objects.net_Find	(id);
-			if (who!=this)	if(bDebug) HUD().outMessage	(0xffffffff,cName(),"Killed by '%s'...",who->cName());
+			if (this!=who)	if(bDebug) HUD().outMessage	(0xffffffff,cName(),"Killed by '%s'...",who->cName());
 			else			if(bDebug) HUD().outMessage	(0xffffffff,cName(),"Crashed...");
 			Die				();
 		}
@@ -107,7 +106,7 @@ void CEntity::Hit			(float perc, Fvector &dir, CObject* who, s16 element,Fvector
 	float lost_health = CalcCondition(perc);
 
 	// Signal hit
-	if(element!=-1)	HitSignal(lost_health,vLocalDir,who,element);
+	if(-1!=element)	HitSignal(lost_health,vLocalDir,who,element);
 
 	// If Local() - perform some logic
 	//if (Local() && (fEntityHealth>0))
@@ -166,7 +165,7 @@ BOOL CEntity::net_Spawn		(LPVOID DC)
 	CGroup& G				= Level().get_group	(id_Team,id_Squad,id_Group);
 	G.Members.push_back		(this);
 	if (S.Leader==0)		S.Leader			=this;
-	G.m_dwAliveCount		++;
+	++G.m_dwAliveCount;
 	
 	// Initialize variables
 	fEntityHealth			= 100;
@@ -189,19 +188,19 @@ void CEntity::net_Destroy	()
 		if (!G.Members.empty())	S.Leader	= G.Members.back();
 	}
 
-	for (u32 T=0; T<Level().Teams.size(); T++)
+	for (u32 T=0; T<Level().Teams.size(); ++T)
 	{
 		CTeam&	TD		= Level().Teams[T];
-		for (u32 S=0; S<TD.Squads.size(); S++)
+		for (u32 S=0; S<TD.Squads.size(); ++S)
 		{
 			CSquad&	SD	= TD.Squads[S];
 			objVisible& VIS	= SD.KnownEnemys;
 
 			VIS.clear		();
-			for (u32 G=0; G<SD.Groups.size(); G++)
+			for (u32 G=0; G<SD.Groups.size(); ++G)
 			{
 				CGroup& GD = SD.Groups[G];
-				for (u32 M=0; M<GD.Members.size(); M++)
+				for (u32 M=0; M<GD.Members.size(); ++M)
 				{
 					CEntityAlive* E	= dynamic_cast<CEntityAlive*>(GD.Members[M]);
 					if (E && E->g_Alive())	E->GetVisible(VIS);
@@ -265,46 +264,46 @@ void CEntityAlive::Load		(LPCSTR section)
 	m_fFood					= 100*pSettings->r_float	(section,"ph_mass");
 
 	/*
-	// Movement: General
-	Movement.SetParent		(this);
+	// m_PhysicMovementControl: General
+	m_PhysicMovementControl.SetParent		(this);
 	Fbox	bb;
 
-	// Movement: BOX
+	// m_PhysicMovementControl: BOX
 	Fvector	vBOX0_center= pSettings->r_fvector3	(section,"ph_box0_center"	);
 	Fvector	vBOX0_size	= pSettings->r_fvector3	(section,"ph_box0_size"		);
 	bb.set	(vBOX0_center,vBOX0_center); bb.grow(vBOX0_size);
-	Movement.SetBox		(0,bb);
+	m_PhysicMovementControl.SetBox		(0,bb);
 
-	// Movement: BOX
+	// m_PhysicMovementControl: BOX
 	Fvector	vBOX1_center= pSettings->r_fvector3	(section,"ph_box1_center"	);
 	Fvector	vBOX1_size	= pSettings->r_fvector3	(section,"ph_box1_size"		);
 	bb.set	(vBOX1_center,vBOX1_center); bb.grow(vBOX1_size);
-	Movement.SetBox		(1,bb);
+	m_PhysicMovementControl.SetBox		(1,bb);
 
-	// Movement: Foots
+	// m_PhysicMovementControl: Foots
 	Fvector	vFOOT_center= pSettings->r_fvector3	(section,"ph_foot_center"	);
 	Fvector	vFOOT_size	= pSettings->r_fvector3	(section,"ph_foot_size"		);
 	bb.set	(vFOOT_center,vFOOT_center); bb.grow(vFOOT_size);
-	Movement.SetFoots	(vFOOT_center,vFOOT_size);
+	m_PhysicMovementControl.SetFoots	(vFOOT_center,vFOOT_size);
 
-	// Movement: Crash speed and mass
+	// m_PhysicMovementControl: Crash speed and mass
 	float	cs_min		= pSettings->r_float	(section,"ph_crash_speed_min"	);
 	float	cs_max		= pSettings->r_float	(section,"ph_crash_speed_max"	);
 	float	mass		= pSettings->r_float	(section,"ph_mass"				);
-	Movement.SetCrashSpeeds	(cs_min,cs_max);
-	Movement.SetMass		(mass);
+	m_PhysicMovementControl.SetCrashSpeeds	(cs_min,cs_max);
+	m_PhysicMovementControl.SetMass		(mass);
 	*/
 
-	// Movement: Frictions
+	// m_PhysicMovementControl: Frictions
 	/*
 	float af, gf, wf;
 	af					= pSettings->r_float	(section,"ph_friction_air"	);
 	gf					= pSettings->r_float	(section,"ph_friction_ground");
 	wf					= pSettings->r_float	(section,"ph_friction_wall"	);
-	Movement.SetFriction	(af,wf,gf);
+	m_PhysicMovementControl.SetFriction	(af,wf,gf);
 
 	// BOX activate
-	Movement.ActivateBox	(0);
+	m_PhysicMovementControl.ActivateBox	(0);
 	*/
 }
 
@@ -312,8 +311,8 @@ BOOL CEntityAlive::net_Spawn	(LPVOID DC)
 {
 	inherited::net_Spawn	(DC);
 
-	//Movement.SetPosition	(Position());
-	//Movement.SetVelocity	(0,0,0);
+	//m_PhysicMovementControl.SetPosition	(Position());
+	//m_PhysicMovementControl.SetVelocity	(0,0,0);
 	return					TRUE;
 }
 
@@ -328,10 +327,10 @@ void CEntityAlive::net_Destroy	()
 	inherited::net_Destroy		();
 }
 
-void CEntityAlive::HitImpulse	(float amount, Fvector& vWorldDir, Fvector& vLocalDir)
+void CEntityAlive::HitImpulse	(float /**amount/**/, Fvector& /**vWorldDir/**/, Fvector& /**vLocalDir/**/)
 {
-//	float Q					= 2*float(amount)/Movement.GetMass();
-//	Movement.vExternalImpulse.mad	(vWorldDir,Q);
+//	float Q					= 2*float(amount)/m_PhysicMovementControl.GetMass();
+//	m_PhysicMovementControl.vExternalImpulse.mad	(vWorldDir,Q);
 }
 
 void CEntityAlive::Hit(float P, Fvector &dir,CObject* who, s16 element,Fvector position_in_object_space, float impulse, ALife::EHitType hit_type)
@@ -363,7 +362,7 @@ void CEntityAlive::BuyItem(LPCSTR buf)
 }
 
 //вывзывает при подсчете хита
-float CEntityAlive::CalcCondition(float hit)
+float CEntityAlive::CalcCondition(float /**hit/**/)
 {	
 	UpdateCondition();
 
