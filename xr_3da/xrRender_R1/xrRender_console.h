@@ -10,6 +10,8 @@ extern ECORE_API int			ps_r__LightSleepFrames;
 extern ECORE_API float			ps_r__Detail_w_rot1;
 extern ECORE_API float			ps_r__Detail_w_rot2;
 extern ECORE_API float			ps_r__Detail_w_speed;
+extern ECORE_API float			ps_r__Detail_w_amp1;
+extern ECORE_API float			ps_r__Detail_w_amp2;
 extern ECORE_API float			ps_r__Detail_l_ambient;
 extern ECORE_API float			ps_r__Detail_l_aniso;
 extern ECORE_API float			ps_r__Detail_density;

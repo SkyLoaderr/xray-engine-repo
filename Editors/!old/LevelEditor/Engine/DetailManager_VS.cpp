@@ -148,8 +148,8 @@ void CDetailManager::hw_Render()
 	//wnd.setHP	(desc.wind_direction,0);
 	//wnd.mul	(desc.wind_velocity /5);
 	//Log		("wd:",desc.wind_direction);
-	dir1.set	(_sin(tm_rot1)+wnd.x,0+wnd.y,_cos(tm_rot1)+wnd.z,0);	dir1.normalize	();	dir1.mul(.1f);	// dir1*amplitude
-	dir2.set	(_sin(tm_rot2)+wnd.x,0+wnd.y,_cos(tm_rot2)+wnd.z,0);	dir2.normalize	(); dir2.mul(.05f);	// dir2*amplitude
+	dir1.set	(_sin(tm_rot1)+wnd.x,0+wnd.y,_cos(tm_rot1)+wnd.z,0);	dir1.normalize	();	dir1.mul(ps_r__Detail_w_amp1);	// dir1*amplitude
+	dir2.set	(_sin(tm_rot2)+wnd.x,0+wnd.y,_cos(tm_rot2)+wnd.z,0);	dir2.normalize	(); dir2.mul(ps_r__Detail_w_amp2);	// dir2*amplitude
 
 	// Setup geometry and DMA
 	RCache.set_Geometry		(hw_Geom);

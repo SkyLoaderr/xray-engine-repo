@@ -11,6 +11,8 @@ int			ps_r__LightSleepFrames		= 10;
 float		ps_r__Detail_w_rot1			= 30.f;
 float		ps_r__Detail_w_rot2			= 1.f;
 float		ps_r__Detail_w_speed		= 2.f;
+float		ps_r__Detail_w_amp1			= 0.1f;
+float		ps_r__Detail_w_amp2			= 0.05f;
 float		ps_r__Detail_l_ambient		= 0.9f;
 float		ps_r__Detail_l_aniso		= 0.25f;
 float		ps_r__Detail_density		= 0.15f;
@@ -87,9 +89,11 @@ void		xrRender_initconsole	()
 	CMD4(CCC_Integer,	"r__supersample",		&ps_r__Supersample,			1,		4		);
 	CMD2(CCC_Aniso,		"r__aniso_tf",			&ps_r__Anisotropic);
 	CMD4(CCC_Integer,	"r__lsleep_frames",		&ps_r__LightSleepFrames,	4,		30		);
-	CMD4(CCC_Float,		"r__detail_w_rot1",		&ps_r__Detail_w_rot1,		1.f,	180.f	);
-	CMD4(CCC_Float,		"r__detail_w_rot2",		&ps_r__Detail_w_rot2,		1.f,	180.f	);
-	CMD4(CCC_Float,		"r__detail_w_speed",	&ps_r__Detail_w_speed,		1.f,	4.f		);
+	CMD4(CCC_Float,		"r__detail_w_rot1",		&ps_r__Detail_w_rot1,		0.01f,	180.f	);
+	CMD4(CCC_Float,		"r__detail_w_rot2",		&ps_r__Detail_w_rot2,		0.01f,	180.f	);
+	CMD4(CCC_Float,		"r__detail_w_speed",	&ps_r__Detail_w_speed,		1.f,	10.f	);
+	CMD4(CCC_Float,		"r__detail_w_amp1",		&ps_r__Detail_w_amp1,		.001f,	1.f		);
+	CMD4(CCC_Float,		"r__detail_w_amp2",		&ps_r__Detail_w_amp2,		.001f,	1.f		);
 	CMD4(CCC_Float,		"r__detail_l_ambient",	&ps_r__Detail_l_ambient,	.5f,	.95f	);
 	CMD4(CCC_Float,		"r__detail_l_aniso",	&ps_r__Detail_l_aniso,		.1f,	.5f		);
 	CMD4(CCC_Float,		"r__detail_density",	&ps_r__Detail_density,		.05f,	0.99f	);
@@ -98,9 +102,9 @@ void		xrRender_initconsole	()
 	Fvector	tw_min,tw_max;
 	tw_min.set			(EPS,EPS,EPS);
 	tw_max.set			(2,2,2);
-	CMD4(CCC_Float,		"r__d_tree_w_rot",		&ps_r__Tree_w_rot,			.01f, 100.f		);
-	CMD4(CCC_Float,		"r__d_tree_w_speed",	&ps_r__Tree_w_speed,		1.0f, 4.f		);
-	CMD4(CCC_Float,		"r__d_tree_w_amp",		&ps_r__Tree_w_amp,			.001f, 1.f		);
+	CMD4(CCC_Float,		"r__d_tree_w_rot",		&ps_r__Tree_w_rot,			.01f,	100.f	);
+	CMD4(CCC_Float,		"r__d_tree_w_speed",	&ps_r__Tree_w_speed,		1.0f,	10.f	);
+	CMD4(CCC_Float,		"r__d_tree_w_amp",		&ps_r__Tree_w_amp,			.001f,	1.f		);
 	CMD4(CCC_Vector3,	"r__d_tree_wave",		&ps_r__Tree_Wave,			tw_min, tw_max	);
 
 	// R1
