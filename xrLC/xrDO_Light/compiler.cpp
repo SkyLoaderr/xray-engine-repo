@@ -85,7 +85,7 @@ struct b_BuildTexture : public b_texture
 Lights					g_lights;
 CDB::MODEL				RCAST_Model;
 Fbox					LevelBB;
-CVirtualFileStreamRW*	dtFS=0;
+CVirtualFileRW*			dtFS=0;
 DetailHeader			dtH;
 DetailSlot*				dtS;
 
@@ -125,9 +125,9 @@ void xrLoad(LPCSTR name)
 	string256			N;
 	{
 		strconcat			(N,name,"build.cform");
-		CVirtualFileStream	FS(N);
+		CVirtualFileReader	FS(N);
 		
-		R_ASSERT(FS.FindChunk(0));
+		R_ASSERT			(FS.find_chunk(0));
 		hdrCFORM			H;
 		FS.Read				(&H,sizeof(hdrCFORM));
 		R_ASSERT			(CFORM_CURRENT_VERSION==H.version);
