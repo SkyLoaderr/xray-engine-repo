@@ -27,6 +27,9 @@ public:
 	
 	virtual BOOL net_Spawn(LPVOID DC) = 0;
 	virtual void net_Destroy() = 0;
+	virtual void net_Export			(NET_Packet& P) = 0;	// export to server
+	virtual void net_Import			(NET_Packet& P) = 0;	// import from server
+
 
 	virtual void UpdateCL();
 
@@ -59,6 +62,11 @@ protected:
 	ALife::EHitType m_eHitTypeBlast;
 	ALife::EHitType m_eHitTypeFrag;
 
+	//коэффицент, сколько из нанесенного взрывом хита
+	//пойдет на физический импульс
+	float m_fBlastImpulseFactor;
+
+
 	//фактор подпроса предмета вверх взрывной волной 
 	float m_fUpThrowFactor;
 
@@ -82,11 +90,11 @@ protected:
 	ref_sound	sndExplode;
 	ESoundTypes m_eSoundExplode;
 
-	//отметки на стенах
+	//размер отметки на стенах
 	float		fWallmarkSize;
 	
 	//эффекты и подсветка
-	ref_str m_sExplodeParticles;
+	ref_str		m_sExplodeParticles;
 	
 	//подсветка взрыва
 	IRender_Light*		m_pLight;
@@ -103,8 +111,6 @@ protected:
 
 public:	 
 
-	virtual void			net_Import			(NET_Packet& P);					// import from server
-	virtual void			net_Export			(NET_Packet& P);					// export to server
 	virtual void			make_Interpolation	();
 	virtual void			PH_B_CrPr			(); // actions & operations before physic correction-prediction steps
 	virtual void			PH_I_CrPr			(); // actions & operations after correction before prediction steps

@@ -11,6 +11,7 @@
 #include "inventory.h"
 #include "Physics.h"
 #include "xrserver_objects_alife.h"
+#include "xrserver_objects_alife_items.h"
 
 CInventoryItem::CInventoryItem() 
 {
@@ -24,16 +25,9 @@ CInventoryItem::CInventoryItem()
 	m_fCondition = 1.0f;
 	m_bUsingCondition = false;
 
-	m_fK_Burn = 1.0f;
-	m_fK_Strike = 1.0f;
-	m_fK_Wound = 1.0f;
-	m_fK_Radiation = 1.0f;
-	m_fK_Telepatic = 1.0f;
-	m_fK_Shock = 1.0f;
-	m_fK_ChemicalBurn = 1.0f;
-	m_fK_Explosion = 1.0f;
-	m_fK_FireWound = 1.0f;
-
+	m_HitTypeK.resize(ALife::eHitTypeMax);
+	for(int i=0; i<ALife::eHitTypeMax; i++)
+		m_HitTypeK[i] = 1.0f;
 
 	m_iGridWidth	= 1;
 	m_iGridHeight	= 1;
@@ -87,9 +81,7 @@ void CInventoryItem::Load(LPCSTR section)
 void  CInventoryItem::ChangeCondition(float fDeltaCondition)
 {
 	m_fCondition += fDeltaCondition;
-
-	if(m_fCondition <0.0f) m_fCondition = 0.0f;
-	else if(m_fCondition >1.0f) m_fCondition = 1.0f;
+	clamp(m_fCondition, 0.f, 1.f);
 }
 
 void CInventoryItem::Hit(float P, Fvector &dir,	
@@ -101,38 +93,10 @@ void CInventoryItem::Hit(float P, Fvector &dir,
 	inherited::Hit(P, dir, who, element, position_in_object_space, 
 		impulse, hit_type);
 
-
 	if(!m_bUsingCondition) return;
 
 	float hit_power = P/100.f;
-
-	switch(hit_type)
-	{
-	case ALife::eHitTypeBurn:
-		hit_power *= m_fK_Burn;
-		break;
-	case ALife::eHitTypeChemicalBurn:
-		hit_power *= m_fK_ChemicalBurn;
-		break;
-	case ALife::eHitTypeStrike:
-		hit_power *= m_fK_Strike;
-		break;
-	case ALife::eHitTypeTelepatic:
-		hit_power *= m_fK_Telepatic;
-		break;
-	case ALife::eHitTypeShock:
-		hit_power *= m_fK_Shock;
-		break;
-	case ALife::eHitTypeExplosion:
-		hit_power *= m_fK_Explosion;
-		break;
-	case ALife::eHitTypeFireWound:
-		hit_power *= m_fK_FireWound;
-		break;
-	case ALife::eHitTypeWound:
-		hit_power *= m_fK_Wound;
-		break;
-	}
+	hit_power *= m_HitTypeK[hit_type];
 
 	ChangeCondition(-hit_power);
 }
@@ -339,6 +303,12 @@ BOOL CInventoryItem::net_Spawn			(LPVOID DC)
 	m_bInInterpolation = false;
 	m_bInterpolate	= false;
 
+	CSE_Abstract					*e	= (CSE_Abstract*)(DC);
+	CSE_ALifeInventoryItem			*pSE_InventoryItem = dynamic_cast<CSE_ALifeInventoryItem*>(e);
+	VERIFY(pSE_InventoryItem);
+	
+	m_fCondition = pSE_InventoryItem->m_fCondition;
+
 	return		res;
 }
 
@@ -352,8 +322,9 @@ void CInventoryItem::net_Destroy		()
 
 void CInventoryItem::net_Import			(NET_Packet& P) 
 {	
-	net_update_IItem			N;
+	P.r_float				(m_fCondition);
 
+	net_update_IItem			N;
 	P.r_u32					( N.dwTimeStamp );
 
 	u16	NumItems = 0;
@@ -374,6 +345,8 @@ void CInventoryItem::net_Import			(NET_Packet& P)
 	P.r_float				( N.State.quaternion.y );
 	P.r_float				( N.State.quaternion.z );
 	P.r_float				( N.State.quaternion.w );
+
+		
 
 	N.State.previous_position	= N.State.position;
 	N.State.previous_quaternion = N.State.quaternion;
@@ -403,12 +376,11 @@ void CInventoryItem::net_Export			(NET_Packet& P)
 {	
 	
 //	inherited::net_Export(P);
-
+	P.w_float			(m_fCondition);
 	P.w_u32				(Level().timeServer());	
 	
 	u16 NumItems = PHGetSyncItemsNumber();
 	if (H_Parent() || GameID() == 1) NumItems = 0;
-
 	P.w_u16				(NumItems);
 	if (!NumItems) return;
 

@@ -15,6 +15,7 @@
 class CSE_ALifeInventoryItem : virtual public CSE_Abstract {
 public:
 	typedef CSE_Abstract inherited;
+	float							m_fCondition;
 	float							m_fMass;
 	int								m_iVolume;
 	u32								m_dwCost;
@@ -145,7 +146,6 @@ SERVER_ENTITY_DECLARE_BEGIN(CSE_ALifeItemGrenade,CSE_ALifeItem)
 SERVER_ENTITY_DECLARE_END
 
 SERVER_ENTITY_DECLARE_BEGIN(CSE_ALifeItemExplosive,CSE_ALifeItem)
-	float							m_fHealth;
 									CSE_ALifeItemExplosive(LPCSTR caSection);
 	virtual							~CSE_ALifeItemExplosive();
 SERVER_ENTITY_DECLARE_END

@@ -70,7 +70,6 @@ SHARED_HUD_INFO_MAP	CWeaponHUD::m_SharedHudInfoMap;
 //////////////////////////////////////////////////////////////////////
 CWeaponHUD::CWeaponHUD		()
 {
-
 	m_pParentWeapon				= NULL;
 	m_pSharedHudInfo			= NULL;
 
@@ -92,8 +91,6 @@ CWeaponHUD::CWeaponHUD(CHudItem* pHudItem)
 
 CWeaponHUD::~CWeaponHUD()
 {
-	//::Render->model_Delete		(pVisual);
-
 	ReleaseHudInfo				(m_sHudSectionName);
 }
 
@@ -114,11 +111,6 @@ void CWeaponHUD::UpdatePosition(const Fmatrix& trans)
 CMotionDef* CWeaponHUD::animGet		(LPCSTR name)
 {
 	return PSkeletonAnimated(Visual())->ID_Cycle_Safe(name);
-}
-
-static void __stdcall animCallback	(CBlend* B)
-{
-	PIItem(B->CallbackParam)->OnAnimationEnd();
 }
 
 void CWeaponHUD::animPlay			(CMotionDef* M,	BOOL bMixIn, CInventoryItem* W)
@@ -165,7 +157,7 @@ void CWeaponHUD::StopCurrentAnim	()
 	m_dwAnimEndTime = 0;
 	m_bStopAtEndAnimIsRunning = false;
 
-	if(m_pCallbackItem) 
+	if(m_pCallbackItem)
 	{
 		m_pCallbackItem->OnAnimationEnd();
 	}

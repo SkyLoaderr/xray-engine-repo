@@ -109,15 +109,8 @@ protected:
 	bool			m_bUsingCondition;
 
 	//коэффициенты изменения типов хитов (задается только там где надо)
-	float			m_fK_Burn;
-	float			m_fK_Strike;
-	float			m_fK_Shock;
-	float			m_fK_Wound;
-	float			m_fK_Radiation;
-	float			m_fK_Telepatic;
-	float			m_fK_ChemicalBurn;
-	float			m_fK_Explosion;
-	float			m_fK_FireWound;
+	//коэффициенты хита
+	HitTypeSVec		m_HitTypeK;
 
 	int				m_iGridWidth;										//ширина в сетке инвенторя
 	int				m_iGridHeight;										//высота в сетке инвенторя

@@ -17,7 +17,7 @@
 	#include "PropertiesListHelper.h"
 #endif
 
-#define SPAWN_VERSION	u16(51)
+#define SPAWN_VERSION	u16(53)
 //------------------------------------------------------------------------------
 // Version history
 //------------------------------------------------------------------------------
@@ -68,6 +68,8 @@
 // 49 - CSE_ALifeObjectHangingLamp		remove some property
 // 50 - CSE_ALifeObject					appended with ALife flags property
 // 51 - CSE_ALifeItemBolt				new class based on CSE_ALifeDynamicObject and CSE_AlifeInventoryItem
+// 52 - CSE_ALifeItemExplosive			new class based on CSE_ALifeItem
+// 53 - CSE_AlifeInventoryItem			appended with property 'condition'
 //------------------------------------------------------------------------------
 
 class CPureServerObject : public IPureServerObject {

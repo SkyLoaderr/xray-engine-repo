@@ -113,7 +113,7 @@ void CGameObject::OnEvent		(NET_Packet& P, u16 type)
 			float			power, impulse;
 			s16				element;
 			Fvector			position_in_bone_space;
-			u16		hit_type;
+			u16				hit_type;
 
 			P.r_u16			(id);
 			P.r_dir			(dir);

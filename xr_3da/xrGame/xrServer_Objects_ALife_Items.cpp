@@ -29,6 +29,9 @@
 ////////////////////////////////////////////////////////////////////////////
 CSE_ALifeInventoryItem::CSE_ALifeInventoryItem(LPCSTR caSection) : CSE_Abstract(caSection)
 {
+	//текущее состояние вещи
+	m_fCondition				= 1.0f;
+
 	m_fMass						= pSettings->r_float(caSection, "inv_weight");
 	m_dwCost					= pSettings->r_u32(caSection, "cost");
 
@@ -60,14 +63,18 @@ CSE_ALifeInventoryItem::~CSE_ALifeInventoryItem	()
 
 void CSE_ALifeInventoryItem::STATE_Write	(NET_Packet &tNetPacket)
 {
+	tNetPacket.w_float				(m_fCondition);
 }
 
 void CSE_ALifeInventoryItem::STATE_Read		(NET_Packet &tNetPacket, u16 size)
 {
+	if (m_wVersion > 52)
+		tNetPacket.r_float				(m_fCondition);
 }
 
 void CSE_ALifeInventoryItem::UPDATE_Write	(NET_Packet &tNetPacket)
 {
+	tNetPacket.w_float			(m_fCondition);
 	tNetPacket.w_u32			(m_dwTimeStamp);
 	tNetPacket.w_u16			(m_u16NumItems);
 	if (!m_u16NumItems) return;	
@@ -90,6 +97,7 @@ void CSE_ALifeInventoryItem::UPDATE_Write	(NET_Packet &tNetPacket)
 
 void CSE_ALifeInventoryItem::UPDATE_Read	(NET_Packet &tNetPacket)
 {
+	tNetPacket.r_float			(m_fCondition);
 	tNetPacket.r_u32			(m_dwTimeStamp);
 	tNetPacket.r_u16			(m_u16NumItems);
 
@@ -115,6 +123,7 @@ void CSE_ALifeInventoryItem::UPDATE_Read	(NET_Packet &tNetPacket)
 void CSE_ALifeInventoryItem::FillProp		(LPCSTR pref, PropItemVec& values)
 {
 	inherited::FillProp			(pref,	 values);
+	PHelper.CreateFloat			(items, FHelper.PrepareKey(pref, s_name, "Item condition"), &m_fCondition, 0.f, 1.f);
 }
 #endif
 
@@ -695,7 +704,6 @@ void CSE_ALifeItemGrenade::FillProp			(LPCSTR pref, PropItemVec& items)
 ////////////////////////////////////////////////////////////////////////////
 CSE_ALifeItemExplosive::CSE_ALifeItemExplosive	(LPCSTR caSection): CSE_ALifeItem(caSection), CSE_Abstract(caSection)
 {
-	m_fHealth = 1.f;
 }
 
 CSE_ALifeItemExplosive::~CSE_ALifeItemExplosive	()
@@ -705,32 +713,27 @@ CSE_ALifeItemExplosive::~CSE_ALifeItemExplosive	()
 void CSE_ALifeItemExplosive::STATE_Read		(NET_Packet	&tNetPacket, u16 size)
 {
 	inherited::STATE_Read		(tNetPacket,size);
-	tNetPacket.r_float			(m_fHealth);
 }
 
 void CSE_ALifeItemExplosive::STATE_Write		(NET_Packet	&tNetPacket)
 {
 	inherited::STATE_Write		(tNetPacket);
-	tNetPacket.w_float			(m_fHealth);
 }
 
 void CSE_ALifeItemExplosive::UPDATE_Read		(NET_Packet	&tNetPacket)
 {
 	inherited::UPDATE_Read		(tNetPacket);
-	tNetPacket.r_float			(m_fHealth);
 }
 
 void CSE_ALifeItemExplosive::UPDATE_Write		(NET_Packet	&tNetPacket)
 {
 	inherited::UPDATE_Write		(tNetPacket);
-	tNetPacket.w_float			(m_fHealth);
 }
 
 #ifdef _EDITOR
 void CSE_ALifeItemExplosive::FillProp			(LPCSTR pref, PropItemVec& items)
 {
 	inherited::FillProp			(pref,items);
-	PHelper.CreateFloat			(items, FHelper.PrepareKey(pref, s_name, "Item health :"), &m_fHealth, 0, 1.f);
 }
 #endif
 

@@ -26,6 +26,8 @@ CExplosive::CExplosive(void)
 
 	m_fUpThrowFactor = 0.f;
 
+	m_fBlastImpulseFactor = 1.f;
+
 	m_eSoundExplode = ESoundTypes(SOUND_TYPE_WEAPON_SHOOTING);
 
 	m_pLight = ::Render->light_create();
@@ -56,6 +58,7 @@ void CExplosive::Load(LPCSTR section)
 	m_eHitTypeFrag	= ALife::g_tfString2HitType(pSettings->r_string(section, "hit_type_frag"));
 
 	m_fUpThrowFactor = pSettings->r_float(section,"up_throw_factor");
+	m_fBlastImpulseFactor = pSettings->r_float(section,"blast_impulse_factor");
 
 	fWallmarkSize = pSettings->r_float(section,"wm_size");
 	R_ASSERT(fWallmarkSize>0);
@@ -234,7 +237,7 @@ void CExplosive::Explode()
 				P.w_float		(l_impuls);
 				P.w_s16			(l_element);
 				P.w_vec3		(l_bs_pos);
-				P.w_float		(l_impuls);
+				P.w_float		(l_impuls*m_fBlastImpulseFactor);
 				P.w_u16			(u16(m_eHitTypeBlast));
 				u_EventSend		(P);
 				l_elements.pop_front();
@@ -304,16 +307,6 @@ void CExplosive::OnEvent(NET_Packet& P, u16 type)
 			break;
 		}
 	}
-}
-
-
-
-void CExplosive::net_Import			(NET_Packet& P)
-{
-}
-
-void CExplosive::net_Export			(NET_Packet& P)
-{
 }
 
 void CExplosive::make_Interpolation ()

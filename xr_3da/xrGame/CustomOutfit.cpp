@@ -46,17 +46,6 @@ void CCustomOutfit::Load(LPCSTR section)
 	m_HitTypeK[ALife::eHitTypeExplosion]	= pSettings->r_float(section,"explosion_protection");
 	m_HitTypeK[ALife::eHitTypeFireWound]	= pSettings->r_float(section,"fire_wound_protection");
 
-
-	m_fK_Burn = pSettings->r_float(section,"burn_immunity");
-	m_fK_Strike = pSettings->r_float(section,"strike_immunity");
-	m_fK_Shock = pSettings->r_float(section,"shock_immunity");
-	m_fK_Wound = pSettings->r_float(section,"wound_immunity");
-	m_fK_Radiation = pSettings->r_float(section,"radiation_immunity");
-	m_fK_Telepatic = pSettings->r_float(section,"telepatic_immunity");
-	m_fK_ChemicalBurn = pSettings->r_float(section,"chemical_burn_immunity");
-	m_fK_Explosion = pSettings->r_float(section,"explosion_immunity");
-	m_fK_FireWound = pSettings->r_float(section,"fire_wound_immunity");
-
 	m_iOutfitIconX = pSettings->r_u32(section, "full_scale_icon_x");
 	m_iOutfitIconY = pSettings->r_u32(section, "full_scale_icon_y");
 }

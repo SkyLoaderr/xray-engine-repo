@@ -85,7 +85,7 @@ protected:
 	
 	virtual void LoadFireParticles(LPCSTR section);
 	//имя партиклов огня, которым может гореть EntityAlive
-	static ref_str m_sFireParticlesName;
+	static STR_VECTOR m_FireParticlesVector;
 
 
 	virtual void			BloodyWallmarks			(float P, Fvector &dir,	s16 element,Fvector position_in_object_space);
