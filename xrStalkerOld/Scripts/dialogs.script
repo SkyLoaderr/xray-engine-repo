@@ -10,7 +10,7 @@ function disable_talk_victim(first_speaker, second_speaker)
 	second_speaker:disable_talk()
 end
 
-function kickass(first_speaker, second_speaker)
+function punch(first_speaker, second_speaker)
 	--utils.abort("KICK ASS !!!!")
 	--xr_punch.punch[first_speaker:id()] = second_speaker
 	db.storage[second_speaker:id()].punch.enabled = true

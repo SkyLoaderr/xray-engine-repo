@@ -17,3 +17,18 @@ end
 function val_suicide_stalker_found(stalker, player)
 	db.actor:set_task_state(task.completed, "val_suicide_find_lost_stalker", 0)
 end
+
+function val_punch_ambush(first_speaker, second_speaker)
+	--utils.abort("KICK ASS !!!!")
+	--xr_punch.punch[first_speaker:id()] = second_speaker
+	local st = db.storage[db.actor:id()].punch
+	if not st then
+		st = {}
+		db.storage[db.actor:id()].punch = st
+	end
+	st.time = nil
+	st.dest_walk = patrol("val_ambush_dest_walk"):point(0)
+	st.dest_look = utils.vector_copy_by_val(
+		patrol("val_ambush_dest_look"):point(0)):sub(st.dest_walk)
+	db.storage[second_speaker:id()].punch.enabled = true
+end

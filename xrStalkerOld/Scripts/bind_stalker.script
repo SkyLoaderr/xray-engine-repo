@@ -27,19 +27,37 @@ end
 function actor_binder:net_destroy()
 	db.del_actor(self.object)
 
+	self.object:set_callback(callback.inventory_info, nil)
+	self.object:set_callback(callback.actor_sleep, nil)
+
 	object_binder.net_destroy(self)
 end
 ----------------------------------------------------------------------------------------------------------------------
 function actor_binder:reinit()
-    object_binder.reinit(self)
+	object_binder.reinit(self)
+
+	db.storage[self.object:id()] = { }
+
+	self.st = db.storage[self.object:id()]
 
 	--self.object:set_info_callback(self, "info_callback")
 	self.object:set_callback(callback.inventory_info, self.info_callback, self)
+	self.object:set_callback(callback.actor_sleep, self.sleep_callback, self)
 end
 ----------------------------------------------------------------------------------------------------------------------
 function actor_binder:info_callback(npc, info_id)
 	printf("*INFO*: npc='%s' id='%s'", npc:name(), info_id)
 	level_tasks.process_map_spot(info_id)
+end
+----------------------------------------------------------------------------------------------------------------------
+function actor_binder:sleep_callback()
+	printf("*SLEEP CALLBACK*")
+	if self.st.punch and self.st.punch.enabled then
+		self.st.punch.enabled = false
+		
+		self.object:set_actor_position(self.st.punch.dest_walk)
+		self.object:set_actor_direction(self.st.punch.dest_look.y)
+	end
 end
 ----------------------------------------------------------------------------------------------------------------------
 function actor_binder:update(delta)

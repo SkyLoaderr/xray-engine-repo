@@ -66,10 +66,6 @@ function action_door:initialize()
 	self.object:set_nonscript_usable(false)
 	self.object:set_callback(callback.use_object, self.door_callback, self)
 
-	-- Не надо: делается в close_door
-	--printf("_bp: action_door: setting physics callback from initialize")
-	--level.add_call(self, "close_check", "close_action")
-
 	if self.st.snd_init then
 		self:door_play_snd_from_set(self.st.snd_init)
 	end
@@ -95,10 +91,6 @@ end
 function action_door:update(delta)
 	--printf("_bp: action_door:update()", delta)
 
-	--if not xr_logic.is_active(self.object, self.st) then
-	--	return
-	--end
-
 	if not self.initialized then
 		utils.abort("object '%s': door failed to initialize", self.object:name())
 	end
@@ -108,36 +100,15 @@ function action_door:update(delta)
 	if xr_logic.try_switch_to_another_section(self.object, self.st, actor) then
 		return
 	end
-	
-	--[[
-	if self.block then
-		local angle = self.joint:get_axis_angle(90)
-		printf("_bp: action_door:update(): angle %f limits %f, %f", angle, self.low_limits, self.hi_limits)
-		if angle >= self.hi_limits then
-			printf("_bp: action_door:update(): door blocked")
-			-- Закрыли до предела, будем блокировать
-			self.joint:set_max_force_and_velocity(10000, 1, 1)
-			self.block = false
-			-- Отыграть звук когда дверь захлопнулась:
-			if not self.soundless_block and self.st.snd_close_stop then
-				self:door_play_snd_from_set(self.st.snd_close_stop)
-			end
-		end
-	end
-	--]]
-
-	--[[
-	if self:close_check() then
-		self:close_action()
-	end
-	--]]
 end
 
 function action_door:fastcall()
 	if self:close_check() then
 		self:close_action()
+		printf("_bp: action_door: fastcall(): return true")
 		return true
 	end
+	printf("_bp: action_door: fastcall(): return false")
 	return false
 end
 

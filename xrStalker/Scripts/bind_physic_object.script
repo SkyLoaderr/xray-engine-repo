@@ -6,7 +6,7 @@
 ----------------------------------------------------------------------------------------------------
 
 function init(obj)
-	db.storage[obj:id()] = { }
+	printf("_bp: init(): name='%s'", obj:name())
 
 	----------------------------------------------------------------------------------------
 	-- Старые схемы
@@ -25,10 +25,13 @@ function init(obj)
 	----------------------------------------------------------------------------------------
 
 	-- Биндить предмет нет смысла, если у него нет секции logic
-	if not ini or not ini:section_exist("logic") then
-		return
-	end
+	--if not ini or not ini:section_exist("logic") then
+	--	if obj:clsid() ~= clsid.projector then
+	--		return
+	--	end
+	--end
 
+	db.storage[obj:id()] = { }
 	local new_binder = generic_physics_binder(obj)
 	obj:bind_object(new_binder)
 end

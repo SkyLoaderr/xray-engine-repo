@@ -301,7 +301,7 @@
             </phrase>
             <phrase id="111">
                 <text>val_ambush_dialog_111</text>
-                <action>dialogs.kickass</action>
+                <action>dialogs_darkvalley.val_punch_ambush</action>
                 <action>dialogs.break_dialog</action>
             </phrase>
             <phrase id="112">
