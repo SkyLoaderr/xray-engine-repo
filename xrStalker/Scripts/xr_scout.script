@@ -49,7 +49,7 @@ function set_soldier_positions( scout, a, around )
 
         if around then
             v.look_dir = vec
-            v.distance = 5
+            v.distance = 4 + math.random( 2 )
         else
             v.look_dir = vec0
             v.distance = 3
@@ -194,7 +194,7 @@ function action_look_around:initialize()
     self.object:set_movement_type       ( move.stand )
     self.object:set_mental_state        ( anim.danger )
 
-    self.a.timer = device():time_global() + time_infinite
+    self.a.timer = device():time_global() + time_infinite --10000
 
     this.set_command( self.aa, leader_stop )
     this.set_soldier_positions( self.object, self.aa, true )
