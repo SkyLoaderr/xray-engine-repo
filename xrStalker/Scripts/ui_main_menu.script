@@ -70,7 +70,6 @@ function main_menu:InitControls()
 	tab:Init(0,0,300, 300);
 	self.main_frame:AttachChild(tab)
 	
-	
 --	local tabBtn = CUITabButton()
 --	tabBtn:SetText("tab1")
 --	tabBtn:Init(0, 0, self.btn_rect.width, self.btn_rect.height)
@@ -94,6 +93,8 @@ function main_menu:InitControls()
 	self:Register(btn)
 	self.main_frame:AttachChild(btn)
 	
+	tab:AddItem(btn)
+	
 	--------->> LOAD Game	
 	btn = CUIButton()
 	btn:SetAutoDelete(true)
@@ -106,6 +107,8 @@ function main_menu:InitControls()
 	self:Register(btn)
 	self.main_frame:AttachChild(btn)	
 	
+	
+	
 	--------->> MULTIPLAYER
 	btn = CUIButton()
 	btn:SetAutoDelete(true)
@@ -117,6 +120,8 @@ function main_menu:InitControls()
 	btn:SetTextY(self.button_indent)
 	self:Register(btn)
 	self.main_frame:AttachChild(btn)
+	
+	
 	
 	--------->> OPTIONS
 	btn = CUIButton()
