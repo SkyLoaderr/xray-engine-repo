@@ -107,7 +107,12 @@ IRender_Visual*	CModelPool::Instance_Load		(const char* N)
 	if (!FS.exist(N))	{
 		if (!FS.exist(fn, "$level$", name))
 			if (!FS.exist(fn, "$game_meshes$", name)){
+#ifdef _EDITOR
+				Msg("!Can't find model file '%s'.",name);
+                return 0;
+#else            
 				Debug.fatal("Can't find model file '%s'.",name);
+#endif
 			}
 	} else {
 		strcpy			(fn,N);
@@ -230,7 +235,11 @@ IRender_Visual* CModelPool::Create(const char* name)
 			Registry.insert	(mk_pair(Model,xr_strdup(low_name)));
 		} else {
 			// 3. If not found
-			Model			= Instance_Duplicate(Instance_Load(low_name));
+            Model			= Instance_Load(low_name);
+#ifdef _EDITOR
+			if (!Model)		return 0;
+#endif
+			Model			= Instance_Duplicate(Model);
 			Registry.insert	(mk_pair(Model,xr_strdup(low_name)));
 		}
 	}
