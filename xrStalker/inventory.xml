@@ -36,7 +36,7 @@
     <!-- DESCRIPTION WINDOW -->
     <descr_static x="370" y="260" width="335" height="455">
         <texture> ui\ui_dg_info</texture>
-        <text x="25" y="2" font="header" r="255" g="255" b="255" a="130">Description</text>
+        <text x="25" y="6" font="header" r="255" g="255" b="255" a="130">Description</text>
     </descr_static>
 
     <!-- CHARACTER WINDOW -->
@@ -79,33 +79,33 @@
     
     <!-- BELT LIST -->
     <dragdrop_list x="22" y="174" width="1024" height="60"
-            cell_width = "54" cell_height="54"
+            cell_width = "52" cell_height="52"
             rows_num="1" cols_num="18"></dragdrop_list>
     <!-- BAG LIST -->
     <dragdrop_list x="30" y="35" width="400" height="350"
-            cell_width = "41" cell_height="41"
+            cell_width = "40" cell_height="40"
             rows_num="18" cols_num="7" rows_num_view="10"></dragdrop_list>
 
     <!-- SLOTS LISTS -->
     <dragdrop_list x="23" y="14" width="120" height="120"
-            cell_width = "54" cell_height="54"
+            cell_width = "52" cell_height="52"
             rows_num="2" cols_num="2"></dragdrop_list>
 
     <dragdrop_list x="168" y="14" width="120" height="120"
-            cell_width = "54" cell_height="54"
+            cell_width = "52" cell_height="52"
             rows_num="2" cols_num="2"></dragdrop_list>
 
     <!-- ACTIVE WEAPON SLOT -->
     <dragdrop_list x="313" y="14" width="320" height="120"
-            cell_width = "54" cell_height="54"
+            cell_width = "52" cell_height="52"
             rows_num="2" cols_num="6"></dragdrop_list>
 
     <dragdrop_list x="670" y="14" width="100" height="120"
-            cell_width = "54" cell_height="54"
+            cell_width = "52" cell_height="52"
             rows_num="2" cols_num="2"></dragdrop_list>
 
     <dragdrop_list x="818" y="14" width="150" height="120"
-            cell_width = "54" cell_height="54"
+            cell_width = "52" cell_height="52"
             rows_num="2" cols_num="3"></dragdrop_list>
 
     <!-- OUTFIT SLOT -->
