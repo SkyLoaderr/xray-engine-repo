@@ -61,6 +61,8 @@
 <!--	<heli_mini_spot x="0" y="0" width="11" height="13" heading="1" light_anim="ui_pda_contacts" alignment="c">  -->
 	<heli_mini_spot x="0" y="0" width="11" height="13" heading="1" alignment="c"> 
 		<texture x="10" y="9" width="11" height="13"> ui\ui_map_arrow_02</texture>
+		<texture_above x="10" y="9" width="11" height="13"> ui\ui_map_arrow_02</texture_above>
+		<texture_below x="10" y="9" width="11" height="13"> ui\ui_map_arrow_02</texture_below>
 	</heli_mini_spot>
 	
 	<enemy_mini_spot width="3" height="3" alignment="c"> 

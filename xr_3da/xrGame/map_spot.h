@@ -31,15 +31,16 @@ public:
 	virtual		void		Update							();
 	virtual LPCSTR			GetHint							();
 };
-/*
-class CZoneMapSpot :public CMapSpot
+
+class CMiniMapSpot :public CMapSpot
 {
 	typedef CMapSpot inherited;
-
+	ref_shader				m_icon_above,m_icon_normal,m_icon_below;
+	Irect					m_tex_rect_above,m_tex_rect_normal,m_tex_rect_below;
 public:
-							CZoneMapSpot					(CMapLocation*);
-	virtual					~CZoneMapSpot					();
+							CMiniMapSpot					(CMapLocation*);
+	virtual					~CMiniMapSpot					();
+	virtual		void		Load							(CUIXml* xml, LPCSTR path);
 	virtual		void		Draw							();
 	virtual		void		Update							();
 };
-*/

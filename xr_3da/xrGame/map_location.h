@@ -3,6 +3,7 @@
 
 
 class CMapSpot;
+class CMiniMapSpot;
 class CMapSpotPointer;
 class CUICustomMap;
 
@@ -13,7 +14,7 @@ private:
 	string512				m_hint;
 	CMapSpot*				m_level_spot;
 	CMapSpotPointer*		m_level_spot_pointer;
-	CMapSpot*				m_minimap_spot;
+	CMiniMapSpot*			m_minimap_spot;
 	CMapSpotPointer*		m_minimap_spot_pointer;
 	u16						m_objectID;
 	u16						m_refCount;
@@ -44,6 +45,7 @@ public:
 	u16						AddRef							() {++m_refCount; return m_refCount;}
 	u16						Release							() {--m_refCount; return m_refCount;}
 	bool					Update							(); //returns actual
+	Fvector2				GetLastPosition					() {return m_position_global;};
 };
 
 

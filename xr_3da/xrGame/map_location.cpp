@@ -70,7 +70,7 @@ void CMapLocation::LoadSpot(LPCSTR type)
 	if(node){
 		LPCSTR str = uiXml.ReadAttrib(path, 0, "spot", "");
 		if( xr_strlen(str) ){
-			m_minimap_spot = xr_new<CMapSpot>(this);
+			m_minimap_spot = xr_new<CMiniMapSpot>(this);
 			m_minimap_spot->Load(&uiXml,str);
 		};
 		str = uiXml.ReadAttrib(path, 0, "pointer", "");
