@@ -199,23 +199,22 @@ public:
 	void						Save(CFS_Memory &FS, u32 &dwID)
 	{
 		NET_Packet		P;
-		u32				position;
 		for (u32 i=0 ; i<m_tpSpawnPoints.size(); i++, dwID++) {
 			xrServerEntity*	E	= m_tpSpawnPoints[i];
 
 			FS.open_chunk		(dwID);
 
 			// Spawn
+			P.w_begin			(M_SPAWN);
 			E->Spawn_Write		(P,TRUE);
 			FS.Wword			(u16(P.B.count));
 			FS.write			(P.B.data,P.B.count);
-			P.w_begin			(M_SPAWN);
 
 			// Update
+			P.w_begin			(M_UPDATE);
 			E->UPDATE_Write		(P);
 			FS.Wword			(u16(P.B.count));
 			FS.write			(P.B.data,P.B.count);
-			P.w_begin			(M_UPDATE);
 
 			FS.close_chunk		();
 		}
