@@ -10,7 +10,7 @@ BOOL CMercuryBall::net_Spawn(LPVOID DC) {
 	setVisible					(true);
 	setEnabled					(true);
 	xrSE_MercuryBall* E			= (xrSE_MercuryBall*)DC;
-	cNameVisual_set				(E->s_Model);
+	//cNameVisual_set				(E->s_Model);
 
 	CKinematics* V				= PKinematics(Visual());
 	if(V) V->PlayCycle			("idle");

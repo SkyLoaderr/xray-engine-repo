@@ -60,7 +60,20 @@ void CAI_Biting::Init()
 	m_fAttackSuccessProbability2	= .4f;
 	m_fAttackSuccessProbability3	= .2f;
 
-	m_fInertion = 0.f;
+	InitState = true;
+	
+	m_tActionState = eMoveBackScared;
+
+	m_dwTimeLastSeenEnemy = 0;
+	m_dwTimeLastHeardEnemy = 0;
+
+	SeenInertion = 0;
+	HeardInertion = 0;
+	StateStartedTime = 0;
+
+	pStateRunAwayInPanic = new stateRunAwayInPanic(10,this);
+
+	ZeroMemory(&m_tLastSound, sizeof(SSimpleSound));
 }
 
 void CAI_Biting::Die()
@@ -225,6 +238,6 @@ void CAI_Biting::net_Import(NET_Packet& P)
 // Other functions
 //////////////////////////////////////////////////////////////////////
 
-void CAI_Biting::HitSignal(float amount, Fvector &vLocalDir, CObject *who, s16 element)
-{
-}
+//void CAI_Biting::HitSignal(float amount, Fvector &vLocalDir, CObject *who, s16 element)
+//{
+//}

@@ -486,6 +486,9 @@
 							</FileConfiguration>
 						</File>
 						<File
+							RelativePath="AI\Biting\ai_biting_feel.cpp">
+						</File>
+						<File
 							RelativePath="AI\Biting\ai_biting_fire.cpp">
 						</File>
 						<File
@@ -499,6 +502,12 @@
 						</File>
 						<File
 							RelativePath="AI\Biting\ai_biting_space.h">
+						</File>
+						<File
+							RelativePath="AI\Biting\ai_biting_state.cpp">
+						</File>
+						<File
+							RelativePath="AI\Biting\ai_biting_state.h">
 						</File>
 					</Filter>
 					<Filter

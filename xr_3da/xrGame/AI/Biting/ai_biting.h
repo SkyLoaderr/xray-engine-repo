@@ -12,11 +12,13 @@
 #include "..\\ai_monsters_misc.h"
 #include "ai_biting_anim.h"
 #include "ai_biting_space.h"
-
+#include "ai_biting_state.h"
 
 class CAI_Biting : public CCustomMonster, public CBitingAnimations
 {
 public:
+	friend class stateRunAwayInPanic;
+
 	typedef	CCustomMonster inherited;
 
 							CAI_Biting		();
@@ -126,7 +128,7 @@ private:
 	
 	// построение пути и установка параметров скорости
 	// tpPoint - куда смотреть при движении
-	void vfSetParameters(IBaseAI_NodeEvaluator *tpNodeEvaluator, Fvector *tpDesiredPosition, bool bSearchNode, Fvector *tpPoint = 0);
+	void vfSetParameters(IBaseAI_NodeEvaluator *tpNodeEvaluator, Fvector *tpDesiredPosition, bool bSearchNode, Fvector *tpPoint = 0, bool moveback=false);
 	
 	
 	// Animation Parameters
@@ -137,7 +139,7 @@ private:
 	void vfSetAnimation(bool bForceChange = false);
 
 	void SetDirectionLook();
-
+	void SetReversedDirectionLook();
 	//////////////////////////////////////////////////////////////////////////
 	// FSM
 	AI_Biting::EStateFSM	m_tStateFSM;
@@ -191,10 +193,27 @@ private:
 	float					m_fAttackSuccessProbability2;
 	float					m_fAttackSuccessProbability3;
 	
-	void vfUpdateParameters(bool &A, bool &B, bool &Bb, bool &C, bool &Cc, bool &D, bool &E, bool &Ee, bool &F);
-	float	m_fInertion;
+	void vfUpdateParameters();
+	u32	m_dwTimeLastSeenEnemy;		
+	u32	m_dwTimeLastHeardEnemy;		
+	u32 SeenInertion;
+	u32 HeardInertion;
+	u32 StateInertion;
+	u32 StateStartedTime;
+
+	bool InitState;
 
 	void MoveBackScared();
+	void RunAwayInPanic();
+	void StayInPlaceScared();
+	
+	bool A, B, Bb, C, Cc, D, E,Ee, F;
+	bool _A, _B, _Bb, _C, _Cc, _D, _E, _Ee, _F;
+
+	stateRunAwayInPanic *pStateRunAwayInPanic;
 
 };
+
+
+
 

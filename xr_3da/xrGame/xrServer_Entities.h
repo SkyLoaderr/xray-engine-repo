@@ -48,6 +48,7 @@ public:
 
 class xrSE_Visualed
 {
+public:
 	string64						visual_name;
 public:
 #ifdef _EDITOR

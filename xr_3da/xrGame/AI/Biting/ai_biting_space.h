@@ -91,6 +91,9 @@ namespace AI_Biting {
 		eActionRunTurnLeft,
 		eActionRunTurnRight,
 		eActionAttack,
+		eActionEat,
+		eActionDamage,
+		eActionScared
 	};
 
 	// Sound
@@ -126,7 +129,7 @@ namespace AI_Biting {
 		eRunToCover,
 		eStayInPlaceScared,
 		eTurnToAttacker,
-		eMoveBackUncertain,
+		eMoveBackScared,
 		eRunAwayInPanic,
 	};
 };

@@ -34,6 +34,7 @@ namespace AI_Biting {
 		"attack_",
 		"eat_",
 		"damage_",
+		"scared_",
 		0
 	};
 };
@@ -142,6 +143,13 @@ void CAI_Biting::vfSetAnimation(bool bForceChange)
 		m_tActionType == eActionTypeWalk ) 
 
 		m_tActionAnim = eActionWalkBkwd;			// пятиться назад
+
+	else if (m_tMovementType == eMovementTypeStand &&   
+		m_tMovementDir == eMovementDirectionNone &&
+		m_tStateType == eStateTypePanic &&
+		m_tActionType == eActionTypeStand ) 
+
+		m_tActionAnim = eActionScared;			// стоять испуганно
 
 	if ( ((PostureAnim_old != m_tPostureAnim) || (ActionAnim_old != m_tActionAnim)) && bForceChange)
 		FORCE_ANIMATION_SELECT();
