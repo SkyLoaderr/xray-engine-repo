@@ -898,10 +898,11 @@ end
 ----------------------------------------------------------------------------------------------------------------------
 
 function add_to_binder( npc, char_ini )
+    printf( "commander1" )
     if char_ini and not char_ini:section_exist( "commander" ) then
         return
     end
-
+    printf( "commander2" )
     local a = xr_motivator.storage[npc:id()].commander
 
     a.dead_hook = false
@@ -929,8 +930,10 @@ function add_to_binder( npc, char_ini )
     action:add_precondition( world_property( prop_dead_hook, true ) )
 
     if char_ini then
+        printf( "commander3" )
         this.set_commander( npc )
     end
+    printf( "commander4" )
 end
 
 function init_commander( npc, a )
