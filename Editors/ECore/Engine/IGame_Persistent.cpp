@@ -10,7 +10,7 @@ IGame_Persistent::IGame_Persistent	()
 {
 	Device.seqAppCycleStart.Add		(this);
 	Device.seqAppCycleEnd.Add		(this);
-	Device.seqFrame.Add				(this);
+	Device.seqFrame.Add				(this,REG_PRIORITY_HIGH+1);
 	Device.seqDevCreate.Add			(this);
 	Device.seqDevDestroy.Add		(this);
 }

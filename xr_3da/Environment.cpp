@@ -290,7 +290,7 @@ void CEnvironment::load		()
 			strconcat	(_r,_n,"_r");
 			music*		m = xr_new<music>	();
 			m->left.create		(true,_l,0);
-			m->right.create		(true,_l,0);
+			m->right.create		(true,_r,0);
 			playlist.push_back	(m);
 		}
 	}
@@ -466,8 +466,8 @@ void CEnvironment::OnFrame()
 	spL.max_distance		= 100.f;
 	spL.volume				= psSoundVMusic;
 	spR						= spL;
-	spL.position.mad(Device.vCameraPosition,Device.vCameraDirection).mad(Device.vCameraRight,-1.f).mad(Device.vCameraTop,.1f);
-	spR.position.mad(Device.vCameraPosition,Device.vCameraDirection).mad(Device.vCameraRight,+1.f).mad(Device.vCameraTop,.1f);
+	spL.position.add(Device.vCameraPosition,Device.vCameraDirection).mad(Device.vCameraRight,-1.f).mad(Device.vCameraTop,.1f);
+	spR.position.add(Device.vCameraPosition,Device.vCameraDirection).mad(Device.vCameraRight,+1.f).mad(Device.vCameraTop,.1f);
 
 	music*	_m				= playlist.front	();
 	_m->left.set_params		(&spL);
