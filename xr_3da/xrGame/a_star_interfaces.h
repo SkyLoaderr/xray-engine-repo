@@ -8,6 +8,7 @@
 
 #pragma once
 
+//this file is included for performance purposes - to inline functions that uses CAI_Space class
 #include "ai_space.h"
 
 struct SAIMapData {

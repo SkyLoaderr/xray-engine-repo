@@ -10,8 +10,6 @@
 
 #pragma once
 
-#include "ai_space.h"
-
 #define MAX_VALUE	10000000.f;
 
 #pragma pack(push,4)
@@ -52,7 +50,7 @@ public:
 			u32				dwGoalNode, 
 			float			fMaxValue, 
 			float			&fValue, 
-			AI::DWORD_VECTOR&tpaNodes,
+			xr_vector<u32>	&tpaNodes,
 			bool			bUseMarks)
 	{
 		Device.Statistic.AI_Path.Begin();
