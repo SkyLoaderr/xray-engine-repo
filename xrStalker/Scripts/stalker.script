@@ -52,15 +52,20 @@ end
 		self.object:set_task_state(task.completed, "tutorial_find_artefact", 0)
 	end 
 
-	if self.object:has_info("tutorial_wounded_help") then
+	if self.object:has_info("tutorial_wounded_help") and
+	   self.object:has_info("tutorial_wounded_start")
+	then
 		self.object:give_info_portion("tutorial_end")
 		self.object:set_task_state(task.completed, "tutorial_help_wounded", 0)
 	end
 
-	if self.object:has_info("tutorial_wounded_die") then
+	if self.object:has_info("tutorial_wounded_die") and
+	   self.object:has_info("tutorial_wounded_start")
+	then
 		self.object:give_info_portion("tutorial_end")
 		self.object:set_task_state(task.fail, "tutorial_help_wounded", 0)
 	end
+
 	if self.object:has_info("escape_stalker_die") then
 		self.object:set_task_state(task.fail, "esc_help_wounded_from_raid", 0)
 	end
