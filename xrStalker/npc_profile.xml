@@ -52,12 +52,12 @@
 
 	<!-- Soldier  -->
 	<character id="soldier">
-		<team>Soldier_general</team>
-		<class>Soldier_general</class>
+		<team>Soldier_private</team>
+		<class>Soldier_private</class>
 	</character>
 	<character id="soldier_novice">
-		<team>Soldier_novice</team>
-		<class>Soldier_novice</class>
+		<team>Soldier_private</team>
+		<class>Soldier_private</class>
 	</character>
 	<character id="soldier_general">
 		<team>Soldier_general</team>
