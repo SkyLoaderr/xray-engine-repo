@@ -49,9 +49,8 @@ void CAI_Space::OnDeviceCreate()
 void CAI_Space::OnDeviceDestroy()
 {
 	REQ_DESTROY	();
-	Device.Shader.Delete	(sh_debug);
+	Device.Shader.Delete		(sh_debug);
 }
-
 void CAI_Space::Load(LPCSTR name)
 {
 	FILE_NAME	fName;
@@ -99,15 +98,15 @@ void CAI_Space::Render()
 
 	// display
 	Fvector P			= POSITION;
-	pApp->pFont->Out	(0.f,0.5f,"%f,%f,%f",VPUSH(P));
 
 	NodePosition		Local;
 	PackPosition		(Local,P);
 
 	DWORD ID			= O->AI_NodeID;
 
-	pApp->pFont->Out(0.f,0.55f,"%3d,%4d,%3d -> %d",
-		int(Local.x),int(Local.y),int(Local.z),DWORD(ID));
+	pApp->pFont->Size	(.02f);
+	pApp->pFont->Out	(0.f,0.5f,"%f,%f,%f",VPUSH(P));
+	pApp->pFont->Out	(0.f,0.55f,"%3d,%4d,%3d -> %d",	int(Local.x),int(Local.y),int(Local.z),DWORD(ID));
 
 	svector<DWORD,128>	linked;
 	{

@@ -17,14 +17,37 @@ IC void minmax(float &mn, float &mx) { if (mn > mx) swap(mn,mx); }
 // Class	: CObjectSpace
 // Purpose	: stores space slots
 //----------------------------------------------------------------------
-CObjectSpace::CObjectSpace( ){
-	dwQueryID = 0x0;
+CObjectSpace::CObjectSpace( )
+{
+	dwQueryID	= 0;
+	sh_debug	= 0;
+	
+	Device.seqDevCreate.Add		(this);
+	Device.seqDevDestroy.Add	(this);
+	OnDeviceCreate				();
 }
 //----------------------------------------------------------------------
-
 CObjectSpace::~CObjectSpace( )
 {
-	pSounds->SetGeometry( NULL );
+	pSounds->SetGeometry		(NULL);
+
+	Device.seqDevCreate.Remove	(this);
+	Device.seqDevDestroy.Remove	(this);
+	Device.Shader.Delete		(sh_debug);
+	OnDeviceDestroy				();
+}
+
+//----------------------------------------------------------------------
+void CAI_Space::OnDeviceCreate()
+{
+	REQ_CREATE	();
+	sh_debug	= Device.Shader.Create	("debug\\wireframe","$null");
+}
+//----------------------------------------------------------------------
+void CAI_Space::OnDeviceDestroy()
+{
+	REQ_DESTROY	();
+	Device.Shader.Delete	(sh_debug);
 }
 //----------------------------------------------------------------------
 IC void CObjectSpace::Object_Register		( CObject *O )
@@ -135,7 +158,8 @@ IC void CObjectSpace::GetRect	( const CCFModel *obj, Irect &rect ){
 	rect.y2				= TransZ(max.z);
 }
 //----------------------------------------------------------------------
-BOOL CObjectSpace::TestNearestObject(CCFModel *object, const Fvector& center, float range){
+BOOL CObjectSpace::TestNearestObject(CCFModel *object, const Fvector& center, float range)
+{
 	dwQueryID++;
 
 	object->Enable 		( false ); // self exclude from test
@@ -145,21 +169,12 @@ BOOL CObjectSpace::TestNearestObject(CCFModel *object, const Fvector& center, fl
 	CCFModel**			_it	 = nearest_list.begin	();
 	CCFModel**			_end = nearest_list.end		();
 	for ( ; _it!=_end; _it++ )
-	{
 		(*_it)->Owner()->OnNear(object->Owner());
-		/*
-		if (!object->owner->OnNear(target)) {
-			nearest_list.erase(_it-nearest_list.begin());
-			_it--;
-			_end = nearest_list.end();
-		}
-		*/
-	}
 	return nearest_list.size();
 }
 //----------------------------------------------------------------------
-
-void CObjectSpace::Load( CStream *F ){
+void CObjectSpace::Load	(CStream *F)
+{
 	R_ASSERT			(F);
 	int					x_count, z_count;
 
@@ -184,7 +199,11 @@ void CObjectSpace::dbgRender()
 {
 	R_ASSERT(bDebug);
 
-	pApp->pFont->Out(0,0,"Box count: %d",q_debug.boxes.size());
+	pApp->pFont->Size	(.02f);
+	pApp->pFont->Out	(0,0,"Box count: %d",q_debug.boxes.size());
+	
+	
+	Device.Shader.set_Shader(sh_debug);
 	for (DWORD i=0; i<q_debug.boxes.size(); i++)
 	{
 		Fobb&		obb		= q_debug.boxes[i];
