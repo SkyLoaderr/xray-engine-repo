@@ -121,10 +121,23 @@ private:	// User declarations
 
 	void 				OutBOOL					(BOOL val, TCanvas* Surface, TRect& R, bool bEnable);
 	void 				OutText					(LPCSTR text, TCanvas* Surface, TRect& R, bool bEnable, TGraphic* g=0, bool bArrow=false);
+public:
+	enum{
+        plFolderStore	= (1<<0)
+    };
+protected:
+    Flags32				m_Flags;
+
+	// RT store
+    struct SFolderStore{
+    	bool expand;
+    };
+    DEFINE_MAP(AnsiString,SFolderStore,FolderStoreMap,FolderStorePairIt);
+    FolderStoreMap		FolderStore;
 public:		// User declarations
 	__fastcall TProperties		        		(TComponent* Owner);
-	static TProperties* CreateForm				(const AnsiString& title, TWinControl* parent=0, TAlign align=alNone, TOnModifiedEvent modif=0, TOnItemFocused focused=0, TOnCloseEvent close=0);
-	static TProperties* CreateModalForm			(const AnsiString& title, bool bShowButtonsBar=true, TOnModifiedEvent modif=0, TOnItemFocused focused=0, TOnCloseEvent close=0);
+	static TProperties* CreateForm				(const AnsiString& title, TWinControl* parent=0, TAlign align=alNone, TOnModifiedEvent modif=0, TOnItemFocused focused=0, TOnCloseEvent close=0, u32 flags=plFolderStore);
+	static TProperties* CreateModalForm			(const AnsiString& title, bool bShowButtonsBar=true, TOnModifiedEvent modif=0, TOnItemFocused focused=0, TOnCloseEvent close=0, u32 flags=plFolderStore);
 	static void 		DestroyForm				(TProperties*& props);
     int __fastcall 		ShowPropertiesModal		();
     void __fastcall 	ShowProperties			();

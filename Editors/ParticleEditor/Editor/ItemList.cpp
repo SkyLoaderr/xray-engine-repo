@@ -60,9 +60,22 @@ void TItemList::ClearParams(TElTreeItem* node)
                 last_selected_items.push_back(s);
             }
         }
+        // store
+        if (m_Flags.is(ilFolderStore)&&tvItems->Items->Count){
+	        FolderStore.clear();
+            for (TElTreeItem* item=tvItems->Items->GetFirstNode(); item; item=item->GetNext()){
+            	if (u32(item->Data)==TYPE_FOLDER){
+                	AnsiString nm;
+                	FHelper.MakeFullName(item,0,nm);
+                    SFolderStore 		st_item;
+                    st_item.expand		= item->Expanded;
+                    FolderStore[nm]		= st_item;
+                }
+            }
+        }
         // real clear
 	    for (ListItemsIt it=m_Items.begin(); it!=m_Items.end(); it++)
-    		xr_delete	(*it);
+    		xr_delete			(*it);
 		m_Items.clear();
         // fill list
         LockUpdating			();
@@ -223,6 +236,22 @@ void __fastcall TItemList::AssignItems(ListItemsVec& items, bool full_expand, bo
 
     // end fill mode
 	if (full_expand) tvItems->FullExpand();
+
+    // folder restore
+    if (m_Flags.is(ilFolderStore)&&!FolderStore.empty()){
+        for (TElTreeItem* item=tvItems->Items->GetFirstNode(); item; item=item->GetNext()){
+            if (u32(item->Data)==TYPE_FOLDER){
+                AnsiString nm;
+                FHelper.MakeFullName		(item,0,nm);
+                FolderStorePairIt it 		= FolderStore.find(nm);
+                if (it!=FolderStore.end()){
+                    SFolderStore& st_item 	= it->second;
+                    if (st_item.expand) 	item->Expand	(false);
+                    else					item->Collapse	(false);
+                }
+            }
+        }
+    }
 
     // sorting
     if (full_sort){

@@ -110,6 +110,20 @@ void TProperties::ClearParams(TElTreeItem* node)
 */
     }else{
 	    if (tvProperties->Selected) FHelper.MakeFullName(tvProperties->Selected,0,last_selected_item);
+        // store
+        if (m_Flags.is(plFolderStore)&&tvProperties->Items->Count){
+            FolderStore.clear();
+            for (TElTreeItem* item=tvProperties->Items->GetFirstNode(); item; item=item->GetNext()){
+            	if (u32(item->Data)==TYPE_FOLDER){
+                	AnsiString nm;
+                	FHelper.MakeFullName(item,0,nm);
+                    SFolderStore 		st_item;
+                    st_item.expand		= item->Expanded;
+                    FolderStore[nm]		= st_item;
+                }
+            }
+        }
+        // clear
 	    for (PropItemIt it=m_Items.begin(); it!=m_Items.end(); it++)
     		xr_delete	(*it);
 		m_Items.clear();
@@ -151,10 +165,11 @@ __fastcall TProperties::TProperties(TComponent* Owner) : TForm(Owner)
 	m_BMEllipsis->LoadFromResourceName	((u32)HInstance,"ELLIPSIS");
     seNumber->Parent= tvProperties;
     seNumber->Hide	();
+    m_Flags.zero	();
 }
 //---------------------------------------------------------------------------
 
-TProperties* TProperties::CreateForm(const AnsiString& title, TWinControl* parent, TAlign align, TOnModifiedEvent modif, TOnItemFocused focused, TOnCloseEvent on_close)
+TProperties* TProperties::CreateForm(const AnsiString& title, TWinControl* parent, TAlign align, TOnModifiedEvent modif, TOnItemFocused focused, TOnCloseEvent on_close, u32 flags)
 {
 	TProperties* props 			= xr_new<TProperties>(parent);
     props->OnModifiedEvent 		= modif;
@@ -169,10 +184,11 @@ TProperties* TProperties::CreateForm(const AnsiString& title, TWinControl* paren
     }
 	props->Caption				= title;	
     props->fsStorage->IniSection= title;
+    props->m_Flags.set				(flags);
 	return props;
 }
 
-TProperties* TProperties::CreateModalForm(const AnsiString& title, bool bShowButtonsBar, TOnModifiedEvent modif, TOnItemFocused focused, TOnCloseEvent on_close)
+TProperties* TProperties::CreateModalForm(const AnsiString& title, bool bShowButtonsBar, TOnModifiedEvent modif, TOnItemFocused focused, TOnCloseEvent on_close, u32 flags)
 {
 	TProperties* props 			= xr_new<TProperties>((TComponent*)0);
     props->OnModifiedEvent 		= modif;
@@ -181,6 +197,7 @@ TProperties* TProperties::CreateModalForm(const AnsiString& title, bool bShowBut
     props->paButtons->Visible	= bShowButtonsBar;
 	props->Caption				= title;	
     props->fsStorage->IniSection= title;
+    props->m_Flags.set			(flags);
 	return props;
 }
 
@@ -288,7 +305,23 @@ void __fastcall TProperties::AssignItems(PropItemVec& items, bool full_expand)
 
     // end fill mode
     bModified=false;
-	if (full_expand) tvProperties->FullExpand();
+    if (full_expand) tvProperties->FullExpand();
+
+    // folder restore
+    if (m_Flags.is(plFolderStore)&&!FolderStore.empty()){
+        for (TElTreeItem* item=tvProperties->Items->GetFirstNode(); item; item=item->GetNext()){
+            if (u32(item->Data)==TYPE_FOLDER){
+                AnsiString nm;
+                FHelper.MakeFullName		(item,0,nm);
+                FolderStorePairIt it 		= FolderStore.find(nm);
+                if (it!=FolderStore.end()){
+                    SFolderStore& st_item 	= it->second;
+                    if (st_item.expand) 	item->Expand	(false);
+                    else					item->Collapse	(false);
+                }
+            }
+        }
+    }
 
 	UnlockUpdating	();
 

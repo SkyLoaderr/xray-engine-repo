@@ -94,6 +94,7 @@ public:
         ilMultiSelect	= (1<<1),
         ilDragAllowed	= (1<<2),
         ilDragCustom	= (1<<3),
+        ilFolderStore	= (1<<4),
 
         // internal
         ilRT_FullExpand	= (1<<30),
@@ -108,6 +109,14 @@ public:
     CFolderHelper::TOnItemRename	OnItemRename;
     CFolderHelper::TOnItemRemove	OnItemRemove;
 protected:
+	// RT store
+    struct SFolderStore{
+    	bool expand;
+    };
+    DEFINE_MAP(AnsiString,SFolderStore,FolderStoreMap,FolderStorePairIt);
+    FolderStoreMap		FolderStore;
+protected:
+    // TItemList vector
 	DEFINE_VECTOR(TItemList*,ILVec,ILIt);
 	static  ILVec		ILForms;
 
@@ -115,8 +124,8 @@ protected:
     void __fastcall		RenameItem				(LPCSTR fn0, LPCSTR fn1, EItemType type);
 public:		// User declarations
 	__fastcall 			TItemList	       		(TComponent* Owner);
-	static TItemList* 	CreateForm				(const AnsiString& title, TWinControl* parent=0, TAlign align=alNone, u32 flags=ilMultiSelect);
-	static TItemList* 	CreateModalForm			(const AnsiString& title, u32 flags=ilMultiSelect);
+	static TItemList* 	CreateForm				(const AnsiString& title, TWinControl* parent=0, TAlign align=alNone, u32 flags=ilMultiSelect|ilFolderStore);
+	static TItemList* 	CreateModalForm			(const AnsiString& title, u32 flags=ilMultiSelect|ilFolderStore);
 	static void 		DestroyForm				(TItemList*& props);
 	static void 		OnFrame					();
 
