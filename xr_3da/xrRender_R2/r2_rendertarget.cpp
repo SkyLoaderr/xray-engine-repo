@@ -6,7 +6,7 @@
 #include "blender_light_spot.h"
 #include "blender_combine.h"
 #include "blender_bloom_build.h"
-
+#include "blender_decompress.h"
 
 void	CRenderTarget::u_setrt			(CRT* _1, CRT* _2, CRT* _3, IDirect3DSurface9* zb)
 {
@@ -70,6 +70,7 @@ void	CRenderTarget::OnDeviceCreate	()
 	b_accum_spot_s					= xr_new<CBlender_accum_spot>			();
 	b_bloom							= xr_new<CBlender_bloom_build>			();
 	b_combine						= xr_new<CBlender_combine>				();
+	b_decompress					= xr_new<CBlender_decompress>			();
 
 	//	NORMAL
 	if (RImplementation.b_nv3x)
@@ -80,6 +81,7 @@ void	CRenderTarget::OnDeviceCreate	()
 		rt_Position					= Device.Shader._CreateRT	(r2_RT_P,		w,h,D3DFMT_A16B16G16R16F);
 		rt_Normal					= Device.Shader._CreateRT	(r2_RT_N_H,		w,h,D3DFMT_A16B16G16R16F);
 		rt_Color					= Device.Shader._CreateRT	(r2_RT_D_G,		w,h,D3DFMT_A8R8G8B8);
+		s_decompress				= Device.Shader.Create_B	(b_decompress,	"r2\\met_decompress");
 	}
 	else
 	{
@@ -87,6 +89,7 @@ void	CRenderTarget::OnDeviceCreate	()
 		rt_Position					= Device.Shader._CreateRT	(r2_RT_P,		w,h,D3DFMT_A16B16G16R16F);
 		rt_Normal					= Device.Shader._CreateRT	(r2_RT_N_H,		w,h,D3DFMT_A16B16G16R16F);
 		rt_Color					= Device.Shader._CreateRT	(r2_RT_D_G,		w,h,D3DFMT_A16B16G16R16);
+		s_decompress				= NULL;
 	}
 
 	// NORMAL-part2
@@ -287,8 +290,10 @@ void	CRenderTarget::OnDeviceDestroy	()
 	Device.Shader._DeleteRT		(rt_Normal				);
 	Device.Shader._DeleteRT		(rt_Position			);
 	Device.Shader._DeleteRT		(rt_Deffer				);
+	Device.Shader.Delete		(s_decompress			);
 
 	// Blenders
+	xr_delete					(b_decompress			);
 	xr_delete					(b_combine				);
 	xr_delete					(b_bloom				);
 	xr_delete					(b_accum_spot_s			);

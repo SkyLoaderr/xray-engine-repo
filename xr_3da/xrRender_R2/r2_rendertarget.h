@@ -24,6 +24,7 @@ private:
 	CBlender*					b_accum_spot_uns;
 	CBlender*					b_bloom;
 	CBlender*					b_combine;
+	CBlender*					b_decompress;
 
 	// MRT-path (or decompressed MET)
 	CRT*						rt_Position;	// 64bit,	fat	(x,y,z,?)				(eye-space)

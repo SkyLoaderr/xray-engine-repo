@@ -31,9 +31,13 @@ void CRender::Render	()
 		render_scenegraph						();
 		Details.Render							(Device.vCameraPosition);
 		// mapSorted.traverseRL					(sorted_L1);
-		mapSorted.clear							();
+		mapSorted.clear							();		// unsupported
 	}
 
+	//******* Decompression on some HW :)
+	if (RImplementation.b_nv3x)					Target.phase_decompress();
+
+	//******* Directional light
 	if (ps_r2_ls_flags.test(R2FLAG_SUN) )
 	{
 		for (u32 dls_phase=0; dls_phase<2; dls_phase++)
