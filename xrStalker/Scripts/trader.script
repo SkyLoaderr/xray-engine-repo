@@ -374,7 +374,7 @@ function CStartActions:select_new_action(trader)
 	elseif(self.state == say_phrase3) then
 		// ∆дем немного
 		trader:play_animation("idle_looped", idle, nil, 3000, false)
-		level.actor():give_info_portion("tutorial_artefact_gain")
+		level.actor():give_info_portion("tutorial_artefact_start")
 		if(self.lock and self.door) then
 			self.door:binded_object():set_lock(false)
 		end
