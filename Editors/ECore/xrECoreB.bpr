@@ -76,7 +76,12 @@
       Intermediate\EThumbnailTexture.obj Intermediate\ETextureParams.obj 
       Intermediate\EThumbnail.obj Intermediate\EThumbnailObject.obj 
       Intermediate\EThumbnailSound.obj Intermediate\Blender_Particle.obj 
-      Intermediate\du_sphere_part.obj Intermediate\FProgressive.obj"/>
+      Intermediate\du_sphere_part.obj Intermediate\FProgressive.obj 
+      Intermediate\WmlContMinBox3.obj Intermediate\WmlBox3.obj 
+      Intermediate\WmlMinimizeN.obj Intermediate\WmlMinimize1.obj 
+      Intermediate\WmlMath.obj Intermediate\WmlVector3.obj 
+      Intermediate\WmlMatrix3.obj Intermediate\WmlSystem.obj 
+      Intermediate\WmlWinSystem.obj"/>
     <RESFILES value="resource.res"/>
     <IDLFILES value=""/>
     <IDLGENFILES value=""/>
@@ -86,7 +91,7 @@
     <LIBRARIES value="elpackB6.lib editor.lib"/>
     <SPARELIBS value="rtl.lib vcl.lib bcbsmp.lib vclx.lib editor.lib elpackB6.lib"/>
     <PACKAGES value="rtl.bpi vcl.bpi vclx.bpi bcbsmp.bpi"/>
-    <PATHCPP value=".;Engine;Engine\Blenders;Engine\Visuals;Editor"/>
+    <PATHCPP value=".;Engine;Engine\Blenders;Engine\Visuals;Editor;WildMagic"/>
     <PATHPAS value=".;"/>
     <PATHRC value=".;"/>
     <PATHASM value=".;"/>
@@ -96,19 +101,19 @@
     <USERDEFINES value="_EDITOR;_ECOREB;_DEBUG"/>
     <SYSDEFINES value="NO_STRICT;_RTLDLL;USEPACKAGES"/>
     <MAINSOURCE value="xrECoreB.bpf"/>
-    <INCLUDEPATH value="&quot;R:\SDK\Microsoft DirectX 9.0 SDK (October 2004)\Include&quot;;Editor;Engine;Engine\Visuals;Engine\Blenders;$(BCB)\include;$(BCB)\include\vcl;R:\SDK\MagicFM_Borland\Sdk\Include;R:\Borland\Components6\AlexMX;R:\Borland\Components6\ElPack\Code\Source;R:\Borland\CBuilder6\Include\Mfc;P:\xrCore;P:\Editors\xrEProps;..\..\Tools\Etools"/>
-    <LIBPATH value="Editor;Engine\Visuals;Engine\Blenders;Engine;c:\rad\borland\CBuilder5\Projects;$(BCB)\lib;$(BCB)\lib\obj;$(BCB)\Projects\Lib;R:\Borland\Components6\AlexMX;R:\Borland\Components6\ElPack\Code;R:\Borland\CBuilder6\Lib\Psdk;&quot;x:\&quot;"/>
+    <INCLUDEPATH value="WildMagic;&quot;R:\SDK\Microsoft DirectX 9.0 SDK (October 2004)\Include&quot;;Editor;Engine;Engine\Visuals;Engine\Blenders;$(BCB)\include;$(BCB)\include\vcl;R:\SDK\MagicFM_Borland\Sdk\Include;R:\Borland\Components6\AlexMX;R:\Borland\Components6\ElPack\Code\Source;R:\Borland\CBuilder6\Include\Mfc;P:\xrCore;P:\Editors\xrEProps;..\..\Tools\Etools"/>
+    <LIBPATH value="WildMagic;Editor;Engine\Visuals;Engine\Blenders;Engine;c:\rad\borland\CBuilder5\Projects;$(BCB)\lib;$(BCB)\lib\obj;$(BCB)\Projects\Lib;R:\Borland\Components6\AlexMX;R:\Borland\Components6\ElPack\Code;R:\Borland\CBuilder6\Lib\Psdk;&quot;x:\&quot;"/>
     <WARNINGS value="-w-par -w-8027"/>
     <OTHERFILES value=""/>
   </MACROS>
   <OPTIONS>
-    <IDLCFLAGS value="-src_suffix cpp -D_EDITOR -D_ECOREB -D_DEBUG 
-      -I&quot;R:\SDK\Microsoft DirectX 9.0 SDK (October 2004)\Include&quot; -IEditor 
-      -IEngine -IEngine\Visuals -IEngine\Blenders -I$(BCB)\include 
+    <IDLCFLAGS value="-IWildMagic -I&quot;R:\SDK\Microsoft DirectX 9.0 SDK (October 2004)\Include&quot; 
+      -IEditor -IEngine -IEngine\Visuals -IEngine\Blenders -I$(BCB)\include 
       -I$(BCB)\include\vcl -IR:\SDK\MagicFM_Borland\Sdk\Include 
       -IR:\Borland\Components6\AlexMX 
       -IR:\Borland\Components6\ElPack\Code\Source -IR:\Borland\CBuilder6\Include\Mfc 
-      -IP:\xrCore -IP:\Editors\xrEProps -I..\..\Tools\Etools -boa"/>
+      -IP:\xrCore -IP:\Editors\xrEProps -I..\..\Tools\Etools -src_suffix cpp 
+      -D_EDITOR -D_ECOREB -D_DEBUG -boa"/>
     <CFLAG1 value="-WD -Od -H=intermediate\pch.csm -Hc -Q -Vms -Vx -Ve -xf -xp -VF -ff -X- 
       -r- -ps -a4 -6 -b- -k -y -v -vi- -tWD -tWM -c"/>
     <PFLAGS value="-N2Intermediate -N0Intermediate -$Y+ -$W -$O- -$A8 -v -JPHNE -M"/>
@@ -285,6 +290,15 @@
       <FILE FILENAME="Engine\Blenders\Blender_Particle.cpp" FORMNAME="" UNITNAME="Blender_Particle" CONTAINERID="CCompiler" DESIGNCLASS="" LOCALCOMMAND=""/>
       <FILE FILENAME="Editor\du_sphere_part.cpp" FORMNAME="" UNITNAME="du_sphere_part" CONTAINERID="CCompiler" DESIGNCLASS="" LOCALCOMMAND=""/>
       <FILE FILENAME="Engine\Visuals\FProgressive.cpp" FORMNAME="" UNITNAME="FProgressive" CONTAINERID="CCompiler" DESIGNCLASS="" LOCALCOMMAND=""/>
+      <FILE FILENAME="WildMagic\WmlContMinBox3.cpp" FORMNAME="" UNITNAME="WmlContMinBox3" CONTAINERID="CCompiler" DESIGNCLASS="" LOCALCOMMAND=""/>
+      <FILE FILENAME="WildMagic\WmlBox3.cpp" FORMNAME="" UNITNAME="WmlBox3" CONTAINERID="CCompiler" DESIGNCLASS="" LOCALCOMMAND=""/>
+      <FILE FILENAME="WildMagic\WmlMinimizeN.cpp" FORMNAME="" UNITNAME="WmlMinimizeN" CONTAINERID="CCompiler" DESIGNCLASS="" LOCALCOMMAND=""/>
+      <FILE FILENAME="WildMagic\WmlMinimize1.cpp" FORMNAME="" UNITNAME="WmlMinimize1" CONTAINERID="CCompiler" DESIGNCLASS="" LOCALCOMMAND=""/>
+      <FILE FILENAME="WildMagic\WmlMath.cpp" FORMNAME="" UNITNAME="WmlMath" CONTAINERID="CCompiler" DESIGNCLASS="" LOCALCOMMAND=""/>
+      <FILE FILENAME="WildMagic\WmlVector3.cpp" FORMNAME="" UNITNAME="WmlVector3" CONTAINERID="CCompiler" DESIGNCLASS="" LOCALCOMMAND=""/>
+      <FILE FILENAME="WildMagic\WmlMatrix3.cpp" FORMNAME="" UNITNAME="WmlMatrix3" CONTAINERID="CCompiler" DESIGNCLASS="" LOCALCOMMAND=""/>
+      <FILE FILENAME="WildMagic\WmlSystem.cpp" FORMNAME="" UNITNAME="WmlSystem" CONTAINERID="CCompiler" DESIGNCLASS="" LOCALCOMMAND=""/>
+      <FILE FILENAME="WildMagic\WmlWinSystem.cpp" FORMNAME="" UNITNAME="WmlWinSystem" CONTAINERID="CCompiler" DESIGNCLASS="" LOCALCOMMAND=""/>
   </FILELIST>
   <BUILDTOOLS>
   </BUILDTOOLS>
@@ -363,7 +377,7 @@ RunParams=
 Launcher=
 UseLauncher=0
 DebugCWD=
-HostApplication=x:\ActorEditor.exe
+HostApplication=x:\LevelEditor.exe
 RemoteHost=
 RemotePath=
 RemoteLauncher=
