@@ -79,9 +79,9 @@ function main ()
 --		object:update()
 --		object1:update()
 		wait		()
-		if (stalker:see(actor)) then
-			printf("[%6d] I see actor!",device().time_global)
-		end
+--		if (stalker:see(actor)) then
+--			printf("[%6d] I see actor!",device().time_global)
+--		end
 	end
 	
     stalker:script	(false,stalker_test:script_name());
