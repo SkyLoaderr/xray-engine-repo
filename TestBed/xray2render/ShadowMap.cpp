@@ -771,7 +771,7 @@ HRESULT CMyD3DApplication::RenderLight_Direct	()
 	D3DXVec3TransformNormal					(&vLightDir, &vLightDir,&mInvView);
 	D3DXVec3Normalize						(&vLightDir, &vLightDir);
 	cc.set									(s_Light_Direct.constants.get("light_direction"),	vLightDir.x,vLightDir.y,vLightDir.z,0	);
-	cc.set									(s_Light_Direct.constants.get("light_color"),		.3f,		.3f,		1.,			.7	);
+	cc.set									(s_Light_Direct.constants.get("light_color"),		.3f,		.3f,		1.,			.9	);
 	cc.flush								(m_pd3dDevice);
 
 	// Blend mode - directional light comes first - means no blending
@@ -783,6 +783,7 @@ HRESULT CMyD3DApplication::RenderLight_Direct	()
 	m_pd3dDevice->DrawPrimitive				(D3DPT_TRIANGLESTRIP, 0, 2);
 
 	// Second light
+	/*
 	m_pd3dDevice->SetRenderState			(D3DRS_ALPHABLENDENABLE, TRUE);
 	m_pd3dDevice->SetRenderState			(D3DRS_SRCBLEND,	D3DBLEND_ONE);
 	m_pd3dDevice->SetRenderState			(D3DRS_DESTBLEND,	D3DBLEND_ONE);
@@ -791,6 +792,17 @@ HRESULT CMyD3DApplication::RenderLight_Direct	()
 	cc.flush								(m_pd3dDevice);
 	m_pd3dDevice->DrawPrimitive				(D3DPT_TRIANGLESTRIP, 0, 2);
 	m_pd3dDevice->SetRenderState			(D3DRS_ALPHABLENDENABLE, FALSE);
+
+	// Third light
+	m_pd3dDevice->SetRenderState			(D3DRS_ALPHABLENDENABLE, TRUE);
+	m_pd3dDevice->SetRenderState			(D3DRS_SRCBLEND,	D3DBLEND_ONE);
+	m_pd3dDevice->SetRenderState			(D3DRS_DESTBLEND,	D3DBLEND_ONE);
+	cc.set									(s_Light_Direct.constants.get("light_direction"),	vLightDir.x,-vLightDir.y,vLightDir.z,0	);
+	cc.set									(s_Light_Direct.constants.get("light_color"),		.1f,		.9f,		.1,			.7		);
+	cc.flush								(m_pd3dDevice);
+	m_pd3dDevice->DrawPrimitive				(D3DPT_TRIANGLESTRIP, 0, 2);
+	m_pd3dDevice->SetRenderState			(D3DRS_ALPHABLENDENABLE, FALSE);
+	*/
 
 	// Cleanup
 	m_pd3dDevice->SetTexture				(0, NULL);
