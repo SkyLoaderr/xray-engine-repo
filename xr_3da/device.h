@@ -29,8 +29,8 @@ private:
     RECT									m_rcWindowClient;
 
 	u32										Timer_MM_Delta;
-	CTimer									Timer;
-	CTimer									TimerGlobal;
+	CTimer_paused							Timer;
+	CTimer_paused							TimerGlobal;
 	
 	void									_Create		(LPCSTR shName);
 	void									_Destroy	(BOOL	bKeepTextures);
@@ -103,7 +103,7 @@ public:
 
 	// Mode control
 	void DumpFlags							();
-	IC CTimer* GetTimerGlobal				(){return &TimerGlobal;}
+	IC CTimer_paused* GetTimerGlobal		()	{ return &TimerGlobal;}
 	u32	 TimerAsync							()
 	{
 		u64	qTime		= TimerGlobal.GetElapsed_clk();
