@@ -177,7 +177,7 @@ void CRender::LoadLights(CStream *fs)
 {
 	CStream* chunk;
 
-	// keys
+	// controllers
 
 	// lights
 	chunk = fs->OpenChunk(fsL_LIGHTS);
