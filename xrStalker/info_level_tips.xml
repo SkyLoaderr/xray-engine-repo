@@ -1,1 +1,7 @@
-<?xml version="1.0" encoding="utf-8"?>
+<?xml version='1.0' encoding="windows-1251"?>
+
+<game_information_portions>
+    <info_portion id="info_zone_danger">
+        <text>tips_zone_danger</text>
+    </info_portion>
+</game_information_portions>
