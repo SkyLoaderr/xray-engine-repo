@@ -352,13 +352,17 @@ bool CDetailPathManager::compute_path(
 	STrajectoryPoint		dest_save = dest;
 	float					min_time = flt_max, time;
 	u32						size = m_tpTravelLine ? m_tpTravelLine->size() : 0;
+	u32						real_straight_line_index;
 	xr_vector<STravelParamsIndex>::const_iterator I = start_params.begin(), B = I;
 	xr_vector<STravelParamsIndex>::const_iterator E = start_params.end();
 	for ( ; I != E; ++I) {
 		start					= start_save;
 		(STravelParams&)start	= (*I);
-		if (!fis_zero(start.linear_velocity) && (start.linear_velocity < 0.f))
+		real_straight_line_index= straight_line_index;
+		if (!fis_zero(start.linear_velocity) && (start.linear_velocity < 0.f)) {
 			start.direction.mul	(-1.f);
+			real_straight_line_index = straight_line_index_negative;
+		}
 		xr_vector<STravelParamsIndex>::const_iterator i = dest_params.begin(), b = i;
 		xr_vector<STravelParamsIndex>::const_iterator e = dest_params.end();
 		for ( ; i != e; ++i) {
