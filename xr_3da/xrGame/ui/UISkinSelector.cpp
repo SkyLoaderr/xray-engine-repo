@@ -21,6 +21,7 @@ const u32			clInactive				= 0xaa888888;
 //-----------------------------------------------------------------------------/
 
 CUISkinSelectorWnd::CUISkinSelectorWnd(const char* strSectionName)
+	: m_uActiveIndex(0)
 {
 	Init(strSectionName);
 }
@@ -28,7 +29,6 @@ CUISkinSelectorWnd::CUISkinSelectorWnd(const char* strSectionName)
 ////////////////////////////////////////////////////////////////////////////////
 
 CUISkinSelectorWnd::CUISkinSelectorWnd()
-	: m_uActiveIndex(0)
 {
 	Init("a");
 }
