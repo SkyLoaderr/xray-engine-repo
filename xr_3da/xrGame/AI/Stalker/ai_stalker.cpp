@@ -658,8 +658,8 @@ void CAI_Stalker::Think			()
 	try {
 		brain().update			(Level().timeServer() - m_dwLastUpdateTime);
 	}
-	catch (std::string message) {
-		Msg						("! Expression \"%s\"",message->c_str());
+	catch (std::string &message) {
+		Msg						("! Expression \"%s\"",message.c_str());
 		brain().setup			(this);
 		brain().update			(Level().timeServer() - m_dwLastUpdateTime);
 	}
