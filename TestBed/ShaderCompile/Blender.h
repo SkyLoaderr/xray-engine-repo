@@ -71,7 +71,7 @@ public:
 	static		CBlender*	Create			(CLASS_ID cls);
 	static		void		CreatePalette	(vector<CBlender*> & palette);
 	
-	CBlender_DESC&			getDescription	();
+	CBlender_DESC&			getDescription	(){return description;}
 	IC			LPCSTR		getName			(){return description.cName;}
 	virtual		LPCSTR		getComment		()	= 0;
 	
