@@ -25,18 +25,15 @@
 		<text x="0" y="0" font="small" r="255" g="255" b="255"></text>
 	</static>
 
-
 	<!-- RELATION -->
-<!--	<relation_static x="170" y="120" width="240" height="60">
+	<relation_static x="170" y="120" width="240" height="60">
 		<text x="0" y="0" font="small" r="255" g="255" b="255"></text>
 	</relation_static>
-	-->
-	
+		
 	<!-- REPUTATION -->
-<!--	<reputation_static x="170" y="130" width="240" height="60">
+	<reputation_static x="170" y="130" width="240" height="60">
 		<text x="0" y="0" font="small" r="255" g="255" b="255"></text>
 	</reputation_static>
--->
 
 </window>
 
