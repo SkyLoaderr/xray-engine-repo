@@ -2,46 +2,46 @@
 wpn_knife			=	10
 
 wpn_pm				=	100
-wpn_pb				=	150
-wpn_usp				=	120
+wpn_pb				=	100
 wpn_fort			=	120
-wpn_walther			=	130
-wpn_hpsa			=	120
+wpn_hpsa			=	160
+wpn_walther			=	180
+wpn_usp				=	200
 
-wpn_l85				=	350
-wpn_ak74			=	350
-wpn_fn2000			=	1500
-wpn_lr300			=	400
-wpn_val				=	2000
-wpn_vintorez		=	2500
-wpn_svu				=	3350
-wpn_svd				=	3500
-wpn_groza			=	600
+wpn_l85				=	600
+wpn_ak74			=	400
+wpn_fn2000			=	1000
+wpn_lr300			=	500
+wpn_val				=	600
+wpn_vintorez		=	700
+wpn_svu				=	800
+wpn_svd				=	800
+wpn_groza			=	800
 wpn_toz34			=	300
-wpn_rpg7			=	1800
-wpn_gauss			=	3500
+wpn_rpg7			=	400
+wpn_gauss			=	2000
 wpn_bm16 			=	300
 
-grenade_f1			=	80
-grenade_rgd5		=	90
-ammo_vog-25			=	80
-ammo_m209			=	80
-ammo_og-7b			=	50
+grenade_f1			=	100
+grenade_rgd5		=	100
+ammo_vog-25			=	150
+ammo_m209			=	150
+ammo_og-7b			=	200
 
 exo_outfit			=	300
 scientific_outfit	=	400
 
 device_torch		=	50
-detector_simple		=	150
-wpn_addon_scope		=	200
-wpn_addon_silencer	=	150
-wpn_addon_grenade_launcher			= 250
-wpn_addon_grenade_launcher_m203		= 250
+detector_simple		=	50
+wpn_addon_scope		=	100
+wpn_addon_silencer	=	50
+wpn_addon_grenade_launcher			= 150
+wpn_addon_grenade_launcher_m203		= 150
 
 [artefacthunt_team1]
 ;slot1 = wpn_knife
 slot2 = wpn_pb, wpn_usp, wpn_fort
-slot3 = wpn_l85, wpn_fn2000, wpn_lr300, wpn_svu, wpn_groza, wpn_toz34, wpn_rpg7
+slot3 = wpn_toz34, wpn_val, wpn_l85, wpn_lr300, wpn_groza, wpn_svu, wpn_rpg7, wpn_gauss
 slot4 = grenade_f1, ammo_vog-25, ammo_m209, ammo_og-7b
 slot5 = exo_outfit, scientific_outfit
 slot6 = device_torch, detector_simple, wpn_addon_silencer,wpn_addon_grenade_launcher_m203
@@ -49,36 +49,36 @@ slot6 = device_torch, detector_simple, wpn_addon_silencer,wpn_addon_grenade_laun
 ;skins = soldat_beret
 skins = stalker_sv_balon_10, stalker_sv_hood_9,stalker_sv_rukzak_3,stalker_sv_rukzak_2
 
-default_items	= wpn_knife, wpn_usp, detector_simple;, device_torch
+default_items	= wpn_knife, wpn_pb, detector_simple;, device_torch
 
 ;//соответствие иконок обоорудованию
 exo_outfit			= stalker_sv_exoskeleton
 scientific_outfit	= stalker_sci_svoboda
 
 ;//money amounts
-money_start		= 5260
-money_min		= 0
+money_start		= 500
+money_min		= 200
 
 kill_rival		= 100
-kill_self		= -100
-kill_team		= 0
+kill_self		= 0
+kill_team		= -50
 
 target_rival	= 200
-target_team		= -500
+target_team		= -100
 target_succeed	= 300
 target_succeed_all	= 200
 
-round_win		= 100
-round_loose		= 50
-round_draw		= 50
+round_win		= 200
+round_loose		= 100
+round_draw		= 100
 
-wpn_usp_cost	=	0
+wpn_pb_cost	=	0
 
 [artefacthunt_team2]
 ;slot1 = wpn_knife
-slot2 = wpn_pm, wpn_walther, wpn_hpsa
-slot3 = wpn_ak74, wpn_val, wpn_vintorez, wpn_svd, wpn_toz34, wpn_rpg7 
-slot4 = grenade_rgd5, ammo_vog-25, ammo_og-7b
+slot2 = wpn_pm, wpn_hpsa, wpn_walther 
+slot3 = wpn_toz34, wpn_vintorez, wpn_svd, wpn_ak74, wpn_fn2000, wpn_rpg7, wpn_gauss
+slot4 = grenade_rgd5, ammo_vog-25p, ammo_m209, ammo_og-7b
 slot5 = exo_outfit, scientific_outfit
 slot6 = device_torch, detector_simple, wpn_addon_scope, wpn_addon_silencer, wpn_addon_grenade_launcher
 
@@ -92,15 +92,15 @@ exo_outfit				= stalker_killer_exoskeleton
 scientific_outfit		= stalker_sci_killer
 
 ;//money amounts
-money_start		= 5260
-money_min		= 0
+money_start		= 500
+money_min		= 200
 
 kill_rival		= 100
-kill_self		= -100
-kill_team		= 0
+kill_self		= 0
+kill_team		= -50
 
 target_rival	= 200
-target_team		= -500
+target_team		= -100
 target_succeed	= 300
 target_succeed_all	= 200
 
