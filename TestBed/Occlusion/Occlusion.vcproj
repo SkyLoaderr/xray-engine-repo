@@ -76,11 +76,11 @@
 			ATLMinimizesCRunTimeLibraryUsage="FALSE"
 			CharacterSet="2"
 			WholeProgramOptimization="TRUE"
-			CompilerName="Microsoft">
+			CompilerName="Intel">
 			<Tool
 				Name="VCCLCompilerTool"
-				AdditionalOptions="/Qwp_ipo /O3 /QxiM "
-				Optimization="4"
+				AdditionalOptions="/Qvc7 /Qwp_ipo /O3 /QxiM "
+				Optimization="3"
 				GlobalOptimizations="TRUE"
 				InlineFunctionExpansion="2"
 				EnableIntrinsicFunctions="TRUE"
@@ -109,10 +109,12 @@
 				Name="VCLinkerTool"
 				AdditionalOptions="/MACHINE:I386 "
 				AdditionalDependencies="odbc32.lib odbccp32.lib"
+				ShowProgress="2"
 				OutputFile=".\Release/Occlusion.exe"
 				LinkIncremental="1"
 				SuppressStartupBanner="TRUE"
-				SubSystem="1"/>
+				SubSystem="1"
+				TargetMachine="1"/>
 			<Tool
 				Name="VCMIDLTool"
 				TypeLibraryName=".\Release/Occlusion.tlb"/>
