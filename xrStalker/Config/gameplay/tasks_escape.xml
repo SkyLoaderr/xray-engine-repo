@@ -61,7 +61,7 @@
 		<title>esc_help_wounded_from_raid</title>
 		<objective>
 			<text>esc_help_wounded_from_raid_0</text>
-			<icon x="50" y="50" width="50" height="50">ui\ui_icons_task</icon>
+			<icon x="200" y="100" width="50" height="50">ui\ui_icons_task</icon>
 		</objective>
 		<objective>
 			<text>esc_help_wounded_from_raid_1</text>
