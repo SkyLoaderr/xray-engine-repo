@@ -97,6 +97,7 @@
 #pragma warning (disable : 4503 )		// decorated name length exceeded
 #pragma warning (disable : 4251 )		// object needs DLL interface
 #pragma warning (disable : 4201 )		// nonstandard extension used : nameless struct/union
+#pragma warning (disable : 4100 )		// unreferenced formal parameter
 
 // stl
 #include <algorithm>

@@ -7,7 +7,7 @@
 class CCriticalSection
 {
 public:
-    CCriticalSection( DWORD spincount = 2000 )
+    CCriticalSection ()
     {
         InitializeCriticalSection	( &m_CritSec );
     };
