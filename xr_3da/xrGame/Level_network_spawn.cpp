@@ -99,6 +99,7 @@ CSE_Abstract *CLevel::spawn_item		(LPCSTR section, const Fvector &position, u32 
 	strcpy					(abstract->s_name,section);
 	strcpy					(abstract->s_name_replace,section);
 	abstract->s_gameid		= u8(GameID());
+	abstract->o_Position	= position;
 	abstract->s_RP			= 0xff;
 	abstract->ID			= 0xffff;
 	abstract->ID_Parent		= parent_id;
@@ -116,4 +117,3 @@ CSE_Abstract *CLevel::spawn_item		(LPCSTR section, const Fvector &position, u32 
 	else
 		return				(abstract);
 }
-
