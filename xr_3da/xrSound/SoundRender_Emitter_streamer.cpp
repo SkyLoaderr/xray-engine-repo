@@ -7,19 +7,22 @@
 
 void	CSoundRender_Emitter::fill_data		(u8* _dest, u32 offset, u32 size)
 {
-//*
+/*
 	Memory.mem_fill	(_dest,0,size);	// debug only
 	//	Msg			("stream: %10s - %d",*source->fname,size);
 	int				dummy;
 	ov_pcm_seek		(source->ovf,(psSoundFreq==sf_22K)?offset:offset/2);
+//	ov_pcm_seek		(source->ovf,0);
 	char* dest		= (char*)_dest;
 	u32	left		= size;
 	while (left)
-	{
+	{                     
 		int ret		= ov_read(source->ovf,dest,left,0,2,1,&dummy);
 //		Msg			("Part: %d - %d",left,ret);
-		if (ret==0)	break;
-		if (ret>0){
+		if (ret==0){	
+        	ret=0;
+        	break;
+        }if (ret>0){
 			left		-= ret;
 			dest		+= ret;
 		}else{
@@ -41,7 +44,7 @@ void	CSoundRender_Emitter::fill_data		(u8* _dest, u32 offset, u32 size)
 	u32		line_amount						= line_size - line_offs;
 	while	(size)
 	{
-		// cache acess
+		// cache access
 		if (SoundRender->cache.request(source->CAT,line))		{
 			source->decompress	(line);
 		}
@@ -97,11 +100,13 @@ void	CSoundRender_Emitter::fill_block	(void* ptr, u32 size)
 			{
 				// Fill in two parts - looping :)
 				u32		sz_first	= source->dwBytesTotal - position;
+                u32		sz_second	= 0;
                 if (0==sz_first)
                 {
 					fill_data			(dest,0,size);
+//					Msg					("        playing: zero");
                 } else {
-                    u32		sz_second	= (position+size) - source->dwBytesTotal;
+                    sz_second			= (position+size) - source->dwBytesTotal;
                     VERIFY				(size == (sz_first+sz_second));
                     VERIFY				(position<source->dwBytesTotal);
 					fill_data			(dest,			position,	sz_first);

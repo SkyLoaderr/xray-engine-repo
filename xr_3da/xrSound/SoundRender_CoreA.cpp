@@ -56,6 +56,9 @@ void CSoundRender_CoreA::_initialize	(u64 window)
     if (eaxGet==NULL) bEAX 		= false;
 
 	ZeroMemory					( &wfm, sizeof( WAVEFORMATEX ) );
+//.    
+//	psSoundFreq = sf_22K;
+//	psSoundFreq = sf_44K;
 	switch	( psSoundFreq ){
 	default:
 	case sf_22K:	wfm.nSamplesPerSec = 22050; break;
@@ -67,7 +70,7 @@ void CSoundRender_CoreA::_initialize	(u64 window)
 	wfm.nBlockAlign				= wfm.wBitsPerSample / 8 * wfm.nChannels;
 	wfm.nAvgBytesPerSec			= wfm.nSamplesPerSec * wfm.nBlockAlign;
 
-    // inherited initialize
+    // inherited initialize           
     inherited::_initialize		(window);
 
 	// Pre-create targets

@@ -103,8 +103,7 @@ void	CSoundRender_TargetA::update			()
         ALint state;
 	    A_CHK		(alGetSourcei(pSource, AL_SOURCE_STATE, &state));
         if (state != AL_PLAYING){
-            A_CHK	(alGetSourcei(pSource, AL_BUFFERS_PROCESSED, &processed));
-			Log		("Queuing underrun detected.",processed);
+//			Log		("Queuing underrun detected.");
 			A_CHK	(alSourcePlay(pSource));
         }
     }
