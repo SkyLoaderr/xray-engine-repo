@@ -199,10 +199,10 @@ function action_state_talk:initialize()
 	self.object:set_desired_direction()
 
 	local overrides = xr_logic.generic_scheme_overrides(self.object)
-	if overrides.meet_state == nil then 
-		state_mgr.set_state(self.object, "wait", nil, nil, {look_object = db.actor, look_position = db.actor:position()})
+	if overrides ~= nil and overrides.meet_state ~= nil then 
+		state_mgr.set_state(self.object, overrides.meet_state, nil, nil, {look_object = db.actor, look_position = db.actor:position()})		
 	else
-		state_mgr.set_state(self.object, overrides.meet_state, nil, nil, {look_object = db.actor, look_position = db.actor:position()})
+		state_mgr.set_state(self.object, "wait", nil, nil, {look_object = db.actor, look_position = db.actor:position()})
 	end
 end
 function action_state_talk:execute ()
