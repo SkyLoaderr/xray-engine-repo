@@ -207,7 +207,7 @@ bool game_sv_Single::load_game				(NET_Packet &net_packet, DPNID sender)
 		return					(inherited::load_game(net_packet,sender));
 	ref_str						game_name;
 	net_packet.r_string			(game_name);
-	return						(alife().load_game(*game_name));
+	return						(alife().load_game(*game_name,true));
 }
 
 void game_sv_Single::reload_game			(NET_Packet &net_packet, DPNID sender)
