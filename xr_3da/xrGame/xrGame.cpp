@@ -12,7 +12,7 @@ extern int					psPhysicsFPS;
 extern float				psSqueezeVelocity;
 ENGINE_API extern DWORD		psAlwaysRun;
 ENGINE_API extern float		psHUD_FOV;
-
+ 
 // console commands
 class CCC_Spawn : public CConsoleCommand
 {

@@ -62,7 +62,8 @@ void C3DSoundRender::OnMove()
 		{
 			C3DSound *pSnd = sounds[i][j];
 			pSnd->OnMove		();
-			if (pSnd->isPlaying	()) {
+			if (pSnd->isPlaying	()) 
+			{
 				Device.Statistic.dwSND_Played++;
 				pSnd->dwLastTimeActive = Device.dwTimeGlobal;
 			} else {
