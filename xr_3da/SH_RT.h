@@ -1,6 +1,8 @@
 #ifndef SH_RT_H
 #define SH_RT_H
 
+class	ENGINE_API	CTexture;
+
 class	ENGINE_API	CRT
 {
 public:
@@ -16,6 +18,7 @@ public:
 
 	void				Create	(LPCSTR Name, DWORD w, DWORD h);
 	void				Destroy	();
+	BOOL				Valid	()	{ return pTexture; }
 };
 
 #endif // SH_RT_H
