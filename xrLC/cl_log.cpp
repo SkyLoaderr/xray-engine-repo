@@ -119,7 +119,7 @@ void __cdecl logThread(void *dummy)
 
 	logWindow = CreateDialog(
 		HINSTANCE(GetModuleHandle(0)),
-		MAKEINTRESOURCE(IDD_LOG),
+	 	MAKEINTRESOURCE(IDD_LOG),
 		0, logDlgProc );
 	if (!logWindow) {
 		R_CHK			(GetLastError());
