@@ -87,9 +87,10 @@ int main			(int argc, char* argv[])
 		fs->write_chunk	(1|CFS_CompressMark, fs_desc.pointer(),fs_desc.size());
 		delete fs;
 		DWORD			dwTimeEnd	= timeGetTime();
-		printf			("\n\nOveral ratio: %3.1f%%\nElapsed time: %d min\n",
+		printf			("\n\nOveral ratio: %3.1f%%\nElapsed time: %d:%d\n",
 			100.f*float(bytesDST)/float(bytesSRC),
-			((dwTimeEnd-dwTimeStart)/1000)/60
+			((dwTimeEnd-dwTimeStart)/1000)/60,
+			((dwTimeEnd-dwTimeStart)/1000)%60
 			);
 	} else {
 		printf("ERROR: folder not found.\n");
