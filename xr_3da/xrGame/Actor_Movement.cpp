@@ -332,7 +332,7 @@ bool CActor::g_LadderOrient()
 	if(mag<EPS_L) return false;
 	leader_norm.div(mag);
 	leader_norm.invert();
-	Fmatrix M;
+	Fmatrix M;M.set(Fidentity);
 	M.k.set(leader_norm);
 	M.j.set(0.f,1.f,0.f);
 	generate_orthonormal_basis1(M.k,M.j,M.i);
