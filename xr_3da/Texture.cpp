@@ -182,7 +182,7 @@ IC	void	TW_Iterate_1OP
 (
 	IDirect3DTexture9*		t_dst,
 	IDirect3DTexture9*		t_src,
-	_It						pred
+	const _It				pred
 )
 {
 	DWORD mips							= t_dst->GetLevelCount();
@@ -214,7 +214,7 @@ IC	void	TW_Iterate_2OP
 	IDirect3DTexture9*		t_dst,
 	IDirect3DTexture9*		t_src0,
 	IDirect3DTexture9*		t_src1,
-	_It						pred
+	const _It				pred
  )
 {
 	DWORD mips							= t_dst->GetLevelCount();
@@ -247,6 +247,36 @@ IC	void	TW_Iterate_2OP
 	}
 }
 
+IC u32 it_gloss_rev		(u32 d, u32 s)	{	return	color_rgba	(
+	color_get_A(s)/2,	// gloss
+	color_get_B(d),
+	color_get_G(d),
+	color_get_R(d)		);
+}
+IC u32 it_gloss_rev_base(u32 d, u32 s)	{	
+	u32		occ		= color_get_A(d)/3;
+	u32		def		= 8;
+	u32		gloss	= (occ*1+def*3)/4;
+	return	color_rgba	(
+		gloss,			// gloss
+		color_get_B(d),
+		color_get_G(d),
+		color_get_R(d)
+	);
+}
+IC u32 it_difference	(u32 d, u32 orig, u32 ucomp)	{	return	color_rgba(
+	128+(int(color_get_R(orig))-int(color_get_R(ucomp)))*2,		// R-error
+	128+(int(color_get_G(orig))-int(color_get_G(ucomp)))*2,		// G-error
+	128+(int(color_get_B(orig))-int(color_get_B(ucomp)))*2,		// B-error
+	128+(int(color_get_A(orig))-int(color_get_A(ucomp)))*2	);	// A-error	
+}
+IC u32 it_height_rev	(u32 d, u32 s)	{	return	color_rgba	(
+	color_get_A(d),		// diff x
+	color_get_R(d),		// diff y
+	color_get_G(d),		// diff z
+	color_get_R(s)	);	// height
+}
+
 ENGINE_API IDirect3DBaseTexture9*	TWLoader2D
 (
 	u32&				mem,
@@ -265,7 +295,6 @@ ENGINE_API IDirect3DBaseTexture9*	TWLoader2D
 	// validation
 	R_ASSERT				(fRName);
 	R_ASSERT				(fRName[0]);
-	R_ASSERT				(fContrast>=0 && fContrast<=1);
 
 	// make file name
 	char fname[_MAX_PATH];
@@ -362,14 +391,6 @@ _BUMP:
 		R_CHK(D3DXComputeNormalMap	(T_normal_1,T_height_gloss,0,0,D3DX_CHANNEL_RED,5.f));
 
 		// Transfer gloss-map
-		struct it_gloss_rev			{
-			IC u32 operator(u32 d, u32 s)	{	return	color_rgba	(
-					color_get_A(s)/2,	// gloss
-					color_get_B(d),
-					color_get_G(d),
-					color_get_R(d)		);
-			}
-		};
 		TW_Iterate_1OP		(T_normal_1,T_height_gloss,it_gloss_rev);
 
 		// Compress
@@ -383,25 +404,9 @@ _BUMP:
 		// Calculate difference
 		IDirect3DTexture9*	T_normal_1D = 0;
 		R_CHK(D3DXCreateTexture(HW.pDevice,dwWidth,dwHeight,T_normal_1U->GetLevelCount(),0,D3DFMT_A8R8G8B8,D3DPOOL_SYSTEMMEM,&T_normal_1D));
-		struct it_difference			{
-			IC u32 operator(u32 d, u32 orig, u32 ucomp)	{	return	color_rgba(
-				128+(int(color_get_R(orig))-int(color_get_R(ucomp)))*2,		// R-error
-				128+(int(color_get_G(orig))-int(color_get_G(ucomp)))*2,		// G-error
-				128+(int(color_get_B(orig))-int(color_get_B(ucomp)))*2,		// B-error
-				128+(int(color_get_A(orig))-int(color_get_A(ucomp)))*2	);	// A-error	
-			}
-		};
 		TW_Iterate_2OP		(T_normal_1D,T_normal_1,T_normal_1U,it_difference);
 
 		// Reverse channels back + transfer heightmap
-		struct it_height_rev			{
-			IC u32 operator(u32 d, u32 s)	{	return	color_rgba	(
-				color_get_A(d),		// diff x
-				color_get_R(d),		// diff y
-				color_get_G(d),		// diff z
-				color_get_R(s)	);	// height
-			}
-		};
 		TW_Iterate_1OP		(T_normal_1D,T_height_gloss,it_height_rev);
 
 		// Compress
@@ -448,44 +453,8 @@ _BUMP_from_base:
 		R_CHK(D3DXComputeNormalMap	(pTexture2D,T_sysmem,0,D3DX_NORMALMAP_COMPUTE_OCCLUSION,D3DX_CHANNEL_LUMINANCE,5.f));
 
 		// Transfer gloss-map
-		if (1)
-		{
-			LPDIRECT3DTEXTURE9			tDest	= pTexture2D;
-			LPDIRECT3DTEXTURE9			tSrc	= T_sysmem;
-			DWORD mips							= tDest->GetLevelCount();
-			R_ASSERT							(mips == tSrc->GetLevelCount());
-
-			for (DWORD i = 0; i < mips; i++)	{
-				D3DLOCKED_RECT				Rsrc,Rdst;
-				D3DSURFACE_DESC				desc;
-
-				tDest->GetLevelDesc			(i, &desc);
-
-				tSrc->LockRect				(i,&Rsrc,0,0);
-				tDest->LockRect				(i,&Rdst,0,0);
-
-				for (u32 y = 0; y < desc.Height; y++)	{
-					for (u32 x = 0; x < desc.Width; x++)	{
-						DWORD&	pSrc	= *(((DWORD*)((BYTE*)Rsrc.pBits + (y * Rsrc.Pitch)))+x);
-						DWORD&	pDst	= *(((DWORD*)((BYTE*)Rdst.pBits + (y * Rdst.Pitch)))+x);
-						u32		occ		= color_get_A(pDst)/3;
-						u32		def		= 8;
-						u32		gloss	= (occ*1+def*3)/4;
-						pDst			= color_rgba
-							(
-							gloss,
-							color_get_B(pDst),
-							color_get_G(pDst),
-							color_get_R(pDst)
-							);
-					}
-				}
-
-				tDest->UnlockRect			(i);
-				tSrc->UnlockRect			(i);
-			}
-		}
-		_RELEASE	(T_sysmem);
+		TW_Iterate_1OP				(pTexture2D,T_sysmem,it_gloss_rev_base);
+		_RELEASE					(T_sysmem);
 
 		// Compress
 		fmt								= D3DFMT_DXT5;
