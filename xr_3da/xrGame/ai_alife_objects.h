@@ -118,20 +118,23 @@ public:
 class CALifeHeader : public IPureALifeLSObject {
 public:
 	u32								m_tALifeVersion;
+	EZoneState						m_tZoneState;
 	
 	virtual void					Save(CFS_Memory	&tMemoryStream)
 	{
 		tMemoryStream.open_chunk	(ALIFE_CHUNK_DATA);
 		tMemoryStream.write			(&m_tALifeVersion,	sizeof(m_tALifeVersion));
+		tMemoryStream.write			(&m_tZoneState,		sizeof(m_tZoneState));
 		tMemoryStream.close_chunk	();
 	}
 	
 	virtual void					Load(CStream	&tFileStream)
 	{
 		R_ASSERT(tFileStream.FindChunk(ALIFE_CHUNK_DATA));
-		m_tALifeVersion				= tFileStream.Rdword();
+		tFileStream.Read			(&m_tALifeVersion,	sizeof(m_tALifeVersion));
 		if (m_tALifeVersion != ALIFE_VERSION)
 			THROW;
+		tFileStream.Read			(&m_tZoneState,		sizeof(m_tZoneState));
 	};
 };
 

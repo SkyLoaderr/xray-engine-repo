@@ -32,7 +32,6 @@ public:
 	u32								m_dwObjectsBeingProcessed;
 	u64								m_qwMaxProcessTime;
 	bool							m_bLoaded;
-	EZoneState						m_tZoneState;
 	
 	// buffer for union operations
 	TASK_VECTOR						m_tpBufferTaskIDs;
