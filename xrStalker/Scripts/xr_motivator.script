@@ -230,7 +230,6 @@ function motivator_binder:reload (section)
 	--' Привязка к организации
 	if char_ini:section_exist("zones") == true then
 		xr_sleeper.add_to_binder	(self.object, nil)
-		xr_guard.add_to_binder		(self.object, nil)
 		xr_walker.add_to_binder		(self.object, nil)
 		xr_patrol.add_to_binder		(self.object, nil)
 		xr_follower.add_to_binder	(self.object, nil)
