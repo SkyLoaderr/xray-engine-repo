@@ -4,14 +4,16 @@ class Lcp33
 static	const	int			MSIZE=3;
 static	const	int			RLENGTH=4;
 				int			NBn																		;
+				int			savedNbn																;
 				bool		unresolved																;
 				dReal		A[MSIZE*RLENGTH]														;
-				dReal		*sourceA																	;
+				dReal		*sourceA																;
 				dReal		*hi																		;
 				dReal		*lo																		;
 				dReal		*b																		;
 				dReal		*x																		;
 				dReal		w[3]																	;
+				dReal		bounds[3]																;
 				dReal		tw[3]																	;
 				int			state[3]																;
 				int			skip																	;
@@ -26,14 +28,23 @@ static	const	int			RLENGTH=4;
 	inline		dReal&		EsA				(int row,int pos)					{ return sourceA[RLENGTH*row+pos];}
 				void		Swap			(int i, int j)											;
 				void		ToBn			(int i)													;
-				bool 		CheckIndex		(int i)													;
+				bool 		BoundX			(int i)													;
+				bool 		BoundIndex		(int i)													;
+				bool		CheckX			(int i)													;
+				bool		CheckIndex		(int i)													;
+				
 				bool		CheckState		(int i)													;
 				void		ToNBn			()														;
+				void		ToNBn			(int i)													;
 				void		SolveW			()														;
 				void		UpdateX			()														;
-				void		CheckUnBn		()														;
+				void		BoundUnBn		()														;
+				bool		CheckUnBn		()														;
+				void		BoundAll		()														;
 				void		FillA			()														;
 				void		FillX			()														;
+				bool		SolveForLines	()														;
+				bool		SolveForPlanes	()														;
 
 public:
 							Lcp33			(dReal* aA,int askip,dReal* ahi, dReal* alo,dReal* ab,dReal* ax)	;

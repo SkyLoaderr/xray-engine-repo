@@ -20,23 +20,37 @@ Lcp33::Lcp33(dReal* aA,int askip,dReal* ahi, dReal* alo,dReal* ab,dReal* ax)
 	unresolved=false;
 }
 
-bool Lcp33::CheckIndex(int i)
+bool Lcp33::BoundX(int i)
 {
-	int idx=index[i];
-
-	dReal &low=lo[idx],&high=hi[idx],&cur_x=x[idx];
+	
+	dReal &low=lo[i],&high=hi[i],&cur_x=x[i];
 	if(cur_x<low) 
 	{
 		cur_x=low;
-		state[idx]=1;
+		state[i]=1;
 		ToBn(i);
 		return false;
 	}
 	else if(cur_x>high)
 	{
 		cur_x=high;
-		state[idx]=-1;
+		state[i]=-1;
 		ToBn(i);
+		return false;
+	}
+	return true;
+}
+
+bool Lcp33::CheckX(int i)
+{
+	
+	dReal &low=lo[i],&high=hi[i],&cur_x=x[i];
+	if(cur_x<low) 
+	{
+		return false;
+	}
+	else if(cur_x>high)
+	{
 		return false;
 	}
 	return true;
@@ -81,11 +95,11 @@ void Lcp33::SolveW()
 			w[idx0]=(rhs0*EinRowA(row1,idx1)-rhs1*EinRowA(row0,idx1))/D;
 			w[idx1]=(rhs1*EinRowA(row0,idx0)-rhs0*EinRowA(row1,idx0))/D;
 			
-			if(!CheckState(idx0)) break;
-			if(!CheckState(idx1)) break;
+			//if(!CheckState(idx0)) break;
+			//if(!CheckState(idx1)) break;
 			unresolved=false;
-			tw[idx0]=w[idx0]-b[idx0];
-			tw[idx1]=w[idx1]-b[idx1];
+			//tw[idx0]=w[idx0]-b[idx0];
+			//tw[idx1]=w[idx1]-b[idx1];
 			break;
 		}
 	case 3:
@@ -112,30 +126,91 @@ void Lcp33::UpdateX()
 			//x[1]=w[0]*EA(1,0)+w[1]*EA(1,1)+w[2]*EA(1,2);
 			//x[2]=w[0]*EA(2,0)+w[1]*EA(2,1)+w[2]*EA(2,2);
 }
-void Lcp33::CheckUnBn()
+
+bool Lcp33::BoundIndex(int i)
 {
-	for(int i=NBn;i<MSIZE;++i) CheckIndex(i);//if(!CheckIndex(i)) break;
+	int idx=index[i];
+	dReal &low=lo[idx],&high=hi[idx],&cur_x=x[idx];
+	if(cur_x<low) 
+	{
+		cur_x=low;
+		state[idx]=1;
+		ToBn(i);
+		return false;
+	}
+	else if(cur_x>high)
+	{
+		cur_x=high;
+		state[idx]=-1;
+		ToBn(i);
+		return false;
+	}
+	return true;
+}
+void Lcp33::BoundUnBn()
+{
+	for(int i=NBn;i<MSIZE;++i) BoundIndex(i);//if(!CheckIndex(i)) break;
 
 }
 
+bool Lcp33::CheckUnBn()
+{
+	for(int i=NBn;i<MSIZE;++i)
+	{
+		if(!CheckIndex(i))return false;
+	}
+	return true;
+}
+
+bool Lcp33::CheckIndex(int i)
+{
+	return CheckX(index[i]);
+}
+void Lcp33::BoundAll()
+{
+	for(int i=0;i<MSIZE;++i) BoundX(i);
+}
 void Lcp33::Solve()
+{
+	if(! SolveForLines())SolveForPlanes();
+
+}
+
+bool Lcp33::SolveForLines()
+{
+	bool in_limits=true;
+	for(int i=0;i<MSIZE;++i)
+	{
+		if(!BoundX(i))
+		{
+			SolveW();
+			UpdateX();
+			if(CheckUnBn()) return true;
+			else ToNBn(i);
+			in_limits=false;
+		}
+	}
+	UpdateX();
+	return in_limits;
+}
+
+bool Lcp33::SolveForPlanes()
 {
 	for(;;)
 	{
-		CheckUnBn();
+		BoundUnBn();
 		if(!unresolved) break;
 		SolveW();
 		UpdateX();
 	}
+return true;
 }
-
 bool Lcp33::CheckState(int i)
 {
 	if(state[i]==1)
 	{
 		if(w[i]<b[i])
 		{
-			ToNBn();
 			return false;
 		}
 	}
@@ -143,7 +218,6 @@ bool Lcp33::CheckState(int i)
 	{
 		if(w[i]>b[i]) 
 		{
-			ToNBn();
 			return false;
 		}
 	}
@@ -164,6 +238,12 @@ void Lcp33::ToNBn()
 	w[idx2]=b[idx2];
 	state[idx1]=state[idx2]=0;
 	
+}
+void Lcp33::ToNBn(int i)
+{
+	w[i]=b[i];
+	Swap(i,NBn);
+	NBn--;
 }
 void Lcp33::FillA()
 {

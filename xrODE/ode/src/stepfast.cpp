@@ -723,8 +723,7 @@ dInternalStepIslandFast (dxWorld * world, dxBody * const *bodies, int nb, dxJoin
 		dSetValue (cfm, m, world->global_cfm);
 		dSetValue (lo, m, -dInfinity);
 		dSetValue (hi, m, dInfinity);
-		for (i = 0; i < m; i++)
-			findex[i] = -1;
+
 
 		// get jacobian data from constraints. a (2*m)x8 matrix will be created
 		// to store the two jacobian blocks from each constraint. it has this
@@ -784,6 +783,8 @@ dInternalStepIslandFast (dxWorld * world, dxBody * const *bodies, int nb, dxJoin
 
 	for (iter = 0; iter < maxiterations; iter++)
 	{
+		for (i = 0; i < m; i++)
+			findex[i] = -1;
 #	ifdef TIMING
 		dTimerNow ("applying inertia and gravity");
 #	endif
@@ -846,6 +847,7 @@ dInternalStepIslandFast (dxWorld * world, dxBody * const *bodies, int nb, dxJoin
 		//now iterate through the random ordered joint array we created.
 		for (j = 0; j < nj; j++)
 		{
+
 #ifdef TIMING
 			dTimerNow ("setting up joint");
 #endif

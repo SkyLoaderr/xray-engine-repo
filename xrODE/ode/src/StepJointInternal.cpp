@@ -2,6 +2,7 @@
 #include "joint.h"
 #include "ode/odemath.h"
 #include "Lcp33.h"
+#include "lcp.h"
 #include "StepJointInternal.h"
 
 
@@ -32,7 +33,7 @@ static void Multiply2_sym_3p8p (dReal * A, dReal * B, dReal * C)
 static void
 MultiplyAdd2_sym_3p8p (dReal * A, dReal * B, dReal * C)
 {
-	A[0]+=2*DOT6(B,C);
+	A[0]+=DOT6(B,C);///2*
 	C+=8;
 	dReal add;
 	add=DOT6(B,C);
@@ -46,14 +47,14 @@ MultiplyAdd2_sym_3p8p (dReal * A, dReal * B, dReal * C)
 
 	B+=8;
 	add=DOT6(B,C);
-	A[5]+=2*add;
+	A[5]+=add;//2*
 	
 	add=DOT6(B,C3);
 	A[9]+=add;
 	A[6]+=add;
 
 	B+=8;
-	A[10]+=2*DOT6(B,C3);
+	A[10]+=DOT6(B,C3);//2*
 
 }
 
@@ -218,14 +219,22 @@ dInternalStepJointContact (dxWorld * world, dxBody * body[2], dReal * GI[2], dRe
 	dTimerNow ("solving LCP problem");
 #	endif
 	dReal lambda[3];
+	dReal lambda1[3];
 	dReal residual[3];
-	dReal lo[3], hi[3];//,lo1[6],hi1[6];
+	dReal lo[3], hi[3],lo1[6],hi1[6];
 	memcpy (lo, Jinfo.lo, 3 * sizeof (dReal));
 	memcpy (hi, Jinfo.hi, 3 * sizeof (dReal));
+	//memcpy (lo1, Jinfo.lo, 3 * sizeof (dReal));
+	//memcpy (hi1, Jinfo.hi, 3 * sizeof (dReal));
 
-
-		dSolveLCP33(m, A, lambda, rhs, residual, nub, lo, hi, Jinfo.findex);
-
+		dSolveLCP33(m, A, lambda, rhs, residual, nub, lo1, hi1, Jinfo.findex);
+	//	dSolveLCP (m, A, lambda1, rhs, residual, nub, lo, hi, Jinfo.findex);
+//	dReal dif[3];
+//	dif[0]=lambda1[0]-lambda[0];lambda1[1]=lambda1[1]-lambda[1];lambda1[2]=lambda1[2]-lambda[2];
+//	dReal lengh=dDOT(lambda,lambda);
+//	dReal ldif=dDOT(dif,dif);
+//	if(lengh>0.001&&ldif/lengh>0.1)
+	//	i++;
 	// compute the constraint force `cforce'
 #	ifdef TIMING
 	dTimerNow ("compute constraint force");
