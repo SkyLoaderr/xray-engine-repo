@@ -1,4 +1,4 @@
-----------------------------------------------------------------------------------------------------------------------
+---------------------------------------------------------------------------------------------------------------------
 --	Схема реакции на раздражители
 --	автор: Диденко Руслан (Stohe)
 --	TODO: после завершения схемы необходимо вывести глобальное свойство - нет новых раздражителей и всем скриптам поставить его в прекондишн
@@ -6,7 +6,7 @@
 
 local sounds = {}
 
----------------------------------------------------------------------------------------------------------------------
+----------------------------------------------------------------------------------------------------------------------
 --Evaluators
 ----------------------------------------------------------------------------------------------------------------------
 -- Эвалуатор указывает что есть новый раздражитель
@@ -17,7 +17,19 @@ end
 function evaluator_new:evaluate()
 	self.a.evn:calculate()
 	self.a.evn:print()
-	return self.a.evn:isEvents()
+
+	-- если мы щас никого не обрабатываем и есть раздражители - нужно заполнить пробел
+	if self.a.id == nil and self.a.evn:isEvents() then
+		self.a.evn:get_event(self.a)
+	end
+	
+	local tt = self.a.id ~= nil 
+--	if tt then
+--		printf("[EVA] Reactions: New TRUE")
+--	else
+--		printf("[EVA] Reactions: New FALSE")
+--	end
+	return tt
 end
 
 ----------------------------------------------------------------------------------------------------------------------
@@ -34,14 +46,85 @@ function action_wait:initialize()
 	self.object:set_path_evaluator()
 	self.object:set_desired_position()
 	self.object:set_desired_direction()
+
+	--временно время устанавливаем здесь
+	self.a.time = device():time_global()
+
+	self.t = nil
+	self.time = nil
 end
 function action_wait:execute ()
-	local npc = self.a.evn:get_event()
+	printf("[ACT] Reactions: Wait")
 
-	self.a.evn:markAsUsed(npc)
+	-- если мы обрабатываем новый раздражитель, то нужно сресетить значения времени ожидания
+	if self.a.evn:isEvents() then
+		self.a.evn:get_event(self.a)
+		self.a.time = device():time_global()
+		self.a.evn:markAsWatch(self.a.id)
+	end
+
+	--идем проверять или стоим смотрим
+	if ((self.a.isVisual ~= nil and self.a.isVisual > 0.5) or self.a.watched == true) then
+		--обработка проверки
+		if self.object:position():distance_to(level.vertex_position(self.a.position)) <= 3 then
+			-- если мы уже стоим в радиусе 5 метров от раздражителя - просто стоим и оглядываемся
+			if (self.time == nil) or (device():time_global()/1000 - self.time > self.t) then
+				self.t = math.random(3)+4
+				self.time = device():time_global()/1000
+
+				local dir = vector():set(math.random(10)-5, 0, math.random(10)-5)
+				self.object:set_sight(look.direction, dir, 0)
+				self.object:set_body_state(move.standing)
+				self.object:set_movement_type(move.stand)
+				self.object:set_mental_state(anim.danger)
+			end
+		else
+			self.object:set_mental_state(anim.danger)
+			self.object:set_movement_type(move.walk)
+			self.object:set_path_type(game_object.level_path)
+			-- медленно подходим к раздражителю
+			self.object:set_dest_level_vertex_id(self.a.position)
+			local pos = level.vertex_position(self.a.position)
+			pos.y = pos.y + 0.8
+			self.object:set_sight(look.point, pos, 0)
+	      		self.object:set_item(object.idle, self.object:best_weapon())
+        	end
+		-- озвучка на проверку
+
+	else
+		-- обрабатываем приглядывание
+		self.object:set_movement_type(move.stand)
+		self.object:set_sight(look.point, level.vertex_position(self.a.position), 0)
+		-- озвучка на поиск
+
+	end
+
+
+	-- надо проверять время на обработку раздражителя, если время закончилось - прекращать обработку
+	if device():time_global() - self.a.time > self.a.time_wait then
+		-- реплики что мы не нашли ничего
+
+		self.a.evn:removeFromWatch(self.a.id)
+		self.a.id = nil
+	end
+
+	-- если мы можем классифицировать объект, то нужно пометить его как обработанный и выйти
+	if self.a.isVisual and self.a.isVisual >= 1 then
+		self.a.evn:markAsUsed(self.a.id)
+		self.a.evn:removeFromWatch(self.a.id)
+		self.a.id = nil
+	end
+
 	action_base.execute (self)
 end
 function action_wait:finalize ()
+	-- если у нас id = nil тогда мы не нашли чего ждали, иначе нашли врага
+	if self.a.id ~= nil then
+		-- реплики что мы что-то враждебное
+
+		self.a.id = nil
+	end
+
 	action_base.finalize (self)
 end
 
@@ -55,22 +138,25 @@ function add_to_binder(object)
 
 	local manager = object:motivation_action_manager()
 
-	properties["new"] = xr_evaluators_id.stohe_reactions_base + 0
+	properties["event"] 	= xr_evaluators_id.stohe_reactions_base + 0
 
-	operators["wait"] = xr_actions_id.stohe_reactions_base + 0
+	operators["wait"] 	= xr_actions_id.stohe_reactions_base + 0
 
 	-- Evaluators
-	manager:add_evaluator (properties["new"], 		this.evaluator_new		("evaluator_new", xr_motivator.storage[object:id()].reactions))
+	manager:add_evaluator (properties["event"], 		this.evaluator_new		("evaluator_new", xr_motivator.storage[object:id()].reactions))
 
 	-- Actions
 	local action = this.action_wait (object:name(),"action_wait", xr_motivator.storage[object:id()].reactions)
 	action:add_precondition		(world_property(stalker_ids.property_alive, 	true))
 	action:add_precondition		(world_property(stalker_ids.property_enemy,	false))
-	action:add_precondition		(world_property(properties["new"],		true))
+	action:add_precondition		(world_property(properties["event"],		true))
+	action:add_effect		(world_property(properties["event"],		false))
 	manager:add_action (operators["wait"], action)
 
+
 	action = manager:action (stalker_ids.action_free_no_alife)	
-	action:add_precondition		(world_property(properties["new"],		false))
+	action:add_precondition		(world_property(properties["event"],		false))
+
 end
 
 ----------------------------------------------------------------------------------------------------------------------
@@ -82,6 +168,9 @@ function events:__init(npc)
 	self.arhive = {} -- массив дескрипторов раздражителей
 	self.used = {} -- обработанные объекты, некоторое время раздражители по ним учитываться не будут
 	self.watch = {}	-- раздражители, за которыми мы следим
+	self.hear = {} 	-- звуки, которые мы слышали менее чем x секунду назад. Так как один и тот же звук может приходить несколько раз 
+			-- то таким образом мы обрубаем повторное включение одного и того же звука
+
 
 	self.descr = {	visibility = nil,  -- дескриптор раздражителей
 			sound_kat = nil,
@@ -124,12 +213,34 @@ function events:__init(npc)
 	self.stype1 = {	snd_type.anomaly,
 			snd_type.monster
 			}
-	self.time_reaction = 5000
+	self.time_reaction = 1500 	-- 1.5 секунд
+	self.time_memory = 600000 	-- 5 минут
+	self.visio	= 0.25 		-- если объект виден
 end
 function events:calculate()  -- Производить перерасчет и обновление раздражителей для текущего элемента
 	self.arhive = {}	
 
 	-- удалять обработанные устаревшие раздражители
+	local dt = {}
+	for k,v in self.used do
+		if device():time_global() - v >= self.time_memory then
+			table.insert(dt, k)
+		end		
+	end
+	for k,v in dt do
+		self:removeFromUsed(v)
+	end
+
+	-- удалять из self.hear звуки старше x секунд
+	dt = {}
+	for k,v in self.hear do
+		if (device():time_global() - v) > 2*self.time_reaction then
+			table.insert(dt, k)
+		end
+	end
+	for k,v in dt do
+		table.remove(self.hear, v)
+	end
 
 	-- определяем что нам известно о звуке объекта
 	local stable = self.npc:memory_sound_objects()
@@ -138,13 +249,36 @@ function events:calculate()  -- Производить перерасчет и обновление раздражителе
 		local so = s:object()
 		local so_id = so:clsid()
 		local continue = true
+		local stime = s.level_time
+	
+		if self.hear[so:id()] ~= nil then
+			if stime - self.hear[so:id()] < self.time_reaction then
+				continue = false
+			end
+		end
+
+		if self.used[so:id()] ~= nil then
+			continue = false
+		end
+
+		if self.npc:position():distance_to(so:position()) > 30 then
+			continue = false
+		end
 
 		if (so_id == clsid.stalker or so_id == clsid.actor) then
 			if (so:squad() == self.npc:squad() and 
 			   so:group() == self.npc:group()) or
-                           (device():time_global() - s.level_time > self.time_reaction)
+                           (device():time_global() - stime > self.time_reaction)
 			then
 				continue = false
+			end
+		end
+
+		if continue then
+			if self.hear[so:id()] == nil then
+				table.insert(self.hear, so:id(), stime)
+			else
+				self.hear[so:id()] = stime
 			end
 		end
 
@@ -187,7 +321,7 @@ function events:calculate()  -- Производить перерасчет и обновление раздражителе
 			self.arhive[so:id()].sound_kat 		= ll
 			self.arhive[so:id()].sound_power 	= s.power
 			self.arhive[so:id()].point 		= so:level_vertex_id()
-			self.arhive[so:id()].time		= s.level_time
+			self.arhive[so:id()].time		= stime
 		end
 	end
 
@@ -207,6 +341,16 @@ function events:calculate()  -- Производить перерасчет и обновление раздражителе
 			end
 		end
 
+		if self.used[vo:id()] ~= nil then
+			continue = false
+		end
+
+		local pers_visio = v.value / self.npc:visibility_threshold()
+
+		if pers_visio < self.visio then
+			continue = false
+		end
+
 		if continue then
 			-- заносим раздражитель в память
 			if self.arhive[vo:id()] == nil then
@@ -224,7 +368,7 @@ function events:calculate()  -- Производить перерасчет и обновление раздражителе
 			end
 			-- указываем, что нам о нем известно
 			self.arhive[vo:id()].point 		= vo:level_vertex_id()
-			self.arhive[vo:id()].visibility		= v.value
+			self.arhive[vo:id()].visibility		= pers_visio
 			self.arhive[vo:id()].time		= device():time_global()
 			if v.value >= self.npc:visibility_threshold() then
 				self.arhive[vo:id()].object_type = self:type(vo)
@@ -242,19 +386,15 @@ function events:calculate()  -- Производить перерасчет и обновление раздражителе
 		end
 	end
 end
-function events:get_event()  -- Выдает наиболее приоритетный раздражитель
+function events:get_event(tt)  -- Выдает наиболее приоритетный раздражитель
 	local prior = nil
-	-- должна выдавать:
-	-- позицию раздражителя
-	-- тип действия (стоять ждать, идти проверять, отметить)
-	-- описание раздражителя (для типа действия отметить)
-	-- указатель, что мы получили раздражитель от объекта, за которым мы следим
+
 	for key,value in self.arhive do
 		local cc = false
 
 		-- Если он в уже отработанных - игнорировать
 		for k,v in self.used do
-			if key == v then
+			if key == k then
 				cc = true
 				break
 			end
@@ -297,7 +437,7 @@ function events:get_event()  -- Выдает наиболее приоритетный раздражитель
 		if not cc and is_this_vision and not is_prior_vision then
 			prior = key
 			cc = true
-		end
+		end                     
 
 		-- проверка по качеству зрения
 		if not cc and is_this_vision and is_prior_vision then
@@ -322,33 +462,58 @@ function events:get_event()  -- Выдает наиболее приоритетный раздражитель
 			end
 		end
 	end
-	return prior
+	-- должна выдавать:
+	if prior == nil then return end
+
+	-- позицию раздражителя
+	tt.position = self.arhive[prior].point
+	-- id раздражителя
+	tt.id = prior
+	-- указатель, что мы получили раздражитель от объекта, за которым мы следим
+	if self.watch[prior] ~= nil then
+		tt.watched = true
+	end
+	-- визуальный или звуковой (в случае визуального передается процент его визуальности)
+	tt.isVisual = self.arhive[prior].visibility
 end
 function events:markAsUsed(npc)
-	table.insert(self.used, npc:id())
-	self.used[npc:id()] = device():time_global()
+	if npc ~= nil then
+		if self.used[npc] ~= nil then 
+			self.used[npc] = device():time_global()
+		else
+			table.insert(self.used, npc, device():time_global())
+		end
+	end
+end
+function events:removeFromUsed(npc)
+	if self.used[npc] ~= nil then
+		table.remove(self.used, npc)	
+	end
 end
 function events:markAsWatch(npc)
-	table.insert(self.watch, npc:id())
+	if npc ~= nil then
+		if self.watch[npc] == nil then 
+			table.insert(self.watch, npc, npc)
+		end
+	end
 end
 function events:removeFromWatch(npc)
-	for key,value in self.watch do
-		if npc:id() == value then
-			table.remove(self.watch, key)	
-		end
+	if self.watch[npc] ~= nil then
+		table.remove(self.watch, npc)	
 	end
 end
 function events:isEvents()
 	local tt = false
-
 	for key,value in self.arhive do 
+		local exst = false
 		for k,v in self.used do
-			if key ~= v then
-				tt = true
+			if key == k then
+				exst = true
 				break
 			end
 		end		
-		if tt then
+		if not exst then
+			tt = true
 			break
 		end
 	end
@@ -382,10 +547,10 @@ function events:print()
 		-- item print
 		if value.item.power == true then	printf("Powerfull") end
 
-		-- used print
-		for k,v in self.used do
+        	-- watched print
+		for k,v in self.watch do
 			if key == v then
-				printf("used")
+				printf("watch")
 				break
 			end
 		end
@@ -439,7 +604,6 @@ function events:type(obj)
 		otype == clsid.wpn_grenade_launcher or
 		otype == clsid.obj_physic or
 		otype == clsid.obj_breakable or
-		otype == clsid.detector_simple or
 		otype == clsid.device_pda or
 		otype == clsid.device_torch or
 		otype == clsid.obj_bolt or
@@ -513,7 +677,6 @@ function events:item_power(obj)
 		otype == clsid.wpn_scope or
 		otype == clsid.wpn_silencer or
 		otype == clsid.wpn_grenade_launcher or
-		otype == clsid.detector_simple or
 		otype == clsid.device_pda or
 		otype == clsid.device_torch or
 		otype == clsid.obj_medikit or
