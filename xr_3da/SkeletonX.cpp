@@ -282,9 +282,11 @@ void CSkeletonX::_Load_hw()
 	switch	(RenderMode)
 	{
 	case RM_SKINNING_SOFT:
+		Msg					("skinning: software");
 		hGeom.create		(vertRenderFVF, RCache.Vertex.Buffer(), pIndices);
 		break;
 	case RM_SINGLE:
+		Msg					("skinning: hw, 0-weight");
 		{
 			vBase				= 0;
 			u32		vStride		= D3DXGetFVFVertexSize		(vertRenderFVF);
@@ -306,6 +308,7 @@ void CSkeletonX::_Load_hw()
 		}
 		break;
 	case RM_SKINNING_1B:
+		Msg					("skinning: hw, 1-weight");
 		{
 			vBase				= 0;
 			u32		vStride		= D3DXGetDeclVertexSize		(dwDecl_1W,0);
@@ -326,6 +329,7 @@ void CSkeletonX::_Load_hw()
 		}
 		break;
 	case RM_SKINNING_2B:
+		Msg					("skinning: hw, 2-weight");
 		{
 			vBase				= 0;
 			u32		vStride		= D3DXGetDeclVertexSize		(dwDecl_2W,0);
