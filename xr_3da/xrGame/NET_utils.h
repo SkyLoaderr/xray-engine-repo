@@ -1,10 +1,21 @@
 #ifndef _INCDEF_NETUTILS_H_
 #define _INCDEF_NETUTILS_H_
 #pragma once
-
 #pragma pack(push,1)
 
 const	u32			NET_PacketSizeLimit	= 16384;//8192;
+
+class ClientID{
+	u32 id;
+public:
+	ClientID():id(0){};
+	u32 value()const{return id;};
+	void  set(u32 v){id=v;};
+	bool  compare(u32 v) const{return id == v;};
+	bool operator ==(const ClientID& other){return value() == other.value();};
+	bool operator !=(const ClientID& other){return value() != other.value();};
+};
+
 
 struct	NET_Buffer
 {
@@ -101,6 +112,10 @@ public:
 		w_vec3	(M.j);
 		w_vec3	(M.k);
 		w_vec3	(M.c);
+	}
+	IC void w_clientID			(ClientID& C)
+	{
+		w_u32(C.value());
 	}
 	IC void	w_chunk_open8		(u32& position)
 	{
@@ -220,6 +235,12 @@ public:
 		r_vec3	(M.j);	M._24_	= 0;
 		r_vec3	(M.k);	M._34_	= 0;
 		r_vec3	(M.c);	M._44_	= 1;
+	}
+	IC void		r_clientID		(ClientID& C)
+	{
+		u32 tmp;
+		r_u32(tmp);
+		C.set(tmp);
 	}
 };
 
