@@ -5,7 +5,7 @@
 #include "ItemListHelper.h"
 #include "EThumbnail.h"
 //---------------------------------------------------------------------------
-
+              
 CPropHelper PHelper;
 
 void CPropHelper::NameAfterEdit_TI(PropItem* sender, LPVOID edit_val)

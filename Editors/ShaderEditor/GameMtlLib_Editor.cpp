@@ -16,30 +16,28 @@
 void SGameMtl::FillProp		(PropItemVec& items, TElTreeItem* owner)
 {
 	PropValue* V=0;
-    PHelper.CreateRName_TI	(items,	"Name",					&m_Name, owner);
-    PHelper.CreateRText		(items,	"Desc",					&m_Desc);
-	// flags                                  
-	V=PHelper.CreateFlag32	(items,	"Flags\\Dynamic",		&Flags,	flDynamic);	V->Owner()->Enable(FALSE);
-	PHelper.CreateFlag32	(items,	"Flags\\Passable",		&Flags,	flPassable);
-    PHelper.CreateFlag32	(items,	"Flags\\Breakable",		&Flags,	flBreakable);
-//.    PHelper.CreateFlag32	(items,	"Flags\\Shootable",		&Flags,	flShootable);
-    PHelper.CreateFlag32	(items,	"Flags\\Bounceable",	&Flags,	flBounceable);
-    PHelper.CreateFlag32	(items,	"Flags\\Skidmark",		&Flags,	flSkidmark);
-    PHelper.CreateFlag32	(items,	"Flags\\Bloodmark",		&Flags,	flBloodmark);
-    PHelper.CreateFlag32	(items,	"Flags\\Climbable",		&Flags,	flClimbable);
-//.    PHelper.CreateFlag32	(items, "Flags\\Walk On",		&Flags, flWalkOn);
+    PHelper.CreateRName_TI			(items,	"Name",						&m_Name, owner);
+    PHelper.CreateRText				(items,	"Desc",						&m_Desc);
+	// flags                                                      	
+	V=PHelper.CreateFlag<Flags32>	(items,	"Flags\\Dynamic",			&Flags,	flDynamic);	V->Owner()->Enable(FALSE);
+	PHelper.CreateFlag<Flags32>		(items,	"Flags\\Passable",			&Flags,	flPassable);
+    PHelper.CreateFlag<Flags32>		(items,	"Flags\\Breakable",			&Flags,	flBreakable);
+    PHelper.CreateFlag<Flags32>		(items,	"Flags\\Bounceable",		&Flags,	flBounceable);
+    PHelper.CreateFlag<Flags32>		(items,	"Flags\\Skidmark",			&Flags,	flSkidmark);
+    PHelper.CreateFlag<Flags32>		(items,	"Flags\\Bloodmark",			&Flags,	flBloodmark);
+    PHelper.CreateFlag<Flags32>		(items,	"Flags\\Climbable",			&Flags,	flClimbable);
     // physics part
-    PHelper.CreateFloat		(items,	"Physics\\Friction",		&fPHFriction,			0.f, 	100.f, 	0.001f, 3); 
-    PHelper.CreateFloat		(items,	"Physics\\Damping",			&fPHDamping,			0.001f,	100.f, 	0.001f, 3); 
-    PHelper.CreateFloat		(items,	"Physics\\Spring",			&fPHSpring,				0.001f,	100.f, 	0.001f, 3); 
-    PHelper.CreateFloat		(items,	"Physics\\Bounce start vel",&fPHBounceStartVelocity,0.f,	100.f, 	0.01f, 	2); 
-    PHelper.CreateFloat		(items,	"Physics\\Bouncing",		&fPHBouncing,			0.f,	1.f, 	0.001f, 3); 
+    PHelper.CreateFloat				(items,	"Physics\\Friction",		&fPHFriction,			0.f, 	100.f, 	0.001f, 3); 
+    PHelper.CreateFloat				(items,	"Physics\\Damping",			&fPHDamping,			0.001f,	100.f, 	0.001f, 3); 
+    PHelper.CreateFloat				(items,	"Physics\\Spring",			&fPHSpring,				0.001f,	100.f, 	0.001f, 3); 
+    PHelper.CreateFloat				(items,	"Physics\\Bounce start vel",&fPHBounceStartVelocity,0.f,	100.f, 	0.01f, 	2); 
+    PHelper.CreateFloat				(items,	"Physics\\Bouncing",		&fPHBouncing,			0.f,	1.f, 	0.001f, 3); 
     // factors
-    PHelper.CreateFloat		(items,	"Factors\\Shoot",			&fShootFactor);
-    PHelper.CreateFloat		(items,	"Factors\\Damage",			&fBounceDamageFactor,   0.f,100.f,0.1f,1);
-    PHelper.CreateFloat		(items,	"Factors\\Transparency",	&fVisTransparencyFactor);
-    PHelper.CreateFloat		(items,	"Factors\\Sound occlusion",	&fSndOcclusionFactor);
-    PHelper.CreateFloat		(items,	"Factors\\Flotation",		&fFlotationFactor);
+    PHelper.CreateFloat				(items,	"Factors\\Shoot",			&fShootFactor);
+    PHelper.CreateFloat				(items,	"Factors\\Damage",			&fBounceDamageFactor,   0.f,100.f,0.1f,1);
+    PHelper.CreateFloat				(items,	"Factors\\Transparency",	&fVisTransparencyFactor);
+    PHelper.CreateFloat				(items,	"Factors\\Sound occlusion",	&fSndOcclusionFactor);
+    PHelper.CreateFloat				(items,	"Factors\\Flotation",		&fFlotationFactor);
 }
 
 BOOL CGameMtlLibrary::UpdateMtlPairs(SGameMtl* src)

@@ -133,6 +133,8 @@ public:
     template <class T>
 	IC TokenValue3<T>* 	CreateToken3	(PropItemVec& items, AnsiString key, T* val, const TokenValue3<T>::ItemVec* lst)
     {   return			(TokenValue3<T>*)AppendValue	(items,key,xr_new<TokenValue3<T> >(val,lst),PROP_TOKEN3);}
+	IC TokenValueSH*   	CreateTokenSH	(PropItemVec& items, AnsiString key, u32* val, u32 cnt, const TokenValueSH::Item* lst)
+    {   return			(TokenValueSH*)	AppendValue		(items,key,xr_new<TokenValueSH>(val,cnt,lst),PROP_SH_TOKEN);}
 	IC ListValue* 	 	CreateList		(PropItemVec& items, AnsiString key, LPSTR val, int lim, AStringVec* lst)
     {   return			(ListValue*)	AppendValue		(items,key,xr_new<ListValue>(val,lim,lst),PROP_LIST);       }
 	IC ListValue* 	 	CreateListA		(PropItemVec& items, AnsiString key, LPSTR val, int lim, u32 cnt, LPCSTR* lst)

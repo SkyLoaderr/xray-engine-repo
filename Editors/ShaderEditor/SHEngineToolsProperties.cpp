@@ -6,6 +6,7 @@
 #include "Blender.h"
 #include "PropertiesList.h"
 #include "folderlib.h"
+#include "ui_main.h"
 
 #define MCSTRING_COUNT 	11
 LPCSTR MCString[MCSTRING_COUNT]={"Custom...","-","$null","$base0","$base1","$base2","$base3","$base4","$base5","$base6","$base7"};
@@ -18,38 +19,22 @@ xr_token							mode_token					[ ]={
 	{ 0,							0							}           
 };
 //---------------------------------------------------------------------------
-void __fastcall CSHEngineTools::ModeOnAfterEdit(PropValue* sender, LPVOID edit_val)
-{
-/*
-	TElTreeItem* parent=sender->Owner()->Item()->Parent; R_ASSERT(parent);
-    ListValue* V = (ListValue*)parent->Tag;
-    R_ASSERT(V->Owner()->Type()==PROP_LIST);
-    string128 nm; strcpy(nm,V->GetValue());
-    CMatrix* M = FindMatrix(nm,false); R_ASSERT(M);
-    V->ApplyValue(nm);
-//    DWORD mode=*(DWORD*)edit_val;
-//    UpdateMatrixModeProps(sender->item,M,mode);
-*/
-}
-//---------------------------------------------------------------------------
 void __fastcall CSHEngineTools::FillMatrixProps(PropItemVec& items, LPCSTR pref, LPSTR name)
 {
-    CMatrix* M = FindMatrix(name,true);
+    CMatrix* M 						= FindMatrix(name,true);
     R_ASSERT(M);
 
-	PropValue* P=0;
-    PHelper.CreateToken(items,FHelper.PrepareKey(pref,"Mode"),&M->dwMode,mode_token,sizeof(M->dwMode));
-//.?    P->SetEvents(ModeOnAfterEdit);
+    PHelper.CreateToken<u32>		(items,FHelper.PrepareKey(pref,"Mode"),&M->dwMode,mode_token);
 
     if (M->dwMode==CMatrix::modeTCM){
-	    PHelper.CreateFlag32(items,	FHelper.PrepareKey(pref,"Scale enabled"),	&M->tcm_flags,CMatrix::tcmScale);
-		PHelper.CreateWave	(items,	FHelper.PrepareKey(pref,"Scale U"),			&M->scaleU);
-		PHelper.CreateWave	(items,	FHelper.PrepareKey(pref,"Scale V"),			&M->scaleV);
-	    PHelper.CreateFlag32(items,	FHelper.PrepareKey(pref,"Rotate enabled"),	&M->tcm_flags,CMatrix::tcmRotate);
-		PHelper.CreateWave	(items,	FHelper.PrepareKey(pref,"Rotate"),			&M->rotate);
-	    PHelper.CreateFlag32(items,	FHelper.PrepareKey(pref,"Scroll enabled"),	&M->tcm_flags,CMatrix::tcmScroll);
-		PHelper.CreateWave	(items,	FHelper.PrepareKey(pref,"Scroll U"),		&M->scrollU);
-		PHelper.CreateWave	(items,	FHelper.PrepareKey(pref,"Scroll V"),		&M->scrollV);
+	    PHelper.CreateFlag<Flags32>	(items,	FHelper.PrepareKey(pref,"Scale enabled"),	&M->tcm_flags,CMatrix::tcmScale);
+		PHelper.CreateWave			(items,	FHelper.PrepareKey(pref,"Scale U"),			&M->scaleU);
+		PHelper.CreateWave			(items,	FHelper.PrepareKey(pref,"Scale V"),			&M->scaleV);
+	    PHelper.CreateFlag<Flags32>	(items,	FHelper.PrepareKey(pref,"Rotate enabled"),	&M->tcm_flags,CMatrix::tcmRotate);
+		PHelper.CreateWave			(items,	FHelper.PrepareKey(pref,"Rotate"),			&M->rotate);
+	    PHelper.CreateFlag<Flags32>	(items,	FHelper.PrepareKey(pref,"Scroll enabled"),	&M->tcm_flags,CMatrix::tcmScroll);
+		PHelper.CreateWave			(items,	FHelper.PrepareKey(pref,"Scroll U"),		&M->scrollU);
+		PHelper.CreateWave			(items,	FHelper.PrepareKey(pref,"Scroll V"),		&M->scrollV);
     }
 }
 //---------------------------------------------------------------------------
@@ -159,9 +144,9 @@ void CSHEngineTools::RealUpdateProperties()
 	            marker_text = key;
             break;
             case xrPID_TOKEN:{
-            	xrP_TOKEN* V=(xrP_TOKEN*)data.pointer();
-            	sz=sizeof(xrP_TOKEN)+sizeof(xrP_TOKEN::Item)*V->Count;
-                PHelper.CreateToken3(items,FHelper.PrepareKey(marker_text.c_str(),key),&V->IDselected,V->Count,(TokenValue3::Item*)(LPBYTE(data.pointer()) + sizeof(xrP_TOKEN)));
+            	xrP_TOKEN* V	= (xrP_TOKEN*)data.pointer();
+            	sz				= sizeof(xrP_TOKEN)+sizeof(xrP_TOKEN::Item)*V->Count;
+                PHelper.CreateTokenSH(items,FHelper.PrepareKey(marker_text.c_str(),key),&V->IDselected,V->Count,(TokenValueSH::Item*)(LPBYTE(data.pointer()) + sizeof(xrP_TOKEN)));
             }break;
             case xrPID_MATRIX:{
             	sz				= sizeof(string64);
@@ -205,7 +190,10 @@ void CSHEngineTools::RealUpdateProperties()
             }
             data.advance(sz);
         }
-        ApplyChanges(true);
+// גלוסעמ ApplyChanges(true);
+        UpdateObjectFromStream();
+        Ext.m_ItemProps->ResetModified();
+//---------------------------
     }
     Ext.m_ItemProps->AssignItems(items,true);
     Ext.m_ItemProps->SetModifiedEvent(Modified);

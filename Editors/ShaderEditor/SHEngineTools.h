@@ -24,12 +24,13 @@ enum EPreviewObj{
     pvoBox,
     pvoSphere,
     pvoTeapot,
-    pvoCustom
+    pvoCustom,
+    pvo_force_dword = u32(-1)
 };
 
 class CSHEngineTools: public ISHTools
 {
-	EPreviewObj				m_PreviewObjectType;
+	u32						m_PreviewObjectType;
 	CSceneObject*			m_PreviewObject;
     bool					m_bCustomEditObject;
 
@@ -83,7 +84,6 @@ friend class TfrmShaderProperties;
     void 					PrepareRender		();
 
     // matrix props
-	void __fastcall 		ModeOnAfterEdit		(PropValue* sender, LPVOID edit_val);
 	void __fastcall 		MatrixOnAfterEdit	(PropItem* sender, LPVOID edit_val);
 	void __fastcall 		FillMatrixProps		(PropItemVec& items, LPCSTR pref, LPSTR name);
 	void __fastcall 		MCOnDraw			(PropValue* sender, LPVOID draw_val);

@@ -127,7 +127,7 @@ void CSHEngineTools::OnActivate()
     fraLeftBar->InplaceEdit->Tree 		= View();
 	PropItemVec items;
 //    m_PreviewObject->FillProp			("Object",items);
-    PropValue* V						= PHelper.CreateToken	(items,FHelper.PrepareKey("Object","Reference"), &m_PreviewObjectType, preview_obj_token, sizeof(m_PreviewObjectType)); 
+    PropValue* V						= PHelper.CreateToken<u32>	(items,FHelper.PrepareKey("Object","Reference"), &m_PreviewObjectType, preview_obj_token); 
     V->Owner()->OnAfterEditEvent 		= OnPreviewObjectRefChange;
     Ext.m_PreviewProps->AssignItems		(items,true);
     Ext.m_PreviewProps->ShowProperties	();
@@ -234,7 +234,7 @@ void CSHEngineTools::ApplyChanges(bool bForced)
     if (m_CurrentBlender&&(Ext.m_ItemProps->IsModified()||bForced)){
     	UpdateObjectFromStream();
 		Ext.m_ItemProps->ResetModified();
-	    ResetShaders(bForced);
+	    ResetShaders(false);// required 'false' for matrix
     }
 }
 
