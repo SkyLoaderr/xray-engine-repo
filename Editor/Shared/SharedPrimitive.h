@@ -133,7 +133,7 @@ public:
 		BYTE* pLockedData	= 0;
 		
 		// Ensure there is enough space in the VB for this data
-		if (0==pIB) Create (); R_ASSERT(Count<mSize);
+		if (0==pIB) Create (); R_ASSERT(Count<=mSize);
 
 		// If either user forced us to flush,
 		// or there is not enough space for the index data,
