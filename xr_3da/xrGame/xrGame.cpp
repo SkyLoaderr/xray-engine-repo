@@ -803,6 +803,30 @@ public:
 	}
 };
 
+class CCC_Net_CL_ClearStats : public IConsole_Command {
+public:
+	CCC_Net_CL_ClearStats(LPCSTR N) : IConsole_Command(N)  { bEmptyArgsHandled = true; };
+	virtual void Execute(LPCSTR /**args/**/) {
+		Level().ClearStatistic();
+	}
+	virtual void	Info	(TInfo& I)		
+	{
+		strcpy(I,"clear client net statistic"); 
+	}
+};
+
+class CCC_Net_SV_ClearStats : public IConsole_Command {
+public:
+	CCC_Net_SV_ClearStats(LPCSTR N) : IConsole_Command(N)  { bEmptyArgsHandled = true; };
+	virtual void Execute(LPCSTR /**args/**/) {
+		Level().Server->ClearStatistic();
+	}
+	virtual void	Info	(TInfo& I)		
+	{
+		strcpy(I,"clear server net statistic"); 
+	}
+};
+
 class CCC_Script : public IConsole_Command {
 public:
 	CCC_Script(LPCSTR N) : IConsole_Command(N)  { bEmptyArgsHandled = true; };
@@ -970,6 +994,8 @@ BOOL APIENTRY DllMain( HANDLE /**hModule/**/,
 		CMD4(CCC_Net_CL_Interpolation,		"net_cl_interpolation",	&lvInterp,			-1,100);
 		CMD4(CCC_Float,				"net_cl_maxdesync",				&g_fMaxDesyncLen,		0, 10);
 		CMD1(CCC_Net_CL_Resync,		"net_cl_resync" );
+		CMD1(CCC_Net_CL_ClearStats,		"net_cl_clearstats" );
+		CMD1(CCC_Net_SV_ClearStats,		"net_sv_clearstats" );
 		CMD3(CCC_Mask,				"g_unlimitedammo",				&psActorFlags,	AF_UNLIMITEDAMMO);
 				
 		// adjust mode support
