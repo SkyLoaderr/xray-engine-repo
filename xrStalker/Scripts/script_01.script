@@ -35,8 +35,9 @@ function main()
 			)
 			wait		(1500)			
                 	break		
-		wait()			
-	end
+		end
+	wait()			
+
 
 	while stalker1:action() and stalker2:action() do
 
