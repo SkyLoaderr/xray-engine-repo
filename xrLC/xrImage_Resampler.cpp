@@ -156,7 +156,7 @@ double	B_spline_filter		(double t)	/* box (*) box (*) box (*) box */
 double	sinc				(double x)
 {
 	x *= 3.1415926f;
-	if(x != 0) return(sin(x) / x);
+	if(x != 0) return(_sin(x) / x);
 	return(1.0);
 }
 double	Lanczos3_filter		(double t)
