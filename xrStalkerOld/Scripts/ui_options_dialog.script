@@ -172,7 +172,7 @@ function options_dialog:InitControls()
 	self.tab_controls:InitControls(btn_sound_rect.x + btn_sound_rect.width + self.indent, self.top_align_y)
 	self.main_frame:AttachChild(self.tab_controls)
 	---- >> PROFILES
-	self.tab_profiles = ui_options_profiles_tab.options_profiles_tab()
+	self.tab_profiles = ui_multiplayer_map_tab.map_tab() --ui_options_profiles_tab.options_profiles_tab()
 	self.tab_profiles:InitControls(btn_sound_rect.x + btn_sound_rect.width + self.indent, self.top_align_y)
 	self.main_frame:AttachChild(self.tab_profiles)
 end

@@ -74,6 +74,9 @@ function multiplayer_base_tab:InitControls(caption, x_pos, y_pos)
 						 self.main_rect.width,
 						 self.main_rect.height)
 	self:AttachChild(self.main_frame)
+	
+	
+	self:SetAutoDelete(true)
 	-- CODE >>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>
 end
 
