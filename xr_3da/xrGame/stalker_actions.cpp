@@ -1304,10 +1304,13 @@ void CStalkerActionKillEnemyModerate::execute		()
 		return;
 
 	if (completed()) {
-		VERIFY					(m_storage);
-		m_storage->set_property	(eWorldPropertyEnemyAimed,false);
+		VERIFY						(m_storage);
+		m_storage->set_property		(eWorldPropertyEnemyAimed,false);
 		return;
 	}
+
+	if (Level().timeServer() >= m_start_level_time + 500 + ::Random.randI(100,200))
+		m_storage->set_property	(eWorldPropertyEnemyLost,true);
 
 	Fvector							position;
 	m_object->enemy()->Center		(position);
@@ -1373,7 +1376,7 @@ void CStalkerActionGetEnemySeenModerate::execute	()
 	if (!mem_object.m_object)
 		return;
 
-	if (Level().timeServer() >= m_start_level_time + 5000)
+	if (Level().timeServer() >= m_start_level_time + 3000)
 		m_storage->set_property	(eWorldPropertyEnemyLost,true);
 
 	if (m_object->enemy()) {
