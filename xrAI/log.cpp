@@ -173,7 +173,7 @@ void __cdecl logThread(void *dummy)
     SendMessage(hwProgress, PBM_SETRANGE,	0, MAKELPARAM(0, 1000)); 
     SendMessage(hwProgress, PBM_SETPOS,		0, 0); 
 
-	Msg("\"LevelBuilder v3.0\" beta build\nCompilation date: %s\n",__DATE__);
+	Msg("\"LevelBuilder v4.1\" beta build\nCompilation date: %s\n",__DATE__);
 	{
 		char tmpbuf[128];
 		Msg("Startup time: %s",_strtime(tmpbuf));

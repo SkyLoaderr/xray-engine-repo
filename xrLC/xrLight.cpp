@@ -3,35 +3,48 @@
 #include "xrThread.h"
 #include "xrSyncronize.h"
 
+CCriticalSection		task_CS;
+vector<int>				task_pool;
+
 class CLMThread : public CThread
 {
 public:
-	CDeflector *		volatile	defl;
-	BOOL				volatile	bContinue;
 	HASH							H;
 	CDB::COLLIDER					DB;
 	vector<R_Light>					LightsSelected;
 public:
-	CLMThread	(DWORD ID, CDeflector* D) : CThread(ID)
+	CLMThread	(DWORD ID) : CThread(ID)
 	{
-		defl		= D;
+		// thMonitor= TRUE;
 		thMessages	= FALSE;
-		bContinue	= TRUE;
 	}
 
 	virtual void	Execute()
 	{
-		while (bContinue) 
+		CDeflector* D	= 0;
+
+		for (;;) 
 		{
+			// Get task
+			task_CS.Enter		();
+			Progress			(1.f - float(task_pool.size())/float(g_deflectors.size()));
+			if (task_pool.empty())	
+			{
+				task_CS.Leave		();
+				return;
+			}
+
+			D					= g_deflectors[task_pool.back()];
+			task_pool.pop_back	();
+			task_CS.Leave		();
+
+			// Perform operation
 			try {
-				defl->Light	(&DB,&LightsSelected,H);
+				D->Light	(&DB,&LightsSelected,H);
 			} catch (...)
 			{
 				Msg("* ERROR: CLMThread::Execute - light");
 			}
-			defl = 0;
-			
-			while ((0==defl) && bContinue) Sleep(1);
 		}
 	}
 };
@@ -44,46 +57,15 @@ void CBuild::Light()
 
 	// Randomize deflectors
 	random_shuffle	(g_deflectors.begin(),g_deflectors.end());
+	for (u32 dit = 0; dit<g_deflectors.size(); dit++)	task_pool.push_back(dit);
 
 	// Main process (4 threads)
-	const	DWORD			thNUM = 5;
-	DWORD	dwTimeStart = timeGetTime();
-	CLMThread*	threads[thNUM];
-	ZeroMemory	(threads,sizeof(threads));
-	DWORD		N=0;
-	for (;;) {
-		for (int L=0; L<thNUM; L++) {
-			if ((0==threads[L]) || (0==threads[L]->defl))
-			{
-				if (N>=g_deflectors.size())		continue;
-				if (0==threads[L])	{
-					// Start NEW thread
-					threads[L]			= new CLMThread	(N,g_deflectors[N]);	N++;
-					threads[L]->Start	();
-				} else {
-					// Use existing one
-					threads[L]->defl	= g_deflectors[N]; N++;
-				}
-				
-				// Info
-				float	P = float(N)/float(g_deflectors.size());
-				Progress(P);
-				Status	("Calculating surface up to #%d (%d)...",N,g_deflectors.size());
-			}
-		}
-		if	(N>=g_deflectors.size())	
-		{
-			DWORD	thOK	= 0;
-			for		(L=0; L<thNUM; L++)	if ((0==threads[L]) || (0==threads[L]->defl))	thOK ++;
-			if		(thOK==thNUM)	break;
-		}
-		Sleep	(50);
-	}
-	for (int L=0; L<thNUM; L++)	{
-		threads[L]->bContinue	= FALSE;
-		while	(!threads[L]->thCompleted) Sleep(1);
-		_DELETE	(threads[L]);
-	}
+	Status("Lighting...");
+	CThreadManager	threads;
+	const	DWORD	thNUM	= 3;
+	DWORD	dwTimeStart		= timeGetTime();
+	for (int L=0; L<thNUM; L++)	threads.start(new CLMThread(L));
+	threads.wait	(500);
 	Msg("%d seconds",(timeGetTime()-dwTimeStart)/1000);
 }
 
