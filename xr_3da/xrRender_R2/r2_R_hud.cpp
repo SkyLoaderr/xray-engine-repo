@@ -1,11 +1,12 @@
 #include "stdafx.h"
+using namespace SceneGraph;
 
-void __fastcall sorted_L1	(mapSorted_Node *N)
+void __fastcall hud_L1		(mapSorted_Node *N)
 {
 	IVisual *V = N->val.pVisual;
 	RCache.set_Shader		(V->hShader);
 	RCache.set_xform_world	(N->val.Matrix);
-	V->Render				(calcLOD(N->key,V->vis.sphere.R));
+	V->Render				(1);
 }
 
 void CRender::render_hud()
@@ -24,7 +25,7 @@ void CRender::render_hud()
 
 	// Rendering
 	rmNear						();
-	mapHUD.traverseLR			(sorted_L1);
+	mapHUD.traverseLR			(hud_L1);
 	mapHUD.clear				();
 	rmNormal					();
 
