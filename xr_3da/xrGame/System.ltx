@@ -106,6 +106,9 @@ inv_grid_x			= 16
 inv_grid_y			= 12
 position			= .35,.25,0
 light_trace_bone	= cone_bone
+angle_offset		= 0, -3.14, 1.6
+position_offset		= 0.105, 0.00, 0.085
+bone_name			= bip01_head
 
 [search_light]
 GroupControlSection	= spawn_group
@@ -1306,10 +1309,8 @@ walk_accel              = 17 ;40 ;17  ;54 ;40
 ;радиус в котром над предметами выводятся их названия
 pickup_info_radius		= 5
 
-; torch params
-torch_angle_offset	  = 0, -3.14, 1.6
-torch_position_offset = 0.105, 0.00, 0.085
-torch_bone_name		  = bip01_head
+; attach params
+attachable_items		= device_torch
 
 ph_box0_center 			= 0.0,  0.9,  0.0
 ph_box0_size 			= 0.35, 0.9,  0.35
@@ -1556,10 +1557,8 @@ eye_range            = 30	;70	;150
 max_item_mass		 = 40.0
 MaxHealthValue		 = 100			; range [0..200]
 
-; torch params
-torch_angle_offset	  = 0, -3.14, 1.6
-torch_position_offset = 0.105, 0.00, 0.085
-torch_bone_name		  = bip01_head
+; attach params
+attachable_items		= device_torch
 
 ; State                = 7
 ; 0 - бежать прямо на врага
@@ -1716,10 +1715,8 @@ eye_range                    = 80	;150
 max_item_mass				 = 40.0
 MaxHealthValue		     = 100			; range [0..200]
 
-; torch params
-torch_angle_offset	  = 0, -3.14, 1.6
-torch_position_offset = 0.105, 0.00, 0.085
-torch_bone_name		  = bip01_head
+; attach params
+attachable_items		= device_torch
 
 State                = 7
 ; 0 - бежать прямо на врага
@@ -2467,6 +2464,9 @@ sleep_health = 1.0		;1.5				;коэффициенты скоростей изменения параметров во врем
 sleep_power = 1.0		;1.5
 sleep_satiety = 1.0		;0.8
 sleep_radiation = 1.0	;1.1
+
+; attach params
+attachable_items		= 
 
 ;-----------------------------------------------------------------
 ; Trade
