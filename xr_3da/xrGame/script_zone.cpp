@@ -45,15 +45,14 @@ void CScriptZone::spatial_move()
 }
 */
 
-void CScriptZone::Center(Fvector& C)
+void CScriptZone::Center(Fvector& C) const
 {
 	XFORM().transform_tiny	(C,CFORM()->getSphere().P);
 }
-float CScriptZone::Radius()
+float CScriptZone::Radius() const
 {
 	return CFORM()->getRadius();
 }
-
 
 BOOL CScriptZone::net_Spawn	(LPVOID DC) 
 {
