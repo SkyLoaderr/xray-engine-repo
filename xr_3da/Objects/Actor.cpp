@@ -478,12 +478,13 @@ void CActor::Update	(DWORD DT)
 	// Check controls, create accel, prelimitary setup "mstate_real"
 	float	Jump	= 0;
 	if (Local())	{
-		g_cl_CheckControls	(mstate_wishful,NET_SavedAccel,Jump,dt);
-		g_cl_Orientate		(mstate_real,dt);
-		g_Orientate			(mstate_real,dt);
-		g_Physics			(NET_SavedAccel,Jump,dt);
-		g_cl_ValidateMState	(mstate_wishful);
-		g_SetAnimation		(mstate_real);
+		g_cl_CheckControls		(mstate_wishful,NET_SavedAccel,Jump,dt);
+		g_cl_Orientate			(mstate_real,dt);
+		g_Orientate				(mstate_real,dt);
+		g_Physics				(NET_SavedAccel,Jump,dt);
+		g_sv_AnalyzeNeighbours	();
+		g_cl_ValidateMState		(mstate_wishful);
+		g_SetAnimation			(mstate_real);
 		// Level().HUD()->outMessage(0xffffffff,cName(),"%d",AI_NodeID);
 	} else {
 		// distinguish interpolation/extrapolation

@@ -328,6 +328,7 @@ BOOL CWeapon::net_Spawn		(BOOL bLocal, int server_id, Fvector& o_pos, Fvector& o
 
 	//
 	bVisible				= TRUE;
+	bEnabled				= TRUE;
 	Sector_Detect			();
 
 	return bResult;

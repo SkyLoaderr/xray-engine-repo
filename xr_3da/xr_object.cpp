@@ -217,8 +217,8 @@ void CObject::Update	( DWORD T )
 		// sector
 		if (SectorMode!=EPM_AT_LOAD)	Sector_Detect	();
 	}
-	// cfmodel
-	if (cfModel)	cfModel->OnMove();
+	// cfmodel 
+	if (cfModel && (0==H_Parent()))		cfModel->OnMove	();
 }
 
 CObject::SavedPosition CObject::ps_Element(DWORD ID)
@@ -264,4 +264,21 @@ void CObject::OnActivate	()
 void CObject::OnDeactivate	()
 {
 	bActive = FALSE;
+}
+
+CObject* CObject::H_SetParent	(CObject* O)
+{
+	if (O==Parent)	return O;
+
+	if (0==Parent)	
+	{
+		// Become chield
+		pCreator->ObjectSpace.Object_Unregister	(this);
+	} else {
+		// Become independent
+		pCreator->ObjectSpace.Object_Register	(this);
+	}
+	CObject* S	= Parent; 
+	Parent		= O; 
+	return		S;
 }
