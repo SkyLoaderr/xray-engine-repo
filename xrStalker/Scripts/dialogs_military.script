@@ -12,10 +12,7 @@
 
 -- Оплата долговцем наших услуг по устранению снайпера
 function mil_dolg_payment (stalker, player)
-    printf ("Stalker_Name %s", stalker:name ())
-    printf ("Money before %d", player:money ())
     stalker:transfer_money (stalker:money () / 2, player)
-    printf ("Money after %d", player:money ())
 end
 
 -- Отмечаем провал задачи
