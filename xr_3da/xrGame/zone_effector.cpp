@@ -13,11 +13,12 @@ CZoneEffectPP::CZoneEffectPP(const SPPInfo &ppi) :
 {
 	state = ppi;
 	factor = 0.1f;
+//	Msg			("CZoneEffectPP::CZoneEffectPP %x",this);
 }
 
 CZoneEffectPP::~CZoneEffectPP()
 {
-
+//	Msg			("CZoneEffectPP::~CZoneEffectPP %x",this);
 }
 
 BOOL CZoneEffectPP::Process(SPPInfo& pp)
@@ -73,9 +74,8 @@ CZoneEffector::CZoneEffector()
 
 CZoneEffector::~CZoneEffector()
 {
-
+	Stop		();
 }
-
 
 void CZoneEffector::Load(LPCSTR section)
 {
@@ -121,13 +121,7 @@ void CZoneEffector::Update(float dist)
 	bool CreateEffector = (Level().CurrentEntity() && Level().CurrentEntity()->SUB_CLS_ID == CLSID_OBJECT_ACTOR);
 	
 	if (p_effector) 
-	{
-		if (dist > max_r || !CreateEffector)
-		{
-			p_effector->Destroy();
-			p_effector = 0;
-		}
-	} 
+		if (dist > max_r || !CreateEffector) Stop();
 	else 
 		if (dist < max_r && CreateEffector) Activate();
 	
