@@ -13,6 +13,10 @@
 
 //////////////////////////////////////////////////////////////////////////
 
+#include "UIWindow.h"
+
+//////////////////////////////////////////////////////////////////////////
+
 class CUIAnimationBase
 {
 public:
@@ -20,15 +24,15 @@ public:
 	virtual ~CUIAnimationBase() = 0;
 
 	// Функция которую необходимо обязательно поместить в Update диалога, для обновления анимации
-	virtual void	Update();
+	virtual void		Update();
 	// Возвращаем текущее состояние анимации
-	int				GetCurrentPhase() const { return m_iPhase; }
+	int					GetCurrentPhase() const			{ return m_iPhase; }
 	// Установить параметры анимации
 	// Params:
 	// 1. period - период в милисекундах
 	// 2. initialState - начальное состояние анимации
-	void			SetAnimationPeriod(int period) { m_iAnimationPeriod = period; }
-	void			SetCurrentPhase(int phase) { m_iPhase = phase; }
+	void				SetAnimationPeriod(int period)	{ m_iAnimationPeriod = period; }
+	void				SetCurrentPhase(int phase)		{ m_iPhase = phase; }
 
 	// Состояние анимации
 	enum EAnimationState
@@ -37,21 +41,31 @@ public:
 		easStopped
 	};
 	// Функции управления анимацией
-	void		Play();
-	void		Stop()		{ m_eAnimationState = easStopped; }	
-	void		Reset()		{ m_uPrevGlobalTime = 0; }	
+	void				Play();
+	void				Stop();
+	void				Reset()							{ m_uPrevGlobalTime = 0; m_uTotalTime = 0; }
+	EAnimationState		GetState() const				{ return m_eAnimationState; }
+
+	void				SetPlayDuration(int duration)	{ m_iAnimationDuration = duration; }
+	void				SetMessageTarget(CUIWindow *pWnd) { m_pMessageTarget = pWnd; }
 
 protected:
 	// Период анимации
-	int				m_iAnimationPeriod;
+	int					m_iAnimationPeriod;
 	// Предыдущее запомненное значение глобального времени
-	int				m_uPrevGlobalTime;
+	int					m_uPrevGlobalTime;
 	// Текущее время анимации
-	int				m_iCurrAnimationTime;
+	int					m_iCurrAnimationTime;
 	// Текущее фаза анимации
-	int				m_iPhase;
+	int					m_iPhase;
+	// Общее время проигрывания анимации для поддержки выключения по времени
+	// Если -1 то играем зацикленно
+	u32					m_uTotalTime;
+	int					m_iAnimationDuration;
 	// Состояние анимации
-	EAnimationState m_eAnimationState;
+	EAnimationState		m_eAnimationState;
+
+	CUIWindow			*m_pMessageTarget;
 };
 
 #endif

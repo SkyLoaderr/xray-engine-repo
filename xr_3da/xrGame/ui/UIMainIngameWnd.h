@@ -14,6 +14,7 @@
 #include "UIListWnd.h"
 #include "UIMultiTextStatic.h"
 #include "UIAnimationFlicker.h"
+#include "UIAnimationFade.h"
 
 #include "../UIZoneMap.h"
 
@@ -170,6 +171,9 @@ public:
 	
 	// Вкл/выкл мигающую иконку
 	void SetFlashIconState(EFlashingIcons type, bool enable);
+
+	//
+	void AnimateContacts();
 	
 protected:
 
@@ -179,7 +183,7 @@ protected:
 
 	// first - иконка, second - время прошедшее с начала периода мигания иконки.
 	// Если -1, то иконка выключена (не мигает)
-	typedef				std::pair<CUIStatic*, CUIAnimationFlicker> IconInfo;
+	typedef				std::pair<CUIStatic*, CUIAnimationFade> IconInfo;
 	DEF_MAP				(FlashingIcons, EFlashingIcons, IconInfo);
 	FlashingIcons		m_FlashingIcons;
 
@@ -232,4 +236,8 @@ protected:
 	// Период проверки ньюсов в моллисекундах
 	static const int	NEWS_CHECK_INTERVAL = 1000;
 	ALife::_TIME_ID		m_iPrevTime;
+
+	// Мигалка для контактов
+	CUIAnimationFlicker	UIContactsFlicker;
+	void				UpdateContactsAnimation();
 };

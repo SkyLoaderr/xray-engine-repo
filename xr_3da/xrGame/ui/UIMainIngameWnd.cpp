@@ -29,7 +29,6 @@
 #include "../game_cl_base.h"
 #include "../level.h"
 #include "../seniority_hierarchy_holder.h"
-//#include "UIAnimationFade.h"
 
 using namespace InventoryUtilities;
 
@@ -68,8 +67,6 @@ const char * const PDA_INGAME_SINGLEPLAYER_CFG	= "ingame_msglog_sp.xml";
 const char * const PDA_INGAME_MULTIPLAYER_CFG	= "ingame_msglog_mp.xml";
 const char * const NEWS_TEMPLATES_CFG			= "news_templates.xml";
 const char * const MAININGAME_XML				= "maingame.xml";
-
-//CUIAnimationFade tmp;
 
 //////////////////////////////////////////////////////////////////////
 // Construction/Destruction//////////////////////////////////////////////////////////////////////
@@ -252,10 +249,9 @@ void CUIMainIngameWnd::Init()
 	uiXml.SetLocalRoot(uiXml.NavigateToNode("flashing_icons"));
 	InitFlashingIcons(uiXml);
 
-	//!!! TEST !!!
-//	tmp.SetAnimationPeriod(10000);
-//	tmp.SetFadeBounds(std::make_pair(0, 10));
-//	tmp.Play();
+	UIContactsFlicker.SetAnimationPeriod(1000);
+	UIContactsFlicker.SetPlayDuration(4000);
+	UIContactsFlicker.SetMessageTarget(this);
 }
 
 void CUIMainIngameWnd::Draw()
@@ -521,10 +517,9 @@ void CUIMainIngameWnd::Update()
 	CheckForNewNews();
 
 	UpdateFlashingIcons();
+	UpdateContactsAnimation();
 
 	CUIWindow::Update();
-
-//	tmp.Update();
 }
 
 bool CUIMainIngameWnd::OnKeyboardPress(int dik)
@@ -1127,9 +1122,15 @@ void CUIMainIngameWnd::SetFlashIconState(EFlashingIcons type, bool enable)
 
 	enable ? icon->second.second.Play() : icon->second.second.Stop();
 	if(!enable)
+	{
 		icon->second.first->TextureOff();
+		icon->second.first->Show(false);
+	}
 	else
+	{
 		icon->second.first->TextureOn();
+		icon->second.first->Show(true);
+	}
 }
 
 //////////////////////////////////////////////////////////////////////////
@@ -1195,9 +1196,30 @@ void CUIMainIngameWnd::UpdateFlashingIcons()
 {
 	for (FlashingIcons_it it = m_FlashingIcons.begin(); it != m_FlashingIcons.end(); ++it)
 	{
-		CUIAnimationFlicker &f = it->second.second;
+		CUIAnimationFade &f = it->second.second;
 		f.Update();
-		if (1 == f.GetCurrentPhase()) it->second.first->Show(true);
-		else it->second.first->Show(false);
+		//		if (1 == f.GetCurrentPhase()) it->second.first->Show(true);
+		//		else it->second.first->Show(false);
+		it->second.first->SetColor(subst_alpha(it->second.first->GetColor(), f.GetCurrentPhase()));
 	}
+}
+
+//////////////////////////////////////////////////////////////////////////
+
+void CUIMainIngameWnd::AnimateContacts()
+{
+	UIContactsFlicker.Play();
+}
+
+//////////////////////////////////////////////////////////////////////////
+
+void CUIMainIngameWnd::UpdateContactsAnimation()
+{
+	UIContactsFlicker.Update();
+	if (UIContactsFlicker.GetState() == CUIAnimationBase::easPlayed)
+	{
+		UIPdaOnline.Show(!!UIContactsFlicker.GetCurrentPhase());
+	}
+	else
+		UIPdaOnline.Show(true);
 }

@@ -124,7 +124,10 @@ enum EUIMessages
 	INVENTORY_DETACH_GRENADE_LAUNCHER_ADDON,
 
 	// CUIDiaryWnd
-	DIARY_RESET_PREV_ACTIVE_ITEM
+	DIARY_RESET_PREV_ACTIVE_ITEM,
+
+	//CUIAnimationBase
+    ANIMATION_STOPPED
 };
 
 //////////////////////////////////////////////////////////////////////////

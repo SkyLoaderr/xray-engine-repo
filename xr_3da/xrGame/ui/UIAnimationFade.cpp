@@ -25,10 +25,11 @@ void CUIAnimationFade::Update()
 	{
 		int tmpTime	= m_iCurrAnimationTime + static_cast<int>(Device.dwTimeGlobal - m_uPrevGlobalTime);
 
-		if (tmpTime > m_iAnimationPeriod / 2)
+		if (tmpTime >= m_iAnimationPeriod / 2)
 		{
 			SwitchFadeDirection();
-			tmpTime = m_iAnimationPeriod / 2;
+			tmpTime %= m_iAnimationPeriod / 2;
+			if (0 == tmpTime) tmpTime = 1;
 		}
 
 		switch (m_eCurrFadeDirection)
@@ -37,18 +38,11 @@ void CUIAnimationFade::Update()
 			m_iPhase = static_cast<int>((m_FadeBounds.second - m_FadeBounds.first) * (tmpTime * 2.0f / m_iAnimationPeriod) + m_FadeBounds.first);
 			break;
 		case efdFadeOut:
-			m_iPhase = static_cast<int>((m_FadeBounds.second - m_FadeBounds.first) * (1 - tmpTime * 2.0f / m_iAnimationPeriod) + m_FadeBounds.first);
+			m_iPhase = static_cast<int>((m_FadeBounds.second - m_FadeBounds.first) * (1 - tmpTime * 2.0f / m_iAnimationPeriod) + m_FadeBounds.first) + 1;
 			break;
 		default:
 			NODEFAULT;
 		}
-
-//		static int prevPh = 0;
-//		if (prevPh != m_iPhase)
-//		{
-//			Msg("%i", m_iPhase);
-//			prevPh = m_iPhase;
-//		}
 
 		m_iCurrAnimationTime += static_cast<int>(Device.dwTimeGlobal - m_uPrevGlobalTime);
 		m_iCurrAnimationTime %= m_iAnimationPeriod / 2;
