@@ -145,6 +145,7 @@ CActor::CActor() : CEntityAlive()
 
 	m_bZoomAimingMode = false;
 
+	m_eDefaultObjAction = eaaNoAction;
 }
 
 
