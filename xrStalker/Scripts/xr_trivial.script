@@ -676,19 +676,6 @@ function stalker_novice3_action:state_actor()
         self.object:add_animation("torg_2", true)
         self.object:add_animation("torg_4", true)
     end
---  if(self.b.talk and self.object:is_talking() == false) then
---      --Если закончили говорить
---      self:init_state_walk()
---        self.b.time_actor = device():time_global()
---        self.b.talk = false
---    return
---    end
-
---    if(device():time_global() > self.a.time + 60000) then
---      self:init_state_walk()
---        self.b.time_actor = device():time_global()
---      return
---    end
 
     local pos = level.actor():position()
     pos.y  = pos.y + 1.6
@@ -706,7 +693,8 @@ function stalker_novice3_action:select_phrase()
 end
 ---------------------------------------------------------------------------------------------------------------------
 function stalker_novice3_action:finalize ()
-    action_base.finalize (self)
+    action_base.finalize(self)
+    self.object:clear_animations()
 end
 
 ---------------------------------------------------------------------------------------------------------------------
@@ -716,9 +704,14 @@ class "novice3_attack" (action_base)
 function novice3_attack:__init (name, storage) super (nil, name)
     self.a    = storage
     self.time = 0
-  self.start_run = false
+    self.start_run = false
     self.end_run   = false
     self.walk_time = 0
+    self.state     = 0
+	--0 - говорим фразу и начинаем бежать
+	--1 - бежим
+    --2 - идем к предпоследней точке
+    --3 - стоим и смотрим
 end
 ---------------------------------------------------------------------------------------------------------------------
 function novice3_attack:initialize ()
@@ -727,68 +720,75 @@ function novice3_attack:initialize ()
     local enemy = level.object(self.a.enemy)
     self.object:clear_animations()
     self.object:set_desired_direction()
-    self.object:set_detail_path_type ( move.line )
-    self.object:set_movement_type    ( move.walk )
+    self.object:set_desired_position ()
+    self.object:set_detail_path_type (move.line)
+    self.object:set_path_type        (game_object.level_path)
+
+	if(self.state == 0) then
+	    self.object:set_movement_type    (move.walk)
+    	self.object:set_dest_level_vertex_id(self.a.enemy_path:level_vertex_id(0) )
+        xr_sounds.play_sound (self.object, 0, "trivial", 4, 3)
+    elseif(self.state == 1)then
+        self.object:set_movement_type    (move.run)
+        self.object:set_dest_level_vertex_id(self.a.enemy_path:level_vertex_id(0) )
+    else
+        self.object:set_movement_type    (move.walk)
+        self.object:set_dest_level_vertex_id(self.a.enemy_path:level_vertex_id(self.a.enemy_path:count() - 2) )
+        self.state = 2
+    end
+
     self.object:set_body_state       ( move.standing )
     self.object:set_mental_state     ( anim.danger )
-    self.object:set_path_type        ( game_object.level_path )
     self.object:set_sight            ( look.path_dir, nil, 0 )
     self.object:set_item             ( object.activate, self.object:best_weapon() )
 
 	-- Инициализируем инфопоршн
-	local actor = level.actor()	
-	if actor ~= nil then
-		actor:give_info_portion("escape_novice_has_weapon")
-	end
+--	local actor = level.actor()
+--	if actor ~= nil then
+--		actor:give_info_portion("escape_novice_has_weapon")
+--	end
 
-    self.object:set_dest_level_vertex_id(patrol(self.a.enemy_path):level_vertex_id(0) )
-
-    self.walk_time   = device():time_global() + 10000
-
-    if(self.a.say_kill == false) then
-      --Один раз говорит, что убем бандитов и больше токого не говорим
-      xr_sounds.play_sound (self.object, 0, "trivial", 4, 3)
-        self.a.say_kill = true
-    end
 end
 ---------------------------------------------------------------------------------------------------------------------
 function novice3_attack:execute ()
 
-  self.object:set_item             ( object.idle, self.object:best_weapon() )
+  	self.object:set_item             ( object.idle, self.object:best_weapon() )
 
 
-  if(self.object:active_sound_count() ~= 0)then
-      return
+  	if(self.object:active_sound_count() ~= 0)then
+    	return
     end
 
-    if(self.start_run == false and self.end_run == false) then
-      self.object:set_movement_type    ( move.run )
-      self.start_run = true
-    end
+	if(self.state == 0) then
+		--Идем и говорим фразу, после этого начинаем бежать
+    	self.object:set_dest_level_vertex_id(self.a.enemy_path:level_vertex_id(0) )
+      	self.object:set_movement_type    	(move.run)
+		self.state = 1
+	elseif(self.state == 1) then
+		--Бежим, добежали, продолжает идти
+	    if(self.object:level_vertex_id() == self.a.enemy_path:level_vertex_id(0) ) then
+	        self.object:set_movement_type       (move.walk)
+	        self.object:set_dest_level_vertex_id(self.a.enemy_path:level_vertex_id(self.a.enemy_path:count()-2) )
+	        self.state = 2
+        end
+	elseif(self.state == 2) then
+        if(self.object:level_vertex_id() == self.a.enemy_path:level_vertex_id(self.a.enemy_path:count() -2 ) ) then
+			self.object:set_movement_type       (move.stand)
+            self.state = 3
+        end
+	elseif(self.state == 3) then
+	    self.object:set_sight        ( look.point, self.a.enemy_path:point(self.a.enemy_path:count() - 1), 0 )
+	end
 
-    if(self.start_run and self.object:level_vertex_id() == patrol(self.a.enemy_path):level_vertex_id(0) ) then
-        self.object:set_movement_type    ( move.walk )
-        self.object:set_patrol_path      ( self.a.enemy_path, patrol.nearest, patrol.continue, true )
-        self.object:set_path_type        ( game_object.patrol_path )
-        self.start_run = false
-        self.end_run   = true
-    end
-
-    if(self.end_run and
-      self.object:level_vertex_id() == patrol(self.a.enemy_path):level_vertex_id(patrol(self.a.enemy_path):count() -1 ) ) then
-    --Если пришли, то схема заканчивает работу
-        self.a.enabled = false
-  end
-
-    self.object:set_mental_state     ( anim.danger )
+	self.object:set_mental_state     ( anim.danger )
 end
 ---------------------------------------------------------------------------------------------------------------------
 function novice3_attack:finalize ()
     action_base.finalize (self)
 
-    if(level.object(self.a.enemy):alive() == false) then
-        self.a.enabled = false
-    end
+--    if(level.object(self.a.enemy):alive() == false) then
+--        self.a.enabled = false
+--    end
 end
 
 ----------------------------------------------------------------------------------------------------------------------
