@@ -18,7 +18,7 @@ public:
 	IC void	iGetMousePosReal			(HANDLE hwnd, Ipoint &p)
 	{
 		iGetMousePosScreen(p);
-		if (hwnd) ScreenToClient(Device.m_hWnd, p.d3d());
+		if (hwnd) ScreenToClient(hwnd, p.d3d());
 	}
 	IC void	iGetMousePosReal			(Ipoint &p)
 	{
