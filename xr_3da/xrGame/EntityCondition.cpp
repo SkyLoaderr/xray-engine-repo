@@ -245,7 +245,6 @@ void CEntityCondition::Sleep(float hours)
 	UpdateSatiety();
 	UpdateRadiation();
 
-
 	m_fHealth += m_fDeltaHealth;
 	m_fPower += m_fDeltaPower;
 	m_fSatiety += m_fDeltaSatiety;

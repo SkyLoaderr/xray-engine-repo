@@ -21,8 +21,6 @@ CEntity::CEntity()
 	fMAX_Health			= MAX_HEALTH;
 	fMAX_Armor			= MAX_ARMOR;
 
-	m_dwDeathTime = 0;
-
 	m_iTradeIconX = m_iTradeIconY = 0;
 	m_iMapIconX = m_iMapIconY = 0;
 	
@@ -76,8 +74,7 @@ float CEntity::CalcCondition(float hit)
 	}
 
 	// If Local() - perform some logic
-	if (Local() && g_Alive())
-	{
+	if (Local() && g_Alive()) {
 		fEntityHealth		-=	lost_health; 
 		fEntityHealth		=	fEntityHealth<-1000?-1000:fEntityHealth;
 		fArmor				-=	lost_armor;
@@ -113,16 +110,8 @@ void CEntity::Hit			(float perc, Fvector &dir, CObject* who, s16 element,Fvector
 	if(-1!=element)	HitSignal(lost_health,vLocalDir,who,element);
 
 	// If Local() - perform some logic
-	//if (Local() && (fEntityHealth>0))
-	if (Local())
-	{
-		//if (fEntityHealth<=0)
-		if(!g_Alive() && !AlreadyDie())
-		{
-//			Msg			("%6d : KillEntity from CEntity for object %s",Level().timeServer(),*cName());
-			KillEntity	(who);
-		}
-	}
+	if (Local() && !g_Alive() && !AlreadyDie())
+		KillEntity	(who);
 }
 
 void CEntity::Load		(LPCSTR section)
@@ -300,4 +289,10 @@ void CEntity::KillEntity(CObject* who)
 	u_EventSend		(P);
 
 	m_dwDeathTime = Level().GetGameTime();
+}
+
+void CEntity::reinit			()
+{
+	inherited::reinit			();
+	m_dwDeathTime			= 0;
 }

@@ -297,12 +297,11 @@ void CAI_Stalker::UpdateCL(){
 		Exec_Visibility();
 }
 
-void CAI_Stalker::Hit(float P, Fvector &dir, CObject *who,s16 element,Fvector p_in_object_space, float impulse, ALife::EHitType hit_type){
-
-	bool kill_hit=g_Alive()&& (fEntityHealth<P);
+void CAI_Stalker::Hit(float P, Fvector &dir, CObject *who,s16 element,Fvector p_in_object_space, float impulse, ALife::EHitType hit_type)
+{
 	if (m_pPhysics_support->isAlive())
 		inherited::Hit(P,dir,who,element,p_in_object_space,impulse,hit_type);
-	m_pPhysics_support->in_Hit(P,dir,who,element,p_in_object_space,impulse,kill_hit);
+	m_pPhysics_support->in_Hit(P,dir,who,element,p_in_object_space,impulse,g_Alive());
 }
 
 void CAI_Stalker::shedule_Update		( u32 DT )

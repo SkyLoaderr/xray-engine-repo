@@ -71,6 +71,7 @@ public:
 
 	// Core events
 	virtual void			Load				(LPCSTR section);
+	virtual void			reinit				();
 	virtual BOOL			net_Spawn			(LPVOID DC);
 	virtual void			net_Destroy			();
 	virtual void			shedule_Update		(u32 dt);	

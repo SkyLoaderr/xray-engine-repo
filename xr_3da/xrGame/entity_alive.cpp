@@ -83,7 +83,6 @@ void CEntityAlive::reinit			()
 	CEntity::reinit			();
 	CEntityCondition::reinit();
 
-	m_dwDeathTime			= 0;
 	m_fAccuracy				= 25.f;
 	m_fIntelligence			= 25.f;
 }
