@@ -43,6 +43,7 @@ protected:
 	vector<sound3D>				Sounds;
 	vector<sound3D>				Sounds_Random;
 	DWORD						Sounds_dwNextTime;
+	int							Sounds_Ambience;
 public:
 	CObjectList					Objects;
 	CEnvironment				Environment;

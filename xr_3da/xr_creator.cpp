@@ -16,6 +16,7 @@ CCreator::CCreator( )
 	bReady						= false;
 	pCurrentEntity				= NULL;
 	LL_Stream					= NULL;
+	Sounds_Ambience				= NULL;
 
 	pHUD						= (CCustomHUD*)NEW_INSTANCE(CLSID_HUDMANAGER);
 }
@@ -132,6 +133,12 @@ BOOL CCreator::Load(DWORD dwNum)
 			Sounds.push_back	(sound3D());
 			pSounds->Create3D	(Sounds.back(),fname);
 			pSounds->Play3DAtPos(Sounds.back(),pos,true);
+		}
+		if (pLevel->LineExists("static_sounds","ambient"))
+		{
+			LPCSTR fname		= pLevel->ReadSTRING("static_sounds","ambient");
+			Sounds_Ambience		= pSounds->Create2D(fname);
+			pSounds->Play2D		(Sounds_Ambience,true);
 		}
 	}
 	{

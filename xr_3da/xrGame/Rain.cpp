@@ -13,8 +13,8 @@ const int	desired_items	= 2500;
 const float	drop_length		= 1.5f;
 const float drop_width		= 0.02f;
 const float drop_angle		= 3.01f;
-const float drop_speed_min	= 20.f;
-const float drop_speed_max	= 40.f;
+const float drop_speed_min	= 40.f;
+const float drop_speed_max	= 80.f;
 
 const int	max_particles	= 1000;
 const int	particles_cache	= 400;
