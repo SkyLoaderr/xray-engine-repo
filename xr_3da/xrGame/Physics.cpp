@@ -299,8 +299,8 @@ static void NearCallback(void* /*data*/, dGeomID o1, dGeomID o2){
 			bool pushing_neg=false;
 			dxGeomUserData* usr_data_1		=NULL;
 			dxGeomUserData* usr_data_2		=NULL;
-			u32				material_id_1	=0;
-			u32				material_id_2	=0;
+			u16				material_id_1	=0;
+			u16				material_id_2	=0;
 
 			surface.mu =1.f;// 5000.f;
 			surface.soft_erp=1.f;//ERP(world_spring,world_damping);
@@ -327,8 +327,8 @@ static void NearCallback(void* /*data*/, dGeomID o1, dGeomID o2){
 			bool is_tri_1=dTriListClass == dGeomGetClass(g1);
 			bool is_tri_2=dTriListClass == dGeomGetClass(g2);
 			if(!is_tri_2&&!is_tri_1) surface.mode=0;
-			if(is_tri_1) material_id_1=surface.mode;
-			if(is_tri_2) material_id_2=surface.mode;
+			if(is_tri_1) material_id_1=(u16)surface.mode;
+			if(is_tri_2) material_id_2=(u16)surface.mode;
 			SGameMtl* material_1=GMLib.GetMaterial(material_id_1);
 			SGameMtl* material_2=GMLib.GetMaterial(material_id_2);
 			////////////////params can be changed in callbacks//////////////////////////////////////////////////////////////////////////
@@ -352,7 +352,13 @@ static void NearCallback(void* /*data*/, dGeomID o1, dGeomID o2){
 
 			if(usr_data_2){
 
-				pushing_neg=usr_data_2->pushing_b_neg||usr_data_2->pushing_neg;
+				pushing_neg=	(usr_data_2->pushing_b_neg
+								&& !GMLib.GetMaterial(usr_data_2->b_neg_tri.T->material)->Flags.is(SGameMtl::flPassable)
+								)
+								||	
+								(usr_data_2->pushing_neg
+								&& !GMLib.GetMaterial(usr_data_2->neg_tri.T->material)->Flags.is(SGameMtl::flPassable)
+								);
 				if(usr_data_2->ph_object){
 					usr_data_2->ph_object->InitContact(&c);
 
@@ -362,7 +368,13 @@ static void NearCallback(void* /*data*/, dGeomID o1, dGeomID o2){
 			///////////////////////////////////////////////////////////////////////////////////////
 			if(usr_data_1){ 
 
-				pushing_neg=usr_data_1->pushing_b_neg||usr_data_1->pushing_neg;
+				pushing_neg=	(usr_data_1->pushing_b_neg
+					&& !GMLib.GetMaterial(usr_data_1->b_neg_tri.T->material)->Flags.is(SGameMtl::flPassable)
+					)
+					||	
+					(usr_data_1->pushing_neg
+					&& !GMLib.GetMaterial(usr_data_1->neg_tri.T->material)->Flags.is(SGameMtl::flPassable)
+					);
 				if(usr_data_1->ph_object){
 					usr_data_1->ph_object->InitContact(&c);
 
@@ -372,15 +384,7 @@ static void NearCallback(void* /*data*/, dGeomID o1, dGeomID o2){
 			
 			Flags32	&flags_1=material_1->Flags;
 			Flags32	&flags_2=material_2->Flags;
-			///////////////////////////params can not be changed by calbacks/////////////////////////////////
-			surface.mode =dContactApprox1|dContactSoftERP|dContactSoftCFM;
-			if(flags_1.is(SGameMtl::flBounceable)&&flags_2.is(SGameMtl::flBounceable))
-			{
-				surface.mode|=dContactBounce;
-				surface.bounce_vel=_max(material_1->fPHBounceStartVelocity,material_2->fPHBounceStartVelocity);
-				surface.bounce	  =_min(material_1->fPHBouncing,material_2->fPHBouncing);
-			}
-			/////////////////////////////////////////////////////////////////////////////////////////////////
+
 			if(is_tri_1)
 			{ 
 				
@@ -404,6 +408,15 @@ static void NearCallback(void* /*data*/, dGeomID o1, dGeomID o2){
 				}
 				if(material_2->Flags.is(SGameMtl::flPassable)) 
 															continue;
+			}
+			/////////////////////////////////////////////////////////////////////////////////////////////////
+			///////////////////////////params can not be changed by calbacks/////////////////////////////////
+			surface.mode =dContactApprox1|dContactSoftERP|dContactSoftCFM;
+			if(flags_1.is(SGameMtl::flBounceable)&&flags_2.is(SGameMtl::flBounceable))
+			{
+				surface.mode|=dContactBounce;
+				surface.bounce_vel=_max(material_1->fPHBounceStartVelocity,material_2->fPHBounceStartVelocity);
+				surface.bounce	  =_min(material_1->fPHBouncing,material_2->fPHBouncing);
 			}
 			/////////////////////////////////////////////////////////////////////////////////////////////////
 			if(pushing_neg) 
@@ -446,8 +459,8 @@ void SaveContacts(dGeomID o1, dGeomID o2,dJointGroupID jointGroup){
 			bool pushing_neg=false;
 			dxGeomUserData* usr_data_1		=NULL;
 			dxGeomUserData* usr_data_2		=NULL;
-			u32				material_id_1	=0;
-			u32				material_id_2	=0;
+			u16				material_id_1	=0;
+			u16				material_id_2	=0;
 
 			surface.mu =1.f;// 5000.f;
 			surface.soft_erp=1.f;//ERP(world_spring,world_damping);
@@ -474,8 +487,8 @@ void SaveContacts(dGeomID o1, dGeomID o2,dJointGroupID jointGroup){
 			bool is_tri_1=dTriListClass == dGeomGetClass(g1);
 			bool is_tri_2=dTriListClass == dGeomGetClass(g2);
 			if(!is_tri_2&&!is_tri_1) surface.mode=0;
-			if(is_tri_1) material_id_1=surface.mode;
-			if(is_tri_2) material_id_2=surface.mode;
+			if(is_tri_1) material_id_1=(u16)surface.mode;
+			if(is_tri_2) material_id_2=(u16)surface.mode;
 			SGameMtl* material_1=GMLib.GetMaterial(material_id_1);
 			SGameMtl* material_2=GMLib.GetMaterial(material_id_2);
 			////////////////params can be changed in callbacks//////////////////////////////////////////////////////////////////////////
@@ -499,7 +512,13 @@ void SaveContacts(dGeomID o1, dGeomID o2,dJointGroupID jointGroup){
 
 			if(usr_data_2){
 
-				pushing_neg=usr_data_2->pushing_b_neg||usr_data_2->pushing_neg;
+				pushing_neg=	(usr_data_2->pushing_b_neg
+								&& !GMLib.GetMaterial(usr_data_2->b_neg_tri.T->material)->Flags.is(SGameMtl::flPassable)
+								)
+								||	
+								(usr_data_2->pushing_neg
+								&& !GMLib.GetMaterial(usr_data_2->neg_tri.T->material)->Flags.is(SGameMtl::flPassable)
+								);
 				if(usr_data_2->ph_object){
 					usr_data_2->ph_object->InitContact(&c);
 
@@ -509,7 +528,13 @@ void SaveContacts(dGeomID o1, dGeomID o2,dJointGroupID jointGroup){
 			///////////////////////////////////////////////////////////////////////////////////////
 			if(usr_data_1){ 
 
-				pushing_neg=usr_data_1->pushing_b_neg||usr_data_1->pushing_neg;
+				pushing_neg=	(usr_data_1->pushing_b_neg
+					&& !GMLib.GetMaterial(usr_data_1->b_neg_tri.T->material)->Flags.is(SGameMtl::flPassable)
+					)
+					||	
+					(usr_data_1->pushing_neg
+					&& !GMLib.GetMaterial(usr_data_1->neg_tri.T->material)->Flags.is(SGameMtl::flPassable)
+					);
 				if(usr_data_1->ph_object){
 					usr_data_1->ph_object->InitContact(&c);
 
@@ -519,17 +544,9 @@ void SaveContacts(dGeomID o1, dGeomID o2,dJointGroupID jointGroup){
 			
 			Flags32	&flags_1=material_1->Flags;
 			Flags32	&flags_2=material_2->Flags;
-			///////////////////////////params can not be changed by calbacks/////////////////////////////////
-			surface.mode =dContactApprox1|dContactSoftERP|dContactSoftCFM;
-			if(flags_1.is(SGameMtl::flBounceable)&&flags_2.is(SGameMtl::flBounceable))
-			{
-				surface.mode|=dContactBounce;
-				surface.bounce_vel=_max(material_1->fPHBounceStartVelocity,material_2->fPHBounceStartVelocity);
-				surface.bounce	  =_min(material_1->fPHBouncing,material_2->fPHBouncing);
-			}
-			/////////////////////////////////////////////////////////////////////////////////////////////////
+
 			if(is_tri_1)
-			{
+			{ 
 				
 				if(material_1->Flags.is(SGameMtl::flSlowDown))
 				{
@@ -537,7 +554,8 @@ void SaveContacts(dGeomID o1, dGeomID o2,dJointGroupID jointGroup){
 					R_ASSERT2(body,"static - static collision !!!");
 					add_contact_body_effector(body,c,material_1->fFlotationFactor);
 				}
-				if(material_1->Flags.is(SGameMtl::flPassable)) continue;
+				if(material_1->Flags.is(SGameMtl::flPassable)) 
+															continue;
 			}
 			if(is_tri_2)
 			{
@@ -548,15 +566,26 @@ void SaveContacts(dGeomID o1, dGeomID o2,dJointGroupID jointGroup){
 					R_ASSERT2(body,"static - static collision !!!");
 					add_contact_body_effector(body,c,material_2->fFlotationFactor);
 				}
-				if(material_2->Flags.is(SGameMtl::flPassable)) continue;
+				if(material_2->Flags.is(SGameMtl::flPassable)) 
+					continue;
+			}
+			/////////////////////////////////////////////////////////////////////////////////////////////////
+			///////////////////////////params can not be changed by calbacks/////////////////////////////////
+			surface.mode =dContactApprox1|dContactSoftERP|dContactSoftCFM;
+			if(flags_1.is(SGameMtl::flBounceable)&&flags_2.is(SGameMtl::flBounceable))
+			{
+				surface.mode|=dContactBounce;
+				surface.bounce_vel=_max(material_1->fPHBounceStartVelocity,material_2->fPHBounceStartVelocity);
+				surface.bounce	  =_min(material_1->fPHBouncing,material_2->fPHBouncing);
 			}
 			/////////////////////////////////////////////////////////////////////////////////////////////////
 			if(pushing_neg) 
-					surface.mu=dInfinity;
+				surface.mu=dInfinity;
 
 			dJointID contact_joint = dJointCreateContact(phWorld, jointGroup, &c);
 			dJointAttach(contact_joint, dGeomGetBody(g1), dGeomGetBody(g2));
-		}
+	}
+
 }
 
 

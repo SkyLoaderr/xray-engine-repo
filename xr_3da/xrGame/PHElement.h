@@ -20,7 +20,7 @@ class CPHElement	:  public CPhysicsElement
 	float					m_start_time;				//uu ->to shell ??	//aux
 	float					m_volume;					//e ??				//bl
 	Fvector					m_mass_center;				//e ??				//bl
-	u32						ul_material;				//e ??				//bl
+	u16						ul_material;				//e ??				//bl
 	dMass					m_mass;						//e ??				//bl
 	dBodyID					m_body;						//e					//st
 	dSpaceID				m_group;					//e					//bl
@@ -155,7 +155,7 @@ public:
 	void			SetTransform							(const Fmatrix& m0);															//called anywhere ph state influent
 	//////////////////////////////////////////////////////////////////////////////////////////////////////////
 	/////////////////////////////////////////////////////////////////////////////////////////////////////////
-	virtual void			SetMaterial				(u32 m);																				//aux
+	virtual void			SetMaterial				(u16 m);																				//aux
 
 	virtual void			SetMaterial				(LPCSTR m){SetMaterial(GMLib.GetMaterialIdx(m));}										//aux
 	virtual	dBodyID			get_body				()		{return m_body;};																//aux

@@ -357,7 +357,7 @@ void CPHShell::SetMaterial(LPCSTR m)
 	}
 }
 
-void CPHShell::SetMaterial(u32 m)
+void CPHShell::SetMaterial(u16 m)
 {
 	ELEMENT_I i;
 	for(i=elements.begin();elements.end() != i;++i)

@@ -132,7 +132,7 @@ virtual ~CPHShell				()
 	virtual void				get_AngularVel			  (Fvector& velocity);
 	virtual void				set_LinearVel			  (const Fvector& velocity);
 	virtual void				set_AngularVel			  (const Fvector& velocity);
-	virtual void				SetMaterial				  (u32 m);
+	virtual void				SetMaterial				  (u16 m);
 	virtual void				SetMaterial				  (LPCSTR m);
 	virtual CPhysicsElement*	get_Element				  (s16 bone_id);
 	virtual CPhysicsElement*	get_ElementByStoreOrder	  (u16 num);

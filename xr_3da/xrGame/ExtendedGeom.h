@@ -4,16 +4,6 @@
 #include "ode_include.h"
 
 
-enum Material 
-{
-	weels,
-	cardboard,
-	mesh_default,
-	car_cabin,
-	weapon_default,
-	matrerial_default 
-};
-
 struct Triangle 
 {
 	//dReal* v0;
@@ -39,8 +29,8 @@ struct dxGeomUserData
 	Triangle	neg_tri,b_neg_tri;
 	CPHObject*	ph_object;
 	CPhysicsRefObject* ph_ref_object;
-	u32			material;
-	u32			tri_material;
+	u16			material;
+	u16			tri_material;
 	ContactCallbackFun* callback;
 	ObjectContactCallbackFun* object_callback;
 	u16			element_position;

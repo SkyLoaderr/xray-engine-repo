@@ -66,7 +66,7 @@ virtual			void		set_local_form		(const Fmatrix& form)												=0;
 				void		set_body			(dBodyID body)														;
 				void		add_to_space		(dSpaceID space)													;
 				void		remove_from_space	(dSpaceID space)													;
-				void		set_material		(u32 ul_material)													;
+				void		set_material		(u16 ul_material)													;
 				void		set_contact_cb		(ContactCallbackFun* ccb)											;
 				void		set_obj_contact_cb	(ObjectContactCallbackFun* occb)									;
 				void		set_ref_object		(CPhysicsRefObject* ro)												;

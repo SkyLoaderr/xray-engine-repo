@@ -67,7 +67,7 @@ public:
 	virtual void			set_LinearVel			(const Fvector& velocity)								= 0;
 	virtual void			set_AngularVel			(const Fvector& velocity)								= 0;
 	virtual void			set_PushOut				(u32 time,PushOutCallbackFun* push_out=PushOutCallback)	= 0;
-	virtual void			SetMaterial				(u32 m)													= 0;
+	virtual void			SetMaterial				(u16 m)													= 0;
 	virtual void			SetMaterial				(LPCSTR m)												= 0;
 	virtual void			set_DisableParams		(float dis_l=default_disl,float dis_w=default_disw)		= 0;
 	virtual					~CPhysicsBase	()																{};

@@ -74,6 +74,12 @@ const dReal def_spring_rate=0.5f;
 const dReal def_dumping_rate=20.1f;
 /////////////////////////////////////////////////////////////////
 void CPHAICharacter::InitContact(dContact* c){
+	SGameMtl* material=GMLib.GetMaterial((u16)c->surface.mode);
+	bool bClimable=!!material->Flags.is(SGameMtl::flClimbable);
+	b_climb=b_climb || bClimable;
+	b_pure_climb=b_pure_climb && bClimable;
+	if(material->Flags.is(SGameMtl::flPassable))return;
+
 	dReal spring_rate=def_spring_rate;
 	dReal dumping_rate=def_dumping_rate;
 	R_ASSERT2(dV_valid(c->geom.pos),"odd contact position");
@@ -141,10 +147,7 @@ void CPHAICharacter::InitContact(dContact* c){
 		}
 		}
 
-	SGameMtl* material=GMLib.GetMaterial(c->surface.mode);
-	bool bClimable=!!material->Flags.is(SGameMtl::flClimbable);
-	b_climb=b_climb || bClimable;
-	b_pure_climb=b_pure_climb && bClimable;
+
  
 //.	if(material->Flags.is(SGameMtl::flWalkOn))
 //.		b_clamb_jump=true;

@@ -286,7 +286,7 @@ f32 CGameObject::ExplosionEffect(const Fvector &expl_centre, const f32 expl_radi
 	return 1.f;
 }
 
-void CGameObject::PHSetMaterial(u32 m)
+void CGameObject::PHSetMaterial(u16 m)
 {
 	if(m_pPhysicsShell)
 		m_pPhysicsShell->SetMaterial(m);

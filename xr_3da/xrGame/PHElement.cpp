@@ -1051,7 +1051,7 @@ void CPHElement::SetPhObjectInGeomData(CPHObject* O)
 
 
 
-void CPHElement::SetMaterial(u32 m)
+void CPHElement::SetMaterial(u16 m)
 {
 	ul_material=m;
 	if(!bActive) return;
