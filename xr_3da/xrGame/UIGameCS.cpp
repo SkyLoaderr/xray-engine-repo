@@ -56,6 +56,7 @@ void CUIGameCS::OnFrame()
 		PlayerList.OnFrame();
 	break;
 	case GAME_PHASE_INPROGRESS:
+		if(!CanBuy()) SetFlag(flShowBuyMenu,FALSE);
 		if (uFlags&flShowBuyMenu)		BuyMenu.OnFrame		();
 		else if (uFlags&flShowFragList) FragList.OnFrame	();
 /*
