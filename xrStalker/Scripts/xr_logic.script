@@ -143,8 +143,9 @@ end
 function reset_actions_event(st)
 	printf("DEBUG: reset_actions_event")
 	if not st.actions then
-		utils.abort("reset_actions: scheme '%s', section '%s': at least one action in a scheme must be " ..
+		printf("WARNING: reset_actions: scheme '%s', section '%s': at least one action in a scheme must be " ..
 			"subscribed for events", st.scheme, st.section)
+		return
 	end
 	for action_ptr, is_active in pairs(st.actions) do
 		action_ptr:reset_scheme()
