@@ -18,9 +18,9 @@ static	void	ode_free	(void *ptr, size_t size)					{ return xr_free(ptr);				}
 CGamePersistent::CGamePersistent(void)
 {
 	// 
-	dSetAllocHandler	(ode_alloc		);
-	dSetReallocHandler	(ode_realloc	);
-	dSetFreeHandler		(ode_free		);
+	// dSetAllocHandler		(ode_alloc		);
+	// dSetReallocHandler	(ode_realloc	);
+	// dSetFreeHandler		(ode_free		);
 
 	// 
 	BOOL	bDemoMode	= (0!=strstr(Core.Params,"-demomode "));
