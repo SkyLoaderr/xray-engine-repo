@@ -639,6 +639,7 @@ IReader* CLocatorAPI::r_open	(LPCSTR path, LPCSTR _fname)
 							if ((fc.size_real == desc.size_real)&&(fc.modif==desc.modif))	{
 								// use
 							} else {
+								// Msg		("copy: db[%X],cache[%X] - '%s', ",fc.modif,desc.modif,fname);
 								// copy & use
 								bCopy	= TRUE;
 							}
