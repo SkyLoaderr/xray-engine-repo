@@ -18,13 +18,16 @@ IC	const CPatrolPath::CVertex *CPatrolPath::point	(ref_str name) const
 	return						(0);
 }
 
-IC	const CPatrolPath::CVertex *CPatrolPath::point	(const Fvector &position) const
+template <typename T>
+IC	const CPatrolPath::CVertex *CPatrolPath::point	(const Fvector &position, const T &evaluator) const
 {
 	const CPatrolPath::CVertex	*nearest = 0;
 	float						best_distance = flt_max;
 	const_vertex_iterator		I = vertices().begin();
 	const_vertex_iterator		E = vertices().end();
 	for ( ; I != E; ++I) {
+		if (!evaluator((*I).data().position()))
+			continue;
 		float					distance = (*I).data().position().distance_to_sqr(position);
 		if (distance < best_distance) {
 			best_distance		= distance;
@@ -32,4 +35,9 @@ IC	const CPatrolPath::CVertex *CPatrolPath::point	(const Fvector &position) cons
 		}
 	}
 	return						(nearest);
+}
+
+IC	const CPatrolPath::CVertex *CPatrolPath::point	(const Fvector &position) const
+{
+	return						(point(position,CAlwaysTrueEvaluator()));
 }

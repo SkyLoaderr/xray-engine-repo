@@ -17,11 +17,6 @@
 #define CGameManagerTemplate CBasePathManager<CGameGraph,_VertexEvaluator,_vertex_id_type,_index_type>
 
 TEMPLATE_SPECIALIZATION
-IC	void CGameManagerTemplate::Init()
-{
-}
-
-TEMPLATE_SPECIALIZATION
 IC	void CGameManagerTemplate::reinit(const CGameGraph *graph)
 {
 	inherited::reinit	(graph);
@@ -32,6 +27,16 @@ TEMPLATE_SPECIALIZATION
 IC	bool CGameManagerTemplate::actual() const
 {
 	return			(inherited::actual(game_vertex_id(),dest_vertex_id()));
+}
+
+TEMPLATE_SPECIALIZATION
+IC	void CGameManagerTemplate::before_search				()
+{
+}
+
+TEMPLATE_SPECIALIZATION
+IC	void CGameManagerTemplate::after_search					()
+{
 }
 
 #undef TEMPLATE_SPECIALIZATION

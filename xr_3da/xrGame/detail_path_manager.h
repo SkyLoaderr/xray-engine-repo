@@ -10,12 +10,39 @@
 
 #include "level_graph.h"
 #include "ai_object_location.h"
+#include "restricted_object.h"
 
 namespace DetailPathManager {
 	enum EDetailPathType {
 		eDetailPathTypeSmooth,
 		eDetailPathTypeSmoothDodge,
 		eDetailPathTypeSmoothCriteria,
+	};
+
+	struct STravelPathPoint {
+		Fvector				position;
+		u32					vertex_id;
+		u32					velocity;
+
+		IC	void set_position	(const Fvector &pos)
+		{
+			position		= pos;
+		}
+
+		IC	void set_vertex_id	(const u32 _vertex_id)
+		{
+			vertex_id		= _vertex_id;
+		}
+
+		IC	Fvector &get_position	()
+		{
+			return			(position);
+		}
+
+		IC	u32		get_vertex_id	()
+		{
+			return			(vertex_id);
+		}
 	};
 };
 
@@ -64,32 +91,6 @@ public:
 	{
 	};
 
-	struct STravelPathPoint {
-		Fvector				position;
-		u32					vertex_id;
-		u32					velocity;
-
-		IC	void set_position	(const Fvector &pos)
-		{
-			position		= pos;
-		}
-
-		IC	void set_vertex_id	(const u32 _vertex_id)
-		{
-			vertex_id		= _vertex_id;
-		}
-
-		IC	Fvector &get_position	()
-		{
-			return			(position);
-		}
-
-		IC	u32		get_vertex_id	()
-		{
-			return			(vertex_id);
-		}
-	};
-
 	struct SDist {
 		u32		index;
 		float	time;
@@ -99,6 +100,10 @@ public:
 			return		(time < d1.time);
 		}
 	};
+
+private:
+	CRestrictedObject							*m_restricted_object;
+
 protected:
 	xr_map<u32,STravelParams>					m_movement_params;
 	u32											m_current_travel_point;

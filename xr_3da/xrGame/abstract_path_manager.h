@@ -8,6 +8,8 @@
 
 #pragma once
 
+#include "restricted_object.h"
+
 template <
 	typename _Graph,
 	typename _VertexEvaluator,
@@ -26,7 +28,9 @@ protected:
 	bool										m_actuality;
 	bool										m_failed;
 	xr_vector<_vertex_id_type>					m_path;
+	CRestrictedObject							*m_restricted_object;
 
+protected:
 	IC	_vertex_id_type	dest_vertex_id				() const;
 	IC	_vertex_id_type	intermediate_vertex_id		() const;
 	IC			u32		intermediate_index			() const;
@@ -42,13 +46,13 @@ protected:
 	IC			void	select_intermediate_vertex	();
 	IC	const _VertexEvaluator	*evaluator			() const;
 	IC			void	make_inactual				();
+	IC	virtual	void	before_search				();
+	IC	virtual	void	after_search				();
 
 public:
-
-
 	IC					CAbstractPathManager		();
 	IC	virtual			~CAbstractPathManager		();
-	IC	virtual	void	Init						();
+	IC	virtual	void	init						();
 	IC			void	reinit						(const _Graph *graph = 0);
 
 	friend class CMovementManager;

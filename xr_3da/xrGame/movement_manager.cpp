@@ -15,7 +15,7 @@ CMovementManager::CMovementManager	()
 	m_base_level_selector			= xr_new<CGraphEngine::CBaseParameters>();
 	m_dwFrameReinit					= u32(-1);
 	m_dwFrameReload					= u32(-1);
-	Init							();
+	init							();
 }
 
 CMovementManager::~CMovementManager	()
@@ -24,7 +24,7 @@ CMovementManager::~CMovementManager	()
 	xr_delete						(m_base_level_selector);
 }
 
-void CMovementManager::Init			()
+void CMovementManager::init			()
 {
 }
 

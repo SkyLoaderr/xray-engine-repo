@@ -24,7 +24,7 @@
 TEMPLATE_SPECIALIZATION
 IC	CPathManagerTemplate::CAbstractPathManager		()
 {
-	Init					();
+	init					();
 }
 
 TEMPLATE_SPECIALIZATION
@@ -33,7 +33,7 @@ IC	CPathManagerTemplate::~CAbstractPathManager	()
 }
 
 TEMPLATE_SPECIALIZATION
-IC	void CPathManagerTemplate::Init				()
+IC	void CPathManagerTemplate::init				()
 {
 }
 
@@ -48,13 +48,16 @@ IC	void CPathManagerTemplate::reinit			(const _Graph *graph)
 	m_intermediate_index	= _index_type(-1);
 	m_dest_vertex_id		= _index_type(-1);
 	m_path.clear			();
+	m_restricted_object		= dynamic_cast<CRestrictedObject*>(this);
 }
 
 TEMPLATE_SPECIALIZATION
 IC	void CPathManagerTemplate::build_path	(const _vertex_id_type start_vertex_id, const _vertex_id_type dest_vertex_id)
 {
 	VERIFY					(m_graph && m_evaluator && m_graph->valid_vertex_id(start_vertex_id) && m_graph->valid_vertex_id(dest_vertex_id));
+	before_search			();
 	m_failed				= !ai().graph_engine().search(*m_graph,start_vertex_id,dest_vertex_id,&m_path,*m_evaluator);
+	after_search			();
 	if (failed()) {
 		m_current_index		= _index_type(-1);
 		m_intermediate_index= _index_type(-1);
@@ -143,6 +146,16 @@ TEMPLATE_SPECIALIZATION
 IC	void CPathManagerTemplate::make_inactual				()
 {
 	m_actuality				= false;
+}
+
+TEMPLATE_SPECIALIZATION
+IC	void CPathManagerTemplate::before_search				()
+{
+}
+
+TEMPLATE_SPECIALIZATION
+IC	void CPathManagerTemplate::after_search					()
+{
 }
 
 #undef CPathManagerTemplate

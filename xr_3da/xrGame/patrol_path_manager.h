@@ -15,6 +15,8 @@
 #include "patrol_path_storage.h"
 #include "patrol_path.h"
 
+class CRestrictedObject;
+
 namespace PatrolPathManager {
 	enum EPatrolStartType {
 		ePatrolStartTypeFirst = u32(0),
@@ -36,6 +38,8 @@ using namespace PatrolPathManager;
 class CPatrolPathManager : 
 	virtual public CAI_ObjectLocation
 {
+	friend struct CAccessabilityEvaluator;
+
 private:
 	const CPatrolPath		*m_path;
 	ref_str					m_path_name;
@@ -50,6 +54,8 @@ private:
 	u32						m_start_point_index;
 	Fvector					m_dest_position;
 	CScriptCallback			*m_callback;
+	CRestrictedObject		*m_restricted_object;
+
 protected:
 	IC			bool	actual						() const;
 	IC			bool	completed					() const;
@@ -58,11 +64,15 @@ protected:
 	IC			const Fvector &destination_position	() const;
 	IC			void	set_path					(const CPatrolPath *path, ref_str path_name);
 				void	select_point				(const Fvector &position, u32 &dest_vertex_id);
+	IC			bool	accessible					(const Fvector &position) const;
+	IC			bool	accessible					(u32 vertex_id) const;
+	IC			bool	accessible					(const CPatrolPath::CVertex *vertex) const;
+
 public:
 	IC					CPatrolPathManager			();
 	IC	virtual			~CPatrolPathManager			();
-	IC			void	Init						();
-	IC	virtual	void	reinit						();
+	IC			void	init						();
+		virtual	void	reinit						();
 	IC	virtual	void	set_callback				(CScriptCallback &callback);
 	IC			void	make_inactual				();
 	const CPatrolPath	*get_path					() {return m_path;}

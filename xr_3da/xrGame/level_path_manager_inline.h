@@ -17,11 +17,6 @@
 #define CLevelManagerTemplate CBasePathManager<CLevelGraph,_VertexEvaluator,_vertex_id_type,_index_type>
 
 TEMPLATE_SPECIALIZATION
-IC	void CLevelManagerTemplate::Init()
-{
-}
-
-TEMPLATE_SPECIALIZATION
 IC	void CLevelManagerTemplate::reinit(const CLevelGraph *graph)
 {
 	inherited::reinit	(graph);
@@ -43,23 +38,29 @@ IC	void CLevelManagerTemplate::build_path	(const _vertex_id_type start_vertex_id
 		return;
 	}
 
-	VERIFY					(ai().level_graph().valid_vertex_id(start_vertex_id) && ai().level_graph().valid_vertex_id(dest_vertex_id));
-//	if (ai().level_graph().check_vertex_in_direction(start_vertex_id,ai().level_graph().vertex_position(start_vertex_id),dest_vertex_id)) {
-//		m_path.resize			(2);
-//		m_path[0]				= start_vertex_id;
-//		m_path[1]				= dest_vertex_id;
-//		m_failed				= false;
-//		m_current_index			= _index_type(0);
-//		m_intermediate_index	= _index_type(0);
-//		m_actuality				= !failed();
-//		return;
-//	}
+	VERIFY						(ai().level_graph().valid_vertex_id(start_vertex_id) && ai().level_graph().valid_vertex_id(dest_vertex_id));
+	
 	inherited::build_path		(start_vertex_id,dest_vertex_id);
+
 #ifdef DEBUG
 	if (failed()) {
 		Msg						("! Cannot build path from \n[%d][%f][%f][%f]\nto\n[%d][%f][%f][%f]",start_vertex_id,VPUSH(ai().level_graph().vertex_position(start_vertex_id)),dest_vertex_id,VPUSH(ai().level_graph().vertex_position(dest_vertex_id)));
 	}
 #endif
+}
+
+TEMPLATE_SPECIALIZATION
+IC	void CLevelManagerTemplate::before_search			()
+{
+	if (m_restricted_object)
+		m_restricted_object->add_border();
+}
+
+TEMPLATE_SPECIALIZATION
+IC	void CLevelManagerTemplate::after_search			()
+{
+	if (m_restricted_object)
+		m_restricted_object->remove_border();
 }
 
 #undef TEMPLATE_SPECIALIZATION

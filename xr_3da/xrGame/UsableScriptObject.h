@@ -1,5 +1,5 @@
-#pragma	   once
-#include "script_export_space.h"
+#pragma once
+
 #include "script_space_forward.h"
 
 class CScriptCallback;

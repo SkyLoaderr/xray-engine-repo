@@ -8,6 +8,8 @@
 
 #pragma once
 
+#include "restricted_object.h"
+
 template <
 	typename _Graph,
 	typename _VertexEvaluator,
@@ -21,15 +23,20 @@ protected:
 	const _Graph				*m_graph;
 	u32							m_last_query_time;
 	u32							m_query_interval;
-	
 	xr_vector<_vertex_id_type>	*m_path;
 	_vertex_id_type				*dest_vertex_id;
+	CRestrictedObject			*m_restricted_object;
 	
+protected:
 	IC			void			perform_search				(const _vertex_id_type game_vertex_id);
+	IC	virtual	void			before_search				();
+	IC	virtual	void			after_search				();
+	IC			bool			accessible					(const _vertex_id_type vertex_id);
+
 public:
 	IC							CAbstractLocationSelector	();
 	IC	virtual					~CAbstractLocationSelector	();
-	IC			void			Init						();
+	IC			void			init						();
 	IC	virtual void			reinit						(const _Graph *graph = 0);
 
 	IC			_vertex_id_type get_selected_vertex_id		() const;

@@ -21,7 +21,7 @@
 TEMPLATE_SPECIALIZATION
 IC	CSelectorTemplate::CAbstractLocationSelector	()
 {
-	Init					();
+	init					();
 }
 
 TEMPLATE_SPECIALIZATION
@@ -30,7 +30,7 @@ IC	CSelectorTemplate::~CAbstractLocationSelector	()
 }
 
 TEMPLATE_SPECIALIZATION
-IC	void CSelectorTemplate::Init					()
+IC	void CSelectorTemplate::init					()
 {
 }
 
@@ -45,6 +45,7 @@ IC	void CSelectorTemplate::reinit					(const _Graph *graph)
 	m_graph					= graph;
 	m_path					= 0;
 	dest_vertex_id			= 0;
+	m_restricted_object		= dynamic_cast<CRestrictedObject*>(this);
 }	
 
 TEMPLATE_SPECIALIZATION
@@ -111,6 +112,9 @@ TEMPLATE_SPECIALIZATION
 IC	void CSelectorTemplate::perform_search		(const _vertex_id_type vertex_id)
 {
 	VERIFY						(m_evaluator && m_graph);
+
+	before_search				();
+
 	m_last_query_time			= Level().timeServer();
 	
 	m_evaluator->m_path			= m_path;
@@ -121,6 +125,8 @@ IC	void CSelectorTemplate::perform_search		(const _vertex_id_type vertex_id)
 	
 	if (!failed())
 		m_selected_vertex_id	= m_evaluator->selected_vertex_id();
+
+	after_search				();
 }
 
 TEMPLATE_SPECIALIZATION
@@ -135,6 +141,21 @@ IC	void CSelectorTemplate::set_dest_vertex		(_vertex_id_type &vertex_id)
 	dest_vertex_id				= &vertex_id;
 }
 
+TEMPLATE_SPECIALIZATION
+IC	void CSelectorTemplate::before_search			()
+{
+}
+
+TEMPLATE_SPECIALIZATION
+IC	void CSelectorTemplate::after_search			()
+{
+}
+
+TEMPLATE_SPECIALIZATION
+IC	bool CSelectorTemplate::accessible			(const _vertex_id_type vertex_id)
+{
+	return					(m_restricted_object ? m_restricted_object->accessible(m_graph->vertex(vertex_id)->level_vertex_id()) : true);
+}
 
 #undef CSelectorTemplate
 #undef TEMPLATE_SPECIALIZATION

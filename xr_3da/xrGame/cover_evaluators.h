@@ -9,6 +9,7 @@
 #pragma once
 
 #include "level.h"
+#include "restricted_object.h"
 
 //////////////////////////////////////////////////////////////////////////
 // CCoverEvaluatorBase
@@ -24,9 +25,10 @@ protected:
 	float				m_best_value;
 	bool				m_initialized;
 	Fvector				m_start_position;
+	CRestrictedObject	*m_object;
 
 public:
-	IC					CCoverEvaluatorBase	();
+	IC					CCoverEvaluatorBase	(CRestrictedObject *object);
 	IC		CCoverPoint	*selected			() const;
 	IC		bool		inertia				() const;
 	IC		bool		initialized			() const;
@@ -34,6 +36,7 @@ public:
 	IC		void		set_inertia			(u32 inertia_time);
 	IC		void		initialize			(const Fvector &start_position);
 	IC		void		finalize			();
+	IC		bool		accessible			(const Fvector &position);
 };
 
 //////////////////////////////////////////////////////////////////////////
@@ -53,6 +56,7 @@ protected:
 	float				m_best_distance;
 
 public:
+	IC					CCoverEvaluatorCloseToEnemy	(CRestrictedObject *object);
 	IC		void		initialize			(const Fvector &start_position);
 	IC		void		setup				(const Fvector &enemy_position, float min_enemy_distance, float	max_enemy_distance, float deviation = 0.f);
 			void		evaluate			(CCoverPoint *cover_point);
@@ -64,8 +68,13 @@ public:
 
 class CCoverEvaluatorFarFromEnemy : public CCoverEvaluatorCloseToEnemy {
 protected:
+	typedef CCoverEvaluatorCloseToEnemy inherited;
+
+protected:
 	float				m_best_distance;
+
 public:
+	IC					CCoverEvaluatorFarFromEnemy	(CRestrictedObject *object);
 			void		evaluate			(CCoverPoint *cover_point);
 };
 
@@ -74,7 +83,11 @@ public:
 //////////////////////////////////////////////////////////////////////////
 
 class CCoverEvaluatorBest : public CCoverEvaluatorCloseToEnemy {
+protected:
+	typedef CCoverEvaluatorCloseToEnemy inherited;
+
 public:
+	IC					CCoverEvaluatorBest	(CRestrictedObject *object);
 			void		evaluate			(CCoverPoint *cover_point);
 };
 
@@ -93,6 +106,7 @@ protected:
 	u32					m_level_vertex_id;
 
 public:
+	IC					CCoverEvaluatorAngle(CRestrictedObject *object);
 	IC		void		setup				(const Fvector &enemy_position, float min_enemy_distance, float	max_enemy_distance, u32 level_vertex_id);
 			void		initialize			(const Fvector &start_position);
 			void		evaluate			(CCoverPoint *cover_point);

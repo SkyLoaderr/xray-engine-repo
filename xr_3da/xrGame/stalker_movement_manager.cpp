@@ -310,7 +310,7 @@ void CStalkerMovementManager::parse_velocity_mask	()
 		return;
 	}
 
-	CMovementManager::STravelPathPoint	point = path()[curr_travel_point_index()];
+	DetailPathManager::STravelPathPoint	point = path()[curr_travel_point_index()];
 	CDetailPathManager::STravelParams	current_velocity = velocity(point.velocity);
 
 	if (fis_zero(current_velocity.linear_velocity)) {

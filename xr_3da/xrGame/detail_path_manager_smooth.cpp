@@ -20,8 +20,7 @@ IC	T sin_apb(T sina, T cosa, T sinb, T cosb)
 
 template <typename T>
 IC	T cos_apb(T sina, T cosa, T sinb, T cosb)
-{
-	return				(cosa*cosb - sina*sinb);
+{return				(cosa*cosb - sina*sinb);
 }
 
 IC	bool is_negative(float a)
@@ -172,12 +171,13 @@ bool CDetailPathManager::build_circle_trajectory(
 				*vertex_id	= position.vertex_id;
 			return			(true);
 		}
-		if (vertex_id) {
+		if (vertex_id)// {
 			*vertex_id		= position.vertex_id;
-			t.position		= ai().level_graph().v3d(position.position);
+
+		t.position		= ai().level_graph().v3d(position.position);
+		if (vertex_id || !path->back().position.similar(t.position)) {
 			t.vertex_id		= position.vertex_id;
 			path->push_back	(t);
-
 		}
 		return			(true);
 	}

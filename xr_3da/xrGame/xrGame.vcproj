@@ -2507,6 +2507,16 @@
 							</File>
 						</Filter>
 					</Filter>
+					<Filter
+						Name="restricted_object"
+						Filter="">
+						<File
+							RelativePath=".\restricted_object.cpp">
+						</File>
+						<File
+							RelativePath=".\restricted_object.h">
+						</File>
+					</Filter>
 				</Filter>
 				<Filter
 					Name="monsters"
@@ -2913,22 +2923,7 @@
 							RelativePath=".\Ai\Stalker\ai_stalker.h">
 						</File>
 						<File
-							RelativePath=".\Ai\Stalker\ai_stalker_events.cpp">
-						</File>
-						<File
-							RelativePath=".\Ai\Stalker\ai_stalker_feel.cpp">
-						</File>
-						<File
-							RelativePath=".\Ai\Stalker\ai_stalker_fire.cpp">
-						</File>
-						<File
 							RelativePath=".\ai\stalker\ai_stalker_inline.h">
-						</File>
-						<File
-							RelativePath=".\Ai\Stalker\ai_stalker_misc.cpp">
-						</File>
-						<File
-							RelativePath=".\Ai\Stalker\ai_stalker_script.cpp">
 						</File>
 						<File
 							RelativePath=".\Ai\Stalker\ai_stalker_space.h">
@@ -3116,6 +3111,25 @@
 							</File>
 							<File
 								RelativePath=".\stalker_movement_manager_space.h">
+							</File>
+						</Filter>
+						<Filter
+							Name="Miscellanious"
+							Filter="">
+							<File
+								RelativePath=".\Ai\Stalker\ai_stalker_events.cpp">
+							</File>
+							<File
+								RelativePath=".\Ai\Stalker\ai_stalker_feel.cpp">
+							</File>
+							<File
+								RelativePath=".\Ai\Stalker\ai_stalker_fire.cpp">
+							</File>
+							<File
+								RelativePath=".\Ai\Stalker\ai_stalker_misc.cpp">
+							</File>
+							<File
+								RelativePath=".\Ai\Stalker\ai_stalker_script.cpp">
 							</File>
 						</Filter>
 					</Filter>

@@ -94,3 +94,17 @@ void CSpaceRestrictorManager::add_restrictor		(CSpaceRestrictor *space_restricto
 	m_space_registry.erase	(I);
 	m_space_registry.insert	(std::make_pair(space_restrictors,temp));
 }
+
+void CSpaceRestrictorManager::add_border			(ALife::_OBJECT_ID id)
+{
+	CSpaceRestriction		*temp = restriction(id);
+	if (temp)
+		temp->add_border	();
+}
+
+void CSpaceRestrictorManager::remove_border			(ALife::_OBJECT_ID id)
+{
+	CSpaceRestriction		*temp = restriction(id);
+	if (temp)
+		temp->remove_border	();
+}

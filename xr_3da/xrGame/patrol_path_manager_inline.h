@@ -10,30 +10,15 @@
 
 IC	CPatrolPathManager::CPatrolPathManager		()
 {
-	Init					();
+	init					();
 }
 
 IC	CPatrolPathManager::~CPatrolPathManager		()
 {
 }
 
-IC	void CPatrolPathManager::Init				()
+IC	void CPatrolPathManager::init				()
 {
-}
-
-IC	void CPatrolPathManager::reinit				()
-{
-	CAI_ObjectLocation::reinit();
-	m_path					= 0;
-	m_start_type			= ePatrolStartTypeDummy;
-	m_route_type			= ePatrolRouteTypeDummy;
-	m_actuality				= true;
-	m_failed				= false;
-	m_completed				= true;
-	m_curr_point_index		= u32(-1);
-	m_prev_point_index		= u32(-1);
-	m_start_point_index		= u32(-1);
-	m_callback				= 0;
 }
 
 IC	bool CPatrolPathManager::actual				() const

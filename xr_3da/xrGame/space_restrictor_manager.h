@@ -38,6 +38,8 @@ public:
 	IC		CSpaceRestriction		*restriction				(ALife::_OBJECT_ID id);
 			void					add_restrictor				(CSpaceRestrictor *space_restrictor);
 	IC		const SPACE_REGISTRY	&restrictions				() const;
+			void					add_border					(ALife::_OBJECT_ID id);
+			void					remove_border				(ALife::_OBJECT_ID id);
 };
 
 #include "space_restrictor_manager_inline.h"

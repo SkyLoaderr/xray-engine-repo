@@ -11,6 +11,7 @@
 #include "ai/stalker/ai_stalker.h"
 #include "motivation_action_manager_stalker.h"
 #include "stalker_decision_space.h"
+#include "cover_manager.h"
 #include "cover_point.h"
 #include "cover_evaluators.h"
 #include "agent_manager.h"
@@ -21,7 +22,7 @@
 using namespace StalkerDecisionSpace;
 
 #ifdef _DEBUG
-//#	define STALKER_DEBUG_MODE
+#	define STALKER_DEBUG_MODE
 #endif
 
 #ifdef DEBUG
@@ -134,15 +135,15 @@ void CStalkerActionFreeNoALife::execute		()
 	
 	Fvector							direction = Fvector().set(0.f,0.f,1.f);//Fvector().set(::Random.randF(1.f),0.f,::Random.randF(1.f));
 	direction.normalize_safe		();
-//	m_object->set_desired_direction	(&direction);
-//	m_object->set_desired_position	(0);
-//	m_object->set_path_type			(MovementManager::ePathTypePatrolPath);
-//	m_object->set_path				("way0000",CMovementManager::ePatrolStartTypeFirst,CMovementManager::ePatrolRouteTypeContinue,false);
-//
-	CGameObject						*actor = dynamic_cast<CGameObject*>(Level().CurrentEntity());
-	m_object->set_desired_position	(&actor->Position());
-	m_object->set_level_dest_vertex	(actor->level_vertex_id());
-	m_object->set_path_type			(MovementManager::ePathTypeLevelPath);
+	m_object->set_desired_direction	(&direction);
+	m_object->set_desired_position	(0);
+	m_object->set_path_type			(MovementManager::ePathTypePatrolPath);
+	m_object->set_path				("way",PatrolPathManager::ePatrolStartTypeFirst,PatrolPathManager::ePatrolRouteTypeContinue,false);
+
+//	CGameObject						*actor = dynamic_cast<CGameObject*>(Level().CurrentEntity());
+//	m_object->set_desired_position	(&actor->Position());
+//	m_object->set_level_dest_vertex	(actor->level_vertex_id());
+//	m_object->set_path_type			(MovementManager::ePathTypeLevelPath);
 //	Fvector							look_pos = actor->Position();
 //	look_pos.y						+= .8f;
 //	m_object->CSightManager::setup	(CSightAction(SightManager::eSightTypePosition,look_pos));

@@ -8,7 +8,7 @@
 #include "PHActorCharacter.h"
 #include "PHCapture.h"
 #include "ai_space.h"
-
+#include "detail_path_manager.h"
 
 #define GROUND_FRICTION	10.0f
 #define AIR_FRICTION	0.01f
@@ -159,7 +159,7 @@ void CPHMovementControl::Calculate(const Fvector& desired_pos,float velocity,flo
 
 }
 
-void CPHMovementControl::Calculate(const xr_vector<CDetailPathManager::STravelPathPoint>& path,float speed,  u32& travel_point,  float& precision  )
+void CPHMovementControl::Calculate(const xr_vector<DetailPathManager::STravelPathPoint>& path,float speed,  u32& travel_point,  float& precision  )
 {
 	
 	if(m_capture) 
@@ -281,7 +281,7 @@ void CPHMovementControl::Calculate(const xr_vector<CDetailPathManager::STravelPa
 }
 
 
-void CPHMovementControl::PathNearestPoint(const xr_vector<CDetailPathManager::STravelPathPoint>  &path,			//in path
+void CPHMovementControl::PathNearestPoint(const xr_vector<DetailPathManager::STravelPathPoint>  &path,			//in path
 										  const Fvector					&new_position,  //in position
 										  int							&index,			//in start from; out nearest
 										  bool							&near_line       //out type
@@ -365,7 +365,7 @@ void CPHMovementControl::PathNearestPoint(const xr_vector<CDetailPathManager::ST
 
 
 
-void CPHMovementControl::PathNearestPointFindUp(const xr_vector<CDetailPathManager::STravelPathPoint>	&path,			//in path
+void CPHMovementControl::PathNearestPointFindUp(const xr_vector<DetailPathManager::STravelPathPoint>	&path,			//in path
 												const Fvector					&new_position,  //in position
 												int								&index,			//in start from; out nearest
 												float							radius,	//out m_path_distance in exit radius
@@ -452,7 +452,7 @@ void CPHMovementControl::PathNearestPointFindUp(const xr_vector<CDetailPathManag
 }
 
 
-void CPHMovementControl::PathNearestPointFindDown(const xr_vector<CDetailPathManager::STravelPathPoint>	&path,			//in path
+void CPHMovementControl::PathNearestPointFindDown(const xr_vector<DetailPathManager::STravelPathPoint>	&path,			//in path
 												const Fvector					&new_position,  //in position
 												int								&index,			//in start from; out nearest
 												float							radius,	//out m_path_distance in exit radius
@@ -540,7 +540,7 @@ void CPHMovementControl::PathNearestPointFindDown(const xr_vector<CDetailPathMan
 	return;
 }
 
-void CPHMovementControl::PathDIrLine(const xr_vector<CDetailPathManager::STravelPathPoint> &/**path/**/,  int /**index/**/,  float distance,  float precesition, Fvector &dir  )
+void CPHMovementControl::PathDIrLine(const xr_vector<DetailPathManager::STravelPathPoint> &/**path/**/,  int /**index/**/,  float distance,  float precesition, Fvector &dir  )
 {
 
 	Fvector to_path_point;
@@ -557,7 +557,7 @@ void CPHMovementControl::PathDIrLine(const xr_vector<CDetailPathManager::STravel
 	dir.normalize_safe();
 }
 
-void CPHMovementControl::PathDIrPoint(const xr_vector<CDetailPathManager::STravelPathPoint> &path,  int index,  float distance,  float precesition, Fvector &dir  )
+void CPHMovementControl::PathDIrPoint(const xr_vector<DetailPathManager::STravelPathPoint> &path,  int index,  float distance,  float precesition, Fvector &dir  )
 {
 	Fvector to_path_point,tangent;
 	to_path_point.sub(vPathPoint,vPosition);	//_new position

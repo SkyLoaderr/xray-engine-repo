@@ -89,9 +89,12 @@ CSpaceRestriction::~CSpaceRestriction	()
 
 bool CSpaceRestriction::inside			(const Fvector &position, float radius)
 {
-	if (!m_initialized)
+	if (!m_initialized) {
 		initialize				();
-	
+		if (!m_initialized)
+			return				(true);
+	}
+
 	if (m_restrictor)
 		return					(CCF_Shape_inside((CCF_Shape*)m_restrictor->collidable.model,position,radius));
 
@@ -107,9 +110,12 @@ bool CSpaceRestriction::inside			(const Fvector &position, float radius)
 void CSpaceRestriction::initialize		()
 {
 	string256					temp;
-	m_initialized				= true;
 	
 	u32							n = _GetItemCount(*m_space_restrictors);
+	VERIFY						(n);
+	if (n == 1)
+		return;
+
 	for (u32 i=0; i<n ;++i)
 		merge					(
 			Level().space_restrictor_manager().restriction(
@@ -120,6 +126,8 @@ void CSpaceRestriction::initialize		()
 		);
 	
 	process_borders				();
+	
+	m_initialized				= true;
 }
 
 void CSpaceRestriction::process_borders	()

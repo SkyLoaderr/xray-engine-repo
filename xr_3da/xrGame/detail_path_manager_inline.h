@@ -18,12 +18,12 @@ IC	bool CDetailPathManager::completed(const Fvector &position, bool bRealComplet
 	return					(m_path.empty() || ((bRealCompleted || !m_state_patrol_path) ? (curr_travel_point_index() == m_path.size() - 1) : curr_travel_point_index() >= m_last_patrol_point));
 }
 
-IC	const xr_vector<CDetailPathManager::STravelPathPoint> &CDetailPathManager::path() const
+IC	const xr_vector<DetailPathManager::STravelPathPoint> &CDetailPathManager::path() const
 {
 	return					(m_path);
 }
 
-IC	const CDetailPathManager::STravelPathPoint &CDetailPathManager::curr_travel_point() const
+IC	const DetailPathManager::STravelPathPoint &CDetailPathManager::curr_travel_point() const
 {
 	return					(m_path[curr_travel_point_index()]);
 }
@@ -46,6 +46,7 @@ IC	void CDetailPathManager::set_start_direction	(const Fvector &start_direction)
 
 IC	void CDetailPathManager::set_dest_position	(const Fvector &dest_position)
 {
+	VERIFY					(!m_restricted_object || m_restricted_object->accessible(dest_position));
 	m_actuality				= m_actuality && m_dest_position.similar(dest_position, .1f);
 	m_dest_position			= dest_position;
 }

@@ -52,12 +52,14 @@ IC	void CMovementManager::set_path_type(EPathType path_type)
 
 IC	void CMovementManager::set_game_dest_vertex	(const ALife::_GRAPH_ID game_vertex_id)
 {
+	VERIFY					(!CDetailPathManager::m_restricted_object || CDetailPathManager::m_restricted_object->accessible(ai().game_graph().vertex(game_vertex_id)->level_point()));
 	CGamePathManager::set_dest_vertex(game_vertex_id);
 	m_path_actuality		= m_path_actuality && CGamePathManager::actual();
 }
 
 IC	void CMovementManager::set_level_dest_vertex(const u32 level_vertex_id)
 {
+	VERIFY					(!CDetailPathManager::m_restricted_object || CDetailPathManager::m_restricted_object->accessible(level_vertex_id));
 	CLevelPathManager::set_dest_vertex(level_vertex_id);
 	m_path_actuality		= m_path_actuality && CLevelPathManager::actual();
 }
@@ -129,7 +131,7 @@ IC	void CMovementManager::set_desirable_speed		(float speed)
 	m_old_desirable_speed	= speed;
 }
 
-IC	const xr_vector<CDetailPathManager::STravelPathPoint>	&CMovementManager::path	() const
+IC	const xr_vector<DetailPathManager::STravelPathPoint>	&CMovementManager::path	() const
 {
 	return					(CDetailPathManager::path());
 }

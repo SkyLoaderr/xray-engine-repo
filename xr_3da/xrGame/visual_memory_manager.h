@@ -22,7 +22,7 @@ class CCustomMonster;
 
 class CVisualMemoryManager : 
 	virtual public CGameObject,
-	virtual public CVisualMemory
+	public CVisualMemory
 {
 public:
 	struct SRemoveOfflivePredicate {

@@ -10,6 +10,52 @@
 #include "patrol_path_manager.h"
 #include "script_game_object.h"
 #include "script_space.h"
+#include "restricted_object.h"
+
+void CPatrolPathManager::reinit				()
+{
+	CAI_ObjectLocation::reinit();
+	m_path					= 0;
+	m_start_type			= ePatrolStartTypeDummy;
+	m_route_type			= ePatrolRouteTypeDummy;
+	m_actuality				= true;
+	m_failed				= false;
+	m_completed				= true;
+	m_curr_point_index		= u32(-1);
+	m_prev_point_index		= u32(-1);
+	m_start_point_index		= u32(-1);
+	m_callback				= 0;
+	m_restricted_object		= dynamic_cast<CRestrictedObject*>(this);
+}
+
+IC	bool CPatrolPathManager::accessible	(const Fvector &position) const
+{
+	return		(m_restricted_object ? m_restricted_object->accessible(position) : true);
+}
+
+IC	bool CPatrolPathManager::accessible	(u32 vertex_id) const
+{
+	return		(m_restricted_object ? m_restricted_object->accessible(vertex_id) : true);
+}
+
+IC	bool CPatrolPathManager::accessible	(const CPatrolPath::CVertex *vertex) const
+{
+	return		(vertex ? accessible(vertex->data().position()) : true);
+}
+
+struct CAccessabilityEvaluator {
+	const CPatrolPathManager *m_manager;
+
+	IC	CAccessabilityEvaluator(const CPatrolPathManager *manager)
+	{
+		m_manager	= manager;
+	}
+
+	IC	bool operator()	(const Fvector &position) const
+	{
+		return		(m_manager->accessible(position));
+	}
+};
 
 void CPatrolPathManager::select_point(const Fvector &position, u32 &dest_vertex_id)
 {
@@ -19,19 +65,23 @@ void CPatrolPathManager::select_point(const Fvector &position, u32 &dest_vertex_
 		switch (m_start_type) {
 			case ePatrolStartTypeFirst : {
 				vertex		= m_path->vertex(0);
+				VERIFY		(accessible(vertex));
 				break;
 			}
 			case ePatrolStartTypeLast : {
 				vertex		= m_path->vertex(m_path->vertices().size() - 1);
+				VERIFY		(accessible(vertex));
 				break;
 			}
 			case ePatrolStartTypeNearest : {
-				vertex		= m_path->point(position);
+				vertex		= m_path->point(position,CAccessabilityEvaluator(this));
+				VERIFY		(accessible(vertex));
 				break;
 			}
 			case ePatrolStartTypePoint : {
 				VERIFY		(m_path->vertex(m_start_point_index));
 				vertex		= m_path->vertex(m_start_point_index);
+				VERIFY		(accessible(vertex));
 				break;
 			}
 			case ePatrolStartTypeNext : {
@@ -39,7 +89,8 @@ void CPatrolPathManager::select_point(const Fvector &position, u32 &dest_vertex_
 					vertex		= m_path->vertex(m_prev_point_index+1);
 				if (!vertex)
 					vertex		= m_path->point(position);
-
+				
+				VERIFY		(accessible(vertex));
 				break;
 			}
 			default			: NODEFAULT;
@@ -56,6 +107,7 @@ void CPatrolPathManager::select_point(const Fvector &position, u32 &dest_vertex_
 		if (vertex->data().level_vertex_id() != level_vertex_id()) {
 			dest_vertex_id		= vertex->data().level_vertex_id();
 			m_dest_position		= vertex->data().position();
+			VERIFY				(accessible(m_dest_position));
 			m_actuality			= true;
 			m_completed			= false;
 			return;
@@ -75,6 +127,9 @@ void CPatrolPathManager::select_point(const Fvector &position, u32 &dest_vertex_
 		if ((*I).vertex_id() == m_curr_point_index)
 			continue;
 
+		if (!accessible(m_path->vertex((*I).vertex_id())))
+			continue;
+
 		if (!count)
 			temp				= (*I).vertex_id();
 		
@@ -89,12 +144,8 @@ void CPatrolPathManager::select_point(const Fvector &position, u32 &dest_vertex_
 				return;
 			}
 			case ePatrolRouteTypeContinue : {
-				if (vertex->edges().empty()) {
-					m_completed	= true;
-					return;
-				}
-				temp			= vertex->edges().begin()->vertex_id();
-				break;
+				m_completed	= true;
+				return;
 			}
 			default : NODEFAULT;
 		}
@@ -107,6 +158,9 @@ void CPatrolPathManager::select_point(const Fvector &position, u32 &dest_vertex_
 		I				= vertex->edges().begin();
 		for ( ; I != E; ++I) {
 			if ((*I).vertex_id() == m_prev_point_index)
+				continue;
+
+			if (!accessible(m_path->vertex((*I).vertex_id())))
 				continue;
 
 			sum			+= (*I).weight();
@@ -123,6 +177,7 @@ void CPatrolPathManager::select_point(const Fvector &position, u32 &dest_vertex_
 	m_curr_point_index	= temp;
 	dest_vertex_id		= m_path->vertex(m_curr_point_index)->data().level_vertex_id();
 	m_dest_position		= m_path->vertex(m_curr_point_index)->data().position();
+	VERIFY				(accessible(m_dest_position));
 	m_actuality			= true;
 	m_completed			= false;
 }

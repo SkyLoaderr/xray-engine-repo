@@ -111,7 +111,7 @@ public:
 
 					CMovementManager		();
 	virtual			~CMovementManager		();
-			void	Init					();
+			void	init					();
 	virtual void	Load					(LPCSTR caSection);
 	virtual void	reinit					();
 	virtual void	reload					(LPCSTR caSection);

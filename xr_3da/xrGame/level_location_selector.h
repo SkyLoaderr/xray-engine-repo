@@ -34,6 +34,9 @@ class
 		_vertex_id_type
 	> inherited;
 
+protected:
+	IC	virtual	void			before_search				();
+	IC	virtual	void			after_search				();
 };
 
 #include "level_location_selector_inline.h"

@@ -20,7 +20,7 @@
 TEMPLATE_SPECIALIZATION
 IC	CGameLocationSelector::CBaseLocationSelector	()
 {
-	Init				();
+	init				();
 }
 
 TEMPLATE_SPECIALIZATION
@@ -35,7 +35,7 @@ IC	void CGameLocationSelector::set_selection_type	(const ESelectionType selectio
 }
 
 TEMPLATE_SPECIALIZATION
-IC	void CGameLocationSelector::Init			()
+IC	void CGameLocationSelector::init			()
 {
 }
 
@@ -91,23 +91,28 @@ IC	void CGameLocationSelector::select_random_location(const _vertex_id_type star
 	for ( ; i != e; ++i)
 		for (int j=0; j<iPointCount; ++j)
 			if ((m_graph->vertex((*i).vertex_id())->level_id() == ai().level_graph().level_id()) && m_graph->mask(location_manager->vertex_types()[j].tMask,m_graph->vertex((*i).vertex_id())->vertex_type()) && ((*i).vertex_id() != m_previous_vertex_id)) {
+				if (!accessible((*i).vertex_id()))
+					continue;
 				++iBranches;
 				if (k < 0)
 					k = j;
 			}
 	if (!iBranches) {
-		VERIFY					(m_graph->valid_vertex_id(m_previous_vertex_id) && (m_previous_vertex_id != start_vertex_id));
 		dest_vertex_id			= m_previous_vertex_id;
-		m_graph->begin			(start_vertex_id,i,e);
-		for ( ; i != e; ++i)
-			for (int j=0; j<iPointCount; ++j)
-				if ((m_graph->vertex((*i).vertex_id())->level_id() == ai().level_graph().level_id()) && m_graph->mask(location_manager->vertex_types()[j].tMask,m_graph->vertex((*i).vertex_id())->vertex_type())) {
-					dest_vertex_id		= (*i).vertex_id();
-					m_time_to_change	= Level().timeServer() + ::Random.randI(location_manager->vertex_types()[j].dwMinTime,location_manager->vertex_types()[j].dwMaxTime);
-					++iBranches;
-					break;
-				}
-		VERIFY					(iBranches);
+		if (m_graph->valid_vertex_id(m_previous_vertex_id) && (m_previous_vertex_id != start_vertex_id)) {
+			m_graph->begin		(start_vertex_id,i,e);
+			for ( ; i != e; ++i)
+				for (int j=0; j<iPointCount; ++j)
+					if ((m_graph->vertex((*i).vertex_id())->level_id() == ai().level_graph().level_id()) && m_graph->mask(location_manager->vertex_types()[j].tMask,m_graph->vertex((*i).vertex_id())->vertex_type())) {
+						if (!accessible((*i).vertex_id()))
+							continue;
+						dest_vertex_id		= (*i).vertex_id();
+						m_time_to_change	= Level().timeServer() + ::Random.randI(location_manager->vertex_types()[j].dwMinTime,location_manager->vertex_types()[j].dwMaxTime);
+						++iBranches;
+						break;
+					}
+			VERIFY				(iBranches);
+		}
 	}
 	else {
 		m_graph->begin			(start_vertex_id,i,e);
@@ -117,6 +122,8 @@ IC	void CGameLocationSelector::select_random_location(const _vertex_id_type star
 		for ( ; i != e; ++i) {
 			for (int j=0; j<iPointCount; ++j)
 				if ((m_graph->vertex((*i).vertex_id())->level_id() == ai().level_graph().level_id()) && m_graph->mask(location_manager->vertex_types()[j].tMask,m_graph->vertex((*i).vertex_id())->vertex_type()) && ((*i).vertex_id() != m_previous_vertex_id)) {
+					if (!accessible((*i).vertex_id()))
+						continue;
 					if (iBranches == iChosenBranch) {
 						dest_vertex_id		= (*i).vertex_id();
 						m_time_to_change	= Level().timeServer() + ::Random.randI(location_manager->vertex_types()[j].dwMinTime,location_manager->vertex_types()[j].dwMaxTime);

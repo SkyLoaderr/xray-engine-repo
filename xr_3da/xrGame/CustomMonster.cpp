@@ -12,7 +12,6 @@
 #include "ai/stalker/ai_stalker.h"
 #include "xrserver_objects_alife_monsters.h"
 #include "xrserver.h"
-#include "space_restrictor_manager.h"
 
 Flags32		psAI_Flags	= {aiLua};
  
@@ -521,8 +520,8 @@ void CCustomMonster::OnRender()
 		float								radius1 = !i ? .2f : .3f;
 		{
 			for (u32 I=1; I<path.size(); ++I) {
-				const CDetailPathManager::STravelPathPoint&	N1 = path[I-1];	Fvector	P1; P1.set(N1.position); P1.y+=0.1f;
-				const CDetailPathManager::STravelPathPoint&	N2 = path[I];	Fvector	P2; P2.set(N2.position); P2.y+=0.1f;
+				const DetailPathManager::STravelPathPoint&	N1 = path[I-1];	Fvector	P1; P1.set(N1.position); P1.y+=0.1f;
+				const DetailPathManager::STravelPathPoint&	N2 = path[I];	Fvector	P2; P2.set(N2.position); P2.y+=0.1f;
 				RCache.dbg_DrawLINE			(Fidentity,P1,P2,color0);
 				if ((path.size() - 1) == I) // песледний box?
 					RCache.dbg_DrawAABB			(P1,radius0,radius0,radius0,color1);
@@ -659,7 +658,7 @@ void CCustomMonster::Die	()
 
 BOOL CCustomMonster::net_Spawn	(LPVOID DC)
 {
-	if (!inherited::net_Spawn(DC) || !CScriptMonster::net_Spawn(DC))
+	if (!inherited::net_Spawn(DC) || !CScriptMonster::net_Spawn(DC) || !CRestrictedObject::net_Spawn(DC))
 		return					(FALSE);
 	
 	CDamageManager::Load		(*cNameSect());
@@ -667,8 +666,6 @@ BOOL CCustomMonster::net_Spawn	(LPVOID DC)
 	CSE_Abstract				*e	= (CSE_Abstract*)(DC);
 	CSE_ALifeMonsterAbstract	*E	= dynamic_cast<CSE_ALifeMonsterAbstract*>(e);
 
-	Level().space_restrictor_manager().associate(ID(),E->m_space_restrictors);
-	
 	eye_matrix.identity			();
 	m_body.current.yaw			= m_body.target.yaw	= -E->o_Angle.y;
 	m_body.current.pitch		= m_body.target.pitch	= 0;

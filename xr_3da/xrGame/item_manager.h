@@ -11,10 +11,17 @@
 #include "object_manager.h"
 
 class CGameObject;
+class CRestrictedObject;
 
 class CItemManager : public CObjectManager<const CGameObject > {
+private:
 	typedef CObjectManager<const CGameObject > inherited;
+
+private:
+	CRestrictedObject	*m_restricted_object;
+
 public:
+	virtual void	reinit						();
 	virtual bool	useful						(const CGameObject *object) const;
 	virtual	float	evaluate					(const CGameObject *object) const;
 	IC		const xr_vector<const CGameObject*> &items() const;

@@ -11,14 +11,14 @@
 
 CEnemyLocationPredictor::CEnemyLocationPredictor		()
 {
-	Init				();
+	init				();
 }
 
 CEnemyLocationPredictor::~CEnemyLocationPredictor		()
 {
 }
 
-void CEnemyLocationPredictor::Init						()
+void CEnemyLocationPredictor::init						()
 {
 }
 
