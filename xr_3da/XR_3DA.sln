@@ -7,9 +7,13 @@ Project("{8BC9CEB8-8B4A-11D0-8D11-00A0C91BC942}") = "xrGame", "xrGame\xrGame.vcp
 EndProject
 Project("{8BC9CEB8-8B4A-11D0-8D11-00A0C91BC942}") = "xrSound", "..\xrSound\xrSound.vcproj", "{CCCA7859-EB86-493E-9B53-C4235F45B3C5}"
 EndProject
+Project("{8BC9CEB8-8B4A-11D0-8D11-00A0C91BC942}") = "xrCore", "..\xrCore\xrCore.vcproj", "{A0F7D1FB-59A7-4717-A7E4-96F37E91998E}"
+EndProject
+Project("{8BC9CEB8-8B4A-11D0-8D11-00A0C91BC942}") = "xrCDB", "..\xrCDB\xrCDB.vcproj", "{A19B1DF2-82EC-4364-8BDF-85D13A1C89B5}"
+EndProject
 Global
 	GlobalSection(SourceCodeControl) = preSolution
-		SccNumberOfProjects = 5
+		SccNumberOfProjects = 7
 		SccLocalPath0 = .
 		CanCheckoutShared = true
 		SolutionUniqueID = {6F8E4AE3-CB8E-4760-8086-796FE333A467}
@@ -29,6 +33,14 @@ Global
 		SccProjectName4 = \u0022$/xr_3da/xrSound\u0022,\u0020OJJAAAAA
 		SccLocalPath4 = ..\\xrSound
 		CanCheckoutShared = true
+		SccProjectUniqueName5 = ..\\xrCore\\xrCore.vcproj
+		SccProjectName5 = \u0022$/xrCore\u0022,\u0020QOIAAAAA
+		SccLocalPath5 = ..\\xrCore
+		CanCheckoutShared = true
+		SccProjectUniqueName6 = ..\\xrCDB\\xrCDB.vcproj
+		SccProjectName6 = \u0022$/xr_3da/xrCDB\u0022,\u0020XKFAAAAA
+		SccLocalPath6 = ..\\xrCDB
+		CanCheckoutShared = true
 	EndGlobalSection
 	GlobalSection(SolutionConfiguration) = preSolution
 		ConfigName.0 = Debug
@@ -38,9 +50,9 @@ Global
 	GlobalSection(ProjectDependencies) = postSolution
 		{2578C6D8-660D-48AE-9322-7422F8664F06}.0 = {CCCA7859-EB86-493E-9B53-C4235F45B3C5}
 		{CA0649DD-D089-423A-981C-46B57A884EB9}.0 = {2578C6D8-660D-48AE-9322-7422F8664F06}
-		{200652A6-043E-4634-8837-87983B3BD5E0}.0 = {CA0649DD-D089-423A-981C-46B57A884EB9}
+		{200652A6-043E-4634-8837-87983B3BD5E0}.0 = {2578C6D8-660D-48AE-9322-7422F8664F06}
 		{200652A6-043E-4634-8837-87983B3BD5E0}.1 = {CCCA7859-EB86-493E-9B53-C4235F45B3C5}
-		{200652A6-043E-4634-8837-87983B3BD5E0}.2 = {2578C6D8-660D-48AE-9322-7422F8664F06}
+		{200652A6-043E-4634-8837-87983B3BD5E0}.2 = {CA0649DD-D089-423A-981C-46B57A884EB9}
 	EndGlobalSection
 	GlobalSection(ProjectConfiguration) = postSolution
 		{2578C6D8-660D-48AE-9322-7422F8664F06}.Debug.ActiveCfg = Debug|Win32
@@ -67,6 +79,18 @@ Global
 		{CCCA7859-EB86-493E-9B53-C4235F45B3C5}.Mixed.Build.0 = Mixed|Win32
 		{CCCA7859-EB86-493E-9B53-C4235F45B3C5}.Release.ActiveCfg = Release|Win32
 		{CCCA7859-EB86-493E-9B53-C4235F45B3C5}.Release.Build.0 = Release|Win32
+		{A0F7D1FB-59A7-4717-A7E4-96F37E91998E}.Debug.ActiveCfg = Debug|Win32
+		{A0F7D1FB-59A7-4717-A7E4-96F37E91998E}.Debug.Build.0 = Debug|Win32
+		{A0F7D1FB-59A7-4717-A7E4-96F37E91998E}.Mixed.ActiveCfg = Mixed|Win32
+		{A0F7D1FB-59A7-4717-A7E4-96F37E91998E}.Mixed.Build.0 = Mixed|Win32
+		{A0F7D1FB-59A7-4717-A7E4-96F37E91998E}.Release.ActiveCfg = Release|Win32
+		{A0F7D1FB-59A7-4717-A7E4-96F37E91998E}.Release.Build.0 = Release|Win32
+		{A19B1DF2-82EC-4364-8BDF-85D13A1C89B5}.Debug.ActiveCfg = Debug|Win32
+		{A19B1DF2-82EC-4364-8BDF-85D13A1C89B5}.Debug.Build.0 = Debug|Win32
+		{A19B1DF2-82EC-4364-8BDF-85D13A1C89B5}.Mixed.ActiveCfg = Debug|Win32
+		{A19B1DF2-82EC-4364-8BDF-85D13A1C89B5}.Mixed.Build.0 = Debug|Win32
+		{A19B1DF2-82EC-4364-8BDF-85D13A1C89B5}.Release.ActiveCfg = Release|Win32
+		{A19B1DF2-82EC-4364-8BDF-85D13A1C89B5}.Release.Build.0 = Release|Win32
 	EndGlobalSection
 	GlobalSection(ExtensibilityGlobals) = postSolution
 	EndGlobalSection
