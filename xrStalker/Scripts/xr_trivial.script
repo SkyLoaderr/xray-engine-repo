@@ -4,7 +4,7 @@ local novice_speak  = 10000     --Через какое время примерно новичок произносит 
 
 local time_to_speak = 15000     --Через какое время примерно зомби произносит фразы
 
-local time_walk2    = 20000     --Время ходьбы для навичка номер2
+local time_walk2    = 15000     --Время ходьбы для навичка номер2
 
 local walk_speak	= xr_sounds_id.zombe_walk_speak
 local stand_speak   = xr_sounds_id.zombe_stand_speak
@@ -69,7 +69,7 @@ function stalker_zombe_action:execute ()
 end
 ---------------------------------------------------------------------------------------------------------------------
 function stalker_zombe_action:speak()
-    if( math.random() < 0.5 ) then
+    if( math.random() < 0 ) then
     	self.object:play_sound( stand_speak, 1, 0, 1, 0, math.random( 0, 6 ) )
     else
         self.object:set_movement_type ( move.stand )
@@ -404,13 +404,13 @@ function stalker_novice2_action:action( param )
        yaw( self.object:direction(), patrol( self.a.path ):point( 0 ) : sub( self.object:position() ) ) < 0.3 ) then
     	printf( "Play sound" )
         self.object:play_sound		( walk_speak, 5000, 2000, 1, 0, math.random( 0, 5 ) )
-        if( math.random() > 0.5 ) then
+        if( math.random() > 0 ) then
 	        self.object:add_animation   ( "prisluh_8_0", true )
-	        self.object:add_animation   ( "prisluh_8_2", true )
+--	        self.object:add_animation   ( "prisluh_8_2", true )
             self.object:add_animation   ( "prisluh_8_3", true )
         else
             self.object:add_animation   ( "prisluh_9_0", true )
-	        self.object:add_animation   ( "prisluh_9_2", true )
+--	        self.object:add_animation   ( "prisluh_9_2", true )
             self.object:add_animation   ( "prisluh_9_3", true )
         end
 
@@ -429,7 +429,8 @@ function stalker_novice2_action:action( param )
 end
 ---------------------------------------------------------------------------------------------------------------------
 function stalker_novice2_action:new_time()
-	self.a.time = device():time_global() + time_walk2 * ( 0.5 + math.random() )
+--	self.a.time = device():time_global() + time_walk2 * ( 0.5 + math.random() )
+  	self.a.time = device():time_global() + time_walk2
 end
 ---------------------------------------------------------------------------------------------------------------------
 function stalker_novice2_action:finalize ()
