@@ -438,7 +438,10 @@ HRESULT CMyD3DApplication::RestoreDeviceObjects()
 			array	[it]	= powf		(v,32);
 		}
 		m_pd3dDevice->CreateTexture		(512,1, 1, 0, D3DFMT_R16F, D3DPOOL_MANAGED, &t_SpecularPower_32, NULL);
-
+		D3DLOCKED_RECT					R;
+		t_SpecularPower_32->LockRect	(0,&R,0, D3DLOCK_DISCARD);
+		D3DXFloat32To16Array			()
+		R.
 	}
 
 
