@@ -190,6 +190,12 @@ void CUIMessageBox::SetStyle(E_MESSAGEBOX_STYLE messageBoxStyle)
 
 void CUIMessageBox::SetText(LPSTR str)
 {
+	CGameFont *pFont = m_UIStatic.GetFont();
+	if (pFont)
+	{
+		m_UIStatic.MoveWindow(GetWidth() / 2 - static_cast<int>(pFont->SizeOf(str) / 2),
+			GetHeight() / 2 - static_cast<int>(pFont->CurrentHeight()));
+	}
 	m_UIStatic.SetText(str);
 }
 void CUIMessageBox::OnMouse(int x, int y, E_MOUSEACTION mouse_action)

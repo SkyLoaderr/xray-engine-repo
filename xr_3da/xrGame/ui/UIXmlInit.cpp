@@ -20,6 +20,8 @@
 
 #define GRAFFITI19_FONT_NAME	"graffiti19"
 #define GRAFFITI22_FONT_NAME	"graffiti22"
+#define GRAFFITI32_FONT_NAME	"graffiti32"
+#define GRAFFITI50_FONT_NAME	"graffiti50"
 
 #define LETTERICA16_FONT_NAME	"letterica16"
 #define LETTERICA18_FONT_NAME	"letterica18"
@@ -334,6 +336,14 @@ bool CUIXmlInit::InitFont(CUIXml &xml_doc, const char *path, int index, u32 &col
 		else if(!xr_strcmp(*font_name, GRAFFITI22_FONT_NAME))
 		{
 			pFnt = HUD().pFontGraffiti22Russian;
+		}
+		else if(!xr_strcmp(*font_name, GRAFFITI32_FONT_NAME))
+		{
+			pFnt = HUD().pFontGraffiti32Russian;
+		}
+		else if(!xr_strcmp(*font_name, GRAFFITI50_FONT_NAME))
+		{
+			pFnt = HUD().pFontGraffiti50Russian;
 		}
 		else if(!xr_strcmp(*font_name, ARIAL_FONT_NAME))
 		{

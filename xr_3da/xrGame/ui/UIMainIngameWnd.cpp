@@ -86,7 +86,7 @@ CUIMainIngameWnd::~CUIMainIngameWnd()
 void CUIMainIngameWnd::Init()
 {
 	CUIXml uiXml;
-	uiXml.Init("$game_data$","maingame.xml");
+	uiXml.Init("$game_data$","maingame_new.xml");
 	
 	CUIXmlInit xml_init;
 	CUIWindow::Init(0,0, Device.dwWidth, Device.dwHeight);
@@ -97,6 +97,8 @@ void CUIMainIngameWnd::Init()
 
 	AttachChild(&UIStaticHealth);
 	xml_init.InitStatic(uiXml, "static", 0, &UIStaticHealth);
+	UIStaticHealth.AttachChild(&UIHealthString);
+	xml_init.InitStatic(uiXml, "static", 11, &UIHealthString);
 	
 /*	AttachChild(&UIStaticMapBack);
 	xml_init.InitStatic(uiXml, "static", 1, &UIStaticMapBack);*/
@@ -121,6 +123,7 @@ void CUIMainIngameWnd::Init()
 	xml_init.InitStatic(uiXml, "static", 9, &UIWeaponIcon);
 	UIWeaponIcon.SetShader(GetEquipmentIconsShader());
 	UIWeaponIcon.ClipperOn();
+
 	//запомнить оригинальный размер для иконки оружия, 
 	//так как она будет масштабироваться и центрироваться
 	m_iWeaponIconWidth = UIWeaponIcon.GetWidth();
@@ -128,6 +131,7 @@ void CUIMainIngameWnd::Init()
 	m_iWeaponIconX = UIWeaponIcon.GetWndRect().left;
 	m_iWeaponIconY = UIWeaponIcon.GetWndRect().top;
 //	UIWeaponIcon.EnableDragDrop(false);
+
 	UIWeaponIcon.Enable(false);
 
 	//
@@ -157,7 +161,6 @@ void CUIMainIngameWnd::Init()
 	//Полоса прогресса здоровья
 	AttachChild(&UIHealthBar);
 	xml_init.InitProgressBar(uiXml, "progress_bar", 0, &UIHealthBar);
-
 
 	//индикаторы 
 	UIZoneMap.Init();
@@ -292,33 +295,55 @@ void CUIMainIngameWnd::Update()
 		
 		if(pWeapon)	
 		{
-			if(m_pWeapon != pWeapon)
+			// Remember last used ammo types, and if this type doesn't changed 
+			// then no need to update info
+			static u32			prevAmmoID		= static_cast<u32>(-1);
+
+			if(m_pWeapon != pWeapon || prevAmmoID != m_pWeapon->m_ammoType)
 			{
+
 				m_pWeapon = pWeapon;
-				UIWeaponIcon.Show(true);
+
+				if (xr_strcmp(m_pWeapon->NameShort(), "knife") != 0)
+				{
+					UIWeaponIcon.Show(true);
+				}
+				else
+				{
+					UIWeaponIcon.Show(false);
+				}
+
+				prevAmmoID			= m_pWeapon->m_ammoType;
+				ref_str sect_name	= m_pWeapon->m_ammoTypes[m_pWeapon->m_ammoType];
+				
+				//properties used by inventory menu
+				int m_iGridWidth	= pSettings->r_u32(sect_name, "inv_grid_width");
+				int m_iGridHeight	= pSettings->r_u32(sect_name, "inv_grid_height");
+
+				int m_iXPos			= pSettings->r_u32(sect_name, "inv_grid_x");
+				int m_iYPos			= pSettings->r_u32(sect_name, "inv_grid_y");
+
 				UIWeaponIcon.GetUIStaticItem().SetOriginalRect(
-								m_pWeapon->GetXPos()*INV_GRID_WIDTH,
-								m_pWeapon->GetYPos()*INV_GRID_HEIGHT,
-								m_pWeapon->GetGridWidth()*INV_GRID_WIDTH,
-								m_pWeapon->GetGridHeight()*INV_GRID_HEIGHT);
-			
+						m_iXPos * INV_GRID_WIDTH,
+						m_iYPos * INV_GRID_HEIGHT,
+						m_iGridWidth * INV_GRID_WIDTH,
+						m_iGridHeight * INV_GRID_HEIGHT);
 				float scale_x = float(m_iWeaponIconWidth)/
-								float(m_pWeapon->GetGridWidth()*INV_GRID_WIDTH);
+					float(m_iGridWidth*INV_GRID_WIDTH);
+
 				float scale_y = float(m_iWeaponIconHeight)/
-								float(m_pWeapon->GetGridHeight()*INV_GRID_HEIGHT);
+					float(m_iGridHeight*INV_GRID_HEIGHT);
 
 				float scale = scale_x<scale_y?scale_x:scale_y;
-				UIWeaponIcon.SetTextureScale(scale);
-				UIWeaponIcon.SetWidth(iFloor(0.5f+ m_pWeapon->GetGridWidth()*INV_GRID_WIDTH*scale));
-				UIWeaponIcon.SetHeight(iFloor(0.5f+ m_pWeapon->GetGridHeight()*INV_GRID_HEIGHT*scale));
-				//отцентрировать иконку
+					UIWeaponIcon.SetTextureScale(scale);
+					UIWeaponIcon.SetWidth(iFloor(0.5f+ m_iGridWidth*INV_GRID_WIDTH*scale));
+					UIWeaponIcon.SetHeight(iFloor(0.5f+ m_iGridHeight*INV_GRID_HEIGHT*scale));
+
 				UIWeaponIcon.MoveWindow(m_iWeaponIconX + 
-									   (m_iWeaponIconWidth - UIWeaponIcon.GetWidth())/2,
-									    m_iWeaponIconY + 
-									   (m_iWeaponIconHeight - UIWeaponIcon.GetHeight())/2);
+					(m_iWeaponIconWidth - UIWeaponIcon.GetWidth())/2,
+					m_iWeaponIconY + 
+					(m_iWeaponIconHeight - UIWeaponIcon.GetHeight())/2);
 			}
-
-
 
 			UIWeaponSignName.SetText(m_pWeapon->NameShort());
 			
@@ -327,8 +352,9 @@ void CUIMainIngameWnd::Update()
 			if((AE>=0)&&(AC>=0))
 			{
 				//сторока для вывода патронов к оружию
-				sprintf(text_str, "%d/%d %s",AE,AC, 
-										 *m_pWeapon->m_ammoName?*m_pWeapon->m_ammoName:"");
+//				sprintf(text_str, "%d/%d %s",AE,AC, 
+//										 *m_pWeapon->m_ammoName?*m_pWeapon->m_ammoName:"");
+				sprintf(text_str, "%d/%d",AE,AC);
 				UIWeaponSignAmmo.SetText(text_str);
 			}
 		}

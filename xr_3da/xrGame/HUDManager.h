@@ -40,7 +40,8 @@ public:
 	CGameFont*				pFontGraffiti22Russian;
 	CGameFont*				pFontLetterica16Russian;
 	CGameFont*				pFontLetterica18Russian;
-
+	CGameFont*				pFontGraffiti32Russian;
+	CGameFont*				pFontGraffiti50Russian;
 
 public:
 							CHUDManager			();

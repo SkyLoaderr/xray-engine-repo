@@ -79,6 +79,7 @@ protected:
 	CUIStatic			UIWeaponSignAmmo;
 	CUIStatic			UIWeaponSignName;
 	CUIStatic			UIWeaponIcon;
+	CUIStatic			UIHealthString;
 	//CUIDragDropItem	UIWeaponIcon;
 
 	
