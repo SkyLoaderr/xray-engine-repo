@@ -7,6 +7,7 @@
 #include "stdafx.h"
 #include "InventoryOwner.h"
 #include "gameobject.h"
+#include "entity.h"
 #include "pda.h"
 
 
@@ -76,6 +77,10 @@ BOOL CInventoryOwner::net_Spawn		(LPVOID DC)
 //достать PDA из специального слота инвентаря
 CPda* CInventoryOwner::GetPDA()
 {
+	CEntityAlive* pEntityAlive = dynamic_cast<CEntityAlive*>(this);
+	
+	if(!pEntityAlive->g_Alive() || !pEntityAlive->g_Alive()) return NULL; 
+	
 	return (CPda*)m_inventory.m_slots[PDA_SLOT].m_pIItem;
 }
 
