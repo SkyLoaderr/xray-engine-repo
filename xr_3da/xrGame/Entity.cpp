@@ -169,6 +169,40 @@ void CEntity::net_Destroy	()
 		G.Member_Remove	(this);
 	}
 
+	for (u32 T=0; T<Level().Teams.size(); T++)
+	{
+		CTeam&	TD		= Level().Teams[T];
+		for (u32 S=0; S<TD.Squads.size(); S++)
+		{
+			CSquad&	SD	= TD.Squads[S];
+			objVisible& VIS	= SD.KnownEnemys;
+
+			VIS.clear		();
+			if (SD.Leader)	{
+				CEntityAlive* E	= dynamic_cast<CEntityAlive*>(SD.Leader);
+				if (E && E->g_Alive()) {
+					E->GetVisible(VIS);
+//					for (int i=0; i<(int)VIS.size(); i++)
+//						if (VIS[i].key == this) {
+//							VIS.erase(i);
+//						}
+				}
+
+			}
+
+			for (u32 G=0; G<SD.Groups.size(); G++)
+			{
+				CGroup& GD = SD.Groups[G];
+				for (u32 M=0; M<GD.Members.size(); M++)
+				{
+					CEntityAlive* E	= dynamic_cast<CEntityAlive*>(GD.Members[M]);
+					if (E && E->g_Alive())	E->GetVisible(VIS);
+				}
+			}
+		}
+	}
+
+
 	inherited::net_Destroy	();
 }
 

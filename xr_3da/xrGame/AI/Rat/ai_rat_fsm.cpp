@@ -146,8 +146,10 @@ void CAI_Rat::Death()
 	}
 	else {
 		if (m_fFood <= 0) {
-			if (Local()) {
-				// Request destroy
+			if (m_dwLastRangeSearch <= m_dwDeathTime)
+				m_dwLastRangeSearch = Level().timeServer();
+			setVisible(false);
+			if (Level().timeServer() - m_dwLastRangeSearch > 10000) {
 				NET_Packet			P;
 				u_EventGen			(P,GE_DESTROY,ID());
 				u_EventSend			(P);
