@@ -46,6 +46,16 @@ end
 
 function game_cl_LastStanding:GetMapEntities(ent_container)
    local D = SZoneMapEntityData()
-//   ent_container.push_back(ent_container,D)
    ent_container:push_back(D)
 end
+
+function game_cl_LastStanding:TranslateGameMessage(msg, P)
+   if msg == game_messages.game_messages.GAME_EVENT_ROUND_STARTED then
+      self:CommonMessageOut("R O U N D  S T A R T E D")
+   else
+      game_cl_mp_script.TranslateGameMessage(self,msg, P)
+   end
+
+end
+
+
