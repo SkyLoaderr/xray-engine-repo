@@ -22,6 +22,7 @@ void xrMU_Reference::export_cform_game	(_mesh& mesh, xr_vector<cform_FailFace>& 
 					Fvector		p;		
 					xform.transform_tiny(p,F->v[0]->P);
 					h = mesh.add_vertex	(_mesh::Point(p.x,p.y,p.z));
+					F->v[v]->handle		= h.idx();
 				}
 				fhandles.push_back	(h);
 			}
