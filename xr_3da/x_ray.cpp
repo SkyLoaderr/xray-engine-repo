@@ -37,7 +37,7 @@ void Startup()
 	Console.Execute				("cfg_load startup.ltx");
 
 	// Creation
-	pSettings					= new CInifile		("system.ltx",FALSE);
+	pSettings					= new CInifile		("system.ltx",TRUE);
 
 #ifdef DEBUG
 	pInput						= new CInput		(FALSE);
