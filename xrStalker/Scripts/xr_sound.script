@@ -106,9 +106,9 @@ function play_sound(npc, themes)
 	-- из списка тем выбираем одну.	
 	local snd = snd_table[math.random(0, t-1)]
 	if snd ~= nil then
-		--printf("!")
-		--print_table(snd)
-		--printf("!")
+		printf("!")
+		print_table(snd)
+		printf("!")
 		db.sound[npc:id()].begin = device():time_global()
 		db.sound[npc:id()].idle = math.random(snd.min_snd, snd.max_snd)*1000			
 		-- необходимо ли нам играть into или rnd звуки
