@@ -107,8 +107,8 @@ void CBitingAttack::Run()
 	if (bJumpState || (!bJumpState && pMonster->CanJump())) m_tAction = ACTION_JUMP;
 
 	if ((pMonster->flagsEnemy & FLAG_ENEMY_DOESNT_SEE_ME) != FLAG_ENEMY_DOESNT_SEE_ME) bEnemyDoesntSeeMe = false;
-	bool bEnemyRunAway = (pMonster->flagsEnemy & FLAG_ENEMY_GO_FARTHER_FAST) == FLAG_ENEMY_GO_FARTHER_FAST;
-	if ((m_tAction == ACTION_RUN) && bEnemyDoesntSeeMe && !bEnemyRunAway) m_tAction = ACTION_STEAL;
+	if (((pMonster->flagsEnemy & FLAG_ENEMY_GO_FARTHER_FAST) == FLAG_ENEMY_GO_FARTHER_FAST) && (m_dwStateStartedTime + 4000 < m_dwCurrentTime)) bEnemyDoesntSeeMe = false;
+	if ((m_tAction == ACTION_RUN) && bEnemyDoesntSeeMe) m_tAction = ACTION_STEAL;
 
 	// Выполнение состояния
 	switch (m_tAction) {	

@@ -33,7 +33,7 @@
 
 
 // logging
-//#define SILENCE
+#define SILENCE
 
 #undef	WRITE_TO_LOG
 #ifdef SILENCE
@@ -251,7 +251,7 @@ public:
 	friend	class 			CBitingExploreNDE;
 
 	// State flags
-	bool					flagEatNow;				// true - сейчас монстр ест]
+	bool					flagEatNow;				// true - сейчас монстр ест
 
 	CMotionManager			MotionMan; 
 

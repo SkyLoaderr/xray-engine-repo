@@ -11,6 +11,7 @@ CAI_Dog::CAI_Dog()
 	stateDetour			= xr_new<CBitingDetour>		(this);
 	statePanic			= xr_new<CBitingPanic>		(this, false);
 	stateExploreNDE		= xr_new<CBitingExploreNDE>	(this);
+	
 	CurrentState		= stateRest;
 
 	Init();
@@ -87,6 +88,8 @@ BOOL CAI_Dog::net_Spawn (LPVOID DC)
 	MotionMan.AddAnim(eAnimStandSitDown,	"stand_sit_down_",		-1, 0,						0,							PS_STAND);	
 	MotionMan.AddAnim(eAnimAttack,			"stand_attack_",		-1, 0,						m_fsRunAngular,				PS_STAND);
 	MotionMan.AddAnim(eAnimStandDamaged,	"stand_damaged_",		-1, 0,						0,							PS_STAND);
+	MotionMan.AddAnim(eAnimDragCorpse,		"stand_drag_",			-1, m_fsDrag,				m_fsWalkAngular,			PS_STAND);
+	MotionMan.AddAnim(eAnimSteal,			"stand_crawl_",			-1, m_fsSteal,				m_fsWalkAngular,			PS_STAND);
 
 	// define transitions
 	// order : 1. [anim -> anim]	2. [anim->state]	3. [state -> anim]		4. [state -> state]
@@ -107,9 +110,9 @@ BOOL CAI_Dog::net_Spawn (LPVOID DC)
 	MotionMan.LinkAction(ACT_EAT,			eAnimEat);
 	MotionMan.LinkAction(ACT_SLEEP,			eAnimSleep);
 	MotionMan.LinkAction(ACT_REST,			eAnimLieIdle);
-	MotionMan.LinkAction(ACT_DRAG,			eAnimWalkFwd);
+	MotionMan.LinkAction(ACT_DRAG,			eAnimDragCorpse);
 	MotionMan.LinkAction(ACT_ATTACK,		eAnimAttack);
-	MotionMan.LinkAction(ACT_STEAL,			eAnimWalkFwd);
+	MotionMan.LinkAction(ACT_STEAL,			eAnimSteal);
 	MotionMan.LinkAction(ACT_LOOK_AROUND,	eAnimStandIdle);
 
 	Fvector center;

@@ -176,7 +176,7 @@ void CPHMovementControl::Calculate(const xr_vector<CTravelNode>& path,float spee
 			dir.sub(path[travel_point].P,new_position);
 		m_start_index=travel_point;
 		dir.y=0.f;
-		dir.normalize();
+		dir.normalize_safe();
 		vPosition.set(new_position);
 		m_path_distance=0;
 		vPathDir.set(dir);
@@ -277,7 +277,7 @@ void CPHMovementControl::PathNearestPoint(const xr_vector<CTravelNode>  &path,		
 		from_first.sub(new_position,first);
 		from_second.sub(new_position,second);
 		dir.sub(second,first);
-		dir.normalize();
+		dir.normalize_safe();
 
 
 		if(from_first.dotproduct(dir)<0.f)//befor this line
@@ -362,7 +362,7 @@ void CPHMovementControl::PathNearestPointFindUp(const xr_vector<CTravelNode>	&pa
 		from_first.sub(new_position,first);
 		from_second.sub(new_position,second);
 		dir.sub(second,first);
-		dir.normalize();
+		dir.normalize_safe();
 		float from_first_dir=from_first.dotproduct(dir);
 		float from_second_dir=from_second.dotproduct(dir);
 
@@ -449,7 +449,7 @@ void CPHMovementControl::PathNearestPointFindDown(const xr_vector<CTravelNode>	&
 		from_first.sub(new_position,first);
 		from_second.sub(new_position,second);
 		dir.sub(second,first);
-		dir.normalize();
+		dir.normalize_safe();
 		float from_first_dir=from_first.dotproduct(dir);
 		float from_second_dir=from_second.dotproduct(dir);
 
@@ -530,7 +530,7 @@ void CPHMovementControl::PathDIrLine(const xr_vector<CTravelNode> &path,  int in
 	to_path_point.mul(1.f/mag);
 	to_path_point.mul(distance*precesition);
 	dir.add(vPathDir,to_path_point);
-	dir.normalize();
+	dir.normalize_safe();
 }
 
 void CPHMovementControl::PathDIrPoint(const xr_vector<CTravelNode> &path,  int index,  float distance,  float precesition, Fvector &dir  )
@@ -547,9 +547,9 @@ void CPHMovementControl::PathDIrPoint(const xr_vector<CTravelNode> &path,  int i
 			return;
 		}
 		dir.sub(path[index].P,path[index-1].P);
-		dir.normalize();
+		dir.normalize_safe();
 		dir.add(vPathDir);
-		dir.normalize();
+		dir.normalize_safe();
 	}
 	to_path_point.mul(1.f/mag);
 
@@ -576,9 +576,9 @@ void CPHMovementControl::PathDIrPoint(const xr_vector<CTravelNode> &path,  int i
 	{
 
 		dir.sub(path[index].P,path[index-1].P);
-		dir.normalize();
+		dir.normalize_safe();
 		dir.add(vPathDir);
-		dir.normalize();
+		dir.normalize_safe();
 	}
 	else 
 	{
@@ -602,7 +602,7 @@ void CPHMovementControl::PathDIrPoint(const xr_vector<CTravelNode> &path,  int i
 	
 	to_path_point.mul(distance*precesition);
 	dir.add(tangent,to_path_point);
-	dir.normalize();
+	dir.normalize_safe();
 }
 void CPHMovementControl::Load					(LPCSTR section){
 

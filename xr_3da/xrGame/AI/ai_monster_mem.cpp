@@ -43,12 +43,17 @@ TSoundDangerValue tagSoundElement::ConvertSoundType(ESoundTypes stype)
 
 void CSoundMemory::HearSound(const SoundElem &s)
 {
-	if (s.type == SOUND_TYPE_MONSTER_DYING) return;		// todo
-	if (s.type == NONE_DANGEROUS_SOUND) return;			// todo
-	if (s.type == WEAPON_BULLET_RICOCHET) return;		// todo
+	if (s.type == MONSTER_DYING)				return;		// todo
+	if (s.type == NONE_DANGEROUS_SOUND)			return;		// todo
+	if (s.type == WEAPON_BULLET_RICOCHET)		return;		// todo
+	if (s.type == MONSTER_INJURING)				return;		// todo
 	
 	// не регистрировать звуки, у которых владелец не известен
 	if (!s.who) return;									// todo
+	
+	// не регистрировать звуки, у которых владелец - труп // todo
+	CEntityAlive* E = dynamic_cast<CEntityAlive*> (s.who);
+	if (E) if (!E->g_Alive()) return;
 
 	// поиск в массиве звука
 	xr_vector<SoundElem>::iterator it;
@@ -100,6 +105,12 @@ void CSoundMemory::UpdateHearing(TTime dt)
 void CSoundMemory::CheckValidObjects()
 {
 	xr_vector<SoundElem>::iterator Result = std::remove_if(Sounds.begin(), Sounds.end(), remove_offline_sound_pred());
+	Sounds.erase   (Result,Sounds.end());
+}
+
+void CSoundMemory::RemoveSoundOwner(CObject *pO)
+{
+	xr_vector<SoundElem>::iterator Result = std::remove_if(Sounds.begin(), Sounds.end(), remove_sound_owner_pred(pO));
 	Sounds.erase   (Result,Sounds.end());
 }
 

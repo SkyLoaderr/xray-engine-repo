@@ -10,7 +10,7 @@ CAI_Bloodsucker::CAI_Bloodsucker()
 	stateEat			= xr_new<CBitingEat>			(this, false);
 	stateAttack			= xr_new<CBitingAttack>			(this, true);
 	statePanic			= xr_new<CBitingPanic>			(this, false);
-	stateExploreDNE		= xr_new<CBitingExploreDNE>		(this);
+	stateExploreDNE		= xr_new<CBitingExploreDNE>		(this, true);
 	stateExploreNDE		= xr_new<CBitingExploreNDE>		(this);
 
 	Init();
@@ -146,9 +146,9 @@ void CAI_Bloodsucker::StateSelector()
 	else if (C && H && !I)		SetState(statePanic);
 	else if (C && !H && I)		SetState(statePanic);
 	else if (C && !H && !I) 	SetState(statePanic);
-	else if (D && H && I)		SetState(statePanic);
+	else if (D && H && I)		SetState(stateAttack);
 	else if (D && !H && I)		SetState(statePanic);
-	else if (D && !H && !I) 	SetState(statePanic);			// :: Hide
+	else if (D && !H && !I) 	SetState(stateAttack);			// :: Hide
 	else if (D && H && !I)		SetState(stateAttack); 
 	else if (E && H && I)		SetState(stateAttack); 
 	else if (E && H && !I)  	SetState(stateAttack);  
@@ -160,7 +160,7 @@ void CAI_Bloodsucker::StateSelector()
 	else if (F && !H && !I) 	SetState(stateAttack);		
 	else if (A && !K)			SetState(stateExploreDNE); 
 	else if (B && !K)			SetState(stateExploreNDE); 
-	else if (GetCorpse(ve) && (ve.obj->m_fFood > 1))// && ((GetSatiety() < 0.85f) || flagEatNow))
+	else if ((GetCorpse(ve) && (ve.obj->m_fFood > 1)) && ((GetSatiety() < 0.85f) || flagEatNow))
 		SetState(stateEat);	
 	else						SetState(stateRest);
 }

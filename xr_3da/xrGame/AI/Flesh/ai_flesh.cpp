@@ -12,7 +12,7 @@ CAI_Flesh::CAI_Flesh()
 	stateHide			= xr_new<CBitingHide>		(this);
 	stateDetour			= xr_new<CBitingDetour>		(this);
 	statePanic			= xr_new<CBitingPanic>		(this, false);
-	stateExploreDNE		= xr_new<CBitingExploreDNE>	(this);
+	stateExploreDNE		= xr_new<CBitingExploreDNE>	(this, false);
 	stateExploreDE		= xr_new<CBitingExploreDE>	(this);
 	stateExploreNDE		= xr_new<CBitingExploreNDE>	(this);
 	CurrentState		= stateRest;

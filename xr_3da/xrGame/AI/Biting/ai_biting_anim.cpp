@@ -54,7 +54,10 @@ void CAI_Biting::CheckAttackHit()
 		this->setEnabled(true);			
 		
 		// если жертва убита - добавить в список трупов	
-		if (!ve.obj->g_Alive()) AddCorpse(ve);
+		if (!ve.obj->g_Alive()) {
+			AddCorpse(ve);
+			RemoveSoundOwner(ve.obj);  // удалить все звуки принадлежащие объекту
+		}
 	}
 }
 
@@ -352,7 +355,6 @@ void CMotionManager::FixBadState()
 	// если конец пути и монстр идёт - исправить
 	if (!pMonster->AI_Path.TravelPath.empty() && ((pMonster->AI_Path.TravelPath.size() - 1 ) <= pMonster->AI_Path.TravelStart) && is_moving_action) {
 		cur_anim = eAnimStandIdle;
-		Msg("PathEnd Fixing");
 		return;
 	}
 
@@ -371,7 +373,6 @@ void CMotionManager::FixBadState()
 		cur_anim = eAnimStandIdle;	
 
 		if (time_start_stand + CRITICAL_STAND_TIME + TIME_STAND_RECHECK < cur_time) time_start_stand = 0;
-		Msg("Bad Movement Fixing");
 	}
 
 	prev_action = m_tAction;

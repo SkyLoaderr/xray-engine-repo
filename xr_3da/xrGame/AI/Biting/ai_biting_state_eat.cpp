@@ -7,6 +7,8 @@
 #include "..\\..\\PhysicsShell.h"
 #include "..\\..\\phcapture.h"
 
+#define  REST_AFTER_LUNCH_TIME 5000
+
 ///////////////////////////////////////////////////////////////////////////////////////////////////////////
 // CBitingEat class
 ///////////////////////////////////////////////////////////////////////////////////////////////////////////
@@ -39,8 +41,6 @@ void CBitingEat::Init()
 
 	bEatRat = (dynamic_cast<CAI_Rat *>(pCorpse) ? true : false);
 	m_fDistToCorpse = ((bEatRat)? 1.0f : pMonster->m_fDistToCorpse); 
-	
-	if (bEatRat) Msg("Eat Rat");
 
 	SavedPos			= pCorpse->Position();		// сохранить позицию трупа
 	m_fDistToDrag		= 20.f;
@@ -53,6 +53,13 @@ void CBitingEat::Init()
 
 	m_dwPrepareDrag		= 0;
 	bEating				= false;
+	
+	bRestAfterLunch		= false;
+	bHideAfterLunch		= false;
+	
+	m_dwTimeStartRest	= 0;
+
+	pMonster->flagEatNow = true;
 
 	// Test
 	WRITE_TO_LOG("_ Eat Init _");
@@ -62,13 +69,16 @@ void CBitingEat::Run()
 {
 	// Если новый труп, снова инициализировать состояние 
 	VisionElem ve;
-	if (!pMonster->GetCorpse(ve)) R_ASSERT(false);
+	if (!pMonster->GetCorpse(ve)) {Done(); return;}
 	if (pCorpse != ve.obj) Init();
 
 	float saved_dist	= SavedPos.distance_to(pMonster->Position()); // расстояние, на которое уже оттащен труп
 	float cur_dist		= pCorpse->Position().distance_to(pMonster->Position());
 
 	if (bEating && (cur_dist > m_fDistToCorpse)) m_tAction = ACTION_WALK;
+
+	if (bHideAfterLunch) m_tAction = ACTION_GET_HIDE;
+	else if (bRestAfterLunch) m_tAction = ACTION_LITTLE_REST;
 
 	// Выполнение состояния
 	switch (m_tAction) {
@@ -175,11 +185,8 @@ void CBitingEat::Run()
 			break;
 		case ACTION_EAT:
 			pMonster->MotionMan.m_tAction = ACT_EAT; 
-
 			bEating = true;
-
-			if (pMonster->GetSatiety() >= 1.0f) pMonster->flagEatNow = false;
-			else pMonster->flagEatNow = true;
+			if (pMonster->GetSatiety() >= 1.0f) bHideAfterLunch = true;
 
 			// съесть часть
 			DO_IN_TIME_INTERVAL_BEGIN(m_dwLastTimeEat, m_dwEatInterval);
@@ -188,6 +195,24 @@ void CBitingEat::Run()
 			DO_IN_TIME_INTERVAL_END();
 
 			break;
+		case ACTION_GET_HIDE:
+			pMonster->Path_GetAwayFromPoint(pCorpse, pCorpse->Position(), 10.f, 300);
+			pMonster->MotionMan.m_tAction = ACT_WALK_FWD; 
+
+			if (cur_dist > 5.f) {
+				m_tAction = ACTION_LITTLE_REST;
+				bHideAfterLunch = false;
+				bRestAfterLunch	= true;
+				m_dwTimeStartRest = m_dwCurrentTime;
+			}
+			break;
+		case ACTION_LITTLE_REST:
+			pMonster->MotionMan.m_tAction = ACT_REST; 
+			if (m_dwTimeStartRest + REST_AFTER_LUNCH_TIME < m_dwCurrentTime) {
+				pMonster->flagEatNow	= false;
+				bRestAfterLunch			= false; 
+			}
+			break;
 	}
 }
 
@@ -195,7 +220,7 @@ void CBitingEat::Done()
 {
 	inherited::Done();
 
-	pMonster->flagEatNow = false;
+	pMonster->flagEatNow	= false;
 
 	// если тащит труп - бросить
 	if (bDragging) {

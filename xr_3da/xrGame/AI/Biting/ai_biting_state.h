@@ -64,6 +64,8 @@ class CBitingEat : public IState {
 		ACTION_LOOK_AROUND,
 		ACTION_WALK,
 		ACTION_EAT,
+		ACTION_GET_HIDE,
+		ACTION_LITTLE_REST,
 	} m_tAction;
 
 	CEntity			*pCorpse;
@@ -82,6 +84,10 @@ class CBitingEat : public IState {
 	TTime			m_dwPrepareDrag;
 	bool			bEating;
 
+	bool			bRestAfterLunch;
+	bool			bHideAfterLunch;
+	TTime			m_dwTimeStartRest;
+
 public:
 					CBitingEat		(CAI_Biting *p, bool pmt_can_drag);
 
@@ -92,6 +98,7 @@ private:
 	virtual void	Run				();
 	virtual void	Done			();
 };
+
 
 ///////////////////////////////////////////////////////////////////////////////////////////////////////////
 // CBitingAttack class
@@ -229,8 +236,10 @@ class CBitingExploreDNE : public IState {
 	TTime			m_dwLastPosSavedTime;
 	TTime			m_dwStayLastTimeCheck;
 
+	bool			m_bInvisibility;
+
 public:
-					CBitingExploreDNE	(CAI_Biting *p);
+					CBitingExploreDNE	(CAI_Biting *p, bool bVisibility);
 private:
 	virtual	void	Init				();
 	virtual	void	Run					();

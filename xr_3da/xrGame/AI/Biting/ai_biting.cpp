@@ -52,7 +52,6 @@ void CAI_Biting::Init()
 	m_pPhysics_support				->in_Init();
 
 	flagEatNow						= false;
-
 }
 
 void CAI_Biting::Die()

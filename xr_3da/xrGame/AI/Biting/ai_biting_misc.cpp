@@ -170,10 +170,13 @@ void CAI_Biting::vfUpdateParameters()
 	cur_pos			= Position();
 
 	bStanding		= !!prev_pos.similar(cur_pos);
-	if (bStanding && (time_start_stand == 0)) time_start_stand = Level().timeServer();		// только начинаем стоять на месте
+	if (bStanding && (time_start_stand == 0)) time_start_stand = m_dwCurrentUpdate;		// только начинаем стоять на месте
 	if (!bStanding) time_start_stand = 0; 
 
 	prev_pos	= cur_pos;
+
+	// Setup additional flags
+
 }
 
 bool CAI_Biting::IsStanding (TTime time)
@@ -193,7 +196,7 @@ bool CAI_Biting::bfAssignMovement (CEntityAction *tpEntityAction)
 
 	// build path to the point
 	vfChoosePointAndBuildPath(0,&l_tMovementAction.m_tDestinationPosition, false, 0);
-	Msg("Biting use script...");
+	//Msg("Biting use script...");
 	//MotionMan.ProcessAction();
 
 	return			(true);		

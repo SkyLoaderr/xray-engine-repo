@@ -2,13 +2,17 @@
 #include "ai_biting.h"
 #include "ai_biting_state.h"
 
+#include "..\\bloodsucker\\ai_bloodsucker.h"
+
 ///////////////////////////////////////////////////////////////////////////////////////////////////////////
 // CBitingExploreDNE class
 ///////////////////////////////////////////////////////////////////////////////////////////////////////////
 
-CBitingExploreDNE::CBitingExploreDNE(CAI_Biting *p)
+CBitingExploreDNE::CBitingExploreDNE(CAI_Biting *p, bool bVisibility)
 {
 	pMonster = p;
+	m_bInvisibility	= bVisibility;
+
 	Reset();
 	SetHighPriority();
 }
@@ -41,14 +45,21 @@ void CBitingExploreDNE::Run()
 	pMonster->GetSound(se, bTemp);
 	if (m_tSound.time + 2000 < se.time) Init();
 
-//	// нивидимость
-//	if (pMonster->GetPower() > pMonster->m_fPowerThreshold) {
-//		if (pMonster->CMonsterInvisibility::Switch(false)) pMonster->ChangePower(pMonster->m_ftrPowerDown);
-//	}
+	// нивидимость
+#pragma todo("Jim to Jim: fix nesting: Bloodsucker in Biting state")
+	if (m_bInvisibility) {
+		CAI_Bloodsucker *pBS =	dynamic_cast<CAI_Bloodsucker *>(pMonster);	
+		if (pBS->GetPower() > pBS->m_fPowerThreshold) {
+			if (pBS->CMonsterInvisibility::Switch(false)) {
+				pBS->ChangePower(pBS->m_ftrPowerDown);
+				pBS->ActivateEffector(pBS->CMonsterInvisibility::GetInvisibleInterval() / 1000.f);
+			}
+		}
+	}
 	
 	switch (m_tAction) {
 	case ACTION_RUN_AWAY: // убегать на N метров от звука
-		Msg(" DNE : [RUN AWAY]");
+		WRITE_TO_LOG(" DNE : [RUN AWAY]");
 
 		pMonster->Path_GetAwayFromPoint (0, m_tSound.position, m_fRunAwayDist, 2000);
 		pMonster->MotionMan.m_tAction = ACT_RUN;
@@ -69,7 +80,7 @@ void CBitingExploreDNE::Run()
 
 		break;
 	case ACTION_LOOK_BACK_POSITION:			// повернуться в сторону звука
-		Msg("DNE : [LOOK_BACK_POSITION]");
+		WRITE_TO_LOG("DNE : [LOOK_BACK_POSITION]");
 		DO_ONCE_BEGIN(flag_once_1);
 			pMonster->AI_Path.TravelPath.clear();
 			pMonster->LookPosition(SavedPosition);
@@ -82,7 +93,7 @@ void CBitingExploreDNE::Run()
 		break;
 
 	case ACTION_LOOK_AROUND:
-		Msg("DNE : [LOOK_AROUND]");
+		WRITE_TO_LOG("DNE : [LOOK_AROUND]");
 		
 		pMonster->MotionMan.m_tAction = ACT_LOOK_AROUND;
 		break;

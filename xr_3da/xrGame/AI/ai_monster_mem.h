@@ -77,6 +77,12 @@ struct predicate_remove_old_sounds {
 	bool operator() (const SoundElem &x) { return (x.time < new_time); }
 };
 
+// удалить все звуки принадлежащие данному объекту
+struct remove_sound_owner_pred {
+	CObject *pO;
+	remove_sound_owner_pred(CObject *o) {pO = o;}
+	bool operator() (const SoundElem &x){ return (x.who == pO); }
+};
 
 class CSoundMemory
 {
@@ -97,8 +103,9 @@ protected:
 
 		void	UpdateHearing			(TTime dt);
 
+		void    RemoveSoundOwner		(CObject *pO);	//удалить все звуки принадлежащие данному объекту
 private:
-		void	CheckValidObjects		(); 		// удалить объекты которые не прошли тест на GetDestroyed(), т.е. ушли в оффлайн
+		void	CheckValidObjects		(); 			// удалить объекты которые не прошли тест на GetDestroyed(), т.е. ушли в оффлайн
 };
 
 
