@@ -235,10 +235,12 @@ void CParticleTools::OnDeviceCreate()
 
 	if (m_TestObject) m_TestObject->OnDeviceCreate();
     m_EditPE->OnDeviceCreate();
+    m_EditPG->OnDeviceCreate();
 }
 
 void CParticleTools::OnDeviceDestroy()
 {
+    m_EditPG->OnDeviceDestroy();
     m_EditPE->OnDeviceDestroy();
 	if (m_TestObject) m_TestObject->OnDeviceDestroy();
 }

@@ -24,29 +24,6 @@ TfraLeftBar *fraLeftBar;
 
 #define MIN_PANEL_HEIGHT 15
 //---------------------------------------------------------------------------
-void __fastcall PanelMinimizeClick(TObject *Sender)
-{
-    TPanel* pa = ((TPanel*)((TControl*)Sender)->Parent);
-    if (pa->Tag > 0){
-        pa->Height = pa->Tag;
-        pa->Tag    = 0;
-    }else{
-        pa->Tag    = pa->Height;
-        pa->Height = MIN_PANEL_HEIGHT;
-    }
-    UI.Command(COMMAND_UPDATE_TOOLBAR);
-}
-void __fastcall PanelMaximizeOnlyClick(TObject *Sender)
-{
-    TPanel* pa = ((TPanel*)((TControl*)Sender)->Parent);
-    if (pa->Tag > 0){
-        pa->Height = pa->Tag;
-        pa->Tag    = 0;
-    }
-    UI.Command(COMMAND_UPDATE_TOOLBAR);
-}
-
-//---------------------------------------------------------------------------
 __fastcall TfraLeftBar::TfraLeftBar(TComponent* Owner)
         : TFrame(Owner)
 {
@@ -77,6 +54,26 @@ void TfraLeftBar::UpdateBar(){
 }
 //---------------------------------------------------------------------------
 
+void TfraLeftBar::MinimizeAllFrames()
+{
+    for (int j=0; j<paLeftBar->ControlCount; j++){
+        TPanel* pa = dynamic_cast<TPanel*>(paLeftBar->Controls[j]);
+	    if (pa) PanelMinimize(pa);
+    }
+	UpdateBar();
+}
+//---------------------------------------------------------------------------
+
+void TfraLeftBar::MaximizeAllFrames()
+{
+    for (int j=0; j<paLeftBar->ControlCount; j++){
+        TPanel* pa = dynamic_cast<TPanel*>(paLeftBar->Controls[j]);
+	    if (pa)	PanelMaximize(pa);
+    }
+	UpdateBar();
+}
+//---------------------------------------------------------------------------
+
 void __fastcall TfraLeftBar::ebSaveClick(TObject *Sender)
 {
 	UI.Command( COMMAND_SAVE );
@@ -97,14 +94,14 @@ void __fastcall TfraLeftBar::ebRefreshTexturesClick(TObject *Sender)
 
 void __fastcall TfraLeftBar::PanelMimimizeClick(TObject *Sender)
 {
-    PanelMinimizeClick(Sender);
+    ::PanelMinMaxClick(Sender);
     UpdateBar();
 }
 //---------------------------------------------------------------------------
 
 void __fastcall TfraLeftBar::PanelMaximizeClick(TObject *Sender)
 {
-    PanelMaximizeOnlyClick(Sender);
+    ::PanelMaximizeClick(Sender);
     UpdateBar();
 }
 //---------------------------------------------------------------------------

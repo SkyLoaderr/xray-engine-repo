@@ -27,28 +27,29 @@ WINAPI WinMain(HINSTANCE hInst, HINSTANCE, LPSTR, int)
 //    try
     {
         frmSplash = xr_new<TfrmSplash>((TComponent*)0);
-        frmSplash->Show();
-        frmSplash->Repaint();
+        frmSplash->Show			();
+        frmSplash->Repaint		();
 
-        frmSplash->SetStatus("Core Initialize...");
+        frmSplash->SetStatus	("Core initializing...");
 
 		Core._initialize		(_EDITOR_FILE_NAME_,ELogCallback);
-        TfrmLog::CreateLog();
+        TfrmLog::CreateLog		();
 
-        Application->Initialize();
+        Application->Initialize	();
 
-        frmSplash->SetStatus("Loading...");
+        frmSplash->SetStatus	("Loading...");
 
 // startup create
-		Application->Title = "Particle Editor";
+		Application->Title 		= _EDITOR_NAME_;
 		Application->CreateForm(__classid(TfrmMain), &frmMain);
-		frmMain->SetHInst(hInst);
+		frmMain->SetHInst		(hInst);
 
-        xr_delete(frmSplash);
+        xr_delete				(frmSplash);
 
-        Application->Run();
+        Application->Run		();
 
-        TfrmLog::DestroyLog();
+        TfrmLog::DestroyLog		();
+        Core._destroy			();
     }
 //    catch (Exception &exception)
 //    {

@@ -23,9 +23,10 @@ void CPSLibrary::OnCreate()
 
 void CPSLibrary::OnDestroy()
 {
-    m_PSs.clear();
-	m_PEDs.clear();
-	m_PGDs.clear();
+	OnDeviceDestroy	();
+    m_PSs.clear		();
+	m_PEDs.clear	();
+	m_PGDs.clear	();
 }
 
 //----------------------------------------------------

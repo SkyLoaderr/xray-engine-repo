@@ -198,8 +198,8 @@ void CRenderDevice::_Create(IReader* F)
     m_SelectionShader.create	("editor\\selection");
 
 	// signal another objects
+    UI.OnDeviceCreate			();           
 	seqDevCreate.Process		(rp_DeviceCreate);
-    UI.OnDeviceCreate			();
 
 	pSystemFont			= xr_new<CGameFont>("hud_font_small");
 }

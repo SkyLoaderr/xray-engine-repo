@@ -198,11 +198,13 @@ CParticleEffect::~CParticleEffect()
 void CParticleEffect::OnDeviceCreate()
 {
 	hGeom.create			(FVF::F_TL, RCache.Vertex.Buffer(), RCache.QuadIB);
+	if (m_Def)	hShader		= m_Def->m_CachedShader;
 }
 
 void CParticleEffect::OnDeviceDestroy()
 {
 	hGeom.destroy			();
+    hShader.destroy			();
 }
 
 void CParticleEffect::Play()
