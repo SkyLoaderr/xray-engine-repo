@@ -47,7 +47,7 @@ private:
 	xr_multiset<svs_respawn>	q_respawn;
 
 public:
-	game_sv_GameState*		game;
+	game_sv_GameState*			game;
 
 	void					Perform_game_export		();
 	BOOL					PerformRP				(xrServerEntity* E);

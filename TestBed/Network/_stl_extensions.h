@@ -55,8 +55,8 @@ template	<>												class	xr_vector<bool>	: public std::vector<bool,xr_alloca
 template	<typename T>									class	xr_list 		: public std::list<T,xr_allocator_t<T> >								{};
 template	<typename T>									class	xr_deque 		: public std::deque<T,xr_allocator_t<T> >								{};
 template	<typename T>									class	xr_stack 		: public std::stack<T,xr_deque<T> >										{};
-template	<typename K, class P=less<K> >					class	xr_set			: public std::set<K,P,xr_allocator_t<K> >								{};
-template	<typename K, class P=less<K> >					class	xr_multiset		: public std::multiset<K,P,xr_allocator_t<K> >							{};
+template	<typename K, class P=std::less<K> >				class	xr_set			: public std::set<K,P,xr_allocator_t<K> >								{};
+template	<typename K, class P=std::less<K> >				class	xr_multiset		: public std::multiset<K,P,xr_allocator_t<K> >							{};
 template	<typename K, class V, class P=std::less<K> >	class	xr_map 			: public std::map<K,V,P,xr_allocator_t<std::pair<const K,V> > >			{};
 template	<typename K, class V, class P=std::less<K> >	class	xr_multimap		: public std::multimap<K,V,P,xr_allocator_t<std::pair<const K,V> > >	{};
 

@@ -88,10 +88,10 @@ public:
 	NL_TYPE							q_nearest;
 	clQueryCollision				q_result;
 
-	clQueryCollision				q_debug;
+	clQueryCollision					q_debug;
 	xr_vector<Fmatrix>					dbg_E;
-	xr_vector<pair<Fsphere,u32> >		dbg_S;
-	xr_vector<Fvector2>				dbg_Slot;
+	xr_vector<std::pair<Fsphere,u32> >	dbg_S;
+	xr_vector<Fvector2>					dbg_Slot;
 
 public:
 									CObjectSpace		( );
