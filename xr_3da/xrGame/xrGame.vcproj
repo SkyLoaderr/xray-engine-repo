@@ -8768,6 +8768,22 @@
 							RelativePath=".\PHIsland.h">
 						</File>
 					</Filter>
+					<Filter
+						Name="PHCommander"
+						Filter="">
+						<File
+							RelativePath=".\PHCommander.cpp">
+						</File>
+						<File
+							RelativePath=".\PHCommander.h">
+						</File>
+						<File
+							RelativePath=".\PHScriptCall.cpp">
+						</File>
+						<File
+							RelativePath=".\PHScriptCall.h">
+						</File>
+					</Filter>
 				</Filter>
 				<Filter
 					Name="Impact"

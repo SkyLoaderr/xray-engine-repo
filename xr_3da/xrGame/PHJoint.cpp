@@ -21,6 +21,11 @@
 const float hinge2_spring=20000.f;
 const float hinge2_damping=1000.f;
 
+IC dBodyID body_for_joint(CPhysicsElement* e)
+{
+	return e->isFixed() ? 0 : e->get_body();
+}
+
 CPHJoint::~CPHJoint(){
 	xr_delete(m_destroy_info);
 	if(bActive) Deactivate();
@@ -86,8 +91,8 @@ default:NODEFAULT;
 
 		return;
 	}
-
-	dJointAttach(m_joint,first->get_body(),second->get_body());
+	
+	dJointAttach(m_joint,body_for_joint(first),body_for_joint(second));
 	dJointSetBallAnchor(m_joint,pos.x,pos.y,pos.z);
 
 }
@@ -129,7 +134,7 @@ default:NODEFAULT;
 	float hi,lo;
 	CalcAxis(0,axis,lo,hi,first_matrix,second_matrix,rotate);
 
-	dJointAttach(m_joint,first->get_body(),second->get_body());
+	dJointAttach(m_joint,body_for_joint(first),body_for_joint(second));
 
 	dJointSetHingeAnchor(m_joint,pos.x,pos.y,pos.z);
 	dJointSetHingeAxis(m_joint,axis.x,axis.y,axis.z);
@@ -170,7 +175,7 @@ void CPHJoint::CreateHinge2()
 	//////////////////////////////////////
 
 	
-	dJointAttach(m_joint,first->get_body(),second->get_body());
+	dJointAttach(m_joint,body_for_joint(first),body_for_joint(second));
 	dJointSetHinge2Anchor(m_joint,pos.x,pos.y,pos.z);
 
 	/////////////////////////////////////////////
@@ -1107,8 +1112,8 @@ void CPHJoint::GetAnchorDynamic(Fvector& anchor)
 }
 
 CPHJoint::SPHAxis::SPHAxis(){
-	high=M_PI/15.f;
-	low=-M_PI/15.f;;
+	high=dInfinity;
+	low=-dInfinity;
 	zero=0.f;
 	//erp=ERP(world_spring/5.f,world_damping*5.f);
 	//cfm=CFM(world_spring/5.f,world_damping*5.f);

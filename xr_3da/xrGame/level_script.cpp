@@ -20,8 +20,9 @@
 #include "date_time.h"
 #include "ai_space.h"
 #include "level_graph.h"
+#include "PHCommander.h"
+#include "PHScriptCall.h"
 #include "HUDManager.h"
-
 using namespace luabind;
 
 CScriptGameObject *tpfGetActor()
@@ -195,6 +196,17 @@ bool is_level_present()
 {
 	return (!!g_pGameLevel);
 }
+
+void add_call(const luabind::functor<bool> &condition,const luabind::functor<void> &action)
+{
+	Level().ph_commander().add_call(xr_new<CPHScriptCondition>(condition),xr_new<CPHScriptAction>(action));
+}
+
+void add_call(const luabind::object &lua_object, LPCSTR condition,LPCSTR action)
+{
+	Level().ph_commander().add_call(xr_new<CPHScriptObjectCondition>(lua_object,condition),xr_new<CPHScriptObjectAction>(lua_object,action));
+}
+
 void CLevel::script_register(lua_State *L)
 {
 	module(L,"level")
@@ -230,7 +242,13 @@ void CLevel::script_register(lua_State *L)
 		def("add_dialog_to_render",				add_dialog_to_render),
 		def("remove_dialog_to_render",			remove_dialog_to_render),
 		def("main_input_receiver",				main_input_receiver),
-
+		def("present",							is_level_present),
+		def("add_call",							((void (*) (const luabind::functor<bool> &,const luabind::functor<void> &)) &add_call)),
+		def("add_call",							((void (*) (const luabind::object &, LPCSTR, LPCSTR)) &add_call)),
 		def("present",							is_level_present)
 	];
 }
+
+
+//(const luabind::object &, LPCSTR, const ScriptEntity::EActionType))
+//)(
