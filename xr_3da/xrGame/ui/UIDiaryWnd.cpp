@@ -22,8 +22,10 @@
 //#include "../xrServer_Objects_ALife_Items.h"
 #include "../xrServer_Objects_ALife_Monsters.h"
 
+//////////////////////////////////////////////////////////////////////////
 
-const char * const DIARY_XML = "events_new.xml";
+const char * const	DIARY_XML			= "events_new.xml";
+const int			contractsOffset		= 60;
 
 // ID for tree view items
 enum EDiaryIDs
@@ -41,12 +43,13 @@ enum EDiaryIDs
 //	Default constructor
 //-----------------------------------------------------------------------------/
 CUIDiaryWnd::CUIDiaryWnd()
-	:	m_pActiveSubdialog	(NULL),
-		m_pTreeItemFont		(NULL),
-		m_pTreeRootFont		(NULL),
-		m_pContractsTreeItem(NULL),
-		m_uTreeRootColor	(0xffffffff),
-		m_uTreeItemColor	(0xffffffff)
+	:	m_pActiveSubdialog		(NULL),
+		m_pTreeItemFont			(NULL),
+		m_pTreeRootFont			(NULL),
+		m_pContractsTreeItem	(NULL),
+		m_uTreeRootColor		(0xffffffff),
+		m_uTreeItemColor		(0xffffffff),
+		m_pLeftHorisontalLine	(NULL)
 {
 	Hide();
 }
@@ -98,14 +101,14 @@ void CUIDiaryWnd::Init()
 	// Поддиалоги
 	UIJobsWnd.Init();
 	UINewsWnd.Init();
-	UINotesWnd.Init();
+	UIContractsWnd.Init();
 
 	m_pActiveSubdialog = NULL;
 	
 	InitTreeView();
 
 	// Autostatics
-	xml_init.InitAutoStatic(uiXml, "left_auto_static", &UIFrameWnd);
+	m_pLeftHorisontalLine = xml_init.InitAutoStatic(uiXml, "left_auto_static", &UIFrameWnd)[2];
 	xml_init.InitAutoStatic(uiXml, "right_auto_static", &UITreeViewBg);
 }
 
@@ -131,6 +134,15 @@ void CUIDiaryWnd::SendMessage(CUIWindow* pWnd, s16 msg, void* pData)
 				UIFrameWnd.DetachChild(m_pActiveSubdialog);
 			}
 
+			if (m_pActiveSubdialog == &UIContractsWnd)
+			{
+				VERIFY(m_pLeftHorisontalLine);
+				RECT r = m_pLeftHorisontalLine->GetWndRect();
+				m_pLeftHorisontalLine->MoveWindow(r.left, r.top - contractsOffset);
+			}
+
+			RECT r;
+
 			switch (static_cast<EDiaryIDs>(pTVItem->GetValue()))
 			{
 
@@ -148,7 +160,10 @@ void CUIDiaryWnd::SendMessage(CUIWindow* pWnd, s16 msg, void* pData)
 				break;
 
 			case idContracts:
-				m_pActiveSubdialog = NULL;
+				VERIFY(m_pLeftHorisontalLine);
+				r = m_pLeftHorisontalLine->GetWndRect();
+				m_pLeftHorisontalLine->MoveWindow(r.left, r.top + contractsOffset);
+				m_pActiveSubdialog = &UIContractsWnd;
 				break;
 
 			case idNews:
@@ -156,7 +171,7 @@ void CUIDiaryWnd::SendMessage(CUIWindow* pWnd, s16 msg, void* pData)
 				break;
 
 			default:
-				R_ASSERT(!"Unknown type of diary id");
+				NODEFAULT;
 				return;
 			}
 
@@ -256,6 +271,7 @@ void CUIDiaryWnd::InitDiary()
 	CActor* pActor = dynamic_cast<CActor*>(Level().CurrentEntity());
 	if(!pActor) return;
 
+	m_pContractsTreeItem->Close();
 	m_pContractsTreeItem->DeleteAllSubItems();
 
 	if(pActor->contacts_registry.objects_ptr())

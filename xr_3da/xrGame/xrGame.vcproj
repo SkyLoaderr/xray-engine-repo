@@ -7936,6 +7936,12 @@
 					Name="Diary"
 					Filter="">
 					<File
+						RelativePath=".\ui\UIContracts.cpp">
+					</File>
+					<File
+						RelativePath=".\ui\UIContracts.h">
+					</File>
+					<File
 						RelativePath=".\ui\UIDiaryWnd.cpp">
 					</File>
 					<File
@@ -7964,12 +7970,6 @@
 					</File>
 					<File
 						RelativePath=".\ui\UINewsWnd.h">
-					</File>
-					<File
-						RelativePath=".\ui\UINotesWnd.cpp">
-					</File>
-					<File
-						RelativePath=".\ui\UINotesWnd.h">
 					</File>
 				</Filter>
 				<Filter

@@ -27,8 +27,8 @@ void CUICharacterInfo::Init(int x, int y, int width, int height, const char* xml
 	inherited::Init(x, y, width, height);
 
 	CUIXml uiXml;
-	bool xml_result = uiXml.Init("$game_data$",xml_name);
-	R_ASSERT2(xml_result, "xml file not found");
+	bool xml_result = uiXml.Init("$game_data$", xml_name);
+	R_ASSERT3(xml_result, "xml file not found", xml_name);
 
 	CUIXmlInit xml_init;
 

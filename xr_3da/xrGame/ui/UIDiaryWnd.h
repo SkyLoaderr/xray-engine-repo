@@ -9,10 +9,9 @@
 #include "UIFrameWindow.h"
 #include "UIFrameLineWnd.h"
 #include "UIAnimatedStatic.h"
-
 #include "UINewsWnd.h"
 #include "UIJobsWnd.h"
-#include "UINotesWnd.h"
+#include "UIContracts.h"
 
 ///////////////////////////////////////
 // Дневник
@@ -40,7 +39,7 @@ protected:
 	// Дочерние окна входящие в окно информации
 	CUINewsWnd			UINewsWnd;
 	CUIJobsWnd			UIJobsWnd;
-	CUINotesWnd			UINotesWnd;
+	CUIContractsWnd		UIContractsWnd;
 
 	// Текущий активный поддиалог
 	CUIDialogWnd		*m_pActiveSubdialog;
@@ -64,6 +63,9 @@ protected:
 	u32					m_uTreeRootColor;
 	CGameFont			*m_pTreeItemFont;
 	u32					m_uTreeItemColor;
+
+	// Левая горизонтальня линия
+	CUIStatic			*m_pLeftHorisontalLine;
 
 	//список торговцев, которые дают заказы на артефакты
 	CUITreeViewItem*	m_pContractsTreeItem;
