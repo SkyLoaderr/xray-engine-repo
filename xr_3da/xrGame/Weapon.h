@@ -15,8 +15,10 @@ class CWeaponHUD;
 class CWeapon : public CObject
 {
 	friend class	CWeaponList;
-	BOOL			bWorking;
-	char*			m_WpnName;
+
+	BOOL			bWorking;		// Weapon fires now
+	BOOL			bPending;		// Weapon needs some time to update itself, even if hidden
+	LPSTR			m_WpnName;
 protected:
 	CEntity*		m_pParent;
 	CWeaponList*	m_pContainer;
@@ -52,11 +54,13 @@ public:
 	virtual void	FireStart		()				{ bWorking=true;	}
 	virtual void	FireEnd			()				{ bWorking=false;	}
 	
-	virtual void	Hide			()				{};
-	virtual void	Show			()				{};
+	virtual void	Hide			();
+	virtual void	Show			();
 
-	BOOL			IsWorking		()				{ return bWorking;	}
-	BOOL			IsValid			()				{ return (iAmmoElapsed!=0); }
+	IC BOOL			IsWorking		()				{ return bWorking;							}
+	IC BOOL			IsValid			()				{ return (iAmmoElapsed!=0);					}
+	IC BOOL			IsVisible		()				{ return bVisible;							}	// Weapon change occur only after visibility change
+	IC BOOL			IsUpdating		()				{ return bWorking || bPending || bVisible;	}	// Does weapon need's update?
 
 	virtual	void	Update			(float dt, BOOL bHUDView)	{};
 	virtual	void	Render			(BOOL bHUDView)				{};

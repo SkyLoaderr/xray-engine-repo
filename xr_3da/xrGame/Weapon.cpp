@@ -69,10 +69,22 @@ void CWeapon::Load(CInifile* ini, const char* section)
 	iHitPower		= ini->ReadINT		(section,"hit_power"		);
 }
 
+void CWeapon::Hide		()
+{
+	FireEnd			();
+	bPending		= TRUE;
+}
+
+void CWeapon::Show		()
+{
+	bVisible		= TRUE;
+}
+
 void CWeapon::SetDefaults()
 {
 	iAmmoElapsed	= 0;
 	bWorking		= false;
+	bPending		= false;
 }
 
 void CWeapon::UpdatePosition(const Fmatrix& trans){
