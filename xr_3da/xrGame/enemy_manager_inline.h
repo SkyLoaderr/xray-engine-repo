@@ -8,7 +8,7 @@
 
 #pragma once
 
-IC	const xr_set<const CEntityAlive*> &CEnemyManager::enemies() const
+IC	const xr_vector<const CEntityAlive*> &CEnemyManager::enemies() const
 {
 	return				(objects());
 }

@@ -1038,13 +1038,13 @@ CInventoryItem *CWeapon::can_kill	(CInventory *inventory) const
 	return					(0);
 }
 
-const CInventoryItem *CWeapon::can_kill	(const xr_set<const CGameObject*> &items) const
+const CInventoryItem *CWeapon::can_kill	(const xr_vector<const CGameObject*> &items) const
 {
 	if (m_ammoTypes.empty())
 		return				(this);
 
-	xr_set<const CGameObject*>::const_iterator I = items.begin();
-	xr_set<const CGameObject*>::const_iterator E = items.end();
+	xr_vector<const CGameObject*>::const_iterator I = items.begin();
+	xr_vector<const CGameObject*>::const_iterator E = items.end();
 	for ( ; I != E; ++I) {
 		const CInventoryItem	*inventory_item = dynamic_cast<const CInventoryItem*>(*I);
 		if (!inventory_item)

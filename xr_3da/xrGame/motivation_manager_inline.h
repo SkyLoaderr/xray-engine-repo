@@ -37,6 +37,7 @@ IC	void CSMotivationManager::init				()
 {
 	m_graph					= xr_new<CSGraphAbstract>();
 	m_edges.reserve			(16);
+	m_actions.reserve		(100);
 }
 
 TEMPLATE_SPECIALIZATION
@@ -125,7 +126,7 @@ IC	typename CSMotivationManager::CSMotivation *CSMotivationManager::motivation	(
 TEMPLATE_SPECIALIZATION
 IC	typename CSMotivationManager::CSMotivationAction *CSMotivationManager::selected	() const
 {
-	xr_map<u32,float>::const_iterator	I = m_actions.find(m_selected_id);
+	xr_vector<CMotivationWeight>::const_iterator	I = std::find(m_actions.begin(),m_actions.end(),m_selected_id);
 	VERIFY				(m_actions.end() != I);
 	return				(dynamic_cast<CSMotivationAction*>(motivation(m_selected_id)));
 }
@@ -194,12 +195,12 @@ IC	void CSMotivationManager::select_action		()
 	{
 		float						max = -1.f;
 		m_selected_id				= u32(-1);
-		xr_map<u32,float>::iterator	I = m_actions.begin();
-		xr_map<u32,float>::iterator	E = m_actions.end();
+		xr_vector<CMotivationWeight>::iterator	I = m_actions.begin();
+		xr_vector<CMotivationWeight>::iterator	E = m_actions.end();
 		for ( ; I != E; ++I)
-			if ((*I).second > max) {
-				m_selected_id		= (*I).first;
-				max					= (*I).second;
+			if ((*I).m_motivation_weight > max) {
+				m_selected_id		= (*I).m_motivation_id;
+				max					= (*I).m_motivation_weight;
 			}
 		VERIFY						(m_selected_id != u32(-1));
 	}
@@ -213,11 +214,11 @@ IC	void CSMotivationManager::propagate	(u32 motivation_id, float weight)
 	xr_vector<CSGraphAbstract::CEdge>::const_iterator	E = vertex->edges().end();
 
 	if (I == E) {
-		xr_map<u32,float>::iterator	i = m_actions.find(motivation_id);
+		xr_vector<CMotivationWeight>::iterator	i = std::find(m_actions.begin(),m_actions.end(),motivation_id);
 		if (m_actions.end() == i)
-			m_actions.insert	(std::make_pair(motivation_id,weight));
+			m_actions.push_back			(CMotivationWeight(motivation_id,weight));
 		else
-			(*i).second			+= weight;
+			(*i).m_motivation_weight	+= weight;
 		return;
 	}
 

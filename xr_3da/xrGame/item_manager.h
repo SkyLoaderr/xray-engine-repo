@@ -17,7 +17,7 @@ class CItemManager : public CObjectManager<const CGameObject > {
 public:
 	virtual bool	useful						(const CGameObject *object) const;
 	virtual	float	evaluate					(const CGameObject *object) const;
-	IC		const xr_set<const CGameObject*> &items() const;
+	IC		const xr_vector<const CGameObject*> &items() const;
 };
 
 #include "item_manager_inline.h"

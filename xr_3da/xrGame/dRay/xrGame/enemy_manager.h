@@ -28,7 +28,7 @@ public:
 	virtual void		reload						(LPCSTR section);
 	virtual bool		useful						(const CEntityAlive *object) const;
 	virtual	float		evaluate					(const CEntityAlive *object) const;
-	IC		const xr_set<const CEntityAlive*> &enemies() const;
+	IC		const xr_vector<const CEntityAlive*> &enemies() const;
 			bool		expedient					(const CEntityAlive *object) const;
 };
 

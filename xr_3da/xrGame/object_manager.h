@@ -11,13 +11,13 @@
 template <typename T>
 class CObjectManager {
 protected:
-	xr_set<const T*>	m_objects;
+	xr_vector<const T*>	m_objects;
 	const T				*m_selected;
 
 public:
 					CObjectManager				();
 	virtual			~CObjectManager				();
-			void	Init						();
+			void	init						();
 	virtual void	Load						(LPCSTR section);
 	virtual void	reinit						();
 	virtual void	reload						(LPCSTR section);
@@ -27,7 +27,7 @@ public:
 	virtual	float	evaluate					(const T *object) const;
 	virtual	void	reset						();
 	IC		const T *selected					() const;
-	IC		const xr_set<const T*> &objects		() const;
+	IC		const xr_vector<const T*> &objects	() const;
 };
 
 #include "object_manager_inline.h"

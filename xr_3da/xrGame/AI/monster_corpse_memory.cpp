@@ -21,7 +21,7 @@ void CMonsterCorpseMemory::init_external(CAI_Biting *M, TTime mem_time)
 
 void CMonsterCorpseMemory::update() 
 {
-	for (xr_set<const CGameObject *>::const_iterator I = monster->CItemManager::items().begin(); I != monster->CItemManager::items().end(); ++I) {
+	for (xr_vector<const CGameObject *>::const_iterator I = monster->CItemManager::items().begin(); I != monster->CItemManager::items().end(); ++I) {
 		const CEntityAlive *p_corpse = dynamic_cast<const CEntityAlive*>(*I);
 		if (!p_corpse || p_corpse->g_Alive()) continue;
 		add_corpse(p_corpse);

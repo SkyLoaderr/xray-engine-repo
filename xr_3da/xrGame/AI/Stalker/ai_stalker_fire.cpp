@@ -149,8 +149,8 @@ void CAI_Stalker::update_best_item_info	()
 	// check if we remember we saw item which can kill
 	// or items which can make my item killing
 	{
-		xr_set<const CGameObject*>::const_iterator	I = items().begin();
-		xr_set<const CGameObject*>::const_iterator	E = items().end();
+		xr_vector<const CGameObject*>::const_iterator	I = items().begin();
+		xr_vector<const CGameObject*>::const_iterator	E = items().end();
 		for ( ; I != E; ++I) {
 			const CInventoryItem	*inventory_item = dynamic_cast<const CInventoryItem*>(*I);
 			if (!inventory_item)
@@ -189,8 +189,8 @@ void CAI_Stalker::update_best_item_info	()
 
 	// check if we remember we saw item to kill
 	// and item which can make this item killing
-	xr_set<const CGameObject*>::const_iterator	I = items().begin();
-	xr_set<const CGameObject*>::const_iterator	E = items().end();
+	xr_vector<const CGameObject*>::const_iterator	I = items().begin();
+	xr_vector<const CGameObject*>::const_iterator	E = items().end();
 	for ( ; I != E; ++I) {
 		const CInventoryItem	*inventory_item = dynamic_cast<const CInventoryItem*>(*I);
 		if (!inventory_item)

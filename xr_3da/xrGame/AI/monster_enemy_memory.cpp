@@ -22,7 +22,7 @@ void CMonsterEnemyMemory::init_external(CAI_Biting *M, TTime mem_time)
 void CMonsterEnemyMemory::update() 
 {
 	// Обновить врагов
-	for (xr_set<const CEntityAlive *>::const_iterator I = monster->enemies().begin(); I != monster->enemies().end(); ++I) {
+	for (xr_vector<const CEntityAlive *>::const_iterator I = monster->enemies().begin(); I != monster->enemies().end(); ++I) {
 		if (!monster->CMemoryManager::visible_now(*I)) continue;
 		add_enemy(*I);
 	}

@@ -13,10 +13,10 @@
 #include "../actor.h"
 #include "../ef_storage.h"
 
-bool bfGetActionSuccessProbability(EntityVec &Members, const xr_set<const CEntityAlive *> &VisibleEnemies, float fMinProbability, CBaseFunction &fSuccessProbabilityFunction)
+bool bfGetActionSuccessProbability(EntityVec &Members, const xr_vector<const CEntityAlive *> &VisibleEnemies, float fMinProbability, CBaseFunction &fSuccessProbabilityFunction)
 {
 	int i = 0, j = 0, I = (int)Members.size(), J = (int)VisibleEnemies.size();
-	xr_set<const CEntityAlive*>::const_iterator	II = VisibleEnemies.begin();
+	xr_vector<const CEntityAlive*>::const_iterator	II = VisibleEnemies.begin();
 	for ( ; (i < I) && (j < J); ) {
 		ai().ef_storage().m_tpCurrentMember = dynamic_cast<CEntityAlive *>(Members[i]);
 		if (!(ai().ef_storage().m_tpCurrentMember) || !(ai().ef_storage().m_tpCurrentMember->g_Alive())) {
@@ -88,7 +88,7 @@ u32 dwfChooseAction(u32 dwActionRefreshRate, float fMinProbability0, float fMinP
 
 	const CEnemyManager					*enemy_manager = dynamic_cast<const CEnemyManager*>(tpEntity);
 	VERIFY								(enemy_manager);
-	const xr_set<const CEntityAlive*>	&VisibleEnemies = enemy_manager->enemies();
+	const xr_vector<const CEntityAlive*>	&VisibleEnemies = enemy_manager->enemies();
 
 	EntityVec	Members;
 	if (!tpEntity)

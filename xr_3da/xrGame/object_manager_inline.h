@@ -17,7 +17,7 @@
 TEMPLATE_SPECIALIZATION
 CAbstractObjectManager::CObjectManager				()
 {
-	Init					();
+	init					();
 }
 
 TEMPLATE_SPECIALIZATION
@@ -26,8 +26,9 @@ CAbstractObjectManager::~CObjectManager				()
 }
 
 TEMPLATE_SPECIALIZATION
-void CAbstractObjectManager::Init					()
+void CAbstractObjectManager::init					()
 {
+	m_objects.reserve		(100);
 }
 
 TEMPLATE_SPECIALIZATION
@@ -52,8 +53,8 @@ void CAbstractObjectManager::update					()
 {
 	float						result = flt_max;
 	m_selected					= 0;
-	xr_set<const T*>::const_iterator	I = m_objects.begin();
-	xr_set<const T*>::const_iterator	E = m_objects.end();
+	xr_vector<const T*>::const_iterator	I = m_objects.begin();
+	xr_vector<const T*>::const_iterator	E = m_objects.end();
 	for ( ; I != E; ++I) {
 		float					value = evaluate(*I);
 		if (result > value) {
@@ -88,9 +89,9 @@ bool CAbstractObjectManager::add					(const T *object)
 	if (!useful(object))
 		return				(false);
 
-	xr_set<const T*>::const_iterator	I = m_objects.find(object);
+	xr_vector<const T*>::const_iterator	I = std::find(m_objects.begin(),m_objects.end(),object);
 	if (m_objects.end() == I) {
-		m_objects.insert	(object);
+		m_objects.push_back	(object);
 		return				(true);
 	}
 	return					(true);
@@ -109,7 +110,7 @@ void CAbstractObjectManager::reset					()
 }
 
 TEMPLATE_SPECIALIZATION
-IC	const xr_set<const T*> &CAbstractObjectManager::objects() const
+IC	const xr_vector<const T*> &CAbstractObjectManager::objects() const
 {
 	return					(m_objects);
 }

@@ -8,7 +8,7 @@
 
 #pragma once
 
-IC	const xr_set<const CGameObject*> &CItemManager::items() const
+IC	const xr_vector<const CGameObject*> &CItemManager::items() const
 {
 	return					(objects());
 }

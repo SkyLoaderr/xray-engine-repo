@@ -29,9 +29,25 @@ public:
 	> CSGraphAbstract;
 
 protected:
+	struct CMotivationWeight {
+		u32							m_motivation_id;
+		float						m_motivation_weight;
+
+		IC				CMotivationWeight	(u32 motivation_id, float motivation_weight) :
+							m_motivation_id		(motivation_id),
+							m_motivation_weight	(motivation_weight)
+		{
+		}
+
+		IC		bool	operator==			(u32 motivation_id) const
+		{
+			return					(m_motivation_id == motivation_id);
+		}
+	};
+protected:
 	CSGraphAbstract					*m_graph;
 	xr_vector<u32>					m_motivations;
-	xr_map<u32,float>				m_actions;
+	xr_vector<CMotivationWeight>	m_actions;
 	u32								m_selected_id;
 	bool							m_actuality;
 	xr_set<u32>						m_temp;
