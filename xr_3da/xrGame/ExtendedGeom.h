@@ -2,16 +2,19 @@
 #define EXTENDED_GEOM
 #include "PHObject.h"
 #include <ode/ode.h>
-enum Material {
-weels,
-cardboard,
-mesh_default,
-car_cabin,
-weapon_default,
-matrerial_default
+
+enum Material 
+{
+	weels,
+	cardboard,
+	mesh_default,
+	car_cabin,
+	weapon_default,
+	matrerial_default
 };
 
-struct ContactsParameters{
+struct ContactsParameters
+{
 	dReal damping;
 	dReal spring;
 	dReal bonce;
@@ -21,7 +24,8 @@ struct ContactsParameters{
 
 };
 
-struct Triangle {
+struct Triangle 
+{
 	dReal* v0;
 	dReal* v1;
 	dReal* v2;
@@ -50,43 +54,47 @@ struct Triangle {
 };
 
 
-struct dxGeomUserData {
-dVector3 last_pos;
-bool pushing_neg,pushing_b_neg;
-Triangle neg_tri,b_neg_tri;
-dReal friction;
-CPHObject* ph_object;
+struct dxGeomUserData
+{
+	dVector3 last_pos;
+	bool pushing_neg,pushing_b_neg;
+	Triangle neg_tri,b_neg_tri;
+	dReal friction;
+	CPHObject* ph_object;
 };
 
-inline void dGeomCreateUserData(dxGeom* geom){
-if(!geom) return;
-dGeomSetData(geom,new dxGeomUserData());
-((dxGeomUserData*)dGeomGetData(geom))->pushing_neg=false;
-((dxGeomUserData*)dGeomGetData(geom))->pushing_b_neg=false;
-((dxGeomUserData*)dGeomGetData(geom))->last_pos[0]=dInfinity;
-((dxGeomUserData*)dGeomGetData(geom))->last_pos[1]=dInfinity;
-((dxGeomUserData*)dGeomGetData(geom))->last_pos[2]=dInfinity;
-((dxGeomUserData*)dGeomGetData(geom))->friction=dInfinity;
-((dxGeomUserData*)dGeomGetData(geom))->ph_object=NULL;
+IC void dGeomCreateUserData(dxGeom* geom)
+{
+	if(!geom) return;
+	dGeomSetData(geom,new dxGeomUserData());
+	((dxGeomUserData*)dGeomGetData(geom))->pushing_neg=false;
+	((dxGeomUserData*)dGeomGetData(geom))->pushing_b_neg=false;
+	((dxGeomUserData*)dGeomGetData(geom))->last_pos[0]=dInfinity;
+	((dxGeomUserData*)dGeomGetData(geom))->last_pos[1]=dInfinity;
+	((dxGeomUserData*)dGeomGetData(geom))->last_pos[2]=dInfinity;
+	((dxGeomUserData*)dGeomGetData(geom))->friction=dInfinity;
+	((dxGeomUserData*)dGeomGetData(geom))->ph_object=NULL;
 }
 
-inline void dGeomDestroyUserData(dxGeom* geom){
-if(!geom) return;
-if(dGeomGetData(geom)) delete dGeomGetData(geom);
-dGeomSetData(geom,0);
+IC void dGeomDestroyUserData(dxGeom* geom)
+{
+	if(!geom) return;
+	if(dGeomGetData(geom)) delete dGeomGetData(geom);
+	dGeomSetData(geom,0);
 }
 
-inline dxGeomUserData* dGeomGetUserData(dxGeom* geom){
-return (dxGeomUserData*) dGeomGetData(geom);
+IC dxGeomUserData* dGeomGetUserData(dxGeom* geom)
+{
+	return (dxGeomUserData*) dGeomGetData(geom);
 }
 
-inline void dGeomUserDataSetFriction(dxGeom* geom,dReal friction){
-((dxGeomUserData*)dGeomGetData(geom))->friction=friction;
-
+IC void dGeomUserDataSetFriction(dxGeom* geom,dReal friction)
+{
+	((dxGeomUserData*)dGeomGetData(geom))->friction=friction;
 }
 
-inline void dGeomUserDataSetPhObject(dxGeom* geom,CPHObject* phObject){
-((dxGeomUserData*)dGeomGetData(geom))->ph_object=phObject;
-
+IC void dGeomUserDataSetPhObject(dxGeom* geom,CPHObject* phObject)
+{
+	((dxGeomUserData*)dGeomGetData(geom))->ph_object=phObject;
 }
 #endif
