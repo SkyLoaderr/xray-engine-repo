@@ -112,27 +112,27 @@
 
 
     <!-- HEALTH BAR -->
-    <progress_bar x="15" y="65" length="216" broad="20" horz="0" min="0" max="1000" pos="0">
-        <texture tile="0" width="18" height="220" length="215" r="255" g="0" b="0">ui\ui_inv_progress_blood</texture>
-        <background x="0" y="0">ui\ui_inv_progress_blood_empty</background>
+    <progress_bar x="15" y="65" length="215" broad="20" horz="0" min="0" max="1000" pos="0">
+        <texture tile="0" width="17" height="222" length="215" r="255" g="0" b="0">ui\ui_inv_progress_blood</texture>
+        <background x="0" y="0" width="17" height="222" >ui\ui_inv_progress_blood_empty</background>
     </progress_bar>
 
     <!-- SATIETY BAR -->
     <progress_bar x="36" y="65" length="215" broad="20" horz="0" min="0" max="1000" pos="0">
-        <texture tile="0" length="215" r="255" g="255" b="0">ui\ui_inv_progress_food</texture>
-        <background x="0" y="0">ui\ui_inv_progress_food_empty</background>
+        <texture tile="0" width="17" height="222" length="215" r="255" g="255" b="0">ui\ui_inv_progress_food</texture>
+        <background x="0" y="0" width="17" height="222" >ui\ui_inv_progress_food_empty</background>
     </progress_bar>
 
     <!-- POWER BAR -->
     <progress_bar x="58" y="65" length="215" broad="20" horz="0" min="0" max="1000" pos="0">
-        <texture tile="0" length="215" r="0" g="255" b="0">ui\ui_inv_progress_end</texture>
-        <background x="0" y="0">ui\ui_inv_progress_end_empty</background>
+        <texture tile="0" width="17" height="222" length="215" r="0" g="255" b="0">ui\ui_inv_progress_end</texture>
+        <background x="0" y="0" width="17" height="222" >ui\ui_inv_progress_end_empty</background>
     </progress_bar>
 
     <!-- RADIATION BAR -->
     <progress_bar x="79" y="65" length="215" broad="20" horz="0" min="0" max="1000" pos="0">
-        <texture tile="0" length="215" r="0" g="255" b="255">ui\ui_inv_progress_rad</texture>
-        <background x="0" y="0">ui\ui_inv_progress_rad_empty</background>
+        <texture tile="0" width="17" height="222" length="215" r="0" g="255" b="255">ui\ui_inv_progress_rad</texture>
+        <background x="0" y="0" width="17" height="222" >ui\ui_inv_progress_rad_empty</background>
     </progress_bar>
 
     <time_static x="15" y="730" width="200" height="30">        
