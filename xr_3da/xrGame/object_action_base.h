@@ -19,7 +19,8 @@ protected:
 	_item_type			*m_item;
 
 public:
-	IC					CObjectActionBase(_item_type *item, CAI_Stalker *owner, LPCSTR action_name = "");
+	IC					CObjectActionBase	(_item_type *item, CAI_Stalker *owner, LPCSTR action_name = "");
+	virtual void		initialize			();
 };
 
 typedef CObjectActionBase<CGameObject> CSObjectActionBase;

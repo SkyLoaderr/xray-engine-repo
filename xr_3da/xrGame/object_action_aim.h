@@ -17,11 +17,11 @@ protected:
 	typedef CObjectActionBase<CInventoryItem> inherited;
 
 protected:
-	bool				*m_condition;
+	u32					m_type;
 	u32					m_start_time;
 
 public:
-						CObjectActionAim	(CInventoryItem *item, CAI_Stalker *owner, bool *condition, LPCSTR action_name = "");
+						CObjectActionAim	(CInventoryItem *item, CAI_Stalker *owner, u32 type, LPCSTR action_name = "");
 	virtual void		initialize			();
 	virtual void		execute				();
 };

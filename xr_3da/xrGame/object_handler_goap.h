@@ -144,6 +144,7 @@ public:
 			void			set_goal				(MonsterSpace::EObjectAction object_action, CGameObject *game_object = 0);
 	IC		void			add_condition			(CActionBase<CAI_Stalker> *action, u16 id, EWorldProperties property, bool value);
 	IC		void			add_effect				(CActionBase<CAI_Stalker> *action, u16 id, EWorldProperties property, bool value);
+	IC		void			set_aimed				(u32 type, bool value);
 };
 
 #include "object_handler_goap_inline.h"

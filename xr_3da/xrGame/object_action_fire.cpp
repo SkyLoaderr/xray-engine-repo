@@ -19,7 +19,7 @@ CObjectActionFire::CObjectActionFire	(CInventoryItem *item, CAI_Stalker *owner, 
 
 void CObjectActionFire::initialize		()
 {
-	inherited::initialize		();
+	inherited::inherited::initialize	();
 	m_object->inventory().Action(kWPN_FIRE,	CMD_START);
 }
 

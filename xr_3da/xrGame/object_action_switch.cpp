@@ -17,12 +17,15 @@ CObjectActionSwitch::CObjectActionSwitch	(CInventoryItem *item, CAI_Stalker *own
 
 void CObjectActionSwitch::initialize		()
 {
+	inherited::initialize	();
 }
 
 void CObjectActionSwitch::execute			()
 {
+	inherited::execute		();
 }
 
 void CObjectActionSwitch::finalize		()
 {
+	inherited::finalize		();
 }

@@ -18,6 +18,7 @@ CObjectActionDrop::CObjectActionDrop	(CInventoryItem *item, CAI_Stalker *owner, 
 
 void CObjectActionDrop::initialize		()
 {
+	inherited::initialize	();
 	if (!m_item || !m_item->H_Parent() || (m_object->ID() != m_item->H_Parent()->ID()))
 		return;
 

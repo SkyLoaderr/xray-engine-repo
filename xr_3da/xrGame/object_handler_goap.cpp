@@ -214,192 +214,6 @@ void CObjectHandlerGOAP::remove_operators	(CObject *object)
 	}
 }
 
-void CObjectHandlerGOAP::add_evaluators		(CWeapon *weapon)
-{
-	u16					id = weapon->ID();
-	// dynamic state properties
-	add_evaluator		(uid(id,eWorldPropertyHidden)		,xr_new<CObjectPropertyEvaluatorState>(weapon,m_object,CWeapon::eHidden));
-	// dynamic member properties
-	add_evaluator		(uid(id,eWorldPropertyAimed1)		,xr_new<CObjectPropertyEvaluatorMember>(weapon,m_object,&m_aimed1));
-	add_evaluator		(uid(id,eWorldPropertyAimed2)		,xr_new<CObjectPropertyEvaluatorMember>(weapon,m_object,&m_aimed2));
-	// dynamic properties
-	add_evaluator		(uid(id,eWorldPropertyAmmo1)		,xr_new<CObjectPropertyEvaluatorAmmo>(weapon,m_object,0));
-	add_evaluator		(uid(id,eWorldPropertyAmmo2)		,xr_new<CObjectPropertyEvaluatorAmmo>(weapon,m_object,1));
-	add_evaluator		(uid(id,eWorldPropertyEmpty1)		,xr_new<CObjectPropertyEvaluatorEmpty>(weapon,m_object,0));
-	add_evaluator		(uid(id,eWorldPropertyEmpty2)		,xr_new<CObjectPropertyEvaluatorEmpty>(weapon,m_object,1));
-	add_evaluator		(uid(id,eWorldPropertyReady1)		,xr_new<CObjectPropertyEvaluatorReady>(weapon,m_object,0));
-	add_evaluator		(uid(id,eWorldPropertyReady2)		,xr_new<CObjectPropertyEvaluatorReady>(weapon,m_object,1));
-	// temporarile const properties
-	add_evaluator		(uid(id,eWorldPropertyQueueWait1)	,xr_new<CObjectPropertyEvaluatorConst>(weapon,m_object,false));
-	add_evaluator		(uid(id,eWorldPropertyQueueWait2)	,xr_new<CObjectPropertyEvaluatorConst>(weapon,m_object,false));
-	add_evaluator		(uid(id,eWorldPropertySwitch1)		,xr_new<CObjectPropertyEvaluatorConst>(weapon,m_object,true));
-	add_evaluator		(uid(id,eWorldPropertySwitch2)		,xr_new<CObjectPropertyEvaluatorConst>(weapon,m_object,false));
-	add_evaluator		(uid(id,eWorldPropertyStrapping)	,xr_new<CObjectPropertyEvaluatorConst>(weapon,m_object,false));
-	add_evaluator		(uid(id,eWorldPropertyStrapped)		,xr_new<CObjectPropertyEvaluatorConst>(weapon,m_object,false));
-	add_evaluator		(uid(id,eWorldPropertyUnstrapping)	,xr_new<CObjectPropertyEvaluatorConst>(weapon,m_object,false));
-	// const properties
-	add_evaluator		(uid(id,eWorldPropertyFiring1)		,xr_new<CObjectPropertyEvaluatorConst>(weapon,m_object,false));
-	add_evaluator		(uid(id,eWorldPropertyFiring2)		,xr_new<CObjectPropertyEvaluatorConst>(weapon,m_object,false));
-	add_evaluator		(uid(id,eWorldPropertyIdle)			,xr_new<CObjectPropertyEvaluatorConst>(weapon,m_object,false));
-	add_evaluator		(uid(id,eWorldPropertyIdleStrap)	,xr_new<CObjectPropertyEvaluatorConst>(weapon,m_object,false));
-	add_evaluator		(uid(id,eWorldPropertyDropped)		,xr_new<CObjectPropertyEvaluatorConst>(weapon,m_object,false));
-	add_evaluator		(uid(id,eWorldPropertyAiming1)		,xr_new<CObjectPropertyEvaluatorConst>(weapon,m_object,false));
-	add_evaluator		(uid(id,eWorldPropertyAiming2)		,xr_new<CObjectPropertyEvaluatorConst>(weapon,m_object,false));
-}
-
-void CObjectHandlerGOAP::add_operators		(CWeapon *weapon)
-{
-	u16					id = weapon->ID();
-	CActionBase<CAI_Stalker>	*action;
-	
-	// show
-	action				= xr_new<CObjectActionShow>(weapon,m_object);
-	add_condition		(action,id,eWorldPropertyHidden,	true);
-	add_effect			(action,id,eWorldPropertyHidden,	false);
-	add_operator		(uid(id,eWorldOperatorShow),		action);
-
-	// hide
-	action				= xr_new<CObjectActionHide>(weapon,m_object);
-	add_condition		(action,id,eWorldPropertyHidden,	false);
-	add_effect			(action,id,eWorldPropertyHidden,	true);
-	add_operator		(uid(id,eWorldOperatorHide),		action);
-
-	// drop
-	action				= xr_new<CObjectActionDrop>(weapon,m_object);
-	add_condition		(action,id,eWorldPropertyHidden,	false);
-	add_effect			(action,id,eWorldPropertyDropped,	true);
-	add_operator		(uid(id,eWorldOperatorDrop),		action);
-
-	// idle
-	action				= xr_new<CSObjectActionBase>(weapon,m_object);
-	add_condition		(action,id,eWorldPropertyHidden,	false);
-	add_effect			(action,id,eWorldPropertyIdle,		true);
-	add_operator		(uid(id,eWorldOperatorIdle),		action);
-
-	// strapping
-	action				= xr_new<CObjectActionStrapping>(weapon,m_object);
-	add_condition		(action,id,eWorldPropertyHidden,	false);
-	add_condition		(action,id,eWorldPropertyStrapped,	false);
-	add_effect			(action,id,eWorldPropertyStrapped,	true);
-	add_operator		(uid(id,eWorldOperatorStrapping),	action);
-
-	// unstrapping
-	action				= xr_new<CObjectActionUnstrapping>(weapon,m_object);
-	add_condition		(action,id,eWorldPropertyHidden,	false);
-	add_condition		(action,id,eWorldPropertyStrapped,	true);
-	add_effect			(action,id,eWorldPropertyStrapped,	false);
-	add_operator		(uid(id,eWorldOperatorUnstrapping),	action);
-
-	// strapped
-	action				= xr_new<CSObjectActionBase>(weapon,m_object);
-	add_condition		(action,id,eWorldPropertyHidden,	false);
-	add_effect			(action,id,eWorldPropertyIdleStrap,	true);
-	add_operator		(uid(id,eWorldOperatorStrapped),	action);
-
-	// aim1
-	action				= xr_new<CObjectActionAim>(weapon,m_object,&m_aimed1);
-	add_condition		(action,id,eWorldPropertyHidden,	false);
-	add_condition		(action,id,eWorldPropertySwitch1,	true);
-	add_effect			(action,id,eWorldPropertyAimed1,	true);
-	add_effect			(action,id,eWorldPropertyAiming1,	true);
-	add_operator		(uid(id,eWorldOperatorAim1),		action);
-
-	// aim2
-	action				= xr_new<CObjectActionAim>(weapon,m_object,&m_aimed2);
-	add_condition		(action,id,eWorldPropertyHidden,	false);
-	add_condition		(action,id,eWorldPropertySwitch2,	true);
-	add_effect			(action,id,eWorldPropertyAimed2,	true);
-	add_effect			(action,id,eWorldPropertyAiming2,	true);
-	add_operator		(uid(id,eWorldOperatorAim2),		action);
-
-	// aim_queue1
-	action				= xr_new<CObjectActionQueueWait>(weapon,m_object,0);
-	add_condition		(action,id,eWorldPropertyHidden,	false);
-	add_condition		(action,id,eWorldPropertySwitch1,	true);
-	add_condition		(action,id,eWorldPropertyQueueWait1,false);
-	add_effect			(action,id,eWorldPropertyQueueWait1,true);
-	add_operator		(uid(id,eWorldOperatorQueueWait1),	action);
-
-	// aim_queue1
-	action				= xr_new<CObjectActionQueueWait>(weapon,m_object,1);
-	add_condition		(action,id,eWorldPropertyHidden,	false);
-	add_condition		(action,id,eWorldPropertySwitch1,	true);
-	add_condition		(action,id,eWorldPropertyQueueWait2,false);
-	add_effect			(action,id,eWorldPropertyQueueWait2,true);
-	add_operator		(uid(id,eWorldOperatorQueueWait2),	action);
-
-	// fire1
-	action				= xr_new<CObjectActionFire>(weapon,m_object,0);
-	add_condition		(action,id,eWorldPropertyHidden,	false);
-	add_condition		(action,id,eWorldPropertyEmpty1,	false);
-	add_condition		(action,id,eWorldPropertyAimed1,	true);
-	add_condition		(action,id,eWorldPropertySwitch1,	true);
-	add_condition		(action,id,eWorldPropertyQueueWait1,false);
-	add_effect			(action,id,eWorldPropertyFiring1,	true);
-	add_operator		(uid(id,eWorldOperatorFire1),		action);
-
-	// fire2
-	action				= xr_new<CObjectActionFire>(weapon,m_object,1);
-	add_condition		(action,id,eWorldPropertyHidden,	false);
-	add_condition		(action,id,eWorldPropertyEmpty2,	false);
-	add_condition		(action,id,eWorldPropertyAimed2,	true);
-	add_condition		(action,id,eWorldPropertySwitch2,	true);
-	add_condition		(action,id,eWorldPropertyQueueWait2,false);
-	add_effect			(action,id,eWorldPropertyFiring2,	true);
-	add_operator		(uid(id,eWorldOperatorFire2),		action);
-
-	// reload1
-	action				= xr_new<CObjectActionReload>(weapon,m_object,0);
-	add_condition		(action,id,eWorldPropertyHidden,	false);
-	add_condition		(action,id,eWorldPropertyReady1,	false);
-	add_condition		(action,id,eWorldPropertyAmmo1,		true);
-	add_effect			(action,id,eWorldPropertyEmpty1,	false);
-	add_operator		(uid(id,eWorldOperatorReload1),		action);
-
-	// reload2
-	action				= xr_new<CObjectActionReload>(weapon,m_object,1);
-	add_condition		(action,id,eWorldPropertyHidden,	false);
-	add_condition		(action,id,eWorldPropertyReady2,	false);
-	add_condition		(action,id,eWorldPropertyAmmo2,		true);
-	add_effect			(action,id,eWorldPropertyEmpty2,	false);
-	add_operator		(uid(id,eWorldOperatorReload2),		action);
-
-	// switch1
-	action				= xr_new<CObjectActionSwitch>(weapon,m_object,0);
-	add_condition		(action,id,eWorldPropertySwitch1,	false);
-	add_condition		(action,id,eWorldPropertySwitch2,	true);
-	add_effect			(action,id,eWorldPropertySwitch1,	true);
-	add_effect			(action,id,eWorldPropertySwitch2,	false);
-	add_operator		(uid(id,eWorldOperatorSwitch1),		action);
-
-	// switch2
-	action				= xr_new<CObjectActionSwitch>(weapon,m_object,1);
-	add_condition		(action,id,eWorldPropertySwitch1,	true);
-	add_condition		(action,id,eWorldPropertySwitch2,	false);
-	add_effect			(action,id,eWorldPropertySwitch1,	false);
-	add_effect			(action,id,eWorldPropertySwitch2,	true);
-	add_operator		(uid(id,eWorldOperatorSwitch2),		action);
-
-	this->action(uid(id,eWorldOperatorAim1)).set_inertia_time(1000);
-	this->action(uid(id,eWorldOperatorAim2)).set_inertia_time(1000);
-}
-
-void CObjectHandlerGOAP::add_evaluators		(CMissile *missile)
-{
-}
-
-void CObjectHandlerGOAP::add_operators		(CMissile *missile)
-{
-}
-
-void CObjectHandlerGOAP::add_evaluators		(CEatableItem *eatable_item)
-{
-}
-
-void CObjectHandlerGOAP::add_operators		(CEatableItem *eatable_item)
-{
-}
-
 #ifdef DEBUG
 LPCSTR action2string(const u32 id)
 {
@@ -475,6 +289,212 @@ LPCSTR property2string(const u32 id)
 	return		(S);
 }
 #endif
+
+void CObjectHandlerGOAP::add_evaluators		(CWeapon *weapon)
+{
+	u16					id = weapon->ID();
+	// dynamic state properties
+	add_evaluator		(uid(id,eWorldPropertyHidden)		,xr_new<CObjectPropertyEvaluatorState>(weapon,m_object,CWeapon::eHidden));
+	// dynamic member properties
+	add_evaluator		(uid(id,eWorldPropertyAimed1)		,xr_new<CObjectPropertyEvaluatorMember>(weapon,m_object,&m_aimed1));
+	add_evaluator		(uid(id,eWorldPropertyAimed2)		,xr_new<CObjectPropertyEvaluatorMember>(weapon,m_object,&m_aimed2));
+	// dynamic properties
+	add_evaluator		(uid(id,eWorldPropertyAmmo1)		,xr_new<CObjectPropertyEvaluatorAmmo>(weapon,m_object,0));
+	add_evaluator		(uid(id,eWorldPropertyAmmo2)		,xr_new<CObjectPropertyEvaluatorAmmo>(weapon,m_object,1));
+	add_evaluator		(uid(id,eWorldPropertyEmpty1)		,xr_new<CObjectPropertyEvaluatorEmpty>(weapon,m_object,0));
+	add_evaluator		(uid(id,eWorldPropertyEmpty2)		,xr_new<CObjectPropertyEvaluatorEmpty>(weapon,m_object,1));
+	add_evaluator		(uid(id,eWorldPropertyReady1)		,xr_new<CObjectPropertyEvaluatorReady>(weapon,m_object,0));
+	add_evaluator		(uid(id,eWorldPropertyReady2)		,xr_new<CObjectPropertyEvaluatorReady>(weapon,m_object,1));
+	// temporarile const properties
+	add_evaluator		(uid(id,eWorldPropertyQueueWait1)	,xr_new<CObjectPropertyEvaluatorConst>(weapon,m_object,false));
+	add_evaluator		(uid(id,eWorldPropertyQueueWait2)	,xr_new<CObjectPropertyEvaluatorConst>(weapon,m_object,false));
+	add_evaluator		(uid(id,eWorldPropertySwitch1)		,xr_new<CObjectPropertyEvaluatorConst>(weapon,m_object,true));
+	add_evaluator		(uid(id,eWorldPropertySwitch2)		,xr_new<CObjectPropertyEvaluatorConst>(weapon,m_object,false));
+	add_evaluator		(uid(id,eWorldPropertyStrapping)	,xr_new<CObjectPropertyEvaluatorConst>(weapon,m_object,false));
+	add_evaluator		(uid(id,eWorldPropertyStrapped)		,xr_new<CObjectPropertyEvaluatorConst>(weapon,m_object,false));
+	add_evaluator		(uid(id,eWorldPropertyUnstrapping)	,xr_new<CObjectPropertyEvaluatorConst>(weapon,m_object,false));
+	// const properties
+	add_evaluator		(uid(id,eWorldPropertyFiring1)		,xr_new<CObjectPropertyEvaluatorConst>(weapon,m_object,false));
+	add_evaluator		(uid(id,eWorldPropertyFiring2)		,xr_new<CObjectPropertyEvaluatorConst>(weapon,m_object,false));
+	add_evaluator		(uid(id,eWorldPropertyIdle)			,xr_new<CObjectPropertyEvaluatorConst>(weapon,m_object,false));
+	add_evaluator		(uid(id,eWorldPropertyIdleStrap)	,xr_new<CObjectPropertyEvaluatorConst>(weapon,m_object,false));
+	add_evaluator		(uid(id,eWorldPropertyDropped)		,xr_new<CObjectPropertyEvaluatorConst>(weapon,m_object,false));
+	add_evaluator		(uid(id,eWorldPropertyAiming1)		,xr_new<CObjectPropertyEvaluatorConst>(weapon,m_object,false));
+	add_evaluator		(uid(id,eWorldPropertyAiming2)		,xr_new<CObjectPropertyEvaluatorConst>(weapon,m_object,false));
+}
+
+void CObjectHandlerGOAP::add_operators		(CWeapon *weapon)
+{
+	u16					id = weapon->ID();
+	CActionBase<CAI_Stalker>	*action;
+	
+	// show
+	action				= xr_new<CObjectActionShow>(weapon,m_object);
+	add_condition		(action,id,eWorldPropertyHidden,	true);
+	add_effect			(action,id,eWorldPropertyHidden,	false);
+	add_operator		(uid(id,eWorldOperatorShow),		action);
+
+	// hide
+	action				= xr_new<CObjectActionHide>(weapon,m_object);
+	add_condition		(action,id,eWorldPropertyHidden,	false);
+	add_effect			(action,id,eWorldPropertyHidden,	true);
+	add_effect			(action,id,eWorldPropertyAimed1,	false);
+	add_effect			(action,id,eWorldPropertyAimed2,	false);
+	add_operator		(uid(id,eWorldOperatorHide),		action);
+
+	// drop
+	action				= xr_new<CObjectActionDrop>(weapon,m_object);
+	add_condition		(action,id,eWorldPropertyHidden,	false);
+	add_effect			(action,id,eWorldPropertyDropped,	true);
+	add_effect			(action,id,eWorldPropertyAimed1,	false);
+	add_effect			(action,id,eWorldPropertyAimed2,	false);
+	add_operator		(uid(id,eWorldOperatorDrop),		action);
+
+	// idle
+	action				= xr_new<CSObjectActionBase>(weapon,m_object);
+	add_condition		(action,id,eWorldPropertyHidden,	false);
+	add_effect			(action,id,eWorldPropertyIdle,		true);
+	add_effect			(action,id,eWorldPropertyAimed1,	false);
+	add_effect			(action,id,eWorldPropertyAimed2,	false);
+	add_operator		(uid(id,eWorldOperatorIdle),		action);
+
+	// strapping
+	action				= xr_new<CObjectActionStrapping>(weapon,m_object);
+	add_condition		(action,id,eWorldPropertyHidden,	false);
+	add_condition		(action,id,eWorldPropertyStrapped,	false);
+	add_effect			(action,id,eWorldPropertyStrapped,	true);
+	add_effect			(action,id,eWorldPropertyAimed1,	false);
+	add_effect			(action,id,eWorldPropertyAimed2,	false);
+	add_operator		(uid(id,eWorldOperatorStrapping),	action);
+
+	// unstrapping
+	action				= xr_new<CObjectActionUnstrapping>(weapon,m_object);
+	add_condition		(action,id,eWorldPropertyHidden,	false);
+	add_condition		(action,id,eWorldPropertyStrapped,	true);
+	add_effect			(action,id,eWorldPropertyStrapped,	false);
+	add_operator		(uid(id,eWorldOperatorUnstrapping),	action);
+
+	// strapped
+	action				= xr_new<CSObjectActionBase>(weapon,m_object);
+	add_condition		(action,id,eWorldPropertyHidden,	false);
+	add_effect			(action,id,eWorldPropertyIdleStrap,	true);
+	add_operator		(uid(id,eWorldOperatorStrapped),	action);
+
+	// aim1
+	action				= xr_new<CObjectActionAim>(weapon,m_object,0);
+	add_condition		(action,id,eWorldPropertyHidden,	false);
+	add_condition		(action,id,eWorldPropertySwitch1,	true);
+	add_effect			(action,id,eWorldPropertyAimed1,	true);
+	add_effect			(action,id,eWorldPropertyAiming1,	true);
+	add_effect			(action,id,eWorldPropertyAimed2,	false);
+	add_operator		(uid(id,eWorldOperatorAim1),		action);
+
+	// aim2
+	action				= xr_new<CObjectActionAim>(weapon,m_object,1);
+	add_condition		(action,id,eWorldPropertyHidden,	false);
+	add_condition		(action,id,eWorldPropertySwitch2,	true);
+	add_effect			(action,id,eWorldPropertyAimed2,	true);
+	add_effect			(action,id,eWorldPropertyAiming2,	true);
+	add_effect			(action,id,eWorldPropertyAimed1,	false);
+	add_operator		(uid(id,eWorldOperatorAim2),		action);
+
+	// aim_queue1
+	action				= xr_new<CObjectActionQueueWait>(weapon,m_object,0);
+	add_condition		(action,id,eWorldPropertyHidden,	false);
+	add_condition		(action,id,eWorldPropertySwitch1,	true);
+	add_condition		(action,id,eWorldPropertyQueueWait1,false);
+	add_effect			(action,id,eWorldPropertyQueueWait1,true);
+	add_effect			(action,id,eWorldPropertyAimed2,	false);
+	add_operator		(uid(id,eWorldOperatorQueueWait1),	action);
+
+	// aim_queue2
+	action				= xr_new<CObjectActionQueueWait>(weapon,m_object,1);
+	add_condition		(action,id,eWorldPropertyHidden,	false);
+	add_condition		(action,id,eWorldPropertySwitch1,	true);
+	add_condition		(action,id,eWorldPropertyQueueWait2,false);
+	add_effect			(action,id,eWorldPropertyQueueWait2,true);
+	add_effect			(action,id,eWorldPropertyAimed2,	false);
+	add_operator		(uid(id,eWorldOperatorQueueWait2),	action);
+
+	// fire1
+	action				= xr_new<CObjectActionFire>(weapon,m_object,0);
+	add_condition		(action,id,eWorldPropertyHidden,	false);
+	add_condition		(action,id,eWorldPropertyEmpty1,	false);
+	add_condition		(action,id,eWorldPropertyAimed1,	true);
+	add_condition		(action,id,eWorldPropertySwitch1,	true);
+	add_condition		(action,id,eWorldPropertyQueueWait1,false);
+	add_effect			(action,id,eWorldPropertyFiring1,	true);
+	add_operator		(uid(id,eWorldOperatorFire1),		action);
+
+	// fire2
+	action				= xr_new<CObjectActionFire>(weapon,m_object,1);
+	add_condition		(action,id,eWorldPropertyHidden,	false);
+	add_condition		(action,id,eWorldPropertyEmpty2,	false);
+	add_condition		(action,id,eWorldPropertyAimed2,	true);
+	add_condition		(action,id,eWorldPropertySwitch2,	true);
+	add_condition		(action,id,eWorldPropertyQueueWait2,false);
+	add_effect			(action,id,eWorldPropertyFiring2,	true);
+	add_operator		(uid(id,eWorldOperatorFire2),		action);
+
+	// reload1
+	action				= xr_new<CObjectActionReload>(weapon,m_object,0);
+	add_condition		(action,id,eWorldPropertyHidden,	false);
+	add_condition		(action,id,eWorldPropertyReady1,	false);
+	add_condition		(action,id,eWorldPropertyAmmo1,		true);
+	add_effect			(action,id,eWorldPropertyEmpty1,	false);
+	add_effect			(action,id,eWorldPropertyAimed1,	false);
+	add_effect			(action,id,eWorldPropertyAimed2,	false);
+	add_operator		(uid(id,eWorldOperatorReload1),		action);
+
+	// reload2
+	action				= xr_new<CObjectActionReload>(weapon,m_object,1);
+	add_condition		(action,id,eWorldPropertyHidden,	false);
+	add_condition		(action,id,eWorldPropertyReady2,	false);
+	add_condition		(action,id,eWorldPropertyAmmo2,		true);
+	add_effect			(action,id,eWorldPropertyEmpty2,	false);
+	add_effect			(action,id,eWorldPropertyAimed1,	false);
+	add_effect			(action,id,eWorldPropertyAimed2,	false);
+	add_operator		(uid(id,eWorldOperatorReload2),		action);
+
+	// switch1
+	action				= xr_new<CObjectActionSwitch>(weapon,m_object,0);
+	add_condition		(action,id,eWorldPropertySwitch1,	false);
+	add_condition		(action,id,eWorldPropertySwitch2,	true);
+	add_effect			(action,id,eWorldPropertySwitch1,	true);
+	add_effect			(action,id,eWorldPropertySwitch2,	false);
+	add_effect			(action,id,eWorldPropertyAimed1,	false);
+	add_effect			(action,id,eWorldPropertyAimed2,	false);
+	add_operator		(uid(id,eWorldOperatorSwitch1),		action);
+
+	// switch2
+	action				= xr_new<CObjectActionSwitch>(weapon,m_object,1);
+	add_condition		(action,id,eWorldPropertySwitch1,	true);
+	add_condition		(action,id,eWorldPropertySwitch2,	false);
+	add_effect			(action,id,eWorldPropertySwitch1,	false);
+	add_effect			(action,id,eWorldPropertySwitch2,	true);
+	add_effect			(action,id,eWorldPropertyAimed1,	false);
+	add_effect			(action,id,eWorldPropertyAimed2,	false);
+	add_operator		(uid(id,eWorldOperatorSwitch2),		action);
+
+	this->action(uid(id,eWorldOperatorAim1)).set_inertia_time(1000);
+	this->action(uid(id,eWorldOperatorAim2)).set_inertia_time(1000);
+}
+
+void CObjectHandlerGOAP::add_evaluators		(CMissile *missile)
+{
+}
+
+void CObjectHandlerGOAP::add_operators		(CMissile *missile)
+{
+}
+
+void CObjectHandlerGOAP::add_evaluators		(CEatableItem *eatable_item)
+{
+}
+
+void CObjectHandlerGOAP::add_operators		(CEatableItem *eatable_item)
+{
+}
 
 void CObjectHandlerGOAP::set_goal	(MonsterSpace::EObjectAction object_action, CGameObject *game_object)
 {

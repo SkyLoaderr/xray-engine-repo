@@ -71,3 +71,8 @@ IC	CObjectHandlerGOAP::EWorldProperties CObjectHandlerGOAP::object_property(Mons
 	return	(eWorldPropertyDummy);
 #endif
 }
+
+IC	void CObjectHandlerGOAP::set_aimed	(u32 type, bool value)
+{
+	(type ? m_aimed2 : m_aimed1) = value;
+}
