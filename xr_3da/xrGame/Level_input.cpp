@@ -114,15 +114,17 @@ void CLevel::IR_OnKeyboardPress(int key)
 
 #ifdef DEBUG
 	case DIK_DIVIDE:
-		if( OnServer() )
+		if( OnServer() ){
 			Server->game->SetGameTimeFactor(1.f);
-//		Level().SetGameTimeFactor(1.f);	
+			SetGameTimeFactor(1.f);	
+		}
 		break;
 	
 	case DIK_MULTIPLY:
-		if( OnServer() )
+		if( OnServer() ){
 			Server->game->SetGameTimeFactor(1000.f);
-//		Level().SetGameTimeFactor(1000.f);
+			SetGameTimeFactor(1000.f);
+		}
 		break;
 
 	case DIK_NUMPAD5: 
