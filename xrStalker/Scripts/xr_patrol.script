@@ -389,7 +389,7 @@ function action_single_patrol:free ()
        ini:line_exist ("escape_raid", "raider") == false or ini:r_bool ("escape_raid", "raider") == false then
        local st = xr_gulag.isUnderFraction (self.object)
        if st ~= nil then
-          st:resetJob (self.object)
+          xr_gulag.resetJob (st, self.object)
        end
     else
        local sim = alife ()
