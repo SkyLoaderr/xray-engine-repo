@@ -21,13 +21,13 @@ CBlender_Editor_Selection::~CBlender_Editor_Selection()
 void	CBlender_Editor_Selection::Save	( CFS_Base& FS	)
 {
 	CBlender::Save	(FS);
-	BP_WRITE	("TFactor",	xrPID_CONSTANT, oT_Factor);
+	xrPWRITE_PROP	("TFactor",	xrPID_CONSTANT, oT_Factor);
 }
 
 void	CBlender_Editor_Selection::Load	( CStream& FS	)
 {
 	CBlender::Load	(FS);
-	BP_READ		(xrPID_CONSTANT,	oT_Factor);
+	xrPREAD_PROP		(xrPID_CONSTANT,	oT_Factor);
 }
 
 void	CBlender_Editor_Selection::Compile	(CBlender_Recorder& RS, sh_list& L_textures, sh_list& L_constants, sh_list& L_matrices, int param, BOOL bEditor)

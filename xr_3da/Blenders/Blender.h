@@ -9,11 +9,6 @@
 #include "Blender_Recorder.h"
 #include "Blender_CLSID.h"
 
-#define		BP_W_MARKER(a)	BP_write_c(FS,xrPID_MARKER,a,0,0)
-#define		BP_WRITE(a,b,c)	BP_write_c(FS,b,a,&c,sizeof(c))
-#define		BP_R_MARKER()	R_ASSERT(xrPID_MARKER==BP_read_c(FS))
-#define		BP_READ(a,c)	R_ASSERT(a==BP_read_c(FS)); FS.Read(&c,sizeof(c))
-
 #pragma pack(push,4)
 class ENGINE_API CBlender_DESC
 {
@@ -56,7 +51,7 @@ public:
 };
 #pragma pack(push,4)
 
-class ENGINE_API CBlender
+class ENGINE_API CBlender	: public CPropertyBase
 {
 protected:
 	CBlender_DESC	description;
@@ -66,16 +61,13 @@ protected:
 	string64		oT_xform;
 protected:
 	DWORD		BC			(BOOL v)		{ return v?0xff:0; }
-	
-	void		BP_write_c	(CFS_Base& FS,  DWORD ID, LPCSTR name, LPCVOID data, DWORD size );
-	DWORD		BP_read_c   (CStream&  FS);
 	BOOL		c_XForm		();
 public:
 	static		CBlender*	Create			(CLASS_ID cls);
 	static		void		CreatePalette	(vector<CBlender*> & palette);
 	
-	CBlender_DESC&			getDescription	(){return description;}
-	IC			LPCSTR		getName			(){return description.cName;}
+	CBlender_DESC&			getDescription	()	{return description;}
+	virtual 	LPCSTR		getName			()	{return description.cName;}
 	virtual		LPCSTR		getComment		()	= 0;
 	
 	virtual		void		Save			(CFS_Base&  FS);

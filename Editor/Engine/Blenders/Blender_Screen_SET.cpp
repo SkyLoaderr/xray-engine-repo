@@ -33,7 +33,7 @@ void	CBlender_Screen_SET::Save	( CFS_Base& FS	)
 
 	// Blend mode
 	xrP_TOKEN::Item	I;
-	BP_WRITE		("Blending",	xrPID_TOKEN,     oBlend);
+	xrPWRITE_PROP		("Blending",	xrPID_TOKEN,     oBlend);
 	I.ID = 0; strcpy(I.str,"SET");		FS.write	(&I,sizeof(I));
 	I.ID = 1; strcpy(I.str,"BLEND");	FS.write	(&I,sizeof(I));
 	I.ID = 2; strcpy(I.str,"ADD");		FS.write	(&I,sizeof(I));
@@ -42,11 +42,11 @@ void	CBlender_Screen_SET::Save	( CFS_Base& FS	)
 	I.ID = 5; strcpy(I.str,"ALPHA-ADD");FS.write	(&I,sizeof(I));
 	
 	// Params
-	BP_WRITE		("Alpha ref",	xrPID_INTEGER,	oAREF);
-	BP_WRITE		("Z-test",      xrPID_BOOL,		oZTest);
-	BP_WRITE		("Z-write",     xrPID_BOOL,		oZWrite);
-	BP_WRITE		("Lighting",    xrPID_BOOL,		oLighting);
-	BP_WRITE		("Fog",			xrPID_BOOL,		oFog);
+	xrPWRITE_PROP		("Alpha ref",	xrPID_INTEGER,	oAREF);
+	xrPWRITE_PROP		("Z-test",      xrPID_BOOL,		oZTest);
+	xrPWRITE_PROP		("Z-write",     xrPID_BOOL,		oZWrite);
+	xrPWRITE_PROP		("Lighting",    xrPID_BOOL,		oLighting);
+	xrPWRITE_PROP		("Fog",			xrPID_BOOL,		oFog);
 }
 
 void	CBlender_Screen_SET::Load	( CStream& FS	)
@@ -55,15 +55,15 @@ void	CBlender_Screen_SET::Load	( CStream& FS	)
 
 	// Blend mode
 	xrP_TOKEN::Item	I;
-	BP_READ			(xrPID_TOKEN,		oBlend);
+	xrPREAD_PROP			(xrPID_TOKEN,		oBlend);
 	for (DWORD it=0; it<oBlend.Count; it++)	FS.Read	(&I,sizeof(I));
 	
 	// Params
-	BP_READ			(xrPID_INTEGER,		oAREF);
-	BP_READ			(xrPID_BOOL,		oZTest);
-	BP_READ			(xrPID_BOOL,		oZWrite);
-	BP_READ			(xrPID_BOOL,		oLighting);
-	BP_READ			(xrPID_BOOL,		oFog);
+	xrPREAD_PROP			(xrPID_INTEGER,		oAREF);
+	xrPREAD_PROP			(xrPID_BOOL,		oZTest);
+	xrPREAD_PROP			(xrPID_BOOL,		oZWrite);
+	xrPREAD_PROP			(xrPID_BOOL,		oLighting);
+	xrPREAD_PROP			(xrPID_BOOL,		oFog);
 }
 
 void	CBlender_Screen_SET::Compile	(CBlender_Recorder& RS, sh_list& L_textures, sh_list& L_constants, sh_list& L_matrices, int param, BOOL bEditor)

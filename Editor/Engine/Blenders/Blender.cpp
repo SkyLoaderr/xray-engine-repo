@@ -25,42 +25,26 @@ CBlender::~CBlender()
 
 }
 
-void CBlender::BP_write_c(CFS_Base& FS, DWORD ID, LPCSTR name, LPCVOID data, DWORD size )
-{
-	FS.Wdword	(ID);
-	FS.WstringZ	(name);
-	if (data && size)	FS.write	(data,size);
-}
-
-DWORD CBlender::BP_read_c(CStream& FS)
-{
-	char		temp[256];
-
-	DWORD T		= FS.Rdword();
-	FS.RstringZ	(temp);
-	return		T;
-}
-
 void	CBlender::Save(	CFS_Base& FS )
 {
 	FS.write	(&description,sizeof(description));
-	BP_W_MARKER ("General");
-	BP_WRITE	("Priority",		xrPID_INTEGER,	oPriority);
-	BP_WRITE	("Strict sorting",	xrPID_BOOL,		oStrictSorting);
-	BP_W_MARKER	("Base Texture");
-	BP_WRITE	("Name",			xrPID_TEXTURE,	oT_Name);
-	BP_WRITE	("Transform",		xrPID_MATRIX,	oT_xform);
+	xrPWRITE_MARKER ("General");
+	xrPWRITE_PROP	("Priority",		xrPID_INTEGER,	oPriority);
+	xrPWRITE_PROP	("Strict sorting",	xrPID_BOOL,		oStrictSorting);
+	xrPWRITE_MARKER	("Base Texture");
+	xrPWRITE_PROP	("Name",			xrPID_TEXTURE,	oT_Name);
+	xrPWRITE_PROP	("Transform",		xrPID_MATRIX,	oT_xform);
 }
 
 void	CBlender::Load(	CStream& FS )
 {
 	FS.Read		(&description,sizeof(description));
-	BP_R_MARKER	();
-	BP_READ		(xrPID_INTEGER,	oPriority);
-	BP_READ		(xrPID_BOOL,	oStrictSorting);
-	BP_R_MARKER	();
-	BP_READ		(xrPID_TEXTURE,	oT_Name);
-	BP_READ		(xrPID_MATRIX,	oT_xform);
+	xrPREAD_MARKER	();
+	xrPREAD_PROP		(xrPID_INTEGER,	oPriority);
+	xrPREAD_PROP		(xrPID_BOOL,	oStrictSorting);
+	xrPREAD_MARKER	();
+	xrPREAD_PROP		(xrPID_TEXTURE,	oT_Name);
+	xrPREAD_PROP		(xrPID_MATRIX,	oT_xform);
 }
 //////////////////////////////////////////////////////////////////////
 #include "blender_clsid.h"

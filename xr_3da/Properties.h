@@ -23,6 +23,7 @@ enum	xrProperties
 	xrPID_TOKEN,
 	xrPID_CLSID,
 	xrPID_OBJECT,		// really only name(stringZ) is written into stream
+	xrPID_MARKER_TEMPLATE,
 	xrPID_FORCEDWORD=DWORD(-1)
 };
 
@@ -64,12 +65,68 @@ struct	xrP_TOKEN
 
 	xrP_TOKEN()	: IDselected(0), Count(0)		{}
 };
+
 struct	xrP_CLSID
 {
 	CLASS_ID			Selected;
 	DWORD				Count;
 	//--- elements:		(...)
+
+	xrP_CLSID()	: Selected(0), Count(0)			{}
 };
+
+struct	xrP_Template
+{
+	DWORD				Type;
+	DWORD				Limit;
+};
+
+// Base class
+class ENGINE_API	CPropertyBase
+{
+protected:
+	
+public:
+	virtual 	LPCSTR		getName			()				= 0;
+	virtual		LPCSTR		getComment		()				= 0;
+	
+	virtual		void		Save			(CFS_Base&  FS)	= 0;
+	virtual		void		Load			(CStream&	FS)	= 0;
+};
+
+// Writers
+IC void		xrPWRITE		(CFS_Base& FS, DWORD ID, LPCSTR name, LPCVOID data, DWORD size )
+{
+	FS.Wdword	(ID);
+	FS.WstringZ	(name);
+	if (data && size)	FS.write	(data,size);
+}
+IC void		xrPWRITE_MARKER	(CFS_Base& FS, LPCSTR name)
+{
+	xrPWRITE	(FS,xrPID_MARKER,name,0,0);
+}
+template <class T>
+IC void		xrPWRITE_PROP	(CFS_Base& FS, LPCSTR name, DWORD ID, T& data)
+{
+	xrPWRITE	(FS,ID,name,&data,sizeof(data));
+}
+
+// Readers
+IC DWORD	xrPREAD			(CStream& FS)
+{
+	DWORD T		= FS.Rdword();
+	FS.SkipStringZ	();
+	return		T;
+}
+IC void		xrPREAD_MARKER	(CStream& FS)
+{
+	R_ASSERT(xrPID_MARKER==xrPREAD(FS));	
+}
+template <class T>
+IC void		xrPREAD_PROP	(CStream& FS, DWORD ID, T& data)
+{
+	R_ASSERT(ID==xrPREAD(FS)); FS.Read(&data,sizeof(data))
+}
 
 #pragma pack(pop)
 #endif // xrPROPERTIES_H
