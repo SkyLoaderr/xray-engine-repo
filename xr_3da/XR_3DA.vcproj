@@ -1685,16 +1685,6 @@
 					</File>
 				</Filter>
 				<Filter
-					Name="DLight"
-					Filter="">
-					<File
-						RelativePath=".\LightPPA.cpp">
-					</File>
-					<File
-						RelativePath=".\LightPPA.h">
-					</File>
-				</Filter>
-				<Filter
 					Name="LightTrack"
 					Filter="">
 					<File
