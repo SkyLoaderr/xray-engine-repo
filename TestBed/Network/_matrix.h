@@ -54,7 +54,10 @@ public:
 
 	// Class members
 	IC	void	set			(const Self &a) {
-		CopyMemory			(this,&a,16*sizeof(T));
+		i.set(a.i); _14_=a._14;
+		j.set(a.j); _24_=a._24;
+		k.set(a.k); _34_=a._34;
+		c.set(a.c); _44_=a._44;
 	}
 	IC	void	set			(const Tvector& R,const Tvector& N,const Tvector& D,const Tvector& C) {
 		i.set(R); _14_=0;
