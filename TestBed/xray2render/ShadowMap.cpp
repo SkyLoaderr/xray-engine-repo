@@ -643,10 +643,10 @@ HRESULT CMyD3DApplication::RenderFAT	()
 	LPDIRECT3DSURFACE9						pBaseTarget;
 
 	// Set new render targets
-	m_pd3dDevice->GetRenderTarget			(0, &pBaseTarget);
-	m_pd3dDevice->SetRenderTarget			(0, d_Position	);
-	m_pd3dDevice->SetRenderTarget			(1, d_Normal	);
-	m_pd3dDevice->SetRenderTarget			(2, d_Color		);
+	m_pd3dDevice->GetRenderTarget			(0, &pBaseTarget	);
+	m_pd3dDevice->SetRenderTarget			(0, d_Position_S	);
+	m_pd3dDevice->SetRenderTarget			(1, d_Normal_S		);
+	m_pd3dDevice->SetRenderTarget			(2, d_Color_S		);
 	m_pd3dDevice->Clear						(0L, NULL, D3DCLEAR_TARGET|D3DCLEAR_ZBUFFER, 0x00, 1.0f, 0L);
 
 	// samplers and texture
