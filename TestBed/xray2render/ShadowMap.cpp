@@ -868,7 +868,7 @@ HRESULT CMyD3DApplication::RestoreDeviceObjects()
 	s_Filter_Bloom.compile			(m_pd3dDevice,"shaders\\D\\filter_bloom.s");
 
 	// Create bloom filter
-	CalcGauss						(bloom_W,bloom_H,bloom_V,7,3.3,1.2f,1.0f,w/2.f,h/2.f);
+	CalcGauss						(bloom_W,bloom_H,bloom_V,7,3.3,2.0f,1.0f,w/2.f,h/2.f);
 
 	// Create special textures
 	LPDIRECT3DTEXTURE9				height	= 0;
@@ -1506,6 +1506,8 @@ HRESULT CMyD3DApplication::RenderCombineDBG_Accumulator	()
 //-----------------------------------------------------------------------------
 HRESULT CMyD3DApplication::RenderCombine_Normal	()
 {
+	m_pd3dDevice->SetRenderState			(D3DRS_ZENABLE,	FALSE);
+
 	// samplers and texture (diffuse + gloss)
 	m_pd3dDevice->SetTexture				(0, d_Color);
 	m_pd3dDevice->SetSamplerState			(0, D3DSAMP_ADDRESSU,	D3DTADDRESS_CLAMP);
@@ -1535,6 +1537,7 @@ HRESULT CMyD3DApplication::RenderCombine_Normal	()
 	// Cleanup
 	m_pd3dDevice->SetTexture				(0, NULL);
 	m_pd3dDevice->SetTexture				(1, NULL);
+	m_pd3dDevice->SetRenderState			(D3DRS_ZENABLE,	TRUE);
 	return S_OK;
 }
 
@@ -1555,7 +1558,7 @@ HRESULT CMyD3DApplication::RenderCombine_Bloom	()
 	// Set Bloom 1
 	m_pd3dDevice->SetRenderTarget			(0, d_Bloom_1_S		);
 	m_pd3dDevice->SetDepthStencilSurface	(NULL);
-	// m_pd3dDevice->SetRenderState			(D3DRS_ZENABLE,		FALSE);
+	m_pd3dDevice->SetRenderState			(D3DRS_ZENABLE,		FALSE);
 	m_pd3dDevice->SetRenderState			(D3DRS_CULLMODE,	D3DCULL_NONE);
 
 	// samplers and texture (diffuse + gloss)
@@ -1650,12 +1653,12 @@ HRESULT CMyD3DApplication::RenderCombine_Bloom	()
 	//*/
 
 	// Cleanup
-	// m_pd3dDevice->SetRenderState			(D3DRS_ZENABLE,	TRUE);
 	m_pd3dDevice->SetTexture				(0, NULL			);
 	m_pd3dDevice->SetTexture				(1, NULL			);
 	m_pd3dDevice->SetRenderTarget			(0, pBaseTarget		);
 	m_pd3dDevice->SetDepthStencilSurface	(pBaseZB			);
 	m_pd3dDevice->SetViewport				(&oldViewport		);
+	m_pd3dDevice->SetRenderState			(D3DRS_ZENABLE,	TRUE);
 	return S_OK;
 }
 
