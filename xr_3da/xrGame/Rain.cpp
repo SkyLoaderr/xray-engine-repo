@@ -244,7 +244,7 @@ void	CEffect_Rain::Render	()
 	
 	// Born new if needed
 	float	b_radius		= 30.f;
-	float	b_radius_wrap	= b_radius+.5f;
+	float	b_radius_wrap	= b_radius+.1f;
 	float	b_height		= 40.f;
 	if (bBornNewItems && (items.size()<desired_items))	{
 		items.reserve	(desired_items);
@@ -277,8 +277,8 @@ void	CEffect_Rain::Render	()
 		if (wlen>b_radius_wrap)	{
 			// Perform wrapping
 			wdir.div	(-wlen);
-			one.P.direct(one.P,wdir,b_radius);
-			RayTest		(one,b_height);
+			one.P.direct(one.P, wdir, b_radius);
+			RayTest		(one, b_height);
 		}
 
 		// Build line
