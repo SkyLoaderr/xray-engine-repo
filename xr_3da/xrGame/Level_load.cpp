@@ -60,7 +60,7 @@ BOOL CLevel::Load_GameSpecific_Before()
 				for (int i=0; i<(int)dwCount; ++i){
 					OBJ->r_fvector3	(tPatrolPath.tpaWayPoints[i].tWayPoint);
 					tPatrolPath.tpaWayPoints[i].dwFlags = OBJ->r_u32();
-					tPatrolPath.tpaWayPoints[i].dwNodeID = ai().level_graph().vertex(tPatrolPath.tpaWayPoints[i].tWayPoint);
+					tPatrolPath.tpaWayPoints[i].dwNodeID = ai().level_graph().vertex(u32(-1),tPatrolPath.tpaWayPoints[i].tWayPoint);
 					string256		S;
 					OBJ->r_stringZ	(S);
 					tPatrolPath.tpaWayPoints[i].name = S;

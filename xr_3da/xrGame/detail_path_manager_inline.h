@@ -46,18 +46,18 @@ IC	void CDetailPathManager::set_start_direction	(const Fvector &start_direction)
 
 IC	void CDetailPathManager::set_dest_position	(const Fvector &dest_position)
 {
-//	if (m_actuality && !m_dest_position.similar(dest_position, .1f)) {
-//		Msg					("set_dest_position made Detail path inactual!");
-//	}
+	if (m_actuality && !m_dest_position.similar(dest_position, .1f)) {
+		Msg					("%6d : set_dest_position made Detail path inactual!",Level().timeServer());
+	}
 	m_actuality				= m_actuality && m_dest_position.similar(dest_position, .1f);
 	m_dest_position			= dest_position;
 }
 
 IC	void CDetailPathManager::set_dest_direction	(const Fvector &dest_direction)
 {
-//	if (m_actuality && !m_dest_direction.similar(dest_direction)) {
-//		Msg					("set_dest_direction made Detail path inactual!");
-//	}
+	if (m_actuality && !m_dest_direction.similar(dest_direction)) {
+		Msg					("%6d : set_dest_direction made Detail path inactual!",Level().timeServer());
+	}
 	m_actuality				= m_actuality && m_dest_direction.similar(dest_direction);
 	m_dest_direction		= dest_direction;
 }
@@ -84,9 +84,9 @@ IC	const Fvector &CDetailPathManager::dest_direction	() const
 
 IC	void CDetailPathManager::set_path_type				(const EDetailPathType path_type)
 {
-//	if (m_actuality && !(path_type == m_path_type)) {
-//		Msg					("set_path_type made Detail path inactual!");
-//	}
+	if (m_actuality && !(path_type == m_path_type)) {
+		Msg					("%6d : set_path_type made Detail path inactual!",Level().timeServer());
+	}
 	m_actuality				= m_actuality && (path_type == m_path_type);
 	m_path_type				= path_type;
 }
@@ -149,9 +149,9 @@ IC	void CDetailPathManager::compute_circles(
 
 IC	void CDetailPathManager::set_velocity_mask			(const u32 velocity_mask)
 {
-//	if (m_actuality && !(velocity_mask == m_velocity_mask)) {
-//		Msg					("set_velocity_mask made Detail path inactual!");
-//	}
+	if (m_actuality && !(velocity_mask == m_velocity_mask)) {
+		Msg					("%6d : set_velocity_mask made Detail path inactual!",Level().timeServer());
+	}
 	m_actuality				= m_actuality && (velocity_mask == m_velocity_mask);
 	m_velocity_mask			= velocity_mask;
 }
@@ -163,9 +163,9 @@ IC	const u32 CDetailPathManager::velocity_mask			() const
 
 IC	void CDetailPathManager::set_desirable_mask			(const u32 desirable_mask)
 {
-//	if (m_actuality && !(desirable_mask == m_desirable_mask)) {
-//		Msg					("set_desirable_mask made Detail path inactual!");
-//	}
+	if (m_actuality && !(desirable_mask == m_desirable_mask)) {
+		Msg					("%6d : set_desirable_mask made Detail path inactual!",Level().timeServer());
+	}
 	m_actuality				= m_actuality && (desirable_mask == m_desirable_mask);
 	m_desirable_mask		= desirable_mask;
 }
@@ -177,9 +177,9 @@ IC	const u32 CDetailPathManager::desirable_mask		() const
 
 IC	void CDetailPathManager::set_try_min_time			(const bool try_min_time)
 {
-//	if (m_actuality && !(try_min_time == m_try_min_time)) {
-//		Msg					("set_try_min_time made Detail path inactual!");
-//	}
+	if (m_actuality && !(try_min_time == m_try_min_time)) {
+		Msg					("%6d : set_try_min_time made Detail path inactual!",Level().timeServer());
+	}
 	m_actuality				= m_actuality && (try_min_time == m_try_min_time);
 	m_try_min_time			= try_min_time;
 }
@@ -191,9 +191,9 @@ IC	const bool CDetailPathManager::try_min_time			() const
 
 IC	void CDetailPathManager::set_use_dest_orientation	(const bool use_dest_orientation)
 {
-//	if (m_actuality && !(use_dest_orientation == m_use_dest_orientation)) {
-//		Msg					("set_use_dest_orientation made Detail path inactual!");
-//	}
+	if (m_actuality && !(use_dest_orientation == m_use_dest_orientation)) {
+		Msg					("%6d : set_use_dest_orientation made Detail path inactual!",Level().timeServer());
+	}
 	m_actuality				= m_actuality && (use_dest_orientation == m_use_dest_orientation);
 	m_use_dest_orientation	= use_dest_orientation;
 }
@@ -210,9 +210,9 @@ IC	bool CDetailPathManager::check_mask					(u32 mask, u32 test) const
 
 IC	void CDetailPathManager::set_state_patrol_path		(const bool state_patrol_path)
 {
-//	if (m_actuality && !(state_patrol_path == m_state_patrol_path)) {
-//		Msg					("set_state_patrol_path made Detail path inactual!");
-//	}
+	if (m_actuality && !(state_patrol_path == m_state_patrol_path)) {
+		Msg					("%6d : set_state_patrol_path made Detail path inactual!",Level().timeServer());
+	}
 	m_actuality				= m_actuality && (state_patrol_path == m_state_patrol_path);
 	m_state_patrol_path		= state_patrol_path;
 }

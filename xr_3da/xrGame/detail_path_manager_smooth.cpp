@@ -620,6 +620,7 @@ void CDetailPathManager::build_path_via_key_points(
 
 void CDetailPathManager::add_patrol_point()
 {
+	VERIFY								(m_path.back().position.similar(m_dest_position));
 	m_last_patrol_point					= m_path.size() - 1;
 	if ((m_path.size() > 1) && m_state_patrol_path) {
 		STravelPathPoint				t;
