@@ -631,6 +631,10 @@ SOURCE=.\Tracer.cpp
 SOURCE=.\Tracer.h
 # End Source File
 # End Group
+# Begin Group "AI_Core"
+
+# PROP Default_Filter ""
+# End Group
 # Begin Source File
 
 SOURCE=X:\game\engine.log
