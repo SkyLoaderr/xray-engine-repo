@@ -55,6 +55,34 @@ p2f 	p_main	( v2p_in IN )
 	p2f		OUT;
   
 	half4		accum,D,L,C,S;
+
+	// rgb.gloss	
+	D			=	tex2D		(s_diffuse,		IN.tc0);
+	D			+=	tex2D		(s_diffuse,		IN.tc1);
+	D			+=	tex2D		(s_diffuse,		IN.tc2);
+	D			+=	tex2D		(s_diffuse,		IN.tc3);
+	
+	// diffuse.specular
+	L 			=	tex2D		(s_accumulator, IN.tc0);
+	L 			+=	tex2D		(s_accumulator, IN.tc1);
+	L 			+=	tex2D		(s_accumulator, IN.tc2);
+	L 			+=	tex2D		(s_accumulator, IN.tc3);
+	
+	C			=	(D*0.25h)*(L*0.25h);			// rgb.gloss * light(rgb.specular)
+	S			=	half4		(C.w,C.w,C.w,C.w);	// replicated specular
+	
+	OUT.C 		=	(C+S) - half4(1,1,1,1);
+	return OUT;
+}
+
+//////////////////////////////////////////////////////////////////////////////////////////
+// Pixel
+/*
+p2f 	p_main	( v2p_in IN )
+{
+	p2f		OUT;
+  
+	half4		accum,D,L,C,S;
 	
 	// 1
 	D			=	tex2D		(s_diffuse,		IN.tc0);
@@ -87,3 +115,4 @@ p2f 	p_main	( v2p_in IN )
 	OUT.C 		= accum * 0.25 - half4(1,1,1,1);
 	return OUT;
 }
+*/
