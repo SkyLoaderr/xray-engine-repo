@@ -141,7 +141,11 @@ HWND logWindow=0;
 void __cdecl logThread(void *dummy)
 {
 	// Startup
-	FILE *F = fopen("x:\\build.log", "wt");
+	string128	log_name,log_user;
+	DWORD		buffer_size		= 128;
+	GetUserName	(log_user,&buffer_size);
+	strconcat	(log_name,"x:\\build_",strlwr(log_user),".log");
+	FILE *F = fopen(log_name, "wt");
 	R_ASSERT(F);
 
 	logWindow = CreateDialog(
