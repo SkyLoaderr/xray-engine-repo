@@ -56,7 +56,7 @@ v2p_out v_main	( a2v  	IN )
 	//					 = object2eye * transpose(object2tangent) (since the inverse of a rotation is its transpose)
 	float3		T	= IN.T;
 	float3		B	= IN.B;
-	float3		N	= cross(T,B);
+	float3		N	= cross	(T,B);
 	float3x3 xform	= mul	((float3x3)m_model2view, 
 								float3x3(
 								T.x,B.x,N.x,
