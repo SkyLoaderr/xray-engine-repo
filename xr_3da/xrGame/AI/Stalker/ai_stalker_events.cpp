@@ -33,10 +33,10 @@ void CAI_Stalker::OnEvent		(NET_Packet& P, u16 type)
 			P.r_u16		(id);
 			CObject* O	= Level().Objects.net_Find	(id);
 
-			Log("Trying to take - ", O->cName());
+			Msg("Trying to take - %s (%d)", O->cName(),O->ID());
 			if(g_Alive() && m_inventory.Take(dynamic_cast<CGameObject*>(O))) {
 				O->H_SetParent(this);
-				Log("TAKE - ", O->cName());
+				Msg("TAKE - %s (%d)", O->cName(),O->ID());
 				////if(m_inventory.m_activeSlot == 0xffffffff) {
 				////	if(PIItem(O)->m_slot < 0xffffffff) {
 				////		m_inventory.Slot(PIItem(O)); 
@@ -160,7 +160,7 @@ void CAI_Stalker::feel_touch_new				(CObject* O)
 	CBolt				*E	= dynamic_cast<CBolt*>			(O);
 
 	if (I && !E) {
-		Msg("Taking item %s!",I->cName());
+		Msg("Taking item %s (%d)!",I->cName(),I->ID());
 		NET_Packet		P;
 		u_EventGen		(P,GE_OWNERSHIP_TAKE,ID());
 		P.w_u16			(u16(I->ID()));
