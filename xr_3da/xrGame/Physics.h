@@ -11,7 +11,7 @@
 extern const dReal l_limit;
 extern const dReal w_limit;
 extern const dReal fixed_step;
-extern const int	 dis_frames;
+extern const u16	 dis_frames;
 
 void BodyCutForce(dBodyID body);
 void SaveContacts(dGeomID o1, dGeomID o2,dJointGroupID jointGroup);

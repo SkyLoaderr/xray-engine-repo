@@ -392,7 +392,7 @@ void CMovementControl::Move(Fvector& Dest, Fvector& Motion, BOOL bDynamic)
 void CMovementControl::CheckEnvironment(const Fvector& newpos)
 {
 	// verify surface and update Player State
-	int cp_cnt=pCreator->ObjectSpace.q_result.tris.size();
+	size_t cp_cnt=pCreator->ObjectSpace.q_result.tris.size();
 	eOldEnvironment	= eEnvironment;
 	eEnvironment	= peInAir;
 

@@ -10,12 +10,12 @@ struct Fcylinder;
 #include "Physics.h"
 #include "tri-colliderknoopc/dTriList.h"
 ///////////////////////////////////////////////////////////////
-#pragma warning(disable:4995)
-#include "..\ode\src\collision_kernel.h"
-#include <..\ode\src\joint.h>
-#include <..\ode\src\objects.h>
+//#pragma warning(disable:4995)
+//#include "..\ode\src\collision_kernel.h"
+//#include <..\ode\src\joint.h>
+//#include <..\ode\src\objects.h>
 
-#pragma warning(default:4995)
+//#pragma warning(default:4995)
 ///////////////////////////////////////////////////////////////////
 
 #include "ExtendedGeom.h"
@@ -273,8 +273,8 @@ void CPHJeep::Create(dSpaceID space, dWorldID world){
 }
 ////////////////////////////////////////////////////////////////
 void CPHJeep::JointTune(dReal step){
-	const	dReal k_p=15000.f;//30000.f;
-	const	dReal k_d=1000.f;//1000.f;
+	/////const	dReal k_p=15000.f;//30000.f;
+//	const	dReal k_d=1000.f;//1000.f;
 	//for(u32 i = 0; i < 4; ++i)
 	//{
 

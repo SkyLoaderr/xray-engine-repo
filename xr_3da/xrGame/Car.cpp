@@ -594,7 +594,7 @@ void CCar::CreateShell()
 
 	static const dReal weelSepXF=scaleBox[0]*1.32f,weelSepXB=scaleBox[0]*1.155f,weelSepZ=scaleBox[2]*1.53f/2.f,weelSepY=scaleBox[1]*0.463f;
 	static const dReal cabinSepX=scaleBox[0]*0.61f,cabinSepY=scaleBox[1]*0.55f;
-	dReal MassShift=0.25f;
+	//dReal MassShift=0.25f;
 
 
 
@@ -687,9 +687,9 @@ void CCar::CreateShell()
 
 		//	dJointSetHinge2Param(Joints[i], dParamVel2, 0.f);
 		//	dJointSetHinge2Param(Joints[i], dParamFMax2, 500.f);
-		dReal k_p=20000000.f;//20000.f;
-		dReal k_d=10.f;//1000.f;
-		dReal h=0.02222f;
+	//	dReal k_p=20000000.f;//20000.f;
+	//	dReal k_d=10.f;//1000.f;
+	//	dReal h=0.02222f;
 
 
 		//	dJointSetHinge2Param(Joints[i], dParamSuspensionERP, h*k_p / (h*k_p + k_d));

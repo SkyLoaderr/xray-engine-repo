@@ -10,11 +10,13 @@ struct Fcylinder;
 #include "tri-colliderknoopc/dTriList.h"
 ///////////////////////////////////////////////////////////////
 #pragma warning(disable:4995)
+#pragma warning(disable:4267)
 #include "..\ode\src\collision_kernel.h"
 #include <..\ode\src\joint.h>
 #include <..\ode\src\objects.h>
-
+#pragma warning(default:4267)
 #pragma warning(default:4995)
+
 #include "gameobject.h"
 ///////////////////////////////////////////////////////////////////
 
@@ -23,7 +25,7 @@ union dInfBytes dInfinityValue = {{0,0,0x80,0x7f}};
 
 
 const dReal fixed_step=0.02f;
-const int dis_frames=11;
+const u16 dis_frames=11;
 
 const dReal w_limit = M_PI/16.f/fixed_step;
 const dReal l_limit = 3.f/fixed_step;
@@ -771,8 +773,8 @@ void __stdcall PushOutCallback1(bool& do_colide,dContact& c)
 	if(!(body1&&body2)) 
 		return;
 
-	const dReal* pos1=dGeomGetPosition(c.geom.g1);
-	const dReal* pos2=dGeomGetPosition(c.geom.g2);
+	///const dReal* pos1=dGeomGetPosition(c.geom.g1);
+	//const dReal* pos2=dGeomGetPosition(c.geom.g2);
 
 
 	dxGeomUserData* usr_data_1=NULL;
