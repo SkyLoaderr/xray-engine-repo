@@ -65,7 +65,11 @@ BOOL	Surface_Detect(LPSTR F, LPSTR N)
 {
 	for (DWORD i=0; i<exts.size(); i++)
 	{
+#ifdef _EDITOR
+		strconcat(F,FS.m_Textures.m_Path,N,".",exts[i].c_str());
+#else
 		strconcat(F,"x:\\textures\\",N,".",exts[i].c_str());
+#endif
 		int h = _open(F,O_RDONLY|O_BINARY);
 		if (h>0)	{
 			_close(h);
