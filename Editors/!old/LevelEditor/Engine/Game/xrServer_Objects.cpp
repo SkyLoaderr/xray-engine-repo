@@ -285,7 +285,9 @@ void CSE_Shape::cform_write					(NET_Packet	&tNetPacket)
 
 void CSE_Shape::assign_shapes	(CShapeData::shape_def* _shapes, u32 _cnt)
 {
-	shapes.assign	(_cnt,*_shapes);
+	shapes.resize	(_cnt);
+	for (u32 k=0; k<_cnt; k++)
+		shapes[k]	= _shapes[k];
 }
 
 ////////////////////////////////////////////////////////////////////////////
