@@ -542,20 +542,22 @@ void CUIMainIngameWnd::Update()
 	{
 		CUIPdaMsgListItem* pItem = dynamic_cast<CUIPdaMsgListItem*>(UIPdaMsgListWnd.GetItem(i));
 		R_ASSERT(pItem);
-		int show_time = pItem->GetValue();
+		int* pShowTime = (int*)pItem->GetData();
 		
-		if(show_time>0)
+		if(*pShowTime>0)
 		{
 			// Плавное исчезновение надписи
-			float fAlphaFactor = static_cast<float>(m_iFade_mSec - show_time) / m_iFade_mSec;
+			float fAlphaFactor = static_cast<float>(m_iFade_mSec - *pShowTime) / m_iFade_mSec;
 			if (fAlphaFactor < 0) fAlphaFactor = 0;
 			pItem->UIMsgText.SetTextColor(subst_alpha(pItem->UIMsgText.GetTextColor(), u8(iFloor(255.f * (1 - fAlphaFactor)))));
 
-			show_time -= Device.dwTimeDelta;
-			pItem->SetValue(show_time);
+			*pShowTime -= Device.dwTimeDelta;
 		}
 		else
+		{
+			xr_delete(pShowTime);
 			UIPdaMsgListWnd.RemoveItem(i);
+		}
 	}
 
 	// Check for new news
@@ -838,7 +840,9 @@ void CUIMainIngameWnd::ReceivePdaMessage(CInventoryOwner* pSender, EPdaMsg msg, 
 	UIPdaMsgListWnd.ScrollToBegin();
 
 	pItem->InitCharacter(dynamic_cast<CInventoryOwner*>(pSender));
-	pItem->SetValue(m_dwMaxShowTime);
+	int* pShowTime = xr_new<int>();
+	*pShowTime = m_dwMaxShowTime;
+	pItem->SetData(pShowTime);
 
 
 	UIPdaMsgListWnd.Show(true);	
@@ -962,7 +966,9 @@ void CUIMainIngameWnd::OnNewsReceived(const CALifeNews &newsItem)
 		UIPdaMsgListWnd.ScrollToBegin();
 
 		pItem->InitCharacter(dynamic_cast<CInventoryOwner*>(Level().CurrentEntity()));
-		pItem->SetValue(m_dwMaxShowTime);
+		int* pShowTime = xr_new<int>();
+		*pShowTime = m_dwMaxShowTime;
+		pItem->SetData(pShowTime);
 
 		UIPdaMsgListWnd.Show(true);	
 
