@@ -127,6 +127,8 @@ USEFORM("KeyBar.cpp", frmKeyBar);
 USEUNIT("Engine\xrXRC.cpp");
 USEUNIT("Engine\cl_collector.cpp");
 USELIB("Lib\xrCDB.lib");
+USEUNIT("Engine\Blenders\Blender_Shadow_Texture.cpp");
+USEUNIT("Engine\Blenders\Blender_Shadow_World.cpp");
 //---------------------------------------------------------------------------
 #include "main.h"
 #include "splash.h"

@@ -57,7 +57,9 @@
       Intermediate\xrBoneLerp.obj Intermediate\FProgressive.obj 
       Intermediate\fmesh.obj Intermediate\Engine.obj Intermediate\ModelPool.obj 
       Intermediate\UI_ToolsMotions.obj Intermediate\KeyBar.obj 
-      Intermediate\xrXRC.obj Intermediate\cl_collector.obj"/>
+      Intermediate\xrXRC.obj Intermediate\cl_collector.obj 
+      Intermediate\Blender_Shadow_Texture.obj 
+      Intermediate\Blender_Shadow_World.obj"/>
     <RESFILES value="ActorEditor.res resource.res"/>
     <IDLFILES value=""/>
     <IDLGENFILES value=""/>
