@@ -27,7 +27,7 @@ end
 function CSE_NewAttachableItem:STATE_Read	(packet, size)
 	log							("CSE_NewAttachableItem::STATE_Read called!")
 	cse_alife_item.STATE_Read	(self,packet,size)
-	self.script_property0:set	(packet:r_u32())
+	self.script_property0:assign(packet:r_u32())
 	this.printf					("STATE_Read : %d",self.script_property0:get())
 end
 
