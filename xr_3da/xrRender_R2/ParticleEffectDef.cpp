@@ -126,8 +126,8 @@ void CPEDef::ExecuteCollision(PAPI::Particle* particles, u32 p_cnt, float dt, CP
 #ifdef _EDITOR                
 				if (Tools->RayPick(m.posB,dir,dist,&pt,&n)){
 #else
-				Collide::rq_result	RQ;
-                Collide::rq_target	RT = m_Flags.is(dfCollisionDyn)?Collide::rqtBoth:Collide::rqtStatic;
+				collide::rq_result	RQ;
+                collide::rq_target	RT = m_Flags.is(dfCollisionDyn)?collide::rqtBoth:collide::rqtStatic;
 				if (g_pGameLevel->ObjectSpace.RayPick(m.posB,dir,dist,RT,RQ)){	
 					pt.mad	(m.posB,dir,RQ.range);
 					if (RQ.O){
