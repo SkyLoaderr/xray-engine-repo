@@ -20,11 +20,6 @@ T1 *_dynamic_cast(T2 *p2)
 	return			(dynamic_cast<T1*>(p2));
 }
 
-void bind_action_to_action_planner(CScriptActionPlanner *planner, const CScriptActionPlanner::_edge_type &id, CScriptActionPlannerAction *action)
-{
-	planner->add_operator	(id, action);
-}
-
 void CActionPlannerAction<CScriptGameObject>::script_register(lua_State *L)
 {
 	module(L)
@@ -41,6 +36,5 @@ void CActionPlannerAction<CScriptGameObject>::script_register(lua_State *L)
 
 		def		("cast_action_to_planner",		&_dynamic_cast<CScriptActionPlanner,CScriptActionBase>,adopt(return_value) + adopt(_1)),
 		def		("cast_planner_to_action",		&_dynamic_cast<CScriptActionBase,CScriptActionPlanner>,adopt(return_value) + adopt(_1)),
-		def		("bind_action_to_action_planner",&bind_action_to_action_planner,adopt(_3))
 	];
 }
