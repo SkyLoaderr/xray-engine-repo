@@ -22,13 +22,14 @@ end
 function action_camera_activity:reset_scheme()
 	printf("_hr: action_camera_activity:reset_scheme: self.object:name()='%s'", self.object:name())
 	
+	xr_logic.mob_capture(self.object, true)
+	
 	if self.path == nil then
 		self.path = patrol(self.st.path_look)
 	end
 	self.num_wp = self.path:count()
 	self.cur_wp = self.st.start_wp
 	
-	xr_logic.mob_capture(self.object, true)
 	action(self.object, look(look.point, self.path:point(self.cur_wp)), anim(anim.turn, 0), cond(cond.look_end))
 	--action(self.object, look(self.path:point(self.cur_wp), self.st.speed_h, self.st.speed_v), cond(cond.look_end))
 end
@@ -85,9 +86,10 @@ function set_scheme(npc, ini, scheme, section, gulag_name)
 	
 	st.logic = xr_logic.cfg_get_switch_conditions(ini, section, npc)
 	
-	st.state     = utils.cfg_get_string(ini, section, "state", npc, false, "off")
-	st.path_look = utils.cfg_get_string(ini, section, "path_look", npc, true, "")
-	st.start_wp  = utils.cfg_get_number(ini, section, "start_wp", npc, false, 0)
-	st.speed_h   = utils.cfg_get_number(ini, section, "speed_h", npc, false, 10)
-	st.speed_v   = utils.cfg_get_number(ini, section, "speed_v", npc, false, 10)
+	st.state       = utils.cfg_get_string(ini, section, "state", npc, false, "", "off")
+	st.path_look   = utils.cfg_get_string(ini, section, "path_look", npc, true, "")
+	st.start_wp    = utils.cfg_get_number(ini, section, "start_wp", npc, false, 0)
+	st.speed_h     = utils.cfg_get_number(ini, section, "speed_h", npc, false, 10)
+	st.speed_v     = utils.cfg_get_number(ini, section, "speed_v", npc, false, 10)
+	st.moving_type = utils.cfg_get_number(ini, section, "moving_type", npc, false, "", "path")
 end
