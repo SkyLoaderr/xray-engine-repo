@@ -1,4 +1,5 @@
 function main()
 	log	("script don't want to work!")
 	local stalker1	= get_level_object("m_stalker_e0001")
+	wait()
 end
