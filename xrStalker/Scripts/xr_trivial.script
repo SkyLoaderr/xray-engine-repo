@@ -689,8 +689,8 @@ function novice3_attack:__init (name, storage) super (nil, name)
     self.end_run   = false
     self.walk_time = 0
     self.state     = 0
-  --0 - говорим фразу и начинаем бежать
-  --1 - бежим
+	--0 - говорим фразу и начинаем бежать
+	--1 - бежим
     --2 - идем к предпоследней точке
     --3 - стоим и смотрим
 end
@@ -722,14 +722,15 @@ function novice3_attack:initialize ()
     self.object:set_sight            ( look.path_dir, nil, 0 )
     self.object:set_item             ( object.activate, self.object:best_weapon() )
 
-  -- Инициализируем инфопоршн
-  local actor = level.actor()
-  if actor ~= nil then
-    actor:give_info_portion("escape_novice_has_weapon")
-  end
-  self.object:set_start_dialog("escape_novice_thank_actor")
-  --Отключаем реакции
-    xr_reactions.add_rule(self.object, "ignore")
+	-- Инициализируем инфопоршн
+	local actor = level.actor()
+	if actor ~= nil then
+		actor:give_info_portion("escape_novice_has_weapon")
+	end
+	self.object:set_start_dialog("escape_novice_thank_actor")
+	--Отключаем реакции
+	xr_reactions.add_rule(self.object, "ignore")
+	self.object:disable_talk()
 end
 ---------------------------------------------------------------------------------------------------------------------
 function novice3_attack:execute ()
