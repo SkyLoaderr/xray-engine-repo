@@ -1167,6 +1167,10 @@ radius = 10
 ;-- Снайпер на ближайшей вышке -----------------------------------
 [logic@mil_freedom_camper4]
 active = camper4@mil_freedom
+on_death = sniper1_death@mil_freedom_combat
+
+[sniper1_death@mil_freedom_combat]
+on_info = %+mil_sniper1_dead%
 
 [camper4@mil_freedom]
 path_walk = camp_walk4
@@ -1176,6 +1180,10 @@ radius = 10
 ;-- Снайпер на вышке у шлагбаума --------------------------------
 [logic@mil_freedom_camper5]
 active = camper5@mil_freedom
+on_death = sniper2_death@mil_freedom_combat
+
+[sniper2_death@mil_freedom_combat]
+on_info = %+mil_sniper2_dead%
 
 [camper5@mil_freedom]
 path_walk = camp_walk5
@@ -1244,3 +1252,86 @@ active = camper12@mil_freedom
 path_walk = camp_walk12
 path_look = camp_look12
 radius = 10
+
+;-------------------------------------------------------------------------------------------------
+;Attack "Dolg" base
+;-------------------------------------------------------------------------------------------------
+;------------------
+[logic@mil_freedom_walker31]
+active = walker31@mil_freedom
+
+[walker31@mil_freedom]
+path_walk = attack_way1
+path_look = attack_look1
+team = mil_freedom_attackers
+
+;------------------
+[logic@mil_freedom_walker32]
+active = walker32@mil_freedom
+
+[walker32@mil_freedom]
+path_walk = attack_way1
+path_look = attack_look1
+team = mil_freedom_attackers
+
+;------------------
+[logic@mil_freedom_walker33]
+active = walker33@mil_freedom
+
+[walker33@mil_freedom]
+path_walk = attack_way1
+path_look = attack_look1
+team = mil_freedom_attackers
+
+;------------------
+[logic@mil_freedom_walker34]
+active = walker34@mil_freedom
+
+[walker34@mil_freedom]
+path_walk = attack_way2
+path_look = attack_look1
+team = mil_freedom_attackers
+
+;------------------
+[logic@mil_freedom_walker35]
+active = walker35@mil_freedom
+
+[walker35@mil_freedom]
+path_walk = attack_way2
+path_look = attack_look1
+team = mil_freedom_attackers
+
+;------------------
+[logic@mil_freedom_walker36]
+active = walker36@mil_freedom
+
+[walker36@mil_freedom]
+path_walk = attack_way2
+path_look = attack_look1
+team = mil_freedom_attackers
+;------------------
+[logic@mil_freedom_walker37]
+active = walker37@mil_freedom
+
+[walker37@mil_freedom]
+path_walk = attack_way3
+path_look = attack_look1
+team = mil_freedom_attackers
+
+;------------------
+[logic@mil_freedom_walker38]
+active = walker38@mil_freedom
+
+[walker38@mil_freedom]
+path_walk = attack_way3
+path_look = attack_look1
+team = mil_freedom_attackers
+
+;------------------
+[logic@mil_freedom_walker39]
+active = walker39@mil_freedom
+
+[walker39@mil_freedom]
+path_walk = attack_way3
+path_look = attack_look1
+team = mil_freedom_attackers
