@@ -23,7 +23,7 @@ public:
 	}
 	void				Start	()
 	{
-		thread_spawn	(startup,"worker-thread",0,this);
+		thread_spawn	(startup,"worker-thread",1024*1024,this);
 	}
 	virtual		void	Execute	()	= 0;
 };
