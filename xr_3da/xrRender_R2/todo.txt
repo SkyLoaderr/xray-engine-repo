@@ -47,9 +47,9 @@ OPT:	precompute invisible list (visuals) for static lights at load time
 +BUG	:	fucking light-flickering!!!
 +BUG	:	DX-WARN: RT used while bound
 
+self-ilum
 hw-pointlight
 incremental object level culling
-self-ilum
 volume-fog
 z-fade particles
 

@@ -58,6 +58,7 @@ public:
 	adopt_compiler			(const adopt_compiler&	_C)	: C(_C.C)					{ }
 
 	adopt_compiler&			_options		(int	P,		bool	S)				{	C->SetParams		(P,S);					return	*this;		}
+	adopt_compiler&			_o_emissive		(bool	E)								{	C->SH->Flags.bEmissive=E;					return	*this;		}
 	adopt_compiler&			_pass			(LPCSTR	vs,		LPCSTR ps)				{	C->r_Pass			(vs,ps,true);			return	*this;		}
 	adopt_compiler&			_fog			(bool	_fog)							{	C->PassSET_LightFog	(FALSE,_fog);			return	*this;		}
 	adopt_compiler&			_ZB				(bool	_test,	bool _write)			{	C->PassSET_ZB		(_test,_write);			return	*this;		}
@@ -130,6 +131,7 @@ void	CResourceManager::LS_Load			()
 			.def(								constructor<const adopt_compiler&>())
 			.def("begin",						&adopt_compiler::_pass			,return_reference_to(self))
 			.def("sorting",						&adopt_compiler::_options		,return_reference_to(self))
+			.def("emissive",					&adopt_compiler::_o_emissive	,return_reference_to(self))
 			.def("fog",							&adopt_compiler::_fog			,return_reference_to(self))
 			.def("zb",							&adopt_compiler::_ZB			,return_reference_to(self))
 			.def("blend",						&adopt_compiler::_blend			,return_reference_to(self))

@@ -9,6 +9,7 @@ void	light_Package::clear	()
 	v_spot_s.clear		();
 }
 
+#if RENDER==R_R2
 IC	bool	pred_light_cmp	(light*	_1, light* _2)
 {
 	if	(_1->vis.pending)
@@ -29,3 +30,4 @@ void	light_Package::sort		()
 	std::stable_sort	(v_spot_s.begin(),	v_spot_s.end(),		pred_light_cmp);
 	std::stable_sort	(v_spot.begin(),	v_spot.end(),		pred_light_cmp);
 }
+#endif
