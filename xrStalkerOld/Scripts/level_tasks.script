@@ -93,6 +93,7 @@ function proceed(actor)
 	end
 
 	if actor:has_info("agroprom_military_case") and
+	   actor:dont_has_info("agroprom_military_case_have") and
 	   actor:object("quest_case_02") ~= nil
 	then
 		actor:give_info_portion("agroprom_military_case_have")
