@@ -251,10 +251,11 @@ static Fvector vV={0,0,0};
 void CAI_Crow::state_DeathFall()
 {
 	Fvector tAcceleration;
-	tAcceleration.set(0,10.f,0);
+	tAcceleration.set(0,-10.f,0);
 	Movement.SetPosition(vPosition);
 	Movement.Calculate	(tAcceleration,0,0,Device.fTimeDelta > .1f ? .1f : Device.fTimeDelta,false);
 	Movement.GetPosition(vPosition);
+	Log("P: ",vPosition);
 
 	UpdateTransform();
 
@@ -292,5 +293,17 @@ void CAI_Crow::HitSignal	(float HitAmount, Fvector& local_dir, CObject* who)
 	fHealth		= 0;
 	if (st_current!=eDeathDead) st_target = eDeathFall;
 	else PKinematics(pVisual)->PlayCycle(m_Anims.m_death_dead.GetRandom());
+}
+//---------------------------------------------------------------------
+void CAI_Crow::HitImpulse	(float	amount,		Fvector& vWorldDir, Fvector& vLocalDir)
+{
+/*
+	switch (st_current){
+	case eDeathDead:{
+		float Q	= float(amount)/Movement.GetMass();
+		Movement.vExternalImpulse.mad(vWorldDir,Q);
+	}break;
+	}
+*/
 }
 //---------------------------------------------------------------------
