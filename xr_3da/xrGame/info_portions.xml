@@ -29,7 +29,6 @@
 		<dialog>job_medkit</dialog>
 	</info_portion>
 
-
 	<info_portion id="actor_start02">
 		<location >
 			<level>0</level>
@@ -38,6 +37,18 @@
 			<text>”кради научный \nчемоданчик с блокпоста,\nтак чтобы никто не заметил...</text>
 		</location>
 	</info_portion>
+
+	<info_portion id="actor_start03">
+		<text>S.O.S. S.O.S. S.O.S.</text> 
+		<location >
+			<level>0</level>
+			<object>fedya</object>
+			<icon name="unknown" x="2" y="4" width="1" height="1"></icon>
+			<text>S.O.S.</text>
+		</location>
+		<!-- список диалогов, который может инициировать InfoPortion -->
+	</info_portion>
+
 
 	<info_portion id="trader_start1">
 		<location >
