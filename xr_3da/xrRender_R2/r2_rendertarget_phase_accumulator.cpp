@@ -36,11 +36,11 @@ void	CRenderTarget::phase_accumulator()
 	// Stencil	- result -> 0x2 where pixel can be potentialy lighted/shadowed
 	CHK_DX(HW.pDevice->SetRenderState	( D3DRS_STENCILENABLE,		TRUE				));
 	CHK_DX(HW.pDevice->SetRenderState	( D3DRS_STENCILFUNC,		D3DCMP_LESSEQUAL	));
-	CHK_DX(HW.pDevice->SetRenderState	( D3DRS_STENCILREF,			0x01				));
-	CHK_DX(HW.pDevice->SetRenderState	( D3DRS_STENCILMASK,		0xff				));
-	CHK_DX(HW.pDevice->SetRenderState	( D3DRS_STENCILWRITEMASK,	0xff				));
+	CHK_DX(HW.pDevice->SetRenderState	( D3DRS_STENCILREF,			0x03				));
+	CHK_DX(HW.pDevice->SetRenderState	( D3DRS_STENCILMASK,		0x01				));
+	CHK_DX(HW.pDevice->SetRenderState	( D3DRS_STENCILWRITEMASK,	0x02				));
 	CHK_DX(HW.pDevice->SetRenderState	( D3DRS_STENCILFAIL,		D3DSTENCILOP_KEEP	));
-	CHK_DX(HW.pDevice->SetRenderState	( D3DRS_STENCILPASS,		D3DSTENCILOP_INCRSAT));	
+	CHK_DX(HW.pDevice->SetRenderState	( D3DRS_STENCILPASS,		D3DSTENCILOP_REPLACE));	
 	CHK_DX(HW.pDevice->SetRenderState	( D3DRS_STENCILZFAIL,		D3DSTENCILOP_KEEP	));
 
 	// Assuming next usage will be for directional light
@@ -75,4 +75,13 @@ void	CRenderTarget::phase_accumulator()
 	CHK_DX						(HW.pDevice->SetRenderState	( D3DRS_COLORWRITEENABLE,	0	));
 	RCache.Render				(D3DPT_TRIANGLELIST,Offset,0,4,0,2);
 	CHK_DX						(HW.pDevice->SetRenderState	( D3DRS_COLORWRITEENABLE,	D3DCOLORWRITEENABLE_RED | D3DCOLORWRITEENABLE_GREEN | D3DCOLORWRITEENABLE_BLUE | D3DCOLORWRITEENABLE_ALPHA ));
+
+	CHK_DX(HW.pDevice->SetRenderState	( D3DRS_STENCILENABLE,		TRUE				));
+	CHK_DX(HW.pDevice->SetRenderState	( D3DRS_STENCILFUNC,		D3DCMP_LESSEQUAL	));
+	CHK_DX(HW.pDevice->SetRenderState	( D3DRS_STENCILREF,			0x02				));
+	CHK_DX(HW.pDevice->SetRenderState	( D3DRS_STENCILMASK,		0xff				));
+	CHK_DX(HW.pDevice->SetRenderState	( D3DRS_STENCILWRITEMASK,	0x00				));
+	CHK_DX(HW.pDevice->SetRenderState	( D3DRS_STENCILFAIL,		D3DSTENCILOP_KEEP	));
+	CHK_DX(HW.pDevice->SetRenderState	( D3DRS_STENCILPASS,		D3DSTENCILOP_KEEP	));
+	CHK_DX(HW.pDevice->SetRenderState	( D3DRS_STENCILZFAIL,		D3DSTENCILOP_KEEP	));
 }
