@@ -102,7 +102,15 @@ void CAI_Stalker::vfBuildPathToDestinationPoint(IBaseAI_NodeEvaluator *tpNodeEva
 		getAI().m_tpAStar->ffFindMinimalPath(AI_NodeID,AI_Path.DestNode,AI_Path);
 	
 	if (AI_Path.Nodes.empty())
-		m_tPathState = ePathStateSearchNode;
+		if (tpNodeEvaluator) {
+			getAI().m_tpAStar->ffFindMinimalPath(AI_NodeID,AI_Path.DestNode,AI_Path);
+			if (AI_Path.Nodes.empty())
+				m_tPathState = ePathStateSearchNode;
+			else
+				m_tPathState = ePathStateBuildTravelLine;
+		}
+		else
+			m_tPathState = ePathStateSearchNode;
 	else
 		m_tPathState = ePathStateBuildTravelLine;
 	
