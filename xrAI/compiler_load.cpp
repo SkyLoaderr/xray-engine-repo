@@ -58,6 +58,7 @@ void xrLoad(LPCSTR name)
 	{
 		strconcat			(N,name,"build.cform");
 		IReader				*F = FS.r_open(N);
+		R_ASSERT2			(F,"There is no file 'build.cform'!");
 		
 		hdrCFORM			H;
 		IReader				*fs	= F->open_chunk(0);
@@ -92,6 +93,7 @@ void xrLoad(LPCSTR name)
 		strconcat				(N,name,"build.prj");
 
 		IReader*	F			= FS.r_open(N);
+		R_ASSERT2				(F,"There is no file 'build.prj'!");
 		IReader					&fs= *F;
 
 		// Version
