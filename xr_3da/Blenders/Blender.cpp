@@ -78,6 +78,9 @@ void	CBlender::Load(	CStream& FS )
 #include "blender_editor_wire.h"
 #include "blender_editor_selection.h"
 #include "blender_light.h"
+#include "blender_LaEmB.h"
+#include "blender_Lm(EbB).h"
+#include "blender_LmBmmD.h"
 CBlender*	CBlender::Create	(CLASS_ID cls)
 {	
 	switch (cls)
@@ -91,6 +94,9 @@ CBlender*	CBlender::Create	(CLASS_ID cls)
 	case B_EDITOR_WIRE:		return new CBlender_Editor_Wire;	break;
 	case B_EDITOR_SEL:		return new CBlender_Editor_Selection;break;
 	case B_LIGHT:			return new CBlender_LIGHT;			break;
+	case B_LmBmmD:			return new CBlender_LmBmmD;			break;
+	case B_LaEmB:			return new CBlender_LaEmB;			break;
+	case B_LmEbB:			return new CBlender_LmEbB;			break;
 	default:				return 0;
 	}
 }
@@ -106,4 +112,7 @@ void		CBlender::CreatePalette(vector<CBlender*> &palette)
 	palette.push_back(Create(B_EDITOR_WIRE));
 	palette.push_back(Create(B_EDITOR_SEL));
 	palette.push_back(Create(B_LIGHT));
+	palette.push_back(Create(B_LmBmmD));
+	palette.push_back(Create(B_LaEmB));
+	palette.push_back(Create(B_LmEbB));
 }
