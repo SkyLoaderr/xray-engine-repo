@@ -109,10 +109,10 @@ public:
 	IC	_dist_type	estimate		(const _index_type node_index) const
 	{
 		VERIFY					(graph);
+		// Manhattan heuritics
 		int						i,j;
 		i						= node_index / (columns + 2);
 		j						= node_index % (columns + 2);
-//		return					(_abs(_i - i - _j + j) + _abs(_i - i));
 		return					(_abs(_j - j) + _abs(_i - i));
 	}
 
@@ -706,6 +706,12 @@ public:
 		y1						= (float)(tNode0.position().y);
 		return					(false);
 	}
+
+	IC	_dist_type	estimate		(const _index_type node_index) const
+	{
+		VERIFY					(graph);
+		return					(_dist_type(0));
+	}
 };
 
 template <
@@ -870,11 +876,7 @@ public:
 			parameters
 		);
 		m_evaluator		= &parameters;
-	}
-
-	IC	_dist_type	evaluate		(const _index_type node_index1, const _index_type node_index2, const _Graph::const_iterator &i)
-	{
-		return					(m_evaluator->ffEvaluate(node_index2));
+		m_evaluator->m_max_range = parameters->m_fSearchRange;
 	}
 
 	IC	_dist_type	estimate		(const _index_type node_index) const
@@ -885,10 +887,18 @@ public:
 
 	IC	bool		is_goal_reached	(const _index_type node_index)
 	{
-		VERIFY					(m_flood);
-		m_flood->push_back		(node_index);
+		VERIFY					(parameters);
+		m_evaluator->m_tpCurrentNode = graph->vertex(node_index);
+		m_evaluator->m_fDistance	 = data_storage.get_best().g();
+		float					value = m_evaluator->ffEvaluate();
+		if (value > m_evaluator->m_fResult) {
+			m_evaluator->m_fResult		= value;
+			m_evaluator->m_dwBestNode	= node_index;
+		}
+
 		_Graph::CVertex			&tNode0 = *graph->vertex(node_index);
 		y1						= (float)(tNode0.position().y);
+
 		return					(false);
 	}
 };

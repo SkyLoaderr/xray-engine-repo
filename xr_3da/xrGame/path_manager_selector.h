@@ -12,6 +12,7 @@
 }
 
 #define DEST_POSITIONS
+#define FIRE_SAFETY_ANGLE				PI/18.f
 #define aiSearchRange					(u64(1) <<  0)
 #define aiEnemySurround					(u64(1) <<  1)
 #define aiTotalCover					(u64(1) <<  2)
