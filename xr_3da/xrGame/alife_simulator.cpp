@@ -25,7 +25,7 @@ union params {
 	IC				params()
 	{
 		for (int i=0; i<4; ++i)
-			strcpy				(m_params[i],"");
+			strcpy	(m_params[i],"");
 	}
 };
 
@@ -39,7 +39,7 @@ CALifeSimulator::CALifeSimulator		(xrServer *server, shared_str *command_line) :
 	setup_command_line			(*command_line);
 
 	params						p;
-	int							n = _GetItemCount(**command_line,'/');
+	int							n = _min(4,_GetItemCount(**command_line,'/'));
 	for (int i=0; i<n; ++i) {
 		_GetItem				(**command_line,i,p.m_params[i],'/');
 		strlwr					(p.m_params[i]);
