@@ -13,6 +13,7 @@ void CMovementManager::process_level_path()
 {
 	switch (m_path_state) {
 		case ePathStateSelectLevelVertex : {
+			
 			CLevelLocationSelector::select_location(level_vertex_id(),CLevelPathManager::m_dest_vertex_id);
 			if (CLevelLocationSelector::failed())				
 				break;
@@ -37,6 +38,7 @@ void CMovementManager::process_level_path()
 				break;
 		}
 		case ePathStateBuildDetailPath : {
+
 			Device.Statistic.TEST2.Begin();
 			CDetailPathManager::set_state_patrol_path(false);
 			CDetailPathManager::set_start_position(Position());
@@ -47,17 +49,19 @@ void CMovementManager::process_level_path()
 						CLevelPathManager::intermediate_vertex_id()
 					)
 				);
-            CDetailPathManager::build_path(
+            
+			CDetailPathManager::build_path(
 				CLevelPathManager::path(),
 				CLevelPathManager::intermediate_index()
 			);
-	
+
+
 			Device.Statistic.TEST2.End();
 
 			if (CDetailPathManager::failed()) {
 				m_path_state	= ePathStateBuildLevelPath;
 				break;
-			}
+			} 
 
 			m_path_state		= ePathStatePathVerification;
 
@@ -65,7 +69,7 @@ void CMovementManager::process_level_path()
 				break;
 		}
 		case ePathStatePathVerification : {
-			
+
 			if (!CLevelLocationSelector::actual(level_vertex_id(),path_completed())) 
 				m_path_state	= ePathStateBuildLevelPath;
 			else

@@ -38,6 +38,8 @@ void CMonsterDebug::M_Add(u32 index, LPCSTR str, u32 col)
 
 void CMonsterDebug::M_Update()
 { 
+
+
 	if (!active) return;
 
 #ifdef DISABLE_MONSTER_DEBUG
@@ -160,8 +162,8 @@ void CMonsterDebug::HT_Update()
 
 
 	for (u32 i=0; i<_text.size(); i++) {
-		HUD().pFontSmall->OutSet(_text[i].x,_text[i].y);
-		HUD().pFontSmall->OutNext(_text[i].text);
+		HUD().pFontMedium->OutSet(_text[i].x,_text[i].y);
+		HUD().pFontMedium->OutNext(_text[i].text);
 	}
 }
 

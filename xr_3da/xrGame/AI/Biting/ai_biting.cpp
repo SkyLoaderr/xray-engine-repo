@@ -65,7 +65,7 @@ void CAI_Biting::Init()
 	m_fAttackSuccessProbability[2]	= .4f;
 	m_fAttackSuccessProbability[3]	= .2f;
 
-	InitMemory						(10000,10000);
+	InitMemory						(20000,20000);
 
 	m_dwPathBuiltLastTime			= 0;
 	

@@ -33,6 +33,9 @@ class
 		_VertexEvaluator,
 		_vertex_id_type
 	> inherited;
+
+
+	IC void perform_search	(const _vertex_id_type vertex_id);
 };
 
 #include "level_location_selector_inline.h"

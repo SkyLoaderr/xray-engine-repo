@@ -88,6 +88,10 @@ void CLevelGraph::render()
 		RCache.set_Shader(sh_debug);
 		F->SetColor		(color_rgba(255,255,255,255));
 
+		// если включён ai_dbg_frustum раскрасить ноды по light
+		// иначе раскрашивать по cover
+		bool b_light = psAI_Flags.test(aiFrustum);
+		
 		for (u32 Nid=0; Nid<header().vertex_count(); ++Nid)
 		{
 			CLevelGraph::CVertex&	N	= *vertex(Nid);
@@ -98,7 +102,10 @@ void CLevelGraph::render()
 
 			float			sr	= header().cell_size();
 			if (::Render->ViewBase.testSphere_dirty(PC,sr)) {
-				u32	LL		= iFloor(float(N.light())/15.f*255.f);
+				
+				u32	LL = ((b_light) ?	iFloor(float(N.light())/15.f*255.f) : 
+										iFloor(vertex_cover(Nid)/4*255.f));
+				
 				u32	CC		= D3DCOLOR_XRGB(0,0,255);
 				u32	CT		= D3DCOLOR_XRGB(LL,LL,LL);
 				u32	CH		= D3DCOLOR_XRGB(0,128,0);

@@ -19,7 +19,7 @@ static void __stdcall vfPlayEndCallBack(CBlend* B)
 void CAI_Biting::SelectAnimation(const Fvector &/**_view/**/, const Fvector &/**_move/**/, float /**speed/**/)
 {
 	if (MotionMan.PrepareAnimation()) {
-		PSkeletonAnimated(Visual())->PlayCycle(MotionMan.m_tpCurAnim,TRUE,vfPlayEndCallBack,this);
+		CBlend *blend = PSkeletonAnimated(Visual())->PlayCycle(MotionMan.m_tpCurAnim,TRUE,vfPlayEndCallBack,this);
 	}
 }
 

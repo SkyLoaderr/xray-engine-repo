@@ -47,6 +47,12 @@ typedef enum {
 // CSoundMemory class
 ///////////////////////////////////////////////////////////////////////////////////////////////////////////
 
+#define FACTOR_SOUND_TYPE	int(8)
+#define FACTOR_DISTANCE		int(1)
+#define FACTOR_DELTA_TIME	int(2)
+#define FACTOR_SOUND_POWER	int(50)
+
+
 typedef struct tagSoundElement
 {
 	const CObject		*who;
@@ -55,46 +61,25 @@ typedef struct tagSoundElement
 	float				power;
 	TTime				time;			// время обнаружения звука
 
+	int					value;			// оценочное значение данного звука		
+
 	tagSoundElement() {  
-		who = 0; type = NONE_DANGEROUS_SOUND; position.set(0,0,0); power = 0.f; time = 0;
+		who = 0; type = NONE_DANGEROUS_SOUND; position.set(0,0,0); power = 0.f; time = 0; value = 0;
 	}
 	bool operator < (const tagSoundElement &s) const  { 
-		return (type < s.type);
+		return (value > s.value);
 	}
 	IC void SetConvert(const CObject* who, int eType, const Fvector &position, float power, TTime time) {
 		this->who = who; type = ConvertSoundType((ESoundTypes)eType); this->position = position; this->power = power; this->time = time;
 	}
 	TSoundDangerValue ConvertSoundType(ESoundTypes stype);
+	
+	void CalcValue(TTime cur_time, Fvector cur_pos) {
+		value = FACTOR_SOUND_TYPE * u32(NONE_DANGEROUS_SOUND - WEAPON_SHOOTING) - FACTOR_DISTANCE * iFloor(cur_pos.distance_to(position)) - FACTOR_DELTA_TIME * iFloor(float((cur_time - time) / 1000)) + FACTOR_SOUND_POWER * iFloor(power);
+	}
+
 } SoundElem;
 
-// удаление звуков от объектов, перешедших в оффлайн
-struct remove_offline_sound_pred {
-	bool operator() (const SoundElem &x){ return (x.who && x.who->getDestroy()); }
-};
-
-// предикат удаления 'старых' старых
-struct predicate_remove_old_sounds {
-	TTime new_time;
-	predicate_remove_old_sounds(TTime time) { new_time = time; }
-	bool operator() (const SoundElem &x) { return (x.time < new_time); }
-};
-
-// удалить все звуки, принадлежащие данному объекту
-struct remove_sound_owner_pred {
-	const CObject *pO;
-	remove_sound_owner_pred(const CObject *o) {o = pO;}
-	bool operator() (const SoundElem &x){ return (x.who == pO); }
-};
-
-struct remove_dead_objects_pred {
-	bool operator() (const SoundElem &x){ 
-		if (x.who) {
-			const CEntityAlive *pE = dynamic_cast<const CEntityAlive*> (x.who);
-			if (pE && pE->g_Alive()) return false;
-		}
-		return true;
-	}
-};
 
 class CSoundMemory
 {
@@ -102,6 +87,8 @@ class CSoundMemory
 	xr_vector<SoundElem>	Sounds;
 
 	TTime					timeCurrent;			// текущее время
+
+	CCustomMonster			*pMonster;
 
 	friend class CMonsterMemory;
 
@@ -116,18 +103,12 @@ public:
 		void	GetSound				(SoundElem &s, bool &bDangerous);	// возвращает самый опасный звук
 	IC	void	GetSound				(SoundElem &s) {s = Sounds.front();}
 		const xr_vector<SoundElem>	&GetSoundData() {return Sounds;}
-		
 
 protected:
-	IC	void	Init					(TTime mem_time) {Deinit(); timeMemory = mem_time; }
-	IC	void	Deinit					() {Sounds.clear();}
+		void	Init					(TTime mem_time);
+		void	Deinit					();
 
 		void	UpdateHearing			(TTime dt);
-
-		void    RemoveSoundOwner		(const CObject *pO);	//удалить все звуки принадлежащие данному объекту
-private:
-		void	CheckValidObjects		(); 			// удалить объекты которые не прошли тест на GetDestroyed(), т.е. ушли в оффлайн
-		void	RemoveDeadObjects		();				// удалить звуки, от мёртвых объектов
 };
 
 

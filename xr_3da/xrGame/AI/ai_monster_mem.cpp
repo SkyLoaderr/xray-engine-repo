@@ -38,86 +38,54 @@ TSoundDangerValue tagSoundElement::ConvertSoundType(ESoundTypes stype)
 }
 
 
+void CSoundMemory::Init(TTime mem_time) 
+{
+	Deinit(); timeMemory = mem_time; 
+	
+	pMonster = dynamic_cast<CCustomMonster *>(this);
+	if (!pMonster) R_ASSERT("Cannot dynamic_cast from CSoundMemory to CCustomMonster!");
+
+	Sounds.reserve(20);
+}
+
+void CSoundMemory::Deinit()
+{
+
+}
+
 void CSoundMemory::HearSound(const SoundElem &s)
 {
-	if (MONSTER_DYING			== s.type)				return;		// todo
-	if (NONE_DANGEROUS_SOUND	== s.type)				return;		// todo
-	if (WEAPON_BULLET_RICOCHET	== s.type)				return;		// todo
-	if (MONSTER_INJURING		== s.type)				return;		// todo
+	if (NONE_DANGEROUS_SOUND	== s.type) return;
 	
-	// не регистрировать звуки, у которых владелец не известен
-	if (!s.who) return;									// todo
-	
-	// не регистрировать звуки, у которых владелец - труп // todo
-	const CEntityAlive* E = dynamic_cast<const CEntityAlive*> (s.who);
-	if (E) if (!E->g_Alive()) return;
-
 	// поиск в массиве звука
 	xr_vector<SoundElem>::iterator it;
 	
+	bool b_sound_replaced = false;
 	for (it = Sounds.begin(); Sounds.end() != it; ++it) {
-		if ((s.who == it->who) && (it->type ==	s.type)) {
-			if (s.time > it->time) *it = s;
-			return;
+		if ((s.who == it->who) && (it->type == s.type)) {
+			if (s.time >= it->time) {
+				*it = s; 
+				b_sound_replaced = true;
+			}
 		}
 	}
-
-	Sounds.push_back(s);
-
-	// отсортировать по "опасности" звука
-	std::sort(Sounds.begin(),Sounds.end());
-
 	
-	
-//	// DEBUG
-//	CAI_Biting *pB = dynamic_cast<CAI_Biting*>(this);
-//
-//	pB->HDebug->HT_Clear();
-//
-//	for (u32 i=0; i<Sounds.size();i++) {
-//		string128 s_type;
-//		switch(Sounds[i].type){
-//			case WEAPON_SHOOTING:			strcpy(s_type,"WEAPON_SHOOTING"); break;
-//			case MONSTER_ATTACKING:			strcpy(s_type,"MONSTER_ATTACKING"); break;
-//			case WEAPON_BULLET_RICOCHET:	strcpy(s_type,"WEAPON_BULLET_RICOCHET"); break;
-//			case WEAPON_RECHARGING:			strcpy(s_type,"WEAPON_RECHARGING"); break;
-//
-//			case WEAPON_TAKING:				strcpy(s_type,"WEAPON_TAKING"); break;
-//			case WEAPON_HIDING:				strcpy(s_type,"WEAPON_HIDING"); break;
-//			case WEAPON_CHANGING:			strcpy(s_type,"WEAPON_CHANGING"); break;
-//			case WEAPON_EMPTY_CLICKING:		strcpy(s_type,"WEAPON_EMPTY_CLICKING"); break;
-//
-//			case MONSTER_DYING:				strcpy(s_type,"MONSTER_DYING"); break;
-//			case MONSTER_INJURING:			strcpy(s_type,"MONSTER_INJURING"); break;
-//			case MONSTER_WALKING:			strcpy(s_type,"MONSTER_WALKING"); break;
-//			case MONSTER_JUMPING:			strcpy(s_type,"MONSTER_JUMPING"); break;
-//			case MONSTER_FALLING:			strcpy(s_type,"MONSTER_FALLING"); break;
-//			case MONSTER_TALKING:			strcpy(s_type,"MONSTER_TALKING"); break;
-//
-//			case DOOR_OPENING:				strcpy(s_type,"DOOR_OPENING"); break;
-//			case DOOR_CLOSING:				strcpy(s_type,"DOOR_CLOSING"); break;
-//			case OBJECT_BREAKING:			strcpy(s_type,"OBJECT_BREAKING"); break;
-//			case OBJECT_FALLING:			strcpy(s_type,"OBJECT_FALLING"); break;
-//			case NONE_DANGEROUS_SOUND:		strcpy(s_type,"NONE_DANGEROUS_SOUND"); break;
-//		}
-//
-//		string128 s;
-//		sprintf(s,"S[%i] : %s",i,s_type);
-//		pB->HDebug->HT_Add(50, 50 + i*20, s);
-//	}
+	if (!b_sound_replaced) Sounds.push_back(s);
+
 }
 
 void CSoundMemory::HearSound(const CObject* who, int eType, const Fvector &Position, float power, TTime time)
 {
 	SoundElem s;
 	s.SetConvert(who,eType,Position,power,time);
+	s.CalcValue(time,pMonster->Position());
 
 	HearSound(s);
 } 
 
 void CSoundMemory::GetSound(SoundElem &s, bool &bDangerous)
 {
-	if (!IsRememberSound()) return;
+	VERIFY(!Sounds.empty());
 
 	// возврат самого опасного
 	s = Sounds.front();
@@ -126,37 +94,93 @@ void CSoundMemory::GetSound(SoundElem &s, bool &bDangerous)
 	else bDangerous = true;
 }
 
+
+struct pred_remove_nonactual_sounds {
+	TTime new_time;
+
+	pred_remove_nonactual_sounds(TTime time) {new_time = time;}
+
+	bool operator() (const SoundElem &x) {
+
+		// удалить звуки от объектов, перешедших в оффлайн	
+		if (x.who && x.who->getDestroy()) return true;
+
+		// удалить 'старые' звуки
+		if (x.time < new_time)	return true;
+
+		// удалить звуки от неживых объектов
+		if (x.who) {
+			const CEntityAlive *pE = dynamic_cast<const CEntityAlive*> (x.who);
+			if (pE && !pE->g_Alive()) return true;
+		}
+
+		return false;
+	}
+};
+
+
 void CSoundMemory::UpdateHearing(TTime dt)
 {
 	timeCurrent = dt;
 
 	// удаление устаревших звуков
-	xr_vector<SoundElem>::iterator I = remove_if(Sounds.begin(), Sounds.end(), predicate_remove_old_sounds(timeCurrent - timeMemory));
+	xr_vector<SoundElem>::iterator I = remove_if(Sounds.begin(), Sounds.end(), pred_remove_nonactual_sounds(timeCurrent - timeMemory));
 	Sounds.erase(I,Sounds.end());
 
-	// удалить объекты, которые ушли в оффлайн
-	CheckValidObjects();
+	// пересчитать value
+	for (I=Sounds.begin(); I!=Sounds.end(); I++) I->CalcValue(timeCurrent, pMonster->Position());
+	
+	// отсортировать по "опасности" звука
+	std::sort(Sounds.begin(),Sounds.end());
 
-	// удалить звуки, от муртвых объектов
+
+	// DEBUG
+	CAI_Biting *pB = dynamic_cast<CAI_Biting*>(this);
+
+	pB->HDebug->HT_Clear();
+	pB->HDebug->L_Clear();
+
+	for (u32 i=0; i<Sounds.size();i++) {
+		string128 s_type;
+		switch(Sounds[i].type){
+			case WEAPON_SHOOTING:			strcpy(s_type,"WEAPON_SHOOTING"); break;
+			case MONSTER_ATTACKING:			strcpy(s_type,"MONSTER_ATTACKING"); break;
+			case WEAPON_BULLET_RICOCHET:	strcpy(s_type,"WEAPON_BULLET_RICOCHET"); break;
+			case WEAPON_RECHARGING:			strcpy(s_type,"WEAPON_RECHARGING"); break;
+
+			case WEAPON_TAKING:				strcpy(s_type,"WEAPON_TAKING"); break;
+			case WEAPON_HIDING:				strcpy(s_type,"WEAPON_HIDING"); break;
+			case WEAPON_CHANGING:			strcpy(s_type,"WEAPON_CHANGING"); break;
+			case WEAPON_EMPTY_CLICKING:		strcpy(s_type,"WEAPON_EMPTY_CLICKING"); break;
+
+			case MONSTER_DYING:				strcpy(s_type,"MONSTER_DYING"); break;
+			case MONSTER_INJURING:			strcpy(s_type,"MONSTER_INJURING"); break;
+			case MONSTER_WALKING:			strcpy(s_type,"MONSTER_WALKING"); break;
+			case MONSTER_JUMPING:			strcpy(s_type,"MONSTER_JUMPING"); break;
+			case MONSTER_FALLING:			strcpy(s_type,"MONSTER_FALLING"); break;
+			case MONSTER_TALKING:			strcpy(s_type,"MONSTER_TALKING"); break;
+
+			case DOOR_OPENING:				strcpy(s_type,"DOOR_OPENING"); break;
+			case DOOR_CLOSING:				strcpy(s_type,"DOOR_CLOSING"); break;
+			case OBJECT_BREAKING:			strcpy(s_type,"OBJECT_BREAKING"); break;
+			case OBJECT_FALLING:			strcpy(s_type,"OBJECT_FALLING"); break;
+			case NONE_DANGEROUS_SOUND:		strcpy(s_type,"NONE_DANGEROUS_SOUND"); break;
+		}
+
+		string128 s;
+		sprintf(s,"S[%i]:: type=%s : time=%u : power=%.3f !!! val=%i", i, s_type, Sounds[i].time, Sounds[i].power, Sounds[i].value);
+		pB->HDebug->HT_Add(50, 50 + i*20, s);
+		pB->HDebug->L_AddPoint(Sounds[i].position,0.15f,D3DCOLOR_XRGB(0,255,255));
+		Fvector new_v;
+		new_v = Sounds[i].position;
+		new_v.y += 5.0f;
+		pB->HDebug->L_AddLine(Sounds[i].position, new_v, D3DCOLOR_XRGB(0,255,255));
+	}
+
+
 }
 
-void CSoundMemory::CheckValidObjects()
-{
-	xr_vector<SoundElem>::iterator Result = std::remove_if(Sounds.begin(), Sounds.end(), remove_offline_sound_pred());
-	Sounds.erase   (Result,Sounds.end());
-}
 
-void CSoundMemory::RemoveSoundOwner(const CObject *pO)
-{
-	xr_vector<SoundElem>::iterator Result = std::remove_if(Sounds.begin(), Sounds.end(), remove_sound_owner_pred(pO));
-	Sounds.erase   (Result,Sounds.end());
-}
-
-void CSoundMemory::RemoveDeadObjects()
-{
-	xr_vector<SoundElem>::iterator Result = std::remove_if(Sounds.begin(), Sounds.end(), remove_dead_objects_pred());
-	Sounds.erase   (Result,Sounds.end());
-}
 
 //---------------------------------------------------------------------------------------------------------
 ///////////////////////////////////////////////////////////////////////////////////////////////////////////

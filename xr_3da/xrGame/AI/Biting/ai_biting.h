@@ -209,6 +209,7 @@ public:
 			void			Path_WalkAroundObj				(const CEntity *pE, Fvector position);
 			
 			void			SetPathParams					(u32 dest_vertex_id, const Fvector &dest_pos);
+			void			SetSelectorPathParams			();
 			
 			void			SetVelocity						();
 			void			PreprocessAction				();
