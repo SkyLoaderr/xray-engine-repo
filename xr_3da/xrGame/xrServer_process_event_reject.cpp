@@ -34,6 +34,7 @@ bool xrServer::Process_event_reject	(NET_Packet& P, ClientID sender, u32 time, u
 	}
 
 	R_ASSERT			(0xffff != e_entity->ID_Parent);
+	VERIFY3				(e_entity->ID_Parent == id_parent,e_entity->name_replace(),e_parent->name_replace());
 	e_entity->ID_Parent	= 0xffff;
 	xr_vector<u16>& C	= e_parent->children;
 	xr_vector<u16>::iterator c	= std::find	(C.begin(),C.end(),id_entity);

@@ -1143,9 +1143,12 @@ void CCustomZone::BornArtefact()
 	if(::Random.randF(0.f, 1.f)> m_fArtefactSpawnProbability) return;
 
 	CArtefact* pArtefact = m_SpawnedArtefacts.back(); VERIFY(pArtefact);
-	m_SpawnedArtefacts.pop_back();
+	m_SpawnedArtefacts.pop_back			();
 
-	if (Local()) {
+	if (Local())	{
+		if (pArtefact->H_Parent()->ID() == this->ID())
+		VERIFY							;
+
 		NET_Packet						P;
 		u_EventGen						(P,GE_OWNERSHIP_REJECT,ID());
 		P.w_u16							(pArtefact->ID());
