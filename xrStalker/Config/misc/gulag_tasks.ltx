@@ -136,26 +136,25 @@ on_timer  = 100000 | {~50} walker@rest, {~100} rest@rest
 ;-- ESCAPE BLOCKPOST
 ;-------------------------------------------------------------------------------------------------
 [logic@esc_blockpost_patrol1]
-active = patrol1@esc_blockpost
+active = walker10@esc_blockpost
 
-[patrol1@esc_blockpost]
-patrol_path = patrol_0
-patrol_look = patrol_look_0
-escape_path = patrol_look_0
+[walker10@esc_blockpost]
+path_walk = patrol_0
+path_look = patrol_look_0
 
 
 [logic@esc_blockpost_follower1]
 active = follower1@esc_blockpost
 
 [follower1@esc_blockpost]
-escape_path = patrol_look_0
+
 
 
 [logic@esc_blockpost_follower2]
 active = follower2@esc_blockpost
 
 [follower2@esc_blockpost]
-escape_path = patrol_look_0
+
 
 
 [logic@esc_blockpost_camper1]
