@@ -111,12 +111,12 @@ function generic_object_binder:update(delta)
 	object_binder.update(self, delta)
 
 	-- DELME: HACK:
-	local actor = level.actor()
-	local info_name = "esc_trader_monolog_1"
-	if actor and self.object:has_info(info_name) and actor:dont_has_info(info_name) then
-		printf("WARNING: HACK: transfering infoportion '%s' from mobile to actor", info_name)
-		actor:give_info_portion(info_name)
-	end
+	--local actor = level.actor()
+	--local info_name = "esc_trader_monolog_1"
+	--if actor and self.object:has_info(info_name) and actor:dont_has_info(info_name) then
+	--	printf("WARNING: HACK: transfering infoportion '%s' from mobile to actor", info_name)
+	--	actor:give_info_portion(info_name)
+	--end
 
 	if self.st.active_section ~= nil then
 		xr_logic.non_goap_update_actions_event(self.st, delta)
