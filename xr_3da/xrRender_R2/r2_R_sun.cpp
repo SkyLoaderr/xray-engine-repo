@@ -1,8 +1,8 @@
 #include "stdafx.h"
 #include "..\irenderable.h"
 
-const	float	tweak_COP_initial_offs			= - 100000.f;
-const	float	tweak_ortho_xform_initial_offs	= - 1000.f	;
+const	float	tweak_COP_initial_offs			= - 10000.f;
+const	float	tweak_ortho_xform_initial_offs	= - 100.f	;
 
 //////////////////////////////////////////////////////////////////////////
 #define DW_AS_FLT(DW) (*(FLOAT*)&(DW))
@@ -254,7 +254,7 @@ void CRender::render_sun				()
 	set_Recorder								(NULL);
 
 	// Compute REAL sheared xform based on receivers/casters information
-	if (0)
+	if (1)
 	{
 		//  transform the shadow caster bounding boxes into light projective space.  
 		//  we want to translate along the Z axis so that all shadow casters are 
