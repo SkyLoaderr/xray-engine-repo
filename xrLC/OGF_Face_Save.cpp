@@ -19,6 +19,10 @@ u32						u8_vec4			(Fvector N, u8 A=0)
 	s32 nz				= iFloor(N.z);	clamp(nz,0,255);
 	return				color_rgba(nx,ny,nz,A);
 }
+u32						u8_vec4			(base_basis N, u8 A=0)
+{
+	return				color_rgba		(N.x,N.y,N.z,A);
+}
 s16						s16_tc_lmap		(float uv)		// [-1 .. +1]
 {
 	const u32	max_tile	=	1;
@@ -62,12 +66,10 @@ struct	r2v
 	u32			B;
 	float		tc0x,tc0y;
 
-	r2v			(Fvector3 _P, Fvector _N, Fvector _T, Fvector _B, base_color _CC, Fvector2 tc_base)
+	r2v			(Fvector3 _P, Fvector _N, base_basis _T, base_basis _B, base_color _CC, Fvector2 tc_base)
 	{
 		base_color_c	_C;	_CC._get	(_C);
 		_N.normalize_safe	();
-		_T.normalize_safe	();
-		_B.normalize_safe	();
 		P					= _P;
 		N					= u8_vec4		(_N,u8_clr(_C.hemi));
 		T					= u8_vec4		(_T);
