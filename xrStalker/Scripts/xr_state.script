@@ -34,12 +34,14 @@ function action_change_state:initialize()
 end
 function action_change_state:execute ()
 
+	printf("%d", self.object:animation_count())
+
 	if self.a.target_state == 0 then
 		if self.object:animation_count() == 0 then
 			self.a.body_state = self.a.target_state
 		end
 	else
-		if self.object:animation_count() == 1 then
+		if self.object:animation_count() <= 1 then
 			self.a.body_state = self.a.target_state
 		end
 	end
@@ -85,7 +87,7 @@ function change_state(object, new, emerg)
 				object:add_animation("stalker_3_down", true)
 			elseif new == 4 then
 				object:add_animation("stalker_2_down", true)
-				object:add_animation("spit_0", true)
+				object:add_animation("spit_0", true)			
 			end
 		elseif st.body_state == 1 then
 			if new == 0 then
