@@ -12,7 +12,7 @@
 		<rank>50</rank>
 		<reputation>50</reputation>
 
-		<visual>actors\dolg\stalker_do_mask</visual>
+		<visual>actors\dolg\stalker_do_antigas</visual>
 			
 		<start_dialog>hello_dialog</start_dialog>
 		<actor_dialog>general_pda_talk</actor_dialog>
@@ -30,7 +30,7 @@
 		<rank>30</rank>
 		<reputation>50</reputation>
 
-		<visual>actors\dolg\stalker_do_antigas</visual>
+		<visual>actors\dolg\stalker_do_mask</visual>
 			
 		<start_dialog>hello_dialog</start_dialog>
 		<actor_dialog>general_pda_talk</actor_dialog>
@@ -48,7 +48,7 @@
 		<rank>50</rank>
 		<reputation>50</reputation>
 
-		<visual>actors\dolg\stalker_do_mask</visual>
+		<visual>actors\dolg\stalker_do_antigas</visual>
 			
 		<start_dialog>hello_dialog</start_dialog>
 		<actor_dialog>general_pda_talk</actor_dialog>
