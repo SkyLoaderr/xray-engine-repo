@@ -34,6 +34,8 @@ CSE_ALifeItem::CSE_ALifeItem(LPCSTR caSection) : CSE_ALifeDynamicObjectVisual(ca
 	else
 		m_iFoodValue			= 0;
 
+	m_iGridWidth				= pSettings->r_s32(caSection, "inv_grid_width");
+	m_iGridHeight				= pSettings->r_s32(caSection, "inv_grid_height");
 	m_fDeteriorationValue		= 0;
 }
 

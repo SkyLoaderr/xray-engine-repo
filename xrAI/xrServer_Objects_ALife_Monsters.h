@@ -191,6 +191,7 @@ SERVER_ENTITY_DECLARE_BEGIN2(CSE_ALifeHumanAbstract,CSE_ALifeTraderAbstract,CSE_
 	CSE_ALifeSimulator				*m_tpALife;
 	svector<char,5>					m_cpEquipmentPreferences;
 	svector<char,4>					m_cpMainWeaponPreferences;
+	ITEM_P_LIST					m_tpTempItemBuffer;
 
 
 									CSE_ALifeHumanAbstract	(LPCSTR					caSection);
@@ -226,7 +227,8 @@ SERVER_ENTITY_DECLARE_BEGIN2(CSE_ALifeHumanAbstract,CSE_ALifeTraderAbstract,CSE_
 			bool					bfChooseNextRoutePoint	();
 			void					vfSetCurrentTask		(_TASK_ID				&tTaskID);
 			u16						get_available_ammo_count(CSE_ALifeItemWeapon	*tpALifeItemWeapon, OBJECT_VECTOR &tpObjectVector);
-			void					attach_available_ammo	(CSE_ALifeItemWeapon	*tpALifeItemWeapon, OBJECT_VECTOR &tpObjectVector);
+			u16						get_available_ammo_count(CSE_ALifeItemWeapon	*tpALifeItemWeapon,	ITEM_P_LIST &tpItemVector);
+			void					attach_available_ammo	(CSE_ALifeItemWeapon	*tpALifeItemWeapon, ITEM_P_LIST &tpItemVector);
 	virtual	CSE_ALifeItemWeapon		*tpfGetBestWeapon		(EHitType				&tHitType,			float &fHitPower);
 	virtual bool					bfPerformAttack			();
 	virtual	void					vfUpdateWeaponAmmo		();

@@ -63,22 +63,9 @@ class CSortItemPredicate {
 private:
 	ALife::D_OBJECT_MAP				*m_tpMap;
 public:
-									CSortItemPredicate					(ALife::D_OBJECT_MAP &tpMap)
+	IC bool							operator()							(const CSE_ALifeItem *tpALifeItem1, const CSE_ALifeItem *tpALifeItem2)  const
 	{
-		m_tpMap						= &tpMap;
-	};
-
-	IC bool							operator()							(const ALife::_OBJECT_ID &tObjectID1, const ALife::_OBJECT_ID &tObjectID2)  const
-	{
-		ALife::D_OBJECT_PAIR_IT		it1 = m_tpMap->find(tObjectID1);
-		VERIFY						(it1 != m_tpMap->end());
-		ALife::D_OBJECT_PAIR_IT		it2 = m_tpMap->find(tObjectID2);
-		VERIFY						(it2 != m_tpMap->end());
-		CSE_ALifeItem				*tpItem1 = dynamic_cast<CSE_ALifeItem *>((*it1).second);
-		VERIFY						(tpItem1);
-		CSE_ALifeItem				*tpItem2 = dynamic_cast<CSE_ALifeItem *>((*it2).second);
-		VERIFY						(tpItem2);
-		return						(float(tpItem1->m_dwCost)/1/**tpItem1->m_fMass/**/ > float(tpItem2->m_dwCost)/1/**tpItem2->m_fMass/**/);
+		return						(float(tpALifeItem1->m_dwCost)/1/**tpALifeItem1->m_fMass/**/ > float(tpALifeItem2->m_dwCost)/1/**tpALifeItem2->m_fMass/**/);
 	};
 };
 

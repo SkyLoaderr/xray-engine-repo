@@ -88,7 +88,7 @@ public:
 	float							m_fOnlineDistance;
 	
 	// temporary buffers for combats
-	OBJECT_VECTOR					m_tpObjectVector;
+	ITEM_P_LIST						m_tpItemList;
 	
 	// constructors/destructors
 									CSE_ALifeSimulator			(xrServer					*tpServer);
@@ -107,6 +107,7 @@ public:
 	// miscellanious
 			void					vfCommunicateWithCustomer	(CSE_ALifeHumanAbstract		*tpALifeHumanAbstract,		CSE_ALifeTraderAbstract		*tpTraderAbstract);
 			void					vfCheckForTheInteraction	(CSE_ALifeMonsterAbstract	*tpALifeMonsterAbstract);
+			void					vfAppendItemList			(OBJECT_VECTOR &tObjectVector, ITEM_P_LIST &tItemList);
 	// console commands support
 #ifdef ALIFE_SUPPORT_CONSOLE_COMMANDS
 			void					vfListObjects				();

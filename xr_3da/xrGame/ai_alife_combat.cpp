@@ -142,9 +142,21 @@ void CSE_ALifeSimulator::vfAssignDeathPosition(CSE_ALifeCreatureAbstract *tpALif
 	tpALifeCreatureAbstract->m_fDistance	= l_tpaLevelPoints[l_dwDeathpointIndex].fDistance;
 }
 
+void CSE_ALifeSimulator::vfAppendItemList(OBJECT_VECTOR &tObjectVector, ITEM_P_LIST &tItemList)
+{
+	OBJECT_IT	I = tObjectVector.begin();
+	OBJECT_IT	E = tObjectVector.end();
+	for ( ; I != E; I++) {
+		CSE_ALifeItem *l_tpALifeItem = dynamic_cast<CSE_ALifeItem*>(tpfGetObjectByID(*I));
+		if (l_tpALifeItem)
+			tItemList.push_back(l_tpALifeItem);
+	}
+}
+
 void CSE_ALifeSimulator::vfFinishCombat(ECombatResult tCombatResult)
 {
 	// processing weapons and dead monsters
+	m_tpItemList.clear();
 	for (int i=0; i<2; i++) {
 		CSE_ALifeAbstractGroup	*l_tpALifeAbstractGroup = dynamic_cast<CSE_ALifeAbstractGroup*>(m_tpaCombatMonsters[i]);
 		if (l_tpALifeAbstractGroup) {
@@ -153,6 +165,7 @@ void CSE_ALifeSimulator::vfFinishCombat(ECombatResult tCombatResult)
 				R_ASSERT2					(l_tpALifeMonsterAbstract,"Invalid group member!");
 				l_tpALifeMonsterAbstract->vfUpdateWeaponAmmo();
 				if (l_tpALifeMonsterAbstract->fHealth <= 0) {
+					vfAppendItemList							(l_tpALifeMonsterAbstract->children,m_tpItemList);
 					l_tpALifeMonsterAbstract->m_bDirectControl	= true;
 					l_tpALifeAbstractGroup->m_tpMembers.erase	(l_tpALifeAbstractGroup->m_tpMembers.begin() + I);
 					vfUpdateDynamicData							(l_tpALifeMonsterAbstract);
@@ -165,17 +178,17 @@ void CSE_ALifeSimulator::vfFinishCombat(ECombatResult tCombatResult)
 		else {
 			m_tpaCombatMonsters[i]->vfUpdateWeaponAmmo();
 			if (m_tpaCombatMonsters[i]->fHealth <= 0) {
-				m_tpObjectVector.insert							(m_tpObjectVector.end(),m_tpaCombatMonsters[i]->children.begin(),m_tpaCombatMonsters[i]->children.end());
+				vfAppendItemList								(m_tpaCombatMonsters[i]->children,m_tpItemList);
 				vfAssignDeathPosition							(m_tpaCombatMonsters[i], m_tpaCombatMonsters[0]->m_tGraphID);
 			}
 		}
 	}
 	
 	// processing items
-	OBJECT_IT	I = m_tpObjectVector.begin();
-	OBJECT_IT	E = m_tpObjectVector.end();
+	ITEM_P_LIST_IT	I = m_tpItemList.begin();
+	ITEM_P_LIST_IT	E = m_tpItemList.end();
 	for ( ; I != E; I++)
-		vfAddObjectToGraphPoint(tpfGetObjectByID(*I),m_tpaCombatMonsters[0]->m_tGraphID);
+		vfAddObjectToGraphPoint(*I,m_tpaCombatMonsters[0]->m_tGraphID);
 
 	int			l_iGroupIndex = -1;
 	switch (tCombatResult) {
@@ -195,5 +208,5 @@ void CSE_ALifeSimulator::vfFinishCombat(ECombatResult tCombatResult)
 	}
 	
 	if (l_iGroupIndex >= 0)
-		m_tpaCombatMonsters[0]->vfAttachItems();
+		m_tpaCombatMonsters[l_iGroupIndex]->vfAttachItems();
 }

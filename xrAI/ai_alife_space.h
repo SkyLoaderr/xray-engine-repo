@@ -38,6 +38,7 @@ class CSE_ALifeDiscovery;
 class CSE_ALifeOrganization;
 class CSE_ALifeArtefactDemand;
 class CSE_ALifeArtefactNeed;
+class CSE_ALifeItem;
 
 namespace ALife {
 	typedef u64	_CLASS_ID;									// Class ID
@@ -276,6 +277,8 @@ namespace ALife {
 		u32						m_dwTotalCount;
 		ARTEFACT_ORDER_VECTOR	m_tpOrders;
 	};
+
+	DEFINE_LIST		(CSE_ALifeItem*,			ITEM_P_LIST,					ITEM_P_LIST_IT);
 
 	DEFINE_VECTOR	(float,						FLOAT_VECTOR,					FLOAT_IT);
 	DEFINE_VECTOR	(LPSTR,						LPSTR_VECTOR,					LPSTR_IT);

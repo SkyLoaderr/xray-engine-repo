@@ -669,6 +669,6 @@ float CWeaponAmmoCount::ffGetValue()
 	else {
 		CSE_ALifeHumanAbstract	*l_tpALifeHumanAbstract = dynamic_cast<CSE_ALifeHumanAbstract*>(getAI().m_tpCurrentALifeMember);
 		R_ASSERT2				(l_tpALifeHumanAbstract,"Non-human object in WeaponAmmoCount evaluation function");
-		return					(m_fLastValue = l_tpALifeHumanAbstract->get_available_ammo_count(dynamic_cast<CSE_ALifeItemWeapon*>(getAI().m_tpCurrentALifeObject),getAI().m_tpALife->m_tpObjectVector));
+		return					(m_fLastValue = l_tpALifeHumanAbstract->get_available_ammo_count(dynamic_cast<CSE_ALifeItemWeapon*>(getAI().m_tpCurrentALifeObject),getAI().m_tpALife->m_tpItemList));
 	}
 }
