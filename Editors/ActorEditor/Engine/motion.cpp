@@ -440,4 +440,42 @@ void SAnimParams::Update(float dt, float speed, bool loop)
 	}
 }
 
+//------------------------------------------------------------------------------
+// Clip
+//------------------------------------------------------------------------------
+#define EOBJ_CLIP_VERSION		0
+#define EOBJ_CLIP_VERSION_CHUNK	0x9000
+#define EOBJ_CLIP_DATA_CHUNK	0x9001
+
+void CClip::Save(IWriter& F)
+{
+	F.open_chunk	(EOBJ_CLIP_VERSION_CHUNK);
+    F.w_u16			(EOBJ_CLIP_VERSION);
+	F.close_chunk	();
+
+	F.open_chunk	(EOBJ_CLIP_DATA_CHUNK);
+    F.w_stringZ		(*name);
+    for (int k=0; k<4; k++) F.w_stringZ(*cycles[k]);
+    F.w_u32			(fxs.size());
+    for (RStrIt it=fxs.begin(); it!=fxs.end(); it++) F.w_stringZ(**it);
+    F.w_float		(length);
+	F.close_chunk();
+}
+//------------------------------------------------------------------------------
+
+bool CClip::Load(IReader& F)
+{
+	R_ASSERT		(F.find_chunk(EOBJ_CLIP_VERSION_CHUNK));
+    u16 ver			= F.r_u16();
+    if (ver!=EOBJ_CLIP_VERSION) return false;
+    string256		buf;
+	R_ASSERT(F.find_chunk(EOBJ_CLIP_DATA_CHUNK));
+    F.r_stringZ		(buf); name=buf;
+    for (int k=0; k<4; k++){ F.r_stringZ(buf); cycles[k]=buf; }
+    fxs.resize		(F.r_u32());
+    for (RStrIt it=fxs.begin(); it!=fxs.end(); it++){ F.r_stringZ(buf); *it=buf;}
+    length			= F.r_float();
+    return true;
+}
+//------------------------------------------------------------------------------
 

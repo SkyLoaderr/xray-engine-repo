@@ -127,6 +127,13 @@ void CEditableObject::Save(IWriter& F)
         for (SMotionIt s_it=m_SMotions.begin(); s_it!=m_SMotions.end(); s_it++) (*s_it)->Save(F);
         F.close_chunk	();
     }
+
+    if (!m_Clips.empty()){
+        F.open_chunk	(EOBJ_CHUNK_CLIPS);
+        F.w_u32		(m_Clips.size());
+        for (ClipIt c_it=m_Clips.begin(); c_it!=m_Clips.end(); c_it++) (*c_it)->Save(F);
+        F.close_chunk	();
+    }
 //    Log("5: ",F.tell());
 
     // bone parts
@@ -288,6 +295,20 @@ bool CEditableObject::Load(IReader& F)
 					ELog.Msg(mtError,"Motions has different version. Load failed.");
 					xr_delete(*s_it);
 					m_SMotions.clear();
+					break;
+				}
+			}
+		}
+
+		// clips
+		if (F.find_chunk(EOBJ_CHUNK_CLIPS)){
+			m_Clips.resize(F.r_u32());
+			for (ClipIt c_it=m_Clips.begin(); c_it!=m_Clips.end(); c_it++){
+				*c_it = xr_new<CClip>();
+				if (!(*c_it)->Load(F)){
+					ELog.Msg(mtError,"Unsupported clip version. Load failed.");
+					xr_delete(*c_it);
+					m_Clips.clear();
 					break;
 				}
 			}

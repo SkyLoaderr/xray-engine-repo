@@ -29,6 +29,7 @@ enum EPropType{
 	PROP_FCOLOR,
 	PROP_TEXT,
     PROP_A_TEXT,
+	PROP_R_TEXT,
 	PROP_ESHADER,
 	PROP_CSHADER,
 	PROP_TEXTURE,
@@ -340,6 +341,26 @@ class ATextValue: public CustomValue<AnsiString>{
 public:
 						ATextValue		(TYPE* val):CustomValue<AnsiString>(val){};
     virtual LPCSTR		GetText			(TOnDrawTextEvent OnDrawText);
+};
+
+class RTextValue: public CustomValue<ref_str>{
+public:
+						RTextValue		(TYPE* val):CustomValue<ref_str>(val){};
+    virtual LPCSTR		GetText			(TOnDrawTextEvent OnDrawText);
+    virtual bool		Equal			(PropValue* val)
+    { 
+    	if (OnTestEqual) return OnTestEqual(this,val);
+    	return (value->equal(*((RTextValue*)val)->value)); 
+    }
+    virtual bool		ApplyValue		(LPVOID val)
+    {
+    	ref_str rv		= LPCSTR(val);
+        if (!value->equal(rv)){
+            *value		= rv;
+            return		true;
+        }
+        return 			false;
+    }
 };
 
 typedef CustomValue<BOOL>		BOOLValue;

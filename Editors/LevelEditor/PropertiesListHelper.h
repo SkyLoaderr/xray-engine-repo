@@ -144,6 +144,8 @@ public:
     {   return			(TextValue*)	AppendValue		(items,key,xr_new<TextValue>(val,lim),PROP_TEXT);       }
 	IC ATextValue* 		CreateAText		(PropItemVec& items, AnsiString key, AnsiString* val)
     {   return			(ATextValue*)	AppendValue		(items,key,xr_new<ATextValue>(val),PROP_A_TEXT);        }
+	IC RTextValue* 		CreateRText		(PropItemVec& items, AnsiString key, ref_str* val)
+    {   return			(RTextValue*)	AppendValue		(items,key,xr_new<RTextValue>(val),PROP_R_TEXT);        }
 	IC TextValue* 	 	CreateEShader	(PropItemVec& items, AnsiString key, LPSTR val, int lim)
     {   return			(TextValue*)	AppendValue		(items,key,xr_new<TextValue>(val,lim),PROP_ESHADER);    }
 	IC TextValue* 	   	CreateCShader	(PropItemVec& items, AnsiString key, LPSTR val, int lim)

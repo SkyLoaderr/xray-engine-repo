@@ -7,6 +7,7 @@
 #include "ItemListHelper.h"
 #include "EditObject.h"
 #include "SkeletonCustom.h"
+#include "ClipEditor.h"
 // refs
 class TProperties;
 class CEditableObject;
@@ -173,6 +174,7 @@ public:
 
     TItemList*			m_ObjectItems;
     TProperties*		m_ItemProps;
+    TClipMaker*			m_ClipMaker;
 
     TfrmKeyBar* 		m_KeyBar;
 // undo part
@@ -219,6 +221,7 @@ public:
     CEditableObject*	CurrentObject		(){return m_pEditObject;}
     void				SetCurrentMotion	(LPCSTR name);
     CSMotion*			GetCurrentMotion	();       
+    CSMotion*			FindMotion			(LPCSTR name);       
 	void				FillObjectProperties(PropItemVec& items, LPCSTR pref, ListItem* sender);
 	void				FillSurfaceProperties(PropItemVec& items, LPCSTR pref, ListItem* sender);
 	void				FillMotionProperties(PropItemVec& items, LPCSTR pref, ListItem* sender);
@@ -273,6 +276,8 @@ public:
     void				SetPreviewObjectPrefs();
 
     void				SelectListItem		(LPCSTR pref, LPCSTR name, bool bVal, bool bLeaveSel, bool bExpand);
+
+	void 				ShowClipMaker		();
 
     void				ShowProperties		(){;}
     void				UpdateProperties	(bool bForced=false){m_Flags.set(flRefreshProps,TRUE); if (bForced) RealUpdateProperties();}

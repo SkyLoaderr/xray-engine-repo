@@ -86,7 +86,7 @@ void __fastcall TItemList::DeselectAll()
 //---------------------------------------------------------------------------
 void __fastcall TItemList::SelectItem(const AnsiString& full_name, bool bVal, bool bLeaveSel, bool bExpand)
 {
-	TElTreeItem* item;
+	TElTreeItem* item;              
     FHelper.FindItem			(tvItems,full_name,&item);
     if (item){
     	if (!bLeaveSel)			tvItems->DeselectAll();
@@ -126,6 +126,8 @@ TItemList* TItemList::CreateForm(const AnsiString& title, TWinControl* parent, T
 	    props->tvItems->OnStartDrag = FHelper.StartDrag;
 	    props->tvItems->OnDragOver 	= FHelper.DragOver;
         props->tvItems->DragAllowed	= true;
+    }else if (props->m_Flags.is(ilDragCustom)){
+        props->tvItems->DragAllowed	= true;
     }else{
 	    props->tvItems->OnStartDrag = 0;
 	    props->tvItems->OnDragOver 	= 0;
@@ -140,23 +142,7 @@ TItemList* TItemList::CreateForm(const AnsiString& title, TWinControl* parent, T
 
 TItemList* TItemList::CreateModalForm(const AnsiString& title, u32 flags)
 {
-	TItemList* props 			= xr_new<TItemList>((TComponent*)0);
-    props->m_Flags.set			(flags);
-    props->tvItems->MultiSelect	= props->m_Flags.is(ilMultiSelect);
-    if (props->m_Flags.is(ilDragAllowed)){
-	    props->tvItems->OnStartDrag = FHelper.StartDrag;
-	    props->tvItems->OnDragOver 	= FHelper.DragOver;
-        props->tvItems->DragAllowed	= true;
-    }else{
-	    props->tvItems->OnStartDrag = 0;
-	    props->tvItems->OnDragOver 	= 0;
-        props->tvItems->DragAllowed	= false;
-    }
-    if (props->Parent)	props->tvItems->HeaderSections->Item[0]->Text = title;
-    else				props->Caption 	= title;
-    props->fsStorage->IniSection   		= title;
-	ILForms.push_back(props);
-	return props;
+	return CreateForm			(title,0,alNone,flags);
 }
 
 void TItemList::DestroyForm(TItemList*& props)
@@ -569,5 +555,6 @@ void TItemList::RenameSelItem()
     }
 }
 //---------------------------------------------------------------------------
+
 
 

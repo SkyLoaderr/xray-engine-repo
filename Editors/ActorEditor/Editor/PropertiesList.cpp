@@ -523,6 +523,7 @@ void __fastcall TProperties::tvPropertiesItemDraw(TObject *Sender,
                 FloatValue* V = dynamic_cast<FloatValue*>(prop->GetFrontValue()); R_ASSERT(V);
                 OutText(FloatTimeToStrTime(V->GetValue()).c_str(),Surface,R,prop->Enabled());
             }break;
+            case PROP_R_TEXT:
             case PROP_A_TEXT:
             case PROP_TEXT:
                 if (edText->Tag!=(int)Item)
@@ -549,6 +550,7 @@ void __fastcall TProperties::tvPropertiesItemDraw(TObject *Sender,
         if (!prop->m_Flags.is(PropItem::flDisabled)){
             switch(type){
             case PROP_TIME:
+            case PROP_R_TEXT:
             case PROP_A_TEXT:
             case PROP_TEXT:
                 if (edText->Tag==(int)Item) if (!edText->Visible) ShowLWText(R);
@@ -759,6 +761,7 @@ void __fastcall TProperties::tvPropertiesMouseDown(TObject *Sender,
                 case PROP_FLOAT:
                     PrepareLWNumber(item);
                 break;
+                case PROP_R_TEXT:
                 case PROP_A_TEXT:
                 case PROP_TEXT:
                 	if ((X-prop->draw_rect.left)<(prop->draw_rect.Width()-(m_BMEllipsis->Width+2)))	PrepareLWText(item);
@@ -1349,6 +1352,14 @@ void TProperties::PrepareLWText(TElTreeItem* item)
 {
 	PropItem* prop 		= (PropItem*)item->Tag;
     switch (prop->type){
+    case PROP_R_TEXT:{
+		RTextValue* V	= dynamic_cast<RTextValue*>(prop->GetFrontValue()); R_ASSERT(V);
+        AnsiString edit_val	= *V->GetValue();
+        prop->OnBeforeEdit	(&edit_val);
+        edText->EditMask	= "";
+		edText->Text 		= edit_val;
+		edText->MaxLength	= 0;
+    }break;
     case PROP_A_TEXT:{
 		ATextValue* V	= dynamic_cast<ATextValue*>(prop->GetFrontValue()); R_ASSERT(V);
         AnsiString edit_val	= V->GetValue();
@@ -1394,11 +1405,20 @@ void TProperties::ApplyLWText()
 		PropItem* prop 			= (PropItem*)item->Tag;
         edText->Update();
 	    switch (prop->type){
+        case PROP_R_TEXT:{
+			RTextValue* V		= dynamic_cast<RTextValue*>(prop->GetFrontValue()); R_ASSERT(V);
+			AnsiString new_val	= edText->Text;
+			prop->OnAfterEdit	(&new_val);
+            if (prop->ApplyValue(new_val.c_str())){
+            	Modified();
+            }
+            item->ColumnText->Strings[0] = prop->GetText();
+        }break;
         case PROP_A_TEXT:{
 			ATextValue* V		= dynamic_cast<ATextValue*>(prop->GetFrontValue()); R_ASSERT(V);
 			AnsiString new_val	= edText->Text;
 			prop->OnAfterEdit	(&new_val);
-            if (prop->ApplyValue(&new_val)){
+            if (prop->ApplyValue(new_val.c_str())){
             	Modified();
             }
             item->ColumnText->Strings[0] = prop->GetText();
@@ -1451,11 +1471,10 @@ void __fastcall TProperties::edTextDblClick(TObject *Sender)
 		PropItem* prop 		= (PropItem*)item->Tag;
         edText->Update();
 	    switch (prop->type){
-    	case PROP_TEXT:{
-			TextValue* V	= dynamic_cast<TextValue*>(prop->GetFrontValue()); R_ASSERT(V);
+    	case PROP_R_TEXT:{
 			AnsiString new_val	= edText->Text;
-			if (TfrmText::RunEditor(new_val,AnsiString(item->Text).c_str(),false,V->lim))
-             	edText->Text = new_val;
+			if (TfrmText::RunEditor(new_val,AnsiString(item->Text).c_str()))
+            	edText->Text = new_val;
             ApplyLWText();
             HideLWText();
         }break;
@@ -1463,6 +1482,14 @@ void __fastcall TProperties::edTextDblClick(TObject *Sender)
 			AnsiString new_val	= edText->Text;
 			if (TfrmText::RunEditor(new_val,AnsiString(item->Text).c_str()))
             	edText->Text = new_val;
+            ApplyLWText();
+            HideLWText();
+        }break;
+    	case PROP_TEXT:{
+			TextValue* V	= dynamic_cast<TextValue*>(prop->GetFrontValue()); R_ASSERT(V);
+			AnsiString new_val	= edText->Text;
+			if (TfrmText::RunEditor(new_val,AnsiString(item->Text).c_str(),false,V->lim))
+             	edText->Text = new_val;
             ApplyLWText();
             HideLWText();
         }break;
@@ -1475,14 +1502,14 @@ void TProperties::ExecTextEditor(PropItem* prop)
 {
     if (prop){
 	    switch (prop->type){
-    	case PROP_TEXT:{
-            TextValue* V	= dynamic_cast<TextValue*>(prop->GetFrontValue()); R_ASSERT(V);
-            AnsiString edit_val	= V->GetValue();
+    	case PROP_R_TEXT:{
+            RTextValue* V	= dynamic_cast<RTextValue*>(prop->GetFrontValue()); R_ASSERT(V);
+            AnsiString edit_val	= *V->GetValue();
             prop->OnBeforeEdit	(&edit_val);
-            if (TfrmText::RunEditor(edit_val,AnsiString(prop->Item()->Text).c_str(),false,V->lim)){
+            if (TfrmText::RunEditor(edit_val,AnsiString(prop->Item()->Text).c_str(),false)){
                 prop->OnAfterEdit	(&edit_val);
-                if (prop->ApplyValue(edit_val.c_str()))
-                    Modified		();
+                if (prop->ApplyValue(&edit_val))
+                    Modified();
                 prop->Item()->ColumnText->Strings[0] = prop->GetText();
             }
         }break;
@@ -1494,6 +1521,17 @@ void TProperties::ExecTextEditor(PropItem* prop)
                 prop->OnAfterEdit	(&edit_val);
                 if (prop->ApplyValue(&edit_val))
                     Modified();
+                prop->Item()->ColumnText->Strings[0] = prop->GetText();
+            }
+        }break;
+    	case PROP_TEXT:{
+            TextValue* V	= dynamic_cast<TextValue*>(prop->GetFrontValue()); R_ASSERT(V);
+            AnsiString edit_val	= V->GetValue();
+            prop->OnBeforeEdit	(&edit_val);
+            if (TfrmText::RunEditor(edit_val,AnsiString(prop->Item()->Text).c_str(),false,V->lim)){
+                prop->OnAfterEdit	(&edit_val);
+                if (prop->ApplyValue(edit_val.c_str()))
+                    Modified		();
                 prop->Item()->ColumnText->Strings[0] = prop->GetText();
             }
         }break;

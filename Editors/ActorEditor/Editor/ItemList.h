@@ -89,6 +89,7 @@ public:
     	ilEditMenu		= (1<<0),              
         ilMultiSelect	= (1<<1),
         ilDragAllowed	= (1<<2),
+        ilDragCustom	= (1<<3),
 
         // internal
         ilRT_FullExpand	= (1<<30),

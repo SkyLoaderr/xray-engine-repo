@@ -95,6 +95,7 @@ protected:
     HANDLE			hMailSlot;
 public:
     void ShowObjectHint();
+    void ShowHint(const AnsiString& s);
     bool ShowHint(const AStringVec& SS);
     void HideHint();
 public:

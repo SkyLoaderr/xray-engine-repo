@@ -1,5 +1,5 @@
 object frmBonePart: TfrmBonePart
-  Left = 702
+  Left = -578
   Top = 225
   BorderStyle = bsToolWindow
   Caption = 'Bone Part'

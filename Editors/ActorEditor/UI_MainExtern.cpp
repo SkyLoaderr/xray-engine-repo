@@ -18,6 +18,9 @@ bool TUI::CommandExt(int _Command, int p1, int p2)
 	bool bRes = true;
 	string256 filebuffer;
 	switch (_Command){
+    case COMMAND_SHOW_CLIPMAKER:
+    	Tools.ShowClipMaker();
+    	break;
     case COMMAND_MAKE_PREVIEW:  
     	Tools.MakePreview();
     	break;
@@ -50,7 +53,6 @@ bool TUI::CommandExt(int _Command, int p1, int p2)
             m_LastFileName = temp_fn;
             ELog.Msg(mtInformation,"Object '%s' successfully loaded. Loading time - %3.2f(s).",m_LastFileName,T.GetElapsed_sec());
             AppendRecentFile(m_LastFileName.c_str());
-//.		    fraLeftBar->UpdateMotionList();
             Command	(COMMAND_UPDATE_CAPTION);
             Command	(COMMAND_UPDATE_PROPERTIES);
             // lock
@@ -120,7 +122,6 @@ bool TUI::CommandExt(int _Command, int p1, int p2)
                 	AnsiString mfn;
                     FS.update_path(mfn,_import_,temp_fn.c_str());
                     EFS.MarkFile(mfn.c_str(),true);
-    //.			    fraLeftBar->UpdateMotionList();
                 }else{
                     Command( COMMAND_CLEAR );
                 }

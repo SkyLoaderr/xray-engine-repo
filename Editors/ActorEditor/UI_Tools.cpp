@@ -107,6 +107,7 @@ void CActorTools::PreviewModel::Render()
     	m_pObject->RenderSingle(T);
     }
 }
+
 void CActorTools::PreviewModel::Update()
 {
     if (m_Flags.is(pmScroll)){
@@ -141,7 +142,8 @@ bool CActorTools::OnCreate()
     Device.seqDevDestroy.Add(this);
 
     // props
-    m_ObjectItems 	= TItemList::CreateForm("",fraLeftBar->paObjectProps,alClient);
+	m_ClipMaker		= TClipMaker::CreateForm();
+    m_ObjectItems 	= TItemList::CreateForm("",fraLeftBar->paObjectProps,alClient,TItemList::ilDragCustom|TItemList::ilMultiSelect);
 	m_ObjectItems->OnItemsFocused	= OnObjectItemFocused;
     m_ItemProps 	= TProperties::CreateForm("",fraLeftBar->paItemProps,alClient,OnItemModified);
     m_PreviewObject.OnCreate();
@@ -161,8 +163,8 @@ void CActorTools::OnDestroy()
 	VERIFY(m_bReady);
     m_bReady			= false;
 
-	// unlock
-	TItemList::DestroyForm(m_ObjectItems);
+    TClipMaker::DestroyForm	(m_ClipMaker);
+	TItemList::DestroyForm	(m_ObjectItems);
 	TProperties::DestroyForm(m_ItemProps);
     m_PreviewObject.OnDestroy();
 
@@ -347,6 +349,7 @@ void CActorTools::Clear()
 //	m_PreviewObject.Clear();
     m_ObjectItems->ClearList();
     m_ItemProps->ClearProperties();
+    m_ClipMaker->HideEditor();
 
 	m_bObjectModified 	= false;
 	m_Flags.set			(flUpdateGeometry|flUpdateMotionDefs|flUpdateMotionKeys,FALSE);
@@ -664,6 +667,11 @@ CSMotion* CActorTools::GetCurrentMotion()
 	return m_pEditObject?m_pEditObject->GetActiveSMotion():0;
 }
 
+CSMotion* CActorTools::FindMotion(LPCSTR name)
+{
+	return m_pEditObject?m_pEditObject->FindSMotionByName(name):0;
+}
+
 void CActorTools::SetCurrentMotion(LPCSTR name)
 {
 	if (m_pEditObject){
@@ -712,5 +720,12 @@ bool CActorTools::RayPick(const Fvector& start, const Fvector& dir, float& dist,
             return true;
         }else return false;
     }
+}
+
+#include "ClipEditor.h"
+void CActorTools::ShowClipMaker()
+{
+	if (CurrentObject()&&CurrentObject()->IsSkeleton()&&CurrentObject()->SMotionCount())
+    	m_ClipMaker->ShowEditor(CurrentObject());
 }
 

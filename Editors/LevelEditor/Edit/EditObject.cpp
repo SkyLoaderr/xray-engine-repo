@@ -105,6 +105,8 @@ void CEditableObject::ClearGeometry ()
     // skeletal motions
     for(SMotionIt s_it=m_SMotions.begin(); s_it!=m_SMotions.end();s_it++) xr_delete(*s_it);
     m_SMotions.clear();
+    for(ClipIt c_it=m_Clips.begin(); c_it!=m_Clips.end();c_it++) xr_delete(*c_it);
+    m_Clips.clear();
 #endif
     m_ActiveSMotion = 0;
 }

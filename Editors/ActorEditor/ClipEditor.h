@@ -17,6 +17,7 @@
 #include "multi_edit.hpp"
 #include "PropertiesList.h"
 #include "ItemList.h"
+#include "motion.h"
 //---------------------------------------------------------------------------
 
 class TClipMaker: public TForm,
@@ -100,7 +101,6 @@ __published:	// IDE-managed Components
 	void __fastcall ClipMouseUp(TObject *Sender, TMouseButton Button,
           TShiftState Shift, int X, int Y);
 	void __fastcall FormShow(TObject *Sender);
-	void __fastcall paBPStartDrag(TObject *Sender, TDragObject *&DragObject);
 	void __fastcall BPDragOver(TObject *Sender, TObject *Source, int X,
           int Y, TDragState State, bool &Accept);
 	void __fastcall BPDragDrop(TObject *Sender, TObject *Source, int X,
@@ -113,24 +113,25 @@ __published:	// IDE-managed Components
 	void __fastcall ebTrashDragOver(TObject *Sender, TObject *Source, int X,
           int Y, TDragState State, bool &Accept);
 	void __fastcall paClipsPaint(TObject *Sender);
+	void __fastcall ebTrashDragDrop(TObject *Sender, TObject *Source, int X,
+          int Y);
+	void __fastcall FormCloseQuery(TObject *Sender, bool &CanClose);
 public:
-	struct SClip{
+	class CUIClip: public CClip{
+    public:                               
+    	float			run_time;
     	s32				idx;
-        AnsiString		cycles[4];
-        AStringVec		fxs;
-        AnsiString		name;
-        float			length;
-        float			run_time;
         TClipMaker* 	owner;
     public:
-        				SClip			(const AnsiString& name, TClipMaker* owner, float r_t);
-        				~SClip			();
+        				CUIClip			(const CClip& src, TClipMaker* own, float rt){*(CClip*)this=src; idx=-1;owner=own; run_time=rt;}
+        				CUIClip			(LPCSTR name, TClipMaker* owner, float r_t);
+        				~CUIClip		();
         int				PWidth			(){return length*owner->m_Zoom;}
         int				PLeft			(){return run_time*owner->m_Zoom;}
         int				PRight			(){return PLeft()+PWidth();}
         float			Length			(){return length;}
         float			RunTime			(){return run_time;}
-        LPCSTR			CycleName		(u16 bp){VERIFY(bp<4); return (cycles[bp]=="")?0:cycles[bp].c_str();}
+        LPCSTR			CycleName		(u16 bp){VERIFY(bp<4); return (cycles[bp]=="")?0:*cycles[bp];}
     };
 protected:
     enum{
@@ -143,23 +144,24 @@ protected:
 	
     TMxLabel* 			m_LB[4];
     CEditableObject* 	m_CurrentObject;
-	DEFINE_VECTOR		(SClip*,ClipVec,ClipIt);
-    ClipVec				clips;
-    SClip*				sel_clip; 
+    
+	DEFINE_VECTOR		(CUIClip*,UIClipVec,UIClipIt);
+    UIClipVec			clips;
+    CUIClip*			sel_clip; 
     u32					play_clip;
     TProperties*		m_ClipProps;
     TItemList*			m_ClipList;
 
-    void				PlayAnimation	(SClip* clip);
+    void				PlayAnimation	(CUIClip* clip);
     
 	void 				RemoveAllClips	();
 	void 				InsertClip		();
 	void 				AppendClip		();
-	void				RemoveClip		(SClip* clip);
-    void				SelectClip		(SClip* clip);
+	void				RemoveClip		(CUIClip* clip);
+    void				SelectClip		(CUIClip* clip);
 
-    SClip*				FindClip		(float t);
-    SClip*				FindClip		(int x);
+    CUIClip*			FindClip		(float t);
+    CUIClip*			FindClip		(int x);
     
     void				RealRepaintClips();
     void				RepaintClips	(bool bForced=false){m_RTFlags.set(flRT_RepaintClips,TRUE); if(bForced) RealRepaintClips(); }
@@ -188,7 +190,7 @@ public:		// User declarations
 
     static TClipMaker*	CreateForm		();
     static void			DestroyForm		(TClipMaker* form);
-    
+
     void				ShowEditor		(CEditableObject* O);
     void				HideEditor		();
 

@@ -173,4 +173,15 @@ public:
     void			Pause	(){bPlay=!bPlay;}
 };
 
+DEFINE_VECTOR(ref_str,RStrVec,RStrIt);
+class ENGINE_API CClip{
+public:
+	ref_str			name;
+    ref_str			cycles[4];
+    RStrVec			fxs;
+    float			length;
+public:
+	virtual void	Save	(IWriter& F);
+	virtual bool	Load	(IReader& F);
+};
 #endif

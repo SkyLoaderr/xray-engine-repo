@@ -36,53 +36,26 @@ static const TColor BP_ACTIVE_COLOR			= 0x00C1C1C1;
 
 static int g_ClipID=0;
 
-TClipMaker::SClip::SClip(const AnsiString& n, TClipMaker* own, float r_t)
+TClipMaker::CUIClip::CUIClip(LPCSTR n, TClipMaker* own, float r_t) 
 {
 	owner				= own;
 	run_time			= r_t;
 	length				= 2.f;
-//    int min_size		= 1;
     cycles[0]=cycles[1]=cycles[2]=cycles[3]="";
     name				= n;
-/*
-    // panel
-    panel		 		= xr_new<TPanel>(owner->paClips);
-    panel->Tag			= (int)this;
-    panel->Alignment	= taLeftJustify;
-    panel->Caption		= " "+name;
-    panel->Align		= alNone;
-    panel->Left			= PLeft();
-    panel->Width		= PWidth();
-    panel->Height		= owner->paClips->Height;
-//    panel->Constraints->MinWidth = min_size;
-    panel->ShowHint		= true;
-    panel->Hint			= "Clip '"+name+"'";
-//    panel->Hint			= panel->Caption;
-    panel->Color		= CLIP_INACTIVE_COLOR;
-    panel->BevelInner	= bvLowered;//bvNone;
-    panel->BevelOuter	= bvRaised;//bvNone;
-    panel->BorderStyle	= bsNone;
-    panel->DragMode		= dmManual;
-    panel->OnDragOver	= owner->ClipDragOver;
-    panel->OnDragDrop	= owner->ClipDragDrop;
-    panel->OnMouseDown	= owner->ClipMouseDown;
-    panel->OnMouseMove	= owner->ClipMouseMove;
-    panel->OnMouseUp	= owner->ClipMouseUp;
-    panel->Parent 		= owner->paClips;
-*/    
     idx					= -1;
 }
 
-TClipMaker::SClip::~SClip()
+TClipMaker::CUIClip::~CUIClip()
 {
 };
 
-IC bool clip_pred(TClipMaker::SClip* x, TClipMaker::SClip* y)
+IC bool clip_pred(TClipMaker::CUIClip* x, TClipMaker::CUIClip* y)
 {
 	return x->run_time<y->run_time;
 };
 
-IC bool clip_pred_float(float x, TClipMaker::SClip* y)
+IC bool clip_pred_float(float x, TClipMaker::CUIClip* y)
 {
 	return x<y->run_time;
 };
@@ -100,6 +73,11 @@ void TClipMaker::DestroyForm(TClipMaker* form)
 void TClipMaker::ShowEditor(CEditableObject* O)
 {
 	m_CurrentObject = O; VERIFY(O);
+    ClipVec& src 	= O->Clips();
+    clips.resize	(src.size());
+    UIClipIt t_it	= clips.begin();
+    for (ClipIt s_it=src.begin(); s_it!=src.end(); s_it++, t_it++)
+    	*t_it		= xr_new<CUIClip>(**s_it,this,s_it-src.begin());
 	Show			();
     UpdateClips		();
     UpdateProperties();
@@ -115,7 +93,7 @@ void TClipMaker::Clear()
 {
 	m_RTFlags.zero	();
 	m_CurrentObject = 0;
-	for (ClipIt it=clips.begin(); it!=clips.end(); it++)
+	for (UIClipIt it=clips.begin(); it!=clips.end(); it++)
     	xr_delete	(*it);
     clips.clear		();
     sel_clip		= 0;
@@ -160,22 +138,48 @@ void __fastcall TClipMaker::FormShow(TObject *Sender)
 }
 //---------------------------------------------------------------------------
 
-TClipMaker::SClip* TClipMaker::FindClip(int x)
+void __fastcall TClipMaker::FormCloseQuery(TObject *Sender, bool &CanClose)
+{
+	int res = ELog.DlgMsg(mtConfirmation, "Save changes before quit?");
+    switch (res){
+    case mrYes:{
+    	ClipVec& tgt = m_CurrentObject->Clips();
+        for (ClipIt it=tgt.begin(); it!=tgt.end(); it++)
+            xr_delete	(*it);
+        tgt.resize(clips.size());
+        ClipIt t_it=tgt.begin();
+        for (UIClipIt s_it=clips.begin(); s_it!=clips.end(); s_it++,t_it++){
+        	*t_it = xr_new<CClip>();
+            **t_it= *(CClip*)*s_it;
+        }
+    }break;
+    case mrNo: 	break;
+    case mrCancel: CanClose=false; break;
+    }
+}
+//---------------------------------------------------------------------------
+
+TClipMaker::CUIClip* TClipMaker::FindClip(int x)
 {
 	return FindClip(float(x)/m_Zoom);
 }
 //---------------------------------------------------------------------------
 
-TClipMaker::SClip* TClipMaker::FindClip(float t)
+TClipMaker::CUIClip* TClipMaker::FindClip(float t)
 {
 	if (clips.empty()) return 0;
-	ClipIt it = std::upper_bound(clips.begin(),clips.end(),t,clip_pred_float);
+	UIClipIt it = std::upper_bound(clips.begin(),clips.end(),t,clip_pred_float);
     VERIFY (it!=clips.begin());
     it--;
     return *it;
 }
 //---------------------------------------------------------------------------
 
+//---------------------------------------------------------------------------
+// clip Drag'n'Drop
+// clip Mouse
+//.
+//---------------------------------------------------------------------------
 void __fastcall TClipMaker::ClipDragOver(TObject *Sender,
       TObject *Source, int X, int Y, TDragState State, bool &Accept)
 {
@@ -195,10 +199,7 @@ void __fastcall TClipMaker::ClipDragOver(TObject *Sender,
             }
         }
     }else{
-		TPanel* P 	= dynamic_cast<TPanel*>(Source);
-        if (P&&(Sender!=Source)){
-            Accept=true;
-        }
+		Accept = (Sender==paClips);
     }
 }
 //---------------------------------------------------------------------------
@@ -206,44 +207,166 @@ void __fastcall TClipMaker::ClipDragOver(TObject *Sender,
 void __fastcall TClipMaker::ClipDragDrop(TObject *Sender,
       TObject *Source, int X, int Y)
 {
+    VERIFY 					(Sender==paClips);
+    CUIClip* tgt				= FindClip(X); VERIFY(tgt);
 	TElTreeDragObject* obj 	= dynamic_cast<TElTreeDragObject*>(Source);
     if (obj){
-        TPanel* Pd			= dynamic_cast<TPanel*>(Sender); VERIFY(Pd);
-        if (Pd->Tag!=-1){
-	        SClip* Cd		= (SClip*)Pd->Tag;
-            TElTree* tv		= dynamic_cast<TElTree*>(obj->Control);
-            if (tv->SelectedCount){
-                for (TElTreeItem* item = tv->GetNextSelected(0); item; item = tv->GetNextSelected(item)){
-                    ListItem* prop	= (ListItem*)item->Tag; VERIFY(prop);
-                    CSMotion* SM 	= (CSMotion*)prop->m_Object;
-                    LPCSTR mname 	= SM->Name();
-                    if (!SM->m_Flags.is(esmFX)){
-                    	if (SM->m_BoneOrPart==BI_NONE){
-	                        Cd->cycles[0]=mname;
-	                        Cd->cycles[1]=mname;
-	                        Cd->cycles[2]=mname;
-	                        Cd->cycles[3]=mname;
-                        }else{
-	                        Cd->cycles[SM->m_BoneOrPart]=mname;
-                        }
+        TElTree* tv			= dynamic_cast<TElTree*>(obj->Control);
+        if (tv->SelectedCount){
+            for (TElTreeItem* item = tv->GetNextSelected(0); item; item = tv->GetNextSelected(item)){
+                ListItem* prop	= (ListItem*)item->Tag; VERIFY(prop);
+                CSMotion* SM 	= (CSMotion*)prop->m_Object;
+                LPCSTR mname 	= SM->Name();
+                if (!SM->m_Flags.is(esmFX)){
+                    if (SM->m_BoneOrPart==BI_NONE){
+                        tgt->cycles[0]=mname;
+                        tgt->cycles[1]=mname;
+                        tgt->cycles[2]=mname;
+                        tgt->cycles[3]=mname;
+                    }else{
+                        tgt->cycles[SM->m_BoneOrPart]=mname;
                     }
                 }
             }
         }
     }else{
-        TExtBtn* trash = dynamic_cast<TExtBtn*>(Sender);
-        if (trash&&(trash==ebTrash)){
-        	RemoveClip		(sel_clip);
-        }else{
-            SClip* tgt			= FindClip(X);
-            sel_clip->run_time	= tgt->run_time-EPS_L;
-//            if (X<)	
-//            else				sel_clip->run_time= Cd->run_time+EPS_L;
-        }
+        float rt			= float(X)/m_Zoom-tgt->RunTime();
+        if (rt<tgt->Length()/2.f)	sel_clip->run_time	= tgt->run_time-EPS_L;
+        else						sel_clip->run_time	= tgt->run_time+EPS_L;
     }
     UpdateClips		();
 }
 //---------------------------------------------------------------------------
+
+static BOOL g_resizing	= FALSE;
+static int 	g_X_prev	= 0;
+static int 	g_X_dx		= 0;
+void __fastcall TClipMaker::ClipMouseDown(TObject *Sender, TMouseButton Button, TShiftState Shift, int X, int Y)
+{
+    if (Button==mbLeft){
+        SelectClip		(FindClip(X));
+        if (paClips->Cursor==crHSplit){
+            g_resizing	= TRUE;
+            Stop		();
+            g_X_prev 	= X;
+            g_X_dx		= X-sel_clip->PRight();
+            RepaintClips();
+        }else{
+            paClips->BeginDrag(false, 2);
+		}
+    }
+}
+//---------------------------------------------------------------------------
+
+void __fastcall TClipMaker::ClipMouseMove(TObject *Sender,
+      TShiftState Shift, int X, int Y)
+{
+    VERIFY				(sel_clip);
+    
+	TMxPanel* P			= dynamic_cast<TMxPanel*>(Sender);
+    CUIClip* C			= FindClip(X); VERIFY(C);
+    int cX				= X-C->PLeft();
+    float w0 			= float(cX)/C->PWidth();
+    int w1	 			= C->PWidth()-cX;
+	if ((w0>0.75f)&&(w0<1.f)&&(w1<7)){
+    	P->Cursor 		= crHSplit;
+    }else{
+    	if (!g_resizing)
+	    	P->Cursor 	= crDefault;
+    }
+    if (g_resizing){
+        float dx		= float(X-(g_X_prev+g_X_dx))/m_Zoom;
+        if (!fis_zero(dx)){
+    	    sel_clip->length += dx;
+            if (sel_clip->length<0.01f) sel_clip->length=0.01f;
+    		g_X_prev 	= sel_clip->PRight();
+            UI.ShowHint	(AnsiString().sprintf("Length: %s",FloatTimeToStrTime(sel_clip->Length(),false,true,true,true)));
+        }
+        UpdateClips		();
+    }
+}
+//---------------------------------------------------------------------------
+
+void __fastcall TClipMaker::ClipMouseUp(TObject *Sender,
+      TMouseButton Button, TShiftState Shift, int X, int Y)
+{
+	if (Button==mbLeft){
+		UI.HideHint	();
+        g_resizing	= FALSE;
+        UpdateClips	();
+    }
+}
+//---------------------------------------------------------------------------
+
+//---------------------------------------------------------------------------
+// BP Drag'n'Drop
+// BP Mouse
+//.
+//---------------------------------------------------------------------------
+static TShiftState drag_state;
+void __fastcall TClipMaker::BPDragOver(TObject *Sender, TObject *Source,
+      int X, int Y, TDragState State, bool &Accept)
+{
+    Accept = false;
+    if (Sender==Source){
+        CUIClip* clip = FindClip(X);
+        Accept = (clip&&(clip!=sel_clip));
+    }
+}
+//---------------------------------------------------------------------------
+
+void __fastcall TClipMaker::BPDragDrop(TObject *Sender, TObject *Source,
+      int X, int Y)
+{
+    TMxPanel* P = dynamic_cast<TMxPanel*>(Source); VERIFY(P);
+	TExtBtn* trash = dynamic_cast<TExtBtn*>(Sender);
+	if (trash&&(trash==ebTrash)){
+        sel_clip->cycles[P->Tag] = "";
+    	UpdateClips();
+	}else{
+        CUIClip* tgt = FindClip(X); VERIFY(tgt);
+        CUIClip* src = sel_clip;
+        if (drag_state.Contains(ssAlt)){
+            ref_str s 		= tgt->cycles[P->Tag];
+            tgt->cycles[P->Tag] = src->cycles[P->Tag];
+            src->cycles[P->Tag] = s;
+        }else if (drag_state.Contains(ssCtrl)){
+            tgt->cycles[P->Tag] = src->cycles[P->Tag];
+        }else{
+            tgt->cycles[P->Tag] = src->cycles[P->Tag];
+            src->cycles[P->Tag] = "";
+        }
+        RepaintClips();
+    }
+}
+//---------------------------------------------------------------------------
+
+void __fastcall TClipMaker::BPMouseDown(TObject *Sender,
+      TMouseButton Button, TShiftState Shift, int X, int Y)
+{
+    TMxPanel* P = dynamic_cast<TMxPanel*>(Sender);
+    if (P){
+        if (Button==mbRight){
+//            TPoint pt; pt.x = X; pt.y = Y;
+//            pt=P->ClientToScreen(pt);
+//            pmClip->Popup(pt.x,pt.y-10);
+        }else if (Button==mbLeft){
+	        SelectClip	(FindClip(X));
+            P->BeginDrag(false, 2);
+			drag_state = Shift;	
+        }
+    }
+}
+//---------------------------------------------------------------------------
+
+void __fastcall TClipMaker::BPMouseUp(TObject *Sender,
+      TMouseButton Button, TShiftState Shift, int X, int Y)
+{
+	drag_state = Shift;	
+}
+//---------------------------------------------------------------------------
+
+
 
 void __fastcall TClipMaker::OnClipItemFocused(ListItemsVec& items)
 {
@@ -251,7 +374,7 @@ void __fastcall TClipMaker::OnClipItemFocused(ListItemsVec& items)
 	    for (ListItemsIt it=items.begin(); it!=items.end(); it++){
             ListItem* prop = *it;
             m_ClipList->LockUpdating();
-            SelectClip((SClip*)prop->m_Object);
+            SelectClip((CUIClip*)prop->m_Object);
             m_ClipList->UnlockUpdating();
         }
     }
@@ -287,7 +410,7 @@ void TClipMaker::RealUpdateProperties()
     V=PHelper.CreateFloat		(p_items,"Zoom",					&m_Zoom,			1.f,1000.f,0.1f,1);
     V->OnChangeEvent			= OnZoomChange;
     if (sel_clip){
-	    V=PHelper.CreateAText	(p_items,"Current Clip\\Name",	&sel_clip->name);
+	    V=PHelper.CreateRText	(p_items,"Current Clip\\Name",	&sel_clip->name);
         V->OnChangeEvent		= OnNameChange;
 	    V=PHelper.CreateFloat	(p_items,"Current Clip\\Length",	&sel_clip->length,	0.f,10000.f,0.1f,2);
         V->OnChangeEvent		= OnClipLengthChange;
@@ -302,27 +425,29 @@ void TClipMaker::RealUpdateProperties()
 }
 //---------------------------------------------------------------------------
 
-void TClipMaker::SelectClip(SClip* clip)
+void TClipMaker::SelectClip(CUIClip* clip)
 {
     sel_clip		= clip;
-    AnsiString nm	= sel_clip?sel_clip->name:AnsiString("");
+    AnsiString nm	= sel_clip?*sel_clip->name:"";
     m_ClipList->SelectItem(nm,true,false,true);
     RepaintClips	();
     UpdateProperties();
+    if (sel_clip)
+	    sbBase->HorzScrollBar->Position = sbBase->HorzScrollBar->Range*(sel_clip->RunTime()/m_TotalLength);
 }
 
 void TClipMaker::InsertClip()
 {
-	SClip* clip		= xr_new<SClip>(AnsiString("clip_")+g_ClipID++,this,sel_clip?sel_clip->RunTime()-EPS_L:0);
+	CUIClip* clip		= xr_new<CUIClip>(AnsiString(AnsiString("clip_")+g_ClipID++).c_str(),this,sel_clip?sel_clip->RunTime()-EPS_L:0);
     clips.push_back	(clip);
-    UpdateClips		(true,false);
+    UpdateClips		(true,false);     
     SelectClip		(clip);
 }
 //---------------------------------------------------------------------------
 
 void TClipMaker::AppendClip()
 {
-	SClip* clip		= xr_new<SClip>(AnsiString("clip_")+g_ClipID++,this,sel_clip?sel_clip->RunTime()+sel_clip->Length()-EPS_L:0);
+	CUIClip* clip		= xr_new<CUIClip>(AnsiString(AnsiString("clip_")+g_ClipID++).c_str(),this,sel_clip?sel_clip->RunTime()+sel_clip->Length()-EPS_L:0);
     clips.push_back	(clip);
     UpdateClips		(true,false);
     SelectClip		(clip);
@@ -332,7 +457,7 @@ void TClipMaker::AppendClip()
 void TClipMaker::RemoveAllClips()
 {
 	SelectClip		(0);
-	for (ClipIt it=clips.begin(); it!=clips.end(); it++)
+	for (UIClipIt it=clips.begin(); it!=clips.end(); it++)
     	xr_delete(*it);
     clips.clear		();
     UpdateClips		();
@@ -340,84 +465,20 @@ void TClipMaker::RemoveAllClips()
 }
 //---------------------------------------------------------------------------
 
-void TClipMaker::RemoveClip(SClip* clip)
+void TClipMaker::RemoveClip(CUIClip* clip)
 {
 	if (clip){
     	Stop		();
-    	ClipIt it 	= std::find(clips.begin(),clips.end(),clip);
+    	UIClipIt it 	= std::find(clips.begin(),clips.end(),clip);
         if (it!=clips.end()){
-        	ClipIt p_it	= it; p_it++;
+        	UIClipIt p_it	= it; p_it++;
             if ((p_it==clips.end())&&(clips.size()>1)){ p_it=it; p_it--;}
-            SClip* C	= p_it==clips.end()?0:*p_it;
+            CUIClip* C	= p_it==clips.end()?0:*p_it;
             xr_delete	(*it);
             clips.erase	(it);
             SelectClip	(C);
             UpdateClips	();
         }
-    }
-}
-//---------------------------------------------------------------------------
-
-static BOOL g_resizing	= FALSE;
-static int 	g_X_prev	= 0;
-static int 	g_X_cur	= 0;
-void __fastcall TClipMaker::ClipMouseDown(TObject *Sender,
-      TMouseButton Button, TShiftState Shift, int X, int Y)
-{
-    if (Button==mbLeft){
-        SelectClip		(FindClip(X));
-        SClip* C		= sel_clip; VERIFY(C);
-        int cX			= X-C->PLeft();
-        float w0		= float(cX)/C->PWidth();
-        int w1 			= C->PWidth()-cX;
-        if ((w0>0.75f)&&(w1<10)&&((w0<1.f))){
-            g_resizing	= TRUE;
-            Stop		();
-            g_X_prev 	= X;
-        }else{
-            paClips->BeginDrag(false, 2);
-        }
-    }
-}
-//---------------------------------------------------------------------------
-
-void __fastcall TClipMaker::ClipMouseMove(TObject *Sender,
-      TShiftState Shift, int X, int Y)
-{
-    VERIFY				(sel_clip);
-    
-	TMxPanel* P			= dynamic_cast<TMxPanel*>(Sender);
-    SClip* C			= sel_clip; VERIFY(C);
-    int cX				= X-C->PLeft();
-    float w0 			= float(cX)/C->PWidth();
-    int w1	 			= C->PWidth()-cX;
-	if ((w0>0.75f)&&(w1<10)&&((w0<1.f))){
-    	P->Cursor 		= crHSplit;
-    }else{
-    	if (!g_resizing)
-	    	P->Cursor 	= crDefault;
-    }
-    if (g_resizing){
-    	g_X_cur			= X;
-        gtClip->Repaint();
-        float dx		= float(X-g_X_prev)/m_Zoom;
-        if (!fis_zero(dx)){
-    	    sel_clip->length += dx;
-            if (sel_clip->length<0.01f) sel_clip->length=0.01f;
-    		g_X_prev 	= X;
-            UI.ShowHint	(AnsiString().sprintf("Length: %s",FloatTimeToStrTime(sel_clip->Length(),false,true,true,true)));
-        }
-    }
-}
-//---------------------------------------------------------------------------
-
-void __fastcall TClipMaker::ClipMouseUp(TObject *Sender,
-      TMouseButton Button, TShiftState Shift, int X, int Y)
-{
-	if (Button==mbLeft){
-		UI.HideHint	();
-        g_resizing	= FALSE;
-        UpdateClips	();
     }
 }
 //---------------------------------------------------------------------------
@@ -430,7 +491,7 @@ void __fastcall TClipMaker::gtClipPaint(TObject *Sender)
 	canvas->Pen->Color 	= clBlack;
     canvas->Pen->Width	= 1;
     canvas->Pen->Style	= psSolid;  
-	for (ClipIt it=clips.begin(); it!=clips.end(); it++){
+	for (UIClipIt it=clips.begin(); it!=clips.end(); it++){
         canvas->MoveTo	((*it)->PLeft(), 0);
         canvas->LineTo	((*it)->PLeft(), 6);
 		AnsiString s	= AnsiString().sprintf("%2.1f",(*it)->RunTime());
@@ -440,7 +501,7 @@ void __fastcall TClipMaker::gtClipPaint(TObject *Sender)
         canvas->TextRect(R,R.Left,R.Top,s);
 	}
     if (!clips.empty()){
-    	SClip* C		= clips.back();
+    	CUIClip* C		= clips.back();
         canvas->MoveTo	(C->PRight()-1, 0);
         canvas->LineTo	(C->PRight()-1, 6);
 		AnsiString s	= AnsiString().sprintf("%2.1f",m_TotalLength);
@@ -449,11 +510,12 @@ void __fastcall TClipMaker::gtClipPaint(TObject *Sender)
         TRect R 		= TRect(C->PRight()-dx, 20-dy, C->PRight(), 20);
         canvas->TextRect(R,R.Left,R.Top,s);
     }
-    if (g_resizing){
+/*    if (g_resizing){
     	canvas->Pen->Color = clGreen;
         canvas->MoveTo	(g_X_cur, 0);
         canvas->LineTo	(g_X_cur, gtClip->Width);
     }
+*/
     if (m_RTFlags.is(flRT_Playing)){
         canvas->Pen->Color 	= clRed;
         canvas->MoveTo		(m_CurrentPlayTime*m_Zoom, 0);
@@ -472,8 +534,8 @@ void __fastcall TClipMaker::paClipsPaint(TObject *Sender)
     canvas->Pen->Color 	= clBlack;
     canvas->Pen->Style	= psSolid;
     canvas->Brush->Style= bsSolid;
-    for (ClipIt it=clips.begin(); it!=clips.end(); it++){
-        TRect R 		= TRect((*it)->PLeft(), 1, (*it)->PRight()-1, 15);
+    for (UIClipIt it=clips.begin(); it!=clips.end(); it++){
+        TRect R 		= TRect((*it)->PLeft(), 1, (*it)->PRight()-1, paClips->Height);
         canvas->Pen->Width	= 1;
         canvas->Brush->Color= (*it==sel_clip)?CLIP_ACTIVE_COLOR:CLIP_INACTIVE_COLOR;
         canvas->Rectangle	(R);
@@ -481,7 +543,7 @@ void __fastcall TClipMaker::paClipsPaint(TObject *Sender)
         R.Bottom			-= 1;
         R.Left				+= 1;
         R.Right				-= 1;
-        canvas->TextRect	(R,R.Left,R.Top,(*it)->name);
+        canvas->TextRect	(R,R.Left,R.Top,*(*it)->name);
     }
 }
 //---------------------------------------------------------------------------
@@ -495,11 +557,11 @@ void __fastcall TClipMaker::BPOnPaint(TObject *Sender)
         canvas->Font->Name 	= "MS Sans Serif";
         canvas->Font->Style	= TFontStyles();
         canvas->Font->Color = clBlack;
-        canvas->Pen->Color 	= clBlack;
+        canvas->Pen->Color	= clBlack;
         canvas->Pen->Style	= psSolid;
         canvas->Brush->Style= bsSolid;
         CSMotion* SM_prev	= 0;
-        for (ClipIt it=clips.begin(); it!=clips.end(); it++){
+        for (UIClipIt it=clips.begin(); it!=clips.end(); it++){
             LPCSTR mname	= (*it)->CycleName(bp->Tag);	
             CSMotion* SM	= O->FindSMotionByName(mname);
             TRect R 		= TRect((*it)->PLeft(), 1, (*it)->PRight()-1, 15);
@@ -530,9 +592,6 @@ void __fastcall TClipMaker::BPOnPaint(TObject *Sender)
 
 void TClipMaker::RealRepaintClips()
 {
-/*
-	PostMessage			(paFrame->Handle,WM_SETREDRAW,FALSE,0);
-*/    
     m_RTFlags.set		(flRT_RepaintClips,FALSE);
     // repaint
     paClips->Repaint	();
@@ -552,13 +611,6 @@ void TClipMaker::RealRepaintClips()
     }
 	for (; k<4; k++)	m_LB[k]->Caption	= "-";
     UpdateProperties	();
-
-/*                  
-	PostMessage			(paFrame->Handle,WM_SETREDRAW,TRUE,0);
-//    paFrame->Repaint	();
-	TRect R = paFrame->ClientRect;
-    InvalidateRect		(paFrame->Handle,&R,TRUE);
-*/
 }
 //---------------------------------------------------------------------------
 
@@ -567,7 +619,7 @@ void TClipMaker::RealUpdateClips()
 	m_RTFlags.set	(flRT_UpdateClips,FALSE);
     m_TotalLength	= 0.f;
     std::sort		(clips.begin(),clips.end(),clip_pred);
-	for (ClipIt it=clips.begin(); it!=clips.end(); it++){
+	for (UIClipIt it=clips.begin(); it!=clips.end(); it++){
     	(*it)->run_time	= m_TotalLength;
         m_TotalLength	+= (*it)->length;
         (*it)->idx	= it-clips.begin();
@@ -577,7 +629,7 @@ void TClipMaker::RealUpdateClips()
     // clip list
     ListItemsVec	l_items;
     for (it=clips.begin(); it!=clips.end(); it++)
-    	LHelper.CreateItem		(l_items,(*it)->name.c_str(),0,0,*it);
+    	LHelper.CreateItem		(l_items,*(*it)->name,0,0,*it);
 	m_ClipList->AssignItems		(l_items,true);
 }
 //---------------------------------------------------------------------------
@@ -594,7 +646,7 @@ void __fastcall TClipMaker::fsStorageSavePlacement(TObject *Sender)
 }
 //---------------------------------------------------------------------------
 
-void TClipMaker::PlayAnimation(SClip* clip)
+void TClipMaker::PlayAnimation(CUIClip* clip)
 {
     for (u32 k=0; k<m_CurrentObject->BoneParts().size(); k++){
     	if (clip->CycleName(k)){
@@ -642,13 +694,10 @@ void __fastcall TClipMaker::ebAppendClipClick(TObject *Sender)
 }
 //---------------------------------------------------------------------------
 
-
-
-
 void __fastcall TClipMaker::ebPrevClipClick(TObject *Sender)
 {
 	if (sel_clip){
-		ClipIt it = std::find(clips.begin(),clips.end(),sel_clip);
+		UIClipIt it = std::find(clips.begin(),clips.end(),sel_clip);
         if (it!=clips.begin()){
 	        it--;
             SelectClip(*it);
@@ -660,7 +709,7 @@ void __fastcall TClipMaker::ebPrevClipClick(TObject *Sender)
 void __fastcall TClipMaker::ebNextClipClick(TObject *Sender)
 {
 	if (sel_clip){
-		ClipIt it = std::find(clips.begin(),clips.end(),sel_clip);
+		UIClipIt it = std::find(clips.begin(),clips.end(),sel_clip);
         if (it!=clips.end()){
 	        it++;
 	        if (it!=clips.end())
@@ -713,100 +762,35 @@ void TClipMaker::Pause()
 }
 //---------------------------------------------------------------------------
 
-static TShiftState drag_state;
-void __fastcall TClipMaker::paBPStartDrag(TObject *Sender,
-      TDragObject *&DragObject)
-{
-//	TMxPanel* P 	= dynamic_cast<TMxPanel*>(Sender); VERIFY(P);
-//	DragObject 		= xr_new<TDragControlObject>(P);
-//	TDragControlObject* obj = dynamic_cast<TDragControlObject*>(Source); VERIFY(obj);
-}
-//---------------------------------------------------------------------------
-
-void __fastcall TClipMaker::BPDragOver(TObject *Sender, TObject *Source,
-      int X, int Y, TDragState State, bool &Accept)
-{
-    Accept = false;
-	TExtBtn* trash = dynamic_cast<TExtBtn*>(Sender);
-	if (trash&&(trash==ebTrash)){
-    	Accept = true;
-    }else if (Sender==Source){
-        SClip* clip = FindClip(X);
-        Accept = (clip&&(clip!=sel_clip));
-    }
-}
-//---------------------------------------------------------------------------
-
-void __fastcall TClipMaker::BPDragDrop(TObject *Sender, TObject *Source,
-      int X, int Y)
-{
-    TMxPanel* P = dynamic_cast<TMxPanel*>(Source); VERIFY(P);
-	TExtBtn* trash = dynamic_cast<TExtBtn*>(Sender);
-	if (trash&&(trash==ebTrash)){
-        sel_clip->cycles[P->Tag] = "";
-    	UpdateClips();
-	}else{
-        SClip* tgt = FindClip(X); VERIFY(tgt);
-        SClip* src = sel_clip;
-        if (drag_state.Contains(ssAlt)){
-            AnsiString s 		= tgt->cycles[P->Tag];
-            tgt->cycles[P->Tag] = src->cycles[P->Tag];
-            src->cycles[P->Tag] = s;
-        }else if (drag_state.Contains(ssCtrl)){
-            tgt->cycles[P->Tag] = src->cycles[P->Tag];
-        }else{
-            tgt->cycles[P->Tag] = src->cycles[P->Tag];
-            src->cycles[P->Tag] = "";
-        }
-        RepaintClips();
-    }
-}
-//---------------------------------------------------------------------------
-
-void __fastcall TClipMaker::BPMouseDown(TObject *Sender,
-      TMouseButton Button, TShiftState Shift, int X, int Y)
-{
-    TMxPanel* P = dynamic_cast<TMxPanel*>(Sender);
-    if (P){
-        if (Button==mbRight){
-//            TPoint pt; pt.x = X; pt.y = Y;
-//            pt=P->ClientToScreen(pt);
-//            pmClip->Popup(pt.x,pt.y-10);
-        }else if (Button==mbLeft){
-	        SelectClip	(FindClip(X));
-            P->BeginDrag(false, 2);
-			drag_state = Shift;	
-        }
-    }
-}
-//---------------------------------------------------------------------------
-
-void __fastcall TClipMaker::BPMouseUp(TObject *Sender,
-      TMouseButton Button, TShiftState Shift, int X, int Y)
-{
-	drag_state = Shift;	
-}
-//---------------------------------------------------------------------------
-
 void __fastcall TClipMaker::ebTrashClick(TObject *Sender)
 {
-	RemoveClip (sel_clip);
+	if (sel_clip&&(ELog.DlgMsg(mtConfirmation,TMsgDlgButtons() << mbYes << mbNo, "Delete selected clip?")==mrYes))
+		RemoveClip (sel_clip);
 }
 //---------------------------------------------------------------------------
 
 void __fastcall TClipMaker::ebTrashDragOver(TObject *Sender,
       TObject *Source, int X, int Y, TDragState State, bool &Accept)
 {
-/*
 	Accept 		= false;
-    // accept BP
     TMxPanel* P = dynamic_cast<TMxPanel*>(Source);
-    if (P) Accept = (P->Tag>-1);
-    else{
-	    TMxPanel* P = dynamic_cast<TMxPanel*>(Source);
-    }
-*/
+    Accept		= !!P;
 }
 //---------------------------------------------------------------------------
+
+void __fastcall TClipMaker::ebTrashDragDrop(TObject *Sender,
+      TObject *Source, int X, int Y)
+{
+    TMxPanel* P = dynamic_cast<TMxPanel*>(Source);
+    if (P==paClips){
+	    RemoveClip(sel_clip);
+    }else{
+    	sel_clip->cycles[P->Tag]="";
+        UpdateClips();
+    }
+}
+//---------------------------------------------------------------------------
+
+
 
 

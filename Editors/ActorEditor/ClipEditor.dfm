@@ -21,6 +21,7 @@ object ClipMaker: TClipMaker
   OldCreateOrder = False
   ParentBiDiMode = False
   Scaled = False
+  OnCloseQuery = FormCloseQuery
   OnCreate = FormCreate
   OnDestroy = FormDestroy
   OnShow = FormShow
@@ -132,6 +133,7 @@ object ClipMaker: TClipMaker
             OnDragOver = ClipDragOver
             OnMouseDown = ClipMouseDown
             OnMouseMove = ClipMouseMove
+            OnMouseUp = ClipMouseUp
             OnPaint = paClipsPaint
             object Bevel9: TBevel
               Left = 0
@@ -224,7 +226,6 @@ object ClipMaker: TClipMaker
             OnDragOver = BPDragOver
             OnMouseDown = BPMouseDown
             OnMouseUp = BPMouseUp
-            OnStartDrag = paBPStartDrag
             OnPaint = BPOnPaint
           end
         end
@@ -507,6 +508,7 @@ object ClipMaker: TClipMaker
         ParentShowHint = False
         ShowHint = True
         OnClick = ebTrashClick
+        OnDragDrop = ebTrashDragDrop
         OnDragOver = ebTrashDragOver
       end
     end

@@ -78,7 +78,8 @@
       Intermediate\Rain.obj Intermediate\EDetailModel.obj 
       Intermediate\ModelPool.obj Intermediate\thunderbolt.obj 
       Intermediate\SkeletonRigid.obj Intermediate\SkeletonAnimated.obj 
-      Intermediate\SkeletonCustom.obj Intermediate\crc32.obj"/>
+      Intermediate\SkeletonCustom.obj Intermediate\crc32.obj 
+      Intermediate\ClipEditor.obj"/>
     <RESFILES value="resource.res ActorEditor.res"/>
     <IDLFILES value=""/>
     <IDLGENFILES value=""/>
@@ -87,7 +88,7 @@
       LeftBar.dfm LogForm.dfm main.dfm Splash.dfm Editor\ChoseForm.dfm 
       Editor\ImageEditor.dfm Editor\ItemList.dfm Editor\NumericVector.dfm 
       Editor\PropertiesList.dfm Editor\ShaderFunction.dfm Editor\TextForm.dfm 
-      Editor\TopBar.dfm"/>
+      Editor\TopBar.dfm ClipEditor.dfm"/>
     <LIBFILES value=""/>
     <LIBRARIES value="editor.lib elpackB6.lib"/>
     <SPARELIBS value="rtl.lib vcl.lib bcbsmp.lib vclx.lib elpackB6.lib editor.lib"/>
@@ -287,6 +288,7 @@
       <FILE FILENAME="Engine\Animations\SkeletonAnimated.cpp" FORMNAME="" UNITNAME="SkeletonAnimated.cpp" CONTAINERID="CCompiler" DESIGNCLASS="" LOCALCOMMAND=""/>
       <FILE FILENAME="Engine\Animations\SkeletonCustom.cpp" FORMNAME="" UNITNAME="SkeletonCustom.cpp" CONTAINERID="CCompiler" DESIGNCLASS="" LOCALCOMMAND=""/>
       <FILE FILENAME="Engine\crc32.cpp" FORMNAME="" UNITNAME="crc32" CONTAINERID="CCompiler" DESIGNCLASS="" LOCALCOMMAND=""/>
+      <FILE FILENAME="ClipEditor.cpp" FORMNAME="ClipMaker" UNITNAME="ClipEditor" CONTAINERID="CCompiler" DESIGNCLASS="" LOCALCOMMAND=""/>
   </FILELIST>
   <BUILDTOOLS>
   </BUILDTOOLS>

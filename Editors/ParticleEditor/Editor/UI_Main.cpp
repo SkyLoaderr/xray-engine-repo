@@ -298,8 +298,8 @@ void TUI::OnAppDeactivate()
 }
 //---------------------------------------------------------------------------
 
-
-bool TUI::ShowHint(const AStringVec& SS){
+bool TUI::ShowHint(const AStringVec& SS)
+{
 	VERIFY(m_bReady);
     if (SS.size()){
         AnsiString S=_ListToSequence2(SS);
@@ -330,10 +330,22 @@ void TUI::HideHint()
 }
 //---------------------------------------------------------------------------
 
-void TUI::ShowObjectHint(){
+void TUI::ShowHint(const AnsiString& s)
+{
+	VERIFY			(m_bReady);
+    GetCursorPos	(&m_HintPoint);
+	AStringVec 		SS;
+    SS.push_back	(s);
+	Tools.OnShowHint(SS);
+    if (!ShowHint(SS)&&m_pHintWindow) HideHint();
+}
+//---------------------------------------------------------------------------
+
+void TUI::ShowObjectHint()
+{
 	VERIFY(m_bReady);
     if (!fraBottomBar->miShowHint->Checked){
-    	if (m_bHintShowing) HideHint();
+//    	if (m_bHintShowing) HideHint();
     	return;
     }
     if (Device.m_Camera.IsMoving()||m_MouseCaptured) return;
@@ -630,7 +642,7 @@ LPCSTR TUI::FirstRecentFile()
 #define MIN_PANEL_HEIGHT 15
 void __fastcall PanelMinMax(TPanel *pa)
 {
-	if (pa){
+	if (pa&&(pa->Align!=alClient)){
         if (pa->Tag > 0){
             pa->Height = pa->Tag;
             pa->Tag    = 0;
@@ -643,7 +655,7 @@ void __fastcall PanelMinMax(TPanel *pa)
 }
 void __fastcall PanelMinimize(TPanel *pa)
 {
-	if (pa){
+	if (pa&&(pa->Align!=alClient)){
         if (pa->Tag <= 0){
             pa->Tag    = pa->Height;
             pa->Height = MIN_PANEL_HEIGHT;
@@ -653,7 +665,7 @@ void __fastcall PanelMinimize(TPanel *pa)
 }
 void __fastcall PanelMaximize(TPanel *pa)
 {
-	if (pa){
+	if (pa&&(pa->Align!=alClient)){
         if (pa->Tag > 0){
             pa->Height = pa->Tag;
             pa->Tag    = 0;

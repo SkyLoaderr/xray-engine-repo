@@ -75,6 +75,12 @@ void UpdatePanel(TPanel* p){
 }
 //---------------------------------------------------------------------------
 
+void TfraLeftBar::OnTimer()
+{
+	UpdateBar();
+}
+//---------------------------------------------------------------------------
+
 void TfraLeftBar::UpdateBar(){
     int i, j;
     for (i=0; i<fraLeftBar->ComponentCount; i++){
@@ -92,7 +98,7 @@ void TfraLeftBar::MinimizeAllFrames()
         TPanel* pa = dynamic_cast<TPanel*>(paLeftBar->Controls[j]);
 	    if (pa) PanelMinimize(pa);
     }
-	UpdateBar();
+	UpdateBar();                      
 }
 //---------------------------------------------------------------------------
 
@@ -323,6 +329,12 @@ void __fastcall TfraLeftBar::Preferences1Click(TObject *Sender)
 void __fastcall TfraLeftBar::ExportDM1Click(TObject *Sender)
 {
 	UI.Command( COMMAND_EXPORT_DM );
+}
+//---------------------------------------------------------------------------
+
+void __fastcall TfraLeftBar::ExtBtn1Click(TObject *Sender)
+{
+	UI.Command( COMMAND_SHOW_CLIPMAKER );
 }
 //---------------------------------------------------------------------------
 

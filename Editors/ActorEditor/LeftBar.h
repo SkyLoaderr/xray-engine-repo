@@ -53,7 +53,18 @@ __published:	// IDE-managed Components
 	TMenuItem *Checknewtextures1;
 	TMenuItem *ImageEditor1;
 	TMenuItem *N6;
-	TPanel *paBasic;
+	TMenuItem *N7;
+	TMenuItem *N8;
+	TMenuItem *N9;
+	TMenuItem *N11;
+	TMenuItem *ExportDM1;
+	TPanel *paScene;
+	TLabel *APHeadLabel2;
+	TExtBtn *ebSceneMin;
+	TExtBtn *ebSceneFile;
+	TExtBtn *ebPreferences;
+	TExtBtn *ebPreviewObjectClick;
+	TExtBtn *ebSceneCommands1;
 	TPanel *paModel;
 	TLabel *Label4;
 	TExtBtn *ExtBtn2;
@@ -65,17 +76,6 @@ __published:	// IDE-managed Components
 	TLabel *Label6;
 	TBevel *Bevel6;
 	TPanel *paObjectProps;
-	TPanel *paScene;
-	TLabel *APHeadLabel2;
-	TExtBtn *ebSceneMin;
-	TExtBtn *ebSceneFile;
-	TExtBtn *ebPreferences;
-	TExtBtn *ebPreviewObjectClick;
-	TExtBtn *ebSceneCommands1;
-	TMenuItem *N7;
-	TMenuItem *N8;
-	TMenuItem *N9;
-	TMenuItem *N11;
 	TPanel *paCurrentMotion;
 	TLabel *Label1;
 	TExtBtn *ExtBtn10;
@@ -83,7 +83,7 @@ __published:	// IDE-managed Components
 	TBevel *Bevel1;
 	TPanel *paItemProps;
 	TSplitter *Splitter1;
-	TMenuItem *ExportDM1;
+	TExtBtn *ExtBtn1;
     void __fastcall ebSaveClick(TObject *Sender);
     void __fastcall PanelMimimizeClick(TObject *Sender);
     void __fastcall PanelMaximizeClick(TObject *Sender);
@@ -123,12 +123,14 @@ __published:	// IDE-managed Components
           TMouseButton Button, TShiftState Shift, int X, int Y);
 	void __fastcall ImageEditor1Click(TObject *Sender);
 	void __fastcall ExportDM1Click(TObject *Sender);
+	void __fastcall ExtBtn1Click(TObject *Sender);
 private:	// User declarations
 	void __fastcall ShowPPMenu		(TMxPopupMenu* M, TObject* btn);
 	void __fastcall RenameItem		(LPCSTR p0, LPCSTR p1, EItemType tp);
 public:		// User declarations
         __fastcall TfraLeftBar		(TComponent* Owner);
     void 			UpdateBar		();
+    void 			OnTimer			();
 	void 			AddMotion		(LPCSTR full_name, bool bLoadMode);
     void			SetRenderStyle	(bool bEngineStyle);
     void 			MinimizeAllFrames();

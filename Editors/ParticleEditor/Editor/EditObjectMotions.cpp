@@ -268,9 +268,11 @@ bool CEditableObject::RenameSMotion(const char* old_name, const char* new_name)
 
 CSMotion* CEditableObject::FindSMotionByName	(const char* name, const CSMotion* Ignore)
 {
-    SMotionVec& lst = m_SMotions;
-    for(SMotionIt m=lst.begin(); m!=lst.end(); m++)
-        if ((Ignore!=(*m))&&(stricmp((*m)->Name(),name)==0)) return (*m);
+	if (name&&name[0]){
+        SMotionVec& lst = m_SMotions;
+        for(SMotionIt m=lst.begin(); m!=lst.end(); m++)
+            if ((Ignore!=(*m))&&(stricmp((*m)->Name(),name)==0)) return (*m);
+    }
     return 0;
 }
 

@@ -151,15 +151,15 @@ public:		// User declarations
 	}
     void __fastcall 	SaveParams				(TFormStorage* fs)
     {
-		fs->WriteInteger(AnsiString().sprintf("%s_column0_width",Name.c_str()),tvProperties->HeaderSections->Item[0]->Width);
-		fs->WriteInteger(AnsiString().sprintf("%s_column1_width",Name.c_str()),tvProperties->HeaderSections->Item[1]->Width);
-		fs->WriteInteger(AnsiString().sprintf("%s_draw_thm",Name.c_str()),miDrawThumbnails->Checked);
+		fs->WriteInteger(AnsiString().sprintf("%s_column0_width",Caption.c_str()),tvProperties->HeaderSections->Item[0]->Width);
+		fs->WriteInteger(AnsiString().sprintf("%s_column1_width",Caption.c_str()),tvProperties->HeaderSections->Item[1]->Width);
+		fs->WriteInteger(AnsiString().sprintf("%s_draw_thm",Caption.c_str()),miDrawThumbnails->Checked);
     }
     void __fastcall 	RestoreParams			(TFormStorage* fs)
     {                                      	
-		tvProperties->HeaderSections->Item[0]->Width 	= fs->ReadInteger(AnsiString().sprintf("%s_column0_width",Name.c_str()),tvProperties->HeaderSections->Item[0]->Width);
-		tvProperties->HeaderSections->Item[1]->Width 	= fs->ReadInteger(AnsiString().sprintf("%s_column1_width",Name.c_str()),tvProperties->HeaderSections->Item[1]->Width);
-        miDrawThumbnails->Checked						= fs->ReadInteger(AnsiString().sprintf("%s_draw_thm",Name.c_str()),false);
+		tvProperties->HeaderSections->Item[0]->Width 	= fs->ReadInteger(AnsiString().sprintf("%s_column0_width",Caption.c_str()),tvProperties->HeaderSections->Item[0]->Width);
+		tvProperties->HeaderSections->Item[1]->Width 	= fs->ReadInteger(AnsiString().sprintf("%s_column1_width",Caption.c_str()),tvProperties->HeaderSections->Item[1]->Width);
+        miDrawThumbnails->Checked						= fs->ReadInteger(AnsiString().sprintf("%s_draw_thm",Caption.c_str()),false);
         RefreshForm			();
     }
 
