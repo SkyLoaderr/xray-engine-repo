@@ -60,8 +60,8 @@ void CAI_Stalker::ResetScriptData(void *P)
 	inherited::ResetScriptData	(P);
 	CMemoryManager::Init		();
 	set_desirable_speed			(0.f);
-	if (P)
-		vfSetParameters			(0,0,false,MonsterSpace::eObjectActionIdle,ePathTypeNoPath,eDetailPathTypeSmooth,m_tBodyState,eMovementTypeStand,m_tMentalState,eLookTypeDirection);
+//	if (P)
+//		vfSetParameters			(0,0,false,MonsterSpace::eObjectActionIdle,ePathTypeNoPath,eDetailPathTypeSmooth,m_tBodyState,eMovementTypeStand,m_tMentalState,eLookTypeDirection);
 }
 
 bool CAI_Stalker::bfAssignMovement(CEntityAction *tpEntityAction)
@@ -73,10 +73,10 @@ bool CAI_Stalker::bfAssignMovement(CEntityAction *tpEntityAction)
 	CWatchAction	&l_tWatchAction		= tpEntityAction->m_tWatchAction;
 	CAnimationAction&l_tAnimationAction	= tpEntityAction->m_tAnimationAction;
 	CObjectAction	&l_tObjectAction	= tpEntityAction->m_tObjectAction;
-	if (l_tMovementAction.m_tMovementType == eMovementTypeStand) {
-		set_level_dest_vertex(level_vertex_id());
-		set_dest_position(Position());
-	}
+//	if (l_tMovementAction.m_tMovementType == eMovementTypeStand) {
+//		set_level_dest_vertex(level_vertex_id());
+//		set_dest_position(Position());
+//	}
 
 	vfSetParameters	(
 		0,
