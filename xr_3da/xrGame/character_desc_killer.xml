@@ -9,6 +9,10 @@
 		<bio>Об этом сталкере ничего не известно.</bio>
 
 		<team>Killer_novice</team>
+		
+		<class>Killer_novice</class>
+		<community>killer</community>
+					
 		<rank>30</rank>
 		<reputation>50</reputation>
 
@@ -23,6 +27,10 @@
 		<bio>Об этом сталкере ничего не известно.</bio>
 
 		<team>Killer_general</team>
+		
+		<class>Killer_general</class>
+		<community>killer</community>
+
 		<rank>50</rank>
 		<reputation>50</reputation>
 
@@ -37,6 +45,10 @@
 		<bio>Об этом сталкере ничего не известно.</bio>
 
 		<team>Killer_veteran</team>
+		
+		<class>Killer_veteran</class>
+		<community>killer</community>
+
 		<rank>70</rank>
 		<reputation>50</reputation>
 
@@ -51,6 +63,12 @@
 		<bio>Об этом сталкере ничего не известно.</bio>
 
 		<team>Killer_master</team>
+		
+		
+		<class>Killer_master</class>
+		<community>killer</community>
+
+		
 		<rank>90</rank>
 		<reputation>50</reputation>
 
