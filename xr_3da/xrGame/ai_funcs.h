@@ -48,8 +48,10 @@ public:
 	DWORD		*dwaVariableValues;
 
 				CPatternFunction(char *caEFFileName);
+				CPatternFunction();
 				~CPatternFunction();
-	
+
+	void		vfLoadEF(char *caEFFileName);
 	double		dfEvaluate();
 	double		dfGetValue(CCustomMonster *cAIMonster);
 };

@@ -18,10 +18,36 @@ double CPatternFunction::dfEvaluate()
 	return(dResult);
 }
 
+CPatternFunction::CPatternFunction()
+{
+	dwPatternCount = dwVariableCount = dwParameterCount = 0;
+	dwaVariableTypes = 0;
+	dwaAtomicFeatureRange = 0;
+	dwaPatternIndexes = 0;
+	tpPatterns = 0;
+	daParameters = 0;
+	dwaVariableValues = 0;
+}
+
 CPatternFunction::CPatternFunction(char *caFileName)
 {
+	dwPatternCount = dwVariableCount = dwParameterCount = 0;
+	dwaVariableTypes = 0;
+	dwaAtomicFeatureRange = 0;
+	dwaPatternIndexes = 0;
+	tpPatterns = 0;
+	daParameters = 0;
+	dwaVariableValues = 0;
+	vfLoadEF(caFileName);
+}
+
+void CPatternFunction::vfLoadEF(char *caFileName)
+{
 	FILE *fTestParameters = fopen(caFileName,"rb");
-	
+	if (!fTestParameters) {
+		Msg("EvaluationFunction : File not found \"%s\"",caFileName);
+		return;
+	}
 	fread(&dwVariableCount,1,sizeof(dwVariableCount),fTestParameters);
 	dwaAtomicFeatureRange = (DWORD *)xr_malloc(dwVariableCount*sizeof(DWORD));
 	ZeroMemory(dwaAtomicFeatureRange,dwVariableCount*sizeof(DWORD));

@@ -30,6 +30,7 @@ class CCustomMonster :
 {
 private:
 	typedef	CEntityAlive	inherited;
+	CPatternFunction		cRelation;	
 	DWORD dwFunctionCount;
 protected:
 	float				m_fBananPadlaCorrection;
