@@ -93,7 +93,7 @@ __published:	// IDE-managed Components
 private:	// User declarations
     void __fastcall 	PMItemClick		(TObject *Sender);
 	void __fastcall 	WaveFormClick	(TElTreeItem* item);
-	void __fastcall 	ColorClick		(TElTreeItem* item, bool alpha);
+	void __fastcall 	ColorClick		(TElTreeItem* item);
 	void __fastcall 	VectorClick		(TElTreeItem* item);
 	void __fastcall 	ChooseClick		(TElTreeItem* item);
 

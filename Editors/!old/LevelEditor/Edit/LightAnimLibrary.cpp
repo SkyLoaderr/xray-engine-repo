@@ -4,6 +4,9 @@
 
 #include "LightAnimLibrary.h"
 //---------------------------------------------------------------------------
+#define LANIM_VERSION		0x0001
+//---------------------------------------------------------------------------
+#define CHUNK_VERSION		0x0000
 #define CHUNK_ITEM_LIST		0x0001
 //---------------------------------------------------------------------------
 #define CHUNK_ITEM_COMMON	0x0001
@@ -96,7 +99,7 @@ void CLAItem::Resize(int new_len)
     }
 }
 
-u32 CLAItem::Interpolate(int frame)
+u32 CLAItem::InterpolateRGB(int frame)
 {
     R_ASSERT(frame<=iFrameCount);
 
@@ -126,16 +129,22 @@ u32 CLAItem::Interpolate(int frame)
     return c.get();
 }
 
-u32 CLAItem::CalculateBGR(float T, int& frame)
+u32 CLAItem::InterpolateBGR(int frame)
 {
-    frame	= iFloor(fmodf(T,float(iFrameCount)/fFPS)*fFPS);
-    return Interpolate(frame);
+	u32 c 	= InterpolateRGB(frame);
+    return color_rgba(color_get_B(c),color_get_G(c),color_get_R(c),color_get_A(c));
 }
 
 u32 CLAItem::CalculateRGB(float T, int& frame)
 {
-	u32 c 	= CalculateBGR(T,frame);
-    return color_rgba(color_get_B(c),color_get_G(c),color_get_R(c),color_get_A(c));
+    frame	= iFloor(fmodf(T,float(iFrameCount)/fFPS)*fFPS);
+    return InterpolateRGB(frame);
+}
+
+u32 CLAItem::CalculateBGR(float T, int& frame)
+{
+    frame	= iFloor(fmodf(T,float(iFrameCount)/fFPS)*fFPS);
+    return InterpolateBGR(frame);
 }
 
 int CLAItem::PrevKeyFrame(int frame)
@@ -194,12 +203,20 @@ void ELightAnimLibrary::Load()
     FS.update_path(fn,_game_data_,"lanims.xr");
 	IReader* fs=FS.r_open(fn);
     if (fs){
+    	u16 version	= 0;
+    	if (fs->find_chunk(CHUNK_VERSION)){
+        	version	= fs->r_u16();
+        }
         IReader* OBJ = fs->open_chunk(CHUNK_ITEM_LIST);
         if (OBJ){
 	        IReader* O   = OBJ->open_chunk(0);
     	    for (int count=1; O; count++) {
         	    CLAItem* I = xr_new<CLAItem>();
                 I->Load(*O);
+                if (version==0){
+                    for (CLAItem::KeyPairIt it=I->Keys.begin(); it!=I->Keys.end(); it++)
+                        it->second	= subst_alpha(bgr2rgb(it->second),color_get_A(it->second));
+                }
                 Items.push_back(I);
             	O->close();
 	            O = OBJ->open_chunk(count);
@@ -214,6 +231,9 @@ void ELightAnimLibrary::Load()
 void ELightAnimLibrary::Save()
 {
 	CMemoryWriter F;
+    F.open_chunk	(CHUNK_VERSION);
+    F.w_u16			(LANIM_VERSION);
+	F.close_chunk	();
     F.open_chunk	(CHUNK_ITEM_LIST);
     int count = 0;
 	for (LAItemIt it=Items.begin(); it!=Items.end(); it++){

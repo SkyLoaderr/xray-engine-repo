@@ -20,7 +20,8 @@ public:
 	void			InitDefault			();
     void			Load				(IReader& F);
     void			Save				(IWriter& F);
-    u32				Interpolate			(int frame);
+    u32				InterpolateRGB		(int frame);
+    u32				InterpolateBGR		(int frame);
     u32				CalculateRGB		(float T, int& frame);
     u32				CalculateBGR		(float T, int& frame);
     void		    Resize				(int new_len);
@@ -32,6 +33,7 @@ public:
     int		 	    NextKeyFrame 		(int frame);
     int		 	    FirstKeyFrame		(){return Keys.rend()->first;}
     int		 	    LastKeyFrame		(){return Keys.rbegin()->first;}
+    u32*			GetKey				(int frame){KeyPairIt it=Keys.find(frame); return (it!=Keys.end())?&(it->second):0;}
 };
 DEFINE_VECTOR(CLAItem*,LAItemVec,LAItemIt);
 
