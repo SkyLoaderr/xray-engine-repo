@@ -1358,7 +1358,11 @@ void CPHElement::set_State(const SPHNetState& state)
 	setForce(state.force);
 	setTorque(state.torque);
 	if(!bActive) return;
-	if(state.enabled&& !dBodyIsEnabled(m_body)) dBodyEnable(m_body);
+	if(state.enabled&& !dBodyIsEnabled(m_body)) 
+					{
+												dBodyEnable(m_body);
+												m_shell->EnableObject();
+					}
 	if(!state.enabled && dBodyIsEnabled(m_body)) Disable();
 }
 
