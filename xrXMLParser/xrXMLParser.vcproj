@@ -306,6 +306,19 @@
 				<File
 					RelativePath=".\tinystr.cpp">
 					<FileConfiguration
+						Name="Release|Win32">
+						<Tool
+							Name="VCCLCompilerTool"
+							UsePrecompiledHeader="0"/>
+					</FileConfiguration>
+					<FileConfiguration
+						Name="Mixed|Win32">
+						<Tool
+							Name="VCCLCompilerTool"
+							UsePrecompiledHeader="0"
+							PrecompiledHeaderFile=""/>
+					</FileConfiguration>
+					<FileConfiguration
 						Name="Debug|Win32">
 						<Tool
 							Name="VCCLCompilerTool"
@@ -330,6 +343,18 @@
 				</File>
 				<File
 					RelativePath=".\tinyxmlerror.cpp">
+					<FileConfiguration
+						Name="Release|Win32">
+						<Tool
+							Name="VCCLCompilerTool"
+							UsePrecompiledHeader="0"/>
+					</FileConfiguration>
+					<FileConfiguration
+						Name="Mixed|Win32">
+						<Tool
+							Name="VCCLCompilerTool"
+							UsePrecompiledHeader="0"/>
+					</FileConfiguration>
 					<FileConfiguration
 						Name="Debug|Win32">
 						<Tool
