@@ -221,7 +221,7 @@ object frmBonePart: TfrmBonePart
     FocusedSelectColor = 10526880
     FocusedSelectTextColor = clBlack
     Font.Charset = DEFAULT_CHARSET
-    Font.Color = clBlack
+    Font.Color = clWindowText
     Font.Height = -11
     Font.Name = 'MS Sans Serif'
     Font.Style = []
@@ -271,7 +271,7 @@ object frmBonePart: TfrmBonePart
     VertScrollBarStyles.UseXPThemes = False
     VirtualityLevel = vlNone
     UseXPThemes = False
-    BkColor = 7368816
+    BkColor = clGray
     OnDragDrop = tvPartDragDrop
     OnDragOver = tvPartDragOver
     OnStartDrag = tvPartStartDrag
@@ -305,7 +305,7 @@ object frmBonePart: TfrmBonePart
     FocusedSelectColor = 10526880
     FocusedSelectTextColor = clBlack
     Font.Charset = DEFAULT_CHARSET
-    Font.Color = clBlack
+    Font.Color = clWindowText
     Font.Height = -11
     Font.Name = 'MS Sans Serif'
     Font.Style = []
@@ -355,7 +355,7 @@ object frmBonePart: TfrmBonePart
     VertScrollBarStyles.UseXPThemes = False
     VirtualityLevel = vlNone
     UseXPThemes = False
-    BkColor = 7368816
+    BkColor = clGray
     OnDragDrop = tvPartDragDrop
     OnDragOver = tvPartDragOver
     OnStartDrag = tvPartStartDrag
@@ -389,7 +389,7 @@ object frmBonePart: TfrmBonePart
     FocusedSelectColor = 10526880
     FocusedSelectTextColor = clBlack
     Font.Charset = DEFAULT_CHARSET
-    Font.Color = clBlack
+    Font.Color = clWindowText
     Font.Height = -11
     Font.Name = 'MS Sans Serif'
     Font.Style = []
@@ -439,7 +439,7 @@ object frmBonePart: TfrmBonePart
     VertScrollBarStyles.UseXPThemes = False
     VirtualityLevel = vlNone
     UseXPThemes = False
-    BkColor = 7368816
+    BkColor = clGray
     OnDragDrop = tvPartDragDrop
     OnDragOver = tvPartDragOver
     OnStartDrag = tvPartStartDrag
@@ -473,7 +473,7 @@ object frmBonePart: TfrmBonePart
     FocusedSelectColor = 10526880
     FocusedSelectTextColor = clBlack
     Font.Charset = DEFAULT_CHARSET
-    Font.Color = clBlack
+    Font.Color = clWindowText
     Font.Height = -11
     Font.Name = 'MS Sans Serif'
     Font.Style = []
@@ -523,7 +523,7 @@ object frmBonePart: TfrmBonePart
     VertScrollBarStyles.UseXPThemes = False
     VirtualityLevel = vlNone
     UseXPThemes = False
-    BkColor = 7368816
+    BkColor = clGray
     OnDragDrop = tvPartDragDrop
     OnDragOver = tvPartDragOver
     OnStartDrag = tvPartStartDrag

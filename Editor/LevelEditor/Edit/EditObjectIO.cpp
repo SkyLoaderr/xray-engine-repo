@@ -185,7 +185,7 @@ bool CEditableObject::Load(CStream& F){
         }
 
         // bone parts
-        if (0){//F.FindChunk(EOBJ_CHUNK_BONEPARTS)){
+        if (F.FindChunk(EOBJ_CHUNK_BONEPARTS)){
             m_BoneParts.resize(F.Rdword());
 	        for (BPIt bp_it=m_BoneParts.begin(); bp_it!=m_BoneParts.end(); bp_it++){
     	        F.RstringZ	(buf); bp_it->alias=buf;

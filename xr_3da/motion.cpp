@@ -211,6 +211,7 @@ bool CSMotion::Load(CStream& F){
 	CCustomMotion::Load(F);
 	WORD vers	= F.Rword();
     if (vers!=EOBJ_SMOTION_VERSION) return false;
+    iBoneOrPart	= F.Rdword();
     bFX			= F.Rbyte();
     bStopAtEnd	= F.Rbyte();
     fSpeed		= F.Rfloat();

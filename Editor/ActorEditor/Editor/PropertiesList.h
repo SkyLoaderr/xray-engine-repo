@@ -14,6 +14,7 @@
 #include <Controls.hpp>
 #include <Menus.hpp>
 #include <StdCtrls.hpp>
+#include <ExtCtrls.hpp>
 
 // refs
 struct 	xr_token;
@@ -148,7 +149,8 @@ public:		// User declarations
     int  __fastcall ShowPropertiesModal		(ObjectList& lst);
 #endif
 	static TfrmProperties* CreateProperties	(TWinControl* parent=0, TAlign align=alNone, TOnModifiedEvent modif=0);
-	static void 	DestroyProperties		(TfrmProperties* props);
+	static void 	DestroyProperties		(TfrmProperties*& props);
+    void __fastcall ShowPropertiesModal		();
     void __fastcall ShowProperties			();
     void __fastcall HideProperties			();
     void __fastcall ClearProperties			();

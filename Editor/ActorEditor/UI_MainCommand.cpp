@@ -60,7 +60,7 @@ bool TUI::Command( int _Command, int p1, int p2 ){
         break;
 	case COMMAND_LOAD_MOTIONS:{
     	if (!Tools.CurrentObject()){
-        	ELog.DlgMsg(mtError,"Load any object before.");
+        	ELog.DlgMsg(mtError,"Scene empty. Load object first.");
         	bRes=false;
         	break;
         }
@@ -72,7 +72,7 @@ bool TUI::Command( int _Command, int p1, int p2 ){
         }break;
 	case COMMAND_SAVE_MOTIONS:{
     	if (!Tools.CurrentObject()){
-        	ELog.DlgMsg(mtError,"Load any object before.");
+        	ELog.DlgMsg(mtError,"Scene empty. Load object first.");
         	bRes=false;
         	break;
         }
@@ -81,7 +81,7 @@ bool TUI::Command( int _Command, int p1, int p2 ){
         }break;
     case COMMAND_SAVEAS:{
 		AnsiString fn = m_LastFileName;
-		if (Engine.FS.GetSaveName(Engine.FS.m_Objects,fn)) Command(COMMAND_SAVE, (DWORD)fn.c_str());
+		if (Engine.FS.GetSaveName(Engine.FS.m_Objects,fn)) bRes=Command(COMMAND_SAVE, (DWORD)fn.c_str());
     	}break;
 	case COMMAND_SAVE:{
     	AnsiString fn;
@@ -89,13 +89,32 @@ bool TUI::Command( int _Command, int p1, int p2 ){
         else	fn = m_LastFileName;
 		if (Tools.Save(fn.c_str())){
         	Command(COMMAND_UPDATE_CAPTION);
+			fraLeftBar->AppendRecentFile(fn.c_str());
+        }else{
+        	bRes=false;
         }
     	}break;
     case COMMAND_IMPORT:{
     	AnsiString fn;
-    	if (Engine.FS.GetOpenName(Engine.FS.m_Import,fn))
-        	if (Command( COMMAND_LOAD, (DWORD)fn.c_str() ))
-            	Command( COMMAND_SAVEAS );
+    	if (Engine.FS.GetOpenName(Engine.FS.m_Import,fn)){
+            if (!Tools.IfModified()){
+                bRes=false;
+                break;
+            }
+			Command( COMMAND_CLEAR );
+	    	if (!Tools.Load(fn.c_str())){
+            	ELog.DlgMsg(mtError,"Can't load file '%s'",fn.c_str());
+            	bRes=false;
+            	break;
+            }
+			strcpy(m_LastFileName,"");
+			if (Command( COMMAND_SAVEAS )){
+	            Engine.FS.MarkFile(fn.c_str());
+			    fraLeftBar->UpdateMotionList();
+            }else{
+            	Command( COMMAND_CLEAR );
+            }
+        }
     	}break;
     case COMMAND_EXPORT:{
     	AnsiString fn;
@@ -119,6 +138,7 @@ bool TUI::Command( int _Command, int p1, int p2 ){
             if ((0==stricmp(fn.c_str(),m_LastFileName))&&Engine.FS.CheckLocking(0,fn.c_str(),true,false)){
                 Engine.FS.UnlockFile(0,fn.c_str());
             }
+			Command( COMMAND_CLEAR );
 	    	if (!Tools.Load(fn.c_str())){
             	ELog.DlgMsg(mtError,"Can't load file '%s'",fn.c_str());
             	bRes=false;
@@ -133,7 +153,7 @@ bool TUI::Command( int _Command, int p1, int p2 ){
 	case COMMAND_CLEAR:
 		{
 			Device.m_Camera.Reset();
-//S            Tools.ResetPreviewObject();
+            Tools.Clear();
 			Command(COMMAND_UPDATE_CAPTION);
 		}
 		break;
@@ -157,8 +177,14 @@ bool TUI::Command( int _Command, int p1, int p2 ){
     	break;
 	case COMMAND_RESET_ANIMATION:
    		break;
-    case COMMAND_APPLY_CHANGES:
-    	Tools.ApplyChanges();
+    case COMMAND_MAKE_PREVIEW:
+    	Tools.MakePreview();
+    	break;
+    case COMMAND_PREVIEW_OBJ_PREF:
+    	Tools.SetPreviewObjectPrefs();
+    	break;
+    case COMMAND_SELECT_PREVIEW_OBJ:
+		Tools.SelectPreviewObject(p1);
     	break;
 	case COMMAND_UPDATE_GRID:
     	DU::UpdateGrid(frmEditorPreferences->seGridNumberOfCells->Value,frmEditorPreferences->seGridSquareSize->Value);

@@ -7,6 +7,7 @@
 #include "BonePart.h"
 #include "Bone.h"
 #include "UI_Tools.h"
+#include "FolderLib.h"
 //---------------------------------------------------------------------------
 #pragma package(smart_init)
 #pragma resource "*.dfm"
@@ -16,10 +17,13 @@ TEdit* E[4];
 //---------------------------------------------------------------------------
 void TfrmBonePart::Run(CEditableObject* object)
 {
-	VERIFY(object);
-	m_EditObject = object;
-	m_BoneParts = &object->BoneParts();
-	ShowModal();
+	if (object){
+        m_EditObject = object;
+        m_BoneParts = &object->BoneParts();
+        ShowModal();
+    }else{
+    	ELog.DlgMsg(mtError,"Scene empty. Load object first.");
+    }
 }
 //---------------------------------------------------------------------------
 __fastcall TfrmBonePart::TfrmBonePart(TComponent* Owner)
@@ -43,12 +47,14 @@ void __fastcall TfrmBonePart::FormShow(TObject *Sender)
 
 void __fastcall TfrmBonePart::FillBoneParts()
 {
-    for (int k=0; k<4; k++){T[k]->Items->Clear();E[k]->Text="";}
+    for (int k=0; k<4; k++) T[k]->IsUpdating = true;
+    for (k=0; k<4; k++){T[k]->Items->Clear();E[k]->Text="";}
 	for (BPIt it=m_BoneParts->begin(); it!=m_BoneParts->end(); it++){
         E[it-m_BoneParts->begin()]->Text = it->alias;
         for (INTIt w_it=it->bones.begin(); w_it!=it->bones.end(); w_it++)
-	    	T[it-m_BoneParts->begin()]->Items->Add(0,m_EditObject->BoneNameByID(*w_it));
+        	FOLDER::AppendObject(T[it-m_BoneParts->begin()],m_EditObject->BoneNameByID(*w_it));
     }
+    for (k=0; k<4; k++) T[k]->IsUpdating = false;
 }
 //---------------------------------------------------------------------------
 
@@ -62,7 +68,7 @@ void __fastcall TfrmBonePart::FormKeyDown(TObject *Sender, WORD &Key,
 void __fastcall TfrmBonePart::tvPartStartDrag(TObject *Sender,
       TDragObject *&DragObject)
 {
-	for (TElTreeItem* node=((TElTree*)Sender)->Selected; node; node=((TElTree*)Sender)->GetNextSelected(node))
+	for (TElTreeItem* node=((TElTree*)Sender)->GetNextSelected(0); node; node=((TElTree*)Sender)->GetNextSelected(node))
 		FDragItems.push_back(node);
 }
 //---------------------------------------------------------------------------
@@ -71,7 +77,7 @@ void __fastcall TfrmBonePart::tvPartDragDrop(TObject *Sender,
       TObject *Source, int X, int Y)
 {
 	for (int k=0; k<FDragItems.size(); k++){
-		((TElTree*)Sender)->Items->Add(0,FDragItems[k]->Text);
+		FOLDER::AppendObject(((TElTree*)Sender),AnsiString(FDragItems[k]->Text).c_str());
         if (ebMoveMode->Down) FDragItems[k]->Delete();
     }
     FDragItems.clear();
@@ -113,7 +119,7 @@ void __fastcall TfrmBonePart::ebSaveClick(TObject *Sender)
             	BP.bones.push_back(m_EditObject->BoneIDByName(AnsiString(node->Text).c_str()));
         }
     }
-    Tools.Modified();
+    Tools.MotionModified();
     Close();
 }
 //---------------------------------------------------------------------------

@@ -3,6 +3,7 @@
 #define UIToolsH
 
 #include "eltree.hpp"
+#include "mxplacemnt.hpp"
 // refs
 class TfrmProperties;
 class CEditableObject;
@@ -26,10 +27,49 @@ enum EAxis{
 
 class CActorTools: public pureDeviceCreate, public pureDeviceDestroy
 {
-	CEditableObject*	m_EditObject;
-    FBasicVisual*		m_Visual;
+    class PreviewModel{
+	    TfrmProperties*	m_Props;
+		CEditableObject*m_pObject;
+        float			m_fSpeed;
+        float			m_fSegment;
+        DWORD			m_dwFlags;
+    public:
+    	enum{
+        	pmScroll	= (1<<0),
+        	force_dword = DWORD(-1)
+        };
+    public:
+        				PreviewModel		(){m_pObject=0;m_fSpeed=5.f;m_fSegment=50.f;m_dwFlags=0;m_Props=0;}
+    	void			OnCreate			();
+    	void			OnDestroy			();
+    	void			Clear				();
+        void			SelectObject		();
+        void			SetPreferences		();
+        void			Render				();
+        void			Update				();
+        void			RestoreParams		(TFormStorage* s);
+        void			SaveParams			(TFormStorage* s);
+    };
 
-    bool				m_bModified;
+	CEditableObject*	m_pEditObject;
+    class EngineModel{
+    	CFS_Memory		m_GeometryStream;
+	    CFS_Memory		m_MotionsStream;
+	    bool			UpdateGeometryStream(CEditableObject* source);
+    	bool			UpdateMotionsStream	(CEditableObject* source);
+    public:
+	    FBasicVisual*	m_pVisual;
+    public:
+        				EngineModel			(){m_pVisual=0;}
+        void			DeleteVisual		(){Device.Models.Delete(m_pVisual);}
+        void			Clear				(){DeleteVisual(); m_GeometryStream.clear();m_MotionsStream.clear();}
+        bool 			UpdateVisual		(CEditableObject* source, bool bUpdGeom=false, bool bUpdMotions=false);
+        bool			IsRenderable		(){return !!m_pVisual;}
+    };
+	EngineModel			m_RenderObject;
+
+    bool				m_bObjectModified;
+    bool				m_bMotionModified;
     bool				m_bReady;
 
     EAction				m_Action;
@@ -53,7 +93,9 @@ class CActorTools: public pureDeviceCreate, public pureDeviceDestroy
 	void __fastcall 	FloatOnBeforeEdit	(PropValue* sender, LPVOID edit_val);
 	void __fastcall 	FloatOnDraw			(PropValue* sender, LPVOID draw_val);
 public:
-    TfrmProperties*		m_Props;
+    TfrmProperties*		m_ObjectProps;
+    TfrmProperties*		m_MotionProps;
+    PreviewModel		m_PreviewObject;
 public:
 						CActorTools			();
     virtual 			~CActorTools		();
@@ -65,19 +107,26 @@ public:
     void				OnDestroy			();
 
     bool				IfModified			();
-    bool				IsModified			(){return m_bModified;}
-    void __fastcall		Modified			(void);
+    bool				IsModified			(){return m_bObjectModified||m_bMotionModified;}
+    bool				IsObjectModified	(){return m_bObjectModified;}
+    bool				IsMotionModified	(){return m_bMotionModified;}
+    void __fastcall		ObjectModified		(void);
+    void __fastcall		MotionModified		(void);
 
-    CEditableObject*	CurrentObject		(){return m_EditObject;}
+    bool				IsVisualPresent		(){return m_RenderObject.IsRenderable();}
+
+    CEditableObject*	CurrentObject		(){return m_pEditObject;}
     void				SetCurrentMotion	(LPCSTR name);
-    void				FillBaseProperties	();
+    void				FillObjectProperties();
 	void				FillMotionProperties();
     void				PlayMotion			();
     void				StopMotion			();
     void				PauseMotion			();
+    bool				RenameMotion		(LPCSTR old_name, LPCSTR new_name);
 
     void				ZoomObject			();
     void				ChangeAction		(EAction action);
+    void				MakePreview			();
 
     bool				Load				(LPCSTR name);
     bool				Save				(LPCSTR name);
@@ -87,7 +136,6 @@ public:
     bool				AppendMotion		(LPCSTR name, LPCSTR fn);
     bool				RemoveMotion		(LPCSTR name);
     void				Reload				();
-    void				ApplyChanges		();
 
     virtual void		OnDeviceCreate		();
     virtual void		OnDeviceDestroy		();
@@ -105,6 +153,9 @@ public:
     bool __fastcall 	KeyPress    		(WORD Key, TShiftState Shift){return false;}
 
     bool				Pick				(){return false;}
+
+    void 				SelectPreviewObject	(bool bClear);
+    void				SetPreviewObjectPrefs();
 };
 extern CActorTools	Tools;
 //---------------------------------------------------------------------------

@@ -117,13 +117,18 @@ TfrmProperties* TfrmProperties::CreateProperties	(TWinControl* parent, TAlign al
 	return props;
 }
 
-void TfrmProperties::DestroyProperties(TfrmProperties* props)
+void TfrmProperties::DestroyProperties(TfrmProperties*& props)
 {
 	VERIFY(props);
 	props->Close();
+    _DELETE(props);
 }
 void __fastcall TfrmProperties::ShowProperties(){
 	Show();
+}
+
+void __fastcall TfrmProperties::ShowPropertiesModal(){
+	ShowModal();
 }
 
 void __fastcall TfrmProperties::HideProperties(){
@@ -133,9 +138,9 @@ void __fastcall TfrmProperties::HideProperties(){
 void __fastcall TfrmProperties::FormClose(TObject *Sender,
       TCloseAction &Action)
 {
-	ClearProperties();
+//	ClearProperties();
 
-	Action = caFree;
+//	Action = caFree;
 //    _DELETE(m_BMEllipsis);
 }
 //---------------------------------------------------------------------------
@@ -650,7 +655,7 @@ void __fastcall TfrmProperties::FillFromStream(CFS_Memory& stream, DWORD advance
     DWORD type;
     char key[255];
     TElTreeItem* M=0;
-    TElTreeItem* node;  
+    TElTreeItem* node;
 /*
     while (!data.Eof()){
         int sz=0;
@@ -675,7 +680,6 @@ void __fastcall TfrmProperties::FillFromStream(CFS_Memory& stream, DWORD advance
 */
 }
 //---------------------------------------------------------------------------
-
 
 
 

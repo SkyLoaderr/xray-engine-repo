@@ -103,7 +103,9 @@ void __fastcall TfraLeftBar::miRecentFilesClick(TObject *Sender)
 
 void __fastcall TfraLeftBar::fsStorageSavePlacement(TObject *Sender)
 {
-    Tools.m_Props->SaveColumnWidth(fsStorage);
+    Tools.m_ObjectProps->SaveColumnWidth(fsStorage);
+    Tools.m_MotionProps->SaveColumnWidth(fsStorage);
+    Tools.m_PreviewObject.SaveParams(fsStorage);
 	for (int i = 0; i < miRecentFiles->Count; i++)
 	{
 		TMenuItem* MI = miRecentFiles->Items[i];
@@ -114,7 +116,9 @@ void __fastcall TfraLeftBar::fsStorageSavePlacement(TObject *Sender)
 
 void __fastcall TfraLeftBar::fsStorageRestorePlacement(TObject *Sender)
 {
-    Tools.m_Props->RestoreColumnWidth(fsStorage);
+    Tools.m_ObjectProps->RestoreColumnWidth(fsStorage);
+    Tools.m_MotionProps->RestoreColumnWidth(fsStorage);
+    Tools.m_PreviewObject.RestoreParams(fsStorage);
 }
 //---------------------------------------------------------------------------
 
@@ -134,6 +138,10 @@ void TfraLeftBar::UpdateBar(){
         TComponent* temp = fraLeftBar->Components[i];
         if (dynamic_cast<TExtBtn *>(temp) != NULL)
             ((TExtBtn*)temp)->UpdateMouseInControl();
+    }
+    if (ebRenderEngineStyle->Down){
+    	ebMakePreview->Enabled = Tools.IsModified();
+	    if (!Tools.IsVisualPresent()) SetRenderStyle(false);
     }
 }
 //---------------------------------------------------------------------------
@@ -170,6 +178,12 @@ void __fastcall TfraLeftBar::ebEditorPreferencesClick(TObject *Sender)
 }
 //---------------------------------------------------------------------------
 
+void __fastcall TfraLeftBar::ebMakePreviewClick(TObject *Sender)
+{
+	UI.Command( COMMAND_MAKE_PREVIEW );
+}
+//---------------------------------------------------------------------------
+
 void __fastcall TfraLeftBar::ebResetAnimationClick(TObject *Sender)
 {
 	UI.Command( COMMAND_RESET_ANIMATION );
@@ -187,11 +201,19 @@ void __fastcall TfraLeftBar::ShowPPMenu(TMxPopupMenu* M, TObject* B){
 void __fastcall TfraLeftBar::ebActorMotionsFileMouseDown(TObject *Sender,
       TMouseButton Button, TShiftState Shift, int X, int Y)
 {
-	ShowPPMenu(pmEngineShadersFile,Sender);
+	ShowPPMenu(pmMotionsFile,Sender);
 }
 //---------------------------------------------------------------------------
 
 void __fastcall TfraLeftBar::ebSceneCommandsMouseDown(TObject *Sender,
+      TMouseButton Button, TShiftState Shift, int X, int Y)
+{
+	ShowPPMenu(pmSceneFile,Sender);
+}
+
+//---------------------------------------------------------------------------
+
+void __fastcall TfraLeftBar::ebPreviewObjectClickMouseDown(TObject *Sender,
       TMouseButton Button, TShiftState Shift, int X, int Y)
 {
 	ShowPPMenu(pmPreviewObject,Sender);
@@ -202,12 +224,6 @@ void __fastcall TfraLeftBar::tvMotionsMouseDown(TObject *Sender,
       TMouseButton Button, TShiftState Shift, int X, int Y)
 {
 	if (Button==mbRight)	ShowPPMenu(pmShaderList,Sender);
-}
-//---------------------------------------------------------------------------
-
-void __fastcall TfraLeftBar::ebEngineApplyChangesClick(TObject *Sender)
-{
-	UI.Command( COMMAND_APPLY_CHANGES );
 }
 //---------------------------------------------------------------------------
 
@@ -236,7 +252,7 @@ void __fastcall TfraLeftBar::CreateFolder1Click(TObject *Sender)
 	TElTreeItem* node = FOLDER::AppendFolder(tvMotions,folder.c_str());
     if (tvMotions->Selected) tvMotions->Selected->Expand(false);
     tvMotions->EditItem(node,-1);
-	Tools.Modified();
+	Tools.MotionModified();
 }
 //---------------------------------------------------------------------------
 
@@ -265,7 +281,7 @@ void __fastcall TfraLeftBar::ebMotionsRemoveClick(TObject *Sender)
                 }
 //				Tools.ResetCurrentPS();
 	            pNode->Delete();
-                Tools.Modified();
+                Tools.MotionModified();
         	}
         }
     	if (FOLDER::IsObject(pNode)){
@@ -274,7 +290,7 @@ void __fastcall TfraLeftBar::ebMotionsRemoveClick(TObject *Sender)
 	            Tools.RemoveMotion(full_name.c_str());
 //				Tools.ResetCurrentPS();
 	            pNode->Delete();
-                Tools.Modified();
+                Tools.MotionModified();
         	}
         }
     }else{
@@ -344,23 +360,27 @@ void __fastcall TfraLeftBar::InplaceParticleEditValidateResult(
         FOLDER::MakeName(node,0,full_name,false);
         Tools.RenamePS(full_name.c_str(),new_text.c_str(),node->Level);
     }
-*/	Tools.Modified();
+*/	Tools.MotionModified();
 }
 //---------------------------------------------------------------------------
 
 void __fastcall TfraLeftBar::eMotionsAppendClick(TObject *Sender)
 {
-    AnsiString folder,nm,fn,full_name;
-    if (Engine.FS.GetOpenName(Engine.FS.m_SMotion,fn)){
-	    TElTreeItem* node=0;
-    	if (tvMotions->Selected&&FOLDER::IsFolder(tvMotions->Selected))
-    		node = tvMotions->Selected;
-        FOLDER::MakeName(node,0,folder,true);
-        FOLDER::GenerateObjectName(tvMotions,node,nm,ChangeFileExt(ExtractFileName(fn),"").c_str());
-        full_name = folder+nm;
-        if (Tools.AppendMotion(full_name.c_str(),fn.c_str())){
-        	tvMotions->Selected = FOLDER::AppendObject(tvMotions,full_name.c_str());
-    	    Tools.Modified();
+    AnsiString folder,nm,fnames,full_name;
+    if (Engine.FS.GetOpenName(Engine.FS.m_SMotion,fnames,true)){
+	    AStringVec lst;
+    	SequenceToList(lst,fnames.c_str());
+        for (AStringIt it=lst.begin(); it!=lst.end(); it++){
+            TElTreeItem* node=0;
+            if (tvMotions->Selected&&FOLDER::IsFolder(tvMotions->Selected))
+                node = tvMotions->Selected;
+            FOLDER::MakeName(node,0,folder,true);
+            FOLDER::GenerateObjectName(tvMotions,node,nm,ChangeFileExt(ExtractFileName(*it),"").c_str());
+            full_name = folder+nm;
+            if (Tools.AppendMotion(full_name.c_str(),it->c_str())){
+                tvMotions->Selected = FOLDER::AppendObject(tvMotions,full_name.c_str());
+                Tools.MotionModified();
+            }
         }
     }
 }
@@ -437,8 +457,8 @@ void __fastcall TfraLeftBar::tvMotionsDragDrop(TObject *Sender,
 		    AnsiString old_name, new_name;
 		    FOLDER::MakeName(item,0,old_name,false);
 		    FOLDER::MakeName(pNode,0,new_name,false);
-//            Tools.RenamePS(old_name.c_str(),new_name.c_str());
-            Tools.Modified();
+            Tools.RenameMotion(old_name.c_str(),new_name.c_str());
+            Tools.MotionModified();
 
             TElTreeItem* parent=item->Parent;
             // get next item && delete existance
@@ -471,11 +491,11 @@ void TfraLeftBar::UpdateMotionList()
 void TfraLeftBar::UpdateProperties()
 {
 	if (Tools.CurrentObject()){
-    	paProperties->Enabled = true;
-        Tools.FillBaseProperties();
+    	paObjectProperties->Enabled = true;
+        Tools.FillObjectProperties();
         Tools.FillMotionProperties();
     }else{
-    	paProperties->Enabled = false;
+    	paObjectProperties->Enabled = false;
     }
 }
 //---------------------------------------------------------------------------
@@ -484,6 +504,16 @@ void TfraLeftBar::UpdateMotionProperties()
 {
 	if (Tools.CurrentObject()){
         Tools.FillMotionProperties();
+        CSMotion* M=Tools.CurrentObject()->GetActiveSMotion();
+        if (M){
+			lbCurFrames->Caption 	= M->Length();
+            lbCurFPS->Caption 		= AnsiString().sprintf("%3.1f",M->FPS());
+            lbName->Caption 		= M->Name();
+        }else{
+			lbCurFrames->Caption 	= "...";
+            lbCurFPS->Caption 		= "...";
+            lbName->Caption 		= "...";
+        }
     }
 }
 //---------------------------------------------------------------------------
@@ -515,6 +545,12 @@ void __fastcall TfraLeftBar::Import1Click(TObject *Sender)
 void __fastcall TfraLeftBar::Load1Click(TObject *Sender)
 {
 	UI.Command( COMMAND_LOAD );
+}
+//---------------------------------------------------------------------------
+
+void __fastcall TfraLeftBar::Clear1Click(TObject *Sender)
+{
+	UI.Command( COMMAND_CLEAR );
 }
 //---------------------------------------------------------------------------
 
@@ -554,4 +590,43 @@ void __fastcall TfraLeftBar::Export2Click(TObject *Sender)
 	UI.Command( COMMAND_EXPORT );
 }
 //---------------------------------------------------------------------------
+
+void __fastcall TfraLeftBar::ebRenderStyleClick(TObject *Sender)
+{
+	if (Sender==ebRenderEngineStyle){
+		if (!Tools.IsVisualPresent()) UI.Command( COMMAND_MAKE_PREVIEW );
+        if (!Tools.IsVisualPresent()) SetRenderStyle(false);
+        else						  SetRenderStyle(true);
+    }
+}
+//---------------------------------------------------------------------------
+
+void TfraLeftBar::SetRenderStyle(bool bEngineStyle)
+{
+    if (Tools.IsVisualPresent()&&bEngineStyle){
+    	ebRenderEngineStyle->Down = true;
+        Tools.PlayMotion();
+    }else ebRenderEditorStyle->Down = true;
+}
+//---------------------------------------------------------------------------
+
+void __fastcall TfraLeftBar::Custom1Click(TObject *Sender)
+{
+	UI.Command( COMMAND_SELECT_PREVIEW_OBJ, false );
+}
+//---------------------------------------------------------------------------
+
+void __fastcall TfraLeftBar::none1Click(TObject *Sender)
+{
+	UI.Command( COMMAND_SELECT_PREVIEW_OBJ, true );
+}
+//---------------------------------------------------------------------------
+
+void __fastcall TfraLeftBar::Preferences1Click(TObject *Sender)
+{
+	UI.Command( COMMAND_PREVIEW_OBJ_PREF );
+}
+//---------------------------------------------------------------------------
+
+
 
