@@ -663,23 +663,4 @@
     </dialog>
 
 
-    <dialog id="pustishka_test">
-        <phrase_list>
-            <phrase id="0">
-                <next>1</next>
-            </phrase>
-            <phrase id="1">
-                <next>2</next>
-            </phrase>
-            <phrase id="2">
-				<text>Fraza1</text>
-                <next>3</next>
-            </phrase>
-            <phrase id="3">
-				<text>Fraza2</text>
-                <next>4</next>
-            </phrase>
-        </phrase_list>
-    </dialog>
-
 </game_dialogs>

@@ -309,6 +309,9 @@
 						RelativePath=".\Config\gameplay\dialogs_garbage.xml">
 					</File>
 					<File
+						RelativePath=".\dialogs_test.xml">
+					</File>
+					<File
 						RelativePath=".\Config\gameplay\dialogs_yantar.xml">
 					</File>
 				</Filter>
@@ -370,6 +373,9 @@
 					Name="rus"
 					Filter="">
 					<File
+						RelativePath=".\stable_dialogs.xml">
+					</File>
+					<File
 						RelativePath=".\Config\text\rus\stable_dialogs_agroprom.xml">
 					</File>
 					<File
@@ -380,6 +386,9 @@
 					</File>
 					<File
 						RelativePath=".\Config\text\rus\stable_dialogs_garbage.xml">
+					</File>
+					<File
+						RelativePath=".\stable_dialogs_test.xml">
 					</File>
 					<File
 						RelativePath=".\Config\text\rus\string_table_artefacts.xml">
