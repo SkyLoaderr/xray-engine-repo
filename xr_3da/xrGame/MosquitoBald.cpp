@@ -57,7 +57,8 @@ void CMosquitoBald::Affect(CObject* O)
 
 	Fvector position_in_bone_space;
 
-	float power = Power(pGameObject->Position().distance_to(P) - pGameObject->Radius());
+	float dist = pGameObject->Position().distance_to(P) - pGameObject->Radius();
+	float power = Power(dist>0.f?dist:0.f);
 	float impulse = m_fHitImpulseScale*power*pGameObject->GetMass();
 
 	//статистика по объекту
