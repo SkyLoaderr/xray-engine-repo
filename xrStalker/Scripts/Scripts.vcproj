@@ -259,6 +259,12 @@
 				RelativePath=".\m_WalkPoint.script">
 			</File>
 			<File
+				RelativePath=".\mob_death.script">
+			</File>
+			<File
+				RelativePath=".\mob_trade.script">
+			</File>
+			<File
 				RelativePath=".\monsters.script">
 			</File>
 		</Filter>
