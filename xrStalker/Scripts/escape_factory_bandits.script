@@ -229,7 +229,7 @@ function action_stand:initialize()
     self.object:set_movement_type       ( move.stand )
 
     if self.a.partner:alive() then
-        self.object:set_sight       ( look.direction, self.a.partner:position():sub( self.object:position() ), 0 )
+        self.object:set_sight       ( look.direction, vector():set( self.a.partner:position() ):sub( self.object:position() ), 0 )
         self.object:set_body_state  ( move.standing )
         self.object:set_mental_state( anim.free )
     else

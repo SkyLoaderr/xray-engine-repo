@@ -295,7 +295,7 @@ end
 function action_command:turn_to_left_flank()
 	if not self.turn_time_end then
 		self.turn_time_end = device():time_global() + 1000
-		self.object:set_sight( look.direction, level.vertex_position( self.a.left_pos_id ):sub( self.object:position() ), 0 )
+		self.object:set_sight( look.direction, vector():set( level.vertex_position( self.a.left_pos_id ) ):sub( self.object:position() ), 0 )
 		return false
 	end
 

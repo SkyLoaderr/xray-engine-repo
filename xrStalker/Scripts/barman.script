@@ -174,7 +174,7 @@ end
 function action_look_at_actor:execute()
     action_base.execute( self )
     
-    self.object:set_sight( look.direction, the_actor:position():sub( self.object:position() ), 0 )
+    self.object:set_sight( look.direction, vector():set( the_actor:position() ):sub( self.object:position() ), 0 )
 
 --    xr_sounds.set_sound( self.object, this.snds_idle_bar )
 
