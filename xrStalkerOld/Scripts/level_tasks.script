@@ -340,8 +340,11 @@ function process_map_spot(info_id)
 	       if db.actor:dont_has_info ("mil_lukash_dead") then 
 	          add_location (707, "mil_lukash_location")
 	       end   
-	       remove_location (704, "mil_sniper_location")
 	       remove_location (708, "mil_dolg_location")
+	       
+    elseif info_id == "mil_dolg_dead" then 	       
+	       remove_location (704, "mil_sniper_location")
+	       
 	elseif info_id == "mil_lukash_arrive" or info_id == "mil_lukash_job_failed" then
 	       remove_location (707, "mil_lukash_location")
 
