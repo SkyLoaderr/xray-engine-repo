@@ -69,16 +69,8 @@ function main()
 
 	wait		(1000)
 
-
 	local 	snd = sound_object("scripts\\kto-to_idet")
-	local	obj = get_actor()
-	wait	(1000)
-	snd:play_at_pos(obj,obj:position(),0);
-	while true do
-		wait()
-	end
-
-	script_01.play_sound_object("actor","scripts\\kto-to_idet",1)
+	snd:play_at_pos(actor,actor:position(),0);
 
 	stalker1:script	(true,script_01.script_name())
 	stalker2:script	(true,script_01.script_name())
