@@ -27,7 +27,7 @@ protected:
 	BOOL		bPause;
 public:
 				CTimer			()		: qwStartTime(0),qwPausedTime(0),qwPauseAccum(0),bPause(FALSE) { }
-	IC void		Start			()		{	if(bPause) return; qwStartTime = CPU::GetCycleCount();			}
+	IC void		Start			()		{	if(bPause) return; qwStartTime = CPU::GetCycleCount()-qwPauseAccum;	}
 	IC float	Stop			()		{	return (fResult = GetElapsed_sec());							}
 	IC float	Get				()		{	return fResult;													}
 	IC u64		GetElapsed_clk	()		{	if(bPause) return qwPausedTime; else return CPU::GetCycleCount()-qwStartTime-CPU::cycles_overhead-qwPauseAccum; }
