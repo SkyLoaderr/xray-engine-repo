@@ -16,7 +16,7 @@ const float drop_angle		= 3.f;
 const float drop_speed_min	= 40.f;
 const float drop_speed_max	= 80.f;
 const int	max_particles	= 1000;
-const int	particles_update= 50;
+const int	particles_update= 100;
 const int	particles_cache	= 500;
 
 //////////////////////////////////////////////////////////////////////
@@ -316,6 +316,7 @@ void	CEffect_Rain::Render	()
 			// Render
 			if (::Render.ViewBase.testSphereDirty(P->visual->bv_Position,P->visual->bv_Radius))
 			{
+				/*
 				int		count_estimated		= P->visual->ParticleCount();
 				if ((pcount+count_estimated) >= particles_cache) {
 					// flush
@@ -327,6 +328,7 @@ void	CEffect_Rain::Render	()
 				int		count_real_verts	= P->visual->RenderTO(verts);
 				verts	+= count_real_verts;
 				pcount	+= count_real_verts/4;
+				*/
 			}
 			
 			// Stop if needed
