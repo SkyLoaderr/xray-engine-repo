@@ -1007,8 +1007,8 @@ void __fastcall TProperties::PMItemClick(TObject *Sender)
         }break;
 		case PROP_CLIST:{
 			CListValue* V			= dynamic_cast<CListValue*>(prop->GetFrontValue()); R_ASSERT(V);
-            std::string new_val		= V->items[mi->Tag];
-            if (prop->AfterEdit<CListValue,std::string>(new_val))
+            xr_string new_val		= V->items[mi->Tag];
+            if (prop->AfterEdit<CListValue,xr_string>(new_val))
                 if (prop->ApplyValue<CListValue,LPCSTR>(new_val.c_str())){
                     Modified			();
                 }
@@ -1016,8 +1016,8 @@ void __fastcall TProperties::PMItemClick(TObject *Sender)
         }break;
 		case PROP_TEXTURE2:{
 			CTextValue* T			= dynamic_cast<CTextValue*>(prop->GetFrontValue()); R_ASSERT(T);
-			std::string edit_val	 = T->GetValue();
-		    prop->BeforeEdit<CTextValue,std::string>(edit_val);
+			xr_string edit_val	 = T->GetValue();
+		    prop->BeforeEdit<CTextValue,xr_string>(edit_val);
             LPCSTR new_val 		 	= 0;
             bool bRes				= true;
         	if (mi->Tag==0){
@@ -1027,7 +1027,7 @@ void __fastcall TProperties::PMItemClick(TObject *Sender)
             }
             if (bRes){
                 edit_val		 	= new_val;
-                if (prop->AfterEdit<CTextValue,std::string>(edit_val)){
+                if (prop->AfterEdit<CTextValue,xr_string>(edit_val)){
                     if (prop->ApplyValue<CTextValue,LPCSTR>(edit_val.c_str()))  
                         Modified		();
                     item->ColumnText->Strings[0]= prop->GetDrawText().c_str();
@@ -1282,16 +1282,16 @@ void TProperties::PrepareLWText(TElTreeItem* item)
     switch (prop->type){
     case PROP_CTEXT:{
 		CTextValue* V		= dynamic_cast<CTextValue*>(prop->GetFrontValue()); R_ASSERT(V);
-        std::string edit_val= V->GetValue();
-	    prop->BeforeEdit<CTextValue,std::string>(edit_val);
+        xr_string edit_val= V->GetValue();
+	    prop->BeforeEdit<CTextValue,xr_string>(edit_val);
         edText->EditMask	= "";
 		edText->Text 		= edit_val.c_str();
 		edText->MaxLength	= V->lim;
 	}break;
     case PROP_STEXT:{
 		STextValue* V		= dynamic_cast<STextValue*>(prop->GetFrontValue()); R_ASSERT(V);
-        std::string edit_val= V->GetValue();
-	    prop->BeforeEdit<STextValue,std::string>(edit_val);
+        xr_string edit_val= V->GetValue();
+	    prop->BeforeEdit<STextValue,xr_string>(edit_val);
         edText->EditMask	= "";
 		edText->Text 		= edit_val.c_str();
 		edText->MaxLength	= 0;
@@ -1336,8 +1336,8 @@ void TProperties::ApplyLWText()
 	    switch (prop->type){
         case PROP_CTEXT:{
 			CTextValue* V		= dynamic_cast<CTextValue*>(prop->GetFrontValue()); R_ASSERT(V);
-			std::string new_val	= AnsiString(edText->Text).c_str();
-            if (prop->AfterEdit<CTextValue,std::string>(new_val))
+			xr_string new_val	= AnsiString(edText->Text).c_str();
+            if (prop->AfterEdit<CTextValue,xr_string>(new_val))
                 if (prop->ApplyValue<CTextValue,LPCSTR>(new_val.c_str())){
                     Modified();
                 }
@@ -1345,9 +1345,9 @@ void TProperties::ApplyLWText()
         }break;
         case PROP_STEXT:{
 			STextValue* V		= dynamic_cast<STextValue*>(prop->GetFrontValue()); R_ASSERT(V);
-			std::string new_val	= AnsiString(edText->Text).c_str();
-            if (prop->AfterEdit<STextValue,std::string>(new_val))
-                if (prop->ApplyValue<STextValue,std::string>(new_val)){
+			xr_string new_val	= AnsiString(edText->Text).c_str();
+            if (prop->AfterEdit<STextValue,xr_string>(new_val))
+                if (prop->ApplyValue<STextValue,xr_string>(new_val)){
                     Modified();
                 }
             item->ColumnText->Strings[0] = prop->GetDrawText().c_str();
@@ -1420,12 +1420,12 @@ void TProperties::ExecTextEditor(PropItem* prop)
 	    switch (prop->type){
     	case PROP_CTEXT:{
             CTextValue* V	= dynamic_cast<CTextValue*>(prop->GetFrontValue()); R_ASSERT(V);
-            std::string edit_val= V->GetValue();
-		    prop->BeforeEdit<CTextValue,std::string>(edit_val);
+            xr_string edit_val= V->GetValue();
+		    prop->BeforeEdit<CTextValue,xr_string>(edit_val);
             AnsiString tmp	= edit_val.c_str();
             if (TfrmText::RunEditor(tmp,AnsiString(prop->Item()->Text).c_str(),false)){
             	edit_val	= tmp.c_str();
-			    if (prop->AfterEdit<CTextValue,std::string>(edit_val))
+			    if (prop->AfterEdit<CTextValue,xr_string>(edit_val))
                     if (prop->ApplyValue<CTextValue,LPCSTR>(edit_val.c_str()))
                         Modified();
                 prop->Item()->ColumnText->Strings[0] = prop->GetDrawText().c_str();
@@ -1433,13 +1433,13 @@ void TProperties::ExecTextEditor(PropItem* prop)
         }break;
     	case PROP_STEXT:{
             STextValue* V	= dynamic_cast<STextValue*>(prop->GetFrontValue()); R_ASSERT(V);
-            std::string edit_val= V->GetValue();
-		    prop->BeforeEdit<STextValue,std::string>(edit_val);
+            xr_string edit_val= V->GetValue();
+		    prop->BeforeEdit<STextValue,xr_string>(edit_val);
             AnsiString tmp	= edit_val.c_str();
             if (TfrmText::RunEditor(tmp,AnsiString(prop->Item()->Text).c_str(),false)){
             	edit_val	= tmp.c_str();
-			    if (prop->AfterEdit<STextValue,std::string>(edit_val))
-                    if (prop->ApplyValue<STextValue,std::string>(edit_val))
+			    if (prop->AfterEdit<STextValue,xr_string>(edit_val))
+                    if (prop->ApplyValue<STextValue,xr_string>(edit_val))
                         Modified();
                 prop->Item()->ColumnText->Strings[0] = prop->GetDrawText().c_str();
             }

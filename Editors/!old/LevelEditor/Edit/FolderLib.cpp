@@ -636,7 +636,7 @@ AnsiString CFolderHelper::GenerateName(LPCSTR _pref, int dgt_cnt, TFindObjectByN
 	AnsiString result;
     int counter 		= 0;
    // test exist name
-    std::string pref	= _pref;
+   	xr_string pref	= _pref;
     xr_strlwr			(pref);
     if (allow_pref_name&&pref.size()){
         result	= pref.c_str();
