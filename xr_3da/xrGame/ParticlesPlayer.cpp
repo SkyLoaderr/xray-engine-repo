@@ -167,6 +167,8 @@ void CParticlesPlayer::StopParticles(const ref_str& ps_name, u16 bone_id)
 
 void CParticlesPlayer::UpdateParticles()
 {
+	if(!bone_mask) return;
+
 	CObject* object			= dynamic_cast<CObject*>(this);
 	VERIFY(object);
 
