@@ -83,9 +83,10 @@ function fract:calculate()
 			v.object = nil				
 		end
 	end
+
 	if self.calculateStates ~= nil then 
-		self.state = self.calculateStates(self.Object, self.States, self.music) 
-	end
+		self:changeState(self.calculateStates(self.Object))
+	end		
 
 	--' Апдейт матюгальника
 	if self.music ~= nil then
@@ -94,6 +95,12 @@ function fract:calculate()
 	
 	self:updateJob()
 	self:print()
+end
+function fract:changeState(state)
+	if self.music ~= nil then
+		self.music:update(state)
+	end
+	self.state = state
 end
 function fract:updateJob()
 	function availState(st, state)
