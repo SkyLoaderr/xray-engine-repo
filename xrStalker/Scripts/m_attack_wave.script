@@ -6,7 +6,7 @@ function boar_callback (obj, action_type, index)
 
 	if ptr:flag (index, 1) == false then return end
 	action_first (obj, anim ("stand_attack_1"), cond (cond.anim_end))
-	obj:clear_callback (game_object.movement)
+--	obj:clear_callback (game_object.movement)
 
 end
 
