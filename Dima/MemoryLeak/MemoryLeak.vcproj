@@ -36,7 +36,7 @@
 				Name="VCCustomBuildTool"/>
 			<Tool
 				Name="VCLinkerTool"
-				OutputFile="$(OutDir)/MemoryLeak.exe"
+				OutputFile="$(OutDir)/palettizer.exe"
 				LinkIncremental="2"
 				GenerateDebugInformation="TRUE"
 				ProgramDatabaseFile="$(OutDir)/MemoryLeak.pdb"
@@ -93,7 +93,7 @@
 				Name="VCCustomBuildTool"/>
 			<Tool
 				Name="VCLinkerTool"
-				OutputFile="$(OutDir)/MemoryLeak.exe"
+				OutputFile="$(OutDir)/palettizer.exe"
 				LinkIncremental="1"
 				GenerateDebugInformation="FALSE"
 				SubSystem="1"

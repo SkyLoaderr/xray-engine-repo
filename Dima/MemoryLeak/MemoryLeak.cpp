@@ -134,27 +134,27 @@ struct cover_predicate_magnitude {
 	}
 };
 
-IC u64 single(u64 n)
+IC double single(double n)
 {
 	return(n*(n + 1)/2);
 }
 
-IC u64 square(u64 n)
+IC double square(double n)
 {
 	return(n*(n + 1)*(2*n + 1)/6);
 }
 
-IC u64 cub(u64 n)
+IC double cub(double n)
 {
 	return(_sqr(single(n)));
 }
 
-IC u64 compute_formula(u64 n, u64 k)
+IC double compute_formula(double n, double k)
 {
 	return(cub(n) - (k - 1)*square(n) - k*single(n));
 }
 
-IC float compute_percents(u64 n, u64 i, u64 k)
+IC float compute_percents(double n, double i, double k)
 {
 	return(_abs(1.f - (float)compute_formula(i,k)/(float)compute_formula(n,k)));
 }
@@ -195,6 +195,7 @@ void xrPalettizeCovers(u32 *data, u32 N)
 		clusters.erase		(remove_if(clusters.begin(),clusters.end(),cover_predicate_equal()),clusters.end());
 		printf				("completed\n\tRemoved duplicates : %d\n\tElements left      : %d\n",n - clusters.size(),clusters.size());
 	}
+
 	printf					("\tSorting magnitudes...");
 	sort					(clusters.begin(),clusters.end(),cover_predicate_magnitude());
 	printf					("completed!\n");
@@ -202,9 +203,9 @@ void xrPalettizeCovers(u32 *data, u32 N)
 	xr_vector<SPair>		best_pair;
 	best_pair.reserve		(clusters.size());
 	u32						best_distance;
-	u64						iterations = compute_formula(clusters.size(),256);
-	u64						portion = iterations/100;
-	u64						accumulator = 0;
+	double					iterations = compute_formula(clusters.size(),256);
+	double					portion = iterations/100;
+	double					accumulator = 0;
 	printf					("\t\tIteration : %5.2f%",0.f);
 	for (int ii=0, nn = clusters.size(); clusters.size() > 256; ) {
 		if (accumulator >= portion) {
