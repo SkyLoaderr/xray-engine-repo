@@ -64,7 +64,7 @@ void check(Vertex* vE1, Vertex* vE2, Vertex* vTEST)
 void edge(Vertex* vE1, Vertex* vE2)
 {
 	if (vE1->P.distance_to(vE2->P)>32.f)	
-		Msg	("ERROR: too long edge        [%3.1f,%3.1f,%3.1f]-[%3.1f,%3.1f,%3.1f]",VPUSH(vE1->P),VPUSH(vE2->P));
+		Msg	("ERROR: too long edge        [%3.1f,%3.1f,%3.1f].-.[%3.1f,%3.1f,%3.1f]",VPUSH(vE1->P),VPUSH(vE2->P));
 }
 
 void CBuild::CorrectTJunctions()
