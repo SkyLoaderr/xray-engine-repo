@@ -2,6 +2,8 @@
 
 void CRenderTarget::accum_reflected		(light* L)
 {
+	RImplementation.stats.l_visible	++;
+
 	// *** assume accumulator setted up ***
 	// *****************************	Mask by stencil		*************************************
 	ref_shader		shader		= s_accum_reflected;

@@ -173,7 +173,6 @@ void CRender::Render		()
 	stats.l_point		= Lights.v_point.size	();
 	stats.l_spot_s		= Lights.v_spot_s.size	();
 	stats.l_spot		= Lights.v_spot.size	();
-	Msg					("--- %d",stats.l_total	);
 
 	//******* Decompression on some HW :)
 	Target.phase_decompress						();
@@ -370,6 +369,8 @@ void CRender::Render		()
 	Device.Statistic.RenderDUMP_HUD.Begin	();
 	g_pGameLevel->pHUD->Render_Direct		();
 	Device.Statistic.RenderDUMP_HUD.End		();
+
+	// Msg					("--- %d : was(%d)",Device.dwFrame,stats.l_visible);	//.
 }
 
 void	CRender::render_indirect			(light* L)

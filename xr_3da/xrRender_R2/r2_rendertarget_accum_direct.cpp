@@ -2,6 +2,8 @@
 
 void CRenderTarget::shadow_direct	(u32 dls_phase)
 {
+	RImplementation.stats.l_visible	++;
+
 	// *** assume accumulator setted up ***
 	// texture adjustment matrix
 	float			fTexelOffs			= (.5f / DSM_size);

@@ -38,11 +38,11 @@ public:
 public:
 	struct		_stats
 	{
-		u32		l_total;
-		u32		l_shadowed,				l_unshadowed;
-		u32		l_point_s,				l_point;
-		u32		l_spot_s,				l_spot;
-		u32		o_queries,				o_culled;
+		u32		l_total,	l_visible;
+		u32		l_shadowed,	l_unshadowed;
+		u32		l_point_s,	l_point;
+		u32		l_spot_s,	l_spot;
+		u32		o_queries,	o_culled;
 	}			stats;
 public:
 	// Sector detection and visibility

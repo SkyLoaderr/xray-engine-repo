@@ -2,6 +2,8 @@
 
 void CRenderTarget::accum_point		(light* L)
 {
+	RImplementation.stats.l_visible	++;
+
 	ref_shader		shader			= L->s_point;
 	if (!shader)	shader			= s_accum_point;
 

@@ -44,6 +44,28 @@ public:
 		bool		visible;		// visible/invisible
 		bool		pending;		// test is still pending
 	}				vis;
+
+	union			_xform	{
+		struct		_D		{
+			Fmatrix						view;
+			Fmatrix						project;
+			Fmatrix						combine;
+		}	D;
+		struct		_P		{
+			Fmatrix						world;
+			Fmatrix						view;
+			Fmatrix						project;
+			Fmatrix						combine;
+		}	P;
+		struct		_S		{
+			Fmatrix						view;
+			Fmatrix						project;
+			Fmatrix						combine;
+			u32							size;
+			u32							posX;
+			u32							posY;
+		}	S;
+	}	X;
 #endif
 
 public:
