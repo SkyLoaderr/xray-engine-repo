@@ -711,6 +711,10 @@ SOURCE=.\xrPhase_Subdivide.cpp
 # End Source File
 # Begin Source File
 
+SOURCE=.\xrPhase_Tesselate.cpp
+# End Source File
+# Begin Source File
+
 SOURCE=.\xrPhase_UVmap.cpp
 # End Source File
 # Begin Source File
