@@ -33,7 +33,7 @@ void CLevel::IR_OnKeyboardPress(int key)
 			bDebug	= !bDebug;
 		return;
 	case DIK_BACK:
-//		if (GameID() == GAME_SINGLE)
+		if (GameID() == GAME_SINGLE)
 			HW.Caps.SceneMode			= (HW.Caps.SceneMode+1)%3;
 		return;
 #endif
@@ -150,13 +150,11 @@ void CLevel::IR_OnKeyboardPress(int key)
 
 	case DIK_NUMPAD5: 
 		{
-			/*
 			if (GameID() != GAME_SINGLE) 
 			{
 				Msg("For this game type Demo Record is disabled.");
 				return;
 			};
-			*/
 			Console->Hide	();
 			char fn[256]; strcpy(fn,"1.xrdemo");
 			g_pGameLevel->Cameras.AddEffector(xr_new<CDemoRecord> (fn));
