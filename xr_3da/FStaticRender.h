@@ -117,7 +117,7 @@ public:
 	virtual IDirect3DVertexBuffer9*	getVB					(int id);
 	virtual IDirect3DIndexBuffer9*	getIB					(int id);
 	virtual IRender_Sector*			detectSector			(Fvector& P);
-	virtual IRender_target*			getTarget				();
+	virtual IRender_Target*			getTarget				();
 	
 	// Main 
 	virtual void					flush					();

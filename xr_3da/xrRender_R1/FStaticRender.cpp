@@ -43,7 +43,7 @@ IVisual*				CRender::getVisual				(int id)			{ VERIFY(id<int(Visuals.size()));	r
 D3DVERTEXELEMENT9*		CRender::getVB_Format			(int id)			{ VERIFY(id<int(DCL.size()));		return DCL[id].begin();	}
 IDirect3DVertexBuffer9*	CRender::getVB					(int id)			{ VERIFY(id<int(VB.size()));		return VB[id];		}
 IDirect3DIndexBuffer9*	CRender::getIB					(int id)			{ VERIFY(id<int(IB.size()));		return IB[id];		}
-IRender_target*			CRender::getTarget				()					{ return &Target;										}
+IRender_Target*			CRender::getTarget				()					{ return &Target;										}
 
 void		CRender::L_add					(CLightPPA* L)		{ VERIFY(L); L_Dynamic.Add(L);							}
 void		CRender::L_select				(Fvector &pos, float fRadius, vector<xrLIGHT*>& dest)
@@ -190,7 +190,7 @@ void CRender::Calculate()
 	Device.Statistic.RenderCALC.Begin();
 
 	// Transfer to global space to avoid deep pointer access
-	IRender_target* T				=	getTarget	();
+	IRender_Target* T				=	getTarget	();
 	g_fFarSq						=	75.f;
 	g_fFarSq						*=	g_fFarSq;
 	g_fSCREEN						=	float(T->get_width()*T->get_height());
@@ -395,19 +395,19 @@ void CRender::flush_Patches	()
 
 void	CRender::rmNear		()
 {
-	IRender_target* T	=	getTarget	();
+	IRender_Target* T	=	getTarget	();
 	D3DVIEWPORT9 VP		=	{0,0,T->get_width(),T->get_height(),0,0.02f };
 	CHK_DX				(HW.pDevice->SetViewport(&VP));
 }
 void	CRender::rmFar		()
 {
-	IRender_target* T	=	getTarget	();
+	IRender_Target* T	=	getTarget	();
 	D3DVIEWPORT9 VP		=	{0,0,T->get_width(),T->get_height(),0.99999f,1.f };
 	CHK_DX				(HW.pDevice->SetViewport(&VP));
 }
 void	CRender::rmNormal	()
 {
-	IRender_target* T	=	getTarget	();
+	IRender_Target* T	=	getTarget	();
 	D3DVIEWPORT9 VP		= {0,0,T->get_width(),T->get_height(),0,1.f };
 	CHK_DX				(HW.pDevice->SetViewport(&VP));
 }

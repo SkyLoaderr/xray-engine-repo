@@ -360,7 +360,7 @@ void	CEffect_Rain::Render	()
 				mXform.mul_43		(P->mXForm,mScale);
 				
 				// XForm verts
-				DM_Drop->Transfer	(mXform,v_ptr,0xffffffff,i_ptr,pcount*DM_Drop->number_vertices);
+				DM_Drop->transfer	(mXform,v_ptr,0xffffffff,i_ptr,pcount*DM_Drop->number_vertices);
 				v_ptr			+=	DM_Drop->number_vertices;
 				i_ptr			+=	DM_Drop->number_indices;
 				pcount			++;
