@@ -462,7 +462,7 @@ void CCustomMonster::Exec_Visibility	( float dt )
 
 	// 5. Camera
 	if (IsMyCamera())
-		pCreator->Cameras.Update(eye_matrix.c,eye_matrix.k,eye_matrix.j,eye_fov,eye_range);
+		pCreator->Cameras.Update(eye_matrix.c,eye_matrix.k,eye_matrix.j,eye_fov,1.f,eye_range);
 }
 
 extern void dbg_draw_frustum (float FOV, float _FAR, float A, Fvector &P, Fvector &D, Fvector &U);

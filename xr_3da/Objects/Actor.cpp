@@ -380,7 +380,8 @@ void CActor::Update	(DWORD DT)
 
 	// Fov
 	CCameraBase* C		= cameras	[cam_active];
-	C->f_fov			= 90.f+z_amount*90.f;
+	C->f_fov			= 90.f+z_amount*45.f + z_amount*sinf(Device.fTimeGlobal*10.f)*15.f;
+	// C->f_aspect			= 1.f-z_amount*.5f;
 
 	// 
 	clamp			(DT,0ul,100ul);
