@@ -451,10 +451,12 @@ IC	void CLevelNavigationGraph::fill_cell		(u32 start_vertex_id)
 IC	void CLevelNavigationGraph::fill_cells		()
 {
 	m_temp.clear			();
+	m_temp2.resize			(m_cross.size());
 
+	TEMP_TABLE::iterator	J = m_temp2.begin();
 	CROSS_TABLE::iterator	I = m_cross.begin();
 	CROSS_TABLE::iterator	E = m_cross.end();
-	for ( ; I != E; ++I) {
+	for ( ; I != E; ++I, ++J) {
 		if (!(*I).m_right)
 			fill_cell		(vertex_id(I),1);
 
@@ -464,8 +466,9 @@ IC	void CLevelNavigationGraph::fill_cells		()
 		if (!(*I).m_down_left)
 			fill_cell		(vertex_id(I));
 
-		m_temp.insert		(&*I);
+		*J					= &*I;
 	}
+	m_temp.insert			(m_temp2.begin(),m_temp2.end());
 }
 
 IC	void CLevelNavigationGraph::update_cell		(u32 start_vertex_id, u32 link)

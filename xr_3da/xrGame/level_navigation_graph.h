@@ -124,6 +124,7 @@ public:
 public:
 	typedef xr_vector<CCellVertex>						CROSS_TABLE;
 	typedef xr_set<CCellVertex*,sort_cells_predicate>	CROSS_PTABLE;
+	typedef xr_vector<CCellVertex*>						TEMP_TABLE;
 
 private:
 	CSectorGraph				*m_sectors;
@@ -132,6 +133,8 @@ private:
 private:
 	CROSS_TABLE					m_cross;
 	CROSS_PTABLE				m_temp;
+	TEMP_TABLE					m_temp2;
+
 	
 #ifdef DEBUG
 private:
