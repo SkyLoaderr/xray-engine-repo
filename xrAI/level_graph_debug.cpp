@@ -845,21 +845,21 @@ IC	bool build_trajectory(
 	TIMER_START(BuildTrajectory2)
 	u32					vertex_id;
 	if (!build_circle_trajectory(level_graph,start,path,&vertex_id)) {
-		Msg				("FALSE : Circle 0");
+//		Msg				("FALSE : Circle 0");
 		TIMER_STOP(BuildTrajectory2)
 		return			(false);
 	}
 	if (!build_line_trajectory(level_graph,start,dest,vertex_id,path)) {
-		Msg				("FALSE : Line");
+//		Msg				("FALSE : Line");
 		TIMER_STOP(BuildTrajectory2)
 		return			(false);
 	}
 	if (!build_circle_trajectory(level_graph,dest,path,0)) {
-		Msg				("FALSE : Circle 1");
+//		Msg				("FALSE : Circle 1");
 		TIMER_STOP(BuildTrajectory2)
 		return			(false);
 	}
-	Msg					("TRUE");
+//	Msg					("TRUE");
 	TIMER_STOP(BuildTrajectory2)
 	return				(true);
 }
@@ -976,13 +976,13 @@ bool compute_path(
 			(CLevelGraph::STravelParams&)dest	= *i;
 			travel_line.clear				();
 			if (compute_trajectory(level_graph,start,dest,6.f,m_tpTravelLine ? &travel_line : 0,time)) {
-				Msg		("[L=%f][A=%f][L=%f][A=%f] : %f",
-					start.linear_velocity,
-					start.angular_velocity,
-					dest.linear_velocity,
-					dest.angular_velocity,
-					time
-				);
+//				Msg		("[L=%f][A=%f][L=%f][A=%f] : %f",
+//					start.linear_velocity,
+//					start.angular_velocity,
+//					dest.linear_velocity,
+//					dest.angular_velocity,
+//					time
+//				);
 				if (time < min_time) {
 					min_time = time;
 					if (m_tpTravelLine) {
