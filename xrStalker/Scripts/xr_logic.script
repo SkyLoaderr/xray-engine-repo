@@ -127,11 +127,13 @@ function pick_section_from_condlist(actor, npc, condlist)
 		for inum, infop in pairs(cond.infop_check) do
 			if actor:has_info(infop.name) then
 				if not infop.required then
+					printf("FAILED: actor has infop '%s', which is NOT needed", infop.name)
 					infop_conditions_met = false -- инфопоршен есть, но он не должен присутствовать
 					break
 				end
 			else
 				if infop.required then
+					printf("FAILED: actor has NO infop '%s', which is needed", infop.name)
 					infop_conditions_met = false -- инфопоршена нет, но он нужен
 					break
 				end
