@@ -289,7 +289,7 @@ void __fastcall TfraLeftBar::ebEngineShaderRemoveClick(TObject *Sender)
         	}
         }
     }else{
-		ELog.DlgMsg(mtInformation, "At first selected item.");
+		ELog.DlgMsg(mtInformation, "At first select item.");
     }
 }
 //---------------------------------------------------------------------------
@@ -320,7 +320,7 @@ void __fastcall TfraLeftBar::ebEngineShaderCloneClick(TObject *Sender)
 		UI.Command(COMMAND_SHADER_PROPERTIES);
 		Tools.Engine.Modified();
     }else{
-		ELog.DlgMsg(mtInformation, "At first selected blender.");
+		ELog.DlgMsg(mtInformation, "At first select item.");
     }
 }
 //---------------------------------------------------------------------------
@@ -429,7 +429,7 @@ void __fastcall TfraLeftBar::ebCompilerShaderRemoveClick(TObject* Sender)
         	}
         }
     }else{
-		ELog.DlgMsg(mtInformation, "At first selected item.");
+		ELog.DlgMsg(mtInformation, "At first select item.");
     }
 }
 //---------------------------------------------------------------------------
@@ -444,7 +444,7 @@ void __fastcall TfraLeftBar::ebCompilerShaderCloneClick(TObject *Sender)
 		UI.Command(COMMAND_SHADER_PROPERTIES);
 		Tools.Compiler.Modified();
     }else{
-		ELog.DlgMsg(mtInformation, "At first selected blender.");
+		ELog.DlgMsg(mtInformation, "At first select item.");
     }
 }
 //---------------------------------------------------------------------------
