@@ -63,7 +63,7 @@ BOOL CSpaceRestrictor::net_Spawn	(LPVOID data)
 	setVisible						(false);
 
 	if (!ai().get_level_graph())
-		return						(FALSE);
+		return						(TRUE);
 
 	Level().space_restriction_manager().register_restrictor(this,RestrictionSpace::EDefaultRestrictorTypes(se_shape->m_default_space_restrictor_type));
 
