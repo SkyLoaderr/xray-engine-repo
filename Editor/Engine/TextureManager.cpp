@@ -175,7 +175,7 @@ CBlender* CShaderManager::_GetBlender		(LPCSTR Name)
 	
 	LPSTR N = LPSTR(Name);
 	map<LPSTR,CBlender*,str_pred>::iterator I = blenders.find	(N);
-#ifdef _SHADER_EDITOR
+#ifdef _EDITOR
 	if (I==blenders.end())	return 0;
 #else
 	if (I==blenders.end())	Device.Fatal("Shader '%s' not found in library.",Name);
