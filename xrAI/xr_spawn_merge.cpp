@@ -190,26 +190,26 @@ public:
 		}
 	};
 
-	void						Save(CMemoryWriter &FS, u32 &dwID)
+	void						Save(CMemoryWriter &fs, u32 &dwID)
 	{
 		NET_Packet		P;
 		for (u32 i=0 ; i<m_tpSpawnPoints.size(); i++, dwID++) {
 			xrServerEntity*	E	= m_tpSpawnPoints[i];
 
-			FS.open_chunk		(dwID);
+			fs.open_chunk		(dwID);
 
 			// Spawn
 			E->Spawn_Write		(P,TRUE);
-			FS.w_u16			(u16(P.B.count));
-			FS.w				(P.B.data,P.B.count);
+			fs.w_u16			(u16(P.B.count));
+			fs.w				(P.B.data,P.B.count);
 
 			// Update
 			P.w_begin			(M_UPDATE);
 			E->UPDATE_Write		(P);
-			FS.w_u16			(u16(P.B.count));
-			FS.w				(P.B.data,P.B.count);
+			fs.w_u16			(u16(P.B.count));
+			fs.w				(P.B.data,P.B.count);
 
-			FS.close_chunk		();
+			fs.close_chunk		();
 		}
 	};
 };

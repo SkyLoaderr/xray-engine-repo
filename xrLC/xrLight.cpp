@@ -240,7 +240,7 @@ void CBuild::LightVertex()
 		// Unique
 		vecVertex&	VL		= it->second;
 		std::sort	(VL.begin(),VL.end());
-		VL.erase	(unique(VL.begin(),VL.end()),VL.end());
+		VL.erase	(std::unique(VL.begin(),VL.end()),VL.end());
 
 		// Calc summary color
 		Fcolor		C;

@@ -66,20 +66,20 @@ void xrLoad(LPCSTR name)
 		strconcat				(N,name,"build.prj");
 
 		IReader*	F			= FS.r_open(N);
-		IReader					&FS	= *F;
+		IReader					&fs= *F;
 
 		// Version
 		DWORD version;
-		FS.r_chunk				(EB_Version,&version);
+		fs.r_chunk				(EB_Version,&version);
 		R_ASSERT				(XRCL_CURRENT_VERSION==version);
 
 		// Header
 		b_params				Params;
-		FS.r_chunk				(EB_Parameters,&Params);
+		fs.r_chunk				(EB_Parameters,&Params);
 
 		// Lights (Static)
 		{
-			F = FS.open_chunk(EB_Light_static);
+			F = fs.open_chunk(EB_Light_static);
 			b_light_static	temp;
 			DWORD cnt		= F->length()/sizeof(temp);
 			for				(DWORD i=0; i<cnt; i++)

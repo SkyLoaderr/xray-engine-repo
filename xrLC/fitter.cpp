@@ -57,7 +57,7 @@ void vfOptimizeParameters(xr_vector<xr_vector<REAL> > &A, xr_vector<xr_vector<RE
 	u32						dwTestCount	= B.size();
 	xr_vector<REAL>			daGradient;
 	xr_vector<REAL>			daDelta;
-	xr_vector<xr_vector<REAL> >	daEvalResults(dwTestCount);
+	xr_vector<xr_vector<REAL> >	daEvalResults; daEvalResults.resize(dwTestCount);
 	
 	if (!B.size()) {
 		clMsg				("ERROR : there are no parameters to fit!");
