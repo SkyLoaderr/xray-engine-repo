@@ -282,7 +282,6 @@ namespace PAPI{
         pVector offset;		// Offset
         float age;
 
-        PATurbulence();
         _METHODS;
     };
 };

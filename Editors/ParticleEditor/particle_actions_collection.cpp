@@ -1571,10 +1571,6 @@ void PAVortex::Transform(const Fmatrix& m)
 
 // Turbulence
 #include "noise.h"
-PATurbulence::PATurbulence()
-{
-	age=0.f;
-}
 void PATurbulence::Execute(ParticleEffect *effect, float dt)
 {
     pVector pV;
