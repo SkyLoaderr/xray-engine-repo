@@ -585,7 +585,7 @@ void CWeapon::net_Import	(NET_Packet& P)
 void CWeapon::shedule_Update	(u32 dT)
 {
 	// Queue shrink
-	u32	dwTimeCL		= Level().timeServer()-NET_Latency;
+//	u32	dwTimeCL		= Level().timeServer()-NET_Latency;
 //	while ((NET.size()>2) && (NET[1].dwTimeStamp<dwTimeCL)) NET.pop_front();
 
 	// Inherited
@@ -708,7 +708,7 @@ void CWeapon::UpdateCL		()
 	if (Remote() && NET.size())
 	{
 		// distinguish interpolation/extrapolation
-		u32	dwTime			= Level().timeServer()-NET_Latency;
+//		u32	dwTime			= Level().timeServer()-NET_Latency;
 		net_update&	N		= NET.back();
 		if (NET.size() > 1)
 		{
