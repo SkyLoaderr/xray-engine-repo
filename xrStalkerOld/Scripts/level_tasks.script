@@ -731,3 +731,38 @@ function remove_location(sid, location)
 		end
 	end
 end
+
+function add_lchanger_location()local 
+	sim = alife()
+	if sim then
+		-- escape
+		local obj = sim:story_object(91)
+		if obj then
+			level.map_add_object_spot(obj.id, "lchanger_up_location", "to_garbage")
+		end
+
+		-- garbage
+		obj = sim:story_object(193)
+		if obj then
+			level.map_add_object_spot(obj.id, "lchanger_down_location", "to_escape")
+		end
+		obj = sim:story_object(192)
+		if obj then
+			level.map_add_object_spot(obj.id, "lchanger_left_location", "to_agroprom")
+		end
+		obj = sim:story_object(191)
+		if obj then
+			level.map_add_object_spot(obj.id, "lchanger_left_location", "to_agroprom")
+		end
+		
+		-- agroprom
+		obj = sim:story_object(391)
+		if obj then
+			level.map_add_object_spot(obj.id, "lchanger_right_location", "to_garbage")
+		end
+		obj = sim:story_object(392)
+		if obj then
+			level.map_add_object_spot(obj.id, "lchanger_right_location", "to_garbage")
+		end
+	end
+end
