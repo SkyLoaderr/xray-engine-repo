@@ -291,7 +291,7 @@ function move_mgr:reset_path_info()
 end
 
 function move_mgr:update(no_dialog_mgr_update)
-	printf("move_mgr:update(self.state == %s)", utils.to_str(self.state))
+	--printf("move_mgr:update(self.state == %s)", utils.to_str(self.state))
 
 	if not no_dialog_mgr_update then
 		self.dialog_mgr:update()
