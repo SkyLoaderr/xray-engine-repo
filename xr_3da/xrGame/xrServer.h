@@ -47,6 +47,7 @@ private:
 	deque<u16>				id_free;
 	multiset<svs_respawn>	q_respawn;
 
+public:
 	void					Perform_game_export		();
 	BOOL					PerformRP				(xrServerEntity* E);
 	void					PerformMigration		(xrServerEntity* E, xrClientData* from, xrClientData* to);
