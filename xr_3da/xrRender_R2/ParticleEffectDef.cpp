@@ -187,7 +187,6 @@ BOOL CPEDef::Load(IReader& F)
 
 	F.r_chunk		(PED_CHUNK_FLAGS,&m_Flags);
 
-	string256		buf;
 	if (m_Flags.is(dfSprite)){
 		R_ASSERT	(F.find_chunk(PED_CHUNK_SPRITE));
 		F.r_stringZ	(m_ShaderName);

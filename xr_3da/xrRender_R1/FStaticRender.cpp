@@ -262,7 +262,7 @@ void CRender::Calculate				()
 		Sectors_xrc.box_query	(rmPortals,Device.vCameraPosition,box_radius);
 		for (int K=0; K<Sectors_xrc.r_count(); K++)
 		{
-			CPortal*	pPortal		= (CPortal*) rmPortals->get_tris()[Sectors_xrc.r_begin()[K].id].dummy;
+			CPortal*	pPortal		= Portals[rmPortals->get_tris()[Sectors_xrc.r_begin()[K].id].dummy];
 			pPortal->bDualRender	= TRUE;
 		}
 	}
