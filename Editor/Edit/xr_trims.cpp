@@ -88,13 +88,16 @@ const char* _CopyVal ( const char* src, char* dst, char separator )
 int				_GetItemCount ( const char* src, char separator )
 {
 	const char*	res			= src;
-	DWORD		p			= 0;
+	const char*	last_res	= res;
+	DWORD		cnt			= 0;
 	while( res=strchr(res,separator) )
 	{
 		res		++;
-		p		++;
+        last_res=res;
+		cnt		++;
 	}
-	return		++p;
+    if (strlen(last_res)) cnt++;
+	return		cnt;
 }
 
 char* _GetItem ( const char* src, int index, char* dst, char separator, char* def )
@@ -105,6 +108,19 @@ char* _GetItem ( const char* src, int index, char* dst, char separator, char* de
 		else	strcpy		( dst, def );
 	_Trim( dst );
 	return		dst;
+}
+
+char* _GetItems ( LPCSTR src, int idx_start, int idx_end, LPSTR dst, char separator ){
+	char* n = dst;
+    int level = 0;
+    bool bCopy = true;
+	for (LPCSTR p=src; *p!=0; p++){
+    	if ((level>=idx_start)&&(level<idx_end))
+			*n++ = *p;
+    	if (*p==separator) level++;
+        if (level>=idx_end) break;
+    }
+    *n++ = '\0';
 }
 
 DWORD _ParseItem ( char* src, xr_token* token_list )
@@ -120,6 +136,25 @@ DWORD _ParseItem ( char* src, int ind, xr_token* token_list )
 	char dst[128];
 	_GetItem(src, ind, dst);
 	return _ParseItem(dst, token_list);
+}
+
+char* _ReplaceItems( LPCSTR src, int idx_start, int idx_end, LPCSTR new_items, LPSTR dst, char separator ){
+	char* n = dst;
+    int level = 0;
+    bool bCopy = true;
+	for (LPCSTR p=src; *p!=0; p++){
+    	if ((level>=idx_start)&&(level<idx_end)){
+        	if (bCopy){
+            	for (LPCSTR itm = new_items; *itm!=0;) *n++ = *itm++;
+                bCopy=false;
+            }
+	    	if (*p==separator) *n++ = separator;
+        }else{
+			*n++ = *p;
+        }
+    	if (*p==separator) level++;
+    }
+    *n++ = '\0';
 }
 
 char* _ReplaceItem ( LPCSTR src, int index, LPCSTR new_item, LPSTR dst, char separator ){
