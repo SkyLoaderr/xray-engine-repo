@@ -154,69 +154,13 @@ public:
 	u32			m_dwLastBestNode;
 	typedef		NodeLink* iterator;
 	SAIMapData	tData;
-	CAIMapShortestPathNode(SAIMapData &tAIMapData)
-	{
-		tData					= tAIMapData;
-		m_dwLastBestNode		= u32(-1);
-		NodeCompressed &tNode1	= *Node(tData.dwFinishNode);
-		x3						= (float)(tNode1.p1.x) + (float)(tNode1.p0.x);
-		y3						= (float)(tNode1.p1.y) + (float)(tNode1.p0.y);
-		z3						= (float)(tNode1.p1.z) + (float)(tNode1.p0.z);
-	}
-
-	IC void begin(u32 dwNode, iterator &tIterator, iterator &tEnd)
-	{
-		tEnd = (tIterator = (NodeLink *)((BYTE *)Node(dwNode) + sizeof(NodeCompressed))) + Node(dwNode)->links;
-	}
-
-	IC u32 get_value(iterator &tIterator)
-	{
-		return(UnpackLink(*tIterator));
-	}
-
-	IC float ffEvaluate(u32 dwStartNode, u32 dwFinishNode)
-	{
-		if (m_dwLastBestNode != dwStartNode) {
-			m_dwLastBestNode = dwStartNode;
-
-			NodeCompressed &tNode0 = *Node(dwStartNode), &tNode1 = *Node(dwFinishNode);
-			
-			x1 = (float)(tNode0.p1.x) + (float)(tNode0.p0.x);
-			y1 = (float)(tNode0.p1.y) + (float)(tNode0.p0.y);
-			z1 = (float)(tNode0.p1.z) + (float)(tNode0.p0.z);
-			
-			x2 = (float)(tNode1.p1.x) + (float)(tNode1.p0.x);
-			y2 = (float)(tNode1.p1.y) + (float)(tNode1.p0.y);
-			z2 = (float)(tNode1.p1.z) + (float)(tNode1.p0.z);
-
-			return(_sqrt((float)(m_fSize2*(_sqr(x2 - x1) + _sqr(z2 - z1)) + m_fYSize2*_sqr(y2 - y1))));
-		}
-		else {
-			NodeCompressed &tNode1 = *Node(dwFinishNode);
-
-			x2 = (float)(tNode1.p1.x) + (float)(tNode1.p0.x);
-			y2 = (float)(tNode1.p1.y) + (float)(tNode1.p0.y);
-			z2 = (float)(tNode1.p1.z) + (float)(tNode1.p0.z);
-
-			return(_sqrt((float)(m_fSize2*(_sqr(x2 - x1) + _sqr(z2 - z1)) + m_fYSize2*_sqr(y2 - y1))));
-		}
-	}
-
-	IC float CAIMapShortestPathNode::ffAnticipate(u32 dwStartNode)
-	{
-		NodeCompressed &tNode0 = *Node(dwStartNode);
-		
-		x2 = (float)(tNode0.p1.x) + (float)(tNode0.p0.x);
-		y2 = (float)(tNode0.p1.y) + (float)(tNode0.p0.y);
-		z2 = (float)(tNode0.p1.z) + (float)(tNode0.p0.z);
-		
-		return(_sqrt((float)(m_fSize2*(_sqr(x3 - x2) + _sqr(z3 - z2)) + m_fYSize2*_sqr(y3 - y2))));
-	}
-	
-	IC float CAIMapShortestPathNode::ffAnticipate()
-	{
-		return(_sqrt((float)(m_fSize2*(_sqr(x3 - x2) + _sqr(z3 - z2)) + m_fYSize2*_sqr(y3 - y2))));
-	}
+				CAIMapShortestPathNode	(SAIMapData &tAIMapData);
+	void		begin					(u32 dwNode, iterator &tStart, iterator &tEnd);
+	u32			get_value				(iterator &tIterator);
+	bool		bfCheckIfAccessible		(u32 dwNode);
+	float		ffEvaluate				(u32 dwStartNode, u32 dwFinishNode, iterator &tIterator);
+	float		ffAnticipate			(u32 dwStartNode);
+	float		ffAnticipate			();
 };
 
 class CGraphThread : public CThread
