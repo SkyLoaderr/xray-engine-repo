@@ -20,7 +20,7 @@
 	</rank_caption>
 
 	<!-- COMMUNITY -->
-	<community_static ="121" y="60" width="240" height="15">
+	<community_static x="121" y="60" width="240" height="15">
 		<text x="0" y="0" font="letterica18" r="150" g="150" b="180"></text>
 	</community_static>
 
