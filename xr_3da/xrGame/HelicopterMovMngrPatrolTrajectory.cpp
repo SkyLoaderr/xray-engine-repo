@@ -139,11 +139,12 @@ void CHelicopterMovManager::createLevelPatrolTrajectory(u32 keyCount,
 
 		if( keys.size() )//intermediate
 		{
-			Fvector& prevPoint = keys.back();
+			Fvector prevPoint = keys.back();
 			float dist = prevPoint.distance_to(keyPoint);
 			float k = (dist / m_maxKeyDist) - 1.0f;
-			for( float i=1; i<k; ++i ) {
-				keys.push_back( makeIntermediateKey(prevPoint, keyPoint, (i/(k+1.0f)) ) );
+			keys.reserve(keys.size()+(int)k);
+			for( float j=1; j<k; ++j ) {
+				keys.push_back( makeIntermediateKey(prevPoint, keyPoint, (j/(k+1.0f)) ) );
 				VERIFY(Fbox(levelBox).scale(0.05f).contains(keys.back()));
 			}
 		}
