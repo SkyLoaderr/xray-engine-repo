@@ -92,8 +92,13 @@ function move_mgr:reset(path_walk, path_walk_info, path_look, path_look_info, te
 	self.play_sound_after_anim_start = false
 	self.play_once = false
 
-	self.move_cb_obj = move_cb_info.obj
-	self.move_cb_func = move_cb_info.func
+	if move_cb_info then
+		self.move_cb_obj = move_cb_info.obj
+		self.move_cb_func = move_cb_info.func
+	else
+		self.move_cb_obj = nil
+		self.move_cb_func = nil
+	end
 
 	-- Точка, в которую смотрели в прошлый раз. Ее запоминаем для того, чтобы не делать паузу между анимациями,
 	-- если собираемся смотреть в ту же самую точку, не поворачиваясь никуда...
@@ -110,7 +115,7 @@ function move_mgr:reset(path_walk, path_walk_info, path_look, path_look_info, te
 	self:update_movement_state()
 
 	self.object:set_path_type(game_object.patrol_path)
-	self.object:set_patrol_path(self.path_walk, patrol.start, patrol.continue, true)
+	self.object:set_patrol_path(self.path_walk, patrol.nearest, patrol.continue, true)
 	self.object:set_sight(look.danger, nil, 0)
 	self.state = state_moving
 
