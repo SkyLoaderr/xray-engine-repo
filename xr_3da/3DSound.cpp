@@ -81,7 +81,7 @@ BOOL C3DSound::Update_Volume()
 
 void C3DSound::Update_Occlusion()
 {
-	if (pSounds->IsOccluded(ps.vPosition,1.f))	{
+	if (pSounds->IsOccluded(ps.vPosition,1.f,occluder))	{
 		fBaseVolume -=	Device.fTimeDelta*fOcclusionSpeed;
 		clamp		(fBaseVolume,0.f,1.f);
 	} else {

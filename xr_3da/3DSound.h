@@ -32,6 +32,8 @@ private:
 	float 					fVolume;				// USER
 	float					fBaseVolume;			// CLIPPING
 	float 					fRealVolume;
+	soundOccluder			occluder;
+
 	DWORD					dwTimeTotal;			// всего
 	DWORD					dwTimeStarted;			// time of "Start"
 	DWORD					dwTimeToStop;			// time to "Stop"
