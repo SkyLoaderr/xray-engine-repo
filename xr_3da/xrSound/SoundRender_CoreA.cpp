@@ -85,7 +85,6 @@ void CSoundRender_CoreA::_initialize	(u64 window)
 
     // Check for EAX extension
     bEAX 				        = alIsExtensionPresent		((ALubyte*)"EAX");
-
     eaxSet 				        = (EAXSet*)alGetProcAddress	((ALubyte*)"EAXSet");
     if (eaxSet==NULL) bEAX 		= false;
     eaxGet 				        = (EAXGet*)alGetProcAddress	((ALubyte*)"EAXGet");
@@ -170,7 +169,7 @@ void CSoundRender_CoreA::update_listener		( const Fvector& P, const Fvector& D, 
 	Listener.orientation[0].set	(D.x,D.y,-D.z);
 	Listener.orientation[1].set	(N.x,N.y,-N.z);
 
-	A_CHK						(alListenerfv	(AL_POSITION,&Listener.position.x));
+	A_CHK						(alListener3f	(AL_POSITION,Listener.position.x,Listener.position.y,-Listener.position.z));
 	A_CHK						(alListener3f	(AL_VELOCITY,0.f,0.f,0.f));
 	A_CHK						(alListenerfv	(AL_ORIENTATION,&Listener.orientation[0].x));
 }
