@@ -7,3 +7,18 @@
 * ability to specify texture + transform on P-lights
 * ability to project texture on directional lights
 * skybox/fog
+
+----------------------------
+intelligent	RT-switches sheduling + give some time to complete RT-rendering
+bilinear/q-linear filter for cubemaps
+bicubic filter for spot shadows
+fixed coordinate system for point lights - should minimize flickering
+3*32	bit RTs		- position/normal compression
+2*DXT5	bumpmaps	- better quality, 16bit total
+detail	bumpmaps	- better quality
+work out blooming	(again)
+work out skybox		(again)
+xrLC geometry selection for point/spot lights
+reverse culling	for spot/point with initial clears - should avoid most biasing
+----------------------------
+perspective shadow maps and all that stuff Gary talks about
