@@ -45,10 +45,10 @@ void CBuild::xrPhase_AdaptiveHT	()
 		}
 
 		// calc approximate normals for vertices + base lighting
-		base_color_c							vC;
 		for (u32 vit=0; vit<cnt_verts; vit++)	
 		{
-			Vertex*		V	= g_vertices[vit];
+			base_color_c		vC;
+			Vertex*		V		= g_vertices[vit];
 			V->normalFromAdj	();
 			LightPoint			(&DB, RCAST_Model, vC, V->P, V->N, pBuild->L_static, LP_dont_rgb+LP_dont_sun,0);
 			V->C._set			(vC);
@@ -176,9 +176,13 @@ void CBuild::xrPhase_AdaptiveHT	()
 				// FacePool.destroy	(g_faces[I]);
 			}
 
-			V->normalFromAdj		();
-			LightPoint				(&DB, RCAST_Model, vC, V->P, V->N, pBuild->L_static, LP_dont_rgb+LP_dont_sun,0);
-			V->C._set				(vC);
+			// calc vertex attributes
+			{
+				base_color_c		vC;
+				V->normalFromAdj		();
+				LightPoint				(&DB, RCAST_Model, vC, V->P, V->N, pBuild->L_static, LP_dont_rgb+LP_dont_sun,0);
+				V->C._set				(vC);
+			}
 		}
 
 		// Cleanup
@@ -197,7 +201,6 @@ void CBuild::xrPhase_AdaptiveHT	()
 
 	//////////////////////////////////////////////////////////////////////////
 	Status				("Gathering lighting information...");
-	if (0)
 	{
 		// Gather
 		xr_vector<base_color>	colors;
