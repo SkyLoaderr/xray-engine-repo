@@ -1,6 +1,7 @@
 #include "stdafx.h"
 
 #include "r_shader.h"
+#include "r_constants_cache.h"
 
 //-----------------------------------------------------------------------------
 // Globals variables and definitions
@@ -55,6 +56,9 @@ class CMyD3DApplication : public CD3DApplication
 	DWORD							m_dwModelNumFaces;
 	LPDIRECT3DVERTEXBUFFER9			m_pFloorVB;
 	FLOAT							m_fModelSize;
+
+	// xr2
+	R_constant_cache				cc;
 
 	//  ************************
 	//	**** Deferred shading **
