@@ -142,8 +142,8 @@ function artefacts_task_text(original_text, first_speaker, second_speaker)
 	local different_artefacts = {}
 
 	for K,V in task_list do
-		if( nil == different_artefacts[K:name()] ) then
-			different_artefacts[K:name()] == 0
+		if( different_artefacts[K:name()] == nil ) then
+			different_artefacts[K:name()] = 0
 		end
 		different_artefacts[K:name()] = different_artefacts[K:name()] + 1
 	end
