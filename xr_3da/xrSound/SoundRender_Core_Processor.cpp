@@ -167,11 +167,11 @@ float CSoundRender_Core::get_occlusion(Fvector& P, float R, Fvector* occ)
 				// cache polygon
 				const CDB::RESULT*	R = ETOOLS::r_begin			();
 #else
-			geom_DB->ray_options	(CDB::OPT_ONLYNEAREST);
-			geom_DB->ray_query		(geom_MODEL,base,dir,range);
-			if (0!=geom_DB->r_count()){ 
+			geom_DB.ray_options		(CDB::OPT_ONLYNEAREST);
+			geom_DB.ray_query		(geom_MODEL,base,dir,range);
+			if (0!=geom_DB.r_count()){ 
 				// cache polygon
-				const CDB::RESULT*	R = geom_DB->r_begin		();
+				const CDB::RESULT*	R = geom_DB.r_begin		();
 #endif            
 				const CDB::TRI&		T = geom_MODEL->get_tris	() [ R->id ];
 				const Fvector*		V = geom_MODEL->get_verts	();
@@ -189,10 +189,10 @@ float CSoundRender_Core::get_occlusion(Fvector& P, float R, Fvector* occ)
 		u32 r_cnt				= ETOOLS::r_count();
         CDB::RESULT*	_B 		= ETOOLS::r_begin();
 #else
-		geom_DB->ray_options	(CDB::OPT_CULL);
-		geom_DB->ray_query		(geom_SOM,base,dir,range);
-		u32 r_cnt				= geom_DB->r_count();
-        CDB::RESULT*	_B 		= geom_DB->r_begin();
+		geom_DB.ray_options		(CDB::OPT_CULL);
+		geom_DB.ray_query		(geom_SOM,base,dir,range);
+		u32 r_cnt				= geom_DB.r_count();
+        CDB::RESULT*	_B 		= geom_DB.r_begin();
 #endif            
 		if (0!=r_cnt){
 			for (u32 k=0; k<r_cnt; k++){

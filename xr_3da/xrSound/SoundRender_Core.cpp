@@ -312,10 +312,10 @@ CSoundRender_Environment*	CSoundRender_Core::get_environment			( const Fvector& 
 			if (ETOOLS::r_count()){
 				CDB::RESULT*		r	= ETOOLS::r_begin();
 #else
-			geom_DB->ray_options	(CDB::OPT_ONLYNEAREST);
-			geom_DB->ray_query		(geom_ENV,P,dir,1000.f);
-			if (geom_DB->r_count()){
-				CDB::RESULT*		r	= geom_DB->r_begin();
+			geom_DB.ray_options		(CDB::OPT_ONLYNEAREST);
+			geom_DB.ray_query		(geom_ENV,P,dir,1000.f);
+			if (geom_DB.r_count()){
+				CDB::RESULT*		r	= geom_DB.r_begin();
 #endif            
 				CDB::TRI*			T	= geom_ENV->get_tris()+r->id;
 				Fvector*			V	= geom_ENV->get_verts();
