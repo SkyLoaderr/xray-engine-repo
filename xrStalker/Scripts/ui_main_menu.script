@@ -46,6 +46,7 @@ function main_menu:InitControls()
 							 y = btn_ok_rect.y,
 							 height = btn_ok_rect.height,
 							 width  = btn_ok_rect.width}	
+	message_rect = {x = 0, y = 0, width = 400, height = 300}
 	
 	----- CODE -------
 	
