@@ -428,10 +428,6 @@
 					RelativePath="Blender_tree.h">
 				</File>
 			</Filter>
-			<Filter
-				Name="Shaders"
-				Filter="">
-			</Filter>
 		</Filter>
 		<Filter
 			Name="Models"
