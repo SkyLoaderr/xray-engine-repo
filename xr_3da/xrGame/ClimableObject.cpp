@@ -16,13 +16,14 @@ void CClimableObject::	Load				( LPCSTR section)
 }
 BOOL CClimableObject::	net_Spawn			( LPVOID DC)
 {
-	BOOL ret	= inherited::net_Spawn(DC);
 	CSE_Abstract				*e = (CSE_Abstract*)(DC);
 	CSE_ALifeObjectClimable	*CLB=smart_cast<CSE_ALifeObjectClimable*>(e);
 	Fmatrix& b=CLB->shapes[0].data.box;
-	m_box.xform_set(XFORM());
 	m_box.m_halfsize.set(b._11,b._22,b._33);
 	m_radius=_max(_max(m_box.m_halfsize.x,m_box.m_halfsize.y),m_box.m_halfsize.z);
+	BOOL ret	= inherited::net_Spawn(DC);
+	m_box.xform_set(XFORM());
+
 	m_pStaticShell=P_BuildStaticGeomShell(smart_cast<CGameObject*>(this),0,m_box);
 	return ret;
 }
