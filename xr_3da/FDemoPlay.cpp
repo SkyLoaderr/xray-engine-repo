@@ -19,7 +19,7 @@ CDemoPlay::CDemoPlay(const char *name, float ms, BOOL bc, float life_time):CEffe
 	bCycle      = bc;
 
 	if (!Engine.FS.Exist(name)) {
-		pCreator->Cameras.AddEffector(0);
+		pCreator->Cameras.SetEffector(0);
 		return;
 	}
 	DWORD sz	= 0;
@@ -59,7 +59,7 @@ void CDemoPlay::Process(Fvector &P, Fvector &D, Fvector &N)
 	int		frame	= iFloor(ip);
 	VERIFY	(t>=0);
 
-	if (frame>=m_count && !bCycle) { pCreator->Cameras.AddEffector(0); return; }
+	if (frame>=m_count && !bCycle) { pCreator->Cameras.SetEffector(0); return; }
 
 	int f1=frame; FIX(f1);
 	int f2=f1+1;  FIX(f2);

@@ -178,7 +178,7 @@ public:
 	virtual void Execute(LPCSTR args) {
 		Console.Hide	();
 		char fn[256]; strconcat(fn,args,".xrdemo");
-		pCreator->Cameras.AddEffector(new CDemoRecord(fn));
+		pCreator->Cameras.SetEffector(new CDemoRecord(fn));
 	}
 };
 class CCC_DemoPlay : public CConsoleCommand

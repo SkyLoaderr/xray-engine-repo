@@ -28,7 +28,7 @@ CDemoRecord::CDemoRecord(const char *name,float life_time):CEffector(life_time)
 		g_vecVelocity = g_vecAngularVelocity = D3DXVECTOR3(0.0f, 0.0f, 0.0f);
 		iCount = 0;
 	} else {
-		pCreator->Cameras.AddEffector(0);
+		pCreator->Cameras.SetEffector(0);
 	}
 }
 
@@ -114,7 +114,7 @@ void CDemoRecord::Process(Fvector &P, Fvector &D, Fvector &N)
 void CDemoRecord::OnKeyboardPress	(int dik)
 {
 	if (dik == DIK_SPACE)	RecordKey();
-	if (dik == DIK_RETURN)	pCreator->Cameras.AddEffector(0);
+	if (dik == DIK_RETURN)	pCreator->Cameras.SetEffector(0);
 }
 
 void CDemoRecord::RecordKey			()
