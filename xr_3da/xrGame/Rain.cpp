@@ -85,6 +85,9 @@ void	CEffect_Rain::Born		(Item& dest, float radius, float height)
 	dest.fLifetime		= (height*2)/dest.fSpeed;
 }
 
+void	CEffect_Rain::Hit		(Fvector& pos)
+{
+}
 void	CEffect_Rain::Render	()
 {
 	// Parse states
