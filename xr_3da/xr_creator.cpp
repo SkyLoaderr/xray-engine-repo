@@ -88,17 +88,17 @@ BOOL CCreator::Load(DWORD dwNum)
 	
 	// Header
 	hdrLEVEL H;
-	fs.ReadChunkSafe(fsL_HEADER,&H,sizeof(H));
-	R_ASSERT		(XRCL_PRODUCTION_VERSION==H.XRLC_version);
-	pApp->LoadTitle	("Description string: ",H.name);
+	fs.ReadChunkSafe			(fsL_HEADER,&H,sizeof(H));
+	R_ASSERT					(XRCL_PRODUCTION_VERSION==H.XRLC_version);
+	pApp->LoadTitle				("Description string: ",H.name);
 	
 	// Textures
-	chunk = fs.OpenChunk	(fsL_STRINGS);
-	R_ASSERT		(chunk);
-	count = chunk->Rdword	();
-	LL_strings.resize		(count);
+	chunk = fs.OpenChunk		(fsL_STRINGS);
+	R_ASSERT					(chunk);
+	count = chunk->Rdword		();
+	LL_strings.resize			(count);
 	for(i=0; i<count; i++) {
-		LL_strings[i] = (char *) chunk->Pointer();
+		LL_strings[i] = LPSTR(chunk->Pointer());
 		chunk->SkipStringZ();
 	}
 	chunk->Close();
