@@ -167,8 +167,6 @@ void CUIZoneMap::UpdateRadar(CEntity* Actor, CTeam& Team)
 	{
 	case GAME_SINGLE:		bRender = TRUE; break;
 	case GAME_DEATHMATCH:	bRender = TRUE; break;
-	case GAME_ASSAULT:		bRender = TRUE;	break;
-	case GAME_CTF:			bRender = TRUE;	break;
 	case GAME_CS:			bRender = TRUE;	break;
 	case GAME_TEAMDEATHMATCH:	bRender = TRUE; break;
 	case GAME_ARTEFACTHUNT:	bRender = TRUE; break;
@@ -226,12 +224,12 @@ void CUIZoneMap::UpdateRadar(CEntity* Actor, CTeam& Team)
 						if (pArtefact)
 						{
 							CObject* pParent = pArtefact->H_Parent();
-							if (pParent && pParent->ID() == Game().m_ArtefactBearerID)
+							if (pParent && pParent->ID() == Game().artefactBearerID)
 							{
 								if (pParent == pActor) continue;
 								ConvertToLocal(LM,pItem->Position(),P);
 
-								if (pActor->g_Team() == Game().m_TeamInPosession)
+								if (pActor->g_Team() == Game().teamInPosession)
 								{
 									EntityOut(pItem->Position().y-Actor->Position().y,COLOR_ARTEFACT,P);
 								}
