@@ -49,6 +49,7 @@ function main ()
     
     wait				(1000)
     
+--[
     action				(
 		stalker,
 		object			(vodka,object.activate),
@@ -68,6 +69,8 @@ function main ()
     )
     
 	while stalker:action() do
+--]
+	while true do
 		wait			()
     end
     
