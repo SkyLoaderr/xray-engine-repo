@@ -76,7 +76,9 @@ function evaluator_on_pos:__init( name, storage ) super ( nil, name )
 end
 
 function evaluator_on_pos:evaluate()
-	return self.object:level_vertex_id() == self.st.last_seen_vert_id
+	local r = self.object:level_vertex_id() == self.st.last_seen_vert_id
+	printf( tostring( r ) )
+	return r
 end
 
 --------------------------------------------------------------------------------------------------------------
@@ -100,6 +102,15 @@ function action_fight_close:finalize()
 	action_base.finalize( self )
 end
 
+-- Внимание: вызывается во всех actions
+function action_fight_close:hit_callback( obj, amount, local_direction, who, bone_index )
+	local be = self.object:best_enemy()
+
+	-- если получили хит от текущего врага, то мы знаем, где он
+	if be and who:id() == be:id() then
+		self.st.last_seen_vert_id = be:level_vertex_id()
+	end
+end
 
 --------------------------------------------------------------------------------------------------------------
 class "action_fight_far" ( action_base )
@@ -157,9 +168,9 @@ function action_look_around:execute()
 	end
 
 	if self.change_dir_time < device():time_global() then
-		self.change_dir_time = device():time_global() + math.random( 2000, 5000 )
+		self.change_dir_time = device():time_global() + math.random( 1000, 2000 )
 
-		local ang = math.pi / 180.0 * math.random( 0, 35900 ) * 0.01
+		local ang = math.rad( math.random( 0, 359 ) )
 		local pos = self.object:position():add( vector():set( math.cos( ang ), 0, math.sin( ang ) ) )
 
 		state_mgr.set_state( self.object, "hide", nil, nil, { look_position = pos } )
@@ -175,6 +186,7 @@ class "action_go_to_pos" ( action_base )
 
 function action_go_to_pos:__init( name, storage )  super ( nil, name )
 	self.st = storage
+	self.t  = {}
 end
 
 function action_go_to_pos:initialize()
@@ -191,13 +203,19 @@ function action_go_to_pos:initialize()
 	self.object:set_detail_path_type    ( move.line )
 	self.object:set_path_type           ( game_object.level_path )
 
-	self.st.last_seen_vert_id = send_to_nearest_accessible_vertex( self.object, self.st.last_seen_vert_id )
-
 	state_mgr.set_state( self.object, "assault" )
+
+	self.cached_id = -1
 end
 
 function action_go_to_pos:execute()
 	action_base.execute( self )
+
+	if self.st.last_seen_vert_id ~= self.cached_id then
+		self.cached_id = self.st.last_seen_vert_id
+
+		self.st.last_seen_vert_id = send_to_nearest_accessible_vertex( self.object, self.cached_id )
+	end
 end
 
 function action_go_to_pos:finalize()
@@ -213,7 +231,7 @@ function add_to_binder( npc, ini, st, planner )
 	action:add_effect      ( world_property( stalker_ids.property_enemy,           false ) )
 	planner:add_action( xr_actions_id.combat_monolith_base, action )]]
 
-	planner:add_evaluator( prop_enable,    evaluator_combat_monolith( "combat_monolith",       st ) )
+	planner:add_evaluator( prop_enable,    evaluator_combat_monolith( "combat_monolith",        st ) )
 	planner:add_evaluator( prop_see,       evaluator_see            ( "combat_monolith_see",    st ) )
 	planner:add_evaluator( prop_close,     evaluator_close          ( "combat_monolith_close",  st ) )
 	planner:add_evaluator( prop_on_pos,    evaluator_on_pos         ( "combat_monolith_on_pos", st ) )
@@ -228,6 +246,9 @@ function add_to_binder( npc, ini, st, planner )
 	action:add_precondition( world_property( prop_close,                     true  ) )
 	action:add_effect      ( world_property( stalker_ids.property_enemy,     false ) )
 	planner:add_action( act_fight_close, action )
+
+	-- подписываем один, работает во всех!
+	xr_logic.subscribe_action_for_events( npc, st, action )
 
 	action = action_fight_far( "combat_monolith_fight_far", st )
 	action:add_precondition( world_property( stalker_ids.property_anomaly,   false ) )
