@@ -191,6 +191,7 @@ void CCF_Skeleton::BuildState()
 	Fmatrix Mbox,T,TW;
 	for (u16 i=0; i<model.size(); i++)
 	{
+		if						(!K->LL_GetBoneVisible(i)) continue;
 		Fobb& B				=	K->LL_GetBox(i);
 		Fmatrix& Mbone		=	K->LL_GetTransform(i);
 		B.xform_get				(Mbox);
@@ -208,7 +209,7 @@ void CCF_Skeleton::BuildState()
 void CCF_Skeleton::BuildTopLevel()
 {
 	dwFrameTL			= Device.dwFrame;
-	IRender_Visual* K			= owner->Visual();
+	IRender_Visual* K	= owner->Visual();
 	Fbox& B				= K->vis.box;
 	bv_box.min.average	(B.min);
 	bv_box.max.average	(B.max);
@@ -237,7 +238,8 @@ BOOL CCF_Skeleton::_RayTest( RayQuery& Q)
 	BOOL bHIT = FALSE;
 	for (xr_vector<CCF_OBB>::iterator I=model.begin(); I!=model.end(); I++) 
 	{
-		if (RAYvsOBB(*I,Q.start,Q.dir,Q.range)) 
+		if	(!K->LL_GetBoneVisible(I-model.begin())) continue;
+		if	(RAYvsOBB(*I,Q.start,Q.dir,Q.range)) 
 		{
 			bHIT		= TRUE;
 			Q.element	= u32	(I-model.begin());
@@ -265,6 +267,7 @@ BOOL CCF_Skeleton::_RayPick( RayPickResult& result, const Fvector& _start, const
 	BOOL bHIT = FALSE;
 	for (xr_vector<CCF_OBB>::iterator I=model.begin(); I!=model.end(); I++) 
 	{
+		if	(!K->LL_GetBoneVisible(I-model.begin())) continue;
 		float range		= _range;
 		if (RAYvsOBB(*I,_start,_dir,range)) 
 		{
