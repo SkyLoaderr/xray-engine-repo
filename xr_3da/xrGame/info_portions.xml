@@ -54,10 +54,6 @@
 		<dialog>job_box02</dialog>
 	</info_portion>
 
-	<info_portion id="wounded_start2">
-		<dialog>job_medkit</dialog>
-	</info_portion>
-
 	<info_portion id="job_box_finished">
 	<disable>trader_start2</disable>
 	</info_portion>
@@ -67,7 +63,6 @@
 	</info_portion>
 	
 	<info_portion id="job_medkit_finished">
-	<disable>wounded_start2</disable>
 	</info_portion>
 
 	
