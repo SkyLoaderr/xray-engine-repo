@@ -448,8 +448,11 @@ void CPathNodes::Calculate(CCustomMonster* Me, Fvector& p_dest, Fvector& p_src, 
 	{
 		p_dest.set	(target);
 
-		if ((TravelStart+2) >= TravelPath.size())
-			break;
+		if ((TravelStart+2) >= TravelPath.size()) {
+			p_dest.set(target);
+			fSpeed	= 0;
+			return;
+		}
 		else {
 			dist			-= mdist;
 			TravelStart		++;

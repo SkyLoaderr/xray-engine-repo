@@ -786,6 +786,7 @@ void CActor::UpdateCL()
 
 void CActor::shedule_Update	(u32 DT)
 {
+//	Msg			("Actor position : [%f][%f][%f]",VPUSH(Position()));
 	if(m_vehicle)
 	{
 		inherited::shedule_Update		(DT);
