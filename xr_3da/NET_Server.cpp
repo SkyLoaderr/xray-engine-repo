@@ -7,7 +7,7 @@ LPCSTR nameTraffic	= "traffic.net";
 
 XRNETSERVER_API int		psNET_ServerUpdate	= 30;		// FPS
 XRNETSERVER_API int		psNET_ServerPending	= 2;
-XRNETSERVER_API int		psNET_Port			= 5445;
+//XRNETSERVER_API int		psNET_Port			= 5445;
 
 void IClientStatistic::Update(DPN_CONNECTION_INFO& CI)
 {
@@ -47,6 +47,7 @@ IPureServer::IPureServer	(CTimer* timer)
 	device_timer			= timer;
 	stats.clear				();
 	stats.dwSendTime		= TimeGlobal(device_timer);
+	psNET_Port				= 5445;
 }
 
 IPureServer::~IPureServer	()

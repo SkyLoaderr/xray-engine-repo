@@ -280,7 +280,7 @@ extern int			psNET_ServerUpdate;
 extern int			psNET_ServerPending;
 extern int			psNET_DedicatedSleep;
 extern char			psNET_Name[32];
-extern int			psNET_Port;
+//extern int			psNET_Port;
 extern int			psSheduler;
 extern float		psShedulerLoadBalance;
 extern Flags32		psEnvFlags;
