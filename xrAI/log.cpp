@@ -288,6 +288,18 @@ void __cdecl Msg( const char *format, ...)
 	LOut	( buf );
 }
 
+void __cdecl clMsg( const char *format, ...)
+{
+	va_list mark;
+	char buf	[256];
+	va_start( mark, format );
+	vsprintf( buf, format, mark );
+
+	char _out_	[256];
+	strconcat	(_out_,"         | ", _out_ );
+	LOut		( buf );
+}
+
 void Log(const char *msg, const char *dop) {
 	char buf[256];
 

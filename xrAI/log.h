@@ -2,6 +2,7 @@
 #define _log_H__
 
 void ENGINE_API __cdecl Msg		(const char *format, ...);
+void ENGINE_API __cdecl clMsg	(const char *format, ...);
 void ENGINE_API			Log		(const char *msg);
 void ENGINE_API			Log		(const char *msg);
 void ENGINE_API			Log		(const char *msg, const char* dop);
