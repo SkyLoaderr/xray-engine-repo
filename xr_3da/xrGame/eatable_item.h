@@ -31,6 +31,8 @@ public:
 	virtual void Load(LPCSTR section);
 	virtual bool Useful() const;
 
+	virtual BOOL	net_Spawn				(CSE_Abstract* DC);
+
 	virtual void OnH_B_Independent();
 	virtual void OnH_A_Independent();
 
@@ -45,5 +47,6 @@ public:
 	//количество порций еды, 
 	//-1 - порция одна и больше не бывает (чтоб не выводить надпись в меню)
 	int		m_iPortionsNum;
+	int		m_iStartPortionsNum;
 };
 

@@ -11,6 +11,7 @@
 #include "xrmessages.h"
 #include "net_utils.h"
 #include "physic_item.h"
+#include "Level.h"
 
 ///////////////////////////////////////////
 // CEatableItem class 
@@ -49,9 +50,18 @@ void CEatableItem::Load(LPCSTR section)
 	m_fWoundsHealPerc	= pSettings->r_float(section, "wounds_heal_perc");
 	clamp(m_fWoundsHealPerc, 0.f, 1.f);
 	
-	m_iPortionsNum = pSettings->r_s32(section, "eat_portions_num");
+	m_iStartPortionsNum = pSettings->r_s32(section, "eat_portions_num");
 	VERIFY(m_iPortionsNum<10000);
 }
+
+BOOL CEatableItem::net_Spawn				(CSE_Abstract* DC)
+{
+	if (!inherited::net_Spawn(DC)) return FALSE;
+
+	m_iPortionsNum = m_iStartPortionsNum;
+
+	return TRUE;
+};
 
 bool CEatableItem::Useful() const
 {
@@ -70,7 +80,7 @@ void CEatableItem::OnH_A_Independent()
 		object().u_EventGen		(P,GE_DESTROY,object().ID());
 		
 		//Msg				("ge_destroy: [%d] - %s",ID(),*cName());
-		if (object().Local())	object().u_EventSend	(P);
+		if (object().Local() && OnServer())	object().u_EventSend	(P);
 	}
 }
 
