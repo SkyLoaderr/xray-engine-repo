@@ -79,7 +79,7 @@ public:
 	virtual void 	OnSynchronize	(){;}
     virtual void    OnShowHint      (AStringVec& dest);
 
-	virtual bool 	Valid			(){return m_Valid;}
+	virtual BOOL 	Valid			(){return m_Valid;}
 
 					CCustomObject	(){
                         m_ClassID 	= OBJCLASS_DUMMY;
@@ -104,9 +104,9 @@ public:
 	virtual 		~CCustomObject();
 };
 
-typedef list<CCustomObject*> ObjectList;
+typedef std::list<CCustomObject*> ObjectList;
 typedef ObjectList::iterator ObjectIt;
-typedef map<EObjClass,ObjectList> ObjectMap;
+typedef std::map<EObjClass,ObjectList> ObjectMap;
 typedef ObjectMap::iterator ObjectPairIt;
 
 //----------------------------------------------------

@@ -28,10 +28,12 @@ class CSurface
     DWORD			m_dwFVF;
 public:
     				CSurface		(){ZeroMemory(this,sizeof(CSurface));}
+#ifdef _EDITOR
 					~CSurface		(){ if (m_Shader) Device.Shader.Delete(m_Shader);}
 	IC void			CopyFrom		(CSurface* surf){*this = *surf; m_Shader=0;}
     IC int			_Priority		()const {return m_Shader->Flags.iPriority;}
     IC bool			_StrictB2F		()const {return m_Shader->Flags.bStrictB2F;}
+#endif
     IC LPCSTR		_Name			()const {return m_Name.c_str();}
     IC Shader*		_Shader			()const {return m_Shader;}
     IC LPCSTR		_ShaderName		()const {return m_ShaderName.c_str();}
@@ -74,7 +76,6 @@ class CEditableObject{
     friend class TfrmPropertiesObject;
     friend class CSector;
     friend class TUI_ControlSectorAdd;
-//    friend class CLibObject;
 	friend class ELibrary;
 	friend class TfrmEditLibrary;
 
@@ -124,7 +125,6 @@ protected:
 public:
     DWORD			m_LoadState;
 
-//	CLibObject*		m_LibParent;
 	AnsiString		m_LibName;
 public:
     // constructor/destructor methods
@@ -132,7 +132,6 @@ public:
 	virtual 		~CEditableObject		();
 
     LPCSTR			GetName					(){ return m_LibName.c_str();}
-//    void			SetName					(LPCSTR name);
 
     IC EditMeshIt	FirstMesh				()	{return m_Meshes.begin();}
     IC EditMeshIt	LastMesh				()	{return m_Meshes.end();}
@@ -247,6 +246,23 @@ public:
 	void 			OnDeviceDestroy			();
 };
 //----------------------------------------------------
+#define EOBJ_CURRENT_VERSION		0x0010
+//----------------------------------------------------
+#define EOBJ_CHUNK_VERSION		  	0x0900
+#define EOBJ_CHUNK_REFERENCE     	0x0902
+#define EOBJ_CHUNK_FLAG           	0x0903
+#define EOBJ_CHUNK_SURFACES			0x0905
+#define EOBJ_CHUNK_EDITMESHES      	0x0910
+#define EOBJ_CHUNK_LIB_VERSION     	0x0911
+#define EOBJ_CHUNK_CLASSSCRIPT     	0x0912
+#define EOBJ_CHUNK_BONES			0x0913
+#define EOBJ_CHUNK_OMOTIONS			0x0914
+#define EOBJ_CHUNK_ACTIVE_OMOTION	0x0915
+#define EOBJ_CHUNK_SMOTIONS			0x0916
+#define EOBJ_CHUNK_ACTIVE_SMOTION	0x0917
+#define EOBJ_CHUNK_SURFACES_XRLC	0x0918
+//----------------------------------------------------
+
 #endif /*_INCDEF_EditObject_H_*/
 
 

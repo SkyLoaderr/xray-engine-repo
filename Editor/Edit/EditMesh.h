@@ -5,13 +5,15 @@
 #define _INCDEF_EditableMesh_H_
 
 //----------------------------------------------------
-#include "cl_rapid.h"
 #include "CustomObject.h"
+#ifdef _EDITOR
+	#include "cl_rapid.h"
+#endif
 
 // refs
-struct CSurface;
+class CSurface;
 struct SRayPickInfo;
-struct CFrustum;
+//struct CFrustum;
 struct FSChunkDef;
 
 #pragma pack( push,1 )
@@ -81,19 +83,21 @@ DEFINE_VECTOR		(st_SVert,SVertVec,SVertIt);
 
 //refs
 struct st_RenderBuffer;
-struct CSurface;
+class CSurface;
 class CSector;
 
-struct st_RenderBuffer{
-    DWORD			dwStartVertex;
-    DWORD			dwNumVertex;
-	BYTE* 			buffer;
-    DWORD			buffer_size;
-    CVertexStream*	stream;
-    st_RenderBuffer	(DWORD sv, DWORD nv):dwStartVertex(sv),dwNumVertex(nv),buffer(0),buffer_size(0){;}
-};
-DEFINE_VECTOR(st_RenderBuffer,RBVector,RBVecIt);
-DEFINE_MAP(CSurface*,RBVector,RBMap,RBMapPairIt);
+#ifdef _EDITOR
+	struct st_RenderBuffer{
+		DWORD			dwStartVertex;
+	    DWORD			dwNumVertex;
+		BYTE* 			buffer;
+		DWORD			buffer_size;
+	    CVertexStream*	stream;
+		st_RenderBuffer	(DWORD sv, DWORD nv):dwStartVertex(sv),dwNumVertex(nv),buffer(0),buffer_size(0){;}
+	};
+	DEFINE_VECTOR(st_RenderBuffer,RBVector,RBVecIt);
+	DEFINE_MAP(CSurface*,RBVector,RBMap,RBMapPairIt);
+#endif
 
 #define EMESH_LS_CF_MODEL	0x0001
 #define EMESH_LS_FNORMALS 	0x0002
@@ -112,7 +116,10 @@ class CEditableMesh {
 
     CEditableObject*	m_Parent;
 
+#ifdef _EDITOR
     RAPID::Model*	m_CFModel;
+    RBMap			m_RenderBuffers;
+#endif
 
     void            GenerateCFModel		();
     void 			GenerateFNormals	();
@@ -126,8 +133,6 @@ class CEditableMesh {
     // internal variables
     BYTE			m_Visible;
     BYTE			m_Locked;
-
-    RBMap			m_RenderBuffers;
 public:
 	st_MeshOptions	m_Ops;
     DWORD 			m_LoadState;
