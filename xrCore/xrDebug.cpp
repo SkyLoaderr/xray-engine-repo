@@ -98,6 +98,7 @@ void xrDebug::backend(const char* reason, const char *file, int line)
 }
 
 
+
 void xrDebug::error		(HRESULT hr, const char* expr, const char *file, int line)
 {
 	string1024	buffer;
