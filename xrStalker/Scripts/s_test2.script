@@ -182,8 +182,8 @@ function main ()
 	local azone = get_level_object ("attack_zone")
 	azone:set_callback (s_test2.zone_callback, true)
 
-    local defender = s_test2.Defender (get_level_object ("stalker_defend"), s_test2.script_name (), nil, {monster}, true) 
-    --patrol ("defend_way")
+    local defender = s_test2.Defender (get_level_object ("stalker_defend"), s_test2.script_name (), patrol ("defend_way"), {monster}, false) 
+    
 	
 	wait (10000)		
 	
