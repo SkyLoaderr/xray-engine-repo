@@ -11,9 +11,6 @@ function gulag_activate(npc, ini, section, gulag_name)
 	if section == nil then
 		utils.abort("gulag_activate: section is nil")
 	end
-	if stype == nil then
-		utils.abort("gulag_activate: please specify a script type")
-	end
 
 	local npc_id = npc:id()
 
