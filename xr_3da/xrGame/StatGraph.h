@@ -2,7 +2,7 @@
 #ifndef StatGraphH
 #define StatGraphH
 //---------------------------------------------------------------------------
-class CStatGraph:public pureRender, public pureDeviceCreate, public pureDeviceDestroy{
+class CStatGraph	: public pureRender, public pureDeviceCreate, public pureDeviceDestroy{
 public:
 	enum EStyle{
     	stBar,
@@ -10,7 +10,6 @@ public:
 		stBarLine,
 		stPoint,
     };
-
 protected:
 	struct SElement{
     	u32 		color;
