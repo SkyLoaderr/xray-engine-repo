@@ -13,7 +13,7 @@ struct	xr_token;
 class XRCORE_API CInifile
 {
 public:
-	struct	Item
+	struct XRCORE_API Item
 	{
 		LPSTR	first;
 		LPSTR	second;
@@ -23,7 +23,7 @@ public:
 	};
 	typedef std::vector<Item>	Items;
 	typedef Items::iterator		SectIt;
-    struct	Sect {
+    struct XRCORE_API Sect {
 		LPSTR			Name;
 		Items			Data;
 
