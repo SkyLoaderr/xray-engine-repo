@@ -74,8 +74,8 @@ public:
 	virtual void			applyForce				(float x,float y,float z)								= 0;
 	virtual void			applyImpulse			(const Fvector& dir, float val)							= 0;
 	virtual void			SetAirResistance		(dReal linear=0.0002f, dReal angular=0.05f)				= 0;
-	virtual void			set_DynamicLimits		(float l_limit=default_l_limit,float w_limit=default_w_limit)					= 0;
-	virtual void			set_DynamicScales		(float l_scale=default_l_scale,float w_scale=default_w_scale)					= 0;
+	virtual void			set_DynamicLimits		(float l_limit=default_l_limit,float w_limit=default_w_limit)= 0;
+	virtual void			set_DynamicScales		(float l_scale=default_l_scale,float w_scale=default_w_scale)= 0;
 	virtual void			set_ContactCallback		(ContactCallbackFun* callback)							= 0;
 	virtual void			set_ObjectContactCallback(ObjectContactCallbackFun* callback)					= 0;
 	virtual void			set_PhysicsRefObject	(CPhysicsRefObject* ref_object)							= 0;
@@ -218,7 +218,7 @@ IC	CKinematics*				PKinematics				()					{return m_pKinematics;};
 
 	virtual bool				isBreakable				()													= 0;
 	virtual bool				isFractured				()													= 0;
-	virtual void				SplitProcess			(PHSHELL_PAIR_VECTOR &out_shels)							= 0;
+	virtual void				SplitProcess			(PHSHELL_PAIR_VECTOR &out_shels)					= 0;
 	virtual void				applyImpulseTrace		(const Fvector& pos, const Fvector& dir, float val)	= 0;
 	virtual BoneCallbackFun*	GetBonesCallback		()													= 0;
 	virtual BoneCallbackFun*	GetBonesCallback1		()													= 0;
@@ -233,8 +233,9 @@ IC	CKinematics*				PKinematics				()					{return m_pKinematics;};
 	virtual void				build_FromKinematics	(CKinematics* K,BONE_P_MAP* p_geting_map=NULL)		= 0;
 	virtual void				UpdateRoot				()													= 0;
 	virtual void                ZeroCallbacks			()													= 0;
-	virtual void				ResetCallbacks			(u16 id,Flags64 &mask)											= 0;
-	virtual						~CPhysicsShell		     (){}
+	virtual void				ResetCallbacks			(u16 id,Flags64 &mask)								= 0;
+	virtual Fmatrix&			ObjectInRoot			()													= 0;
+	virtual						~CPhysicsShell		    (){}
 	//build_FromKinematics		in returns elements  & joint pointers according bone IDs;
 	};
 

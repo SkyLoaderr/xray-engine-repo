@@ -301,12 +301,12 @@ void CPHShellSplitterHolder::PhDataUpdate(dReal step)
 				CPHElement* element=m_pShell->elements[i->m_element];
 				dBodyID body=element->get_body();
 				if(!dBodyIsEnabled(body)) return;
-				m_has_breaks=m_has_breaks||(element->FracturesHolder()->PhDataUpdate(body));
+				m_has_breaks=(element->FracturesHolder()->PhDataUpdate(body))||m_has_breaks;
 				break;
 			}
 		case CPHShellSplitter::splJoint:
 			{
-				m_has_breaks=m_has_breaks||m_pShell->joints[i->m_joint]->JointDestroyInfo()->Update();
+				m_has_breaks=m_pShell->joints[i->m_joint]->JointDestroyInfo()->Update()||m_has_breaks;
 				break;
 			}
 		default: NODEFAULT;

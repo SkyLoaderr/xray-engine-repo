@@ -299,18 +299,17 @@ void CPhysicObject::UnsplitSingle(CGameObject* O)
 	newPhysicsShell->set_Kinematics(newKinematics);
 	newPhysicsShell->ResetCallbacks(m_unsplited_shels.back().second,mask1);
 	newKinematics->Calculate();
+	newPhysicsShell->ObjectInRoot().identity();
 	newKinematics->LL_SetBoneRoot		(m_unsplited_shels.back().second);
 	newKinematics->LL_SetBonesVisible	(mask1.flags);
 	
-	//
 
-	//////////////////////////////////////////////////////////////////////////
-
-
-
-
-	//////////////////////////////////////////////////////////////////////////
 	m_unsplited_shels.erase(m_unsplited_shels.end()-1);
+
+	NET_Packet P;
+	O->u_EventGen(P, GE_OWNERSHIP_REJECT,ID());
+	P.w_u16(u16(O->ID()));
+	O->u_EventSend(P);
 }
 //////////////////////////////////////////////////////////////////////////
 /*

@@ -153,6 +153,7 @@ virtual ~CPHShell				()
 	virtual void				InterpolateGlobalPosition	(Fvector* v);
 	virtual void				GetGlobalTransformDynamic	(Fmatrix* m);
 	virtual void				GetGlobalPositionDynamic	(Fvector* v);
+	virtual Fmatrix&			ObjectInRoot				(){return m_object_in_root;}
 
 	dSpaceID GetSpace()
 	{
