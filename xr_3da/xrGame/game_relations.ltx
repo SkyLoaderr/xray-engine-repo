@@ -11,10 +11,10 @@ goodwill_names      = deadly_enemy, -20, enemy, 0, hostile, 20, indifferent, 40,
 
 
 ;пороговые значения для отношения персонажей
-attitude_neutal_threshold = -25 
-attitude_friend_threshold = 50
+attitude_neutal_threshold = -25		;когда attitude меньше значения, то выставляется ALife::eRelationEnemy
+attitude_friend_threshold = 50		;когда attitude меньше значения, то выставляется ALife::eRelationNeutral, иначе ALife::eRelationFriend
 
-;константы, которые присвоят скриптовые функции set_relation для goodwill
+;константы, которые присвоят скриптовые функции set_relation для personal goodwill
 goodwill_enemy  = -100
 goodwill_neutal = 0 
 goodwill_friend = 100
@@ -22,6 +22,16 @@ goodwill_friend = 100
 
 ;названия группировок
 communities		= stalker, 1, monolith, 2, military, 3, killer, 4, ecolog, 1, dolg, 1, freedom, 1, bandit, 1, zombied, 23
+
+
+;	отношения персонажа к персонажу вычисляется по формуле
+;	attitude = presonal_goodwill +				//личное отношение персонажа к другому персонажу
+;			   community_goodwill +				//отношение группировка лично к персонажу
+;			   community_to_community			//отношение между группировками из [communities_relations]
+;              reputation_goodwill +			//отношение между репутациями из [reputation_relations]
+;			   rank_goodwill +					//отношение между рангами из [rank_relations]
+
+
 
 [communities_relations]
 ;				stalker, monolith, military, killer, ecolog, dolg, svoboda, bandit, zombied
