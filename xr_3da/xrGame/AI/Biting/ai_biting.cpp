@@ -318,6 +318,8 @@ void CAI_Biting::UpdateCL()
 		CMaterialManager::update(Device.fTimeDelta,vol,freq,!!fis_zero(speed()));
 	}
 
+	PitchCorrection();
+
 
 	m_pPhysics_support->in_UpdateCL();
 
@@ -450,4 +452,28 @@ void CAI_Biting::reload	(LPCSTR section)
 {
 	CCustomMonster::reload		(section);
 	CMonsterMovement::reload	(section);
+}
+
+
+void CAI_Biting::PitchCorrection() 
+{
+	CLevelGraph::SContour	contour;
+	ai().level_graph().contour(contour, level_vertex_id());
+	
+	Fplane  P;
+	P.build(contour.v1,contour.v2,contour.v3);
+
+	// находим проекцию точки, лежащей на векторе текущего направления
+	Fvector dir_point, proj_point;
+	dir_point.mad(Position(), Direction(), 1.f);
+	P.project(proj_point,dir_point);
+	
+	// получаем искомый вектор направления
+	Fvector target_dir;
+	target_dir.sub(proj_point,Position());
+
+	float yaw,pitch;
+	target_dir.getHP(yaw,pitch);
+
+	m_body.target.pitch = -pitch;
 }

@@ -128,6 +128,16 @@ public:
 
 	virtual bool			useful							(const CGameObject *object) const;
 
+	virtual void			OnHUDDraw						(CCustomHUD* hud)			{return inherited::OnHUDDraw(hud);}
+	virtual void			OnEvent							(NET_Packet& P, u16 type)	{return inherited::OnEvent(P,type);}
+	virtual u16				PHGetSyncItemsNumber			()							{return inherited::PHGetSyncItemsNumber();}
+	virtual CPHSynchronize*	PHGetSyncItem					(u16 item)					{return inherited::PHGetSyncItem(item);}
+	virtual void			PHUnFreeze						()							{return inherited::PHUnFreeze();}
+	virtual void			PHFreeze						()							{return inherited::PHFreeze();}
+	virtual BOOL			UsedAI_Locations				()							{return inherited::UsedAI_Locations();}
+	virtual void			reload							(LPCSTR section);
+	virtual const SRotation	Orientation						() const					{return inherited::Orientation();}
+	virtual void			renderable_Render				()							{return inherited::renderable_Render();} 
 
 	// ---------------------------------------------------------------------------------
 	// Process scripts
@@ -270,18 +280,8 @@ public:
 	void	UpdateVelocities	(STravelParams cur_velocity);
 
 	xr_vector<STravelParams> velocities;
-
-public:
-	virtual void				OnHUDDraw				(CCustomHUD* hud)			{return inherited::OnHUDDraw(hud);}
-	virtual void				OnEvent					(NET_Packet& P, u16 type)	{return inherited::OnEvent(P,type);}
-	virtual u16					PHGetSyncItemsNumber	()							{return inherited::PHGetSyncItemsNumber();}
-	virtual CPHSynchronize*		PHGetSyncItem			(u16 item)					{return inherited::PHGetSyncItem(item);}
-	virtual void				PHUnFreeze				()							{return inherited::PHUnFreeze();}
-	virtual void				PHFreeze				()							{return inherited::PHFreeze();}
-	virtual BOOL				UsedAI_Locations		()							{return inherited::UsedAI_Locations();}
-	virtual void				reload					(LPCSTR section);
-	virtual const SRotation		Orientation				() const					{return inherited::Orientation();}
-	virtual void				renderable_Render		()							{return inherited::renderable_Render();} 
+	
+	void		PitchCorrection	();
 };
 
 #include "ai_biting_inline.h"

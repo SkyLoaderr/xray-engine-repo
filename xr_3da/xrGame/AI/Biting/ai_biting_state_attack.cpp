@@ -131,10 +131,10 @@ void CBitingAttack::Run()
 	
 	// Проверить, достижим ли противник
 	if (flags.is(AF_ENEMY_IS_NOT_REACHABLE) && !b_attack_melee) m_tAction = ACTION_ENEMY_POSITION_APPROACH;
-	if ((flags.is(AF_BAD_MOTION)) && !b_attack_melee) time_start_walk_away = m_dwCurrentTime;
-	if (time_start_walk_away + 5000 > m_dwCurrentTime) {
-		m_tAction = ACTION_ENEMY_WALK_AWAY;
-	}
+	//if ((flags.is(AF_BAD_MOTION)) && !b_attack_melee) time_start_walk_away = m_dwCurrentTime;
+	//if (time_start_walk_away + 5000 > m_dwCurrentTime) {
+	//	m_tAction = ACTION_ENEMY_WALK_AWAY;
+	//}
 
 
 	// проверить на возможность прыжка

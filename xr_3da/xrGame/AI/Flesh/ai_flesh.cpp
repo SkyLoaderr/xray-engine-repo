@@ -149,7 +149,7 @@ void CAI_Flesh::StateSelector()
 	else if (F && H && !I)  	SetState(stateAttack); 
 	else if (F && !H && I)  	SetState(stateAttack); 
 	else if (F && !H && !I) 	SetState(stateAttack);
-	else if (A && !K)			SetState(stateExploreDNE);		//SetState(stateExploreDNE);	//SetState(stateExploreDE);	// слышу опасный звук, но не вижу, враг выгодный			(ExploreDE)		
+	else if (A && !K)			SetState(statePanic);		//SetState(stateExploreDNE);	//SetState(stateExploreDE);	// слышу опасный звук, но не вижу, враг выгодный			(ExploreDE)		
 	else if (B && !K)			SetState(stateExploreNDE);	// слышу не опасный звук, но не вижу, враг выгодный		(ExploreNDE)
 	
 #ifdef TEST_EAT_STATE	
