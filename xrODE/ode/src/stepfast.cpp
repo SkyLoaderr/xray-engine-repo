@@ -439,13 +439,13 @@ dInternalStepFast (dxWorld * world, dxBody * body[2], dReal * GI[2], dReal * Gin
 	memcpy (lo, Jinfo.lo, m * sizeof (dReal));
 	memcpy (hi, Jinfo.hi, m * sizeof (dReal));
 
-	if(m==3&&nub==0&&Jinfo.findex[1]!=-1&&Jinfo.findex[2]!=-1)
-	{
-		//memcpy (lo1, Jinfo.lo, m * sizeof (dReal));
-		//memcpy (hi1, Jinfo.hi, m * sizeof (dReal));
-		dSolveLCP33(m, A, lambda, rhs, residual, nub, lo, hi, Jinfo.findex);
-	}
-	else 
+	//if(m==3&&nub==0&&Jinfo.findex[1]!=-1&&Jinfo.findex[2]!=-1)
+	//{
+	//	//memcpy (lo1, Jinfo.lo, m * sizeof (dReal));
+	//	//memcpy (hi1, Jinfo.hi, m * sizeof (dReal));
+	//	dSolveLCP33(m, A, lambda, rhs, residual, nub, lo, hi, Jinfo.findex);
+	//}
+	//else 
 		dSolveLCP (m, A, lambda, rhs, residual, nub, lo, hi, Jinfo.findex);
 #endif
 

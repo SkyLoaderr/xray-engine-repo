@@ -4,58 +4,7 @@
 #include "Lcp33.h"
 #include "StepJointInternal.h"
 
-static void
-MultiplyAdd2_sym_p8p (dReal * A, dReal * B, dReal * C, int p, int Askip)
-{
-	int i, j;
-	dReal sum, *aa, *ad, *bb, *cc;
-	dIASSERT (p > 0 && A && B && C);
-	bb = B;
-	for (i = 0; i < p; i++)
-	{
-		//aa is going accross the matrix, ad down
-		aa = ad = A;
-		cc = C;
-		for (j = i; j < p; j++)
-		{
-			sum = bb[0] * cc[0];
-			sum += bb[1] * cc[1];
-			sum += bb[2] * cc[2];
-			sum += bb[4] * cc[4];
-			sum += bb[5] * cc[5];
-			sum += bb[6] * cc[6];
-			*(aa++) += sum;
-			*ad += sum;
-			ad += Askip;
-			cc += 8;
-		}
-		bb += 8;
-		A += Askip + 1;
-		C += 8;
-	}
-}
 
-
-// this assumes the 4th and 8th rows of B are zero.
-
-static void
-Multiply0_p81 (dReal * A, dReal * B, dReal * C, int p)
-{
-	int i;
-	dIASSERT (p > 0 && A && B && C);
-	dReal sum;
-	for (i = p; i; i--)
-	{
-		sum = B[0] * C[0];
-		sum += B[1] * C[1];
-		sum += B[2] * C[2];
-		sum += B[4] * C[4];
-		sum += B[5] * C[5];
-		sum += B[6] * C[6];
-		*(A++) = sum;
-		B += 8;
-	}
-}
 #define	   DOT6(A,B)	(A[0]*B[0]+A[1]*B[1]+A[2]*B[2]+A[4]*B[4]+A[5]*B[5]+A[6]*B[6])
 
 static void Multiply2_sym_3p8p (dReal * A, dReal * B, dReal * C)
