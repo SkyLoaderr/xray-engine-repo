@@ -108,8 +108,7 @@ void xrServer::Process_event	(NET_Packet& P, DPNID sender)
 			if (c_src->owner->ID == id_src)
 			{
 				// Main unit
-				c_src->g_frags		++;
-
+				// c_src->g_frags	++;
 				P.w_begin			(M_EVENT);
 				P.w_u32				(timestamp);
 				P.w_u16				(type);

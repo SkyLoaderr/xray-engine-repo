@@ -12,7 +12,6 @@
 namespace AI {
 	class	NodeEstimator
 	{
-		friend class CAI_Space;
 	public:
 		DWORD	BestNode;
 		float	BestCost;
