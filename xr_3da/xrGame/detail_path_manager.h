@@ -193,7 +193,7 @@ public:
 			void	init						();
 	virtual	void	reinit						();
 			bool	valid						() const;
-			const	Fvector &direction			();
+			Fvector direction					() const;
 			bool	actual						() const;
 	IC		bool	failed						() const;
 	IC		bool	completed					(const Fvector &position, bool bRealCompleted = true) const;

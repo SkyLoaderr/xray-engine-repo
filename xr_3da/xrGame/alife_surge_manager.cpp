@@ -66,7 +66,7 @@ void CALifeSurgeManager::surge		()
 	update_tasks						();
 	assign_stalker_customers			();
 
-	time_manager().next_surge_time		(time_manager().last_surge_time() + 7*24*3600*1000); // a week in milliseconds
+	time_manager().next_surge_time		(time_manager().last_surge_time() + u64(52)*u64(7*24*3600*1000)); // a week in milliseconds
 
 #ifdef DEBUG
 	if (psAI_Flags.test(aiALife)) {
