@@ -17,8 +17,14 @@ namespace RestrictedObject {
 		eRestrictionTypeDummy	= u32(-1),
 	};
 
-	struct CInRestriction {
+	class CInRestriction {
+	private:
+		bool			m_enabled;
+
+	public:
 		virtual bool	accessible				(const Fvector &position) const = 0;
+		IC		void	enable					(bool value) {m_enabled = value;}
+		IC		bool	enabled					() const {return m_enabled;}
 	};
 
 	class CShapeRestriction : public CInRestriction {
