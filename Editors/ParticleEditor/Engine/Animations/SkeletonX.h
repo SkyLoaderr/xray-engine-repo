@@ -42,7 +42,7 @@ struct vertRender
 class ENGINE_API CSkeletonX
 {
 protected:
-	enum { vertRenderFVF = D3DFVF_XYZ | D3DFVF_NORMAL | D3DFVF_TEX1 };
+	enum					{ vertRenderFVF = D3DFVF_XYZ | D3DFVF_NORMAL | D3DFVF_TEX1 };
 
 	CKinematics*			Parent;			// setted up by parent
 	vertBoned1W*			Vertices1W;		// shared
@@ -52,9 +52,9 @@ protected:
 	u32						cache_vOffset;
 	
 	void					_Copy			(CSkeletonX *V);
-	void					_Render			(ref_geom& hGeom, u32 vCount, u32 pCount);
+	void					_Render			(ref_geom& hGeom,	u32 vCount,		u32 pCount);
 	void					_Release		();
-	void					_Load			(const char* N, IReader *data, u32& dwVertCount);
+	void					_Load			(const char* N,		IReader *data,	u32& dwVertCount);
 public:
 	virtual void			SetParent		(CKinematics* K) { Parent = K; }
 
