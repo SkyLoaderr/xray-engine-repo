@@ -91,7 +91,7 @@ inv_grid_height		= 1
 
 cost				= 1000
 
-detector_dist		= 15
+detector_dist		= 8
 detector_sound		= detectors\da-2_noise1_loop.wav
 
 jump_height			= .5
@@ -327,12 +327,16 @@ $spawn 			= on
 $prefetch 		= 16
 class			= Z_MBALD
 hit_impulse_scale	= .1
-sound			= zone_mosquito_bald_det.wav
+sound			= zone_mosquito_bald.wav
 postprocess		= postprocess_anomaly
 hit_effect		= explosions\expl_02_sparks
 effects			= anomaly\marevo, anomaly\storm_01
 artefacts		= af_magnet,0.7
 BirthProbability = 0.9
+
+detector_dist		= 15
+detector_sound		= zone_mosquito_bald_det.wav
+
 
 [zone_mosquito_bald_weapon]
 GroupControlSection	= spawn_group_zone
