@@ -178,12 +178,6 @@ function load_job(sj, gname, type, squad, groups)
 
 	-- Гулаг нехороших сталкеров ветеранов на Дикой территории
 	if type == "bar_evil_veterans" then
-		t = { section = "logic@bar_evil_veterans_patrol", 
-			idle = 0,
-			prior = 10, state = {0,1}, squad = squad, group = groups[0],
-			in_rest = "", out_rest = ""
-		}
-		table.insert(sj, t)		    
 		t = { section = "logic@bar_evil_veterans_walker1", 
 			idle = 0,
 			prior = 7, state = {0}, squad = squad, group = groups[0],
@@ -205,6 +199,36 @@ function load_job(sj, gname, type, squad, groups)
 		t = { section = "logic@bar_evil_veterans_kamp2", 
 			idle = 0,
 			prior = 7, state = {1}, squad = squad, group = groups[0],
+			in_rest = "", out_rest = ""
+		}
+		table.insert(sj, t)		    
+		t = { section = "logic@bar_evil_veterans_walker3", 
+			idle = 0,
+			prior = 7, state = {0}, squad = squad, group = groups[0],
+			in_rest = "", out_rest = ""
+		}
+		table.insert(sj, t)
+		t = { section = "logic@bar_evil_veterans_kamp3", 
+			idle = 0,
+			prior = 7, state = {1}, squad = squad, group = groups[0],
+			in_rest = "", out_rest = ""
+		}
+		table.insert(sj, t)
+		t = { section = "logic@bar_dolg_veterans_gates_alarm1", 
+			idle = 0,
+			prior = 5, state = {2}, squad = squad, group = groups[0],
+			in_rest = "", out_rest = ""
+		}
+		table.insert(sj, t)	
+		t = { section = "logic@bar_dolg_veterans_gates_alarm2", 
+			idle = 0,
+			prior = 5, state = {2}, squad = squad, group = groups[0],
+			in_rest = "", out_rest = ""
+		}
+		table.insert(sj, t)
+		t = { section = "logic@bar_dolg_veterans_gates_alarm3", 
+			idle = 0,
+			prior = 5, state = {2}, squad = squad, group = groups[0],
 			in_rest = "", out_rest = ""
 		}
 		table.insert(sj, t)
@@ -264,7 +288,7 @@ function load_states(gname, type)
 	end
 	if type == "bar_evil_veterans" then        
 		return function (gulag)
-				return 1
+				return 2
 --[[
 				for k,v in gulag.Object do
 					enemy = v:best_enemy()
