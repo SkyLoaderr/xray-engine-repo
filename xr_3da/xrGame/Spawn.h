@@ -22,6 +22,8 @@ public:
 	char		cName		[128];
 	WORD		version;
 	DWORD		IDcform;
+	Fvector		o_Position;		// position: x,y,z
+	Fvector		o_Orientation;	// rotation: angle_x, angle_y, angle_z
 
 	CSpawn_DESC	()	
 	{

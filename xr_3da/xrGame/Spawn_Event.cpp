@@ -83,3 +83,23 @@ void CSpawn_Event::Load	(CStream& FS)
 	}
 	R_ASSERT			(!Commands.empty());
 }
+
+#ifndef _EDITOR
+void CSpawn_Event::Execute()
+{
+	NET_Packet	P;
+	P.w_begin	(M_CL_SPAWN);
+	P.w_string	("m_event");
+	P.w_u8		(0);
+	P.w_u8		(0);
+	P.w_u8		(0);
+	P.w_u8		(0xFE);
+	P.w_vec3	(description.o_Position);
+	P.w_vec3	(description.o_Orientation);
+	P.w_u16		(0);
+}
+#else
+void CSpawn_Event::Execute()
+{
+}
+#endif
