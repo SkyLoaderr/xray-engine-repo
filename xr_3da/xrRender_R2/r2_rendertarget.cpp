@@ -147,6 +147,7 @@ void	CRenderTarget::OnDeviceCreate	()
 		s_combine					= Device.Shader.Create_B	(b_combine,					"r2\\combine");
 		s_combine_dbg_Normal		= Device.Shader.Create		("effects\\screen_set",		r2_RT_N_H);
 		s_combine_dbg_Accumulator	= Device.Shader.Create		("effects\\screen_set",		r2_RT_accum);
+		s_combine_dbg_DepthD		= Device.Shader.Create		("effects\\screen_set",		r2_RT_smap_d_surf);
 		g_combine					= Device.Shader.CreateGeom	(FVF::F_TL,		RCache.Vertex.Buffer(), RCache.QuadIB);
 	}
 
@@ -222,6 +223,7 @@ void	CRenderTarget::OnDeviceDestroy	()
 
 	// COMBINE
 	Device.Shader.DeleteGeom	(g_combine				);
+	Device.Shader.Delete		(s_combine_dbg_DepthD	);
 	Device.Shader.Delete		(s_combine_dbg_Normal	);
 	Device.Shader.Delete		(s_combine_dbg_Accumulator);
 	Device.Shader.Delete		(s_combine				);

@@ -35,11 +35,11 @@ private:
 	CRT*						rt_Generic;		// 32bit		(r,g,b,a)				// post-process, intermidiate results, etc.
 	CRT*						rt_Bloom_1;		// 32bit, dim/4	(r,g,b,?)
 	CRT*						rt_Bloom_2;		// 32bit, dim/4	(r,g,b,?)
-	IDirect3DSurface9*			rt_Bloom_ZB;
+	IDirect3DSurface9*			rt_Bloom_ZB;	// $$$ dumb ZB for nv3xx
 
 	// D-smap
 	CRT*						rt_smap_d_surf;	// 32bit, depth 
-	CRT*						rt_smap_d_depth;// 32bit, depth 
+	CRT*						rt_smap_d_depth;// 24(32) bit, depth 
 	IDirect3DSurface9*			rt_smap_d_ZB;	//
 
 	// P-smap
@@ -73,6 +73,7 @@ private:
 
 	// Combine
 	SGeometry*					g_combine;
+	Shader*						s_combine_dbg_DepthD;
 	Shader*						s_combine_dbg_Normal;
 	Shader*						s_combine_dbg_Accumulator;
 	Shader*						s_combine;

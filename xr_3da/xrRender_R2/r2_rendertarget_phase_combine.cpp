@@ -70,7 +70,7 @@ void	CRenderTarget::phase_combine	()
 	RCache.set_Stencil				(FALSE);
 
 	// ********************* Debug
-	if (0)
+	if (1)
 	{
 		u32		C					= D3DCOLOR_RGBA	(255,255,255,255);
 		float	_w					= float(Device.dwWidth)/2;
@@ -110,7 +110,7 @@ void	CRenderTarget::phase_combine	()
 			RCache.Vertex.Unlock		(4,g_combine->vb_stride);
 
 			// Draw COLOR
-			RCache.set_Shader			(s_bloom_dbg_2);
+			RCache.set_Shader			(s_combine_dbg_DepthD);
 			RCache.set_Geometry			(g_combine);
 			RCache.Render				(D3DPT_TRIANGLELIST,Offset,0,4,0,2);
 		}
