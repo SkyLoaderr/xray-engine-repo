@@ -142,6 +142,11 @@ namespace PathManagers {
 		{
 			return		(m_dwBestNode);
 		}
+
+		IC	bool actual ()
+		{
+			return		(true);
+		}
 	};
 
 	template <const u64 qwFlags> class CVertexEvaluator : public CAbstractVertexEvaluator {

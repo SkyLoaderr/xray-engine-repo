@@ -29,6 +29,11 @@ namespace PathManagers {
 			max_visited_node_count(max_visited_node_count)
 		{
 		}
+
+		IC	bool actual ()
+		{
+			return		(true);
+		}
 	};
 
 	template <
