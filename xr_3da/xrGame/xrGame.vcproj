@@ -4421,6 +4421,9 @@
 							RelativePath=".\script_game_object3.cpp">
 						</File>
 						<File
+							RelativePath=".\script_game_object_impl.h">
+						</File>
+						<File
 							RelativePath=".\script_game_object_inventory_owner.cpp">
 						</File>
 						<File

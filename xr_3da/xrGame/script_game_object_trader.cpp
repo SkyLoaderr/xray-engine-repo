@@ -4,6 +4,7 @@
 
 #include "stdafx.h"
 #include "script_game_object.h"
+#include "script_game_object_impl.h"
 
 #include "script_task.h"
 #include "script_zone.h"
@@ -21,8 +22,8 @@ class CWeapon;
 
 void CScriptGameObject::SetCallback(const luabind::functor<void> &tpZoneCallback, bool bOnEnter)
 {
-	CScriptZone	*l_tpScriptZone = smart_cast<CScriptZone*>(m_tpGameObject);
-	CAI_Trader	*l_tpTrader		= smart_cast<CAI_Trader*>	(m_tpGameObject);
+	CScriptZone	*l_tpScriptZone = smart_cast<CScriptZone*>(object());
+	CAI_Trader	*l_tpTrader		= smart_cast<CAI_Trader*>(object());
 
 	if (!l_tpScriptZone && !l_tpTrader)
 		ai().script_engine().script_log			(ScriptStorage::eLuaMessageTypeError,"CScriptZone or CTrader: cannot access class member set_callback!");
@@ -30,21 +31,21 @@ void CScriptGameObject::SetCallback(const luabind::functor<void> &tpZoneCallback
 	else l_tpTrader->set_callback(tpZoneCallback,bOnEnter);
 }
 
-void CScriptGameObject::SetCallback(const luabind::object &object, LPCSTR method, bool bOnEnter)
+void CScriptGameObject::SetCallback(const luabind::object &lua_object, LPCSTR method, bool bOnEnter)
 {
-	CScriptZone	*l_tpScriptZone = smart_cast<CScriptZone*>(m_tpGameObject);
-	CAI_Trader	*l_tpTrader		= smart_cast<CAI_Trader*>	(m_tpGameObject);
+	CScriptZone	*l_tpScriptZone = smart_cast<CScriptZone*>(object());
+	CAI_Trader	*l_tpTrader		= smart_cast<CAI_Trader*>(object());
 
 	if (!l_tpScriptZone && !l_tpTrader)
 		ai().script_engine().script_log			(ScriptStorage::eLuaMessageTypeError,"CScriptZone or CTrader: cannot access class member set_callback!");
-	else if (l_tpScriptZone) l_tpScriptZone->set_callback(object,method,bOnEnter);
-	else l_tpTrader->set_callback(object,method,bOnEnter);
+	else if (l_tpScriptZone) l_tpScriptZone->set_callback(lua_object,method,bOnEnter);
+	else l_tpTrader->set_callback(lua_object,method,bOnEnter);
 }
 
 void CScriptGameObject::ClearCallback(bool bOnEnter)
 {
-	CScriptZone	*l_tpScriptZone = smart_cast<CScriptZone*>(m_tpGameObject);
-	CAI_Trader	*l_tpTrader		= smart_cast<CAI_Trader*>	(m_tpGameObject);
+	CScriptZone	*l_tpScriptZone = smart_cast<CScriptZone*>(object());
+	CAI_Trader	*l_tpTrader		= smart_cast<CAI_Trader*>(object());
 
 	if (!l_tpScriptZone && !l_tpTrader)
 		ai().script_engine().script_log			(ScriptStorage::eLuaMessageTypeError,"CScriptZone : cannot access class member set_callback!");
@@ -55,24 +56,24 @@ void CScriptGameObject::ClearCallback(bool bOnEnter)
 
 
 void CScriptGameObject::SetTradeCallback(const luabind::functor<void> &tpTradeCallback) {
-	CAI_Trader	*l_tpTrader		= smart_cast<CAI_Trader*>	(m_tpGameObject);
+	CAI_Trader	*l_tpTrader		= smart_cast<CAI_Trader*>	(object());
 
 	if (!l_tpTrader) 
 		ai().script_engine().script_log			(ScriptStorage::eLuaMessageTypeError,"CAI_Trader : cannot access class member set_trade_callback!");
 	else l_tpTrader->set_trade_callback(tpTradeCallback);
 }
 
-void CScriptGameObject::SetTradeCallback(const luabind::object &object, LPCSTR method) {
-	CAI_Trader	*l_tpTrader	= smart_cast<CAI_Trader*>	(m_tpGameObject);
+void CScriptGameObject::SetTradeCallback(const luabind::object &lua_object, LPCSTR method) {
+	CAI_Trader	*l_tpTrader	= smart_cast<CAI_Trader*>	(object());
 
 	if (!l_tpTrader) 
 		ai().script_engine().script_log			(ScriptStorage::eLuaMessageTypeError,"CAI_Trader : cannot access class member set_trade_callback!");
-	else l_tpTrader->set_trade_callback(object, method);
+	else l_tpTrader->set_trade_callback(lua_object, method);
 }
 
 
 void CScriptGameObject::ClearTradeCallback() {
-	CAI_Trader	*l_tpTrader		= smart_cast<CAI_Trader*>	(m_tpGameObject);
+	CAI_Trader	*l_tpTrader		= smart_cast<CAI_Trader*>	(object());
 
 	if (!l_tpTrader) 
 		ai().script_engine().script_log			(ScriptStorage::eLuaMessageTypeError,"CAI_Trader : cannot access class member clear_trade_callback!");
@@ -85,12 +86,12 @@ void CScriptGameObject::ClearTradeCallback() {
 
 bool CScriptGameObject::is_body_turning		() const
 {
-	CMovementManager	*movement_manager = smart_cast<CMovementManager*>(m_tpGameObject);
+	CMovementManager	*movement_manager = smart_cast<CMovementManager*>(object());
 	if (!movement_manager) {
 		ai().script_engine().script_log		(ScriptStorage::eLuaMessageTypeError,"CGameObject : cannot access class member is_turning!");
 		return			(false);
 	}
-	CStalkerMovementManager	*stalker_movement_manager = smart_cast<CStalkerMovementManager*>(m_tpGameObject);
+	CStalkerMovementManager	*stalker_movement_manager = smart_cast<CStalkerMovementManager*>(object());
 	if (!stalker_movement_manager)
 		return			(!fsimilar(movement_manager->body_orientation().target.yaw,movement_manager->body_orientation().current.yaw));
 	else
@@ -103,7 +104,7 @@ bool CScriptGameObject::is_body_turning		() const
 
 u32	CScriptGameObject::add_sound		(LPCSTR prefix, u32 max_count, ESoundTypes type, u32 priority, u32 mask, u32 internal_type, LPCSTR bone_name)
 {
-	CSoundPlayer				*sound_player = smart_cast<CSoundPlayer*>(m_tpGameObject);
+	CSoundPlayer				*sound_player = smart_cast<CSoundPlayer*>(object());
 	if (!sound_player) {
 		ai().script_engine().script_log					(ScriptStorage::eLuaMessageTypeError,"CSoundPlayer : cannot access class member add!");
 		return					(0);
@@ -114,7 +115,7 @@ u32	CScriptGameObject::add_sound		(LPCSTR prefix, u32 max_count, ESoundTypes typ
 
 u32	CScriptGameObject::add_sound		(LPCSTR prefix, u32 max_count, ESoundTypes type, u32 priority, u32 mask, u32 internal_type, LPCSTR bone_name, LPCSTR head_anim)
 {
-	CSoundPlayer				*sound_player = smart_cast<CSoundPlayer*>(m_tpGameObject);
+	CSoundPlayer				*sound_player = smart_cast<CSoundPlayer*>(object());
 	if (!sound_player) {
 		ai().script_engine().script_log					(ScriptStorage::eLuaMessageTypeError,"CSoundPlayer : cannot access class member add!");
 		return					(0);
@@ -130,7 +131,7 @@ u32	CScriptGameObject::add_sound		(LPCSTR prefix, u32 max_count, ESoundTypes typ
 
 void CScriptGameObject::remove_sound	(u32 internal_type)
 {
-	CSoundPlayer				*sound_player = smart_cast<CSoundPlayer*>(m_tpGameObject);
+	CSoundPlayer				*sound_player = smart_cast<CSoundPlayer*>(object());
 	if (!sound_player)
 		ai().script_engine().script_log					(ScriptStorage::eLuaMessageTypeError,"CSoundPlayer : cannot access class member add!");
 	else
@@ -139,7 +140,7 @@ void CScriptGameObject::remove_sound	(u32 internal_type)
 
 void CScriptGameObject::set_sound_mask	(u32 sound_mask)
 {
-	CSoundPlayer				*sound_player = smart_cast<CSoundPlayer*>(m_tpGameObject);
+	CSoundPlayer				*sound_player = smart_cast<CSoundPlayer*>(object());
 	if (!sound_player)
 		ai().script_engine().script_log					(ScriptStorage::eLuaMessageTypeError,"CSoundPlayer : cannot access class member set_sound_mask!");
 	else {
@@ -153,7 +154,7 @@ void CScriptGameObject::set_sound_mask	(u32 sound_mask)
 
 void CScriptGameObject::play_sound		(u32 internal_type)
 {
-	CSoundPlayer				*sound_player = smart_cast<CSoundPlayer*>(m_tpGameObject);
+	CSoundPlayer				*sound_player = smart_cast<CSoundPlayer*>(object());
 	if (!sound_player)
 		ai().script_engine().script_log					(ScriptStorage::eLuaMessageTypeError,"CSoundPlayer : cannot access class member play!");
 	else
@@ -162,7 +163,7 @@ void CScriptGameObject::play_sound		(u32 internal_type)
 
 void CScriptGameObject::play_sound		(u32 internal_type, u32 max_start_time)
 {
-	CSoundPlayer				*sound_player = smart_cast<CSoundPlayer*>(m_tpGameObject);
+	CSoundPlayer				*sound_player = smart_cast<CSoundPlayer*>(object());
 	if (!sound_player)
 		ai().script_engine().script_log					(ScriptStorage::eLuaMessageTypeError,"CSoundPlayer : cannot access class member play!");
 	else
@@ -171,7 +172,7 @@ void CScriptGameObject::play_sound		(u32 internal_type, u32 max_start_time)
 
 void CScriptGameObject::play_sound		(u32 internal_type, u32 max_start_time, u32 min_start_time)
 {
-	CSoundPlayer				*sound_player = smart_cast<CSoundPlayer*>(m_tpGameObject);
+	CSoundPlayer				*sound_player = smart_cast<CSoundPlayer*>(object());
 	if (!sound_player)
 		ai().script_engine().script_log					(ScriptStorage::eLuaMessageTypeError,"CSoundPlayer : cannot access class member play!");
 	else
@@ -180,7 +181,7 @@ void CScriptGameObject::play_sound		(u32 internal_type, u32 max_start_time, u32 
 
 void CScriptGameObject::play_sound		(u32 internal_type, u32 max_start_time, u32 min_start_time, u32 max_stop_time)
 {
-	CSoundPlayer				*sound_player = smart_cast<CSoundPlayer*>(m_tpGameObject);
+	CSoundPlayer				*sound_player = smart_cast<CSoundPlayer*>(object());
 	if (!sound_player)
 		ai().script_engine().script_log					(ScriptStorage::eLuaMessageTypeError,"CSoundPlayer : cannot access class member play!");
 	else
@@ -189,7 +190,7 @@ void CScriptGameObject::play_sound		(u32 internal_type, u32 max_start_time, u32 
 
 void CScriptGameObject::play_sound		(u32 internal_type, u32 max_start_time, u32 min_start_time, u32 max_stop_time, u32 min_stop_time)
 {
-	CSoundPlayer				*sound_player = smart_cast<CSoundPlayer*>(m_tpGameObject);
+	CSoundPlayer				*sound_player = smart_cast<CSoundPlayer*>(object());
 	if (!sound_player)
 		ai().script_engine().script_log					(ScriptStorage::eLuaMessageTypeError,"CSoundPlayer : cannot access class member play!");
 	else
@@ -198,7 +199,7 @@ void CScriptGameObject::play_sound		(u32 internal_type, u32 max_start_time, u32 
 
 void CScriptGameObject::play_sound		(u32 internal_type, u32 max_start_time, u32 min_start_time, u32 max_stop_time, u32 min_stop_time, u32 id)
 {
-	CSoundPlayer				*sound_player = smart_cast<CSoundPlayer*>(m_tpGameObject);
+	CSoundPlayer				*sound_player = smart_cast<CSoundPlayer*>(object());
 	if (!sound_player)
 		ai().script_engine().script_log					(ScriptStorage::eLuaMessageTypeError,"CSoundPlayer : cannot access class member play!");
 	else
@@ -207,7 +208,7 @@ void CScriptGameObject::play_sound		(u32 internal_type, u32 max_start_time, u32 
 
 int  CScriptGameObject::active_sound_count		(bool only_playing)
 {
-	CSoundPlayer	*sound_player = smart_cast<CSoundPlayer*>(m_tpGameObject);
+	CSoundPlayer	*sound_player = smart_cast<CSoundPlayer*>(object());
 	if (!sound_player) {
 		ai().script_engine().script_log		(ScriptStorage::eLuaMessageTypeError,"CGameObject : cannot access class member active_sound_count!");
 		return								(-1);

@@ -77,18 +77,14 @@ struct ScriptCallbackInfo{
 };
 
 class CScriptGameObject {
-	CGameObject				*m_tpGameObject;
+	mutable CGameObject		*m_game_object;
 public:
 
 							CScriptGameObject		(CGameObject *tpGameObject);
 	virtual					~CScriptGameObject		();
 							operator CObject*		();
 
-	IC		CGameObject		*object					()
-	{
-		return				(m_tpGameObject);
-	}
-
+	IC		CGameObject		*object					() const;
 	typedef xr_map<s16,ScriptCallbackInfo*>	CALLBACKS;
 	typedef CALLBACKS::iterator				CALLBACK_IT;
 	CALLBACKS							m_callbacks;

@@ -1,5 +1,6 @@
 #include "stdafx.h"
 #include "script_game_object.h"
+#include "script_game_object_impl.h"
 #include "UsableScriptObject.h"
 #include "GameObject.h"
 #include "script_storage_space.h"
@@ -32,24 +33,24 @@ void CScriptGameObject::AddEventCallback			(s16 event, const luabind::object &lu
 
 void CScriptGameObject::SetUseCallback(const luabind::functor<void> &tpUseCallback)
 {
-	CUsableScriptObject	*l_tpUseableScriptObject = smart_cast<CUsableScriptObject*>(m_tpGameObject);
+	CUsableScriptObject	*l_tpUseableScriptObject = smart_cast<CUsableScriptObject*>(object());
 	if (!l_tpUseableScriptObject)
 		ai().script_engine().script_log			(ScriptStorage::eLuaMessageTypeError,"Can not set callback on use. Reason: the object is not usable");
 	else l_tpUseableScriptObject->set_callback(tpUseCallback);
 	
 }
 
-void CScriptGameObject::SetUseCallback(const luabind::object &object, LPCSTR method)
+void CScriptGameObject::SetUseCallback(const luabind::object &lua_object, LPCSTR method)
 {
-	CUsableScriptObject	*l_tpUseableScriptObject = smart_cast<CUsableScriptObject*>(m_tpGameObject);
+	CUsableScriptObject	*l_tpUseableScriptObject = smart_cast<CUsableScriptObject*>(object());
 	if (!l_tpUseableScriptObject)
 		ai().script_engine().script_log			(ScriptStorage::eLuaMessageTypeError,"Can not set callback on use. Reason: the object is not usable");
-	else l_tpUseableScriptObject->set_callback(object,method);
+	else l_tpUseableScriptObject->set_callback(lua_object,method);
 }
 
 void CScriptGameObject::ClearUseCallback()
 {
-	CUsableScriptObject	*l_tpUseableScriptObject = smart_cast<CUsableScriptObject*>(m_tpGameObject);
+	CUsableScriptObject	*l_tpUseableScriptObject = smart_cast<CUsableScriptObject*>(object());
 	if (!l_tpUseableScriptObject)
 		ai().script_engine().script_log			(ScriptStorage::eLuaMessageTypeError,"Can not clear use callback . Reason: the object is not usable");
 	else l_tpUseableScriptObject->clear_callback();
@@ -57,14 +58,14 @@ void CScriptGameObject::ClearUseCallback()
 
 void CScriptGameObject::SetTipText (LPCSTR tip_text)
 {
-	CUsableScriptObject	*l_tpUseableScriptObject = smart_cast<CUsableScriptObject*>(m_tpGameObject);
+	CUsableScriptObject	*l_tpUseableScriptObject = smart_cast<CUsableScriptObject*>(object());
 	if (!l_tpUseableScriptObject)
 		ai().script_engine().script_log			(ScriptStorage::eLuaMessageTypeError,"Can not clear use callback . Reason: the object is not usable");
 	else l_tpUseableScriptObject->set_tip_text(tip_text);
 }
 void CScriptGameObject::SetTipTextDefault ()
 {
-	CUsableScriptObject	*l_tpUseableScriptObject = smart_cast<CUsableScriptObject*>(m_tpGameObject);
+	CUsableScriptObject	*l_tpUseableScriptObject = smart_cast<CUsableScriptObject*>(object());
 	if (!l_tpUseableScriptObject)
 		ai().script_engine().script_log			(ScriptStorage::eLuaMessageTypeError,"Can not clear use callback . Reason: the object is not usable");
 	else l_tpUseableScriptObject->set_tip_text_default();
@@ -72,7 +73,7 @@ void CScriptGameObject::SetTipTextDefault ()
 
 void CScriptGameObject::SetNonscriptUsable(bool nonscript_usable)
 {
-	CUsableScriptObject	*l_tpUseableScriptObject = smart_cast<CUsableScriptObject*>(m_tpGameObject);
+	CUsableScriptObject	*l_tpUseableScriptObject = smart_cast<CUsableScriptObject*>(object());
 	if (!l_tpUseableScriptObject)
 		ai().script_engine().script_log			(ScriptStorage::eLuaMessageTypeError,"Can not clear use callback . Reason: the object is not usable");
 	else l_tpUseableScriptObject->set_nonscript_usable(nonscript_usable);
@@ -82,7 +83,7 @@ void CScriptGameObject::SetNonscriptUsable(bool nonscript_usable)
 //CAI_Bloodsucker
 void CScriptGameObject::set_invisible(bool val)
 {
-	CAI_Bloodsucker		*monster = smart_cast<CAI_Bloodsucker*>(m_tpGameObject);
+	CAI_Bloodsucker		*monster = smart_cast<CAI_Bloodsucker*>(object());
 	if (!monster) {
 		ai().script_engine().script_log		(ScriptStorage::eLuaMessageTypeError,"CAI_Bloodsucker : cannot access class member set_invisible!");
 		return;
@@ -93,7 +94,7 @@ void CScriptGameObject::set_invisible(bool val)
 
 void CScriptGameObject::set_manual_invisibility(bool val)
 {
-	CAI_Bloodsucker		*monster = smart_cast<CAI_Bloodsucker*>(m_tpGameObject);
+	CAI_Bloodsucker		*monster = smart_cast<CAI_Bloodsucker*>(object());
 	if (!monster) {
 		ai().script_engine().script_log		(ScriptStorage::eLuaMessageTypeError,"CAI_Bloodsucker : cannot access class member set_manual_invisible!");
 		return;
@@ -103,7 +104,7 @@ void CScriptGameObject::set_manual_invisibility(bool val)
 }
 bool CScriptGameObject::get_invisible()
 {
-	CAI_Bloodsucker		*monster = smart_cast<CAI_Bloodsucker*>(m_tpGameObject);
+	CAI_Bloodsucker		*monster = smart_cast<CAI_Bloodsucker*>(object());
 	if (!monster) {
 		ai().script_engine().script_log		(ScriptStorage::eLuaMessageTypeError,"Script Object : cannot access class member get_invisible!");
 		return false;
@@ -114,7 +115,7 @@ bool CScriptGameObject::get_invisible()
 
 bool CScriptGameObject::get_manual_invisibility()
 {
-	CAI_Bloodsucker		*monster = smart_cast<CAI_Bloodsucker*>(m_tpGameObject);
+	CAI_Bloodsucker		*monster = smart_cast<CAI_Bloodsucker*>(object());
 	if (!monster) {
 		ai().script_engine().script_log		(ScriptStorage::eLuaMessageTypeError,"Script Object : cannot access class member get_manual_invisibility!");
 		return false;
@@ -122,22 +123,20 @@ bool CScriptGameObject::get_manual_invisibility()
 	return monster->is_manual_control();
 }
 
-CScriptGameObject::CScriptGameObject		(CGameObject *tpGameObject)
+CScriptGameObject::CScriptGameObject		(CGameObject *game_object)
 {
-	m_tpGameObject	= tpGameObject;
-	R_ASSERT2		(m_tpGameObject,"Null actual object passed!");
+	m_game_object	= game_object;
+	R_ASSERT2		(m_game_object,"Null actual object passed!");
 }
 
 CScriptGameObject::~CScriptGameObject		()
 {
-		 delete_data(m_callbacks);
+	delete_data		(m_callbacks);
 }
-
-
 
 CScriptGameObject *CScriptGameObject::Parent				() const
 {
-	CGameObject		*l_tpGameObject = smart_cast<CGameObject*>(m_tpGameObject->H_Parent());
+	CGameObject		*l_tpGameObject = smart_cast<CGameObject*>(object()->H_Parent());
 	if (l_tpGameObject)
 		return		(l_tpGameObject->lua_game_object());
 	else
@@ -146,41 +145,41 @@ CScriptGameObject *CScriptGameObject::Parent				() const
 
 int	CScriptGameObject::clsid				() const
 {
-	VERIFY			(m_tpGameObject);
-	return			(m_tpGameObject->clsid());
+	VERIFY			(object());
+	return			(object()->clsid());
 }
 
 LPCSTR CScriptGameObject::Name				() const
 {
-	VERIFY			(m_tpGameObject);
-	return			(*m_tpGameObject->cName());
+	VERIFY			(object());
+	return			(*object()->cName());
 }
 
 shared_str CScriptGameObject::cName				() const
 {
-	VERIFY			(m_tpGameObject);
-	return			(*m_tpGameObject->cName());
+	VERIFY			(object());
+	return			(*object()->cName());
 }
 
 LPCSTR CScriptGameObject::Section				() const
 {
-	VERIFY			(m_tpGameObject);
-	return			(*m_tpGameObject->cNameSect());
+	VERIFY			(object());
+	return			(*object()->cNameSect());
 }
 
 void CScriptGameObject::Kill					(CScriptGameObject* who)
 {
-	CEntity				*l_tpEntity = smart_cast<CEntity*>(m_tpGameObject);
+	CEntity				*l_tpEntity = smart_cast<CEntity*>(object());
 	if (!l_tpEntity) {
-		ai().script_engine().script_log			(ScriptStorage::eLuaMessageTypeError,"%s cannot access class member Kill!",*m_tpGameObject->cName());
+		ai().script_engine().script_log			(ScriptStorage::eLuaMessageTypeError,"%s cannot access class member Kill!",*object()->cName());
 		return;
 	}
-	l_tpEntity->KillEntity	(who ? who->m_tpGameObject : 0);
+	l_tpEntity->KillEntity	(who ? who->object() : 0);
 }
 
 bool CScriptGameObject::Alive					() const
 {
-	CEntityAlive		*l_tpEntityAlive = smart_cast<CEntityAlive*>(m_tpGameObject);
+	CEntityAlive		*l_tpEntityAlive = smart_cast<CEntityAlive*>(object());
 	if (!l_tpEntityAlive) {
 		ai().script_engine().script_log			(ScriptStorage::eLuaMessageTypeError,"CSciptMonster : cannot access class member Alive!");
 		return			(false);
@@ -190,15 +189,15 @@ bool CScriptGameObject::Alive					() const
 
 ALife::ERelationType CScriptGameObject::GetRelationType	(CScriptGameObject* who)
 {
-	CEntityAlive		*l_tpEntityAlive1 = smart_cast<CEntityAlive*>(m_tpGameObject);
+	CEntityAlive		*l_tpEntityAlive1 = smart_cast<CEntityAlive*>(object());
 	if (!l_tpEntityAlive1) {
-		ai().script_engine().script_log			(ScriptStorage::eLuaMessageTypeError,"%s cannot access class member!",*m_tpGameObject->cName());
+		ai().script_engine().script_log			(ScriptStorage::eLuaMessageTypeError,"%s cannot access class member!",*object()->cName());
 		return ALife::eRelationTypeDummy;
 	}
 	
-	CEntityAlive		*l_tpEntityAlive2 = smart_cast<CEntityAlive*>(who->m_tpGameObject);
+	CEntityAlive		*l_tpEntityAlive2 = smart_cast<CEntityAlive*>(who->object());
 	if (!l_tpEntityAlive2) {
-		ai().script_engine().script_log			(ScriptStorage::eLuaMessageTypeError,"%s cannot access class member!",*who->m_tpGameObject->cName());
+		ai().script_engine().script_log			(ScriptStorage::eLuaMessageTypeError,"%s cannot access class member!",*who->object()->cName());
 		return ALife::eRelationTypeDummy;
 	}
 	
@@ -208,7 +207,7 @@ ALife::ERelationType CScriptGameObject::GetRelationType	(CScriptGameObject* who)
 template <typename T>
 IC	T	*CScriptGameObject::motivation_action_manager()
 {
-	T	*manager = smart_cast<T*>(m_tpGameObject);
+	T	*manager = smart_cast<T*>(object());
 	if (!manager)
 		ai().script_engine().script_log				(ScriptStorage::eLuaMessageTypeError,"CMotivationActionManager : cannot access class member motivation_action_manager!");
 	return					(manager);
@@ -223,7 +222,7 @@ CScriptSoundInfo CScriptGameObject::GetSoundInfo()
 {
 	CScriptSoundInfo	ret_val;
 
-	CBaseMonster *l_tpMonster = smart_cast<CBaseMonster *>(m_tpGameObject);
+	CBaseMonster *l_tpMonster = smart_cast<CBaseMonster *>(object());
 	if (l_tpMonster) {
 		if (l_tpMonster->SoundMemory.IsRememberSound()) {
 			SoundElem se; 
@@ -243,7 +242,7 @@ CScriptMonsterHitInfo CScriptGameObject::GetMonsterHitInfo()
 {
 	CScriptMonsterHitInfo	ret_val;
 
-	CBaseMonster *l_tpMonster = smart_cast<CBaseMonster *>(m_tpGameObject);
+	CBaseMonster *l_tpMonster = smart_cast<CBaseMonster *>(object());
 	if (l_tpMonster) {
 		if (l_tpMonster->HitMemory.is_hit()) {
 			CGameObject *pO = smart_cast<CGameObject *>(l_tpMonster->HitMemory.get_last_hit_object());
