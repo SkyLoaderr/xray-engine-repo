@@ -29,6 +29,7 @@ void	CRender::render_lights	(light_Package& LP)
 				for (u32 pls_phase=0; pls_phase<6; pls_phase++)		{
 					phase									= PHASE_SMAP_P;
 					if (!LR.compute_xfp_1(pls_phase, L))	continue;	// frustum doesn't touch primary frustum
+					L->svis.begin							();
 					r_dsgraph_render_subspace				(L->spatial.sector, L->X.P.combine, L->position, TRUE);
 					LR.compute_xfp_2						(pls_phase, L);
 					if (mapNormal[0].size() || mapMatrix[0].size())	{
@@ -38,6 +39,7 @@ void	CRender::render_lights	(light_Package& LP)
 						RCache.set_xform_project			(L->X.P.project);
 						r_dsgraph_render_graph				(0);
 					}
+					L->svis.end								();
 				}
 			}
 		}
@@ -52,6 +54,7 @@ void	CRender::render_lights	(light_Package& LP)
 			else	{
 				phase									= PHASE_SMAP_S;
 				LR.compute_xfs_1						(0, L);
+				L->svis.begin							();
 				r_dsgraph_render_subspace				(L->spatial.sector, L->X.S.combine, L->position, TRUE);
 				LR.compute_xfs_2						(0, L);
 				if (mapNormal[0].size() || mapMatrix[0].size())	{
@@ -61,6 +64,7 @@ void	CRender::render_lights	(light_Package& LP)
 					RCache.set_xform_project			(L->X.S.project);
 					r_dsgraph_render_graph				(0);
 				}
+				L->svis.end								();
 			}
 		}
 
