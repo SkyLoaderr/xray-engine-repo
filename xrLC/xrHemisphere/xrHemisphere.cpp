@@ -366,6 +366,7 @@ extern "C"
 		int						quality,
 		BOOL					ground,
 		float					ground_scale,
+		float					energy,
 		xrHemisphereIterator*	iterator,
 		LPVOID					param
 		)
@@ -410,17 +411,27 @@ extern "C"
 		default:// NO 	
 			return;
 		}
-
-		// ITERATE
+		
+		// Calculate energy
+		float total = 0;
 		for (int i=0; i<h_count; i++)
 		{
-			float x		= -float(hemi[i][h_table[0]]);
-			float y		= -float(hemi[i][h_table[1]]);
-			float z		= -float(hemi[i][h_table[2]]);
-			float mag	= sqrtf(x*x + y*y + z*z);
-			x /= mag; y /= mag; z /= mag;
+			float E		=	(y<0)?ground_scale:1;
+			total		+=	E;
 		}
 		
+		// Iterate
+		for (int i=0; i<h_count; i++)
+		{
+			float x		=	-float(hemi[i][h_table[0]]);
+			float y		=	-float(hemi[i][h_table[1]]);
+			float z		=	-float(hemi[i][h_table[2]]);
+			float mag	=	sqrtf(x*x + y*y + z*z);
+			x /= mag;	y /= mag;	z /= mag;
+
+			float E		=	((y<0)?ground_scale:1)/total;
+
+			iterator	(x,y,z,E*energy,param);
+		}
 	}
-	
 };

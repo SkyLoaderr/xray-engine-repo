@@ -6,7 +6,7 @@
 #define XRHS_API __declspec(dllimport)
 #endif
 
-typedef void __stdcall		xrHemisphereIterator(float x, float y, float z, float scale, LPVOID param);
+typedef void __stdcall		xrHemisphereIterator(float x, float y, float z, float energy, LPVOID param);
 
 extern "C" 
 {
@@ -16,6 +16,7 @@ extern "C"
 			int						quality,
 			BOOL					ground,
 			float					ground_scale,
+			float					energy,
 			xrHemisphereIterator*	iterator,
 			LPVOID					param
 		);
