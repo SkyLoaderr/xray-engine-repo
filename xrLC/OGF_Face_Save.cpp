@@ -95,7 +95,7 @@ void	OGF::Save_Normal_PM		(CFS_Base &fs, ogf_header& H, DWORD FVF, BOOL bColors,
 	g_VB.Begin		(FVF);
 	for (itOGF_V V=vertices.begin(); V!=vertices.end(); V++)
 	{
-		if (bNeedNormals)		g_VB.Add(V,6*sizeof(float));	// Position & normal
+		if (bNeedNormals)	g_VB.Add(V,6*sizeof(float));	// Position & normal
 		else				g_VB.Add(V,3*sizeof(float));	// Position only
 		if (bColors)		g_VB.Add(&(V->Color),4);
 		for (DWORD uv=0; uv<dwRelevantUV; uv++)

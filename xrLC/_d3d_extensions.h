@@ -98,7 +98,7 @@ struct	VDeclarator	: public svector<D3DVERTEXELEMENT9, MAXD3DDECLLENGTH+1>
 	{
 		*this		= d;
 	}
-	u32		vertex	()				{ return D3DXGetDeclVertexSize(begin(),0)+1;	}
+	u32		vertex	()				{ return D3DXGetDeclVertexSize(begin(),0);	}
 	BOOL	equal	(VDeclarator& d)	
 	{ 
 		if (size()!=d.size())	return false;
