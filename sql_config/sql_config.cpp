@@ -195,22 +195,15 @@ extern "C"{
 
 
 };
-/*
-void test();
+#include "stdio.h"
 int main ()
 {
 	initLibrary();
-	test();
+	int r = testConnection("localhost\\kas_sql_srv", "sa", "KAStorka40");	
+		if (r==0)
+			printf ("All OK");
+		else
+			printf ("Failed");
+
 	deInitLibrary();
 }
-#include "MyADO.h"
-void test()
-{
-
-char conn[] =    "Provider=SQLOLEDB.1;Data Source=localhost\\kas_sql_srv;Initial Catalog=KAS;";
-
-	CMyADO MyADOObject;
-	HRESULT res = MyADOObject.Open( conn, "sa", "KAStorka40" );
-	MyADOObject.Close();
-}
-*/

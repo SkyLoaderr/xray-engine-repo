@@ -19,7 +19,7 @@
 			Name="Debug|Win32"
 			OutputDirectory="$(ProjectDir)"
 			IntermediateDirectory="Debug"
-			ConfigurationType="2"
+			ConfigurationType="1"
 			CharacterSet="2">
 			<Tool
 				Name="VCCLCompilerTool"
@@ -36,7 +36,7 @@
 				Name="VCCustomBuildTool"/>
 			<Tool
 				Name="VCLinkerTool"
-				OutputFile="$(OutDir)/sql_config.dll"
+				OutputFile="e:\exchange2\!bb\sql_config.exe"
 				LinkIncremental="2"
 				GenerateDebugInformation="TRUE"
 				ProgramDatabaseFile="$(OutDir)/sql_config.pdb"
@@ -116,6 +116,18 @@
 	</References>
 	<Files>
 		<File
+			RelativePath=".\MyADO.cpp">
+			<FileConfiguration
+				Name="Debug|Win32"
+				ExcludedFromBuild="TRUE">
+				<Tool
+					Name="VCCLCompilerTool"/>
+			</FileConfiguration>
+		</File>
+		<File
+			RelativePath=".\MyADO.h">
+		</File>
+		<File
 			RelativePath=".\setupMSDE.ini">
 		</File>
 		<File
@@ -125,6 +137,15 @@
 				<Tool
 					Name="VCCLCompilerTool"
 					UsePrecompiledHeader="0"/>
+			</FileConfiguration>
+		</File>
+		<File
+			RelativePath=".\sql_config_ado.cpp">
+			<FileConfiguration
+				Name="Debug|Win32"
+				ExcludedFromBuild="TRUE">
+				<Tool
+					Name="VCCLCompilerTool"/>
 			</FileConfiguration>
 		</File>
 		<File
