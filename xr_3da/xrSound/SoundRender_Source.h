@@ -20,6 +20,10 @@ public:
 	u32						dwBytesTotal;
 //	u32						dwBytesPerSec;
 	u32						dwBytesPerMS;
+
+	float					m_fMinDist;
+	float					m_fMaxDist;
+	u32						m_uGameType;
 private:
 	void					LoadWave 				(LPCSTR name, BOOL b3D);
 public:

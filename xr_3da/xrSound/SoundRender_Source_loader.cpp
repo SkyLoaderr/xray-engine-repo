@@ -62,6 +62,19 @@ void CSoundRender_Source::LoadWave	(LPCSTR pName, BOOL b3D)
 	dwBytesPerMS			= wfxdest.nAvgBytesPerSec/1000;
 //	dwBytesPerSec			= wfxdest.nAvgBytesPerSec;
 	dwTimeTotal				= sdef_source_footer + (dwBytesTotal*1000)/wfxdest.nAvgBytesPerSec;
+
+	vorbis_comment*	ovm		= ov_comment(ovf,-1);
+	if (ovm->comments){
+		IReader F			(ovm->user_comments[0],ovm->comment_lengths[0]);
+		u32 vers			= F.r_u32	();
+		if (vers==OGG_COMMENT_VERSION){
+			m_fMinDist		= F.r_float	();
+			m_fMaxDist		= F.r_float	();
+			m_uGameType		= F.r_u32	();
+		}else{
+			Log				("! Invalid ogg-comment version in file: ",pName);
+		}
+	}
 }
 
 void CSoundRender_Source::load(LPCSTR name,	BOOL b3D)
