@@ -7,6 +7,7 @@
 #include "portal.h"
 #include "xr_ini.h"
 #include "xrLevel.h"
+#include "fbasicvisual.h"
 
 #include "x_ray.h"
 #include "XR_SmallFont.h"
@@ -39,6 +40,9 @@ void CObject::setEnabled		(BOOL _enabled)
 	bEnabled = _enabled;	
 	if (cfModel) cfModel->Enable(_enabled); 
 }
+void	CObject::svCenter			(Fvector& C)	const	{ VERIFY(pVisual); svTransform.transform_tiny(C,pVisual->bv_Position);	}
+void	CObject::clCenter			(Fvector& C)	const	{ VERIFY(pVisual); clTransform.transform_tiny(C,pVisual->bv_Position);	}
+float	CObject::Radius				()				const	{ VERIFY(pVisual); return pVisual->bv_Radius;							}
 
 //----------------------------------------------------------------------
 // Class	: CXR_Object

@@ -1,12 +1,13 @@
 #ifndef __XR_OBJECT_H__
 #define __XR_OBJECT_H__
 
-#include "fbasicvisual.h"
+// #include "fbasicvisual.h"
 // #include "xr_collide_form.h"
 #include "fcontroller.h"
 #include "xrSheduler.h"
 
 // refs
+class	ENGINE_API CVisual;
 class	ENGINE_API CCFModel;
 class	ENGINE_API CInifile;
 class	ENGINE_API CSector;
@@ -76,14 +77,14 @@ public:
 	
 	// Geometry xform
 	void								UpdateTransform	(void);
-	IC void								svCenter		(Fvector& C) const	{ VERIFY(pVisual); svTransform.transform_tiny(C,pVisual->bv_Position);	}
-	IC void								clCenter		(Fvector& C) const	{ VERIFY(pVisual); clTransform.transform_tiny(C,pVisual->bv_Position);	}
+	void								svCenter		(Fvector& C) const;
+	void								clCenter		(Fvector& C) const;
 	IC const Fmatrix&					svXFORM			()			 const	{ return svTransform;	}
 	IC const Fmatrix&					clXFORM			()			 const	{ return clTransform;	}
 	
 	IC CSector*							Sector			()					{ return pSector; }
 
-	IC float							Radius			() const			{ VERIFY(pVisual); return pVisual->bv_Radius;}
+	virtual float						Radius			() const;
 	virtual Fvector&					Position		() 					{ return vPosition; }
 	IC Fvector&							Direction		() 					{ return mRotate.k; }
 	IC Fmatrix&							Rotation		()					{ return mRotate;	}
