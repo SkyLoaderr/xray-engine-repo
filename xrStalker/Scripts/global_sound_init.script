@@ -16,7 +16,7 @@ function main()
 	prof_hmm = sound_object("scripts\\stalker_prof_replics\\prof_hmm")
 	prof_hmm2 = sound_object("scripts\\stalker_prof_replics\\prof_hmm2")
 	prof_hmm3 = sound_object("scripts\\stalker_prof_replics\\prof_hmm4")
-	prof_hmm4 = sound_object("scripts\\stalker_prof_replics\\prof_hmm5")
+--	prof_hmm4 = sound_object("scripts\\stalker_prof_replics\\prof_hmm5")
 	prof_e = sound_object("scripts\\stalker_prof\\prof_e")
 	prof_eh = sound_object("scripts\\stalker_prof\\prof_eh")
 
