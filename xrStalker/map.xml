@@ -27,7 +27,7 @@
 		<text x="0" y="0" font="normal" r="255" g="255" b="255"></text>
 	</static>
 
-	<gl_button x="17" y="39" width="128" height="256">
+	<gl_button x="11" y="11" width="128" height="256">
 		<text font="letterica16" r="255" g="255" b="255"></text>
 		<texture>ui\ui_global_map_small</texture>
 	</gl_button>
