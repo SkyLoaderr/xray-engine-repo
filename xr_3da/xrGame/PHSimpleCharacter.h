@@ -151,7 +151,7 @@ public:
 																					};
 	virtual	const Fvector&  ControlAccel						()const				{return m_acceleration;}
 	virtual		void		SetMas								(dReal mass)		;
-
+	virtual		float		Mass								()					{return m_mass;};
 	virtual		void		SetPhysicsRefObject					(CPhysicsShellHolder* ref_object);
 
 	virtual		void		CaptureObject						(dBodyID body,const dReal* anchor);

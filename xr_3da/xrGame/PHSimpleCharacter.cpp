@@ -729,7 +729,7 @@ void CPHSimpleCharacter::SetAcceleration(Fvector accel){
 	m_acceleration=accel;
 }
 
-static const float pull_force=20.f;
+static const float pull_force=25.f;
 void CPHSimpleCharacter::ApplyAcceleration() 
 {
 	//	if (Level().iGetKeyState(DIK_RSHIFT))

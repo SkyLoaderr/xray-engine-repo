@@ -280,7 +280,7 @@ float CClimableObject::DDToPlain(CPHCharacter *actor,Fvector &dir)const
 bool CClimableObject::InTouch(CPHCharacter *actor)const
 {
 	Fvector dir;
-	const float normal_tolerance=0.005f;
+	const float normal_tolerance=0.05f;
 	float foot_radius=actor->FootRadius();
 	return (DDToPlain(actor,dir)<foot_radius+m_norm.magnitude()+normal_tolerance&&
 			DDSideToAxis(actor,dir)<m_side.magnitude())&&InRange(actor);
