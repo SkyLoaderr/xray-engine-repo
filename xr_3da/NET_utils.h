@@ -113,45 +113,45 @@ public:
 	{
 		return r_pos>=B.count;
 	}
-
+	
 	// reading - utilities
-	IC Fvector	r_vec3			( )	{ Fvector a; r(&a,3*sizeof(float));	return a;	} // vec3
-	IC Fvector4 r_vec4			( )	{ Fvector4 a;r(&a,4*sizeof(float));	return a;	} // vec4
-	IC float	r_float			( )	{ float a; r(&a,4);	return a;	}			// float
-	IC u64		r_u64			( )	{	u64 a; r(&a,8);	return a;	}			// qword (8b)
-	IC s64		r_s64			( )	{	s64 a; r(&a,8); return a; 	}			// qword (8b)
-	IC u32		r_u32			( )	{	u32 a; r(&a,4);	return a;	}			// dword (4b)
-	IC s32		r_s32			( )	{	s32 a; r(&a,4);	return a; 	}			// dword (4b)
-	IC u32		r_u24			( )	{	u32 a=0; r(&a,3);return a;	}			// dword (3b)
-	IC u16		r_u16			( )	{	u16 a; r(&a,2);	return a; 	}			// word (2b)
-	IC s16		r_s16			( )	{	s16 a; r(&a,2); return a; 	}			// word (2b)
-	IC u8		r_u8			( )	{	 u8 a; r(&a,1); return a; 	}			// byte (1b)
-	IC s8		r_s8			( )	{	 s8 a; r(&a,1); return a; 	}			// byte (1b)
-
-	IC float	r_float_q16		( float min, float max)
+	IC void		r_vec3			(Fvector& A)	{ r(&A,3*sizeof(float));		} // vec3
+	IC void		r_vec4			(Fvector4& A)	{ r(&A,4*sizeof(float));		} // vec4
+	IC void		r_float			(float& A )		{ r(&A,4);						} // float
+	IC void 	r_u64			(u64& A)		{ r(&A,8);						} // qword (8b)
+	IC void 	r_s64			(s64& A)		{ r(&A,8);						} // qword (8b)
+	IC void 	r_u32			(u32& A)		{ r(&A,4);						} // dword (4b)
+	IC void		r_s32			(s32& A)		{ r(&A,4);						} // dword (4b)
+	IC void		r_u24			(u32& A)		{ A=0; r(&A,3);					} // dword (3b)
+	IC void		r_u16			(u16& A)		{ r(&A,2);						} // word (2b)
+	IC void		r_s16			(s16& A)		{ r(&A,2);						} // word (2b)
+	IC void		r_u8			(u8&  A)		{ r(&A,1);						} // byte (1b)
+	IC void		r_s8			(s8&  A)		{ r(&A,1);						} // byte (1b)
+	
+	IC void		r_float_q16		(float& A, float min, float max)
 	{
-		u16		val = r_u16();
-		float	v	= (float(val)/65535.f)*(max-min) + min;
-		VERIFY	(v>=min && v<=max);
-		return	v;
+		u16		val;
+		r_u16	(val);
+		A		= (float(val)/65535.f)*(max-min) + min;
+		VERIFY	(A>=min && A<=max);
 	}
-	IC float	r_float_q8		( float min, float max)
+	IC void		r_float_q8		(float& A, float min, float max)
 	{
-		u8		val = r_u8();
-		float	v	= (float(val)/255.f)*(max-min) + min;
-		VERIFY	(v>=min && v<=max);
-		return	v;
+		u8		val;
+		r_u8	(val);
+		A		= (float(val)/255.f)*(max-min) + min;
+		VERIFY	(A>=min && A<=max);
 	}
-	IC float	r_angle16		( )	{ return r_float_q16(0,PI_MUL_2);	}
-	IC float	r_angle8		( )	{ return r_float_q8	(0,PI_MUL_2);	}
-	IC Fvector	r_dir			( ) { Fvector D; pvDecompress(D,r_u16()); return D; }
+	IC void		r_angle16		(float& A)		{ r_float_q16	(A,0,PI_MUL_2);	}
+	IC void		r_angle8		(float& A)		{ r_float_q8	(A,0,PI_MUL_2);	}
+	IC void		r_dir			(Fvector& A)	{ u16 t; r_u16(t); pvDecompress  (A,t); }
 
-	IC Fvector	r_sdir			( )
+	IC void		r_sdir			(Fvector& A)
 	{
-		Fvector	D;
-		pvDecompress	(D,r_u16());
-		D.mul			(r_float());
-		return	D;
+		u16	t;	r_u16	(t);
+		float s;r_float	(s);
+		pvDecompress	(A,t);
+		A.mul			(s);
 	}
 
 	IC void		r_string		( LPSTR S )

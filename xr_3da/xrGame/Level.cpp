@@ -54,6 +54,7 @@ CLevel::~CLevel()
 // Game interface ////////////////////////////////////////////////////
 void CLevel::g_cl_Spawn		(LPCSTR name, int rp, int team, int squad, int group)
 {
+	Fvector		dummyPos,dummyAngle; dummyPos.set(0,0,0); dummyAngle.set(0,0,0);
 	NET_Packet	P;
 	P.w_begin	(M_SPAWN);
 	P.w_string	(name);
@@ -62,10 +63,12 @@ void CLevel::g_cl_Spawn		(LPCSTR name, int rp, int team, int squad, int group)
 	P.w_u8		(squad);
 	P.w_u8		(group);
 	P.w_u8		((rp>=0)?u8(rp):0xff);
-	P.w_u16		(0);
-	P.w_u8		(0);
-	P.w_u16		(1);		// data size
-	
+	P.w_vec3	(dummyPos);
+	P.w_vec3	(dummyAngle);
+	P.w_u16		(0);		// srv-id	| by server
+	P.w_u8		(0);		// local	| by server
+	P.w_u16		(2);		// data size
+	P.w_u16		(M_SPAWN_OBJECT_ACTIVE);
 	Send		(P,net_flags(TRUE));
 }
 
@@ -75,7 +78,7 @@ void CLevel::g_sv_Spawn		(NET_Packet* Packet)
 	NET_Packet&	P = *Packet;
 	u16			type;
 	P.r_begin	(type);
-	R_ASSERT	(type==M_SV_SPAWN);
+	R_ASSERT	(type==M_SPAWN);
 
 	// Read definition
 	char		s_name[128],s_replace[128];
