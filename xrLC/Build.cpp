@@ -6,6 +6,8 @@
 #include "xrThread.h"
 #include "xrSyncronize.h"
 
+using namespace			std;
+
 xr_vector<OGF_Base *>	g_tree;
 BOOL					b_R2	= FALSE;
 CThreadManager			mu_base;
@@ -251,10 +253,13 @@ void CBuild::Run	(LPCSTR P)
 	{
 		b_glow&	G	= glows[i];
 		fs->w		(&G,4*sizeof(float));
-		string		sid		= 
-			string(shader_render[materials[G.dwMaterial].shader].name)	+	"\"	+
-			string(textures		[materials[G.dwMaterial].surfidx].name);
-		fs->w_u16	(RegisterShader(sid.c_str()));
+		string1024	sid;
+		strconcat	(sid,
+			shader_render[materials[G.dwMaterial].shader].name,
+			"/",
+			textures		[materials[G.dwMaterial].surfidx].name
+			);
+		fs->w_u16	(RegisterShader(sid));
 	}
 	fs->close_chunk	();
 

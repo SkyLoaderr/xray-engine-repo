@@ -6,6 +6,8 @@
 #include "fmesh.h"
 #include "xrOcclusion.h"
 
+using namespace std;
+
 void set_status(char* N, int id, int f, int v)
 {
 	string1024 status_str;
@@ -197,7 +199,7 @@ void OGF_Node::Save	(IWriter &fs)
 	ogf_header H;
 	H.format_version	= xrOGF_FormatVersion;
 	H.type				= MT_HIERRARHY;
-	H.flags				= 0;
+	H.shader_id			= 0;
 	fs.w				(&H,sizeof(H));
 	fs.close_chunk		();
 
@@ -216,13 +218,16 @@ void OGF_LOD::Save		(IWriter &fs)
 
 	// Header
 	ogf_header			H;
-	string		sid		= 
-		string(pBuild->shader_render[pBuild->materials[lod_Material].shader].name)	+	"\"	+
-		string(pBuild->textures[pBuild->materials[lod_Material].surfidx].name);
+	string1024			sid;
+	strconcat			(sid,
+		pBuild->shader_render[pBuild->materials[lod_Material].shader].name,
+		"/",
+		pBuild->textures[pBuild->materials[lod_Material].surfidx].name
+		);
 	fs.open_chunk		(OGF_HEADER);
 	H.format_version	= xrOGF_FormatVersion;
 	H.type				= MT_LOD;
-	H.shader_id			= RegisterShader(sid.c_str());
+	H.shader_id			= RegisterShader(sid);
 	fs.w				(&H,sizeof(H));
 	fs.close_chunk		();
 

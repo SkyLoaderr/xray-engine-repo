@@ -5,6 +5,8 @@
 #include "fs.h"
 #include "fmesh.h"
 
+using namespace std;
+
 extern u16	RegisterShader		(LPCSTR T);
 extern void	geom_batch_average	(u32 verts, u32 faces);
 

@@ -18,10 +18,10 @@ u32						g_batch_5000;
 
 u16		RegisterShader		(LPCSTR T) 
 {
-	for (u32 it=0; it<g_Strings.size(); it++)
-		if (0==stricmp(T,g_Strings[it]))	return it;
-	g_Strings.push_back		(xr_strdup(T));
-	return g_Strings.size	()-1;
+	for (u32 it=0; it<g_Shaders.size(); it++)
+		if (0==stricmp(T,g_Shaders[it]))	return it;
+	g_Shaders.push_back		(xr_strdup(T));
+	return g_Shaders.size	()-1;
 }
 
 void	geom_batch_average	(u32 verts, u32 faces)
