@@ -79,6 +79,9 @@ class SceneBuilder{
 	int 	BuildMaterial	(CSurface* surf, int sector_num, int lod_id);
 
     void 	SaveBuild		();
+
+	void 	PF_ProcessOne	(_finddata_t& F, const char* path);
+	void 	PF_Recurse		(const char* path);
 protected:
 	friend void SaveBuild	();
     friend class TfrmBuildProgress;

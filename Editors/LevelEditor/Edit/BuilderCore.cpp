@@ -21,37 +21,43 @@ bool SceneBuilder::PreparePath(){
 }
 //------------------------------------------------------------------------------
 
-bool SceneBuilder::PrepareFolders(){
-	_finddata_t fdata;
-	memset(&fdata,0,sizeof(fdata));
+void SceneBuilder::PF_ProcessOne(_finddata_t& F, const char* path)
+{
+	string256	N;
+	strcpy		(N,path);
+	strcat		(N,F.name);
 
-	char findmask[MAX_PATH];
-	strcpy(findmask,"*.*" );
-	m_LevelPath.Update( findmask );
-
-	int fhandle = _findfirst(findmask,&fdata);
-	if( fhandle > 0 ){
-
-		// count files
-
-		int filecount = 1;
-		while( 0==_findnext(fhandle,&fdata) )
-			filecount++;
-		_findclose( fhandle );
-
-		// search & remove
-		memset(&fdata,0,sizeof(fdata));
-		fhandle = _findfirst(findmask,&fdata);
-		do{
-			char fullname[MAX_PATH];
-            if (strcmp(fdata.name,".")==0 || strcmp(fdata.name,"..")==0) continue;
-			strcpy( fullname, fdata.name );
-			m_LevelPath.Update( fullname );
-			unlink( fullname );
-		} while( 0==_findnext(fhandle,&fdata) );
-		_findclose( fhandle );
+	if (F.attrib&_A_SUBDIR) {
+		if (0==strcmp(F.name,"."))	return;
+		if (0==strcmp(F.name,"..")) return;
+		strcat(N,"\\");
+		PF_Recurse(N);
+        RmDir(N);
+	} else {
+    	unlink(N);
 	}
+}
 
+void SceneBuilder::PF_Recurse(const char* path)
+{
+    _finddata_t		sFile;
+    int				hFile;
+
+	string256		N;
+	string256		dst;
+
+    strcpy			(N,path);
+    strcat			(N,"*.*");
+    R_ASSERT		((hFile=_findfirst(N, &sFile)) != -1);
+    PF_ProcessOne	(sFile,path);
+    while			( _findnext( hFile, &sFile ) == 0 )
+        PF_ProcessOne(sFile,path);
+    _findclose		( hFile );
+}
+
+bool SceneBuilder::PrepareFolders()
+{
+	PF_Recurse		(m_LevelPath.m_Path);
 	return true;
 }
 //------------------------------------------------------------------------------
