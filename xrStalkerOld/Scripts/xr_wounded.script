@@ -278,8 +278,8 @@ function action_help:initialize ()
        end   
     end
     
---    state_mgr.set_state(self.object, "help_me")
-    state_mgr.set_state(self.object, "wounded")
+    state_mgr.set_state(self.object, "help_me")
+
     self.first_sound = true
 end
 ------------
