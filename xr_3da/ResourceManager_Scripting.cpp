@@ -291,6 +291,7 @@ ShaderElement*		CBlender_Compile::_lua_Compile	(LPCSTR namesp, LPCSTR name)
 	r_End				();
 	lua_setgcthreshold	(LSVM,0);
 	Memory.dbg_check	();
-
-	return				Device.Resources->_CreateElement(E);
+	ShaderElement*	_r	= Device.Resources->_CreateElement(E);
+	Memory.dbg_check	();
+	return			_r;
 }

@@ -82,6 +82,12 @@ void	xrMemory::dbg_check		()
 		u32*		_shred	= (u32*)(_ptr + debug_info[it]._size);
 		R_ASSERT2			(u32(-1)==*_shred, "Memory overrun error");
 	}
+
+	// crt-check
+	R_ASSERT2(_HEAPOK==_heapchk(),					"CRT heap corruption");
+	R_ASSERT2(HeapValidate(GetProcessHeap(),0,0),	"Win32 heap corruption");
+
+	// leave
 	debug_mode				= TRUE;
 	debug_cs.Leave			();
 }
