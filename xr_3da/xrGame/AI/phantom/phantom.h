@@ -11,13 +11,23 @@ class CPhantom : public CEntity {
 	typedef	CEntity inherited;
 
 	MotionID		m_motion;
+	
+	LPCSTR			m_particles;
 
+	CObject			*m_enemy;
+
+	float			fDHeading;
+	float			fSpeed;	
+	float			fASpeed;
+	Fvector			vHPB;
+	
 public:
 					CPhantom					();
 	virtual			~CPhantom					();
 	
 	virtual void	Load						( LPCSTR section );
 	virtual BOOL	net_Spawn					( CSE_Abstract* DC );
+	virtual void	net_Destroy					();
 	
 	virtual void	net_Export					(NET_Packet& P);
 	virtual void	net_Import					(NET_Packet& P);
@@ -30,18 +40,18 @@ public:
 	
 	virtual void	Die							(CObject* who){inherited::Die(who);};
 
-	//virtual void	create_physic_shell			() {}
-
-	static void	__stdcall animation_callback	(CBlend* B);
-
 	virtual BOOL	IsVisibleForHUD				() {return false;}
 	virtual bool	IsVisibleForZones			() {return false;}
 
 	virtual BOOL	UsedAI_Locations			() {return false;}
 
-	virtual BOOL	renderable_ShadowGenerate	() { return FALSE;	}
-	virtual BOOL	renderable_ShadowReceive	() { return FALSE;	}
+	//virtual BOOL	renderable_ShadowGenerate	() { return TRUE;	}
+	//virtual BOOL	renderable_ShadowReceive	() { return TRUE;	}
 
 	virtual CEntity*cast_entity					() {return this;}
+
+			void	PlayParticles				();
+
+			void	UpdatePosition				();
 };
 
