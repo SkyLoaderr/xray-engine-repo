@@ -18,7 +18,6 @@ class CBaseMonster;
 #include "base_monster_state_exploreNDE.h"
 #include "base_monster_state_exploreDNE.h"
 #include "base_monster_state_panic.h"
-#include "base_monster_state_misc.h"
 #include "base_monster_run_away.h"
 #include "base_monster_state_controlled.h"
 
