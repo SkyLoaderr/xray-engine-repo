@@ -236,9 +236,12 @@ void TUI::Idle()
         if (est==esEditLightAnim) TfrmEditLightAnim::OnIdle();
     }
         // show hint
-    ShowObjectHint();
+    ShowObjectHint	();
 
-	ResetBreak();
+	ResetBreak		();
+	// check mail    
+    CheckMailslot	();
+    if (bNeedQuit) 	frmMain->Close();
 }
 //---------------------------------------------------------------------------
 void TUI::RealUpdateScene(){

@@ -52,6 +52,7 @@ protected:
 	bool bRedraw;
     bool bUpdateScene;
 	bool bResize;
+    bool bNeedQuit;
 protected:
 	long m_StartTime;
 
@@ -90,6 +91,9 @@ protected:
 	AnsiString m_LastHint;
     bool  m_bHintShowing;
     POINT m_HintPoint;
+
+    // mailslot
+    HANDLE			hMailSlot;
 public:
     void ShowObjectHint();
     bool ShowHint(const AStringVec& SS);
@@ -100,6 +104,9 @@ public:
 public:
     				TUI				();
     virtual 		~TUI			();
+
+    void			Quit			()	{	bNeedQuit=true; }
+    
     IC HANDLE 		GetHWND			()	{   return m_D3DWindow->Handle; }
     int 			GetRenderWidth	()	{   return Device.dwWidth; }
     int 			GetRenderHeight	()	{   return Device.dwHeight; }
@@ -189,6 +196,12 @@ public:
 
     void 			OnDeviceCreate		();
     void			OnDeviceDestroy		();
+
+    // mailslot
+	void 			CreateMailslot		();
+	void 			CheckMailslot		();
+	void 			OnReceiveMail		(LPCSTR msg);
+//	void 			SendMail			();
 };
 //---------------------------------------------------------------------------
 extern TUI UI;

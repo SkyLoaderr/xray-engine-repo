@@ -319,7 +319,8 @@ BOOL SceneBuilder::BuildSun(b_light* b, DWORD usage, svector<WORD,16>* sectors)
     if (usage&CLight::flAffectStatic){
 	    b_params& P			= Scene.m_LevelOp.m_BuildParams;
     	if (!P.area_quality){
-        	// single light	        l_light_static.push_back(b_light_static());
+        	// single light	        
+            l_light_static.push_back(b_light_static());
     	    b_light_static& sl	= l_light_static.back();
 	        sl.controller_ID 	= b->controller_ID;
     	    sl.data			    = b->data;

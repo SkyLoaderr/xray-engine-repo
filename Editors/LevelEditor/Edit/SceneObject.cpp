@@ -201,32 +201,19 @@ bool CSceneObject::RayPick(float& dist, Fvector& S, Fvector& D, SRayPickInfo* pi
 	return false;
 }
 
-bool CSceneObject::BoxPick(const Fbox& box, SBoxPickInfoVec& pinf){
+bool CSceneObject::BoxPick(const Fbox& box, SBoxPickInfoVec& pinf)
+{
 	if (!m_pRefs) return false;
 	return m_pRefs->BoxPick(this, box, _ITransform(), pinf);
 }
 
-void CSceneObject::PivotScale(const Fmatrix& prev_inv, const Fmatrix& current, Fvector& amount ){
-    if (IsDynamic()){
-    	ELog.Msg(mtError,"Dynamic object %s - can't scale.", Name);
-        return;
-    }
-	inherited::PivotScale(prev_inv,current,amount);
-}
-
-void CSceneObject::Scale( Fvector& amount ){
-    if (IsDynamic()){
-    	ELog.Msg(mtError,"Dynamic object %s - can't scale.", Name);
-        return;
-    }
-	inherited::Scale(amount);
-}
-
-void CSceneObject::GetFullTransformToWorld( Fmatrix& m ){
+void CSceneObject::GetFullTransformToWorld( Fmatrix& m )
+{
     m.set( _Transform() );
 }
 
-void CSceneObject::GetFullTransformToLocal( Fmatrix& m ){
+void CSceneObject::GetFullTransformToLocal( Fmatrix& m )
+{
     m.invert(_Transform());
 }
 
@@ -238,7 +225,8 @@ CEditableObject* CSceneObject::SetReference(LPCSTR ref_name)
     return m_pRefs;
 }
 
-void CSceneObject::OnFrame(){
+void CSceneObject::OnFrame()
+{
 	inherited::OnFrame();
 	if (!m_pRefs) return;
 	if (m_pRefs) m_pRefs->OnFrame();

@@ -83,7 +83,7 @@ bool TUI::Command( int _Command, int p1, int p2 ){
     	bRes = Scene.IsModified();
 		break;
 	case COMMAND_QUIT:
-		frmMain->Close();
+    	Quit();
     	break;
 	case COMMAND_EXIT:{
 	    EEditorState est = GetEState();

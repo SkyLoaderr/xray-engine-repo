@@ -636,7 +636,7 @@ bool EScene::Validate(bool bNeedOkMsg, bool bTestPortal){
     for(ObjectIt it=lst.begin();it!=lst.end();it++){
     	CEditableObject* O = ((CSceneObject*)(*it))->GetReference(); R_ASSERT(O);
         if (O->IsFlag(CEditableObject::eoHOM)){ bHasHOM = true; break; }
-    }
+    }                            
     if (!bHasHOM)
     	if (mrNo==ELog.DlgMsg(mtConfirmation,TMsgDlgButtons() << mbYes << mbNo,"Level doesn't contain HOM.\nContinue anyway?"))
         	return false;
@@ -654,10 +654,10 @@ bool EScene::Validate(bool bNeedOkMsg, bool bTestPortal){
 //    	ELog.DlgMsg(mtError,"*ERROR: Compute portals before compiling.");
 //        return false;
 //	}
-//	if (ObjCount(OBJCLASS_GLOW)==0){
-//    	ELog.DlgMsg(mtError,"*ERROR: Can't found 'Glow'.\nPlease add at least one.");
-//		return false;
-//	}
+	if (ObjCount(OBJCLASS_GLOW)==0){
+    	ELog.DlgMsg(mtError,"*ERROR: Can't found 'Glow'.\nPlease add at least one.");
+		return false;
+	}
     if (FindDuplicateName()){
     	ELog.DlgMsg(mtError,"*ERROR: Found duplicate object name.\nResolve this problem and try again.");
         return false;

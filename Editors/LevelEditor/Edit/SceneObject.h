@@ -70,6 +70,15 @@ public:
     virtual Fvector& GetRotation			()	{return m_ActiveOMotion?m_vMotionRotation:FRotation; }
     virtual void 	SetPosition				(Fvector& pos)	{ if (m_ActiveOMotion) m_vMotionPosition.set(pos); else FPosition.set(pos);	UpdateTransform();}
 	virtual void 	SetRotation				(Fvector& rot)	{ if (m_ActiveOMotion) m_vMotionRotation.set(rot); else FRotation.set(rot);	UpdateTransform();}
+    virtual void 	SetScale				(Fvector& scale)
+    { 
+    	if (m_pRefs&&m_pRefs->IsFlag(CEditableObject::eoDynamic)){
+        	ELog.Msg(mtError,"Dynamic object %s - can't scale.", Name);
+        }else{
+			FScale.set(scale); 
+            UpdateTransform();
+        }
+    }
 protected:
 	typedef CCustomObject inherited;
     int				m_iBlinkTime;           
@@ -120,10 +129,6 @@ public:
 	virtual bool 	RayPick					(float& dist, Fvector& S, Fvector& D, SRayPickInfo* pinf=0);
 	virtual bool 	FrustumPick				(const CFrustum& frustum);
     virtual bool 	SpherePick				(const Fvector& center, float radius);
-
-    // change position/orientation methods
-	virtual void 	PivotScale				(const Fmatrix& prev_inv, const Fmatrix& current, Fvector& amount);
-	virtual void 	Scale					(Fvector& amount);
 
     // get orintation/bounding volume methods
 	virtual bool 	GetBox					(Fbox& box);

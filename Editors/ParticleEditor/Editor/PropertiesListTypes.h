@@ -33,6 +33,7 @@ enum EPropType{
 	PROP_A_TEXTURE,
     PROP_LIGHTANIM,
     PROP_LIBOBJECT,
+    PROP_LIBSOUND,
     PROP_ENTITY,
 	PROP_WAVE 			
 };
@@ -770,6 +771,12 @@ namespace PROP{
     {
         TextValue* V	= new TextValue(lim,after,before,draw,change);
         V->type			= PROP_LIBOBJECT;
+        return V;
+    }
+    TextValue*			CreateLibSound(int lim, TAfterEdit after=0, TBeforeEdit before=0, TOnDrawValue draw=0, TOnChange change=0)
+    {
+        TextValue* V	= new TextValue(lim,after,before,draw,change);
+		V->type			= PROP_LIBSOUND;
         return V;
     }
 	TextValue* 			CreateEntity	(int lim, TAfterEdit after=0, TBeforeEdit before=0, TOnDrawValue draw=0, TOnChange change=0)

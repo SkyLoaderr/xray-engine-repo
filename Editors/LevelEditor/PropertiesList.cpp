@@ -371,6 +371,7 @@ void __fastcall TProperties::tvPropertiesItemDraw(TObject *Sender,
                 else			   	Surface->Draw(R.Left,R.Top+3,m_BMDot);
             }break;
             case PROP_WAVE:
+            case PROP_LIBSOUND:
             case PROP_LIGHTANIM:
             case PROP_LIBOBJECT:
             case PROP_ENTITY:
@@ -544,6 +545,7 @@ void __fastcall TProperties::tvPropertiesMouseDown(TObject *Sender,
         case PROP_WAVE: 			WaveFormClick(item); 		break;
         case PROP_FCOLOR: 			
         case PROP_COLOR: 			ColorClick(item); 			break;
+        case PROP_LIBSOUND:
         case PROP_LIGHTANIM:
         case PROP_LIBOBJECT:
         case PROP_ENTITY:
@@ -752,12 +754,13 @@ void __fastcall TProperties::CustomTextClick(TElTreeItem* item)
 	if (V->OnBeforeEdit) 	V->OnBeforeEdit(V,&edit_val);
     LPCSTR new_val=0;
     switch (V->type){
-    case PROP_ESHADER:		new_val	= TfrmChoseItem::SelectShader(edit_val.c_str());		break;
-	case PROP_CSHADER:		new_val	= TfrmChoseItem::SelectShaderXRLC(edit_val.c_str());	break;
+    case PROP_ESHADER:		new_val	= TfrmChoseItem::SelectShader(edit_val.c_str());			break;
+	case PROP_CSHADER:		new_val	= TfrmChoseItem::SelectShaderXRLC(edit_val.c_str());		break;
     case PROP_TEXTURE:		new_val = TfrmChoseItem::SelectTexture(false,edit_val.c_str(),true);break;
-	case PROP_LIGHTANIM:	new_val = TfrmChoseItem::SelectLAnim(false,0,edit_val.c_str());	break;
-    case PROP_LIBOBJECT:	new_val = TfrmChoseItem::SelectObject(false,0,edit_val.c_str());break;
-    case PROP_ENTITY:		new_val = TfrmChoseItem::SelectEntity(edit_val.c_str());		break;
+	case PROP_LIGHTANIM:	new_val = TfrmChoseItem::SelectLAnim(false,0,edit_val.c_str());		break;
+    case PROP_LIBOBJECT:	new_val = TfrmChoseItem::SelectObject(false,0,edit_val.c_str());	break;
+    case PROP_ENTITY:		new_val = TfrmChoseItem::SelectEntity(edit_val.c_str());			break;
+    case PROP_LIBSOUND:		new_val = TfrmChoseItem::SelectSound(false,edit_val.c_str(),true);	break;
     default: THROW2("Unknown prop");
     }
     if (new_val){

@@ -88,6 +88,17 @@ const char* _CopyVal ( const char* src, char* dst, char separator )
 	return		dst;
 }
 
+const char* _CopyVal ( const char* src, AnsiString& dst, char separator )
+{
+	const char*	p;
+	DWORD		n;
+	p			= strchr	( src, separator );
+	n			= (p>0) ? (p-src) : strlen(src);
+    dst			= src;
+    dst			= dst.Delete(n+1,dst.Length());
+	return		dst.c_str();
+}
+
 int				_GetItemCount ( const char* src, char separator )
 {
 	const char*	res			= src;
@@ -104,7 +115,7 @@ int				_GetItemCount ( const char* src, char separator )
 	return		cnt;
 }
 
-char* _GetItem ( const char* src, int index, char* dst, char separator, char* def )
+LPCSTR _GetItem ( const char* src, int index, char* dst, char separator, char* def )
 {
 	const char*	ptr;
 	ptr			= _SetPos	( src, index, separator );
@@ -114,7 +125,18 @@ char* _GetItem ( const char* src, int index, char* dst, char separator, char* de
 	return		dst;
 }
 
-char* _GetItems ( LPCSTR src, int idx_start, int idx_end, LPSTR dst, char separator ){
+LPCSTR _GetItem ( const char* src, int index, AnsiString& dst, char separator, char* def )
+{
+	const char*	ptr;
+	ptr			= _SetPos	( src, index, separator );
+	if( ptr )	_CopyVal	( ptr, dst, separator );
+		else	dst = def;
+    dst 		= dst.Trim();
+	return		dst.c_str();
+}
+
+LPCSTR _GetItems ( LPCSTR src, int idx_start, int idx_end, LPSTR dst, char separator )
+{
 	char* n = dst;
     int level = 0;
  	for (LPCSTR p=src; *p!=0; p++){
@@ -125,6 +147,18 @@ char* _GetItems ( LPCSTR src, int idx_start, int idx_end, LPSTR dst, char separa
     }
     *n++ = '\0';
 	return dst;
+}
+
+LPCSTR _GetItems ( LPCSTR src, int idx_start, int idx_end, AnsiString& dst, char separator )
+{
+    int level = 0;
+ 	for (LPCSTR p=src; *p!=0; p++){
+    	if ((level>=idx_start)&&(level<idx_end))
+        	dst += *p;
+    	if (*p==separator) level++;
+        if (level>=idx_end) break;
+    }
+	return dst.c_str();
 }
 
 DWORD _ParseItem ( char* src, xr_token* token_list )

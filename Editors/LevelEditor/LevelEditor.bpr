@@ -104,7 +104,8 @@
       intermediate\Frustum.obj intermediate\DetailModel.obj 
       intermediate\DetailObjectsGenerate.obj intermediate\DetailManager_VS.obj 
       intermediate\render.obj intermediate\xrSkin2W.obj 
-      intermediate\EditObjectExportLWO.obj intermediate\FS2.obj"/>
+      intermediate\EditObjectExportLWO.obj intermediate\FS2.obj 
+      intermediate\UI_MainMail.obj"/>
     <RESFILES value="LevelEditor.res resource.res"/>
     <IDLFILES value=""/>
     <IDLGENFILES value=""/>
@@ -394,6 +395,7 @@
       <FILE FILENAME="Engine\Animations\xrSkin2W.cpp" FORMNAME="" UNITNAME="xrSkin2W" CONTAINERID="CCompiler" DESIGNCLASS="" LOCALCOMMAND=""/>
       <FILE FILENAME="edit\EditObjectExportLWO.cpp" FORMNAME="" UNITNAME="EditObjectExportLWO" CONTAINERID="CCompiler" DESIGNCLASS="" LOCALCOMMAND=""/>
       <FILE FILENAME="edit\FS2.CPP" FORMNAME="" UNITNAME="FS2" CONTAINERID="CCompiler" DESIGNCLASS="" LOCALCOMMAND=""/>
+      <FILE FILENAME="edit\UI_MainMail.cpp" FORMNAME="" UNITNAME="UI_MainMail" CONTAINERID="CCompiler" DESIGNCLASS="" LOCALCOMMAND=""/>
   </FILELIST>
   <BUILDTOOLS>
   </BUILDTOOLS>

@@ -36,6 +36,7 @@ TUI::TUI()
     m_Cursor        = 0;
 #endif
 
+    bNeedQuit = false;
     bRedraw = false;
 	bResize = true;
     bUpdateScene = false;
@@ -100,6 +101,7 @@ bool TUI::OnCreate(){
 
     Engine.FS.WriteAccessLog(_EDITOR_FILE_NAME_,"Started");
     
+    CreateMailslot	();
     return true;
 }
 

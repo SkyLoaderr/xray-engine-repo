@@ -241,7 +241,7 @@ void CSpawnPoint::Save(CFS_Base& F){
     
         F.open_chunk	(SPAWNPOINT_CHUNK_SPAWNDATA);
         NET_Packet 		Packet;
-        m_SpawnData->Spawn_Write(Packet,FALSE);
+        m_SpawnData->Spawn_Write(Packet,TRUE);
         F.Wdword		(Packet.B.count);
         F.write			(Packet.B.data,Packet.B.count);
         F.close_chunk	();
@@ -265,7 +265,7 @@ bool CSpawnPoint::ExportGame(SExportStreams& F)
 	if (m_SpawnData){
         strcpy	  					(m_SpawnData->s_name_replace,Name);
         NET_Packet					Packet;
-        m_SpawnData->Spawn_Write	(Packet,FALSE);
+        m_SpawnData->Spawn_Write	(Packet,TRUE);
         
         F.spawn.stream.open_chunk	(F.spawn.chunk++);
         F.spawn.stream.write		(Packet.B.data,Packet.B.count);
