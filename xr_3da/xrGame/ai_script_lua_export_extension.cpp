@@ -92,11 +92,11 @@ void Script::vfExportEffector(CLuaVirtualMachine *tpLuaVirtualMachine)
 			.def_readwrite("v",					&SPPInfo::SDuality::v)
 			.def(								constructor<>()),
 
-		class_<SPPInfo::SNoise::SColor>("color")
-			.def_readwrite("r",					&SPPInfo::SNoise::SColor::r)
-			.def_readwrite("g",					&SPPInfo::SNoise::SColor::g)
-			.def_readwrite("b",					&SPPInfo::SNoise::SColor::b)
-			.def_readwrite("a",					&SPPInfo::SNoise::SColor::a)
+		class_<SPPInfo::SColor>	("color")
+			.def_readwrite("r",					&SPPInfo::SColor::r)
+			.def_readwrite("g",					&SPPInfo::SColor::g)
+			.def_readwrite("b",					&SPPInfo::SColor::b)
+			.def_readwrite("a",					&SPPInfo::SColor::a)
 			.def(								constructor<>()),
 
 		class_<SPPInfo::SNoise>("noise")
