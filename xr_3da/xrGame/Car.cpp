@@ -609,7 +609,7 @@ void CCar::CreateShell()
 
 	E=	P_create_Element				();
 	E->mXFORM.set(m);
-	(M->LL_GetInstance(id)).set_callback(m_pPhysicsShell->GetBonesCallback(),E);
+	// (M->LL_GetInstance(id)).set_callback(m_pPhysicsShell->GetBonesCallback(),E);
 
 	id=M->LL_BoneID("phy_body");
 	//CBoneInstance& instance=M->LL_GetInstance				(id);
