@@ -46,9 +46,12 @@ public:
 	int				getAmmoCurrent		()	{ CWeapon* W = ActiveWeapon(); if (W) return W->GetAmmoCurrent(); else return 0; }
 	int				getAmmoLimit		()	{ CWeapon* W = ActiveWeapon(); if (W) return W->GetAmmoLimit();	  else return 0; }
 	int				getAmmoMagazineSize	()	{ CWeapon* W = ActiveWeapon(); if (W) return W->GetAmmoMagSize(); else return 0; }
-	
-	BOOL			TakeItem			(CLASS_ID cls, int iAmmoCount);
-	void			LeaveWeapon			(CLASS_ID cls);
+	CWeapon*		getWeaponByWeapon	(CWeapon* W);
+	CWeapon*		getWeaponByIndex	(int iIndex)	{ return ((iIndex > -1) && (iIndex < m_Weapons.size())) ? m_Weapons[iIndex] : 0; }
+
+
+	// BOOL			TakeItem			(CLASS_ID cls, int iAmmoCount);
+	// void			LeaveWeapon			(CLASS_ID cls);
 
 	void			FireStart			();
 	void			FireEnd				();
@@ -58,9 +61,6 @@ public:
 	void			Reset				(){;}
 
 	void			Update				(float dt, BOOL bHUDView);
-
-	// for soldiers
-	IC	CWeapon*	GetWeaponByIndex	(int iIndex)	{ return ((iIndex > -1) && (iIndex < m_Weapons.size())) ? m_Weapons[iIndex] : 0; }
 
 	//
 	IC	CWeapon*	ActiveWeapon		()	{ return (m_iActiveWeapon==-1)?0:m_Weapons[m_iActiveWeapon]; }

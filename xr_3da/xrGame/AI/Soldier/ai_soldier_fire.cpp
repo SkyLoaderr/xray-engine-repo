@@ -368,7 +368,7 @@ DWORD CAI_Soldier::tfGetAloneFightType()
 				case CLSID_AI_SOLDIER	: {
 					fTempCoefficient = SOLDIER_ENEMY*tpCustomMonster->g_Health()/100.f;
 					for (int j=0; j<tpCustomMonster->tpfGetWeapons()->WeaponCount(); j++) {
-						CWeapon *tpWeapon = tpCustomMonster->tpfGetWeapons()->GetWeaponByIndex(j);
+						CWeapon *tpWeapon = tpCustomMonster->tpfGetWeapons()->getWeaponByIndex(j);
 						int iAmmoCurrent = tpWeapon->GetAmmoCurrent();
 						int iAmmoElapsed = tpWeapon->GetAmmoElapsed();
 						switch (tpWeapon->SUB_CLS_ID) {
@@ -445,7 +445,7 @@ DWORD CAI_Soldier::tfGetAloneFightType()
 			
 			fTempCoefficient = STALKER_ENEMY*tpActor->g_Health()/100.f;
 			for (int j=0; j<tpActor->tpfGetWeapons()->WeaponCount(); j++) {
-				CWeapon *tpWeapon = tpActor->tpfGetWeapons()->GetWeaponByIndex(j);
+				CWeapon *tpWeapon = tpActor->tpfGetWeapons()->getWeaponByIndex(j);
 				int iAmmoCurrent = tpWeapon->GetAmmoCurrent();
 				int iAmmoElapsed = tpWeapon->GetAmmoElapsed();
 				switch (tpWeapon->SUB_CLS_ID) {
@@ -529,7 +529,7 @@ DWORD CAI_Soldier::tfGetAloneFightType()
 				case CLSID_AI_SOLDIER	: {
 					fTempCoefficient = SOLDIER_FRIEND*tpCustomMonster->g_Health()/100.f;
 					for (int j=0; j<tpCustomMonster->tpfGetWeapons()->WeaponCount(); j++) {
-						CWeapon *tpWeapon = tpCustomMonster->tpfGetWeapons()->GetWeaponByIndex(j);
+						CWeapon *tpWeapon = tpCustomMonster->tpfGetWeapons()->getWeaponByIndex(j);
 						int iAmmoCurrent = tpWeapon->GetAmmoCurrent();
 						int iAmmoElapsed = tpWeapon->GetAmmoElapsed();
 						switch (tpWeapon->SUB_CLS_ID) {
@@ -629,7 +629,7 @@ DWORD CAI_Soldier::tfGetGroupFightType()
 				case CLSID_AI_SOLDIER	: {
 					fTempCoefficient = SOLDIER_ENEMY*tpCustomMonster->g_Health()/100.f;
 					for (int j=0; j<tpCustomMonster->tpfGetWeapons()->WeaponCount(); j++) {
-						CWeapon *tpWeapon = tpCustomMonster->tpfGetWeapons()->GetWeaponByIndex(j);
+						CWeapon *tpWeapon = tpCustomMonster->tpfGetWeapons()->getWeaponByIndex(j);
 						int iAmmoCurrent = tpWeapon->GetAmmoCurrent();
 						int iAmmoElapsed = tpWeapon->GetAmmoElapsed();
 						switch (tpWeapon->SUB_CLS_ID) {
@@ -706,7 +706,7 @@ DWORD CAI_Soldier::tfGetGroupFightType()
 			
 			fTempCoefficient = STALKER_ENEMY*tpActor->g_Health()/100.f;
 			for (int j=0; j<tpActor->tpfGetWeapons()->WeaponCount(); j++) {
-				CWeapon *tpWeapon = tpActor->tpfGetWeapons()->GetWeaponByIndex(j);
+				CWeapon *tpWeapon = tpActor->tpfGetWeapons()->getWeaponByIndex(j);
 				int iAmmoCurrent = tpWeapon->GetAmmoCurrent();
 				int iAmmoElapsed = tpWeapon->GetAmmoElapsed();
 				switch (tpWeapon->SUB_CLS_ID) {
@@ -790,7 +790,7 @@ DWORD CAI_Soldier::tfGetGroupFightType()
 				case CLSID_AI_SOLDIER	: {
 					fTempCoefficient = SOLDIER_FRIEND*tpCustomMonster->g_Health()/100.f;
 					for (int j=0; j<tpCustomMonster->tpfGetWeapons()->WeaponCount(); j++) {
-						CWeapon *tpWeapon = tpCustomMonster->tpfGetWeapons()->GetWeaponByIndex(j);
+						CWeapon *tpWeapon = tpCustomMonster->tpfGetWeapons()->getWeaponByIndex(j);
 						int iAmmoCurrent = tpWeapon->GetAmmoCurrent();
 						int iAmmoElapsed = tpWeapon->GetAmmoElapsed();
 						switch (tpWeapon->SUB_CLS_ID) {

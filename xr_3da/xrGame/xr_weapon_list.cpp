@@ -139,6 +139,7 @@ void CWeaponList::Reload()
 	if (W)		W->Reload		();
 }
 
+/*
 BOOL CWeaponList::TakeItem(CLASS_ID cls, int iAmmoCount)
 {
 	int idx				= -1;
@@ -180,6 +181,17 @@ BOOL CWeaponList::TakeItem(CLASS_ID cls, int iAmmoCount)
 
 void CWeaponList::LeaveWeapon(CLASS_ID cls)
 {
+}
+*/
+
+CWeapon*	CWeaponList::getWeaponByWeapon(CWeapon* W)
+{
+	for (int it=0; it<m_Weapons.size(); it++)
+	{
+		CWeapon* T							= m_Weapons[it];
+		if (typeid(*W)==typeid(*T))	return	T;
+	}
+	return 0;
 }
 
 void CWeaponList::Update	(float dt, BOOL bHUDView)

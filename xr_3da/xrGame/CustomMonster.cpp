@@ -97,7 +97,7 @@ void CCustomMonster::Load		(LPCSTR section)
 		Weapons					= new CWeaponList(this);
 		LPCSTR S1 = pSettings->ReadSTRING(section,"bone_torso_weapon"),S2 = pSettings->ReadSTRING(section,"bone_head_weapon");
 		Weapons->Init			(S1,S2);
-		Weapons->TakeItem		(CLSID_OBJECT_W_AK74, 0);
+		// Weapons->TakeItem	(CLSID_OBJECT_W_AK74, 0);
 	}
 
 	// take index spine bone

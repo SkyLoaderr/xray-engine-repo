@@ -178,6 +178,8 @@ void CActor::Load		(LPCSTR section )
 
 	Weapons				= new CWeaponList(this);
 	Weapons->Init		("bip01_r_hand","bip01_l_finger1");
+
+	/*
 	Weapons->TakeItem	(CLSID_OBJECT_W_HPSA,0);
 	Weapons->TakeItem	(CLSID_OBJECT_W_PM,0);
 	Weapons->TakeItem	(CLSID_OBJECT_W_FORT,0);
@@ -185,7 +187,8 @@ void CActor::Load		(LPCSTR section )
 	Weapons->TakeItem	(CLSID_OBJECT_W_FN2000,0);
 	Weapons->TakeItem	(CLSID_OBJECT_W_LR300,0);
 	Weapons->TakeItem	(CLSID_OBJECT_W_BINOCULAR,0);
-//	Weapons->TakeItem	(CLSID_OBJECT_W_M134,0);
+	Weapons->TakeItem	(CLSID_OBJECT_W_M134,0);
+	*/
 	
 	// sounds
 	char buf[256];
@@ -345,7 +348,38 @@ BOOL CActor::TakeItem		( DWORD CID )
 }
 */
 
-void CActor::g_Physics(Fvector& accel, float jump, float dt)
+void CActor::g_sv_AnalyzeNeighbours	()
+{
+	// Find nearest objects
+	Fvector C; float R;		Movement.GetBoundingSphere	(C,R);
+	Level().ObjectSpace.GetNearest						(C,R);
+	CObjectSpace::NL_IT		n_begin						= Level().ObjectSpace.q_nearest.begin	();
+	CObjectSpace::NL_IT		n_end						= Level().ObjectSpace.q_nearest.end		();
+	if (n_end==n_begin)		return;
+
+	// Process results
+	for (CObjectSpace::NL_IT it = n_begin; it!=n_end; it++)
+	{
+		CObject* O = *it;
+
+		// Test for weapon
+		CWeapon* W	= dynamic_cast<CWeapon*>	(O);
+		if (W)
+		{
+			// Search if we have similar type of weapon
+			CWeapon* T = Weapons->getWeaponByWeapon	(W);
+			if (T)	
+			{
+				// We have similar weapon - just get ammo out of it
+				// T->AddAmmo	(W);
+			}
+		}
+
+		// 
+	}
+}
+
+void CActor::g_Physics				(Fvector& accel, float jump, float dt)
 {
 	if (patch_frame<patch_frames)	return;
 
@@ -361,10 +395,6 @@ void CActor::g_Physics(Fvector& accel, float jump, float dt)
 	}
 	Movement.GetPosition	(vPosition);
 	
-	// Test nearest object
-	Fvector C; float R;		Movement.GetBoundingSphere	(C,R);
-	Level().ObjectSpace.TestNearestObject				(cfModel, C, R);
-
 	// Check ground-contact
 	if (net_Local && Movement.gcontact_Was) 
 	{

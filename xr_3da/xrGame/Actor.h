@@ -164,6 +164,7 @@ private:
 	void					g_cl_ValidateMState		(DWORD mstate_wf);
 	void					g_cl_Orientate			(DWORD mstate_rl, float dt);
 	void					g_sv_Orientate			(DWORD mstate_rl, float dt);
+	void					g_sv_AnalyzeNeighbours	();
 	void					g_Orientate				(DWORD mstate_rl, float dt);
 	void					g_Physics				(Fvector& accel, float jump, float dt);
 	void					g_SetAnimation			(DWORD mstate_rl);
