@@ -8418,6 +8418,9 @@
 				<File
 					RelativePath=".\M_Zombie.ltx">
 				</File>
+				<File
+					RelativePath=".\M_Zombie.ltx">
+				</File>
 			</Filter>
 			<Filter
 				Name="Weapons"
@@ -8532,6 +8535,9 @@
 				</File>
 				<File
 					RelativePath=".\info_portions.xml">
+				</File>
+				<File
+					RelativePath=".\info_portions_test.xml">
 				</File>
 				<File
 					RelativePath=".\npc_profile.xml">
