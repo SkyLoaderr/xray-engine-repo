@@ -3,7 +3,7 @@
 --	автор: Диденко Руслан (Stohe)
 --	TODO: 
 ----------------------------------------------------------------------------------------------------------------------
-local sounds = {}
+
 local speeks = {} -- говорит ли кто либо в лагере, чтобы вместе не болтали
 
 ---------------------------------------------------------------------------------------------------------------------
@@ -15,7 +15,7 @@ function evaluator_kamp_end:__init(storage) super()
 	self.a = storage
 end
 function evaluator_kamp_end:evaluate()
-	return self.a.enabled == false
+	return not xr_logic.is_active(self.object, self.a)
 end
 --' Находимся ли мы на заданной позиции
 class "evaluator_on_position" (property_evaluator)
@@ -226,6 +226,7 @@ end
 function action_wait:execute()
 	action_base.execute (self)
 	if self.a.action == 0 or self.a.action == nil then
+		xr_logic.try_switch_to_another_section(self.object, self.a)	
 		local actions = {}
 		local i = 1
 		--' Тут выбор действий
@@ -314,9 +315,7 @@ end
 ----------------------------------------------------------------------------------------------------------------------
 --Kamp binder
 ----------------------------------------------------------------------------------------------------------------------
-function add_to_binder(object, char_ini)
-    if char_ini == nil or char_ini:section_exist ("kamp") == true then
-	
+function add_to_binder(object, ini, scheme, section, storage)
 	local operators		= {}
 	local properties	= {}
 
@@ -373,58 +372,42 @@ function add_to_binder(object, char_ini)
 	action = manager:action (stalker_ids.action_puzzle_solver)	
 	action:add_precondition		(world_property(properties["kamp_end"],		true))
 
-	if char_ini ~= nil then xr_kamp.set_kamp(object) end
-    end
 end
 -- включение лагеря
-function set_kamp(object, enable, center_point, patrol_path, path_look)
-	-- enable - будет ли работать схема в принципе
-	-- center_point - центр лагеря
-	-- patrol_path - патрульные пути для обхода
-	local char_ini = object:spawn_ini()
-	local st = xr_motivator.storage[object:id()].kamp
+function set_scheme(npc, ini, scheme, section, gulag_name)
+	local st = xr_logic.assign_storage_and_bind(npc, ini, scheme, section)
 
-	if enable == nil then
-       		if char_ini:section_exist ("kamp") == true and char_ini:line_exist("kamp", "enabled") == true then
-               		st.enabled = char_ini:r_bool("kamp", "enabled")
-		else
-			st.enabled = false
-	        end
-	else
-		st.enabled = enable		
-	end	
-	if st.enabled == true then
-		if center_point == nil then
-        		if char_ini:section_exist ("kamp") == true and char_ini:line_exist("kamp", "center_point") == true then
-	        	        st.center_point = char_ini:r_string("kamp", "center_point")
-        		else
-	        	    	st.enabled = false
-		        end
-		else
-			st.center_point = center_point
+	st.logic     = xr_logic.cfg_get_switch_conditions(ini, section, npc)		
+    
+	st.max_rad = 2
+	st.action = 0
+    st.last_action = 0
+    st.patrol_path = {}
+    st.path_look = {}
+    st.pos_id = -1
+    st.body_state = 0
+    st.timer = { act1 = {begin = nil, time = 120},
+				act4 = {begin = nil, time = 60}}
+					
+	st.center_point = utils.cfg_get_string(ini, section, "center_point", npc, true,  gulag_name)
+	
+	local i = 1
+	local s		
+	while true do
+		s = utils.cfg_get_string(ini, section, "patrol_path_"..i, npc, false,  gulag_name)
+		if not s then
+			break
 		end
+		st.patrol_path[i] = s
+		i = i + 1
 	end
-	if st.enabled == true then
-		if patrol_path == nil then
-        		local i = 1
-		        while char_ini:section_exist ("kamp") == true and char_ini:line_exist("kamp", "patrol_path_"..i) == true do
-       				st.patrol_path[i] = char_ini:r_string("kamp", "patrol_path_"..i)
-				i = i + 1
-	    		end
-		else
-			st.patrol_path = patrol_path
+	i = 1
+	while true do
+		s = utils.cfg_get_string(ini, section, "path_look_"..i, npc, false,  gulag_name)
+		if not s then
+			break
 		end
-	end
-	if st.enabled == true then
-		if path_look == nil then
-        		local i = 1
-		        while char_ini:section_exist("kamp") == true and char_ini:line_exist("kamp", "path_look_"..i) == true do
-       				st.path_look[i] = char_ini:r_string("kamp", "path_look_"..i)
-				i = i + 1
-	    		end
-		else
-			st.path_look = path_look
-		end
-	end
-	xr_motivator.checkStorage(object)
+		st.path_look[i] = s
+		i = i + 1
+	end		
 end
