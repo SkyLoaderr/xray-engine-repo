@@ -81,9 +81,11 @@ void CStats::Show()
 	// Show them
 	if (psDeviceFlags & rsStatistic) 
 	{
-		float		r_ps			= clRAY.count/clRAY.result;
-		float		b_ps			= clBOX.count/clBOX.result;
-
+		static float	r_ps		= 0;
+		static float	b_ps		= 0;
+		r_ps						= .9f*r_ps + .1f*(clRAY.count/clRAY.result);
+		b_ps						= .9f*b_ps + .1f*(clBOX.count/clBOX.result);
+		
 		CFontHUD&	F = *((CFontHUD*)font);
 		F.Color		(0xFFFFFFFF	);
 		F.OutSet	(0,0);
