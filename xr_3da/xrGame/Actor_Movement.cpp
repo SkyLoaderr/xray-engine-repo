@@ -91,12 +91,18 @@ void CActor::g_cl_ValidateMState(float dt, u32 mstate_wf)
 	}
 	if(m_PhysicMovementControl->Environment()==CPHMovementControl::peAtWall)
 	{
+		if(!(mstate_real & mcClimb))
+		{
+		
 		mstate_real				|=mcClimb;
+		//cam_Set(eacLadder);
+		}
 	}
 	else
 	{
 		if (mstate_real & mcClimb)
 		{
+			//cam_Set(eacFirstEye);
 			RestoreHidedWeapon();
 		}
 		mstate_real				&=~mcClimb;		
@@ -292,7 +298,7 @@ void CActor::g_Orientate	(u32 mstate_rl, float dt)
 bool CActor::g_LeaderOrient(u32/* mstate_rl*/,float dt)
 {
 	Fvector leader_norm;
-	leader_norm.set(m_PhysicMovementControl->GroundNormal());
+	m_PhysicMovementControl->GroundNormal(leader_norm);
 	if(_abs(leader_norm.y)>M_SQRT1_2) return false;
 	//leader_norm.y=0.f;
 	float mag=leader_norm.magnitude();
@@ -307,10 +313,10 @@ bool CActor::g_LeaderOrient(u32/* mstate_rl*/,float dt)
 	//M.j.invert();
 
 
-	Fquaternion q1,q2,q3;
-	q1.set(XFORM());
-	q2.set(M);
-	q3.slerp(q1,q2,dt);
+	//Fquaternion q1,q2,q3;
+	//q1.set(XFORM());
+	//q2.set(M);
+	//q3.slerp(q1,q2,dt);
 	//Fvector angles1,angles2,angles3;
 	//XFORM().getHPB(angles1.x,angles1.y,angles1.z);
 	//M.getHPB(angles2.x,angles2.y,angles2.z);
@@ -325,7 +331,8 @@ bool CActor::g_LeaderOrient(u32/* mstate_rl*/,float dt)
 	//XFORM().setHPB(angles3.x,angles3.y,angles3.z);
 	Fvector position;
 	position.set(Position());
-	XFORM().rotation(q3);
+	//XFORM().rotation(q3);
+	XFORM().set(M);
 	Position().set(position);
 	return true;
 }

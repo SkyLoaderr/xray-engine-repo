@@ -95,10 +95,19 @@ IC float	to_mag_and_dir(Fvector &in_out_v)
 IC void		prg_pos_on_axis(const Fvector	&in_ax_p,const Fvector &in_ax_d,Fvector &in_out_pos)
 {
 	in_out_pos.sub(in_ax_p);
-	float prg=in_out_pos.dotproduct(in_ax_d);
-	in_out_pos.set(in_ax_d);in_out_pos.normalize();
-	in_out_pos.mul(prg);
+	float ax_mag=in_ax_d.magnitude();
+	float prg=in_out_pos.dotproduct(in_ax_d)/ax_mag;
+	in_out_pos.set(in_ax_d);
+	in_out_pos.mul(prg/ax_mag);
 	in_out_pos.add(in_ax_p);
 }
 
+IC bool check_obb_sise(Fobb& obb)
+{
+	return (!fis_zero(obb.m_halfsize.x,EPS_L)||
+		!fis_zero(obb.m_halfsize.y,EPS_L)||
+		!fis_zero(obb.m_halfsize.z,EPS_L)
+		);
+
+}
 #endif

@@ -2,6 +2,7 @@
 #include "PHCharacter.h"
 #include "Physics.h"
 #include "MathUtils.h"
+#include "ElevatorState.h"
 //#define DRAW_BOXES
 
 class CPHSimpleCharacter : public CPHCharacter
@@ -13,7 +14,7 @@ class CPHSimpleCharacter : public CPHCharacter
 	Fvector m_AABB;
 	Fvector m_AABB_forbid;
 #endif
-
+	CElevatorState			m_elevator_state;
 protected:
 	////////////////////////////damage////////////////////////////////////////
 	dContact				m_damege_contact;
@@ -96,8 +97,9 @@ protected:
 	u32  m_contact_count;
 
 	dReal m_friction_factor;
+
 public:
-	CPHSimpleCharacter										()					;
+							CPHSimpleCharacter					()									;
 	virtual					~CPHSimpleCharacter					()						{Destroy();}
 
 	/////////////////CPHObject//////////////////////////////////////////////
@@ -115,7 +117,7 @@ public:
 	//Check state
 	virtual		bool			 ContactWas						()					{if(b_meet_control) {b_meet_control=false;return true;} else return false;}
 	virtual		EEnvironment	 CheckInvironment				()					;
-	virtual		const Fvector&	 GroundNormal					()					;
+	virtual		void			 GroundNormal					(Fvector &norm)		;
 	//Creating
 	virtual		void		Create								(dVector3 sizes)	;
 	virtual		void		Destroy								(void)				;
@@ -130,6 +132,7 @@ public:
 	virtual		void		GetVelocity							(Fvector& vvel)		;
 	virtual		void		SetVelocity							(Fvector vel)		;
 	virtual		void		SetAirControlFactor					(float factor)		{m_air_control_factor=factor;}
+	virtual		void		SetElevator							(CClimableObject* climable){m_elevator_state.SetElevator(climable);};
 	virtual		void		GetPosition							(Fvector& vpos)		;
 	virtual		float		FootRadius							()					;
 	virtual		void		DeathPosition						(Fvector& deathPos)	;
@@ -146,6 +149,7 @@ public:
 	virtual		bool		JumpState							()					{
 																					return b_jumping||b_jump;
 																					};
+	virtual	const Fvector&  ControlAccel						()const				{return m_acceleration;}
 	virtual		void		SetMas								(dReal mass)		;
 
 	virtual		void		SetPhysicsRefObject					(CPhysicsShellHolder* ref_object);

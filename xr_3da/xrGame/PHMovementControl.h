@@ -137,7 +137,7 @@ public:
 	float				GetVelocityMagnitude()		{ return vVelocity.magnitude();	}
 	float				GetVelocityActual	()		{ return fActualVelocity;	}
 	float				GetContactSpeed		()		{ return fContactSpeed; }
-	const Fvector&		GroundNormal		()								;
+	void				GroundNormal		(Fvector &norm)					;
 	CPHSynchronize*		GetSyncItem			()								;
 	void				Freeze				()								;
 	void				UnFreeze			()								;

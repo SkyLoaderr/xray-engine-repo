@@ -503,14 +503,7 @@ void CPHShell::preBuild_FromKinematics(CKinematics* K,BONE_P_MAP* p_geting_map)
 	R_ASSERT2((*elements.begin())->numberOfGeoms(),"No physics shapes was assigned for model or no shapes in main root bone!!!");
 	if(m_spliter_holder->isEmpty())xr_delete(m_spliter_holder);
 }
-IC bool check_obb_sise(Fobb& obb)
-{
-	return (!fis_zero(obb.m_halfsize.x,EPS_L)||
-			!fis_zero(obb.m_halfsize.y,EPS_L)||
-			!fis_zero(obb.m_halfsize.z,EPS_L)
-			);
 
-}
 void CPHShell::AddElementRecursive(CPhysicsElement* root_e, u16 id,Fmatrix global_parent,u16 element_number,bool* vis_check)
 {
 

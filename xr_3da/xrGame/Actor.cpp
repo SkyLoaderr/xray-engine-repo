@@ -95,7 +95,7 @@ CActor::CActor() : CEntityAlive()
 	cameras[eacFirstEye]	= xr_new<CCameraFirstEye>	(this, pSettings, "actor_firsteye_cam", 0);
 	cameras[eacLookAt]		= xr_new<CCameraLook>		(this, pSettings, "actor_look_cam",		0);
 	cameras[eacFreeLook]	= xr_new<CCameraLook>		(this, pSettings, "actor_free_cam",		0);
-
+	cameras[eacLadder]		= xr_new<CCameraFirstEye>	(this, pSettings, "actor_ladder_cam",	0);
 	cam_active				= eacFirstEye;
 	fPrevCamPos				= 0;
 	

@@ -6,6 +6,7 @@
 #include "PHDefs.h"
 #include "PhysicsShell.h"
 #include "PHSynchronize.h"
+#include "MathUtils.h"
 #define F_MAX         3.402823466e+38F
 u32 CPHSkeleton::remove_time=5000;
 
@@ -17,9 +18,7 @@ bool IC CheckObjectSize(CKinematics* K)
 		if(K->LL_GetBoneVisible(i))
 		{
 			Fobb obb=K->LL_GetBox(i);
-			if(!fis_zero(obb.m_halfsize.x) ||
-				!fis_zero(obb.m_halfsize.y)||
-				!fis_zero(obb.m_halfsize.z))return true;
+			if(check_obb_sise(obb))return true;
 		}
 	}
 	return false;

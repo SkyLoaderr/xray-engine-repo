@@ -81,7 +81,7 @@ virtual		void		Jump								(const Fvector& jump_velocity)								=0 ;
 virtual		bool		JumpState							()															=0 ;
 virtual		EEnvironment CheckInvironment					()															=0 ;
 virtual		bool		ContactWas							()															=0 ;
-virtual	const Fvector&	GroundNormal						()															=0 ;
+virtual		void		GroundNormal						(Fvector &norm)												=0 ;
 virtual		void		Create								(dVector3 /**sizes/**/)										=0 ;
 virtual		void		Destroy								(void)														=0 ;
 virtual		void		SetAcceleration						(Fvector accel)												=0 ;
@@ -94,6 +94,7 @@ virtual		void		GetVelocity							(Fvector& vvel)												=0 ;
 virtual		void		SetVelocity							(Fvector vel)												=0 ;
 virtual		void		SetAirControlFactor					(float factor)												=0 ;
 virtual		void		GetPosition							(Fvector& vpos)												=0 ;
+virtual		void		GetFootCenter						(Fvector& vpos)												{vpos.set(*(Fvector*)dBodyGetPosition(m_body));}
 virtual		void		SetMas								(dReal mass)												=0 ;
 virtual		void		SetPhysicsRefObject					(CPhysicsShellHolder* ref_object)									=0 ;
 virtual		CPhysicsShellHolder* PhysicsRefObject					()									{return m_phys_ref_object;}
@@ -110,6 +111,7 @@ virtual		void		get_State							(		SPHNetState&	state)								;
 virtual		void		set_State							(const	SPHNetState&	state)								;
 virtual		void		cv2obj_Xfrom						(const Fquaternion& q,const Fvector& pos, Fmatrix& xform)	{;}
 virtual		void		cv2bone_Xfrom						(const Fquaternion& q,const Fvector& pos, Fmatrix& xform)	{;}
+virtual	const Fvector&  ControlAccel						()const														=0;
 			CPHCharacter									(void)														;
 virtual		~CPHCharacter									(void)														;
 };

@@ -21,6 +21,7 @@ const float CLAMB_DISTANCE=0.5f;
 const float CLIMB_GETUP_HEIGHT=0.3f;
 static u16 lastMaterial;
 
+
 ////////////////////////////////////////////////////////////////////////////////
 ///////////////////////////////////class//CPHSimpleCharacter////////////////////
 CPHSimpleCharacter::CPHSimpleCharacter()
@@ -93,6 +94,7 @@ void __stdcall TestPathCallback(bool& do_colide,dContact& c,SGameMtl * /*materia
 void CPHSimpleCharacter::Create(dVector3 sizes){
 
 	if(b_exist) return;
+
 	b_air_contact_state=false;
 	b_climb_getup=false;
 	b_near_leader=false;
@@ -244,6 +246,7 @@ void CPHSimpleCharacter::Create(dVector3 sizes){
 	}
 	CPHObject::activate();
 	spatial_register();
+	m_elevator_state.SetCharacter(static_cast<CPHCharacter*>(this));
 }
 void CPHSimpleCharacter::Destroy(){
 	if(!b_exist) return;
@@ -402,7 +405,7 @@ void CPHSimpleCharacter::PhDataUpdate(dReal /**step/**/){
 	m_body_interpolation.UpdatePositions();
 }
 
-void CPHSimpleCharacter::PhTune(dReal /**step/**/){
+void CPHSimpleCharacter::PhTune(dReal step){
 
 	//if(b_jumping)
 	//{
@@ -411,6 +414,7 @@ void CPHSimpleCharacter::PhTune(dReal /**step/**/){
 	//	Log("time %f",Device.fTimeGlobal);
 	//}
 	//if(!b_exist)return;
+	m_elevator_state.PhTune(step);
 	b_air_contact_state=!is_contact;
 	bool b_good_graund=b_valide_ground_contact&&m_ground_contact_normal[1]>M_SQRT1_2;
 	if(!b_death_pos)dVectorSet(m_death_position,dGeomGetPosition(m_wheel));
@@ -443,7 +447,7 @@ void CPHSimpleCharacter::PhTune(dReal /**step/**/){
 	b_on_ground=b_valide_ground_contact ||(b_meet&&(!b_depart));
 
 
-	if(b_at_wall ) 
+	if(m_elevator_state.ClimbingState()) 
 	{
 		// b_clamb_jump=true;
 		b_side_contact=false;
@@ -464,7 +468,7 @@ void CPHSimpleCharacter::PhTune(dReal /**step/**/){
 		!b_external_impulse										 && 
 		dSqrt(velocity[0]*velocity[0]+velocity[2]*velocity[2])<5.||
 		fis_zero(linear_vel_smag)								 ||
-		b_climb
+		m_elevator_state.ClimbingState()
 		) 
 		b_lose_control=false;
 	
@@ -473,7 +477,7 @@ void CPHSimpleCharacter::PhTune(dReal /**step/**/){
 		b_jumping=false;
 
 	//deside if control lost
-	if(!b_on_ground)
+	if(!b_on_ground && !m_elevator_state.ClimbingState())
 	{
 		const dReal* current_pos=dBodyGetPosition(m_body);
 		dVector3 dif={current_pos[0]-m_depart_position[0],
@@ -538,9 +542,10 @@ void CPHSimpleCharacter::PhTune(dReal /**step/**/){
 		//m_jump_accel=m_acceleration;
 		b_jump=false;
 		b_jumping=true;
+		m_elevator_state.Depart();
 	}
 
-	b_lose_ground=!(b_good_graund||b_at_wall)||b_lose_control;
+	b_lose_ground=!(b_good_graund||m_elevator_state.ClimbingState())||b_lose_control;
 
 
 
@@ -565,7 +570,7 @@ void CPHSimpleCharacter::PhTune(dReal /**step/**/){
 		if(!b_lose_control||b_clamb_jump)
 			dBodyAddForce(m_body,
 				-sidedir[0]*vProj*(500.f+200.f*b_clamb_jump)*m_friction_factor,
-				-m.mass*(50.f+90.f*b_at_wall)*(!b_lose_control&&!(is_contact||(b_climb&&b_any_contacts))),//&&!b_climb
+				-m.mass*(50.f)*(!b_lose_control&&!(is_contact||(b_climb&&b_any_contacts))),//&&!b_climb
 				-sidedir[2]*vProj*(500.f+200.f*b_clamb_jump)*m_friction_factor
 				);
 		//if(b_clamb_jump){
@@ -575,8 +580,7 @@ void CPHSimpleCharacter::PhTune(dReal /**step/**/){
 		//		dBodyAddForce(m_body,-chVel[0]*500.f,-chVel[1]*500.f,-chVel[2]*500.f);
 		//		}
 	}
-	if(!b_jumping&&b_at_wall)//!is_control&&
-		dBodyAddForce(m_body,0.f,m.mass*world_gravity,0.f);
+	
 
 	if(b_jumping)
 	{
@@ -725,6 +729,7 @@ void CPHSimpleCharacter::SetAcceleration(Fvector accel){
 	m_acceleration=accel;
 }
 
+static const float pull_force=20.f;
 void CPHSimpleCharacter::ApplyAcceleration() 
 {
 	//	if (Level().iGetKeyState(DIK_RSHIFT))
@@ -733,9 +738,6 @@ void CPHSimpleCharacter::ApplyAcceleration()
 	//	int i;
 	//	i=5;
 	//	}
-
-
-
 	m_control_force[0]=0.f;
 	m_control_force[1]=0.f;
 	m_control_force[2]=0.f;
@@ -758,62 +760,51 @@ void CPHSimpleCharacter::ApplyAcceleration()
 
 
 	dVector3 accel={m_acceleration.x,0.f,m_acceleration.z};
+	if(m_elevator_state.Active())
+	{
+		if(m_elevator_state.NearState())m_elevator_state.GetControlDir(*(Fvector*)accel);
+		if(m_elevator_state.ClimbingState())
+		{
+			m_elevator_state.GetControlDir(*(Fvector*)m_control_force);
+			m_control_force[0]*=m_friction_factor*m.mass*pull_force*2.f;
+			m_control_force[1]*=m_friction_factor*m.mass*pull_force*2.f;
+			m_control_force[2]*=m_friction_factor*m.mass*pull_force*2.f;
+			return;
+		}
+	}
+
+/////////////////////////////////////////////////////////////////////////
 	dVector3 fvdir,sidedir;
 	////////////////////////////////////////////////
 	//deside which force direction use  
 	dVector3 y={0.f,1.f,0.f};
 	dCROSS(sidedir,=,y,accel);
-
-	if(b_clamb_jump&&b_valide_wall_contact&&!b_at_wall){
+	if(b_clamb_jump&&b_valide_wall_contact){
 		dCROSS(fvdir,=,sidedir,m_wall_contact_normal);
 		dNormalize3(fvdir);
-		m_control_force[0]+=fvdir[0]*m.mass*20.f;
-		m_control_force[1]+=fvdir[1]*m.mass*20.f;
-		m_control_force[2]+=fvdir[2]*m.mass*20.f;
+		m_control_force[0]+=fvdir[0]*m.mass*pull_force;
+		m_control_force[1]+=fvdir[1]*m.mass*pull_force;
+		m_control_force[2]+=fvdir[2]*m.mass*pull_force;
 	}
-	else{/*
+	else{
 		 if(b_valide_ground_contact&&(m_ground_contact_normal[1]>M_SQRT1_2)){//M_SQRT1_2//0.8660f
 		 dCROSS(fvdir,=,sidedir,m_ground_contact_normal);
 		 dNormalize3(fvdir);
-		 m_control_force[0]+=fvdir[0]*m.mass*20.f;
-		 m_control_force[1]+=fvdir[1]*m.mass*20.f;
-		 m_control_force[2]+=fvdir[2]*m.mass*20.f;
+		 m_control_force[0]+=fvdir[0]*m.mass*pull_force;
+		 m_control_force[1]+=fvdir[1]*m.mass*pull_force;
+		 m_control_force[2]+=fvdir[2]*m.mass*pull_force;
 
 		 }
-
-		 else
-		 */
-		if(b_at_wall&&b_valide_wall_contact){
-
-			dReal press_to_ladder=world_gravity*m_mass*0.05f;
-			dReal proj=dDOT(accel,m_wall_contact_normal);
-			fvdir[0]=accel[0]-m_wall_contact_normal[0]*(proj+press_to_ladder);//proj+press_to_ladder
-			//fvdir[1]=-proj;
-			fvdir[1]=m_wall_contact_normal[1]<0.1f ? -proj : -m_wall_contact_normal[1]*(proj+press_to_ladder);//accel[1]-m_wall_contact_normal[1]*proj,//+press_to_ladder
-			fvdir[2]=accel[2]-m_wall_contact_normal[2]*(proj+press_to_ladder);//+press_to_ladder
-			dNormalize3(fvdir);
-			m_control_force[0]+=fvdir[0]*m.mass*30.f;
-			m_control_force[1]+=fvdir[1]*m.mass*30.f;
-			m_control_force[2]+=fvdir[2]*m.mass*30.f;
-
-		}
 		else{
 			//fvdir[0]=0.f;fvdir[1]=0.f;fvdir[2]=0.f;//
 			dVectorSet(fvdir,accel);
 			dNormalize3(fvdir);
-			m_control_force[0]+=fvdir[0]*m.mass*30.f;
-			m_control_force[1]+=fvdir[1]*m.mass*30.f;
-			m_control_force[2]+=fvdir[2]*m.mass*30.f;
+			m_control_force[0]+=fvdir[0]*m.mass*pull_force*1.5f;
+			m_control_force[1]+=fvdir[1]*m.mass*pull_force*1.5f;
+			m_control_force[2]+=fvdir[2]*m.mass*pull_force*1.5f;
 		}
 
-
 	}
-
-
-
-
-
-
 
 	if(!b_at_wall&&b_clamb_jump){//&&m_wall_contact_normal[1]<M_SQRT1_2
 		m_control_force[0]*=4.f;
@@ -822,54 +813,6 @@ void CPHSimpleCharacter::ApplyAcceleration()
 		m_control_force[1]=dFabs(m_control_force[1]);
 		m_control_force[0]=m_control_force[0]*accel[0]>0.f ? m_control_force[0] : -m_control_force[0];
 		m_control_force[2]=m_control_force[2]*accel[2]>0.f ? m_control_force[2] : -m_control_force[2];
-	}
-
-	//M->m_Flags.is(GameMtl::flClimable);
-	if(!b_at_wall&&b_climb)
-	{
-		if(!b_block_climb_getup)
-		{
-			if(!b_climb_getup)
-			{
-				b_climb_getup=true;
-				m_start_climb_getup_height=dBodyGetPosition(m_body)[1];
-			}
-
-				if(dFabs(dBodyGetPosition(m_body)[1]-m_start_climb_getup_height)<CLIMB_GETUP_HEIGHT)
-				{
-					//m_control_force[0]*=4.f;
-					if(b_side_contact)m_control_force[1]+=m.mass*40.f;
-					else 
-					{
-						if(b_valide_wall_contact)
-						{
-							dReal k=m.mass*20.f;
-							//dReal k2=m.mass*10.f;
-							m_control_force[0]+=m_wall_contact_normal[0]*k;
-							m_control_force[1]+=m_wall_contact_normal[1]*k;
-							m_control_force[2]+=m_wall_contact_normal[2]*k;
-						}
-					}
-					//m_control_force[2]*=4.f;
-				}
-				else
-				{
-					b_climb_getup=false;
-					b_block_climb_getup=true;
-				}
-			
-		}
-		else
-		{
-				if((dBodyGetPosition(m_body)[1]-m_start_climb_getup_height)<CLIMB_GETUP_HEIGHT)
-				{
-					b_block_climb_getup=false;
-				}
-		}
-	}
-	else 
-	{
-		b_block_climb_getup=false;
 	}
 
 	m_control_force[0]*=m_friction_factor;
@@ -995,7 +938,7 @@ EEnvironment	 CPHSimpleCharacter::CheckInvironment(){
 	if(b_lose_control)
 		return	peInAir;	
 	//else									 return peAtWall;
-	else if(b_at_wall) 
+	else if(m_elevator_state.ClimbingState()) 
 		return peAtWall;
 
 	return peOnGround;	 								
@@ -1174,7 +1117,7 @@ void CPHSimpleCharacter::InitContact(dContact* c,bool	&do_collide,SGameMtl * mat
 		tri_material=material_1;
 
 	bool bClimable=!!tri_material->Flags.is(SGameMtl::flClimable);
-	if(is_control&&b_at_wall)
+	if(is_control&&m_elevator_state.ClimbingState())
 	{
 		c->surface.mu=0.f;
 		c->surface.soft_cfm=world_cfm*2.f;
@@ -1453,16 +1396,16 @@ void CPHSimpleCharacter::InitContact(dContact* c,bool	&do_collide,SGameMtl * mat
 
 }
 
-const Fvector& CPHSimpleCharacter::GroundNormal()
+void CPHSimpleCharacter::GroundNormal(Fvector &norm)
 {
-	if(b_at_wall)
+	if(m_elevator_state.ClimbingState())
 	{
-		return *((Fvector*)m_wall_contact_normal);
+		m_elevator_state.GetLeaderNormal(norm);
 
 	}
 	else
 	{
-		return *((Fvector*)m_ground_contact_normal);
+		norm.set(*((Fvector*)m_ground_contact_normal));
 	}
 }
 u16 CPHSimpleCharacter::ContactBone()
