@@ -102,8 +102,9 @@ function action_commander:initialize()
         self.zone = level.object( self.a.zone_name )
     end
 
-    self.zone:set_callback( self, "zone_callback", true )
-
+    if self.zone then
+        self.zone:set_callback( self, "zone_callback", true )
+    end
 --    printf( "action_commander initialized" )
 end
 
@@ -112,7 +113,9 @@ function action_commander:finalize()
 
     self.object:clear_callback( game_object.movement )
 
-    self.zone:clear_callback( true )
+    if self.zone then
+        self.zone:clear_callback( true )
+    end
 
     self.object:set_sound_mask( -1 )
     self.object:set_sound_mask( 0 )
