@@ -173,15 +173,19 @@ void __stdcall  FillTexture(ChooseItemVec& items, void* param)
 }
 void __stdcall  SelectTexture(SChooseItem* item, PropItemVec& info_items)
 {
-	ETextureThumbnail* thm			= xr_new<ETextureThumbnail>(*item->name);
-    if (thm->Valid()) thm->FillInfo	(info_items);
-    xr_delete						(thm);
+	if (item->name.size()){
+        ETextureThumbnail* thm			= xr_new<ETextureThumbnail>(*item->name);
+        if (thm->Valid()) thm->FillInfo	(info_items);
+        xr_delete						(thm);
+    }
 }
 void __stdcall  DrawTextureTHM(LPCSTR name, HDC hdc, const Irect& r)
 {
-	ETextureThumbnail* thm			= xr_new<ETextureThumbnail>(name);
-    if (thm->Valid()) thm->Draw		(hdc,r);
-    xr_delete						(thm);
+	if (name&&name[0]){
+        ETextureThumbnail* thm		= xr_new<ETextureThumbnail>(name);
+        if (thm->Valid()) thm->Draw	(hdc,r);
+        xr_delete					(thm);
+    }
 }
 //---------------------------------------------------------------------------
 void __stdcall  FillGameMaterial(ChooseItemVec& items, void* param)
