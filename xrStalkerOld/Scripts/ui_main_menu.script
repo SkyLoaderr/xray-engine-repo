@@ -40,9 +40,9 @@ function main_menu:InitControls()
 	
 	-- rect of main window
 	self.main_rect = {x = 0, y = 0,
-					  width  = 600,
-					  height = 400}
-	self.main_rect.x = (self.screen.width  - self.main_rect.width )/2
+					  width  = 1024,
+					  height = 512}
+	self.main_rect.x = (self.screen.width  - self.main_rect.width )
 	self.main_rect.y = (self.screen.height - self.main_rect.height)/2
 	-----------------------------------------------------------------
 	self.left_align_x   = self.indent
@@ -108,10 +108,10 @@ function main_menu:InitControls()
 	self.main_frame = CUIFrameWindow()
 	self.main_frame:SetAutoDelete(true)
 	self.main_frame:SetWindowName("main_frame")
-	self.main_frame:Init("ui\\ui_frame", self.main_rect.x, 
-										 self.main_rect.y, 
-										 self.main_rect.width, 
-										 self.main_rect.height)
+	self.main_frame:Init("ui\\ui_satic_main_menu", self.main_rect.x, 
+												   self.main_rect.y, 
+												   self.main_rect.width, 
+												   self.main_rect.height)
 --	self.main_frame:InitLeftTop("ui\\ui_frame_over_lt", self.lt_frame_indent.x, self.lt_frame_indent.y)
 	self:AttachChild(self.main_frame)
 
@@ -181,9 +181,7 @@ function main_menu:InitControls()
 	local btn = CUI3tButton()	
 	btn:SetAutoDelete(true)
 	btn:SetWindowName("btn_new_game")
---	btn:Init("ui\\ui_button_01", btn_new_rect.x, btn_new_rect.y, btn_new_rect.width, btn_new_rect.height)
-	btn:Init(btn_new_rect.x, btn_new_rect.y, btn_new_rect.width, btn_new_rect.height)
-	btn:InitTexture("ui\\ui_btn_main_menu")
+	btn:Init("ui\\ui_btn_main_menu", btn_new_rect.x, btn_new_rect.y, btn_new_rect.width, btn_new_rect.height)
 	btn:SetText("New game")
 	btn:SetFont(self.button_font)
 	btn:SetTextAlign(CGameFont.alCenter)
@@ -199,9 +197,7 @@ function main_menu:InitControls()
 	btn = CUI3tButton()
 	btn:SetAutoDelete(true)
 	btn:SetWindowName("btn_load")
---	btn:Init("ui\\ui_button_01", btn_load_rect.x, btn_load_rect.y, btn_load_rect.width, btn_load_rect.height)
-	btn:Init(btn_load_rect.x, btn_load_rect.y, btn_load_rect.width, btn_load_rect.height)
-	btn:InitTexture("ui\\ui_button_01", "ui\\ui_button_02", "ui\\ui_button_03")
+	btn:Init("ui\\ui_btn_main_menu", btn_load_rect.x, btn_load_rect.y, btn_load_rect.width, btn_load_rect.height)
 	btn:SetText("Load Game")
 	btn:SetFont(self.button_font)
 	btn:SetTextAlign(CGameFont.alCenter)
@@ -212,10 +208,10 @@ function main_menu:InitControls()
 	
 		
 	--------->> MULTIPLAYER
-	btn = CUIButton()
+	btn = CUI3tButton()
 	btn:SetAutoDelete(true)
 	btn:SetWindowName("btn_multiplayer")
-	btn:Init("ui\\ui_button_01", btn_multi_rect.x, btn_multi_rect.y, btn_multi_rect.width, btn_multi_rect.height)
+	btn:Init("ui\\ui_btn_main_menu", btn_multi_rect.x, btn_multi_rect.y, btn_multi_rect.width, btn_multi_rect.height)
 	btn:SetText("Multiplayer")
 	btn:SetFont(self.button_font)
 	btn:SetTextAlign(CGameFont.alCenter)
@@ -225,10 +221,10 @@ function main_menu:InitControls()
 	
 	
 	--------->> OPTIONS
-	btn = CUIButton()
+	btn = CUI3tButton()
 	btn:SetAutoDelete(true)
 	btn:SetWindowName("btn_options")
-	btn:Init("ui\\ui_button_01", btn_opt_rect.x, btn_opt_rect.y, btn_opt_rect.width, btn_opt_rect.height)
+	btn:Init("ui\\ui_btn_main_menu", btn_opt_rect.x, btn_opt_rect.y, btn_opt_rect.width, btn_opt_rect.height)
 	btn:SetText("Options")
 	btn:SetFont(self.button_font)
 	btn:SetTextAlign(CGameFont.alCenter)
@@ -237,10 +233,10 @@ function main_menu:InitControls()
 	self.main_frame:AttachChild(btn)
 	
 	--------->> QUIT TO WINDOWS
-	btn = CUIButton()
+	btn = CUI3tButton()
 	btn:SetAutoDelete(true)
 	btn:SetWindowName("btn_quit")
-	btn:Init("ui\\ui_button_01", btn_quit_rect.x, btn_quit_rect.y, btn_quit_rect.width, btn_quit_rect.height)
+	btn:Init("ui\\ui_btn_main_menu", btn_quit_rect.x, btn_quit_rect.y, btn_quit_rect.width, btn_quit_rect.height)
 	btn:SetText("Quit to Windows")
 	btn:SetFont(self.button_font)
 	btn:SetTextAlign(CGameFont.alCenter)
@@ -248,11 +244,11 @@ function main_menu:InitControls()
 	self:Register(btn)
 	self.main_frame:AttachChild(btn)
 	
-		--------->> QUIT TO WINDOWS
-	btn = CUIButton()
+		--------->> BONUS
+	btn = CUI3tButton()
 	btn:SetAutoDelete(true)
 	btn:SetWindowName("btn_bonus")
-	btn:Init("ui\\ui_button_01", btn_bonus_rect.x, btn_bonus_rect.y, btn_bonus_rect.width, btn_bonus_rect.height)
+	btn:Init("ui\\ui_btn_main_menu", btn_bonus_rect.x, btn_bonus_rect.y, btn_bonus_rect.width, btn_bonus_rect.height)
 	btn:SetText("Bonus")
 	btn:SetFont(self.button_font)
 	btn:SetTextAlign(CGameFont.alCenter)
