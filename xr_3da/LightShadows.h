@@ -9,6 +9,7 @@
 #include "scenegraph.h"
 
 class ENGINE_API	CObject;
+class ENGINE_API	xrLIGHT;
 
 class ENGINE_API	CLightShadows  
 {

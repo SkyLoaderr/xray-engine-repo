@@ -93,7 +93,6 @@ void CRender::Calculate()
 	// Build lights visibility & perform basic initialization
 	// Lights
 	Lights.UnselectAll				();
-	Lights.BuildSelection			();
 	gm_Data.diffuse.set				(1,1,1,1);
 	gm_Data.ambient.set				(1,1,1,1);
 	gm_Data.emissive.set			(0,0,0,0);

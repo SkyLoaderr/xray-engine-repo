@@ -5,6 +5,7 @@
 #include "stdafx.h"
 #include "LightShadows.h"
 #include "xr_object.h"
+#include "fstaticrender.h"
 
 const	float	S_distance	= 32;
 const	float	S_level		= .1f;
@@ -73,7 +74,7 @@ void CLightShadows::calculate	()
 		if (C.nodes.empty())	continue;
 		
 		// Select lights and calc importance
-		lights.clear		();
+		lights.clear			();
 		::Render.Lights.Select	(C.C,C.O->Radius(),lights);
 		
 		// iterate on lights

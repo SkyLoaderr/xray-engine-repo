@@ -3,8 +3,9 @@
 #pragma once
 
 #pragma pack(push,4)
-struct xrLIGHT : public Flight
+class xrLIGHT : public Flight
 {
+public:
 	DWORD		dwFrame;
 
 	struct {
