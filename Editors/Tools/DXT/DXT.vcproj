@@ -94,6 +94,7 @@
 				PreprocessorDefinitions="WIN32;_DEBUG;_WINDOWS;_USRDLL;DXT_EXPORTS"
 				BasicRuntimeChecks="3"
 				RuntimeLibrary="3"
+				RuntimeTypeInfo="TRUE"
 				UsePrecompiledHeader="3"
 				PrecompiledHeaderThrough="stdafx.h"
 				PrecompiledHeaderFile=".\Debug/DXT.pch"
@@ -187,8 +188,33 @@
 			<File
 				RelativePath=".\ETextureParams.h">
 			</File>
+		</Filter>
+		<Filter
+			Name="NormalMap"
+			Filter="">
 			<File
-				RelativePath=".\xr_tokens.h">
+				RelativePath=".\Image_DXTC.cpp">
+			</File>
+			<File
+				RelativePath=".\Image_DXTC.h">
+			</File>
+			<File
+				RelativePath=".\NormalMapGen.cpp">
+			</File>
+			<File
+				RelativePath=".\NV_Common.h">
+			</File>
+			<File
+				RelativePath=".\NVI_Convolution.cpp">
+			</File>
+			<File
+				RelativePath=".\NVI_Convolution.h">
+			</File>
+			<File
+				RelativePath=".\NVI_Image.cpp">
+			</File>
+			<File
+				RelativePath=".\NVI_Image.h">
 			</File>
 		</Filter>
 		<File

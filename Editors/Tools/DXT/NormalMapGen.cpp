@@ -139,13 +139,14 @@ void 	CalculateNormalMap( NVI_Image* pSrc, ConvolutionKernel * pKernels, int num
 			// Get alpha as height
 			height = (char) ( pArray[ j * size_x + i ] ) >> 24;
 
+			Fvector src =	{-du/mag, -dv/mag, 1.0f / mag};
+			Ivector dst	=	vpack(src);
+			nmap_color	=	color_rgba	(dst.x,dst.y,dst.z,0);
 //.			AlphaAndVectorToARGB( height, -du/mag, -dv/mag, 1.0f / mag, nmap_color );
-
 
 			pArray[ j * size_x + i ] = nmap_color;
 		}
 	}
-	xr_delete(pSrc);
 }
 
 
@@ -625,12 +626,8 @@ void ConvertAlphaToNormalMap_9x9( NVI_Image* pSrc, float scale, bool wrap )
 
 }
 
-void ConvertToNormalMap(u8* src_data, int src_width, int src_height, KernelType kt, float scale)
+void ConvertToNormalMap(NVI_Image* pSrc, KernelType kt, float scale)
 {
-	NVI_Image* pSrc		= xr_new<NVI_Image>();
-	pSrc->Initialize	(src_width,src_height,NVI_A8_R8_G8_B8,src_data);
-	pSrc->AverageRGBToAlpha();
-
 	switch (kt){
 	case KERNEL_4x:		ConvertAlphaToNormalMap_4x	(pSrc,scale,true);	break;
 	case KERNEL_3x3:	ConvertAlphaToNormalMap_3x3	(pSrc,scale,true);	break;
@@ -639,6 +636,176 @@ void ConvertToNormalMap(u8* src_data, int src_width, int src_height, KernelType 
 	case KERNEL_9x9:	ConvertAlphaToNormalMap_9x9	(pSrc,scale,true);	break;
 	default: NODEFAULT;
 	}
-
-	xr_delete(pSrc);
 }
+
+IC u32 it_gloss_rev		(u32 d, u32 s)	
+{	
+	return	color_rgba	(
+	color_get_A(s),		// gloss
+	color_get_B(d),
+	color_get_G(d),
+	color_get_R(d)		);
+}
+IC u32 it_difference	(u32 d, u32 orig, u32 ucomp)	
+{	
+	return	color_rgba(
+	128+(int(color_get_R(orig))-int(color_get_R(ucomp)))*2,		// R-error
+	128+(int(color_get_G(orig))-int(color_get_G(ucomp)))*2,		// G-error
+	128+(int(color_get_B(orig))-int(color_get_B(ucomp)))*2,		// B-error
+	128+(int(color_get_A(orig))-int(color_get_A(ucomp)))*2	);	// A-error	
+}
+IC u32 it_height_rev	(u32 d, u32 s)	
+{
+	return	color_rgba	(
+	color_get_A(d),					// diff x
+	color_get_B(d),					// diff y
+	color_get_G(d),					// diff z
+	color_get_R(s)	);				// height
+}
+
+template	<class _It>
+IC	void	TW_Iterate_1OP(u32 width, u32 height, u32 pitch, u8* dst, u8* src, const _It pred)
+{
+	for (u32 y = 0; y < height; y++)	{
+		for (u32 x = 0; x < width; x++)	{
+			u32&	pSrc	= *(((u32*)(src + (y * pitch)))+x);
+			u32&	pDst	= *(((u32*)(dst + (y * pitch)))+x);
+			pDst			= pred	(pDst,pSrc);
+		}
+	}
+}
+
+template	<class _It>
+IC	void	TW_Iterate_2OP(u32 width, u32 height, u32 pitch, u8* dst, u8* src0, u8* src1, const _It pred)
+{
+	for (u32 y = 0; y < height; y++)	{
+		for (u32 x = 0; x < width; x++)	{
+			u32&	pSrc0	= *(((u32*)((u8*)src0 + (y * pitch)))+x);
+			u32&	pSrc1	= *(((u32*)((u8*)src1 + (y * pitch)))+x);
+			u32&	pDst	= *(((u32*)((u8*)dst  + (y * pitch)))+x);
+			pDst			= pred(pDst,pSrc0,pSrc1);
+		}
+	}
+}
+
+#include "ETextureParams.h"
+#include "Image_DXTC.h"
+extern bool DXTCompressImage	(LPCSTR out_name, u8* raw_data, u32 w, u32 h, u32 pitch, 
+								 STextureParams* fmt, u32 depth);
+
+bool DXTCompressBump(LPCSTR out_name, u8* T_height_gloss, u32 w, u32 h, u32 pitch, STextureParams* fmt, u32 depth)
+{
+	VERIFY				(4==depth);
+	NVI_Image* pSrc		= new NVI_Image();
+	pSrc->Initialize	(w,h,NVI_A8_R8_G8_B8,T_height_gloss);
+	pSrc->AverageRGBToAlpha();
+
+	// stage 0 
+	ConvertToNormalMap	(pSrc,KERNEL_5x5,fmt->bump_virtual_height*100.f);
+	u8* T_normal_1		= pSrc->GetImageDataPointer();
+	TW_Iterate_1OP		(w,h,pitch,T_normal_1,T_height_gloss,it_gloss_rev);
+
+	STextureParams		fmt0;
+	fmt0.flags.set		(STextureParams::flGenerateMipMaps);
+	fmt0.type			= STextureParams::ttImage;
+	fmt0.fmt			= STextureParams::tfDXT5;
+	bool bRes			= DXTCompressImage(out_name, T_normal_1, w, h, pitch, &fmt0, depth);
+
+	// stage 1
+	if (bRes){
+		// Decompress (back)
+		Image_DXTC* CI	= new Image_DXTC(); 
+		if (CI->LoadFromFile(out_name)){
+			VERIFY			((w==CI->Width())&&(h==CI->Height()));
+			CI->Decompress	();
+			u8* T_normal_1U	= CI->GetDecompDataPointer();
+
+			// Calculate difference
+			u8*	T_normal_1D	= (u8*) calloc( w * h * 4, sizeof( u8 ));
+			TW_Iterate_2OP	(w,h,pitch,T_normal_1D,T_normal_1,T_normal_1U,it_difference);
+
+			// Reverse channels back + transfer heightmap
+			TW_Iterate_1OP	(w,h,pitch,T_normal_1D,T_height_gloss,it_height_rev);
+			
+			// Compress
+			STextureParams	fmt0;
+			fmt0.flags.set	(STextureParams::flGenerateMipMaps);
+			fmt0.type		= STextureParams::ttImage;
+			fmt0.fmt		= STextureParams::tfDXT5;
+			string256		out_name1;
+			strcpy			(out_name1,out_name); if (strext(out_name1)) *strext(out_name1)=0;
+			strcat			(out_name1,"#.dds");
+			bRes			|= DXTCompressImage(out_name1, T_normal_1D, w, h, pitch, &fmt0, depth);
+
+			free			(T_normal_1D);
+		}else{
+			bRes			= false;
+		}
+		delete				(CI);
+	}
+
+	delete					(pSrc);
+
+	return bRes;
+}
+/*
+_BUMP:
+{
+	// Load   SYS-MEM-surface, bound to device restrictions
+	D3DXIMAGE_INFO			IMG;
+	IReader* S				= FS.r_open	(fn);
+	IDirect3DTexture9*		T_height_gloss;
+	R_CHK(D3DXCreateTextureFromFileInMemoryEx(
+		HW.pDevice,	S->pointer(),S->length(),
+		D3DX_DEFAULT,D3DX_DEFAULT,	D3DX_DEFAULT,0,D3DFMT_A8R8G8B8,
+		D3DPOOL_SYSTEMMEM,			D3DX_DEFAULT,D3DX_DEFAULT,
+		0,&IMG,0,&T_height_gloss	));
+	FS.r_close				(S);
+	//TW_Save						(T_height_gloss,fname,"debug-0","original");
+
+	// Create HW-surface, compute normal map
+	IDirect3DTexture9*	T_normal_1	= 0;
+	R_CHK(D3DXCreateTexture		(HW.pDevice,IMG.Width,IMG.Height,D3DX_DEFAULT,0,D3DFMT_A8R8G8B8,D3DPOOL_SYSTEMMEM,&T_normal_1));
+	R_CHK(D3DXComputeNormalMap	(T_normal_1,T_height_gloss,0,0,D3DX_CHANNEL_RED,4.f));
+	//TW_Save					(T_normal_1,fname,"debug-1","normal");
+
+	// Transfer gloss-map
+	TW_Iterate_1OP				(T_normal_1,T_height_gloss,it_gloss_rev);
+	//TW_Save						(T_normal_1,fname,"debug-2","normal-G");
+
+	// Compress
+	fmt								= D3DFMT_DXT5;
+	IDirect3DTexture9*	T_normal_1C	= TW_LoadTextureFromTexture(T_normal_1,fmt,psTextureLOD,dwWidth,dwHeight);
+	//TW_Save						(T_normal_1C,fname,"debug-3","normal-G-C");
+
+#if RENDER==R_R2
+	// Decompress (back)
+	fmt								= D3DFMT_A8R8G8B8;
+	IDirect3DTexture9*	T_normal_1U	= TW_LoadTextureFromTexture(T_normal_1C,fmt,0,dwWidth,dwHeight);
+	// TW_Save						(T_normal_1U,fname,"debug-4","normal-G-CU");
+
+	// Calculate difference
+	IDirect3DTexture9*	T_normal_1D = 0;
+	R_CHK(D3DXCreateTexture(HW.pDevice,dwWidth,dwHeight,T_normal_1U->GetLevelCount(),0,D3DFMT_A8R8G8B8,D3DPOOL_SYSTEMMEM,&T_normal_1D));
+	TW_Iterate_2OP				(T_normal_1D,T_normal_1,T_normal_1U,it_difference);
+	// TW_Save						(T_normal_1D,fname,"debug-5","normal-G-diff");
+
+	// Reverse channels back + transfer heightmap
+	TW_Iterate_1OP				(T_normal_1D,T_height_gloss,it_height_rev);
+	// TW_Save						(T_normal_1D,fname,"debug-6","normal-G-diff-H");
+
+	// Compress
+	fmt								= D3DFMT_DXT5;
+	IDirect3DTexture9*	T_normal_2C	= TW_LoadTextureFromTexture(T_normal_1D,fmt,0,dwWidth,dwHeight);
+	// TW_Save						(T_normal_2C,fname,"debug-7","normal-G-diff-H-C");
+	_RELEASE					(T_normal_1U	);
+	_RELEASE					(T_normal_1D	);
+
+	// 
+	string256			fnameB;
+	strconcat			(fnameB,"$user$",fname,"X");
+	ref_texture			t_temp		= Device.Resources->_CreateTexture	(fnameB);
+	t_temp->surface_set	(T_normal_2C	);
+	_RELEASE			(T_normal_2C	);	// texture should keep reference to it by itself
+#endif
+*/

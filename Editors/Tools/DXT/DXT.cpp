@@ -222,11 +222,7 @@ bool DXTCompressImage	(LPCSTR out_name, u8* raw_data, u32 w, u32 h, u32 pitch,
 	else return true;
 }
 
-bool DXTCompressBump(LPCSTR out_name, u8* raw_data, u32 w, u32 h, u32 pitch, 
-					STextureParams* fmt, u32 depth)
-{
-	return false;
-}
+extern bool DXTCompressBump(LPCSTR out_name, u8* raw_data, u32 w, u32 h, u32 pitch, STextureParams* fmt, u32 depth);
 
 extern "C" __declspec(dllexport) 
 bool DXTCompress	(LPCSTR out_name, u8* raw_data, u32 w, u32 h, u32 pitch, 
