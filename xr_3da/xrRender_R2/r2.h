@@ -24,21 +24,21 @@ public:
 	SceneGraph::mapSorted_T									mapSorted;
 	SceneGraph::mapHUD_T									mapHUD;
 
-	vector<SceneGraph::mapNormalVS::TNode*>					lstVS;
-	vector<SceneGraph::mapNormalPS::TNode*>					lstPS;
-	vector<SceneGraph::mapNormalCS::TNode*>					lstCS;
-	vector<SceneGraph::mapNormalStates::TNode*>				lstStates;
-	vector<SceneGraph::mapNormalTextures::TNode*>			lstTextures;
-	vector<SceneGraph::mapNormalTextures::TNode*>			lstTexturesTemp;
-	vector<SceneGraph::mapNormalVB::TNode*>					lstVB;
+	vector<SceneGraph::mapNormalVS::TNode*>					nrmVS;
+	vector<SceneGraph::mapNormalPS::TNode*>					nrmPS;
+	vector<SceneGraph::mapNormalCS::TNode*>					nrmCS;
+	vector<SceneGraph::mapNormalStates::TNode*>				nrmStates;
+	vector<SceneGraph::mapNormalTextures::TNode*>			nrmTextures;
+	vector<SceneGraph::mapNormalTextures::TNode*>			nrmTexturesTemp;
+	vector<SceneGraph::mapNormalVB::TNode*>					nrmVB;
 
-	vector<SceneGraph::mapNormalVS::TNode*>					lstVS_mat;
-	vector<SceneGraph::mapNormalPS::TNode*>					lstPS_mat;
-	vector<SceneGraph::mapNormalCS::TNode*>					lstCS_mat;
-	vector<SceneGraph::mapNormalStates::TNode*>				lstStates_mat;
-	vector<SceneGraph::mapNormalTextures::TNode*>			lstTextures_mat;
-	vector<SceneGraph::mapNormalTextures::TNode*>			lstTexturesTemp_mat;
-	vector<SceneGraph::mapNormalVB::TNode*>					lstVB_mat;
+	vector<SceneGraph::mapMatrixVS::TNode*>					matVS;
+	vector<SceneGraph::mapMatrixPS::TNode*>					matPS;
+	vector<SceneGraph::mapMatrixCS::TNode*>					matCS;
+	vector<SceneGraph::mapMatrixStates::TNode*>				matStates;
+	vector<SceneGraph::mapMatrixTextures::TNode*>			matTextures;
+	vector<SceneGraph::mapMatrixTextures::TNode*>			matTexturesTemp;
+	vector<SceneGraph::mapMatrixVB::TNode*>					matVB;
 
 	// Sector detection and visibility
 	CSector*												pLastSector;
