@@ -57,6 +57,12 @@ snd_files = {
 	military_radio                 = "characters_voice\\human_01\\scenario\\radio\\radio_voice_",
 	
 	patrol_radio_1                 = "characters_voice\\human_01\\scenario\\radio\\talk_1\\radio_",
+	
+	silent_voice                   = "characters_voice\\human_01\\reactions\\hear_something\\stalker\\hear_5",
+	soldier_radio1                 = "characters_voice\\human_01\\scenario\\radio\\radio_voice_1",
+	soldier_radio2                 = "characters_voice\\human_01\\scenario\\radio\\radio_voice_2",
+	soldier_radio3                 = "characters_voice\\human_01\\scenario\\radio\\radio_voice_3",
+	
 
 	gar_dm_bandit_backoff1         = [[characters_voice\human_01\scenario\dramatic_garbage\dramatic_bandits_back_off_1_]],
 	gar_dm_bandit_backoff2         = [[characters_voice\human_01\scenario\dramatic_garbage\dramatic_bandits_back_off_2_]],
