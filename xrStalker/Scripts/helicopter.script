@@ -21,7 +21,7 @@ function main()
 --			helicopter:air_attack_wait(actor,100,15)    --þ¸ªðýþòøª¹¸  ÷ð 100 üõª¨þò ôþ ¡õûø, òø¸õª¹ 15 ¸õú
 --			helicopter:air_attack(actor)
    	
-			local vecDst = vector(actor:position())
+			local vecDst = vector():set(actor:position())
 			local vecVia = vector():set(0,0,0)
 			
 			helicopter:heli_go_to_point(vecDst,vecVia,20)
