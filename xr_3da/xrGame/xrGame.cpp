@@ -700,7 +700,6 @@ public:
 
 		NET_Packet			net_packet;
 		net_packet.w_begin	(M_SAVE_GAME);
-		net_packet.w_u32	(Level().timeServer());
 		net_packet.w_string	(S);
 		Level().Send		(net_packet,net_flags(TRUE));
 	}

@@ -42,6 +42,8 @@ CAI_Space::~CAI_Space				()
 void CAI_Space::load				(LPCSTR level_name)
 {
 	unload					();
+	Memory.mem_compact		();
+	u32						mem_usage = Memory.mem_usage();
 	m_level_graph			= xr_new<CLevelGraph>();
 	m_cross_table			= xr_new<CGameLevelCrossTable>();
 	m_graph_engine			= xr_new<CGraphEngine>(
@@ -77,6 +79,8 @@ void CAI_Space::load				(LPCSTR level_name)
 		m_cover_manager->clear	();
 	}
 	m_cover_manager->compute_static_cover();
+
+	Msg						("* Loading ai space is successfully completed (%7.3f Mb)",float(Memory.mem_usage() - mem_usage)/1048576.0);
 }
 
 void CAI_Space::unload				()

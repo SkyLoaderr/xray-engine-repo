@@ -373,7 +373,7 @@ void CSE_ALifeAnomalousZone::FillProp		(LPCSTR pref, PropItemVec& items)
 
 bool CSE_ALifeAnomalousZone::need_update	(CSE_ALifeDynamicObject *object)
 {
-	return						(CSE_ALifeSchedulable::need_update(object) && !fis_zero(m_maxPower));
+	return						(CSE_ALifeSchedulable::need_update(object) && (m_maxPower > EPS_L));
 }
 
 //-------------------------------------------------------------------------

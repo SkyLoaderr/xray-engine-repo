@@ -12,6 +12,7 @@
 #include "script_binder.h"
 #include "xrServer_Objects_ALife.h"
 #include "script_binder_object.h"
+#include "ai_script_classes.h"
 
 CScriptBinder::CScriptBinder		()
 {
@@ -102,9 +103,6 @@ void CScriptBinder::net_Import		(NET_Packet &net_packet)
 
 void CScriptBinder::net_Export		(NET_Packet &net_packet)
 {
-	if (!xr_strcmp("bandit_stalker_0_0",*dynamic_cast<CGameObject*>(this)->cName())) {
-		m_object = m_object;
-	}
 	if (m_object)
 		m_object->net_Export(&net_packet);
 }

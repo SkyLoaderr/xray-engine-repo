@@ -8,6 +8,7 @@
 
 #include "stdafx.h"
 #include "script_property_evaluator_wrapper.h"
+#include "ai_script_classes.h"
 
 void CPropertyEvaluatorWrapper::reinit			(CLuaGameObject *object, CPropertyStorage *storage)
 {

@@ -17,8 +17,8 @@ CScriptBinderObject::CScriptBinderObject	(CLuaGameObject *object)
 
 CScriptBinderObject::~CScriptBinderObject	()
 {
-//	if (m_object)
-//		Msg			("Destroying binded object %s",m_object->Name());
+	if (m_object)
+		Msg			("Destroying binded object %s",m_object->Name());
 }
 
 void CScriptBinderObject::reinit			()

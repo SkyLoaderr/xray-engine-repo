@@ -55,7 +55,7 @@ protected:
 			bool		bfCheckForInventoryCapacity		(CSE_ALifeHumanAbstract		*tpALifeHumanAbstract1,		ALife::ITEM_P_VECTOR			&tpTrader1,						ALife::INT_VECTOR		&tpIndexes1,				CSE_ALifeHumanAbstract	*tpALifeHumanAbstract2,	ALife::ITEM_P_VECTOR			&tpTrader2,					ALife::INT_VECTOR		&tpIndexes2);
 			bool		bfCheckForInventoryCapacity		(CSE_ALifeHumanAbstract		*tpALifeHumanAbstract1,		ALife::ITEM_P_VECTOR			&tpTrader1,						int				iSum1,						int						iMoney1,				CSE_ALifeHumanAbstract	*tpALifeHumanAbstract2,				ALife::ITEM_P_VECTOR	&tpTrader2,		int			iSum2,		int iMoney2, int iBalance);
 			bool		bfCheckForTrade					(CSE_ALifeHumanAbstract		*tpALifeHumanAbstract1,		ALife::ITEM_P_VECTOR			&tpTrader1,						ALife::INT_VECTOR		&tpSums1,					int						iMoney1,				CSE_ALifeHumanAbstract	*tpALifeHumanAbstract2,		ALife::ITEM_P_VECTOR	&tpTrader2,		ALife::INT_VECTOR	&tpSums2,	int iMoney2, int iBalance);
-			bool		bfCheckIfCanNullTradersBalance	(CSE_ALifeHumanAbstract	*tpALifeHumanAbstract1,		CSE_ALifeHumanAbstract	*tpALifeHumanAbstract2,			int				iItemCount1,				int						iItemCount2,			int						iBalance);
+			bool		bfCheckIfCanNullTradersBalance	(CSE_ALifeHumanAbstract		*tpALifeHumanAbstract1,		CSE_ALifeHumanAbstract	*tpALifeHumanAbstract2,			int				iItemCount1,				int						iItemCount2,			int						iBalance);
 			void		vfPerformTrading				(CSE_ALifeHumanAbstract		*tpALifeHumanAbstract1,		CSE_ALifeHumanAbstract	*tpALifeHumanAbstract2);
 			void		vfPerformCommunication			();
 

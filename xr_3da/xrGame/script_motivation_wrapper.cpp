@@ -8,6 +8,7 @@
 
 #include "stdafx.h"
 #include "script_motivation_wrapper.h"
+#include "ai_script_classes.h"
 
 CScriptMotivationWrapper::~CScriptMotivationWrapper	()
 {

@@ -8,6 +8,8 @@
 
 #include "stdafx.h"
 #include "script_binder_object_wrapper.h"
+#include "ai_script_classes.h"
+#include "xrServer_Objects.h"
 
 CScriptBinderObjectWrapper::CScriptBinderObjectWrapper	(CLuaGameObject *object) :
 	CScriptBinderObject	(object)

@@ -8,6 +8,7 @@
 
 #include "stdafx.h"
 #include "script_action_wrapper.h"
+#include "ai_script_classes.h"
 
 void CScriptActionWrapper::reinit				(CLuaGameObject *object, CPropertyStorage *storage, bool clear_all)
 {

@@ -8,6 +8,7 @@
 
 #include "stdafx.h"
 #include "script_action_planner_wrapper.h"
+#include "ai_script_classes.h"
 
 void CScriptActionPlannerWrapper::reinit		(CLuaGameObject *object, bool clear_all)
 {

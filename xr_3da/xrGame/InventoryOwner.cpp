@@ -14,6 +14,7 @@
 #include "inventory.h"
 #include "xrserver_objects_alife_items.h"
 #include "character_info.h"
+#include "ai_script_classes.h"
 
 //////////////////////////////////////////////////////////////////////////
 // CInventoryOwner class 
