@@ -26,7 +26,7 @@ public:
 	
 	virtual void OnAnimationEnd();
 	virtual void UpdateCL();
-
+	
 	virtual bool Activate();
 	virtual void Deactivate();
 	virtual void Throw();
@@ -38,42 +38,20 @@ public:
 
 	virtual void						net_Import			(NET_Packet& P);					// import from server
 	virtual void						net_Export			(NET_Packet& P);					// export to server
-
 	virtual void renderable_Render() {inherited::renderable_Render();}
 	virtual void OnH_B_Chield() {inherited::OnH_B_Chield();}
+
 	virtual bool IsHidden() {return inherited::IsHidden();}
 	virtual bool IsPending() {return inherited::IsPending();}
 
 	virtual	void Hit(float P, Fvector &dir,	CObject* who, s16 element,
 					 Fvector position_in_object_space, float impulse, 
 					 ALife::EHitType hit_type = eHitTypeWound)	{inherited::Hit(P, dir, who, element, position_in_object_space,impulse,hit_type);}
+
 protected:
 	//объект фейковой гранаты
 	CGrenade *m_pFake;
 
-	struct	net_update 		
-	{
-		u32					dwTimeStamp;
-		u64					CurPhStep;
-		u64					RPhStep;
-
-//		u8					enabled;
-//		Fvector				pos;//,angles;
-//		Fquaternion			quaternion;
-
-//		Fvector		linear_vel;
-//		Fvector		angular_vel;
-
-		SPHNetState			State;
-	};
-
-	xr_deque<net_update>	NET;
-	net_update				NET_Last;
-
-	u64						LastCPhStep;
-	u64						LastAPhStep;
-
 	ref_sound sndCheckout;
 	ESoundTypes	m_eSoundCheckout;
-
 };

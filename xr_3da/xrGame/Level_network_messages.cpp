@@ -35,6 +35,8 @@ void CLevel::ClientReceive()
 		case M_UPDATE:
 			game.net_import_update	(*P);
 			Objects.net_Import		(P);
+			
+			UpdateDeltaUpd(timeServer());
 			break;
 		case M_SV_CONFIG_GAME:
 			game.net_import_state	(*P);

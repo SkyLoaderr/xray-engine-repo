@@ -67,10 +67,47 @@ void CSE_ALifeInventoryItem::STATE_Read		(NET_Packet &tNetPacket, u16 size)
 
 void CSE_ALifeInventoryItem::UPDATE_Write	(NET_Packet &tNetPacket)
 {
+	tNetPacket.w_u32			(m_dwTimeStamp);
+	tNetPacket.w_u16			(m_u16NumItems);
+	if (!m_u16NumItems) return;	
+
+	tNetPacket.w_u8					( State.enabled );
+
+	tNetPacket.w_vec3				( State.angular_vel );
+	tNetPacket.w_vec3				( State.linear_vel );
+
+	tNetPacket.w_vec3				( State.force );
+	tNetPacket.w_vec3				( State.torque );
+
+	tNetPacket.w_vec3				( State.position );
+
+	tNetPacket.w_float				( State.quaternion.x );
+	tNetPacket.w_float				( State.quaternion.y );
+	tNetPacket.w_float				( State.quaternion.z );
+	tNetPacket.w_float				( State.quaternion.w );	
 };
 
 void CSE_ALifeInventoryItem::UPDATE_Read	(NET_Packet &tNetPacket)
 {
+	tNetPacket.r_u32			(m_dwTimeStamp);
+	tNetPacket.r_u16			(m_u16NumItems);
+
+	if (!m_u16NumItems) return;
+
+	tNetPacket.r_u8					( *((u8*)&(State.enabled)) );
+
+	tNetPacket.r_vec3				( State.angular_vel );
+	tNetPacket.r_vec3				( State.linear_vel );
+
+	tNetPacket.r_vec3				( State.force );
+	tNetPacket.r_vec3				( State.torque );
+
+	tNetPacket.r_vec3				( State.position );
+
+	tNetPacket.r_float				( State.quaternion.x );
+	tNetPacket.r_float				( State.quaternion.y );
+	tNetPacket.r_float				( State.quaternion.z );
+	tNetPacket.r_float				( State.quaternion.w );
 };
 
 #ifdef _EDITOR
@@ -246,16 +283,10 @@ CSE_ALifeItemWeapon::~CSE_ALifeItemWeapon	()
 void CSE_ALifeItemWeapon::UPDATE_Read		(NET_Packet	&tNetPacket)
 {
 	inherited::UPDATE_Read		(tNetPacket);
-	tNetPacket.r_u32			(timestamp);
+
 	tNetPacket.r_u8				(flags);
 
-	tNetPacket.r_u16			(a_current);
 	tNetPacket.r_u16			(a_elapsed);
-
-	tNetPacket.r_vec3			(o_Position	);
-	tNetPacket.r_angle8			(o_Angle.x	);
-	tNetPacket.r_angle8			(o_Angle.y	);
-	tNetPacket.r_angle8			(o_Angle.z	);
 
 	tNetPacket.r_u8				(m_addon_flags.flags);
 }
@@ -263,16 +294,10 @@ void CSE_ALifeItemWeapon::UPDATE_Read		(NET_Packet	&tNetPacket)
 void CSE_ALifeItemWeapon::UPDATE_Write		(NET_Packet	&tNetPacket)
 {
 	inherited::UPDATE_Write		(tNetPacket);
-	tNetPacket.w_u32			(timestamp);
+
 	tNetPacket.w_u8				(flags);
 
-	tNetPacket.w_u16			(a_current);
 	tNetPacket.w_u16			(a_elapsed);
-
-	tNetPacket.w_vec3			(o_Position	);
-	tNetPacket.w_angle8			(o_Angle.x	);
-	tNetPacket.w_angle8			(o_Angle.y	);
-	tNetPacket.w_angle8			(o_Angle.z	);
 
 	tNetPacket.w_u8				(m_addon_flags.get());
 }
@@ -383,24 +408,12 @@ void CSE_ALifeItemAmmo::UPDATE_Read			(NET_Packet	&tNetPacket)
 {
 	inherited::UPDATE_Read		(tNetPacket);
 
-	tNetPacket.r_u32			(m_dwTimeStamp);
-	tNetPacket.r_vec3			(o_Position	);
-	tNetPacket.r_angle8			(o_Angle.x	);
-	tNetPacket.r_angle8			(o_Angle.y	);
-	tNetPacket.r_angle8			(o_Angle.z	);
-
 	tNetPacket.r_u16			(a_elapsed);
 }
 
 void CSE_ALifeItemAmmo::UPDATE_Write		(NET_Packet	&tNetPacket)
 {
 	inherited::UPDATE_Write		(tNetPacket);
-
-	tNetPacket.w_u32			(m_dwTimeStamp);
-	tNetPacket.w_vec3			(o_Position	);
-	tNetPacket.w_angle8			(o_Angle.x	);
-	tNetPacket.w_angle8			(o_Angle.y	);
-	tNetPacket.w_angle8			(o_Angle.z	);
 
 	tNetPacket.w_u16			(a_elapsed);
 }
@@ -637,63 +650,12 @@ void CSE_ALifeItemGrenade::STATE_Write		(NET_Packet	&tNetPacket)
 void CSE_ALifeItemGrenade::UPDATE_Read		(NET_Packet	&tNetPacket)
 {
 	inherited::UPDATE_Read		(tNetPacket);
-
-	tNetPacket.r_u32			(m_dwTimeStamp);
-	/*
-	tNetPacket.r_u64			(m_RPhStep);
-
-	tNetPacket.r_vec3				( State.angular_vel);
-	tNetPacket.r_vec3				( State.linear_vel);
-
-	tNetPacket.r_vec3				( State.force);
-	tNetPacket.r_vec3				( State.torque);
-
-	tNetPacket.r_vec3				( State.position);
-	tNetPacket.r_vec3				( State.previous_position);
-
-	tNetPacket.r_float				( State.quaternion.x );
-	tNetPacket.r_float				( State.quaternion.y );
-	tNetPacket.r_float				( State.quaternion.z );
-	tNetPacket.r_float				( State.quaternion.w );
-
-	tNetPacket.r_float				( State.previous_quaternion.x );
-	tNetPacket.r_float				( State.previous_quaternion.y );
-	tNetPacket.r_float				( State.previous_quaternion.z );
-	tNetPacket.r_float				( State.previous_quaternion.w );
-
-	tNetPacket.r_u8					( *((u8*)&(State.enabled)) );
-	*/
 }
 
 void CSE_ALifeItemGrenade::UPDATE_Write		(NET_Packet	&tNetPacket)
 {
 	inherited::UPDATE_Write		(tNetPacket);
 
-	tNetPacket.w_u32			(m_dwTimeStamp);
-	/*
-	tNetPacket.w_u64			(m_RPhStep);
-
-	tNetPacket.w_vec3				( State.angular_vel);
-	tNetPacket.w_vec3				( State.linear_vel);
-
-	tNetPacket.w_vec3				( State.force);
-	tNetPacket.w_vec3				( State.torque);
-
-	tNetPacket.w_vec3				( State.position);
-	tNetPacket.w_vec3				( State.previous_position);
-
-	tNetPacket.w_float				( State.quaternion.x );
-	tNetPacket.w_float				( State.quaternion.y );
-	tNetPacket.w_float				( State.quaternion.z );
-	tNetPacket.w_float				( State.quaternion.w );
-
-	tNetPacket.w_float				( State.previous_quaternion.x );
-	tNetPacket.w_float				( State.previous_quaternion.y );
-	tNetPacket.w_float				( State.previous_quaternion.z );
-	tNetPacket.w_float				( State.previous_quaternion.w );
-
-	tNetPacket.w_u8					( State.enabled );
-	*/
 }
 
 #ifdef _EDITOR

@@ -38,6 +38,7 @@ ENGINE_API extern float		psHUD_FOV;
 extern	float				psSqueezeVelocity;
 extern	int					phFPS;
 extern	int					phIterations;
+extern	int					lvInterpSteps;
 
 // console commands
 class CCC_Spawn : public CConsoleCommand
@@ -689,6 +690,25 @@ public:
 	}
 };
 
+class CCC_Net_CL_Interpolation : public CCC_Integer {
+protected:
+	int		*value_blin;
+public:
+	CCC_Net_CL_Interpolation(LPCSTR N, int* V, int _min=0, int _max=999) :
+		CCC_Integer(N,V,_min,_max),
+		value_blin(V)
+	{};
+
+	virtual void	Execute	(LPCSTR args)
+	{
+		CCC_Integer::Execute(args);
+		if (!*value_blin && g_pGameLevel)
+			Level().ReculcInterpolationSteps();
+	}
+};
+
+
+
 ///////////////////////////////////////////////////////////////////////////////////////////////////////////
 
 #include "ui/xrXMLParser.h"
@@ -766,6 +786,10 @@ BOOL APIENTRY DllMain( HANDLE /**hModule/**/,
 		// Physics
 		CMD4(CCC_Integer,			"ph_fps",				&phFPS,			10,100);
 		CMD4(CCC_Integer,			"ph_iterations",		&phIterations,	1,50);
+
+		// Mad Max
+		// Net Interpolation
+		CMD4(CCC_Net_CL_Interpolation,		"net_cl_interpolation",	&lvInterpSteps,			-1,100);
 
 		// keyboard binding
 		CCC_RegisterInput			();

@@ -3,6 +3,7 @@
 #include "actor.h"
 #include "trade.h"
 #include "weapon.h"
+#include "Physics.h"
 
 #include "ui/UIInventoryUtilities.h"
 #include "ai_script_lua_space.h"
@@ -40,6 +41,9 @@ CInventoryItem::CInventoryItem()
 
 	m_iXPos = 0;
 	m_iYPos = 0;
+	////////////////////////////////////
+	m_bHasUpdate = false;
+	m_bInInterpolation = false;
 }
 
 CInventoryItem::~CInventoryItem() 
@@ -334,6 +338,221 @@ bool CInventoryItem::Detach(const char* item_section_name)
 	return true;
 }
 
+/////////// network ///////////////////////////////
+void CInventoryItem::net_Import			(NET_Packet& P) 
+{	
+	net_update_IItem			N;
+
+	P.r_u32					( N.dwTimeStamp );
+
+	u16	NumItems = 0;
+	P.r_u16					( NumItems);
+	if (!NumItems) return;
+
+	P.r_u8					( *((u8*)&(N.State.enabled)) );
+
+	P.r_vec3				( N.State.angular_vel);
+	P.r_vec3				( N.State.linear_vel);
+
+	P.r_vec3				( N.State.force);
+	P.r_vec3				( N.State.torque);
+
+	P.r_vec3				( N.State.position);
+
+	P.r_float				( N.State.quaternion.x );
+	P.r_float				( N.State.quaternion.y );
+	P.r_float				( N.State.quaternion.z );
+	P.r_float				( N.State.quaternion.w );
+
+	N.State.previous_position	= N.State.position;
+	N.State.previous_quaternion = N.State.quaternion;
+
+	if (NET_IItem.empty() || (NET_IItem.back().dwTimeStamp<N.dwTimeStamp))
+	{
+		long dTime = Level().timeServer() - N.dwTimeStamp;
+		if (dTime < (fixed_step*500)) return;
+		u32 NumSteps = ph_world->CalcNumSteps(dTime);
+
+		m_bHasUpdate = true;
+		Level().m_bNeed_CrPr = true;
+		Level().m_dwNumSteps = NumSteps;
+
+		NET_IItem.push_back			(N);
+	}
+};
+
+void CInventoryItem::net_Export			(NET_Packet& P) 
+{	
+	P.w_u32				(Level().timeServer());	
+	
+	u16 NumItems = PHGetSyncItemsNumber();
+	if (H_Parent()) NumItems = 0;
+
+	P.w_u16				(NumItems);
+	if (!NumItems) return;
+
+	CPHSynchronize* pSyncObj = NULL;
+	SPHNetState	State;
+
+	for (u16 i=0; i<NumItems; i++)
+	{
+		pSyncObj = PHGetSyncItem(i);
+		if (!pSyncObj) continue;
+		pSyncObj->get_State(State);
+
+		P.w_u8					( State.enabled );
+
+		P.w_vec3				( State.angular_vel);
+		P.w_vec3				( State.linear_vel);
+
+		P.w_vec3				( State.force);
+		P.w_vec3				( State.torque);
+
+		P.w_vec3				( State.position);
+
+		P.w_float				( State.quaternion.x );
+		P.w_float				( State.quaternion.y );
+		P.w_float				( State.quaternion.z );
+		P.w_float				( State.quaternion.w );
+	};
+};
+
+void CInventoryItem::PH_B_CrPr		()
+{
+	//just set last update data for now
+	u32 CurTime = Level().timeServer();
+	if (m_bHasUpdate)
+	{
+		m_bInInterpolation = false;
+		///////////////////////////////////////////////
+		CPHSynchronize* pSyncObj = NULL;
+		pSyncObj = PHGetSyncItem(0);
+		if (!pSyncObj) return;
+		///////////////////////////////////////////////
+		PHUnFreeze();
+		///////////////////////////////////////////////
+		while (NET_IItem.size() > 2)
+		{
+			NET_IItem.pop_front();
+		};
+
+		net_update_IItem N = NET_IItem.back();
+		///////////////////////////////////////////////
+		IStartPos.set(Position());
+		IStartRot.set(XFORM());
+		///////////////////////////////////////////////
+		pSyncObj->set_State(N.State);
+		if (!N.State.enabled) PHFreeze();
+		///////////////////////////////////////////////
+		if (int(Level().InterpolationSteps()) < 0)
+		{
+			m_bHasUpdate = false;
+			m_bInInterpolation = false;
+		};
+	};
+};	
+
+
+void CInventoryItem::PH_I_CrPr		()		// actions & operations between two phisic prediction steps
+{
+	//store recalculated data, then we able to restore it after small future prediction
+	if (!m_bHasUpdate) return;
+	////////////////////////////////////
+	CPHSynchronize* pSyncObj = NULL;
+	pSyncObj = PHGetSyncItem(0);
+	if (!pSyncObj) return;
+	////////////////////////////////////
+	pSyncObj->get_State(RecalculatedState);
+	///////////////////////////////////////////////
+	if (!getVisible())
+	{
+		m_bHasUpdate = false;
+		
+		PHFreeze();
+	};
+}; 
+
+void CInventoryItem::PH_A_CrPr		()
+{
+	//restore recalculated data and get data for interpolation	
+	if (!m_bHasUpdate) return;
+	m_bHasUpdate = false;
+	////////////////////////////////////
+	CPHSynchronize* pSyncObj = NULL;
+	pSyncObj = PHGetSyncItem(0);
+	if (!pSyncObj) return;
+	////////////////////////////////////
+	SPHNetState		PredictedState;
+	pSyncObj->get_State(PredictedState);
+	
+	Fmatrix xformX;
+	pSyncObj->cv2obj_Xfrom(PredictedState.previous_quaternion, PredictedState.previous_position, xformX);
+
+	IEndRot.set(xformX);
+	IEndPos.set(xformX.c);
+
+	m_bInInterpolation = true;
+	m_dwIStartTime = Level().timeServer();
+	m_dwIEndTime = m_dwIStartTime + Level().InterpolationSteps()*u32(fixed_step*1000);
+	m_u64IEndStep = ph_world->m_steps_num + Level().InterpolationSteps();
+	////////////////////////////////////
+	pSyncObj->set_State(RecalculatedState);
+};
+
+void CInventoryItem::make_Interpolation	()
+{
+	if (!m_bInInterpolation) return;
+
+	u32 CurrentTime = Level().timeServer();
+	if(!H_Parent() && getVisible() && m_pPhysicsShell) 
+	{		
+		if (ph_world->m_steps_num > m_u64IEndStep)
+		{
+			m_bInInterpolation = false;
+		}
+		else
+		{
+			Fvector IPos;
+			Fquaternion IRot;
+
+			if (ph_world->m_steps_num < m_u64IEndStep)
+			{
+				float f = float(CurrentTime - m_dwIStartTime)/(m_dwIEndTime - m_dwIStartTime);
+				if (f < 0 || f > 1)
+				{
+					if (f < 0) f = 0.0f;
+					else f = 1.0f;
+				};
+
+				IPos.lerp(IStartPos, IEndPos, f);
+				IRot.slerp(IStartRot, IEndRot, f);
+			}
+			else
+			{
+				CPHSynchronize* pSyncObj = NULL;
+				pSyncObj = PHGetSyncItem(0);
+				if (!pSyncObj) return;
+				SPHNetState	State;
+				pSyncObj->get_State(State);
+
+				Fmatrix xformI;
+				pSyncObj->cv2obj_Xfrom(State.quaternion, State.position, xformI);
+
+				Fvector tmpP;
+				Fquaternion tmpR;
+
+				tmpR.set(xformI);
+				tmpP.set(xformI.c);
+
+				IPos.lerp(IEndPos, tmpP, ph_world->m_frame_time/fixed_step);
+				IRot.slerp(IEndRot, tmpR, ph_world->m_frame_time/fixed_step);
+			};
+
+			XFORM().rotation(IRot);
+			Position().set(IPos);
+		};
+	};
+};
 
 ///////////////////////////////////////////
 // CEatableItem class 
@@ -372,6 +591,7 @@ bool CEatableItem::Useful()
 
 	return true;
 }
+
 ///////////////////////////////////////////////////////////////////////////////
 // CInventory class 
 ///////////////////////////////////////////////////////////////////////////////
@@ -708,6 +928,12 @@ bool CInventory::Action(s32 cmd, u32 flags)
 		{
 		case kUSE:
 			{
+			}break;
+		case kWPN_RELOAD:
+			{
+				//создать и отправить пакет
+				SendActionEvent(cmd, flags);
+				return true;
 			}break;
 		case kDROP:
 			{

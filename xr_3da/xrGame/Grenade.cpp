@@ -5,8 +5,6 @@
 #include "entity.h"
 #include "PSObject.h"
 #include "ParticlesObject.h"
-#include "Physics.h"
-#include "HUDManager.h"
 
 CGrenade::CGrenade(void) 
 {
@@ -184,9 +182,11 @@ void CGrenade::OnAnimationEnd()
 			if (Local())
 			{
 				NET_Packet P;
-				u_EventGen(P, GE_OWNERSHIP_REJECT, H_Parent()->ID());
-				P.w_u16(u16(ID()));
-				u_EventSend(P);
+//				u_EventGen(P, GE_OWNERSHIP_REJECT, H_Parent()->ID());
+//				P.w_u16(u16(ID()));
+//				u_EventSend(P);
+				u_EventGen			(P,GE_DESTROY,ID());
+				u_EventSend			(P);
 			};
 
 			//найти такую же гранату и положить в рюкзак
@@ -208,62 +208,15 @@ void CGrenade::OnAnimationEnd()
 
 void CGrenade::UpdateCL() 
 {
-	if (Remote() && NET.size()>1)
-	{
-		net_update N = NET.back();
-		NET_Last = N;
-		N = *(NET.end()-2);
-
-//		XFORM().setHPB(NET_Last.angles.x, NET_Last.angles.y, NET_Last.angles.z);
-//		Position().set(NET_Last.pos);
-
-		u16 NumItems = PHGetSyncItemsNumber();
-
-		CPHSynchronize* pSyncObj = NULL;
-		SPHNetState	State;
-
-		for (u16 i=0; i<NumItems; i++)
-		{
-			pSyncObj = PHGetSyncItem(i);
-			if (!pSyncObj) continue;
-
-			pSyncObj->get_State(State);
- 
-			State.angular_vel			= NET_Last.State.angular_vel;
-			State.linear_vel			= NET_Last.State.linear_vel;
-			State.enabled				= true;//(!N.State.enabled && !NET_Last.State.enabled) ? false : true;
-
-			State.force					= NET_Last.State.force;
-			State.torque				= NET_Last.State.torque;
-			
-			State.position				= NET_Last.State.position;
-			State.previous_position		= NET_Last.State.position;
-
-			State.quaternion			= NET_Last.State.quaternion;
-			State.previous_quaternion	= NET_Last.State.quaternion;
-			
-			pSyncObj->set_State(NET_Last.State);
-
-			State.enabled				= NET_Last.State.enabled;
-			pSyncObj->set_State(NET_Last.State);
-
-			HUD().outMessage		(0xffffffff,"client","Physics C desync: %d steps A desync %d steps",
-										 NET_Last.CurPhStep	- LastCPhStep,
-										 NET_Last.RPhStep	- LastAPhStep);
-
-			LastCPhStep = NET_Last.CurPhStep;
-			LastAPhStep = NET_Last.RPhStep;
-		};
-
-		while (NET.size() > 1)
-		{
-			NET.pop_front();
-		};
-	};
+	////////////////////////////////////
 	inherited::UpdateCL();
 	
-	CExplosive::UpdateCL();
+	CExplosive::UpdateCL();	
+	////////////////////////////////////
+	make_Interpolation();
 }
+
+
 
 bool CGrenade::Action(s32 cmd, u32 flags) 
 {
@@ -328,83 +281,13 @@ bool CGrenade::Action(s32 cmd, u32 flags)
 	return false;
 }
 
-static DWORD DTime = 0;
 void CGrenade::net_Import			(NET_Packet& P) 
 {
-	net_update			N;
-
-	P.r_u32					( N.dwTimeStamp );
-	return;
-//	N.CurPhStep				= ph_world->m_steps_num;
-//	P.r_u64					(N.RPhStep);
-//
-//	P.r_vec3				( N.State.angular_vel);
-//	P.r_vec3				( N.State.linear_vel);
-//
-//	P.r_vec3				( N.State.force);
-//	P.r_vec3				( N.State.torque);
-//
-//	P.r_vec3				( N.State.position);
-//	P.r_vec3				( N.State.previous_position);
-//
-//	P.r_float				( N.State.quaternion.x );
-//	P.r_float				( N.State.quaternion.y );
-//	P.r_float				( N.State.quaternion.z );
-//	P.r_float				( N.State.quaternion.w );
-//
-//	P.r_float				( N.State.previous_quaternion.x );
-//	P.r_float				( N.State.previous_quaternion.y );
-//	P.r_float				( N.State.previous_quaternion.z );
-//	P.r_float				( N.State.previous_quaternion.w );
-//
-//	P.r_u8					( *((u8*)&(N.State.enabled)) );
-//
-//	if (NET.empty() || (NET.back().dwTimeStamp+DTime<N.dwTimeStamp))	
-//	{
-//		NET.push_back			(N);
-//	}
+	inherited::net_Import (P);	
 };
 
 void CGrenade::net_Export			(NET_Packet& P) 
 {
-	P.w_u32				(Level().timeServer());
-	return;
-//	P.w_u64				(ph_world->m_steps_num);
-////	P.w_vec3			(Position()	);
-//
-////	float					_x,_y,_z;
-////	XFORM().getHPB			(_x,_y,_z);
-//
-//	u16 NumItems = PHGetSyncItemsNumber();
-//
-//	CPHSynchronize* pSyncObj = NULL;
-//	SPHNetState	State;
-//
-//	for (u16 i=0; i<NumItems; i++)
-//	{
-//		pSyncObj = PHGetSyncItem(i);
-//		if (!pSyncObj) continue;
-//		pSyncObj->get_State(State);
-//
-//		P.w_vec3				( State.angular_vel);
-//		P.w_vec3				( State.linear_vel);
-//
-//		P.w_vec3				( State.force);
-//		P.w_vec3				( State.torque);
-//
-//		P.w_vec3				( State.position);
-//		P.w_vec3				( State.previous_position);
-//
-//		P.w_float				( State.quaternion.x );
-//		P.w_float				( State.quaternion.y );
-//		P.w_float				( State.quaternion.z );
-//		P.w_float				( State.quaternion.w );
-//
-//		P.w_float				( State.previous_quaternion.x );
-//		P.w_float				( State.previous_quaternion.y );
-//		P.w_float				( State.previous_quaternion.z );
-//		P.w_float				( State.previous_quaternion.w );
-//
-//		P.w_u8					( State.enabled );
-//	};
+	inherited::net_Export (P);
 };
+

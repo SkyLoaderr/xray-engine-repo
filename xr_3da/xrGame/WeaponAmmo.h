@@ -50,12 +50,5 @@ public:
 	string64	m_tmpName;
 
 protected:
-	struct	net_update
-	{
-		u32					dwTimeStamp;
-		Fvector				pos,angles;
-		u16					m_boxCurr;
-	};
-	xr_deque<net_update>	NET;
-	net_update				NET_Last;
+	////////////// network //////////////////	
 };

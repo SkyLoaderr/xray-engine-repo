@@ -163,18 +163,7 @@ protected:
 	//состо€ние подключенных аддонов
 	u8			m_flagsAddOnState;
 protected:
-	struct	net_update 		
-	{
-		u32					dwTimeStamp;
-		u8					flags;
-		u16					ammo_current;
-		u16					ammo_elapsed;
-		Fvector				pos,angles;
-		u8					m_flagsAddOnState;
-		void	lerp		(net_update& A,net_update& B, float f);
-	};
-	xr_deque<net_update>	NET;
-	net_update				NET_Last;
+	////////////////// network ///////////////////	
 protected:
 	void					Light_Start			();
 	void					Light_Render		(Fvector& P);
@@ -295,7 +284,7 @@ public:
 
 	float					GetPrecision		();
 	IC LPCSTR				GetName				()	const		{	return *m_WpnName;							}
-	IC int					GetAmmoElapsed		()	const		{	return int(m_magazine.size())/*iAmmoElapsed*/;						}
+	IC int					GetAmmoElapsed		()	const		{	return /*int(m_magazine.size())*/iAmmoElapsed;						}
 	IC int					GetAmmoMagSize		()	const		{	return iMagazineSize;						}
 
 	//параметы оружи€ в зависимоти от его состо€ни€ исправности

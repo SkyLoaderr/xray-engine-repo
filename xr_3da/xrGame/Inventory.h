@@ -141,6 +141,39 @@ protected:
 	int m_iXPos;											//позиция X в сетке инвенторя
 	int m_iYPos;											//позиция Y в сетке инвенторя
 
+	////////// network //////////////////////////////////////////////////
+public:
+	virtual void			make_Interpolation ();
+	virtual void			PH_B_CrPr		(); // actions & operations before physic correction-prediction steps
+	virtual void			PH_I_CrPr		(); // actions & operations after correction before prediction steps
+	virtual void			PH_A_CrPr		(); // actions & operations after phisic correction-prediction steps
+
+	virtual void			net_Import			(NET_Packet& P);					// import from server
+	virtual void			net_Export			(NET_Packet& P);					// export to server
+
+protected:
+	struct	net_update_IItem 		
+	{
+		u32					dwTimeStamp;
+		SPHNetState			State;
+	};
+
+	xr_deque<net_update_IItem>	NET_IItem;
+	/////////////////////////////////////////////
+	bool					m_bHasUpdate;
+
+	Fvector					IStartPos;
+	Fquaternion				IStartRot;
+
+	Fvector					IEndPos;
+	Fquaternion				IEndRot;
+
+	SPHNetState				RecalculatedState;
+
+	bool					m_bInInterpolation;
+	u32						m_dwIStartTime;
+	u32						m_dwIEndTime;
+	u64						m_u64IEndStep;
 };
 
 

@@ -56,8 +56,10 @@ CLevel::CLevel()
 
 	m_tpScriptProcessor			= 0;
 
-	//m_bNeedSync					= false;
-	//m_dwNumSteps				= 0;
+	m_bNeed_CrPr					= false;
+	m_dwNumSteps				= 0;
+	m_dwDeltaUpdate				= u32(fixed_step*1000);
+	m_dwLastNetUpdateTime		= 0;
 
 	//получить материал пули
 	CShootingObject::bullet_material_id  = GMLib.GetMaterialIdx(WEAPON_MATERIAL_NAME);
@@ -177,7 +179,7 @@ void CLevel::OnFrame	()
 		}
 	}
 	//Net sync
-	//if (m_bNeedSync) make_NetSync();
+	if (m_bNeed_CrPr) make_NetCorrectionPrediction();
 
 	// Inherited update
 	inherited::OnFrame					();
@@ -282,12 +284,12 @@ void CLevel::OnEvent(EVENT E, u64 P1, u64 /**P2/**/)
 	} else return;
 }
 
-/*
+
 int	lvInterpSteps = 0;
 
-void CLevel::make_NetSync	()
+void CLevel::make_NetCorrectionPrediction	()
 {
-	m_bNeedSync = false;
+	m_bNeed_CrPr = false;
 	
 //////////////////////////////////////////////////////////////////////////////////
 	ph_world->Freeze();
@@ -297,38 +299,51 @@ void CLevel::make_NetSync	()
 	{
 		CGameObject* P = dynamic_cast<CGameObject*>(*O);
 		if (!P) continue;
-		P->PH_B_SyncSteps();
-	}
-//	u32 dwNumSteps = iCeil(((dReal)m_dwDeltaTime / 1000) / fixed_step);
+		P->PH_B_CrPr();
+	};
 //////////////////////////////////////////////////////////////////////////////////
 	//first prediction from "delivered" to "real current" position
 	//making enought PH steps to calculate current objects position based on their updated state
-	for (u32 i =0; i<m_dwNumSteps; i++)	
-		ph_world->Step();
-
+	if (lvInterpSteps >= 0)
+	{
+		for (u32 i =0; i<m_dwNumSteps; i++)	
+			ph_world->Step();
+		//////////////////////////////////////////////////////////////////////////////////
+		//setting flags to Interpolation
+		for (xr_vector<CObject*>::iterator O=Objects.objects.begin(); O!=Objects.objects.end(); O++) 
+		{
+			CGameObject* P = dynamic_cast<CGameObject*>(*O);
+			if (!P) continue;
+			P->PH_I_CrPr();
+		}
+		//////////////////////////////////////////////////////////////////////////////////
+		for (u32 i =0; i<lvInterpSteps; i++)	//second prediction "real current" to "future" position
+			ph_world->Step();
+		//////////////////////////////////////////////////////////////////////////////////
+		for (xr_vector<CObject*>::iterator O=Objects.objects.begin(); O!=Objects.objects.end(); O++) 
+		{
+			CGameObject* P = dynamic_cast<CGameObject*>(*O);
+			if (!P) continue;
+			P->PH_A_CrPr();
+		}
+	};
 	ph_world->UnFreeze();
-//////////////////////////////////////////////////////////////////////////////////
-	//setting flags to Interpolation
-	for (xr_vector<CObject*>::iterator O=Objects.objects.begin(); O!=Objects.objects.end(); O++) 
-	{
-		CGameObject* P = dynamic_cast<CGameObject*>(*O);
-		if (!P) continue;
-		P->PH_M_SyncSteps();
-	}
-//////////////////////////////////////////////////////////////////////////////////
-	for (u32 i =0; i<lvInterpSteps; i++)	//second prediction "real current" to "future" position
-		ph_world->Step();
-//////////////////////////////////////////////////////////////////////////////////
-	for (xr_vector<CObject*>::iterator O=Objects.objects.begin(); O!=Objects.objects.end(); O++) 
-	{
-		CGameObject* P = dynamic_cast<CGameObject*>(*O);
-		if (!P) continue;
-		P->PH_A_SyncSteps();
-	}
 };
 
 u32			CLevel::InterpolationSteps	()
 {
 	return lvInterpSteps;
 };
-*/
+
+void		CLevel::UpdateDeltaUpd	( u32 LastTime )
+{
+	u32 CurrentDelta = iFloor(float(m_dwDeltaUpdate * 10 + (LastTime - m_dwLastNetUpdateTime)) / 11);
+	m_dwLastNetUpdateTime = LastTime;
+	m_dwDeltaUpdate = CurrentDelta;
+};
+
+void		CLevel::ReculcInterpolationSteps ()
+{
+	lvInterpSteps = iFloor(float(m_dwDeltaUpdate) / (fixed_step*1000));
+	if (lvInterpSteps < 1) lvInterpSteps = 1;
+};

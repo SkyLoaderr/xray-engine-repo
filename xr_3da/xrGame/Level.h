@@ -75,6 +75,21 @@ protected:
 	EVENT						eEnvironment;
 	EVENT						eEntitySpawn;
 public:
+	////////////// network ////////////////////////
+	BOOL						m_bNeed_CrPr;
+	u32							m_dwNumSteps;
+	u32							InterpolationSteps ();
+
+	void						ReculcInterpolationSteps ();
+private:
+	void						make_NetCorrectionPrediction	();
+
+	u32							m_dwDeltaUpdate ;
+	u32							m_dwLastNetUpdateTime;
+	void						UpdateDeltaUpd	( u32 LastTime );
+public:
+	//////////////////////////////////////////////	
+	
 	// scripts
 	CScriptProcessor			*m_tpScriptProcessor;
 	CScriptProcessor*			GetScriptProcessor() {return m_tpScriptProcessor;}

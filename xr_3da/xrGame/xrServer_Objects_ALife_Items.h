@@ -33,6 +33,11 @@ public:
 		return						(ID_Parent < 0xffff);
 	}
 	virtual bool					bfUseful();
+	/////////// network ///////////////
+	u32								m_dwTimeStamp;
+	u16								m_u16NumItems;
+	SPHNetState						State;
+	///////////////////////////////////
 SERVER_ENTITY_DECLARE_END
 
 SERVER_ENTITY_DECLARE_BEGIN2(CSE_ALifeItem,CSE_ALifeDynamicObjectVisual,CSE_ALifeInventoryItem)
@@ -58,7 +63,6 @@ SERVER_ENTITY_DECLARE_END
 SERVER_ENTITY_DECLARE_BEGIN(CSE_ALifeItemAmmo,CSE_ALifeItem)
 	u16								a_elapsed;
 	u16								m_boxSize;
-	u32								m_dwTimeStamp;
 
 									CSE_ALifeItemAmmo	(LPCSTR caSection);
 	virtual							~CSE_ALifeItemAmmo	();
@@ -133,15 +137,6 @@ SERVER_ENTITY_DECLARE_BEGIN(CSE_ALifeItemDocument,CSE_ALifeItem)
 SERVER_ENTITY_DECLARE_END
 
 SERVER_ENTITY_DECLARE_BEGIN(CSE_ALifeItemGrenade,CSE_ALifeItem)
-	u32								m_dwTimeStamp;
-	u64								m_RPhStep;
-//	u8								m_bEnabled;
-//	Fquaternion						m_oQuat;
-	
-//	Fvector		m_vlinear_vel;
-//	Fvector		m_vangular_vel;
-	SPHNetState						State;
-
 									CSE_ALifeItemGrenade(LPCSTR caSection);
 	virtual							~CSE_ALifeItemGrenade();
 SERVER_ENTITY_DECLARE_END

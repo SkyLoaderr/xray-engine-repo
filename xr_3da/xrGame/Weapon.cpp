@@ -259,7 +259,7 @@ void CWeapon::UpdateFP		()
 
 		UpdateXForm		();
 
-		if (hud_mode && (0!=H_Parent()) && Local())
+		if (hud_mode && (0!=H_Parent()))// && Local())
 		{
 			// 1st person view - skeletoned
 			CKinematics* V			= PKinematics(m_pHUD->Visual());
@@ -578,50 +578,30 @@ void CWeapon::net_Destroy	()
 
 void CWeapon::net_Export	(NET_Packet& P)
 {
+	inherited::net_Export (P);
+
 	u8 flags				=	u8(IsUpdating()? M_UPDATE_WEAPON_wfVisible:0);
 	flags					|=	u8(IsWorking() ? M_UPDATE_WEAPON_wfWorking:0);
 
-//	CGameObject::net_Export(P);
-	P.w_u32					(Level().timeServer());
 	P.w_u8					(flags);
 
-	P.w_u16					(u16(0/*iAmmoCurrent*/));
-	P.w_u16					(u16(0/*iAmmoElapsed*/));
-
-	//////
-	P.w_vec3				(Position());
-
-	float					_x,_y,_z;
-	XFORM().getHPB			(_x,_y,_z);
-	P.w_angle8				(_x);
-	P.w_angle8				(_y);
-	P.w_angle8				(_z);
+	P.w_u16					(u16(iAmmoElapsed));
 
 	P.w_u8					(m_flagsAddOnState);
 }
 
 void CWeapon::net_Import	(NET_Packet& P)
 {
-	net_update				N;
+	inherited::net_Import (P);
 
-//	CGameObject::net_Import(P);
-	P.r_u32					(N.dwTimeStamp);
-	P.r_u8					(N.flags);
+	u8 flags = 0;
+	P.r_u8					(flags);
 
-	P.r_u16					(N.ammo_current);
-	P.r_u16					(N.ammo_elapsed);
+	u16 ammo_elapsed = 0;
+	P.r_u16					(ammo_elapsed);
+	iAmmoElapsed = int(ammo_elapsed);
 
-	P.r_vec3				(N.pos);
-	P.r_angle8				(N.angles.x);
-	P.r_angle8				(N.angles.y);
-	P.r_angle8				(N.angles.z);
-
-	P.r_u8					(N.m_flagsAddOnState);
-
-	if (NET.empty() || (NET.back().dwTimeStamp<N.dwTimeStamp))	
-	{
-		NET.push_back			(N);
-	}
+	P.r_u8					(m_flagsAddOnState);
 }
 
 void CWeapon::shedule_Update	(u32 dT)
@@ -716,6 +696,7 @@ void CWeapon::Ammo_add(int /**iValue/**/)
 	//iAmmoCurrent+=iValue;
 }
 
+/*
 void CWeapon::net_update::lerp(CWeapon::net_update& A, CWeapon::net_update& B, float f)
 {
 	float invf		= 1.f-f;
@@ -727,7 +708,7 @@ void CWeapon::net_update::lerp(CWeapon::net_update& A, CWeapon::net_update& B, f
 	angles.y		= angle_lerp	(A.angles.y,B.angles.y,	f);
 	angles.z		= angle_lerp	(A.angles.z,B.angles.z,	f);
 }
-
+*/
 void CWeapon::UpdateCL		()
 {
 	inherited::UpdateCL		();
@@ -751,57 +732,7 @@ void CWeapon::UpdateCL		()
 	UpdateFP();
 	if(m_pFlameParticles) UpdateFlameParticles();
 
-	if (Remote() && NET.size())
-	{
-		// distinguish interpolation/extrapolation
-//		u32	dwTime			= Level().timeServer()-NET_Latency;
-		net_update&	N		= NET.back();
-		if (NET.size() > 1)
-		{
-			NET.pop_front();
-		};
-		NET_Last = N;
-		XFORM().setHPB(NET_Last.angles.x, NET_Last.angles.y, NET_Last.angles.z);
-		Position().set(NET_Last.pos);
-/*
-		if ((dwTime > N.dwTimeStamp) || (NET.size()<2))
-		{
-			// BAD.	extrapolation
-			NET_Last		= N;
-		} else {
-			// OK.	interpolation
-
-			// Search 2 keyframes for interpolation
-			int select		= -1;
-			for (u32 id=0; id<NET.size()-1; ++id)
-			{
-				if ((NET[id].dwTimeStamp<=dwTime)&&(dwTime<=NET[id+1].dwTimeStamp))	select=id;
-			}
-			if (select>=0)		
-			{
-				// Interpolate state
-				net_update&	A		= NET[select+0];
-				net_update&	B		= NET[select+1];
-				u32	d1				= dwTime-A.dwTimeStamp;
-				u32	d2				= B.dwTimeStamp - A.dwTimeStamp;
-				float	factor		= (float(d1)/float(d2));
-				NET_Last.lerp		(A,B,factor);
-
-				// 
-				////iAmmoCurrent		= NET_Last.ammo_current;
-				////iAmmoElapsed		= NET_Last.ammo_elapsed;
-				if (NET_Last.flags&M_UPDATE_WEAPON_wfWorking)
-				{
-					if (!IsWorking())	{ FireStart(); }
-				} else {
-					if (IsWorking())	{ FireEnd(); }
-				}
-			}
-		}
-*/		
-	}
-
-	
+	make_Interpolation();
 }
 
 void CWeapon::SwitchState(u32 S)
