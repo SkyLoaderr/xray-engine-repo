@@ -26,9 +26,9 @@
 #define FRAGS_AND_PLACE_COLOR	0xff00ff00
 
 
-#define DI2PX(x) float(iFloor((x+1)*float(Device.dwWidth)*0.5f))
-#define DI2PY(y) float(iFloor((y+1)*float(Device.dwHeight)*0.5f))
-#define SZ(x) x*Device.dwWidth
+#define DI2PX(x) float(iFloor((x+1)*float(UI_BASE_WIDTH)*0.5f))
+#define DI2PY(y) float(iFloor((y+1)*float(UI_BASE_HEIGHT)*0.5f))
+#define SZ(x) x*UI_BASE_WIDTH
 //--------------------------------------------------------------------
 CUIGameDM::CUIGameDM()
 {
