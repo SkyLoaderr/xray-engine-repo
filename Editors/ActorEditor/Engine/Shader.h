@@ -21,33 +21,33 @@ class	ENGINE_API	CRTC;
 
 #pragma pack(push,4)
 
-struct	ENGINE_API	STextureList	: public svector<CTexture*,8>
+struct	ENGINE_API		STextureList	: public svector<CTexture*,8>
 {
 	u32	dwReference;
 };
-struct	ENGINE_API	SMatrixList		: public svector<CMatrix*,8>
+struct	ENGINE_API		SMatrixList		: public svector<CMatrix*,8>
 {
 	u32	dwReference;
 };
-struct	ENGINE_API	SConstantList	: public svector<CConstant*,8>
+struct	ENGINE_API		SConstantList	: public svector<CConstant*,8>
 {
 	u32	dwReference;
 };
-struct	ENGINE_API	SVS
+struct	ENGINE_API		SVS
 {
 	u32								dwReference;
 
 	IDirect3DVertexShader9*			vs;
 	R_constant_table				constants;
 };
-struct	ENGINE_API	SPS
+struct	ENGINE_API		SPS
 {
 	u32								dwReference;
 
 	IDirect3DPixelShader9*			ps;
 	R_constant_table				constants;
 };
-struct	ENGINE_API	SState
+struct	ENGINE_API		SState
 {
 	u32								dwReference;
 
