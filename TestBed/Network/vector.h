@@ -109,7 +109,6 @@ IC float snapto( float value, float snap ){
 };
 
 // pre-definitions
-struct _matrix;		// matrix
 struct _matrix33;	// matrix
 
 struct _fpoint;		// fpoint
