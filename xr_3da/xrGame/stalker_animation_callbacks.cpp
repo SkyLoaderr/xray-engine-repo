@@ -41,7 +41,7 @@ void __stdcall head_callback	(CBoneInstance *B)
 		pitch_factor		= p_head_factor;
 	}
 	float					yaw		= angle_normalize_signed(-yaw_factor * angle_normalize_signed(A->movement().head_orientation().current.yaw - (A->movement().body_orientation().current.yaw)));
-	float					pitch	= angle_normalize_signed(-pitch_factor * (A->NET_Last.o_torso.pitch));
+	float					pitch	= angle_normalize_signed(-pitch_factor * angle_normalize_signed(A->NET_Last.o_torso.pitch));
 
 	spin.setXYZ				(pitch, yaw, 0);
 	VERIFY					(_valid(spin));
@@ -64,7 +64,7 @@ void __stdcall shoulder_callback(CBoneInstance *B)
 		pitch_factor		= p_shoulder_factor;
 	}
 	float					yaw		= angle_normalize_signed(-yaw_factor * angle_normalize_signed(A->movement().head_orientation().current.yaw - (A->movement().body_orientation().current.yaw)));
-	float					pitch	= angle_normalize_signed(-pitch_factor * (A->NET_Last.o_torso.pitch));
+	float					pitch	= angle_normalize_signed(-pitch_factor * angle_normalize_signed(A->NET_Last.o_torso.pitch));
 	spin.setXYZ				(pitch, yaw, 0);
 	VERIFY					(_valid(spin));
 	B->mTransform.mulA_43	(spin);
@@ -86,7 +86,7 @@ void __stdcall spine_callback(CBoneInstance *B)
 		pitch_factor		= p_spin_factor;
 	}
 	float					yaw		= angle_normalize_signed(-yaw_factor * angle_normalize_signed(A->movement().head_orientation().current.yaw - (A->movement().body_orientation().current.yaw)));
-	float					pitch	= angle_normalize_signed(-pitch_factor * (A->NET_Last.o_torso.pitch));
+	float					pitch	= angle_normalize_signed(-pitch_factor * angle_normalize_signed(A->NET_Last.o_torso.pitch));
 	spin.setXYZ				(pitch, yaw, 0);
 	VERIFY					(_valid(spin));
 	B->mTransform.mulA_43	(spin);
