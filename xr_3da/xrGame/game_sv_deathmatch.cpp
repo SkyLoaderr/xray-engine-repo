@@ -8,7 +8,7 @@
 #include "Inventory.h"
 #include "CustomZone.h"
 
-int		SkinID = -1;
+//int		SkinID = -1;
 u32		g_dwMaxCorpses = 10;
 
 void	game_sv_Deathmatch::Create					(ref_str& options)
@@ -22,6 +22,22 @@ void	game_sv_Deathmatch::Create					(ref_str& options)
 		m_bAnomaliesEnabled	= true;
 	else 
 		m_bAnomaliesEnabled	= false;
+	//-----------------------------------------------------------------------
+	int		SpectatorMode = -1;
+	if (!g_pGamePersistent->bDedicatedServer)
+	{
+		SpectatorMode = get_option_i		(*options,"spectr",-1);	// in (ms)
+		if (SpectatorMode > 0) SpectatorMode *= 1000;
+	};
+	if (SpectatorMode<0)
+		m_bSpectatorMode = false;
+	else
+	{
+		m_bSpectatorMode = true;
+		m_dwSM_SwitchDelta = SpectatorMode;
+		m_dwSM_LastSwitchTime = 0;
+	}
+	//-----------------------------------------------------------------------
 	/////////////////////////////////////////////////////////////////////////
 	LoadTeams();
 	/////////////////////////////////////////////////////////////////////////
@@ -150,6 +166,11 @@ void	game_sv_Deathmatch::Update					()
 				u_EventGen			(P,GE_DESTROY,CorpseID);
 				Level().Send(P,net_flags(TRUE,TRUE));
 			};
+			//-----------------------------------------------------
+			if (m_bSpectatorMode)
+			{
+				SM_SwitchOnNextActivePlayer();
+			};
 		}
 		break;
 	case GAME_PHASE_PENDING:
@@ -159,6 +180,62 @@ void	game_sv_Deathmatch::Update					()
 		}
 		break;
 	}
+}
+
+void	game_sv_Deathmatch::SM_SwitchOnNextActivePlayer()
+{
+	if (m_dwSM_LastSwitchTime>Level().timeServer()) return;
+
+	u32		PossiblePlayers[32];
+	u32		cnt		= get_count	();
+	u32		PPlayersCount = 0;
+
+	for		(u32 it=0; it<cnt; ++it)	
+	{
+		game_PlayerState* ps		=	get_it	(it);
+		if (ps->Skip) continue;
+		if (ps->flags & GAME_PLAYER_FLAG_VERY_VERY_DEAD) continue;
+		PossiblePlayers[PPlayersCount++] = it;
+	};
+	
+	
+	CObject* pNewObject = NULL;
+	if (!PPlayersCount)
+	{
+		xrClientData*	C = NULL;
+		C	= m_server->GetServer_client();
+		pNewObject =  Level().Objects.net_Find(C->ps.GameID);
+	}
+	else
+	{
+		it	= PossiblePlayers[::Random.randI((int)PPlayersCount)];
+		xrClientData*	C = NULL;
+		C	= (xrClientData*)m_server->client_Get			(it);	
+		pNewObject =  Level().Objects.net_Find(C->ps.GameID);
+		CActor* pActor = dynamic_cast<CActor*>(pNewObject);
+		if (!pActor || !pActor->g_Alive()) return;
+	};
+	SM_SwitchOnPlayer(pNewObject);
+};
+
+void	game_sv_Deathmatch::SM_SwitchOnPlayer(CObject* pNewObject)
+{
+//	CObject* pNewObject =  Level().Objects.net_Find(ps->GameID);
+	if (!pNewObject) return;
+
+	CObject* pOldObject = Level().CurrentViewEntity();
+	Level().SetEntity(pNewObject);
+	
+	if (pOldObject)
+	{
+		Engine.Sheduler.Unregister	(pOldObject);
+		Engine.Sheduler.Register	(pOldObject);
+	};
+	Engine.Sheduler.Unregister	(pNewObject);
+	Engine.Sheduler.Register	(pNewObject, TRUE);
+
+	m_dwSM_CurViewEntity = pNewObject->ID();
+	m_dwSM_LastSwitchTime = Level().timeServer() + m_dwSM_SwitchDelta;
 }
 
 BOOL	game_sv_Deathmatch::AllPlayers_Ready ()
@@ -274,6 +351,9 @@ void	game_sv_Deathmatch::OnPlayerReady			(u32 id)
 //			LPCSTR	options			=	get_name_id	(id);
 			game_PlayerState*	ps	=	get_id	(id);
 			if (ps->Skip) break;
+			if (!(ps->flags & GAME_PLAYER_FLAG_VERY_VERY_DEAD)) break;
+			xrClientData* xrSCData	=	m_server->GetServer_client();
+			if (xrSCData && xrSCData->ID == id && m_bSpectatorMode) break;
 
 			//------------------------------------------------------------
 			RespawnPlayer(id, false);
@@ -893,7 +973,7 @@ void	game_sv_Deathmatch::SetSkin					(CSE_Abstract* E, u16 Team, u16 ID)
 	string256 SkinName;
 	std::strcpy(SkinName, pSettings->r_string("mp_skins_path", "skin_path"));
 	//загружены ли скины для этой комманды
-	if (SkinID != -1) ID = u16(SkinID);
+//	if (SkinID != -1) ID = u16(SkinID);
 
 	if (!TeamList.empty()	&&
 		TeamList.size() > Team	&&

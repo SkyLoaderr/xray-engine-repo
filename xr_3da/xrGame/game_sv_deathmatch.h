@@ -100,6 +100,13 @@ protected:
 	xr_vector<u8>					m_AnomalySetID;
 	u32								m_dwLastAnomalySetID;
 	bool							m_bAnomaliesEnabled;
+	//--------------------------------------------------
+	bool							m_bSpectatorMode;
+	u32								m_dwSM_SwitchDelta;
+	u32								m_dwSM_LastSwitchTime;
+	u32								m_dwSM_CurViewEntity;
+	void							SM_SwitchOnNextActivePlayer			();
+	void							SM_SwitchOnPlayer		(CObject* pNewObject);//(game_PlayerState* ps);
 
 protected:
 	virtual		void				OnPlayerChangeSkin		(u32 id_who, u8 skin);
