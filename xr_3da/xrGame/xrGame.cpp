@@ -62,7 +62,7 @@ public:
 	CCC_Path(LPCSTR N) : CConsoleCommand(N)  { };
 	virtual void Execute(LPCSTR args) {
 		int id1, id2;
-		sscanf(args ,"%d,%d",&id1,&id2);
+		sscanf(args ,"%d %d",&id1,&id2);
 		Level().AI.vfFindMinimalPath(id1,id2,Level().AI.m_tpaNodes);
 	}
 };
