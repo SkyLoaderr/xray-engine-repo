@@ -176,6 +176,47 @@ states = {
 				animation = "eating"
 			},
 
+	hello = {	weapon = "strapped",
+				movement = move.stand,
+				mental = anim.free,
+				bodystate = move.standing,
+				animstate = "stand",
+				animation = "hello",
+				reset = true
+			},
+	refuse = {	weapon = "strapped",
+				movement = move.stand,
+				mental = anim.free,
+				bodystate = move.standing,
+				animstate = "stand",
+				animation = "refuse",
+				reset = true
+			},
+	claim = {	weapon = "strapped",
+				movement = move.stand,
+				mental = anim.free,
+				bodystate = move.standing,
+				animstate = "stand",
+				animation = "claim",
+				reset = true
+			},
+	backoff = {	weapon = "strapped",
+				movement = move.stand,
+				mental = anim.free,
+				bodystate = move.standing,
+				animstate = "stand",
+				animation = "backoff",
+				reset = true
+			},
+	backoff2 = {weapon = "strapped",
+				movement = move.stand,
+				mental = anim.free,
+				bodystate = move.standing,
+				animstate = "stand",
+				animation = "backoff2",
+				reset = true
+			},
+
 
 	-- Раненый
 	wounded = {	weapon = "strapped",
