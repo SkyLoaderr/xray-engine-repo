@@ -16,7 +16,18 @@ void CAI_Zombie::Exec_Action(float dt)
 	AI::AIC_Action* L	= (AI::AIC_Action*)C;
 	switch (L->Command) {
 		case AI::AIC_Action::AttackBegin: {
-			pSounds->PlayAtPos(m_tpaSoundAttack[Random.randI(SND_ATTACK_COUNT)],this,vPosition);
+			bool bOk = false;
+			if (m_tpSoundBeingPlayed) {
+				for (int i=0; i<SND_ATTACK_COUNT; i++)
+					if (&(m_tpaSoundAttack[i]) == m_tpSoundBeingPlayed) {
+						bOk = true;
+						break;
+					}
+			}
+			if (!bOk)
+				pSounds->PlayAtPos(m_tpaSoundAttack[Random.randI(SND_ATTACK_COUNT)],this,eye_matrix.c);
+			else
+				m_tpSoundBeingPlayed->feedback->SetPosition(eye_matrix.c);
 			u32 dwTime = Level().timeServer();
 			if ((m_tSavedEnemy->g_Health() > 0) && (dwTime - m_dwStartAttackTime > m_dwHitInterval)) {
 				m_bActionStarted = true;
