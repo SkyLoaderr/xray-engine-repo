@@ -27,7 +27,7 @@ void CSE_ALifeSimulator::vfCreateObjectFromSpawnPoint(CSE_ALifeDynamicObject *&i
 	i->UPDATE_Read				(tNetPacket);
 	i->m_tSpawnID				= tSpawnID;
 	i->ID						= m_tpServer->PerformIDgen(0xffff);
-	m_tObjectRegistry.insert	(std::make_pair(i->ID,i));
+	CSE_ALifeObjectRegistry::Add(i);
 	vfUpdateDynamicData			(i);
 	i->m_bALifeControl			= true;
 	//m_tpServer->entity_Destroy	(tpSE_Abstract);
@@ -61,7 +61,7 @@ void CSE_ALifeSimulator::vfCreateObjectFromSpawnPoint(CSE_ALifeDynamicObject *&i
 			*I							= k->ID;
 			k->m_bDirectControl			= false;
 			k->m_bALifeControl			= true;
-			m_tObjectRegistry.insert	(std::make_pair(k->ID,k));
+			CSE_ALifeObjectRegistry::Add(k);
 			vfUpdateDynamicData			(k);
 			//m_tpServer->entity_Destroy	(l_tpAbstract);
 		}
@@ -159,8 +159,8 @@ void CSE_ALifeSimulator::vfGenerateAnomalousZones()
 
 				l_tpALifeItemArtefact->m_fAnomalyValue = l_tpALifeAnomalousZone->m_maxPower*(1.f - i->o_Position.distance_to(l_tpSpawnAnomalousZone->o_Position)/l_tpSpawnAnomalousZone->m_fRadius);
 
-				m_tObjectRegistry.insert(std::make_pair(i->ID,i));
-				vfUpdateDynamicData(i);
+				CSE_ALifeObjectRegistry::Add(i);
+				vfUpdateDynamicData		(i);
 				//m_tpServer->entity_Destroy	(l_tpSE_Abstract);
 			}
 		}
@@ -661,7 +661,7 @@ void CSE_ALifeSimulator::vfBuySupplies(CSE_ALifeTrader &tTrader)
 				l_tpALifeItem->m_tNodeID	= tTrader.m_tNodeID;
 				l_tpALifeItem->m_fDistance	= tTrader.m_fDistance;
 				l_tpALifeItem->m_bALifeControl = true;
-				m_tObjectRegistry.insert	(std::make_pair(i->ID,i));
+				CSE_ALifeObjectRegistry::Add(i);
 				vfUpdateDynamicData			(i);
 				//CSE_Abstract				*l_tpAbstract = dynamic_cast<CSE_Abstract*>(l_tpALifeItem);
 				//m_tpServer->entity_Destroy	(l_tpAbstract);
@@ -712,7 +712,7 @@ void CSE_ALifeSimulator::vfUpdateTasks()
 #pragma todo("Correct task price")
 				l_tpALifeTask->m_fCost		= 100.f;
 				l_tpALifeTask->m_tTaskID	= m_tTaskID++;
-				m_tTaskRegistry.insert(std::make_pair(l_tpALifeTask->m_tTaskID,l_tpALifeTask));
+				CSE_ALifeTaskRegistry::Add	(l_tpALifeTask);
 			}
 		}
 	}

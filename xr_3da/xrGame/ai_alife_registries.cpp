@@ -82,8 +82,13 @@ void CSE_ALifeObjectRegistry::Load(IReader &tFileStream)
 		tNetPacket.r_begin		(u_id);
 		R_ASSERT2				(M_UPDATE==u_id,"Invalid packet ID (!= M_UPDATE)");
 		tpALifeDynamicObject->UPDATE_Read(tNetPacket);
-		m_tObjectRegistry.insert(std::make_pair(tpALifeDynamicObject->ID,tpALifeDynamicObject));
+		Add						(tpALifeDynamicObject);
 	}
+}
+
+void CSE_ALifeObjectRegistry::Add(CSE_ALifeDynamicObject *tpALifeDynamicObject)
+{
+	m_tObjectRegistry.insert	(std::make_pair(tpALifeDynamicObject->ID,tpALifeDynamicObject));
 }
 
 bool CSE_ALifeObjectRegistry::bfCheckIfTaskCompleted(CSE_Abstract &CSE_Abstract, CSE_ALifeHumanAbstract *tpALifeHumanAbstract, OBJECT_IT &I)

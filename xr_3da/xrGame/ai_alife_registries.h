@@ -21,6 +21,7 @@ public:
 	virtual							~CSE_ALifeObjectRegistry	();
 	virtual	void					Save						(IWriter &tMemoryStream);
 	virtual void					Load						(IReader &tFileStream);
+			void					Add							(CSE_ALifeDynamicObject *tpALifeDynamicObject);
 			bool					bfCheckIfTaskCompleted		(CSE_Abstract &CSE_Abstract, CSE_ALifeHumanAbstract *tpALifeHumanAbstract, OBJECT_IT &I);
 			bool					bfCheckIfTaskCompleted		(CSE_ALifeHumanAbstract *tpALifeHuman, OBJECT_IT &I);
 			bool					bfCheckIfTaskCompleted		(CSE_ALifeHumanAbstract *tpALifeHuman);
