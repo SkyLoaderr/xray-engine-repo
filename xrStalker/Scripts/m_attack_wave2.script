@@ -126,7 +126,7 @@ function Defender:process ()
 	   waiting = waiting - game.time ()
 	   if waiting < 0 then
 		  reset_action (self.npc, self.script_name)
-		  action (self.npc, move (move.crouch, move.stand), look (look.fire_point, enemy), object (self.weapon, object.fire1, math.random (2, 4),
+		  action (self.npc, move (move.crouch, move.stand), look (look.fire_point, enemy), object (self.weapon, object.fire1, math.random (2, 4)),
 				  cond (cond.time_end, time_infinite))	
 		  waiting = game.time () + math.random (2000, 3000)
 	   end
