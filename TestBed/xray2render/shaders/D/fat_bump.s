@@ -85,8 +85,9 @@ p2f 	p_main	( v2p_in IN )
   half3 Ns	= 2*(half3)Nu - 1;								// Signed normal
   half3 Ne	= mul		(half3x3(IN.M1, IN.M2, IN.M3), Ns);	// Normal in eye-space : unnormalized
   half3 NeN	= normalize	(Ne);								// Normal in eye-space : normalized		// texCUBE	(s_NCM,Ne);	
+  half3	Pe	= IN.Pe	+ .05f*NeN;
   
-  OUT.Pe	= half4		(IN.Pe.x,IN.Pe.y,IN.Pe.z,0);		// OUT: position
+  OUT.Pe	= half4		(Pe.x,	Pe.y,	Pe.z,	0);			// OUT: position
   OUT.Ne 	= half4		(NeN.x,	NeN.y,	NeN.z,	0);			// OUT: normal.0
   OUT.C		= half4		(D.x,	D.y,	D.z,	Nu.w);		// OUT: rgb.gloss
   return OUT;
