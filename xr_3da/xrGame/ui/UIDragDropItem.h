@@ -61,16 +61,19 @@ public:
 	void SetGridRow(int iGridRow) {m_iGridRow = iGridRow;}
 	void SetGridCol(int iGridCol) {m_iGridCol = iGridCol;}
 
-	void* GetData() {return m_pData;}
-	void SetData(void* pData) {m_pData = pData;}
+	virtual void* GetData() {return m_pData;}
+	virtual void SetData(void* pData) {m_pData = pData;}
 
 	void SetCustomUpdate(CUSTOM_UPDATE_PROC pCustomUpdateProc) 
 								{m_pCustomUpdateProc = pCustomUpdateProc;}
 	void SetCustomDraw(CUSTOM_DRAW_PROC pCustomDrawProc) 
 								{m_pCustomDrawProc = pCustomDrawProc;}
 
-
-	friend void InventoryUtilities::WeaponDrawProc(CUIDragDropItem* pItem);
+	//размеры клеточки сетки
+	int GetCellWidth() {return m_iCellWidth;}
+	int GetCellHeight() {return m_iCellHeight;}
+	void SetCellWidth(int iCellWidth) {m_iCellWidth = iCellWidth;}
+	void SetCellHeight(int iCellHeight) {m_iCellHeight = iCellHeight;}
 
 protected:
 	
@@ -89,6 +92,10 @@ protected:
 
 	int m_iGridCol;
 	int m_iGridRow;
+
+	//размеры клеточки сетки в пикселях
+	int m_iCellWidth;
+	int m_iCellHeight;
 
 
 	//указатель на произвольные данные которые могут быть

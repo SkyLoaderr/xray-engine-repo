@@ -62,9 +62,10 @@ void CUICustomItem::Render(FVF::TL*& Pointer, const Ivector2& pos, u32 color,
 	float sc		= HUD().GetScale();
 	LTp.set			(pos.x+x1*sc,pos.y+y1*sc);
 	RBp.set			(pos.x+x2*sc,pos.y+y2*sc);
-/*	LTp.set			(float(pos.x),float(pos.y));
-	RBp.set			(pos.x + fScale*float(x2-x1),
-					 pos.y + fScale*float(y2-y1));*/
+
+/*	LTp.set			(float(pos.x+x1),float(pos.y+y1));
+	RBp.set			(pos.x + x1 + float(x2-x1)/fScale,
+					 pos.y + y1 + float(y2-y1)/fScale);*/
 
 
 	//текстурные координаты
@@ -81,6 +82,12 @@ void CUICustomItem::Render(FVF::TL*& Pointer, const Ivector2& pos, u32 color,
 					 (float(iOriginalRect.y1+y1)+
 					  fScale*float(y2-y1))/
 					  float(iTextureRect.height())+hp.y);
+/*	RBt.set			((float(iOriginalRect.x1+x1)+
+					  float(x2-x1))/
+					  float(iTextureRect.width())+hp.x,
+					 (float(iOriginalRect.y1+y1)+
+					  float(y2-y1))/
+					  float(iTextureRect.height())+hp.y);*/
 
 
 	Pointer->set	(LTp.x,	RBp.y,	color, LTt.x, RBt.y); Pointer++;

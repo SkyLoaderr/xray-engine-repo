@@ -10,7 +10,7 @@
 #include "UIDialogWnd.h"
 #include "UIStatic.h"
 #include "UIButton.h"
-#include "UIDragDropItem.h"
+#include "UIWpnDragDropItem.h"
 #include "UIDragDropList.h"
 #include "UIProgressBar.h"
 #include "UIPropertiesBox.h"
@@ -111,7 +111,7 @@ protected:
 
 
 	static const int MAX_ITEMS = 140;
-	CUIDragDropItem m_vDragDropItems[MAX_ITEMS];
+	CUIWpnDragDropItem m_vDragDropItems[MAX_ITEMS];
 	int m_iUsedItems;
 
 	//указатели игрока и того с кем торгуем

@@ -47,9 +47,10 @@ public:
 	void InitTexture(LPCSTR tex_name);
 	CUIStaticItem* GetStaticItem() {return &m_UIStaticItem;}
 
-	void ClipperOn();
-	void ClipperOff();
-	bool GetClipperState() {return m_bClipper;}
+	virtual void ClipperOn();
+	virtual void ClipperOff();
+	virtual void ClipperOff(CUIStaticItem& UIStaticItem);
+	virtual bool GetClipperState() {return m_bClipper;}
 
 	//отсечение части изображение, при его выходе за
 	//пределы родительского окна
@@ -57,9 +58,14 @@ public:
 						int offset_y = 0,
 						RECT* pClipRect = NULL);
 
+	void TextureClipper(int offset_x, 
+						int offset_y,
+						RECT* pClipRect, 
+						CUIStaticItem& UIStaticItem);
 
-	void	SetTextureScale		(float new_scale);
-	float	GetTextureScale		();
+	virtual void	SetTextureScale		(float new_scale);
+	virtual float	GetTextureScale		();
+	
 	void	SetShader			(const ref_shader& sh);
 	CUIStaticItem& GetUIStaticItem() {return m_UIStaticItem;}
 

@@ -9,6 +9,7 @@
 #include "..\\WeaponAmmo.h"
 #include "..\\UIStaticItem.h"
 #include "UIDragDropItem.h"
+#include "UIStatic.h"
 
 //буферный список для сортировки
 static TIItemList ruck_list;
@@ -16,6 +17,7 @@ static TIItemList ruck_list;
 
 
 static ref_shader g_EquipmentIconsShader = NULL;
+static CUIStatic*	GetUIStatic();
 
 
 
@@ -42,26 +44,18 @@ void InventoryUtilities::FoodUpdateProc(CUIDragDropItem* pItem)
 							"%d",	pEatableItem->m_iPortionsNum);
 }
 
-//для иконок аддонов на оружии
-void InventoryUtilities::WeaponDrawProc(CUIDragDropItem* pItem)
-{
-/*	CWeapon* pWeapon = (CWeapon*)(pItem->GetData());
-	RECT rect = pItem->GetAbsoluteRect();
-*/
-}
-
 
 //сравнивает элементы по пространству занимаемому ими в рюкзаке
 bool InventoryUtilities::GreaterRoomInRuck(PIItem item1, PIItem item2)
 {
-	int item1_room = item1->m_iGridWidth*item1->m_iGridHeight;
-	int item2_room = item2->m_iGridWidth*item2->m_iGridHeight;
+	int item1_room = item1->GetGridWidth()*item1->GetGridHeight();
+	int item2_room = item2->GetGridWidth()*item2->GetGridHeight();
 
 	if(item1_room > item2_room)
 		return true;
 	else if (item1_room == item2_room)
 	{
-		if(item1->m_iGridWidth >= item2->m_iGridWidth)
+		if(item1->GetGridWidth() >= item2->GetGridWidth())
 			return true;
 	}
    	return false;
@@ -105,15 +99,15 @@ bool InventoryUtilities::FreeRoom(TIItemList item_list, int width, int height)
 		//проверяем последовательно каждую клеточку
 		found_place = false;
 	
-		for(i=0; (i<height - pItem->m_iGridHeight +1) && !found_place; i++)
+		for(i=0; (i<height - pItem->GetGridHeight() +1) && !found_place; i++)
 		{
-			for(j=0; (j<width - pItem->m_iGridWidth +1) && !found_place; j++)
+			for(j=0; (j<width - pItem->GetGridWidth() +1) && !found_place; j++)
 			{
 				can_place = true;
 
-				for(k=0; (k<pItem->m_iGridHeight) && can_place; k++)
+				for(k=0; (k<pItem->GetGridHeight()) && can_place; k++)
 				{
-					for(m=0; (m<pItem->m_iGridWidth) && can_place; m++)
+					for(m=0; (m<pItem->GetGridWidth()) && can_place; m++)
 					{
 						if(ruck_room[(i+k)*width + (j+m)])
 								can_place =  false;
@@ -122,7 +116,7 @@ bool InventoryUtilities::FreeRoom(TIItemList item_list, int width, int height)
 			
 				if(can_place)
 				{
-					found_place=true;	
+					found_place=true;
 					place_row = i;
 					place_col = j;
 				}
@@ -133,9 +127,9 @@ bool InventoryUtilities::FreeRoom(TIItemList item_list, int width, int height)
 		//разместить элемент на найденном месте
 		if(found_place)
 		{
-			for(k=0; k<pItem->m_iGridHeight; k++)
+			for(k=0; k<pItem->GetGridHeight(); k++)
 			{
-				for(m=0; m<pItem->m_iGridWidth; m++)
+				for(m=0; m<pItem->GetGridWidth(); m++)
 				{
 					ruck_room[(place_row+k)*width + place_col+m] = true;
 				}

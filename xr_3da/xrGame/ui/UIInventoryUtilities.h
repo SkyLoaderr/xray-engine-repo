@@ -13,12 +13,11 @@
 
 class CUIDragDropItem;
 
+
 namespace InventoryUtilities
 {
 
-
-
-//сравнивает элементы по пространству занимаемому ими в рюкзаке
+	//сравнивает элементы по пространству занимаемому ими в рюкзаке
 //для сортировки
 bool GreaterRoomInRuck(PIItem item1, PIItem item2);
 //для проверки свободного места
@@ -28,8 +27,6 @@ bool FreeRoom(TIItemList item_list, int width, int height);
 void AmmoUpdateProc(CUIDragDropItem* pItem);
 //для надписей на иконках с едой
 void FoodUpdateProc(CUIDragDropItem* pItem);
-//для иконок аддонов на оружии
-void WeaponDrawProc(CUIDragDropItem* pItem);
 
 //получить shader на иконки инвенторя
 ref_shader& GetEquipmentIconsShader();

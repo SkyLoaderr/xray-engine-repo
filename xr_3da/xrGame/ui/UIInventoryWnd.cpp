@@ -45,45 +45,24 @@ CUIInventoryWnd::CUIInventoryWnd()
 	m_pCurrentItem = NULL;
 	m_pCurrentDragDropItem = NULL;
 	m_pItemToUpgrade = NULL;
-	m_sAddonName = NULL;
 
 	Init();
 
 	SetFont(HUD().pFontMedium);
-
-	m_vDragDropItems.clear();
-	m_vDragDropItems.reserve(MAX_ITEMS);
 }
 
 CUIInventoryWnd::~CUIInventoryWnd()
 {
-//	m_vDragDropItems.erase(m_vDragDropItems.begin(), m_vDragDropItems.end());
-	m_vDragDropItems.clear();
 }
 
 void CUIInventoryWnd::Init()
 {
-
-	/*CInfoPortion info;
-	info.Load(1);
-
-	char* s = info.GetText();*/
-
-
 	CUIXml uiXml;
 	uiXml.Init("$game_data$","inventory.xml");
 
-	/*XML_NODE* pNode = uiXml.SearchForAttribute(uiXml.GetRoot(),
-											 "test",
-											 "index",
-											 "12");
-	char* str =  uiXml.Read(pNode, "no val");*/
-	
-	
 	CUIXmlInit xml_init;
 
 	CUIWindow::Init(0,0, Device.dwWidth, Device.dwHeight);
-
 
 	AttachChild(&UIStaticTop);
 	UIStaticTop.Init("ui\\ui_inv_quick_slots", 0,0,1024,128);
@@ -257,113 +236,99 @@ void CUIInventoryWnd::InitInventory()
 	UIBagList.DropAll();
 
 
-	u32 i;
-	/*for(u32 i = 0; i <MAX_ITEMS; i++) 
+	for(u32 i = 0; i <MAX_ITEMS; i++) 
 	{
 		m_vDragDropItems[i].SetData(NULL);
 		m_vDragDropItems[i].SetWndRect(0,0,0,0);
 		m_vDragDropItems[i].SetCustomUpdate(NULL);
 	}
-	m_iUsedItems = 0;*/
-	m_vDragDropItems.clear();
+	m_iUsedItems = 0;
 
 
 	//Slots
 	for( i = 0; i < SLOTS_NUM; i++) 
 	{
-			if(pInv->m_slots[i].m_pIItem) 
-			{
-				m_vDragDropItems.push_back(CUIDragDropItem());
-				CUIDragDropItem& UIDragDropItem = m_vDragDropItems.back();
-	
-				//UIDragDropItem.Init(pInv->m_slots[i].m_pIItem->m_sIconTexture, 0,0, 50,50);
-				
-				UIDragDropItem.CUIStatic::Init(0,0, 50,50);
-				UIDragDropItem.SetShader(GetEquipmentIconsShader());
+        if(pInv->m_slots[i].m_pIItem) 
+		{
+			CUIDragDropItem& UIDragDropItem = m_vDragDropItems[m_iUsedItems];
+		
+			UIDragDropItem.CUIStatic::Init(0,0, 50,50);
+			UIDragDropItem.SetShader(GetEquipmentIconsShader());
 
-				UIDragDropItem.SetGridHeight(pInv->m_slots[i].m_pIItem->m_iGridHeight);
-				UIDragDropItem.SetGridWidth(pInv->m_slots[i].m_pIItem->m_iGridWidth);
+			UIDragDropItem.SetGridHeight(pInv->m_slots[i].m_pIItem->GetGridHeight());
+			UIDragDropItem.SetGridWidth(pInv->m_slots[i].m_pIItem->GetGridWidth());
 
-				UIDragDropItem.GetUIStaticItem().SetOriginalRect(
-										pInv->m_slots[i].m_pIItem->m_iXPos*INV_GRID_WIDTH,
-										pInv->m_slots[i].m_pIItem->m_iYPos*INV_GRID_HEIGHT,
-										pInv->m_slots[i].m_pIItem->m_iGridWidth*INV_GRID_WIDTH,
-										pInv->m_slots[i].m_pIItem->m_iGridHeight*INV_GRID_HEIGHT);
+			UIDragDropItem.GetUIStaticItem().SetOriginalRect(
+									pInv->m_slots[i].m_pIItem->GetXPos()*INV_GRID_WIDTH,
+									pInv->m_slots[i].m_pIItem->GetYPos()*INV_GRID_HEIGHT,
+									pInv->m_slots[i].m_pIItem->GetGridWidth()*INV_GRID_WIDTH,
+									pInv->m_slots[i].m_pIItem->GetGridHeight()*INV_GRID_HEIGHT);
 
+			UITopList[i].AttachChild(&UIDragDropItem);
+			UIDragDropItem.SetData(pInv->m_slots[i].m_pIItem);
 
-				UIDragDropItem.SetData(pInv->m_slots[i].m_pIItem);
-				
-				UITopList[i].AttachChild(&UIDragDropItem);
-				
-				//m_iUsedItems++;
-				//m_vDragDropItems.push_back(UIDragDropItem);
-
-			}
+			m_iUsedItems++;
+			R_ASSERT(m_iUsedItems<MAX_ITEMS);
+		}
 	}
 
 	//Слот с костюмом
 	if(pInv->m_slots[OUTFIT_SLOT].m_pIItem) 
 	{
-		m_vDragDropItems.push_back(CUIDragDropItem());
-		CUIDragDropItem& UIDragDropItem = m_vDragDropItems.back();
-		
-//		UIDragDropItem.Init(pInv->m_slots[OUTFIT_SLOT].m_pIItem->m_sIconTexture, 0,0, 50,50);
+		CUIDragDropItem& UIDragDropItem = m_vDragDropItems[m_iUsedItems];		
 
 		UIDragDropItem.CUIStatic::Init(0,0, 50,50);
 		UIDragDropItem.SetShader(GetEquipmentIconsShader());
 
-		UIDragDropItem.SetGridHeight(pInv->m_slots[OUTFIT_SLOT].m_pIItem->m_iGridHeight);
-		UIDragDropItem.SetGridWidth(pInv->m_slots[OUTFIT_SLOT].m_pIItem->m_iGridWidth);
+		UIDragDropItem.SetGridHeight(pInv->m_slots[OUTFIT_SLOT].m_pIItem->GetGridHeight());
+		UIDragDropItem.SetGridWidth(pInv->m_slots[OUTFIT_SLOT].m_pIItem->GetGridWidth());
 
 		UIDragDropItem.GetUIStaticItem().SetOriginalRect(
-									pInv->m_slots[OUTFIT_SLOT].m_pIItem->m_iXPos*INV_GRID_WIDTH,
-									pInv->m_slots[OUTFIT_SLOT].m_pIItem->m_iYPos*INV_GRID_HEIGHT,
-									pInv->m_slots[OUTFIT_SLOT].m_pIItem->m_iGridWidth*INV_GRID_WIDTH,
-									pInv->m_slots[OUTFIT_SLOT].m_pIItem->m_iGridHeight*INV_GRID_HEIGHT);
+									pInv->m_slots[OUTFIT_SLOT].m_pIItem->GetXPos()*INV_GRID_WIDTH,
+									pInv->m_slots[OUTFIT_SLOT].m_pIItem->GetYPos()*INV_GRID_HEIGHT,
+									pInv->m_slots[OUTFIT_SLOT].m_pIItem->GetGridWidth()*INV_GRID_WIDTH,
+									pInv->m_slots[OUTFIT_SLOT].m_pIItem->GetGridHeight()*INV_GRID_HEIGHT);
 
 
-		UIDragDropItem.SetData(pInv->m_slots[OUTFIT_SLOT].m_pIItem);
-				
 		UIOutfitSlot.AttachChild(&UIDragDropItem);
-		
-		//m_iUsedItems++;
+		UIDragDropItem.SetData(pInv->m_slots[OUTFIT_SLOT].m_pIItem);
+
+		m_iUsedItems++;
+		R_ASSERT(m_iUsedItems<MAX_ITEMS);
 	}
 
 	//Пояс
 	for(PPIItem it =  pInv->m_belt.begin(); it !=  pInv->m_belt.end(); it++) 
 	{
-			if((*it)) 
-			{
-				m_vDragDropItems.push_back(CUIDragDropItem());
-				CUIDragDropItem& UIDragDropItem = m_vDragDropItems.back();
-			
-//				UIDragDropItem.Init((*it)->m_sIconTexture, 0,0, 50,50);
-//				UIDragDropItem.Init("ui\\ui_inv_quick_slots", 0,0, 50,50);
-				UIDragDropItem.CUIStatic::Init(0,0, 50,50);
-				UIDragDropItem.SetShader(GetEquipmentIconsShader());
-
-				UIDragDropItem.SetGridHeight((*it)->m_iGridHeight);
-				UIDragDropItem.SetGridWidth((*it)->m_iGridWidth);
-
-				UIDragDropItem.GetUIStaticItem().SetOriginalRect(
-										(*it)->m_iXPos*INV_GRID_WIDTH,
-										(*it)->m_iYPos*INV_GRID_HEIGHT,
-										(*it)->m_iGridWidth*INV_GRID_WIDTH,
-										(*it)->m_iGridHeight*INV_GRID_HEIGHT);
-
-
-				UIDragDropItem.SetData((*it));
-
-				CWeaponAmmo* pWeaponAmmo  = dynamic_cast<CWeaponAmmo*>((*it));
-				if(pWeaponAmmo)	UIDragDropItem.SetCustomUpdate(AmmoUpdateProc);
-
-				CEatableItem* pEatableItem = dynamic_cast<CEatableItem*>((*it));
-				if(pEatableItem) UIDragDropItem.SetCustomUpdate(FoodUpdateProc);
+		if((*it)) 
+		{
+			CUIDragDropItem& UIDragDropItem = m_vDragDropItems[m_iUsedItems];
 		
-				UIBeltList.AttachChild(&UIDragDropItem);
-				
-				//m_iUsedItems++;
-			}
+			UIDragDropItem.CUIStatic::Init(0,0, 50,50);
+			UIDragDropItem.SetShader(GetEquipmentIconsShader());
+
+			UIDragDropItem.SetGridHeight((*it)->GetGridHeight());
+			UIDragDropItem.SetGridWidth((*it)->GetGridWidth());
+
+			UIDragDropItem.GetUIStaticItem().SetOriginalRect(
+									(*it)->GetXPos()*INV_GRID_WIDTH,
+									(*it)->GetYPos()*INV_GRID_HEIGHT,
+									(*it)->GetGridWidth()*INV_GRID_WIDTH,
+									(*it)->GetGridHeight()*INV_GRID_HEIGHT);
+
+
+			CWeaponAmmo* pWeaponAmmo  = dynamic_cast<CWeaponAmmo*>((*it));
+			if(pWeaponAmmo)	UIDragDropItem.SetCustomUpdate(AmmoUpdateProc);
+
+			CEatableItem* pEatableItem = dynamic_cast<CEatableItem*>((*it));
+			if(pEatableItem) UIDragDropItem.SetCustomUpdate(FoodUpdateProc);
+
+			UIBeltList.AttachChild(&UIDragDropItem);
+			UIDragDropItem.SetData((*it));
+
+			m_iUsedItems++;
+			R_ASSERT(m_iUsedItems<MAX_ITEMS);
+		}
 	}
 
 
@@ -373,37 +338,35 @@ void CUIInventoryWnd::InitInventory()
 	//Рюкзак
 	for(it =  ruck_list.begin(); it !=  ruck_list.end(); it++) 
 	{
-			if((*it)) 
-			{
-				m_vDragDropItems.push_back(CUIDragDropItem());
-				CUIDragDropItem& UIDragDropItem = m_vDragDropItems.back();
+		if((*it)) 
+		{
+			CUIDragDropItem& UIDragDropItem = m_vDragDropItems[m_iUsedItems];
 
-//				UIDragDropItem.Init((*it)->m_sIconTexture, 0,0, 50,50);
-//				UIDragDropItem.Init("ui\\ui_inv_quick_slots", 0,0, 50,50);
-				UIDragDropItem.CUIStatic::Init(0,0, 50,50);
-				UIDragDropItem.SetShader(GetEquipmentIconsShader());
+			UIDragDropItem.CUIStatic::Init(0,0, 50,50);
+			UIDragDropItem.SetShader(GetEquipmentIconsShader());
 
-				UIDragDropItem.SetGridHeight((*it)->m_iGridHeight);
-				UIDragDropItem.SetGridWidth((*it)->m_iGridWidth);
+			UIDragDropItem.SetGridHeight((*it)->GetGridHeight());
+			UIDragDropItem.SetGridWidth((*it)->GetGridWidth());
 
-				UIDragDropItem.GetUIStaticItem().SetOriginalRect(
-										(*it)->m_iXPos*INV_GRID_WIDTH,
-										(*it)->m_iYPos*INV_GRID_HEIGHT,
-										(*it)->m_iGridWidth*INV_GRID_WIDTH,
-										(*it)->m_iGridHeight*INV_GRID_HEIGHT);
+			UIDragDropItem.GetUIStaticItem().SetOriginalRect(
+								(*it)->GetXPos()*INV_GRID_WIDTH,
+								(*it)->GetYPos()*INV_GRID_HEIGHT,
+								(*it)->GetGridWidth()*INV_GRID_WIDTH,
+								(*it)->GetGridHeight()*INV_GRID_HEIGHT);
 				
-				UIDragDropItem.SetData((*it));
+			CWeaponAmmo* pWeaponAmmo  = dynamic_cast<CWeaponAmmo*>((*it));
+			if(pWeaponAmmo)	UIDragDropItem.SetCustomUpdate(AmmoUpdateProc);
 
-				CWeaponAmmo* pWeaponAmmo  = dynamic_cast<CWeaponAmmo*>((*it));
-				if(pWeaponAmmo)	UIDragDropItem.SetCustomUpdate(AmmoUpdateProc);
+			CEatableItem* pEatableItem = dynamic_cast<CEatableItem*>((*it));
+			if(pEatableItem) UIDragDropItem.SetCustomUpdate(FoodUpdateProc);
 
-				CEatableItem* pEatableItem = dynamic_cast<CEatableItem*>((*it));
-				if(pEatableItem) UIDragDropItem.SetCustomUpdate(FoodUpdateProc);
+			UIBagList.AttachChild(&UIDragDropItem);
+			UIDragDropItem.SetData((*it));
 
-				UIBagList.AttachChild(&UIDragDropItem);
-				
-				//m_iUsedItems++;
-			}
+			m_iUsedItems++;
+			R_ASSERT(m_iUsedItems<MAX_ITEMS);
+
+		}
 	}
 }  
 
@@ -423,7 +386,7 @@ bool CUIInventoryWnd::SlotProc0(CUIDragDropItem* pItem, CUIDragDropList* pList)
 
 	if(!this_inventory->GetInventory()->CanPutInSlot(pInvItem)) return false;
 
-	if( pInvItem->m_slot == 0)
+	if( pInvItem->GetSlot() == 0)
 		return this_inventory->GetInventory()->Slot(pInvItem);
 	else
 		return false;
@@ -438,7 +401,7 @@ bool CUIInventoryWnd::SlotProc1(CUIDragDropItem* pItem, CUIDragDropList* pList)
 
 	if(!this_inventory->GetInventory()->CanPutInSlot(pInvItem)) return false;
 
-	if(pInvItem->m_slot == 1)
+	if(pInvItem->GetSlot() == 1)
 		return this_inventory->GetInventory()->Slot(pInvItem);
 	else
 		return false;
@@ -452,7 +415,7 @@ bool CUIInventoryWnd::SlotProc2(CUIDragDropItem* pItem, CUIDragDropList* pList)
 
 	if(!this_inventory->GetInventory()->CanPutInSlot(pInvItem)) return false;
 
-	if( pInvItem->m_slot == 2)
+	if( pInvItem->GetSlot() == 2)
 		return this_inventory->GetInventory()->Slot(pInvItem);
 	else
 		return false;
@@ -467,7 +430,7 @@ bool CUIInventoryWnd::SlotProc3(CUIDragDropItem* pItem, CUIDragDropList* pList)
 
 	if(!this_inventory->GetInventory()->CanPutInSlot(pInvItem)) return false;
 
-	if( pInvItem->m_slot == 3)
+	if( pInvItem->GetSlot() == 3)
 		return this_inventory->GetInventory()->Slot(pInvItem);
 	else
 		return false;
@@ -482,7 +445,7 @@ bool CUIInventoryWnd::SlotProc4(CUIDragDropItem* pItem, CUIDragDropList* pList)
 
 	if(!this_inventory->GetInventory()->CanPutInSlot(pInvItem)) return false;
 
-	if(pInvItem->m_slot == 4)
+	if(pInvItem->GetSlot() == 4)
 		return this_inventory->GetInventory()->Slot(pInvItem);
 	else
 		return false;
@@ -498,7 +461,7 @@ bool CUIInventoryWnd::OutfitSlotProc(CUIDragDropItem* pItem, CUIDragDropList* pL
 
 	if(!this_inventory->GetInventory()->CanPutInSlot(pInvItem)) return false;
 
-	if(pInvItem->m_slot == OUTFIT_SLOT)
+	if(pInvItem->GetSlot() == OUTFIT_SLOT)
 		return this_inventory->GetInventory()->Slot(pInvItem);
 	else
 		return false;
@@ -612,10 +575,15 @@ void CUIInventoryWnd::SendMessage(CUIWindow *pWnd, s16 msg, void *pData)
 			case ATTACH_ADDON:
 				AttachAddon();
 				break;
-			case DETACH_ADDON:
-				DetachAddon();
+			case DETACH_SCOPE_ADDON:
+				DetachAddon(*(dynamic_cast<CWeapon*>(m_pCurrentItem))->GetScopeName());
 				break;
-
+			case DETACH_SILENCER_ADDON:
+				DetachAddon(*(dynamic_cast<CWeapon*>(m_pCurrentItem))->GetSilencerName());
+				break;
+			case DETACH_GRENADE_LAUNCHER_ADDON:
+				DetachAddon(*(dynamic_cast<CWeapon*>(m_pCurrentItem))->GetGrenadeLauncherName());
+				break;
 			}
 		}
 	}
@@ -732,11 +700,7 @@ void CUIInventoryWnd::Update()
 
 		
 		//убрать объект drag&drop для уже использованной вещи
-		//for(int i = 0; i <m_iUsedItems; i++) 
-		int i = 0;
-		for(DRAG_DROP_VECTOR_it it = m_vDragDropItems.begin(); 
-			it != m_vDragDropItems.end(); 
-			it++, i++) 
+		for(int i = 0; i <m_iUsedItems; i++) 
 		{
 			CInventoryItem* pItem = (CInventoryItem*)m_vDragDropItems[i].GetData();
 			if(pItem && !pItem->Useful())
@@ -744,19 +708,16 @@ void CUIInventoryWnd::Update()
 				m_vDragDropItems[i].GetParent()->DetachChild(&m_vDragDropItems[i]);
 				m_vDragDropItems[i].SetData(NULL);
 				m_vDragDropItems[i].SetCustomUpdate(NULL);
-				m_vDragDropItems.erase(m_vDragDropItems.begin()+i);
-
+				
 				if(m_pCurrentItem == pItem)
 				{	
 					m_pCurrentItem = NULL;
 					m_pCurrentDragDropItem = NULL;
 				}
-
-				i = 0;
-				it = m_vDragDropItems.begin(); 
 			}
 		}
 	}
+
 
 	CUIWindow::Update();
 }
@@ -824,15 +785,15 @@ void CUIInventoryWnd::ActivatePropertiesBox()
 	CGrenadeLauncher* pGrenadeLauncher = dynamic_cast<CGrenadeLauncher*>(m_pCurrentItem);
 	
 
-	if(m_pCurrentItem->m_slot<SLOTS_NUM && m_pInv->CanPutInSlot(m_pCurrentItem))
+	if(m_pCurrentItem->GetSlot()<SLOTS_NUM && m_pInv->CanPutInSlot(m_pCurrentItem))
 	{
 		UIPropertiesBox.AddItem("Move to slot",  NULL, TO_SLOT_ACTION);
 	}
-	if(m_pCurrentItem->m_belt && m_pInv->CanPutInBelt(m_pCurrentItem))
+	if(m_pCurrentItem->Belt() && m_pInv->CanPutInBelt(m_pCurrentItem))
 	{
 		UIPropertiesBox.AddItem("Move on belt",  NULL, TO_BELT_ACTION);
 	}
-	if(m_pCurrentItem->m_ruck && m_pInv->CanPutInRuck(m_pCurrentItem))
+	if(m_pCurrentItem->Ruck() && m_pInv->CanPutInRuck(m_pCurrentItem))
 	{
 		if(!pOutfit)
 			UIPropertiesBox.AddItem("Move to bag",  NULL, TO_BAG_ACTION);
@@ -844,20 +805,20 @@ void CUIInventoryWnd::ActivatePropertiesBox()
 		UIPropertiesBox.AddItem("Dress in outfit",  NULL, TO_SLOT_ACTION);
 	}
 	
+	//отсоединение аддонов от вещи
 	if(pWeapon)
 	{
-		if(pWeapon->IsGreandeLauncherAttached())
+		if(pWeapon->IsGrenadeLauncherAttached())
 		{
-			UIPropertiesBox.AddItem("Detach grenade launcher",  NULL, DETACH_ADDON);
+			UIPropertiesBox.AddItem("Detach grenade launcher",  NULL, DETACH_GRENADE_LAUNCHER_ADDON);
 		}
 		if(pWeapon->IsScopeAttached())
 		{
-			m_sAddonName = pWeapon->GetScopeName();
-			UIPropertiesBox.AddItem("Detach scope",  NULL, DETACH_ADDON);
+			UIPropertiesBox.AddItem("Detach scope",  NULL, DETACH_SCOPE_ADDON);
 		}
 		if(pWeapon->IsSilencerAttached())
 		{
-			UIPropertiesBox.AddItem("Detach silencer",  NULL, DETACH_ADDON);
+			UIPropertiesBox.AddItem("Detach silencer",  NULL, DETACH_SILENCER_ADDON);
 		}
 	}
 	
@@ -879,9 +840,28 @@ void CUIInventoryWnd::ActivatePropertiesBox()
 	}
 	else if(pSilencer)
 	{
+		 if(m_pInv->m_slots[PISTOL_SLOT].m_pIItem != NULL &&
+		   m_pInv->m_slots[PISTOL_SLOT].m_pIItem->CanAttach(pSilencer))
+		 {
+			 UIPropertiesBox.AddItem("Attach silencer to pitol",  NULL, ATTACH_ADDON);
+			 m_pItemToUpgrade = m_pInv->m_slots[PISTOL_SLOT].m_pIItem;
+		 }
+		 if(m_pInv->m_slots[RIFLE_SLOT].m_pIItem != NULL &&
+			m_pInv->m_slots[RIFLE_SLOT].m_pIItem->CanAttach(pSilencer))
+		 {
+			 UIPropertiesBox.AddItem("Attach silencer to rifle",  NULL, ATTACH_ADDON);
+			 m_pItemToUpgrade = m_pInv->m_slots[RIFLE_SLOT].m_pIItem;
+		 }
 	}
 	else if(pGrenadeLauncher)
 	{
+		 if(m_pInv->m_slots[RIFLE_SLOT].m_pIItem != NULL &&
+			m_pInv->m_slots[RIFLE_SLOT].m_pIItem->CanAttach(pGrenadeLauncher))
+		 {
+			 UIPropertiesBox.AddItem("Attach grenade launcher to rifle",  NULL, ATTACH_ADDON);
+			 m_pItemToUpgrade = m_pInv->m_slots[RIFLE_SLOT].m_pIItem;
+		 }
+
 	}
 	
 	
@@ -928,10 +908,10 @@ bool CUIInventoryWnd::ToSlot()
 
 	((CUIDragDropList*)m_pCurrentDragDropItem->GetParent())->DetachChild(m_pCurrentDragDropItem);
 
-	if(m_pCurrentItem->m_slot == OUTFIT_SLOT)
+	if(m_pCurrentItem->GetSlot() == OUTFIT_SLOT)
 		UIOutfitSlot.AttachChild(m_pCurrentDragDropItem);
 	else
-		UITopList[m_pCurrentItem->m_slot].AttachChild(m_pCurrentDragDropItem);
+		UITopList[m_pCurrentItem->GetSlot()].AttachChild(m_pCurrentDragDropItem);
 			
 	m_pMouseCapturer = NULL;
 
@@ -997,39 +977,38 @@ void CUIInventoryWnd::StopArtifactMerger()
 //для работы с сочетателем артефактом извне
 void CUIInventoryWnd::AddArtifactToMerger(CArtifact* pArtifact)
 {
-	m_vDragDropItems.push_back(CUIDragDropItem());
-	CUIDragDropItem& UIDragDropItem = m_vDragDropItems.back();		
+	CUIDragDropItem& UIDragDropItem = m_vDragDropItems[m_iUsedItems];
+	m_iUsedItems++; R_ASSERT(m_iUsedItems<MAX_ITEMS);
 
 	UIDragDropItem.CUIStatic::Init(0,0, 50,50);
 	UIDragDropItem.SetShader(GetEquipmentIconsShader());
-	UIDragDropItem.SetGridHeight(pArtifact->m_iGridHeight);
-	UIDragDropItem.SetGridWidth(pArtifact->m_iGridWidth);
+	UIDragDropItem.SetGridHeight(pArtifact->GetGridHeight());
+	UIDragDropItem.SetGridWidth(pArtifact->GetGridWidth());
 	UIDragDropItem.GetUIStaticItem().SetOriginalRect(
-										pArtifact->m_iXPos*INV_GRID_WIDTH,
-										pArtifact->m_iYPos*INV_GRID_HEIGHT,
-										pArtifact->m_iGridWidth*INV_GRID_WIDTH,
-										pArtifact->m_iGridHeight*INV_GRID_HEIGHT);
+										pArtifact->GetXPos()*INV_GRID_WIDTH,
+										pArtifact->GetYPos()*INV_GRID_HEIGHT,
+										pArtifact->GetGridWidth()*INV_GRID_WIDTH,
+										pArtifact->GetGridHeight()*INV_GRID_HEIGHT);
 	UIDragDropItem.SetData(pArtifact);
 	UIArtifactMergerWnd.UIArtifactList.AttachChild(&UIDragDropItem);
 }
 
 void CUIInventoryWnd::AddItemToBag(PIItem pItem)
 {
-	m_vDragDropItems.push_back(CUIDragDropItem());
-	CUIDragDropItem& UIDragDropItem = m_vDragDropItems.back();		
+	CUIDragDropItem& UIDragDropItem = m_vDragDropItems[m_iUsedItems];
+	m_iUsedItems++; R_ASSERT(m_iUsedItems<MAX_ITEMS);
 
 	UIDragDropItem.CUIStatic::Init(0,0, 50,50);
 	UIDragDropItem.SetShader(GetEquipmentIconsShader());
-	UIDragDropItem.SetGridHeight(pItem->m_iGridHeight);
-	UIDragDropItem.SetGridWidth(pItem->m_iGridWidth);
+	UIDragDropItem.SetGridHeight(pItem->GetGridHeight());
+	UIDragDropItem.SetGridWidth(pItem->GetGridWidth());
 	UIDragDropItem.GetUIStaticItem().SetOriginalRect(
-										pItem->m_iXPos*INV_GRID_WIDTH,
-										pItem->m_iYPos*INV_GRID_HEIGHT,
-										pItem->m_iGridWidth*INV_GRID_WIDTH,
-										pItem->m_iGridHeight*INV_GRID_HEIGHT);
-	UIDragDropItem.SetData(pItem);
-	m_vDragDropItems.push_back(UIDragDropItem);
+										pItem->GetXPos()*INV_GRID_WIDTH,
+										pItem->GetYPos()*INV_GRID_HEIGHT,
+										pItem->GetGridWidth()*INV_GRID_WIDTH,
+										pItem->GetGridHeight()*INV_GRID_HEIGHT);
 	UIBagList.AttachChild(&UIDragDropItem);
+	UIDragDropItem.SetData(pItem);
 }
 
 void CUIInventoryWnd::AttachAddon()
@@ -1044,9 +1023,7 @@ void CUIInventoryWnd::AttachAddon()
 
 	m_pItemToUpgrade = NULL;
 }
-void CUIInventoryWnd::DetachAddon()
+void CUIInventoryWnd::DetachAddon(const char* addon_name)
 {
-	R_ASSERT(*m_sAddonName);
-	m_pCurrentItem->Detach(*m_sAddonName);
-	m_sAddonName = NULL;
+	m_pCurrentItem->Detach(addon_name);
 }

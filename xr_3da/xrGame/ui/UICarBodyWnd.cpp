@@ -149,15 +149,15 @@ void CUICarBodyWnd::UpdateLists()
 				UIDragDropItem.CUIStatic::Init(0,0, 50,50);
 				UIDragDropItem.SetShader(GetEquipmentIconsShader());
 
-				UIDragDropItem.SetGridHeight((*it)->m_iGridHeight);
-				UIDragDropItem.SetGridWidth((*it)->m_iGridWidth);
+				UIDragDropItem.SetGridHeight((*it)->GetGridHeight());
+				UIDragDropItem.SetGridWidth((*it)->GetGridWidth());
 
 
 				UIDragDropItem.GetUIStaticItem().SetOriginalRect(
-										(*it)->m_iXPos*INV_GRID_WIDTH,
-										(*it)->m_iYPos*INV_GRID_HEIGHT,
-										(*it)->m_iGridWidth*INV_GRID_WIDTH,
-										(*it)->m_iGridHeight*INV_GRID_HEIGHT);
+										(*it)->GetXPos()*INV_GRID_WIDTH,
+										(*it)->GetYPos()*INV_GRID_HEIGHT,
+										(*it)->GetGridWidth()*INV_GRID_WIDTH,
+										(*it)->GetGridHeight()*INV_GRID_HEIGHT);
 
 				UIDragDropItem.SetData((*it));
 
@@ -206,14 +206,14 @@ void CUICarBodyWnd::UpdateLists()
 				UIDragDropItem.CUIStatic::Init(0,0, 50,50);
 				UIDragDropItem.SetShader(GetEquipmentIconsShader());
 
-				UIDragDropItem.SetGridHeight((*it)->m_iGridHeight);
-				UIDragDropItem.SetGridWidth((*it)->m_iGridWidth);
+				UIDragDropItem.SetGridHeight((*it)->GetGridHeight());
+				UIDragDropItem.SetGridWidth((*it)->GetGridWidth());
 
 				UIDragDropItem.GetUIStaticItem().SetOriginalRect(
-										(*it)->m_iXPos*INV_GRID_WIDTH,
-										(*it)->m_iYPos*INV_GRID_HEIGHT,
-										(*it)->m_iGridWidth*INV_GRID_WIDTH,
-										(*it)->m_iGridHeight*INV_GRID_HEIGHT);
+										(*it)->GetXPos()*INV_GRID_WIDTH,
+										(*it)->GetYPos()*INV_GRID_HEIGHT,
+										(*it)->GetGridWidth()*INV_GRID_WIDTH,
+										(*it)->GetGridHeight()*INV_GRID_HEIGHT);
 
 				UIDragDropItem.SetData((*it));
 

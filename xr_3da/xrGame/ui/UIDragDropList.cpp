@@ -45,6 +45,8 @@ void CUIDragDropList::AttachChild(CUIDragDropItem* pChild)
 	pChild->SetWidth(GetCellWidth()*pChild->GetGridWidth());
 	pChild->SetHeight(GetCellHeight()*pChild->GetGridHeight());
 
+	pChild->SetCellWidth(GetCellWidth());
+	pChild->SetCellHeight(GetCellHeight());
 
 	/*
 	m_iCurrentFirstRow = pChild->GetGridRow();

@@ -9,7 +9,10 @@
 #include "UIDialogWnd.h"
 #include "UIStatic.h"
 #include "UIButton.h"
+
 #include "UIDragDropItem.h"
+#include "UIWpnDragDropItem.h"
+
 #include "UIDragDropList.h"
 #include "UIProgressBar.h"
 #include "UI3dStatic.h"
@@ -103,12 +106,10 @@ protected:
 	//менюшка для работы с устройством производства артефактов
 	CUIArtifactMerger UIArtifactMergerWnd;
 
-		
-	DEFINE_VECTOR (CUIDragDropItem, DRAG_DROP_VECTOR, DRAG_DROP_VECTOR_it);
-	DRAG_DROP_VECTOR m_vDragDropItems;
-
-	//static const int MAX_ITEMS = 70;
-	//int m_iUsedItems;
+	
+	static const int MAX_ITEMS = 70;
+	CUIWpnDragDropItem m_vDragDropItems[MAX_ITEMS];
+	int m_iUsedItems;
 
 	//указатель на инвентарь, передается перед запуском меню
 	CInventory* m_pInv;
@@ -138,7 +139,10 @@ protected:
 		  TO_SLOT_ACTION, TO_BAG_ACTION,
 		  ARTIFACT_MERGER_ACTIVATE,
 		  ARTIFACT_MERGER_DEACTIVATE,
-  		  ATTACH_ADDON, DETACH_ADDON};
+  		  ATTACH_ADDON, 
+		  DETACH_SCOPE_ADDON,
+		  DETACH_SILENCER_ADDON,
+		  DETACH_GRENADE_LAUNCHER_ADDON};
 
 	//выбросить элемент
 	void DropItem();
@@ -157,7 +161,7 @@ protected:
 
 	//присоединение/отсоединение аддонов к оружию
 	void AttachAddon();
-	void DetachAddon();
+	void DetachAddon(const char* addon_name);
 
 
 	//дополнительные списки для сортировки вещей
@@ -165,6 +169,4 @@ protected:
 	
 	//вещь к которой мы присоединяем add-on
 	PIItem	m_pItemToUpgrade;
-	//имя того аддона который отсоединяем
-	ref_str m_sAddonName;
 };

@@ -29,7 +29,7 @@ class CUIZoneMap
 	void			ConvertToLocal	(const Fmatrix& LM, const Fvector& src, Ivector2& dest);
 public:
 					CUIZoneMap		();
-					~CUIZoneMap		();
+	virtual			~CUIZoneMap		();
 	void			Render			();
 	void			SetHeading		(float angle);
 	void			Init			();

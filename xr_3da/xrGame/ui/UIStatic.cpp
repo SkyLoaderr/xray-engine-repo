@@ -336,6 +336,12 @@ u32 CUIStatic::ReadColor(int pos, int& r, int& g, int& b)
 
 void CUIStatic::TextureClipper(int offset_x, int offset_y, RECT* pClipRect)
 {
+	TextureClipper(offset_x, offset_y, pClipRect, m_UIStaticItem);
+}
+
+void CUIStatic::TextureClipper(int offset_x, int offset_y, RECT* pClipRect,
+							   CUIStaticItem& UIStaticItem)
+{
 	RECT parent_rect;
 	
 	if(pClipRect == NULL)
@@ -357,7 +363,7 @@ void CUIStatic::TextureClipper(int offset_x, int offset_y, RECT* pClipRect)
 	{
 		Irect r;
 		r.set(0,0,0,0);
-		m_UIStaticItem.SetRect(r);
+		UIStaticItem.SetRect(r);
 		return;
 	}
 
@@ -370,9 +376,6 @@ void CUIStatic::TextureClipper(int offset_x, int offset_y, RECT* pClipRect)
 	out_rect.bottom = GetHeight();
 	out_rect.left =  0;
 	out_rect.right = GetWidth();
-
-	//	out_rect.right = m_UIStaticItem.GetOriginalRect().width();
-	
 
 
 	if(wnd_rect.left<0)
@@ -398,25 +401,27 @@ void CUIStatic::TextureClipper(int offset_x, int offset_y, RECT* pClipRect)
 	
 	Irect r;
 	r.x1 = out_rect.left;
-	r.x2 = out_rect.right<m_UIStaticItem.GetOriginalRect().width()?
-		   out_rect.right:m_UIStaticItem.GetOriginalRect().width();
+	r.x2 = out_rect.right<UIStaticItem.GetOriginalRectScaled().width()?
+		   out_rect.right:UIStaticItem.GetOriginalRectScaled().width();
 
 	r.y1 = out_rect.top;
-	r.y2 = out_rect.bottom<m_UIStaticItem.GetOriginalRect().height()?
-		   out_rect.bottom:m_UIStaticItem.GetOriginalRect().height();
-	m_UIStaticItem.SetRect(r);
+	r.y2 = out_rect.bottom<UIStaticItem.GetOriginalRectScaled().height()?
+		   out_rect.bottom:UIStaticItem.GetOriginalRectScaled().height();
+	UIStaticItem.SetRect(r);
 
-	m_UIStaticItem.SetPos(out_x + offset_x , out_y + offset_y);
+	UIStaticItem.SetPos(out_x + offset_x , out_y + offset_y);
 	
 }
+
+
 void CUIStatic::ClipperOn() 
 {
 	m_bClipper = true;
 
 	TextureClipper(0, 0);
-} 
+}
 
-void CUIStatic::ClipperOff() 
+void CUIStatic::ClipperOff(CUIStaticItem& UIStaticItem)
 {
 	m_bClipper = false;
 
@@ -429,17 +434,19 @@ void CUIStatic::ClipperOff()
 	
 	Irect r;
 	r.x1 = out_rect.left;
-	r.x2 = out_rect.right<m_UIStaticItem.GetOriginalRect().width()?
-		   out_rect.right:m_UIStaticItem.GetOriginalRect().width();
+	r.x2 = out_rect.right<UIStaticItem.GetOriginalRectScaled().width()?
+		   out_rect.right:UIStaticItem.GetOriginalRectScaled().width();
 
 	r.y1 = out_rect.top;
-	r.y2 = out_rect.bottom<m_UIStaticItem.GetOriginalRect().height()?
-		   out_rect.bottom:m_UIStaticItem.GetOriginalRect().height();
-	m_UIStaticItem.SetRect(r);
+	r.y2 = out_rect.bottom<UIStaticItem.GetOriginalRectScaled().height()?
+		   out_rect.bottom:UIStaticItem.GetOriginalRectScaled().height();
+	UIStaticItem.SetRect(r);
+}
 
 
-
-	m_UIStaticItem.SetRect(r);
+void CUIStatic::ClipperOff() 
+{
+	ClipperOff(m_UIStaticItem);
 }
 
 void CUIStatic::SetTextureScale(float new_scale)

@@ -16,7 +16,7 @@ class CUIWeapon
 	ref_shader		cur_shader;
 public:
 					CUIWeapon		();
-					~CUIWeapon		();
+	virtual			~CUIWeapon		();
 	void			Render			();
 	void			Out				(CWeapon* wpn);
 	void			Init			();

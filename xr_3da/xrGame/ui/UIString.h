@@ -10,7 +10,7 @@ class CUIString
 {
 public:
 	CUIString();
-	~CUIString();
+	virtual ~CUIString();
 
 	void SetText(LPSTR str);
 	void AppendText(LPSTR str);
@@ -22,6 +22,3 @@ public:
 
 	STRING m_str;
 };
-
-
-

@@ -92,7 +92,7 @@ protected:
 
 
 	static const int MAX_ITEMS = 140;
-	CUIDragDropItem m_vDragDropItems[MAX_ITEMS];
+	CUIWpnDragDropItem m_vDragDropItems[MAX_ITEMS];
 	int m_iUsedItems;
 
 	//для сортировки вещей
