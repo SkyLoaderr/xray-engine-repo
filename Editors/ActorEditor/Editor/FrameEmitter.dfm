@@ -147,13 +147,20 @@ object fraEmitter: TfraEmitter
     Width = 195
     Height = 96
     ActiveTabColor = 10528425
+    BorderWidth = 0
     Color = 10528425
+    DrawFocus = False
     Flat = True
+    HotTrack = True
     InactiveTabColor = 10528425
     MinTabHeight = 20
     MinTabWidth = 20
+    Multiline = False
+    RaggedRight = False
+    ScrollOpposite = False
     Style = etsButtons
     TabIndex = 3
+    TabPosition = etpTop
     HotTrackFont.Charset = DEFAULT_CHARSET
     HotTrackFont.Color = 15790320
     HotTrackFont.Height = -11
@@ -161,16 +168,13 @@ object fraEmitter: TfraEmitter
     HotTrackFont.Style = []
     TabBkColor = 10528425
     ActivePage = tsBox
-    ActiveTabFont.Charset = DEFAULT_CHARSET
-    ActiveTabFont.Color = clWindowText
-    ActiveTabFont.Height = -11
-    ActiveTabFont.Name = 'MS Sans Serif'
-    ActiveTabFont.Style = []
+    FlatTabBorderColor = clBtnShadow
     ParentColor = False
     TabOrder = 4
-    DockOrientation = doNoOrient
     object tsPoint1: TElTabSheet
       PageControl = pcEmitterType
+      ImageIndex = -1
+      TabVisible = True
       Caption = 'Point'
       Visible = False
       object Panel3: TPanel
@@ -200,6 +204,8 @@ object fraEmitter: TfraEmitter
     object tsCone: TElTabSheet
       TabColor = 10528425
       PageControl = pcEmitterType
+      ImageIndex = -1
+      TabVisible = True
       Caption = 'Cone'
       Color = 10528425
       Visible = False
@@ -356,6 +362,8 @@ object fraEmitter: TfraEmitter
     end
     object tsSphere: TElTabSheet
       PageControl = pcEmitterType
+      ImageIndex = -1
+      TabVisible = True
       Caption = 'Sphere'
       Visible = False
       object Panel5: TPanel
@@ -406,6 +414,8 @@ object fraEmitter: TfraEmitter
     end
     object tsBox: TElTabSheet
       PageControl = pcEmitterType
+      ImageIndex = -1
+      TabVisible = True
       Caption = 'Box'
       object Panel4: TPanel
         Left = 0
