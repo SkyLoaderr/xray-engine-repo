@@ -842,8 +842,10 @@ function new_point(center_id, position_id,radius, min_radius)
 end
 
 function stop_play_sound(obj)
-    obj:set_sound_mask (-1)
-    obj:set_sound_mask (0)
+	if obj:alive() == true then
+		obj:set_sound_mask (-1)
+		obj:set_sound_mask (0)
+	end
 end
 
 function object_type(obj)
