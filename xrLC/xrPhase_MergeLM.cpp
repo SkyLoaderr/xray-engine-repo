@@ -131,9 +131,9 @@ void CBuild::xrPhase_MergeLM()
 			g_lightmaps.push_back	(lmap);
 
 			// Process 
-			Status		("Process...");
 			for (it=0; it<merge_count; it++) 
 			{
+				if (0==(it%16))		Status	("Process [%d/%d]...",it,merge_count);
 				CDeflector::Layer&	L = *(Layer[it]->GetLayer(L_base));
 				_rect		rT,rS; 
 				rS.a.set	(0,0);
