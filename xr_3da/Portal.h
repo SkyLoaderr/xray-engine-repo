@@ -38,7 +38,7 @@ public:
 
 		FPU::m64r();
 		for (int i=2; i<vcnt; i++) {
-			T.mk_normal	(poly[0],poly[i-1],poly[i]);
+			T.mknormal	(poly[0],poly[i-1],poly[i]);
 			N.add		(T);
 		}
 		float	tcnt = float(vcnt)-2;
