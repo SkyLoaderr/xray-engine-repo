@@ -50,12 +50,11 @@ public:
 	CSector*						pLastSector;
 	Fvector							vLastCameraPos;
 public:
-//	CList<FCached*>						vecCached;
-//	CList<SceneGraph::mapNormal_Node*>	vecNormalNodes;
-	CList<mapNormalCodes::TNode*>		lstCodes;
-	CList<mapNormalTextures::TNode*>	lstTextures;
-	CList<mapNormalMatrices::TNode*>	lstMatrices;
-	CList<mapNormalConstants::TNode*>	lstConstants;
+	CList<FCached*>									vecCached;
+	CList<SceneGraph::mapNormalCodes::TNode*>		lstCodes;
+	CList<SceneGraph::mapNormalTextures::TNode*>	lstTextures;
+	CList<SceneGraph::mapNormalMatrices::TNode*>	lstMatrices;
+	CList<SceneGraph::mapNormalConstants::TNode*>	lstConstants;
 	
 	// Global vertex-buffer container
 	vector<DWORD>					FVF;
