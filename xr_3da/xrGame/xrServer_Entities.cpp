@@ -16,6 +16,7 @@ void	xrServerEntity::Spawn_Write		(NET_Packet& P, BOOL bLocal)
 	P.w_begin			(M_SPAWN		);
 	P.w_string			(s_name			);
 	P.w_string			(s_name_replace	);
+	P.w_u8				(s_gameid		);
 	P.w_u8				(0xFE			);	// No need for RP, use supplied (POS,ANGLEs)
 	P.w_vec3			(o_Position		);
 	P.w_vec3			(o_Angle		);
@@ -38,6 +39,7 @@ void	xrServerEntity::Spawn_Read		(NET_Packet& P)
 	P.r_begin			(dummy16		);
 	P.r_string			(s_name			);
 	P.r_string			(s_name_replace	);
+	P.r_u8				(s_gameid		);
 	P.r_u8				(s_RP			);
 	P.r_vec3			(o_Position		);
 	P.r_vec3			(o_Angle		);
