@@ -16,6 +16,7 @@ void CHWCaps::Update()
 	vertex.bNPatches	= (caps.DevCaps & D3DDEVCAPS_NPATCHES)!=0;
 	vertex.bMPS			= (caps.DeclTypes & D3DDTCAPS_UBYTE4)!=0;
 	vertex.dwRegisters	= (caps.MaxVertexShaderConst);
+	vertex.dwClipPlanes	= _min(caps.MaxUserClipPlanes,15);
 	IDirect3DQuery9*	q_vc;
 	D3DDEVINFO_VCACHE	vc;
 	HRESULT _hr			= HW.pDevice->CreateQuery(D3DQUERYTYPE_VCACHE,&q_vc);

@@ -48,3 +48,44 @@ void CBackend::Invalidate	()
 	cull_mode					= u32(-1);
 	colorwrite_mask				= u32(-1);
 }
+
+void	CBackend::set_ClipPlanes(u32 _enable, Fplane*	_planes /*=NULL */, u32 count/* =0*/)
+{
+	if (0==HW.Caps.vertex.dwClipPlanes)	return;
+	if (!_enable)	{
+		CHK_DX	(HW.pDevice->SetRenderState(D3DRS_CLIPPLANEENABLE,FALSE));
+		return;
+	}
+
+	// Enable and setup planes
+	VERIFY	(_planes && count);
+	if		(count>HW.Caps.vertex.dwClipPlanes)	count=HW.Caps.vertex.dwClipPlanes;
+
+	D3DXMATRIX			worldToClipMatrixIT;
+	D3DXMatrixInverse	(&worldToClipMatrixIT,NULL,(D3DXMATRIX*)&Device.mFullTransform);
+	D3DXMatrixTranspose	(&worldToClipMatrixIT,&worldToClipMatrixIT);
+	for		(u32 it=0; it<count; it++)		{
+		Fplane&		P			= _planes	[it];
+		D3DXPLANE	planeWorld	(P.n.x,P.n.y,P.n.z,P.d), planeClip;
+		D3DXPlaneNormalize		(&planeWorld,	&planeWorld);
+		D3DXPlaneTransform		(&planeClip,	&planeWorld, &worldToClipMatrixIT);
+		CHK_DX					(HW.pDevice->SetClipPlane(it,planeClip));
+	}
+
+	// Enable them
+	u32		e_mask	= (1<<count)-1;
+	CHK_DX	(HW.pDevice->SetRenderState(D3DRS_CLIPPLANEENABLE,e_mask));
+}
+
+void	CBackend::set_ClipPlanes(u32 _enable, Fmatrix*	_xform  /*=NULL */, u32 fmask/* =0xff */)
+{
+	if (0==HW.Caps.vertex.dwClipPlanes)	return;
+	if (!_enable)	{
+		CHK_DX	(HW.pDevice->SetRenderState(D3DRS_CLIPPLANEENABLE,FALSE));
+		return;
+	}
+	VERIFY		(_xform && fmask);
+	CFrustum	F;
+	F.CreateFromMatrix	(*_xform,fmask);
+	set_ClipPlanes		(_enable,F.planes,F.p_count);
+}
