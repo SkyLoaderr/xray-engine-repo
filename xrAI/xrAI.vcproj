@@ -484,6 +484,12 @@
 					RelativePath="ai_nodes.h">
 				</File>
 				<File
+					RelativePath="xrCrossTable.cpp">
+				</File>
+				<File
+					RelativePath="xrCrossTable.h">
+				</File>
+				<File
 					RelativePath="xrGraph.cpp">
 				</File>
 				<File

@@ -1,0 +1,11 @@
+////////////////////////////////////////////////////////////////////////////
+//	Module 		: xrCrossTable.h
+//	Created 	: 25.01.2003
+//  Modified 	: 25.01.2003
+//	Author		: Dmitriy Iassenev
+//	Description : Building cross table for AI nodes
+////////////////////////////////////////////////////////////////////////////
+
+#pragma once
+
+void xrBuildCrossTable(LPCSTR caProjectName);

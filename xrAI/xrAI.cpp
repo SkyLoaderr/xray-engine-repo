@@ -9,6 +9,7 @@
 #include "xrGraph.h"
 #include "xr_graph_merge.h"
 #include "xr_spawn_merge.h"
+#include "xrCrossTable.h"
 
 #pragma comment(linker,"/STACK:0x800000,0x400000")
 
@@ -61,6 +62,9 @@ void Startup(LPSTR     lpCmdLine)
 	else
 		if (strstr(cmd,"-g"))
 			sscanf	(strstr(cmd,"-g")+2,"%s",name);
+		else
+			if (strstr(cmd,"-a"))
+				sscanf	(strstr(cmd,"-g")+2,"%s",name);
 
 	string prjName		= "gamedata\\levels\\"+string(name)+"\\";
 
@@ -71,15 +75,18 @@ void Startup(LPSTR     lpCmdLine)
 	else
 		if (strstr(cmd,"-g"))
 			xrBuildGraph		(prjName.c_str());
-		else {
-			if (strstr(cmd,"-m")) {
-				xrMergeGraphs		();
-			}
-			else
-				if (strstr(cmd,"-s")) {
-					pSettings	= xr_new<CInifile>(SYSTEM_LTX);
-					xrMergeSpawns		();
+		else
+			if (strstr(cmd,"-a"))
+				xrBuildCrossTable	(prjName.c_str());
+			else {
+				if (strstr(cmd,"-m")) {
+					xrMergeGraphs		();
 				}
+				else
+					if (strstr(cmd,"-s")) {
+						pSettings	= xr_new<CInifile>(SYSTEM_LTX);
+						xrMergeSpawns		();
+					}
 		}
 	// Show statistic
 	char	stats[256];
