@@ -35,9 +35,11 @@ private:
 	CRTC*						rt_smap_p;
 	IDirect3DSurface9*			rt_smap_p_ZB;
 
-	// Materials
+	// Textures
 	IDirect3DTexture9*			t_material_surf;
 	CTexture*					t_material;
+	IDirect3DTexture9*			t_ds2fade_surf;
+	CTexture*					t_ds2fade;
 private:
 	// 
 	Shader*						s_accum_direct_mask;

@@ -9,7 +9,9 @@
 #define	r2_RT_bloom2	"$user$bloom2"			// ---
 #define	r2_RT_smap_d	"$user$smap_d"			// ---
 #define	r2_RT_smap_p	"$user$smap_p"			// ---
+
 #define r2_material		"$user$material"		// ---
+#define r2_ds2_fade		"$user$ds2_fade"		// ---
 
 const u32				DSM_size			= 1024;
 const float				DSM_distance_1		= 15.f;

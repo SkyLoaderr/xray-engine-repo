@@ -56,29 +56,60 @@ void	CRenderTarget::OnDeviceCreate	()
 		g_combine					= Device.Shader.CreateGeom	(FVF::F_TL,		RCache.Vertex.Buffer(), RCache.QuadIB);
 	}
 
-	// Build material(s)
+	// Build textures
 	{
-		// Surface
-		R_CHK						(D3DXCreateTexture(HW.pDevice,TEX_material_size,TEX_material_size,1,0,D3DFMT_A8R8G8B8,D3DPOOL_MANAGED,&t_material_surf));
-		t_material					= Device.Shader._CreateTexture(r2_material);
-		t_material->surface_set		(t_material_surf);
-
-		// Fill it (x=dot(L,N),y=dot(L,H))
-		D3DLOCKED_RECT				R;
-		R_CHK						(t_material_surf->LockRect	(0,&R,0,0));
-		for (u32 y=0; y<TEX_material_size; y++)
+		// Build material(s)
 		{
-			for (u32 x=0; x<TEX_material_size; x++)
+			// Surface
+			R_CHK						(D3DXCreateTexture(HW.pDevice,TEX_material_size,TEX_material_size,1,0,D3DFMT_A8R8G8B8,D3DPOOL_MANAGED,&t_material_surf));
+			t_material					= Device.Shader._CreateTexture(r2_material);
+			t_material->surface_set		(t_material_surf);
+
+			// Fill it (addr: x=dot(L,N),y=dot(L,H))
+			D3DLOCKED_RECT				R;
+			R_CHK						(t_material_surf->LockRect	(0,&R,0,0));
+			for (u32 y=0; y<TEX_material_size; y++)
 			{
-				u32*	p	= (u32*)	(LPBYTE (R.pBits) + y*R.Pitch + x*4);
-				float	ld	= float(x) / float	(TEX_material_size-1);
-				float	ls	= float(y) / float	(TEX_material_size-1);
-				s32		_d	= iFloor	(ld*255.5f);			clamp(_d,0,255);
-				s32		_s	= iFloor	(pow(ls,32.f)*255.5f);	clamp(_s,0,255);
-				*p			= color_rgba(_d,_d,_d,_s);
+				for (u32 x=0; x<TEX_material_size; x++)
+				{
+					u32*	p	= (u32*)	(LPBYTE (R.pBits) + y*R.Pitch + x*4);
+					float	ld	= float(x) / float	(TEX_material_size-1);
+					float	ls	= float(y) / float	(TEX_material_size-1);
+					s32		_d	= iFloor	(ld*255.5f);			clamp(_d,0,255);
+					s32		_s	= iFloor	(pow(ls,32.f)*255.5f);	clamp(_s,0,255);
+					*p			= color_rgba(_d,_d,_d,_s);
+				}
 			}
+			R_CHK						(t_material_surf->UnlockRect	(0));
 		}
-		R_CHK						(t_material_surf->UnlockRect	(0));
+
+		// Build shadow2fade
+		{
+			// Surface
+			R_CHK						(D3DXCreateTexture(HW.pDevice,TEX_ds2_fade,1,1,0,D3DFMT_A8R8G8B8,D3DPOOL_MANAGED,&t_ds2fade_surf));
+			t_ds2fade					= Device.Shader._CreateTexture(r2_ds2_fade);
+			t_ds2fade->surface_set		(t_ds2fade_surf);
+
+			// Fill it (addr:depth/DSM_distance_2; res:x=mul,w=add)
+			D3DLOCKED_RECT				R;
+			R_CHK						(t_ds2fade_surf->LockRect	(0,&R,0,0));
+			for (u32 x=0; x<TEX_ds2_fade_size; x++)
+			{
+				u32*	p		= (u32*)	(LPBYTE (R.pBits) + x*4);
+				float	frac	= float(x)  / float	(TEX_ds2_fade_size-1);
+				float	len		= frac		* DSM_distance_2;
+				float	alpha_l	= len		/ DSM_distance_1;	clamp	(alpha,	0.f,1.f);
+				float	fade_l	= len		/ DSM_distance_2;	clamp	(fade_l,0.f,1.f);
+				float	alpha	= _sqr(alpha_l);
+				float	fade	= _sqr(fade_l);
+				float	_mul_	= (1-fade)*alpha;
+				float	_add_	= fade*alpha;
+				s32		_mul_i	= iFloor	(_mul_*255.5f);		clamp	(_mul_i,0,255);
+				s32		_add_i 	= iFloor	(_add_*255.5f);		clamp	(_add_i,0,255);
+				*p				= color_rgba(_mul_i,_mul_i,_mul_i,_add_i);
+			}
+			R_CHK						(t_ds2fade_surf->UnlockRect	(0));
+		}
 	}
 
 	// 
@@ -88,7 +119,9 @@ void	CRenderTarget::OnDeviceCreate	()
 
 void	CRenderTarget::OnDeviceDestroy	()
 {
-	// Material
+	// Textures
+	t_ds2fade->surface_set		(NULL);
+	_RELEASE					(t_ds2fade_surf);
 	t_material->surface_set		(NULL);
 	_RELEASE					(t_material_surf);
 
