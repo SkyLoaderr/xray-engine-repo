@@ -85,7 +85,7 @@ void CEntity::Hit			(float perc, Fvector &dir, CObject* who, s16 element,Fvector
 	// If Local() - perform some logic
 	if (Local() && (fHealth>0))
 	{
-		fHealth				-=	lost_health;
+		fHealth				-=	lost_health; fHealth=fHealth<-1000?-1000:fHealth;
 		fArmor				-=	lost_armor;
 
 		if (fHealth<=0)
