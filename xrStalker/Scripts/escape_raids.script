@@ -76,11 +76,11 @@ end
 -------------------------------------------------------------------------------------------
 function wait_for_start ()
    
-    --if xr_gulag.needRaid ("blockpost") == false then return end
+    if xr_gulag.needRaid ("blockpost") == false then return end
     
-    local time = local_hours ()
+    --local time = local_hours ()
 --    printf ("LOCAL TIME = %d hours", time)
-    if time ~= 9 and time ~= 15 and time ~= 21 then return end
+    --if time ~= 9 and time ~= 15 and time ~= 21 then return end
     
     local raid_moved = false
     for a = 1, table.getn (patrols), 1 do
