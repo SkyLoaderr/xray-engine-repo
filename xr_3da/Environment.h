@@ -32,13 +32,6 @@ public:
 	int						Music_Active;
 	int						Music_Fade;
 public:
-	// Total level of lighting on level
-	float					fDayLight;		// 0..1
-
-	// Wind
-	float					fWindDir;		// angle
-	float					fWindStrength;	// m/s
-
 	// Environments
 	SEnvDef					Current;
 	int						CurrentID;

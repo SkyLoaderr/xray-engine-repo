@@ -35,4 +35,9 @@ void CLight_rSM::compute_xf_direct	(Fmatrix& mDest, Fmatrix& mView, float p_FOV,
 	_F[2].mad		(mView.c, ProjDirs[2], p_FAR);
 	_F[3].mad		(mView.c, ProjDirs[3], p_FAR);
 	_F[5].set		(mView.c);
+
+	// Build L-view matrix
+	Fvector			L_dir,L_up,L_right;
+	L_dir.set		(1,-2,1);	L_dir.normalize();
+
 }

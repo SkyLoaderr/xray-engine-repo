@@ -31,11 +31,6 @@ ENGINE_API DWORD	psEnvFlags= effSunGlare;
 
 CEnvironment::CEnvironment()
 {
-	// environment data
-	fDayLight				= 1.0f;
-	fWindDir				= PI_DIV_2;
-	fWindStrength			= 2;
-
 	// environment objects
 	Device.seqDevCreate.Add	(this);
 	Device.seqDevDestroy.Add(this);
