@@ -345,16 +345,28 @@ void IPureServer::OnCL_Disconnected		(IClient* CL)
 {
 	Msg("* Player '%s' disconnected.\n",CL->Name);
 }
+
+/*
+void IPureServer::client_link_aborted	(IClient* CL)
+{
+}
+void IPureServer::client_link_aborted	(DPNID ID)
+{
+}
+*/
+
 BOOL IPureServer::HasBandwidth			(IClient* C)
 {
 	DWORD	dwTime			= Device.dwTimeGlobal;
 	DWORD	dwInterval		= 1000/psNET_ServerUpdate;
 
+	HRESULT hr;
 	if ((dwTime-C->dwTime_LastUpdate)>dwInterval)	
 	{
 		// check queue for "empty" state
-		DWORD	dwPending;
-		CHK_DX	(NET->GetSendQueueInfo(C->ID,&dwPending,0,0));
+		DWORD				dwPending;
+		hr					= NET->GetSendQueueInfo(C->ID,&dwPending,0,0);
+		if (FAILED(hr))		return FALSE;
 
 		if (dwPending > DWORD(psNET_ServerPending))	return FALSE;
 
@@ -362,7 +374,8 @@ BOOL IPureServer::HasBandwidth			(IClient* C)
 		DPN_CONNECTION_INFO	CI;
 		ZeroMemory			(&CI,sizeof(CI));
 		CI.dwSize			= sizeof(CI);
-		CHK_DX				(NET->GetConnectionInfo(C->ID,&CI,0));
+		hr					= NET->GetConnectionInfo(C->ID,&CI,0);
+		if (FAILED(hr))		return FALSE;
 		C->stats.Update		(CI);
 
 		// ok
@@ -371,3 +384,4 @@ BOOL IPureServer::HasBandwidth			(IClient* C)
 	}
 	return FALSE;
 }
+

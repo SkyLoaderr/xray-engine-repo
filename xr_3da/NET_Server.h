@@ -51,6 +51,8 @@ protected:
 	// Utilities
 	void					pCompress			(NET_Packet& D, NET_Packet& S);
 	void					pDecompress			(NET_Packet& D, void* data, DWORD size);
+	void					client_link_aborted	(DPNID ID	);
+	void					client_link_aborted	(IClient* C	);
 	
 	// Statistic
 	IServerStatistic		stats;
