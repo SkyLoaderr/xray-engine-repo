@@ -302,9 +302,10 @@ void CActor::Hit		(float iLost, Fvector &dir, CObject* who, s16 element, float i
 
 void CActor::Hit		(float iLost, Fvector &dir, CObject* who, s16 element,Fvector position_in_bone_space, float impulse)
 {
-	if (g_Alive()<=0) return;
+	if (g_Alive()>0)ph_Movement.ApplyImpulse(dir,impulse);
+	else m_phSkeleton->applyImpulseTrace(position_in_bone_space,dir,impulse);
 
-	ph_Movement.ApplyImpulse(dir,iLost/1.f);
+	if (g_Alive()<=0) return;
 
 	switch (GameID())
 	{
