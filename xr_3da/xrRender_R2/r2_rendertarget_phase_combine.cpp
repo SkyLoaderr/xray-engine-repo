@@ -27,6 +27,7 @@ void	CRenderTarget::phase_combine	()
 		Fmatrix		m_v2w;			m_v2w.invert				(Device.mView		);
 		CEnvDescriptor&		envdesc	= g_pGamePersistent->Environment.CurrentEnv;
 		Fvector4	envclr			= { envdesc.sky_color.x*2, envdesc.sky_color.y*2, envdesc.sky_color.z*2, envdesc.sky_factor };
+		Fvector4	fogclr			= { _sqr(envdesc.fog_color.x), _sqr(envdesc.fog_color.y), _sqr(envdesc.fog_color.z), 0		};
 
 		// Fill VB
 		u32		C					= color_rgba	(255,255,255,255);
@@ -53,6 +54,7 @@ void	CRenderTarget::phase_combine	()
 		RCache.set_Element			(s_combine->E[0]		);
 		RCache.set_c				("m_v2w",		m_v2w	);
 		RCache.set_c				("env_color",	envclr	);
+		RCache.set_c				("fog_color",	fogclr	);
 		RCache.set_Geometry			(g_combine				);
 		RCache.Render				(D3DPT_TRIANGLELIST,Offset,0,4,0,2);
 	}
