@@ -674,6 +674,7 @@ function bind_manager(object)
 	manager:add_action(operators["state_mgr_to_idle_combat"], action)
 
 	action = this.act_state_mgr_to_idle("state_mgr_to_idle_alife", state_manager)
+	action:add_precondition		(world_property(stalker_ids.property_enemy,	false))
 	action:add_precondition		(world_property(properties["state_mgr_idle_alife"],	false))
 	action:add_effect 			(world_property(properties["state_mgr_idle_alife"],	true))
 	manager:add_action(operators["state_mgr_to_idle_alife"], action)
