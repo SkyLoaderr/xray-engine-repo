@@ -113,7 +113,8 @@ BOOL CInventoryOwner::net_Spawn		(LPVOID DC)
 		CharacterInfo().InitSpecificCharacter (pTrader->specific_character());
 
 		//-------------------------------------
-		m_known_info_registry->registry().init(pThis->ID());
+		Msg("ids m_known_info_registry %d %d", pThis->ID(), E->ID);
+		m_known_info_registry->registry().init(E->ID);
 		//-------------------------------------
 
 
