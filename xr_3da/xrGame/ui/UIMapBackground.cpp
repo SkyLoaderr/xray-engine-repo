@@ -5,6 +5,7 @@
 
 #include "stdafx.h"
 #include "UIMapBackground.h"
+#include "UIGlobalMapLocation.h"
 
 #include "../actor.h"
 #include "../levelFogOfWar.h"
@@ -405,21 +406,34 @@ void CUIMapBackground::OnMouse(int x, int y, EUIMessages mouse_action)
 			CUIMapSpot				*pSpot		= smart_cast<CUIMapSpot*>(*it);
 			if (!pSpot) continue;
 
-			if (pSpot->m_bArrowVisible)
+			if (pSpot->m_bArrowVisible && pSpot->IsShown())
 			{
 				r.left		= pSpot->m_Arrow.GetPosX() - absR.left;
 				r.top		= pSpot->m_Arrow.GetPosY() - absR.top;
 				r.right		= ARROW_DIMENTIONS + r.left;
 				r.bottom	= ARROW_DIMENTIONS + r.top;
 
-				if (PtInRect(&r, p))
+				static CUIMapSpot *focusHolder = NULL;
+
+				if (NULL == focusHolder || pSpot == focusHolder)
 				{
-					m_pActiveMapSpot = pSpot;
-					GetMessageTarget()->SendMessage(this, MAPSPOT_FOCUS_RECEIVED, NULL);
-				}
-				else
-				{
-					GetMessageTarget()->SendMessage(this, MAPSPOT_FOCUS_LOST, NULL);
+					if (PtInRect(&r, p))
+					{
+						if (NULL == focusHolder)
+						{
+							m_pActiveMapSpot = pSpot;
+							GetMessageTarget()->SendMessage(this, MAPSPOT_ARROW_FOCUS_RECEIVED, NULL);
+							focusHolder = pSpot;
+						}
+					}
+					else
+					{
+						if (pSpot == focusHolder)
+						{
+							GetMessageTarget()->SendMessage(this, MAPSPOT_ARROW_FOCUS_LOST, NULL);
+							focusHolder = NULL;
+						}
+					}
 				}
 			}
 		}
@@ -465,7 +479,7 @@ void CUIMapBackground::OnMouse(int x, int y, EUIMessages mouse_action)
 			deltaX = x - m_iOldMouseX;
 			deltaY = y - m_iOldMouseY;
 			MoveMap(deltaX, deltaY);
-			if (m_pActiveMapSpot)
+			if (m_pActiveMapSpot && smart_cast<CUIGlobalMapLocation*>(m_pActiveMapSpot))
 				SendMessage(m_pActiveMapSpot, STATIC_FOCUS_RECEIVED, NULL);
 			GetMessageTarget()->SendMessage(this, MAP_MOVED, NULL);
 		}

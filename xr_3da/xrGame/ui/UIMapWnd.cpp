@@ -264,6 +264,7 @@ void CUIMapWnd::InitLocalMapObjectives()
 		map_spot->m_sDescText.SetText("");
 		map_spot->m_sNameText.SetText("");
 		map_spot->m_bArrowEnabled = true;
+		if (map_location.dynamic_manifestation) map_spot->DynamicManifestation(true);
 
 		if(xr_strlen(map_location.text)>1)
 		{
@@ -457,11 +458,14 @@ void CUIMapWnd::SendMessage(CUIWindow* pWnd, s16 msg, void* pData)
 
 	if(pWnd == &UILocalMapBackground)
 	{
-		if(MAPSPOT_FOCUS_RECEIVED == msg)
+		if (MAPSPOT_FOCUS_RECEIVED == msg || MAPSPOT_ARROW_FOCUS_RECEIVED == msg)
 		{
-			if(m_pCurrentMap->m_pActiveMapSpot)
+			if (m_pCurrentMap->m_pActiveMapSpot)
 			{
 				UIStaticInfo.Show(true);
+				RECT r	= m_pCurrentMap->m_pActiveMapSpot->GetAbsoluteRect();
+				RECT r2	= UIStaticInfo.GetParent()->GetAbsoluteRect();
+				UIStaticInfo.MoveWindow(r.left - r2.left, r.bottom + 2 - r2.bottom);
 				
 				//CInventoryOwner* pInvOwner = smart_cast<CInventoryOwner*>(m_pCurrentMap->m_pActiveMapSpot->m_pObject);
 
@@ -487,7 +491,7 @@ void CUIMapWnd::SendMessage(CUIWindow* pWnd, s16 msg, void* pData)
 				}
             }
 		}
-		else if(MAPSPOT_FOCUS_LOST == msg)
+		else if(MAPSPOT_FOCUS_LOST == msg || MAPSPOT_ARROW_FOCUS_LOST == msg)
 		{
 			UIStaticInfo.Show(false);
 		}

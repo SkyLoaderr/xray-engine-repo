@@ -20,7 +20,9 @@ CUIColorAnimatorWrapper::CUIColorAnimatorWrapper()
 	:	colorAnimation		(NULL),
 		animationTime		(0.0f),
 		color				(NULL),
-		isDone				(false)
+		isDone				(false),
+		reverse				(false),
+		kRev				(0.0f)
 {
 	prevGlobalTime	= Device.fTimeGlobal;
 }
@@ -31,7 +33,9 @@ CUIColorAnimatorWrapper::CUIColorAnimatorWrapper(const shared_str &animationName
 	:	colorAnimation		(LALib.FindItem(*animationName)),
 		animationTime		(0.0f),
 		color				(colorToModify),
-		isDone				(false)
+		isDone				(false),
+		reverse				(false),
+		kRev				(0.0f)
 {
 	VERIFY(colorAnimation);
 	VERIFY(color);
@@ -44,7 +48,9 @@ CUIColorAnimatorWrapper::CUIColorAnimatorWrapper(const shared_str &animationName
 	:	colorAnimation		(LALib.FindItem(*animationName)),
 		animationTime		(0.0f),
 		color				(NULL),
-		isDone				(false)
+		isDone				(false),
+		reverse				(false),
+		kRev				(0.0f)
 {
 	VERIFY(colorAnimation);
 	prevGlobalTime	= Device.fTimeGlobal;
@@ -82,7 +88,7 @@ void CUIColorAnimatorWrapper::Update()
 		{
 			if (animationTime < (colorAnimation->iFrameCount / colorAnimation->fFPS))
 			{
-				currColor		= colorAnimation->CalculateBGR(animationTime, currFrame);
+				currColor		= colorAnimation->CalculateBGR(std::abs(animationTime - kRev), currFrame);
 //				Msg("frame: %i", dummy);
 				currColor		= color_rgba(color_get_B(currColor), color_get_G(currColor), color_get_R(currColor), color_get_A(currColor));
 				// обновим время
@@ -91,7 +97,7 @@ void CUIColorAnimatorWrapper::Update()
 			else
 			{
 				// В любом случае (при любом ФПС) последним кадром должен быть последний кадр анимации
-				currColor	= colorAnimation->CalculateBGR(colorAnimation->iFrameCount - 1 / colorAnimation->fFPS, currFrame);
+				currColor	= colorAnimation->CalculateBGR((colorAnimation->iFrameCount - 1) / colorAnimation->fFPS - kRev, currFrame);
 				currColor	= color_rgba(color_get_B(currColor), color_get_G(currColor), color_get_R(currColor), color_get_A(currColor));
 				// Индицируем конец анимации
 				isDone = true;
@@ -130,4 +136,25 @@ int CUIColorAnimatorWrapper::TotalFrames() const
 		return colorAnimation->iFrameCount;
 	}
 	return 0;
+}
+
+//////////////////////////////////////////////////////////////////////////
+
+void CUIColorAnimatorWrapper::Reverese(bool value)
+{
+	reverse = value;
+
+	if (value)
+	{
+		kRev = (colorAnimation->iFrameCount - 1) / colorAnimation->fFPS;
+	}
+	else
+	{
+		kRev = 0.0f;
+	}
+
+	if (!Done())
+	{
+		animationTime = colorAnimation->iFrameCount / colorAnimation->fFPS - animationTime;
+	}
 }

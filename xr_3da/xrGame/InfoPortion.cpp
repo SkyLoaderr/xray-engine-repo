@@ -157,6 +157,7 @@ void CInfoPortion::load_shared	(LPCSTR)
 			map_location.icon_y = uiXml.ReadAttribInt(pMapNode, "icon", 0, "y");
 			map_location.icon_width = uiXml.ReadAttribInt(pMapNode, "icon", 0, "width");
 			map_location.icon_height = uiXml.ReadAttribInt(pMapNode, "icon", 0, "height");
+			map_location.dynamic_manifestation = !!uiXml.ReadAttribInt(pMapNode, "icon", 0, "dyn");
 
 			map_location.text = uiXml.Read(pMapNode, "text", 0);
 

@@ -45,6 +45,8 @@ public:
 	int					LastFrame				() const		{ return currFrame; }
 	int					TotalFrames				() const;
 	bool				Done					() const		{ return isDone; }
+	void				SetDone					(bool value)	{ isDone = value; }
+	void				Reverese				(bool value);
 
 private:
 	// Собственно анимация
@@ -63,6 +65,13 @@ private:
 	int					currFrame;
 	// Анимация закончилась?
 	bool				isDone;
+	// Анимация прокручивается в реверсивном порядке? Не применимо для бесконечной анимации
+	bool				reverse;
+	// Коеффициент для пересчета времени при реверснутом проигрывании
+	float				kRev;
+
+public:
+	CLAItem				*GetAnimation			() const		{ return colorAnimation; } 
 };
 
 #endif

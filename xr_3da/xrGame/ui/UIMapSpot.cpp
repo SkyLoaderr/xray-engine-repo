@@ -4,6 +4,7 @@
 
 #include "stdafx.h"
 #include "UIMapSpot.h"
+#include "UIMapBackground.h"
 
 #include "../actor.h"
 #include "../level.h"
@@ -13,6 +14,7 @@
 //////////////////////////////////////////////////////////////////////////
 
 const char * const	ARROW_TEX			= "ui\\ui_map_arrow_04";
+const char * const	MAP_AREA_ANIMATION	= "ui_map_area_anim";
 const int			ARROW_DIMENTIONS	= 32;
 
 //////////////////////////////////////////////////////////////////////////
@@ -21,18 +23,21 @@ CUIMapSpot::CUIMapSpot()
 	:	m_bArrowEnabled		(false),
 		m_bArrowVisible		(false)
 {
-	m_our_level_id		= 0xffff;
-	m_object_id			= 0xffff;
-	m_eAlign			= eNone;
-	m_fHeading			= 0.f;
-	m_bHeading			= false;
-	arrow_color			= 0xffffffff;
-	m_LevelName			= NULL;
-	m_vWorldPos.set		(0,0,0);
-	m_sDescText.SetText	("");
-	m_sNameText.SetText	("");
-	ClipperOn			();
-	m_Arrow.CreateShader(ARROW_TEX, "hud\\default");
+	m_our_level_id			= 0xffff;
+	m_object_id				= 0xffff;
+	m_eAlign				= eNone;
+	m_fHeading				= 0.f;
+	m_bHeading				= false;
+	arrow_color				= 0xffffffff;
+	m_LevelName				= NULL;
+	m_vWorldPos.set			(0,0,0);
+	m_sDescText.SetText		("");
+	m_sNameText.SetText		("");
+	ClipperOn				();
+	m_Arrow.CreateShader	(ARROW_TEX, "hud\\default");
+	m_MapSpotAnimation.SetColorToModify(&GetColorRef());
+	m_MapSpotAnimation.SetDone	(true);
+	m_MapSpotAnimation.Cyclic	(false);
 }
 
 //////////////////////////////////////////////////////////////////////////
@@ -112,6 +117,7 @@ void CUIMapSpot::Draw()
 void CUIMapSpot::Update()
 {
 	CUIStatic::Update();
+	m_MapSpotAnimation.Update();
 }
 
 Fvector CUIMapSpot::MapPos()
@@ -165,4 +171,49 @@ void CUIMapSpot::SetObjectID(u16 id)
 {
 	m_object_id = id;
 	m_our_level_id = ai().game_graph().vertex(smart_cast<CGameObject*>(Level().CurrentEntity())->game_vertex_id())->level_id();
+}
+
+//////////////////////////////////////////////////////////////////////////
+
+void CUIMapSpot::SendMessage(CUIWindow* pWnd, s16 msg, void* pData)
+{
+	if (!m_MapSpotAnimation.GetAnimation()) return;
+
+	CUIMapBackground *b = smart_cast<CUIMapBackground*>(GetParent());
+
+	if (b && b == pWnd && b->m_pActiveMapSpot == this)
+	{
+		if (MAPSPOT_FOCUS_RECEIVED == msg)
+		{
+			m_MapSpotAnimation.Reverese(false);
+			if (m_MapSpotAnimation.Done())
+			{
+				m_MapSpotAnimation.Reset();
+			}
+		}
+		else if (MAPSPOT_FOCUS_LOST == msg)
+		{
+			m_MapSpotAnimation.Reverese(true);
+			if (m_MapSpotAnimation.Done())
+			{
+				m_MapSpotAnimation.Reset();
+			}
+		}
+	}
+}
+
+//////////////////////////////////////////////////////////////////////////
+
+void CUIMapSpot::DynamicManifestation(bool value)
+{
+	if (value)
+	{
+		m_MapSpotAnimation.SetColorAnimation(MAP_AREA_ANIMATION);
+		m_MapSpotAnimation.Update();
+		SetColor(m_MapSpotAnimation.GetColor());
+	}
+	else
+	{
+		m_MapSpotAnimation.SetColorAnimation(NULL);
+	}
 }

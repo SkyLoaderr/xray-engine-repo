@@ -21,6 +21,7 @@ SMapLocation::SMapLocation()
 	object_id					= 0xffff;
 	marker_show					= false;
 	icon_color					= 0xffffffff;
+	dynamic_manifestation		= false;
 	type_flags.zero				();
 	animation.Cyclic			(false);
 }

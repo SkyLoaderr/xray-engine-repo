@@ -59,6 +59,9 @@ struct SMapLocation
 	// Задать цветовую анимацию для спота
 	void	SetColorAnimation(const shared_str &animationName);
 
+	// Динамическое проявление и исчезание
+	bool	dynamic_manifestation;
+
 private:
 	// Анимация индикатора на карте
 	CUIColorAnimatorWrapper	animation;
