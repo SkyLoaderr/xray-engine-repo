@@ -30,7 +30,7 @@ protected:
 
 	vector<CFlare>	Flares;		// 0-Source if exists
 
-// variable
+	// variable
     Fcolor			LightColor;
 	float			fGradientDensity;
 
