@@ -121,6 +121,7 @@ void CLightmap::Save()
 {
 	static int		lmapNameID = 0; ++lmapNameID;
 
+	Phase			("Saving...");
 	// Borders correction
 	for (DWORD _y=0; _y<lmap_size; _y++)
 	{
@@ -131,7 +132,10 @@ void CLightmap::Save()
 			else									pixel = (pixel&RGBA_MAKE(255,255,255,0));
 		}
 	}
-	for (DWORD ref=254; ref>0; ref--) ApplyBorders(lm,ref);
+	for (DWORD ref=254; ref>0; ref--) {
+		ApplyBorders	(lm,ref);
+		Progress		(1.f - float(ref)/254.f);
+	}
 
 	// Saving			(DXT5.dds)
 	{
