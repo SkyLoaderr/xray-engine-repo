@@ -1,6 +1,7 @@
 #pragma once
 #include "gameobject.h"
 
+
 #define CMD_START	(1<<0)
 #define CMD_STOP	(1<<1)
 
@@ -11,6 +12,11 @@ typedef xr_set<PIItem>			TIItemSet;
 typedef xr_list<PIItem>			TIItemList;
 typedef TIItemSet::iterator		PSPIItem;
 typedef TIItemList::iterator	PPIItem;
+
+
+#define OUTFIT_SLOT 6
+#define PDA_SLOT 7
+
 
 ///////////////////////////////////////////////////////////////////////////////////////////////////
 class CInventoryItem : virtual public CGameObject 					// Предок объектов инвентаря
@@ -148,30 +154,7 @@ public:
 	CInventoryOwner *m_pOwner;
 };
 
+
 ///////////////////////////////////////////////////////////////////////////////////////////////////
-class CTrade;
-class CPda;
-
-class CInventoryOwner		// Примесь для актеров и неписей имеющих инвентарь 
-{							
-public:
-	CInventoryOwner();
-	virtual ~CInventoryOwner();
-
-	CInventory	m_inventory;									// Инвентарь
-	CInventory	m_trade_storage;								// склад 
-	
-	CTrade		*m_trade;										// торговля
-
-	// свойства
-	u32					m_dwMoney;
-	EStalkerRank		m_tRank;
-
-	CPda* GetPDA() {return m_pPDA;}
-
-protected:
-	//PDA является специальной вещью инвентаря,
-	//потерять которую можно только после смерти
-	CPda*	m_pPDA;
-
-};
+//для владельцев инвенторя
+#include "InventoryOwner.h"

@@ -328,7 +328,10 @@ void CActor::net_Import		(NET_Packet& P)					// import from server
 BOOL CActor::net_Spawn		(LPVOID DC)
 {
 	if (!inherited::net_Spawn(DC))	return FALSE;
+	//проспавнить PDA у InventoryOwner
+	if (!CInventoryOwner::net_Spawn(DC)) return FALSE;
 
+	
 	ph_Movement.CreateCharacter();
 	ph_Movement.SetPhysicsRefObject(this);
 	ph_Movement.SetPLastMaterial(&last_gmtl_id);
@@ -378,6 +381,8 @@ BOOL CActor::net_Spawn		(LPVOID DC)
 	
 
 	// @@@: WT - !!!ВРЕМЕННО!!! - спавним каждому актеру детектор
+
+	//спавним каждому актеру в инвентарь болты
 	if(Local()) for(u32 i = 0; i < 1; i++) {
 		// Create
 		//CSE_Abstract*		D	= F_entity_Create("detector_simple");
@@ -387,6 +392,8 @@ BOOL CActor::net_Spawn		(LPVOID DC)
 		CSE_ALifeDynamicObject				*l_tpALifeDynamicObject = dynamic_cast<CSE_ALifeDynamicObject*>(D);
 		R_ASSERT							(l_tpALifeDynamicObject);
 		l_tpALifeDynamicObject->m_tNodeID	= E->m_tNodeID;
+		
+		
 		// Fill
 		strcpy				(D->s_name,"bolt");
 		strcpy				(D->s_name_replace,"");
@@ -442,6 +449,7 @@ BOOL CActor::net_Spawn		(LPVOID DC)
 
 	//. temporary
 	//	Level().Cameras.AddEffector(xr_new<CEffectorPPHit>	());
+
 
 	return					TRUE;
 }

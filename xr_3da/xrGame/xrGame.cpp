@@ -915,9 +915,9 @@ extern "C" {
 		// Detectors
 		case CLSID_DETECTOR_SIMPLE:		P = xr_new<CSimpleDetector>();		break;
 
-		case CLSID_DEVICE_PDA:			P = xr_new<CPda>();					break;
 		// Devices
 		case CLSID_DEVICE_TORCH:		P = xr_new<CTorch>();				break;
+		case CLSID_DEVICE_PDA:			P = xr_new<CPda>();					break;
 
 		// entity
 		case CLSID_OBJECT_HLAMP:		P = xr_new<CHangingLamp>();			break;

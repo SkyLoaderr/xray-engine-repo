@@ -17,8 +17,7 @@ CUIListWnd::~CUIListWnd(void)
 	for(LIST_ITEM_LIST_it it=m_ItemList.begin(); it!=m_ItemList.end(); it++)
 	{
 		DetachChild(*it);
-		if(*it!=NULL)
-			delete *it;
+		if(*it!=NULL)xr_delete(*it);
 	}
 
 	m_ItemList.clear();
@@ -52,9 +51,9 @@ bool CUIListWnd::AddItem(char*  str, void* pData)
 {
 	//создать новый элемент и добавить его в список
 	CUIListItem* pItem = NULL;
-	pItem = new CUIListItem;
+	pItem = xr_new<CUIListItem>();
 		
-    	if(!pItem) return false;
+    if(!pItem) return false;
 
 	pItem->Init(str, 0, GetSize()* m_iItemHeight, 
 					m_iItemWidth, m_iItemHeight);
@@ -79,14 +78,18 @@ bool CUIListWnd::AddItem(char*  str, void* pData)
 
 void CUIListWnd::RemoveItem(int index)
 {
+	if(index<0 || index>=(int)m_ItemList.size()) return;
+
 	LIST_ITEM_LIST_it it;
 
 	//выбрать нужный элемент
 	it = m_ItemList.begin();
 	for(int i=0; i<index;i++, it++);
 
+	R_ASSERT(it!=m_ItemList.end());
+
 	DetachChild(*it);
-	delete *it;
+	xr_delete(*it);
 
 	m_ItemList.erase(it);
 
@@ -99,17 +102,48 @@ void CUIListWnd::RemoveItem(int index)
 
 }
 
+//убрать все элементы из списка
+void CUIListWnd::RemoveAll()
+{
+	if(m_ItemList.empty()) return;
+
+	LIST_ITEM_LIST_it it;
+
+		
+	while(!m_ItemList.empty())
+	{
+		it = m_ItemList.begin();
+		
+		CUIListItem* ptr = *it;
+		
+		DetachChild(*it);
+		if(*it != NULL) xr_delete(*it);
+
+		m_ItemList.erase(it);
+	}
+
+	m_iFirstShownIndex = 0;
+	
+	UpdateList();
+	Reset();
+
+	//обновить полосу прокрутки
+	m_ScrollBar.SetRange(0,s16(m_ItemList.size()-1));
+	m_ScrollBar.SetPageSize(s16(m_iRowNum));
+	m_ScrollBar.SetScrollPos(s16(m_iFirstShownIndex));
+}
 
 void CUIListWnd::UpdateList()
 {
 	LIST_ITEM_LIST_it it=m_ItemList.begin();
 	
-	//спятать все элементы до зоны 
+	//спрятать все элементы до участка 
 	//отображающейся в данный момент
 	for(int i=0; i<_min(m_ItemList.size(),m_iFirstShownIndex);
 					i++, it++)
 	{
 		(*it)->Show(false);
+		(*it)->Enable(false);
 	}
 	   
 
@@ -121,6 +155,7 @@ void CUIListWnd::UpdateList()
 		(*it)->SetWndRect(0, (i-m_iFirstShownIndex)* m_iItemHeight, 
 							m_iItemWidth, m_iItemHeight);
 		(*it)->Show(true);
+		(*it)->Enable(true);
 	}
 
 	it--;
@@ -130,6 +165,7 @@ void CUIListWnd::UpdateList()
 			k<m_ItemList.size(); k++, it++)
 	{
 		(*it)->Show(false);
+		(*it)->Enable(false);
 	}
 }
 
@@ -188,4 +224,15 @@ void CUIListWnd::Reset()
 	{
 		(*it)->Reset();
 	}
+}
+
+//находит первый элемент с заданной pData, иначе -1
+int CUIListWnd::FindItem(void* pData)
+{
+	int i=0;
+	for(LIST_ITEM_LIST_it it=m_ItemList.begin();  it != m_ItemList.end(); it++,i++)
+	{
+		if((*it)->GetData()==pData) return i;
+	}
+	return -1;
 }

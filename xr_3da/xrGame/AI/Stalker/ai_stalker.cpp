@@ -11,6 +11,7 @@
 #include "..\\ai_monsters_misc.h"
 #include "..\\..\\weapon.h"
 #include "..\\..\\CharacterPhysicsSupport.h"
+#include "..\\..\\pda.h"
 
 CAI_Stalker::CAI_Stalker			()
 {
@@ -228,6 +229,10 @@ BOOL CAI_Stalker::net_Spawn			(LPVOID DC)
 {
 	if (!inherited::net_Spawn(DC))
 		return						(FALSE);
+
+	//проспавнить PDA у InventoryOwner
+	if (!CInventoryOwner::net_Spawn(DC)) return FALSE;
+
 	Movement.SetPLastMaterial		(&m_dwLastMaterialID);
 
 	CSE_Abstract					*e	= (CSE_Abstract*)(DC);
@@ -491,7 +496,7 @@ Fvector vNewPosition=Position();
 				m_inventory.Ruck((*I).m_pIItem);
 			TIItemList &l_list = m_inventory.m_ruck;
 			for(PPIItem l_it = l_list.begin(); l_it != l_list.end(); l_it++)
-				if (*l_it == tpWeapon)
+//				if (*l_it == tpWeapon)
 					(**l_it).Drop();
 		}
 		else {
@@ -549,4 +554,30 @@ float CAI_Stalker::Radius()const
 	CWeapon* W	= dynamic_cast<CWeapon*>(m_inventory.ActiveItem());
 	if (W) R	+= W->Radius();
 	return R;
+}
+
+/////////////////////////
+//PDA functions
+void CAI_Stalker::ReceivePdaMessage(u16 who, EPdaMsg msg, EPdaMsgAnger anger)
+{
+	EPdaMsg pda_msg = ePdaMsgAccept;
+
+	if(GetPDA()->NeedToAnswer(who))
+	{
+		switch(msg)
+		{
+			case ePdaMsgTrade:
+				pda_msg = ePdaMsgAccept;
+				break;
+			case ePdaMsgNeedHelp:
+				pda_msg = ePdaMsgDecline;
+				break;
+			case ePdaMsgGoAway:
+				pda_msg = ePdaMsgDeclineRude;
+				break;
+		}
+
+		//реакция на сообщение
+		SendPdaMessage(who, pda_msg, anger);
+	}
 }

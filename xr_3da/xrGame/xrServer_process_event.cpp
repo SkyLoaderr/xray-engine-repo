@@ -50,6 +50,9 @@ void xrServer::Process_event	(NET_Packet& P, DPNID sender)
 			}
 		}
 		break;
+	case GE_PDA:
+		SendBroadcast			(0xffffffff,P,MODE);
+		break;
 	case GE_BUY:
 		{
 			string64			i_name;

@@ -6,6 +6,8 @@
 
 #define C_DEFAULT	D3DCOLOR_XRGB(0xff,0xff,0xff)
 
+#define SENSITIVITY_DEFAULT 1.5f
+
 //////////////////////////////////////////////////////////////////////
 // Construction/Destruction
 //////////////////////////////////////////////////////////////////////
@@ -16,6 +18,8 @@ CUICursor::CUICursor()
 
 	hGeom.create	(FVF::F_TL, RCache.Vertex.Buffer(), RCache.QuadIB);
 	hShader.create	("hud\\cursor","ui\\ui_cursor");
+
+	m_fSensitivity = SENSITIVITY_DEFAULT;
 }
 //--------------------------------------------------------------------
 CUICursor::~CUICursor	()
@@ -83,8 +87,8 @@ POINT CUICursor::GetPos()
 
 void CUICursor::MoveBy(int dx, int dy)
 {
-	vPos.x +=(float)dx/(float)Device.dwWidth;
-	vPos.y +=(float)dy/(float)Device.dwHeight;
+	vPos.x +=(float)m_fSensitivity*dx/(float)Device.dwWidth;
+	vPos.y +=(float)m_fSensitivity*dy/(float)Device.dwHeight;
 
 	if(vPos.x<-1) vPos.x=-1;
 	if(vPos.x>1) vPos.x=1;

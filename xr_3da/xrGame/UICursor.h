@@ -8,6 +8,9 @@ class CUICursor
 	ref_geom		hGeom;	
 	bool			bVisible;
 	Fvector2		vPos;
+
+	//чувствительность передвижение курсора
+	float m_fSensitivity;
 public:
 					CUICursor	();
 					~CUICursor	();
@@ -25,6 +28,8 @@ public:
 	void Hide() {bVisible = false;}
 
 
+	void SetSensitivity(float sens) {m_fSensitivity = sens;}
+	float GetSensitivity() {return m_fSensitivity;}
 };
 
 #endif //__XR_UICURSOR_H__

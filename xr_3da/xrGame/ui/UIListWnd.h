@@ -30,11 +30,14 @@ public:
 	typedef enum{LIST_ITEM_CLICKED} E_MESSAGE;
 
 				 
-	virtual void SendMessage(CUIWindow *pWnd, s16 msg, void *pData);
+	virtual void SendMessage(CUIWindow *pWnd, s16 msg, void* pData);
 	virtual void Draw();
 	
 	bool AddItem(char*  str, void* pData = NULL);
 	void RemoveItem(int index);
+	void RemoveAll();
+	//находит первый элемент с заданной pData, иначе -1
+	int FindItem(void* pData);
 
 	int GetSize();
 

@@ -426,4 +426,9 @@ public:
 	virtual void			feel_sound_new					(CObject* who, int eType, const Fvector &Position, float power);
 	virtual BOOL			feel_vision_isRelevant			(CObject* who);
 	virtual float			Radius							() const;
+
+
+	/////////////////////////
+	//PDA functions
+	void ReceivePdaMessage(u16 who, EPdaMsg msg, EPdaMsgAnger anger);
 };

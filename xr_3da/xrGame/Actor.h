@@ -11,7 +11,7 @@
 #include "..\feel_touch.h"
 #include "PHMovementControl.h"
 #include "PhysicsShell.h"
-#include "inventory.h"
+#include "InventoryOwner.h"
 
 #include "ActorCondition.h"
 

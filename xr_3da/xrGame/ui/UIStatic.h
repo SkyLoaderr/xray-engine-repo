@@ -31,8 +31,8 @@ public:
 	virtual void Update();
 
 
-	void SetText(LPSTR str) {m_str = str;}
-	LPSTR GetText() {return m_str;}
+	void SetText(LPCSTR str) {m_str = str;}
+	LPCSTR GetText() {return m_str;}
 
 	void SetColor(u32 color) {m_UIStaticItem.SetColor(color);}
 
@@ -47,7 +47,7 @@ protected:
 
 
 	//текст
-	LPSTR m_str;
+	LPCSTR m_str;
 
 
 	/////////////////////////////////////

@@ -32,6 +32,8 @@ enum {
 	GE_DESTROY,					// authorative client request for entity-destroy
 
 	GE_BUY,
+
+	GE_PDA,						//a PDA message sent from one PDA to another
 	
 	GE_TRADE_SELL,
 	GE_TRADE_BUY,

@@ -5,10 +5,36 @@
 
 
 #pragma once
-#include "inventory.h"
-#include "..\feel_touch.h"
-#include "customzone.h"
 
+#include "..\feel_touch.h"
+#include "inventory.h"
+
+
+class CInventoryOwner;
+
+
+//структура для описания сообщения PDA,
+//используется для ведения логов
+typedef struct tagSPdaMessage 
+{
+	EPdaMsg			msg;
+	EPdaMsgAnger	anger;
+	
+	//true если мы получали сообщение 
+	//и false если мы его посылали
+	bool			receive;
+	
+	//true, если сообщение - вопрос
+	//и false, если ответ
+	bool			question;
+
+	//время получения/отправки сообщения
+	_TIME_ID		time;
+		
+} SPdaMessage;
+
+
+DEF_LIST (PDA_LIST, CPda*);
 
 
 class CPda :
@@ -35,32 +61,59 @@ public:
 	virtual void feel_touch_delete	(CObject* O);
 	virtual BOOL feel_touch_contact	(CObject* O);
 
+	void OnEvent(NET_Packet& P, u16 type);
 
 
-
-	//типы сообщений PDA
-	enum EPDAMsg {
-		ePDAMsg = u32(0),
-		ePDAMsgTrade,
-		ePDAMsgGoAway,
-		ePDAMsgNeedHelp,
-		ePDAMsgDecline,			//принять предложение
-		ePDAMsgAccept,			//отклонить
-		ePDAMessageMax,
-	};
+	virtual u32 GetOriginalOwnerID() {return m_idOriginalOwner;}
+	virtual CInventoryOwner* GetOriginalOwner();
 
 
+	virtual void TurnOn() {m_bTurnedOff = false;}
+	virtual void TurnOff() {m_bTurnedOff = true;}
+	
+	virtual bool IsActive() {return (!m_bTurnedOff && !m_bPassiveMode);}
+	virtual bool IsPassive() {return (m_bTurnedOff || m_bPassiveMode);}
+	virtual bool IsOn() {return !m_bTurnedOff;}
+	virtual bool IsOff() {return m_bTurnedOff;}
 
+	virtual void SendMessage(u32 pda_num, EPdaMsg msg, EPdaMsgAnger anger);
+	virtual void SendMessageID(u32 pda_ID, EPdaMsg msg, EPdaMsgAnger anger);
 
+	virtual bool IsNewMessage(){return m_bNewMessage;}
+	virtual void NoNewMessage(){m_bNewMessage = false;}
 
-	virtual void SendMessage(u32 pda_num, EPDAMsg msg);
-
-protected:
-    DEF_LIST (PDA_LIST, CPda*);
+	virtual bool NeedToAnswer(u32 pda_ID);
+	virtual bool WaitForReply(u32 pda_ID);
 
 	//список PDA в зоне достигаемости
 	PDA_LIST m_PDAList;
 
+	//список только что вошедших и вышедших PDA из зоны
+	PDA_LIST m_NewPDAList;
+	PDA_LIST m_DeletedPDAList;
+
+	//для ведения логов переговоров
+	//с другими PDA в зоне досягаемости
+	DEF_LIST (PDA_MESSAGE_LIST, SPdaMessage);
+	DEFINE_MAP (u32, PDA_MESSAGE_LIST, PDA_LOG_MAP, PDA_LOG_PAIR_IT);
+	PDA_LOG_MAP m_mapPdaLog;
+
+protected:
+	//поступление нового сообщения на PDA
+	bool m_bNewMessage;
+
+	void PdaEventSend(u32 pda_ID, EPdaMsg msg, EPdaMsgAnger anger);
+	void AddMessageToLog(u32 pda_ID, EPdaMsg msg, EPdaMsgAnger anger, bool receive);
+
+
 	//радиус обнаружения других PDA
 	float m_fRadius;
+
+	//первый владелец PDA
+	u32 m_idOriginalOwner;
+
+	//пассивный режим работы PDA
+	bool m_bPassiveMode;
+	//PDA выключено
+	bool m_bTurnedOff;
 };

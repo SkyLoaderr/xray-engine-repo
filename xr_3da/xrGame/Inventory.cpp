@@ -104,7 +104,10 @@ bool CInventoryItem::Detach(PIItem pIItem, bool force)
 
 bool CInventoryItem::DetachAll() 
 {
-	if(!m_pInventory || std::find(m_pInventory->m_ruck.begin(), m_pInventory->m_ruck.end(), this) == m_pInventory->m_ruck.end()) return false;
+	if(!m_pInventory || std::find(m_pInventory->m_ruck.begin(), 
+								    m_pInventory->m_ruck.end(), this) == 
+									m_pInventory->m_ruck.end()) return false;
+
 	for(PPIItem l_it = m_subs.begin(); l_it != m_subs.end(); l_it++) 
 	{
 		Detach(*l_it);
@@ -417,6 +420,7 @@ bool CInventory::Take(CGameObject *pObj, bool bNotActivate)
 		l_pIItem->m_drop = false;
 		m_all.insert(l_pIItem);
 		
+		
 		if(l_pIItem->m_ruck) 
 			m_ruck.insert(m_ruck.end(), l_pIItem); 
 		
@@ -432,35 +436,37 @@ bool CInventory::Take(CGameObject *pObj, bool bNotActivate)
 			l_subs.insert(l_subs.end(), l_pIItem->m_subs.begin(), l_pIItem->m_subs.end());
 			l_subs.erase(l_subs.begin());
 		}
+		
+		//поытаться закинуть в слот
 		if(!Slot(l_pIItem)) 
 		{
 			if(l_pIItem->m_slot < 0xffffffff) 
 			{
-				/*if(!m_slots[l_pIItem->m_slot].m_pIItem) {
-					Slot(l_pIItem);
-					return true;
-				} else*/
 				if(m_slots[l_pIItem->m_slot].m_pIItem->Attach(l_pIItem)) 
 				{
 					m_ruck.erase(std::find(m_ruck.begin(), m_ruck.end(), l_pIItem));
 					return true;
 				} 
-				else if(m_ruck.size() > m_maxRuck || !l_pIItem->m_ruck || !FreeRuckRoom()) 
+				else if(!Belt(l_pIItem)) if(m_ruck.size() > m_maxRuck || 
+											!l_pIItem->m_ruck || !FreeRuckRoom()) 
 				{
-					if(Belt(l_pIItem)) 
-						return true;
-					else 
+					//return true;
+					//else 
 						return !Drop(l_pIItem);
 				}
 			} 
-			else if(m_ruck.size() > m_maxRuck || !FreeRuckRoom()) 
+			else if(!Belt(l_pIItem)) if(m_ruck.size() > m_maxRuck || !FreeRuckRoom()) 
 			{
-				if(Belt(l_pIItem)) 
-					return true;
-				else 
+//				if(Belt(l_pIItem)) 
+//					return true;
+//				else 
 					return !Drop(l_pIItem);
 			}
-		} else if(m_activeSlot == 0xffffffff && !bNotActivate) Activate(l_pIItem->m_slot);
+		} 
+		else if(m_activeSlot == 0xffffffff && !bNotActivate) 
+		{
+			Activate(l_pIItem->m_slot);
+		}
 		return true;
 	}
 	return false;
@@ -888,6 +894,7 @@ CInventorySlot::~CInventorySlot()
 
 ///////////////////////////////////////////////////////////////////////////////////////////////////
 // CInventoryOwner class //////////////////////////////////////////////////////////////////////////
+/*
 CInventoryOwner::CInventoryOwner()
  {
 	m_inventory.m_pOwner		= this;
@@ -903,3 +910,4 @@ CInventoryOwner::CInventoryOwner()
 CInventoryOwner::~CInventoryOwner() 
 {
 }
+*/

@@ -16,6 +16,8 @@ void CUIGameSP::OnFrame() {
 		InventoryMenu.OnFrame();
 	else if (TradeMenu.IsShown()) 
 		TradeMenu.Update();
+	else if (PdaMenu.IsShown())
+		PdaMenu.Update();
 }
 
 void CUIGameSP::Render()
@@ -24,6 +26,8 @@ void CUIGameSP::Render()
 		InventoryMenu.Render();
 	else if (TradeMenu.IsShown()) 
 		TradeMenu.Draw();
+	else if (PdaMenu.IsShown())
+		PdaMenu.Draw();
 }
 
 
@@ -39,6 +43,13 @@ bool CUIGameSP::IR_OnKeyboardPress(int dik)
 		if(TradeMenu.IR_OnKeyboardPress(dik))
 			return true;
 	}
+	else if(PdaMenu.IsEnabled())
+	{
+		if(PdaMenu.IR_OnKeyboardPress(dik))
+			return true;
+	}
+
+
 	
 	switch (dik)
 	{
@@ -92,10 +103,40 @@ bool CUIGameSP::IR_OnKeyboardPress(int dik)
 		}
 		return true;
 		break;
-	}
+	case DIK_P:
+		//start trade PDA menu 
+		if(PdaMenu.IsShown())
+		{
+			m_bUserMenuShown  = false;
+			
+			PdaMenu.Show(false);
+			PdaMenu.Enable(false);
+			m_Parent->HideCursor();
+			m_Parent->ShowIndicators();
+			
+		}
+		else
+		{
+			if(!m_bUserMenuShown)
+			{
+				m_bUserMenuShown  = true;
 
+				PdaMenu.Show(true);
+				PdaMenu.Enable(true);
+				m_Parent->ShowCursor();
+				m_Parent->HideIndicators();
+
+				PdaMenu.InitPDA();
+			}
+		}
+		return true;
+		break;
+	}
 	
 	
+	//временно! пока, по убыванию сил до критического
+	//уровня персонаж не засыпает, а просто переходит
+	//в меню инвенторя
 	CActor *l_pA = dynamic_cast<CActor*>(Level().CurrentEntity());
 	if(l_pA && l_pA->g_Alive() && !l_pA->GetPower())
 	{
@@ -128,7 +169,11 @@ bool CUIGameSP::IR_OnKeyboardRelease(int dik) {
 		if(TradeMenu.IR_OnKeyboardRelease(dik))
 			return true;
 	}
-	
+	else if(PdaMenu.IsEnabled())
+	{ 
+		if(PdaMenu.IR_OnKeyboardRelease(dik))
+			return true;
+	}
 	return false;
 }
 
@@ -142,7 +187,12 @@ bool CUIGameSP::IR_OnMouseMove(int dx,int dy)
 	else if(TradeMenu.IsEnabled())
 	{
 		if(TradeMenu.IR_OnMouseMove(dx, dy))
-		return true;
+			return true;
+	}
+	else if(PdaMenu.IsEnabled())
+	{ 
+		if(PdaMenu.IR_OnMouseMove(dx, dy))
+			return true;
 	}
 
 

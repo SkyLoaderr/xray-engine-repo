@@ -11,7 +11,7 @@
 #include "weapon.h"
 #include "ai_space.h"
 #include "entity.h"
-#include "inventory.h"
+#include "inventoryowner.h"
 #include "ai_alife.h"
 
 float CDistanceFunction::ffGetValue()

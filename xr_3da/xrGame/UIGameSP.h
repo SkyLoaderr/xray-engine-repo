@@ -2,6 +2,7 @@
 #include "uigamecustom.h"
 #include "UIInventory.h"
 #include "ui\\UITradeWnd.h"
+#include "ui\\UIPdaWnd.h"
 
 class CUIGameSP :
 	public CUIGameCustom
@@ -21,6 +22,7 @@ public:
 
 	CUIInventory		InventoryMenu;
 	CUITradeWnd			TradeMenu;
+	CUIPdaWnd			PdaMenu;
 
 	bool m_bUserMenuShown;
 };

@@ -899,6 +899,12 @@
 						RelativePath="Inventory.h">
 					</File>
 					<File
+						RelativePath=".\InventoryOwner.cpp">
+					</File>
+					<File
+						RelativePath=".\InventoryOwner.h">
+					</File>
+					<File
 						RelativePath="trade.cpp">
 					</File>
 					<File
@@ -1793,6 +1799,68 @@
 					<File
 						RelativePath="UIInventory.h">
 					</File>
+					<Filter
+						Name="InventoryWnd"
+						Filter="">
+						<File
+							RelativePath=".\ui\UIInventoryWnd.cpp">
+						</File>
+						<File
+							RelativePath=".\ui\UIInventoryWnd.h">
+						</File>
+					</Filter>
+					<Filter
+						Name="TradeWnd"
+						Filter="">
+						<File
+							RelativePath=".\ui\UITradeWnd.cpp">
+						</File>
+						<File
+							RelativePath=".\ui\UITradeWnd.h">
+						</File>
+					</Filter>
+					<Filter
+						Name="PdaWnd"
+						Filter="">
+						<File
+							RelativePath=".\ui\UIPdaContactsWnd.cpp">
+						</File>
+						<File
+							RelativePath=".\ui\UIPdaContactsWnd.h">
+						</File>
+						<File
+							RelativePath=".\ui\UIPdaDialogWnd.cpp">
+						</File>
+						<File
+							RelativePath=".\ui\UIPdaDialogWnd.h">
+						</File>
+						<File
+							RelativePath=".\ui\UIPdaWnd.cpp">
+						</File>
+						<File
+							RelativePath=".\ui\UIPdaWnd.h">
+						</File>
+					</Filter>
+					<Filter
+						Name="MainIngame"
+						Filter="">
+						<File
+							RelativePath=".\ui\UIMainIngameWnd.cpp">
+						</File>
+						<File
+							RelativePath=".\ui\UIMainIngameWnd.h">
+						</File>
+					</Filter>
+					<Filter
+						Name="MapWnd"
+						Filter="">
+						<File
+							RelativePath=".\ui\UIMapWnd.cpp">
+						</File>
+						<File
+							RelativePath=".\ui\UIMapWnd.h">
+						</File>
+					</Filter>
 				</Filter>
 				<Filter
 					Name="Single"
@@ -1807,72 +1875,6 @@
 				<Filter
 					Name="UIWindows"
 					Filter="">
-					<File
-						RelativePath=".\ui\UI3dStatic.cpp">
-					</File>
-					<File
-						RelativePath=".\ui\UI3dStatic.h">
-					</File>
-					<File
-						RelativePath=".\ui\UIButton.cpp">
-					</File>
-					<File
-						RelativePath=".\ui\UIButton.h">
-					</File>
-					<File
-						RelativePath=".\ui\UICheckButton.cpp">
-					</File>
-					<File
-						RelativePath=".\ui\UICheckButton.h">
-					</File>
-					<File
-						RelativePath=".\ui\UIEditBox.cpp">
-					</File>
-					<File
-						RelativePath=".\ui\UIEditBox.h">
-					</File>
-					<File
-						RelativePath=".\ui\UIFrameWindow.cpp">
-					</File>
-					<File
-						RelativePath=".\ui\UIFrameWindow.h">
-					</File>
-					<File
-						RelativePath=".\ui\UIProgressBar.cpp">
-					</File>
-					<File
-						RelativePath=".\ui\UIProgressBar.h">
-					</File>
-					<File
-						RelativePath=".\ui\UIRadioButton.cpp">
-					</File>
-					<File
-						RelativePath=".\ui\UIRadioButton.h">
-					</File>
-					<File
-						RelativePath=".\ui\UIRadioGroup.cpp">
-					</File>
-					<File
-						RelativePath=".\ui\UIRadioGroup.h">
-					</File>
-					<File
-						RelativePath=".\ui\UIStatic.cpp">
-					</File>
-					<File
-						RelativePath=".\ui\UIStatic.h">
-					</File>
-					<File
-						RelativePath=".\ui\UIWindow.cpp">
-					</File>
-					<File
-						RelativePath=".\ui\UIWindow.h">
-					</File>
-					<File
-						RelativePath=".\ui\UIXmlInit.cpp">
-					</File>
-					<File
-						RelativePath=".\ui\UIXmlInit.h">
-					</File>
 					<Filter
 						Name="XML"
 						Filter="">
@@ -1886,27 +1888,13 @@
 							RelativePath=".\ui\CkXml.h">
 						</File>
 						<File
+							RelativePath=".\ui\UIXmlInit.cpp">
+						</File>
+						<File
+							RelativePath=".\ui\UIXmlInit.h">
+						</File>
+						<File
 							RelativePath=".\ui\xrXMLParser.h">
-						</File>
-					</Filter>
-					<Filter
-						Name="InventoryWnd"
-						Filter="">
-						<File
-							RelativePath=".\ui\UIInventoryWnd.cpp">
-						</File>
-						<File
-							RelativePath=".\ui\UIInventoryWnd.h">
-						</File>
-					</Filter>
-					<Filter
-						Name="MainIngame"
-						Filter="">
-						<File
-							RelativePath=".\ui\UIMainIngameWnd.cpp">
-						</File>
-						<File
-							RelativePath=".\ui\UIMainIngameWnd.h">
 						</File>
 					</Filter>
 					<Filter
@@ -1978,13 +1966,83 @@
 						</File>
 					</Filter>
 					<Filter
-						Name="TradeWnd"
+						Name="Buttons"
 						Filter="">
 						<File
-							RelativePath=".\ui\UITradeWnd.cpp">
+							RelativePath=".\ui\UIButton.cpp">
 						</File>
 						<File
-							RelativePath=".\ui\UITradeWnd.h">
+							RelativePath=".\ui\UIButton.h">
+						</File>
+						<File
+							RelativePath=".\ui\UICheckButton.cpp">
+						</File>
+						<File
+							RelativePath=".\ui\UICheckButton.h">
+						</File>
+						<File
+							RelativePath=".\ui\UIRadioButton.cpp">
+						</File>
+						<File
+							RelativePath=".\ui\UIRadioButton.h">
+						</File>
+						<File
+							RelativePath=".\ui\UIRadioGroup.cpp">
+						</File>
+						<File
+							RelativePath=".\ui\UIRadioGroup.h">
+						</File>
+					</Filter>
+					<Filter
+						Name="Static"
+						Filter="">
+						<File
+							RelativePath=".\ui\UI3dStatic.cpp">
+						</File>
+						<File
+							RelativePath=".\ui\UI3dStatic.h">
+						</File>
+						<File
+							RelativePath=".\ui\UIStatic.cpp">
+						</File>
+						<File
+							RelativePath=".\ui\UIStatic.h">
+						</File>
+					</Filter>
+					<Filter
+						Name="EditBox"
+						Filter="">
+						<File
+							RelativePath=".\ui\UIEditBox.cpp">
+						</File>
+						<File
+							RelativePath=".\ui\UIEditBox.h">
+						</File>
+					</Filter>
+					<Filter
+						Name="Windows"
+						Filter="">
+						<File
+							RelativePath=".\ui\UIFrameWindow.cpp">
+						</File>
+						<File
+							RelativePath=".\ui\UIFrameWindow.h">
+						</File>
+						<File
+							RelativePath=".\ui\UIWindow.cpp">
+						</File>
+						<File
+							RelativePath=".\ui\UIWindow.h">
+						</File>
+					</Filter>
+					<Filter
+						Name="ProgressBar"
+						Filter="">
+						<File
+							RelativePath=".\ui\UIProgressBar.cpp">
+						</File>
+						<File
+							RelativePath=".\ui\UIProgressBar.h">
 						</File>
 					</Filter>
 				</Filter>

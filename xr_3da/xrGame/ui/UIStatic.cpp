@@ -63,7 +63,7 @@ void CUIStatic::Update()
 {
 	if(m_str == NULL) return;
 	
-	if(GetFont()->SizeOf(m_str) == 0) return;	
+	if(GetFont()->SizeOf((char*)m_str) == 0) return;	
 	
 
 	//RECT rect = GetAbsoluteRect();
