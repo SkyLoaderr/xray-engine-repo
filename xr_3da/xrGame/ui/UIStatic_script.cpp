@@ -12,12 +12,14 @@ void CUIStatic::script_register(lua_State *L)
 		.def(						constructor<>())
 
 		.def("SetText",				(void (CUIStatic::*)(LPCSTR)) (&CUIStatic::SetText) )
+		.def("SetText",				(void (CUIStatic::*)(LPCSTR)) (&CUIStatic::SetText) )
 		.def("GetText",				&CUIStatic::GetText)
 
 		.def("SetColor",			&CUIStatic::SetColor)
 		.def("GetColor",			&CUIStatic::GetColor)
+		.def("Init",				(void(CUIStatic::*)(int,int,int,int))CUIStatic::Init )
+		.def("Init",				(void(CUIStatic::*)(LPCSTR,int,int,int,int))CUIStatic::Init )
 
-		.def("InitTexture",			&CUIStatic::InitTexture)
 		.def("SetOriginalRect",		&CUIStatic::SetOriginalRect)
 
 		.def("SetTextureScale",		&CUIStatic::SetTextureScale)

@@ -1,7 +1,5 @@
 #include "stdafx.h"
 #include "UIGame_custom_script.h"
-#include "level.h"
-#include "HUDManager.h"
 
 #include "script_space.h"
 #include "xrServer_script_macroses.h"
@@ -17,16 +15,6 @@ struct CWrapperBase : public T, public luabind::wrap_base {
 	DEFINE_LUA_WRAPPER_METHOD_V1(SetClGame, game_cl_GameState*)
 };
 
-CGameFont* GetFontSmall(UIGame_custom_script*)
-{return HUD().pFontSmall;}
-CGameFont* GetFontMedium(UIGame_custom_script*)
-{return HUD().pFontMedium;}
-CGameFont* GetFontDI(UIGame_custom_script*)
-{return HUD().pFontDI;}
-CGameFont* GetFontBigDigit(UIGame_custom_script*)
-{return HUD().pFontBigDigit;}
-u32 GetARGB(u16 a, u16 r, u16 g, u16 b)
-{return color_argb(a,r,g,b);}
 
 void UIGame_custom_script::AddCustomMessage		(LPCSTR id, float x, float y, float font_size, CGameFont *pFont, u16 alignment, u32 color, LPCSTR def_text )
 {
@@ -50,15 +38,8 @@ void UIGame_custom_script::script_register(lua_State *L)
 			.def("Init",		&BaseType::Init, &WrapType::Init_static)
 			.def("SetClGame",		&BaseType::SetClGame, &WrapType::SetClGame_static)
 
-			.def("GetFontSmall",		&GetFontSmall)
-			.def("GetFontMedium",		&GetFontMedium)
-			.def("GetFontDI",			&GetFontDI)
-			.def("GetFontBigDigit",		&GetFontBigDigit)
 			.def("AddCustomMessage",    &UIGame_custom_script::AddCustomMessage)
-			.def("CustomMessageOut",    &UIGame_custom_script::CustomMessageOut),
-			
-			def("GetARGB",				&GetARGB)
-
+			.def("CustomMessageOut",    &UIGame_custom_script::CustomMessageOut)
 
 		];
 }

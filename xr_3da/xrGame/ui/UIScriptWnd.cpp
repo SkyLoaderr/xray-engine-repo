@@ -25,8 +25,6 @@ struct event_comparer{
 UIScriptWnd::UIScriptWnd():inherited()
 {
 	Hide();
-	SetFont(HUD().pFontDI);
-
 }
 
 UIScriptWnd::~UIScriptWnd()

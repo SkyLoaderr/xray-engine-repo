@@ -268,6 +268,7 @@ void  CUIButton::Draw()
 		down_offset = m_iPushOffsetY;
 	}
 
+
 	if (GetFont())
 	{
 		UpdateTextAlign();
