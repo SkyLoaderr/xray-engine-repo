@@ -306,6 +306,9 @@
 			<File
 				RelativePath=".\r__dsgraph.h">
 			</File>
+			<File
+				RelativePath=".\r__dsgraph_structure.h">
+			</File>
 		</Filter>
 		<Filter
 			Name="Details"

@@ -141,9 +141,6 @@ void CRender::level_Unload()
 
 	//*** Shaders
 	Shaders.clear_and_free		();
-
-	matFogPass._set				(NULL);
-	matDetailTexturing._set		(NULL);
 }
 
 void CRender::LoadBuffers	(IReader *base_fs)
