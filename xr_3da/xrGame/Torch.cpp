@@ -5,8 +5,6 @@
 #include "PhysicsShell.h"
 const float TIME_2_HIDE		= 5.f;
 
-const void *blin = 0;
-
 CTorch::CTorch(void) 
 {
 	m_weight				= .5f;
@@ -28,7 +26,6 @@ CTorch::~CTorch(void)
 void CTorch::Load(LPCSTR section) 
 {
 	inherited::Load(section);
-	blin		= dynamic_cast<void*>(this);
 	m_pos		= pSettings->r_fvector3(section,"position");
 }
 
