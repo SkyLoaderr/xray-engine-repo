@@ -40,6 +40,8 @@ module ("xr_rest")
 module ("escape")
 
 module ("escape_factory_bandits")
+--For Dark Laboratory
+--module ("xr_scientist")
 
 function printf(fmt,...)
     log(string.format(fmt,unpack(arg)))
