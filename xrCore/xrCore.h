@@ -19,6 +19,7 @@
 #ifdef __BORLANDC__
 #include <vcl.h>
 #include <mmsystem.h>
+#include <stdint.h>
 #endif
 
 #define NOGDICAPMASKS

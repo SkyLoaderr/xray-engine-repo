@@ -184,12 +184,12 @@ void	CInifile::save_as( LPCSTR new_fname )
         fName		= xr_strdup(new_fname);
     }
     R_ASSERT(fName&&fName[0]);
-    CMemoryWriter	F;
+    IWriter* F		= FS.w_open(fName);
     char		temp[512],val[512];
     for (RootIt r_it=DATA.begin(); r_it!=DATA.end(); r_it++)
     {
         sprintf		(temp,"[%s]",r_it->Name);
-        F.w_string	(temp);
+        F->w_string	(temp);
         for (SectIt s_it=r_it->begin(); s_it!=r_it->end(); s_it++)
         {
             Item&	I = *s_it;
@@ -218,11 +218,11 @@ void	CInifile::save_as( LPCSTR new_fname )
                 else			temp[0] = 0;
             }
             _TrimRight			(temp);
-            if (temp[0])		F.w_string	(temp);
+            if (temp[0])		F->w_string	(temp);
         }
-        F.w_string		(" ");
+        F->w_string		(" ");
     }
-    F.save_to			(fName,0);
+    FS.w_close			(F);
 }
 
 BOOL	CInifile::section_exist( LPCSTR S )

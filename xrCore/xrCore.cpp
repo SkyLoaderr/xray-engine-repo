@@ -47,7 +47,6 @@ void xrCore::_initialize	(LPCSTR _ApplicationName, LogCallback cb)
 	Debug._initialize		();
 	Memory._initialize		();
 	FS._initialize			();
-
 	CreateLog				(cb);
 
 	bInitialized			= TRUE;

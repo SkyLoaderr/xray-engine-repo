@@ -119,8 +119,8 @@ static int day_in_month[12] = { 31, 28, 31, 30, 31, 30, 31, 31, 30, 31, 30, 31 }
 void CreateLog(LogCallback cb)
 {
 	LogCB				= cb;
-	strconcat			(logFName,"logs\\",Core.ApplicationName,"_",Core.UserName,".log");
-    VerifyPath			(logFName);
+	strconcat			(logFName,Core.ApplicationName,"_",Core.UserName,".log");
+    FS.update_path		("$logs$",logFName);
 
 	FILE *f;
 	f		= fopen		(logFName, "wt");
