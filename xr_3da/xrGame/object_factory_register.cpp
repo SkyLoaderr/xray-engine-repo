@@ -306,7 +306,7 @@ void CObjectFactory::register_classes	()
 	ADD(CMosquitoBald			,CSE_ALifeAnomalousZone			,CLSID_Z_MBALD					,"zone_mosquito_bald");
 	ADD(CMincer					,CSE_ALifeAnomalousZone			,CLSID_Z_MINCER					,"zone_mincer");
 	ADD(CMosquitoBald			,CSE_ALifeAnomalousZone			,CLSID_Z_ACIDF					,"zone_acid_fog");
-	ADD(CGraviZone				,CSE_ALifeAnomalousZone			,CLSID_Z_GALANT					,"zone_galantine");
+	ADD(CMincer					,CSE_ALifeAnomalousZone			,CLSID_Z_GALANT					,"zone_galantine");
 	ADD(CRadioactiveZone		,CSE_ALifeAnomalousZone			,CLSID_Z_RADIO					,"zone_radioactive");
 	ADD(CMosquitoBald			,CSE_ALifeAnomalousZone			,CLSID_Z_BFUZZ					,"zone_bfuzz");
 	ADD(CMosquitoBald			,CSE_ALifeAnomalousZone			,CLSID_Z_RUSTYH					,"zone_rusty_hair");
