@@ -114,7 +114,6 @@ int ogg_enc(const char* in_fn, const char* out_fn, float quality, void* comment,
 	}	
 
 	/* OK, let's build the vorbis_comments structure */
-//	build_comments				(&vc, &opt, comment, size);
 	memset						(&vc,0,sizeof(vc));
 
 	vc.user_comments			= _ogg_malloc	(sizeof(*vc.user_comments));
@@ -147,7 +146,7 @@ int ogg_enc(const char* in_fn, const char* out_fn, float quality, void* comment,
 	if(vc.user_comments)		_ogg_free(vc.user_comments);
 	if(vc.comment_lengths)		_ogg_free(vc.comment_lengths);
 	if(vc.vendor)				_ogg_free(vc.vendor);
-	memset						(&vc,0,sizeof(vc));
+
 	// close files
 	fclose						(in);
 	fclose						(out);
