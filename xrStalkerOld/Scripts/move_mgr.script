@@ -84,7 +84,7 @@ function move_mgr:initialize(npc)
 	-- пути сбрасываем также и в initialize.
 	--self:reset_path_info()
 
-	self.object:set_callback(self, "waypoint_callback", game_object.movement)
+	self.object:set_callback(callback.movement, self.waypoint_callback, self)
 end
 
 -- Удостоверяется, что пути и флажки на них проставлены корректно
