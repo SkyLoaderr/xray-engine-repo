@@ -36,8 +36,7 @@ public:
 		start.h()				= path_manager.estimate(start.index());
 		start.f()				= start.h();
 		// assign null parent to the start node
-		//data_storage.assign_parent(start,0);
-		start.back = 0;
+		data_storage.assign_parent(start,0);
 		// add start node to the opened list
 		data_storage.add_opened	(start);
 	}
@@ -55,7 +54,6 @@ public:
 			return				(true);
 		}
 
-#pragma todo("Dima to Dima : make it more clear here")
 		// put best node to the closed list
 		data_storage.add_best_closed();
 		// and remove this node from the opened one
@@ -88,7 +86,7 @@ public:
 						neighbour.f()	= neighbour.g() + neighbour.h();
 						// assign correct parent to the node to be able
 						// to retreive a path
-						data_storage.assign_parent	(neighbour,best);
+						data_storage.assign_parent	(neighbour,&best);
 						// notify data storage about node decreasing value
 						data_storage.decrease_opened(neighbour);
 						// continue iterating on neighbours
@@ -124,7 +122,7 @@ public:
 						neighbour.f()	= neighbour.g() + neighbour.h();
 						// assign correct parent to the node to be able
 						// to retreive a path
-						data_storage.assign_parent	(neighbour,best);
+						data_storage.assign_parent	(neighbour,&best);
 						// notify data storage about node decreasing value
 						// to make it modify all the node successors
 						data_storage.update_successors(neighbour);
@@ -143,7 +141,7 @@ public:
 				// put neighbour node to the opened list
 				CGraphNode				&neighbour = data_storage.create_node(graph.get_value(i));
 				// assign best node as its parent
-				data_storage.assign_parent(neighbour,best);
+				data_storage.assign_parent(neighbour,&best);
 				// fill the corresponding node parameters 
 				neighbour.g()			= best.g() + path_manager.evaluate(best.index(),graph.get_value(i));
 				neighbour.h()			= path_manager.estimate(neighbour.index());
@@ -165,11 +163,10 @@ public:
 		init					(data_storage, path_manager);
 		// iterate while opened list is not empty
 //		for (_iteration_type i = _iteration_type(0); !data_storage.is_opened_empty(); ++i) {
-		for (; ;) {
+		for (;;) {
 			// check if we reached limit
 //			if (path_manager.is_limit_reached(i)) {
-//				// so we reaches limit, return failure
-//				Msg				("Limit reached!");
+				// so we reaches limit, return failure
 //				return			(false);
 //			}
 			
@@ -181,7 +178,6 @@ public:
 		}
 
 		// so, opened list is empty, return failure
-//		Msg						("Path wasn't found!");
 		return					(false);
 	}
 };

@@ -132,7 +132,6 @@ public:
 		VERIFY					(node_index < max_node_count);
 		CGraphNode				*node = indexes[node_index].node = nodes + node_count++;
 		indexes[node_index].epoch_id = epoch_count;
-#pragma todo("Dima to Dima : remove next line here")
 		node->_index			= node_index;
 		return					(*node);
 	}
@@ -177,9 +176,9 @@ public:
 		return					(*indexes[node_index].node);
 	}
 
-	IC		void		assign_parent	(CGraphNode	&tpNeighbour, CGraphNode &tpParent)
+	IC		void		assign_parent	(CGraphNode	&tpNeighbour, CGraphNode *tpParent)
 	{
-		tpNeighbour.back		= &tpParent;
+		tpNeighbour.back		= tpParent;
 	}
 
 	IC		const _index_type	get_visited_node_count() const
