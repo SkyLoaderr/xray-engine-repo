@@ -91,11 +91,12 @@ void CAI_Soldier::vfLoadAnimations()
 	tSoldierAnimations.tNormal.tGlobal.tpPointSign = tpVisualObject->ID_Cycle("norm_sign_2");
 	tSoldierAnimations.tNormal.tGlobal.tpIdle = tpVisualObject->ID_Cycle("norm_idle");
 
-	tSoldierAnimations.tNormal.tTorso.tpAim = tpVisualObject->ID_Cycle("norm_aim");
-	tSoldierAnimations.tNormal.tTorso.tpAttack = tpVisualObject->ID_Cycle("norm_attack");
+	tSoldierAnimations.tNormal.tGlobal.tpAim = tpVisualObject->ID_Cycle("norm_aim");
+	tSoldierAnimations.tNormal.tGlobal.tpAttack = tpVisualObject->ID_Cycle("norm_attack");
+	tSoldierAnimations.tNormal.tGlobal.tpReload = tpVisualObject->ID_Cycle("norm_reload");
+
 	tSoldierAnimations.tNormal.tTorso.tpDamageLeft = tpVisualObject->ID_FX("norm_damage_ls");
 	tSoldierAnimations.tNormal.tTorso.tpDamageRight = tpVisualObject->ID_FX("norm_damage_rs");
-	tSoldierAnimations.tNormal.tTorso.tpReload = tpVisualObject->ID_Cycle("norm_reload");
 	tSoldierAnimations.tNormal.tTorso.tpRaiseHandSign = tpVisualObject->ID_Cycle("norm_sign_0");
 	tSoldierAnimations.tNormal.tTorso.tpGoAheadSign = tpVisualObject->ID_Cycle("norm_sign_1");
 	
@@ -120,9 +121,9 @@ void CAI_Soldier::vfLoadAnimations()
 	tSoldierAnimations.tCrouch.tGlobal.tpWalkRight = tpVisualObject->ID_Cycle("cr_walk_rs");
 	tSoldierAnimations.tCrouch.tGlobal.tpPointSign = tpVisualObject->ID_Cycle("cr_sign_2");
 
-	tSoldierAnimations.tCrouch.tTorso.tpAim = tpVisualObject->ID_Cycle("cr_aim");
-	tSoldierAnimations.tCrouch.tTorso.tpAttack = tpVisualObject->ID_Cycle("cr_attack");
-	tSoldierAnimations.tCrouch.tTorso.tpReload = tpVisualObject->ID_Cycle("cr_reload");
+	tSoldierAnimations.tCrouch.tGlobal.tpAim = tpVisualObject->ID_Cycle("cr_aim");
+	tSoldierAnimations.tCrouch.tGlobal.tpAttack = tpVisualObject->ID_Cycle("cr_attack");
+	tSoldierAnimations.tCrouch.tGlobal.tpReload = tpVisualObject->ID_Cycle("cr_reload");
 	tSoldierAnimations.tCrouch.tTorso.tpDamageLeft = tpVisualObject->ID_FX("cr_damage_ls");
 	tSoldierAnimations.tCrouch.tTorso.tpDamageRight = tpVisualObject->ID_FX("cr_damage_rs");
 	tSoldierAnimations.tCrouch.tTorso.tpRaiseHandSign = tpVisualObject->ID_Cycle("cr_sign_0");
@@ -312,7 +313,7 @@ void CAI_Soldier::SelectAnimation(const Fvector& _view, const Fvector& _move, fl
 											switch (eCurrentState) {
 												case aiSoldierRecharge :
 												case aiSoldierAttackFireAlone : {
-													tpGlobalAnimation = tSoldierAnimations.tNormal.tTorso.tpAim;
+													tpGlobalAnimation = tSoldierAnimations.tNormal.tGlobal.tpAim;
 												}
 												/**
 												case aiSoldierAttackRun : {
@@ -338,7 +339,7 @@ void CAI_Soldier::SelectAnimation(const Fvector& _view, const Fvector& _move, fl
 											switch (eCurrentState) {
 												case aiSoldierRecharge :
 												case aiSoldierAttackFireAlone : {
-													tpGlobalAnimation = tSoldierAnimations.tCrouch.tTorso.tpAim;
+													tpGlobalAnimation = tSoldierAnimations.tCrouch.tGlobal.tpAim;
 												}
 												/**
 												case aiSoldierAttackRun : {
@@ -412,7 +413,7 @@ void CAI_Soldier::SelectAnimation(const Fvector& _view, const Fvector& _move, fl
 											switch (eCurrentState) {
 												case aiSoldierRecharge :
 												case aiSoldierAttackFireAlone : {
-													tpGlobalAnimation = tSoldierAnimations.tNormal.tTorso.tpAim;
+													tpGlobalAnimation = tSoldierAnimations.tNormal.tGlobal.tpAim;
 												}
 												/**
 												case aiSoldierAttackRun : {
@@ -438,7 +439,7 @@ void CAI_Soldier::SelectAnimation(const Fvector& _view, const Fvector& _move, fl
 											switch (eCurrentState) {
 												case aiSoldierRecharge :
 												case aiSoldierAttackFireAlone : {
-													tpGlobalAnimation = tSoldierAnimations.tCrouch.tTorso.tpAim;
+													tpGlobalAnimation = tSoldierAnimations.tCrouch.tGlobal.tpAim;
 												}
 												/**
 												case aiSoldierAttackRun : {
@@ -478,11 +479,11 @@ void CAI_Soldier::SelectAnimation(const Fvector& _view, const Fvector& _move, fl
 						case aiSoldierRecharge : {
 							switch (m_cBodyState) {
 								case BODY_STATE_STAND : {
-									tpTorsoAnimation = tSoldierAnimations.tNormal.tTorso.tpReload;
+									tpGlobalAnimation = tSoldierAnimations.tNormal.tGlobal.tpReload;
 									break;
 								}
 								case BODY_STATE_CROUCH : {
-									tpTorsoAnimation = tSoldierAnimations.tCrouch.tTorso.tpReload;
+									tpGlobalAnimation = tSoldierAnimations.tCrouch.tGlobal.tpReload;
 									break;
 								}
 								case BODY_STATE_LIE : {
@@ -495,11 +496,11 @@ void CAI_Soldier::SelectAnimation(const Fvector& _view, const Fvector& _move, fl
 						case aiSoldierAttackFireAlone : {
 							switch (m_cBodyState) {
 								case BODY_STATE_STAND : {
-									tpTorsoAnimation = tSoldierAnimations.tNormal.tTorso.tpAttack;
+									tpGlobalAnimation = tSoldierAnimations.tNormal.tGlobal.tpAttack;
 									break;
 								}
 								case BODY_STATE_CROUCH : {
-									tpGlobalAnimation = tSoldierAnimations.tCrouch.tTorso.tpAttack;
+									tpGlobalAnimation = tSoldierAnimations.tCrouch.tGlobal.tpAttack;
 									break;
 								}
 								case BODY_STATE_LIE : {
@@ -707,11 +708,11 @@ void CAI_Soldier::SelectAnimation(const Fvector& _view, const Fvector& _move, fl
 						case aiSoldierRecharge : {
 							switch (m_cBodyState) {
 								case BODY_STATE_STAND : {
-									tpTorsoAnimation = tSoldierAnimations.tNormal.tTorso.tpReload;
+									tpGlobalAnimation = tSoldierAnimations.tNormal.tGlobal.tpReload;
 									break;
 								}
 								case BODY_STATE_CROUCH : {
-									tpTorsoAnimation = tSoldierAnimations.tCrouch.tTorso.tpReload;
+									tpGlobalAnimation = tSoldierAnimations.tCrouch.tGlobal.tpReload;
 									break;
 														 }
 								case BODY_STATE_LIE : {

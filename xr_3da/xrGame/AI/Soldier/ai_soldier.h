@@ -102,15 +102,15 @@ class CAI_Soldier : public CCustomMonster
 			CMotionDef* tpIdle;
 			CMotionDef* tpTurnLeft;
 			CMotionDef* tpTurnRight;
+			CMotionDef* tpAim;
+			CMotionDef* tpAttack;
+			CMotionDef* tpReload;
 		}SNormalGlobalAnimations;
 
 		// torso animations
 		typedef struct tagSNormalTorsoAnimations{
-			CMotionDef* tpAim;
-			CMotionDef* tpAttack;
 			CMotionDef* tpDamageLeft;
 			CMotionDef* tpDamageRight;
-			CMotionDef* tpReload;
 			CMotionDef* tpRaiseHandSign;
 			CMotionDef* tpGoAheadSign;
 		}SNormalTorsoAnimations;
@@ -144,13 +144,13 @@ class CAI_Soldier : public CCustomMonster
 			CMotionDef* tpWalkLeft;
 			CMotionDef* tpWalkRight;
 			CMotionDef* tpPointSign;
+			CMotionDef* tpAim;
+			CMotionDef* tpAttack;
+			CMotionDef* tpReload;
 		}SCrouchGlobalAnimations;
 
 		// torso animations
 		typedef struct tagSCrouchTorsoAnimations{
-			CMotionDef* tpAim;
-			CMotionDef* tpAttack;
-			CMotionDef* tpReload;
 			CMotionDef* tpDamageLeft;
 			CMotionDef* tpDamageRight;
 			CMotionDef* tpRaiseHandSign;
