@@ -287,6 +287,9 @@ void OGF::MakeProgressive	()
 	// Convert
 	VIPM_Result* VR			= VIPM_Convert(u32(-1),1.f,1);
 	if (VR->swr_records.size()>0){
+		vecOGF_V				vertices_saved;
+		vecOGF_F				faces_saved;
+
 		// Permute vertices
 		vertices_saved			= vertices;
 		for(u32 i=0; i<vertices.size(); i++)

@@ -101,8 +101,8 @@ struct OGF : public OGF_Base
 {
 	u32					material	;
 	vecOGF_T			textures	;
-	vecOGF_V			vertices, vertices_saved;
-	vecOGF_F			faces,    faces_saved;
+	vecOGF_V			vertices	;
+	vecOGF_F			faces		;
 
 	// fast-vertices
 	vec_XV				x_vertices	;

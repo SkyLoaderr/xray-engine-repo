@@ -335,6 +335,7 @@ void	OGF::Save_Normal_PM		(IWriter &fs, ogf_header& H, BOOL bVertexColored)
 
 extern	void xrStripify(xr_vector<u16> &indices, xr_vector<u16> &perturb, int iCacheSize, int iMinStripLength);
 
+/*
 void	OGF::Save_Progressive	(IWriter &fs, ogf_header& H, BOOL bVertexColored)
 {
 //	clMsg				("- saving: progressive");
@@ -481,3 +482,4 @@ void	OGF::Save_Progressive	(IWriter &fs, ogf_header& H, BOOL bVertexColored)
 	}
 	fs.close_chunk	();
 }
+*/
