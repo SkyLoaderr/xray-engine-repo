@@ -11,6 +11,7 @@ class ENGINE_API	IRender_Visual;
 class ENGINE_API	IBlender;
 class ENGINE_API	CSkeletonWallmark;
 class ENGINE_API	CKinematics;
+struct ENGINE_API	FSlideWindowItem;
 
 const	float		fLightSmoothFactor = 4.f;
 
@@ -143,8 +144,9 @@ public:
 	virtual D3DVERTEXELEMENT9*		getVB_Format			(int id)									= 0;
 	virtual IDirect3DVertexBuffer9*	getVB					(int id)									= 0;
 	virtual IDirect3DIndexBuffer9*	getIB					(int id)									= 0;
-	virtual IRender_Sector*			detectSector			(const Fvector& P)								= 0;
+	virtual IRender_Sector*			detectSector			(const Fvector& P)							= 0;
 	virtual IRender_Target*			getTarget				()											= 0;
+	virtual FSlideWindowItem*		getSWI					(int id)									= 0;
 
 	// Main 
 	IC		void					set_Frustum				(CFrustum*	O	)							{ VERIFY(O);	View = O;			}

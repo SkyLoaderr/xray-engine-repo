@@ -1,5 +1,8 @@
 #pragma once
 
+// refs
+struct FSlideWindowItem;
+
 class FTreeVisual :	public IRender_Visual
 {
 private:
@@ -31,6 +34,34 @@ public:
 
 	FTreeVisual(void);
 	virtual ~FTreeVisual(void);
+};
+
+class FTreeVisual_ST :	public FTreeVisual
+{
+	typedef FTreeVisual inherited;
+public:
+					FTreeVisual_ST	(void);
+	virtual			~FTreeVisual_ST	(void);
+
+	virtual void	Render			(float LOD		);									// LOD - Level Of Detail  [0.0f - min, 1.0f - max], Ignored
+	virtual void	Load			(LPCSTR N, IReader *data, u32 dwFlags);
+	virtual void	Copy			(IRender_Visual *pFrom	);
+	virtual void	Release			();
+};
+
+class FTreeVisual_PM :	public FTreeVisual
+{
+	typedef FTreeVisual inherited;
+private:
+	FSlideWindowItem*	pSWI;
+public:
+					FTreeVisual_PM	(void);
+	virtual			~FTreeVisual_PM	(void);
+
+	virtual void	Render			(float LOD		);									// LOD - Level Of Detail  [0.0f - min, 1.0f - max], Ignored
+	virtual void	Load			(LPCSTR N, IReader *data, u32 dwFlags);
+	virtual void	Copy			(IRender_Visual *pFrom	);
+	virtual void	Release			();
 };
 
 const int		FTreeVisual_tile	= 16;

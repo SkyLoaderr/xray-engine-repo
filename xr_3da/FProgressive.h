@@ -7,17 +7,12 @@
 #pragma once
 
 #include "FVisual.h"
+struct ENGINE_API FSlideWindowItem;
 
 class ENGINE_API FProgressive : public Fvisual
 {
 protected:
-	struct SlideWindow {
-        u32				offset;
-        u16				num_tris;
-        u16				num_verts;
-	};
-	SlideWindow*		pSWs;
-    u32					SW_count;
+	FSlideWindowItem*	pSWI;
 public:
     					FProgressive();
 	virtual 			~FProgressive();

@@ -336,7 +336,8 @@ void CRender::add_leafs_Static(IRender_Visual *pVisual)
 			}
 		}
 		return;
-	case MT_TREE:
+	case MT_TREE_PM:
+	case MT_TREE_ST:
 		{
 			// Insert (as dynamic)
 			FTreeVisual*	pV			= (FTreeVisual*)pVisual;
@@ -506,7 +507,8 @@ void CRender::add_Static(IRender_Visual *pVisual, u32 planes)
 			}
 		}
 		break;
-	case MT_TREE:
+	case MT_TREE_ST:
+	case MT_TREE_PM:
 		{
 			// Insert (as dynamic)
 			FTreeVisual*	pV			= (FTreeVisual*)pVisual;

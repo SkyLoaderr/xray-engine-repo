@@ -119,19 +119,14 @@ void FTreeVisual::Render	(float LOD)
 	RCache.set_c			(c_c_scale,	c_scale.rgb.x,c_scale.rgb.y,c_scale.rgb.z,c_scale.hemi);	// scale
 	RCache.set_c			(c_c_bias,	c_bias.rgb.x,c_bias.rgb.y,c_bias.rgb.z,c_bias.hemi);		// bias
 	RCache.set_c			(c_c_sun,	c_scale.sun,c_bias.sun,0,0);								// sun
-
-	// render
-	// RCache.set_xform_world (xform);
-	RCache.set_Geometry		(hGeom);
-	RCache.Render			(D3DPT_TRIANGLELIST,vBase,0,vCount,iBase,dwPrimitives);
 }
 
 #define PCOPY(a)	a = pFrom->a
-void	FTreeVisual::Copy			(IRender_Visual *pSrc)
+void	FTreeVisual::Copy	(IRender_Visual *pSrc)
 {
-	IRender_Visual::Copy				(pSrc);
+	IRender_Visual::Copy	(pSrc);
 
-	FTreeVisual	*pFrom				= dynamic_cast<FTreeVisual*> (pSrc);
+	FTreeVisual	*pFrom		= dynamic_cast<FTreeVisual*> (pSrc);
 
 	PCOPY(pVertices);
 	PCOPY(vBase);
@@ -146,3 +141,75 @@ void	FTreeVisual::Copy			(IRender_Visual *pSrc)
 	PCOPY(c_scale);
 	PCOPY(c_bias);
 }
+
+//-----------------------------------------------------------------------------------
+// Stripified Tree
+//-----------------------------------------------------------------------------------
+FTreeVisual_ST::FTreeVisual_ST	(void)
+{
+}
+FTreeVisual_ST::~FTreeVisual_ST	(void)
+{
+}
+void FTreeVisual_ST::Release	()
+{
+	inherited::Release			();
+}
+void FTreeVisual_ST::Load		(const char* N, IReader *data, u32 dwFlags)
+{
+	inherited::Load				(N,data,dwFlags);
+}
+void FTreeVisual_ST::Render		(float LOD)
+{
+	inherited::Render			(LOD);
+	// RCache.set_xform_world	(xform);
+	RCache.set_Geometry			(hGeom);
+	RCache.Render				(D3DPT_TRIANGLELIST,vBase,0,vCount,iBase,dwPrimitives);
+}
+void FTreeVisual_ST::Copy		(IRender_Visual *pSrc)
+{
+	inherited::Copy				(pSrc);
+}
+
+//-----------------------------------------------------------------------------------
+// Progressive Tree
+//-----------------------------------------------------------------------------------
+FTreeVisual_PM::FTreeVisual_PM(void)
+{
+	pSWI						= 0;
+}
+FTreeVisual_PM::~FTreeVisual_PM(void)
+{
+}
+void FTreeVisual_PM::Release	()
+{
+	inherited::Release			();
+}
+void FTreeVisual_PM::Load		(const char* N, IReader *data, u32 dwFlags)
+{
+	inherited::Load				(N,data,dwFlags);
+	R_ASSERT					(data->find_chunk(OGF_SWICONTAINER));
+	{
+		u32 ID					= data->r_u32		();
+		pSWI					= ::Render->getSWI	(ID);
+	}
+}
+void FTreeVisual_PM::Render		(float LOD)
+{
+	inherited::Render			(LOD);
+	// RCache.set_xform_world	(xform);
+	clamp						(LOD,0.f,1.f);
+	int lod_id					= iFloor((1.f-LOD)*float(pSWI->count-1)+0.5f);
+//	lod_id = pSWI->count-1;
+	VERIFY						(lod_id>=0 && lod_id<int(pSWI->count));
+	FSlideWindow& SW			= pSWI->sw[lod_id];
+	RCache.set_Geometry			(hGeom);
+	RCache.Render				(D3DPT_TRIANGLELIST,vBase,0,SW.num_verts,iBase+SW.offset,SW.num_tris);
+}
+void FTreeVisual_PM::Copy		(IRender_Visual *pSrc)
+{
+	inherited::Copy				(pSrc);
+	FTreeVisual_PM	*pFrom		= dynamic_cast<FTreeVisual_PM*> (pSrc);
+	PCOPY						(pSWI);
+}
+

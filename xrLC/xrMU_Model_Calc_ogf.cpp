@@ -37,6 +37,7 @@ void xrMU_Model::calc_ogf()
 						u32 id			= (u32)(std::find(m_vertices.begin(),m_vertices.end(),_V)-m_vertices.begin());
 						V[k].P			= _V->P;
 						V[k].N			= _V->N; 
+						V[k].Color		= color[id];
 						V[k].T.set		(0,0,0);	//.
 						V[k].B.set		(0,0,0);	//.
 						V[k].UV.push_back(FF->tc[k]);

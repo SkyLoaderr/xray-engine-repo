@@ -47,7 +47,14 @@ void xrMU_Model::Load	(IReader& F)
 		b_face&	F		= b_faces[f_it];
 		create_face		(m_vertices[F.v[0]],m_vertices[F.v[1]],m_vertices[F.v[2]],F);
 	}
-
+/*
+	// CONVERT and OPTIMIZE
+	for (u32 it=0; it<b_faces.size(); it++)
+	{
+		b_face&	F			= b_faces[it];
+		load_create_face	(b_vertices[F.v[0]],b_vertices[F.v[1]],b_vertices[F.v[2]],F);
+	}
+*/
 	// 
 	clMsg	("* Loading model: '%s' - v(%d/%d), f(%d/%d)",*m_name,m_vertices.size(),b_vertices.size(),m_faces.size(),b_faces.size());
 }

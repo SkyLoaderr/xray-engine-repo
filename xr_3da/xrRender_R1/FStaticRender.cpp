@@ -10,6 +10,7 @@
 #include "..\CustomHUD.h"
 #include "..\xr_object.h"
 #include "lighttrack.h"
+#include "..\fmesh.h"
 
 using	namespace		R_dsgraph;
 
@@ -134,6 +135,7 @@ D3DVERTEXELEMENT9*		CRender::getVB_Format			(int id)			{ VERIFY(id<int(DCL.size(
 IDirect3DVertexBuffer9*	CRender::getVB					(int id)			{ VERIFY(id<int(VB.size()));		return VB[id];		}
 IDirect3DIndexBuffer9*	CRender::getIB					(int id)			{ VERIFY(id<int(IB.size()));		return IB[id];		}
 IRender_Target*			CRender::getTarget				()					{ return Target;										}
+FSlideWindowItem*		CRender::getSWI					(int id)			{ VERIFY(id<int(SWIs.size()));		return &SWIs[id];	}
 
 IRender_Light*			CRender::light_create			()					{ return L_DB->Create();								}
 void					CRender::light_destroy			(IRender_Light* &L)	{ if (L) { L_DB->Destroy((light*)L); L=0; }				}

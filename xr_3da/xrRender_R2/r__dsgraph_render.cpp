@@ -14,10 +14,11 @@ extern float		r_ssaLOD_B;
 extern float		r_ssaHZBvsTEX;
 extern float		g_fLOD, g_fFarSq;
 
-IC float calcLOD	(float fDistSq, float R)
+IC float calcLOD	(float ssa/*fDistSq*/, float R)
 {
-	float dist	= g_fFarSq - fDistSq + R*R;
-	float lod	= g_fLOD*dist/g_fFarSq;
+//	float dist	= g_fFarSq - fDistSq + R*R;
+//	float lod	= g_fLOD*dist/g_fFarSq;
+	float lod	= (ssa/0.2f)*(ssa/0.2f);
 	clamp		(lod,0.001f,0.999f);
 	return		lod;
 }
