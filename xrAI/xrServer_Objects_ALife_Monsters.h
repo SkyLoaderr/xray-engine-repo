@@ -98,6 +98,15 @@ SERVER_ENTITY_DECLARE_END
 add_to_type_list(CSE_ALifeAnomalousZone)
 #define script_type_list save_type_list(CSE_ALifeAnomalousZone)
 
+
+
+SERVER_ENTITY_DECLARE_BEGIN2(CSE_ALifeTorridZone,CSE_ALifeAnomalousZone,CSE_Motion)
+		CSE_ALifeTorridZone				(LPCSTR caSection);
+		virtual	~CSE_ALifeTorridZone		();
+SERVER_ENTITY_DECLARE_END
+add_to_type_list(CSE_ALifeTorridZone)
+#define script_type_list save_type_list(CSE_ALifeTorridZone)
+
 //---------------------------------------------------------------------------------------------------------
 //---------------------------------------------------------------------------------------------------------
 //---------------------------------------------------------------------------------------------------------

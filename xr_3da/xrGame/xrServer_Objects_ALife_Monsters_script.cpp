@@ -47,6 +47,8 @@ void CSE_ALifeAnomalousZone::script_register(lua_State *L)
 	];
 }
 
+
+
 void CSE_ALifeCreatureAbstract::script_register(lua_State *L)
 {
 	module(L)[

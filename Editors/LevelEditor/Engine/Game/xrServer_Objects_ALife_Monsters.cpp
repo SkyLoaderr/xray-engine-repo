@@ -418,6 +418,59 @@ bool CSE_ALifeAnomalousZone::need_update	(CSE_ALifeDynamicObject *object)
 	return						(CSE_ALifeSchedulable::need_update(object) && (m_maxPower > EPS_L));
 }
 
+//////////////////////////////////////////////////////////////////////////
+//SE_ALifeTorridZone
+//////////////////////////////////////////////////////////////////////////
+CSE_ALifeTorridZone::CSE_ALifeTorridZone	(LPCSTR caSection)
+:CSE_ALifeAnomalousZone(caSection),CSE_Motion()
+{
+}
+
+CSE_ALifeTorridZone::~CSE_ALifeTorridZone	()
+{
+}
+
+void CSE_ALifeTorridZone::STATE_Read		(NET_Packet	&tNetPacket, u16 size)
+{
+	inherited1::STATE_Read		(tNetPacket,size);
+	CSE_Motion::motion_read		(tNetPacket);
+
+
+#ifdef _EDITOR    
+	CSE_Motion::PlayMotion		();
+#endif
+}
+
+void CSE_ALifeTorridZone::STATE_Write		(NET_Packet	&tNetPacket)
+{
+	inherited1::STATE_Write		(tNetPacket);
+	CSE_Motion::motion_write	(tNetPacket);
+
+}
+
+void CSE_ALifeTorridZone::UPDATE_Read		(NET_Packet	&tNetPacket)
+{
+	inherited1::UPDATE_Read		(tNetPacket);
+}
+
+void CSE_ALifeTorridZone::UPDATE_Write		(NET_Packet	&tNetPacket)
+{
+	inherited1::UPDATE_Write		(tNetPacket);
+}
+
+#ifdef _EDITOR
+void CSE_ALifeTorridZone::FillProp(LPCSTR pref, PropItemVec& values)
+{
+	inherited1::FillProp		(pref,	 values);
+
+	// motion
+	CSE_Motion::FillProp		(FHelper.PrepareKey(pref,s_name).c_str(),	 values);
+}
+#endif
+
+
+
+
 //-------------------------------------------------------------------------
 //
 //void CSE_ALifeAnomalousZoneMoving::UPDATE_Write(NET_Packet &tNetPacket)
