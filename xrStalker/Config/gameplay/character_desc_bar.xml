@@ -238,14 +238,14 @@
 			ammo_12x70_buck \n
 		</supplies>
 		
-		<start_dialog>bar_bar_visitors_1_start</start_dialog>
+		<start_dialog>bar_dolg_petrenko_start</start_dialog>
 	</specific_character>	
 
 	<specific_character id="bar_dolg_ivancov" team_default = "1">
 		<name> апитан »ванцов</name>
 		<icon x="16" y="4"></icon>
 		<map_icon x="0" y="0"></map_icon>
-		<bio>ѕрава€ рука лидера ƒолга, руководитель всех карательных операций и операций по зачистке гнезд мутантов.</bio>
+		<bio>ѕрава€ рука лидера ƒолга, руководитель всех карательных операций и операций по зачистке крупных скоплений мутантов.</bio>
 
 		<class>stalker_bar_ivancov</class>
 		<community>dolg</community>
@@ -260,7 +260,7 @@
 			ammo_12x70_buck \n
 		</supplies>
 		
-		<start_dialog>bar_bar_visitors_1_start</start_dialog>
+		<start_dialog>bar_dolg_ivancov_start</start_dialog>
 	</specific_character>	
 
 

@@ -366,6 +366,51 @@
     <string id="bar_dolg_guard_bunker_start_31">
         <text>Проходи, брат. И помни, миссия Долга - очищение!</text>
     </string>
+    <string id="bar_dolg_ivancov_join_0">
+        <text>Хочу вступить в группировку Долг.</text>
+    </string>
+    <string id="bar_dolg_ivancov_join_1">
+        <text>Иди к Петренко, он тебе все объяснит</text>
+    </string>
+    <string id="bar_dolg_ivancov_join_11">
+        <text>А где он?</text>
+    </string>
+    <string id="bar_dolg_ivancov_join_111">
+        <text>В администрации, через дворик отсюда.</text>
+    </string>
+    <string id="bar_dolg_ivancov_start_11">
+        <text>Чего тебе?</text>
+    </string>
+    <string id="bar_dolg_ivancov_start_21">
+        <text>Слушаю.</text>
+    </string>
+    <string id="bar_dolg_ivancov_start_31">
+        <text>Здравствуй, брат.</text>
+    </string>
+    <string id="bar_dolg_ivancov_test_finish_0">
+        <text>Я выполнил ваше задание, вот архивная папка.</text>
+    </string>
+    <string id="bar_dolg_ivancov_test_finish_1">
+        <text>Превосходно, будем считать, что ты прошел проверку. Держи допуск в бункер. Теперь иди к Лидеру, только он может принять тебя в группировку.</text>
+    </string>
+    <string id="bar_dolg_ivancov_test_finish_2">
+        <text>Спасибо.</text>
+    </string>
+    <string id="bar_dolg_ivancov_test_start_0">
+        <text>Меня к вам направил полковник Петренко. Вот разрешение.</text>
+    </string>
+    <string id="bar_dolg_ivancov_test_start_1">
+        <text>Давай разрешение! …ага …хмм …гм. Итак, говоришь, у Долга появился еще один оптимист доброволец, ага?</text>
+    </string>
+    <string id="bar_dolg_ivancov_test_start_11">
+        <text>Что-то вроде того.</text>
+    </string>
+    <string id="bar_dolg_ivancov_test_start_111">
+        <text>Посмотрим, посмотрим. Но, прежде чем делать выводы, пройди маленькую проверку. Тебе надо достать архивную папку из заброшенного здания напротив. Задание проще простого, просто войди внутрь, возьми папку и принеси ее мне. Что может быть проще, правильно? Когда папка будет у меня, тогда и решим, годишься ты для Долга или нет.</text>
+    </string>
+    <string id="bar_dolg_ivancov_test_start_1111">
+        <text>Хорошо, я попробую.</text>
+    </string>
     <string id="bar_dolg_novice_start_2">
         <text>Здравствуй, брат сталкер</text>
     </string>
@@ -389,6 +434,45 @@
     </string>
     <string id="bar_dolg_novice_start_6">
         <text>спасибо</text>
+    </string>
+    <string id="bar_dolg_petrenko_join_0">
+        <text>Хочу вступить в группировку Долг.</text>
+    </string>
+    <string id="bar_dolg_petrenko_join_1">
+        <text>Для чего?</text>
+    </string>
+    <string id="bar_dolg_petrenko_join_211">
+        <text>Вести беспощадную борьбу с нечистью Зоны.</text>
+    </string>
+    <string id="bar_dolg_petrenko_join_2111">
+        <text>Надеюсь, ты понимаешь, что это не так чудесно, как звучит. К сожалению для тебя, Долг принимает только опытных сталкеров, поэтому становись опытным и приходи снова.</text>
+    </string>
+    <string id="bar_dolg_petrenko_join_311">
+        <text>Вести беспощадную борьбу с нечистью Зоны.</text>
+    </string>
+    <string id="bar_dolg_petrenko_join_3111">
+        <text>Твоя слава опережает тебя. Ты думал нам нужны такие беспредельщики? Ты ошибался. Таким как ты дорога в Долг закрыта, и я не советую тебе переходить нам дорогу. А теперь убирайся.</text>
+    </string>
+    <string id="bar_dolg_petrenko_join_411">
+        <text>Вести беспощадную борьбу с нечистью Зоны.</text>
+    </string>
+    <string id="bar_dolg_petrenko_join_4111">
+        <text>Надеюсь, ты понимаешь, что это не так чудесно, как звучит. Ты достаточно опытен, кроме того ничего плохого о тебе я не слышал. У тебя есть шанс вступить в Долг, перед этим придется доказать капитану Иванцову чего ты стоишь. Вот, держи мое разрешение, ступай с ним к Иванцову, он проверит тебя.</text>
+    </string>
+    <string id="bar_dolg_petrenko_start_11">
+        <text>Слушаю.</text>
+    </string>
+    <string id="bar_dolg_petrenko_start_21">
+        <text>Чем могу помочь?</text>
+    </string>
+    <string id="bar_dolg_petrenko_start_31">
+        <text>Здравствуй, брат. Что привело тебя ко мне?</text>
+    </string>
+    <string id="bar_dolg_petrenko_talk_0">
+        <text>Расскажи о группировке Долг.</text>
+    </string>
+    <string id="bar_dolg_petrenko_talk_1">
+        <text>Мы тут с самого начала. Группировку основали выжившие члены одного из спецотрядов, отправленных в Зону, чтобы разобраться с причиной ее появления. Мы попали в серьезную передрягу. После того, как половина отряда погибла при ужасных обстоятельствах, выжившие поклялись, что не уйдут, пока не разберутся с тем, что произошло в Зоне. Пока не справятся с ней</text>
     </string>
     <string id="bar_dolg_veteran_start_2">
         <text>Чего тебе?</text>
