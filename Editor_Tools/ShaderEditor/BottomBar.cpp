@@ -9,10 +9,6 @@
 
 //---------------------------------------------------------------------------
 #pragma package(smart_init)
-#pragma link "CloseBtn"
-#pragma link "Placemnt"
-#pragma link "RxMenus"
-#pragma link "CGAUGES"
 #pragma resource "*.dfm"
 TfraBottomBar *fraBottomBar=0;
 //---------------------------------------------------------------------------

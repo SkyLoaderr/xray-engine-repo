@@ -10,7 +10,7 @@ class CShaderTools: public pureDeviceCreate, public pureDeviceDestroy
 	CEditableObject*	m_EditObject;
 	BOOL				m_Modified;
 public:
-						CShaderTools		();
+						CShaderTools	();
     virtual 			~CShaderTools	();
 
     bool				Load			(LPCSTR name);

@@ -7,8 +7,12 @@
 #include "main.h"
 //---------------------------------------------------------------------------
 #pragma package(smart_init)
-#pragma link "Placemnt"
-#pragma link "RxMenus"
+#pragma link "ExtBtn"
+#pragma link "MxMenus"
+#pragma link "mxPlacemnt"
+#pragma link "FrameProperties"
+#pragma link "ElTree"
+#pragma link "ElXPThemedControl"
 #pragma resource "*.dfm"
 TfraLeftBar *fraLeftBar;
 
@@ -150,10 +154,10 @@ void __fastcall TfraLeftBar::ebResetAnimationClick(TObject *Sender)
 }
 //---------------------------------------------------------------------------
 
-void __fastcall TfraLeftBar::ShowPPMenu(TRxPopupMenu* M, TObject* B){
+void __fastcall TfraLeftBar::ShowPPMenu(TMxPopupMenu* M, TObject* B){
     POINT pt;
     GetCursorPos(&pt);
-	M->Popup(pt.x,pt.y);
+	M->Popup(pt.x,pt.y-10);
     TExtBtn* btn = dynamic_cast<TExtBtn*>(B); VERIFY(btn); btn->MouseManualUp();
 }
 //---------------------------------------------------------------------------

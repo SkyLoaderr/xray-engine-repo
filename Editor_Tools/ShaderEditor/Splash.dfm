@@ -1,6 +1,6 @@
 object frmSplash: TfrmSplash
-  Left = 418
-  Top = 206
+  Left = 836
+  Top = 439
   BorderStyle = bsNone
   Caption = 'frmSplash'
   ClientHeight = 300
@@ -3809,11 +3809,11 @@ object frmSplash: TfrmSplash
       DDDDDDDDDDDDDDDDDDDDDDDDDDDDDDDDDDDDDDDDDDDDDDDDDDDDDDDDDDDDDDDD
       DDDDDDDDDDDDDDDDDDDDDDDDDDDDDDDDDDDDDDDDDDDDDDDDDDDDDDDDDBDD}
   end
-  object lbStatus: TRxLabel
+  object lbStatus: TMxLabel
     Left = 9
     Top = 259
-    Width = 45
-    Height = 12
+    Width = 44
+    Height = 11
     Caption = 'Status'
     Font.Charset = RUSSIAN_CHARSET
     Font.Color = 5925276

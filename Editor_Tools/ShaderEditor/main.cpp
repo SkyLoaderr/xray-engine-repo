@@ -7,12 +7,11 @@
 TfrmMain *frmMain;
 //---------------------------------------------------------------------------
 #pragma package(smart_init)
-#pragma link "RXCtrls"
-#pragma package(smart_init)
-#pragma link "RxMenus"
-#pragma link "Placemnt"
 #pragma link "TopBar"
 #pragma link "RenderWindow"
+#pragma link "ExtBtn"
+#pragma link "MxMenus"
+#pragma link "mxPlacemnt"
 #pragma resource "*.dfm"
 #include "ui_main.h"
 #include "SceneClassList.h"
@@ -181,7 +180,7 @@ void __fastcall TfrmMain::ApplyGlobalShortCut(WORD Key, TShiftState Shift)
 void __fastcall TfrmMain::UpdateCaption()
 {
     AnsiString name;
-    name.sprintf("Actor Editor - [%s%s]",UI->GetEditFileName()[0]?UI->GetEditFileName():"noname","");//Scene->IsModified()?"*":"");
+    name.sprintf("Shader Editor - [%s%s]",UI->GetEditFileName()[0]?UI->GetEditFileName():"noname","");//Scene->IsModified()?"*":"");
     Caption = name;
 }
 //---------------------------------------------------------------------------

@@ -218,12 +218,19 @@ object fraBottomBar: TfraBottomBar
     Left = 185
     Top = 33
   end
-  object pmOptions: TRxPopupMenu
+  object pmOptions: TMxPopupMenu
     AutoPopup = False
     MenuAnimation = [maTopToBottom]
     TrackButton = tbLeftButton
+    MarginStartColor = 13158600
+    MarginEndColor = 1644825
+    BKColor = 10528425
+    SelColor = clBlack
+    SelFontColor = clWhite
+    SepHColor = 1644825
+    SepLColor = 13158600
     LeftMargin = 10
-    Style = msBtnLowered
+    Style = msOwnerDraw
     Left = 5
     Top = 24
     object Render1: TMenuItem

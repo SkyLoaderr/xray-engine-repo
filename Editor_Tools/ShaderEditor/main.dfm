@@ -24,27 +24,27 @@ object frmMain: TfrmMain
   PixelsPerInch = 96
   TextHeight = 13
   object paLeftBar: TPanel
-    Left = 442
+    Left = 492
     Top = 0
-    Width = 210
+    Width = 160
     Height = 402
     Align = alRight
     BevelInner = bvLowered
     BevelOuter = bvNone
-    Constraints.MaxWidth = 210
-    Constraints.MinWidth = 210
+    Constraints.MaxWidth = 160
+    Constraints.MinWidth = 160
     TabOrder = 0
     object paTools: TPanel
       Left = 1
       Top = 1
-      Width = 208
+      Width = 158
       Height = 16
       Align = alTop
       TabOrder = 0
       object APHeadLabel2: TLabel
         Left = 1
         Top = 1
-        Width = 206
+        Width = 156
         Height = 13
         Align = alTop
         Alignment = taCenter
@@ -54,7 +54,7 @@ object frmMain: TfrmMain
         OnClick = TopClick
       end
       object sbToolsMin: TExtBtn
-        Left = 195
+        Left = 144
         Top = 2
         Width = 11
         Height = 11
@@ -86,7 +86,7 @@ object frmMain: TfrmMain
   object paMain: TPanel
     Left = 0
     Top = 0
-    Width = 442
+    Width = 492
     Height = 402
     Align = alClient
     BevelOuter = bvNone
@@ -94,7 +94,7 @@ object frmMain: TfrmMain
     object paTopBar: TPanel
       Left = 0
       Top = 0
-      Width = 442
+      Width = 492
       Height = 18
       Align = alTop
       BevelOuter = bvNone
@@ -103,7 +103,7 @@ object frmMain: TfrmMain
     object paWindow: TPanel
       Left = 0
       Top = 18
-      Width = 442
+      Width = 492
       Height = 384
       Align = alClient
       BevelOuter = bvNone
@@ -138,10 +138,11 @@ object frmMain: TfrmMain
     Left = 185
     Top = 33
   end
-  object pmObjectContext: TRxPopupMenu
+  object pmObjectContext: TMxPopupMenu
     Alignment = paCenter
     AutoPopup = False
     MenuAnimation = [maTopToBottom]
+    MarginEndColor = clBlack
     LeftMargin = 15
     Style = msBtnLowered
     Left = 157

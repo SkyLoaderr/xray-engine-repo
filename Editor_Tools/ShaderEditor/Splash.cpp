@@ -4,7 +4,6 @@
 #include "Splash.h"
 //---------------------------------------------------------------------------
 #pragma package(smart_init)
-#pragma link "RXCtrls"
 #pragma resource "*.dfm"
 TfrmSplash *frmSplash;
 //---------------------------------------------------------------------------

@@ -162,7 +162,7 @@ object fraTopBar: TfraTopBar
       Top = 0
       Width = 20
       Height = 18
-      Hint = 'Zoom Extents'
+      Hint = 'Camera Style'
       Align = alNone
       HotTrack = True
       CloseButton = False
@@ -187,7 +187,7 @@ object fraTopBar: TfraTopBar
       Top = 0
       Width = 20
       Height = 18
-      Hint = 'Zoom Extents Selected'
+      Hint = 'Camera Style'
       Align = alNone
       HotTrack = True
       CloseButton = False
@@ -211,7 +211,7 @@ object fraTopBar: TfraTopBar
       Top = 0
       Width = 20
       Height = 18
-      Hint = 'Zoom Extents Selected'
+      Hint = 'Camera Style'
       Align = alNone
       HotTrack = True
       CloseButton = False

@@ -8,8 +8,8 @@
 #include <StdCtrls.hpp>
 
 #include "CustomObject.h"
-#include "CloseBtn.hpp"
-#include "Placemnt.hpp"
+#include "ExtBtn.hpp"
+#include "mxPlacemnt.hpp"
 
 class TfrmLog : public TForm
 {

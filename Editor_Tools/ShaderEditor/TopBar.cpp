@@ -7,7 +7,6 @@
 #include "main.h"
 //---------------------------------------------------------------------------
 #pragma package(smart_init)
-#pragma link "Placemnt"
 #pragma resource "*.dfm"
 TfraTopBar *fraTopBar;
 //---------------------------------------------------------------------------

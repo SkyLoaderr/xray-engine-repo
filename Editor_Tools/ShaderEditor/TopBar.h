@@ -10,8 +10,8 @@
 #include <Forms.hpp>
 #include <Buttons.hpp>
 #include <ExtCtrls.hpp>
-#include "CloseBtn.hpp"
-#include "Placemnt.hpp"
+#include "ExtBtn.hpp"
+#include "mxPlacemnt.hpp"
 //---------------------------------------------------------------------------
 class TfraTopBar : public TFrame
 {

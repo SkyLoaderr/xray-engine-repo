@@ -81,6 +81,7 @@ USEOBJ("Intermediate\cpuid.obj");
 USEOBJ("Intermediate\_math.obj");
 USEFORM("LeftBar.cpp", fraLeftBar); /* TFrame: File Type */
 USEUNIT("ShaderTools.cpp");
+USEFORM("FrameProperties.cpp", fraProperties); /* TFrame: File Type */
 //---------------------------------------------------------------------------
 #include "main.h"
 #include "splash.h"
@@ -121,5 +122,6 @@ WINAPI WinMain(HINSTANCE hInst, HINSTANCE, LPSTR, int)
     return 0;
 }
 //---------------------------------------------------------------------------
+
 
 

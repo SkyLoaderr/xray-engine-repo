@@ -8,9 +8,9 @@
 #include <Controls.hpp>
 #include <StdCtrls.hpp>
 #include <Forms.hpp>
-#include "CloseBtn.hpp"
-#include "Placemnt.hpp"
-#include "RxMenus.hpp"
+#include "ExtBtn.hpp"
+#include "mxPlacemnt.hpp"
+#include "MxMenus.hpp"
 #include <ExtCtrls.hpp>
 #include <Menus.hpp>
 #include "CGAUGES.h"
@@ -23,7 +23,7 @@ __published:	// IDE-managed Components
     TPanel *paMenu;
 	TExtBtn *ebOptions;
 	TFormStorage *fsStorage;
-	TRxPopupMenu *pmOptions;
+	TMxPopupMenu *pmOptions;
     TMenuItem *Quality1;
 	TMenuItem *N25;
 	TMenuItem *N50;

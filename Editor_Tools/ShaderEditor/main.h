@@ -11,14 +11,14 @@
 #include <Buttons.hpp>
 #include <ComCtrls.hpp>
 #include <Menus.hpp>
-#include "RXCtrls.hpp"
-#include "CloseBtn.hpp"
-#include "RxMenus.hpp"
-#include "Placemnt.hpp"
+#include "MXCtrls.hpp"
 #include <ImgList.hpp>
 #include <ToolWin.hpp>
 #include "SceneClassList.h"
 #include "RenderWindow.hpp"
+#include "ExtBtn.hpp"
+#include "MxMenus.hpp"
+#include "mxPlacemnt.hpp"
 //---------------------------------------------------------------------------
 // refs
 
@@ -29,7 +29,7 @@ __published:	// IDE-managed Components
         TPanel *paBottomBar;
     TPanel *paTools;
     TTimer *tmRefresh;
-    TRxPopupMenu *pmObjectContext;
+	TMxPopupMenu *pmObjectContext;
     TMenuItem *miProperties;
     TMenuItem *miCopy;
     TMenuItem *miPaste;
