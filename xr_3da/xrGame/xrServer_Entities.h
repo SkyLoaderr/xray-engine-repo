@@ -61,12 +61,24 @@ public:
 //
 #define	xrSE_DECLARE_END \
 public:\
-virtual void 						UPDATE_Read	(NET_Packet& P); \
+virtual void 						UPDATE_Read		(NET_Packet& P); \
 virtual void 						UPDATE_Write	(NET_Packet& P); \
 virtual void 						STATE_Read		(NET_Packet& P, u16 size); \
-virtual void 						STATE_Write	(NET_Packet& P); \
+virtual void 						STATE_Write		(NET_Packet& P); \
 xrSE_EDITOR_METHODS\
 };
+
+xrSE_DECLARE_BEGIN(xrSE_HangingLamp,xrServerEntity)
+	u32								color;
+	string64						caModel;
+	string64						animator;
+	string64						spot_texture;
+	string32						spot_bone;
+	float							spot_range;
+	float							spot_cone_angle;
+									xrSE_HangingLamp	(LPCSTR caSection);
+    virtual							~xrSE_HangingLamp	();
+xrSE_DECLARE_END
 
 //***** Weapon
 xrSE_DECLARE_BEGIN(xrSE_Weapon,CALifeDynamicObject)

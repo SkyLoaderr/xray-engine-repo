@@ -1,164 +1,61 @@
-// DummyObject.cpp: implementation of the CDummyObject class.
-//
-//////////////////////////////////////////////////////////////////////
-
 #include "stdafx.h"
+#pragma hdrstop
 
-#include "DummyObject.h"
-#include "..\ObjectAnimator.h"
-#include "..\psvisual.h"
+#include "HangingLamp.h"
  
 //////////////////////////////////////////////////////////////////////
 // Construction/Destruction
 //////////////////////////////////////////////////////////////////////
 
-CDummyObject::CDummyObject	()
+CHangingLamp::CHangingLamp	()
 {
-	style					= 0;
-	s_animator				= NULL;
-	s_particles				= NULL;
-	s_sound.feedback		= NULL;
-	m_pPhysicsShell			= 0;
 }
 
-CDummyObject::~CDummyObject	()
+CHangingLamp::~CHangingLamp	()
 {
-	::Sound->destroy			(s_sound);
-	::Render->model_Delete	(s_particles);
-	xr_delete				(s_animator);
-	xr_delete				(m_pPhysicsShell);
 }
 
-void CDummyObject::Load		(LPCSTR section)
+void CHangingLamp::Load		(LPCSTR section)
 {
 	inherited::Load			(section);
-
-	/*
-	if (pSettings->line_exist(section,"motions")){
-		style			|= esAnimated;
-	}
-	if (pVisual->Type==MT_SKELETON){
-		style			|= esSkeleton;
-		PKinematics(pVisual)->PlayCycle	("idle");
-	}
-	if (pSettings->line_exist(section,"sound"))
-	{
-		LPCSTR N = pSettings->r_string(section,"sound");
-		::Sound->create(sndDummy,TRUE,N);
-	}
-
-	Sector_Detect();
-	*/
+	R_ASSERT				(pVisual&&PKinematics(pVisual));
 }
 
-BOOL CDummyObject::net_Spawn(LPVOID DC)
+BOOL CHangingLamp::net_Spawn(LPVOID DC)
 {
 	inherited::net_Spawn	(DC);
-	xrSE_Dummy*				E = (xrSE_Dummy*)DC;
-
-	// 
-	setVisible				(TRUE);
-
-	UpdateTransform			();
-	clTransform.set			(svTransform);
-	relation.set			(svTransform);
-
-	style					= E->s_style;
-	if (style&esAnimated)		{
-		// Load animator
-		s_animator				= xr_new<CObjectAnimator>	();
-		s_animator->Load		(E->s_Animation);
-		s_animator->PlayMotion	("idle",true);
-	}
-	if (style&esModel)			{
-		// Load model
-		cNameVisual_set			(E->s_Model);
-	}
-	if (style&esParticles)		{
-		// Load model
-		s_particles				= ::Render->model_CreatePS	(E->s_Particles,&s_emitter);
-		CPSVisual* V			= dynamic_cast<CPSVisual*>	(s_particles);
-		if (V)					{
-			s_emitter.m_Position.set	(Position());
-			s_emitter.Play				();
-		}
-	}
-	if (style&esSound)			{
-		// Load sound
-		::Sound->create			(s_sound,TRUE,E->s_Sound);
-		::Sound->play_at_pos		(s_sound,0,Position(),true);
-	}
-
-	CKinematics* V			= PKinematics	(Visual());
-	if (V)					V->PlayCycle	("idle");
-
-	if (!s_animator && (style&esModel) && (0==m_pPhysicsShell))
-	{
-		// Physics (Box)
-		Fobb								obb;
-		Visual()->vis.box.get_CD			(obb.m_translate,obb.m_halfsize);
-		obb.m_rotate.identity				();
-
-		// Physics (Elements)
-		CPhysicsElement* E					= P_create_Element	();
-		R_ASSERT							(E);
-		E->add_Box							(obb);
-
-		// Physics (Shell)
-		m_pPhysicsShell						= P_create_Shell	();
-		R_ASSERT							(m_pPhysicsShell);
-		m_pPhysicsShell->add_Element		(E);
-		m_pPhysicsShell->setDensity			(200.f);
-		m_pPhysicsShell->Activate			(svXFORM(),0,svXFORM(),true);
-		m_pPhysicsShell->mDesired.identity	();
-		m_pPhysicsShell->fDesiredStrength	= 0.f;
-	}
+	xrSE_HangingLamp* lamp	= (xrSE_HangingLamp*)(DC);
+	R_ASSERT				(lamp);
+	cNameVisual_set			(lamp->caModel);
+	// set bone id
+	light_bone_idx			= lamp->spot_bone[0]?PKinematics(pVisual)->LL_BoneID(lamp->spot_bone):-1;
+	
+//	lamp->animator;
+//	lamp->color;
+//	lamp->spot_cone_angle;
+//	lamp->spot_range;
+//	lamp->spot_texture;
 
 	return TRUE;
 }
 
-void CDummyObject::Update		(u32 dt)
+void CHangingLamp::Update	(u32 dt)
 {
-	inherited::Update	(dt);
-
-	if (s_particles)	dynamic_cast<CPSVisual*>(s_particles)->Update(dt);
+	inherited::Update		(dt);
 }
 
-void CDummyObject::UpdateCL		()
+void CHangingLamp::UpdateCL		()
 {
-	if (s_animator)
-	{
-		s_animator->OnMove		();
-		mRotate.set				(s_animator->GetRotate());
-		vPosition.set			(s_animator->GetPosition());
-		UpdateTransform			();
-		if (style&esRelativePosition){
-			R_ASSERT2(0,"CDummyObject: Relative position error.");
-			svTransform.mulB_43	(relation);
-		}
-	} else {
-		if (m_pPhysicsShell)		
-		{
-			m_pPhysicsShell->Update	();
-			svTransform.set			(m_pPhysicsShell->mXFORM);
-			vPosition.set			(svTransform.c);
-		}
-	}
-	clTransform.set				(svTransform);
-
-	if (s_particles)			
-	{
-		s_emitter.m_Position.set				(Position());
-	}
-	if (s_sound.feedback)
-	{
-		s_sound.set_position	(Position());
-		s_sound.set_range		(10,1000);
-	}
+	inherited::UpdateCL		();
 }
 
-void CDummyObject::OnVisible	()
+void CHangingLamp::OnVisible	()
 {
 	inherited::OnVisible();
-	if (s_particles)	::Render->add_Visual(s_particles);
 }
+
+void CHangingLamp::Hit(float P, Fvector &dir,	CObject* who, s16 element,Fvector p_in_object_space, float impulse)
+{
+	inherited::Hit(P,dir,who,element,p_in_object_space,impulse);
+}
+

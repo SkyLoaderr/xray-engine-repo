@@ -207,7 +207,8 @@ void CGameObject::u_EventSend(NET_Packet& P, BOOL sync)
 	Level().Send(P,net_flags(TRUE,TRUE));
 }
 
-void CGameObject::Hit(float P, Fvector &dir,	CObject* who, s16 element,Fvector p_in_object_space, float impulse){
+void CGameObject::Hit(float P, Fvector &dir,	CObject* who, s16 element,Fvector p_in_object_space, float impulse)
+{
 	if(m_pPhysicsShell) m_pPhysicsShell->applyImpulseTrace(p_in_object_space,dir,impulse);
 }
 

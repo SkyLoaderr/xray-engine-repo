@@ -1337,6 +1337,12 @@
 				Name="Lighting"
 				Filter="">
 				<File
+					RelativePath="LightAnimLibrary.cpp">
+				</File>
+				<File
+					RelativePath="LightAnimLibrary.h">
+				</File>
+				<File
 					RelativePath=".\light.h">
 				</File>
 			</Filter>

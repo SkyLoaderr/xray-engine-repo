@@ -1328,6 +1328,16 @@
 						Filter="">
 					</Filter>
 				</Filter>
+				<Filter
+					Name="_lamp"
+					Filter="">
+					<File
+						RelativePath="HangingLamp.cpp">
+					</File>
+					<File
+						RelativePath="HangingLamp.h">
+					</File>
+				</Filter>
 			</Filter>
 			<Filter
 				Name="Game Materials"

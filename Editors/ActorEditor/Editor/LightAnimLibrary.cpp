@@ -118,8 +118,8 @@ u32 CLAItem::Interpolate(int frame)
     R_ASSERT(Keys.size()>1);
     // интерполируем цвет
     Fcolor c, c0, c1;
-    float a0=A->first;
-    float a1=B->first;
+    float a0=(float)A->first;
+    float a1=(float)B->first;
     c0.set(A->second);
     c1.set(B->second);
     float t = float(frame-a0)/float(a1-a0);
@@ -129,7 +129,7 @@ u32 CLAItem::Interpolate(int frame)
 
 u32 CLAItem::Calculate(float T, int& frame)
 {
-    frame	= fmod(Device.fTimeGlobal,float(iFrameCount)/fFPS)*fFPS;
+    frame	= iFloor(fmodf(Device.fTimeGlobal,float(iFrameCount)/fFPS)*fFPS);
     return Interpolate(frame);
 }
 
@@ -185,9 +185,9 @@ void ELightAnimLibrary::Unload()
 
 void ELightAnimLibrary::Load()
 {
-	AnsiString fn;
+	string256 fn;
     FS.update_path(fn,_game_data_,"lanims.xr");
-	IReader* fs=FS.r_open(fn.c_str());
+	IReader* fs=FS.r_open(fn);
     if (fs){
         IReader* OBJ = fs->open_chunk(CHUNK_ITEM_LIST);
         if (OBJ){
@@ -218,9 +218,9 @@ void ELightAnimLibrary::Save()
     }
 	F.close_chunk	();
 
-	AnsiString fn;
+	string256 fn;
     FS.update_path(fn,_game_data_,"lanims.xr");
-    F.save_to(fn.c_str());
+    F.save_to(fn);
 }
 
 void ELightAnimLibrary::Reload()

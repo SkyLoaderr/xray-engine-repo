@@ -1336,6 +1336,58 @@ void xrSE_Idol::FillProp(LPCSTR pref, PropItemVec& items)
 }	
 #endif
 
+//***** Lamp
+xrSE_HangingLamp::xrSE_HangingLamp(LPCSTR caSection) : xrServerEntity(caSection)
+{
+	strcpy					(caModel,"lights\\hanginglamp");
+	strcpy					(spot_texture,"lights\\lights_hl");
+	strcpy					(animator,"");
+	strcpy					(spot_bone,"");
+	spot_range				= 10.f;
+	spot_cone_angle			= PI_DIV_3;
+	color					= 0xffffffff;
+}
+xrSE_HangingLamp::~xrSE_HangingLamp()
+{
+}
+void xrSE_HangingLamp::STATE_Read			(NET_Packet& P, u16 size)
+{
+	// model
+	P.r_u32					(color);
+	P.r_string				(caModel);
+	P.r_string				(animator);
+	P.r_string				(spot_texture);
+	P.r_string				(spot_bone);
+	P.r_float				(spot_range);
+	P.r_angle8				(spot_cone_angle);
+}
+void xrSE_HangingLamp::STATE_Write		(NET_Packet& P)
+{
+	// model
+	P.w_u32					(color);
+	P.w_string				(caModel);
+	P.w_string				(animator);
+	P.w_string				(spot_texture);
+	P.w_string				(spot_bone);
+	P.w_float				(spot_range);
+	P.w_angle8				(spot_cone_angle);
+}
+void xrSE_HangingLamp::UPDATE_Read		(NET_Packet& P)	{};
+void xrSE_HangingLamp::UPDATE_Write		(NET_Packet& P)	{};
+#ifdef _EDITOR
+void	xrSE_HangingLamp::FillProp			(LPCSTR pref, PropItemVec& values)
+{
+	inherited::FillProp(pref,values);
+	PHelper.CreateColor					(items, PHelper.PrepareKey(pref,s_name,"Color"),			&color);
+	PHelper.CreateGameObject			(items, PHelper.PrepareKey(pref,s_name,"Model"),			caModel,			sizeof(caModel));
+	PHelper.CreateLightAnim				(items, PHelper.PrepareKey(pref,s_name,"Light animator"),	animator,			sizeof(animator));
+	PHelper.CreateTexture				(items, PHelper.PrepareKey(pref,s_name,"Spot texture"),		spot_texture,		sizeof(spot_texture));
+	PHelper.CreateText					(items, PHelper.PrepareKey(pref,s_name,"Spot bone"),		spot_bone,			sizeof(spot_bone));
+	PHelper.CreateFloat					(items, PHelper.PrepareKey(pref,s_name,"Spot range"),		&spot_range,		0.1f, 1000.f);
+	PHelper.CreateAngle					(items, PHelper.PrepareKey(pref,s_name,"Spot angle"),		&spot_cone_angle,	0, PI_DIV_2);
+}
+#endif
+
 //--------------------------------------------------------------------
 xrServerEntity*	F_entity_Create		(LPCSTR caSection)
 {
@@ -1346,6 +1398,7 @@ xrServerEntity*	F_entity_Create		(LPCSTR caSection)
 	switch (cls){
 	case CLSID_OBJECT_ACTOR:		return xr_new<xrSE_Actor>			(caSection);
 	case CLSID_OBJECT_DUMMY:		return xr_new<xrSE_Dummy>			(caSection);
+	case CLSID_OBJECT_HLAMP:		return xr_new<xrSE_HangingLamp>		(caSection);
 	case CLSID_AI_GRAPH:			return xr_new<xrGraphPoint>			(caSection);
 	case CLSID_AI_CROW:				return xr_new<xrSE_Crow>			(caSection);
 	case CLSID_AI_RAT:				return xr_new<xrSE_Rat>				(caSection);

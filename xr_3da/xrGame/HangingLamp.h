@@ -12,7 +12,11 @@ class CHangingLamp: public CGameObject
 {
 	typedef	CGameObject		inherited;
 private:
+	int				light_bone_idx;
 public:
+					CHangingLamp	();
+	virtual			~CHangingLamp	();
+
 	virtual void	Load			( LPCSTR section);
 	virtual BOOL	net_Spawn		( LPVOID DC);
 	virtual void	Update			( u32 dt);							// Called by sheduler
@@ -21,8 +25,8 @@ public:
 
 	virtual BOOL	ShadowGenerate	( ) { return TRUE;	}
 	virtual BOOL	ShadowReceive	( ) { return TRUE;	}
-					CHangingLamp		();
-	virtual ~CHangingLamp();
+	
+	virtual	void	Hit				(float P, Fvector &dir,	CObject* who, s16 element,Fvector p_in_object_space, float impulse);
 };
 
 #endif //HangingLampH
