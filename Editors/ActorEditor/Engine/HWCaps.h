@@ -8,8 +8,6 @@ class ENGINE_API CHWCaps {
 public:
 	struct		caps_Geometry
 	{
-		u32	dwVersion_major	: 4;
-		u32	dwVersion_minor	: 4;
 		u32	dwRegisters		: 16;
 		u32	bSoftware		: 1;
 		u32	bPointSprites	: 1;
@@ -20,8 +18,6 @@ public:
 	};
 	struct		caps_Raster
 	{
-		u32	dwVersion_major	: 4;		// pixel shader version
-		u32	dwVersion_minor	: 4;		// pixel shader version
 		u32	dwRegisters		: 16;
 		u32	dwStages		: 8;		// number of tex-stages
 		u32	bNonPow2		: 1;
@@ -44,7 +40,11 @@ public:
 	u32				dwRefreshRate;
 
 	// caps itself
+	u16				geometry_major;
+	u16				geometry_minor;
 	caps_Geometry	geometry;
+	u16				raster_major;
+	u16				raster_minor;
 	caps_Raster		raster;
 
 	BOOL			bStencil;			// stencil buffer present
