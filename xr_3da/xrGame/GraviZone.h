@@ -31,6 +31,7 @@ public:
 	virtual void	Affect(CObject* O);
 
 	virtual void	shedule_Update		(u32 dt);
+	virtual bool	BlowoutState		();
 
 protected:
 	//время втягивания объектов в зону

@@ -57,15 +57,15 @@ void CGraviZone::Affect(CObject* O)
 	
 	float throw_power = m_fThrowInImpulse*RelativePower(dist);
 	throw_in_dir.normalize();
-
+	throw_in_dir.mul(throw_power);
 	static int i = 0;
 	i+=Device.dwTimeDelta;
-	if (i > 250)
+	if (true)
 	{
 		i = 0;
 		if(EA && EA->g_Alive())
 		{
-			EA->m_PhysicMovementControl->ApplyImpulse(throw_in_dir, throw_power);
+			EA->m_PhysicMovementControl->AddControlVel(throw_in_dir);
 		}
 		else
 			GO->m_pPhysicsShell->applyImpulse(throw_in_dir, throw_power);
@@ -96,4 +96,18 @@ void CGraviZone::shedule_Update		(u32 dt)
 //	}
 
 	TTelekinesis::schedule_update();
+}
+
+bool CGraviZone::BlowoutState()
+{
+	bool result = inherited::BlowoutState();
+
+	//если мы перешли в следующее состояние
+	if(result)
+	{
+		AffectObjects();
+		return true;
+	}
+
+	return false;
 }
