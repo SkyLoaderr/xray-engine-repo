@@ -1,14 +1,14 @@
 
 -- Кто-то из участников сценки вступил в бой - теперь нужно пообижать всех на всех
 function gar_dm_bandits_fight(actor, npc)
-	local novice = utils.obj_by_sid(304)
+	local novice = utils.obj_by_sid(104)
 	if not novice or not novice:alive() then
 		return
 	end
 
 	local ignore_actor = distance_between(actor, novice) > 10
 
-	local bandit1 = utils.obj_by_sid(301)
+	local bandit1 = utils.obj_by_sid(101)
 	if bandit1 then
 		novice:set_relation(game_object.enemy, bandit1)
 		bandit1:set_relation(game_object.enemy, novice)
@@ -17,7 +17,7 @@ function gar_dm_bandits_fight(actor, npc)
 		end
 	end
 
-	local bandit2 = utils.obj_by_sid(302)
+	local bandit2 = utils.obj_by_sid(102)
 	if bandit2 then
 		novice:set_relation(game_object.enemy, bandit2)
 		bandit2:set_relation(game_object.enemy, novice)
@@ -26,7 +26,7 @@ function gar_dm_bandits_fight(actor, npc)
 		end
 	end
 
-	local bandit3 = utils.obj_by_sid(303)
+	local bandit3 = utils.obj_by_sid(103)
 	if bandit3 then
 		novice:set_relation(game_object.enemy, bandit3)
 		bandit3:set_relation(game_object.enemy, novice)
