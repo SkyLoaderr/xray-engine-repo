@@ -6197,9 +6197,6 @@
 			<File
 				RelativePath=".\todo.txt">
 			</File>
-			<File
-				RelativePath=".\weapons.ltx">
-			</File>
 			<Filter
 				Name="Monsters"
 				Filter="">
@@ -6229,6 +6226,43 @@
 				</File>
 				<File
 					RelativePath=".\M_Pseudodog.ltx">
+				</File>
+			</Filter>
+			<Filter
+				Name="Weapons"
+				Filter="">
+				<File
+					RelativePath=".\w_ak74.ltx">
+				</File>
+				<File
+					RelativePath=".\w_bolt.ltx">
+				</File>
+				<File
+					RelativePath=".\w_f1.ltx">
+				</File>
+				<File
+					RelativePath=".\w_fn2000.ltx">
+				</File>
+				<File
+					RelativePath=".\w_knife.ltx">
+				</File>
+				<File
+					RelativePath=".\w_lr300.ltx">
+				</File>
+				<File
+					RelativePath=".\w_rgd5.ltx">
+				</File>
+				<File
+					RelativePath=".\w_rpg7.ltx">
+				</File>
+				<File
+					RelativePath=".\w_val.ltx">
+				</File>
+				<File
+					RelativePath=".\w_vintorez.ltx">
+				</File>
+				<File
+					RelativePath=".\weapons.ltx">
 				</File>
 			</Filter>
 		</Filter>
