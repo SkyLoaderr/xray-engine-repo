@@ -6,7 +6,8 @@
 #include "../../ai_monster_utils.h"
 
 
-#define GOOD_DISTANCE_FOR_TELE	10.f
+#define GOOD_DISTANCE_FOR_TELE	15.f
+#define GOOD_DISTANCE_FOR_GRAVI 8.f
 #define MAX_HANDLED_OBJECTS		3
 #define CHECK_OBJECTS_RADIUS	10.f
 #define MINIMAL_MASS			40.f
@@ -16,7 +17,7 @@
 #define MIN_DIST_FOR_GRAVI		3.f
 #define MAX_DIST_FOR_GRAVI		20.f
 #define GRAVI_DELAY				5000
-#define GRAVI_HOLD				3000
+#define GRAVI_HOLD				2000
 
 
 CBurerAttack::CBurerAttack(CBurer *p)  
@@ -69,11 +70,11 @@ void CBurerAttack::Run()
 	float dist;
 	dist = pMonster->GetEnemyDistances(m_fDistMin, m_fDistMax);
 
-//	if (m_tAction == ACTION_DEFAULT) {
-//		// получить минимальную и максимальную дистанции до врага
-//		if ((m_tPrevAction == ACTION_MELEE) && (dist < m_fDistMax)) m_tAction = ACTION_MELEE;
-//		else m_tAction = ((dist > m_fDistMin) ? ACTION_RUN : ACTION_MELEE);
-//	}
+	if ((m_tAction == ACTION_DEFAULT) || (m_tAction == ACTION_MELEE) || (m_tAction == ACTION_RUN)) {
+		// получить минимальную и максимальную дистанции до врага
+		if ((m_tPrevAction == ACTION_MELEE) && (dist < m_fDistMax)) m_tAction = ACTION_MELEE;
+		else m_tAction = ((dist > m_fDistMin) ? ACTION_RUN : ACTION_MELEE);
+	}
 
 
 	//-----------------------------------------------------------
@@ -142,7 +143,13 @@ void CBurerAttack::Run()
 				run_around_time_started		= m_dwCurrentTime;
 
 				// select point random_point
-				selected_random_point = random_position(pMonster->Position(), 10.f);
+				if (dist > 15.f) {
+					Fvector dir;
+					dir.sub(enemy->Position(),pMonster->Position());
+					dir.normalize();
+					selected_random_point.mad(pMonster->Position(),dir,10.f);
+				} else 
+					selected_random_point = random_position(pMonster->Position(), 10.f);
 
 			}
 			
@@ -215,7 +222,8 @@ bool CBurerAttack::CheckTele()
 {
 	// если triple анимация активна - выход
 	if (pMonster->MotionMan.TA_IsActive()) return false;
-	if (m_tAction != ACTION_DEFAULT) return false;
+	bool b_normal_trans = ((m_tAction == ACTION_DEFAULT) || (m_tAction == ACTION_RUN) || (m_tAction == ACTION_MELEE));
+	if (!b_normal_trans) return false;
 	
 	// телекинез уже активен (т.е. объекты уже готовы к обработке)
 
@@ -239,8 +247,13 @@ bool CBurerAttack::CheckGravi()
 {
 	// если triple анимация активна - выход
 	if (pMonster->MotionMan.TA_IsActive()) return false;
-	if (m_tAction != ACTION_DEFAULT)  return false;
+	bool b_normal_trans = ((m_tAction == ACTION_DEFAULT) || (m_tAction == ACTION_RUN) || (m_tAction == ACTION_MELEE));
+	if (!b_normal_trans) return false;
 	
+	// обработать объекты
+	float dist = pMonster->Position().distance_to(enemy->Position());
+	if (dist < GOOD_DISTANCE_FOR_GRAVI) return false;
+
 	bool see_enemy_now		= pMonster->EnemyMan.get_enemy_time_last_seen() == m_dwCurrentTime;
 	bool good_time_to_start = time_next_gravi_available < m_dwCurrentTime;
 
@@ -290,8 +303,8 @@ void CBurerAttack::Execute_Tele()
 		Fvector enemy_pos = enemy->Position();
 		enemy_pos.y += 2 * enemy->Radius();
 	
-		float dist = tele_object.get_object()->Position().distance_to(pMonster->Position());
-		pMonster->CTelekinesis::fire(tele_object.get_object(), enemy_pos, dist*dist*dist);
+		float dist = tele_object.get_object()->Position().distance_to(enemy->Position());
+		pMonster->CTelekinesis::fire(tele_object.get_object(), enemy_pos, dist/10);
 	
 		m_tAction = ACTION_WAIT_TRIPLE_END;
 	}
@@ -312,6 +325,7 @@ void CBurerAttack::Execute_Gravi()
 		m_tAction = ACTION_GRAVI_CONTINUE;
 		time_gravi_started			= m_dwCurrentTime;
 		time_next_gravi_available	= u32(-1);
+		pMonster->StartGraviPrepare();
 	}
 
 	if (m_tAction == ACTION_GRAVI_CONTINUE) {
@@ -323,15 +337,42 @@ void CBurerAttack::Execute_Gravi()
 
 	if (m_tAction == ACTION_GRAVI_FIRE) {
 		pMonster->MotionMan.TA_PointBreak();
+		Fvector from_pos;
+		Fvector target_pos;
+		from_pos	= pMonster->Position();	from_pos.y		+= 0.5f;
+		target_pos	= enemy->Position();	target_pos.y	+= 0.5f;
+		pMonster->m_gravi_object.activate(enemy, from_pos, target_pos);
 		time_next_gravi_available = m_dwCurrentTime + GRAVI_DELAY;
 		m_tAction = ACTION_WAIT_TRIPLE_END;
+		pMonster->StopGraviPrepare();
 	}
+
 }	
 
 
 //////////////////////////////////////////////////////////////////////////
 // Дополнительные функции
 //////////////////////////////////////////////////////////////////////////
+
+class best_object_predicate {
+	Fvector enemy_pos;
+	Fvector monster_pos;
+public:
+	best_object_predicate(const Fvector &m_pos, const Fvector &pos) {
+		monster_pos = m_pos;
+		enemy_pos	= pos;
+	}
+
+	bool operator()	 (const CGameObject *tpObject1, const CGameObject *tpObject2) const
+	{
+		float dist1 = monster_pos.distance_to(tpObject1->Position());
+		float dist2 = enemy_pos.distance_to(tpObject2->Position());
+		float dist3 = enemy_pos.distance_to(monster_pos);
+
+		return ((dist1 < dist3) && (dist2 > dist3));
+	};
+};
+
 
 void CBurerAttack::find_tele_objects()
 {
@@ -365,9 +406,12 @@ void CBurerAttack::find_tele_objects()
 		pMonster->tele_objects.push_back(obj);
 	}
 			
+	
+	sort(pMonster->tele_objects.begin(),pMonster->tele_objects.end(),best_object_predicate(pMonster->Position(), enemy->Position()));
+	
 	// выбрать объект
 	for (u32 i=0; i<pMonster->tele_objects.size(); i++) {
-		CGameObject *obj = dynamic_cast<CGameObject *>(pMonster->tele_objects[i]);
+		CGameObject *obj = pMonster->tele_objects[i];
 		
 		// применить телекинез на объект
 		pMonster->CTelekinesis::activate(obj, 3.f, 2.f, 10000);
@@ -380,3 +424,11 @@ void CBurerAttack::find_tele_objects()
 	}
 }
 
+
+void CBurerAttack::Done()
+{
+	inherited::Done();
+	
+	pMonster->StopGraviPrepare();
+	pMonster->MotionMan.TA_Deactivate();
+}

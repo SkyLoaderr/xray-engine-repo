@@ -86,7 +86,7 @@ void CTelekinesis::fire(CGameObject *obj, const Fvector &target, float power)
 	if (it == objects.end()) return;
 
 	// בנמסטעü מבתוךע
-	it->fire(target);
+	it->fire(target,power);
 }
 
 
