@@ -57,6 +57,9 @@ void CAI_Flesh::Load(LPCSTR section)
 {
 	inherited::Load(section);
 
+	MotionMan.AddReplacedAnim(&m_bDamaged, eAnimRun,		eAnimRunDamaged);
+	MotionMan.AddReplacedAnim(&m_bDamaged, eAnimWalkFwd,	eAnimWalkDamaged);
+
 	BEGIN_LOAD_SHARED_MOTION_DATA();
 
 	// define animation set
@@ -75,6 +78,7 @@ void CAI_Flesh::Load(LPCSTR section)
 	MotionMan.AddAnim(eAnimRunDamaged,		"stand_run_dmg_",		-1,	inherited::_sd->m_fsRunFwdDamaged,	inherited::_sd->m_fsRunAngular,				PS_STAND);
 
 	MotionMan.AddAnim(eAnimAttack,			"stand_attack_",		-1, 0,									inherited::_sd->m_fsRunAngular,				PS_STAND);
+	MotionMan.AddAnim(eAnimAttackRat,		"stand_attack_rat_0",	-1, 0,									inherited::_sd->m_fsRunAngular,				PS_STAND);
 	MotionMan.AddAnim(eAnimCheckCorpse,		"stand_eat_",			 1,	0,									0,											PS_STAND);
 
 	MotionMan.AddAnim(eAnimEat,				"stand_eat_",			-1, 0,									0,											PS_STAND);
@@ -87,6 +91,8 @@ void CAI_Flesh::Load(LPCSTR section)
 	MotionMan.AddAnim(eAnimDragCorpse,		"stand_drag_",			-1, inherited::_sd->m_fsDrag,			inherited::_sd->m_fsWalkAngular,			PS_STAND);
 
 	MotionMan.AddAnim(eAnimScared,			"stand_scared_",		-1,	0,									0,											PS_STAND);
+	MotionMan.AddAnim(eAnimThreaten,		"stand_threaten_",		-1,	0,									0,											PS_STAND);
+	
 
 	// define transitions
 	MotionMan.AddTransition(PS_STAND,	PS_LIE,		eAnimStandLieDown,		false);
@@ -108,15 +114,10 @@ void CAI_Flesh::Load(LPCSTR section)
 	MotionMan.LinkAction(ACT_LOOK_AROUND,	eAnimScared);
 
 	// Добавить анимации атак
-	Fvector center, left_side, right_side, special_side;
-
+	Fvector center;
 	center.set		(0.f,0.f,0.f);
-	left_side.set	(-0.1f,0.f,0.f);
-	right_side.set	(0.1f,0.f,0.f);
-	special_side.set(-0.5f,0.f,0.5f);
-
-	MotionMan.AA_PushAttackAnim(eAnimAttack,		0, 700,		800,	center,			2.f,  inherited::_sd->m_fHitPower, 0.f, 0.f);
-	MotionMan.AA_PushAttackAnim(eAnimAttack,		1, 600,		800,	center,			2.5f, inherited::_sd->m_fHitPower, 0.f, 0.f);
+	MotionMan.AA_PushAttackAnim(eAnimAttack,		0, 800,		1000,	center,			2.5f,	inherited::_sd->m_fHitPower, 0.f, 0.f);
+	MotionMan.AA_PushAttackAnim(eAnimAttack,		1, 800,		1000,	center,			2.5f,	inherited::_sd->m_fHitPower, 0.f, 0.f);
 	
 	END_LOAD_SHARED_MOTION_DATA();
 }
@@ -125,11 +126,6 @@ void CAI_Flesh::Load(LPCSTR section)
 void CAI_Flesh::StateSelector()
 {
 	
-//	SetState(stateTest);
-//	return;
-
-	// ---------------------------------------------------------------------------------
-
 	VisionElem ve;
 
 	if (C && H && I)			SetState(statePanic);
@@ -139,15 +135,20 @@ void CAI_Flesh::StateSelector()
 	else if (D && H && I)		SetState(stateAttack);
 	else if (D && H && !I)		SetState(stateAttack);		//тихо подобраться и начать аттаку
 	else if (D && !H && I)		SetState(statePanic);
-	else if (D && !H && !I) 	SetState(stateHide);		// отход перебежками через укрытия
+	//else if (D && !H && !I) 	SetState(stateHide);		// отход перебежками через укрытия
+	else if (D && !H && !I) 	SetState(statePanic);
 	else if (E && H && I)		SetState(stateAttack); 
 	else if (E && H && !I)  	SetState(stateAttack);		//тихо подобраться и начать аттаку
-	else if (E && !H && I) 		SetState(stateDetour); 
-	else if (E && !H && !I)		SetState(stateDetour); 
+//	else if (E && !H && I) 		SetState(stateDetour); 
+//	else if (E && !H && !I)		SetState(stateDetour); 
+	else if (E && !H && I) 		SetState(stateAttack); 
+	else if (E && !H && !I)		SetState(stateAttack); 
 	else if (F && H && I) 		SetState(stateAttack); 		
 	else if (F && H && !I)  	SetState(stateAttack); 
-	else if (F && !H && I)  	SetState(stateDetour); 
-	else if (F && !H && !I) 	SetState(stateHide);
+	else if (F && !H && I)  	SetState(stateAttack); 
+	else if (F && !H && !I) 	SetState(stateAttack);
+//	else if (F && !H && I)  	SetState(stateDetour); 
+//	else if (F && !H && !I) 	SetState(stateHide);
 	else if (A && !K && !H)		SetState(stateExploreNDE);  // SetState(stateExploreDNE);  // слышу опасный звук, но не вижу, враг не выгодный		(ExploreDNE)
 	else if (A && !K && H)		SetState(stateExploreNDE);  // SetState(stateExploreDNE);	//SetState(stateExploreDE);	// слышу опасный звук, но не вижу, враг выгодный			(ExploreDE)		
 	else if (B && !K && !H)		SetState(stateExploreNDE);	// слышу не опасный звук, но не вижу, враг не выгодный	(ExploreNDNE)
@@ -220,35 +221,11 @@ void CAI_Flesh::CheckSpecParams(u32 spec_params)
 {
 
 	if ((spec_params & ASP_DRAG_CORPSE) == 	ASP_DRAG_CORPSE) MotionMan.SetCurAnim(eAnimDragCorpse);
-	//else if ((spec_params & ASP_STAND_SCARED) == ASP_STAND_SCARED) MotionMan.SetCurAnim(eAnimStandDamaged);
 
 	if ((spec_params & ASP_CHECK_CORPSE) == ASP_CHECK_CORPSE) {
 		MotionMan.Seq_Add(eAnimCheckCorpse);
 		MotionMan.Seq_Switch();
 	}
-
-	EMotionAnim cur_anim = MotionMan.GetCurAnim();
-	bool bDamaged = (GetHealth() < 0.5f);
-
-	if (cur_anim == eAnimStandIdle && bDamaged) MotionMan.SetCurAnim(eAnimStandDamaged);
-
-	
-	
-//	if (IsMovingOnPath()) {
-//		u32 velocity_index = CDetailPathManager::path()[curr_travel_point_index()].velocity;
-//
-//		switch (velocity_index) {
-//		case eMovementParameterStand:
-//
-//			break;
-//		case eMovementParameterWalkFree:
-//			MotionMan.SetCurAnim(eAnimWalkFwd);
-//			break;
-//		case eMovementParameterRunFree:
-//			MotionMan.SetCurAnim(eAnimWalkFwd);
-//			break;
-//		}
-//	}
 }
 
 

@@ -82,6 +82,10 @@ void CAI_Biting::Think()
 	PreprocessAction();
 	MotionMan.ProcessAction();
 	
+//	if (IsMovingOnPath()) {
+//		UpdateVelocities();
+//	}
+
 	SetVelocity();
 
 #pragma todo("Dima to Jim : This method will be automatically removed after 22.12.2003 00:00")
@@ -113,8 +117,18 @@ void CAI_Biting::SetVelocity()
 		R_ASSERT(it != m_movement_params.end());
 
 		m_fCurSpeed		= (*it).second.linear_velocity;
-		m_body.speed	= 2*(*it).second.angular_velocity;
+		m_body.speed	= (*it).second.angular_velocity;
+
+//		m_fCurSpeed		= 6.0f;
+//		m_body.speed	= 3.14f;
+
+//		m_fCurSpeed		= velocities[curr_travel_point_index()].linear_velocity;
+//		m_body.speed	= PI_DIV_2;
+
 	} else m_fCurSpeed	= 0;	
+
+
+
 }
 
 // В зависимости от маршрута - изменить Action
@@ -147,6 +161,99 @@ void CAI_Biting::PreprocessAction()
 			}
 		}
 	}
+}
+
+void CAI_Biting::UpdateVelocities()
+{
+	// заполнить вектор velocities
+	velocities.clear();
+	velocities.reserve(CDetailPathManager::path().size());
+
+	for (u32 i=0; i<CDetailPathManager::path().size(); i++) {
+		xr_map<u32,STravelParams>::const_iterator it = m_movement_params.find(CDetailPathManager::path()[i].velocity);
+		R_ASSERT(it != m_movement_params.end());
+		
+		velocities.push_back(it->second);
+	}
+
+	u32	start_point_index	= 0;
+	u32	end_point_index		= 0;		// индекс последнего валидного элемента
+	u32 cur_point_index		= 0;
+
+	
+	while (true) {							// цикл для всего пути
+
+		xr_vector<u32>	section;			// индексы в массиве скоростей
+		bool			b_path_end			= false;
+		bool			b_velocity_changed	= false;
+		section.clear						();
+		
+		start_point_index					= cur_point_index;
+		STravelParams	start_velocity		= velocities[start_point_index];
+		STravelParams	end_velocity;
+
+		while (true) {							// цикл для текущего участка
+			cur_point_index++;
+
+			if (cur_point_index >= velocities.size()) {
+				b_path_end = true;
+				break;
+			}
+
+			STravelParams	new_velocity = velocities[cur_point_index];
+
+			// если новая скорость не равна предыдущей
+			if ((new_velocity.linear_velocity != start_velocity.linear_velocity ) || 
+				(new_velocity.angular_velocity != start_velocity.angular_velocity )) {
+
+				b_velocity_changed = true;
+				break;
+			}
+			
+			section.push_back(cur_point_index);			
+		}
+
+		end_point_index = cur_point_index-1;
+
+		if (b_path_end)			end_velocity = STravelParams(0.f,0.f);
+		if (b_velocity_changed) end_velocity = velocities[cur_point_index];
+		
+		// интерполяция текущей секции
+		if (section.size() < 2) break;
+
+		// найти дистанцию текущей секции
+		float D = 0.f;
+		for (u32 i=start_point_index; i<end_point_index; i++) 
+			D += CDetailPathManager::path()[i].position.distance_to(CDetailPathManager::path()[i+1].position);
+		
+
+		STravelParams from	= start_velocity;
+		STravelParams to	= end_velocity;
+		STravelParams new_vel;
+
+		float dist;
+
+		for (u32 j = start_point_index; j < end_point_index; j++) {
+			dist	= CDetailPathManager::path()[j].position.distance_to(CDetailPathManager::path()[j+1].position) / D;
+
+			new_vel.linear_velocity = from.linear_velocity + (to.linear_velocity - from.linear_velocity) * dist;
+			new_vel.angular_velocity = from.angular_velocity + (to.angular_velocity - from.angular_velocity) * dist;
+	
+			velocities[j] = new_vel;
+
+			from = new_vel;
+		}
+
+		if (b_path_end) break;		
+	}
+
+	LOG_EX("----------------- VELOCITIES --------------------");
+	for (int i=0;i<velocities.size();i++) {
+		LOG_EX2("V%u = [%f]", *"*/ i+1, velocities[i].linear_velocity /*"*);
+	}
+	LOG_EX("-------------------------------------------------");
+	
+
 }
 
 

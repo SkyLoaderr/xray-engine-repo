@@ -150,7 +150,7 @@ BOOL CGameObject::net_Spawn		(LPVOID	DC)
 
 			// validating position
 			if (UsedAI_Locations())
-				Position().y		= ai().level_graph().vertex_plane_y(*level_vertex(),Position().x,Position().z);
+				Position().y		= EPS_L + ai().level_graph().vertex_plane_y(*level_vertex(),Position().x,Position().z);
 		
 		}
 		inherited::net_Spawn	(DC);

@@ -17,6 +17,7 @@
 #include "../ai_monster_share.h"
 #include "../../path_manager_level_selector.h"
 
+
 // flags
 #define FLAG_ENEMY_DIE					( 1 << 0 )
 #define FLAG_ENEMY_LOST_SIGHT			( 1 << 1 )
@@ -377,6 +378,11 @@ public:
 	void Path_CommonSelector	(CEntity *pE, Fvector position);
 
 	Fvector	RandomPosInR(const Fvector &p, float r);
+
+	void			UpdateVelocities();
+	
+	xr_vector<STravelParams> velocities;
+
 };
 
 

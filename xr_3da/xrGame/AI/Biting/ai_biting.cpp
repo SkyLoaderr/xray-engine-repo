@@ -215,13 +215,13 @@ BOOL CAI_Biting::net_Spawn (LPVOID DC)
 	m_PhysicMovementControl.SetPosition	(Position());
 	m_PhysicMovementControl.SetVelocity	(0,0,0);
 
-	m_movement_params.insert(std::make_pair(eVelocityParameterStand,		STravelParams(0.f,						_sd->m_fsTurnNormalAngular	/ 2)));
-	m_movement_params.insert(std::make_pair(eVelocityParameterWalkNormal,	STravelParams(_sd->m_fsWalkFwdNormal,	_sd->m_fsWalkAngular		/ 2)));
-	m_movement_params.insert(std::make_pair(eVelocityParameterRunNormal,	STravelParams(_sd->m_fsRunFwdNormal,	_sd->m_fsRunAngular			/ 2 )));
-	m_movement_params.insert(std::make_pair(eVelocityParameterWalkDamaged,	STravelParams(_sd->m_fsWalkFwdDamaged,	_sd->m_fsWalkAngular		/ 2)));
-	m_movement_params.insert(std::make_pair(eVelocityParameterRunDamaged,	STravelParams(_sd->m_fsRunFwdDamaged,	_sd->m_fsRunAngular			/ 2)));
-	m_movement_params.insert(std::make_pair(eVelocityParameterSteal,		STravelParams(_sd->m_fsSteal,			_sd->m_fsWalkAngular		/ 2 )));
-	m_movement_params.insert(std::make_pair(eVelocityParameterDrag,			STravelParams(_sd->m_fsDrag,			_sd->m_fsWalkAngular		/ 2 )));
+	m_movement_params.insert(std::make_pair(eVelocityParameterStand,		STravelParams(0.f,						_sd->m_fsTurnNormalAngular	)));
+	m_movement_params.insert(std::make_pair(eVelocityParameterWalkNormal,	STravelParams(_sd->m_fsWalkFwdNormal,	_sd->m_fsWalkAngular		)));
+	m_movement_params.insert(std::make_pair(eVelocityParameterRunNormal,	STravelParams(_sd->m_fsRunFwdNormal,	_sd->m_fsRunAngular			)));
+	m_movement_params.insert(std::make_pair(eVelocityParameterWalkDamaged,	STravelParams(_sd->m_fsWalkFwdDamaged,	_sd->m_fsWalkAngular		)));
+	m_movement_params.insert(std::make_pair(eVelocityParameterRunDamaged,	STravelParams(_sd->m_fsRunFwdDamaged,	_sd->m_fsRunAngular			)));
+	m_movement_params.insert(std::make_pair(eVelocityParameterSteal,		STravelParams(_sd->m_fsSteal,			_sd->m_fsWalkAngular		)));
+	m_movement_params.insert(std::make_pair(eVelocityParameterDrag,			STravelParams(_sd->m_fsDrag,			_sd->m_fsWalkAngular		)));
 
 	return(TRUE);
 }

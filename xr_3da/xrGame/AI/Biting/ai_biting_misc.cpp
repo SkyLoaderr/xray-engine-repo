@@ -271,6 +271,8 @@ bool CAI_Biting::bfAssignMovement (CEntityAction *tpEntityAction)
 	PreprocessAction();
 	MotionMan.ProcessAction();
 
+	//if (IsMovingOnPath()) UpdateVelocities();
+	
 	SetVelocity();
 
 #pragma todo("Dima to Jim : This method will be automatically removed after 22.12.2003 00:00")

@@ -131,10 +131,17 @@ void CBitingAttack::Run()
 		m_tAction = ACTION_WALK_ANGRY_AROUND;
 	}
 
+	static TTime test_interval = 0;
+
 	// Выполнение состояния
 	switch (m_tAction) {	
 		case ACTION_RUN:		 // бежать на врага
-			pMonster->MoveToTarget(m_tEnemy.obj, pMonster->eVelocityParamsRun, pMonster->eVelocityParameterWalkNormal | pMonster->eVelocityParameterStand | pMonster->eVelocityParameterRunNormal);
+			
+			DO_IN_TIME_INTERVAL_BEGIN(test_interval,500);
+				// pMonster->MoveToTarget(m_tEnemy.obj, pMonster->eVelocityParamsRun, pMonster->eVelocityParameterWalkNormal | pMonster->eVelocityParameterStand | pMonster->eVelocityParameterRunNormal);
+				pMonster->MoveToTarget(m_tEnemy.obj, pMonster->eVelocityParameterRunNormal | pMonster->eVelocityParameterStand, pMonster->eVelocityParameterRunNormal);
+			DO_IN_TIME_INTERVAL_END();
+
 			pMonster->MotionMan.m_tAction = ACT_RUN;
 			break;
 		case ACTION_ATTACK_MELEE:		// атаковать вплотную
@@ -265,6 +272,5 @@ Fvector CBitingAttack::RandomPos(Fvector pos, float R)
 void CBitingAttack::WalkAngrySubState()
 {
 	// workout this state
-	
 }
 
