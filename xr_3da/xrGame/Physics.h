@@ -36,12 +36,18 @@ class CPHJeep {
 	dGeomID Geoms[NofGeoms];
 	dJointID Joints[NofJoints];
 	dVector3 startPosition;
-	bool weels_limited;
+	bool	 weels_limited;
+	bool	 bActive;
 	void CreateDynamicData();
 public:
-	CPHJeep(){weels_limited=true;}
+	CPHJeep()
+	{
+		weels_limited=true;
+		bActive=false;
+	}
 
 	void applyImpulseTrace		(int part,const Fvector& pos, const Fvector& dir, float val){
+	if(!bActive) return;
 	val/=fixed_step;
 	if(part<0||part>NofBodies-1) return;
 	Fvector body_pos;
@@ -65,8 +71,13 @@ public:
 	void NeutralDrive();
 	void JointTune(dReal step);
 	void Revert();
-	void SetStartPosition(Fvector pos){dBodySetPosition(Bodies[0],pos.x,pos.y,pos.z);}
+	void SetStartPosition(Fvector pos)
+	{
+		if(!bActive) return;
+		dBodySetPosition(Bodies[0],pos.x,pos.y,pos.z);
+	}
 	void SetPosition(Fvector pos){
+		if(!bActive) return;
 		const dReal* currentPos=dBodyGetPosition(Bodies[0]);	
 		Fvector v={pos.x-currentPos[0],pos.y-currentPos[1],pos.z-currentPos[2]};
 		dBodySetPosition(Bodies[0],pos.x,pos.y,pos.z);
@@ -77,6 +88,7 @@ public:
 		}
 	}
 	void SetRotation(dReal* R){
+		if(!bActive) return;
 		const dReal* currentPos0=dBodyGetPosition(Bodies[0]);	
 		const dReal* currentR=dBodyGetRotation(Bodies[0]);
 		dMatrix3 relRot;
@@ -101,6 +113,13 @@ public:
 		
 	}
 	Fvector GetVelocity(){
+
+		if(!bActive) 
+		{
+			Fvector ret;
+			ret.set(0,0,0);
+			return ret;
+		}
 		Fvector ret;
 		const dReal* vel=dBodyGetLinearVel(Bodies[0]);
 		ret.x=vel[0];
@@ -298,8 +317,9 @@ public:
 	virtual void			SetMaterial				(u32 m){ul_material=m;}
 	virtual void			SetMaterial				(LPCSTR m){ul_material=GMLib.GetMaterialIdx(m);}
 	virtual void			Activate				(const Fmatrix& m0, float dt01, const Fmatrix& m2,bool disable=false);
-	virtual void			Activate				(const Fmatrix &transform,const Fvector& lin_vel,const Fvector& ang_vel);
-	virtual void			Activate				();
+	virtual void			Activate				(const Fmatrix &transform,const Fvector& lin_vel,const Fvector& ang_vel,bool disable=false);
+	virtual void			Activate				(bool place_current_forms=false,bool disable=false);
+			void			Activate				(const Fmatrix& start_from, bool disable=false);
 	virtual void			Deactivate				();
 	virtual void			setMass					(float M);
 	virtual void			applyForce				(const Fvector& dir, float val){
@@ -483,8 +503,8 @@ public:
 	virtual void			Update					()	;											
 
 	virtual void			Activate				(const Fmatrix& m0, float dt01, const Fmatrix& m2,bool disable=false);
-	virtual void			Activate				(const Fmatrix &transform,const Fvector& lin_vel,const Fvector& ang_vel);
-	virtual void			Activate				();
+	virtual void			Activate				(const Fmatrix &transform,const Fvector& lin_vel,const Fvector& ang_vel,bool disable=false);
+	virtual void			Activate				(bool place_current_forms=false,bool disable=false);
 	virtual void			Deactivate				()		;
 
 	virtual void			setMass					(float M)									;

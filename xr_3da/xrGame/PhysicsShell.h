@@ -18,8 +18,8 @@ public:
 	float					fDesiredStrength;		// Desire strength, [0..1]%
 public:
 	virtual void			Activate				(const Fmatrix& m0, float dt01, const Fmatrix& m2,bool disable=false)		= 0;
-	virtual void			Activate				(const Fmatrix &transform,const Fvector& lin_vel,const Fvector& ang_vel)	= 0;
-	virtual void			Activate				()																			= 0;
+	virtual void			Activate				(const Fmatrix &transform,const Fvector& lin_vel,const Fvector& ang_vel,bool disable=false)	= 0;
+	virtual void			Activate				(bool  place_current_forms=false,bool disable=false)																			= 0;
 
 	virtual void			Deactivate				()											= 0;
 	virtual void			Enable					()											= 0;

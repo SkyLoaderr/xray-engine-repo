@@ -20,6 +20,27 @@ private:
 	CActor*					m_owner;
 	Fmatrix					fmPosDriver;
 	Fvector					m_vCamDeltaHP;
+////////////////////////////////////////////////////
+bool  Breaks;
+int   DriveDirection;
+float DriveVelocity;
+float DriveForce;
+float VelocityRate;
+CPhysicsJoint* weels[4];
+////////////////////////////////////////////////////
+void Steer(const char& steering);
+float GetSteerAngle();
+void LimitWeels();
+void Drive(const char& velocity,dReal force=500.f);
+void Drive();
+void NeutralDrive();
+void JointTune(dReal step);
+void Revert();
+void SetStartPosition(Fvector pos){}
+void SetPosition(Fvector pos){}
+void SetRotation(dReal* R){}
+Fvector GetVelocity(){}
+////////////////////////////////////////////////////
 
 	void					OnCameraChange		(int type);
 	
@@ -30,7 +51,7 @@ private:
 	bool					HUDview				( ) { return IsFocused(); }
 	
 	void					ActivateJeep		();
-	void					ActivateShell		();
+	void					CreateShell			();
 
 	static void __stdcall	cb_WheelFL			(CBoneInstance* B);
 	static void __stdcall	cb_WheelFR			(CBoneInstance* B);

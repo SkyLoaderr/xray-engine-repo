@@ -101,7 +101,7 @@ void CPHMesh ::Destroy(){
 ///////////////////////////////////////////////////////////////////////////
 
 void CPHJeep::Create1(dSpaceID space, dWorldID world){
-	
+	if(bActive) return;
 	static const dReal scaleParam=1.f;
 	static const dVector3 scaleBox={scaleParam, scaleParam, scaleParam};
 	//jeepBox={scaleBox[0],scaleBox[0],scaleBox[0]};
@@ -199,12 +199,12 @@ void CPHJeep::Create1(dSpaceID space, dWorldID world){
 
 	//dynamic data
 CreateDynamicData();
-
+bActive=true;
 }
 
 /////////////////////////////////////////////////////////////////////////////
 void CPHJeep::Create(dSpaceID space, dWorldID world){
-	
+	if(bActive) return;
 	static const dReal scaleParam=1.f;
 	static const dVector3 scaleBox={scaleParam, scaleParam, scaleParam};
 	//jeepBox={scaleBox[0],scaleBox[0],scaleBox[0]};
@@ -329,7 +329,7 @@ void CPHJeep::Create(dSpaceID space, dWorldID world){
 
 	//dynamic data
 CreateDynamicData();
-
+bActive=true;
 }
 ////////////////////////////////////////////////////////////////
 void CPHJeep::JointTune(dReal step){
@@ -353,6 +353,7 @@ const	dReal k_d=1000.f;//1000.f;
 }
 /////////
 void CPHJeep::Destroy(){
+	if(!bActive) return;
 	for(u32 i=0;i<NofGeoms;i++) dGeomDestroyUserData(Geoms[i]);
 	DynamicData.Destroy();
 	
@@ -372,11 +373,12 @@ void CPHJeep::Destroy(){
 	dGeomDestroy(Geoms[7]);
 	dGeomDestroy(GeomsGroup);
 
-
+	bActive=false;
 }
 
 void CPHJeep::Steer1(const char& velocity, const char& steering)
 {
+	if(!bActive) return;
 	static const dReal steeringRate = M_PI * 4 / 3;
 	static const dReal steeringLimit = M_PI / 6;
 	static const dReal wheelVelocity = 1.f * M_PI;
@@ -452,6 +454,7 @@ DynamicData.SetZeroTransform(Translate);
 
 void CPHJeep::Steer(const char& steering)
 {
+	if(!bActive) return;
 	static const dReal steeringRate = M_PI * 4 / 5;
 	static const dReal steeringLimit = M_PI / 4;
 	
@@ -497,6 +500,7 @@ void CPHJeep::Steer(const char& steering)
 
 void CPHJeep::LimitWeels()
 {
+if(!bActive) return;
 if(weels_limited) return;
 
 	for(int i = 2; i < 4; ++i)
@@ -516,6 +520,7 @@ if(weels_limited) return;
 ////////////////////////////////////////////////////////////////
 void CPHJeep::Drive(const char& velocity,dReal force)
 {
+	if(!bActive) return;
 
 	static const dReal wheelVelocity = 12.f * M_PI;//3*18.f * M_PI;
 	ULONG i;
@@ -603,6 +608,7 @@ if(!Breaks)
 }
 /////////////////////////////////////////
 void CPHJeep::NeutralDrive(){
+if(!bActive) return;
 	//////////////////
 	for(u32 i = 0; i < 4; ++i){
 			dJointSetHinge2Param(Joints[i], dParamFMax2, 10);
@@ -611,6 +617,7 @@ void CPHJeep::NeutralDrive(){
 }
 //////////////////////////////////////////////////////////
 void CPHJeep::Revert(){
+if(!bActive) return;
 dBodyAddForce(Bodies[0], 0, 2*9000, 0);
 dBodyAddRelTorque(Bodies[0], 300, 0, 0);
 }
@@ -770,6 +777,7 @@ dContact contacts[N];
 											contacts[i].surface.soft_erp=1.f;//ERP(world_spring,world_damping);
 											contacts[i].surface.soft_cfm=1.f;//CFM(world_spring,world_damping);
 											contacts[i].surface.bounce = 0.01f;//0.1f;
+											contacts[i].surface.mode=0;
 											}
 
 
@@ -1203,6 +1211,13 @@ dBodySetPosition(m_body,mc.x,mc.y,mc.z);
 
 void CPHElement::RunSimulation()
 {
+	if(m_phys_ref_object)
+	{
+		vector<dGeomID>::iterator i;
+		for(i=m_geoms.begin();i!=m_geoms.end();i++)
+			dGeomUserDataSetPhysicsRefObject(*i,m_phys_ref_object);
+	}
+
 if(m_group)
 dSpaceAdd(m_shell->GetSpace(),m_group);
 else
@@ -1411,12 +1426,7 @@ void		CPHElement::Start(){
 	//mXFORM.set(m0);
 	build(m_space);
 	RunSimulation();
-	if(m_phys_ref_object)
-	{
-		vector<dGeomID>::iterator i;
-		for(i=m_geoms.begin();i!=m_geoms.end();i++)
-			dGeomUserDataSetPhysicsRefObject(*i,m_phys_ref_object);
-	}
+
 	//dBodySetPosition(m_body,m_m0.c.x,m_m0.c.y,m_m0.c.z);
 	//Fmatrix33 m33;
 	//m33.set(m_m0);
@@ -1478,13 +1488,13 @@ void CPHShell::Activate(const Fmatrix &m0,float dt01,const Fmatrix &m2,bool disa
 														//(*i)->SetTransform(m0);
 														(*i)->Activate(m0,dt01, m2, disable);
 			}
-	SetPhObjectInElements();
+	//SetPhObjectInElements();
 	bActive=true;
 }
 
 
 
-void CPHShell::Activate(const Fmatrix &transform,const Fvector& lin_vel,const Fvector& ang_vel){
+void CPHShell::Activate(const Fmatrix &transform,const Fvector& lin_vel,const Fvector& ang_vel,bool disable){
 	if(bActive)
 		return;
 	m_ident=ph_world->AddObject(this);
@@ -1499,7 +1509,7 @@ void CPHShell::Activate(const Fmatrix &transform,const Fvector& lin_vel,const Fv
 		//(*i)->SetTransform(m0);
 		(*i)->Activate(transform,lin_vel, ang_vel);
 	}
-	SetPhObjectInElements();
+	//SetPhObjectInElements();
 	bActive=true;
 }
 
@@ -1548,7 +1558,7 @@ void CPHElement::Activate(const Fmatrix &m0,float dt01,const Fmatrix &m2,bool di
 	bActive=true;
 }
 
-void CPHElement::Activate(const Fmatrix &transform,const Fvector& lin_vel,const Fvector& ang_vel){
+void CPHElement::Activate(const Fmatrix &transform,const Fvector& lin_vel,const Fvector& ang_vel,bool disable){
 	mXFORM.set(transform);
 	Start();
 	SetTransform(transform);
@@ -1591,7 +1601,7 @@ void CPHElement::Activate(const Fmatrix &transform,const Fvector& lin_vel,const 
 
 	m_body_interpolation.SetBody(m_body);
 	//previous_f[0]=dInfinity;
-	//if(disable) dBodyDisable(m_body);
+	if(disable) dBodyDisable(m_body);
 	bActive=true;
 }
 
@@ -2144,7 +2154,7 @@ void CPHElement::DynamicAttach(CPHElement* E)
 
 }
 
-void CPHShell::Activate(){
+void CPHShell::Activate(bool place_current_forms,bool disable){
 	if(bActive)
 		return;
 	m_ident=ph_world->AddObject(this);
@@ -2162,30 +2172,17 @@ void CPHShell::Activate(){
 														(*i)->Activate();
 										
 			}
-		SetPhObjectInElements();/////////////////////////////////////////////////////////////////////
+	//SetPhObjectInElements();/////////////////////////////////////////////////////////////////////
 	bActive=true;
 	bActivating=true;
 }
-void CPHElement::Activate(){
-	//mXFORM.set(m0);
-	Start();
-	//SetTransform(m0);
-	//i=elements.begin();
-	//m_body=(*i)->get_body();
-	//m_inverse_local_transform.set((*i)->m_inverse_local_transform);
-	//Fmatrix33 m33;
-	//Fmatrix m,m1;
-	//m1.set(m0);
-	//m1.identity();
-	//m1.invert();
-	//m.mul(m1,m2);
-	//m.mul(1.f/dt01);
-	//m33.set(m);
-	//dMatrix3 R;
-	//PHDynamicData::FMX33toDMX(m33,R);
-	//dBodySetLinearVel(m_body,m2.c.x-m0.c.x,m2.c.y-m0.c.y,m2.c.z-m0.c.z);
-	//dBodySetPosition(m_body,m0.c.x,m0.c.y+1.,m0.c.z);
+void CPHElement::Activate(bool place_current_forms,bool disable){
 
+	Start();
+	if(place_current_forms)
+	{
+	SetTransform(mXFORM);
+	}
 	Memory.mem_copy(m_safe_position,dBodyGetPosition(m_body),sizeof(dVector3));
 	Memory.mem_copy(m_safe_velocity,dBodyGetLinearVel(m_body),sizeof(dVector3));
 
@@ -2200,11 +2197,38 @@ void CPHElement::Activate(){
 
 	m_body_interpolation.SetBody(m_body);
 	//previous_f[0]=dInfinity;
-//	if(disable) dBodyDisable(m_body);
+	if(disable) dBodyDisable(m_body);
 
 
 }
 
+void CPHElement::Activate(const Fmatrix& start_from,bool disable){
+
+	Start();
+//	if(place_current_forms)
+	{
+		Fmatrix globe;
+		globe.mul(mXFORM,start_from);
+		SetTransform(globe);
+	}
+	Memory.mem_copy(m_safe_position,dBodyGetPosition(m_body),sizeof(dVector3));
+	Memory.mem_copy(m_safe_velocity,dBodyGetLinearVel(m_body),sizeof(dVector3));
+
+
+	//////////////////////////////////////////////////////////////
+	//initializing values for disabling//////////////////////////
+	//////////////////////////////////////////////////////////////
+
+	previous_p[0]=dInfinity;
+	previous_r[0]=0.f;
+	dis_count_f=0;
+
+	m_body_interpolation.SetBody(m_body);
+	//previous_f[0]=dInfinity;
+	if(disable) dBodyDisable(m_body);
+
+
+}
 void CPHJoint::CreateBall()
 {
 
@@ -3182,6 +3206,7 @@ dBodyGetMass(b,&m);
 
 float CPHJeep::GetSteerAngle()
 {
+	if(!bActive) return 0;
 	return dJointGetHinge2Angle1 (Joints[2]);
 }
 

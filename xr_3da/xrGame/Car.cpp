@@ -27,6 +27,18 @@ CCar::CCar(void)
 
 	m_repairing		=false;
 	m_owner			=NULL;
+
+	///////////////////////////////
+	//////////////////////////////
+	/////////////////////////////
+	VelocityRate=3.f;
+	DriveForce=0;
+	DriveVelocity=12.f * M_PI;
+	DriveDirection=0;
+	Breaks=false;
+	///////////////////////////////
+	//////////////////////////////
+	/////////////////////////////
 }
 
 CCar::~CCar(void)
@@ -460,7 +472,10 @@ void CCar::ActivateJeep()
 	 ///clTransform.set					( m_jeep.DynamicData.BoneTransform	);
 }
 
-void CCar::ActivateShell()
+void CCar::CreateShell()
 {
-
+m_pPhysicsShell=P_create_Shell();
+//m_pPhysicsShell->
 }
+
+//void CCar::S
