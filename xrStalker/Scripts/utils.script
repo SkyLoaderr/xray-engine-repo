@@ -323,6 +323,7 @@ function path_parse_waypoints(pathname)
 		return nil
 	end
 
+	printf("_bp: path_parse_waypoints: pathname='%s'", pathname)
 	local ptr = patrol(pathname)
 	local cnt = ptr:count()
 	local rslt = {}
@@ -437,14 +438,12 @@ function no_need_to_rotate(npc, target_pos)
 	return y < 0.3
 end
 
-function ini_file(npc, filename)
+function get_customdata_or_ini_file(npc, filename)
 	if filename == "<customdata>" then
 		local ini = npc:spawn_ini()
 		if ini then
 			return ini
 		end
---ini_file([[scripts\dummy]]) FIXME
---		abort("zzz")
 		return ini_file([[scripts\dummy.ltx]])
 	else
 		return ini_file(filename)
