@@ -174,10 +174,10 @@ void CBuild::ImplicitLighting()
 	for (vecFaceIt I=g_faces.begin(); I!=g_faces.end(); I++)
 	{
 		Face* F = *I;
-		if (F->pDeflector)	continue;
-		if (!hasImplicitLighting(F)) continue;
+		if (F->pDeflector)				continue;
+		if (!hasImplicitLighting(F))	continue;
 		
-		Progress (float(I-g_faces.begin())/float(g_faces.size()));
+		Progress		(float(I-g_faces.begin())/float(g_faces.size()));
 		b_material&		M	= materials		[F->dwMaterial];
 		u32				Tid = M.surfidx;
 		b_BuildTexture*	T	= &(textures[Tid]);
@@ -211,6 +211,7 @@ void CBuild::ImplicitLighting()
 		for (u32 fid=0; fid<defl.faces.size(); fid++)
 		{
 			Face* F				= defl.faces[fid];
+			F->AddChannel		(F->tc[0].uv[0],F->tc[0].uv[1],F->tc[0].uv[2]); // make compatible format with LMAPs
 			defl.Bounds			(fid,bounds);
 			ImplicitHash->add	(bounds,F);
 		}
