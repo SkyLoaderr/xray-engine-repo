@@ -34,8 +34,10 @@ protected:
 	Shader*			hUIIcon;
 	float			fWallmarkSize;
 
-	int				iAmmoLimit;
-	int				iAmmoElapsed;
+	int				iMagazineSize;		// ammo in magazine, maximal
+	int				iMagazineCount;		// number of magazines left
+	int				iMagazineCountLimit;// number of magazines max
+	int				iAmmoElapsed;		// ammo in magazine, currently
 	float			fTimeToFire;
 	int				iHitPower;
 
