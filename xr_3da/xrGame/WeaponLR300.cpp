@@ -84,6 +84,7 @@ void CWeaponLR300::switch2_Empty	(BOOL bHUDView)
 }
 void CWeaponLR300::switch2_Reload(BOOL bHUDView)
 {
+	pSounds->Play3DAtPos	(sndReload,vLastFP);
 }
 void CWeaponLR300::OnShot		(BOOL bHUDView)
 {

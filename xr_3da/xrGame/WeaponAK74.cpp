@@ -84,6 +84,7 @@ void CWeaponAK74::switch2_Empty	(BOOL bHUDView)
 }
 void CWeaponAK74::switch2_Reload(BOOL bHUDView)
 {
+	pSounds->Play3DAtPos	(sndReload,vLastFP);
 }
 void CWeaponAK74::OnShot		(BOOL bHUDView)
 {
