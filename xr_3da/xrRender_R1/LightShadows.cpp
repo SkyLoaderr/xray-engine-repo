@@ -280,15 +280,15 @@ void CLightShadows::calculate	()
 			
 			// register shadow and increment slot
 			shadows.push_back	(shadow());
-#ifdef DEBUG
-			shadows.back().dbg_O	=	C.O;
-			shadows.back().dbg_HAT	=	p_hat;
-#endif
+			shadows.back().O	=	C.O;
 			shadows.back().slot	=	slot_id;
 			shadows.back().C	=	C.C;
 			shadows.back().M	=	mCombineR;
 			shadows.back().L	=	L.source;
 			shadows.back().E	=	L.energy;
+#ifdef DEBUG
+			shadows.back().dbg_HAT	=	p_hat;
+#endif
 			slot_id	++;
 		}
 	}
@@ -325,7 +325,7 @@ void CLightShadows::calculate	()
 
 #define CLS(a)	color_rgba	(a,a,a,a)
 
-IC	bool		cache_search(const cache_item& A, const cache_item& B)
+IC	bool		cache_search(const CLightShadows::cache_item& A, const CLightShadows::cache_item& B)
 {
 	if (A.O < B.O)	return true;
 	if (A.O > B.O)	return false;
@@ -379,7 +379,7 @@ void CLightShadows::render	()
 			CI		= &*CI_ptr;
 			bValid	= FALSE;
 		} else {
-			if (CI_ptr->O != CI_what.O  || CI_ptr->L != CI_what->L)	
+			if (CI_ptr->O != CI_what.O  || CI_ptr->L != CI_what.L)	
 			{	// we found something different
 				CI_ptr	= cache.insert		(CI_ptr,CI_what);
 				CI		= &*CI_ptr;
@@ -388,8 +388,8 @@ void CLightShadows::render	()
 				// Everything, OK. Check if info is still relevant...
 				CI		= &*CI_ptr;
 				bValid	= TRUE;
-				if (!fsimilar(CI->O->renderable.xform.c,CI->Op))	bValid = FALSE;
-				else if (!fsimilar(CI->L->position,		CI->Lp))	bValid = FALSE;
+				if (!CI->Op.similar(CI->O->renderable.xform.c))	bValid = FALSE;
+				else if (!CI->Lp.similar(CI->L->position))		bValid = FALSE;
 			}
 		}
 		CI->time				= Device.dwTimeGlobal;	// acess time
