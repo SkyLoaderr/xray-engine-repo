@@ -120,7 +120,7 @@ function main ()
 
 	t[2]:set_callback (m_attack_wave.boar_callback, game_object.movement)
 
-	wait (10000)
+	wait (60000)
 
 
 	for a = 1, 13, 1 do
@@ -146,7 +146,7 @@ function main ()
 			end
 		end	
 		
-		if device():time_global () - ctime > 500 then
+		if device():time_global () - ctime > 600 then
 		   ctime =  device():time_global ()
 		   local nz = 0
 		   local pass = 0
