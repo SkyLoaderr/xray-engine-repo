@@ -10,9 +10,9 @@
 
 #include "level_graph.h"
 
-#ifdef AI_COMPILER
-#	define OPTIMAL_GRAPH
-#endif
+//#ifdef AI_COMPILER
+//#	define OPTIMAL_GRAPH
+//#endif
 
 namespace LevelNavigationGraph {
 	struct CCellVertex;

@@ -620,8 +620,6 @@ IC	void CLevelNavigationGraph::generate_sectors()
 	}
 	finish					= CPU::GetCycleCount();
 	Msg						("* Building sectors (%f seconds)",CPU::cycles2seconds*float(finish - start));
-
-	Msg						("nodes %d, vertices %d",m_global_count,sectors().vertex_count());
 }
 
 IC	void CLevelNavigationGraph::generate_edges	()
