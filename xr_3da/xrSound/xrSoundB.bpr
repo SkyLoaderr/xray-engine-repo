@@ -34,7 +34,7 @@
     <DEBUGLIBPATH value="$(BCB)\lib\debug"/>
     <RELEASELIBPATH value="$(BCB)\lib\release"/>
     <LINKER value="ilink32"/>
-    <USERDEFINES value="_EDITOR;_XRSOUNDB;XRSOUND_EXPORTS;_DEBUG"/>
+    <USERDEFINES value="_EDITOR;_XRSOUNDB;XRSOUND_EXPORTS"/>
     <SYSDEFINES value="NO_STRICT;_RTLDLL;USEPACKAGES"/>
     <MAINSOURCE value="xrSoundB.bpf"/>
     <INCLUDEPATH value="R:\SDK\DirectX9.0\include;$(BCB)\include;$(BCB)\include\vcl;P:\MagicFM_Borland\Sdk\Include;R:\Borland\Components6\AlexMX;R:\Borland\Components6\ElPack\Code\Source;R:\VS7.NET\Vc7\atlmfc\include;P:\xrCore;R:\SDK\ogg\ogg\include;R:\SDK\ogg\vorbis\include"/>
@@ -48,13 +48,13 @@
       -IR:\Borland\Components6\ElPack\Code\Source 
       -IR:\VS7.NET\Vc7\atlmfc\include -IP:\xrCore -IR:\SDK\ogg\ogg\include 
       -IR:\SDK\ogg\vorbis\include -src_suffix cpp -D_EDITOR -D_XRSOUNDB 
-      -DXRSOUND_EXPORTS -D_DEBUG -boa"/>
-    <CFLAG1 value="-WD -Od -H=$(BCB)\lib\vcl60.csm -Hc -Q -Vx -Ve -xf -xp -VF -ff -X- -r- -ps 
-      -a4 -6 -b- -k -y -v -vi- -tWD -tWM -c"/>
-    <PFLAGS value="-N2Intermediate -N0Intermediate -$Y+ -$W -$O- -$A8 -v -JPHNE -M"/>
+      -DXRSOUND_EXPORTS -boa"/>
+    <CFLAG1 value="-WD -O2 -H=$(BCB)\lib\vcl60.csm -Hc -Q -Vx -Ve -xf -xp -VF -ff -X- -ps -a4 
+      -6 -b- -k -vi -tWD -tWM -c"/>
+    <PFLAGS value="-N2Intermediate -N0Intermediate -$Y- -$L- -$D- -$A8 -v -JPHNE -M"/>
     <RFLAGS value=""/>
-    <AFLAGS value="/mu /w2 /zi"/>
-    <LFLAGS value="-IIntermediate -D&quot;&quot; -aa -Tpd -x -Gi -v"/>
+    <AFLAGS value="/mu /w2 /zn"/>
+    <LFLAGS value="-IIntermediate -D&quot;&quot; -aa -Tpd -x -Gi"/>
     <OTHERFILES value=""/>
   </OPTIONS>
   <LINKER>
@@ -81,6 +81,24 @@
       <FILE FILENAME="cl_collector.cpp" FORMNAME="" UNITNAME="cl_collector.cpp" CONTAINERID="CCompiler" DESIGNCLASS="" LOCALCOMMAND=""/>
       <FILE FILENAME="guids.cpp" FORMNAME="" UNITNAME="guids" CONTAINERID="CCompiler" DESIGNCLASS="" LOCALCOMMAND=""/>
       <FILE FILENAME="SoundRender_Cache.cpp" FORMNAME="" UNITNAME="SoundRender_Cache" CONTAINERID="CCompiler" DESIGNCLASS="" LOCALCOMMAND=""/>
+      <FILE FILENAME="Sound.h" FORMNAME="" UNITNAME="Sound.h" CONTAINERID="" DESIGNCLASS="" LOCALCOMMAND=""/>
+      <FILE FILENAME="xrLevel.h" FORMNAME="" UNITNAME="xrLevel.h" CONTAINERID="" DESIGNCLASS="" LOCALCOMMAND=""/>
+      <FILE FILENAME="cl_collector.h" FORMNAME="" UNITNAME="cl_collector.h" CONTAINERID="" DESIGNCLASS="" LOCALCOMMAND=""/>
+      <FILE FILENAME="cl_intersect.h" FORMNAME="" UNITNAME="cl_intersect.h" CONTAINERID="" DESIGNCLASS="" LOCALCOMMAND=""/>
+      <FILE FILENAME="FTimer.h" FORMNAME="" UNITNAME="FTimer.h" CONTAINERID="" DESIGNCLASS="" LOCALCOMMAND=""/>
+      <FILE FILENAME="MusicStream.h" FORMNAME="" UNITNAME="MusicStream.h" CONTAINERID="" DESIGNCLASS="" LOCALCOMMAND=""/>
+      <FILE FILENAME="SoundRender.h" FORMNAME="" UNITNAME="SoundRender.h" CONTAINERID="" DESIGNCLASS="" LOCALCOMMAND=""/>
+      <FILE FILENAME="soundrender_cache.h" FORMNAME="" UNITNAME="soundrender_cache.h" CONTAINERID="" DESIGNCLASS="" LOCALCOMMAND=""/>
+      <FILE FILENAME="SoundRender_Core.h" FORMNAME="" UNITNAME="SoundRender_Core.h" CONTAINERID="" DESIGNCLASS="" LOCALCOMMAND=""/>
+      <FILE FILENAME="SoundRender_Emitter.h" FORMNAME="" UNITNAME="SoundRender_Emitter.h" CONTAINERID="" DESIGNCLASS="" LOCALCOMMAND=""/>
+      <FILE FILENAME="SoundRender_Emitter_Params.h" FORMNAME="" UNITNAME="SoundRender_Emitter_Params.h" CONTAINERID="" DESIGNCLASS="" LOCALCOMMAND=""/>
+      <FILE FILENAME="SoundRender_Environment.h" FORMNAME="" UNITNAME="SoundRender_Environment.h" CONTAINERID="" DESIGNCLASS="" LOCALCOMMAND=""/>
+      <FILE FILENAME="soundrender_source.h" FORMNAME="" UNITNAME="soundrender_source.h" CONTAINERID="" DESIGNCLASS="" LOCALCOMMAND=""/>
+      <FILE FILENAME="SoundRender_Target.h" FORMNAME="" UNITNAME="SoundRender_Target.h" CONTAINERID="" DESIGNCLASS="" LOCALCOMMAND=""/>
+      <FILE FILENAME="stdafx.h" FORMNAME="" UNITNAME="stdafx.h" CONTAINERID="" DESIGNCLASS="" LOCALCOMMAND=""/>
+      <FILE FILENAME="xr_cda.h" FORMNAME="" UNITNAME="xr_cda.h" CONTAINERID="" DESIGNCLASS="" LOCALCOMMAND=""/>
+      <FILE FILENAME="xr_streamsnd.h" FORMNAME="" UNITNAME="xr_streamsnd.h" CONTAINERID="" DESIGNCLASS="" LOCALCOMMAND=""/>
+      <FILE FILENAME="xrCDB.h" FORMNAME="" UNITNAME="xrCDB.h" CONTAINERID="" DESIGNCLASS="" LOCALCOMMAND=""/>
   </FILELIST>
   <BUILDTOOLS>
   </BUILDTOOLS>
@@ -164,8 +182,8 @@ Item0=$(BCB)\source\vcl
 
 [HistoryLists\hlConditionals]
 Count=3
-Item0=_EDITOR;_XRSOUNDB;XRSOUND_EXPORTS;_DEBUG
-Item1=_EDITOR;_XRSOUNDB;XRSOUND_EXPORTS
+Item0=_EDITOR;_XRSOUNDB;XRSOUND_EXPORTS
+Item1=_EDITOR;_XRSOUNDB;XRSOUND_EXPORTS;_DEBUG
 Item2=_XRSOUNDB;XRSOUND_EXPORTS;_DEBUG
 
 [HistoryLists\hlIntOutputDir]
