@@ -14,6 +14,7 @@
 #define RGBA_GETRED(rgb)        (((rgb) >> 16) & 0xff)
 #define RGBA_GETGREEN(rgb)      (((rgb) >> 8) & 0xff)
 #define RGBA_GETBLUE(rgb)       ((rgb) & 0xff)
+#define ENGINE_BUILD
 
 #ifndef	NDEBUG
 #define X_TRY 
