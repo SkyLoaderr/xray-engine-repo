@@ -34,20 +34,29 @@ void CSE_ALifeTrader::script_register(lua_State *L)
 	];
 }
 
-void CSE_ALifeAnomalousZone::script_register(lua_State *L)
+void CSE_ALifeCustomZone::script_register(lua_State *L)
 {
 	module(L)[
-		luabind_class_alife3(
+		luabind_class_alife2(
 			CSE_ALifeAnomalousZone,
-			"cse_anomalous_zone",
+			"cse_custom_zone",
 			CSE_ALifeDynamicObject,
-			CSE_ALifeSchedulable,
 			CSE_Shape
 		)
 	];
 }
 
-
+void CSE_ALifeAnomalousZone::script_register(lua_State *L)
+{
+	module(L)[
+		luabind_class_alife2(
+			CSE_ALifeAnomalousZone,
+			"cse_anomalous_zone",
+			CSE_ALifeCustomZone,
+			CSE_ALifeSchedulable
+		)
+	];
+}
 
 void CSE_ALifeCreatureAbstract::script_register(lua_State *L)
 {

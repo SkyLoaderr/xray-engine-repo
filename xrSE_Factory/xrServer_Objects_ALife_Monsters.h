@@ -64,10 +64,20 @@ SERVER_ENTITY_DECLARE_END
 add_to_type_list(CSE_ALifeTrader)
 #define script_type_list save_type_list(CSE_ALifeTrader)
 
-SERVER_ENTITY_DECLARE_BEGIN3(CSE_ALifeAnomalousZone,CSE_ALifeDynamicObject,CSE_ALifeSchedulable,CSE_Shape)
+SERVER_ENTITY_DECLARE_BEGIN2(CSE_ALifeCustomZone,CSE_ALifeDynamicObject,CSE_Shape)
 	f32								m_maxPower;
 	f32								m_attn;
 	u32								m_period;
+	ALife::EAnomalousZoneType		m_tAnomalyType;
+	ALife::EHitType					m_tHitType;
+	
+									CSE_ALifeCustomZone		(LPCSTR caSection);
+	virtual							~CSE_ALifeCustomZone	();
+SERVER_ENTITY_DECLARE_END
+add_to_type_list(CSE_ALifeCustomZone)
+#define script_type_list save_type_list(CSE_ALifeCustomZone)
+
+SERVER_ENTITY_DECLARE_BEGIN2(CSE_ALifeAnomalousZone,CSE_ALifeCustomZone,CSE_ALifeSchedulable)
 	float							m_fRadius;
 	float							m_fBirthProbability;
 	u16								m_wItemCount;
@@ -75,8 +85,6 @@ SERVER_ENTITY_DECLARE_BEGIN3(CSE_ALifeAnomalousZone,CSE_ALifeDynamicObject,CSE_A
 	string64						*m_cppArtefactSections;
 	u16								m_wArtefactSpawnCount;
 	u32								m_dwStartIndex;
-	ALife::EAnomalousZoneType		m_tAnomalyType;
-	ALife::EHitType					m_tHitType;
 	float							m_fStartPower;
 
 									CSE_ALifeAnomalousZone	(LPCSTR caSection);
@@ -98,11 +106,9 @@ SERVER_ENTITY_DECLARE_END
 add_to_type_list(CSE_ALifeAnomalousZone)
 #define script_type_list save_type_list(CSE_ALifeAnomalousZone)
 
-
-
-SERVER_ENTITY_DECLARE_BEGIN2(CSE_ALifeTorridZone,CSE_ALifeAnomalousZone,CSE_Motion)
-		CSE_ALifeTorridZone				(LPCSTR caSection);
-		virtual	~CSE_ALifeTorridZone		();
+SERVER_ENTITY_DECLARE_BEGIN2(CSE_ALifeTorridZone,CSE_ALifeCustomZone,CSE_Motion)
+									CSE_ALifeTorridZone		(LPCSTR caSection);
+	virtual							~CSE_ALifeTorridZone	();
 SERVER_ENTITY_DECLARE_END
 add_to_type_list(CSE_ALifeTorridZone)
 #define script_type_list save_type_list(CSE_ALifeTorridZone)

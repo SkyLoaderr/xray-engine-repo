@@ -243,13 +243,94 @@ void CSE_ALifeTrader::FillProp				(LPCSTR _pref, PropItemVec& items)
 #endif
 
 ////////////////////////////////////////////////////////////////////////////
-// CSE_ALifeAnomalousZone
+// CSE_ALifeCustomZone
 ////////////////////////////////////////////////////////////////////////////
-CSE_ALifeAnomalousZone::CSE_ALifeAnomalousZone(LPCSTR caSection) : CSE_ALifeSchedulable(caSection), CSE_ALifeDynamicObject(caSection)
+CSE_ALifeCustomZone::CSE_ALifeCustomZone	(LPCSTR caSection) : CSE_ALifeDynamicObject(caSection)
 {
 	m_maxPower					= 100.f;
 	m_attn						= 1.f;
 	m_period					= 1000;
+	m_tAnomalyType				= ALife::eAnomalousZoneTypeGravi;
+	m_maxPower					= 0.f;
+	if (pSettings->line_exist(caSection,"hit_type"))
+		m_tHitType				= ALife::g_tfString2HitType(pSettings->r_string(caSection,"hit_type"));
+	else
+		m_tHitType				= ALife::eHitTypeMax;
+}
+
+CSE_ALifeCustomZone::~CSE_ALifeCustomZone	()
+{
+}
+
+void CSE_ALifeCustomZone::STATE_Read		(NET_Packet	&tNetPacket, u16 size)
+{
+	// CForm
+	if (m_wVersion >= 15)
+		inherited1::STATE_Read	(tNetPacket,size);
+
+	cform_read					(tNetPacket);
+
+	tNetPacket.r_float			(m_maxPower);
+	tNetPacket.r_float			(m_attn);
+	tNetPacket.r_u32			(m_period);
+
+	if ((m_wVersion > 66) && (m_wVersion > 27)) {
+		u32						l_dwDummy;
+		tNetPacket.r_u32		(l_dwDummy);
+		m_tAnomalyType			= ALife::EAnomalousZoneType(l_dwDummy);
+	}
+}
+
+void CSE_ALifeCustomZone::STATE_Write	(NET_Packet	&tNetPacket)
+{
+	inherited1::STATE_Write		(tNetPacket);
+	// CForm
+	cform_write					(tNetPacket);
+
+	tNetPacket.w_float			(m_maxPower);
+	tNetPacket.w_float			(m_attn);
+	tNetPacket.w_u32			(m_period);
+	tNetPacket.w_u32			(m_tAnomalyType);
+}
+
+void CSE_ALifeCustomZone::UPDATE_Read	(NET_Packet	&tNetPacket)
+{
+	inherited1::UPDATE_Read		(tNetPacket);
+}
+
+void CSE_ALifeCustomZone::UPDATE_Write	(NET_Packet	&tNetPacket)
+{
+	inherited1::UPDATE_Write	(tNetPacket);
+}
+
+#ifdef _EDITOR
+//xr_token TokenAnomalyType[]={
+//	{ "Gravi",			eAnomalousZoneTypeGravi			},
+//	{ "Fog",			eAnomalousZoneTypeFog			},
+//	{ "Radioactive",	eAnomalousZoneTypeRadio			},
+//	{ "Plant",			eAnomalousZoneTypePlant			},
+//	{ "Gelatine",		eAnomalousZoneTypeGelatine		},
+//	{ "Fluff",			eAnomalousZoneTypeFluff			},
+//	{ "Rusty Hair",		eAnomalousZoneTypeRustyHair		},
+//	{ "RustyWhistlers",	eAnomalousZoneTypeRustyWhistlers},
+//	{ 0,				0}
+//};
+
+void CSE_ALifeCustomZone::FillProp		(LPCSTR pref, PropItemVec& items)
+{
+	inherited1::FillProp		(pref,items);
+//	PHelper.CreateToken<u8>		(items,FHelper.PrepareKey(pref,s_name,"Type"),								(u8*)&m_tAnomalyType,	TokenAnomalyType);
+	PHelper.CreateFloat			(items,FHelper.PrepareKey(pref,s_name,"Power"),								&m_maxPower,0.f,1000.f);
+	PHelper.CreateFloat			(items,FHelper.PrepareKey(pref,s_name,"Attenuation"),						&m_attn,0.f,100.f);
+	PHelper.CreateU32			(items,FHelper.PrepareKey(pref,s_name,"Period"),							&m_period,20,10000);
+}
+#endif
+
+////////////////////////////////////////////////////////////////////////////
+// CSE_ALifeAnomalousZone
+////////////////////////////////////////////////////////////////////////////
+CSE_ALifeAnomalousZone::CSE_ALifeAnomalousZone(LPCSTR caSection) : CSE_ALifeSchedulable(caSection), CSE_ALifeCustomZone(caSection)
+{
 	m_fRadius					= 30.f;
 	m_fBirthProbability			= pSettings->r_float(caSection,"BirthProbability");
 
@@ -266,13 +347,7 @@ CSE_ALifeAnomalousZone::CSE_ALifeAnomalousZone(LPCSTR caSection) : CSE_ALifeSche
 		m_faWeights[i]			= (float)atof(_GetItem(l_caParameters,(i << 1) | 1,l_caBuffer));
 	}
 	m_wArtefactSpawnCount		= 32;
-	m_tAnomalyType				= ALife::eAnomalousZoneTypeGravi;
-	m_fStartPower = m_maxPower	= 0.f;
-
-	if (pSettings->line_exist(caSection,"hit_type"))
-		m_tHitType				= ALife::g_tfString2HitType(pSettings->r_string(caSection,"hit_type"));
-	else
-		m_tHitType				= ALife::eHitTypeMax;
+	m_fStartPower				= 0.f;
 }
 
 CSE_Abstract *CSE_ALifeAnomalousZone::init			()
@@ -301,15 +376,7 @@ CSE_ALifeAnomalousZone::~CSE_ALifeAnomalousZone()
 
 void CSE_ALifeAnomalousZone::STATE_Read		(NET_Packet	&tNetPacket, u16 size)
 {
-	// CForm
-	if (m_wVersion >= 15)
-		inherited1::STATE_Read	(tNetPacket,size);
-
-	cform_read					(tNetPacket);
-
-	tNetPacket.r_float			(m_maxPower);
-	tNetPacket.r_float			(m_attn);
-	tNetPacket.r_u32			(m_period);
+	inherited1::STATE_Read		(tNetPacket,size);
 
 	if (m_wVersion > 21) {
 		tNetPacket.r_float		(m_fRadius);
@@ -340,15 +407,18 @@ void CSE_ALifeAnomalousZone::STATE_Read		(NET_Packet	&tNetPacket, u16 size)
 				xr_free					(l_faWeights);
 				xr_free					(l_cppArtefactSections);
 	}
+	
 	if (m_wVersion > 25) {
 		tNetPacket.r_u16		(m_wArtefactSpawnCount);
 		tNetPacket.r_u32		(m_dwStartIndex);
 	}
-	if (m_wVersion > 27) {
+
+	if ((m_wVersion < 67) && (m_wVersion > 27)) {
 		u32						l_dwDummy;
 		tNetPacket.r_u32		(l_dwDummy);
 		m_tAnomalyType			= ALife::EAnomalousZoneType(l_dwDummy);
 	}
+
 	if (m_wVersion > 38)
 		tNetPacket.r_float		(m_fStartPower);
 }
@@ -356,12 +426,6 @@ void CSE_ALifeAnomalousZone::STATE_Read		(NET_Packet	&tNetPacket, u16 size)
 void CSE_ALifeAnomalousZone::STATE_Write	(NET_Packet	&tNetPacket)
 {
 	inherited1::STATE_Write		(tNetPacket);
-	// CForm
-	cform_write					(tNetPacket);
-
-	tNetPacket.w_float			(m_maxPower);
-	tNetPacket.w_float			(m_attn);
-	tNetPacket.w_u32			(m_period);
 	tNetPacket.w_float			(m_fRadius);
 	tNetPacket.w_float			(m_fBirthProbability);
 	tNetPacket.w_u16			(m_wItemCount);
@@ -371,7 +435,6 @@ void CSE_ALifeAnomalousZone::STATE_Write	(NET_Packet	&tNetPacket)
 	}
 	tNetPacket.w_u16			(m_wArtefactSpawnCount);
 	tNetPacket.w_u32			(m_dwStartIndex);
-	tNetPacket.w_u32			(m_tAnomalyType);
 	tNetPacket.w_float			(m_fStartPower);
 }
 
@@ -422,7 +485,7 @@ bool CSE_ALifeAnomalousZone::need_update	(CSE_ALifeDynamicObject *object)
 //SE_ALifeTorridZone
 //////////////////////////////////////////////////////////////////////////
 CSE_ALifeTorridZone::CSE_ALifeTorridZone	(LPCSTR caSection)
-:CSE_ALifeAnomalousZone(caSection),CSE_Motion()
+:CSE_ALifeCustomZone(caSection),CSE_Motion()
 {
 }
 
