@@ -1,4 +1,5 @@
 module("monsterAi")
+module("storage")
 
 class "monster_zone"
 function monster_zone:__init(obj, ini)
@@ -10,61 +11,65 @@ function monster_zone:__init(obj, ini)
 		assert(false)
 	end
 	
+	self.custom_data	= {}
+	
 	//' Читаем время действия скрипта для монстра в этой зоне
 	if(ini:line_exist("monster", "work_time") == true) then
-		self.work_time	= ini:r_u32("monster", "work_time")
-	else
-		self.work_time = nil
+		self.custom_data.work_time	= ini:r_u32("monster", "work_time")
 	end
 
 	//' Читаем кастом дату для настройки скрипта
 	self:read_custom_data(ini)
+
+	self.zone_manager 	= nil
+	self.ini_ok			= true
 	
-	self.ini_ok	= true
+end
+
+function monster_zone:update()
+	
+	if(self.zone_manager) then
+		self.zone_manager:update()
+	end
+	
 end
 
 function monster_zone:on_enter(obj)
+
 	if(is_object_monster(obj)) then
-		printf("bindind monster. type = %s", self.type)
-		//obj:bind_object(monster_binder(obj, self.type, self.time))
-		obj:bind_object(monsterai.CMonsterBaseBind(obj))
+		
+		// Если еще менеджер зоны не создан, то создаем его
+		if(self.zone_manager == nil) then
+			self.zone_manager = self.ref_manager(self.custom_data)
+		end
+		
+		self.zone_manager:add_member(obj)
 	end
+	
 end
 
 function monster_zone:read_custom_data(ini)
-	if(self.type == "sleep") then
-		self.way	= ini:r_string("monster", "way")
+
+	if(self.type == "zombie_walk") then
+
+		// Читаем пути для хождения
+		self.custom_data.ways = {}
+		
+		for i = 1, 30 do
+			if(ini:line_exist("monster", "way"..i)) then
+				self.custom_data.ways[i] = ini:r_string("monster", "way"..i)
+				printf("read way %s", "way"..i)
+			else
+				break
+			end
+		end
+		
+		self.ref_manager = CZombieWalk
+
 	elseif(self.type == "aaa") then
 	
 	end
-end
-
-
-//---------------------------------------------------------------------------------------------------------
-//' monster_binder
-//---------------------------------------------------------------------------------------------------------
-
-class "monster_binder" (object_binder)
-function monster_binder:__init(obj, type, time) super(obj)
-	self.object:script(true, script_name())
-end
-
-function monster_binder:reload(section)
-	object_binder.reload(self, section)
-	assert(false)			//' если сюда попали, то что-то надо менять в архитектуре
-end
-
-function monster_binder:update(delta)
-	object_binder.update(self, delta)
-	if(self.object:alive() == false) then
-		printf("dead")
-		return
-	end
 	
-	if(self.object:action() == nil) then
-		action(self.object, anim(anim.sit_idle, 0), cond(cond.time_end, 4000))
-		action(self.object, anim(anim.stand_idle, 0), cond(cond.time_end, 4000))
-	end
 end
 
 
@@ -78,10 +83,10 @@ function is_object_monster(obj)
 		otype == clsid.controller	or
 		otype == clsid.bloodsucker	or
 		otype == clsid.burer		or
-		otype == clsid.chimera		or
+		otype == clsid.chimera		or	
 		otype == clsid.boar			or
 		otype == clsid.idol			or
-		otype == clsid.dog_red		or
+		otype == clsid.dog_red		or		
 		otype == clsid.dog_black	or
 		otype == clsid.pseudo_gigant  )
 	then
@@ -91,3 +96,76 @@ function is_object_monster(obj)
 	return false
 end
 
+///////////////////////////////////////////////////////////////////////////////////////////////////////////////
+
+class "CBaseManager"
+function CBaseManager:__init(_custom_data)
+	self.custom_data	= _custom_data
+	self.members		= { {obj = nil, time = nil, id = 0 } }
+end
+
+function CBaseManager:add_member(obj)
+	assert(false)		// Абстрактный базовый класс. Забыли перегрузить эту функцию
+end
+
+function CBaseManager:update()
+	for i = table.getn(self.members), 1, -1 do
+		
+		
+		if(is_object_online(self.members[i].id) == false or
+		       (self.members[i].obj and self.members[i].obj:alive() == false) 
+		   ) then
+			//Удаляем объек, если он ушел в offline либо мертв
+			
+			self:remove_member(self.members[i].id)
+			table.remove(self.members, i)	
+		elseif(self.members[i].time and device():time_global() > self.members[i].time) then
+			// удаляем объет, если закончилось его время работы
+			
+			self.members[i].obj:binded_object():finalize()
+			self:remove_member(self.members[i].id)
+			table.remove(self.members, i)
+		end
+	end
+end
+
+function CBaseManager:remove_member(obj_id)
+
+end
+////////////////////////////////////////////////////////////////////////////////////////////////////////////////
+
+class "CZombieWalk" (CBaseManager)
+function CZombieWalk:__init(_custom_data) super(_custom_data)
+	self.storage = storage.CStorage()
+	
+	for i = 1, table.getn(_custom_data.ways) do
+		self.storage:insert(_custom_data.ways[i])
+	end
+end
+
+function CZombieWalk:add_member(object)
+
+	if(object:binded_object()) then
+		return										// Объект уже прибинденный
+	end
+	
+	if(self.storage:empty()) then
+		printf("not free way for monster %s", object:name())
+		return
+	end
+
+	object:bind_object(monsterai.CMonsterBaseBind(object, nil,	staterest.CStateRestBind(nil, nil,
+												statewalk.CStateWalk(nil, nil, self.storage:get_data(object:id()))))
+					)
+												
+	table.insert(self.members, { obj = object, time = nil, id = object:id() }	)
+				
+	if(self.custom_data.work_time) then
+		self.members[table.getn(self.members)].time	= device():time_global() + self.custom_data.work_time
+	end
+
+end	
+
+function CZombieWalk:remove_member(obj_id)
+	self.storage:release_data(obj_id)
+end

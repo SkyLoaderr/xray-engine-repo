@@ -140,7 +140,6 @@ function CMonsterBase:set_state(new_state)
 		self.curState	= self.stateDangerSound
 	elseif(new_state == s_sound) then
 		self.curState	= self.stateNotDangerSound
-		printf("1111111111111")
 	else
 		self.curState	= self.stateRest
 	end
@@ -190,8 +189,13 @@ end
 //Монстр которого биндят к монстру
 //---------------------------------------------------------------------------------------------------------
 class "CMonsterBaseBind" (object_binder)
-function CMonsterBaseBind:__init(obj, sRest, sAttack, sHit, sDangerSound, sNotDangerSound) super(obj)
+function CMonsterBaseBind:__init(obj, time, sRest, sAttack, sHit, sDangerSound, sNotDangerSound) super(obj)
 	self.npc_name	= _name
+	self.end_work 	= true
+	
+	if(time) then
+		self.end_time 	= device():time_global() + time
+	end
 	
 	self.data		= {
 						npc			= self.object,
@@ -250,7 +254,13 @@ end
 function CMonsterBaseBind:update(delta)
 	object_binder.update(self, delta)
 	
-	if(self.data.npc:alive() == false) then		//Если мертвый, то конец скрипта
+	if(self.end_work == false) then
+		// Если отбиндили, то ничего не делаем
+		return
+	end
+	
+	if(self.data.npc:alive() == false or
+  	   (self.end_time and device():time_global() > self.end_time) ) then		//Если мертвый либо закончилось время то конец скрипта
 		self:finalize()
 		return false
 	end
@@ -321,6 +331,8 @@ end
 function CMonsterBaseBind:finalize()
 	if(self.data.npc and self.data.npc:get_script()) then
 		self.data.npc:script(false, script_name())
-		//' тут должны отбиндить монстра
+		
 	end
+	//' тут должны отбиндить монстра
+	self.end_work	= false
 end

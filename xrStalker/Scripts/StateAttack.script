@@ -13,7 +13,7 @@ end
 
 function CStateAttack:execute()
 	if(self:enemy_changed()) then
-		reset_action(self.data.npc, self.data.script_name)
+		reset_action(self.data.npc, self.data.scr_name)
 	end
 	
 	if(self.data.npc:action() == nil) then

@@ -1,0 +1,39 @@
+//------------------------------------------------------------------------------------------
+// –азличные хранилища
+//------------------------------------------------------------------------------------------
+
+// из CStorage можно вз€ть некоторые данные, которые не используетс€. ѕосле того, как персонаж
+// закончил с ними работать, он их освобождает и они станос€тс€ свободными дл€ других
+
+class "CStorage"
+function CStorage:__init()
+	self.data	= {}			// ƒанные, которые хран€тс€
+	self.use	= {}			// ƒанные, которые испольлует npc
+end
+
+function CStorage:insert(_data)
+	table.insert(self.data, _data)
+end
+
+function CStorage:get_data(npc_id)
+	assert(table.getn(self.data) >= 0)				// ѕопытка вызвать get_date() без проверки empty()
+	
+	self.index		 = if_then_else(table.getn(self.data) > 1, table.getn(self.data), 1)
+	self.use[npc_id] = self.data[self.index]
+	table.remove(self.data, self.index)
+	
+	return self.use[npc_id]
+end
+
+function CStorage:release_data(npc_id)
+	assert(self.use[npc_id] ~= nil)					// данный npc и не брал никаких данных
+
+	table.insert(self.data, self.use[npc_id])
+	table.remove(self.use, npc_id)
+	
+	printf("Release data")
+end
+
+function CStorage:empty()
+	return(table.getn(self.data) == 0)
+end
