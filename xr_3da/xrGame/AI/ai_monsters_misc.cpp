@@ -570,12 +570,13 @@ void vfCreateFastRealisticPath(vector<Fvector> &tpaPoints, DWORD dwStartNode, ve
 					if ((COMPUTE_DISTANCE_2D(tPrevPoint,tStartPoint) >= fPreviousRoundedDistance) || 
 						((!bLooped) && (iCurrentPatrolPoint == 1))) {
 						if ((!tpaPath.size()) || COMPUTE_DISTANCE_2D(tTravelNode.P,tpaPath[tpaPath.size() - 1].P) > fSegmentSizeMin)
-							/**/
+							/**
 							if (fabsf(tTravelNode.P.y - tPrevPoint.y) > 1.f/256.f)
 								tpaPath.push_back(tTravelNode);
 							else
-							/**/
 								tpaPath[tpaPath.size() - 1].P = tTravelNode.P;
+							/**/
+							tpaPath.push_back(tTravelNode);
 						else
 							tpaPath.push_back(tTravelNode);
 					}

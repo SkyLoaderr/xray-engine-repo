@@ -1016,7 +1016,7 @@ void CAI_Soldier::OnPatrolReturn()
 		
 		vfSearchForBetterPosition(SelectorPatrol,Squad,Leader);
 		
-		if ((fDistance < 1.f) || (AI_NodeID == AI_Path.DestNode)) {
+		if ((fDistance < 5.f) || (AI_NodeID == AI_Path.DestNode)) {
 			if (this == Leader) {
 				float fDistance = 0.f;
 				for (int i=0; i<SelectorPatrol.taMemberPositions.size(); i++) {
@@ -1073,6 +1073,14 @@ void CAI_Soldier::OnFollowLeaderPatrol()
 
 	CHECK_IF_SWITCH_TO_NEW_STATE(m_bStateChanged,aiSoldierPatrolReturnToRoute)
 	
+	SelectSound(m_iSoundIndex);
+	if (m_iSoundIndex >= 0) {
+		AI_Path.TravelPath.clear();
+		if (m_tpSoundBeingPlayed && m_tpSoundBeingPlayed->feedback)
+			m_tpSoundBeingPlayed->feedback->Stop();
+		SWITCH_TO_NEW_STATE(aiSoldierSenseSomethingAlone);
+	}
+
 	if ((!(AI_Path.fSpeed)) || (AI_Path.TravelPath.empty()) || (AI_Path.TravelPath[AI_Path.TravelStart].P.distance_to(AI_Path.TravelPath[AI_Path.TravelPath.size() - 1].P) <= .5f)) {
 		CAI_Soldier *SoldierLeader = dynamic_cast<CAI_Soldier *>(Leader);
 //		if (!m_bLooped) {
@@ -1378,6 +1386,15 @@ void CAI_Soldier::OnAttackFireAlone()
 		//GO_TO_PREV_STATE;
 	}
 	
+	if ((dwCurTime - dwHitTime < HIT_JUMP_TIME) && (dwHitTime)) {
+		if (m_cBodyState == BODY_STATE_STAND)
+			m_tpAnimationBeingWaited = tSoldierAnimations.tNormal.tGlobal.tpaLieDown[0];
+		else
+			m_tpAnimationBeingWaited = tSoldierAnimations.tCrouch.tGlobal.tpaLieDown[0];
+		Lie();
+		SWITCH_TO_NEW_STATE(aiSoldierWaitForAnimation);
+	}
+
 	CHECK_IF_SWITCH_TO_NEW_STATE(!(Enemy.bVisible),aiSoldierPursuitAlone)
 		
 	CGroup &Group = Level().Teams[g_Team()].Squads[g_Squad()].Groups[g_Group()];
@@ -1385,7 +1402,7 @@ void CAI_Soldier::OnAttackFireAlone()
 	Fvector tDistance;
 	tDistance.sub(Position(),Enemy.Enemy->Position());
 
-	CHECK_IF_GO_TO_NEW_STATE((tDistance.square_magnitude() >= 25.f) && ((Group.m_dwFiring > 1) || ((Group.m_dwFiring == 1) && (!m_bFiring))),aiSoldierAttackAloneRun)
+	//CHECK_IF_GO_TO_NEW_STATE((tDistance.square_magnitude() >= 25.f) && ((Group.m_dwFiring > 1) || ((Group.m_dwFiring == 1) && (!m_bFiring))),aiSoldierAttackAloneRun)
 	
 	CHECK_IF_SWITCH_TO_NEW_STATE((Weapons->ActiveWeapon()) && (Weapons->ActiveWeapon()->GetAmmoElapsed() == 0),aiSoldierRecharge)
 
@@ -1450,8 +1467,8 @@ void CAI_Soldier::OnAttackFireAlone()
 		if (m_cBodyState != BODY_STATE_STAND)
 			vfSetMovementType(WALK_NO);
 		else {
-			Squat();
-			vfSetMovementType(WALK_NO);
+			StandUp();
+			vfSetMovementType(RUN_FORWARD_3);
 		}
 	}
 }
@@ -1473,6 +1490,15 @@ void CAI_Soldier::OnAttackAloneRun()
 		GO_TO_NEW_STATE(aiSoldierPursuitAlone);
 	}
 	
+	if ((dwCurTime - dwHitTime < HIT_JUMP_TIME) && (dwHitTime)) {
+		if (m_cBodyState == BODY_STATE_STAND)
+			m_tpAnimationBeingWaited = tSoldierAnimations.tNormal.tGlobal.tpaLieDown[0];
+		else
+			m_tpAnimationBeingWaited = tSoldierAnimations.tCrouch.tGlobal.tpaLieDown[0];
+		Lie();
+		SWITCH_TO_NEW_STATE(aiSoldierWaitForAnimation);
+	}
+
 	CHECK_IF_SWITCH_TO_NEW_STATE(!(Enemy.bVisible),aiSoldierPursuitAlone)
 		
 	CGroup &Group = Level().Teams[g_Team()].Squads[g_Squad()].Groups[g_Group()];
@@ -1480,7 +1506,7 @@ void CAI_Soldier::OnAttackAloneRun()
 	Fvector tDistance;
 	tDistance.sub(Position(),Enemy.Enemy->Position());
 
-	CHECK_IF_GO_TO_NEW_STATE((tDistance.square_magnitude() >= 25.f) && ((Group.m_dwFiring > 1) || ((Group.m_dwFiring == 1) && (!m_bFiring))),aiSoldierAttackAloneRun)
+	//CHECK_IF_GO_TO_NEW_STATE((tDistance.square_magnitude() <= 25.f) && (!Group.m_dwFiring),aiSoldierAttackFireAlone)
 	
 	CHECK_IF_SWITCH_TO_NEW_STATE((Weapons->ActiveWeapon()) && (Weapons->ActiveWeapon()->GetAmmoElapsed() == 0),aiSoldierRecharge)
 
@@ -1491,7 +1517,9 @@ void CAI_Soldier::OnAttackAloneRun()
 	vfSaveEnemy();
 
 	INIT_SQUAD_AND_LEADER;
+	
 	vfInitSelector(SelectorAttack,Squad,Leader);
+
 	if (AI_Path.bNeedRebuild)
 		vfBuildPathToDestinationPoint(&SelectorAttack);
 	else
@@ -1555,8 +1583,14 @@ void CAI_Soldier::OnSteal()
 	
 	vfSetFire(false,Group);
 	
-	Squat();
-	vfSetMovementType(WALK_FORWARD_1);
+	if (vPosition.distance_to(Enemy.Enemy->Position()) > 25.f) {
+		StandUp();
+		vfSetMovementType(RUN_FORWARD_3);
+	}
+	else {
+		Squat();
+		vfSetMovementType(WALK_FORWARD_1);
+	}
 }
 /**/
 
@@ -1658,20 +1692,38 @@ void CAI_Soldier::OnSenseSomethingAlone()
 				if (fDistance < DISTANCE_TO_REACT) {
 					tHitPosition = tpaDynamicSounds[iSoundIndex].tSavedPosition;
 					dwHitTime = tpaDynamicSounds[iSoundIndex].dwTime;
+					tSavedEnemy = tpaDynamicSounds[iSoundIndex].tpEntity;
 					GO_TO_NEW_STATE(aiSoldierPatrolHurt);
 				}
 				else {
-					tHitPosition = tpaDynamicSounds[iSoundIndex].tSavedPosition;
-					dwHitTime = tpaDynamicSounds[iSoundIndex].dwTime;
-					m_dwLastRangeSearch = dwCurTime;
-					GO_TO_NEW_STATE(aiSoldierPatrolDanger);
+					//tHitPosition = tpaDynamicSounds[iSoundIndex].tSavedPosition;
+					//dwHitTime = tpaDynamicSounds[iSoundIndex].dwTime;
+					//m_dwLastRangeSearch = dwCurTime;
+					tSavedEnemyPosition = tpaDynamicSounds[iSoundIndex].tSavedPosition;
+					tSavedEnemy = tpaDynamicSounds[iSoundIndex].tpEntity;
+					GO_TO_NEW_STATE(aiSoldierPursuitAlone);
 				}
 			}
 			else {
-				tHitPosition = tpaDynamicSounds[iSoundIndex].tSavedPosition;
-				dwHitTime = tpaDynamicSounds[iSoundIndex].dwTime;
-				m_dwLastRangeSearch = dwCurTime;
-				GO_TO_NEW_STATE(aiSoldierPatrolDanger);
+				if ((tpaDynamicSounds[iSoundIndex].eSoundType & SOUND_TYPE_WEAPON_BULLET_RICOCHET) != SOUND_TYPE_WEAPON_BULLET_RICOCHET) {
+//					tHitPosition = tpaDynamicSounds[iSoundIndex].tSavedPosition;
+//					dwHitTime = tpaDynamicSounds[iSoundIndex].dwTime;
+//					m_dwLastRangeSearch = dwCurTime;
+					tSavedEnemyPosition = tpaDynamicSounds[iSoundIndex].tSavedPosition;
+					tSavedEnemy = tpaDynamicSounds[iSoundIndex].tpEntity;
+					GO_TO_NEW_STATE(aiSoldierPursuitAlone);
+				}
+				else {
+					if (m_tpaPatrolPoints.size()) {
+//						tHitPosition = m_tpaPatrolPoints[0];
+//						dwHitTime = tpaDynamicSounds[iSoundIndex].dwTime;
+//						m_dwLastRangeSearch = dwCurTime;
+						tSavedEnemyPosition = tpaDynamicSounds[iSoundIndex].tSavedPosition;
+						tSavedEnemy = tpaDynamicSounds[iSoundIndex].tpEntity;
+						GO_TO_NEW_STATE(aiSoldierPursuitAlone);
+					}
+					GO_TO_PREV_STATE;
+				}
 //				m_bStateChanged = false;
 //				GO_TO_PREV_STATE;
 //				Fvector tCurrentPosition = vPosition;
@@ -1699,18 +1751,22 @@ void CAI_Soldier::OnSenseSomethingAlone()
 			}
 		}
 		else {
-			tHitPosition = tpaDynamicSounds[iSoundIndex].tSavedPosition;
-			dwHitTime = tpaDynamicSounds[iSoundIndex].dwTime;
-			m_dwLastRangeSearch = dwCurTime;
+//			tHitPosition = tpaDynamicSounds[iSoundIndex].tSavedPosition;
+//			dwHitTime = tpaDynamicSounds[iSoundIndex].dwTime;
+//			m_dwLastRangeSearch = dwCurTime;
 			m_bStateChanged = false;
-			GO_TO_NEW_STATE(aiSoldierPatrolDanger);
+			tSavedEnemyPosition = tpaDynamicSounds[iSoundIndex].tSavedPosition;
+			tSavedEnemy = tpaDynamicSounds[iSoundIndex].tpEntity;
+			GO_TO_NEW_STATE(aiSoldierPursuitAlone);
 		}
 	}
 	else {
-		tHitPosition = tpaDynamicSounds[iSoundIndex].tSavedPosition;
-		dwHitTime = tpaDynamicSounds[iSoundIndex].dwTime;
-		m_dwLastRangeSearch = dwCurTime;
+//		tHitPosition = tpaDynamicSounds[iSoundIndex].tSavedPosition;
+//		dwHitTime = tpaDynamicSounds[iSoundIndex].dwTime;
+//		m_dwLastRangeSearch = dwCurTime;
 		m_bStateChanged = false;
+		tSavedEnemyPosition = tpaDynamicSounds[iSoundIndex].tSavedPosition;
+		tSavedEnemy = tpaDynamicSounds[iSoundIndex].tpEntity;
 		GO_TO_PREV_STATE;
 	}
 
@@ -1989,7 +2045,7 @@ void CAI_Soldier::OnPursuitAlone()
 	SelectorPatrol.m_tEnemy = tSavedEnemy;
 	SelectorPatrol.m_tEnemyPosition = tSavedEnemyPosition;
 
-	CHECK_IF_GO_TO_PREV_STATE((ps_Size() > 0) && (ps_Element(ps_Size() - 1).dwTime > 5000));
+	CHECK_IF_GO_TO_PREV_STATE(!(m_bStateChanged) && (ps_Size() > 0) && (dwCurTime - ps_Element(ps_Size() - 1).dwTime > 5000));
 
 	if (AI_Path.bNeedRebuild)
 		vfBuildPathToDestinationPoint(0);

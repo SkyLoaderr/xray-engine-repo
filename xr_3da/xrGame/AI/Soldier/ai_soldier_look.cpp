@@ -27,7 +27,10 @@ bool CAI_Soldier::bfCheckForVisibility(CEntity* tpEntity)
 	tCurrentWatchDirection.setHP	(-r_current.yaw,-r_current.pitch);
 	tCurrentWatchDirection.normalize();
 	tTemp.sub(tpEntity->Position(),vPosition);
-	tTemp.normalize();
+	if (tTemp.magnitude() > EPS_L)
+		tTemp.normalize();
+	else
+		return(true);
 	float fAlpha = tCurrentWatchDirection.dotproduct(tTemp), fEyeFov = eye_fov*PI/180.f;
 	//float fAlpha = tWatchDirection.dotproduct(tTemp), fEyeFov = eye_fov*PI/180.f;
 	clamp(fAlpha,-.99999f,+.99999f);
