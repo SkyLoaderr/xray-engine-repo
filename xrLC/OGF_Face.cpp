@@ -21,6 +21,7 @@ void set_status(char* N, int id, int f, int v)
 BOOL OGF_Vertex::similar(OGF* ogf, OGF_Vertex& V)
 {
 	const float ntb		= _cos	(deg2rad(5.f));
+	if (!P.similar(V.P)) 		return FALSE;
 	if (!N.similar(V.N)) 		return FALSE;
 	if (!T.similar(V.T)) 		return FALSE;
 	if (!B.similar(V.B)) 		return FALSE;
@@ -34,6 +35,10 @@ BOOL OGF_Vertex::similar(OGF* ogf, OGF_Vertex& V)
 		if (!UV[i].similar(V.UV[i],eu,ev)) return FALSE;
 	}
 	return TRUE;
+}
+void OGF_Vertex::dump	(u32 id)
+{
+//	Msg	("%d: ");
 }
 BOOL x_vertex::similar	(OGF* ogf, x_vertex& V)
 {
@@ -78,13 +83,21 @@ void OGF::x_BuildFace	(OGF_Vertex& V1, OGF_Vertex& V2, OGF_Vertex& V3)
 			x_vertices.erase(x_vertices.begin()+VertCount,x_vertices.end());
 	}
 }
-void OGF::_BuildFace	(OGF_Vertex& V1, OGF_Vertex& V2, OGF_Vertex& V3)
+void OGF::_BuildFace	(OGF_Vertex& V1, OGF_Vertex& V2, OGF_Vertex& V3, bool _log_)
 {
 	OGF_Face			F;
 	u32		VertCount	= (u32)vertices.size();
 	F.v[0]	= _BuildVertex(V1);
 	F.v[1]	= _BuildVertex(V2);
 	F.v[2]	= _BuildVertex(V3);
+	/*
+	if (_log_)	{
+		clMsg	("face[%d]: %d,%d,%d",faces.size(),u32(F.v[0]),u32(F.v[1]),u32(F.v[2]));
+		if		(34==faces.size())	{
+
+		}
+	}
+	*/
 	if (!F.Degenerate()) {
 		for (itOGF_F I=faces.begin(); I!=faces.end(); I++)		if (I->Equal(F)) return;
 		faces.push_back	(F);
@@ -308,10 +321,10 @@ void OGF::MakeProgressive	(float metric_limit)
 		float	_metric	=	float(_remove)/float(_full);
 		if		(_metric<metric_limit)		{
 			progressive_clear				()		;
-			clMsg	("* mesh simplified from [%4dv] to [%4dv] ==> em[%0.2f]-discarded",_full,_simple,metric_limit);
+			clMsg	("* mesh simplified from [%4dv] to [%4dv], nf[%4d] ==> em[%0.2f]-discarded",_full,_simple,VR->indices.size()/3,metric_limit);
 			break									;
 		} else {
-			clMsg	("* mesh simplified from [%4dv] to [%4dv] ==> em[%0.2f]-accepted",_full,_simple,metric_limit);
+			clMsg	("* mesh simplified from [%4dv] to [%4dv], nf[%4d] ==> em[%0.2f]-accepted", _full,_simple,VR->indices.size()/3,metric_limit);
 		}
 
 		// OK
@@ -322,6 +335,7 @@ void OGF::MakeProgressive	(float metric_limit)
 		vertices_saved			= vertices;
 		for(u32 i=0; i<vertices.size(); i++)
 			vertices[VR->permute_verts[i]]=vertices_saved[i];
+
 		// Fill indices
 		faces_saved				= faces;
 		faces.resize			(VR->indices.size()/3);

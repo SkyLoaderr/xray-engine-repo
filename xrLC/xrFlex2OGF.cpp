@@ -68,6 +68,7 @@ void CBuild::Flex2OGF()
 			} catch (...) {  clMsg("* ERROR: Flex2OGF, model# %d, *textures*",MODEL_ID); }
 			
 			// Collect faces & vertices
+			bool	_log_	= (18==MODEL_ID)||(21==MODEL_ID);
 			try {
 				for (vecFaceIt Fit=(*it)->begin(); Fit!=(*it)->end(); Fit++)
 				{
@@ -79,8 +80,8 @@ void CBuild::Flex2OGF()
 					// Geometry
 					for (u32 fv=0; fv<3; fv++)
 					{
-						V[fv].P.set(FF->v[fv]->P);
-						V[fv].N.set(FF->v[fv]->N); 
+						V[fv].P.set	(FF->v[fv]->P);
+						V[fv].N.set	(FF->v[fv]->N); 
 						V[fv].T		= FF->basis_tangent[fv];
 						V[fv].B		= FF->basis_binormal[fv];
 						V[fv].Color	= FF->v[fv]->C;
@@ -96,7 +97,7 @@ void CBuild::Flex2OGF()
 					}
 					
 					// build face
-					TRY				(pOGF->_BuildFace(V[0],V[1],V[2]));
+					TRY				(pOGF->_BuildFace(V[0],V[1],V[2],_log_));
 					V[0].UV.clear();V[1].UV.clear();V[2].UV.clear();
 				}
 			} catch (...) {  clMsg("* ERROR: Flex2OGF, model# %d, *faces*",MODEL_ID); }
@@ -106,15 +107,15 @@ void CBuild::Flex2OGF()
 		}
 		
 		try {
-			clMsg		("%3d: base: v(%d)-f(%d)",MODEL_ID,pOGF->vertices.size(),pOGF->faces.size());
+			//clMsg		("%3d: base: v(%d)-f(%d)",MODEL_ID,pOGF->vertices.size(),pOGF->faces.size());
 			pOGF->Optimize						();
-			clMsg		("%3d: opt : v(%d)-f(%d)",MODEL_ID,pOGF->vertices.size(),pOGF->faces.size());
+			//clMsg		("%3d: opt : v(%d)-f(%d)",MODEL_ID,pOGF->vertices.size(),pOGF->faces.size());
 			pOGF->CalcBounds					();
-			clMsg		("%3d: cb  : v(%d)-f(%d)",MODEL_ID,pOGF->vertices.size(),pOGF->faces.size());
+			//clMsg		("%3d: cb  : v(%d)-f(%d)",MODEL_ID,pOGF->vertices.size(),pOGF->faces.size());
 			pOGF->MakeProgressive				(c_PM_MetricLimit_static);
-			clMsg		("%3d: prog: v(%d)-f(%d)",MODEL_ID,pOGF->vertices.size(),pOGF->faces.size());
+			//clMsg		("%3d: prog: v(%d)-f(%d)",MODEL_ID,pOGF->vertices.size(),pOGF->faces.size());
 			pOGF->Stripify						();
-			clMsg		("%3d: strp: v(%d)-f(%d)",MODEL_ID,pOGF->vertices.size(),pOGF->faces.size());
+			//clMsg		("%3d: strp: v(%d)-f(%d)",MODEL_ID,pOGF->vertices.size(),pOGF->faces.size());
 		} catch (...)
 		{
 			clMsg("* ERROR: Flex2OGF, 2nd part, model# %d",MODEL_ID);

@@ -26,6 +26,7 @@ struct OGF_Vertex
 	svector<Fvector2,2>	UV;
 
 	BOOL				similar		(OGF* p, OGF_Vertex&	other);
+	void				dump		(u32 id);
 };
 typedef xr_vector<OGF_Vertex>		vecOGF_V;
 typedef vecOGF_V::iterator			itOGF_V;
@@ -142,7 +143,7 @@ struct OGF : public OGF_Base
 	u16					x_BuildVertex		(x_vertex&	V);
 	void				x_BuildFace			(OGF_Vertex& V1, OGF_Vertex& V2, OGF_Vertex& V3);
 	u16					_BuildVertex		(OGF_Vertex& V1);
-	void				_BuildFace			(OGF_Vertex& V1, OGF_Vertex& V2, OGF_Vertex& V3);
+	void				_BuildFace			(OGF_Vertex& V1, OGF_Vertex& V2, OGF_Vertex& V3, bool _log_ =false);
 
 	void				Optimize			();
 	void				CalculateTB			();

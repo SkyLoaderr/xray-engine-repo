@@ -82,7 +82,7 @@ void edge(Vertex* vE1, Vertex* vE2)
 	rec.T	= 0;
 	vecEdges->push_back	(rec);
 	
-	clMsg	("ERROR: too long edge        %3.1fm [%3.1f,%3.1f,%3.1f] - [%3.1f,%3.1f,%3.1f]",len,VPUSH(vE1->P),VPUSH(vE2->P));
+	// clMsg	("ERROR: too long edge        %3.1fm [%3.1f,%3.1f,%3.1f] - [%3.1f,%3.1f,%3.1f]",len,VPUSH(vE1->P),VPUSH(vE2->P));
 }
 
 void CBuild::CorrectTJunctions()

@@ -27,7 +27,7 @@ u16		RegisterShader		(LPCSTR T)
 
 void	geom_batch_average	(u32 verts, u32 faces)
 {
-	clMsg			("* batch[%d], %d verts, %d faces",g_batch_count,verts,faces);
+	//clMsg			("* batch[%d], %d verts, %d faces",g_batch_count,verts,faces);
 	g_batch_count	++;
 	g_batch_verts	+=	verts;
 	g_batch_faces	+=	faces;
@@ -48,6 +48,7 @@ bool	remap_order		(u32 id0, u32 id1)
 
 void	SaveGEOMs		(LPCSTR fn, VBContainer& vb, IBContainer& ib, SWIContainer& swi)
 {
+	Status				("Geometry '%s'...",	fn);
 	// geometry
 	string_path					lfn		;
 	IWriter*					file	;
@@ -55,17 +56,17 @@ void	SaveGEOMs		(LPCSTR fn, VBContainer& vb, IBContainer& ib, SWIContainer& swi)
 	hdrLEVEL H;	H.XRLC_version	= XRCL_PRODUCTION_VERSION;
 	file->w_chunk				(fsL_HEADER,&H,sizeof(H));
 
-	Status				("Geometry '%s': vertices ...",	fn);
+	// verts
 	file->open_chunk	(fsL_VB);
 	vb.Save				(*file);
 	file->close_chunk	();
 
-	Status				("Geometry '%s': indices ...",	fn);
+	// indices
 	file->open_chunk	(fsL_IB);
 	ib.Save				(*file);
 	file->close_chunk	();
 
-	Status				("Geometry '%s': SWIs ...",		fn);
+	// swis
 	file->open_chunk	(fsL_SWIS);
 	swi.Save			(*file);
 	file->close_chunk	();
@@ -86,7 +87,7 @@ void CBuild::SaveTREE	(IWriter &fs)
 	clMsg				("remap-size: %d",remap.size());
 	for (u32 sid=0; sid<remap.size(); sid++)	{
 		u32				id	= remap[sid];
-		clMsg			("%3d: subdiv: %d",sid,id);
+		//clMsg			("%3d: subdiv: %d",sid,id);
 		g_tree[id]->PreSave	(id);
 	}
 
