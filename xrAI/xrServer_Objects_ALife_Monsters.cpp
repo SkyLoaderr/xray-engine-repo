@@ -560,6 +560,7 @@ CSE_ALifeAnomalousZone::CSE_ALifeAnomalousZone(LPCSTR caSection) : CSE_ALifeSche
 	m_min_start_power			= 50.f;
 	m_max_start_power			= 150.f;
 	m_power_artefact_factor		= 10.f;
+	m_spawn_flags.set			(flSpawnDestroyOnSpawn,TRUE);
 }
 
 CSE_Abstract *CSE_ALifeAnomalousZone::init			()
