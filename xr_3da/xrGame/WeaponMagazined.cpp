@@ -85,6 +85,7 @@ void CWeaponMagazined::Load	(LPCSTR section)
 void CWeaponMagazined::FireStart		()
 {
 	if(dynamic_cast<CActor*>(H_Parent())) m_queueSize = 0;
+	
 	if(IsValid() && !IsMisfire()) 
 	{
 		if(!IsWorking())
@@ -128,7 +129,7 @@ void CWeaponMagazined::Reload()
 	TryReload();
 }
 
-void CWeaponMagazined::TryReload() 
+bool CWeaponMagazined::TryReload() 
 {
 	if(m_pInventory) 
 	{
@@ -140,14 +141,14 @@ void CWeaponMagazined::TryReload()
 		{
 			m_bPending = true;
 			SwitchState(eReload); 
-			return;
+			return true;
 		}
 
 		if(m_pAmmo) 
 		{
 			m_bPending = true;
 			SwitchState(eReload); 
-			return;
+			return true;
 		} 
 		else for(u32 i = 0; i < m_ammoTypes.size(); ++i) 
 		{
@@ -158,11 +159,12 @@ void CWeaponMagazined::TryReload()
 				m_ammoType = i; 
 				m_bPending = true;
 				SwitchState(eReload); 
-				return; 
+				return true; 
 			}
 		}
 	}
 	SwitchState(eIdle);
+	return false;
 }
 
 bool CWeaponMagazined::IsAmmoAvailable()
@@ -180,7 +182,7 @@ void CWeaponMagazined::OnMagazineEmpty()
 {
 	m_bPending = true;
 
-	FireEnd();	
+	//FireEnd();
 
 	SwitchState(eMagEmpty); 
 	inherited::OnMagazineEmpty();
@@ -415,10 +417,10 @@ void CWeaponMagazined::state_Misfire	(float /**dt/**/)
 
 void CWeaponMagazined::state_MagEmpty	(float /**dt/**/)
 {
-	UpdateFP				();
+/*	UpdateFP				();
 	OnEmptyClick			();
 	SwitchState				(eIdle);
-	UpdateSounds			();
+	UpdateSounds			();*/
 }
 
 void CWeaponMagazined::renderable_Render	()
@@ -503,6 +505,14 @@ void CWeaponMagazined::switch2_Fire	()
 }
 void CWeaponMagazined::switch2_Empty()
 {
+	if(!TryReload())
+	{
+		OnEmptyClick();
+	}
+	else
+	{
+		inherited::FireEnd();
+	}
 }
 void CWeaponMagazined::switch2_Reload()
 {
@@ -667,12 +677,23 @@ void CWeaponMagazined::InitAddons()
 		m_sFlameParticlesCurrent = m_sSilencerFlameParticles;
 		m_sSmokeParticlesCurrent = m_sSilencerSmokeParticles;
 		m_pSndShotCurrent = &sndSilencerShot;
+
+
+		//сила выстрела
+		iHitPower			= pSettings->r_s32		(cNameSect(),"silencer_hit_power"		);
+		fHitImpulse			= pSettings->r_float	(cNameSect(),"silencer_hit_impulse"		);
+		fireDistance		= pSettings->r_float	(cNameSect(),"silencer_fire_distance"	);
 	}
 	else
 	{
 		m_sFlameParticlesCurrent = m_sFlameParticles;
 		m_sSmokeParticlesCurrent = m_sSmokeParticles;
 		m_pSndShotCurrent = &sndShot;
+
+		//сила выстрела
+		iHitPower			= pSettings->r_s32		(cNameSect(),"hit_power"		);
+		fHitImpulse			= pSettings->r_float	(cNameSect(),"hit_impulse"		);
+		fireDistance		= pSettings->r_float	(cNameSect(),"fire_distance"	);
 	}
 
 

@@ -58,7 +58,6 @@ void	CWeaponCustomPistol::state_Fire	(float dt)
 }
 void	CWeaponCustomPistol::state_MagEmpty	(float /**dt/**/) 
 {
-	inherited::FireEnd();
 }
 void CWeaponCustomPistol::OnAnimationEnd() {
 	switch(STATE) {

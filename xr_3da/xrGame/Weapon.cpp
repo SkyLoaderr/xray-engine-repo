@@ -309,9 +309,14 @@ void CWeapon::Load		(LPCSTR section)
 	iAmmoElapsed		= pSettings->r_s32		(section,"ammo_elapsed"		);
 	iMagazineSize		= pSettings->r_s32		(section,"ammo_mag_size"	);
 	
-	fireDistance		= pSettings->r_float		(section,"fire_distance"	);
+	//сила выстрела
+	iHitPower			= pSettings->r_s32		(section,"hit_power"		);
+	fHitImpulse			= pSettings->r_float	(section,"hit_impulse"		);
+	fireDistance		= pSettings->r_float	(section,"fire_distance"	);
+
 	fireDispersionBase	= pSettings->r_float		(section,"fire_dispersion_base"	);	
 	fireDispersionBase	= deg2rad(fireDispersionBase);
+	
 	fireDispersion		= pSettings->r_float		(section,"fire_dispersion"	);		
 	fireDispersion		= deg2rad(fireDispersion);
 	fireDispersion_Inc	= pSettings->r_float		(section,"fire_dispersion_add"); 
@@ -348,11 +353,7 @@ void CWeapon::Load		(LPCSTR section)
 		light_lifetime		= pSettings->r_float		(section,"light_time"		);
 		light_time			= -1.f;
 	}
-
-	iHitPower			= pSettings->r_s32		(section,"hit_power"		);
-	if(pSettings->line_exist(section,"hit_impulse")) fHitImpulse = pSettings->r_float(section,"hit_impulse");
-	else fHitImpulse = 1.f;
-
+	
 	vFirePoint			= pSettings->r_fvector3		(section,"fire_point"		);
 	
 	if(pSettings->line_exist(section,"fire_point2")) 

@@ -154,6 +154,7 @@ void CTorch::UpdateCL()
 		light_render->set_direction	(M.k);
 		light_render->set_position	(M.c);
 		glow_render->set_position	(M.c);
+		glow_render->set_direction	(M.k);
 
 		if(light_render->get_active())
 		{
@@ -174,6 +175,8 @@ void CTorch::UpdateCL()
 			light_render->set_direction	(M.k);
 			light_render->set_position	(M.c);
 			glow_render->set_position	(M.c);
+			glow_render->set_direction	(M.k);
+			
 			time2hide			-= Device.fTimeDelta;
 			if (time2hide<0){
 				light_render->set_active(false);
@@ -211,6 +214,7 @@ void CTorch::renderable_Render()
 			light_render->set_direction	(M.k);
 			light_render->set_position	(XFORM().c);
 			glow_render->set_position	(XFORM().c);
+			glow_render->set_direction	(M.k);
 		}
 */
 	}

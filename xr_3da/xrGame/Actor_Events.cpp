@@ -52,12 +52,12 @@ void CActor::OnEvent		(NET_Packet& P, u16 type)
 				}
 
 
-				CScope* pScope = dynamic_cast<CScope*>(O);
+/*				CScope* pScope = dynamic_cast<CScope*>(O);
 				CSilencer* pSilencer = dynamic_cast<CSilencer*>(O);
 				CGrenadeLauncher* pGrenadeLauncher = dynamic_cast<CGrenadeLauncher*>(O);
-
+*/
 				//добавить отсоединенный аддон в инвентарь
-				if(pGameSP && (pScope || pSilencer || pGrenadeLauncher))
+				if(pGameSP/* && (pScope || pSilencer || pGrenadeLauncher)*/)
 				{
 					if(pGameSP->m_pUserMenu == &pGameSP->InventoryMenu)
 					{

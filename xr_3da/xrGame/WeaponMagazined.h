@@ -66,7 +66,7 @@ protected:
 
 	virtual void	UpdateSounds	();
 
-	void			TryReload		();
+	bool			TryReload		();
 protected:
 	virtual void	ReloadMagazine	();
 	virtual void	UnloadMagazine	();

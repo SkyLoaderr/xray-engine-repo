@@ -121,6 +121,7 @@ void CSearchlight::UpdateCL	()
 			light_render->set_direction	(M.k);
 			light_render->set_position	(M.c);
 			glow_render->set_position	(M.c);
+			glow_render->set_direction	(M.k);
 //			time2hide			-= Device.fTimeDelta;
 //			if (time2hide<0){
 //				light_render->set_active(false);

@@ -1028,7 +1028,12 @@ void CUIInventoryWnd::AddItemToBag(PIItem pItem)
 										pItem->GetYPos()*INV_GRID_HEIGHT,
 										pItem->GetGridWidth()*INV_GRID_WIDTH,
 										pItem->GetGridHeight()*INV_GRID_HEIGHT);
-	UIBagList.AttachChild(&UIDragDropItem);
+	if(m_pInv->Get(pItem->ID(), false))
+        UIBeltList.AttachChild(&UIDragDropItem);
+	else if(m_pInv->Get(pItem->ID(), true))
+		UIBagList.AttachChild(&UIDragDropItem);
+
+	
 	UIDragDropItem.SetData(pItem);
 }
 
