@@ -252,15 +252,5 @@ void __fastcall TfrmMain::paRenderResize(TObject *Sender)
 }
 //---------------------------------------------------------------------------
 
-void __fastcall TfrmMain::FormActivate(TObject *Sender)
-{
-    Device.bActive  = true;
-}
-//---------------------------------------------------------------------------
 
-void __fastcall TfrmMain::FormDeactivate(TObject *Sender)
-{
-    Device.bActive  = false;
-}
-//---------------------------------------------------------------------------
 

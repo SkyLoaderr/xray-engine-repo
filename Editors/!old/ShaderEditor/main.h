@@ -61,8 +61,6 @@ __published:	// IDE-managed Components
 	void __fastcall ebAllMaxClick(TObject *Sender);
 	void __fastcall FormResize(TObject *Sender);
 	void __fastcall paRenderResize(TObject *Sender);
-	void __fastcall FormActivate(TObject *Sender);
-	void __fastcall FormDeactivate(TObject *Sender);
 private:	// User declarations
     void __fastcall IdleHandler(TObject *Sender, bool &Done);
 
