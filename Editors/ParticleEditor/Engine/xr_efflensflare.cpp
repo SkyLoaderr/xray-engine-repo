@@ -63,22 +63,7 @@ CLensFlare::~CLensFlare()
 void CLensFlare::OnDeviceCreate()
 {
 	// pre-build indices
-	WORD	Indices[MAX_Flares*2*3];
-	int		Cnt = 0;
-	int		ICnt= 0;
-	for (int i=0; i<MAX_Flares; i++){
-		Indices[ICnt++]=Cnt;
-		Indices[ICnt++]=Cnt+1;
-		Indices[ICnt++]=Cnt+2;
-
-		Indices[ICnt++]=Cnt+2;
-		Indices[ICnt++]=Cnt+3;
-		Indices[ICnt++]=Cnt+0;
-
-		Cnt+=4;
-	}
-	P.VB_Create		(FVF::F_LIT, 2*MAX_Flares*4, D3DUSAGE_WRITEONLY|D3DUSAGE_DYNAMIC);
-	P.IB_Create		(0, 2*MAX_Flares*2*3,		D3DUSAGE_WRITEONLY,			Indices);
+	VS				= Device.Streams.Create		(FVF::F_LIT, 2*MAX_Flares*4);
 
 	// shaders
 	m_Gradient.hShader	= CreateFlareShader(m_Gradient.texture);
@@ -88,9 +73,6 @@ void CLensFlare::OnDeviceCreate()
 
 void CLensFlare::OnDeviceDestroy()
 {
-	P.IB_Destroy	();
-	P.VB_Destroy	();
-
 	// shaders
 	if (m_Gradient.hShader) Device.Shader.Delete(m_Gradient.hShader);
 	if (m_Source.hShader)	Device.Shader.Delete(m_Source.hShader);
@@ -270,11 +252,13 @@ void CLensFlare::Render(BOOL bSun, BOOL bFlares, BOOL bGradient)
 	dwLight.set		( LightColor );
 	vector<SFlare*>	rlist;
 	
-	FVF::LIT *pv = (FVF::LIT*) P.VB_Lock(D3DLOCK_DISCARD);
+	DWORD				VS_Offset;
+	FVF::LIT *pv		= (FVF::LIT*) VS->Lock(2*MAX_Flares*4,VS_Offset);
 	
 	float 	fDistance	= FAR_DIST*0.75f;
 	
-	if (m_Flags.bSource&&bSun){
+	if (m_Flags.bSource&&bSun)
+	{
 		vecSx.mul(vecX, m_Source.fRadius*fDistance);
 		vecSy.mul(vecY, m_Source.fRadius*fDistance);
 
@@ -327,7 +311,7 @@ void CLensFlare::Render(BOOL bSun, BOOL bFlares, BOOL bGradient)
 		}
 	}
 	
-	P.VB_Unlock	();
+	VS->Unlock				();
 	Device.set_xform_world	(Fidentity);
 	
 	for (DWORD i=0; i<rlist.size(); i++)

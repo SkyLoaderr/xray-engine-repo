@@ -18,8 +18,6 @@ protected:
 	};
 	vector<primLOD>			LODs;
 public:
-	virtual CVisual*		CreateInstance(void);
-
 	virtual void Render		(float LOD);		// LOD - Level Of Detail  [0.0f - min, 1.0f - max], -1 = Ignored
 	virtual void Load		(const char* N, CStream *data,DWORD dwFlags);
 	virtual void Copy		(CVisual *pFrom);

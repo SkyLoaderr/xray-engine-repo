@@ -522,7 +522,26 @@
 					<File
 						RelativePath=".\FVF.h"/>
 					<File
-						RelativePath=".\Primitive.cpp"/>
+						RelativePath=".\Primitive.cpp">
+						<FileConfiguration
+							Name="Debug|Win32"
+							ExcludedFromBuild="TRUE">
+							<Tool
+								Name="VCCLCompilerTool"/>
+						</FileConfiguration>
+						<FileConfiguration
+							Name="Mixed|Win32"
+							ExcludedFromBuild="TRUE">
+							<Tool
+								Name="VCCLCompilerTool"/>
+						</FileConfiguration>
+						<FileConfiguration
+							Name="Release|Win32"
+							ExcludedFromBuild="TRUE">
+							<Tool
+								Name="VCCLCompilerTool"/>
+						</FileConfiguration>
+					</File>
 					<File
 						RelativePath=".\Primitive.h"/>
 					<File
@@ -1704,46 +1723,6 @@
 						RelativePath=".\FShadowForm.h"/>
 				</Filter>
 				<Filter
-					Name="Skeleton"
-					Filter="">
-					<File
-						RelativePath=".\BodyInstance.cpp">
-						<FileConfiguration
-							Name="Mixed|Win32">
-							<Tool
-								Name="VCCLCompilerTool"
-								AssemblerOutput="4"/>
-						</FileConfiguration>
-						<FileConfiguration
-							Name="Release|Win32">
-							<Tool
-								Name="VCCLCompilerTool"
-								AssemblerOutput="4"/>
-						</FileConfiguration>
-					</File>
-					<File
-						RelativePath=".\BodyInstance.h"/>
-					<File
-						RelativePath=".\SkeletonCalculate.cpp"/>
-					<File
-						RelativePath=".\SkeletonX.cpp">
-						<FileConfiguration
-							Name="Mixed|Win32">
-							<Tool
-								Name="VCCLCompilerTool"
-								AssemblerOutput="2"/>
-						</FileConfiguration>
-						<FileConfiguration
-							Name="Release|Win32">
-							<Tool
-								Name="VCCLCompilerTool"
-								AssemblerOutput="2"/>
-						</FileConfiguration>
-					</File>
-					<File
-						RelativePath=".\SkeletonX.h"/>
-				</Filter>
-				<Filter
 					Name="Ordinal (normal)"
 					Filter="">
 					<File
@@ -1755,7 +1734,26 @@
 					Name="Progressive"
 					Filter="">
 					<File
-						RelativePath=".\FProgressive.cpp"/>
+						RelativePath=".\FProgressive.cpp">
+						<FileConfiguration
+							Name="Debug|Win32"
+							ExcludedFromBuild="TRUE">
+							<Tool
+								Name="VCCLCompilerTool"/>
+						</FileConfiguration>
+						<FileConfiguration
+							Name="Mixed|Win32"
+							ExcludedFromBuild="TRUE">
+							<Tool
+								Name="VCCLCompilerTool"/>
+						</FileConfiguration>
+						<FileConfiguration
+							Name="Release|Win32"
+							ExcludedFromBuild="TRUE">
+							<Tool
+								Name="VCCLCompilerTool"/>
+						</FileConfiguration>
+					</File>
 					<File
 						RelativePath=".\FProgressive.h"/>
 					<File
@@ -1864,6 +1862,46 @@
 					</File>
 					<File
 						RelativePath=".\psvisual.h"/>
+				</Filter>
+				<Filter
+					Name="Skeleton"
+					Filter="">
+					<File
+						RelativePath=".\BodyInstance.cpp">
+						<FileConfiguration
+							Name="Mixed|Win32">
+							<Tool
+								Name="VCCLCompilerTool"
+								AssemblerOutput="4"/>
+						</FileConfiguration>
+						<FileConfiguration
+							Name="Release|Win32">
+							<Tool
+								Name="VCCLCompilerTool"
+								AssemblerOutput="4"/>
+						</FileConfiguration>
+					</File>
+					<File
+						RelativePath=".\BodyInstance.h"/>
+					<File
+						RelativePath=".\SkeletonCalculate.cpp"/>
+					<File
+						RelativePath=".\SkeletonX.cpp">
+						<FileConfiguration
+							Name="Mixed|Win32">
+							<Tool
+								Name="VCCLCompilerTool"
+								AssemblerOutput="2"/>
+						</FileConfiguration>
+						<FileConfiguration
+							Name="Release|Win32">
+							<Tool
+								Name="VCCLCompilerTool"
+								AssemblerOutput="2"/>
+						</FileConfiguration>
+					</File>
+					<File
+						RelativePath=".\SkeletonX.h"/>
 				</Filter>
 			</Filter>
 			<Filter

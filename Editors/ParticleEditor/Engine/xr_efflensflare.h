@@ -23,7 +23,7 @@ protected:
     Fcolor			LightColor;
 	float			fGradientValue;
 
-	CPrimitive		P;
+	CVertexStream*	VS;
 
 	void			SetGradient	(float fMaxRadius, float fOpacity, const char* tex_name);
     void			SetSource	(float fRadius, const char* tex_name);

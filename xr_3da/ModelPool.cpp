@@ -7,7 +7,7 @@
 #include "fmesh.h"
 #include "fvisual.h"
 #include "fprogressivefixedvisual.h"
-#include "fprogressive.h"
+///#include "fprogressive.h"
 #include "fhierrarhyvisual.h"
 #include "bodyinstance.h"
 #include "fdetailpatch.h"
@@ -52,9 +52,9 @@ CVisual*	CModelPool::Instance_Create(DWORD type)
 	case MT_CACHED:
 		V	= new FCached;
 		break;
-	case MT_PROGRESSIVE_STRIPS:
-		V	= new FProgressive;
-		break;
+	// case MT_PROGRESSIVE_STRIPS:
+	//	V	= new FProgressive;
+	//	break;
 	default:
 		R_ASSERT(0=="Unknown visual type");
 		break;

@@ -57,8 +57,8 @@ public:
 	}
 	
 	// The most used wrappers --- recomendation DON'T USE AT ALL :)
-	IC void Draw			(CPrimitive& P,		DWORD dwNumVerts, DWORD dwNumPrimitives);
-	IC void DrawSubset		(CPrimitive& P,		DWORD dwStartVertex,DWORD dwNumVerts, DWORD dwStartIndex, DWORD dwNumPrimitives);
+	// IC void Draw			(CPrimitive& P,		DWORD dwNumVerts, DWORD dwNumPrimitives);
+	// IC void DrawSubset		(CPrimitive& P,		DWORD dwStartVertex,DWORD dwNumVerts, DWORD dwStartIndex, DWORD dwNumPrimitives);
 	IC void Draw			(CVertexStream* S,	DWORD dwNumVerts, DWORD dwNumPrimitives, DWORD dwBase, IDirect3DIndexBuffer8* IB);
 	IC void Draw			(CVertexStream* S,	DWORD dwNumPrimitives, DWORD dwBase);
 	IC void Draw			(CVertexStream* S,  DWORD dwNumVerts, DWORD dwNumPrimitives, DWORD vBase, CIndexStream* IS, DWORD iBase);
