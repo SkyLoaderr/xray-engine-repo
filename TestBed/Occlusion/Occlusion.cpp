@@ -83,7 +83,7 @@ int __cdecl main	(int argc, char* argv[])
 	T.raster[1].y	= 10.9f;
 	T.raster[1].z	= 0.1f;
 	
-	T.raster[2].x	= 20.2f;
+	T.raster[2].x	= 60.5f;
 	T.raster[2].y	= 50.3f;
 	T.raster[2].z	= 0.99f;
 
