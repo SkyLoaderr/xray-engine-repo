@@ -64,7 +64,7 @@ public:
 	int				q_LoadSearch	(const Fvector& Pos);	// <0 - failure
 
 	// Helper functions
-	IC	hdrNODES&			Header()		{ return m_header; }
+	IC	const hdrNODES&		Header()		{ return m_header; }
 	IC	NodeCompressed*		Node(DWORD ID)	{ return vfs?m_nodes_ptr[ID]:NULL; }
 
 	IC	void		UnpackPosition	(Fvector& Pdest, const NodePosition& Psrc)
