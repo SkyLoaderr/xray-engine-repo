@@ -40,6 +40,9 @@ private:
 
 	// temporary buffer for object being switched offline children
 	OBJECT_VECTOR					m_tpChildren;
+	// temporary buffer for purchesed by the particular trader artefacts
+	ARTEFACT_COUNT_MAP				m_tpTraderArtefacts;
+	ORGANIZATION_ORDER_MAP			m_tpSoldArtefacts;
 
 	// comnmon
 			void					vfUpdateDynamicData			();

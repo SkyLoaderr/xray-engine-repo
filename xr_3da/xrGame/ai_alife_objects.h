@@ -164,6 +164,7 @@ public:
 	LPSTR_VECTOR					m_tpPossibleDiscoveries;
 	float							m_fJoinProbability;
 	float							m_fLeftProbability;
+	EStalkerRank					m_tTraderRank;
 	EResearchState					m_tResearchState;
 	_TIME_ID						m_tTimeFinish;				// this member is usd for keeping time where some state finishes (research or freeze)
 	ARTEFACT_ORDER_VECTOR			m_tpOrderedArtefacts;

@@ -77,7 +77,7 @@ void CWeaponKnife::UpdateCL	()
 {
 	inherited::UpdateCL	();
 
-	float dt			= Device.fTimeDelta;
+//	float dt			= Device.fTimeDelta;
 	
 	// cycle update
 	switch (STATE)

@@ -211,12 +211,21 @@ namespace ALife {
 	DEFINE_VECTOR(STerrainPlace, TERRAIN_VECTOR, TERRAIN_IT);
 
 	struct SArtefactOrder {
-		string64	m_caSection;
-		u32			m_dwCount;
-		u32			m_dwPrice;
+		string64				m_caSection;
+		u32						m_dwCount;
+		u32						m_dwPrice;
 	};
-	
+
+	struct SOrganizationOrder {
+		CSE_ALifeOrganization	*m_tpALifeOrganization;
+		u32						m_dwCount;
+	};
+
 	DEFINE_VECTOR		(SArtefactOrder,				ARTEFACT_ORDER_VECTOR,			ARTEFACT_ORDER_IT);
+	
+	typedef xr_map<u32,SOrganizationOrder,std::greater<u32> >			ORGANIZATION_ORDER_MAP;
+	typedef xr_map<u32,SOrganizationOrder,std::greater<u32> >::iterator	ORGANIZATION_ORDER_PAIR_IT;
+	//DEFINE_MAP_PRED		(u32,		SOrganizationOrder,			ORGANIZATION_ORDER_MAP,		ORGANIZATION_ORDER_PAIR_IT, (std::greater<u32>));
 };
 
 #endif

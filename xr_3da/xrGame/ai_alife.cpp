@@ -715,7 +715,54 @@ void CSE_ALifeSimulator::vfUpdateOrganizations()
 
 void CSE_ALifeSimulator::vfSellArtefacts(CSE_ALifeTrader &tTrader)
 {
-
+	m_tpTraderArtefacts.clear();
+	// filling temporary map with the purchased artefacts
+	{
+		xr_vector<u16>::iterator	i = tTrader.children.begin();
+		xr_vector<u16>::iterator	e = tTrader.children.end();
+		for ( ; i != e; i++) {
+			// getting pointer to the purchased item from the object registry
+			OBJECT_PAIR_IT	j = m_tObjectRegistry.find(*i);
+			R_ASSERT2		(j != m_tObjectRegistry.end(),"Trader purchased unregistered item!");
+			// checking if the purchased item is an artefact
+			CSE_ALifeItemArtefact *l_tpALifeItemArtefact = dynamic_cast<CSE_ALifeItemArtefact*>((*j).second);
+			if (!l_tpALifeItemArtefact)
+				continue;
+			
+			// adding item to the temporary artefact map
+			ARTEFACT_COUNT_PAIR_IT	k = m_tpTraderArtefacts.find(l_tpALifeItemArtefact->s_name);
+			if (k == m_tpTraderArtefacts.end())
+				m_tpTraderArtefacts.insert(std::make_pair(l_tpALifeItemArtefact->s_name,1));
+			else
+				(*k).second++;
+		}
+	}
+	
+	// iterating on all the trader artefacts
+	ARTEFACT_COUNT_PAIR_IT		i = m_tpTraderArtefacts.begin();
+	ARTEFACT_COUNT_PAIR_IT		e = m_tpTraderArtefacts.end();
+	for ( ; i != e; i++) {
+		m_tpSoldArtefacts.clear	();
+		// iterating on all the organizations
+		ORGANIZATION_P_PAIR_IT	I = m_tOrganizationRegistry.begin();
+		ORGANIZATION_P_PAIR_IT	E = m_tOrganizationRegistry.end();
+		for ( ; I != E; I++) {
+			// checking if our rank is enough for the organization
+			// and the organization in the appropriate state
+			if (((*I).second->m_tTraderRank == tTrader.m_tRank) && ((*I).second->m_tResearchState == eResearchStateJoin)) {
+				// iterating on all the organization artefact orders
+				ARTEFACT_ORDER_IT	ii = (*I).second->m_tpOrderedArtefacts.begin();
+				ARTEFACT_ORDER_IT	ee = (*I).second->m_tpOrderedArtefacts.end();
+				for ( ; ii != ee; ii++)
+					if (!strcmp((*ii).m_caSection,(*i).first)) {
+						SOrganizationOrder l_tOrganizationOrder;
+						l_tOrganizationOrder.m_tpALifeOrganization = (*I).second;
+						l_tOrganizationOrder.m_dwCount = (*ii).m_dwCount;
+						m_tpSoldArtefacts.insert(std::make_pair((*ii).m_dwPrice,l_tOrganizationOrder));
+					}
+			}
+		}
+	}
 }
 
 void CSE_ALifeSimulator::vfUpdateArtefactOrders(CSE_ALifeTrader &tTrader)
