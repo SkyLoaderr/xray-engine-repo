@@ -5,7 +5,7 @@
 #include "fs.h"
 #include "fmesh.h"
 
-extern int	RegisterString		(LPCSTR T);
+extern u16	RegisterShader		(LPCSTR T);
 extern void	geom_batch_average	(u32 verts, u32 faces);
 
 u32						u8_vec4			(Fvector N, u8 A=0)
@@ -95,14 +95,7 @@ void OGF::Save			(IWriter &fs)
 	// clMsg			("* %d faces",faces.size());
 	geom_batch_average	((u32)vertices.size(),(u32)faces.size());
 
-	// Create header
-	ogf_header H;
-	H.format_version	= xrOGF_FormatVersion;
-	H.flags				= 0;
-	H.type				= MT_NORMAL;
-
 	// Texture & shader
-	fs.open_chunk		(OGF_SHADER_ID);
 	std::string			Tname;
 	for (u32 i=0; i<textures.size(); i++)	{
 		if (!Tname.empty()) Tname += ',';
@@ -110,9 +103,13 @@ void OGF::Save			(IWriter &fs)
 		if (strchr(fname,'.')) *strchr(fname,'.')=0;
 		Tname += fname;
 	}
-	Tname				+= "/" + string(pBuild->shader_render[pBuild->materials[material].shader].name);
-	fs.w_u32			(RegisterString(Tname.c_str()));
-	fs.close_chunk		();
+	Tname				= string(pBuild->shader_render[pBuild->materials[material].shader].name) + "/" + Tname;
+
+	// Create header
+	ogf_header			H;
+	H.format_version	= xrOGF_FormatVersion;
+	H.type				= MT_NORMAL;
+	H.shader_id			= RegisterShader			(Tname.c_str());
 
 	// Vertices
 	Shader_xrLC*	SH	=	pBuild->shaders.Get		(pBuild->materials[material].reserved);
@@ -141,14 +138,7 @@ void OGF_Reference::Save	(IWriter &fs)
 
 	// geom_batch_average	(vertices.size(),faces.size());	// don't use reference(s) as batch estimate
 
-	// Create header
-	ogf_header			H;
-	H.format_version	= xrOGF_FormatVersion;
-	H.flags				= 0;
-	H.type				= MT_TREE;
-
 	// Texture & shader
-	fs.open_chunk		(OGF_SHADER_ID);
 	std::string			Tname;
 	for (u32 i=0; i<textures.size(); i++)
 	{
@@ -157,9 +147,13 @@ void OGF_Reference::Save	(IWriter &fs)
 		if (strchr(fname,'.')) *strchr(fname,'.')=0;
 		Tname += fname;
 	}
-	Tname				+= "/" + string(pBuild->shader_render[pBuild->materials[material].shader].name);
-	fs.w_u32			(RegisterString(Tname.c_str()));
-	fs.close_chunk		();
+	Tname				= string(pBuild->shader_render[pBuild->materials[material].shader].name) + "/" + Tname;
+
+	// Create header
+	ogf_header			H;
+	H.format_version	= xrOGF_FormatVersion;
+	H.type				= MT_TREE;
+	H.shader_id			= RegisterShader	(Tname.c_str());
 
 	// Vertices
 	fs.open_chunk		(OGF_VCONTAINER);

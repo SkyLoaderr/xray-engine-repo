@@ -208,18 +208,21 @@ void OGF_Node::Save	(IWriter &fs)
 	fs.close_chunk		();
 }
 
-extern int	RegisterString	(LPCSTR T);
+extern u16	RegisterShader	(LPCSTR T);
 
 void OGF_LOD::Save		(IWriter &fs)
 {
 	OGF_Base::Save		(fs);
 
 	// Header
+	ogf_header			H;
+	string		sid		= 
+		string(pBuild->shader_render[pBuild->materials[lod_Material].shader].name)	+	"\"	+
+		string(pBuild->textures[pBuild->materials[lod_Material].surfidx].name);
 	fs.open_chunk		(OGF_HEADER);
-	ogf_header H;
 	H.format_version	= xrOGF_FormatVersion;
 	H.type				= MT_LOD;
-	H.flags				= 0;
+	H.shader_id			= RegisterShader(sid.c_str());
 	fs.w				(&H,sizeof(H));
 	fs.close_chunk		();
 
@@ -232,11 +235,5 @@ void OGF_LOD::Save		(IWriter &fs)
 	// Lod-def
 	fs.open_chunk		(OGF_LODDEF2);
 	fs.w				(lod_faces,sizeof(lod_faces));
-	fs.close_chunk		();
-
-	// Texture & shader
-	fs.open_chunk		(OGF_TEXTURE_L);
-	fs.w_u32			(RegisterString(pBuild->textures[pBuild->materials[lod_Material].surfidx].name));
-	fs.w_u32			(RegisterString(pBuild->shader_render[pBuild->materials[lod_Material].shader].name));
 	fs.close_chunk		();
 }

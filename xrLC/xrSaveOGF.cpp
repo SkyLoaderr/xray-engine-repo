@@ -4,7 +4,7 @@
 
 VBContainer				g_VB;
 IBContainer				g_IB;
-xr_vector<LPCSTR>		g_Strings;
+xr_vector<LPCSTR>		g_Shaders;
 
 u32						g_batch_count;
 u32						g_batch_verts;
@@ -16,7 +16,7 @@ u32						g_batch_500;
 u32						g_batch_1000;
 u32						g_batch_5000;
 
-int		RegisterString		(LPCSTR T) 
+u16		RegisterShader		(LPCSTR T) 
 {
 	for (u32 it=0; it<g_Strings.size(); it++)
 		if (0==stricmp(T,g_Strings[it]))	return it;

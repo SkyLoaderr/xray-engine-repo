@@ -22,7 +22,7 @@ CBuild::~CBuild()
 {
 }
  
-extern int RegisterString		(LPCSTR T);
+extern u16		RegisterShader		(LPCSTR T);
 
 class CMULight : public CThread
 {
@@ -248,8 +248,10 @@ void CBuild::Run	(LPCSTR P)
 	{
 		b_glow&	G	= glows[i];
 		fs->w		(&G,4*sizeof(float));
-		fs->w_u32	(RegisterString(textures		[materials[G.dwMaterial].surfidx].name));
-		fs->w_u32	(RegisterString(shader_render	[materials[G.dwMaterial].shader].name));
+		string		sid		= 
+			string(shader_render[materials[G.dwMaterial].shader].name)	+	"\"	+
+			string(textures		[materials[G.dwMaterial].surfidx].name);
+		fs->w_u16	(RegisterShader(sid.c_str()));
 	}
 	fs->close_chunk	();
 

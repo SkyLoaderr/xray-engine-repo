@@ -24,7 +24,6 @@ enum MT {
 enum OGF_Chuncks {
 	OGF_HEADER		= 1,
 	OGF_TEXTURE		= 2,
-	OGF_SHADER_ID	= 3,	// really - shader link for static data
 	OGF_MATERIAL	= 4,	// actors only
 	OGF_CHIELDS		= 5,
 	OGF_BBOX		= 6,
@@ -54,9 +53,9 @@ const u16	xrOGF_SMParamsVersion	= 1;
 // OGF_HEADER
 const BYTE	xrOGF_FormatVersion		= 3;
 struct ogf_header {
-	BYTE format_version;			// = xrOGF_FormatVersion
-	BYTE type;						// MT
-	u16	 flags;						// =0
+	u8		format_version;			// = xrOGF_FormatVersion
+	u8		type;					// MT
+	u16		shader_id;				// should not be ZERO
 };
 
 // OGF_BBOX
