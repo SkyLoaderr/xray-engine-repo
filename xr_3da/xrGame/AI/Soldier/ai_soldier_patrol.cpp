@@ -668,13 +668,11 @@ void vfCreateFastRealisticPath(vector<Fvector> &tpaPoints, DWORD dwStartNode, ve
 
 void CAI_Soldier::PatrolUnderFire()
 {
-	// if no more health then soldier is dead
-#ifdef WRITE_LOG
-	Msg("creature : %s, mode : %s",cName(),"Patrol under fire");
-#endif
+	WRITE_TO_LOG("Patrol under fire");
+
 	if (g_Health() <= 0) {
 		eCurrentState = aiSoldierDie;
-		bStopThinking = true;
+		
 		return;
 	}
 
@@ -684,7 +682,7 @@ void CAI_Soldier::PatrolUnderFire()
 	if (Enemy.Enemy)		{
 		eCurrentState = aiSoldierAttackFire;
 		m_dwLastRangeSearch = 0;
-		bStopThinking = true;
+		
 		return;
 	}
 	/**/
@@ -696,7 +694,7 @@ void CAI_Soldier::PatrolUnderFire()
 		eCurrentState = tStateStack.top();
 		tStateStack.pop();
 		m_dwLastRangeSearch = 0;
-		bStopThinking = true;
+		
 		return;
 	}
 	/**/
@@ -704,7 +702,7 @@ void CAI_Soldier::PatrolUnderFire()
 	if (dwCurTime - dwHitTime < m_dwPatrolShock) {
 		eCurrentState = aiSoldierPatrolHurt;
 		m_dwLastRangeSearch = 0;
-		bStopThinking = true;
+		
 		return;
 	}
 	
@@ -712,7 +710,7 @@ void CAI_Soldier::PatrolUnderFire()
 	if (m_cBodyState != BODY_STATE_LIE) {
 		tStateStack.push(eCurrentState);
 		eCurrentState = aiSoldierLyingDown;
-		bStopThinking = true;
+		
 		return;
 	}
 	/**/
@@ -725,7 +723,7 @@ void CAI_Soldier::PatrolUnderFire()
 		eCurrentState = tStateStack.top();
 		tStateStack.pop();
 		m_dwLastRangeSearch = 0;
-		bStopThinking = true;
+		
 		return;
 	}
 	
@@ -779,7 +777,7 @@ void CAI_Soldier::PatrolUnderFire()
 	vfSetFire(false,Group);
 	
 	// stop processing more rules
-	bStopThinking = true;
+	
 }
 
 void CAI_Soldier::PatrolHurtAggressiveUnderFire()
@@ -789,7 +787,7 @@ void CAI_Soldier::PatrolHurtAggressiveUnderFire()
 
 	if (g_Health() <= 0) {
 		eCurrentState = aiSoldierDie;
-		bStopThinking = true;
+		
 		return;
 	}
 
@@ -800,28 +798,28 @@ void CAI_Soldier::PatrolHurtAggressiveUnderFire()
 	if ((Enemy.Enemy) && (dwCurTime - dwHitTime >= m_dwPatrolShock + m_dwUnderFireShock)) {
 		eCurrentState = aiSoldierAttackFire;
 		m_dwLastRangeSearch = 0;
-		bStopThinking = true;
+		
 		return;
 	}
 	
 	if (dwCurTime - dwHitTime >= m_dwPatrolShock + m_dwUnderFireShock) {
 		eCurrentState = aiSoldierPatrolUnderFire;
 		m_dwLastRangeSearch = 0;
-		bStopThinking = true;
+		
 		return;
 	}
 	
 	if (dwCurTime - dwHitTime < m_dwPatrolShock) {
 		eCurrentState = aiSoldierPatrolHurt;
 		m_dwLastRangeSearch = 0;
-		bStopThinking = true;
+		
 		return;
 	}
 	
 	if (m_cBodyState != BODY_STATE_LIE) {
 		tStateStack.push(eCurrentState);
 		eCurrentState = aiSoldierLyingDown;
-		bStopThinking = true;
+		
 		return;
 	}
 
@@ -843,18 +841,16 @@ void CAI_Soldier::PatrolHurtAggressiveUnderFire()
 	else
 		vfSetFire(Enemy.Enemy ? fabsf(r_torso_current.yaw - r_torso_target.yaw) < PI/30.f : false,Group);
 	
-	bStopThinking = true;
+	
 }
 
 void CAI_Soldier::PatrolHurtNonAggressiveUnderFire()
 {
-	// if no more health then soldier is dead
-#ifdef WRITE_LOG
-	Msg("creature : %s, mode : %s",cName(),"Patrol hurt non-aggressive under fire");
-#endif
+	WRITE_TO_LOG("Patrol hurt non-aggressive under fire");
+	
 	if (g_Health() <= 0) {
 		eCurrentState = aiSoldierDie;
-		bStopThinking = true;
+		
 		return;
 	}
 
@@ -864,7 +860,7 @@ void CAI_Soldier::PatrolHurtNonAggressiveUnderFire()
 	if (Enemy.Enemy)		{
 		eCurrentState = aiSoldierAttackFire;
 		m_dwLastRangeSearch = 0;
-		bStopThinking = true;
+		
 		return;
 	}
 	/**/
@@ -876,7 +872,7 @@ void CAI_Soldier::PatrolHurtNonAggressiveUnderFire()
 		eCurrentState = tStateStack.top();
 		tStateStack.pop();
 		m_dwLastRangeSearch = 0;
-		bStopThinking = true;
+		
 		return;
 	}
 	/**/
@@ -885,7 +881,7 @@ void CAI_Soldier::PatrolHurtNonAggressiveUnderFire()
 	if (m_cBodyState != BODY_STATE_LIE) {
 		tStateStack.push(eCurrentState);
 		eCurrentState = aiSoldierLyingDown;
-		bStopThinking = true;
+		
 		return;
 	}
 	/**/
@@ -898,7 +894,7 @@ void CAI_Soldier::PatrolHurtNonAggressiveUnderFire()
 		eCurrentState = tStateStack.top();
 		tStateStack.pop();
 		m_dwLastRangeSearch = 0;
-		bStopThinking = true;
+		
 		return;
 	}
 	
@@ -949,24 +945,23 @@ void CAI_Soldier::PatrolHurtNonAggressiveUnderFire()
 	vfSetFire(false,Group);
 	
 	// stop processing more rules
-	bStopThinking = true;
+	
 }
 
 void CAI_Soldier::PatrolHurt()
 {
-	// if no more health then soldier is dead
 	WRITE_TO_LOG("Patrol hurt");
 
 	if (g_Health() <= 0) {
 		eCurrentState = aiSoldierDie;
-		bStopThinking = true;
+		
 		return;
 	}
 
 	if (m_cBodyState != BODY_STATE_LIE) {
 		tStateStack.push(eCurrentState);
 		eCurrentState = aiSoldierLyingDown;
-		bStopThinking = true;
+		
 		return;
 	}
 	
@@ -981,7 +976,7 @@ void CAI_Soldier::PatrolHurt()
 		else
 			eCurrentState = aiSoldierPatrolHurtAggressiveUnderFire;
 		m_dwLastRangeSearch = 0;
-		bStopThinking = true;
+		
 		return;
 	}
 
@@ -991,7 +986,7 @@ void CAI_Soldier::PatrolHurt()
 
 	vfSetMovementType(BODY_STATE_LIE,0);
 
-	bStopThinking = true;
+	
 }
 
 void CAI_Soldier::FollowLeaderPatrol()
@@ -1000,7 +995,7 @@ void CAI_Soldier::FollowLeaderPatrol()
 	
 	if (Leader == this) {
 		eCurrentState = aiSoldierPatrolRoute;
-		bStopThinking = true;
+		
 		return;
 	}
 
@@ -1008,7 +1003,7 @@ void CAI_Soldier::FollowLeaderPatrol()
 		tStateStack.push(eCurrentState);
 		eCurrentState = aiSoldierPatrolReturnToRoute;
 		m_dwLastRangeSearch = 0;
-		bStopThinking = true;
+		
 		return;
 	}
 	else
@@ -1074,9 +1069,6 @@ void CAI_Soldier::FollowLeaderPatrol()
 	else {
 		SET_LOOK_FIRE_MOVEMENT(false, BODY_STATE_STAND,.9f*m_fMinSpeed);
 	}
-	
-	// stop processing more rules
-	bStopThinking = true;
 }
 
 void CAI_Soldier::Patrol()
@@ -1087,7 +1079,7 @@ void CAI_Soldier::Patrol()
 		tStateStack.push(eCurrentState);
 		eCurrentState = aiSoldierPatrolReturnToRoute;
 		m_dwLastRangeSearch = 0;
-		bStopThinking = true;
+		
 		return;
 	}
 	else
@@ -1135,7 +1127,9 @@ void CAI_Soldier::PatrolReturn()
 			fDistance = vPosition.distance_to(Leader->Position());
 			SelectorPatrol.m_tEnemyPosition = Leader->Position();
 		}
+		
 		vfSearchForBetterPosition(SelectorPatrol,Squad,Leader);
+		
 		if ((fDistance < 2.f) || (AI_NodeID == AI_Path.DestNode)) {
 			if (this == Leader) {
 				float fDistance = 0.f;
@@ -1150,7 +1144,6 @@ void CAI_Soldier::PatrolReturn()
 					m_ePreviousState = eCurrentState = tStateStack.top();
 					tStateStack.pop();
 					m_dwLastRangeSearch = 0;
-					bStopThinking = true;
 					return;
 				}
 			}
@@ -1158,7 +1151,6 @@ void CAI_Soldier::PatrolReturn()
 				m_ePreviousState = eCurrentState = tStateStack.top();
 				tStateStack.pop();
 				m_dwLastRangeSearch = 0;
-				bStopThinking = true;
 				return;
 			}
 		}

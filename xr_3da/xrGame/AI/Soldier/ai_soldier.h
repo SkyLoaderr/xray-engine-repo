@@ -55,7 +55,7 @@ class CAI_Soldier : public CCustomMonster
 	protected:
 		
 		// macroses
-//		#define WRITE_LOG
+		#define WRITE_LOG
 		#define MIN_RANGE_SEARCH_TIME_INTERVAL	15000.f
 		#define MAX_TIME_RANGE_SEARCH			150000.f
 		#define	FIRE_ANGLE						PI/10
@@ -66,7 +66,6 @@ class CAI_Soldier : public CCustomMonster
 		#define FN(i)							(float(tNode->cover[(i)])/255.f)
 		#define	AMMO_NEED_RELOAD				6
 		#define	MAX_HEAD_TURN_ANGLE				(PI/3.f)
-		#define VECTOR_DIRECTION(i)				(i == 0 ? tLeft : (i == 1 ? tForward : (i == 2 ? tRight : tBack)))
 		#define EYE_WEAPON_DELTA				(0*PI/30.f)
 		#define TORSO_ANGLE_DELTA				(0*PI/30.f)
 		#define INIT_SQUAD_AND_LEADER \
@@ -82,7 +81,9 @@ class CAI_Soldier : public CCustomMonster
 		#define MIN_PATROL_DISTANCE		1.f
 
 		#ifdef WRITE_LOG
-			#define WRITE_TO_LOG(S) Msg("creature : %s, mode : %s",cName(),S);
+			#define WRITE_TO_LOG(S) \
+				Msg("creature : %s, mode : %s, %.2f,%.2f,%.2f,%.2f,%.2f,%.2f,%.2f",cName(),S,vPosition.x,vPosition.y,vPosition.z,r_current.yaw,r_current.pitch,r_torso_current.yaw,r_torso_current.pitch);\
+				bStopThinking = true;
 		#else
 			#define WRITE_TO_LOG(S)
 		#endif
@@ -92,7 +93,6 @@ class CAI_Soldier : public CCustomMonster
 			\
 			if (g_Health() <= 0) {\
 				eCurrentState = aiSoldierDie;\
-				bStopThinking = true;\
 				return;\
 			}\
 			\
@@ -102,7 +102,6 @@ class CAI_Soldier : public CCustomMonster
 				tStateStack.push(eCurrentState);\
 				eCurrentState = aiSoldierAttackFire;\
 				m_dwLastRangeSearch = 0;\
-				bStopThinking = true;\
 				return;\
 			}\
 			\
@@ -112,7 +111,6 @@ class CAI_Soldier : public CCustomMonster
 				tStateStack.push(eCurrentState);\
 				eCurrentState = aiSoldierPatrolHurt;\
 				m_dwLastRangeSearch = 0;\
-				bStopThinking = true;\
 				return;\
 			}\
 			\
@@ -120,7 +118,6 @@ class CAI_Soldier : public CCustomMonster
 				tStateStack.push(eCurrentState);\
 				eCurrentState = aiSoldierSenseSomething;\
 				m_dwLastRangeSearch = 0;\
-				bStopThinking = true;\
 				return;\
 			}\
 			\
@@ -132,7 +129,6 @@ class CAI_Soldier : public CCustomMonster
 				tStateStack.push(eCurrentState);\
 				eCurrentState = aiSoldierPatrolUnderFire;\
 				m_dwLastRangeSearch = 0;\
-				bStopThinking = true;\
 				return;\
 			}
 
@@ -149,9 +145,7 @@ class CAI_Soldier : public CCustomMonster
 			\
 			vfSetFire(a,Group);\
 			\
-			vfSetMovementType(b,c);\
-			\
-			bStopThinking = true;
+			vfSetMovementType(b,c);
 
 		////////////////////////////////////////////////////////////////////////////
 		// normal animations
