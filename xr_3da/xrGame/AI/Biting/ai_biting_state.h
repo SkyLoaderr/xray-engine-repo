@@ -91,7 +91,8 @@ class CBitingAttack : public IState {
 		ACTION_ATTACK_MELEE,
 	} m_tAction;
 
-	CEntity			*pEnemy;
+	VisionElem		m_tEnemy;
+
 	bool			m_bAttackRat;
 
 	float			m_fDistMin;						//!< минимально допустимое рассто€ни€ дл€ аттаки

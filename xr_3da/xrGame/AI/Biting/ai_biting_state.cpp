@@ -189,12 +189,11 @@ void CBitingAttack::Init()
 	IState::Init();
 
 	// Получить врага
-	VisionElem ve;
-	if (!pMonster->GetEnemy(ve)) R_ASSERT(false);
-	pEnemy = ve.obj;
+	if (!pMonster->GetEnemy(m_tEnemy)) R_ASSERT(false);
+	pMonster->SaveEnemy();
 
 	// Определение класса врага
-	CAI_Rat	*tpRat = dynamic_cast<CAI_Rat *>(pEnemy);
+	CAI_Rat	*tpRat = dynamic_cast<CAI_Rat *>(m_tEnemy.obj);
 	if (tpRat) m_bAttackRat = true;
 	else m_bAttackRat = false;
 
@@ -206,7 +205,6 @@ void CBitingAttack::Init()
 		m_fDistMin = 2.4f;
 		m_fDistMax = 3.8f;
 	}
-	
 
 	// Test
 	Msg("_ Attack Init _");
@@ -217,7 +215,7 @@ void CBitingAttack::Run()
 	// Если враг изменился, инициализировать состояние
 	VisionElem ve;
 	if (!pMonster->GetEnemy(ve)) R_ASSERT(false);
-	if (pEnemy != ve.obj) {
+	if (m_tEnemy.obj != ve.obj) {
 		Reset();
 		Init();
 	} 
@@ -225,10 +223,10 @@ void CBitingAttack::Run()
 	// Выбор состояния
 	bool bAttackMelee = (m_tAction == ACTION_ATTACK_MELEE);
 
-	if (bAttackMelee && (pEnemy->Position().distance_to(pMonster->Position()) < m_fDistMax)) 
+	if (bAttackMelee && (m_tEnemy.position.distance_to(pMonster->Position()) < m_fDistMax)) 
 		m_tAction = ACTION_ATTACK_MELEE;
 	else 
-		m_tAction = ((pEnemy->Position().distance_to(pMonster->Position()) > m_fDistMin) ? ACTION_RUN : ACTION_ATTACK_MELEE);
+		m_tAction = ((m_tEnemy.position.distance_to(pMonster->Position()) > m_fDistMin) ? ACTION_RUN : ACTION_ATTACK_MELEE);
 
 	// вычисление частоты старт-стопов
 	if (bAttackMelee && m_tAction == ACTION_RUN) {
@@ -240,19 +238,22 @@ void CBitingAttack::Run()
 			m_fDistMin -= 0.3f;
 		} else nDoDamage = 1;
 	}
-
+	
+	u32 delay;
 
 	// Выполнение состояния
 	switch (m_tAction) {	
 		case ACTION_RUN:		// бежать на врага
-			pMonster->AI_Path.DestNode = pEnemy->AI_NodeID;
-			pMonster->vfChoosePointAndBuildPath(0,&pEnemy->Position(), false, 0, 300);
+			delay = ((m_bAttackRat)? 0: 300);
+			pMonster->AI_Path.DestNode = m_tEnemy.node_id;
+			pMonster->vfChoosePointAndBuildPath(0,&m_tEnemy.position, false, 0, delay);
 
 			pMonster->Motion.m_tParams.SetParams(eMotionRun,m_cfBitingRunAttackSpeed,m_cfBitingRunRSpeed,0,0,MASK_ANIM | MASK_SPEED | MASK_R_SPEED);
 			pMonster->Motion.m_tTurn.Set(eMotionRunTurnLeft,eMotionRunTurnRight, m_cfBitingRunAttackTurnSpeed,m_cfBitingRunAttackTurnRSpeed,m_cfBitingRunAttackMinAngle);
 
 			break;
 		case ACTION_ATTACK_MELEE:		// атаковать вплотную
+			// если враг под монстром подпрыгнуть и убить
 			float yaw, pitch;
 
 			if (m_dwFaceEnemyLastTime + m_dwFaceEnemyLastTimeInterval < m_dwCurrentTime) {
