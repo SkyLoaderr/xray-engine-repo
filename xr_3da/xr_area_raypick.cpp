@@ -151,10 +151,10 @@ BOOL CObjectSpace::RayQuery(const Collide::ray_defs& R, Collide::rq_callback* CB
 		if ((R.tgt&rqtDyn)&&sd_test.is(rqtDyn)&&(next_test&rqtDyn)){ 
 			r_temp.r_clear	();
 			// Traverse object database
-			g_SpatialSpace->q_ray	(0,STYPE_COLLIDEABLE,d_rd.start,d_rd.dir,d_rd.range);
+			g_SpatialSpace->q_ray	(r_spatial,0,STYPE_COLLIDEABLE,d_rd.start,d_rd.dir,d_rd.range);
 			// Determine visibility for dynamic part of scene
-			for (u32 o_it=0; o_it<g_SpatialSpace->q_result.size(); o_it++){
-				CObject*	collidable		= dynamic_cast<CObject*>	(g_SpatialSpace->q_result[o_it]);
+			for (u32 o_it=0; o_it<r_spatial.size(); o_it++){
+				CObject*	collidable		= dynamic_cast<CObject*>	(r_spatial[o_it]);
 				if			(0==collidable)	continue;
 				ICollisionForm*	cform		= collidable->collidable.model;
 				ECollisionFormType tp		= collidable->collidable.model->Type();
