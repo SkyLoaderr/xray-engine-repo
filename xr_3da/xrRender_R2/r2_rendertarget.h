@@ -13,6 +13,7 @@ private:
 	u32							dwWidth;
 	u32							dwHeight;
 	u32							dwAccumulatorClearMark;
+	u32							dwZBufferClearMark;
 	u32							dwLightMarkerID;
 public:
 	// 
