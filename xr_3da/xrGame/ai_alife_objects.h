@@ -220,8 +220,7 @@ public:
 	
 	_GRAPH_ID						m_tNextGraphID;
 	_GRAPH_ID						m_tPrevGraphID;
-	float							m_fMinSpeed;
-	float							m_fMaxSpeed;
+	float							m_fGoingSpeed;
 	float							m_fCurSpeed;
 	float							m_fDistanceFromPoint;
 	float							m_fDistanceToPoint;
@@ -231,8 +230,7 @@ public:
 		inherited::Save				(tMemoryStream);
 		tMemoryStream.write			(&m_tNextGraphID,			sizeof(m_tNextGraphID));
 		tMemoryStream.write			(&m_tPrevGraphID,			sizeof(m_tPrevGraphID));
-		tMemoryStream.write			(&m_fMinSpeed,				sizeof(m_fMinSpeed));
-		tMemoryStream.write			(&m_fMaxSpeed,				sizeof(m_fMaxSpeed));
+		tMemoryStream.write			(&m_fGoingSpeed,			sizeof(m_fGoingSpeed));
 		tMemoryStream.write			(&m_fCurSpeed,				sizeof(m_fCurSpeed));
 		tMemoryStream.write			(&m_fDistanceFromPoint,		sizeof(m_fDistanceFromPoint));
 		tMemoryStream.write			(&m_fDistanceToPoint,		sizeof(m_fDistanceToPoint));
@@ -243,8 +241,7 @@ public:
 		inherited::Load				(tFileStream);
 		tFileStream.Read			(&m_tNextGraphID,			sizeof(m_tNextGraphID));
 		tFileStream.Read			(&m_tPrevGraphID,			sizeof(m_tPrevGraphID));
-		tFileStream.Read			(&m_fMinSpeed,				sizeof(m_fMinSpeed));
-		tFileStream.Read			(&m_fMaxSpeed,				sizeof(m_fMaxSpeed));
+		tFileStream.Read			(&m_fGoingSpeed,			sizeof(m_fGoingSpeed));
 		tFileStream.Read			(&m_fCurSpeed,				sizeof(m_fCurSpeed));
 		tFileStream.Read			(&m_fDistanceFromPoint,		sizeof(m_fDistanceFromPoint));
 		tFileStream.Read			(&m_fDistanceToPoint,		sizeof(m_fDistanceToPoint));
@@ -255,8 +252,7 @@ public:
 		inherited::Init				(tSpawnID,tpSpawnPoints);
 		m_tNextGraphID				= tpSpawnPoints[tSpawnID].tNearestGraphPointID;
 		m_tPrevGraphID				= tpSpawnPoints[tSpawnID].tNearestGraphPointID;
-		m_fMinSpeed					= pSettings->ReadFLOAT	(tpSpawnPoints[tSpawnID].caModel, "minSpeed");
-		m_fMaxSpeed					= pSettings->ReadFLOAT	(tpSpawnPoints[tSpawnID].caModel, "maxSpeed");
+		m_fGoingSpeed				= pSettings->ReadFLOAT	(tpSpawnPoints[tSpawnID].caModel, "going_speed");
 		m_fCurSpeed					= 0.0f;
 		m_fDistanceFromPoint		= 0.0f;
 		m_fDistanceToPoint			= 0.0f;
@@ -363,6 +359,7 @@ public:
 	u32								m_dwCurNode;
 	u32								m_dwCurTaskLocation;
 	STask							m_tCurTask;
+	float							m_fSearchSpeed;
 
 	virtual	void					Save(CFS_Memory &tMemoryStream)
 	{
@@ -423,6 +420,7 @@ public:
 		tMemoryStream.Wdword		(m_dwCurNode);
 		tMemoryStream.Wdword		(m_dwCurTaskLocation);
 		tMemoryStream.write			(&m_tCurTask,	sizeof(m_tCurTask));
+		tMemoryStream.Wfloat		(m_fSearchSpeed);
 	};
 
 	virtual	void					Load(CStream	&tFileStream)
@@ -479,6 +477,7 @@ public:
 		m_dwCurNode					= tFileStream.Rdword();
 		m_dwCurTaskLocation			= tFileStream.Rdword();
 		tFileStream.Read			(&m_tCurTask,	sizeof(m_tCurTask));
+		m_fSearchSpeed				= tFileStream.Rfloat();
 	};
 
 	virtual void					Init(_SPAWN_ID	tSpawnID, SPAWN_VECTOR &tpSpawnPoints)
@@ -494,6 +493,7 @@ public:
 		m_tCurTask.tTaskID			= u32(-1);
 		m_dwCurNode					= u32(-1);
 		m_dwCurTaskLocation			= u32(-1);
+		m_fSearchSpeed				= pSettings->ReadFLOAT				(tpSpawnPoints[tSpawnID].caModel, "search_speed");
 	};
 };
 

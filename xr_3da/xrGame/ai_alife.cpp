@@ -359,7 +359,7 @@ void CAI_ALife::Load()
 	m_dwObjectsBeingProcessed	=     0;
 	m_qwMaxProcessTime			=  100*CPU::cycles_per_microsec;
 	m_dwStartTime				=	Level().timeServer();
-	m_fTimeFactor				=   10.0f;
+	m_fTimeFactor				=   1.0f;
 
 	// checking if graph is loaded
 	if (!Level().AI.m_tpaGraph)

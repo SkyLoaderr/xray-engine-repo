@@ -29,42 +29,48 @@ IC void vfPrintTime(char *S, _TIME_ID tTimeID)
 void vfPrintLargeString(const char *S1, const char *S, const int i, const int j, const u32 u)
 {
 	string128	S2;
-	for (int k=0, l=strlen(S), m=((l - 1)/u) + 1; k<m; k++) {
-		PSGP.memCopy(S2,S + k*u,u*sizeof(char));
-		if (k == m - 1)
-			S2[l - k*u]=0;
-		else
-			S2[u] = 0;
-		if (!k)
-			if (m > 1)
-				Msg("* %s %d : %d[\n* %s",S1,i,j,S2);
-			else
-				Msg("* %s %d : %d[%s]",S1,i,j,S2);
-		else
+	if (strlen(S))
+		for (int k=0, l=strlen(S), m=((l - 1)/u) + 1; k<m; k++) {
+			PSGP.memCopy(S2,S + k*u,u*sizeof(char));
 			if (k == m - 1)
-				Msg("* %s]",S2);
+				S2[l - k*u]=0;
 			else
-				Msg("* %s",S2);
-	}
+				S2[u] = 0;
+			if (!k)
+				if (m > 1)
+					Msg("* %s %d : %d[\n* %s",S1,i,j,S2);
+				else
+					Msg("* %s %d : %d[%s]",S1,i,j,S2);
+			else
+				if (k == m - 1)
+					Msg("* %s]",S2);
+				else
+					Msg("* %s",S2);
+		}
+	else
+		Msg("* %s %d : %d[%s]",S1,i,j,S);
 }
 
 void vfPrintLargeString(const char *S1, const char *S, const int j, const u32 u)
 {
 	string128	S2;
-	for (int k=0, l=strlen(S), m=((l - 1)/u) + 1; k<m; k++) {
-		PSGP.memCopy(S2,S + k*u,u*sizeof(char));
-		if (k == m - 1)
-			S2[l - k*u]=0;
-		else
-			S2[u] = 0;
-		if (!k)
-			if (m > 1)
-				Msg("* %s[%d] : \n* %s",S1,j,S2);
+	if (strlen(S))
+		for (int k=0, l=strlen(S), m=((l - 1)/u) + 1; k<m; k++) {
+			PSGP.memCopy(S2,S + k*u,u*sizeof(char));
+			if (k == m - 1)
+				S2[l - k*u]=0;
 			else
-				Msg("* %s[%d] : %s",S1,j,S2);
-		else
-			Msg("* %s",S2);
-	}
+				S2[u] = 0;
+			if (!k)
+				if (m > 1)
+					Msg("* %s[%d] : \n* %s",S1,j,S2);
+				else
+					Msg("* %s[%d] : %s",S1,j,S2);
+			else
+				Msg("* %s",S2);
+		}
+	else
+		Msg("* %s[%d] : %s",S1,j,S);
 }
 
 void CAI_ALife::vfListObjects()
@@ -190,8 +196,7 @@ void CAI_ALife::vfObjectInfo(_OBJECT_ID	&tObjectID)
 		Msg("* Graph ID next : %d",tpALifeMonster->m_tNextGraphID);
 		Msg("* Graph ID prev : %d",tpALifeMonster->m_tPrevGraphID);
 		Msg("* Current speed : %7.2f",tpALifeMonster->m_fCurSpeed);
-		Msg("* Minimum speed : %7.2f",tpALifeMonster->m_fMinSpeed);
-		Msg("* Maximum speed : %7.2f",tpALifeMonster->m_fMaxSpeed);
+		Msg("* Going speed   : %7.2f",tpALifeMonster->m_fGoingSpeed);
 		Msg("* Distance from : %7.2f",tpALifeMonster->m_fDistanceFromPoint);
 		Msg("* Distance to   : %7.2f",tpALifeMonster->m_fDistanceToPoint);
 		Msg("* Health        : %d",tpALifeMonster->m_tMonsterParams.m_iHealth);
@@ -203,8 +208,7 @@ void CAI_ALife::vfObjectInfo(_OBJECT_ID	&tObjectID)
 		Msg("* Graph ID next : %d",tpALifeMonsterGroup->m_tNextGraphID);
 		Msg("* Graph ID prev : %d",tpALifeMonsterGroup->m_tPrevGraphID);
 		Msg("* Current speed : %7.2f",tpALifeMonsterGroup->m_fCurSpeed);
-		Msg("* Minimum speed : %7.2f",tpALifeMonsterGroup->m_fMinSpeed);
-		Msg("* Maximum speed : %7.2f",tpALifeMonsterGroup->m_fMaxSpeed);
+		Msg("* Going speed   : %7.2f",tpALifeMonsterGroup->m_fGoingSpeed);
 		Msg("* Distance from : %7.2f",tpALifeMonsterGroup->m_fDistanceFromPoint);
 		Msg("* Distance to   : %7.2f",tpALifeMonsterGroup->m_fDistanceToPoint);
 		{
@@ -220,27 +224,51 @@ void CAI_ALife::vfObjectInfo(_OBJECT_ID	&tObjectID)
 	string16		S1;
 	CALifeHuman *tpALifeHuman = dynamic_cast<CALifeHuman *>(tpALifeDynamicObject);
 	if (tpALifeHuman) {
+		Msg("* Trader        : %d",tpALifeHuman->m_bIsTrader);
 		Msg("* Graph ID next : %d",tpALifeHuman->m_tNextGraphID);
 		Msg("* Graph ID prev : %d",tpALifeHuman->m_tPrevGraphID);
 		Msg("* Current speed : %7.2f",tpALifeHuman->m_fCurSpeed);
-		Msg("* Minimum speed : %7.2f",tpALifeHuman->m_fMinSpeed);
-		Msg("* Maximum speed : %7.2f",tpALifeHuman->m_fMaxSpeed);
+		Msg("* Going speed   : %7.2f",tpALifeHuman->m_fGoingSpeed);
+		Msg("* Search speed  : %7.2f",tpALifeHuman->m_fSearchSpeed);
 		Msg("* Distance from : %7.2f",tpALifeHuman->m_fDistanceFromPoint);
 		Msg("* Distance to   : %7.2f",tpALifeHuman->m_fDistanceToPoint);
+		Msg("* Task state    : %7.2f",tpALifeHuman->m_tTaskState);
+		Msg("* Current node  : %7.2f",tpALifeHuman->m_dwCurNode);
+		Msg("* Current point : %7.2f",tpALifeHuman->m_dwCurTaskLocation);
+		Msg("* Current task  :");
+		if (tpALifeHuman->m_tpTaskIDs.size()) {
+			STask	&tTask = tpALifeHuman->m_tCurTask;
+			Msg("* Task  ID    : %d",tTask.tTaskID);
+			vfPrintTime("* Time  ID  :",tTask.tTimeID);
+			Msg("* Customer ID : %d",tTask.tCustomerID);
+			Msg("* Task type   : %d",tTask.tTaskType);
+			if (tTask.tTaskType == eTaskTypeSearchForItemOG) {
+				Msg("* Graph ID    : %d",tTask.tGraphID);
+				Msg("* Object ID   : %d",tTask.tObjectID);
+			}
+			else if (tTask.tTaskType == eTaskTypeSearchForItemOL) {
+				Msg("* Location ID : %d",tTask.tLocationID);
+				Msg("* Object ID   : %d",tTask.tObjectID);
+			}
+			else if (tTask.tTaskType == eTaskTypeSearchForItemCG) {
+				string64 tString;
+				PSGP.memCopy(tString,&(tTask.tClassID),sizeof(tTask.tClassID));
+				tString[sizeof(tTask.tClassID)] = 0;
+				Msg("* Graph ID    : %d",tTask.tGraphID);
+				Msg("* Class ID    : %d (%s)",tTask.tClassID,tString);
+			}
+			else if (tTask.tTaskType == eTaskTypeSearchForItemCL) {
+				string64 tString;
+				PSGP.memCopy(tString,&(tTask.tClassID),sizeof(tTask.tClassID));
+				tString[sizeof(tTask.tClassID)] = 0;
+				Msg("* Location ID : %d",tTask.tLocationID);
+				Msg("* Class ID    : %d (%s)",tTask.tClassID,tString);
+			}
+		}
 		Msg("* Max item mass : %7.2f",tpALifeHuman->m_fMaxItemMass);
-		
-		Msg("* Trader        : %d",tpALifeHuman->m_bIsTrader);
-
 		Msg("* Health        : %d",tpALifeHuman->m_tHumanParams.m_iHealth);
 		Msg("* Money         : %d",tpALifeHuman->m_tHumanParams.m_dwMoney);
 		Msg("* Item mass     : %7.2f",tpALifeHuman->m_tHumanParams.m_fCumulativeItemMass);
-//		Msg("* Items         :");
-//		{
-//			OBJECT_IT I			= tpALifeHuman->m_tHumanParams.m_tpItemIDs.begin();
-//			OBJECT_IT E			= tpALifeHuman->m_tHumanParams.m_tpItemIDs.end();
-//			for (int i=0; I != E; I++, i++)
-//				Msg("* Item ID [%d]  : %d",i,*I);
-//		}
 		{
 			OBJECT_IT I			= tpALifeHuman->m_tHumanParams.m_tpItemIDs.begin();
 			OBJECT_IT E			= tpALifeHuman->m_tHumanParams.m_tpItemIDs.end();
@@ -250,7 +278,7 @@ void CAI_ALife::vfObjectInfo(_OBJECT_ID	&tObjectID)
 					strcat(S,",");
 				strcat(S,itoa(*I,S1,10));
 			}
-			vfPrintLargeString(S,"Items",E - tpALifeHuman->m_tHumanParams.m_tpItemIDs.begin(),105);
+			vfPrintLargeString("Items",S,E - tpALifeHuman->m_tHumanParams.m_tpItemIDs.begin(),105);
 		}
 		{
 			PERSONAL_EVENT_IT	I = tpALifeHuman->m_tpEvents.begin();
@@ -261,7 +289,7 @@ void CAI_ALife::vfObjectInfo(_OBJECT_ID	&tObjectID)
 					strcat(S,",");
 				strcat(S,itoa((*I).tEventID,S1,10));
 			}
-			vfPrintLargeString(S,"Events",E - tpALifeHuman->m_tpEvents.begin(),105);
+			vfPrintLargeString("Events",S,E - tpALifeHuman->m_tpEvents.begin(),105);
 		}
 		{
 			TASK_IT				I = tpALifeHuman->m_tpTaskIDs.begin();
@@ -272,7 +300,7 @@ void CAI_ALife::vfObjectInfo(_OBJECT_ID	&tObjectID)
 					strcat(S,",");
 				strcat(S,itoa(*I,S1,10));
 			}
-			vfPrintLargeString(S,"Tasks",E - tpALifeHuman->m_tpTaskIDs.begin(),105);
+			vfPrintLargeString("Tasks",S,E - tpALifeHuman->m_tpTaskIDs.begin(),105);
 		}
 		return;
 	}
@@ -282,10 +310,43 @@ void CAI_ALife::vfObjectInfo(_OBJECT_ID	&tObjectID)
 	Msg("* Graph ID next : %d",tpALifeHumanGroup->m_tNextGraphID);
 	Msg("* Graph ID prev : %d",tpALifeHumanGroup->m_tPrevGraphID);
 	Msg("* Current speed : %7.2f",tpALifeHumanGroup->m_fCurSpeed);
-	Msg("* Minimum speed : %7.2f",tpALifeHumanGroup->m_fMinSpeed);
-	Msg("* Maximum speed : %7.2f",tpALifeHumanGroup->m_fMaxSpeed);
+	Msg("* Going speed   : %7.2f",tpALifeHumanGroup->m_fGoingSpeed);
+	Msg("* Search speed  : %7.2f",tpALifeHumanGroup->m_fSearchSpeed);
 	Msg("* Distance from : %7.2f",tpALifeHumanGroup->m_fDistanceFromPoint);
 	Msg("* Distance to   : %7.2f",tpALifeHumanGroup->m_fDistanceToPoint);
+	Msg("* Task state    : %7.2f",tpALifeHumanGroup->m_tTaskState);
+	Msg("* Current node  : %7.2f",tpALifeHumanGroup->m_dwCurNode);
+	Msg("* Current point : %7.2f",tpALifeHumanGroup->m_dwCurTaskLocation);
+	Msg("* Current task  :");
+	if (tpALifeHumanGroup->m_tpTaskIDs.size()) {
+		STask	&tTask = tpALifeHuman->m_tCurTask;
+		Msg("* Task  ID    : %d",tTask.tTaskID);
+		vfPrintTime("* Time  ID  :",tTask.tTimeID);
+		Msg("* Customer ID : %d",tTask.tCustomerID);
+		Msg("* Task type   : %d",tTask.tTaskType);
+		if (tTask.tTaskType == eTaskTypeSearchForItemOG) {
+			Msg("* Graph ID    : %d",tTask.tGraphID);
+			Msg("* Object ID   : %d",tTask.tObjectID);
+		}
+		else if (tTask.tTaskType == eTaskTypeSearchForItemOL) {
+			Msg("* Location ID : %d",tTask.tLocationID);
+			Msg("* Object ID   : %d",tTask.tObjectID);
+		}
+		else if (tTask.tTaskType == eTaskTypeSearchForItemCG) {
+			string64 tString;
+			PSGP.memCopy(tString,&(tTask.tClassID),sizeof(tTask.tClassID));
+			tString[sizeof(tTask.tClassID)] = 0;
+			Msg("* Graph ID    : %d",tTask.tGraphID);
+			Msg("* Class ID    : %d (%s)",tTask.tClassID,tString);
+		}
+		else if (tTask.tTaskType == eTaskTypeSearchForItemCL) {
+			string64 tString;
+			PSGP.memCopy(tString,&(tTask.tClassID),sizeof(tTask.tClassID));
+			tString[sizeof(tTask.tClassID)] = 0;
+			Msg("* Location ID : %d",tTask.tLocationID);
+			Msg("* Class ID    : %d (%s)",tTask.tClassID,tString);
+		}
+	}
 	Msg("* Max item mass : %7.2f",tpALifeHumanGroup->m_fMaxItemMass);
 	Msg("* Members       :");
 	{
@@ -294,7 +355,7 @@ void CAI_ALife::vfObjectInfo(_OBJECT_ID	&tObjectID)
 		for (int i=0; I != E; I++, i++) {
 			Msg("* Member ID [%d]: %d",i,*I);
 			Msg("* Health        : %d",(*I).m_iHealth);
-			Msg("* Health        : %d",(*I).m_dwMoney);
+			Msg("* Money         : %d",(*I).m_dwMoney);
 			Msg("* Item mass     : %7.2f",(*I).m_fCumulativeItemMass);
 			{
 				OBJECT_IT I			= tpALifeHuman->m_tHumanParams.m_tpItemIDs.begin();
@@ -305,7 +366,7 @@ void CAI_ALife::vfObjectInfo(_OBJECT_ID	&tObjectID)
 						strcat(S,",");
 					strcat(S,itoa(*I,S1,10));
 				}
-				vfPrintLargeString(S,"Items",E - tpALifeHuman->m_tHumanParams.m_tpItemIDs.begin(),105);
+				vfPrintLargeString("Items",S,E - tpALifeHuman->m_tHumanParams.m_tpItemIDs.begin(),105);
 			}
 		}
 	}
@@ -318,7 +379,7 @@ void CAI_ALife::vfObjectInfo(_OBJECT_ID	&tObjectID)
 				strcat(S,",");
 			strcat(S,itoa((*I).tEventID,S1,10));
 		}
-		vfPrintLargeString(S,"Events",E - tpALifeHuman->m_tpEvents.begin(),105);
+		vfPrintLargeString("Events",S,E - tpALifeHuman->m_tpEvents.begin(),105);
 	}
 	{
 		TASK_IT				I = tpALifeHuman->m_tpTaskIDs.begin();
@@ -329,7 +390,7 @@ void CAI_ALife::vfObjectInfo(_OBJECT_ID	&tObjectID)
 				strcat(S,",");
 			strcat(S,itoa(*I,S1,10));
 		}
-		vfPrintLargeString(S,"Tasks",E - tpALifeHuman->m_tpTaskIDs.begin(),105);
+		vfPrintLargeString("Tasks",S,E - tpALifeHuman->m_tpTaskIDs.begin(),105);
 	}
 }
 
@@ -345,7 +406,6 @@ void CAI_ALife::vfEventInfo(_EVENT_ID &tEventID)
 	Msg("* Event ID  : %d",tEvent.tEventID);
 	Msg("* Graph ID  : %d",tEvent.tGraphID);
 	vfPrintTime("* Time  ID  :",tEvent.tTimeID);
-//	Msg("* Time  ID  : %d",tEvent.tTimeID);
 	Msg("* Battle    : %d",tEvent.tBattleResult);
 	Msg("* Monster 1 :");
 	CALifeEventGroup *tpMG = tEvent.tpMonsterGroup1;

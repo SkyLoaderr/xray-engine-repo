@@ -36,7 +36,15 @@ void CAI_ALife::vfChooseNextRoutePoint(CALifeMonsterAbstract	*tpALifeMonsterAbst
 	}
 	if (tpALifeMonsterAbstract->m_tNextGraphID == tpALifeMonsterAbstract->m_tGraphID) {
 		CALifeHuman *tpALifeHuman = dynamic_cast<CALifeHuman *>(tpALifeMonsterAbstract);
-		if (tpALifeHuman && bfCheckForItems(tpALifeHuman) && (tpALifeHuman->m_tTaskState == eTaskStateGoing) && bfCheckIfTaskCompleted(tpALifeHuman)) {
+		if ((tpALifeHuman)
+			&&
+			((tpALifeHuman->m_tTaskState == eTaskStateSearching)
+			 ||
+			 (tpALifeHuman->m_tTaskState == eTaskStateGoing)
+			 ||
+			 (tpALifeHuman->m_tTaskState == eTaskStateGoToTrader))
+			&& bfCheckForItems(tpALifeHuman) 
+			&& tpALifeHuman->m_tpTaskIDs.size() && bfCheckIfTaskCompleted(tpALifeHuman)) {
 			tpALifeHuman->m_tpaVertices.clear();
 			tpALifeHuman->m_tNextGraphID = tpALifeHuman->m_tGraphID;
 			return;
@@ -50,12 +58,42 @@ void CAI_ALife::vfChooseNextRoutePoint(CALifeMonsterAbstract	*tpALifeMonsterAbst
 		if (tpALifeHumanAbstract) {
 			if (tpALifeHumanAbstract->m_tpaVertices.size() > ++(tpALifeHumanAbstract->m_dwCurNode)) {
 				tpALifeHumanAbstract->m_tNextGraphID		= _GRAPH_ID(tpALifeHumanAbstract->m_tpaVertices[tpALifeHumanAbstract->m_dwCurNode]);
-				tpALifeHumanAbstract->m_fCurSpeed			= tpALifeHumanAbstract->m_fMinSpeed;
+				tpALifeHumanAbstract->m_fCurSpeed			= tpALifeHumanAbstract->m_fGoingSpeed;
 				for (int i=0; i<(int)wNeighbourCount; i++)
 					if (tpaEdges[i].dwVertexNumber == tpALifeHumanAbstract->m_tNextGraphID) {
                         tpALifeMonsterAbstract->m_fDistanceToPoint	= tpaEdges[i].fPathDistance;
 						break;
 					}
+				if ((tpALifeHumanAbstract->m_tTaskState == eTaskStateSearching) || (tpALifeHumanAbstract->m_tTaskState == eTaskStateGoing)) {
+					switch (tpALifeHumanAbstract->m_tCurTask.tTaskType) {
+						case eTaskTypeSearchForItemCG :
+						case eTaskTypeSearchForItemOG : {
+							if (tpALifeHumanAbstract->m_tNextGraphID == tpALifeHumanAbstract->m_tCurTask.tGraphID) {
+								tpALifeHumanAbstract->m_tTaskState = eTaskStateSearching;
+								tpALifeHumanAbstract->m_fCurSpeed  = tpALifeHumanAbstract->m_fSearchSpeed;
+							}
+							else {
+								tpALifeHumanAbstract->m_tTaskState = eTaskStateGoing;
+								tpALifeHumanAbstract->m_fCurSpeed  = tpALifeHumanAbstract->m_fGoingSpeed;
+							}
+							break;
+						}
+						case eTaskTypeSearchForItemCL :
+						case eTaskTypeSearchForItemOL : {
+							VERIFY(m_tpTerrain[tpALifeHuman->m_tCurTask.tLocationID].size());
+							if (Level().AI.m_tpaGraph[tpALifeHumanAbstract->m_tNextGraphID].tVertexType == tpALifeHuman->m_tCurTask.tLocationID) {
+								tpALifeHumanAbstract->m_tTaskState = eTaskStateSearching;
+								tpALifeHumanAbstract->m_fCurSpeed  = tpALifeHumanAbstract->m_fSearchSpeed;
+							}
+							else {
+								tpALifeHumanAbstract->m_tTaskState = eTaskStateGoing;
+								tpALifeHumanAbstract->m_fCurSpeed  = tpALifeHumanAbstract->m_fGoingSpeed;
+							}
+							break;
+						}
+						default : NODEFAULT;
+					};
+				}
 			}
 			else {
 				tpALifeHumanAbstract->m_fCurSpeed			= 0.0f;
@@ -107,7 +145,7 @@ void CAI_ALife::vfChooseNextRoutePoint(CALifeMonsterAbstract	*tpALifeMonsterAbst
 				tpALifeMonsterAbstract->m_fDistanceToPoint	= 0.0f;
 			}
 			else {
-				tpALifeMonsterAbstract->m_fCurSpeed			= tpALifeMonsterAbstract->m_fMinSpeed;
+				tpALifeMonsterAbstract->m_fCurSpeed			= tpALifeMonsterAbstract->m_fGoingSpeed;
 			}
 		}
 	}
