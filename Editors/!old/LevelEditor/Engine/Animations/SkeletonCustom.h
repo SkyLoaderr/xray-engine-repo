@@ -90,13 +90,18 @@ class ENGINE_API CSkeletonWallmark		// 4+4+4+12+4+16+16 = 60
 	Fvector3			m_ContactPoint;	// 12		model space
 	float				m_fTimeStart;	// 4
 public:
+	struct WMVert{
+		Fvector3		v;
+		Fvector2		uv;
+		u16				bone_id[2];
+		float			weight;
+	};
+	DEFINE_VECTOR		(WMVert,WMVertsVec,WMVertsVecIt);
 	struct WMFace{
-		Fvector3		vert	[3];
-		Fvector2		uv		[3];
-		u16				bone_id	[3][2];
-		float			weight	[3];
+		u16				pt[3];
 	};
 	DEFINE_VECTOR		(WMFace,WMFacesVec,WMFacesVecIt);
+	WMVertsVec			m_Verts;
 	WMFacesVec			m_Faces;		// 16 
 public:
 	Fsphere				m_Bounds;		// 16		world space
