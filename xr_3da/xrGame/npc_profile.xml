@@ -302,5 +302,10 @@
 		<class>bar_svoboda_attack_commander</class>
 	</character>
 
+	<!-- X18 -->
+	<character id="dar_stalker_explorer">
+		<class>dar_stalker_explorer</class>
+	</character>
+
 
 </xml>
