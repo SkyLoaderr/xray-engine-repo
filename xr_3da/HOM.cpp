@@ -143,29 +143,36 @@ void CHOM::Render_DB	(CFrustum& base)
 	// Perfrom selection, sorting, culling
 	for (; it!=end; it++)
 	{
-		occTri& T	= m_pTris	[it->id];
-		if (T.skip)	{ T.skip--; continue; }
+		// Control skipping
+		occTri& T		= m_pTris	[it->id];
+		if (T.skip)		{ T.skip--; continue; }
+		DWORD	next	= ::Random.randI(10);
 		
 		// Test for good occluder - should be improved :)
-		if (!(T.flags || (T.plane.classify(COP)>0)))	continue;
+		if (!(T.flags || (T.plane.classify(COP)>0)))	
+			{ T.skip=next; continue; }
 		
 		// Access to triangle vertices
-		CDB::TRI& t	= m_pModel->get_tris() [it->id];
+		CDB::TRI& t		= m_pModel->get_tris() [it->id];
 		src.clear		();	dst.clear	();
 		src.push_back	(*t.verts[0]);
 		src.push_back	(*t.verts[1]);
 		src.push_back	(*t.verts[2]);
 		sPoly* P =		clip.ClipPoly	(src,dst);
-		if (0==P)		continue;
+		if (0==P)		
+			{ T.skip=next; continue; }
 		
 		// XForm and Rasterize
+		DWORD	pixels	= 0;
 		for (int v=1; v<P->size()-1; v++)
 		{
 			xform			(XF,T.raster[0],(*P)[0],	dim);
 			xform			(XF,T.raster[1],(*P)[v+0],	dim);
 			xform			(XF,T.raster[2],(*P)[v+1],	dim);
-			Raster.rasterize(&T);
+			pixels +=		Raster.rasterize(&T);
 		}
+		if (0==pixels)
+			{ T.skip=next; continue; }
 	}
 }
 
