@@ -279,7 +279,7 @@ HRESULT CMyD3DApplication::InitDeviceObjects()
 	FLOAT					fModelRad;
 
 	// Initialize the font's internal textures
-	m_pFont->InitDeviceObjects(m_pd3dDevice);
+	m_pFont->InitDeviceObjects	(m_pd3dDevice);
 
 	// Load model
 	if (FAILED(Mesh.Create(m_pd3dDevice, _T("media\\star.x"))))			return D3DAPPERR_MEDIANOTFOUND;
