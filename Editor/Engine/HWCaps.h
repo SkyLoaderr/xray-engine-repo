@@ -14,6 +14,10 @@ public:
 	BOOL		bForceDXT3;
 	BOOL		bShowOverdraw;
 
+	// device format
+	D3DFORMAT	fTarget;
+	D3DFORMAT	fDepth;
+	
 	// caps itself
 	BOOL		bSoftware;
 	BOOL		bIndexedBlend;
@@ -29,7 +33,7 @@ public:
 	D3DSTENCILOP	soDec, soInc;		// best stencil OPs for shadows
 	DWORD			dwMaxStencilValue;  // maximum value the stencil buffer can hold
 
-	void	Update(void);
+	void		Update(void);
 };
 
 #endif

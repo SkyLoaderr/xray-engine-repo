@@ -92,12 +92,12 @@ DWORD CHW::CreateDevice		(HWND m_hWnd,DWORD &dwWidth,DWORD &dwHeight)
 	}
 
 	// Select back-buffer & depth-stencil format
-	D3DFORMAT	fTarget,fDepth;
+	D3DFORMAT&	fTarget	= Caps.fTarget;
+	D3DFORMAT&	fDepth	= Caps.fDepth;
 	if (bWindowed)
 	{
 		fTarget = mWindowed.Format;
-		R_CHK(pD3D->CheckDeviceType(D3DADAPTER_DEFAULT,D3DDEVTYPE_HAL,fTarget,fTarget,TRUE));
-
+		R_CHK(pD3D->CheckDeviceType	(D3DADAPTER_DEFAULT,D3DDEVTYPE_HAL,fTarget,fTarget,TRUE));
 		fDepth  = selectDepthStencil(fTarget);
 	} else {
 		switch (psCurrentBPP) {
