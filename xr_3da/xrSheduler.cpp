@@ -194,6 +194,9 @@ void CSheduler::Update				()
 	{
 		Item&	T						= ItemsRT[it];
 		u32	Elapsed						= dwTime-T.dwTimeOfLastExecute;
+#ifdef DEBUG
+		T.Object->dbg_startframe		= Device.dwFrame;
+#endif
 		T.Object->shedule_Update		(Elapsed);
 		T.dwTimeOfLastExecute			= dwTime;
 	}
