@@ -19,7 +19,6 @@ using namespace PS;
 //------------------------------------------------------------------------------
 CPEDef::CPEDef()
 {                                         
-    strcpy				(m_Name,"unknown");
     m_ShaderName		= 0;
     m_TextureName		= 0;
     m_Frame.InitDefault	();
@@ -46,7 +45,7 @@ CPEDef::~CPEDef()
 }
 void CPEDef::SetName(LPCSTR name)
 {
-    strcpy				(m_Name,name);
+    m_Name				= name;
 }
 void CPEDef::pAlignToPath(float rot_x, float rot_y, float rot_z)
 {

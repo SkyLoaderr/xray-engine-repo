@@ -10,7 +10,6 @@ using namespace PS;
 
 CPGDef::CPGDef()
 {                             
-	m_Name[0]		= 0;
     m_Flags.zero	();
     m_fTimeLimit	= 0.f;
 }
@@ -21,7 +20,7 @@ CPGDef::~CPGDef()
 
 void CPGDef::SetName(LPCSTR name)
 {
-    strcpy				(m_Name,name);
+    m_Name			= name;
 }
 
 //------------------------------------------------------------------------------
