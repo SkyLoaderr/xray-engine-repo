@@ -55,7 +55,7 @@ IC	void CALifeGraphRegistry::remove	(CSE_ALifeDynamicObject *object, ALife::_GRA
 
 IC	void CALifeGraphRegistry::change	(CSE_ALifeDynamicObject *object, ALife::_GRAPH_ID tGraphPointID, ALife::_GRAPH_ID tNextGraphPointID)
 {
-	VERIFY3						(object->used_ai_locations() && (object->interactive() || object->m_bOnline),object->s_name,object->s_name_replace);
+	VERIFY3						(object->used_ai_locations()/** && (object->interactive() || object->m_bOnline)/**/,object->s_name,object->s_name_replace);
 	remove						(object,tGraphPointID);
 	add							(object,tNextGraphPointID);
 	object->m_tGraphID			= tNextGraphPointID;
