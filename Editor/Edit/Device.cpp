@@ -73,6 +73,14 @@ CRenderDevice::~CRenderDevice(){
 
 void CRenderDevice::Initialize()
 {
+	AnsiString fn = "shaders_xrlc.xr";
+    FS.m_GameRoot.Update(fn);
+    if (FS.Exist(fn.c_str())){
+    	ShaderXRLC.Load(fn.c_str());
+    }else{
+    	ELog.DlgMsg(mtInformation,"Can't find file '%s'",fn.c_str());
+    }
+
 	// load blenders
 	Shader.xrStartUp	();
 	// Startup shaders
@@ -83,6 +91,8 @@ void CRenderDevice::Initialize()
 
 void CRenderDevice::ShutDown()
 {
+	ShaderXRLC.Unload	();
+
 	// destroy context
 	Destroy				();
 	_DELETE				(pHUDFont);

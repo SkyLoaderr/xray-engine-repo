@@ -86,7 +86,7 @@ void C3DCursor::Render(){
 
 //                UI->D3D_RenderNearer(0.0001);
                 Device.SetTransform(D3DTS_WORLD,precalc_identity);
-				Device.Shader.Set(Device.m_WireShader);
+				Device.SetShader(Device.m_WireShader);
                 DU::DrawPrimitiveL(D3DPT_LINESTRIP,m_RenderBuffer.size(),m_RenderBuffer.begin(),m_RenderBuffer.size(),dwColor,true,true);
 //                UI->D3D_ResetNearer();
             }break;
@@ -102,7 +102,7 @@ void C3DCursor::Render(){
 				pt[4].set(pt[0].p.x  ,pt[0].p.y+1,pt[0].p.z,pt[0].p.w,dwColor,0,0);
                 Device.RenderNearer(0.001);
                 Device.SetTransform(D3DTS_WORLD,precalc_identity);
-				Device.Shader.Set(Device.m_WireShader);
+				Device.SetShader(Device.m_WireShader);
                 DU::DrawPrimitiveTL(D3DPT_POINTLIST,5,pt,5,true,true);
                 Device.ResetNearer();
             }break;

@@ -5,7 +5,6 @@
 #include "RenderWindow.hpp"
 #include "ui_tools.h"
 #include "device.h"
-#include "FileSystem.h"
 #include "UI_MainCommand.h"
 #include "ColorPicker.h"
 #include "FController.h"
@@ -25,7 +24,6 @@ enum EEditorState{
 	esSceneLocked,
     esEditScene,
     esEditLibrary,
-    esEditShaders,
     esEditParticles,
     esEditImages,
     esBuildLevel
@@ -117,8 +115,8 @@ public:
 
     IC float ZFar()						{	return Device.m_Camera.m_Zfar; }
 
-    bool Init(TD3DWindow* wnd);
-    void Clear();
+    bool OnCreate						(TD3DWindow* wnd);
+    void OnDestroy						();
 
     char* GetEditFileName()             {   return m_LastFileName; }
 

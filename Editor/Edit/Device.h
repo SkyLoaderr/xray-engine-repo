@@ -9,6 +9,7 @@
 #include "ftimer.h"
 #include "estats.h"
 #include "primitivesR.h"
+#include "shader_xrlc.h"
 //---------------------------------------------------------------------------
 // refs
 class CFontHUD;
@@ -158,6 +159,7 @@ public:
 	void									Error	(HRESULT,LPCSTR,int);
 public:
 	CShaderManager			Shader;
+    Shader_xrLC_LIB			ShaderXRLC;
 };
 
 extern ENGINE_API CRenderDevice Device;

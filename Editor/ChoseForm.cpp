@@ -5,9 +5,10 @@
 
 #include "ChoseForm.h"
 #include "shader.h"
+#include "shader_xrlc.h"
 #include "texture.h"
 #include "xr_trims.h"
-#include "Library.h"
+#include "Library.h"            
 #include "EditObject.h"
 #include "D3DUtils.h"
 
@@ -64,6 +65,44 @@ LPCSTR __fastcall TfrmChoseItem::SelectShader(bool bExcludeSystem, LPCSTR start_
     form->tvItems->Selected = 0;
     form->tvItems->Items->Clear();
     // fill shaders list
+    CShaderManager::BlenderMap& blenders = Device.Shader._GetBlenders();
+	CShaderManager::BlenderPairIt _F = blenders.begin();
+	CShaderManager::BlenderPairIt _E = blenders.end();
+	for (CShaderManager::BlenderPairIt _S = _F; _S!=_E; _S++){
+//		if (!start_folder||(start_folder&&(stricmp(start_folder,S->cFolder)==0)))
+		if (bExcludeSystem&&(_S->first[0]!='$')||(!bExcludeSystem))
+        	form->AddItemToFolder("Shaders",_S->first);
+    }
+//S    for (SH_ShaderDef* S=SHLib->FirstShader(); S!=SHLib->LastShader(); S++){
+//		if (!start_folder||(start_folder&&(stricmp(start_folder,S->cFolder)==0)))
+//S		if (bExcludeSystem&&(S->cName[0]!='$')||(!bExcludeSystem))
+//S        	form->AddItemToFolder("Shaders",S->cName);
+//S    }
+    // redraw
+	SendMessage(form->tvItems->Handle,WM_SETREDRAW,1,0);
+	form->tvItems->Repaint();
+	// show
+    if (form->ShowModal()!=mrOk) return 0;
+    return select_item.c_str();
+}
+//---------------------------------------------------------------------------
+LPCSTR __fastcall TfrmChoseItem::SelectShaderXRLC(LPCSTR start_folder, LPCSTR init_name){
+	VERIFY(!form);
+	form = new TfrmChoseItem(0);
+	form->Mode = smShaderXRLC;
+	// init
+	if (init_name) last_item = init_name;
+	SendMessage(form->tvItems->Handle,WM_SETREDRAW,0,0);
+    form->tvItems->Selected = 0;
+    form->tvItems->Items->Clear();
+    // fill shaders list
+    Shader_xrLCVec& shaders = Device.ShaderXRLC.Library();
+	Shader_xrLCIt _F = shaders.begin();
+	Shader_xrLCIt _E = shaders.end();
+	for ( ;_F!=_E;_F++){
+//		if (!start_folder||(start_folder&&(stricmp(start_folder,S->cFolder)==0)))
+		form->AddItemToFolder("Shaders",_F->Name);
+    }
 //S    for (SH_ShaderDef* S=SHLib->FirstShader(); S!=SHLib->LastShader(); S++){
 //		if (!start_folder||(start_folder&&(stricmp(start_folder,S->cFolder)==0)))
 //S		if (bExcludeSystem&&(S->cName[0]!='$')||(!bExcludeSystem))
