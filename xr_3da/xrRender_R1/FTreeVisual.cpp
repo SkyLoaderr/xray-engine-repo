@@ -4,7 +4,6 @@
 #include "..\igame_level.h"
 #include "..\environment.h"
 #include "..\fmesh.h"
-#include "..\xr_effsun.h"
 
 #include "ftreevisual.h"
 
