@@ -14,6 +14,8 @@ void xrServer::Perform_connect_spawn(CSE_Abstract* E, xrClientData* CL, NET_Pack
 	if (Parent)		Perform_connect_spawn	(Parent,CL,P);
 
 	// Process
+	Flags16			save = E->s_flags;
+	E->s_flags.set	(M_SPAWN_UPDATE,TRUE);
 	if (0==E->owner)	
 	{
 		// PROCESS NAME; Name this entity
@@ -26,12 +28,15 @@ void xrServer::Perform_connect_spawn(CSE_Abstract* E, xrClientData* CL, NET_Pack
 		// Associate
 		E->owner		= CL;
 		E->Spawn_Write	(P,TRUE	);
+		E->UPDATE_Write	(P);
 	}
 	else				
 	{
 		// Just inform
 		E->Spawn_Write	(P,FALSE);
+		E->UPDATE_Write	(P);
 	}
+	E->s_flags			= save;
 	SendTo				(CL->ID,P,net_flags(TRUE,TRUE));
 	E->net_Processed	= TRUE;
 }

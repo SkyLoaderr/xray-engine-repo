@@ -221,16 +221,6 @@ void CSE_ALifeItem::FillProps				(LPCSTR pref, PropItemVec& values)
 ////////////////////////////////////////////////////////////////////////////
 CSE_ALifeItemTorch::CSE_ALifeItemTorch		(LPCSTR caSection) : CSE_ALifeItem(caSection)
 {
-/*	strcpy						(spot_texture,"");
-	strcpy						(animator,"");
-	spot_range					= 10.f;
-	spot_cone_angle				= PI_DIV_3;
-	color						= 0xffffffff;
-    spot_brightness				= 1.f;
-	glow_texture[0]				= 0;
-	glow_radius					= 0.1f;
-    guid_bone					= u32(BI_NONE);
-*/
 	m_active					= false;
 }
 
@@ -243,18 +233,11 @@ void CSE_ALifeItemTorch::STATE_Read			(NET_Packet	&tNetPacket, u16 size)
 	if (m_wVersion > 20)
 		inherited::STATE_Read	(tNetPacket,size);
 
-	if (m_wVersion > 100 ){
-		u8 b;
-		tNetPacket.r_u8(b);
-		m_active = !!b;
-	}
-
 }
 
 void CSE_ALifeItemTorch::STATE_Write		(NET_Packet	&tNetPacket)
 {
 	inherited::STATE_Write		(tNetPacket);
-	tNetPacket.w_u8(m_active ? 1 : 0);
 }
 
 void CSE_ALifeItemTorch::UPDATE_Read		(NET_Packet	&tNetPacket)
@@ -272,24 +255,6 @@ void CSE_ALifeItemTorch::UPDATE_Write		(NET_Packet	&tNetPacket)
 void CSE_ALifeItemTorch::FillProps			(LPCSTR pref, PropItemVec& values)
 {
 	inherited::FillProps			(pref,	 values);
-/*
-	PHelper.CreateColor			(values, FHelper.PrepareKey2(pref,*s_name,"Color"),			&color);
-	PHelper.CreateChoose		(values, FHelper.PrepareKey2(pref,*s_name,"Color animator"),	animator,			sizeof(animator), 		smLAnim);
-	PHelper.CreateChoose		(values, FHelper.PrepareKey2(pref,*s_name,"Spot texture"),	spot_texture,		sizeof(spot_texture),	smTexture);
-	PHelper.CreateFloat			(values, FHelper.PrepareKey2(pref,*s_name,"Range"),			&spot_range,		0.1f, 1000.f);
-	PHelper.CreateAngle			(values, FHelper.PrepareKey2(pref,*s_name,"Angle"),			&spot_cone_angle,	0, PI_DIV_2);
-    PHelper.CreateFloat			(values, FHelper.PrepareKey2(pref,*s_name,"Brightness"),		&spot_brightness,	0.1f, 5.f);
-	PHelper.CreateChoose		(values, FHelper.PrepareKey2(pref,*s_name,"Glow texture"),	glow_texture,		sizeof(glow_texture), 	smTexture);
-	PHelper.CreateFloat			(values, FHelper.PrepareKey2(pref,*s_name,"Glow radius"),		&glow_radius,		0.1f, 1000.f);
-    // bones
-    if (visual && smart_cast<CKinematics*>(visual))
-    {
-        AStringVec				vec;
-        u16 cnt					= smart_cast<CKinematics*>(visual)->LL_Bones()->size();
-        for (u16 k=0; k<cnt; k++) vec.push_back(smart_cast<CKinematics*>(visual)->LL_BoneName_dbg(k));
-		PHelper.CreateToken2<u16>(values, FHelper.PrepareKey2(pref,*s_name,"Guide bone"),		&guid_bone,	&vec);
-    }
-*/
 }
 
 ////////////////////////////////////////////////////////////////////////////

@@ -117,9 +117,8 @@
 // 98 - CSE_ALifeItemPDA				changed m_info_portion(int) to m_info_portion(shared_str) +m_specific_character +CSE_ALifeItemDocument m_wDoc (int-> shared_str)
 // 99 - CSE_ALifeObjectClimable			inheritance changed CSE_Abstruct -> CSE_AlifeObject
 // 100 - CSE_ALifeObjectClimable		inheritance changed CSE_AlifeObject -> CSE_AlifeDynamicObject
-// 101 - CSE_ALifeItemTorch				store m_active property
 //------------------------------------------------------------------------------
-#define SPAWN_VERSION	u16(101)
+#define SPAWN_VERSION	u16(100)
 
 SERVER_ENTITY_DECLARE_BEGIN2(CSE_Shape,ISE_Shape,CShapeData)
 public:

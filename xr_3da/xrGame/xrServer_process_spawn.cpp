@@ -136,8 +136,8 @@ CSE_Abstract* xrServer::Process_spawn(NET_Packet& P, ClientID sender, BOOL bSpaw
 		SendBroadcast		(CL->ID,Packet,net_flags(TRUE,TRUE));
 	} else {
 		E->Spawn_Write		(Packet,FALSE	);
-//		if (E->s_flags.is(M_SPAWN_UPDATE))
-//			E->UPDATE_Write	(Packet);
+		if (E->s_flags.is(M_SPAWN_UPDATE))
+			E->UPDATE_Write	(Packet);
 		ClientID clientID;clientID.set(0);
 		SendBroadcast		(clientID, Packet, net_flags(TRUE,TRUE));
 	}
