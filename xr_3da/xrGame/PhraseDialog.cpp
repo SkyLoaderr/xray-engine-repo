@@ -51,12 +51,6 @@
 #include "phrasedialog.h"
 #include "phrasedialogmanager.h"
 
-#define  DIALOGS_XML			"dialogs.xml"
-
-#define  NO_PHRASE				-1
-#define  START_PHRASE			0
-#define  START_PHRASE_STR		"0"
-
 //////////////////////////////////////////////////////////////////////////
 
 SPhraseDialogData::SPhraseDialogData ()
@@ -106,6 +100,8 @@ void CPhraseDialog::Load(ref_str dialog_id)
 void CPhraseDialog::Init(CPhraseDialogManager* speaker_first, 
 						 CPhraseDialogManager* speaker_second)
 {
+	VERIFY(!IsInit());
+
 	m_pSpeakerFirst = speaker_first;
 	m_pSpeakerSecond = speaker_second;
 
@@ -120,42 +116,53 @@ void CPhraseDialog::Init(CPhraseDialogManager* speaker_first,
 	m_bFirstIsSpeaking = true;
 }
 
-bool CPhraseDialog::SayPhrase (PHRASE_ID phrase_id)
+//обнуляем все связи
+void CPhraseDialog::Reset ()
 {
-	m_bFirstIsSpeaking = !m_bFirstIsSpeaking;
+}
+
+bool CPhraseDialog::SayPhrase (DIALOG_SHARED_PTR& phrase_dialog, PHRASE_ID phrase_id)
+{
+	VERIFY(phrase_dialog->IsInit());
+
+	phrase_dialog->m_iSaidPhraseID = phrase_id;
 	
-	m_iSaidPhraseID = phrase_id;
-	
-	CPhraseGraph::CVertex* phrase_vertex = dialog_data()->m_PhraseGraph.vertex(m_iSaidPhraseID);
+	CPhraseGraph::CVertex* phrase_vertex = phrase_dialog->dialog_data()->m_PhraseGraph.vertex(phrase_dialog->m_iSaidPhraseID);
 	VERIFY(phrase_vertex);
 
 	//больше нет фраз, чтоб говорить
-	if(phrase_vertex->edges().empty()) 
+	phrase_dialog->m_PhraseVector.clear();
+	if(phrase_vertex->edges().empty())
 	{
-		m_bFinished = true;
-		return false;
+		phrase_dialog->m_bFinished = true;
+	}
+	else
+	{
+		//обновить список фраз, которые можно сейчас говорить
+		for(xr_vector<CPhraseGraph::CEdge>::const_iterator it = phrase_vertex->edges().begin();
+			it != phrase_vertex->edges().end();
+			it++)
+		{
+			const CPhraseGraph::CEdge& edge = *it;
+			CPhraseGraph::CVertex* next_phrase_vertex = phrase_dialog->dialog_data()->m_PhraseGraph.vertex(edge.vertex_id());
+			VERIFY(next_phrase_vertex);
+			phrase_dialog->m_PhraseVector.push_back(next_phrase_vertex->data());
+		}
 	}
 
-	//обновить список фраз, которые можно сейчас говорить
-	for(xr_vector<CPhraseGraph::CEdge>::const_iterator it = phrase_vertex->edges().begin();
-		it != phrase_vertex->edges().end();
-		it++)
-	{
-		const CPhraseGraph::CEdge& edge = *it;
-		CPhraseGraph::CVertex* next_phrase_vertex = dialog_data()->m_PhraseGraph.vertex(edge.vertex_index());
-		VERIFY(next_phrase_vertex);
-		m_PhraseVector.push_back(next_phrase_vertex->data());
-	}
 
+	bool first_is_speaking = phrase_dialog->FirstIsSpeaking();
+	phrase_dialog->m_bFirstIsSpeaking = !phrase_dialog->m_bFirstIsSpeaking;
 
 	//сообщить CDialogManager, что сказана фраза
 	//и ожидается ответ
-	if(FirstIsSpeaking())
-		FirstSpeaker()->ReceivePhrase((DIALOG_SHARED_PRT)this);
+	if(first_is_speaking)
+		phrase_dialog->SecondSpeaker()->ReceivePhrase(phrase_dialog);
 	else
-		SecondSpeaker()->ReceivePhrase((DIALOG_SHARED_PRT)this);
+		phrase_dialog->FirstSpeaker()->ReceivePhrase(phrase_dialog);
 
-	return true;
+
+	return !phrase_dialog->m_bFinished;
 }
 
 
@@ -164,6 +171,11 @@ LPCSTR CPhraseDialog::GetPhraseText	(PHRASE_ID phrase_id)
 	CPhraseGraph::CVertex* phrase_vertex = dialog_data()->m_PhraseGraph.vertex(phrase_id);
 	VERIFY(phrase_vertex);
 	return phrase_vertex->data()->GetText();
+}
+
+LPCSTR CPhraseDialog::DialogCaption()
+{
+	return GetPhraseText(START_PHRASE);
 }
 
 void CPhraseDialog::load_shared	(LPCSTR xml_file)
@@ -195,7 +207,8 @@ void CPhraseDialog::load_shared	(LPCSTR xml_file)
 void CPhraseDialog::AddPhrase	(XML_NODE* phrase_node, PHRASE_ID phrase_id)
 {
 	//проверить не добавлена ли вершина
-	if(dialog_data()->m_PhraseGraph.vertex(phrase_id)) return;
+	if(dialog_data()->m_PhraseGraph.vertex(phrase_id)) 
+		return;
 
 	CPhrase* phrase = xr_new<CPhrase>(); VERIFY(phrase);
 	phrase->SetIndex(phrase_id);

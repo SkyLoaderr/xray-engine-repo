@@ -39,22 +39,11 @@ void CActor::IR_OnKeyboardPress(int cmd)
 			CEntityAlive* pEntityAliveWeLookingAt = 
 							dynamic_cast<CEntityAlive*>(m_pPersonWeLookingAt);
 			
-			R_ASSERT(pEntityAliveWeLookingAt);
+			VERIFY(pEntityAliveWeLookingAt);
 
 			if(pEntityAliveWeLookingAt->g_Alive())
 			{
-				if(!IsTalking())
-				{
-					//предложить поговорить с нами
-					if(m_pPersonWeLookingAt->OfferTalk(this))
-					{	
-						StartTalk(m_pPersonWeLookingAt);
-
-						//только если находимся в режиме single
-						CUIGameSP* pGameSP = dynamic_cast<CUIGameSP*>(HUD().GetUI()->UIGame());
-						if(pGameSP)pGameSP->StartTalk();
-					}
-				}
+				TryToTalk();
 			}
 			//обыск трупа
 			else if(Level().IR_GetKeyState(DIK_LSHIFT))

@@ -62,7 +62,12 @@ public:
 	//список вопросов, которые игрок может задавать после получения 
 	//информации
 	INFO_QUESTIONS_LIST m_QuestionsList;
-	
+
+
+	DEFINE_VECTOR(ref_str, DIALOG_NAME_VECTOR, DIALOG_NAME_VECTOR_IT);
+	//массив с именами диалогов, которые могут быть инициированы
+	//из этого InfoPortion
+	DIALOG_NAME_VECTOR m_DialogNames;
 
 protected:
 	bool m_bLoaded;

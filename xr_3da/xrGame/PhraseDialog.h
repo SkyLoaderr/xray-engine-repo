@@ -57,23 +57,37 @@ public:
 	virtual void Init	(CPhraseDialogManager* speaker_first, 
 						 CPhraseDialogManager* speaker_second);
 
+	IC		bool IsInit () {return ((FirstSpeaker()!=NULL)&& (SecondSpeaker()!=NULL));}
+
+	//реинициализация диалога
+	virtual void Reset  ();
+
+	//список доступных в данный момент фраз
 	virtual const PHRASE_VECTOR& PhraseList() const			{return m_PhraseVector;}
 	
 	//сказать фразу и перейти к следующей стадии диалога
 	//если вернули false, то считаем, что диалог закончился
-	virtual bool		SayPhrase		(PHRASE_ID phrase_id);
-	virtual LPCSTR		GetPhraseText	(PHRASE_ID phrase_id);
+	//(сделано статическим, так как мы должны передавать имеенно DIALOG_SHARED_PTR&,
+	//а не обычный указатель)
+	static bool			SayPhrase		(DIALOG_SHARED_PTR& phrase_dialog, PHRASE_ID phrase_id);
+
+	virtual LPCSTR		GetPhraseText		(PHRASE_ID phrase_id);
+	virtual LPCSTR		GetLastPhraseText	() {return GetPhraseText(m_iSaidPhraseID);}
+	virtual PHRASE_ID	GetLastPhraseID		() {return m_iSaidPhraseID;}
+
+	//заголовок, диалога, если не задан, то 0-я фраза
+	virtual LPCSTR		DialogCaption	();
 
 
 	virtual bool		IsFinished		()	const {return m_bFinished;}
 	
-	CPhraseDialogManager* FirstSpeaker	()	const {return m_pSpeakerFirst;}
-	CPhraseDialogManager* SecondSpeaker	()	const {return m_pSpeakerSecond;}
+	IC CPhraseDialogManager* FirstSpeaker	()	const {return m_pSpeakerFirst;}
+	IC CPhraseDialogManager* SecondSpeaker	()	const {return m_pSpeakerSecond;}
 
-	bool				FirstIsSpeaking	()	const {return m_bFirstIsSpeaking;}
-	bool				SecondIsSpeaking()	const {return !m_bFirstIsSpeaking;}
+	IC bool				FirstIsSpeaking	()	const {return m_bFirstIsSpeaking;}
+	IC bool				SecondIsSpeaking()	const {return !m_bFirstIsSpeaking;}
 
-	bool				IsWeSpeaking	(CPhraseDialogManager* dialog_manager) const  {return (FirstSpeaker()==dialog_manager && FirstIsSpeaking()) ||
+	IC bool				IsWeSpeaking	(CPhraseDialogManager* dialog_manager) const  {return (FirstSpeaker()==dialog_manager && FirstIsSpeaking()) ||
 																							(SecondSpeaker()==dialog_manager && SecondIsSpeaking());}
 	
 	EDialogType			GetDialogType	()	const {return m_eDialogType;}

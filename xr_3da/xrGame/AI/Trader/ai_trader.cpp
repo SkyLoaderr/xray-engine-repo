@@ -482,5 +482,8 @@ void CAI_Trader::spawn_supplies			()
 	CInventoryOwner::spawn_supplies	();
 }
 
-
-
+//PhraseDialogManager
+void  CAI_Trader::ReceivePhrase (DIALOG_SHARED_PTR& phrase_dialog)
+{
+	CPhraseDialogManager::ReceivePhrase(phrase_dialog);
+}

@@ -19,6 +19,9 @@
 #include "ai_stalker_animations.h"
 #include "ai_stalker_space.h"
 
+#include "../../PhraseDialogManager.h"
+
+
 #ifdef OLD_DECISION_BLOCK
 	#include "../../state_manager_stalker.h"
 #else
@@ -55,7 +58,8 @@ class CAI_Stalker :
 	public CMotivationActionManagerStalker,
 #endif
 	public CScriptBinder,
-	public CSetupManager<CSetupAction,CAI_Stalker,u32>
+	public CSetupManager<CSetupAction,CAI_Stalker,u32>,
+	public CPhraseDialogManager
 {
 private:
 	typedef CCustomMonster								inherited;
@@ -127,8 +131,10 @@ public:
 	virtual bool				useful							(const CGameObject *object) const;
 	virtual	float				evaluate						(const CGameObject *object) const;
 	
-	// PDA		
-			void				ReceivePdaMessage				(u16 who, EPdaMsg msg, int info_index);
+	// PDA && Dialogs
+	virtual void				ReceivePdaMessage				(u16 who, EPdaMsg msg, int info_index);
+	//PhraseDialogManager
+	virtual void				ReceivePhrase					(DIALOG_SHARED_PTR& phrase_dialog);
 
 	// scripts
 	virtual void				UseObject				(const CObject			*tpObject);

@@ -114,6 +114,16 @@ void CInfoPortion::LoadInfoPortionFromXml(CUIXml& uiXml, int num_in_file)
 	}
 
 	
+	//список названий диалогов
+	int dialogs_num = uiXml.GetNodesNum(pNode, "dialog");
+	m_DialogNames.clear();
+	for(i=0; i<dialogs_num; ++i)
+	{
+		ref_str dialog_name = uiXml.Read(pNode, "dialog", i);
+		m_DialogNames.push_back(dialog_name);
+	}
+
+
 	//загрузить позиции на карте
 	SMapLocation map_location;
 	m_MapLocationVector.clear();

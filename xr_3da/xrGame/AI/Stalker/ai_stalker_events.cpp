@@ -15,6 +15,7 @@
 #include "../../pda.h"
 #include "../../inventory.h"
 #include "../../xrmessages.h"
+#include "../../PhraseDialog.h"
 
 IC BOOL BE	(BOOL A, BOOL B)
 {
@@ -144,4 +145,14 @@ void CAI_Stalker::ReceivePdaMessage(u16 who, EPdaMsg msg, int info_index)
 
 	CInventoryOwner::ReceivePdaMessage(who, msg, info_index);
 
+}
+
+
+//PhraseDialogManager
+void  CAI_Stalker::ReceivePhrase (DIALOG_SHARED_PTR& phrase_dialog)
+{
+	if(!phrase_dialog->IsFinished())
+		CPhraseDialogManager::SayPhrase(phrase_dialog, 
+					phrase_dialog->PhraseList()[phrase_dialog->PhraseList().size()-1]->GetIndex());
+	CPhraseDialogManager::ReceivePhrase(phrase_dialog);
 }
