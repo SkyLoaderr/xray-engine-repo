@@ -142,7 +142,7 @@ void CWeaponMagazined::ReloadMagazine	()
 	if (iAmmoCurrent>=iMagazineSize)	{ iAmmoElapsed = iMagazineSize; iAmmoCurrent -= iMagazineSize;	}
 	else								{ iAmmoElapsed = iAmmoCurrent;	iAmmoCurrent =  0;				}
 }
-void CWeaponMagazined::Update(float dt, BOOL bHUDView)
+void CWeaponMagazined::Update			(float dt, BOOL bHUDView)
 {
 	inherited::Update	(dt,bHUDView);
 	VERIFY				(m_pParent);
@@ -195,6 +195,7 @@ void CWeaponMagazined::Update(float dt, BOOL bHUDView)
 	case eIdle:
 	case eShowing:
 	case eHiding:
+	case eReload:
 		bVisible		= TRUE;
 		fTime			-=	dt;
 		if (fTime<0)	fTime = 0;
