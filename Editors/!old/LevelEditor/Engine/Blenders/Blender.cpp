@@ -75,6 +75,6 @@ void	IBlender::Load(	IReader& fs, u16 version )
 
 void	IBlender::Compile(CBlender_Compile& C)
 {
-	if (C.bEditor)	C.SetParams	(oPriority.value,oStrictSorting.value?true:false,true,	false);
-	else			C.SetParams	(oPriority.value,oStrictSorting.value?true:false,false,	false);
+	if (C.bEditor)	C.SetParams	(oPriority.value,oStrictSorting.value?true:false);
+	else			C.SetParams	(oPriority.value,oStrictSorting.value?true:false);
 }
