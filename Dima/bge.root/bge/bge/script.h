@@ -1,15 +1,17 @@
 ////////////////////////////////////////////////////////////////////////////
-//	Module 		: script_engine.h
+//	Module 		: script.h
 //	Created 	: 03.12.2004
 //  Modified 	: 03.12.2004
 //	Author		: Dmitriy Iassenev
-//	Description : Scripting engine
+//	Description : Scripting engine singleton
 ////////////////////////////////////////////////////////////////////////////
 
 #pragma once
 
-class CScriptEngine {
-public:
-				CScriptEngine	();
-		void	init			()
-};
+#include <singleton.h>
+#include "script_engine.h"
+
+IC	CScriptEngine &script()
+{
+	return	(Loki::SingletonHolder<CScriptEngine>::Instance());
+}

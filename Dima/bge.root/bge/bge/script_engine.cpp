@@ -9,3 +9,10 @@
 #include "stdafx.h"
 #include "script_engine.h"
 
+CScriptEngine::CScriptEngine	()
+{
+}
+
+void CScriptEngine::init		()
+{
+}

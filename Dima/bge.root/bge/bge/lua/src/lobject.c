@@ -163,10 +163,10 @@ void luaO_chunkid (char *out, const char *source, int bufflen) {
   }
   else {  /* out = "source", or "...source" */
     if (*source == '@') {
-      size_t l;
+      int l;
       source++;  /* skip the `@' */
       bufflen -= sizeof(" `...' ");
-      l = xr_strlen(source);
+      l = (int)xr_strlen(source);
       strcpy(out, "");
       if (l>bufflen) {
         source += (l-bufflen);  /* get last part of file name */
