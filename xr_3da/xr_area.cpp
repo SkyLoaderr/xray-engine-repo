@@ -14,6 +14,8 @@ IC void minmax(float &mn, float &mx) { if (mn > mx) std::swap(mn,mx); }
 
 void	IGame_Level::SoundEvent	( ref_sound* S, float range )
 {
+	if (S->g_object&&S->g_object->getDestroy()) return;
+
 	const CSound_params*	p	= S->feedback->get_params();
 	VERIFY					(p);
 
