@@ -173,10 +173,11 @@ class CCC_Start : public IConsole_Command
 public:
 	CCC_Start(LPCSTR N) : IConsole_Command(N) {};
 	virtual void Execute(LPCSTR args) {
-		if (g_pGameLevel)	{
+/*		if (g_pGameLevel)	{
 			Log		("! Please disconnect/unload first");
 			return;
 		}
+*/
 		string256	op_server,op_client;
 		
 		parse		(op_server,args,"server");	// 1. server
