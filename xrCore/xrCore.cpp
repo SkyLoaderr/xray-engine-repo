@@ -6,7 +6,7 @@
 #include <objbase.h>
 #include "xrCore.h"
 
-#include <string>
+// #include <string>
  
 #pragma comment(lib,"winmm.lib")
 
