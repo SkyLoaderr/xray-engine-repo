@@ -499,6 +499,9 @@
 						RelativePath=".\Config\text\rus\stable_dialogs_garbage.xml">
 					</File>
 					<File
+						RelativePath=".\config\text\rus\stable_dialogs_labx18.xml">
+					</File>
+					<File
 						RelativePath=".\config\text\rus\stable_dialogs_military.xml">
 					</File>
 					<File
