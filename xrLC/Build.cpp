@@ -124,13 +124,6 @@ void CBuild::Run	(LPCSTR P)
 	PreOptimize					();
 	CorrectTJunctions			();
 
-	//****************************************** Collision DB
-	FPU::m64r					();
-	Phase						("Building collision database...");
-	mem_Compact					();
-	BuildCForm					();
-	BuildPortals				(*fs);
-
 	//****************************************** HEMI-Tesselate
 	/*
 	FPU::m64r					();
@@ -144,6 +137,14 @@ void CBuild::Run	(LPCSTR P)
 	Phase						("Building normals...");
 	mem_Compact					();
 	CalcNormals					();
+
+	//****************************************** Collision DB
+	//should be after normals, so that double-sided faces gets separated
+	FPU::m64r					();
+	Phase						("Building collision database...");
+	mem_Compact					();
+	BuildCForm					();
+	BuildPortals				(*fs);
 
 	//****************************************** T-Basis
 	if (b_R2)	//****************************** R2 only

@@ -44,6 +44,25 @@ int getTriByEdge(Vertex *V1, Vertex *V2, Face* parent, vecFace &ids)
 	}
 }
 
+void TestEdge			(Vertex *V1, Vertex *V2, Face* parent)
+{
+	Face*	found	= 0;
+	int		f_count = 0;
+
+	for (vecFaceIt I=V1->adjacent.begin(); I!=V1->adjacent.end(); I++)	{
+		Face* test = *I;
+		if (test == parent) continue;
+		if (test->VContains(V2)) {
+			f_count++;
+			found = test;
+		}
+	}
+	if (f_count>1) {
+		bCriticalErrCnt	++;
+		pBuild->err_multiedge.w_fvector3(V1->P);
+		pBuild->err_multiedge.w_fvector3(V2->P);
+	}
+}
 void SimplifyCFORM		(CDB::CollectorPacked& CL);
 void CBuild::BuildCForm	()
 {
@@ -97,6 +116,11 @@ void CBuild::BuildCForm	()
 	for (vecFaceIt F = cfFaces->begin(); F!=cfFaces->end(); F++)
 	{
 		Face*	T = *F;
+
+		TestEdge	(T->v[0],T->v[1],T);
+		TestEdge	(T->v[1],T->v[2],T);
+		TestEdge	(T->v[2],T->v[0],T);
+
 		CL.add_face	(
 			T->v[0]->P, T->v[1]->P, T->v[2]->P,
 			T->dwMaterialGame, materials[T->dwMaterial].sector

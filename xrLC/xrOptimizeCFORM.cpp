@@ -48,16 +48,16 @@ struct	FailFace
 	u32		props;
 };
 
-void SimplifyCFORM		(CDB::CollectorPacked& CL)
+void	SimplifyCFORM		(CDB::CollectorPacked& CL)
 {
 	Phase		("CFORM: simplification...");
 	//Status		("Building base mesh : vertices...");
 
-	_mesh        mesh;						// a mesh object
-	_decimater   decimater(mesh);			// a decimater object, connected to a mesh
-	_HModQuadric hModQuadric;				// use a quadric module
-	decimater.add( hModQuadric );			// register module at the decimater
-	decimater.module(hModQuadric).set_max_err(0.00001,false);	// error-limit
+	_mesh			mesh;						// a mesh object
+	_decimater		decimater(mesh);			// a decimater object, connected to a mesh
+	_HModQuadric	hModQuadric;				// use a quadric module
+	decimater.add	(hModQuadric);				// register module at the decimater
+	decimater.module(hModQuadric).set_max_err	(0.00001,false);	// error-limit
 
 	// Initializing mesh
 	Status		("Building base mesh : vertices[%d]...",CL.getVS());
@@ -133,3 +133,8 @@ void SimplifyCFORM		(CDB::CollectorPacked& CL)
 		CL.add_face_D	( F.P[0], F.P[1], F.P[2], F.props );
 	}
 }
+/*
+void CBuild::BuildCForm	()
+{
+}
+*/
