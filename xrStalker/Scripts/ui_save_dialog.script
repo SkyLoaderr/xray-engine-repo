@@ -103,7 +103,7 @@ function save_dialog:InitControls()
     local list_wnd = CUIListWnd()
     list_wnd:SetAutoDelete(true)
     list_wnd:SetWindowName("list_window")
-    list_wnd:Init(0,0,154,148)
+    list_wnd:Init(list_rect.x, list_rect.y, list_rect.width, list_rect.height)
     list_wnd:SetItemHeight(15)
     list_wnd:EnableScrollBar(true)
     main_frame:AttachChild(list_wnd)
@@ -159,7 +159,7 @@ end
 function save_dialog:AddItemToList(item)
 	local list_box = self:GetListWnd("list_window")
 	local shift = 50
-	local color = GetARGB(255,0,255,0)
+	local color = GetARGB(255,0,255,255)
 	local parse = false
 	
 	list_box:AddText(item, shift, color, GetFontDI(), parse)
