@@ -439,8 +439,10 @@ void	CRender::Render		()
 	g_pGamePersistent->Environment.RenderFirst	();				// sky / sun
 	r_pmask										(true,false);	// disable priority "1"
 	o.vis_intersect								= TRUE			;
+	HOM.Disable									();
 	L_Dynamic->render							();				// addititional light sources
 	Wallmarks->Render							();				// wallmarks has priority as normal geometry
+	HOM.Enable									();
 	o.vis_intersect								= FALSE			;
 	phase										= PHASE_NORMAL	;
 	r_pmask										(true,true);	// enable priority "0" and "1"
