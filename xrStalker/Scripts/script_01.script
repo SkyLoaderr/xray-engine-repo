@@ -70,7 +70,7 @@ function main()
 	wait		(1000)
 
 
-	local 	snd = sound_object("water_bulkaet")
+	local 	snd = sound_object("scripts\\kto-to_idet")
 	local	obj = get_actor()
 	wait	(1000)
 	snd:play_at_pos(obj,obj:position(),0);
