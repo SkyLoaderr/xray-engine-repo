@@ -44,13 +44,9 @@ BOOL	testVFS			(LPCSTR path)
 	string256			p_ext;
 	_splitpath			(path, 0, 0, p_name, p_ext );
 	
-	if (0==stricmp(p_name,"level"))	{
-		if (0==stricmp(p_ext,".game"))		return FALSE;
-		if (0==stricmp(p_ext,".hom"))		return FALSE;
-		if (0==stricmp(p_ext,".ltx"))		return FALSE;
-		if (0==stricmp(p_ext,".spawn"))		return FALSE;
-		return TRUE;
-	}
+	if (0==stricmp(p_name,"level") && 0==stricmp(p_ext,"."))	return TRUE;
+	if (0==stricmp(p_name,"level") && 0==stricmp(p_ext,".ai"))	return TRUE;
+	if (0==stricmp(p_ext,".ogg"))								return TRUE;
 	return FALSE;
 }
 
