@@ -106,12 +106,10 @@ public:
 	void				AttachDetachAddon(CUIDragDropItemMP *pPossibleAddon, bool bAttach, bool bRealRepresentationSet = false);
 	void				AttachDetachAllAddons(bool bAttach);
 	bool				IsAddonAttached(int iAddonIndex) { return m_AddonInfo[iAddonIndex].iAttachStatus == 1; }
-	// Проверяем а наш ли это аддон?
+
 	AddonIDs			IsOurAddon(CUIDragDropItemMP * pPossibleAddon);
-	// Переопределяем некоторые функции, которые нам нужны для коректной отрисовки оружия с аддонами
-	virtual void		ClipperOn();
-	virtual void		ClipperOff();
 	virtual void		Draw();
+
 	// Здесь мы храним указатели на вещи-аддоны
 	CUIDragDropItemMP	*m_pAddon[NUM_OF_ADDONS];
 
