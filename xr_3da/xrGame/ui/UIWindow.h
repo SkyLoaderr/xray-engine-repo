@@ -15,6 +15,13 @@
 //для работы с XML
 //#include "IOXml.h"
 
+
+#include "..\uistaticitem.h"
+
+#include "..\uiframerect.h"
+
+
+
 class CUIWindow  
 {
 public:
@@ -144,6 +151,10 @@ protected:
 	///////////////////////////////////////	
 	//Графический интрефейс для рисования
 	///////////////////////////////////////
+	//CUIStaticItem	m_background;
+	CUIFrameRect m_background;
+
+
 //	CUIWindowDraw* m_pWindowDraw;
 
 

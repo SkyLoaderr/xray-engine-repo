@@ -34,6 +34,22 @@ void CUIWindow::Init(const char *title, int x, int y, int width, int height)
 //	m_sTitle = title;
 	SetRect(&m_WndRect, x, y, x+width, y+height);
 
+	//m_background.Init("ui\\hud_health_back","hud\\default",250,250,alNone);
+	//m_background.Init("ui\\ui_hud_frame_l","hud\\default",250,250,alNone);
+//	m_background.Init("ui\\ui_hud_frame",x,y,width, height,alNone);
+	
+	//m_background.Init("ui\\ui_hud_frame",100,100,132, 132,alNone);
+	m_background.Init("ui\\ui_hud_frame",x,y,width,height,alNone);
+	//m_background.Init("ui\\ui_hud_frame",x,y,x+width,y+height,alNone);
+	//m_background.SetSize(256,256);
+	
+	
+	
+	//m_background.SetRect(x, y, x+width, y+height);
+	
+
+	
+
 	//координаты текста заголовка
 //	SetRect(&m_title_rect, 2,2, width-2, height-2);
 }
@@ -100,9 +116,11 @@ void CUIWindow::Draw()
 	m_pWindowDraw->TextOut(rect.left + m_title_rect.left,
 						   rect.top + m_title_rect.top,	
 							m_sTitle.c_str());
-	
-
 */		
+	RECT rect = GetAbsoluteRect();
+	
+	m_background.SetPos(rect.left, rect.top);
+	m_background.Render();
 
 
 
