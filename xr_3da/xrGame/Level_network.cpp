@@ -16,6 +16,7 @@ void CLevel::ClientSend	()
 {
 	if (!Level().Server->client_Count())
 	{
+		return;
 		if (!net_HasBandwidth())	return;
 	};
 
