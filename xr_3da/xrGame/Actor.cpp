@@ -218,7 +218,7 @@ void CActor::Load		(LPCSTR section )
 	::Sound->create		(sndDie[2],			TRUE,	strconcat(buf,cName(),"\\die2"),SOUND_TYPE_MONSTER_DYING_HUMAN);
 	::Sound->create		(sndDie[3],			TRUE,	strconcat(buf,cName(),"\\die3"),SOUND_TYPE_MONSTER_DYING_HUMAN);
 
-	ph_Movement.ActivateBox	(0);
+//	ph_Movement.ActivateBox	(0);
 	//ph_Movement.ActivateBox	(0);
 	cam_Set					(eacFirstEye);
 
@@ -320,7 +320,7 @@ BOOL CActor::net_Spawn		(LPVOID DC)
 	ph_Movement.SetPLastMaterial(&last_gmtl_id);
 	ph_Movement.SetPosition	(Position());
 	ph_Movement.SetVelocity	(0,0,0);
-
+	
 	CSE_Abstract			*e	= (CSE_Abstract*)(DC);
 	CSE_ALifeCreatureActor	*E	= dynamic_cast<CSE_ALifeCreatureActor*>(e);
 

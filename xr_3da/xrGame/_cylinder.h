@@ -1,5 +1,5 @@
-#ifndef FCYLINDER_H
-#define FCYLINDER_H
+#ifndef PCYLINDER_H
+#define PCYLINDER_H
 
 struct	Pcylinder
 {
