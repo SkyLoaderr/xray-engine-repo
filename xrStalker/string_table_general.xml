@@ -1,7 +1,7 @@
 ﻿<?xml version='1.0' encoding="UTF-8"?>
 <!-- таблица строк общего назначения -->
 <string_table>
-	<string id="item test1">
+	<string id="test1">
 		<text>This is a ITEM test string</text>
 	</string>
 	<string id="test2">
