@@ -55,5 +55,5 @@ function create_map_tab:InitCallbacks()
 end
 
 function create_map_tab:OnButton_back()
-	level:start_stop_manu(self, true)
+	level.start_stop_menu(self, true)
 end
