@@ -184,10 +184,11 @@ void CWeaponMagazined::UpdateCL			()
 	// cycle update
 	switch (st_current)
 	{
-	case eIdle:
 	case eShowing:
 	case eHiding:
 	case eReload:
+		PKinematics		(m_pHUD->Visual())->Update();
+	case eIdle:
 		fTime			-=	dt;
 		if (fTime<0)	fTime = 0;
 		break;
@@ -402,10 +403,8 @@ void CWeaponMagazined::switch2_Hiding()
 	pSounds->PlayAtPos		(sndHide,H_Root(),vLastFP);
 	m_pHUD->animPlay		(mhud_hide[Random.randI(mhud_hide.size())],TRUE,this);
 }
-
 void CWeaponMagazined::switch2_Showing()
 {
 	pSounds->PlayAtPos		(sndShow,H_Root(),vLastFP);
-	m_pHUD->animPlay			(mhud_show[Random.randI(mhud_show.size())],FALSE,this);
+	m_pHUD->animPlay		(mhud_show[Random.randI(mhud_show.size())],FALSE,this);
 }
-
