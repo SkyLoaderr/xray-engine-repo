@@ -145,8 +145,8 @@ bool DXTCompress(LPCSTR out_name, BYTE* raw_data, DWORD w, DWORD h, DWORD pitch,
     if (fmt->flag&STextureParams::flGenerateMipMaps)	nvOpt.MipMapType=dGenerateMipMaps;
     else												nvOpt.MipMapType=dNoMipMaps;
     nvOpt.bBinaryAlpha	    = !!(fmt->flag&STextureParams::flBinaryAlpha);
-    nvOpt.bNormalMap		= !!(fmt->flag&STextureParams::flNormalMap);
-	nvOpt.bDuDvMap			= !!(fmt->flag&STextureParams::flDuDvMap);
+    nvOpt.bNormalMap		= fmt->type==STextureParams::ttNormalMap;
+	nvOpt.bDuDvMap			= fmt->type==STextureParams::ttDuDvMap;
     nvOpt.bAlphaBorder		= !!(fmt->flag&STextureParams::flAlphaBorder);
     nvOpt.bBorder			= !!(fmt->flag&STextureParams::flColorBorder);
     nvOpt.BorderColor.u		= fmt->border_color;
@@ -157,7 +157,7 @@ bool DXTCompress(LPCSTR out_name, BYTE* raw_data, DWORD w, DWORD h, DWORD pitch,
     nvOpt.bDitherColor		= !!(fmt->flag&STextureParams::flDitherColor);
     nvOpt.bDitherEachMIPLevel=!!(fmt->flag&STextureParams::flDitherEachMIPLevel);
     nvOpt.bGreyScale		= !!(fmt->flag&STextureParams::flGreyScale);
-	nvOpt.TextureType		= (fmt->flag&STextureParams::flCubeMap)?dTextureTypeCube:dTextureType2D;
+	nvOpt.TextureType		= (fmt->type==STextureParams::ttCubeMap)?dTextureTypeCube:dTextureType2D;
     switch(fmt->fmt){
     case STextureParams::tfDXT1: 	nvOpt.TextureFormat = dDXT1; 	break;
     case STextureParams::tfADXT1: 	nvOpt.TextureFormat = dDXT1a; 	break;
