@@ -8,7 +8,6 @@
 #include "leftbar.h"
 #include "main.h"
 #include "xr_input.h"
-#include "cl_rapid.h"
 #include "UI_Tools.h"
 #include "xr_trims.h"
 #include "bottombar.h"
@@ -82,7 +81,7 @@ bool TUI::OnCreate(){
     m_Cursor        = new C3DCursor();
 #endif
 
-    XRC.RayMode		(RAY_CULL);
+	XRC.ray_options	(CDB::OPT_ONLYNEAREST | CDB::OPT_CULL);
 
     pInput			= new CInput(FALSE,mouse_device_key);
     UI.iCapture		();

@@ -13,10 +13,10 @@ ENGINE_API xrXRC XRC;
 
 xrXRC::xrXRC()
 {
-
+	CL = (CDB::COLLIDER*)cdb_collider_create();
 }
 
 xrXRC::~xrXRC()
 {
-
+	cdb_collider_destroy(CL);
 }

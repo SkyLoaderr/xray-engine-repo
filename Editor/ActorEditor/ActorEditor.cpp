@@ -34,14 +34,6 @@ USEUNIT("engine\Envelope.cpp");
 USEUNIT("engine\motion.cpp");
 USEUNIT("engine\bone.cpp");
 USEUNIT("engine\clsid.cpp");
-USEUNIT("engine\cl_raypick.cpp");
-USEUNIT("engine\cl_build.cpp");
-USEUNIT("engine\cl_collector.cpp");
-USEUNIT("engine\cl_collide.cpp");
-USEUNIT("engine\cl_intersect.cpp");
-USEUNIT("engine\cl_overlap.cpp");
-USEUNIT("engine\cl_RAPID.cpp");
-USEUNIT("engine\cl_bboxcollide.cpp");
 USEUNIT("engine\xr_ini.cpp");
 USEUNIT("editor\ColorPicker.cpp");
 USEUNIT("engine\LzHuf.cpp");
@@ -132,6 +124,9 @@ USEUNIT("Editor\Engine.cpp");
 USEUNIT("Editor\ModelPool.cpp");
 USEUNIT("UI_ToolsMotions.cpp");
 USEFORM("KeyBar.cpp", frmKeyBar);
+USEUNIT("Engine\xrXRC.cpp");
+USEUNIT("Engine\cl_collector.cpp");
+USELIB("Lib\xrCDB.lib");
 //---------------------------------------------------------------------------
 #include "main.h"
 #include "splash.h"

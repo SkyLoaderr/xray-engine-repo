@@ -15,11 +15,7 @@
       Intermediate\_quaternion.obj Intermediate\_compressed_normal.obj 
       Intermediate\xr_trims.obj Intermediate\interp.obj 
       Intermediate\Envelope.obj Intermediate\motion.obj Intermediate\bone.obj 
-      Intermediate\clsid.obj Intermediate\cl_raypick.obj 
-      Intermediate\cl_build.obj Intermediate\cl_collector.obj 
-      Intermediate\cl_collide.obj Intermediate\cl_intersect.obj 
-      Intermediate\cl_overlap.obj Intermediate\cl_RAPID.obj 
-      Intermediate\cl_bboxcollide.obj Intermediate\xr_ini.obj 
+      Intermediate\clsid.obj Intermediate\xr_ini.obj 
       Intermediate\ColorPicker.obj Intermediate\LzHuf.obj 
       Intermediate\UI_Camera.obj Intermediate\UI_MainCommand.obj 
       Intermediate\FS.obj Intermediate\HW.obj Intermediate\HWCaps.obj 
@@ -60,7 +56,8 @@
       Intermediate\BodyInstance.obj Intermediate\xrSkin1W.obj 
       Intermediate\xrBoneLerp.obj Intermediate\FProgressive.obj 
       Intermediate\fmesh.obj Intermediate\Engine.obj Intermediate\ModelPool.obj 
-      Intermediate\UI_ToolsMotions.obj Intermediate\KeyBar.obj"/>
+      Intermediate\UI_ToolsMotions.obj Intermediate\KeyBar.obj 
+      Intermediate\xrXRC.obj Intermediate\cl_collector.obj"/>
     <RESFILES value="ActorEditor.res resource.res"/>
     <IDLFILES value=""/>
     <IDLGENFILES value=""/>
@@ -71,7 +68,7 @@
       BonePart.dfm KeyBar.dfm"/>
     <LIBFILES value="lib\LWO.lib lib\cg32.lib lib\MagicFMd.lib lib\DXT.lib lib\d3d8.lib 
       lib\d3dx8d.lib lib\dinput.lib Lib\FreeImage.lib Lib\ETools.lib 
-      Lib\xrProgressive.lib"/>
+      Lib\xrProgressive.lib Lib\xrCDB.lib"/>
     <LIBRARIES value="elpackB5.lib dclusr50.lib VCLX50.lib bcbsmp50.lib Vcl50.lib"/>
     <SPARELIBS value="Vcl50.lib bcbsmp50.lib VCLX50.lib dclusr50.lib elpackB5.lib"/>
     <PACKAGES value="Vcl50.bpi Vclx50.bpi bcbsmp50.bpi TeeUI50.bpi Tee50.bpi Vclbde50.bpi 

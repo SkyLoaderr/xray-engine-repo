@@ -209,7 +209,7 @@ bool CFileSystem::GetSaveName( FSPath& initial, char *buffer, int sz_buf, LPCSTR
 }
 //----------------------------------------------------
 #ifdef M_BORLAND
-bool CFileSystem::GetOpenName(FSPath& initial, AnsiString& buffer, bool bMulti, LPCSTR offset ){
+bool CFileSystem::GetOpenName(FSPath& initial, AnsiString& buffer, bool bMulti, LPCSTR offset, int start_flt_ext ){
 	string4096 buf;
     strcpy(buf,buffer.c_str());
 	bool bRes = GetOpenName(initial,buf,sizeof(buf),bMulti,offset,start_flt_ext);
@@ -217,7 +217,7 @@ bool CFileSystem::GetOpenName(FSPath& initial, AnsiString& buffer, bool bMulti, 
 	return bRes;
 }
 
-bool CFileSystem::GetSaveName( FSPath& initial, AnsiString& buffer, LPCSTR offset ){
+bool CFileSystem::GetSaveName( FSPath& initial, AnsiString& buffer, LPCSTR offset, int start_flt_ext ){
 	string4096 buf;
     strcpy(buf,buffer.c_str());
 	bool bRes = GetSaveName(initial,buf,sizeof(buf),offset,start_flt_ext);

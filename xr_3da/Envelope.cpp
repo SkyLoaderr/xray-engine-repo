@@ -34,3 +34,45 @@ void CEnvelope::Load(CStream& F){
     }
 }
 
+void CEnvelope::SaveA(CFS_Base& F){
+}
+
+void CEnvelope::LoadA(CStream& F){
+	string512 	buf;
+    float		f[9];
+	F.Rstring(buf);
+	if (strstr(buf,"{ Envelope")){
+		F.Rstring(buf);
+        int nkeys=atoi(buf);
+		keys.resize(nkeys);
+		for (DWORD i=0; i<keys.size(); i++){
+    		keys[i]	= new st_Key();
+            st_Key& K=*keys[i];
+			F.Rstring(buf);
+            int cnt = sscanf	(buf,"Key %f %f %f %f %f %f %f %f %f", f[0], f[1], f[2], f[3], f[4], f[5], f[6], f[7], f[8]);
+            R_ASSERT(cnt==9);
+			K.value = f[ 0 ];
+      		K.time  = f[ 1 ];
+      		K.shape = ( int ) f[ 2 ];
+			if ( K.shape == SHAPE_TCB ) {
+         		K.tension    = f[ 3 ];
+         		K.continuity = f[ 4 ];
+         		K.bias       = f[ 5 ];
+      		}
+            if ( K.shape == SHAPE_BEZ2 ) {
+         		K.param[ 0 ] = f[ 3 ];
+         		K.param[ 1 ] = f[ 4 ];
+         		K.param[ 2 ] = f[ 5 ];
+         		K.param[ 3 ] = f[ 6 ];
+      		}else{
+         		K.param[ 0 ] = f[ 6 ];
+                K.param[ 1 ] = f[ 7 ];
+      		}
+	    }
+        // behavior <pre> <post>
+		F.Rstring(buf);
+		int cnt = sscanf(buf,"Behaviors %d %d", behavior[0], behavior[1] );
+        R_ASSERT(cnt==2);
+    }
+}
+

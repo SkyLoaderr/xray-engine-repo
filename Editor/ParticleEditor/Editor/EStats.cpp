@@ -35,6 +35,7 @@ void CStats::Show(CFontBase* font)
 		Input.FrameEnd				();
 		clRAY.FrameEnd				();
 		clBOX.FrameEnd				();
+        clFRUSTUM.FrameEnd			();
 	}
 
 	// calc FPS & TPS
@@ -69,6 +70,7 @@ void CStats::Show(CFontBase* font)
 		F.OutNext	("Input:       %2.2fms",Input.result);
 		F.OutNext	("clRAY:       %2.2fms, %d",clRAY.result,clRAY.count);
 		F.OutNext	("clBOX:       %2.2fms, %d",clBOX.result,clBOX.count);
+        F.OutNext	("clFRUSTUM:   %2.2fms, %d",clFRUSTUM.result,clFRUSTUM.count);
 		F.OutSkip	();
 	}
 
@@ -79,6 +81,7 @@ void CStats::Show(CFontBase* font)
 		Input.FrameStart			();
 		clRAY.FrameStart			();
 		clBOX.FrameStart			();
+		clFRUSTUM.FrameStart		();
 
 		RenderDUMP_SKIN.FrameStart	();
 	}

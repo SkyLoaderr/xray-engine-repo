@@ -39,10 +39,10 @@ static float		m_fSoftAngle;
 void CEditableMesh::GenerateCFModel(){
 	UnloadCForm();
 
-	m_CFModel = new RAPID::Model();    VERIFY(m_CFModel);
+	m_CFModel = new CDB::MODEL();    VERIFY(m_CFModel);
 	// Collect faces
 
-	RAPID::Collector CL;
+	CDB::Collector CL;
 	// double sided
 /*	не корректно работает с сурфейсами
 	for (SurfFacesPairIt sp_it=m_SurfFaces.begin(); sp_it!=m_SurfFaces.end(); sp_it++){
@@ -64,7 +64,7 @@ void CEditableMesh::GenerateCFModel(){
 			0,0,0 );
 	}
 
-	m_CFModel->BuildModel(CL.getV(), CL.getVS(), CL.getT(), CL.getTS());
+	m_CFModel->build(CL.getV(), CL.getVS(), CL.getT(), CL.getTS());
 	m_LoadState |= EMESH_LS_CF_MODEL;
 }
 
@@ -74,20 +74,21 @@ bool CEditableMesh::RayPick(float& distance, Fvector& start, Fvector& direction,
     if (!m_CFModel) GenerateCFModel();
     float m_r = UI.ZFar();//pinf?pinf->rp_inf.range: (bugs: не всегда выбирает)
 
-    XRC.RayPick	(&parent, m_CFModel, start, direction, m_r);
-    float new_dist;
-    if (XRC.GetMinRayPickDistance(new_dist)){
-    	if (new_dist<distance){
+	XRC.ray_options	(CDB::OPT_ONLYNEAREST | CDB::OPT_CULL);
+    XRC.ray_query	(parent, m_CFModel, start, direction, m_r);
+    if (XRC.r_count()){// XRC.GetMinRayPickDistance(new_dist)){
+		CDB::RESULT* I	= XRC.r_begin	();
+		if (I->range<distance) {
 	        if (pinf){
-	            pinf->rp_inf= *XRC.GetMinRayPickInfo();
+	            pinf->rp_inf	= *I;
     	        pinf->e_obj 	= m_Parent;
         	    pinf->e_mesh	= this;
-	            pinf->pt.mul(direction,pinf->rp_inf.range);
-    	        pinf->pt.add(start);
+	            pinf->pt.mul	(direction,pinf->rp_inf.range);
+    	        pinf->pt.add	(start);
             }
-            distance = new_dist;
+            distance = I->range;
             return true;
-        }
+		}
     }
 	return false;
 }

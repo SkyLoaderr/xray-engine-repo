@@ -185,11 +185,11 @@ DEFINE_VECTOR(string64,string64Vec,string64It);
 #ifdef _EDITOR
 	#include "device.h"
 	#include "properties.h"
-
 	DEFINE_VECTOR(FVF::L,FLvertexVec,FLvertexIt);
 	DEFINE_VECTOR(FVF::TL,FTLvertexVec,FTLvertexIt);
 	DEFINE_VECTOR(FVF::LIT,FLITvertexVec,FLITvertexIt);
 #endif
+#include "xrXRC.h"
 
 #define MAX_FOLDER_NAME    255
 #define MAX_OBJ_NAME       64

@@ -92,15 +92,15 @@ void CEditableMesh::FillRenderBuffer(INTVec& face_lst, int start_face, int num_f
             for (int t=0; t<dwTexCnt; t++){
                 VERIFY2(t<m_VMRefs[fv.vmref].size(),"- VMap layer index out of range");
             	st_VMapPt& vm_pt 	= m_VMRefs[fv.vmref][t+offs];
-                if (m_VMaps[vm_pt.vmap_index].type!=vmtUV){
+                if (m_VMaps[vm_pt.vmap_index]->type!=vmtUV){
                 	offs++;
                     t--;
                     continue;
                 }
                 VERIFY2(vm_pt.vmap_index<int(m_VMaps.size()),"- VMap index out of range");
-				st_VMap& vmap		= m_VMaps[vm_pt.vmap_index];
-                VERIFY2(vm_pt.index<vmap.size(),"- VMap point index out of range");
-                CopyMemory(data,&vmap.getUV(vm_pt.index),sz); data+=sz;
+				st_VMap* vmap		= m_VMaps[vm_pt.vmap_index];
+                VERIFY2(vm_pt.index<vmap->size(),"- VMap point index out of range");
+                CopyMemory(data,&vmap->getUV(vm_pt.index),sz); data+=sz;
             }
         }
         if (surf->_2Sided()){
@@ -125,15 +125,15 @@ void CEditableMesh::FillRenderBuffer(INTVec& face_lst, int start_face, int num_f
                 for (int t=0; t<dwTexCnt; t++){
 	                VERIFY2(t<m_VMRefs[fv.vmref].size(),"- VMap layer index out of range");
                     st_VMapPt& vm_pt 	= m_VMRefs[fv.vmref][t];
-                    if (m_VMaps[vm_pt.vmap_index].type!=vmtUV){
+                    if (m_VMaps[vm_pt.vmap_index]->type!=vmtUV){
                         offs++;
                         t--;
                         continue;
                     }
 	                VERIFY2(vm_pt.vmap_index<int(m_VMaps.size()),"- VMap index out of range");
-                    st_VMap& vmap		= m_VMaps[vm_pt.vmap_index];
-    	            VERIFY2(vm_pt.index<vmap.size(),"- VMap point index out of range");
-                    CopyMemory(data,&vmap.getUV(vm_pt.index),sz); data+=sz;
+                    st_VMap* vmap		= m_VMaps[vm_pt.vmap_index];
+    	            VERIFY2(vm_pt.index<vmap->size(),"- VMap point index out of range");
+                    CopyMemory(data,&vmap->getUV(vm_pt.index),sz); data+=sz;
                 }
             }
         }

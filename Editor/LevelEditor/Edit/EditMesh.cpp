@@ -42,7 +42,7 @@ void CEditableMesh::Clear(){
 
 void CEditableMesh::UnloadCForm     (){
 #ifdef _EDITOR
-	_DELETE(m_CFModel);
+	cdb_model_destroy(m_CFModel);
 #endif
     m_LoadState &=~ EMESH_LS_CF_MODEL;
 }
@@ -127,13 +127,6 @@ void CEditableMesh::GenerateSVertices(){
     m_Parent->CalculateAnimation(true);
 	m_SVertices.resize(m_Points.size());
 
-    int kk=0;
-    for (DWORD u=0; u<m_VMaps.size(); u++){
-    	st_VMap& M = m_VMaps[u];
-        if (M.type==vmtWeight) kk++;
-    }
-
-
     for (DWORD i=0; i<m_Points.size(); i++){
     	Fvector&  P =m_Points[i];
     	st_SVert& SV=m_SVertices[i];
@@ -147,7 +140,7 @@ void CEditableMesh::GenerateSVertices(){
                 if (fv.pindex==int(i)){
                     VMapPtSVec& vmpt_lst = m_VMRefs[fv.vmref];
                     for (VMapPtIt vmpt_it=vmpt_lst.begin(); vmpt_it!=vmpt_lst.end(); vmpt_it++){
-                        st_VMap& VM = m_VMaps[vmpt_it->vmap_index];
+                        st_VMap& VM = *m_VMaps[vmpt_it->vmap_index];
                         if (VM.type==vmtWeight){
 							//float& w = VM.getW(vmpt_it->index);
                             SV.bone 	= m_Parent->GetBoneIndexByWMap(VM.name);

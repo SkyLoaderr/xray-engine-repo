@@ -11,15 +11,12 @@ class CEditableMesh;
 class CSceneObject;
 
 #ifdef _EDITOR
-	#include "cl_defs.h";
-	#include "cl_rapid.h";
-
 	struct SRayPickInfo{
 		CSceneObject*		s_obj;
 		CEditableObject*	e_obj;
 		CEditableMesh*		e_mesh;
 		Fvector     		pt;
-		RAPID::raypick_info rp_inf;
+		CDB::RESULT 		rp_inf;
 		SRayPickInfo		(){Reset();}
 		IC void Reset		(){ ZeroMemory(this,sizeof(SRayPickInfo));rp_inf.range = 5000;}
 	};
@@ -27,7 +24,7 @@ class CSceneObject;
 		CSceneObject*		s_obj;
 		CEditableObject*	e_obj;
 		CEditableMesh*		e_mesh;
-		RAPID::bboxpick_info bp_inf;
+		CDB::RESULT 		bp_inf;
 		SBoxPickInfo		(){Reset();}
 		IC void Reset		(){ZeroMemory(this,sizeof(SBoxPickInfo));}
 	};

@@ -134,7 +134,7 @@ class CEditableMesh {
     CEditableObject*	m_Parent;
 
 #ifdef _EDITOR
-    RAPID::Model*	m_CFModel;
+    CDB::MODEL*		m_CFModel;
     RBMap			m_RenderBuffers;
 #endif
 

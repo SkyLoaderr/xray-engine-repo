@@ -65,6 +65,8 @@ public:
 
 	void		Save		(CFS_Base& F);
 	void		Load		(CStream& F);
+	void		SaveA		(CFS_Base& F);
+	void		LoadA		(CStream& F);
 };
 
 #endif //_ENVELOPE_H_
