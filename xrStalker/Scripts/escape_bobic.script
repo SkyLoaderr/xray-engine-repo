@@ -48,7 +48,7 @@ end
 ----------------------------------------------------------------------------------------------------------------------
 class "action_bobik" (action_base)
 function action_bobik:__init (npc_name,action_name) super (nil, action_name)
-	self.timer = 5000
+	self.timer = 10000
 	self.time = nil
 end
 function action_bobik:initialize()
