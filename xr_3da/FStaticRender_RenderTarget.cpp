@@ -55,6 +55,7 @@ BOOL CRenderTarget::Create	()
 	R_CHK	(HW.pDevice->GetDepthStencilSurface	(&pBaseZB));
 	
 	// Texture and shader
+	pStream		= Device.Streams.Create			(FVF::F_TL,6);
 	pTexture	= Device.Shader._CreateTexture	(RTname);
 	pShaderSet	= Device.Shader.Create			("effects\\screen_set",		RTname);
 	pShaderGray	= Device.Shader.Create			("effects\\screen_gray",	RTname);
