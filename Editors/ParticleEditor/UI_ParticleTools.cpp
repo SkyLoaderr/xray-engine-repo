@@ -55,7 +55,7 @@ bool CParticleTools::OnCreate()
 	// shader test locking
 	AnsiString fn; 
     FS.update_path(fn,_game_data_,PSLIB_FILENAME);
-//	if (EFS.CheckLocking(0,fn.c_str(),false,true)) return false;
+	if (EFS.CheckLocking(0,fn.c_str(),false,true)) return false;
 
     m_bReady = true;
 
