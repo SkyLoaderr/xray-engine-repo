@@ -242,11 +242,6 @@ bool CAI_Stalker::ready_to_kill			()
 	);
 }
 
-bool CAI_Stalker::kill_distance			()
-{
-	return					(true);
-}
-
 bool CAI_Stalker::can_kill_member		()
 {
 	Fvector					position, direction;

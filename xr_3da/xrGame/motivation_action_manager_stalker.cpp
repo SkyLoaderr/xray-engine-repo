@@ -19,10 +19,6 @@
 #include "stalker_death_planner.h"
 #include "stalker_squad_action.h"
 
-#ifdef DEBUG
-EStalkerBehaviour	g_stalker_behaviour = eStalkerBehaviourModerate;//eStalkerBehaviourAggressive;
-#endif
-
 //#define GOAP_DEBUG
 
 using namespace StalkerDecisionSpace;
@@ -38,9 +34,6 @@ CMotivationActionManagerStalker::~CMotivationActionManagerStalker	()
 
 void CMotivationActionManagerStalker::init				()
 {
-#ifdef DEBUG
-	m_stalker_behaviour		= g_stalker_behaviour;
-#endif
 }
 
 #ifdef LOG_ACTION
@@ -89,11 +82,6 @@ void CMotivationActionManagerStalker::update			(u32 time_delta)
 	if ((psAI_Flags.test(aiGOAP) && !m_use_log) || (!psAI_Flags.test(aiGOAP) && m_use_log))
 		set_use_log			(!!psAI_Flags.test(aiGOAP));
 #endif
-#ifdef DEBUG
-	if (m_stalker_behaviour!=g_stalker_behaviour) {
-		CSActionPlanner::m_actuality	= false;
-	}
-#endif
 	inherited::update		();
 	
 #ifdef GOAP_DEBUG
@@ -138,10 +126,6 @@ void CMotivationActionManagerStalker::update			(u32 time_delta)
 			}
 		}
 	}
-#endif
-
-#ifdef DEBUG
-	m_stalker_behaviour		= g_stalker_behaviour;
 #endif
 }
 

@@ -204,7 +204,7 @@ void CStalkerMovementManager::setup_movement_params	()
 	else
 		if ((path_type() != ePathTypePatrolPath) && (path_type() != ePathTypeGamePath)) {
 			Fvector	dest_position = ai().level_graph().vertex_position(CLevelPathManager::dest_vertex_id());
-			if (m_stalker->accessible(dest_position)) {
+			if (!m_stalker->accessible(dest_position)) {
 				Fvector	new_dest_position;
 				u32	level_vertex_id = m_stalker->accessible_nearest(dest_position,new_dest_position);
 				VERIFY	(level_vertex_id == CLevelPathManager::dest_vertex_id());

@@ -17,10 +17,6 @@
 #include "WeaponHUD.h"
 #include "xrServer.h"
 
-#ifdef DEBUG
-extern EStalkerBehaviour	g_stalker_behaviour;
-#endif
-
 // Обработка нажатия клавиш
 void CLevel::IR_OnKeyboardPress(int key)
 {
@@ -188,23 +184,6 @@ void CLevel::IR_OnKeyboardPress(int key)
 //			m_bSynchronization	= false;
 //		}
 		return;
-//#ifdef DEBUG
-//	case DIK_G:
-//		g_stalker_behaviour = eStalkerBehaviourVeryAggressive;
-//		return;
-//	case DIK_H:
-//		g_stalker_behaviour = eStalkerBehaviourAggressive;
-//		return;
-//	case DIK_J:
-//		g_stalker_behaviour = eStalkerBehaviourModerate;
-//		return;
-//	case DIK_K:
-//		g_stalker_behaviour = eStalkerBehaviourAvoiding;
-//		return;
-//	case DIK_L:
-//		g_stalker_behaviour = eStalkerBehaviourRetreat;
-//		break;
-//#endif
 #endif
 	}
 

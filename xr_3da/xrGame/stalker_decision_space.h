@@ -38,7 +38,6 @@ namespace StalkerDecisionSpace {
 		eWorldPropertyItemCanKill,
 		eWorldPropertyFoundAmmo,
 		eWorldPropertyReadyToKill,
-		eWorldPropertyKillDistance,
 		eWorldPropertyEnemyAimed,
 		eWorldPropertySafeToKill,
 		eWorldPropertyFireEnough,
@@ -69,16 +68,7 @@ namespace StalkerDecisionSpace {
 		eWorldOperatorMakeItemKilling,
 		eWorldOperatorFindAmmo,
 
-		eWorldOperatorGetReadyToKillVeryAggressive,
-		eWorldOperatorKillEnemyVeryAggressive,
-		
-		eWorldOperatorGetReadyToKillAggressive,
-		eWorldOperatorKillEnemyAggressive,
 		eWorldOperatorAimEnemy,
-
-		eWorldOperatorGetReadyToKillAvoid,
-		eWorldOperatorKillEnemyAvoid,
-		
 		eWorldOperatorRetreatFromEnemy,
 
 		eWorldOperatorGetReadyToKillModerate,
