@@ -58,6 +58,36 @@ void CAI_ALife::vfListTasks()
 	Msg("Total %d tasks",i);
 }
 
+void CAI_ALife::vfListLocations()
+{
+	TASK_PAIR_IT	it = m_tTaskRegistry.m_tpMap.begin();
+	TASK_PAIR_IT	E  = m_tTaskRegistry.m_tpMap.end();
+	Msg("%s->Listing location owners :",cName());
+	for (int i=0; it != E; it++, i++)
+		Msg("* %4d : [ID=%4d][CID=%1d][TT=][GID=%4d][UPD=%d]",i,(*it).first,(*it).second.tCustomerID,(*it).second.tTaskType,(*it).second.tGraphID,(*it).second.tTimeID);
+	Msg("Total %d location owners",i);
+}
+
+void CAI_ALife::vfListTerrain()
+{
+	TASK_PAIR_IT	it = m_tTaskRegistry.m_tpMap.begin();
+	TASK_PAIR_IT	E  = m_tTaskRegistry.m_tpMap.end();
+	Msg("%s->Listing terrain :",cName());
+	for (int i=0; it != E; it++, i++)
+		Msg("* %4d : [ID=%4d][CID=%1d][TT=][GID=%4d][UPD=%d]",i,(*it).first,(*it).second.tCustomerID,(*it).second.tTaskType,(*it).second.tGraphID,(*it).second.tTimeID);
+	Msg("Total %d terrain",i);
+}
+
+void CAI_ALife::vfListSpawnPoints()
+{
+	TASK_PAIR_IT	it = m_tTaskRegistry.m_tpMap.begin();
+	TASK_PAIR_IT	E  = m_tTaskRegistry.m_tpMap.end();
+	Msg("%s->Listing spawn points :",cName());
+	for (int i=0; it != E; it++, i++)
+		Msg("* %4d : [ID=%4d][CID=%1d][TT=][GID=%4d][UPD=%d]",i,(*it).first,(*it).second.tCustomerID,(*it).second.tTaskType,(*it).second.tGraphID,(*it).second.tTimeID);
+	Msg("Total %d spawn points",i);
+}
+
 void CAI_ALife::vfObjectInfo(_OBJECT_ID	&tObjectID)
 {
 	OBJECT_PAIR_IT	it = m_tObjectRegistry.m_tppMap.find(tObjectID);

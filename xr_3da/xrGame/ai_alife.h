@@ -113,6 +113,9 @@ public:
 			void					vfListObjects			();
 			void					vfListEvents			();
 			void					vfListTasks				();
+			void					vfListLocations			();
+			void					vfListTerrain			();
+			void					vfListSpawnPoints		();
 			void					vfObjectInfo			(_OBJECT_ID	&tObjectID);
 			void					vfEventInfo				(_EVENT_ID &tEventID);
 			void					vfTaskInfo				(_TASK_ID &tTaskID);

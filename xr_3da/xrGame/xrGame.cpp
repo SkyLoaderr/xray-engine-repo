@@ -241,6 +241,57 @@ public:
 	}
 };
 
+class CCC_ALifeListLocations : public CConsoleCommand {
+public:
+	CCC_ALifeListLocations(LPCSTR N) : CConsoleCommand(N)  { bEmptyArgsHandled = true; };
+	virtual void Execute(LPCSTR args) {
+		if (Level().game.type == GAME_SINGLE) {
+			game_sv_Single *tpGame = dynamic_cast<game_sv_Single *>(Level().Server->game);
+			if (tpGame && tpGame->m_tALife.m_bLoaded) {
+				tpGame->m_tALife.vfListLocations();
+			}
+			else
+				Log("!ALife simulation cannot be saved!");
+		}
+		else
+			Log("!Not a single player game!");
+	}
+};
+
+class CCC_ALifeListTerrain : public CConsoleCommand {
+public:
+	CCC_ALifeListTerrain(LPCSTR N) : CConsoleCommand(N)  { bEmptyArgsHandled = true; };
+	virtual void Execute(LPCSTR args) {
+		if (Level().game.type == GAME_SINGLE) {
+			game_sv_Single *tpGame = dynamic_cast<game_sv_Single *>(Level().Server->game);
+			if (tpGame && tpGame->m_tALife.m_bLoaded) {
+				tpGame->m_tALife.vfListTerrain();
+			}
+			else
+				Log("!ALife simulation cannot be saved!");
+		}
+		else
+			Log("!Not a single player game!");
+	}
+};
+
+class CCC_ALifeListSpawns : public CConsoleCommand {
+public:
+	CCC_ALifeListSpawns(LPCSTR N) : CConsoleCommand(N)  { bEmptyArgsHandled = true; };
+	virtual void Execute(LPCSTR args) {
+		if (Level().game.type == GAME_SINGLE) {
+			game_sv_Single *tpGame = dynamic_cast<game_sv_Single *>(Level().Server->game);
+			if (tpGame && tpGame->m_tALife.m_bLoaded) {
+				tpGame->m_tALife.vfListSpawnPoints();
+			}
+			else
+				Log("!ALife simulation cannot be saved!");
+		}
+		else
+			Log("!Not a single player game!");
+	}
+};
+
 class CCC_ALifeObjectInfo : public CConsoleCommand {
 public:
 	CCC_ALifeObjectInfo(LPCSTR N) : CConsoleCommand(N)  { };
@@ -349,16 +400,19 @@ BOOL APIENTRY DllMain( HANDLE hModule,
 		CMD1(CCC_Team,				"g_change_team"			);
 		
 		// alife
-		CMD1(CCC_ALifePath,			"alife_path"			);
-		CMD1(CCC_ALifeSave,			"alife_save"			);
+		CMD1(CCC_ALifePath,			"alife_path"			);		// build path
+		CMD1(CCC_ALifeSave,			"alife_save"			);		// save alife state
 #ifdef ALIFE_SUPPORT_CONSOLE_COMMANDS
-		CMD1(CCC_ALifeListAll,		"alife_la"				);
-		CMD1(CCC_ALifeListObjects,	"alife_lo"				);
-		CMD1(CCC_ALifeListEvents,	"alife_le"				);
-		CMD1(CCC_ALifeListTasks,	"alife_lt"				);
-		CMD1(CCC_ALifeObjectInfo,	"alife_io"				);
-		CMD1(CCC_ALifeEventInfo,	"alife_ie"				);
-		CMD1(CCC_ALifeTaskInfo,		"alife_it"				);
+		CMD1(CCC_ALifeListAll,		"alife_la"				);		// list all (objects, events and tasks)
+		CMD1(CCC_ALifeListObjects,	"alife_lo"				);		// list objects
+		CMD1(CCC_ALifeListEvents,	"alife_le"				);		// list events
+		CMD1(CCC_ALifeListTasks,	"alife_lt"				);		// list tasks
+		CMD1(CCC_ALifeListLocations,"alife_ll"				);		// list location owners
+		CMD1(CCC_ALifeListTerrain,	"alife_lr"				);		// list terrain
+		CMD1(CCC_ALifeListSpawns,	"alife_ls"				);		// list spawnpoints
+		CMD1(CCC_ALifeObjectInfo,	"alife_io"				);		// object info
+		CMD1(CCC_ALifeEventInfo,	"alife_ie"				);		// event info
+		CMD1(CCC_ALifeTaskInfo,		"alife_it"				);		// task info
 #endif
 
 		// hud
