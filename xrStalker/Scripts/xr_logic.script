@@ -177,10 +177,26 @@ function enable_scripts(npc, ini, stype)
 
 		set_generic_schemes(actual_ini, npc, stype)
 
-		local active_section = utils.cfg_get_string(actual_ini, "logic", "active", npc, true, "")
+		-- Этот код не учитывал команды, заключенные в %%
+		--local active_section = utils.cfg_get_string(actual_ini, "logic", "active", npc, true, "")
+		--if active_section == "nil" then
+		--	printf("WARNING: object '%s': active section is 'nil'", npc:name())
+		--end
+
+		-- Распарсить строку выбора активной секции с учетом команд, заключенных в %%
+		local active_section_cond = cfg_get_condlist(actual_ini, "logic", "active", npc)
+		local active_section
+		if not active_section_cond then
+			active_section = nil
+		else
+			-- FIXME
+			active_section = pick_section_from_condlist(level.actor(), npc, active_section_cond.condlist)
+		end
+
 		if active_section == "nil" then
 			printf("WARNING: object '%s': active section is 'nil'", npc:name())
 		end
+
 		activate_by_section(npc, actual_ini, active_section)
 	else
 		--utils.abort("object '%s': unable to find section 'logic'", npc:name())

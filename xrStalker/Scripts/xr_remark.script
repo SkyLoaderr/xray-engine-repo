@@ -18,8 +18,8 @@ function evaluator_need_remark:__init(storage, name) super(nil, name)
 end
 
 function evaluator_need_remark:evaluate()
-	printf("_bp: evaluator_need_remark [%s]: evaluate(): %s",
-		self.object:name(), if_then_else(xr_logic.is_active(self.object, self.st), "true", "false"))
+	--printf("_bp: evaluator_need_remark [%s]: evaluate(): %s",
+	--	self.object:name(), if_then_else(xr_logic.is_active(self.object, self.st), "true", "false"))
   	return xr_logic.is_active(self.object, self.st)
 end
 
@@ -61,6 +61,7 @@ function action_remark_activity:reset_scheme()
 	self.st.signals = {}
 	self.sound_end_signalled = false
 	self.move_end_signalled = false
+	self.action_end_signalled = false
 end	
 
 function action_remark_activity:signal_arrival()
@@ -68,6 +69,11 @@ function action_remark_activity:signal_arrival()
 		self.move_end_signalled = true
 		self.st.signals["move_end"] = true
 		printf("xr_remark: signalling move_end")
+		if not self.action_end_signalled and self.sound_end_signalled then
+			self.action_end_signalled = true
+			self.st.signals["action_end"] = true
+			printf("xr_remark: signalling action_end")
+		end
 	end
 end
 
@@ -111,6 +117,11 @@ function action_remark_activity:step()
 		self.sound_end_signalled = true
 		self.st.signals["sound_end"] = true
 		printf("xr_remark [%s]: signalling sound_end", self.object:name())
+		if not self.action_end_signalled and self.move_end_signalled then
+			self.action_end_signalled = true
+			self.st.signals["action_end"] = true
+			printf("xr_remark: signalling action_end")
+		end
 	end
 
 	-- Try to switch to another scheme:
@@ -245,7 +256,7 @@ end
 function action_remark_activity:execute()
 	action_base.execute(self)
 
-	printf("_bp: action_remark_activity [%s]: execute", self.object:name())
+	--printf("_bp: action_remark_activity [%s]: execute", self.object:name())
 
 	local old_state
 	repeat

@@ -1,23 +1,34 @@
 [logic]
-active = walker1
+active = walker1 %=gar_dm_bandit_demand%
 on_death = death
 on_combat = combat
 on_hit = hit
 
 [death]
-on_info = %+gar_dm_novice_dead =gar_bandits_fight%
+on_info = %+gar_dm_novice_dead =gar_dm_bandits_fight%
 
 [combat]
-on_info = remark@after_fight %=disable_combat_handler =gar_bandits_fight%
+on_info = remark@after_fight %=disable_combat_handler =gar_dm_bandits_fight%
 
 [hit]
-on_info = {!hit_by_actor} remark@after_fight %=gar_bandits_fight%
+on_info = {!hit_by_actor} remark@after_fight %=gar_dm_bandits_fight%
 
 [walker1]
 path_walk = novice_walk
 path_look = novice_look
 on_actor_dist_le_nvis = 12 | remark1
+on_info = {+gar_dm_newbie_no_money} remark@no_money %-gar_dm_newbie_no_money%
 on_info2 = {+gar_dm_bandit1_dead +gar_dm_bandit2_dead +gar_dm_bandit3_dead} remark@after_fight
+reactions = ignore
+
+[remark@no_money]
+no_move = true
+no_rotate = true
+snd = gar_dm_newbie_no_money
+anim = refuse
+on_signal = sound_end | walker1 %=gar_dm_bandit_demand%
+on_info2 = {+gar_dm_bandit1_dead +gar_dm_bandit2_dead +gar_dm_bandit3_dead} remark@after_fight
+on_actor_dist_le_nvis = 12 | remark1
 reactions = ignore
 
 [remark1]
@@ -33,6 +44,7 @@ reactions = ignore
 no_move = true
 no_wpn = true
 on_actor_dist_le_nvis = 7 | remark3
+on_actor_dist_ge = 15 | %=gar_dm_bandits_fight%
 on_info2 = {+gar_dm_bandit1_dead +gar_dm_bandit2_dead +gar_dm_bandit3_dead} remark@after_fight
 reactions = ignore
 
@@ -41,14 +53,15 @@ no_move = false
 no_wpn = true
 snd = help
 arrival_timeout = 1500
-on_signal = move_end | nil %=gar_bandits_fight%
+on_signal = move_end | remark@after_fight %=gar_dm_bandits_fight%
 on_info2 = {+gar_dm_bandit1_dead +gar_dm_bandit2_dead +gar_dm_bandit3_dead} remark@after_fight
 reactions = ignore
 
 [remark@after_fight]
 no_move = false
 no_wpn = true
-;snd = weather
+snd = gar_dm_newbie_thank_you
 arrival_timeout = 20000
+snd_timeout = 20000
 reactions = ignore
-on_signal = move_end | %=actor_friend% nil
+on_signal = action_end | nil %=actor_friend%

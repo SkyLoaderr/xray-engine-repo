@@ -6,50 +6,33 @@ function gar_dm_bandits_fight(actor, npc)
 		return
 	end
 
+	local ignore_actor = distance_between(actor, novice) > 10
+
 	local bandit1 = level.object("gar_dramscene_bandit1")
 	if bandit1 then
 		novice:set_relation(game_object.enemy, bandit1)
 		bandit1:set_relation(game_object.enemy, novice)
-		bandit1:set_relation(game_object.enemy, actor)
+		if not ignore_actor then
+			bandit1:set_relation(game_object.enemy, actor)
+		end
 	end
 
 	local bandit2 = level.object("gar_dramscene_bandit2")
 	if bandit2 then
 		novice:set_relation(game_object.enemy, bandit2)
 		bandit2:set_relation(game_object.enemy, novice)
-		bandit2:set_relation(game_object.enemy, actor)
+		if not ignore_actor then
+			bandit2:set_relation(game_object.enemy, actor)
+		end
 	end
 
 	local bandit3 = level.object("gar_dramscene_bandit3")
 	if bandit3 then
 		novice:set_relation(game_object.enemy, bandit3)
 		bandit3:set_relation(game_object.enemy, novice)
-		bandit3:set_relation(game_object.enemy, actor)
-	end
-end
-
-function gar_dm_bandits_fight_ignore_actor(actor, npc)
-	local novice = level.object("gar_dramscene_novice")
-	if not novice or not novice:alive() then
-		return
-	end
-
-	local bandit1 = level.object("gar_dramscene_bandit1")
-	if bandit1 then
-		novice:set_relation(game_object.enemy, bandit1)
-		bandit1:set_relation(game_object.enemy, novice)
-	end
-
-	local bandit2 = level.object("gar_dramscene_bandit2")
-	if bandit2 then
-		novice:set_relation(game_object.enemy, bandit2)
-		bandit2:set_relation(game_object.enemy, novice)
-	end
-
-	local bandit3 = level.object("gar_dramscene_bandit3")
-	if bandit3 then
-		novice:set_relation(game_object.enemy, bandit3)
-		bandit3:set_relation(game_object.enemy, novice)
+		if not ignore_actor then
+			bandit3:set_relation(game_object.enemy, actor)
+		end
 	end
 end
 
