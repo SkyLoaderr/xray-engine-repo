@@ -1,62 +1,77 @@
-#ifndef __M33__
-#define __M33__
+#ifndef _matrix33H_
+#define _matrix33H_
 
-typedef struct _matrix33 {
+template <class T>
+struct _matrix33{
+public:
+	typedef _matrix33<T>Self;
+	typedef Self&		SelfRef;
+	typedef const Self&	SelfCRef;
+	typedef _vector3<T>	Tvector;
 public:
 	union {
 		struct {						// Direct definition
-            float _11, _12, _13;
-            float _21, _22, _23;
-            float _31, _32, _33;
+            T _11, _12, _13;
+            T _21, _22, _23;
+            T _31, _32, _33;
 		};
     	struct {
-    		Fvector i;
-    		Fvector j;
-    		Fvector k;
+    		Tvector i;
+    		Tvector j;
+    		Tvector k;
         };
 		float m[3][3];					// Array
 	};
-
 	// Class members
-	IC void set_rapid(const Fmatrix &a) {
+	IC SelfRef set_rapid(const _matrix<T> &a) 
+	{
         m[0][0]	=  a.m[0][0];	m[0][1]	=  a.m[0][1];	m[0][2]	= -a.m[0][2];
         m[1][0]	=  a.m[1][0];	m[1][1]	=  a.m[1][1];	m[1][2]	= -a.m[1][2];
         m[2][0]	= -a.m[2][0];	m[2][1]	= -a.m[2][1];	m[2][2]	=  a.m[2][2];
+		return *this;
 	}
-	IC void set(const _matrix33 &a) {
+	IC SelfRef set(SelfCRef a) 
+	{
 		CopyMemory(this,&a,9*sizeof(float));
+		return *this;
 	}
-	IC void set(const Fmatrix &a) {
+	IC SelfRef set(const _matrix<T> &a) 
+	{
     	_11=a._11; _12=a._12; _13=a._13;
     	_21=a._21; _22=a._22; _23=a._23;
     	_31=a._31; _32=a._32; _33=a._33;
+		return *this;
 	}
-	IC void identity(void) {
+	IC SelfRef identity(void) {
     	_11=1.f; _12=0.f; _13=0.f;
     	_21=0.f; _22=1.f; _23=0.f;
     	_31=0.f; _32=0.f; _33=1.f;
+		return *this;
 	}
 
-	IC void transpose(const _matrix33 &matSource)	// faster version of transpose
+	IC SelfRef transpose(SelfCRef matSource)	// faster version of transpose
 	{
 		_11=matSource._11;	_12=matSource._21;	_13=matSource._31;
 		_21=matSource._12;	_22=matSource._22;	_23=matSource._32;
 		_31=matSource._13;	_32=matSource._23;	_33=matSource._33;
+		return *this;
 	}
-	IC void transpose(const Fmatrix &matSource)		// faster version of transpose
+	IC SelfRef transpose(const _matrix<T> &matSource)		// faster version of transpose
 	{
 		_11=matSource._11;	_12=matSource._21;	_13=matSource._31;
 		_21=matSource._12;	_22=matSource._22;	_23=matSource._32;
 		_31=matSource._13;	_32=matSource._23;	_33=matSource._33;
+		return *this;
 	}
-	IC void transpose(void)						// self transpose - slower
+	IC SelfRef transpose(void)						// self transpose - slower
 	{
 		_matrix33 a;
 		CopyMemory(&a,this,9*sizeof(float));					// save matrix
 		transpose(a);
+		return *this;
 	}
 
-    IC void MxM(const _matrix33 &M1, const _matrix33 &M2)
+    IC SelfRef MxM(SelfCRef M1, SelfCRef M2)
     {
       m[0][0] = (   M1.m[0][0] * M2.m[0][0] +
                     M1.m[0][1] * M2.m[1][0] +
@@ -85,9 +100,10 @@ public:
       m[2][2] = (   M1.m[2][0] * M2.m[0][2] +
                     M1.m[2][1] * M2.m[1][2] +
                     M1.m[2][2] * M2.m[2][2]);
-    }
+	  return *this;
+	}
 
-    IC void MTxM(const _matrix33 &M1, const _matrix33 &M2)
+    IC SelfRef MTxM(SelfCRef M1, SelfCRef M2)
     {
       m[0][0] = (   M1.m[0][0] * M2.m[0][0] +
                     M1.m[1][0] * M2.m[1][0] +
@@ -116,20 +132,21 @@ public:
       m[2][2] = (   M1.m[0][2] * M2.m[0][2] +
                     M1.m[1][2] * M2.m[1][2] +
                     M1.m[2][2] * M2.m[2][2]);
+	  return *this;
     }
 
 
 #define ROT(a,i,j,k,l) g=a.m[i][j]; h=a.m[k][l]; a.m[i][j]=g-s*(h+g*tau); a.m[k][l]=h+s*(g-h*tau);
 
-    int IC Meigen(Fvector& dout, _matrix33& a)
+    int IC Meigen(Tvector& dout, SelfRef a)
     {
         int i;
         float tresh,theta,tau,t,sm,s,h,g,c;
         int nrot;
-        Fvector b;
-        Fvector z;
+        Tvector b;
+        Tvector z;
         _matrix33 v;
-        Fvector d;
+        Tvector d;
 
         v.identity();
 
@@ -212,14 +229,15 @@ public:
 //--------------------------------------------------------------------------------
 // other unused function
 //--------------------------------------------------------------------------------
-    IC void McolcMcol(int cr, const _matrix33& M, int c)
+    IC SelfRef McolcMcol(int cr, SelfCRef M, int c)
     {
         m[0][cr] = M.m[0][c];
         m[1][cr] = M.m[1][c];
         m[2][cr] = M.m[2][c];
+		return *this;
     }
 
-    IC void MxMpV(const _matrix33& M1, const _matrix33& M2, const Fvector& T)
+    IC SelfRef MxMpV(SelfCRef M1, SelfCRef M2, const Tvector& T)
     {
         m[0][0] = ( M1.m[0][0] * M2.m[0][0] +
                     M1.m[0][1] * M2.m[1][0] +
@@ -248,9 +266,10 @@ public:
         m[2][2] = ( M1.m[2][0] * M2.m[0][2] +
                     M1.m[2][1] * M2.m[1][2] +
                     M1.m[2][2] * M2.m[2][2] + T.z);
+		return *this;
     }
 
-    IC void Mqinverse(const _matrix33& M)
+    IC SelfRef Mqinverse(SelfCRef M)
     {
         int i,j;
 
@@ -262,9 +281,10 @@ public:
                 int j2 = (j+2)%3;
                 m[i][j] = (M.m[j1][i1]*M.m[j2][i2] - M.m[j1][i2]*M.m[j2][i1]);
           }
+			return *this;
     }
 
-    IC void MxMT(const _matrix33& M1, const _matrix33& M2)
+    IC SelfRef MxMT(SelfCRef M1, SelfCRef M2)
     {
         m[0][0] = ( M1.m[0][0] * M2.m[0][0] +
                     M1.m[0][1] * M2.m[0][1] +
@@ -293,9 +313,10 @@ public:
         m[2][2] = ( M1.m[2][0] * M2.m[2][0] +
                     M1.m[2][1] * M2.m[2][1] +
                     M1.m[2][2] * M2.m[2][2]);
+		return *this;
     }
 
-    IC void MskewV(const Fvector& v)
+    IC SelfRef MskewV(const Tvector& v)
     {
         m[0][0] = m[1][1] = m[2][2] = 0.0;
         m[1][0] = v.z;
@@ -304,52 +325,69 @@ public:
         m[2][0] = -v.y;
         m[1][2] = -v.x;
         m[2][1] = v.x;
+		return *this;
     }
-	IC void sMxVpV(Fvector& R, float s1, const Fvector& V1, const Fvector& V2) const
+	IC SelfRef sMxVpV(Tvector& R, float s1, const Tvector& V1, const Tvector& V2) const
 	{
 		R.x = s1 * (m[0][0] * V1.x + m[0][1] * V1.y + m[0][2] * V1.z) + V2.x;
 		R.y = s1 * (m[1][0] * V1.x + m[1][1] * V1.y + m[1][2] * V1.z) + V2.y;
 		R.z = s1 * (m[2][0] * V1.x + m[2][1] * V1.y + m[2][2] * V1.z) + V2.z;
+		return *this;
 	}
-	IC void MTxV(Fvector& R, const Fvector& V1) const
+	IC SelfRef MTxV(Tvector& R, const Tvector& V1) const
 	{
 		R.x = (m[0][0] * V1.x + m[1][0] * V1.y + m[2][0] * V1.z);
 		R.y = (m[0][1] * V1.x + m[1][1] * V1.y + m[2][1] * V1.z);
 		R.z = (m[0][2] * V1.x + m[1][2] * V1.y + m[2][2] * V1.z);
+		return *this;
 	}
-	IC void MTxVpV(Fvector& R, const Fvector& V1, const Fvector& V2) const
+	IC SelfRef MTxVpV(Tvector& R, const Tvector& V1, const Tvector& V2) const
 	{
 		R.x = (m[0][0] * V1.x + m[1][0] * V1.y + m[2][0] * V1.z + V2.x);
 		R.y = (m[0][1] * V1.x + m[1][1] * V1.y + m[2][1] * V1.z + V2.y);
 		R.z = (m[0][2] * V1.x + m[1][2] * V1.y + m[2][2] * V1.z + V2.z);
+		return *this;
 	}
-	IC void MTxVmV(Fvector& R, const Fvector& V1, const Fvector& V2) const
+	IC SelfRef MTxVmV(Tvector& R, const Tvector& V1, const Tvector& V2) const
 	{
 		R.x = (m[0][0] * V1.x + m[1][0] * V1.y + m[2][0] * V1.z - V2.x);
 		R.y = (m[0][1] * V1.x + m[1][1] * V1.y + m[2][1] * V1.z - V2.y);
 		R.z = (m[0][2] * V1.x + m[1][2] * V1.y + m[2][2] * V1.z - V2.z);
+		return *this;
 	}
-	IC void sMTxV(Fvector& R, float s1, const Fvector& V1) const
+	IC SelfRef sMTxV(Tvector& R, float s1, const Tvector& V1) const
 	{
 		R.x = s1*(m[0][0] * V1.x + m[1][0] * V1.y + m[2][0] * V1.z);
 		R.y = s1*(m[0][1] * V1.x + m[1][1] * V1.y + m[2][1] * V1.z);
 		R.z = s1*(m[0][2] * V1.x + m[1][2] * V1.y + m[2][2] * V1.z);
 	}
-	IC void MxV(Fvector& R, const Fvector& V1) const
+	IC SelfRef MxV(Tvector& R, const Tvector& V1) const
 	{
 		R.x = (m[0][0] * V1.x + m[0][1] * V1.y + m[0][2] * V1.z);
 		R.y = (m[1][0] * V1.x + m[1][1] * V1.y + m[1][2] * V1.z);
 		R.z = (m[2][0] * V1.x + m[2][1] * V1.y + m[2][2] * V1.z);
+		return *this;
 	}
-	IC void MxVpV(Fvector& R, const Fvector& V1, const Fvector& V2) const
+	IC SelfRef MxVpV(Tvector& R, const Tvector& V1, const Tvector& V2) const
 	{
 		R.x = (m[0][0] * V1.x + m[0][1] * V1.y + m[0][2] * V1.z + V2.x);
 		R.y = (m[1][0] * V1.x + m[1][1] * V1.y + m[1][2] * V1.z + V2.y);
 		R.z = (m[2][0] * V1.x + m[2][1] * V1.y + m[2][2] * V1.z + V2.z);
+		return *this;
 	}
+};
 
-//--------------------------------------------------------------------------------
-} Fmatrix33;
+typedef		_matrix33<float>	Fmatrix33;
+typedef		_matrix33<double>	Dmatrix33;
+
+template <class T>
+BOOL	_valid			(const _matrix33<T>& m)		
+{ 
+	return 
+		_valid(m.i)&& 
+		_valid(m.j)&&
+		_valid(m.k);
+}
 
 #endif
 

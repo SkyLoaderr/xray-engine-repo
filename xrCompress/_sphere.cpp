@@ -1,15 +1,6 @@
 #include "stdafx.h"
 #pragma hdrstop
 
-
-/*
-template <class float>
-void _sphere<float>::compute_fast(const _vector_<float> *verts, int count)
-{
-_box3<float>	BB;
-}
-*/
-
 class Miniball;
 class Basis;
 

@@ -63,7 +63,6 @@ public:
 	{
 		return T( PI_MUL_4 / 3 ) * (R*R*R);
 	}
-	void		compute_fast	(const _vector3<T> *verts, int count);
 };
 
 typedef _sphere<float>	Fsphere;

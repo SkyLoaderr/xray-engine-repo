@@ -43,7 +43,7 @@ public:
 
 	IC T			magnitude_sqr ()					{ return x*x + y*y + z*z + w*w;		}
 	IC T			magnitude()							{ return _sqrt(magnitude_sqr());	}
-	IC void			normalize()							{ mul(1/magnitude());				}
+	IC	SelfRef		normalize()							{ return mul(1/magnitude());		}
 };
 
 typedef							_vector4<float>		Fvector4;

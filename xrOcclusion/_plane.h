@@ -12,54 +12,64 @@ public:
 	_vector3<T>	n;
 	T			d;
 public:
-	IC	void	set		(Self &P)
+	IC	SelfRef	set		(Self &P)
 	{
 		n.set	(P.n);
 		d		= P.d;
+		return *this;
 	}
-    IC	 BOOL 	similar (Self &P, T eps_n=EPS, T eps_d=EPS){
+    IC	 BOOL 	similar (Self &P, T eps_n=EPS, T eps_d=EPS)
+	{
     	return (n.similar(P.n,eps_n)&&(_abs(d-P.d)<eps_d));
     }
-	IC	void	build	(const _vector3<T> &v1, const _vector3<T> &v2, const _vector3<T> &v3) {
+	IC	SelfRef	build	(const _vector3<T> &v1, const _vector3<T> &v2, const _vector3<T> &v3) 
+	{
 		_vector3<T> t1,t2;
 		t1.sub(v1,v2);
 		t2.sub(v1,v3);
 		n.crossproduct(t1,t2);
 		n.normalize   ();
 		d = -n.dotproduct(v1);
+		return *this;
 	}
-	IC	void	build(const _vector3<T> &_p, const _vector3<T> &_n)
+	IC	SelfRef	build(const _vector3<T> &_p, const _vector3<T> &_n)
 	{
 		n.normalize	(_n);
 		d			= - n.dotproduct(_p);
+		return *this;
 	}
-	IC	void	build_unit_normal(const _vector3<T> &_p, const _vector3<T> &_n)
+	IC	SelfRef	build_unit_normal(const _vector3<T> &_p, const _vector3<T> &_n)
 	{
 		VERIFY		(fsimilar(_n.magnitude(),1,EPS));
 		n.set		(_n);
 		d			= - n.dotproduct(_p);
+		return *this;
 	}
-	IC	void	project(_vector3<T> &pdest, _vector3<T> &psrc)
+	IC	SelfRef	project(_vector3<T> &pdest, _vector3<T> &psrc)
 	{
 		T dist		= classify(psrc);
 		pdest.mad	(psrc,n,-dist);
+		return *this;
 	}
-	IC	T		classify(const _vector3<T> &v) const	{
+	IC	T		classify(const _vector3<T> &v) const	
+	{
 		return n.dotproduct(v)+d;
 	}
-	IC	void	normalize() {
+	IC	SelfRef	normalize() 
+	{
 		T denom = 1.f / n.magnitude();
 		n.mul(denom);
 		d*=denom;
+		return *this;
 	}
-	IC	T	classify_inv(const _vector3<T> &v) {
+	IC	T	classify_inv(const _vector3<T> &v) 
+	{
 		return -classify(v);
 	}
-
-	IC	T	distance(const _vector3<T> &v)	{
+	IC	T	distance(const _vector3<T> &v)	
+	{
 		return _abs(classify(v));
 	}
-
 	IC BOOL intersectRayDist(const _vector3<T>& P, const _vector3<T>& D, T& dist)
 	{
 		T numer = classify(P);
@@ -71,7 +81,8 @@ public:
 		dist = -(numer / denom);
 		return true;
 	}
-	IC BOOL intersectRayPoint(const _vector3<T>& P, const _vector3<T>& D, _vector3<T>& dest) {
+	IC BOOL intersectRayPoint(const _vector3<T>& P, const _vector3<T>& D, _vector3<T>& dest) 
+	{
 		T numer = classify(P);
 		T denom = n.dotproduct(D);
 	
@@ -81,7 +92,6 @@ public:
 			return true;
 		}
 	}
-
 	IC	BOOL	intersect (
 		const _vector3<T>& u, const _vector3<T>& v,	// segment
 	    _vector3<T>&	isect)                  // intersection point
@@ -117,12 +127,13 @@ public:
 
 		return true;
 	}
-	IC	void	transform(_matrix<T>& M)
+	IC	SelfRef	transform(_matrix<T>& M)
 	{
 		// rotate the normal
 		M.transform_dir(n);
 		// slide the offset
 		d -= M.c.dotproduct(n);
+		return *this;
 	}
 };
 

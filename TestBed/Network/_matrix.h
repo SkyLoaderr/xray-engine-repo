@@ -51,30 +51,35 @@ public:
 	};
 
 	// Class members
-	IC	void	set			(const Self &a) {
+	IC	SelfRef	set			(const Self &a) 
+	{
 		i.set(a.i); _14_=a._14;
 		j.set(a.j); _24_=a._24;
 		k.set(a.k); _34_=a._34;
 		c.set(a.c); _44_=a._44;
+		return *this;
 	}
-	IC	void	set			(const Tvector& R,const Tvector& N,const Tvector& D,const Tvector& C) {
+	IC	SelfRef	set			(const Tvector& R,const Tvector& N,const Tvector& D,const Tvector& C) 
+	{
 		i.set(R); _14_=0;
 		j.set(N); _24_=0;
 		k.set(D); _34_=0;
 		c.set(C); _44_=1;
+		return *this;
 	}
-	IC	void	identity	(void) 
+	IC	SelfRef	identity	(void) 
 	{
 		_11=1; _12=0; _13=0; _14=0;
 		_21=0; _22=1; _23=0; _24=0;
 		_31=0; _32=0; _33=1; _34=0;
 		_41=0; _42=0; _43=0; _44=1;
+		return *this;
 	}
-	IC	void	rotation	(const _quaternion &Q);
-	IC	void	mk_xform	(const _quaternion &Q, const Tvector &V);
+	IC	SelfRef	rotation	(const _quaternion<T> &Q);
+	IC	SelfRef	mk_xform	(const _quaternion<T> &Q, const Tvector &V);
 
 	// Multiply RES = A[4x4]*B[4x4] (WITH projection)
-	IC	void	mul			(const Self &A,const Self &B)
+	IC	SelfRef	mul			(const Self &A,const Self &B)
 	{
 		m[0][0] = A.m[0][0] * B.m[0][0] + A.m[1][0] * B.m[0][1] + A.m[2][0] * B.m[0][2] + A.m[3][0] * B.m[0][3];
 		m[0][1] = A.m[0][1] * B.m[0][0] + A.m[1][1] * B.m[0][1] + A.m[2][1] * B.m[0][2] + A.m[3][1] * B.m[0][3];
@@ -95,10 +100,11 @@ public:
 		m[3][1] = A.m[0][1] * B.m[3][0] + A.m[1][1] * B.m[3][1] + A.m[2][1] * B.m[3][2] + A.m[3][1] * B.m[3][3];
 		m[3][2] = A.m[0][2] * B.m[3][0] + A.m[1][2] * B.m[3][1] + A.m[2][2] * B.m[3][2] + A.m[3][2] * B.m[3][3];
 		m[3][3] = A.m[0][3] * B.m[3][0] + A.m[1][3] * B.m[3][1] + A.m[2][3] * B.m[3][2] + A.m[3][3] * B.m[3][3];
+		return *this;
 	}
 
 	// Multiply RES = A[4x3]*B[4x3] (no projection), faster than ordinary multiply
-	IC	void	mul_43		(const Self &A,const Self &B)
+	IC	SelfRef	mul_43		(const Self &A,const Self &B)
 	{
 		m[0][0] = A.m[0][0] * B.m[0][0] + A.m[1][0] * B.m[0][1] + A.m[2][0] * B.m[0][2];
 		m[0][1] = A.m[0][1] * B.m[0][0] + A.m[1][1] * B.m[0][1] + A.m[2][1] * B.m[0][2];
@@ -119,24 +125,29 @@ public:
 		m[3][1] = A.m[0][1] * B.m[3][0] + A.m[1][1] * B.m[3][1] + A.m[2][1] * B.m[3][2] + A.m[3][1];
 		m[3][2] = A.m[0][2] * B.m[3][0] + A.m[1][2] * B.m[3][1] + A.m[2][2] * B.m[3][2] + A.m[3][2];
 		m[3][3] = 1;
+		return *this;
 	}
-	IC	void	mulA		( const Self &A )	// mul after 
+	IC	SelfRef	mulA		( const Self &A )	// mul after 
 	{
     	Self B; B.set( *this ); 	mul		( A, B );
+		return *this;
     };
-	IC	void	mulB		( const Self &B )	// mul before
+	IC	SelfRef	mulB		( const Self &B )	// mul before
 	{
 		Self A; A.set( *this ); 	mul		( A, B );
+		return *this;
 	};
-	IC	void	mulA_43		( const Self &A )	// mul after (no projection)
+	IC	SelfRef	mulA_43		( const Self &A )	// mul after (no projection)
 	{
     	Self B; B.set( *this ); 	mul_43	( A, B );
+		return *this;
     };
-	IC	void	mulB_43		( const Self &B )	// mul before (no projection)
+	IC	SelfRef	mulB_43		( const Self &B )	// mul before (no projection)
 	{
 		Self A; A.set( *this ); 	mul_43	( A, B );
+		return *this;
 	};
-	IC	void	invert		( const Self &a )
+	IC	SelfRef	invert		( const Self &a )
 	{	
 		// faster than self-invert
 		T fDetInv = ( a._11 * ( a._22 * a._33 - a._23 * a._32 ) -
@@ -165,48 +176,61 @@ public:
 		_42 = -( a._41 * _12 + a._42 * _22 + a._43 * _32 );
 		_43 = -( a._41 * _13 + a._42 * _23 + a._43 * _33 );
 		_44 = 1.0f;
+		return *this;
 	}
 
-	IC	void	invert		()					// slower than invert other matrix
+	IC	SelfRef	invert		()					// slower than invert other matrix
 	{
 		Self a;	a.set(*this);	invert(a);
+		return *this;
 	}
-	IC	void	transpose	(const Self &matSource)	// faster version of transpose
+	IC	SelfRef	transpose	(const Self &matSource)	// faster version of transpose
 	{
 		_11=matSource._11;	_12=matSource._21;	_13=matSource._31;	_14=matSource._41;
 		_21=matSource._12;	_22=matSource._22;	_23=matSource._32;	_24=matSource._42;
 		_31=matSource._13;	_32=matSource._23;	_33=matSource._33;	_34=matSource._43;
 		_41=matSource._14;	_42=matSource._24;	_43=matSource._34;	_44=matSource._44;
+		return *this;
 	}
-	IC	void	transpose	()						// self transpose - slower
+	IC	SelfRef	transpose	()						// self transpose - slower
 	{
 		Self a;	a.set(*this);	transpose(a);
+		return *this;
 	}
-	IC	void	translate	(const Tvector &Loc )		// setup translation matrix
-	{	identity();	c.set	(Loc.x,Loc.y,Loc.z);	}
-	IC	void	translate	(T _x, T _y, T _z ) // setup translation matrix
-	{	identity(); c.set	(_x,_y,_z);				}
-	IC	void	translate_over(const Tvector &Loc )	// modify only translation
-	{	c.set	(Loc.x,Loc.y,Loc.z);				}
-	IC	void	translate_over(T _x, T _y, T _z) // modify only translation
-	{	c.set	(_x,_y,_z);							}
-	IC	void	translate_add(const Tvector &Loc )	// combine translation
-	{	c.add	(Loc);								}
-	IC	void	scale		(T x, T y, T z )	// setup scale matrix
-	{	identity(); m[0][0]=x; m[1][1]=y; m[2][2]=z; }
-	IC	void	scale(const Tvector &v )			// setup scale matrix
-	{	scale(v.x,v.y,v.z); }
+	IC	SelfRef	translate	(const Tvector &Loc )		// setup translation matrix
+	{	
+		identity();	c.set	(Loc.x,Loc.y,Loc.z);	
+		return *this;
+	}
+	IC	SelfRef	translate	(T _x, T _y, T _z ) // setup translation matrix
+	{	
+		identity(); c.set	(_x,_y,_z);				
+		return *this;
+	}
+	IC	SelfRef	translate_over(const Tvector &Loc )	// modify only translation
+	{	
+		c.set	(Loc.x,Loc.y,Loc.z);				
+		return *this;
+	}
+	IC	SelfRef	translate_over(T _x, T _y, T _z) // modify only translation
+	{	
+		c.set	(_x,_y,_z);							
+		return *this;
+	}
+	IC	SelfRef	translate_add(const Tvector &Loc )	// combine translation
+	{	
+		c.add	(Loc);								
+		return *this;
+	}
+	IC	SelfRef	scale		(T x, T y, T z )	// setup scale matrix
+	{	
+		identity(); m[0][0]=x; m[1][1]=y; m[2][2]=z; 
+		return *this;
+	}
+	IC	SelfRef	scale(const Tvector &v )			// setup scale matrix
+	{	return scale(v.x,v.y,v.z); }
 
-	/*
-	IC	void	scale_over(T x, T y, T z )			// modify scaling
-	{   m[0][0]=x;	m[1][1]=y;	m[2][2]=z;	}
-	IC	void	scale_over(const Tvector &v )		// modify scaling
-	{	scale_over(v.x,v.y,v.z); }
-	IC	void	scale_add(const Tvector &v )		// combine scaling
-	{	m[0][0]*=v.x; m[1][1]*=v.y;	m[2][2]*=v.z; }
-	*/
-
-	IC	void	rotateX		(T Angle )				// rotation about X axis
+	IC	SelfRef	rotateX		(T Angle )				// rotation about X axis
 	{
 		T cosa	= _cos(Angle);
 		T sina	= _sin(Angle);
@@ -214,8 +238,9 @@ public:
 		j.set		(0,		cosa,	sina);	_24 = 0;
 		k.set		(0,    -sina,   cosa);	_34 = 0;
 		c.set		(0,		0,		0	);	_44 = 1;
+		return *this;
 	}
-	IC	void	rotateY		(T Angle )				// rotation about Y axis
+	IC	SelfRef	rotateY		(T Angle )				// rotation about Y axis
 	{
 		T cosa	= _cos(Angle);
 		T sina	= _sin(Angle);
@@ -223,8 +248,9 @@ public:
 		j.set		(0,		1,		0	);	_24 = 0;
 		k.set		(sina,  0,		cosa);	_34 = 0;
 		c.set		(0,		0,		0	);	_44 = 1;
+		return *this;
 	}
-	IC	void	rotateZ		(T Angle )				// rotation about Z axis
+	IC	SelfRef	rotateZ		(T Angle )				// rotation about Z axis
 	{
 		T cosa	= _cos(Angle);
 		T sina	= _sin(Angle);
@@ -232,9 +258,10 @@ public:
 		j.set		(-sina,	cosa,	0	);	_24 = 0;
 		k.set		(0,		0,		1	);	_34 = 0;
 		c.set		(0,		0,		0	);	_44 = 1;
+		return *this;
 	}
 
-	IC	void	rotation	( const Tvector &vdir, const Tvector &vnorm )
+	IC	SelfRef	rotation	( const Tvector &vdir, const Tvector &vnorm )
 	{
 		Tvector vright;
 		vright.crossproduct	(vnorm,vdir);
@@ -243,16 +270,17 @@ public:
 		m[1][0] = vnorm.x;	m[1][1] = vnorm.y;	m[1][2] = vnorm.z;	m[1][3]=0;
 		m[2][0] = vdir.x;	m[2][1] = vdir.y;	m[2][2] = vdir.z;	m[2][3]=0;
 		m[3][0] = 0;		m[3][1] = 0;		m[3][2] = 0;		m[3][3]=1;
+		return *this;
 	}
 
-	IC	void	mapXYZ		()	{i.set(1, 0, 0);_14=0;j.set(0, 1, 0);_24=0;k.set(0, 0, 1);_34=0;c.set(0, 0, 0);_44=1;	}
-	IC	void	mapXZY		()	{i.set(1, 0, 0);_14=0;j.set(0, 0, 1);_24=0;k.set(0, 1, 0);_34=0;c.set(0, 0, 0);_44=1;	}
-	IC	void	mapYXZ		()	{i.set(0, 1, 0);_14=0;j.set(1, 0, 0);_24=0;k.set(0, 0, 1);_34=0;c.set(0, 0, 0);_44=1;	}
-	IC	void	mapYZX		()	{i.set(0, 1, 0);_14=0;j.set(0, 0, 1);_24=0;k.set(1, 0, 0);_34=0;c.set(0, 0, 0);_44=1;	}
-	IC	void	mapZXY		()	{i.set(0, 0, 1);_14=0;j.set(1, 0, 0);_24=0;k.set(0, 1, 0);_34=0;c.set(0, 0, 0);_44=1;	}
-	IC	void	mapZYX		()	{i.set(0, 0, 1);_14=0;j.set(0, 1, 0);_24=0;k.set(1, 0, 0);_34=0;c.set(0, 0, 0);_44=1;	}
+	IC	SelfRef	mapXYZ		()	{i.set(1, 0, 0);_14=0;j.set(0, 1, 0);_24=0;k.set(0, 0, 1);_34=0;c.set(0, 0, 0);_44=1;	return *this; }
+	IC	SelfRef	mapXZY		()	{i.set(1, 0, 0);_14=0;j.set(0, 0, 1);_24=0;k.set(0, 1, 0);_34=0;c.set(0, 0, 0);_44=1;	return *this; }
+	IC	SelfRef	mapYXZ		()	{i.set(0, 1, 0);_14=0;j.set(1, 0, 0);_24=0;k.set(0, 0, 1);_34=0;c.set(0, 0, 0);_44=1;	return *this; }
+	IC	SelfRef	mapYZX		()	{i.set(0, 1, 0);_14=0;j.set(0, 0, 1);_24=0;k.set(1, 0, 0);_34=0;c.set(0, 0, 0);_44=1;	return *this; }
+	IC	SelfRef	mapZXY		()	{i.set(0, 0, 1);_14=0;j.set(1, 0, 0);_24=0;k.set(0, 1, 0);_34=0;c.set(0, 0, 0);_44=1;	return *this; }
+	IC	SelfRef	mapZYX		()	{i.set(0, 0, 1);_14=0;j.set(0, 1, 0);_24=0;k.set(1, 0, 0);_34=0;c.set(0, 0, 0);_44=1;	return *this; }
 	
-	IC	void	rotation	( const Tvector &axis, T Angle )
+	IC	SelfRef	rotation	( const Tvector &axis, T Angle )
 	{
 		T Cosine	= _cos(Angle);
 		T Sine		= _sin(Angle);
@@ -269,60 +297,94 @@ public:
 		m [2][2] 	= axis.z * axis.z + ( 1 - axis.z * axis.z) * Cosine;
 		m [2][3] 	= 0; m [3][0] = 0; m [3][1] = 0;
 		m [3][2] 	= 0; m [3][3] = 1;
+		return *this; 
 	}
 
 	// mirror X
-	IC	void	mirrorX ()
-	{	identity();	m[0][0] = -1;	}
-	IC	void	mirrorX_over ()
-	{	m[0][0] = -1;	}
-	IC	void	mirrorX_add ()
-	{	m[0][0] *= -1;	}
+	IC	SelfRef	mirrorX ()
+	{	
+		identity();	m[0][0] = -1;	
+		return *this; 
+	}
+	IC	SelfRef	mirrorX_over ()
+	{	
+		m[0][0] = -1;	
+		return *this; 
+	}
+	IC	SelfRef	mirrorX_add ()
+	{	
+		m[0][0] *= -1;	
+		return *this; 
+	}
 
 	// mirror Y
-	IC	void	mirrorY ()
-	{	identity();	m [1][1] = -1;	}
-	IC	void	mirrorY_over ()
-	{	m [1][1] = -1;	}
-	IC	void	mirrorY_add ()
-	{	m [1][1] *= -1;	}
+	IC	SelfRef	mirrorY ()
+	{	
+		identity();	m [1][1] = -1;	
+		return *this; 
+	}
+	IC	SelfRef	mirrorY_over ()
+	{	
+		m[1][1] = -1;	
+		return *this; 
+	}
+	IC	SelfRef	mirrorY_add ()
+	{	
+		m[1][1] *= -1;	
+		return *this; 
+	}
 
 	// mirror Z
-	IC	void	mirrorZ ()
-	{	identity();		m [2][2] = -1;	}
-	IC	void	mirrorZ_over ()
-	{	m [2][2] = -1;	}
-	IC	void	mirrorZ_add ()
-	{	m [2][2] *= -1;	}
+	IC	SelfRef	mirrorZ ()
+	{	
+		identity();		m [2][2] = -1;	
+		return *this; 
+	}
+	IC	SelfRef	mirrorZ_over ()
+	{	
+		m[2][2] = -1;	
+		return *this; 
+	}
+	IC	SelfRef	mirrorZ_add ()
+	{	
+		m[2][2] *= -1;	
+		return *this; 
+	}
 
-	IC	void	mul( const Self &A, T v )
+	IC	SelfRef	mul( const Self &A, T v )
 	{
 		m[0][0] = A.m [0][0] * v;	m[0][1] = A.m [0][1] * v;	m[0][2] = A.m [0][2] * v;	m[0][3] = A.m [0][3] * v;
 		m[1][0] = A.m [1][0] * v;	m[1][1] = A.m [1][1] * v;	m[1][2] = A.m [1][2] * v;	m[1][3] = A.m [1][3] * v;
 		m[2][0] = A.m [2][0] * v;	m[2][1] = A.m [2][1] * v;	m[2][2] = A.m [2][2] * v;	m[2][3] = A.m [2][3] * v;
 		m[3][0] = A.m [3][0] * v;	m[3][1] = A.m [3][1] * v;	m[3][2] = A.m [3][2] * v;	m[3][3] = A.m [3][3] * v;
+		return *this; 
 	}
-	IC	void	mul( T v )
+	IC	SelfRef	mul( T v )
 	{
 		m[0][0] *= v;		m[0][1] *= v;		m[0][2] *= v;		m[0][3] *= v;
 		m[1][0] *= v;		m[1][1] *= v;		m[1][2] *= v;		m[1][3] *= v;
 		m[2][0] *= v;		m[2][1] *= v;		m[2][2] *= v;		m[2][3] *= v;
 		m[3][0] *= v;		m[3][1] *= v;		m[3][2] *= v;		m[3][3] *= v;
+		return *this; 
 	}
-	IC	void	div( const Self &A, T v ) {
+	IC	SelfRef	div( const Self &A, T v ) 
+	{
 		VERIFY(_abs(v)>0.000001f);
-		mul(A,1.0f/v);
+		return mul(A,1.0f/v);
 	}
-	IC	void	div( T v ) {
+	IC	SelfRef	div( T v ) 
+	{
 		VERIFY(_abs(v)>0.000001f);
-		mul(1.0f/v);
+		return mul(1.0f/v);
 	}
 	// fov
-	IC	void	build_projection		(T fFOV, T fAspect, T fNearPlane, T fFarPlane) {
-		build_projection_HAT			(tanf(fFOV/2.f),fAspect,fNearPlane,fFarPlane);
+	IC	SelfRef	build_projection		(T fFOV, T fAspect, T fNearPlane, T fFarPlane) 
+	{
+		return build_projection_HAT		(tanf(fFOV/2.f),fAspect,fNearPlane,fFarPlane);
 	}
 	// half_fov-angle-tangent
-	IC	void	build_projection_HAT	(T HAT, T fAspect, T fNearPlane, T fFarPlane) {
+	IC	SelfRef	build_projection_HAT	(T HAT, T fAspect, T fNearPlane, T fFarPlane) 
+	{
 		VERIFY( _abs(fFarPlane-fNearPlane) > EPS_S );
 		VERIFY( _abs(HAT) > EPS_S );
 		
@@ -337,15 +399,17 @@ public:
 		_33			= Q;
 		_34			= 1.0f;
 		_43			= -Q*fNearPlane;
+		return *this; 
 	}
-	IC	void	build_projection_ortho	(T w, T h, T zn, T zf)
+	IC	SelfRef	build_projection_ortho	(T w, T h, T zn, T zf)
 	{
 		_11	= T(2)/w;	_12 = 0;		_13 = 0;			_14 = 0;
 		_21 = 0;		_22 = T(2)/h;	_23	= 0;			_24	= 0;
 		_31 = 0;		_32 = 0;		_33	= T(1)/(zf-zn);	_34	= 0;
 		_41 = 0;		_42 = 0;		_43	= zn/(zn-zf);	_44	= T(1);
+		return *this; 
 	}
-	IC	void	build_camera(const Tvector &vFrom, const Tvector &vAt, const Tvector &vWorldUp) 
+	IC	SelfRef	build_camera(const Tvector &vFrom, const Tvector &vAt, const Tvector &vWorldUp) 
 	{
 		// Get the z basis vector3, which points straight ahead. This is the
 		// difference from the eyepoint to the lookat point.
@@ -378,8 +442,9 @@ public:
 		_42 = - vFrom.dotproduct( vUp  );
 		_43 = - vFrom.dotproduct(vView );
 		_44 = 1.0f;
+		return *this; 
 	}
-	IC	void	build_camera_dir(const Tvector &vFrom, const Tvector &vView, const Tvector &vWorldUp) 
+	IC	SelfRef	build_camera_dir(const Tvector &vFrom, const Tvector &vView, const Tvector &vWorldUp) 
 	{
 		// Get the dot product, and calculate the projection of the z basis
 		// vector3 onto the up vector3. The projection is the y basis vector3.
@@ -406,9 +471,10 @@ public:
 		_42 = - vFrom.dotproduct( vUp  );
 		_43 = - vFrom.dotproduct(vView );
 		_44 = 1.0f;
+		return *this; 
 	}
 
-	IC	void	inertion(const Self &mat, T v)
+	IC	SelfRef	inertion(const Self &mat, T v)
 	{
 		T iv = 1.f-v;
 		for (int i=0; i<4; i++)
@@ -418,6 +484,7 @@ public:
 			m[i][2] = m[i][2]*v + mat.m[i][2]*iv;
 			m[i][3] = m[i][3]*v + mat.m[i][3]*iv;
 		}
+		return *this; 
 	}
 	IC	void	transform_tiny		(Tvector &dest, const Tvector &v)	const // preferred to use
 	{
@@ -475,7 +542,7 @@ public:
 		transform_dir	(res,v);
 		v.set			(res);
 	}
-	IC	void	setHPB	(T h, T p, T b)
+	IC	SelfRef	setHPB	(T h, T p, T b)
 	{
         T _ch, _cp, _cb, _sh, _sp, _sb, _cc, _cs, _sc, _ss;
 
@@ -488,11 +555,12 @@ public:
         j.set(_sp*_sc+_cs,	_cp*_cb, 	_ss-_sp*_cc	);	_24_=0;
         k.set(-_cp*_sh,    	_sp,		_cp*_ch		);	_34_=0;
         c.set(0,			0,			0			);  _44_=1;
+		return *this; 
     }
-	IC	void	setXYZ	(T x, T y, T z)	{setHPB(y,x,z);}
-	IC	void	setXYZ	(Tvector& xyz)	{setHPB(xyz.y,xyz.x,xyz.z);}
-	IC	void	setXYZi	(T x, T y, T z)	{setHPB(-y,-x,-z);}
-	IC	void	setXYZi	(Tvector& xyz)	{setHPB(-xyz.y,-xyz.x,-xyz.z);}
+	IC	SelfRef	setXYZ	(T x, T y, T z)	{return setHPB(y,x,z);}
+	IC	SelfRef	setXYZ	(Tvector& xyz)	{return setHPB(xyz.y,xyz.x,xyz.z);}
+	IC	SelfRef	setXYZi	(T x, T y, T z)	{return setHPB(-y,-x,-z);}
+	IC	SelfRef	setXYZi	(Tvector& xyz)	{return setHPB(-xyz.y,-xyz.x,-xyz.z);}
 	//
 	IC	void	getHPB	(T& h, T& p, T& b) const
 	{
@@ -512,35 +580,6 @@ public:
 	IC	void	getXYZ	(Tvector& xyz) const{getXYZ(xyz.x,xyz.y,xyz.z);}
 	IC	void	getXYZi	(T& x, T& y, T& z) const{getHPB(y,x,z);x*=-1.f;y*=-1.f;z*=-1.f;}
 	IC	void	getXYZi	(Tvector& xyz) const{getXYZ(xyz.x,xyz.y,xyz.z);xyz.mul(-1.f);}
-    // remove
-	IC	void	setHPB_old	(T h, T p, T b)
-	{
-		T _sp,_cp;		_sp = _sin(p); _cp = _cos(p);
-		T _sh,_ch;		_sh = _sin(h); _ch = _cos(h);
-		T _sb,_cb;		_sb = _sin(b); _cb = _cos(b);
-
-		i.set(_cb*_ch+_sb*_sp*_sh, 	_sb*_cp,	_sh*_cb-_sb*_sp*_ch);	_14_=0;
-		j.set(-_sb*_ch+_cb*_sp*_sh, _cb*_cp,	-_sb*_sh-_cb*_sp*_ch);	_24_=0;
-		k.set(-_cp*_sh, 			_sp, 		_cp*_ch);				_34_=0;
-		c.set(0,					0,			0);						_44_=1;
-    }
-	IC	void	getHPB_old	(T& h, T& p, T& b){
-        if ( m[2][1] < 1.0f ){
-            if ( m[2][1] > -1.0f ){
-                b 	= -atan2(-m[0][1],m[1][1]);
-                p 	= asin(m[2][1]);
-                h 	= atan2(-m[2][0],m[2][2]);
-            }else{
-                b 	= atan2(m[0][2],m[0][0]);
-                p 	= -PI_DIV_2;
-                h	= 0.0f;
-            }
-        }else{
-            b 	= -atan2(m[0][2],m[0][0]);
-            p 	= PI_DIV_2;
-            h 	= 0.0f;
-        }
-    }
 };
 
 typedef		_matrix<float>	Fmatrix;

@@ -5,12 +5,17 @@ template <class T>
 class _cylinder
 {
 public:
+	typedef T			TYPE;
+	typedef _cylinder<T>Self;
+	typedef Self&		SelfRef;
+	typedef const Self&	SelfCRef;
+public:
 	_vector3<T>	m_center;
 	_vector3<T>	m_direction;
 	T			m_height;
 	T			m_radius;
 public:
-	IC void		invalidate	()			{ m_center.set(0,0,0); m_direction.set(0,0,0); m_height=0; m_radius=0;}
+	IC SelfRef	invalidate	()	{ m_center.set(0,0,0); m_direction.set(0,0,0); m_height=0; m_radius=0; return *this; }
     IC int		intersect	(const _vector3<T>& start, const _vector3<T>& dir, T afT[2])
     {
         T fEpsilon = 1e-12f;
@@ -19,7 +24,7 @@ public:
         _vector3<T> kU, kV, kW = m_direction;
         _vector3<T>::generate_orthonormal_basis(kW,kU,kV);
         _vector3<T> kD; kD.set(kU.dotproduct(dir),kV.dotproduct(dir),kW.dotproduct(dir));
-        T fDLength = kD.normalize();
+        T fDLength = kD.normalize_magn();
         T fInvDLength = 1.0f/fDLength;
         _vector3<T> kDiff; kDiff.sub(start,m_center);
         _vector3<T> kP; kP.set(kU.dotproduct(kDiff),kV.dotproduct(kDiff),kW.dotproduct(kDiff));
