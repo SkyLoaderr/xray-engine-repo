@@ -26,7 +26,7 @@ enum OGF_Chuncks {
 	OGF_TEXTURE				= 2,
 	OGF_VERTICES			= 3,
 	OGF_INDICES				= 4,
-	OGF_P_MAP				= 5,
+	OGF_P_MAP				= 5,	//---------------------- unused
 	OGF_P_LODS				= 6,
 	OGF_VCONTAINER			= 7,
 	OGF_ICONTAINER			= 8,
@@ -69,13 +69,13 @@ struct ECORE_API ogf_desc	{
 };
 
 // OGF_BBOX
-struct ogf_bbox {
+struct ogf_bbox		{
 	Fvector min;
 	Fvector max;
 };
 
 // OGF_BSPHERE
-struct ogf_bsphere {
+struct ogf_bsphere	{
 	Fvector c;
 	float	r;
 };
@@ -91,12 +91,12 @@ struct ogf_header {
 };
 
 // Sliding Window Record
-struct ENGINE_API FSlideWindow {
-	u32			offset;
-	u16			num_tris;
-	u16			num_verts;
+struct ENGINE_API	FSlideWindow		{
+	u32				offset;
+	u16				num_tris;
+	u16				num_verts;
 };
-struct ENGINE_API FSlideWindowItem {
+struct ENGINE_API	FSlideWindowItem	{
 	FSlideWindow*	sw;
 	u32				count;
 	u32				reserved[4];
