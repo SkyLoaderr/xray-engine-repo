@@ -51,7 +51,9 @@ public:
 	bool b_engine_on;
 	bool b_clutch;
 	bool b_starting;
+	bool b_stalling;
 	u32	 m_dwStartTime;
+	u32	 m_dwStallTime;
 	float m_fuel;
 	float m_fuel_expence_per_rotation;
 	struct SWheel 
@@ -302,12 +304,14 @@ private:
 	void Unbreak();
 	void ParseDefinitions				();
 	void CreateSkeleton					();//creates m_pPhysicsShell
-	void Init						();
+	void Init							();
 
 	void PlayExhausts					();
 	void StopExhausts					();
 	void UpdateExhausts					();
 	void ClearExhausts					();
+	void UpdateSound					();
+	void StallSound						();
 	////////////////////////////////////////////////////
 
 	void					OnCameraChange		(int type);

@@ -169,13 +169,8 @@ void	CCar::UpdateCL				( )
 	Fvector		C,V;
 	Center	(C);
 	V.set		(lin_vel);
-	//float		velocity						= V.magnitude();
-	float		scale							= 0.5f+m_current_rpm/m_torque_rpm/2.f; clamp(scale,0.5f,1.f);
-
-	snd_engine.set_position			(C);
-	snd_engine.set_frequency		(scale);
-	snd_engine.set_volume			(car_snd_volume);
-
+	
+	UpdateSound();
 	if(m_owner)
 	{
 		m_pPhysicsShell->InterpolateGlobalTransform(&m_owner->XFORM());
@@ -401,6 +396,7 @@ void CCar::Init()
 	b_engine_on=false;
 	b_clutch   =false;
 	b_starting =false;
+	b_stalling =false;
 	m_root_transform.set(bone_map.find(pKinematics->LL_BoneRoot())->second.element->mXFORM);
 	m_current_transmission_num=0;
 	m_pPhysicsShell->set_DynamicScales(1.f,1.f);
@@ -509,7 +505,7 @@ b_engine_on=true;
 }
 void CCar::StopEngine()
 {
-snd_engine.stop();
+
 StopExhausts();
 NeutralDrive();//set zero speed
 UpdatePower();//set engine friction;
@@ -519,6 +515,8 @@ b_engine_on=false;
 void CCar::Stall()
 {
 	StopEngine();
+	b_stalling=true;
+	m_dwStallTime=Device.dwTimeGlobal;
 }
 void CCar::ReleasePedals()
 {
@@ -806,7 +804,7 @@ void CCar::PhTune(dReal step)
 	if(fwp||bkp)
 	{	
 		UpdatePower();
-		if(!b_starting && m_current_rpm<m_min_rpm)Stall();
+		if(b_engine_on&&!b_starting && m_current_rpm<m_min_rpm)Stall();
 	}
 
 	for (int k=0; k<(int)m_doors_update.size(); k++){
@@ -941,6 +939,32 @@ float CCar::EngineDriveSpeed()
 	}
 	if(drive_speed<dInfinity) return dFabs(drive_speed*m_current_gear_ratio);
 	else					  return 0.f;
+}
+
+void CCar::UpdateSound()
+{
+	//float		velocity						= V.magnitude();
+	float		scale							= 0.5f+m_current_rpm/m_torque_rpm/2.f; clamp(scale,0.5f,1.f);
+
+	snd_engine.set_position			(Position());
+	snd_engine.set_frequency		(scale);
+	snd_engine.set_volume			(car_snd_volume);
+	StallSound();
+}
+
+void CCar::StallSound()
+{
+	
+	if(!b_stalling||b_engine_on) return;
+	u32 time_passed=Device.dwTimeGlobal-m_dwStallTime;
+	if(time_passed>2500) 
+	{
+		snd_engine.stop();
+		b_stalling=false;
+		return;
+	}
+	snd_engine.set_volume(car_snd_volume*1000.f/time_passed);
+	
 }
 /////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////
 CCar::SExhaust::~SExhaust()
