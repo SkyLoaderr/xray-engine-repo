@@ -85,7 +85,8 @@ void CAI_Rat::SelectAnimation(const Fvector& /**_view/**/, const Fvector& /**_mo
 	
 	if (tpGlobalAnimation != m_tpCurrentGlobalAnimation)
 		m_tpCurrentGlobalBlend = tpVisualObject->PlayCycle(m_tpCurrentGlobalAnimation = tpGlobalAnimation);
-
+#ifdef DEBUG
 	if (psAI_Flags.is(aiAnimation))
 		Msg			("%6d %s animation : %s (%f,%f)",Level().timeServer(),"Global",PSkeletonAnimated(Visual())->LL_MotionDefName_dbg(m_tpCurrentGlobalAnimation),m_body.current.yaw,m_body.target.yaw);
+#endif
 }
