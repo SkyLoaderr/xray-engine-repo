@@ -92,6 +92,7 @@ void CHOM::Load			()
 	m_pModel->build		(CL.getV(),CL.getVS(),CL.getT(),CL.getTS());
 	
 	// Debug
+/*
 	HW.pDevice->CreateTexture(occ_dim_0,occ_dim_0,1,0,D3DFMT_X8R8G8B8,D3DPOOL_MANAGED,&m_pDBG);
 	R_ASSERT			(m_pDBG);
 	LPCSTR		RTname	= "$user$hom";
@@ -99,6 +100,7 @@ void CHOM::Load			()
 	pTexture	= Device.Shader._CreateTexture	(RTname);
 	pShader		= Device.Shader.Create			("effects\\screen_set",		RTname);
 	pTexture->surface_set	(m_pDBG);
+*/
 }
 
 void CHOM::Unload		()
