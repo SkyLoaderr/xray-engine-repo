@@ -1,3 +1,4 @@
+--Âçíîñ Äîëãó äëÿ ïğîõîäà íà òåğğèòîğèş
 function has_dolg_deposite(actor, npc)
 	return actor:money() >= 1000
 end
