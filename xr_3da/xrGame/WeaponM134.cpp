@@ -77,15 +77,14 @@ CWeaponM134::CWeaponM134() : CWeapon("M134")
 
 	dwServoMaxFreq	= 10000;
 	dwServoMinFreq	= 22050;
-
+	
 	vLastFP.set		(0,0,0);
 	vLastFD.set		(0,0,0);
 }
 
 CWeaponM134::~CWeaponM134()
 {
-	for (DWORD i=0; i<hFlames.size(); i++)
-		Device.Shader.Delete(hFlames[i]);
+	FlameUNLOAD();
 
 	// sounds
 	pSounds->Delete3D(sndFireStart);
@@ -120,24 +119,45 @@ void CWeaponM134::Load(CInifile* ini, const char* section)
 	iFlameDiv		= ini->ReadINT	(section,"flame_div");
 	fFlameLength	= ini->ReadFLOAT(section,"flame_length");
 	fFlameSize		= ini->ReadFLOAT(section,"flame_size");
+	
+	dwServoMaxFreq	= ini->ReadINT(section,"servo_max_freq");
+	dwServoMinFreq	= ini->ReadINT(section,"servo_min_freq");
+	
+	PKinematics(pVisual)->PlayCycle("idle");
+	PKinematics(pVisual)->LL_GetInstance(iWpnRotBone).set_callback			(RotateCallback_norm,this);
+	
+	PKinematics(m_pHUD->Visual())->PlayCycle("idle");
+	PKinematics(m_pHUD->Visual())->LL_GetInstance(iHUDRotBone).set_callback	(RotateCallback_hud,this);
 
+	FlameLOAD		();
+}
+
+void CWeaponM134::FlameLOAD()
+{
 	// flame textures
-	LPCSTR S		= ini->ReadSTRING(section,"flame");
+	LPCSTR S		= pSettings->ReadSTRING	(cName(),"flame");
 	DWORD scnt		= _GetItemCount(S);
 	char name[255];
 	for (DWORD i=0; i<scnt; i++)
 		hFlames.push_back(Device.Shader.Create("particles\\add",_GetItem(S,i,name),false));
-
-	dwServoMaxFreq	= ini->ReadINT(section,"servo_max_freq");
-	dwServoMinFreq	= ini->ReadINT(section,"servo_min_freq");
-
-	PKinematics(pVisual)->PlayCycle("idle");
-	PKinematics(pVisual)->LL_GetInstance(iWpnRotBone).set_callback			(RotateCallback_norm,this);
-
-	PKinematics(m_pHUD->Visual())->PlayCycle("idle");
-	PKinematics(m_pHUD->Visual())->LL_GetInstance(iHUDRotBone).set_callback	(RotateCallback_hud,this);
 }
-
+void CWeaponM134::FlameUNLOAD()
+{
+	for (DWORD i=0; i<hFlames.size(); i++)
+		Device.Shader.Delete(hFlames[i]);
+	hFlames.clear();
+}
+void CWeaponM134::OnDeviceCreate()
+{
+	REQ_CREATE	();
+	inherited::OnDeviceCreate	();
+	FlameLOAD	();
+}
+void CWeaponM134::OnDeviceDestroy()
+{
+	inherited::OnDeviceDestroy	();
+	FlameUNLOAD	();
+}
 void CWeaponM134::FireStart()
 {
 	if (!IsWorking() && IsValid()){ 

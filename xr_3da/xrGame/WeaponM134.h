@@ -64,8 +64,10 @@ private:
 	void			DrawFlame		(const Fvector& fp, const Fvector& fd, bool bHUDView);
 	void			UpdateFP		(BOOL bHUD);
 	void			UpdateXForm		(BOOL bHUD);
-
 protected:
+	void			FlameLOAD		();
+	void			FlameUNLOAD		();
+	
 	virtual void	FireShotmark	(const Fvector& vDir, const Fvector &vEnd, Collide::ray_query& R);
 public:
 					CWeaponM134		();
@@ -83,6 +85,9 @@ public:
 
 	virtual	void	Update			(float dt, BOOL bHUDView);
 	virtual	void	Render			(BOOL bHUDView);
+	
+	virtual void	OnDeviceCreate	();
+	virtual void	OnDeviceDestroy	();
 };
 
 #endif //__XR_WEAPON_M134_H__
