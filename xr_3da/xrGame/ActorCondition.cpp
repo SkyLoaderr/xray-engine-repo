@@ -10,6 +10,7 @@
 #include "ai_space.h"
 #include "script_callback_ex.h"
 #include "script_game_object.h"
+#include "game_object_space.h"
 
 #define ENEMIES_RADIUS				30.f
 
