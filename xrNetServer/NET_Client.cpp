@@ -207,7 +207,7 @@ BOOL IPureClient::Connect(LPCSTR options)
 		R_CHK					(NET->GetApplicationDesc(dpServerDesc,&dpServerDescSize,0));
 		if( dpServerDesc->pwszSessionName)	{
 			string4096				dpSessionName;
-			R_CHK(WideCharToMultiByte(CP_ACP,0,dpServerDesc->pwszSessionName,-1,dpSessionName,sizeof(NODE.dpSessionName),0,0));
+			R_CHK(WideCharToMultiByte(CP_ACP,0,dpServerDesc->pwszSessionName,-1,dpSessionName,sizeof(dpSessionName),0,0));
 			NODE.dpSessionName	= (char*)(&dpSessionName[0]);
 		}
 		net_Hosts.push_back		(NODE);
@@ -347,7 +347,7 @@ HRESULT	IPureClient::net_Handler(u32 dwMessageType, PVOID pMessage)
 
 				if( pDesc->pwszSessionName)	{
 					string4096			dpSessionName;
-					R_CHK				(WideCharToMultiByte(CP_ACP,0,dpServerDesc->pwszSessionName,-1,dpSessionName,sizeof(NODE.dpSessionName),0,0));
+					R_CHK				(WideCharToMultiByte(CP_ACP,0,dpServerDesc->pwszSessionName,-1,dpSessionName,sizeof(dpSessionName),0,0));
 					NODE.dpSessionName	= (char*)(&dpSessionName[0]);
 				}
 
