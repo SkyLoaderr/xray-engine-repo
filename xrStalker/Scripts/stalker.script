@@ -2,6 +2,6 @@ function init    (obj)
 	xr_motivator.AddToMotivator(obj)
 end
 
-function action_init    (obj)
+function actor_init    (obj)
 	printf("INIT %s", obj:name())
 end
