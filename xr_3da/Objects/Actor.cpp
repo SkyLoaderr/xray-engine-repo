@@ -95,6 +95,8 @@ CActor::~CActor()
 	// sounds 3D
 	for (i=0; i<SND_HIT_COUNT; i++) ::Sound->Delete(sndHit[i]);
 	for (i=0; i<SND_DIE_COUNT; i++) ::Sound->Delete(sndDie[i]);
+
+	if(m_phSkeleton) xr_delete<CPhysicsShell>(m_phSkeleton);
 }
 
 void CActor::Load		(LPCSTR section )
