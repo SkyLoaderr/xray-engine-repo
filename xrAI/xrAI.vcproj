@@ -1535,12 +1535,6 @@
 				<File
 					RelativePath=".\spawn_constructor_space.h">
 				</File>
-				<File
-					RelativePath="xr_spawn_merge.cpp">
-				</File>
-				<File
-					RelativePath="xr_spawn_merge.h">
-				</File>
 				<Filter
 					Name="game_spawn_constructor"
 					Filter="">

@@ -8,7 +8,7 @@
 
 #include "xrGraph.h"
 #include "xr_graph_merge.h"
-#include "xr_spawn_merge.h"
+#include "game_spawn_constructor.h"
 #include "xrCrossTable.h"
 #include "path_test.h"
 #include <mmsystem.h>
@@ -66,7 +66,7 @@ void Startup(LPSTR     lpCmdLine)
 	// Give a LOG-thread a chance to startup
 	InitCommonControls	();
 	Sleep				(150);
-	thread_spawn		(logThread,	"log-update", 0,0);
+	thread_spawn		(logThread,	"log-update", 1024*1024,0);
 	while				(!logWindow)	Sleep		(150);
 	
 	// Load project
@@ -92,7 +92,7 @@ void Startup(LPSTR     lpCmdLine)
 	prjName				[0] = 0;
 	FS.update_path		(prjName,"$game_levels$",name);
 
-	u32				dwStartupTime	= timeGetTime();
+	u32					dwStartupTime	= timeGetTime();
 	
 	FS.update_path		(INI_FILE,"$game_config$","game.ltx");
 	
@@ -126,7 +126,7 @@ void Startup(LPSTR     lpCmdLine)
 						_TrimLeft		(temp1);
 						start			= temp1;
 					}
-					xrMergeSpawns		(name,output,start);
+					CGameSpawnConstructor(name,output,start);
 				}
 				else
 					if (strstr(cmd,"-t")) {
