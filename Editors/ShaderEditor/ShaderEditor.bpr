@@ -21,7 +21,6 @@
       Intermediate\FS.obj Intermediate\HWCaps.obj Intermediate\PrimitivesR.obj 
       Intermediate\SharedPrimitive.obj Intermediate\EditObject.obj 
       Intermediate\Xr_input.obj Intermediate\fcontroller.obj 
-      Intermediate\XR_CustomFont.obj Intermediate\XR_HUDFont.obj 
       Intermediate\c_dinput.obj Intermediate\pure.obj 
       Intermediate\xrImage_Resampler.obj Intermediate\LeftBar.obj 
       Intermediate\LogForm.obj Intermediate\Library.obj 
@@ -64,7 +63,7 @@
       Intermediate\LightAnimLibrary.obj Intermediate\Frustum.obj 
       Intermediate\render.obj Intermediate\SoundManager.obj 
       Intermediate\UI_MainMail.obj Intermediate\xrSkin2W.obj Intermediate\HW.obj 
-      Intermediate\defines.obj"/>
+      Intermediate\defines.obj Intermediate\GameFont.obj"/>
     <RESFILES value="ShaderEditor.res resource.res"/>
     <IDLFILES value=""/>
     <IDLGENFILES value=""/>
@@ -165,8 +164,6 @@
       <FILE FILENAME="editor\EditObject.cpp" FORMNAME="" UNITNAME="EditObject" CONTAINERID="CCompiler" DESIGNCLASS="" LOCALCOMMAND=""/>
       <FILE FILENAME="engine\Xr_input.cpp" FORMNAME="" UNITNAME="Xr_input" CONTAINERID="CCompiler" DESIGNCLASS="" LOCALCOMMAND=""/>
       <FILE FILENAME="engine\fcontroller.cpp" FORMNAME="" UNITNAME="fcontroller" CONTAINERID="CCompiler" DESIGNCLASS="" LOCALCOMMAND=""/>
-      <FILE FILENAME="engine\XR_CustomFont.cpp" FORMNAME="" UNITNAME="XR_CustomFont" CONTAINERID="CCompiler" DESIGNCLASS="" LOCALCOMMAND=""/>
-      <FILE FILENAME="engine\XR_HUDFont.cpp" FORMNAME="" UNITNAME="XR_HUDFont" CONTAINERID="CCompiler" DESIGNCLASS="" LOCALCOMMAND=""/>
       <FILE FILENAME="lib\dinput.lib" FORMNAME="" UNITNAME="dinput" CONTAINERID="LibTool" DESIGNCLASS="" LOCALCOMMAND=""/>
       <FILE FILENAME="lib\c_dinput.cpp" FORMNAME="" UNITNAME="c_dinput" CONTAINERID="CCompiler" DESIGNCLASS="" LOCALCOMMAND=""/>
       <FILE FILENAME="engine\pure.cpp" FORMNAME="" UNITNAME="pure" CONTAINERID="CCompiler" DESIGNCLASS="" LOCALCOMMAND=""/>
@@ -255,6 +252,7 @@
       <FILE FILENAME="Engine\Animations\xrSkin2W.cpp" FORMNAME="" UNITNAME="xrSkin2W" CONTAINERID="CCompiler" DESIGNCLASS="" LOCALCOMMAND=""/>
       <FILE FILENAME="Engine\HW.cpp" FORMNAME="" UNITNAME="HW" CONTAINERID="CCompiler" DESIGNCLASS="" LOCALCOMMAND=""/>
       <FILE FILENAME="Engine\defines.cpp" FORMNAME="" UNITNAME="defines" CONTAINERID="CCompiler" DESIGNCLASS="" LOCALCOMMAND=""/>
+      <FILE FILENAME="Engine\GameFont.cpp" FORMNAME="" UNITNAME="GameFont" CONTAINERID="CCompiler" DESIGNCLASS="" LOCALCOMMAND=""/>
   </FILELIST>
   <BUILDTOOLS>
   </BUILDTOOLS>

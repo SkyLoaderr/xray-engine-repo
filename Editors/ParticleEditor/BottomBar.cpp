@@ -37,7 +37,7 @@ void __fastcall TfraBottomBar::ClickOptionsMenuItem(TObject *Sender)
         else if (mi==miLightScene)  		SET_FLAG(rsLighting,mi->Checked)
         else if (mi==miRenderLinearFilter)	SET_FLAG(rsFilterLinear,mi->Checked)
         else if (mi==miRenderEdgedFaces)	SET_FLAG(rsEdgedFaces,mi->Checked)
-        else if (mi==miRenderHWTransform){	SET_FLAG(rsForceHWTransform,mi->Checked); UI.Resize(); }
+        else if (mi==miRenderHWTransform){	HW.Caps.bForceGPU_SW = !mi->Checked; UI.Resize(); }
         else if (mi==miRealTime)			SET_FLAG(rsRenderRealTime,mi->Checked)
     }
     UI.RedrawScene();
@@ -61,7 +61,7 @@ void __fastcall TfraBottomBar::fsStorageRestorePlacement(TObject *Sender)
 	if (miRenderShadeFlat->Checked)			Device.dwShadeMode=D3DSHADE_FLAT;
     else if (miRenderShadeGouraud->Checked)	Device.dwShadeMode=D3DSHADE_GOURAUD;
     // hw transform
-    SET_FLAG(rsForceHWTransform,miRenderHWTransform->Checked);
+    HW.Caps.bForceGPU_SW 		= !miRenderHWTransform->Checked;
     // other render
     SET_FLAG(rsRenderTextures,	miRenderWithTextures->Checked);
     SET_FLAG(rsLighting,		miLightScene->Checked);
