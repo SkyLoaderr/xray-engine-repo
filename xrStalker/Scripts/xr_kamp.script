@@ -99,7 +99,7 @@ function action_go_position:execute ()
 		local used = {}
 		local i = 1
 		for key,value in xr_motivator.storage do 
-			if value.kamp.center_point == self.a.center_point and
+			if value.kamp ~= nil and value.kamp.center_point == self.a.center_point and
 			    value.kamp.enabled == true then
 				used[i] = value.kamp.pos_id
 				i = i + 1
