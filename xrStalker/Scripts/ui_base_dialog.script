@@ -95,7 +95,7 @@ function base_dialog:InitControls(caption)
 										 self.main_rect.y, 
 										 self.main_rect.width, 
 										 self.main_rect.height)
-	self.main_frame:InitLeftTop("ui\\ui_frame_over_lt", 20, 45)
+	self.main_frame:InitLeftTop("ui\\ui_frame_over_lt", self.lt_frame_indent.x, self.lt_frame_indent.y)
 	self:AttachChild(self.main_frame)
 	
 	-- CAPTION --
