@@ -256,7 +256,7 @@ public:
 
 	IC		void vfAddIfInsideNode						()
 			{
-				if (!getAI().bfInsideNode(m_tpCurrentNode,m_tStartPosition))
+				if (!getAI().bfInsideNode(m_tpCurrentNode,m_tStartPosition) && (_abs(m_tStartPosition.y - getAI().ffGetY(*m_tpCurrentNode,m_tStartPosition.x,m_tStartPosition.z) < .3f)))
 					m_fResult = m_fDistance;
 			}
 
