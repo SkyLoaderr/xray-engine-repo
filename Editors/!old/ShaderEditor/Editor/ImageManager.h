@@ -41,6 +41,8 @@ public:
     void 		RefreshTextures		(AStringVec* modif);
 
     AnsiString	UpdateFileName		(AnsiString& fn);
+
+    void		WriteAssociation	(CInifile* ltx_ini, LPCSTR base_name, const STextureParams& fmt);
 };
 
 extern CImageManager ImageLib;

@@ -305,15 +305,7 @@ void CImageManager::SynchronizeTextures(bool sync_thm, bool sync_game, bool bFor
                     if (sync_list) 		sync_list->push_back(base_name);
                     if (modif_map) 		modif_map->insert(*it);
                     // save to assoc ltx
-                    if (FMT.flags.is_any(STextureParams::flDiffuseDetail|STextureParams::flBumpDetail)){
-                        AnsiString det;                          
-                        det.sprintf("%s, %f, %d, %d",	FMT.detail_name, FMT.detail_scale,
-                                                        FMT.flags.is(STextureParams::flDiffuseDetail),
-                                                        FMT.flags.is(STextureParams::flBumpDetail));
-                        ltx_ini->w_string("association", base_name.c_str(), det.c_str());
-                    }else{
-                        ltx_ini->remove_line("association", base_name.c_str());
-                    }
+                    WriteAssociation	(ltx_ini,base_name.c_str(),FMT);
                 }else{
 					bFailed				= TRUE;
                 }
@@ -333,6 +325,29 @@ void CImageManager::SynchronizeTextures(bool sync_thm, bool sync_game, bool bFor
     if (bProgress) UI->ProgressEnd();
     // lock rescanning
     FS.unlock_rescan	();
+}
+
+void CImageManager::WriteAssociation(CInifile* ltx_ini, LPCSTR base_name, const STextureParams& fmt)
+{
+    // save to assoc ltx
+    if (fmt.flags.is_any(STextureParams::flDiffuseDetail|STextureParams::flBumpDetail)){
+        AnsiString det;                          
+        det.sprintf		("%s, %f, %d, %d",	fmt.detail_name, fmt.detail_scale,
+                                            fmt.flags.is(STextureParams::flDiffuseDetail),
+                                            fmt.flags.is(STextureParams::flBumpDetail));
+        ltx_ini->w_string("association", base_name, det.c_str());
+    }else{
+        ltx_ini->remove_line("association", base_name);
+    }                                                  
+    AnsiString 			bm;
+    AnsiString 			det;
+    switch(fmt.bump_mode){
+    case STextureParams::tbmAutogen: 	bm="autogen"; 	det=fmt.bump_virtual_height; 	break;
+    case STextureParams::tbmNone: 		bm="none"; 		det=""; 						break;
+    case STextureParams::tbmUse: 		bm="use"; 		det=*fmt.bump_name;				break;
+    default: NODEFAULT;
+    }
+    ltx_ini->w_string	("specification", base_name, 	AnsiString().sprintf("bump_mode[%s%s]",bm.c_str(),det.c_str()).c_str());
 }
 
 void CImageManager::SynchronizeTexture(LPCSTR tex_name, int age)
@@ -648,6 +663,7 @@ BOOL CImageManager::RemoveTexture(LPCSTR fname, EItemType type)
             FS.update_path		(ltx_nm,_game_textures_,"textures.ltx");
             CInifile* ltx_ini 	= xr_new<CInifile>(ltx_nm.c_str(), FALSE, TRUE, TRUE);
             ltx_ini->remove_line("association", base_name.c_str());
+            ltx_ini->remove_line("specification", base_name.c_str());
             xr_delete			(ltx_ini);
             return TRUE;
         }

@@ -251,16 +251,8 @@ void __fastcall TfrmImageLib::ebRebuildAssociationClick(TObject *Sender)
     for (;it!=_E; it++){
         ETextureThumbnail* m_Thm = xr_new<ETextureThumbnail>(it->first.c_str());
 	    UI->ProgressInc(it->first.c_str());
-        if (m_Thm->Valid()&&(m_Thm->_Format().flags.is_any(STextureParams::flDiffuseDetail|STextureParams::flBumpDetail))){
-        	AnsiString det;
-            string128 src;
-            det.sprintf("%s, %f, %d, %d",	m_Thm->_Format().detail_name, m_Thm->_Format().detail_scale,
-                                            m_Thm->_Format().flags.is(STextureParams::flDiffuseDetail),
-                                            m_Thm->_Format().flags.is(STextureParams::flBumpDetail));
-            strcpy(src,it->first.c_str());
-	    	if (strext(src)) *strext(src)=0;
-	    	ini->w_string("association", src, det.c_str());
-        }
+        AnsiString base_name= ChangeFileExt(it->first,"");
+        ImageLib.WriteAssociation	(ini,base_name.c_str(),m_Thm->_Format());
         xr_delete(m_Thm);
 		if (UI->NeedAbort()){ bRes=false; break; }
     }

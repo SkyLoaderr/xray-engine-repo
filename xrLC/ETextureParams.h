@@ -28,7 +28,7 @@ struct STextureParams{
 	};
     enum ETBumpMode{
     	tbmAutogen	= 0,
-        tbmFlat,
+        tbmNone,
         tbmUse,
 		tbmForceU32	= u32(-1)
     };
