@@ -203,7 +203,7 @@ void CRender::LoadSectors(CStream* fs)
 {
 	// allocate memory for portals
 	DWORD size = fs->FindChunk(fsL_PORTALS); 
-	R_ASSERT(size && 0==size%sizeof(b_portal));
+	R_ASSERT(0==size%sizeof(b_portal));
 	DWORD count = size/sizeof(b_portal);
 	Portals.resize(count);
 

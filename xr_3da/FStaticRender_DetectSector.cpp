@@ -8,17 +8,20 @@ CSector* CRender::detectSector(Fvector& P)
 	Fvector dir; dir.set(0,-1,0);
 
 	// Portals model
-	int id1 = -1;
-	float	range1 = 100.f;
-	XRC.ray_query	(rmPortals,P,dir,range1);
-	if (XRC.r_count()) {
-		CDB::RESULT *RP1 = XRC.r_begin();
-		id1 = RP1->id; range1 = RP1->range; 
+	int		id1		= -1;
+	float	range1	= 100.f;
+	if (rmPortals)	
+	{
+		XRC.ray_query	(rmPortals,P,dir,range1);
+		if (XRC.r_count()) {
+			CDB::RESULT *RP1 = XRC.r_begin();
+			id1 = RP1->id; range1 = RP1->range; 
+		}
 	}
 
 	// Geometry model
-	int id2 = -1;
-	float	range2 = range1;
+	int		id2		= -1;
+	float	range2	= range1;
 	XRC.ray_query	(pCreator->ObjectSpace.GetStaticModel(),P,dir,range2);
 	if (XRC.r_count()) {
 		CDB::RESULT *RP2 = XRC.r_begin();
