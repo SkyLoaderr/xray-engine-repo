@@ -25,10 +25,10 @@ struct OGF_Vertex
 	Fvector				N;		// normal
 	Fvector				T;		// tangent
 	Fvector				B;		// binormal
-	u32				Color;
-	svector<Fvector2,4>	UV;
+	u32					Color;
+	svector<Fvector2,2>	UV;
 
-	BOOL		similar	(OGF* p, OGF_Vertex&	other);
+	BOOL				similar	(OGF* p, OGF_Vertex&	other);
 };
 typedef xr_vector<OGF_Vertex>	vecOGF_V;
 typedef vecOGF_V::iterator		itOGF_V;
