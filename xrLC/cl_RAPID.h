@@ -108,8 +108,6 @@ namespace RAPID {
 	// X-Ray Collision class
 	//------------------------------------------------------------------------------
 	class ENGINE_API XRCollide{
-		bool		Intersect_RayTri	(const ray&,Fvector**,raypick_info& rp_inf);
-		bool		Intersect_RayTri	(const ray&,Fvector*,raypick_info& rp_inf);
 		bool		Intersect_BBoxTri	(const bbox&,Fvector**);
 		
 		// internal use
