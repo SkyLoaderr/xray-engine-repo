@@ -101,6 +101,7 @@ void CRestrictedObject::remove_border		() const
 	m_removed					= true;
 	if (m_applied)
 		Level().space_restriction_manager().remove_border(ID());
+	m_applied					= false;
 }
 
 void CRestrictedObject::remove_all_restrictions	()
