@@ -708,6 +708,7 @@ void CObjectHandler::set_goal	(MonsterSpace::EObjectAction object_action, CGameO
 
 void CObjectHandler::update(u32 time_delta)
 {
+#pragma todo("Oles to Dima: remove this, as fast as possible - serious performance slowdown")
 	if (initialized()) {
 		CInventoryItem			*item = m_object->inventory().get_object_by_id((ALife::_OBJECT_ID)current_action_object_id());
 		u32						action_id = current_action_state_id();
