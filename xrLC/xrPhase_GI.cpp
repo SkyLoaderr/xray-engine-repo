@@ -40,6 +40,7 @@ public:
 				dst				= src;
 				dst.type		= LT_SECONDARY;
 				task_it			++;
+				thProgress		= float(task_it)/float(task->size());
 			}
 			task_cs.Leave		();
 
