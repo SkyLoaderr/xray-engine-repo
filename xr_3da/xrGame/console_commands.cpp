@@ -1847,7 +1847,7 @@ void CCC_RegisterCommands()
 	CMD1(CCC_Vote_No,		"cl_voteno"				);
 
 	CMD4(CCC_SvControlHit,	"net_sv_control_hit",	&net_sv_control_hit,	0, 1)	;
-	CMD4(CCC_SvControlHit,	"dbg_show_ani_info",	&g_ShowAnimationInfo,	0, 1)	;
+	CMD4(CCC_Integer,		"dbg_show_ani_info",	&g_ShowAnimationInfo,	0, 1)	;
 	CMD1(CCC_MainMenu,		"main_menu"				);
 
 	CMD1(CCC_StartTimeSingle,	"start_time_single");
