@@ -157,7 +157,22 @@ void CBuild::PreOptimize()
 	mem_Compact			();
 	clMsg("%d vertices removed. (%d left)",Vcount-g_vertices.size(),g_vertices.size());
 	clMsg("%d faces removed. (%d left)",   Fcount-g_faces.size(),   g_faces.size());
+	
+	// -------------------------------------------------------------
+	int		err_count	=0 ;
+	for (int _1=0; _1<g_faces.size(); _1++)
+	{
+		for (int _2=0; _2<g_faces.size(); _2++)
+		{
+			if (_1==_2)		continue;
+			if (FaceEqual(g_faces[_1],g_faces[_2]))	{
+				err_count	++;
+			}
+		}
+	}
+	clMsg		("! duplicate/same faces found:%d",err_count`);
 
+	// -------------------------------------------------------------
 	if (b_noise)	{
 		CRandom		rnd		(0x12071980);
 		Fvector		dir;
