@@ -33,7 +33,7 @@ namespace RAPID {
 				XR_mR.sMxVpV(bb_inf.p[2], XR_ms, *(model1->tris[bb_inf.id].verts[2]), XR_mT);
 
 				Fvector*	PTR[3] = { bb_inf.p+0, bb_inf.p+1, bb_inf.p+2 };
-				if (Intersect_BBoxTri(*bb,PTR))
+				if (TestBBoxTri(*bb,PTR,bbox_flags&BBOX_CULL))
 					add_bboxcollide(bb_inf);
 			}else
 				add_bboxcollide(bb_inf);

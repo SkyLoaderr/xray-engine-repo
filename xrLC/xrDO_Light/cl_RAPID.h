@@ -109,8 +109,6 @@ namespace RAPID {
 	//------------------------------------------------------------------------------
 	class ENGINE_API XRCollide
 	{
-		bool		Intersect_BBoxTri	(const bbox&,Fvector**);
-		
 		// internal use
 		Fmatrix33   XR_mR;
 		Fvector     XR_mT;
