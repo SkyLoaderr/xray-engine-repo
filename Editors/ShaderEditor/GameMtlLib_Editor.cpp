@@ -172,7 +172,7 @@ void __fastcall SGameMtlPair::OnParentClick(PropValue* sender, bool& bModif)
         	if (MP){
                 int m0, m1;
                 m_Owner->NameToMtlPair	(MP,m0,m1);
-                SGameMtlPair* p	= m_Owner->GetMaterialPair(m0,m1);
+                SGameMtlPair* p	= m_Owner->GetMaterialPair(m0,m1); VERIFY(p);
                 if (!SetParent	(p->GetID())){
                 	ELog.DlgMsg(mtError,"Pair can't inherit from self.");
                 }else{
@@ -189,6 +189,46 @@ void __fastcall SGameMtlPair::OnParentClick(PropValue* sender, bool& bModif)
 	}
 }
 
+void __fastcall SGameMtlPair::OnCommandClick(PropValue* sender, bool& bModif)
+{
+    bModif = false;
+	ButtonValue* V = dynamic_cast<ButtonValue*>(sender); R_ASSERT(V);
+    switch (V->btn_num){
+    case 0:{
+        LPCSTR MP=0;
+	    AStringVec items;
+        for (GameMtlIt m0_it=m_Owner->FirstMaterial(); m0_it!=m_Owner->LastMaterial(); m0_it++){
+            SGameMtl* M0 		= *m0_it;
+            for (GameMtlIt m1_it=m_Owner->FirstMaterial(); m1_it!=m_Owner->LastMaterial(); m1_it++){
+                SGameMtl* M1 	= *m1_it;
+                GameMtlPairIt p_it = GMLib.GetMaterialPairIt(M0->GetID(),M1->GetID());
+                if (p_it!=GMLib.LastMaterialPair())
+		        	items.push_back	(GMLib.MtlPairToName(M0->GetID(),M1->GetID()));
+            }
+        }
+	    SGameMtlPair* P	= m_Owner->GetMaterialPair(ID_parent);
+        AnsiString nm	= P?m_Owner->MtlPairToName(P->GetMtl0(),P->GetMtl1()):NONE_CAPTION;
+        if (TfrmChoseItem::SelectItem(TfrmChoseItem::smCustom,MP,128,0,false,&items)){
+        	if (MP){
+                AStringVec lst;
+                _SequenceToList(lst,MP);
+                for (AStringIt it=lst.begin(); it!=lst.end(); it++){
+                    int m0, m1;
+                    m_Owner->NameToMtlPair	(it->c_str(),m0,m1);
+                    SGameMtlPair* p	= m_Owner->GetMaterialPair(m0,m1); VERIFY(p);
+                    if (!p->SetParent(GetID())){
+                        ELog.DlgMsg(mtError,"Pair can't inherit from self.");
+                    }else{
+                        bModif 		= true;
+                    }
+                }
+                if (bModif)		UI.Command(COMMAND_UPDATE_PROPERTIES);
+            }
+        }
+    }break;
+	}
+}
+
 void SGameMtlPair::FillProp(PropItemVec& items)
 {
 	TOnChange OnChange	= 0;
@@ -199,7 +239,10 @@ void SGameMtlPair::FillProp(PropItemVec& items)
         show_CB		    = PropItem::flShowCB;
 	    P				= m_Owner->GetMaterialPair(ID_parent);
     }
-    ButtonValue* B		= PHelper.CreateButton(items,		"Parent", 			P?m_Owner->MtlPairToName(P->GetMtl0(),P->GetMtl1()):NONE_CAPTION,0);
+    ButtonValue* B;
+    B					= PHelper.CreateButton(items,		"Command",			"Set As Parent To...",0);
+    B->OnBtnClickEvent	= OnCommandClick;
+    B					= PHelper.CreateButton(items,		"Parent", 			P?m_Owner->MtlPairToName(P->GetMtl0(),P->GetMtl1()):NONE_CAPTION,0);
     B->OnBtnClickEvent	= OnParentClick;
     
 	propBreakingSounds	= PHelper.CreateASoundSrc	(items,	"Breaking Sounds",	&BreakingSounds);

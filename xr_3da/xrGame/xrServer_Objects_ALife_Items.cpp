@@ -198,10 +198,12 @@ void CSE_ALifeItemTorch::FillProp			(LPCSTR pref, PropItemVec& values)
 	inherited::FillProp			(pref,	 values);
 	PHelper.CreateColor			(values, FHelper.PrepareKey(pref,s_name,"Color"),			&color);
 	PHelper.CreateLightAnim		(values, FHelper.PrepareKey(pref,s_name,"Color animator"),	animator,			sizeof(animator));
-	PHelper.CreateTexture		(values, FHelper.PrepareKey(pref,s_name,"Texture"),			spot_texture,		sizeof(spot_texture));
+	PHelper.CreateTexture		(values, FHelper.PrepareKey(pref,s_name,"Spot texture"),	spot_texture,		sizeof(spot_texture));
 	PHelper.CreateFloat			(values, FHelper.PrepareKey(pref,s_name,"Range"),			&spot_range,		0.1f, 1000.f);
 	PHelper.CreateAngle			(values, FHelper.PrepareKey(pref,s_name,"Angle"),			&spot_cone_angle,	0, PI_DIV_2);
     PHelper.CreateFloat			(values, FHelper.PrepareKey(pref,s_name,"Brightness"),		&spot_brightness,	0.1f, 5.f);
+	PHelper.CreateTexture		(values, FHelper.PrepareKey(pref,s_name,"Glow texture"),	glow_texture,		sizeof(spot_texture));
+	PHelper.CreateFloat			(values, FHelper.PrepareKey(pref,s_name,"Glow radius"),		&glow_radius,		0.1f, 1000.f);
 }
 #endif
 

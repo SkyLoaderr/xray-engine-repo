@@ -361,3 +361,4 @@ void __fastcall TfraLeftBar::MenuItem7Click(TObject *Sender)
 }
 //---------------------------------------------------------------------------
 
+

@@ -83,7 +83,7 @@ __published:	// IDE-managed Components
 	TExtBtn *ExtBtn1;
 	TExtBtn *ebMaterialPairClone;
 	TExtBtn *ExtBtn6;
-	TExtBtn *ebMaterialPairCreate;
+	TExtBtn *ebMaterialPairSetParent;
 	TElTabSheet *tsSoundEnv;
 	TBevel *Bevel5;
 	TPanel *Panel5;
