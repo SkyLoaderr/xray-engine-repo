@@ -19,7 +19,7 @@ float CAI_Space::ffFindMinimalPath(u32 dwStartNode, u32 dwGoalNode, vector<u32> 
 	float				fDistance;
 	tData.dwFinishNode	= dwGoalNode;
 	tData.tpAI_Space	= this;
-	m_tpGraphPath.vfFindOptimalPath(m_tpHeap,m_tpIndexes,m_dwAStarStaticCounter,tData,dwStartNode,dwGoalNode,1000.f,fDistance,tpaNodes,false);
+	m_tpGraphPath.vfFindOptimalPath(m_tpHeap,m_tpIndexes,m_dwAStarStaticCounter,tData,dwStartNode,dwGoalNode,40000.f,fDistance,tpaNodes,false);
 	return(fDistance);
 }
 

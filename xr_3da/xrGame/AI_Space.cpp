@@ -122,26 +122,28 @@ void CAI_Space::Load(LPCSTR name)
 //	Msg("A star time %11I64u",t2x);
 }
 
+#define NORMALIZE_VECTOR(t) t.x /= 10.f, t.x -= 80.f, t.y /= 10.f, t.y += 1.f, t.z /= 10.f, t.z -= 10.f;
 void CAI_Space::Render()
 {
-	if (!bDebug)	return;
-
 	if (m_tpaGraph)
 	{
 		CGameFont* F		= ((CHUDManager*)Level().HUD())->pFontDI;
 		for (int i=0; i<(int)m_tGraphHeader.dwVertexCount; i++) {
 			Fvector t1 = m_tpaGraph[i].tPoint;
 			t1.y += .6f;
-			Device.Primitive.dbg_DrawAABB(t1,.5f,.5f,.5f,D3DCOLOR_XRGB(0,0,255));
+			NORMALIZE_VECTOR(t1);
+			Device.Primitive.dbg_DrawAABB(t1,.05f,.05f,.05f,D3DCOLOR_XRGB(0,0,255));
 			for (int j=0; j<(int)m_tpaGraph[i].dwNeighbourCount; j++) {
 				Fvector t2 = m_tpaGraph[((AI::SGraphEdge *)((BYTE *)m_tpaGraph + m_tpaGraph[i].dwEdgeOffset) + j)->dwVertexNumber].tPoint;
 				t2.y += .6f;
+				NORMALIZE_VECTOR(t2);
 				Device.Primitive.dbg_DrawLINE(Fidentity,t1,t2,D3DCOLOR_XRGB(0,255,0));
 			}
 			Fvector         T;
 			Fvector4        S;
 			T.set			(t1);
-			T.y+= 1.5f;
+			//T.y+= 1.5f;
+			T.y+= 1.5f/10.f;
 			Device.mFullTransform.transform (S,T);
 			F->SetSize	(0.05f/sqrtf(_abs(S.w)));
 			F->SetColor(0xffffffff);
@@ -150,16 +152,27 @@ void CAI_Space::Render()
 		if (m_tpaNodes.size()) {
 			Fvector t1 = m_tpaGraph[m_tpaNodes[0]].tPoint;
 			t1.y += .6f;
-			Device.Primitive.dbg_DrawAABB(t1,.5f,.5f,.5f,D3DCOLOR_XRGB(0,0,255));
+			NORMALIZE_VECTOR(t1);
+			Device.Primitive.dbg_DrawAABB(t1,.05f,.05f,.05f,D3DCOLOR_XRGB(0,0,255));
 			for (int i=1; i<(int)m_tpaNodes.size(); i++) {
 				Fvector t2 = m_tpaGraph[m_tpaNodes[i]].tPoint;
 				t2.y += .6f;
-				Device.Primitive.dbg_DrawAABB(t2,.5f,.5f,.5f,D3DCOLOR_XRGB(0,0,255));
+				NORMALIZE_VECTOR(t2);
+				Device.Primitive.dbg_DrawAABB(t2,.05f,.05f,.05f,D3DCOLOR_XRGB(0,0,255));
 				Device.Primitive.dbg_DrawLINE(Fidentity,t1,t2,D3DCOLOR_XRGB(255,0,0));
 				t1 = t2;
 			}
+			i=1;
+			for (; m_tpIndexes[m_tpHeap[i].iIndex].dwTime == m_dwAStarStaticCounter; i++) {
+				Fvector t2 = m_tpaGraph[m_tpHeap[i].iIndex].tPoint;
+				t2.y += .6f;
+				NORMALIZE_VECTOR(t2);
+				Device.Primitive.dbg_DrawAABB(t2,.05f,.05f,.05f,D3DCOLOR_XRGB(255,0,0));
+			}
 		}
 	}
+
+	if (!bDebug)	return;
 
 	if (0==vfs)						return;
 	if (0==sh_debug)				return;
