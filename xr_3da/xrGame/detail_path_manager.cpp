@@ -34,7 +34,11 @@ void CDetailPathManager::Init			()
 
 bool CDetailPathManager::valid			() const
 {
-	return					(!m_path.empty() && m_path[0].position.similar(m_start_position) && m_path.back().position.similar(m_dest_position));
+	bool					b = true;
+	b						= b && !m_path.empty();
+	b						= b && fis_zero(m_path.front().position.distance_to_xz_sqr(m_start_position));
+	b						= b && fis_zero(m_path.back().position.distance_to_xz_sqr(m_dest_position));
+	return					(!m_path.empty() && fis_zero(m_path.front().position.distance_to_xz_sqr(m_start_position)) && fis_zero(m_path.back().position.distance_to_xz_sqr(m_dest_position)));
 }
 
 bool CDetailPathManager::valid			(const Fvector &position) const

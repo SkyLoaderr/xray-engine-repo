@@ -120,7 +120,7 @@ void CAI_Stalker::Init()
 	m_bCanFire						= true;
 
 //	m_movement_params.insert		(std::make_pair(eMovementParameterStand						,STravelParams(0.f									,PI_MUL_2)));
-	m_movement_params.insert		(std::make_pair(eMovementParameterWalkFree					,STravelParams(m_fWalkFreeFactor					,PI_DIV_4)));
+	m_movement_params.insert		(std::make_pair(eMovementParameterWalkFree					,STravelParams(m_fWalkFreeFactor					,PI_DIV_8)));
 //	m_movement_params.insert		(std::make_pair(eMovementParameterRunFree					,STravelParams(m_fRunFreeFactor						,PI_MUL_2)));
 //	m_movement_params.insert		(std::make_pair(eMovementParameterWalkDangerStand			,STravelParams(m_fWalkFactor						,PI_MUL_2)));
 //	m_movement_params.insert		(std::make_pair(eMovementParameterWalkDangerCrouch			,STravelParams(m_fWalkFactor*m_fCrouchFactor		,PI_MUL_2)));

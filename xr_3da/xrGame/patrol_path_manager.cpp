@@ -47,7 +47,8 @@ void CPatrolPathManager::select_point(const Fvector &position, u32 &dest_vertex_
 		return;
 	}
 	VERIFY					(m_curr_point_index < m_path->tpaWayPoints.size());
-	
+	VERIFY					(m_path->tpaWayPoints[m_curr_point_index].tWayPoint.similar(position));
+
 	if (m_callback)
 		luabind::call_member<void>(*(m_callback->m_lua_object),*m_callback->m_method_name,CLuaGameObject(dynamic_cast<CGameObject*>(this)),u32(CScriptMonster::eActionTypeMovement),m_curr_point_index);
 

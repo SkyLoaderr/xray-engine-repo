@@ -381,6 +381,7 @@ void CDetailPathManager::build_smooth_path		(
 )
 {
 	build_straight_path(level_path,intermediate_index);
+	m_actuality								= true;
 	m_current_travel_point					= 0;
 //	Device.Statistic.AI_Range.Begin			();
 //
