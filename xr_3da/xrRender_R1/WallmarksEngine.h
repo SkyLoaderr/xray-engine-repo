@@ -15,11 +15,11 @@ public:
 		float				ttl;
 	};
 private:
-	xr_vector<wallmark*>				pool;
-	xr_vector<wallmark*>				marks;
-	SGeometry*						hGeom;
+	xr_vector<wallmark*>			pool;
+	xr_vector<wallmark*>			marks;
+	ref_geom						hGeom;
 
-	xr_vector<CDB::TRI*>				sml_processed;
+	xr_vector<CDB::TRI*>			sml_processed;
 	Fvector							sml_normal;
 	sPoly							sml_poly_dest;
 	sPoly							sml_poly_src;

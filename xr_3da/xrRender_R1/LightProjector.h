@@ -29,9 +29,9 @@ private:
 	CRT*					RT_temp;
 	Shader*					sh_BlurTR;
 	Shader*					sh_BlurRT;
-	SGeometry*				geom_Blur;
+	ref_geom				geom_Blur;
 	Shader*					sh_Screen;
-	SGeometry*				geom_Screen;
+	ref_geom				geom_Screen;
 public:
 	void					set_object		(IRenderable*	O);
 	BOOL					shadowing		()			{ return current!=0; }

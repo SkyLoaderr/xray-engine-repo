@@ -44,7 +44,7 @@ public:
 	xr_vector<IRender_Visual*>								lstVisuals;
 	xr_vector<ISpatial*>									lstRenderables;
 
-	SGeometry*												hGeomPatches;
+	ref_geom												hGeomPatches;
 
 	// Sector detection and visibility
 	CSector*												pLastSector;

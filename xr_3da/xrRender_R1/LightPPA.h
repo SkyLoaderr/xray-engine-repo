@@ -36,7 +36,7 @@ public:
 	virtual void	set_color		(float r, float g, float b)		{ color.set(r,g,b,1); }
 	virtual void	set_texture		(LPCSTR name)					{};
 
-	void			Render			(SGeometry* hGeom);
+	void			Render			(ref_geom& hGeom);
 };
 
 class CLightPPA_Manager
@@ -45,7 +45,7 @@ class CLightPPA_Manager
 	xr_set<CLightPPA*>				inactive;
 	
 	Shader*							hShader;
-	SGeometry*						hGeom;
+	ref_geom						hGeom;
 public:
 	void			Initialize		();
 	void			Destroy			();

@@ -15,12 +15,12 @@ private:
 
 	/*
 	Shader*					h_Shader;
-	SGeometry*				h_Geom;
+	ref_geom				h_Geom;
 
 	IDirect3DTexture9*		dbg_surf;
 	CTexture*				dbg_texture;
 	Shader*					dbg_shader;
-	SGeometry*				dbg_geom;
+	ref_geom				dbg_geom;
 	*/
 	
 	void					Render_DB	(CFrustum& base);

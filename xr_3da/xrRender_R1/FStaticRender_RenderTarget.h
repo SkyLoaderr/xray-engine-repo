@@ -14,14 +14,14 @@ private:
 	CRT*				RT;
 	IDirect3DSurface9*	ZB;
 
-	Shader*				pShaderSet;
-	Shader*				pShaderGray;
-	Shader*				pShaderBlend;
-	Shader*				pShaderDuality;
-	Shader*				pShaderNoise;
+	ref_shader			pShaderSet;
+	ref_shader			pShaderGray;
+	ref_shader			pShaderBlend;
+	ref_shader			pShaderDuality;
+	ref_shader			pShaderNoise;
 
-	SGeometry*			pGeom;
-	SGeometry*			pGeom2;
+	ref_geom			pGeom;
+	ref_geom			pGeom2;
 	
 	BOOL				Create				();
 	

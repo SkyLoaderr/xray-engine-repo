@@ -48,7 +48,7 @@ IC void mk_vertex		(CLightPPA_Vertex& D, Fvector& P, Fvector& N, Fvector& C, flo
 	D.v1	=.5f;
 }
 
-void CLightPPA::Render	(SGeometry* hGeom)
+void CLightPPA::Render	(ref_geom& hGeom)
 {
 	VERIFY	(g_pGameLevel);
 

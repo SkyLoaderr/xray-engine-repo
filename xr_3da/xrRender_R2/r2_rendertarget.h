@@ -66,25 +66,25 @@ private:
 	Shader*						s_accum_point_uns;
 	Shader*						s_accum_spot_s;
 	Shader*						s_accum_spot_uns;
-	SGeometry*					g_accum_point;
-	SGeometry*					g_accum_spot;
-	SGeometry*					g_accum_point_tl;
+	ref_geom					g_accum_point;
+	ref_geom					g_accum_spot;
+	ref_geom					g_accum_point_tl;
 	IDirect3DVertexBuffer9*		g_accum_point_vb;
 	IDirect3DIndexBuffer9*		g_accum_point_ib;
 	IDirect3DVertexBuffer9*		g_accum_spot_vb;
 	IDirect3DIndexBuffer9*		g_accum_spot_ib;
 
 	// Bloom
-	SGeometry*					g_bloom_build;
-	SGeometry*					g_bloom_filter;
+	ref_geom					g_bloom_build;
+	ref_geom					g_bloom_filter;
 	Shader*						s_bloom_dbg_1;
 	Shader*						s_bloom_dbg_2;
 	Shader*						s_bloom;
 
 	// Combine
-	SGeometry*					g_combine;
-	SGeometry*					g_aa_blur;
-	SGeometry*					g_aa_AA;
+	ref_geom					g_combine;
+	ref_geom					g_aa_blur;
+	ref_geom					g_aa_AA;
 	Shader*						s_combine_dbg_DepthD;
 	Shader*						s_combine_dbg_Normal;
 	Shader*						s_combine_dbg_Accumulator;

@@ -47,11 +47,11 @@ private:
 	Shader*					sh_Texture;
 	Shader*					sh_BlurTR;
 	Shader*					sh_BlurRT;
-	SGeometry*				geom_Blur;
+	ref_geom				geom_Blur;
 	Shader*					sh_World;
-	SGeometry*				geom_World;
+	ref_geom				geom_World;
 	Shader*					sh_Screen;
-	SGeometry*				geom_Screen;
+	ref_geom				geom_Screen;
 private:
 public:
 	void					set_object		(IRenderable*	O);
