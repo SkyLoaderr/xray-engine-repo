@@ -1,7 +1,86 @@
+-- define class const evaluator
+class "const_evaluator"		(property_evaluator)
+
+function const_evaluator:__init(value) super()
+	self.value				= value
+end
+
+function const_evaluator:evaluate()
+	return					self.value
+end
+
+-- define class custom action
+class "custom_action"		(action)
+
+function custom_action:__init(weight,object,name) super(object,name)
+	self.weight				= weight
+	self.name				= name
+end
+
+function custom_action:weight(world_state0,world_state1)
+	return					self.weight
+end
+
+function custom_action:execute()
+	action.execute			()
+	printf					("action %s is executed!",self.name)
+end
+
 function main()
-    actor				= get_actor()
---    stalker				= get_level_object("m_stalker_e")
-    snd					= sound_object("scripts\\rolik\\alarm")
-    wait				(2000)
-    snd:play_at_pos		(actor,actor:position())
+	-- define world properties
+	property_id0			= 0
+	property_id1			= 1
+	property_id2			= 2
+	property_id3			= 3
+	
+	-- define action identifiers
+	action_id0				= 0
+	action_id1				= 1
+	action_id2				= 2
+	action_id3				= 3
+	
+	-- define evaluators
+	eval0					= const_evaluator(false)
+	eval1					= const_evaluator(false)
+	eval2					= const_evaluator(false)
+	eval3					= const_evaluator(false)
+	
+	-- define actions
+	action0					= custom_action(1,nil,"action0")
+	action1					= custom_action(1,nil,"action1")
+	action2					= custom_action(1,nil,"action2")
+	action3					= custom_action(1,nil,"action3")
+	
+	-- define action conditions and effects
+	action0:add_condition	(property_id0,false)
+	action0:add_effect		(property_id0,true)
+	
+	action1:add_condition	(property_id1,false)
+	action1:add_effect		(property_id1,true)
+	
+	action2:add_condition	(property_id2,false)
+	action2:add_effect		(property_id2,true)
+	
+	action3:add_condition	(property_id3,false)
+	action3:add_effect		(property_id3,true)
+	
+	-- define planner
+	planner					= action_planner()
+	
+	-- add evaluators
+	planner:add_evaluator	(property_id0,eval0)
+	planner:add_evaluator	(property_id1,eval1)
+	planner:add_evaluator	(property_id2,eval2)
+	planner:add_evaluator	(property_id3,eval3)
+	
+	-- add actions
+	planner:add_action		(action_id0,action0)
+	planner:add_action		(action_id1,action1)
+	planner:add_action		(action_id2,action2)
+	planner:add_action		(action_id3,action3)
+	
+	while true do
+		planner:update		(1000)
+		wait				(1000)
+	end
 end
