@@ -90,9 +90,14 @@ struct DetailSlot					// was(4+4+3*4+2 = 22b), now(8+2*4=16b)
 public:
 	enum			{	ID_Empty	= 0x3f	};
 public:
-	void			w_ybase		(float v)				{	s32	_v = iFloor((v + 200)/.2f);	clamp(_v,0,4095); y_base = _v;	}
+	void			w_y		(float base, float height)				
+	{	
+		s32	_base	= iFloor((base + 200)/.2f);			clamp(_base,	0,4095);	y_base		= _base;
+		f32 _error	= base - r_ybase();
+		s32	_height = iCeil ((height+_error) / .05f);	clamp(_height,	0,255);		y_height	= _height;
+	}
+
 	float			r_ybase		()						{	return float(y_base)*.2f - 200.f;								}
-	void			w_yheight	(float v)				{	s32	_v = iFloor(v / .05f); clamp(_v,0,255); y_height = _v;		}
 	float			r_yheight	()						{	return float(y_height)*.05f;									}
 	u32				w_qclr		(float v, u32 range)	{	s32 _v = iFloor(v * float(range)); clamp(_v,0,s32(range)); return _v; };
 	float			r_qclr		(u32 v,   u32 range)	{	return float(v)/float(range); }
