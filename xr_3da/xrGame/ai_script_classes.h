@@ -336,6 +336,16 @@ public:
 		}
 	}
 
+	IC		bool			CheckTypeVisibility(const char *section_name)
+	{
+		CCustomMonster		*l_tpCustomMonster = dynamic_cast<CCustomMonster*>(m_tpGameObject);
+		if (l_tpCustomMonster)
+			return			(l_tpCustomMonster->CheckTypeVisibility(section_name));
+		else {
+			LuaOut			(Lua::eLuaMessageTypeError,"CLuaGameObject : cannot access class member CheckTypeVisibility!");
+			return			(false);
+		}
+	}
 	// CAI_Stalker
 //	BIND_FUNCTION01	(m_tpGameObject,	UseObject,			CAI_Stalker,	UseObject,			const CLuaGameObject*,				CObject*);
 	IC		void			UseObject(const CLuaGameObject *tpLuaGameObject)
