@@ -12,6 +12,9 @@
 #include "ai_alife_predicates.h"
 #include "ai_primary_funcs.h"
 
+#define MAX_ITEM_FOOD_COUNT		3
+#define MAX_ITEM_MEDIKIT_COUNT	3
+
 bool CSE_ALifeHumanAbstract::bfCheckIfTaskCompleted(OBJECT_IT &I)
 {
 	if (int(m_dwCurTaskID) < 0)
@@ -283,6 +286,12 @@ void CSE_ALifeHumanAbstract::vfProcessItems()
 		vfAttachItems();
 }
 
+bool CSE_ALifeHumanAbstract::bfCanGetItem(CSE_ALifeItem *tpALifeItem)
+{
+#pragma todo("Implement inventory volume check")
+	return(m_fCumulativeItemMass + tpALifeItem->m_fMass <= m_fMaxItemMass);
+}
+
 void CSE_ALifeHumanAbstract::vfAttachItems(ETakeType tTakeType)
 {
 	CSE_ALifeAbstractGroup			*l_tpALifeAbstractGroup = dynamic_cast<CSE_ALifeAbstractGroup*>(this);
@@ -311,8 +320,8 @@ void CSE_ALifeHumanAbstract::vfAttachItems(ETakeType tTakeType)
 	if (tTakeType == eTakeTypeAll) {
 		m_tpALife->m_tpObjectVector.insert(m_tpALife->m_tpObjectVector.end(),children.begin(),children.end());
 		{
-			OBJECT_IT					I = l_tpALifeAbstractGroup->m_tpMembers.begin();
-			OBJECT_IT					E = l_tpALifeAbstractGroup->m_tpMembers.end();
+			OBJECT_IT					I = children.begin();
+			OBJECT_IT					E = children.end();
 			for ( ; I != E; I++) {
 				CSE_ALifeItem			*l_tpALifeItem = dynamic_cast<CSE_ALifeItem*>(m_tpALife->tpfGetObjectByID(*I));
 				R_ASSERT2				(l_tpALifeItem,"Invalid inventory object");
@@ -346,7 +355,7 @@ void CSE_ALifeHumanAbstract::vfAttachItems(ETakeType tTakeType)
 				// evaluating item
 				float					l_fCurrentValue = getAI().m_pfEquipmentType->ffGetValue();
 				// choosing the best item
-				if (l_fCurrentValue > l_fItemBestValue) {
+				if ((l_fCurrentValue > l_fItemBestValue) && bfCanGetItem(l_tpALifeItem)) {
 					l_fItemBestValue = l_fCurrentValue;
 					l_tpALifeItemBest = l_tpALifeItem;
 				}
@@ -398,7 +407,7 @@ void CSE_ALifeHumanAbstract::vfAttachItems(ETakeType tTakeType)
 						}
 					}
 					// choosing the best item
-					if (l_fCurrentValue > l_fItemBestValue) {
+					if ((l_fCurrentValue > l_fItemBestValue) && bfCanGetItem(l_tpALifeItem)) {
 						l_fItemBestValue = l_fCurrentValue;
 						l_tpALifeItemBest = l_tpALifeItem;
 					}
@@ -410,6 +419,44 @@ void CSE_ALifeHumanAbstract::vfAttachItems(ETakeType tTakeType)
 			}
 		}
 		
+#pragma todo("Add food and medikit items support")
+		std::sort						(m_tpALife->m_tpObjectVector.begin(),m_tpALife->m_tpObjectVector.end(),CSortItemPredicate(m_tpALife->m_tObjectRegistry));
+		
+		// choosing food
+		{
+			u32							l_dwCount = 0;
+			OBJECT_IT					I = m_tpALife->m_tpObjectVector.begin();
+			OBJECT_IT					E = m_tpALife->m_tpObjectVector.end();
+			for ( ; I != E; I++) {
+				CSE_ALifeItem			*l_tpALifeItem = dynamic_cast<CSE_ALifeItem*>(m_tpALife->tpfGetObjectByID(*I));
+				if (!l_tpALifeItem || (l_tpALifeItem->m_iFoodValue <= 0))
+					continue;
+				if (bfCanGetItem(l_tpALifeItem)) {
+					m_tpALife->vfAttachItem	(*this,l_tpALifeItem,m_tGraphID);
+					l_dwCount++;
+					if (l_dwCount > MAX_ITEM_FOOD_COUNT)
+						break;
+				}
+			}
+		}
+		
+		// choosing medikits
+		{
+			u32							l_dwCount = 0;
+			OBJECT_IT					I = m_tpALife->m_tpObjectVector.begin();
+			OBJECT_IT					E = m_tpALife->m_tpObjectVector.end();
+			for ( ; I != E; I++) {
+				CSE_ALifeItem			*l_tpALifeItem = dynamic_cast<CSE_ALifeItem*>(m_tpALife->tpfGetObjectByID(*I));
+				if (!l_tpALifeItem || (l_tpALifeItem->m_iHealthValue <= 0))
+					continue;
+				if (bfCanGetItem(l_tpALifeItem)) {
+					m_tpALife->vfAttachItem	(*this,l_tpALifeItem,m_tGraphID);
+					l_dwCount++;
+					if (l_dwCount > MAX_ITEM_MEDIKIT_COUNT)
+						break;
+				}
+			}
+		}
 		// choosing detector
 		l_tpALifeItemBest				= 0;
 		l_fItemBestValue				= -1.f;
@@ -425,7 +472,7 @@ void CSE_ALifeHumanAbstract::vfAttachItems(ETakeType tTakeType)
 				getAI().m_tpCurrentALifeObject = l_tpALifeItem;
 				float					l_fCurrentValue = getAI().m_pfEquipmentType->ffGetValue();
 				// choosing the best item
-				if (l_fCurrentValue > l_fItemBestValue) {
+				if ((l_fCurrentValue > l_fItemBestValue) && bfCanGetItem(l_tpALifeItem)) {
 					l_fItemBestValue = l_fCurrentValue;
 					l_tpALifeItemBest = l_tpALifeItem;
 				}
@@ -437,5 +484,16 @@ void CSE_ALifeHumanAbstract::vfAttachItems(ETakeType tTakeType)
 
 	if ((tTakeType == eTakeTypeAll) || (tTakeType == eTakeTypeRest)) {
 		// choosing the others objects
+		if (tTakeType == eTakeTypeRest)
+			std::sort				(m_tpALife->m_tpObjectVector.begin(),m_tpALife->m_tpObjectVector.end(),CSortItemPredicate(m_tpALife->m_tObjectRegistry));
+		OBJECT_IT					I = m_tpALife->m_tpObjectVector.begin();
+		OBJECT_IT					E = m_tpALife->m_tpObjectVector.end();
+		for ( ; I != E; I++) {
+			CSE_ALifeItem			*l_tpALifeItem = dynamic_cast<CSE_ALifeItem*>(m_tpALife->tpfGetObjectByID(*I));
+			if (!l_tpALifeItem)
+				continue;
+			if (bfCanGetItem(l_tpALifeItem))
+				m_tpALife->vfAttachItem	(*this,l_tpALifeItem,m_tGraphID);
+		}
 	}
 }

@@ -23,10 +23,17 @@ CSE_ALifeItem::CSE_ALifeItem(LPCSTR caSection) : CSE_ALifeDynamicObjectVisual(ca
 {
 	m_fMass						= pSettings->r_float(caSection, "inv_weight");
 	m_dwCost					= pSettings->r_u32(caSection, "cost");
+	
 	if (pSettings->line_exist(caSection, "health_value"))
 		m_iHealthValue			= pSettings->r_s32(caSection, "health_value");
 	else
 		m_iHealthValue			= 0;
+	
+	if (pSettings->line_exist(caSection, "food_value"))
+		m_iFoodValue			= pSettings->r_s32(caSection, "food_value");
+	else
+		m_iFoodValue			= 0;
+
 	m_fDeteriorationValue		= 0;
 }
 

@@ -78,7 +78,7 @@ public:
 		VERIFY						(tpItem1);
 		CSE_ALifeItem				*tpItem2 = dynamic_cast<CSE_ALifeItem *>((*it2).second);
 		VERIFY						(tpItem2);
-		return						(float(tpItem1->m_dwCost)/tpItem1->m_fMass > float(tpItem2->m_dwCost)/tpItem2->m_fMass);
+		return						(float(tpItem1->m_dwCost)/1/**tpItem1->m_fMass/**/ > float(tpItem2->m_dwCost)/1/**tpItem2->m_fMass/**/);
 	};
 };
 

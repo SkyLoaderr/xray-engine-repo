@@ -232,6 +232,7 @@ SERVER_ENTITY_DECLARE_BEGIN2(CSE_ALifeHumanAbstract,CSE_ALifeTraderAbstract,CSE_
 	virtual	void					vfUpdateWeaponAmmo		();
 	virtual	void					vfProcessItems			();
 	virtual	void					vfAttachItems			(ETakeType tTakeType = eTakeTypeAll);
+			bool					bfCanGetItem			(CSE_ALifeItem *tpALifeItem);
 #endif
 #endif
 SERVER_ENTITY_DECLARE_END

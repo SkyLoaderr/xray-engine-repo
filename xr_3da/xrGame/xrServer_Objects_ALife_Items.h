@@ -15,6 +15,7 @@ SERVER_ENTITY_DECLARE_BEGIN(CSE_ALifeItem,CSE_ALifeDynamicObjectVisual)
 	float							m_fMass;
 	u32								m_dwCost;
 	s32								m_iHealthValue;
+	s32								m_iFoodValue;
 	float							m_fDeteriorationValue;
 	
 									CSE_ALifeItem	(LPCSTR caSection);
