@@ -319,7 +319,7 @@ void CParticleEffect::Render(float LOD)
 				RCache.set_xform_world	(Fidentity);
 				RCache.set_Geometry		(geom);
 
-                u32 cm					= RCache.get_CullMode();
+//              u32 cm					= RCache.get_CullMode();
                 RCache.set_CullMode		(CULL_NONE	);
 				RCache.Render	   		(D3DPT_TRIANGLELIST,dwOffset,0,dwCount,0,dwCount/2);
                 RCache.set_CullMode		(CULL_CCW	); 

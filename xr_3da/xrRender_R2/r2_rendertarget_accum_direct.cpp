@@ -101,8 +101,8 @@ void CRenderTarget::accum_direct		(u32 sub_phase)
 
 		// Make jitter texture
 		Fvector2					j0,j1;
-		float	scale_X				= float(Device.dwWidth)	/ float(TEX_jitter);
-		float	scale_Y				= float(Device.dwHeight)/ float(TEX_jitter);
+		//float	scale_X				= float(Device.dwWidth)	/ float(TEX_jitter);
+		//float	scale_Y				= float(Device.dwHeight)/ float(TEX_jitter);
 		float	offset				= (.5f / float(TEX_jitter));
 		j0.set						(offset,offset);
 		j1.set						(scale_X,scale_X).add(offset);
@@ -307,7 +307,7 @@ void CRenderTarget::accum_direct_lum	()
 	Fvector2					p0,p1;
 	p0.set						(.5f/_w, .5f/_h);
 	p1.set						((_w+.5f)/_w, (_h+.5f)/_h );
-	float	d_Z	= EPS_S, d_W = 1.f;
+	float	d_Z	= EPS_S;		//, d_W = 1.f;
 
 	// Common constants (light-related)
 	Fvector		L_dir,L_clr;	float L_spec;
@@ -333,7 +333,7 @@ void CRenderTarget::accum_direct_lum	()
 		// Make jitter texture
 		Fvector2					j0,j1;
 		float	scale_X				= float(Device.dwWidth)	/ float(TEX_jitter);
-		float	scale_Y				= float(Device.dwHeight)/ float(TEX_jitter);
+//		float	scale_Y				= float(Device.dwHeight)/ float(TEX_jitter);
 		float	offset				= (.5f / float(TEX_jitter));
 		j0.set						(offset,offset);
 		j1.set						(scale_X,scale_X).add(offset);

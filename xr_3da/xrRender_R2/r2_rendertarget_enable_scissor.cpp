@@ -41,11 +41,11 @@ BOOL CRenderTarget::enable_scissor		(light* L)		// true if intersects near plane
 
 	CSector*	S	= (CSector*)L->spatial.sector;
 	_scissor	bb	= S->r_scissor_merged;
-	RECT		R;
-	R.left		= clampr	(iFloor	(bb.min.x*Device.dwWidth),	int(0),int(Device.dwWidth));
-	R.right		= clampr	(iCeil	(bb.max.x*Device.dwWidth),	int(0),int(Device.dwWidth));
-	R.top		= clampr	(iFloor	(bb.min.y*Device.dwHeight),	int(0),int(Device.dwHeight));
-	R.bottom	= clampr	(iCeil	(bb.max.y*Device.dwHeight),	int(0),int(Device.dwHeight));
+	Irect		R;
+	R.x1		= clampr	(iFloor	(bb.min.x*Device.dwWidth),	int(0),int(Device.dwWidth));
+	R.x2		= clampr	(iCeil	(bb.max.x*Device.dwWidth),	int(0),int(Device.dwWidth));
+	R.y1		= clampr	(iFloor	(bb.min.y*Device.dwHeight),	int(0),int(Device.dwHeight));
+	R.y2		= clampr	(iCeil	(bb.max.y*Device.dwHeight),	int(0),int(Device.dwHeight));
 	if	( (Device.dwWidth==u32(R.right - R.left)) && (Device.dwHeight==u32(R.bottom-R.top)) )
 	{
 		// full-screen -> do nothing
@@ -86,10 +86,12 @@ BOOL CRenderTarget::enable_scissor		(light* L)		// true if intersects near plane
 				);
 		if (!bIntersect)	{
 			// volume doesn't touch scissor - enable mask
-			CHK_DX		(HW.pDevice->SetRenderState(D3DRS_SCISSORTESTENABLE,TRUE));
-			CHK_DX		(HW.pDevice->SetScissorRect(&R));
+			RCache.set_Scissor(&R);
+			//CHK_DX		(HW.pDevice->SetRenderState(D3DRS_SCISSORTESTENABLE,TRUE));
+			//CHK_DX		(HW.pDevice->SetScissorRect(&R));
 		} else {
 			// __asm int 3;
+			RCache.set_Scissor(NULL);
 		}
 	}
 

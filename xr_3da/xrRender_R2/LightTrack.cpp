@@ -142,7 +142,7 @@ void	CROS_impl::update	(IRenderable* O)
 
 	// hemi & sun: update and smooth
 	float	l_f				=	dt*lt_smooth;
-	float	l_i				=	1.f-l_f;
+//	float	l_i				=	1.f-l_f;
 	int		_pass			=	0;
 	for (int it=0; it<result_count; it++)	if (result[it])	_pass	++;
 	hemi_value				=	float	(_pass)/float(result_count?result_count:1);
