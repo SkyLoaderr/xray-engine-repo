@@ -79,7 +79,7 @@ void CRenderDevice::Create	()
 	if (bReady)	return;		// prevent double call
 	Log("Starting RENDER device...");
 
-	u32 dwWindowStyle = HW.CreateDevice(m_hWnd);
+	u32 dwWindowStyle = HW.CreateDevice(m_hWnd,dwWidth,dwHeight);
 	dwWidth		= HW.DevPP.BackBufferWidth;
 	dwHeight	= HW.DevPP.BackBufferHeight;
 	fWidth_2	= float(dwWidth/2);
