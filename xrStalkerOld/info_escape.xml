@@ -185,6 +185,10 @@
 		<text>Обыщи трупы</text>
 	</info_portion>
 
+	<info_portion id="tutorial_trader_give_medikit">
+		<text>Дай ему аптечку</text>
+	</info_portion>
+
 	<info_portion id="tutorial_trader_help_wounded">
 		<text>Дай раненому аптечку</text>
 	</info_portion>
