@@ -447,7 +447,7 @@ void CAI_Stalker::vfFindAllSuspiciousNodes(u32 StartNode, Fvector tPointPosition
 	Device.Statistic.AI_Range.Begin	();
 
 	Group.m_tpaSuspiciousNodes.clear();
-	
+
 	BOOL bStop = FALSE;
 	
 	CAI_Space &AI = getAI();

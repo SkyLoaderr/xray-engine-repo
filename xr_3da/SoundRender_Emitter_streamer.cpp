@@ -4,7 +4,7 @@
 
 void	CSoundRender_Emitter::fill_block	(void* ptr, u32 size)
 {
-	Msg			("stream: %10s - [%X]:%d",source->fname,ptr,size);
+	Msg			("stream: %10s - [%X]:%d, p=%d, t=%d",source->fname,ptr,size,position,source->dwBytesTotal);
 	LPBYTE		dest = LPBYTE(ptr);
 	LPBYTE		wave = LPBYTE(source->wave);
 	if ((position+size) > source->dwBytesTotal)
@@ -19,6 +19,7 @@ void	CSoundRender_Emitter::fill_block	(void* ptr, u32 size)
 				{
 					// ??? We requested the block after remainder - just zero
 					Memory.mem_fill	(dest,0,size);
+					Msg				("        playing: zero");
 				} else {
 					// Calculate remainder
 					u32	sz_data		= source->dwBytesTotal - position;
@@ -26,6 +27,7 @@ void	CSoundRender_Emitter::fill_block	(void* ptr, u32 size)
 					VERIFY			(size == (sz_data+sz_zero));
 					Memory.mem_copy	(dest,wave+position,sz_data);
 					Memory.mem_fill	(dest+sz_data,0,sz_zero);
+					Msg				("        playing: [%d]-normal,[%d]-zero",sz_data,sz_zero);
 				}
 			}
 			break;
@@ -37,6 +39,7 @@ void	CSoundRender_Emitter::fill_block	(void* ptr, u32 size)
 				VERIFY				(size == (sz_first+sz_second));
 				Memory.mem_copy		(dest,wave+position,sz_first);
 				Memory.mem_copy		(dest+sz_first,wave,sz_second);
+				Msg				("        looping: [%d]-first,[%d]-second",sz_first,sz_second);
 			}
 			break;
 		default:
@@ -45,6 +48,7 @@ void	CSoundRender_Emitter::fill_block	(void* ptr, u32 size)
 		}
 	} else {
 		// Everything OK, just stream
+		Msg				("        normal");
 		Memory.mem_copy	(dest,wave+position,size);
 	}
 
