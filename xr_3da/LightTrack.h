@@ -17,7 +17,7 @@ public:
 	struct	Item			{
 		u32					frame_touched	;	// to track creation & removal
 		light*				source			;	// 
-		Collide::ray_cache	cache			;	//
+		collide::ray_cache	cache			;	//
 		float				test			;	// note range: (-1[no]..1[yes])
 		float				energy			;	//
 	};
@@ -36,8 +36,8 @@ public:
 	xr_vector<Light>		lights			;	// 
 
 	bool					result			[lt_hemisamples];
-	Collide::ray_cache		cache			[lt_hemisamples];
-	Collide::ray_cache		cache_sun		;
+	collide::ray_cache		cache			[lt_hemisamples];
+	collide::ray_cache		cache_sun		;
 	u32		result_count		;
 	u32		result_iterator		;
 	u32		result_frame		;
