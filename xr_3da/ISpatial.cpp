@@ -102,11 +102,10 @@ void	ISpatial::spatial_move	()
 	}
 }
 
-void	ISpatial::spatial_updatesector	()
+void	ISpatial::spatial_updatesector_internal()
 {
-	if (0== (spatial.type&STYPEFLAG_INVALIDSECTOR))	return;
-	spatial.type						&=	~STYPEFLAG_INVALIDSECTOR;
 	IRender_Sector*		S				=	::Render->detectSector(spatial_sector_point());
+	spatial.type						&=	~STYPEFLAG_INVALIDSECTOR;
 	if (S)				spatial.sector	=	S;
 }
 

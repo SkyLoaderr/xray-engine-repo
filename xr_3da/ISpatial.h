@@ -75,13 +75,16 @@ public:
 		_spatial() : type(0)	{}				// safe way to enhure type is zero before any contstructors takes place
 	}							spatial;
 public:
-	BOOL						spatial_inside		()	;
+	BOOL						spatial_inside		()			;
+				void			spatial_updatesector_internal()	;
 public:
 	virtual		void			spatial_register	()	;
 	virtual		void			spatial_unregister	()	;
 	virtual		void			spatial_move		()	;
 	virtual		Fvector			spatial_sector_point()	{ return spatial.center; }
-				void			spatial_updatesector()	;
+	ICF			void			spatial_updatesector()	{
+		if (0== (spatial.type&STYPEFLAG_INVALIDSECTOR))	return;
+	};
 
 	virtual		CObject*		dcast_CObject		()	{ return 0;	}
 	virtual		Feel::Sound*	dcast_FeelSound		()	{ return 0;	}
