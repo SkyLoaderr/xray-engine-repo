@@ -51,7 +51,7 @@ public:
 	CWeapon*				getWeaponByWeapon		(CWeapon* W);
 	CWeapon*				getWeaponByIndex		(int iIndex)	{ return ((iIndex > -1) && (iIndex < (int)(m_Weapons.size()))) ? m_Weapons[iIndex] : 0; }
 	u32						getWeaponCount			()				{ return (m_Weapons.size());	}
-	BOOL					isSlotEmpty				(int iSlot)		{ return 0!=m_Weapons[iSlot];	}
+	BOOL					isSlotEmpty				(int iSlot)		{ return 0==m_Weapons[iSlot];	}
 							
 	void					FireStart				();
 	void					FireEnd					();
