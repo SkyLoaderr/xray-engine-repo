@@ -417,8 +417,11 @@ struct _line {
 	bool	b_changed;
 };
 
-#define MIN_ANGLE			PI_DIV_6
-#define MAX_DIST_THRESHOLD	10.f
+#define MIN_ANGLE						PI_DIV_6
+#define MAX_DIST_THRESHOLD				10.f
+#define CHANGE_DIR_ANGLE				PI_DIV_4
+#define MIN_DIST_TO_SKIP_ANGLE_CHECK	2.5f
+#define ENABLE_RANDOM_SIDE	
 
 void CMonsterSquad::SetupMemeberPositions(ENTITY_STATE_MAP &cur_map, CEntity *enemy)
 {
@@ -452,6 +455,8 @@ void CMonsterSquad::SetupMemeberPositions(ENTITY_STATE_MAP &cur_map, CEntity *en
 		// Пройти по всем линиям и определить линию, с которой минимальный угол
 		float	smallest_angle	= flt_max;
 		u32		line_index	= u32(-1);
+		float	min_dist		= flt_max;		// дистанция до ближайшего NPC
+
 		for (u32 i = 0; i < lines.size(); i++){
 			Fvector dir1, dir2;
 			dir1.sub(lines[i].p_to,		lines[i].p_from); 
@@ -470,10 +475,14 @@ void CMonsterSquad::SetupMemeberPositions(ENTITY_STATE_MAP &cur_map, CEntity *en
 					line_index		= i;
 				}
 			}
+			
+			float cur_dist = cur_line.p_from.distance_to(lines[i].p_from);
+			if (cur_dist < min_dist) min_dist = cur_dist;
 		}
 
+
 		// установить target_pos
-		if (line_index == u32(-1)) {	// нет слишком малых углов
+		if ((line_index == u32(-1)) || (!fsimilar(min_dist,flt_max) && (min_dist > MIN_DIST_TO_SKIP_ANGLE_CHECK))) {	// нет слишком малых углов
 			lines.push_back(cur_line);
 		} else {
 			_line nearest = lines[line_index];
@@ -488,7 +497,14 @@ void CMonsterSquad::SetupMemeberPositions(ENTITY_STATE_MAP &cur_map, CEntity *en
 			dir2.getHP(h2,p2);
 
 			float d_angle;
-			d_angle = ((angle_normalize_signed(h2 - h) > 0) ? -PI_DIV_3 : PI_DIV_3);
+			d_angle = ((angle_normalize_signed(h2 - h) > 0) ? -CHANGE_DIR_ANGLE : CHANGE_DIR_ANGLE);
+
+#ifdef ENABLE_RANDOM_SIDE
+			if (::Random.randI(100) < 50) { 
+				if (::Random.randI(2)) d_angle = -CHANGE_DIR_ANGLE;
+				else d_angle = CHANGE_DIR_ANGLE;
+			}
+#endif
 
 			float dist;
 			dist = cur_dir.magnitude();

@@ -106,7 +106,8 @@ void CJumping::Execute()
 		global_transform.set(entity->XFORM());
 		global_transform.mulB(bone.mTransform);
 		target_pos = global_transform.c;
-		target_pos.y /= 1.5f;
+		
+		target_pos.y -= 0.5f;
 	}
 
 	// получить время физ.прыжка

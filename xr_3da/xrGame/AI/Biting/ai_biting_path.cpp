@@ -78,11 +78,11 @@ void CAI_Biting::Path_CoverFromPoint(const CEntity *pE, Fvector position)
 
 void CAI_Biting::Path_ApproachPoint(Fvector position)
 {
+	CLevelLocationSelector::set_evaluator(m_tSelectorApproach);
+
 	vfInitSelector(*m_tSelectorApproach, true);
 	m_tSelectorApproach->m_tEnemyPosition = position;
 	m_tSelectorApproach->m_tEnemy		  = 0;		
-
-	CLevelLocationSelector::set_evaluator(m_tSelectorApproach);
 }
 
 void CAI_Biting::Path_WalkAroundObj(const CEntity *pE, Fvector position)
