@@ -1689,7 +1689,7 @@ location.transform_dir(axis,axes[0].direction);
 dJointAttach(m_joint,first->get_body(),second->get_body());
 dJointSetHingeAnchor(m_joint,pos.x,pos.y,pos.z);
 dJointSetHingeAxis(m_joint,axis.x,axis.y,axis.z);
-dJointSetHingeParam(m_joint,dParamLoStop ,axes[0].law);
+dJointSetHingeParam(m_joint,dParamLoStop ,axes[0].low);
 dJointSetHingeParam(m_joint,dParamHiStop ,axes[0].high);
 }
 
@@ -1739,6 +1739,28 @@ void CPHJoint::SetAxisVsSecondElement(const float x,const float y,const float z,
 
 void CPHJoint::SetLimits(const float low, const float high, const int axis_num)
 {
+	int ax=axis_num;
+
+	switch(eType){
+	case ball:					return;						break;
+	case hinge:					ax=0;
+															break;
+	case hinge2:
+	
+	
+	case universal_hinge:		
+														
+	case shoulder1:	
+														
+	case shoulder2:	
+														
+	case car_wheel:	
+								if(ax>1) ax=1;
+														break;
+	}
+
+			axes[ax].low=low;
+			axes[ax].high=high;	
 }
 
 
@@ -1800,4 +1822,25 @@ void CPHJoint::Deactivate()
 {
 if(!bActive) return;
 dJointDestroy(m_joint);
+}
+
+
+void CPHShell::SetTransform(Fmatrix m){
+Fmatrix init;
+vector<CPHElement*>::iterator i=elements.begin();
+(*i)->InterpolateGlobalTransform(&init);
+init.invert();
+Fmatrix add;
+add.mul(init,m);
+(*i)->SetTransform(m);
+i++;
+Fmatrix element_transform;
+for( ;i!=elements.end(); i++)
+{
+(*i)->InterpolateGlobalTransform(&element_transform);
+element_transform.mulA(add);
+(*i)->SetTransform(element_transform);
+}
+
+
 }

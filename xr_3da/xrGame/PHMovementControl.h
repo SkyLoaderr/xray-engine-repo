@@ -116,7 +116,7 @@ public:
 	void				SetCrashSpeeds	(float min, float max)
 	{	fMinCrashSpeed	= min; 	fMaxCrashSpeed	= max; 	}
 
-	void				SetPosition		(Fvector &P)
+	void				SetPosition		(const Fvector &P)
 	{	vPosition.set	(P); vLastUpdatePosition.set(P); m_character.SetPosition(vPosition);}
 
 	void				SetPosition		(float x, float y, float z)

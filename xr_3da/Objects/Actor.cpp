@@ -538,6 +538,7 @@ void CActor::Update	(u32 DT)
 	// patch
 	if (patch_frame<patch_frames)	{
 		vPosition.set		(patch_position);
+		if(!m_phSkeleton)
 		ph_Movement.SetPosition(patch_position);
 		patch_frame			+= 1;
 	}
@@ -588,7 +589,9 @@ void CActor::Update	(u32 DT)
 				Movement.SetVelocity	(NET_Last.p_velocity);
 				ph_Movement.SetVelocity	(NET_Last.p_velocity);
 				vPosition.set			(NET_Last.p_pos);
+				if(!m_phSkeleton)
 				ph_Movement.SetPosition(NET_Last.p_pos);
+				
 				UpdateTransform			();
 			}
 
@@ -621,6 +624,7 @@ void CActor::Update	(u32 DT)
 				g_sv_Orientate	(NET_Last.mstate,dt);
 				g_Orientate		(NET_Last.mstate,dt);
 				vPosition.set	(NET_Last.p_pos);		// physics :)
+				if(!m_phSkeleton)
 				ph_Movement.SetPosition(NET_Last.p_pos);
 				g_SetAnimation	(NET_Last.mstate);
 				
@@ -1374,6 +1378,12 @@ void CActor::create_Skeleton(){
 
 }
 
+void CActor::SetPhPosition(const Fmatrix &pos)
+{
+
+	if(!m_phSkeleton) ph_Movement.SetPosition(pos.c);
+	//else m_phSkeleton->S
+}
 
 #ifdef DEBUG
 void dbg_draw_frustum (float FOV, float _FAR, float A, Fvector &P, Fvector &D, Fvector &U);

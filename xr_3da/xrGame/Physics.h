@@ -295,17 +295,17 @@ dJointID m_joint;
 
 struct SPHAxis {
 float high;
-float law;
+float low;
 float erp;
 float cfm;
 Fvector direction;
-IC void set_limits(float h, float l) {high=h; law=l;}
+IC void set_limits(float h, float l) {high=h; low=l;}
 IC void set_direction(const Fvector& v){direction.set(v);}
 IC void set_direction(const float x,const float y,const float z){direction.set(x,y,z);}
 IC void set_param(const float e,const float c){erp=e;cfm=c;}	
 SPHAxis(){
 	high=M_PI/15.f;
-	law=-M_PI/15.f;;
+	low=-M_PI/15.f;;
 	erp=ERP(world_spring,world_damping);
 	cfm=CFM(world_spring,world_damping);
 	direction.set(0,0,1);
@@ -386,6 +386,7 @@ public:
 														joints.clear();
 														}
 
+
 	static void __stdcall	BonesCallback				(CBoneInstance* B);
 	virtual	BoneCallbackFun* GetBonesCallback		()	{return BonesCallback ;}
 	virtual	void			add_Element				(CPhysicsElement* E)		  {
@@ -427,6 +428,8 @@ public:
 	{
 		if(!m_space) m_space=dSimpleSpaceCreate(ph_world->GetSpace());
 	}
+
+	void SetTransform(Fmatrix m);
 private:
 	
 
