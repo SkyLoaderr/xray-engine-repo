@@ -6,6 +6,8 @@
 #define AFX_LIGHTSHADOWS_H__CFA216D9_CACB_4515_9FBE_7C531649168F__INCLUDED_
 #pragma once
 
+#include "fstaticrender_scenegraph.h"
+
 class ENGINE_API	CObject;
 class ENGINE_API	xrLIGHT;
 

@@ -1715,26 +1715,6 @@
 					</File>
 				</Filter>
 				<Filter
-					Name="Projector"
-					Filter="">
-					<File
-						RelativePath=".\LightProjector.cpp">
-					</File>
-					<File
-						RelativePath=".\LightProjector.h">
-					</File>
-				</Filter>
-				<Filter
-					Name="Shadows"
-					Filter="">
-					<File
-						RelativePath=".\LightShadows.cpp">
-					</File>
-					<File
-						RelativePath=".\LightShadows.h">
-					</File>
-				</Filter>
-				<Filter
 					Name="LightTrack"
 					Filter="">
 					<File

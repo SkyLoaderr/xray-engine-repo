@@ -256,6 +256,18 @@
 		<Filter
 			Name="Lights"
 			Filter="">
+			<File
+				RelativePath="LightProjector.cpp">
+			</File>
+			<File
+				RelativePath="LightProjector.h">
+			</File>
+			<File
+				RelativePath="LightShadows.cpp">
+			</File>
+			<File
+				RelativePath="LightShadows.h">
+			</File>
 		</Filter>
 	</Files>
 	<Globals>
