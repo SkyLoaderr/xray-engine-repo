@@ -10,7 +10,38 @@
 #pragma comment(lib,"c:\\temp\\bk\\bkbase.lib")
 #pragma comment(lib,"c:\\temp\\bk\\bkphysix.lib")
 
-bkPhysicEnvironment	ENV;
+static bkPhysicEnvironment	ENV;
+
+static class myTriList : public bkRBShapeTriList {
+	vector<bkVector3*>		tris;
+public:
+	virtual bkU16 GetTris	(bkVector3 **&ppVerts, const bkVector3 &p, const bkVector3 &s, const bkMatrix3 &r)
+	{
+		RAPID::Model* M = Level().ObjectSpace.GetStaticModel();
+		Fmatrix		  X;	X.identity();
+
+		X.i.set(r.x11,r.x12,r.x13); 
+		X.j.set(r.x21,r.x22,r.x23); 
+		X.k.set(r.x31,r.x32,r.x33); 
+
+		XRC.BBoxMode	(0);
+		XRC.BBoxCollide	(precalc_identity,M,  X, *(Fvector*)&p, *(Fvector*)&s);
+
+		tris.clear		();
+		tris.reserve	(XRC.BBoxContact.size() * 3);
+		for (int i=0; i<XRC.BBoxContact.size(); i++)
+		{
+			int tri_id = XRC.BBoxContact[i].id;
+			RAPID::tri* T = M->GetTris()+tri_id;
+			tris.push_back((bkVector3*) T->verts[0]);
+			tris.push_back((bkVector3*) T->verts[1]);
+			tris.push_back((bkVector3*) T->verts[2]);
+		}
+		ppVerts			= tris.begin();
+
+		return tris.size();
+	}
+}		TRIS;
 
 //////////////////////////////////////////////////////////////////////
 // Construction/Destruction
