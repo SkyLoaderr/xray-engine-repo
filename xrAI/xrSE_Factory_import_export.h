@@ -11,7 +11,7 @@ class CSE_Abstract;
 
 extern "C" {
 	FACTORY_API ISE_Abstract* __stdcall create_entity	(LPCSTR section);
-	FACTORY_API void		  __stdcall destroy_entity	(CSE_Abstract *&);
+	FACTORY_API void		  __stdcall destroy_entity	(ISE_Abstract *&);
 };
 
 #ifdef AI_COMPILER
