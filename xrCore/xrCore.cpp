@@ -60,13 +60,17 @@ void xrCore::_initialize	(LPCSTR _ApplicationName, LogCallback cb)
 
 	rtc_initialize			();
 	xr_FS					= xr_new<CLocatorAPI>	();
-	xr_EFS					= xr_new<EFS_Utils>		();
+
 	u32 flags				= 0;
 	if (0!=strstr(Params,"-build"))	flags |= CLocatorAPI::flBuildCopy;
 	if (0!=strstr(Params,"-ebuild"))flags |= CLocatorAPI::flBuildCopy|CLocatorAPI::flEBuildCopy;
 
 	FS._initialize			(flags);
+
+#ifdef EDITOR
+	xr_EFS					= xr_new<EFS_Utils>		();
 	EFS._initialize			();
+#endif
     
 	CreateLog				(cb,0!=strstr(Params,"-nolog"));
 

@@ -74,12 +74,26 @@ void FS_Path::_update(std::string& dest, LPCSTR src)const
     dest			= std::string(m_Path)+src;
     xr_strlwr		(dest);
 }
-void FS_Path::rescan_path_cb()
+void FS_Path::rescan_path_cb	()
 {
 	m_Flags.set(flNeedRescan,TRUE);
     FS.m_Flags.set(CLocatorAPI::flNeedRescan,TRUE);
 }
-
+std::string		_ChangeFileExt	(LPCSTR src, LPCSTR ext)				{
+	std::string	tmp;
+	LPSTR src_ext	= strext(src);
+	if (src_ext){
+		size_t		ext_pos	= src_ext-src;
+		tmp.assign	(src,0,ext_pos);
+	}else{
+		tmp			= src;
+	}
+	tmp				+= ext;
+	return tmp;
+}
+std::string		_ChangeFileExt	(const std::string& src, LPCSTR ext)	{
+	return		_ChangeFileExt	(src.c_str(),ext);
+}
 //////////////////////////////////////////////////////////////////////
 // Construction/Destruction
 //////////////////////////////////////////////////////////////////////
@@ -495,12 +509,12 @@ int CLocatorAPI::file_list(FS_QueryMap& dest, LPCSTR path, u32 flags, LPCSTR mas
 			}
 			std::string fn			= entry_begin;
 			// insert file entry
-			if (flags&FS_ClampExt)	fn = EFS.ChangeFileExt(fn,"");
+			if (flags&FS_ClampExt)	fn = _ChangeFileExt(fn,"");
 			u32 fl = (entry.vfs!=0xffffffff?FS_QueryItem::flVFS:0);
 			dest.insert(mk_pair(fn.c_str(),FS_QueryItem(entry.size_real,entry.modif,fl)));
 		} else {
 			// folder
-			if ((flags&FS_ListFolders) == 0)continue;
+			if ((flags&FS_ListFolders) == 0)	continue;
 			LPCSTR entry_begin 		= entry.name+base_len;
 
 			if ((flags&FS_RootOnly)&&(strstr(entry_begin,"\\")!=end_symbol))	continue;	// folder in folder
@@ -528,7 +542,7 @@ bool CLocatorAPI::file_find(FS_QueryItem& dest, LPCSTR path, LPCSTR name, bool c
 
 	size_t base_len		= N.size();
     const file& entry 	= *I;
-    std::string fn		= (clamp_ext)?EFS.ChangeFileExt(entry.name+base_len,""):std::string(entry.name+base_len);
+    std::string fn		= (clamp_ext)?_ChangeFileExt(entry.name+base_len,""):std::string(entry.name+base_len);
     u32 fl 				= (entry.vfs!=0xffffffff?FS_QueryItem::flVFS:0);
     dest.set			(entry.size_real,entry.modif,fl);
     return true;

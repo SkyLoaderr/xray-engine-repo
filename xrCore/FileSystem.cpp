@@ -43,7 +43,6 @@ void EFS_Utils::_initialize()
     FS.update_path			(m_AccessLog,	"$server_data_root$","access.log");
 }                                               
 //----------------------------------------------------
-
 LPCSTR MakeFilter(string1024& dest, LPCSTR info, LPCSTR ext)
 {
 	ZeroMemory(dest,sizeof(dest));
