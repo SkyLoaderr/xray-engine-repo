@@ -660,7 +660,7 @@ bool CExportSkeleton::ExportGeometry(IWriter& F)
     int bone_idx=0;
     for (BoneIt bone_it=m_Source->FirstBone(); bone_it!=m_Source->LastBone(); bone_it++,bone_idx++){
         F.w_stringZ	((*bone_it)->Name());
-        F.w_stringZ	((*bone_it)->Parent()?(*bone_it)->ParentName().c_str():"");
+		F.w_stringZ	((*bone_it)->Parent()?(*bone_it)->ParentName().c_str():"");
         Fobb	obb;
         ComputeOBB	(obb,bone_points[bone_idx]);
         F.w			(&obb,sizeof(Fobb));
@@ -686,6 +686,33 @@ bool CExportSkeleton::ExportGeometry(IWriter& F)
     return bRes;
 }
 //----------------------------------------------------
+struct bm_item{
+    CKeyQR* 		_keysQR; 
+    CKeyQT* 		_keysQT; 
+    Fvector* 		_keysT;
+    Fvector 		Mt;
+    Fvector 		Ct;
+    Fvector 		St;
+    BOOL			t_present;
+    BOOL			r_present;
+    void create(u32 len)
+    {
+        _keysQR 	= xr_alloc<CKeyQR>(len); 
+        _keysQT 	= xr_alloc<CKeyQT>(len); 
+        _keysT 		= xr_alloc<Fvector>(len);
+        t_present	= TRUE;
+        r_present	= TRUE;
+        Mt.set		(0,0,0);
+        Ct.set		(0,0,0);
+        St.set		(0,0,0);
+    }
+    void destroy()
+    {
+        xr_free		(_keysQR);
+        xr_free		(_keysQT);
+        xr_free		(_keysT);
+    }
+};
 
 bool CExportSkeleton::ExportMotionKeys(IWriter& F)
 {
@@ -720,69 +747,57 @@ bool CExportSkeleton::ExportMotionKeys(IWriter& F)
         F.w_u32(motion->Length());
 
         u32 dwLen			= motion->Length();
-		CKeyQR* _keysQR 	= xr_alloc<CKeyQR>(dwLen); 
-		CKeyQT* _keysQT 	= xr_alloc<CKeyQT>(dwLen); 
-		Fvector* _keysT 	= xr_alloc<Fvector>(dwLen);
-        
-        BoneMotionVec& lst=motion->BoneMotions();
-        int bone_id = 0;
-        for (BoneMotionIt bm_it=lst.begin(); bm_it!=lst.end(); bm_it++,bone_id++){
-            Flags8 flags = motion->GetMotionFlags(bone_id);
-            CBone* B 	= m_Source->GetBone(bone_id);
-            CBone* PB 	= B->Parent();
-            for (int frm=motion->FrameStart(); frm<motion->FrameEnd(); frm++){
-                float t = (float)frm/motion->FPS();
-                Fvector T,R;
-                Fquaternion q;
-                motion->_Evaluate	(bone_id,t,T,R);
-                B->_Update			(T,R);
-                m_Source->CalculateAnimation(B,motion);
-                Fmatrix mat			= B->_MTransform();
-                if (flags.is(st_BoneMotion::flWorldOrient)){
-                    Fmatrix 	parent;
-                    Fmatrix 	inv_parent;
-                    if(PB){
-                        m_Source->GetBoneWorldTransform(PB->index,t,motion,parent);
-                        inv_parent.invert(parent);
-                    }else{
-                        parent 		= Fidentity;
-                        inv_parent	= Fidentity;
-                    }
-                    Fmatrix 	rot;
-                    rot.setXYZi	(R.x,R.y,R.z);
-                    mat.mul		(inv_parent,rot);
-                }
-                // apply global transform
-                if (B->IsRoot()){
-                	mGT.transform_tiny(T);
-                    mat.mulA(mGT);
-                }
+        BoneMotionVec& lst	= motion->BoneMotions();
 
+        bm_item* items	 	= xr_alloc<bm_item>(lst.size());
+        for (u32 itm_idx=0; itm_idx<lst.size(); itm_idx++) 
+        	items[itm_idx].create(dwLen);
+        
+        for (int frm=motion->FrameStart(); frm<motion->FrameEnd(); frm++){
+            float t 		= (float)frm/motion->FPS();
+            BoneVec& b_lst 	= m_Source->Bones();
+	        int bone_id 	= 0;
+            for(BoneIt b_it=b_lst.begin(); b_it!=b_lst.end(); b_it++, bone_id++){
+	            Fvector 	T,R;
+                motion->_Evaluate	(bone_id,t,T,R);
+                (*b_it)->_Update	(T,R);
+            }
+            m_Source->CalculateAnimation(motion);
+	        bone_id 		= 0;
+            for(b_it=b_lst.begin(); b_it!=b_lst.end(); b_it++, bone_id++){
+//.                Flags8 flags= motion->GetMotionFlags(bone_id);
+                CBone* B 	= *b_it;
+//.         	CBone* PB 	= B->Parent();
+                Fmatrix mat	= B->_MTransform();
+                // apply global transform
+	            VERIFY		(!motion->GetMotionFlags(bone_id).is(st_BoneMotion::flWorldOrient));
+//.         	if (B->IsRoot()){
+//.             	mGT.transform_tiny(T);
+//.             	mat.mulA(mGT);
+//.				}
+				Fquaternion	q;
                 q.set		(mat);
 
-                CKeyQR&	Kr 	= _keysQR[frm-motion->FrameStart()];
-                Fvector&Kt 	= _keysT [frm-motion->FrameStart()];
+                CKeyQR&	Kr 	= items[bone_id]._keysQR[frm-motion->FrameStart()];
+                Fvector&Kt 	= items[bone_id]._keysT [frm-motion->FrameStart()];
                 
                 // Quantize quaternion
                 int	_x 		= int(q.x*KEY_Quant); clamp(_x,-32767,32767); Kr.x =  _x;
                 int	_y 		= int(q.y*KEY_Quant); clamp(_y,-32767,32767); Kr.y =  _y;
                 int	_z 		= int(q.z*KEY_Quant); clamp(_z,-32767,32767); Kr.z =  _z;
                 int	_w 		= int(q.w*KEY_Quant); clamp(_w,-32767,32767); Kr.w =  _w;
-                Kt.set	(T);
+                Kt.set		(B->_Offset());
             }
-            
+        }
+        // free temp storage
+        for (itm_idx=0; itm_idx<lst.size(); itm_idx++){
             // check T
-            BOOL t_present	= FALSE;
-            BOOL r_present	= FALSE;
             R_ASSERT		(dwLen);
-            Fvector Mt		= {0,0,0};
-            Fvector Ct		= {0,0,0};
-            Fvector St		= {0,0,0};
-            Fvector At		= _keysT[0];
-            Fvector Bt		= _keysT[0];
+            Fvector At		= items[itm_idx]._keysT[0];
+            Fvector Bt		= items[itm_idx]._keysT[0];
             for (u32 t_idx=0; t_idx<dwLen; t_idx++){
-            	Fvector& t	= _keysT[t_idx];
-            	Mt.add		(t);
+            	Fvector& t	= items[itm_idx]._keysT[t_idx];
+            	items[itm_idx].Mt.add		(t);
                 At.x		= _min(At.x,t.x);
                 At.y		= _min(At.y,t.y);
                 At.z		= _min(At.z,t.z);
@@ -790,45 +805,43 @@ bool CExportSkeleton::ExportMotionKeys(IWriter& F)
                 Bt.y		= _max(Bt.y,t.y);
                 Bt.z		= _max(Bt.z,t.z);
             }
-            Mt.div			(dwLen);
-            Ct.add			(Bt,At);
-            Ct.mul			(0.5f);
-            St.sub			(Bt,At);
-            St.mul			(0.5f);
-            CKeyQR& R		= _keysQR[0];
+            items[itm_idx].Mt.div			(dwLen);
+            items[itm_idx].Ct.add			(Bt,At);
+            items[itm_idx].Ct.mul			(0.5f);
+            items[itm_idx].St.sub			(Bt,At);
+            items[itm_idx].St.mul			(0.5f);
+            CKeyQR& R		= items[itm_idx]._keysQR[0];
             for (t_idx=0; t_idx<dwLen; t_idx++){
-            	Fvector& t	= _keysT[t_idx];
-            	CKeyQR& r	= _keysQR[t_idx];
-                if (!Mt.similar(t,EPS_L))							t_present = TRUE;
-                if ((R.x!=r.x)||(R.y!=r.y)||(R.z!=r.z)||(R.w!=r.w))	r_present = TRUE;
+            	Fvector& t	= items[itm_idx]._keysT[t_idx];
+            	CKeyQR& r	= items[itm_idx]._keysQR[t_idx];
+                if (!items[itm_idx].Mt.similar(t,EPS_L))							items[itm_idx].t_present = TRUE;
+                if ((R.x!=r.x)||(R.y!=r.y)||(R.z!=r.z)||(R.w!=r.w))	items[itm_idx].r_present = TRUE;
                 
-                CKeyQT&	Kt 	= _keysQT[t_idx];
-                int	_x 		= int(127.f*(t.x-Ct.x)/St.x); clamp(_x,-128,127); Kt.x =  _x;
-                int	_y 		= int(127.f*(t.y-Ct.y)/St.y); clamp(_y,-128,127); Kt.y =  _y;
-                int	_z 		= int(127.f*(t.z-Ct.z)/St.z); clamp(_z,-128,127); Kt.z =  _z;
+                CKeyQT&	Kt 	= items[itm_idx]._keysQT[t_idx];
+                int	_x 		= int(127.f*(t.x-items[itm_idx].Ct.x)/items[itm_idx].St.x); clamp(_x,-128,127); Kt.x =  _x;
+                int	_y 		= int(127.f*(t.y-items[itm_idx].Ct.y)/items[itm_idx].St.y); clamp(_y,-128,127); Kt.y =  _y;
+                int	_z 		= int(127.f*(t.z-items[itm_idx].Ct.z)/items[itm_idx].St.z); clamp(_z,-128,127); Kt.z =  _z;
             }
-            St.div	(127.f);
+            items[itm_idx].St.div	(127.f);
             // save
-            F.w_u8	((t_present?flTKeyPresent:0)|(r_present?0:flRKeyAbsent));
-            if (r_present){	
-                F.w_u32	(crc32(_keysQR,dwLen*sizeof(CKeyQR)));
-                F.w		(_keysQR,dwLen*sizeof(CKeyQR));
+            F.w_u8	((items[itm_idx].t_present?flTKeyPresent:0)|(items[itm_idx].r_present?0:flRKeyAbsent));
+            if (items[itm_idx].r_present){	
+                F.w_u32	(crc32(items[itm_idx]._keysQR,dwLen*sizeof(CKeyQR)));
+                F.w		(items[itm_idx]._keysQR,dwLen*sizeof(CKeyQR));
             }else{
-                F.w		(&R,sizeof(R));
+                F.w		(&items[itm_idx]._keysQR[0],sizeof(items[itm_idx]._keysQR[0]));
             }
-            if (t_present){	
-	            F.w_u32(crc32(_keysQT,u32(dwLen*sizeof(CKeyQT))));
-            	F.w	(_keysQT,dwLen*sizeof(CKeyQT));
-	            F.w_fvector3(St);
-    	        F.w_fvector3(Ct);
+            if (items[itm_idx].t_present){	
+	            F.w_u32(crc32(items[itm_idx]._keysQT,u32(dwLen*sizeof(CKeyQT))));
+            	F.w	(items[itm_idx]._keysQT,dwLen*sizeof(CKeyQT));
+	            F.w_fvector3(items[itm_idx].St);
+    	        F.w_fvector3(items[itm_idx].Ct);
             }else{
-                F.w_fvector3(Mt);
+                F.w_fvector3(items[itm_idx].Mt);
             }
+			items[itm_idx].destroy();
         }
-        // free temp storage
-        xr_free(_keysQR);
-        xr_free(_keysQT);
-        xr_free(_keysT);
+        xr_free(items);
 
         F.close_chunk();
     	pb->Inc		();

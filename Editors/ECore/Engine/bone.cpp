@@ -21,7 +21,7 @@ CBone::CBone()
 {
 	flags.zero		();
     rest_length		= 0;
-	index			= -1;
+	SelfID			= -1;
     parent			= 0;
 
     ResetData		();

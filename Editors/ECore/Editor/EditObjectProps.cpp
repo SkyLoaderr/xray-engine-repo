@@ -65,20 +65,20 @@ void CEditableObject::FillSummaryProps(LPCSTR pref, PropItemVec& items)
 
 ECORE_API AnsiString MakeFullBoneName(CBone* bone)
 {
-	if (bone->Parent()){
-    	return MakeFullBoneName(bone->Parent())+"\\"+bone->Name().c_str();
-    }else{
-    	return bone->Name().c_str();
-    }
+//.	if (bone->Parent()){
+//.    	return MakeFullBoneName(bone->Parent())+"\\"+bone->Name().c_str();
+//.    }else{
+//.    	return bone->Name().c_str();
+//.    }
 }
 
 AnsiString MakeFullBonePath(CBone* bone)
 {
-	if (bone->Parent()){
-    	return MakeFullBoneName(bone->Parent());
-    }else{
-    	return "";
-    }
+//.	if (bone->Parent()){
+//    	return MakeFullBoneName(bone->Parent());
+//	}else{
+//    	return "";
+//	}
 }
 
 void CEditableObject::FillSurfaceList(LPCSTR pref, ListItemsVec& items, int modeID)

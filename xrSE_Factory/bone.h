@@ -144,6 +144,10 @@ struct ECORE_API SJointIKData
 };
 #pragma pack( pop )
 
+// refs
+class CBone;
+DEFINE_VECTOR		    (CBone*,BoneVec,BoneIt);
+
 class ECORE_API CBone
 {
 	shared_str			name;
@@ -166,17 +170,17 @@ class ECORE_API CBone
 
     Fmatrix				render_transform;
 public:
-	int				    index;
+	int				    SelfID;
     CBone*			    parent;
+    BoneVec				children;
 public:
     // editor part
     Flags8			    flags;    
 	enum{
     	flSelected	    = (1<<0),
-        flCalculate	    = (1<<1)
     };
     SJointIKData	    IK_data;
-    shared_str			    game_mtl;
+    shared_str			   game_mtl;
     SBoneShape		    shape;
 
     float			    mass;
@@ -193,8 +197,7 @@ public:
 	shared_str		    Name			(){return name;}
 	shared_str		    ParentName		(){return parent_name;}
 	shared_str		    WMap			(){return wmap;}
-    IC int			    Index			(){return index;}
-    IC CBone*		    Parent			(){return parent;}
+	IC CBone*		    Parent			(){return parent;}
     IC BOOL			    IsRoot			(){return (parent==0);}
 
     // transformation
@@ -245,6 +248,5 @@ public:
     bool 			    ExportOGF		(IWriter& F);
 #endif
 };
-DEFINE_VECTOR		    (CBone*,BoneVec,BoneIt);
 
 #endif

@@ -303,7 +303,6 @@ public:
 	void 			SaveBoneData			(IWriter& F);
     void			ResetBones				();
 	CSMotion*		ResetSAnimation			(bool bGotoBindPose=true);
-	void 			CalculateAnimation		(CBone* bone, CSMotion* motion);
     void			CalculateAnimation		(CSMotion* motion);
     void			CalculateBindPose		();
 	void			GotoBindPose			();

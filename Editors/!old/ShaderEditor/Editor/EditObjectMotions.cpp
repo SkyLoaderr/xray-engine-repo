@@ -78,15 +78,10 @@ CSMotion* CEditableObject::ResetSAnimation(bool bGotoBindPose)
 //----------------------------------------------------
 // Skeletal motion
 //----------------------------------------------------
-static void CalculateAnim(CBone* bone, CSMotion* motion)
+static void CalculateAnim(CBone* bone, CSMotion* motion, Fmatrix& parent)
 {
     Flags8 flags; flags.zero();
-    if (motion) flags = motion->GetMotionFlags(bone->index);
-    
-    CBone* parent_bone = bone->Parent();
-
-    if (parent_bone&&!parent_bone->flags.is(CBone::flCalculate))
-	    CalculateAnim(parent_bone,motion); 
+    if (motion) flags 	= motion->GetMotionFlags(bone->SelfID);
 
     Fmatrix& M 		= bone->_MTransform();
     Fmatrix& L 		= bone->_LTransform();
@@ -95,60 +90,45 @@ static void CalculateAnim(CBone* bone, CSMotion* motion)
     if (flags.is(st_BoneMotion::flWorldOrient)){
         M.setXYZi	(r.x,r.y,r.z);
         M.c.set		(bone->_Offset());
-        L.mul		(parent_bone?parent_bone->_LTransform():Fidentity,M);
+        L.mul		(parent,M);
         L.i.set		(M.i);
         L.j.set		(M.j);
         L.k.set		(M.k);
-		if (parent_bone){ 
-            Fmatrix LI; LI.invert(parent_bone->_LTransform());
-        	M.mulA	(LI);
-        }
+
+        Fmatrix		 LI; LI.invert(parent);
+        M.mulA		(LI);
     }else{
         M.setXYZi	(r.x,r.y,r.z);
         M.c.set		(bone->_Offset());
-        L.mul		(parent_bone?parent_bone->_LTransform():Fidentity,M);
+        L.mul		(parent,M);
     }
 	bone->_RenderTransform().mul_43(bone->_LTransform(),bone->_RITransform());
-
-    bone->flags.set(CBone::flCalculate,TRUE);
+    
+    // Calculate children
+    for (BoneIt b_it=bone->children.begin(); b_it!=bone->children.end(); b_it++)
+    	CalculateAnim	(*b_it,motion,bone->_LTransform());
 }
-static void CalculateRest(CBone* bone)
+static void CalculateRest(CBone* bone, Fmatrix& parent)
 {
-    CBone* parent_bone = bone->Parent();
-
-    if (parent_bone&&!parent_bone->flags.is(CBone::flCalculate))
-	    CalculateRest(parent_bone); 
-
     Fmatrix& R	= bone->_RTransform();
     R.setXYZi	(bone->_RestRotate());
     R.c.set		(bone->_RestOffset());
-    if (parent_bone) R.mulA_43(parent_bone->_RTransform());
+    R.mulA_43	(parent);
     bone->_RITransform().invert(bone->_RTransform());
 
-    bone->flags.set(CBone::flCalculate,TRUE);
-}
-
-void CEditableObject::CalculateAnimation(CBone* bone, CSMotion* motion)
-{
-    for(BoneIt b_it=m_Bones.begin(); b_it!=m_Bones.end(); b_it++)
-		(*b_it)->flags.set(CBone::flCalculate,FALSE);
-	CalculateAnim(bone,motion);
+    // Calculate children
+    for (BoneIt b_it=bone->children.begin(); b_it!=bone->children.end(); b_it++)
+    	CalculateRest	(*b_it,bone->_RTransform());
 }
 
 void CEditableObject::CalculateAnimation(CSMotion* motion)
 {
-    for(BoneIt b_it=m_Bones.begin(); b_it!=m_Bones.end(); b_it++)
-		(*b_it)->flags.set(CBone::flCalculate,FALSE);
-    for(b_it=m_Bones.begin(); b_it!=m_Bones.end(); b_it++)
-		if (!(*b_it)->flags.is(CBone::flCalculate)) CalculateAnim(*b_it,motion);
+	CalculateAnim(m_Bones.front(),motion,Fidentity);
 }
 
 void CEditableObject::CalculateBindPose()
 {
-    for(BoneIt b_it=m_Bones.begin(); b_it!=m_Bones.end(); b_it++)
-		(*b_it)->flags.set(CBone::flCalculate,FALSE);
-    for(b_it=m_Bones.begin(); b_it!=m_Bones.end(); b_it++)
-		if (!(*b_it)->flags.is(CBone::flCalculate)) CalculateRest(*b_it);
+	CalculateRest(m_Bones.front(),Fidentity);
 }
 
 void CEditableObject::SetActiveSMotion(CSMotion* mot)
@@ -316,24 +296,47 @@ void CEditableObject::GenerateSMotionName(char* buffer, const char* start_name, 
     strlwr(buffer);
 }
 
-bool	pred_sort_B(const CBone* A, const CBone* B)	
+ICF bool pred_sort_B(CBone* A, CBone* B)	
 {
-	int p 	= xr_strcmp(A->ParentName(),B->ParentName());
-	int n 	= xr_strcmp(A->Name(),B->Name());
-	return (p<0)||((0==p)&&(n<0));
+	return (xr_strcmp(A->Name().c_str(),B->Name().c_str())<0);
 }
-
+ICF void fill_bones_by_parent(BoneVec& bones,CBone* start)
+{
+    bones.push_back		(start);
+    for (BoneIt b_it=start->children.begin(); b_it!=start->children.end(); b_it++)
+    	fill_bones_by_parent(bones,*b_it);
+}
 void CEditableObject::PrepareBones()
 {
-    std::sort		(m_Bones.begin(),m_Bones.end(),pred_sort_B);
-    // update parenting
+	CBone* PARENT		= 0;
+    // clear empty parent
     for (BoneIt b_it=m_Bones.begin(); b_it!=m_Bones.end(); b_it++){
-        (*b_it)->index 		= b_it-m_Bones.begin();
-        if ((*b_it)->ParentName().size()){
+        BoneIt parent	= std::find_if(m_Bones.begin(),m_Bones.end(),fBoneNameEQ((*b_it)->ParentName()));
+        if (parent==m_Bones.end()){ 
+        	(*b_it)->SetParentName("");
+            VERIFY2		(0==PARENT,"Invalid object. Have more than 1 parent.");
+            PARENT		= *b_it;
+        }else{
             BoneIt parent	= std::find_if(m_Bones.begin(),m_Bones.end(),fBoneNameEQ((*b_it)->ParentName()));
             (*b_it)->parent	= (parent==m_Bones.end())?0:*parent;
         }
     }
+    // sort by name
+    std::sort(m_Bones.begin(),m_Bones.end(),pred_sort_B);
+    // fill children
+    for (b_it=m_Bones.begin(); b_it!=m_Bones.end(); b_it++){
+        BoneIt parent	= std::find_if(m_Bones.begin(),m_Bones.end(),fBoneNameEQ((*b_it)->ParentName()));
+        if (parent!=m_Bones.end()) (*parent)->children.push_back(*b_it);
+    }
+    // manual sort
+    u32 b_cnt			= m_Bones.size();
+    m_Bones.clear		();
+    fill_bones_by_parent(m_Bones,PARENT);
+    VERIFY				(b_cnt==m_Bones.size());
+    // update SelfID
+    for (b_it=m_Bones.begin(); b_it!=m_Bones.end(); b_it++)
+        (*b_it)->SelfID		= b_it-m_Bones.begin();
+    VERIFY(0==m_Bones.front()->parent);
 /*    
     for (b_it=m_Bones.begin(); b_it!=m_Bones.end(); b_it++)
     	Msg("%20s - %20s",(*b_it)->Name().c_str(),(*b_it)->ParentName().c_str());
@@ -391,7 +394,7 @@ void CEditableObject::GetBoneWorldTransform(u32 bone_idx, float t, CSMotion* mot
     int idx	= bone_idx;
     matrix.identity();
     IntVec lst;
-    do{ lst.push_back(idx); }while((idx=m_Bones[idx]->Parent()?m_Bones[idx]->Parent()->index:-1)>-1);
+    do{ lst.push_back(idx); }while((idx=m_Bones[idx]->Parent()?m_Bones[idx]->Parent()->SelfID:-1)>-1);
     for (int i=lst.size()-1; i>=0; i--){
     	idx = lst[i];
 	    Flags8 flags	= motion->GetMotionFlags(idx);
