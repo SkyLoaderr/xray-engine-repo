@@ -526,10 +526,10 @@ void game_cl_mp::OnPlayerKilled			(NET_Packet& P)
 					if (pAnomaly)
 					{
 						KMS.m_initiator.m_shader = GetKillEventIconsShader();
-						KMS.m_initiator.m_rect.x1 = 0*KILLEVENT_GRID_WIDTH;
-						KMS.m_initiator.m_rect.y1 = 0*KILLEVENT_GRID_HEIGHT;
-						KMS.m_initiator.m_rect.x2 = KMS.m_initiator.m_rect.x1 + 1*KILLEVENT_GRID_WIDTH;
-						KMS.m_initiator.m_rect.y2 = KMS.m_initiator.m_rect.y1 + 1*KILLEVENT_GRID_HEIGHT;
+						KMS.m_initiator.m_rect.x1 = 1;//0*KILLEVENT_GRID_WIDTH;
+						KMS.m_initiator.m_rect.y1 = 202;//0*KILLEVENT_GRID_HEIGHT;
+						KMS.m_initiator.m_rect.x2 = KMS.m_initiator.m_rect.x1 + 31;//1*KILLEVENT_GRID_WIDTH;
+						KMS.m_initiator.m_rect.y2 = KMS.m_initiator.m_rect.y1 + 30;//1*KILLEVENT_GRID_HEIGHT;
 						break;
 					}
 				};
@@ -554,10 +554,10 @@ void game_cl_mp::OnPlayerKilled			(NET_Packet& P)
 						Color_Weapon);					
 
 					KMS.m_ext_info.m_shader = GetKillEventIconsShader();
-					KMS.m_ext_info.m_rect.x1 = 2*KILLEVENT_GRID_WIDTH;
-					KMS.m_ext_info.m_rect.y1 = 0*KILLEVENT_GRID_HEIGHT;
-					KMS.m_ext_info.m_rect.x2 = KMS.m_ext_info.m_rect.x1 + 1*KILLEVENT_GRID_WIDTH;
-					KMS.m_ext_info.m_rect.y2 = KMS.m_ext_info.m_rect.y1 + 1*KILLEVENT_GRID_HEIGHT;
+					KMS.m_ext_info.m_rect.x1 = 62;//2*KILLEVENT_GRID_WIDTH;
+					KMS.m_ext_info.m_rect.y1 = 202;//0*KILLEVENT_GRID_HEIGHT;
+					KMS.m_ext_info.m_rect.x2 = KMS.m_ext_info.m_rect.x1 + 26;//1*KILLEVENT_GRID_WIDTH;
+					KMS.m_ext_info.m_rect.y2 = KMS.m_ext_info.m_rect.y1 + 30;//1*KILLEVENT_GRID_HEIGHT;
 				}break;
 			case 2:		// BackStab
 				{
@@ -567,10 +567,10 @@ void game_cl_mp::OnPlayerKilled			(NET_Packet& P)
 						Color_Weapon);
 
 					KMS.m_initiator.m_shader = GetKillEventIconsShader();
-					KMS.m_initiator.m_rect.x1 = 3*KILLEVENT_GRID_WIDTH;
-					KMS.m_initiator.m_rect.y1 = 0*KILLEVENT_GRID_HEIGHT;
-					KMS.m_initiator.m_rect.x2 = KMS.m_initiator.m_rect.x1 + 1*KILLEVENT_GRID_WIDTH;
-					KMS.m_initiator.m_rect.y2 = KMS.m_initiator.m_rect.y1 + 1*KILLEVENT_GRID_HEIGHT;
+					KMS.m_initiator.m_rect.x1 = 88;//3*KILLEVENT_GRID_WIDTH;
+					KMS.m_initiator.m_rect.y1 = 202;//0*KILLEVENT_GRID_HEIGHT;
+					KMS.m_initiator.m_rect.x2 = KMS.m_initiator.m_rect.x1 + 30;//1*KILLEVENT_GRID_WIDTH;
+					KMS.m_initiator.m_rect.y2 = KMS.m_initiator.m_rect.y1 + 30;//1*KILLEVENT_GRID_HEIGHT;
 					
 				}break;
 			}
@@ -583,10 +583,10 @@ void game_cl_mp::OnPlayerKilled			(NET_Packet& P)
 //				KMS.m_victim.m_name = " ";
 
 				KMS.m_ext_info.m_shader = GetKillEventIconsShader();
-				KMS.m_ext_info.m_rect.x1 = 1*KILLEVENT_GRID_WIDTH;
-				KMS.m_ext_info.m_rect.y1 = 0*KILLEVENT_GRID_HEIGHT;
-				KMS.m_ext_info.m_rect.x2 = KMS.m_ext_info.m_rect.x1 + 1*KILLEVENT_GRID_WIDTH;
-				KMS.m_ext_info.m_rect.y2 = KMS.m_ext_info.m_rect.y1 + 1*KILLEVENT_GRID_HEIGHT;
+				KMS.m_ext_info.m_rect.x1 = 32;//1*KILLEVENT_GRID_WIDTH;
+				KMS.m_ext_info.m_rect.y1 = 202;//0*KILLEVENT_GRID_HEIGHT;
+				KMS.m_ext_info.m_rect.x2 = KMS.m_ext_info.m_rect.x1 + 30;//1*KILLEVENT_GRID_WIDTH;
+				KMS.m_ext_info.m_rect.y2 = KMS.m_ext_info.m_rect.y1 + 30;//1*KILLEVENT_GRID_HEIGHT;
 			};
 
 		}break;
@@ -601,10 +601,10 @@ void game_cl_mp::OnPlayerKilled			(NET_Packet& P)
 				pKiller ? pKiller->name : *(pOKiller->cName()));
 
 			KMS.m_initiator.m_shader = GetBloodLossIconsShader();
-			KMS.m_initiator.m_rect.x1 = 0*KILLEVENT_GRID_WIDTH;
-			KMS.m_initiator.m_rect.y1 = 0*KILLEVENT_GRID_HEIGHT;
-			KMS.m_initiator.m_rect.x2 = KMS.m_initiator.m_rect.x1 + 1*KILLEVENT_GRID_WIDTH;
-			KMS.m_initiator.m_rect.y2 = KMS.m_initiator.m_rect.y1 + 1*KILLEVENT_GRID_HEIGHT;
+			KMS.m_initiator.m_rect.x1 = 238;//0*KILLEVENT_GRID_WIDTH;
+			KMS.m_initiator.m_rect.y1 = 31;//0*KILLEVENT_GRID_HEIGHT;
+			KMS.m_initiator.m_rect.x2 = KMS.m_initiator.m_rect.x1 + 17;//1*KILLEVENT_GRID_WIDTH;
+			KMS.m_initiator.m_rect.y2 = KMS.m_initiator.m_rect.y1 + 26;//1*KILLEVENT_GRID_HEIGHT;
 
 			if (!pKiller)
 			{
@@ -612,10 +612,10 @@ void game_cl_mp::OnPlayerKilled			(NET_Packet& P)
 				if (pAnomaly)
 				{
 					KMS.m_ext_info.m_shader = GetKillEventIconsShader();
-					KMS.m_ext_info.m_rect.x1 = 0*KILLEVENT_GRID_WIDTH;
-					KMS.m_ext_info.m_rect.y1 = 0*KILLEVENT_GRID_HEIGHT;
-					KMS.m_ext_info.m_rect.x2 = KMS.m_ext_info.m_rect.x1 + 1*KILLEVENT_GRID_WIDTH;
-					KMS.m_ext_info.m_rect.y2 = KMS.m_ext_info.m_rect.y1 + 1*KILLEVENT_GRID_HEIGHT;
+						KMS.m_ext_info.m_rect.x1 = 1;//0*KILLEVENT_GRID_WIDTH;
+						KMS.m_ext_info.m_rect.y1 = 202;//0*KILLEVENT_GRID_HEIGHT;
+						KMS.m_ext_info.m_rect.x2 = KMS.m_ext_info.m_rect.x1 + 31;//1*KILLEVENT_GRID_WIDTH;
+						KMS.m_ext_info.m_rect.y2 = KMS.m_ext_info.m_rect.y1 + 30;//1*KILLEVENT_GRID_HEIGHT;
 					break;
 				}
 			};
@@ -634,10 +634,10 @@ void game_cl_mp::OnPlayerKilled			(NET_Packet& P)
 				Color_Radiation);
 
 			KMS.m_initiator.m_shader = GetRadiationIconsShader();
-			KMS.m_initiator.m_rect.x1 = 0*KILLEVENT_GRID_WIDTH;
-			KMS.m_initiator.m_rect.y1 = 0*KILLEVENT_GRID_HEIGHT;
-			KMS.m_initiator.m_rect.x2 = KMS.m_initiator.m_rect.x1 + 1*KILLEVENT_GRID_WIDTH;
-			KMS.m_initiator.m_rect.y2 = KMS.m_initiator.m_rect.y1 + 1*KILLEVENT_GRID_HEIGHT;
+			KMS.m_initiator.m_rect.x1 = 215;//0*KILLEVENT_GRID_WIDTH;
+			KMS.m_initiator.m_rect.y1 = 195;//0*KILLEVENT_GRID_HEIGHT;
+			KMS.m_initiator.m_rect.x2 = KMS.m_initiator.m_rect.x1 + 24;//1*KILLEVENT_GRID_WIDTH;
+			KMS.m_initiator.m_rect.y2 = KMS.m_initiator.m_rect.y1 + 24;//1*KILLEVENT_GRID_HEIGHT;
 
 		}break;
 	default:

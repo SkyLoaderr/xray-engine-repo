@@ -11,6 +11,7 @@
 #include "Spectator.h"
 #include "Inventory.h"
 #include "xrserver_objects_alife_items.h"
+#include "xr_level_controller.h"
 
 #include "game_cl_Deathmatch.h"
 
@@ -190,3 +191,25 @@ void CUIGameDM::SetVoteTimeResultMsg			(LPCSTR str)
 {
 	m_gameCaptions.setCaption(m_votetimeresult_caption, str, VOTE0_MSG_COLOR, true);
 }
+
+bool		CUIGameDM::IR_OnKeyboardPress		(int dik)
+{
+	if(inherited::IR_OnKeyboardPress(dik)) return true;
+
+	switch (key_binding[dik])
+	{
+	case kINVENTORY: 
+	case kBUY:
+	case kSKIN:
+	case kTEAM:
+		{
+			return Game().OnKeyboardPress(key_binding[dik]);
+		}break;
+	}
+	return false;
+};
+
+bool		CUIGameDM::IR_OnKeyboardRelease	(int dik)
+{
+	return false;
+};
