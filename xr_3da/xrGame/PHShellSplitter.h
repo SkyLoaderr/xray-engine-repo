@@ -50,6 +50,7 @@ virtual					~CPHShellSplitterHolder();
 		void			Activate();
 		void			Deactivate();
 		void			AddSplitter(CPHShellSplitter::EType type,u16 element,u16 joint);
+		void			AddSplitter(CPHShellSplitter::EType type,u16 element,u16 joint,u16 position);
 		void			SplitProcess(PHSHELL_PAIR_VECTOR &out_shels);
 		void			AddToGeomMap(const id_geom& id_rootgeom);
 		u16				FindRootGeom (u16 bone_id);

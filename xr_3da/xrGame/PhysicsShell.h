@@ -61,7 +61,7 @@ public:
 	virtual void			GetGlobalTransformDynamic(Fmatrix* m)											= 0;
 	virtual void			InterpolateGlobalPosition (Fvector* v)											= 0;
 	virtual void			GetGlobalPositionDynamic (Fvector* v)											= 0;
-
+	virtual bool			isBreakable				()														= 0;
 	virtual void			Deactivate				()														= 0;
 	virtual void			Enable					()														= 0;
 	
@@ -220,7 +220,7 @@ IC	CKinematics*				PKinematics				()					{return m_pKinematics;};
 	virtual	void				add_Element				(CPhysicsElement* E)								= 0;
 	virtual	void				add_Joint				(CPhysicsJoint* E)									= 0;
 
-	virtual bool				isBreakable				()													= 0;
+
 	virtual bool				isFractured				()													= 0;
 	virtual void				SplitProcess			(PHSHELL_PAIR_VECTOR &out_shels)					= 0;
 	virtual void				applyImpulseTrace		(const Fvector& pos, const Fvector& dir, float val)	= 0;

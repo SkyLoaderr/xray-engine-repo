@@ -177,9 +177,10 @@ virtual ~CPHShell				()
 private:
 	//breakable
 	void setEndElementSplitter	  ();
-	void setElementSplitter		  (u16 element_number);
+	void setElementSplitter		  (u16 element_number,u16 splitter_position);
 	void setEndJointSplitter	  ();
 	void AddSplitter			  (CPHShellSplitter::EType type,u16 element,u16 joint);
+	void AddSplitter			  (CPHShellSplitter::EType type,u16 element,u16 joint,u16 position);
 	/////////////////////////////////////////
 	void AddElementRecursive(CPhysicsElement* root_e, u16 id,Fmatrix global_parent,u16 element_number);
 	void ZeroCallbacksRecursive(u16 id);

@@ -236,8 +236,20 @@ if(spl_inf.m_end_jt_num!=u16(-1))
 		}
 		if(elem!=u16(-1) ) elem=elem-passed_shift_e;
 		if(joint!=u16(-1)) joint=joint-passed_shift_j;
+
 	}
+
 	SPLITTER_I i_to = spl_i;
+
+	//corect data for all rest splitters
+	for(;spl_i!=spl_e;++spl_i)
+	{
+		u16	&elem	= spl_i->m_element;
+		u16 &joint  = spl_i->m_joint;
+		if(elem!=u16(-1)) elem=elem-shift_e;
+		if(joint!=u16(-1)) joint=joint-shift_j;
+	}
+
 	dest_holder->m_splitters.insert(dest_holder->m_splitters.end(),i_from,i_to);
 	m_splitters.erase(i_from,i_to);
 }
@@ -251,8 +263,8 @@ shell_root CPHShellSplitterHolder::ElementSingleSplit(const element_fracture &sp
 	CPhysicsShell *new_shell_last=P_create_Shell();
 	CPHShell	  *new_shell_last_desc=dynamic_cast<CPHShell*>(new_shell_last);
 	new_shell_last->mXFORM.set(m_pShell->mXFORM);
-	const u16& start_joint=split_elem.second.m_start_jt_num;
-	const u16& end_joint=split_elem.second.m_end_jt_num;
+	const u16 start_joint=split_elem.second.m_start_jt_num;
+	const u16 end_joint=split_elem.second.m_end_jt_num;
 	//it is not right for multiple joints attached to the unsplited part becource all these need to be reattached
 	if(start_joint!=end_joint)
 	{
@@ -271,11 +283,11 @@ shell_root CPHShellSplitterHolder::ElementSingleSplit(const element_fracture &sp
 	//m_splitters.erase(m_splitters.begin()+aspl);
 	//now aspl points to the next splitter
 	if((split_elem.first)->FracturesHolder())//if this element can be splitted add a splitter for it
-		new_shell_last_desc->AddSplitter(CPHShellSplitter::splElement,0,0);//
+		new_shell_last_desc->AddSplitter(CPHShellSplitter::splElement,0,u16(-1));//
 	
 	new_shell_last_desc->add_Element(split_elem.first);
 	//pass splitters taking into account that one element was olready added
-	PassEndSplitters(split_elem.second,new_shell_last_desc,1,0);
+	PassEndSplitters(split_elem.second,new_shell_last_desc,0,0);
 
 
 	new_shell_last_desc->PresetActive();
@@ -283,7 +295,7 @@ shell_root CPHShellSplitterHolder::ElementSingleSplit(const element_fracture &sp
 
 	//InitNewShell(new_shell_last_desc);//this cretes space for the shell and add elements to it,place elements to attach joints.....
 
-	m_pShell->PassEndJoints(split_elem.second.m_end_jt_num,split_elem.second.m_end_jt_num,new_shell_last_desc);
+	m_pShell->PassEndJoints(split_elem.second.m_start_jt_num,split_elem.second.m_end_jt_num,new_shell_last_desc);
 
 
 
@@ -321,17 +333,18 @@ void CPHShellSplitterHolder::SplitProcess(PHSHELL_PAIR_VECTOR &out_shels)
 	u16 i=u16(m_splitters.size()-1);
 	for(;u16(-1)!=i;--i)
 	{
-		switch(m_splitters[i].m_type) 
-		{
-		case CPHShellSplitter::splJoint:
-			out_shels.push_back(SplitJoint(i));
+		if(m_splitters[i].m_breaked)
+			switch(m_splitters[i].m_type) 
+			{
+			case CPHShellSplitter::splJoint:
+				out_shels.push_back(SplitJoint(i));
 
-			break;
-		case CPHShellSplitter::splElement:
-			SplitElement(i,out_shels);
-			break;
-		default: NODEFAULT;
-		}
+				break;
+			case CPHShellSplitter::splElement:
+				SplitElement(i,out_shels);
+				break;
+			default: NODEFAULT;
+			}
 	}
 	m_has_breaks=false;
 }
@@ -373,16 +386,17 @@ void CPHShellSplitterHolder::PhDataUpdate(dReal step)
 				CPHElement* element=m_pShell->elements[i->m_element];
 				dBodyID body=element->get_body();
 				if(!dBodyIsEnabled(body)) return;
-				m_has_breaks=(element->FracturesHolder()->PhDataUpdate(element))||m_has_breaks;
+				i->m_breaked=(element->FracturesHolder()->PhDataUpdate(element))||i->m_breaked;
 				break;
 			}
 		case CPHShellSplitter::splJoint:
 			{
-				m_has_breaks=m_pShell->joints[i->m_joint]->JointDestroyInfo()->Update()||m_has_breaks;
+				i->m_breaked=m_pShell->joints[i->m_joint]->JointDestroyInfo()->Update()||i->m_breaked;
 				break;
 			}
 		default: NODEFAULT;
 		}
+		m_has_breaks=m_has_breaks||i->m_breaked;
 	}
 }
 void CPHShellSplitterHolder::Activate()
@@ -401,6 +415,10 @@ void CPHShellSplitterHolder::Deactivate()
 void CPHShellSplitterHolder::AddSplitter(CPHShellSplitter::EType type,u16 element,u16 joint)
 {
 	m_splitters.push_back(CPHShellSplitter(type,element,joint));
+}
+void CPHShellSplitterHolder::AddSplitter(CPHShellSplitter::EType type,u16 element,u16 joint,u16 position)
+{
+	m_splitters.insert(m_splitters.begin()+position,CPHShellSplitter(type,element,joint));
 }
 CPHShellSplitter::CPHShellSplitter(CPHShellSplitter::EType type,u16 element,u16 joint)
 {
