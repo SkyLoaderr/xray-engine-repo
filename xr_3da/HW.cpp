@@ -186,16 +186,16 @@ DWORD CHW::CreateDevice		(HWND m_hWnd,DWORD &dwWidth,DWORD &dwHeight)
 	switch (GPU)
 	{
 	case D3DCREATE_SOFTWARE_VERTEXPROCESSING:
-		Log("* Geometry Processor: SOFTWARE");
+		Log	("* Geometry Processor: SOFTWARE");
 		break;
 	case D3DCREATE_MIXED_VERTEXPROCESSING:
-		Log("* Geometry Processor: MIXED");
+		Log	("* Geometry Processor: MIXED");
 		break;
 	case D3DCREATE_HARDWARE_VERTEXPROCESSING:
-		Log("* Geometry Processor: HARDWARE");
+		Log	("* Geometry Processor: HARDWARE");
 		break;
 	case D3DCREATE_HARDWARE_VERTEXPROCESSING|D3DCREATE_PUREDEVICE:
-		Log("* Geometry Processor: PURE HARDWARE");
+		Log	("* Geometry Processor: PURE HARDWARE");
 		break;
 	}
 
@@ -204,7 +204,8 @@ DWORD CHW::CreateDevice		(HWND m_hWnd,DWORD &dwWidth,DWORD &dwHeight)
 	R_CHK	(pDevice->GetRenderTarget			(&pBaseRT));
 	R_CHK	(pDevice->GetDepthStencilSurface	(&pBaseZB));
 	R_CHK	(pDevice->CreateDepthStencilSurface	(512,512,fDepth,D3DMULTISAMPLE_NONE,&pTempZB));
-	
+	DWORD	memory								= pDevice->GetAvailableTextureMem	();
+	Log		("* Texture memory:     %d M",		memory/1024);
 	return dwWindowStyle;
 }
 
