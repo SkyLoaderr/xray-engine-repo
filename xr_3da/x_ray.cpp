@@ -242,8 +242,6 @@ void CApplication::OnEvent(EVENT E, DWORD P1, DWORD P2)
 			Console.Show			();
 		}
 	}
-	Engine.mem_Compact	();
-	Msg					("* MEMORY USAGE: %d K",Engine.mem_Usage()/1024);
 }
 
 /*

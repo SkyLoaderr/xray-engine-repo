@@ -93,6 +93,11 @@ void CRenderDevice::End		(void)
 	{
 		dwPrecacheFrame	--;
 		CHK_DX			(HW.pDevice->Clear(0,0,D3DCLEAR_TARGET,D3DCOLOR_ARGB(0,0,0,0),1,0));
+		if (0==dwPrecacheFrame)
+		{
+			Engine.mem_Compact	();
+			Msg					("* MEMORY USAGE: %d K",Engine.mem_Usage()/1024);
+		}
 	}
 
 	// end scene
