@@ -6,7 +6,8 @@
     <PROJECT value="x:\xrLC_Options.dll"/>
     <OBJFILES value="Intermediate\xrLC_OptionsEntry.obj Intermediate\stdafx.obj 
       Intermediate\SceneProperties.obj Intermediate\ColorPicker.obj 
-      Intermediate\FileSystem.obj Intermediate\Log.obj Intermediate\Engine.obj"/>
+      Intermediate\FileSystem.obj Intermediate\Log.obj Intermediate\Engine.obj 
+      Intermediate\defines.obj"/>
     <RESFILES value=""/>
     <IDLFILES value=""/>
     <IDLGENFILES value=""/>
@@ -16,7 +17,7 @@
     <LIBRARIES value="elpackB6.lib editor.lib vclx.lib bcbsmp.lib"/>
     <SPARELIBS value="rtl.lib vcl.lib bcbsmp.lib vclx.lib editor.lib elpackB6.lib"/>
     <PACKAGES value="rtl.bpi vcl.bpi"/>
-    <PATHCPP value=".;Editor"/>
+    <PATHCPP value=".;Editor;Engine"/>
     <PATHPAS value=".;"/>
     <PATHRC value=".;"/>
     <PATHASM value=".;"/>
@@ -60,6 +61,7 @@
       <FILE FILENAME="Editor\Log.cpp" FORMNAME="" UNITNAME="Log" CONTAINERID="CCompiler" DESIGNCLASS="" LOCALCOMMAND=""/>
       <FILE FILENAME="Lib\ETools.lib" FORMNAME="" UNITNAME="ETools" CONTAINERID="LibTool" DESIGNCLASS="" LOCALCOMMAND=""/>
       <FILE FILENAME="Editor\Engine.cpp" FORMNAME="" UNITNAME="Engine" CONTAINERID="CCompiler" DESIGNCLASS="" LOCALCOMMAND=""/>
+      <FILE FILENAME="Engine\defines.cpp" FORMNAME="" UNITNAME="defines" CONTAINERID="CCompiler" DESIGNCLASS="" LOCALCOMMAND=""/>
   </FILELIST>
   <BUILDTOOLS>
   </BUILDTOOLS>
