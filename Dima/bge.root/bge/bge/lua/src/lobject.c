@@ -163,7 +163,7 @@ void luaO_chunkid (char *out, const char *source, int bufflen) {
   }
   else {  /* out = "source", or "...source" */
     if (*source == '@') {
-      int l;
+      size_t l;
       source++;  /* skip the `@' */
       bufflen -= sizeof(" `...' ");
       l = xr_strlen(source);

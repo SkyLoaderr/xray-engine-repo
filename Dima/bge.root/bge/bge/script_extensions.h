@@ -16,8 +16,6 @@
 
 #include "src/xr_LuaAllocator.h"
 
-#define LUA_API
-
 #define xr_strlen strlen
 #define xr_strcpy strcpy
 #define xr_strcmp strcmp
