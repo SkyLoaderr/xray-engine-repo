@@ -122,6 +122,7 @@ public:
 	}
 	virtual bool 			is_true							()											{b_obsolete=CPHScriptObjectConditionN::is_true();return b_obsolete;}
 	virtual bool			compare							(const	CObject* v)			const			{return m_obj->ID()==v->ID();}
+	virtual bool			compare							(const	CPHReqComparerV* v)	const			{return v->compare(this);}
 	virtual bool			obsolete						()							const			{return b_obsolete;}
 };
 
@@ -135,6 +136,7 @@ public:
 	{
 		m_obj=gobj;
 	}
+	virtual bool			compare							(const	CPHReqComparerV* v)	const			{return v->compare(this);}
 	virtual bool			compare							(const	CObject* v)			const			{return m_obj->ID()==v->ID();}
 };
 
