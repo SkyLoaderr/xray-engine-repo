@@ -111,5 +111,4 @@ protected:
 	//кадры момента пересчета XFORM и FirePos
 	u32						dwFP_Frame;
 	u32						dwXF_Frame;
-	u32						dwHudUpdate_Frame;
 };

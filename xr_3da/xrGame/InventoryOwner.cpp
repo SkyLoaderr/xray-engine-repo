@@ -202,10 +202,14 @@ void CInventoryOwner::ReceivePdaMessage(u16 who, EPdaMsg msg, int info_index)
 	//Запустить скриптовый callback
 	CGameObject* pThisGameObject = dynamic_cast<CGameObject*>(this);
 	VERIFY(pThisGameObject);
-	CGameObject* pWhoGameObject = dynamic_cast<CGameObject*>(Level().Objects.net_Find(who));
-	VERIFY(pWhoGameObject);
+	CPda* pWhoPda = dynamic_cast<CPda*>(Level().Objects.net_Find(who));
+	VERIFY(pWhoPda);
+	CGameObject* pWho = dynamic_cast<CGameObject*>(pWhoPda->H_Parent());
 
-	SCRIPT_CALLBACK_EXECUTE_4(m_pPdaCallback, pThisGameObject->lua_game_object(), pWhoGameObject->lua_game_object(), (int)msg, info_index);
+ 	SCRIPT_CALLBACK_EXECUTE_4(m_pPdaCallback, 
+							  pThisGameObject->lua_game_object(),
+							  pWho->lua_game_object(), (int)msg,
+							  info_index);
 }
 
 

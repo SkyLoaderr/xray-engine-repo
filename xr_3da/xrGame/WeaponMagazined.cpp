@@ -764,20 +764,20 @@ void CWeaponMagazined::PlayAnimShow()
 
 void CWeaponMagazined::PlayAnimHide()
 {
-	m_pHUD->animPlay (mhud_hide[Random.randI(mhud_hide.size())],FALSE,this);
+	m_pHUD->animPlay (mhud_hide[Random.randI(mhud_hide.size())],TRUE,this);
 }
 
 void CWeaponMagazined::PlayAnimReload()
 {
-	m_pHUD->animPlay(mhud_reload[Random.randI(mhud_reload.size())],FALSE,this);
+	m_pHUD->animPlay(mhud_reload[Random.randI(mhud_reload.size())],TRUE,this);
 }
 
 void CWeaponMagazined::PlayAnimIdle()
 {
 	if(IsZoomed())
-		m_pHUD->animPlay(mhud_idle[Random.randI(mhud_idle_aim.size())]);
+		m_pHUD->animPlay(mhud_idle_aim[Random.randI(mhud_idle_aim.size())], TRUE);
 	else
-		m_pHUD->animPlay(mhud_idle[Random.randI(mhud_idle.size())]);
+		m_pHUD->animPlay(mhud_idle[Random.randI(mhud_idle.size())], TRUE);
 }
 void CWeaponMagazined::PlayAnimShoot()
 {

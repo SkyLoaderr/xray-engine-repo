@@ -180,6 +180,7 @@ void CAI_Trader::OnEvent		(NET_Packet& P, u16 type)
 			Obj = Level().Objects.net_Find	(id);
 			if(g_Alive() && inventory().Take(dynamic_cast<CGameObject*>(Obj))) Obj->H_SetParent(this);
 			break;
+		case GE_TRADE_SELL:
 		case GE_OWNERSHIP_REJECT:
 			P.r_u16		(id);
 			Obj = Level().Objects.net_Find	(id);
@@ -193,13 +194,16 @@ void CAI_Trader::OnEvent		(NET_Packet& P, u16 type)
 			P.r_u16		(id);
 			Obj			= Level().Objects.net_Find	(id);
 			
-			if(g_Alive() && m_trade_storage->Take(dynamic_cast<CGameObject*>(Obj), true)) Obj->H_SetParent(this);
+			if(g_Alive() && m_trade_storage->Take(dynamic_cast<CGameObject*>(Obj), true)) 
+				Obj->H_SetParent(this);
+
 			break;
-		case GE_TRADE_SELL:
+/*		case GE_TRADE_SELL:
 			P.r_u16		(id);
 			Obj			= Level().Objects.net_Find	(id);
-			if	(m_trade_storage->Drop(dynamic_cast<CGameObject*>(Obj))) Obj->H_SetParent(0);
-			break;
+			if	(m_trade_storage->Drop(dynamic_cast<CGameObject*>(Obj))) 
+				Obj->H_SetParent(0);
+			break;*/
 	}
 }
 

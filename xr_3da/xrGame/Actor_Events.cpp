@@ -34,7 +34,7 @@ void CActor::OnEvent		(NET_Packet& P, u16 type)
 
 			if(inventory().Take(dynamic_cast<CGameObject*>(O))) 
 			{
-				O->H_SetParent(this);
+				O->H_SetParent(dynamic_cast<CObject*>(this));
 				
 
 				//добавить новый артефакт в меню, если

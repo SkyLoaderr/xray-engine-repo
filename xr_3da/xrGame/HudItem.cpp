@@ -123,10 +123,6 @@ void CHudItem::PlaySound(HUD_SOUND& hud_snd,
 
 void CHudItem::renderable_Render()
 {
-	//CActor *pActor = dynamic_cast<CActor*>(H_Parent());
-	//if (m_pHUD && pActor && hud_mode && 
-	//	!IsHidden() &&	!m_pHUD->IsHidden())
-
 	if(hud_mode && !m_pHUD->IsHidden() && !IsHidden())
 	{ 
 		// HUD render
@@ -220,11 +216,6 @@ void CHudItem::Deactivate()
 
 void CHudItem::UpdateHudPosition	()
 {
-	if (Device.dwFrame == dwHudUpdate_Frame) 
-		return;
-	
-	dwHudUpdate_Frame = Device.dwFrame;
-
 	if (m_pHUD && hud_mode)
 	{
 		Fmatrix							trans;

@@ -369,8 +369,6 @@ void CMissile::UpdateXForm()
 		mRes.set		(R,N,D,mR.c);
 		mRes.mulA_43	(E->XFORM());
 		UpdatePosition	(mRes);
-		
-		UpdateHudPosition	();
 	}
 }
 

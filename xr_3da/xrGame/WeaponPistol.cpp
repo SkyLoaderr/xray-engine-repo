@@ -58,9 +58,9 @@ void CWeaponPistol::PlayAnimShow	()
 void CWeaponPistol::PlayAnimIdle	()
 {
 	if(m_opened) 
-		m_pHUD->animPlay(mhud_empty[Random.randI(mhud_empty.size())]);
+		m_pHUD->animPlay(mhud_empty[Random.randI(mhud_empty.size())],TRUE);
 	else 
-		m_pHUD->animPlay(mhud_idle[Random.randI(mhud_idle.size())]);
+		m_pHUD->animPlay(mhud_idle[Random.randI(mhud_idle.size())],TRUE);
 }
 
 void CWeaponPistol::PlayAnimReload	()
@@ -90,12 +90,12 @@ void CWeaponPistol::PlayAnimShoot	()
 {
 	if(iAmmoElapsed > 1) 
 	{
-		m_pHUD->animPlay	(mhud_shots[Random.randI(mhud_shots.size())],TRUE,this);
+		m_pHUD->animPlay	(mhud_shots[Random.randI(mhud_shots.size())],FALSE,this);
 		m_opened = false;
 	}
 	else 
 	{
-		m_pHUD->animPlay	(mhud_shot_l[Random.randI(mhud_shot_l.size())],TRUE,this); 
+		m_pHUD->animPlay	(mhud_shot_l[Random.randI(mhud_shot_l.size())],FALSE,this); 
 		m_opened = true; 
 	}
 }

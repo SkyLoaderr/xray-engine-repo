@@ -130,8 +130,6 @@ void CWeapon::UpdateXForm	()
 		mRes.set		(R,N,D,mR.c);
 		mRes.mulA_43	(E->XFORM());
 		UpdatePosition	(mRes);
-
-		UpdateHudPosition	();
 	}
 }
 
@@ -1096,11 +1094,6 @@ bool CWeapon::ready_to_kill	() const
 //просчитывается смещения HUD в режиме приближения
 void CWeapon::UpdateHudPosition	()
 {
-	if (Device.dwFrame == dwHudUpdate_Frame) 
-		return;
-	
-	dwHudUpdate_Frame = Device.dwFrame;
-
 	if (m_pHUD && hud_mode)
 	{
 		Fmatrix							trans;
