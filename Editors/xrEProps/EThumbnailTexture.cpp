@@ -136,13 +136,13 @@ void ETextureThumbnail::FillProp(PropItemVec& items)
 //------------------------------------------------------------------------------
 
 void ETextureThumbnail::FillInfo(PropItemVec& items)
-{
+{            
 	STextureParams& F			= m_TexParams;
-    PHelper.CreateCaption		(items, "Format",					tfmt_token[F.fmt].name	);
-    PHelper.CreateCaption		(items, "Type",						ttype_token[F.type].name);
-    PHelper.CreateCaption		(items, "Width",					_Width());
-    PHelper.CreateCaption		(items, "Height",					_Height());
-    PHelper.CreateCaption		(items, "Alpha",					_Alpha()?"on":"off");
+    PHelper().CreateCaption		(items, "Format",					tfmt_token[F.fmt].name	);
+    PHelper().CreateCaption		(items, "Type",						ttype_token[F.type].name);
+    PHelper().CreateCaption		(items, "Width",					ref_str().sprintf("%d",_Width()));
+    PHelper().CreateCaption		(items, "Height",					ref_str().sprintf("%d",_Height()));
+    PHelper().CreateCaption		(items, "Alpha",					_Alpha()?"on":"off");
 }
 //------------------------------------------------------------------------------
 

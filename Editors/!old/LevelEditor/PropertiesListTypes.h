@@ -4,22 +4,19 @@
 
 #include "WaveForm.H"
 
+#ifdef __BORLANDC__    
+#	include "ElTree.hpp"
+#endif
 //---------------------------------------------------------------------------
 enum EPropType{
 	PROP_UNDEF		= -1,
 	PROP_CAPTION	= 0x1000,
 	PROP_BUTTON,
     PROP_CHOOSE,
-	PROP_S8,
-	PROP_S16,
-	PROP_S32,
-	PROP_U8,
-	PROP_U16,
-	PROP_U32,
-	PROP_FLOAT,
+	PROP_NUMERIC,	// {u8,u16,u32,s8,s16,s32,f32}
 	PROP_BOOLEAN,
 	PROP_FLAG,
-    PROP_VECTOR,
+    PROP_VECTOR, 
 	PROP_TOKEN,
 	PROP_RTOKEN,
     PROP_SH_TOKEN,
@@ -27,8 +24,7 @@ enum EPropType{
 	PROP_COLOR,
 	PROP_FCOLOR,
 	PROP_VCOLOR,
-	PROP_TEXT,
-	PROP_R_TEXT,
+	PROP_RTEXT,
 	PROP_TEXTURE2,
 	PROP_WAVE,
     PROP_CANVAS,
@@ -44,40 +40,34 @@ DEFINE_VECTOR			(PropItem*,PropItemVec,PropItemIt);
 #include "ChooseTypes.H"     
 //------------------------------------------------------------------------------
 
-typedef void 	__stdcall (__closure *TBeforeEdit)			(PropItem* sender, LPVOID edit_val);
-typedef void 	__stdcall (__closure *TAfterEdit)			(PropItem* sender, LPVOID edit_val);
-typedef void 	__stdcall (__closure *TOnDrawTextEvent)	(PropValue* sender, LPVOID draw_val);
+typedef void 	__stdcall (__closure *TOnDrawTextEvent)		(PropValue* sender, ref_str& draw_val);
 typedef void 	__stdcall (__closure *TOnChange)			(PropValue* sender);
-typedef void 	__stdcall (__closure *TOnClick)			(PropItem* sender);
+typedef void 	__stdcall (__closure *TOnClick)				(PropItem* sender);
 typedef void 	__stdcall (__closure *TOnBtnClick)			(PropValue* sender, bool& bDataModified, bool& bSafe);
 typedef void 	__stdcall (__closure *TOnCloseEvent)		(void);
-typedef void 	__stdcall (__closure *TOnModifiedEvent)	(void);
-typedef void 	__stdcall (__closure *TOnItemFocused)		(TElTreeItem* item);
+typedef void 	__stdcall (__closure *TOnModifiedEvent)		(void);
 typedef void 	__stdcall (__closure *TOnPropItemFocused)	(PropItem* sender);
 typedef void 	__stdcall (__closure *TOnDrawCanvasEvent)	(PropValue* sender, TCanvas* canvas, const TRect& rect);
-typedef bool 	__stdcall (__closure *TOnTestEqual)		(PropValue* a, PropValue* b);
-typedef void 	__stdcall (__closure* TOnChooseFillProp)	(ChooseItemVec& lst);
-//------------------------------------------------------------------------------
-extern AnsiString prop_draw_text;
+typedef void 	__stdcall (__closure *TOnTestEqual)			(PropValue* a, PropValue* b, bool& result);
+typedef void 	__stdcall (__closure *TOnChooseFillProp)	(ChooseItemVec& lst);
 //------------------------------------------------------------------------------
 
-class XR_EPROPS_API PropValue{
+class XR_EPROPS_API PropValue
+{
 	friend class		CPropHelper;
     friend class		PropItem;
 protected:
 	PropItem*			m_Owner;
 public:
-	LPVOID				tag;
+	u32					tag;
 public:
 	// base events
     TOnChange			OnChangeEvent;
-    TOnTestEqual		OnTestEqual;
 public:
-						PropValue		():tag(0),m_Owner(0),OnChangeEvent(0),OnTestEqual(0){;}
-    virtual LPCSTR		GetText			(TOnDrawTextEvent OnDrawText)=0;
+						PropValue		():tag(0),m_Owner(0),OnChangeEvent(0){;}
+    virtual ref_str		GetText			(TOnDrawTextEvent OnDrawText)=0;
     virtual void		ResetValue		()=0;
     virtual bool		Equal			(PropValue* prop)=0;
-    virtual bool		ApplyValue		(LPVOID _val)=0;
     IC PropItem*		Owner			(){return m_Owner;}
 };
 //------------------------------------------------------------------------------
@@ -97,51 +87,52 @@ public:
 	TYPE				init_value;
 	TYPE*				value;
 public:
+    void __stdcall (__closure* OnBeforeEditEvent) 	(PropValue*, T&);
+    void __stdcall (__closure* OnAfterEditEvent) 	(PropValue*, T&, bool &Accepted);
+public:
 						CustomValue		(T* val)
 	{
+    	OnBeforeEditEvent 	= 0;
+        OnAfterEditEvent	= 0;
     	set_value		(value,val);
     	set_value		(init_value,*val);
     };
-    virtual LPCSTR		GetText			(TOnDrawTextEvent OnDrawText){return 0;}
+    virtual ref_str		GetText			(TOnDrawTextEvent OnDrawText){return 0;}
     virtual bool		Equal			(PropValue* val)
     {
-    	if (OnTestEqual) return OnTestEqual(this,val);
     	CustomValue<T>* prop = (CustomValue<T>*)val;
         return (*value==*prop->value);
     }
     virtual const T&	GetValue		(){return *value; }
     virtual void		ResetValue		(){set_value(*value,init_value);}
-    virtual bool		ApplyValue		(LPVOID _val)
+    bool				ApplyValue		(const T& val)
     {
-    	TYPE* val		= (TYPE*)_val;
-        if (!(*value==*val)){
-        	set_value	(*value,*val);
+		if (!(*value==val)){
+            set_value	(*value,val);
             return		true;
         }
         return 			false;
     }
 };
 
-class XR_EPROPS_API PropItem{
+class XR_EPROPS_API PropItem
+{
 	friend class		CPropHelper;
     friend class		TProperties;
-    AnsiString			key;
+    ref_str				key;
     EPropType			type;
-	TElTreeItem*		item;
+	void*				item;
 	DEFINE_VECTOR		(PropValue*,PropValueVec,PropValueIt);
     PropValueVec		values;
 // events
 public:
-    TAfterEdit			OnAfterEditEvent;
-    TBeforeEdit			OnBeforeEditEvent;
     TOnDrawTextEvent	OnDrawTextEvent;
     TOnPropItemFocused	OnItemFocused;
     TOnClick			OnClickEvent;
 public:
-	TColor				prop_color;
-	TColor				val_color;
-    TRect				draw_rect;
-    int 				tag;
+	u32					prop_color;
+	u32					val_color;
+    Irect				draw_rect;
     int					subitem;		// multiple selection for each item (SelectTexture for example)
 public:
     enum{
@@ -154,14 +145,16 @@ public:
     };
     Flags32				m_Flags;
 public:
-						PropItem		(EPropType _type):type(_type),prop_color(clBlack),val_color(clBlack),item(0),key(0),tag(0),subitem(1),OnClickEvent(0),OnAfterEditEvent(0),OnBeforeEditEvent(0),OnDrawTextEvent(0),OnItemFocused(0){m_Flags.zero();}
+						PropItem		(EPropType _type):type(_type),prop_color(clBlack),val_color(clBlack),item(0),key(0),subitem(1),OnClickEvent(0),OnDrawTextEvent(0),OnItemFocused(0){m_Flags.zero();}
 	virtual 			~PropItem		()
     {
     	for (PropValueIt it=values.begin(); values.end() != it; ++it)
         	xr_delete	(*it);
     };
-    void				SetItemHeight	(int height){item->OwnerHeight=false; item->Height=height;}
-    void				SetName			(const AnsiString& name){key=name;}
+    void				SetName			(const ref_str& name)
+    {
+    	key=name;
+    }
     IC void				ResetValues		()
     {
     	for (PropValueIt it=values.begin(); values.end() != it; ++it)
@@ -174,10 +167,10 @@ public:
         	m_Flags.set	(flMixed,TRUE);
     	values.push_back(value);
     }
-    IC LPCSTR			GetText			()
+    IC ref_str			GetText			()
     {
     	VERIFY(!values.empty()); 
-        return m_Flags.is(flMixed)?"(mixed)":values.front()->GetText(OnDrawTextEvent);
+        return m_Flags.is(flMixed)?ref_str("(mixed)"):values.front()->GetText(OnDrawTextEvent);
     }
 	IC void				CheckMixed		()
     {
@@ -194,78 +187,95 @@ public:
         }
     }
 
-    IC bool 			ApplyValue		(LPVOID val)
+    template <class T1, class T2>
+    IC void 			BeforeEdit		(T2& val)
+    {
+        T1* CV			= dynamic_cast<T1*>(values.front()); VERIFY(CV);
+        if (CV->OnBeforeEditEvent) CV->OnBeforeEditEvent(CV,val);
+    }
+    template <class T1, class T2>
+    IC bool 			AfterEdit		(T2& val)
+    {
+    	bool Accepted	= true;
+        T1* CV			= dynamic_cast<T1*>(values.front()); VERIFY(CV);
+        if (CV->OnAfterEditEvent) CV->OnAfterEditEvent(CV,val,Accepted);
+        return Accepted;
+	}    
+    template <class T1, class T2>
+    IC bool 			ApplyValue		(const T2& val)
     {
     	bool bChanged	= false;
-    	for (PropValueIt it=values.begin(); values.end() != it; ++it)
-        	if ((*it)->ApplyValue(val)){
+        m_Flags.set		(flMixed,FALSE);
+    	for (PropValueIt it=values.begin(); values.end() != it; ++it){
+        	T1* CV		= dynamic_cast<T1*>(*it); VERIFY(CV);
+        	if (CV->ApplyValue(val)){
             	bChanged = true;
-                if ((*it)->OnChangeEvent) (*it)->OnChangeEvent(*it);
-        	}
-        if (bChanged)	m_Flags.set(flMixed,FALSE);
+                if (CV->OnChangeEvent) CV->OnChangeEvent(*it);
+            }
+            if (!CV->Equal(values.front()))
+                m_Flags.set	(flMixed,TRUE);
+        }
         return bChanged;
     }
     IC PropValueVec&	Values			(){return values;}
     IC PropValue*		GetFrontValue	(){VERIFY(!values.empty()); return values.front(); };
     IC EPropType		Type			(){return type;}
-	IC TElTreeItem*		Item			(){return item;}
-	IC TElTreeItem**	LPItem			(){return &item;}
+#ifdef __BORLANDC__    
+	IC TElTreeItem*		Item			(){return (TElTreeItem*)item;}
+#endif
 	IC LPCSTR			Key				(){return key.c_str();}
     IC void				Enable			(BOOL val){m_Flags.set(flDisabled,!val);}
     IC BOOL				Enabled			(){return !m_Flags.is(flDisabled);}
-
-	IC void				OnBeforeEdit	(LPVOID edit_val)
-    {
-    	if (OnBeforeEditEvent) OnBeforeEditEvent(this,edit_val);
-    }
-	IC void				OnAfterEdit		(LPVOID edit_val)
-    {
-    	if (OnAfterEditEvent) OnAfterEditEvent(this,edit_val);
-    }
 	IC void				OnChange		()
     {
     	for (PropValueIt it=values.begin(); values.end() != it; ++it)
         	if ((*it)->OnChangeEvent) 	(*it)->OnChangeEvent(*it);
     }
+/*    
+    template <class T1, class T2>
+	IC void				OnBeforeEdit	()
+    {
+    	for (PropValueIt it=values.begin(); values.end() != it; ++it){
+        	T1* CV		= dynamic_cast<T1*>(*it); VERIFY(CV);
+        	if (CV->OnChangeEvent) 		CV->OnChangeEvent(*it);
+        }
+    }
+*/
 };
 
 //------------------------------------------------------------------------------
 // values
 //------------------------------------------------------------------------------
 class XR_EPROPS_API CaptionValue: public PropValue{
-	AnsiString			value;
+	ref_str				value;
 public:
-						CaptionValue	(AnsiString val){value=val;}
-    virtual LPCSTR		GetText			(TOnDrawTextEvent){return value.c_str();}
+						CaptionValue	(const ref_str& val){value=val;}
+    virtual ref_str		GetText			(TOnDrawTextEvent)	{return value.c_str();}
     virtual	void		ResetValue		(){;}
-    virtual	bool		Equal			(PropValue* val)
-    { 
-    	if (OnTestEqual) return OnTestEqual(this,val);
-    	return (value==((CaptionValue*)val)->value); 
-    }
-    virtual	bool		ApplyValue		(LPVOID val){value=*(AnsiString*)val; return false;}
+    virtual	bool		Equal			(PropValue* val)	{return (value==((CaptionValue*)val)->value);}
+    bool				ApplyValue		(const ref_str& val){value=val; return false;}
 };
 
 class XR_EPROPS_API CanvasValue: public PropValue{
-	AnsiString			value;
+	ref_str				value;
 public:
     int					height;
+    TOnTestEqual		OnTestEqual;
     TOnDrawCanvasEvent	OnDrawCanvasEvent;
 public:
-						CanvasValue		(AnsiString val, int h):OnDrawCanvasEvent(0),height(h){value=val;}
-    virtual LPCSTR		GetText			(TOnDrawTextEvent){return value.c_str();}
+						CanvasValue		(const ref_str& val, int h):OnDrawCanvasEvent(0),OnTestEqual(0),height(h){value=val;}
+    virtual ref_str		GetText			(TOnDrawTextEvent){return value.c_str();}
     virtual	void		ResetValue		(){;}
     virtual	bool		Equal			(PropValue* val)
     {
-    	if (OnTestEqual) return OnTestEqual(this,val);
+    	if (OnTestEqual){bool res=true; OnTestEqual(this,val,res); return res;}
     	return false;
     }
-    virtual	bool		ApplyValue		(LPVOID val){return false;}
 };
 
 class XR_EPROPS_API ButtonValue: public PropValue{
 public:
-	AStringVec			value;
+	RStringVec			value;
     int					btn_num;
     TOnBtnClick			OnBtnClickEvent;
     enum{
@@ -273,99 +283,54 @@ public:
     };
     Flags8				m_Flags;
 public:
-						ButtonValue		(AnsiString val, u32 flags)
+						ButtonValue		(const ref_str& val, u32 flags)
 	{
     	m_Flags.assign	(flags);
     	OnBtnClickEvent	= 0;
     	btn_num			= -1;
-    	AnsiString 		v;
+    	std::string 	v;
         int cnt=_GetItemCount(val.c_str()); 
         for (int k=0; k<cnt; ++k)
         	value.push_back(_GetItem(val.c_str(),k,v));
     }
-    virtual LPCSTR		GetText			(TOnDrawTextEvent);
+    virtual ref_str		GetText			(TOnDrawTextEvent)
+    {
+        return 			_ListToSequence(value).c_str();
+    }
     virtual	void		ResetValue		(){;}
-    virtual	bool		Equal			(PropValue* val)
-    {
-    	if (OnTestEqual) return OnTestEqual(this,val);
-    	return true;
-    }
-    virtual	bool		ApplyValue		(LPVOID val){return false;}
-    bool				OnBtnClick		(bool& bSafe){if(OnBtnClickEvent)	{ bool bDModif=true; OnBtnClickEvent(this,bDModif,bSafe); return bDModif;}else return false;}
-};
-
-class XR_EPROPS_API TextValue: public PropValue{
-	AnsiString			init_value;
-	LPSTR				value;
-public:
-	int					lim;
-						TextValue		(LPSTR val, int _lim):value(val),init_value(val),lim(_lim){};
-    virtual LPCSTR		GetText			(TOnDrawTextEvent OnDrawText);
-    virtual bool		Equal			(PropValue* val)
-    { 
-    	if (OnTestEqual) return OnTestEqual(this,val);
-    	return (0==xr_strcmp((LPSTR)value,((TextValue*)val)->value)); 
-    }
-    virtual bool		ApplyValue		(LPVOID val)
-    {
-        if (0!=xr_strcmp(value,LPCSTR(val))){
-            strcpy(value,LPCSTR(val));
-            return		true;
-        }
-        return 			false;
-    }
-    LPCSTR				GetValue		(){return value;}
-    virtual void		ResetValue		(){strcpy(value,init_value.c_str());}
+    virtual	bool		Equal			(PropValue* val)					{return true;}
+    bool				OnBtnClick		(bool& bSafe){if(OnBtnClickEvent)	{bool bDModif=true; OnBtnClickEvent(this,bDModif,bSafe); return bDModif;}else return false;}
 };
 //------------------------------------------------------------------------------
 
 class XR_EPROPS_API RTextValue: public CustomValue<ref_str>{
 public:
 						RTextValue		(TYPE* val):CustomValue<ref_str>(val){};
-    virtual LPCSTR		GetText			(TOnDrawTextEvent OnDrawText);
-    virtual bool		Equal			(PropValue* val)
-    { 
-    	if (OnTestEqual) return OnTestEqual(this,val);
-    	return (value->equal(*((RTextValue*)val)->value)); 
-    }
-    virtual bool		ApplyValue		(LPVOID val)
+    virtual ref_str		GetText			(TOnDrawTextEvent OnDrawText)
     {
-    	ref_str rv		= LPCSTR(val);
-        if (!value->equal(rv)){
-            *value		= rv;
-            return		true;
-        }
-        return 			false;
+        ref_str txt		= GetValue();
+        if (OnDrawText)	OnDrawText(this, txt);
+        return txt.c_str();
     }
 };
 
-class XR_EPROPS_API ChooseValueCustom{
+class XR_EPROPS_API ChooseValue: public RTextValue{
 public:
 	u32					choose_id;
-    AnsiString			start_path;
+    ref_str				start_path;
     TOnChooseFillProp	OnChooseFillEvent;
 public:
-						ChooseValueCustom	(LPCSTR path,u32 cid):choose_id(cid),start_path(path),OnChooseFillEvent(0){}
+						ChooseValue			(ref_str* val, u32 cid, LPCSTR path):RTextValue(val),choose_id(cid),start_path(path),OnChooseFillEvent(0){}
 };
 
-class XR_EPROPS_API ChooseValue: public TextValue, public ChooseValueCustom{
-public:
-						ChooseValue			(LPSTR val, int len, u32 cid, LPCSTR path):TextValue(val,len),ChooseValueCustom(path,cid){}
-};
-
-class XR_EPROPS_API RChooseValue: public RTextValue, public ChooseValueCustom{
-public:
-						RChooseValue		(ref_str* val, u32 cid, LPCSTR path):RTextValue(val),ChooseValueCustom(path,cid){}
-};
-
-typedef CustomValue<BOOL>		BOOLValue;
+typedef XR_EPROPS_API CustomValue<BOOL>		BOOLValue;
 //------------------------------------------------------------------------------
 
 IC bool operator == (const WaveForm& A, const WaveForm& B){return A.Similar(B);}
 class XR_EPROPS_API WaveValue: public CustomValue<WaveForm>{
 public:
 						WaveValue		(TYPE* val):CustomValue<WaveForm>(val){};
-    virtual LPCSTR		GetText			(TOnDrawTextEvent){return "[Wave]";}
+    virtual ref_str		GetText			(TOnDrawTextEvent){return "[Wave]";}
 };
 //------------------------------------------------------------------------------
 
@@ -373,10 +338,6 @@ IC bool operator == (const Fcolor& A, const Fcolor& B)
 {	return A.similar_rgba(B); }
 typedef CustomValue<Fcolor>		ColorValue;
 //------------------------------------------------------------------------------
-
-template <class T>
-IC AnsiString& astring_sprintf(AnsiString& s, const T& V, int tag)
-{	s = V; return s;}
 
 template <class T>
 class XR_EPROPS_API NumericValue: public CustomValue<T>
@@ -399,53 +360,55 @@ public:
         value			= val;
         init_value		= *value;
     };
-    virtual bool		ApplyValue		(LPVOID _val)
+    bool				ApplyValue		(const T& _val)
     {
-    	T* val			= (T*)_val;
-    	clamp			(*val,lim_mn,lim_mx);
+    	T val			= _val;
+    	clamp			(val,lim_mn,lim_mx);
         return CustomValue<T>::ApplyValue(val);
     }
-	virtual LPCSTR 		GetText			(TOnDrawTextEvent OnDrawText)
+	virtual ref_str		GetText			(TOnDrawTextEvent OnDrawText)
 	{
-        T edit_val 		= *value;
-        if (OnDrawText)OnDrawText(this, &edit_val);
-        static AnsiString prop_draw_text;
-        return astring_sprintf	(prop_draw_text,edit_val,dec).c_str();
+        ref_str 		draw_val;
+        if (OnDrawText)	OnDrawText(this, draw_val);
+        else			rstring_sprintf	(draw_val,*value,dec);
+        return draw_val.c_str();
     }
 };
-//------------------------------------------------------------------------------
 
-typedef NumericValue<u8>	U8Value;
-typedef NumericValue<u16>	U16Value;
-typedef NumericValue<u32>	U32Value;
-typedef NumericValue<s8>	S8Value;
-typedef NumericValue<s16>	S16Value;
-typedef NumericValue<s32>	S32Value;
 //------------------------------------------------------------------------------
-
-IC AnsiString& astring_sprintf(AnsiString& s, const float& V, int dec)
+template <class T>
+IC ref_str rstring_sprintf(ref_str& s, const T& V, int tag)
+{	s.sprintf("%d",V); return s;}
+//------------------------------------------------------------------------------
+IC ref_str rstring_sprintf(ref_str& s, const float& V, int dec)
 {
-    AnsiString fmt; fmt.sprintf("%%.%df",dec);
+    ref_str fmt; fmt.sprintf("%%.%df",dec);
     s.sprintf(fmt.c_str(),V);
     return s;
 }
-typedef NumericValue<float>	FloatValue;
 //------------------------------------------------------------------------------
-
 IC bool operator == (const Fvector& A, const Fvector& B)
 {	return A.similar(B); }
-IC void clamp(Fvector& V, Fvector& mn, const Fvector& mx)
+IC void clamp(Fvector& V, const Fvector& mn, const Fvector& mx)
 {
     clamp(V.x,mn.x,mx.x);
     clamp(V.y,mn.y,mx.y);
     clamp(V.z,mn.z,mx.z);
 }
-IC AnsiString& astring_sprintf(AnsiString& s, const Fvector& V, int dec)
+IC ref_str rstring_sprintf(ref_str& s, const Fvector& V, int dec)
 {
-	AnsiString fmt; fmt.sprintf("{%%.%df, %%.%df, %%.%df}",dec,dec,dec);
-	s.sprintf(fmt.c_str(),V.x,V.y,V.z);
+	ref_str fmt;fmt.sprintf("{%%.%df, %%.%df, %%.%df}",dec,dec,dec);
+	s.sprintf	(fmt.c_str(),V.x,V.y,V.z);
     return s;
 }
+//------------------------------------------------------------------------------
+typedef NumericValue<u8>	XR_EPROPS_API U8Value;
+typedef NumericValue<u16>	XR_EPROPS_API U16Value;
+typedef NumericValue<u32>	XR_EPROPS_API U32Value;
+typedef NumericValue<s8>	XR_EPROPS_API S8Value;
+typedef NumericValue<s16>	XR_EPROPS_API S16Value;
+typedef NumericValue<s32>	XR_EPROPS_API S32Value;
+typedef NumericValue<float>	XR_EPROPS_API FloatValue;
 class XR_EPROPS_API VectorValue: public NumericValue<Fvector>{
 public:
 						VectorValue		(Fvector* val, float mn, float mx, float increment, int decimal):NumericValue<Fvector>(val)
@@ -458,68 +421,65 @@ public:
 };
 //------------------------------------------------------------------------------
 
-class XR_EPROPS_API FlagValueCustom: public PropValue
+class XR_EPROPS_API FlagValueCustom
 {
 public:
-    AnsiString			caption[2];
+    ref_str				caption[2];
     enum{
     	flInvertedDraw	= (1<<0),
     };
     Flags32				m_Flags;
 public:
-						FlagValueCustom	(u32 mask){m_Flags.assign(mask);}
-	virtual	bool		HaveCaption		(){return caption[0].Length()&&caption[1].Length();}
+						FlagValueCustom	(u32 mask, LPCSTR c0, LPCSTR c1)
+    {
+        caption[0]		= c0;
+        caption[1]		= c1;
+        m_Flags.assign(mask);
+    }
+	virtual	bool		HaveCaption		(){return caption[0].size()&&caption[1].size();}
     virtual bool		GetValueEx		()=0;
 };
 
 template <class T>
-class XR_EPROPS_API FlagValue: public FlagValueCustom
+class XR_EPROPS_API FlagValue: public CustomValue<T>, public FlagValueCustom
 {
 public:
 	typedef T			TYPE;
 public:
-	TYPE				init_value;
-	TYPE*				value;
     T::TYPE				mask;
 public:
-						FlagValue		(T* val, T::TYPE _mask, LPCSTR c0, LPCSTR c1, u32 flags):FlagValueCustom(flags),mask(_mask)
-	{
-    	value			= val;
-    	init_value		= *val;
-        caption[0]		= c0;
-        caption[1]		= c1;
-    };
-    virtual LPCSTR		GetText			(TOnDrawTextEvent OnDrawText)
+						FlagValue		(T* val, T::TYPE _mask, LPCSTR c0, LPCSTR c1, u32 flags):CustomValue<T>(val),FlagValueCustom(flags,c0,c1),mask(_mask){}
+    virtual ref_str		GetText			(TOnDrawTextEvent OnDrawText)
     {	
-    	return HaveCaption()?caption[GetValueEx()?1:0].c_str():0;
+        ref_str 		draw_val;
+        if (OnDrawText)	OnDrawText(this, draw_val);
+        else 			return HaveCaption()?caption[GetValueEx()?1:0].c_str():0;
+        return			draw_val.c_str();
     }
-    virtual bool		Equal			(PropValue* val)
+    virtual bool		Equal			(PropValue* val){return value->equal(*((FlagValue<T>*)val)->value,mask);}
+    virtual const T&	GetValue		()				{return *value; }
+    virtual void		ResetValue		()				{value->set(mask,init_value.is(mask));}
+    virtual bool		GetValueEx		()				{return value->is(mask);}
+    bool				ApplyValue		(const T& val)
     {
-    	if (OnTestEqual) return OnTestEqual(this,val);
-    	return value->equal(*((FlagValue<T>*)val)->value,mask);
-    }
-    virtual const T&	GetValue		(){return *value; }
-    virtual void		ResetValue		(){value->set(mask,init_value.is(mask));}
-    virtual bool		GetValueEx		(){return value->is(mask);}
-    virtual bool		ApplyValue		(LPVOID _val)
-    {
-    	T* val			= (T*)_val;
-        if (!val->equal(*value,mask)){
-        	value->set	(mask,val->is(mask));
-            return 		true;
+        if (!val.equal(*value,mask)){
+            value->set	(mask,val.is(mask));
+            return		true;
         }
         return 			false;
     }
 };
 //------------------------------------------------------------------------------
-
 typedef FlagValue<Flags8>	Flag8Value;
 typedef FlagValue<Flags16>	Flag16Value;
 typedef FlagValue<Flags32>	Flag32Value;
 //------------------------------------------------------------------------------
+template <class T>
+bool operator == (_flags<T> const & A, _flags<T>  const & B){return A.flags==B.flags;}
+//------------------------------------------------------------------------------
 
 class XR_EPROPS_API TokenValueCustom{
-public:
+public:                                          
 	xr_token* 			token;
     					TokenValueCustom(xr_token* _token):token(_token){;}
 };
@@ -528,12 +488,12 @@ class XR_EPROPS_API TokenValue: public CustomValue<T>, public TokenValueCustom
 {
 public:
 						TokenValue		(T* val, xr_token* _token):TokenValueCustom(_token),CustomValue<T>(val){};
-    virtual LPCSTR		GetText			(TOnDrawTextEvent OnDrawText)
+    virtual ref_str		GetText			(TOnDrawTextEvent OnDrawText)
     {
-        T draw_val 		= GetValue();
-        if (OnDrawText)	OnDrawText(this, &draw_val);
-        for(int i=0; token[i].name; i++) if (token[i].id==draw_val) return token[i].name;
-        return 0;
+        ref_str 		draw_val;
+        if (OnDrawText)	OnDrawText(this, draw_val);
+        else			for(int i=0; token[i].name; i++) if (token[i].id==GetValue()) return token[i].name;
+        return draw_val.c_str();
     }
 };
 //------------------------------------------------------------------------------
@@ -552,12 +512,12 @@ class XR_EPROPS_API RTokenValue: public CustomValue<T>, public RTokenValueCustom
 {
 public:
 						RTokenValue		(T* val, RTokenVec* _token):CustomValue<T>(val),RTokenValueCustom(_token){};
-    virtual LPCSTR		GetText			(TOnDrawTextEvent OnDrawText)
+    virtual ref_str		GetText			(TOnDrawTextEvent OnDrawText)
     {
-        u32 draw_val 	= GetValue();
-        if (OnDrawText)OnDrawText(this, &draw_val);
-        for(RTokenVecIt it=token->begin(); it!=token->end(); it++) if (it->id==draw_val) return *it->name;
-        return 0;
+        ref_str draw_val;
+        if (OnDrawText)	OnDrawText(this, draw_val);
+        else			for(RTokenVecIt it=token->begin(); it!=token->end(); it++) if (it->id==GetValue()) return *it->name;
+        return draw_val.c_str();
     }
 };
 //------------------------------------------------------------------------------
@@ -577,7 +537,12 @@ public:
     const Item*			items;
 public:
 						TokenValueSH	(u32* val, u32 _cnt, const Item* _items):CustomValue<u32>(val),cnt(_cnt),items(_items){};
-	virtual LPCSTR 		GetText			(TOnDrawTextEvent OnDrawText);
+	virtual ref_str		GetText			(TOnDrawTextEvent OnDrawText)
+    {
+        u32 draw_val 	= GetValue();
+        for(u32 i=0; i<cnt; i++) if (items[i].ID==draw_val) return items[i].str;
+        return 0;
+    }
 };
 //------------------------------------------------------------------------------
 
@@ -588,7 +553,6 @@ public:
 						ListValue		(ref_str* val, RStringVec* _items):RTextValue(val),items(_items){};
 	virtual bool		Equal			(PropValue* val)
     {
-    	if (OnTestEqual) return OnTestEqual(this,val);
         if (items!=((ListValue*)val)->items){
         	m_Owner->m_Flags.set(PropItem::flDisabled,TRUE); 
         	return false;

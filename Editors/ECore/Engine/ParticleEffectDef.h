@@ -116,28 +116,28 @@ namespace PS
         
 	    DEFINE_VECTOR		(EParticleAction*,EPAVec,EPAVecIt);
 		EPAVec 				m_EActionList;
-	public:
-		bool __fastcall 	FindActionByName	(LPCSTR new_name);
-		void __fastcall 	CollisionFrictionOnAfterEdit	(PropItem* sender, LPVOID edit_val);
-		void __fastcall 	CollisionFrictionOnBeforeEdit	(PropItem* sender, LPVOID edit_val);
-		void __fastcall 	CollisionFrictionOnDraw			(PropValue* sender, LPVOID draw_val);
-		void __fastcall 	CollisionCutoffOnAfterEdit		(PropItem* sender, LPVOID edit_val);
-		void __fastcall 	CollisionCutoffOnBeforeEdit		(PropItem* sender, LPVOID edit_val);
-		void __fastcall 	CollisionCutoffOnDraw			(PropValue* sender, LPVOID draw_val);
-		void __fastcall 	OnActionEditClick	(PropValue* sender, bool& bDataModified, bool& bSafe);
-	    void __fastcall 	OnFrameResize		(PropValue* sender);
-	    void __fastcall 	OnShaderChange		(PropValue* sender);
-	    void __fastcall 	OnFlagChange		(PropValue* sender);
-		void __fastcall 	OnControlClick		(PropValue* sender, bool& bDataModified, bool& bSafe);
-		void __fastcall 	OnActionsClick		(PropValue* sender, bool& bDataModified, bool& bSafe);
-        void __fastcall 	OnAfterActionNameEdit(PropItem* sender, LPVOID edit_val);
+	public:             
+		bool __stdcall  	FindActionByName	(LPCSTR new_name);
+		void __stdcall  	CollisionFrictionOnAfterEdit	(PropValue* sender, float& edit_val, bool& accepted);
+		void __stdcall  	CollisionFrictionOnBeforeEdit	(PropValue* sender, float& edit_val);
+		void __stdcall  	CollisionFrictionOnDraw			(PropValue* sender, ref_str& draw_val);
+		void __stdcall  	CollisionCutoffOnAfterEdit		(PropValue* sender, float& edit_val, bool& accepted);
+		void __stdcall  	CollisionCutoffOnBeforeEdit		(PropValue* sender, float& edit_val);
+		void __stdcall  	CollisionCutoffOnDraw			(PropValue* sender, ref_str& draw_val);
+		void __stdcall  	OnActionEditClick	(PropValue* sender, bool& bDataModified, bool& bSafe);
+	    void __stdcall  	OnFrameResize		(PropValue* sender);
+	    void __stdcall  	OnShaderChange		(PropValue* sender);
+	    void __stdcall  	OnFlagChange		(PropValue* sender);
+		void __stdcall  	OnControlClick		(PropValue* sender, bool& bDataModified, bool& bSafe);
+		void __stdcall  	OnActionsClick		(PropValue* sender, bool& bDataModified, bool& bSafe);
+        void __stdcall  	OnAfterActionNameEdit(PropValue* sender, ref_str& edit_val, bool& accepted);
 		void				FillProp		   	(LPCSTR pref, ::PropItemVec& items, ::ListItem* owner);
 		void				Copy				(const CPEDef& src);
 		BOOL				Equal				(const CPEDef* pe);
 		void 				Render				(const Fmatrix& parent);
 		void 				Compile				();
 		static PFunction*	FindCommandPrototype(LPCSTR src, LPCSTR& dest);
-		void __fastcall 	FillActionList		(ChooseItemVec& items);
+		void __stdcall  	FillActionList		(ChooseItemVec& items);
 #endif
 	};
 };

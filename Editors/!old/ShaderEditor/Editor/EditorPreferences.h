@@ -60,7 +60,7 @@ public:
     // objects
     Flags32	object_flags;
 private:
-	void 	__fastcall OnClose	(void);
+	void 	__stdcall  OnClose	(void);
     void	ApplyValues			();
 public:		// User declarations
     		CEditorPreferences	();

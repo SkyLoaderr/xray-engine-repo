@@ -9,16 +9,16 @@
 #include "PropertiesList.h"
 #include "PropertiesListHelper.h"
 
-void __fastcall CCustomObject::OnMotionableChange(PropValue* sender)
+void  CCustomObject::OnMotionableChange(PropValue* sender)
 {
 	if (m_CO_Flags.is(flMotion)){
     	m_Motion		= xr_new<COMotion>();
         m_MotionParams	= xr_new<SAnimParams>();
-        UI->Command	(COMMAND_UPDATE_PROPERTIES);
     }else{
     	xr_delete		(m_Motion);
     	xr_delete		(m_MotionParams);
     }
+    UI->Command			(COMMAND_UPDATE_PROPERTIES);
 }
 
 void CCustomObject::AnimationCreateKey(float t)
@@ -96,7 +96,7 @@ void CCustomObject::AnimationDrawPath()
 #endif    
 }
 
-void __fastcall	CCustomObject::OnMotionControlClick(PropValue* value, bool& bModif, bool& bSafe)
+void 	CCustomObject::OnMotionControlClick(PropValue* value, bool& bModif, bool& bSafe)
 {
 	ButtonValue* B = dynamic_cast<ButtonValue*>(value); R_ASSERT(B);
 	switch(B->btn_num){
@@ -142,7 +142,7 @@ void __fastcall	CCustomObject::OnMotionControlClick(PropValue* value, bool& bMod
     bModif = false;
 }
 
-void __fastcall	CCustomObject::OnMotionCommandsClick(PropValue* value, bool& bModif, bool& bSafe)
+void 	CCustomObject::OnMotionCommandsClick(PropValue* value, bool& bModif, bool& bSafe)
 {
 	ButtonValue* B = dynamic_cast<ButtonValue*>(value); R_ASSERT(B);
 	switch(B->btn_num){
@@ -156,9 +156,9 @@ void __fastcall	CCustomObject::OnMotionCommandsClick(PropValue* value, bool& bMo
     	TProperties* P 		= TProperties::CreateModalForm("Scale keys");
         PropItemVec items;
         float from_time=m_MotionParams->min_t,to_time=m_MotionParams->max_t,scale_factor=1.f;
-		PHelper.CreateFloat	(items,"From Time", 	&from_time, 	from_time, to_time, 	1.f/30.f, 3);
-		PHelper.CreateFloat	(items,"To Time",   	&to_time, 		from_time, to_time, 	1.f/30.f, 3);
-		PHelper.CreateFloat	(items,"Scale",			&scale_factor, 	-1000.f, 1000.f);
+		PHelper().CreateFloat	(items,"From Time", 	&from_time, 	from_time, to_time, 	1.f/30.f, 3);
+		PHelper().CreateFloat	(items,"To Time",   	&to_time, 		from_time, to_time, 	1.f/30.f, 3);
+		PHelper().CreateFloat	(items,"Scale",			&scale_factor, 	-1000.f, 1000.f);
         P->AssignItems		(items);
         if (mrOk==P->ShowPropertiesModal()){
         	m_Motion->ScaleKeys(from_time,to_time,scale_factor);
@@ -174,9 +174,9 @@ void __fastcall	CCustomObject::OnMotionCommandsClick(PropValue* value, bool& bMo
     	TProperties* P 		= TProperties::CreateModalForm("Normalize keys");
         PropItemVec items;
         float from_time=m_MotionParams->min_t,to_time=m_MotionParams->max_t,speed=5.f;
-//		PHelper.CreateFloat	(items,"From Time", 	&from_time, 	from_time, to_time, 	1.f/30.f, 3);
-//		PHelper.CreateFloat	(items,"To Time",   	&to_time, 		from_time, to_time, 	1.f/30.f, 3);
-		PHelper.CreateFloat	(items,"Speed (m/sec)", &speed, 		0.f, 100.f);
+		PHelper().CreateFloat	(items,"From Time", 	&from_time, 	from_time, to_time, 	1.f/30.f, 3);
+		PHelper().CreateFloat	(items,"To Time",   	&to_time, 		from_time, to_time, 	1.f/30.f, 3);
+		PHelper().CreateFloat	(items,"Speed (m/sec)", &speed, 		0.f, 100.f);
         P->AssignItems		(items);
         if (mrOk==P->ShowPropertiesModal()){
         	m_Motion->NormalizeKeys(from_time,to_time,speed);
@@ -185,15 +185,22 @@ void __fastcall	CCustomObject::OnMotionCommandsClick(PropValue* value, bool& bMo
         float mx; m_Motion->GetLength(0,&mx);
         if (m_MotionParams->max_t<mx){ 
         	m_MotionParams->max_t=mx;
-			m_Motion->SetParam	(m_MotionParams->min_t*30.f,m_MotionParams->max_t*30.f,30.f);
+ 			m_Motion->SetParam	(m_MotionParams->min_t*30.f,m_MotionParams->max_t*30.f,30.f);
         }
+    }break;
+    case 4:{
+    	float mn,mx;
+        m_Motion->GetLength		(&mn,&mx);
+        m_MotionParams->min_t	= mn;
+        m_MotionParams->max_t	= mx;
+        m_Motion->SetParam		(mn*30.f,mx*30.f,30.f);
     }break;
 	}
     AnimationUpdate			(m_MotionParams->Frame());
 	bModif = true;
 }
 
-void __fastcall	CCustomObject::OnMotionFilesClick(PropValue* value, bool& bModif, bool& bSafe)
+void 	CCustomObject::OnMotionFilesClick(PropValue* value, bool& bModif, bool& bSafe)
 {
 	ButtonValue* B = dynamic_cast<ButtonValue*>(value); R_ASSERT(B);
     bModif = false;
@@ -215,13 +222,13 @@ void __fastcall	CCustomObject::OnMotionFilesClick(PropValue* value, bool& bModif
 	}
 }
 
-void __fastcall	CCustomObject::OnMotionFrameChange(PropValue* value)
+void 	CCustomObject::OnMotionFrameChange(PropValue* value)
 {
 	m_Motion->SetParam	(m_MotionParams->min_t*30.f,m_MotionParams->max_t*30.f,30.f);
     UI->Command			(COMMAND_UPDATE_PROPERTIES);
 }
 
-void __fastcall	CCustomObject::OnMotionCurrentFrameChange(PropValue* value)
+void 	CCustomObject::OnMotionCurrentFrameChange(PropValue* value)
 {
 	if (m_MotionParams->t<m_MotionParams->min_t) 		m_MotionParams->min_t = m_MotionParams->t;
     else if (m_MotionParams->t>m_MotionParams->max_t) m_MotionParams->max_t = m_MotionParams->t;
@@ -231,40 +238,40 @@ void __fastcall	CCustomObject::OnMotionCurrentFrameChange(PropValue* value)
     UI->Command			(COMMAND_UPDATE_PROPERTIES);
 }
 
-void __fastcall	CCustomObject::OnMotionCameraViewChange(PropValue* value)
+void 	CCustomObject::OnMotionCameraViewChange(PropValue* value)
 {
 	if (m_CO_Flags.is(flCameraView))
 	    AnimationUpdate	(m_MotionParams->Frame());
 }
 
-void __fastcall	CCustomObject::OnTransformChange(PropValue* value)
+void 	CCustomObject::OnTransformChange(PropValue* value)
 {
 	UpdateTransform();
 }
 
 void CCustomObject::AnimationFillProp(LPCSTR pref, PropItemVec& items)
 {
-    PropValue* V		= PHelper.CreateFlag<Flags32>(items,FHelper.PrepareKey(pref,"Flags\\Motionable"),&m_CO_Flags, flMotion);
+    PropValue* V		= PHelper().CreateFlag32(items,PHelper().PrepareKey(pref,"Flags\\Motionable"),&m_CO_Flags, flMotion);
     V->OnChangeEvent	= OnMotionableChange;
 	if (Motionable()){
-       				      PHelper.CreateCaption		(items,FHelper.PrepareKey(pref,"Motion\\Hint"),		"Make KEY only on Parent CS");
-	    ButtonValue* B	= PHelper.CreateButton		(items,FHelper.PrepareKey(pref,"Motion\\Files"),	"Import,Export", 0);
+       				      PHelper().CreateCaption		(items,PHelper().PrepareKey(pref,"Motion\\Hint"),		"Make KEY only on Parent CS");
+	    ButtonValue* B	= PHelper().CreateButton		(items,PHelper().PrepareKey(pref,"Motion\\Files"),	"Import,Export", 0);
         B->OnBtnClickEvent= OnMotionFilesClick;
-	    B				= PHelper.CreateButton		(items,FHelper.PrepareKey(pref,"Motion\\Commands"),	"+ Key,- Key,Scale,Normalize", 0);
+	    B				= PHelper().CreateButton		(items,PHelper().PrepareKey(pref,"Motion\\Commands"),	"+ K,- K,Scale,Norm,Clamp", 0);
         B->OnBtnClickEvent= OnMotionCommandsClick;
-	    B				= PHelper.CreateButton		(items,FHelper.PrepareKey(pref,"Motion\\Controls"),	" |<<, +<<, <<, >, ||, >>, >>+, >>|", 0); 
+	    B				= PHelper().CreateButton		(items,PHelper().PrepareKey(pref,"Motion\\Controls"),	" |<<, +<<, <<, >, ||, >>, >>+, >>|", 0); 
         B->OnBtnClickEvent= OnMotionControlClick;
-        				  PHelper.CreateFlag<Flags32>(items,FHelper.PrepareKey(pref,"Motion\\Flags\\Auto Key"), 		&m_CO_Flags, flAutoKey);
-        V				= PHelper.CreateFlag<Flags32>(items,FHelper.PrepareKey(pref,"Motion\\Flags\\Camera View"), 	&m_CO_Flags, flCameraView);
+        				  PHelper().CreateFlag32		(items,PHelper().PrepareKey(pref,"Motion\\Flags\\Auto Key"), 		&m_CO_Flags, flAutoKey);
+        V				= PHelper().CreateFlag32		(items,PHelper().PrepareKey(pref,"Motion\\Flags\\Camera View"), 	&m_CO_Flags, flCameraView);
         V->OnChangeEvent= OnMotionCameraViewChange;
-	    V				= PHelper.CreateFloat		(items,FHelper.PrepareKey(pref,"Motion\\Start Frame (sec)"),	&m_MotionParams->min_t, -10000.f, m_MotionParams->max_t, 	1.f/30.f, 3);
+	    V				= PHelper().CreateFloat		(items,PHelper().PrepareKey(pref,"Motion\\Start Frame (sec)"),	&m_MotionParams->min_t, -10000.f, m_MotionParams->max_t, 	1.f/30.f, 3);
     	V->OnChangeEvent= OnMotionFrameChange;
-		V				= PHelper.CreateFloat		(items,FHelper.PrepareKey(pref,"Motion\\End Frame (sec)"),		&m_MotionParams->max_t, m_MotionParams->min_t, 10000.f, 	1.f/30.f, 3);
+		V				= PHelper().CreateFloat		(items,PHelper().PrepareKey(pref,"Motion\\End Frame (sec)"),		&m_MotionParams->max_t, m_MotionParams->min_t, 10000.f, 	1.f/30.f, 3);
     	V->OnChangeEvent= OnMotionFrameChange;
-		V				= PHelper.CreateFloat		(items,FHelper.PrepareKey(pref,"Motion\\Current Frame (sec)"),	&m_MotionParams->t, -10000.f, 10000.f,	1.f/30.f, 3);
+		V				= PHelper().CreateFloat		(items,PHelper().PrepareKey(pref,"Motion\\Current Frame (sec)"),	&m_MotionParams->t, -10000.f, 10000.f,	1.f/30.f, 3);
     	V->OnChangeEvent= OnMotionCurrentFrameChange;
-        				  PHelper.CreateCaption		(items,FHelper.PrepareKey(pref,"Motion\\Key Count"),			m_Motion->KeyCount());
-        				  PHelper.CreateCaption		(items,FHelper.PrepareKey(pref,"Motion\\Length (sec)"),			AnsiString().sprintf("%3.2f",m_Motion->GetLength()));
+        				  PHelper().CreateCaption		(items,PHelper().PrepareKey(pref,"Motion\\Key Count"),			ref_str().sprintf("%d",m_Motion->KeyCount()));
+        				  PHelper().CreateCaption		(items,PHelper().PrepareKey(pref,"Motion\\Length (sec)"),		ref_str().sprintf("%3.2f",m_Motion->GetLength()));
 	}
 }
  

@@ -149,7 +149,7 @@ void TfrmSoundLib::InitItemsList()
 	FS_QueryPairIt it = sound_map.begin();
 	FS_QueryPairIt _E = sound_map.end();
     for (; it!=_E; it++)
-        LHelper.CreateItem(items,it->first.c_str(),0);
+        LHelper().CreateItem(items,it->first.c_str(),0);
 
     m_ItemList->AssignItems(items,false,true);
 }
@@ -304,7 +304,7 @@ void __fastcall TfrmSoundLib::OnControlClick(PropValue* sender, bool& bModif, bo
     case 2:{ 
     	ButtonValue* B = dynamic_cast<ButtonValue*>(sender); VERIFY(B);
     	bAutoPlay=!bAutoPlay; 
-        B->value[V->btn_num] = AnsiString().sprintf("Auto (%s)",bAutoPlay?"on":"off");
+        B->value[V->btn_num] = ref_str().sprintf("Auto (%s)",bAutoPlay?"on":"off");
     }break;
 	}
     bModif = false;
@@ -359,11 +359,11 @@ void __fastcall TfrmSoundLib::OnItemsFocused(ListItemsVec& items)
         u32 size=0;
         u32 time=0;
 		PlaySound(thm->SrcName(), size, time);
-        PHelper.CreateCaption(props,"File Length",	AnsiString().sprintf("%.2f Kb",float(size)/1024.f));
-        PHelper.CreateCaption(props,"Total Time",	AnsiString().sprintf("%.2f sec",float(time)/1000.f));
-        ButtonValue* B=PHelper.CreateButton	(props, "Control",	"Play,Stop",ButtonValue::flFirstOnly);
+        PHelper().CreateCaption(props,"File Length",	ref_str().sprintf("%.2f Kb",float(size)/1024.f));
+        PHelper().CreateCaption(props,"Total Time",	ref_str().sprintf("%.2f sec",float(time)/1000.f));
+        ButtonValue* B=PHelper().CreateButton	(props, "Control",	"Play,Stop",ButtonValue::flFirstOnly);
         B->OnBtnClickEvent		= OnControlClick;
-        B=PHelper.CreateButton	(props, "Auto Play",bAutoPlay?"on":"off",ButtonValue::flFirstOnly);
+        B=PHelper().CreateButton	(props, "Auto Play",bAutoPlay?"on":"off",ButtonValue::flFirstOnly);
         B->OnBtnClickEvent		= OnControl2Click;
     }
     

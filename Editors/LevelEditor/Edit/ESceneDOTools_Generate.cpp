@@ -404,16 +404,15 @@ bool EDetailManager::UpdateSlotObjects(int x, int z){
 
 bool EDetailManager::UpdateObjects(bool bUpdateTex, bool bUpdateSelectedOnly)
 {
+	m_Base.ReloadImage();
 	if (!m_Base.Valid()){ 
-    	ELog.DlgMsg(mtError,"Base texture empty!");
+    	ELog.DlgMsg(mtError,"Invalid base texture!");
     	return false;
     }
 	if (objects.empty()){
     	ELog.DlgMsg(mtError,"Object list empty!");
      	return false;
     }
-    // reload base texture
-//.    if (bUpdateTex&&!UpdateBaseTexture(0)) 	return false;
     // update objects
     UI->ProgressStart	(dtH.size_x*dtH.size_z,"Updating objects...");
     for (u32 z=0; z<dtH.size_z; z++)

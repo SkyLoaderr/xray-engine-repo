@@ -89,8 +89,8 @@ public:
     TOnILItemsFocused	OnItemsFocusedEvent;
     TOnILItemFocused	OnItemFocusedEvent;
     TOnILCloseEvent	  	OnCloseEvent;
-    CFolderHelper::TOnItemRename	OnItemRenameEvent;
-    CFolderHelper::TOnItemRemove	OnItemRemoveEvent;
+    TOnItemRename		OnItemRenameEvent;
+    TOnItemRemove		OnItemRemoveEvent;
 protected:
 	// RT store
     struct SFolderStore{
@@ -98,8 +98,8 @@ protected:
     };
     DEFINE_MAP(AnsiString,SFolderStore,FolderStoreMap,FolderStorePairIt);
     FolderStoreMap		FolderStore;
-protected:
-    void __fastcall		RenameItem				(LPCSTR fn0, LPCSTR fn1, EItemType type);
+protected:     
+    void __stdcall 		RenameItem				(LPCSTR fn0, LPCSTR fn1, EItemType type);
 public:		// User declarations
 	__fastcall 	    	TItemList	       		(TComponent* Owner);
 
@@ -141,7 +141,7 @@ public:		// User declarations
         RefreshForm			();
     }
 
-    virtual void 		RemoveSelItems			(CFolderHelper::TOnItemRemove on_remove=0);
+    virtual void 		RemoveSelItems			(TOnItemRemove on_remove=0);
     virtual void 		RenameSelItem			();
     virtual void		FireOnItemFocused		();
 
@@ -157,8 +157,8 @@ public:		// User declarations
     virtual void		SetOnItemFocusedEvent	(TOnILItemFocused e)			{OnItemFocusedEvent=e;}
     virtual void		SetOnItemsFocusedEvent	(TOnILItemsFocused e)			{OnItemsFocusedEvent=e;}
     virtual void		SetOnCloseEvent			(TOnILCloseEvent e)				{OnCloseEvent=e;}
-    virtual void		SetOnItemRenameEvent	(CFolderHelper::TOnItemRename e){OnItemRenameEvent=e;}
-    virtual void		SetOnItemRemoveEvent	(CFolderHelper::TOnItemRemove e){OnItemRemoveEvent=e;}
+    virtual void		SetOnItemRenameEvent	(TOnItemRename e)				{OnItemRenameEvent=e;}
+    virtual void		SetOnItemRemoveEvent	(TOnItemRemove e)				{OnItemRemoveEvent=e;}
     virtual void		SetOnModifiedEvent		(TOnModifiedEvent e)			{OnModifiedEvent=e;}
 
     virtual void 		SetILFocus				(){SetFocus();}

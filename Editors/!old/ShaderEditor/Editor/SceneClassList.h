@@ -8,8 +8,7 @@
 
 class CEditableObject;
 class CEditableMesh;
-class CSceneObject;
-class TUI_CustomTools;
+class CCustomObject;
 
 #ifdef _EDITOR
 	class SPickQuery{
@@ -99,7 +98,7 @@ class TUI_CustomTools;
     };
 	struct SRayPickInfo{
 		CDB::RESULT 		inf;
-		CSceneObject*		s_obj;
+		CCustomObject*		s_obj;
 		CEditableObject*	e_obj;
 		CEditableMesh*		e_mesh;
 		Fvector     		pt;
@@ -110,7 +109,7 @@ class TUI_CustomTools;
     DEFINE_VECTOR(CDB::RESULT,BPInfVec,BPInfIt);
 	struct SBoxPickInfo{
     	BPInfVec			inf;
-		CSceneObject*		s_obj;
+		CCustomObject*		s_obj;
 		CEditableObject*	e_obj;
 		CEditableMesh*		e_mesh;
 		SBoxPickInfo		(){Reset();}

@@ -573,10 +573,10 @@ bool CFolderHelper::NameAfterEdit(TElTreeItem* node, AnsiString value, AnsiStrin
     return true;
 }
 
-bool CFolderHelper::DrawThumbnail(TCanvas *Surface, TRect &R, LPCSTR fname, u32 thm_type)
+bool CFolderHelper::DrawThumbnail(TCanvas *Surface, TRect &R, ref_str fname, u32 thm_type)
 {
-	if (fname&&fname[0]){
-        EImageThumbnail* m_Thm 	= CreateThumbnail(fname,EImageThumbnail::THMType(thm_type));
+	if (fname.size()){
+        EImageThumbnail* m_Thm 	= CreateThumbnail(fname.c_str(),EImageThumbnail::THMType(thm_type));
         VERIFY		(m_Thm);
         int dw 		= R.Width()-R.Height();
         if (dw>=0) 	R.right		-= dw;

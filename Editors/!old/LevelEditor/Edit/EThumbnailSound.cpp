@@ -102,25 +102,25 @@ void ESoundThumbnail::Save(int age, LPCSTR path)
 #include "ai_sounds.h"
 
 void ESoundThumbnail::FillProp(PropItemVec& items)
-{                                     
-    PHelper.CreateFloat			(items, "Quality", 	&m_fQuality);
-    PHelper.CreateFloat			(items, "Min Dist",	&m_fMinDist, 0.f,10000.f);
-    PHelper.CreateFloat			(items, "Max Dist",	&m_fMaxDist, 0.f,10000.f);
-    PHelper.CreateFloat			(items, "Volume",	&m_fVolume, 0.f,2.f);
-    PHelper.CreateToken32		(items, "Game Type",&m_uGameType, anomaly_type_token);
+{                                      
+    PHelper().CreateFloat		(items, "Quality", 	&m_fQuality);
+    PHelper().CreateFloat		(items, "Min Dist",	&m_fMinDist, 0.f,10000.f);
+    PHelper().CreateFloat		(items, "Max Dist",	&m_fMaxDist, 0.f,10000.f);
+    PHelper().CreateFloat		(items, "Volume",	&m_fVolume, 0.f,2.f);
+    PHelper().CreateToken32		(items, "Game Type",&m_uGameType, anomaly_type_token);
 }
 //------------------------------------------------------------------------------
 
 void ESoundThumbnail::FillInfo(PropItemVec& items)
 {
-    PHelper.CreateCaption		(items, "Quality", 	AnsiString().sprintf("%3.2f",m_fQuality));
-    PHelper.CreateCaption		(items, "Min Dist", AnsiString().sprintf("%3.2f",m_fMinDist));
-    PHelper.CreateCaption		(items, "Max Dist",	AnsiString().sprintf("%3.2f",m_fMaxDist));
-    PHelper.CreateCaption		(items, "Volume",	AnsiString().sprintf("%3.2f",m_fVolume));
+    PHelper().CreateCaption		(items, "Quality", 	AnsiString().sprintf("%3.2f",m_fQuality).c_str());
+    PHelper().CreateCaption		(items, "Min Dist", AnsiString().sprintf("%3.2f",m_fMinDist).c_str());
+    PHelper().CreateCaption		(items, "Max Dist",	AnsiString().sprintf("%3.2f",m_fMaxDist).c_str());
+    PHelper().CreateCaption		(items, "Volume",	AnsiString().sprintf("%3.2f",m_fVolume).c_str());
     LPCSTR gt_name=0;
     for (int k=0; anomaly_type_token[k].name; k++)
     	if (m_uGameType==(u32)anomaly_type_token[k].id){ gt_name=anomaly_type_token[k].name; break;}
-    PHelper.CreateCaption		(items, "Game Type",gt_name);
+    PHelper().CreateCaption		(items, "Game Type",gt_name);
 }
 //------------------------------------------------------------------------------
 

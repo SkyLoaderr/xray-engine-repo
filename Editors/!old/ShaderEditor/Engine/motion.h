@@ -50,16 +50,17 @@ protected:
 		ForceDWORD	= u32(-1)
 	};
 	EMotionType		mtype;
-	string128		name;
 	int				iFrameStart, iFrameEnd;
 	float			fFPS;
+public:
+	ref_str			name;
 public:
 					CCustomMotion	();
 					CCustomMotion	(CCustomMotion* src);
 	virtual			~CCustomMotion	();
 
-	void			SetName			(const char* n)	{if(n) strcpy(name,n); strlwr(name);}
-	string128&		Name			()				{return name;}
+	void			SetName			(const char* n)	{string256 tmp; tmp[0]=0; if(n){strcpy(tmp,n); strlwr(tmp);} name=tmp;}
+	LPCSTR			Name			()				{return name.c_str();}
     int				FrameStart		()				{return iFrameStart;}
     int				FrameEnd		()				{return iFrameEnd;}
     float			FPS				()				{return fFPS;}

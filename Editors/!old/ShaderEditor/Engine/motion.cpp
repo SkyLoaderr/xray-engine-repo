@@ -15,8 +15,8 @@
 //------------------------------------------------------------------------------------------
 // CCustomMotion
 //------------------------------------------------------------------------------------------
-CCustomMotion::CCustomMotion(){
-	name[0]			=0;
+CCustomMotion::CCustomMotion()
+{
     iFrameStart		=0;
     iFrameEnd		=0;
     fFPS			=30.f;
@@ -26,20 +26,23 @@ CCustomMotion::CCustomMotion(CCustomMotion* source){
 	*this			= *source;
 }
 
-CCustomMotion::~CCustomMotion(){
+CCustomMotion::~CCustomMotion()
+{
 }
 
-void CCustomMotion::Save(IWriter& F){
+void CCustomMotion::Save(IWriter& F)
+{
 #ifdef _LW_EXPORT
 	ReplaceSpace(name);			strlwr(name);
 #endif
 	F.w_stringZ	(name);
-	F.w_u32	(iFrameStart);
-	F.w_u32	(iFrameEnd);
+	F.w_u32		(iFrameStart);
+	F.w_u32		(iFrameEnd);
 	F.w_float	(fFPS);
 }
 
-bool CCustomMotion::Load(IReader& F){
+bool CCustomMotion::Load(IReader& F)
+{
 	F.r_stringZ	(name);
 	iFrameStart	= F.r_u32();
 	iFrameEnd	= F.r_u32();
@@ -184,33 +187,41 @@ BOOL COMotion::ScaleKeys(float from_time, float to_time, float scale_factor)
 }
 BOOL COMotion::NormalizeKeys(float from_time, float to_time, float speed)
 {
-	CEnvelope* E = Envelope(ctPositionX);
+	if (to_time<from_time) return FALSE;
+	CEnvelope* E 	= Envelope(ctPositionX);
     float new_tm	= 0;
     float t0		= E->keys.front()->time;
     FloatVec tms;
     tms.push_back	(t0);
     for (KeyIt it=E->keys.begin()+1; it!=E->keys.end(); it++){
-    	if (((*it)->time>from_time)&&((*it)->time<to_time)){
-            float dist	= 0;
-            Fvector PT,T,R;
-            _Evaluate	(t0, PT, R);
-            for (float tm=t0+1.f/fFPS; tm<=(*it)->time; tm+=EPS_L){
-                _Evaluate	(tm, T, R);
-                dist		+= PT.distance_to(T);
-                PT.set		(T);
+    	if ((*it)->time>from_time){
+        	if ((*it)->time<to_time+EPS){
+                float dist	= 0;
+                Fvector PT,T,R;
+                _Evaluate	(t0, PT, R);
+                for (float tm=t0+1.f/fFPS; tm<=(*it)->time; tm+=EPS_L){
+                    _Evaluate	(tm, T, R);
+                    dist		+= PT.distance_to(T);
+                    PT.set		(T);
+                }
+                new_tm			+= dist / speed;
+                t0				= (*it)->time;
+                tms.push_back	(new_tm);
+	        }else{
+                float dt		= (*it)->time-t0;
+                t0				= (*it)->time;
+                new_tm			+=dt;
+                tms.push_back	(new_tm);
             }
-            new_tm			+= dist / speed;
-            t0				= (*it)->time;
-            tms.push_back	(new_tm);
         }
     }
     for (int ch=0; ch<ctMaxChannel; ch++){
     	E				= Envelope(EChannelType(ch));
-        FloatIt	f_it	= tms.begin();
+        FloatIt	f_it	= tms.begin();   VERIFY(tms.size()==E->keys.size());
 	    for (KeyIt k_it=E->keys.begin(); k_it!=E->keys.end(); k_it++,f_it++)
-	    	if (((*k_it)->time>from_time)&&((*k_it)->time<to_time))
-	        	(*k_it)->time = *f_it;
+            (*k_it)->time = *f_it;
     }
+    
 /*
 	CEnvelope* E = Envelope();
     for (KeyIt it=E->keys.begin(); it!=E->keys.end(); it++){
@@ -220,7 +231,7 @@ BOOL COMotion::NormalizeKeys(float from_time, float to_time, float speed)
         }
     }
 */
-	return FALSE;
+	return TRUE;
 }
 #endif
 

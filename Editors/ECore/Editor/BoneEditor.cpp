@@ -216,7 +216,7 @@ bool CBone::ExportOGF(IWriter& F)
         ELog.Msg(mtError,"Bone '%s' has invalid shape.",Name());
     	return false;
     }
-    SGameMtl* M			= GMLib.GetMaterial(game_mtl);
+    SGameMtl* M			= GMLib.GetMaterial(game_mtl.c_str());
     if (!M){
         ELog.Msg(mtError,"Bone '%s' has invalid game material.",Name());
     	return false;

@@ -11,7 +11,6 @@
 #include "SoundManager.h"
 #include "PSLibrary.h"
 
-#include "itemlist.h"
 #include "ImageEditor.h"
 #include "SoundEditor.h"
 

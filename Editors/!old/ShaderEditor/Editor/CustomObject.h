@@ -66,7 +66,7 @@ protected:
     };
     Flags32			m_RT_Flags;
 public:
-	string128		FName;
+	ref_str			FName;
 
     // orientation
     Fvector 		FPosition;
@@ -81,18 +81,18 @@ public:
 	Fmatrix 		FITransform;
 
     CCustomObject*	m_pOwnerObject;
-	void __fastcall OnObjectNameAfterEdit	(PropItem* sender, LPVOID edit_val);
-    void __fastcall	OnTransformChange		(PropValue* value); 
-	void __fastcall OnMotionableChange		(PropValue* sender);
-    void __fastcall	OnMotionCommandsClick	(PropValue* value, bool& bModif, bool& bSafe);
-    void __fastcall	OnMotionFilesClick		(PropValue* value, bool& bModif, bool& bSafe);
-    void __fastcall	OnMotionControlClick	(PropValue* value, bool& bModif, bool& bSafe);
-    void __fastcall	OnMotionFrameChange		(PropValue* value); 
-    void __fastcall	OnMotionCurrentFrameChange(PropValue* value); 
-    void __fastcall	OnMotionCameraViewChange(PropValue* value); 
+	void __stdcall  OnObjectNameAfterEdit	(PropValue* sender, ref_str& edit_val, bool& accepted);
+    void __stdcall 	OnTransformChange		(PropValue* value); 
+	void __stdcall  OnMotionableChange		(PropValue* sender);
+    void __stdcall 	OnMotionCommandsClick	(PropValue* value, bool& bModif, bool& bSafe);
+    void __stdcall 	OnMotionFilesClick		(PropValue* value, bool& bModif, bool& bSafe);
+    void __stdcall 	OnMotionControlClick	(PropValue* value, bool& bModif, bool& bSafe);
+    void __stdcall 	OnMotionFrameChange		(PropValue* value); 
+    void __stdcall 	OnMotionCurrentFrameChange(PropValue* value); 
+    void __stdcall 	OnMotionCameraViewChange(PropValue* value); 
 protected:
-	LPSTR			GetName			(){return FName; }
-	void			SetName			(LPCSTR N){strcpy(FName,N); strlwr(FName); }
+	LPCSTR			GetName			(){return *FName; }
+	void			SetName			(LPCSTR N){string256 tmp; strcpy(tmp,N); strlwr(tmp); FName=tmp;}
 
     virtual Fvector& GetPosition	()	{ return FPosition; 	}
     virtual Fvector& GetRotation	()	{ return FRotation;		}
@@ -102,9 +102,9 @@ protected:
 	virtual void 	SetRotation		(const Fvector& rot)	{ FRotation.set(rot);	UpdateTransform();}
     virtual void 	SetScale		(const Fvector& scale)	{ FScale.set(scale);	UpdateTransform();}
 
-    void __fastcall	OnNumChangePosition	(PropValue* sender);
-    void __fastcall	OnNumChangeRotation	(PropValue* sender);
-    void __fastcall	OnNumChangeScale	(PropValue* sender);
+    void __stdcall 	OnNumChangePosition	(PropValue* sender);
+    void __stdcall 	OnNumChangeRotation	(PropValue* sender);
+    void __stdcall 	OnNumChangeScale	(PropValue* sender);
 public:
 					CCustomObject	(LPVOID data, LPCSTR name);
 					CCustomObject	(CCustomObject* source);
@@ -201,7 +201,7 @@ public:
 
     PropertyGP(FParentTools,FParentTools)	ESceneCustomOTools* ParentTools;
     PropertyGP(FClassID,FClassID)			EObjClass ClassID;
-    PropertyGP(GetName,SetName) 			LPSTR  	Name;
+    PropertyGP(GetName,SetName) 			LPCSTR  	Name;
 public:
 	static void		SnapMove		(Fvector& pos, Fvector& rot, const Fmatrix& rotRP, const Fvector& amount);
 	static void		NormalAlign		(Fvector& rot, const Fvector& up);

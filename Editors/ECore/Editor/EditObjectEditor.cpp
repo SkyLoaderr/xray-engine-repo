@@ -68,7 +68,7 @@ bool CEditableObject::FrustumPick(const CFrustum& frustum, const Fmatrix& parent
 	return false;
 }
 
-bool CEditableObject::BoxPick(CSceneObject* obj, const Fbox& box, const Fmatrix& inv_parent, SBoxPickInfoVec& pinf){
+bool CEditableObject::BoxPick(CCustomObject* obj, const Fbox& box, const Fmatrix& inv_parent, SBoxPickInfoVec& pinf){
 	bool picked = false;
     for(EditMeshIt m = m_Meshes.begin();m!=m_Meshes.end();m++)
         if ((*m)->BoxPick(box, inv_parent, pinf)){
@@ -81,14 +81,14 @@ bool CEditableObject::GetSummaryInfo(SSceneSummary* inf)
 {
 	if (IsStatic()||IsMUStatic()){
         for(SurfaceIt 	s_it=m_Surfaces.begin(); s_it!=m_Surfaces.end(); s_it++)
-            inf->textures.insert(ChangeFileExt((*s_it)->m_Texture,"").LowerCase());
+            inf->textures.insert(ChangeFileExt(*(*s_it)->m_Texture,"").LowerCase().c_str());
         if (m_Flags.is(eoUsingLOD)){
-            inf->textures.insert(GetLODTextureName());
-            inf->lod_objects.insert(m_LibName);
+            inf->textures.insert	(GetLODTextureName().c_str());
+            inf->lod_objects.insert	(m_LibName.c_str());
             inf->object_lod_ref_cnt++;
         }
         if (m_Flags.is(eoMultipleUsage)){
-            inf->mu_objects.insert(m_LibName);
+            inf->mu_objects.insert(m_LibName.c_str());
             inf->object_mu_ref_cnt++;
         }
 
@@ -380,14 +380,14 @@ bool CEditableObject::CheckShaderCompatible()
 	bool bRes 			= true;
 	for(SurfaceIt s_it=m_Surfaces.begin(); s_it!=m_Surfaces.end(); s_it++)
     {
-    	IBlender* 		B = Device.Resources->_FindBlender((*s_it)->m_ShaderName.c_str()); 
-        Shader_xrLC* 	C = Device.ShaderXRLC.Get((*s_it)->m_ShaderXRLCName.c_str());
+    	IBlender* 		B = Device.Resources->_FindBlender(*(*s_it)->m_ShaderName); 
+        Shader_xrLC* 	C = Device.ShaderXRLC.Get(*(*s_it)->m_ShaderXRLCName);
         if (!B||!C){
-        	ELog.Msg	(mtError,"Object '%s': invalid or missing shader [E:'%s', C:'%s']",GetName(),(*s_it)->m_ShaderName.c_str(),(*s_it)->m_ShaderXRLCName.c_str());
+        	ELog.Msg	(mtError,"Object '%s': invalid or missing shader [E:'%s', C:'%s']",GetName(),(*s_it)->_ShaderName(),(*s_it)->_ShaderXRLCName());
             bRes 		= false;
         }else{
             if (!BE(B->canBeLMAPped(),!C->flags.bLIGHT_Vertex)){ 
-                ELog.Msg	(mtError,"Object '%s': engine shader '%s' non compatible with compiler shader '%s'",GetName(),(*s_it)->m_ShaderName.c_str(),(*s_it)->m_ShaderXRLCName.c_str());
+                ELog.Msg	(mtError,"Object '%s': engine shader '%s' non compatible with compiler shader '%s'",GetName(),(*s_it)->_ShaderName(),(*s_it)->_ShaderXRLCName());
                 bRes 		= false;
             }
         }

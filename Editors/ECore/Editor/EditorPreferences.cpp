@@ -72,7 +72,7 @@ void CEditorPreferences::ApplyValues()
 }
 //---------------------------------------------------------------------------
 
-void __fastcall CEditorPreferences::OnClose	()
+void __stdcall CEditorPreferences::OnClose	()
 {
 	ApplyValues	();	
 }
@@ -83,50 +83,50 @@ void CEditorPreferences::Edit()
     // fill prop
 	PropItemVec props;
 
-    PHelper.CreateFloat	(props,"View\\Near Plane",				&view_np, 			0.01f,	10.f);
-    PHelper.CreateFloat	(props,"View\\Far Plane", 				&view_fp,			10.f, 	10000.f);
-    PHelper.CreateAngle	(props,"View\\FOV",		  				&view_fov,			deg2rad(0.1f), deg2rad(170.f));
+    PHelper().CreateFloat	(props,"View\\Near Plane",				&view_np, 			0.01f,	10.f);
+    PHelper().CreateFloat	(props,"View\\Far Plane", 				&view_fp,			10.f, 	10000.f);
+    PHelper().CreateAngle	(props,"View\\FOV",		  				&view_fov,			deg2rad(0.1f), deg2rad(170.f));
 
-    PHelper.CreateColor	(props,"Fog\\Color",					&fog_color	);
-    PHelper.CreateFloat	(props,"Fog\\Fogness",					&fog_fogness, 		0.f, 	100.f);
+    PHelper().CreateColor	(props,"Fog\\Color",					&fog_color	);
+    PHelper().CreateFloat	(props,"Fog\\Fogness",					&fog_fogness, 		0.f, 	100.f);
 
-    PHelper.CreateFloat	(props,"Camera\\Sensetivity\\Move",		&cam_sens_move);
-    PHelper.CreateFloat	(props,"Camera\\Sensetivity\\Rotate",	&cam_sens_rot);
-    PHelper.CreateFloat	(props,"Camera\\Fly\\Speed",			&cam_fly_speed, 	0.01f, 	100.f);
-    PHelper.CreateFloat	(props,"Camera\\Fly\\Altitude",			&cam_fly_alt, 		0.f, 	1000.f);
+    PHelper().CreateFloat	(props,"Camera\\Sensetivity\\Move",		&cam_sens_move);
+    PHelper().CreateFloat	(props,"Camera\\Sensetivity\\Rotate",	&cam_sens_rot);
+    PHelper().CreateFloat	(props,"Camera\\Fly\\Speed",			&cam_fly_speed, 	0.01f, 	100.f);
+    PHelper().CreateFloat	(props,"Camera\\Fly\\Altitude",			&cam_fly_alt, 		0.f, 	1000.f);
 
-    PHelper.CreateFloat	(props,"Tools\\Sensetivity\\Move",		&tools_sens_move);
-    PHelper.CreateFloat	(props,"Tools\\Sensetivity\\Rotate",	&tools_sens_rot);
-    PHelper.CreateFloat	(props,"Tools\\Sensetivity\\Scale",		&tools_sens_scale);
+    PHelper().CreateFloat	(props,"Tools\\Sensetivity\\Move",		&tools_sens_move);
+    PHelper().CreateFloat	(props,"Tools\\Sensetivity\\Rotate",	&tools_sens_rot);
+    PHelper().CreateFloat	(props,"Tools\\Sensetivity\\Scale",		&tools_sens_scale);
 
-    PHelper.CreateBOOL	(props,"Box Pick\\Limited Depth",		&bp_lim_depth);
-    PHelper.CreateBOOL	(props,"Box Pick\\Back Face Culling",	&bp_cull);
-    PHelper.CreateFloat	(props,"Box Pick\\Depth Tolerance",		&bp_depth_tolerance,0.f, 	10000.f);
+    PHelper().CreateBOOL	(props,"Box Pick\\Limited Depth",		&bp_lim_depth);
+    PHelper().CreateBOOL	(props,"Box Pick\\Back Face Culling",	&bp_cull);
+    PHelper().CreateFloat	(props,"Box Pick\\Depth Tolerance",		&bp_depth_tolerance,0.f, 	10000.f);
 
-    PHelper.CreateAngle	(props,"Snap\\Angle",					&snap_angle,		0, 		PI_MUL_2);
-    PHelper.CreateFloat	(props,"Snap\\Move",					&snap_move, 		0.01f,	1000.f);
-    PHelper.CreateFloat	(props,"Snap\\Move To", 				&snap_moveto,		0.01f,	1000.f);
+    PHelper().CreateAngle	(props,"Snap\\Angle",					&snap_angle,		0, 		PI_MUL_2);
+    PHelper().CreateFloat	(props,"Snap\\Move",					&snap_move, 		0.01f,	1000.f);
+    PHelper().CreateFloat	(props,"Snap\\Move To", 				&snap_moveto,		0.01f,	1000.f);
 
-    PHelper.CreateFloat	(props,"Grid\\Cell Size", 				&grid_cell_size,	0.1f,	10.f);
-    PHelper.CreateU32	(props,"Grid\\Cell Count", 				&grid_cell_count,	10, 	1000);
+    PHelper().CreateFloat	(props,"Grid\\Cell Size", 				&grid_cell_size,	0.1f,	10.f);
+    PHelper().CreateU32	(props,"Grid\\Cell Count", 				&grid_cell_count,	10, 	1000);
 
-    PHelper.CreateColor	(props,"Scene\\Clear Color",			&scene_clear_color	);
-    PHelper.CreateU32	(props,"Scene\\Undo Level", 			&scene_undo_level,	0, 		125);
-    PHelper.CreateU32	(props,"Scene\\Recent Count", 			&scene_recent_count,0, 		25);
-    PHelper.CreateBOOL	(props,"Scene\\Always Keep Object Copy",&scene_leave_eo_copy);
+    PHelper().CreateColor	(props,"Scene\\Clear Color",			&scene_clear_color	);
+    PHelper().CreateU32	(props,"Scene\\Undo Level", 			&scene_undo_level,	0, 		125);
+    PHelper().CreateU32	(props,"Scene\\Recent Count", 			&scene_recent_count,0, 		25);
+    PHelper().CreateBOOL	(props,"Scene\\Always Keep Object Copy",&scene_leave_eo_copy);
 
-    PHelper.CreateFloat	(props,"Sounds\\Rolloff Factor",		&sound_rolloff, 	0.f,	10.f);
-    PHelper.CreateFlag<Flags32>	(props,"Sounds\\Use Hardware",					&psSoundFlags, 	ssHardware);
-    PHelper.CreateFlag<Flags32>	(props,"Sounds\\Use EAX",						&psSoundFlags, 	ssEAX);
+    PHelper().CreateFloat	(props,"Sounds\\Rolloff Factor",		&sound_rolloff, 	0.f,	10.f);
+    PHelper().CreateFlag32(props,"Sounds\\Use Hardware",					&psSoundFlags, 	ssHardware);
+    PHelper().CreateFlag32(props,"Sounds\\Use EAX",						&psSoundFlags, 	ssEAX);
 
-    PHelper.CreateFlag<Flags32>	(props,"Objects\\Show Hint",					&object_flags, 	epoShowHint);
-    PHelper.CreateFlag<Flags32>	(props,"Objects\\Draw Pivot",					&object_flags, 	epoDrawPivot);
-    PHelper.CreateFlag<Flags32>	(props,"Objects\\Draw Animation Path",			&object_flags, 	epoDrawAnimPath);
-    PHelper.CreateFlag<Flags32>	(props,"Objects\\Draw LOD",						&object_flags, 	epoDrawLOD);
-    PHelper.CreateFlag<Flags32>	(props,"Objects\\Skeleton\\Draw Joints",		&object_flags, 	epoDrawJoints);
-    PHelper.CreateFlag<Flags32>	(props,"Objects\\Skeleton\\Draw Bone Axis",		&object_flags, 	epoDrawBoneAxis);
-    PHelper.CreateFlag<Flags32>	(props,"Objects\\Skeleton\\Draw Bone Names",	&object_flags, 	epoDrawBoneNames);
-    PHelper.CreateFlag<Flags32>	(props,"Objects\\Skeleton\\Draw Bone Shapes",	&object_flags, 	epoDrawBoneShapes);
+    PHelper().CreateFlag32(props,"Objects\\Show Hint",					&object_flags, 	epoShowHint);
+    PHelper().CreateFlag32(props,"Objects\\Draw Pivot",					&object_flags, 	epoDrawPivot);
+    PHelper().CreateFlag32(props,"Objects\\Draw Animation Path",			&object_flags, 	epoDrawAnimPath);
+    PHelper().CreateFlag32(props,"Objects\\Draw LOD",						&object_flags, 	epoDrawLOD);
+    PHelper().CreateFlag32(props,"Objects\\Skeleton\\Draw Joints",		&object_flags, 	epoDrawJoints);
+    PHelper().CreateFlag32(props,"Objects\\Skeleton\\Draw Bone Axis",		&object_flags, 	epoDrawBoneAxis);
+    PHelper().CreateFlag32(props,"Objects\\Skeleton\\Draw Bone Names",	&object_flags, 	epoDrawBoneNames);
+    PHelper().CreateFlag32(props,"Objects\\Skeleton\\Draw Bone Shapes",	&object_flags, 	epoDrawBoneShapes);
     
 	m_ItemProps->AssignItems		(props);
     m_ItemProps->ShowPropertiesModal();

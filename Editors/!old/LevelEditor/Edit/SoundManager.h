@@ -12,9 +12,9 @@ class ECORE_API CSoundManager{
 public:
 				CSoundManager		(){}
 	virtual		~CSoundManager		(){;}
-
-    BOOL __fastcall	RemoveSound		(LPCSTR fname, EItemType type);
-	void __fastcall RenameSound		(LPCSTR p0, LPCSTR p1, EItemType type);
+                    
+    BOOL __stdcall RemoveSound		(LPCSTR fname, EItemType type);
+	void __stdcall RenameSound		(LPCSTR p0, LPCSTR p1, EItemType type);
 
 	// texture routines
     int			GetSounds			(FS_QueryMap& files, BOOL bFolders=FALSE);

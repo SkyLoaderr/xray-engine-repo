@@ -61,7 +61,7 @@ public:
     Flags32		flags;
     u32			clr;
 protected:
-	void __fastcall PDomain::OnTypeChange(PropValue* sender);
+	void __stdcall PDomain::OnTypeChange(PropValue* sender);
 public:
 	PDomain 	(){}
 	PDomain		(EType et, BOOL renderable, u32 color=0x00000000, PAPI::PDomainEnum type = PAPI::PDPoint,	

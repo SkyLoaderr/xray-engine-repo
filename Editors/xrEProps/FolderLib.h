@@ -7,16 +7,7 @@
 #include "ExtBtn.hpp"
 #include "MxMenus.hpp"
 
-enum EItemType{
-	TYPE_INVALID= -1,
-	TYPE_FOLDER	= 0,
-	TYPE_OBJECT	= 1
-};
 class XR_EPROPS_API CFolderHelper{
-    IC AnsiString  		FolderAppend	(LPCSTR val)
-    {
-    	return (val&&val[0])?AnsiString(val)+"\\":AnsiString("");
-    }
     IC TElTreeItem*		LL_CreateFolder	(TElTree* tv, TElTreeItem* parent, const AnsiString& name, bool force_icon)
     {
     	TElTreeItem* N	= tv->Items->AddChildObject(parent,name,(void*)TYPE_FOLDER);
@@ -29,25 +20,6 @@ class XR_EPROPS_API CFolderHelper{
         return N;
     }
 public:
-    IC AnsiString		PrepareKey		(LPCSTR pref, LPCSTR key)
-    {
-        R_ASSERT(key);
-        return FolderAppend(pref)+AnsiString(key);
-    }
-    IC AnsiString		PrepareKey		(LPCSTR pref0, LPCSTR pref1, LPCSTR key)
-    {
-        R_ASSERT(key);
-        return FolderAppend(pref0)+FolderAppend(pref1)+AnsiString(key);
-    }
-    IC AnsiString		PrepareKey		(LPCSTR pref0, LPCSTR pref1, LPCSTR pref2, LPCSTR key)
-    {
-        R_ASSERT(key);
-        return FolderAppend(pref0)+FolderAppend(pref1)+FolderAppend(pref2)+AnsiString(key);
-    }
-public:
-	typedef void 		__fastcall (__closure *TOnItemRename)(LPCSTR p0, LPCSTR p1, EItemType type);
-	typedef BOOL 		__fastcall (__closure *TOnItemRemove)(LPCSTR p0, EItemType type);  
-	typedef void 		__fastcall (__closure *TOnItemAfterRemove)();
     IC bool				IsFolder			(TElTreeItem* node){return node?(TYPE_FOLDER==(u32)node->Data):TYPE_INVALID;}
     IC bool				IsObject			(TElTreeItem* node){return node?(TYPE_OBJECT==(u32)node->Data):TYPE_INVALID;}
 
@@ -83,9 +55,9 @@ public:
     TElTreeItem*		ExpandItem			(TElTree* tv, TElTreeItem* node);
     TElTreeItem*		ExpandItem			(TElTree* tv, AnsiString full_name);
 
-	bool 				DrawThumbnail		(TCanvas *Surface, TRect &R, LPCSTR fname, u32 thm_type);
+	bool 				DrawThumbnail		(TCanvas *Surface, TRect &R, ref_str fname, u32 thm_type);
 
-	typedef bool 		__fastcall 			(__closure *TFindObjectByName)(LPCSTR new_name);
+	typedef bool 		__stdcall  			(__closure *TFindObjectByName)(LPCSTR new_name);
     AnsiString			GenerateName		(LPCSTR pref, int dgt_cnt, TFindObjectByName cb, bool allow_pref_name);
 //------------------------------------------------------------------------------
 };

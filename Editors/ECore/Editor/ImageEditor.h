@@ -13,7 +13,6 @@
 #include "mxPlacemnt.hpp"
 #include <ImgList.hpp>
 
-#include "ItemList.h"
 #include "MXCtrls.hpp"
 
 //---------------------------------------------------------------------------
@@ -57,7 +56,7 @@ __published:	// IDE-managed Components
 private:
 // list functions
     void 				InitItemsList		();
-	void __fastcall 	OnItemsFocused		(ListItemsVec& items);
+	void __stdcall  	OnItemsFocused		(ListItemsVec& items);
 
 	enum{
     	flUpdateProperties = (1<<0),

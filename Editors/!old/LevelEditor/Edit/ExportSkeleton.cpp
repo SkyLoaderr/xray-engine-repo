@@ -398,9 +398,9 @@ bool CExportSkeleton::ExportGeometry(IWriter& F)
         if (!(*bone_it)->ExportOGF(F)) bRes=false; 
     F.close_chunk();
 
-    if (!m_Source->GetClassScript().IsEmpty()){
+    if (m_Source->GetClassScript().size()){
         F.open_chunk(OGF_USERDATA);
-        F.w(m_Source->GetClassScript().c_str(),m_Source->GetClassScript().Length());
+        F.w(*m_Source->GetClassScript(),m_Source->GetClassScript().size());
         F.close_chunk();
     }
 

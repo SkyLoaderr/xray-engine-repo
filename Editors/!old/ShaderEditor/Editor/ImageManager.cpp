@@ -138,7 +138,7 @@ bool CImageManager::MakeGameTexture(LPCSTR game_name, u32* data, u32 w, u32 h, S
     // fill texture params
     STextureParams TP;
     TP.fmt 			= fmt;
-    TP.mip_filter   = STextureParams::dMIPFilterBox;
+    TP.mip_filter   = STextureParams::kMIPFilterBox;
     TP.type			= STextureParams::ttImage;
     TP.width		= w;
     TP.height		= h;

@@ -52,12 +52,12 @@ public:
 	enum EFlags{
     	sf2Sided		= (1<<0),
     };
-	AnsiString		m_Name;
-    AnsiString		m_Texture;	//
-    AnsiString		m_VMap;		//
-    AnsiString		m_ShaderName;
-    AnsiString		m_ShaderXRLCName;
-    AnsiString		m_GameMtlName;
+	ref_str			m_Name;
+    ref_str			m_Texture;	//
+    ref_str			m_VMap;		//
+    ref_str			m_ShaderName;
+    ref_str			m_ShaderXRLCName;
+    ref_str			m_GameMtlName;
     Flags32			m_Flags;
     u32				m_dwFVF;
 #ifdef _MAX_EXPORT
@@ -93,13 +93,13 @@ public:
     IC bool			_StrictB2F		()	{return _Shader()?_Shader()->E[0]->flags.bStrictB2F:false;}
 	IC ref_shader	_Shader			()	{if (!m_RTFlags.is(rtValidShader)) OnDeviceCreate(); return m_Shader;}
 #endif
-    IC LPCSTR		_Name			()const {return m_Name.c_str();}
-    IC LPCSTR		_ShaderName		()const {return m_ShaderName.c_str();}
-    IC LPCSTR		_GameMtlName	()const {return m_GameMtlName.c_str();}
-    IC LPCSTR		_ShaderXRLCName	()const {return m_ShaderXRLCName.c_str();}
+    IC LPCSTR		_Name			()const {return *m_Name;}
+    IC LPCSTR		_ShaderName		()const {return *m_ShaderName;}
+    IC LPCSTR		_GameMtlName	()const {return *m_GameMtlName;}
+    IC LPCSTR		_ShaderXRLCName	()const {return *m_ShaderXRLCName;}
+    IC LPCSTR		_Texture		()const {return *m_Texture;}
+    IC LPCSTR		_VMap			()const {return *m_VMap;}
     IC u32			_FVF			()const {return m_dwFVF;}
-    IC LPCSTR		_Texture		(){return m_Texture.c_str();}
-    IC LPCSTR		_VMap			(){return m_VMap.c_str();}
     IC void			SetName			(LPCSTR name){m_Name=name;}
 	IC void			SetShader		(LPCSTR name)
 	{
@@ -115,12 +115,12 @@ public:
     IC void			SetTexture		(LPCSTR name){string256 buf; strcpy(buf,name); if(strext(buf)) *strext(buf)=0; m_Texture=buf;}
     IC void			SetVMap			(LPCSTR name){m_VMap=name;}
 #ifdef _EDITOR
-    IC u32			_GameMtl		()const	{return GMLib.GetMaterialID	(m_GameMtlName.c_str());}
+    IC u32			_GameMtl		()const	{return GMLib.GetMaterialID	(*m_GameMtlName);}
     IC void			OnDeviceCreate	()
     { 
         R_ASSERT(!m_RTFlags.is(rtValidShader));
-    	if (m_ShaderName.Length()&&m_Texture.Length()) 	m_Shader.create(m_ShaderName.c_str(),m_Texture.c_str()); 
-        else                                       		m_Shader.create("editor\\wire");
+    	if (m_ShaderName.size()&&m_Texture.size())	m_Shader.create(*m_ShaderName,*m_Texture); 
+        else                                       	m_Shader.create("editor\\wire");
         m_RTFlags.set(rtValidShader,TRUE);
     }
     IC void			OnDeviceDestroy	()
@@ -165,7 +165,7 @@ class ECORE_API CEditableObject{
     time_t			m_ModifTime;
     
 // general
-	AnsiString		m_ClassScript;
+	ref_str			m_ClassScript;
 
 	SurfaceVec		m_Surfaces;
 	EditMeshVec		m_Meshes;
@@ -222,8 +222,8 @@ protected:
     void			DefferedLoadRP			();
     void			DefferedUnloadRP		();
 
-	void __fastcall OnChangeTransform		(PropValue* prop);
-    void __fastcall	OnChangeShader			(PropValue* prop);
+	void __stdcall  OnChangeTransform		(PropValue* prop);
+    void __stdcall 	OnChangeShader			(PropValue* prop);
 public:
 	enum{
 	    LS_RBUFFERS	= (1<<0),
@@ -284,7 +284,7 @@ public:
 ///    IC bool			CheckVersion			()  {if(m_LibRef) return (m_ObjVer==m_LibRef->m_ObjVer); return true;}
     // get object properties methods
 
-	IC AnsiString&	GetClassScript			()	{return m_ClassScript;}
+	IC ref_str		GetClassScript			()	{return m_ClassScript;}
     IC const Fbox&	GetBox					() 	{return m_Box;}
 
     // animation
@@ -331,7 +331,7 @@ public:
 #ifdef _EDITOR
 	void 			RayQuery				(const Fmatrix& parent, const Fmatrix& inv_parent, SPickQuery& pinf);
 	void 			BoxQuery				(const Fmatrix& parent, const Fmatrix& inv_parent, SPickQuery& pinf);
-    bool 			BoxPick					(CSceneObject* obj, const Fbox& box, const Fmatrix& inv_parent, SBoxPickInfoVec& pinf);
+    bool 			BoxPick					(CCustomObject* obj, const Fbox& box, const Fmatrix& inv_parent, SBoxPickInfoVec& pinf);
 	bool 			FrustumPick				(const CFrustum& frustum, const Fmatrix& parent);
     bool 			SpherePick				(const Fvector& center, float radius, const Fmatrix& parent);
 

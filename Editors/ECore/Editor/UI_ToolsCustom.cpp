@@ -9,7 +9,6 @@
 #include "ChoseForm.h"
 #include "ui_main.h"
 #include "PropertiesList.h"               
-#include "ItemList.h"
 #include "motion.h"
 #include "bone.h"
 #include "library.h"

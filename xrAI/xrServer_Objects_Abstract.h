@@ -103,7 +103,7 @@ add_to_type_list(CSE_Shape)
 
 SERVER_ENTITY_DECLARE_BEGIN0(CSE_Visual)
 private:
-	string64						visual_name;
+	ref_str							visual_name;
 public:
 #ifdef _EDITOR
 	AnsiString						play_animation;
@@ -119,7 +119,7 @@ public:
 	void							visual_write	(NET_Packet& P);
 
     void							set_visual		(LPCSTR name, bool load=true);
-	LPCSTR							get_visual		() const {return visual_name;};
+	LPCSTR							get_visual		() const {return *visual_name;};
     
 #ifdef _EDITOR
     void 							FillProp		(LPCSTR pref, PropItemVec& values);

@@ -17,7 +17,7 @@ class ECORE_API CPSLibrary{
 #ifdef _EDITOR    
     AnsiString			m_CurrentParticles;
 public:
-	bool __fastcall 	FindByName		(LPCSTR new_name);
+	bool __stdcall	 	FindByName		(LPCSTR new_name);
 #endif
 
 public:

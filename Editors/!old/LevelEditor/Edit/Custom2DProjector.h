@@ -12,19 +12,20 @@ protected:
     DEFINE_VECTOR	(FVF::V,TVertVec,TVertIt);
     TVertVec		mesh;
     ref_geom		geom;
-
-    void __stdcall 	OnTextureChange		(PropValue* prop);
+public:
+    void __stdcall 	OnImageChange		(PropValue* prop);
 public:
     ref_str			name;
 public:
                     CCustom2DProjector	();
     IC bool			Valid				(){return (w>0)&&(h>0)&&(!!data.size());}
     IC void			Clear				(){name=""; w=0; h=0; geom=0; data.clear(); mesh.clear(); DestroyShader();}
+    bool			LoadImage			(LPCSTR nm);
+    void			ReloadImage			();
     void			CreateRMFromObjects	(const Fbox& box, ObjectList& lst);
     void			Render				(bool blended);
     void			CreateShader		();
     void			DestroyShader		();
-    bool			LoadImage			(LPCSTR nm);
     IC LPCSTR 		GetName				(){ return *name; }
     IC bool 		GetColor			(u32& color, int U, int V){
         if (Valid()&&(U<(int)w)&&(V<(int)h)){
@@ -49,7 +50,6 @@ public:
         int V 		= iFloor(GetVFromZ(z,box)*(h-1)+0.5f); if (V<0) V=0;
         return V;
     }
-    void			FillProp          	(LPCSTR pref, PropItemVec& items);
 };
 //---------------------------------------------------------------------------
 #endif

@@ -22,10 +22,71 @@
 
 #ifdef _EDITOR
 	#include "SkeletonAnimated.h"
-//.	static TokenValue3Custom::ItemVec	locations[4];
-//.	static AStringVec					level_ids;
-//.	static TokenValue3Custom::ItemVec	story_names;
 #endif
+struct SFillPropData{
+    RTokenVec 	locations[4];
+    RStringVec	level_ids;
+    RTokenVec 	story_names;
+    u32			counter;
+                SFillPropData	()
+    {
+        counter = 0;
+    }
+                ~SFillPropData	()
+    {
+        int y=0;
+    }
+    void		load			()
+    {
+        // create ini
+        CInifile				*Ini = 0;
+        string256				gm_name;
+        FS.update_path			(gm_name,_game_data_,"game.ltx");
+        R_ASSERT2				(FS.exist(gm_name),"Couldn't find file 'game.ltx'");
+        Ini						= xr_new<CInifile>(gm_name);
+        // location type
+        LPCSTR					N,V;
+        u32 					k;
+        for (int i=0; i<LOCATION_TYPE_COUNT; ++i){
+            VERIFY				(locations[i].empty());
+            string256			caSection, T;
+            strconcat			(caSection,SECTION_HEADER,itoa(i,T,10));
+            R_ASSERT			(Ini->section_exist(caSection));
+            for (k = 0; Ini->r_line(caSection,k,&N,&V); ++k)
+                locations[i].push_back	(xr_rtoken(V,atoi(N)));
+        }
+        // level names/ids
+        VERIFY					(level_ids.empty());
+        for (k = 0; Ini->r_line("levels",k,&N,&V); ++k)
+            level_ids.push_back	(*Ini->r_string_wb(N,"caption"));
+        // story names
+        VERIFY					(story_names.empty());
+        LPCSTR section 			= "story_ids";
+        R_ASSERT				(Ini->section_exist(section));
+        for (k = 0; Ini->r_line(section,k,&N,&V); ++k)
+            story_names.push_back	(xr_rtoken(V,atoi(N)));
+        // destroy ini
+        xr_delete				(Ini);
+    }
+    void		unload			()
+    {
+    }        
+    void 		dec				()
+    {
+        VERIFY(counter > 0);
+        --counter;
+        if (!counter)
+            unload	();
+    }                           
+    void 		inc				()
+    {
+        VERIFY(counter < 0xffffffff);
+        if (!counter)
+            load	();
+        ++counter;
+    }
+};
+static SFillPropData			fp_data;
 
 ////////////////////////////////////////////////////////////////////////////
 // CSE_ALifeGraphPoint
@@ -33,16 +94,17 @@
 CSE_ALifeGraphPoint::CSE_ALifeGraphPoint	(LPCSTR caSection) : CSE_Abstract(caSection)
 {
 	s_gameid					= GAME_DUMMY;
-	m_caConnectionPointName[0]	= 0;
-	m_caConnectionLevelName[0]	= 0;
 	m_tLocations[0]				= 0;
 	m_tLocations[1]				= 0;
 	m_tLocations[2]				= 0;
 	m_tLocations[3]				= 0;
+
+    fp_data.inc					();
 }
 
 CSE_ALifeGraphPoint::~CSE_ALifeGraphPoint	()
 {
+    fp_data.dec					();
 }
 
 void CSE_ALifeGraphPoint::STATE_Read		(NET_Packet	&tNetPacket, u16 size)
@@ -86,41 +148,13 @@ void CSE_ALifeGraphPoint::UPDATE_Write		(NET_Packet	&tNetPacket)
 #ifdef _EDITOR              
 void CSE_ALifeGraphPoint::FillProp			(LPCSTR pref, PropItemVec& items)
 {
-	CInifile					*Ini = 0;
-/*
-//.
-	if(locations[0].empty()||locations[1].empty()||locations[2].empty()||locations[3].empty()||level_ids.empty()){
-		string256				gm_name;
-		FS.update_path			(gm_name,_game_data_,"game.ltx");
-		R_ASSERT2				(FS.exist(gm_name),"Couldn't find file 'game.ltx'");
-		Ini						= xr_new<CInifile>(gm_name);
-	}
+	PHelper().CreateRToken8		(items,	PHelper().PrepareKey(pref,s_name,"Location\\1"),				&m_tLocations[0],			&fp_data.locations[0]);
+	PHelper().CreateRToken8		(items,	PHelper().PrepareKey(pref,s_name,"Location\\2"),				&m_tLocations[1],			&fp_data.locations[1]);
+	PHelper().CreateRToken8		(items,	PHelper().PrepareKey(pref,s_name,"Location\\3"),				&m_tLocations[2],			&fp_data.locations[2]);
+	PHelper().CreateRToken8		(items,	PHelper().PrepareKey(pref,s_name,"Location\\4"),				&m_tLocations[3],			&fp_data.locations[3]);
 
-	for (int i=0; i<LOCATION_TYPE_COUNT; ++i)
-		if(locations[i].empty()) {
-			string256			caSection, T;
-			strconcat			(caSection,SECTION_HEADER,itoa(i,T,10));
-			R_ASSERT			(Ini->section_exist(caSection));
-			LPCSTR				N,V;
-			for (u32 k = 0; Ini->r_line(caSection,k,&N,&V); ++k)
-				locations[i].push_back	(TokenValue3Custom::Item(atoi(N),V));
-		}
-
-	if(level_ids.empty()) {
-		LPCSTR					N,V;
-		for (u32 k = 0; Ini->r_line("levels",k,&N,&V); ++k)
-			level_ids.push_back	(*Ini->r_string_wb(N,"caption"));
-	}
-	if (Ini)
-		xr_delete				(Ini);
-*/
-//.	PHelper().CreateToken3<u8>	(items,	PHelper().PrepareKey(pref,s_name,"Location\\1"),				&m_tLocations[0],			&locations[0]);
-//.	PHelper().CreateToken3<u8>	(items,	PHelper().PrepareKey(pref,s_name,"Location\\2"),				&m_tLocations[1],			&locations[1]);
-//.	PHelper().CreateToken3<u8>	(items,	PHelper().PrepareKey(pref,s_name,"Location\\3"),				&m_tLocations[2],			&locations[2]);
-//.	PHelper().CreateToken3<u8>	(items,	PHelper().PrepareKey(pref,s_name,"Location\\4"),				&m_tLocations[3],			&locations[3]);
-
-//.	PHelper().CreateList			(items,	PHelper().PrepareKey(pref,s_name,"Connection\\Level name"),	m_caConnectionLevelName,		sizeof(m_caConnectionLevelName),		&level_ids);
-//.	PHelper().CreateText			(items,	PHelper().PrepareKey(pref,s_name,"Connection\\Point name"),	m_caConnectionPointName,		sizeof(m_caConnectionPointName));
+	PHelper().CreateList	 	(items,	PHelper().PrepareKey(pref,s_name,"Connection\\Level name"),		&m_caConnectionLevelName,	&fp_data.level_ids);
+	PHelper().CreateRText	 	(items,	PHelper().PrepareKey(pref,s_name,"Connection\\Point name"),		&m_caConnectionPointName);
 }
 #endif
 
@@ -146,6 +180,7 @@ CSE_ALifeObject::CSE_ALifeObject			(LPCSTR caSection) : CSE_Abstract(caSection)
 #ifdef XRGAME_EXPORTS
 	m_alife_simulator			= 0;
 #endif
+    fp_data.inc					();
 }
 
 #ifdef XRGAME_EXPORTS
@@ -158,6 +193,7 @@ CALifeSimulator	&CSE_ALifeObject::alife	() const
 
 CSE_ALifeObject::~CSE_ALifeObject			()
 {
+    fp_data.dec					();
 }
 
 void CSE_ALifeObject::STATE_Write			(NET_Packet &tNetPacket)
@@ -253,33 +289,19 @@ void CSE_ALifeObject::OnChooseGroupControl(ChooseItemVec& lst)
 }
 void CSE_ALifeObject::FillProp				(LPCSTR pref, PropItemVec& items)
 {
-	inherited::FillProp				(pref, 	items);
-	PHelper().CreateRText			(items,	PHelper().PrepareKey(pref,s_name,"Custom data"),&m_ini_string);
-	PHelper().CreateFloat			(items,	PHelper().PrepareKey(pref,s_name,"ALife\\Probability"),		&m_fProbability,	0,100);
+	inherited::FillProp			(pref, 	items);
+	PHelper().CreateRText		(items,	PHelper().PrepareKey(pref,s_name,"Custom data"),&m_ini_string);
+	PHelper().CreateFloat		(items,	PHelper().PrepareKey(pref,s_name,"ALife\\Probability"),		&m_fProbability,	0,100);
     ChooseValue* V;
-    V=PHelper().CreateChoose		(items, PHelper().PrepareKey(pref,s_name,"ALife\\Group control"),		&m_caGroupControl, smCustom);
-    V->OnChooseFillEvent			= OnChooseGroupControl;
+    V=PHelper().CreateChoose	(items, PHelper().PrepareKey(pref,s_name,"ALife\\Group control"),		&m_caGroupControl, smCustom);
+    V->OnChooseFillEvent		= OnChooseGroupControl;
 	if (m_flags.is(flUseSwitches)) {
-		PHelper().CreateFlag32		(items,	PHelper().PrepareKey(pref,s_name,"ALife\\Can switch online"),	&m_flags,			flSwitchOnline);
-		PHelper().CreateFlag32		(items,	PHelper().PrepareKey(pref,s_name,"ALife\\Can switch offline"),&m_flags,			flSwitchOffline);
+		PHelper().CreateFlag32	(items,	PHelper().PrepareKey(pref,s_name,"ALife\\Can switch online"),	&m_flags,			flSwitchOnline);
+		PHelper().CreateFlag32	(items,	PHelper().PrepareKey(pref,s_name,"ALife\\Can switch offline"),&m_flags,			flSwitchOffline);
 	}                            
-	PHelper().CreateFlag32			(items,	PHelper().PrepareKey(pref,s_name,"ALife\\Interactive"),		&m_flags,			flInteractive);
-	PHelper().CreateFlag32			(items,	PHelper().PrepareKey(pref,s_name,"ALife\\Visible for AI"),	&m_flags,			flVisibleForAI);
-/*
-//.
-	if (story_names.empty()){
-		string256					gm_name;
-		FS.update_path				(gm_name,_game_data_,"game.ltx");
-		R_ASSERT2					(FS.exist(gm_name),"Couldn't find file 'game.ltx'");
-		CInifile					*Ini = xr_new<CInifile>(gm_name);
-		LPCSTR						section = "story_ids";
-		R_ASSERT					(Ini->section_exist(section));
-		LPCSTR						N,V;
-		for (u32 k = 0; Ini->r_line(section,k,&N,&V); ++k)
-			story_names.push_back	(TokenValue3Custom::Item(atoi(N),V));
-	}
-*/
-//.	PHelper().CreateToken3<ALife::_STORY_ID>	(items,	PHelper().PrepareKey(pref,s_name,"ALife\\Story ID"),	&m_story_id,		&story_names);
+	PHelper().CreateFlag32		(items,	PHelper().PrepareKey(pref,s_name,"ALife\\Interactive"),		&m_flags,			flInteractive);
+	PHelper().CreateFlag32		(items,	PHelper().PrepareKey(pref,s_name,"ALife\\Visible for AI"),	&m_flags,			flVisibleForAI);
+	PHelper().CreateRToken32	(items,	PHelper().PrepareKey(pref,s_name,"ALife\\Story ID"),		&m_story_id,		&fp_data.story_names);
 }
 #endif
 
@@ -583,11 +605,12 @@ CSE_ALifeLevelChanger::CSE_ALifeLevelChanger(LPCSTR caSection) : CSE_ALifeScript
 	m_dwNextNodeID				= u32(-1);
 	m_tNextPosition.set			(0.f,0.f,0.f);
 	m_tAngles.set				(0.f,0.f,0.f);
-	m_caLevelToChange[0]		= 0;
+    fp_data.inc					();
 }
 
 CSE_ALifeLevelChanger::~CSE_ALifeLevelChanger()
 {
+    fp_data.dec					();
 }
 
 void CSE_ALifeLevelChanger::STATE_Read		(NET_Packet	&tNetPacket, u16 size)
@@ -640,27 +663,8 @@ void CSE_ALifeLevelChanger::FillProp		(LPCSTR pref, PropItemVec& items)
 {
 	inherited::FillProp			(pref,items);
 	
-	CInifile					*Ini = 0;
-/*
-//.
-	if (level_ids.empty()) {
-		string256				gm_name;
-		FS.update_path			(gm_name,_game_data_,"game.ltx");
-		R_ASSERT2				(FS.exist(gm_name),"Couldn't find file 'game.ltx'");
-		Ini						= xr_new<CInifile>(gm_name);
-	}
-
-    if(level_ids.empty()) {
-        LPCSTR				N,V;
-        for (u32 k = 0; Ini->r_line("levels",k,&N,&V); ++k)
-            level_ids.push_back	(*Ini->r_string_wb(N,"caption"));
-    }
-	if (Ini)
-		xr_delete				(Ini);
-	
-	PHelper().CreateList			(items,PHelper().PrepareKey(pref,s_name,"Level to change"),		m_caLevelToChange,	sizeof(m_caLevelToChange),	&level_ids);
-	PHelper().CreateRText			(items,PHelper().PrepareKey(pref,s_name,"Level point to change"),	&m_caLevelPointToChange);
-*/
+	PHelper().CreateList		(items,PHelper().PrepareKey(pref,s_name,"Level to change"),			&m_caLevelToChange,		&fp_data.level_ids);
+	PHelper().CreateRText		(items,PHelper().PrepareKey(pref,s_name,"Level point to change"),	&m_caLevelPointToChange);
 }
 #endif
 

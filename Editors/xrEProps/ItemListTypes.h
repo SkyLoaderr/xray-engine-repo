@@ -10,10 +10,10 @@ class XR_EPROPS_API ListItem{
     ref_str				key;
     int					type;
 	void*				item;
-public:
-    typedef void 	__fastcall (__closure *TOnListItemFocused)	(ListItem* sender);
-    typedef void 	__fastcall (__closure *TOnClick)			(ListItem* sender);
-    typedef bool 	__fastcall (__closure *TOnDrawThumbnail)	(ListItem* sender, TCanvas *Surface, TRect &R);
+public:                        
+    typedef void 	__stdcall  (__closure *TOnListItemFocused)	(ListItem* sender);
+    typedef void 	__stdcall  (__closure *TOnClick)			(ListItem* sender);
+    typedef bool 	__stdcall  (__closure *TOnDrawThumbnail)	(ListItem* sender, TCanvas *Surface, TRect &R);
 
     TOnClick			OnClickEvent;
     TOnListItemFocused	OnItemFocused;

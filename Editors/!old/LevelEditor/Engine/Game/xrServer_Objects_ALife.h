@@ -55,8 +55,8 @@ add_to_type_list(CSE_ALifeSchedulable)
 
 SERVER_ENTITY_DECLARE_BEGIN(CSE_ALifeGraphPoint,CSE_Abstract)
 public:
-	string32						m_caConnectionLevelName;
-	string32						m_caConnectionPointName;
+	ref_str							m_caConnectionLevelName;
+	ref_str							m_caConnectionPointName;
 	u8								m_tLocations[LOCATION_TYPE_COUNT];
 
 									CSE_ALifeGraphPoint(LPCSTR caSection);
@@ -231,7 +231,7 @@ SERVER_ENTITY_DECLARE_BEGIN(CSE_ALifeLevelChanger,CSE_ALifeScriptZone)
 	u32								m_dwNextNodeID;
 	Fvector							m_tNextPosition;
 	Fvector							m_tAngles;
-	string32						m_caLevelToChange;
+	ref_str							m_caLevelToChange;
 	ref_str							m_caLevelPointToChange;
 
 									CSE_ALifeLevelChanger	(LPCSTR caSection);

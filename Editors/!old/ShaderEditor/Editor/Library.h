@@ -23,9 +23,9 @@ class ECORE_API ELibrary:	public pureDeviceCreate, public pureDeviceDestroy
 public:
 						ELibrary			();
 	virtual 			~ELibrary			();
-
-    BOOL __fastcall		RemoveObject		(LPCSTR fname, EItemType type);
-    void __fastcall		RenameObject		(LPCSTR fn0, LPCSTR fn1, EItemType type);
+                    
+    BOOL __stdcall 		RemoveObject		(LPCSTR fname, EItemType type);
+    void __stdcall 		RenameObject		(LPCSTR fn0, LPCSTR fn1, EItemType type);
 
 	void 				OnCreate			();
 	void 				OnDestroy			();

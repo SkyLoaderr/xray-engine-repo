@@ -70,7 +70,7 @@ void CEditableObject::Save(IWriter& F)
 	F.close_chunk	();
 
 	F.open_chunk	(EOBJ_CHUNK_CLASSSCRIPT);
-	F.w_stringZ		(m_ClassScript.c_str());
+	F.w_stringZ		(m_ClassScript);
 	F.close_chunk	();
 
     F.w_chunk		(EOBJ_CHUNK_FLAGS,&m_Flags.flags,sizeof(m_Flags.flags));

@@ -13,7 +13,6 @@
 #include "mxPlacemnt.hpp"
 #include <ImgList.hpp>
 
-#include "ItemList.h"
 #include "MXCtrls.hpp"
 
 //---------------------------------------------------------------------------
@@ -56,10 +55,10 @@ __published:	// IDE-managed Components
 private:
 // list functions
     void 				InitItemsList		();
-	void __fastcall 	OnItemsFocused		(ListItemsVec& items);
+	void __stdcall  	OnItemsFocused		(ListItemsVec& items);
 
-    BOOL __fastcall		RemoveSound			(LPCSTR fname, EItemType type);
-	void __fastcall 	RenameSound			(LPCSTR p0, LPCSTR p1, EItemType type);
+    BOOL __stdcall 		RemoveSound			(LPCSTR fname, EItemType type);
+	void __stdcall  	RenameSound			(LPCSTR p0, LPCSTR p1, EItemType type);
 
 	enum{
     	flUpdateProperties = (1<<0),
@@ -92,8 +91,8 @@ private:	// User declarations
     static FS_QueryMap	modif_map;
 	ref_sound			m_Snd;
     void				PlaySound			(LPCSTR name, u32& size, u32& time);
-	void __fastcall 	OnControlClick		(PropValue* sender, bool& bModif, bool& bSafe);
-	void __fastcall 	OnControl2Click		(PropValue* sender, bool& bModif, bool& bSafe);
+	void __stdcall  	OnControlClick		(PropValue* sender, bool& bModif, bool& bSafe);
+	void __stdcall  	OnControl2Click		(PropValue* sender, bool& bModif, bool& bSafe);
 
     void				AppendModif			(LPCSTR nm);
 public:		// User declarations

@@ -15,6 +15,7 @@ namespace CDB{
 #include "Sound.h"             
 
 #include "xrEProps.h"
+#include "FolderLib.h"                 
 
 #define ENGINE_API
 #define DLL_API		__declspec(dllimport)

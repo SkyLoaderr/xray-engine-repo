@@ -53,6 +53,7 @@ __published:	// IDE-managed Components
 	TMaskEdit *edText;
 	TPanel *paFolders;
 	TSplitter *spFolders;
+	TElTreeInplaceEdit *ElTreeInplaceEdit1;
 	void __fastcall 	FormClose(TObject *Sender, TCloseAction &Action);
 	void __fastcall 	tvPropertiesClick(TObject *Sender);
 	void __fastcall 	tvPropertiesItemDraw(TObject *Sender, TElTreeItem *Item, TCanvas *Surface, TRect &R, int SectionIndex);
@@ -120,8 +121,9 @@ private:	// User declarations
     PropItemVec 		m_ViewItems;
 	void 				FillElItems		(PropItemVec& items, LPCSTR startup_pref=0);
     
-    TOnModifiedEvent 	OnModifiedEvent;
+    typedef void 		__stdcall 		(__closure *TOnItemFocused)(TElTreeItem* item);
     TOnItemFocused      OnItemFocused;
+    TOnModifiedEvent 	OnModifiedEvent;
     TOnCloseEvent		OnCloseEvent;
     void 				Modified				(){bModified=true; if (OnModifiedEvent) OnModifiedEvent();}
     void 				ClearParams				(TElTreeItem* node=0);
@@ -129,7 +131,7 @@ private:	// User declarations
     void 				CancelEditControl		();
 
 	void 				OutBOOL					(BOOL val, TCanvas* Surface, TRect& R, bool bEnable);
-	void 				OutText					(LPCSTR text, TCanvas* Surface, TRect& R, bool bEnable, TGraphic* g=0, bool bArrow=false);
+	void 				OutText					(ref_str text, TCanvas* Surface, TRect& R, bool bEnable, TGraphic* g=0, bool bArrow=false);
 public:
 	enum{
         plFolderStore	= (1<<0),
@@ -151,7 +153,7 @@ protected:
     void				FolderRestore			();
 
     TItemList*			m_Folders;
-    void 	__fastcall 	OnFolderFocused			(TElTreeItem* item);
+    void 	__stdcall  	OnFolderFocused			(TElTreeItem* item);
 public:		// User declarations
 	__fastcall TProperties		        		(TComponent* Owner);
 	static TProperties* CreateForm				(const AnsiString& title, TWinControl* parent=0, TAlign align=alNone, TOnModifiedEvent modif=0, TOnItemFocused focused=0, TOnCloseEvent close=0, u32 flags=plFolderStore|plFullExpand);

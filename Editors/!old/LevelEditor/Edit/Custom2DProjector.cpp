@@ -93,17 +93,15 @@ void CCustom2DProjector::DestroyShader()
 	shader_overlap.destroy();
 }
 
-void CCustom2DProjector::OnTextureChange	(PropValue* prop)
+void CCustom2DProjector::OnImageChange	(PropValue* prop)
 {
 	LoadImage				(*name);
 	DestroyShader			();
     CreateShader			();
 }
 
-void CCustom2DProjector::FillProp(LPCSTR pref, PropItemVec& items)
+void CCustom2DProjector::ReloadImage()
 {
-	PropValue* P;
-    P=PHelper().CreateChoose(items, PHelper().PrepareKey(pref,"Base Texture"),	&name, smTexture);
-    P->OnChangeEvent		= OnTextureChange;
+	LoadImage				(*name);
 }
 

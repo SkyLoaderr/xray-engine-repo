@@ -14,7 +14,7 @@ public:
 				CImageManager		(){;}
 				~CImageManager		(){;}
 	// texture routines
-    BOOL __fastcall	RemoveTexture	(LPCSTR fname, EItemType type);
+    BOOL __stdcall 	RemoveTexture	(LPCSTR fname, EItemType type);
     BOOL		CheckCompliance		(LPCSTR fname, int& compl);
     void		CheckCompliance		(FS_QueryMap& files, FS_QueryMap& compl);
     int			GetTextures			(FS_QueryMap& files, BOOL bFolder=FALSE);
@@ -33,8 +33,8 @@ public:
 
     // result 0-can't fit images, 1-ok, -1 can't load image 
     void		MergedTextureRemapUV(float& dest_u, float& dest_v, float src_u, float src_v, const Fvector2& offs, const Fvector2& scale, bool bRotate);
-    int			CreateMergedTexture	(const AStringVec& src_names, LPCSTR dest_name, STextureParams::ETFormat fmt, int dest_width, int dest_height, Fvector2Vec& dest_offset, Fvector2Vec& dest_scale, boolVec& dest_rotate, U32Vec& remap);
-    int			CreateMergedTexture	(const AStringVec& src_names, LPCSTR dest_name, STextureParams::ETFormat fmt, int dest_width_min, int dest_width_max, int dest_height_min, int dest_height_max, Fvector2Vec& dest_offset, Fvector2Vec& dest_scale, boolVec& dest_rotate, U32Vec& remap);
+    int			CreateMergedTexture	(const RStringVec& src_names, LPCSTR dest_name, STextureParams::ETFormat fmt, int dest_width, int dest_height, Fvector2Vec& dest_offset, Fvector2Vec& dest_scale, boolVec& dest_rotate, U32Vec& remap);
+    int			CreateMergedTexture	(const RStringVec& src_names, LPCSTR dest_name, STextureParams::ETFormat fmt, int dest_width_min, int dest_width_max, int dest_height_min, int dest_height_max, Fvector2Vec& dest_offset, Fvector2Vec& dest_scale, boolVec& dest_rotate, U32Vec& remap);
 
     EImageThumbnail* CreateThumbnail(LPCSTR src_name, ECustomThumbnail::THMType type, bool bLoad=true);
 

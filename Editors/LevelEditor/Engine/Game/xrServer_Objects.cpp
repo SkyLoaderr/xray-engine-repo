@@ -224,9 +224,9 @@ void CSE_Shape::cform_write					(NET_Packet	&tNetPacket)
 ////////////////////////////////////////////////////////////////////////////
 // CSE_Visual
 ////////////////////////////////////////////////////////////////////////////
-CSE_Visual::CSE_Visual					(LPCSTR name)
+CSE_Visual::CSE_Visual		   	(LPCSTR name)
 {
-	strcpy						(visual_name,name?name:"");
+	visual_name					= name;
 #ifdef _EDITOR
 	play_animation				= "$editor";
 	visual						= 0;
@@ -234,19 +234,23 @@ CSE_Visual::CSE_Visual					(LPCSTR name)
 #endif
 }
 
-CSE_Visual::~CSE_Visual						()
+CSE_Visual::~CSE_Visual			()
 {
 }
 
-void CSE_Visual::set_visual					(LPCSTR name, bool load)
+void CSE_Visual::set_visual	   	(LPCSTR name, bool load)
 {
-	strcpy						(visual_name,name); if (strext(visual_name)) *strext(visual_name) = 0;
+//.
+	string_path tmp;
+    strcpy						(tmp,name);
+    if (strext(tmp))		 	*strext(tmp) = 0;
+	visual_name					= tmp; 
 #ifdef _EDITOR
 	if (load)					OnChangeVisual(0);
 #endif
 }
 
-void CSE_Visual::visual_read				(NET_Packet	&tNetPacket)
+void CSE_Visual::visual_read   	(NET_Packet	&tNetPacket)
 {
 	tNetPacket.r_string			(visual_name);
 #ifdef _EDITOR
@@ -254,13 +258,13 @@ void CSE_Visual::visual_read				(NET_Packet	&tNetPacket)
 #endif
 }
 
-void CSE_Visual::visual_write				(NET_Packet	&tNetPacket)
+void CSE_Visual::visual_write  	(NET_Packet	&tNetPacket)
 {
 	tNetPacket.w_string			(visual_name);
 }
 
 #ifdef _EDITOR
-void CSE_Visual::PlayAnimation		(LPCSTR name)
+void CSE_Visual::PlayAnimation 	(LPCSTR name)
 {
     // play motion if skeleton
     if (PSkeletonAnimated(visual)){ 
@@ -281,8 +285,8 @@ void CSE_Visual::PlayAnimation		(LPCSTR name)
 void CSE_Visual::OnChangeVisual	(PropValue* sender)
 {
 	::Render->model_Delete		(visual,TRUE);
-    if (visual_name[0]) {
-        visual					= ::Render->model_Create(visual_name);
+    if (visual_name.size()) {
+        visual					= ::Render->model_Create(visual_name.c_str());
         PlayAnimation			(play_animation.c_str());
     }
 	UI->Command					(COMMAND_UPDATE_PROPERTIES);
@@ -290,8 +294,8 @@ void CSE_Visual::OnChangeVisual	(PropValue* sender)
 
 void CSE_Visual::FillProp		(LPCSTR pref, PropItemVec& values)
 {
-//.	PropValue					*V = PHelper().CreateChoose(values, PHelper().PrepareKey(pref,"Model"),visual_name,sizeof(visual_name), smGameObject);
-//.	V->OnChangeEvent			= OnChangeVisual;
+	ChooseValue *V 				= PHelper().CreateChoose(values, PHelper().PrepareKey(pref,"Model"),&visual_name, smGameObject);
+	V->OnChangeEvent			= OnChangeVisual;
 }
 #endif
 
@@ -588,7 +592,6 @@ void CSE_Target_CS_Base::FillProp			(LPCSTR pref, PropItemVec& items)
 ////////////////////////////////////////////////////////////////////////////
 CSE_Target_CS_Cask::CSE_Target_CS_Cask		(LPCSTR caSection) : CSE_Target(caSection)
 {
-	s_Model[0]					= 0;
 }
 
 CSE_Target_CS_Cask::~CSE_Target_CS_Cask		()
@@ -616,7 +619,7 @@ void CSE_Target_CS_Cask::STATE_Write		(NET_Packet	&tNetPacket)
 #ifdef _EDITOR
 void CSE_Target_CS_Cask::FillProp			(LPCSTR pref, PropItemVec& items)
 {
-//.	PHelper().CreateChoose		(items, PHelper().PrepareKey(pref,s_name,"Model"),	s_Model,	sizeof(s_Model), smGameObject);
+	PHelper().CreateChoose		(items, PHelper().PrepareKey(pref,s_name,"Model"),	&s_Model,	smGameObject);
 }
 #endif
 
@@ -625,7 +628,6 @@ void CSE_Target_CS_Cask::FillProp			(LPCSTR pref, PropItemVec& items)
 ////////////////////////////////////////////////////////////////////////////
 CSE_Target_CS::CSE_Target_CS				(LPCSTR caSection) : CSE_Target(caSection)
 {
-	s_Model[0]					= 0;
 }
 
 CSE_Target_CS::~CSE_Target_CS				()
@@ -653,7 +655,7 @@ void CSE_Target_CS::STATE_Write				(NET_Packet	&tNetPacket)
 #ifdef _EDITOR
 void CSE_Target_CS::FillProp				(LPCSTR pref, PropItemVec& items)
 {
-//.	PHelper().CreateChoose		(items, PHelper().PrepareKey(pref,s_name,"Model"),	s_Model,	sizeof(s_Model), smGameObject);
+	PHelper().CreateChoose		(items, PHelper().PrepareKey(pref,s_name,"Model"),	&s_Model,	smGameObject);
 }
 #endif
 

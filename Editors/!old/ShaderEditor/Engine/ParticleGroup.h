@@ -42,12 +42,12 @@ namespace PS
         ref_str				m_ModifName;
         time_t				m_CreateTime;
         time_t				m_ModifTime;
-// change Equal if variables changed
-		void __fastcall 	OnEffectsEditClick	(PropValue* sender, bool& bDataModified, bool& bSafe);
-		void __fastcall 	OnEffectTypeChange	(PropValue* sender);
-		void __fastcall 	OnEffectEditClick	(PropValue* sender, bool& bDataModified, bool& bSafe);
-		void __fastcall 	OnControlClick	(PropValue* sender, bool& bDataModified, bool& bSafe);
-		void __fastcall 	OnParamsChange	(PropValue* sender);
+// change Equal if variables changed 
+		void __stdcall  	OnEffectsEditClick	(PropValue* sender, bool& bDataModified, bool& bSafe);
+		void __stdcall  	OnEffectTypeChange	(PropValue* sender);
+		void __stdcall  	OnEffectEditClick	(PropValue* sender, bool& bDataModified, bool& bSafe);
+		void __stdcall  	OnControlClick	(PropValue* sender, bool& bDataModified, bool& bSafe);
+		void __stdcall  	OnParamsChange	(PropValue* sender);
 		void				FillProp	   	(LPCSTR pref, ::PropItemVec& items, ::ListItem* owner);
 		BOOL				Equal			(const CPGDef* pe);
 #endif

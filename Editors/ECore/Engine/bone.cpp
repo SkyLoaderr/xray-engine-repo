@@ -37,7 +37,7 @@ CBone::~CBone()
 void CBone::ResetData()
 {
     IK_data.Reset	();
-    strcpy			(game_mtl,"default");
+    game_mtl		= "default";
     shape.Reset		();
 
     mass			= 10.f;;
@@ -183,7 +183,7 @@ void CBone::LoadData(IReader& F)
 
 void CBone::CopyData(CBone* bone)
 {
-    strcpy			(game_mtl,bone->game_mtl);
+    game_mtl		= bone->game_mtl;
     shape			= bone->shape;
 	IK_data			= bone->IK_data;
     mass			= bone->mass;

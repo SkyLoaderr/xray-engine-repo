@@ -172,7 +172,7 @@ public:
         flCalculate	    = (1<<1)
     };
     SJointIKData	    IK_data;
-    string64		    game_mtl;
+    ref_str			    game_mtl;
     SBoneShape		    shape;
 
     float			    mass;

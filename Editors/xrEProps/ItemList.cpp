@@ -594,7 +594,7 @@ void __fastcall TItemList::tvItemsHeaderResize(TObject *Sender)
 }
 //---------------------------------------------------------------------------
 
-void TItemList::RemoveSelItems(CFolderHelper::TOnItemRemove on_remove)
+void TItemList::RemoveSelItems(TOnItemRemove on_remove)
 {
 	R_ASSERT(m_Flags.is(ilEditMenu)||on_remove);
     ElItemsVec sel_items;

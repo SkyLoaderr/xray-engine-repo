@@ -2,15 +2,14 @@
 #define SceneSummaryInfoH
 #pragma once
 
-DEFINE_SET(AnsiString,AStringSet,AStringSetIt);
 struct SSceneSummary{   	
-	AStringSet	textures;
-	AStringSet	det_textures;
-	AStringSet	do_textures;
-	AStringSet	lod_objects;
-	AStringSet	mu_objects;
-	AStringSet	waves;
-	AStringSet	pe_static;
+	RStringSet	textures;
+	RStringSet	det_textures;
+	RStringSet	do_textures;
+	RStringSet	lod_objects;
+	RStringSet	mu_objects;
+	RStringSet	waves;
+	RStringSet	pe_static;
     int			face_cnt;
     int			vert_cnt;
     int			hom_face_cnt;

@@ -85,14 +85,13 @@ namespace ALife {
 	};
 
 	struct STraderSupply {
-		string256				m_caSections;
+		ref_str					m_caSections;
 		u32						m_dwCount;
 		float					m_fMinFactor;
 		float					m_fMaxFactor;
 #ifdef _EDITOR
 		STraderSupply()
 		{
-			m_caSections[0]		= 0;
 			m_dwCount			= 1;
 			m_fMinFactor		= 0.f;
 			m_fMaxFactor		= 1.f;

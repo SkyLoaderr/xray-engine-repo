@@ -2,9 +2,10 @@
 #pragma hdrstop
 
 #include "scenecustom.h"
-#include "sceneobject.h"
+//#include "sceneobject.h"
 #include "ui_main.h"
-#include "ui_leveltools.h"
+//#include "ui_leveltools.h"
+#include "ui_toolscustom.h"
 #include "PropertiesListHelper.h"
 #include "editorpreferences.h"
 
@@ -198,37 +199,35 @@ void CCustomObject::Scale( Fvector& amount )
     PScale		= s;
 }
 
-void __fastcall CCustomObject::OnObjectNameAfterEdit(PropItem* sender, LPVOID edit_val)
+void CCustomObject::OnObjectNameAfterEdit(PropValue* sender, ref_str& edit_val, bool& accepted)
 {
-	TextValue* V = (TextValue*)sender->GetFrontValue();
-	AnsiString* new_name = (AnsiString*)edit_val;
-	if (IScene->FindObjectByName(new_name->c_str(),0)) *new_name = V->GetValue();
-    else *new_name = new_name->LowerCase();
+	RTextValue* V = dynamic_cast<RTextValue*>(sender); VERIFY(V);
+    edit_val 	= (AnsiString(edit_val.c_str()).LowerCase()).c_str();
+	accepted	= !IScene->FindObjectByName(edit_val.c_str(),0);
 }
 
-void __fastcall	CCustomObject::OnNumChangePosition(PropValue* sender)
+void CCustomObject::OnNumChangePosition(PropValue* sender)
 {
 	NumSetPosition	(PPosition);
 }
-void __fastcall	CCustomObject::OnNumChangeRotation(PropValue* sender)
+void CCustomObject::OnNumChangeRotation(PropValue* sender)
 {
 	NumSetRotation	(PRotation);
 }
-void __fastcall	CCustomObject::OnNumChangeScale(PropValue* sender)
+void CCustomObject::OnNumChangeScale(PropValue* sender)
 {
 	NumSetScale		(PScale);
 }
 
 void CCustomObject::FillProp(LPCSTR pref, PropItemVec& items)
 {
-    PropValue* V = PHelper.CreateText(items,FHelper.PrepareKey(pref, "Name"),FName,sizeof(FName));
-    V->Owner()->OnAfterEditEvent = OnObjectNameAfterEdit;
-    if (V->Owner()->m_Flags.is(PropItem::flMixed)) V->Owner()->m_Flags.set(PropItem::flDisabled,TRUE);
-    V = PHelper.CreateVector	(items, FHelper.PrepareKey(pref,"Transform\\Position"),	&PPosition,	-10000,	10000,0.01,2);
+    PHelper().CreateNameCB		(items,PHelper().PrepareKey(pref, "Name"),&FName,NULL,NULL,&OnObjectNameAfterEdit);
+    PropValue* V;
+    V = PHelper().CreateVector	(items, PHelper().PrepareKey(pref,"Transform\\Position"),	&PPosition,	-10000,	10000,0.01,2);
     V->OnChangeEvent	= OnNumChangePosition;
-    V = PHelper.CreateAngle3	(items, FHelper.PrepareKey(pref,"Transform\\Rotation"),	&PRotation,	-10000,	10000,0.1,1);
+    V = PHelper().CreateAngle3	(items, PHelper().PrepareKey(pref,"Transform\\Rotation"),	&PRotation,	-10000,	10000,0.1,1);
     V->OnChangeEvent	= OnNumChangeRotation;
-    V = PHelper.CreateVector	(items, FHelper.PrepareKey(pref,"Transform\\Scale"),	&PScale, 	0.01,	10000,0.01,2);
+    V = PHelper().CreateVector	(items, PHelper().PrepareKey(pref,"Transform\\Scale"),	&PScale, 	0.01,	10000,0.01,2);
     V->OnChangeEvent	= OnNumChangeScale;
 }
 //----------------------------------------------------

@@ -160,7 +160,7 @@ void TfrmImageLib::InitItemsList()
     // fill
 	FS_QueryPairIt it = texture_map.begin();
 	FS_QueryPairIt _E = texture_map.end();
-    for (; it!=_E; it++) LHelper.CreateItem(items,it->first.c_str(),0);
+    for (; it!=_E; it++) LHelper().CreateItem(items,it->first.c_str(),0);
     m_ItemList->AssignItems(items,false,true);
 }
 
@@ -279,7 +279,7 @@ void TfrmImageLib::DestroyUsedTHM()
     m_THM_Used.clear();
 }
 
-void __fastcall TfrmImageLib::OnItemsFocused(ListItemsVec& items)
+void TfrmImageLib::OnItemsFocused(ListItemsVec& items)
 {
 	PropItemVec props;
 
