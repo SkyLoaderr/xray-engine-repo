@@ -66,7 +66,7 @@ void CObjectAnimator::LoadMotions(const char* fname)
 
 void CObjectAnimator::Load(const char * name)
 {
-	LoadMotions			(name);
+	LoadMotions			(name); 
 	SetActiveMotion		(0);
 }
 

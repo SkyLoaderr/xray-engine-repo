@@ -37,7 +37,7 @@ void CCustomObject::AnimationUpdate(float t)
 {
     Fvector R,P,r;   
     m_Motion->_Evaluate		(t,P,r);
-    R.set					(-r.y,-r.x,-r.z);
+    R.set					(-r.x,-r.y,-r.z);
 
 //    speed					= speed*0.9f+(P.distance_to(PPosition)/Device.fTimeDelta)*0.1f;
 //    Log("speed: ",speed);
