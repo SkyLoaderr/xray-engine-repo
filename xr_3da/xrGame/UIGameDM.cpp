@@ -45,7 +45,7 @@ CUIGameDM::CUIGameDM()
 	m_force_respawn_time_caption =	"force_respawn_time";
 	m_gameCaptions.addCustomMessage(m_force_respawn_time_caption, 0.0f, -0.9f, 0.02f, HUD().Font().pFontDI, CGameFont::alCenter, NORMAL_MSG_COLOR, "");
 	m_frags_and_place_caption =	"frags_and_place";
-	m_gameCaptions.addCustomMessage(m_frags_and_place_caption, 0.0f, -0.80f, 0.02f, HUD().Font().pFontDI, CGameFont::alCenter, FRAGS_AND_PLACE_COLOR, "");
+	m_gameCaptions.addCustomMessage(m_frags_and_place_caption, 0.0f, -0.75f, 0.02f, HUD().Font().pFontDI, CGameFont::alCenter, FRAGS_AND_PLACE_COLOR, "");
 	//-----------------------------------------------------------------------
 	m_vote_caption0 = "votecaption0";
 	m_vote_caption1 = "votecaption1";
