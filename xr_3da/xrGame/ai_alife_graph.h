@@ -28,11 +28,11 @@ public:
 	typedef struct tagSGraphVertex {
 		Fvector								tLocalPoint;
 		Fvector								tGlobalPoint;
-		u8									tLevelID;
-		u32									tNodeID;
+		u32									tLevelID:8;
+		u32									tNodeID:24;
 		u8									tVertexTypes[LOCATION_TYPE_COUNT];
-		u8									tNeighbourCount;
-		u32									dwEdgeOffset;
+		u32									tNeighbourCount:8;
+		u32									dwEdgeOffset:24;
 	} SGraphVertex;
 
 	typedef struct tagSLevel {
