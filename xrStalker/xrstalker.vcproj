@@ -260,9 +260,6 @@
 				<File
 					RelativePath=".\Config\gameplay\storyline_info_to_diary.xml">
 				</File>
-				<File
-					RelativePath=".\config\gameplay\tasks_radar.xml">
-				</File>
 				<Filter
 					Name="Dialogs"
 					Filter="">
@@ -320,6 +317,9 @@
 					</File>
 					<File
 						RelativePath=".\config\gameplay\tasks_military.xml">
+					</File>
+					<File
+						RelativePath=".\config\gameplay\tasks_radar.xml">
 					</File>
 				</Filter>
 				<Filter
