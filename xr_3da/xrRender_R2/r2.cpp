@@ -60,7 +60,7 @@ void					CRender::create					()
 {
 	::Device.Resources->RegisterConstantSetup	("v_encodeZ01",	&binder_encodeZ01);
 	::Device.Resources->RegisterConstantSetup	("v_decodeZ01",	&binder_decodeZ01);
-	::Device.Resources->RegisterConstantSetup	("v_decodeZ01",	&binder_decodeZ01);
+	::Device.Resources->RegisterConstantSetup	("parallax",	&binder_parallax);
 
 	Target.OnDeviceCreate		();
 	LR.Create					();
