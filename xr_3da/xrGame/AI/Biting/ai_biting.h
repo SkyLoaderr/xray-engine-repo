@@ -301,8 +301,6 @@ private:
 	EMotionAnim		m_tAnimPrevFrame;
 	void			MotionToAnim(EMotionAnim motion, int &index1, int &index2, int &index3);
 
-	CBlend	*CurrentBlend;
-
 	SAttackAnimation	m_tAttack;
 	void				FillAttackStructure(u32, TTime);
 };

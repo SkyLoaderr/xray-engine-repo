@@ -113,7 +113,6 @@ void CAI_Biting::Init()
 	Motion.Init						();
 
 	m_dwPathBuiltLastTime			= 0;
-	CurrentBlend					= 0;
 
 	m_fEyeShiftYaw					= PI_DIV_6;
 	ZeroMemory						(&m_tAttack,sizeof(m_tAttack));

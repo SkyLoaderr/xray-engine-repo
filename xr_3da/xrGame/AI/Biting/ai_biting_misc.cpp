@@ -182,14 +182,14 @@ void CAI_Biting::vfUpdateParameters()
 void CAI_Biting::SetText()
 {
 #ifdef DEBUG
-	if (CurrentBlend) {
-		HUD().pFontSmall->OutSet (300,420);	
-		HUD().pFontSmall->OutNext("frame [%i]		time current = [%.4f] time total = [%.4f]",
-			CurrentBlend->dwFrame, CurrentBlend->timeCurrent, CurrentBlend->timeTotal);
-	} else {
-		HUD().pFontSmall->OutSet (300,420);	
-		HUD().pFontSmall->OutNext("NO CURRENT BLEND");
-	}
+//	if (CurrentBlend) {
+//		HUD().pFontSmall->OutSet (300,420);	
+//		HUD().pFontSmall->OutNext("frame [%i]		time current = [%.4f] time total = [%.4f]",
+//			CurrentBlend->dwFrame, CurrentBlend->timeCurrent, CurrentBlend->timeTotal);
+//	} else {
+//		HUD().pFontSmall->OutSet (300,420);	
+//		HUD().pFontSmall->OutNext("NO CURRENT BLEND");
+//	}
 
 #endif
 }

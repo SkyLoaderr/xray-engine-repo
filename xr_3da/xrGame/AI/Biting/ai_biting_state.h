@@ -59,6 +59,7 @@ class CBitingRest : public IState {
 			ACTION_STAND,
 			ACTION_LIE,
 			ACTION_TURN,
+			ACTION_WALK_GRAPH_END
 	} m_tAction;
 	
 	TTime			m_dwReplanTime;						//!< время через, которое делать планирование

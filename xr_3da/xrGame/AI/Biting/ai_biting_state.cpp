@@ -74,7 +74,7 @@ void CBitingRest::Init()
 	IState::Init();
 
 	// если есть путь - дойти до конца (последствия преследования врага)
-	if (pMonster->AI_Path.TravelPath.empty()) {
+	if (!pMonster->AI_Path.TravelPath.empty()) {
 		m_bFollowPath = true;
 	} else m_bFollowPath = false;
 }
@@ -88,7 +88,7 @@ void CBitingRest::Run()
 	}
 	
 	if (m_bFollowPath) {
-		m_tAction = ACTION_WALK;
+		m_tAction = ACTION_WALK_GRAPH_END;
 	} else {
 		// проверить нужно ли провести перепланировку
 		if (m_dwCurrentTime > m_dwLastPlanTime + m_dwReplanTime) Replanning();
@@ -115,6 +115,9 @@ void CBitingRest::Run()
 			pMonster->Motion.m_tParams.SetParams(eMotionStandTurnLeft,0,m_cfBitingStandTurnRSpeed, 0, 0, MASK_ANIM | MASK_SPEED | MASK_R_SPEED);
 			pMonster->Motion.m_tTurn.Clear();
 			break;
+		case ACTION_WALK_GRAPH_END:
+			pMonster->Motion.m_tParams.SetParams(eMotionWalkFwd,m_cfBitingWalkSpeed,m_cfBitingWalkRSpeed,0,0,MASK_ANIM | MASK_SPEED | MASK_R_SPEED);
+			pMonster->Motion.m_tTurn.Set(eMotionWalkTurnLeft, eMotionWalkTurnRight,m_cfBitingWalkTurningSpeed,m_cfBitingWalkTurnRSpeed,m_cfBitingWalkMinAngle);
 	}
 }
 
