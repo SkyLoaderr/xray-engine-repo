@@ -218,7 +218,7 @@ void CActorTools::FillMotionProperties()
             lst.push_back("--none--");
             for (BPIt it=m_pEditObject->FirstBonePart(); it!=m_pEditObject->LastBonePart(); it++) lst.push_back(it->alias);
             m_MotionProps->AddItem(m_pCycleNode,PROP_TOKEN2, 	"Bone part",m_MotionProps->MakeTokenValue2(&SM->iBoneOrPart,&lst));
-            m_MotionProps->AddItem(m_pCycleNode,PROP_BOOL,		"Stop at end",&SM->bStopAtEnd);
+            m_MotionProps->AddItem(m_pCycleNode,PROP_FLAG,		"Stop at end",&SM->m_dwFlags,CSMotion::eStopAtEnd);
         }
         m_pFXNode = m_MotionProps->AddItem(0,PROP_MARKER, "FX");
         {
