@@ -87,6 +87,7 @@ public:
 	IC		const xr_vector<CVisibleObject>	&memory_visible_objects() const;
 	IC		const xr_vector<CObject*>	&visible_objects() const;
 	IC		const xr_vector<CNotYetVisibleObject> &not_yet_visible_objects() const;
+	IC		const u32 visible_object_time_last_seen(const CObject *object) const;
 			bool	visible							(const CGameObject *game_object, float time_delta);
 			bool	visible							(u32 level_vertex_id, float yaw, float eye_fov) const;
 	IC		void	set_squad_objects				(xr_vector<CVisibleObject> *squad_objects);

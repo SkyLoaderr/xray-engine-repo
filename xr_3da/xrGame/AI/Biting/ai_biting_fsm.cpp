@@ -25,6 +25,9 @@ void CAI_Biting::Think()
 	m_dwLastUpdateTime						= m_current_update;
 	m_current_update						= Level().timeServer();
 
+	InitThink								();
+	
+	
 	MotionStats->update						();
 	
 	vfUpdateParameters						();
@@ -32,7 +35,6 @@ void CAI_Biting::Think()
 	CMonsterMovement::Frame_Init();
 
 	// Squad calculations
-
 	CMonsterSquad	*pSquad = monster_squad().get_squad(this);
 	if (pSquad && pSquad->SquadActive()) {
 		pSquad->UpdateMonsterData(this,const_cast<CEntityAlive *>(EnemyMan.get_enemy()));

@@ -104,6 +104,7 @@ public:
 	virtual void			UpdateCL						();
 	virtual void			shedule_Update					(u32 dt);
 
+	virtual void			InitThink						() {}
 	virtual void			Think							();
 	virtual	void			reinit							();
 	virtual void			reload							(LPCSTR section);

@@ -39,8 +39,8 @@ class CMotionManager : public CSharedClass<_motion_shared, CLASS_ID> {
 
 	bool					should_play_die_anim;	// должен отыгрывать анимацию смерти
 
-	bool					b_end_transition;		// запомнить анимацию конца перехода
-	EMotionAnim				saved_anim;
+	bool					transition_sequence_used;	// запомнить анимацию конца перехода
+	EMotionAnim				target_transition_anim;
 
 	TTime					fx_time_last_play;
 
@@ -122,12 +122,12 @@ public:
 	EMotionAnim	GetCurAnim				() {return  cur_anim;} 
 
 	// работа с последовательностями
+	void		Seq_Init				();
 	void		Seq_Add					(EMotionAnim a);
 	void		Seq_Switch				();					// Перейти в следующее состояние, если такового не имеется - завершить
 	void		Seq_Finish				();
 	EMotionAnim	Seq_CurAnim				() {return ((seq_playing) ? *seq_it : eAnimStandIdle );}
 	bool		Seq_Active				() {return seq_playing;}
-
 
 	// работа с анимациями атак
 	void		AA_Load					(LPCSTR section);
@@ -150,9 +150,6 @@ private:
 
 	void		UpdateAnimCount			();
 	
-	// работа с последовательностями
-	void		Seq_Init				();
-
 	// работа с анимациями атак
 	void		AA_Clear				(); 
 	void		AA_SwitchAnimation		(EMotionAnim a, u32 i3);
@@ -229,6 +226,7 @@ public:
 		void	TA_Deactivate			();
 		void	TA_PointBreak			();
 		bool	TA_IsActive				();
+
 
 	// -----------------------------------------------------
 	// Jumps

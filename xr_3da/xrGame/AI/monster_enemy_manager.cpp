@@ -142,3 +142,10 @@ void CMonsterEnemyManager::add_enemy(const CEntityAlive *enemy)
 {
 	monster->EnemyMemory.add_enemy(enemy);
 }
+
+
+bool CMonsterEnemyManager::see_enemy_now()
+{
+	if (time_last_seen == Level().timeServer()) return true;
+	return false;
+}

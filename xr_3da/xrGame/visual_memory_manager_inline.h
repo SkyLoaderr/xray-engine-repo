@@ -18,6 +18,15 @@ IC	const xr_vector<CObject*>		&CVisualMemoryManager::visible_objects() const
 	return							(m_visible_objects);
 }
 
+IC	const u32						CVisualMemoryManager::visible_object_time_last_seen(const CObject *object) const
+{
+	xr_vector<CVisibleObject>::iterator	I = std::find(m_objects->begin(),m_objects->end(),object_id(object));
+	if (I != m_objects->end()) 
+		return (I->m_level_time);	
+	else 
+		return u32(-1);
+}
+
 IC	void CVisualMemoryManager::set_squad_objects(xr_vector<CVisibleObject> *squad_objects)
 {
 	m_objects						= squad_objects;

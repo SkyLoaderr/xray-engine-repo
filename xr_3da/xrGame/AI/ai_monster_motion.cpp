@@ -52,8 +52,8 @@ void CMotionManager::reinit()
 	
 	Seq_Init				();
 	
-	b_end_transition		= false;
-	saved_anim				= cur_anim;
+	transition_sequence_used = false;
+	target_transition_anim	 = cur_anim;
 
 	fx_time_last_play		= 0;
 	b_forced_velocity		= false;
@@ -131,7 +131,7 @@ bool CMotionManager::PrepareAnimation()
 void CMotionManager::CheckTransition(EMotionAnim from, EMotionAnim to)
 {
 	// поиск соответствующего перехода
-	bool		bActivated	= false;
+	bool		b_activated	= false;
 	EMotionAnim cur_from = from; 
 	EPState		state_from	= GetState(cur_from);
 	EPState		state_to	= GetState(to);
@@ -148,7 +148,7 @@ void CMotionManager::CheckTransition(EMotionAnim from, EMotionAnim to)
 
 			// переход годится
 			Seq_Add(I->anim_transition);
-			bActivated	= true;	
+			b_activated	= true;	
 
 			if (I->chain) {
 				cur_from	= I->anim_transition;
@@ -160,10 +160,10 @@ void CMotionManager::CheckTransition(EMotionAnim from, EMotionAnim to)
 		if (get_sd()->m_tTransitions.end() == ++I) break;
 	}
 
-	if (bActivated) {
-		b_end_transition = true;		
-		saved_anim = to;
-		Seq_Switch();
+	if (b_activated) {
+		transition_sequence_used	= true;
+		target_transition_anim		= to;
+		Seq_Switch				();
 	}
 }
 
@@ -223,6 +223,7 @@ void CMotionManager::Seq_Init()
 
 void CMotionManager::Seq_Add(EMotionAnim a)
 {
+	if (Seq_Active()) Seq_Init();
 	seq_states.push_back(a);
 }
 
@@ -252,9 +253,9 @@ void CMotionManager::Seq_Finish()
 {
 	Seq_Init(); 
 
-	if (b_end_transition) { 
-		prev_anim = cur_anim = saved_anim;
-		b_end_transition = false;
+	if (transition_sequence_used) { 
+		prev_anim = cur_anim = target_transition_anim;
+		transition_sequence_used = false;
 	} else {
 		prev_anim = cur_anim = get_sd()->m_tMotions[m_tAction].anim;
 	}

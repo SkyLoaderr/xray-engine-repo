@@ -4,6 +4,9 @@
 #include "controller_state_manager.h"
 #include "../../controlled_entity.h"
 #include "../../ai_monster_debug.h"
+#include "../../../actor.h"
+#include "../../../ActorEffector.h"
+#include "../../ai_monster_effector.h"
 
 CController::CController()
 {
@@ -24,6 +27,34 @@ void CController::Load(LPCSTR section)
 
 	MotionMan.accel_load			(section);
 	MotionMan.accel_chain_add		(eAnimWalkFwd,		eAnimRun);
+
+	::Sound->create(control_start_sound,TRUE, pSettings->r_string(section,"sound_control_start"),	SOUND_TYPE_WORLD);
+	::Sound->create(control_hit_sound,	TRUE, pSettings->r_string(section,"sound_control_hit"),		SOUND_TYPE_WORLD);
+
+
+
+	// Load control postprocess --------------------------------------------------------
+	LPCSTR ppi_section = pSettings->r_string(section, "control_effector");
+	m_control_effector.ppi.duality.h		= pSettings->r_float(ppi_section,"duality_h");
+	m_control_effector.ppi.duality.v		= pSettings->r_float(ppi_section,"duality_v");
+	m_control_effector.ppi.gray				= pSettings->r_float(ppi_section,"gray");
+	m_control_effector.ppi.blur				= pSettings->r_float(ppi_section,"blur");
+	m_control_effector.ppi.noise.intensity	= pSettings->r_float(ppi_section,"noise_intensity");
+	m_control_effector.ppi.noise.grain		= pSettings->r_float(ppi_section,"noise_grain");
+	m_control_effector.ppi.noise.fps		= pSettings->r_float(ppi_section,"noise_fps");
+
+	sscanf(pSettings->r_string(ppi_section,"color_base"),	"%f,%f,%f", &m_control_effector.ppi.color_base.r,	&m_control_effector.ppi.color_base.g,	&m_control_effector.ppi.color_base.b);
+	sscanf(pSettings->r_string(ppi_section,"color_gray"),	"%f,%f,%f", &m_control_effector.ppi.color_gray.r,	&m_control_effector.ppi.color_gray.g,	&m_control_effector.ppi.color_gray.b);
+	sscanf(pSettings->r_string(ppi_section,"color_add"),	"%f,%f,%f", &m_control_effector.ppi.color_add.r,	&m_control_effector.ppi.color_add.g,	&m_control_effector.ppi.color_add.b);
+
+	m_control_effector.time			= pSettings->r_float(ppi_section,"time");
+	m_control_effector.time_attack	= pSettings->r_float(ppi_section,"time_attack");
+	m_control_effector.time_release	= pSettings->r_float(ppi_section,"time_release");
+
+	m_control_effector.ce_time			= pSettings->r_float(ppi_section,"ce_time");
+	m_control_effector.ce_amplitude		= pSettings->r_float(ppi_section,"ce_amplitude");
+	m_control_effector.ce_period_number	= pSettings->r_float(ppi_section,"ce_period_number");
+	m_control_effector.ce_power			= pSettings->r_float(ppi_section,"ce_power");
 
 	if (!MotionMan.start_load_shared(SUB_CLS_ID)) return;
 
@@ -120,6 +151,13 @@ void CController::UpdateControlled()
 		HDebug->L_AddLine(enemy_pos,	new_pos, D3DCOLOR_XRGB(0,255,255));
 	}
 
+
+	//if (EnemyMan.get_enemy()) 
+	//	HDebug->M_Add(0, "See Actor", D3DCOLOR_XRGB(255,0,0));
+	//else 
+	//	HDebug->M_Add(0, "Dont see Actor", D3DCOLOR_XRGB(255,0,0));
+
+
 #endif
 }
 
@@ -144,3 +182,74 @@ void CController::CheckSpecParams(u32 spec_params)
 	}
 
 } 
+
+void CController::InitThink()
+{
+	for	(u32 i=0; i<m_controlled_objects.size(); i++) {	
+		CAI_Biting *base = dynamic_cast<CAI_Biting*>(m_controlled_objects[i]);
+		if (!base) continue;
+		if (base->EnemyMan.get_enemy()) 
+			EnemyMemory.add_enemy  (base->EnemyMan.get_enemy(), 
+									base->EnemyMan.get_enemy_position(),
+									base->EnemyMan.get_enemy_vertex(),
+									base->EnemyMan.get_enemy_time_last_seen()
+			);
+	}
+}
+
+void CController::play_control_sound_start()
+{
+	CActor *pA = dynamic_cast<CActor*>(Level().CurrentEntity());
+	if (!pA) return;
+	
+	Fvector pos = pA->Position();
+	pos.y += 1.5f;
+
+	if (control_start_sound.feedback) control_start_sound.stop();
+	control_start_sound.play_at_pos(pA,pos);
+}
+
+void CController::play_control_sound_hit()
+{
+	CActor *pA = dynamic_cast<CActor*>(Level().CurrentEntity());
+	if (!pA) return;
+
+	Fvector pos = pA->Position();
+	pos.y += 1.5f;
+	
+	if (control_hit_sound.feedback) control_hit_sound.stop();
+	control_hit_sound.play_at_pos(pA,pos);
+}
+
+void CController::reload(LPCSTR section)
+{
+	inherited::reload(section);
+
+	// Load triple gravi animations
+	CMotionDef *def1, *def2, *def3;
+	def1 = PSkeletonAnimated(Visual())->ID_Cycle_Safe("stand_sit_down_attack_0");
+	VERIFY(def1);
+
+	def2 = PSkeletonAnimated(Visual())->ID_Cycle_Safe("control_attack_0");
+	VERIFY(def2);
+
+	def3 = PSkeletonAnimated(Visual())->ID_Cycle_Safe("sit_stand_up_attack_0");
+	VERIFY(def3);
+
+	anim_triple_control.init_external	(def1, def2, def3);
+}
+
+void CController::control_hit()
+{
+	play_control_sound_hit();
+	
+	// start postprocess
+	CActor *pA = dynamic_cast<CActor *>(Level().CurrentEntity());
+	if (pA) {
+		pA->EffectorManager().AddEffector(xr_new<CMonsterEffectorHit>(m_control_effector.ce_time,m_control_effector.ce_amplitude,m_control_effector.ce_period_number,m_control_effector.ce_power));
+		Level().Cameras.AddEffector(xr_new<CMonsterEffector>(m_control_effector.ppi, m_control_effector.time, m_control_effector.time_attack, m_control_effector.time_release));
+	}
+}
+
+
+

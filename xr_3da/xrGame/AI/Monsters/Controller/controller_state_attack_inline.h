@@ -23,26 +23,6 @@ CStateControllerAttackAbstract::~CStateControllerAttack()
 {
 }
 
-//TEMPLATE_SPECIALIZATION
-//void CStateControllerAttackAbstract::execute()
-//{
-//	float dist, m_fDistMin, m_fDistMax;
-//	dist = object->GetEnemyDistances(m_fDistMin, m_fDistMax);
-//
-//	// определить тип атаки
-//	bool b_melee = false; 
-//	if ((prev_substate == eStateMelee) && (dist < m_fDistMax)) b_melee = true;
-//	else if (dist < m_fDistMin) b_melee = true;
-//
-//	// установить целевое состояние
-//	if (b_melee)	select_state(eStateMelee);
-//	else			select_state(eStateRun);
-//
-//	get_state_current()->execute();
-//
-//	prev_substate = current_substate;
-//}
-
 TEMPLATE_SPECIALIZATION
 void CStateControllerAttackAbstract::reselect_state()
 {
@@ -51,10 +31,15 @@ void CStateControllerAttackAbstract::reselect_state()
 		return;
 	}
 	
-	if (get_state(eStateControlExpose)->check_start_conditions()) {
-		select_state(eStateControlExpose);
+	if (get_state(eStateControlAttack)->check_start_conditions()) {
+		select_state(eStateControlAttack);
 		return;
 	}
+
+	//if (get_state(eStateControlExpose)->check_start_conditions()) {
+	//	select_state(eStateControlExpose);
+	//	return;
+	//}
 
 	select_state(eStateRun);
 }

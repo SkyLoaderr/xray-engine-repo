@@ -27,6 +27,7 @@ public:
 						CMonsterEnemyManager	(); 
 						~CMonsterEnemyManager	();
 	void				init_external			(CAI_Biting *M);
+	void				reinit					();
 
 	void				update					();
 
@@ -41,10 +42,10 @@ public:
 
 	Flags32				&get_flags				() {return flags;}
 	
+	bool				see_enemy_now			();
+
 	// вернуть количество врагов
 	u32					get_enemies_count		();
-
-	void				reinit					();
 
 	void				add_enemy				(const CEntityAlive *);
 };

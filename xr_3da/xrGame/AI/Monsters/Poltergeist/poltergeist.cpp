@@ -76,22 +76,20 @@ void CPoltergeist::Hide()
 	setVisible(false);
 	
 	StartParticles();
-
+	MotionMan.ForceAnimSelect();
 }
 
 void CPoltergeist::Show()
 {
-	if (m_hidden) {
-		MotionMan.Seq_Add	(eAnimMiscAction_00);
-		MotionMan.Seq_Switch();
-
-	}
+	m_hidden = false;
+	
 	setEnabled(true);
 	setVisible(true);
 
 	StopParticles();
-
-	m_hidden   =false;
+	
+	MotionMan.Seq_Add	(eAnimMiscAction_00);
+	MotionMan.Seq_Switch();
 }
 
 

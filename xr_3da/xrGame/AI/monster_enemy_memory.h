@@ -27,6 +27,7 @@ public:
 	void				clear					() {m_objects.clear();}
 	
 	void				add_enemy				(const CEntityAlive *enemy);
+	void				add_enemy				(const CEntityAlive *enemy, const Fvector &pos, u32 vertex, u32 time);
 
 private:
 

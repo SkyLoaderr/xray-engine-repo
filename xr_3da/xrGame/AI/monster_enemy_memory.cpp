@@ -23,8 +23,7 @@ void CMonsterEnemyMemory::update()
 {
 	// Обновить врагов
 	for (xr_vector<const CEntityAlive *>::const_iterator I = monster->enemies().begin(); I != monster->enemies().end(); ++I) {
-		if (!monster->CMemoryManager::visible_now(*I)) continue;
-		add_enemy(*I);
+		if (monster->CMemoryManager::visible_now(*I)) add_enemy(*I);
 	}
 
 	// удалить устаревших врагов
@@ -48,6 +47,24 @@ void CMonsterEnemyMemory::add_enemy(const CEntityAlive *enemy)
 	if (it != m_objects.end()) {
 		// обновить данные о враге
 		it->second = enemy_info;
+	} else {
+		// добавить врага в список объектов
+		m_objects.insert(mk_pair(enemy, enemy_info));
+	}
+}
+
+void CMonsterEnemyMemory::add_enemy(const CEntityAlive *enemy, const Fvector &pos, u32 vertex, u32 time)
+{
+	SMonsterEnemy enemy_info;
+	enemy_info.position = pos;
+	enemy_info.vertex   = vertex;
+	enemy_info.time		= time;
+	enemy_info.danger	= 0.f;
+
+	ENEMIES_MAP_IT it = m_objects.find(enemy);
+	if (it != m_objects.end()) {
+		// обновить данные о враге
+		if (it->second.time < enemy_info.time) it->second = enemy_info;
 	} else {
 		// добавить врага в список объектов
 		m_objects.insert(mk_pair(enemy, enemy_info));

@@ -130,7 +130,7 @@ void CStateManagerController::execute()
 	//}
 
 	if (enemy)
-		state_id = eStatePanic;
+		state_id = eStateAttack;
 	else 
 		state_id = eStateRest;
 
