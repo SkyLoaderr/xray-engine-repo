@@ -73,8 +73,11 @@ Steal					= 1.5
   
 
 ;attack parameters
-MinAttackDist		= 0.5
-MaxAttackDist		= 3.8
+MinAttackDist		= 1.0	;0.5
+MaxAttackDist		= 2.5	;3.8
+
+as_min_dist				= 0.5
+as_step					= 0.1
 
 ; "Rest" state specific 
 ProbRestWalkFree	= 30    ; при выборе действия, в 50% случаях монстр будет ходить
@@ -164,10 +167,6 @@ jump_delay				= 3000
 jump_min_dist			= 1.0 
 jump_max_dist			= 20.0
 jump_max_angle			= 1.5
-
-
-as_min_dist				= 1.0
-as_step					= 0.1
 
 DamagedThreshold		= 0.5
 
