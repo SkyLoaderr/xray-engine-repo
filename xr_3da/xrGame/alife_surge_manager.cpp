@@ -408,9 +408,8 @@ void CALifeSurgeManager::assign_stalker_customers()
 
 void CALifeSurgeManager::create_objects	()
 {
+//	D_OBJECT_P_MAP::const_iterator	I = objects().objects().begin();
+//	D_OBJECT_P_MAP::const_iterator	E = objects().objects().end();
+//	for ( ; I != E; ++I)
+//		(*I).second->on_surge		();
 }
-
-void CALifeSurgeManager::ballance_creatures()
-{
-}
-
