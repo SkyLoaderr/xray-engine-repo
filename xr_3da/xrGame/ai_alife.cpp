@@ -51,10 +51,12 @@ void CAI_ALife::Load()
 	shedule_Max					=    20;
 	m_dwObjectsBeingProcessed	=     0;
 	m_qwMaxProcessTime			=  100*CPU::cycles_per_microsec;
+	m_fOnlineDistance			=    10.f;
 
 	if (!Level().AI.m_tpaGraph)
 		return;
 
+#ifdef USE_SINGLE_PLAYER
 	vfInitTerrain				();
 	CStream						*tpStream;
 	FILE_NAME					caFileName;
@@ -62,6 +64,24 @@ void CAI_ALife::Load()
 	tpStream					= Engine.FS.Open(caFileName);
 	CALifeSpawnRegistry::Load	(*tpStream);
 	Engine.FS.Close				(tpStream);
+
+	// temporary!!! creating objects
+	ALIFE_ENTITY_P_VECTOR_PAIR_IT	K = m_tLevelEntities.find(1);
+	R_ASSERT					(K != m_tLevelEntities.begin());
+	m_tpObjects.resize			((*K).second->size());
+	ALIFE_ENTITY_P_IT			I = (*K).second->begin();
+	ALIFE_ENTITY_P_IT			E = (*K).second->end();
+	ALIFE_ENTITY_P_IT			i = m_tpObjects.begin();
+	for ( ; I != E; I++, i++) {
+		*i = *I;
+		vfCreateObject			(*i);
+		vfSwitchObjectOnline	(*i);
+		(*i)->m_bOnline			= true;
+		if ((*I)->s_flags.is(M_SPAWN_OBJECT_ASPLAYER))
+			m_tpActor			= *i;
+	}
+	m_bLoaded = true;
+#endif
 	return;
 
 //	vfInitTerrain();
@@ -251,9 +271,122 @@ void CAI_ALife::vfUpdateCreatures()
 {
 }
 
-void CAI_ALife::Spawn()
+void CAI_ALife::vfCreateObject(xrALifeEntity *tpALifeEntity)
 {
-	FILE_NAME	fn_spawn;
-	R_ASSERT(Engine.FS.Exist(fn_spawn, ::Path.GameData, "game.spawn"));
-	CVirtualFileStream	F(fn_spawn);
+	NET_Packet						P;
+	u16								ID;
+	Level().Server->Process_spawn	(P,0,FALSE,tpALifeEntity);
+	
+	P.w_begin						(M_UPDATE);
+	tpALifeEntity->UPDATE_Write		(P);
+	P.r_begin						(ID);
+	R_ASSERT						(M_UPDATE==ID);
+	Level().Server->Process_update	(P,0);
+}
+
+void CAI_ALife::vfSwitchObjectOnline(xrALifeEntity *tpALifeEntity)
+{
+	R_ASSERT						(!tpALifeEntity->m_bOnline);
+	CObject							*tpObject = Level().Objects.FindObjectByName(tpALifeEntity->s_name_replace);
+	if (!tpObject)
+		return;
+	tpObject->setVisible			(true);
+	tpObject->setEnabled			(true);
+	tpObject->setActive				(true);
+	tpALifeEntity->m_bOnline		= true;
+	Msg								("- SERVER: Going online [%d] '%s'(%d,%d,%d) as #%d, on '%s'",Level().timeServer(),tpALifeEntity->s_name_replace, tpALifeEntity->g_team(), tpALifeEntity->g_squad(), tpALifeEntity->g_group(), tpALifeEntity->ID, "*SERVER*");
+}
+
+void CAI_ALife::vfSwitchObjectOffline(xrALifeEntity *tpALifeEntity)
+{
+	R_ASSERT						(tpALifeEntity->m_bOnline);
+	CObject							*tpObject = Level().Objects.FindObjectByName(tpALifeEntity->s_name_replace);
+	if (!tpObject)
+		return;
+	tpObject->setVisible			(false);
+	tpObject->setEnabled			(false);
+	tpObject->setActive				(false);
+	tpALifeEntity->m_bOnline		= false;
+	Msg								("- SERVER: Going offline [%d] '%s'(%d,%d,%d) as #%d, on '%s'",Level().timeServer(),tpALifeEntity->s_name_replace, tpALifeEntity->g_team(), tpALifeEntity->g_squad(), tpALifeEntity->g_group(), tpALifeEntity->ID, "*SERVER*");
+}
+
+void CAI_ALife::vfUpdateOfflineObject(xrALifeEntity *tpALifeEntity)
+{
+	NET_Packet						P;
+	_GRAPH_ID						tDummy = 0;
+	float							fDummy = 0.0f;
+	u16								ID;
+	CObject							*tpObject = Level().Objects.FindObjectByName(tpALifeEntity->s_name_replace);
+	if (!tpObject)
+		return;
+	if (tpObject->SUB_CLS_ID == CLSID_OBJECT_W_AK74) {
+		tpObject = tpObject;
+	}
+	P.w_begin						(M_UPDATE);
+	P.w								(&tDummy,sizeof(tDummy));
+	P.w_float						(fDummy);
+	tpObject->net_Export			(P);
+	P.r_begin						(ID);
+	tpALifeEntity->UPDATE_Read		(P);
+}
+
+void CAI_ALife::vfUpdateOnlineObject(xrALifeEntity *tpALifeEntity)
+{
+	NET_Packet						P;
+	u16								ID;
+	_GRAPH_ID						tDummy;
+	float							fDummy;
+	P.w_begin						(M_UPDATE);
+	tpALifeEntity->UPDATE_Write		(P);
+	CObject							*tpObject = Level().Objects.FindObjectByName(tpALifeEntity->s_name_replace);
+	if (!tpObject)
+		return;
+	if (tpObject->SUB_CLS_ID == CLSID_OBJECT_W_AK74) {
+		tpObject = tpObject;
+	}
+	P.r_begin						(ID);
+	P.r								(&tDummy,sizeof(tDummy));
+	P.r_float						(fDummy);
+	tpObject->net_Import			(P);
+}
+
+void CAI_ALife::ProcessOnlineOfflineSwitches(CObject *tpObject, ALIFE_ENTITY_P_IT &I)
+{
+	float						fDistance;
+	if ((*I)->m_bOnline) {
+		vfUpdateOfflineObject	(*I);
+		if ((*I)->ID_Parent == 0xffff) {
+			fDistance			= tpObject->Position().distance_to((*I)->o_Position);
+			if (fDistance > m_fOnlineDistance)
+				vfSwitchObjectOffline(*I);
+		}
+		else {
+			xrServerEntity		*tpServerEntity = Level().Server->ID_to_entity((*I)->ID_Parent);
+			R_ASSERT			(tpServerEntity);
+			xrALifeEntity		*tpALifeEntity  = dynamic_cast<xrALifeEntity*>(tpServerEntity);
+			R_ASSERT			(tpALifeEntity);
+			if (!tpALifeEntity->m_bOnline)
+				vfSwitchObjectOffline(*I);
+		}
+	}
+	else {
+		vfUpdateOfflineObject	(*I);
+		if ((*I)->ID_Parent == 0xffff) {
+			fDistance			= tpObject->Position().distance_to((*I)->o_Position);
+			if (fDistance <= m_fOnlineDistance) {
+				vfUpdateOnlineObject(*I);
+				vfSwitchObjectOnline(*I);
+			}
+		}
+		else {
+			xrServerEntity		*tpServerEntity = Level().Server->ID_to_entity((*I)->ID_Parent);
+			R_ASSERT			(tpServerEntity);
+			xrALifeEntity		*tpALifeEntity  = dynamic_cast<xrALifeEntity*>(tpServerEntity);
+			R_ASSERT			(tpALifeEntity);
+			if (tpALifeEntity->m_bOnline) {
+				vfUpdateOnlineObject	(*I);
+				vfSwitchObjectOnline(*I);
+			}
+		}
+	}
 }

@@ -192,7 +192,11 @@ void CAI_Zombie::net_Export(NET_Packet& P)
 
 void CAI_Zombie::net_Import(NET_Packet& P)
 {
-	R_ASSERT				(Remote());
+	if (Level().game.type != GAME_SINGLE)
+		R_ASSERT				(Remote());
+	else
+		R_ASSERT				(Local());
+
 	net_update				N;
 
 	u8 flags;

@@ -117,6 +117,12 @@ class xrALifeEntity : public xrServerEntity {
 public:
 	ALife::_GRAPH_ID		m_tGraphID;
 	float					m_fDistance;
+	bool					m_bOnline;
+
+							xrALifeEntity	()
+	{
+		m_bOnline			= false;
+	};
 
 	virtual void			UPDATE_Read		(NET_Packet& P);
 	virtual void			UPDATE_Write	(NET_Packet& P);

@@ -17,40 +17,67 @@ void CAI_ALife::Update(u32 dt)
 	if (!m_bLoaded)
 		return;
 	
-	switch (m_tZoneState) {
-		case eZoneStateSurge : {
-			vfGenerateArtefacts			();
-			TRADER_P_IT					I = m_tpTraders.begin();
-			TRADER_P_IT					E = m_tpTraders.end();
-			for ( ; I != E; I++) {
-				vfSellArtefacts			(**I);
-				vfUpdateArtefactOrders	(**I);
-				vfGiveMilitariesBribe	(**I);
-				vfBuySupplies			(**I);
-				vfAssignPrices			(**I);
-			}
-			vfBallanceCreatures			();
-			vfUpdateCreatures			();
-			Save						();
-			m_tTimeAfterSurge			= 0;
-			m_tZoneState				= eZoneStateAfterSurge;
-			break;
-		}
-		case eZoneStateAfterSurge : {
-			u64							qwStartTime	= CPU::GetCycleCount();
-			if (m_tpScheduledObjects.size()) {
-				int						i=0;
-				do {
-					i++;
-					m_dwObjectsBeingProcessed = ((m_dwObjectsBeingProcessed + 1) % m_tpScheduledObjects.size());
-					vfProcessNPC		(m_tpScheduledObjects[m_dwObjectsBeingProcessed]);
-				}
-				while (((CPU::GetCycleCount() - qwStartTime)*(i + 1)/i < m_qwMaxProcessTime) && (i < (int)m_tpScheduledObjects.size()));
-			}
-			break;
-		}
-		default : NODEFAULT;
-	}
+//	switch (m_tZoneState) {
+//		case eZoneStateSurge : {
+//			vfGenerateArtefacts			();
+//			TRADER_P_IT					I = m_tpTraders.begin();
+//			TRADER_P_IT					E = m_tpTraders.end();
+//			for ( ; I != E; I++) {
+//				vfSellArtefacts			(**I);
+//				vfUpdateArtefactOrders	(**I);
+//				vfGiveMilitariesBribe	(**I);
+//				vfBuySupplies			(**I);
+//				vfAssignPrices			(**I);
+//			}
+//			vfBallanceCreatures			();
+//			vfUpdateCreatures			();
+//			Save						();
+//			m_tTimeAfterSurge			= 0;
+//			m_tZoneState				= eZoneStateAfterSurge;
+//			break;
+//		}
+//		case eZoneStateAfterSurge : {
+//			u64							qwStartTime	= CPU::GetCycleCount();
+//			if (m_tpScheduledObjects.size()) {
+//				int						i=0;
+//				do {
+//					i++;
+//					m_dwObjectsBeingProcessed = ((m_dwObjectsBeingProcessed + 1) % m_tpScheduledObjects.size());
+//					vfProcessNPC		(m_tpScheduledObjects[m_dwObjectsBeingProcessed]);
+//				}
+//				while (((CPU::GetCycleCount() - qwStartTime)*(i + 1)/i < m_qwMaxProcessTime) && (i < (int)m_tpScheduledObjects.size()));
+//			}
+//			break;
+//		}
+//		default : NODEFAULT;
+//	}
+	
+//	vfUpdateOfflineObject			(m_tpActor);
+//	ALIFE_ENTITY_P_IT				I = m_tpObjects.begin();
+//	ALIFE_ENTITY_P_IT				E = m_tpObjects.end();
+//	for ( ;I != E; I++) {
+//		float						fDistance;
+//		if ((*I)->m_bOnline) {
+//			vfUpdateOfflineObject	(*I);
+//			fDistance				= m_tpActor->o_Position.distance_to((*I)->o_Position);
+//			if (fDistance > m_fOnlineDistance)
+//				vfSwitchObjectOffline(*I);
+//		}
+//		else {
+//			vfUpdateOnlineObject	(*I);
+//			fDistance				= m_tpActor->o_Position.distance_to((*I)->o_Position);
+//			if (fDistance <= m_fOnlineDistance)
+//				vfSwitchObjectOnline(*I);
+//		}
+//	}
+
+	ALIFE_ENTITY_P_IT				I = m_tpObjects.begin();
+	ALIFE_ENTITY_P_IT				E = m_tpObjects.end();
+	CObject							*tpObject = Level().Objects.FindObjectByName(m_tpActor->s_name_replace);
+	if (!tpObject)
+		return;
+	for ( ;I != E; I++)
+		ProcessOnlineOfflineSwitches(tpObject, I);
 }
 
 void CAI_ALife::vfProcessNPC(CALifeMonsterAbstract	*tpALifeMonsterAbstract)

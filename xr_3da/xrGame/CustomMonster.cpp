@@ -208,7 +208,10 @@ void CCustomMonster::net_Export(NET_Packet& P)					// export to server
 
 void CCustomMonster::net_Import(NET_Packet& P)
 {
-	R_ASSERT				(Remote());
+	if (Level().game.type != GAME_SINGLE)
+		R_ASSERT				(Remote());
+	else
+		R_ASSERT				(Local());
 	VERIFY					(Weapons);
 	net_update				N;
 

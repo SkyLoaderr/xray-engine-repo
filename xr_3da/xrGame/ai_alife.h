@@ -38,6 +38,9 @@ private:
 	GRAPH_VECTOR_SVECTOR			m_tpTerrain;			// массив списков: по идетнификатору 
 															//	местности получить список точек 
 															//  графа
+	ALIFE_ENTITY_P_VECTOR			m_tpObjects;
+	xrALifeEntity					*m_tpActor;
+	float							m_fOnlineDistance;
 	// comnmon
 	void							vfUpdateDynamicData		(CALifeDynamicObject *tpALifeDynamicObject);
 	void							vfUpdateDynamicData		();
@@ -83,7 +86,12 @@ public:
 	virtual void					Update					(u32 dt);	
 			void					Save					();
 			void					Generate				();
-			void					Spawn					();
+			void					vfCreateObject			(xrALifeEntity *tpALifeEntity);
+			void					vfSwitchObjectOnline	(xrALifeEntity *tpALifeEntity);
+			void					vfSwitchObjectOffline	(xrALifeEntity *tpALifeEntity);
+			void					vfUpdateOfflineObject	(xrALifeEntity *tpALifeEntity);
+			void					vfUpdateOnlineObject	(xrALifeEntity *tpALifeEntity);
+			void					ProcessOnlineOfflineSwitches(CObject *tpObject, ALIFE_ENTITY_P_IT &I);
 #ifdef ALIFE_SUPPORT_CONSOLE_COMMANDS
 			void					vfListObjects			();
 			void					vfListEvents			();

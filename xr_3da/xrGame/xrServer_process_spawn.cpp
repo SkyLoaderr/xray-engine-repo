@@ -2,11 +2,11 @@
 #include "xrServer.h"
 #include "hudmanager.h"
 
-void xrServer::Process_spawn(NET_Packet& P, DPNID sender, BOOL bSpawnWithClientsMainEntityAsParent, xrServerEntity* exist_entity)
+void xrServer::Process_spawn(NET_Packet& P, DPNID sender, BOOL bSpawnWithClientsMainEntityAsParent, xrServerEntity* tpExistedEntity)
 {
 	// create server entity
 	xrClientData* CL	= ID_to_client	(sender);
-	xrServerEntity*	E	= exist_entity;
+	xrServerEntity*	E	= tpExistedEntity;
 	if (!E){
 		// read spawn information
 		string64			s_name;
@@ -31,7 +31,7 @@ void xrServer::Process_spawn(NET_Packet& P, DPNID sender, BOOL bSpawnWithClients
 	if (E->RespawnTime && (0xffff==E->ID_Phantom))
 	{
 		// Create phantom
-		xrServerEntity* Phantom	=	entity_Create	(s_name); R_ASSERT(Phantom);
+		xrServerEntity* Phantom	=	entity_Create	(E->s_name); R_ASSERT(Phantom);
 		Phantom->Spawn_Read		(P);
 		Phantom->ID				=	PerformIDgen	(0xffff);
 		Phantom->ID_Phantom		=	Phantom->ID;						// Self-linked to avoid phantom-breeding

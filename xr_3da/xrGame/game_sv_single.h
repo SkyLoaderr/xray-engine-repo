@@ -3,6 +3,8 @@
 #include "game_sv_base.h"
 #include "ai_alife.h"
 
+//#define USE_SINGLE_PLAYER
+
 class	game_sv_Single				: public game_sv_GameState
 {
 private:
