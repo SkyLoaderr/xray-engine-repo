@@ -49,9 +49,14 @@ function game_cl_LastStanding:GetMapEntities(ent_container)
 
    local players_count = self:GetPlayersCount()
    for it=0,players_count-1 do
-
-      D.pos = vector():set(10,11,12)
-      ent_container:push_back(D)
+       local ps_who = self:GetPlayerByOrderID(it)
+      printf("ps_who:GameID=%s",ps_who.GameID)
+        
+      local game_object = self:GetObjectByGameID(ps_who.GameID)
+      if game_object ~=nil then
+         D.pos = game_object:position()
+         ent_container:push_back(D)
+      end
    end
 
 
