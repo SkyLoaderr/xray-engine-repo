@@ -31,6 +31,6 @@ void CPlayers::remove(NET_Packet& P)
 CPlayers::Item* CPlayers::access(DWORD ID)
 {
 	map<DWORD,Item>::iterator	it = items.find	(ID);
-	if (it!=items.end())		return it->second;
+	if (it!=items.end())		return &it->second;
 	else						return 0;
 }
