@@ -710,6 +710,7 @@ extern "C" {
 
 		// Grenades
 		case CLSID_GRENADE_F1:			P = xr_new<CF1>();					break;
+		case CLSID_OBJECT_G_RPG7:		P = xr_new<CWeaponRPG7Grenade>();	break;
 
 		// Zones
 		case CLSID_ZONE:				P = xr_new<CCustomZone>();			break;

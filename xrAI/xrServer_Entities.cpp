@@ -1353,6 +1353,7 @@ xrServerEntity*	F_entity_Create		(LPCSTR caSection)
 	case CLSID_TARGET_CS_CASK:		return xr_new<xrSE_Target_CSCask>	(caSection);
 	case CLSID_IITEM_BOLT:			return xr_new<CALifeDynamicObject>	(caSection);
 	case CLSID_GRENADE_F1:			return xr_new<CALifeDynamicObject>	(caSection);
+	case CLSID_OBJECT_G_RPG7:		return xr_new<CALifeDynamicObject>	(caSection);
 }
 	return 0;
 }

@@ -12,6 +12,15 @@ CCustomDetector::~CCustomDetector(void) {
 BOOL CCustomDetector::net_Spawn(LPVOID DC) {
 	BOOL res = inherited::net_Spawn(DC);
 
+	CCF_Shape*	shape			= xr_new<CCF_Shape>	(this);
+	cfModel						= shape;
+	Fsphere S;	S.P.set			(0,1.f,0); S.R = m_buzzer_radius;
+	shape->add_sphere			(S);
+	shape->ComputeBounds						();
+#pragma todo("@@@ WT: Check if detector will work w/o registration.")
+	pCreator->ObjectSpace.Object_Register		(this);
+	cfModel->OnMove								();
+
 	setEnabled(true);
 
 	return res;
@@ -27,13 +36,6 @@ void CCustomDetector::Load(LPCSTR section) {
 
 	m_radius = pSettings->r_float(section,"radius");
 	m_buzzer_radius = pSettings->r_float(section,"buzzer_radius");
-	CCF_Shape*	shape			= xr_new<CCF_Shape>	(this);
-	cfModel						= shape;
-	Fsphere S;	S.P.set			(0,1.f,0); S.R = m_buzzer_radius;
-	shape->add_sphere			(S);
-	shape->ComputeBounds						();
-	pCreator->ObjectSpace.Object_Register		(this);
-	cfModel->OnMove								();
 
 	LPCSTR l_soundName = pSettings->r_string(section,"noise");
 	SoundCreate(m_noise, l_soundName);
