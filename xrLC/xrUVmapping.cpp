@@ -23,17 +23,12 @@ void Face::OA_Unwarp()
 
 	// now iterate on all our neigbours
 	for (int i=0; i<3; i++) 
-	{
 		for (vecFaceIt it=v[i]->adjacent.begin(); it!=v[i]->adjacent.end(); it++)
-		{
 			(*it)->OA_Unwarp();
-		}
-	}
 }
 
-
-extern void Detach(vecFace* S);
-extern BOOL	hasImplicitLighting(Face* F);
+extern void Detach				(vecFace* S);
+extern BOOL	hasImplicitLighting	(Face* F);
 
 void CBuild::BuildUVmap()
 {
@@ -52,60 +47,57 @@ void CBuild::BuildUVmap()
 		R_ASSERT(!g_XSplit[SP].empty());
 		Face*		Fvl = g_XSplit[SP][0];
 		if (Fvl->Shader().flags.bLIGHT_Vertex) 	continue;	// do-not touch (skip)
-		if (hasImplicitLighting(Fvl))
-		{
-			continue;
-		} else {
-			//   find first poly that doesn't has mapping and start recursion
-			while (TRUE) {
-				// Select maximal sized poly
-				Face *	msF		= NULL;
-				float	msA		= 0;
-				for (vecFaceIt it = g_XSplit[SP].begin(); it!=g_XSplit[SP].end(); it++)
+		if (hasImplicitLighting(Fvl))			continue;
+
+		//   find first poly that doesn't has mapping and start recursion
+		while (TRUE) {
+			// Select maximal sized poly
+			Face *	msF		= NULL;
+			float	msA		= 0;
+			for (vecFaceIt it = g_XSplit[SP].begin(); it!=g_XSplit[SP].end(); it++)
+			{
+				if ( (*it)->pDeflector == NULL ) {
+					float a = (*it)->CalcArea();
+					if (a>msA) {
+						msF = (*it);
+						msA = a;
+					}
+				}
+			}
+			if (msF) {
+				g_deflectors.push_back(new CDeflector);
+				
+				// Start recursion from this face
+				Deflector->OA_SetNormal(msF->N);
+				msF->OA_Unwarp();
+				
+				// break the cycle to startup again
+				Deflector->OA_Export();
+				
+				// Detach affected faces
+				static vecFace faces_affected;
+				for (int i=0; i<int(g_XSplit[SP].size()); i++) {
+					Face *F = g_XSplit[SP][i];
+					if ( F->pDeflector==Deflector ) {
+						faces_affected.push_back(F);
+						g_XSplit[SP].erase(g_XSplit[SP].begin()+i);
+						i--;
+					}
+				}
+				
+				// detaching itself
+				Detach(&faces_affected);
+				
+				g_XSplit.push_back(faces_affected);
+				faces_affected.clear();
+			} else {
+				if (g_XSplit[SP].empty()) 
 				{
-					if ( (*it)->pDeflector == NULL ) {
-						float a = (*it)->CalcArea();
-						if (a>msA) {
-							msF = (*it);
-							msA = a;
-						}
-					}
+					g_XSplit.erase(g_XSplit.begin()+SP);
+					SP--;
 				}
-				if (msF) {
-					g_deflectors.push_back(new CDeflector);
-					
-					// Start recursion from this face
-					Deflector->OA_SetNormal(msF->N);
-					msF->OA_Unwarp();
-					
-					// break the cycle to startup again
-					Deflector->OA_Export();
-					
-					// Detach affected faces
-					static vecFace faces_affected;
-					for (int i=0; i<int(g_XSplit[SP].size()); i++) {
-						Face *F = g_XSplit[SP][i];
-						if ( F->pDeflector==Deflector ) {
-							faces_affected.push_back(F);
-							g_XSplit[SP].erase(g_XSplit[SP].begin()+i);
-							i--;
-						}
-					}
-					
-					// detaching itself
-					Detach(&faces_affected);
-					
-					g_XSplit.push_back(faces_affected);
-					faces_affected.clear();
-				} else {
-					if (g_XSplit[SP].empty()) 
-					{
-						g_XSplit.erase(g_XSplit.begin()+SP);
-						SP--;
-					}
-					// Cancel infine loop (while)
-					break;
-				}
+				// Cancel infine loop (while)
+				break;
 			}
 		}
 	}
