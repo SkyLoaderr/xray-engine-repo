@@ -4,7 +4,7 @@ function loadJob(sj, gname, type, squad, groups)
 --'-----------------------------------------------------------------------------------------
 --' ESCAPE BLOCKPOST
 --'-----------------------------------------------------------------------------------------
-	if type == "blockpost" then	
+--[[	if type == "blockpost" then	
 		--' STATE 0
 		t = { name = "patrol",
 			object = nil, begin = nil, idle = 6*60*60*1000,
@@ -1460,7 +1460,7 @@ function loadJob(sj, gname, type, squad, groups)
 			center_point = "left_hand_kamp" }
 		table.insert(sj, t)
 
-	end
+	end]]
 ------------------------------------------------------------------------------------
 	if type == "test" then
 		t = { section = "walker1",
@@ -1485,7 +1485,7 @@ function loadJob(sj, gname, type, squad, groups)
 end
 
 function loadStates(gname, type)
-	if type == "blockpost" then
+--[[	if type == "blockpost" then
 		return function(gulag)
 			for k,v in gulag.Object do
 				enemy = v:best_enemy()
@@ -1553,7 +1553,7 @@ function loadStates(gname, type)
 			return 0
 		end
 	end
-
+]]
 	if type == "test" then
 		return function(gulag)
 			return 0
