@@ -1158,7 +1158,7 @@ void	game_sv_Deathmatch::StartAnomalies			()
 	xr_vector<u8>&	ASetID	= m_AnomalySetID;
 	if (ASetID.empty())
 	{
-		u8 Size = m_AnomalySetsList.size();
+		u8 Size = (u32)m_AnomalySetsList.size();
 		for (u8 i=0; i<Size; i++)
 		{
 			if (m_dwLastAnomalySetID == i && Size > 1) continue;
