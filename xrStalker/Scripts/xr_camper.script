@@ -166,6 +166,6 @@ function set_scheme(npc, ini, scheme, section, gulag_name)
 
 	st.path_walk = utils.cfg_get_string(ini, section, "path_walk", npc, true,  gulag_name)
 	st.path_look = utils.cfg_get_string(ini, section, "path_look", npc, true,  gulag_name)
-	st.radius	 = utils.cfg_get_string(ini, section, "radius", npc, false,  gulag_name)
+	st.radius	 = utils.cfg_get_number(ini, section, "radius", npc, false)
 	if st.radius == nil then st.radius = 20 end
 end
