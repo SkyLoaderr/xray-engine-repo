@@ -415,7 +415,6 @@ void CDetailManager::UpdateCache	(int limit)
 				Item.mRotY.rotateY(r_yaw.randF	(0,PI_MUL_2));
 				
 				// X-Form BBox
-/*
 				Fmatrix		mScale,mXform;
 				Fbox		ItemBB;
 				mScale.scale					(Item.scale,Item.scale,Item.scale);
@@ -423,7 +422,6 @@ void CDetailManager::UpdateCache	(int limit)
 				mXform.translate_over			(Item.P);
 				ItemBB.xform					(Dobj.bv_bb,mXform);
 				Bounds.merge					(ItemBB);
-*/
 				
 				// Color
 				DetailPalette*	c_pal	= (DetailPalette*)&DS.color;
@@ -443,7 +441,7 @@ void CDetailManager::UpdateCache	(int limit)
 
 		// Check for number of decompressions
 		limit--;
-		// D.BB.set	(Bounds);
+		D.BB.set	(Bounds);
 	}
 }
 
