@@ -101,6 +101,7 @@ public:
 	float					g_Armor				()	{ return fArmor;	}
 	float					g_Health			()	{ return fHealth;	}
 	float					g_Accuracy			()	{ return fAccuracy;	}
+	BOOL					g_Alive				()	{ return g_Health()>0; }
 	virtual BOOL			g_State				(SEntityState& state)	{return FALSE;}
 
 	int						g_Team				()	{ return id_Team;	}

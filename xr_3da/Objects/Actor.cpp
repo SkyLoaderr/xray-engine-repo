@@ -740,9 +740,14 @@ void CActor::g_fireParams	(Fvector &fire_pos, Fvector &fire_dir)
 
 void CActor::g_fireStart	( )
 {
-	if ()
-	Weapons->FireStart	( );
+	if (g_Alive())			Weapons->FireStart	( );
+	else if (Local())
+	{
+		// We want to respawn
+		g_cl_Spawn			("actor",0xFF,M_SPAWN_OBJECT_ACTIVE  | M_SPAWN_OBJECT_LOCAL | M_SPAWN_OBJECT_ASPLAYER);
+	}
 }
+
 void CActor::g_fireEnd	( )
 {
 	Weapons->FireEnd	( );
