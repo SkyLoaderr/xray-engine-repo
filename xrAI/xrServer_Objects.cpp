@@ -397,6 +397,14 @@ void CSE_Temporary::FillProps				(LPCSTR pref, PropItemVec& values)
 CSE_SpawnGroup::CSE_SpawnGroup				(LPCSTR caSection) : CSE_Abstract(caSection)
 {
 	m_spawn_probability						= 1.f;
+	m_min_spawn_interval					= 0.f;
+	m_max_spawn_interval					= 0.f;
+	m_flags.zero							();
+	m_flags.set								(flSpawnGroupActive				,TRUE);
+	m_flags.set								(flSpawnGroupOnSurgeOnly		,TRUE);
+	m_flags.set								(flSpawnGroupSingleItemOnly		,TRUE);
+	m_flags.set								(flSpawnGroupIfDestroyedOnly	,TRUE);
+	m_flags.set								(flSpawnGroupSingleTimeOnly		,FALSE);
 }
 
 CSE_SpawnGroup::~CSE_SpawnGroup				()
