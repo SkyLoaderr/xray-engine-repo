@@ -306,7 +306,7 @@ HRESULT CMyD3DApplication::Render		()
 		RenderShadowMap				();
 		RenderLight_Direct_smap		();
 		RenderCombine				(CM_NORMAL);
-		RenderCombine_Bloom			();
+		// RenderCombine_Bloom		();
 		RenderOverlay				();
 
 		// Output statistics
