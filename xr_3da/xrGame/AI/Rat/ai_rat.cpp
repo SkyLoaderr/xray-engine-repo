@@ -607,9 +607,9 @@ void CAI_Rat::FollowLeader(Fvector &tLeaderPosition, const float fMinDistance, c
 
 		/**/
 		// filling the subnodes with the moving objects
-		Level().ObjectSpace.GetNearest(Position(),5.f);//20*(Level().AI.GetHeader().size));
+		Level().ObjectSpace.GetNearest(Position(),3*Level().AI.GetHeader().size);
 		CObjectSpace::NL_TYPE &tpNearestList = Level().ObjectSpace.nearest_list;
-		Msg("%d",tpNearestList.size());
+		//Msg("%d",tpNearestList.size());
 		if (!(tpNearestList.empty())) {
 			for (CObjectSpace::NL_IT tppObjectIterator=tpNearestList.begin(); tppObjectIterator!=tpNearestList.end(); tppObjectIterator++) {
 				CObject* tpCurrentObject = (*tppObjectIterator)->Owner();
@@ -716,7 +716,7 @@ void CAI_Rat::FollowLeader(Fvector &tLeaderPosition, const float fMinDistance, c
 	else {
 		int iMySubNode = ifDivideNearestNode(tpCurrentNode,tCurrentPosition,tpSubNodes);
 		VERIFY(iMySubNode >= 0);
-		Level().ObjectSpace.GetNearest(tpSubNodes[iMySubNode].tLeftDown,2*(Level().AI.GetHeader().size));
+		Level().ObjectSpace.GetNearest(tpSubNodes[iMySubNode].tLeftDown,3*(Level().AI.GetHeader().size));
 		CObjectSpace::NL_TYPE &tpNearestList = Level().ObjectSpace.nearest_list;
 		//Msg("%d",tpNearestList.size());
 		if (!tpNearestList.empty()) {
