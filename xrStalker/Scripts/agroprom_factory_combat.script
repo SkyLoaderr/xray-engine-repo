@@ -35,7 +35,7 @@ end
 function add_actions( npc, acts )
     local i = 1
 
-    reset_action( npc, this.script_name() )
+    reset_action( npc, script_name() )
 
     function get_act_cmd()
         local c = acts[i]
@@ -111,14 +111,14 @@ function main()
     ----------   
 
     local zone = get_level_object( "zone_factory_combat" )
-    zone:set_callback( this.on_enter, true )
+    zone:set_callback( on_enter, true )
 
     way  = patrol( "way_factory_combat" )
 
     for i = 1, table.getn( shoot_points ) do
         local npc = get_level_object( "military_"..i )
         table.insert( npcs, npc )
-        npc:script( true, this.script_name() )
+        npc:script( true, script_name() )
 
         local wpn = npc:best_weapon()
         wpns[npc] = wpn
@@ -179,7 +179,7 @@ function main()
             end
         end
 
-        this.add_actions( npcs[i], actions )
+        add_actions( npcs[i], actions )
     end
     
     events_i = 1
@@ -209,7 +209,7 @@ function main()
     heli:heli_goto_stay_point( time_infinite )
 
     for i = 1, table.getn( shoot_points ) do
-        npcs[i]:script( false, this.script_name() )
+        npcs[i]:script( false, script_name() )
     end
 
     -- лидер должен быть military_2
