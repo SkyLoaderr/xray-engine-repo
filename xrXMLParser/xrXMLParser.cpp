@@ -64,14 +64,10 @@ XML_NODE* CUIXml::NavigateToNode(XML_NODE* start_node,
 								 const char* path, 
 								 int node_index)
 {
-	XML_NODE* node = NULL;
-	XML_NODE* node_parent = NULL;
+	XML_NODE*	node			= NULL;
+	XML_NODE*	node_parent		= NULL;
 
-	char* buf_str;	
-	buf_str = (char*)xr_malloc((xr_strlen(path)+1)*sizeof(char));
-//	buf_str.resize(xr_strlen(path)+1);
-	strcpy(buf_str, path);
-
+	char*		buf_str			= xr_strdup(path);
 
 	char seps[]   = ":";
     char *token;
@@ -81,7 +77,6 @@ XML_NODE* CUIXml::NavigateToNode(XML_NODE* start_node,
 
 	if( token != NULL )
 			node = start_node->GetNthChildWithTag(token, node_index);
-
 	
     while( token != NULL )
     {
@@ -93,12 +88,12 @@ XML_NODE* CUIXml::NavigateToNode(XML_NODE* start_node,
 			{
 				node_parent = node;
 				node = node_parent->GetChildWithTag(token);
-				xr_delete(node_parent);
+				delete(node_parent);
 			}
 
     }
 
-	xr_free(buf_str);
+	xr_free	(buf_str);
 	return node;
 }
 
@@ -113,8 +108,8 @@ char* CUIXml::Read(const char *path, int index, const char*  default_str_val)
 {
 	XML_NODE* node = NavigateToNode(path, index);
 	char* result = Read(node,  default_str_val);
-	xr_delete(node);
-	return result;
+	delete	(node);
+	return	result;
 }
 
 
@@ -123,8 +118,8 @@ char* CUIXml::Read(XML_NODE* start_node,  const char *path, int index, const cha
 {
 	XML_NODE* node = NavigateToNode(start_node, path, index);
 	char* result = Read(node,  default_str_val);
-	xr_delete(node);
-	return result;
+	delete	(node);
+	return	result;
 }
 
 
@@ -175,9 +170,9 @@ char* CUIXml::ReadAttrib(XML_NODE* start_node, const char *path,  int index,
 {
 	XML_NODE* node = NavigateToNode(start_node, path, index);
 	char* result = ReadAttrib(node, attrib, default_str_val);
-	xr_delete(node);
+	delete	(node);
 
-	return result;
+	return	result;
 }
 
 
@@ -186,9 +181,8 @@ char* CUIXml::ReadAttrib(const char *path,  int index,
 {
 	XML_NODE* node = NavigateToNode(path, index);
 	char* result = ReadAttrib(node, attrib, default_str_val);
-	xr_delete(node);
-
-	return result;
+	delete	(node);
+	return	result;
 }
 char* CUIXml::ReadAttrib(XML_NODE* node, const char *attrib, const char*  default_str_val)
 {
@@ -267,7 +261,7 @@ int CUIXml::GetNodesNum(const char *path, int index, const char* tag_name)
 	
 	if(node == NULL) return 0;
 	int result =  node->NumChildrenHavingTag(tag_name);
-	if(GetRoot()!=node) xr_delete(node);
+	if(GetRoot()!=node) delete		(node);
 	return result;
 }
 
@@ -286,8 +280,8 @@ XML_NODE* CUIXml::SearchForAttribute(const char *path, int index,
 {
 	XML_NODE* start_node = NavigateToNode(path, index);
 	XML_NODE* result =  SearchForAttribute(start_node, tag_name, attrib, attrib_value_pattern);
-	xr_delete(start_node);
-	return result;
+	delete	(start_node);
+	return	result;
 }
 
 XML_NODE* CUIXml::SearchForAttribute(XML_NODE* start_node, 
