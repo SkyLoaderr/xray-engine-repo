@@ -20,17 +20,17 @@ static void w_qt_q8(NET_Packet& P,const Fquaternion& q)
 	Fvector Q;
 	Q.set(q.x,q.y,q.z);
 	if(q.w<0.f)	Q.invert();
-	P.w_float_q8(Q.x,0.f,1.f);
-	P.w_float_q8(Q.y,0.f,1.f);
-	P.w_float_q8(Q.z,0.f,1.f);
+	P.w_float_q8(Q.x,-1.f,1.f);
+	P.w_float_q8(Q.y,-1.f,1.f);
+	P.w_float_q8(Q.z,-1.f,1.f);
 }
 static void r_qt_q8(NET_Packet& P,Fquaternion& q)
 {
-
-	P.r_float_q8(q.x,0.f,1.f);
-	P.r_float_q8(q.y,0.f,1.f);
-	P.r_float_q8(q.z,0.f,1.f);
-	q.w=1.f;
+	// x^2 + y^2 + z^2 + w^2 = 1
+	P.r_float_q8(q.x,-1.f,1.f);
+	P.r_float_q8(q.y,-1.f,1.f);
+	P.r_float_q8(q.z,-1.f,1.f);
+	q.w=_sqrt(1.f-q.x*q.x-q.y*q.y-q.z*q.z);
 }
 void	SPHNetState::net_Export(NET_Packet& P)
 {
@@ -115,7 +115,7 @@ void SPHBonesData::net_Save(NET_Packet &P)
 	PHNETSTATE_I	i=bones.begin(),e=bones.end();
 	for(;e!=i;i++)
 	{
-		(*i).net_Save(P);
+		(*i).net_Save(P,min,max);
 	}
 	bones.clear();
 }
@@ -130,7 +130,7 @@ void SPHBonesData::net_Load(NET_Packet &P)
 	for(int i=0;i<bones_number;i++)
 	{
 		SPHNetState	S;
-		S.net_Load(P);
+		S.net_Load(P,min,max);
 		bones.push_back(S);
 	}
 }

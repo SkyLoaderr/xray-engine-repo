@@ -5,6 +5,7 @@
 #include "xrserver_objects_alife.h"
 #include "level.h"
 #include "phsynchronize.h"
+#define F_MAX         3.402823466e+38F
 u32 CPhysicObject::remove_time=5000;
 
 CPhysicObject::CPhysicObject(void) 
@@ -33,21 +34,37 @@ void CPhysicObject::SaveNetState(NET_Packet& P)
 		P.w_u16(0);
 	}
 	/////////////////////////////
-	Fvector center,min,max;
-	Center(center);
-	float r=Radius();
-	min.set(center.x-r,center.y-r,center.z-r);
-	max.set(center.x+r,center.y+r,center.z+r);
+	Fvector min,max;
+
+	min.set(F_MAX,F_MAX,F_MAX);
+	max.set(-F_MAX,-F_MAX,-F_MAX);
 	/////////////////////////////////////
-	P.w_vec3(min);
-	P.w_vec3(max);
-	u16 bones_number=PHGetSyncItemsNumber();
-	P.w_u16(bones_number);
+
+ 	u16 bones_number=PHGetSyncItemsNumber();
 	for(u16 i=0;i<bones_number;i++)
 	{
 		SPHNetState state;
 		PHGetSyncItem(i)->get_State(state);
-		state.net_Save(P);
+		Fvector& p=state.position;
+		if(p.x<min.x)min.x=p.x;
+		if(p.y<min.y)min.y=p.y;
+		if(p.z<min.z)min.z=p.z;
+		
+		if(p.x>max.x)max.x=p.x;
+		if(p.y>max.y)max.y=p.y;
+		if(p.z>max.z)max.z=p.z;
+	}
+
+	P.w_vec3(min);
+	P.w_vec3(max);
+
+	P.w_u16(bones_number);
+
+	for(u16 i=0;i<bones_number;i++)
+	{
+		SPHNetState state;
+		PHGetSyncItem(i)->get_State(state);
+		state.net_Save(P,min,max);
 	}
 }
 
