@@ -176,9 +176,10 @@ void CWeaponList::Update	(float dt, BOOL bHUDView)
 	if (m_iActiveWeapon>=0)		m_Weapons[m_iActiveWeapon]->SetHUDmode(bHUDView);
 }
 
-void CWeaponList::GetFireParams(Fvector &fire_pos, Fvector &fire_dir){
+void CWeaponList::GetFireParams(Fvector &fire_pos, Fvector &fire_dir)
+{
 	if (m_iActiveWeapon==-1) return;
 	CWeapon* W		= m_Weapons[m_iActiveWeapon];
 	fire_pos.set	(W->Position());
-	fire_dir.set	(Device.vCameraDirection);
+	fire_dir.set	(W->vLastFD);
 }
