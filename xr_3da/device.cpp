@@ -44,7 +44,6 @@ void CRenderDevice::End		(void)
 		{
 			Memory.mem_compact		();
 			Msg						("* MEMORY USAGE: %d K",Memory.mem_usage()/1024);
-			g_pStringContainer->dump();
 		}
 	}
 
