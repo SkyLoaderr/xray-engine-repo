@@ -86,14 +86,13 @@ void CActor::SActorMotions::SActorState::Create(CKinematics* K, LPCSTR base)
 	m_torso[2].Create(K,base,"_3");
 	
 	m_torso_idle	= K->ID_Cycle(strconcat(buf,base,"_torso_0_aim_0"));
-	m_dead_stop		= K->ID_Cycle(strconcat(buf,base,"_dead_stop_0"));
 	jump_begin		= K->ID_Cycle(strconcat(buf,base,"_jump_begin"));
 	jump_idle		= K->ID_Cycle(strconcat(buf,base,"_jump_idle"));
 	landing[0]		= K->ID_Cycle(strconcat(buf,base,"_jump_end"));
 	landing[1]		= K->ID_Cycle(strconcat(buf,base,"_jump_end_1"));
 
 	for (int k=0; k<12; k++)
-		m_damage[k]	= K->ID_Cycle(strconcat(buf,base,"_damage_",itoa(k,buf1,10)));
+		m_damage[k]	= K->ID_FX(strconcat(buf,base,"_damage_",itoa(k,buf1,10)));
 }
 
 void CActor::SActorMotions::Create(CKinematics* V)
@@ -102,6 +101,7 @@ void CActor::SActorMotions::Create(CKinematics* V)
 	m_steering_torso_right	= V->ID_Cycle_Safe("steering_torso_rs");
 	m_steering_torso_idle	= V->ID_Cycle_Safe("steering_torso_idle");
 	m_steering_legs_idle	= V->ID_Cycle_Safe("steering_legs_idle");
+	m_dead_stop				= V->ID_Cycle("norm_dead_stop_0");
 
 	m_normal.Create	(V,"norm");
 	m_crouch.Create	(V,"cr");
@@ -200,7 +200,7 @@ void CActor::g_SetAnimation( u32 mstate_rl )
 			//cfModel->OnMove();
 			//PKinematics	(pVisual)->PlayCycle("x90",false);
 			////////////////////
-			PKinematics(pVisual)->PlayCycle(m_anims.m_normal.m_dead_stop);
+			PKinematics(pVisual)->PlayCycle(m_anims.m_dead_stop);
 		}
 	}
 #ifdef _DEBUG

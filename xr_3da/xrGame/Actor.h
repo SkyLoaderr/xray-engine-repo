@@ -122,7 +122,6 @@ protected:
 			SAnimState		m_run;
 			STorsoWpn		m_torso[2];
 			CMotionDef*		m_torso_idle;
-			CMotionDef*		m_dead_stop;
 
 			CMotionDef*		m_damage[DAMAGE_FX_COUNT];
 
@@ -132,6 +131,7 @@ protected:
 		CMotionDef*			m_steering_torso_right;
 		CMotionDef*			m_steering_torso_idle;
 		CMotionDef*			m_steering_legs_idle;
+		CMotionDef*			m_dead_stop;
 
 		SActorState			m_normal;
 		SActorState			m_crouch;
