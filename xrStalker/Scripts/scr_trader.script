@@ -14,7 +14,7 @@ local actor_id   = 0
 local spinka     = 1
 local idle       = 2
 local chitaet    = 3
---local time_mes   = 30000   --¬рем€, через которое торговец посылет сообщение актеру
+
 local pause_time = 20000   --¬рем€, через которое торговец говорит, что-то игроку, который не ушел
 
 
@@ -96,13 +96,11 @@ function Trader:__init( npc_o, zone_o, scr_name_o )
 
     self.on_line     = false
 
---    actor_id         = get_actor():id()
-
 end
 
 function Trader:on_enter( zone, obj )
     if( level.actor() == nil ) then return end
---    if( obj:id() == actor_id ) then
+
     if( obj:id() == level.actor():id() ) then
         printf( "Actor %s enter in zone", obj:name() )
         self.mem.entered    = true
@@ -118,14 +116,12 @@ end
 function Trader:on_exit( zone, obj )
     if( level.actor() == nil ) then return end
 
---    if( obj:id() == actor_id ) then
     if( obj:id() == level.actor():id() ) then
         printf( "Actor %s exit from zone", obj:name() )
         self.mem.entered    = false
         self.mem.repeats    = 0
         self.mem.exit_time  = device():time_global()
         self.mem.event      = actor_exit
---        printf( "reset_action" )
     end
 end
 
@@ -144,11 +140,6 @@ function Trader:end_trade()
 end
 
 function Trader:on_trade( obj, type )
-
---    if( obj:id() == 100 ) then
---    	self.mem.bring  = box_with_post
---    end
-
 	self.mem.exchange   = true
 end
 
@@ -156,12 +147,12 @@ end
 function Trader:is_on_line()
     if( self.on_line ) then
         if( level.object( self.npc_name ) ~= nil and level.object( self.zone_name ) ~= nil ) then return end
-        printf( "Off line ________________________________________" )
+        printf( "Off line ________________________________________trader" )
         self.on_line  = false
         self.npc      = nil
     else
         if( level.object( self.npc_name ) == nil or level.object( self.zone_name ) == nil ) then return end
-        printf( "In line ________________________________________" )
+        printf( "In line ________________________________________trader" )
         self.on_line  = true
         self.npc      = level.object( self.npc_name )
         self.npc:script( true, self.script_name )
@@ -189,7 +180,6 @@ function Trader:process()
             if( self.mem.need_reset ) then
                 reset_action( self.npc, self.script_name )
                 self.mem.need_reset = false
---                printf( "Name %s", self.mem.anim_snd )
             end
 
             if( self.curState:check_completed() ) then
@@ -205,19 +195,16 @@ function Trader:animation()
 
 --    printf( "New animation" )
 
-     --≈сил тело торговца дл€ новой анимации не надо двигать, то проигруем анимацию, в противном случае двигаем тело
+     --≈сли тело торговца дл€ новой анимации не надо двигать, то проигруем анимацию, в противном случае двигаем тело
     if( self.mem.state == self.mem.new_state ) then
 
         if( self.mem.anim_snd == nil ) then                 --ѕроигруем анимацию без звука
             action( self.npc, anim( self.mem.last_anim ), cond( cond.anim_end ) )
---            this.action2( self.npc, anim( self.mem.last_anim ), cond( cond.anim_end ) )
---            printf( "Play with no sound" )
 --            printf( "Anim   %s", self.mem.last_anim )
             self.mem.repeats = self.mem.repeats - 1
         else                                           --ѕроигруем анимацию со звуком
 	        if( self.mem.all_anim ) then                        --јнимаци€, где двигаетс€ все тело
     	        action( self.npc, anim( self.mem.last_anim ), sound( self.mem.anim_snd, "bip01_head"),
---    	        this.action2( self.npc, anim( self.mem.last_anim ), sound( self.mem.anim_snd, "bip01_head"),
         		                                                    cond( cond.sound_end ) )
             	self.mem.all_anim = false
             else
@@ -234,21 +221,17 @@ function Trader:animation()
      --”станавливаем торговца в нужное положение
         if( self.mem.state == spinka ) then
             action( self.npc, anim( "spinka_idle" ), cond( cond.anim_end ) )
---            this.action2( self.npc, anim( "spinka_idle" ), cond( cond.anim_end ) )
             self.mem.state = idle
         elseif( self.mem.state == idle ) then
             if( self.mem.new_state == spinka ) then
                 action( self.npc, anim( "idle_spinka" ), cond( cond.anim_end ) )
---                this.action2( self.npc, anim( "idle_spinka" ), cond( cond.anim_end ) )
                 self.mem.state = spinka
             else
                 action( self.npc, anim( "idle_chitaet" ), cond( cond.anim_end ) )
---                this.action2( self.npc, anim( "idle_chitaet" ), cond( cond.anim_end ) )
                 self.mem.state = chitaet
             end
         else          --state == chitaet
             action( self.npc, anim( "chitaet_idle" ), cond( cond.anim_end ) )
---            this.action2( self.npc, anim( "chitaet_idle" ), cond( cond.anim_end ) )
             self.mem.state = idle
         end
     end
@@ -347,7 +330,7 @@ function t_OnStart:select_state()
 end
 
 function t_OnStart:set_anim()
---         self.anim_snd   = nil
+
 	if( self.mem.repeats == 0 or self.mem.anim_snd ~= nil ) then
         if( self.mem.anim_snd == nil ) then
 	        self.mem.last_anim  = "idle"
@@ -477,7 +460,6 @@ function t_Life:set_anim()
     else                                              --јктер еще не вошел
     if( self:sound_with_anim() == false ) then
     --”же проиграли нужное количество раз анимацию, выбираем новую
---        printf( "repeats = %d", self.mem.repeats  )
         if( self.mem.repeats < 1 ) then
             self.choise = math.random( 1, 3 )
             if( self.choise == 1 ) then
@@ -494,7 +476,6 @@ function t_Life:set_anim()
                 self.mem.new_state = idle
             end
         end
---        printf("animation %s", self.mem.last_anim )
     end
     end
 end
