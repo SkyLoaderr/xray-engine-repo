@@ -248,6 +248,7 @@ function object_binder:reload(section)
 end
 
 function object_binder:net_spawn(server_object)
+	printf			("inherited::net_spawn called!")
 	return			true
 end
 
