@@ -29,95 +29,137 @@ IC	float	CalcSSA				(float& distSQ, Fvector& C, IRender_Visual* V)
 
 void CRender::InsertSG_Dynamic	(IRender_Visual *pVisual, Fvector& Center)
 {
-	float distSQ;	if (CalcSSA(distSQ,Center,pVisual)<=r_ssaDISCARD)	return;
+	if (pVisual->vis.frame	==	RImplementation.marker)	return;
+	pVisual->vis.frame		=	RImplementation.marker;
 
-	// Select List and add to it
+	float distSQ;
+	float SSA				=	CalcSSA		(distSQ,pVisual->vis.sphere.P,pVisual);
+	if (SSA<=r_ssaDISCARD)		return;
+
+	// Select shader
+#if		RENDER==R_R1
 	ShaderElement*		sh		= (L_Projector->shadowing()?pVisual->hShader->E[0]:pVisual->hShader->E[1])._get();
+#elif	RENDER==R_R2
+	ShaderElement*		sh		= pVisual->hShader->E[RImplementation.phase]._get();
+#endif
+
+	// Invisible elements exist only in R1
+#if RENDER==R_R1
 	if (val_bInvisible)	{
-		mapMatrixItem::TNode C;
+		mapMatrixItem::TNode	C;
 		C.val.pObject			= val_pObject;
 		C.val.pVisual			= pVisual;
 		C.val.Matrix			= *val_pTransform;
 		C.val.vCenter.set		(Center);
 		L_Shadows->add_element	(&C);
-	}else if (val_bHUD)	{
+	} else
+#endif
+
+	// HUD rendering
+	if (val_bHUD)		{
 		mapHUD_Node* N			= mapHUD.insertInAnyWay(distSQ);
 		N->val.pObject			= val_pObject;
 		N->val.pVisual			= pVisual;
 		N->val.Matrix			= *val_pTransform;
 		N->val.vCenter.set		(Center);
-	} else if (sh->Flags.bStrictB2F) {
+	} else 
+
+	// strict-sorting selection
+	if (sh->Flags.bStrictB2F) {
 		mapSorted_Node* N		= mapSorted.insertInAnyWay(distSQ);
-		if (val_pObject)		VERIFY	(val_pObject->renderable.ROS);
 		N->val.pObject			= val_pObject;
 		N->val.pVisual			= pVisual;
 		N->val.Matrix			= *val_pTransform;
 		N->val.vCenter.set		(Center);
+#if RENDER==R_R1
 		L_Shadows->add_element	(N);
-	} else {
-		mapMatrix_Node* N		= mapMatrix.insert		(sh		);
-		mapMatrixItem::TNode* C	= N->val.insertInAnyWay	(distSQ	);
-		C->val.pObject			= val_pObject;
-		C->val.pVisual			= pVisual;
-		C->val.Matrix			= *val_pTransform;
-		C->val.vCenter.set		(Center);
-		L_Shadows->add_element	(C);
+#endif
+	} else
+
+	// the most common node
+	{
+		SPass&						pass	= *sh->Passes.front	();
+		mapMatrix_T&				map		= mapMatrix;
+		mapMatrixVS::TNode*			Nvs		= map.insert		(pass.vs->vs);
+		mapMatrixPS::TNode*			Nps		= Nvs->val.insert	(pass.ps->ps);
+		mapMatrixCS::TNode*			Ncs		= Nps->val.insert	(pass.constants._get());
+		mapMatrixStates::TNode*		Nstate	= Ncs->val.insert	(pass.state->state);
+		mapMatrixTextures::TNode*	Ntex	= Nstate->val.insert(pass.T._get());
+		mapMatrixVB::TNode*			Nvb		= Ntex->val.insert	(pVisual->hGeom->vb);
+		mapMatrixItems&				item	= Nvb->val;
+
+		// Need to sort for HZB efficient use
+		if (SSA>Nvb->val.ssa) {
+			Nvb->val.ssa = SSA;
+			if (SSA>Ntex->val.ssa) {
+				Ntex->val.ssa = SSA;
+				if (SSA>Nstate->val.ssa) {
+					Nstate->val.ssa = SSA;
+					if (SSA>Ncs->val.ssa)	{
+						Ncs->val.ssa = SSA;
+						if (SSA>Nps->val.ssa) {
+							Nps->val.ssa = SSA;
+							if (SSA>Nvs->val.ssa)	Nvs->val.ssa = SSA; 
+						}
+					}
+				}
+			}
+		}
+
+		item.unsorted.push_back			(_MatrixItem());
+		item.unsorted.back().pObject	= val_pObject;
+		item.unsorted.back().pVisual	= pVisual;
+		item.unsorted.back().Matrix		= *val_pTransform;
+		item.unsorted.back().vCenter.set(Center);
+#if RENDER==R_R1
+		L_Shadows->add_element			(item.unsorted.back());
+#endif
 	}
 }
 
-void CRender::InsertSG_Static(IRender_Visual *pVisual)
+void CRender::InsertSG_Static	(IRender_Visual *pVisual)
 {
-	if (pVisual->vis.frame != Device.dwFrame) 
-	{
-		pVisual->vis.frame = Device.dwFrame;
-		
-		float distSQ;
-		float SSA    = CalcSSA		(distSQ,pVisual->vis.sphere.P,pVisual);
+	if (pVisual->vis.frame == RImplementation.marker)	return;
+	pVisual->vis.frame			= RImplementation.marker;
 
-		if (SSA<=r_ssaDISCARD)		return;
+	float distSQ;
+	float SSA					= CalcSSA	(distSQ,pVisual->vis.sphere.P,pVisual);
+	if (SSA<=r_ssaDISCARD)		return;
 
-		// Select List and add to it
-		ShaderElement*		sh		= (((_sqrt(distSQ)-pVisual->vis.sphere.R)<20)?pVisual->hShader->E[0]:pVisual->hShader->E[1])._get();
-		if (sh->Flags.bStrictB2F) {
-			mapSorted_Node* N		= mapSorted.insertInAnyWay(distSQ);
-			N->val.pObject			= NULL;
-			N->val.pVisual			= pVisual;
-			N->val.Matrix			= Fidentity;
-			N->val.vCenter.set		(pVisual->vis.sphere.P);
-		} else {
-			for (u32 pass_id=0; pass_id<sh->Passes.size(); pass_id++)
-			{
-				SPass&						pass	= *(sh->Passes[pass_id]);
-				mapNormalCodes&				codes	= mapNormal			[sh->Flags.iPriority/2][pass_id];
-				mapNormalCodes::TNode*		Ncode	= codes.insert		(pass.state->state);
-				mapNormalVS::TNode*			Nvs		= Ncode->val.insert	(pass.vs->vs);
-				mapNormalPS::TNode*			Nps		= Nvs->val.insert	(pass.ps->ps);
-				mapNormalCS::TNode*			Ncs		= Nps->val.insert	(pass.constants._get());
-				mapNormalTextures::TNode*	Ntex	= Ncs->val.insert	(pass.T._get());
-				mapNormalVB::TNode*			Nvb		= Ntex->val.insert	(pVisual->hGeom->vb);
-				mapNormalMatrices::TNode*	Nmat	= Nvb->val.insert	(pass.M._get());
-				mapNormalItems&				items	= Nmat->val;
-				_NormalItem					item	= {SSA,pVisual};
-				items.push_back						(item);
-				if (0==pass_id) {
-					// Need to sort for HZB efficient use
-					if (SSA>Nmat->val.ssa) {
-						Nmat->val.ssa = SSA;
-						if (SSA>Nvb->val.ssa) {
-							Nvb->val.ssa = SSA;
-							if (SSA>Ntex->val.ssa) {
-								Ntex->val.ssa = SSA;
-								if (SSA>Ncs->val.ssa) {
-									Ncs->val.ssa = SSA;
-									if (SSA>Nps->val.ssa)	{
-										Nps->val.ssa = SSA; 
-										if (SSA>Nvs->val.ssa)	{
-											Nvs->val.ssa = SSA; 
-											if (SSA>Ncode->val.ssa) Ncode->val.ssa = SSA;
-										}
-									}
-								}
-							}
+	// Select shader
+#if		RENDER==R_R1
+	ShaderElement*		sh		= (((_sqrt(distSQ)-pVisual->vis.sphere.R)<20)?pVisual->hShader->E[0]:pVisual->hShader->E[1])._get();
+#elif	RENDER==R_R2
+	ShaderElement*		sh		= pVisual->hShader->E[RImplementation.phase]._get();
+#endif
+
+	// strict-sorting selection
+	if (sh->Flags.bStrictB2F) {
+		mapSorted_Node* N			= mapSorted.insertInAnyWay(distSQ);
+		N->val.pObject				= NULL;
+		N->val.pVisual				= pVisual;
+		N->val.Matrix				= Fidentity;
+		N->val.vCenter.set			(pVisual->vis.sphere.P);
+	} else {
+		SPass&						pass	= *sh->Passes.front	();
+		mapNormal_T&				map		= mapNormal			[sh->Flags.iPriority/2];
+		mapNormalVS::TNode*			Nvs		= map.insert		(pass.vs->vs);
+		mapNormalPS::TNode*			Nps		= Nvs->val.insert	(pass.ps->ps);
+		mapNormalCS::TNode*			Ncs		= Nps->val.insert	(pass.constants._get());
+		mapNormalStates::TNode*		Nstate	= Ncs->val.insert	(pass.state->state);
+		mapNormalTextures::TNode*	Ntex	= Nstate->val.insert(pass.T._get());
+		mapNormalVB::TNode*			Nvb		= Ntex->val.insert	(pVisual->hGeom->vb);
+		mapNormalItems&				items	= Nvb->val;
+		_NormalItem					item	= {SSA,pVisual};
+		items.push_back						(item);
+
+		// Need to sort for HZB efficient use
+		if (SSA>Nvb->val.ssa) {	Nvb->val.ssa = SSA;
+			if (SSA>Ntex->val.ssa) { Ntex->val.ssa = SSA;
+				if (SSA>Nstate->val.ssa) { Nstate->val.ssa = SSA;
+					if (SSA>Ncs->val.ssa) { Ncs->val.ssa = SSA;
+						if (SSA>Nps->val.ssa)  { Nps->val.ssa = SSA;
+							if (SSA>Nvs->val.ssa)	Nvs->val.ssa = SSA;
 						}
 					}
 				}
@@ -168,9 +210,9 @@ void CRender::add_leafs_Dynamic(IRender_Visual *pVisual)
 		{
 			// General type of visual
 			// Calculate distance to it's center
-			Fvector		Tpos;
-			val_pTransform->transform_tiny(Tpos, pVisual->vis.sphere.P);
-			InsertSG_Dynamic(pVisual,Tpos);
+			Fvector							Tpos;
+			val_pTransform->transform_tiny	(Tpos, pVisual->vis.sphere.P);
+			InsertSG_Dynamic				(pVisual,Tpos);
 		}
 		return;
 	}
@@ -314,14 +356,9 @@ void CRender::add_Static(IRender_Visual *pVisual, u32 planes)
 {
 	// Check frustum visibility and calculate distance to visual's center
 	EFC_Visible	VIS;
-//	VIS = View->testSphere(pVisual->bv_Position,pVisual->bv_Radius,planes);
-//	VIS = (View->testSphere_dirty(pVisual->bv_Position,pVisual->bv_Radius))?fcvFully:fcvNone;
-//	VIS = View->testAABB(pVisual->bv_BBox.min,pVisual->bv_BBox.max,planes);
 	vis_data&	vis			= pVisual->vis;
 	VIS = View->testSAABB	(vis.sphere.P,vis.sphere.R,vis.box.min,vis.box.max,planes);
-	if (fcvNone==VIS){
-		return;
-	}
+	if (fcvNone==VIS)		return;
 	if (!HOM.visible(vis))	return;
 	
 	// If we get here visual is visible or partially visible

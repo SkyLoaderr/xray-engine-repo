@@ -1,13 +1,15 @@
 #include "stdafx.h"
+
 #include "..\fhierrarhyvisual.h"
-#include "..\bodyinstance.h"
+#include "..\SkeletonCustom.h"
 #include "..\fmesh.h"
 #include "..\fcached.h"
 #include "..\flod.h"
-#include "particlegroup.h"
-#include "ftreevisual.h"
+#include "..\irenderable.h"
 
-using namespace SceneGraph;
+#include "particlegroup.h"
+
+using	namespace SceneGraph;
 
 ////////////////////////////////////////////////////////////////////////////////////////////////////
 // Scene graph actual insertion and sorting ////////////////////////////////////////////////////////
@@ -28,7 +30,7 @@ IC	float	CalcSSA				(float& distSQ, Fvector& C, IRender_Visual* V)
 void CRender::InsertSG_Dynamic	(IRender_Visual *pVisual, Fvector& Center)
 {
 	if (pVisual->vis.frame == RImplementation.marker)	return;
-	pVisual->vis.frame = RImplementation.marker;
+	pVisual->vis.frame			= RImplementation.marker;
 
 	float distSQ;
 	float SSA    = CalcSSA		(distSQ,pVisual->vis.sphere.P,pVisual);
