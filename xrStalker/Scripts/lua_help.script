@@ -371,8 +371,8 @@ C++ class snd_type {
 };
 
 C++ class ui_events {
-    const ARTEFACT_MERGER_CLOSE_BUTTON_CLICKED = 59;
-    const ARTEFACT_MERGER_PERFORM_BUTTON_CLICKED = 60;
+    const ARTEFACT_MERGER_CLOSE_BUTTON_CLICKED = 60;
+    const ARTEFACT_MERGER_PERFORM_BUTTON_CLICKED = 61;
     const BUTTON_CLICKED = 12;
     const BUTTON_DOWN = 13;
     const CHECK_BUTTON_RESET = 19;
@@ -384,17 +384,17 @@ C++ class ui_events {
     const DRAG_DROP_ITEM_RBUTTON_CLICK = 25;
     const DRAG_DROP_REFRESH_ACTIVE_ITEM = 26;
     const INTERACTIVE_ITEM_CLICK = 34;
-    const INVENTORY_ARTEFACT_MERGER_ACTIVATE = 66;
-    const INVENTORY_ARTEFACT_MERGER_DEACTIVATE = 67;
-    const INVENTORY_ATTACH_ADDON  = 68;
-    const INVENTORY_DETACH_GRENADE_LAUNCHER_ADDON = 71;
-    const INVENTORY_DETACH_SCOPE_ADDON = 69;
-    const INVENTORY_DETACH_SILENCER_ADDON = 70;
-    const INVENTORY_DROP_ACTION = 61;
-    const INVENTORY_EAT_ACTION = 62;
-    const INVENTORY_TO_BAG_ACTION = 65;
-    const INVENTORY_TO_BELT_ACTION  = 63;
-    const INVENTORY_TO_SLOT_ACTION = 64;
+    const INVENTORY_ARTEFACT_MERGER_ACTIVATE = 67;
+    const INVENTORY_ARTEFACT_MERGER_DEACTIVATE = 68;
+    const INVENTORY_ATTACH_ADDON  = 69;
+    const INVENTORY_DETACH_GRENADE_LAUNCHER_ADDON = 72;
+    const INVENTORY_DETACH_SCOPE_ADDON = 70;
+    const INVENTORY_DETACH_SILENCER_ADDON = 71;
+    const INVENTORY_DROP_ACTION = 62;
+    const INVENTORY_EAT_ACTION = 63;
+    const INVENTORY_TO_BAG_ACTION = 66;
+    const INVENTORY_TO_BELT_ACTION  = 64;
+    const INVENTORY_TO_SLOT_ACTION = 65;
     const LIST_ITEM_CLICKED = 31;
     const MAPSPOT_FOCUS_LOST = 43;
     const MAPSPOT_FOCUS_RECEIVED = 42;
@@ -403,10 +403,10 @@ C++ class ui_events {
     const MESSAGE_BOX_NO_CLICKED = 38;
     const MESSAGE_BOX_OK_CLICKED = 36;
     const MESSAGE_BOX_YES_CLICKED = 37;
-    const OUTFIT_RETURNED_BACK = 58;
-    const PDA_CONTACTS_WND_CONTACT_SELECTED = 54;
-    const PDA_DIALOG_WND_BACK_BUTTON_CLICKED = 52;
-    const PDA_DIALOG_WND_MESSAGE_BUTTON_CLICKED = 53;
+    const OUTFIT_RETURNED_BACK = 59;
+    const PDA_CONTACTS_WND_CONTACT_SELECTED = 55;
+    const PDA_DIALOG_WND_BACK_BUTTON_CLICKED = 53;
+    const PDA_DIALOG_WND_MESSAGE_BUTTON_CLICKED = 54;
     const PDA_MAP_SET_ACTIVE_POINT = 48;
     const PROPERTY_CLICKED = 35;
     const RADIOBUTTON_SET = 20;
@@ -414,15 +414,15 @@ C++ class ui_events {
     const SCROLLBAR_VSCROLL = 29;
     const SCROLLBOX_MOVE = 27;
     const SCROLLBOX_STOP = 28;
-    const SLEEP_WND_PERFORM_BUTTON_CLICKED = 56;
+    const SLEEP_WND_PERFORM_BUTTON_CLICKED = 57;
     const STATIC_FOCUS_LOST = 11;
     const STATIC_FOCUS_RECEIVED = 10;
     const TAB_CHANGED = 14;
     const TAB_SELECT = 15;
     const TALK_DIALOG_QUESTION_CLICKED = 41;
     const TALK_DIALOG_TRADE_BUTTON_CLICKED = 40;
-    const TRADE_WND_CLOSED = 55;
-    const UNDRESS_OUTFIT = 57;
+    const TRADE_WND_CLOSED = 56;
+    const UNDRESS_OUTFIT = 58;
     const WINDOW_KEYBOARD_CAPTURE_LOST = 9;
     const WINDOW_KEY_PRESSED = 6;
     const WINDOW_KEY_RELEASED = 7;
@@ -455,7 +455,7 @@ C++ class hit_memory_object : entity_memory_object {
 
 C++ class clsid {
     const actor = 75;
-    const ameba_zone = 121;
+    const ameba_zone = 123;
     const art_bast_artefact = 0;
     const art_black_drops = 1;
     const art_dummy = 3;
@@ -544,8 +544,8 @@ C++ class clsid {
     const spectator = 89;
     const stalker = 33;
     const switcher = 81;
-    const team_base_zone = 129;
-    const torrid_zone = 130;
+    const team_base_zone = 131;
+    const torrid_zone = 132;
     const trader = 35;
     const wpn_ak74 = 99;
     const wpn_ammo = 37;
@@ -553,39 +553,41 @@ C++ class clsid {
     const wpn_ammo_og7b = 40;
     const wpn_ammo_vog25 = 41;
     const wpn_binocular = 100;
-    const wpn_fn2000 = 101;
-    const wpn_fort = 102;
+    const wpn_bm16 = 101;
+    const wpn_fn2000 = 102;
+    const wpn_fort = 103;
     const wpn_grenade_f1 = 58;
     const wpn_grenade_fake = 59;
-    const wpn_grenade_launcher = 103;
+    const wpn_grenade_launcher = 104;
     const wpn_grenade_rgd5 = 62;
     const wpn_grenade_rpg7 = 63;
-    const wpn_groza = 104;
-    const wpn_hpsa = 105;
-    const wpn_knife = 106;
-    const wpn_lr300 = 107;
-    const wpn_mounted = 108;
-    const wpn_pm = 109;
-    const wpn_rpg7 = 110;
-    const wpn_scope = 111;
-    const wpn_shotgun = 112;
-    const wpn_silencer = 113;
-    const wpn_svd = 114;
-    const wpn_svu = 115;
-    const wpn_usp45 = 116;
-    const wpn_val = 117;
-    const wpn_vintorez = 118;
-    const wpn_walther = 119;
+    const wpn_groza = 105;
+    const wpn_hpsa = 106;
+    const wpn_knife = 107;
+    const wpn_lr300 = 108;
+    const wpn_mounted = 109;
+    const wpn_pm = 110;
+    const wpn_rg6 = 111;
+    const wpn_rpg7 = 112;
+    const wpn_scope = 113;
+    const wpn_shotgun = 114;
+    const wpn_silencer = 115;
+    const wpn_svd = 116;
+    const wpn_svu = 117;
+    const wpn_usp45 = 118;
+    const wpn_val = 119;
+    const wpn_vintorez = 120;
+    const wpn_walther = 121;
     const zombie = 36;
-    const zone = 131;
-    const zone_acid_fog = 120;
-    const zone_bfuzz = 122;
-    const zone_dead = 123;
-    const zone_galantine = 124;
-    const zone_mincer = 126;
-    const zone_mosquito_bald = 125;
-    const zone_radioactive = 127;
-    const zone_rusty_hair = 128;
+    const zone = 133;
+    const zone_acid_fog = 122;
+    const zone_bfuzz = 124;
+    const zone_dead = 125;
+    const zone_galantine = 126;
+    const zone_mincer = 128;
+    const zone_mosquito_bald = 127;
+    const zone_radioactive = 129;
+    const zone_rusty_hair = 130;
     
 };
 
@@ -1407,7 +1409,7 @@ C++ class stalker_ids {
     const sound_injuring_by_friend = 9;
     const sound_panic_human = 10;
     const sound_panic_monster = 11;
-    const sound_script = 13;
+    const sound_script = 15;
     const sound_search = 8;
     const sound_tolls = 12;
     
@@ -1538,6 +1540,7 @@ C++ class cse_anomalous_zone : cse_custom_zone,cse_alife_schedulable {
     property online;
     property parent_id;
     property position;
+    property script_version;
     
     cse_anomalous_zone (string);
     
@@ -1567,6 +1570,7 @@ C++ class cse_alife_car : cse_alife_dynamic_object_visual,cse_ph_skeleton {
     property online;
     property parent_id;
     property position;
+    property script_version;
     
     cse_alife_car (string);
     
@@ -1597,6 +1601,7 @@ C++ class cse_alife_creature_abstract : cse_alife_dynamic_object_visual {
     property online;
     property parent_id;
     property position;
+    property script_version;
     property squad;
     property team;
     
@@ -1633,6 +1638,7 @@ C++ class cse_alife_creature_actor : cse_alife_creature_abstract,cse_alife_trade
     property online;
     property parent_id;
     property position;
+    property script_version;
     property squad;
     property team;
     
@@ -1670,6 +1676,7 @@ C++ class cse_alife_creature_crow : cse_alife_creature_abstract {
     property online;
     property parent_id;
     property position;
+    property script_version;
     property squad;
     property team;
     
@@ -1705,6 +1712,7 @@ C++ class cse_custom_zone : cse_alife_dynamic_object,cse_shape {
     property online;
     property parent_id;
     property position;
+    property script_version;
     
     cse_custom_zone (string);
     
@@ -1734,6 +1742,7 @@ C++ class cse_alife_dynamic_object : cse_alife_object {
     property online;
     property parent_id;
     property position;
+    property script_version;
     
     cse_alife_dynamic_object (string);
     
@@ -1763,6 +1772,7 @@ C++ class cse_alife_dynamic_object_visual : cse_alife_dynamic_object,cse_visual 
     property online;
     property parent_id;
     property position;
+    property script_version;
     
     cse_alife_dynamic_object_visual (string);
     
@@ -1790,6 +1800,7 @@ C++ class cse_alife_graph_point : cse_abstract {
     property id;
     property parent_id;
     property position;
+    property script_version;
     
     cse_alife_graph_point (string);
     
@@ -1815,6 +1826,7 @@ C++ class cse_alife_helicopter : cse_alife_dynamic_object_visual,cse_motion,cse_
     property online;
     property parent_id;
     property position;
+    property script_version;
     
     cse_alife_helicopter (string);
     
@@ -1845,6 +1857,7 @@ C++ class cse_alife_human_abstract : cse_alife_trader_abstract,cse_alife_monster
     property online;
     property parent_id;
     property position;
+    property script_version;
     property squad;
     property team;
     
@@ -1883,6 +1896,7 @@ C++ class cse_alife_human_stalker : cse_alife_human_abstract,cse_ph_skeleton {
     property online;
     property parent_id;
     property position;
+    property script_version;
     property squad;
     property team;
     
@@ -1923,6 +1937,7 @@ C++ class cse_alife_item : cse_alife_dynamic_object_visual,cse_alife_inventory_i
     property online;
     property parent_id;
     property position;
+    property script_version;
     
     cse_alife_item (string);
     
@@ -1952,6 +1967,7 @@ C++ class cse_alife_item_ammo : cse_alife_item {
     property online;
     property parent_id;
     property position;
+    property script_version;
     
     cse_alife_item_ammo (string);
     
@@ -1982,6 +1998,7 @@ C++ class cse_alife_item_artefact : cse_alife_item {
     property online;
     property parent_id;
     property position;
+    property script_version;
     
     cse_alife_item_artefact (string);
     
@@ -2012,6 +2029,7 @@ C++ class cse_alife_item_bolt : cse_alife_item {
     property online;
     property parent_id;
     property position;
+    property script_version;
     
     cse_alife_item_bolt (string);
     
@@ -2042,6 +2060,7 @@ C++ class cse_alife_item_custom_outfit : cse_alife_item {
     property online;
     property parent_id;
     property position;
+    property script_version;
     
     cse_alife_item_custom_outfit (string);
     
@@ -2072,6 +2091,7 @@ C++ class cse_alife_item_detector : cse_alife_item {
     property online;
     property parent_id;
     property position;
+    property script_version;
     
     cse_alife_item_detector (string);
     
@@ -2102,6 +2122,7 @@ C++ class cse_alife_item_document : cse_alife_item {
     property online;
     property parent_id;
     property position;
+    property script_version;
     
     cse_alife_item_document (string);
     
@@ -2132,6 +2153,7 @@ C++ class cse_alife_item_explosive : cse_alife_item {
     property online;
     property parent_id;
     property position;
+    property script_version;
     
     cse_alife_item_explosive (string);
     
@@ -2162,6 +2184,7 @@ C++ class cse_alife_item_grenade : cse_alife_item {
     property online;
     property parent_id;
     property position;
+    property script_version;
     
     cse_alife_item_grenade (string);
     
@@ -2192,6 +2215,7 @@ C++ class cse_alife_item_pda : cse_alife_item {
     property online;
     property parent_id;
     property position;
+    property script_version;
     
     cse_alife_item_pda (string);
     
@@ -2222,6 +2246,7 @@ C++ class cse_alife_item_torch : cse_alife_item {
     property online;
     property parent_id;
     property position;
+    property script_version;
     
     cse_alife_item_torch (string);
     
@@ -2252,6 +2277,7 @@ C++ class cse_alife_item_weapon : cse_alife_item {
     property online;
     property parent_id;
     property position;
+    property script_version;
     
     cse_alife_item_weapon (string);
     
@@ -2282,6 +2308,7 @@ C++ class cse_alife_level_changer : cse_alife_space_restrictor {
     property online;
     property parent_id;
     property position;
+    property script_version;
     
     cse_alife_level_changer (string);
     
@@ -2312,6 +2339,7 @@ C++ class cse_alife_monster_abstract : cse_alife_creature_abstract,cse_alife_sch
     property online;
     property parent_id;
     property position;
+    property script_version;
     property squad;
     property team;
     
@@ -2349,6 +2377,7 @@ C++ class cse_alife_monster_base : cse_alife_monster_abstract,cse_ph_skeleton {
     property online;
     property parent_id;
     property position;
+    property script_version;
     property squad;
     property team;
     
@@ -2386,6 +2415,7 @@ C++ class cse_alife_monster_rat : cse_alife_monster_abstract,cse_alife_inventory
     property online;
     property parent_id;
     property position;
+    property script_version;
     property squad;
     property team;
     
@@ -2423,6 +2453,7 @@ C++ class cse_alife_monster_zombie : cse_alife_monster_abstract {
     property online;
     property parent_id;
     property position;
+    property script_version;
     property squad;
     property team;
     
@@ -2459,6 +2490,7 @@ C++ class cse_alife_mounted_weapon : cse_alife_dynamic_object_visual {
     property online;
     property parent_id;
     property position;
+    property script_version;
     
     cse_alife_mounted_weapon (string);
     
@@ -2488,6 +2520,7 @@ C++ class cse_alife_object : cse_abstract {
     property online;
     property parent_id;
     property position;
+    property script_version;
     
     cse_alife_object (string);
     
@@ -2517,6 +2550,7 @@ C++ class cse_alife_object_breakable : cse_alife_dynamic_object_visual {
     property online;
     property parent_id;
     property position;
+    property script_version;
     
     cse_alife_object_breakable (string);
     
@@ -2544,6 +2578,7 @@ C++ class cse_alife_object_climable : cse_shape,cse_abstract {
     property id;
     property parent_id;
     property position;
+    property script_version;
     
     cse_alife_object_climable (string);
     
@@ -2566,6 +2601,7 @@ C++ class cse_alife_object_hanging_lamp : cse_alife_dynamic_object_visual,cse_ph
     property online;
     property parent_id;
     property position;
+    property script_version;
     
     cse_alife_object_hanging_lamp (string);
     
@@ -2595,6 +2631,7 @@ C++ class cse_alife_object_physic : cse_alife_dynamic_object_visual,cse_ph_skele
     property online;
     property parent_id;
     property position;
+    property script_version;
     
     cse_alife_object_physic (string);
     
@@ -2624,6 +2661,7 @@ C++ class cse_alife_object_projector : cse_alife_dynamic_object_visual {
     property online;
     property parent_id;
     property position;
+    property script_version;
     
     cse_alife_object_projector (string);
     
@@ -2653,6 +2691,7 @@ C++ class cse_alife_ph_skeleton_object : cse_alife_dynamic_object_visual,cse_ph_
     property online;
     property parent_id;
     property position;
+    property script_version;
     
     cse_alife_ph_skeleton_object (string);
     
@@ -2685,6 +2724,7 @@ C++ class cse_alife_smart_zone : cse_alife_space_restrictor,cse_alife_schedulabl
     property online;
     property parent_id;
     property position;
+    property script_version;
     
     cse_alife_smart_zone (string);
     
@@ -2717,6 +2757,7 @@ C++ class cse_alife_space_restrictor : cse_alife_dynamic_object,cse_shape {
     property online;
     property parent_id;
     property position;
+    property script_version;
     
     cse_alife_space_restrictor (string);
     
@@ -2746,6 +2787,7 @@ C++ class cse_alife_team_base_zone : cse_alife_space_restrictor {
     property online;
     property parent_id;
     property position;
+    property script_version;
     
     cse_alife_team_base_zone (string);
     
@@ -2775,6 +2817,7 @@ C++ class cse_torrid_zone : cse_custom_zone,cse_motion {
     property online;
     property parent_id;
     property position;
+    property script_version;
     
     cse_torrid_zone (string);
     
@@ -2804,6 +2847,7 @@ C++ class cse_alife_trader : cse_alife_dynamic_object_visual,cse_alife_trader_ab
     property online;
     property parent_id;
     property position;
+    property script_version;
     
     cse_alife_trader (string);
     
@@ -2838,6 +2882,7 @@ C++ class cse_zone_visual : cse_anomalous_zone,cse_visual {
     property online;
     property parent_id;
     property position;
+    property script_version;
     
     cse_zone_visual (string);
     
@@ -2865,6 +2910,7 @@ C++ class cse_abstract : cpure_server_object {
     property id;
     property parent_id;
     property position;
+    property script_version;
     
     function STATE_Write(net_packet&);
     function spawn_ini(cse_abstract*);
@@ -2880,6 +2926,7 @@ C++ class CSE_AbstractVisual : cse_visual,cse_abstract {
     property id;
     property parent_id;
     property position;
+    property script_version;
     
     CSE_AbstractVisual (string);
     
@@ -2901,6 +2948,7 @@ C++ class cse_event : cse_shape,cse_abstract {
     property id;
     property parent_id;
     property position;
+    property script_version;
     
     cse_event (string);
     
@@ -2930,6 +2978,7 @@ C++ class cse_event : cse_abstract {
     property id;
     property parent_id;
     property position;
+    property script_version;
     
     cse_event (string);
     
@@ -2950,6 +2999,7 @@ C++ class cse_spectator : cse_abstract {
     property id;
     property parent_id;
     property position;
+    property script_version;
     
     cse_spectator (string);
     
@@ -2970,6 +3020,7 @@ C++ class cse_target : cse_abstract {
     property id;
     property parent_id;
     property position;
+    property script_version;
     
     cse_target (string);
     
@@ -2990,6 +3041,7 @@ C++ class cse_target_assault : cse_abstract {
     property id;
     property parent_id;
     property position;
+    property script_version;
     
     cse_target_assault (string);
     
@@ -3010,6 +3062,7 @@ C++ class cse_target_cs : cse_abstract {
     property id;
     property parent_id;
     property position;
+    property script_version;
     
     cse_target_cs (string);
     
@@ -3030,6 +3083,7 @@ C++ class cse_target_cs_base : cse_abstract {
     property id;
     property parent_id;
     property position;
+    property script_version;
     
     cse_target_cs_base (string);
     
@@ -3050,6 +3104,7 @@ C++ class cse_target_cs_cask : cse_abstract {
     property id;
     property parent_id;
     property position;
+    property script_version;
     
     cse_target_cs_cask (string);
     
@@ -3070,6 +3125,7 @@ C++ class cse_temporary : cse_abstract {
     property id;
     property parent_id;
     property position;
+    property script_version;
     
     cse_temporary (string);
     
@@ -3274,7 +3330,7 @@ C++ class game_object {
     function remove_restrictions(string, string);
     function action_count() const;
     function money();
-    function enable_talk();
+    function weapon_unstrapped() const;
     function name() const;
     function add_sound(string, number, enum ESoundTypes, number, number, number);
     function add_sound(string, number, enum ESoundTypes, number, number, number, string);
@@ -3296,14 +3352,16 @@ C++ class game_object {
     function set_pda_info(string);
     function set_path_evaluator();
     function set_path_evaluator(vertex_evaluator*);
-    function RemoveEventCallback(number);
-    function remove_all_restrictions();
     function inside(const vector&, number) const;
     function inside(const vector&) const;
-    function add_restrictions(string, string);
+    function RemoveEventCallback(number);
     function active_zone_contact(number);
-    function get_monster_hit_info();
+    function remove_all_restrictions();
     function set_nonscript_usable(boolean);
+    function add_restrictions(string, string);
+    function set_tip_text_default();
+    function get_monster_hit_info();
+    function set_tip_text(string);
     function set_use_callback(const function<void>&);
     function set_use_callback(object, string);
     function set_hear_callback(object, string);
@@ -3313,119 +3371,121 @@ C++ class game_object {
     function set_sound_mask(number);
     function community_goodwill(game_object*);
     function vision_enabled() const;
-    function set_tip_text_default();
+    function clear_use_callback();
     function safe_cover(const vector&, number, number);
     function path_completed() const;
     function clear_info_callback();
-    function set_tip_text(string);
-    function attachable_item_enabled() const;
-    function clear_use_callback();
     function get_physics_shell() const;
+    function attachable_item_enabled() const;
     function get_hanging_lamp();
     function get_helicopter();
-    function level_vertex_id() const;
     function disable_anomaly();
     function enable_anomaly();
+    function level_vertex_id() const;
     function set_trade_callback(const function<void>&);
     function set_trade_callback(object, string);
-    function set_start_point(number);
     function get_character_pda_info();
     function set_character_pda_info(string);
+    function set_start_point(number);
+    function group() const;
+    function command(const entity_action*, boolean);
     function stop_talk();
     function profile_name();
-    function group() const;
+    function use(const game_object*);
     function set_path_type(enum MovementManager::EPathType);
     function weapon_strapped() const;
     function get_ammo_total() const;
-    function give_game_news(string, string, number, number, number, number);
-    function command(const entity_action*, boolean);
-    function use(const game_object*);
-    function parent() const;
-    function set_pda_callback(const function<void>&);
-    function set_pda_callback(object, string);
-    function enable_memory_object(game_object*, boolean);
+    function give_game_news(string, string, number, number, number, number, number);
+    function visibility_threshold() const;
+    function limping() const;
     function character_reputation();
     function set_character_rank(number);
+    function enable_memory_object(game_object*, boolean);
     function character_rank();
     function motivation_action_manager(game_object*);
+    function set_relation(enum ALife::ERelationType, game_object*);
+    function general_goodwill(game_object*);
     function animation_count() const;
     function change_community_goodwill(number, game_object*);
     function out_restrictions();
-    function set_relation(enum ALife::ERelationType, game_object*);
-    function enable_attachable_item(boolean);
-    function general_goodwill(game_object*);
     function change_goodwill(number, game_object*);
+    function enable_attachable_item(boolean);
     function set_goodwill(number, game_object*);
+    function clsid() const;
+    function restore_default_start_dialog();
+    function set_start_dialog(string);
+    function run_talk_dialog(game_object*);
+    function memory_sound_objects() const;
+    function clear_pda_callback();
+    function give_info_portion(string);
+    function switch_to_talk();
+    function switch_to_trade();
+    function clear_death_callback(boolean);
+    function transfer_money(number, game_object*);
+    function transfer_item(game_object*, game_object*);
+    function set_callback(const function<void>&, boolean);
+    function set_callback(object, string, boolean);
+    function set_callback(object, string, enum ScriptEntity::EActionType);
+    function set_callback(const function<void>&, enum ScriptEntity::EActionType);
+    function get_corpse() const;
+    function is_talk_enabled();
+    function disable_talk();
+    function set_news_show_time(string, number);
+    function path_type() const;
+    function rank();
+    function enable_talk();
+    function is_talking();
+    function movement_type() const;
+    function send_pda_message(enum EPdaMsg, game_object*);
+    function explode(number);
+    function get_ammo_in_magazine();
+    function set_task_state(enum ETaskState, string, number);
+    function best_enemy();
+    function death_time() const;
+    function set_dest_level_vertex_id(number);
+    function get_task_state(string, number);
+    function best_cover(const vector&, const vector&, number, number, number);
+    function armor() const;
+    function best_hit() const;
+    function get_info_time(string);
+    function set_patrol_extrapolate_callback();
+    function set_patrol_extrapolate_callback(const function<boolean>&);
+    function set_patrol_extrapolate_callback(const function<boolean>&, object);
+    function get_script_name() const;
+    function give_info_portion_via_pda(string, game_object*);
+    function set_pda_callback(const function<void>&);
+    function set_pda_callback(object, string);
+    function set_character_reputation(number);
+    function accessible_nearest(const vector&, vector&);
+    function accessible(const vector&);
+    function accessible(number);
+    function spawn_ini() const;
+    function binded_object();
+    function in_restrictions();
+    function get_manual_invisibility();
+    function clear_hit_callback(boolean);
+    function position() const;
+    function relation(game_object*);
+    function get_script() const;
+    function set_movement_type(enum MonsterSpace::EMovementType);
+    function get_enemy() const;
+    function restore_sound_threshold();
+    function set_body_state(enum MonsterSpace::EBodyState);
+    function parent() const;
+    function character_community();
+    function action_by_index(number);
+    function not_yet_visible_objects() const;
+    function set_invisible(boolean);
+    function get_sound_info();
+    function active_sound_count();
+    function active_sound_count(boolean);
+    function accuracy() const;
     function play_sound(number);
     function play_sound(number, number);
     function play_sound(number, number, number);
     function play_sound(number, number, number, number);
     function play_sound(number, number, number, number, number);
     function play_sound(number, number, number, number, number, number);
-    function restore_default_start_dialog();
-    function memory_sound_objects() const;
-    function clear_pda_callback();
-    function give_info_portion(string);
-    function set_start_dialog(string);
-    function run_talk_dialog(game_object*);
-    function clear_death_callback(boolean);
-    function switch_to_talk();
-    function switch_to_trade();
-    function set_callback(const function<void>&, boolean);
-    function set_callback(object, string, boolean);
-    function set_callback(object, string, enum ScriptEntity::EActionType);
-    function set_callback(const function<void>&, enum ScriptEntity::EActionType);
-    function get_corpse() const;
-    function transfer_money(number, game_object*);
-    function transfer_item(game_object*, game_object*);
-    function set_news_show_time(string, number);
-    function path_type() const;
-    function rank();
-    function is_talk_enabled();
-    function disable_talk();
-    function movement_type() const;
-    function is_talking();
-    function explode(number);
-    function get_ammo_in_magazine();
-    function send_pda_message(enum EPdaMsg, game_object*);
-    function best_enemy();
-    function death_time() const;
-    function set_dest_level_vertex_id(number);
-    function set_task_state(enum ETaskState, string, number);
-    function best_cover(const vector&, const vector&, number, number, number);
-    function armor() const;
-    function best_hit() const;
-    function get_task_state(string, number);
-    function get_info_time(string);
-    function get_script_name() const;
-    function clsid() const;
-    function give_info_portion_via_pda(string, game_object*);
-    function set_character_reputation(number);
-    function limping() const;
-    function accessible(const vector&);
-    function accessible(number);
-    function spawn_ini() const;
-    function accessible_nearest(const vector&, vector&);
-    function binded_object();
-    function get_manual_invisibility();
-    function clear_hit_callback(boolean);
-    function position() const;
-    function in_restrictions();
-    function get_script() const;
-    function relation(game_object*);
-    function set_movement_type(enum MonsterSpace::EMovementType);
-    function get_enemy() const;
-    function set_body_state(enum MonsterSpace::EBodyState);
-    function restore_sound_threshold();
-    function character_community();
-    function action_by_index(number);
-    function visibility_threshold() const;
-    function set_invisible(boolean);
-    function not_yet_visible_objects() const;
-    function get_sound_info();
-    function active_sound_count();
-    function active_sound_count(boolean);
-    function accuracy() const;
     function goodwill(game_object*);
     function has_info(string);
     function eat(game_object*);
@@ -4531,7 +4591,7 @@ C++ class CUIProgressBar : CUIWindow {
     function GetRange_min();
     function SetBackgroundTexture(string, number, number);
     function AttachChild(CUIWindow*);
-    function SetProgressTexture(string, number, boolean, number);
+    function SetProgressTexture(string, number, boolean, number, number, number, number, number);
     function ProgressDec();
     function ProgressInc();
     function GetScrollPos();
