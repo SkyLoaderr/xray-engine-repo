@@ -26,7 +26,7 @@ void CAI_Biting::feel_sound_new(CObject* who, int eType, const Fvector &Position
 	// ignore unknown sounds
 	if (eType == 0xffffffff) return;
 
-	if (Position().distance_to(Position) > MAX_SOUND_DISTANCE) return;
+	if (this->Position().distance_to(Position) > MAX_SOUND_DISTANCE) return;
 
 	if ((eType & SOUND_TYPE_WEAPON_SHOOTING) == SOUND_TYPE_WEAPON_SHOOTING)
 		power = 1.f;//expf(.1f*log(power));
