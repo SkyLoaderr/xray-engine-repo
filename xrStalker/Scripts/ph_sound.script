@@ -59,7 +59,7 @@ function snd_source:update(delta)
        if self.current_sound > table.getn (self.sound_list) then
           self.current_sound = 1
        end
-       self.sound_list[self.current_sound]:play (self.object)
+       self.sound_list[self.current_sound]:play (self.object, self.object:position ())
        printf ("PH_SOUND : PLAY SOUND NUMBER %d", self.current_sound)
        played_sound = self.sound_list[self.current_sound]
     end
