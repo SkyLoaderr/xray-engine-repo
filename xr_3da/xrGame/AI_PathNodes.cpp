@@ -421,8 +421,11 @@ void CPathNodes::Calculate(CCustomMonster* Me, Fvector& p_dest, Fvector& p_src, 
 	if (dt<EPS)			return;
 	float	dist		=	speed*dt;
 	float	dist_save	=	dist;
-	//p_dest				=	p_src;
-	Me->Movement.GetDesiredPos(p_dest);
+#ifndef NO_PHYSICS_IN_AI_MOVE
+		Me->Movement.GetDesiredPos(p_dest);
+#else
+		p_dest				=	p_src;
+#endif
 	// move full steps
 	Fvector	mdir,target;
 	target.set		(TravelPath[TravelStart+1].P);
