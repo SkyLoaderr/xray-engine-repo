@@ -42,20 +42,3 @@ float CAI_Stalker::evaluate		(const CGameObject *object) const
 	distance			= !fis_zero(distance) ? distance : EPS_L;
 	return				(distance);
 }
-
-bool CAI_Stalker::bfIfHuman(const CEntity *tpEntity)
-{
-	if (!tpEntity)
-		tpEntity = enemy();
-	if (!tpEntity)
-		return(false);
-	switch (tpEntity->SUB_CLS_ID) {
-		case CLSID_OBJECT_ACTOR :
-		case CLSID_AI_SCIENTIST :
-		case CLSID_AI_SOLDIER :
-		case CLSID_AI_STALKER_MILITARY :
-		case CLSID_AI_STALKER : 
-			return(true);
-		default : return(false);
-	}
-}

@@ -74,36 +74,41 @@ bool CVisualMemoryManager::visible(const CGameObject *game_object) const
 	if (!m_stalker)
 		return							(true);
 
+	Fvector								eye_position = Fvector().set(0.f,0.f,0.f), temp, eye_direction;
 	Fmatrix								&eye_matrix = PKinematics(m_monster->Visual())->LL_GetTransform(u16(m_stalker->eye_bone));
-	VERIFY								(_valid(eye_matrix));
-	const CAI_Stalker					*stalker = dynamic_cast<const CAI_Stalker*>(this);
-	const MonsterSpace::SBoneRotation	&rotation = stalker ? stalker->head_orientation() : m_stalker->m_body;
-	Fvector								current_direction, object_direction;
-	current_direction.setHP				(-rotation.current.yaw,-rotation.current.pitch);
+
+	eye_matrix.transform_tiny			(temp,eye_position);
+	XFORM().transform_tiny				(eye_position,temp);
+	eye_direction.setHP					(m_stalker->m_head.current.yaw, m_stalker->m_head.current.pitch);
+	
+	Fvector								object_direction;
 	game_object->Center					(object_direction);
-	float								object_distance = object_direction.distance_to(eye_matrix.c);
-	object_direction.sub				(eye_matrix.c);
+	float								object_distance = object_direction.distance_to(eye_position);
+	object_direction.sub				(eye_position);
 	object_direction.normalize_safe		();
 	float								fov = deg2rad(m_stalker->eye_fov)*.5f;
-	float								cos_alpha = current_direction.dotproduct(object_direction);
+	float								cos_alpha = eye_direction.dotproduct(object_direction);
 	clamp								(cos_alpha,-.99999f,.99999f);
 	float								alpha = acosf(cos_alpha);
 	clamp								(alpha,0.f,fov);
 
-	float								max_view_distance, min_view_distance;
-	if (stalker->mental_state() == eMentalStateDanger) {
-		max_view_distance				= m_max_view_distance_danger;
-		min_view_distance				= m_min_view_distance_danger;
+	float								max_view_distance = m_stalker->eye_range, min_view_distance = m_stalker->eye_range;
+	if (m_stalker->mental_state() == eMentalStateDanger) {
+		max_view_distance				*= m_max_view_distance_danger;
+		min_view_distance				*= m_min_view_distance_danger;
 	}
 	else {
-		max_view_distance				= m_max_view_distance_free;
-		min_view_distance				= m_min_view_distance_free;
+		max_view_distance				*= m_max_view_distance_free;
+		min_view_distance				*= m_min_view_distance_free;
 	}
 
 	float								distance = (1.f - (fov - alpha)/fov)*(max_view_distance - min_view_distance) + min_view_distance;
-	if (distance < object_distance)
+	if (distance < object_distance) {
+		Msg								("Object %s IS NOT visible",*game_object->cName());
 		return							(false);
+	}
 	
+	Msg									("Object %s IS visible",*game_object->cName());
 	return								(true);
 ////	if (Level().iGetKeyState(DIK_RCONTROL))
 ////		return(false);

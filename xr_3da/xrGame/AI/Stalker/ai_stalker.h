@@ -152,7 +152,6 @@ public:
 	// miscellanious functions
 			void				DropItemSendMessage				(CObject *O);
 			bool				bfCheckForNodeVisibility		(u32 dwNodeID, bool bIfRyPick = false);
-			bool				bfIfHuman						(const CEntity *tpEntity = 0);
 
 	// states
 			void				Death							();
