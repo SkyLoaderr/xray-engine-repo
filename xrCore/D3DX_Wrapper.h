@@ -113,7 +113,8 @@ extern "C" {
 		D3DX_GetFVFVertexSize(
 		DWORD					FVF);
 
-	ETOOLS_API const char*  WINAPI DXGetErrorDescription9(
+	ETOOLS_API const char*  WINAPI 
+		DX_GetErrorDescription9(
 		HRESULT					hr);
 }
 

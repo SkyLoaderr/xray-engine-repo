@@ -4,6 +4,7 @@
 #include	"stdafx.h"
 #include	"D3DX_Wrapper.h"
 
+#include	"dxerr9.h"
 // misc
 __declspec( dllimport ) bool WINAPI FSColorPickerDoModal(unsigned int * currentColor, unsigned int * originalColor, const int initialExpansionState);
 extern "C" __declspec(dllexport) bool FSColorPickerExecute(LPDWORD currentColor, LPDWORD originalColor, const int initialExpansionState)
@@ -157,7 +158,7 @@ extern "C"{
 		return D3DXGetFVFVertexSize(FVF);
 	}
 
-	ETOOLS_API const char*  WINAPI DXGetErrorDescription9(HRESULT hr)
+	ETOOLS_API const char*  WINAPI DX_GetErrorDescription9(HRESULT hr)
 	{
 		return DXGetErrorDescription9(hr);
 	}
