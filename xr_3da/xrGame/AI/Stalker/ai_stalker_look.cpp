@@ -202,29 +202,10 @@ void CAI_Stalker::SetLessCoverLook(NodeCompressed *tpNode, float fMaxHeadTurnAng
 
 void CAI_Stalker::vfValidateAngleDependency(float x1, float &x2, float x3)
 {
-	float	_x1 = x1;
-	float	_x2 = x2;
-	float	_x3 = x3;
-	x2		= angle_normalize_signed(x2 - x1);
-	x3		= angle_normalize_signed(x3 - x1);
-	if ((x2*x3 <= 0) && (_abs(x2) + _abs(x3) > PI - EPS_L)) {
-		//x2	= angle_normalize_signed(x2);
-		//x3	= angle_normalize_signed(x3);
-		x2  = angle_normalize_signed(_x3);//(x2 + x3)/2);
-//		x1	= angle_normalize_signed((x2 + x3)/2);
-//		x2	= _abs(x1 - x2);
-//		x3	= _abs(x1 - x3);
-//		if (x2 > PI)
-//			x2 = PI_MUL_2 - x2;
-//		if (x3 > PI)
-//			x3 = PI_MUL_2 - x3;
-//		if (x2 + x3 >= PI)
-//			x2 = angle_normalize_signed(x1 + PI);
-//		else
-//			x2 = x1;
-	}
-	else
-		x2	= angle_normalize_signed(_x2);
+	float	_x2	= angle_normalize_signed(x2 - x1);
+	float	_x3	= angle_normalize_signed(x3 - x1);
+	if ((_x2*_x3 <= 0) && (_abs(_x2) + _abs(_x3) > PI - EPS_L))
+		x2  = x3;
 }
 
 #define R2D(x) (angle_normalize(x)*180.f/PI)
