@@ -992,3 +992,8 @@ void CCar::SExhaust::Stop()
 {
 	p_pgobject->Stop();
 }
+
+void CCar::SDoor::Init()
+{
+	joint=bone_map.find(bone_id)->second.joint;
+}

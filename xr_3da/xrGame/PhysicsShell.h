@@ -82,6 +82,7 @@ class	CPhysicsElement		: public CPhysicsBase
 {
 
 public:
+	int						m_SelfID;
 	virtual void			InterpolateGlobalTransform(Fmatrix* m)									= 0;
 	virtual void			set_ContactCallback		(ContactCallbackFun* callback)					= 0;
 	virtual	void			add_Sphere				(const Fsphere&		V)							= 0;
@@ -133,10 +134,11 @@ protected:
 	CPhysicsElement* pSecond_element;
 	bool bActive;
 //	CPhysicsJoint(CPhysicsElement* first,CPhysicsElement* second,enumType type){pFirst_element=first; pSecond_element=second; eType=type;bActive=false;}
-
+	IC CPhysicsElement* PFirst_element(){return pFirst_element;};
+	IC CPhysicsElement* PSecond_element(){return pSecond_element;};
 public:
 	virtual ~CPhysicsJoint	()																{};
-	
+		
 	//virtual void SetAxis					(const SPHAxis& axis,const int axis_num)		=0;
 	virtual void Activate					()												=0;
 	virtual void SetAnchor					(const Fvector& position)						=0;
@@ -175,6 +177,7 @@ CKinematics* m_pKinematics;
 public:
 	BOOL					bActive;
 public:
+IC	CKinematics*				PKinematics				()					{return m_pKinematics;};
 	void						set_Kinematics			(CKinematics* p)	{m_pKinematics=p;}
 	virtual void				set_JointResistance		(float force)										= 0;
 	virtual	void				add_Element				(CPhysicsElement* E)								= 0;

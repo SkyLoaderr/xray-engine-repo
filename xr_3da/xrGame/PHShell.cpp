@@ -398,6 +398,7 @@ void CPHShell::AddElementRecursive(CPhysicsElement* root_e, int id,const CBoneDa
 		else										//
 		{
 			E	= P_create_Element();
+			E->m_SelfID=id;
 			E->mXFORM.set		(fm_position);
 			E->SetMaterial(bone_data.game_mtl);
 			//Fvector mc;

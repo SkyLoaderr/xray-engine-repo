@@ -52,6 +52,7 @@ struct SWheel
 		void Init();//asumptions: bone_map is 1. ini parsed 2. filled in 3. bone_id is set 
 		SWheel(CCar* acar)
 		{
+			bone_id=-1;
 			car=acar;
 			joint=NULL;
 			inited=false;
@@ -108,6 +109,7 @@ struct SExhaust
 	void Clear ();
 	SExhaust(CCar* acar)
 	{
+		bone_id=-1;
 		pcar=acar;
 		p_pgobject=NULL;
 		pelement=NULL;
@@ -117,10 +119,24 @@ struct SExhaust
 
 struct SDoor 
 {
+int bone_id;
 CCar* pcar;
+CPhysicsJoint* joint;
+void Init();
+enum eState
+{
+opening,
+closing,
+opened,
+closed
+};
+eState state;
 SDoor(CCar* acar)
 {
+	bone_id=-1;
 	pcar=acar;
+	joint=NULL;
+	state=closed;
 }
 };
 private:
@@ -138,7 +154,8 @@ xr_vector <SWheelDrive> m_driving_wheels;
 xr_vector <SWheelSteer> m_steering_wheels;
 xr_vector <SWheelBreak> m_breaking_wheels;
 xr_vector <SExhaust>	m_exhausts;
-xr_map	  <int,SDoor>		m_doors;
+xr_map	  <int,SDoor>	m_doors;
+xr_vector <SDoor>		m_update_doors;
 xr_vector <float>		m_gear_ratious;
 xr_vector <Fmatrix>		m_sits_transforms;// m_sits_transforms[0] - driver_place
 float					m_current_gear_ratio;
@@ -303,13 +320,13 @@ private:
 
 			int bone_id	=				pKinematics->LL_BoneID(S1);
 			SDoor						door(this);
-			//door.bone_id=				bone_id;
+			door.bone_id=				bone_id;
 			doors.insert				(mk_pair(bone_id,door));
-			//BONE_P_PAIR_IT J		= bone_map.find(bone_id);
-			//if (J == bone_map.end()) 
-			//{
-			//	bone_map.insert(mk_pair(bone_id,physicsBone()));
-			//}
+			BONE_P_PAIR_IT J		= bone_map.find(bone_id);
+			if (J == bone_map.end()) 
+			{
+				bone_map.insert(mk_pair(bone_id,physicsBone()));
+			}
 
 		}
 	}

@@ -80,6 +80,10 @@ CAI_Crow::CAI_Crow()
 	vVarGoal.set		(10.f,10.f,100.f);
 	fIdleSoundDelta		= 10.f;
 	fIdleSoundTime		= fIdleSoundDelta;
+	ISpatial*			self = dynamic_cast<ISpatial*> (this);
+	if (self) {
+		self->spatial.type &=~STYPE_VISIBLEFORAI;
+	}
 }
 
 CAI_Crow::~CAI_Crow()

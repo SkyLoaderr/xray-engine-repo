@@ -420,8 +420,13 @@ if(m_pPhysicsShell) return;
 	m_pPhysicsShell->SmoothElementsInertia(0.3f);
 
 	m_pPhysicsShell->set_PhysicsRefObject(this);
-	//m_pPhysicsShell->set_DisableParams(default_disl*50.f,default_disw*500.);
+	CInifile* ini = PKinematics(Visual())->LL_UserData();
+	if(! ini) return;
+
+	///////////////////////////car definition///////////////////////////////////////////////////
+	m_pPhysicsShell->set_DisableParams(default_disl*ini->r_float("disable","linear_factor"),default_disw*ini->r_float("disable","angular_factor"));
 	m_pPhysicsShell->Activate(true);
+	PKinematics(Visual())->PlayCycle("death_init");
 	PKinematics(Visual())->Calculate();
 }
 
