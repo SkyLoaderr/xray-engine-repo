@@ -40,6 +40,7 @@ void		xrServer::client_Destroy	(IClient* C)
 void xrServer::Update	()
 {
 	NET_Packet		Packet;
+	u32				position;
 
 	// spawn queue
 	DWORD svT				= Device.TimerAsync();

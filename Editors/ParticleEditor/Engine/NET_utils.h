@@ -100,7 +100,7 @@ public:
 		w_vec3	(M.k);
 		w_vec3	(M.c);
 	}
-	IC u32	w_chunk_open8	(u32& position)
+	IC void	w_chunk_open8	(u32& position)
 	{
 		position			= w_tell	();
 		w_u8				(0);
