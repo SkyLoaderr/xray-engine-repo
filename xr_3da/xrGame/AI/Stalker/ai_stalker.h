@@ -169,10 +169,10 @@ private:
 			void			Pursuit							();
 
 			// selectors
-			void			vfBuildPathToDestinationPoint	(CAISelectorBase *S);
+			void			vfBuildPathToDestinationPoint	(CAISelectorBase *S, bool bCanStraighten);
 			void			vfSearchForBetterPosition		(CAISelectorBase &S, CSquad &Squad, CEntity* &Leader);
 			void			vfInitSelector					(CAISelectorBase &S, CSquad &Squad, CEntity* &Leader);
-			void			vfChoosePointAndBuildPath		(CAISelectorBase &tSelector);
+			void			vfChoosePointAndBuildPath		(CAISelectorBase &tSelector, bool bCanStraighten = false);
 			// animations
 			void			vfAssignGlobalAnimation			(CMotionDef *&tpGlobalAnimation);
 			void			vfAssignTorsoAnimation			(CMotionDef *&tpGlobalAnimation);

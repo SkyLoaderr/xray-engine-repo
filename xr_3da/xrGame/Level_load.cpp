@@ -9,10 +9,9 @@ void CLevel::vfCreateAllPossiblePaths(string64 sName, SPath &tpPatrolPath)
 	vector<BYTE>		tpaTo;
 	vector<Fvector>		tpaPoints;
 	vector<Fvector>		tpaDeviations;
-	vector<u32>		tpaNodes;
+	vector<u32>			tpaNodes;
 
 	int i;
-//	bool bStop			= false;
 	int iStartPoint = -1, iFinishPoint = -1, iCurPoint = 0, iPrevPoint = -1;
 	u32 N = tpPatrolPath.tpaWayPoints.size(), dwOneZero = 0, dwZeroOne = 0, dwOneCount = 0, dwTwoCount = 0;
 
@@ -194,14 +193,12 @@ BOOL CLevel::Load_GameSpecific_Before()
 	getAI().Load(Path.Current);
 
 	string256		fn_game;
-	if (Engine.FS.Exist(fn_game, Path.Current, "level.game")) 
-	{
+	if (Engine.FS.Exist(fn_game, Path.Current, "level.game")) {
 		IReader *F = Engine.FS.Open	(fn_game);
 		IReader *O = 0;
 
 		// Load WayPoints
-		if (0!=(O = F->open_chunk	(WAY_PATROLPATH_CHUNK)))
-		{ 
+		if (0!=(O = F->open_chunk	(WAY_PATROLPATH_CHUNK))) { 
 			int chunk = 0;
 			for (IReader *OBJ = O->open_chunk(chunk++); OBJ; OBJ = O->open_chunk(chunk++)) {
 				R_ASSERT(OBJ->find_chunk(WAYOBJECT_CHUNK_VERSION));
@@ -264,10 +261,6 @@ BOOL CLevel::Load_GameSpecific_Before()
 
 BOOL CLevel::Load_GameSpecific_After()
 {
-	// only for single...hmmm????
-//	m_tpAI_DDD	= xr_new<CAI_DDD> ();
-//	m_tpAI_DDD->vfLoad();
-
 	return TRUE;
 }
 
