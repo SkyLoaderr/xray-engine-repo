@@ -3,7 +3,6 @@
 
 #include "bone.h"
 #include "envelope.h"
-#include "fs.h"
 
 CBone::~CBone(){
 }
