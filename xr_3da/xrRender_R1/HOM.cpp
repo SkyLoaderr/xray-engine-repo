@@ -228,6 +228,7 @@ BOOL CHOM::visible		(Fbox2& B, float depth)
 
 BOOL CHOM::visible		(vis_data& vis)
 {
+	vis.hom_accept_frame				= Device.dwFrame;
 	if (Device.dwFrame<vis.hom_frame)	return TRUE;				// not at this time :)
 	if (!bEnabled)						return TRUE;				// return - everything visible
 	
@@ -241,38 +242,15 @@ BOOL CHOM::visible		(vis_data& vis)
 	Device.Statistic.RenderCALC_HOM.Begin	();
 	BOOL result			= _visible			(vis.box,m_xform_01);
 	u32  delay			= 1;
-	if (vis.hom_accept_frame<frame_prev)
+	if (result)
 	{
-		// either [0] or [2]
-		if (vis.hom_tested<frame_prev)
-		{
-			// [2]
-			// assumming, that it will be rendered this frames, situation will be [1]
-			if (result)
-			{
-				// visible	- delay next test
-				delay			= ::Random.randI	(2,5);
-			} else {
-				// hidden	- shedule to next frame
-			}
-		} else {
-			// [0]
-			// (a) - visible, but last time it was hidden	- shedule to next frame
-			// (b) - invisible								- shedule to next frame
-		}
+		// visible	- delay next test
+		delay			= ::Random.randI	(2,5);
 	} else {
-		// [1]
-		if (result)
-		{
-			// visible	- delay next test
-			delay			= ::Random.randI	(5,10);
-		} else {
-			// hidden	- shedule to next frame
-		}
+		// hidden	- shedule to next frame
 	}
-	vis.hom_frame	= frame_current + delay;
-	vis.hom_tested	= frame_current;
-	if (result)		vis.hom_accept_frame = Device.dwFrame;
+	vis.hom_frame			= frame_current + delay;
+	vis.hom_tested			= frame_current;
 
 	Device.Statistic.RenderCALC_HOM.End	();
 	return result;

@@ -8,7 +8,7 @@ struct	vis_data
 	Fsphere		sphere;				//
 	Fbox		box;				//
 	u32			marker;				// for different sub-renders
-	u32			hom_accept_frame;	// when it was tested, and accepted
+	u32			hom_accept_frame;	// when it was requisted to test - main render
 	u32			hom_frame;			// when to perform test - shedule
 	u32			hom_tested;			// when it was last time tested
 
