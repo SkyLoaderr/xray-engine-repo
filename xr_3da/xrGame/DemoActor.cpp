@@ -1,7 +1,6 @@
 #include "stdafx.h"
 #include "..\CameraFirstEye.h"
 #include "..\environment.h"
-#include "..\xr_streamsnd.h"
 
 #include "DemoActor.h"
 #include "..\ObjectAnimator.h"
