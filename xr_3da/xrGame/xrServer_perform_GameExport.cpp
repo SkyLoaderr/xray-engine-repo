@@ -2,6 +2,8 @@
 
 void xrServer::Perform_game_export	()
 {
+	if (net_Players.empty())	return;
+
 	// Broadcase game state to every body
 	// But it is slightly different view for each "player"
 
