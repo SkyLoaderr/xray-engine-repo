@@ -408,8 +408,6 @@ float LightPoint(CDB::COLLIDER* DB, Fvector &Pold, Fvector &N, LSelection& SEL)
 			float D		= Ldir.dotproduct( N );
 			if( D <=0 ) continue;
 
-			// Raypick
-//O			if (!RayPick(DB,Pnew,Ldir,1000.f,*L))	amount+=D*L->energy;
 			// Trace Light
 			amount += D*L->energy*rayTrace(DB,*L,Pnew,Ldir,1000.f);//,skip);
 		} else {
@@ -423,10 +421,6 @@ float LightPoint(CDB::COLLIDER* DB, Fvector &Pold, Fvector &N, LSelection& SEL)
 			float D		= Ldir.dotproduct( N );
 			if( D <=0 ) continue;
 			
-			// Raypick
-//O			float R		= _sqrt(sqD);
-//O			if (!RayPick(DB,Pnew,Ldir,R,*L))
-//O				amount += (D*L->energy)/(L->attenuation0 + L->attenuation1*R + L->attenuation2*sqD);
 			// Trace Light
 			float R		= _sqrt(sqD);
 			float scale = D*L->energy*rayTrace(DB,*L,Pnew,Ldir,R);//,skip);
@@ -572,13 +566,13 @@ public:
 				}
 				
 				// calculation of luminocity
-				DetailPalette* dc = (DetailPalette*)&DS.color;	int LL; float	res;
-				res				= amount[0]/float(count[0]); LL = iFloor(7.f * res); clamp(LL,0,15); dc->a0	= LL;
-				res				= amount[1]/float(count[1]); LL = iFloor(7.f * res); clamp(LL,0,15); dc->a1	= LL;
-				res				= amount[2]/float(count[2]); LL = iFloor(7.f * res); clamp(LL,0,15); dc->a2	= LL;
-				res				= amount[3]/float(count[3]); LL = iFloor(7.f * res); clamp(LL,0,15); dc->a3	= LL;
-				thProgress		= float(_z-Nstart)/float(Nend-Nstart);
-				thPerformance	= float(double(t_count)/double(t_time*CPU::cycles2seconds))/1000.f;
+				DetailPalette* dc	= (DetailPalette*)&DS.color;	int LL; float	res;
+				res					= amount[0]/float(count[0]); LL = iFloor(7.f * res); clamp(LL,0,15); dc->a0	= LL;
+				res					= amount[1]/float(count[1]); LL = iFloor(7.f * res); clamp(LL,0,15); dc->a1	= LL;
+				res					= amount[2]/float(count[2]); LL = iFloor(7.f * res); clamp(LL,0,15); dc->a2	= LL;
+				res					= amount[3]/float(count[3]); LL = iFloor(7.f * res); clamp(LL,0,15); dc->a3	= LL;
+				thProgress			= float(_z-Nstart)/float(Nend-Nstart);
+				thPerformance		= float(double(t_count)/double(t_time*CPU::cycles2seconds))/1000.f;
 			}
 		}
 	}
@@ -589,19 +583,18 @@ void	xrLight			()
 	u32	range			= dtH.size_z;
 
 	// Start threads, wait, continue --- perform all the work
-	CThreadManager			Threads;
-	u32	start_time		= timeGetTime();
+	CThreadManager		Threads;
+	u32	start_time		= timeGetTime	();
 	u32	stride			= range/NUM_THREADS;
-	u32	last			= range-stride*(NUM_THREADS-1);
-	for (u32 thID=0; thID<NUM_THREADS; thID++)
-	{
+	u32	last			= range-stride*	(NUM_THREADS-1);
+	for (u32 thID=0; thID<NUM_THREADS; thID++)	{
 		CThread*	T		= xr_new<LightThread> (thID,thID*stride,thID*stride+((thID==(NUM_THREADS-1))?last:stride));
 		T->thMessages		= FALSE;
 		T->thMonitor		= FALSE;
 		Threads.start		(T);
 	}
 	Threads.wait			();
-	Msg("%d seconds elapsed.",(timeGetTime()-start_time)/1000);
+	Msg						("%d seconds elapsed.",(timeGetTime()-start_time)/1000);
 }
 
 void xrCompiler(LPCSTR name)
@@ -614,14 +607,3 @@ void xrCompiler(LPCSTR name)
 
 	if (dtFS)	xr_delete(dtFS);
 }
-						/*
-						Frect rect;
-						GetSlotRect	(rect,_x,_z);
-						BB.min.set	(rect.x1, DS.y_min, rect.y1);
-						BB.max.set	(rect.x2, DS.y_max, rect.y2);
-						BB.grow		(0.01f);
-						Msg			("BB1:[%3.2f,%3.2f,%3.2f]-[%3.2f,%3.2f,%3.2f]",
-						BB.min.x,BB.min.y,BB.min.z,
-						BB.max.x,BB.max.y,BB.max.z
-						);
-						*/
