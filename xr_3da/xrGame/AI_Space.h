@@ -120,8 +120,16 @@ public:
 	}
 
 	// REF-counting
-	IC  BYTE		ref_add			(DWORD ID)	{	return vfs?(q_mark[ID] += BYTE(1)):BYTE(0);	}
-	IC	BYTE		ref_dec			(DWORD ID)  {	return vfs?(q_mark[ID] -= BYTE(1)):BYTE(0);	}
+	IC  BYTE		ref_add			(DWORD ID)	
+	{
+		if (vfs && ID!=DWORD(-1))	return q_mark[ID] += BYTE(1);	
+		else						return BYTE(0);
+	}
+	IC	BYTE		ref_dec			(DWORD ID)
+	{
+		if (vfs && ID!=DWORD(-1))	return q_mark[ID] -= BYTE(1);	
+		else						return BYTE(0);
+	}
 
 	// Utilities
 	float			u_SqrDistance2Node	(const Fvector& P, const NodeCompressed* Node);

@@ -90,11 +90,12 @@ void CGameObject::Sector_Detect	()
 	{
 		// Use parent information
 		CGameObject* O	= dynamic_cast<CGameObject*>(H_Root());
-		CAI_Space&	AI	= Level().AI;
-		AI.ref_dec		(AI_NodeID);
-		AI_NodeID		= O->AI_NodeID;
-		AI.ref_add		(AI_NodeID);
-		AI_Node			= O->AI_Node;
+		VERIFY						(O);
+		CAI_Space&	AI				= Level().AI;
+		AI.ref_dec					(AI_NodeID);
+		AI_NodeID					= O->AI_NodeID;
+		AI.ref_add					(AI_NodeID);
+		AI_Node						= O->AI_Node;
 		// Sector_Move	(O->Sector());
 	} else {
 		// We was moved - so find new AI-Node
