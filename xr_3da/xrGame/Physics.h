@@ -56,6 +56,8 @@ public:
 
 	void Step(dReal step=0.025f);
 
+	void Render();
+
 private:
 		static void FUNCCALL NearCallback(void* /*data*/, dGeomID o1, dGeomID o2){
 	const ULONG N = 100;
