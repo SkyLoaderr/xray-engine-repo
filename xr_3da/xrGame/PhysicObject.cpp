@@ -114,11 +114,23 @@ BOOL CPhysicObject::net_Spawn(LPVOID DC)
 			{
 				R_ASSERT2(*m_startup_anim,"no startup animation");
 				pSkeletonAnimated->PlayCycle(*m_startup_anim);
-				pSkeletonAnimated->Calculate();
 			}
 			break;
 		default: NODEFAULT; 
 	}
+PKinematics(Visual())->Calculate();
+if(m_flags.test(CSE_ALifeObjectPhysic::flSavedData))
+{
+		PHNETSTATE_VECTOR& saved_bones=po->saved_bones;
+		PHNETSTATE_I i=saved_bones.begin(),e=saved_bones.end();
+		for(u16 bone=0;e!=i;i++,bone++)
+		{
+			PHGetSyncItem(bone)->set_State(*i);
+		}
+		saved_bones.clear();
+		m_flags.set(CSE_ALifeObjectPhysic::flSavedData,FALSE);
+		po->flags.set(CSE_ALifeObjectPhysic::flSavedData,FALSE);
+}
 
 if(!po->flags.test(CSE_ALifeObjectPhysic::flSpawnCopy))
 {
@@ -259,18 +271,7 @@ void CPhysicObject::CreateBody(CSE_ALifeObjectPhysic* po) {
 	}
 	//m_pPhysicsShell->SetAirResistance(0.002f, 0.3f);
 	
-	if(m_flags.test(CSE_ALifeObjectPhysic::flSavedData))
-	{
-		PHNETSTATE_VECTOR& saved_bones=po->saved_bones;
-		PHNETSTATE_I i=saved_bones.begin(),e=saved_bones.end();
-		for(u16 bone=0;e!=i;i++,bone++)
-		{
-			PHGetSyncItem(bone)->set_State(*i);
-		}
-		saved_bones.clear();
-		m_flags.set(CSE_ALifeObjectPhysic::flSavedData,FALSE);
-		po->flags.set(CSE_ALifeObjectPhysic::flSavedData,FALSE);
-	}
+
 }
 
 
