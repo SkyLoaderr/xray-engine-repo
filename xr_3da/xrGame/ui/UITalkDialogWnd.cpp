@@ -18,6 +18,7 @@ const char * const TRADE_CHARACTER_XML		= "trade_character.xml";
 //////////////////////////////////////////////////////////////////////////
 
 CUITalkDialogWnd::CUITalkDialogWnd()
+	:	m_pNameTextFont		(NULL)
 {
 	m_iClickedQuestion = -1;
 }
@@ -82,8 +83,8 @@ void CUITalkDialogWnd::Init(int x, int y, int width, int height)
 	// шрифт для индикации имени персонажа в окне разговора
 	xml_init.InitFont(uiXml, "font", 0, m_iNameTextColor, m_pNameTextFont);
 
-	CGameFont *pFnt = NULL;
-	xml_init.InitFont(uiXml, "font", 1, m_uOurReplicsColor, pFnt);
+	CGameFont * pFont = NULL;
+	xml_init.InitFont(uiXml, "font", 1, m_uOurReplicsColor, pFont);
 }
 
 
@@ -121,43 +122,3 @@ void CUITalkDialogWnd::SendMessage(CUIWindow* pWnd, s16 msg, void* pData)
 
 	inherited::SendMessage(pWnd, msg, pData);
 }
-
-/*
-void CUITalkDialogWnd::AddMessageToLog(CUIListWnd *List, const CUIString& msg, const char StartShift, const u32 &MsgColor)
-{
-	const STRING& text =  msg.m_str;
-	STRING buf;
-
-	u32 last_pos = 0;
-
-	List->SetTextColor(MsgColor);
-
-	int GroupID = List->GetSize();
-	
-	for(u32 i = 0; i<text.size()-2; ++i)
-	{
-         // '\n' - переход на новую строку
-		if(text[i] == '\\' && text[i+1]== 'n')
-		{	
-			buf.clear();
-			buf.insert(buf.begin(), StartShift, ' ');
-			buf.insert(buf.begin() + StartShift, text.begin()+last_pos, text.begin()+i);
-			buf.push_back(0);
-			List->AddItem(&buf.front());
-			List->GetItem(List->GetSize() - 1)->SetGroupID(GroupID);
-			++i;
-			last_pos = i+1;
-		}	
-	}
-
-	if(last_pos<text.size())
-	{
-		buf.clear();
-		buf.insert(buf.begin(), StartShift, ' ');
-		buf.insert(buf.begin() + StartShift, text.begin()+last_pos, text.end());
-		buf.push_back(0);
-		List->AddItem(&buf.front());
-		List->GetItem(List->GetSize() - 1)->SetGroupID(GroupID);
-	}
-}
-*/

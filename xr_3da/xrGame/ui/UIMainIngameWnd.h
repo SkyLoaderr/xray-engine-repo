@@ -61,6 +61,9 @@ public:
 	
 	void AddGameMessage	(CInventoryOwner* pSender, LPCSTR TextMessage);
 	void AddStaticItem	(CUIStaticItem* si, int left, int top, int right, int bottom);
+	// Функция для вывода служебных сообщений, таких как "здась спать нельзя",
+	// "рюкзак переполнен", и т.д.
+	void AddInfoMessage	(LPCSTR message);
 
 protected:
 	void HideAll();
@@ -68,30 +71,31 @@ protected:
 	bool m_bShowHudInfo;
 	bool m_bShowHudCrosshair;
 
-	CUIStatic	UIStaticHealth;
-	CUIStatic	UIStaticArmor;
-	CUIStatic	UIStaticMapBack;
+	CUIStatic			UIStaticHealth;
+	CUIStatic			UIStaticArmor;
+	CUIStatic			UIStaticMapBack;
 
 	// Статик контрол для отображения подсказок действий при наведении прицела на объект
 	// Кнопка потому, что в статике еще нет функции выравнивания текста
-	CUIButton	UIStaticQuickHelp;
+	CUIButton			UIStaticQuickHelp;
 	
-	CUIStatic	UITextWound;
+	CUIStatic			UITextWound;
 
-	CUIProgressBar UIHealthBar;
-	CUIProgressBar UIArmorBar;
+	CUIProgressBar		UIHealthBar;
+	CUIProgressBar		UIArmorBar;
 
-	CUIZoneMap UIZoneMap;
+	CUIZoneMap			UIZoneMap;
 
 	//иконка, показывающая количество активных PDA
 	CUIStatic			UIPdaOnline;
 	//список входящих сообщений PDA
 	CUIListWnd			UIPdaMsgListWnd;
+	// Список входящих информационных сообщений
+	CUIListWnd			UIInfoMessages;
 	
 	//интервал показывания сообщения
 	int					m_dwMaxShowTime;
-	//время сколько показывается новое сообщение PDA
-	int					m_dwMsgShowingTime;
+	int					m_iInfosShowTime;
 
 	//изображение оружия
 	CUIStatic			UIWeaponBack;
@@ -164,13 +168,16 @@ protected:
 	float				fuzzyShowInfo;
 	// Отображение подсказок при наведении прицела на объект
 	void RenderQuickInfos();
+	// Просчитать анимационные параметры фейда для айтемов листа
+	void FadeUpdate(CUIListWnd *pWnd, int fadeDuration);
 
 	// ассоциативный массив с типсами. Выбор пал на map, так как заполнение произойдет 1 раз,
 	// а поиск будет производиться часто.
 	std::map<int, ref_str>	m_strTips;
 
 	// для лога сообщений на экране устанавливаем время постепенного исчезновения надписи
-	int					m_iFade_mSec;
+	int					m_iPdaMessagesFade_mSec;
+	int					m_iInfoMessagesFade_mSec;
 	
 	//-----------------------------------------------------------------------------/
 	//	News related routines
@@ -202,5 +209,4 @@ protected:
 	// Период проверки ньюсов в моллисекундах
 	static const int						NEWS_CHECK_INTERVAL = 1000;
 	ALife::_TIME_ID							m_iPrevTime;
-
 };

@@ -98,6 +98,7 @@ void CUIMapWnd::Init()
 
 	UIStaticInfo.AttachChild(&UICharacterInfo);
 	UICharacterInfo.Init(0,0, UIStaticInfo.GetWidth(), UIStaticInfo.GetHeight(), "map_character.xml");
+	UIStaticInfo.Enable(false);
 	
 	UIMainMapFrame.AttachChild(&UILocalMapBackground);
 	xml_init.InitWindow(uiXml, "window", 0, &UILocalMapBackground);

@@ -34,9 +34,9 @@ public:
 	virtual void Show();
 	virtual void Hide();
 
-	u32			 GetHeaderColor() { return m_iNameTextColor; }
-	CGameFont	 *GetHeaderFont() { return m_pNameTextFont; }
-	u32			GetOurReplicsColor() { return m_uOurReplicsColor; }
+	u32			GetHeaderColor()		{ return m_iNameTextColor; }
+	CGameFont *	GetHeaderFont()			{ return m_pNameTextFont; }
+	u32			GetOurReplicsColor()	{ return m_uOurReplicsColor; }
 
 	//номер выбранного вопроса
 	int m_iClickedQuestion;
@@ -64,6 +64,6 @@ private:
 	// Ўрифт и цвет текста с именем персонажа
 	CGameFont			*m_pNameTextFont;
 	u32					m_iNameTextColor;
-	// ÷вет такста наших реплик
+	// ÷вет тeкста и шрифт наших реплик
 	u32					m_uOurReplicsColor;
 };

@@ -91,6 +91,8 @@ public:
 	// Анализируем текст на помещаемость его по длинне в заданную ширину, и если нет, то всталяем 
 	// "\n" реализуем таким образом wordwrap
 	static void PreprocessText(STRING &str, u32 width, CGameFont *pFont);
+	// Функция вывода текста
+	void DrawString(const RECT &rect);
 
 protected:
 	bool m_bClipper;
@@ -114,7 +116,7 @@ protected:
 	/////////////////////////////////////
 	//форматированный вывод текста
 	/////////////////////////////////////
-	void WordOut();
+	void WordOut(const RECT &rect);
 	void AddLetter(char letter);
 	u32 ReadColor(int pos, int& r, int& g, int& b);
 	

@@ -146,6 +146,14 @@ bool CUIXmlInit::InitStatic(CUIXml& xml_doc, LPCSTR path,
 	InitFont(xml_doc, *text_path, index, color, pTmpFont);
 	pWnd->SetTextColor(color);
 	pWnd->SetFont(pTmpFont);
+	// Load font alignment
+	ref_str al = xml_doc.ReadAttrib(*text_path, index, "align", "l");
+	if (0 == xr_strcmp(al, "c"))
+		pWnd->SetTextAlign(CGameFont::alCenter);
+	else if (0 == xr_strcmp(al, "r"))
+		pWnd->SetTextAlign(CGameFont::alRight);
+	else if (0 == xr_strcmp(al, "l"))
+		pWnd->SetTextAlign(CGameFont::alLeft);
 
 	// Text coordinates
 	int text_x = xml_doc.ReadAttribInt(*text_path, index, "x");

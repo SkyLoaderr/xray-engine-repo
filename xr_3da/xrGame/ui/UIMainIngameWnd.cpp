@@ -77,13 +77,13 @@ CUIMainIngameWnd::CUIMainIngameWnd()
 	m_pWeapon					= NULL;
 
 	m_dwMaxShowTime				= 20000;
-	m_dwMsgShowingTime			= 0;
 
 	m_bShowHudInfo				= true;
 	m_bShowHudCrosshair			= false;
 	// Quick infos
 	fuzzyShowInfo				= 0.f;
-	m_iFade_mSec				= 0;
+	m_iPdaMessagesFade_mSec		= 0;
+	m_iInfoMessagesFade_mSec	= 0;
 	m_iPrevTime					= 0;
 }
 
@@ -144,9 +144,16 @@ void CUIMainIngameWnd::Init()
 		uiXml2.Init("$game_data$", PDA_INGAME_SINGLEPLAYER_CFG);
 
 	xml_init.InitListWnd(uiXml2, "list", 0, &UIPdaMsgListWnd);
-	m_iFade_mSec = uiXml2.ReadAttribInt("list", 0, "fade", 0);
+	m_iPdaMessagesFade_mSec = uiXml2.ReadAttribInt("list", 0, "fade", 0);
 
 	UIPdaMsgListWnd.SetVertFlip(true);
+
+	// Для информационных сообщений
+	AttachChild(&UIInfoMessages);
+	xml_init.InitListWnd(uiXml, "info_list", 0, &UIInfoMessages);
+	m_iInfoMessagesFade_mSec = uiXml.ReadAttribInt("info_list", 0, "fade", 0);
+	UIInfoMessages.SetVertFlip(true);
+
 		
 //	AttachChild(&UITextWound);
 //	UITextWound.Init(UIStaticWound.GetWndRect().left+12, 
@@ -169,8 +176,8 @@ void CUIMainIngameWnd::Init()
 	UIPdaMsgListWnd.Show(false);
 	UIPdaMsgListWnd.Enable(false);
 
-	m_dwMsgShowingTime = 0;
-	m_dwMaxShowTime = pSettings->r_s32("pda_maingame","max_show_time");
+	m_dwMaxShowTime		= pSettings->r_s32("maingame_ui", "pda_msgs_max_show_time");
+	m_iInfosShowTime	= pSettings->r_s32("maingame_ui", "info_msgs_max_show_time");
 
 	// Подсказки, которые возникают при наведении прицела на объект
 	AttachChild(&UIStaticQuickHelp);
@@ -504,26 +511,9 @@ void CUIMainIngameWnd::Update()
 		i = static_cast<EWarningIcons>(i + 1);
 	}
 
-	// weapon
-	for(int i=0; i<UIPdaMsgListWnd.GetSize(); i++)
-	{
-		CUIPdaMsgListItem* pItem = dynamic_cast<CUIPdaMsgListItem*>(UIPdaMsgListWnd.GetItem(i));
-		R_ASSERT(pItem);
-		int show_time = pItem->GetValue();
-		
-		if(show_time>0)
-		{
-			// Плавное исчезновение надписи
-			float fAlphaFactor = static_cast<float>(m_iFade_mSec - show_time) / m_iFade_mSec;
-			if (fAlphaFactor < 0) fAlphaFactor = 0;
-			pItem->UIMsgText.SetTextColor(subst_alpha(pItem->UIMsgText.GetTextColor(), u8(iFloor(255.f * (1 - fAlphaFactor)))));
-
-			show_time -= Device.dwTimeDelta;
-			pItem->SetValue(show_time);
-		}
-		else
-			UIPdaMsgListWnd.RemoveItem(i);
-	}
+	// Fade animations
+	FadeUpdate(&UIPdaMsgListWnd, m_iPdaMessagesFade_mSec);
+	FadeUpdate(&UIInfoMessages, m_iInfoMessagesFade_mSec);
 
 	// Check for new news
 	CheckForNewNews();
@@ -820,9 +810,9 @@ void CUIMainIngameWnd::ReceivePdaMessage(CInventoryOwner* pSender, EPdaMsg msg, 
 	{
 		pItem->UIMsgText.SetText(CPda::m_PdaMsgStr[msg]);
 	}
-
-	m_dwMsgShowingTime = m_dwMaxShowTime;
 }
+
+//////////////////////////////////////////////////////////////////////////
 
 void CUIMainIngameWnd::AddGameMessage	(CInventoryOwner* pSender, LPCSTR TextMessage)
 {
@@ -836,9 +826,25 @@ void CUIMainIngameWnd::AddGameMessage	(CInventoryOwner* pSender, LPCSTR TextMess
 	UIPdaMsgListWnd.Show(true);	
 
 	pItem->UIMsgText.SetText(TextMessage);
-
-	m_dwMsgShowingTime = m_dwMaxShowTime;
 };
+
+//////////////////////////////////////////////////////////////////////////
+
+void CUIMainIngameWnd::AddInfoMessage(LPCSTR message)
+{
+	CUIPdaMsgListItem* pItem = NULL;
+	pItem = xr_new<CUIPdaMsgListItem>();
+	UIInfoMessages.AddItem<CUIListItem>(pItem, 0); 
+	UIInfoMessages.ScrollToBegin();
+
+	pItem->SetValue(m_iInfosShowTime);
+
+	UIInfoMessages.Show(true);	
+
+	pItem->UIMsgText.SetText(message);
+}
+
+//////////////////////////////////////////////////////////////////////////
 
 void CUIMainIngameWnd::RenderQuickInfos()
 {
@@ -932,8 +938,6 @@ void CUIMainIngameWnd::OnNewsReceived(const CALifeNews &newsItem)
 		UIPdaMsgListWnd.Show(true);	
 
 		pItem->UIMsgText.SetText(result);
-
-		m_dwMsgShowingTime = m_dwMaxShowTime;
 	}
 
 	CUIGameSP* pGameSP		= dynamic_cast<CUIGameSP*>(HUD().GetUI()->UIGame());
@@ -1064,4 +1068,29 @@ void CUIMainIngameWnd::DisplayMoneyChange(ref_str deltaMoney)
 void  CUIMainIngameWnd::AddStaticItem (CUIStaticItem* si, int left, int top, int right, int bottom)
 {
 	m_CustomTextures.push_back(CUSTOM_TEXTURE(si, left, top, right, bottom));
+}
+
+//////////////////////////////////////////////////////////////////////////
+
+void CUIMainIngameWnd::FadeUpdate(CUIListWnd *pWnd, int fadeDuration)
+{
+	for(int i=0; i<pWnd->GetSize(); i++)
+	{
+		CUIPdaMsgListItem* pItem = dynamic_cast<CUIPdaMsgListItem*>(pWnd->GetItem(i));
+		R_ASSERT(pItem);
+		int show_time = pItem->GetValue();
+
+		if(show_time>0)
+		{
+			// Плавное исчезновение надписи
+			float fAlphaFactor = static_cast<float>(fadeDuration - show_time) / fadeDuration;
+			if (fAlphaFactor < 0) fAlphaFactor = 0;
+			pItem->UIMsgText.SetTextColor(subst_alpha(pItem->UIMsgText.GetTextColor(), u8(iFloor(255.f * (1 - fAlphaFactor)))));
+
+			show_time -= Device.dwTimeDelta;
+			pItem->SetValue(show_time);
+		}
+		else
+			pWnd->RemoveItem(i);
+	}
 }

@@ -87,104 +87,14 @@ void  CUIStatic::Draw()
 
 	inherited::Draw();
 
-	// Вывод текста
-
-	if(m_str == NULL) return;
-
-	if(!GetFont() || !m_str || !m_str[0]) return;	
-
-	GetFont()->SetAligment(GetTextAlign());
-	GetFont()->SetColor(m_dwFontColor);
-
-	/////////////////////////////////////
 	//форматированный вывод текста
-	/////////////////////////////////////
-
-	//положение пишущей каретки
-	curretX = 0;
-	curretY = 0;
-	//выводимый текст
-	outX = 0;
-	outY = 0;
-
-	new_word = false;
-	word_length = 0;
-
-	space_width = (int)GetFont()->SizeOf(' ');
-
-	for(u32 i = 0; i<str_len+1; ++i)
+	if (GetFont())
 	{
-		char cur_char;
-
-		if(i<str_len)
-			cur_char = m_str[i];
-		else
-			//завершить весь вывод пробелом
-			cur_char = ' ';
-
-		switch(cur_char)
-		{
-		case ' ':
-			WordOut();
-
-			//"нарисовать" пробел
-			if(curretX+space_width >= GetWidth())
-			{
-				curretY += (int)GetFont()->CurrentHeight();
-				curretX = space_width;
-			}
-			else
-			{
-				curretX += space_width;
-			}
-			break;
-		case '\\':
-			if(i+1<str_len)
-			{
-				//переход на новую строку
-				if(m_str[i+1]== 'n')
-				{
-					WordOut();
-
-					//перевести курсор на новую строку
-					curretY += (int)GetFont()->CurrentHeight();
-					curretX = 0;
-				}
-				//вывести символ '\'
-				else if(m_str[i+1]== '\\')
-				{
-					AddLetter('\\');
-				}
-			}
-			++i;
-			break;
-		case '%':
-			if(i+1<str_len)
-			{
-				if(m_str[i+1]== 'c')
-				{
-					int r,g,b;
-					u32 offset = ReadColor(i+2, r,g,b);
-
-					//++i;
-					i+= offset;
-
-					u32 color = RGB_ALPHA(0xFF,r,g,b);
-					GetFont()->SetColor(color);
-				}
-				//вывести символ '%'
-				else if(m_str[i+1]== '%')
-				{
-					AddLetter('%');				
-				}
-			}
-			++i;
-			break;
-		default:
-			AddLetter(m_str[i]);
-		}
+		GetFont()->SetAligment(GetTextAlign());
+		GetFont()->SetColor(m_dwFontColor);
+		RECT r = GetAbsoluteRect();
+		DrawString(r);
 	}
-	GetFont()->OnRender();
 }
 
 
@@ -193,10 +103,8 @@ void CUIStatic::Update()
 	inherited::Update();
 }
 
-void CUIStatic::WordOut()
+void CUIStatic::WordOut(const RECT &rect)
 {
-	RECT rect = GetAbsoluteRect();
-
 	//вывести слово
 	if(new_word)
 	{
@@ -611,4 +519,102 @@ void CUIStatic::PreprocessText(STRING &str, u32 width, CGameFont *pFont)
 	processedStr.insert(processedStr.end(), word.begin(), word.end());
 	processedStr.push_back(0);
     processedStr.swap(str);
+}
+
+//////////////////////////////////////////////////////////////////////////
+
+void CUIStatic::DrawString(const RECT &rect)
+{
+	// Вывод текста
+
+	if(m_str == NULL) return;
+
+	if(!GetFont() || !m_str || !m_str[0]) return;	
+
+	//положение пишущей каретки
+	curretX = 0;
+	curretY = 0;
+	//выводимый текст
+	outX = 0;
+	outY = 0;
+
+	new_word = false;
+	word_length = 0;
+
+	space_width = (int)GetFont()->SizeOf(' ');
+	GetFont()->SetAligment(m_eTextAlign);
+
+	for(u32 i = 0; i<str_len+1; ++i)
+	{
+		char cur_char;
+
+		if(i<str_len)
+			cur_char = m_str[i];
+		else
+			//завершить весь вывод пробелом
+			cur_char = ' ';
+
+		switch(cur_char)
+		{
+		case ' ':
+			WordOut(rect);
+
+			//"нарисовать" пробел
+			if(curretX+space_width >= GetWidth())
+			{
+				curretY += (int)GetFont()->CurrentHeight();
+				curretX = space_width;
+			}
+			else
+			{
+				curretX += space_width;
+			}
+			break;
+		case '\\':
+			if(i+1<str_len)
+			{
+				//переход на новую строку
+				if(m_str[i+1]== 'n')
+				{
+					WordOut(rect);
+
+					//перевести курсор на новую строку
+					curretY += (int)GetFont()->CurrentHeight();
+					curretX = 0;
+				}
+				//вывести символ '\'
+				else if(m_str[i+1]== '\\')
+				{
+					AddLetter('\\');
+				}
+			}
+			++i;
+			break;
+		case '%':
+			if(i+1<str_len)
+			{
+				if(m_str[i+1]== 'c')
+				{
+					int r,g,b;
+					u32 offset = ReadColor(i+2, r,g,b);
+
+					//++i;
+					i+= offset;
+
+					u32 color = RGB_ALPHA(GetTextColor() >> 24,r,g,b);
+					GetFont()->SetColor(color);
+				}
+				//вывести символ '%'
+				else if(m_str[i+1]== '%')
+				{
+					AddLetter('%');				
+				}
+			}
+			++i;
+			break;
+		default:
+			AddLetter(m_str[i]);
+		}
+	}
+	GetFont()->OnRender();
 }
