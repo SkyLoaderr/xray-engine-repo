@@ -707,6 +707,9 @@
 					<File
 						RelativePath=".\alife_space.h">
 					</File>
+					<File
+						RelativePath=".\game_graph_space.h">
+					</File>
 					<Filter
 						Name="artefact_order"
 						Filter="">

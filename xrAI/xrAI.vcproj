@@ -919,6 +919,9 @@
 							<File
 								RelativePath=".\game_graph_inline.h">
 							</File>
+							<File
+								RelativePath=".\game_graph_space.h">
+							</File>
 						</Filter>
 						<Filter
 							Name="level_graph"
