@@ -177,13 +177,18 @@ function door_init(door)
 end
 
 -- Дверь door импульсом захлопнется и залочится, при юзе будет вызываться callback_fn
-function close_then_lock(door, callback_fn)
+function door_close_then_lock(door, callback_fn)
+	local ph_shell = door:get_physics_shell()
+	local joint = ph_shell:get_joint_by_bone_name("door")
+	local low_limit = 0
+	local hi_limit = 0
+	low_limit, hi_limit = joint:get_limits(low_limit, hi_limit, 0)
 	local angle = joint:get_axis_angle(0)
 	if angle-low_limit > hi_limit - angle 
 	then
-		joint:set_max_force_and_velocity(1000, -1.5, 0)
+		joint:set_max_force_and_velocity(1000000, 0, 0)
 	else
-		joint:set_max_force_and_velocity(1000, 1.5, 0)
+		joint:set_max_force_and_velocity(1000000, 0, 0)
 	end
 end
 	
