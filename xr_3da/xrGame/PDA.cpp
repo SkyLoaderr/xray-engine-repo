@@ -68,7 +68,7 @@ void CPda::net_Destroy()
 
 void CPda::shedule_Update(u32 dt)	
 {
-	Msg							("-SUB-:[%x][%s] CPda::shedule_Update",dynamic_cast<void*>(this),*cName());
+	// Msg							("-SUB-:[%x][%s] CPda::shedule_Update",dynamic_cast<void*>(this),*cName());
 	inherited::shedule_Update	(dt);
 
 	if(!H_Parent()) return;
