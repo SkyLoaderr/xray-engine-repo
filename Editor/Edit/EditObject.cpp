@@ -354,7 +354,7 @@ void CEditObject::RenderAnimation(const Fmatrix& parent){
 
         Device.Shader.Set		(Device.m_WireShader);
         Device.SetTransform		(D3DTS_WORLD,M);
-        Device.DP				(D3DPT_LINESTRIP,FVF::F_L,v.begin(),v.size());
+///        Device.DP				(D3DPT_LINESTRIP,FVF::F_L,v.begin(),v.size());
     }
 }
 

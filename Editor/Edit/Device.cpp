@@ -10,7 +10,6 @@
 
 CRenderDevice Device;
 
-DWORD psDeviceFlags = 0;
 // video
 enum {
 	rsFullscreen		= (1ul<<0ul),
@@ -28,6 +27,8 @@ enum {
 	mtSound				= (1ul<<24ul),
 	mtInput				= (1ul<<25ul)
 };
+DWORD psDeviceFlags 	= rsClearBB|rsNoVSync;
+DWORD dwClearColor		= 0x00555555;
 
 //---------------------------------------------------------------------------
 CRenderDevice::CRenderDevice(){
@@ -104,8 +105,8 @@ void CRenderDevice::Destroy(){
 
 	// before destroy
 	bReady 						= FALSE;
-    Shader.Clear();
 	OnDeviceDestroy();
+    Shader.Clear();
 
 	// real destroy
 	_RELEASE					(Streams_QuadIB);
@@ -174,6 +175,7 @@ void CRenderDevice::OnDeviceCreate(){
     ResetMaterial();
 	// signal another objects
     Shader.OnDeviceCreate		();
+	Primitive.OnDeviceCreate	();
     Scene->OnDeviceCreate		();
 
     UpdateFog();
@@ -210,6 +212,7 @@ void CRenderDevice::OnDeviceCreate(){
 void CRenderDevice::OnDeviceDestroy(){
     Scene->OnDeviceDestroy		();
     Shader.OnDeviceDestroy		();
+	Primitive.OnDeviceDestroy	();
 	Streams.OnDeviceDestroy		();
 }
 
@@ -244,8 +247,6 @@ void CRenderDevice::UpdateFog(){
 //---------------------------------------------------------------------------
 void __fastcall CRenderDevice::Resize(int w, int h)
 {
-    bReady 			= FALSE;
-
     m_RealWidth 	= w;
     m_RealHeight 	= h;
     m_RenderArea	= w*h;
@@ -261,11 +262,10 @@ void __fastcall CRenderDevice::Resize(int w, int h)
     mProjection.build_projection( m_Camera.m_FOV, m_Camera.m_Aspect, m_Camera.m_Znear, m_Camera.m_Zfar );
     m_fNearer = mProjection._43;
 
+    Create			(m_Handle);
+
     SetTransform	(D3DTS_PROJECTION,mProjection);
     SetTransform	(D3DTS_WORLD,precalc_identity);
-
-    Create			(m_Handle);
-    bReady 			= TRUE;
 
     UI->RedrawScene();
 }
@@ -284,7 +284,7 @@ void CRenderDevice::Begin( ){
 		D3DCLEAR_ZBUFFER|
 		((psDeviceFlags&rsClearBB)?D3DCLEAR_TARGET:0)|
 		(HW.Caps.bStencil?D3DCLEAR_STENCIL:0),
-		D3DCOLOR_XRGB(0,255,0),1,0
+		dwClearColor,1,0
 		));
 	Streams.BeginFrame();
 }
@@ -296,6 +296,7 @@ void CRenderDevice::End(){
 
 	// end scene
 	Shader.SetNULL	();
+//	Primitive.Reset	();
     CHK_DX(HW.pDevice->EndScene());
 
 	CHK_DX(HW.pDevice->Present( NULL, NULL, NULL, NULL ));
@@ -329,24 +330,25 @@ void CRenderDevice::UpdateTimer(){
     m_Camera.Update(fTimeDelta);
 }
 
-void CRenderDevice::DP(D3DPRIMITIVETYPE pt, DWORD vtd, LPVOID v, DWORD vc){
-/*    DWORD dwRequired	= Device.Shader.dwPassesRequired;
+void CRenderDevice::DP(D3DPRIMITIVETYPE pt, CVertexStream* vs, DWORD vBase, DWORD pc){
+    DWORD dwRequired	= Device.Shader.dwPassesRequired;
+	Primitive.setVertices(vs->getFVF(),vs->getStride(),vs->getBuffer());
     for (DWORD dwPass = 0; dwPass<dwRequired; dwPass++){
         Shader.SetupPass(dwPass);
-        CHK_DX(m_DX->pD3DDev->DrawPrimitive(pt,vtd,v,vc,0));
-		m_Statistic.dwRenderPolyCount += vc/3;
+		Primitive.Render(pt,vBase,pc);
+		m_Statistic.dwRenderPolyCount += pc/3;
     }
-*/
 }
 
-void CRenderDevice::DIP(D3DPRIMITIVETYPE pt, DWORD vtd, LPVOID v, DWORD vc, LPWORD i, DWORD ic){
-/*    DWORD dwRequired	= Device.Shader.dwPassesRequired;
+void CRenderDevice::DIP(D3DPRIMITIVETYPE pt, CVertexStream* vs, DWORD vBase, DWORD vc, CIndexStream* is, DWORD iBase, DWORD pc){
+    DWORD dwRequired	= Device.Shader.dwPassesRequired;
+    Primitive.setIndicesUC(vBase, is->getBuffer());
+    Primitive.setVertices(vs->getFVF(),vs->getStride(),vs->getBuffer());
     for (DWORD dwPass = 0; dwPass<dwRequired; dwPass++){
         Shader.SetupPass(dwPass);
-        CHK_DX(m_DX->pD3DDev->DrawIndexedPrimitive(pt,vtd,v,vc,i,ic,0));
-		m_Statistic.dwRenderPolyCount += ic;
+		Primitive.Render(pt,vBase,vc,iBase,pc);
+		m_Statistic.dwRenderPolyCount += pc/3;
     }
-*/
 }
 
 void CRenderDevice::Validate()

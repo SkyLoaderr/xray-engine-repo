@@ -191,11 +191,11 @@ void CEditMesh::RenderList(const Fmatrix& parent, DWORD color, bool bEdge, DWORD
         st_Face& face = m_Faces[*dw_it];
         for (int k=0; k<3; k++)	RB[RB_cnt++].set(m_Points[face.pv[k].pindex],color);
 		if (RB_cnt==MAX_VERT_COUNT){
-            Device.DP(D3DPT_TRIANGLELIST, FVF::F_L, RB, RB_cnt);
+///            Device.DP(D3DPT_TRIANGLELIST, FVF::F_L, RB, RB_cnt);
 			RB_cnt = 0;
         }
     }
-	if (RB_cnt)	Device.DP(D3DPT_TRIANGLELIST, FVF::F_L, RB, RB_cnt);
+///	if (RB_cnt)	Device.DP(D3DPT_TRIANGLELIST, FVF::F_L, RB, RB_cnt);
     if (bEdge)  Device.SetRS(D3DRS_FILLMODE,UI->dwRenderFillMode);
 	Device.ResetNearer();
 }
@@ -213,11 +213,11 @@ void CEditMesh::RenderEdge(Fmatrix& parent, DWORD color){
     for (FaceIt f_it=m_Faces.begin(); f_it!=m_Faces.end(); f_it++){
         for (int k=0; k<3; k++)	RB[RB_cnt++].set(m_Points[f_it->pv[k].pindex],color);
         if (RB_cnt==MAX_VERT_COUNT){
-            Device.DP(D3DPT_TRIANGLELIST, FVF::F_L, RB, RB_cnt);
+///            Device.DP(D3DPT_TRIANGLELIST, FVF::F_L, RB, RB_cnt);
 			RB_cnt = 0;
         }
     }
-    if (RB_cnt)	Device.DP(D3DPT_TRIANGLELIST, FVF::F_L, RB, RB_cnt);
+///    if (RB_cnt)	Device.DP(D3DPT_TRIANGLELIST, FVF::F_L, RB, RB_cnt);
 
     Device.SetRS(D3DRS_FILLMODE,UI->dwRenderFillMode);
     Device.ResetNearer();
@@ -239,10 +239,10 @@ void CEditMesh::RenderSelection(Fmatrix& parent, DWORD color){
     for (FaceIt f_it=m_Faces.begin(); f_it!=m_Faces.end(); f_it++){
         for (int k=0; k<3; k++)	RB[RB_cnt++].set(m_Points[f_it->pv[k].pindex],color);
         if (RB_cnt==MAX_VERT_COUNT){
-            Device.DP(D3DPT_TRIANGLELIST, FVF::F_L, RB, RB_cnt);
+///            Device.DP(D3DPT_TRIANGLELIST, FVF::F_L, RB, RB_cnt);
 			RB_cnt = 0;
         }
     }
-    if (RB_cnt)	Device.DP(D3DPT_TRIANGLELIST, FVF::F_L, RB, RB_cnt);
+///    if (RB_cnt)	Device.DP(D3DPT_TRIANGLELIST, FVF::F_L, RB, RB_cnt);
 }
 

@@ -64,8 +64,6 @@ TUI::TUI()
     fHintHideTime   = 0.f;
     bHintShowing    = false;
 
-	D3D_UpdateGrid();
-
 	dwRenderFillMode= D3DFILL_SOLID;
 	dwRenderShadeMode=D3DSHADE_FLAT;
     dwRenderHWTransform=D3DX_DEFAULT;
@@ -321,17 +319,19 @@ void TUI::Redraw(){
         }
 
     // draw grid
-        D3D_DrawGrid();
-        D3D_DrawPivot();
+    	if (bDrawGrid){
+	        DU::DrawGrid();
+    	    DU::DrawPivot(m_Pivot);
+        }
 
     // draw selection rect
-        D3D_DrawSelectionRect();
+		if(m_SelectionRect) DU::DrawSelectionRect(m_SelStart,m_SelEnd);
 
     // draw cursor
         m_Cursor->Render();
 
     // draw axis
-        D3D_DrawAxis();
+        DU::DrawAxis();
 
     // end draw
         Device.End();

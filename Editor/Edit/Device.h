@@ -19,12 +19,6 @@ class ENGINE_API CRenderDevice{
 
     float 					m_fNearer;
 
-    int 					m_RenderWidth, m_RenderHeight;
-    int 					m_RenderWidth_2, m_RenderHeight_2;
-    int 					m_RealWidth, m_RealHeight;
-    float					m_RenderArea;
-    float 					m_ScreenQuality;
-
     Shader*					m_NullShader;
 	CTimer					Timer;
 	CTimer					TimerGlobal;
@@ -38,7 +32,12 @@ public:
     CStatistic     			m_Statistic;
 
 	CShaderManager			Shader;
-// new
+public:
+    int 					m_RenderWidth, m_RenderHeight;
+    int 					m_RenderWidth_2, m_RenderHeight_2;
+    int 					m_RealWidth, m_RealHeight;
+    float					m_RenderArea;
+    float 					m_ScreenQuality;
 public:
     HANDLE 					m_Handle;
 
@@ -59,6 +58,7 @@ public:
 	Fmatrix 				mProjection;
 	Fmatrix					mFullTransform;
 
+	CDraw					Primitive;
 	// Shared Streams
 	CSharedStreams	 	  	Streams;
 	IDirect3DIndexBuffer8*	Streams_QuadIB;
@@ -100,11 +100,8 @@ public:
                                		  		   	CHK_DX(HW.pDevice->SetTransform(p1,m.d3d()));
 							   			 	}
 	// draw
-	void			   		DP				(D3DPRIMITIVETYPE pt, DWORD vtd, LPVOID v, DWORD vc);
-//	void					DPS				(D3DPRIMITIVETYPE pt, DWORD vtd, LPD3DDRAWPRIMITIVESTRIDEDDATA va, DWORD vc);
-	void					DIP				(D3DPRIMITIVETYPE pt, DWORD vtd, LPVOID v, DWORD vc, LPWORD i, DWORD ic);
-//	void					DIPS			(D3DPRIMITIVETYPE pt, DWORD vtd, LPD3DDRAWPRIMITIVESTRIDEDDATA va, DWORD vc, LPWORD i, DWORD ic);
-//	void					DPVB			(D3DPRIMITIVETYPE pt, LPDIRECT3DVERTEXBUFFER7 vb, DWORD sv, DWORD nv);
+	void			   		DP				(D3DPRIMITIVETYPE pt, CVertexStream* VS, DWORD vBase, DWORD pc);
+	void 					DIP				(D3DPRIMITIVETYPE pt, CVertexStream* vs, DWORD vBase, DWORD vc, CIndexStream* is, DWORD iBase, DWORD pc);
 
     // light&material
     IC void					LightEnable		(DWORD dwLightIndex, BOOL bEnable){

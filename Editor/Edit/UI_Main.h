@@ -56,15 +56,6 @@ protected:
 protected:
 	long m_StartTime;
 
-	FLvertexVec m_GridPoints;
-	WORDVec m_GridIndices;
-
-	void D3D_DrawSelectionRect();
-	void D3D_UpdateGrid();
-	void D3D_DrawGrid();
-	void D3D_DrawPivot();
-    void D3D_DrawAxis();
-
     void Redraw();
     void RealUpdateScene();
 protected:

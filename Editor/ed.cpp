@@ -173,7 +173,7 @@ USEUNIT("shared\Primitive.cpp");
 USEUNIT("shared\SharedPrimitive.cpp");
 USEOBJ("ed_debug\_math.obj");
 USELIB("lib\DX\d3d8.lib");
-USELIB("lib\DX\d3dx8.lib");
+USELIB("lib\DX\d3dx8d.lib");
 USEUNIT("edit\EditObject.cpp");
 //---------------------------------------------------------------------------
 #include "main.h"

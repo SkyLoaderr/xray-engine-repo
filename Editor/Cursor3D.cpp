@@ -89,8 +89,8 @@ void C3DCursor::Render(){
     //            UI->D3D_RenderNearer(0.0001);
                 Device.SetTransform(D3DTS_WORLD,precalc_identity);
 				Device.Shader.Set(Device.m_WireShader);
-                Device.DP(D3DPT_LINESTRIP,FVF::F_L,
-                    &(m_RenderBuffer.front()), m_RenderBuffer.size());
+///                Device.DP(D3DPT_LINESTRIP,FVF::F_L,
+///                    &(m_RenderBuffer.front()), m_RenderBuffer.size());
     //            UI->D3D_ResetNearer();
             }break;
             case csCross:{
@@ -109,7 +109,7 @@ void C3DCursor::Render(){
                 Device.RenderNearer(0.001);
                 Device.SetTransform(D3DTS_WORLD,precalc_identity);
 				Device.Shader.Set(Device.m_WireShader);
-                Device.DIP(D3DPT_LINELIST,FVF::F_L, pt, 4, CrossIndices, 4);
+///                Device.DIP(D3DPT_LINELIST,FVF::F_L, pt, 4, CrossIndices, 4);
                 Device.ResetNearer();
             }break;
             case csPoint:{
@@ -125,7 +125,7 @@ void C3DCursor::Render(){
                 Device.RenderNearer(0.001);
                 Device.SetTransform(D3DTS_WORLD,precalc_identity);
 				Device.Shader.Set(Device.m_WireShader);
-                Device.DP(D3DPT_POINTLIST,FVF::F_TL, pt, 5);
+///                Device.DP(D3DPT_POINTLIST,FVF::F_TL, pt, 5);
                 Device.ResetNearer();
             }break;
             }

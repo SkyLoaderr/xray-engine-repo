@@ -11,7 +11,6 @@
 #include "FS.h"
 #include "ui_main.h"
 #include "Frustum.h"
-//#include "Texturizer.h"
 #include "EditObject.h"
 #include "DPatch.h"
 #include "DetailObjects.h"

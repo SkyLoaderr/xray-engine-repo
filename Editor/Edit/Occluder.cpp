@@ -156,7 +156,7 @@ void COccluder::Render( Fmatrix& parent, ERenderPriority flag ){
         FLvertexIt l_it=V.begin();
         for(FvectorIt it=m_3DPoints.m_Points.begin(); it!=m_3DPoints.m_Points.end(); it++,l_it++) l_it->set(*it,C);
         Device.SetRS(D3DRS_CULLMODE,D3DCULL_NONE);
-        Device.DP( D3DPT_TRIANGLEFAN,FVF::F_L, V.begin(), V.size());
+///        Device.DP( D3DPT_TRIANGLEFAN,FVF::F_L, V.begin(), V.size());
         Device.SetRS(D3DRS_CULLMODE,D3DCULL_CCW);
     }
     if (flag==rpNormal){
@@ -175,7 +175,7 @@ void COccluder::Render( Fmatrix& parent, ERenderPriority flag ){
         FLvertexIt l_it=V.begin();
         for(FvectorIt it=m_3DPoints.m_Points.begin(); it!=m_3DPoints.m_Points.end(); it++,l_it++) l_it->set(*it,CB);
         V.push_back(V.front());
-        Device.DP( D3DPT_LINESTRIP,FVF::F_L, V.begin(), V.size());
+///        Device.DP( D3DPT_LINESTRIP,FVF::F_L, V.begin(), V.size());
         // points
         for(it=m_3DPoints.m_Points.begin(); it!=m_3DPoints.m_Points.end(); it++)
             DU::DrawCross(*it,0.025f,0.025f,0.025f,0.025f,0.025f,0.025f,CP,false);

@@ -78,10 +78,10 @@ void CPortal::Render( Fmatrix& parent, ERenderPriority flag ){
 		Device.RenderNearer(0.0002);
 		// render portal tris
         Device.Shader.Set	(Device.m_SelectionShader);
-		Device.DP			(D3DPT_TRIANGLEFAN, FVF::F_L, LV.begin(), LV.size());
+///		Device.DP			(D3DPT_TRIANGLEFAN, FVF::F_L, LV.begin(), LV.size());
 		// render portal edges
         Device.Shader.Set	(Device.m_WireShader);
-		Device.DIP			(D3DPT_LINELIST, FVF::F_L, LV.begin(), LV.size(), I.begin(),I.size());
+///		Device.DIP			(D3DPT_LINELIST, FVF::F_L, LV.begin(), LV.size(), I.begin(),I.size());
         Device.ResetNearer	();
         // render normal
         DU::DrawFaceNormal	(m_Center,m_Normal,0.5f,col.get());

@@ -118,7 +118,7 @@ void CDetailManager::RenderTexture(float alpha){
 	Device.Shader.Set(m_pBaseShader);
     Device.SetTransform(D3DTS_WORLD,precalc_identity);
     Device.SetRS(D3DRS_CULLMODE,D3DCULL_NONE);
-    Device.DP(D3DPT_TRIANGLEFAN,FVF::F_LIT, V, 4);
+///    Device.DP(D3DPT_TRIANGLEFAN,FVF::F_LIT, V, 4);
     Device.SetRS(D3DRS_CULLMODE,D3DCULL_CCW);
 }
 
@@ -251,7 +251,7 @@ void CDetailManager::RenderObjects(const Fvector& EYE)
             }
             // render objects
 			Device.SetTransform(D3DTS_WORLD,mXform);
-			Device.DIP(D3DPT_TRIANGLELIST,F_DOV,Object.m_Vertices.begin(),Object.m_Vertices.size(),Object.m_Indices.begin(),Object.m_Indices.size());
+///			Device.DIP(D3DPT_TRIANGLELIST,F_DOV,Object.m_Vertices.begin(),Object.m_Vertices.size(),Object.m_Indices.begin(),Object.m_Indices.size());
 		}
 
 		// Clean up
