@@ -39,8 +39,8 @@ void xrLoad(LPCSTR name)
 		fs->r				(&H,sizeof(hdrCFORM));
 		R_ASSERT			(CFORM_CURRENT_VERSION==H.version);
 		
-		fs					= F->open_chunk(1);
-		Fvector*	verts	= (Fvector*)F->pointer();
+		//fs					= F->open_chunk(1);
+		Fvector*	verts	= (Fvector*)fs->pointer();
 		CDB::TRI*	tris	= (CDB::TRI*)(verts+H.vertcount);
 		LevelLight.build	( verts, H.vertcount, tris, H.facecount );
 		fs->close			();
@@ -122,7 +122,7 @@ void xrLoad(LPCSTR name)
 		IReader				*O = 0;
 
 		R_ASSERT			(F->open_chunk(AIMAP_CHUNK_VERSION));
-		R_ASSERT			(F->r_u16() != AIMAP_VERSION);
+		R_ASSERT			(F->r_u16() == AIMAP_VERSION);
 
 		R_ASSERT			(F->open_chunk(AIMAP_CHUNK_BOX));
 		F->r				(&LevelBB,sizeof(LevelBB));
