@@ -79,8 +79,21 @@ function main()
 	planner:add_action		(action_id2,action2)
 	planner:add_action		(action_id3,action3)
 	
+	-- define goal
+	goal					= world_state()			
+	goal:add_condition		(world_property(property_id0,true))
+	goal:add_condition		(world_property(property_id1,true))
+	goal:add_condition		(world_property(property_id2,true))
+	goal:add_condition		(world_property(property_id3,true))
+	
+	-- setup goal
+	planner:set_goal_world_state(goal)
+	
+	-- update cycle
 	while true do
 		planner:update		(1000)
 		wait				(1000)
 	end
+	
+	-- the end
 end
