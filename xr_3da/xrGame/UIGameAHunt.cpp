@@ -139,7 +139,7 @@ void			CUIGameAHunt::OnFrame()
 				};
 			};
 
-			if (pCurActor)
+			if (pCurActor && !pCurBuyMenu->IsShown())
 			{
 				game_TeamState team0 = Game().teams[0];
 				game_TeamState team1 = Game().teams[1];

@@ -263,7 +263,8 @@ bool CUIGameDM::IR_OnKeyboardPress(int dik)
 
 				SetCurrentBuyMenu	();
 
-				SetBuyMenuItems		();
+				if (pCurBuyMenu && !pCurBuyMenu->IsShown())
+					SetBuyMenuItems		();
 
 				StartStopMenu(pCurBuyMenu);
 			}break;
@@ -507,6 +508,16 @@ void		CUIGameDM::SetBuyMenuItems		()
 	pCurBuyMenu->ClearSlots();
 	pCurBuyMenu->ClearRealRepresentationFlags();
 	//---------------------------------------------------------
+	xr_vector <s16>			TmpPresetItems;
+	PRESET_ITEMS_it		It = pCurPresetItems->begin();
+	PRESET_ITEMS_it		Et = pCurPresetItems->end();
+	for ( ; It != Et; ++It) 
+	{
+		TmpPresetItems.push_back(*It);
+	};
+	//---------------------------------------------------------
+	pCurBuyMenu->IgnoreMoney(true);
+
 	TIItemSet::const_iterator	I = pCurActor->inventory().m_all.begin();
 	TIItemSet::const_iterator	E = pCurActor->inventory().m_all.end();
 	pCurBuyMenu->IgnoreMoney(true);
@@ -514,12 +525,29 @@ void		CUIGameDM::SetBuyMenuItems		()
 	{
 		PIItem pItem = (*I);
 		if ((*I)->getDestroy() || (*I)->m_drop) continue;
-		pCurBuyMenu->SectionToSlot(*pItem->cNameSect(), true);
+		u8 SlotID, ItemID;
+		pCurBuyMenu->GetWeaponIndexByName(*pItem->cNameSect(), SlotID, ItemID);
+		if (SlotID == 0xff || ItemID == 0xff) continue;
+
+//		pCurBuyMenu->SectionToSlot(*pItem->cNameSect(), true);
+		pCurBuyMenu->SectionToSlot(SlotID, ItemID, true);
+		//-----------------------------------------------------
+		s16 BigID = (s16(SlotID) << 0x08) | s16(ItemID);
+		It = TmpPresetItems.begin();
+		Et = TmpPresetItems.end();
+		for ( ; It != Et; ++It) 
+		{
+			if (BigID == ((*It)& 0xff1f))
+			{
+				TmpPresetItems.erase(It);
+				break;
+			}
+		}
 	};
-	//---------------------------------------------------------
-	PRESET_ITEMS_it		It = pCurPresetItems->begin();
-	PRESET_ITEMS_it		Et = pCurPresetItems->end();
 	pCurBuyMenu->IgnoreMoney(false);
+	//---------------------------------------------------------
+	It = TmpPresetItems.begin();
+	Et = TmpPresetItems.end();
 	for ( ; It != Et; ++It) 
 	{
 		s16	ItemID = (*It);
@@ -527,5 +555,6 @@ void		CUIGameDM::SetBuyMenuItems		()
 		pCurBuyMenu->SectionToSlot(u8((ItemID&0xff00)>>0x08), u8(ItemID&0x00ff), false);
 	};
 	//---------------------------------------------------------
+	pCurBuyMenu->SetMoneyAmount(P->money_for_round);
 	pCurBuyMenu->CheckBuyAvailabilityInSlots();
 };

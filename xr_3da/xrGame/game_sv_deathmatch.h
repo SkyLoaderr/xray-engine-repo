@@ -77,6 +77,7 @@ protected:
 		s16					m_iM_TargetRival	;
 		s16					m_iM_TargetTeam		;
 		s16					m_iM_TargetSucceed	;
+		s16					m_iM_TargetSucceedAll	;
 
 		s16					m_iM_RoundWin		;
 		s16					m_iM_RoundLoose		;
@@ -111,7 +112,7 @@ public:
 	// Events
 	virtual		void				OnRoundStart			();										// старт раунда
 
-	virtual		void				OnTeamScore				(u32 /**team/**/)						{};		// команда выиграла
+	virtual		void				OnTeamScore				(u32 /**team/**/)						;		// команда выиграла
 	virtual		void				OnTeamsInDraw			()								{};		// ничья
 	virtual		void				OnPlayerHitPlayer		(u16 id_hitter, u16 id_hitted, NET_Packet& P); //игрок получил Hit
 

@@ -83,31 +83,40 @@ void	game_sv_ArtefactHunt::OnPlayerKillPlayer		(u32 id_killer, u32 id_killed)
 
 	ps_killed->flags				|=	GAME_PLAYER_FLAG_VERY_VERY_DEAD;
 	ps_killed->deaths				+=	1;
+
+	TeamStruct* pTeam		= GetTeamData(u8(ps_killer->team));
+
 	if (ps_killer == ps_killed || ps_killed->team == ps_killer->team)	
 	{
 		// By himself
 		ps_killer->kills			-=	1;
+
+		if (pTeam)
+		{
+			if (ps_killer == ps_killed)
+				ps_killer->money_for_round	=	ps_killer->money_for_round + pTeam->m_iM_KillSelf;
+			else
+				if (ps_killed->GameID == m_ArtefactBearerID)
+					ps_killer->money_for_round	=	ps_killer->money_for_round + pTeam->m_iM_TargetTeam;
+				else
+					ps_killer->money_for_round	=	ps_killer->money_for_round + pTeam->m_iM_KillTeam;
+		}
 	} else {
 		// Opponent killed - frag 
 		ps_killer->kills			+=	1;
+
+		if (pTeam)
+			if (ps_killed->GameID == m_ArtefactBearerID)
+				ps_killer->money_for_round	=	ps_killer->money_for_round + pTeam->m_iM_TargetRival;
+			else
+				ps_killer->money_for_round	=	ps_killer->money_for_round + pTeam->m_iM_KillRival;
+
 	}
-	/*
-	teams[ps_killer->team-1].score = 0;
-	u32		cnt = get_count();
-	for		(u32 it=0; it<cnt; ++it)	
-	{
-		// init
-		game_PlayerState*	ps	=	get_it	(it);
-		if (ps->team != ps_killer->team) continue;
-
-		teams[ps_killer->team-1].score += ps->kills;
-	};
-	*/
-
-//	if (fraglimit && (teams[ps_killer->team-1].score >= fraglimit) )OnFraglimitExceed();
-
 	// Send Message About Player Killed
 	SendPlayerKilledMessage(id_killer, id_killed);
+
+	if (pTeam)
+		if (ps_killer->money_for_round < pTeam->m_iM_Min) ps_killer->money_for_round = pTeam->m_iM_Min;
 
 	signal_Syncronize();
 }
@@ -388,6 +397,24 @@ void		game_sv_ArtefactHunt::OnArtefactOnBase		(u32 id_who)
 	//-----------------------------------------------
 	//add player's points
 	ps->kills += 5;
+
+	TeamStruct* pTeam		= GetTeamData(u8(ps->team));
+	if (pTeam)
+	{
+		ps->money_for_round = ps->money_for_round + pTeam->m_iM_TargetSucceed;
+
+		// Add money to players in this team
+		u32		cnt = get_count();
+		for		(u32 it=0; it<cnt; ++it)	
+		{
+			// init
+			game_PlayerState*	pstate	=	get_it	(it);
+			if (pstate->Skip || pstate == ps || pstate->team != ps->team) continue;		
+			
+			ps->money_for_round = ps->money_for_round + pTeam->m_iM_TargetSucceedAll;			
+		}
+	}
+
 	teams[ps->team-1].score++;
 	//-----------------------------------------------
 	//remove artefact from player

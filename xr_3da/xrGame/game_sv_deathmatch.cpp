@@ -43,6 +43,8 @@ void	game_sv_Deathmatch::OnRoundStart			()
 		//---------------------------------------
 		SetPlayersDefItems		(ps);
 		//---------------------------------------
+		Money_SetStart			(get_it_2_id(it));
+		//---------------------------------------
 
 		if (ps->Skip) continue;
 		SpawnActor(get_it_2_id(it), "spectator");
@@ -1130,6 +1132,7 @@ void	game_sv_Deathmatch::LoadTeamData			(char* caSection)
 		NewTeam.m_iM_TargetRival		= pSettings->r_s16(caSection, "target_rival");
 		NewTeam.m_iM_TargetTeam			= pSettings->r_s16(caSection, "target_team");
 		NewTeam.m_iM_TargetSucceed		= pSettings->r_s16(caSection, "target_succeed");
+		NewTeam.m_iM_TargetSucceedAll	= pSettings->r_s16(caSection, "target_succeed_all");
 
 		NewTeam.m_iM_RoundWin			= pSettings->r_s16(caSection, "round_win");
 		NewTeam.m_iM_RoundLoose			= pSettings->r_s16(caSection, "round_loose");
@@ -1259,3 +1262,22 @@ void	game_sv_Deathmatch::RemoveItemFromActor		(CSE_Abstract* pItem)
 	u_EventGen			(P,GE_DESTROY,pItem->ID);
 	Level().Send(P,net_flags(TRUE,TRUE));
 };
+
+void	game_sv_Deathmatch::OnTeamScore				(u32 Team)
+{
+	TeamStruct* pTeam		= GetTeamData(u8(Team));
+	if (!pTeam) return;
+	
+	u32		cnt = get_count();
+	for		(u32 it=0; it<cnt; ++it)	
+	{
+		// init
+		game_PlayerState*	ps	=	get_it	(it);
+		if (ps->Skip) continue;		
+
+		if (ps->team == s16(Team))
+			ps->money_for_round = ps->money_for_round + pTeam->m_iM_RoundWin;
+		else
+			ps->money_for_round = ps->money_for_round + pTeam->m_iM_RoundLoose;
+	}
+}
