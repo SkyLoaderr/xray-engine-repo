@@ -6,7 +6,7 @@
 #define AFX_FVISUAL_H__9ACFCFC1_8091_11D3_83D8_00C02610C34E__INCLUDED_
 #pragma once
 
-#include "fbasicvisual.h"
+#include "../fbasicvisual.h"
 
 class	Fvisual		: public IRender_Visual
 {
