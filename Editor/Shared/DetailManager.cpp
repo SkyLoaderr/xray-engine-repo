@@ -381,7 +381,7 @@ void CDetailManager::UpdateCache	(int limit)
 		D.type			= stReady;
 		
 		// Select polygons
-		XRC.BBoxMode		(BBOX_TRITEST);
+		XRC.BBoxMode		(0); // BBOX_TRITEST
 		XRC.BBoxCollide		(precalc_identity,pCreator->ObjectSpace.GetStaticModel(),precalc_identity,D.BB);
 		DWORD	triCount	= XRC.GetBBoxContactCount();
 		if (0==triCount)	continue;
