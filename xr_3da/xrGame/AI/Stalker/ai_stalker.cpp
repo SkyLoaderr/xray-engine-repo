@@ -44,8 +44,9 @@ CAI_Stalker::CAI_Stalker			()
 	m_dwLastRangeSearch				= 0;
 	m_dwRandomFactor				= 100;
 	m_dwInertion					= 20000;
-	m_tMovementType					= eMovementTypeStand;
+	m_dwParticularState				= -1;
 
+	m_tMovementType					= eMovementTypeStand;
 	m_tPathState					= ePathStateSearchNode;
 	m_tPathType						= ePathTypeDodge;
 	m_tStateType					= eStateTypeNormal;
@@ -140,6 +141,8 @@ void CAI_Stalker::Load				(LPCSTR section)
 	m_fMinMissFactor   				= pSettings->r_float(section,"MinMissFactor");
 	m_fMaxMissDistance 				= pSettings->r_float(section,"MaxMissDistance");
 	m_fMaxMissFactor				= pSettings->r_float(section,"MaxMissFactor");
+	if (pSettings->line_exist(section,"State"))
+		m_dwParticularState			= pSettings->r_u32(section,"State");
 
 	eye_fov							= pSettings->r_float(section,"eye_fov");
 	eye_range						= pSettings->r_float(section,"eye_range");

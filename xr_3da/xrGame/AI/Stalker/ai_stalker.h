@@ -73,6 +73,7 @@ private:
 	bool					m_bHammerIsClutched;
 	u32						m_dwRandomFactor;
 	u32						m_dwInertion;
+	u32						m_dwParticularState;
 	
 	// firing
 	bool					m_bFiring;
