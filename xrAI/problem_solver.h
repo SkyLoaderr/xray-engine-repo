@@ -24,11 +24,28 @@ public:
 	typedef CConditionState<_condition_type,_value_type>			CState;
 	typedef CState													_index_type;
 	typedef _operator_id_type										_edge_type;
-	typedef xr_map<_operator_id_type,COperator*>					OPERATOR_MAP;
-	typedef typename OPERATOR_MAP::const_iterator					const_iterator;
+//	typedef xr_map<_operator_id_type,COperator*>					OPERATOR_MAP;
+//	typedef typename OPERATOR_MAP::const_iterator					const_iterator;
+	struct SOperator {
+		_operator_id_type	m_operator_id;
+		COperator			*m_operator;
+
+		IC					SOperator(const _operator_id_type &operator_id, COperator *_operator) :
+								m_operator_id(operator_id),
+								m_operator(_operator)
+		{
+		}
+
+		bool				operator<(const _operator_id_type &operator_id) const
+		{
+			return			(m_operator_id < operator_id);
+		}
+	};
+	typedef xr_vector<SOperator>									OPERATOR_VECTOR;
+	typedef typename OPERATOR_VECTOR::const_iterator				const_iterator;
 
 protected:
-	OPERATOR_MAP				m_operators;
+	OPERATOR_VECTOR				m_operators;
 	CState						m_current_state;
 	CState						m_target_state;
 	_edge_type					m_current_operator;
@@ -47,7 +64,7 @@ public:
 	IC		void				solve				();
 	IC		const CState		&current_state		() const;
 	IC		const CState		&target_state		() const;
-	IC		const OPERATOR_MAP	&operators			() const;
+	IC		const OPERATOR_VECTOR &operators		() const;
 	// graph interface
 	IC		u8					get_edge_weight		(const _index_type	&vertex_index0,	const _index_type &vertex_index1,	const const_iterator	&i) const;
 	IC		bool				is_accessible		(const _index_type	&vertex_index) const;

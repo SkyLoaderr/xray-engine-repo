@@ -27,21 +27,23 @@ TEMPLATE_SPECIALIZATION
 CProblemSolverAbstract::~CProblemSolver					()
 {
 	while (!m_operators.empty())
-		remove_operator		((*m_operators.begin()).first);
+		remove_operator		(m_operators.back().m_operator_id);
 }
 
 TEMPLATE_SPECIALIZATION
 IC	void CProblemSolverAbstract::add_operator			(COperator *_operator, const _edge_type &operator_id)
 {
-	m_operators.insert		(std::make_pair(operator_id,_operator));
+	OPERATOR_VECTOR::iterator	I = std::lower_bound(m_operators.begin(), m_operators.end(),operator_id);
+	VERIFY					((I == m_operators.end()) || ((*I).m_operator_id != operator_id));
+	m_operators.insert		(I,SOperator(operator_id,_operator));
 }
 
 TEMPLATE_SPECIALIZATION
 IC	void CProblemSolverAbstract::remove_operator		(const _edge_type &operator_id)
 {
-	OPERATOR_MAP::iterator	I = m_operators.find(operator_id);
+	OPERATOR_VECTOR::iterator	I = std::lower_bound(m_operators.begin(), m_operators.end(),operator_id);
 	VERIFY					(m_operators.end() != I);
-	xr_delete				((*I).second);
+	xr_delete				((*I).m_operator);
 	m_operators.erase		(I);
 }
 
@@ -66,8 +68,8 @@ IC	void CProblemSolverAbstract::set_target_state		(const CState &state)
 TEMPLATE_SPECIALIZATION
 IC	void CProblemSolverAbstract::set_current_operator	(const _edge_type &operator_id)
 {
-	xr_map<_edge_type,COperator>::const_iterator	I = m_operators.find(operator_id);
-	VERIFY					(m_operators.end() != E);
+	OPERATOR_VECTOR::const_iterator	I = std::lower_bound(m_operators.begin(), m_operators.end(),operator_id);
+	VERIFY					((m_operators.end() != E) && ((*I)m_operator_id == operator_id));
 	m_current_operator		= operator_id;
 }
 
@@ -103,11 +105,11 @@ TEMPLATE_SPECIALIZATION
 IC	const typename CProblemSolverAbstract::_index_type &CProblemSolverAbstract::value(const _index_type &vertex_index, const_iterator &i) const
 {
 #ifdef INTENSIVE_MEMORY_USAGE
-	if ((*i).second->applicable(vertex_index))
-		return				((*i).second->apply(vertex_index,m_temp));
+	if ((*i).m_operator->applicable(vertex_index))
+		return				((*i).m_operator->apply(vertex_index,m_temp));
 #else
-	if ((*i).second->applicable(vertex_index,current_state()))
-		return				((*i).second->apply(vertex_index,current_state(),m_temp));
+	if ((*i).m_operator->applicable(vertex_index,current_state()))
+		return				((*i).m_operator->apply(vertex_index,current_state(),m_temp));
 #endif
 	else {
 		m_temp.clear		();
@@ -128,7 +130,7 @@ IC	void CProblemSolverAbstract::solve			()
 }
 
 TEMPLATE_SPECIALIZATION
-IC	const typename CProblemSolverAbstract::OPERATOR_MAP &CProblemSolverAbstract::operators	() const
+IC	const typename CProblemSolverAbstract::OPERATOR_VECTOR &CProblemSolverAbstract::operators	() const
 {
 	return					(m_operators);
 }

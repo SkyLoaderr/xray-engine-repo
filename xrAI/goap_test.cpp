@@ -10,9 +10,9 @@
 #include "problem_solver.h"
 #include "graph_engine.h"
 
-const u32 world_state_dimension = 8;
-const u32 min_operator_count	= 4;
-const u32 max_operator_count	= 8;
+const u32 world_state_dimension = 32;
+const u32 min_operator_count	= 16;
+const u32 max_operator_count	= 32;
 typedef u32																		_condition_type;
 typedef u32																		_value_type;
 typedef u32																		_operator_id_type;
@@ -27,7 +27,7 @@ typedef CSProblemSolver::CState													_index_type;
 typedef SBaseParameters<_dist_type,_index_type,_iteration_type>	CBaseParameters;
 CRandom								random;
 
-CState random_condition(int _max = 100, int _min = 20, int __max = 2, int __min = 1)
+CState random_condition(int _max = 100, int _min = 10, int __max = 2, int __min = 1)
 {
 	CState		result;
 	for (u32 i=0; i<world_state_dimension; ++i)
@@ -96,29 +96,29 @@ void test_goap	()
 
 		path.clear						();
 
-//		if (ii == 137) {
-//			ii = ii;
-//			Msg							("Problem %5d (try %I64d, %f sec)",jj,ii,CPU::cycles2seconds*(CPU::GetCycleCount() - start));
-//			++jj;
-//			show_condition				(problem_solver.current_state());
-//			show_condition				(problem_solver.target_state(),1);
-//
-//			{
-//				CSProblemSolver::OPERATOR_MAP::const_iterator	I = problem_solver.operators().begin();
-//				CSProblemSolver::OPERATOR_MAP::const_iterator	E = problem_solver.operators().end();
-//				for ( ; I != E; ++I)
-//					show_operator			(*(*I).second,(*I).first);
-//			}
-//		}
+		if (ii == 137) {
+			ii = ii;
+			Msg							("Problem %5d (try %I64d, %f sec)",jj,ii,CPU::cycles2seconds*(CPU::GetCycleCount() - start));
+			++jj;
+			show_condition				(problem_solver.current_state());
+			show_condition				(problem_solver.target_state(),1);
+
+			{
+				CSProblemSolver::const_iterator	I = problem_solver.operators().begin();
+				CSProblemSolver::const_iterator	E = problem_solver.operators().end();
+				for ( ; I != E; ++I)
+					show_operator			(*(*I).m_operator,(*I).m_operator_id);
+			}
+		}
 #ifdef INTENSIVE_MEMORY_USAGE
 		graph_engine->search			(problem_solver,problem_solver.current_state(),problem_solver.target_state(),&path,CBaseParameters());
 #else
 		graph_engine->search			(problem_solver,CState(),problem_solver.target_state(),&path,CBaseParameters());
 #endif
-//		if (ii == 137) {
-//			Msg							("Finished %5d (try %I64d, %f sec, %d vertices)",jj,ii,CPU::cycles2seconds*(CPU::GetCycleCount() - start),graph_engine->solver_algorithm().data_storage().get_visited_node_count());
-//			FlushLog					();
-//		}
+		if (ii == 137) {
+			Msg							("Finished %5d (try %I64d, %f sec, %d vertices)",jj,ii,CPU::cycles2seconds*(CPU::GetCycleCount() - start),graph_engine->solver_algorithm().data_storage().get_visited_node_count());
+			FlushLog					();
+		}
 
 		xr_vector<_edge_type>::iterator	I = path.begin(), B = I;
 		xr_vector<_edge_type>::iterator	E = path.end();
@@ -136,10 +136,10 @@ void test_goap	()
 		show_condition					(problem_solver.target_state(),1);
 
 		{
-			CSProblemSolver::OPERATOR_MAP::const_iterator	I = problem_solver.operators().begin();
-			CSProblemSolver::OPERATOR_MAP::const_iterator	E = problem_solver.operators().end();
+			CSProblemSolver::const_iterator	I = problem_solver.operators().begin();
+			CSProblemSolver::const_iterator	E = problem_solver.operators().end();
 			for ( ; I != E; ++I)
-				show_operator			(*(*I).second,(*I).first);
+				show_operator			(*(*I).m_operator,(*I).m_operator_id);
 		}
 
 		Msg								("Solution : ");
@@ -147,14 +147,16 @@ void test_goap	()
 		CState							world_state = problem_solver.current_state(), temp;
 		show_condition					(world_state);
 		for ( ; I != E; ++I) {
-			CSProblemSolver::OPERATOR_MAP::const_iterator	i = problem_solver.operators().find(*I);
-			show_operator				(*(*i).second,(*i).first);
+			CSProblemSolver::const_iterator	i = std::lower_bound(problem_solver.operators().begin(),problem_solver.operators().end(),*I);
+			VERIFY						(i != problem_solver.operators().end());
+			VERIFY						((*i).m_operator_id == *I);
+			show_operator				(*(*i).m_operator,(*i).m_operator_id);
 #ifdef INTENSIVE_MEMORY_USAGE
-			VERIFY						((*i).second->applicable(world_state));
-			world_state					= (*i).second->apply(world_state,temp);
+			VERIFY						((*i).m_operator->applicable(world_state));
+			world_state					= (*i).m_operator->apply(world_state,temp);
 #else
-			VERIFY						((*i).second->applicable(world_state,problem_solver.current_state()));
-			world_state					= (*i).second->apply(world_state,problem_solver.current_state(),temp);
+			VERIFY						((*i).m_operator->applicable(world_state,problem_solver.current_state()));
+			world_state					= (*i).m_operator->apply(world_state,problem_solver.current_state(),temp);
 #endif
 			show_condition				(world_state);
 		}

@@ -66,7 +66,7 @@ IC	const _index_type &CSolverPathManager::get_value(const_iterator &i) const
 TEMPLATE_SPECIALIZATION
 IC	const typename CSolverPathManager::_edge_type &CSolverPathManager::edge		(const_iterator &i) const
 {
-	return					((*i).first);
+	return					((*i).m_operator_id);
 }
 
 TEMPLATE_SPECIALIZATION

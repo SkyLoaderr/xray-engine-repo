@@ -18,7 +18,7 @@
 TEMPLATE_SPECIALIZATION
 IC	CConditionStateAbstract::CConditionState	()
 {
-	m_conditions.reserve	(128);
+	m_conditions.reserve	(8);
 }
 
 TEMPLATE_SPECIALIZATION
