@@ -63,6 +63,7 @@ _ParticleState& _GetPState()
 
 	return __ps;
 }
+
 // Get a pointer to the particles in gp memory
 ParticleGroup* _GetGroupPtr(int p_group_num)
 {

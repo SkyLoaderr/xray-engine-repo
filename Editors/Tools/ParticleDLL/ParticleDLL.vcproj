@@ -103,13 +103,13 @@
 				Name="VCLinkerTool"
 				AdditionalOptions="/MACHINE:I386"
 				AdditionalDependencies="opengl32.lib odbc32.lib odbccp32.lib"
-				OutputFile="x:\ParticleDLL.dll"
+				OutputFile="$(OutDir)\ParticleDLL.dll"
 				LinkIncremental="2"
 				SuppressStartupBanner="TRUE"
 				GenerateDebugInformation="TRUE"
-				ProgramDatabaseFile=".\Debug/ParticleDLL.pdb"
+				ProgramDatabaseFile="$(OutDir)\ParticleDLL.pdb"
 				SubSystem="2"
-				ImportLibrary=".\Debug/ParticleDLL.lib"/>
+				ImportLibrary="$(OutDir)\ParticleDLL.lib"/>
 			<Tool
 				Name="VCMIDLTool"
 				PreprocessorDefinitions="_DEBUG"
@@ -191,12 +191,6 @@
 						Name="VCCLCompilerTool"
 						UsePrecompiledHeader="3"/>
 				</FileConfiguration>
-			</File>
-			<File
-				RelativePath=".\general.h">
-			</File>
-			<File
-				RelativePath="p_vector.h">
 			</File>
 			<File
 				RelativePath=".\system.cpp">

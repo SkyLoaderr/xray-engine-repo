@@ -11,7 +11,6 @@
 
 #include <xrCore.h>
 
-#include "p_vector.h"
 #include "psystem.h"
 
 #ifdef __BORLANDC__
