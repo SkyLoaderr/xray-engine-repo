@@ -25,7 +25,7 @@ void FLOD::Load			(LPCSTR N, IReader *data, u32 dwFlags)
 	}
 
 	// VS
-	hGeom.create		(F_HW, RCache.Vertex.Buffer(), RCache.QuadIB);
+	geom.create			(F_HW, RCache.Vertex.Buffer(), RCache.QuadIB);
 
 	// lod correction
 	Fvector3			S;
@@ -68,14 +68,14 @@ void FLOD::Render		(float LOD		)
 	// Fill VB
 	_face&		F					= facets[best_id];
 	u32			vOffset				= 0;
-	_hw*		V					= (_hw*) RCache.Vertex.Lock(4,hGeom->vb_stride,vOffset);
+	_hw*		V					= (_hw*) RCache.Vertex.Lock(4,geom->vb_stride,vOffset);
 	V[0].set	(F.v[0].v,F.N,F.v[0].c_rgb_hemi,F.v[0].t.x,F.v[0].t.y);
 	V[1].set	(F.v[1].v,F.N,F.v[1].c_rgb_hemi,F.v[1].t.x,F.v[1].t.y);
 	V[2].set	(F.v[2].v,F.N,F.v[2].c_rgb_hemi,F.v[2].t.x,F.v[2].t.y);
 	V[3].set	(F.v[3].v,F.N,F.v[3].c_rgb_hemi,F.v[3].t.x,F.v[3].t.y);
-	RCache.Vertex.Unlock			(4,hGeom->vb_stride);
+	RCache.Vertex.Unlock			(4,geom->vb_stride);
 
 	// Draw IT
-	RCache.set_Geometry		(hGeom);
+	RCache.set_Geometry		(geom);
 	RCache.Render			(D3DPT_TRIANGLEFAN,vOffset,2);
 }

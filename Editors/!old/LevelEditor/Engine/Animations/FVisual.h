@@ -14,7 +14,7 @@ public:
 	struct _mesh	
 	{
 		// format
-		ref_geom					hGeom;
+		ref_geom					geom;
 
 		// verts
 		IDirect3DVertexBuffer9*		pVertices;
@@ -27,8 +27,8 @@ public:
 		u32							iCount;
 		u32							dwPrimitives;
 
-		_mesh()					{ pVertices=0; pIndices=0;					}
-		~_mesh()				{ _RELEASE(pVertices); _RELEASE(pIndices);	}
+		_mesh()						{ pVertices=0; pIndices=0;					}
+		~_mesh()					{ _RELEASE(pVertices); _RELEASE(pIndices);	}
 	};
 	_mesh						m_base	;
 	_mesh						m_fast	;	

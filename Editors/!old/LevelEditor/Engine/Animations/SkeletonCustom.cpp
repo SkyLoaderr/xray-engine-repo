@@ -157,22 +157,11 @@ void CBoneData::CalculateM2B(const Fmatrix& parent)
     m2b_transform.invert	();            
 }
 
-CSkeletonX* CKinematics::LL_GetChild(u32 idx)
+CSkeletonX* CKinematics::LL_GetChild	(u32 idx)
 {
-	IRender_Visual*	V = children[idx];
-	CSkeletonX*		B = NULL;
-	switch (V->Type){
-		case MT_SKELETON_GEOMDEF_PM:{
-			CSkeletonX_PM*	X = (CSkeletonX_PM*)V;
-			B = (CSkeletonX*)X;
-									}break;
-		case MT_SKELETON_GEOMDEF_ST:{
-			CSkeletonX_ST*	X = (CSkeletonX_ST*)V;
-			B = (CSkeletonX*)X;
-									}break;
-		default: NODEFAULT;
-	}
-	return B;
+	IRender_Visual*	V	= children[idx];
+	CSkeletonX*		B	= dynamic_cast<CSkeletonX*>(V);
+	return			B	;
 }
 
 void	CKinematics::Load(const char* N, IReader *data, u32 dwFlags)

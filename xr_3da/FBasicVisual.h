@@ -23,16 +23,16 @@ class	ENGINE_API				IRender_Visual
 {
 public:
 #ifdef _EDITOR
-    ogf_desc					desc;
+    ogf_desc					desc		;
 #endif
 #ifdef DEBUG
-	shared_str					dbg_name;
+	shared_str					dbg_name	;
 #endif
 public:
 	// Common data for rendering
-	u32							Type	;				// visual's type
-	vis_data					vis		;				// visibility-data
-	ref_shader					shader	;				// pipe state, shared
+	u32							Type		;				// visual's type
+	vis_data					vis			;				// visibility-data
+	ref_shader					shader		;				// pipe state, shared
 
 	virtual void				Render					(float LOD)		{};		// LOD - Level Of Detail  [0..1], Ignored
 	virtual void				Render_Fast				(float LOD)		{};		// LOD - Level Of Detail  [0..1], Ignored

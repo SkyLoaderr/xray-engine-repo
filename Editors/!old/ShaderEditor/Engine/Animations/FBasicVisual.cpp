@@ -16,9 +16,7 @@
 IRender_Visual::IRender_Visual		()
 {
 	Type				= 0;
-	hShader				= 0;
-	hGeom				= 0;
- 
+	shader				= 0;
 	vis.clear			();
 }
 

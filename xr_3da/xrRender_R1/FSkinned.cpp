@@ -10,8 +10,7 @@
 #pragma warning(default:4995)
 
 #include "Render.h"
-#include "SkeletonX.h"
-#include "SkeletonCustom.h"
+#include "FSkinned.h"
 #include "fmesh.h"
 #include "xrCPU_Pipe.h"
 

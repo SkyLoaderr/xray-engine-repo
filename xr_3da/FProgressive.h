@@ -7,9 +7,9 @@
 #pragma once
 
 #include "FVisual.h"
-struct ENGINE_API FSlideWindowItem;
+struct	FSlideWindowItem;
 
-class	ENGINE_API		FProgressive : public Fvisual
+class	FProgressive	: public Fvisual
 {
 protected:
 	FSlideWindowItem*	pSWI		;
