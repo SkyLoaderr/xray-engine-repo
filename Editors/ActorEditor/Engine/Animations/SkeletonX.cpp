@@ -121,9 +121,9 @@ void CSkeletonX::_Load(const char* N, IReader *data, u32& dwVertCount)
 	xr_set<u32>		bids;
 
 	// Load vertices
-	R_ASSERT(data->find_chunk(OGF_VERTICES));
+	R_ASSERT	(data->find_chunk(OGF_VERTICES));
 			
-	u32 dwVertType,size,it,bpv=0;
+	u32			dwVertType,size,it,bpv=0;
 	dwVertType	= data->r_u32(); 
 	dwVertCount	= data->r_u32();
 
