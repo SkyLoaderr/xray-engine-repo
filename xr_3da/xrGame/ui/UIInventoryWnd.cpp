@@ -350,7 +350,11 @@ bool CUIInventoryWnd::ToSlot()
 	if (OUTFIT_SLOT == item_slot) UndressOutfit();
 
 	// Убираем текущую вещь в слоте, если это не одежда, и текущая вещь и вешь в слоте не одно и то же
-	if (OUTFIT_SLOT != item_slot && item_slot<SLOTS_NUM )
+	bool bGrenadeSlotAllow =	(GRENADE_SLOT==item_slot && (GetInventory()->ItemFormSlot(GRENADE_SLOT)==NULL) ) ||
+								(GRENADE_SLOT!=item_slot);
+	if (OUTFIT_SLOT!=item_slot	&& 
+		bGrenadeSlotAllow		&&
+		item_slot<SLOTS_NUM )
 	{
 		DRAG_DROP_LIST &DDList = UITopList[item_slot].GetDragDropItemsList();
 
