@@ -65,9 +65,9 @@ void CAI_Rat::HitSignal(float amount, Fvector& vLocalDir, CObject* who)
 		if (Random.randI(2))
 			return;
 		pSounds->PlayAtPos		(S,this,vPosition);
+		r_torso_target.pitch = 0;
 	}
 	if (g_Health() - amount < 0) {
-		r_torso_target.pitch = 0;
 		if ((m_tpCurrentGlobalAnimation) && (!m_tpCurrentGlobalBlend->playing))
 			if (m_tpCurrentGlobalAnimation != m_tRatAnimations.tNormal.tGlobal.tpaDeath[0])
 				m_tpCurrentGlobalBlend = PKinematics(pVisual)->PlayCycle(m_tpCurrentGlobalAnimation = m_tRatAnimations.tNormal.tGlobal.tpaDeath[::Random.randI(0,2)]);

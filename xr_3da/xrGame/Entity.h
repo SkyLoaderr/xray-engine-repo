@@ -98,6 +98,7 @@ public:
 	CMovementControl		Movement;
 	EVENT					m_tpEventSay;
 	bool					m_bMobility;
+	float					m_fMorale;
 public:
 	// General
 	CEntityAlive			();

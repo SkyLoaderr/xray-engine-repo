@@ -115,7 +115,9 @@ void CEntity::Load		(LPCSTR section)
 
 	setVisible			(FALSE);
 	CLS_ID				= CLSID_ENTITY;
-	fHealth				= fArmor = 100;
+	
+	m_fMaxHealthValue = fHealth = pSettings->ReadFLOAT(section,"health");
+	//fHealth				= fArmor = 100;
 
 	// Team params
 	id_Team = -1; if (pSettings->LineExists(section,"team"))	id_Team		= pSettings->ReadINT	(section,"team");
@@ -141,7 +143,7 @@ BOOL CEntity::net_Spawn		(LPVOID DC)
 	else					G.Members.push_back	(this);
 	
 	// Initialize variables
-	fHealth					= 100;
+	//fHealth					= 100;
 	fArmor					= 0;
 	
 	Engine.Sheduler.Unregister	(this);
@@ -222,7 +224,7 @@ void CEntityAlive::Load		(LPCSTR section)
 	// BOX activate
 	Movement.ActivateBox	(0);
 	
-	m_fMaxHealthValue = fHealth = pSettings->ReadFLOAT(section,"health");
+	m_fMorale = 66.f;
 }
 
 BOOL CEntityAlive::net_Spawn	(LPVOID DC)
