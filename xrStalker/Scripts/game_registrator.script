@@ -1,6 +1,5 @@
 
 if (editor() == false) and (user_name ~= nil and user_name() == "Andy") then
---	module	("ce_new_game_dm")
 	module	("game_last")
    module   ("game_last_cl")
 end
@@ -12,7 +11,6 @@ function register(object_factory)
 	if(user_name == nil or user_name() ~= "Andy") then return end
 	
 	if (editor() == false) then
-		object_factory:register ("ce_new_game_dm.C_new_game_sv_Deathmatch","SV_NEWDM","new_game_sv_Deathmatch")
 		object_factory:register ("game_last.game_sv_LastStanding","SV_LAST","game_sv_LastStanding")
 		object_factory:register ("game_last_cl.game_cl_LastStanding","CL_LAST","game_cl_LastStanding")
 	

@@ -9,11 +9,10 @@ game_types={
 		GAME_CS 						= 5,
 		GAME_TEAMDEATHMATCH = 6,
 		GAME_ARTEFACTHUNT 	= 7,
-		GAME_DUMMY					=255,
 		
 		--script game types
-		GAME_NEWDM 					= 1000,
-		GAME_LASTSTANDING     =1001
+		GAME_LASTSTANDING     =100,
+		GAME_DUMMY					=255--max(unsigned8)
 }
 
 
