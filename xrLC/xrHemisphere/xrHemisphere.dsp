@@ -98,5 +98,9 @@ SOURCE=.\StdAfx.h
 
 SOURCE=.\xrHemisphere.cpp
 # End Source File
+# Begin Source File
+
+SOURCE=.\xrHemisphere.h
+# End Source File
 # End Target
 # End Project
