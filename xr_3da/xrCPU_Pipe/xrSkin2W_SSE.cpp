@@ -81,7 +81,8 @@ void __stdcall xrSkin2W_SSE(vertRender*		D,
 							vertBoned2W*	S,
 							u32				vCount,
 							CBoneInstance*	Bones) 
-{__asm
+{
+	__asm {
 // ------------------------------------------------------------------
 	mov			ecx,vCount		; ecx = vCount
 // ------------------------------------------------------------------
@@ -111,7 +112,7 @@ void __stdcall xrSkin2W_SSE(vertRender*		D,
 // ------------------------------------------------------------------
 // preparing data for lerps
 // ------------------------------------------------------------------
-	movss		xmm5,DOWRD PTR [esi]S.w			; xmm5 = ?.? | ?.? | ?.? | w
+	movss		xmm5,DWORD PTR [esi]S.w			; xmm5 = ?.? | ?.? | ?.? | w
 	shufps		xmm5,xmm5,00000000b				; xmm5 = w | w | w | w
 // ------------------------------------------------------------------
 // transform tiny m 0
@@ -250,4 +251,5 @@ void __stdcall xrSkin2W_SSE(vertRender*		D,
 	dec			ecx						; ecx = ecx - 1
 	jnz			new_dot					; ecx==0 ? goto new_dot : exit
 // ------------------------------------------------------------------
+	}
 }

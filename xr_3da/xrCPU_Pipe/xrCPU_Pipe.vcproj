@@ -352,6 +352,9 @@
 			<File
 				RelativePath=".\xrSkin1W_SSE.cpp">
 			</File>
+			<File
+				RelativePath=".\xrSkin2W_SSE.cpp">
+			</File>
 		</Filter>
 		<Filter
 			Name="Generic x86"
