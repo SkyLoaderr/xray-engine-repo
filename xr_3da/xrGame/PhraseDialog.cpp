@@ -15,6 +15,7 @@ SPhraseDialogData::SPhraseDialogData ()
 {
 	m_PhraseGraph.clear();
 	m_eDialogType = eDialogTypeMax;
+	m_iPriority = 0;
 }
 
 SPhraseDialogData::~SPhraseDialogData ()
@@ -179,6 +180,11 @@ LPCSTR CPhraseDialog::DialogCaption()
 }
 
 
+int	 CPhraseDialog::Priority()
+{
+	return data()->m_iPriority;
+}
+
 
 //инициализация диалога
 //если диалог с таким id раньше не использовался
@@ -214,6 +220,8 @@ void CPhraseDialog::load_shared	(LPCSTR)
 	int pda_dialog = uiXml.ReadAttribInt(dialog_node, "pda", 0);
 	if (1 == pda_dialog) 
 		data()->m_eDialogType = eDialogTypePDA;
+
+	data()->m_iPriority = uiXml.ReadAttribInt(dialog_node, "priority", 0);
 
 	//заголовок 
 	data()->m_sCaption = uiXml.Read(dialog_node, "caption", 0, NULL);

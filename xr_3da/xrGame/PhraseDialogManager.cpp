@@ -51,8 +51,18 @@ void CPhraseDialogManager::SayPhrase(DIALOG_SHARED_PTR& phrase_dialog,
 }
 
 
+
+static bool dialog_priority (DIALOG_SHARED_PTR dialog1, DIALOG_SHARED_PTR dialog2)
+{
+	if(dialog1->Priority() > dialog2->Priority())
+		return true;
+	else
+		return false;
+}
+
 void CPhraseDialogManager::UpdateAvailableDialogs(CPhraseDialogManager* partner)
 {
+	std::sort(m_AvailableDialogs.begin(), m_AvailableDialogs.end(), dialog_priority);
 }
 
 bool CPhraseDialogManager::AddAvailableDialog(PHRASE_DIALOG_ID dialog_id, CPhraseDialogManager* partner)

@@ -34,6 +34,10 @@ struct SPhraseDialogData : CSharedResource
 	CPhraseScript m_PhraseScript;
 
 	EDialogType m_eDialogType;
+	
+	//произвольное число - приоритет диалога (0 по умолчанию), может быть отрицательным
+	//в окне выбора у актера диалоги будут сортироваться по этому значению от меньшего (снизу) к большему (сверху)
+	int	m_iPriority;
 };
 
 DEFINE_VECTOR(CPhrase*, PHRASE_VECTOR, PHRASE_VECTOR_IT);
@@ -92,6 +96,7 @@ public:
 
 	//заголовок, диалога, если не задан, то 0-я фраза
 	virtual LPCSTR		DialogCaption	();
+	virtual int			Priority		();
 
 
 	virtual bool		IsFinished		()	const {return m_bFinished;}
