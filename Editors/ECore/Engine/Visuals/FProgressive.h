@@ -13,6 +13,7 @@ class ENGINE_API FProgressive : public Fvisual
 {
 protected:
 	FSlideWindowItem*	pSWI;
+	u32					last_lod;
 public:
     					FProgressive();
 	virtual 			~FProgressive();

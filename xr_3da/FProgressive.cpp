@@ -17,6 +17,7 @@
 FProgressive::FProgressive	() : Fvisual()
 {
 	pSWI			= 0;
+	last_lod		= 0;
 }
 
 FProgressive::~FProgressive	()
@@ -55,12 +56,16 @@ void FProgressive::Load		(const char* N, IReader *data, u32 dwFlags)
 
 void FProgressive::Render	(float LOD)
 {
-	clamp					(LOD,0.f,1.f);
-	int lod_id				= iFloor((1.f-LOD)*float(pSWI->count-1)+0.5f);
-	VERIFY					(lod_id>=0 && lod_id<int(pSWI->count));
-	FSlideWindow& SW		= pSWI->sw[lod_id];
-	RCache.set_Geometry		(hGeom);
-	RCache.Render			(D3DPT_TRIANGLELIST,vBase,0,SW.num_verts,iBase+SW.offset,SW.num_tris);
+	int lod_id		= last_lod;
+	if (LOD>=0.f){
+		clamp		(LOD,0.f,1.f);
+		lod_id		= iFloor((1.f-LOD)*float(pSWI->count-1)+0.5f);
+		last_lod	= lod_id;
+	}
+	VERIFY			(lod_id>=0 && lod_id<int(pSWI->count));
+	FSlideWindow& SW= pSWI->sw[lod_id];
+	RCache.set_Geometry(hGeom);
+	RCache.Render	(D3DPT_TRIANGLELIST,vBase,0,SW.num_verts,iBase+SW.offset,SW.num_tris);
 }
 
 #define PCOPY(a)	a = pFrom->a

@@ -9,8 +9,6 @@ using namespace		R_dsgraph;
 
 extern float		r_ssaDISCARD;
 extern float		r_ssaDONTSORT;
-extern float		r_ssaLOD_A;
-extern float		r_ssaLOD_B;
 extern float		r_ssaHZBvsTEX;
 extern float		g_fLOD, g_fFarSq;
 

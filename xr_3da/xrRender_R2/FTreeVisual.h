@@ -54,6 +54,7 @@ class FTreeVisual_PM :	public FTreeVisual
 	typedef FTreeVisual inherited;
 private:
 	FSlideWindowItem*	pSWI;
+	u32					last_lod;
 public:
 					FTreeVisual_PM	(void);
 	virtual			~FTreeVisual_PM	(void);

@@ -178,8 +178,12 @@ void CSkeletonX_ST::Copy	(IRender_Visual *P)
 //////////////////////////////////////////////////////////////////////
 void CSkeletonX_PM::Render	(float LOD) 
 {
-	clamp					(LOD,0.f,1.f);
-	int lod_id				= iFloor((1.f-LOD)*float(pSWI->count-1)+0.5f);
+	int lod_id				= inherited1::last_lod;
+	if (LOD>=0.f){
+		clamp				(LOD,0.f,1.f);
+		lod_id				= iFloor((1.f-LOD)*float(pSWI->count-1)+0.5f);
+		inherited1::last_lod= lod_id;
+	}
 	VERIFY					(lod_id>=0 && lod_id<int(pSWI->count));
 	FSlideWindow& SW		= pSWI->sw[lod_id];
 	_Render					(hGeom,SW.num_verts,SW.offset,SW.num_tris);

@@ -177,6 +177,7 @@ void FTreeVisual_ST::Copy		(IRender_Visual *pSrc)
 FTreeVisual_PM::FTreeVisual_PM(void)
 {
 	pSWI						= 0;
+	last_lod					= 0;
 }
 FTreeVisual_PM::~FTreeVisual_PM(void)
 {
@@ -197,10 +198,13 @@ void FTreeVisual_PM::Load		(const char* N, IReader *data, u32 dwFlags)
 void FTreeVisual_PM::Render		(float LOD)
 {
 	inherited::Render			(LOD);
-	// RCache.set_xform_world	(xform);
-	clamp						(LOD,0.f,1.f);
-	int lod_id					= iFloor((1.f-LOD)*float(pSWI->count-1)+0.5f);
-//	lod_id = pSWI->count-1;
+	int lod_id					= last_lod;
+	if (LOD>=0.f){
+//		LOD						*= lod_factor;
+		clamp					(LOD,0.f,1.f);
+		lod_id					= iFloor((1.f-LOD)*float(pSWI->count-1)+0.5f);
+		last_lod				= lod_id;
+	}
 	VERIFY						(lod_id>=0 && lod_id<int(pSWI->count));
 	FSlideWindow& SW			= pSWI->sw[lod_id];
 	RCache.set_Geometry			(hGeom);

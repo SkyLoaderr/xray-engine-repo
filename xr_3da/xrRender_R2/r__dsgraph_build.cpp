@@ -320,7 +320,8 @@ void CRender::add_leafs_Static(IRender_Visual *pVisual)
 		{
 			FLOD		* pV	= (FLOD*) pVisual;
 			float		D;
-			float		ssa		= CalcSSA	(D,pV->vis.sphere.P,pV);
+			float		ssa		= CalcSSA(D,pV->vis.sphere.P,pV);
+			ssa					*= pV->lod_factor;
 			if (ssa<r_ssaLOD_A)
 			{
 				mapLOD_Node*	N	= mapLOD.insertInAnyWay(D);
