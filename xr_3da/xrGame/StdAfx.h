@@ -9,7 +9,7 @@
 #include "clsid_game.h"
 
 // #pragma warning(disable:4201)
-#include "..\igame_persistant.h"
+#include "..\igame_persistent.h"
 #include "..\igame_level.h"
 #include "..\xr_object.h"
 #include "..\sound.h"

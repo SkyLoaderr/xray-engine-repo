@@ -8,7 +8,7 @@
 #ifdef _EDITOR
 	#include "ui_tools.h"
 #else
-	#include "igame_persistant.h"
+	#include "igame_persistent.h"
 	#include "environment.h"
 	#include "xr_effsun.h"
 #endif
