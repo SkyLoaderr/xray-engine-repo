@@ -29,6 +29,7 @@ void UIScriptWnd::script_register(lua_State *L)
 		.def("AddCallback",		(void(UIScriptWnd::*)(LPCSTR, s16, const luabind::functor<void>&))UIScriptWnd::AddCallback)
 		.def("AddCallback",		(void(UIScriptWnd::*)(LPCSTR, s16, const luabind::object&, LPCSTR))UIScriptWnd::AddCallback)
 
+		.def("Register",		&UIScriptWnd::Register)
 		.def("test",			&UIScriptWnd::test)
 
 		.def("GetButton",		(CUIButton* (UIScriptWnd::*)(LPCSTR)) UIScriptWnd::GetControl<CUIButton>)

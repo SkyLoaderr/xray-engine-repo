@@ -31,6 +31,10 @@ UIScriptWnd::~UIScriptWnd()
 {
 	 delete_data(m_callbacks);
 }
+void UIScriptWnd::Register			(CUIWindow* pChild)
+{
+	pChild->SetMessageTarget(this);
+}
 
 void UIScriptWnd::SendMessage(CUIWindow* pWnd, s16 msg, void* pData)
 {

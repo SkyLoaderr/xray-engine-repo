@@ -164,9 +164,10 @@ public:
 	void SetAutoDelete(bool auto_delete) {m_bAutoDelete = auto_delete;}
 
 	// Name of the window
-	ref_str WindowName() { return m_windowName; }
-	void	SetWindowName(LPCSTR wn) { m_windowName = wn; }
-	LPCSTR	WindowName_script() {return *m_windowName;}
+	const ref_str	WindowName() const { return m_windowName; }
+	void			SetWindowName(LPCSTR wn) { m_windowName = wn; }
+	LPCSTR			WindowName_script() {return *m_windowName;}
+	CUIWindow*		FindChild(const ref_str name);
 protected:
 	ref_str		m_windowName;
 	//список дочерних окон

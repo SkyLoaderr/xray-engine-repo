@@ -22,6 +22,7 @@ protected:
 			bool				Load				(LPCSTR xml_name);
 
 public:
+			void				Register			(CUIWindow* pChild);
 								UIScriptWnd			();
 	virtual						~UIScriptWnd		();
 			void				AddCallback			(LPCSTR control_id, s16 event, const luabind::functor<void> &lua_function);
@@ -31,13 +32,12 @@ public:
 
 template<typename T>
 T*	GetControl(LPCSTR name){
-	ref_str n = name;
-	WINDOW_LIST_it it = m_ChildWndList.begin();
-	for(; it!=m_ChildWndList.end(); ++it)
-		if( (*it)->WindowName()== n ){
-			return dynamic_cast<T*>(*it);
-		}
-	return NULL;
+		ref_str n = name;
+		CUIWindow* pWnd = FindChild(n);
+		if(pWnd == NULL)
+			return NULL;
+
+		return dynamic_cast<T*>(pWnd);
 }
 
 

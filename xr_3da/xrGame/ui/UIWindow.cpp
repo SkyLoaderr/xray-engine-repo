@@ -357,3 +357,19 @@ bool CUIWindow::IsChild(CUIWindow *pPossibleChild) const
 	WINDOW_LIST::const_iterator it = std::find(m_ChildWndList.begin(), m_ChildWndList.end(), pPossibleChild);
 	return it != m_ChildWndList.end();
 }
+
+CUIWindow*	CUIWindow::FindChild(const ref_str name)
+{
+	if(WindowName()==name)
+		return this;
+
+	WINDOW_LIST::const_iterator it = m_ChildWndList.begin();
+	WINDOW_LIST::const_iterator it_e = m_ChildWndList.end();
+	for(;it!=it_e;++it){
+		CUIWindow* pRes = (*it)->FindChild(name);
+		if(pRes != NULL)
+			return pRes;
+	}
+
+	return NULL;
+}
