@@ -74,6 +74,7 @@ function main()
 			flush()
 		end
 	wait()
+	break
 	end
 
 	while true do
@@ -82,6 +83,7 @@ function main()
 			flush()
 		end
 	wait()
+	break
 	end
 
 
