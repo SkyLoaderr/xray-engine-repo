@@ -51,7 +51,7 @@ public:
 	void		SetTextAlign_script			(u32 align)						{ m_eTextAlign = (CGameFont::EAligment)align;	}
 	u32			GetTextAlign_script			()								{ return static_cast<u32>(m_eTextAlign);		}
 
-	void		SetColor					(u32 color)						{ m_UIStaticItem.SetColor(color);		}
+	virtual void SetColor					(u32 color)						{ m_UIStaticItem.SetColor(color);		}
 	u32			GetColor					() const						{ return m_UIStaticItem.GetColor();		}
 	// Получения цвета по референсу используется для анимации
 	u32&		GetColorRef					()								{ return m_UIStaticItem.GetColorRef();	}
