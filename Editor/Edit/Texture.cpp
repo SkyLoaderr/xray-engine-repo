@@ -162,6 +162,7 @@ void ETextureCore::DDClear(){
 
 int ETextureCore::IfNeedUpdate(){
 	if (m_bNullTex) return 0;
+    if (m_LoadName.IsEmpty()) return 1;
 	AnsiString tex_name=m_LoadName;
 	FS.m_Textures.Update(tex_name);
     if (!FS.Exist(tex_name.c_str(),true)) return -1;
@@ -234,12 +235,12 @@ void ETextureCore::SaveTextureParams(){
     	// delete exist dds
         AnsiString gf;
         // game
-        gf = m_LoadName;
+        gf = m_ShortName;
     	FS.m_GameTextures.Update(gf);
         gf = ChangeFileExt(gf,".dds");
         FS.DeleteFileByName(gf.c_str());
         // render
-        gf = m_LoadName;
+        gf = m_ShortName;
     	FS.m_TexturesRender.Update(gf);
         gf = ChangeFileExt(gf,".dds");
         FS.DeleteFileByName(gf.c_str());
