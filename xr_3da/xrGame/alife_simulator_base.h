@@ -107,7 +107,7 @@ protected:
 			void								unregister_object			(CSE_ALifeDynamicObject *object, bool alife_query = true);
 			void								unload						();
 	virtual	void								reload						(LPCSTR section);
-	IC		void								setup_command_line			(shared_str &command_line);
+	IC		void								setup_command_line			(shared_str *command_line);
 	IC		shared_str							*server_command_line		() const;
 			void								assign_death_position		(CSE_ALifeCreatureAbstract *tpALifeCreatureAbstract, GameGraph::_GRAPH_ID tGraphID,	CSE_ALifeSchedulable *tpALifeSchedulable = 0);
 	virtual void								setup_simulator				(CSE_ALifeObject *object) = 0;

@@ -36,7 +36,7 @@ CALifeSimulator::CALifeSimulator		(xrServer *server, shared_str *command_line) :
 {
 	VERIFY						(!ai().get_alife());
 	ai().set_alife				(this);
-	setup_command_line			(*command_line);
+	setup_command_line			(command_line);
 
 	params						p;
 	int							n = _min(4,_GetItemCount(**command_line,'/'));

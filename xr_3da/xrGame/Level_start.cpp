@@ -72,7 +72,7 @@ BOOL CLevel::net_Start	( LPCSTR op_server, LPCSTR op_client )
 			m_name				= l_name;
 		}
 
-		m_caServerOptions		= op_server;
+//		m_caServerOptions		= op_server;
 	}
 
 	//=============================================================================

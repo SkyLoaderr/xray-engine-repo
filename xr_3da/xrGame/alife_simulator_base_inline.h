@@ -104,13 +104,6 @@ IC	const CALifeStoryRegistry			&CALifeSimulatorBase::story_objects			() const
 	return						(*m_story_objects);
 }
 
-//IC	const CALifeRegistryContainer		&CALifeSimulatorBase::registry				() const
-//{
-//	VERIFY						(initialized());
-//	VERIFY						(m_registry_container);
-//	return						(*m_registry_container);
-//}
-//
 IC	CALifeSimulatorHeader				&CALifeSimulatorBase::header				()
 {
 	VERIFY						(initialized());
@@ -214,9 +207,9 @@ IC	CRandom32							&CALifeSimulatorBase::random				()
 	return						(m_random);
 }
 
-IC	void								CALifeSimulatorBase::setup_command_line		(shared_str &command_line)
+IC	void								CALifeSimulatorBase::setup_command_line		(shared_str *command_line)
 {
-	m_server_command_line		= &command_line;
+	m_server_command_line		= command_line;
 }
 
 IC	xrServer							&CALifeSimulatorBase::server				() const
