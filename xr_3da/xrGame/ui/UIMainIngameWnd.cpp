@@ -94,7 +94,7 @@ CUIMainIngameWnd::~CUIMainIngameWnd()
 void CUIMainIngameWnd::Init()
 {
 	CUIXml uiXml;
-	uiXml.Init("$game_data$", MAININGAME_XML);
+	uiXml.Init(CONFIG_PATH, UI_PATH, MAININGAME_XML);
 	
 	CUIXmlInit xml_init;
 	CUIWindow::Init(0,0, UI_BASE_WIDTH, UI_BASE_HEIGHT);
@@ -137,9 +137,9 @@ void CUIMainIngameWnd::Init()
 	// У нас отдельные конфигурации листа для SP, и MP modes
 	CUIXml uiXml2;
 	if (GameID() != GAME_SINGLE)
-		uiXml2.Init("$game_data$", PDA_INGAME_MULTIPLAYER_CFG);
+		uiXml2.Init(CONFIG_PATH, UI_PATH, PDA_INGAME_MULTIPLAYER_CFG);
 	else
-		uiXml2.Init("$game_data$", PDA_INGAME_SINGLEPLAYER_CFG);
+		uiXml2.Init(CONFIG_PATH, UI_PATH, PDA_INGAME_SINGLEPLAYER_CFG);
 
 	AttachChild(&UIPdaMsgListWnd);
 	xml_init.InitListWnd(uiXml2, "list", 0, &UIPdaMsgListWnd);

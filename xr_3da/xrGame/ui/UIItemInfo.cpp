@@ -34,7 +34,7 @@ void CUIItemInfo::Init(int x, int y, int width, int height, const char* xml_name
 	inherited::Init(x, y, width, height);
 
 	CUIXml uiXml;
-	bool xml_result = uiXml.Init("$game_data$",xml_name);
+	bool xml_result = uiXml.Init(CONFIG_PATH, UI_PATH,xml_name);
 	R_ASSERT2(xml_result, "xml file not found");
 
 	CUIXmlInit xml_init;

@@ -51,7 +51,7 @@ CUICarBodyWnd::~CUICarBodyWnd()
 void CUICarBodyWnd::Init()
 {
 	CUIXml uiXml;
-	uiXml.Init("$game_data$", CAR_BODY_XML);
+	uiXml.Init(CONFIG_PATH, UI_PATH, CAR_BODY_XML);
 	
 	CUIXmlInit xml_init;
 

@@ -93,10 +93,12 @@ void TiXmlString ::operator = (const char * content)
         empty_it ();
         return;
     }
-    newlen = static_cast<unsigned int>(xr_strlen (content) + 1);
-    newstring = new char [newlen];
-    // strcpy (newstring, content);
-    Memory.mem_copy(newstring, content, newlen);
+//    newlen = static_cast<unsigned int>(xr_strlen (content) + 1);
+ //   newstring = new char [newlen];
+	//!!! strcpy (newstring, content);
+  //  Memory.mem_copy(newstring, content, newlen);
+	newstring = xr_strdup(content);
+	newlen = static_cast<unsigned int>(xr_strlen (newstring) + 1);
     empty_it ();
     allocated = newlen;
     cstring = newstring;

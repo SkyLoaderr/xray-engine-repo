@@ -40,7 +40,7 @@ void CUIActorDiaryWnd::Init(CUIListWnd *idxList)
 	m_pCore		= xr_new<CUIEncyclopediaCore>();
 
 	CUIXml uiXml;
-	bool xml_result = uiXml.Init("$game_data$", ACTOR_DIARY_XML);
+	bool xml_result = uiXml.Init(CONFIG_PATH, UI_PATH, ACTOR_DIARY_XML);
 	R_ASSERT3(xml_result, "xml file not found", ACTOR_DIARY_XML);
 
 	inherited::Init(0,0, UI_BASE_WIDTH, UI_BASE_HEIGHT);

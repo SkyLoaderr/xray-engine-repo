@@ -78,7 +78,7 @@ CUIDiaryWnd::~CUIDiaryWnd()
 void CUIDiaryWnd::Init()
 {
 	CUIXml uiXml;
-	bool xml_result = uiXml.Init("$game_data$", DIARY_XML);
+	bool xml_result = uiXml.Init(CONFIG_PATH, UI_PATH, DIARY_XML);
 	R_ASSERT3(xml_result, "xml file not found", DIARY_XML);
 	CUIXmlInit xml_init;
 

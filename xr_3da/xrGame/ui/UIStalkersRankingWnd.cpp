@@ -26,7 +26,7 @@ const char * const		STALKERS_RANKING_CHARACTER_XML	= "stalkers_ranking_character
 void CUIStalkersRankingWnd::Init()
 {
 	CUIXml		uiXml;
-	R_ASSERT3(uiXml.Init("$game_data$",STALKERS_RANKING_XML), "xml file not found", STALKERS_RANKING_XML);
+	R_ASSERT3(uiXml.Init(CONFIG_PATH, UI_PATH,STALKERS_RANKING_XML), "xml file not found", STALKERS_RANKING_XML);
 
 	CUIXmlInit	xml_init;
 

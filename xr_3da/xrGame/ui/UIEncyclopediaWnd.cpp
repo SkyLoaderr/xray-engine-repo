@@ -42,7 +42,7 @@ CUIEncyclopediaWnd::~CUIEncyclopediaWnd()
 void CUIEncyclopediaWnd::Init()
 {
 	CUIXml		uiXml;
-	bool xml_result = uiXml.Init("$game_data$", ENCYCLOPEDIA_DIALOG_XML);
+	bool xml_result = uiXml.Init(CONFIG_PATH, UI_PATH, ENCYCLOPEDIA_DIALOG_XML);
 	R_ASSERT3(xml_result, "xml file not found", ENCYCLOPEDIA_DIALOG_XML);
 
 	CUIXmlInit	xml_init;

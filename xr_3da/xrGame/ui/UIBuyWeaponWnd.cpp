@@ -84,7 +84,7 @@ void CUIBuyWeaponWnd::Init(LPCSTR strSectionName)
 	m_StrSectionName = strSectionName;
 
 	CUIXml uiXml;
-	bool xml_result = uiXml.Init("$game_data$", BUY_WND_XML_NAME);
+	bool xml_result = uiXml.Init(CONFIG_PATH, UI_PATH, BUY_WND_XML_NAME);
 	R_ASSERT2(xml_result, "xml file not found");
 
 	inherited::DetachAll();

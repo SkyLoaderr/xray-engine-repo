@@ -40,7 +40,7 @@ CUIPdaDialogWnd::~CUIPdaDialogWnd()
 void CUIPdaDialogWnd::Init(int x, int y, int width, int height)
 {
 	CUIXml		uiXml;
-	bool xml_result =uiXml.Init("$game_data$",PDA_DIALOG_XML);
+	bool xml_result =uiXml.Init(CONFIG_PATH, UI_PATH,PDA_DIALOG_XML);
 	R_ASSERT3(xml_result, "xml file not found", PDA_DIALOG_XML);
 	CUIXmlInit	xml_init;
 

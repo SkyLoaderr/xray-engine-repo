@@ -158,7 +158,7 @@ typename CSXML_IdToIndex::T_VECTOR&	CSXML_IdToIndex::ItemDataVector ()
 			xml_file_full = xml_file;
 			xml_file_full += ".xml";
 			//strconcat(xml_file_full, *shared_str(xml_file), ".xml");
-			bool xml_result = uiXml.Init("$game_data$", xml_file_full.c_str());
+			bool xml_result = uiXml.Init(CONFIG_PATH, GAME_PATH, xml_file_full.c_str());
 			R_ASSERT3(xml_result, "xml file not found", xml_file_full.c_str());
 
 			//общий список

@@ -23,7 +23,7 @@ const char * const		ACTOR_CHARACTER_XML		= "pda_dialog_character.xml";
 void CUIActorInfoWnd::Init()
 {
 	CUIXml		uiXml;
-	R_ASSERT3(uiXml.Init("$game_data$",ACTOR_STATISTIC_XML), "xml file not found", ACTOR_STATISTIC_XML);
+	R_ASSERT3(uiXml.Init(CONFIG_PATH, UI_PATH,ACTOR_STATISTIC_XML), "xml file not found", ACTOR_STATISTIC_XML);
 
 	CUIXmlInit	xml_init;
 

@@ -60,7 +60,7 @@ void CInfoPortion::load_shared	(LPCSTR)
 	string128 xml_file_full;
 	strconcat(xml_file_full, *shared_str(item_data.file_name), ".xml");
 
-	bool xml_result = uiXml.Init("$game_data$", xml_file_full);
+	bool xml_result = uiXml.Init(CONFIG_PATH, GAME_PATH, xml_file_full);
 	R_ASSERT3(xml_result, "xml file not found", xml_file_full);
 
 	//loading from XML

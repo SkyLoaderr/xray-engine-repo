@@ -76,7 +76,7 @@ CUIInventoryWnd::~CUIInventoryWnd()
 void CUIInventoryWnd::Init()
 {
 	CUIXml uiXml;
-	bool xml_result = uiXml.Init("$game_data$", INVENTORY_XML);
+	bool xml_result = uiXml.Init(CONFIG_PATH, UI_PATH, INVENTORY_XML);
 	R_ASSERT3(xml_result, "xml file not found", INVENTORY_XML);
 
 	CUIXmlInit xml_init;

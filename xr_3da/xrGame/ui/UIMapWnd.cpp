@@ -101,7 +101,7 @@ void CUIMapWnd::Init()
 {
 	CUIXmlInit xml_init;
 	CUIXml uiXml;
-	uiXml.Init("$game_data$", PDA_MAP_XML);
+	uiXml.Init(CONFIG_PATH, UI_PATH, PDA_MAP_XML);
 
 	inherited::Init(0, 0, UI_BASE_WIDTH, UI_BASE_HEIGHT);
 
@@ -774,7 +774,7 @@ void CUIMapWnd::InitLocalMaps()
 	const CGameGraph::LEVEL_MAP &levelMap		= ai().get_game_graph()->header().levels();
 	
 	string256			gameLtxPath;
-	FS.update_path					(gameLtxPath, "$game_data$", "game.ltx");
+	FS.update_path					(gameLtxPath, CONFIG_PATH, "game.ltx");
 	CInifile			gameLtx		(gameLtxPath);
 	// Loop through all levels in graph and initialize its map data
 	for (CGameGraph::LEVEL_MAP::const_iterator it = levelMap.begin(); it != levelMap.end(); ++it)

@@ -65,7 +65,7 @@ CUIXmlInit::~CUIXmlInit()
 bool CUIXmlInit::InitWindow(CUIXml& xml_doc, LPCSTR path, 	
 							int index, CUIWindow* pWnd)
 {
-	R_ASSERT2(xml_doc.NavigateToNode(path,index), "XML node not found");
+	R_ASSERT3(xml_doc.NavigateToNode(path,index), "XML node not found", path);
 
 	int x = xml_doc.ReadAttribInt(path, index, "x");
 	int y = xml_doc.ReadAttribInt(path, index, "y");
@@ -81,7 +81,7 @@ bool CUIXmlInit::InitWindow(CUIXml& xml_doc, LPCSTR path,
 bool CUIXmlInit::InitFrameWindow(CUIXml& xml_doc, LPCSTR path, 
 									int index, CUIFrameWindow* pWnd)
 {
-	R_ASSERT2(xml_doc.NavigateToNode(path,index), "XML node not found");
+	R_ASSERT3(xml_doc.NavigateToNode(path,index), "XML node not found", path);
 
 	string256 buf;
 
@@ -195,7 +195,7 @@ bool CUIXmlInit::InitStatic(CUIXml& xml_doc, LPCSTR path,
 bool CUIXmlInit::InitButton(CUIXml& xml_doc, LPCSTR path, 
 						int index, CUIButton* pWnd)
 {
-	R_ASSERT2(xml_doc.NavigateToNode(path,index), "XML node not found");
+	R_ASSERT3(xml_doc.NavigateToNode(path,index), "XML node not found", path);
 
 	InitStatic(xml_doc, path, index, pWnd);
 
@@ -226,7 +226,7 @@ bool CUIXmlInit::InitButton(CUIXml& xml_doc, LPCSTR path,
 bool CUIXmlInit::InitDragDropList(CUIXml& xml_doc, LPCSTR path, 
 						int index, CUIDragDropList* pWnd)
 {
-	R_ASSERT2(xml_doc.NavigateToNode(path,index), "XML node not found");
+	R_ASSERT3(xml_doc.NavigateToNode(path,index), "XML node not found", path);
 
 	int x = xml_doc.ReadAttribInt(path, index, "x");
 	int y = xml_doc.ReadAttribInt(path, index, "y");
@@ -268,7 +268,7 @@ bool CUIXmlInit::InitDragDropList(CUIXml& xml_doc, LPCSTR path,
 bool CUIXmlInit::InitListWnd(CUIXml& xml_doc, LPCSTR path, 
 										   int index, CUIListWnd* pWnd)
 {
-	R_ASSERT2(xml_doc.NavigateToNode(path,index), "Node not found");
+	R_ASSERT3(xml_doc.NavigateToNode(path,index), "XML node not found", path);
 	
 	int x = xml_doc.ReadAttribInt(path, index, "x");
 	int y = xml_doc.ReadAttribInt(path, index, "y");
@@ -304,7 +304,7 @@ bool CUIXmlInit::InitListWnd(CUIXml& xml_doc, LPCSTR path,
 bool CUIXmlInit::InitProgressBar(CUIXml& xml_doc, LPCSTR path, 
 						int index, CUIProgressBar* pWnd)
 {
-	R_ASSERT2(xml_doc.NavigateToNode(path,index), "XML node not found");
+	R_ASSERT3(xml_doc.NavigateToNode(path,index), "XML node not found", path);
 
 	string256 buf;
 	
@@ -458,7 +458,7 @@ bool CUIXmlInit::InitFont(CUIXml &xml_doc, LPCSTR path, int index, u32 &color, C
 
 bool CUIXmlInit::InitTabControl(CUIXml &xml_doc, LPCSTR path, int index, CUITabControl *pWnd)
 {
-	R_ASSERT2(xml_doc.NavigateToNode(path,index), "XML node not found");
+	R_ASSERT3(xml_doc.NavigateToNode(path,index), "XML node not found", path);
 	
 	bool status = true;
 
@@ -520,7 +520,7 @@ bool CUIXmlInit::InitFrameLine(CUIXml& xml_doc, const char* path, int index, CUI
 
 bool CUIXmlInit::InitTextBanner(CUIXml &xml_doc, const char *path, int index, CUITextBanner *pBnr)
 {
-	R_ASSERT2(xml_doc.NavigateToNode(path,index), "XML node not found");
+	R_ASSERT3(xml_doc.NavigateToNode(path,index), "XML node not found", path);
 
 	std::map<shared_str, CUITextBanner::TextBannerStyles> conformityTable;
 	conformityTable["none"]		= CUITextBanner::tbsNone;
@@ -558,7 +558,7 @@ bool CUIXmlInit::InitTextBanner(CUIXml &xml_doc, const char *path, int index, CU
 
 bool CUIXmlInit::InitMultiTextStatic(CUIXml &xml_doc, const char *path, int index, CUIMultiTextStatic *pWnd)
 {
-	R_ASSERT2(xml_doc.NavigateToNode(path,index), "XML node not found");
+	R_ASSERT3(xml_doc.NavigateToNode(path,index), "XML node not found", path);
 
 	bool status = true;
 	string128	buf;
@@ -602,7 +602,7 @@ bool CUIXmlInit::InitMultiTextStatic(CUIXml &xml_doc, const char *path, int inde
 
 bool CUIXmlInit::InitAnimatedStatic(CUIXml &xml_doc, const char *path, int index, CUIAnimatedStatic *pWnd)
 {
-	R_ASSERT2(xml_doc.NavigateToNode(path,index), "XML node not found");
+	R_ASSERT3(xml_doc.NavigateToNode(path,index), "XML node not found", path);
 
 	InitStatic(xml_doc, path, index, pWnd);
 
@@ -763,7 +763,7 @@ void CUIXmlInit::InitColorDefs()
 	m_pColorDefs = xr_new<ColorDefs>();
 
 	CUIXml uiXml;
-	bool flag = uiXml.Init("$game_data$", COLOR_DEFINITIONS);
+	bool flag = uiXml.Init(CONFIG_PATH, UI_PATH, COLOR_DEFINITIONS);
 	R_ASSERT3(flag, "xml file not found", COLOR_DEFINITIONS);
 
 	int num = uiXml.GetNodesNum("colors", 0, "color");

@@ -42,7 +42,7 @@ CUIPdaCommunication::~CUIPdaCommunication()
 void CUIPdaCommunication::Init()
 {
 	CUIXml uiXml;
-	uiXml.Init("$game_data$",PDA_XML);
+	uiXml.Init(CONFIG_PATH, UI_PATH,PDA_XML);
 	CUIXmlInit xml_init;
 
 	inherited::Init(0,0, Device.dwWidth, Device.dwHeight);

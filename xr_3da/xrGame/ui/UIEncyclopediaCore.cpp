@@ -47,7 +47,7 @@ void CUIEncyclopediaCore::Init(CUIListWnd *infoList, CUIListWnd *idxList)
 	pInfoList->SetRightIndention(static_cast<int>(10 * HUD().GetScale()));
 
 	CUIXml		uiXml;
-	bool xml_result = uiXml.Init("$game_data$", ENCYCLOPEDIA_CORE_XML);
+	bool xml_result = uiXml.Init(CONFIG_PATH, UI_PATH, ENCYCLOPEDIA_CORE_XML);
 	R_ASSERT3(xml_result, "xml file not found", ENCYCLOPEDIA_CORE_XML);
 
 	CUIXmlInit	xml_init;

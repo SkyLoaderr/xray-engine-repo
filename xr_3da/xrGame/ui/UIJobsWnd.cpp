@@ -49,7 +49,7 @@ CUIJobsWnd::~CUIJobsWnd()
 void CUIJobsWnd::Init()
 {
 	CUIXml uiXml;
-	bool xml_result = uiXml.Init("$game_data$", JOBS_XML);
+	bool xml_result = uiXml.Init(CONFIG_PATH, UI_PATH, JOBS_XML);
 	R_ASSERT3(xml_result, "xml file not found", JOBS_XML);
 
 	inherited::Init(0,0, UI_BASE_WIDTH, UI_BASE_HEIGHT);

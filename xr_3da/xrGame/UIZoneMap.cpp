@@ -119,7 +119,7 @@ void CUIZoneMap::Init()
 
 	shared_str				map_texture;
 	string256			gameLtxPath;
-	FS.update_path					(gameLtxPath, "$game_data$", "game.ltx");
+	FS.update_path					(gameLtxPath, CONFIG_PATH, "game.ltx");
 	CInifile			gameLtx		(gameLtxPath);
 
 	if(currLIt != levelMap.end() &&

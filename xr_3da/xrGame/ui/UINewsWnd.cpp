@@ -41,7 +41,7 @@ CUINewsWnd::~CUINewsWnd()
 void CUINewsWnd::Init()
 {
 	CUIXml uiXml;
-	bool xml_result = uiXml.Init("$game_data$", NEWS_XML);
+	bool xml_result = uiXml.Init(CONFIG_PATH, UI_PATH, NEWS_XML);
 	R_ASSERT3(xml_result, "xml file not found", NEWS_XML);
 	CUIXmlInit xml_init;
 

@@ -29,8 +29,8 @@ CUITalkDialogWnd::~CUITalkDialogWnd()
 void CUITalkDialogWnd::Init(int x, int y, int width, int height)
 {
 	CUIXml uiXml;
-	bool xml_result = uiXml.Init("$game_data$", TALK_XML);
-	R_ASSERT2(xml_result, "xml file not found");
+	bool xml_result = uiXml.Init(CONFIG_PATH, UI_PATH, TALK_XML);
+	R_ASSERT3(xml_result, "xml file not found", TALK_XML);
 	CUIXmlInit xml_init;
 
 	inherited::Init(x, y, width, height);

@@ -40,7 +40,7 @@ void CUISleepWnd::Init(int x, int y, int width, int height)
 void CUISleepWnd::Init()
 {
 	CUIXml uiXml;
-	bool xml_result = uiXml.Init("$game_data$", SLEEP_DIALOG_XML);
+	bool xml_result = uiXml.Init(CONFIG_PATH, UI_PATH, SLEEP_DIALOG_XML);
 	R_ASSERT2(xml_result, "xml file not found");
 
 	CUIXmlInit	xml_init;

@@ -22,7 +22,7 @@ CUIJobItem::CUIJobItem(int leftOffest)
 {
 	// Initialize internal structures
 	CUIXml uiXml;
-	bool xml_result = uiXml.Init("$game_data$", JOB_ITEM_XML);
+	bool xml_result = uiXml.Init(CONFIG_PATH, UI_PATH, JOB_ITEM_XML);
 	R_ASSERT3(xml_result, "xml file not found", JOB_ITEM_XML);
 
 	CUIXmlInit xml_init;

@@ -42,7 +42,7 @@ void CUIPdaListItem::Init(int x, int y, int width, int height)
 //	UICharacterInfo.Init(0,0,width, height, PDA_CONTACT_CHAR);
 
 	CUIXml uiXml;
-	bool xml_result = uiXml.Init("$game_data$", PDA_CONTACT_CHAR);
+	bool xml_result = uiXml.Init(CONFIG_PATH, UI_PATH, PDA_CONTACT_CHAR);
 	R_ASSERT2(xml_result, "xml file not found");
 
 	CUIXmlInit xml_init;
