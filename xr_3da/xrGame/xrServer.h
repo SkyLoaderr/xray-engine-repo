@@ -44,6 +44,7 @@ public:
 	u8						s_RP;
 	Fvector					o_Position;
 	Fvector					o_Angle;
+	u16						s_flags;		// state flags
 	
 	virtual void			UPDATE_Read		(NET_Packet& P)				= 0;
 	virtual void			UPDATE_Write	(NET_Packet& P)				= 0;
@@ -69,10 +70,11 @@ public:
 		P.w_u8				(bLocal			);
 
 		// write specific data
-		u32	position		= P.w_tell	();
-		P.w_u16				(0);
-		STATE_Write			(P);
-		u16 size			= u16		(P.w_tell()-position);
+		u32	position		= P.w_tell		();
+		P.w_u16				(0				);
+		P.w_u16				(s_flags		);
+		STATE_Write			(P				);
+		u16 size			= u16			(P.w_tell()-position);
 		P.w_seek			(position,&size,sizeof(u16));
 	}
 	void					Spawn_Read		(NET_Packet& P)
@@ -95,6 +97,7 @@ public:
 		// read specific data
 		u16					size;
 		P.r_u16				(size			);	// size
+		P.r_u16				(s_flags		);
 		STATE_Read			(P,size			);
 	}
 

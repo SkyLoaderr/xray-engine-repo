@@ -97,7 +97,7 @@ BOOL xrServer::ProcessRP	(xrServerEntity* EEE)
 				float		cost	=0;
 				DWORD		count	=0;
 				
-				for (xrS_entities::iterator o_it=0; o_it!=entities.end(); o_it++) 
+				for (xrS_entities::iterator o_it=entities.begin(); o_it!=entities.end(); o_it++) 
 				{
 					// Get entity & it's position
 					xrServerEntity*	E	= o_it->second;
