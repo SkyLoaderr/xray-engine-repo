@@ -27,14 +27,10 @@ D3DFORMAT CHW::selectDepthStencil	(D3DFORMAT fTarget)
 {
 
 	static	D3DFORMAT	fDS_Try1[6] = 
-	{D3DFMT_D24X8,D3DFMT_D24S8,D3DFMT_D24X4S4,D3DFMT_D32,D3DFMT_D16,D3DFMT_D15S1};
+	{D3DFMT_D24S8,D3DFMT_D24X4S4,D3DFMT_D32,D3DFMT_D24X8,D3DFMT_D16,D3DFMT_D15S1};
 	
-	static	D3DFORMAT	fDS_Try2[2] = 
-	{D3DFMT_D24S8,D3DFMT_D24X4S4};
-
-	D3DFORMAT*	fDS_Try = fDS_Try1;
-	int			fDS_Cnt	= 6;
-	if (HW.Caps.bShowOverdraw) { fDS_Try = fDS_Try2; fDS_Cnt=2; }
+	D3DFORMAT*	fDS_Try			= fDS_Try1;
+	int			fDS_Cnt			= 6;
 
 	for (int it = 0; it<fDS_Cnt; it++){
 		if (SUCCEEDED(pD3D->CheckDeviceFormat(

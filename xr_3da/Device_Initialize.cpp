@@ -50,8 +50,6 @@ void CRenderDevice::Initialize()
 	else										HW.Caps.bForceGPU_SW		= FALSE;
 	if (strstr(lpCmdLine,"-gpu_nopure")!=NULL)	HW.Caps.bForceGPU_NonPure	= TRUE;
 	else										HW.Caps.bForceGPU_NonPure	= FALSE;
-	if (strstr(lpCmdLine,"-overdraw")!=NULL)	HW.Caps.bShowOverdraw		= TRUE;
-	else										HW.Caps.bShowOverdraw		= FALSE;
 
 	// Startup shaders
 	Shader.xrStartUp	();
