@@ -43,6 +43,7 @@ BOOL CRenderTarget::Create	()
 	}
 	while (rtWidth%2)	rtWidth--;
 	while (rtHeight%2)	rtHeight--;
+	Msg				("* SSample: %dx%d",rtWidth,rtHeight);
 
 	// Bufferts
 	RT				= Device.Shader._CreateRT		(RTname,rtWidth,rtHeight);
@@ -70,7 +71,7 @@ BOOL CRenderTarget::Create	()
 void CRenderTarget::OnDeviceCreate	()
 {
 	bAvailable					= Create	();
-	eff_load					("postprocess_base");
+	Msg							("* SSample: %s",bAvailable?"enabled":"disabled");
 }
 
 void CRenderTarget::OnDeviceDestroy	()
@@ -199,6 +200,7 @@ void CRenderTarget::Begin		()
 		RCache.set_RT			(RT->pRT,ZB);
 		curWidth				= rtWidth;
 		curHeight				= rtHeight;
+		Log						("sss");
 	}
 	Device.Clear				();
 }
