@@ -97,7 +97,7 @@ CActor::CActor() : CEntityAlive()
 
 	self_gmtl_id			=	GAMEMTL_NONE;
 	last_gmtl_id			=	GAMEMTL_NONE;
-	m_phSkeleton			=	NULL;
+	m_pPhysicsShell			=	NULL;
 	bDeathInit				=	false;
 	m_saved_dir.set(0,0,0);
 	m_saved_impulse=0.f;
@@ -129,9 +129,9 @@ CActor::~CActor()
 	for (i=0; i<SND_HIT_COUNT; i++) ::Sound->destroy(sndHit[i]);
 	for (i=0; i<SND_DIE_COUNT; i++) ::Sound->destroy(sndDie[i]);
 
-	if(m_phSkeleton) {
-		m_phSkeleton->Deactivate();
-		xr_delete<CPhysicsShell>(m_phSkeleton);
+	if(m_pPhysicsShell) {
+		m_pPhysicsShell->Deactivate();
+		xr_delete<CPhysicsShell>(m_pPhysicsShell);
 	}
 
 	xr_delete(m_trade);
@@ -453,8 +453,7 @@ void CActor::net_Destroy	()
 	ph_Movement.DestroyCharacter();
 	if(m_pPhysicsShell) 
 		m_pPhysicsShell->Deactivate();
-	if(m_phSkeleton) 
-		m_phSkeleton->Deactivate();
+
 }
 
 void CActor::Hit		(float iLost, Fvector &dir, CObject* who, s16 element, float impulse)
@@ -492,8 +491,8 @@ void CActor::Hit		(float iLost, Fvector &dir, CObject* who, s16 element,Fvector 
 		m_saved_impulse=impulse*skel_fatal_impulse_factor;
 		m_saved_element=element;
 	}
-	else if(m_phSkeleton) 
-		m_phSkeleton->applyImpulseTrace(position_in_bone_space,dir,impulse,element);
+	else if(m_pPhysicsShell) 
+		m_pPhysicsShell->applyImpulseTrace(position_in_bone_space,dir,impulse,element);
 	//m_phSkeleton->applyImpulseTrace(position_in_bone_space,dir,impulse);
 	else{
 		m_saved_dir.set(dir);
@@ -582,8 +581,6 @@ void CActor::Die	( )
 	g_fireEnd				();
 	mstate_wishful	&=		~mcAnyMove;
 	mstate_real		&=		~mcAnyMove;
-	ph_Movement.GetDeathPosition(Position());
-	ph_Movement.DestroyCharacter();
 	create_Skeleton();
 }
 
@@ -591,21 +588,21 @@ void CActor::g_Physics			(Fvector& _accel, float jump, float dt)
 {
 	if (!g_Alive())	{
 
-		if(m_phSkeleton)
-			if(m_phSkeleton->bActive && m_saved_impulse!=0.f)
+		if(m_pPhysicsShell)
+			if(m_pPhysicsShell->bActive && m_saved_impulse!=0.f)
 			{
-				m_phSkeleton->applyImpulseTrace(m_saved_position,m_saved_dir,m_saved_impulse*1.5f,m_saved_element);
+				m_pPhysicsShell->applyImpulseTrace(m_saved_position,m_saved_dir,m_saved_impulse*1.5f,m_saved_element);
 				m_saved_impulse=0.f;
 			}
 
 
-			if(m_phSkeleton)
+			if(m_pPhysicsShell)
 			{
-				XFORM().set	(m_phSkeleton->mXFORM);
+				XFORM().set	(m_pPhysicsShell->mXFORM);
 				if(skel_ddelay==0)
 				{
-					m_phSkeleton->set_JointResistance(5.f*hinge_force_factor1);
-					m_phSkeleton->Enable();
+					m_pPhysicsShell->set_JointResistance(5.f*hinge_force_factor1);
+					m_pPhysicsShell->Enable();
 				}
 				skel_ddelay--;
 			}
@@ -750,9 +747,9 @@ void CActor::UpdateCL()
 
 	if (!g_Alive())			
 
-		if(m_phSkeleton)
+		if(m_pPhysicsShell)
 		{
-			XFORM().set(m_phSkeleton->mXFORM);
+			XFORM().set(m_pPhysicsShell->mXFORM);
 		}
 		// Analyze Die-State
 		/*
@@ -798,7 +795,7 @@ void CActor::shedule_Update	(u32 DT)
 	// patch
 	if (patch_frame<patch_frames)	{
 		Position().set		(patch_position);
-		if(!m_phSkeleton)
+		if(!m_pPhysicsShell)
 			ph_Movement.SetPosition(patch_position);
 		patch_frame			+= 1;
 	}
@@ -863,7 +860,7 @@ void CActor::shedule_Update	(u32 DT)
 				ph_Movement.SetVelocity	(NET_Last.p_velocity);
 				ph_Movement.SetVelocity	(NET_Last.p_velocity);
 				Position().set			(NET_Last.p_pos);
-				if(!m_phSkeleton)
+				if(!m_pPhysicsShell)
 					ph_Movement.SetPosition	(NET_Last.p_pos);
 			}
 
@@ -896,7 +893,7 @@ void CActor::shedule_Update	(u32 DT)
 				g_sv_Orientate	(NET_Last.mstate,dt);
 				g_Orientate		(NET_Last.mstate,dt);
 				Position().set	(NET_Last.p_pos);		// physics :)
-				if(!m_phSkeleton)
+				if(!m_pPhysicsShell)
 					ph_Movement.SetPosition(NET_Last.p_pos);
 				g_SetAnimation	(NET_Last.mstate);
 
@@ -1333,7 +1330,7 @@ float CActor::HitScale	(int element)
 
 void CActor::SetPhPosition(const Fmatrix &pos)
 {
-	if(!m_phSkeleton) ph_Movement.SetPosition(pos.c);
+	if(!m_pPhysicsShell) ph_Movement.SetPosition(pos.c);
 	//else m_phSkeleton->S
 }
 

@@ -81,7 +81,7 @@ protected:
 	u32						last_gmtl_id;
 	//
 	//Death physics			
-	CPhysicsShell*			m_phSkeleton;
+	///CPhysicsShell*			m_phSkeleton;
 
 	//vehicle (not luxury)
 	CCar*					m_vehicle;
@@ -347,7 +347,7 @@ public:
 	// HUD
 	virtual void						OnHUDDraw			(CCustomHUD* hud);
 	//CWeaponList*						tpfGetWeapons		()	{return Weapons;}
-	virtual f32 GetMass() { return g_Alive()?ph_Movement.GetMass():m_phSkeleton?m_phSkeleton->getMass():0; }
+	virtual f32 GetMass() { return g_Alive()?ph_Movement.GetMass():m_pPhysicsShell?m_pPhysicsShell->getMass():0; }
 	virtual float						Radius				() const;
 
 #ifdef DEBUG
