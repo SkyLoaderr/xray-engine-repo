@@ -114,9 +114,14 @@ void CEntity::Hit			(float perc, Fvector &dir, CObject* who)
 	HitSignal				(lost_health,vLocalDir,who);
 
 	// If Local() - perform some logic
-	if (Local())
+	if (Local() && (fHealth>0))
 	{
-		if ((fHealth>0) && (lost_health>fHealth))	
+		Msg	("~ ----- %f, %f",fHealth,lost_health);
+
+		fHealth				-=	lost_health;
+		fArmor				-=	lost_armor;
+
+		if (fHealth<=0)
 		{
 			// die
 			NET_Packet		P;
@@ -124,8 +129,6 @@ void CEntity::Hit			(float perc, Fvector &dir, CObject* who)
 			P.w_u16			(u16(who->ID())	);
 			u_EventSend		(P);
 		}
-		fHealth			-=	lost_health;
-		fArmor			-=	lost_armor;
 	}
 }
 
