@@ -86,15 +86,15 @@ struct FindLevelByName
 
 void CUIZoneMap::Init()
 {
-	static LPCSTR	map_point_texture			= pSettings->r_string	(MAP_SECTION, "map_point");
-	static u32		map_point_size				= pSettings->r_u32		(MAP_SECTION, "map_point_size");
-	static LPCSTR	map_point_up_texture		= pSettings->r_string	(MAP_SECTION, "map_point_up");
-	static u32		map_point_up_texture_size	= pSettings->r_u32		(MAP_SECTION, "map_point_up_size");
-	static LPCSTR	map_point_down_texture		= pSettings->r_string	(MAP_SECTION, "map_point_down");
-	static u32		map_point_down_texture_size	= pSettings->r_u32		(MAP_SECTION, "map_point_down_size");
-	static LPCSTR	map_point_info_texture		= pSettings->r_string	(MAP_SECTION, "map_point_info");
-	static u32		map_point_info_texture_size	= pSettings->r_u32		(MAP_SECTION, "map_point_info_size");
-	static LPCSTR	map_arrow_texture			= pSettings->r_string	(MAP_SECTION, "map_arrow");
+	LPCSTR	map_point_texture			= pSettings->r_string	(MAP_SECTION, "map_point");
+	u32		map_point_size				= pSettings->r_u32		(MAP_SECTION, "map_point_size");
+	LPCSTR	map_point_up_texture		= pSettings->r_string	(MAP_SECTION, "map_point_up");
+	u32		map_point_up_texture_size	= pSettings->r_u32		(MAP_SECTION, "map_point_up_size");
+	LPCSTR	map_point_down_texture		= pSettings->r_string	(MAP_SECTION, "map_point_down");
+	u32		map_point_down_texture_size	= pSettings->r_u32		(MAP_SECTION, "map_point_down_size");
+	LPCSTR	map_point_info_texture		= pSettings->r_string	(MAP_SECTION, "map_point_info");
+	u32		map_point_info_texture_size	= pSettings->r_u32		(MAP_SECTION, "map_point_info_size");
+	LPCSTR	map_arrow_texture			= pSettings->r_string	(MAP_SECTION, "map_arrow");
 
 	DWORD align = alLeft|alTop;
 	compass.Init("ui\\hud_map_arrow",	"hud\\default",150,150,align);

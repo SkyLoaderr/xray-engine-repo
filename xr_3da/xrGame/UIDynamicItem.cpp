@@ -3,6 +3,7 @@
 #include "uidynamicitem.h"
 #include "hudmanager.h"
 
+extern ENGINE_API BOOL g_bRendering; 
 //////////////////////////////////////////////////////////////////////
 // Construction/Destruction
 //////////////////////////////////////////////////////////////////////
@@ -41,6 +42,7 @@ void CUIDynamicItem::Out(int left, int top, u32 color, float angle)
 
 void CUIDynamicItem::Render	()
 {
+	VERIFY(g_bRendering);
 	if (!item_cnt)	return;
 
 	// установить обязательно перед вызовом CustomItem::Render() !!!
@@ -64,6 +66,8 @@ void CUIDynamicItem::Render	()
 //--------------------------------------------------------------------
 void CUIDynamicItem::Render(float angle)
 {
+	VERIFY(g_bRendering);
+
 	if (!item_cnt) return;
 
 	// actual rendering
