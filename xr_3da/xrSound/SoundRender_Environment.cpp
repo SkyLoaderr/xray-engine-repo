@@ -16,6 +16,7 @@ CSoundRender_Environment::~CSoundRender_Environment(void)
 
 void CSoundRender_Environment::set_default	()
 {
+	Environment				= EAX_ENVIRONMENT_GENERIC;
     Room                    = EAXLISTENER_DEFAULTROOM;
     RoomHF                  = EAXLISTENER_DEFAULTROOMHF;
     RoomRolloffFactor       = EAXLISTENER_DEFAULTROOMROLLOFFFACTOR;
@@ -77,7 +78,7 @@ bool CSoundRender_Environment::load			(IReader* fs)
 {
 	version							= fs->r_u32();
 
-	if (sdef_env_version == version){
+	if (version >= 0x0002){
         fs->r_stringZ			    (name);
 
         Room                		= fs->r_float();
@@ -92,7 +93,8 @@ bool CSoundRender_Environment::load			(IReader* fs)
         EnvironmentSize     		= fs->r_float();
         EnvironmentDiffusion		= fs->r_float();
         AirAbsorptionHF     		= fs->r_float();
-
+		if (version > 0x0002)
+	        Environment     		= fs->r_u32();
         return true;
     }
     return false;
@@ -115,6 +117,8 @@ void CSoundRender_Environment::save	(IWriter* fs)
     fs->w_float	                    (EnvironmentSize     );
     fs->w_float	                    (EnvironmentDiffusion);
     fs->w_float	                    (AirAbsorptionHF     );
+
+	fs->w_u32						(Environment		 );
 }
 
 //////////////////////////////////////////////////////////////////////////

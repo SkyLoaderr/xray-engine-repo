@@ -88,8 +88,11 @@ public:
 	virtual void						refresh_env_library		();
 	virtual void						set_user_env			(CSound_environment* E);
 	virtual void						refresh_sources			();
-    virtual void						test_env_size			(CSound_environment*& E);
+    virtual void						set_environment			(u32 id, CSound_environment** dst_env);
+    virtual void						set_environment_size	(CSound_environment* src_env, CSound_environment** dst_env);
 #endif
+	void								i_set_eax				(CSound_environment* E);
+	void								i_get_eax				(CSound_environment*& E);
 public:
 	CSoundRender_Source*				i_create_source			( LPCSTR name, BOOL _3D		);
 	void								i_destroy_source		( CSoundRender_Source*  S	);

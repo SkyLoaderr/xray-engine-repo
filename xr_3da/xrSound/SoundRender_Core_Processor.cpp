@@ -93,44 +93,29 @@ void CSoundRender_Core::update	( const Fvector& P, const Fvector& D, const Fvect
 	// Update listener
 	if (pListener)
 	{
-		clamp								(dt,EPS_S,1.f/10.f);
-		Listener.vVelocity.sub				(P, Listener.vPosition );
-		Listener.vVelocity.div				(dt);
+		clamp							(dt,EPS_S,1.f/10.f);
+		Listener.vVelocity.sub			(P, Listener.vPosition );
+		Listener.vVelocity.div			(dt);
         if (!Listener.vPosition.similar(P)){
-			Listener.vPosition.set			(P);
-            bListenerMoved					= TRUE;
+			Listener.vPosition.set		(P);
+            bListenerMoved				= TRUE;
         }
-		//last_pos							= P;
-		Listener.vOrientFront.set			(D);
-		Listener.vOrientTop.set				(N);
-		Listener.fDopplerFactor				= EPS_S;
-		Listener.fRolloffFactor				= psSoundRolloff;
-		pListener->SetAllParameters			((DS3DLISTENER*)&Listener, DS3D_DEFERRED );
+		//last_pos						= P;
+		Listener.vOrientFront.set		(D);
+		Listener.vOrientTop.set			(N);
+		Listener.fDopplerFactor			= EPS_S;
+		Listener.fRolloffFactor			= psSoundRolloff;
+		pListener->SetAllParameters		((DS3DLISTENER*)&Listener, DS3D_DEFERRED );
         
 // EAX        
 		if (psSoundFlags.test(ssFX)&&pExtensions){
         	if (bListenerMoved){
-	        	bListenerMoved				= FALSE;
-    	        e_target					= *get_environment	(Listener.vPosition);
+	        	bListenerMoved			= FALSE;
+    	        e_target				= *get_environment	(Listener.vPosition);
             }
-            e_current.lerp					(e_current,e_target,dt);
+            e_current.lerp				(e_current,e_target,dt);
 
-            EAXLISTENERPROPERTIES eax_props;
-            eax_props.lRoom					= iFloor(e_current.Room)		;	// room effect level at low frequencies
-            eax_props.lRoomHF				= iFloor(e_current.RoomHF)		;   // room effect high-frequency level re. low frequency level
-            eax_props.flRoomRolloffFactor	= e_current.RoomRolloffFactor	;   // like DS3D flRolloffFactor but for room effect
-            eax_props.flDecayTime			= e_current.DecayTime			;   // reverberation decay time at low frequencies
-            eax_props.flDecayHFRatio		= e_current.DecayHFRatio		;   // high-frequency to low-frequency decay time ratio
-            eax_props.lReflections			= iFloor(e_current.Reflections)	;   // early reflections level relative to room effect
-            eax_props.flReflectionsDelay	= e_current.ReflectionsDelay	;   // initial reflection delay time
-            eax_props.lReverb				= iFloor(e_current.Reverb)	 	;   // late reverberation level relative to room effect
-            eax_props.flReverbDelay			= e_current.ReverbDelay			;   // late reverberation delay time relative to initial reflection
-            eax_props.dwEnvironment			= EAXLISTENER_DEFAULTENVIRONMENT;  	// sets all listener properties
-            eax_props.flEnvironmentSize		= e_current.EnvironmentSize		;  	// environment size in meters
-            eax_props.flEnvironmentDiffusion= e_current.EnvironmentDiffusion; 	// environment diffusion
-            eax_props.flAirAbsorptionHF		= e_current.AirAbsorptionHF		;	// change in level per meter at 5 kHz
-            eax_props.dwFlags				= EAXLISTENER_DEFAULTFLAGS		;	// modifies the behavior of properties
-            R_CHK(pExtensions->Set	   		(DSPROPSETID_EAX_ListenerProperties, DSPROPERTY_EAXLISTENER_ALLPARAMETERS, NULL, 0, &eax_props, sizeof(EAXLISTENERPROPERTIES)))
+            i_set_eax					(&e_current);
         }
 
         // commit deffered settings
@@ -144,6 +129,62 @@ void CSoundRender_Core::update	( const Fvector& P, const Fvector& D, const Fvect
 		for (it=0; it<s_targets_defer.size(); it++)
 			s_targets_defer[it]->render	();
 	}
+}
+
+void	CSoundRender_Core::i_set_eax			(CSound_environment* _E)
+{
+	VERIFY(pExtensions);
+    CSoundRender_Environment* E = static_cast<CSoundRender_Environment*>(_E);
+    EAXLISTENERPROPERTIES ep;
+    ep.lRoom					= iFloor(E->Room)				;	// room effect level at low frequencies
+    ep.lRoomHF					= iFloor(E->RoomHF)				;   // room effect high-frequency level re. low frequency level
+    ep.flRoomRolloffFactor		= E->RoomRolloffFactor			;   // like DS3D flRolloffFactor but for room effect
+    ep.flDecayTime				= E->DecayTime					;   // reverberation decay time at low frequencies
+    ep.flDecayHFRatio			= E->DecayHFRatio				;   // high-frequency to low-frequency decay time ratio
+    ep.lReflections				= iFloor(E->Reflections)		;   // early reflections level relative to room effect
+    ep.flReflectionsDelay		= E->ReflectionsDelay			;   // initial reflection delay time
+    ep.lReverb					= iFloor(E->Reverb)	 			;   // late reverberation level relative to room effect
+    ep.flReverbDelay			= E->ReverbDelay				;   // late reverberation delay time relative to initial reflection
+    ep.dwEnvironment			= EAXLISTENER_DEFAULTENVIRONMENT;  	// sets all listener properties
+    ep.flEnvironmentSize		= E->EnvironmentSize			;  	// environment size in meters
+    ep.flEnvironmentDiffusion	= E->EnvironmentDiffusion		; 	// environment diffusion
+    ep.flAirAbsorptionHF		= E->AirAbsorptionHF			;	// change in level per meter at 5 kHz
+    ep.dwFlags					= EAXLISTENER_DEFAULTFLAGS		;	// modifies the behavior of properties
+    R_CHK(pExtensions->Set		(DSPROPSETID_EAX_ListenerProperties, DSPROPERTY_EAXLISTENER_ROOM, 					NULL, 0, &ep.lRoom, 				sizeof(LONG)));
+    R_CHK(pExtensions->Set     	(DSPROPSETID_EAX_ListenerProperties, DSPROPERTY_EAXLISTENER_ROOMHF, 				NULL, 0, &ep.lRoomHF, 				sizeof(LONG)));
+    R_CHK(pExtensions->Set      (DSPROPSETID_EAX_ListenerProperties, DSPROPERTY_EAXLISTENER_ROOMROLLOFFFACTOR, 		NULL, 0, &ep.flRoomRolloffFactor,	sizeof(float)));
+    R_CHK(pExtensions->Set      (DSPROPSETID_EAX_ListenerProperties, DSPROPERTY_EAXLISTENER_DECAYTIME, 				NULL, 0, &ep.flDecayTime, 			sizeof(float)));
+    R_CHK(pExtensions->Set      (DSPROPSETID_EAX_ListenerProperties, DSPROPERTY_EAXLISTENER_DECAYHFRATIO,			NULL, 0, &ep.flDecayHFRatio, 		sizeof(float)));
+    R_CHK(pExtensions->Set      (DSPROPSETID_EAX_ListenerProperties, DSPROPERTY_EAXLISTENER_REFLECTIONS, 			NULL, 0, &ep.lReflections, 			sizeof(LONG)));
+    R_CHK(pExtensions->Set      (DSPROPSETID_EAX_ListenerProperties, DSPROPERTY_EAXLISTENER_REFLECTIONSDELAY, 		NULL, 0, &ep.flReflectionsDelay, 	sizeof(float)));
+    R_CHK(pExtensions->Set      (DSPROPSETID_EAX_ListenerProperties, DSPROPERTY_EAXLISTENER_REVERB, 				NULL, 0, &ep.lReverb, 				sizeof(LONG)));
+    R_CHK(pExtensions->Set      (DSPROPSETID_EAX_ListenerProperties, DSPROPERTY_EAXLISTENER_REVERBDELAY, 			NULL, 0, &ep.flReverbDelay, 		sizeof(float)));
+    R_CHK(pExtensions->Set      (DSPROPSETID_EAX_ListenerProperties, DSPROPERTY_EAXLISTENER_ENVIRONMENTDIFFUSION,	NULL, 0, &ep.flEnvironmentDiffusion,sizeof(float)));
+    R_CHK(pExtensions->Set      (DSPROPSETID_EAX_ListenerProperties, DSPROPERTY_EAXLISTENER_AIRABSORPTIONHF, 		NULL, 0, &ep.flAirAbsorptionHF, 	sizeof(float)));
+    R_CHK(pExtensions->Set      (DSPROPSETID_EAX_ListenerProperties, DSPROPERTY_EAXLISTENER_FLAGS, 					NULL, 0, &ep.dwFlags, 				sizeof(DWORD)));
+//	R_CHK(pExtensions->Set	   	(DSPROPSETID_EAX_ListenerProperties, DSPROPERTY_EAXLISTENER_ALLPARAMETERS, NULL, 0, &ep, sizeof(EAXLISTENERPROPERTIES)))
+}
+
+void	CSoundRender_Core::i_get_eax			(CSound_environment*& _E)
+{
+	VERIFY(pExtensions);
+    CSoundRender_Environment* E = static_cast<CSoundRender_Environment*>(_E);
+    EAXLISTENERPROPERTIES ep;
+    // get all params
+    unsigned long total_bytes;
+    R_CHK(pExtensions->Get		(DSPROPSETID_EAX_ListenerProperties, DSPROPERTY_EAXLISTENER_ALLPARAMETERS, NULL, 0, &ep, sizeof(EAXLISTENERPROPERTIES), &total_bytes));
+    E->Room						= ep.lRoom					;
+    E->RoomHF					= ep.lRoomHF				;
+    E->RoomRolloffFactor		= ep.flRoomRolloffFactor	;
+    E->DecayTime			   	= ep.flDecayTime			;
+    E->DecayHFRatio				= ep.flDecayHFRatio			;
+    E->Reflections				= ep.lReflections			;
+    E->ReflectionsDelay			= ep.flReflectionsDelay		;
+    E->Reverb					= ep.lReverb				;
+    E->ReverbDelay				= ep.flReverbDelay			;
+    E->EnvironmentSize			= ep.flEnvironmentSize		;
+    E->EnvironmentDiffusion		= ep.flEnvironmentDiffusion	;
+    E->AirAbsorptionHF			= ep.flAirAbsorptionHF		;
 }
 
 void	CSoundRender_Core::update_events		()
@@ -205,3 +246,16 @@ BOOL	CSoundRender_Core::get_occlusion(Fvector& P, float R, Fvector* occ)
 		return TRUE;
 	}
 }
+
+
+
+
+
+
+
+
+
+
+
+
+

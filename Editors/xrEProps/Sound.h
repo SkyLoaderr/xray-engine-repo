@@ -18,7 +18,7 @@
 #endif
 
 #define SNDENV_FILENAME				"sEnvironment.xr"
-#define OGG_COMMENT_VERSION 		0x0002 
+#define OGG_COMMENT_VERSION 		0x0003 
 
 // refs
 class	CObject;
@@ -233,7 +233,8 @@ public:
 	virtual void					refresh_env_library		()																						= 0;
 	virtual void					set_user_env			(CSound_environment* E)																	= 0;
 	virtual void					refresh_sources			()																						= 0;
-    virtual void					test_env_size			(CSound_environment*& E)																= 0;
+    virtual void					set_environment			(u32 id, CSound_environment** dst_env)													= 0;
+    virtual void					set_environment_size	(CSound_environment* src_env, CSound_environment** dst_env)								= 0;
 #endif
 };
 extern XRSOUND_API CSound_manager_interface*		Sound;
