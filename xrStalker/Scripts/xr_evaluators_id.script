@@ -40,6 +40,7 @@ sidor_ptr                           = id_start + 2120
 sidor_yantar                        = id_start + 2200
 sidor_secret_lab                    = id_start + 2220
 sidor_military_radio                = id_start + 2230
+sidor_attendant_eva                 = id_start + 2240
 
 chugai_commander_base               = id_start + 3020
 chugai_scout_base                   = id_start + 3030
