@@ -76,7 +76,7 @@ CSE_ALifeDiscovery::CSE_ALifeDiscovery(LPCSTR caSection)
 		LPSTR_IT				E = m_tpDependency.end();
 		for ( ; I != E; I++) {
 			_GetItem			(S,int(I - B),S1);
-			*I					= (char*)xr_malloc((strlen(S1) + 1)*sizeof(char));
+			*I					= (char*)xr_malloc((xr_strlen(S1) + 1)*sizeof(char));
 			strcpy				((char*)(*I),S1);
 		}
 	}
@@ -116,7 +116,7 @@ CSE_ALifeOrganization::CSE_ALifeOrganization(LPCSTR caSection)
 	LPSTR_IT					E = m_tpPossibleDiscoveries.end();
 	for ( ; I != E; I++) {
 		_GetItem				(S,int(I - B),S1);
-		*I						= (char*)xr_malloc((strlen(S1) + 1)*sizeof(char));
+		*I						= (char*)xr_malloc((xr_strlen(S1) + 1)*sizeof(char));
 		strcpy					((char*)(*I),S1);
 	}
 	m_fJoinProbability			= pSettings->r_float	(caSection,"join_probability");

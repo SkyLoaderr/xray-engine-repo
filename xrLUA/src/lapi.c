@@ -416,7 +416,7 @@ LUA_API void lua_pushstring (lua_State *L, const char *s) {
   if (s == NULL)
     lua_pushnil(L);
   else
-    lua_pushlstring(L, s, strlen(s));
+    lua_pushlstring(L, s, xr_strlen(s));
 }
 
 

@@ -23,7 +23,7 @@ void CLuaGameObject::Hit(CLuaHit &tLuaHit)
 	P.w_float		(tLuaHit.m_fPower);
 	CKinematics		*V = PKinematics(m_tpGameObject->Visual());
 	R_ASSERT		(V);
-	if (strlen(*tLuaHit.m_caBoneName))
+	if (xr_strlen	(tLuaHit.m_caBoneName))
 		P.w_s16		(V->LL_BoneID(*tLuaHit.m_caBoneName));
 	else
 		P.w_s16		(s16(0));

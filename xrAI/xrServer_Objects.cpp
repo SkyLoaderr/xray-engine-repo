@@ -66,7 +66,7 @@ CSE_Abstract::CSE_Abstract					(LPCSTR caSection)
 	s_gameid					= 0;
 	s_RP						= 0xFE;			// Use supplied coords
 	s_flags.set					(0);
-	Memory.mem_copy				(s_name,caSection,((u32)strlen(caSection) + 1)*sizeof(char));
+	Memory.mem_copy				(s_name,caSection,((u32)xr_strlen(caSection) + 1)*sizeof(char));
 	ZeroMemory					(s_name_replace,sizeof(string64));
 	o_Angle.set					(0.f,0.f,0.f);
 	o_Position.set				(0.f,0.f,0.f);

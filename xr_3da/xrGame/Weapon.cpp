@@ -1035,7 +1035,7 @@ const char* CWeapon::Name()
 	
 	char l_tmp[20]; 
 	sprintf(l_tmp, " %d/%d %s", iAmmoElapsed, iMagazineSize, m_ammoName);
-	strcpy(&m_tmpName[strlen(m_tmpName)], l_tmp);
+	strcpy(&m_tmpName[xr_strlen(m_tmpName)], l_tmp);
 	return m_tmpName;
 }
 

@@ -736,7 +736,7 @@ static int str_format (lua_State *L) {
           return luaL_error(L, "invalid option to `format'");
         }
       }
-      luaL_addlstring(&b, buff, strlen(buff));
+      luaL_addlstring(&b, buff, xr_strlen(buff));
     }
   }
   luaL_pushresult(&b);

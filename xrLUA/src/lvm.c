@@ -244,7 +244,7 @@ static int luaV_strcmp (const TString *ls, const TString *rs) {
     int temp = strcoll(l, r);
     if (temp != 0) return temp;
     else {  /* strings are equal up to a `\0' */
-      size_t len = strlen(l);  /* index of first `\0' in both strings */
+      size_t len = xr_strlen(l);  /* index of first `\0' in both strings */
       if (len == lr)  /* r is finished? */
         return (len == ll) ? 0 : 1;
       else if (len == ll)  /* l is finished? */

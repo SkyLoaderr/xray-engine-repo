@@ -333,7 +333,7 @@ static int read_line (lua_State *L, FILE *f) {
       luaL_pushresult(&b);  /* close buffer */
       return (lua_strlen(L, -1) > 0);  /* check whether read something */
     }
-    l = strlen(p);
+    l = xr_strlen(p);
     if (p[l-1] != '\n')
       luaL_addsize(&b, l);
     else {

@@ -123,7 +123,7 @@ void CWeaponAmmo::OnH_B_Independent() {
 const char* CWeaponAmmo::Name() {
 	if(m_name) strcpy(m_tmpName, m_name); else m_tmpName[0] = 0;
 	char l_tmp[20]; sprintf(l_tmp, " %d/%d", m_boxCurr, m_boxSize);
-	strcpy(&m_tmpName[strlen(m_tmpName)], l_tmp);
+	strcpy(&m_tmpName[xr_strlen(m_tmpName)], l_tmp);
 	return m_tmpName;
 }
 

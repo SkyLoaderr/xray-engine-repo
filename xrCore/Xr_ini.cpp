@@ -140,7 +140,7 @@ void	CInifile::Load(IReader* F, LPCSTR path)
 				Current.clear	();
 			}
 //#pragma todo("find real section-name-end ']'")
-//			size_t L = strlen(str); str[L-1] = 0;
+//			size_t L = xr_strlen(str); str[L-1] = 0;
 			R_ASSERT3(strchr(str,']'),"Bad ini section found: ",str);
 			*strchr(str,']') 	= 0;
 			Current.Name 		= strlwr(str+1);

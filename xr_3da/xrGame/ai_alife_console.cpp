@@ -33,8 +33,8 @@ using namespace AI;
 void vfPrintLargeString(const char *S1, const char *S, const int i, const int j, const u32 u)
 {
 	string128	S2;
-	if (strlen(S))
-		for (int k=0, l=(int)strlen(S), m=((l - 1)/u) + 1; k<m; k++) {
+	if (xr_strlen(S))
+		for (int k=0, l=(int)xr_strlen(S), m=((l - 1)/u) + 1; k<m; k++) {
 			Memory.mem_copy(S2,S + k*u,u*sizeof(char));
 			if (k == m - 1)
 				S2[l - k*u]=0;
@@ -58,8 +58,8 @@ void vfPrintLargeString(const char *S1, const char *S, const int i, const int j,
 void vfPrintLargeString(const char *S1, const char *S, const int j, const u32 u)
 {
 	string128	S2;
-	if (strlen(S))
-		for (int k=0, l=(int)strlen(S), m=((l - 1)/u) + 1; k<m; k++) {
+	if (xr_strlen(S))
+		for (int k=0, l=(int)xr_strlen(S), m=((l - 1)/u) + 1; k<m; k++) {
 			Memory.mem_copy(S2,S + k*u,u*sizeof(char));
 			if (k == m - 1)
 				S2[l - k*u]=0;
@@ -255,14 +255,14 @@ void CSE_ALifeSimulator::vfObjectInfo(_OBJECT_ID	tObjectID)
 			}
 			else if (tTask.m_tTaskType == eTaskTypeSearchForItemCG) {
 				string64 tString;
-				Memory.mem_copy(tString,&(tTask.m_caSection),u32(strlen(tTask.m_caSection) + 1)*sizeof(char));
+				Memory.mem_copy(tString,&(tTask.m_caSection),u32(xr_strlen(tTask.m_caSection) + 1)*sizeof(char));
 				tString[sizeof(tTask.m_caSection)] = 0;
 				Msg("* Graph ID    : %d",tTask.m_tGraphID);
 				Msg("* Class ID    : %d (%s)",tTask.m_caSection,tString);
 			}
 			else if (tTask.m_tTaskType == eTaskTypeSearchForItemCL) {
 				string64 tString;
-				Memory.mem_copy(tString,&(tTask.m_caSection),u32(strlen(tTask.m_caSection) + 1)*sizeof(char));
+				Memory.mem_copy(tString,&(tTask.m_caSection),u32(xr_strlen(tTask.m_caSection) + 1)*sizeof(char));
 				tString[sizeof(tTask.m_caSection)] = 0;
 				Msg("* Location ID : %d",tTask.m_tLocationID);
 				Msg("* Class ID    : %d (%s)",tTask.m_caSection,tString);

@@ -178,7 +178,7 @@ LUALIB_API const char *luaL_optlstring (lua_State *L, int narg,
                                         const char *def, size_t *len) {
   if (lua_isnoneornil(L, narg)) {
     if (len)
-      *len = (def ? strlen(def) : 0);
+      *len = (def ? xr_strlen(def) : 0);
     return def;
   }
   else return luaL_checklstring(L, narg, len);
@@ -382,7 +382,7 @@ LUALIB_API void luaL_addlstring (luaL_Buffer *B, const char *s, size_t l) {
 
 
 LUALIB_API void luaL_addstring (luaL_Buffer *B, const char *s) {
-  luaL_addlstring(B, s, strlen(s));
+  luaL_addlstring(B, s, xr_strlen(s));
 }
 
 
@@ -588,7 +588,7 @@ LUALIB_API int lua_dobuffer (lua_State *L, const char *buff, size_t size,
 
 
 LUALIB_API int lua_dostring (lua_State *L, const char *str) {
-  return lua_dobuffer(L, str, strlen(str), str);
+  return lua_dobuffer(L, str, xr_strlen(str), str);
 }
 
 /* }====================================================== */

@@ -10,7 +10,7 @@
 void CBlender_DESC::Setup	(LPCSTR N)
 {
 	// Name
-	VERIFY(strlen(N)<128);
+	VERIFY(xr_strlen(N)<128);
 	VERIFY(0==strchr(N,'.'));
 	strcpy(cName,N);
 	strlwr(cName);

@@ -5,8 +5,8 @@ LPSTR _TrimLeft( LPSTR str )
 {
 	LPSTR p = str;
 	while( *p && isspace(*p) ) p++;
-	size_t	num1 = strlen( str );
-	size_t	num2 = strlen( p );
+	size_t	num1 = xr_strlen( str );
+	size_t	num2 = xr_strlen( p );
 	if (num1 == num2) return str;
 	for (u32	i = 0; i < num1; i++)
 	{
@@ -18,7 +18,7 @@ LPSTR _TrimLeft( LPSTR str )
 
 LPSTR _TrimRight( LPSTR str )
 {
-	size_t	num = strlen( str );
+	size_t	num = xr_strlen( str );
     if (num>0){
      	num-=1;
         while ( (num > 0)&&(isspace(u8(str[num]))))
@@ -54,7 +54,7 @@ LPCSTR _CopyVal ( LPCSTR src, LPSTR dst, char separator )
 	LPCSTR	p;
 	size_t	n;
 	p			= strchr	( src, separator );
-	n			= (p>0) ? (p-src) : strlen(src);
+	n			= (p>0) ? (p-src) : xr_strlen(src);
 	strncpy		( dst, src, n );
 	dst[n]		= 0;
 	return		dst;
@@ -73,7 +73,7 @@ int	_GetItemCount ( LPCSTR src, char separator )
 			cnt		++;
 			if (res[0]==separator) break;
 		}
-		if (strlen(last_res)) cnt++;
+		if (xr_strlen(last_res)) cnt++;
 	}
 	return		cnt;
 }
@@ -218,7 +218,7 @@ LPCSTR _CopyVal ( LPCSTR src, AnsiString& dst, char separator )
 	LPCSTR	p;
 	u32		n;
 	p			= strchr	( src, separator );
-	n			= (p>0) ? (p-src) : strlen(src);
+	n			= (p>0) ? (p-src) : xr_strlen(src);
 	dst			= src;
 	dst			= dst.Delete(n+1,dst.Length());
 	return		dst.c_str();
@@ -307,7 +307,7 @@ void _SequenceToList(LPSTRVec& lst, LPCSTR in, char separator)
 	for (int i=0; i<t_cnt; i++){
 		_GetItem(in,i,T,separator,0);
         _Trim(T);
-        if (strlen(T)) lst.push_back(xr_strdup(T));
+        if (xr_strlen(T)) lst.push_back(xr_strdup(T));
 	}
 }
 

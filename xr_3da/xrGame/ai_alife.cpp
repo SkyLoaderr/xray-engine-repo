@@ -120,7 +120,7 @@ void CSE_ALifeSimulator::vfUpdateDynamicData(bool bReserveID)
 
 void CSE_ALifeSimulator::Save()
 {
-	if (!strlen(m_caSaveName))
+	if (!xr_strlen(m_caSaveName))
 		Log						("There is no file name specified!");
 	else
 		Save(m_caSaveName);

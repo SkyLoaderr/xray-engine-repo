@@ -685,7 +685,7 @@ CSE_ALifeOrganizationRegistry::CSE_ALifeOrganizationRegistry()
 	for (u32 i=0, n=_GetItemCount(S); i<n; i++) {
 		string64				S1;
 		_GetItem				(S,i,S1);
-		LPSTR					S2 = (LPSTR)xr_malloc((strlen(S1) + 1)*sizeof(char));
+		LPSTR					S2 = (LPSTR)xr_malloc((xr_strlen(S1) + 1)*sizeof(char));
 		strcpy					(S2,S1);
 		m_tArtefactRegistry.insert(mk_pair(S2,false));
 	}

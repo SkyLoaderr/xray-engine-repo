@@ -91,7 +91,7 @@ public:
 	}
 	IC void w_string			( LPCSTR S )
 	{
-		w	(S,(u32)strlen(S)+1);
+		w	(S,(u32)xr_strlen(S)+1);
 	}
 	IC void w_matrix			(Fmatrix& M)
 	{
@@ -196,7 +196,7 @@ public:
 	IC void		r_string		( LPSTR S )
 	{
 		LPCSTR	data	= LPCSTR(&B.data[r_pos]);
-		size_t	len		= strlen(data);
+		size_t	len		= xr_strlen(data);
 		r		(S,(u32)len+1);
 	}
 	IC void		r_matrix		(Fmatrix& M)

@@ -188,7 +188,7 @@ void __cdecl CHUDManager::outMessage(u32 C, LPCSTR from, LPCSTR msg, ...)
 	va_list		p;
 	va_start	(p,msg);
 	vsprintf	(buffer,msg,p);
-	R_ASSERT	(strlen(buffer)<128);
+	R_ASSERT	(xr_strlen(buffer)<128);
 	va_end		(p);
 
 	GetUI()->AddMessage	(from,buffer,C);

@@ -76,7 +76,7 @@ void EFS_Utils::WriteAccessLog(LPSTR fn, LPSTR start_msg)
 		_O_WRONLY|_O_CREAT|_O_TRUNC| _O_BINARY,
 		_S_IREAD | _S_IWRITE );
 
-	_write( hf, buf, strlen(buf) );
+	_write( hf, buf, xr_strlen(buf) );
     char el[2]={0x0d,0x0a};
 	_write( hf, el, 2 );
 	_close( hf );

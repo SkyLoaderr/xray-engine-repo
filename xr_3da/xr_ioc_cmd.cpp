@@ -153,7 +153,7 @@ class CCC_Start : public CConsoleCommand
 	{
 		dest[0]	= 0;
 		if (strstr(args,name))
-			sscanf(strstr(args,name)+strlen(name),"(%[^)])",dest);
+			sscanf(strstr(args,name)+xr_strlen(name),"(%[^)])",dest);
 	}
 public:
 	CCC_Start(LPCSTR N) : CConsoleCommand(N) {};
@@ -167,12 +167,12 @@ public:
 		parse		(op_server,args,"server");	// 1. server
 		parse		(op_client,args,"client");	// 2. client
 
-		if (0==strlen(op_client))	
+		if (0==xr_strlen(op_client))	
 		{
 			Log("! Can't start game without client. Arguments: '%s'.",args);
 			return;
 		}
-		Engine.Event.Defer	("KERNEL:start",u32(strlen(op_server)?xr_strdup(op_server):0),u32(xr_strdup(op_client)));
+		Engine.Event.Defer	("KERNEL:start",u32(xr_strlen(op_server)?xr_strdup(op_server):0),u32(xr_strdup(op_client)));
 	}
 };
 

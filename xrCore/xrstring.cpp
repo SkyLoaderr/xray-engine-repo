@@ -5,7 +5,7 @@
 
 XRCORE_API	extern		str_container*	g_pStringContainer	= NULL;
 
-#define		HEADER		6
+#define		HEADER		8
 
 str_value*	str_container::dock		(str_c value)
 {
@@ -16,7 +16,7 @@ str_value*	str_container::dock		(str_c value)
 	str_value*	result			= 0;
 
 	// calc len
-	size_t	s_len				= strlen(value);
+	size_t	s_len				= xr_strlen(value);
 	size_t	s_len_with_zero		= s_len_with_zero+1;
 	VERIFY	(HEADER+s_len_with_zero < 4096);
 
@@ -24,7 +24,7 @@ str_value*	str_container::dock		(str_c value)
 	string4096	tempstorage;
 	str_value*	sv				= (str_value*)tempstorage;
 	sv->dwReference				= 0;
-	sv->dwStrLen				= (u16)s_len;
+	sv->dwStrLen				= s_len;
 	Memory.mem_copy				(sv->value,value,s_len_with_zero);
 	
 	// search

@@ -95,7 +95,7 @@ void CUIStatic::Update()
 	outX = 0;
 	outY = 0;
 
-	//u32 str_len = (u32)strlen(m_str);
+	//u32 str_len = (u32)xr_strlen(m_str);
 	//buf_str = (char*)xr_malloc(str_len*sizeof(char));
 	
 	new_word = false;
@@ -236,10 +236,10 @@ u32 CUIStatic::ReadColor(int pos, int& r, int& g, int& b)
 	u32 symbols_to_copy;
 	u32 str_offset = 0;
 
-	if(strlen(m_str)-pos>11)
+	if(xr_strlen(m_str)-pos>11)
 		symbols_to_copy = 11;
 	else
-		symbols_to_copy = (u32)strlen(m_str)-pos;
+		symbols_to_copy = (u32)xr_strlen(m_str)-pos;
 
 	
 	for(u32 i=0; i<symbols_to_copy; i++)
@@ -259,7 +259,7 @@ u32 CUIStatic::ReadColor(int pos, int& r, int& g, int& b)
 	if(token!=NULL)
 	{
 		r = atoi(token);
-		str_offset += (u32)strlen(token);
+		str_offset += (u32)xr_strlen(token);
 		str_offset++;
 	}
 	else
@@ -270,7 +270,7 @@ u32 CUIStatic::ReadColor(int pos, int& r, int& g, int& b)
 	if(token!=NULL)
 	{
 		g = atoi(token);
-		str_offset += (u32)strlen(token);
+		str_offset += (u32)xr_strlen(token);
 		str_offset++;
 	}
 	else
@@ -469,7 +469,7 @@ void CUIStatic::SetText(LPSTR str)
 		return;
 	}
 
-	for(u32 i=0; i<strlen(str); i++)
+	for(u32 i=0; i<xr_strlen(str); i++)
 		m_sEdit.push_back(str[i]);
 	m_sEdit.push_back(0);
 

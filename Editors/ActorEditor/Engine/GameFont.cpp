@@ -99,9 +99,9 @@ void CGameFont::OnRender()
 	{
 		// calculate first-fit
 		int		count	=	1;
-		int		length	=	strlen(strings[i].string);
+		int		length	=	xr_strlen(strings[i].string);
 		while	((i+count)<strings.size()) {
-			int	L	=	strlen(strings[i+count].string);
+			int	L	=	xr_strlen(strings[i+count].string);
 			if ((L+length)<MAX_CHARS)
 			{
 				count	++;
@@ -119,7 +119,7 @@ void CGameFont::OnRender()
 		u32 last=i+count;
 		for (; i<last; i++) {
 			String		&PS	= strings[i];
-			int			len	= strlen(PS.string);
+			int			len	= xr_strlen(PS.string);
 			if (len) {
 				float	X	= float			(iFloor((uFlags&fsDeviceIndependent)?(PS.x+1)*w_2:PS.x));
 				float	Y	= float			(iFloor((uFlags&fsDeviceIndependent)?(PS.y+1)*h_2:PS.y));
@@ -177,7 +177,7 @@ void CGameFont::OnRender()
 
 void CGameFont::Add(float _x, float _y, char *s, u32 _c, float _size)
 {
-	VERIFY(strlen(s)<127);
+	VERIFY(xr_strlen(s)<127);
 	String rs;
 	rs.x=_x;
 	rs.y=_y;
@@ -199,7 +199,7 @@ void __cdecl CGameFont::Out(float _x, float _y, char *fmt,...)
 	va_list p;
 	va_start(p,fmt);
 	vsprintf(rs.string,fmt,p);
-	VERIFY(strlen(rs.string)<127);
+	VERIFY(xr_strlen(rs.string)<127);
 	va_end(p);
 
 	strings.push_back(rs);
@@ -217,7 +217,7 @@ void __cdecl CGameFont::OutNext(char *fmt,...)
 	va_list p;
 	va_start(p,fmt);
 	vsprintf(rs.string,fmt,p);
-	VERIFY(strlen(rs.string)<255);
+	VERIFY(xr_strlen(rs.string)<255);
 	va_end(p);
 
 	strings.push_back(rs);
@@ -236,7 +236,7 @@ void __cdecl CGameFont::OutPrev(char *fmt,...)
 	va_list p;
 	va_start(p,fmt);
 	vsprintf(rs.string,fmt,p);
-	VERIFY(strlen(rs.string)<127);
+	VERIFY(xr_strlen(rs.string)<127);
 	va_end(p);
 
 	strings.push_back(rs);
@@ -251,7 +251,7 @@ void CGameFont::OutSkip(float val)
 float CGameFont::SizeOf(char *s,float size)
 {
 	if (uFlags&fsValid){
-		int		len			= strlen(s);
+		int		len			= xr_strlen(s);
 		float	X			= 0;
 		if (len) for (int j=0; j<len; j++) X+=TCMap[s[j]].z;
 		return				X*ConvertSize(size)/fHeight*vInterval.x*vTS.x;

@@ -138,7 +138,7 @@ public:
 	virtual void	Status	(TStatus& S)
 	{	
 		sprintf	(S,"%3.5f",*value);
-		while	(strlen(S) && ('0'==S[strlen(S)-1]))	S[strlen(S)-1] = 0;
+		while	(xr_strlen(S) && ('0'==S[xr_strlen(S)-1]))	S[xr_strlen(S)-1] = 0;
 	}
 	virtual void	Info	(TInfo& I)
 	{	

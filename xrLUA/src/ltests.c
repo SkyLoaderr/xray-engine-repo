@@ -165,14 +165,14 @@ static char *buildop (Proto *p, int pc, char *buff) {
   sprintf(buff, "(%4d) %4d - ", line, pc);
   switch (getOpMode(o)) {  
     case iABC:
-      sprintf(buff+strlen(buff), "%-12s%4d %4d %4d", name,
+      sprintf(buff+xr_strlen(buff), "%-12s%4d %4d %4d", name,
               GETARG_A(i), GETARG_B(i), GETARG_C(i));
       break;
     case iABx:
-      sprintf(buff+strlen(buff), "%-12s%4d %4d", name, GETARG_A(i), GETARG_Bx(i));
+      sprintf(buff+xr_strlen(buff), "%-12s%4d %4d", name, GETARG_A(i), GETARG_Bx(i));
       break;
     case iAsBx:
-      sprintf(buff+strlen(buff), "%-12s%4d %4d", name, GETARG_A(i), GETARG_sBx(i));
+      sprintf(buff+xr_strlen(buff), "%-12s%4d %4d", name, GETARG_A(i), GETARG_sBx(i));
       break;
   }
   return buff;
@@ -624,7 +624,7 @@ static int testC (lua_State *L) {
       const char *s = lua_tostring(L, getnum);
       lua_pushstring(L, s);
     }
-    else if EQ("strlen") {
+    else if EQ("xr_strlen") {
       lua_pushintegral(L, lua_strlen(L, getnum));
     }
     else if EQ("tocfunction") {

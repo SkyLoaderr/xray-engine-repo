@@ -160,7 +160,7 @@ void CConsole::OnPressKey(int dik, BOOL bHold)
 		SelectCommand();
 		break;
 	case DIK_BACK:
-		if (strlen(editor)>0) editor[strlen(editor)-1]=0;
+		if (xr_strlen(editor)>0) editor[xr_strlen(editor)-1]=0;
 		break;
 	case DIK_LSHIFT:
 	case DIK_RSHIFT:
@@ -239,7 +239,7 @@ void CConsole::OnPressKey(int dik, BOOL bHold)
 			if( hmem ){
 				LPCSTR	clipdata = (LPCSTR)GlobalLock(hmem);
 				strncpy (editor,clipdata,MAX_LEN-1); editor[MAX_LEN-1]=0;
-				for (u32 i=0; i<strlen(editor); i++)
+				for (u32 i=0; i<xr_strlen(editor); i++)
 					if (isprint(editor[i]))	editor[i]=char(_tolower(editor[i]));
 					else					editor[i]=' ';
 				
@@ -251,7 +251,7 @@ void CConsole::OnPressKey(int dik, BOOL bHold)
 	default:
 		break;
 	}
-	if (strlen(editor)>=MAX_LEN) editor[MAX_LEN-1]=0;
+	if (xr_strlen(editor)>=MAX_LEN) editor[MAX_LEN-1]=0;
 	bRepeat		= false;
 	rep_time	= 0;
 }
@@ -292,7 +292,7 @@ void CConsole::ExecuteCommand()
 	cmd_delta		= 0;
 	old_cmd_delta	= 0;
 
-	len = strlen(editor);
+	len = xr_strlen(editor);
 	for (i=0; i<len; i++) {
 		if ((editor[i]=='\n')||(editor[i]=='\t')) editor[i]=' ';
 	}
@@ -326,7 +326,7 @@ outloop:
 	}
 	first_word[i]=0;
 	strcpy(last_word,editor);
-	if (last_word[strlen(last_word)-1]==' ') last_word[strlen(last_word)-1]=0;
+	if (last_word[xr_strlen(last_word)-1]==' ') last_word[xr_strlen(last_word)-1]=0;
 	
 	vecCMD_IT I = Commands.find(first_word);
 	if (I!=Commands.end()) {

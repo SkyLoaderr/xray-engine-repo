@@ -138,20 +138,20 @@ char* CInventoryItem::NameComplex()
 	{
 		const char *l_subName = (*l_it)->NameShort();
 		if(l_subName)
-			strcpy(&m_nameComplex[strlen(m_nameComplex)], l_subName);
+			strcpy(&m_nameComplex[xr_strlen(m_nameComplex)], l_subName);
 	}
 
 
 	if(m_bUsingCondition)
 	{
 		/*if(GetCondition()<0.33)
-			strcpy(&m_nameComplex[strlen(m_nameComplex)], " bad");
+			strcpy(&m_nameComplex[xr_strlen(m_nameComplex)], " bad");
 		else if(GetCondition()<0.66)
-			strcpy(&m_nameComplex[strlen(m_nameComplex)], " good");
+			strcpy(&m_nameComplex[xr_strlen(m_nameComplex)], " good");
 		else
-			strcpy(&m_nameComplex[strlen(m_nameComplex)], " excelent");
+			strcpy(&m_nameComplex[xr_strlen(m_nameComplex)], " excelent");
 		*/
-		sprintf(&m_nameComplex[strlen(m_nameComplex)]," %f",GetCondition());
+		sprintf(&m_nameComplex[xr_strlen(m_nameComplex)]," %f",GetCondition());
 	}
 
 

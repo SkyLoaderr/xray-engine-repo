@@ -200,7 +200,7 @@ namespace PS
 		BOOL				SetName(const char* N)
 		{
 			// Name
-			VERIFY(strlen(N)<64);
+			VERIFY(xr_strlen(N)<64);
 
 			string64 new_name;
 			strcpy(new_name,N);
@@ -220,12 +220,12 @@ namespace PS
 		};
 		void				SetShader(const char* sh)
 		{
-			VERIFY(strlen(sh)<64);
+			VERIFY(xr_strlen(sh)<64);
 			strcpy(m_ShaderName,sh);
 		}
 		void				SetTexture(const char* tx)
 		{
-			VERIFY(strlen(tx)<64);
+			VERIFY(xr_strlen(tx)<64);
 			strcpy(m_TextureName,tx);
 		}
 #ifdef _EDITOR

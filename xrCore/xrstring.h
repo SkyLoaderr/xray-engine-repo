@@ -11,7 +11,7 @@ typedef const char*		str_c;
 struct		XRCORE_API	str_value
 {
 	u32					dwReference		;
-	u16					dwStrLen		;
+	u32					dwStrLen		;
 	char				value		[]	;
 };
 struct		XRCORE_API	str_value_cmp
@@ -78,13 +78,15 @@ public:
 // ptr != const res_ptr
 // res_ptr < res_ptr
 // res_ptr > res_ptr
-inline bool operator	==	(ref_str const & a, ref_str const & b)		{ return a._get() == b._get();					}
-inline bool operator	!=	(ref_str const & a, ref_str const & b)		{ return a._get() != b._get();					}
-inline bool operator	<	(ref_str const & a, ref_str const & b)		{ return a._get() <  b._get();					}
-inline bool operator	>	(ref_str const & a, ref_str const & b)		{ return a._get() >  b._get();					}
+IC bool operator	==	(ref_str const & a, ref_str const & b)		{ return a._get() == b._get();					}
+IC bool operator	!=	(ref_str const & a, ref_str const & b)		{ return a._get() != b._get();					}
+IC bool operator	<	(ref_str const & a, ref_str const & b)		{ return a._get() <  b._get();					}
+IC bool operator	>	(ref_str const & a, ref_str const & b)		{ return a._get() >  b._get();					}
 
-// externally visible swap
-inline void swap			(ref_str & lhs, ref_str & rhs)				{ lhs.swap(rhs);	}
+// externally visible standart functionality
+IC void swap			(ref_str & lhs, ref_str & rhs)				{ lhs.swap(rhs);		}
+IC u32	xr_strlen		(ref_str & a)								{ return a.length();	}
+
 #pragma pack(pop)
 
 #endif

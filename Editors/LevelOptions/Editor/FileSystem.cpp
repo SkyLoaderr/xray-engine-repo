@@ -44,17 +44,17 @@ LPCSTR MakeFilter(string1024& dest, LPCSTR info, LPCSTR ext)
 		LPSTR dst=dest;
         if (icnt>1){
             strconcat(dst,info," (",ext,")");
-            dst+=(strlen(dst)+1);
+            dst+=(xr_strlen(dst)+1);
             strcpy(dst,ext);
-            dst+=(strlen(ext)+1);
+            dst+=(xr_strlen(ext)+1);
         }
         for (int i=0; i<icnt; i++){
             string64 buf;
             _GetItem(ext,i,buf,';');
             strconcat(dst,info," (",buf,")");
-            dst+=(strlen(dst)+1);
+            dst+=(xr_strlen(dst)+1);
             strcpy(dst,buf);
-            dst+=(strlen(buf)+1);
+            dst+=(xr_strlen(buf)+1);
         }
     }
 	return dest;

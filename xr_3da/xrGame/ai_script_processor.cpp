@@ -81,7 +81,7 @@ void CScriptProcessor::Update()
 			n--;
 			continue;
 		}
-		if (strlen(m_caOutput))
+		if (xr_strlen(m_caOutput))
 			LuaOut(Lua::eLuaMessageTypeInfo,"%s",m_caOutput);
 	}
 	g_ca_stdout = S;

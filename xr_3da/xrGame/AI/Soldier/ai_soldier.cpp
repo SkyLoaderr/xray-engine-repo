@@ -240,10 +240,10 @@ void CAI_Soldier::OnEvent(EVENT E, u64 P1, u64 P2)
 							break;
 						}
 						
-					if ((strlen(monster_name)) && (strcmp(monster_name,cName())))
+					if ((xr_strlen(monster_name)) && (strcmp(monster_name,cName())))
 						return;
 					
-					if (!(strlen(monster_name))) {
+					if (!(xr_strlen(monster_name))) {
 						sscanf(buf2,"%d,%d,%d",&team,&squad,&group);
 						
 						if (((int)team != g_Team()) || ((int)squad != g_Squad()) || ((int)group != g_Group()))

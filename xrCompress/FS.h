@@ -44,8 +44,8 @@ public:
 	IC void			w_s16	(s16 d)					{	w(&d,sizeof(s16));	}
 	IC void			w_s8	(s8 d)					{	w(&d,sizeof(s8));	}
 	IC void			w_float	(float d)				{	w(&d,sizeof(float));}
-	IC void			w_string(const char *p)			{	w(p,(u32)strlen(p)); w_u8(13); w_u8(10);}
-	IC void			w_stringZ(const char *p)		{	w(p,(u32)strlen(p)+1);	}
+	IC void			w_string(const char *p)			{	w(p,(u32)xr_strlen(p)); w_u8(13); w_u8(10);}
+	IC void			w_stringZ(const char *p)		{	w(p,(u32)xr_strlen(p)+1);	}
 	IC void			w_fcolor(const Fcolor &v)		{	w(&v,sizeof(Fcolor));	}
 	IC void			w_fvector4(const Fvector4 &v)	{	w(&v,sizeof(Fvector4));	}
 	IC void			w_fvector3(const Fvector3 &v)	{	w(&v,sizeof(Fvector3));	}

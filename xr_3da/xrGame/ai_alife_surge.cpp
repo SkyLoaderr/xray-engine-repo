@@ -380,7 +380,7 @@ void CSE_ALifeSimulator::vfUpdateOrganizations()
 			}
 			case eResearchStateJoin : {
 				// asking if we have to left zone investigations
-				if (!strlen((*I).second->m_caDiscoveryToInvestigate) && (*I).second->m_tpOrderedArtefacts.empty() && (randF(1) < (*I).second->m_fLeftProbability))
+				if (!xr_strlen((*I).second->m_caDiscoveryToInvestigate) && (*I).second->m_tpOrderedArtefacts.empty() && (randF(1) < (*I).second->m_fLeftProbability))
 					(*I).second->m_tResearchState = eResearchStateLeft;
 				else {
 					// selecting discovery we would like to investigate
@@ -777,7 +777,7 @@ void CSE_ALifeSimulator::vfAssignStalkerCustomers()
 	SCHEDULE_P_PAIR_IT				E = m_tpScheduledObjects.end();
 	for ( ; I != E; I++) {
 		CSE_ALifeHumanAbstract		*l_tpALifeHumanAbstract = dynamic_cast<CSE_ALifeHumanAbstract*>((*I).second);
-		if (l_tpALifeHumanAbstract && strlen(l_tpALifeHumanAbstract->m_caKnownCustomers)) {
+		if (l_tpALifeHumanAbstract && xr_strlen(l_tpALifeHumanAbstract->m_caKnownCustomers)) {
 //			u32						N = _GetItemCount(l_tpALifeHumanAbstract->m_caKnownCustomers);
 //			if (!N)
 //				continue;

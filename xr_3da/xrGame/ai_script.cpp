@@ -25,7 +25,7 @@ CScript::CScript(CLuaVirtualMachine *tpLuaVirtualMachine, LPCSTR caFileName)
 	string256		l_caNamespaceName, S;
 	_splitpath		(caFileName,0,0,l_caNamespaceName,0);
 	sprintf			(S,"\nfunction %s.script_name()\nreturn \"%s\"\nend\nthis = %s\n",l_caNamespaceName,l_caNamespaceName,l_caNamespaceName);
-	if (!bfLoadBuffer(tpLuaVirtualMachine,S,strlen(S),caFileName))
+	if (!bfLoadBuffer(tpLuaVirtualMachine,S,xr_strlen(S),caFileName))
 		return;
 
 	lua_call		(tpLuaVirtualMachine,0,0);
@@ -46,7 +46,7 @@ CScript::CScript(CLuaVirtualMachine *tpLuaVirtualMachine, LPCSTR caFileName)
 #endif
 
 	sprintf			(S,"\n%s.main()\n",l_caNamespaceName);
-	if (!bfLoadBuffer(m_tpLuaThread,S,strlen(S),"@internal.script")) {
+	if (!bfLoadBuffer(m_tpLuaThread,S,xr_strlen(S),"@internal.script")) {
 		lua_pop		(tpLuaVirtualMachine,2);
 		return;
 	}

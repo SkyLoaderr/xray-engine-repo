@@ -112,6 +112,9 @@ IC char*						strconcat				( char* dest, const char* S1, const char* S2, const c
 IC char*						strext					( const char* S )
 {	return (char*) strchr(S,'.'); }
 
+IC u32							xr_strlen				( const char* S )
+{	return strlen(S);	}
+
 IC char*						timestamp				(string64& dest)
 {
 	string64	temp;
@@ -125,13 +128,13 @@ IC char*						timestamp				(string64& dest)
 
 	// date
 	_strdate	( temp );
-	for (it=0; it<strlen(temp); it++)
+	for (it=0; it<xr_strlen(temp); it++)
 		if ('/'==temp[it]) temp[it]='-';
 	strconcat	( dest, temp, "_" );
 
 	// time
 	_strtime	( temp );
-	for (it=0; it<strlen(temp); it++)
+	for (it=0; it<xr_strlen(temp); it++)
 		if (':'==temp[it]) temp[it]='-';
 	strcat		( dest, temp);
     return dest;

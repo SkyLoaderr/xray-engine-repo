@@ -181,7 +181,7 @@ void	IWriter::w_printf(const char* format, ...)
 	char buf[1024];
 	va_start( mark, format );
 	vsprintf( buf, format, mark );
-	w		( buf, strlen(buf) );
+	w		( buf, xr_strlen(buf) );
 }
 
 //---------------------------------------------------

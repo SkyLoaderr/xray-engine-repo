@@ -71,12 +71,12 @@ int __cdecl Lua::LuaOut(Lua::ELuaMessageType tLuaMessageType, LPCSTR caFormat, .
 	va_start(l_tMarker,caFormat);
 
 	strcpy	(S2,S);
-	S1		= S2 + strlen(S);
+	S1		= S2 + xr_strlen(S);
 	int		l_iResult = vsprintf(S1,caFormat,l_tMarker);
 	Msg		("%s",S2);
 	
 	strcpy	(S2,SS);
-	S1		= S2 + strlen(SS);
+	S1		= S2 + xr_strlen(SS);
 	vsprintf(S1,caFormat,l_tMarker);
 	getAI().m_tpLuaOutput->w_string(S2);
 
@@ -120,8 +120,8 @@ void Script::vfExportToLua(CLuaVirtualMachine *tpLuaVirtualMachine)
 	vfExportActions	(tpLuaVirtualMachine);
 	vfExportObject	(tpLuaVirtualMachine);
 	vfExportEffector(tpLuaVirtualMachine);
-	vfExportArtifactMerger(tpLuaVirtualMachine);
-
+	// vfExportArtifactMerger(tpLuaVirtualMachine);	// OLES: there are no such func
+#pragma todo("Oles to Dandy: vfExportArtifactMerger() - there are no such func")
 #ifdef DEBUG
 	lua_sethook		(tpLuaVirtualMachine, LuaHookCall,	LUA_HOOKCALL | LUA_HOOKRET | LUA_HOOKLINE | LUA_HOOKTAILRET,	0);
 #endif
@@ -133,7 +133,7 @@ bool Script::bfLoadFile(CLuaVirtualMachine *tpLuaVirtualMachine, LPCSTR caScript
 {
 	string256		l_caNamespaceName;
 	_splitpath		(caScriptName,0,0,l_caNamespaceName,0);
-	if (!strlen(l_caNamespaceName))
+	if (!xr_strlen(l_caNamespaceName))
 		return		(bfLoadFileIntoNamespace(tpLuaVirtualMachine,caScriptName,"_G",bCall));
 	else
 		return		(bfLoadFileIntoNamespace(tpLuaVirtualMachine,caScriptName,l_caNamespaceName,bCall));
@@ -143,10 +143,10 @@ bool bfCreateNamespaceTable(CLuaVirtualMachine *tpLuaVirtualMachine, LPCSTR caNa
 {
 	lua_pushstring	(tpLuaVirtualMachine,"_G");
 	lua_gettable	(tpLuaVirtualMachine,LUA_GLOBALSINDEX);
-	LPSTR			S2 = (char*)xr_malloc((strlen(caNamespaceName) + 1)*sizeof(char)), S = S2;
-	strcpy			(S,caNamespaceName);
+	LPSTR			S2	= xr_strdup(caNamespaceName);
+	LPSTR			S	= S2;
 	for (;;) {
-		if (!strlen(S)) {
+		if (!xr_strlen(S)) {
 			lua_pop		(tpLuaVirtualMachine,1);
 			LuaOut		(Lua::eLuaMessageTypeError,"the namespace name %s is incorrect!",caNamespaceName);
 			xr_free		(S2);

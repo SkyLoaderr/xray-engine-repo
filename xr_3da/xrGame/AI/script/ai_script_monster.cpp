@@ -99,7 +99,7 @@ void CScriptMonster::vfUpdateParticles()
 	CParticleAction	&l_tParticleAction = GetCurrentAction()->m_tParticleAction;
 	LPCSTR			l_caBoneName = *l_tParticleAction.m_caBoneName;
 
-	if (l_caBoneName && strlen(l_caBoneName)) {
+	if (l_caBoneName && xr_strlen(l_caBoneName)) {
 		CParticlesObject	*l_tpParticlesObject = l_tParticleAction.m_tpParticleSystem;
 		l_tpParticlesObject->UpdateParent(GetUpdatedMatrix(l_caBoneName,l_tParticleAction.m_tParticlePosition,l_tParticleAction.m_tParticleAngles),l_tParticleAction.m_tParticleVelocity);
 	}
@@ -109,7 +109,7 @@ void CScriptMonster::vfUpdateSounds()
 {
 	CSoundAction	&l_tSoundAction = GetCurrentAction()->m_tSoundAction;
 	LPCSTR			l_caBoneName	= *l_tSoundAction.m_caBoneName;
-	if (l_caBoneName && strlen(l_caBoneName) && l_tSoundAction.m_tpSound && l_tSoundAction.m_tpSound->feedback)
+	if (l_caBoneName && xr_strlen(l_caBoneName) && l_tSoundAction.m_tpSound && l_tSoundAction.m_tpSound->feedback)
 		l_tSoundAction.m_tpSound->feedback->set_position(GetUpdatedMatrix(l_caBoneName,l_tSoundAction.m_tSoundPosition,Fvector().set(0,0,0)).c);
 }
 
@@ -170,7 +170,7 @@ const Fmatrix CScriptMonster::GetUpdatedMatrix(LPCSTR caBoneName, const Fvector 
 	l_tMatrix.setHPB(VPUSH(tAngleOffset));
 	l_tMatrix.c		= tPositionOffset;
 
-	if (caBoneName && strlen(caBoneName)) {
+	if (caBoneName && xr_strlen(caBoneName)) {
 		CBoneInstance	&l_tBoneInstance = PKinematics(Visual())->LL_GetInstance(PKinematics(Visual())->LL_BoneID(caBoneName));
 //#pragma todo("Dima to Dima : null callbacks after completion")
 //		if (fpBoneCallback)
@@ -198,7 +198,7 @@ bool CScriptMonster::bfAssignSound(CEntityAction *tpEntityAction)
 				l_tSoundAction.m_bCompleted = true;
 	}
 	else {
-		if (*l_tSoundAction.m_caSoundToPlay && strlen(*l_tSoundAction.m_caSoundToPlay))
+		if (xr_strlen(l_tSoundAction.m_caSoundToPlay))
 			::Sound->create	(*(l_tSoundAction.m_tpSound = xr_new<ref_sound>()),TRUE,*l_tSoundAction.m_caSoundToPlay);
 		else
 			l_tSoundAction.m_bCompleted = true;

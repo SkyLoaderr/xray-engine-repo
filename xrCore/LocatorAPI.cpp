@@ -25,7 +25,7 @@ FS_Path::FS_Path	(LPCSTR _Root, LPCSTR _Add, LPCSTR _DefExt, LPCSTR _FilterCapti
 	string256		temp;
     strcpy			(temp,_Root);
     if (_Add) 		strcat(temp,_Add);
-	if (temp[strlen(temp)-1]!='\\') strcat(temp,"\\");
+	if (temp[xr_strlen(temp)-1]!='\\') strcat(temp,"\\");
 	m_Path			= xr_strdup(temp);
 	m_DefExt		= _DefExt?xr_strdup(_DefExt):0;
 	m_FilterCaption	= _FilterCaption?xr_strdup(_FilterCaption):0;
@@ -57,7 +57,7 @@ void	FS_Path::_set	(LPSTR add)
 	// m_Path
 	string256		temp;
 	strconcat		(temp,m_Root,m_Add);
-	if (temp[strlen(temp)-1]!='\\') strcat(temp,"\\");
+	if (temp[xr_strlen(temp)-1]!='\\') strcat(temp,"\\");
 	xr_free			(m_Path);
 	m_Path			= strlwr(xr_strdup(temp));
 }
@@ -146,7 +146,7 @@ void CLocatorAPI::Register		(LPCSTR name, u32 vfs, u32 ptr, u32 size_real, u32 s
             R_ASSERT(I.second);
 		}
 		strcpy(temp,folder);
-		if (strlen(temp))		temp[strlen(temp)-1]=0;
+		if (xr_strlen(temp))		temp[xr_strlen(temp)-1]=0;
 	}
 }
 
@@ -390,12 +390,12 @@ xr_vector<char*>* CLocatorAPI::file_list_open			(const char* path, u32 flags)
 	
 	xr_vector<char*>*	dest	= xr_new<xr_vector<char*> > ();
 
-	size_t base_len	= strlen(N);
+	size_t base_len	= xr_strlen(N);
 	for (++I; I!=files.end(); I++)
 	{
 		const file& entry = *I;
 		if (0!=strncmp(entry.name,N,base_len))	break;	// end of list
-		const char* end_symbol = entry.name+strlen(entry.name)-1;
+		const char* end_symbol = entry.name+xr_strlen(entry.name)-1;
 		if ((*end_symbol) !='\\')	{
 			// file
 			if ((flags&FS_ListFiles) == 0)	continue;
@@ -475,7 +475,7 @@ IReader* CLocatorAPI::r_open	(LPCSTR path, LPCSTR _fname)
 		R_ASSERT	(P);
 		if (fname==strstr(fname,P->m_Path))
 		{
-			update_path			(cpy_name,"$build_copy$",fname+strlen(P->m_Path));
+			update_path			(cpy_name,"$build_copy$",fname+xr_strlen(P->m_Path));
 			IWriter* W = w_open	(cpy_name);
 			W->w				(R->pointer(),R->length());
 			w_close				(W);
@@ -531,13 +531,13 @@ BOOL CLocatorAPI::dir_delete(LPCSTR path,LPCSTR nm,BOOL remove_files)
 	// remove files
     I					= file_find(fpath);
     if (I!=files.end()){
-        size_t base_len			= strlen(fpath);
+        size_t base_len			= xr_strlen(fpath);
         for (; I!=files.end(); ){
             files_it cur_item	= I;
             const file& entry 	= *cur_item;
             I					= cur_item; I++;
             if (0!=strncmp(entry.name,fpath,base_len))	break;	// end of list
-			const char* end_symbol = entry.name+strlen(entry.name)-1;
+			const char* end_symbol = entry.name+xr_strlen(entry.name)-1;
 			if ((*end_symbol) !='\\'){
 //		        const char* entry_begin = entry.name+base_len;
 				if (!remove_files) return FALSE;
@@ -551,7 +551,7 @@ BOOL CLocatorAPI::dir_delete(LPCSTR path,LPCSTR nm,BOOL remove_files)
     // remove folders
     files_set::reverse_iterator r_it = folders.rbegin();
     for (;r_it!=folders.rend();r_it++){
-	    const char* end_symbol = r_it->name+strlen(r_it->name)-1;
+	    const char* end_symbol = r_it->name+xr_strlen(r_it->name)-1;
     	if ((*end_symbol) =='\\'){
         	_rmdir		(r_it->name);
             files.erase	(*r_it);
@@ -681,7 +681,7 @@ void CLocatorAPI::rescan_path(LPCSTR full_path, BOOL bRecurse)
 	files_it	I 	= files.lower_bound(desc);
 	if (I==files.end())	return;
 	
-	size_t base_len			= strlen(full_path);
+	size_t base_len			= xr_strlen(full_path);
 	for (; I!=files.end(); ){
     	files_it cur_item	= I;
 		const file& entry 	= *cur_item;

@@ -66,8 +66,8 @@ XML_NODE* CUIXml::NavigateToNode(XML_NODE* start_node,
 	XML_NODE* node = NULL;
 
 	char* buf_str;	
-	buf_str = (char*)xr_malloc((strlen(path)+1)*sizeof(char));
-//	buf_str.resize(strlen(path)+1);
+	buf_str = (char*)xr_malloc((xr_strlen(path)+1)*sizeof(char));
+//	buf_str.resize(xr_strlen(path)+1);
 	strcpy(buf_str, path);
 
 

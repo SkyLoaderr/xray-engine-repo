@@ -8,7 +8,7 @@ XRCORE_API void __stdcall CLSID2TEXT(CLASS_ID id, LPSTR text) {
 XRCORE_API CLASS_ID __stdcall TEXT2CLSID(LPCSTR text) {
 	char buf[10];
 	strncpy(buf,text,9);
-	size_t need = 8-strlen(buf);
+	size_t need = 8-xr_strlen(buf);
 	while (need) { buf[8-need]=' '; need--; }
 	return MK_CLSID(buf[0],buf[1],buf[2],buf[3],buf[4],buf[5],buf[6],buf[7]);
 }
