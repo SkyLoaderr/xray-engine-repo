@@ -429,13 +429,13 @@ void CHelicopter::UpdateCL()
 
 	XFORM().translate_over(m_currP);
 	
-
+/*
 	HUD().pFontSmall->SetColor(color_rgba(0xff,0xff,0xff,0xff));
 	HUD().pFontSmall->OutSet	(120,630);
 	HUD().pFontSmall->OutNext("Linear Velocity:         [%3.5f]",m_curLinearSpeed);
 	HUD().pFontSmall->OutNext("Linear Acceleration:     [%3.2f]",m_curLinearAcc);
 	HUD().pFontSmall->OutNext("Lag:                     [%3.2f]",deltaDist);
-
+*/
 ///////////////////////////////////////////////////////////////////////////
 	m_engineSound.set_position(XFORM().c);
 
