@@ -15,7 +15,7 @@
 #pragma comment(lib,"X:\\FreeImage.lib")
 
 extern void	xrCompiler			(LPCSTR name);
-extern void __cdecl logThread	(void *dummy);
+extern void logThread			(void *dummy);
 extern volatile BOOL bClose;
 
 static const char* h_str = 
