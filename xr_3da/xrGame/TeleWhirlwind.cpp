@@ -3,6 +3,7 @@
 #include "PhysicsShell.h"
 #include "PhysicsShellHolder.h"
 #include "../level.h"
+#include "phdestroyable.h"
 
 		CTeleWhirlwindObject::		CTeleWhirlwindObject()
 {
@@ -15,6 +16,10 @@ bool		CTeleWhirlwindObject::		init(CTelekinesis* tele,CPhysicsShellHolder *obj, 
 {
 			bool result			=inherited::init(tele,obj,s,h,ttk);
 			m_telekinesis		=static_cast<CTeleWhirlwind*>(tele);
+			if(m_telekinesis->is_active_object(obj))
+			{
+					return false;
+			}
 			if(obj->PPhysicsShell())
 			{
 				obj->PPhysicsShell()->SetAirResistance(0.f,0.f);
@@ -36,13 +41,37 @@ void		CTeleWhirlwindObject::		release					()
 	
 		
 	Fvector dir_inv;
-	dir_inv.set(0.f,-1.0f,0.f);
+	dir_inv.sub(object->Position(),m_telekinesis->Center());
+	float magnitude	= dir_inv.magnitude();
+	
 
 	// включить гравитацию
 	Fvector zer;zer.set(0,0,0);
 	object->m_pPhysicsShell->set_LinearVel(zer);
 	object->m_pPhysicsShell->set_ApplyByGravity(TRUE);
 
+	if(magnitude<2.f*object->Radius())
+	{
+		CPHDestroyable* D=object->ph_destroyable();
+		if(D)
+		{
+			D->Destroy();
+		}
+	}
+	float impulse=0.f;
+	if(!fis_zero(magnitude))
+	{
+		dir_inv.mul(1.f/magnitude);
+		impulse=strength/magnitude/magnitude;
+	}
+	else
+	{
+		dir_inv.set(0,-1.f,0);
+		impulse=100000.f;
+	}
+
+	
+	object->m_pPhysicsShell->applyImpulse(dir_inv,impulse);
 	switch_state(TS_None);
 }
 void		CTeleWhirlwindObject::		raise					(float power)
@@ -70,8 +99,8 @@ void		CTeleWhirlwindObject::		raise					(float power)
 			if(mag<mag_eps)
 			{
 				accel=k/mag_eps/mag_eps/mag_eps;
-				Fvector zer;zer.set(0,0,0);
-				E->set_LinearVel(zer);
+				//Fvector zer;zer.set(0,0,0);
+				//E->set_LinearVel(zer);
 			}
 	
 			Fvector vel;

@@ -20,14 +20,14 @@ void CMincer::SwitchZoneState(EZoneState new_state)
 		for(;e!=it;++it)
 		{
 			CPhysicsShellHolder * GO = smart_cast<CPhysicsShellHolder *>(*it);
-			Telekinesis().activate(GO, 0.1f, m_fTeleHeight, 100000);
+			Telekinesis().activate(GO,10000.f, m_fTeleHeight, 100000);
 
 		}
 	}
 
 	if(m_eZoneState==eZoneStateBlowout && new_state!=eZoneStateBlowout)
 	{
-		Telekinesis().deactivate();
+		Telekinesis().clear_deactivate();
 	}
 	inherited::SwitchZoneState(new_state);
 }
@@ -50,25 +50,39 @@ BOOL CMincer::net_Spawn(LPVOID DC)
 void CMincer::feel_touch_new				(CObject* O)
 {
 	inherited::feel_touch_new(O);
-	if(m_eZoneState==eZoneStateBlowout)
+	if(m_eZoneState==eZoneStateBlowout && 
+			(
+			m_dwBlowoutExplosionTime>(u32)m_iStateTime
+				)
+		)
 	{
 		CPhysicsShellHolder * GO = smart_cast<CPhysicsShellHolder *>(O);
-		Telekinesis().activate(GO, 0.1f, m_fTeleHeight, 100000);
+		Telekinesis().activate(GO, 10000.f, m_fTeleHeight, 100000);
 	}
 }
 
 void CMincer:: AffectThrow	(CPhysicsShellHolder* GO,const Fvector& throw_in_dir,float dist)
 {
-	CPHDestroyable* D=GO->ph_destroyable();
-	if(D)
-	{
-		D->Destroy();
-	}
+	inherited::AffectThrow(GO,throw_in_dir,dist);
 }
 
+bool CMincer::BlowoutState	()
+{
+	bool ret=inherited::BlowoutState	();
+	if(m_dwBlowoutExplosionTime<(u32)m_iPreviousStateTime ||
+		m_dwBlowoutExplosionTime>=(u32)m_iStateTime) return ret;
+	Telekinesis().deactivate();
+	return ret;
+}
 void CMincer ::ThrowInCenter(Fvector& C)
 {
 	C.set(m_telekinetics.Center());
+}
+
+
+void CMincer ::Center	(Fvector& C) const
+{
+	C.set(Position());
 }
 #ifdef DEBUG
 void CMincer::OnRender()

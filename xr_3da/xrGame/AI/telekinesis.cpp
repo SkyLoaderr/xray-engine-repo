@@ -34,6 +34,23 @@ void CTelekinesis::deactivate()
 	CPHUpdateObject::Deactivate();
 }
 
+void CTelekinesis::clear_deactivate()
+{
+	active			= false;
+
+	// отпустить все объекты
+	// 
+	for (u32 i = 0; i < objects.size(); i++) 
+	{
+
+		objects[i]->switch_state(TS_None);
+		xr_delete(objects[i]);
+	}
+	objects.clear	();
+
+	CPHUpdateObject::Deactivate();
+}
+
 struct SFindPred
 {
 	CPhysicsShellHolder *obj;
@@ -53,6 +70,15 @@ void CTelekinesis::deactivate(CPhysicsShellHolder *obj)
 	// отпустить объект
 	(*it)->release();
 
+	//remove from list, delete...
+	remove_object(it);
+}
+
+void CTelekinesis::remove_object		(CPhysicsShellHolder *obj)
+{
+	// найти объект
+	TELE_OBJECTS_IT it = std::find_if(objects.begin(), objects.end(), SFindPred(obj));
+	if (it == objects.end()) return;
 	//remove from list, delete...
 	remove_object(it);
 }

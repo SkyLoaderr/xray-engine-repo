@@ -24,9 +24,13 @@ public:
 
 			// деактивировать все объекты
 			void	deactivate			();
+
+			//clear objects (does not call release, but call switch to TS_None)
+			void	clear_deactivate	();
 			// деактивировать объект
 			void	deactivate			(CPhysicsShellHolder *obj);
 			void	remove_object		(TELE_OBJECTS_IT it);
+			void	remove_object		(CPhysicsShellHolder *obj);
 			// бросить объект 'obj' в позицию 'target'
 			void	fire				(CPhysicsShellHolder *obj, const Fvector &target);
 	
