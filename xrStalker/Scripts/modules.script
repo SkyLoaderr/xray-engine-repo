@@ -17,6 +17,7 @@ module ("xr_sounds_id")
 module ("xr_evaluators")
 module ("xr_storyline")
 module ("xr_state")
+module ("state_mgr")
 
 module ("debug_info")
 module ("utils")
