@@ -49,7 +49,7 @@ void CActor::IR_OnKeyboardPress(int cmd)
 			else
 				mstate_wishful |= mcCrouch;					
 		}break;
-	case kSPRINT_TOGLE:	
+	case kSPRINT_TOGGLE:	
 		{
 			if (mstate_wishful & mcSprint)
 				mstate_wishful &=~mcSprint;

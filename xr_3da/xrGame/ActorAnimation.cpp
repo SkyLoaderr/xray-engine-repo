@@ -394,6 +394,8 @@ void CActor::g_SetAnimation( u32 mstate_rl )
 		if (mstate_rl&mcFall)		strcat(buf,"Fall ");
 		if (mstate_rl&mcTurn)		strcat(buf,"Turn ");
 		if (mstate_rl&mcLanding)	strcat(buf,"Landing ");
+		if (mstate_rl&mcLLookout)	strcat(buf,"LLookout ");
+		if (mstate_rl&mcRLookout)	strcat(buf,"RLookout ");
 		if (m_bJumpKeyPressed)		strcat(buf,"+Jumping ");
 		HUD().pFontSmall->SetColor	(0xffffffff);
 		HUD().pFontSmall->OutSet	(170,450);
@@ -410,6 +412,13 @@ void CActor::g_SetAnimation( u32 mstate_rl )
 		HUD().pFontSmall->OutNext	("Accel     [%3.2f, %3.2f, %3.2f]",VPUSH(NET_SavedAccel));
 		HUD().pFontSmall->OutNext	("V         [%3.2f, %3.2f, %3.2f]",VPUSH(m_PhysicMovementControl->GetVelocity()));
 		HUD().pFontSmall->OutNext	("vertex ID   %d",level_vertex_id());
+		
+		strcpy(buf,"");
+		if (m_iCurWeaponHideState & (1<<0)) strcat(buf, "INVENTORY_MENU_OPEN ");
+		if (m_iCurWeaponHideState & (1<<1)) strcat(buf, "BUY_MENU_OPEN ");
+		if (m_iCurWeaponHideState & (1<<2)) strcat(buf, "DEACTIVATE_CURRENT_SLOT ");
+		if (m_iCurWeaponHideState & (1<<3)) strcat(buf, "SPRINT ");
+		HUD().pFontSmall->OutNext	("WeaponHideState:     [%s]",buf);
 	};
 #endif
 #endif

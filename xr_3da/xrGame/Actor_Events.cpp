@@ -159,36 +159,21 @@ void CActor::OnEvent		(NET_Packet& P, u16 type)
 	case GEG_PLAYER_BUYMENU_OPEN:
 	case GEG_PLAYER_INVENTORYMENU_OPEN:
 	case GEG_PLAYER_DEACTIVATE_CURRENT_SLOT:
+	case GEG_PLAYER_SPRINT_START:
 		{
 			if (OnServer())
 			{
-				/*
-				u32 InventorySlot = inventory().GetActiveSlot();
-				if( InventorySlot != NO_ACTIVE_SLOT && InventorySlot <= PDA_SLOT &&
-					inventory().m_slots[InventorySlot].m_pIItem)
-				{
-					inventory().SetPrevActiveSlot(InventorySlot);
-					inventory().Activate(NO_ACTIVE_SLOT);
-				}
-				*/
-				m_iCurWeaponNextState = 1;
+				m_iCurWeaponHideState |= 1<<((type - GEG_PLAYER_INVENTORYMENU_OPEN)/2);
 			};
 		}break;
 	case GEG_PLAYER_BUYMENU_CLOSE:
 	case GEG_PLAYER_INVENTORYMENU_CLOSE:
 	case GEG_PLAYER_RESTORE_CURRENT_SLOT:
+	case GEG_PLAYER_SPRINT_END:
 		{
 			if (OnServer())
 			{
-				/*
-				u32 InventorySlot = inventory().GetPrevActiveSlot();
-				if( InventorySlot != NO_ACTIVE_SLOT && InventorySlot <= PDA_SLOT &&
-					inventory().m_slots[InventorySlot].m_pIItem)
-				{
-					inventory().Activate(inventory().InventorySlot);
-				}
-				*/
-				m_iCurWeaponNextState = 2;
+				m_iCurWeaponHideState &= ~(1<<((type - GEG_PLAYER_INVENTORYMENU_OPEN)/2));
 			};
 		}break;
 	case GE_MOVE_ACTOR:

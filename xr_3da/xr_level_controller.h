@@ -13,7 +13,7 @@ enum	EKeyBinding
 	kJUMP			,
 	kCROUCH			,
 	kCROUCH_TOGGLE	,
-	kSPRINT_TOGLE	,
+	kSPRINT_TOGGLE	,
 	kACCEL			,
 	kREPAIR			,
 	kL_LOOKOUT		,

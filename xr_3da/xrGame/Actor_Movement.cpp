@@ -97,7 +97,7 @@ void CActor::g_cl_ValidateMState(float dt, u32 mstate_wf)
 		{
 			mstate_real				|=mcClimb;
 			cam_SetLadder();
-			HideCurrentWeapon(GEG_PLAYER_DEACTIVATE_CURRENT_SLOT, true);
+			HideCurrentWeapon(GEG_PLAYER_DEACTIVATE_CURRENT_SLOT);//, true);
 		}
 	}
 	else
@@ -194,11 +194,45 @@ void CActor::g_cl_CheckControls(u32 mstate_wf, Fvector &vControlAccel, float &Ju
 
 		}
 
-
-
+		u32 mstate_old = mstate_real;
 		mstate_real &= (~move);
 		mstate_real |= (mstate_wf & move);
 
+		if(mstate_wf&mcSprint)
+			mstate_real|=mcSprint;
+		else
+			mstate_real&=~mcSprint;
+		if(!(mstate_real&(mcFwd|mcLStrafe|mcRStrafe))||mstate_real&(mcCrouch|mcClimb))
+		{
+			mstate_real&=~mcSprint;
+			mstate_wishful&=~mcSprint;
+		}
+
+		if (mstate_real & mcClimb && ((mstate_real&mcAnyMove) != (mstate_old&mcAnyMove)))
+		{
+			if (mstate_real&mcAnyMove)
+			{
+				HideCurrentWeapon(GEG_PLAYER_DEACTIVATE_CURRENT_SLOT);//, true);
+			}
+			else
+			{
+				RestoreHidedWeapon(GEG_PLAYER_RESTORE_CURRENT_SLOT);
+			};
+		};
+
+		
+		if ((mstate_real&mcSprint) != (mstate_old & mcSprint))
+		{
+			if (mstate_real&mcSprint)
+			{
+				HideCurrentWeapon(GEG_PLAYER_SPRINT_START);//, false);
+			}
+			else
+			{
+				RestoreHidedWeapon(GEG_PLAYER_SPRINT_END);
+			}
+		};
+		
 	
 		
 		// check player move state
@@ -242,38 +276,6 @@ void CActor::g_cl_CheckControls(u32 mstate_wf, Fvector &vControlAccel, float &Ju
 	mOrient.rotateY		(-r_model_yaw);
 	mOrient.transform_dir(vControlAccel);
 	//XFORM().transform_dir(vControlAccel);
-	if (mstate_real & mcClimb)
-	{
-		if (mstate_real&mcAnyMove)
-		{
-			HideCurrentWeapon(GEG_PLAYER_DEACTIVATE_CURRENT_SLOT, true);
-		}
-		else
-		{
-			RestoreHidedWeapon(GEG_PLAYER_RESTORE_CURRENT_SLOT);
-		};
-	};
-
-	if(mstate_wf&mcSprint)
-					mstate_real|=mcSprint;
-	else
-					mstate_real&=~mcSprint;
-
-	if(!(mstate_real&(mcFwd|mcLStrafe|mcRStrafe))||mstate_real&(mcCrouch|mcClimb))
-	{
-		mstate_real&=~mcSprint;
-		mstate_wishful&=~mcSprint;
-	}
-
-	
-	if (mstate_real & mcSprint)
-	{
-		HideCurrentWeapon(GEG_PLAYER_DEACTIVATE_CURRENT_SLOT, true);
-	}
-	else
-	{
-		RestoreHidedWeapon(GEG_PLAYER_RESTORE_CURRENT_SLOT);
-	}
 
 	/*
 	if(mstate_real&mcClimb&&mstate_real&mcAnyMove&&

@@ -704,9 +704,7 @@ BOOL CActor::net_Spawn		(LPVOID DC)
 	smart_cast<CKinematics*>(Visual())->CalculateBones();
 
 	//--------------------------------------------------------------
-	m_iCurWeaponNextState = 0;
-	m_bCurWeaponHidden = false;
-//	m_iCurWeaponHideState = 0;
+	m_iCurWeaponHideState = 0;
 	//--------------------------------------------------------------
 	//добавить отметки на карте, которые актер помнит в info_portions
 	if(m_known_info_registry->registry().objects_ptr())
@@ -1505,29 +1503,49 @@ void	CActor::OnRender_Network()
 
 #endif
 
-void		CActor::HideCurrentWeapon		(u32 Msg, bool only2handed)
+void		CActor::HideCurrentWeapon		(u32 Msg)//, bool only2handed)
 {
-	if (m_bCurWeaponHidden) return;
-	if (inventory().ActiveItem() && (!only2handed || !inventory().ActiveItem()->IsSingleHanded()))
-	{
 		NET_Packet	P;
 		u_EventGen(P, Msg/*GEG_PLAYER_DEACTIVATE_CURRENT_SLOT*/, ID());
 		u_EventSend(P);
-		m_bCurWeaponHidden = true;
-	};
 };
 
 void		CActor::RestoreHidedWeapon		(u32 Msg)
 {
-	if (!m_bCurWeaponHidden) return;
-//	if (inventory().GetActiveSlot() == NO_ACTIVE_SLOT)
-	{
 		NET_Packet	P;
 		u_EventGen(P, Msg/*GEG_PLAYER_RESTORE_CURRENT_SLOT*/, ID());
 		u_EventSend(P);
-		m_bCurWeaponHidden = false;
-	};
 }
+
+void		CActor::Check_Weapon_ShowHideState	()
+{
+	if (!OnServer()) return;
+	if (m_iCurWeaponHideState)
+	{
+		u32 InventorySlot = inventory().GetActiveSlot();
+		if( InventorySlot != NO_ACTIVE_SLOT && InventorySlot <= PDA_SLOT &&
+			inventory().m_slots[InventorySlot].m_pIItem &&
+			(!(m_iCurWeaponHideState&(1<<2)) || !inventory().m_slots[InventorySlot].m_pIItem->IsSingleHanded()))
+		{
+			if (inventory().Activate(NO_ACTIVE_SLOT))
+			{
+				inventory().SetPrevActiveSlot(InventorySlot);
+			};
+		}
+	}
+	else
+	{
+		u32 InventorySlot = inventory().GetPrevActiveSlot();
+		if( InventorySlot != NO_ACTIVE_SLOT && InventorySlot <= PDA_SLOT &&
+			inventory().m_slots[InventorySlot].m_pIItem)
+		{
+			if (inventory().Activate(InventorySlot))
+			{
+				inventory().SetPrevActiveSlot(NO_ACTIVE_SLOT);
+			}
+		};
+	}
+};
 
 void CActor::net_Save(NET_Packet& P)
 {
