@@ -2,6 +2,8 @@
 #define xrLevelH
 #pragma once
 
+#define NODE_NEIGHBOUR_COUNT 4
+
 enum fsL_Chunks {
 	fsL_HEADER2			=1,		//*
 	fsL_SHADERS			=2,		//*
@@ -58,15 +60,11 @@ struct NodePosition
 struct NodeCompressed
 {
 	u16				plane;			// 2
-	NodePosition	p0;				// 2+2+2 = 6
-	NodePosition	p1;				// 2+2+2 = 6
+	NodePosition	p;				// 2+2+2 = 6
 	u8				light;			// 1
-
-	u8				cover	[4];	// 4
-	u8				links	: 6;	// 1
-	u8				flag0	: 1;	// .
-	u8				flag1	: 1;	// .
-};									// 2+6+6+1+4+1 = 20b + links
+	u8				cover;			// 1
+	NodeLink		links	[4];	// 12
+};									// 2+6+1+12 = 21b
 #pragma pack	(pop)
 
 const u32 XRCL_CURRENT_VERSION		=	16;	// input

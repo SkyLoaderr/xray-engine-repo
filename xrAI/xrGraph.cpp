@@ -255,7 +255,7 @@ void vfSaveGraph(LPCSTR name, CAI_Map *tpAI_Map)
 	SLevel						tLevel;
 	tLevel.tOffset.set			(0,0,0);
 	tLevel.tLevelID				= 0;
-	Memory.mem_copy				(tLevel.caLevelName,name,(u32)strlen(name) + 1);
+	Memory.mem_copy				(tLevel.caLevelName,name,(u32)xr_strlen(name) + 1);
 	tGraphHeader.tpLevels.insert(std::make_pair(tLevel.tLevelID,tLevel));
 	tGraph.w_u32				(tGraphHeader.dwVersion);
 	tGraph.w_u32				(tGraphHeader.dwLevelCount);

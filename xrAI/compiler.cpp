@@ -3,15 +3,17 @@
 
 #include "cl_intersect.h"
 
-Nodes			g_nodes;
-Merged			g_merged;
-Lights			g_lights;
-SAIParams		g_params;
-CDB::MODEL		Level;
-CDB::MODEL		LevelLight;
-CDB::COLLIDER	XRC;
-Fbox			LevelBB;
-Vectors			Emitters;
+Nodes				g_nodes;
+//Merged				g_merged;
+xr_vector<SCover>	g_covers_palette;
+
+Lights				g_lights;
+SAIParams			g_params;
+CDB::MODEL			Level;
+CDB::MODEL			LevelLight;
+CDB::COLLIDER		XRC;
+Fbox				LevelBB;
+Vectors				Emitters;
 
 void Node::PointLF(Fvector& D)
 {
@@ -85,13 +87,17 @@ void xrCompiler(LPCSTR name)
 	
 	/////////////////////////////////////
 
-	Phase("Merging nodes...");
-	xrMerge		();
+//	Phase("Merging nodes...");
+//	xrMerge		();
+//	mem_Optimize();
+
+	Phase("Palettizing cover values...");
+	xrPalettizeCovers();
 	mem_Optimize();
-	
-	Phase("Converting and linking...");
-	xrConvertAndLink();
-	mem_Optimize();
+
+//	Phase("Converting and linking...");
+//	xrConvertAndLink();
+//	mem_Optimize();
 	
 	Phase("Visualizing nodes...");
 	xrDisplay	();

@@ -95,7 +95,7 @@ public:
 				CSE_ALifeObject	*tpALifeObject = dynamic_cast<CSE_ALifeObject*>(E);
 				if (tpALifeObject) {
 					m_tpSpawnPoints.push_back(tpALifeObject);
-					if (!strlen(tpALifeObject->m_caGroupControl))
+					if (!xr_strlen(tpALifeObject->m_caGroupControl))
 						tpALifeObject->m_dwSpawnGroup = ++*dwGroupOffset;
 					else {
 						xr_map<LPCSTR,xr_vector<CSE_ALifeObject*>*,pred_str>::iterator I = l_tpSpawnGroupObjectsMap.find(tpALifeObject->m_caGroupControl);
@@ -136,7 +136,7 @@ public:
 			xr_map<LPCSTR,xr_vector<CSE_ALifeObject*>*,pred_str>::iterator	E = l_tpSpawnGroupObjectsMap.end();
 			
 			for ( ; I != E; I++) {
-				R_ASSERT(strlen((*I).first));
+				R_ASSERT(xr_strlen((*I).first));
 				
 				xr_map<LPCSTR,CSE_SpawnGroup*,pred_str>::iterator			J = l_tpSpawnGroupControlsMap.find((*I).first);
 
@@ -375,9 +375,9 @@ void xrMergeSpawns(LPCSTR name)
 			R_ASSERT2			(Ini->section_exist(N),S);
 		}
 		V						= Ini->r_string(N,"name");
-		if (strlen(name) && stricmp(name,V))
+		if (xr_strlen(name) && stricmp(name,V))
 			continue;
-		Memory.mem_copy			(tLevel.caLevelName,V,(u32)strlen(V) + 1);
+		Memory.mem_copy			(tLevel.caLevelName,V,(u32)xr_strlen(V) + 1);
 		Msg						("Reading level %s...",tLevel.caLevelName);
 		u32						id = Ini->r_s32(N,"id");
 		tpLevels.push_back		(xr_new<CSpawn>("$game_levels$",tLevel,id,&dwGroupOffset));

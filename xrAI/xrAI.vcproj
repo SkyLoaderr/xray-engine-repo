@@ -428,12 +428,27 @@
 			</File>
 			<File
 				RelativePath=".\compiler_link.cpp">
+				<FileConfiguration
+					Name="Debug|Win32"
+					ExcludedFromBuild="TRUE">
+					<Tool
+						Name="VCCLCompilerTool"/>
+				</FileConfiguration>
 			</File>
 			<File
 				RelativePath=".\compiler_load.cpp">
 			</File>
 			<File
 				RelativePath=".\compiler_merge.cpp">
+				<FileConfiguration
+					Name="Debug|Win32"
+					ExcludedFromBuild="TRUE">
+					<Tool
+						Name="VCCLCompilerTool"/>
+				</FileConfiguration>
+			</File>
+			<File
+				RelativePath=".\compiler_palettize_covers.cpp">
 			</File>
 			<File
 				RelativePath=".\compiler_save.cpp">

@@ -26,6 +26,7 @@ struct Node					// definition of "patch" or "node"
 	float	LightLevel;
 	
 	float	cover[4];		// cover in four directions
+	u8		cover_index;
 
 	Node() {
 		n1=n2=n3=n4	= UnkonnectedNode;
@@ -44,16 +45,16 @@ struct Node					// definition of "patch" or "node"
 };
 
 DEF_VECTOR(DWORDs,u32);
-struct NodeMerged
-{
-	DWORDs		neighbours;	// list of neighbours
-	DWORDs		contains;	// while merging - contains list of elementar nodes
-	Fplane		plane;
-	Fvector		P0,P1;		// min/max
-	WORD		sector;
-	BYTE		light;
-	float		cover[4];
-};
+//struct NodeMerged
+//{
+//	DWORDs		neighbours;	// list of neighbours
+//	DWORDs		contains;	// while merging - contains list of elementar nodes
+//	Fplane		plane;
+//	Fvector		P;			// min
+//	WORD		sector;
+//	BYTE		light;
+//	float		cover[4];
+//};
 
 void	Compress	(NodeCompressed& Dest, Node& Src);
 
@@ -76,22 +77,27 @@ struct R_Light
 	Fvector			tri[3];				// Cached triangle for ray-testing
 };
 
+struct SCover {
+	u8				cover[4];
+};
+
 DEF_VECTOR(Nodes,Node			);
-DEF_VECTOR(Merged,NodeMerged	);
+//DEF_VECTOR(Merged,NodeMerged	);
 DEF_VECTOR(Vectors,Fvector		);
 DEF_VECTOR(Marks,BYTE			);
 DEF_VECTOR(Lights,R_Light		);
 
 // data
-extern	Nodes			g_nodes;
-extern	Merged			g_merged;
-extern	Lights			g_lights;
-extern	SAIParams		g_params;
-extern	CDB::MODEL		Level;
-extern	CDB::MODEL		LevelLight;
-extern	CDB::COLLIDER	XRC;
-extern	Fbox			LevelBB;
-extern	Vectors			Emitters;
+extern	Nodes				g_nodes;
+//extern	Merged				g_merged;
+extern	xr_vector<SCover>	g_covers_palette;
+extern	Lights				g_lights;
+extern	SAIParams			g_params;
+extern	CDB::MODEL			Level;
+extern	CDB::MODEL			LevelLight;
+extern	CDB::COLLIDER		XRC;
+extern	Fbox				LevelBB;
+extern	Vectors				Emitters;
 
 // phases
 void	xrLoad			(LPCSTR name);
@@ -102,6 +108,7 @@ void	xrCover			();
 void	xrMerge			();
 void	xrConvertAndLink();
 void	xrDisplay		();
+void	xrPalettizeCovers();
 void	xrSaveNodes		(LPCSTR name);
 
 // constants

@@ -48,8 +48,8 @@ public:
 		R_ASSERT	(m_header.version == XRAI_CURRENT_VERSION);
 		m_nodes		= (BYTE*) vfs->pointer();
 
-		m_fSize2	= _sqr(m_header.size)/4;
-		m_fYSize2	= _sqr((float)(m_header.size_y/32767.0))/4;
+		m_fSize2	= _sqr(m_header.size)/1;
+		m_fYSize2	= _sqr((float)(m_header.size_y/32767.0))/1;
 		// dispatch table
 		m_nodes_ptr	= (NodeCompressed**)xr_malloc(m_header.count*sizeof(void*));
 		
@@ -59,9 +59,9 @@ public:
 
 			NodeCompressed	C;
 			vfs->r			(&C,sizeof(C));
-
-			u32				L = C.links;
-			vfs->advance	(L*sizeof(NodeLink));
+//
+//			u32				L = C.links;
+//			vfs->advance	(L*sizeof(NodeLink));
 		}
 
 		// special query tables
@@ -91,8 +91,7 @@ public:
 
 	IC BOOL	u_InsideNode(const NodeCompressed& N, const NodePosition& P) const
 	{
-		return 	((P.x>=N.p0.x)&&(P.x<=N.p1.x))&&	// X inside
-				((P.z>=N.p0.z)&&(P.z<=N.p1.z));		// Z inside
+		return 	((P.x == N.p.x) && (P.z==N.p.z));		// Z inside
 	}
 
 	IC	void UnpackPosition(Fvector& Pdest, const NodePosition& Psrc) const
@@ -111,12 +110,9 @@ public:
 
 	IC Fvector tfGetNodeCenter(NodeCompressed *tpNode) const
 	{
-		Fvector tP0, tP1;
-		UnpackPosition(tP0, tpNode->p0);
-		UnpackPosition(tP1, tpNode->p1);
-		tP0.add(tP1);
-		tP0.mul(.5f);
-		return(tP0);
+		Fvector tP;
+		UnpackPosition(tP, tpNode->p);
+		return(tP);
 	}
 
 	IC Fvector tfGetNodeCenter(u32 tNodeID) const
@@ -190,28 +186,27 @@ public:
 
 	IC float ffGetY(NodeCompressed &tNode, float X, float Z) const
 	{
-		Fvector	DUP, vNorm, v, v1, P0;
+		Fvector	DUP, vNorm, v, v1, P;
 		DUP.set(0,1,0);
 		pvDecompress(vNorm,tNode.plane);
 		Fplane PL; 
-		UnpackPosition(P0,tNode.p0);
-		PL.build(P0,vNorm);
-		v.set(X,P0.y,Z);	
+		UnpackPosition(P,tNode.p);
+		PL.build(P,vNorm);
+		v.set(X,P.y,Z);	
 		PL.intersectRayPoint(v,DUP,v1);	
 		return(v1.y);
 	}
 
 	IC bool bfInsideNode(NodeCompressed *tpNode, Fvector &tCurrentPosition, bool bUseY = false) const
 	{
-		Fvector tP0, tP1;
+		Fvector tP;
 		float fHalfSubNodeSize = m_header.size*.5f;
-		UnpackPosition(tP0,tpNode->p0);
-		UnpackPosition(tP1,tpNode->p1);
+		UnpackPosition(tP,tpNode->p);
 		return(
-			(tCurrentPosition.x >= tP0.x - fHalfSubNodeSize - EPS) &&
-			(tCurrentPosition.z >= tP0.z - fHalfSubNodeSize - EPS) &&
-			(tCurrentPosition.x <= tP1.x + fHalfSubNodeSize + EPS) &&
-			(tCurrentPosition.z <= tP1.z + fHalfSubNodeSize + EPS) &&
+			(tCurrentPosition.x >= tP.x - fHalfSubNodeSize - EPS) &&
+			(tCurrentPosition.z >= tP.z - fHalfSubNodeSize - EPS) &&
+			(tCurrentPosition.x <= tP.x + fHalfSubNodeSize + EPS) &&
+			(tCurrentPosition.z <= tP.z + fHalfSubNodeSize + EPS) &&
 			((!bUseY) || 
 			(_abs(tCurrentPosition.y - ffGetY(*tpNode,tCurrentPosition.x,tCurrentPosition.z)) < 1.f))
 		);
@@ -227,22 +222,21 @@ public:
 		NodeCompressed *tpNode = Node(ID);
 		
 		// decompress positions
-		Fvector P0,P1;
-		UnpackPosition(P0,tpNode->p0);
-		UnpackPosition(P1,tpNode->p1);
+		Fvector P;
+		UnpackPosition(P,tpNode->p);
 		
 		// decompress plane
 		Fplane	PL;	
 		pvDecompress(PL.n,tpNode->plane);
-		PL.d = - PL.n.dotproduct(P0);
+		PL.d = - PL.n.dotproduct(P);
 		
 		// create vertices
 		float st = m_header.size/2;
 		
-		C.v1.set(P0.x-st,P0.y,P0.z-st);	projectPoint(PL,C.v1);	// minX,minZ
-		C.v2.set(P1.x+st,P0.y,P0.z-st);	projectPoint(PL,C.v2);	// maxX,minZ
-		C.v3.set(P1.x+st,P1.y,P1.z+st);	projectPoint(PL,C.v3);	// maxX,maxZ
-		C.v4.set(P0.x-st,P1.y,P1.z+st);	projectPoint(PL,C.v4);	// minX,maxZ
+		C.v1.set(P.x-st,P.y,P.z-st);	projectPoint(PL,C.v1);	// minX,minZ
+		C.v2.set(P.x+st,P.y,P.z-st);	projectPoint(PL,C.v2);	// maxX,minZ
+		C.v3.set(P.x+st,P.y,P.z+st);	projectPoint(PL,C.v3);	// maxX,maxZ
+		C.v4.set(P.x-st,P.y,P.z+st);	projectPoint(PL,C.v4);	// minX,maxZ
 	}
 
 	IC bool bfSimilar(Fvector &tPoint0, Fvector &tPoint1) const
@@ -532,20 +526,17 @@ public:
 	{
 		SContour				tCurContour;
 		NodeCompressed			*tpNode;
-		NodeLink				*taLinks;
-		int						i, iCount, iSavedIndex, iPrevIndex = -1, iNextNode;
+		int						i, iSavedIndex, iPrevIndex = -1, iNextNode;
 		Fvector					tStartPoint = tStartPosition, tTempPoint = tStartPosition, tFinishPoint = tFinishPosition;
 		float					fCurDistance = 0.f, fDistance = tStartPosition.distance_to_xz(tFinishPosition);
 		u32						dwCurNode = dwStartNode;
 
 		while (!bfInsideNode(Node(dwCurNode),tFinishPosition) && (fCurDistance < (fDistance + EPS_L))) {
 			tpNode				= Node(dwCurNode);
-			taLinks				= (NodeLink *)((BYTE *)tpNode + sizeof(NodeCompressed));
-			iCount				= tpNode->links;
 			iSavedIndex			= -1;
 			UnpackContour		(tCurContour,dwCurNode);
-			for ( i=0; i < iCount; i++)
-				if ((iNextNode = UnpackLink(taLinks[i])) != iPrevIndex)
+			for ( i=0; i < NODE_NEIGHBOUR_COUNT; i++)
+				if ((iNextNode = UnpackLink(tpNode->links[i])) != iPrevIndex)
 					vfChoosePoint	(tStartPoint,tFinishPoint,tCurContour, iNextNode,tTempPoint,iSavedIndex);
 
 			if (iSavedIndex > -1) {
@@ -572,13 +563,13 @@ public:
 		for (int i=0; i<(int)m_header.count; i++) {
 			NodeCompressed& N = *m_nodes_ptr[i];
 			if (u_InsideNode(N,P)) {
-				Fvector	DUP, vNorm, v, v1, P0;
+				Fvector	DUP, vNorm, v, v1, P;
 				DUP.set(0,1,0);
 				pvDecompress(vNorm,N.plane);
 				Fplane PL; 
-				UnpackPosition(P0,N.p0);
-				PL.build(P0,vNorm);
-				v.set(tLocalPoint.x,P0.y,tLocalPoint.z);	
+				UnpackPosition(P,N.p);
+				PL.build(P,vNorm);
+				v.set(tLocalPoint.x,P.y,tLocalPoint.z);	
 				PL.intersectRayPoint(v,DUP,v1);
 				int dist = iFloor((v1.y - tLocalPoint.y)*(v1.y - tLocalPoint.y));
 				if (dist < min_dist) {
@@ -592,7 +583,7 @@ public:
 
 	void						vfShallowGraphSearch(Fvector tStartPosition, u32 dwStartNode, float fSearchRange, xr_vector<u32> &tpaStack, xr_vector<bool> &tpaMask)
 	{
-		u32							dwCurNodeID, dwNextNodeID, dwNeighbourCount;
+		u32							dwCurNodeID, dwNextNodeID;
 		NodeCompressed				*tpStartNode = Node(dwStartNode), *tpCurNode, *tpCurrentNode = tpStartNode;
 		float						fRangeSquare = fSearchRange*fSearchRange, fDistance = tStartPosition.distance_to_sqr(tfGetNodeCenter(tpStartNode));
 		NodeLink					*I, *E;
@@ -605,9 +596,8 @@ public:
 		for (u32 i=0; i<tpaStack.size(); i++) {
 			dwCurNodeID				= tpaStack[i];
 			tpCurNode				= Node(dwCurNodeID);
-			dwNeighbourCount		= tpCurNode->links;
-			I						= (NodeLink *)((BYTE *)tpCurNode + sizeof(NodeCompressed));
-			E						= I + dwNeighbourCount;
+			I						= tpCurNode->links;
+			E						= I + NODE_NEIGHBOUR_COUNT;
 			for ( ; I != E; I++) {
 				if (tpaMask[dwNextNodeID = UnpackLink(*I)])
 					continue;
@@ -632,7 +622,7 @@ public:
 	
 	IC		void		begin			(const u32 node_index, const_iterator &begin, const_iterator &end) const
 	{
-		end						= (begin = (const_iterator)((BYTE *)Node(node_index) + sizeof(NodeCompressed))) + Node(node_index)->links;
+		end						= (begin = Node(node_index)->links) + NODE_NEIGHBOUR_COUNT;
 	}
 
 	IC		float		get_edge_weight	(const u32 node_index1, const u32 node_index2) const

@@ -64,22 +64,22 @@ public:
 	{
 		tData					= tAIMapData;
 		NodeCompressed &tNode1	= *tData.m_tpAI_Map->Node(tData.dwFinishNode);
-		x3						= (int)(tNode1.p1.x) + (int)(tNode1.p0.x);
-		y3						= (float)(tNode1.p1.y) + (float)(tNode1.p0.y);
-		z3						= (int)(tNode1.p1.z) + (int)(tNode1.p0.z);
+		x3						= (int)(tNode1.p.x);
+		y3						= (float)(tNode1.p.y);
+		z3						= (int)(tNode1.p.z);
 		m_fSize2				= tData.m_tpAI_Map->m_fSize2;
 		m_fYSize2				= tData.m_tpAI_Map->m_fYSize2;
 	}
 
 	IC void begin(u32 dwNode, CAIMapShortestPathNode::iterator &tIterator, CAIMapShortestPathNode::iterator &tEnd)
 	{
-		tEnd = (tIterator = (NodeLink *)((BYTE *)tData.m_tpAI_Map->Node(dwNode) + sizeof(NodeCompressed))) + tData.m_tpAI_Map->Node(dwNode)->links;
+		tEnd = (tIterator = tData.m_tpAI_Map->Node(dwNode)->links) + NODE_NEIGHBOUR_COUNT;
 		
 		NodeCompressed &tNode0 = *tData.m_tpAI_Map->Node(dwNode);
 
-		x1 = (int)(tNode0.p1.x) + (int)(tNode0.p0.x);
-		y1 = (float)(tNode0.p1.y) + (float)(tNode0.p0.y);
-		z1 = (int)(tNode0.p1.z) + (int)(tNode0.p0.z);
+		x1 = (int)(tNode0.p.x);
+		y1 = (float)(tNode0.p.y);
+		z1 = (int)(tNode0.p.z);
 	}
 
 	IC u32 get_value(CAIMapShortestPathNode::iterator &tIterator)
@@ -96,9 +96,9 @@ public:
 	{
 		NodeCompressed &tNode1 = *tData.m_tpAI_Map->Node(dwFinishNode);
 
-		x2 = (int)(tNode1.p1.x) + (int)(tNode1.p0.x);
-		y2 = (float)(tNode1.p1.y) + (float)(tNode1.p0.y);
-		z2 = (int)(tNode1.p1.z) + (int)(tNode1.p0.z);
+		x2 = (int)(tNode1.p.x);
+		y2 = (float)(tNode1.p.y);
+		z2 = (int)(tNode1.p.z);
 
 		return(_sqrt((float)(m_fSize2*float(_sqr(x2 - x1) + _sqr(z2 - z1)) + m_fYSize2*_sqr(y2 - y1))));
 	}
@@ -107,9 +107,9 @@ public:
 	{
 		NodeCompressed &tNode0 = *tData.m_tpAI_Map->Node(dwStartNode);
 		
-		x2 = (int)(tNode0.p1.x) + (int)(tNode0.p0.x);
-		y2 = (float)(tNode0.p1.y) + (float)(tNode0.p0.y);
-		z2 = (int)(tNode0.p1.z) + (int)(tNode0.p0.z);
+		x2 = (int)(tNode0.p.x);
+		y2 = (float)(tNode0.p.y);
+		z2 = (int)(tNode0.p.z);
 		
 		return(_sqrt((float)(m_fSize2*float(_sqr(x3 - x2) + _sqr(z3 - z2)) + m_fYSize2*_sqr(y3 - y2))));
 	}

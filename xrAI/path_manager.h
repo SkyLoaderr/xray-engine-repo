@@ -100,14 +100,14 @@ public:
 	IC	void		init			()
 	{
 		_Graph::InternalNode	&tNode1	= *graph->Node(start_node_index);
-		x2						= (int)(tNode1.p1.x) + (int)(tNode1.p0.x);
-		y2						= (float)(tNode1.p1.y) + (float)(tNode1.p0.y);
-		z2						= (int)(tNode1.p1.z) + (int)(tNode1.p0.z);
+		x2						= (int)(tNode1.p.x);
+		y2						= (float)(tNode1.p.y);
+		z2						= (int)(tNode1.p.z);
 		
 		_Graph::InternalNode	&tNode2	= *graph->Node(goal_node_index);
-		x3						= (int)(tNode2.p1.x) + (int)(tNode2.p0.x);
-		y3						= (float)(tNode2.p1.y) + (float)(tNode2.p0.y);
-		z3						= (int)(tNode2.p1.z) + (int)(tNode2.p0.z);
+		x3						= (int)(tNode2.p.x);
+		y3						= (float)(tNode2.p.y);
+		z3						= (int)(tNode2.p.z);
 	}
 
 	IC	_dist_type	evaluate		(const _index_type node_index1, const _index_type node_index2, const _Graph::const_iterator &i)
@@ -116,9 +116,9 @@ public:
 		
 		_Graph::InternalNode	&tNode1 = *graph->Node(node_index2);
 
-		x2						= (int)(tNode1.p1.x) + (int)(tNode1.p0.x);
-		y2						= (float)(tNode1.p1.y) + (float)(tNode1.p0.y);
-		z2						= (int)(tNode1.p1.z) + (int)(tNode1.p0.z);
+		x2						= (int)(tNode1.p.x);
+		y2						= (float)(tNode1.p.y);
+		z2						= (int)(tNode1.p.z);
 
 		return					(_sqrt((float)(square_size_xz*float(_sqr(x2 - x1) + _sqr(z2 - z1)) + square_size_y*(float)_sqr(y2 - y1))));
 	}
@@ -136,9 +136,9 @@ public:
 		
 		_Graph::InternalNode	&tNode0 = *graph->Node(node_index);
 
-		x1						= (int)(tNode0.p1.x) + (int)(tNode0.p0.x);
-		y1						= (float)(tNode0.p1.y) + (float)(tNode0.p0.y);
-		z1						= (int)(tNode0.p1.z) + (int)(tNode0.p0.z);
+		x1						= (int)(tNode0.p.x);
+		y1						= (float)(tNode0.p.y);
+		z1						= (int)(tNode0.p.z);
 
 		return					(false);
 	}
