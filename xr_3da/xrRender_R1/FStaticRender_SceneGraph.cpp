@@ -28,7 +28,7 @@ void CRender::InsertSG_Dynamic	(IRender_Visual *pVisual, Fvector& Center)
 	float distSQ;	if (CalcSSA(distSQ,Center,pVisual)<=r_ssaDISCARD)	return;
 
 	// Select List and add to it
-	ShaderElement*		sh		= L_Projector.shadowing()?pVisual->hShader->E[0]:pVisual->hShader->E[1];
+	ShaderElement*		sh		= (L_Projector.shadowing()?pVisual->hShader->E[0]:pVisual->hShader->E[1])._get();
 	if (val_bInvisible){
 		SceneGraph::mapMatrixItem::TNode C;
 		C.val.pObject			= val_pObject;
@@ -73,7 +73,7 @@ void CRender::InsertSG_Static(IRender_Visual *pVisual)
 		if (SSA<=r_ssaDISCARD)		return;
 
 		// Select List and add to it
-		ShaderElement*		sh		= ((_sqrt(distSQ)-pVisual->vis.sphere.R)<20)?pVisual->hShader->E[0]:pVisual->hShader->E[1];
+		ShaderElement*		sh		= (((_sqrt(distSQ)-pVisual->vis.sphere.R)<20)?pVisual->hShader->E[0]:pVisual->hShader->E[1])._get();
 		if (sh->Flags.bStrictB2F) {
 			SceneGraph::mapSorted_Node* N		= mapSorted.insertInAnyWay(distSQ);
 			N->val.pObject			= NULL;
@@ -85,12 +85,12 @@ void CRender::InsertSG_Static(IRender_Visual *pVisual)
 			{
 				SPass&									pass	= *(sh->Passes[pass_id]);
 				SceneGraph::mapNormalCodes&				codes	= mapNormal	[sh->Flags.iPriority][pass_id];
-				SceneGraph::mapNormalCodes::TNode*		Ncode	= codes.insert		(pass.state);
-				SceneGraph::mapNormalVS::TNode*			Nvs		= Ncode->val.insert	(pass.vs);
-				SceneGraph::mapNormalConstants::TNode*	Nconst	= Nvs->val.insert	(pass.constants);
-				SceneGraph::mapNormalTextures::TNode*	Ntex	= Nconst->val.insert(pass.T);
+				SceneGraph::mapNormalCodes::TNode*		Ncode	= codes.insert		(pass.state->state);
+				SceneGraph::mapNormalVS::TNode*			Nvs		= Ncode->val.insert	(pass.vs->vs);
+				SceneGraph::mapNormalConstants::TNode*	Nconst	= Nvs->val.insert	(pass.constants._get());
+				SceneGraph::mapNormalTextures::TNode*	Ntex	= Nconst->val.insert(pass.T._get());
 				SceneGraph::mapNormalVB::TNode*			Nvb		= Ntex->val.insert	(pVisual->hGeom->vb);
-				SceneGraph::mapNormalMatrices::TNode*	Nmat	= Nvb->val.insert	(pass.M);
+				SceneGraph::mapNormalMatrices::TNode*	Nmat	= Nvb->val.insert	(pass.M._get());
 				SceneGraph::mapNormalItems&				item	= Nmat->val;
 				if (pass_id)	{
 					// No need to sort - ZB already setted up

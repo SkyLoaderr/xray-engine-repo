@@ -34,7 +34,7 @@ void CRender::InsertSG_Dynamic	(IRender_Visual *pVisual, Fvector& Center)
 	if (SSA<=r_ssaDISCARD)		return;
 
 	// Select List and add to it
-	ShaderElement*		sh		= pVisual->hShader->E[RImplementation.phase];
+	ShaderElement*		sh		= pVisual->hShader->E[RImplementation.phase]._get();
 	if (val_bHUD)	{
 		// HUD
 		mapHUD_Node* N			= mapHUD.insertInAnyWay(distSQ);

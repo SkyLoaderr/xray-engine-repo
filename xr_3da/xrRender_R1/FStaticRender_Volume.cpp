@@ -45,7 +45,7 @@ void CRender::RenderBox			(IRender_Sector* _S, Fbox& BB, int sh)
 		default:
 			{
 				// Renderable visual
-				ShaderElement* E	= V->hShader->E[sh];
+				ShaderElement* E	= V->hShader->E[sh]._get();
 				for (u32 pass=0; pass<E->Passes.size(); pass++)
 				{
 					RCache.set_Element			(E,pass);

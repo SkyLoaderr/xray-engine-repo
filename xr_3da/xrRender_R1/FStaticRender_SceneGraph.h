@@ -23,7 +23,7 @@ namespace SceneGraph
 		BOOL			nearer;
 	};
 	struct _LodItem		{
-		float			ssa;
+		float				ssa;
 		IRender_Visual*		pVisual;
 	};
 
