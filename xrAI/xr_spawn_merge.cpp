@@ -47,8 +47,6 @@ public:
 	NodeCompressed**			m_nodes_ptr;	// pointers to node's data
 	SERVER_ENTITY_P_VECTOR		m_tpSpawnPoints;
 	u32							m_dwLevelID;
-	u32							m_dwStart;
-	u32							m_dwEnd;
 	u32							m_dwAStarStaticCounter;
 	SNode						*m_tpHeap;
 	SNode						**m_tppHeap;
@@ -120,6 +118,16 @@ public:
 			m_tpSpawnPoints.push_back(E);
 			S_id++;
 		}
+		m_dwAStarStaticCounter	= 0;
+		u32 S1					= (m_header.count + 2)*sizeof(SNode);
+		m_tpHeap				= (SNode *)xr_malloc(S1);
+		ZeroMemory				(m_tpHeap,S1);
+		u32 S2					= (m_header.count)*sizeof(SIndexNode);
+		m_tpIndexes				= (SIndexNode *)xr_malloc(S2);
+		ZeroMemory				(m_tpIndexes,S2);
+		u32 S3					= (m_header.count)*sizeof(SNode *);
+		m_tppHeap				= (SNode **)xr_malloc(S1);
+		ZeroMemory				(m_tpHeap,S1);
 	};
 	virtual 					~CSpawn()
 	{
@@ -172,8 +180,9 @@ public:
 			}
 			else {
 				m_tpGraphNodes[i] = -1;
-				if ((dwStart <= (u32)i) && (dwFinish > (u32)i))
+				if ((dwStart <= (u32)i) && (dwFinish > (u32)i)) {
 					dwFinish = i;
+				}
 			}
 		DWORD_IT				BB = m_tpGraphNodes.begin();
 		DWORD_IT				B = BB + dwStart;
