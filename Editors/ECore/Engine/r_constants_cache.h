@@ -16,11 +16,11 @@ public:
 		array.resize(limit);
 		flush		();
 	}
-	IC T*					access	(u32 id)				{ return &array[id];						}
-	IC void					flush	()						{ lo=hi=0;									}
-	IC void					dirty	(u32 _lo, u32 _hi)		{ if (_lo<lo) lo=_lo; if (_hi>hi) hi=_hi;	}
-	IC u32					r_lo	()						{ return lo;								}
-	IC u32					r_hi	()						{ return hi;								}
+	ICF T*					access	(u32 id)				{ return &array[id];						}
+	ICF void				flush	()						{ lo=hi=0;									}
+	ICF void				dirty	(u32 _lo, u32 _hi)		{ if (_lo<lo) lo=_lo; if (_hi>hi) hi=_hi;	}
+	ICF u32					r_lo	()						{ return lo;								}
+	ICF u32					r_hi	()						{ return hi;								}
 };
 
 class	R_constant_array
@@ -139,35 +139,35 @@ public:
 	void					flush_cache	();
 public:
 	// fp, non-array versions
-	IC void					set		(R_constant* C, const Fmatrix& A)		{
+	ICF void				set		(R_constant* C, const Fmatrix& A)		{
 		if (C->destination&1)		{ a_pixel.set	(C,C->ps,A); a_pixel.b_dirty=TRUE;		}
 		if (C->destination&2)		{ a_vertex.set	(C,C->vs,A); a_vertex.b_dirty=TRUE;		}
 	}
-	IC void					set		(R_constant* C, const Fvector4& A)		{
+	ICF void				set		(R_constant* C, const Fvector4& A)		{
 		if (C->destination&1)		{ a_pixel.set	(C,C->ps,A); a_pixel.b_dirty=TRUE;		}
 		if (C->destination&2)		{ a_vertex.set	(C,C->vs,A); a_vertex.b_dirty=TRUE;		}
 	}
-	IC void					set		(R_constant* C, float x, float y, float z, float w)	{
+	ICF void				set		(R_constant* C, float x, float y, float z, float w)	{
 		Fvector4 data;		data.set(x,y,z,w);
 		set					(C,data);
 	}
 
 	// fp, array versions
-	IC void					seta	(R_constant* C, u32 e, const Fmatrix& A)		{
+	ICF void				seta	(R_constant* C, u32 e, const Fmatrix& A)		{
 		if (C->destination&1)		{ a_pixel.seta	(C,C->ps,e,A); a_pixel.b_dirty=TRUE;	}
 		if (C->destination&2)		{ a_vertex.seta	(C,C->vs,e,A); a_vertex.b_dirty=TRUE;	}
 	}
-	IC void					seta	(R_constant* C, u32 e, const Fvector4& A)		{
+	ICF void				seta	(R_constant* C, u32 e, const Fvector4& A)		{
 		if (C->destination&1)		{ a_pixel.seta	(C,C->ps,e,A); a_pixel.b_dirty=TRUE;	}
 		if (C->destination&2)		{ a_vertex.seta	(C,C->vs,e,A); a_vertex.b_dirty=TRUE;	}
 	}
-	IC void					seta	(R_constant* C, u32 e, float x, float y, float z, float w)	{
+	ICF void				seta	(R_constant* C, u32 e, float x, float y, float z, float w)	{
 		Fvector4 data;		data.set(x,y,z,w);
 		seta				(C,e,data);
 	}
 
 	//
-	IC void					flush	()
+	ICF void					flush	()
 	{
 		if (a_pixel.b_dirty || a_vertex.b_dirty)	flush_cache();
 	}
