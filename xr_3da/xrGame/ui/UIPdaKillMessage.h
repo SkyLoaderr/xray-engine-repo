@@ -10,7 +10,7 @@
 #include "UIPdaMsgListItem.h"
 
 class CUIPdaKillMessage : public CUIPdaMsgListItem{
-typedef CUIListItem inherited;
+typedef CUIPdaMsgListItem inherited;
 public:
 	CUIPdaKillMessage();
 	CUIPdaKillMessage(int iDelay);
