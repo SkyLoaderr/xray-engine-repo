@@ -343,19 +343,19 @@ void CxrUpdateView::TryAddNewTask(int t)
 	if(!t_parent)
 		return;
 
-	CSectionQueryDlg dlg;
+//	CSectionQueryDlg dlg;
 	string128 new_name;
 	strconcat(new_name, "new_",*typeToStr((ETaskType)t) );
-	dlg.m_task_name = new_name;
-	if(dlg.DoModal()){
+//	dlg.m_task_name = new_name;
+//	if(dlg.DoModal()){
 		
 		CTask* task_new = CTaskFacrory::create_task( (ETaskType)t );
 
-		task_new->set_name(dlg.m_task_name.GetBuffer());
+		task_new->set_name(new_name);
 		t_parent->add_sub_task(task_new);
 		HTREEITEM itm = FillTaskTree(task_new, hItem);
 		m_tree_ctrl.SelectItem(itm);
-	}
+//	}
 }
 
 void CxrUpdateView::OnEnChangeEditTaskName()
@@ -379,7 +379,7 @@ void CxrUpdateView::OnNMClickTree1(NMHDR *pNMHDR, LRESULT *pResult)
 	if(!t)
 		return;
 
-    MSG         msg_;
+//    MSG         msg_;
 	
 /*	while(PeekMessage( &msg_, m_tree_ctrl.GetSafeHwnd(), 0U, 0U, PM_REMOVE )){
               TranslateMessage	( &msg_ );
@@ -515,6 +515,8 @@ MyCompareProc(LPARAM lParam1, LPARAM lParam2, LPARAM lParamSort)
 	   return -1;
    if(t1->m_priority > t2->m_priority)
 	   return 1;
+   
+   return 0;
 }
 
 void CxrUpdateView::SortItems(HTREEITEM itm)
