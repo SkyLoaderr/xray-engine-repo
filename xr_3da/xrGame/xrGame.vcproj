@@ -1161,41 +1161,41 @@
 						RelativePath=".\sound_player_inline.h">
 					</File>
 				</Filter>
-			</Filter>
-			<Filter
-				Name="ACover"
-				Filter="">
-				<File
-					RelativePath=".\cover_manager.cpp">
-				</File>
-				<File
-					RelativePath=".\cover_manager.h">
-				</File>
-				<File
-					RelativePath=".\cover_manager_inline.h">
-				</File>
 				<Filter
-					Name="quadtree"
+					Name="ACover"
 					Filter="">
 					<File
-						RelativePath=".\quadtree.h">
+						RelativePath=".\cover_manager.cpp">
 					</File>
 					<File
-						RelativePath=".\quadtree_inline.h">
-					</File>
-				</Filter>
-				<Filter
-					Name="cover_point"
-					Filter="">
-					<File
-						RelativePath=".\cover_point.h">
+						RelativePath=".\cover_manager.h">
 					</File>
 					<File
-						RelativePath=".\cover_point_inline.h">
+						RelativePath=".\cover_manager_inline.h">
 					</File>
-					<File
-						RelativePath=".\cover_point_script.cpp">
-					</File>
+					<Filter
+						Name="quadtree"
+						Filter="">
+						<File
+							RelativePath=".\quadtree.h">
+						</File>
+						<File
+							RelativePath=".\quadtree_inline.h">
+						</File>
+					</Filter>
+					<Filter
+						Name="cover_point"
+						Filter="">
+						<File
+							RelativePath=".\cover_point.h">
+						</File>
+						<File
+							RelativePath=".\cover_point_inline.h">
+						</File>
+						<File
+							RelativePath=".\cover_point_script.cpp">
+						</File>
+					</Filter>
 				</Filter>
 			</Filter>
 			<Filter
@@ -6330,6 +6330,9 @@
 						<File
 							RelativePath=".\PhraseScript.h">
 						</File>
+						<File
+							RelativePath=".\xml_str_id_loader.h">
+						</File>
 					</Filter>
 				</Filter>
 				<Filter
@@ -7054,32 +7057,172 @@
 					</File>
 				</Filter>
 				<Filter
-					Name="BaseCharacter"
+					Name="Physics"
 					Filter="">
-					<File
-						RelativePath="PHCharacter.cpp">
-					</File>
-					<File
-						RelativePath="PHCharacter.h">
-					</File>
 					<Filter
-						Name="SimpleCharacter"
+						Name="Tri-Collider"
 						Filter="">
 						<File
-							RelativePath="PHSimpleCharacter.cpp">
+							RelativePath="tri-colliderKNoOPC\__aabb_tri.h">
 						</File>
 						<File
-							RelativePath="PHSimpleCharacter.h">
+							RelativePath="tri-colliderknoopc\dcTriListCollider.cpp">
+							<FileConfiguration
+								Name="Debug|Win32"
+								ExcludedFromBuild="TRUE">
+								<Tool
+									Name="VCCLCompilerTool"/>
+							</FileConfiguration>
+							<FileConfiguration
+								Name="Mixed|Win32"
+								ExcludedFromBuild="TRUE">
+								<Tool
+									Name="VCCLCompilerTool"/>
+							</FileConfiguration>
+							<FileConfiguration
+								Name="Release|Win32"
+								ExcludedFromBuild="TRUE">
+								<Tool
+									Name="VCCLCompilerTool"/>
+							</FileConfiguration>
+						</File>
+						<File
+							RelativePath="tri-colliderKNoOPC\dcTriListCollider.h">
+						</File>
+						<File
+							RelativePath=".\tri-colliderknoopc\dSortTriPrimitive.cpp">
+						</File>
+						<File
+							RelativePath=".\tri-colliderknoopc\dSortTriPrimitive.h">
+						</File>
+						<File
+							RelativePath=".\tri-colliderknoopc\dTriBox.cpp">
+						</File>
+						<File
+							RelativePath=".\tri-colliderknoopc\dTriBox.h">
+						</File>
+						<File
+							RelativePath="tri-colliderKNoOPC\dTriCallideK.cpp">
+						</File>
+						<File
+							RelativePath="tri-colliderKNoOPC\dTriCollideK.h">
+						</File>
+						<File
+							RelativePath=".\tri-colliderknoopc\dTriColliderCommon.h">
+						</File>
+						<File
+							RelativePath=".\tri-colliderknoopc\dTriColliderMath.h">
+						</File>
+						<File
+							RelativePath=".\tri-colliderknoopc\dTriCylinder.cpp">
+						</File>
+						<File
+							RelativePath=".\tri-colliderknoopc\dTriCylinder.h">
+						</File>
+						<File
+							RelativePath="tri-colliderKNoOPC\dTriList.cpp">
+						</File>
+						<File
+							RelativePath="tri-colliderKNoOPC\dTriList.h">
+						</File>
+						<File
+							RelativePath=".\tri-colliderknoopc\dTriSphere.cpp">
+						</File>
+						<File
+							RelativePath=".\tri-colliderknoopc\dTriSphere.h">
+						</File>
+						<File
+							RelativePath="tri-colliderKNoOPC\dxTriList.h">
+						</File>
+						<File
+							RelativePath=".\tri-colliderknoopc\TriPrimitiveCollideClassDef.h">
 						</File>
 					</Filter>
 					<Filter
-						Name="WheeledCharacter"
+						Name="PhyMove"
+						Filter="">
+						<Filter
+							Name="ActorCaracter"
+							Filter="">
+							<File
+								RelativePath="PHActorCharacter.cpp">
+							</File>
+							<File
+								RelativePath="PHActorCharacter.h">
+							</File>
+						</Filter>
+						<Filter
+							Name="AICharacter"
+							Filter="">
+							<File
+								RelativePath="PHAICharacter.cpp">
+							</File>
+							<File
+								RelativePath="PHAICharacter.h">
+							</File>
+						</Filter>
+						<Filter
+							Name="BaseCharacter"
+							Filter="">
+							<File
+								RelativePath="PHCharacter.cpp">
+							</File>
+							<File
+								RelativePath="PHCharacter.h">
+							</File>
+							<Filter
+								Name="SimpleCharacter"
+								Filter="">
+								<File
+									RelativePath="PHSimpleCharacter.cpp">
+								</File>
+								<File
+									RelativePath="PHSimpleCharacter.h">
+								</File>
+							</Filter>
+							<Filter
+								Name="WheeledCharacter"
+								Filter="">
+								<File
+									RelativePath="PHWheeledCharacter.cpp">
+								</File>
+								<File
+									RelativePath="PHWheeledCharacter.h">
+								</File>
+							</Filter>
+						</Filter>
+						<Filter
+							Name="Capture"
+							Filter="">
+							<File
+								RelativePath=".\PHCapture.cpp">
+							</File>
+							<File
+								RelativePath=".\PHCapture.h">
+							</File>
+							<File
+								RelativePath=".\PHCaptureInit.cpp">
+							</File>
+						</Filter>
+						<Filter
+							Name="MovementControl"
+							Filter="">
+							<File
+								RelativePath="PHMovementControl.cpp">
+							</File>
+							<File
+								RelativePath="PHMovementControl.h">
+							</File>
+						</Filter>
+					</Filter>
+					<Filter
+						Name="Cyl_Collider"
 						Filter="">
 						<File
-							RelativePath="PHWheeledCharacter.cpp">
+							RelativePath="dCylinder\dCylinder.cpp">
 						</File>
 						<File
-							RelativePath="PHWheeledCharacter.h">
+							RelativePath="dCylinder\dCylinder.h">
 						</File>
 					</Filter>
 				</Filter>
@@ -7168,109 +7311,257 @@
 						RelativePath=".\PHStaticGeomShell.h">
 					</File>
 					<Filter
-						Name="Element"
+						Name="Base"
 						Filter="">
 						<File
-							RelativePath="PHElement.cpp">
+							RelativePath="ExtendedGeom.h">
 						</File>
 						<File
-							RelativePath="PHElement.h">
+							RelativePath="ode_include.h">
 						</File>
 						<File
-							RelativePath=".\PHElementNetState.cpp">
+							RelativePath="ode_redefine.h">
 						</File>
 						<File
-							RelativePath=".\PHGeometryOwner.cpp">
+							RelativePath=".\PHWorld.cpp">
 						</File>
 						<File
-							RelativePath=".\PHGeometryOwner.h">
+							RelativePath=".\PHWorld.h">
+						</File>
+						<File
+							RelativePath="Physics.cpp">
+						</File>
+						<File
+							RelativePath="Physics.h">
+						</File>
+						<File
+							RelativePath=".\PhysicsCommon.h">
+						</File>
+						<File
+							RelativePath=".\PhysicsGamePars.cpp">
+						</File>
+						<File
+							RelativePath=".\PhysicsGamePars.h">
+						</File>
+						<Filter
+							Name="Objects"
+							Filter="">
+							<File
+								RelativePath=".\ph_shell_interface.h">
+							</File>
+							<File
+								RelativePath=".\PHDefs.h">
+							</File>
+							<File
+								RelativePath=".\PHObject.cpp">
+							</File>
+							<File
+								RelativePath="PHObject.h">
+							</File>
+							<File
+								RelativePath=".\PHShellCreator.cpp">
+							</File>
+							<File
+								RelativePath=".\PHShellCreator.h">
+							</File>
+							<File
+								RelativePath=".\PHStaticGeomShell.cpp">
+							</File>
+							<File
+								RelativePath=".\PHStaticGeomShell.h">
+							</File>
+							<Filter
+								Name="Element"
+								Filter="">
+								<File
+									RelativePath="PHElement.cpp">
+								</File>
+								<File
+									RelativePath="PHElement.h">
+								</File>
+								<File
+									RelativePath=".\PHElementNetState.cpp">
+								</File>
+								<File
+									RelativePath=".\PHGeometryOwner.cpp">
+								</File>
+								<File
+									RelativePath=".\PHGeometryOwner.h">
+								</File>
+							</Filter>
+							<Filter
+								Name="Joint"
+								Filter="">
+								<File
+									RelativePath="PHJoint.cpp">
+								</File>
+								<File
+									RelativePath="PHJoint.h">
+								</File>
+							</Filter>
+							<Filter
+								Name="Shell"
+								Filter="">
+								<File
+									RelativePath="PHShell.cpp">
+								</File>
+								<File
+									RelativePath="PHShell.h">
+								</File>
+								<File
+									RelativePath=".\PHShellActivate.cpp">
+								</File>
+								<File
+									RelativePath=".\PHShellNetState.cpp">
+								</File>
+								<File
+									RelativePath=".\PHSplitedShell.cpp">
+								</File>
+								<File
+									RelativePath=".\PHSplitedShell.h">
+								</File>
+								<File
+									RelativePath=".\ShellHit.cpp">
+								</File>
+							</Filter>
+							<Filter
+								Name="BaseShell"
+								Filter="">
+								<File
+									RelativePath="PhysicsShell.cpp">
+								</File>
+								<File
+									RelativePath="PhysicsShell.h">
+								</File>
+							</Filter>
+							<Filter
+								Name="Geometry"
+								Filter="">
+								<File
+									RelativePath=".\Geometry.cpp">
+								</File>
+								<File
+									RelativePath=".\Geometry.h">
+								</File>
+							</Filter>
+							<Filter
+								Name="Breakable"
+								Filter="">
+								<File
+									RelativePath=".\PHFracture.cpp">
+								</File>
+								<File
+									RelativePath=".\PHFracture.h">
+								</File>
+								<File
+									RelativePath=".\PHJointDestroyInfo.cpp">
+								</File>
+								<File
+									RelativePath=".\PHJointDestroyInfo.h">
+								</File>
+								<File
+									RelativePath=".\PHShellSplitter.cpp">
+								</File>
+								<File
+									RelativePath=".\PHShellSplitter.h">
+								</File>
+							</Filter>
+							<Filter
+								Name="Island"
+								Filter="">
+								<File
+									RelativePath=".\PHIsland.cpp">
+								</File>
+								<File
+									RelativePath=".\PHIsland.h">
+								</File>
+							</Filter>
+						</Filter>
+						<Filter
+							Name="Disabling"
+							Filter="">
+							<File
+								RelativePath=".\DisablingParams.cpp">
+							</File>
+							<File
+								RelativePath=".\DisablingParams.h">
+							</File>
+							<File
+								RelativePath=".\PHDisabling.cpp">
+							</File>
+							<File
+								RelativePath=".\PHDisabling.h">
+							</File>
+						</Filter>
+					</Filter>
+					<Filter
+						Name="Utils"
+						Filter="">
+						<File
+							RelativePath=".\BlockAllocator.h">
+						</File>
+						<File
+							RelativePath=".\CycleConstStorage.h">
+						</File>
+						<File
+							RelativePath=".\MathUtils.h">
+						</File>
+						<File
+							RelativePath="PHDynamicData.cpp">
+						</File>
+						<File
+							RelativePath="PHDynamicData.h">
+						</File>
+						<File
+							RelativePath="PHInterpolation.cpp">
+						</File>
+						<File
+							RelativePath="PHInterpolation.h">
+						</File>
+						<File
+							RelativePath=".\PHItemList.h">
+						</File>
+						<File
+							RelativePath=".\SpaceUtils.h">
 						</File>
 					</Filter>
 					<Filter
-						Name="Joint"
+						Name="CharacterSupport"
 						Filter="">
 						<File
-							RelativePath="PHJoint.cpp">
+							RelativePath=".\CharacterPhysicsSupport.cpp">
 						</File>
 						<File
-							RelativePath="PHJoint.h">
+							RelativePath=".\CharacterPhysicsSupport.h">
 						</File>
 					</Filter>
 					<Filter
-						Name="Shell"
+						Name="BodyEffectors"
 						Filter="">
 						<File
-							RelativePath="PHShell.cpp">
+							RelativePath=".\PHBaseBodyEffector.h">
 						</File>
 						<File
-							RelativePath="PHShell.h">
+							RelativePath=".\PHContactBodyEffector.cpp">
 						</File>
 						<File
-							RelativePath=".\PHShellActivate.cpp">
-						</File>
-						<File
-							RelativePath=".\PHShellNetState.cpp">
-						</File>
-						<File
-							RelativePath=".\PHSplitedShell.cpp">
-						</File>
-						<File
-							RelativePath=".\PHSplitedShell.h">
-						</File>
-						<File
-							RelativePath=".\ShellHit.cpp">
+							RelativePath=".\PHContactBodyEffector.h">
 						</File>
 					</Filter>
 					<Filter
-						Name="BaseShell"
+						Name="PHNet"
 						Filter="">
 						<File
-							RelativePath="PhysicsShell.cpp">
+							RelativePath=".\PHNetState.cpp">
 						</File>
 						<File
-							RelativePath="PhysicsShell.h">
-						</File>
-					</Filter>
-					<Filter
-						Name="Geometry"
-						Filter="">
-						<File
-							RelativePath=".\Geometry.cpp">
+							RelativePath=".\PHNetState.h">
 						</File>
 						<File
-							RelativePath=".\Geometry.h">
-						</File>
-					</Filter>
-					<Filter
-						Name="Breakable"
-						Filter="">
-						<File
-							RelativePath=".\PHFracture.cpp">
+							RelativePath=".\PHSynchronize.cpp">
 						</File>
 						<File
-							RelativePath=".\PHFracture.h">
-						</File>
-						<File
-							RelativePath=".\PHJointDestroyInfo.cpp">
-						</File>
-						<File
-							RelativePath=".\PHJointDestroyInfo.h">
-						</File>
-						<File
-							RelativePath=".\PHShellSplitter.cpp">
-						</File>
-						<File
-							RelativePath=".\PHShellSplitter.h">
-						</File>
-					</Filter>
-					<Filter
-						Name="Island"
-						Filter="">
-						<File
-							RelativePath=".\PHIsland.cpp">
-						</File>
-						<File
-							RelativePath=".\PHIsland.h">
+							RelativePath=".\PHSynchronize.h">
 						</File>
 					</Filter>
 				</Filter>

@@ -21,7 +21,7 @@ void clean_memory_global()
 
 
 	//info portions static data
-	CInfoPortion::DeleteStrToID();
+	CInfoPortion::DeleteIdToIndexData();
 	//static shader for blood
 	CEntityAlive::UnloadBloodyWallmarks	();
 	CEntityAlive::UnloadFireParticles ();

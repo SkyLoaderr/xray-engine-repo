@@ -500,15 +500,14 @@ void CUITradeWnd::SellItems(CUIDragDropList* pSellList,
 
 void CUITradeWnd::UpdateLists()
 {
-	//обновить надписи
-	UpdatePrices();
-	
 	//очистить после предыдущего запуска
 	UIOurBagList.DropAll();
 	UIOthersBagList.DropAll();
 	UIOurTradeList.DropAll();
 	UIOthersTradeList.DropAll();
 
+	//обновить надписи
+	UpdatePrices();
 
 	ClearDragDrop(m_vDragDropItems);
 

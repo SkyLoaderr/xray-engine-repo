@@ -248,8 +248,8 @@ void CUIMapWnd::InitMap()
 		map_spot->m_sNameText.SetText("");
 		if(xr_strlen(map_location.text)>1)
 		{
-			map_spot->m_sDescText = map_location.text;
-			map_spot->m_sNameText = map_location.name;
+			map_spot->m_sDescText.SetText(*map_location.text);
+			map_spot->m_sNameText.SetText(*map_location.name);
 		}
 
 
