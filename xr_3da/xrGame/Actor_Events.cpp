@@ -154,8 +154,9 @@ void CActor::OnEvent		(NET_Packet& P, u16 type)
 		{
 			if (OnServer())
 			{
-				if(inventory().GetPrevActiveSlot() != NO_ACTIVE_SLOT && 
-					inventory().m_slots[inventory().GetPrevActiveSlot()].m_pIItem)
+				u32 InventorySlot = inventory().GetPrevActiveSlot();
+				if( InventorySlot != NO_ACTIVE_SLOT && InventorySlot <= PDA_SLOT &&
+					inventory().m_slots[InventorySlot].m_pIItem)
 				{
 					inventory().Activate(inventory().GetPrevActiveSlot());
 				}
