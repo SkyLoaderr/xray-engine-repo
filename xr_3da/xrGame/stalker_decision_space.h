@@ -37,6 +37,7 @@ namespace StalkerDecisionSpace {
 		eWorldPropertyReadyToKill,
 		eWorldPropertyKillDistance,
 		eWorldPropertyEnemyAimed,
+		eWorldPropertyEnemyLost,
 
 		eWorldPropertyScript,
 		eWorldPropertyDummy			= u32(-1),
@@ -74,6 +75,7 @@ namespace StalkerDecisionSpace {
 		eWorldOperatorKillEnemyModerate,
 		eWorldOperatorCamping,
 		eWorldOperatorGetEnemySeenModerate,
+		eWorldOperatorKillEnemyLostModerate,
 
 		eWorldOperatorScript,
 		eWorldOperatorDummy			= u32(-1),

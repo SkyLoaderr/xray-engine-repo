@@ -584,11 +584,6 @@ _edge_value_type CStalkerActionGetReadyToKillVeryAggressive::weight	(const CSCon
 CStalkerActionKillEnemyVeryAggressive::CStalkerActionKillEnemyVeryAggressive	(CAI_Stalker *object, LPCSTR action_name) :
 	inherited				(object,action_name)
 {
-#ifdef VERY_AGGRESSIVE
-	m_weight				= _edge_value_type(1);
-#else
-	m_weight				= _edge_value_type(100);
-#endif
 }
 
 void CStalkerActionKillEnemyVeryAggressive::initialize	()
@@ -739,11 +734,6 @@ _edge_value_type CStalkerActionGetReadyToKillAggressive::weight	(const CSConditi
 CStalkerActionKillEnemyAggressive::CStalkerActionKillEnemyAggressive	(CAI_Stalker *object, LPCSTR action_name) :
 	inherited				(object,action_name)
 {
-#ifdef AGGRESSIVE
-	m_weight				= _edge_value_type(1);
-#else
-	m_weight				= _edge_value_type(100);
-#endif
 }
 
 void CStalkerActionKillEnemyAggressive::initialize	()
@@ -762,7 +752,7 @@ void CStalkerActionKillEnemyAggressive::initialize	()
 			m_fire_crouch	= false;
 		}
 		else {
-			set_inertia_time(iFloor(float(1500 - 500)*(distance - 5.f)/(30.f - 5.f)) + 500);
+			set_inertia_time(iFloor(float(1500 - 500)*(30.f - distance)/(30.f - 5.f)) + 500);
 			m_fire_crouch	= ::Random.randF(40.f) < (distance - 5.f);
 		}
 
@@ -847,7 +837,7 @@ void CStalkerActionAimEnemy::initialize	()
 			m_run			= false;
 		}
 		else {
-			set_inertia_time(iFloor(float(1500 - 500)*(50.f - distance)/(50.f - 10.f)) + 500);
+			set_inertia_time(iFloor(float(1500 - 500)*(distance - 10.f)/(50.f - 10.f)) + 500);
 			m_run			= ::Random.randF(40.f) > (distance - 10.f);
 		}
 }
@@ -1209,6 +1199,7 @@ void CStalkerActionGetReadyToKillModerate::finalize	()
 {
 	inherited::finalize		();
 	m_object->set_sound_mask(0);
+	m_storage->set_property	(eWorldPropertyEnemyLost,false);
 }
 
 void CStalkerActionGetReadyToKillModerate::execute	()
@@ -1240,7 +1231,7 @@ void CStalkerActionGetReadyToKillModerate::execute	()
 	m_object->set_body_state		(eBodyStateStand);
 	m_object->set_mental_state		(eMentalStateDanger);
 
-	m_object->CSightManager::setup				(SightManager::eSightTypeCurrentDirection);
+	m_object->CSightManager::setup					(SightManager::eSightTypeCurrentDirection); // PathDirection
 	if (!dynamic_cast<CMissile*>(m_object->best_weapon()))
 #ifdef OLD_OBJECT_HANDLER
 		m_object->CObjectHandler::set_dest_state	(eObjectActionNoItems);
@@ -1270,12 +1261,31 @@ void CStalkerActionKillEnemyModerate::initialize	()
 {
 	inherited::initialize	();
 	m_object->set_sound_mask(u32(eStalkerSoundMaskHumming));
+
+	float					distance = m_object->Position().distance_to(m_object->enemy()->Position());
+	if (distance >= 30.f) {
+		set_inertia_time	(500);
+		m_fire_crouch		= true;
+	}
+	else
+		if (distance <= 5.f) {
+			set_inertia_time(1500);
+			m_fire_crouch	= false;
+		}
+		else {
+			set_inertia_time(iFloor(float(1500 - 500)*(30.f - distance)/(30.f - 5.f)) + 500);
+			m_fire_crouch	= ::Random.randF(40.f) < (distance - 5.f);
+		}
+
+		m_fire_crouch = distance > 10.f ? true : false;
 }
 
 void CStalkerActionKillEnemyModerate::finalize	()
 {
 	inherited::finalize		();
 	m_object->set_sound_mask(0);
+	VERIFY					(m_storage);
+	m_storage->set_property	(eWorldPropertyEnemyAimed,false);
 }
 
 void CStalkerActionKillEnemyModerate::execute		()
@@ -1293,13 +1303,19 @@ void CStalkerActionKillEnemyModerate::execute		()
 	if (!m_object->visible(m_object->enemy()))
 		return;
 
+	if (completed()) {
+		VERIFY					(m_storage);
+		m_storage->set_property	(eWorldPropertyEnemyAimed,false);
+		return;
+	}
+
 	Fvector							position;
 	m_object->enemy()->Center		(position);
 
 	m_object->set_movement_type		(eMovementTypeStand);
 	m_object->set_path_type			(CMovementManager::ePathTypeLevelPath);
 	m_object->set_detail_path_type	(CMovementManager::eDetailPathTypeSmooth);
-	m_object->set_body_state		(eBodyStateStand);
+	m_object->set_body_state		(m_fire_crouch ? eBodyStateCrouch : eBodyStateStand);
 	m_object->set_mental_state		(eMentalStateDanger);
 
 	m_object->setup					(SightManager::eSightTypeFirePosition,&position);
@@ -1339,7 +1355,8 @@ void CStalkerActionGetEnemySeenModerate::finalize	()
 	if (m_object->enemy() && m_object->visible(m_object->enemy()))
 		m_storage->set_property		(eWorldPropertyEnemyAimed,true);
 	m_object->set_sound_mask(0);
-	m_start_standing_time	= Level().timeServer();
+	m_start_standing_time	= m_start_level_time;
+	m_storage->set_property	(eWorldPropertyEnemyLost,false);
 }
 
 void CStalkerActionGetEnemySeenModerate::execute	()
@@ -1356,6 +1373,9 @@ void CStalkerActionGetEnemySeenModerate::execute	()
 
 	if (!mem_object.m_object)
 		return;
+
+	if (Level().timeServer() >= m_start_level_time + 5000)
+		m_storage->set_property	(eWorldPropertyEnemyLost,true);
 
 	if (m_object->enemy()) {
 		CMemoryInfo					mem_object = m_object->memory(m_object->enemy());
@@ -1418,5 +1438,80 @@ _edge_value_type CStalkerActionGetEnemySeenModerate::weight	(const CSConditionSt
 		return				(_edge_value_type(100));
 	else
 		return				(_edge_value_type(1));
+}
+
+//////////////////////////////////////////////////////////////////////////
+// CStalkerActionKillEnemyLostModerate
+//////////////////////////////////////////////////////////////////////////
+
+CStalkerActionKillEnemyLostModerate::CStalkerActionKillEnemyLostModerate	(CAI_Stalker *object, LPCSTR action_name) :
+	inherited				(object,action_name)
+{
+}
+
+void CStalkerActionKillEnemyLostModerate::initialize	()
+{
+	inherited::initialize	();
+	m_object->set_sound_mask(u32(eStalkerSoundMaskHumming));
+}
+
+void CStalkerActionKillEnemyLostModerate::finalize	()
+{
+	inherited::finalize		();
+	m_object->set_sound_mask(0);
+	VERIFY					(m_storage);
+	m_storage->set_property	(eWorldPropertyEnemyLost,false);
+}
+
+void CStalkerActionKillEnemyLostModerate::execute		()
+{
+	inherited::execute		();
+
+	if (!m_object->enemy())
+		return;
+
+	CMemoryInfo						mem_object = m_object->memory(m_object->enemy());
+
+	if (!mem_object.m_object)
+		return;
+
+	if (!m_object->visible(m_object->enemy()))
+		return;
+
+	Fvector							position;
+	m_object->enemy()->Center		(position);
+	m_object->setup					(SightManager::eSightTypeFirePosition,&position);
+
+	position						= mem_object.m_object_params.m_position;
+	m_object->m_ce_far->setup		(position,10.f,170.f,10.f);
+	CCoverPoint						*point = m_object->best_cover(m_object->Position(),10.f,*m_object->m_ce_far);
+	if (point) {
+		m_object->set_level_dest_vertex	(point->level_vertex_id());
+		m_object->set_desired_position	(&point->position());
+		m_object->set_movement_type		(eMovementTypeRun);
+	}
+	else
+		m_object->set_movement_type	(eMovementTypeStand);
+
+	m_object->set_desired_direction	(0);
+	m_object->set_movement_type		(eMovementTypeRun);
+	m_object->set_path_type			(CMovementManager::ePathTypeLevelPath);
+	m_object->set_detail_path_type	(CMovementManager::eDetailPathTypeSmooth);
+	m_object->set_body_state		(eBodyStateStand);
+	m_object->set_mental_state		(eMentalStateDanger);
+
+#ifdef OLD_OBJECT_HANDLER
+	m_object->CObjectHandler::set_dest_state(eObjectActionFire1,m_object->best_weapon());
+#else
+	m_object->CObjectHandlerGOAP::set_goal	(eObjectActionFire1,m_object->best_weapon());
+#endif
+}
+
+_edge_value_type CStalkerActionKillEnemyLostModerate::weight	(const CSConditionState &condition0, const CSConditionState &condition1) const
+{
+	if (g_stalker_behaviour == eStalkerBehaviourModerate)
+		return				(_edge_value_type(1));
+	else
+		return				(_edge_value_type(100));
 }
 

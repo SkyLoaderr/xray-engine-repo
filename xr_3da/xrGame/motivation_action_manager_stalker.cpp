@@ -1,4 +1,4 @@
-////////////////////////////////////////////////////////////////////////////
+
 //	Module 		: motivation_action_manager_stalker.cpp
 //	Created 	: 26.03.2004
 //  Modified 	: 26.03.2004
@@ -60,6 +60,7 @@ void CMotivationActionManagerStalker::reinit			(CAI_Stalker *object, bool clear_
 	m_storage.clear			();
 	m_storage.set_property	(eWorldPropertyDead,false);
 	m_storage.set_property	(eWorldPropertyEnemyAimed,false);
+	m_storage.set_property	(eWorldPropertyEnemyLost,false);
 
 #ifdef LOG_ACTION
 	if (psAI_Flags.test(aiGOAP))
@@ -142,6 +143,7 @@ void CMotivationActionManagerStalker::add_evaluators		()
 	add_evaluator			(eWorldPropertyReadyToKill		,xr_new<CStalkerPropertyEvaluatorReadyToKill>		());
 	add_evaluator			(eWorldPropertyKillDistance		,xr_new<CStalkerPropertyEvaluatorKillDistance>		());
 	add_evaluator			(eWorldPropertyEnemyAimed		,xr_new<CStalkerPropertyEvaluatorMember>			(&m_storage,eWorldPropertyEnemyAimed,true,true));
+	add_evaluator			(eWorldPropertyEnemyLost		,xr_new<CStalkerPropertyEvaluatorMember>			(&m_storage,eWorldPropertyEnemyLost,true,true));
 }
 
 void CMotivationActionManagerStalker::add_actions			()
@@ -342,6 +344,20 @@ void CMotivationActionManagerStalker::add_actions			()
 	add_condition			(action,eWorldPropertyReadyToKill,	true);
 	add_condition			(action,eWorldPropertyItemToKill,	true);
 	add_condition			(action,eWorldPropertyItemCanKill,	true);
+	add_condition			(action,eWorldPropertyEnemyAimed,	true);
+//	add_condition			(action,eWorldPropertyEnemyLost,	false);
 	add_effect				(action,eWorldPropertyEnemy,		false);
 	add_operator			(eWorldOperatorKillEnemyModerate,	action);
+
+//	action					= xr_new<CStalkerActionKillEnemyLostModerate>	(m_object,"kill_enemy_moderate_lost");
+//	add_condition			(action,eWorldPropertyAlive,		true);
+//	add_condition			(action,eWorldPropertyEnemy,		true);
+//	add_condition			(action,eWorldPropertySeeEnemy,		true);
+//	add_condition			(action,eWorldPropertyKillDistance,	true);
+//	add_condition			(action,eWorldPropertyReadyToKill,	true);
+//	add_condition			(action,eWorldPropertyItemToKill,	true);
+//	add_condition			(action,eWorldPropertyItemCanKill,	true);
+//	add_condition			(action,eWorldPropertyEnemyLost,	true);
+//	add_effect				(action,eWorldPropertyEnemy,		false);
+//	add_operator			(eWorldOperatorKillEnemyLostModerate,action);
 }

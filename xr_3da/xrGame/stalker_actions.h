@@ -266,6 +266,9 @@ class CStalkerActionKillEnemyModerate : public CStalkerActionBase {
 protected:
 	typedef CStalkerActionBase inherited;
 
+protected:
+	bool				m_fire_crouch;
+
 public:
 						CStalkerActionKillEnemyModerate(CAI_Stalker *object, LPCSTR action_name = "");
 	virtual void		initialize					();
@@ -369,6 +372,22 @@ protected:
 
 public:
 						CStalkerActionGetEnemySeenModerate			(CAI_Stalker *object, LPCSTR action_name = "");
+	virtual void		initialize					();
+	virtual void		execute						();
+	virtual void		finalize					();
+	virtual _edge_value_type	weight				(const CSConditionState &condition0, const CSConditionState &condition1) const;
+};
+
+//////////////////////////////////////////////////////////////////////////
+// CStalkerActionKillEnemyLostModerate
+//////////////////////////////////////////////////////////////////////////
+
+class CStalkerActionKillEnemyLostModerate : public CStalkerActionBase {
+protected:
+	typedef CStalkerActionBase inherited;
+
+public:
+						CStalkerActionKillEnemyLostModerate(CAI_Stalker *object, LPCSTR action_name = "");
 	virtual void		initialize					();
 	virtual void		execute						();
 	virtual void		finalize					();
