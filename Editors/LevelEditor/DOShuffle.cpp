@@ -260,7 +260,7 @@ void __fastcall TfrmDOShuffle::ebAddObjectClick(TObject *Sender)
 	LPCSTR S;
     if (TfrmChoseItem::SelectItem(TfrmChoseItem::smObject,S,8)){
 	    AStringVec lst;
-		SequenceToList(lst, S);
+		_SequenceToList(lst, S);
         for (AStringIt s_it=lst.begin(); s_it!=lst.end(); s_it++)
         	if (!FindItem(s_it->c_str())){
                 if (tvItems->Items->Count>=dm_max_objects){

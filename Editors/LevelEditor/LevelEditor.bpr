@@ -30,12 +30,12 @@
       intermediate\EditObjectIO.obj intermediate\EditObjectMotions.obj 
       intermediate\FrameLight.obj intermediate\OneEnvironment.obj 
       intermediate\PropertiesPS.obj intermediate\PSObject.obj 
-      intermediate\xrParticlesLib.obj intermediate\ChoseForm.obj 
-      intermediate\ImageEditor.obj intermediate\FramePS.obj 
-      intermediate\previewimage.obj intermediate\FrameEmitter.obj 
-      intermediate\xr_trims.obj intermediate\FrameRPoint.obj 
-      intermediate\interp.obj intermediate\Envelope.obj intermediate\motion.obj 
-      intermediate\bone.obj intermediate\clsid.obj intermediate\WayPoint.obj 
+      intermediate\ChoseForm.obj intermediate\ImageEditor.obj 
+      intermediate\FramePS.obj intermediate\previewimage.obj 
+      intermediate\FrameEmitter.obj intermediate\xr_trims.obj 
+      intermediate\FrameRPoint.obj intermediate\interp.obj 
+      intermediate\Envelope.obj intermediate\motion.obj intermediate\bone.obj 
+      intermediate\clsid.obj intermediate\WayPoint.obj 
       intermediate\FrameWayPoint.obj intermediate\DetailObjects.obj 
       intermediate\FrameDetObj.obj intermediate\Xr_ini.obj 
       intermediate\ColorPicker.obj intermediate\LzHuf.obj 
@@ -105,7 +105,8 @@
       intermediate\FrameShape.obj intermediate\du_box.obj 
       intermediate\PropertiesListHelper.obj intermediate\SceneObject.obj 
       intermediate\c_dinput.obj intermediate\xrServer_Entity_Custom.obj 
-      intermediate\ai_alife_server_objects.obj intermediate\PSLibrary.obj"/>
+      intermediate\ai_alife_server_objects.obj intermediate\PSLibrary.obj 
+      intermediate\ParticleGroup.obj intermediate\PSLibraryEditor.obj"/>
     <RESFILES value="LevelEditor.res resource.res"/>
     <IDLFILES value=""/>
     <IDLGENFILES value=""/>
@@ -219,7 +220,6 @@
       <FILE FILENAME="OneEnvironment.cpp" FORMNAME="frmOneEnvironment" UNITNAME="OneEnvironment" CONTAINERID="CCompiler" DESIGNCLASS="" LOCALCOMMAND=""/>
       <FILE FILENAME="PropertiesPS.cpp" FORMNAME="frmPropertiesPS" UNITNAME="PropertiesPS" CONTAINERID="CCompiler" DESIGNCLASS="" LOCALCOMMAND=""/>
       <FILE FILENAME="edit\PSObject.cpp" FORMNAME="" UNITNAME="PSObject" CONTAINERID="CCompiler" DESIGNCLASS="" LOCALCOMMAND=""/>
-      <FILE FILENAME="engine\xrParticlesLib.cpp" FORMNAME="" UNITNAME="xrParticlesLib" CONTAINERID="CCompiler" DESIGNCLASS="" LOCALCOMMAND=""/>
       <FILE FILENAME="engine\Particle.h" FORMNAME="" UNITNAME="Particle" CONTAINERID="" DESIGNCLASS="" LOCALCOMMAND=""/>
       <FILE FILENAME="engine\ParticleSystem.h" FORMNAME="" UNITNAME="ParticleSystem" CONTAINERID="" DESIGNCLASS="" LOCALCOMMAND=""/>
       <FILE FILENAME="ChoseForm.cpp" FORMNAME="frmChoseItem" UNITNAME="ChoseForm" CONTAINERID="CCompiler" DESIGNCLASS="" LOCALCOMMAND=""/>
@@ -380,6 +380,8 @@
       <FILE FILENAME="Engine\Game\xrServer_Entity_Custom.cpp" FORMNAME="" UNITNAME="xrServer_Entity_Custom" CONTAINERID="CCompiler" DESIGNCLASS="" LOCALCOMMAND=""/>
       <FILE FILENAME="Engine\Game\ai_alife_server_objects.cpp" FORMNAME="" UNITNAME="ai_alife_server_objects" CONTAINERID="CCompiler" DESIGNCLASS="" LOCALCOMMAND=""/>
       <FILE FILENAME="edit\PSLibrary.cpp" FORMNAME="" UNITNAME="PSLibrary" CONTAINERID="CCompiler" DESIGNCLASS="" LOCALCOMMAND=""/>
+      <FILE FILENAME="Engine\ParticleGroup.cpp" FORMNAME="" UNITNAME="ParticleGroup" CONTAINERID="CCompiler" DESIGNCLASS="" LOCALCOMMAND=""/>
+      <FILE FILENAME="edit\PSLibraryEditor.cpp" FORMNAME="" UNITNAME="PSLibraryEditor" CONTAINERID="CCompiler" DESIGNCLASS="" LOCALCOMMAND=""/>
   </FILELIST>
   <BUILDTOOLS>
   </BUILDTOOLS>
@@ -391,7 +393,7 @@ AutoIncBuild=1
 MajorVer=1
 MinorVer=0
 Release=1
-Build=502
+Build=504
 Debug=1
 PreRelease=0
 Special=0
@@ -403,7 +405,7 @@ CodePage=1252
 [Version Info Keys]
 CompanyName=
 FileDescription=
-FileVersion=1.0.1.502
+FileVersion=1.0.1.504
 InternalName=
 LegalCopyright=
 LegalTrademarks=

@@ -495,7 +495,7 @@ void __fastcall TfrmEditLibrary::ebImportClick(TObject *Sender)
         ResetSelected();
 		// load
     	AStringVec lst;
-        SequenceToList(lst,open_nm.c_str());
+        _SequenceToList(lst,open_nm.c_str());
 		bool bNeedUpdate=false;
 		bool bNeedBreak=false;
 		AnsiString path;

@@ -135,7 +135,7 @@ void __fastcall TfraObject::ebMultiAppendClick(TObject *Sender)
     	Fvector up={0.f,1.f,0.f};
         Scene.SelectObjects(false,OBJCLASS_SCENEOBJECT);
 	    AStringVec lst;
-    	SequenceToList(lst,N);
+    	_SequenceToList(lst,N);
         UI.ProgressStart(lst.size(),"Append object: ");
         for (AStringIt it=lst.begin(); it!=lst.end(); it++){
             string256 namebuffer;

@@ -109,7 +109,7 @@ BOOL CPGDef::Load(CStream& F)
         F.Read		(&m_Frame,sizeof(SFrame));
     }
 
-#ifdef _EDITOR    
+#ifdef _PARTICLE_EDITOR    
 	F.FindChunk		(PGD_CHUNK_SOURCETEXT);
     F.RstringZ		(m_SourceText);
 #endif
@@ -151,7 +151,7 @@ void CPGDef::Save(CFS_Base& F)
         F.close_chunk	();
     }
 
-#ifdef _EDITOR    
+#ifdef _PARTICLE_EDITOR    
 	F.open_chunk	(PGD_CHUNK_SOURCETEXT);
     F.WstringZ		(m_SourceText.c_str());
 	F.close_chunk	();

@@ -183,8 +183,21 @@ bool CPortal::Update(bool bLoadMode){
 	        if (m_SectorFront->RayPick(1000,m_Center,SB_dir)) 	B[m_SectorFront] += 1;
 	        if (m_SectorBack->RayPick(1000,m_Center,SF_dir))	B[m_SectorBack] += 1;
         }
-        if ((A[m_SectorFront]>B[m_SectorFront])&&(A[m_SectorBack]>B[m_SectorBack])); 
-        else if ((A[m_SectorFront]<B[m_SectorFront])&&(A[m_SectorBack]<B[m_SectorBack])) InvertOrientation();
+/*
+        int a_f = A[m_SectorFront];
+        int a_b = A[m_SectorBack];
+        int b_f = B[m_SectorFront];
+        int b_b = B[m_SectorBack];
+        Log("----------",Name);
+        Log("a_f ",a_f);
+        Log("a_b ",a_b);
+        Log("b_f ",b_f);
+        Log("b_b ",b_b);
+*/
+        int a = A[m_SectorFront]+A[m_SectorBack];
+        int b = B[m_SectorFront]+B[m_SectorBack];
+        if (a>b); 
+        else if (a<b) InvertOrientation();
         else ELog.Msg(mtError, "Check portal orientation: '%s'",Name);
 /*    
         map<CSector*,int> counters;
@@ -375,7 +388,8 @@ void CPortal::Simplify()
     }
     // compute 2D Convex Hull
     Mgc::ConvexHull2D Hull(points.size(),(const Mgc::Vector2*)points.begin());
-    Hull.ByDivideAndConquer();//ByIncremental();
+//    Hull.ByDivideAndConquer();
+    Hull.ByIncremental();
     Hull.RemoveCollinear();
 	int Count   	= Hull.GetQuantity();
 	if (Count<=0) return;

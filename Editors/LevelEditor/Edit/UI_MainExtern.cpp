@@ -345,6 +345,7 @@ bool TUI::CommandExt(int _Command, int p1, int p2)
 		if( !Scene.locked() ){
 			Scene.ShowObjects( false, Tools.CurrentClassID(), true, false );
 			Scene.UndoSave();
+	        Command(COMMAND_UPDATE_PROPERTIES);
 		} else {
 			ELog.DlgMsg( mtError, "Scene sharing violation" );
 			bRes = false;
@@ -354,6 +355,7 @@ bool TUI::CommandExt(int _Command, int p1, int p2)
 		if( !Scene.locked() ){
 			Scene.ShowObjects( bool(p1), Tools.CurrentClassID(), true, true );
 			Scene.UndoSave();
+	        Command(COMMAND_UPDATE_PROPERTIES);
 		} else {
 			ELog.DlgMsg( mtError, "Scene sharing violation" );
 			bRes = false;
@@ -363,6 +365,7 @@ bool TUI::CommandExt(int _Command, int p1, int p2)
 		if( !Scene.locked() ){
 			Scene.ShowObjects( bool(p1), Tools.CurrentClassID(), false );
 			Scene.UndoSave();
+	        Command(COMMAND_UPDATE_PROPERTIES);
 		}else{
         	ELog.DlgMsg( mtError, "Scene sharing violation" );
 			bRes = false;

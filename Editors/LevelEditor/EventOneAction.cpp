@@ -93,7 +93,7 @@ void __fastcall TfrmOneEventAction::OnModified(TObject *Sender)
 void __fastcall TfrmOneEventAction::ebExpandTextClick(TObject *Sender)
 {
 	AnsiString txt=edEvent->Text;
-	if (TfrmText::Run(txt, "Event Text")){
+	if (TfrmText::ShowModalEditor(txt, "Event Text")){
 		edEvent->Text = txt;
     }
 }
