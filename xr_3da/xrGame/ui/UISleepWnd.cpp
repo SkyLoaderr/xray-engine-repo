@@ -7,7 +7,12 @@
 const char * const SLEEP_DIALOG_XML = "sleep_dialog.xml";
 
 CUISleepWnd::CUISleepWnd()
-	: m_Hours(0), m_Minutes(0)
+	: m_Hours		(0),
+	  m_Minutes		(0),
+	  m_MorningH	(0),
+	  m_EveningH	(0),
+	  m_EveningM	(0),
+	  m_MorningM	(0)
 {
 }
 
@@ -60,6 +65,18 @@ void CUISleepWnd::Init()
 	AttachChild(&UICloseBtn);
 	xml_init.InitButton(uiXml, "close_button", 0, &UICloseBtn);
 
+	// Rest until morning
+	AttachChild(&UIRestUntilMorningBtn);
+	xml_init.InitButton(uiXml, "to_morning_button", 0, &UIRestUntilMorningBtn);
+	m_MorningH		= static_cast<s8>(uiXml.ReadAttribInt("to_morning_button", 0, "to_hour"));
+	m_MorningM		= static_cast<s8>(uiXml.ReadAttribInt("to_morning_button", 0, "to_min"));
+
+	// Rest until evening
+	AttachChild(&UIRestUntilEveningBtn);
+	xml_init.InitButton(uiXml, "to_evening_button", 0, &UIRestUntilEveningBtn);
+	m_EveningH		= static_cast<s8>(uiXml.ReadAttribInt("to_evening_button", 0, "to_hour"));
+	m_EveningM		= static_cast<s8>(uiXml.ReadAttribInt("to_evening_button", 0, "to_min"));
+
 	// Update timerest meter
 	ResetTime();
 }
@@ -106,6 +123,44 @@ void CUISleepWnd::SendMessage(CUIWindow *pWnd, s16 msg, void *pData)
 	{
 		// Отдохнуть 8 час
 		u32 restMsec = 8 * 3600 * 1000;
+		GetMessageTarget()->SendMessage(this, PERFORM_BUTTON_CLICKED, reinterpret_cast<void*>(&restMsec));
+	}
+	else if(pWnd == &UIRestUntilMorningBtn && msg == CUIButton::BUTTON_CLICKED)
+	{
+		// Отдохнуть до утра
+		u32 deltaH = 0, deltaM = 0;
+		if (m_CurrHours > m_MorningH)
+		{
+			deltaH = 24 - m_CurrHours + m_MorningH;
+		}
+		else
+		{
+			deltaH = m_MorningH - m_CurrHours;
+		}
+
+		deltaM		= m_CurrMins - m_MorningM;
+
+		u32 restMsec = deltaH * 3600 * 1000 - deltaM * 60 * 1000;
+
+		GetMessageTarget()->SendMessage(this, PERFORM_BUTTON_CLICKED, reinterpret_cast<void*>(&restMsec));
+	}
+	else if(pWnd == &UIRestUntilEveningBtn && msg == CUIButton::BUTTON_CLICKED)
+	{
+		// Отдохнуть до утра
+		u32 deltaH = 0, deltaM = 0;
+		if (m_CurrHours > m_EveningH)
+		{
+			deltaH = 24 - m_CurrHours + m_EveningH;
+		}
+		else
+		{
+			deltaH = m_EveningH - m_CurrHours;
+		}
+
+		deltaM		= m_CurrMins - m_EveningM;
+
+		u32 restMsec = deltaH * 3600 * 1000 - deltaM * 60 * 1000;
+
 		GetMessageTarget()->SendMessage(this, PERFORM_BUTTON_CLICKED, reinterpret_cast<void*>(&restMsec));
 	}
 
@@ -187,9 +242,9 @@ void CUISleepWnd::UpdateCurrentTime()
 	string32 buf;
 	ALife::_TIME_ID currMsec = Level().GetGameTime();
 
-	u8 mins		= static_cast<u8>(currMsec / (1000 * 60) % 60 & 0xFF);
-	u8 hours	= static_cast<u8>(currMsec / (1000 * 3600) % 24 & 0xFF);
-	sprintf(buf, "CUR. TIME:%02i:%02i", hours, mins);
+	m_CurrMins		= static_cast<u8>(currMsec / (1000 * 60) % 60 & 0xFF);
+	m_CurrHours		= static_cast<u8>(currMsec / (1000 * 3600) % 24 & 0xFF);
+	sprintf(buf, "CUR. TIME:%02i:%02i", m_CurrHours, m_CurrMins);
 
 	UIStaticCurrTime.SetText(buf);
 }

@@ -43,11 +43,16 @@ protected:
 	void UpdateCurrentTime();
 	// Текущее запоменное время отдыха
 	s8 m_Hours, m_Minutes;
+	// Время индицирующее утро и вечер
+	s8 m_MorningH, m_EveningH, m_MorningM, m_EveningM;
+	// Текущее время
+	u8 m_CurrMins, m_CurrHours;
 
 	// Контролы
 	CUIStatic UIStaticCurrTime;
 	CUIStatic UIStaticRestAmount;
 	CUIButton UIPlusBtn, UIMinusBtn;
 	CUIButton UIIncRestTime1Btn, UIIncRestTime2Btn, UIIncRestTime3Btn;
+	CUIButton UIRestUntilMorningBtn, UIRestUntilEveningBtn;
 	CUIButton UIRestBtn, UICloseBtn;
 };
