@@ -4631,6 +4631,12 @@
 							<File
 								RelativePath=".\HudItem.h">
 							</File>
+							<File
+								RelativePath=".\HudSound.cpp">
+							</File>
+							<File
+								RelativePath=".\HudSound.h">
+							</File>
 						</Filter>
 						<Filter
 							Name="Explosives"

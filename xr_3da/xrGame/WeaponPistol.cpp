@@ -19,7 +19,7 @@ void CWeaponPistol::net_Destroy()
 	inherited::net_Destroy();
 
 	// sounds
-	DestroySound(sndClose);
+	HUD_SOUND::DestroySound(sndClose);
 }
 
 
@@ -27,7 +27,7 @@ void CWeaponPistol::Load	(LPCSTR section)
 {
 	inherited::Load		(section);
 
-	LoadSound(section, "snd_close", sndClose, TRUE, m_eSoundClose);
+	HUD_SOUND::LoadSound(section, "snd_close", sndClose, TRUE, m_eSoundClose);
 
 	animGet				(mhud_empty,		pSettings->r_string(*hud_sect, "anim_empty"));
 	animGet				(mhud_shot_l,		pSettings->r_string(*hud_sect, "anim_shot_last"));

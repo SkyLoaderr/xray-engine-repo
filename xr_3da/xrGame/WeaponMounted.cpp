@@ -5,6 +5,9 @@
 #include "xrServer_Objects_ALife.h"
 #include "camerafirsteye.h"
 #include "actor.h"
+#include "weaponammo.h"
+
+
 //----------------------------------------------------------------------------------------
 
 void __stdcall CWeaponMounted::BoneCallbackX(CBoneInstance *B)
@@ -30,7 +33,6 @@ void __stdcall CWeaponMounted::BoneCallbackY(CBoneInstance *B)
 CWeaponMounted::CWeaponMounted()
 {
 	camera		= xr_new<CCameraFirstEye>	(this, pSettings, "mounted_weapon_cam",	CCameraBase::flRelativeLink|CCameraBase::flPositionRigid|CCameraBase::flDirectionRigid); 
-	m_bFiring	= false;
 }
 
 CWeaponMounted::~CWeaponMounted()
@@ -40,8 +42,9 @@ CWeaponMounted::~CWeaponMounted()
 void	CWeaponMounted::Load(LPCSTR section)
 {
 	inherited::Load(section);
+	CShootingObject::Load	(section);
 
-//	CShootingObject::Load	(section);
+	HUD_SOUND::LoadSound(section,"snd_shoot", sndShot, TRUE, SOUND_TYPE_WEAPON_SHOOTING);
 }
 
 BOOL	CWeaponMounted::net_Spawn(LPVOID DC)
@@ -104,10 +107,15 @@ void	CWeaponMounted::UpdateCL()
 		CKinematics* K	= PKinematics(Visual());
 		K->Calculate	();
 		// update fire pos & fire_dir
-		Fmatrix mFP		= K->LL_GetTransform(fire_bone);
-		mFP.mulB		(XFORM());
-		fire_pos.set	(0,0,0); mFP.transform_tiny	(fire_pos);
-		fire_dir.set	(0,0,1); mFP.transform_dir	(fire_dir);
+		fire_bone_xform	= K->LL_GetTransform(fire_bone);
+		fire_bone_xform.mulA		(XFORM());
+		fire_pos.set	(0,0,0); 
+		fire_bone_xform.transform_tiny	(fire_pos);
+		fire_dir.set	(0,0,1); 
+		fire_bone_xform.transform_dir	(fire_dir);
+
+
+		UpdateFire();
 	}
 }
 
@@ -118,6 +126,9 @@ void	CWeaponMounted::shedule_Update(u32 dt)
 
 void	CWeaponMounted::renderable_Render()
 {
+	//нарисовать подсветку
+	RenderLight();
+
 	inherited::renderable_Render	();
 }
 
@@ -143,7 +154,7 @@ void	CWeaponMounted::OnKeyboardPress		(int dik)
 	switch (dik)	
 	{
 	case kWPN_FIRE:					
-		m_bFiring	= true;
+		FireStart();
 		break;
 	};
 
@@ -154,7 +165,7 @@ void	CWeaponMounted::OnKeyboardRelease	(int dik)
 	switch (dik)	
 	{
 	case kWPN_FIRE:
-		m_bFiring	= false;
+		FireEnd();
 		break;
 	};
 }
@@ -223,6 +234,10 @@ void	CWeaponMounted::detach_Actor		()
 	biY.set_callback		(0,0);
 	// enable shell callback
 	m_pPhysicsShell->EnabledCallbacks(TRUE);
+	
+	//закончить стрельбу
+	FireEnd();
+}
 }
 
 Fvector	CWeaponMounted::ExitPosition		()
@@ -235,3 +250,63 @@ CCameraBase*	CWeaponMounted::Camera				()
 	return camera;
 }
 
+
+void CWeaponMounted::FireStart()
+{
+	CShootingObject::FireStart();
+}
+void CWeaponMounted::FireEnd()
+{
+	CShootingObject::FireEnd();
+	StopFlameParticles	();
+}
+
+void CWeaponMounted::UpdateFire()
+{
+	fTime -= Device.fTimeDelta;
+	
+
+	CShootingObject::UpdateFlameParticles();
+	CShootingObject::UpdateLight();
+
+	if(!IsWorking()) 
+	{
+		if(fTime<0) fTime = 0.f;
+		return;
+	}
+
+	if(fTime<=0)
+	{
+		OnShot();
+		fTime += fTimeToFire;
+	}
+
+}
+
+void CWeaponMounted::OnShot		()
+{
+	VERIFY(Owner());
+
+	CCartridge cartridge;
+	cartridge.m_kDist = 1.f;
+	cartridge.m_kHit = 1.f;
+	cartridge.m_kImpulse = 1.f;
+	cartridge.m_kPierce = 1.f;
+	cartridge.fWallmarkSize = 0.3f;
+
+	FireBullet(CurrentFirePoint(),fire_dir, 
+				fireDispersionBase,
+				cartridge, Owner()->ID(),ID());
+
+	StartFlameParticles();
+	StartSmokeParticles(fire_pos, zero_vel);
+	OnShellDrop(fire_pos, zero_vel);
+
+	bool hud_mode = (Level().CurrentEntity() == dynamic_cast<CObject*>(Owner()));
+	HUD_SOUND::PlaySound(sndShot, fire_pos, Owner(), hud_mode);
+}
+
+const Fmatrix&	 CWeaponMounted::ParticlesXFORM() const	
+{
+	return fire_bone_xform;
+}

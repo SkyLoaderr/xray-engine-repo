@@ -4,6 +4,8 @@
 
 #include "holder_custom.h"
 #include "shootingobject.h"
+#include "HudSound.h"
+
 
 class CWeaponMounted :	public CGameObject, 
 						public CHolderCustom,
@@ -22,9 +24,10 @@ private:
 	u16						camera_bone;
 
 	Fvector					fire_pos, fire_dir;
+	Fmatrix					fire_bone_xform;
 
-	//режим стрельбы
-	bool					m_bFiring;
+	//звук стрельбы
+	HUD_SOUND				sndShot;
 
 	static void __stdcall	BoneCallbackX		(CBoneInstance *B);
 	static void __stdcall	BoneCallbackY		(CBoneInstance *B);
@@ -33,11 +36,15 @@ public:
 	virtual					~CWeaponMounted		();
 
 	// for shooting object
-	virtual const Fmatrix&	XFORM()	 const		{return CGameObject::XFORM();}
-	virtual		  Fmatrix&	XFORM()				{return CGameObject::XFORM();}
-	virtual IRender_Sector*	Sector()			{return CGameObject::Sector();}
-	virtual const Fvector&	CurrentFirePoint()	{return fire_pos;}
-	virtual const Fvector&	CurrentFirePoint2() {return fire_pos;}
+	virtual const Fmatrix&	ParticlesXFORM() const;
+	virtual IRender_Sector*	Sector()				{return CGameObject::Sector();}
+	virtual const Fvector&	CurrentFirePoint()		{return fire_pos;}
+
+	virtual	void			FireStart	();
+	virtual	void			FireEnd		();
+	virtual	void			UpdateFire	();
+	virtual	void			OnShot		();
+
 
 	// Generic
 	virtual void			Load				(LPCSTR section);

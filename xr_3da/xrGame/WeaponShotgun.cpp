@@ -18,7 +18,7 @@ void CWeaponShotgun::net_Destroy()
 	inherited::net_Destroy();
 
 	// sounds
-	DestroySound(sndShotBoth);
+	HUD_SOUND::DestroySound(sndShotBoth);
 }
 
 void CWeaponShotgun::Load	(LPCSTR section)
@@ -26,7 +26,7 @@ void CWeaponShotgun::Load	(LPCSTR section)
 	inherited::Load		(section);
 
 	// Звук и анимация для выстрела дуплетом
-	LoadSound(section, "snd_shoot_duplet", sndShotBoth, TRUE, m_eSoundShotBoth);
+	HUD_SOUND::LoadSound(section, "snd_shoot_duplet", sndShotBoth, TRUE, m_eSoundShotBoth);
 	animGet	(mhud_shot_boths,	pSettings->r_string(*hud_sect,"anim_shoot_both"));
 }
 
