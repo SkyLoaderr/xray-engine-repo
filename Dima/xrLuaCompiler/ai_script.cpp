@@ -30,8 +30,8 @@ CScript::CScript(LPCSTR caNamespaceName)
 
 	m_tpLuaThread		= lua_newthread(ai().script_engine().lua());
 	
-	sprintf				(S,"\n\n%s.main()\n",caNamespaceName);
-	if (!luaL_loadbuffer(m_tpLuaThread,S,xr_strlen(S) + 1,"@internal.script")) {
+	sprintf				(S,"%s.main()\n",caNamespaceName);
+	if (!ai().script_engine().load_buffer(m_tpLuaThread,S,xr_strlen(S),"@internal.script")) {
 		if (!ai().script_engine().print_output(m_tpLuaThread,m_script_name,1))
 			ai().script_engine().print_error(m_tpLuaThread,1);
 		return;
@@ -51,7 +51,6 @@ CScript::~CScript()
 
 bool CScript::Update()
 {
-	Msg					("Updating script %s",m_script_name);
 	if (!m_bActive)
 		R_ASSERT2		(false,"Cannot resume dead Lua thread!");
 	ai().script_engine().set_current_thread	(m_script_name);
