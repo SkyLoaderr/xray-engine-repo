@@ -87,7 +87,7 @@ void	CTracer::Render	()
 	}
 
 	DWORD vCount = verts-start;
-	VS->Unlock(vCount);
+	VS->Unlock				(vCount);
 	Device.Shader.Set		(sh_Tracer);
 	Device.Primitive.Draw	(VS,vCount,vCount/2,vOffset,Device.Streams_QuadIB);
 }
