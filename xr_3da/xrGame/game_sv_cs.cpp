@@ -41,7 +41,7 @@ void	game_sv_CS::OnRoundStart	()
 	random_shuffle		( rp.begin( ), rp.end( ) );
 	for(s32 i = 0; i < 3; i++) {
 		xrServerEntity*		E	=	spawn_begin	("m_target_cs");									// create SE
-		xrSE_Target_CS*	A			=	(xrSE_Target_CS*) E;					
+		xrSE_Target_CS*	A		=	(xrSE_Target_CS*) E;					
 		A->s_flags				=	M_SPAWN_OBJECT_ACTIVE  | M_SPAWN_OBJECT_LOCAL;				// flags
 		RPoint&				r	= rp[i];
 		A->o_Position.set	(r.P);
