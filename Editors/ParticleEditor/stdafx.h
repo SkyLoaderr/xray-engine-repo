@@ -190,9 +190,10 @@ struct st_Version{
 #pragma comment(lib,"xrCDB.lib")
 #pragma comment(lib,"dxt.lib")
 #pragma comment(lib,"xrProgressive.lib")
-#pragma comment(lib,"MagicFMd.lib")
+#pragma comment(lib,"MagicFMDLLB.lib")
 #pragma comment(lib,"ETools.lib")
 #pragma comment(lib,"LWO.lib")
+#pragma comment(lib,"xrHemisphere.lib")
 
 #pragma hdrstop
 #endif
