@@ -18,6 +18,10 @@ CSE_ALifeSimulator::CSE_ALifeSimulator(xrServer *tpServer)
 	m_caSaveName[0]		= 0;
 	shedule_register	();
 	m_bFirstUpdate		= true;
+	m_tpGroupVector[0].clear();
+	m_tpGroupVector[1].clear();
+	m_tpGroupVector[0].reserve(255);
+	m_tpGroupVector[1].reserve(255);
 }
 
 CSE_ALifeSimulator::~CSE_ALifeSimulator()
@@ -154,6 +158,7 @@ void CSE_ALifeSimulator::Load	(LPCSTR caSaveName)
 	m_fOnlineDistance			= pSettings->r_float("alife","online_distance");
 	m_dwSwitchDelay				= pSettings->r_s32	("alife","switch_delay");
 	m_fTimeFactor				= pSettings->r_float("alife","time_factor");
+	m_dwMaxBattleIterationCount	= pSettings->r_u32	("alife","max_battle_iteration_count");
 
 	string256					caFileName;
 	IReader						*tpStream;

@@ -27,20 +27,21 @@ class CSE_ALifeSimulator :
 	public ISheduled,
 	public CRandom 
 {
-private:
 	u64								m_qwMaxProcessTime;
 	u32								m_dwSwitchDelay;
 	xrServer						*m_tpServer;
 	bool							m_bActorEnabled;
 	string256						m_caSaveName;
 	bool							m_bFirstUpdate;
+	u32								m_dwMaxBattleIterationCount;
+	MONSTER_P_VECTOR				m_tpGroupVector[2];
 	
 	// temporary buffer for purchased by the particular trader artefacts
 	ITEM_COUNT_MAP					m_tpTraderItems;
 	ORGANIZATION_ORDER_MAP			m_tpSoldArtefacts;
 
 	// common
-			void					vfUpdateDynamicData			(bool bReserveID = true);
+			void					vfUpdateDynamicData			(bool						bReserveID = true);
 			void					vfUpdateDynamicData			(CSE_ALifeDynamicObject		*tpALifeDynamicObject);
 			void					vfCreateNewTask				(CSE_ALifeTrader			*tpTrader);
 			void					vfCreateObjectFromSpawnPoint(CSE_ALifeDynamicObject		*&tpALifDynamicObject, CSE_ALifeDynamicObject *j, _SPAWN_ID tSpawnID);
@@ -66,6 +67,16 @@ private:
 			void					vfSwitchObjectOffline		(CSE_ALifeDynamicObject		*tpALifeDynamicObject);
 			void					ProcessOnlineOfflineSwitches(CSE_ALifeDynamicObject		*tpALifeDynamicObject);
 			void					vfFurlObjectOffline			(CSE_ALifeDynamicObject		*tpALifeDynamicObject);
+	// interaction routines
+			void					vfCheckForTheInteraction	(CSE_ALifeMonsterAbstract	*tpALifeMonsterAbstract,	_GRAPH_ID					tGraphID);
+			void					vfFillBattleGroup			(CSE_ALifeMonsterAbstract	*tpALifeMonsterAbstract,	MONSTER_P_VECTOR			&tpGroupVector);
+			bool					bfCheckForBattle			(CSE_ALifeMonsterAbstract	*tpALifeMonsterAbstract1,	CSE_ALifeMonsterAbstract	*tpALifeMonsterAbstract2, int &iGroupIndex);
+			EBattleAction			tfChooseBattleAction		(int						iGroupIndex);
+			void					vfPerformAttackAction		(int						iGroupIndex);
+			bool					bfCheckIfRetreated			(int						iGroupIndex);
+			void					vfPerformCommunication		(CSE_ALifeHumanAbstract		*tpALifeHumanAbstract1,		CSE_ALifeHumanAbstract		*tpALifeHumanAbstract2);
+			void					vfUpdateGroupMembers		(int						iGroupIndex);
+			void					vfFinishBattle				(EBattleResult				tBattleResult);
 public:
 	// members
 	bool							m_bLoaded;
@@ -75,22 +86,20 @@ public:
 	// constructors/destructors
 									CSE_ALifeSimulator			(xrServer					*tpServer);
 	virtual							~CSE_ALifeSimulator			();
-	
 	// scheduler
 	virtual float					shedule_Scale				();
 	virtual void					shedule_Update				(u32 dt);	
 	virtual BOOL					shedule_Ready				();
 	virtual LPCSTR					cName						();
-	
 	// game interface
 	virtual void					Load						(LPCSTR						caSaveName);
 			void					Save						(LPCSTR						caSaveName);
 			void					Save						();
 			void					vfNewGame					(LPCSTR						caSaveName);
-			void					vfReleaseObject				(CSE_Abstract				*tpSE_Abstract, bool bForceDelete = true);
+			void					vfReleaseObject				(CSE_Abstract				*tpSE_Abstract,				bool						bForceDelete = true);
 	// miscellanious
-			void					vfCommunicateWithCustomer	(CSE_ALifeHumanAbstract		*tpALifeHumanAbstract, CSE_ALifeTraderAbstract *tpTraderAbstract);
-			void					vfCheckForTheBattle			(CSE_ALifeMonsterAbstract	*tpALifeMonsterAbstract);
+			void					vfCommunicateWithCustomer	(CSE_ALifeHumanAbstract		*tpALifeHumanAbstract,		CSE_ALifeTraderAbstract		*tpTraderAbstract);
+			void					vfCheckForTheInteraction	(CSE_ALifeMonsterAbstract	*tpALifeMonsterAbstract);
 	// console commands support
 #ifdef ALIFE_SUPPORT_CONSOLE_COMMANDS
 			void					vfListObjects				();

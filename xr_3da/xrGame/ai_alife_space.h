@@ -115,12 +115,12 @@ namespace ALife {
 	};
 
 	enum EBattleResult {
-		eBattleNone = u32(0),
-		eBattleRun1,
-		eBattleRun2,
-		eBattleRun12,
-		eBattleRun1WF,
-		eBattleRun2WF,
+		eBattleResultRetreat1 = u32(0),
+		eBattleResultRetreat2,
+		eBattleResultRetreat12,
+		eBattleResult1Kill2,
+		eBattleResult2Kill1,
+		eBattleResultBothKilled,
 		eBattleDummy = u32(-1),
 	};
 
@@ -190,6 +190,12 @@ namespace ALife {
 		eAnomalousZoneTypeRustyHair,
 		eAnomalousZoneTypeRustyWhistlers,
 		eAnomalousZoneTypeDummy,
+	};
+
+	enum EBattleAction {
+		eBattleActionAttack = u32(0),
+		eBattleActionRetreat,
+		eBattleActionDummy = u32(-1),
 	};
 
 	DEFINE_VECTOR	(CSE_ALifeDynamicObject*,	D_OBJECT_P_VECTOR,				D_OBJECT_P_IT);

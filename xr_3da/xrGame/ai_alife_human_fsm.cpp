@@ -64,7 +64,7 @@ void CSE_ALifeHumanAbstract::Update			(CSE_ALifeSimulator *tpALife)
 			default				: NODEFAULT;
 		}
 		bOk						= bfChooseNextRoutePoint();
-		m_tpALife->vfCheckForTheBattle(this);
+		m_tpALife->vfCheckForTheInteraction(this);
 		bfProcessItems			();
 		vfCheckForDeletedEvents	();
 	}

@@ -87,7 +87,7 @@ void CSE_ALifeMonsterAbstract::Update		(CSE_ALifeSimulator *tpALife)
 			else
 				m_fCurSpeed			= m_fGoingSpeed;
 		}
-		tpALife->vfCheckForTheBattle(this);
+		tpALife->vfCheckForTheInteraction(this);
 	}
 	while (bContinue && (tpALife->m_tpActor->o_Position.distance_to(o_Position) > tpALife->m_fOnlineDistance));
 	m_tTimeID					= tpALife->tfGetGameTime();
