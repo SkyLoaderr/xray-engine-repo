@@ -94,8 +94,10 @@ CInifile::CInifile(LPCSTR szFileName, BOOL ReadOnly, BOOL bLoad, BOOL SaveAtEnd)
 		_splitpath	(fName, path, folder, 0, 0 );
         strcat		(path,folder);
 		IReader* R 	= FS.r_open(szFileName);
-		Load		(R,path);
-		FS.r_close	(R);
+        if (R){
+			Load		(R,path);
+			FS.r_close	(R);
+        }
 	}
 }
 
@@ -107,6 +109,7 @@ CInifile::~CInifile( )
 
 void	CInifile::Load(IReader* F, LPCSTR path)
 {
+	R_ASSERT(F);
 	Sect	Current;	Current.Name = 0;
 	char	str			[1024];
 	char	str2		[1024];
