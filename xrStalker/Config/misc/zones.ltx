@@ -12,7 +12,7 @@ postprocess		= mosquito_bald
 
 
 BirthProbability	= 0.9
-hit_type			= strike
+hit_type			= explosion
 
 idle_particles		= anomaly2\gravity_idle
 blowout_particles	= anomaly2\gravity_blast_01
@@ -95,7 +95,7 @@ sound			=
 
 
 BirthProbability	= 0.9
-hit_type			= strike
+hit_type			= explosion
 
 ;idle_particles		= 
 blowout_particles	= explosions\explosions_mine
@@ -173,7 +173,7 @@ postprocess		= postprocess_death
 
 artefacts		= 
 BirthProbability	= 0.9
-hit_type			= strike
+hit_type			= explosion
 
 idle_particles		= 
 blowout_particles	= anomaly2\gravity_blast_01
@@ -472,7 +472,7 @@ light_height		= 1.5			;подъем источника света на высоту
 
 idle_light			= off
 
-hit_type		= wound
+hit_type		= shock
 
 disable_time		= 50	;время игнорирования неживого объекта в зоне (-1 если не нужно)
 disable_time_small	= 500		;время игнорирования маленького неживого объекта в зоне (-1 если не нужно)
@@ -516,7 +516,7 @@ postprocess		= postprocess_fuzz
 artefacts		= af_fuzz_kolobok,1
 BirthProbability = 0.5
 
-hit_type		= burn
+hit_type		= chemical_burn
 hit_effect		= anomaly2\hit_metal_02
 
 idle_particles		= anomaly2\pux_idle
@@ -576,7 +576,7 @@ postprocess		= postprocess_fuzz
 artefacts		= af_fuzz_kolobok,1
 BirthProbability = 0.5
 
-hit_type		= burn
+hit_type		= wound
 hit_effect		= anomaly2\hit_metal_02
 
 idle_particles		= anomaly2\pux_idle
@@ -679,7 +679,7 @@ postprocess		= postprocess_new
 artefacts		= af_rusty_thorn,0.7,af_rusty_kristall,0.25,af_rusty_sea-urchin,0.05
 BirthProbability = 0.9
 
-hit_type		= shock
+hit_type		= chemical_burn
 
 disable_time		= -1	;время игнорирования неживого объекта в зоне (-1 если не нужно)
 disable_time_small	= 500		;время игнорирования маленького неживого объекта в зоне (-1 если не нужно)
@@ -723,7 +723,7 @@ postprocess		= postprocess_new
 artefacts		= af_rusty_thorn,0.7,af_rusty_kristall,0.25,af_rusty_sea-urchin,0.05
 BirthProbability = 0.9
 
-hit_type		= shock
+hit_type		= chemical_burn
 
 disable_time		= -1	;время игнорирования неживого объекта в зоне (-1 если не нужно)
 disable_time_small	= 500		;время игнорирования маленького неживого объекта в зоне (-1 если не нужно)
@@ -825,7 +825,7 @@ blowout_sound		= anomaly\anomaly_mincer_blowout; anomaly_gravy_blast01	;во время
 hit_sound			= anomaly\anomaly_gravy_hit1						;на персонаже, когда тот получает хит
 entrance_sound		= anomaly\gravi_idle01								;при попадании объекта в аномалию
 body_tearing_sound	= anomaly\anomaly_body_tear_1						;звук разрывания трупа
-hit_type			= wound
+hit_type			= strike
 hit_impulse_scale	= 0.1			;соотношение физического импульса и силы хита
 effective_radius	= 0.75 ;размер радиуса в процентах от оригинального, где действует зона
 
@@ -909,7 +909,7 @@ hit_sound			= anomaly\anomaly_gravy_hit1						;на персонаже, когда тот получает 
 body_tearing_sound	= anomaly\anomaly_body_tear_1						;звук разрывания трупа
 entrance_sound		= anomaly\gravi_idle01								;при попадании объекта в аномалию
 
-hit_type		= wound
+hit_type		= strike
 hit_impulse_scale	= 0.2;0.5;0.1			;соотношение физического импульса и силы хита
 effective_radius	= 0.75 ;размер радиуса в процентах от оригинального, где действует зона
 
@@ -1342,8 +1342,6 @@ postprocess		= postprocess_flame
 
 artefacts		= 
 BirthProbability = 0.9
-
-idle_light		= off
 
 idle_particles		= anomaly2\heat_02
 blowout_particles	= anomaly2\heat_03
