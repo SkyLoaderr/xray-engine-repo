@@ -2899,6 +2899,12 @@
 						<File
 							RelativePath=".\ai\Monsters\Bloodsucker\bloodsucker_state_manager.h">
 						</File>
+						<File
+							RelativePath=".\ai\Monsters\Bloodsucker\bloodsucker_vampire_effector.cpp">
+						</File>
+						<File
+							RelativePath=".\ai\Monsters\Bloodsucker\bloodsucker_vampire_effector.h">
+						</File>
 						<Filter
 							Name="Vampire State"
 							Filter="">
