@@ -94,15 +94,15 @@ postprocess		=
 BirthProbability	= 0.9
 hit_type			= strike
 
-idle_particles		= 
+;idle_particles		= 
 blowout_particles	= explosions\explosions_mine
 
-hit_small_particles			= 
-hit_big_particles			= 
-idle_small_particles		= 
-idle_big_particles			= 
-entrance_small_particles	= 
-entrance_big_particles		= 
+;hit_small_particles			= 
+;hit_big_particles			= 
+;idle_small_particles		= 
+;idle_big_particles			= 
+;entrance_small_particles	= 
+;entrance_big_particles		= 
 
 idle_sound			= 
 blowout_sound		= weapons\f1_explode	;во время выброса(удара) в центре аномалии	
@@ -121,7 +121,7 @@ blowout_sound_time  	= 100
 
 disable_time		= -1 ; 5000		;время игнорирования неживого объекта в зоне (-1 если не нужно)
 disable_time_small	= -1		;время игнорирования маленького неживого объекта в зоне (-1 если не нужно)
-disable_idle_time	= 		;время отключения idle партиклов
+disable_idle_time	= -1		;время отключения idle партиклов
 
 ignore_nonalive		= false
 ignore_small		= true 
@@ -140,18 +140,11 @@ visible_by_detector = off
 
 ;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;
 ;рождение артефактов 
-
 artefacts		= 
 
 ;;во время срабатывания в online
 spawn_blowout_artefacts = off
 
-artefact_spawn_probability = 				;вероятность, что во время срабатывания аномалии будет рожден артефакт
-artefact_spawn_particles = 	;партиклы, которые отыграются на месте рождения артефакта (опционально)
-artefact_born_sound =  		;звук, который отыграются на месте рождения артефакта (опционально)
-
-throw_out_power = 			;импульс с которым артефакт будет выброшен из зоны в произвольном направлении
-artefact_spawn_height = 		;(м) высота на центром зоны где будет рожден артефакт
 
 ;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;
 ;; ветер
