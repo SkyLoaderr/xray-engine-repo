@@ -15,11 +15,7 @@ module("ui_multiplayer_options_tab")
 module("ui_multiplayer_gametype_tab")
 module("ui_multiplayer_map_tab")
 module("ui_multiplayer_create")
-module("ui_options_base_tab")
-module("ui_options_sound_tab")
-module("ui_options_game_tab")
-module("ui_options_controls_tab")
-module("ui_options_profiles_tab")
+
 module("ui_options_dialog")
 
 function main()
