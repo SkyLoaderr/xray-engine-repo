@@ -14,21 +14,24 @@
 CBlender_LmEbB::CBlender_LmEbB	()
 {
 	description.CLS		= B_LmEbB;
+	description.version	= 0x1;
 	strcpy				(oT2_Name,	"$null");
 	strcpy				(oT2_xform,	"$null");
+	oBlend.value		= FALSE;
 }
 
 CBlender_LmEbB::~CBlender_LmEbB	()
 {
-	
 }
 
 void	CBlender_LmEbB::Save(	IWriter& fs )
 {
-	IBlender::Save	(fs);
-	xrPWRITE_MARKER	(fs,"Environment map");
-	xrPWRITE_PROP	(fs,"Name",				xrPID_TEXTURE,	oT2_Name);
-	xrPWRITE_PROP	(fs,"Transform",		xrPID_MATRIX,	oT2_xform);
+	description.version	= 0x1;
+	IBlender::Save		(fs);
+	xrPWRITE_MARKER		(fs,"Environment map");
+	xrPWRITE_PROP		(fs,"Name",				xrPID_TEXTURE,	oT2_Name);
+	xrPWRITE_PROP		(fs,"Transform",		xrPID_MATRIX,	oT2_xform);
+	xrPWRITE_PROP		(fs,"Alpha-Blend",		xrPID_BOOL,		oBlend);
 }
 
 void	CBlender_LmEbB::Load(	IReader& fs, u16 version )
@@ -37,6 +40,9 @@ void	CBlender_LmEbB::Load(	IReader& fs, u16 version )
 	xrPREAD_MARKER	(fs);
 	xrPREAD_PROP	(fs,xrPID_TEXTURE,	oT2_Name);
 	xrPREAD_PROP	(fs,xrPID_MATRIX,	oT2_xform);
+	if (version>=0x1)	{
+		xrPREAD_PROP	(fs,xrPID_BOOL,	oBlend);
+	}
 }
 
 void	CBlender_LmEbB::Compile(CBlender_Compile& C)
@@ -83,7 +89,8 @@ void	CBlender_LmEbB::Compile(CBlender_Compile& C)
 			// Level view
 			if (C.bDetail_Diffuse)
 			{
-				C.r_Pass	("lmapE_dt","lmapE_dt",TRUE);
+				if (oBlend.value)	C.r_Pass	("lmapE_dt","lmapE_dt",TRUE,TRUE,FALSE,TRUE,D3DBLEND_SRCALPHA,D3DBLEND_INVSRCALPHA,TRUE,0);
+				else				C.r_Pass	("lmapE_dt","lmapE_dt",TRUE);
 				C.r_Sampler	("s_base",	C.L_textures[0]);
 				C.r_Sampler	("s_lmap",	C.L_textures[1]);
 				C.r_Sampler	("s_env",	oT2_Name,false,D3DTADDRESS_CLAMP);
@@ -91,7 +98,8 @@ void	CBlender_LmEbB::Compile(CBlender_Compile& C)
 				C.r_End		();
 			} else
 			{
-				C.r_Pass	("lmapE","lmapE",TRUE);
+				if (oBlend.value)	C.r_Pass	("lmapE","lmapE",TRUE,TRUE,FALSE,TRUE,D3DBLEND_SRCALPHA,	D3DBLEND_INVSRCALPHA,	TRUE,0);
+				else				C.r_Pass	("lmapE","lmapE",TRUE);
 				C.r_Sampler	("s_base",	C.L_textures[0]);
 				C.r_Sampler	("s_lmap",	C.L_textures[1]);
 				C.r_Sampler	("s_env",	oT2_Name,false,D3DTADDRESS_CLAMP);

@@ -11,6 +11,7 @@ class CBlender_LmEbB : public IBlender
 public:
 	string64	oT2_Name;		// name of secondary texture
 	string64	oT2_xform;		// xform for secondary texture
+	xrP_BOOL	oBlend;
 	
 	void		compile_2	(CBlender_Compile& C);
 	void		compile_3	(CBlender_Compile& C);
