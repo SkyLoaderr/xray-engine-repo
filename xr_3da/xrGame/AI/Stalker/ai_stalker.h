@@ -224,6 +224,7 @@ private:
 			void			BackDodge						();
 			void			BackCover						();
 			void			ForwardCover					();
+			void			ForwardStraight					();
 
 			// selectors
 			void			vfInitSelector					(IBaseAI_NodeEvaluator &S, CSquad &Squad, CEntity* &Leader);

@@ -249,14 +249,9 @@ void CCustomMonster::Update	( u32 DT )
 		m_fTimeUpdateDelta				= dt;
 		Device.Statistic.AI_Think.Begin	();
 		Think							();
-		m_dwLastUpdateTime = Level().timeServer();
+		m_dwLastUpdateTime				= Level().timeServer();
 		Device.Statistic.AI_Think.End	();
-//		if (m_fCurSpeed < EPS_L) {
-//			AI_Path.TravelPath.clear();
-//			AI_Path.TravelStart = 0;
-//		}
 
-		//
 		Engine.Sheduler.Slice			();
 
 		// Look and action streams

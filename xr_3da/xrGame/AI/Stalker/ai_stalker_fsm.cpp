@@ -151,6 +151,33 @@ void CAI_Stalker::ForwardCover()
 	}
 }
 
+void CAI_Stalker::ForwardStraight()
+{
+	WRITE_TO_LOG("Forward straight");
+	
+	m_tEnemy.Enemy				= dynamic_cast<CEntity *>(Level().CurrentEntity());
+	Fvector						tPoint;
+	m_tEnemy.Enemy->svCenter	(tPoint);
+	float						fDistance = vPosition.distance_to(m_tEnemy.Enemy->Position());
+
+	CWeapon						*tpWeapon = dynamic_cast<CWeapon*>(m_inventory.ActiveItem());
+	if (tpWeapon) {
+		m_tSelectorFreeHunting.m_fMaxEnemyDistance = tpWeapon->m_fMaxRadius;
+		m_tSelectorFreeHunting.m_fMinEnemyDistance = tpWeapon->m_fMinRadius;
+		m_tSelectorFreeHunting.m_fOptEnemyDistance = tpWeapon->m_fMinRadius + 3.f;
+	}
+
+	vfSetParameters				(
+		m_tSelectorFreeHunting,
+		0,
+		eWeaponStatePrimaryFire,
+		ePathTypeStraight,
+		eBodyStateStand,
+		eMovementTypeRun,
+		eLookTypeFirePoint,
+		tPoint);
+}
+
 void CAI_Stalker::Think()
 {
 	vfUpdateDynamicObjects	();
@@ -164,7 +191,7 @@ void CAI_Stalker::Think()
 		if (!g_Alive())
 			Death();
 		else
-			ForwardCover();
+			ForwardStraight();
 		m_bStateChanged		= m_ePreviousState != m_eCurrentState;
 	}
 	while (!m_bStopThinking);

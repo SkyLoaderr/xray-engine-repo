@@ -179,7 +179,7 @@ void CAI_Stalker::vfSetWeaponState(EWeaponState tWeaponState)
 			if (tpWeapon->STATE == CWeapon::eFire)
 				if (bfCheckIfCanKillEnemy() && !bfCheckIfCanKillMember()) {
 					m_dwStartFireAmmo = tpWeapon->GetAmmoElapsed();
-					m_inventory.Action(kWPN_FIRE, CMD_STOP);
+					//m_inventory.Action(kWPN_FIRE, CMD_STOP);
 					if (m_dwStartFireAmmo) {
 						m_inventory.Action(kWPN_FIRE, CMD_START);
 						m_bFiring = true;

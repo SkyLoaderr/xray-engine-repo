@@ -164,11 +164,7 @@ void CAI_Stalker::vfBuildTravelLine(Fvector *tpDestinationPosition)
 			m_tpaLine.push_back(m_tpaPoints[i-1]);
 			m_tpaLine.push_back(m_tpaPoints[i]);
 			getAI().vfCreateFastRealisticPath(m_tpaLine,m_tpaPointNodes[i-1],m_tpaDeviations,m_tpaTravelPath,m_tpaNodes,false,false,0,0);
-			u32 n;
-			if (m_tPathType == ePathTypeStraight)
-				n = AI_Path.TravelPath.size();
-			else
-				n = m_tpaTravelPath.size();
+			u32 n = m_tpaTravelPath.size();
 			AI::CTravelNode	T;
 			for (u32 j= i<2?0:1; j<n; j++) {
 				T.P = m_tpaTravelPath[j];
