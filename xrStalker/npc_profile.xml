@@ -66,14 +66,9 @@
 		<start_dialog>escape_trader_start_dialog</start_dialog>
 		<specific_character>default</specific_character>
 	</character>
+	
+	
 	<character id="actor">
-		<name>Gunner</name>
-		<icon x="0" y="9"></icon>
-		<map_icon x="0" y="4"></map_icon>
-		<visual>string_name2</visual>
-		<rank>novice</rank>
-		<team>Lonewolf</team>
-		
 		<specific_character>actor</specific_character>
 	</character>
 </xml>
