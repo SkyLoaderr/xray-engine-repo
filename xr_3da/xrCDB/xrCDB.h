@@ -73,8 +73,8 @@ namespace CDB
 
 		IC TRI*			get_tris	()	{ return tris;	}
 
-		void			build		(Fvector* V, int Vcnt, TRI* T, int Tcnt);
-		DWORD			memory		();
+		virtual void	build		(Fvector* V, int Vcnt, TRI* T, int Tcnt);
+		virtual DWORD	memory		();
 	};
 
 	// Collider result
@@ -124,8 +124,20 @@ namespace CDB
 		RESULT&			r_add			();
 		void			r_free			();
 		IC int			r_count			()	{	return rd_count;			};
+
 		IC void			r_clear			()	{	rd_count = 0;				};
 	};
+};
+
+extern "C" 
+{
+	void*	XRCDB_API	__cdecl		cdb_model_create	();
+	void	XRCDB_API	__cdecl		cdb_model_destroy	(void*);
+	void*	XRCDB_API	__cdecl		cdb_collider_create	();
+	void	XRCDB_API	__cdecl		cdb_collider_destroy(void*);
+	void	XRCDB_API	__cdecl		cdb_query_ray		(const COLLIDER* C, const MODEL *m_def, const Fvector& r_start,  const Fvector& r_dir, float r_range = 10000.f);
+	void	XRCDB_API	__cdecl		cdb_query_box		(const COLLIDER* C, const MODEL *m_def, const Fvector& b_center, const Fvector& b_dim);
+	void	XRCDB_API	__cdecl		cdb_query_frustum	(const COLLIDER* C, const MODEL *m_def, const CFrustum& F);
 };
 
 #pragma pack(pop)	

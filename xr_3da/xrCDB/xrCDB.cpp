@@ -144,3 +144,35 @@ void COLLIDER::r_free	()
 	rd_count		= 0;
 	rd_size			= 0;
 }
+
+// C-style
+extern "C" {
+	void*	XRCDB_API	__cdecl		cdb_model_create	()
+	{
+		return new MODEL;
+	}
+	void	XRCDB_API	__cdecl		cdb_model_destroy	(void* P)
+	{
+		delete (MODEL*)P;
+	}
+	void*	XRCDB_API	__cdecl		cdb_collider_create	()
+	{
+		return new COLLIDER;
+	}
+	void	XRCDB_API	__cdecl		cdb_collider_destroy(void* P)
+	{
+		delete (COLLIDER*)P;
+	}
+	void	XRCDB_API	__cdecl		cdb_query_ray		(const COLLIDER* C, const MODEL *m_def, const Fvector& r_start,  const Fvector& r_dir, float r_range = 10000.f)
+	{
+		C->ray_query(m_def,r_start,r_dir,r_range);
+	}
+	void	XRCDB_API	__cdecl		cdb_query_box		(const COLLIDER* C, const MODEL *m_def, const Fvector& b_center, const Fvector& b_dim)
+	{
+		C->box_query(m_def,b_center,b_dim);
+	}
+	void	XRCDB_API	__cdecl		cdb_query_frustum	(const COLLIDER* C, const MODEL *m_def, const CFrustum& F)
+	{
+		C->frustum_query(m_def,F);
+	}
+};
