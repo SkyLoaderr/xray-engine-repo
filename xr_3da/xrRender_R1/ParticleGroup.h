@@ -73,8 +73,8 @@ namespace PS
 
             IC u32			GetVisuals		(xr_vector<IRender_Visual*>& visuals)
             {
-            	visuals.reserve(children.size()+children_stopped.size()+1);
-                visuals.push_back(effect);
+            	visuals.reserve				(children.size()+children_stopped.size()+1);
+                visuals.push_back			(effect);
 			    VisualVecIt it;
                 for (it=children.begin(); it!=children.end(); it++) 				visuals.push_back(*it);
                 for (it=children_stopped.begin(); it!=children_stopped.end(); it++)	visuals.push_back(*it);
