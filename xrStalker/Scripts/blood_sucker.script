@@ -37,14 +37,14 @@ function CBaseBloodsucker:__init(_npc, _can_eat, _state_rest, _state_attack, _st
         self.stateRest      = _state_rest       (self.npc, self.memory)
     end
 
-  if(_state_sound) then
-      self.stateSound      = _state_sound     (self.npc, self.memory)
+    if(_state_sound) then
+        self.stateSound      = _state_sound     (self.npc, self.memory)
     else
         self.stateSound     = this.CStateSound  (self.npc, self.memory)
     end
 
     if(_state_hit) then
-      self.stateHit       = _state_hit       (self.npc, self.memory)
+        self.stateHit       = _state_hit       (self.npc, self.memory)
     else
         self.stateHit       = this.CStateHit    (self.npc, self.memory)
     end
@@ -53,7 +53,7 @@ function CBaseBloodsucker:__init(_npc, _can_eat, _state_rest, _state_attack, _st
 end
 
 function CBaseBloodsucker:initialize()
-  self.npc:script    (true, script_name())
+  self.npc:script    (true, blood_sucker.script_name())
 end
 
 function CBaseBloodsucker:execute()
