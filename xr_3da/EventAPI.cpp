@@ -107,6 +107,7 @@ EVENT	CEventAPI::Handler_Attach(const char* N, IEventReceiver* H)
 
 void	CEventAPI::Handler_Detach(EVENT& E, IEventReceiver* H)
 {
+	if (0==E)	return;
 	CS.Enter	();
 	E->Detach	(H);
 	Destroy		(E);
