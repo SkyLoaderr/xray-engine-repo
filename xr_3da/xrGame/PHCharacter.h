@@ -62,7 +62,7 @@ public:
 
 
 void					SetPLastMaterial					(u16* p)													{p_lastMaterial=p;}													
-
+virtual void			SetMaterial							(u16 material)												=0 ;
 virtual void			SetMaximumVelocity					(dReal /**vel/**/)											{}																			//!!
 virtual		dReal		GetMaximumVelocity					()															{return 0;}
 virtual	void			SetJupmUpVelocity					(dReal /**velocity/**/)										{}																			//!!

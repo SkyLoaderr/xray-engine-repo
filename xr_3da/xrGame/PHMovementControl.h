@@ -22,7 +22,7 @@ CPHCapture*			PHCapture      (){return m_capture;}
 void				PHReleaseObject();
 Fvector				PHCaptureGetNearestElemPos(CGameObject* object);
 Fmatrix				PHCaptureGetNearestElemTransform(CGameObject* object);
-
+void				SetMaterial(u16 material);
 enum				JumpType 
 {
 					jtStrait, //end point before uppermost point
@@ -90,6 +90,7 @@ private:
 	int					m_path_size;
 	int					m_start_index;
 	float				m_path_distance;
+	u16					m_material;
 
 	float				fLastMotionMag;
 
@@ -97,6 +98,7 @@ private:
 	float				fContactSpeed;
 	float				fLastUpdateTime;
 	Fvector				vLastUpdatePosition;
+	
 public:
 	Fvector				vExternalImpulse;
 	BOOL				bSleep;
@@ -108,10 +110,7 @@ public:
 	void				AllocateCharacterObject(CharacterType type);
 	void				DeleteCharacterObject();
 
-	void				CreateCharacter()		{	
-		dVector3 size={aabb.x2-aabb.x1,aabb.y2-aabb.y1,aabb.z2-aabb.z1};
-		m_character->Create(size);
-	}
+	void				CreateCharacter();		
 	void				DestroyCharacter();
 	void				Load					(LPCSTR section);
 #ifdef DEBUG

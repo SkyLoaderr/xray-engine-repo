@@ -22,6 +22,7 @@
 CPHMovementControl::CPHMovementControl(void)
 {
 	//m_character->Create();
+	m_material			=0;
 	m_capture			=NULL;
 	b_exect_position	=true;
 	m_start_index		=0;
@@ -863,6 +864,20 @@ void CPHMovementControl::GetJumpParam(Fvector &velocity, JumpType &type,const Fv
 
 }
 
+void CPHMovementControl::SetMaterial(u16 material)
+{
+	m_material=material;
+	if(m_character)
+	{
+		m_character->SetMaterial(material);
+	}
+}
+void CPHMovementControl::CreateCharacter()
+{	
+	dVector3 size={aabb.x2-aabb.x1,aabb.y2-aabb.y1,aabb.z2-aabb.z1};
+	m_character->Create(size);
+	m_character->SetMaterial(m_material);
+}
 CPHSynchronize*	CPHMovementControl::GetSyncItem()
 {
 	if(m_character)	return dynamic_cast<CPHSynchronize*>(m_character);

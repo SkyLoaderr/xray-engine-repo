@@ -1266,7 +1266,14 @@ u16 CPHSimpleCharacter::ContactBone()
 {
 	return RetriveContactBone();
 }
-
+void CPHSimpleCharacter::SetMaterial	(u16 material)
+{
+	if(!b_exist) return;
+	dGeomGetUserData(m_geom_shell)->material=material;
+	dGeomGetUserData(m_wheel)->material		=material;
+	dGeomGetUserData(m_cap)->material		=material;
+	dGeomGetUserData(m_hat)->material		=material;
+}
 void CPHSimpleCharacter::get_State(SPHNetState& state)
 {
 	CPHCharacter::get_State(state);

@@ -105,7 +105,7 @@ public:
 	virtual		void		SetObjectContactCallback			(ObjectContactCallbackFun* callback);
 	virtual		void		SetAcceleration						(Fvector accel)		;
 	virtual		Fvector		GetAcceleration						()					{ return m_acceleration; };
-
+	virtual		void		SetMaterial							(u16 material)		;
 	virtual		void		SetPosition							(Fvector pos)		;
 	virtual		void		GetVelocity							(Fvector& vvel)		;
 	virtual		void		SetVelocity							(Fvector vel)		;

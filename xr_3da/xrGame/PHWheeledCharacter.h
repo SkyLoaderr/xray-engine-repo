@@ -25,6 +25,7 @@ public:
 	virtual		void		Create							  (dVector3 sizes);
 	virtual		void		Destroy								(void)				;
 	virtual		void		SetAcceleration						(Fvector /**accel/**/)	{}	;
+	virtual		void		SetMaterial							(u16	/**material/**/){}	;
 	virtual		void		SetPosition							(Fvector /**pos/**/)	{}	;
 	virtual		void		GetVelocity							(Fvector& /**vel/**/)	{}	;
 	virtual		void		SetVelocity							(Fvector /**vel/**/)	{}	;
