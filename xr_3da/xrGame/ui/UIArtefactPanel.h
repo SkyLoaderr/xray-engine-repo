@@ -23,9 +23,9 @@ public:
 
 	virtual void InitIcons(const xr_vector<RECT>& vector);
 	virtual void Draw();
+	virtual void SetScale(float fScale);
 
 protected:
 	xr_vector<RECT>           m_vRects;
 	CUIStaticItem             m_si;
-
 };

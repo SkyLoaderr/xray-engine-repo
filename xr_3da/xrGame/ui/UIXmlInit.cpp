@@ -782,3 +782,21 @@ void CUIXmlInit::InitColorDefs()
 		m_pColorDefs->push_back(std::make_pair<shared_str, u32>(name, (a<<24) | (r<<16) | (g<<8) | b));
 	}
 }
+
+//////////////////////////////////////////////////////////////////////////////
+
+bool CUIXmlInit::InitArtefactPanel(CUIXml &xml_doc, const char* path, int index, CUIArtefactPanel* pWnd){
+	R_ASSERT3(xml_doc.NavigateToNode(path,index), "XML node not found", path);
+
+	int x = xml_doc.ReadAttribInt(path, index, "x");
+	int y = xml_doc.ReadAttribInt(path, index, "y");
+	InitAlignment(xml_doc, path, index, x, y);
+	int width = xml_doc.ReadAttribInt(path, index, "width");
+	int height = xml_doc.ReadAttribInt(path, index, "height");
+	pWnd->Init(x, y, width, height);
+
+	LPCSTR strScale = xml_doc.ReadAttrib(path, index, "scale");
+	float fScale = static_cast<float>(atof(strScale));
+	pWnd->SetScale(fScale);
+	return true;
+}

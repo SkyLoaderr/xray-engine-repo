@@ -25,6 +25,7 @@ class CUIFrameLineWnd;
 class CUITextBanner;
 class CUIMultiTextStatic;
 class CUIAnimatedStatic;
+class CUIArtefactPanel;
 
 //////////////////////////////////////////////////////////////////////////
 
@@ -77,6 +78,8 @@ public:
 								int index, CUIAnimatedStatic *pWnd);
 
 	bool InitTexture			(CUIXml &xml_doc, const char *path,	int index, CUIStatic *pWnd);
+
+	bool InitArtefactPanel      (CUIXml &xml_doc, const char *path, int index, CUIArtefactPanel* pWnd);
 
 	// Функция чтения алайна из xml файла и применения его к координатам.
 	// Return true если для данного окна есть выравнивание

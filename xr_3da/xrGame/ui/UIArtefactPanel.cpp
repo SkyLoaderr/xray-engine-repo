@@ -13,11 +13,15 @@
 
 using namespace InventoryUtilities;
 
-CUIArtefactPanel::CUIArtefactPanel(){	
+CUIArtefactPanel::CUIArtefactPanel(){		
 }
 
 CUIArtefactPanel::~CUIArtefactPanel(){
 
+}
+
+void CUIArtefactPanel::SetScale(float fScale){	
+	m_si.SetScale(fScale);
 }
 
 void CUIArtefactPanel::InitIcons(const xr_vector<RECT>& vect){
@@ -32,6 +36,8 @@ void CUIArtefactPanel::Draw(){
 	const int iIndent = 8;
 	      int x = 0;
 		  int y = 0;
+		  int iHeight;
+		  int iWidth;
 
 	RECT rect = GetAbsoluteRect();
 	x = rect.left;
@@ -41,12 +47,14 @@ void CUIArtefactPanel::Draw(){
 	{
 		const RECT& r = *it;		
 
+		iHeight = (int)(m_si.GetScale()*(r.bottom - r.top));
+		iWidth  = (int)(m_si.GetScale()*(r.right - r.left));
+
 		m_si.SetOriginalRect(r.left, r.top, 0, 0);
-		m_si.SetRect(0, 0, r.right - r.left, r.bottom - r.top);
+		m_si.SetRect(0, 0, iWidth, iHeight);
 
 		m_si.SetPos(x, y);
-
-		x = x + iIndent + (r.right - r.left);
+		x = x + iIndent + iWidth;
 
         m_si.Render();
 	}
