@@ -134,7 +134,7 @@ void	MODEL::build_internal	(Fvector* V, int Vcnt, TRI* T, int Tcnt)
 	OPCC.Rules		= SPLIT_COMPLETE | SPLIT_SPLATTERPOINTS | SPLIT_GEOMCENTER;
 	OPCC.NoLeaf		= true;
 	OPCC.Quantized	= false;
-	tree			= new OPCODE_Model;
+	tree			= xr_new<OPCODE_Model> ();
 	if (!tree->Build(OPCC)) 
 	{
 		xr_free		(verts);
