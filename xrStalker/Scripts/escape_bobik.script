@@ -3,20 +3,18 @@ module("m_monster_ai")
 local sounds = {}
 
 local bobik_home = nil
-local dog = nil
 
-function init_bobik()
-  bobik_home = patrol("point_bobik"):point(0)
+function main()
+	bobik_home = patrol("point_bobik"):point(0)
 
-  dog = m_monster_ai.m_MonsterBobik("dog_bobik", script_name(), "point_bobik", 8 )
-  printf("bobik under script")
-end
-function execute_bobik()
-  return dog:execute()
-end
-function finalize_bobik()
-  bobik_die()
-  dog:finalize()
+	local dog = m_monster_ai.m_MonsterBobik("dog_bobik", script_name(), "point_bobik", 8 )
+
+	while(dog:execute()) do
+		wait()
+	end
+	
+	bobik_die()
+	dog:finalize()
 end
 
 local alarm   = false

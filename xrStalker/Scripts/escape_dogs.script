@@ -1,25 +1,24 @@
 module("m_monster_ai")
 
-local dog1 = nil
-local dog2 = nil
-
-function init()
-    dog1 = m_monster_ai.m_MonsterArtful("btr_dog_1", script_name(), "way_btr_dog_1", "point_btr_dog_1", 10)
-    dog2 = m_monster_ai.m_MonsterArtful("btr_dog_2", script_name(), "way_btr_dog_2", "point_btr_dog_2", 10)
-end
-
-function execute()
-
-     dog1:execute()
-    dog2:execute()
-
-    if(dog1:check_completed() and dog2:check_completed()) then
-        return false
-    end
-
-end
-
-function finalize()
-    dog1:finalize()
-    dog2:finalize()
+function main()
+    local dog1 = m_monster_ai.m_MonsterArtful("btr_dog_1", script_name(), "way_btr_dog_1", "point_btr_dog_1", 10)
+    local dog2 = m_monster_ai.m_MonsterArtful("btr_dog_2", script_name(), "way_btr_dog_2", "point_btr_dog_2", 10)
+	
+	local work_dog1	= true
+	local wokr_dog2	= true
+	
+	dog1:initialize()
+	dog2:initialize()
+	
+	while(work_dog1 or work_dog2) do
+		if(work_dog1 and dog1:execute() == false) then
+			work_dog1	= false
+			dog1:finalize()
+		end
+		
+		if(work_dog2 and dog2:execute() == false) then
+			work_dog2	= false
+			dog2:finalize()
+		end
+	end
 end
