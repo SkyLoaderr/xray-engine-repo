@@ -90,6 +90,8 @@ void		CRender::set_Object			(IRenderable*		O )
 	L_Shadows.set_object	(O);
 	L_Projector.set_object	(O);
 	L_DB.Track				(O);
+
+	VERIFY					(O?O->renderable.ROS:true);
 }
 
 // Misc
@@ -147,6 +149,7 @@ IC		void		gm_SetLighting		(IRenderable* O)
 	{
 		gm_Object			= O;
 		if (0==gm_Object)	return;
+		VERIFY				(O->renderable.ROS);
 		CLightTrack& LT		= *((CLightTrack*)O->renderable.ROS);
 		
 		// shadowing
@@ -292,7 +295,7 @@ void CRender::Calculate()
 
 		// Determine visibility for dynamic part of scene
 		set_Object							(0);
-		g_pGameLevel->pHUD->Render_First	();	
+		g_pGameLevel->pHUD->Render_First	( );
 		for (u32 o_it=0; o_it<g_SpatialSpace.q_result.size(); o_it++)
 		{
 			ISpatial*	spatial		= g_SpatialSpace.q_result[o_it];
@@ -394,7 +397,7 @@ void __fastcall matrix_L1	(SceneGraph::mapMatrix_Node *N)
 // ALPHA
 void __fastcall sorted_L1	(SceneGraph::mapSorted_Node *N)
 {
-	IRender_Visual *V = N->val.pVisual;
+	IRender_Visual *V	=	N->val.pVisual;
 	RCache.set_Shader		(V->hShader);
 	RCache.set_xform_world	(N->val.Matrix);
 	gm_SetLighting			(N->val.pObject);

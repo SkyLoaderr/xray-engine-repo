@@ -222,7 +222,9 @@ CObject* CObject::H_SetParent	(CObject* O)
 
 	if (0==S)	OnH_B_Chield		();
 	else		OnH_B_Independent	();
-	Parent		= O; 
+	if (O)		spatial_unregister	();
+	else		spatial_register	();
+	Parent		= O;
 	if (0==S)	OnH_A_Chield		();
 	else		OnH_A_Independent	();
 

@@ -6,6 +6,7 @@
 #include "..\fmesh.h"
 #include "..\fcached.h"
 #include "..\flod.h"
+#include "..\irenderable.h"
 
 extern	Shader*			shDEBUG;
 
@@ -46,6 +47,7 @@ void CRender::InsertSG_Dynamic	(IRender_Visual *pVisual, Fvector& Center)
 		N->val.vCenter.set		(Center);
 	} else if (sh->Flags.bStrictB2F) {
 		SceneGraph::mapSorted_Node* N		= mapSorted.insertInAnyWay(distSQ);
+		VERIFY					(val_pObject?val_pObject->renderable.ROS:true);
 		N->val.pObject			= val_pObject;
 		N->val.pVisual			= pVisual;
 		N->val.Matrix			= *val_pTransform;

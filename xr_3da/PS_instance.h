@@ -6,6 +6,7 @@
 #include "irenderable.h"
 
 class ENGINE_API CPS_Instance	:
+	public IEventReceiver,
 	public ISpatial,
 	public ISheduled,
 	public IRenderable
@@ -13,6 +14,8 @@ class ENGINE_API CPS_Instance	:
 protected:
 	int					m_iLifeTime;
 	BOOL				m_bAutoRemove;
+	string32			rm_event_desc;
+	EVENT				rm_event;
 public:
 	CPS_Instance		();
 	virtual				~CPS_Instance	();
@@ -22,6 +25,7 @@ public:
 	IC void				PSI_SetLifeTime	(float life_time)		{	m_iLifeTime=iFloor(life_time*1000);	}
 
 	virtual void		shedule_Update	(u32 dt);
+	virtual void		OnEvent			(EVENT E, u64 P1, u64 P2)	{};
 };
 
 #endif

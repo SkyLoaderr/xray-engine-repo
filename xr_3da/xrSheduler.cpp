@@ -105,8 +105,7 @@ void CSheduler::ProcessStep			()
 	u32	dwTime					= Device.dwTimeGlobal;
 
 	// Normal priority
-	if (Items.empty())				return;
-	while (Top().dwTimeForExecute < dwTime)
+	while (!Items.empty() && Top().dwTimeForExecute < dwTime)
 	{
 		// Update
 		Item	T					= Top	();

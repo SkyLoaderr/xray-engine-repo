@@ -31,13 +31,18 @@ CPGObject::CPGObject	(LPCSTR ps_name, IRender_Sector* S, BOOL bAutoRemove)
 	shedule.t_min			= 20;
 	shedule.t_max			= 50;
 	shedule_register		();
+
+	// event
+	_ui64toa				(u64(this), rm_event_desc, 16);
+	rm_event				= Engine.Event.Handler_Attach	(rm_event_desc,this);
 }
 
 //----------------------------------------------------
 CPGObject::~CPGObject()
 {
-	spatial_unregister		();
-	shedule_unregister		();
+	Engine.Event.Handler_Detach	(rm_event,this);
+	spatial_unregister			();
+	shedule_unregister			();
 }
 
 LPCSTR CPGObject::dbg_ref_name()
@@ -88,7 +93,12 @@ void CPGObject::shedule_Update	(u32 dt)
 
 	// remove???
 	if (m_bAutoRemove && m_iLifeTime<=0)
-		xr_delete(this);
+		Engine.Event.Defer	(rm_event);
+}
+
+void CPGObject::OnEvent(EVENT E, u64 P1, u64 P2)
+{
+	if (rm_event==E)	xr_delete	(this);
 }
 
 static const Fvector zero_vel		= {0.f,0.f,0.f};
