@@ -93,10 +93,10 @@ void	CTracer::Render	()
 	VS->Unlock				(vCount);
 	
 	if (vCount)	{
-		HW.pDevice->SetTransform(D3DTS_WORLD, precalc_identity.d3d());
-		HW.pDevice->SetRenderState(D3DRS_CULLMODE,D3DCULL_NONE);
-		Device.Shader.Set		(sh_Tracer);
-		Device.Primitive.Draw	(VS,vCount,vCount/2,vOffset,Device.Streams_QuadIB);
-		HW.pDevice->SetRenderState(D3DRS_CULLMODE,D3DCULL_CCW);
+		HW.pDevice->SetTransform	(D3DTS_WORLD, precalc_identity.d3d());
+		HW.pDevice->SetRenderState	(D3DRS_CULLMODE,D3DCULL_NONE);
+		Device.Shader.Set			(sh_Tracer);
+		Device.Primitive.Draw		(VS,vCount,vCount/2,vOffset,Device.Streams_QuadIB);
+		HW.pDevice->SetRenderState	(D3DRS_CULLMODE,D3DCULL_CCW);
 	}
 }
