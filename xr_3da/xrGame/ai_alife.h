@@ -42,7 +42,7 @@ private:
 	ORGANIZATION_ORDER_MAP			m_tpSoldArtefacts;
 
 	// comnmon
-			void					vfUpdateDynamicData			();
+			void					vfUpdateDynamicData			(bool bReserveID = true);
 			void					vfUpdateDynamicData			(CSE_ALifeDynamicObject		*tpALifeDynamicObject);
 			void					vfCreateNewTask				(CSE_ALifeTrader			*tpTrader);
 			void					vfAssignGraphPosition		(CSE_ALifeMonsterAbstract	*tpALifeMonsterAbstract);

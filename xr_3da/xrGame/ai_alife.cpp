@@ -22,6 +22,12 @@ CSE_ALifeSimulator::CSE_ALifeSimulator(xrServer *tpServer)
 CSE_ALifeSimulator::~CSE_ALifeSimulator()
 {
 	shedule_unregister	();
+	OBJECT_PAIR_IT			I = m_tObjectRegistry.begin();
+	OBJECT_PAIR_IT			E = m_tObjectRegistry.end();
+	for ( ; I != E; I++) {
+		CSE_Abstract		*l_tpAbstract = dynamic_cast<CSE_Abstract*>((*I).second);
+		m_tpServer->entity_Destroy(l_tpAbstract);
+	}
 }
 
 float CSE_ALifeSimulator::shedule_Scale()
@@ -49,25 +55,30 @@ void CSE_ALifeSimulator::vfUpdateDynamicData(CSE_ALifeDynamicObject *tpALifeDyna
 	if (l_tpALifeItem && l_tpALifeItem->bfAttached()) {
 		OBJECT_PAIR_IT					II = m_tObjectRegistry.find(l_tpALifeItem->ID_Parent);
 		R_ASSERT2						(II != m_tObjectRegistry.end(),"Parent object doesn't exist!");
+		xr_vector<u16>::iterator		i = (*II).second->children.begin();
+		xr_vector<u16>::iterator		e = (*II).second->children.end();
+		for ( ; i != e; i++)
+			VERIFY(*i != l_tpALifeItem->ID);
 		(*II).second->children.push_back(l_tpALifeItem->ID);
 	}
 }
 
-void CSE_ALifeSimulator::vfUpdateDynamicData()
+void CSE_ALifeSimulator::vfUpdateDynamicData(bool bReserveID)
 {
-	// initialize
-	CSE_ALifeGraphRegistry::Init	();
-	CSE_ALifeTraderRegistry::Init	();
-	CSE_ALifeScheduleRegistry::Init	();
 	// update objects
-	{
+	if (bReserveID) {
+		// initialize
+		CSE_ALifeGraphRegistry::Init	();
+		CSE_ALifeTraderRegistry::Init	();
+		CSE_ALifeScheduleRegistry::Init	();
+
 		OBJECT_PAIR_IT			I = m_tObjectRegistry.begin();
 		OBJECT_PAIR_IT			E = m_tObjectRegistry.end();
 		for ( ; I != E; I++) {
 			vfUpdateDynamicData	((*I).second);
-			_OBJECT_ID			l_tObjectID = (*I).second->ID;
-			(*I).second->ID		= m_tpServer->PerformIDgen(l_tObjectID);
-			R_ASSERT2			(l_tObjectID == (*I).second->ID,"Can't reserve a particular object identifier");
+			_OBJECT_ID		l_tObjectID = (*I).second->ID;
+			(*I).second->ID	= m_tpServer->PerformIDgen(l_tObjectID);
+			R_ASSERT2		(l_tObjectID == (*I).second->ID,"Can't reserve a particular object identifier");
 		}
 	}
 

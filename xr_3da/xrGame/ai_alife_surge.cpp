@@ -28,9 +28,9 @@ void CSE_ALifeSimulator::vfCreateObjectFromSpawnPoint(CSE_ALifeDynamicObject *&i
 	i->m_tSpawnID				= tSpawnID;
 	i->ID						= m_tpServer->PerformIDgen(0xffff);
 	m_tObjectRegistry.insert	(std::make_pair(i->ID,i));
-	//vfUpdateDynamicData			(i);
+	vfUpdateDynamicData			(i);
 	i->m_bALifeControl			= true;
-	m_tpServer->entity_Destroy	(tpSE_Abstract);
+	//m_tpServer->entity_Destroy	(tpSE_Abstract);
 
 	CSE_ALifeMonsterAbstract	*l_tpALifeMonsterAbstract	= dynamic_cast<CSE_ALifeMonsterAbstract*>(i);
 	if (l_tpALifeMonsterAbstract)
@@ -62,8 +62,8 @@ void CSE_ALifeSimulator::vfCreateObjectFromSpawnPoint(CSE_ALifeDynamicObject *&i
 			k->m_bDirectControl			= false;
 			k->m_bALifeControl			= true;
 			m_tObjectRegistry.insert	(std::make_pair(k->ID,k));
-			//vfUpdateDynamicData			(k);
-			m_tpServer->entity_Destroy	(l_tpAbstract);
+			vfUpdateDynamicData			(k);
+			//m_tpServer->entity_Destroy	(l_tpAbstract);
 		}
 	}
 }
@@ -128,12 +128,12 @@ void CSE_ALifeSimulator::vfGenerateAnomalousZones()
 		R_ASSERT2				(l_tpALifeAnomalousZone,"Anomalous zones are grouped with incompatible objects!");
 		CSE_ALifeAnomalousZone	*l_tpSpawnAnomalousZone = dynamic_cast<CSE_ALifeAnomalousZone*>(*j);
 		R_ASSERT2				(l_tpSpawnAnomalousZone,"Anomalous zones are grouped with incompatible objects!");
-		l_tpALifeAnomalousZone->m_maxPower = randF(.5f*l_tpSpawnAnomalousZone->m_maxPower,1.f*l_tpSpawnAnomalousZone->m_maxPower);
+		l_tpALifeAnomalousZone->m_maxPower = randF(50,150);
 
 		// proceed random artefacts generation for the active zone
 		fProbability			= randF(1.f);
 		fSum					= 0;
-		for (u32 ii=0, jj=iFloor(l_tpALifeAnomalousZone->m_maxPower/10); ii<jj; ii++) {
+		for (u32 ii=0, jj=iFloor(l_tpALifeAnomalousZone->m_maxPower/20); ii<jj; ii++) {
 			for (u16 p=0; p<l_tpSpawnAnomalousZone->m_wItemCount; p++) {
 				fSum			+= l_tpSpawnAnomalousZone->m_faWeights[p];
 				if (fSum > fProbability)
@@ -160,8 +160,8 @@ void CSE_ALifeSimulator::vfGenerateAnomalousZones()
 				l_tpALifeItemArtefact->m_fAnomalyValue = l_tpALifeAnomalousZone->m_maxPower*(1.f - i->o_Position.distance_to(l_tpSpawnAnomalousZone->o_Position)/l_tpSpawnAnomalousZone->m_fRadius);
 
 				m_tObjectRegistry.insert(std::make_pair(i->ID,i));
-				//vfUpdateDynamicData(i);
-				m_tpServer->entity_Destroy	(l_tpSE_Abstract);
+				vfUpdateDynamicData(i);
+				//m_tpServer->entity_Destroy	(l_tpSE_Abstract);
 			}
 		}
 		I++;
@@ -285,7 +285,7 @@ void CSE_ALifeSimulator::vfKillCreatures()
 						l_tpALifeCreatureAbstract->m_tNodeID		= l_tpaLevelPoints[l_dwDeathpointIndex].tNodeID;
 						l_tpALifeCreatureAbstract->m_fDistance		= l_tpaLevelPoints[l_dwDeathpointIndex].fDistance;
 
-						//vfUpdateDynamicData							(l_tpALifeCreatureAbstract);
+						vfUpdateDynamicData							(l_tpALifeCreatureAbstract);
 						i--;
 						N--;
 					}
@@ -525,7 +525,7 @@ void CSE_ALifeSimulator::vfSellArtefacts(CSE_ALifeTrader &tTrader)
 						if (!strcmp((*i).first,(*jj).second->s_name)) {
 							CSE_Abstract				*l_tpAbstract = dynamic_cast<CSE_Abstract*>((*jj).second);
 							m_tpServer->entity_Destroy	(l_tpAbstract);
-							xr_delete					((*jj).second);
+							xr_delete					(l_tpAbstract);
 							m_tObjectRegistry.erase		(*ii);
 							tTrader.children.erase		(ii);
 							l_bFoundObject				= true;
@@ -654,16 +654,17 @@ void CSE_ALifeSimulator::vfBuySupplies(CSE_ALifeTrader &tTrader)
 				}
 				tTrader.m_dwMoney			-= l_tpALifeItem->m_dwCost;
 				l_tpALifeItem->ID			= m_tpServer->PerformIDgen(0xffff);
+				l_tpALifeItem->ID_Parent	= tTrader.ID;
 				l_tpALifeItem->m_tSpawnID	= _SPAWN_ID(-1);
 				l_tpALifeItem->m_tGraphID	= tTrader.m_tGraphID;
 				l_tpALifeItem->o_Position	= tTrader.o_Position;
 				l_tpALifeItem->m_tNodeID	= tTrader.m_tNodeID;
 				l_tpALifeItem->m_fDistance	= tTrader.m_fDistance;
-				l_tpALifeItem->ID_Parent	= tTrader.ID;
 				l_tpALifeItem->m_bALifeControl = true;
 				m_tObjectRegistry.insert	(std::make_pair(i->ID,i));
-				//vfUpdateDynamicData			(i);
-				m_tpServer->entity_Destroy	(l_tpSE_Abstract);
+				vfUpdateDynamicData			(i);
+				//CSE_Abstract				*l_tpAbstract = dynamic_cast<CSE_Abstract*>(l_tpALifeItem);
+				//m_tpServer->entity_Destroy	(l_tpAbstract);
 			}
 		}
 	}
@@ -743,5 +744,5 @@ void CSE_ALifeSimulator::vfPerformSurge()
 	vfUpdateTasks					();
 	
 	// updating dynamic data
-	vfUpdateDynamicData			();
+	vfUpdateDynamicData				(false);
 }

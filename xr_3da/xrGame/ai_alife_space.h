@@ -25,7 +25,7 @@
 #define SECTION_HEADER				"location_"
 #define SAVE_EXTENSION				".sav"
 #define SPAWN_NAME					"game.spawn"
-//#define DEBUG_LOG
+#define DEBUG_LOG
 
 class CSE_ALifeEventGroup;
 class CSE_ALifeDynamicObject;

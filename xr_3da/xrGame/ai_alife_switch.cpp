@@ -49,7 +49,7 @@ void CSE_ALifeSimulator::vfCreateObject(CSE_ALifeDynamicObject *tpALifeDynamicOb
 			CSE_Abstract			*l_tpAbstract = dynamic_cast<CSE_Abstract*>(tpItem);
 			m_tpServer->entity_Destroy(l_tpAbstract);
 #ifdef DEBUG_LOG
-			Msg						("ALife : Spawning item %s (ID = %d)",tpItem->s_name_replace,tpItem->ID);
+			Msg						("ALife : Spawning item %s (ID = %d)",tpItem->s_name,tpItem->ID);
 #endif
 			m_tpServer->Process_spawn(tNetPacket,0,FALSE,tpItem);
 			tpItem->o_Position		= tpALifeDynamicObject->o_Position;
@@ -96,6 +96,16 @@ void CSE_ALifeSimulator::vfReleaseObject(CSE_ALifeDynamicObject *tpALifeDynamicO
 void CSE_ALifeSimulator::vfSwitchObjectOnline(CSE_ALifeDynamicObject *tpALifeDynamicObject)
 {
 	VERIFY							(!tpALifeDynamicObject->m_bOnline);
+	tpALifeDynamicObject->m_dwLastSwitchTime = 0;
+	tpALifeDynamicObject->m_bOnline	= true;
+#ifdef DEBUG_LOG
+	Msg								("ALife : Going online [%d] '%s' as #%d, on '%s'",Device.TimerAsync(),tpALifeDynamicObject->s_name_replace, tpALifeDynamicObject->ID, "*SERVER*");
+#endif
+	
+	CSE_ALifeAnomalousZone			*l_tpAnomalousZone = dynamic_cast<CSE_ALifeAnomalousZone*>(tpALifeDynamicObject);
+	if (l_tpAnomalousZone && (l_tpAnomalousZone->m_maxPower < EPS_L))
+		return;
+
 	CSE_ALifeAbstractGroup			*tpALifeAbstractGroup = dynamic_cast<CSE_ALifeAbstractGroup*>(tpALifeDynamicObject);
 	if (tpALifeAbstractGroup) {
 		OBJECT_IT					I = tpALifeAbstractGroup->m_tpMembers.begin(), B = I;
@@ -117,16 +127,21 @@ void CSE_ALifeSimulator::vfSwitchObjectOnline(CSE_ALifeDynamicObject *tpALifeDyn
 	}
 	else
 		vfCreateObject					(tpALifeDynamicObject);
-	tpALifeDynamicObject->m_dwLastSwitchTime = 0;
-	tpALifeDynamicObject->m_bOnline	= true;
-#ifdef DEBUG_LOG
-	Msg								("ALife : Going online [%d] '%s' as #%d, on '%s'",Device.TimerAsync(),tpALifeDynamicObject->s_name_replace, tpALifeDynamicObject->ID, "*SERVER*");
-#endif
 }
 
 void CSE_ALifeSimulator::vfSwitchObjectOffline(CSE_ALifeDynamicObject *tpALifeDynamicObject)
 {
 	VERIFY							(tpALifeDynamicObject->m_bOnline);
+	tpALifeDynamicObject->m_dwLastSwitchTime = 0;
+	tpALifeDynamicObject->m_bOnline	= false;
+#ifdef DEBUG_LOG
+	Msg								("ALife : Going offline [%d] '%s' as #%d, on '%s'",Device.TimerAsync(),tpALifeDynamicObject->s_name_replace, tpALifeDynamicObject->ID, "*SERVER*");
+#endif
+	
+	CSE_ALifeAnomalousZone			*l_tpAnomalousZone = dynamic_cast<CSE_ALifeAnomalousZone*>(tpALifeDynamicObject);
+	if (l_tpAnomalousZone && (l_tpAnomalousZone->m_maxPower < EPS_L))
+		return;
+
 	CSE_ALifeAbstractGroup				*tpALifeAbstractGroup = dynamic_cast<CSE_ALifeAbstractGroup*>(tpALifeDynamicObject);
 	if (tpALifeAbstractGroup) {
 		OBJECT_IT I = tpALifeAbstractGroup->m_tpMembers.begin();
@@ -158,11 +173,6 @@ void CSE_ALifeSimulator::vfSwitchObjectOffline(CSE_ALifeDynamicObject *tpALifeDy
 	}
 	else
 		vfReleaseObject				(tpALifeDynamicObject);
-	tpALifeDynamicObject->m_dwLastSwitchTime = 0;
-	tpALifeDynamicObject->m_bOnline	= false;
-#ifdef DEBUG_LOG
-	Msg								("ALife : Going offline [%d] '%s' as #%d, on '%s'",Device.TimerAsync(),tpALifeDynamicObject->s_name_replace, tpALifeDynamicObject->ID, "*SERVER*");
-#endif
 }
 
 void CSE_ALifeSimulator::ProcessOnlineOfflineSwitches(CSE_ALifeDynamicObject *I)

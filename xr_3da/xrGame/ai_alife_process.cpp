@@ -47,7 +47,7 @@ void CSE_ALifeSimulator::shedule_Update			(u32 dt)
 				if ((CPU::GetCycleCount() - qwStartTime)*(i + 1)/i >= m_qwMaxProcessTime) {
 					m_tNextFirstSwitchObjectID = (++I == E) ? (*B).second->ID : (*I).second->ID;
 #ifdef DEBUG_LOG
-					Msg("Not enough time (0)[%d : %d] !",E - B, I - M);
+//					Msg("Not enough time (0)[%d : %d] !",E - B, I - M);
 #endif
 					return;
 				}
@@ -57,7 +57,7 @@ void CSE_ALifeSimulator::shedule_Update			(u32 dt)
 				if ((CPU::GetCycleCount() - qwStartTime)*(i + 1)/i >= m_qwMaxProcessTime) {
 					m_tNextFirstSwitchObjectID = (++I == E) ? (*B).second->ID : (*I).second->ID;
 #ifdef DEBUG_LOG
-					Msg("Not enough time (1)[%d : %d] !",E - B, E - M + I - B);
+//					Msg("Not enough time (1)[%d : %d] !",E - B, E - M + I - B);
 #endif
 					return;
 				}
@@ -65,7 +65,7 @@ void CSE_ALifeSimulator::shedule_Update			(u32 dt)
 			
 			if (CPU::GetCycleCount() - qwStartTime >= m_qwMaxProcessTime) {
 #ifdef DEBUG_LOG
-				Msg("Not enough time (2)[%d : %d] !",E - B,E - B);
+//				Msg("Not enough time (2)[%d : %d] !",E - B,E - B);
 #endif
 				return;
 			}
