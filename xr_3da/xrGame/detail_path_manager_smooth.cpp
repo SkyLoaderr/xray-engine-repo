@@ -691,6 +691,15 @@ void CDetailPathManager::build_path_via_key_points(
 			ai().level_graph().v2d(m_path[m_path.size() - 2].position)
 		);
 
+		if (fis_zero(s.direction.magnitude())) {
+			m_path.pop_back				();
+			VERIFY						(m_path.size() > 1);
+			s.direction.sub					(
+				ai().level_graph().v2d(m_path[m_path.size() - 1].position),
+				ai().level_graph().v2d(m_path[m_path.size() - 2].position)
+			);
+		}
+
 		VERIFY							(!fis_zero(s.direction.magnitude()));
 		s.direction.normalize			();
 		m_path.pop_back					();
@@ -714,6 +723,27 @@ void CDetailPathManager::build_path_via_key_points(
 	m_failed							= false;
 }
 
+struct CRemoveSimilarPointsPredicate {
+	IC	bool	operator()	(const CDetailPathManager::STravelPoint &point) const
+	{
+		return				(!point.valid);
+	}
+};
+
+void CDetailPathManager::remove_similar_key_points()
+{
+	xr_vector<STravelPoint>::iterator	I = m_key_points.begin(), B = I;
+	xr_vector<STravelPoint>::iterator	E = m_key_points.end();
+	for ( ; I != E; ++I) {
+		(*I).valid		= 1;
+		if (B == I)
+			continue;
+		(*I).valid		= (*(I - 1)).position.similar((*I).position);
+	}
+	I					= remove_if(m_key_points.begin(),m_key_points.end(),CRemoveSimilarPointsPredicate());
+	m_key_points.erase	(I,m_key_points.end());
+}
+
 void CDetailPathManager::postprocess_key_points(
 	const xr_vector<u32>	&level_path,
 	u32						intermediate_index,
@@ -724,11 +754,7 @@ void CDetailPathManager::postprocess_key_points(
 	u32						straight_line_index_negative
 )
 {
-	if (m_key_points.size() < 3)
-		return;
-
-	if (m_key_points[m_key_points.size() - 2].position.similar(m_key_points[m_key_points.size() - 1].position,EPS_S))
-		m_key_points.pop_back();
+	remove_similar_key_points();
 
 	for (int i=1, n=(int)m_key_points.size() - 1; i < n; ++i) {
 		STravelPoint		key_point0 = compute_better_key_point(m_key_points[i-1],m_key_points[i],m_key_points[i+1],false);
@@ -761,8 +787,9 @@ void CDetailPathManager::postprocess_key_points(
 			m_key_points[i]	= key_point0;
 		else
 			m_key_points[i]	= key_point1;
-		VERIFY				(!m_key_points[i].position.similar(m_key_points[i-1].position,EPS_S));
 	}
+
+	remove_similar_key_points();
 }
 
 void CDetailPathManager::add_patrol_point()

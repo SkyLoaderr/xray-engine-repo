@@ -68,7 +68,7 @@ void CEntity::OnEvent		(NET_Packet& P, u16 type)
 void CEntity::Die(CObject* who)
 {
 	set_ready_to_save	();
-	fEntityHealth = -1.f;
+	fEntityHealth		= -1.f;
 	Level().seniority_holder().team(g_Team()).squad(g_Squad()).group(g_Group()).unregister_member(this);
 }
 

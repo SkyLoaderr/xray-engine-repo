@@ -34,7 +34,8 @@ public:
 
 	struct STravelPoint {
 		Fvector2		position;
-		u32				vertex_id;
+		u32				vertex_id : 31;
+		u32				valid : 1;
 	};
 
 	struct SPathPoint : public STravelParams, public STravelPoint {
@@ -129,6 +130,7 @@ private:
 			bool	init_build					(const xr_vector<u32>	&level_path,	  u32							intermediate_index,	  STrajectoryPoint				&start,					  STrajectoryPoint				&dest,					  u32							&straight_line_index,			  u32				&straight_line_index_negative);
 			bool	fill_key_points				(const xr_vector<u32>	&level_path,	  u32							intermediate_index,   STrajectoryPoint				&start,					  STrajectoryPoint				&dest);
 			void	add_patrol_point			();
+			void	remove_similar_key_points	();
 			void	postprocess_key_points		(const xr_vector<u32>	&level_path,	  u32							intermediate_index,   STrajectoryPoint				&start,					  STrajectoryPoint				&dest,xr_vector<STravelParamsIndex> &finish_params,		const u32							straight_line_index,const u32							straight_line_index_negative);
 			void	build_path_via_key_points	(STrajectoryPoint		&start,			  STrajectoryPoint				&dest,				  xr_vector<STravelParamsIndex> &finish_params,		const u32							straight_line_index,const u32							straight_line_index_negative);
 			void	build_smooth_path			(const xr_vector<u32>	&level_path,	  u32							intermediate_index);
