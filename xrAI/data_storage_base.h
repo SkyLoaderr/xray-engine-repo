@@ -150,6 +150,7 @@ public:
 						inherited(node_count)
 	{
 		cur_path_id				= _path_id_type(0);
+		max_node_count			= node_count;
 
 		u32						memory_usage = 0;
 		u32						byte_count;

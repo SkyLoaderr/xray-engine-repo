@@ -168,8 +168,8 @@ public:
 		// initialize data structures with new search
 		init					(data_storage, path_manager);
 		// iterate while opened list is not empty
-//		for (_iteration_type i = _iteration_type(0); !data_storage.is_opened_empty(); ++i) {
-		for (;;) {
+		for (_iteration_type i = _iteration_type(0); !data_storage.is_opened_empty(); ++i) {
+//		for (;;) {
 			// check if we reached limit
 //			if (path_manager.is_limit_reached(i)) {
 				// so we reaches limit, return failure

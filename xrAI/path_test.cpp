@@ -10,17 +10,17 @@
 #include "path_test.h"
 #include "ai_map.h"
 #include "a_star.h"
-#include "data_storage_heap.h"
-//#include "data_storage_list.h"
+//#include "data_storage_heap.h"
+#include "data_storage_list.h"
 #include "path_manager.h"
 #include "path_test_old.h"
 
-typedef CDataStorageBinaryHeap<float,u32,u32,true,24,8>					CDataStorage;
-//typedef CDataStorageDLSL<float,u32,u32,true,24,8>						CDataStorage;
+//typedef CDataStorageBinaryHeap<float,u32,u32,true,24,8>				CDataStorage;
+typedef CDataStorageSL<float,u32,u32,true,24,8>						CDataStorage;
 typedef CPathManager<CAI_Map,CDataStorage,float,u32,u32>				CDistancePathManager;
 typedef CAStar<CDataStorage,CDistancePathManager,CAI_Map,u32,float>		CAStarSearch;
 
-#define TIME_TEST
+//#define TIME_TEST
 
 void path_test(LPCSTR caLevelName)
 {
