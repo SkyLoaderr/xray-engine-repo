@@ -131,9 +131,16 @@ public:
 			void	Ruck				(bool on_ruck) {m_ruck = on_ruck;}
 			bool	RuckDefault			() {return m_bRuckDefault;}
 			
-	
+	virtual bool	CanTake				() const {return m_bCanTake;}
+	virtual bool	CanTrade			() const {return m_bCanTrade;}
 			
 protected:
+
+	//вещь можно подобрать
+	bool			m_bCanTake;
+	//вещью можно торговать
+	bool			m_bCanTrade;
+
 	// Слот в который можно установить объект (NO_ACTIVE_SLOT если нельзя)
 	u32				m_slot;
 	// Может ли объект быть на поясе или в рюкзаке

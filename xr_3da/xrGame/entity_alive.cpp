@@ -252,7 +252,7 @@ void CEntityAlive::HitImpulse	(float /**amount/**/, Fvector& /**vWorldDir/**/, F
 void CEntityAlive::Hit(float P, Fvector &dir,CObject* who, s16 element,Fvector position_in_object_space, float impulse, ALife::EHitType hit_type)
 {
 	CEntityAlive* EA = smart_cast<CEntityAlive*>(who);
-	if(EA && EA->g_Alive())
+	if(EA && EA->g_Alive() && EA->ID() != ID())
 	{
 		RELATION_REGISTRY().FightRegister(EA->ID(), ID(), this->tfGetRelationType(EA), P);
 		RELATION_REGISTRY().Action(EA, this, RELATION_REGISTRY::ATTACK);

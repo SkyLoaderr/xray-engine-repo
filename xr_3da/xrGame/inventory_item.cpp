@@ -30,6 +30,9 @@ CInventoryItem::CInventoryItem()
 	m_ruck = true;
 	m_bRuckDefault = false;
 
+	m_bCanTake = true;
+	m_bCanTrade = true;
+
 	m_fCondition = 1.0f;
 	m_bUsingCondition = false;
 
@@ -99,6 +102,16 @@ void CInventoryItem::Load(LPCSTR section)
 	if(pSettings->line_exist(section, "belt"))
 		m_belt = !!pSettings->r_bool(section, "belt");
 
+
+	if(pSettings->line_exist(section, "can_take"))
+		m_bCanTake = !!pSettings->r_bool(section, "can_take");
+	else
+		m_bCanTake = true;
+
+	if(pSettings->line_exist(section, "can_trade"))
+		m_bCanTrade = !!pSettings->r_bool(section, "can_trade");
+	else
+		m_bCanTrade = true;
 }
 
 void  CInventoryItem::ChangeCondition(float fDeltaCondition)
@@ -169,7 +182,7 @@ LPCSTR CInventoryItem::NameComplex()
 bool CInventoryItem::Useful() const
 {
 	// Если IItem нельзя использовать, вернуть false
-	return true;
+	return CanTake();
 }
 
 bool CInventoryItem::Activate() 

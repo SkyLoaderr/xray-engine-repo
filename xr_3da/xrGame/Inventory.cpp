@@ -948,6 +948,7 @@ bool CInventory::CanTakeItem(CInventoryItem *inventory_item) const
 	VERIFY			(m_pOwner);
 	VERIFY			(inventory_item->H_Parent() == NULL);
 
+	if(!inventory_item->CanTake()) return false;
 
 	for(TIItemSet::const_iterator it = m_all.begin(); it != m_all.end(); it++)
 		if((*it)->ID() == inventory_item->ID()) break;
@@ -992,24 +993,41 @@ u32  CInventory::BeltWidth() const
 	return m_iMaxBelt;
 }
 
-void  CInventory::AddAvailableItems(TIItemList& items_container) const
+void  CInventory::AddAvailableItems(TIItemList& items_container, bool for_trade) const
 {
-	items_container.insert(items_container.end(), m_ruck.begin(), m_ruck.end());
-	
+	for(TIItemList::const_iterator it = m_ruck.begin(); m_ruck.end() != it; ++it) 
+	{
+		PIItem pIItem = *it;
+		if(!for_trade || pIItem->CanTrade())
+			items_container.push_back(pIItem);
+	}
+
 	if(m_bBeltUseful)
-		items_container.insert(items_container.end(), m_belt.begin(), m_belt.end());
+	{
+		for(TIItemList::const_iterator it = m_belt.begin(); m_belt.end() != it; ++it) 
+		{
+			PIItem pIItem = *it;
+			if(!for_trade || pIItem->CanTrade())
+				items_container.push_back(pIItem);
+		}
+	}
 	
 	if(m_bSlotsUseful)
 	{
 		if(m_slots[KNIFE_SLOT].m_pIItem)
-			items_container.push_back(m_slots[KNIFE_SLOT].m_pIItem);
+			if(!for_trade || m_slots[KNIFE_SLOT].m_pIItem->CanTrade())
+				items_container.push_back(m_slots[KNIFE_SLOT].m_pIItem);
 		if(m_slots[RIFLE_SLOT].m_pIItem)
-			items_container.push_back(m_slots[RIFLE_SLOT].m_pIItem);
+			if(!for_trade || m_slots[RIFLE_SLOT].m_pIItem->CanTrade())
+				items_container.push_back(m_slots[RIFLE_SLOT].m_pIItem);
 		if(m_slots[GRENADE_SLOT].m_pIItem)
-			items_container.push_back(m_slots[GRENADE_SLOT].m_pIItem);
+			if(!for_trade || m_slots[GRENADE_SLOT].m_pIItem->CanTrade())
+				items_container.push_back(m_slots[GRENADE_SLOT].m_pIItem);
 		if(m_slots[APPARATUS_SLOT].m_pIItem)
-			items_container.push_back(m_slots[APPARATUS_SLOT].m_pIItem);
+			if(!for_trade || m_slots[APPARATUS_SLOT].m_pIItem->CanTrade())
+				items_container.push_back(m_slots[APPARATUS_SLOT].m_pIItem);
 		if(m_slots[OUTFIT_SLOT].m_pIItem)
-			items_container.push_back(m_slots[OUTFIT_SLOT].m_pIItem);
+			if(!for_trade || m_slots[OUTFIT_SLOT].m_pIItem->CanTrade())
+				items_container.push_back(m_slots[OUTFIT_SLOT].m_pIItem);
 	}		
 }

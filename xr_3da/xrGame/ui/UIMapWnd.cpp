@@ -226,10 +226,14 @@ void CUIMapWnd::InitLocalMapObjectives()
 		Level().MapLocations().end() != it; 
 		it++)
 	{
+		SMapLocation& map_location = *(*it);
+		if(map_location.type_flags.test(eMapLocationPDAContact))	
+			continue;
+
+		
 		CUIMapSpot * map_spot;
 		map_spot = xr_new<CUIMapSpot>();
-		SMapLocation& map_location = *(*it);
-
+		
 		if(map_location.attached_to_object)
 		{
 			map_spot->SetObjectID(map_location.object_id);
@@ -466,8 +470,18 @@ void CUIMapWnd::SendMessage(CUIWindow* pWnd, s16 msg, void* pData)
 				UIStaticInfo.Show(true);
 				RECT r	= m_pCurrentMap->m_pActiveMapSpot->GetAbsoluteRect();
 				RECT r2	= UIStaticInfo.GetParent()->GetAbsoluteRect();
-				UIStaticInfo.MoveWindow(r.left - r2.left, r.bottom + 2 - r2.bottom);
 				
+				int left = r.right - r2.left;
+				int top = r.top + 2 - r2.top;
+/*				if(left + UIStaticInfo.GetWidth() > m_pCurrentMap->GetWidth())
+					left = r.left - r2.left - UIStaticInfo.GetWidth() - 2;
+				if(top<0)
+					top = r.bottom + 2 - r2.top;
+				else if(top + UIStaticInfo.GetHeight() >  m_pCurrentMap->GetHeight())
+					top = top - (top + UIStaticInfo.GetHeight() -  m_pCurrentMap->GetHeight()) -2;
+*/			
+				UIStaticInfo.MoveWindow(left, top);
+			
 				//CInventoryOwner* pInvOwner = smart_cast<CInventoryOwner*>(m_pCurrentMap->m_pActiveMapSpot->m_pObject);
 
 				if(xr_strlen(m_pCurrentMap->m_pActiveMapSpot->m_sDescText.GetBuf())>1)

@@ -128,7 +128,7 @@ public:
 	TISlotArr		m_slots;
 
 	//возвращает все кроме PDA в слоте и болта
-	void AddAvailableItems(TIItemList& items_container) const;
+	void AddAvailableItems(TIItemList& items_container, bool for_trade = false) const;
 
 	float GetTakeDist() const			{return m_fTakeDist;}
 	
