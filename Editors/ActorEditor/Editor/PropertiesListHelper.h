@@ -65,6 +65,10 @@ public:
         V->x = deg2rad(V->x);
         V->y = deg2rad(V->y);
         V->z = deg2rad(V->z);
+        VectorValue* P = dynamic_cast<VectorValue*>(sender); R_ASSERT(P);
+        P->lim_mn.x = deg2rad(P->lim_mn.x);  P->lim_mx.x = deg2rad(P->lim_mx.x);
+        P->lim_mn.y = deg2rad(P->lim_mn.y);  P->lim_mx.y = deg2rad(P->lim_mx.y);
+        P->lim_mn.z = deg2rad(P->lim_mn.z);  P->lim_mx.z = deg2rad(P->lim_mx.z);
     }
 
     IC void __fastcall 	FvectorRDOnBeforeEdit(PropValue* sender, LPVOID edit_val)
@@ -73,6 +77,10 @@ public:
         V->x = rad2deg(V->x);
         V->y = rad2deg(V->y);
         V->z = rad2deg(V->z);
+        VectorValue* P = dynamic_cast<VectorValue*>(sender); R_ASSERT(P);
+        P->lim_mn.x = rad2deg(P->lim_mn.x);  P->lim_mx.x = rad2deg(P->lim_mx.x);
+        P->lim_mn.y = rad2deg(P->lim_mn.y);  P->lim_mx.y = rad2deg(P->lim_mx.y);
+        P->lim_mn.z = rad2deg(P->lim_mn.z);  P->lim_mx.z = rad2deg(P->lim_mx.z);
     }
 
     IC void __fastcall 	FvectorRDOnDraw(PropValue* sender, LPVOID draw_val)
@@ -85,11 +93,15 @@ public:
     IC void __fastcall 	floatRDOnAfterEdit(PropValue* sender, LPVOID edit_val)
     {
         *(float*)edit_val = deg2rad(*(float*)edit_val);
+        FloatValue* P 	= dynamic_cast<FloatValue*>(sender); R_ASSERT(P);
+        P->lim_mn = deg2rad(P->lim_mn); P->lim_mx = deg2rad(P->lim_mx);
     }
 
     IC void __fastcall 	floatRDOnBeforeEdit(PropValue* sender, LPVOID edit_val)
     {
         *(float*)edit_val = rad2deg(*(float*)edit_val);
+        FloatValue* P 	= dynamic_cast<FloatValue*>(sender); R_ASSERT(P);
+        P->lim_mn = rad2deg(P->lim_mn); P->lim_mx = rad2deg(P->lim_mx);
     }
 
     IC void __fastcall 	floatRDOnDraw(PropValue* sender, LPVOID draw_val)

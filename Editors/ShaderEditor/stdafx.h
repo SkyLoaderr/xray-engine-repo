@@ -45,6 +45,7 @@ __inline long _lseek(int handle, long offset, int fromwhere){ return ::lseek(han
 #ifdef _dup
 #undef _dup
 #endif
+#define fmodf fmod
 __inline int _dup    (int handle)                           { return ::dup(handle);}
 __inline float modff(float a, float *b){
 	double x,y;
@@ -190,13 +191,6 @@ struct astr_pred : public binary_function<AnsiString&, AnsiString&, bool>
 #define _server_root_		"$server_root$"
 #define _server_data_root_	"$server_data_root$"
 #define _local_root_		"$local_root$"
-
-#define _game_data_			"$game_data$"
-#define _game_textures_		"$game_textures$"
-#define _game_levels_		"$game_levels$"
-#define _game_sounds_		"$game_sounds$"
-#define _game_meshes_		"$game_meshes$"
-#define _game_shaders_		"$game_shaders$"
 
 #define _import_			"$import$"
 #define _textures_			"$textures$"

@@ -13,7 +13,9 @@
 #include "bottombar.h"
 #include "scene.h"
 #include "xrServer_Entities.h"
+
 #include "eshape.h"
+#include "sceneobject.h"
 
 #define SPAWNPOINT_VERSION   			0x0014
 //----------------------------------------------------
@@ -103,7 +105,7 @@ bool CSpawnPoint::SSpawnData::ExportGame(SExportStreams& F, CSpawnPoint* owner)
     // export cform (if needed)
     xrSE_CFormed* cform 		= dynamic_cast<xrSE_CFormed*>(m_Data);
 //   	if (cform) cform->shapes.push_back		(xrSE_CFormed::shape_def());
-
+// SHAPE
     if (cform&&!(owner->m_AttachedObject&&(owner->m_AttachedObject->ClassID==OBJCLASS_SHAPE))){
 		ELog.DlgMsg				(mtError,"Spawn Point: '%s' must contain attached shape.",owner->Name);
     	return false;
@@ -112,6 +114,16 @@ bool CSpawnPoint::SSpawnData::ExportGame(SExportStreams& F, CSpawnPoint* owner)
 	    CEditShape* shape		= dynamic_cast<CEditShape*>(owner->m_AttachedObject); R_ASSERT(shape);
 		shape->ApplyScale		();
     	cform->shapes 			= shape->GetShapes();
+    }
+// VISUAL    
+    xrSE_Visualed* visual		= dynamic_cast<xrSE_Visualed*>(m_Data);
+    if (visual&&!(owner->m_AttachedObject&&(owner->m_AttachedObject->ClassID==OBJCLASS_SCENEOBJECT))){
+		ELog.DlgMsg				(mtError,"Spawn Point: '%s' must contain attached SceneObject.",owner->Name);
+    	return false;
+    }
+    if (visual){
+	    CSceneObject* scene_obj	= dynamic_cast<CSceneObject*>(owner->m_AttachedObject); R_ASSERT(scene_obj);
+    	strcpy(visual->visual_name,scene_obj->GetRefName());
     }
     // end
 
@@ -189,9 +201,12 @@ bool CSpawnPoint::AttachObject(CCustomObject* obj)
 	bool bAllowed = false;
     // большая проверялка
     if (m_SpawnData.Valid()){
-    	switch(obj->ClassID){
+    	switch(obj->ClassID){    
         case OBJCLASS_SHAPE:
 	    	bAllowed = !!dynamic_cast<xrSE_CFormed*>(m_SpawnData.m_Data);
+        break;
+        case OBJCLASS_SCENEOBJECT:
+	    	bAllowed = !!dynamic_cast<xrSE_Visualed*>(m_SpawnData.m_Data);
         break;
         }
     }
@@ -288,6 +303,7 @@ void CSpawnPoint::Render( int priority, bool strictB2F )
                     Device.pSystemFont->Out		(cx,cy,s_name.c_str());
                 }
                 if( Selected() ){
+	                RCache.set_xform_world(Fidentity);
                     Fbox bb; GetBox(bb);
                     u32 clr = Locked()?0xFFFF0000:0xFFFFFFFF;
                     Device.SetShader(Device.m_WireShader);

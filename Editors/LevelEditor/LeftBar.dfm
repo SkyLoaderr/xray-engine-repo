@@ -2,7 +2,7 @@ object fraLeftBar: TfraLeftBar
   Left = 0
   Top = 0
   Width = 443
-  Height = 713
+  Height = 674
   HorzScrollBar.Visible = False
   VertScrollBar.Increment = 34
   VertScrollBar.Size = 13
@@ -894,7 +894,7 @@ object fraLeftBar: TfraLeftBar
         BtnColor = 10528425
         CloseButton = False
         GroupIndex = 1
-        Caption = '7. Spawn Point'
+        Caption = '7. Spawn Element'
         Font.Charset = DEFAULT_CHARSET
         Font.Color = clWindowText
         Font.Height = -11
