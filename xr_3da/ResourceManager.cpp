@@ -100,7 +100,7 @@ void	CResourceManager::_ParseList(sh_list& dest, LPCSTR names)
 	}
 }
 
-ShaderElement* CResourceManager::_CreateElement(	CBlender_Compile& C)
+ShaderElement* CResourceManager::_CreateElement			(ShaderElement& S)
 {
 	// Search equal in shaders array
 	for (u32 it=0; it<v_elements.size(); it++)
@@ -143,45 +143,45 @@ Shader*	CResourceManager::_cpp_Create	(IBlender* B, LPCSTR s_shader, LPCSTR s_te
 	{
 		C.iElement			= 0;
 		C.bDetail			= TRUE;
-		ShaderElement		S;
-		C._cpp_Compile		(&S);
-		S.E[0]				= _CreateElement	(S);
+		ShaderElement		E;
+		C._cpp_Compile		(&E);
+		S.E[0]				= _CreateElement	(E);
 	}
 
 	// Compile element	(LOD1)
 	{
 		C.iElement			= 1;
 		C.bDetail			= FALSE;
-		ShaderElement		S;
-		C._cpp_Compile		(&S);
-		S.E[1]				= _CreateElement	(S);
+		ShaderElement		E;
+		C._cpp_Compile		(&E);
+		S.E[1]				= _CreateElement	(E);
 	}
 
 	// Compile element
 	{
 		C.iElement			= 2;
 		C.bDetail			= FALSE;
-		ShaderElement		S;
-		C._cpp_Compile		(&S);
-		S.E[2]				= _CreateElement	(S);
+		ShaderElement		E;
+		C._cpp_Compile		(&E);
+		S.E[2]				= _CreateElement	(E);
 	}
 
 	// Compile element
 	{
 		C.iElement			= 3;
 		C.bDetail			= FALSE;
-		ShaderElement		S;
-		C._cpp_Compile		(&S);
-		S.E[3]				= _CreateElement	(C);
+		ShaderElement		E;
+		C._cpp_Compile		(&E);
+		S.E[3]				= _CreateElement	(E);
 	}
 
 	// Compile element
 	{
 		C.iElement			= 4;
 		C.bDetail			= FALSE;
-		ShaderElement		S;
-		C._cpp_Compile		(&S);
-		S.E[4]				= _CreateElement	(C);
+		ShaderElement		E;
+		C._cpp_Compile		(&E);
+		S.E[4]				= _CreateElement	(E);
 	}
 
 	// Search equal in shaders array
