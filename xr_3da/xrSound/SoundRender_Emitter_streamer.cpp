@@ -31,6 +31,7 @@ void	CSoundRender_Emitter::fill_data		(u8* dest, u32 offset, u32 size)
 		line		++	;
 		size		-=	blk_size;
 		dest		+=	blk_size;
+		offset		+=	blk_size;
 		line_offs	=	0;
 		line_amount	=	line_size;
 	}
