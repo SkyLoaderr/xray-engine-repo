@@ -88,6 +88,8 @@ class CMyD3DApplication : public CD3DApplication
 	LPDIRECT3DVERTEXBUFFER9			m_pFloorVB;
 	LPDIRECT3DVERTEXBUFFER9			m_pQuadVB;
 	LPDIRECT3DVERTEXBUFFER9			m_pOverlayVB;
+	LPDIRECT3DVERTEXBUFFER9			m_pBloom_Combine_VB;
+	LPDIRECT3DVERTEXBUFFER9			m_pBloom_Filter_VB;
 
 	LPDIRECT3DVERTEXDECLARATION9	m_pDeclVert;
 	LPDIRECT3DVERTEXDECLARATION9	m_pDeclVert2D;
@@ -527,28 +529,58 @@ HRESULT CMyD3DApplication::InitDeviceObjects()
 	pDstT[3].tv = 0.0f;
 	m_pOverlayVB->Unlock();
 
-	// Full-screen-quad VB
+	// Bloom-combine VB
 	{
 		const float	 w	= float(m_d3dsdBackBuffer.Width),	h = float(m_d3dsdBackBuffer.Height);
-		const float _w	= w-.95f, _h = h-.95f;
+		const float  eps= 0.01f;
+		const float _w	= w-1.f, _h = h-1.f;
 		const float thw = .5f/w;
 		const float thh = .5f/h;
 
 		m_pd3dDevice->CreateVertexBuffer	(4 * sizeof(TVERTEX), D3DUSAGE_WRITEONLY, 0, D3DPOOL_MANAGED, &m_pQuadVB, NULL);
 		m_pQuadVB->Lock						(0, 0, (void**)&pDstT, 0);
-		pDstT[0].p	= D3DXVECTOR4(0, _h,	0.001f, 1.0f);
+		pDstT[0].p	= D3DXVECTOR4(0+eps, _h+eps,	0.001f, 1.0f);
 		pDstT[0].tu = 0.0f+thw;
 		pDstT[0].tv = 1.0f+thh;
 
-		pDstT[1].p	= D3DXVECTOR4(_w, _h,	0.001f, 1.0f);
+		pDstT[1].p	= D3DXVECTOR4(_w+eps, _h+eps,	0.001f, 1.0f);
 		pDstT[1].tu = 1.0f+thw;
 		pDstT[1].tv = 1.0f+thh;
 
-		pDstT[2].p	= D3DXVECTOR4(0, 0,		0.001f, 1.0f);
+		pDstT[2].p	= D3DXVECTOR4(0+eps, 0+eps,		0.001f, 1.0f);
 		pDstT[2].tu = 0.0f+thw;
 		pDstT[2].tv = 0.0f+thh;
 
-		pDstT[3].p	= D3DXVECTOR4(_w, 0,	0.001f, 1.0f);
+		pDstT[3].p	= D3DXVECTOR4(_w+eps, 0+eps,	0.001f, 1.0f);
+		pDstT[3].tu = 1.0f+thw;
+		pDstT[3].tv = 0.0f+thh;
+
+		m_pQuadVB->Unlock					();
+	}
+
+	// Full-screen-quad VB
+	{
+		const float	 w	= float(m_d3dsdBackBuffer.Width),	h = float(m_d3dsdBackBuffer.Height);
+		const float  eps= 0.01f;
+		const float _w	= w-1.f, _h = h-1.f;
+		const float thw = .5f/w;
+		const float thh = .5f/h;
+
+		m_pd3dDevice->CreateVertexBuffer	(4 * sizeof(TVERTEX), D3DUSAGE_WRITEONLY, 0, D3DPOOL_MANAGED, &m_pQuadVB, NULL);
+		m_pQuadVB->Lock						(0, 0, (void**)&pDstT, 0);
+		pDstT[0].p	= D3DXVECTOR4(0+eps, _h+eps,	0.001f, 1.0f);
+		pDstT[0].tu = 0.0f+thw;
+		pDstT[0].tv = 1.0f+thh;
+
+		pDstT[1].p	= D3DXVECTOR4(_w+eps, _h+eps,	0.001f, 1.0f);
+		pDstT[1].tu = 1.0f+thw;
+		pDstT[1].tv = 1.0f+thh;
+
+		pDstT[2].p	= D3DXVECTOR4(0+eps, 0+eps,		0.001f, 1.0f);
+		pDstT[2].tu = 0.0f+thw;
+		pDstT[2].tv = 0.0f+thh;
+
+		pDstT[3].p	= D3DXVECTOR4(_w+eps, 0+eps,	0.001f, 1.0f);
 		pDstT[3].tu = 1.0f+thw;
 		pDstT[3].tv = 0.0f+thh;
 
