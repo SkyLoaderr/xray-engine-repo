@@ -22,6 +22,7 @@ function mob_remark:reset_scheme()
 
 	if not self.st.no_reset then
 		printf("_bp: mob_remark:reset_scheme: %s: reset_action()", self.object:name())
+		--printf("__bp: action reset: %d", device():time_global())
 		reset_action(self.object, script_name())
 	else
 		if not self.object:get_script() then
@@ -69,9 +70,11 @@ function mob_remark:reset_scheme()
 				cnd = cond(cond.time_end, tm)
 			end
 			if self.st.anim_head then
+				--printf("__bp: action set: %d", device():time_global())
 				action(self.object, anim(an), sound(snd, "bip01_head",
 					MonsterSpace[self.st.anim_head]), cnd)
 			else
+				--printf("__bp: action set: %d", device():time_global())
 				action(self.object, anim(an), sound(snd, "bip01_head"), cnd)
 			end
 		elseif an then
@@ -80,6 +83,7 @@ function mob_remark:reset_scheme()
 			else
 				cnd = cond(cond.time_end, tm)
 			end
+			--printf("__bp: action set: %d", device():time_global())
 			action(self.object, anim(an), cnd)
 		--else
 		--	if npc:get_script() then
@@ -91,7 +95,8 @@ function mob_remark:reset_scheme()
 	if self.st.tip then
 		local actor = level.actor()
 		if actor then
-			actor:give_game_news(self.st.tip, "ui_icons_npc", 50, 0, 50, 50)
+			--actor:give_game_news(self.st.tip, "ui_icons_npc", 50, 0, 50, 50)
+			news_manager.send_news(actor, self.st.tip)
 		end
 	end
 	
@@ -101,6 +106,7 @@ function mob_remark:reset_scheme()
 end
 
 function mob_remark:update(delta)
+	--printf("__bp: mob_remark update: %d", device():time_global())
 	if not xr_logic.is_active(self.object, self.st) then
 		return
 	end
@@ -109,6 +115,7 @@ function mob_remark:update(delta)
 	
 	if self.object:get_script() and not self.object:action() then
 		self.object:script(false, script_name())
+		--printf("__bp: free from script: %d", device():time_global())
 
 		if not self.action_end_signalled then
 			self.action_end_signalled = true
