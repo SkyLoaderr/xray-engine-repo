@@ -140,6 +140,7 @@ void CAI_Space::Render()
 		if (bfCheckIfGraphLoaded()) {
 			if (!Level().CurrentEntity())
 				return;
+
 			Fvector tCameraPosition = Level().CurrentEntity()->Position();
 			CGameFont* F		= HUD().pFontDI;
 			for (int i=0; i<(int)GraphHeader().dwVertexCount; i++) {
@@ -187,6 +188,19 @@ void CAI_Space::Render()
 			if (Level().game.type == GAME_SINGLE) {
 				game_sv_Single *tpGame = dynamic_cast<game_sv_Single *>(Level().Server->game);
 				if ((tpGame) && (tpGame->m_tpALife)) {
+					{
+						ALife::D_OBJECT_P_MAP_PAIR_IT I = tpGame->m_tpALife->m_tLevelMap.find(m_tpaGraph[tpGame->m_tpALife->m_tpActor->m_tGraphID].tLevelID);
+						R_ASSERT2(I != tpGame->m_tpALife->m_tLevelMap.end(),"Can't find corresponding to actor level!");
+						_LEVEL_ID	J = (*I).first;
+						for (int i=0, n=(int)m_tGraphHeader.dwVertexCount; i<n; i++) {
+							if (m_tpaGraph[i].tLevelID != J)
+								continue;
+							Fvector t1 = m_tpaGraph[i].tLocalPoint;
+							t1.y += .6f;
+							RCache.dbg_DrawAABB(t1,.05f,.05f,.05f,D3DCOLOR_XRGB(255,255,255));
+						}
+					}
+
 					D_OBJECT_PAIR_IT	I = tpGame->m_tpALife->m_tObjectRegistry.begin();
 					D_OBJECT_PAIR_IT	E = tpGame->m_tpALife->m_tObjectRegistry.end();
 					for ( ; I != E; I++) {

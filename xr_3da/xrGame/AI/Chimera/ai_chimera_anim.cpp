@@ -94,6 +94,8 @@ void CAI_Chimera::MotionToAnim(EMotionAnim motion, int &index1, int &index2, int
 		case eMotionEat:			index1 = 2; index2 = 12; index3 = -1;	break;
 		case eMotionStandDamaged:	index1 = 0; index2 = 0;  index3 = -1;	break;
 		case eMotionScared:			index1 = 0; index2 = 0;  index3 = -1;	break;
+//		case eMotionDie:			index1 = 0; index2 = 15; index3 = -1;	break;
+#pragma todo("Dima to Jim : Where is death animation for chimera?")
 		case eMotionDie:			index1 = 0; index2 = 0;  index3 = -1;	break;
 		case eMotionLieDown:		index1 = 0; index2 = 16; index3 = -1;	break;
 		case eMotionStandUp:		index1 = 2; index2 = 17; index3 = -1;	break;
