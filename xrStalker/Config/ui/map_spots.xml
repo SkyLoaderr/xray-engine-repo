@@ -1,3 +1,10 @@
 <?xml version="1.0" encoding="windows-1251" ?>
 <map_spots>
+	<actor_spot>
+		<level_map x="10" y="10" width="30" height="30" stretch="1">
+			<texture x="223" y="35" width="30" height="30"> ui\ui_icons_map</texture>
+		</level_map>
+		
+	</actor_spot>
+	
 </map_spots>
