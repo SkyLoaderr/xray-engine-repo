@@ -140,6 +140,7 @@ class CMyD3DApplication : public CD3DApplication
 	R_shader						s_Scene2fat_base;
 	R_shader						s_Scene2fat_bump;
 	R_shader						s_Scene2smap_direct;
+	R_shader						s_Combine_Normal;
 	R_shader						s_CombineDBG_Normals;
 	R_shader						s_CombineDBG_Accumulator;
 	R_shader						s_CombineDBG_Base;
@@ -171,6 +172,7 @@ public:
 	HRESULT RenderLight_Direct			();
 	HRESULT RenderLight_Direct_smap		();
 	HRESULT RenderCombine				(COMBINE_MODE M);
+	HRESULT RenderCombine_Normal		();
 	HRESULT RenderCombineDBG_Normals	();
 	HRESULT RenderCombineDBG_Accumulator();
 	HRESULT RenderCombineDBG_Base		();
@@ -266,7 +268,7 @@ HRESULT CMyD3DApplication::Render		()
 		RenderFAT					();
 		RenderShadowMap				();
 		RenderLight_Direct			();
-		RenderCombine				(CM_DBG_ACCUMULATOR);
+		RenderCombine				(CM_NORMAL);
 		// RenderOverlay				();
 
 		// Output statistics
