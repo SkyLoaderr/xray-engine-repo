@@ -91,11 +91,7 @@ void EScene::OnDestroy()
 	ELog.Msg				( mtInformation, "Scene: cleared" );
 	m_LastAvailObject 		= 0;
 	m_Valid 				= false;
-
-    SceneToolsMapPairIt _I = m_SceneTools.begin();
-    SceneToolsMapPairIt _E = m_SceneTools.end();
-    for (; _I!=_E; _I++)	xr_delete(_I->second);
-    m_SceneTools.clear		();
+    DestroySceneTools		();
 }
 
 void EScene::AppendObject( CCustomObject* object, bool bUndo )

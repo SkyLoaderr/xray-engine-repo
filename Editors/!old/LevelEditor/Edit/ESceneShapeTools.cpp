@@ -17,6 +17,7 @@ void ESceneShapeTools::CreateControls()
  
 void ESceneShapeTools::RemoveControls()
 {
+	inherited::RemoveControls();
 }
 //----------------------------------------------------
 

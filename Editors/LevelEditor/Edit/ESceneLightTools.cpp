@@ -283,6 +283,7 @@ void ESceneLightTools::CreateControls()
  
 void ESceneLightTools::RemoveControls()
 {
+	inherited::RemoveControls();
 }
 //----------------------------------------------------
 

@@ -18,6 +18,7 @@ void ESceneSpawnTools::CreateControls()
  
 void ESceneSpawnTools::RemoveControls()
 {
+	inherited::RemoveControls();
 }
 //----------------------------------------------------
 

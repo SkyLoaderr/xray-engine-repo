@@ -17,6 +17,7 @@ void EScenePSTools::CreateControls()
  
 void EScenePSTools::RemoveControls()
 {
+	inherited::RemoveControls();
 }
 //----------------------------------------------------
 

@@ -21,6 +21,7 @@ void ESceneAIMapTools::CreateControls()
  
 void ESceneAIMapTools::RemoveControls()
 {
+	inherited::RemoveControls();
 }
 //----------------------------------------------------
 

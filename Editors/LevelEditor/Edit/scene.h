@@ -123,6 +123,7 @@ protected:
 protected:
 	void			RegisterSceneTools			(ESceneCustomMTools* mt);
 	void			CreateSceneTools			();
+	void			DestroySceneTools			();
 
     bool __fastcall FindObjectByNameCB			(LPCSTR new_name){return !!FindObjectByName(new_name,0);}
 public:

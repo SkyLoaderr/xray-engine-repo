@@ -11,6 +11,7 @@ void ESceneSoundEnvTools::CreateControls()
  
 void ESceneSoundEnvTools::RemoveControls()
 {
+	inherited::RemoveControls();
 }
 //----------------------------------------------------
 

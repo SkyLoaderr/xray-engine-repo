@@ -14,6 +14,7 @@ void EDetailManager::CreateControls()
  
 void EDetailManager::RemoveControls()
 {
+	inherited::RemoveControls();
 }
 //----------------------------------------------------
 

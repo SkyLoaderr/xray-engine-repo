@@ -17,6 +17,7 @@ void ESceneGroupTools::CreateControls()
  
 void ESceneGroupTools::RemoveControls()
 {
+	inherited::RemoveControls();
 }
 //----------------------------------------------------
 

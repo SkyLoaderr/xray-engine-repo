@@ -20,6 +20,7 @@ void EScenePortalTools::CreateControls()
  
 void EScenePortalTools::RemoveControls()
 {
+	inherited::RemoveControls();
 }
 //----------------------------------------------------
 

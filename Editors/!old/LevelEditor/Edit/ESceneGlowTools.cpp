@@ -13,6 +13,7 @@ void ESceneGlowTools::CreateControls()
  
 void ESceneGlowTools::RemoveControls()
 {
+	inherited::RemoveControls();
 }
 //----------------------------------------------------
 

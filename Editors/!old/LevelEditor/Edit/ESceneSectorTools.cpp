@@ -23,6 +23,7 @@ void ESceneSectorTools::CreateControls()
  
 void ESceneSectorTools::RemoveControls()
 {
+	inherited::RemoveControls();
 }
 //----------------------------------------------------
 

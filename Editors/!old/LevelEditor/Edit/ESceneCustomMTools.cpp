@@ -15,15 +15,16 @@ ESceneCustomMTools::ESceneCustomMTools(EObjClass cls)
 
 ESceneCustomMTools::~ESceneCustomMTools()
 {
-	OnDestroy			();
 }
  
 void ESceneCustomMTools::OnCreate()
 {
+    OnDeviceCreate		();
     CreateControls		();
 }
 void ESceneCustomMTools::OnDestroy()
 {
+    OnDeviceDestroy		();
     RemoveControls		();
 }
 
