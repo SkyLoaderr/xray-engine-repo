@@ -270,7 +270,7 @@ void CLevelGraph::render()
 		if (::Render->ViewBase.testSphere_dirty(PC,sr)) {
 			u32	LL		= iFloor(float(N.light())/15.f*255.f);
 			u32	CC		= D3DCOLOR_XRGB(0,0,255);
-			u32	CT		= D3DCOLOR_XRGB(0,255,0);
+			u32	CT		= D3DCOLOR_XRGB(LL,LL,LL);
 			u32	CH		= D3DCOLOR_XRGB(0,128,0);
 
 			BOOL	bHL		= FALSE;
