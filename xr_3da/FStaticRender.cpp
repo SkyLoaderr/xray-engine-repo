@@ -408,6 +408,11 @@ void	CRender::Render		()
 	pCreator->pHUD->Render_Affected			();
 	Device.Statistic.RenderDUMP_HUD.End		();
 
+	// Patches
+	if (vecPatches.size())  {
+		flush_Patches	();
+	}
+	
 	// Postprocess
 	Target.End				();
 	
@@ -415,11 +420,6 @@ void	CRender::Render		()
 	Device.Statistic.RenderDUMP_HUD.Begin	();
 	pCreator->pHUD->Render_Direct			();
 	Device.Statistic.RenderDUMP_HUD.End		();
-
-	// Patches
-	if (vecPatches.size())  {
-		flush_Patches	();
-	}
 
 	Device.Statistic.RenderDUMP.End();
 }
