@@ -25,7 +25,7 @@ __published:	// IDE-managed Components
 	TPanel *paRight;
 	TFormStorage *fsStorage;
 	TPanel *paCommand;
-	TExtBtn *ebClose;
+	TExtBtn *ebOk;
 	TPanel *paImage;
 	TPaintBox *pbImage;
 	TBevel *Bevel1;
@@ -47,7 +47,7 @@ __published:	// IDE-managed Components
 	TBevel *Bevel3;
 	TExtBtn *ebAssociation;
 	TBevel *Bevel4;
-    void __fastcall ebCloseClick(TObject *Sender);
+    void __fastcall ebOkClick(TObject *Sender);
     void __fastcall FormShow(TObject *Sender);
     void __fastcall FormClose(TObject *Sender, TCloseAction &Action);
     void __fastcall FormKeyDown(TObject *Sender, WORD &Key,
@@ -80,7 +80,7 @@ private:	// User declarations
     static FileMap texture_map;
     static FileMap modif_map;
 	void __fastcall SaveTextureParams();
-    bool bCheckMode;
+    bool bImportMode;
     TProperties* ImageProps;
     static AnsiString m_LastSelection;
     void __fastcall UpdateImageLib();
@@ -91,8 +91,8 @@ private:	// User declarations
 public:		// User declarations
     __fastcall TfrmImageLib(TComponent* Owner);
 // static function
-    static void __fastcall CheckImageLib();
-    static void __fastcall EditImageLib(AnsiString& title, bool bCheck=false);
+    static void __fastcall ImportTextures();
+    static void __fastcall EditImageLib(AnsiString& title, bool bImport=false);
     static bool __fastcall HideImageLib();
     static bool __fastcall Visible(){return !!form;}
 };

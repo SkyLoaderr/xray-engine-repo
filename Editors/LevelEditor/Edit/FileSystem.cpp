@@ -288,7 +288,7 @@ void CFileSystem::CopyFileTo(LPCSTR src, LPCSTR dest, bool bOverwrite){
 
 void CFileSystem::MoveFileTo(LPCSTR src, LPCSTR dest, bool bOverwrite){
 	VerifyPath(dest);
-	MoveFileEx(src,dest,bOverwrite?MOVEFILE_REPLACE_EXISTING:0);
+	MoveFileEx(src,dest,bOverwrite?MOVEFILE_REPLACE_EXISTING|MOVEFILE_COPY_ALLOWED:0);
 }
 //----------------------------------------------------
 

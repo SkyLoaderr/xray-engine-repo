@@ -131,7 +131,7 @@ bool TUI::Command( int _Command, int p1, int p2 ){
     	TfrmImageLib::EditImageLib(AnsiString("Image Editor"));
     	break;
 	case COMMAND_CHECK_TEXTURES:
-    	TfrmImageLib::CheckImageLib();
+    	TfrmImageLib::ImportTextures();
     	break;
 	case COMMAND_REFRESH_TEXTURES:
 		Device.RefreshTextures(0);

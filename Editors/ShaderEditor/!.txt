@@ -593,13 +593,13 @@ Level:
 + Render bug Lines
 + Scene load per object progress
 + удаление WayPoint
-- Library access without clear
+--Library access without clear
 + Image Library access without clear
-- Export Tex Assos
-- Cancel ImageEditor вернуть текстуры
++ Export Tex Assos
++ ImageEditor без копирования
+- DO - engine render 
 - осветить хемисферой лод
 - на спавнпоинтах рисовать иконки
-- DO - engine render 
 - FindObjectByName не использовать с классом
 - Render на расстоянии боксами
 + builder LTX 	- группы!!!

@@ -58,7 +58,7 @@ bool Surface_Load(LPCSTR full_name, DWORDVec& data, int& w, int& h, int& a)
 //------------------------------------------------------------------------------
 // создает тхм
 //------------------------------------------------------------------------------
-void CImageManager::MakeThumbnail(EImageThumbnail* THM, DWORD* data, int w, int h, int a)
+void CImageManager::MakeThumbnailImage(EImageThumbnail* THM, DWORD* data, int w, int h, int a)
 {
 	R_ASSERT(THM);
 	// create thumbnail
@@ -72,29 +72,47 @@ void CImageManager::MakeThumbnail(EImageThumbnail* THM, DWORD* data, int w, int 
 }
 
 //------------------------------------------------------------------------------
-// создает новый тхм
-// использовать в случае если не было такого файла
+// создает тхм
 //------------------------------------------------------------------------------
-void CImageManager::CreateThumbnail(EImageThumbnail* THM, const AnsiString& src_name){
+void CImageManager::CreateTextureThumbnail(EImageThumbnail* THM, const AnsiString& src_name, FSPath* path){
 	R_ASSERT(src_name.Length());
-	AnsiString base_name 	= src_name;
-	Engine.FS.m_Textures.Update	(base_name);
+	AnsiString base_name 		= src_name;
+    if (path)	path->Update	(base_name);
+    else		Engine.FS.m_Textures.Update	(base_name);
     DWORDVec data;
     int w, h, a;
-    if (!Surface_Load(base_name.c_str(),data,w,h,a)) return;
-    MakeThumbnail(THM,data.begin(),w,h,a);
-	THM->m_Age = Engine.FS.GetFileAge(base_name);
-	THM->m_TexParams.fmt 	= (a)?STextureParams::tfDXT3:STextureParams::tfDXT1;
-    if ((h*6)==w) THM->m_TexParams.type	= STextureParams::ttCubeMap;
-}
+    if (!Surface_Load(base_name.c_str(),data,w,h,a)){
+    	ELog.DlgMsg(mtError,"Can't load texture '%s'.\nCheck file existance",src_name.c_str());
+     	return;
+    }
+    MakeThumbnailImage(THM,data.begin(),w,h,a);
 
+    // проверить если тхумбнайла не было выставить начальные параметры
+    AnsiString 	fn 	= ChangeFileExt	(base_name,".thm");
+	if (!Engine.FS.Exist(fn.c_str())){
+		THM->m_Age 			= Engine.FS.GetFileAge(base_name);
+		THM->m_TexParams.fmt= (a)?STextureParams::tfDXT3:STextureParams::tfDXT1;
+	    if ((h*6)==w) THM->m_TexParams.type	= STextureParams::ttCubeMap;
+    }
+}
+/*
+	if (!Engine.FS.Exist(fn.c_str())){
+    	ELog.DlgMsg(mtError,"Can't load texture '%s'.\nCheck file existance",fn.c_str());
+        return;
+    }
+	bool bRes = Surface_Load(fn.c_str(),data,w,h,a);
+    if (!bRes){
+    	ELog.DlgMsg(mtError,"Can't load texture '%s'.\nCheck file existance or texture size.",fn.c_str(),w,h);
+		return;
+    }
+*/
 //------------------------------------------------------------------------------
 // создает новую текстуру
 //------------------------------------------------------------------------------
 void CImageManager::CreateGameTexture(const AnsiString& src_name, EImageThumbnail* thumb){
 	R_ASSERT(src_name.Length());
     EImageThumbnail* THM 	= thumb?thumb:new EImageThumbnail(src_name.c_str(),EImageThumbnail::EITTexture);
-	AnsiString base_name 	= src_name;
+	AnsiString base_name 	= src_name;       
 	AnsiString game_name 	= ChangeFileExt(src_name,".dds");
 	Engine.FS.m_Textures.Update(base_name);
 	Engine.FS.m_GameTextures.Update(game_name);
@@ -141,24 +159,6 @@ bool CImageManager::LoadTextureData(const AnsiString& src_name, DWORDVec& data, 
     return true;
 }
 
-void CImageManager::SynchronizeThumbnail(EImageThumbnail* THM, LPCSTR src_name)
-{
-    DWORDVec data;
-    int w, h, a;
-	AnsiString fn = src_name;
-	Engine.FS.m_Textures.Update(fn);
-	if (!Engine.FS.Exist(fn.c_str())){
-    	ELog.DlgMsg(mtError,"Can't load texture '%s'.\nCheck file existance",fn.c_str());
-        return;
-    }
-	bool bRes = Surface_Load(fn.c_str(),data,w,h,a);
-    if (!bRes){
-    	ELog.DlgMsg(mtError,"Can't load texture '%s'.\nCheck file existance or texture size.",fn.c_str(),w,h);
-		return;
-    }
-    R_ASSERT2(bRes,"");
-	MakeThumbnail(THM,data.begin(),w,h,a);
-}
 //------------------------------------------------------------------------------
 // копирует обновленные текстуры с Import'a в Textures
 // files - список файлов для копирование
@@ -174,13 +174,21 @@ void CImageManager::SafeCopyLocalToServer(FileMap& files)
     FilePairIt it	= files.begin();
 	FilePairIt _E 	= files.end();
 	for (; it!=_E; it++){
-		string256 fn; strcpy(fn,it->first.c_str());
+        // copy thm
+		AnsiString fn = ChangeFileExt(it->first,".thm");
+		src_name 	= p_import	+ AnsiString(fn);
+		Engine.FS.UpdateTextureNameWithFolder(fn);
+		dest_name 	= p_textures+ AnsiString(fn);
+		Engine.FS.MoveFileTo	(src_name.c_str(),dest_name.c_str(),true);
+    	// copy sources
+		fn 			= it->first;
 		src_name 	= p_import	+ AnsiString(fn);
 		Engine.FS.UpdateTextureNameWithFolder(fn);
 		dest_name 	= p_textures+ AnsiString(fn);
         Engine.FS.BackupFile	(&Engine.FS.m_Textures,AnsiString(fn));
 		Engine.FS.CopyFileTo	(src_name.c_str(),dest_name.c_str(),true);
         Engine.FS.WriteAccessLog(dest_name.c_str(),"Replace");
+        Engine.FS.MarkFile		(src_name);
     }
 }
 //------------------------------------------------------------------------------
@@ -229,7 +237,7 @@ void CImageManager::SynchronizeTextures(bool sync_thm, bool sync_game, bool bFor
     	if (sync_thm&&bThm){
         	THM = new EImageThumbnail(it->first.c_str(),EImageThumbnail::EITTexture);
 		    bool bRes = Surface_Load(fn.c_str(),data,w,h,a); R_ASSERT(bRes);
-            MakeThumbnail(THM,data.begin(),w,h,a);
+            MakeThumbnailImage(THM,data.begin(),w,h,a);
             THM->Save	(it->second);
         }
         // check game textures
@@ -477,7 +485,7 @@ BOOL ApplyBorders(DWORDVec& pixels, int w, int h, DWORD ref)
 
 void CImageManager::CreateLODTexture(Fbox bbox, LPCSTR tex_name, int tgt_w, int tgt_h, int samples, int age)
 {
-    int src_w=tgt_w,src_h=tgt_h;
+    DWORD src_w=tgt_w,src_h=tgt_h;
 	DWORDVec pixels;
 
     Fvector C;
@@ -513,7 +521,7 @@ void CImageManager::CreateLODTexture(Fbox bbox, LPCSTR tex_name, int tgt_w, int 
 	    SetCamera(angle,C,S.y,R,D);
 	    Device.MakeScreenshot(pixels,src_w,src_h);
         // copy LOD to final
-		for (int y=0; y<src_h; y++)
+		for (DWORD y=0; y<src_h; y++)
     		CopyMemory(new_pixels.begin()+y*pitch+frame*src_w,pixels.begin()+y*src_w,src_w*sizeof(DWORD));
     }
     // restore render params

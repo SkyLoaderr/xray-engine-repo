@@ -7,23 +7,24 @@
 #include "xr_tokens.h"
 
 //----------------------------------------------------
-//----------------------------------------------------
-bool CreateBitmap(HDC hdc, HBITMAP& th, DWORDVec& data, int w, int h)
+bool DrawThumbnail(HDC hdc, DWORDVec& data, int offs_x, int offs_y, int dest_w, int dest_h, int src_w, int src_h)
 {
-    BITMAPINFOHEADER bi;
-    ZeroMemory		(&bi, sizeof(bi));
-    bi.biSize 		= sizeof(BITMAPINFOHEADER);
-    bi.biWidth 		= w;
-    bi.biHeight 	= h;
-    bi.biPlanes 	= 1;
-    bi.biBitCount 	= 32;
-    bi.biCompression= BI_RGB;
-    bi.biSizeImage 	= w*h*4;
+    BITMAPINFO bi;
+    ZeroMemory					(&bi, sizeof(bi));
+    bi.bmiHeader.biSize 		= sizeof(BITMAPINFOHEADER);
+    bi.bmiHeader.biWidth 		= src_w;
+    bi.bmiHeader.biHeight 		= src_h;
+    bi.bmiHeader.biPlanes 		= 1;
+    bi.bmiHeader.biBitCount 	= 32;
+    bi.bmiHeader.biCompression	= BI_RGB;
+    bi.bmiHeader.biSizeImage 	= src_w*src_h*4;
 
-	th = CreateCompatibleBitmap( hdc,w,h );
-	if (!th) return false;
-    int ln = SetDIBits( hdc, th, 0, h, (BYTE*)data.begin(), (LPBITMAPINFO)&bi, DIB_RGB_COLORS);
-	if (!ln) return false;
+    SetStretchBltMode			(hdc, STRETCH_HALFTONE);
+    int ln = StretchDIBits		(hdc, offs_x,offs_y, dest_w,dest_h, 0,0, src_w,src_h, (BYTE*)data.begin(), &bi, DIB_RGB_COLORS, SRCCOPY);
+	if (ln==GDI_ERROR){ 
+    	ELog.Msg(mtError,"%s",Engine.LastWindowsError());
+    	return false;
+    }
 	return true;
 }
 //----------------------------------------------------
@@ -43,16 +44,12 @@ void EImageThumbnail::VFlip()
 }
 //----------------------------------------------------
 
-EImageThumbnail::EImageThumbnail(LPCSTR src_name, THMType type, bool bLoad, bool bSync)
+EImageThumbnail::EImageThumbnail(LPCSTR src_name, THMType type, bool bLoad)
 {
 	m_Type	= type;
 	m_Name 	= ChangeFileExt(src_name,".thm");
     m_Age	= 0;
-    if (bLoad)
-		if (!Load()&&IsTexture()) ImageManager.CreateThumbnail(this,src_name);
-    if (bSync){
-    	ImageManager.SynchronizeThumbnail(this,src_name);
-    }
+    if (bLoad) 	if (!Load()&&IsTexture()) ImageManager.CreateTextureThumbnail(this,src_name);
 }
 
 EImageThumbnail::~EImageThumbnail()
@@ -70,12 +67,15 @@ void EImageThumbnail::CreateFromData(LPDWORD p, int w, int h){
     m_TexParams.flag&=~STextureParams::flHasAlpha;
 }
 
-bool EImageThumbnail::Load()
+bool EImageThumbnail::Load(LPCSTR src_name, FSPath* path)
 {
-	AnsiString fn = m_Name;
-    switch (m_Type){
-    case EITObject: Engine.FS.m_Objects.Update(fn); 	break;
-    case EITTexture:Engine.FS.m_Textures.Update(fn); 	break;
+	AnsiString fn = ChangeFileExt(src_name?AnsiString(src_name):m_Name,".thm");
+    if (path) path->Update(fn);
+    else{
+	    switch (m_Type){
+    	case EITObject: Engine.FS.m_Objects.Update(fn); 	break;
+	    case EITTexture:Engine.FS.m_Textures.Update(fn); 	break;
+    	}
     }
     if (!Engine.FS.Exist(fn.c_str())) return false;
     CFileStream FN(fn.c_str());
@@ -126,7 +126,7 @@ bool EImageThumbnail::Load()
     return true;
 }
 
-void EImageThumbnail::Save(int age){
+void EImageThumbnail::Save(int age, FSPath* path){
 	if (!Valid()) return;
 
     CFS_Memory F;
@@ -164,11 +164,14 @@ void EImageThumbnail::Save(int age){
 	F.close_chunk	();
 
 	AnsiString fn 	= m_Name;
-    switch (m_Type){
-    case EITObject: Engine.FS.m_Objects.Update(fn); 	break;
-    case EITTexture:Engine.FS.m_Textures.Update(fn); 	break;
+    if (path) path->Update(fn);
+    else{
+        switch (m_Type){
+        case EITObject: Engine.FS.m_Objects.Update(fn); 	break;
+        case EITTexture:Engine.FS.m_Textures.Update(fn); 	break;
+        }
     }
-	Engine.FS.VerifyPath	(fn.c_str());
+	Engine.FS.VerifyPath(fn.c_str());
 
     F.SaveTo		(fn.c_str(),THM_SIGN);
 
@@ -205,68 +208,6 @@ bool EImageThumbnail::FillProp(PropValueVec& values)
     return true;
 }
 
-void EImageThumbnail::DrawNormal( HANDLE handle, RECT *r ){
-    if (!Valid()) return;
-
-	HBITMAP th	= 0;
-    HDC 	hdc = 0;
-    int cnt		= 5;
-    bool res;
-    do{
-	    DeleteObject(th);
-    	ReleaseDC	(handle,hdc);
-    	hdc	= GetDC	(handle);
-    }while(--cnt&&!hdc&&!(res=CreateBitmap(hdc,th,m_Pixels,THUMB_WIDTH,THUMB_HEIGHT)));
-    if (!res){ 
-	    DeleteObject(th);
-    	ReleaseDC	(handle,hdc);
-		ELog.Msg( mtError, "Error: can't create bitmap from thumbnail for '%s'", m_Name );
-    	return;
-    }else{
-        HDC hdcmem = CreateCompatibleDC( hdc );
-        HBITMAP oldbitmap = (HBITMAP) SelectObject( hdcmem, th );
-        SetStretchBltMode(hdc, STRETCH_HALFTONE);
-        BitBlt(hdc,r->left,r->top,r->right-r->left,r->bottom-r->top,hdcmem,0,0,SRCCOPY);
-        SelectObject( hdcmem, oldbitmap );
-        DeleteDC( hdcmem );
-    }
-    DeleteObject(th);
-    ReleaseDC(handle,hdc);
-}
-
-void EImageThumbnail::DrawStretch( HANDLE handle, RECT *r )
-{
-    if (!Valid()) return;
-
-	HBITMAP th	= 0;
-    HDC 	hdc = 0;
-    int cnt		= 5;
-    bool res;
-    do{
-	    DeleteObject(th);
-    	ReleaseDC	(handle,hdc);
-    	hdc	= GetDC	(handle);
-        res = hdc&&CreateBitmap(hdc,th,m_Pixels,THUMB_WIDTH,THUMB_HEIGHT);
-    }while(--cnt&&!res);
-    if (cnt!=4) 
-    	ELog.Msg( mtError, "Error: can't create bitmap from thumbnail for '%s'", m_Name );
-    if (!res){ 
-	    DeleteObject(th);
-    	ReleaseDC	(handle,hdc);
-		ELog.Msg( mtError, "Error: can't create bitmap from thumbnail for '%s'", m_Name );
-    	return;
-    }else{
-        HDC hdcmem = CreateCompatibleDC( hdc );
-        HBITMAP oldbitmap = (HBITMAP) SelectObject( hdcmem, th );
-        SetStretchBltMode(hdc, STRETCH_HALFTONE);
-        StretchBlt(hdc,r->left,r->top,r->right-r->left,r->bottom-r->top,hdcmem,0,0,THUMB_WIDTH,THUMB_HEIGHT,SRCCOPY);
-        SelectObject( hdcmem, oldbitmap );
-        DeleteDC( hdcmem );
-    }
-    DeleteObject(th);
-    ReleaseDC(handle,hdc);
-}
-
 void EImageThumbnail::Draw(TPanel* panel, TPaintBox* pbox, bool bStretch)
 {
     RECT r;
@@ -277,7 +218,8 @@ void EImageThumbnail::Draw(TPanel* panel, TPaintBox* pbox, bool bStretch)
     if (w!=h)	pbox->Canvas->FillRect(pbox->BoundsRect);
     if (w>h){   r.right = pbox->Width-1; r.bottom = h/w*pbox->Height-1;
     }else{      r.right = w/h*pbox->Width-1; r.bottom = pbox->Height-1;}
-    if (bStretch)	DrawStretch(panel->Handle, &r);
-    else			DrawNormal(panel->Handle, &r);
+    HDC hdc 	= GetDC	(panel->Handle);
+	DrawThumbnail(hdc,m_Pixels,r.left,r.top,r.right-r.left,r.bottom-r.top,THUMB_WIDTH,THUMB_HEIGHT);
+   	ReleaseDC	(panel->Handle,hdc);
 }
 

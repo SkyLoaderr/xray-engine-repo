@@ -29,7 +29,7 @@ __fastcall TfrmImageLib::TfrmImageLib(TComponent* Owner)
     : TForm(Owner)
 {
     DEFINE_INI(fsStorage);
-    bCheckMode = false;
+    bImportMode = false;
 }
 //---------------------------------------------------------------------------
 
@@ -39,18 +39,17 @@ void __fastcall TfrmImageLib::FormCreate(TObject *Sender)
 }
 //---------------------------------------------------------------------------
 
-void __fastcall TfrmImageLib::EditImageLib(AnsiString& title, bool bCheck){
+void __fastcall TfrmImageLib::EditImageLib(AnsiString& title, bool bImport){
 	if (!form){
-        form = new TfrmImageLib(0);
-        form->Caption = title;
-	    form->bCheckMode = bCheck;
-        compl_map.clear();
+        form 				= new TfrmImageLib(0);
+        form->Caption 		= title;
+	    form->bImportMode 	= bImport;
+        compl_map.clear		();
 
-        if (!form->bCheckMode) 	ImageManager.GetTextures(texture_map);
-		form->modif_map.clear();
-        form->m_Thm = 0;
-        form->m_SelectedName = "";
-        form->ebCancel->Enabled = !bCheck;
+        if (!form->bImportMode) ImageManager.GetTextures(texture_map);
+		form->modif_map.clear	();
+        form->m_Thm 			= 0;
+        form->m_SelectedName 	= "";
 
         form->paTextureCount->Caption = AnsiString(" Images in list: ")+AnsiString(texture_map.size());
     }
@@ -60,23 +59,13 @@ void __fastcall TfrmImageLib::EditImageLib(AnsiString& title, bool bCheck){
 }
 //---------------------------------------------------------------------------
 
-void __fastcall TfrmImageLib::CheckImageLib()
+void __fastcall TfrmImageLib::ImportTextures()
 {
 	texture_map.clear();
     int new_cnt = ImageManager.GetLocalNewTextures(texture_map);
     if (new_cnt){
-    	if (ELog.DlgMsg(mtConfirmation,TMsgDlgButtons()<<mbYes<<mbNo,"Found %d new texture(s).\nAppend to library?",new_cnt)==mrYes){
-        	ImageManager.SafeCopyLocalToServer(texture_map);
-	        Engine.FS.MarkFiles(&Engine.FS.m_Import,texture_map);
-            FileMap files=texture_map;
-            texture_map.clear();
-            string256 fn;
-            FilePairIt it=files.begin();
-            FilePairIt _E=files.end();
-            for (;it!=_E; it++)
-                texture_map[Engine.FS.UpdateTextureNameWithFolder(it->first.c_str(),fn)]=it->second;
+    	if (ELog.DlgMsg(mtInformation,"Found %d new texture(s)",new_cnt))
     		EditImageLib(AnsiString("Update images"),true);
-    	}
     }else{
     	ELog.DlgMsg(mtInformation,"No new textures found.");
     }
@@ -85,9 +74,19 @@ void __fastcall TfrmImageLib::CheckImageLib()
 void __fastcall TfrmImageLib::UpdateImageLib()
 {
     SaveTextureParams();
-    if (bCheckMode&&!texture_map.empty()){
+    if (bImportMode&&!texture_map.empty()){
     	LPSTRVec modif;
         LockForm();
+        ImageManager.SafeCopyLocalToServer(texture_map);
+		// rename with folder
+		FileMap files=texture_map;
+        texture_map.clear();
+        string256 fn;
+        FilePairIt it=files.begin();
+        FilePairIt _E=files.end();
+        for (;it!=_E; it++)
+            texture_map[Engine.FS.UpdateTextureNameWithFolder(it->first.c_str(),fn)]=it->second;
+        // sync
 		ImageManager.SynchronizeTextures(true,true,true,&texture_map,&modif);
         UnlockForm();
     	Device.RefreshTextures(&modif);
@@ -175,15 +174,15 @@ void __fastcall TfrmImageLib::FormKeyDown(TObject *Sender, WORD &Key,
       TShiftState Shift)
 {
     if (Key==VK_ESCAPE){
-		if (bFormLocked)   	UI.Command(COMMAND_BREAK_LAST_OPERATION);
-        else				ebClose->Click();
+		if (bFormLocked)UI.Command(COMMAND_BREAK_LAST_OPERATION);
+        ebCancel->Click	();
         Key = 0; // :-) нужно для того чтобы AccessVoilation не вылазил по ESCAPE
     }
 }
 //---------------------------------------------------------------------------
 
 
-void __fastcall TfrmImageLib::ebCloseClick(TObject *Sender)
+void __fastcall TfrmImageLib::ebOkClick(TObject *Sender)
 {
 	if (bFormLocked) return;
 
@@ -204,8 +203,8 @@ void __fastcall TfrmImageLib::ebCancelClick(TObject *Sender)
 //---------------------------------------------------------------------------
 
 void __fastcall TfrmImageLib::SaveTextureParams(){
-	if (m_Thm&&(ImageProps->IsModified()||bCheckMode)){
-        m_Thm->Save();
+	if (m_Thm&&(ImageProps->IsModified()||bImportMode)){
+        m_Thm->Save(0,bImportMode?&Engine.FS.m_Import:0);
 	    FilePairIt it=texture_map.find(m_SelectedName); R_ASSERT(it!=texture_map.end());
         modif_map.insert(*it);
     }
@@ -221,7 +220,13 @@ void __fastcall TfrmImageLib::tvItemsItemFocused(TObject *Sender)
     	FOLDER::MakeName(Item,0,m_SelectedName,false);
 		_DELETE(m_Thm);
         // get new texture
-        m_Thm = new EImageThumbnail(m_SelectedName.c_str(),EImageThumbnail::EITTexture,true,bCheckMode);
+        if (bImportMode){ 
+        	m_Thm = new EImageThumbnail(m_SelectedName.c_str(),EImageThumbnail::EITTexture,false);
+            AnsiString fn = m_SelectedName;
+            Engine.FS.UpdateTextureNameWithFolder(fn);         
+            if (!(m_Thm->Load(m_SelectedName.c_str(),&Engine.FS.m_Import)||m_Thm->Load(fn.c_str(),&Engine.FS.m_Textures)))
+            	ImageManager.CreateTextureThumbnail(m_Thm,m_SelectedName.c_str(),&Engine.FS.m_Import);
+        }else			 m_Thm = new EImageThumbnail(m_SelectedName.c_str(),EImageThumbnail::EITTexture);
         if (!m_Thm->Valid()){
         	pbImage->Repaint();
             ImageProps->ClearProperties();
@@ -346,7 +351,7 @@ void __fastcall TfrmImageLib::ebAssociationClick(TObject *Sender)
     UI.ProgressStart(texture_map.size(),"Export assosiation");
     bool bRes=true;
     for (;it!=_E; it++){
-        EImageThumbnail* m_Thm = new EImageThumbnail(it->first.c_str(),EImageThumbnail::EITTexture,true,false);
+        EImageThumbnail* m_Thm = new EImageThumbnail(it->first.c_str(),EImageThumbnail::EITTexture);
 	    UI.ProgressInc(it->first.c_str());
         if (m_Thm->Valid()&&(m_Thm->_Format().flag&STextureParams::flHasDetailTexture)){
         	AnsiString tmp;
