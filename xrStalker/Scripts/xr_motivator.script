@@ -494,7 +494,7 @@ xr_motivator.storage[self.object:id()].reactions = {
     xr_position.add_to_binder(self.object)
     xr_meet.add_to_binder(self.object)
 
---[[    -- модели поведения
+    -- модели поведения
     xr_talker.add_to_binder(self.object)
     xr_patrol.add_to_binder (self.object)
     xr_follower.add_to_binder (self.object)
@@ -512,11 +512,11 @@ xr_motivator.storage[self.object:id()].reactions = {
     xr_trivial.add_novice2    (self.object)
     xr_trivial.add_novice3    (self.object)
     escape_factory_bandits.add_to_binder(self.object)
-    agroprom_military_commander.add_to_binder(self.object) ]]
+    agroprom_military_commander.add_to_binder(self.object)
     
     
     
-    -- модели поведения
+--[[    -- модели поведения
     if char_ini:section_exist("talker") then
         xr_talker.add_to_binder(self.object)
     end
@@ -580,7 +580,7 @@ xr_motivator.storage[self.object:id()].reactions = {
 
     if char_ini:section_exist("military_commander") then
         agroprom_military_commander.add_to_binder(self.object)    
-    end
+    end]]
     
     
     
@@ -594,10 +594,10 @@ xr_motivator.storage[self.object:id()].reactions = {
             xr_gulag.addMember(char_ini:r_string("fraction", "name"), self.object)
             xr_gulag.add_to_binder(self.object)
             
-            xr_patrol.add_to_binder  (self.object)
+--[[            xr_patrol.add_to_binder  (self.object)
             xr_follower.add_to_binder(self.object)
             xr_guard.add_to_binder   (self.object)
-            xr_sleeper.add_to_binder (self.object)
+            xr_sleeper.add_to_binder (self.object)]]
         end
     else
         -- включение схем
