@@ -3,20 +3,24 @@
 #include "../../CustomMonster.h"
 #include "../../state_internal.h"
 #include "ai_chimera_movement.h"
+#include "../telekinesis.h"
 
 class CCharacterPhysicsSupport;
 
 class CAI_Chimera : 	public CCustomMonster,
 						public CChimeraMovementManager,
-						public CStateInternal<CAI_Chimera>  {
+						public CStateInternal<CAI_Chimera>,
+						public CTelekinesis<CAI_Chimera> {
 
-	typedef CCustomMonster		inherited;
+public:
+	typedef CTelekinesis<CAI_Chimera>	TTelekinesis;
 
+	typedef CCustomMonster				inherited;
 
 	CCharacterPhysicsSupport	*m_pPhysics_support;
 	float						m_fGoingSpeed;
 
-public:
+
 	CMotionDef					*cur_anim;
 public:
 							CAI_Chimera					();

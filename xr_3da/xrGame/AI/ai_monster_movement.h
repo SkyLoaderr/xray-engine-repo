@@ -22,7 +22,6 @@ class CMonsterMovement : virtual public CMovementManager {
 public :
 
 	SVelocity			m_velocity_linear, m_velocity_angular;
-	float				m_accel;			
 
 public:
 
@@ -70,8 +69,6 @@ public:
 		void		WalkNextGraphPoint	();
 
 		void		update_velocity		();
-	IC	void		set_accel			(float new_val) {m_accel = new_val;}
-
 private:
 	
 		// проверка на завершение пути

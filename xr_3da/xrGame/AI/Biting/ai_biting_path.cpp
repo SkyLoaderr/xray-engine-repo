@@ -72,7 +72,7 @@ void CAI_Biting::FaceTarget(const Fvector &position)
 }
 
 
-void CAI_Biting::SetupVelocityMasks(bool force_real_speed)
+void CAI_Biting::TranslateActionToVelocityMasks(bool force_real_speed)
 {
 	bool bEnablePath = true;
 	u32 vel_mask = 0;

@@ -2,6 +2,7 @@
 #include "ai_monster_motion.h"
 #include "ai_monster_jump.h"
 #include "biting/ai_biting.h"
+#include "ai_monster_utils.h"
 
 #define CHECK_SHARED_LOADED() {if (CSharedClass<_motion_shared>::IsLoaded()) return; }
 
@@ -237,17 +238,14 @@ bool CMotionManager::VelocityChain_GetAnim(float cur_speed, EMotionAnim target_a
 			float				from	= param->velocity.linear * param->min_factor;
 			float				to		= param->velocity.linear * param->max_factor;
 
-			if ( ((from <= cur_speed) && (cur_speed <= to))	|| 
-				 ((cur_speed < from) && (IT == I->begin()))	|| 
-				 ((cur_speed >= to)	 &&	(IT+1 == I->end())) ) {
+			if ( ((from <= cur_speed+EPS_L) && (cur_speed <= to + EPS_L))	|| 
+				 ((cur_speed < from) && (IT == I->begin()))					|| 
+				 ((cur_speed + EPS_L >= to) &&	(IT+1 == I->end())) ) {
 					 best_anim	= IT;
 					 best_param	= item_it->second.velocity;
 			}
 
-			if ((*IT) == target_anim)	{
-				found = true;
-				break;
-			}
+			if ((*IT) == target_anim) found = true;
 		}
 		
 		if (!found) continue;
@@ -807,3 +805,4 @@ bool CMotionManager::IsStandCurAnim()
 	if (fis_zero(item_it->second.velocity->velocity.linear)) return true;
 	return false;
 }
+

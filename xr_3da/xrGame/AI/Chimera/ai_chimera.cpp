@@ -95,7 +95,10 @@ void CAI_Chimera::Think()
 {
 	if (!g_Alive()) return;
 	
-	CChimeraMovementManager::update();
+	TTelekinesis::Update(1.0f);
+
+	
+//	CChimeraMovementManager::update();
 
 
 	//	if (!CDetailPathManager::completed(Position()) && CMovementManager::enabled()) {
@@ -117,7 +120,10 @@ void CAI_Chimera::Think()
 //		m_body.speed	= (*it).second.angular_velocity;
 //	} else m_fCurSpeed = 0;
 	
-	set_desirable_speed						(m_fCurSpeed);
+//	set_desirable_speed						(m_fCurSpeed);
+
+	
+
 }
 
 void CAI_Chimera::Die()
@@ -229,12 +235,6 @@ void CAI_Chimera::net_Import(NET_Packet& P)
 	}
 
 }
-
-
-
-
-
-
 
 
 

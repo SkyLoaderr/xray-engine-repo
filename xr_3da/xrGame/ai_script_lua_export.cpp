@@ -427,28 +427,20 @@ void Script::vfExportActions(CLuaVirtualMachine *tpLuaVirtualMachine)
 				value("on",						int(CMovementAction::eInputKeyEngineOn)),
 				value("off",					int(CMovementAction::eInputKeyEngineOff))
 			]
-			.enum_("act")
+			.enum_("monster")
 			[
-				value("act_stand_idle",					int(MonsterSpace::eActStandIdle)),
-				value("act_sit_idle",					int(MonsterSpace::eActSitIdle)),
-				value("act_lie_idle",					int(MonsterSpace::eActLieIdle)),
-				value("act_walk_fwd",					int(MonsterSpace::eActWalkFwd)),
-				value("act_walk_bkwd",					int(MonsterSpace::eActWalkBkwd)),
-				value("act_run",						int(MonsterSpace::eActRun)),
-				value("act_eat",						int(MonsterSpace::eActEat)),
-				value("act_sleep",						int(MonsterSpace::eActSleep)),
-				value("act_rest",						int(MonsterSpace::eActRest)),
-				value("act_drag",						int(MonsterSpace::eActDrag)),
-				value("act_attack",						int(MonsterSpace::eActAttack)),
-				value("act_steal",						int(MonsterSpace::eActSteal)),
-				value("act_look_around",				int(MonsterSpace::eActLookAround)),
-				value("act_jump",						int(MonsterSpace::eActJump)),
-				value("act_turn",						int(MonsterSpace::eActTurn))
+
+				value("walk_fwd",					int(MonsterSpace::eMA_WalkFwd)),
+				value("walk_bkwd",					int(MonsterSpace::eMA_WalkBkwd)),
+				value("run",						int(MonsterSpace::eMA_Run)),
+				value("drag",						int(MonsterSpace::eMA_Drag)),
+				value("jump",						int(MonsterSpace::eMA_Jump)),
+				value("steal",						int(MonsterSpace::eMA_Steal))
 			]
-			.enum_("act_type")
+			.enum_("monster_speed_param")
 			[
-				value("default",						int(MonsterSpace::eAT_Default)),
-				value("force_type",						int(MonsterSpace::eAT_ForceMovementType))
+				value("default",					int(MonsterSpace::eSP_Default)),
+				value("force",						int(MonsterSpace::eSP_ForceSpeed))
 			]
 
 			.def(								constructor<>())
@@ -460,10 +452,17 @@ void Script::vfExportActions(CLuaVirtualMachine *tpLuaVirtualMachine)
 			.def(								constructor<MonsterSpace::EBodyState,MonsterSpace::EMovementType,CDetailPathManager::EDetailPathType,const CPatrolPathParams &,float>())
 			.def(								constructor<MonsterSpace::EBodyState,MonsterSpace::EMovementType,CDetailPathManager::EDetailPathType,const Fvector &>())
 			.def(								constructor<MonsterSpace::EBodyState,MonsterSpace::EMovementType,CDetailPathManager::EDetailPathType,const Fvector &,float>())
-			.def(								constructor<MonsterSpace::EActState,MonsterSpace::EActTypeEx,const Fvector &>())
-			.def(								constructor<MonsterSpace::EActState,MonsterSpace::EActTypeEx,const CPatrolPathParams &>())
-			.def(								constructor<MonsterSpace::EActState,MonsterSpace::EActTypeEx,CLuaGameObject*>())
 			.def(								constructor<const Fvector &,float>())
+			
+			// Monsters 
+			.def(								constructor<MonsterSpace::EScriptMonsterMoveAction,const Fvector &,				MonsterSpace::EScriptMonsterSpeedParam>())
+			.def(								constructor<MonsterSpace::EScriptMonsterMoveAction,const CPatrolPathParams &,	MonsterSpace::EScriptMonsterSpeedParam>())
+			.def(								constructor<MonsterSpace::EScriptMonsterMoveAction,CLuaGameObject*,				MonsterSpace::EScriptMonsterSpeedParam>())
+			.def(								constructor<MonsterSpace::EScriptMonsterMoveAction,const Fvector &>())
+			.def(								constructor<MonsterSpace::EScriptMonsterMoveAction,const CPatrolPathParams &>())
+			.def(								constructor<MonsterSpace::EScriptMonsterMoveAction,CLuaGameObject*>())
+
+
 			.def("body",						&CMovementAction::SetBodyState)
 			.def("move",						&CMovementAction::SetMovementType)
 			.def("path",						&CMovementAction::SetPathType)
@@ -471,7 +470,6 @@ void Script::vfExportActions(CLuaVirtualMachine *tpLuaVirtualMachine)
 			.def("patrol",						&CMovementAction::SetPatrolPath)
 			.def("position",					&CMovementAction::SetPosition)
 			.def("input",						&CMovementAction::SetInputKeys)
-			.def("act",							&CMovementAction::SetAct)
 			.def("completed",					(bool (CMovementAction::*)())(CMovementAction::completed)),
 
 
@@ -511,10 +509,27 @@ void Script::vfExportActions(CLuaVirtualMachine *tpLuaVirtualMachine)
 				value("zombied",				int(MonsterSpace::eMentalStateZombied)),
 				value("dummy",					int(MonsterSpace::eMentalStateDummy))
 			]
+			.enum_("monster")
+			[
+				value("stand_idle",				int(MonsterSpace::eAA_StandIdle)),
+				value("sit_idle",				int(MonsterSpace::eAA_SitIdle)),
+				value("lie_idle",				int(MonsterSpace::eAA_LieIdle)),
+				value("eat",					int(MonsterSpace::eAA_Eat)),
+				value("sleep",					int(MonsterSpace::eAA_Sleep)),
+				value("rest",					int(MonsterSpace::eAA_Rest)),
+				value("attack",					int(MonsterSpace::eAA_Attack)),
+				value("look_around",			int(MonsterSpace::eAA_LookAround)),
+				value("turn",					int(MonsterSpace::eAA_Turn))
+			]
+
 			.def(								constructor<>())
 			.def(								constructor<LPCSTR>())
 			.def(								constructor<LPCSTR,bool>())
 			.def(								constructor<MonsterSpace::EMentalState>())
+			
+			// Monster specific
+			.def(								constructor<MonsterSpace::EScriptMonsterAnimAction, int>())
+			
 			.def("anim",						&CAnimationAction::SetAnimation)
 			.def("type",						&CAnimationAction::SetMentalState)
 			.def("completed",					(bool (CAnimationAction::*)())(CAnimationAction::completed)),

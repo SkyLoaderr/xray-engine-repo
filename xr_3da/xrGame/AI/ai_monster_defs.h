@@ -358,3 +358,10 @@ struct SVelocity {
 	
 	void	set		(float c, float t) {current = c; target = t;}
 }; 
+
+
+enum EActivityState {
+	MS_Calm,
+	MS_Aggressive
+};
+

@@ -68,6 +68,6 @@ void CChimeraMovementManager::update()
 	CDetailPathManager::set_try_min_time	(false); 
 	enable_movement							(true);
 
-	update_path();
+	update_path								();
 }
 

@@ -138,8 +138,9 @@ public:
 	float							m_fSpeed;
 	bool							m_bRandom;
 	EInputKeys						m_tInputKeys;
-	MonsterSpace::EActState			m_tActState;
-	MonsterSpace::EActTypeEx		m_tActTypeEx;
+	
+	MonsterSpace::EScriptMonsterMoveAction		m_tMoveAction;
+	MonsterSpace::EScriptMonsterSpeedParam		m_tSpeedParam;
 	
 
 							CMovementAction		()
@@ -203,28 +204,34 @@ public:
 		SetInputKeys		(tInputKeys);
 		SetSpeed			(fSpeed);
 	}
-							CMovementAction		(MonsterSpace::EActState tActState, MonsterSpace::EActTypeEx type_ex, const Fvector &tPosition)
+
+	// --------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------						
+	// Monsters
+	// --------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------
+							CMovementAction		(MonsterSpace::EScriptMonsterMoveAction tAct, const Fvector &tPosition, MonsterSpace::EScriptMonsterSpeedParam speed_param = MonsterSpace::eSP_Default)
+	{																																			
+		m_tMoveAction		= tAct;
+		SetPosition			(tPosition);																										
+		m_tSpeedParam		= speed_param;																											
+	}																																			
+							CMovementAction		(MonsterSpace::EScriptMonsterMoveAction tAct, const CPatrolPathParams &tPatrolPathParams, MonsterSpace::EScriptMonsterSpeedParam speed_param = MonsterSpace::eSP_Default)
+	{																																			
+		m_tMoveAction		= tAct;
+		SetPatrolPath		(tPatrolPathParams.m_path,tPatrolPathParams.m_path_name);															
+		SetPatrolStart		(tPatrolPathParams.m_tPatrolPathStart);																				
+		SetPatrolStop		(tPatrolPathParams.m_tPatrolPathStop);																				
+		SetPatrolRandom		(tPatrolPathParams.m_bRandom);																						
+		m_tSpeedParam		= speed_param;
+	}																																			
+							CMovementAction		(MonsterSpace::EScriptMonsterMoveAction tAct, CLuaGameObject *tpObjectToGo, MonsterSpace::EScriptMonsterSpeedParam speed_param = MonsterSpace::eSP_Default)
 	{
-		SetAct				(tActState);
-		SetPosition			(tPosition);
-		m_tActTypeEx		= type_ex;
-	}
-							CMovementAction		(MonsterSpace::EActState tActState, MonsterSpace::EActTypeEx type_ex, const CPatrolPathParams &tPatrolPathParams)
-	{
-		SetAct				(tActState);
-		SetPatrolPath		(tPatrolPathParams.m_path,tPatrolPathParams.m_path_name);
-		SetPatrolStart		(tPatrolPathParams.m_tPatrolPathStart);
-		SetPatrolStop		(tPatrolPathParams.m_tPatrolPathStop);
-		SetPatrolRandom		(tPatrolPathParams.m_bRandom);
-		m_tActTypeEx		= type_ex;
-	}
-							CMovementAction		(MonsterSpace::EActState tActState, MonsterSpace::EActTypeEx type_ex, CLuaGameObject *tpObjectToGo)
-	{
-		SetAct				(tActState);
+		m_tMoveAction		= tAct;
 		SetObjectToGo		(tpObjectToGo);
-		m_tActTypeEx		= type_ex;
+		m_tSpeedParam		= speed_param;
 	}
 	
+	// --------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------
+
 			void			SetBodyState		(const MonsterSpace::EBodyState tBodyState)
 	{
 		m_tBodyState		= tBodyState;
@@ -289,10 +296,6 @@ public:
 		m_tInputKeys		= tInputKeys;
 		m_tGoalType			= eGoalTypeInput;
 		m_bCompleted		= false;
-	}
-			void			SetAct				(MonsterSpace::EActState tActState)
-	{
-		m_tActState = tActState;
 	}
 
 	IC		void			initialize				()
@@ -406,6 +409,10 @@ public:
 	MonsterSpace::EMentalState		m_tMentalState;
 	EGoalType						m_tGoalType;
 	bool							m_bHandUsage;
+	
+	MonsterSpace::EScriptMonsterAnimAction	m_tAnimAction;
+	int										anim_index;
+
 
 							CAnimationAction	()
 	{
@@ -413,6 +420,7 @@ public:
 		m_tGoalType			= eGoalTypeMental;
 		m_bCompleted		= false;
 		m_bHandUsage		= true;
+		m_tAnimAction		= MonsterSpace::eAA_NoAction;
 	}
 
 							CAnimationAction	(LPCSTR caAnimationToPlay, bool use_single_hand = false)
@@ -425,6 +433,18 @@ public:
 	{
 		SetMentalState		(tMentalState);
 	}
+
+	// -------------------------------------------------------------------------------------------------
+	// Monster
+	// -------------------------------------------------------------------------------------------------
+							CAnimationAction	(MonsterSpace::EScriptMonsterAnimAction tAnimAction, int index)
+	{
+		m_tAnimAction		= tAnimAction;
+		m_bCompleted		= false;
+		anim_index			= index;
+	}
+	// -------------------------------------------------------------------------------------------------
+
 
 			void			SetAnimation		(LPCSTR caAnimationToPlay)
 	{
@@ -440,6 +460,7 @@ public:
 		m_tGoalType			= eGoalTypeMental;
 		m_bCompleted		= true;
 	}
+
 
 	IC		void			initialize				()
 	{

@@ -130,7 +130,10 @@ public:
 	virtual	bool			bfAssignMovement				(CEntityAction	*tpEntityAction);
 	virtual	bool			bfAssignObject					(CEntityAction	*tpEntityAction);
 	virtual	bool			bfAssignWatch					(CEntityAction	*tpEntityAction);
+	virtual bool			bfAssignAnimation				(CEntityAction  *tpEntityAction);
 
+	virtual void			ProcessScripts					();
+	
 	// ---------------------------------------------------------------------------------
 	
 	virtual void			ProcessTurn						() {}
@@ -174,7 +177,7 @@ public:
 			void			GetStepSound					(EMotionAnim a, float &vol, float &freq);
 	
 	// Velocity management
-			void			SetupVelocityMasks				(bool force_real_speed);
+			void			TranslateActionToVelocityMasks	(bool force_real_speed);
 			void			UpdateVelocityWithPath			();
 			void			UpdateActionWithPath			();
 			void			UpdatePathWithAction			();
@@ -250,6 +253,9 @@ public:
 	float					anim_speed;
 	void					SetAnimSpeed(float val) {anim_speed = val;}
 	CBlend					*cur_blend;
+	
+	EActivityState			mental_state;
+	float					GetAcceleration();
 
 
 #ifdef 	DEEP_TEST_SPEED

@@ -10,32 +10,18 @@ bool CAI_Biting::bfAssignMovement (CEntityAction *tpEntityAction)
 		return		(false);
 
 	CMovementAction	&l_tMovementAction	= tpEntityAction->m_tMovementAction;
-	MotionMan.m_tAction = EAction(l_tMovementAction.m_tActState);
+	// translate script.action into MotionMan.action
+	switch (l_tMovementAction.m_tMoveAction) {
+	case eMA_WalkFwd:	MotionMan.m_tAction = ACT_WALK_FWD;		break;
+	case eMA_WalkBkwd:	MotionMan.m_tAction = ACT_WALK_BKWD;	break;
+	case eMA_Run:		MotionMan.m_tAction = ACT_RUN;			break;
+	case eMA_Drag:		MotionMan.m_tAction = ACT_DRAG;			break;
+	case eMA_Jump:		MotionMan.m_tAction = ACT_JUMP;			break;
+	case eMA_Steal:		MotionMan.m_tAction = ACT_STEAL;		break;
+	}
 
-	// pre-update path parameters
-	CMonsterMovement::Frame_Init();
-	CDetailPathManager::set_use_dest_orientation(false);
-
-	SetupVelocityMasks			(l_tMovementAction.m_tActTypeEx == eAT_ForceMovementType);
-
-	Frame_Update				();
-
-	UpdateActionWithPath		();
-	MotionMan.ProcessAction		();
-
-	UpdateVelocityWithPath		();
-
-	CMonsterMovement::Frame_Finalize				();
-
-//	// Show patrol path
-//	HDebug->L_Clear();
-//	const CLevel::SPath *P = CPatrolPathManager::get_path();
-//	for (u32 i=0; i < P->tpaWayPoints.size(); i++) {
-//		HDebug->L_AddPoint(P->tpaWayPoints[i].tWayPoint, 0.35f, D3DCOLOR_XRGB(0,255,255));
-//	}
-//
-//	HDebug->SetActive();
-
+	TranslateActionToVelocityMasks(l_tMovementAction.m_tSpeedParam == eSP_ForceSpeed);
+	
 	return			(true);		
 }
 
@@ -46,23 +32,23 @@ bool CAI_Biting::bfAssignObject(CEntityAction *tpEntityAction)
 	if (!inherited::bfAssignObject(tpEntityAction))
 		return	(false);
 
-	CObjectAction	&l_tObjectAction = tpEntityAction->m_tObjectAction;
-	if (!l_tObjectAction.m_tpObject)
-		return	(false == (l_tObjectAction.m_bCompleted = true));
-
-	CEntityAlive	*l_tpEntity		= dynamic_cast<CEntityAlive*>(l_tObjectAction.m_tpObject);
-	if (!l_tpEntity) return	(false == (l_tObjectAction.m_bCompleted = true));
-
-	switch (l_tObjectAction.m_tGoalType) {
-		case eObjectActionTake: 
-			m_PhysicMovementControl->PHCaptureObject(l_tpEntity);
-			break;
-		case eObjectActionDrop: 
-			m_PhysicMovementControl->PHReleaseObject();
-			break;
-	}
-	
-	l_tObjectAction.m_bCompleted = true;
+//	CObjectAction	&l_tObjectAction = tpEntityAction->m_tObjectAction;
+//	if (!l_tObjectAction.m_tpObject)
+//		return	(false == (l_tObjectAction.m_bCompleted = true));
+//
+//	CEntityAlive	*l_tpEntity		= dynamic_cast<CEntityAlive*>(l_tObjectAction.m_tpObject);
+//	if (!l_tpEntity) return	(false == (l_tObjectAction.m_bCompleted = true));
+//
+//	switch (l_tObjectAction.m_tGoalType) {
+//		case eObjectActionTake: 
+//			m_PhysicMovementControl->PHCaptureObject(l_tpEntity);
+//			break;
+//		case eObjectActionDrop: 
+//			m_PhysicMovementControl->PHReleaseObject();
+//			break;
+//	}
+//	
+//	l_tObjectAction.m_bCompleted = true;
 	return	(true);
 }
 
@@ -92,4 +78,49 @@ bool CAI_Biting::bfAssignWatch(CEntityAction *tpEntityAction)
 	
 	return		(!l_tWatchAction.m_bCompleted);
 }
+
+bool CAI_Biting::bfAssignAnimation(CEntityAction *tpEntityAction)
+{
+	if (!inherited::bfAssignAnimation(tpEntityAction))
+		return			(false);
+
+	CAnimationAction	&l_tAnimAction	= tpEntityAction->m_tAnimationAction;
+	// translate animation.action into MotionMan.action
+	switch (l_tAnimAction.m_tAnimAction) {
+	case eAA_StandIdle:		MotionMan.m_tAction = ACT_STAND_IDLE;	break;
+	case eAA_SitIdle:		MotionMan.m_tAction = ACT_SIT_IDLE;		break;
+	case eAA_LieIdle:		MotionMan.m_tAction = ACT_LIE_IDLE;		break;
+	case eAA_Eat:			MotionMan.m_tAction = ACT_EAT;			break;
+	case eAA_Sleep:			MotionMan.m_tAction = ACT_SLEEP;		break;
+	case eAA_Rest:			MotionMan.m_tAction = ACT_REST;			break;
+	case eAA_Attack:		MotionMan.m_tAction = ACT_ATTACK;		break;
+	case eAA_LookAround:	MotionMan.m_tAction = ACT_LOOK_AROUND;	break;
+	case eAA_Turn:			MotionMan.m_tAction = ACT_TURN;			break;
+	}
+	
+	return				(true);
+}
+
+
+void CAI_Biting::ProcessScripts()
+{
+	CMonsterMovement::Frame_Init				();
+	CDetailPathManager::set_use_dest_orientation(false);
+	
+	inherited::ProcessScripts					();
+	MotionMan.ProcessAction						();
+
+	UpdatePathWithAction						();
+
+	if (CMonsterMovement::is_path_targeted())
+		UpdateTargetVelocityWithPath			();
+
+	// построить путь
+	CMonsterMovement::Frame_Update				();
+
+	// установить текущую скорость
+	CMonsterMovement::Frame_Finalize			();
+
+}
+
 

@@ -36,7 +36,6 @@ void CAI_Biting::Think()
 		CurrentState->Reset					();
 		SetState							(stateRest);
 	}
-
 	
 	// Squad calculations
 	CMonsterSquad	*pSquad = Level().SquadMan.GetSquad((u8)g_Squad());
@@ -145,11 +144,10 @@ void CAI_Biting::UpdatePathWithAction()
 
 void CAI_Biting::UpdateTargetVelocityWithPath()
 {
-	float accelaration	= 3.5f;
-	float dist_to_end	= (m_velocity_linear.current * m_velocity_linear.current) / accelaration;
+	float acceleration	= GetAcceleration();
+	float dist_to_end	= (m_velocity_linear.current * m_velocity_linear.current) / acceleration;
 	
 	if (IsPathEnd(dist_to_end) && IsMovingOnPath()) {
-		Msg("Cur Dist = [%f]", dist_to_end);
 		m_velocity_linear.target = 0.f;
 	}
 }

@@ -30,7 +30,6 @@ void CMonsterMovement::Init()
 
 	m_velocity_linear.set			(0.f,0.f);
 	m_velocity_angular.set			(0.f,0.f);
-	m_accel							= 0.f;
 }
 
 //////////////////////////////////////////////////////////////////////////
@@ -204,7 +203,7 @@ void CMonsterMovement::SetPathParams(u32 dest_vertex_id, const Fvector &dest_pos
 	set_dest_position(dest_pos);
 	set_path_type (CMovementManager::ePathTypeLevelPath);
 
-	pMonster->SetupVelocityMasks(false);
+	pMonster->TranslateActionToVelocityMasks(false);
 }
 
 void CMonsterMovement::SetSelectorPathParams()
@@ -215,7 +214,7 @@ void CMonsterMovement::SetSelectorPathParams()
 	// использовать при установке селектора: true - использовать путь найденный селектором, false - селектор находит тольтко ноду, путь строит BuildLevelPath
 	use_selector_path(true);
 
-	pMonster->SetupVelocityMasks(false);
+	pMonster->TranslateActionToVelocityMasks(false);
 }
 
 
@@ -224,10 +223,10 @@ void CMonsterMovement::WalkNextGraphPoint()
 	set_path_type		(CMovementManager::ePathTypeGamePath);
 	set_selection_type	(CMovementManager::eSelectionTypeRandomBranching);
 
-	pMonster->SetupVelocityMasks(false);
+	pMonster->TranslateActionToVelocityMasks(false);
 }
 
 void CMonsterMovement::update_velocity()
 {
-	velocity_lerp	(m_velocity_linear.current, m_velocity_linear.target, m_accel, Device.fTimeDelta);
+	velocity_lerp	(m_velocity_linear.current, m_velocity_linear.target, pMonster->GetAcceleration(), Device.fTimeDelta);
 }

@@ -103,30 +103,35 @@ namespace MonsterSpace {
 		eMentalStateDummy = u32(-1),
 	};
 
-	enum EActState {
-		eActStandIdle = u32(0), // movement parameter (body state)
-		eActSitIdle,			// movement parameter (body state)
-		eActLieIdle,			// movement parameter (body state)
-		eActWalkFwd,			// movement parameter
-		eActWalkBkwd,			// movement parameter
-		eActRun,				// movement parameter
-		eActEat,				// object parameter
-		eActSleep,				// animation parameter (a-la mental state)
-		eActRest,				// animation parameter (a-la mental state)
-		eActDrag,				// object parameter
-		eActAttack,				// object parameter
-		eActSteal,				// animation parameter (a-la mental state)
-		eActLookAround,			// watch parameter
-		eActJump,				// movement parameter
-		eActTurn,
-		eActNone	 = u32(-1),	
+	enum EScriptMonsterMoveAction {
+		eMA_WalkFwd,
+		eMA_WalkBkwd,
+		eMA_Run,
+		eMA_Drag,
+		eMA_Jump,
+		eMA_Steal
 	};
 	
-	enum EActTypeEx {
-		eAT_Default				= u32(0),
-		eAT_ForceMovementType,	
-		eAT_None				= u32(-1),
+
+	enum EScriptMonsterSpeedParam {
+		eSP_Default				= u32(0),
+		eSP_ForceSpeed,	
+		eSP_None				= u32(-1),
 	};
+
+	enum EScriptMonsterAnimAction {
+		eAA_StandIdle, 
+		eAA_SitIdle,			
+		eAA_LieIdle,			
+		eAA_Eat,				
+		eAA_Sleep,				
+		eAA_Rest,				
+		eAA_Attack,				
+		eAA_LookAround,
+		eAA_Turn,
+		eAA_NoAction			= u32(-1)
+	};
+
 
 	enum EMonsterSounds {
 		eMonsterSoundIdle		= u32(0),

@@ -61,3 +61,5 @@ IC void velocity_lerp(float &_cur, float _target, float _accel, float _dt)
 		if (_cur < 0) _cur = 0.f;
 	}
 }
+
+

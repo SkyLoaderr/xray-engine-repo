@@ -19,6 +19,10 @@ void CAI_Biting::feel_sound_new(CObject* who, int eType, const Fvector &Position
 	if (!g_Alive())
 		return;
 
+	CScriptMonster	*script_monster = dynamic_cast<CScriptMonster*>(this);
+	if (script_monster)
+		script_monster->sound_callback(who,eType,Position,power);
+
 	// ignore sounds from team
 	CEntityAlive* E = dynamic_cast<CEntityAlive*> (who);
 	if (E && (E->g_Team() == g_Team()) || (this == who)) return;
@@ -101,9 +105,14 @@ void CAI_Biting::HitSignal(float amount, Fvector& vLocalDir, CObject* who, s16 e
 	else if ((yaw >= 3 * PI_DIV_4) && (yaw <= 5*PI_DIV_4)) hit_side = eSideBack;
 	else if ((yaw >= 5 * PI_DIV_4) && (yaw <= 7*PI_DIV_4)) hit_side = eSideRight;
 
-	MotionMan.FX_Play(hit_side, 1.0f);
+	//MotionMan.FX_Play(hit_side, 1.0f);
 
 	AddDangerousEnemy(who,20000);
+
+	CScriptMonster	*script_monster = dynamic_cast<CScriptMonster*>(this);
+	if (script_monster)
+		script_monster->hit_callback(amount,vLocalDir,who,element);
+	
 }
 
 bool CAI_Biting::RayPickEnemy(const CObject *target_obj, const Fvector &trace_from, const Fvector &dir, float dist, float radius, u32 num_picks)

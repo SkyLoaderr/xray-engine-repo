@@ -63,6 +63,8 @@ void CAI_Biting::Init()
 
 	anim_speed						= -1.f;
 	cur_blend						= 0;
+
+	mental_state					= MS_Calm;
 }
 
 void CAI_Biting::reinit()
@@ -216,6 +218,12 @@ void CAI_Biting::LoadShared(LPCSTR section)
 
 	// --------------------------------------------------------------------------------
 
+	_sd->m_accel.generic			= pSettings->r_float(section, "Accel_Generic");
+	_sd->m_accel.aggressive			= pSettings->r_float(section, "Accel_Aggressive");
+
+	// --------------------------------------------------------------------------------
+
+
 	R_ASSERT2 (100 == (_sd->m_dwProbRestWalkFree + _sd->m_dwProbRestStandIdle + _sd->m_dwProbRestLieIdle + _sd->m_dwProbRestTurnLeft), "Probability sum isn't 1");
 }
 
@@ -367,7 +375,12 @@ void CAI_Biting::UpdateCL()
 
 	CMonsterMovement::update_velocity();
 	m_fCurSpeed		= m_velocity_linear.current;
-	m_body.speed	= m_velocity_angular.target * m_velocity_linear.current / (m_velocity_linear.target + EPS_L);
+
+	if (!fis_zero(m_velocity_linear.current))
+		m_body.speed	= m_velocity_angular.target * m_velocity_linear.current / (m_velocity_linear.target + EPS_L);
+	else 
+		m_body.speed	= m_velocity_angular.target;
+
 
 #ifdef DEBUG
 	HDebug->M_Update	();
@@ -533,5 +546,9 @@ float CAI_Biting::get_custom_pitch_speed(float def_speed)
 	return cur_speed;
 }
 
-
+float CAI_Biting::GetAcceleration()
+{
+	if (mental_state == MS_Aggressive) return _sd->m_accel.aggressive;
+	else return _sd->m_accel.generic;
+}
 

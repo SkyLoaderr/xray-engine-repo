@@ -6,6 +6,8 @@
 #include "ai_alife.h"
 #include "level_graph.h"
 
+#include "ai/chimera/ai_chimera.h"
+
 // Обработка нажатия клавиш
 void CLevel::IR_OnKeyboardPress(int key)
 {
@@ -123,33 +125,52 @@ void CLevel::IR_OnKeyboardPress(int key)
 		break;
 	}
 
-	
 
+	CObject			*obj		= Level().Objects.FindObjectByName("chimera");
+	CAI_Chimera		*monster	= dynamic_cast<CAI_Chimera *>(obj);
 
-// TEST	
-		
-	CObject			*obj	= Level().Objects.FindObjectByName("blood");
-	CEntityAlive	*pE		= dynamic_cast<CEntityAlive *>(obj);
-	Fvector dir, dir_inv;
-	dir.set(0.f,1.0f,0.f);
-	dir_inv.set(0.f,-1.0f,0.f);
-
-	if (pE) {
+	if (monster) {
 		switch (key) {
 		case DIK_1:
-			pE->m_pPhysicsShell->applyImpulse(dir, 5.0f * pE->m_pPhysicsShell->getMass());
+			monster->TTelekinesis::Activate();
 			break;
 		case DIK_2:
-			pE->m_pPhysicsShell->applyImpulse(dir_inv, 1.5f * pE->m_pPhysicsShell->getMass());
+			monster->TTelekinesis::Throw(Level().CurrentEntity()->Position());			
 			break;
-		case DIK_9:
-			pE->m_pPhysicsShell->set_ApplyByGravity(TRUE);
-			break;
-		case DIK_0:
-			pE->m_pPhysicsShell->set_ApplyByGravity(FALSE);
+		case DIK_3:
+			monster->TTelekinesis::Deactivate();
 			break;
 		}
 	}
+
+
+
+//////////////////////////////////////////////////////////////////////////
+//	TEST	
+//////////////////////////////////////////////////////////////////////////
+
+//	CObject			*obj	= Level().Objects.FindObjectByName("chimera");
+//	CEntityAlive	*pE		= dynamic_cast<CEntityAlive *>(obj);
+//	Fvector dir, dir_inv;
+//	dir.set(0.f,1.0f,0.f);
+//	dir_inv.set(0.f,-1.0f,0.f);
+//
+//	if (pE) {
+//		switch (key) {
+//		case DIK_1:
+//			pE->m_pPhysicsShell->applyImpulse(dir, 5.0f * pE->m_pPhysicsShell->getMass());
+//			break;
+//		case DIK_2:
+//			pE->m_pPhysicsShell->applyImpulse(dir_inv, 1.5f * pE->m_pPhysicsShell->getMass());
+//			break;
+//		case DIK_9:
+//			pE->m_pPhysicsShell->set_ApplyByGravity(TRUE);
+//			break;
+//		case DIK_0:
+//			pE->m_pPhysicsShell->set_ApplyByGravity(FALSE);
+//			break;
+//		}
+//	}
 
 
 //	//////////////////////////////////////////////////////////////////////////
