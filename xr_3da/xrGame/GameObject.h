@@ -25,7 +25,6 @@ public:
 	// Methods
 	virtual BOOL			net_Spawn			(LPVOID DC);
 	virtual void			net_Destroy			();
-	virtual void			net_Event			(NET_Packet& P);
 	virtual BOOL			net_Relevant		()	{ return getLocal() && getActive();	}	// send messages only if active and local
 
 	virtual BOOL			Ready				()	{ return getReady() && getActive();	}	// update only if active and fully initialized by/for network

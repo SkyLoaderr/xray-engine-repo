@@ -24,7 +24,7 @@ void CLevel::ClientReceive()
 			game_configured			= TRUE;
 			break;
 		case M_EVENT:
-			game_events.insert		(P);
+			game_events.insert		(*P);
 			break;
 		case M_MIGRATE_DEACTIVATE:	// TO:   Changing server, just deactivate
 			{
