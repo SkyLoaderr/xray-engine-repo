@@ -53,7 +53,6 @@ class CHeightMap
 	CHM_Dynamic					hm_dynamic;
 	DWORD						dwFrame;
 public:
-	void						Update		();
 	float						Query		(Fvector2& pos);				// 2D query
 	Fvector						Query		(Fvector& pos, Fvector& dir);	// 3D ray-query
 };

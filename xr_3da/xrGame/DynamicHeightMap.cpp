@@ -122,11 +122,30 @@ void CHM_Static::Update	()
 
 float CHM_Static::Query	(Fvector2& pos)
 {
+	// base slot
 	int			v_x		= iFloor(pos.x/dhm_size);
 	int			v_z		= iFloor(pos.z/dhm_size);
 	int			dx		= v_x - c_x;
 	int			dz		= v_z - c_z;
 	int			gx		= dx  - dhm_line;	clamp(gx,0,dhm_matrix-1);
 	int			gz		= dz  - dhm_line;	clamp(gz,0,dhm_matrix-1);
+	Slot*		S		= data[gz][gx];
 	
+	// precision
+	float		ostX	= pos.x-v_x*dhm_size;
+	float		ostZ	= pos.x-v_x*dhm_size;
+	int			px		= iFloor(dhm_precision*ostX/dhm_size);	clamp(px,0,dhm_precision-1);
+	int			pz		= iFloor(dhm_precision*ostZ/dhm_size);	clamp(pz,0,dhm_precision-1);
+	return		S->data	[pz][px];
+}
+
+//
+float CHeightMap::Query	()
+{
+	if (dwFrame!=Device.dwFrame)
+	{
+		dwFrame = Device.dwFrame;
+		hm_static.Update	();
+		hm_dynamic.Update	();
+	}
 }
