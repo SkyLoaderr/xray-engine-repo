@@ -8,8 +8,10 @@
 
 #include "stdafx.h"
 #include "xr_ini.h"
+#include "xrLevel.h"
 
 #include "xrGraph.h"
+
 typedef struct tagSLevel {
 	string64	caLevelName;
 	u32			tLevelID;
@@ -127,7 +129,7 @@ void xrMergeGraphs()
 	CFS_Memory						F;
 	SGraphHeader					tGraphHeader;
 	tGraphHeader.dwLevelCount		= tpGraphs.size();
-	tGraphHeader.dwVersion			= GRAPH_VERSION;
+	tGraphHeader.dwVersion			= XRAI_CURRENT_VERSION;
 	tGraphHeader.dwVertexCount		= (dwOffset *= sizeof(SCompressedGraphVertex));
 	F.write							(&tGraphHeader,sizeof(tGraphHeader));
 	{

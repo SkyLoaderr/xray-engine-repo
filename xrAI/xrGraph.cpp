@@ -297,7 +297,7 @@ void vfSaveGraph(LPCSTR name)
 	CFS_Memory	tGraph;
 	tGraphHeader.dwVersion		= m_header.version;
 	tGraphHeader.dwVertexCount	= tpaGraph.size();
-	tGraphHeader.dwLevelCount	= GRAPH_VERSION;
+	tGraphHeader.dwLevelCount	= XRAI_CURRENT_VERSION;
 	tGraph.write(&tGraphHeader,sizeof(SGraphHeader));	
 	Progress(0.0f);
 	SCompressedGraphVertex tCompressedGraphVertex;

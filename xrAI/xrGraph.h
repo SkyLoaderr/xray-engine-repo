@@ -9,7 +9,6 @@
 #ifndef __XRAI_XR_GRAPH__
 #define __XRAI_XR_GRAPH__
 
-#define GRAPH_VERSION		1
 #pragma pack(push,4)
 typedef struct tagSGraphEdge {
 	u32		dwVertexNumber;
