@@ -51,11 +51,8 @@ int mini_max(u8 ucDepth, u8 ucEmpties, TBoardCell tColor, char cCurrentValue)
 				-cCurrentValue
 			);
 
-			if (tValue > tBest) {
-//				if (i)
-					vfMoveToFrontByIndex(i,tpStartMove,*tpCurMove);
+			if (tValue > tBest)
 				tBest				= tValue;
-			}
 
 			vfUndo					(dwFlipCount, tOpponentColor);
 			cCurrentValue			= cSafeValue;
