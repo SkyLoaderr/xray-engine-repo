@@ -64,20 +64,30 @@ MODEL::~MODEL()
 	if (verts)	{ cl_free(verts);	verts=0;	verts_count=0;	}
 }
 
-void	MODEL::build(Fvector* V, int Vcnt, TRI* T, int Tcnt)
+DWORD	MODEL::build(Fvector* V, int Vcnt, TRI* T, int Tcnt)
 {
 	// verts
 	verts_count	= Vcnt;
 	verts		= cl_alloc<Fvector>	(verts_count);
+	if (0==verts)	return err_memory_0;
 	CopyMemory	(verts,V,verts_count*sizeof(Fvector));
 	
 	// tris
 	tris_count	= Tcnt;
 	tris		= cl_alloc<TRI>		(tris_count);
+	if (0==tris)	{
+		cl_free		(verts);
+		return		err_memory_1;
+	}
 	CopyMemory	(tris,T,tris_count*sizeof(TRI));
 	
 	// Allocate temporary "OPCODE" tris + convert tris to 'pointer' form
 	DWORD*		temp_tris	= cl_alloc<DWORD>	(tris_count*3);
+	if (0==temp_tris)	{
+		cl_free		(verts);
+		cl_free		(tris);
+		return		err_memory_2;
+	}
 	DWORD*		temp_ptr	= temp_tris;
 	for (int i=0; i<tris_count; i++)
 	{
@@ -97,11 +107,20 @@ void	MODEL::build(Fvector* V, int Vcnt, TRI* T, int Tcnt)
 	OPCC.NoLeaf		= true;
 	OPCC.Quantized	= false;
 	tree			= new OPCODE_Model;
-	tree->Build		(OPCC);
+	if (!tree->Build(OPCC)) 
+	{
+		cl_free		(verts);
+		cl_free		(tris);
+		cl_free		(temp_tris);
+		return		err_build;
+	};
+
 
 	// Free temporary tris
 	cl_free			(temp_tris);
+	return err_ok;
 }
+
 DWORD MODEL::memory()
 {
 	DWORD V = verts_count*sizeof(Fvector);

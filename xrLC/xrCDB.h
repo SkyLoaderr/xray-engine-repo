@@ -28,7 +28,7 @@ namespace CDB
 	template <class T>
 	IC T*	cl_alloc	(u32 count)
 	{
-		return (T*) HeapAlloc	(GetProcessHeap(),HEAP_GENERATE_EXCEPTIONS,count*sizeof(T));
+		return (T*) HeapAlloc	(GetProcessHeap(),0,count*sizeof(T));
 	}
 	template <class T>
 	IC void cl_free		(T* P)
@@ -73,7 +73,7 @@ namespace CDB
 
 		IC TRI*			get_tris	()	{ return tris;	}
 
-		virtual void	build		(Fvector* V, int Vcnt, TRI* T, int Tcnt);
+		virtual DWORD	build		(Fvector* V, int Vcnt, TRI* T, int Tcnt);
 		virtual DWORD	memory		();
 	};
 
@@ -127,13 +127,19 @@ namespace CDB
 
 		IC void			r_clear			()	{	rd_count = 0;				};
 	};
+
+	const DWORD			err_ok			= 0;
+	const DWORD			err_memory_0	= 1;
+	const DWORD			err_memory_1	= 2;
+	const DWORD			err_memory_2	= 3;
+	const DWORD			err_build		= 4;
 };
 
 extern "C" 
 {
 	XRCDB_API	void*	__cdecl		cdb_model_create	();
 	XRCDB_API	void	__cdecl		cdb_model_destroy	(void*);
-	XRCDB_API	void	__cdecl		cdb_model_build		(CDB::MODEL *m_def, Fvector* V, int Vcnt, CDB::TRI* T, int Tcnt);
+	XRCDB_API	DWORD	__cdecl		cdb_model_build		(CDB::MODEL *m_def, Fvector* V, int Vcnt, CDB::TRI* T, int Tcnt);
 	XRCDB_API	void*	__cdecl		cdb_collider_create	();
 	XRCDB_API	void	__cdecl		cdb_collider_destroy(void*);
 	XRCDB_API	void	__cdecl		cdb_query_ray		(const CDB::COLLIDER* C, const CDB::MODEL *m_def, const Fvector& r_start,  const Fvector& r_dir, float r_range = 10000.f);
