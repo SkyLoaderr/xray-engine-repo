@@ -65,10 +65,11 @@ void __stdcall ContactShotMark(CDB::TRI* T,dContactGeom* c)
 					if(!mtl_pair->CollideSounds.empty())
 					{
 						ref_sound& sound= SELECT_RANDOM1(mtl_pair->CollideSounds);
-						sound.set_volume(collide_volume_min+vel_cret*(collide_volume_max-collide_volume_min)/(_sqrt(mass_limit)*default_l_limit-vel_cret_sound));
+						float volume=collide_volume_min+vel_cret*(collide_volume_max-collide_volume_min)/(_sqrt(mass_limit)*default_l_limit-vel_cret_sound);
 						::Sound->play_at_pos(
 							 sound,0,*((Fvector*)c->pos)
 							);
+						sound.set_volume(volume);
 					}
 				}
 

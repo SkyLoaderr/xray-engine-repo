@@ -985,7 +985,7 @@ void CCC_RegisterCommands()
 	CMD4( CCC_FloatBlock,		"ph_break_common_factor",		&phBreakCommonFactor		,			0.f		,1000000000.f	);
 	CMD4( CCC_FloatBlock,		"ph_rigid_break_weapon_factor",	&phRigidBreakWeaponFactor	,			0.f		,1000000000.f	);
 	CMD4(CCC_FloatBlock,		"snd_collide_max_volume",		&collide_volume_max			,			1.f		,5000.f			);
-	CMD4(CCC_FloatBlock,		"snd_collide_min_volume",		&collide_volume_min 		,			1.f		,5000.f			);
+	CMD4(CCC_FloatBlock,		"snd_collide_min_volume",		&collide_volume_min 		,			0.f		,5000.f			);
 	// Mad Max
 	// Net Interpolation
 	CMD4(CCC_Float,					"net_cl_interpolation",		&g_cl_lvInterp,				-1,1);
