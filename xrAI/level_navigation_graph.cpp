@@ -371,24 +371,30 @@ const _use_type right	= 1 << 1;
 const _use_type down	= 1 << 2;
 const _use_type left	= 1 << 3;
 
-IC	u32	CLevelNavigationGraph::vertex_id		(const CCellVertex &vertex) const
+ICF	u32	CLevelNavigationGraph::vertex_id		(const CCellVertex &vertex) const
 {
 	return			(u32(&vertex - &*m_cross.begin()));
 }
 
-IC	u32	CLevelNavigationGraph::vertex_id		(const CCellVertex *vertex) const
+ICF	u32	CLevelNavigationGraph::vertex_id		(const CCellVertex *vertex) const
 {
 	return			(vertex_id(*vertex));
 }
 
-IC	u32	CLevelNavigationGraph::vertex_id		(const CROSS_TABLE::const_iterator &vertex) const
+ICF	u32	CLevelNavigationGraph::vertex_id		(const CROSS_TABLE::const_iterator &vertex) const
 {
 	return			(vertex_id(*vertex));
 }
 
-IC	u32	CLevelNavigationGraph::vertex_id		(const CROSS_PTABLE::const_iterator &vertex) const
+ICF	u32	CLevelNavigationGraph::vertex_id		(const CROSS_PTABLE::const_iterator &vertex) const
 {
 	return			(vertex_id(**vertex));
+}
+
+ICF	bool CLevelNavigationGraph::check_left(u32 vertex_id, u32 left_vertex_id) const
+{
+	u32				link = vertex(vertex_id)->link(3);
+	return			((left_vertex_id == link) && valid_vertex_id(link) && (vertex(link)->link(1) == vertex_id));
 }
 
 IC	void CLevelNavigationGraph::fill_cell		(u32 start_vertex_id, u32 link)
@@ -398,8 +404,7 @@ IC	void CLevelNavigationGraph::fill_cell		(u32 start_vertex_id, u32 link)
 		if (!valid_vertex_id(vertex_id))
 			break;
 
-		if (m_cross[vertex_id].m_mark)
-			break;
+		VERIFY				(!m_cross[vertex_id].m_mark);
 
 		if (vertex(vertex_id)->link((link + 2) & 3) != current_vertex_id)
 			break;
@@ -407,22 +412,50 @@ IC	void CLevelNavigationGraph::fill_cell		(u32 start_vertex_id, u32 link)
 		current_vertex_id	= vertex_id;
 	}
 
-	u32						last_vertex_id = current_vertex_id;
 	current_vertex_id		= start_vertex_id;
 	for (u32 j=0; j<i; ++j) {
 		m_cross[current_vertex_id].m_dirs[link-1] = u16(i-j);
-		m_cross[current_vertex_id].m_dirs_id[link-1] = last_vertex_id;
 		current_vertex_id	= vertex(current_vertex_id)->link(link);
 	}
 }
 
+IC	void CLevelNavigationGraph::fill_cell		(u32 start_vertex_id)
+{
+	u32							left_current_vertex_id = vertex(start_vertex_id)->link(3);
+	if (!valid_vertex_id(left_current_vertex_id) || (vertex(left_current_vertex_id)->link(1) != start_vertex_id)) {
+		m_cross[start_vertex_id].m_down_left = 1;
+		return;
+	}
+
+	u32							current_vertex_id = start_vertex_id;
+	u32							n = m_cross[start_vertex_id].m_down;
+	u32							i = 1;
+	for ( ; i<n; ++i) {
+		u32						vertex_id = vertex(current_vertex_id)->link(2);
+		u32						left_vertex_id = vertex(left_current_vertex_id)->link(2);
+		if (!check_left(vertex_id,left_vertex_id))
+			break;
+		current_vertex_id		= vertex_id;
+		left_current_vertex_id	= left_vertex_id;
+	}
+
+	current_vertex_id			= start_vertex_id;
+	for (u32 j=0; j<i; ++j) {
+		m_cross[current_vertex_id].m_down_left = u16(i-j);
+		current_vertex_id		= vertex(current_vertex_id)->link(2);
+	}
+}
+
 struct sort_cells_predicate {
-	IC	bool	operator()	(const CLevelNavigationGraph::CCellVertex *v0, const CLevelNavigationGraph::CCellVertex *v1) const
+	ICF	bool	operator()	(const CLevelNavigationGraph::CCellVertex *v0, const CLevelNavigationGraph::CCellVertex *v1) const
 	{
-//		u32					square0 = v0->m_all_computed_dirs ? v0->m_computed_down*v0->m_computed_right : v0->m_down*v0->m_right;
-//		u32					square1 = v1->m_all_computed_dirs ? v1->m_computed_down*v1->m_computed_right : v1->m_down*v1->m_right;
-//		return				(square0 > square1);
+#if 0
+		u32					square0 = v0->m_all_computed_dirs ? v0->m_computed_down*v0->m_computed_right : v0->m_down*v0->m_right;
+		u32					square1 = v1->m_all_computed_dirs ? v1->m_computed_down*v1->m_computed_right : v1->m_down*v1->m_right;
+		return				(square0 > square1);
+#else
 		return				(v0->m_down*v0->m_right > v1->m_down*v1->m_right);
+#endif
 	}
 };
 
@@ -430,10 +463,11 @@ IC	void CLevelNavigationGraph::fill_cells		()
 {
 	m_temp.resize			(m_cross.size());
 	
+	const_vertex_iterator	i = begin();
 	CROSS_TABLE::iterator	J = m_cross.begin();
 	CROSS_PTABLE::iterator	I = m_temp.begin();
 	CROSS_PTABLE::iterator	E = m_temp.end();
-	for ( ; I != E; ++I, ++J)
+	for ( ; I != E; ++I, ++J, ++i)
 		*I					= &*J;
 		
 	for (I = m_temp.begin(); I != E; ++I) {
@@ -441,37 +475,87 @@ IC	void CLevelNavigationGraph::fill_cells		()
 			fill_cell		(vertex_id(I),1);
 		if (!(*I)->m_down)
 			fill_cell		(vertex_id(I),2);
+		if (!(*I)->m_down_left)
+			fill_cell		(vertex_id(I));
 	}
 
 	std::sort				(m_temp.begin(),m_temp.end(),sort_cells_predicate());
 }
 
 struct remove_cell_preciate {
-	IC	bool	operator()	(const CLevelNavigationGraph::CCellVertex *&v) const
+	ICF	bool	operator()	(const CLevelNavigationGraph::CCellVertex *&v) const
 	{
 		return	(!!v->m_mark);
 	}
 };
 
+struct find_cell_predicate {
+	ICF		bool	operator()			(const CLevelNavigationGraph::CCellVertex *v, u32 square) const
+	{
+		return	(u32(v->m_right)*u32(v->m_down) > square);
+	}
+};
+
+#define KEEP_SORTED
+
+ICF	void CLevelNavigationGraph::order_move		(u32 vertex_id, u32 index, u16 value)
+{
+#if 0
+	{
+		CROSS_PTABLE::iterator	E = m_temp.end();
+		CROSS_PTABLE::iterator	I = m_temp.begin(), J = I + 1;
+		for ( ; J != E; ++I, ++J)
+			VERIFY			((*I)->m_right*(*I)->m_down >= (*J)->m_right*(*J)->m_down);
+	}
+#endif
+
+#ifdef KEEP_SORTED
+	CCellVertex				&cell = m_cross[vertex_id];
+	CROSS_PTABLE::iterator	E = m_temp.end();
+	CROSS_PTABLE::iterator	I = std::lower_bound(m_temp.begin(),m_temp.end(),cell.m_right*cell.m_down,find_cell_predicate());
+	bool					found = false;
+	for ( ; I != E; ++I) {
+		if (*I == &cell) {
+			found			= true;
+			break;
+		}
+	}
+	VERIFY					(found);
+	
+	u16						new_value = cell.m_dirs[index ^ 1]*value;
+	VERIFY					(new_value <= cell.m_right*cell.m_down);
+
+	CROSS_PTABLE::iterator	K = I, J = std::lower_bound(I,m_temp.end(),new_value,find_cell_predicate());
+	VERIFY					(I<=J);
+	if (I != J) {
+		for (++I; I != J; ++I)
+			*(I-1)			= *I;
+
+		if (J == E)
+			m_temp.back()	= &cell;
+		else
+			*(J-1)			= &cell;
+	}
+#endif
+	cell.m_dirs[index]		= value;
+
+#if 1
+	if (m_temp.size() == 1)
+		return;
+
+	{
+		CROSS_PTABLE::iterator	E = m_temp.end();
+		CROSS_PTABLE::iterator	I = m_temp.begin(), J = I + 1;
+		for ( ; J != E; ++I, ++J)
+			VERIFY			((*I)->m_right*(*I)->m_down >= (*J)->m_right*(*J)->m_down);
+	}
+#endif
+}
+
 IC	void CLevelNavigationGraph::update_cell		(u32 start_vertex_id, u32 link)
 {
-	u32								set_id = vertex(start_vertex_id)->link(link);
-	if (!valid_vertex_id(set_id))
-		return;
-
-	if (m_cross[set_id].m_mark)
-		return;
-
-	if (vertex(set_id)->link((link + 2) & 3) != start_vertex_id)
-		return;
-
-	for (u32 current_vertex_id = set_id, i = 1, index = (link + 1) & 3; ;++i) {
-		CCellVertex					&cell = m_cross[current_vertex_id];
-		cell.m_dirs[index]			= (u16)i;
-		cell.m_dirs_id[index]		= (u16)set_id;
-		cell.m_all_computed_dirs	= 0;
-
-		u32							vertex_id = vertex(current_vertex_id)->link(link);
+	for (u32 current_vertex_id = start_vertex_id, i = 1, index = (link + 1) & 3; ;++i) {
+		u32									vertex_id = vertex(current_vertex_id)->link(link);
 		if (!valid_vertex_id(vertex_id))
 			break;
 
@@ -481,33 +565,28 @@ IC	void CLevelNavigationGraph::update_cell		(u32 start_vertex_id, u32 link)
 		if (vertex(vertex_id)->link((link + 2) & 3) != current_vertex_id)
 			break;
 
-		current_vertex_id			= vertex_id;
+		order_move							(vertex_id,index,(u16)i);
+		current_vertex_id					= vertex_id;
 	}
 }
 
 IC	void CLevelNavigationGraph::update_cells	(u32 vertex_id, u32 right, u32 down)
 {
-	m_temp.erase				(remove_if(m_temp.begin(),m_temp.end(),remove_cell_preciate()),m_temp.end());
+	m_temp.erase			(remove_if(m_temp.begin(),m_temp.end(),remove_cell_preciate()),m_temp.end());
 
 	for (u32 right_id = vertex_id, i=0; i<right; right_id = vertex(right_id)->link(1), ++i)
-		update_cell				(right_id,0);
+		update_cell			(right_id,0);
 
 	for (u32 down_id = vertex_id, j=0; j<down; down_id = vertex(down_id)->link(2), ++j)
-		update_cell				(down_id,3);
+		update_cell			(down_id,3);
 
-	std::sort				(m_temp.begin(),m_temp.end(),sort_cells_predicate());
+//	std::sort				(m_temp.begin(),m_temp.end(),sort_cells_predicate());
 }
 
 IC	void CLevelNavigationGraph::select_sector	(CCellVertex *v, u32 &right, u32 &down, u32 max_square)
 {
+#ifdef _DEBUG
 	VERIFY					(!v->m_mark);
-
-#if 1
-	if (v->m_all_computed_dirs) {
-		right				= v->m_computed_right;
-		down				= v->m_computed_down;
-		return;
-	}
 #endif
 
 	if (v->m_right >= v->m_down) {
@@ -519,61 +598,24 @@ IC	void CLevelNavigationGraph::select_sector	(CCellVertex *v, u32 &right, u32 &d
 		down				= v->m_down;
 	}
 
-	bool					completed = true;
-	for	(u32 right_id = vertex(vertex_id(v))->link(1), i=2, min_side = v->m_down; ; right_id = vertex(right_id)->link(1), ++i) {
-		if (!valid_vertex_id(right_id))
+	for	(u32 right_id = vertex(vertex_id(v))->link(1), i=2, min_side = v->m_down; i<=v->m_right; right_id = vertex(right_id)->link(1), ++i) {
+#ifdef _DEBUG
+		VERIFY				(valid_vertex_id(right_id));
+		VERIFY				(!m_cross[right_id].m_mark);
+#endif
+
+		u32					current_down = _min(min_side,_min(m_cross[right_id].m_down_left,m_cross[right_id].m_down));
+		min_side			= current_down;
+		if (current_down*v->m_right <= max_square)
 			break;
 
-		if (m_cross[right_id].m_mark)
-			break;
+		if (i*current_down <= max_square)
+			continue;
 
-		u32					current_down = m_cross[right_id].m_down;
-
-		if (m_cross[right_id].m_down < min_side)
-			min_side		= m_cross[right_id].m_down;
-		else
-			current_down	= min_side;
-
-		if (current_down*v->m_right <= max_square) {
-			completed		= false;
-			break;
-		}
-
-		for	(u32 down_id = vertex(right_id)->link(2), j=2; j <= current_down; down_id = vertex(down_id)->link(2), ++j) {
-			if (m_cross[down_id].m_mark)
-				break;
-
-			u32				left_link = vertex(down_id)->link(3);
-			
-			if (!valid_vertex_id(left_link))
-				break;
-
-			if (vertex(left_link)->link(1) != down_id)
-				break;
-		}
-		--j;
-
-		if (j<min_side)
-			min_side		= j;
-
-		if (i*j > max_square) {
-			max_square		= i*j;
-			right			= i;
-			down			= j;
-		}
-
-		if (right_id == v->m_right_id)
-			break;
+		max_square			= i*current_down;
+		right				= i;
+		down				= current_down;
 	}
-
-	if (!completed)
-		return;
-
-	VERIFY					(!v->m_all_computed_dirs || (v->m_computed_right == right));
-	VERIFY					(!v->m_all_computed_dirs || (v->m_computed_down == down));
-
-	v->m_computed_right		= u16(right);
-	v->m_computed_down		= u16(down);
 }
 
 IC	bool CLevelNavigationGraph::select_sector	(u32 &vertex_id, u32 &right, u32 &down)
@@ -582,17 +624,15 @@ IC	bool CLevelNavigationGraph::select_sector	(u32 &vertex_id, u32 &right, u32 &d
 	CROSS_PTABLE::iterator	I = m_temp.begin();
 	CROSS_PTABLE::iterator	E = m_temp.end();
 	for ( ; I != E; ++I) {
+#ifdef KEEP_SORTED
 		if (u32((*I)->m_right)*u32((*I)->m_down) <= max_square)
 			return			(true);
+#endif
 
-//		bool				can_continue = !(*I)->m_all_computed_dirs;
 		select_sector		(*I,current_right,current_down,max_square);
 
 		if (current_right*current_down <= max_square)
-//			if (can_continue)
-				continue;
-//			else
-//				return		(!!max_square);
+			continue;
 
 		right				= current_right;
 		down				= current_down;
@@ -604,7 +644,7 @@ IC	bool CLevelNavigationGraph::select_sector	(u32 &vertex_id, u32 &right, u32 &d
 
 IC	void CLevelNavigationGraph::build_sector	(u32 vertex_id, u32 _right, u32 _down, u32 group_id)
 {
-	Msg							("* Sector %d (%3dx%3d)",_right*_down,_right,_down);
+	Msg							("* Sector %5d (%3dx%3d) %6d",_right*_down,_right,_down,vertex_id);
 	CCellVertex					*cell = 0;
 	u32							j, down_id, mask = left;
 	for (u32 right_id = vertex_id, i=0; i<_right; right_id = vertex(right_id)->link(1), ++i) {
@@ -650,8 +690,19 @@ IC	void CLevelNavigationGraph::generate_sectors()
 	finish					= CPU::GetCycleCount();
 	Msg						("* Filling cells (%f seconds)",CPU::cycles2seconds*float(finish - start));
 	
+#ifdef AI_COMPILER
+#	ifdef DEBUG
+	Phase					("generating sectors");
+	Progress				(0.f);
+#	endif
+#endif
 	while (select_sector(id,right,down)) {
 		build_sector		(id,right,down,++group_id);
+#ifdef AI_COMPILER
+#	ifdef DEBUG
+		Progress			(_sqr(float(m_global_count)/float(header().vertex_count())));
+#	endif
+#endif
 		update_cells		(id,right,down);
 	}
 	finish					= CPU::GetCycleCount();
