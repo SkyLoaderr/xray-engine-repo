@@ -349,8 +349,6 @@ CHelicopter::shedule_Update(u32	time_delta)
 				(d < m_max_rocket_dist) &&
 				(Device.dwTimeGlobal-m_last_rocket_attack > m_time_between_rocket_attack))
 			{
-				Log("-----rocket, dist=",d);
-				Log("-----rocket, time=",Device.dwTimeGlobal-m_last_rocket_attack);
 				startRocket(1);
 				startRocket(2);
 				m_last_rocket_attack = Device.dwTimeGlobal;
