@@ -696,7 +696,6 @@ function  add_to_binder(obj, char_ini)
 end
 ----------------------------------------------------------------------------------------------------------------------
 function set_follower (npc, enabled, leader_name, escape_path, raid_enabled, raid_path, raid_look, team)
-    printf ("XR_FOLLOWER:SET_FOLLOWER called for %s", npc:name ())
 	local char_ini = npc:spawn_ini()
 	local st = xr_motivator.storage[npc:id()].follower
 	local ptr = xr_motivator.storage[npc:id()].patrol
