@@ -157,7 +157,7 @@ public:
 	CPEDef*				GetDefinition		(){return m_Def;}
 
 	void				Play				();
-    void				Stop				(bool bFinishPlaying=true);
+    void				Stop				(BOOL bFinishPlaying=TRUE);
     BOOL				IsPlaying			(){return m_Flags.is(flPlaying);}
 };
 DEFINE_VECTOR			(PS::CPEDef*,PEDVec,PEDIt);

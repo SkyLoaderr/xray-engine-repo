@@ -8,6 +8,7 @@
 class ENGINE_API	IRenderable;
 class ENGINE_API	IRender_Visual;
 class ENGINE_API	IBlender;
+//class ENGINE_API	CPSLibrary;
 namespace PS	{ 
 	struct ENGINE_API SDef;
 	struct ENGINE_API SEmitter; 
@@ -191,6 +192,9 @@ public:
 	virtual void					rmNear					()										= 0;
 	virtual void					rmFar					()										= 0;
 	virtual void					rmNormal				()										= 0;
+
+	// Particle library
+//	virtual CPSLibrary*				ps_library				()										= 0;
 
 	// Constructor/destructor
 	virtual ~IRender_interface();

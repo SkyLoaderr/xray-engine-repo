@@ -60,7 +60,7 @@ public:
 	xr_vector<IDirect3DVertexBuffer9*>						VB;
 	xr_vector<IDirect3DIndexBuffer9*>						IB;
 	xr_vector<IRender_Visual*>								Visuals;
-	CPSLibrary												PSystems;
+	CPSLibrary												PSLibrary;
 
 	CLightDB_Static											L_DB;
 	CLightPPA_Manager										L_Dynamic;
@@ -129,6 +129,9 @@ public:
 	//
 	virtual IRender_ObjectSpecific*	ros_create				(IRenderable* parent);
 	virtual void					ros_destroy				(IRender_ObjectSpecific* &);
+
+	// Particle library
+	virtual CPSLibrary*				ps_library				(){return &PSLibrary;}
 
 	// Lighting
 	virtual IRender_Light*			light_create			();

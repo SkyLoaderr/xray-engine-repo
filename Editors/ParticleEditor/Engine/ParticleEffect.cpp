@@ -209,7 +209,7 @@ void CParticleEffect::Play()
 	m_Flags.set			(flPlaying,TRUE);
    	pStartPlaying		(m_HandleActionList);
 }
-void CParticleEffect::Stop(bool bFinishPlaying)
+void CParticleEffect::Stop(BOOL bFinishPlaying)
 {
 	if (bFinishPlaying){
 		m_Flags.set		(flDefferedStop,TRUE);

@@ -62,9 +62,7 @@ public:
 						~CParticleGroup	(){;}
 	void	 			OnFrame			(u32 dt);
 
-//	u32					RenderTO		(FVF::TL* V);
-//	virtual void		Render			(float LOD);
-	virtual void		Copy			(IRender_Visual* pFrom){;}
+	virtual void		Copy			(IRender_Visual* pFrom) {Debug.fatal("Can't duplicate particle system - NOT IMPLEMENTED");}
 
     void 				OnDeviceCreate	(){;}
     void 				OnDeviceDestroy	(){;}

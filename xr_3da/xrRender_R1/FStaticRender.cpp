@@ -37,13 +37,13 @@ void					CRender::model_Delete			(IRender_DetailModel* & F)
 }
 IRender_Visual*			CRender::model_CreatePS			(LPCSTR name, PS::SEmitter* E)	
 { 
-	PS::SDef*	source		= PSystems.FindPS	(name);
+	PS::SDef*	source		= PSLibrary.FindPS	(name);
 	VERIFY					(source);
 	return Models.CreatePS	(source,E);
 }
 IRender_Visual*			CRender::model_CreatePE			(LPCSTR name)	
 { 
-	PS::CPEDef*	source		= PSystems.FindPED	(name);
+	PS::CPEDef*	source		= PSLibrary.FindPED	(name);
 	VERIFY					(source);
 	return Models.CreatePE	(source);
 }
@@ -792,8 +792,8 @@ void CRender::OnDeviceCreate	()
 	L_Shadows.OnDeviceCreate	();
 	L_Projector.OnDeviceCreate	();
 
-	PSystems.OnCreate			();
-	PSystems.OnDeviceCreate		();
+	PSLibrary.OnCreate			();
+	PSLibrary.OnDeviceCreate	();
 	level_Load					();
 	L_Dynamic.Initialize		();
 
@@ -813,8 +813,8 @@ void CRender::OnDeviceDestroy	()
 
 	L_Dynamic.Destroy			();
 	level_Unload				();
-	PSystems.OnDeviceDestroy	();
-	PSystems.OnDestroy			();
+	PSLibrary.OnDeviceDestroy	();
+	PSLibrary.OnDestroy			();
 
 	L_Projector.OnDeviceDestroy	();
 	L_Shadows.OnDeviceDestroy	();

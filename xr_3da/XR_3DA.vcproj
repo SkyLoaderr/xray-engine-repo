@@ -1005,12 +1005,6 @@
 				<File
 					RelativePath="PSLibrary.h">
 				</File>
-				<File
-					RelativePath=".\xrParticlesLib.cpp">
-				</File>
-				<File
-					RelativePath=".\xrParticlesLib.h">
-				</File>
 				<Filter
 					Name="Particle Sorter"
 					Filter="">

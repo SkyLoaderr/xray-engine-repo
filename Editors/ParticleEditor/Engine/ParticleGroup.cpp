@@ -5,6 +5,7 @@
 #include "ParticleGroup.h"
 #include "psystem.h"
 #include "PSLibrary.h"
+#include "render.h"
 
 using namespace PS;
 
@@ -45,8 +46,8 @@ BOOL CPGDef::Load(IReader& F)
     m_Effects.resize(F.r_u32());
     for (EffectIt it=m_Effects.begin(); it!=m_Effects.end(); it++){
     	F.r_stringZ		(it->m_EffectName);
-    	it->m_Time0 	= F.r_float();
-    	it->m_Time1 	= F.r_float();
+    	it->m_Time0 	= F.r_u32();
+    	it->m_Time1 	= F.r_u32();
     	it->m_Flags.set	(F.r_u32());
     }
     
@@ -69,8 +70,8 @@ void CPGDef::Save(IWriter& F)
     F.w_u32			(m_Effects.size());
     for (EffectIt it=m_Effects.begin(); it!=m_Effects.end(); it++){
     	F.w_stringZ	(it->m_EffectName);
-    	F.w_float	(it->m_Time0);
-    	F.w_float	(it->m_Time1);
+    	F.w_u32		(it->m_Time0);
+    	F.w_u32		(it->m_Time1);
     	F.w_u32		(it->m_Flags.get());
     }
     F.close_chunk	();
@@ -126,10 +127,8 @@ BOOL CParticleGroup::Compile(CPGDef* def)
     // create new
     if (m_Def){
         children.resize(m_Def->m_Effects.size());
-        for (CPGDef::EffectVec::const_iterator e_it=m_Def->m_Effects.begin(); e_it!=m_Def->m_Effects.end(); e_it++){
-            CPEDef* pe_def = ::Render->PSystems.FindPED(e_it->m_EffectName);
-            children[e_it-def->m_Effects.begin()]=Device.Models.CreatePE(pe_def);
-        }
+        for (CPGDef::EffectVec::const_iterator e_it=m_Def->m_Effects.begin(); e_it!=m_Def->m_Effects.end(); e_it++)
+			children[e_it-def->m_Effects.begin()]	= ::Render->model_CreatePE(e_it->m_EffectName);
     }
     return TRUE;
 }
