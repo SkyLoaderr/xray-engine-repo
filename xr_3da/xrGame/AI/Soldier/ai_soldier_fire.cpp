@@ -334,7 +334,7 @@ DWORD CAI_Soldier::tfGetAloneFightType()
 
 	if (KnownEnemies.size() == 1) {
 		CEntity *tpEntity = dynamic_cast<CEntity *>(KnownEnemies[0].key);
-		if ((tpEntity) && (!bfCheckForEntityVisibility(tpEntity)))
+		if ((tpEntity) && (!bfCheckForEntityVisibility(tpEntity)) && !bfNeedRecharge())
 			return(FIGHT_TYPE_ATTACK);
 	}
 

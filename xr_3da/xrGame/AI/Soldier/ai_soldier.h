@@ -585,11 +585,11 @@ class CAI_Soldier : public CCustomMonster
 		}
 	IC	bool bfNeedRecharge()
 		{
-			return(Weapons && Weapons->getAmmoCurrent());
+			return(Weapons && (Weapons->getAmmoElapsed() == 0));
 		}
 	IC	bool bfNoAmmo()
 		{
-			return(Weapons && Weapons->getAmmoElapsed());
+			return(Weapons && (Weapons->getAmmoCurrent() == 0));
 		}
 	IC	bool bfTooBigAngle(float fAngle0, float fAngle1, float fDelta)
 		{
@@ -621,7 +621,7 @@ class CAI_Soldier : public CCustomMonster
 		}
 	IC	void vfAddStateToList(ESoldierStates eState)
 		{
-			if (tStateList[tStateList.size() - 1].eState == eState) {
+			if ((tStateList.size()) && (tStateList[tStateList.size() - 1].eState == eState)) {
 				tStateList[tStateList.size() - 1].dwTime = m_dwLastUpdate;
 				return;
 			}
