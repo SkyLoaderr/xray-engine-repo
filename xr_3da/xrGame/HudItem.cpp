@@ -102,7 +102,7 @@ void CHudItem::OnAnimationEnd()
 void CHudItem::SwitchState(u32 S)
 {
 	NEXT_STATE		= S;	// Very-very important line of code!!! :)
-	if (Local()/* && (S!=NEXT_STATE)*/)	
+	if (Local() && !getDestroy()/* && (S!=NEXT_STATE)*/)	
 	{
 		// !!! Just single entry for given state !!!
 		NET_Packet		P;
