@@ -412,14 +412,14 @@ bool InitCommandTemplates()
         for (k=0; PStateCommands[k]; k++){
             PS::PFunction F; F.type = PFunction::ftState;
             if (!(bRes=F.LoadTemplate(PStateCommands[k]))) break;
-            ct.insert(make_pair(xr_strdup(F.command),F));
+            ct.insert(mk_pair(xr_strdup(F.command),F));
         }
 	    if (!bRes) break;
 		// load action commands
         for (k=0; PActionCommands[k]; k++){
             PFunction F; F.type = PS::PFunction::ftAction;
             if (!(bRes=F.LoadTemplate(PActionCommands[k]))) break;
-            ct.insert(make_pair(xr_strdup(F.command),F));
+            ct.insert(mk_pair(xr_strdup(F.command),F));
         }
     }while(0);
     if (!bRes) ct.clear();

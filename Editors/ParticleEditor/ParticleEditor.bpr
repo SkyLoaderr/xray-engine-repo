@@ -5,12 +5,11 @@
     <VERSION value="BCB.06.00"/>
     <PROJECT value="x:\ParticleEditor.exe"/>
     <OBJFILES value="Intermediate\ParticleEditor.obj Intermediate\stdafx.obj 
-      Intermediate\FileSystem.obj Intermediate\d3dutils.obj 
-      Intermediate\EditMesh.obj Intermediate\EditObjectImport.obj 
-      Intermediate\EditMeshIO.obj Intermediate\EditMeshModify.obj 
-      Intermediate\Device.obj Intermediate\EditMeshRender.obj 
-      Intermediate\BottomBar.obj Intermediate\EditorPref.obj 
-      Intermediate\Splash.obj Intermediate\main.obj 
+      Intermediate\d3dutils.obj Intermediate\EditMesh.obj 
+      Intermediate\EditObjectImport.obj Intermediate\EditMeshIO.obj 
+      Intermediate\EditMeshModify.obj Intermediate\Device.obj 
+      Intermediate\EditMeshRender.obj Intermediate\BottomBar.obj 
+      Intermediate\EditorPref.obj Intermediate\Splash.obj Intermediate\main.obj 
       Intermediate\EditObjectIO.obj Intermediate\EditObjectMotions.obj 
       Intermediate\interp.obj Intermediate\Envelope.obj Intermediate\motion.obj 
       Intermediate\bone.obj Intermediate\cl_collector.obj 
@@ -71,7 +70,7 @@
       Intermediate\Blender_tree.obj Intermediate\ELog.obj 
       Intermediate\Blender_Palette.obj Intermediate\ParticleGroupEditor.obj 
       Intermediate\ParticleGroupParser.obj Intermediate\R_Backend_xform.obj 
-      Intermediate\Blender_Recorder_R2.obj"/>
+      Intermediate\Blender_Recorder_R2.obj Intermediate\du_cone.obj"/>
     <RESFILES value="ParticleEditor.res resource.res"/>
     <IDLFILES value=""/>
     <IDLGENFILES value=""/>
@@ -126,7 +125,6 @@
       <FILE FILENAME="resource.res" FORMNAME="" UNITNAME="resource" CONTAINERID="ResTool" DESIGNCLASS="" LOCALCOMMAND=""/>
       <FILE FILENAME="!.txt" FORMNAME="" UNITNAME="!" CONTAINERID="" DESIGNCLASS="" LOCALCOMMAND=""/>
       <FILE FILENAME="stdafx.cpp" FORMNAME="" UNITNAME="stdafx" CONTAINERID="CCompiler" DESIGNCLASS="" LOCALCOMMAND=""/>
-      <FILE FILENAME="editor\FileSystem.cpp" FORMNAME="" UNITNAME="FileSystem" CONTAINERID="CCompiler" DESIGNCLASS="" LOCALCOMMAND=""/>
       <FILE FILENAME="editor\d3dutils.cpp" FORMNAME="" UNITNAME="D3DUtils" CONTAINERID="CCompiler" DESIGNCLASS="" LOCALCOMMAND=""/>
       <FILE FILENAME="editor\Fmesh.h" FORMNAME="" UNITNAME="Fmesh" CONTAINERID="" DESIGNCLASS="" LOCALCOMMAND=""/>
       <FILE FILENAME="editor\std_classes.h" FORMNAME="" UNITNAME="std_classes" CONTAINERID="" DESIGNCLASS="" LOCALCOMMAND=""/>
@@ -262,6 +260,7 @@
       <FILE FILENAME="Editor\ParticleGroupParser.cpp" FORMNAME="" UNITNAME="ParticleGroupParser" CONTAINERID="CCompiler" DESIGNCLASS="" LOCALCOMMAND=""/>
       <FILE FILENAME="Engine\R_Backend_xform.cpp" FORMNAME="" UNITNAME="R_Backend_xform" CONTAINERID="CCompiler" DESIGNCLASS="" LOCALCOMMAND=""/>
       <FILE FILENAME="Engine\Blenders\Blender_Recorder_R2.cpp" FORMNAME="" UNITNAME="Blender_Recorder_R2" CONTAINERID="CCompiler" DESIGNCLASS="" LOCALCOMMAND=""/>
+      <FILE FILENAME="Editor\du_cone.cpp" FORMNAME="" UNITNAME="du_cone" CONTAINERID="CCompiler" DESIGNCLASS="" LOCALCOMMAND=""/>
   </FILELIST>
   <BUILDTOOLS>
   </BUILDTOOLS>
