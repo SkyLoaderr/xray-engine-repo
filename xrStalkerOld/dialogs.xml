@@ -1,77 +1,126 @@
-<?xml version='1.0' encoding="windows-1251"?>
-
+<?xml version="1.0" encoding="windows-1251" ?>
 <game_dialogs>
-
-
-<!-- FINAL DIALOGS -->
-    <dialog id="hello_dialog">
+    <!-- FINAL DIALOGS -->
+    <dialog id="general_pda_talk" pda="1">
+        <precondition>dialogs.is_bad_relation</precondition>
         <phrase_list>
+            <phrase id="1">
+                <text />
+                <next>2</next>
+                <next>3</next>
+                <next>10</next>
+            </phrase>
+            <phrase id="11">
+                <text />
+            </phrase>
+            <phrase id="10">
+                <text />
+            </phrase>
+            <phrase id="2">
+                <text />
+                <next>21</next>
+                <next>22</next>
+            </phrase>
+            <phrase id="21">
+                <text />
+                <precondition>dialogs.want_trade</precondition>
+                <action>dialogs.trade_init</action>
+                <next>10</next>
+            </phrase>
+            <phrase id="22">
+                <text />
+                <precondition>dialogs.dont_want_trade</precondition>
+                <next>10</next>
+            </phrase>
+            <phrase id="3">
+                <text />
+                <next>31</next>
+                <next>32</next>
+            </phrase>
+            <phrase id="31">
+                <text />
+                <action>dialogs.helper_init</action>
+                <next>10</next>
+            </phrase>
+            <phrase id="32">
+                <text />
+                <next>10</next>
+            </phrase>
             <phrase id="0">
-                <text>hello_dialog_0</text>
+                <text />
+                <next>1</next>
+                <next>11</next>
             </phrase>
         </phrase_list>
     </dialog>
-        
-    <dialog id="actor_break_dialog" priority="-1">
-	<phrase_list>
-	    <phrase id="0">
-			<text>actor_break_dialog_0</text>
-			<action>dialogs.break_dialog</action>
-	    </phrase>                                                                                               
-	</phrase_list>
+    <dialog id="hello_dialog">
+        <phrase_list>
+            <phrase id="1">
+                <next>2</next>
+                <next>3</next>
+            </phrase>
+            <phrase id="3">
+                <text>hello_dialog_3</text>
+                <precondition>dialogs.is_wounded</precondition>
+            </phrase>
+            <phrase id="0">
+                <next>1</next>
+            </phrase>
+            <phrase id="2">
+                <text>hello_dialog_2</text>
+                <precondition>dialogs.is_not_wounded</precondition>
+            </phrase>
+        </phrase_list>
     </dialog>
-    
-	<dialog id="general_pda_talk" pda="1" actor="0">
-	<precondition>dialogs.is_bad_relation</precondition>
-	<phrase_list>
-	   	<phrase id="0">
-			<text>Привет. Есть свободная минутка?</text>
-			<next>1</next>
-			<next>11</next>
-		</phrase>                                                                                               
-	   	<phrase id="1">
-			<text>Да. Чем могу помочь?</text>
-			<next>2</next>			
-			<next>3</next>
-			<next>10</next>
-		</phrase>
-	   	<phrase id="11">
-			<text>Занят. Не мешай.</text>
-		</phrase>
-	   	<phrase id="10">
-			<text>Я отключаюсь. Пока.</text>
-		</phrase>
-	   	<phrase id="2">
-			<text>Есть дело, давай встретимся?</text>
-			<next>21</next>
-			<next>22</next>
-		</phrase>
-	   	<phrase id="21">
-	   		<precondition>dialogs.want_trade</precondition>
-			<text>Согласен. Жду тебя здесь. Координаты у тебя на PDA.</text>
-			<action>dialogs.trade_init</action>
-			<next>10</next>
-		</phrase>
-	   	<phrase id="22">
-	   		<precondition>dialogs.dont_want_trade</precondition>
-			<text>Нет. Не сегодня.</text>
-			<next>10</next>
-		</phrase>
-	   	<phrase id="3">
-			<text>Помоги мне!</text>
-			<next>31</next>
-			<next>32</next>
-		</phrase>
-	   	<phrase id="31">
-			<text>Уже иду.</text>
-			<action>dialogs.helper_init</action>
-			<next>10</next>
-		</phrase>
-	   	<phrase id="32">
-			<text>Не могу. Своих дел выше крыши.</text>
-			<next>10</next>
-		</phrase>	
-	</phrase_list>
-	</dialog>
-
+    <dialog id="actor_break_dialog" priority="-1">
+        <phrase_list>
+            <phrase id="0">
+                <text>actor_break_dialog_0</text>
+                <action>dialogs.break_dialog</action>
+            </phrase>
+        </phrase_list>
+    </dialog>
+    <dialog id="actor_help_wounded">
+        <precondition>dialogs.is_opp_wounded</precondition>
+        <phrase_list>
+            <phrase id="141">
+                <text>actor_help_wounded_141</text>
+            </phrase>
+            <phrase id="111">
+                <text>actor_help_wounded_111</text>
+            </phrase>
+            <phrase id="131">
+                <text>actor_help_wounded_131</text>
+            </phrase>
+            <phrase id="0">
+                <text>actor_help_wounded_0</text>
+                <next>1</next>
+            </phrase>
+            <phrase id="1">
+                <text>actor_help_wounded_1</text>
+                <next>11</next>
+                <next>12</next>
+                <next>13</next>
+                <next>14</next>
+            </phrase>
+            <phrase id="13">
+                <text>actor_help_wounded_13</text>
+                <next>131</next>
+            </phrase>
+            <phrase id="14">
+                <text>actor_help_wounded_14</text>
+                <next>141</next>
+            </phrase>
+            <phrase id="12">
+                <text>actor_help_wounded_12</text>
+                <precondition>dialogs.actor_have_bandage</precondition>
+                <next>111</next>
+            </phrase>
+            <phrase id="11">
+                <text>actor_help_wounded_11</text>
+                <precondition>dialogs.actor_have_medikit</precondition>
+                <next>111</next>
+            </phrase>
+        </phrase_list>
+    </dialog>
 </game_dialogs>

@@ -19,6 +19,24 @@ function get_money_then_leave(first_speaker, second_speaker)
 	xr_motivator.storage[first_speaker:id()].robber.enabled = true
 end
 
+function is_wounded(first_speaker, second_speaker)
+	return xr_wounded.is_wounded(first_speaker, 0.2)
+end
+function is_opp_wounded(first_speaker, second_speaker, dialog_id)
+	return	xr_wounded.is_wounded(second_speaker, 0.2) and
+			((second_speaker:profile_name() ~= "stalker_escape_tutorial_wounded" or
+			 first_speaker:has_info("tutorial_end") == true) or
+			 dialog_id == "tutorial_wounded_give_medkit")
+end
+function is_not_wounded(first_speaker, second_speaker)
+	return not this.is_wounded(first_speaker, second_speaker)
+end
+function actor_have_medikit(first_speaker, second_speaker)
+	return first_speaker:object("medkit") ~= nil
+end
+function actor_have_bandage(first_speaker, second_speaker)
+	return first_speaker:object("bandage") ~= nil
+end
 
 --'---------------------------------------------------------------------------------
 --' DIALOG ALLOWED

@@ -28,7 +28,7 @@ function body_state:__init(npc)
 								[xr_state.sit]		= {"spit_3"}}}								
 	self.ianim = {
 		[xr_state.sit] = "stalker_2_1",
-		[xr_state.sit_wait] = "stalker_3_2",
+		[xr_state.sit_wait] = "item_0_idle_0",
 		[xr_state.sleep] = "spit_2"
 	}
 	self.states = {

@@ -336,7 +336,7 @@ function set_anim(npc, anim, st)
 			local r = math.random(table.getn(anim.anim_active))
 			npc:clear_animations()
 			npc:add_animation(anim.anim_active[r].name,anim.anim_active[r].hand)
-			npc:add_animation("stalker_3_2", true)
+			npc:add_animation("item_0_idle_0", true)
 		end
 	end		
 end
