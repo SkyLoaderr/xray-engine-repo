@@ -19,7 +19,7 @@ function motivator_binder:__init (obj) super(obj)
 end
 
 function motivator_binder:extrapolate_callback(cur_pt)
-	if self.st.active_section ~= nil then
+	if self.st.active_section then
 		--printf("___ACTIVE_SECTION___")
 		xr_logic.issue_event(self.object, self.st[self.st.active_scheme], "extrapolate_callback")
 	end
@@ -139,15 +139,15 @@ function motivator_binder:hit_callback(obj, amount, local_direction, who, bone_i
 	printf("_bp: motivator_binder:hit_callback: obj='%s'", obj:name())
 	-- FIXME: коллбеки неплохо было бы регистрировать в общем storage, а не посхемно...
 	-- просто всегда ставить их при включении схемы и снимать при отключении.
-	xr_logic.issue_event(self.object, self.st[self.st.active_scheme], "hit_callback", obj, amount, local_direction, who, bone_index)
+	if self.st.active_section then
+		xr_logic.issue_event(self.object, self.st[self.st.active_scheme], "hit_callback", obj, amount, local_direction, who, bone_index)
+	end
 	if self.st.combat_ignore then
 		xr_logic.issue_event(self.object, self.st.combat_ignore, "hit_callback", obj, amount, local_direction, who, bone_index)
 	end
 	if self.st.hit then
 		xr_logic.issue_event(self.object, self.st.hit, "hit_callback", obj, amount, local_direction, who, bone_index)
 	end
-	
-	xr_logic.issue_event(self.object, self.st[self.st.active_scheme], "hit_callback", obj, amount, local_direction, who, bone_index)
 end
 
 function motivator_binder:update(delta)
