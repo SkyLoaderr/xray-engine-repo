@@ -11,6 +11,10 @@ typedef u32 TTime;
 #undef	LOG_EX
 #undef	LOG_EX2
 
+#ifndef DEBUG
+#undef ENABLE_WRITE_LOG_EX
+#endif
+
 #ifndef ENABLE_WRITE_LOG_EX
 	
 	#define LOG_EX(str) 
