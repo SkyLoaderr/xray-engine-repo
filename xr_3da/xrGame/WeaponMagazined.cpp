@@ -146,7 +146,6 @@ void CWeaponMagazined::Update(float dt, BOOL bHUDView)
 {
 	inherited::Update	(dt,bHUDView);
 	VERIFY				(m_pParent);
-	bVisible			= FALSE;
 	
 	// on state change
 	if (st_target!=st_current)
