@@ -1,6 +1,7 @@
 #include "stdafx.h"
 #include "ispatial.h"
 #include "render.h"
+#include "xr_object.h"
 
 ISpatial_DB					g_SpatialSpace;
 
@@ -207,7 +208,17 @@ void			ISpatial_DB::insert		(ISpatial* S)
 	lock		= TRUE;
 
 	stat_insert.Begin	();
-	VERIFY				(f_valid(S->spatial.radius) && f_valid(S->spatial.center.x) && f_valid(S->spatial.center.y) && f_valid(S->spatial.center.z) );
+
+#ifdef DEBUG
+	BOOL		bValid	= f_valid(S->spatial.radius) && f_valid(S->spatial.center.x) && f_valid(S->spatial.center.y) && f_valid(S->spatial.center.z);
+	if (!bValid)	
+	{
+		CObject*	O	= dynamic_cast<CObject*>(S);
+		if	(O)			Debug.fatal("Invalid object position or radius (%s)",O->cName());
+		else			Debug.fatal("Invalid spatial position or radius (%x)",O);
+	}
+#endif
+
 	if (verify_sp(S,m_center,m_bounds))
 	{
 		// Object inside our DB

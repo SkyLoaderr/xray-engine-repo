@@ -84,6 +84,8 @@ void CPGObject::shedule_Update	(u32 dt)
 	} else {
 		spatial_move		();
 	}
+
+	// Msg	("update(%s): %3.1f,%3.1f,%3.1f,%3.1f",V->GetDefinition()->m_Name,VPUSH(spatial.center),spatial.radius);
 }
 
 static const Fvector zero_vel		= {0.f,0.f,0.f};
@@ -109,4 +111,9 @@ void CPGObject::renderable_Render	()
 {
 	::Render->set_Transform			(&Fidentity);
 	::Render->add_Visual			(renderable.visual);
+
+	/*
+	PS::CParticleEffect* V	= dynamic_cast<PS::CParticleEffect*>(renderable.visual);	R_ASSERT(V);
+	Msg						("render(%s): %3.1f,%3.1f,%3.1f,%3.1f",V->GetDefinition()->m_Name,VPUSH(spatial.center),spatial.radius);
+	*/
 }
