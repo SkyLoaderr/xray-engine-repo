@@ -45,9 +45,9 @@ void CRender::Render	()
 				phase									= PHASE_SMAP_D;
 
 				HOM.Disable								();
-				LR_Direct.compute_xfd_1					(dls_phase);
-				render_smap_direct						(LR_Direct.L_combine);
-				LR_Direct.compute_xfd_2					(dls_phase);
+				LR.compute_xfd_1						(dls_phase);
+				render_smap_direct						(LR.L_combine);
+				LR.compute_xfd_2						(dls_phase);
 			}
 			Device.Statistic.RenderCALC.End			();
 
@@ -56,8 +56,8 @@ void CRender::Render	()
 				Target.phase_smap_direct				();
 
 				RCache.set_xform_world					(Fidentity);
-				RCache.set_xform_view					(LR_Direct.L_view);
-				RCache.set_xform_project				(LR_Direct.L_project);
+				RCache.set_xform_view					(LR.L_view);
+				RCache.set_xform_project				(LR.L_project);
 				render_scenegraph						();
 			}
 
@@ -108,17 +108,17 @@ void CRender::Render	()
 					phase									= PHASE_SMAP_P;
 
 					// calculate
-					LR_Direct.compute_xfp_1					(pls_phase, L);
-					render_smap_direct						(LR_Direct.L_combine);
-					LR_Direct.compute_xfp_2					(pls_phase, L);
+					LR.compute_xfp_1					(pls_phase, L);
+					render_smap_direct						(LR.L_combine);
+					LR.compute_xfp_2					(pls_phase, L);
 
 					// rendering
 					if (mapNormal.size())
 					{
 						Target.phase_smap_point				(pls_phase);
 						RCache.set_xform_world				(Fidentity);			// ???
-						RCache.set_xform_view				(LR_Direct.L_view);
-						RCache.set_xform_project			(LR_Direct.L_project);
+						RCache.set_xform_view				(LR.L_view);
+						RCache.set_xform_project			(LR.L_project);
 						render_scenegraph					();
 					}
 				}
@@ -133,17 +133,17 @@ void CRender::Render	()
 				phase									= PHASE_SMAP_S;
 
 				// calculate
-				LR_Direct.compute_xfs_1					(0, L);
-				render_smap_direct						(LR_Direct.L_combine);
-				LR_Direct.compute_xfs_2					(0, L);
+				LR.compute_xfs_1					(0, L);
+				render_smap_direct						(LR.L_combine);
+				LR.compute_xfs_2					(0, L);
 
 				// rendering
 				if (mapNormal.size())
 				{
 					Target.phase_smap_spot				();
 					RCache.set_xform_world				(Fidentity);			// ???
-					RCache.set_xform_view				(LR_Direct.L_view);
-					RCache.set_xform_project			(LR_Direct.L_project);
+					RCache.set_xform_view				(LR.L_view);
+					RCache.set_xform_project			(LR.L_project);
 					render_scenegraph					();
 				}
 

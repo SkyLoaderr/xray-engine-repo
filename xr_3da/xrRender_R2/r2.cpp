@@ -140,7 +140,7 @@ void CRender::OnDeviceCreate	()
 {
 	REQ_CREATE					();
 	Target.OnDeviceCreate		();
-	LR_Direct.Create			();
+	LR.Create					();
 
 	PSystems.OnCreate			();
 	PSystems.OnDeviceCreate		();
@@ -156,7 +156,7 @@ void CRender::OnDeviceDestroy	()
 	PSystems.OnDeviceDestroy	();
 	PSystems.OnDestroy			();
 
-	LR_Direct.Destroy			();
+	LR.Destroy					();
 	Target.OnDeviceDestroy		();
 }
 
