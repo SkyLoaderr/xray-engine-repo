@@ -61,7 +61,23 @@ function generic_physics_binder:update(delta)
 	end
 end
 
+function generic_physics_binder:net_spawn(data)
+	if not object_binder.net_spawn(self, data) then
+		return false
+	end
+
+	if self.object:clsid() == clsid.projector then
+		db.add_sl(self.object)
+	end
+
+	return true
+end
+
 function generic_physics_binder:net_destroy()
+	if self.object:clsid() == clsid.projector then
+		db.del_sl(self.object)
+	end
+
 	object_binder.net_destroy(self)
 end
 

@@ -5,6 +5,7 @@
 
 obj_by_id    = {}
 zone_by_name = {}
+sl_by_name   = {}
 storage      = {}
 actor        = nil
 
@@ -26,6 +27,16 @@ end
 function del_zone( zone )
 	zone_by_name[zone:name()] = nil
 	del_obj( zone )
+end
+
+function add_sl( sl )
+	sl_by_name[sl:name()] = sl
+	add_obj( sl )
+end
+
+function del_sl( sl )
+	sl_by_name[sl:name()] = nil
+	del_obj( sl )
 end
 
 function add_actor( obj )

@@ -29,6 +29,9 @@ local state_standing = 2
 
 --rotation_start_time = 700 -- FIXME xr_remark used it
 
+local sl_speed_h = 0.52 -- горизонтальная скорость вращения прожекторов
+local sl_speed_v = 0.22 -- вертикальная скорость вращения прожекторов
+
 local sync = {}
 
 -------------------------------------------------------------------------------------------------------------------------
@@ -286,6 +289,13 @@ end
 function move_mgr:update()
 	--printf("move_mgr:update(self.state == %s)", utils.to_str(self.state))
 	--printf("move_mgr:update(self.object:anims == %d)", self.object:animation_count())
+	
+	if not utils.is_day() and self.sl and self.sl:action() == nil then
+		-- Прожектор в своей финальной точке - поднять тревогу, если туда попал кто-то из персонажей
+		--printf("ALARM?!")
+		self:reset_sl() -- отпустить прожектор
+	end
+	
 	if self.syn_signal and device():time_global() >= self.syn_signal_set_tm then
 		if self:sync_ok() then
 			self:scheme_set_signal(self.syn_signal)
@@ -349,14 +359,37 @@ function move_mgr:update_movement_state()
 end
 
 function move_mgr:update_standing_state(look_pos)
+	printf("_bp [%s]: pt_wait_time = %s", self.object:name(), utils.to_str(self.pt_wait_time))
 	state_mgr.set_state(self.object, self.cur_state_standing,
 		{ obj = self, func = self.time_callback, turn_end_func = self.turn_end_callback },
 		self.pt_wait_time,
 		{ look_position = look_pos } )
 	self.moving = false
+	
+	-- Прожектор:
+	local pt = self.last_look_index
+	local sl_name = self.path_look_info[pt]["sl"]
+	if sl_name then
+		self:reset_sl() -- отпустить старый прожектор (на всякий случай)
+		self.sl = db.sl_by_name[sl_name]
+		if self.sl then
+			reset_action(self.sl, "move_mgr")
+			if utils.is_day() then
+				utils.action2(self.sl, object(object.turn_off),
+					cond(cond.time_end, 100))
+			else
+				utils.action2(self.sl, object(object.turn_on),
+					cond(cond.time_end, 100))
+				utils.action2(self.sl, look(self.patrol_look:point(pt),
+					sl_speed_h, sl_speed_v),
+					cond(cond.look_end))
+			end
+		end
+	end
 end
 
 function move_mgr:time_callback()
+	printf("_bp [%s]: time_callback", self.object:name())
 	--if self.syn_signal then
 	--	return
 	--end
@@ -564,6 +597,7 @@ function move_mgr:waypoint_callback(obj, action_type, index)
 	end
 
 	local pt_chosen_idx, num_equal_pts = choose_look_point(self.patrol_look, self.path_look_info, search_for)
+	printf("_bp [%s]: pt_chosen_idx = %s", self.object:name(), utils.to_str(pt_chosen_idx))
 	if pt_chosen_idx then
 		local suggested_anim_set = self.path_look_info[pt_chosen_idx]["a"]
 		if suggested_anim_set then
