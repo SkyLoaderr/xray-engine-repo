@@ -137,98 +137,99 @@ void CBuild::SoftenLights()
 	{
 		Progress				(float(L-lights_lmaps.begin())/float(lights_lmaps.size()));
 
+		// generic properties
 		RL.diffuse.normalize_rgb	(L->diffuse);
 		RL.position.set				(L->position);
-		RL.direction.set			(L->direction);
-		RL.range				=	L->range*1.2f;
+		RL.direction.normalize_safe	(L->direction);
+		RL.range				=	L->range*1.1f;
 		RL.range2				=	RL.range*RL.range;
 		RL.attenuation0			=	L->attenuation0;
 		RL.attenuation1			=	L->attenuation1;
 		RL.attenuation2			=	L->attenuation2;
 		RL.energy				=	L->diffuse.magnitude_rgb();
+		
+		// select destination container
+		vector<R_Light>* dest	=	0;
+		if (L->flags.bProcedural)	{
+			lights_soften.push_back( vector<R_Light> () );
+			dest = &(lights_soften.back());		// one of the procedural lights
+			RL.diffuse.set			(1,1,1,1);
+			RL.energy				= RL.diffuse.magnitude_rgb();
+			RL.diffuse.normalize_rgb();
+		} else {
+			dest = &(lights_soften[0]);			// ambient (fully-static)
+		}
 
 		if (L->type==D3DLIGHT_DIRECTIONAL) 
 		{
-			RL.type			= LT_DIRECT;
-			R_Light	T		= RL;
-			Fmatrix			rot_y;
+			RL.type				= LT_DIRECT;
+			R_Light	T			= RL;
+			Fmatrix				rot_y;
 
-			Fvector			v_top,v_right,v_dir;
+			Fvector				v_top,v_right,v_dir;
 			v_top.set			(0,1,0);
 			v_dir.set			(RL.direction);
 			v_right.crossproduct(v_top,v_dir);
 			v_right.normalize	();
 
 			// Build jittered light
-			T.energy		= RL.energy/14.f;
-			float angle		= deg2rad(g_params.area_dispersion);
+			T.energy			= RL.energy/14.f;
+			float angle			= deg2rad(g_params.area_dispersion);
 			{
 				// *** center
-				lights_soften.push_back	(T);
+				dest->push_back	(T);
 
 				// *** left
-				/*
-				rot_y.rotateY			(4*angle/4);
-				rot_y.transform_dir		(T.direction,RL.direction);
-				lights_soften.push_back	(T);
-				*/
-
 				rot_y.rotateY			(3*angle/4);
 				rot_y.transform_dir		(T.direction,RL.direction);
-				lights_soften.push_back	(T);
+				dest->push_back	(T);
 
 				rot_y.rotateY			(2*angle/4);
 				rot_y.transform_dir		(T.direction,RL.direction);
-				lights_soften.push_back	(T);
+				dest->push_back	(T);
 
 				rot_y.rotateY			(1*angle/4);
 				rot_y.transform_dir		(T.direction,RL.direction);
-				lights_soften.push_back	(T);
+				dest->push_back	(T);
 
 				// *** right
 				rot_y.rotateY			(-1*angle/4);
 				rot_y.transform_dir		(T.direction,RL.direction);
-				lights_soften.push_back	(T);
+				dest->push_back	(T);
 
 				rot_y.rotateY			(-2*angle/4);
 				rot_y.transform_dir		(T.direction,RL.direction);
-				lights_soften.push_back	(T);
+				dest->push_back	(T);
 
 				rot_y.rotateY			(-3*angle/4);
 				rot_y.transform_dir		(T.direction,RL.direction);
-				lights_soften.push_back	(T);
-
-				/*
-				rot_y.rotateY			(-4*angle/4);
-				rot_y.transform_dir		(T.direction,RL.direction);
-				lights_soften.push_back	(T);
-				*/
+				dest->push_back	(T);
 				
 				// *** top 
 				rot_y.rotation			(v_right, 3*angle/4);
 				rot_y.transform_dir		(T.direction,RL.direction);
-				lights_soften.push_back	(T);
+				dest->push_back	(T);
 
 				rot_y.rotation			(v_right, 2*angle/4);
 				rot_y.transform_dir		(T.direction,RL.direction);
-				lights_soften.push_back	(T);
+				dest->push_back	(T);
 
 				rot_y.rotation			(v_right, 1*angle/4);
 				rot_y.transform_dir		(T.direction,RL.direction);
-				lights_soften.push_back	(T);
+				dest->push_back	(T);
 
 				// *** bottom
 				rot_y.rotation			(v_right,-1*angle/4);
 				rot_y.transform_dir		(T.direction,RL.direction);
-				lights_soften.push_back	(T);
+				dest->push_back	(T);
 
 				rot_y.rotation			(v_right,-2*angle/4);
 				rot_y.transform_dir		(T.direction,RL.direction);
-				lights_soften.push_back	(T);
+				dest->push_back	(T);
 
 				rot_y.rotation			(v_right,-3*angle/4);
 				rot_y.transform_dir		(T.direction,RL.direction);
-				lights_soften.push_back	(T);
+				dest->push_back	(T);
 			}
 
 			// Build area-lights
@@ -265,7 +266,7 @@ void CBuild::SoftenLights()
 					
 					T.diffuse.set			(g_params.area_color);
 					
-					lights_soften.push_back	(T);
+					dest->push_back	(T);
 				}
 			}
 		} else {
@@ -292,10 +293,10 @@ void CBuild::SoftenLights()
 					
 					// calculate point
 					T.position.direct		(RL.position,R,dist*.5f);
-					lights_soften.push_back	(T);
+					dest->push_back	(T);
 				}
 			} else {
-				lights_soften.push_back(RL);
+				dest->push_back(RL);
 			}
 		}
 	}

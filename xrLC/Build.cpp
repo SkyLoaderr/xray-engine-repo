@@ -91,7 +91,7 @@ CBuild::CBuild(b_transfer * L)
 	//*******
 	Status	("Other transfer...");
 	transfer("materials",	materials,	L->material,	L->mtl_count);
-	transfer("shaders",		shader_names,	L->shaders,	L->shader_count);
+	transfer("shaders",		shader_names,L->shaders,	L->shader_count);
 	transfer("glows",		glows,		L->glows,		L->glow_count);
 	transfer("occluders",	occluders,	L->occluders,	L->occluder_count);
 	transfer("portals",		portals,	L->portals,		L->portal_count);
@@ -102,9 +102,10 @@ CBuild::CBuild(b_transfer * L)
 	for (DWORD l=0; l<L->light_count; l++) {
 		b_light R = L->lights[l];
 		R.direction.normalize_safe();
-		if (R.flags.bAffectStatic)	lights_lmaps.push_back(R);
+		if (R.flags.bAffectStatic)	lights_lmaps.push_back	(R);
 		if (R.flags.bAffectDynamic) lights_dynamic.push_back(R);
 	}
+	lights_soften.resize(1);
 
 	// process textures
 	Status		("Processing textures...");
@@ -199,20 +200,6 @@ void CBuild::Run()
 	Phase	("Building normals...");
 	CalcNormals		();
 
-	/*
-	if (g_params.m_bTesselate) {
-		FPU::m24r();
-		Phase	("Tesselating curves...");
-		Tesselate	();
-		FPU::m24r();
-		Phase	("Optimizing...");
-		PreOptimize	();
-		FPU::m24r();
-		Phase	("Building normals...");
-		CalcNormals	();
-	}
-	*/
-	
 	FPU::m24r();
 	Phase	("Building collision database...");
 	BuildCForm		(fs);
@@ -269,23 +256,6 @@ void CBuild::Run()
 	Phase	("Building sectors...");
 	BuildSectors	();
 
-	/*
-	FPU::m24r();
-	Phase	("Building hierrarhy...");
-	BuildHierrarhy	();
-
-	if (g_params.m_bTestOcclusion)
-	{
-		FPU::m24r();
-		Phase	("Building PVS...");
-		BuildPVS	();
-	}
-
-	FPU::m24r();
-	Phase	("Building 'RelevantSet'...");
-	BuildRelevance	(fs);
-	*/
-
 	FPU::m24r();
 	Phase	("Saving lights, glows, occlusion planes...");
 	SaveLights		(fs);
@@ -302,12 +272,6 @@ void CBuild::Run()
 		fs.Wdword(RegisterString(S));
 	}
 	fs.close_chunk();
-
-	/*
-	fs.open_chunk(fsL_PLANES);
-	fs.write(occluders.begin(),occluders.size()*sizeof(b_occluder));
-	fs.close_chunk();
-	*/
 
 	FPU::m24r();
 	Phase	("Saving static geometry...");

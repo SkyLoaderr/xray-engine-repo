@@ -519,5 +519,20 @@ VOID CDeflector::Light(HASH& H)
 			lm.dwWidth		= lm_old.dwWidth;
 			lm.dwHeight		= lm_old.dwHeight;
 		}
+
+		// Test if layer really needed 
+		{
+			if (0==layer)	continue;	// base, ambient layer - SKPI
+			BOOL			bSkip	= FALSE;
+			DWORD			size	= (lm.dwWidth+2*BORDER)*(lm.dwHeight+2*BORDER);
+			for (DWORD pix=0; pix<size; pix++)	{
+				DWORD pixel	= lm.pSurface	[y*lm.dwWidth+x];
+				if (RGBA_GETALPHA(pixel)>=254)	{
+					if (rms_diff(_r, RGBA_GETRED(pixel))>rms)	return FALSE;
+					if (rms_diff(_g, RGBA_GETGREEN(pixel))>rms)	return FALSE;
+					if (rms_diff(_b, RGBA_GETBLUE(pixel))>rms)	return FALSE;
+				}
+			}
+		}
 	}
 }
