@@ -1,0 +1,23 @@
+[logic]
+active = mob_walker1
+on_combat = mob_combat
+
+[mob_combat]
+on_info = nil %=disable_combat_handler%
+
+[mob_walker1]
+path_walk = val_sos_bs_walk
+path_look = val_sos_bs_look
+state = invis
+friendly = true
+on_actor_dist_le = 3 | mob_walker2
+on_info = {+val_sos_actor_near_wounded} mob_walker2
+
+[mob_walker2]
+path_walk = val_sos_bs_attack_walk
+path_look = val_sos_bs_attack_look
+state = invis
+friendly = true
+on_actor_dist_le = 3 | nil
+on_signal = arrived | nil
+
