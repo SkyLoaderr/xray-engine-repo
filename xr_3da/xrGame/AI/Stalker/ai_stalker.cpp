@@ -884,6 +884,14 @@ void CAI_Stalker::Hit(float P, Fvector &dir, CObject *who,s16 element,Fvector p_
 
 void CAI_Stalker::shedule_Update		( u32 DT )
 {
+	if (!Remote()) {
+		if ((fHealth>0) || bfExecMovement())
+			// функция должна выполняться до inherited::shedule_Update, для smooth movement
+			Exec_Movement	(float(DT)/1000.f);  
+	}
+
+	// *** general stuff
+	inherited::inherited::shedule_Update	(DT);
 	// Queue shrink
 	u32	dwTimeCL	= Level().timeServer()-NET_Latency;
 	VERIFY				(!NET.empty());
@@ -899,20 +907,9 @@ void CAI_Stalker::shedule_Update		( u32 DT )
 		// here is monster AI call
 		m_fTimeUpdateDelta				= dt;
 		Device.Statistic.AI_Think.Begin	();
-
-		Msg("--------------------------------------------------------------------------------");
-		Msg("BEFOR:: time = [%i]  current = [%f]  target = [%f]", m_dwCurrentUpdate, 
-			R2D(r_torso_current.yaw), R2D(r_torso_target.yaw));
-
 		Think							();
-
-		Msg("AFTER:: time = [%i]  current = [%f]  target = [%f]", m_dwCurrentUpdate, 
-			R2D(r_torso_current.yaw), R2D(r_torso_target.yaw));
-
-
-		m_dwLastUpdateTime = Level().timeServer();
+		m_dwLastUpdateTime				= Level().timeServer();
 		Device.Statistic.AI_Think.End	();
-		//
 		Engine.Sheduler.Slice			();
 
 		// Look and action streams
@@ -1020,9 +1017,6 @@ void CAI_Stalker::shedule_Update		( u32 DT )
 		}
 	}
 	m_inventory.Update(DT);
-
-	// *** general stuff
-	inherited::inherited::shedule_Update	(DT);
 
 	if(m_pPhysicsShell&&m_pPhysicsShell->bActive)
 	{
