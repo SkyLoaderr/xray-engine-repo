@@ -1007,8 +1007,10 @@ void xrGraphPoint::STATE_Read		(NET_Packet& P, u16 size)
 	P.r_u32		(m_tLevelID);
 	P.r_u8		(m_tLocations[0]);
 	P.r_u8		(m_tLocations[1]);
-	P.r_u8		(m_tLocations[2]);
-	P.r_u8		(m_tLocations[3]);
+	if (!P.r_eof()) {
+		P.r_u8		(m_tLocations[2]);
+		P.r_u8		(m_tLocations[3]);
+	}
 };
 
 void xrGraphPoint::STATE_Write		(NET_Packet& P)
