@@ -38,19 +38,17 @@ private:
 	EAK74State		st_current, st_target;
 
 	void			DrawFlame		(const Fvector& fp, const Fvector& fd, bool bHUDView);
-	virtual void	UpdateFP		(BOOL bHUD);
-	virtual void	UpdateXForm		(BOOL bHUD);
-
-protected:
 	void			FlameLOAD		();
 	void			FlameUNLOAD		();
 	
+protected:
+	virtual void	UpdateFP		(BOOL bHUD);
+	virtual void	UpdateXForm		(BOOL bHUD);
 	virtual void	FireShotmark	(const Fvector &vDir, const Fvector &vEnd, Collide::ray_query& R);
 public:
 					CWeaponAK74		();
 	virtual			~CWeaponAK74	();
 
-	// misc
 	virtual void	Load			(CInifile* ini, const char* section);
 
 	virtual void	SetDefaults		();
