@@ -351,6 +351,7 @@ public:
 			CSE_ALifeObject		*l_tpALifeObject = dynamic_cast<CSE_ALifeObject*>(E);
 			R_ASSERT3			(l_tpALifeObject->m_tNodeID && (l_tpALifeObject->m_tNodeID < m_tpAI_Map->header().vertex_count()),"Invalid node for object ",l_tpALifeObject->s_name_replace);
 			R_ASSERT2			(l_tpALifeObject,"Non-ALife object!");
+			VERIFY				(tpGraph->vertex(l_tpALifeObject->m_tGraphID)->level_id() == m_dwLevelID);
 			l_tpALifeObject->m_caGroupControl = "";
 			CSE_ALifeAnomalousZone *l_tpALifeAnomalousZone = dynamic_cast<CSE_ALifeAnomalousZone*>(E);
 			if (l_tpALifeAnomalousZone) {
@@ -486,6 +487,8 @@ public:
 		string256					l_caFileName;
 		FS.update_path				(l_caFileName,"$game_spawn$",cafGetActorLevelName(tpLevels,S));
 		tMemoryStream.save_to		(l_caFileName);
+
+		Msg							("GAME SPAWN is successfully saved to the file\n%s",l_caFileName);
 
 		Phase						("Freeing resources being allocated");
 		xr_delete					(tpGraph);
