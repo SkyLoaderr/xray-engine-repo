@@ -15,6 +15,7 @@ struct SmodInfo{
 	shared_str		m_version;
 	shared_str		m_www;
 	shared_str		m_cmd_line;
+	shared_str		m_picture_name;
 	xr_vector<shared_str>* m_credits;
 	xr_vector<shared_str>* m_archieves;
 	SmodInfo() {m_credits = new xr_vector<shared_str>();m_archieves = new xr_vector<shared_str>();}

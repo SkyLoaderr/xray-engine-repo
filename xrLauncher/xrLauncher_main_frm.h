@@ -65,6 +65,7 @@ namespace xrLauncher
 	private: System::Windows::Forms::ListBox *  modList;
 	private: System::Windows::Forms::ImageList *  imageList1;
 	private: System::Windows::Forms::Button *  aboutBtn;
+	private: System::Windows::Forms::ImageList *  imageList2;
 	private: System::ComponentModel::IContainer *  components;
 
 	private:
@@ -90,6 +91,7 @@ namespace xrLauncher
 			this->settingsBtn = new System::Windows::Forms::Button();
 			this->playBtn = new System::Windows::Forms::Button();
 			this->pictureBox1 = new System::Windows::Forms::PictureBox();
+			this->imageList2 = new System::Windows::Forms::ImageList(this->components);
 			this->panel1->SuspendLayout();
 			this->SuspendLayout();
 			// 
@@ -201,6 +203,12 @@ namespace xrLauncher
 			this->pictureBox1->Size = System::Drawing::Size(120, 256);
 			this->pictureBox1->TabIndex = 0;
 			this->pictureBox1->TabStop = false;
+			// 
+			// imageList2
+			// 
+			this->imageList2->ImageSize = System::Drawing::Size(128, 256);
+			this->imageList2->ImageStream = (__try_cast<System::Windows::Forms::ImageListStreamer *  >(resources->GetObject(S"imageList2.ImageStream")));
+			this->imageList2->TransparentColor = System::Drawing::Color::Transparent;
 			// 
 			// xrLauncher_main_frm
 			// 

@@ -46,6 +46,20 @@ void xrLauncher_main_frm::addFileInfo(LPCSTR fn)
 			info.m_cmd_line = ini.r_string_wb("general","command_line");
 		};
 
+		if(ini.line_exist("general","image")){
+			string16	_drive;
+			string_path	_dir;
+			string256	_fname;
+			string16	_ext;
+			_splitpath(fn,_drive,_dir,_fname,_ext);
+			string_path pic_name;
+
+			info.m_picture_name = ini.r_string_wb("general","image");
+			strconcat(pic_name,_drive,_dir,*info.m_picture_name);
+			info.m_picture_name = pic_name;
+		}else
+			info.m_picture_name = "";
+		
 		info.m_credits->clear();
 		if(ini.section_exist("creator")){
 			int lc = ini.line_count("creator");
@@ -117,6 +131,14 @@ System::Void xrLauncher_main_frm::modList_SelectedIndexChanged(System::Object * 
     SmodInfo& info = m_mod_info->at(index);
 
 	playBtn->Enabled = xr_strlen(info.m_cmd_line)>0;
+
+	pictureBox1->BackgroundImage->Dispose();
+	
+	if(xr_strlen(info.m_picture_name)){
+		Image * img = Image::FromFile(*info.m_picture_name);
+		pictureBox1->BackgroundImage = img;
+	}else
+		pictureBox1->BackgroundImage = imageList2->Images->get_Item(0);
 
 }
 
