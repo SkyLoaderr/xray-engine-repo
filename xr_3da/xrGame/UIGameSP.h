@@ -8,7 +8,12 @@
 #include "ui/UIDiaryWnd.h"
 #include "ui/UITalkWnd.h"
 #include "ui/UICarBodyWnd.h"
+
 #include "ui/UIBuyWeaponWnd.h"
+#include "ui/UISpawnWnd.h"
+#include "ui/UIStatsWnd.h"
+
+
 
 class CUIGameSP : public CUIGameCustom
 {
@@ -35,4 +40,6 @@ public:
 	
 	//!!! temporary
 	CUIBuyWeaponWnd		UIBuyWeaponWnd;
+	CUISpawnWnd			UISpawnWnd;
+	CUIStatsWnd			UIStatsWnd;
 };
