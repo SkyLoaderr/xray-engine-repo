@@ -386,6 +386,7 @@ void CAI_Biting::MoraleBroadcast(float fValue)
 	}
 }
 
+#ifdef DEBUG
 void CAI_Biting::OnRender()
 {
 	inherited::OnRender();
@@ -393,6 +394,7 @@ void CAI_Biting::OnRender()
 	HDebug->L_Update();
 	HDebug->HT_Update();
 }
+#endif
 
 bool CAI_Biting::is_angle_between(float yaw, float yaw_from, float yaw_to)
 {

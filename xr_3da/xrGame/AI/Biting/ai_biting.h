@@ -393,13 +393,13 @@ public:
 	void InitSelectorCommon		(float dist_opt, float weight_opt, float dist_min, float weight_min, float dist_max, float weight_max);
 	void Path_CommonSelector	(const CEntity *pE, Fvector position);
 
-	Fvector	RandomPosInR(const Fvector &p, float r);
+	Fvector	RandomPosInR		(const Fvector &p, float r);
 
-	void	UpdateVelocities(STravelParams cur_velocity);
+	void	UpdateVelocities	(STravelParams cur_velocity);
 	
 	xr_vector<STravelParams> velocities;
 
-	u32 GetNextGameVertex(float R);
+	u32		GetNextGameVertex	(float R);
 
 	bool	NeedRebuildPath		(u32 n_points);
 	bool	NeedRebuildPath		(float dist_to_end);
@@ -410,12 +410,12 @@ public:
 
 	//////////////////////////////////////////////////////////////////////////
 	// DEBUG
-	
+#ifdef DEBUG
 	CMonsterDebug	*HDebug;
 	CMotionStats	*MotionStats;
 
-	void OnRender();
-
+	virtual void	OnRender();
+#endif
 
 	bool	is_angle_between(float yaw, float yaw_from, float yaw_to);
 

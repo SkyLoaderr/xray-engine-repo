@@ -8,10 +8,11 @@ CFryupZone::~CFryupZone()
 {
 }
 
+#ifdef DEBUG
 void CFryupZone::OnRender()
 {
-
 }
+#endif
 
 //BOOL CCustomZone::net_Spawn(LPVOID DC) 
 //{
