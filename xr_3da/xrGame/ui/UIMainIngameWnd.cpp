@@ -544,7 +544,7 @@ void CUIMainIngameWnd::Update()
 				//сторока для вывода патронов к оружию
 //				sprintf(text_str, "%d/%d %s",AE,AC, 
 //										 *m_pWeapon->m_ammoName?*m_pWeapon->m_ammoName:"");
-				if (!psActorFlags.test(AF_UNLIMITEDAMMO))
+				if (!m_pWeapon->unlimited_ammo())
 					sprintf(text_str, "%d/%d",AE,AC - AE);
 				else
 					sprintf(text_str, "%d/--",AE);

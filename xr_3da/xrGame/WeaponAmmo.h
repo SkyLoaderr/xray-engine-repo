@@ -14,6 +14,7 @@ public:
 	int		m_buckShot;
 	float	m_impair;
 	float	fWallmarkSize;
+	bool	m_bCanBeUnlimited;
 	
 	u16		bullet_material_idx;
 };
@@ -50,7 +51,7 @@ public:
 	u16			m_boxSize;			// Размер коробки (Сколько патронов игрок берет за раз)
 	u16			m_boxCurr;			// Сколько патронов осталось в коробке (включая текущий магазин)
 
-	bool		m_bCanBeUnlimited;
+//	bool		m_bCanBeUnlimited;
 
 protected:
 	////////////// network //////////////////	

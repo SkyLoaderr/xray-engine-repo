@@ -117,6 +117,7 @@ BOOL CWeaponMagazinedWGrenade::net_Spawn(CSE_Abstract* DC)
 	UpdateGrenadeVisibility(!!iAmmoElapsed);
 	m_bPending = false;
 
+	m_DefaultCartridge2.Load(*m_ammoTypes2[m_ammoType2]);
 	return l_res;
 }
 void CWeaponMagazinedWGrenade::switch2_Idle() 
@@ -195,6 +196,8 @@ void  CWeaponMagazinedWGrenade::PerformSwitch()
 
 	swap		(m_ammoType,m_ammoType2);
 	swap		(m_ammoName,m_ammoName2);
+	
+	swap		(m_DefaultCartridge, m_DefaultCartridge2);
 
 	xr_stack<CCartridge> l_magazine;
 	while(m_magazine.size()) { l_magazine.push(m_magazine.top()); m_magazine.pop(); }

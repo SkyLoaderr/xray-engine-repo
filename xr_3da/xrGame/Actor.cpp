@@ -1299,7 +1299,7 @@ void	CActor::RemoveAmmoForWeapon	(CInventoryItem *pIItem)
 	if (!pWM || !pWM->AutoSpawnAmmo()) return;
 
 	CWeaponAmmo* pAmmo = smart_cast<CWeaponAmmo*>(inventory().Get(*(pWM->m_ammoTypes[0]), false));
-	if (!pAmmo || !pAmmo->m_bCanBeUnlimited) return;
+	if (!pAmmo) return;
 	//--- мы нашли патроны к текущему оружию	
 	/*
 	//--- проверяем не подходят ли они к чему-то еще

@@ -34,6 +34,12 @@ void CCartridge::Load(LPCSTR section)
 	m_buckShot = pSettings->r_s32(section, "buck_shot");
 	m_impair = pSettings->r_float(section, "impair");
 	fWallmarkSize = pSettings->r_float(section, "wm_size");
+
+	if(pSettings->line_exist(section,"can_be_unlimited"))
+		m_bCanBeUnlimited = !!pSettings->r_bool(section,"can_be_unlimited");
+	else
+		m_bCanBeUnlimited = true;
+
 	m_ricochet = true;
 	bullet_material_idx =  GMLib.GetMaterialIdx(WEAPON_MATERIAL_NAME);
 	VERIFY	(u16(-1)!=bullet_material_idx);
@@ -71,12 +77,7 @@ void CWeaponAmmo::Load(LPCSTR section)
 	R_ASSERT(fWallmarkSize>0);
 
 	m_boxSize = (u16)pSettings->r_s32(section, "box_size");
-	m_boxCurr = m_boxSize;
-
-	if(pSettings->line_exist(section,"can_be_unlimited"))
-		m_bCanBeUnlimited = !!pSettings->r_bool(section,"can_be_unlimited");
-	else
-		m_bCanBeUnlimited = true;
+	m_boxCurr = m_boxSize;	
 }
 
 BOOL CWeaponAmmo::net_Spawn(CSE_Abstract* DC) 
@@ -171,8 +172,8 @@ bool CWeaponAmmo::Get(CCartridge &cartridge)
 	cartridge.m_impair = m_impair;
 	cartridge.fWallmarkSize = fWallmarkSize;
 	cartridge.bullet_material_idx = GMLib.GetMaterialIdx(WEAPON_MATERIAL_NAME);
-	if (!psActorFlags.test(AF_UNLIMITEDAMMO) || !m_bCanBeUnlimited || ai().get_alife())
-		--m_boxCurr;
+//	if (!psActorFlags.test(AF_UNLIMITEDAMMO) || !m_bCanBeUnlimited || ai().get_alife())
+	--m_boxCurr;
 	return true;
 }
 

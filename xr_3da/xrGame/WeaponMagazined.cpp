@@ -162,7 +162,7 @@ bool CWeaponMagazined::TryReload()
 			return true;
 		}
 
-		if(m_pAmmo || psActorFlags.test(AF_UNLIMITEDAMMO)) 
+		if(m_pAmmo || unlimited_ammo())  
 		{
 			m_bPending = true;
 			SwitchState(eReload); 
@@ -273,7 +273,7 @@ void CWeaponMagazined::ReloadMagazine()
 	
 	if (!m_pInventory) return;
 
-	if(!psActorFlags.test(AF_UNLIMITEDAMMO)) 
+	if(!unlimited_ammo()) 
 	{
 		//попытаться найти в инвентаре патроны текущего типа 
 		m_pAmmo = smart_cast<CWeaponAmmo*>(m_pInventory->Get(*m_ammoTypes[m_ammoType],
@@ -300,7 +300,7 @@ void CWeaponMagazined::ReloadMagazine()
 	VERIFY((u32)iAmmoElapsed == m_magazine.size());
 
 	//нет патронов для перезарядки
-	if(!m_pAmmo && !psActorFlags.test(AF_UNLIMITEDAMMO) ) return;
+	if(!m_pAmmo && !unlimited_ammo() ) return;
 
 	//разрядить магазин, если загружаем патронами другого типа
 	if(!m_bLockType && !m_magazine.empty() && 
@@ -313,7 +313,7 @@ void CWeaponMagazined::ReloadMagazine()
 	CCartridge l_cartridge = m_DefaultCartridge;
 	while(iAmmoElapsed < iMagazineSize)
 	{
-		if (!psActorFlags.test(AF_UNLIMITEDAMMO))
+		if (!unlimited_ammo())
 		{
 			if (!m_pAmmo->Get(l_cartridge)) break;
 		}

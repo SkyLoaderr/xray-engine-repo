@@ -14,6 +14,7 @@
 
 #include "ShootingObject.h"
 #include "hud_item_object.h"
+#include "Actor_Flags.h"
 
 
 // refs
@@ -423,6 +424,7 @@ public:
 	CCartridge				m_DefaultCartridge;
 	float					m_fCurrentCartirdgeDisp;
 
+	IC	bool				unlimited_ammo() { return psActorFlags.test(AF_UNLIMITEDAMMO) && m_DefaultCartridge.m_bCanBeUnlimited; };
 	IC	bool				can_be_strapped	() const {return m_can_be_strapped;};
 
 protected:

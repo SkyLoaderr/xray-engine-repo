@@ -340,7 +340,7 @@ void CWeaponShotgun::PlayAnimCloseWeapon()
 
 bool CWeaponShotgun::HaveCartridgeInInventory		()
 {
-	if (psActorFlags.test(AF_UNLIMITEDAMMO)) return true;
+	if (unlimited_ammo()) return true;
 	m_pAmmo = NULL;
 	if(m_pInventory) 
 	{
@@ -379,7 +379,7 @@ u8 CWeaponShotgun::AddCartridge		(u8 cnt)
 	CCartridge l_cartridge = m_DefaultCartridge;
 	while(cnt)// && m_pAmmo->Get(l_cartridge)) 
 	{
-		if (!psActorFlags.test(AF_UNLIMITEDAMMO))
+		if (!unlimited_ammo())
 		{
 			if (!m_pAmmo->Get(l_cartridge)) break;
 		}

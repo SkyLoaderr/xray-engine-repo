@@ -93,6 +93,8 @@ public:
 	bool					m_bGrenadeMode;
 	Fvector*				m_pGrenadePoint;
 
+	CCartridge				m_DefaultCartridge2;
+
 	virtual void UpdateGrenadeVisibility(bool visibility);
 
 	//название косточки для гранаты подствольника в HUD

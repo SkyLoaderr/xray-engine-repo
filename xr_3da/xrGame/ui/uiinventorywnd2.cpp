@@ -500,8 +500,8 @@ void CUIInventoryWnd::InitInventory()
 			if(pWeaponAmmo)
 			{
 				UIDragDropItem.SetCustomUpdate(AmmoUpdateProc);
-				if (GameID() != GAME_SINGLE && pWeaponAmmo->m_bCanBeUnlimited)	
-					continue;
+//				if (GameID() != GAME_SINGLE && pWeaponAmmo->m_bCanBeUnlimited)	
+//					continue;
 			}
 
 			CEatableItem* pEatableItem = smart_cast<CEatableItem*>((*it));
@@ -552,8 +552,8 @@ void CUIInventoryWnd::InitInventory()
 			if(pWeaponAmmo)
 			{
 				UIDragDropItem.SetCustomUpdate(AmmoUpdateProc);
-				if (GameID() != GAME_SINGLE && pWeaponAmmo->m_bCanBeUnlimited)
-					continue;
+//				if (GameID() != GAME_SINGLE && pWeaponAmmo->m_bCanBeUnlimited)
+//					continue;
 			}
 
 			CEatableItem* pEatableItem = smart_cast<CEatableItem*>((*it));
