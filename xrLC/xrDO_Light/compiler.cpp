@@ -641,6 +641,7 @@ public:
 				
 				// calculation of luminocity
 				amount.scale		(count);
+				amount.mul			(.5f);
 				DS.c_dir			= DS.w_qclr	(amount.sun,15);
 				DS.c_hemi			= DS.w_qclr	(amount.hemi,15);
 				DS.c_r				= DS.w_qclr	(amount.rgb.x,15);
