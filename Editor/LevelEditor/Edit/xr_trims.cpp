@@ -121,6 +121,7 @@ char* _GetItems ( LPCSTR src, int idx_start, int idx_end, LPSTR dst, char separa
         if (level>=idx_end) break;
     }
     *n++ = '\0';
+	return dst;
 }
 
 DWORD _ParseItem ( char* src, xr_token* token_list )
@@ -155,6 +156,7 @@ char* _ReplaceItems( LPCSTR src, int idx_start, int idx_end, LPCSTR new_items, L
     	if (*p==separator) level++;
     }
     *n++ = '\0';
+	return dst;
 }
 
 char* _ReplaceItem ( LPCSTR src, int index, LPCSTR new_item, LPSTR dst, char separator ){
@@ -174,6 +176,7 @@ char* _ReplaceItem ( LPCSTR src, int index, LPCSTR new_item, LPSTR dst, char sep
     	if (*p==separator) level++;
     }
     *n++ = '\0';
+	return dst;
 }
 
 char* _ChangeSymbol ( char* name, char src, char dest )

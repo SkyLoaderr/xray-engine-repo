@@ -30,11 +30,13 @@ void FSPath::Update( char *_FileName )const{
 	strcat(_FileName, buffer );
 }
 
+#ifdef M_BORLAND
 void FSPath::Update( AnsiString& _FileName )const{
 	AnsiString buf;
     buf.sprintf("%s%s",m_Path,_FileName.c_str());
     _FileName=buf;
 }
+#endif
 
 void FSPath::VerifyPath(){
 	char tmp[MAX_PATH];
@@ -73,6 +75,7 @@ void CFileSystem::OnCreate(){
 	m_GameMeshes.Init	(m_Server, 	"game\\data\\meshes\\",	"ogf",		"Render model (*.ogf)|*.ogf" );
     m_GameDO.Init		(m_Server,  "game\\data\\meshes\\",	"do",		"Detail object (*.do)|*.do" );
     m_GameTextures.Init	(m_Server,	"game\\data\\textures\\","dds",		"Textures (*.dds)|*.dds" );
+	m_GameKeys.Init		(m_Server,  "game\\data\\meshes\\",	"key",		"XRay model keys (*.key)" );
 
 	m_Groups.Init   	(m_Server, 	"objects\\",       		"mesh", 	"Groups (*.group)|*.group" );
     m_Objects.Init  	(m_Server, 	"objects\\",       		"object",	"Editor objects (*.object,*.lwo)|*.object;*.lwo" );
@@ -87,7 +90,68 @@ void CFileSystem::OnCreate(){
 }
 
 //----------------------------------------------------
+#ifdef _MSC_VER
+#define utimbuf _utimbuf
+LPCSTR ExtractFileExt(const string& fn){
+	return strext(fn.c_str());
+}
+bool FileExists(LPCSTR fn){
+	int handle	= open(fn, O_RDONLY);
+    return handle>-1;
+}
+bool CFileSystem::GetOpenName( FSPath *initial, char *buffer, bool bMulti ){
+	VERIFY( initial && buffer );
 
+	char flt[1024];ZeroMemory(flt,sizeof(char)*1024);
+	char ext[256];
+	sprintf(ext,"*.%s",initial->m_DefExt);
+	strcpy(flt,initial->m_FilterString);
+	strcpy(flt+strlen(flt)+1,ext);
+
+	OPENFILENAME ofn;
+	memset( &ofn, 0, sizeof(ofn) );
+	ofn.hwndOwner = 0;
+	ofn.lpstrDefExt = initial->m_DefExt;
+	ofn.lpstrFile = buffer;
+	ofn.lpstrFilter = flt;
+	ofn.lStructSize = sizeof(ofn);
+	ofn.nMaxFile = MAX_PATH;
+	ofn.nFilterIndex = 1;
+	ofn.lpstrInitialDir = initial->m_Path;
+	ofn.Flags = 
+		OFN_HIDEREADONLY|
+		OFN_FILEMUSTEXIST|
+		OFN_NOCHANGEDIR|(bMulti?OFN_ALLOWMULTISELECT:0);
+	return !!GetOpenFileName( &ofn );
+}
+
+bool CFileSystem::GetSaveName( FSPath *initial, char *buffer ){
+
+	VERIFY( initial && buffer );
+
+	char flt[1024]; ZeroMemory(flt,sizeof(char)*1024);
+	char ext[256];
+	sprintf(ext,"*.%s",initial->m_DefExt);
+	strcpy(flt,initial->m_FilterString);
+	strcpy(flt+strlen(flt)+1,ext);
+
+	OPENFILENAME ofn;
+	memset( &ofn, 0, sizeof(ofn) );
+	ofn.hwndOwner = 0;
+	ofn.lpstrDefExt = initial->m_DefExt;
+	ofn.lpstrFile = buffer;
+	ofn.lpstrFilter = flt;
+	ofn.lStructSize = sizeof(ofn);
+	ofn.nMaxFile = MAX_PATH;
+	ofn.nFilterIndex = 1;
+	ofn.lpstrInitialDir = initial->m_Path;
+	ofn.Flags = 
+		OFN_HIDEREADONLY|
+		OFN_OVERWRITEPROMPT|
+		OFN_NOCHANGEDIR;
+	return !!GetSaveFileName( &ofn );
+}
+#else
 bool CFileSystem::GetOpenName( FSPath *initial, char *buffer, bool bMulti ){
 	VERIFY( initial && buffer );
 
@@ -181,6 +245,7 @@ bool CFileSystem::GetSaveName( FSPath *initial, AnsiString& buffer ){
     _DELETE(od);
     return res;
 }
+#endif
 
 bool CFileSystem::Exist(LPCSTR _FileName, bool bMessage){
     bool bRes = FileExists(_FileName);
@@ -209,10 +274,10 @@ bool CFileSystem::Exist(char* fn, const char* path, const char* name, const char
 
 
 bool CFileSystem::Exist( FSPath *initial, const char *_FileName, bool bMessage){
-	AnsiString fn;
-    fn = _FileName;
+	FILE_NAME fn;
+    strcpy(fn, _FileName);
     initial->Update(fn);
-	return Exist(fn.c_str(),bMessage);
+	return Exist(fn,bMessage);
 }
 //----------------------------------------------------
 
@@ -256,7 +321,7 @@ int	CFileSystem::FileLength(LPCSTR fn){
     return 0;
 }
 //----------------------------------------------------
-
+#ifdef M_BORLAND
 void CFileSystem::MarkFile(const AnsiString& fn){
 	AnsiString ext = ExtractFileExt(fn);
     ext.Insert("~",2);
@@ -288,11 +353,11 @@ bool CFileSystem::CreateNullFile(const char* fn){
 	F.SaveTo(fn,0);
     return true;
 }
+#endif
 
 void CFileSystem::ProcessOne(_finddata_t& F, const char* path, bool bOnlyDir)
 {
 	FILE_NAME	N;
-	FILE_NAME	M;
 	strcpy		(N,path);
 	strcat		(N,F.name);
 
@@ -304,7 +369,7 @@ void CFileSystem::ProcessOne(_finddata_t& F, const char* path, bool bOnlyDir)
 	} else {
     	if (bOnlyDir) return;
     	if (bClampExt) if (strext(N)) *strext(N)=0;
-		m_FindItems->insert(make_pair(strlwr(N+path_size),F.time_write));
+		m_FindItems->insert(std::make_pair(strlwr(N+path_size),F.time_write));
 	}
 }
 

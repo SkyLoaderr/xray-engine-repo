@@ -15,8 +15,10 @@ public:
 
 	void Init( char *_Root, char *_Add, char *_DefExt, char *_FilterString );
 	void Update( char *_FileName ) const;
-	void Update( AnsiString& _FileName ) const;
 	void VerifyPath();
+#ifdef M_BORLAND
+	void Update( AnsiString& _FileName ) const;
+#endif
 };
 
 DEFINE_MAP(AnsiString,int,FileMap,FilePairIt);
@@ -37,6 +39,7 @@ public:
 	FSPath 	m_GameSounds;
 	FSPath 	m_GameCForms;
 	FSPath 	m_GameMeshes;
+	FSPath	m_GameKeys;
 	FSPath 	m_GameDO;
 	FSPath 	m_GameTextures;
 	FSPath 	m_GameLevels;
