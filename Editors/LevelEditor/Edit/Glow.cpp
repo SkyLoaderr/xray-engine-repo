@@ -35,6 +35,7 @@ void CGlow::Construct(LPVOID data){
     m_fRadius	= 0.5f;
     m_bDefLoad	= false;
     m_Flags.zero();
+    m_ShaderName= "effects\\glow";
 }
 
 CGlow::~CGlow()
@@ -83,6 +84,7 @@ void CGlow::Render(int priority, bool strictB2F)
                 if (m_GShader){	Device.SetShader(m_GShader);
                 }else{			Device.SetShader(Device.m_WireShader);}
                 m_RenderSprite.Render(PPosition,m_fRadius,m_Flags.is(gfFixedSize));
+                DU.DrawRomboid(PPosition, VIS_RADIUS, 0x00FF8507);
             }else{
                 // рендерим bounding sphere
                 Device.SetShader(Device.m_WireShader);
@@ -97,7 +99,11 @@ void CGlow::Render(int priority, bool strictB2F)
             Fbox bb; GetBox(bb);
             u32 clr = Locked()?0xFFFF0000:0xFFFFFFFF;
             Device.SetShader(Device.m_WireShader);
-            DU.DrawSelectionBox(bb,&clr);
+            DU.DrawSelectionBox(bb,&clr);  
+            if (gt->m_Flags.is(ESceneGlowTools::flDrawCross)){
+            	Fvector sz; bb.getradius(sz);
+        		DU.DrawCross(PPosition,sz.x,sz.y,sz.z, sz.x,sz.y,sz.z,0xFFFFFFFF,false);
+            }
         }
     }
 }
