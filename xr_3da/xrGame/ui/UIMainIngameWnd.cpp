@@ -10,11 +10,11 @@
 
 #include "../Entity.h"
 #include "../HUDManager.h"
-/*
-#include "../Group.h"
-*/
-
+#include "../PDA.h"
 #include "../UIStaticItem.h"
+
+#include "UIInventoryUtilities.h"
+using namespace InventoryUtilities;
 
 
 
@@ -44,13 +44,7 @@ CUIMainIngameWnd::~CUIMainIngameWnd()
 
 void CUIMainIngameWnd::Init()
 {
-//	g_UIStaticItem.Init("ui\\ui_inv_ak47","hud\\default",400,400,alNone);
-	
-
-
-
 	CUIXml uiXml;
-	//uiXml.Init("x:\\maingame.xml");
 	uiXml.Init("$game_data$","maingame.xml");
 	
 	CUIXmlInit xml_init;
@@ -76,41 +70,38 @@ void CUIMainIngameWnd::Init()
 	AttachChild(&UIStaticWound);
 	xml_init.InitStatic(uiXml, "static", 5, &UIStaticWound);
 
-	AttachChild(&UIStaticWeapon);
-	xml_init.InitStatic(uiXml, "static", 6, &UIStaticWeapon);
+	AttachChild(&UIWeaponBack);
+	xml_init.InitStatic(uiXml, "static", 6, &UIWeaponBack);
+	UIWeaponBack.AttachChild(&UIWeaponSignAmmo);
+	xml_init.InitStatic(uiXml, "static", 7, &UIWeaponSignAmmo);
+	UIWeaponBack.AttachChild(&UIWeaponSignName);
+	xml_init.InitStatic(uiXml, "static", 8, &UIWeaponSignName);
+	UIWeaponBack.AttachChild(&UIWeaponIcon);
+	xml_init.InitStatic(uiXml, "static", 9, &UIWeaponIcon);
+	UIWeaponIcon.SetShader(GetEquipmentIconsShader());
+	UIWeaponIcon.ClipperOn();
+	//запомнить оригинальный размер для иконки оружия, 
+	//так как она будет масштабироваться и центрироваться
+	m_iWeaponIconWidth = UIWeaponIcon.GetWidth();
+	m_iWeaponIconHeight = UIWeaponIcon.GetHeight();
+	m_iWeaponIconX = UIWeaponIcon.GetWndRect().left;
+	m_iWeaponIconY = UIWeaponIcon.GetWndRect().top;
 
+	//
+	AttachChild(&UIPdaOnline);
+	xml_init.InitStatic(uiXml, "static", 10, &UIPdaOnline);
 	
-/*	AttachChild(&UIWeapon1);
-	UIWeapon1.InitTexture("ui\\ui_inv_lr300");
-	UIWeapon1.MoveWindow(300,200);
-	UIWeapon1.GetStaticItem()->bScaling = true;
-	UIWeapon1.GetStaticItem()->fScalingProportional = 0.2f;
-	//UIWeapon1.GetStaticItem()->SetRect(0,0,200,200);
 
-	AttachChild(&UIWeapon2);
-	UIWeapon2.InitTexture("ui\\ui_inv_lr300");
-	UIWeapon2.MoveWindow(300,300);
-	UIWeapon2.GetStaticItem()->bScaling = false;
-	//UIWeapon2.GetStaticItem()->SetRect(0,0,200,200);*/
+
+/*	UIWeaponBack;
+	UIWeaponSignAmmo;
+	UIWeaponSignName;
+	UIWeaponIcon;*/
 
 	AttachChild(&UITextWound);
 	UITextWound.Init(UIStaticWound.GetWndRect().left+12, 
 						UIStaticWound.GetWndRect().top+40,
 						30,30);
-//	UITextWound.SetText("40");
-
-	AttachChild(&UITextAmmo);
-	UITextAmmo.Init(UIStaticWeapon.GetWndRect().left + 22, 
-						UIStaticWeapon.GetWndRect().top - 10,
-						30,30);
-	UITextAmmo.SetText("T30/250");
-
-	AttachChild(&UITextWeaponName);
-	UITextWeaponName.Init(UIStaticWeapon.GetWndRect().left + 119, 
-						UIStaticWeapon.GetWndRect().top + 15,
-						130,30);
-	UITextWeaponName.SetFont(HUD().pFontSmall);
-	//UITextWeaponName.SetText("AK-47");
 
 
 	//Полоса прогресса здоровья
@@ -119,7 +110,6 @@ void CUIMainIngameWnd::Init()
 
 
 	//индикаторы 
-	UIWeapon.Init();
 	UIZoneMap.Init();
 	UIZoneMap.SetScale(2);
 }
@@ -150,7 +140,6 @@ void CUIMainIngameWnd::Draw()
 	{
 		//отрисовать остальные иконки
 		CUIWindow::Draw();
-		UIWeapon.Render();
 		UIZoneMap.Render();
 	}
 }
@@ -158,6 +147,7 @@ void CUIMainIngameWnd::Draw()
 void CUIMainIngameWnd::Update()
 {
 	static string256 wound_string;
+	static string256 pda_string;
 
 	m_pActor = dynamic_cast<CActor*>(Level().CurrentEntity());
 	if (!m_pActor) 
@@ -167,23 +157,80 @@ void CUIMainIngameWnd::Update()
 		return;
 	}
 
+	if(m_pActor->GetPDA() && m_pActor->GetPDA()->ActiveContactsNum()>0)
+	{
+		string256 text;
+		sprintf(&text[0], "%d", m_pActor->GetPDA()->ActiveContactsNum());
+		UIPdaOnline.SetText(&text[0]);
+	}
+	else
+	{
+		UIPdaOnline.SetText("");
+	}
+
 
 	if(m_pActor->m_inventory.GetActiveSlot() < m_pActor->m_inventory.m_slots.size()) 
 	{
-		m_pWeapon = dynamic_cast<CWeapon*>(m_pActor->m_inventory.m_slots[
+		CWeapon* pWeapon = dynamic_cast<CWeapon*>(m_pActor->m_inventory.m_slots[
 										m_pActor->m_inventory.GetActiveSlot()].m_pIItem); 
-		if(m_pWeapon)
-			UITextWeaponName.SetText((char*)m_pWeapon->NameShort());
-		else
-			UITextWeaponName.SetText(NULL);
+		
+		if(pWeapon)	
+		{
+			if(m_pWeapon != pWeapon)
+			{
+				m_pWeapon = pWeapon;
+				UIWeaponIcon.Show(true);
+				UIWeaponIcon.GetUIStaticItem().SetOriginalRect(
+								m_pWeapon->GetXPos()*INV_GRID_WIDTH,
+								m_pWeapon->GetYPos()*INV_GRID_HEIGHT,
+								m_pWeapon->GetGridWidth()*INV_GRID_WIDTH,
+								m_pWeapon->GetGridHeight()*INV_GRID_HEIGHT);
+			
+				float scale_x = float(m_iWeaponIconWidth)/
+								float(m_pWeapon->GetGridWidth()*INV_GRID_WIDTH);
+				float scale_y = float(m_iWeaponIconHeight)/
+								float(m_pWeapon->GetGridHeight()*INV_GRID_HEIGHT);
+
+				float scale = scale_x<scale_y?scale_x:scale_y;
+				UIWeaponIcon.SetTextureScale(scale);
+				UIWeaponIcon.SetWidth(iFloor(0.5f+ m_pWeapon->GetGridWidth()*INV_GRID_WIDTH*scale));
+				UIWeaponIcon.SetHeight(iFloor(0.5f+ m_pWeapon->GetGridHeight()*INV_GRID_HEIGHT*scale));
+				//отцентрировать иконку
+				UIWeaponIcon.MoveWindow(m_iWeaponIconX + 
+									   (m_iWeaponIconWidth - UIWeaponIcon.GetWidth())/2,
+									    m_iWeaponIconY + 
+									   (m_iWeaponIconHeight - UIWeaponIcon.GetHeight())/2);
+			}
+
+
+
+			UIWeaponSignName.SetText(m_pWeapon->NameShort());
+			
+			int	AE = m_pWeapon->GetAmmoElapsed();
+			int	AC = m_pWeapon->GetAmmoCurrent();
+			if((AE>=0)&&(AC>=0))
+			{
+				//сторока для вывода патронов к оружию
+				string256 m_sAmmoText;
+				sprintf(&m_sAmmoText[0], "%d/%d %s",AE,AC, 
+										 *m_pWeapon->m_ammoName?*m_pWeapon->m_ammoName:"");
+				UIWeaponSignAmmo.SetText(&m_sAmmoText[0]);
+			}
+		}
 	} 
 	else
 		m_pWeapon = NULL;
+
+	//сбросить индикаторы
+	if(!m_pWeapon)
+	{
+		UIWeaponSignAmmo.SetText("");
+		UIWeaponSignName.SetText("");
+		UIWeaponIcon.Show(false);
+	}
     
 
 	if(m_pWeapon && m_pWeapon->IsZoomed() && m_pWeapon->ZoomTexture()) return;
-
-	UIWeapon.Out(m_pWeapon);
 
 
     // radar

@@ -81,9 +81,13 @@ public:
 
 	DRAG_DROP_LIST& GetDragDropItemsList() {return m_DragDropItemsList;}
 
+	void EnableScrollBar(bool enable);
+	bool IsScrollBarEnabled() {return m_bScrollBarEnabled;}
+
 protected:
 	//полоса прокрутки
 	CUIScrollBar m_ScrollBar;
+	bool m_bScrollBarEnabled;
 
 	bool PlaceItemInGrid(CUIDragDropItem* pItem);
 	void RemoveItemFromGrid(CUIDragDropItem* pItem);

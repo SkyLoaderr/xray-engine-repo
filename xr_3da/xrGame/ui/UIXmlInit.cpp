@@ -7,6 +7,12 @@
 
 #include"UIXmlInit.h"
 
+#include"..\\hudmanager.h"
+
+
+#define HEADER_FONT_NAME		"header"
+#define NORMAL_FONT_NAME		"normal"
+#define ARIAL_FONT_NAME			"arial"
 
 CUIXmlInit::CUIXmlInit()
 {
@@ -35,19 +41,19 @@ bool CUIXmlInit::InitFrameWindow(CUIXml& xml_doc, const char* path,
 	int width = xml_doc.ReadAttribInt(path, index, "width");
 	int height = xml_doc.ReadAttribInt(path, index, "height");
 	
-	char* base_name = xml_doc.Read(strconcat(buf,path,":base_texture"), index, NULL);
+	ref_str base_name = xml_doc.Read(strconcat(buf,path,":base_texture"), index, NULL);
 
 	if(!base_name) return false;
 		
-	pWnd->Init(base_name, x, y, width, height);
+	pWnd->Init(*base_name, x, y, width, height);
 
 	strconcat(buf,path,":left_top_texture");
-	char* tex_name = xml_doc.Read(buf, index, NULL);
+	ref_str tex_name = xml_doc.Read(buf, index, NULL);
 
 	x = xml_doc.ReadAttribInt(buf, index, "x");
 	y = xml_doc.ReadAttribInt(buf, index, "y");
 
-	if(tex_name) pWnd->InitLeftTop(tex_name, x,y);
+	if(*tex_name) pWnd->InitLeftTop(*tex_name, x,y);
 
 
 	strconcat(buf,path,":left_bottom_texture");
@@ -56,9 +62,9 @@ bool CUIXmlInit::InitFrameWindow(CUIXml& xml_doc, const char* path,
 	x = xml_doc.ReadAttribInt(buf, index, "x");
 	y = xml_doc.ReadAttribInt(buf, index, "y");
 
-	if(tex_name) pWnd->InitLeftBottom(tex_name, x,y);
+	if(*tex_name) pWnd->InitLeftBottom(*tex_name, x,y);
 
-	pWnd->InitLeftBottom(tex_name, x,y);
+	pWnd->InitLeftBottom(*tex_name, x,y);
 
 	return true;
 }
@@ -74,15 +80,56 @@ bool CUIXmlInit::InitStatic(CUIXml& xml_doc, const char* path,
 	int width = xml_doc.ReadAttribInt(path, index, "width");
 	int height = xml_doc.ReadAttribInt(path, index, "height");
 	
-	char* texture = xml_doc.Read(strconcat(buf,path,":texture"), index, NULL);
+	ref_str texture = xml_doc.Read(strconcat(buf,path,":texture"), index, NULL);
 
-	if(texture)
+	if(*texture)
 	{
-		pWnd->Init(texture, x, y, width, height);
+		pWnd->Init(*texture, x, y, width, height);
+	}
+	else
+	{
+		pWnd->Init(x, y, width, height);
 	}
 
-	char* text = xml_doc.Read(strconcat(buf,path,":text"), index, NULL);
-	pWnd->SetText(text);
+
+	
+	ref_str text_path = strconcat(buf,path,":text");
+	int text_x = xml_doc.ReadAttribInt(*text_path, index, "x");
+	int text_y = xml_doc.ReadAttribInt(*text_path, index, "y");
+	ref_str font_name = xml_doc.ReadAttrib(*text_path, index, "font");
+	ref_str text = xml_doc.Read(*text_path, index, NULL);
+
+	int r = xml_doc.ReadAttribInt(*text_path, index, "r");
+	int g = xml_doc.ReadAttribInt(*text_path, index, "g");
+	int b = xml_doc.ReadAttribInt(*text_path, index, "b");
+	//чтоб не было тупых ошибок когда забыли поставить альфу
+	ref_str alpha = xml_doc.ReadAttrib(*text_path, index, "a");
+	int a = 0xFF;
+	if(*alpha) a = xml_doc.ReadAttribInt(*text_path, index, "a");
+	
+	u32 color = RGB_ALPHA(a,r,g,b);
+
+	if(*font_name)
+	{
+		pWnd->SetTextColor(color);
+
+		if(!strcmp(*font_name, HEADER_FONT_NAME))
+		{
+			pWnd->SetFont(HUD().pFontHeaderRussian);
+		}
+		else if(!strcmp(*font_name, NORMAL_FONT_NAME))
+		{
+			pWnd->SetFont(HUD().pFontGraffiti19Russian);
+		}
+		else if(!strcmp(*font_name, ARIAL_FONT_NAME))
+		{
+			pWnd->SetFont(HUD().pArialN21Russian);
+		}
+	}
+
+	pWnd->SetTextX(text_x);
+	pWnd->SetTextY(text_y);
+	pWnd->SetText(*text);
 
 	return true;
 }

@@ -37,6 +37,9 @@ void CUIScrollBox::Init(int x, int y, int length, int broad, bool bIsHorizontal)
 		m_UIStaticItem.Init(SCROLLBOX_VERT, "hud\\default",x,y, alNone);
 		CUIWindow::Init(x,y, broad, length);
 	}
+
+	SetPushOffsetX(0);
+	SetPushOffsetY(0);
 }
 
 

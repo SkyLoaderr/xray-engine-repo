@@ -80,11 +80,6 @@ protected:
 	//смещение кнопки при нажатии
 	int m_iPushOffsetX;
 	int m_iPushOffsetY;
-
-	//смещение текста,  в зависимости от выбранного
-	//метода центровки
-	int m_iTextOffsetX;
-	int m_iTextOffsetY;
 };
 
 #endif // _UI_BUTTON_H_

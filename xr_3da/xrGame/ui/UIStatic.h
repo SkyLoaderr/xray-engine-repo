@@ -15,7 +15,7 @@
 #include "../uistaticitem.h"
 
 
-
+#define RGB_ALPHA(a, r, g ,b)  ((u32) (((u8) (b) | ((u16) (g) << 8)) | (((u32) (u8) (r)) << 16)) | (((u32) (u8) (a)) << 24)) 
 
 
 class CUIStatic : public CUIWindow  
@@ -36,7 +36,7 @@ public:
 	virtual void Update();
 
 
-	void SetText(LPSTR str);
+	void SetText(LPCSTR str);
 	LPCSTR GetText() {return m_str;}
 
 	virtual void SetTextAlign(CGameFont::EAligment align) {m_eTextAlign = align;}
@@ -69,6 +69,14 @@ public:
 	void	SetShader			(const ref_shader& sh);
 	CUIStaticItem& GetUIStaticItem() {return m_UIStaticItem;}
 
+	void SetTextX(int text_x) {m_iTextOffsetX = text_x;}
+	void SetTextY(int text_y) {m_iTextOffsetY = text_y;}
+	int GetTextX() {return m_iTextOffsetX;}
+	int GetTextY() {return m_iTextOffsetY;}
+
+	void SetTextColor(u32 color) {m_dwFontColor = color;} 
+	u32 GetTextColor() {return m_dwFontColor;}
+
 protected:
 	bool m_bClipper;	
 	
@@ -83,6 +91,8 @@ protected:
 	LPSTR m_str;
 	STRING m_sEdit;
 
+	//цвет текста
+	u32 m_dwFontColor;
 
 	/////////////////////////////////////
 	//форматированный вывод текста
@@ -97,6 +107,11 @@ protected:
 	//выводимый текст
 	int outX;
 	int outY;
+
+	//смещение текста,  в зависимости от выбранного
+	//метода центровки
+	int m_iTextOffsetX;
+	int m_iTextOffsetY;
 
 	//буфер в который записывается уже отформатированная строка
 	xr_vector<char> buf_str;

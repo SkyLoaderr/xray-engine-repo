@@ -11,7 +11,7 @@
 #include "UIDragDropItem.h"
 #include "UIDragDropList.h"
 #include "UIProgressBar.h"
-
+#include "UIWpnDragDropItem.h"
 
 
 #include "../UIZoneMap.h"
@@ -42,21 +42,27 @@ protected:
 	CUIStatic	UIStaticRadiationMedium;
 	CUIStatic	UIStaticRadiationHigh;
 	CUIStatic	UIStaticWound;
-	CUIStatic	UIStaticWeapon;
-
+	
 	CUIStatic	UITextWound;
-	CUIStatic	UITextAmmo;
-	CUIStatic	UITextWeaponName;
 
 	CUIProgressBar UIHealthBar;
 
-	CUIWeapon UIWeapon;
 	CUIZoneMap UIZoneMap;
 
-	CUIStatic	UIWeapon1;
-	CUIStatic	UIWeapon2;
+	//иконка, показывающая количество активных PDA
+	CUIStatic	UIPdaOnline;
+
+	//изображение оружия
+	CUIStatic			UIWeaponBack;
+	CUIStatic			UIWeaponSignAmmo;
+	CUIStatic			UIWeaponSignName;
+	CUIStatic			UIWeaponIcon;
 
 	//для текущего активного актера и оружия
 	CActor*		m_pActor;	
 	CWeapon*	m_pWeapon;
+	int			m_iWeaponIconX;
+	int			m_iWeaponIconY;
+	int			m_iWeaponIconWidth;
+	int			m_iWeaponIconHeight;
 };

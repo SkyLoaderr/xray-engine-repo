@@ -6,6 +6,11 @@
 #include "stdafx.h"
 #include "uidragdroplist.h"
 
+
+#define SCROLLBAR_OFFSET_X 5
+#define SCROLLBAR_OFFSET_Y 0
+
+
 //////////////////////////////////////////////////////////////////////
 // Construction/Destruction
 //////////////////////////////////////////////////////////////////////
@@ -27,6 +32,8 @@ CUIDragDropList::CUIDragDropList()
 	m_iCurrentFirstRow = 0;
 
 	m_DragDropItemsList.clear();
+
+	m_bScrollBarEnabled = true;
 }
 
 CUIDragDropList::~CUIDragDropList()
@@ -105,13 +112,6 @@ void CUIDragDropList::DropAll()
 	}
 	AttachChild(&m_ScrollBar);
 
-/*	for(WINDOW_LIST_it it = m_ChildWndList.begin(); m_ChildWndList.end() != it; ++it)
-	{
-		CUIDragDropItem* pDragDropItem = dynamic_cast<CUIDragDropItem*>(*it);
-		if(pDragDropItem) DetachChild(pDragDropItem);
-	}*/
-
-	
 
 	int k,m;
 
@@ -289,16 +289,12 @@ void CUIDragDropList::InitGrid(int iRowsNum, int iColsNum,
 
 
 
-	SetWidth(m_iColsNum*GetCellWidth() + CUIScrollBar::SCROLLBAR_WIDTH);
+	SetWidth(m_iColsNum*GetCellWidth() + CUIScrollBar::SCROLLBAR_WIDTH + SCROLLBAR_OFFSET_X);
 	SetHeight(GetViewRows()*GetCellHeight());
 
 	AttachChild(&m_ScrollBar);
-	m_ScrollBar.Init(GetWidth() - CUIScrollBar::SCROLLBAR_WIDTH, 0, 
+	m_ScrollBar.Init(GetWidth() - CUIScrollBar::SCROLLBAR_WIDTH, SCROLLBAR_OFFSET_Y, 
 					GetHeight(), false);
-	/*m_ScrollBar.SetRange(0,10);
-	m_ScrollBar.SetPageSize(2);
-	m_ScrollBar.SetScrollPos(0);*/
-
 
 	m_vGridState.resize(m_iRowsNum*m_iColsNum, CELL_EMPTY);
 
@@ -571,4 +567,21 @@ void CUIDragDropList::DetachAll()
 {
 	//m_DragDropItemsList.clear();
 	inherited::DetachAll();
+}
+
+void CUIDragDropList::EnableScrollBar(bool enable)
+{
+	m_bScrollBarEnabled = enable;
+
+	if(m_bScrollBarEnabled)
+	{
+		m_ScrollBar.Enable(true);
+		m_ScrollBar.Show(true);
+	}
+	else
+	{
+		m_ScrollBar.Enable(false);
+		m_ScrollBar.Show(false);
+	}
+
 }

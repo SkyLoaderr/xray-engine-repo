@@ -33,8 +33,8 @@ void CUIListItem::Init(char* str, int x, int y, int width, int height)
 	m_pData = NULL;
 
 	SetPressMode(CUIButton::DOWN_PRESS);
-	this->SetPushOffsetX(0);
-	this->SetPushOffsetY(0);
+	SetPushOffsetX(0);
+	SetPushOffsetY(0);
 }
 
 void CUIListItem::OnMouse(int x, int y, E_MOUSEACTION mouse_action)

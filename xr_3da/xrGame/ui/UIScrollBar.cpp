@@ -80,31 +80,40 @@ void CUIScrollBar::SetHeight(int height)
 
 void CUIScrollBar::UpdateScrollBar()
 {
-	//относительный размер единичного прокручемого элемента
+	//относительный размер единичного прокручиваемого элемента
 	float scrollbar_unit;
 	scrollbar_unit = (float)1/(m_iMaxPos-m_iMinPos+1);
 
 	//утановить размер и положение каретки
 	if(m_bIsHorizontal)
 	{	
-		m_ScrollBox.SetWidth((int)((GetWidth()-2*SCROLLBAR_WIDTH)*
+		m_ScrollBox.SetWidth(iFloor(0.5f + 
+									(float)(GetWidth()-2*SCROLLBAR_WIDTH)*
 									scrollbar_unit*m_iPageSize));
 		
 		m_ScrollBox.MoveWindow((int)(SCROLLBAR_WIDTH + 	
 									(GetWidth()-2*SCROLLBAR_WIDTH)
 									*scrollbar_unit*(m_iScrollPos-m_iMinPos)),  
 							          m_ScrollBox.GetWndRect().top);
+		
+		//в крайней позиции подправить положение scrollbox
 		if(m_iScrollPos == m_iMaxPos - m_iPageSize + 1)
 		{
-			m_ScrollBox.MoveWindow(GetWidth() - SCROLLBAR_WIDTH - 
-											m_ScrollBox.GetWidth(), 
-											m_ScrollBox.GetWndRect().top);
+//			m_ScrollBox.MoveWindow(GetWidth() - SCROLLBAR_WIDTH - 
+//											m_ScrollBox.GetWidth(), 
+//											m_ScrollBox.GetWndRect().top);
+			m_ScrollBox.SetWidth(m_IncButton.GetWndRect().left-m_ScrollBox.GetWndRect().left);
 		}
 	}
 	else
 	{
-		m_ScrollBox.SetHeight((int)((GetHeight()-2*SCROLLBAR_HEIGHT)*
-									scrollbar_unit*m_iPageSize));
+//		m_ScrollBox.SetHeight((int)((GetHeight()-2*SCROLLBAR_HEIGHT)*
+//									scrollbar_unit*m_iPageSize));
+		m_ScrollBox.SetHeight(iFloor(
+									float((GetHeight()-2*SCROLLBAR_HEIGHT))*
+									scrollbar_unit*float(m_iPageSize)
+									+.5f));
+
 		
 		m_ScrollBox.MoveWindow(m_ScrollBox.GetWndRect().left,
 								(int)( SCROLLBAR_HEIGHT+
@@ -114,9 +123,13 @@ void CUIScrollBar::UpdateScrollBar()
 		//в крайней позиции подправить положение scrollbox
 		if(m_iScrollPos == m_iMaxPos - m_iPageSize + 1)
 		{
-			m_ScrollBox.MoveWindow(m_ScrollBox.GetWndRect().left,
-									GetHeight() - SCROLLBAR_HEIGHT - 
-									m_ScrollBox.GetHeight());
+//			m_ScrollBox.MoveWindow(m_ScrollBox.GetWndRect().left,
+//									GetHeight() - SCROLLBAR_HEIGHT - 
+//									m_ScrollBox.GetHeight());
+//			m_ScrollBox.MoveWindow(m_ScrollBox.GetWndRect().left,
+//				         m_IncButton.GetWndRect().top - m_ScrollBox.GetHeight());
+
+			m_ScrollBox.SetHeight(m_IncButton.GetWndRect().top-m_ScrollBox.GetWndRect().top);
 		}
 	}
 }
@@ -162,9 +175,9 @@ void CUIScrollBar::SendMessage(CUIWindow *pWnd, s16 msg, void *pData)
 											m_ScrollBox.GetWndRect().top);
 
 
-				m_iScrollPos = (s16)((s16)m_ScrollBox.GetWndRect().left - SCROLLBAR_WIDTH)*
-							(m_iMaxPos-m_iMinPos+1)/
-							((s16)GetWidth() - (s16)2*SCROLLBAR_WIDTH) + m_iMinPos;
+				m_iScrollPos = (s16)iFloor((float)((s16)m_ScrollBox.GetWndRect().left - SCROLLBAR_WIDTH)*
+							(float)(m_iMaxPos-m_iMinPos+1)/
+							(float)((s16)GetWidth() - (s16)2*SCROLLBAR_WIDTH) + m_iMinPos);
 
 				if(m_iScrollPos+m_iPageSize>m_iMaxPos) 
 					m_iScrollPos = m_iMaxPos - m_iPageSize +1;
@@ -185,9 +198,10 @@ void CUIScrollBar::SendMessage(CUIWindow *pWnd, s16 msg, void *pData)
 											m_ScrollBox.GetHeight());
 
 
-				m_iScrollPos = (s16)(m_ScrollBox.GetWndRect().top - SCROLLBAR_HEIGHT)*
-							(m_iMaxPos-m_iMinPos+1)/
-							((s16)GetHeight() - 2*SCROLLBAR_HEIGHT) + m_iMinPos;
+				m_iScrollPos = (s16)iFloor(0.5f +
+					        float(m_ScrollBox.GetWndRect().top - SCROLLBAR_HEIGHT)*
+							float(m_iMaxPos-m_iMinPos+1)/
+							float((s16)GetHeight() - 2*SCROLLBAR_HEIGHT) + m_iMinPos);
 
 				if(m_iScrollPos+m_iPageSize>m_iMaxPos)
 							m_iScrollPos = m_iMaxPos - m_iPageSize + 1;
@@ -200,38 +214,14 @@ void CUIScrollBar::SendMessage(CUIWindow *pWnd, s16 msg, void *pData)
 		else if(msg == CUIScrollBox::SCROLLBOX_STOP)
 		{
 			//вычислить новое положение прокрутки
-			if(m_bIsHorizontal)
-			{
-				m_iScrollPos = (s16)(m_ScrollBox.GetWndRect().left - SCROLLBAR_WIDTH)*
-							(m_iMaxPos-m_iMinPos+1)/
-							((s16)GetWidth() - 2*SCROLLBAR_WIDTH) + m_iMinPos;
-
-				if(m_iScrollPos+m_iPageSize>m_iMaxPos) m_iScrollPos = m_iMaxPos - m_iPageSize +1;
-				if(m_iScrollPos<m_iMinPos) m_iScrollPos = m_iMinPos;
-			}
-			else
-			{
-				m_iScrollPos = (s16)(m_ScrollBox.GetWndRect().top - SCROLLBAR_HEIGHT)*
-							(m_iMaxPos-m_iMinPos+1)/
-							((s16)GetHeight() - 2*SCROLLBAR_HEIGHT) + m_iMinPos;
-
-				if(m_iScrollPos+m_iPageSize>m_iMaxPos) 
-					m_iScrollPos = m_iMaxPos - m_iPageSize+1;
-				if(m_iScrollPos<m_iMinPos) m_iScrollPos = m_iMinPos;
-			}
-
 			UpdateScrollBar();
 
 			if(m_bIsHorizontal)
 				GetParent()->SendMessage(this, HSCROLL);
 			else
 				GetParent()->SendMessage(this, VSCROLL);
-			//*/
 		}
-
 	}
-
-
 	CUIWindow::SendMessage(pWnd, msg, pData);
 }
 

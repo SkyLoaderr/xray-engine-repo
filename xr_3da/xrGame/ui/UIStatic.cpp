@@ -8,9 +8,6 @@
 
 #include <string.h>
 
-
-#define RGB_ALPHA(a, r, g ,b)  ((u32) (((u8) (b) | ((u16) (g) << 8)) | (((u32) (u8) (r)) << 16)) | (((u32) (u8) (a)) << 24)) 
-
 //////////////////////////////////////////////////////////////////////
 // Construction/Destruction
 //////////////////////////////////////////////////////////////////////
@@ -23,6 +20,11 @@ CUIStatic:: CUIStatic()
 	m_bClipper = false;
 
 	SetTextAlign(CGameFont::alLeft);
+
+	m_iTextOffsetX = 0;
+	m_iTextOffsetY = 0;
+
+	m_dwFontColor = 0xFFFFFFFF;
 }
 
  CUIStatic::~ CUIStatic()
@@ -58,7 +60,11 @@ void CUIStatic::Init(int x, int y, int width, int height)
 //прорисовка
 void  CUIStatic::Draw()
 {
-	if(!m_bAvailableTexture) return;
+	if(!m_bAvailableTexture)
+	{
+		inherited::Draw();
+		return;
+	}
 	
 	RECT rect = GetAbsoluteRect();
 	m_UIStaticItem.SetPos(rect.left, rect.top);
@@ -67,12 +73,15 @@ void  CUIStatic::Draw()
 		TextureClipper();
 
 	m_UIStaticItem.Render();
-			
+
+	inherited::Draw();
 }
 
 
 void CUIStatic::Update()
 {
+	inherited::Update();
+
 	if(m_str == NULL) return;
 	
 	if(GetFont()->SizeOf((char*)m_str) == 0) return;	
@@ -80,7 +89,7 @@ void CUIStatic::Update()
 
 	//RECT rect = GetAbsoluteRect();
 	GetFont()->SetAligment(GetTextAlign());
-	GetFont()->SetColor(0xFFEEEEEE);
+	GetFont()->SetColor(m_dwFontColor);
 
 
 	
@@ -178,8 +187,6 @@ void CUIStatic::Update()
 			AddLetter(m_str[i]);
 		}
 	}
-
-	//xr_free(buf_str);
 }
 
 void CUIStatic::WordOut()
@@ -208,7 +215,8 @@ void CUIStatic::WordOut()
 			outY = curretY;
 		}
 		
-		GetFont()->Out((float)rect.left+outX, (float)rect.top+outY,  &buf_str.front());
+		GetFont()->Out((float)rect.left+outX + m_iTextOffsetX, 
+						(float)rect.top+outY + m_iTextOffsetY,  &buf_str.front());
 
 		word_length = 0;
 		new_word = false;
@@ -466,7 +474,7 @@ void  CUIStatic::SetShader(const ref_shader& sh)
 }
 
 
-void CUIStatic::SetText(LPSTR str) 
+void CUIStatic::SetText(LPCSTR str) 
 {
 	m_sEdit.clear();
 
