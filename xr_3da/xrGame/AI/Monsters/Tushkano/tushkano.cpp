@@ -73,15 +73,15 @@ void CTushkano::Load(LPCSTR section)
 
 void CTushkano::CheckSpecParams(u32 spec_params)
 {
-	if ((spec_params & ASP_CHECK_CORPSE) == ASP_CHECK_CORPSE) {
-		MotionMan.Seq_Add(eAnimCheckCorpse);
-		MotionMan.Seq_Switch();
-	}
+	//if ((spec_params & ASP_CHECK_CORPSE) == ASP_CHECK_CORPSE) {
+	//	MotionMan.Seq_Add(eAnimCheckCorpse);
+	//	MotionMan.Seq_Switch();
+	//}
 
-	if ((spec_params & ASP_STAND_SCARED) == ASP_STAND_SCARED) {
-		MotionMan.SetCurAnim(eAnimLookAround);
-		return;
-	}
+	//if ((spec_params & ASP_STAND_SCARED) == ASP_STAND_SCARED) {
+	//	MotionMan.SetCurAnim(eAnimLookAround);
+	//	return;
+	//}
 }
 
 
