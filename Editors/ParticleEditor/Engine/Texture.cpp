@@ -9,7 +9,6 @@
 #include <d3dx9.h>
 #pragma warning(default:4995)
 
-#include "image.h"
 #include "texture.h"
 #include "std_classes.h"
 #include "xr_avi.h"
@@ -141,7 +140,6 @@ ENGINE_API IDirect3DBaseTexture9*	TWLoader2D
 	u32&				dwHeight
  )
 {
-	CImage					Image;
 	IDirect3DTexture9*		pTexture2D		= NULL;
 	IDirect3DCubeTexture9*	pTextureCUBE	= NULL;
 	string256				fn;

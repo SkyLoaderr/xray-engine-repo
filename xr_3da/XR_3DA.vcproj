@@ -740,12 +740,6 @@
 				Name="Imaging"
 				Filter="">
 				<File
-					RelativePath=".\Image.cpp">
-				</File>
-				<File
-					RelativePath=".\Image.h">
-				</File>
-				<File
 					RelativePath=".\tga.cpp">
 				</File>
 				<File
