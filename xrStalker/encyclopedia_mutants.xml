@@ -1,9 +1,36 @@
 <?xml version='1.0' encoding="UTF-8"?>
 <encyclopedia>
     <!-- LIST OF ENCYCLOPEDIA ENTRIES -->
-    <article id="mutant_flash_general" name="Flesh" group="Mutants/Flesh/General">
+    <article id="mutant_flesh_evolution" name="Evolution" group="Mutants/Flesh">
         <texture x="250" y="250" width="250" height="100">ui\ui_icon_equipment</texture>
-        <text>enc_mutant_flesh_desc</text>
+        <text>enc_mutant_flesh_evolution</text>
     </article>
+    <article id="mutant_flesh_eco" name="Eco" group="Mutants/Flesh">
+        <texture x="250" y="250" width="250" height="100">ui\ui_icon_equipment</texture>
+        <text>enc_mutant_flesh_eco</text>
+    </article>
+
+    <article id="mutant_flesh_skin" name="Skin" group="Mutants/Flesh">
+        <texture x="250" y="250" width="250" height="100">ui\ui_icon_equipment</texture>
+        <text>enc_mutant_flesh_skin</text>
+    </article>
+    <article id="mutant_flesh_move" name="Move" group="Mutants/Flesh">
+        <texture x="250" y="250" width="250" height="100">ui\ui_icon_equipment</texture>
+        <text>enc_mutant_flesh_move</text>
+    </article>
+    <article id="mutant_flesh_eat" name="Eat" group="Mutants/Flesh">
+        <texture x="250" y="250" width="250" height="100">ui\ui_icon_equipment</texture>
+        <text>enc_mutant_flesh_eat</text>
+    </article>
+    <article id="mutant_flesh_nerve" name="Nerve" group="Mutants/Flesh">
+        <texture x="250" y="250" width="250" height="100">ui\ui_icon_equipment</texture>
+        <text>enc_mutant_flesh_nerve</text>
+    </article>
+
+    <article id="mutant_flesh_list1" name="List1" group="Mutants/Flesh">
+        <texture x="250" y="250" width="250" height="100">ui\ui_icon_equipment</texture>
+        <text>enc_mutant_flesh_list1</text>
+    </article>
+
 </encyclopedia>
 

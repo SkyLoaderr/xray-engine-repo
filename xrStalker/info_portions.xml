@@ -54,7 +54,13 @@
 	</info_portion>
 
 	<info_portion id="encyclopedy">
-		<article>mutant_flash_general</article>
+		<article>mutant_flesh_evolution</article>
+		<article>mutant_flesh_eco</article>
+		<article>mutant_flesh_skin</article>
+		<article>mutant_flesh_move</article>
+		<article>mutant_flesh_eat</article>
+		<article>mutant_flesh_nerve</article>
+		<article>mutant_flesh_list1</article>
 	</info_portion>
 
 </game_information_portions>
