@@ -4,9 +4,14 @@
 ------------------------------------------------------------------------------------------
 function send_sos (npc)
     local act = level.actor ()
-    if act == nil or act:alive () == false or distance_between (npc, act) > 70.0 then
+    if act == nil or  act:alive () == false or npc:relation (act) == game_object.enemy then
        return 
     end
+        
+    if distance_between (npc, act) > 70.0  then
+       return 
+    end
+    
     news_manager.send_help (act)    
 end
 ------------------------------------------------------------------------------------------
