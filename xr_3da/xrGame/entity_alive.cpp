@@ -253,7 +253,7 @@ void CEntityAlive::BuyItem(LPCSTR buf)
 {
 	NET_Packet P;
 	u_EventGen	(P,GE_BUY,ID());
-	P.w_string	(buf);
+	P.w_stringZ	(buf);
 	u_EventSend	(P);
 }
 

@@ -114,11 +114,11 @@ CSE_ALifeGraphPoint::~CSE_ALifeGraphPoint	()
 
 void CSE_ALifeGraphPoint::STATE_Read		(NET_Packet	&tNetPacket, u16 size)
 {
-	tNetPacket.r_string			(m_caConnectionPointName);
+	tNetPacket.r_stringZ		(m_caConnectionPointName);
 	if (m_wVersion < 33)
 		tNetPacket.r_u32		();
 	else
-		tNetPacket.r_string		(m_caConnectionLevelName);
+		tNetPacket.r_stringZ	(m_caConnectionLevelName);
 	tNetPacket.r_u8				(m_tLocations[0]);
 	tNetPacket.r_u8				(m_tLocations[1]);
 	tNetPacket.r_u8				(m_tLocations[2]);
@@ -135,8 +135,8 @@ void CSE_ALifeGraphPoint::STATE_Read		(NET_Packet	&tNetPacket, u16 size)
 
 void CSE_ALifeGraphPoint::STATE_Write		(NET_Packet	&tNetPacket)
 {
-	tNetPacket.w_string			(m_caConnectionPointName);
-	tNetPacket.w_string			(m_caConnectionLevelName);
+	tNetPacket.w_stringZ			(m_caConnectionPointName);
+	tNetPacket.w_stringZ			(m_caConnectionLevelName);
 	tNetPacket.w_u8				(m_tLocations[0]);
 	tNetPacket.w_u8				(m_tLocations[1]);
 	tNetPacket.w_u8				(m_tLocations[2]);
@@ -210,9 +210,9 @@ void CSE_ALifeObject::STATE_Write			(NET_Packet &tNetPacket)
 	tNetPacket.w_u32			(m_bDirectControl);
 	tNetPacket.w_u32			(m_tNodeID);
 	tNetPacket.w				(&m_tSpawnID,	sizeof(m_tSpawnID));
-	tNetPacket.w_string			(*m_caGroupControl?*m_caGroupControl:"");
+	tNetPacket.w_stringZ			(*m_caGroupControl?*m_caGroupControl:"");
 	tNetPacket.w_u32			(m_flags.get());
-	tNetPacket.w_string			(m_ini_string);
+	tNetPacket.w_stringZ			(m_ini_string);
 	tNetPacket.w				(&m_story_id,sizeof(m_story_id));
 }
 
@@ -245,14 +245,14 @@ void CSE_ALifeObject::STATE_Read			(NET_Packet &tNetPacket, u16 size)
 		tNetPacket.r			(&m_tSpawnID,	sizeof(m_tSpawnID));
 	if (m_wVersion > 23){
     	string256 tmp;
-		tNetPacket.r_string		(tmp); m_caGroupControl=tmp;
+		tNetPacket.r_stringZ	(tmp); m_caGroupControl=tmp;
     }
 	if (m_wVersion > 49) {
 		tNetPacket.r_u32		(m_flags.flags);
 	}
 	
 	if (m_wVersion > 57)
-		tNetPacket.r_string		(m_ini_string);
+		tNetPacket.r_stringZ	(m_ini_string);
 
 	if (m_wVersion > 61)
 		tNetPacket.r			(&m_story_id,sizeof(m_story_id));
@@ -636,8 +636,8 @@ void CSE_ALifeLevelChanger::STATE_Read		(NET_Packet	&tNetPacket, u16 size)
 		else
 			tNetPacket.r_vec3	(m_tAngles);
 	}
-	tNetPacket.r_string			(m_caLevelToChange);
-	tNetPacket.r_string			(m_caLevelPointToChange);
+	tNetPacket.r_stringZ		(m_caLevelToChange);
+	tNetPacket.r_stringZ		(m_caLevelPointToChange);
 }
 
 void CSE_ALifeLevelChanger::STATE_Write	(NET_Packet	&tNetPacket)
@@ -649,8 +649,8 @@ void CSE_ALifeLevelChanger::STATE_Write	(NET_Packet	&tNetPacket)
 	tNetPacket.w_float			(m_tNextPosition.y);
 	tNetPacket.w_float			(m_tNextPosition.z);
 	tNetPacket.w_vec3			(m_tAngles);
-	tNetPacket.w_string			(m_caLevelToChange);
-	tNetPacket.w_string			(m_caLevelPointToChange);
+	tNetPacket.w_stringZ			(m_caLevelToChange);
+	tNetPacket.w_stringZ			(m_caLevelPointToChange);
 }
 
 void CSE_ALifeLevelChanger::UPDATE_Read	(NET_Packet	&tNetPacket)
@@ -712,10 +712,10 @@ void CSE_ALifeObjectPhysic::STATE_Read		(NET_Packet	&tNetPacket, u16 size)
 	tNetPacket.r_float			(mass);
     
 	if (m_wVersion > 9)
-		tNetPacket.r_string		(fixed_bones);
+		tNetPacket.r_stringZ	(fixed_bones);
 
 	if (m_wVersion<65&&m_wVersion > 28)
-		tNetPacket.r_string		(startup_animation);
+		tNetPacket.r_stringZ	(startup_animation);
 
 	if(m_wVersion<64)
 		{
@@ -743,7 +743,7 @@ void CSE_ALifeObjectPhysic::STATE_Write		(NET_Packet	&tNetPacket)
 	inherited2::STATE_Write		(tNetPacket);
 	tNetPacket.w_u32			(type);
 	tNetPacket.w_float			(mass);
-	tNetPacket.w_string			(fixed_bones);
+	tNetPacket.w_stringZ			(fixed_bones);
 
 }
 
@@ -883,9 +883,9 @@ void CSE_ALifeObjectHangingLamp::STATE_Read	(NET_Packet	&tNetPacket, u16 size)
 		float	f_tmp;
 		// model
 		tNetPacket.r_u32			(color);
-		tNetPacket.r_string			(color_animator);
-		tNetPacket.r_string			(s_tmp);
-		tNetPacket.r_string			(s_tmp);
+		tNetPacket.r_stringZ		(color_animator);
+		tNetPacket.r_stringZ		(s_tmp);
+		tNetPacket.r_stringZ		(s_tmp);
 		tNetPacket.r_float			(range);
 		tNetPacket.r_angle8			(f_tmp);
 		if (m_wVersion>10)
@@ -895,19 +895,19 @@ void CSE_ALifeObjectHangingLamp::STATE_Read	(NET_Packet	&tNetPacket, u16 size)
 		if (m_wVersion>12)
 			tNetPacket.r_float		(f_tmp);
 		if (m_wVersion>17)
-			tNetPacket.r_string		(startup_animation);
+			tNetPacket.r_stringZ	(startup_animation);
 
 #ifdef _EDITOR    
 		PlayAnimation				(*startup_animation?*startup_animation:"$editor");
 #endif
 
 		if (m_wVersion > 42) {
-			tNetPacket.r_string		(s_tmp);
+			tNetPacket.r_stringZ	(s_tmp);
 			tNetPacket.r_float		(f_tmp);
 		}
 
 		if (m_wVersion > 43){
-			tNetPacket.r_string		(fixed_bones);
+			tNetPacket.r_stringZ	(fixed_bones);
 		}
 
 		if (m_wVersion > 44){
@@ -917,14 +917,14 @@ void CSE_ALifeObjectHangingLamp::STATE_Read	(NET_Packet	&tNetPacket, u16 size)
 		// model
 		tNetPacket.r_u32			(color);
 		tNetPacket.r_float			(brightness);
-		tNetPacket.r_string			(color_animator);
+		tNetPacket.r_stringZ		(color_animator);
 		tNetPacket.r_float			(range);
     	tNetPacket.r_u16			(flags.flags);
-		tNetPacket.r_string			(startup_animation);
+		tNetPacket.r_stringZ		(startup_animation);
 	#ifdef _EDITOR    
 		PlayAnimation				(*startup_animation?*startup_animation:"$editor");
 	#endif
-		tNetPacket.r_string			(fixed_bones);
+		tNetPacket.r_stringZ		(fixed_bones);
 		tNetPacket.r_float			(m_health);
 	}
 
@@ -933,11 +933,11 @@ void CSE_ALifeObjectHangingLamp::STATE_Read	(NET_Packet	&tNetPacket, u16 size)
 		tNetPacket.r_float			(m_virtual_size);
 	    tNetPacket.r_float			(m_ambient_radius);
     	tNetPacket.r_float			(m_ambient_power);
-	    tNetPacket.r_string			(m_ambient_texture);
-        tNetPacket.r_string			(light_texture);
-        tNetPacket.r_string			(guid_bone);
+	    tNetPacket.r_stringZ		(m_ambient_texture);
+        tNetPacket.r_stringZ		(light_texture);
+        tNetPacket.r_stringZ		(guid_bone);
         tNetPacket.r_float			(spot_cone_angle);
-        tNetPacket.r_string			(glow_texture);
+        tNetPacket.r_stringZ		(glow_texture);
         tNetPacket.r_float			(glow_radius);
 	}
 }
@@ -950,21 +950,21 @@ void CSE_ALifeObjectHangingLamp::STATE_Write(NET_Packet	&tNetPacket)
 	// model
 	tNetPacket.w_u32			(color);
 	tNetPacket.w_float			(brightness);
-	tNetPacket.w_string			(color_animator);
+	tNetPacket.w_stringZ			(color_animator);
 	tNetPacket.w_float			(range);
    	tNetPacket.w_u16			(flags.flags);
-	tNetPacket.w_string			(startup_animation);
-    tNetPacket.w_string			(fixed_bones);
+	tNetPacket.w_stringZ			(startup_animation);
+    tNetPacket.w_stringZ			(fixed_bones);
 	tNetPacket.w_float			(m_health);
 	tNetPacket.w_float			(m_virtual_size);
     tNetPacket.w_float			(m_ambient_radius);
     tNetPacket.w_float			(m_ambient_power);
-    tNetPacket.w_string			(m_ambient_texture);
+    tNetPacket.w_stringZ			(m_ambient_texture);
 
-    tNetPacket.w_string			(light_texture);
-    tNetPacket.w_string			(guid_bone);
+    tNetPacket.w_stringZ			(light_texture);
+    tNetPacket.w_stringZ			(guid_bone);
     tNetPacket.w_float			(spot_cone_angle);
-    tNetPacket.w_string			(glow_texture);
+    tNetPacket.w_stringZ			(glow_texture);
     tNetPacket.w_float			(glow_radius);
     
 }
@@ -1171,8 +1171,8 @@ void CSE_ALifeHelicopter::STATE_Read		(NET_Packet	&tNetPacket, u16 size)
 	if(m_wVersion>=68)// 69 !! hack!!!
 		inherited3::STATE_Read		(tNetPacket,size);
 #pragma todo("change 68 -> 69")
-    tNetPacket.r_string			(startup_animation);
-	tNetPacket.r_string			(engine_sound);
+    tNetPacket.r_stringZ		(startup_animation);
+	tNetPacket.r_stringZ		(engine_sound);
 
 #ifdef _EDITOR    
 	CSE_Visual::PlayAnimation	(*startup_animation?*startup_animation:"$editor");
@@ -1185,8 +1185,8 @@ void CSE_ALifeHelicopter::STATE_Write		(NET_Packet	&tNetPacket)
 	inherited1::STATE_Write		(tNetPacket);
     CSE_Motion::motion_write	(tNetPacket);
 	inherited3::STATE_Write		(tNetPacket);
-    tNetPacket.w_string			(startup_animation);
-    tNetPacket.w_string			(engine_sound);
+    tNetPacket.w_stringZ			(startup_animation);
+    tNetPacket.w_stringZ			(engine_sound);
 }
 
 void CSE_ALifeHelicopter::UPDATE_Read		(NET_Packet	&tNetPacket)

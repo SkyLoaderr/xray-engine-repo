@@ -108,7 +108,7 @@ CSE_Abstract *CALifeSimulatorBase::spawn_item	(LPCSTR section, const Fvector &po
 	R_ASSERT3					(abstract,"Cannot find item with section %s",section);
 
 	strcpy						(abstract->s_name,section);
-	abstract->s_gameid			= u8(GameID());
+	abstract->s_gameid			= u8(GAME_SINGLE); // GameID()
 	abstract->s_RP				= 0xff;
 	abstract->ID				= server().PerformIDgen(0xffff);
 	abstract->ID_Parent			= parent_id;

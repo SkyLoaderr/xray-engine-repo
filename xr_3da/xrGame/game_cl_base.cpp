@@ -52,7 +52,7 @@ void	game_cl_GameState::net_import_state	(NET_Packet& P)
 		u32				ID;
 		Player			IP;
 		P.r_u32			(ID);
-		P.r_string		(IP.name);
+		P.r_stringZ		(IP.name);
 //		P.r				(&IP,sizeof(game_PlayerState));
 		IP.net_Import	(P);
 		I				= players.insert(mk_pair(ID,IP));
@@ -121,7 +121,7 @@ void game_cl_GameState::TranslateGameMessage	(u32 msg, NET_Packet& P)
 	case GMSG_PLAYER_CONNECTED:
 		{
 			string64 PlayerName;
-			P.r_string(PlayerName);
+			P.r_stringZ(PlayerName);
 			
 			sprintf(Text, "%sPlayer %s%s %sconnected",Color_Main,Color_Teams[0],PlayerName,Color_Main);
 			HUD().GetUI()->UIMainIngameWnd.AddGameMessage(NULL, Text);
@@ -129,7 +129,7 @@ void game_cl_GameState::TranslateGameMessage	(u32 msg, NET_Packet& P)
 	case GMSG_PLAYER_DISCONNECTED:
 		{
 			string64 PlayerName;
-			P.r_string(PlayerName);
+			P.r_stringZ(PlayerName);
 
 			sprintf(Text, "%sPlayer %s%s %sdisconnected",Color_Main,Color_Teams[0],PlayerName,Color_Main);
 			HUD().GetUI()->UIMainIngameWnd.AddGameMessage(NULL, Text);

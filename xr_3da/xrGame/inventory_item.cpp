@@ -287,7 +287,7 @@ void CInventoryItem::OnEvent (NET_Packet& P, u16 type)
 	case GE_ADDON_DETACH:
 		{
 			string64			i_name;
-			P.r_string			(i_name);
+			P.r_stringZ			(i_name);
 			Detach(i_name);
 			CActor* pActor = dynamic_cast<CActor*>(H_Parent());
 			if (pActor && pActor->inventory().ActiveItem() == this)

@@ -17,11 +17,12 @@ using namespace ALife;
 
 struct COrganizationLoader : public object_loader::detail::CEmptyPredicate {
 	using object_loader::detail::CEmptyPredicate::operator();
-	
+
+	bool				m_load;
 	mutable ALife::ORGANIZATION_P_MAP::iterator I;
 	ALife::ORGANIZATION_P_MAP::iterator E;
 	
-	IC	COrganizationLoader(ALife::ORGANIZATION_P_MAP &orgs)
+	IC	COrganizationLoader(ALife::ORGANIZATION_P_MAP &orgs, bool load) : m_load(load)
 	{
 		I = orgs.begin();
 		E = orgs.end();
@@ -29,10 +30,12 @@ struct COrganizationLoader : public object_loader::detail::CEmptyPredicate {
 
 	IC	bool can_clear() const {return(false);}
 	template <typename T1, typename T2>
-	IC	bool operator()	(T1 &data, const T2 &value, bool first) const {return(!first);}
-	template <typename T1>
-	IC	void operator()	(T1 &data) const
+	IC	bool operator()	(T1 &data, const T2 &value, bool first) const {return(!m_load && !first);}
+	template <typename T1, typename T2>
+	IC	void after_load	(T1 &data, T2 &stream) const
 	{
+		data.second		= (*I).second;
+		load_data		(*data.second,stream);
 		VERIFY2			((I != E) && !xr_strcmp(data.second->m_name,(*I).first),"Data key value mismatch : DELETE saved game and try again!");
 	}
 
@@ -48,10 +51,11 @@ struct COrganizationLoader : public object_loader::detail::CEmptyPredicate {
 struct CDiscoveryLoader : public object_loader::detail::CEmptyPredicate {
 	using object_loader::detail::CEmptyPredicate::operator();
 
+	bool				m_load;
 	mutable ALife::DISCOVERY_P_MAP::iterator I;
 	ALife::DISCOVERY_P_MAP::iterator E;
 	
-	IC	CDiscoveryLoader(ALife::DISCOVERY_P_MAP &discoveries)
+	IC	CDiscoveryLoader(ALife::DISCOVERY_P_MAP &discoveries, bool load) : m_load(load)
 	{
 		I = discoveries.begin();
 		E = discoveries.end();
@@ -59,10 +63,12 @@ struct CDiscoveryLoader : public object_loader::detail::CEmptyPredicate {
 
 	IC	bool can_clear() const {return(false);}
 	template <typename T1, typename T2>
-	IC	bool operator()	(T1 &data, const T2 &value, bool first) const {return(!first);}
-	template <typename T1>
-	IC	void operator()	(T1 &data) const
+	IC	bool operator()	(T1 &data, const T2 &value, bool first) const {return(!m_load && !first);}
+	template <typename T1, typename T2>
+	IC	void after_load	(T1 &data, T2 &stream) const
 	{
+		data.second		= (*I).second;
+		load_data		(*data.second,stream);
 		VERIFY2			((I != E) && !xr_strcmp(data.second->m_id,(*I).first),"Data key value mismatch : DELETE saved game and try again!");
 	}
 
@@ -122,8 +128,8 @@ void CALifeOrganizationRegistry::save					(IWriter &memory_stream)
 {
 	Msg							("* Saving organizations and discoveries...");
 	memory_stream.open_chunk	(DISCOVERY_CHUNK_DATA);
-	save_data					(m_organizations,	memory_stream,COrganizationLoader(m_organizations));
-	save_data					(m_discoveries,		memory_stream,CDiscoveryLoader(m_discoveries));
+	save_data					(m_organizations,	memory_stream,COrganizationLoader(m_organizations,false));
+	save_data					(m_discoveries,		memory_stream,CDiscoveryLoader(m_discoveries,false));
 	save_data					(m_artefacts,		memory_stream);
 	memory_stream.close_chunk	();
 }
@@ -132,8 +138,8 @@ void CALifeOrganizationRegistry::load					(IReader &file_stream)
 { 
 	Msg							("* Loading organizations and discoveries...");
 	R_ASSERT2					(file_stream.find_chunk(DISCOVERY_CHUNK_DATA),"Can't find chunk DISCOVERY_CHUNK_DATA!");
-	load_data					(m_organizations,	file_stream,COrganizationLoader(m_organizations));
-	load_data					(m_discoveries,		file_stream,CDiscoveryLoader(m_discoveries));
+	load_data					(m_organizations,	file_stream,COrganizationLoader(m_organizations,true));
+	load_data					(m_discoveries,		file_stream,CDiscoveryLoader(m_discoveries,true));
 	load_data					(m_artefacts,		file_stream);
 }
 

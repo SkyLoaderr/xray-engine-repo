@@ -15,7 +15,7 @@ void game_cl_TeamDeathmatch::TranslateGameMessage	(u32 msg, NET_Packet& P)
 	case GMSG_PLAYER_JOIN_TEAM: //tdm
 		{
 			string64 PlayerName;
-			P.r_string	(PlayerName);
+			P.r_stringZ	(PlayerName);
 			u16 Team;
 			P.r_u16		(Team);
 

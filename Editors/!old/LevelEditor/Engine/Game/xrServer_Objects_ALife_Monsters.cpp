@@ -141,7 +141,7 @@ void CSE_ALifeTrader::STATE_Write			(NET_Packet &tNetPacket)
 		ALife::ARTEFACT_TRADER_ORDER_PAIR_IT	I = m_tpOrderedArtefacts.begin();
 		ALife::ARTEFACT_TRADER_ORDER_PAIR_IT	E = m_tpOrderedArtefacts.end();
 		for ( ; I != E; ++I) {
-			tNetPacket.w_string	((*I).second->m_caSection);
+			tNetPacket.w_stringZ	((*I).second->m_caSection);
 			tNetPacket.w_u32	((*I).second->m_dwTotalCount);
 			save_data			((*I).second->m_tpOrders,tNetPacket);
 		}
@@ -151,7 +151,7 @@ void CSE_ALifeTrader::STATE_Write			(NET_Packet &tNetPacket)
 		ALife::TRADER_SUPPLY_IT		I = m_tpSupplies.begin();
 		ALife::TRADER_SUPPLY_IT		E = m_tpSupplies.end();
 		for ( ; I != E; ++I) {
-			tNetPacket.w_string	((*I).m_caSections);
+			tNetPacket.w_stringZ	((*I).m_caSections);
 			tNetPacket.w_u32	((*I).m_dwCount);
 			tNetPacket.w_float	((*I).m_fMinFactor);
 			tNetPacket.w_float	((*I).m_fMaxFactor);
@@ -171,7 +171,7 @@ void CSE_ALifeTrader::STATE_Read			(NET_Packet &tNetPacket, u16 size)
 		u32						l_dwCount	= tNetPacket.r_u32();
 		for (int i=0 ; i<(int)l_dwCount; ++i) {
 			ALife::SArtefactTraderOrder	*l_tpArtefactOrder = xr_new<ALife::SArtefactTraderOrder>();
-			tNetPacket.r_string	(l_tpArtefactOrder->m_caSection);
+			tNetPacket.r_stringZ(l_tpArtefactOrder->m_caSection);
 			tNetPacket.r_u32	(l_tpArtefactOrder->m_dwTotalCount);
 			load_data			(l_tpArtefactOrder->m_tpOrders,tNetPacket);
 			m_tpOrderedArtefacts.insert(mk_pair(l_tpArtefactOrder->m_caSection,l_tpArtefactOrder));
@@ -182,7 +182,7 @@ void CSE_ALifeTrader::STATE_Read			(NET_Packet &tNetPacket, u16 size)
 		ALife::TRADER_SUPPLY_IT		I = m_tpSupplies.begin();
 		ALife::TRADER_SUPPLY_IT		E = m_tpSupplies.end();
 		for ( ; I != E; ++I) {
-			tNetPacket.r_string	((*I).m_caSections);
+			tNetPacket.r_stringZ((*I).m_caSections);
 			tNetPacket.r_u32	((*I).m_dwCount);
 			tNetPacket.r_float	((*I).m_fMinFactor);
 			tNetPacket.r_float	((*I).m_fMaxFactor);
@@ -386,7 +386,7 @@ void CSE_ALifeAnomalousZone::STATE_Read		(NET_Packet	&tNetPacket, u16 size)
 		string64				*l_cppArtefactSections	= (string64*)xr_malloc(l_wItemCount*sizeof(string64));
 
 		for (u16 i=0; i<l_wItemCount; ++i) {
-			tNetPacket.r_string	(l_cppArtefactSections[i]);
+			tNetPacket.r_stringZ(l_cppArtefactSections[i]);
 			if (m_wVersion > 26)
 				tNetPacket.r_float	(l_faWeights[i]);
 			else {
@@ -429,7 +429,7 @@ void CSE_ALifeAnomalousZone::STATE_Write	(NET_Packet	&tNetPacket)
 	tNetPacket.w_float			(m_fBirthProbability);
 	tNetPacket.w_u16			(m_wItemCount);
 	for (u16 i=0; i<m_wItemCount; ++i) {
-		tNetPacket.w_string		(m_cppArtefactSections[i]);
+		tNetPacket.w_stringZ		(m_cppArtefactSections[i]);
 		tNetPacket.w_float		(m_faWeights[i]);
 	}
 	tNetPacket.w_u16			(m_wArtefactSpawnCount);
@@ -1314,7 +1314,7 @@ void CSE_ALifeHumanAbstract::STATE_Write	(NET_Packet &tNetPacket)
 	inherited2::STATE_Write		(tNetPacket);
 	save_data					(m_tpPath,tNetPacket);
 	save_data					(m_baVisitedVertices,tNetPacket);
-	tNetPacket.w_string			(*m_caKnownCustomers?*m_caKnownCustomers:"");
+	tNetPacket.w_stringZ			(*m_caKnownCustomers?*m_caKnownCustomers:"");
 	save_data					(m_tpKnownCustomers,tNetPacket);
 	save_data					(m_cpEquipmentPreferences,tNetPacket);
 	save_data					(m_cpMainWeaponPreferences,tNetPacket);
@@ -1329,7 +1329,7 @@ void CSE_ALifeHumanAbstract::STATE_Read		(NET_Packet &tNetPacket, u16 size)
 		load_data				(m_baVisitedVertices,tNetPacket);
 		if (m_wVersion > 35) {
 			string256			caKnownCustomers;
-			tNetPacket.r_string	(caKnownCustomers);
+			tNetPacket.r_stringZ(caKnownCustomers);
 			m_caKnownCustomers	= caKnownCustomers;
 			load_data			(m_tpKnownCustomers,tNetPacket);
 			if (m_wVersion > 68) {
@@ -1432,14 +1432,14 @@ CSE_ALifeObjectIdol::~CSE_ALifeObjectIdol	()
 void CSE_ALifeObjectIdol::STATE_Read		(NET_Packet& tNetPacket, u16 size)
 {
 	inherited::STATE_Read		(tNetPacket,size);
-	tNetPacket.r_string			(m_caAnimations);
+	tNetPacket.r_stringZ		(m_caAnimations);
 	tNetPacket.r_u32			(m_dwAniPlayType);
 }
 
 void CSE_ALifeObjectIdol::STATE_Write		(NET_Packet& tNetPacket)
 {
 	inherited::STATE_Write		(tNetPacket);
-	tNetPacket.w_string			(m_caAnimations);
+	tNetPacket.w_stringZ			(m_caAnimations);
 	tNetPacket.w_u32			(m_dwAniPlayType);
 }
 

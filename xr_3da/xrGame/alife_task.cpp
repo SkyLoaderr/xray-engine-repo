@@ -22,12 +22,12 @@ void CALifeTask::load		(IReader &stream)
 	stream.r				(&m_tTaskType,	sizeof(m_tTaskType));
 	switch (m_tTaskType) {
 		case ALife::eTaskTypeSearchForItemCL : {
-			stream.r_string	(m_caSection);
+			stream.r_stringZ(m_caSection);
 			stream.r		(&m_tLocationID,sizeof(m_tLocationID));
 			break;
 		}
 		case ALife::eTaskTypeSearchForItemCG : {
-			stream.r_string	(m_caSection);
+			stream.r_stringZ(m_caSection);
 			stream.r		(&m_tGraphID,	sizeof(m_tGraphID));
 			break;
 		}
@@ -56,12 +56,12 @@ void CALifeTask::save		(IWriter &stream)
 	stream.w				(&m_tTaskType,		sizeof(m_tTaskType));
 	switch (m_tTaskType) {
 		case ALife::eTaskTypeSearchForItemCL : {
-			stream.w_string	(m_caSection);
+			stream.w_stringZ(m_caSection);
 			stream.w		(&m_tLocationID,	sizeof(m_tLocationID));
 			break;
 		}
 		case ALife::eTaskTypeSearchForItemCG : {
-			stream.w_string	(m_caSection);
+			stream.w_stringZ(m_caSection);
 			stream.w		(&m_tGraphID,		sizeof(m_tGraphID));
 			break;
 		}

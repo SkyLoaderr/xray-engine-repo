@@ -126,17 +126,17 @@ struct CSaver {
 
 	IC	static void save_data(LPSTR data, M &stream, const P &p)
 	{
-		stream.w_string					(data);
+		stream.w_stringZ				(data);
 	}
 
 	IC	static void save_data(LPCSTR data, M &stream, const P &p)
 	{
-		stream.w_string					(data);
+		stream.w_stringZ				(data);
 	}
 
 	IC	static void save_data(const ref_str &data, M &stream, const P &p)
 	{
-		stream.w_string					(*data);
+		stream.w_stringZ				(*data);
 	}
 
 	template <typename T1, typename T2>

@@ -95,7 +95,7 @@ void xrServer::Process_event	(NET_Packet& P, DPNID sender)
 	case GE_BUY:
 		{
 			string64			i_name;
-			P.r_string			(i_name);
+			P.r_stringZ			(i_name);
 			CSE_Abstract*		E			= game->get_entity_from_eid	(destination);
 			if (E) {
 				xrClientData*		C			= E->owner;

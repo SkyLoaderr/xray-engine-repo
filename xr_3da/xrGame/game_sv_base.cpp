@@ -182,7 +182,7 @@ void game_sv_GameState::net_Export_State						(NET_Packet& P, u32 to)
 		if (A->Skip) continue;
 
 		P.w_u32					(get_it_2_id	(p_it));
-		P.w_string				(p_name);
+		P.w_stringZ				(p_name);
 		copy.net_Export			(P);
 //		P.w						(&copy,sizeof(game_PlayerState));
 	}

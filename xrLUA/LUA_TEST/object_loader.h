@@ -143,14 +143,14 @@ struct CLoader {
 	IC	static void load_data(LPSTR &data, M &stream, const P &p)
 	{
 		string256						S;
-		stream.r_string					(S);
+		stream.r_stringZ				(S);
 		VERIFY							(xr_strlen(S) < 255);
 		data							= xr_strdup(S);
 	}
 
 	IC	static void load_data(ref_str &data, M &stream, const P &p)
 	{
-		stream.r_string					(data);
+		stream.r_stringZ				(data);
 	}
 
 	template <typename T1, typename T2>
@@ -163,7 +163,7 @@ struct CLoader {
 		}
 		if (p(data,data.second,false))
 			load_data					(data.second,stream,p);
-		p								(data);
+		p.after_load					(data,stream);
 	}
 
 	IC	static void load_data(xr_vector<bool> &data, M &stream, const P &p)
@@ -277,8 +277,8 @@ struct CLoader {
 namespace object_loader {
 	namespace detail {
 		struct CEmptyPredicate {
-			template <typename T1>
-			IC	void operator()	(T1 &data) const {}
+			template <typename T1, typename T2>
+			IC	void after_load	(T1 &data, T2 &stream) const {}
 			template <typename T1, typename T2>
 			IC	bool operator()	(T1 &data, const T2 &value) const {return(true);}
 			template <typename T1, typename T2>

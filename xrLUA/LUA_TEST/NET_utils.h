@@ -86,11 +86,11 @@ public:
 		w_dir	(C);
 		w_float (mag);
 	}
-	IC void w_string			( LPCSTR S )
+	IC void w_stringZ			( LPCSTR S )
 	{
 		w	(S,(u32)xr_strlen(S)+1);
 	}
-	IC void w_string			( ref_str& p )
+	IC void w_stringZ			( ref_str& p )
 	{
     	if (*p)	w(*p,(u32)xr_strlen(p)+1);
         else	w_u8(0);
@@ -201,17 +201,19 @@ public:
 		A.mul			(s);
 	}
 
-	IC void		r_string		( LPSTR S )
+	IC void		r_stringZ		( LPSTR S )
 	{
 		LPCSTR	data	= LPCSTR(&B.data[r_pos]);
 		size_t	len		= xr_strlen(data);
 		r		(S,(u32)len+1);
 	}
-    void 		r_string		(ref_str& dest)
+    
+	void 		r_stringZ		(ref_str& dest)
     {
         dest		= LPCSTR(&B.data[r_pos]);
         r_advance	(dest.size()+1);
     }
+
 	IC void		r_matrix		(Fmatrix& M)
 	{
 		r_vec3	(M.i);	M._14_	= 0;

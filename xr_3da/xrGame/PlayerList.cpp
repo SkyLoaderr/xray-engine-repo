@@ -109,7 +109,7 @@ void CPlayers::add(NET_Packet& P)
 	P.r_u32			(ID);
 
 	Item			I;
-	P.r_string		(I.name);
+	P.r_stringZ		(I.name);
 	P.r_s16			(I.score);
 	items.insert	(mk_pair(ID,I));
 }

@@ -640,14 +640,14 @@ public:
 		if (!xr_strlen(S)) {
 			NET_Packet			net_packet;
 			net_packet.w_begin	(M_SAVE_GAME);
-			net_packet.w_string	("quick_save");
+			net_packet.w_stringZ("quick_save");
 			Level().Send		(net_packet,net_flags(TRUE));
 			return;
 		}
 
 		NET_Packet			net_packet;
 		net_packet.w_begin	(M_SAVE_GAME);
-		net_packet.w_string	(S);
+		net_packet.w_stringZ(S);
 		Level().Send		(net_packet,net_flags(TRUE));
 	}
 };
@@ -676,7 +676,7 @@ public:
 
 		NET_Packet			net_packet;
 		net_packet.w_begin	(M_LOAD_GAME);
-		net_packet.w_string	(S);
+		net_packet.w_stringZ(S);
 		Level().Send		(net_packet,net_flags(TRUE));
 	}
 };

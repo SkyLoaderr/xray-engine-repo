@@ -83,7 +83,7 @@ BOOL CLevel::net_Start	( LPCSTR op_server, LPCSTR op_client )
 void CLevel::InitializeClientGame	(NET_Packet& P)
 {
 	string256 game_type_name;
-	P.r_string(game_type_name);
+	P.r_stringZ(game_type_name);
 	if(game && !xr_strcmp(game_type_name, game->type_name()) )
 		return;
 	

@@ -28,9 +28,9 @@ CALifeSpawnRegistry::~CALifeSpawnRegistry	()
 void CALifeSpawnRegistry::save	(IWriter &memory_stream)
 {
 	Msg							("* Saving spawn extra info...");
-	memory_stream.open_chunk		(SPAWN_CHUNK_DATA);
-	memory_stream.w_string			(m_spawn_name);
-	memory_stream.close_chunk		();
+	memory_stream.open_chunk	(SPAWN_CHUNK_DATA);
+	memory_stream.w_stringZ		(m_spawn_name);
+	memory_stream.close_chunk	();
 }
 
 void CALifeSpawnRegistry::load	(IReader &file_stream, LPCSTR game_name)
@@ -39,7 +39,7 @@ void CALifeSpawnRegistry::load	(IReader &file_stream, LPCSTR game_name)
 	R_ASSERT2					(file_stream.find_chunk(SPAWN_CHUNK_DATA),"Cannot find chunk SPAWN_CHUNK_DATA!");
 	xr_free						(m_spawn_name);
 	m_spawn_name				= (LPSTR)xr_malloc(256*sizeof(char));
-	file_stream.r_string		(m_spawn_name);
+	file_stream.r_stringZ		(m_spawn_name);
 
 	string256					file_name;
 	IReader						*stream;
@@ -100,7 +100,7 @@ void CALifeSpawnRegistry::load	(IReader &file_stream)
 		R_ASSERT2				(M_SPAWN == ID,"Invalid packet ID (!= M_SPAWN)!");
 
 		string64				s_name;
-		tNetPacket.r_string		(s_name);
+		tNetPacket.r_stringZ	(s_name);
 		if (psAI_Flags.test(aiALife)) {
 			Msg					("Loading spawn point %s",s_name);
 		}

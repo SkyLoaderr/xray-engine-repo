@@ -69,7 +69,7 @@ CSE_ALifeDynamicObject *CALifeObjectRegistry::get_object		(IReader &file_stream)
 	R_ASSERT2				(M_SPAWN==u_id,"Invalid packet ID (!= M_SPAWN)");
 
 	string64				s_name;
-	tNetPacket.r_string		(s_name);
+	tNetPacket.r_stringZ	(s_name);
 	if (psAI_Flags.test(aiALife)) {
 		Msg					("Loading object %s",s_name);
 	}

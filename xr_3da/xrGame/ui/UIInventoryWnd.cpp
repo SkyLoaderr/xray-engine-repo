@@ -1260,7 +1260,7 @@ void CUIInventoryWnd::DetachAddon(const char* addon_name)
 	{
 		NET_Packet P;
 		m_pCurrentItem->u_EventGen(P, GE_ADDON_DETACH, m_pCurrentItem->ID());
-		P.w_string(addon_name);
+		P.w_stringZ(addon_name);
 		m_pCurrentItem->u_EventSend(P);
 	};
 	m_pCurrentItem->Detach(addon_name);

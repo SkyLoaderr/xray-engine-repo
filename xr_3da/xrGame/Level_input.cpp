@@ -42,7 +42,7 @@ void CLevel::IR_OnKeyboardPress(int key)
 		if (Game().type != GAME_SINGLE) return;
 		NET_Packet					net_packet;
 		net_packet.w_begin			(M_SAVE_GAME);
-		net_packet.w_string			("quick_save");
+		net_packet.w_stringZ		("quick_save");
 		Send						(net_packet,net_flags(TRUE));
 		return;
 	}

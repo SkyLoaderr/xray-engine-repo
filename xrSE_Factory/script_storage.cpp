@@ -118,7 +118,7 @@ int __cdecl CScriptStorage::script_log	(ScriptStorage::ELuaMessageType tLuaMessa
 	vsprintf(S1,caFormat,l_tMarker);
 
 #ifndef ENGINE_BUILD
-	ai().script_engine().m_output.w_string(S2);
+	ai().script_engine().m_output.w_stringZ(S2);
 #endif
 
 	va_end	(l_tMarker);

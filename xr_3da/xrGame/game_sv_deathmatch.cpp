@@ -316,7 +316,7 @@ void game_sv_Deathmatch::OnPlayerConnect	(u32 id_who)
 		NET_Packet			P;
 		P.w_begin			(M_GAMEMESSAGE);
 		P.w_u32				(GMSG_PLAYER_CONNECTED);
-		P.w_string			(get_option_s(*xrCData->Name,"name",*xrCData->Name));
+		P.w_stringZ			(get_option_s(*xrCData->Name,"name",*xrCData->Name));
 
 		u_EventSend(P);
 	};
@@ -354,7 +354,7 @@ void game_sv_Deathmatch::OnPlayerDisconnect		(u32 id_who)
 			NET_Packet			P;
 			P.w_begin			(M_GAMEMESSAGE);
 			P.w_u32				(GMSG_PLAYER_DISCONNECTED);
-			P.w_string			(get_option_s(*xrCData->Name,"name",*xrCData->Name));
+			P.w_stringZ			(get_option_s(*xrCData->Name,"name",*xrCData->Name));
 
 			u_EventSend(P);
 		};

@@ -260,14 +260,14 @@ void CSE_ALifeItemTorch::STATE_Read			(NET_Packet	&tNetPacket, u16 size)
 		inherited::STATE_Read	(tNetPacket,size);
 /*	
 	tNetPacket.r_u32			(color);
-	tNetPacket.r_string			(animator);
-	tNetPacket.r_string			(spot_texture);
+	tNetPacket.r_stringZ		(animator);
+	tNetPacket.r_stringZ		(spot_texture);
 	tNetPacket.r_float			(spot_range);
 	tNetPacket.r_angle8			(spot_cone_angle);
 	tNetPacket.r_float			(spot_brightness);
 
 	if (m_wVersion > 40){
-		tNetPacket.r_string		(glow_texture);
+		tNetPacket.r_stringZ	(glow_texture);
 		tNetPacket.r_float		(glow_radius);
 	}
 	if (m_wVersion > 41){
@@ -281,12 +281,12 @@ void CSE_ALifeItemTorch::STATE_Write		(NET_Packet	&tNetPacket)
 	inherited::STATE_Write		(tNetPacket);
 /*
 	tNetPacket.w_u32			(color);
-	tNetPacket.w_string			(animator);
-	tNetPacket.w_string			(spot_texture);
+	tNetPacket.w_stringZ			(animator);
+	tNetPacket.w_stringZ			(spot_texture);
 	tNetPacket.w_float			(spot_range);
 	tNetPacket.w_angle8			(spot_cone_angle);
 	tNetPacket.w_float			(spot_brightness);
-	tNetPacket.w_string			(glow_texture);
+	tNetPacket.w_stringZ			(glow_texture);
 	tNetPacket.w_float			(glow_radius);
     tNetPacket.w_u16			(guid_bone);
 */

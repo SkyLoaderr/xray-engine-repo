@@ -207,7 +207,7 @@ void game_sv_Single::save_game				(NET_Packet &net_packet, DPNID sender)
 	Level().ClientSave			();
 
 	ref_str						game_name;
-	net_packet.r_string			(game_name);
+	net_packet.r_stringZ		(game_name);
 	alife().save				(*game_name);
 }
 
@@ -216,7 +216,7 @@ bool game_sv_Single::load_game				(NET_Packet &net_packet, DPNID sender)
 	if (!ai().get_alife())
 		return					(inherited::load_game(net_packet,sender));
 	ref_str						game_name;
-	net_packet.r_string			(game_name);
+	net_packet.r_stringZ		(game_name);
 	return						(alife().load_game(*game_name,true));
 }
 

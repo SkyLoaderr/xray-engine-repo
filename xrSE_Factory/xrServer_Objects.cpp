@@ -72,8 +72,8 @@ void CSE_Abstract::Spawn_Write				(NET_Packet	&tNetPacket, BOOL bLocal)
 {
 	// generic
 	tNetPacket.w_begin			(M_SPAWN);
-	tNetPacket.w_string			(s_name			);
-	tNetPacket.w_string			(s_name_replace	);
+	tNetPacket.w_stringZ			(s_name			);
+	tNetPacket.w_stringZ			(s_name_replace	);
 	tNetPacket.w_u8				(s_gameid		);
 	tNetPacket.w_u8				(s_RP			);
 	tNetPacket.w_vec3			(o_Position		);
@@ -105,8 +105,8 @@ BOOL CSE_Abstract::Spawn_Read				(NET_Packet	&tNetPacket)
 	// generic
 	tNetPacket.r_begin			(dummy16);	
 	R_ASSERT					(M_SPAWN==dummy16);
-	tNetPacket.r_string			(s_name			);
-	tNetPacket.r_string			(s_name_replace	);
+	tNetPacket.r_stringZ		(s_name			);
+	tNetPacket.r_stringZ		(s_name_replace	);
 	tNetPacket.r_u8				(s_gameid		);
 	tNetPacket.r_u8				(s_RP			);
 	tNetPacket.r_vec3			(o_Position		);
@@ -252,7 +252,7 @@ void CSE_Visual::set_visual	   	(LPCSTR name, bool load)
 
 void CSE_Visual::visual_read   	(NET_Packet	&tNetPacket)
 {
-	tNetPacket.r_string			(visual_name);
+	tNetPacket.r_stringZ		(visual_name);
 #ifdef _EDITOR
 	OnChangeVisual				(0);
 #endif
@@ -260,7 +260,7 @@ void CSE_Visual::visual_read   	(NET_Packet	&tNetPacket)
 
 void CSE_Visual::visual_write  	(NET_Packet	&tNetPacket)
 {
-	tNetPacket.w_string			(visual_name);
+	tNetPacket.w_stringZ			(visual_name);
 }
 
 #ifdef _EDITOR
@@ -325,7 +325,7 @@ void CSE_Motion::set_motion		(LPCSTR name)
 
 void CSE_Motion::motion_read	(NET_Packet	&tNetPacket)
 {
-	tNetPacket.r_string			(motion_name);
+	tNetPacket.r_stringZ		(motion_name);
 #ifdef _EDITOR
 	OnChangeMotion				(0);
 #endif
@@ -333,7 +333,7 @@ void CSE_Motion::motion_read	(NET_Packet	&tNetPacket)
 
 void CSE_Motion::motion_write	(NET_Packet	&tNetPacket)
 {
-	tNetPacket.w_string			(motion_name);
+	tNetPacket.w_stringZ			(motion_name);
 }
 
 #ifdef _EDITOR
@@ -403,7 +403,7 @@ void CSE_Event::STATE_Read					(NET_Packet	&tNetPacket, u16 size)
 		tNetPacket.r_u8			(A.type);
 		tNetPacket.r_u16		(A.count);
 		tNetPacket.r_u64		(A.cls);
-		tNetPacket.r_string		(str);
+		tNetPacket.r_stringZ	(str);
 		A.event					= xr_strdup(str);
 		Actions.push_back		(A);
 		--count;
@@ -422,7 +422,7 @@ void CSE_Event::STATE_Write					(NET_Packet	&tNetPacket)
 		tNetPacket.w_u8			(A.type	);
 		tNetPacket.w_u16		(A.count);
 		tNetPacket.w_u64		(A.cls	);
-		tNetPacket.w_string		(A.event);
+		tNetPacket.w_stringZ		(A.event);
 	}
 }
 
@@ -608,12 +608,12 @@ void CSE_Target_CS_Cask::UPDATE_Write		(NET_Packet	&tNetPacket)
 
 void CSE_Target_CS_Cask::STATE_Read			(NET_Packet	&tNetPacket, u16 size)
 {
-	tNetPacket.r_string			(s_Model);
+	tNetPacket.r_stringZ		(s_Model);
 }
 
 void CSE_Target_CS_Cask::STATE_Write		(NET_Packet	&tNetPacket)
 {
-	tNetPacket.w_string			(s_Model);
+	tNetPacket.w_stringZ			(s_Model);
 }
 
 #ifdef _EDITOR
@@ -644,12 +644,12 @@ void CSE_Target_CS::UPDATE_Write			(NET_Packet	&tNetPacket)
 
 void CSE_Target_CS::STATE_Read				(NET_Packet	&tNetPacket, u16 size)
 {
-	tNetPacket.r_string			(s_Model);
+	tNetPacket.r_stringZ		(s_Model);
 }
 
 void CSE_Target_CS::STATE_Write				(NET_Packet	&tNetPacket)
 {
-	tNetPacket.w_string			(s_Model);
+	tNetPacket.w_stringZ			(s_Model);
 }
 
 #ifdef _EDITOR
@@ -752,7 +752,7 @@ CSE_PHSkeleton::~CSE_PHSkeleton()
 void CSE_PHSkeleton::STATE_Read		(NET_Packet	&tNetPacket, u16 size)
 {
 
-	tNetPacket.r_string		(startup_animation);
+	tNetPacket.r_stringZ	(startup_animation);
 	tNetPacket.r_u8			(flags.flags);
 	tNetPacket.r_u16		(source_id);
 	if (flags.test(flSavedData)) {
@@ -762,7 +762,7 @@ void CSE_PHSkeleton::STATE_Read		(NET_Packet	&tNetPacket, u16 size)
 
 void CSE_PHSkeleton::STATE_Write		(NET_Packet	&tNetPacket)
 {
-	tNetPacket.w_string			(startup_animation);
+	tNetPacket.w_stringZ			(startup_animation);
 	tNetPacket.w_u8				(flags.flags);
 	tNetPacket.w_u16			(source_id);
 	////////////////////////saving///////////////////////////////////////

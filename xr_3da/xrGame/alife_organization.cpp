@@ -47,13 +47,13 @@ void CALifeOrganization::save			(IWriter &memory_stream)
 {
 	memory_stream.w				(&m_research_state,	sizeof(m_research_state));
 	memory_stream.w				(&m_finish_time,	sizeof(m_finish_time));
-	memory_stream.w_string		(m_discovery_to_investigate);
+	memory_stream.w_stringZ		(m_discovery_to_investigate);
 	{
 		memory_stream.w_u32		(m_ordered_artefacts.size());
 		ARTEFACT_ORDER_IT		I = m_ordered_artefacts.begin();
 		ARTEFACT_ORDER_IT		E = m_ordered_artefacts.end();
 		for ( ; I != E; ++I) {
-			memory_stream.w_string((*I).m_section);
+			memory_stream.w_stringZ((*I).m_section);
 			memory_stream.w_u32	((*I).m_count);
 			memory_stream.w_u32	((*I).m_price);
 		}
@@ -63,7 +63,7 @@ void CALifeOrganization::save			(IWriter &memory_stream)
 		ITEM_COUNT_PAIR_IT		I = m_purchased_artefacts.begin();
 		ITEM_COUNT_PAIR_IT		E = m_purchased_artefacts.end();
 		for ( ; I != E; ++I) {
-			memory_stream.w_string((*I).first);
+			memory_stream.w_stringZ((*I).first);
 			memory_stream.w		(&((*I).second),sizeof((*I).second));
 		}
 	}
@@ -73,13 +73,13 @@ void CALifeOrganization::load			(IReader &file_stream)
 {
 	file_stream.r				(&m_research_state,	sizeof(m_research_state));
 	file_stream.r				(&m_finish_time,	sizeof(m_finish_time));
-	file_stream.r_string		(m_discovery_to_investigate);
+	file_stream.r_stringZ		(m_discovery_to_investigate);
 	{
 		m_ordered_artefacts.resize	(file_stream.r_u32());
 		ARTEFACT_ORDER_IT		I = m_ordered_artefacts.begin();
 		ARTEFACT_ORDER_IT		E = m_ordered_artefacts.end();
 		for ( ; I != E; ++I) {
-			file_stream.r_string((*I).m_section);
+			file_stream.r_stringZ((*I).m_section);
 			(*I).m_count		= file_stream.r_u32();
 			(*I).m_price		= file_stream.r_u32();
 		}
@@ -88,7 +88,7 @@ void CALifeOrganization::load			(IReader &file_stream)
 		u32						count = file_stream.r_u32();
 		for (u32 i=0; i<count; ++i) {
 			string32			S;
-			file_stream.r_string(S);
+			file_stream.r_stringZ(S);
 			LPSTR				section = (char*)xr_malloc(32*sizeof(char));
 			strcpy				(section,S);
 			m_purchased_artefacts.insert(mk_pair(section,file_stream.r_u32()));

@@ -19,7 +19,7 @@ void CLevel::ClientReceive()
 			{
 				// Begin analysis
 				string64			s_name;
-				P->r_string			(s_name);
+				P->r_stringZ		(s_name);
 
 				// Create DC (xrSE)
 				CSE_Abstract*		E	= F_entity_Create	(s_name);
@@ -86,7 +86,7 @@ void CLevel::ClientReceive()
 		case M_CHAT:
 			{
 				char	buffer[256];
-				P->r_string(buffer);
+				P->r_stringZ(buffer);
 				Msg		("- %s",buffer);
 			}
 			break;

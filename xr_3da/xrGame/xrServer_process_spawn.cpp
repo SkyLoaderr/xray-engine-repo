@@ -11,7 +11,7 @@ void xrServer::Process_spawn(NET_Packet& P, DPNID sender, BOOL bSpawnWithClients
 	if (!E){
 		// read spawn information
 		string64			s_name;
-		P.r_string			(s_name);
+		P.r_stringZ			(s_name);
 		// create entity
 		E = entity_Create	(s_name); R_ASSERT3(E,"Can't create entity.",s_name);
 		E->Spawn_Read		(P);
