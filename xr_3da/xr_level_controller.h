@@ -21,6 +21,8 @@ enum	EKeyBinding
 	kCAM_ZOOM_IN	,
 	kCAM_ZOOM_OUT	,
 
+	kBINOCULAR		,
+
 	kWPN_1			,
 	kWPN_2			,
 	kWPN_3			,
