@@ -465,6 +465,7 @@ bool xrServer::verify_entities				() const
 
 void xrServer::verify_entity				(const CSE_Abstract *entity) const
 {
+	VERIFY(entity->m_wVersion!=0);
 	if (entity->ID_Parent != 0xffff) {
 		xrS_entities::const_iterator	J = entities.find(entity->ID_Parent);
 		VERIFY3							(J != entities.end(),"SERVER : Cannot find parent in the map",entity->name_replace());

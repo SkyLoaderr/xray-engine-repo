@@ -114,6 +114,7 @@ CSE_Abstract *CALifeSimulatorBase::spawn_item	(LPCSTR section, const Fvector &po
 	abstract->ID_Parent			= parent_id;
 	abstract->ID_Phantom		= 0xffff;
 	abstract->o_Position		= position;
+	abstract->m_wVersion		= SPAWN_VERSION;
 	
 	string256					s_name_replace;
 	strcpy						(s_name_replace,*abstract->s_name);
