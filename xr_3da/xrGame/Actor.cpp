@@ -529,6 +529,7 @@ void CActor::Update	(u32 DT)
 	// patch
 	if (patch_frame<patch_frames)	{
 		vPosition.set		(patch_position);
+		ph_Movement.SetPosition(patch_position);
 		patch_frame			+= 1;
 	}
 	cam_shift				= 0.f;
