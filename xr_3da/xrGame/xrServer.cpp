@@ -117,7 +117,7 @@ void xrServer::Update	()
 
 				if (0==Test.owner)							continue;	// Phantom(?)
 				if (!Test.net_Ready)						continue;
-				if (Test.owner == Client)					continue;	// Can't be relevant
+				if (Test.owner == Client && Client->flags.bLocal)					continue;	// Can't be relevant
 
 				if (Test.s_flags.is(M_SPAWN_OBJECT_PHANTOM))	continue;	// Surely: phantom
 
@@ -129,26 +129,7 @@ void xrServer::Update	()
 					Packet.w_chunk_close8	(position		);
 				}
 			}
-		}
-		else
-		{
-			/*
-			u32 NumPackets = NET_SV_Client_Stream.size();
-
-			for (u32 id=0; id<NumPackets; id++)
-			{
-				NET_Packet* pPacket = &(NET_SV_Client_Stream[id]);
-				if (!pPacket) continue;
-
-				u16 type;
-				pPacket->r_begin(type);
-				
-				if (Packet.B.count + (pPacket->B.count - pPacket->r_pos) > NET_PacketSizeLimit) continue;
-				Packet.w(pPacket->B.data + pPacket->r_pos, pPacket->B.count - pPacket->r_pos);
-			};
-			*/
 		};
-		if (Client->flags.bLocal) NET_SV_Client_Stream.clear();
 
 		if (Packet.B.count > 2)	
 		{
