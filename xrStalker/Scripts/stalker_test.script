@@ -17,30 +17,8 @@ function custom_action:__init(weight,object,name) super(object,name)
 	self.name				= name
 end
 
-function custom_action:weight(world_state0,world_state1)
-	return					self.m_weight
-end
-
---function custom_action:initialize()
---	action_base.initialize	(self)
---end
-
---function custom_action:execute()
---	action_base.execute		(self)
---	printf					("action %s is executed!",self.name)
---end
-
---function custom_action:finalize()
---	action_base.finalize	(self)
---end
-
---class "custom_planner" 		(action_planner)
-
---function custom_planner:__init	() super()
---end
-
---function custom_planner:reinit	(obj, clear_all)
---	action_planner.reinit	(self, obj, clear_all)
+--function custom_action:weight(world_state0,world_state1)
+--	return					self.m_weight
 --end
 
 function main()
