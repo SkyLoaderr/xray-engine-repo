@@ -254,6 +254,7 @@ namespace ALife {
 		eCombatTypeMonsterMonster = u32(0),
 		eCombatTypeMonsterAnomaly,
 		eCombatTypeAnomalyMonster,
+		eCombatTypeSmartTerrain,
 		eCombatTypeDummy = u32(-1),
 	};
 

@@ -18,8 +18,16 @@ using namespace ALife;
 
 void CSE_ALifeMonsterAbstract::update		()
 {
+	ALife::_GRAPH_ID	start_game_vertex_id = m_tGraphID;
 	bool				bContinue = true;
-	while (bContinue && bfActive() && (ai().alife().graph().actor()->o_Position.distance_to(o_Position) > ai().alife().online_distance())) {
+	while (
+		bContinue && 
+		bfActive()// && 
+//		(	(ai().game_graph().vertex(m_tGraphID)->level_id() != ai().game_graph().vertex(ai().alife().graph().actor()->m_tGraphID)->level_id())
+//			||
+//			(ai().alife().graph().actor()->o_Position.distance_to(o_Position) > ai().alife().online_distance())
+//		)
+		) {
 		vfCheckForPopulationChanges();
 		bContinue		= false;
 		if (!m_flags.test(flOfflineNoMove) && (m_tNextGraphID != m_tGraphID)) {
@@ -91,7 +99,10 @@ void CSE_ALifeMonsterAbstract::update		()
 			else
 				m_fCurSpeed			= m_fGoingSpeed;
 		}
-		alife().check_for_interaction(this);
+		if (start_game_vertex_id != m_tGraphID) {
+			alife().check_for_interaction(this);
+			start_game_vertex_id	= m_tGraphID;
+		}
 	}
 	m_tTimeID					= ai().alife().time_manager().game_time();
 }
@@ -112,7 +123,13 @@ EMeetActionType	CSE_ALifeMonsterAbstract::tfGetActionType(CSE_ALifeSchedulable *
 		return						(eRelationTypeFriend == ai().alife().relation_type(this,smart_cast<CSE_ALifeMonsterAbstract*>(tpALifeSchedulable)) ? eMeetActionTypeIgnore : ((bMutualDetection || alife().choose_combat_action(iGroupIndex) == eCombatActionAttack) ? eMeetActionTypeAttack : eMeetActionTypeIgnore));
 	}
 	else
-		return(eMeetActionTypeAttack);
+		if (eCombatTypeSmartTerrain == ai().alife().combat_type()) {
+			CSE_ALifeSmartZone		*smart_zone = smart_cast<CSE_ALifeSmartZone*>(tpALifeSchedulable);
+			VERIFY					(smart_zone);
+			return					(smart_zone->tfGetActionType(this,iGroupIndex ? 0 : 1,bMutualDetection));
+		}
+		else
+			return					(eMeetActionTypeAttack);
 }
 
 bool CSE_ALifeMonsterAbstract::bfActive()

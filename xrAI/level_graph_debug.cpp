@@ -454,6 +454,15 @@ void CLevelGraph::render()
 										NORMALIZE_VECTOR(t1);
 										RCache.dbg_DrawAABB(t1,.05f,.05f,.05f,D3DCOLOR_XRGB(0,0,0));
 									}
+									else {
+										CSE_ALifeSmartZone *smart_zone = smart_cast<CSE_ALifeSmartZone*>((*I).second);
+										if (smart_zone) {
+											Fvector t1 = ai().game_graph().vertex((*I).second->m_tGraphID)->game_point();
+											t1.y += .6f;
+											NORMALIZE_VECTOR(t1);
+											RCache.dbg_DrawAABB(t1,.05f,.05f,.05f,D3DCOLOR_XRGB(255,0,0));
+										}
+									}
 								}
 							}
 						}

@@ -14,6 +14,7 @@
 //#define USE_WRITER_READER
 class CSE_Abstract;
 class NET_Packet;
+class CSE_ALifeMonsterAbstract;
 
 #ifndef USE_WRITER_READER
 #	define INHERIT_PURE \
@@ -47,7 +48,9 @@ class NET_Packet;
 
 #define INHERIT_ZONE \
 	INHERIT_ALIFE\
-	DEFINE_LUA_WRAPPER_METHOD_V0		(update)
+	DEFINE_LUA_WRAPPER_METHOD_V0		(update)\
+	DEFINE_LUA_WRAPPER_METHOD_V1		(smart_touch,CSE_ALifeMonsterAbstract*)\
+	DEFINE_LUA_WRAPPER_METHOD_0			(detect_probability,float)
 
 #define INHERIT_CREATURE \
 	INHERIT_ALIFE\
@@ -155,6 +158,11 @@ struct CWrapperAbstractItem : public T, public luabind::wrap_base {
 	DEFINE_LUABIND_VIRTUAL_FUNCTION(a,b,g_squad	) \
 	DEFINE_LUABIND_VIRTUAL_FUNCTION(a,b,g_group	)
 
+#define luabind_virtual_zone(a,b) \
+	DEFINE_LUABIND_VIRTUAL_FUNCTION(a,b,update)\
+	DEFINE_LUABIND_VIRTUAL_FUNCTION(a,b,smart_touch)\
+	DEFINE_LUABIND_VIRTUAL_FUNCTION(a,b,detect_probability)
+
 #define luabind_virtual_monster(a,b) \
 	DEFINE_LUABIND_VIRTUAL_FUNCTION(a,b,update)
 
@@ -178,7 +186,7 @@ struct CWrapperAbstractItem : public T, public luabind::wrap_base {
 
 #define luabind_virtual_Zone(a,b) \
 	luabind_virtual_Alife(a,b) \
-	luabind_virtual_monster(a,b)
+	luabind_virtual_zone(a,b)
 
 #define luabind_virtual_Monster(a,b) \
 	luabind_virtual_Creature(a,b) \

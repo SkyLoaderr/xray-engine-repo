@@ -24,6 +24,7 @@ void CSE_ALifeHumanAbstract::update			()
 		return;
 	m_dwTotalMoney		= u32(-1);
 	R_ASSERT3			(!m_bOnline,"Can't update online object ",s_name_replace);
+	ALife::_GRAPH_ID	start_game_vertex_id = m_tGraphID;
 	bool				bOk;
 	do {
 		switch (m_tTaskState) {
@@ -55,7 +56,10 @@ void CSE_ALifeHumanAbstract::update			()
 		}
 		bOk						= bfChooseNextRoutePoint();
 		vfProcessItems			();
-		alife().check_for_interaction(this);
+		if (start_game_vertex_id != m_tGraphID) {
+			alife().check_for_interaction(this);
+			start_game_vertex_id	= m_tGraphID;
+		}
 		vfCheckForDeletedEvents	();
 	}
 	while (bOk && bfActive() && (ai().alife().graph().actor()->o_Position.distance_to(o_Position) > ai().alife().online_distance()));

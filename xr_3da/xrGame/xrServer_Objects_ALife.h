@@ -247,6 +247,7 @@ SERVER_ENTITY_DECLARE_BEGIN2(CSE_ALifeSmartZone,CSE_ALifeSpaceRestrictor,CSE_ALi
 	virtual const CSE_Abstract		*base						() const;
 	virtual CSE_Abstract			*init						();
 	virtual void					update						();
+	virtual float					detect_probability			();
 #ifdef XRGAME_EXPORTS
 	virtual	CSE_ALifeItemWeapon		*tpfGetBestWeapon			(ALife::EHitType		&tHitType,			float		&fHitPower);
 	virtual	ALife::EMeetActionType	tfGetActionType				(CSE_ALifeSchedulable	*tpALifeSchedulable,int			iGroupIndex, bool bMutualDetection);

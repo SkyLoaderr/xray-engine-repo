@@ -144,9 +144,16 @@ bool CALifeCombatManager::bfCheckObjectDetection(CSE_ALifeSchedulable *tpALifeSc
 			ai().ef_storage().m_tpCurrentALifeEnemy		= tpALifeSchedulable2;
 			return										(randF(100) < (int)ai().ef_storage().m_pfAnomalyDetectProbability->ffGetValue());
 		}
-		default :							NODEFAULT;
+		case eCombatTypeSmartTerrain : {
+			CSE_ALifeSmartZone							*smart_zone = smart_cast<CSE_ALifeSmartZone*>(tpALifeSchedulable2);
+			if (!smart_zone)
+				smart_zone								= smart_cast<CSE_ALifeSmartZone*>(tpALifeSchedulable1);
+			VERIFY										(smart_zone);
+			return										(randF(100) < 100.f*smart_zone->detect_probability());
+		}
+		default :										NODEFAULT;
 	}
-	return									(false);
+	return												(false);
 }
 
 bool CALifeCombatManager::bfCheckForInteraction(CSE_ALifeSchedulable *tpALifeSchedulable1, CSE_ALifeSchedulable *tpALifeSchedulable2, int &iCombatGroupIndex, bool &bMutualDetection)
@@ -161,16 +168,19 @@ bool CALifeCombatManager::bfCheckForInteraction(CSE_ALifeSchedulable *tpALifeSch
 		if (!l_tpALifeMonsterAbstract2)
 			return(false);
 		else {
-			CSE_ALifeAnomalousZone	*l_tpALifeAnomalousZone	= smart_cast<CSE_ALifeAnomalousZone*>(tpALifeSchedulable1);
-			R_ASSERT2				(l_tpALifeAnomalousZone,"Unknown schedulable object class");
+			CSE_ALifeSpaceRestrictor*l_tpALifeSpaceRestrictor = smart_cast<CSE_ALifeSpaceRestrictor*>(tpALifeSchedulable2);
+			R_ASSERT2				(l_tpALifeSpaceRestrictor,"Unknown schedulable object class");
 			m_combat_type			= eCombatTypeAnomalyMonster;
 		}
 	}
 	else {
 		if (!l_tpALifeMonsterAbstract2) {
-			CSE_ALifeAnomalousZone	*l_tpALifeAnomalousZone	= smart_cast<CSE_ALifeAnomalousZone*>(tpALifeSchedulable2);
-			R_ASSERT2				(l_tpALifeAnomalousZone,"Unknown schedulable object class");
+			CSE_ALifeSpaceRestrictor*l_tpALifeSpaceRestrictor = smart_cast<CSE_ALifeSpaceRestrictor*>(tpALifeSchedulable2);
+			R_ASSERT2				(l_tpALifeSpaceRestrictor,"Unknown schedulable object class");
 			m_combat_type			= eCombatTypeMonsterAnomaly;
+			CSE_ALifeSmartZone		*smart_zone = smart_cast<CSE_ALifeSmartZone*>(tpALifeSchedulable2);
+			if (smart_zone)
+				m_combat_type		= eCombatTypeSmartTerrain;
 		}
 		else {
 			m_combat_type			= eCombatTypeMonsterMonster;

@@ -13,11 +13,12 @@
 		typename _key_type,\
 		typename _data_type,\
 		typename _predicate,\
+		bool	 use_time_limit,\
 		typename _cycle_type,\
 		bool	 use_first_update\
 	>
 
-#define CSSafeMapIterator	CSafeMapIterator<_key_type,_data_type,_predicate,_cycle_type,use_first_update>
+#define CSSafeMapIterator	CSafeMapIterator<_key_type,_data_type,_predicate,use_time_limit,_cycle_type,use_first_update>
 
 TEMPLATE_SPEZIALIZATION
 IC	CSSafeMapIterator::CSafeMapIterator			()
@@ -96,7 +97,7 @@ IC	void CSSafeMapIterator::start_timer			()
 TEMPLATE_SPEZIALIZATION
 IC	bool CSSafeMapIterator::time_over			()
 {
-	return				(!m_first_update && (CPU::GetCycleCount() >= (m_start_time + m_max_process_time)));
+	return				(use_time_limit && !m_first_update && (CPU::GetCycleCount() >= (m_start_time + m_max_process_time)));
 }
 
 TEMPLATE_SPEZIALIZATION

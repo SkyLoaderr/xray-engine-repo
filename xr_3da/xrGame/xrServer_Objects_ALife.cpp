@@ -200,12 +200,12 @@ void CSE_ALifeObject::on_surge				()
 
 bool CSE_ALifeObject::move_offline			() const
 {
-	return						(!!m_flags.test(flOfflineNoMove));
+	return						(!m_flags.test(flOfflineNoMove));
 }
 
 void CSE_ALifeObject::move_offline			(bool value)
 {
-	m_flags.set					(flOfflineNoMove,value ? TRUE : FALSE);
+	m_flags.set					(flOfflineNoMove,!value ? TRUE : FALSE);
 }
 
 void CSE_ALifeObject::STATE_Write			(NET_Packet &tNetPacket)
@@ -1474,6 +1474,11 @@ void CSE_ALifeSmartZone::FillProps		(LPCSTR pref, PropItemVec& items)
 	inherited1::FillProps		(pref,items);
 }
 
-void CSE_ALifeSmartZone::update		()
+void CSE_ALifeSmartZone::update			()
 {
+}
+
+float CSE_ALifeSmartZone::detect_probability()
+{
+	return						(0.f);
 }

@@ -16,8 +16,23 @@ class CSE_ALifeCreatureActor;
 
 class CALifeGraphRegistry {
 public:
-	typedef CSafeMapIterator<ALife::_OBJECT_ID,CSE_ALifeDynamicObject>	OBJECT_REGISTRY;
-	typedef CSafeMapIterator<ALife::_EVENT_ID,CALifeEvent>				EVENT_REGISTRY;
+	typedef CSafeMapIterator<
+		ALife::_OBJECT_ID,
+		CSE_ALifeDynamicObject,
+		std::less<
+			ALife::_OBJECT_ID
+		>,
+		false
+	>							OBJECT_REGISTRY;
+	
+	typedef CSafeMapIterator<
+		ALife::_EVENT_ID,
+		CALifeEvent,
+		std::less<
+			ALife::_EVENT_ID
+		>,
+		false
+	>							EVENT_REGISTRY;
 
 public:
 	class CGraphPointInfo {

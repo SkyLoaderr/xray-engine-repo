@@ -12,6 +12,7 @@ template <
 	typename _key_type,
 	typename _data_type,
 	typename _predicate = std::less<_key_type>,
+	bool	 use_time_limit = true,
 	typename _cycle_type = u64,
 	bool	 use_first_update = true
 >
