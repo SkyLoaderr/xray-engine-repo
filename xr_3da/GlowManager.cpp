@@ -13,8 +13,6 @@
 #define MAX_GlowsDist1		float(pCreator->Environment.Current.Far)
 #define MAX_GlowsDist2		float(MAX_GlowsDist1*MAX_GlowsDist1)
 
-int psGlowsPerFrame		= 7;
-
 //////////////////////////////////////////////////////////////////////
 // Construction/Destruction
 //////////////////////////////////////////////////////////////////////
@@ -130,7 +128,7 @@ void CGlowManager::Render()
 	{
 		// 1. Test some number of glows
 		Fvector &start	= Device.vCameraPosition;
-		for (int i=0; i<psGlowsPerFrame; i++,dwTestID++)
+		for (int i=0; i<ps_r1_GlowsPerFrame; i++,dwTestID++)
 		{
 			u32	ID	= dwTestID%Selected_Count;
 			CGlow&	G	= *Selected[ID];

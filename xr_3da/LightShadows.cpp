@@ -9,8 +9,6 @@
 #include "..\fbasicvisual.h"
 #include "..\lighttrack.h"
 
-int		psSH_Blur			= 1;
-
 const	float	S_distance	= 48;
 const	float	S_distance2	= S_distance*S_distance;
 
@@ -294,7 +292,7 @@ void CLightShadows::calculate	()
 		RCache.set_Geometry		(geom_Blur	);
 		RCache.Render			(D3DPT_TRIANGLELIST,Offset,0,4,0,2);
 		
-		for (int it=0; it<psSH_Blur; it++)	
+		for (int it=0; it<ps_r1_SH_Blur; it++)	
 		{
 			// Actual rendering (pass1, real2temp)
 			RCache.set_RT			(RT_temp->pRT,HW.pTempZB);

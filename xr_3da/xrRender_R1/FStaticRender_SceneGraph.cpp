@@ -12,17 +12,10 @@ extern	Shader*			shDEBUG;
 ////////////////////////////////////////////////////////////////////////////////////////////////////
 // Scene graph actual insertion and sorting ////////////////////////////////////////////////////////
 ////////////////////////////////////////////////////////////////////////////////////////////////////
-float ssaDISCARD		= 4.f;
-float ssaDONTSORT		= 32.f;
-float ssaLOD_A			= 64.f;
-float ssaLOD_B			= 48.f;
-float ssaHZBvsTEX		= 128.f;
-
 float r_ssaDISCARD;
 float r_ssaDONTSORT;
 float r_ssaLOD_A;
 float r_ssaLOD_B;
-
 float r_ssaHZBvsTEX;
 
 IC	float	CalcSSA(float& distSQ, Fvector& C, IVisual* V)
