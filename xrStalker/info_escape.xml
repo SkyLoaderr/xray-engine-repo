@@ -80,5 +80,22 @@
         <disable>escape_trader_find_artefact</disable>
         <disable>escape_trader_need_artefact</disable>
     </info_portion>
+
+	<info_portion id="escape_need_agroprom_documents">
+        <location>
+            <level>l03_agroprom</level>
+            <object>200</object>
+			<icon name="Документы" x="5" y="1" width="1" height="1" r="238" g="155" b="23" marker="1"></icon>
+            <text>Важные военные документы.</text>
+        </location>
+        <task>agroprom_get_military_documents</task>
+    </info_portion>
+    <info_portion id="agroprom_take_agroprom_documents">
+        <disable>escape_need_agroprom_documents</disable>
+    </info_portion>   
+    <info_portion id="bar_have_agroprom_documents">
+        <disable>escape_need_agroprom_documents</disable>
+        <disable>agroprom_take_agroprom_documents</disable>
+    </info_portion>
     
 </game_information_portions>

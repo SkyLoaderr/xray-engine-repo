@@ -60,10 +60,11 @@ function have_blockpost_case(first_speaker, second_speaker)
 end
 function trader_need_blockpost_box(first_speaker, second_speaker)
 	local actor = level.actor()
-       	if actor ~= nil and
+    if actor ~= nil and
 	   actor:dont_has_info("escape_need_blockpost_case") and
+	   actor:dont_has_info("escape_take_blockpost_case") and
 	   actor:dont_has_info("escape_have_blockpost_case")
-then
+	then
 		return true
 	end
 	return false
@@ -89,9 +90,21 @@ function give_artefact_nightstar(first_speaker, second_speaker)
 end
 function trader_need_artefact(first_speaker, second_speaker)
 	local actor = level.actor()
-       	if actor ~= nil and
+    if actor ~= nil and
 	   actor:dont_has_info("escape_trader_need_artefact") and
+	   actor:dont_has_info("escape_trader_find_artefact") and	   
 	   actor:dont_has_info("escape_trader_have_artefact")
+	then
+		return true
+	end
+	return false
+end
+
+--' Barmen needs military documents
+function trader_need_military_document(first_speaker, second_speaker)
+	local actor = level.actor()
+    if actor ~= nil and
+	   actor:has_info("escape_trader_have_artefact")
 	then
 		return true
 	end

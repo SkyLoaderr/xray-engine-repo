@@ -48,5 +48,25 @@
 			<text>Принесите "Ночную звезду" торговцу.</text>
 		</objective>
 	</game_task>
+
+	<game_task id="garbage_meet_stalker">
+		<title>Встретиться на свалке со сталкером.</title>
+		<objective>
+			<text>Торговец договорился для вас о встрече со сталкером, знающим кое-что о группировке Стрелка. Встретьтесь с ним в гараже на свалке.</text>
+		</objective>
+	</game_task>
+
+	<game_task id="agroprom_get_military_documents">
+		<title>Достать документы военных из НИИ "Агропром".</title>
+		<objective>
+			<text>Необходимо достать военные документы и доставить их бармену в баре сталкеров.</text>
+		</objective>
+		<objective>
+			<text>Добудьте военные документы из НИИ "Агропром".</text>
+		</objective>
+		<objective>
+			<text>Отнесите документы бармену в баре сталкеров.</text>
+		</objective>
+	</game_task>
 	
 </game_tasks_data>
