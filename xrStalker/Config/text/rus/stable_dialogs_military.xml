@@ -432,6 +432,9 @@
     <string id="mil_max_dialog_8003">
         <text>К Лукашу - он у нас старший. Иди в главное здание.</text>
     </string>
+    <string id="mil_max_dialog_9001">
+        <text>Вижу, справился с задачей. Отдай Лукашу документы.</text>
+    </string>
     <string id="mil_max_dialog_common1_0">
         <text>Расскажи мне о деревне.</text>
     </string>
