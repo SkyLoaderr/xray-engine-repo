@@ -69,6 +69,7 @@ void CEnvironment::Load(CInifile *pIni, char *section)
 			pSun	= xr_new<CSun> (pIni, name);
 			Suns.push_back(pSun);
 		}
+		R_ASSERT2	(Suns.size(), "Should be at least one 'sun' source in level");
 	}
 
 	// environment objects
