@@ -41,6 +41,7 @@ IC	bool CLevelNavigationGraph::connected		(CCellVertex &vertex, VERTEX_VECTOR &v
 	u32						_link = this->vertex(vertex.m_vertex_id)->link(link);
 	if (!valid_vertex_id(_link))
 		return				(false);
+
 	if (this->vertex(_link)->link((link + 2) & 3) != vertex.m_vertex_id)
 		return				(false);
 
@@ -111,6 +112,44 @@ IC	void CLevelNavigationGraph::build_sectors	(u32 i, u32 j, CCellVertex &cell_ve
 	cell_vertex.m_use			= left | up;
 	m_cross[cell_vertex.m_vertex_id]	= &cell_vertex;
 	CCellVertex					v = cell_vertex, v1;
+
+#if 0
+	u32							last_j2 = j, last_i2 = i, best_square = 1;
+
+	{
+		CCellVertex				v = cell_vertex;
+		LINE_VECTOR				&vi = m_marks[i];
+		for (u32 j2 = j + 1; j2<=max_x(); ++j2) {
+			if (vi[j2].empty() || !connected(v,vi[j2],2))
+				break;
+			u32					square = v.m_down*m_cross[v.m_down_id]->m_right;
+			if (square > best_square) {
+				best_square		= square;
+				last_j2			= j2 + 1;
+				last_i2			= v.m_down + i + 1;
+			}
+		}
+	}
+	{
+		LINE_VECTOR				&vi = m_marks[i];
+		CCellVertex				v = cell_vertex;
+		for (u32 i2 = i + 1; i2<=max_z(); ++i2) {
+			if (m_marks[i2][j].empty() || !connected(v,m_marks[i2][j],1))
+				break;
+			u32					square = m_cross[v.m_right_id]->m_down*v.m_right;
+			if (square > best_square) {
+				best_square		= square;
+				last_j2			= v.m_right + j + 1;
+				last_i2			= i2 + 1;
+			}
+		}
+	}
+
+	LINE_VECTOR					&vi = m_marks[i];
+	for (u32 j2 = j + 1; j2<last_j2; ++j2)
+		if (vi[j2].empty() || !connected(v,vi[j2],group_id,2,up))
+			break;
+#endif
 
 	LINE_VECTOR					&vi = m_marks[i];
 	for (u32 j2 = j + 1; j2<=max_x(); ++j2)
@@ -200,8 +239,67 @@ IC	void CLevelNavigationGraph::fill_marks		()
 	}
 }
 
+#if 0
+IC	bool CLevelNavigationGraph::connected		(CCellVertex &vertex, VERTEX_VECTOR &vertices, u32 link)
+{
+	u32						_link = this->vertex(vertex.m_vertex_id)->link(link);
+	if (!valid_vertex_id(_link))
+		return				(false);
+
+	if (this->vertex(_link)->link((link + 2) & 3) != vertex.m_vertex_id)
+		return				(false);
+
+	VERTEX_VECTOR::iterator	I = vertices.begin();
+	VERTEX_VECTOR::iterator	E = vertices.end();
+	for ( ; I != E; ++I)
+		if (_link == (*I).m_vertex_id) {
+			vertex			= *I;
+			return			(true);
+		}
+	return					(false);
+}
+
+IC	void CLevelNavigationGraph::compute_length	(u32 i, u32 j, CCellVertex &cell_vertex)
+{
+	{
+		CCellVertex					v = cell_vertex;
+		LINE_VECTOR					&vi = m_marks[i];
+		for (u32 j2 = j + 1; j2<=max_x(); ++j2)
+			if (vi[j2].empty() || !connected(v,vi[j2],2))
+				break;
+		cell_vertex.m_down			= j2 - j;
+	}
+	{
+		CCellVertex					v = cell_vertex;
+		for (u32 i2 = i + 1; i2<=max_z(); ++i2)
+			if (m_marks[i2][j].empty() || !connected(v,m_marks[i2][j],1))
+				break;
+		cell_vertex.m_right			= i2 - i;
+	}
+}
+#endif
+
 IC	void CLevelNavigationGraph::build_sectors	()
 {
+#if 0
+	{
+		MARK_TABLE::iterator			I = m_marks.begin(), B = m_marks.begin();
+		MARK_TABLE::iterator			E = m_marks.end();
+		for ( ; I != E; ++I) {
+			LINE_VECTOR::iterator		i = (*I).begin(), b = (*I).begin();
+			LINE_VECTOR::iterator		e = (*I).end();
+			for ( ; i != e; ++i) {
+				VERTEX_VECTOR::iterator	II = (*i).begin();
+				VERTEX_VECTOR::iterator	EE = (*i).end();
+				for ( ; II != EE; ++II) {
+					if ((*II).m_mark)
+						continue;
+					compute_length		(u32(I - B),u32(i - b),*II);
+				}
+			}
+		}
+	}
+#endif
 	u32								group_id = 0;
 	MARK_TABLE::iterator			I = m_marks.begin(), B = m_marks.begin();
 	MARK_TABLE::iterator			E = m_marks.end();

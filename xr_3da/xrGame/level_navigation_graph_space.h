@@ -13,6 +13,10 @@
 namespace LevelNavigationGraph {
 	struct CCellVertex {
 		u32				m_vertex_id;
+#if 0
+		u32				m_down;
+		u32				m_right;
+#endif
 		union {
 			typedef u8	_use_type;
 

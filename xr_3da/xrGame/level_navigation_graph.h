@@ -73,6 +73,11 @@ protected:
 	IC		void				build_sectors			();
 	IC		void				build_edges				();
 
+#if 0
+	IC		bool				connected				(CCellVertex &vertex, VERTEX_VECTOR &vertices, u32 link);
+	IC		void				compute_length			(u32 i, u32 j, CCellVertex &cell_vertex);
+#endif
+
 public:
 	IC		const CSectorGraph	&sectors				() const;
 
