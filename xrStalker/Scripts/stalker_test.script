@@ -11,7 +11,7 @@ function main ()
 		cond		(cond.time_end,500000000)
 	)
 	
-	wait			(5000)
+	wait			(50000)
 	
 	printf			("%d",device().time_global)
 	reset_action	(stalker,stalker_test:script_name())
