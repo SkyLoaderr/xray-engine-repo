@@ -54,6 +54,8 @@ private:
 	u32					m_level_id;		// unique level identifier
 	u32					m_row_length;
 	u32					m_column_length;
+	u32					m_max_x;
+	u32					m_max_z;
 public:
 #ifdef AI_COMPILER
 	xr_vector<bool>		q_mark_bit;
@@ -84,6 +86,8 @@ public:
 	IC		u8		ref_add						(u32 vertex_id);
 	IC		u8		ref_dec						(u32 vertex_id);
 	IC		void	level_id					(u32 level_id);
+	IC		u32		max_x						() const;
+	IC		u32		max_z						() const;
 	IC		void	begin						(const CVertex &vertex, const_iterator &begin, const_iterator &end) const;
 	IC		void	begin						(const CVertex *vertex, const_iterator &begin, const_iterator &end) const;
 	IC		void	begin						(u32 vertex_id,			const_iterator &begin, const_iterator &end) const;
@@ -93,6 +97,7 @@ public:
 	IC		const CHeader &header				() const;
 	IC		bool	valid_vertex_id				(u32 vertex_id) const;
 	IC		u32		level_id					() const;
+	IC		void	unpack_xz					(const CLevelGraph::CPosition &vertex_position, u32 &x, u32 &z) const;
 	IC		void	unpack_xz					(const CLevelGraph::CPosition &vertex_position, int &x, int &z) const;
 	IC		void	unpack_xz					(const CLevelGraph::CPosition &vertex_position, float &x, float &z) const;
 	template <typename T>

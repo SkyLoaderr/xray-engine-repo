@@ -59,7 +59,7 @@ IC	u32	CLevelGraph::vertex	(const CVertex &vertex_r) const
 	return				(vertex(&vertex_r));
 }
 
-IC u8	CLevelGraph::ref_add		(u32 id)	
+IC	u8	CLevelGraph::ref_add		(u32 id)	
 {
 	VERIFY				(valid_vertex_id(id));
 	VERIFY				(m_ref_counts[id] < u8(-1));
@@ -67,7 +67,7 @@ IC u8	CLevelGraph::ref_add		(u32 id)
 	return				(m_ref_counts[id]);	
 }
 
-IC u8	CLevelGraph::ref_dec		(u32 id)
+IC	u8	CLevelGraph::ref_dec		(u32 id)
 {
 	VERIFY				(valid_vertex_id(id));
 	VERIFY				(m_ref_counts[id]);
@@ -75,34 +75,42 @@ IC u8	CLevelGraph::ref_dec		(u32 id)
 	return				(m_ref_counts[id]);	
 }
 
-IC void CLevelGraph::unpack_xz(const CLevelGraph::CPosition &vertex_position, int &x, int &z) const
+IC	void CLevelGraph::unpack_xz(const CLevelGraph::CPosition &vertex_position, u32 &x, u32 &z) const
 {
 	VERIFY				(vertex_position.xz() < (1 << MAX_NODE_BIT_COUNT) - 1);
 	x					= vertex_position.xz() / m_row_length;
 	z					= vertex_position.xz() % m_row_length;
 }
 
-IC void CLevelGraph::unpack_xz(const CLevelGraph::CPosition &vertex_position, float &x, float &z) const
+IC	void CLevelGraph::unpack_xz(const CLevelGraph::CPosition &vertex_position, int &x, int &z) const
 {
-	int					_x,_z;
+	u32					_x, _z;
+	unpack_xz			(vertex_position,_x,_z);
+	x					= (int)_x;
+	z					= (int)_z;
+}
+
+IC	void CLevelGraph::unpack_xz(const CLevelGraph::CPosition &vertex_position, float &x, float &z) const
+{
+	u32					_x,_z;
 	unpack_xz			(vertex_position,_x,_z);
 	x					= float(_x)*header().cell_size() + header().box().min.x;
 	z 					= float(_z)*header().cell_size() + header().box().min.z;
 }
 
 template <typename T>
-IC void CLevelGraph::unpack_xz(const CLevelGraph::CVertex &vertex, T &x, T &z) const
+IC	void CLevelGraph::unpack_xz(const CLevelGraph::CVertex &vertex, T &x, T &z) const
 {
 	unpack_xz			(vertex.position(),x,z);
 }
 
 template <typename T>
-IC void CLevelGraph::unpack_xz(const CLevelGraph::CVertex *vertex, T &x, T &z) const
+IC	void CLevelGraph::unpack_xz(const CLevelGraph::CVertex *vertex, T &x, T &z) const
 {
 	unpack_xz			(*vertex,x,z);
 }
 
-IC const Fvector CLevelGraph::vertex_position	(const CLevelGraph::CPosition &source_position) const
+IC	const Fvector CLevelGraph::vertex_position	(const CLevelGraph::CPosition &source_position) const
 {
 	Fvector				dest_position;
 	unpack_xz			(source_position,dest_position.x,dest_position.z);
@@ -110,12 +118,12 @@ IC const Fvector CLevelGraph::vertex_position	(const CLevelGraph::CPosition &sou
 	return				(dest_position);
 }
 
-IC const Fvector &CLevelGraph::vertex_position	(Fvector &dest_position, const CLevelGraph::CPosition &source_position) const
+IC	const Fvector &CLevelGraph::vertex_position	(Fvector &dest_position, const CLevelGraph::CPosition &source_position) const
 {
 	return				(dest_position = vertex_position(source_position));
 }
 
-IC const CLevelGraph::CPosition &CLevelGraph::vertex_position	(CLevelGraph::CPosition &dest_position, const Fvector &source_position) const
+IC	const CLevelGraph::CPosition &CLevelGraph::vertex_position	(CLevelGraph::CPosition &dest_position, const Fvector &source_position) const
 {
 	VERIFY				(iFloor((source_position.z - header().box().min.z)/header().cell_size() + .5f) < (int)m_row_length);
 	int					pxz	= iFloor(((source_position.x - header().box().min.x)/header().cell_size() + .5f))*m_row_length + iFloor((source_position.z - header().box().min.z)/header().cell_size() + .5f);
@@ -618,6 +626,16 @@ IC	void CLevelGraph::iterate_vertices		(const Fvector &min_position, const Fvect
 
 	for ( ; I != E; ++I)
 		predicate				(*I);
+}
+
+IC	u32	CLevelGraph::max_x					() const
+{
+	return						(m_max_x);
+}
+
+IC	u32	CLevelGraph::max_z					() const
+{
+	return						(m_max_z);
 }
 
 IC	bool operator<		(const CLevelGraph::CVertex &vertex, u32 vertex_xz)
