@@ -15,4 +15,3 @@ game_types={
 		GAME_DUMMY					=255 --max(unsigned8)
 }
 
-test2
