@@ -749,12 +749,21 @@ void CBoneDataAnimated::Calculate(CKinematics* _K, Fmatrix *parent)
                 break;
             default:
                 {
-                    int count = BLEND_INST.Blend.size();
+                    int 	count 	= BLEND_INST.Blend.size();
+                    float   total 	= 0;
 					for (int i=0; i<count; i++){
 						S[i].set(R+i,BI[i]->blendAmount);
 					}
                     std::sort	(S,S+count);
-                    KEY_Interp	(Result,*S[0].K, *S[1].K, clampr(S[1].w/(S[0].w+S[1].w),0.f,1.f) );
+                    CKey		tmp;
+                    total		= S[0].w;
+                    tmp			= *S[0].K;
+                    for 		(int cnt=1; cnt<count; cnt++)
+                    {
+                    	total		+= S[cnt].w;
+                    	KEY_Interp	(Result,tmp, *S[cnt].K, clampr(S[cnt].w/total,0.f,1.f) );
+                        tmp 		= Result;
+                    }
                 }
                 break;
             }
