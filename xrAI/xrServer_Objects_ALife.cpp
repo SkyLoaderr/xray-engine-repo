@@ -242,7 +242,7 @@ void CSE_ALifeObject::STATE_Read			(NET_Packet &tNetPacket, u16 size)
 {
 	if (m_wVersion >= 1) {
 		if (m_wVersion > 24) {
-			if (m_wVersion < 82) {
+			if (m_wVersion < 83) {
 				tNetPacket.r_float	(m_fProbability);
 			}
 		}
@@ -251,7 +251,7 @@ void CSE_ALifeObject::STATE_Read			(NET_Packet &tNetPacket, u16 size)
 			tNetPacket.r_u8		(l_ucTemp);
 			m_fProbability		= (float)l_ucTemp;
 		}
-		if (m_wVersion < 82) {
+		if (m_wVersion < 83) {
 			tNetPacket.r_u32	();
 		}
 		if (m_wVersion < 4) {

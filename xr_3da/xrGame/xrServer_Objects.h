@@ -99,8 +99,9 @@
 // 80 - CSE_Abstract					m_tSpawnID property moved from CSE_ALifeObject to CSE_Abstract
 // 81 - CSE_SpawnGroup					appended with 4 properties
 // 82 - CSE_AlifeTraderAbstract			load/save m_iCharacterProfile on state read/write
+// 83 - CSE_AlifeObject					m_fProbability moved to CSE_Abstract, m_dwSpawnGroup is removed completely
 //------------------------------------------------------------------------------
-#define SPAWN_VERSION	u16(82)
+#define SPAWN_VERSION	u16(83)
 
 SERVER_ENTITY_DECLARE_BEGIN2(CSE_Shape,ISE_Shape,CShapeData)
 public:
