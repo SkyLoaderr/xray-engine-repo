@@ -61,8 +61,11 @@ void CRenderTarget::accum_point		(light* L)
 	// *****************************	Minimize overdraw	*************************************
 	// Select shader (front or back-faces), *** back, if intersect near plane
 	RCache.set_ColorWriteEnable				();
+	RCache.set_CullMode						(CULL_CW);		// back
+	/*
 	if (bIntersect)	RCache.set_CullMode		(CULL_CW);		// back
 	else			RCache.set_CullMode		(CULL_CCW);		// front
+	*/
 
 	// 2D texgen (texture adjustment matrix)
 	float	_w						= float(Device.dwWidth);

@@ -1,5 +1,6 @@
 #include "StdAfx.h"
 #include "light.h"
+#include "..\cl_intersect.h"
 
 const	u32	delay_small_min			= 1;
 const	u32	delay_small_max			= 3;
@@ -17,8 +18,25 @@ void	light::vis_prepare			()
 	//		. perform testing				= ???,		pending
 
 	u32	frame	= Device.dwFrame;
-	if (frame	<	vis.frame2test)	return;
-	if (Device.vCameraPosition.distance_to(spatial.center)<=spatial.radius)	{
+	if (frame	<	vis.frame2test)		return;
+
+	BOOL	near_intersect				= FALSE;
+	{
+		Fmatrix& M						= Device.mFullTransform;
+		Fvector4 plane;
+		plane.x							= -(M._14 + M._13);
+		plane.y							= -(M._24 + M._23);
+		plane.z							= -(M._34 + M._33);
+		plane.w							= -(M._44 + M._43);
+		float denom						= -1.0f / _sqrt(_sqr(plane.x)+_sqr(plane.y)+_sqr(plane.z));
+		plane.mul						(denom);
+		Fplane	P;	P.n.set(plane.x,plane.y,plane.z); P.d = plane.w;
+		float	p_dist					= P.classify	(spatial.center) - spatial.radius;
+		near_intersect					= (p_dist<=0);
+	}
+	//Msg	("sc[%f,%f,%f]/c[%f,%f,%f] - sr[%f]/r[%f]",VPUSH(spatial.center),VPUSH(position),spatial.radius,range);
+	//Msg	("dist:%f",Device.vCameraPosition.distance_to(spatial.center));
+	if (near_intersect || Device.vCameraPosition.distance_to(spatial.center)<=(spatial.radius+VIEWPORT_NEAR+EPS_S))	{	// small error
 		vis.visible		=	true;
 		vis.pending		=	false;
 		vis.frame2test	=	frame	+ ::Random.randI(delay_small_min,delay_small_max);
@@ -46,6 +64,7 @@ void	light::vis_update			()
 
 	u32	frame			= Device.dwFrame;
 	u32 fragments		= RImplementation.occq_get	(vis.query_id);
+	// Log					("",fragments);
 	vis.visible			= (fragments > cullfragments);
 	vis.pending			= false;
 	if (vis.visible)	{
