@@ -129,7 +129,7 @@ public:
 		for (DWORD i=0; i<data.size(); i++)
 		{
 			fs.w_u32	(data[i].size());
-			fs.w		(data[i].begin(),data[i].size()*2);
+			fs.w		(&*data[i].begin(),data[i].size()*2);
 		}
 		data.clear	();
 	}

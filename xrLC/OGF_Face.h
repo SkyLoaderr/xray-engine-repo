@@ -130,7 +130,7 @@ struct OGF : public OGF_Base
 
 	virtual void		GetGeometry		(xr_vector<Fvector> &R)
 	{
-		for (OGF_Vertex* I=vertices.begin(); I!=vertices.end(); I++)
+		for (xr_vector<OGF_Vertex>::iterator I=vertices.begin(); I!=vertices.end(); I++)
 			R.push_back(I->P);
 	}
 };
@@ -160,7 +160,7 @@ struct OGF_Reference : public OGF_Base
 	virtual void		GetGeometry	(xr_vector<Fvector> &R)
 	{
 		Fvector			P;
-		for (OGF_Vertex* I=model->vertices.begin(); I!=model->vertices.end(); I++)
+		for (xr_vector<OGF_Vertex>::iterator I=model->vertices.begin(); I!=model->vertices.end(); I++)
 		{
 			xform.transform_tiny	(P,I->P);
 			R.push_back				(P);
