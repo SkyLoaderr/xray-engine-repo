@@ -183,7 +183,7 @@ COLLIDER::COLLIDER()
 
 COLLIDER::~COLLIDER()
 {
-//	r_free			();
+	r_free			();
 }
 
 RESULT& COLLIDER::r_add	()
