@@ -66,14 +66,19 @@
 	<!-- DOLG BASE -->
 	<info_portion id="bar_dolg_base_pass"></info_portion>
 	<info_portion id="bar_dolg_bunker_pass"></info_portion>
-	<info_portion id="bar_dolg_community_leader_done"></info_portion>
 
 	<info_portion id="bar_dolg_community_start"></info_portion>
 	<info_portion id="bar_dolg_veteran_start"></info_portion>
 	<info_portion id="bar_dolg_veteran_gain"></info_portion>
 	<info_portion id="bar_dolg_veteran_done"></info_portion>
-	<info_portion id="bar_dolg_community_leader"></info_portion>
 
+	<info_portion id="bar_dolg_community_leader"></info_portion>
+	<info_portion id="bar_dolg_community_leader_talk"></info_portion>
+	<info_portion id="bar_dolg_community_leader_done"></info_portion>
+
+	<info_portion id="bar_svoboda_rg6_start"></info_portion>
+	<info_portion id="mil_svoboda_rg6_gain"></info_portion>
+	<info_portion id="bar_svoboda_rg6_done"></info_portion>
 
     <info_portion id="rostok_heli_start">
     </info_portion>

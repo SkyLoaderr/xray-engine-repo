@@ -411,6 +411,48 @@
     <string id="bar_dolg_ivancov_test_start_1111">
         <text>Хорошо, я попробую.</text>
     </string>
+    <string id="bar_dolg_leader_job_0">
+        <text>Какие мои текущие задачи?</text>
+    </string>
+    <string id="bar_dolg_leader_job_1">
+        <text>Пока задач нет, рядовой.</text>
+    </string>
+    <string id="bar_dolg_leader_join_0">
+        <text>Я хочу вступить в группировку Долг.</text>
+    </string>
+    <string id="bar_dolg_leader_join_1">
+        <text>Похвальное желание. Полковник Петренко и капитан Иванцов мне уже доложили о тебе. Прежде чем принять тебя, я хочу попросить выполнить одно дело. Лично для меня, понимаешь?</text>
+    </string>
+    <string id="bar_dolg_leader_join_11">
+        <text>Думаю что понимаю. Что я должен сделать?</text>
+    </string>
+    <string id="bar_dolg_leader_join_111">
+        <text>Видишь ли, тут такое дело. Сейчас у нас идут территориальные боевые действия с группой Свободы и нам не хватает оружия помощней того, что у нас есть. У Свободы есть несколько отличных гранатометов РГ-6 , если бы у тебя получилось выкрасть хотя бы один такой гранатомет, то я бы с удовольствием принял такого отважного сталкера в нашу группировку. Если у тебя получится выкрасть несколько гранатометов, то я обещаю хорошее вознаграждение. Ну, что думаешь?</text>
+    </string>
+    <string id="bar_dolg_leader_join_1111">
+        <text>Хорошо, я возьмусь выкрасть РГ-6 у Свободы.</text>
+    </string>
+    <string id="bar_dolg_leader_join_11111">
+        <text>Ну вот и отлично. Я скину тебе информацию по местонахождению складов на территории военной базы, на которой сейчас размещена Свобода.</text>
+    </string>
+    <string id="bar_dolg_leader_join_1112">
+        <text>Нет, я пока не готов к таким подвигам.</text>
+    </string>
+    <string id="bar_dolg_leader_join_11121">
+        <text>Дело твое.</text>
+    </string>
+    <string id="bar_dolg_leader_quest_rg6_finish_0">
+        <text>Я выполнил вашу просьбу, принес РГ-6. </text>
+    </string>
+    <string id="bar_dolg_leader_quest_rg6_finish_1">
+        <text>Отличная работа, новобранец. Это то что надо. Я принимаю тебя в нашу группировку, отныне ты рядовой член группировки Долг. Я подготовлю для тебя текущие задачи. За выполнение каждой из них, ты будешь вознагражден и возможно повышен в звании.</text>
+    </string>
+    <string id="bar_dolg_leader_start_11">
+        <text>Слушаю.</text>
+    </string>
+    <string id="bar_dolg_leader_start_21">
+        <text>Что привело тебя ко мне, брат? </text>
+    </string>
     <string id="bar_dolg_novice_start_2">
         <text>Здравствуй, брат сталкер</text>
     </string>
