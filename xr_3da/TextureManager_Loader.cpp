@@ -259,7 +259,7 @@ void	CShaderManager::OnDeviceCreate	(LPCSTR shName)
 	string32	id;
 	CStream*	F			= Engine.FS.Open(shName);
 	F->Read		(&id,8);
-	if (0==strcmp(id,ID))	
+	if (0==strncmp(id,ID,8))	
 	{
 		Engine.FS.Close			(F);
 		F						= new CCompressedStream(shName,ID);

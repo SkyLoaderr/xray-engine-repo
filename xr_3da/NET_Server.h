@@ -4,13 +4,18 @@
 
 class ENGINE_API IClient
 {
+	struct Flags
+	{
+		u32		bLocal		: 1;
+		u32		bConnected	: 1;
+	};
 public:
 	IClientStatistic	stats;
 
 	DPNID				ID;
-	u32				dwTime_LastUpdate;
-	char				Name	[64];
-	u32				Flags;	// local/host/normal
+	string128			Name;
+	Flags				flags;	// local/host/normal
+	u32					dwTime_LastUpdate;
 
 	IClient()	{
 		dwTime_LastUpdate	= 0;

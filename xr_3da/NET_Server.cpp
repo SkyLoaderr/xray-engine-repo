@@ -216,7 +216,8 @@ HRESULT	IPureServer::net_Handler(u32 dwMessageType, PVOID pMessage)
 			// setup structure
 			IClient*				P = client_Create();
 			P->ID					= msg->dpnidPlayer;
-			P->Flags				= Pinfo->dwPlayerFlags;
+			P->flags.bLocal			= (Pinfo->dwPlayerFlags&DPNPLAYER_LOCAL);
+			P->flags.bConnected		= TRUE;
 			CHK_DX(WideCharToMultiByte(CP_ACP,0,Pinfo->pwszName,-1,P->Name,sizeof(P->Name),0,0));
 
 			// register player
@@ -240,6 +241,7 @@ HRESULT	IPureServer::net_Handler(u32 dwMessageType, PVOID pMessage)
 				if (net_Players[I]->ID==msg->dpnidPlayer)
 				{
 					// gen message
+					net_Players[I]->flags.bConnected	= FALSE;
 					OnCL_Disconnected	(net_Players[I]);
 
 					// real destroy
@@ -320,6 +322,7 @@ void	IPureServer::SendBroadcast_LL(DPNID exclude, void* data, u32 size, u32 dwFl
 	{
 		IClient* PLAYER		= net_Players[I];
 		if (PLAYER->ID==exclude)		continue;
+		if (!PLAYER->flags.bConnected)	continue;
 		SendTo_LL	(PLAYER->ID, data, size, dwFlags);
 	}
 	csPlayers.Leave	();
