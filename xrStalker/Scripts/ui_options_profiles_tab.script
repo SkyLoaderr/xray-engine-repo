@@ -45,6 +45,7 @@ function options_profiles_tab:InitControls(x_pos, y_pos)
 	caption:SetWindowName("caption")
 	caption:Init(info_rect.x, info_rect.y, info_rect.width, info_rect.height)
 	caption:SetTextAlign(CGameFont.alLeft)
+	caption:SetFont(self.caption_font);
 	caption:SetText("Current Profile: xxx")
 	self.main_frame:AttachChild(caption)
 	
