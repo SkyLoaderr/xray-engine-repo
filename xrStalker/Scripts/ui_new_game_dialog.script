@@ -7,7 +7,7 @@
 
 
 function main()
-	local dlg = ui_main_menu.main_menu()
+	local dlg = ui_new_game_dialog.new_game_dlg()
 	level.start_stop_menu(dlg,true)
 		while true do
 		wait(3000)
