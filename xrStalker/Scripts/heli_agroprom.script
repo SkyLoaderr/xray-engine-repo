@@ -11,6 +11,7 @@ end
 
 
 function main ()
+    if true then return end
     local heli = get_level_object ("helicopter")
     local ini = heli:spawn_ini ()
     if ini == nil or
