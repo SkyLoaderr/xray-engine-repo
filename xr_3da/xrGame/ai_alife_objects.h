@@ -327,12 +327,12 @@ public:
 	
 	PERSONAL_EVENT_VECTOR			m_tpEvents;
 	TASK_VECTOR						m_tpTaskIDs;
+	DWORD_VECTOR					m_tpaVertices;
 	float							m_fMaxItemMass;
 	ETaskState						m_tTaskState;
-	STask							m_tCurTask;
 	u32								m_dwCurNode;
 	u32								m_dwCurTaskLocation;
-	DWORD_VECTOR					m_tpaVertices;
+	STask							m_tCurTask;
 
 	virtual	void					Save(CFS_Memory &tMemoryStream)
 	{
@@ -415,9 +415,9 @@ public:
 		}
 		m_fMaxItemMass				= tFileStream.Rfloat();
 		m_tTaskState				= ETaskState(tFileStream.Rdword());
-		tFileStream.Read			(&m_tCurTask,	sizeof(m_tCurTask));
 		m_dwCurNode					= tFileStream.Rdword();
 		m_dwCurTaskLocation			= tFileStream.Rdword();
+		tFileStream.Read			(&m_tCurTask,	sizeof(m_tCurTask));
 	};
 
 	virtual void					Init(_SPAWN_ID	tSpawnID, SPAWN_VECTOR &tpSpawnPoints)
