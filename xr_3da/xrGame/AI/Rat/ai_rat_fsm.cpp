@@ -791,7 +791,7 @@ void CAI_Rat::EatCorpse()
 	if (!Level().AI.bfTooSmallAngle(r_torso_target.yaw, r_torso_current.yaw,PI_DIV_8) || m_bNoWay) {
 		m_fSpeed = .1f;
 		if (m_bNoWay) {
-			//m_fSpeed = 0;
+			m_fSpeed = 0;
 			float fAngle = ::Random.randF(m_fWallMinTurnValue,m_fWallMaxTurnValue);
 			r_torso_target.yaw = r_torso_current.yaw + fAngle;
 			r_torso_target.yaw = angle_normalize(r_torso_target.yaw);
