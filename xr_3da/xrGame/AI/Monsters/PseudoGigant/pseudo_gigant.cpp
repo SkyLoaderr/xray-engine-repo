@@ -163,7 +163,7 @@ void CPseudoGigant::event_on_step()
 				step_effector.time, 
 				step_effector.amplitude, 
 				step_effector.period_number, 
-				(max_dist - dist_to_actor) / (1.2 * max_dist))
+				(max_dist - dist_to_actor) / (1.2f * max_dist))
 			);
 	}
 	//////////////////////////////////
