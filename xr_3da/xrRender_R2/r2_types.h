@@ -22,5 +22,6 @@ const float				DSM_d_range			= 100.f;
 const u32				PSM_size			= 512;
 const float				PSM_near_plane		= .07f;
 
-const u32				TEX_material_size	= 256;
+const u32				TEX_material_LdotN	= 128;	// diffuse,		X
+const u32				TEX_material_LdotH	= 256;	// specular,	Y
 const u32				TEX_ds2_fade_size	= 256;

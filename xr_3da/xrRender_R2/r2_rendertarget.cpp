@@ -75,21 +75,21 @@ void	CRenderTarget::OnDeviceCreate	()
 		// Build material(s)
 		{
 			// Surface
-			R_CHK						(D3DXCreateTexture(HW.pDevice,TEX_material_size,TEX_material_size,1,0,D3DFMT_A8R8G8B8,D3DPOOL_MANAGED,&t_material_surf));
+			R_CHK						(D3DXCreateTexture(HW.pDevice,TEX_material_LdotN,TEX_material_LdotH,1,0,D3DFMT_A8R8G8B8,D3DPOOL_MANAGED,&t_material_surf));
 			t_material					= Device.Shader._CreateTexture(r2_material);
 			t_material->surface_set		(t_material_surf);
 
 			// Fill it (addr: x=dot(L,N),y=dot(L,H))
 			D3DLOCKED_RECT				R;
 			R_CHK						(t_material_surf->LockRect	(0,&R,0,0));
-			for (u32 y=0; y<TEX_material_size; y++)
+			for (u32 y=0; y<TEX_material_LdotH; y++)
 			{
-				for (u32 x=0; x<TEX_material_size; x++)
+				for (u32 x=0; x<TEX_material_LdotN; x++)
 				{
 					u32*	p	=	(u32*)		(LPBYTE (R.pBits) + y*R.Pitch + x*4);
-					float	ld	=	float(x)	/ float	(TEX_material_size-1);
-					float	ls	=	float(y)	/ float	(TEX_material_size-1);
-							ls	*=	powf		(ld,1/4);	// minimize specular where diffuse near zero
+					float	ld	=	float(x)	/ float	(TEX_material_LdotN-1);
+					float	ls	=	float(y)	/ float	(TEX_material_LdotH-1);
+							ls	*=	powf		(ld,1/4);				// minimize specular where diffuse near zero
 					s32		_d	=	iFloor		(ld*255.5f);			clamp(_d,0,255);
 					s32		_s	=	iFloor		(pow(ls,32.f)*255.5f);	clamp(_s,0,255);
 					*p			=	color_rgba	(_d,_d,_d,_s);
