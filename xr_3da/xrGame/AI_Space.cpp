@@ -192,6 +192,8 @@ int	CAI_Space::q_LoadSearch(const Fvector& pos)
 {
 	if (0==vfs)	return	0;
 
+	Log			("***AAA***");
+
 	NodePosition	P;
 	PackPosition	(P,pos);
 	short min_dist	= 32767;
