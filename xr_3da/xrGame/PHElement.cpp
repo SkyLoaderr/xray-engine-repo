@@ -150,28 +150,28 @@ void CPHElement::			create_Sphere	(const Fsphere&	V){
 			if(object_contact_callback)dGeomUserDataSetObjectContactCallback(geom,object_contact_callback);
 		}
 };
-void CPHElement::add_Cylinder	(const Pcylinder& V)
+void CPHElement::add_Cylinder	(const Fcylinder& V)
 {
 	m_cylinders_data.push_back(V);
 }
 
-void CPHElement::create_Cylinder(const Pcylinder& V)
+void CPHElement::create_Cylinder(const Fcylinder& V)
 {
 	dGeomID geom,trans;
-
 	dVector3 local_position=
 	{
-		V.m_translate.x-m_mass_center.x,
-		V.m_translate.y-m_mass_center.y,
-		V.m_translate.z-m_mass_center.z
+		
+		V.m_center.x-m_mass_center.x,
+		V.m_center.y-m_mass_center.y,
+		V.m_center.z-m_mass_center.z
 	};
 
 	if(m_group){
 		geom=dCreateCylinder
 			(
 			0,
-			V.m_halflength*2.f,
-			V.m_radius
+			V.m_radius,
+			V.m_height
 			);
 
 		m_geoms.push_back(geom);
@@ -180,7 +180,10 @@ void CPHElement::create_Cylinder(const Pcylinder& V)
 			local_position[1],
 			local_position[2]);
 		dMatrix3 R;
-		PHDynamicData::FMX33toDMX(V.m_rotate,R);
+		Fmatrix33 m33;
+		m33.j.set(V.m_direction);
+		Fvector::generate_orthonormal_basis(m33.j,m33.k,m33.i);
+		PHDynamicData::FMX33toDMX(m33,R);
 		dGeomSetRotation(geom,R);
 		trans=dCreateGeomTransform(0);
 		dGeomSetData(trans,0);
@@ -200,8 +203,9 @@ void CPHElement::create_Cylinder(const Pcylinder& V)
 		geom=dCreateCylinder
 			(
 			0,
-			V.m_halflength*2.f,
-			V.m_radius
+			V.m_radius,
+			V.m_height
+		
 			);
 
 		m_geoms.push_back(geom);
@@ -213,7 +217,10 @@ void CPHElement::create_Cylinder(const Pcylinder& V)
 			local_position[2]);
 
 		dMatrix3 R;
-		PHDynamicData::FMX33toDMX(V.m_rotate,R);
+		Fmatrix33 m33;
+		m33.j.set(V.m_direction);
+		Fvector::generate_orthonormal_basis(m33.j,m33.k,m33.i);
+		PHDynamicData::FMX33toDMX(m33,R);
 		dGeomSetRotation(geom,R);
 
 
@@ -266,7 +273,7 @@ void CPHElement::			build	(dSpaceID space){
 		create_Sphere(*i_sphere);
 	}
 	///////////////////////////////////////////////////////////////////////////////////////
-	xr_vector<Pcylinder>::iterator i_cylinder;
+	xr_vector<Fcylinder>::iterator i_cylinder;
 	for(i_cylinder=m_cylinders_data.begin();i_cylinder!=m_cylinders_data.end();i_cylinder++){
 		create_Cylinder(*i_cylinder);
 	}
@@ -350,10 +357,10 @@ Fvector CPHElement::			get_mc_data	(){
 	}
 
 
-	xr_vector<Pcylinder>::iterator i_cylider;
+	xr_vector<Fcylinder>::iterator i_cylider;
 	for(i_cylider=m_cylinders_data.begin();i_cylider!=m_cylinders_data.end();i_cylider++){
-		pv=M_PI*(*i_cylider).m_radius*(*i_cylider).m_radius*(*i_cylider).m_halflength*2.f;
-		s.mul((*i_cylider).m_translate,pv);
+		pv=M_PI*(*i_cylider).m_radius*(*i_cylider).m_radius*(*i_cylider).m_height;
+		s.mul((*i_cylider).m_center,pv);
 		volume+=pv;
 		mc.add(s);
 	}
@@ -384,9 +391,9 @@ void CPHElement::			calc_volume_data	(){
 	}
 
 
-	xr_vector<Pcylinder>::iterator i_cylider;
+	xr_vector<Fcylinder>::iterator i_cylider;
 	for(i_cylider=m_cylinders_data.begin();i_cylider!=m_cylinders_data.end();i_cylider++){
-		pv=M_PI*(*i_cylider).m_radius*(*i_cylider).m_radius*(*i_cylider).m_halflength*2.f;
+		pv=M_PI*(*i_cylider).m_radius*(*i_cylider).m_radius*(*i_cylider).m_height;
 		
 		volume+=pv;
 
@@ -449,14 +456,17 @@ void CPHElement::calculate_it_data(const Fvector& mc,float mas){
 
 	}
 
-	xr_vector<Pcylinder>::iterator i_cylinder;
+	xr_vector<Fcylinder>::iterator i_cylinder;
 	for(i_cylinder=m_cylinders_data.begin();i_cylinder!=m_cylinders_data.end();i_cylinder++){
-		Fvector& pos=(*i_cylinder).m_translate;
+		Fvector& pos=(*i_cylinder).m_center;
 		Fvector l;
 		l.sub(pos,mc);
-		dMassSetCylinder(&m,mas/m_volume,2,(*i_cylinder).m_radius,2.f*(*i_cylinder).m_halflength);
+		dMassSetCylinder(&m,mas/m_volume,2,(*i_cylinder).m_radius,(*i_cylinder).m_height);
 		dMatrix3 DMatx;
-		PHDynamicData::FMX33toDMX((*i_cylinder).m_rotate,DMatx);
+		Fmatrix33 m33;
+		m33.j.set((*i_cylinder).m_direction);
+		Fvector::generate_orthonormal_basis(m33.j,m33.k,m33.i);
+		PHDynamicData::FMX33toDMX(m33,DMatx);
 		dMassRotate(&m,DMatx);
 		dMassTranslate(&m,l.x,l.y,l.z);
 		dMassAdd(&m_mass,&m);
@@ -508,13 +518,13 @@ void CPHElement::calculate_it_data_use_density(const Fvector& mc,float density){
 
 	}
 
-	xr_vector<Pcylinder>::iterator i_cylinder;
+	xr_vector<Fcylinder>::iterator i_cylinder;
 	for(i_cylinder=m_cylinders_data.begin();i_cylinder!=m_cylinders_data.end();i_cylinder++){
-		Fvector& pos=(*i_cylinder).m_translate;
+		Fvector& pos=(*i_cylinder).m_center;
 		Fvector l;
 		l.sub(pos,mc);
-		dMassSetCylinder(&m,1.f,2,(*i_cylinder).m_radius,(*i_cylinder).m_halflength*2.f);
-		dMassAdjust(&m,M_PI*(*i_cylinder).m_radius*(*i_cylinder).m_radius*(*i_cylinder).m_halflength*2.f*density);
+		dMassSetCylinder(&m,1.f,2,(*i_cylinder).m_radius,(*i_cylinder).m_height);
+		dMassAdjust(&m,M_PI*(*i_cylinder).m_radius*(*i_cylinder).m_radius*(*i_cylinder).m_height*density);
 		dMatrix3 DMatx;
 		PHDynamicData::FMX33toDMX((*i_box).m_rotate,DMatx);
 		dMassRotate(&m,DMatx);	
@@ -1452,7 +1462,10 @@ void CPHElement::add_Shape(const SBoneShape& shape)
 
 
 	case SBoneShape::stCylinder :
-		break;
+		{
+		   add_Cylinder(shape.cylinder);
+		   break;
+		}
 
 	case SBoneShape::stNone :
 		break;

@@ -790,9 +790,7 @@ void CActor::shedule_Update	(u32 DT)
 {
 	if(m_vehicle)
 	{
-		m_vehicle->Update(DT);
-		//inherited::Update		(DT);
-
+		inherited::shedule_Update		(DT);
 		return;
 	}
 	if (!getEnabled())	return;

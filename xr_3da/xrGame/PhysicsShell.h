@@ -10,7 +10,7 @@ void __stdcall PushOutCallback(bool& do_colide,dContact& c);
 void __stdcall PushOutCallback1(bool& do_colide,dContact& c);
 
 
-struct Pcylinder;
+
 class CPhysicsRefObject
 {
 public:
@@ -84,7 +84,7 @@ public:
 	virtual void			set_ContactCallback		(ContactCallbackFun* callback)					= 0;
 	virtual	void			add_Sphere				(const Fsphere&		V)							= 0;
 	virtual	void			add_Box					(const Fobb&		V)							= 0;
-	virtual	void			add_Cylinder			(const Pcylinder&	V)							= 0;
+	virtual	void			add_Cylinder			(const Fcylinder&	V)							= 0;
 	virtual void			add_Shape				(const SBoneShape& shape)						= 0;
 	virtual void			add_Shape				(const SBoneShape& shape,const Fmatrix& offset)	= 0;
 	virtual void			add_Mass				(const SBoneShape& shape,const Fmatrix& offset,const Fvector& mass_center,float mass)=0;

@@ -17,7 +17,7 @@ class CPHElement	:  public CPhysicsElement
 	xr_vector <dGeomID>		m_trans;
 	xr_vector <Fsphere>		m_spheras_data;
 	xr_vector <Fobb>		m_boxes_data;
-	xr_vector <Pcylinder>	m_cylinders_data;
+	xr_vector <Fcylinder>	m_cylinders_data;
 	bool					bActive;
 	bool					bActivating;
 	float					m_start_time;
@@ -73,7 +73,7 @@ public:
 private:
 	void					create_Sphere					(const Fsphere&		V);
 	void					create_Box						(const Fobb&		V);
-	void					create_Cylinder					(const Pcylinder&	V);
+	void					create_Cylinder					(const Fcylinder&	V);
 
 	void					calculate_it_data				(const Fvector& mc,float mass);
 	void					calculate_it_data_use_density	(const Fvector& mc,float density);
@@ -100,7 +100,7 @@ public:
 	///
 	virtual	void			add_Sphere						(const Fsphere&		V);
 	virtual	void			add_Box							(const Fobb&		V);
-	virtual	void			add_Cylinder					(const Pcylinder&	V);
+	virtual	void			add_Cylinder					(const Fcylinder&	V);
 	virtual void			add_Shape						(const SBoneShape& shape);
 	virtual void			add_Shape						(const SBoneShape& shape,const Fmatrix& offset);
 

@@ -150,13 +150,13 @@ void	CCar::net_Destroy()
 	xr_delete(m_pExhaustPG2);
 }
 
-void	CCar::Update				( u32 T )
+void	CCar::shedule_Update				( u32 T )
 {
 	inherited::shedule_Update		(T);
 
-	XFORM().set(m_pPhysicsShell->mXFORM);
-	if	(m_owner)
-		m_owner->XFORM().mul	(XFORM(),fmPosDriver);
+//	XFORM().set(m_pPhysicsShell->mXFORM);
+//	if	(m_owner)
+//		m_owner->XFORM().mul	(XFORM(),fmPosDriver);
 }
 
 void	CCar::UpdateCL				( )
@@ -503,11 +503,7 @@ void CCar::Revert()
 
 void CCar::NeutralDrive()
 {
-//	for(u32 i = 0; i < 4; ++i){
-//		dJointSetHinge2Param(Joints[i], dParamFMax2, 10.f);
-//		dJointSetHinge2Param(Joints[i], dParamVel2, 0);
-//	}
-	
+
 	xr_vector<SWheelDrive>::iterator i,e;
 	i=m_driving_wheels.begin();
 	e=m_driving_wheels.end();
@@ -534,67 +530,12 @@ void CCar::Drive()
 	for(;i!=e;i++)
 		i->Drive();
 	e_state_drive=drive;
-	//	static const dReal wheelVelocity = 12.f * M_PI;//3*18.f * M_PI;
-	/*
-	ULONG i;
-
-	if(!Breaks)
-		switch(DriveDirection)
-	{
-		case 1:
-			for(i = 0; i < 4; ++i)
-				dJointSetHinge2Param(Joints[i], dParamVel2, ((i % 2) == 0) ? -DriveVelocity : DriveVelocity);
-			break;
-
-		case -1:
-			for(i = 0; i < 4; ++i)
-				dJointSetHinge2Param(Joints[i], dParamVel2, ((i % 2) == 0) ? DriveVelocity : -DriveVelocity);
-			break;
-		case 0:
-			for(i = 0; i < 4; ++i){
-				dJointSetHinge2Param(Joints[i], dParamVel2, 0.f);
-				dJointSetHinge2Param(Joints[i], dParamFMax2, car_neutral_drive_resistance);
-			}
-			return;
-	}
-	else {
-		for(i = 0; i < 2; ++i){
-
-			dJointSetHinge2Param(Joints[i], dParamFMax2,car_breaks_resistance);
-			dJointSetHinge2Param(Joints[i], dParamVel2, 0);
-		}
-		/////////////
-		switch(DriveDirection)
-		{
-		case 1:
-			for(i = 2; i < 4; ++i)
-				dJointSetHinge2Param(Joints[i], dParamVel2, ((i % 2) == 0) ? -DriveVelocity : DriveVelocity);
-			break;
-
-		case -1:
-			for(i = 2; i < 4; ++i)
-				dJointSetHinge2Param(Joints[i], dParamVel2, ((i % 2) == 0) ? DriveVelocity : -DriveVelocity);
-			break;
-		case 0:
-			for(i = 2; i < 4; ++i){
-				dJointSetHinge2Param(Joints[i], dParamVel2, 0.f);
-				dJointSetHinge2Param(Joints[i], dParamFMax2, 100);
-			}
-			return;
-		}
-		/////////////
-		for(i=2;i<4;i++)
-			dJointSetHinge2Param(Joints[i], dParamFMax2, DriveForce);
-		return;
-	}
-
-	for(i=0;i<4;i++)
-		dJointSetHinge2Param(Joints[i], dParamFMax2, DriveForce);
-		*/
+	
 }
 
 void CCar::SteerRight()
 {
+	b_wheels_limited=true;  //no need to limit wheels when stiring
 	m_pPhysicsShell->Enable();
 	xr_vector<SWheelSteer>::iterator i,e;
 	i=m_steering_wheels.begin();
@@ -602,48 +543,11 @@ void CCar::SteerRight()
 	for(;i!=e;i++)
 		i->SteerRight();
 	e_state_steer=right;
-/*
-	ULONG i;
-	switch(steering)
-	{
-	case 1:
-	case -1:
-		weels_limited=true;
-		for(i = 2; i < 4; ++i)
-		{
-			dJointSetHinge2Param(Joints[i], dParamHiStop, steeringLimit);
-			dJointSetHinge2Param(Joints[i], dParamLoStop, -steeringLimit);
-			dJointSetHinge2Param(Joints[i], dParamVel, ((i < 2) ? steering : -steering) * steeringRate);
-		}
-		break;
 
-	default: // case 0
-		weels_limited=false;
-		for(i = 2; i < 4; ++i)
-		{
-			dReal angle = dJointGetHinge2Angle1(Joints[i]);
-
-
-			if(angle < 0)
-			{
-				dJointSetHinge2Param(Joints[i], dParamHiStop, 0);
-
-				dJointSetHinge2Param(Joints[i], dParamVel, steeringRate);
-			}
-			else
-			{	
-
-				dJointSetHinge2Param(Joints[i], dParamLoStop, 0);
-				dJointSetHinge2Param(Joints[i], dParamVel, -steeringRate);
-			}
-
-		}
-		break;
-	}
-*/
 }
 void CCar::SteerLeft()
 {
+	b_wheels_limited=true; //no need to limit wheels when stiring
 	m_pPhysicsShell->Enable();
 	xr_vector<SWheelSteer>::iterator i,e;
 	i=m_steering_wheels.begin();
@@ -655,6 +559,7 @@ void CCar::SteerLeft()
 
 void CCar::SteerIdle()
 {
+	b_wheels_limited=false;
 	m_pPhysicsShell->Enable();
 	xr_vector<SWheelSteer>::iterator i,e;
 	i=m_steering_wheels.begin();
@@ -664,25 +569,15 @@ void CCar::SteerIdle()
 	e_state_steer=idle;
 }
 
-void CCar::LimitWeels()
+void CCar::LimitWheels()
 {
-	/*
-	if(!bActive) return;
-	if(weels_limited) return;
-
-	for(int i = 2; i < 4; ++i)
-	{
-		dReal angle = dJointGetHinge2Angle1(Joints[i]);
-		if(dFabs(angle)<M_PI/180.f)
-		{
-
-			dJointSetHinge2Param(Joints[i], dParamHiStop, 0);
-			dJointSetHinge2Param(Joints[i], dParamLoStop, 0);///
-			dJointSetHinge2Param(Joints[i], dParamVel, 0);
-			weels_limited=true;
-		}
-	}
-*/
+	if(b_wheels_limited) return;
+	b_wheels_limited=true;
+	xr_vector<SWheelSteer>::iterator i,e;
+	i=m_steering_wheels.begin();
+	e=m_steering_wheels.end();
+	for(;i!=e;i++)
+		i->Limit();
 }
 void CCar::Break()
 {
@@ -792,6 +687,12 @@ if(num<m_gear_ratious.size())
 m_current_gear_ratio=m_gear_ratious[num];
 }
 
+void CCar::PhTune(dReal step)
+{
+	if(m_repairing)Revert();
+	LimitWheels();
+}
+
 void CCar::SWheel::Init()
 {
 if(inited) return;
@@ -836,10 +737,12 @@ pos_right=bone_map.find(pwheel->bone_id)->second.element->mXFORM.i.dotproduct(pw
 pos_right=pos_right>0.f ? -1.f : 1.f;
 dJointSetHinge2Param(pwheel->joint, dParamFMax, 1000.f);
 dJointSetHinge2Param(pwheel->joint, dParamVel, 0.f);
+limited=false;
 }
 
 void CCar::SWheelSteer::SteerRight()
 {
+	limited=true;						//no need to limit wheels when steering
 	if(pos_right>0)
 	{
 	
@@ -855,6 +758,7 @@ void CCar::SWheelSteer::SteerRight()
 }
 void CCar::SWheelSteer::SteerLeft()
 {
+	limited=true;						//no need to limit wheels when steering
 	if(pos_right<0)
 	{
 
@@ -870,6 +774,7 @@ void CCar::SWheelSteer::SteerLeft()
 }
 void CCar::SWheelSteer::SteerIdle()
 {
+	limited=false;
 	if(pwheel->car->e_state_steer==right)
 	{
 		if(pos_right<0)
@@ -905,11 +810,25 @@ void CCar::SWheelSteer::SteerIdle()
 
 void CCar::SWheelSteer::Limit()
 {
+if(!limited)
+{
+	dJointID joint=pwheel->joint;
+	dReal angle = dJointGetHinge2Angle1(joint);
+	if(dFabs(angle)<M_PI/180.f)
+	{
+		dJointSetHinge2Param(joint, dParamHiStop, 0);
+		dJointSetHinge2Param(joint, dParamLoStop, 0);///
+		dJointSetHinge2Param(joint, dParamVel, 0);
+		limited=true;
+	}
+}
+pwheel->car->b_wheels_limited=pwheel->car->b_wheels_limited&&limited;
 }
 void CCar::SWheelBreak::Init()
 {
 pwheel->Init();
 break_torque=pwheel->car->m_break_torque*pwheel->radius/pwheel->car->m_ref_radius;
+
 }
 
 void CCar::SWheelBreak::Break()

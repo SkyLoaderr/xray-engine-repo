@@ -18,7 +18,7 @@ static BONE_P_MAP bone_map; //interface for PhysicsShell
 
 xr_list<CPHObject*>::iterator m_ident;
 virtual void PhDataUpdate(dReal step){};
-virtual void PhTune(dReal step){if(m_repairing)Revert();};
+virtual void PhTune(dReal step);
 virtual void InitContact(dContact* c){};
 virtual void StepFrameUpdate(dReal step){};
 public:
@@ -75,6 +75,7 @@ struct SWheelSteer
 	float hi_limit;
 	float steering_velocity;
 	float steering_torque;
+	bool  limited;			//zero limited for idle steering drive
 	float GetSteerAngle()
 	{
 		return dJointGetHinge2Angle1 (pwheel->joint);
@@ -128,7 +129,7 @@ CPGObject* m_pExhaustPG1;
 CPGObject* m_pExhaustPG2;
 ////////////////////////////////////////////////////
 float GetSteerAngle();
-void LimitWeels();
+void LimitWheels();
 void Drive();
 
 void NeutralDrive();
@@ -177,7 +178,7 @@ public:
 	virtual void			Load				( LPCSTR section );
 	virtual BOOL			net_Spawn			( LPVOID DC );
 	virtual void			net_Destroy			();
-	virtual void			Update				( u32 T ); 
+	virtual void			shedule_Update		( u32 T ); 
 	virtual void			UpdateCL			( ); 
 	virtual void			renderable_Render			( ); 
 	
