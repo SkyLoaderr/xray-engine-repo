@@ -206,7 +206,7 @@ BOOL	CreateNode(Fvector& vAt, Node& N)
 		}
 		float perc = float(num_successed_rays)/float(RCAST_Total);
 		if (perc < 0.5f) {
-//			Msg		("Floating node.");
+			//			Msg		("Floating node.");
 			return	FALSE;
 		}
 	}
@@ -218,7 +218,29 @@ const int		HDIM_Z = 128;
 
 DEF_VECTOR		(vecDW,DWORD);
 
-static vecDW	HASH[HDIM_X+1][HDIM_Z+1];
+static vecDW*	HASH[HDIM_X+1][HDIM_Z+1];
+
+void	hash_Initialize ()
+{
+	for (int i=0; i<=HDIM_X; i++)
+	{
+		for (int j=0; j<HDIM_Z; j++)
+		{
+			HASH[i][j]	= new vecDW;
+			HASH[i][j]->reserve	(64);
+		}
+	}
+}
+void	hash_Destroy	()
+{
+	for (int i=0; i<=HDIM_X; i++)
+	{
+		for (int j=0; j<HDIM_Z; j++)
+		{
+			_DELETE	(HASH[i][j]);
+		}
+	}
+}
 
 vecDW&	HashMap	(Fvector& V)
 {
@@ -240,7 +262,7 @@ vecDW&	HashMap	(Fvector& V)
 	ix = iFloor((V.x-VMmin.x)*scale.x);
 	iz = iFloor((V.z-VMmin.z)*scale.z);
 	R_ASSERT(ix<=HDIM_X && iz<=HDIM_Z);
-	return HASH[ix][iz];
+	return *HASH[ix][iz];
 }
 
 void	RegisterNode(Node& N)
@@ -313,7 +335,10 @@ void xrBuildNodes()
 	// begin
 	XRC.BBoxMode	(BBOX_TRITEST);
 	XRC.RayMode		(RAY_CULL|RAY_ONLYNEAREST);
-	g_nodes.reserve	(16384*2);
+	g_nodes.reserve	(1024*1024);
+
+	// Initialize hash
+	hash_Initialize ();
 
 	for (DWORD em=0; em<Emitters.size(); em++) 
 	{
@@ -390,5 +415,6 @@ void xrBuildNodes()
 			}
 		}
 	}
+	Msg("Freeing memory...");
+	hash_Destroy	();
 }
-
