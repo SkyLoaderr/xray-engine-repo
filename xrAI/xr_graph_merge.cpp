@@ -104,6 +104,7 @@ public:
 void xrMergeGraphs()
 {
 	// load all the graphs
+	Phase("Reading level graphs");
 	if (!pSettings->SectionExists("game_levels"))
 		THROW;
 	GRAPH_P_VECTOR					tpGraphs;
@@ -127,8 +128,10 @@ void xrMergeGraphs()
 	// for all connections do:
 	//		determine vertices graph ownership
 	//		call vfAddEdge of the 2 corrsponding graphs
+	Phase("Adding interconnection points");
 	
 	// save all the graphs
+	Phase("Saving graph being merged");
 	CFS_Memory						F;
 	tGraphHeader.dwLevelCount		= tpGraphs.size();
 	tGraphHeader.dwVersion			= XRAI_CURRENT_VERSION;
@@ -161,6 +164,7 @@ void xrMergeGraphs()
 	F.SaveTo("game.graph",0);
 	
 	// _free all the graphs
+	Phase("Freeing resources being allocated");
 	{
 		GRAPH_P_IT					I = tpGraphs.begin();
 		GRAPH_P_IT					E = tpGraphs.end();
