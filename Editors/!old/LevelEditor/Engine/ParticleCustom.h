@@ -21,7 +21,7 @@ public:
 
 	virtual float	GetTimeLimit		()=0;
 
-	virtual const ref_str&	Name		()=0;
+	virtual const ref_str	Name		()=0;
 };
 //---------------------------------------------------------------------------
 #endif //ParticleCustomH
