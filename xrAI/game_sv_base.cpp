@@ -394,3 +394,8 @@ void game_sv_GameState::SetGameTimeFactor(const float fTimeFactor)
 	m_fTimeFactor				= fTimeFactor;
 }
 
+
+bool game_sv_GameState::change_level		(NET_Packet &net_packet, DPNID sender)
+{
+	return						(true);
+}

@@ -13,7 +13,11 @@
 
 class CLevelChanger : public CGameObject, public Feel::Touch {
 private:
-	ref_str			m_caLevelToChange;
+	ALife::_GRAPH_ID	m_game_vertex_id;
+	u32					m_level_vertex_id;
+	Fvector				m_position;
+	Fvector				m_angles;
+
 public:
 	typedef	CGameObject	inherited;
 

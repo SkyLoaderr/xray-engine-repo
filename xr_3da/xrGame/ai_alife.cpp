@@ -310,3 +310,24 @@ void CSE_ALifeSimulator::vfInitAI_ALifeMembers()
 	ai().ef_storage().m_tpCurrentEnemy	= 0;
 	ai().ef_storage().m_tpGameObject	= 0;
 }
+
+bool CSE_ALifeSimulator::change_level	(NET_Packet &net_packet)
+{
+	Fvector						m_safe_angles = m_tpActor->o_Angle, m_safe_position = m_tpActor->o_Position;
+	u32							m_safe_level_vertex_id = m_tpActor->m_tNodeID;
+	ALife::_GRAPH_ID			m_safe_graph_vertex_id = m_tpActor->m_tGraphID;
+	
+	net_packet.r_vec3			(m_tpActor->o_Angle);
+	net_packet.r				(&m_tpActor->m_tGraphID,sizeof(m_tpActor->m_tGraphID));
+	m_tpActor->m_tNodeID		= ai().game_graph().vertex(m_tpActor->m_tGraphID)->level_vertex_id();
+	m_tpActor->o_Position		= ai().game_graph().vertex(m_tpActor->m_tGraphID)->level_point();
+
+	Save						();
+
+	m_tpActor->o_Angle			= m_safe_angles;
+	m_tpActor->o_Position		= m_safe_position;
+	m_tpActor->m_tNodeID		= m_safe_level_vertex_id;
+	m_tpActor->m_tGraphID		= m_safe_graph_vertex_id;
+
+	return						(true);
+}

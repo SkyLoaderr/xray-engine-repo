@@ -37,10 +37,10 @@ void CLevel::IR_OnKeyboardPress(int key)
 			net_Save				("quick.save");
 		return;
 	case DIK_F7:
-		if (Server->game->type == GAME_SINGLE) {
-			Engine.Event.Defer		("KERNEL:disconnect");
-			Engine.Event.Defer		("KERNEL:start",size_t(xr_strdup(m_caServerOptions)),size_t(xr_strdup(m_caClientOptions)));
-		}
+		NET_Packet					net_packet;
+		net_packet.w_begin			(M_CHANGE_LEVEL);
+		net_packet.w_u32			(Level().timeServer());
+		Send						(net_packet,net_flags(TRUE));
 		return;
 	case DIK_F5: {
 		xr_vector<CObject*>::iterator I = Objects.objects.begin(), B = I, J;

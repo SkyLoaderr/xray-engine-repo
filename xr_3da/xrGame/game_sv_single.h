@@ -38,7 +38,8 @@ public:
 
 	// Main
 	virtual		void				Update					();
-	virtual		ALife::_TIME_ID			GetGameTime				();
+	virtual		ALife::_TIME_ID		GetGameTime				();
 	virtual		float				GetGameTimeFactor		();
 	virtual		void				SetGameTimeFactor		(const float fTimeFactor);
+	virtual		bool				change_level			(NET_Packet &net_packet, DPNID sender);
 };

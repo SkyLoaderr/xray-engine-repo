@@ -145,3 +145,11 @@ void game_sv_Single::SetGameTimeFactor		(const float fTimeFactor)
 	else
 		return(inherited::SetGameTimeFactor(fTimeFactor));
 }
+
+bool game_sv_Single::change_level			(NET_Packet &net_packet, DPNID sender)
+{
+	if (m_tpALife)
+		return					(m_tpALife->change_level(net_packet));
+	else
+		return					(true);
+}

@@ -15,29 +15,14 @@ CLevelChanger::~CLevelChanger	()
 {
 }
 
-/*void CLevelChanger::spatial_register()
+void CLevelChanger::Center		(Fvector& C) const
 {
-	R_ASSERT2					(CFORM(),"Invalid or no CForm!");
-	spatial.center.set			(CFORM()->getSphere().P);
-	spatial.radius				= CFORM()->getRadius();
-	ISpatial::spatial_register	();
+	XFORM().transform_tiny		(C,CFORM()->getSphere().P);
 }
 
-void CLevelChanger::spatial_move()
+float CLevelChanger::Radius		() const
 {
-	R_ASSERT2					(CFORM(),"Invalid or no CForm!");
-	spatial.center.set			(CFORM()->getSphere().P);
-	spatial.radius				= CFORM()->getRadius();
-	ISpatial::spatial_move		();
-}*/
- 
-void CLevelChanger::Center(Fvector& C) const
-{
-	XFORM().transform_tiny	(C,CFORM()->getSphere().P);
-}
-float CLevelChanger::Radius() const
-{
-	return CFORM()->getRadius();
+	return CFORM()->getRadius	();
 }
 
 BOOL CLevelChanger::net_Spawn	(LPVOID DC) 
@@ -49,7 +34,10 @@ BOOL CLevelChanger::net_Spawn	(LPVOID DC)
 	CSE_ALifeLevelChanger		*l_tpALifeLevelChanger = dynamic_cast<CSE_ALifeLevelChanger*>(l_tpAbstract);
 	R_ASSERT					(l_tpALifeLevelChanger);
 
-	m_caLevelToChange			= l_tpALifeLevelChanger->m_caLevelToChange;
+	m_game_vertex_id			= l_tpALifeLevelChanger->m_tNextGraphID;
+	m_level_vertex_id			= l_tpALifeLevelChanger->m_dwNextNodeID;
+	m_position					= l_tpALifeLevelChanger->m_tNextPosition;
+	m_angles					= l_tpALifeLevelChanger->m_tAngles;
 
 	feel_touch.clear			();
 	
@@ -91,7 +79,13 @@ void CLevelChanger::feel_touch_new	(CObject *tpObject)
 {
 	CActor						*l_tpActor = dynamic_cast<CActor*>(tpObject);
 	if (l_tpActor) {
-		strconcat				(Level().m_caServerOptions,*m_caLevelToChange,"/single");
-		Level().IR_OnKeyboardPress(DIK_F7);
+		NET_Packet				net_packet;
+		net_packet.w_begin		(M_CHANGE_LEVEL);
+		net_packet.w_u32		(Level().timeServer());
+		net_packet.w			(&m_game_vertex_id,sizeof(m_game_vertex_id));
+		net_packet.w			(&m_level_vertex_id,sizeof(m_level_vertex_id));
+		net_packet.w_vec3		(m_position);
+		net_packet.w_vec3		(m_angles);
+		Level().Send			(net_packet,net_flags(TRUE));
 	}
 }

@@ -71,6 +71,9 @@ class CSE_ALifeSimulator :
 
 	DWORD_VECTOR					m_tpTempPath;
 
+	Fvector							m_actor_angles;
+	ALife::_GRAPH_ID				m_actor_vertex_id;
+
 	// common
 			void					vfUpdateDynamicData			(bool						bReserveID = true);
 			void					vfUpdateDynamicData			(CSE_ALifeDynamicObject		*tpALifeDynamicObject);
@@ -167,6 +170,7 @@ public:
 	virtual void					Load						(LPCSTR						caSaveName);
 			void					Save						(LPCSTR						caSaveName);
 			void					Save						();
+			bool					change_level				(NET_Packet &net_packet);
 			void					vfNewGame					(LPCSTR						caSaveName);
 			void					vfReleaseObject				(CSE_Abstract				*tpSE_Abstract,				bool					bALifeRequest = true);
 	// miscellanious

@@ -637,7 +637,7 @@ CSE_ALifeLevelChanger::CSE_ALifeLevelChanger(LPCSTR caSection) : CSE_ALifeScript
 	m_tNextGraphID				= ALife::_GRAPH_ID(-1);
 	m_dwNextNodeID				= u32(-1);
 	m_tNextPosition.set			(0.f,0.f,0.f);
-	m_fAngle					= 0.f;
+	m_tAngles.set				(0.f,0.f,0.f);
 	m_caLevelToChange[0]		= 0;
 }
 
@@ -658,7 +658,10 @@ void CSE_ALifeLevelChanger::STATE_Read		(NET_Packet	&tNetPacket, u16 size)
 		tNetPacket.r_float		(m_tNextPosition.x);
 		tNetPacket.r_float		(m_tNextPosition.y);
 		tNetPacket.r_float		(m_tNextPosition.z);
-		tNetPacket.r_float		(m_fAngle);
+		if (m_wVersion <= 53)
+			m_tAngles.set		(0.f,tNetPacket.r_float(),0.f);
+		else
+			tNetPacket.r_vec3	(m_tAngles);
 	}
 	tNetPacket.r_string			(m_caLevelToChange);
 	tNetPacket.r_string			(m_caLevelPointToChange);
@@ -672,7 +675,7 @@ void CSE_ALifeLevelChanger::STATE_Write	(NET_Packet	&tNetPacket)
 	tNetPacket.w_float			(m_tNextPosition.x);
 	tNetPacket.w_float			(m_tNextPosition.y);
 	tNetPacket.w_float			(m_tNextPosition.z);
-	tNetPacket.w_float			(m_fAngle);
+	tNetPacket.w_vec3			(m_tAngles);
 	tNetPacket.w_string			(m_caLevelToChange);
 	tNetPacket.w_string			(m_caLevelPointToChange);
 }

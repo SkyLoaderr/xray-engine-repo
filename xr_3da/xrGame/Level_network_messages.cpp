@@ -80,6 +80,11 @@ void CLevel::ClientReceive()
 				if (0 == O)		break;
 				O->net_ImportInput(*P);
 			}break;
+		case M_CHANGE_LEVEL:
+			{
+				Engine.Event.Defer	("KERNEL:disconnect");
+				Engine.Event.Defer	("KERNEL:start",size_t(xr_strdup(m_caServerOptions)),size_t(xr_strdup(m_caClientOptions)));
+			}break;
 		}
 
 		net_msg_Release();

@@ -220,7 +220,7 @@ SERVER_ENTITY_DECLARE_BEGIN(CSE_ALifeLevelChanger,CSE_ALifeScriptZone)
 	ALife::_GRAPH_ID				m_tNextGraphID;
 	u32								m_dwNextNodeID;
 	Fvector							m_tNextPosition;
-	float							m_fAngle;
+	Fvector							m_tAngles;
 	string32						m_caLevelToChange;
 	ref_str							m_caLevelPointToChange;
 
