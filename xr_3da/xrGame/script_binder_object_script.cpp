@@ -31,5 +31,6 @@ void CScriptBinderObject::script_register(lua_State *L)
 			.def("update",						&CScriptBinderObject::shedule_Update,	&CScriptBinderObjectWrapper::shedule_Update_static)
 			.def("save",						&CScriptBinderObject::save,				&CScriptBinderObjectWrapper::save_static)
 			.def("load",						&CScriptBinderObject::load,				&CScriptBinderObjectWrapper::load_static)
+			.def("net_save_relevant",			&CScriptBinderObject::net_SaveRelevant,	&CScriptBinderObjectWrapper::net_SaveRelevant)
 	];
 }
