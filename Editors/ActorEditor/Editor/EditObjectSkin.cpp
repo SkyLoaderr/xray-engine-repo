@@ -140,9 +140,9 @@ void CEditableObject::RenderBones(const Fmatrix& parent)
                 u32 c 		= (*b_it)->flags.is(CBone::flSelected)?0x80ffffff:0x300000ff;
                 if ((*b_it)->shape.Valid()){
                     switch ((*b_it)->shape.type){
-                    case SBoneShape::stBox: 	DU.DrawOBB		(mat,(*b_it)->shape.box,c);	break;
-                    case SBoneShape::stSphere:	DU.DrawSphere   (mat,(*b_it)->shape.sphere,c,TRUE,TRUE);break;
-                    case SBoneShape::stCylinder:DU.DrawCylinder (mat,(*b_it)->shape.cylinder.m_center,(*b_it)->shape.cylinder.m_direction,(*b_it)->shape.cylinder.m_height,(*b_it)->shape.cylinder.m_radius,c,TRUE,TRUE);break;
+                    case SBoneShape::stBox: 	DU.DrawOBB		(mat,(*b_it)->shape.box,c,c);	break;
+                    case SBoneShape::stSphere:	DU.DrawSphere   (mat,(*b_it)->shape.sphere,c,c,TRUE,TRUE);break;
+                    case SBoneShape::stCylinder:DU.DrawCylinder (mat,(*b_it)->shape.cylinder.m_center,(*b_it)->shape.cylinder.m_direction,(*b_it)->shape.cylinder.m_height,(*b_it)->shape.cylinder.m_radius,c,c,TRUE,TRUE);break;
 	                }
                 }
             }

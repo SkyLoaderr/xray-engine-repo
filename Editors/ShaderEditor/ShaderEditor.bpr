@@ -22,15 +22,15 @@
       Intermediate\Texture.obj Intermediate\tga.obj Intermediate\tss_def.obj 
       Intermediate\xr_avi.obj Intermediate\Xr_input.obj 
       Intermediate\xrImage_Resampler.obj Intermediate\xrLoadSurface.obj 
-      Intermediate\xrParticlesLib.obj Intermediate\xrRender_console.obj 
-      Intermediate\xrSkin2W.obj Intermediate\FBasicVisual.obj 
-      Intermediate\FHierrarhyVisual.obj Intermediate\FProgressiveFixedVisual.obj 
-      Intermediate\FVisual.obj Intermediate\SkeletonX.obj 
-      Intermediate\xrSkin1W.obj Intermediate\BlenderDefault.obj 
-      Intermediate\Blender.obj Intermediate\Blender_B.obj 
-      Intermediate\Blender_Blur.obj Intermediate\Blender_BmmD.obj 
-      Intermediate\Blender_default_aref.obj 
-      Intermediate\Blender_detail_still.obj Intermediate\Blender_Editor_Selection.obj 
+      Intermediate\xrRender_console.obj Intermediate\xrSkin2W.obj 
+      Intermediate\FBasicVisual.obj Intermediate\FHierrarhyVisual.obj 
+      Intermediate\FProgressiveFixedVisual.obj Intermediate\FVisual.obj 
+      Intermediate\SkeletonX.obj Intermediate\xrSkin1W.obj 
+      Intermediate\BlenderDefault.obj Intermediate\Blender.obj 
+      Intermediate\Blender_B.obj Intermediate\Blender_Blur.obj 
+      Intermediate\Blender_BmmD.obj Intermediate\Blender_default_aref.obj 
+      Intermediate\Blender_detail_still.obj 
+      Intermediate\Blender_Editor_Selection.obj 
       Intermediate\Blender_Editor_Wire.obj Intermediate\Blender_LaEmB.obj 
       Intermediate\blender_light.obj Intermediate\Blender_Lm(EbB).obj 
       Intermediate\Blender_LmBmmD.obj Intermediate\Blender_Model.obj 
@@ -178,7 +178,6 @@
       <FILE FILENAME="Engine\Xr_input.cpp" FORMNAME="" UNITNAME="Xr_input.cpp" CONTAINERID="CCompiler" DESIGNCLASS="" LOCALCOMMAND=""/>
       <FILE FILENAME="Engine\xrImage_Resampler.cpp" FORMNAME="" UNITNAME="xrImage_Resampler.cpp" CONTAINERID="CCompiler" DESIGNCLASS="" LOCALCOMMAND=""/>
       <FILE FILENAME="Engine\xrLoadSurface.cpp" FORMNAME="" UNITNAME="xrLoadSurface.cpp" CONTAINERID="CCompiler" DESIGNCLASS="" LOCALCOMMAND=""/>
-      <FILE FILENAME="Engine\xrParticlesLib.cpp" FORMNAME="" UNITNAME="xrParticlesLib.cpp" CONTAINERID="CCompiler" DESIGNCLASS="" LOCALCOMMAND=""/>
       <FILE FILENAME="Engine\xrRender_console.cpp" FORMNAME="" UNITNAME="xrRender_console.cpp" CONTAINERID="CCompiler" DESIGNCLASS="" LOCALCOMMAND=""/>
       <FILE FILENAME="Engine\Animations\xrSkin2W.cpp" FORMNAME="" UNITNAME="xrSkin2W.cpp" CONTAINERID="CCompiler" DESIGNCLASS="" LOCALCOMMAND=""/>
       <FILE FILENAME="Engine\Animations\FBasicVisual.cpp" FORMNAME="" UNITNAME="FBasicVisual.cpp" CONTAINERID="CCompiler" DESIGNCLASS="" LOCALCOMMAND=""/>
