@@ -305,7 +305,7 @@ void CHangingLamp::CreateBody(CSE_ALifeObjectHangingLamp	*lamp)
 		bone_map.insert(mk_pair(pKinematics->LL_GetBoneRoot(),physicsBone()))			;
 	}
 
-	bone_map.insert(mk_pair(light_bone,physicsBone()));
+
 
 	m_pPhysicsShell->build_FromKinematics(pKinematics,&bone_map);
 	m_pPhysicsShell->set_PhysicsRefObject(this);
