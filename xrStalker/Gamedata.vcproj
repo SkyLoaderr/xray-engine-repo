@@ -408,6 +408,9 @@
 				<File
 					RelativePath=".\info_escape.xml">
 				</File>
+				<File
+					RelativePath=".\info_news.xml">
+				</File>
 			</Filter>
 		</Filter>
 		<Filter
