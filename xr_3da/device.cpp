@@ -85,7 +85,7 @@ void CRenderDevice::overdrawEnd		()
 	for (int I=1; I<16; I++ ) 
 	{
 		DWORD	_c	= I*256/17;
-		DWORD	c	= D3DCOLOR_XRGB(c,c,c);
+		DWORD	c	= D3DCOLOR_XRGB(_c,_c,_c);
 		
 		FVF::TL	pv[4];
 		pv[0].set(float(0),			float(dwHeight),	c,0,0);			
