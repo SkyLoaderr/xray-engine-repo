@@ -37,8 +37,8 @@ void CStateManagerBiting::reinit			(CAI_Biting *object)
 {
 	inherited::reinit		(object);
 
-	set_current_state		(eStateRest);
-	set_dest_state			(eStateRest);
+//	set_current_state		(eStateRest);
+//	set_dest_state			(eStateRest);
 }
 
 void CStateManagerBiting::reload			(LPCSTR section)
