@@ -118,7 +118,7 @@ function move_mgr:reset(path_walk, path_walk_info, path_look, path_look_info, te
 	--xr_reactions.add_rule(self.object, "ignore") -- DELME
 
 	--printf("move_mgr:reset(path_walk=%s, path_look=%s, team=%s)",
-		utils.to_str(path_walk), utils.to_str(path_look), utils.to_str(team))
+	--	utils.to_str(path_walk), utils.to_str(path_look), utils.to_str(team))
 
 	self.no_validation = no_validation
 	
