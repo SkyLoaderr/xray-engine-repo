@@ -108,7 +108,7 @@ function actor_binder:update(delta)
  	if  self.bCheckStart then
 		printf("SET DEFAULT INFOS")		
 		if self.object:dont_has_info("storyline_actor_start") and
-		   ( (level.name() == "l01_escape") or (level.name() == "zmey_test1") )then
+		   (level.name() == "l01_escape") then
 			self.object:give_info_portion("storyline_actor_start")
 			_G.g_start_avi=true
 --			local console = get_console()
