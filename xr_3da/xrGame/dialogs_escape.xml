@@ -24,21 +24,6 @@
             </phrase>
         </phrase_list>
     </dialog>
-    <dialog id="escape_trader_done_artefact" priority="9">
-        <precondition>escape_dialog.have_artefact_from_fleshes</precondition>
-        <dont_has_info>escape_artefact_done</dont_has_info>
-        <phrase_list>
-            <phrase id="2">
-                <text>escape_trader_done_artefact_2</text>
-            </phrase>
-            <phrase id="0">
-                <text>escape_trader_done_artefact_0</text>
-                <action>escape_dialog.give_artefact_from_fleshes</action>
-                <give_info>escape_artefact_done</give_info>
-                <next>2</next>
-            </phrase>
-        </phrase_list>
-    </dialog>
     <dialog id="escape_trader_start_dialog">
         <phrase_list>
             <phrase id="21">
@@ -120,6 +105,7 @@
     </dialog>
     <dialog id="escape_trader_done_blockpost_box" priority="9">
         <precondition>escape_dialog.have_blockpost_case</precondition>
+        <has_info>escape_blockpost_case_have</has_info>
         <phrase_list>
             <phrase id="2">
                 <text>escape_trader_done_blockpost_box_2</text>
@@ -127,7 +113,7 @@
             <phrase id="0">
                 <text>escape_trader_done_blockpost_box_0</text>
                 <action>escape_dialog.give_blockpost_case</action>
-                <give_info>escape_have_blockpost_case</give_info>
+                <give_info>escape_blockpost_case_done</give_info>
                 <next>2</next>
             </phrase>
         </phrase_list>
@@ -137,12 +123,12 @@
         <dont_has_info>tutorial_artefact_done</dont_has_info>
         <phrase_list>
             <phrase id="11">
-                <text></text>
+                <text />
                 <dont_has_info>tutorial_end</dont_has_info>
                 <next>1</next>
             </phrase>
             <phrase id="12">
-                <text></text>
+                <text />
                 <has_info>tutorial_end</has_info>
                 <next>2</next>
             </phrase>
@@ -154,7 +140,7 @@
                 <text>escape_trader_done_tutorial_artefact_2</text>
             </phrase>
             <phrase id="10">
-                <text></text>
+                <text />
                 <next>11</next>
                 <next>12</next>
             </phrase>
@@ -260,11 +246,11 @@
     <dialog id="escape_lager_volk_hello">
         <phrase_list>
             <phrase id="0">
-                <text></text>
+                <text />
                 <next>1</next>
             </phrase>
             <phrase id="1">
-                <text></text>
+                <text />
                 <next>11</next>
                 <next>12</next>
                 <next>13</next>
@@ -435,7 +421,7 @@
     <dialog id="escape_lager_novice_start_dialog">
         <phrase_list>
             <phrase id="1">
-                <text></text>
+                <text />
                 <next>2</next>
                 <next>3</next>
             </phrase>
@@ -446,7 +432,7 @@
                 <text>escape_lager_novice_start_dialog_3</text>
             </phrase>
             <phrase id="0">
-                <text></text>
+                <text />
                 <next>1</next>
             </phrase>
         </phrase_list>
@@ -465,7 +451,7 @@
                 <next>11</next>
             </phrase>
             <phrase id="11">
-                <text></text>
+                <text />
                 <next>111</next>
             </phrase>
             <phrase id="2">
@@ -485,7 +471,7 @@
                 <next>11</next>
             </phrase>
             <phrase id="111">
-                <text></text>
+                <text />
                 <next>2</next>
                 <next>3</next>
                 <next>4</next>
@@ -533,7 +519,7 @@
     <dialog id="escape_lager_guard_start_dialog">
         <phrase_list>
             <phrase id="1">
-                <text></text>
+                <text />
                 <next>2</next>
                 <next>3</next>
             </phrase>
@@ -544,7 +530,7 @@
                 <text>escape_lager_guard_start_dialog_3</text>
             </phrase>
             <phrase id="0">
-                <text></text>
+                <text />
                 <next>1</next>
             </phrase>
         </phrase_list>
@@ -631,7 +617,7 @@
                 <next>11</next>
             </phrase>
             <phrase id="111">
-                <text></text>
+                <text />
                 <next>3</next>
                 <next>4</next>
                 <next>5</next>
@@ -658,7 +644,7 @@
                 <text>escape_trader_talk_info_10</text>
             </phrase>
             <phrase id="11">
-                <text></text>
+                <text />
                 <next>111</next>
             </phrase>
             <phrase id="41">
@@ -708,34 +694,6 @@
             </phrase>
         </phrase_list>
     </dialog>
-    <dialog id="escape_trader_done_gift">
-        <has_info>escape_stalker_give</has_info>
-        <phrase_list>
-            <phrase id="11">
-                <text>escape_trader_done_gift_11</text>
-                <next>111</next>
-            </phrase>
-            <phrase id="111">
-                <text>escape_trader_done_gift_111</text>
-                <next>2</next>
-            </phrase>
-            <phrase id="2">
-                <text>escape_trader_done_gift_2</text>
-            </phrase>
-            <phrase id="1">
-                <text>escape_trader_done_gift_1</text>
-                <next>11</next>
-            </phrase>
-            <phrase id="0">
-                <text>escape_trader_done_gift_0</text>
-                <precondition>escape_dialog.have_fox_info</precondition>
-                <action>escape_dialog.give_fox_info</action>
-                <give_info>escape_stalker_to_trader_done</give_info>
-                <has_info>escape_stalker_to_trader_give</has_info>
-                <next>1</next>
-            </phrase>
-        </phrase_list>
-    </dialog>
     <dialog id="escape_lager_volk_info">
         <phrase_list>
             <phrase id="1">
@@ -782,14 +740,14 @@
                 <next>2131</next>
             </phrase>
             <phrase id="12">
-                <text></text>
+                <text />
                 <next>2</next>
                 <next>3</next>
                 <next>4</next>
                 <next>10</next>
             </phrase>
             <phrase id="11">
-                <text></text>
+                <text />
                 <next>12</next>
             </phrase>
             <phrase id="2131">
@@ -826,25 +784,6 @@
             </phrase>
             <phrase id="10">
                 <text>escape_lager_volk_info_10</text>
-            </phrase>
-        </phrase_list>
-    </dialog>
-    <dialog id="escape_factory_assault_hello">
-        <phrase_list>
-            <phrase id="3">
-                <text>escape_factory_assault_hello_3</text>
-            </phrase>
-            <phrase id="2">
-                <text>escape_factory_assault_hello_2</text>
-            </phrase>
-            <phrase id="1">
-                <text></text>
-                <next>2</next>
-                <next>3</next>
-            </phrase>
-            <phrase id="0">
-                <text></text>
-                <next>1</next>
             </phrase>
         </phrase_list>
     </dialog>
@@ -885,7 +824,7 @@
                 <next>113</next>
             </phrase>
             <phrase id="1">
-                <text></text>
+                <text />
                 <next>11</next>
                 <next>12</next>
             </phrase>
@@ -911,7 +850,7 @@
                 <next>11212</next>
             </phrase>
             <phrase id="0">
-                <text></text>
+                <text />
                 <next>1</next>
             </phrase>
             <phrase id="11211">
@@ -992,6 +931,68 @@
             </phrase>
             <phrase id="21">
                 <text>escape_factory_assault_talk_21</text>
+            </phrase>
+        </phrase_list>
+    </dialog>
+    <dialog id="escape_factory_assault_hello">
+        <phrase_list>
+            <phrase id="3">
+                <text>escape_factory_assault_hello_3</text>
+            </phrase>
+            <phrase id="2">
+                <text>escape_factory_assault_hello_2</text>
+            </phrase>
+            <phrase id="1">
+                <text></text>
+                <next>2</next>
+                <next>3</next>
+            </phrase>
+            <phrase id="0">
+                <text></text>
+                <next>1</next>
+            </phrase>
+        </phrase_list>
+    </dialog>
+    <dialog id="escape_trader_done_artefact" priority="9">
+        <precondition>escape_dialog.have_artefact_from_fleshes</precondition>
+        <dont_has_info>escape_artefact_done</dont_has_info>
+        <phrase_list>
+            <phrase id="2">
+                <text>escape_trader_done_artefact_2</text>
+            </phrase>
+            <phrase id="0">
+                <text>escape_trader_done_artefact_0</text>
+                <action>escape_dialog.give_artefact_from_fleshes</action>
+                <give_info>escape_artefact_done</give_info>
+                <has_info>escape_artefact_gain</has_info>
+                <next>2</next>
+            </phrase>
+        </phrase_list>
+    </dialog>
+    <dialog id="escape_trader_done_gift">
+        <has_info>escape_stalker_give</has_info>
+        <precondition>escape_dialog.have_fox_info</precondition>        
+        <phrase_list>
+            <phrase id="11">
+                <text>escape_trader_done_gift_11</text>
+                <next>111</next>
+            </phrase>
+            <phrase id="111">
+                <text>escape_trader_done_gift_111</text>
+                <next>2</next>
+            </phrase>
+            <phrase id="2">
+                <text>escape_trader_done_gift_2</text>
+            </phrase>
+            <phrase id="1">
+                <text>escape_trader_done_gift_1</text>
+                <next>11</next>
+            </phrase>
+            <phrase id="0">
+                <text>escape_trader_done_gift_0</text>
+                <action>escape_dialog.give_fox_info</action>
+                <give_info>escape_stalker_done</give_info>
+                <next>1</next>
             </phrase>
         </phrase_list>
     </dialog>
