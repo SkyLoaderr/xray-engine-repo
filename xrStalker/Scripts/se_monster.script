@@ -11,7 +11,7 @@ end
 function se_monster:can_switch_online ()
     local ini = self:spawn_ini ()
     if ini == nil or ini:section_exist ("spawner") == false then 
-       return cse_alife_human_stalker.can_switch_online (self)
+       return cse_alife_monster_base.can_switch_online (self)
     end    
     return xr_spawner.check_spawn (self)
 end    
