@@ -350,7 +350,27 @@ public:
             else						p = atanf(y/hyp);
         }
     }
-
+	IC float 	getH	()
+	{
+		if (fis_zero(x)&& fis_zero(z)){
+			return	0.0f;
+		}else{
+			if (fis_zero(z))			return (x>0.0f)?-PI_DIV_2:PI_DIV_2;
+			else if (z<0.0f)			return -(atanf(x/z)-PI);
+			else            			return -atanf(x/z);
+		}
+	}
+	IC float 	getP	()
+	{
+		if (fis_zero(x)&& fis_zero(z)){
+			if (!fis_zero(float(y)))	return (y>0.0f)?PI_DIV_2:-PI_DIV_2;
+			else            			return 0.0f;
+		}else{
+			float hyp	= _sqrt(x*x+z*z);
+			if (fis_zero(float(hyp)))	return (y>0.0f)?PI_DIV_2:-PI_DIV_2;
+			else						return atanf(y/hyp);
+		}
+	}
 	IC	SelfRef	reflect(const Self& dir, const Self& norm)
 	{
 		return mad(dir,norm,-2*dir.dotproduct(norm));
