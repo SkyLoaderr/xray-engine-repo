@@ -47,11 +47,19 @@ p2f 	p_main	( v2p_in IN )
 	// negative
 	for (s=0; s<7; s++)
 	{
-		samples[s]	= tex2D	(s_bloom, IN.tc0 + offset[s]);
+		samples[s]		= tex2D	(s_bloom, IN.tc0 + offset[s]);
+	}
+
+	// center
+	samples[7]	= tex2D	(s_bloom, IN.tc0);
+	
+	// positive
+	for (s=0; s<7; s++)
+	{
+		samples[8+s]	= tex2D	(s_bloom, IN.tc0 - offset[s]);
 	}
 	
-
-
+	// final weight
 
 	return OUT;
 }
