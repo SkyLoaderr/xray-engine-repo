@@ -159,6 +159,12 @@ bleeding_v					= 0						;потеря крови при номинальной ране в секунду
 wound_incarnation_v			= 0.0					;крутизна кривой заживления (какой процент раны останется после заживления в игровую секунду)
 min_wound_size				= 0.01
 
+[stalker_terrain]
+	254,253,252,251
+	244,243,242,241
+	144,143,142,141
+	044,043,042,041
+
 [stalker]
 class							= AI_STL						; Class identifier
 
@@ -214,6 +220,7 @@ distance_to_search_for_artefacts= 30.0	; in meters
 
 ;---ONLINE-OFFLINE ALIFE-----------------------------------------------------------
 terrain							= 255,255,255,255,0,1
+;terrain							= stalker_terrain
 
 ;---SOUND-------------------------------------------------------------
 sound_threshold					= 0.08
