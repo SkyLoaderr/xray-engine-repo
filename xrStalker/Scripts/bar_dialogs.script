@@ -21,7 +21,7 @@ function have_dolg_arhive_document(first_speaker, second_speaker)
   	return first_speaker:object("dolg_arhive_documents") ~= nil
 end
 function give_dolg_arhive_document(first_speaker, second_speaker)
-	local document = first_speaker:object("dolg_arhive_document")
+	local document = first_speaker:object("dolg_arhive_documents")
 	first_speaker:transfer_item(document, second_speaker)
 end
 
