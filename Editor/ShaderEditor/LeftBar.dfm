@@ -162,7 +162,7 @@ object fraLeftBar: TfraLeftBar
       Left = 1
       Top = 69
       Width = 258
-      Height = 259
+      Height = 206
       Align = alClient
       Color = 10528425
       ParentShowHint = False
@@ -184,7 +184,7 @@ object fraLeftBar: TfraLeftBar
         Left = 1
         Top = 14
         Width = 256
-        Height = 244
+        Height = 191
         ActiveTabColor = 10528425
         BorderWidth = 0
         Color = 10528425
@@ -343,7 +343,7 @@ object fraLeftBar: TfraLeftBar
             Left = 0
             Top = 52
             Width = 252
-            Height = 167
+            Height = 114
             Cursor = crDefault
             LeftPosition = 0
             DragCursor = crDrag
@@ -556,7 +556,7 @@ object fraLeftBar: TfraLeftBar
             Left = 0
             Top = 52
             Width = 252
-            Height = 167
+            Height = 114
             Cursor = crDefault
             LeftPosition = 0
             DragCursor = crDrag

@@ -125,6 +125,7 @@ USEUNIT("Editor\Engine.cpp");
 USEFORM("Editor\PropertiesList.cpp", frmProperties);
 USEUNIT("SHEngineToolsProperties.cpp");
 USEUNIT("SHCompilerToolsProperties.cpp");
+USEUNIT("Engine\BLENDERS\Blender_Shadow_Texture.cpp");
 //---------------------------------------------------------------------------
 #include "main.h"
 #include "splash.h"

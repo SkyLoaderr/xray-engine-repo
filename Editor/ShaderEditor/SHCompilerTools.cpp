@@ -121,10 +121,10 @@ Shader_xrLC* CSHCompilerTools::FindShader(LPCSTR name){
 LPCSTR CSHCompilerTools::GenerateShaderName(LPSTR name, LPCSTR source){
     int cnt = 0;
 	char fld[128]; strcpy(fld,name);
-    if (source) strcpy(name,source); else sprintf(name,"%s\shader_%02d",fld,cnt++);
+    if (source) strcpy(name,source); else sprintf(name,"%sshader_%02d",fld,cnt++);
 	while (FindShader(name))
     	if (source) sprintf(name,"%s_%02d",source,cnt++);
-        else sprintf(name,"%s\shader_%02d",fld,cnt++);
+        else sprintf(name,"%sshader_%02d",fld,cnt++);
 	return name;
 }
 

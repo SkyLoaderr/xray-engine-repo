@@ -121,13 +121,12 @@ __published:	// IDE-managed Components
 	void __fastcall fsStorageSavePlacement(TObject *Sender);
 private:	// User declarations
 	void __fastcall TemplateClick	(TObject *Sender);
-	void __fastcall ShowPPMenu		(TMxPopupMenu* M, TObject* btn);
     TElTree*		CurrentView		(){ if (pcShaders->ActivePage==tsEngine) 		return tvEngine;
 									    else if (pcShaders->ActivePage==tsCompiler)	return tvCompiler;
                                         THROW;
                                         return 0;
     								  }
-    TElTreeItem*	DragItem;
+	void __fastcall RenameItem(LPVOID p0, LPVOID p1);
     bool			bFocusedAffected;
 public:		// User declarations
         __fastcall TfraLeftBar		(TComponent* Owner);

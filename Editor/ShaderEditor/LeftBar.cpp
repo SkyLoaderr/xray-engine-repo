@@ -56,7 +56,6 @@ __fastcall TfraLeftBar::TfraLeftBar(TComponent* Owner)
     InplaceEngineEdit->Editor->BorderStyle	= bsNone;
     InplaceCompilerEdit->Editor->Color		= TColor(0x00A0A0A0);
     InplaceCompilerEdit->Editor->BorderStyle= bsNone;
-    DragItem = 0;
     frmMain->paLeftBar->Width = paLeftBar->Width+2;
     frmMain->sbToolsMin->Left = paLeftBar->Width-frmMain->sbToolsMin->Width-3;
     bFocusedAffected = true;
@@ -127,32 +126,24 @@ void __fastcall TfraLeftBar::ebResetAnimationClick(TObject *Sender)
 }
 //---------------------------------------------------------------------------
 
-void __fastcall TfraLeftBar::ShowPPMenu(TMxPopupMenu* M, TObject* B){
-    POINT pt;
-    GetCursorPos(&pt);
-	M->Popup(pt.x,pt.y-10);
-    TExtBtn* btn = dynamic_cast<TExtBtn*>(B); if(btn) btn->MouseManualUp();
-}
-//---------------------------------------------------------------------------
-
 void __fastcall TfraLeftBar::ebEngineShaderFileMouseDown(TObject *Sender,
       TMouseButton Button, TShiftState Shift, int X, int Y)
 {
-	ShowPPMenu(pmEngineShadersFile,Sender);
+	FOLDER::ShowPPMenu(pmEngineShadersFile,dynamic_cast<TExtBtn*>(Sender));
 }
 //---------------------------------------------------------------------------
 
 void __fastcall TfraLeftBar::ebSceneCommandsMouseDown(TObject *Sender,
       TMouseButton Button, TShiftState Shift, int X, int Y)
 {
-	ShowPPMenu(pmPreviewObject,Sender);
+	FOLDER::ShowPPMenu(pmPreviewObject,dynamic_cast<TExtBtn*>(Sender));
 }
 //---------------------------------------------------------------------------
 
 void __fastcall TfraLeftBar::tvEngineMouseDown(TObject *Sender,
       TMouseButton Button, TShiftState Shift, int X, int Y)
 {
-	if (Button==mbRight)	ShowPPMenu(pmShaderList,Sender);
+	if (Button==mbRight)	FOLDER::ShowPPMenu(pmShaderList,dynamic_cast<TExtBtn*>(Sender));
 }
 //---------------------------------------------------------------------------
 
@@ -176,7 +167,7 @@ void TfraLeftBar::InitPalette(TemplateVec& lst){
 void __fastcall TfraLeftBar::ebEngineShaderCreateMouseDown(TObject *Sender,
       TMouseButton Button, TShiftState Shift, int X, int Y)
 {
-	ShowPPMenu(pmTemplateList,Sender);
+	FOLDER::ShowPPMenu(pmTemplateList,dynamic_cast<TExtBtn*>(Sender));
 }
 //---------------------------------------------------------------------------
 
@@ -203,12 +194,12 @@ void TfraLeftBar::ClearCShaderList(){
 //---------------------------------------------------------------------------
 
 void TfraLeftBar::AddBlender(LPCSTR full_name){
-	TElTreeItem* node = FOLDER::AppendObject(tvEngine,full_name);
+	FOLDER::AppendObject(tvEngine,full_name);
 }
 //---------------------------------------------------------------------------
 
 void TfraLeftBar::AddCShader(LPCSTR full_name){
-	TElTreeItem* node = FOLDER::AppendObject(tvCompiler,full_name);
+	FOLDER::AppendObject(tvCompiler,full_name);
 }
 //---------------------------------------------------------------------------
 
@@ -350,7 +341,6 @@ void __fastcall TfraLeftBar::Rename1Click(TObject *Sender)
 void __fastcall TfraLeftBar::InplaceEngineEditValidateResult(TObject *Sender, bool &InputValid)
 {
 	TElTreeInplaceAdvancedEdit* IE=0;
-    TElTree* TV=0;
     switch(Tools.ActiveEditor()){
     case aeEngine: 		IE=InplaceEngineEdit; 	break;
     case aeCompiler: 	IE=InplaceCompilerEdit;	break;
@@ -456,101 +446,35 @@ void __fastcall TfraLeftBar::ebCompilerShaderCloneClick(TObject *Sender)
 }
 //---------------------------------------------------------------------------
 
-void __fastcall TfraLeftBar::tvEngineStartDrag(TObject *Sender,
-      TDragObject *&DragObject)
-{
-	TElTree* tv = dynamic_cast<TElTree*>(Sender); VERIFY(Sender);
-	if (tv->ItemFocused) 	DragItem = tv->ItemFocused;
-  	else					DragItem = 0;
-}
-//---------------------------------------------------------------------------
-
 void __fastcall TfraLeftBar::tvEngineDragOver(TObject *Sender,
       TObject *Source, int X, int Y, TDragState State, bool &Accept)
 {
-	TElTree* tv = dynamic_cast<TElTree*>(Sender); VERIFY(Sender);
-	TElTreeItem* tgt;
-    TElTreeItem* src=DragItem;
-    TSTItemPart IP;
-    int HCol;
-    if (!DragItem) Accept = false;
-  	else{
-		tgt = tv->GetItemAt(X, Y, IP, HCol);
-        if (tgt){
-        	if (FOLDER::IsFolder(src)){
-                bool b = true;
-                for (TElTreeItem* itm=tgt->Parent; itm; itm=itm->Parent) if (itm==src){b=false; break;}
-            	if (FOLDER::IsFolder(tgt)){
-		        	Accept = b&&(tgt!=src)&&(src->Parent!=tgt);
-                }else if (FOLDER::IsObject(tgt)){
-		        	Accept = b&&(src!=tgt->Parent)&&(tgt!=src)&&(tgt->Parent!=src->Parent);
-                }
-            }else if (FOLDER::IsObject(src)){
-            	if (FOLDER::IsFolder(tgt)){
-		        	Accept = (tgt!=src)&&(src->Parent!=tgt);
-                }else if (FOLDER::IsObject(tgt)){
-		        	Accept = (tgt!=src)&&(src->Parent!=tgt->Parent);
-                }
-            }
-        }else Accept = !!DragItem->Parent;
+	FOLDER::DragOver(Sender,Source,X,Y,State,Accept);
+}
+//---------------------------------------------------------------------------
+
+void __fastcall TfraLeftBar::tvEngineStartDrag(TObject *Sender,
+      TDragObject *&DragObject)
+{
+	FOLDER::StartDrag(Sender,DragObject,RenameItem);
+}
+//---------------------------------------------------------------------------
+
+void __fastcall TfraLeftBar::RenameItem(LPVOID p0, LPVOID p1)
+{
+	switch (Tools.ActiveEditor()){
+    case aeEngine: 		Tools.SEngine.RenameBlender((LPCSTR)p0,(LPCSTR)p1); 	break;
+    case aeCompiler: 	Tools.SCompiler.RenameShader((LPCSTR)p0,(LPCSTR)p1); 	break;
     }
+	Tools.Modified();
 }
 //---------------------------------------------------------------------------
 void __fastcall TfraLeftBar::tvEngineDragDrop(TObject *Sender,
       TObject *Source, int X, int Y)
 {
-	TElTree* tv = dynamic_cast<TElTree*>(Sender); VERIFY(Sender);
-	TElTreeItem* tgt_folder = tv->GetItemAt(X, Y, 0, 0);
-    if (tgt_folder&&(FOLDER::IsObject(tgt_folder))) tgt_folder=tgt_folder->Parent;
-
-    AnsiString base_name;
-    FOLDER::MakeName(tgt_folder,0,base_name,true);
-    AnsiString cur_fld_name=base_name;
-    TElTreeItem* cur_folder=tgt_folder;
-
-    int drg_level=DragItem->Level;
-
-    TElTreeItem* item = DragItem;
-    do{
-    	DWORD type = DWORD(item->Data);
-		TElTreeItem* pNode = FOLDER::FindItemInFolder(type,CurrentView(),cur_folder,item->Text);
-		if (pNode&&FOLDER::IsObject(item)){
-            item=item->GetNext();
-        	continue;
-        }
-
-        if (!pNode) pNode = CurrentView()->Items->AddChildObject(cur_folder,item->Text,(TObject*)type);
-		if (FOLDER::IsFolder(item)){
-        	cur_folder = pNode;
-		    FOLDER::MakeName(cur_folder,0,cur_fld_name,true);
-            item=item->GetNext();
-        }else{
-        	// rename
-		    AnsiString old_name, new_name;
-		    FOLDER::MakeName(item,0,old_name,false);
-		    FOLDER::MakeName(pNode,0,new_name,false);
-            switch (Tools.ActiveEditor()){
-            case aeEngine: 		Tools.SEngine.RenameBlender(old_name.c_str(),new_name.c_str()); 	break;
-            case aeCompiler: 	Tools.SCompiler.RenameShader(old_name.c_str(),new_name.c_str()); 	break;
-            }
-            Tools.Modified();
-
-            TElTreeItem* parent=item->Parent;
-            // get next item && delete existance
-            TElTreeItem* next=item->GetNext();
-			item->Delete();
-
-            if (parent&&((parent->GetLastChild()==item)||(0==parent->ChildrenCount))){
-	            if (0==parent->ChildrenCount) parent->Delete();
-	        	cur_folder = cur_folder?cur_folder->Parent:0;
-            }
-
-            item=next;
-        }
-    }while(item&&(item->Level>drg_level));
+	FOLDER::DragDrop(Sender,Source,X,Y);
 }
 //---------------------------------------------------------------------------
-
 
 void __fastcall TfraLeftBar::fsStorageRestorePlacement(TObject *Sender)
 {
