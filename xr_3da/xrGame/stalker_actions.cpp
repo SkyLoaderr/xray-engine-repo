@@ -139,6 +139,10 @@ void CStalkerActionFreeNoALife::initialize	()
 void CStalkerActionFreeNoALife::finalize	()
 {
 	inherited::finalize				();
+
+	if (!m_object->g_Alive())
+		return;
+
 	m_object->set_sound_mask		(u32(eStalkerSoundMaskNoHumming));
 	m_object->set_sound_mask		(0);
 }
@@ -191,6 +195,10 @@ void CStalkerActionGatherItems::initialize	()
 void CStalkerActionGatherItems::finalize	()
 {
 	inherited::finalize		();
+
+	if (!m_object->g_Alive())
+		return;
+
 	m_object->set_sound_mask(0);
 }
 
@@ -234,6 +242,10 @@ void CStalkerActionGetKillDistance::initialize	()
 void CStalkerActionGetKillDistance::finalize	()
 {
 	inherited::finalize		();
+
+	if (!m_object->g_Alive())
+		return;
+
 	m_object->set_sound_mask(0);
 }
 
@@ -275,6 +287,10 @@ void CStalkerActionGetEnemy::initialize	()
 void CStalkerActionGetEnemy::finalize	()
 {
 	inherited::finalize		();
+
+	if (!m_object->g_Alive())
+		return;
+
 	m_object->set_sound_mask(0);
 }
 
@@ -317,6 +333,10 @@ void CStalkerActionGetEnemySeen::finalize	()
 	inherited::finalize		();
 	if (m_object->enemy() && m_object->visible_now(m_object->enemy()))
 		m_storage->set_property		(eWorldPropertyEnemyAimed,true);
+
+	if (!m_object->g_Alive())
+		return;
+
 	m_object->set_sound_mask(0);
 }
 
@@ -399,8 +419,12 @@ void CStalkerActionGetItemToKill::initialize	()
 void CStalkerActionGetItemToKill::finalize	()
 {
 	inherited::finalize		();
-	m_object->set_sound_mask(0);
 	m_object->CSightManager::clear();
+
+	if (!m_object->g_Alive())
+		return;
+
+	m_object->set_sound_mask(0);
 }
 
 void CStalkerActionGetItemToKill::execute	()
@@ -447,6 +471,10 @@ void CStalkerActionFindItemToKill::initialize	()
 void CStalkerActionFindItemToKill::finalize	()
 {
 	inherited::finalize		();
+
+	if (!m_object->g_Alive())
+		return;
+
 	m_object->set_sound_mask(0);
 }
 
@@ -489,8 +517,12 @@ void CStalkerActionMakeItemKilling::initialize	()
 void CStalkerActionMakeItemKilling::finalize	()
 {
 	inherited::finalize		();
-	m_object->set_sound_mask(0);
 	m_object->CSightManager::clear();
+
+	if (!m_object->g_Alive())
+		return;
+
+	m_object->set_sound_mask(0);
 }
 
 void CStalkerActionMakeItemKilling::execute	()
@@ -538,6 +570,10 @@ void CStalkerActionFindAmmo::initialize	()
 void CStalkerActionFindAmmo::finalize	()
 {
 	inherited::finalize		();
+
+	if (!m_object->g_Alive())
+		return;
+
 	m_object->set_sound_mask(0);
 }
 
@@ -578,6 +614,10 @@ void CStalkerActionGetReadyToKillVeryAggressive::initialize	()
 void CStalkerActionGetReadyToKillVeryAggressive::finalize	()
 {
 	inherited::finalize		();
+
+	if (!m_object->g_Alive())
+		return;
+
 	m_object->set_sound_mask(0);
 }
 
@@ -659,6 +699,10 @@ void CStalkerActionKillEnemyVeryAggressive::initialize	()
 void CStalkerActionKillEnemyVeryAggressive::finalize	()
 {
 	inherited::finalize		();
+
+	if (!m_object->g_Alive())
+		return;
+
 	m_object->set_sound_mask(0);
 }
 
@@ -734,6 +778,10 @@ void CStalkerActionGetReadyToKillAggressive::initialize	()
 void CStalkerActionGetReadyToKillAggressive::finalize	()
 {
 	inherited::finalize		();
+
+	if (!m_object->g_Alive())
+		return;
+
 	m_object->set_sound_mask(0);
 }
 
@@ -830,9 +878,13 @@ void CStalkerActionKillEnemyAggressive::initialize	()
 void CStalkerActionKillEnemyAggressive::finalize	()
 {
 	inherited::finalize		();
-	m_object->set_sound_mask(0);
 	VERIFY					(m_storage);
 	m_storage->set_property	(eWorldPropertyEnemyAimed,false);
+
+	if (!m_object->g_Alive())
+		return;
+
+	m_object->set_sound_mask(0);
 }
 
 void CStalkerActionKillEnemyAggressive::execute		()
@@ -922,6 +974,10 @@ void CStalkerActionAimEnemy::initialize	()
 void CStalkerActionAimEnemy::finalize	()
 {
 	inherited::finalize		();
+
+	if (!m_object->g_Alive())
+		return;
+
 	m_object->set_sound_mask(0);
 }
 
@@ -985,6 +1041,10 @@ void CStalkerActionGetReadyToKillAvoid::initialize	()
 void CStalkerActionGetReadyToKillAvoid::finalize	()
 {
 	inherited::finalize		();
+
+	if (!m_object->g_Alive())
+		return;
+
 	m_object->set_sound_mask(0);
 }
 
@@ -1055,6 +1115,10 @@ void CStalkerActionKillEnemyAvoid::initialize	()
 void CStalkerActionKillEnemyAvoid::finalize	()
 {
 	inherited::finalize		();
+
+	if (!m_object->g_Alive())
+		return;
+
 	m_object->set_sound_mask(0);
 }
 
@@ -1123,6 +1187,10 @@ void CStalkerActionRetreatFromEnemy::initialize	()
 void CStalkerActionRetreatFromEnemy::finalize	()
 {
 	inherited::finalize		();
+
+	if (!m_object->g_Alive())
+		return;
+
 	m_object->set_sound_mask(0);
 }
 
@@ -1192,6 +1260,10 @@ void CStalkerActionCamp::initialize	()
 void CStalkerActionCamp::finalize	()
 {
 	inherited::finalize		();
+
+	if (!m_object->g_Alive())
+		return;
+
 	m_object->set_sound_mask(0);
 }
 
@@ -1266,6 +1338,10 @@ void CStalkerActionGetReadyToKillModerate::initialize	()
 void CStalkerActionGetReadyToKillModerate::finalize	()
 {
 	inherited::finalize		();
+
+	if (!m_object->g_Alive())
+		return;
+
 	m_object->set_sound_mask(0);
 }
 
@@ -1350,13 +1426,17 @@ void CStalkerActionKillEnemyModerate::initialize	()
 void CStalkerActionKillEnemyModerate::finalize	()
 {
 	inherited::finalize		();
-	m_object->set_sound_mask(0);
 	VERIFY					(m_storage);
 //	if ((Level().timeServer() >= m_start_level_time + 500) && !::Random.randI(0,3))
 	if (!::Random.randI(0,2)) {
 		m_storage->set_property	(eWorldPropertyFireEnough,true);
 //		m_storage->set_property	(eWorldPropertyEnemyAimed,true);
 	}
+
+	if (!m_object->g_Alive())
+		return;
+
+	m_object->set_sound_mask(0);
 }
 
 void CStalkerActionKillEnemyModerate::execute		()
@@ -1433,8 +1513,6 @@ void CStalkerActionGetEnemySeenModerate::initialize	()
 void CStalkerActionGetEnemySeenModerate::finalize	()
 {
 	inherited::finalize		();
-	m_object->set_sound_mask(eStalkerSoundMaskSurrender);
-	m_object->set_sound_mask(0);
 //	if (m_object->enemy() && m_object->enemy()->human_being()) {
 //		CMemoryInfo			mem_object = m_object->memory(m_object->enemy());
 //		if (mem_object.m_object && 
@@ -1444,6 +1522,12 @@ void CStalkerActionGetEnemySeenModerate::finalize	()
 //		}
 //	}
 	m_start_standing_time	= m_start_level_time;
+
+	if (!m_object->g_Alive())
+		return;
+
+	m_object->set_sound_mask(eStalkerSoundMaskSurrender);
+	m_object->set_sound_mask(0);
 }
 
 void CStalkerActionGetEnemySeenModerate::execute	()
@@ -1572,6 +1656,10 @@ void CStalkerActionKillEnemyLostModerate::initialize	()
 void CStalkerActionKillEnemyLostModerate::finalize	()
 {
 	inherited::finalize		();
+
+	if (!m_object->g_Alive())
+		return;
+
 	m_object->set_sound_mask(0);
 	VERIFY					(m_storage);
 }
@@ -1647,8 +1735,12 @@ void CStalkerActionTakeCover::initialize()
 void CStalkerActionTakeCover::finalize	()
 {
 	inherited::finalize		();
-	m_object->set_sound_mask(0);
 	m_storage->set_property	(eWorldPropertyFireEnough,false);
+
+	if (!m_object->g_Alive())
+		return;
+
+	m_object->set_sound_mask(0);
 }
 
 void CStalkerActionTakeCover::execute	()
@@ -1749,6 +1841,10 @@ void CStalkerActionGetOutOfAnomaly::initialize	()
 void CStalkerActionGetOutOfAnomaly::finalize	()
 {
 	inherited::finalize		();
+
+	if (!m_object->g_Alive())
+		return;
+
 	m_object->set_sound_mask(0);
 }
 
@@ -1789,6 +1885,10 @@ void CStalkerActionDetectAnomaly::initialize	()
 void CStalkerActionDetectAnomaly::finalize	()
 {
 	inherited::finalize		();
+
+	if (!m_object->g_Alive())
+		return;
+
 	m_object->set_sound_mask(0);
 }
 
