@@ -21,6 +21,7 @@
 #include <fcntl.h>
 #include <sys\stat.h>
 #include <assert.h>
+#include <direct.h>
 
 #include "limits"
 #include "list"

@@ -21,10 +21,10 @@ void ProcessOne		(_finddata_t& F, const char* path)
 		if (0==strcmp(F.name,"..")) return;
 		strcat(N,"\\");
 		files.insert(strlwr(strdup(N)));
-		Recurse(N);
+		Recurse		(N);
 	} else {
 		char*	ins	= strlwr(strdup(N));
-		printf		(ins);
+		printf		("%s\n",ins);
 		files.insert(ins); 
 	}
 }
@@ -53,14 +53,17 @@ int main			(int argc, char* argv[])
 	printf			("\n\n");
 
 	if (argc!=2)	{
-		printf("ERROR: u must pass directory name as parameter.\n");
-		return 1;
+		printf("ERROR: u must pass folder name as parameter.\n");
+		return 3;
 	}
 	printf			("Scanning files...");
-	string256		base;
-	strconcat		(base,argv[1],"\\");
-	Recurse			(base);
-	
+	if (0==chdir(argv[1]))
+	{
+		Recurse			("");
+	} else {
+		printf("ERROR: folder not found.\n");
+		return 3;
+	}
 
 	return 0;
 }
