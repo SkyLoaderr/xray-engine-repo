@@ -26,7 +26,7 @@ CUI::CUI(CHUDManager* p)
 	pUIDMFragList	= 0;
 	pUIDMPlayerList	= 0;
 
-	msgs_offs		= m_Parent->ClientToScreenScaledY(MSGS_OFFS,alLeft|alBottom)/Level().HUD()->pHUDFont->GetScale();
+	msgs_offs		= m_Parent->ClientToScreenY(MSGS_OFFS,alLeft|alBottom);
 }
 //--------------------------------------------------------------------
 
