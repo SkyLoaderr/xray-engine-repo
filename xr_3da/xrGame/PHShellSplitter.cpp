@@ -200,21 +200,25 @@ shell_root CPHShellSplitterHolder::ElementSingleSplit(const element_fracture &sp
 	CPhysicsShell *new_shell_last=P_create_Shell();
 	CPHShell	  *new_shell_last_desc=dynamic_cast<CPHShell*>(new_shell_last);
 	new_shell_last->mXFORM.set(m_pShell->mXFORM);
-	
-	
-	m_pShell->joints[split_elem.second.m_start_jt_num]->ReattachFirstElement(split_elem.first);
-	//the last new shell will have all splitted old elements end joints and one new element reattached to old joint
+	const u16& start_joint=split_elem.second.m_start_jt_num;
+	const u16& end_joint=split_elem.second.m_end_jt_num;
+	//it is not right for multiple joints attached to the unsplited part becource all these need to be reattached
+	if(start_joint!=end_joint)
+				m_pShell->joints[split_elem.second.m_start_jt_num]->ReattachFirstElement(split_elem.first);
+				//the last new shell will have all splitted old elements end joints and one new element reattached to old joint
 
 	m_pShell->add_Element(split_elem.first);
+	new_shell_last_desc->PresetActive();
 	m_pShell->PassEndElements(split_elem.second.m_start_el_num,split_elem.second.m_end_el_num,new_shell_last_desc);
 
-	InitNewShell(new_shell_last_desc);//this cretes space for the shell and add elements to it,place elements to attach joints.....
+	//InitNewShell(new_shell_last_desc);//this cretes space for the shell and add elements to it,place elements to attach joints.....
 
 	m_pShell->PassEndJoints(split_elem.second.m_end_jt_num,split_elem.second.m_end_jt_num,new_shell_last_desc);
+	new_shell_last_desc->AfterSetActive();
 	//m_splitters.erase(m_splitters.begin()+aspl);
 	//now aspl points to the next splitter
 	if((split_elem.first)->FracturesHolder())//if this element can be splitted add a splitter for it
-			new_shell_last_desc->m_spliter_holder->m_splitters.push_back(CPHShellSplitter(CPHShellSplitter::splElement,0,0));//
+			new_shell_last_desc->AddSplitter(CPHShellSplitter::splElement,0,0);//
 
 	//pass splitters taking into account that one element was olready added
 	PassEndSplitters(split_elem.second,new_shell_last_desc,1,0);
@@ -245,7 +249,7 @@ void CPHShellSplitterHolder::SplitProcess(PHSHELL_PAIR_VECTOR &out_shels)
 	//any split process must start from the end of the elment storage
 	//this based on that all childs in the bone hierarchy was added after their parrent
 	u16 i=u16(m_splitters.size()-1);
-	for(;i!=0;i--)
+	for(;i!=u16(-1);i--)
 	{
 		switch(m_splitters[i].m_type) 
 		{
@@ -295,7 +299,9 @@ void CPHShellSplitterHolder::PhDataUpdate(dReal step)
 		case CPHShellSplitter::splElement:
 			{
 				CPHElement* element=m_pShell->elements[i->m_element];
-				m_has_breaks=m_has_breaks||(element->FracturesHolder()->PhDataUpdate(element->get_body()));
+				dBodyID body=element->get_body();
+				if(!dBodyIsEnabled(body)) return;
+				m_has_breaks=m_has_breaks||(element->FracturesHolder()->PhDataUpdate(body));
 				break;
 			}
 		case CPHShellSplitter::splJoint:

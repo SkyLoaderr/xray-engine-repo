@@ -43,8 +43,7 @@ void CPHFracturesHolder::PassEndFractures(u16 from,CPHElement* dest)
 	u16 leaved_geoms=begin_geom_num+1;
 	u16 passed_geoms=end_geom-begin_geom_num;
 	if(i_from==e) return;
-	CPHFracturesHolder* &dest_fract_holder=dest->m_fratures_holder;
-	if(!dest_fract_holder) dest_fract_holder=xr_new<CPHFracturesHolder>();
+
 	for(;i!=i_from;i++)//correct end geoms for fractures leaved in source
 	{
 		u16& cur_end_geom=i->m_end_geom_num;
@@ -69,20 +68,29 @@ void CPHFracturesHolder::PassEndFractures(u16 from,CPHElement* dest)
 		cur_end_geom		=cur_end_geom-passed_geoms;
 		cur_geom			=cur_end_geom-passed_geoms;
 	}
+
+	if(i_from+1!=i_to)//insure it!!
+	{
+	
+	CPHFracturesHolder* &dest_fract_holder=dest->m_fratures_holder;
+	if(!dest_fract_holder) dest_fract_holder=xr_new<CPHFracturesHolder>();
 	//pass fractures not including end fracture
 	dest_fract_holder->m_fractures.insert(dest_fract_holder->m_fractures.end(),i_from+1,i_to);
 	//erase passed fracture allong whith used fracture
-	m_fractures.erase(i_from,i_to);
-}
 
+	}
+	m_fractures.erase(i_from,i_to);//erase along whith used fracture
+}
 void CPHFracturesHolder::SplitProcess(CPHElement* element,ELEMENT_PAIR_VECTOR &new_elements)
 {
-	FRACTURE_RI i=m_fractures.rbegin(),e=m_fractures.rend();//reversed
-	for(;i!=e;i++)
+	//FRACTURE_RI i=m_fractures.rbegin(),e=m_fractures.rend();//reversed
+	u16 i=u16(m_fractures.size()-1);
+
+	for(;i!=u16(-1);i--)
 	{
-		if(i->Breaked())
+		if(m_fractures[i].Breaked())
 		{
-			new_elements.push_back(SplitFromEnd(element,i->m_start_geom_num));
+			new_elements.push_back(SplitFromEnd(element,i));
 		}
 	}
 }
@@ -157,7 +165,8 @@ m_breaked=false;
 bool CPHFracture::Update(PH_IMPACT_STORAGE& impacts,dBodyID body)
 {
 	//itterate through impacts & calculate 
-	return false;
+	m_breaked=true;
+	return m_breaked;
 }
 
 void CPHFracture::SetMassParts(const dMass& first,const dMass& second)

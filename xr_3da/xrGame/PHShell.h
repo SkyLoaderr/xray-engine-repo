@@ -8,7 +8,7 @@ class CPHShellSplitterHolder;
 #include "PHJoint.h"
 #include "PHElement.h"
 #include "PHDefs.h"
-
+#include "PHShellSplitter.h"
 
 class CPHShell: public CPhysicsShell,public CPHObject {
 
@@ -44,6 +44,7 @@ virtual ~CPHShell				()
 						for(j=joints.begin();j!=joints.end();j++)
 							xr_delete(*j);
 						joints.clear();
+						if(m_spliter_holder)xr_delete(m_spliter_holder);
 	}
 
 	virtual void	applyImpulseTrace		(const Fvector& pos, const Fvector& dir, float val,const s16 element);
@@ -81,6 +82,7 @@ virtual ~CPHShell				()
 	virtual void			Activate				(bool place_current_forms=false,bool disable=false);
 	virtual void			Activate				(const Fmatrix& start_from, bool disable=false){};
 			void			PresetActive			();
+			void			AfterSetActive			();
 	virtual void			Deactivate				()		;
 
 	virtual void			setMass					(float M)									;
@@ -172,6 +174,7 @@ private:
 	void setEndElementSplitter	  ();
 	void setElementSplitter		  (u16 element);
 	void setEndJointSplitter	  ();
+	void AddSplitter			  (CPHShellSplitter::EType type,u16 element,u16 joint);
 	/////////////////////////////////////////
 	void AddElementRecursive(CPhysicsElement* root_e, u16 id,Fmatrix global_parent,u16 element_number);
 	void ZeroCallbacksRecursive(u16 id);

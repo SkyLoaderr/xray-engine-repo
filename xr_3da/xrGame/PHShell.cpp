@@ -131,22 +131,31 @@ void CPHShell::Activate(bool place_current_forms,bool disable)
 	bActive=true;
 	bActivating=true;
 }
-
-void CPHShell::PresetActive()
+void CPHShell::AfterSetActive()
 {
+
 	if(bActive)
 		return;
 	CPHObject::Activate();
-	if(!m_space) 
-	{
-		m_space=dSimpleSpaceCreate(ph_world->GetSpace());
-		dSpaceSetCleanup(m_space,0);
-	}
+
 	bActive=true;
 	bActivating=true;
 	ELEMENT_I i=elements.begin(),e=elements.end();
 	for(;i!=e;i++)(*i)->PresetActive();
 	if(m_spliter_holder)m_spliter_holder->Activate();
+
+
+
+
+}
+void CPHShell::PresetActive()
+{
+	VERIFY(!bActive);
+	if(!m_space) 
+	{
+		m_space=dSimpleSpaceCreate(ph_world->GetSpace());
+		dSpaceSetCleanup(m_space,0);
+	}
 }
 
 
@@ -734,16 +743,16 @@ void CPHShell::AddElementRecursive(CPhysicsElement* root_e, u16 id,Fmatrix globa
 	{
 		if(joint_data.type==jtRigid)
 		{
-			fracture.m_bone_id			=id;
-			fracture.m_start_geom_num	=E->numberOfGeoms()-1;
-			fracture.m_start_el_num		=u16(elements.size()-1);
-			fracture.m_start_jt_num		=u16(joints.size()-1);	 
-			VERIFY(fracture.m_start_geom_num!=u16(-1));
-			setElementSplitter(element_number);
+			fracture.m_bone_id					=id;
+			fracture.m_start_geom_num			=E->numberOfGeoms()-1;
+			fracture.m_start_el_num				=u16(elements.size());
+			fracture.m_start_jt_num				=u16(joints.size());	 
+			VERIFY(fracture.m_start_geom_num	!=u16(-1));
+
 		}
 		else
 		{
-			setEndJointSplitter();
+
 		}
 	}
 /////////////////////////////////////////////////////////////////////////////////////
@@ -760,9 +769,11 @@ void CPHShell::AddElementRecursive(CPhysicsElement* root_e, u16 id,Fmatrix globa
 			fracture.m_end_el_num		=u16(elements.size());//just after this el = current+1
 			fracture.m_end_jt_num		=u16(joints.size());	 //current+1
 			E->setGeomFracturable(fracture);
+			setElementSplitter(element_number);
 		}
 		else
 		{
+			setEndJointSplitter();
 		}
 	}
 
@@ -910,14 +921,19 @@ void CPHShell::setEndElementSplitter()
 void CPHShell::setElementSplitter(u16 element)
 {
 	if(elements[element]->FracturesHolder())
-					m_spliter_holder->AddSplitter(CPHShellSplitter::splElement,element,element-1);
+						AddSplitter(CPHShellSplitter::splElement,element,element-1);
 }
+void CPHShell::AddSplitter(CPHShellSplitter::EType type,u16 element,u16 joint)
+{
+	if(!m_spliter_holder) m_spliter_holder=xr_new<CPHShellSplitterHolder>(this);
+	m_spliter_holder->AddSplitter(CPHShellSplitter::splElement,element,element-1);
+}
+
 void CPHShell::setEndJointSplitter()
 {
-	if(!m_spliter_holder)m_spliter_holder=xr_new<CPHShellSplitterHolder>(this);
-
+	
 	if(!joints.back()->JointDestroyInfo())//setting joint breacable supposed before adding splitter. Need only one splitter for a joint
-				m_spliter_holder->AddSplitter(CPHShellSplitter::splJoint,u16(elements.size()-1),u16(joints.size()-1));
+				AddSplitter(CPHShellSplitter::splJoint,u16(elements.size()-1),u16(joints.size()-1));
 }
 
 bool CPHShell::isBreakable()
