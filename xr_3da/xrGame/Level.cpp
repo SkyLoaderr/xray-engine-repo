@@ -101,7 +101,7 @@ void CLevel::g_sv_Spawn		(NET_Packet* Packet)
 	
 	// Real spawn
 	CEntity* E = (CEntity*) Objects.LoadOne(pSettings,s_name);
-	if (0==E || (!E->Spawn(s_local,s_server_id,s_team,s_squad,s_group,o_pos,o_angle))) 
+	if (0==E || (!E->Spawn(s_local,s_server_id,s_team,s_squad,s_group,o_pos,o_angle, P))) 
 	{
 		Objects.DestroyObject(E);
 		Msg("! Failed to spawn entity '%s'",s_name);
