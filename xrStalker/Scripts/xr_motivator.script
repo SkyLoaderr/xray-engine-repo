@@ -136,7 +136,7 @@ function motivator_binder:net_destroy()
 end
 
 function motivator_binder:hit_callback(obj, amount, local_direction, who, bone_index)
-	printf("_bp: motivator_binder:hit_callback: obj='%s'", obj:name())
+	--printf("_bp: motivator_binder:hit_callback: obj='%s'", obj:name())
 	-- FIXME: коллбеки неплохо было бы регистрировать в общем storage, а не посхемно...
 	-- просто всегда ставить их при включении схемы и снимать при отключении.
 	if self.st.active_section then

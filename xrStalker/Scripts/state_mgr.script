@@ -123,7 +123,7 @@ function eva_state_mgr_locked:evaluate()
 	--printf("animstate locked: %s", utils.to_str(self.st.planner:evaluator(self.st.properties["animstate_locked"]):evaluate()))
 	--printf("animation locked: %s", utils.to_str(self.st.planner:evaluator(self.st.properties["animation_locked"]):evaluate()))
 
-	if self.st.combat or self.st.alife then return false end
+	if self.st.combat or self.st.alife then return true end
 
 	return self.st.planner:initialized() and (
 		   self.st.planner:evaluator(self.st.properties["weapon_locked"]):evaluate() or
