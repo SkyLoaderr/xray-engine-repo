@@ -124,11 +124,11 @@ void CRender::LoadBuffers	(CStream *base_fs)
 			D3DVERTEXELEMENT9*	dcl		= (D3DVERTEXELEMENT9*) fs().Pointer();
 			u32 dcl_len			= D3DXGetDeclLength		(dcl)+1;
 			DCL[i].resize		(dcl_len);
-			fs().Read			(&DCL[i],dcl_len*D3DVERTEXELEMENT9);
+			fs().Read			(DCL[i].begin(),dcl_len*sizeof(D3DVERTEXELEMENT9));
 
 			// count, size
 			u32 vCount			= fs().Rdword	();
-			u32 vSize			= D3DXGetDeclVertexSize	(dcl);
+			u32 vSize			= D3DXGetDeclVertexSize	(dcl,0);
 			Msg	("* [Loading VB] %d verts, %d Kb",vCount,(vCount*vSize)/1024);
 
 			// Create and fill
