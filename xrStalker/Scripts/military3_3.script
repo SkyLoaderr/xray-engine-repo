@@ -30,19 +30,19 @@ function main ()
 	--тут мы сидим и чистим ружжо :)
 
 	action (stalker, move (move.standing, move.stand, move.line, patrol ("way_sh1")),
-			look (), anim ("chistit ruje_1"), cond (cond.anim_end))
+			look (), anim ("chistit ruje_1", true), cond (cond.anim_end))
 
---    while stalker:action () do wait () end
+    while stalker:action () do wait () end
 
---	military3_3.reset (stalker)
+	military3_3.reset (stalker)
 	action (stalker, move (move.standing, move.stand, move.line, patrol ("way_sh1")),
-			look (), anim ("chistit ruje_1"), cond (cond.anim_end))
+			look (), anim ("chistit ruje_1", true), cond (cond.anim_end))
 
---    while stalker:action () do wait () end
+    while stalker:action () do wait () end
 
---	military3_3.reset (stalker)
+	military3_3.reset (stalker)
 	action (stalker, move (move.standing, move.stand, move.line, patrol ("way_sh1")),
-			look (), anim ("stul_podyem"), cond (cond.anim_end))
+			look (), anim ("stul_podyem", true), cond (cond.anim_end))
 
     while stalker:action () do wait () end
 

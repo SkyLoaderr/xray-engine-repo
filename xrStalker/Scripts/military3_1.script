@@ -2,6 +2,7 @@
 
 local anims = {"stoya_ruje_ 0", "vishka_1", "vishka_2", "vishka_3"}
 local num_anims = {1, 1, 1, 1}
+local aflags = {true, true, false, false}
 
 class "Guardian"
 
@@ -43,7 +44,7 @@ function Guardian:setanim ()
 	printf ("Current animation %d for object %s", self.curr_anim, self.npc:name ())
     self:reset ()
 	action (self.npc, move (move.standing, move.stand, move.line, patrol (self.path_name)), 
-			look (), anim (anims[self.curr_anim]), cond (cond.anim_end))
+			look (), anim (anims[self.curr_anim], aflags[self.curr_anim]), cond (cond.anim_end))
 	printf ("Set anim called")
 end
 
