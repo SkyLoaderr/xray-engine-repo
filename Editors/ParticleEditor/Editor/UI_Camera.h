@@ -61,7 +61,7 @@ public:
     void			ViewReset 	(){m_HPB.set(0.f,0,0.f); m_Position.set(0,0,0); m_Target.set(0,0,0); BuildCamera();}
 
     const Fmatrix&	GetTransform() const {return m_CamMat;}
-    void			GetView		(Fmatrix& V) const {return V.invert(m_CamMat);}
+    const Fmatrix&	GetView		(Fmatrix& V) const {return V.invert(m_CamMat);}
     const Fvector&	GetHPB		() const {return m_HPB;}
     const Fvector&	GetPosition	() const {return m_Position;}
     const Fvector&	GetRight	() const {return m_CamMat.i;}
