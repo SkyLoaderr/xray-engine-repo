@@ -60,6 +60,8 @@ void CUIPdaDialogWnd::Init(int x, int y, int width, int height)
 							 UICharacterWindow.GetHeight(), 
 							 PDA_DIALOG_CHAR_XML);
 
+	//Элементы автоматического добавления
+	xml_init.InitAutoStatic(uiXml, "auto_static", this);
 
 	inherited::Init(x, y, width, height);
 }

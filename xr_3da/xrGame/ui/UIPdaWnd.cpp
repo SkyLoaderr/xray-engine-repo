@@ -72,6 +72,10 @@ void CUIPdaWnd::Init()
 	xml_init.InitListWnd(uiXml, "list", 0, &UIPdaContactsWnd.UIListWnd);
 	UIPdaContactsWnd.UIListWnd.EnableActiveBackground(true);
 	UIPdaContactsWnd.UIListWnd.EnableScrollBar(true);
+
+
+	//Элементы автоматического добавления
+	xml_init.InitAutoStatic(uiXml, "auto_static", this);
 }
 
 void CUIPdaWnd::InitPDA()

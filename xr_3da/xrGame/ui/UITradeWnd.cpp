@@ -115,6 +115,11 @@ void CUITradeWnd::Init()
 	UIOthersBagList.SetCheckProc(OthersBagProc);
 	UIOthersTradeList.SetCheckProc(OthersTradeProc);
 
+
+	//Ёлементы автоматического добавлени€
+	xml_init.InitAutoStatic(uiXml, "auto_static", this);
+
+
 	// нопки
 	AttachChild(&UIPerformTradeButton);
 	xml_init.InitButton(uiXml, "button", 0, &UIPerformTradeButton);

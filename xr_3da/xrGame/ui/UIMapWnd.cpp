@@ -105,6 +105,10 @@ void CUIMapWnd::Init()
 	
 	m_iMapWidth = UIMapBackground.GetWidth();
 	m_iMapHeight = UIMapBackground.GetHeight();
+
+
+	//Элементы автоматического добавления
+	xml_init.InitAutoStatic(uiXml, "auto_static", this);
 }
 
 void CUIMapWnd::InitMap()

@@ -92,6 +92,10 @@ void CUICarBodyWnd::Init()
 	UIItemInfo.Init(0,0, UIStaticDesc.GetWidth(), UIStaticDesc.GetHeight(), "inventory_item.xml");
 
 
+	//Элементы автоматического добавления
+	xml_init.InitAutoStatic(uiXml, "auto_static", this);
+
+
 
 	AttachChild(&UIPropertiesBox);
 	UIPropertiesBox.Init("ui\\ui_frame",0,0,300,300);

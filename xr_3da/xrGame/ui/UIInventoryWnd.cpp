@@ -137,7 +137,7 @@ void CUIInventoryWnd::Init()
 
 
 	//кнопки внизу
-	AttachChild(&UIButton1);
+/*	AttachChild(&UIButton1);
 	xml_init.InitButton(uiXml, "button", 0, &UIButton1);
 	AttachChild(&UIButton2);
 	xml_init.InitButton(uiXml, "button", 1, &UIButton2);
@@ -148,10 +148,7 @@ void CUIInventoryWnd::Init()
 	AttachChild(&UIButton5);
 	xml_init.InitButton(uiXml, "button", 4, &UIButton5);
 	AttachChild(&UIButton6);
-	xml_init.InitButton(uiXml, "button", 5, &UIButton6);
-
-
-
+	xml_init.InitButton(uiXml, "button", 5, &UIButton6);*/
 	
 
 	//Списки Drag&Drop
