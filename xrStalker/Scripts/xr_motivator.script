@@ -117,6 +117,7 @@ function motivator_binder:reload (section)
 ----------------------------------------------------------------------------------------------------------------------
 -- Общие скрипты
 ----------------------------------------------------------------------------------------------------------------------
+	xr_sound.load_sound(self.object)
     xr_motivator.trade_arhive[self.object:id()] = xr_motivator.pda_storage()
     xr_motivator.storage[self.object:id()] = {  followers = {} }
     -- Положения тела 
