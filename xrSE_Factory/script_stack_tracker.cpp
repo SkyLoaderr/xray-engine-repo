@@ -79,7 +79,7 @@ void CScriptStackTracker::print_stack	(lua_State *L)
 			ai().script_engine().script_log	(ScriptStorage::eLuaMessageTypeError,"%2d : [%s] %s(%d) : %s",k,l_tDebugInfo.what,l_tDebugInfo.short_src,l_tDebugInfo.currentline,"");
 		else
 			if (!xr_strcmp(l_tDebugInfo.what,"C"))
-				ai().script_engine().script_log	(ScriptStorage::eLuaMessageTypeError,"%2d : [C  ] %s(%d) : %s",k,"C source code",l_tDebugInfo.currentline,l_tDebugInfo.name);
+				ai().script_engine().script_log	(ScriptStorage::eLuaMessageTypeError,"%2d : [C  ] %s",k,l_tDebugInfo.name);
 			else
 				ai().script_engine().script_log	(ScriptStorage::eLuaMessageTypeError,"%2d : [%s] %s(%d) : %s",k,l_tDebugInfo.what,l_tDebugInfo.short_src,l_tDebugInfo.currentline,l_tDebugInfo.name);
 	}
