@@ -11,6 +11,7 @@
 #include "..\CameraFirstEye.h"
 #include "..\xr_level_controller.h"
 #include "..\fmesh.h"
+#include "EffectorBobbing.h"
 #include "customitem.h"
 #include "hudmanager.h"
 #include "Actor_Flags.h"
@@ -132,8 +133,8 @@ CActor::CActor() : CEntity()
 	cameras[eacFreeLook]	= new CCameraLook		(this, pSettings, "actor_free_cam",	false);
 
 	cam_active				= eacFirstEye;
-	cam_BobCycle			= 0;
 	fPrevCamPos				= 0;
+	pCamBobbing				= 0;
 
 	// 
 	Weapons					= 0;
@@ -278,7 +279,7 @@ void CActor::Die	( )
 	g_fireEnd	();
 	bAlive		= FALSE;
 	mstate_wishful	&= ~mcAnyMove;
-	mstate_real		&= ~mcAnyMove;
+	mstate_real		&=~ mcAnyMove;
 }
 
 BOOL CActor::TakeItem		( DWORD CID )
@@ -325,7 +326,7 @@ void CActor::g_Physics(Fvector& accel, float jump, float dt)
 	Level().ObjectSpace.TestNearestObject				(cfModel, C, R);
 
 	// Check ground-contact
-	if (net_Local && Movement.gcontact_Was && Movement.gcontact_HealthLost) 
+	if (net_Local && Movement.gcontact_Was) 
 	{
 		pCreator->Cameras.AddEffector		(new CEffectorFall(Movement.gcontact_Power));
 		Fvector D; D.set	(0,1,0);
@@ -440,7 +441,16 @@ void CActor::Update	(DWORD DT)
 	UpdateTransform			();
 	CObject::Update			(DT);
 	
-	if (IsMyCamera())		cam_Update	(dt);
+	if (IsMyCamera())		{
+		if (!pCamBobbing){ 
+			pCamBobbing = new CEffectorBobbing();
+			Level().Cameras.AddEffector(pCamBobbing);
+		}
+		pCamBobbing->SetState(mstate_real);
+		cam_Update	(dt);
+	} else {
+		if (pCamBobbing){ Level().Cameras.RemoveEffector(cefBobbing); pCamBobbing=0; }
+	}
 
 	bVisible				= !HUDview	();
 
@@ -484,7 +494,7 @@ void CActor::g_cl_ValidateMState(DWORD mstate_wf)
 	// Зажало-ли меня/уперся - не двигаюсь
 	if (Movement.GetVelocityActual()<0.2f || Movement.bSleep) 
 	{
-		mstate_real &= ~mcAnyMove;
+		mstate_real				&=~ mcAnyMove;
 	}
 }
 
@@ -550,7 +560,7 @@ void CActor::g_cl_CheckControls(DWORD mstate_wf, Fvector &vControlAccel, float &
 	}
 	else
 	{
-		mstate_real	&= ~mcAnyMove;
+		mstate_real			&=~ mcAnyMove;
 	}
 
 	// transform local dir to world dir

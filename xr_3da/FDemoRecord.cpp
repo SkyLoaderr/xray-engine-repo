@@ -8,6 +8,7 @@
 #include "fDemoRecord.h"
 #include "xr_ioconsole.h"
 #include "xr_creator.h"
+#include "xr_input.h"
 
 CDemoRecord * xrDemoRecord = 0;
 
@@ -24,9 +25,27 @@ CDemoRecord::CDemoRecord(const char *name,float life_time):CEffector(cefDemo,lif
 	hFile	= _open(name,O_WRONLY|O_CREAT|O_BINARY, S_IREAD|S_IWRITE);
 	if (hFile>0) {
 		iCapture();	// capture input
-		((Fmatrix *)&g_matPosition)->invert(Device.mView);
-		g_vecVelocity = g_vecAngularVelocity = D3DXVECTOR3(0.0f, 0.0f, 0.0f);
+		m_Camera.invert(Device.mView);
+
+		// parse yaw
+		Fvector& dir	= m_Camera.k;
+		Fvector DYaw;	DYaw.set(dir.x,0.f,dir.z); DYaw.normalize_safe();
+		if (DYaw.x>=0)	m_HPB.x = -acosf(DYaw.z);
+		else			m_HPB.x = -(2*PI-acosf(DYaw.z));
+
+		// parse pitch
+		dir.normalize_safe	();
+		m_HPB.y			= asinf(dir.y);
+		m_HPB.z			= 0;
+
+		m_Position.set	(m_Camera.c);
+
+		m_vVelocity.set	(0,0,0);
+		m_vAngularVelocity.set(0,0,0);
 		iCount = 0;
+		
+		m_vT.set(0,0,0);
+		m_vR.set(0,0,0);
 	} else {
 		pCreator->Cameras.RemoveEffector(cefDemo);
 	}
@@ -50,65 +69,53 @@ void CDemoRecord::Process(Fvector &P, Fvector &D, Fvector &N)
 		pApp->pFont->Out(0,+.05f,"~Key frames count: %d",iCount);
 	}
 
-    D3DXVECTOR3 vecT(0.0f, 0.0f, 0.0f);
-    D3DXVECTOR3 vecR(0.0f, 0.0f, 0.0f);
 
-    if(Console.iGetKeyState(DIK_A) || Console.iGetKeyState(DIK_NUMPAD1) || Console.iGetKeyState(DIK_LEFT))  vecT.x -= 1.0f; // Slide Left
-    if(Console.iGetKeyState(DIK_D) || Console.iGetKeyState(DIK_NUMPAD3) || Console.iGetKeyState(DIK_RIGHT)) vecT.x += 1.0f; // Slide Right
-    if(Console.iGetKeyState(DIK_DOWN))											vecT.y -= 1.0f; // Slide Down
-    if(Console.iGetKeyState(DIK_UP))											vecT.y += 1.0f; // Slide Up
-    if(Console.iGetKeyState(DIK_S))												vecT.z -= 2.0f; // Move Forward
-    if(Console.iGetKeyState(DIK_W))												vecT.z += 2.0f; // Move Backward
-    if(Console.iGetKeyState(DIK_NUMPAD2))										vecR.x -= 1.0f; // Pitch Down
-    if(Console.iGetKeyState(DIK_NUMPAD8))										vecR.x += 1.0f; // Pitch Up
-    if(Console.iGetKeyState(DIK_E) || Console.iGetKeyState(DIK_NUMPAD6))		vecR.y += 1.0f; // Turn Left
-    if(Console.iGetKeyState(DIK_Q) || Console.iGetKeyState(DIK_NUMPAD4))		vecR.y -= 1.0f; // Turn Right
-    if(Console.iGetKeyState(DIK_NUMPAD9))										vecR.z -= 2.0f; // Roll CW
-    if(Console.iGetKeyState(DIK_NUMPAD7))										vecR.z += 2.0f; // Roll CCW
-
-	g_vecVelocity = g_vecVelocity * 0.9f + vecT * 0.1f;
-	g_vecAngularVelocity = g_vecAngularVelocity * 0.9f + vecR * 0.1f;
-
-	D3DXMATRIX		matT, matR;
-	D3DXQUATERNION	qR;
+	m_vVelocity.lerp		(m_vVelocity,m_vT,0.1f);
+	m_vAngularVelocity.lerp	(m_vAngularVelocity,m_vR,0.1f);
 
 	float acc;
-	if (Console.iGetKeyState(DIK_LSHIFT)) acc=.025f; else acc=1.f;
-    vecT = g_vecVelocity * Device.fTimeDelta * g_fSpeed * acc;
-    vecR = g_vecAngularVelocity * Device.fTimeDelta * g_fAngularSpeed * acc;
+	if (Console.iGetKeyState(DIK_LSHIFT)) acc=.025f;
+	else if (Console.iGetKeyState(DIK_LCONTROL)) acc=4.0; else acc=1.f;
+    m_vT.mul				(m_vVelocity, Device.fTimeDelta * g_fSpeed * acc);
+    m_vR.mul				(m_vAngularVelocity, Device.fTimeDelta * g_fAngularSpeed * acc);
 
-	D3DXMatrixTranslation(&matT, vecT.x, vecT.y, vecT.z);
-	D3DXMatrixMultiply(&g_matPosition, &matT, &g_matPosition);
+	m_HPB.x -= m_vR.y;
+	m_HPB.y -= m_vR.x;
+	m_HPB.z += m_vR.z;
 
-	D3DXQuaternionRotationYawPitchRoll(&qR, vecR.y, vecR.x, vecR.z);
-	D3DXMatrixRotationQuaternion(&matR, &qR);
-	D3DXMatrixMultiply(&g_matPosition, &matR, &g_matPosition);
+	// move
+    Fvector vmove;
 
-//	if(g_matPosition.m31 < 1.0f)	g_matPosition.m31 = 1.0f;
-//	CopyMemory(&Device.mView,&g_matPosition,sizeof(D3DMATRIX));
-	D3DXMatrixInverse((D3DXMATRIX *)(&Device.mView), NULL, &g_matPosition);
+    vmove.set				( m_Camera.k );
+    vmove.normalize_safe	();
+    vmove.mul				( m_vT.z );
+    m_Position.add			( vmove );
 
-	N.set( g_matPosition._21, g_matPosition._22, g_matPosition._23 );
-	D.set( g_matPosition._31, g_matPosition._32, g_matPosition._33 );
-	P.set( g_matPosition._41, g_matPosition._42, g_matPosition._43 );
+    vmove.set				( m_Camera.i );
+    vmove.normalize_safe	();
+    vmove.mul				( m_vT.x );
+    m_Position.add			( vmove );
+	
+    vmove.set				( m_Camera.j );
+    vmove.normalize_safe	();
+    vmove.mul				( m_vT.y );
+    m_Position.add			( vmove );
 
-	/*
-	a = (-m41 -b*yr-c*zr)/xr
-	(-m41 -b*yr-c*zr)*xu/xr+b*yu+c*zu = -m42
-	- m41*xu/xr - b*yr*xu/xr - c*zr*xu/xr + b*yu + c*zu + m42 = 0
-	- m41*xu/xr - c*zr*xu/xr + c*zu + m42 = b*yr*xu/xr - b*yu
-	b = (- m41*xu/xr - c*zr*xu/xr + c*zu + m42)/(yr*xu/xr-yu)
-	a = (-m41 + (m41*xu/xr + c*zr*xu/xr - c*zu - m42)/(yr*xu/xr-yu) -c*zr)/xr
-	a = (-(c*(xr*(yu*zr-zu)-xu*zr*(yr-1))+m41*(xr*yu+xu*(1-yr))-m42*xr)/(xr*(xr*yu-xu*yr)))
+	m_Camera.setHPB			(m_HPB.x,m_HPB.y,m_HPB.z);
+    m_Camera.translate_over	(m_Position);
 
-	result:
-	c = (-(m41*(xr*(xu*yv-xv*yu)+xu*xv*(yr-1))-xr*(m42*(xr*yv-xv)+m43*(xu*yr-xr*yu)))/(xr*xr*(yu*zv-yv*zu)-xr*(xu*(yr*zv-yv*zr)+xv*(yu*zr-zu))+xu*xv*zr*(yr-1)))
-	b = -(c*(xr*zu-xu*zr)+m42*xr-m41*xu)/(xr*yu-xu*yr)
-	a = (-m41 -b*yr-c*zr)/xr
+	// update view
+	Device.mView.invert		(m_Camera);
 
-	*/
+	// update camera
+	N.set(m_Camera.j);
+	D.set(m_Camera.k);
+	P.set(m_Camera.c);
 
 	fLifeTime-=Device.fTimeDelta;
+
+	m_vT.set(0,0,0);
+    m_vR.set(0,0,0);
 }
 
 void CDemoRecord::OnKeyboardPress	(int dik)
@@ -117,25 +124,49 @@ void CDemoRecord::OnKeyboardPress	(int dik)
 	if (dik == DIK_RETURN)	pCreator->Cameras.RemoveEffector(cefDemo);
 }
 
+void CDemoRecord::OnKeyboardHold	(int dik)
+{
+	switch(dik){
+	case DIK_A:
+	case DIK_NUMPAD1:
+	case DIK_LEFT:		m_vT.x -= 1.0f; break; // Slide Left
+	case DIK_D:
+	case DIK_NUMPAD3:
+	case DIK_RIGHT:		m_vT.x += 1.0f; break; // Slide Right
+	case DIK_DOWN:		m_vT.y -= 1.0f; break; // Slide Down
+	case DIK_UP:		m_vT.y += 1.0f; break; // Slide Up
+	case DIK_S:			m_vT.z -= 1.0f; break; // Move Forward
+	case DIK_W:			m_vT.z += 1.0f; break; // Move Backward
+	// rotate	
+	case DIK_NUMPAD2:	m_vR.x -= 1.0f; break; // Pitch Down
+	case DIK_NUMPAD8:	m_vR.x += 1.0f; break; // Pitch Up
+	case DIK_E:	
+	case DIK_NUMPAD6:	m_vR.y += 1.0f; break; // Turn Left
+	case DIK_Q:	
+	case DIK_NUMPAD4:	m_vR.y -= 1.0f; break; // Turn Right
+	case DIK_NUMPAD9:	m_vR.z -= 2.0f; break; // Turn Right
+	case DIK_NUMPAD7:	m_vR.z += 2.0f; break; // Turn Right
+	}
+}
+
+void CDemoRecord::OnMouseMove		(int dx, int dy)
+{
+	float scale			= psMouseSens;
+	if (dx||dy){
+		m_vR.y			+= float(dx)*scale;
+		m_vR.x			+= ((psMouseInvert)?-1:1)*float(dy)*scale*MouseHWScale;
+	}
+}
+
 void CDemoRecord::RecordKey			()
 {
-	D3DXMATRIX g_matView;
+	Fmatrix g_matView;
  
+	g_matView.invert(m_Camera);
 	_write(
 		hFile,
-		D3DXMatrixInverse((D3DXMATRIX *)(&g_matView), NULL, &g_matPosition),
+		&g_matView,
 		sizeof(Fmatrix)
 	);
 	iCount++;
-	/*
-    // Start building the matrix. The first three rows contains the basis
-    // vectors used to rotate the view to point at the lookat point
-    mat._11 = vRight.x;    mat._12 = vUp.x;    mat._13 = vView.x;
-    mat._21 = vRight.y;    mat._22 = vUp.y;    mat._23 = vView.y;
-    mat._31 = vRight.z;    mat._32 = vUp.z;    mat._33 = vView.z;
-    // Do the translation values (rotations are still about the eyepoint)
-    mat._41 = - DotProduct( vFrom, vRight );
-    mat._42 = - DotProduct( vFrom, vUp );
-    mat._43 = - DotProduct( vFrom, vView );
-	*/
 }

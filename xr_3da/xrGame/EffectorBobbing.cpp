@@ -1,38 +1,61 @@
 #include "stdafx.h"
 #include "EffectorBobbing.h"
+#include "Actor.h"
 
 //////////////////////////////////////////////////////////////////////
 // Construction/Destruction
 //////////////////////////////////////////////////////////////////////
 
-CEffectorBobbing::CEffectorBobbing	(float relax_time, float angle) : CEffector(cefBobbing,10000.f)
+CEffectorBobbing::CEffectorBobbing() : CEffector(cefBobbing,10000.f)
 {
-	fTimeCurrent	= -1;
-	fTimeTotal		= relax_time;
-	fAngleCurrent	= 0;
-	fAngleTotal		= angle;
+	fTime			= 0;
 }
 
 CEffectorBobbing::~CEffectorBobbing	()
 {
-
 }
 
-void CEffectorBobbing::Shot		()
-{
-	Fvector	axis; axis.set		(0,0,1);
-	vDirectionDiff.random_dir	();
-	fTimeCurrent				= fTimeTotal;
-	fAngleCurrent				= ::Random.randF(fAngleTotal/2,fAngleTotal);
+void CEffectorBobbing::SetState(DWORD mstate){
+	dwMState		= mstate;
 }
+
+#define AMPLITUDE_RUN	0.01f
+#define AMPLITUDE_WALK	0.0075f
+#define SPEED_RUN		10.f
+#define SPEED_WALK		7.f
+#define CROUCH_FACTOR	0.75f
 
 void CEffectorBobbing::Process		(Fvector &p, Fvector &d, Fvector &n)
 {
-	fTimeCurrent	-= Device.fTimeDelta;
-	if (fTimeCurrent<0)		return;
+	fTime			+= Device.fTimeDelta;
+	if (dwMState&CActor::EMoveCommand::mcAnyMove){
+		Fmatrix		M;
+		M.identity	();
+		M.j.set		(n);
+		M.k.set		(d);
+		M.i.crossproduct(n,d);
+		M.c.set		(p);
+		
+		// apply footstep bobbing effect
+		Fvector dangle;
+		float k = (dwMState&CActor::EMoveCommand::mcCrouch)?CROUCH_FACTOR:1.f;
+		float A = (CActor::isAccelerated(dwMState)?AMPLITUDE_RUN:AMPLITUDE_WALK)*k;
+		float ST= ((CActor::isAccelerated(dwMState)?SPEED_RUN:SPEED_WALK)*fTime)*k;
+	
+		p.y			+=	A*fabsf(sinf(ST)); 
+		dangle.x	=	A*cosf(ST);
+		dangle.z	=	A*cosf(ST);
+		dangle.y	=	A*fabsf(sinf(ST));
 
-	float	angle	= fAngleCurrent*(fTimeCurrent/fTimeTotal);
-	d.mad			(vDirectionDiff,tanf(angle));
+		Fmatrix		R;
+		R.setHPB	(dangle.x,dangle.y,dangle.z);
 
-	fLifeTime-=Device.fTimeDelta;
+		Fmatrix		mR;
+		mR.mul		(M,R);
+		
+		d.set		(mR.k);
+		n.set		(mR.j);
+	}else{
+		fTime = 0;
+	}
 }

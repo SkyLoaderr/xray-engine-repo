@@ -10,7 +10,7 @@
 class ENGINE_API CController
 {
 public:
-
+	void	iGetLastMouseDelta			(Ipoint& p);
 	void	iGetMousePosReal			(Ipoint &p)
 	{
 		GetCursorPos(p.d3d());

@@ -15,6 +15,12 @@ void	CController::iRelease					(void)
 	pInput->iRelease(this);
 }
 
+void	CController::iGetLastMouseDelta			(Ipoint& p)
+{
+	VERIFY(pInput);
+	pInput->iGetLastMouseDelta( p );
+}
+
 void CController::OnInputDeactivate			(void)
 {
 	int i;

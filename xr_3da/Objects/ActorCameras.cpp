@@ -40,6 +40,7 @@ void CActor::cam_Update(float dt)
 		Fvector offset;
 		offset.set		(0,0,0);
 		dangle.set		(0,0,0);
+/*		{
 		cam_BobCycle	+= dt;
 		
 		if (mstate_real&mcAnyMove){
@@ -59,6 +60,7 @@ void CActor::cam_Update(float dt)
 		}else{
 			cam_BobCycle = 0;
 		}
+*/
 		point.add(offset);
 		}
 		break;

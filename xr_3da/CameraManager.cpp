@@ -83,16 +83,14 @@ void CCameraManager::Update(const Fvector& P, const Fvector& D, const Fvector& N
 	unaffected_vRight.crossproduct		(vNormal,vDirection);
 
 	// Effector
-	int eff_cnt=m_Effectors.size();
-	if (eff_cnt) 
+	if (m_Effectors.size()) 
 	{
-		for (int i=0; i<eff_cnt; i++){
+		for (int i=m_Effectors.size()-1; i>=0; i--){
 			CEffector* eff = m_Effectors[i];
 			eff->Process(vPosition,vDirection,vNormal);
 			if (eff->fLifeTime<=0){ 
 				m_Effectors.erase(m_Effectors.begin()+i);
 				_DELETE(eff);
-				i--;
 			}
 		}
 		

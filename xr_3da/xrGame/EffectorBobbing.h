@@ -6,17 +6,17 @@
 
 class CEffectorBobbing : public CEffector  
 {
-	Fvector	vDirectionDiff;
-	float	fTimeCurrent;
-	float	fTimeTotal;
-	float	fAngleCurrent;
-	float	fAngleTotal;
+	float	fTime;
+	Fvector	vAngleAmplitude;
+	float	fYAmplitude;
+	float	fSpeed;
+
+	DWORD	dwMState;
 public:
-	CEffectorBobbing			(float relax_time, float angle);
+			CEffectorBobbing	();
 	virtual ~CEffectorBobbing	();
 	virtual	void	Process		(Fvector &p, Fvector &d, Fvector &n);
-
-	void	Shot				();
+	void	SetState			(DWORD st);
 };
 
 #endif //_EFFECTOR_BOBBING_H

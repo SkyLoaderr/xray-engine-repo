@@ -20,10 +20,10 @@ class ENGINE_API CDemoPlay :
 	CTimer				timer;
 	DWORD				dwFramesRendered;
 public:
-	virtual	void		Process(Fvector &p, Fvector &d, Fvector &n);
+	virtual	void		Process		(Fvector &p, Fvector &d, Fvector &n);
 
-	CDemoPlay			(const char *name, float ms, BOOL cycle=false, float life_time=60*60*1000);
-	virtual ~CDemoPlay	();
+						CDemoPlay	(const char *name, float ms, BOOL cycle=false, float life_time=60*60*1000);
+	virtual				~CDemoPlay	();
 };
 
 #endif // !defined(AFX_FDEMOPLAY_H__9B07E6E0_FC3C_11D3_B4E3_4854E82A090D__INCLUDED_)

@@ -277,10 +277,10 @@ void CMovementControl::Calculate(Fvector &_Accel, float ang_speed, float jump, f
 
 			// now vOldVelocity - average velocity at contact time
 			float		contact_speed	= fOldActVelocity;
-			if (contact_speed>fMinCrashSpeed/2) 
-			{
-				gcontact_Power	= contact_speed/fMaxCrashSpeed;
-			}
+
+			// contact with ground
+			gcontact_Power	= contact_speed/fMaxCrashSpeed;
+
 			gcontact_HealthLost = 0;
 			if (contact_speed>fMinCrashSpeed) 
 			{

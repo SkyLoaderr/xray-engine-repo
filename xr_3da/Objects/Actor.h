@@ -16,6 +16,7 @@ class ENGINE_API CMotionDef;
 class CWeaponList;
 class ENGINE_API CKinematics;
 class ENGINE_API CBlend;
+class CEffectorBobbing;
 
 class CActor: public CEntity, public pureRender
 {
@@ -23,6 +24,13 @@ class CActor: public CEntity, public pureRender
 		SND_HIT_COUNT=8,
 		SND_DIE_COUNT=4
 	};
+	enum EActorCameras {
+		eacFirstEye		= 0,
+		eacLookAt,
+		eacFreeLook,
+		eacMaxCam
+	};
+public:
 	enum EMoveCommand
 	{
 		mcFwd		= 0x0001,
@@ -35,12 +43,6 @@ class CActor: public CEntity, public pureRender
 		mcTurn		= 0x0080,
 
 		mcAnyMove	= (mcFwd|mcBack|mcLStrafe|mcRStrafe)
-	};
-	enum EActorCameras {
-		eacFirstEye		= 0,
-		eacLookAt,
-		eacFreeLook,
-		eacMaxCam
 	};
 protected:
 	// weapons
@@ -105,17 +107,11 @@ private:
 	float				m_fJumpSpeed;
 	float				m_fRunCoef;
 
-	IC BOOL				isAccelerated			(DWORD mstate)	
-	{
-		if (mstate&mcAccel)	return (psActorFlags&AF_ALWAYSRUN)?FALSE:TRUE ;
-		else				return (psActorFlags&AF_ALWAYSRUN)?TRUE :FALSE;
-	}
-
 	// Cameras
 	CCameraBase*		cameras[eacMaxCam];
 	EActorCameras		cam_active;
-	float				cam_BobCycle;
 	float				fPrevCamPos;
+	CEffectorBobbing*	pCamBobbing;
 
 //------------------------------
 	struct				net_update 		
@@ -162,6 +158,11 @@ public:
 	virtual				~CActor					( );
 
 
+	IC static BOOL		isAccelerated			(DWORD mstate)	
+	{
+		if (mstate&mcAccel)	return (psActorFlags&AF_ALWAYSRUN)?FALSE:TRUE ;
+		else				return (psActorFlags&AF_ALWAYSRUN)?TRUE :FALSE;
+	}
 
 	virtual void		Load					( CInifile* ini, const char *section );
 
