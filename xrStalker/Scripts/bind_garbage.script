@@ -125,7 +125,7 @@ end
 function CRushMonster:death_callback (self, who)
     -- who dead ????!!!!
     if who == nil then return  end
-    printf ("Monster %s killed", self:name ())
+    printf ("Monster %s killed by killer %s", self:name (), who:name ())
     -- remove from spawner 
     xr_spawner.remove_from_list (self:id ())
     -- get actor
