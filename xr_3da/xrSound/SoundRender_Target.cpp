@@ -3,6 +3,7 @@
 
 #include "soundrender_target.h"
 #include "soundrender_core.h"
+#include "soundrender_emitter.h"
 
 CSoundRender_Target::CSoundRender_Target(void)
 {
@@ -63,4 +64,7 @@ void	CSoundRender_Target::update			()
 void	CSoundRender_Target::fill_parameters()
 {
 	VERIFY			(pEmitter);
+	if (pEmitter->b2D){
+        pEmitter->set_position(SoundRender->listener_position());
+    }
 }

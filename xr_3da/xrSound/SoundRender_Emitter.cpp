@@ -59,16 +59,28 @@ void CSoundRender_Emitter::Event_ReleaseOwner()
 void CSoundRender_Emitter::Event_Propagade	()
 {
 	dwTimeToPropagade			+= ::Random.randI	(sdef_event_pulse-30,sdef_event_pulse+30);
-	if (0==owner)					return;
-	if (0==owner->g_type)			return;
-	if (0==SoundRender->Handler)	return;
+	if (0==owner)				return;
+	if (0==owner->g_type)		return;
+	if (0==SoundRender->Handler)return;
 
 	// Calculate range
-	float	limitV					= .01f;
-	float	clip					= (p_source.min_distance*p_source.volume) / (psSoundRolloff*limitV); // (Dmin*V)/(R*V')
-	float	range					= _min(p_source.max_distance,clip);
-	if	(clip<0)					return;
+	float	limitV				= .01f;
+	float	clip				= (p_source.min_distance*p_source.volume) / (psSoundRolloff*limitV); // (Dmin*V)/(R*V')
+	float	range				= _min(p_source.max_distance,clip);
+	if	(clip<0)				return;
 
 	// Inform objects
 	SoundRender->s_events.push_back	(mk_pair(owner,range));
 }
+
+void CSoundRender_Emitter::switch_to_2D()
+{
+ 	b2D 						= TRUE;	
+    set_position				(SoundRender->listener_position()); 
+}
+
+void CSoundRender_Emitter::switch_to_3D()						
+{ 	
+	b2D 						= FALSE;											
+}
+
