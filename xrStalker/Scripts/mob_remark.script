@@ -150,6 +150,4 @@ function set_scheme(npc, ini, scheme, section, gulag_name)
 	st.anim_head     = utils.cfg_get_string(ini, section, "anim_head", npc, false, "")
 	st.snd           = utils.cfg_get_string(ini, section, "snd", npc, false, "")
 	st.time          = utils.cfg_get_string(ini, section, "time", npc, false, "")
-
-	xr_logic.reset_actions(st)
 end

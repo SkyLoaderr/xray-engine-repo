@@ -13,8 +13,15 @@ function gulag_activate(npc, ini, section, gulag_name)
 	end
 
 	local npc_id = npc:id()
+
+	local old_active_section = xr_motivator.storage[npc_id]["active_section"]
+	if old_active_section then
+		deactivate_actions_event(xr_motivator.storage[npc_id][utils.get_scheme_by_section(old_active_section)])
+	end
+
 	xr_motivator.storage[npc_id]["active_section"] = nil
 	xr_motivator.storage[npc_id]["gulag_name"] = if_then_else(gulag_name, gulag_name, "")
+
 	activate_by_section(npc, ini, section)
 end
 
@@ -23,6 +30,11 @@ function stalker_enable_scripts(npc, ini)
 	printf("_bp: physic_object: obj:name()=%s, obj:id()=%s", npc:name(), npc:id())
 
 	local npc_id = npc:id()
+
+	local old_active_section = xr_motivator.storage[npc_id]["active_section"]
+	if old_active_section then
+		deactivate_actions_event(xr_motivator.storage[npc_id][utils.get_scheme_by_section(old_active_section)])
+	end
 
 	xr_motivator.storage[npc_id]["active_section"] = nil
 	xr_motivator.storage[npc_id]["gulag_name"] = ""
@@ -84,6 +96,8 @@ function activate_by_section(npc, ini, section)
 		_G[schemes[scheme]].set_scheme(npc, ini, scheme, section, xr_motivator.storage[npc_id]["gulag_name"])
 		printf("DEBUG: activate_by_section: scheme '%s' activated from section '%s'", scheme, section)
 		xr_motivator.storage[npc_id]["active_section"] = section
+
+		reset_actions_event(xr_motivator.storage[npc_id][utils.get_scheme_by_section(section)])
 	else
 		utils.abort("object '%s': activate_by_section: section '%s' does not exist",
 			npc:name(), section)
@@ -126,14 +140,28 @@ function subscribe_action_for_events(st, new_action)
 	st.actions[new_action] = true
 end
 
-function reset_actions(st)
-	printf("DEBUG: reset_actions")
+function reset_actions_event(st)
+	printf("DEBUG: reset_actions_event")
 	if not st.actions then
 		utils.abort("reset_actions: scheme '%s', section '%s': at least one action in a scheme must be " ..
 			"subscribed for events", st.scheme, st.section)
 	end
 	for action_ptr, is_active in pairs(st.actions) do
 		action_ptr:reset_scheme()
+	end
+end
+
+function deactivate_actions_event(st)
+	printf("DEBUG: reset_actions")
+	if not st.actions then
+		utils.abort("reset_actions: scheme '%s', section '%s': at least one action in a scheme must be " ..
+			"subscribed for events", st.scheme, st.section)
+	end
+	for action_ptr, is_active in pairs(st.actions) do
+		if action_ptr.deactivate_scheme then
+			printf("WARNING: scheme '%s' has no deactivation event handler", st.scheme)
+			action_ptr:deactivate_scheme()
+		end
 	end
 end
 

@@ -123,9 +123,5 @@ function set_scheme(npc, ini, scheme, section, gulag_name)
 
 	st.path_walk_info = nil -- Будут инициализированы в reset(), сейчас пути могут быть еще
 	st.path_look_info = nil -- не загружены.
-
-	-- После изменении настроек, сбросить все actions, нуждающиеся в сбросе:
-	printf("DEBUG: set_scheme: about to call xr_logic.reset_actions()")
-	xr_logic.reset_actions(st)
 end
 

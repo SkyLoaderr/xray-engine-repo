@@ -130,6 +130,8 @@ function action_zoneguard_activity:execute()
 		if actor:alive() and see_actor and self.st.zone_warn_obj:active_zone_contact(actor:id()) and
 				teams[self.st.team].triggered == nil then
 			xr_state.anim_update(nil, self.object)
+			local mental_state = if_then_else(self.object:relation(actor) == game_object.friend,
+				anim.free, anim.danger)
 			if not self.st.no_move then
 				self.object:set_path_type(game_object.level_path)
 				self.object:set_desired_direction(actor:direction())
@@ -272,7 +274,5 @@ function set_scheme(npc, ini, scheme, section, gulag_name)
 	if not st.walker_team then
 		st.walker_team = st.team
 	end
-
-	xr_logic.reset_actions(st)
 end
 

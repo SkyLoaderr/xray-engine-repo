@@ -461,8 +461,5 @@ function set_scheme (npc, ini, scheme, section, gulag_name)
 	st.raid_walk_info = nil
 	st.raid_look_info = nil
 	st.raid_process = false
-
-	-- После изменении настроек, сбросить все actions, нуждающиеся в сбросе:
-	xr_logic.reset_actions (st)
 end
 

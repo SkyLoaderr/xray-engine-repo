@@ -29,6 +29,10 @@ function door_binder:reset_scheme(delta)
 	self.block = false
 end
 
+function door_binder:deactivate_scheme()
+	self.object:clear_use_callback()
+end
+
 function door_binder:initialize()
 	printf("_bp: door_binder: initialize()")
 	self.joint = self.object:get_physics_shell():get_joint_by_bone_name("door")
@@ -61,7 +65,7 @@ function door_binder:update(delta)
 		return
 	end
 
-	printf("_bp: door_binder:update [%s] [%d]", self.object:name(), device():time_global())
+	--printf("_bp: door_binder:update [%s] [%d]", self.object:name(), device():time_global())
 
 	xr_logic.try_switch_to_another_section(self.object, self.st)
 
@@ -118,6 +122,4 @@ function set_scheme(npc, ini, scheme, section, gulag_name)
 
 	st.locked    = utils.cfg_get_bool(ini, section, "locked", npc, false)
 	st.sign      = utils.cfg_get_string(ini, section, "sign", npc, false, gulag_name, "door_sign")
-
-	xr_logic.reset_actions(st)
 end

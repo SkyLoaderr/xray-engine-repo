@@ -795,8 +795,5 @@ function set_scheme (npc, ini, scheme, section, gulag_name)
 	st.look_dir = vector ():set (0, 0, 1)
 	st.leader_command = leader_move
 	st.npc = npc
-
-	-- После изменении настроек, сбросить все actions, нуждающиеся в сбросе:
-	xr_logic.reset_actions (st)
 end
 ----------------------------------------------------------------------------------------
