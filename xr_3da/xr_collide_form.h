@@ -125,7 +125,7 @@ class ENGINE_API	CCF_Skeleton : public ICollisionForm
 {
 private:
 	Fbox			base_box;
-	xr_vector<CCF_OBB>	model;
+	xr_vector<CCF_OBB>	models;
 
 	u32				dwFrame;		// The model itself
 	u32				dwFrameTL;		// Top level

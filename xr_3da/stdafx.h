@@ -31,6 +31,8 @@
 	#define DLL_API
 #endif // NO_ENGINE_API
 
+#define ECORE_API
+
 // Our headers
 #include "engine.h"
 #include "defines.h"
