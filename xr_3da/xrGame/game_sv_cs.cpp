@@ -442,11 +442,8 @@ void game_sv_CS::OnPlayerConnect	(u32 id_who)
 	ps_who->money_total = 1000;
 
 	// Spawn "actor"
-	ps_who->team = u8(get_option_i(options,"team",AutoTeam()));
+	ps_who->team			= u8(get_option_i(options,"team",AutoTeam()));
 	xrSE_Spectator*		A	=	(xrSE_Spectator*)spawn_begin	("spectator");															// create SE
-/*	xrServerEntity*		E	=	spawn_begin	(ps_who->team?"actor_cs_1":"actor_cs_2");													// create SE
-	xrSE_Actor*	A			=	(xrSE_Actor*) E;					
-*/
 	strcpy					(A->s_name_replace,get_option_s(options,"name","Player"));					// name
 	A->s_flags				=	M_SPAWN_OBJECT_ACTIVE  | M_SPAWN_OBJECT_LOCAL | M_SPAWN_OBJECT_ASPLAYER;// flags
 	assign_RP				(A);
@@ -492,7 +489,8 @@ void game_sv_CS::OnPlayerConnect	(u32 id_who)
 				F_entity_Destroy				(W_pistol);
 			}
 		}
-	}*/
+	}
+	*/
 }
 
 void game_sv_CS::OnPlayerBuy		(u32 id_who, u16 eid_who, LPCSTR what)
@@ -594,7 +592,7 @@ void game_sv_CS::OnPlayerBuy		(u32 id_who, u16 eid_who, LPCSTR what)
 		// check if has money to pay
 		game_PlayerState*	ps_who	=	get_id	(id_who);
 		if(ps_who->money_total < cost)	{ F_entity_Destroy(E); return; }
-		ps_who->money_total		= ps_who->money_total - s16(cost);
+		ps_who->money_total			= ps_who->money_total - s16(cost);
 
 		// Spawn item
 		spawn_end				(E,	id_who);
