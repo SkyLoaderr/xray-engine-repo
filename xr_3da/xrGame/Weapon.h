@@ -145,8 +145,8 @@ public:
 
 	IC BOOL					IsWorking			()				{	return bWorking;							}
 	IC BOOL					IsValid				()				{	return iAmmoCurrent || iAmmoElapsed;		}
-	IC BOOL					IsVisible			()				{	return bVisible;							}	// Weapon change occur only after visibility change
-	IC BOOL					IsUpdating			()				{	return bWorking || bPending || bVisible;	}	// Does weapon need's update?
+	IC BOOL					IsVisible			()				{	return getVisible();						}	// Weapon change occur only after visibility change
+	IC BOOL					IsUpdating			()				{	return bWorking || bPending || getVisible();}	// Does weapon need's update?
 	virtual BOOL			HasOpticalAim		()				{	return FALSE;								}
 	virtual float			GetZoomFactor		()				{	return DEFAULT_FOV;							}
 

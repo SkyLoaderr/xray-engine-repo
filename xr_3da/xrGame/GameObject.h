@@ -20,8 +20,8 @@ public:
 	virtual float			Ambient				();
 
 	// State flags
-	virtual BOOL			net_Relevant		()	{ return net_Local && bActive;	}	// send messages only if active and local
-	virtual BOOL			Ready				()	{ return net_Ready && bActive;	}	// update only if active and fully initialized by/for network
+	virtual BOOL			net_Relevant		()	{ return net_Local && getActive();	}	// send messages only if active and local
+	virtual BOOL			Ready				()	{ return net_Ready && getActive();	}	// update only if active and fully initialized by/for network
 	
 	// Position stack
 	virtual	SavedPosition	ps_Element			(DWORD ID);

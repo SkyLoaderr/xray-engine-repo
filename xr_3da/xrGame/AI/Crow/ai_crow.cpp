@@ -117,10 +117,10 @@ void CAI_Crow::Load( LPCSTR section )
 
 BOOL CAI_Crow::net_Spawn		(BOOL bLocal, int server_id, Fvector& o_pos, Fvector& o_angle, NET_Packet& P, u16 flags)
 {
-	BOOL R = inherited::net_Spawn	(bLocal,server_id,o_pos,o_angle,P,flags);
-	bVisible					= TRUE;
-	AI_Node = 0;
-	return R;
+	BOOL R		= inherited::net_Spawn	(bLocal,server_id,o_pos,o_angle,P,flags);
+	setVisible	(TRUE);
+	AI_Node		= 0;
+	return		R;
 }
 
 // crow update
@@ -265,8 +265,8 @@ void CAI_Crow::state_DeathFall()
 void CAI_Crow::UpdateCL()
 {
 	inherited::UpdateCL();
-	if (!bActive) return;
-//---------------------------------------------------------------------
+	if (!getActive()) return;
+
 	switch (st_current){
 	case eFlyIdle:
 	case eFlyUp:
@@ -277,7 +277,6 @@ void CAI_Crow::UpdateCL()
 		break;
 	}
 }
-//---------------------------------------------------------------------
 
 // Core events
 void CAI_Crow::net_Export(NET_Packet& P)					// export to server
