@@ -1,10 +1,16 @@
+local first_call = false
+
 function boar_callback (obj, action_type, index)
 
 	if index < 0 then return end
 
+	if first_call == true then return end
+
     local ptr = patrol (obj:patrol ())
 
 	if ptr:flag (index, 1) == false then return end
+
+	first_call = true
 	obj:clear_callback (game_object.movement)
 	reset_action (obj, m_attack_wave.script_name ())
 	action (obj, anim ("stand_attack_1"), cond (cond.anim_end))
