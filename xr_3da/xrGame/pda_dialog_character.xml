@@ -2,27 +2,27 @@
 <!-- CHARACTER INFO IN THE PDA DIALOG -->
 <window>
 	<!-- ICON -->
-	<icon_static x="0" y="0" width="128" height="128"></icon_static>
+	<icon_static x="0" y="0" width="106" height="120"></icon_static>
 
 	<!-- NAME -->
 	<static x="30" y="182" width="240" height="60">
-		<text x="0" y="0" font="small" r="255" g="128" b="64"></text>
+		<text x="0" y="0" font="letterica18" r="255" g="128" b="64"></text>
 	</static>
 
 	<!-- RANK -->
-	<static x="30" y="192" width="240" height="60">
-		<text x="0" y="0" font="small" r="255" g="255" b="255">Rank</text>
+	<static x="121" y="14" width="240" height="60">
+		<text x="0" y="0" font="letterica18" r="150" g="150" b="180">Rank</text>
 	</static>
 
 	<!-- COMMUNITY -->
-	<static x="30" y="202" width="240" height="60">
-		<text x="0" y="0" font="small" r="255" g="255" b="255"></text>
+	<static x="121" y="60" width="240" height="60">
+		<text x="0" y="0" font="letterica18" r="150" g="150" b="180"></text>
 	</static>
 
 
 	<!-- RELATION -->
-	<relation_static x="30" y="212" width="240" height="60">
-		<text x="0" y="0" font="small" r="255" g="255" b="255"></text>
+	<relation_static x="121" y="106" width="240" height="60">
+		<text x="0" y="0" font="letterica18" r="150" g="150" b="180"></text>
 	</relation_static>
 </window>
 
