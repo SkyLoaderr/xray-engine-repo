@@ -104,14 +104,14 @@ template <class T>
 void transfer(const char *name, vector<T> &dest, IReader& F, u32 chunk)
 {
 	IReader*	O		= F.open_chunk(chunk);
-	u32		count	= O?(O->Length()/sizeof(T)):0;
+	u32		count	= O?(O->length()/sizeof(T)):0;
 	clMsg			("* %16s: %d",name,count);
 	if (count)  
 	{
 		dest.reserve(count);
-		dest.insert	(dest.begin(), (T*)O->Pointer(), (T*)O->Pointer() + count);
+		dest.insert	(dest.begin(), (T*)O->pointer(), (T*)O->pointer() + count);
 	}
-	if (O)		O->Close	();
+	if (O)		O->close	();
 }
 
 extern u32*		Surface_Load	(char* name, u32& w, u32& h);
@@ -132,7 +132,7 @@ void xrLoad(LPCSTR name)
 		FS.r				(&H,sizeof(hdrCFORM));
 		R_ASSERT			(CFORM_CURRENT_VERSION==H.version);
 		
-		Fvector*	verts	= (Fvector*)FS.Pointer();
+		Fvector*	verts	= (Fvector*)FS.pointer();
 		CDB::TRI*	tris	= (CDB::TRI*)(verts+H.vertcount);
 		RCAST_Model.build	( verts, H.vertcount, tris, H.facecount );
 		Msg("* Level CFORM: %dK",RCAST_Model.memory()/1024);
@@ -147,12 +147,12 @@ void xrLoad(LPCSTR name)
 	// Load .details
 	{
 		strconcat			(N,name,"level.details");
-		dtFS				= xr_new<CVirtualFileStreamRW> (N);
+		dtFS				= xr_new<CVirtualFileRW> (N);
 		dtFS->r_chunk		(0,&dtH);
 		R_ASSERT			(dtH.version==DETAIL_VERSION);
 
 		dtFS->find_chunk		(2);
-		dtS					= (DetailSlot*)dtFS->Pointer();
+		dtS					= (DetailSlot*)dtFS->pointer();
 	}
 	
 	// Load lights
@@ -161,11 +161,11 @@ void xrLoad(LPCSTR name)
 
 		string32	ID			= BUILD_PROJECT_MARK;
 		string32	id;
-		IReader*	F			= xr_new<CFileStream> (N);
+		IReader*	F			= xr_new<CFileReader> (N);
 		F->r		(&id,8);
 		if (0==strcmp(id,ID))	{
 			xr_delete			(F);
-			F					= xr_new<CCompressedStream> (N,ID);
+			F					= xr_new<CCompressedReader> (N,ID);
 		}
 		IReader&				FS	= *F;
 
@@ -185,7 +185,7 @@ void xrLoad(LPCSTR name)
 			{
 				F = FS.open_chunk(EB_Light_static);
 				b_light_static	temp;
-				DWORD cnt		= F->Length()/sizeof(temp);
+				DWORD cnt		= F->length()/sizeof(temp);
 				for				(DWORD i=0; i<cnt; i++)
 				{
 					R_Light		RL;
@@ -212,7 +212,7 @@ void xrLoad(LPCSTR name)
 //					R_ASSERT	(temp.controller_ID<L_layers.size());
 //					L_layers	[temp.controller_ID].lights.push_back	(RL);
 				}
-				F->Close		();
+				F->close		();
 			}
 		}
 		transfer("materials",	g_materials,			FS,		EB_Materials);
@@ -222,7 +222,7 @@ void xrLoad(LPCSTR name)
 		{
 			Surface_Init		();
 			F = FS.open_chunk	(EB_Textures);
-			u32 tex_count	= F->Length()/sizeof(b_texture);
+			u32 tex_count	= F->length()/sizeof(b_texture);
 			for (u32 t=0; t<tex_count; t++)
 			{
 				Progress		(float(t)/float(tex_count));
@@ -238,7 +238,7 @@ void xrLoad(LPCSTR name)
 				if (strchr(N,'.')) *(strchr(N,'.')) = 0;
 				strlwr			(N);
 				char th_name[256]; strconcat(th_name,"\\\\x-ray\\stalkerdata$\\textures\\",N,".thm");
-				CCompressedStream THM	(th_name,THM_SIGN);
+				CCompressedReader THM	(th_name,THM_SIGN);
 
 				// analyze thumbnail information
 				R_ASSERT		(THM.r_chunk(THM_CHUNK_TEXTUREPARAM,&BT.THM));
