@@ -58,7 +58,7 @@ void CConsole::Destroy	()
 	_DELETE						(pFont);
 }
 
-void CConsole::OnFrame()
+void CConsole::OnFrame	()
 {
 	cur_time+=Device.fTimeDelta;
 	rep_time+=Device.fTimeDelta*fAccel;
@@ -66,7 +66,7 @@ void CConsole::OnFrame()
 	if (rep_time>0.2f) { rep_time-=0.2f; bRepeat=true;	fAccel+=0.2f;	}
 }
 
-void CConsole::OnRender()
+void CConsole::OnRender	()
 {
 	float			fMaxY;
 	BOOL			bGame;
