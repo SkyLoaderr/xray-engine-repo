@@ -63,6 +63,9 @@
 	<string id="bar_dolg_bring_rg6">
 		<text>Добыть РГ-6 для генерала Воронина</text>
 	</string>
+	<string id="bar_dolg_find_max">
+		<text>Связаться с боевиком Свободы Максом и узнать, где хранится РГ-6</text>
+	</string>
 	<string id="bar_dolg_find_rg6">
 		<text>Проникнуть на территорию группировки Свободы и выкрасть РГ-6</text>
 	</string>
