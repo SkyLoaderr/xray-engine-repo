@@ -413,7 +413,7 @@
 		<name>Неизвестный солдат</name>
 		<icon x="6" y="4"></icon>
 		<map_icon x="2" y="2"></map_icon>
-		<bio>Представитель неизвестного военного подразделения. Хорошо вооружен и очень опасен.
+		<bio> Военный сталкер. Хорошо вооружен и очень опасен.
 		Детальная информация недоступна.</bio>
 
 		<team>Soldier_military</team>
@@ -429,7 +429,7 @@
 			[spawn] \n
 			wpn_beretta \n
 			ammo_9x19_pbp = 1 \n
-			wpn_val \n
+			wpn_vintorez \n
 			ammo_9x39_sp5 = 1 \n
 			device_torch \n
 		</supplies>		
@@ -443,7 +443,7 @@
 		<name>Неизвестный солдат</name>
 		<icon x="6" y="4"></icon>
 		<map_icon x="2" y="2"></map_icon>
-		<bio>Представитель неизвестного военного подразделения. Хорошо вооружен и очень опасен.
+		<bio>Военный сталкер-ветеран. Очень хорошо вооружен, защищен и очень опасен.
 		Детальная информация недоступна.</bio>
 
 		<team>Soldier_military</team>
@@ -454,7 +454,7 @@
 		<rank>90</rank>
 		<reputation>0</reputation>
 
-		<visual>actors\militari\stalker_militari_1</visual>		
+		<visual>actors\militari\stalker_militari_2</visual>		
 		<supplies>
 			[spawn] \n
 			wpn_usp \n
@@ -468,6 +468,67 @@
 		<actor_dialog>general_pda_talk</actor_dialog>
 		<actor_dialog>esc_stalker_talk_level</actor_dialog>
 	</specific_character>
+
+	<specific_character id="soldier_military_default3" team_default = "1">
+		<name>Неизвестный солдат</name>
+		<icon x="6" y="4"></icon>
+		<map_icon x="2" y="2"></map_icon>
+		<bio>Военный сталкер-ветеран. Очень хорошо вооружен, защищен и очень опасен.
+		Детальная информация недоступна..</bio>
+
+		<team>Soldier_military</team>
+		
+		<class>Soldier_military</class>
+		<community>military</community>
+		
+		<rank>90</rank>
+		<reputation>0</reputation>
+
+		<visual>actors\militari\stalker_militari_antigas_2</visual>		
+		<supplies>
+			[spawn] \n
+			wpn_usp \n
+			ammo_11.43x23_hydro = 1 \n
+			wpn_vintorez \n
+			ammo_9x39_sp5 = 1 \n
+			device_torch \n
+		</supplies>		
+					
+		<start_dialog>hello_dialog</start_dialog>
+		<actor_dialog>general_pda_talk</actor_dialog>
+		<actor_dialog>esc_stalker_talk_level</actor_dialog>
+	</specific_character>
+
+<specific_character id="soldier_military_default4" team_default = "1">
+		<name>Неизвестный солдат</name>
+		<icon x="6" y="4"></icon>
+		<map_icon x="2" y="2"></map_icon>
+		<bio>Военный сталкер. Очень хорошо вооружен, защищен и очень опасен.
+		Детальная информация недоступна.</bio>
+
+		<team>Soldier_military</team>
+		
+		<class>Soldier_military</class>
+		<community>military</community>
+		
+		<rank>90</rank>
+		<reputation>0</reputation>
+
+		<visual>actors\militari\stalker_militari_antigas_1</visual>		
+		<supplies>
+			[spawn] \n
+			wpn_usp \n
+			ammo_11.43x23_hydro = 1 \n
+			wpn_val \n
+			ammo_9x39_sp5 = 1 \n
+			device_torch \n
+		</supplies>		
+					
+		<start_dialog>hello_dialog</start_dialog>
+		<actor_dialog>general_pda_talk</actor_dialog>
+		<actor_dialog>esc_stalker_talk_level</actor_dialog>
+	</specific_character>
+
 <!--
 	<specific_character id="soldier_default" team_default = "1">
 		<name>Неизвестный военный.</name>
