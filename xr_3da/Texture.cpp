@@ -431,7 +431,7 @@ ENGINE_API IDirect3DBaseTexture9*	TWLoader2D
 	CImage					Image;
 	IDirect3DTexture9*		pTexture2D		= NULL;
 	IDirect3DCubeTexture9*	pTextureCUBE	= NULL;
-	FILE_NAME				fn;
+	string256				fn;
 
 	// validation
 	R_ASSERT				(fRName);

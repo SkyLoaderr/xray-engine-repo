@@ -94,7 +94,7 @@ void CLocatorAPI::ProcessOne	(const char* path, LPVOID _F)
 {
 	_finddata_t& F	= *((_finddata_t*)_F);
 
-	FILE_NAME	N;
+	string256	N;
 	strcpy		(N,path);
 	strcat		(N,F.name);
 	strlwr		(N);
@@ -119,7 +119,7 @@ void CLocatorAPI::Recurse		(const char* path)
     _finddata_t		sFile;
     int				hFile;
 
-	FILE_NAME		N;
+	string256		N;
 	strcpy			(N,path);
 	strcat			(N,"*.*");
 
@@ -165,7 +165,7 @@ void CLocatorAPI::Destroy		()
 
 BOOL CLocatorAPI::Exist			(const char* F)
 {
-	FILE_NAME		N;
+	string256		N;
 	strcpy			(N,F);
 	strlwr			(N);
 	file			desc;
@@ -189,7 +189,7 @@ void CLocatorAPI::List			(vector<char*>& dest, const char* path, u32 flags)
 {
 	VERIFY			(flags);
 	
-	FILE_NAME		N;
+	string256		N;
 	strcpy			(N,path);
 	strlwr			(N);
 	if (N[strlen(N)-1]!='\\') strcat(N,"\\");
@@ -225,7 +225,7 @@ void CLocatorAPI::List			(vector<char*>& dest, const char* path, u32 flags)
 CStream* CLocatorAPI::Open	(const char* F)
 {
 	// Search entry
-	FILE_NAME		N;
+	string256		N;
 	strcpy			(N,F);
 	strlwr			(N);
 	file			desc_f;

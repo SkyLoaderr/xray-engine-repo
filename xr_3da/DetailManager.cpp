@@ -87,7 +87,7 @@ void dump	(CDetailManager::vis_list& lst)
 void CDetailManager::Load		()
 {
 	// Open file stream
-	FILE_NAME	fn;
+	string256	fn;
 	if (!Engine.FS.Exist(fn,Path.Current,"level.details"))
 	{
 		dtFS	= NULL;

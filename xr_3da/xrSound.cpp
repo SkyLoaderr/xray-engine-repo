@@ -46,7 +46,7 @@ void CSoundManager::OnFrame		( )
 void	CSoundManager::Create				( sound& S, BOOL _3D, const char* fName, BOOL bCtrlFreq, int type )
 {
 	if (!bPresent) return;
-	FILE_NAME	fn;
+	string256	fn;
 	strcpy		(fn,fName);
 	char*		E = strext(fn);
 	if (E)		*E = 0;

@@ -61,7 +61,7 @@ void CEnvironment::Load(CInifile *pIni, char *section)
 	if (pIni->LineExists(section,"suns"))
 	{
 		LPCSTR		S;
-		FILE_NAME	name;
+		string256	name;
 		CSun*		pSun;
 		S = pIni->ReadSTRING(section,"suns");
 		u32 scnt = _GetItemCount(S);

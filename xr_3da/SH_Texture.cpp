@@ -86,7 +86,7 @@ void CTexture::Load(LPCSTR cName)
 	}
 
 	// Check for AVI
-	FILE_NAME fn;
+	string256 fn;
 #ifndef M_BORLAND
 	if (Engine.FS.Exist(fn,Path.Textures,cName,".avi"))
 #else

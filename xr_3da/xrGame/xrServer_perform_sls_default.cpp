@@ -12,7 +12,7 @@ void xrServer::SLS_Default	()
 			return;
 		}
 	}
-	FILE_NAME			fn_spawn;
+	string256			fn_spawn;
 	if (Engine.FS.Exist(fn_spawn, ::Path.Current, "level.spawn"))
 	{
 		CStream*		SP	= Engine.FS.Open(fn_spawn);

@@ -91,7 +91,7 @@ void CLensFlare::AddFlare(float fRadius, float fOpacity, float fPosition, const 
 void CLensFlare::Load( CInifile* pIni, LPCSTR section )
 {
 	LPCSTR		T,R,O,P;
-	FILE_NAME	name;
+	string256	name;
 	float r, o, p;
 	m_Flags.set	(flSource,pIni->ReadBOOL ( section,"source" ));
 	if (m_Flags.is(flSource)){

@@ -262,7 +262,7 @@ void CApplication::Level_Scan()
 	R_ASSERT		(!folder.empty());
 	for (u32 i=0; i<folder.size(); i++)
 	{
-		FILE_NAME	N,F;
+		string256	N,F;
 		strconcat	(N,Path.Levels,folder[i]);
 		if	(
 			Engine.FS.Exist(F,N,"level")		&&

@@ -5,7 +5,7 @@
 void CDetail::Load		(CStream* S)
 {
 	// Shader
-	FILE_NAME		fnT,fnS;
+	string256		fnT,fnS;
 	S->RstringZ		(fnS);
 	S->RstringZ		(fnT);
 	shader			= Device.Shader.Create(fnS,	fnT);

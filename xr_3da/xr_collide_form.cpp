@@ -49,7 +49,7 @@ BOOL CCF_Polygonal::LoadModel( CInifile* ini, const char *section )
 	R_ASSERT			(section);
 
 	// Locate file
-	FILE_NAME			full_path;
+	string256			full_path;
 	LPCSTR				N = ini->ReadSTRING(section,"cform");
 	if (!Engine.FS.Exist(full_path, Path.Current, N))
 		if (!Engine.FS.Exist(full_path, Path.CForms, N)){

@@ -49,7 +49,7 @@ void CObjectAnimator::SetActiveMotion(COMotion* mot, bool bLoop)
 
 void CObjectAnimator::LoadMotions(const char* fname)
 {
-	FILE_NAME			full_path;
+	string256			full_path;
 	if (!Engine.FS.Exist( full_path, Path.Current, fname ))
 		if (!Engine.FS.Exist( full_path, Path.Meshes, fname ))
 			Debug.fatal("Can't find motion file '%s'.",fname);

@@ -81,7 +81,7 @@ void CVisual::Load		(const char* N, CStream *data, u32 dwFlags)
 #endif
 	} else {
 		if (data->FindChunk(OGF_TEXTURE)) {
-			FILE_NAME fnT,fnS;
+			string256 fnT,fnS;
 			data->RstringZ(fnT);
 			data->RstringZ(fnS);
 			hShader = Device.Shader.Create(fnS,fnT);

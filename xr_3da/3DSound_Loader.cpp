@@ -287,7 +287,7 @@ void CSound::Load		(LPCSTR name, BOOL ctrl_freq)
 		_Freq			= ctrl_freq;
 	}
 	
-	FILE_NAME			fn,N;
+	string256			fn,N;
 	strcpy				(N,name);
 	strlwr				(N);
 	if (strext(N))		*strext(N) = 0;

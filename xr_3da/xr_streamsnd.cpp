@@ -277,7 +277,7 @@ void CSoundStream::LoadADPCM( )
 	sxr_riff		riff;
 	sxr_hdr			hdr;
 
-	FILE_NAME		fn;
+	string256		fn;
 	sprintf			(fn,"%s%s.wav",Path.Sounds,fName);
 
 	DataPos			= NULL;
