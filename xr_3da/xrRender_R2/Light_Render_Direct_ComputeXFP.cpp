@@ -37,16 +37,17 @@ BOOL CLight_Render_Direct::compute_xfp_1	(u32 m_phase, light* L)
 	{
 		Fvector		points			[5];
 		ComputeFrustum				(points,deg2rad(90.f),1.f,L->range+EPS_S,L_dir,L_up,L_right,L_pos);
+		CFrustum	fTest;			fTest.CreateFromMatrix			(P_combine,FRUSTUM_P_LRTB|FRUSTUM_P_NEAR);
 		sPoly	sSrc(points,4), sDest;
-		if (0!=RImplementation.ViewBase.ClipPoly(sSrc, sDest))		return TRUE;
+		if (0!=fTest.ClipPoly(sSrc, sDest))		return TRUE;
 		sSrc.clear();sDest.clear();sSrc.push_back(L_pos);sSrc.push_back(points[0]);sSrc.push_back(points[1]);
-		if (0!=RImplementation.ViewBase.ClipPoly(sSrc, sDest))		return TRUE;
+		if (0!=fTest.ClipPoly(sSrc, sDest))		return TRUE;
 		sSrc.clear();sDest.clear();sSrc.push_back(L_pos);sSrc.push_back(points[1]);sSrc.push_back(points[2]);
-		if (0!=RImplementation.ViewBase.ClipPoly(sSrc, sDest))		return TRUE;
+		if (0!=fTest.ClipPoly(sSrc, sDest))		return TRUE;
 		sSrc.clear();sDest.clear();sSrc.push_back(L_pos);sSrc.push_back(points[2]);sSrc.push_back(points[3]);
-		if (0!=RImplementation.ViewBase.ClipPoly(sSrc, sDest))		return TRUE;
+		if (0!=fTest.ClipPoly(sSrc, sDest))		return TRUE;
 		sSrc.clear();sDest.clear();sSrc.push_back(L_pos);sSrc.push_back(points[3]);sSrc.push_back(points[0]);
-		if (0!=RImplementation.ViewBase.ClipPoly(sSrc, sDest))		return TRUE;
+		if (0!=fTest.ClipPoly(sSrc, sDest))		return TRUE;
 	}
 
 	// The last possibility - our main frustum is totally inside test frustum
@@ -55,7 +56,7 @@ BOOL CLight_Render_Direct::compute_xfp_1	(u32 m_phase, light* L)
 		float		p_FOV			= Device.fFOV;
 		float		p_DIST			= g_pGamePersistent->Environment.CurrentEnv.far_plane;
 		ComputeFrustum				(points,p_FOV,1.f,p_DIST,Device.vCameraDirection,Device.vCameraTop,Device.vCameraRight,Device.vCameraPosition);
-		CFrustum	fTest;			fTest.CreateFromMatrix			(P_combine,FRUSTUM_P_ALL);
+		CFrustum	fTest;			fTest.CreateFromMatrix			(P_combine,FRUSTUM_P_LRTB|FRUSTUM_P_NEAR);
 		sPoly	sSrc(points,4), sDest;
 		if (0!=fTest.ClipPoly(sSrc, sDest))		return TRUE;
 		sSrc.clear();sDest.clear();sSrc.push_back(L_pos);sSrc.push_back(points[0]);sSrc.push_back(points[1]);
