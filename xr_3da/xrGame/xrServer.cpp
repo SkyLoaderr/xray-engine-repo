@@ -93,7 +93,7 @@ void xrServer::Update	()
 	for (u32 client=0; client<net_Players.size(); client++)
 	{
 		// Initialize process and check for available bandwidth
-		xrClientData*	Client	= (xrClientData*) net_Players	[client];
+		xrClientData*	Client		= (xrClientData*) net_Players	[client];
 		if (!Client->net_Ready)		continue;
 		if (!HasBandwidth(Client))	continue;
 
