@@ -399,7 +399,12 @@ void CLevel::OnRender()
 void CLevel::OnEvent(EVENT E, DWORD P1, DWORD P2)
 {
 	if (E==eEntitySpawn)	{
-		
+		char	Name[128];	Name[0]=0;
+		int		rp=0,team=0,squad=0,group=0;
+
+		sscanf		(LPCSTR(P1),"%[^,],%d,%d,%d,%d", Name, &rp, &team, &squad, &group);
+		g_cl_Spawn	(Name,rp,team,squad,group);
+
 	} else if (E==eChangeRP && P1) {
 	} else if (E==eDemoPlay && P1) {
 		char* name = (char*)P1;
