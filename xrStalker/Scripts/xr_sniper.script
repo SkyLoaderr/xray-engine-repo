@@ -1,0 +1,221 @@
+local distance_to_enemy			= 10
+
+---------------------------------------------------------------------------------------------------------------------
+-- Evaluators
+---------------------------------------------------------------------------------------------------------------------
+--Видим ли монстра рядом
+class "monster_evaluator" (property_evaluator)
+function monster_evaluator:__init (name, storage) super ()
+    self.a = storage
+end
+
+function monster_evaluator:evaluate()
+    return false
+end
+---------------------------------------------------------------------------------------------------------------------
+
+--Видим ли врага
+class "see_enemy_evaluator" (property_evaluator)
+function see_enemy_evaluator:__init (name, storage) super ()
+    self.a = storage
+end
+
+function see_enemy_evaluator:evaluate()
+    return false
+end
+---------------------------------------------------------------------------------------------------------------------
+
+--Получили ли хит
+class "receive_hit_evaluator" (property_evaluator)
+function receive_hit_evaluator:__init (name, storage) super ()
+    self.a = storage
+end
+
+function receive_hit_evaluator:evaluate()
+    return false
+end
+---------------------------------------------------------------------------------------------------------------------
+
+--Находится ли враг ближе некоторого расстояния
+class "enemy_near_evaluator" (property_evaluator)
+function enemy_near_evaluator:__init (name, storage) super ()
+    self.a = storage
+end
+
+function enemy_near_evaluator:evaluate()
+    return( self.object:best_enemy() ~= nil and distance_between(self.object, self.object:best_enemy()) < distance_to_enemy )
+end
+---------------------------------------------------------------------------------------------------------------------
+
+---------------------------------------------------------------------------------------------------------------------
+-- Action sniper_idle
+---------------------------------------------------------------------------------------------------------------------
+class "action_sniper_idle" (action_base)
+function action_sniper_idle:__init (name, storage) super (nil, name)
+    self.a = storage
+end
+---------------------------------------------------------------------------------------------------------------------
+function action_sniper_idle:initialize ()
+    action_base.initialize (self)
+
+end
+---------------------------------------------------------------------------------------------------------------------
+function action_sniper_idle:execute ()
+    action_base.execute (self)
+end
+---------------------------------------------------------------------------------------------------------------------
+function action_sniper_idle:finalize ()
+    action_base.finalize (self)
+end
+
+---------------------------------------------------------------------------------------------------------------------
+-- Action kill_monster
+---------------------------------------------------------------------------------------------------------------------
+class "action_kill_monster" (action_base)
+function action_kill_monster:__init (name, storage) super (nil, name)
+    self.a = storage
+end
+---------------------------------------------------------------------------------------------------------------------
+function action_kill_monster:initialize ()
+    action_base.initialize (self)
+
+end
+---------------------------------------------------------------------------------------------------------------------
+function action_kill_monster:execute ()
+    action_base.execute (self)
+end
+---------------------------------------------------------------------------------------------------------------------
+function action_kill_monster:finalize ()
+    action_base.finalize (self)
+end
+
+---------------------------------------------------------------------------------------------------------------------
+-- Action kill_enemy
+---------------------------------------------------------------------------------------------------------------------
+class "action_kill_enemy" (action_base)
+function action_kill_enemy:__init (name, storage) super (nil, name)
+    self.a = storage
+end
+---------------------------------------------------------------------------------------------------------------------
+function action_kill_enemy:initialize ()
+    action_base.initialize (self)
+
+end
+---------------------------------------------------------------------------------------------------------------------
+function action_kill_enemy:execute ()
+    action_base.execute (self)
+end
+---------------------------------------------------------------------------------------------------------------------
+function action_kill_enemy:finalize ()
+    action_base.finalize (self)
+end
+
+---------------------------------------------------------------------------------------------------------------------
+-- Action
+---------------------------------------------------------------------------------------------------------------------
+class "action_camper" (action_base)
+function action_camper:__init (name, storage) super (nil, name)
+    self.a = storage
+end
+---------------------------------------------------------------------------------------------------------------------
+function action_camper:initialize ()
+    action_base.initialize (self)
+
+end
+---------------------------------------------------------------------------------------------------------------------
+function action_camper:execute ()
+    action_base.execute (self)
+end
+---------------------------------------------------------------------------------------------------------------------
+function action_camper:finalize ()
+    action_base.finalize (self)
+end
+
+----------------------------------------------------------------------------------------------------------------------
+--scientist binder
+----------------------------------------------------------------------------------------------------------------------
+function add_to_binder(obj)
+
+    local operators     = {}
+    local properties    = {}
+
+
+    properties["enabled"]            = xr_evaluators_id.jon_sniper_enabled
+    properties["see_monster"]        = xr_evaluators_id.jon_sniper_see_monster
+    properties["see_enemy"]          = xr_evaluators_id.jon_sniper_see_enemy
+    properties["receive_hit"]        = xr_evaluators_id.jon_sniper_receive_hit
+    properties["enemy_near"]         = xr_evaluators_id.jon_sniper_enemy_near
+
+    operators["idle"]                = xr_actions_id.jon_sniper_enabled
+    operators["kill_monster"]        = xr_actions_id.jon_sniper_see_monster
+    operators["kill_enemy"]          = xr_actions_id.jon_sniper_see_enemy
+    operators["recieve_hit"]         = xr_actions_id.jon_sniper_receive_hit
+    operators["camper"]              = xr_actions_id.jon_sniper_camper
+
+    local manager  = obj:motivation_action_manager ()
+
+    manager:add_evaluator (properties["enabled"],     enabled_evaluator          ("alife_sniper", xr_motivator.storage[obj:id()].sniper))
+	manager:add_evaluator (properties["see_monster"], this.monster_evaluator     ("see_monster",  xr_motivator.storage[obj:id()].sniper))
+	manager:add_evaluator (properties["see_enemy"],   this.see_enemy_evaluator   ("see_enemy",    xr_motivator.storage[obj:id()].sniper))
+	manager:add_evaluator (properties["receive_hit"], this.receive_hit_evaluator ("recieve_hit",  xr_motivator.storage[obj:id()].sniper))
+	manager:add_evaluator (properties["enemy_near"],  this.enemy_near_evaluator  ("enemy_near",   xr_motivator.storage[obj:id()].sniper))
+
+    local action = this.action_sniper_idle ("sniper_idle", xr_motivator.storage[obj:id()].sniper)
+
+    action:add_precondition         (world_property (stalker_ids.property_alive,    true))
+    action:add_precondition         (world_property(stalker_ids.property_enemy,     false))
+    action:add_precondition         (world_property (properties["see_monster"],     false))
+    action:add_precondition         (world_property (properties["see_enemy"],       false))
+    action:add_precondition         (world_property (properties["receive_hit"],     false))
+    action:add_precondition         (world_property (properties["enabled"],         true))
+    action:add_effect               (world_property (properties["enabled"],         false))
+    manager:add_action              (operators["idle"], action)
+
+	action = this.action_kill_monster("kill_monster", xr_motivator.storage[obj:id()].sniper)
+
+    action:add_precondition         (world_property (stalker_ids.property_alive,    true))
+    action:add_precondition         (world_property (properties["enabled"],         true))
+    action:add_precondition         (world_property (properties["enemy_near"],      false))
+    action:add_precondition         (world_property (properties["see_enemy"],       false))
+    action:add_precondition         (world_property (properties["see_monster"],     true))
+    action:add_effect               (world_property (properties["see_monster"],     false))
+    manager:add_action              (operators["kill_monster"], action)
+
+    action = this.action_kill_enemy("kill_enemy", xr_motivator.storage[obj:id()].sniper)
+
+    action:add_precondition         (world_property (stalker_ids.property_alive,    true))
+    action:add_precondition         (world_property (properties["enabled"],         true))
+    action:add_precondition         (world_property (properties["enemy_near"],      false))
+    action:add_precondition         (world_property (properties["see_enemy"],       true))
+    action:add_effect               (world_property (properties["see_enemy"],       false))
+    manager:add_action              (operators["kill_enemy"], action)
+
+    action = this.action_camper("receive_hit", xr_motivator.storage[obj:id()].sniper)
+
+    action:add_precondition         (world_property (stalker_ids.property_alive,    true))
+    action:add_precondition         (world_property (properties["enabled"],         true))
+    action:add_precondition         (world_property (properties["enemy_near"],      false))
+    action:add_precondition         (world_property (properties["see_enemy"],       false))
+    action:add_precondition         (world_property (properties["see_monster"],     true))
+    action:add_precondition         (world_property (properties["receive_hit"],     true))
+    action:add_effect               (world_property (properties["receive_hit"],     false))
+    manager:add_action              (operators["recieve_hit"], action)
+
+    action = this.action_camper("camper", xr_motivator.storage[obj:id()].sniper)
+
+    action:add_precondition         (world_property (stalker_ids.property_alive,    true))
+    action:add_precondition         (world_property (properties["enabled"],         true))
+    action:add_precondition         (world_property (properties["enemy_near"],      false))
+    action:add_precondition         (world_property (properties["see_enemy"],       false))
+    action:add_precondition         (world_property (properties["see_monster"],     false))
+    action:add_precondition         (world_property (properties["receive_hit"],     false))
+    action:add_precondition         (world_property(stalker_ids.property_enemy,     true))
+    action:add_effect               (world_property (stalker_ids.property_enemy,    false))
+    manager:add_action              (operators["camper"], action)
+
+--    action = manager:action         (stalker_ids.action_combat_planner)
+--    action:add_precondition         (world_property (properties["enemy_near"],      true))
+
+    action = manager:action         (stalker_ids.action_puzzle_solver)
+    action:add_precondition         (world_property (properties["enabled"],  false))
+end
