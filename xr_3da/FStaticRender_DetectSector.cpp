@@ -9,7 +9,7 @@ CSector* CRender::detectSector(Fvector& P)
 
 	// Portals model
 	int		id1		= -1;
-	float	range1	= 100.f;
+	float	range1	= 500.f;
 	if (rmPortals)	
 	{
 		XRC.ray_query	(rmPortals,P,dir,range1);
