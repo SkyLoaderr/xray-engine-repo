@@ -295,31 +295,30 @@ float CPersonalWeaponTypeFunction::ffGetTheBestWeapon()
 				if (tpCustomWeapon && (tpCustomWeapon->GetAmmoCurrent() > tpCustomWeapon->GetAmmoMagSize()/10)) {
 					u32 dwCurrentBestWeapon = 0;
 					switch (tpCustomWeapon->SUB_CLS_ID) {
-						case CLSID_OBJECT_W_M134	: {
+						case CLSID_OBJECT_W_RPG7:
+						case CLSID_OBJECT_W_M134: {
 							dwCurrentBestWeapon = 9;
 							break;
 						}
-						case CLSID_OBJECT_W_FN2000	: {
+						case CLSID_OBJECT_W_FN2000:
+						case CLSID_OBJECT_W_SVD:
+						case CLSID_OBJECT_W_SVU:
+						case CLSID_OBJECT_W_VINTOREZ: {
 							dwCurrentBestWeapon = 8;
 							break;
 						}
-						case CLSID_OBJECT_W_AK74	: {
+						case CLSID_OBJECT_W_SHOTGUN:
+						case CLSID_OBJECT_W_AK74:
+						case CLSID_OBJECT_W_VAL:
+						case CLSID_OBJECT_W_LR300:		{
 							dwCurrentBestWeapon = 6;
 							break;
 						}
-						case CLSID_OBJECT_W_LR300	: {
-							dwCurrentBestWeapon = 6;
-							break;
-						}
-						case CLSID_OBJECT_W_HPSA	: {
-							dwCurrentBestWeapon = 5;
-							break;
-						}
-						case CLSID_OBJECT_W_PM		: {
-							dwCurrentBestWeapon = 5;
-							break;
-						}
-						case CLSID_OBJECT_W_FORT	: {
+						case CLSID_OBJECT_W_HPSA:		
+						case CLSID_OBJECT_W_PM:			
+						case CLSID_OBJECT_W_FORT:		
+						case CLSID_OBJECT_W_WALTHER:	
+						case CLSID_OBJECT_W_USP45:		{
 							dwCurrentBestWeapon = 5;
 							break;
 						}

@@ -448,6 +448,8 @@ void CAI_Stalker::vfFindAllSuspiciousNodes(u32 StartNode, Fvector tPointPosition
 	Device.Statistic.TEST3.Begin	();
 
 	Group.m_tpaSuspiciousNodes.clear();
+	if (StartNode > getAI().Header().count)
+		return;
 
 	BOOL bStop = FALSE;
 	

@@ -1383,7 +1383,7 @@ u32 CAI_Space::dwfCheckPositionInDirection(u32 dwStartNode, Fvector tStartPositi
 			return(-1);
 	}
 	
-	if (bfInsideNode(Node(dwCurNode),tFinishPosition))
+	if (bfInsideNode(Node(dwCurNode),tFinishPosition) && (abs(ffGetY(*Node(dwCurNode),tFinishPosition.x,tFinishPosition.z) - tFinishPosition.y) < .5f))
 		return(dwCurNode);
 	else
 		return(-1);
