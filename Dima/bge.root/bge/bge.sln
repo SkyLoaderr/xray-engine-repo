@@ -1,0 +1,31 @@
+﻿
+Microsoft Visual Studio Solution File, Format Version 9.00
+# Visual Studio 2005
+Project("{8BC9CEB8-8B4A-11D0-8D11-00A0C91BC942}") = "bge", "bge\bge.vcproj", "{86E121CC-DC44-4134-A11F-E20271A93EC2}"
+EndProject
+Global
+	GlobalSection(SourceCodeControl) = preSolution
+		SccNumberOfProjects = 2
+		SccProviderRegKey = Software\Microsoft\SourceSafe
+		SccLocalPath0 = .
+		CanCheckoutShared = true
+		SolutionUniqueID = {71916BA7-62AB-4005-82B2-3EFB263F2F40}
+		SccProjectUniqueName1 = bge\\bge.vcproj
+		SccLocalPath1 = .
+		CanCheckoutShared = true
+		SccProjectFilePathRelativizedFromConnection1 = bge\\
+	EndGlobalSection
+	GlobalSection(SolutionConfigurationPlatforms) = preSolution
+		Debug|Win32 = Debug|Win32
+		Release|Win32 = Release|Win32
+	EndGlobalSection
+	GlobalSection(ProjectConfigurationPlatforms) = postSolution
+		{86E121CC-DC44-4134-A11F-E20271A93EC2}.Debug|Win32.ActiveCfg = Debug|Win32
+		{86E121CC-DC44-4134-A11F-E20271A93EC2}.Debug|Win32.Build.0 = Debug|Win32
+		{86E121CC-DC44-4134-A11F-E20271A93EC2}.Release|Win32.ActiveCfg = Release|Win32
+		{86E121CC-DC44-4134-A11F-E20271A93EC2}.Release|Win32.Build.0 = Release|Win32
+	EndGlobalSection
+	GlobalSection(SolutionProperties) = preSolution
+		HideSolutionNode = FALSE
+	EndGlobalSection
+EndGlobal
