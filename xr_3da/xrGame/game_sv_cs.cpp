@@ -114,7 +114,7 @@ void game_sv_CS::SaveDefaultWeapon(CMemoryWriter &store) {		//@@@ WT: Это надо п
 
 void game_sv_CS::SpawnArtifacts() {
 	xr_vector<RPoint>&		rp	= rpoints[2];
-	srand				( (unsigned)time( NULL ) );
+	srand				( Device.TimerAsync() );
 	std::random_shuffle	( rp.begin( ), rp.end( ) );
 	for(s32 i = 0; i < 3; ++i) {
 		CSE_Abstract*		E	=	spawn_begin	("m_target_cs");								// create SE
@@ -201,8 +201,8 @@ void game_sv_CS::OnRoundStart() {
 		}
 	}
 	teams[0].num_targets = teams[1].num_targets = 0;
-	SpawnArtifacts();
-	srand((unsigned)time(NULL));
+	SpawnArtifacts	();
+	srand			( Device.TimerAsync() );
 	xr_vector<RPoint> &rp1 = rpoints[0];
 	std::random_shuffle(rp1.begin(), rp1.end());
 	xr_vector<RPoint> &rp2 = rpoints[0];
