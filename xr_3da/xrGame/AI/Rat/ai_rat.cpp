@@ -120,6 +120,11 @@ BOOL CAI_Rat::net_Spawn	(LPVOID DC)
 	m_tSpawnPosition.set(vPosition);
 	m_tSafeSpawnPosition.set(m_tSpawnPosition);
 	tStateStack.push(eCurrentState = aiRatFreeHunting);
+	r_torso_current = r_current;
+	r_torso_target = r_target;
+	m_tHPB.x = r_torso_current.yaw;
+	m_tHPB.y = r_torso_current.pitch;
+	m_tHPB.z = 0;
 	
 	return TRUE;
 }

@@ -22,6 +22,7 @@ void CAI_Rat::SetDirectionLook()
 	}
 	else
 		r_torso_target.pitch = 0;
+	r_target = r_torso_target;
 }
 
 void CAI_Rat::vfAimAtEnemy()

@@ -88,14 +88,15 @@ void CCustomMonster::Exec_Look		( float dt )
 	a1 = angle_lerp	(r_current.yaw,	r_target.yaw,	L->o_look_speed, dt);
 	a2 = angle_lerp	(r_current.pitch,	r_target.pitch,	L->o_look_speed, dt);
 	
+	a1 = angle_lerp	(r_torso_current.yaw,	r_torso_target.yaw,	r_torso_speed, dt);
+	a2 = angle_lerp	(r_torso_current.pitch,	r_torso_target.pitch,	r_torso_speed, dt);
+
 	if (a1 && a2) L->setCompleted();
 	
 	if (Device.dwTimeGlobal>=L->o_timeout)	L->setTimeout();
 	
-	a1 = angle_lerp	(r_torso_current.yaw,	r_torso_target.yaw,	r_torso_speed, dt);
-	a2 = angle_lerp	(r_torso_current.pitch,	r_torso_target.pitch,	r_torso_speed, dt);
-
 	mRotate.setHPB					(-NET_Last.o_model,0,0);
+	//mRotate.setHPB					(-r_torso_current.yaw,0,0);
 
 	//
 	Engine.Sheduler.Slice			();
