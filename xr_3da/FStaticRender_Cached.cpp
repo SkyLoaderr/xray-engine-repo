@@ -78,39 +78,3 @@ void __fastcall render_Cached(CList<FCached*>& cache)
 		Start = End;
 	}
 }
-
-/*
-// Render of cached meshes
-void __fastcall render_Cached(CList<FCached*>& cache)
-{
-	CIndexStream*			is	= Device.Streams.Get_IB();
-	DWORD dwPassesRequired		= Device.Shader.dwPassesRequired;
-
-	for (DWORD Start=0; Start<cache.size(); Start++)
-	{
-		FCached& V			=	*(cache[Start]);
-		CVertexStream*vs	=	V.VS;
-			
-		// Transfer geometry
-		DWORD	vBase,	iBase;
-		DWORD	Stride	= vs->Stride();
-		BYTE*	verts	= LPBYTE(vs->Lock(V.vCount,vBase));
-		WORD*	indices	= LPWORD(is->Lock(V.iCount,iBase));
-		CopyMemory		(verts,		V.pVertices,V.vCount*Stride);
-		CopyMemory		(indices,	V.pIndices,	V.iCount*sizeof(WORD));
-		vs->Unlock		(V.vCount);
-		is->Unlock		(V.iCount);
-
-		// Render
-		DWORD dwNumPrimitives			= V.iCount/3;
-		Device.Shader.SetupPass			(0);
-		Device.Primitive.Reset			();
-		HW.pDevice->SetVertexShader		(vs->getFVF());
-		HW.pDevice->SetStreamSource		(0,vs->getBuffer(),vs->Stride());
-		HW.pDevice->SetIndices			(is->getBuffer(),vBase);
-		HW.pDevice->DrawIndexedPrimitive(D3DPT_TRIANGLELIST,0,V.vCount,iBase,dwNumPrimitives);
-
-		UPDATEC(V.vCount,dwNumPrimitives,dwPassesRequired);
-	}
-}
-*/
