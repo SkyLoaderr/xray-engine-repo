@@ -41,6 +41,8 @@ public:
 	void				set_callback	(BoneCallback C, void* Param, BOOL overwrite=FALSE);
 	void				set_param		(u32 idx, float data);
 	float				get_param		(u32 idx);
+
+	u32					mem_usage		(){return sizeof(*this);}
 };
 #pragma pack(pop)
 
@@ -82,6 +84,14 @@ public:
 	// Calculation
 	void				CalculateM2B	(const Fmatrix& Parent);
 	virtual void		Calculate		(CKinematics* K, Fmatrix *Parent)=0;
+
+	virtual u32			mem_usage		()
+	{
+		u32 sz			= sizeof(*this)+sizeof(vecBones::value_type)*children.size();
+		for (ChildFacesVecIt c_it=child_faces.begin(); c_it!=child_faces.end(); c_it++)
+			sz			+= c_it->size()*sizeof(FacesVec::value_type)+sizeof(*c_it);
+		return			sz;
+	}
 };
 
 class ENGINE_API CSkeletonWallmark		// 4+4+4+12+4+16+16 = 60
@@ -203,6 +213,14 @@ public:
     virtual void 				Release				();
 
 	virtual	CKinematics*		dcast_PKinematics	()				{ return this;	}
+
+	virtual u32					mem_usage			()
+	{
+		u32 sz					= sizeof(*this);
+		for (vecBonesIt b_it=bones->begin(); b_it!=bones->end(); b_it++)
+			sz					+= sizeof(vecBones::value_type)+(*b_it)->mem_usage();
+		return sz;
+	}
 };
 IC CKinematics* PKinematics		(IRender_Visual* V)		{ return V?V->dcast_PKinematics():0; }
 //---------------------------------------------------------------------------

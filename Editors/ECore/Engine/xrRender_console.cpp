@@ -133,6 +133,15 @@ public:
 		::Render->Screenshot(IRender_interface::SM_NORMAL,image);
 	}
 };
+class CCC_ModelPoolStat : public IConsole_Command
+{
+public:
+	CCC_ModelPoolStat(LPCSTR N) : IConsole_Command(N)  { bEmptyArgsHandled = TRUE; };
+	virtual void Execute(LPCSTR args) {
+		RImplementation.Models->dump();
+	}
+};
+//-----------------------------------------------------------------------
 
 //-----------------------------------------------------------------------
 void		xrRender_initconsole	()
@@ -144,6 +153,8 @@ void		xrRender_initconsole	()
 	CMD2(CCC_tf_Aniso,	"r__tf_aniso",			&ps_r__tf_Anisotropic		);
 	CMD2(CCC_tf_MipBias,"r__tf_mipbias",		&ps_r__tf_Mipbias			);
 	CMD4(CCC_Integer,	"r__lsleep_frames",		&ps_r__LightSleepFrames,	4,		30		);
+
+	CMD1(CCC_ModelPoolStat,"stat_models"		);
 
 	Fvector	tw_min,tw_max;
 #ifdef DEBUG

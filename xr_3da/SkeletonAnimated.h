@@ -80,6 +80,10 @@ public:
 
 	// Calculation
 	virtual void		Calculate		(CKinematics* K, Fmatrix *Parent);
+	virtual u32			mem_usage		()
+	{
+		return			CBoneData::mem_usage()+sizeof(*this);
+	}
 };
 
 //*** The visual itself ***************************************************************************
@@ -164,6 +168,12 @@ public:
 	virtual void				Spawn			();
 	virtual	CSkeletonAnimated*	dcast_PSkeletonAnimated	()				{ return this;	}
 	virtual						~CSkeletonAnimated	();
+
+	virtual u32					mem_usage			()
+	{
+		u32 sz					= CKinematics::mem_usage()+sizeof(*this);
+		return sz;
+	}
 };
 IC CSkeletonAnimated* PSkeletonAnimated(IRender_Visual* V) { return V?V->dcast_PSkeletonAnimated():0; }
 //---------------------------------------------------------------------------

@@ -69,10 +69,10 @@ public:
 	}
 };
 //-----------------------------------------------------------------------
-class CCC_SkelStat : public IConsole_Command
+class CCC_MotionsStat : public IConsole_Command
 {
 public:
-	CCC_SkelStat(LPCSTR N) : IConsole_Command(N)  { bEmptyArgsHandled = TRUE; };
+	CCC_MotionsStat(LPCSTR N) : IConsole_Command(N)  { bEmptyArgsHandled = TRUE; };
 	virtual void Execute(LPCSTR args) {
 		g_pMotionsContainer->dump();
 	}
@@ -307,10 +307,10 @@ void CCC_Register()
 	CMD1(CCC_SaveCFG,	"cfg_save"				);
 	CMD1(CCC_LoadCFG,	"cfg_load"				);
 
+	CMD1(CCC_MotionsStat,"stat_motions"			);
 
 #ifdef DEBUG
 	CMD1(CCC_MemStat,	"stat_mem"				);
-	CMD1(CCC_SkelStat,	"stat_skeleton"			);
 
 	CMD3(CCC_Mask,		"mt_sound",				&psDeviceFlags,			mtSound);
 	CMD3(CCC_Mask,		"mt_physics",			&psDeviceFlags,			mtPhysics);

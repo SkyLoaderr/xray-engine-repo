@@ -10,6 +10,10 @@ public:
 						CBoneDataRigid	(u16 ID):CBoneData(ID){}
 	// Calculation                                                          
 	virtual void		Calculate		(CKinematics* K, Fmatrix *Parent);
+	virtual u32			mem_usage		()
+	{
+		return			CBoneData::mem_usage()+sizeof(*this);
+	}
 };
 
 class ENGINE_API	CBoneInstanceRigid	: public CBoneInstance
@@ -26,6 +30,11 @@ public:
 	// Main functionality
 	virtual void				CalculateBones			(BOOL bForced=FALSE);
 	virtual	CSkeletonRigid*		dcast_PSkeletonRigid	()				{ return this;	}
+	virtual u32					mem_usage			()
+	{
+		u32 sz					= CKinematics::mem_usage()+sizeof(*this);
+		return sz;
+	}
 };
 IC CSkeletonRigid* PSkeletonRigid(IRender_Visual* V)	{ return V?V->dcast_PSkeletonRigid():0; }
 
