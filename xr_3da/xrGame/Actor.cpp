@@ -581,11 +581,11 @@ void CActor::Update	(u32 DT)
 	Weapons->Update			(dt,HUDview());
 
 	// sound step
-	if ((mstate_real&mcAnyMove)&&(!(mstate_real&(mcJump|mcFall|mcLanding|mcLanding2)))){
+	if ((NET_Last.mstate&mcAnyMove)&&(!(NET_Last.mstate&(mcJump|mcFall|mcLanding|mcLanding2)))){
 		if(m_fTimeToStep<0){
 			bStep				= !bStep;
-			float k				= (mstate_real&mcCrouch)?0.75f:1.f;
-			float tm			= isAccelerated(mstate_real)?(PI/(k*10.f)):(PI/(k*7.f));
+			float k				= (NET_Last.mstate&mcCrouch)?0.75f:1.f;
+			float tm			= isAccelerated(NET_Last.mstate)?(PI/(k*10.f)):(PI/(k*7.f));
 			m_fTimeToStep		= tm;
 			::Sound->PlayAtPos	(sndStep[bStep],this,Position());
 			if (!Local()){
@@ -596,8 +596,8 @@ void CActor::Update	(u32 DT)
 	}
 
 	// sounds update
-	float	s_k			=	(mstate_real&mcCrouch)?0.75f:1.f;
-	float	s_vol		=	s_k * (isAccelerated(mstate_real)?1.f:.75f);
+	float	s_k			=	(NET_Last.mstate&mcCrouch)?0.75f:1.f;
+	float	s_vol		=	s_k * (isAccelerated(NET_Last.mstate)?1.f:.75f);
 	Fvector	s_pos		=	Position	();
 	s_pos.y				+=	.5f;
 	if (sndStep[0].feedback)		{
