@@ -247,7 +247,7 @@ void CSE_ALifeSimulator::vfUpdateHuman(CSE_ALifeHumanAbstract *tpALifeHuman)
 //		}
 //		default : NODEFAULT;
 //	};
-	VERIFY(!tpALifeHuman->m_bOnline);
+	VERIFY					(!tpALifeHuman->m_bOnline);
 	vfChooseNextRoutePoint	(tpALifeHuman);
 	vfCheckForTheBattle		(tpALifeHuman);
 	bfCheckForItems			(tpALifeHuman);

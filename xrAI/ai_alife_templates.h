@@ -99,13 +99,7 @@ void save_data(IPureServerObject &tData, M &tStream,bool bSaveCount = true)
 	tData.UPDATE_Write			(tStream);
 }
 
-template <class M>
-void save_data(IPureALifeSObject &tData, M &tStream,bool bSaveCount = true)
-{
-	tData.Save					(tStream);
-}
-
-template <class T, class M>
+template <typename T, class M>
 void save_data(T &tData, M &tStream,bool bSaveCount = true)
 {
 	tStream.w					(&tData,sizeof(tData));
@@ -120,7 +114,25 @@ void save_data(LPSTR &tData, M &tStream,bool bSaveCount = true)
 template <class T, class M>
 void save_data(T *&tpData, M &tStream, bool bSaveCount = true)
 {
+	tpData->Save				(tStream);
+};
+
+template <class T, class M>
+void save_data(T **&tpData, M &tStream, bool bSaveCount = true)
+{
 	save_data					(*tpData,tStream,bSaveCount);
+};
+
+template <class T1, class T2, class T3, class M>
+void save_data(xr_map<T1,T2,T3> *&tpMap, M &tStream, bool bSaveCount = true)
+{
+	save_data					(*tpMap,tStream,bSaveCount);
+};
+
+template <class T, class M>
+void save_data(xr_vector<T> *&tpVector, M &tStream, bool bSaveCount = true)
+{
+	save_data					(*tpVector,tStream,bSaveCount);
 };
 
 // load data
@@ -193,18 +205,6 @@ void load_data(LPSTR &tpData, M &tStream, bool bSaveCount = true)
 	tpData						= xr_strdup(S);
 };
 
-template <class M>
-void load_data(IPureServerObject &tData, M &tStream,bool bSaveCount = true)
-{
-	tData.UPDATE_Read			(tStream);
-}
-
-template <class M>
-void load_data(IPureALifeSObject &tData, M &tStream,bool bSaveCount = true)
-{
-	tData.Load					(tStream);
-}
-
 template <class T, class M>
 void load_data(T &tData, M &tStream, bool bSaveCount = true)
 {
@@ -216,7 +216,39 @@ void load_data(T *&tpData, M &tStream, bool bSaveCount = true)
 {
 	if (bSaveCount)
 		tpData = xr_new<T>();
+	tpData->Load				(tStream);
+};
+
+template <class T, class M>
+void load_data(T **&tpData, M &tStream, bool bSaveCount = true)
+{
+	if (bSaveCount)
+		tpData = xr_new<T>();
 	load_data					(*tpData,tStream,bSaveCount);
+};
+
+template <class T1, class T2, class T3, class M>
+void load_data(xr_map<T1,T2,T3> *&tpMap, M &tStream, const T1 tfGetKey(const T2))
+{
+	if (bSaveCount)
+		tpData = xr_new<T>();
+	load_data					(*tpMap,tStream,tfGetKey);
+};
+
+template <class T1, class T2, class T3, class M>
+void load_data(xr_map<T1,T2,T3> *&tpMap, M &tStream, bool bSaveCount = true)
+{
+	if (bSaveCount)
+		tpData = xr_new<T>();
+	load_data					(*tpMap,tStream,bSaveCount);
+};
+
+template <class T, class M>
+void load_data(xr_vector<T> *&tpVector, M &tStream, bool bSaveCount = true)
+{
+	if (bSaveCount)
+		tpData = xr_new<T>();
+	load_data					(*tpVector,tStream,bSaveCount);
 };
 
 #endif

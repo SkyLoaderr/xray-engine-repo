@@ -50,6 +50,8 @@ class CPureServerObject : public IPureServerObject {
 public:
 	virtual void					Load(IReader	&tFileStream);
 	virtual void					Save(IWriter	&tMemoryStream);
+	virtual void					Load(NET_Packet	&tNetPacket);
+	virtual void					Save(NET_Packet	&tNetPacket);
 };
 
 class xrClientData;
