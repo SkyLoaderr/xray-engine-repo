@@ -41,20 +41,19 @@ function fract:__init(name, char_ini)
 
 end
 function fract:zone_enter(zone, obj)
-	printf("ENTER")
+	printf("ENTER %s", obj:name())
 	-- нужно определить свой это или чужой. Если чужой - добавить его в список гостей
 	if obj ~= nil and (get_clsid(obj) == clsid.stalker or get_clsid(obj) == clsid.actor ) then
 		if self.Guest[obj:id()] == nil then
 			-- отметить как гостя
-			local t = {	object = obj,
-					time = nil,
-					vertex = nil }
-			table.insert(self.Guest, obj:id(), t)
+			self.Guest[obj:id()] = {object = obj,
+						time = nil,
+						vertex = nil }			
 		end
 	end
 end
 function fract:zone_exit(zone, obj)
-	printf("EXIT")
+	printf("EXIT %s", obj:name())
 	-- нужно удалить чудака из списка гостей, если он там есть.
 	if obj ~= nil and (get_clsid(obj) == clsid.stalker or get_clsid(obj) == clsid.actor ) then
 		if self.Guest[obj:id()] ~= nil then
@@ -126,6 +125,7 @@ function fract:calculate() -- просчет лагеря
 	   game.time() - self.checkBegin > self.checkTime then
 		self:updateJob()
 	end		
+	self:print()
 end
 function fract:updateJob()
 	self.checkBegin = game.time()
@@ -187,6 +187,10 @@ function fract:print()
 			printf("    ObjID: %d", v.object:id())
 			printf("    Actor: %s", self.Object[v.object:id()]:name())
 		end
+	end
+	printf("Guest:")
+	for k,v in self.Guest do
+		printf("id: %d name: %s", k, v.object:name())
 	end
 end
 function fract:loadJob(name) -- загружает список заданий
