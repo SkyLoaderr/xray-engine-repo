@@ -12,6 +12,7 @@ public:
 
 	struct	_subdiv
 	{
+		u32 material;
 		u32	start;
 		u32 count;
 	};
@@ -71,6 +72,7 @@ public:
 	string128			m_name;
 	v_vertices			m_vertices;
 	v_faces				m_faces;
+	v_subdivs			m_subdivs;
 private:
 	_face*				load_create_face	(Fvector& P1, Fvector& P2, Fvector& P3, b_face& F);
 	_vertex*			load_create_vertex	(Fvector& P);
