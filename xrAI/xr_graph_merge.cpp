@@ -368,43 +368,82 @@ public:
 
 void read_levels(CInifile *Ini, xr_set<CLevelInfo> &levels)
 {
-	LPCSTR				N,V;
+	LPCSTR				_N,V;
 	string256			caFileName, file_name;
-	for (u32 k = 0; Ini->r_line("levels",k,&N,&V); k++) {
-		R_ASSERT3		(Ini->section_exist(N),"Fill section properly!",N);
-		R_ASSERT3		(Ini->line_exist(N,"name"),"Fill section properly!",N);
-		R_ASSERT3		(Ini->line_exist(N,"id"),"Fill section properly!",N);
-		// ai
-		strconcat		(caFileName,Ini->r_string(N,"name"),"\\level.ai");
-		FS.update_path	(file_name,"$game_levels$",caFileName);
-		if (!FS.exist(file_name)) {
-			Msg			("There is no ai-map for the level %s! (level is not included into the game graph)",Ini->r_string(N,"name"));
+	for (u32 k = 0; Ini->r_line("levels",k,&_N,&V); k++) {
+		string256		N;
+		strlwr			(strcpy(N,_N));
+
+		if (!Ini->section_exist(N)) {
+			Msg			("! There is no section %s in the game.ltx!",N);
 			continue;
 		}
-		// graph
-		strconcat		(caFileName,Ini->r_string(N,"name"),"\\level.graph");
-		FS.update_path	(file_name,"$game_levels$",caFileName);
-		if (!FS.exist(file_name)) {
-			Msg			("There is no graph for the level %s! (level is not included into the game graph)",Ini->r_string(N,"name"));
-			continue;
-		}
-		// cross table
-		strconcat		(caFileName,Ini->r_string(N,"name"),"\\",CROSS_TABLE_NAME_RAW);
-		FS.update_path	(file_name,"$game_levels$",caFileName);
-		if (!FS.exist(file_name)) {
-			Msg			("There is no cross table for the level %s! (level is not included into the game graph)",Ini->r_string(N,"name"));
+
+		if (!Ini->line_exist(N,"name")) {
+			Msg			("! There is no line \"name\" in the section %s!",N);
 			continue;
 		}
 		
+		if (!Ini->line_exist(N,"id")) {
+			Msg			("! There is no line \"id\" in the section %s!",N);
+			continue;
+		}
+
+		if (!Ini->line_exist(N,"offset")) {
+			Msg			("! There is no line \"offset\" in the section %s!",N);
+			continue;
+		}
+
 		u32				id = Ini->r_s32(N,"id");
-		LPCSTR			S = Ini->r_string(N,"name");
+		LPCSTR			_S = Ini->r_string(N,"name");
+		string256		S;
+		strlwr			(strcpy(S,_S));
 		{
+			bool		ok = true;
 			xr_set<CLevelInfo>::const_iterator	I = levels.begin();
 			xr_set<CLevelInfo>::const_iterator	E = levels.end();
 			for ( ; I != E; ++I) {
-				VERIFY3	((*I).id != id,"Duplicated level id in the game.ltx",S);
+				if (!xr_strcmp((*I).m_section,N)) {
+					Msg	("! Duplicated line %s in section \"levels\" in the game.ltx",N);
+					ok	= false;
+					break;
+				}
+				if (!xr_strcmp((*I).name,S)) {
+					Msg	("! Duplicated level name %s in the game.ltx, sections %s, %s",S,*(*I).m_section,N);
+					ok	= false;
+					break;
+				}
+				if ((*I).id == id) {
+					Msg	("! Duplicated level id %d in the game.ltx, section %s, level %s",id,N,S);
+					ok	= false;
+					break;
+				}
 			}
+			if (!ok)
+				continue;
 		}
+		// ai
+		strconcat		(caFileName,S,"\\level.ai");
+		FS.update_path	(file_name,"$game_levels$",caFileName);
+		if (!FS.exist(file_name)) {
+			Msg			("! There is no ai-map for the level %s! (level is not included into the game graph)",S);
+			continue;
+		}
+		// graph
+		strconcat		(caFileName,S,"\\level.graph");
+		FS.update_path	(file_name,"$game_levels$",caFileName);
+		if (!FS.exist(file_name)) {
+			Msg			("! There is no graph for the level %s! (level is not included into the game graph)",S);
+			continue;
+		}
+		// cross table
+		strconcat		(caFileName,S,"\\",CROSS_TABLE_NAME_RAW);
+		FS.update_path	(file_name,"$game_levels$",caFileName);
+		if (!FS.exist(file_name)) {
+			Msg			("! There is no cross table for the level %s! (level is not included into the game graph)",S);
+			continue;
+		}
+		
 		levels.insert	(CLevelInfo(id,S,Ini->r_fvector3(N,"offset"),N));
 	}
 }
