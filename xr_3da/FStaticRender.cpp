@@ -10,6 +10,7 @@
 #include "xr_creator.h"
 #include "xr_object.h"
 #include "CustomHUD.h"
+#include "lighttrack.h"
 
 CRender_interface::CRender_interface()		{};
 CRender_interface::~CRender_interface()		{};
@@ -119,7 +120,7 @@ IC		void		gm_SetLighting		(CObject* O)
 		CLightTrack& LT		= *O->Lights	();
 
 		// set up to 8 lights to device
-		int			 max	= _min(LT.lights.size(),8);
+		int			 max	= _min	(int(LT.lights.size()),8);
 		for (int L=0; L<max; L++)
 			CHK_DX(HW.pDevice->SetLight(L, LT.lights[L].L.d3d()) );
 
