@@ -1,6 +1,6 @@
 
 function main()
-
+    if true then return end
 	local helicopter = get_level_object( "helicopter" )
 	local actor = get_actor()
 

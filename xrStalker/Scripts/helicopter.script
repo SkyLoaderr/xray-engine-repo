@@ -12,6 +12,7 @@
 
 function main()
 
+    if true then return end
 	local helicopter = get_level_object( "helicopter" )
 	local car = get_level_object( "m_car" )
 	local actor = get_actor()
