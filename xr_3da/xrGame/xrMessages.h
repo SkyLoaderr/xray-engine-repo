@@ -19,6 +19,7 @@ enum {
 	M_CHAT,						// DUAL:
 
 	M_EVENT,					// Game Event
+	M_CL_INPUT,					// Client Input Data
 	MSG_FORCEDWORD				= u32(-1)
 };
 

@@ -271,7 +271,7 @@ private:
 //		BOOL				m_bJumpKeyPressed;
 	};
 	xr_deque<net_input>		NET_I;
-//	void					NetInput_Save			( );
+	void					NetInput_Save			( );
 	//------------------------------
 	void					g_cl_CheckControls		(u32 mstate_wf, Fvector &vControlAccel, float &Jump, float dt);
 	void					g_cl_ValidateMState		(float dt, u32 mstate_wf);
@@ -319,6 +319,7 @@ public:
 	virtual BOOL						net_Spawn			( LPVOID DC);
 	virtual void						net_Export			( NET_Packet& P);				// export to server
 	virtual void						net_Import			( NET_Packet& P);				// import from server
+	virtual void						net_ImportInput		( NET_Packet& P);				// import input from remote client
 	virtual BOOL						net_Relevant		()	{ return getSVU() | getLocal(); };		// relevant for export to server
 	virtual	void						net_Relcase			( CObject* O );					//
 	virtual void						net_Destroy			();

@@ -172,6 +172,12 @@ u32 xrServer::OnMessage(NET_Packet& P, DPNID sender)			// Non-Zero means broadca
 	case M_UPDATE:	Process_update		(P,sender);	break;		// No broadcast
 	case M_SPAWN:	Process_spawn		(P,sender);	break;
 	case M_EVENT:	Process_event		(P,sender); break;	
+	case M_CL_INPUT:
+		{
+			xrClientData* CL		= ID_to_client(sender);
+			if (CL)	CL->net_Ready	= TRUE;
+			if (SV_Client) SendTo(SV_Client->ID, P, net_flags(TRUE, TRUE));
+		}break;
 	}
 	csPlayers.Leave				();
 

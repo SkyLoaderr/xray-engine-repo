@@ -70,6 +70,13 @@ void CLevel::ClientReceive()
 				Msg		("- %s",buffer);
 			}
 			break;
+		case M_CL_INPUT:
+			{
+				P->r_u16		(ID);
+				CObject*	O	= Objects.net_Find		(ID);
+				if (0 == O)		break;
+				O->net_ImportInput(*P);
+			}break;
 		}
 
 		net_msg_Release();
