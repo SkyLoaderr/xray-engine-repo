@@ -1,6 +1,7 @@
 	/ CORE
 		+ TODO: Blender compiling for editor
 		. TODO: Blender compiling for different number of layers
+		+ BUG:  File Sharing
 
 	/ SOUND
 		+ TODO: Rolloff
@@ -32,7 +33,7 @@
 		. TODO: Console Aliases
 
 	/ COMPILER
-		. TODO: Compiler:Lighting:LM:Smooth/Sharp
+		+ TODO: Compiler:Lighting:LM:Smooth/Sharp
 		. TODO: Translucency
 
 //-----------------------------------------------------------------------
