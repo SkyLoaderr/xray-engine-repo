@@ -119,7 +119,7 @@ function generic_object_binder:update(delta)
 	end
 
 	if self.st.active_section ~= nil then
-		xr_logic.non_goap_update_actions_event(self.st)
+		xr_logic.non_goap_update_actions_event(self.st, delta)
 	end
 --TEST-------------------------------------------------------------
 	--reset_action(self.object, script_name())

@@ -5,74 +5,69 @@
 -- Перевод на xr_logic: Andrey Fidrya (Zmey) af@svitonline.com
 ----------------------------------------------------------------------------------------------------
 
-class "door_binder" (object_binder)
+class "action_door"
 
-function door_binder:__init(obj, storage) super(obj)
+function action_door:__init(obj, storage)
+	self.object = obj
 	self.st = storage
 end
 
-function door_binder:reload(section)
-	object_binder.reload(self, section)
-
-	printf("_bp: door_binder:reload")
+function action_door:reset_scheme()
+	printf("_bp: action_door:reset_scheme: self.object:name()='%s'", self.object:name())
+	self.initialized = false
 end
 
-function door_binder:reset_scheme(delta)
-	printf("_bp: door_binder:reset_scheme")
+function action_door:initialize()
+	local ph_shell = self.object:get_physics_shell()
+	if not ph_shell then
+		return
+	end
+	self.joint = ph_shell:get_joint_by_bone_name("door")
 
-	self.initialized = false
+	self.low_limits, self.hi_limits = 0, 0
+	self.low_limits, self.hi_limits	= self.joint:get_limits(self.low_limits, self.hi_limits, 0)
 
-	self.joint = nil
-	self.low_limits = 0
-	self.hi_limits = 0
 	self.run = 0
 	self.block = false
-end
 
-function door_binder:deactivate_scheme()
-	printf("deactivate_scheme")
-	self.object:clear_use_callback()
-end
-
-function door_binder:initialize()
-	printf("_bp: door_binder: initialize()")
-	self.joint = self.object:get_physics_shell():get_joint_by_bone_name("door")
-	if not self.joint then
-		return false
+	if self.st.tip_open then
+		self.tip_open = string_table():get_by_id(self.st.tip_open)
+	else
+		self.tip_open = nil
 	end
-	self.low_limits, self.hi_limits	= self.joint:get_limits(self.low_limits, self.hi_limits, 0)
-	self.object:set_nonscript_usable(false)
-	self.object:set_use_callback(self, "door_callback")
-	local door_sign = string_table():get_by_id("door_sign")
-	if door_sign then
-		self.object:set_tip_text(door_sign)
+	if self.st.tip_close then
+		self.tip_close = string_table():get_by_id(self.st.tip_close)
+	else
+		self.tip_close = nil
 	end
 
 	self:close_door()
 
-	self.initialized = true
+	self.object:set_nonscript_usable(false)
+	self.object:set_use_callback(self, "door_callback")
 
-	return true
+	self.initialized = true
 end
 
-function door_binder:update(delta)
-	object_binder.update(self, delta)
+function action_door:update(delta)
+	--printf("_bp: action_door:update()", delta)
 
 	if not xr_logic.is_active(self.object, self.st) then
 		return
 	end
 
-	if not self.initialized and not self:initialize() then
-		return
+	if not self.initialized then
+		self:initialize()
+		if not self.initialized then
+			return
+		end
 	end
-
-	--printf("_bp: door_binder:update [%s] [%d]", self.object:name(), device():time_global())
 
 	xr_logic.try_switch_to_another_section(self.object, self.st)
 
 	if self.block then
 		local angle = self.joint:get_axis_angle(90)
-		printf("angle %f limits %f, %f", angle, self.low_limits, self.hi_limits)
+		printf("_bp: action_door:update(): angle %f limits %f, %f", angle, self.low_limits, self.hi_limits)
 		if angle >= self.hi_limits then
 			-- Закрыли до предела, будем блокировать
 			self.joint:set_max_force_and_velocity(10000, 1, 1)
@@ -81,26 +76,32 @@ function door_binder:update(delta)
 	end
 end
 
-function door_binder:open_door()
+function action_door:open_door()
+	printf("_bp: action_door:open_door()")
 	self.joint:set_max_force_and_velocity(300, -3, 0)
 	self.block = false
+
+	if self.tip_open then
+		self.object:set_tip_text(self.tip_close)
+	end
 end
 
-function door_binder:close_door()
+function action_door:close_door()
+	printf("_bp: action_door:close_door()")
 	self.joint:set_max_force_and_velocity(300, 3, 1)
 	self.block = true -- Закрываем и блокируем	
+
+	if self.tip_open then
+		self.object:set_tip_text(self.tip_open)
+	end
 end
 
-function door_binder:door_callback(door, actor)
+function action_door:door_callback(door, actor)
 	if self.st.locked then
 		return
 	end
 
-	if not self.joint then -- FIXME - DELME после того, как нормально станут убирать коллбеки на переключении схем
-		return
-	end
-
-	local angle  = self.joint:get_axis_angle(90)
+	local angle = self.joint:get_axis_angle(90)
 
 	if angle - self.low_limits > self.hi_limits - angle then
 		self:open_door()
@@ -113,11 +114,10 @@ end
 function add_to_binder(npc, ini, scheme, section, storage)
 	printf("DEBUG: add_to_binder: scheme='%s', section='%s'", scheme, section)
 
-	local new_binder = door_binder(npc, storage)
-	npc:bind_object(new_binder)
+	local new_action = action_door(npc, storage)
 
 	-- Зарегистрировать все actions, в которых должен быть вызван метод reset_scheme при изменении настроек схемы:
-	xr_logic.subscribe_action_for_events(npc, new_binder)
+	xr_logic.subscribe_action_for_events(npc, new_action)
 end
 
 function set_scheme(npc, ini, scheme, section, gulag_name)
@@ -126,5 +126,11 @@ function set_scheme(npc, ini, scheme, section, gulag_name)
 	st.logic     = xr_logic.cfg_get_switch_conditions(ini, section, npc)
 
 	st.locked    = utils.cfg_get_bool(ini, section, "locked", npc, false)
-	st.sign      = utils.cfg_get_string(ini, section, "sign", npc, false, gulag_name, "door_sign")
+	if not st.locked then
+		st.tip_open  = utils.cfg_get_string(ini, section, "tip_open", npc, false, "", "tip_door_open")
+		st.tip_close = utils.cfg_get_string(ini, section, "tip_close", npc, false, "", "tip_door_close")
+	else
+		st.tip_open  = utils.cfg_get_string(ini, section, "tip_open", npc, false, "", "tip_door_locked")
+	end
 end
+

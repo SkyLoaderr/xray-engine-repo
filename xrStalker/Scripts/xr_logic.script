@@ -119,12 +119,13 @@ function reset_generic_schemes_on_scheme_switch(npc)
 
 	if st.stype == modules.stype_stalker then
 		xr_meet.dialog_manager_reset(npc)
-	end
-
-	if st.stype == modules.stype_mobile then
+	elseif st.stype == modules.stype_mobile then
 		printf("_bp: disabling talk")
 		npc:disable_talk()
 		xr_meet.dialog_manager_reset(npc)
+	elseif st.stype == modules.stype_item then
+		npc:clear_use_callback()
+		npc:set_nonscript_usable(false)
 	end
 end
 
@@ -175,7 +176,7 @@ function reset_actions_event(st)
 	end
 end
 
-function non_goap_update_actions_event(st)
+function non_goap_update_actions_event(st, delta)
 	--printf("DEBUG: non_goap_update_actions_event [%s]", utils.to_str(st.active_section))
 	
 	if not st.actions then
@@ -184,7 +185,7 @@ function non_goap_update_actions_event(st)
 		return
 	end
 	for action_ptr, is_active in pairs(st.actions) do
-		action_ptr:update()
+		action_ptr:update(delta)
 	end
 end
 
