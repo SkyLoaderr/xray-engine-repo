@@ -18,12 +18,12 @@ void CBuild::xrPhase_R2_Lights	()
 	L_hemi.clear			();
 
 	R_Light						RL;
-	RL.type                     = D3DLIGHT_DIRECTIONAL;
+	RL.type                     = LT_DIRECT;
 	RL.diffuse.set				(1,1,1,1);
-	xrHemisphereBuild			(2,FALSE,0.5f,1.f,hemi_callback,&RL);
+	xrHemisphereBuild			(2,FALSE,1.f,1.f,hemi_callback,&RL);
 }
 
-#define NUM_THREADS	6
+#define NUM_THREADS	1
 class CR2Light : public CThread
 {
 public:
