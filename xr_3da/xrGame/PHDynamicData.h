@@ -93,6 +93,23 @@ public:
 			aTransform._34=0.f;
 			aTransform._44=1.f;
 		};
+	static inline DMXtoFMX(const dReal* R,Fmatrix& aTransform){
+			aTransform._11=R[0];
+			aTransform._12=R[4];
+			aTransform._13=R[8];
+			aTransform._14=0.f;
+
+			aTransform._21=R[1];
+			aTransform._22=R[5];
+			aTransform._23=R[9];
+			aTransform._24=0.f;
+			
+			aTransform._31=R[2];
+			aTransform._32=R[6];
+			aTransform._33=R[10];
+			aTransform._34=0.f;
+			aTransform._44=1.f;
+	};
 	static inline FMX33toDMX(const Fmatrix33& aTransform,dReal* R){	
 		R[0]=aTransform._11;
 		R[4]=aTransform._12;

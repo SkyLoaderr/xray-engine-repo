@@ -2979,6 +2979,16 @@
 					RelativePath="PHWheeledCharacter.h">
 				</File>
 			</Filter>
+			<Filter
+				Name="Geometry"
+				Filter="">
+				<File
+					RelativePath=".\Geometry.cpp">
+				</File>
+				<File
+					RelativePath=".\Geometry.h">
+				</File>
+			</Filter>
 		</Filter>
 		<File
 			RelativePath=".\blockpost.cpp">
