@@ -328,6 +328,9 @@
 				</FileConfiguration>
 			</File>
 			<File
+				RelativePath=".\NewProjectDlg.cpp">
+			</File>
+			<File
 				RelativePath="OutputWnd.cpp">
 				<FileConfiguration
 					Name="Release|Win32">
@@ -369,46 +372,6 @@
 			</File>
 			<File
 				RelativePath="ProjectFile.cpp">
-				<FileConfiguration
-					Name="Release|Win32">
-					<Tool
-						Name="VCCLCompilerTool"
-						Optimization="2"
-						AdditionalIncludeDirectories=""
-						PreprocessorDefinitions=""/>
-				</FileConfiguration>
-				<FileConfiguration
-					Name="Debug|Win32">
-					<Tool
-						Name="VCCLCompilerTool"
-						Optimization="0"
-						AdditionalIncludeDirectories=""
-						PreprocessorDefinitions=""
-						BasicRuntimeChecks="3"/>
-				</FileConfiguration>
-			</File>
-			<File
-				RelativePath="ProjectNew.cpp">
-				<FileConfiguration
-					Name="Release|Win32">
-					<Tool
-						Name="VCCLCompilerTool"
-						Optimization="2"
-						AdditionalIncludeDirectories=""
-						PreprocessorDefinitions=""/>
-				</FileConfiguration>
-				<FileConfiguration
-					Name="Debug|Win32">
-					<Tool
-						Name="VCCLCompilerTool"
-						Optimization="0"
-						AdditionalIncludeDirectories=""
-						PreprocessorDefinitions=""
-						BasicRuntimeChecks="3"/>
-				</FileConfiguration>
-			</File>
-			<File
-				RelativePath="ProjectProperties.cpp">
 				<FileConfiguration
 					Name="Release|Win32">
 					<Tool
@@ -636,6 +599,9 @@
 				RelativePath="MDIClientWnd.h">
 			</File>
 			<File
+				RelativePath=".\NewProjectDlg.h">
+			</File>
+			<File
 				RelativePath="OutputWnd.h">
 			</File>
 			<File
@@ -643,12 +609,6 @@
 			</File>
 			<File
 				RelativePath="ProjectFile.h">
-			</File>
-			<File
-				RelativePath="ProjectNew.h">
-			</File>
-			<File
-				RelativePath="ProjectProperties.h">
 			</File>
 			<File
 				RelativePath="Resource.h">

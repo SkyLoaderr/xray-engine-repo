@@ -11,10 +11,9 @@
 #include "LuaDoc.h"
 #include "LuaView.h"
 #include "MainFrame.h"
-#include "ProjectProperties.h"
 #include "ScintillaView.h"
-#include "ProjectNew.h"
 #include "DebugDialog.h"
+#include "NewProjectDlg.h"
 
 #ifdef _DEBUG
 #undef THIS_FILE
@@ -40,17 +39,7 @@ CProject::~CProject()
 //- file and directory functions
 //--------------------------------------------------------------------------------------------------
 
-CString CProject::GetName()
-{
-	char drive[_MAX_DRIVE];
-	char dir[_MAX_DIR];
-	char fname[_MAX_FNAME];
-	char ext[_MAX_EXT];
-
-	_splitpath( m_strPathName, drive, dir, fname, ext );
-	return CString(fname);
-}
-
+/*
 CString CProject::GetNameExt()
 {
 	char drive[_MAX_DRIVE];
@@ -61,7 +50,7 @@ CString CProject::GetNameExt()
 	_splitpath( m_strPathName, drive, dir, fname, ext );
 	return CString(fname)+ext;
 }
-
+*/
 
 
 //--------------------------------------------------------------------------------------------------
@@ -149,6 +138,7 @@ void CProject::RemoveFile(CProjectFile *pPF)
 		}
 
 	SetModifiedFlag(TRUE);
+	RedrawFilesTree();
 }
 
 void CProject::RemoveProjectFiles()
@@ -171,7 +161,7 @@ void CProject::RemoveProjectFiles()
 //--------------------------------------------------------------------------------------------------
 //- project new/save/load/close functions
 //--------------------------------------------------------------------------------------------------
-
+/*
 void CProject::NewProject()
 {
 	AfxMessageBox("ERROR :)");
@@ -181,7 +171,8 @@ void CProject::NewProject()
 	RedrawFilesTree();
 	SetModifiedFlag(FALSE);
 }
-
+*/
+/*
 BOOL CProject::New(CString sFileName)
 {
 	m_strPathName = sFileName;
@@ -193,34 +184,43 @@ BOOL CProject::New(CString sFileName)
 
 	return TRUE;
 };
-
+*/
 BOOL CProject::New()
 {
 	SaveModified();
 
-	CProjectNew pn;
-	if ( pn.DoModal()!=IDOK )
+	DWORD				sz_user	= 64;
+	char				UserName[64];
+
+	GetUserName			(UserName,&sz_user);
+	
+
+	CNewProjectDlg dlg;
+//	dlg.m_project_name.Format("%s_scr_dbg",UserName);
+	CString s;
+	s.Format("%s_scr_dbg",UserName);
+	dlg.SetFileName(s);
+	if ( dlg.DoModal()!=IDOK ){
 		return FALSE;
+	}
+/*	if(dlg.m_project_name.Find(".lpr")!=dlg.m_project_name.GetLength()-4)
+		m_strName = dlg.m_project_name + ".lpr";
+*/
+	m_strName = dlg.GetProjectName();
 
-	m_strPathName = pn.GetProjectPathName();
-	return New(m_strPathName);
-/*
 	RedrawFilesTree();
-
-	pn.CreateByType(this);
 
 	Save();
 	SetModifiedFlag(FALSE);
 
 	return TRUE;
-*/
+
 }
 
 BOOL CProject::Close()
 {
 	SaveModified();
-
-	m_strPathName = "";
+	SetName("");
 
 	RemoveProjectFiles();
 
@@ -268,14 +268,18 @@ BOOL CProject::Load()
 
 BOOL CProject::Load(CString sFileName)
 {
+
 	CFile fin;
-	if ( !fin.Open(sFileName, CFile::modeRead) )
+	if( !fin.Open(sFileName,CFile::modeRead) )
 	{
-		AfxMessageBox("Unable to open project file");
+		CString msg;
+		msg.Format("Unable to open project file %s", sFileName);
+		AfxMessageBox(msg);
 		return FALSE;
 	}
 
-	m_strPathName = sFileName;
+
+	m_strName = sFileName;
 
 	CArchive ar(&fin, CArchive::load);
 
@@ -292,7 +296,12 @@ BOOL CProject::Load(CString sFileName)
 
 BOOL CProject::Load(CArchive &ar)
 {
-	ar >> m_strPathName;
+	int version;
+	ar >> version;
+	if( (version > PROJ_VERSION) || (version < 0x03)){
+		AfxMessageBox("Project file is corrupted. Re-create project.");
+		return FALSE;
+	}
 
 	long nFiles;
 	ar >> nFiles;
@@ -333,7 +342,7 @@ BOOL CProject::Save()
 
 	sFileName.Format("%s%s%s",drive,dir,m_strPathName);
 */
-	return Save(m_strPathName);
+	return Save( GetName() );
 }
 
 BOOL CProject::Save(CString strPathName)
@@ -344,6 +353,8 @@ BOOL CProject::Save(CString strPathName)
 		AfxMessageBox("Unable to open project file");
 		return FALSE;
 	}
+
+	m_strName = strPathName;
 
 	CArchive ar(&fout, CArchive::store);
 
@@ -356,7 +367,8 @@ BOOL CProject::Save(CString strPathName)
 
 BOOL CProject::Save(CArchive &ar)
 {
-	ar << m_strPathName;
+	int version = PROJ_VERSION;
+	ar << version;
 
 	long nFiles = m_files.GetSize();
 	ar << nFiles;
@@ -373,17 +385,16 @@ BOOL CProject::Save(CArchive &ar)
 
 BOOL CProject::SaveAs()
 {
-	CFileDialog fd(FALSE, "lpr", m_strPathName, OFN_PATHMUSTEXIST, 
-		"Project files (*.lpr)|*.lpr|All files (*.*)|*.*||", g_mainFrame);
+	CFileDialog fd(FALSE, "lpr", GetName(), OFN_PATHMUSTEXIST, 
+		"Project files (*.lpr)", g_mainFrame);
+//		"Project files (*.lpr)|*.lpr|All files (*.*)|*.*||", g_mainFrame);
 
 	if ( fd.DoModal()!=IDOK )
 		return FALSE;
 
-	m_strPathName = fd.GetPathName();
+	SetName (fd.GetPathName() );
 
-	BOOL bResult = Save(m_strPathName);
-
-	return bResult;
+	return Save();
 }
 
 
@@ -420,7 +431,7 @@ BOOL CProject::PositionBreakPoints()
 
 	return bModified;
 }
-
+/*
 CString CProject::GetProjectDir()
 {
 	char drive[_MAX_DRIVE];
@@ -432,7 +443,7 @@ CString CProject::GetProjectDir()
 	if ( dir[strlen(dir)-1]=='\\' )
 		dir[strlen(dir)-1] = '\0';
 	return CString(drive)+dir;	
-}
+}*/
 
 void CProject::FillBreakPoints(CMailSlotMsg* msg)
 {
@@ -480,16 +491,6 @@ void CProject::OnRunApplication()
 	CString strCmdLine;
 	strCmdLine.Format("%s%s",m_working_dir.GetBuffer(),m_command.GetBuffer() );
 
-
-	PROCESS_INFORMATION pi;
-	STARTUPINFO si;
-
-	ZeroMemory(&si,sizeof(STARTUPINFO));
-	si.cb = sizeof(STARTUPINFO);
-
-/*	CreateProcess(NULL, strCmdLine.GetBuffer(), NULL, NULL, FALSE,
-		0, NULL, NULL, &si, &pi);*/
-//	_spawnl(_P_NOWAIT, strCmdLine.GetBuffer(), m_arguments.GetBuffer());
 	CString curDir;
 	if(!m_working_dir.IsEmpty()){
 		GetCurrentDirectoryA(2048,curDir.GetBuffer(2048));
@@ -522,3 +523,43 @@ void CProject::SetModifiedFlag(BOOL bModified)
 { 
 	m_bModified = bModified; 
 };
+
+
+
+/*
+void CProjectNew::OnProjectSelloc() 
+{
+	UpdateData(TRUE);
+
+	BROWSEINFO bi;
+	TCHAR szDir[MAX_PATH];
+	LPITEMIDLIST pidl;
+	LPMALLOC pMalloc;
+
+	if (SUCCEEDED(SHGetMalloc(&pMalloc))) 
+	{
+		ZeroMemory(&bi,sizeof(bi));
+		bi.hwndOwner = NULL;
+		bi.pszDisplayName = 0;
+		bi.pidlRoot = 0;
+		bi.ulFlags = BIF_RETURNONLYFSDIRS | BIF_STATUSTEXT;
+		bi.lpfn = BrowseCallbackProc;
+
+		pidl = SHBrowseForFolder(&bi);
+		if (pidl) 
+		{
+			if (SHGetPathFromIDList(pidl,szDir)) 
+			{
+				m_strProjectDir = szDir;
+				UpdateData(FALSE);
+			}
+
+			// In C++: pMalloc->Free(pidl); pMalloc->Release();
+			pMalloc->Free(pidl);
+			pMalloc->Release();
+		}
+	}	
+}
+
+
+*/

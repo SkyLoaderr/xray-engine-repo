@@ -60,6 +60,9 @@ BEGIN_MESSAGE_MAP(CMainFrame, CMDIFrameWnd)
 	ON_UPDATE_COMMAND_UI(ID_DEBUG_RUNTOCURSOR, OnUpdateDebugMenu)
 	ON_UPDATE_COMMAND_UI(ID_DEBUG_STOPDEBUGGING, OnUpdateDebugMenu)
 
+	ON_COMMAND(IDR_TOOLS_OPTIONS, OnToolsOptions)
+	ON_UPDATE_COMMAND_UI(IDR_TOOLS_OPTIONS, OnUpdateToolsOptions)
+	
 	//}}AFX_MSG_MAP
 END_MESSAGE_MAP()
 
@@ -87,6 +90,8 @@ CMainFrame::CMainFrame()
 
 CMainFrame::~CMainFrame()
 {
+	AfxGetApp()->WriteProfileString("options","last project", GetProject()->GetName() );
+
 	if(m_pMailSlotThread!=NULL)
  		delete m_pMailSlotThread;
 
@@ -139,7 +144,10 @@ int CMainFrame::OnCreate(LPCREATESTRUCT lpCreateStruct)
  		m_pMailSlotThread->m_bAutoDelete=false;
  		m_pMailSlotThread->ResumeThread();
  	}
-	
+/*	m_workingFolder = AfxGetApp()->GetProfileString("options","working folder", "e:\\qqqq");
+	if (!checkExistingFolder(m_workingFolder+"\\*.*"))
+		OnToolsOptions();
+*/
 	return 0;
 }
 
@@ -252,11 +260,13 @@ void CMainFrame::OnFileOpenproject()
 void CMainFrame::OnFileSaveproject() 
 {
 	GetProject()->Save();
+	OnUpdateFrameTitle(TRUE);
 }
 
 void CMainFrame::OnFileSaveprojectas() 
 {
 	GetProject()->SaveAs();
+	OnUpdateFrameTitle(TRUE);
 }
 
 void CMainFrame::OnProjectAddFiles() 
@@ -569,37 +579,31 @@ void CMainFrame::OpenDefaultProject()
 	DWORD				sz_user	= 64;
 	char				UserName[64];
 
-	CString sAppName;
-	CString sFullFileName;
 
-/*	char drive[_MAX_DRIVE];
-	char dir[_MAX_DIR];
-	char fname[_MAX_FNAME];
-	char ext[_MAX_EXT];
-*/
-	GetUserName			(UserName,&sz_user);
 
-//	AfxGetModuleShortFileName(AfxGetInstanceHandle(),sAppName);
-//	_splitpath( sAppName, drive, dir, fname, ext );
+	sFileName = AfxGetApp()->GetProfileString("options","last project", "" );
+	if(sFileName.IsEmpty())
+		return;
 
-//	sFullFileName.Format("%s%s%s_scr_dbg.lpr",drive,dir,UserName);
-	sFullFileName.Format("x:\\%s_scr_dbg.lpr",UserName);
 
-	BOOL bFileExist = FALSE;
+  HANDLE hFile = CreateFile(sFileName,
+			GENERIC_READ, FILE_SHARE_READ,
+			NULL, OPEN_EXISTING, FILE_ATTRIBUTE_NORMAL, NULL);
 
-  WIN32_FIND_DATA FindFileData;
-  HANDLE hFind;
+  if (hFile == INVALID_HANDLE_VALUE){
+		CString msg;
+		msg.Format("Couldn't open last project file %s", sFileName);
+		AfxMessageBox(msg);
+		return;
+  }
+	CloseHandle(hFile);
 
-  hFind = FindFirstFile(sFullFileName, &FindFileData);
+	GetProject()->Load(sFileName);
+	SetMode(modeIdle);
+	m_wndWorkspace.Enable(TRUE);
+	OnUpdateFrameTitle(TRUE);
 
-  if (hFind == INVALID_HANDLE_VALUE) {
-	bFileExist = FALSE;
-  } else {
-    bFileExist = TRUE;
-    FindClose(hFind);
-  };
-
-	
+/*	
 	if ( !bFileExist )
 	{
 		GetProject()->New(sFullFileName);
@@ -612,6 +616,7 @@ void CMainFrame::OpenDefaultProject()
 		m_wndWorkspace.Enable(TRUE);
 		OnUpdateFrameTitle(TRUE);
 	}
+*/
 }
 
 void CMainFrame::OnFileNewproject() 
@@ -862,4 +867,21 @@ void CMainFrame::EvalWatch(CString watch, int iItem)
 	if( CheckExisting(DEBUGGER_MAIL_SLOT) )
 		SendMailslotMessage(DEBUGGER_MAIL_SLOT,msg);
 
+}
+
+void CMainFrame::OnToolsOptions()
+{
+}
+
+BOOL CMainFrame::checkExistingFolder(CString str)
+{
+	WIN32_FIND_DATA  data;
+	HANDLE hr = FindFirstFile(str,&data);
+	return (INVALID_HANDLE_VALUE != hr);
+	
+}
+
+void CMainFrame::OnUpdateToolsOptions(CCmdUI* pCmdUI)
+{
+	pCmdUI->Enable(TRUE);
 }

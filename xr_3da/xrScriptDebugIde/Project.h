@@ -14,6 +14,7 @@
 class CWorkspaceWnd;
 
 typedef CTypedPtrArray<CPtrArray, CProjectFile*> CProjectFileArray;
+#define PROJ_VERSION 0x03
 
 class CProject  
 {
@@ -21,7 +22,6 @@ public:
 	void RemoveFile(CProjectFile* pPF);
 	BOOL Close();
 	BOOL New();
-	BOOL New(CString);
 	BOOL HasBreakPoint(const char* szFile, int nLine);
 	CProject();
 	virtual ~CProject();
@@ -36,7 +36,6 @@ public:
 	BOOL Save(CString strPathName);
 	BOOL Save(CArchive& ar);
 	BOOL Load();
-	BOOL Load(CArchive& ar);
 	BOOL Load(CString);
 
 	void RemoveProjectFiles();
@@ -48,18 +47,17 @@ public:
 	void AddFiles();
 	CProjectFile* GetProjectFile(CString strPathName);
 	void RedrawFilesTree();
-	void NewProject();
-	CString GetProjectDir();
-	void SetPathName(CString strPathName) { m_strPathName=strPathName; };
-	CString GetPathName() { return m_strPathName; };
-	CString GetName();
-	CString GetNameExt();
+
+	CString GetName(){return m_strName;};
+	void	SetName(LPCSTR s){m_strName = s;};
 	void FillBreakPoints(CMailSlotMsg* msg);
 protected:
+	BOOL Load(CArchive& ar);
+
 	BOOL m_bModified;
 
 	CProjectFileArray	m_files;
-	CString m_strPathName;
+	CString m_strName;
 
 	CString m_command;
 	CString m_arguments;

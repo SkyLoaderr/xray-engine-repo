@@ -105,73 +105,6 @@ END
 
 /////////////////////////////////////////////////////////////////////////////
 //
-// Dialog
-//
-
-IDD_PROJECT_PROPERTIES DIALOG  0, 0, 231, 129
-STYLE DS_SETFONT | DS_MODALFRAME | WS_POPUP | WS_CAPTION | WS_SYSMENU
-CAPTION "Project properties"
-FONT 8, "MS Sans Serif"
-BEGIN
-    DEFPUSHBUTTON   "OK",IDOK,174,108,50,14
-    LTEXT           "Output files:",IDC_STATIC,7,37,38,8
-    LTEXT           "Output file prefix:",IDC_STATIC,7,68,54,8
-    EDITTEXT        IDC_OUTPUT_DIR,7,46,147,12,ES_AUTOHSCROLL
-    EDITTEXT        IDC_OUTPUT_PREFIX,7,77,105,12,ES_AUTOHSCROLL
-    CONTROL         "Generate listing file",IDC_GENERATE_LISTING,"Button",
-                    BS_AUTOCHECKBOX | WS_TABSTOP,7,98,75,10
-    LTEXT           "Intermediate files:",IDC_STATIC,8,7,56,8
-    EDITTEXT        IDC_INTERMEDIATE_DIR,7,16,147,12,ES_AUTOHSCROLL
-    PUSHBUTTON      "Cancel",IDCANCEL,119,108,50,14
-END
-
-IDD_NEW_PROJECT DIALOG  0, 0, 283, 130
-STYLE DS_SETFONT | DS_MODALFRAME | WS_POPUP | WS_CAPTION | WS_SYSMENU
-CAPTION "New Project"
-FONT 8, "MS Sans Serif"
-BEGIN
-    DEFPUSHBUTTON   "OK",IDOK,229,109,47,14
-    PUSHBUTTON      "Cancel",IDCANCEL,174,109,47,14
-    CONTROL         "List1",IDC_PROJECT_TYPES,"SysListView32",LVS_LIST | 
-                    LVS_SINGLESEL | LVS_SHOWSELALWAYS | LVS_NOCOLUMNHEADER | 
-                    LVS_NOSORTHEADER | WS_BORDER | WS_TABSTOP,7,8,160,115
-    LTEXT           "Project name:",IDC_STATIC,173,8,44,8
-    EDITTEXT        IDC_PROJECT_NAME,173,17,88,12,ES_AUTOHSCROLL
-    LTEXT           "Location:",IDC_STATIC,174,33,30,8
-    EDITTEXT        IDC_PROJECT_LOCATION,173,43,88,12,ES_AUTOHSCROLL
-    PUSHBUTTON      "...",IDC_PROJECT_SELLOC,262,43,14,12
-END
-
-
-/////////////////////////////////////////////////////////////////////////////
-//
-// DESIGNINFO
-//
-
-#ifdef APSTUDIO_INVOKED
-GUIDELINES DESIGNINFO 
-BEGIN
-    IDD_PROJECT_PROPERTIES, DIALOG
-    BEGIN
-        LEFTMARGIN, 7
-        RIGHTMARGIN, 224
-        TOPMARGIN, 7
-        BOTTOMMARGIN, 122
-    END
-
-    IDD_NEW_PROJECT, DIALOG
-    BEGIN
-        LEFTMARGIN, 7
-        RIGHTMARGIN, 276
-        TOPMARGIN, 7
-        BOTTOMMARGIN, 123
-    END
-END
-#endif    // APSTUDIO_INVOKED
-
-
-/////////////////////////////////////////////////////////////////////////////
-//
 // String Table
 //
 
@@ -296,6 +229,21 @@ BEGIN
     PUSHBUTTON      "&Help",1038,174,75,50,14
 END
 
+IDD_DIALOG_NEW_PROJECT DIALOGEX 0, 0, 268, 51
+STYLE DS_SETFONT | DS_MODALFRAME | DS_FIXEDSYS | WS_POPUP | WS_CAPTION | 
+    WS_SYSMENU
+CAPTION "Dialog"
+FONT 8, "MS Shell Dlg", 400, 0, 0x1
+BEGIN
+    DEFPUSHBUTTON   "OK",IDOK,211,7,50,14
+    PUSHBUTTON      "Cancel",IDCANCEL,211,26,50,14
+    LTEXT           "Project name:",IDC_STATIC,7,27,64,15
+    EDITTEXT        IDC_EDIT1,59,26,149,15,ES_AUTOHSCROLL
+    LTEXT           "Project folder:",IDC_STATIC,7,7,64,15
+    EDITTEXT        IDC_EDIT2,60,7,125,15,ES_AUTOHSCROLL
+    PUSHBUTTON      "...",IDC_BUTTON1,189,7,18,15
+END
+
 
 /////////////////////////////////////////////////////////////////////////////
 //
@@ -314,6 +262,14 @@ BEGIN
     IDD_DEBUG_DIALOG, DIALOG
     BEGIN
         BOTTOMMARGIN, 89
+    END
+
+    IDD_DIALOG_NEW_PROJECT, DIALOG
+    BEGIN
+        LEFTMARGIN, 7
+        RIGHTMARGIN, 261
+        TOPMARGIN, 7
+        BOTTOMMARGIN, 44
     END
 END
 #endif    // APSTUDIO_INVOKED
@@ -366,6 +322,10 @@ BEGIN
         MENUITEM "&Local Variables",            ID_VIEW_LOCALS
         MENUITEM "W&atches",                    ID_VIEW_WATCHES
         MENUITEM "Threads",                     ID_VIEW_THREADS
+    END
+    POPUP "Tools"
+    BEGIN
+        MENUITEM "Options",                     IDR_TOOLS_OPTIONS
     END
 END
 
@@ -621,7 +581,7 @@ END
 STRINGTABLE 
 BEGIN
     IDR_MAINFRAME           "xRayScriptDebugger v1.0 Beta"
-    IDR_IDE2TYPE            "LuaIDE\nLua\nLua\nLua (*.script)\n.lua\nLuaIDE.Document\nLuaIDE Document"
+    IDR_IDE2TYPE            "xrScriptDebugger\nScript\nScript\nScript(*.script)\n.script\nxrScriptDebugger.Document\nxrScriptDebugger Document"
 END
 
 STRINGTABLE 

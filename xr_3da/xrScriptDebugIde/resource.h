@@ -25,10 +25,9 @@
 #define IDR_ACCEL_DEBUG_BREAK           131
 #define IDR_PROJECT_MENU                132
 #define IDR_ACCEL_NO_PROJECT            132
-#define IDD_PROJECT_PROPERTIES          133
-#define IDD_NEW_PROJECT                 134
 #define IDD_DIALOG1                     136
 #define IDD_DEBUG_DIALOG                137
+#define IDD_DIALOG_NEW_PROJECT          140
 #define IDC_PROJECT_TYPES               1002
 #define IDC_OUTPUT_DIR                  1003
 #define IDC_PROJECT_NAME                1003
@@ -40,11 +39,13 @@
 #define IDC_INTERMEDIATE_DIR            1007
 #define IDC_EDIT1                       1007
 #define IDC_STATIC_COMMAND              1008
+#define IDC_EDIT2                       1008
 #define IDC_STATIC_COMMAND2             1009
 #define IDC_STATIC_COMMAND3             1010
 #define IDC_EDIT_CMD                    1012
 #define IDC_EDIT_WDIR                   1013
 #define IDC_EDIT_ARGS                   1014
+#define IDC_BUTTON1                     1015
 #define IDD_SCINTILLA_FINDDLGORD        1020
 #define IDD_SCINTILLA_REPLACEDLGORD     1021
 #define IDC_REGULAR_EXPRESSION          1022
@@ -83,15 +84,16 @@
 #define ID_EDIT_GOTOLINE                32808
 #define ID_PROJECT_DEBUGGING            32818
 #define ID_PROJECT_RUNPROJECT           32819
+#define IDR_TOOLS_OPTIONS               32824
 
 // Next default values for new objects
 // 
 #ifdef APSTUDIO_INVOKED
 #ifndef APSTUDIO_READONLY_SYMBOLS
 #define _APS_3D_CONTROLS                     1
-#define _APS_NEXT_RESOURCE_VALUE        139
-#define _APS_NEXT_COMMAND_VALUE         32823
-#define _APS_NEXT_CONTROL_VALUE         1013
+#define _APS_NEXT_RESOURCE_VALUE        141
+#define _APS_NEXT_COMMAND_VALUE         32825
+#define _APS_NEXT_CONTROL_VALUE         1016
 #define _APS_NEXT_SYMED_VALUE           112
 #endif
 #endif

@@ -50,7 +50,7 @@ protected:
 	CWinThread*		m_pMailSlotThread;
 	HANDLE			m_mailSlot;
 
-
+	BOOL			checkExistingFolder(CString str);
 // Operations
 public:
 // Overrides
@@ -114,8 +114,10 @@ protected:
 	afx_msg void OnFileNewproject();
 	afx_msg void OnFileCloseproject();
 	afx_msg void OnDebugBreak();
+	afx_msg void OnToolsOptions();
 
 	afx_msg void OnUpdateDebugMenu(CCmdUI* pCmdUI);
+	afx_msg void OnUpdateToolsOptions(CCmdUI* pCmdUI);
 
 	//}}AFX_MSG
 	DECLARE_MESSAGE_MAP()
