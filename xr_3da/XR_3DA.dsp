@@ -648,6 +648,10 @@ SOURCE=.\TextureManager_Loader.cpp
 # End Source File
 # Begin Source File
 
+SOURCE=.\TextureManager_Runtime.h
+# End Source File
+# Begin Source File
+
 SOURCE=.\xr_avi.cpp
 # End Source File
 # Begin Source File
