@@ -2083,16 +2083,6 @@
 							Name="path_builders"
 							Filter="">
 							<Filter
-								Name="vertex_path"
-								Filter="">
-								<File
-									RelativePath=".\vertex_path.h">
-								</File>
-								<File
-									RelativePath=".\vertex_path_inline.h">
-								</File>
-							</Filter>
-							<Filter
 								Name="edge_path"
 								Filter="">
 								<File
@@ -2100,6 +2090,16 @@
 								</File>
 								<File
 									RelativePath=".\edge_path_inline.h">
+								</File>
+							</Filter>
+							<Filter
+								Name="vertex_path"
+								Filter="">
+								<File
+									RelativePath=".\vertex_path.h">
+								</File>
+								<File
+									RelativePath=".\vertex_path_inline.h">
 								</File>
 							</Filter>
 						</Filter>
