@@ -138,13 +138,13 @@ function Defender:process ()
 	   action (self.npc, move (move.crouch, move.stand, move.line, vector():set (0, 0, 0)), look (look.fire_point, enemy.npc), cond (cond.time_end, time_infinite))	
 	end
  
-	if self.waiting ~= 0 then
+	if self.waiting > 0 then
 	   self.waiting = self.waiting - game.time ()
-	   if self.waiting < 0 then
+	   if self.waiting <= 0 then
 		  reset_action (self.npc, self.script_name)
 		  printf ("Attack %s target %s", self.npc:name (), enemy.npc:name ())
 		  action (self.npc, move (move.crouch, move.stand, move.line, vector ():set (0, 0, 0)), 
-				  look (look.fire_point, enemy.npc), object (self.weapon, object.fire1, math.random (2, 4)),
+				  look (look.fire_point, enemy.npc), object (self.weapon, object.fire1, math.random (2, 5)),
 				  cond (cond.time_end, time_infinite))	
 		  self.waiting = game.time () + math.random (2000, 3000)
 	   end
