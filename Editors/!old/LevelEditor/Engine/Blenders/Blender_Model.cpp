@@ -82,8 +82,6 @@ void	CBlender_Model::Compile	(CBlender_Compile& C)
 			break;
 		case SE_R1_NORMAL_LQ:
 			vsname = psname =	"model_def_lq"; 
-			if (1==mskin)		vsname		= "model_def_lq_1";
-			if (2==mskin)		vsname		= "model_def_lq_2";
 			if (oBlend.value)	C.r_Pass	(vsname,psname,TRUE,TRUE,TRUE,TRUE,D3DBLEND_SRCALPHA,	D3DBLEND_INVSRCALPHA,	TRUE,oAREF.value);
 			else				C.r_Pass	(vsname,psname,TRUE);
 			C.r_Sampler			("s_base",	C.L_textures[0]);
@@ -92,8 +90,6 @@ void	CBlender_Model::Compile	(CBlender_Compile& C)
 		case SE_R1_LPOINT:
 			vsname				= "model_def_point";
 			psname				= "add_point";
-			if (1==mskin)		vsname		= "model_def_point_1";
-			if (2==mskin)		vsname		= "model_def_point_2";
 			if (oBlend.value)	C.r_Pass	(vsname,psname,FALSE,TRUE,FALSE,TRUE,D3DBLEND_ONE,	D3DBLEND_ONE,TRUE,oAREF.value);
 			else				C.r_Pass	(vsname,psname,FALSE,TRUE,FALSE,TRUE,D3DBLEND_ONE,	D3DBLEND_ONE,TRUE);
 			C.r_Sampler			("s_base",	C.L_textures[0]);
@@ -104,8 +100,6 @@ void	CBlender_Model::Compile	(CBlender_Compile& C)
 		case SE_R1_LSPOT:
 			vsname				= "model_def_spot";
 			psname				= "add_spot";
-			if (1==mskin)		vsname		= "model_def_spot_1";
-			if (2==mskin)		vsname		= "model_def_spot_2";
 			if (oBlend.value)	C.r_Pass	(vsname,psname,FALSE,TRUE,FALSE,TRUE,D3DBLEND_ONE,	D3DBLEND_ONE,TRUE,oAREF.value);
 			else				C.r_Pass	(vsname,psname,FALSE,TRUE,FALSE,TRUE,D3DBLEND_ONE,	D3DBLEND_ONE,TRUE);
 			C.r_Sampler			("s_base",	C.L_textures[0]);
