@@ -12,7 +12,7 @@
 const	float	S_distance	= 48;
 const	float	S_distance2	= S_distance*S_distance;
 const	float	S_level		= .1f;
-const	int		S_size		= 32;
+const	int		S_size		= 64;
 const	int		S_rt_size	= 512;
 const	int		batch_size	= 128;
 const	float	S_tess		= .5f;
@@ -35,15 +35,16 @@ CLightShadows::~CLightShadows()
 
 void CLightShadows::OnDeviceCreate	()
 {
-	LPCSTR	RTname	= "$user$shadow";
-	LPCSTR	RTtemp	= "$user$temp";
+	LPCSTR	RTname		= "$user$shadow";
+	LPCSTR	RTtemp		= "$user$temp";
+	string128 RTtemp2;	strconcat(RTtemp2,RTtemp,",",RTtemp);
 	
 	// 
 	RT			= Device.Shader._CreateRT	(RTname,S_rt_size,S_rt_size);
 	RT_temp		= Device.Shader._CreateRT	(RTtemp,S_rt_size,S_rt_size);
 	sh_Texture	= Device.Shader.Create		("effects\\shadow_texture");
 	sh_World	= Device.Shader.Create		("effects\\shadow_world",	RTname);
-	sh_Blur		= Device.Shader.Create		("effects\\shadow_blur",	RTtemp);
+	sh_Blur		= Device.Shader.Create		("effects\\blur",			RTtemp2);
 	vs_World	= Device.Streams.Create		(FVF::F_LIT, 4*batch_size*3);
 
 	// Debug
