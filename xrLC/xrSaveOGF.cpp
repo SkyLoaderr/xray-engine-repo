@@ -38,7 +38,7 @@ void CBuild::SaveTREE(CFS_Base &fs)
 	fs.close_chunk	();
 
 	Status("String table...");
-	fs.open_chunk	(fsL_TEXTURES);
+	fs.open_chunk	(fsL_STRINGS);
 	fs.Wdword		(g_Strings.size());
 	for (vector<string>::iterator T=g_Strings.begin(); T!=g_Strings.end(); T++)
 		fs.write(T->c_str(),T->length()+1);
