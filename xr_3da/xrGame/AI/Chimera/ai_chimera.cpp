@@ -60,7 +60,7 @@ void CAI_Chimera::StateSelector()
 //	}
 	VisionElem ve;
 
-	if (C && H && I)		SetState(statePanic);
+	if (C && H && I)			SetState(statePanic);
 	else if (C && H && !I)		SetState(statePanic);
 	else if (C && !H && I)		SetState(statePanic);
 	else if (C && !H && !I) 	SetState(statePanic);
@@ -111,7 +111,6 @@ BOOL CAI_Chimera::net_Spawn (LPVOID DC)
 	MotionMan.AddAnim(eAnimAttack,			"stand_attack_",		-1, 0,						m_fsRunAngular,				PS_STAND);
 	MotionMan.AddAnim(eAnimJump,			"stand_attack_",		 0, 0,						m_fsRunAngular,				PS_STAND);
 
-
 	// define transitions
 	// order : 1. [anim -> anim]	2. [anim->state]	3. [state -> anim]		4. [state -> state]
 	MotionMan.AddTransition_S2S(PS_STAND,	PS_LIE,		eAnimStandLieDown,		false);
@@ -148,4 +147,16 @@ BOOL CAI_Chimera::net_Spawn (LPVOID DC)
 	return TRUE;
 }
 
+void CAI_Chimera::Jump(Fvector to_pos)
+{
+	TTime anim_time = 1000;
 
+	//Movement.Jump(to_pos, anim_type);
+}
+
+bool CAI_Chimera::CanJump() 
+{
+	// проверить дистанцию для прыжка
+		
+	return true;
+}

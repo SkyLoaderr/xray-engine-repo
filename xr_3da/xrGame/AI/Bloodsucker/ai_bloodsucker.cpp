@@ -187,15 +187,7 @@ void CAI_Bloodsucker::vfAssignBones()
 	Bones.AddBone(GetBone(bone2), AXIS_X); Bones.AddBone(GetBone(bone2), AXIS_Y); Bones.AddBone(GetBone(bone2), AXIS_Z);
 }
 
-CBoneInstance *CAI_Bloodsucker::GetBone(LPCTSTR bone_name)
-{
-	int bone = PKinematics(Visual())->LL_BoneID(bone_name);
-	return (&PKinematics(Visual())->LL_GetInstance(u16(bone)));
-}
-CBoneInstance *CAI_Bloodsucker::GetBone(int bone_id)
-{
-	return (&PKinematics(Visual())->LL_GetInstance(u16(bone_id)));
-}
+
 
 void CAI_Bloodsucker::LookDirection(Fvector to_dir, float bone_turn_speed)
 {

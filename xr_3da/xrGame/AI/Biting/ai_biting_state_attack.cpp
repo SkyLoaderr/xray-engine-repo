@@ -88,6 +88,7 @@ void CBitingAttack::Run()
 	}
 
 	u32 delay;
+
 #pragma todo("Jim to Jim: fix nesting: Bloodsucker in Biting state")
 	if (m_bInvisibility) {
 		CAI_Bloodsucker *pBS =	dynamic_cast<CAI_Bloodsucker *>(pMonster);
@@ -100,8 +101,8 @@ void CBitingAttack::Run()
 			}
 		}
 	}
+	
 	bool bJumpState	= pMonster->Movement.JumpState();
-
 	if (bJumpState || (!bJumpState && pMonster->CanJump())) m_tAction = ACTION_JUMP;
 
 	// Выполнение состояния
@@ -140,24 +141,18 @@ void CBitingAttack::Run()
 				yaw = angle_normalize(yaw);
 				pMonster->r_torso_target.yaw = yaw;
 			DO_IN_TIME_INTERVAL_END();
-
+			
 			if (m_bAttackRat) pMonster->MotionMan.SetSpecParams(ASP_ATTACK_RAT);
 			pMonster->MotionMan.m_tAction = ACT_ATTACK;
 
 			break;
 		case ACTION_JUMP:
 			DO_ONCE_BEGIN(flag_once_1);
-				WRITE_TO_LOG("Try to jump");
-				pMonster->Movement.Jump(m_tEnemy.obj->Position(), 1000);
+				pMonster->Jump(m_tEnemy.obj->Position());
 			DO_ONCE_END();
-
-			pMonster->AI_Path.DestNode = m_tEnemy.obj->AI_NodeID;
-			pMonster->vfChoosePointAndBuildPath(0,&m_tEnemy.obj->Position(), true, 0, 0);
-
+			
 			pMonster->MotionMan.m_tAction = ACT_JUMP;
 			break;
 	}
-
-	
 }
 

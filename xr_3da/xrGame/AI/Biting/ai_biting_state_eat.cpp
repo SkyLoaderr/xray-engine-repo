@@ -125,7 +125,7 @@ void CBitingEat::Run()
 			pMonster->Path_GetAwayFromPoint(pCorpse, pCorpse->Position(), saved_dist, 500);
 
 			// Установить параметры движения
-			pMonster->MotionMan.m_tAction = ACT_WALK_BKWD; 
+			pMonster->MotionMan.m_tAction = ACT_DRAG; 
 			pMonster->MotionMan.SetSpecParams(ASP_DRAG_CORPSE | ASP_MOVE_BKWD);
 
 			// если не может тащить
@@ -152,7 +152,10 @@ void CBitingEat::Run()
 				m_dwStandStart = m_dwCurrentTime;
 			DO_ONCE_END();
 			
-			if (m_dwStandStart + 2000 < m_dwCurrentTime) m_tAction = ACTION_WALK;
+			if (m_dwStandStart + 2000 < m_dwCurrentTime) {
+				pMonster->AI_Path.TravelPath.clear();
+				m_tAction = ACTION_WALK;
+			}
 
 			// Look around
 			pMonster->MotionMan.m_tAction = ACT_LOOK_AROUND; 

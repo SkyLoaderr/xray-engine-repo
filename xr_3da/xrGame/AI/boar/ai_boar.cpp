@@ -61,10 +61,12 @@ void CAI_Boar::StateSelector()
 	else if (A && !K && H)		SetState(stateExploreNDE);  //SetState(stateExploreDNE);	//SetState(stateExploreDE);	// слышу опасный звук, но не вижу, враг выгодный			(ExploreDE)		
 	else if (B && !K && !H)		SetState(stateExploreNDE);	// слышу не опасный звук, но не вижу, враг не выгодный	(ExploreNDNE)
 	else if (B && !K && H)		SetState(stateExploreNDE);	// слышу не опасный звук, но не вижу, враг выгодный		(ExploreNDE)
-	else if (GetCorpse(ve) && (ve.obj->m_fFood > 1) && ((GetSatiety() < 0.85f) || flagEatNow))	
+	else if (GetCorpse(ve) && (ve.obj->m_fFood > 1))	
+	///else if (GetCorpse(ve) && (ve.obj->m_fFood > 1) && ((GetSatiety() < 0.85f) || flagEatNow))	
 		SetState(stateEat);
 	else						SetState(stateRest); 
 }
+
 
 BOOL CAI_Boar::net_Spawn (LPVOID DC) 
 {
@@ -98,7 +100,7 @@ BOOL CAI_Boar::net_Spawn (LPVOID DC)
 	MotionMan.LinkAction(ACT_SIT_IDLE,		eAnimLieIdle);
 	MotionMan.LinkAction(ACT_LIE_IDLE,		eAnimLieIdle);
 	MotionMan.LinkAction(ACT_WALK_FWD,		eAnimWalkFwd);
-	MotionMan.LinkAction(ACT_WALK_BKWD,		eAnimWalkFwd);
+	MotionMan.LinkAction(ACT_WALK_BKWD,		eAnimDragCorpse);
 	MotionMan.LinkAction(ACT_RUN,			eAnimRun);
 	MotionMan.LinkAction(ACT_EAT,			eAnimEat);
 	MotionMan.LinkAction(ACT_SLEEP,			eAnimSleep);
@@ -115,3 +117,9 @@ void CAI_Boar::CheckSpecParams(u32 spec_params)
 {
 
 }
+
+// проверка включения поворота костей
+void CAI_Boar::ProcessTurn()
+{
+}
+

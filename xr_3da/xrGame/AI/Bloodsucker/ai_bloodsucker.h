@@ -25,9 +25,6 @@ public:
 
 	static	void __stdcall	BoneCallback			(CBoneInstance *B);
 
-			CBoneInstance*	GetBone					(LPCTSTR bone_name);
-			CBoneInstance*	GetBone					(int bone_id);
-
 			void			LookDirection			(Fvector to_dir, float bone_turn_speed);
 	virtual	void			LookPosition			(Fvector to_point);
 
