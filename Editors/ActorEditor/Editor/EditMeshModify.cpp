@@ -222,7 +222,7 @@ void CEditableMesh::Optimize(BOOL NoOpt)
 			for (int y=0; y<MY+1; y++)
     			for (int z=0; z<MZ+1; z++)
             		VM[x][y][z].clear();
-		VMscale.set(m_Box.max.x-m_Box.min.x, m_Box.max.y-m_Box.min.y, m_Box.max.z-m_Box.min.z);
+		VMscale.set(m_Box.max.x-m_Box.min.x+EPS_S, m_Box.max.y-m_Box.min.y+EPS_S, m_Box.max.z-m_Box.min.z+EPS_S);
 		VMmin.set(m_Box.min.x, m_Box.min.y, m_Box.min.z);
 
 		VMeps.set(VMscale.x/MX/2,VMscale.y/MY/2,VMscale.z/MZ/2);
