@@ -189,9 +189,11 @@ IC		void			gm_SetNearer		(BOOL bNearer)
 //////////////////////////////////////////////////////////////////////
 CRender::CRender	()
 {
-	if ( (HW.Caps.raster.dwVersion_major>=1) && (HW.Caps.raster.dwVersion_minor>=4) )	b_distortion = TRUE;
-	else																				b_distortion = FALSE;
-	if (strstr(Core.Params,"-nodistort"))												b_distortion = FALSE;
+	u32		v_dev	= CAP_VERSION(HW.Caps.raster.dwVersion_major, HW.Caps.raster.dwVersion_minor);
+	u32		v_need	= CAP_VERSION(1,4);
+	if ( v_dev >= v_need )						b_distortion = TRUE;
+	else										b_distortion = FALSE;
+	if (strstr(Core.Params,"-nodistort"))		b_distortion = FALSE;
 }
 
 CRender::~CRender	()
