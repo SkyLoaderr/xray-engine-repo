@@ -265,11 +265,11 @@ void CSoundStream::LoadADPCM( )
 	sxr_hdr			hdr;
 
 	string256		fn;
-	sprintf			(fn,"%s%s.wav",Path.Sounds,fName);
+	strconcat		(fn,fName,".wav");
 
 	DataPos			= NULL;
 
-    hf				= FS.r_open(fn);
+    hf				= FS.r_open("$sounds$",fn);
 	R_ASSERT		(hf>=0);
 	ZeroMemory		(&riff, sizeof(riff));
     XRead			(riff);

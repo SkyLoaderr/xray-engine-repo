@@ -202,10 +202,9 @@ void CSoundRender_Source::Load		(LPCSTR name,	BOOL b3D)
 	if (strext(N))		*strext(N) = 0;
 
 	strconcat			(fn,Path.Current,N,".wav");
-	strlwr				(fn);
 	if (!FS.exist(fn))	{
-		strconcat			(fn,Path.Sounds,N,".wav");
-		strlwr				(fn);
+		strconcat		(fn,N,".wav");
+		FS.update_path	(fn,"$sounds$",fn);
 	}
 
 	if (_3D)			LoadWaveAs3D		( fn );

@@ -9,5 +9,3 @@ Flags32		psDeviceFlags		= {rsFullscreen|rsNoVSync|mtSound};
 
 // textures
 int			psTextureLOD		= 0;
-
-string256	PathCurrent			= {0};

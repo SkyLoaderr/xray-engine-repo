@@ -81,10 +81,9 @@ CVisual*	CModelPool::Instance_Load		(const char* N)
 
 	// Load data from MESHES or LEVEL
 	if (!FS.exist(N))	{
-		if (!FS.exist(fn, Path.Current, name))
-			if (!FS.exist(fn, Path.Meshes, name)){
-				Msg("Can't find model file '%s'.",name);
-				THROW;
+		if (!FS.exist(fn, "$level$", name))
+			if (!FS.exist(fn, "$game_meshes$", name)){
+				Debug.fatal("Can't find model file '%s'.",name);
 			}
 	} else {
 		strcpy			(fn,N);
