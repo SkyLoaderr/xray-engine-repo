@@ -559,7 +559,6 @@ IC	bool compute_tangent(
 	CLevelGraph::SCirclePoint			*tangents
 )
 {
-#pragma todo("Dima to Dima : If this will be a slow down, optimize it by using just a few square roots instead of arctangents and arccosinuses")
 	float				start_cp, dest_cp, distance, alpha1, alpha2, start_yaw, dest_yaw, pitch, yaw1, yaw2;
 	Fvector				direction, temp;
 	
