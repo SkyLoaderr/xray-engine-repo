@@ -112,8 +112,26 @@ void CBuild::xrPhase_Subdivide()
 	Msg("%d subdivisions.",g_XSplit.size());
 	
 	Status				("Compacting memory...");
-	DWORD M1			= mem_Usage();
-	mem_CompactSubdivs	();
-	DWORD M2			= mem_Usage();
-	Msg("Compact: %d / %d (%d)",M1,M2,M1-M2);
+	{
+		DWORD M1			= mem_Usage();
+		g_bUnregister		= false;
+		for (DWORD it=0; it<g_vertices.size(); it++)
+		{
+			Vertex* V = g_vertices[it];
+			if (V->adjacent.empty())	{
+				_DELETE(V);
+				g_vertices.erase(g_vertices.begin()+it);
+				it--;
+			}
+		}
+		g_bUnregister		= true;
+		DWORD M2			= mem_Usage();
+		Msg("Compact: %d / %d (%d)",M1,M2,M1-M2);
+	}
+	{
+		DWORD M1			= mem_Usage();
+		mem_CompactSubdivs	();
+		DWORD M2			= mem_Usage();
+		Msg("Compact: %d / %d (%d)",M1,M2,M1-M2);
+	}
 }
