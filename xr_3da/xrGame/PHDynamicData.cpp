@@ -107,7 +107,9 @@ Fmatrix parent_transform;
 //DMXPStoFMX(dBodyGetRotation(body),dBodyGetPosition(body),BoneTransform);
 p_parent_body_interpolation->InterpolateRotation(parent_transform);
 p_parent_body_interpolation->InterpolatePosition(parent_transform.c);
+
 body_interpolation.InterpolateRotation(transform);
+
 body_interpolation.InterpolatePosition(transform.c);
 parent_transform.mulB(ZeroTransform);
 

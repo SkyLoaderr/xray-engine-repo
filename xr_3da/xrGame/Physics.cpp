@@ -301,13 +301,13 @@ void CPHJeep::Create(dSpaceID space, dWorldID world){
 
 		dJointSetHinge2Param(Joints[i], dParamLoStop, 0.f);
 		dJointSetHinge2Param(Joints[i], dParamHiStop, 0.f);
-		dJointSetHinge2Param(Joints[i], dParamFMax, 10000.f);
+		dJointSetHinge2Param(Joints[i], dParamFMax, 10000.f );
 		dJointSetHinge2Param(Joints[i], dParamFudgeFactor, 0.001f);
 
 		dJointSetHinge2Param(Joints[i], dParamVel2, 0.f);
 		dJointSetHinge2Param(Joints[i], dParamFMax2, 500.f);
-		dReal k_p=20000.f;
-		dReal k_d=1000.f;
+		dReal k_p=20000000.f;//20000.f;
+		dReal k_d=10.f;//1000.f;
 		dReal h=0.02222f;
 			
 
@@ -315,6 +315,7 @@ void CPHJeep::Create(dSpaceID space, dWorldID world){
 		dJointSetHinge2Param(Joints[i], dParamSuspensionCFM, 1.f / (h*k_p + k_d));
 
 	}
+
 
 	GeomsGroup = dCreateGeomGroup(space);  
 	for(i = 1; i < NofGeoms-1; ++i)
@@ -328,8 +329,8 @@ CreateDynamicData();
 }
 ////////////////////////////////////////////////////////////////
 void CPHJeep::JointTune(dReal step){
-const	dReal k_p=30000.f;
-const	dReal k_d=1000.f;
+const	dReal k_p=30000.f;//30000.f;
+const	dReal k_d=1000.f;//1000.f;
 	for(UINT i = 0; i < 4; ++i)
 	{
 
@@ -446,7 +447,7 @@ DynamicData.SetZeroTransform(Translate);
 
 void CPHJeep::Steer(const char& steering)
 {
-	static const dReal steeringRate = M_PI * 2 / 5;
+	static const dReal steeringRate = M_PI * 4 / 5;
 	static const dReal steeringLimit = M_PI / 4;
 	
 	ULONG i;
