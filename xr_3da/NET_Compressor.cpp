@@ -224,12 +224,13 @@ void NET_Compressor::Initialize	(NET_Compressor_FREQ& compress, NET_Compressor_F
 
 WORD NET_Compressor::Compress	(BYTE* dest, BYTE* src, DWORD count)
 {
-	R_ASSERT(dest && src && count);
-
-	PSGP.memCopy	(dest,src,count);
-	return WORD(count);
+	R_ASSERT		(dest && src && count);
 
 	/*
+	PSGP.memCopy	(dest,src,count);
+	return WORD		(count);
+	*/
+
 	CS.Enter		();
     start_encoding	(dest, 2);
 	
@@ -249,7 +250,6 @@ WORD NET_Compressor::Compress	(BYTE* dest, BYTE* src, DWORD count)
 	CS.Leave		();
 
     return WORD(size);
-	*/
 }
 
 
@@ -257,10 +257,11 @@ WORD NET_Compressor::Decompress	(BYTE* dest, BYTE* src, DWORD count)
 {  
 	R_ASSERT(dest && src && count);
 
+	/*
 	PSGP.memCopy	(dest,src,count);
 	return			WORD(count);
+	*/
 
-	/*
 	CS.Enter		();
 	DWORD			size	= DWORD(*LPWORD(src));
 
@@ -289,8 +290,7 @@ WORD NET_Compressor::Decompress	(BYTE* dest, BYTE* src, DWORD count)
 	
     done_decoding	();
 	CS.Leave		();
-	return WORD(size);
-	*/
+	return WORD		(size);
 }
 
 void NET_Compressor_FREQ::Normalize()
