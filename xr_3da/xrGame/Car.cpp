@@ -17,6 +17,8 @@ extern dReal car_neutral_drive_resistance;
 extern dReal car_breaks_resistance;
 extern dReal steeringRate;
 extern dReal steeringLimit;
+extern dReal car_spring_factor;
+extern dReal car_damping_factor;
 
 enum ECarCamType{
 	ectFirst	= 0,
@@ -200,6 +202,8 @@ void	CCar::Load					( LPCSTR section )
 	steeringRate					=pSettings->r_float(section,"steering_rate");
 	steeringLimit					=pSettings->r_float(section,"steering_limit");
 	m_jeep.MassShift				=pSettings->r_float(section,"mass_shift");
+	car_spring_factor				=pSettings->r_float(section,"car_wheels_spring_factor");;
+	car_damping_factor				=pSettings->r_float(section,"car_wheels_damping_factor");
 	snd_engine.create				(TRUE,"car\\car1");
 
 

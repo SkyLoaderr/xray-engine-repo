@@ -218,7 +218,8 @@ bActive=true;
 
 void __stdcall CarHitCallback(bool& do_colide,dContact& c);
 /////////////////////////////////////////////////////////////////////////////
-
+dReal car_spring_factor=1.f;
+dReal car_damping_factor=1.f;
 void CPHJeep::Create(dSpaceID space, dWorldID world){
 	if(bActive) return;
 	static const dReal scaleParam=1.f;
@@ -336,8 +337,8 @@ void CPHJeep::Create(dSpaceID space, dWorldID world){
 
 		dJointSetHinge2Param(Joints[i], dParamVel2, 0.f);
 		dJointSetHinge2Param(Joints[i], dParamFMax2, 500.f);
-		dReal k_p=20000.f;
-		dReal k_d=1000.f;
+		dReal k_p=20000.f*car_spring_factor;
+		dReal k_d=1000.f*car_damping_factor;
 		dReal h=fixed_step;
 			
 
