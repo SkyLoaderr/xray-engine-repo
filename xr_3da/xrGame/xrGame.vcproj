@@ -6749,6 +6749,12 @@
 					<Filter
 						Name="Postprocess"
 						Filter="">
+						<File
+							RelativePath=".\night_vision_effector.cpp">
+						</File>
+						<File
+							RelativePath=".\night_vision_effector.h">
+						</File>
 						<Filter
 							Name="Zones"
 							Filter="">

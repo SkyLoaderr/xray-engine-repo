@@ -63,15 +63,20 @@ void HUD_SOUND::DestroySound	(HUD_SOUND& hud_snd)
 void HUD_SOUND::PlaySound	(HUD_SOUND&		hud_snd,
 							const Fvector&	position,
 							const CObject*	parent,
-							bool			hud_mode)
+							bool			hud_mode,
+							bool			looped)
 {
 	if(!hud_snd.enable)		return;
 
 	VERIFY2					(hud_snd.snd.handle,"Trying to play non-existant or destroyed sound");
+
+	u32 flags = hud_mode?sm_2D:0;
+	if(looped)
+		flags |= sm_Looped;
 	hud_snd.snd.set_volume	(hud_snd.volume);
 	hud_snd.snd.play_at_pos	(const_cast<CObject*>(parent),
 							position,
-							hud_mode?sm_2D:0,
+							flags,
 							hud_snd.delay);
 }
 

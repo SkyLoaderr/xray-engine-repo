@@ -29,7 +29,8 @@ struct HUD_SOUND
 	static void		PlaySound	(HUD_SOUND& snd,
 								const Fvector& position,
 								const CObject* parent,
-								bool hud_mode);
+								bool hud_mode,
+								bool looped = false);
 
 	static void		StopSound	(HUD_SOUND& snd);
 

@@ -306,6 +306,7 @@ void CWeaponMagazined::ReloadMagazine()
 	{
 		++iAmmoElapsed;
 		m_magazine.push(l_cartridge);
+		m_fCurrentCartirdgeDisp = l_cartridge.m_kDisp;
 	}
 	m_ammoName = m_pAmmo->m_nameShort;
 

@@ -294,6 +294,9 @@ void CWeaponMounted::OnShot		()
 		fireDispersionBase,
 		m_CurrentAmmo, Owner()->ID(),ID());
 
+	StartShotParticles	();
+	if(m_bShotLight) Light_Start();
+
 	StartFlameParticles();
 	StartSmokeParticles(fire_pos, zero_vel);
 	OnShellDrop(fire_pos, zero_vel);
@@ -337,7 +340,7 @@ void CWeaponMounted::AddShotEffector		()
 	if(Owner())
 	{
 		CEffectorShot* S		= smart_cast<CEffectorShot*>	(Owner()->EffectorManager().GetEffector(eCEShot)); 
-		if (!S)	S				= (CEffectorShot*)Owner()->EffectorManager().AddEffector(xr_new<CEffectorShot> (camMaxAngle,camRelaxSpeed, 0.25f));
+		if (!S)	S				= (CEffectorShot*)Owner()->EffectorManager().AddEffector(xr_new<CEffectorShot> (camMaxAngle,camRelaxSpeed, 0.25f, 0.01f));
 		R_ASSERT				(S);
 		S->MountedWeaponShot	();
 	}

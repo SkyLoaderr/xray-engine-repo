@@ -18,9 +18,9 @@ float CWeapon::GetConditionDispersionFactor() const
 	return (1.f + fireDispersionConditionFactor*(1.f-GetCondition()));
 }
 
-float CWeapon::GetFireDispersion	() const
+float CWeapon::GetFireDispersion	(bool with_cartridge) const
 {
-	return GetFireDispersion	(1.f);
+	return GetFireDispersion	(with_cartridge?m_fCurrentCartirdgeDisp:1.f);
 }
 
 //текущая дисперсия (в радианах) оружия с учетом используемого патрона
@@ -48,7 +48,7 @@ void CWeapon::AddShotEffector		()
 	if(pActor)
 	{
 		CEffectorShot* S		= smart_cast<CEffectorShot*>	(pActor->EffectorManager().GetEffector(eCEShot)); 
-		if (!S)	S				= (CEffectorShot*)pActor->EffectorManager().AddEffector(xr_new<CEffectorShot> (camMaxAngle,camRelaxSpeed, camHorzProb, camHorzFactor));
+		if (!S)	S				= (CEffectorShot*)pActor->EffectorManager().AddEffector(xr_new<CEffectorShot> (camMaxAngle,camRelaxSpeed, camMaxAngleHorz, camStepAngleHorz));
 		R_ASSERT				(S);
 		S->Shot					(camDispersion);
 	}

@@ -39,13 +39,13 @@ BOOL CMonsterEffector::Process(SPPInfo& pp)
 	
 	SPPInfo	def;
 
-	pp.duality.h		= def.duality.h			+ (state.duality.h			- def.duality.h)		* factor; 			
-	pp.duality.v		= def.duality.v			+ (state.duality.v			- def.duality.v)		* factor;
-	pp.gray				= def.gray				+ (state.gray				- def.gray)				* factor;
-	pp.blur				= def.blur				+ (state.blur				- def.blur)				* factor;
-	pp.noise.intensity	= def.noise.intensity	+ (state.noise.intensity	- def.noise.intensity)	* factor;
-	pp.noise.grain		= def.noise.grain		+ (state.noise.grain		- def.noise.grain)		* factor;
-	pp.noise.fps		= def.noise.fps			+ (state.noise.fps			- def.noise.fps)		* factor;	
+	pp.duality.h		+= def.duality.h			+ (state.duality.h			- def.duality.h)		* factor; 			
+	pp.duality.v		+= def.duality.v			+ (state.duality.v			- def.duality.v)		* factor;
+	pp.gray				+= def.gray				+ (state.gray				- def.gray)				* factor;
+	pp.blur				+= def.blur				+ (state.blur				- def.blur)				* factor;
+	pp.noise.intensity	+= def.noise.intensity	+ (state.noise.intensity	- def.noise.intensity)	* factor;
+	pp.noise.grain		+= def.noise.grain		+ (state.noise.grain		- def.noise.grain)		* factor;
+	pp.noise.fps		+= def.noise.fps			+ (state.noise.fps			- def.noise.fps)		* factor;	
 
 	pp.color_base.set	(
 		def.color_base.r	+ (state.color_base.r - def.color_base.r) * factor, 

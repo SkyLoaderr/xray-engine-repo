@@ -27,9 +27,23 @@ void CWeapon::FireTrace		(const Fvector& P, const Fvector& D)
 	//повысить изношенность оружия с учетом влияния конкретного патрона
 	ChangeCondition(-conditionDecreasePerShot*l_cartridge.m_impair);
 
-	//выстерлить пулю
-	FireBullet(P,D, GetFireDispersion(l_cartridge.m_kDisp),
-				l_cartridge, H_Parent()->ID(), ID());
+	
+	float weapon_fire_disp = GetFireDispersion(false);
+	Fvector dir_base_disp;
+	dir_base_disp.random_dir(D, weapon_fire_disp, Random);
+
+	float cartirdge_fire_disp = GetFireDispersion(true) - weapon_fire_disp;
+
+	//выстерлить пулю (с учетом возможной стрельбы дробью)
+	for(int i = 0; i < l_cartridge.m_buckShot; ++i) 
+	{
+		FireBullet(P, dir_base_disp, cartirdge_fire_disp,
+					l_cartridge, H_Parent()->ID(), ID());
+	}
+
+	StartShotParticles	();
+	if(m_bShotLight) Light_Start();
+
 	
 	// Ammo
 	m_magazine.pop	();

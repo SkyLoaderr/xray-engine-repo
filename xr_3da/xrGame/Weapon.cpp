@@ -61,6 +61,9 @@ CWeapon::CWeapon(LPCSTR name)
 	m_pFlameParticles2	= NULL;
 	m_sFlameParticles2 = NULL;
 
+
+	m_fCurrentCartirdgeDisp = 1.f;
+
 }
 
 CWeapon::~CWeapon		()
@@ -258,11 +261,10 @@ void CWeapon::Load		(LPCSTR section)
 	camDispersion		= pSettings->r_float		(section,"cam_dispersion"	); 
 	camDispersion		= deg2rad					(camDispersion);
 
-	camHorzProb			= pSettings->r_float		(section,"cam_horz_prob"	); 
-	camHorzFactor		= pSettings->r_float		(section,"cam_horz_factor"	); 
-
-
-
+	camMaxAngleHorz		= pSettings->r_float		(section,"cam_max_angle_horz"	); 
+	camMaxAngleHorz		= deg2rad					(camMaxAngleHorz);
+	camStepAngleHorz	= pSettings->r_float		(section,"cam_step_angle_horz"	); 
+	camStepAngleHorz	= deg2rad					(camStepAngleHorz);
 
 	fireDispersionConditionFactor = pSettings->r_float(section,"fire_dispersion_condition_factor"); 
 	misfireProbability			  = pSettings->r_float(section,"misfire_probability"); 
@@ -380,6 +382,7 @@ BOOL CWeapon::net_Spawn		(LPVOID DC)
 	{
 		CCartridge l_cartridge; 
 		l_cartridge.Load(*m_ammoTypes[m_ammoType]);
+		m_fCurrentCartirdgeDisp = l_cartridge.m_kDisp;
 		for(int i = 0; i < iAmmoElapsed; ++i) 
 			m_magazine.push(l_cartridge);
 	}
@@ -1121,6 +1124,7 @@ void	CWeapon::SetAmmoElapsed	(int ammo_count)
 		{
 			CCartridge l_cartridge; 
 			l_cartridge.Load(*m_ammoTypes[m_ammoType]);
+			m_fCurrentCartirdgeDisp = l_cartridge.m_kDisp;
 			while (uAmmo > m_magazine.size())
 			{
 				m_magazine.push(l_cartridge);

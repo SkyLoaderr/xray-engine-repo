@@ -10,15 +10,17 @@
 //////////////////////////////////////////////////////////////////////
 
 CEffectorShot::CEffectorShot	(float max_angle, float relax_speed, 
-								 float disp_prob, float horz_factor) : CCameraEffector(eCEShot,100000.f,TRUE)
+								 float max_angle_horz, float step_angle_horz) : CCameraEffector(eCEShot,100000.f,TRUE)
 {
 	fRelaxSpeed		= _abs(relax_speed);
 	fAngleCurrent	= -EPS_S;
 	fMaxAngle		= _abs(max_angle);
 	bActive			= FALSE;
 
-	fDispProbability = 1.f - disp_prob;
-	fHorzDispFactor	 = horz_factor;
+
+	fAngleHorz = 0.f;
+	fAngleHorzMax = max_angle_horz;//PI*0.05f;
+	fAngleHorzStep = step_angle_horz;//PI*0.05f*0.2f;
 }
 
 CEffectorShot::~CEffectorShot	()
@@ -26,13 +28,17 @@ CEffectorShot::~CEffectorShot	()
 
 }
 
+
 void CEffectorShot::Shot		(float angle)
 {
-	fAngleCurrent	+= (angle*.75f+::Random.randF(-1,1)*angle*.25f);
+	fAngleCurrent	+= (angle*.7f+::Random.randF(-1,1)*angle*.3f);
 	clamp			(fAngleCurrent,-fMaxAngle,fMaxAngle);
-	float r			= (::Random.randF()>fDispProbability)?(fAngleCurrent/fMaxAngle)*fHorzDispFactor*::Random.randF(-1,1):0.f;
-	vDispersionDir.set(r,1.f,r); 
-	vDispersionDir.normalize_safe();
+	if(fis_zero(fAngleCurrent - fMaxAngle))
+			fAngleCurrent *= ::Random.randF(0.9f,1.1f);
+
+	fAngleHorz		= fAngleHorz + (fAngleCurrent/fMaxAngle)*::Random.randF(-1,1)*fAngleHorzStep;
+	clamp			(fAngleHorz,-fAngleHorzMax,fAngleHorzMax);
+		
 	bActive			= TRUE;
 }
 
@@ -50,18 +56,38 @@ void CEffectorShot::MountedWeaponShot		()
 
 BOOL CEffectorShot::Process		(Fvector &p, Fvector &d, Fvector &n, float& fFov, float& fFar, float& fAspect)
 {
-	if (bActive){
-		d.mad					(vDispersionDir,tanf(fAngleCurrent));
-		if (fAngleCurrent>=0.f){
+	if (bActive)
+	{
+		UpdateAngles	();
+		d.add					(vDispersionDir);
+
+		float time_to_relax = _abs(fAngleCurrent)/fRelaxSpeed;
+		float relax_speed = _abs(fAngleHorz)/time_to_relax;
+		if (fAngleHorz>=0.f)
+			fAngleHorz	 -= relax_speed*Device.fTimeDelta;
+		else
+			fAngleHorz	 += relax_speed*Device.fTimeDelta;
+
+
+
+		if (fAngleCurrent>=0.f)
+		{
 			fAngleCurrent		-= fRelaxSpeed*Device.fTimeDelta;
-			if (fAngleCurrent<0.f){
+		
+			if (fAngleCurrent<0.f)
+			{
 				fAngleCurrent	= 0.f;
+				fAngleHorz		= 0.f;
 				bActive			= FALSE;
 			}
-		}else{
+		}
+		else
+		{
 			fAngleCurrent		+= fRelaxSpeed*Device.fTimeDelta;
-			if (fAngleCurrent>0.f){
+			if (fAngleCurrent>0.f)
+			{
 				fAngleCurrent	= 0.f;
+				fAngleHorz		= 0.f;
 				bActive			= FALSE;
 			}
 		}
@@ -69,6 +95,12 @@ BOOL CEffectorShot::Process		(Fvector &p, Fvector &d, Fvector &n, float& fFov, f
 	return TRUE;
 }
 
+
+void CEffectorShot::UpdateAngles	()
+{
+	vDispersionDir.y = tanf(fAngleCurrent);
+	vDispersionDir.z = tanf(fAngleHorz);
+}
 
 void  CEffectorShot::GetDeltaAngle	(Fvector &delta_angle)
 {

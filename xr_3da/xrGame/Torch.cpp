@@ -5,11 +5,14 @@
 #include "../LightAnimLibrary.h"
 #include "PhysicsShell.h"
 #include "xrserver_objects_alife_items.h"
+#include "ai_sounds.h"
+
+#include "HUDManager.h"
+#include "level.h"
+
+
 const float TIME_2_HIDE		= 5.f;
 
-#include "level.h"
-#include "../CameraManager.h"
-#include "ai/ai_monster_effector.h"
 
 CTorch::CTorch(void) 
 {
@@ -22,8 +25,6 @@ CTorch::CTorch(void)
 	lanim						= 0;
 	time2hide					= 0;
 	fBrightness					= 1.f;
-
-	m_pNightVision				= NULL;
 }
 
 CTorch::~CTorch(void) 
@@ -31,6 +32,10 @@ CTorch::~CTorch(void)
 	::Render->light_destroy	(light_render);
 	::Render->glow_destroy	(glow_render);
 	xr_delete				(collidable.model);
+
+	HUD_SOUND::DestroySound(m_NightVisionOnSnd);
+	HUD_SOUND::DestroySound(m_NightVisionOffSnd);
+	HUD_SOUND::DestroySound(m_NightVisionIdleSnd);
 }
 
 void CTorch::Load(LPCSTR section) 
@@ -43,33 +48,21 @@ void CTorch::Load(LPCSTR section)
 	m_bNightVisionEnabled = !!pSettings->r_bool(section,"night_vision");
 	if(m_bNightVisionEnabled)
 	{
-		m_sNightVisionTexture = pSettings->r_string(section,"night_vision_texture");
-		
+		LPCSTR texture = pSettings->r_string(section,"night_vision_texture");
+		m_NightVisionTexture.Init(texture, "hud\\default", 0, 0, alNone);
+
 		// Load attack postprocess --------------------------------------------------------
 		LPCSTR ppi_section = pSettings->r_string(section,"night_vision_effector");
-		m_NightVisionEffector.ppi.duality.h		= pSettings->r_float(ppi_section,"duality_h");
-		m_NightVisionEffector.ppi.duality.v		= pSettings->r_float(ppi_section,"duality_v");
-		m_NightVisionEffector.ppi.gray				= pSettings->r_float(ppi_section,"gray");
-		m_NightVisionEffector.ppi.blur				= pSettings->r_float(ppi_section,"blur");
-		m_NightVisionEffector.ppi.noise.intensity	= pSettings->r_float(ppi_section,"noise_intensity");
-		m_NightVisionEffector.ppi.noise.grain		= pSettings->r_float(ppi_section,"noise_grain");
-		m_NightVisionEffector.ppi.noise.fps		= pSettings->r_float(ppi_section,"noise_fps");
-		VERIFY(!fis_zero(m_NightVisionEffector.ppi.noise.fps));
+		m_NightVisionEffector.Load(ppi_section);
 
-		sscanf(pSettings->r_string(ppi_section,"color_base"),	"%f,%f,%f", &m_NightVisionEffector.ppi.color_base.r, &m_NightVisionEffector.ppi.color_base.g, &m_NightVisionEffector.ppi.color_base.b);
-		sscanf(pSettings->r_string(ppi_section,"color_gray"),	"%f,%f,%f", &m_NightVisionEffector.ppi.color_gray.r, &m_NightVisionEffector.ppi.color_gray.g, &m_NightVisionEffector.ppi.color_gray.b);
-		sscanf(pSettings->r_string(ppi_section,"color_add"),	"%f,%f,%f", &m_NightVisionEffector.ppi.color_add.r,  &m_NightVisionEffector.ppi.color_add.g,  &m_NightVisionEffector.ppi.color_add.b);
 
-		m_NightVisionEffector.time			= pSettings->r_float(ppi_section,"time");
-		m_NightVisionEffector.time_attack	= pSettings->r_float(ppi_section,"time_attack");
-		m_NightVisionEffector.time_release	= pSettings->r_float(ppi_section,"time_release");
-
-		m_NightVisionEffector.ce_time			= pSettings->r_float(ppi_section,"ce_time");
-		m_NightVisionEffector.ce_amplitude		= pSettings->r_float(ppi_section,"ce_amplitude");
-		m_NightVisionEffector.ce_period_number	= pSettings->r_float(ppi_section,"ce_period_number");
-		m_NightVisionEffector.ce_power			= pSettings->r_float(ppi_section,"ce_power");
-
-		// --------------------------------------------------------------------------------
+		//// Sounds
+		if(pSettings->line_exist(section, "snd_night_vision_on"))
+			HUD_SOUND::LoadSound(section,"snd_night_vision_on"	, m_NightVisionOnSnd	, TRUE, SOUND_TYPE_ITEM_USING);
+		if(pSettings->line_exist(section, "snd_night_vision_off"))
+			HUD_SOUND::LoadSound(section,"snd_night_vision_off"	, m_NightVisionOffSnd	, TRUE, SOUND_TYPE_ITEM_USING);
+		if(pSettings->line_exist(section, "snd_night_vision_idle"))
+			HUD_SOUND::LoadSound(section,"snd_night_vision_idle", m_NightVisionIdleSnd	, TRUE, SOUND_TYPE_ITEM_USING);
 	}
 }
 
@@ -87,22 +80,38 @@ void CTorch::SwitchNightVision(bool vision_on)
 	{
 		CActor *pA = smart_cast<CActor *>(H_Parent());
 		if (pA) 
-			m_pNightVision = xr_new<CMonsterEffector>(m_NightVisionEffector.ppi, m_NightVisionEffector.time, m_NightVisionEffector.time_attack, m_NightVisionEffector.time_release);
-			Level().Cameras.AddEffector(m_pNightVision);
+		{
+			bool result = m_NightVisionEffector.Start();
+			if(result)
+			{
+				HUD_SOUND::PlaySound(m_NightVisionOnSnd, pA->Position(), pA, true);
+				HUD_SOUND::PlaySound(m_NightVisionIdleSnd, pA->Position(), pA, true, true);
+			}
+		}
 	}
 	else
 	{
-		//m_pNightVision->fLifeTime = m_pNightVision->m_total*m_pNightVision->m_release;
-		m_pNightVision = NULL;
-		//Level().Cameras.RemoveEffector(xr_new<CMonsterEffector>(get_sd()->m_attack_effector.ppi, get_sd()->m_attack_effector.time, m_NightVisionEffector.time_attack, m_NightVisionEffector.time_release));
+		CActor *pA = smart_cast<CActor *>(H_Parent());
+		if(pA)
+		{
+			bool result = m_NightVisionEffector.Stop();
+			if(result)
+			{
+				HUD_SOUND::PlaySound(m_NightVisionOffSnd, pA->Position(), pA, true);
+				HUD_SOUND::StopSound(m_NightVisionIdleSnd);
+			}
+		}
 	}
 }
 
 
 void CTorch::UpdateSwitchNightVision   ()
 {
-//	if(m_pNightVision)
-//		m_pNightVision->fLifeTime = flt_max;
+	if(m_bNightVisionOn)
+	{
+		if(m_NightVisionTexture.GetShader())
+			HUD().GetUI()->UIMainIngameWnd.AddStaticItem(&m_NightVisionTexture, 0,0, UI_BASE_WIDTH, UI_BASE_HEIGHT);
+	}
 }
 
 void CTorch::Switch()
@@ -196,61 +205,66 @@ void CTorch::OnH_B_Independent()
 
 	Switch					(false);
 	SwitchNightVision		(false);
+
+	HUD_SOUND::StopSound(m_NightVisionOnSnd);
+	HUD_SOUND::StopSound(m_NightVisionOffSnd);
+	HUD_SOUND::StopSound(m_NightVisionIdleSnd);
 }
 
 void CTorch::UpdateCL	() 
 {
 	inherited::UpdateCL	();
 
-	// Oles: no need to perform lighting-update for turned-off lights
-	// Oles: esp. the "CalculateBones" is slow
-	if (!light_render->get_active())	return;	
-
-	CBoneInstance& BI = PKinematics(Visual())->LL_GetBoneInstance(guid_bone);
-	Fmatrix M;
-
-	if (H_Parent()) {
-		PKinematics(H_Parent()->Visual())->CalculateBones	();
-		M.mul						(XFORM(),BI.mTransform);
-		light_render->set_rotation	(M.k,M.i);
-		light_render->set_position	(M.c);
-		glow_render->set_position	(M.c);
-		glow_render->set_direction	(M.k);
-	}
-	else
-	{
-		if(getVisible() && m_pPhysicsShell) {
-			M.mul					(XFORM(),BI.mTransform);
-
-			if (light_render->get_active()){
-				light_render->set_rotation	(M.k,M.i);
-				light_render->set_position	(M.c);
-				glow_render->set_position	(M.c);
-				glow_render->set_direction	(M.k);
-
-				time2hide			-= Device.fTimeDelta;
-				if (time2hide<0){
-					light_render->set_active(false);
-					glow_render->set_active(false);
-				}
-			}
-		} 
-	}
-
-	// calc color animator
-	if (lanim){
-		int frame;
-		// возвращает в формате BGR
-		u32 clr			= lanim->CalculateBGR(Device.fTimeGlobal,frame); 
-
-		Fcolor			fclr;
-		fclr.set		((float)color_get_B(clr),(float)color_get_G(clr),(float)color_get_R(clr),1.f);
-		fclr.mul_rgb	(fBrightness/255.f);
-		light_render->set_color(fclr);
-		glow_render->set_color(fclr);
-	}
-
 	UpdateSwitchNightVision   ();
+
+	if (light_render->get_active())
+	{
+
+
+		CBoneInstance& BI = PKinematics(Visual())->LL_GetBoneInstance(guid_bone);
+		Fmatrix M;
+
+		if (H_Parent()) {
+			PKinematics(H_Parent()->Visual())->CalculateBones	();
+			M.mul						(XFORM(),BI.mTransform);
+			light_render->set_rotation	(M.k,M.i);
+			light_render->set_position	(M.c);
+			glow_render->set_position	(M.c);
+			glow_render->set_direction	(M.k);
+		}
+		else
+		{
+			if(getVisible() && m_pPhysicsShell) {
+				M.mul					(XFORM(),BI.mTransform);
+
+				if (light_render->get_active()){
+					light_render->set_rotation	(M.k,M.i);
+					light_render->set_position	(M.c);
+					glow_render->set_position	(M.c);
+					glow_render->set_direction	(M.k);
+
+					time2hide			-= Device.fTimeDelta;
+					if (time2hide<0){
+						light_render->set_active(false);
+						glow_render->set_active(false);
+					}
+				}
+			} 
+		}
+
+		// calc color animator
+		if (lanim){
+			int frame;
+			// возвращает в формате BGR
+			u32 clr			= lanim->CalculateBGR(Device.fTimeGlobal,frame); 
+
+			Fcolor			fclr;
+			fclr.set		((float)color_get_B(clr),(float)color_get_G(clr),(float)color_get_R(clr),1.f);
+			fclr.mul_rgb	(fBrightness/255.f);
+			light_render->set_color(fclr);
+			glow_render->set_color(fclr);
+		}
+	}
 }
 
 void CTorch::renderable_Render	() 

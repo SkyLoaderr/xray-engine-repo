@@ -336,29 +336,21 @@ void CShootingObject::FireBullet(const Fvector& pos,
 								 u16 parent_id,
 								 u16 weapon_id)
 {
-	for(int i = 0; i < cartridge.m_buckShot; ++i) 
-	{
-		Fvector dir;
-		dir.random_dir(shot_dir, fire_disp, Random);
+	Fvector dir;
+	dir.random_dir(shot_dir, fire_disp, Random);
 
-		//инициализипровать текущие параметры выстрела перед запуском RayPick
-		m_fCurrentHitPower	= float(iHitPower);
-		m_fCurrentHitImpulse = fHitImpulse;
-		m_fCurrentWallmarkSize = cartridge.fWallmarkSize;
-		m_vCurrentShootDir = dir;
-		m_vCurrentShootPos = pos;
-		m_fCurrentFireDist = fireDistance;
-		m_iCurrentParentID = parent_id;
+	//инициализипровать текущие параметры выстрела перед запуском RayPick
+	m_fCurrentHitPower	= float(iHitPower);
+	m_fCurrentHitImpulse = fHitImpulse;
+	m_fCurrentWallmarkSize = cartridge.fWallmarkSize;
+	m_vCurrentShootDir = dir;
+	m_vCurrentShootPos = pos;
+	m_fCurrentFireDist = fireDistance;
+	m_iCurrentParentID = parent_id;
 
-		Level().BulletManager().AddBullet(	pos, dir, m_fStartBulletSpeed, float(iHitPower), 
-											fHitImpulse, parent_id, weapon_id, 
-											ALife::eHitTypeFireWound, fireDistance, cartridge);
-
-		StartShotParticles	();
-	}
-
-	// light
-	if(m_bShotLight) Light_Start();
+	Level().BulletManager().AddBullet(	pos, dir, m_fStartBulletSpeed, float(iHitPower), 
+										fHitImpulse, parent_id, weapon_id, 
+										ALife::eHitTypeFireWound, fireDistance, cartridge);
 }
 
 void CShootingObject::FireStart	()

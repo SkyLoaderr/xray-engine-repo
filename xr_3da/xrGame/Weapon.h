@@ -310,8 +310,8 @@ protected:
 
 public:
 	//текущая дисперсия (в радианах) оружия с учетом используемого патрона
-	float					GetFireDispersion	()					const;
-	float					GetFireDispersion	(float cartridge_k) const;
+	float					GetFireDispersion	(bool with_cartridge)			const;
+	float					GetFireDispersion	(float cartridge_k)				const;
 	const Fvector&			GetRecoilDeltaAngle	();
 
 	//параметы оружия в зависимоти от его состояния исправности
@@ -332,10 +332,8 @@ protected:
 	float					camMaxAngle;
 	float					camRelaxSpeed;
 	float					camDispersion;
-	//вероятность отклонения по горизонтали эффектора во время стрельбы
-	float					camHorzProb;
-	//коэффициент отклонения
-	float					camHorzFactor;
+	float					camMaxAngleHorz;
+	float					camStepAngleHorz;
 
 protected:
 	//для отдачи оружия
@@ -392,6 +390,7 @@ public:
 
 	// Multitype ammo support
 	xr_stack<CCartridge>	m_magazine;
+	float					m_fCurrentCartirdgeDisp;
 };
 
 #endif // !defined(AFX_WEAPON_H__7C42AD7C_0EBD_4AD1_90DE_2F972BF538B9__INCLUDED_)

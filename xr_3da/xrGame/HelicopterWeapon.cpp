@@ -64,6 +64,10 @@ void CHelicopter::OnShot		()
 		ID(),
 		ID());
 
+	StartShotParticles	();
+	if(m_bShotLight) Light_Start();
+
+
 	StartFlameParticles();
 	StartSmokeParticles(m_fire_pos, zero_vel);
 	OnShellDrop(m_fire_pos, zero_vel);

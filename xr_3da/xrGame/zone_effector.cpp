@@ -26,13 +26,13 @@ BOOL CZoneEffectPP::Process(SPPInfo& pp)
 
 	SPPInfo	def;
 
-	pp.duality.h		= def.duality.h			+ (state.duality.h			- def.duality.h)		* factor; 			
-	pp.duality.v		= def.duality.v			+ (state.duality.v			- def.duality.v)		* factor;
-	pp.gray				= def.gray				+ (state.gray				- def.gray)				* factor;
-	pp.blur				= def.blur				+ (state.blur				- def.blur)				* factor;
-	pp.noise.intensity	= def.noise.intensity	+ (state.noise.intensity	- def.noise.intensity)	* factor;
-	pp.noise.grain		= def.noise.grain		+ (state.noise.grain		- def.noise.grain)		* factor;
-	pp.noise.fps		= def.noise.fps			+ (state.noise.fps			- def.noise.fps)		* factor;	
+	pp.duality.h		+= def.duality.h			+ (state.duality.h			- def.duality.h)		* factor; 			
+	pp.duality.v		+= def.duality.v			+ (state.duality.v			- def.duality.v)		* factor;
+	pp.gray				+= def.gray				+ (state.gray				- def.gray)				* factor;
+	pp.blur				+= def.blur				+ (state.blur				- def.blur)				* factor;
+	pp.noise.intensity	+= def.noise.intensity	+ (state.noise.intensity	- def.noise.intensity)	* factor;
+	pp.noise.grain		+= def.noise.grain		+ (state.noise.grain		- def.noise.grain)		* factor;
+	pp.noise.fps		+= def.noise.fps			+ (state.noise.fps			- def.noise.fps)		* factor;	
 	VERIFY(!fis_zero(pp.noise.fps));
 
 	pp.color_base.set	(

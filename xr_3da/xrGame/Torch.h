@@ -1,11 +1,15 @@
 #pragma once
 #include "attachable_item.h"
-#include "ai/ai_monster_defs.h"
+#include "night_vision_effector.h"
+#include "hudsound.h"
+
+#include "ui/uistatic.h"
 
 class CLAItem;
 class CMonsterEffector;
 
-class CTorch : public CAttachableItem {
+class CTorch : public CAttachableItem 
+{
 private:
     typedef	CAttachableItem	inherited;
 protected:
@@ -49,11 +53,15 @@ public:
 			void	SwitchNightVision		  (bool light_on);
 			void	UpdateSwitchNightVision   ();
 protected:
-	bool				m_bNightVisionEnabled;
-	bool				m_bNightVisionOn;
-	ref_str				m_sNightVisionTexture;
-	SAttackEffector		m_NightVisionEffector;
-	CMonsterEffector*	m_pNightVision;
+	bool					m_bNightVisionEnabled;
+	bool					m_bNightVisionOn;
+	CNightVisionEffector	m_NightVisionEffector;
+
+	HUD_SOUND				m_NightVisionOnSnd;
+	HUD_SOUND				m_NightVisionOffSnd;
+	HUD_SOUND				m_NightVisionIdleSnd;
+	CUIStaticItem			m_NightVisionTexture;
+
 public:
 
 	virtual bool			use_parent_ai_locations	() const
