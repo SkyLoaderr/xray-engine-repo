@@ -46,7 +46,7 @@ function options_dialog:InitControls()
 	main_rect.y = (screen.height - main_rect.height)/2
 	--local caption_rect    = {x = -20,      y = -50,      width = main_rect.width, height = indent*2}
 	local captiontxt_rect = {x = 50, --caption_rect.width/2,
-							 y = -65, --caption_rect.height/2,
+							 y = -60, --caption_rect.height/2,
 							 width = 0,
 							 height = 0}
 	     --->> BUTTONS
