@@ -17,6 +17,12 @@
 		<disable>garbage_meetstalker_start</disable>
 	</info_portion>
 
+
+	<!-- Раш монстров -->
+	<info_portion id="gar_dolg_help_kill_rush"></info_portion>
+	<info_portion id="gar_dolg_warning_done"></info_portion>
+
+
   <!-- Драм-момент -->
   <info_portion id="gar_dm_novice_asked_for_help"></info_portion>
   <info_portion id="gar_dm_bandit_warned_plr"></info_portion>
