@@ -20,8 +20,13 @@
 #include "actor.h"
 #include "huditem.h"
 
+bool g_bDisableAllInput = false;
+
 void CLevel::IR_OnMouseWheel( int direction )
 {
+	if( Device.Pause()		) return;
+	if(	g_bDisableAllInput	) return;
+
 	if (pHUD->GetUI()->IR_OnMouseWheel(direction)) return;
 	if ( Game().IR_OnMouseWheel(direction) ) return;
 }
@@ -49,8 +54,8 @@ void CLevel::IR_OnKeyboardPress(int key)
 		return;
 		break;
 	};
-	
-	if( Device.Pause() ) return;
+	if( Device.Pause()		) return;
+	if(	g_bDisableAllInput	) return;
 
 	if (pHUD->GetUI()->IR_OnKeyboardPress(key)) return;
 	if ( Game().IR_OnKeyboardPress(key) ) return;
@@ -289,7 +294,8 @@ void CLevel::IR_OnKeyboardPress(int key)
 
 void CLevel::IR_OnKeyboardRelease(int key)
 {
-	if( Device.Pause() ) return;
+	if( Device.Pause()		) return;
+	if(	g_bDisableAllInput	) return;
 	if (pHUD->GetUI()->IR_OnKeyboardRelease(key)) return;
 	if ( Game().OnKeyboardRelease(key_binding[key]) ) return;
 
@@ -302,6 +308,7 @@ void CLevel::IR_OnKeyboardRelease(int key)
 void CLevel::IR_OnKeyboardHold(int key)
 {
 	if( Device.Pause() ) return;
+	if(g_bDisableAllInput) return;
 	if (CurrentEntity())		{
 		IInputReceiver*		IR	= smart_cast<IInputReceiver*>	(smart_cast<CGameObject*>(CurrentEntity()));
 		if (IR)				IR->IR_OnKeyboardHold				(key_binding[key]);

@@ -12,6 +12,16 @@
 
 using namespace luabind;
 
+bool is_device_paused(CRenderDevice* d)
+{
+	return !!Device.Pause();
+}
+
+void set_device_paused(CRenderDevice* d, bool b)
+{
+	Device.Pause(b);
+}
+
 void CScriptRenderDevice::script_register(lua_State *L)
 {
 	module(L)
@@ -31,6 +41,7 @@ void CScriptRenderDevice::script_register(lua_State *L)
 			.def_readonly("aspect_ratio",			&CRenderDevice::fASPECT)
 			.def("time_global",						&CRenderDevice::TimerAsync)
 			.def_readonly("precache_frame",			&CRenderDevice::dwPrecacheFrame)
-			
+			.def("is_paused",						&is_device_paused)
+			.def("pause",							&set_device_paused)
 	];
 }

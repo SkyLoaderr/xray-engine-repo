@@ -295,7 +295,15 @@ CEnvDescriptor *current_environment(CEnvironment *self)
 {
 	return		(&self->CurrentEnv);
 }
-
+extern bool g_bDisableAllInput;
+void disable_input()
+{
+	g_bDisableAllInput = true;
+}
+void enable_input()
+{
+	g_bDisableAllInput = false;
+}
 void CLevel::script_register(lua_State *L)
 {
 	class_<CEnvDescriptor>("CEnvDescriptor")
@@ -357,6 +365,8 @@ void CLevel::script_register(lua_State *L)
 		def("remove_call",						((void (*) (const luabind::object &,const luabind::functor<bool> &,const luabind::functor<void> &)) &remove_call)),
 		def("remove_call",						((void (*) (const luabind::object &, LPCSTR, LPCSTR)) &remove_call)),
 		def("remove_calls_for_object",			remove_calls_for_object),
-		def("present",							is_level_present)
+		def("present",							is_level_present),
+		def("disable_input",					disable_input),
+		def("enable_input",						enable_input)
 	];
 }

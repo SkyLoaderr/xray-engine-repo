@@ -137,7 +137,7 @@ void CUIInventoryWnd::ActivatePropertiesBox()
 		UIPropertiesBox.AddItem("Eat",  NULL, INVENTORY_EAT_ACTION);
 	}
 
-	if(pArtefactMerger)
+/*	if(pArtefactMerger)
 	{
 		if(!UIArtefactMergerWnd.IsShown())
 		{
@@ -151,7 +151,7 @@ void CUIInventoryWnd::ActivatePropertiesBox()
 									INVENTORY_ARTEFACT_MERGER_DEACTIVATE);
 		}
 	}
-	else
+	else*/
 	{
 		UIPropertiesBox.AddItem("Drop", NULL, INVENTORY_DROP_ACTION);
 	}
