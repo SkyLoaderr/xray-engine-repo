@@ -10,8 +10,11 @@
 
 #define MAX_VALUE				1000000.0
 
+class CAI_Map;
+
 typedef struct tagSAIMapData {
 	u32			dwFinishNode;
+	CAI_Map		*m_tpAI_Map;
 } SAIMapData;
 
 #pragma pack(push,4)
@@ -120,10 +123,10 @@ public:
 				vector<u32>::iterator	E = tpaNodes.end();
 				u32 dwNode = *I;
 				for (I++; I != E; I++) {
-					fDirectDistance = ffCheckPositionInDirection(dwNode,tPosition,tfGetNodeCenter(*I),fMaxValue);
+					fDirectDistance = tTemplateNode.tData.m_tpAI_Map->ffCheckPositionInDirection(dwNode,tPosition,tTemplateNode.tData.m_tpAI_Map->tfGetNodeCenter(*I),fMaxValue);
 					if (fDirectDistance == MAX_VALUE) {
 						if (fLastDirectDistance == 0) {
-							fCumulativeDistance += ffGetDistanceBetweenNodeCenters(dwNode,*I);
+							fCumulativeDistance += tTemplateNode.tData.m_tpAI_Map->ffGetDistanceBetweenNodeCenters(dwNode,*I);
 							dwNode = *I;
 						}
 						else {
@@ -131,7 +134,7 @@ public:
 							fLastDirectDistance = 0;
 							dwNode = *--I;
 						}
-						tPosition = tfGetNodeCenter(dwNode);
+						tPosition = tTemplateNode.tData.m_tpAI_Map->tfGetNodeCenter(dwNode);
 					}
 					else 
 						fLastDirectDistance = fDirectDistance;
@@ -141,9 +144,9 @@ public:
 					}
 				}
 
-				fDirectDistance = ffCheckPositionInDirection(dwNode,tPosition,tFinishPosition,fMaxValue);
+				fDirectDistance = tTemplateNode.tData.m_tpAI_Map->ffCheckPositionInDirection(dwNode,tPosition,tFinishPosition,fMaxValue);
 				if (fDirectDistance == MAX_VALUE)
-					fValue = fCumulativeDistance + fLastDirectDistance + tFinishPosition.distance_to(tfGetNodeCenter(tpaNodes[tpaNodes.size() - 1]));
+					fValue = fCumulativeDistance + fLastDirectDistance + tFinishPosition.distance_to(tTemplateNode.tData.m_tpAI_Map->tfGetNodeCenter(tpaNodes[tpaNodes.size() - 1]));
 				else
 					fValue = fCumulativeDistance + fDirectDistance;
 				return;

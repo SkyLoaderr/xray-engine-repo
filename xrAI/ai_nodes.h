@@ -15,118 +15,21 @@
 #include "xrGraph.h"
 #include "ai_nodes.h"
 #include "ai_a_star_search.h"
+#include "ai_map.h"
 
-extern CStream*					vfs;			// virtual file
-extern hdrNODES					m_header;		// m_header
-extern BYTE*					m_nodes;		// virtual nodes DATA array
-extern NodeCompressed**			m_nodes_ptr;	// pointers to node's data
-extern vector<bool>				q_mark_bit;		// temporal usage mark for queries
-
-static float m_fSize2;
-static float m_fYSize2;
-
-IC	NodeCompressed*		Node(u32 ID)	{ return vfs?m_nodes_ptr[ID]:NULL; }
-
-IC	u32		UnpackLink		(NodeLink& L) {	return (*LPDWORD(&L))&0x00ffffff;	}
-
-IC	void PackPosition(NodePosition& Pdest, const Fvector& Psrc)
-{
-	float sp = 1/m_header.size;
-	int px	= iFloor(Psrc.x*sp+EPS_L + .5f);
-	int py	= iFloor(65535.f*(Psrc.y-m_header.aabb.min.y)/(m_header.size_y)+EPS_L);
-	int pz	= iFloor(Psrc.z*sp+EPS_L + .5f);
-	clamp	(px,-32767,32767);	Pdest.x = s16	(px);
-	clamp	(py,0,     65535);	Pdest.y = u16	(py);
-	clamp	(pz,-32767,32767);	Pdest.z = s16	(pz);
-}
-
-IC BOOL	u_InsideNode(const NodeCompressed& N, const NodePosition& P)
-{
-	return 	((P.x>=N.p0.x)&&(P.x<=N.p1.x))&&	// X inside
-			((P.z>=N.p0.z)&&(P.z<=N.p1.z));		// Z inside
-}
-
-IC	void UnpackPosition(Fvector& Pdest, const NodePosition& Psrc)
-{
-	Pdest.x = float(Psrc.x)*m_header.size;
-	Pdest.y = (float(Psrc.y)/65535)*m_header.size_y + m_header.aabb.min.y;
-	Pdest.z = float(Psrc.z)*m_header.size;
-}
-
-IC Fvector tfGetNodeCenter(NodeCompressed *tpNode)
-{
-	Fvector tP0, tP1;
-	UnpackPosition(tP0, tpNode->p0);
-	UnpackPosition(tP1, tpNode->p1);
-	tP0.add(tP1);
-	tP0.mul(.5f);
-	return(tP0);
-}
-
-IC Fvector tfGetNodeCenter(u32 tNodeID)
-{
-	return(tfGetNodeCenter(Node(tNodeID)));
-}
-
-IC float ffGetDistanceBetweenNodeCenters(NodeCompressed *tpNode0, NodeCompressed *tpNode1)
-{
-	return(tfGetNodeCenter(tpNode0).distance_to(tfGetNodeCenter(tpNode1)));
-}
-
-IC float ffGetDistanceBetweenNodeCenters(u32 dwNodeID0, u32 dwNodeID1)
-{
-	return(ffGetDistanceBetweenNodeCenters(Node(dwNodeID0),Node(dwNodeID1)));
-}
-
-IC float ffGetDistanceBetweenNodeCenters(NodeCompressed *tpNode0, u32 dwNodeID1)
-{
-	return(ffGetDistanceBetweenNodeCenters(tpNode0,Node(dwNodeID1)));
-}
-
-IC float ffGetDistanceBetweenNodeCenters(u32 dwNodeID0, NodeCompressed *tpNode1)
-{
-	return(ffGetDistanceBetweenNodeCenters(Node(dwNodeID0),tpNode1));
-}
-
-extern float ffCheckPositionInDirection(u32 dwStartNode, Fvector tStartPosition, Fvector tFinishPosition, float fMaxDistance);
 
 class CNodeThread : public CThread
 {
-	u32	m_dwStart;
-	u32 m_dwEnd;
-
-	u32 dwfFindCorrespondingNode(Fvector &tLocalPoint)
-	{
-		NodePosition	P;
-		PackPosition	(P,tLocalPoint);
-		short min_dist	= 32767;
-		int selected	= -1;
-		for (int i=0; i<(int)m_header.count; i++) {
-			NodeCompressed& N = *m_nodes_ptr[i];
-			if (u_InsideNode(N,P)) {
-				Fvector	DUP, vNorm, v, v1, P0;
-				DUP.set(0,1,0);
-				pvDecompress(vNorm,N.plane);
-				Fplane PL; 
-				UnpackPosition(P0,N.p0);
-				PL.build(P0,vNorm);
-				v.set(tLocalPoint.x,P0.y,tLocalPoint.z);	
-				PL.intersectRayPoint(v,DUP,v1);
-				int dist = iFloor((v1.y - tLocalPoint.y)*(v1.y - tLocalPoint.y));
-				if (dist < min_dist) {
-					min_dist = (short)dist;
-					selected = i;
-				}
-			}
-		}
-		return(selected);
-	}
+	u32				m_dwStart;
+	u32				m_dwEnd;
+	CAI_Map			*m_tpAI_Map;
 
 public:
-	CNodeThread	(u32 ID, u32 dwStart, u32 dwEnd) : CThread(ID)
+	CNodeThread	(u32 ID, u32 dwStart, u32 dwEnd, CAI_Map &tAI_Map) : CThread(ID)
 	{
-		m_dwStart = dwStart;
-		m_dwEnd	  = dwEnd;
+		m_dwStart  = dwStart;
+		m_dwEnd	   = dwEnd;
+		m_tpAI_Map = &tAI_Map;
 	}
 	
 	virtual void Execute()
@@ -134,7 +37,7 @@ public:
 		u32 dwSize = m_dwEnd - m_dwStart + 1;
 		thProgress = 0.0f;
 		for (int i = (int)m_dwStart; i<(int)m_dwEnd; thProgress = float(++i - (int)m_dwStart)/dwSize)
-			tpaGraph[i].tNodeID = dwfFindCorrespondingNode(tpaGraph[i].tLocalPoint);
+			tpaGraph[i].tNodeID = m_tpAI_Map->dwfFindCorrespondingNode(tpaGraph[i].tLocalPoint);
 		thProgress = 1.0f;
 	}
 };
@@ -153,36 +56,42 @@ public:
 	u32			m_dwLastBestNode;
 	typedef		NodeLink* iterator;
 	SAIMapData	tData;
+	float		m_fSize2;
+	float		m_fYSize2;
+
+
 	IC CAIMapShortestPathNode(SAIMapData &tAIMapData)
 	{
 		tData					= tAIMapData;
 		m_dwLastBestNode		= u32(-1);
-		NodeCompressed &tNode1	= *Node(tData.dwFinishNode);
+		NodeCompressed &tNode1	= *tData.m_tpAI_Map->Node(tData.dwFinishNode);
 		x3						= (float)(tNode1.p1.x) + (float)(tNode1.p0.x);
 		y3						= (float)(tNode1.p1.y) + (float)(tNode1.p0.y);
 		z3						= (float)(tNode1.p1.z) + (float)(tNode1.p0.z);
+		m_fSize2				= tData.m_tpAI_Map->m_fSize2;
+		m_fYSize2				= tData.m_tpAI_Map->m_fYSize2;
 	}
 
 	IC void begin(u32 dwNode, CAIMapShortestPathNode::iterator &tIterator, CAIMapShortestPathNode::iterator &tEnd)
 	{
-		tEnd = (tIterator = (NodeLink *)((BYTE *)Node(dwNode) + sizeof(NodeCompressed))) + Node(dwNode)->links;
+		tEnd = (tIterator = (NodeLink *)((BYTE *)tData.m_tpAI_Map->Node(dwNode) + sizeof(NodeCompressed))) + tData.m_tpAI_Map->Node(dwNode)->links;
 	}
 
 	IC u32 get_value(CAIMapShortestPathNode::iterator &tIterator)
 	{
-		return(UnpackLink(*tIterator));
+		return(tData.m_tpAI_Map->UnpackLink(*tIterator));
 	}
 
 	IC bool bfCheckIfAccessible(u32 dwNode)
 	{
-		return(q_mark_bit[dwNode]);
+		return(tData.m_tpAI_Map->q_mark_bit[dwNode]);
 	}
 
 	IC float ffEvaluate(u32 dwStartNode, u32 dwFinishNode, iterator &tIterator)
 	{
 		if (m_dwLastBestNode != dwStartNode) {
 			m_dwLastBestNode = dwStartNode;
-			NodeCompressed &tNode0 = *Node(dwStartNode), &tNode1 = *Node(dwFinishNode);
+			NodeCompressed &tNode0 = *tData.m_tpAI_Map->Node(dwStartNode), &tNode1 = *tData.m_tpAI_Map->Node(dwFinishNode);
 			
 			x1 = (float)(tNode0.p1.x) + (float)(tNode0.p0.x);
 			y1 = (float)(tNode0.p1.y) + (float)(tNode0.p0.y);
@@ -195,7 +104,7 @@ public:
 			return(_sqrt((float)(m_fSize2*(_sqr(x2 - x1) + _sqr(z2 - z1)) + m_fYSize2*_sqr(y2 - y1))));
 		}
 		else {
-			NodeCompressed &tNode1 = *Node(dwFinishNode);
+			NodeCompressed &tNode1 = *tData.m_tpAI_Map->Node(dwFinishNode);
 
 			x2 = (float)(tNode1.p1.x) + (float)(tNode1.p0.x);
 			y2 = (float)(tNode1.p1.y) + (float)(tNode1.p0.y);
@@ -207,7 +116,7 @@ public:
 
 	IC float ffAnticipate(u32 dwStartNode)
 	{
-		NodeCompressed &tNode0 = *Node(dwStartNode);
+		NodeCompressed &tNode0 = *tData.m_tpAI_Map->Node(dwStartNode);
 		
 		x2 = (float)(tNode0.p1.x) + (float)(tNode0.p0.x);
 		y2 = (float)(tNode0.p1.y) + (float)(tNode0.p0.y);
@@ -234,25 +143,27 @@ class CGraphThread : public CThread
 	xrCriticalSection	*m_tpCriticalSection;
 	vector<u32>			tpaNodes;
 	CAStarSearch<CAIMapShortestPathNode,SAIMapData> m_tpMapPath;
+	CAI_Map				*m_tpAI_Map;
 
 public:
-	CGraphThread(u32 ID, u32 dwStart, u32 dwEnd, float fMaxDistance, xrCriticalSection *tpCriticalSection) : CThread(ID)
+	CGraphThread(u32 ID, u32 dwStart, u32 dwEnd, float fMaxDistance, xrCriticalSection *tpCriticalSection, CAI_Map &tAI_Map) : CThread(ID)
 	{
-		m_dwAStarStaticCounter	= 0;
-		u32 S1					= (m_header.count + 2)*sizeof(SNode);
-		m_tpHeap				= (SNode *)xr_malloc(S1);
-		ZeroMemory				(m_tpHeap,S1);
-		u32 S2					= (m_header.count)*sizeof(SIndexNode);
-		m_tpIndexes				= (SIndexNode *)xr_malloc(S2);
-		ZeroMemory				(m_tpIndexes,S2);
-		u32 S3					= (m_header.count)*sizeof(SNode *);
-		m_tppHeap				= (SNode **)xr_malloc(S1);
-		ZeroMemory				(m_tpHeap,S1);
-		
 		m_dwStart				= dwStart;
 		m_dwEnd					= dwEnd;
 		m_fMaxDistance			= fMaxDistance;
 		m_tpCriticalSection		= tpCriticalSection;
+		m_tpAI_Map				= &tAI_Map;
+		
+		m_dwAStarStaticCounter	= 0;
+		u32 S1					= (m_tpAI_Map->m_header.count + 2)*sizeof(SNode);
+		m_tpHeap				= (SNode *)xr_malloc(S1);
+		ZeroMemory				(m_tpHeap,S1);
+		u32 S2					= (m_tpAI_Map->m_header.count)*sizeof(SIndexNode);
+		m_tpIndexes				= (SIndexNode *)xr_malloc(S2);
+		ZeroMemory				(m_tpIndexes,S2);
+		u32 S3					= (m_tpAI_Map->m_header.count)*sizeof(SNode *);
+		m_tppHeap				= (SNode **)xr_malloc(S1);
+		ZeroMemory				(m_tpHeap,S1);
 	}
 
 	~CGraphThread()
@@ -264,7 +175,7 @@ public:
 	virtual void Execute()
 	{
 		u32 dwSize = m_dwEnd - m_dwStart + 1;
-		u32 dwMaxNodeCount = m_header.count + 2;
+		u32 dwMaxNodeCount = m_tpAI_Map->m_header.count + 2;
 		float fDistance;
 
 		u32 N = tpaGraph.size() - 1, M = N + 1, K = N*M/2;
@@ -276,10 +187,11 @@ public:
 				SGraphVertex &tNeighbourGraphVertex = tpaGraph[j];
 				if (tCurrentGraphVertex.tLocalPoint.distance_to(tNeighbourGraphVertex.tLocalPoint) < m_fMaxDistance) {
 					try {
-						fDistance = ffCheckPositionInDirection(tCurrentGraphVertex.tNodeID,tCurrentGraphVertex.tLocalPoint,tNeighbourGraphVertex.tLocalPoint,m_fMaxDistance);
+						fDistance = m_tpAI_Map->ffCheckPositionInDirection(tCurrentGraphVertex.tNodeID,tCurrentGraphVertex.tLocalPoint,tNeighbourGraphVertex.tLocalPoint,m_fMaxDistance);
 						if (fDistance == MAX_VALUE) {
 							SAIMapData			tData;
 							tData.dwFinishNode	= tNeighbourGraphVertex.tNodeID;
+							tData.m_tpAI_Map	= m_tpAI_Map;
 							m_tpMapPath.vfFindOptimalPath(
 								m_tppHeap,
 								m_tpHeap,
