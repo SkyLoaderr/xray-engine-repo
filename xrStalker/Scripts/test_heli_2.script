@@ -10,6 +10,7 @@ end
 function HeliManager:Init()
    self.m_heli = get_level_object( "helicopter" )
    self.m_heliObject = self.m_heli:get_helicopter()
+   self.m_stay_point = self.m_heli:position()
    self.m_heli:AddEventCallback(CHelicopter.on_point,self,"HeliOnPoint")
    self.m_heli:AddEventCallback(CHelicopter.on_hit,self,"HeliOnHit")
    
