@@ -214,7 +214,6 @@ function add_to_binder(object)
 	-- Actions
 	local action = this.action_change_state (object:name(),"action_change_state", xr_motivator.storage[object:id()].state)
 	action:add_precondition		(world_property(stalker_ids.property_alive, 	true))
-	action:add_precondition		(world_property(stalker_ids.property_enemy,	false))
 	action:add_precondition		(world_property(properties["state_end"],	false))
 	action:add_effect 		(world_property(properties["state_end"],	true))
 	manager:add_action (operators["state"], action)
