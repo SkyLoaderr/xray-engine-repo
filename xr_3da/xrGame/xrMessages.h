@@ -21,6 +21,7 @@ enum {
 };
 
 enum {
+	GE_RESPAWN,
 	GE_OWNERSHIP_TAKE,			// DUAL: Client request for ownership of an item
 	GE_OWNERSHIP_REJECT,		// DUAL: Client request ownership rejection
 	GE_TRANSFER_AMMO,			// DUAL: Take ammo out of weapon for our weapon
@@ -208,6 +209,10 @@ M_UPDATE
 		vec3		f_pos;
 		direction	f_dir;
 	}
+}
+
+GE_RESPAWN
+{
 }
 
 GE_OWNERSHIP_TAKE

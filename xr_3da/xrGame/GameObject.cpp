@@ -77,6 +77,10 @@ BOOL CGameObject::net_Spawn		(LPVOID	DC)
 		AI_Node				= Level().AI.Node(AI_NodeID);
 		Level().AI.ref_add  (AI_NodeID);
 	}
+
+	// Phantom
+	respawnTime				= E->RespawnTime;
+	respawnPhantom			= E->ID_Phantom;
 	
 	return	TRUE;
 }

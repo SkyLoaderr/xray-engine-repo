@@ -16,6 +16,8 @@ public:
 	DWORD										AI_NodeID;
 	NodeCompressed*								AI_Node;
 	NET_Queue_Event								net_Events;
+	DWORD										respawnTime;
+	DWORD										respawnPhantom;
 
 	// Utilities
 	void					u_EventGen			(NET_Packet& P, u32 type, u32 dest	);

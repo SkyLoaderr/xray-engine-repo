@@ -13,6 +13,14 @@ void xrServer::Process_event	(NET_Packet& P, DPNID sender)
 
 	switch		(type)
 	{
+	case GE_RESPAWN:
+		{
+			svs_respawn			R;
+			R.timestamp			= timestamp;
+			R.phantom			= destination;
+			q_respawn.insert	(R);
+		}
+		break;
 	case GE_OWNERSHIP_TAKE:
 		{
 			// Parse message

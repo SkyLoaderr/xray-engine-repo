@@ -41,11 +41,27 @@ void		xrServer::client_Destroy	(IClient* C)
 //--------------------------------------------------------------------
 void xrServer::Update	()
 {
+	NET_Packet		Packet;
+
+	// spawn queue
+	DWORD svT				= Device.TimerAsync();
+	while (!(q_respawn.empty() || (svT<q_respawn.begin()->timestamp)))
+	{
+		// get
+		svs_respawn	R		= *q_respawn.begin();
+		queue.erase			(queue.begin());
+
+		// 
+		xrServerEntity* E	= ID_to_entity(R.phantom);
+		E->Spawn_Write		(Packet);
+		Process_spawn		(Packet,0);
+	}
+
+	// 
 	csPlayers.Enter		();
 	for (DWORD client=0; client<net_Players.size(); client++)
 	{
 		// Initialize process and check for available bandwidth
-		NET_Packet		Packet;
 		xrClientData*	Client	= (xrClientData*) net_Players	[client];
 		if (!Client->net_Ready)		continue;
 		if (!HasBandwidth(Client))	continue;
