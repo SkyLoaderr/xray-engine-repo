@@ -398,6 +398,7 @@ public:
 LPCSTR cafGetActorLevelName(xr_vector<CSpawn *> &tpLevels, string256 &S)
 {
 	CSE_ALifeCreatureActor	*l_tpActor = 0;
+	u32						level_id;
 	for (u32 i=0; i<tpLevels.size(); i++) {
 		ALIFE_OBJECT_P_IT	I = tpLevels[i]->m_tpSpawnPoints.begin();
 		ALIFE_OBJECT_P_IT	E = tpLevels[i]->m_tpSpawnPoints.end();
@@ -408,10 +409,11 @@ LPCSTR cafGetActorLevelName(xr_vector<CSpawn *> &tpLevels, string256 &S)
 			Msg				("Actor is on the level %s",tpGraph->header().levels().find(tpGraph->vertex(actor->m_tGraphID)->level_id())->second.name());
 			VERIFY2			(!l_tpActor,"There must the SINGLE level with ACTOR!");
 			l_tpActor		= actor;
+			level_id		= i;
 		}
 	}
 	if (l_tpActor)
-		return				(strconcat(S,tpLevels[i]->m_tLevel.name(),".spawn"));
+		return				(strconcat(S,tpLevels[level_id]->m_tLevel.name(),".spawn"));
 	R_ASSERT2				(false,"There is no actor!");
 	return					("game.spawn");
 }
