@@ -23,14 +23,19 @@ public:
 
 CObjectList::CObjectList	( )
 {
+	Device.seqDevCreate.Add		(this, REG_PRIORITY_LOW);
+	Device.seqDevDestroy.Add	(this, REG_PRIORITY_LOW);
 }
 
 CObjectList::~CObjectList	( )
 {
+	Device.seqDevCreate.Remove	(this, REG_PRIORITY_LOW);
+	Device.seqDevDestroy.Remove	(this, REG_PRIORITY_LOW);
 	R_ASSERT(objects.size()==0);
 }
 
-void CObjectList::Unload( ){
+void CObjectList::Unload	( )
+{
 	for (DWORD i=0; i<objects.size(); i++) {
 		CObject *pObject = objects[i];
 		_DELETE	( pObject );
