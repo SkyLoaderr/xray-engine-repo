@@ -30,6 +30,7 @@ public:
 	// general
 	u32						MODE				;
 	u32						dwFrame				;
+	u32						dwFrameSmooth		;
 
 	// 
 	xr_vector<Item>			track				;	// everything what touches
@@ -46,7 +47,7 @@ public:
 	u32						shadow_gen_frame	;
 	u32						shadow_recv_frame	;
 	int						shadow_recv_slot	;
-public:
+private:
 	float					hemi_value			;
 	float					hemi_smooth			;
 	float					sun_value			;
@@ -59,6 +60,16 @@ public:
 
 	void					add					(light*			L);
 	void					update				(IRenderable*	O);
+	void					update_smooth		();
+	
+	ICF	float				get_hemi			()	{
+		if (dwFrameSmooth!=Device.dwFrame)		update_smooth();
+		return									hemi_smooth;
+	}
+	ICF	float				get_sun				()	{
+		if (dwFrameSmooth!=Device.dwFrame)		update_smooth();
+		return									sun_smooth;
+	}
 
 	CROS_impl				();
 	virtual ~CROS_impl	()	{};

@@ -144,9 +144,7 @@ void	CROS_impl::update	(IRenderable* O)
 	int		_pass			=	0;
 	for (int it=0; it<result_count; it++)	if (result[it])	_pass	++;
 	hemi_value				=	float	(_pass)/float(result_count?result_count:1);
-	hemi_smooth				=	hemi_value*l_f + hemi_smooth*l_i;
-	sun_smooth				=	sun_value *l_f + sun_smooth *l_i;
-	// Msg						("- hemi[%f], sun[%f]", hemi_smooth, sun_smooth);
+	update_smooth			();
 
 	// light-tracing
 	BOOL	bTraceLights	= MODE & IRender_ObjectSpecific::TRACE_LIGHTS;
@@ -243,4 +241,14 @@ void	CROS_impl::update	(IRenderable* O)
 	approximate				=	accum;
 
 	if (_object)		{ _object->setEnabled(_enabled); }
+}
+
+// hemi & sun: update and smooth
+void	CROS_impl::update_smooth	()
+{
+	dwFrameSmooth			=	Device.dwFrame;
+	float	l_f				=	Device.fTimeDelta*lt_smooth;
+	float	l_i				=	1.f-l_f;
+	hemi_smooth				=	hemi_value*l_f + hemi_smooth*l_i;
+	sun_smooth				=	sun_value *l_f + sun_smooth *l_i;
 }
