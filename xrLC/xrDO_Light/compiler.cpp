@@ -390,7 +390,7 @@ public:
 				DetailPalette* dc = (DetailPalette*)&DS.color;	int LL; float	res;
 				float amb		= Header.params.m_lm_amb_color.magnitude_rgb();
 				float f			= 1.f - Header.params.m_lm_amb_fogness;
-				float f_inv		= 1.f - f;
+				float f_inv		= 1.f - f; 
 				res				= (amount[0]/float(count[0]))*f_inv + amb*f; LL = iFloor(15.f * res); clamp(LL,0,15); dc->a0	= LL;
 				res				= (amount[1]/float(count[1]))*f_inv + amb*f; LL = iFloor(15.f * res); clamp(LL,0,15); dc->a1	= LL;
 				res				= (amount[2]/float(count[2]))*f_inv + amb*f; LL = iFloor(15.f * res); clamp(LL,0,15); dc->a2	= LL;
