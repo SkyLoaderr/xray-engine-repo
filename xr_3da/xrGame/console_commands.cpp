@@ -705,6 +705,69 @@ public:
 	}
 };
 
+class CCC_KickPlayer : public IConsole_Command {
+public:
+	CCC_KickPlayer(LPCSTR N) : IConsole_Command(N)  { bEmptyArgsHandled = false; };
+	virtual void Execute(LPCSTR args) 
+	{
+		if (!OnServer())	return;
+		
+		char	Name[128];	Name[0]=0;
+		int Num = 0;
+		sscanf	(args,"%d", Num);
+		sscanf	(args,"%s", Name);
+		
+		u32	cnt = Level().Server->game->get_players_count();
+		for(u32 it=0; it<cnt; it++)	
+		{
+			xrClientData *l_pC = (xrClientData*)	Level().Server->client_Get	(it);
+			if (!l_pC) continue;
+			if (!_stricmp(l_pC->ps->getName(), Name))
+			{
+				if (Level().Server->GetServer_client() == l_pC)
+				{
+					Msg("! Can't disconnect server's client");
+					return;
+				};
+				Msg("Disconnecting : %s", l_pC->ps->getName());
+				Level().Server->DisconnectClient(l_pC);
+				return;
+			}
+		};
+
+		Msg("! No such player found : %s", Name);
+	};
+
+	virtual void	Info	(TInfo& I)		
+	{
+		strcpy(I,"Kick Player"); 
+	}
+};
+
+class CCC_ListPlayers : public IConsole_Command {
+public:
+	CCC_ListPlayers(LPCSTR N) : IConsole_Command(N)  { bEmptyArgsHandled = true; };
+	virtual void Execute(LPCSTR args) 
+	{
+		if (!OnServer())	return;
+		
+		u32	cnt = Level().Server->game->get_players_count();
+		Msg("- Total Players : %d", cnt);
+		for(u32 it=0; it<cnt; it++)	
+		{
+			xrClientData *l_pC = (xrClientData*)	Level().Server->client_Get	(it);
+			if (!l_pC) continue;
+			Msg("%d : %s", it+1, l_pC->ps->getName());
+		};
+		Msg("------------------------");
+	};
+
+	virtual void	Info	(TInfo& I)		
+	{
+		strcpy(I,"List Players"); 
+	}
+};
+
 class CCC_Net_CL_InputUpdateRate : public CCC_Integer {
 protected:
 	int		*value_blin;
@@ -1093,5 +1156,8 @@ void CCC_RegisterCommands()
 #ifdef DEBUG
 	CMD4(CCC_Integer,	"string_table_error_msg",	&CStringTable::m_bWriteErrorsToLog,	0,	1);
 #endif
+
+	CMD1(CCC_KickPlayer,	"g_kick"					);		// graph-point info
+	CMD1(CCC_ListPlayers,	"g_listplayers"					);		// graph-point info
 }
 

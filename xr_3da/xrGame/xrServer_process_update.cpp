@@ -5,6 +5,10 @@
 void xrServer::Process_update(NET_Packet& P, ClientID sender)
 {
 	xrClientData* CL		= ID_to_client(sender);
+	if (!CL)
+	{
+		return;
+	}
 //	if (CL)	CL->net_Ready	= TRUE;
 
 	R_ASSERT(CL->flags.bLocal);
