@@ -19,6 +19,7 @@ extern ECORE_API	float		ps_r__WallmarkTTL	;
 extern ECORE_API	float		ps_r__GLOD_ssa_start;
 extern ECORE_API	float		ps_r__GLOD_ssa_end	;
 extern ECORE_API	float		ps_r__LOD			;
+extern ECORE_API	float		ps_r__LOD_Power		;
 
 // R1
 extern ECORE_API	float		ps_r1_ssaDISCARD;

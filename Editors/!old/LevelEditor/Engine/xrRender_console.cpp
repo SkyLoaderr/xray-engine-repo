@@ -22,6 +22,7 @@ float		ps_r__WallmarkTTL			= 90.f	;
 float		ps_r__GLOD_ssa_start		= 256.f	;
 float		ps_r__GLOD_ssa_end			=  64.f	;
 float		ps_r__LOD					=  1.f	;
+float		ps_r__LOD_Power				=  1.5f	;
 
 // R1
 float		ps_r1_ssaDISCARD			= 4.f	;
@@ -169,6 +170,7 @@ void		xrRender_initconsole	()
 	CMD4(CCC_Float,		"r__ssa_glod_start",	&ps_r__GLOD_ssa_start,		128,	512		);
 	CMD4(CCC_Float,		"r__ssa_glod_end",		&ps_r__GLOD_ssa_end,		16,		96		);
 	CMD4(CCC_Float,		"r__geometry_lod",		&ps_r__LOD,					0,		2		);
+	CMD4(CCC_Float,		"r__geometry_lod_pow",	&ps_r__LOD_Power,			0,		2		);
 	
 #ifdef DEBUG
 	CMD4(CCC_Float,		"r__detail_l_ambient",	&ps_r__Detail_l_ambient,	.5f,	.95f	);
