@@ -381,6 +381,15 @@ function process_map_spot(info_id)
 	elseif info_id == "bar_resque_research_fail" then
 		remove_location(500, "bar_barman_location")
 
+	elseif info_id == "bar_dolg_veteran_start" then
+		add_location(501, "bar_dolg_arhive_document_location")
+	
+	elseif info_id == "bar_dolg_veteran_gain" then
+		remove_location(501, "bar_dolg_arhive_document_location)
+		add_location(505, "bar_dolg_captain_ivancov_location")
+
+
+
 	-- military	
 	elseif info_id == "mil_max_job" then
 	       add_location (703, "mil_crazy_location")
