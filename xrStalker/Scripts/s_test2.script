@@ -8,7 +8,7 @@ function main ()
 
 	local time = game.time ()
 
-	bool act = false
+	local act = false
 
 	while true do 
 		  if game.time () - time > 5000 then
