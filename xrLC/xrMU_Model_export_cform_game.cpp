@@ -25,8 +25,8 @@ int getTriByEdge	(xrMU_Model::_vertex *V1, xrMU_Model::_vertex *V2, xrMU_Model::
 	}
 	if (f_count>1) {
 		bCriticalErrCnt	++;
-		pBuild->err_multiedge.Wvector(V1->P);
-		pBuild->err_multiedge.Wvector(V2->P);
+		pBuild->err_multiedge.w_fvector3(V1->P);
+		pBuild->err_multiedge.w_fvector3(V2->P);
 	}
 	if (found) {
 		xrMU_Model::v_faces_it F = lower_bound(ids.begin(),ids.end(),found);

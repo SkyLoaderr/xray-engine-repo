@@ -161,7 +161,7 @@ void CBuild::Load	(const b_params& Params, const IReader& _in_FS)
 			while (!F->Eof())
 			{
 				F->Read				(temp.control.name,sizeof(temp.control.name));
-				u32 cnt				= F->Rdword();
+				u32 cnt				= F->r_u32();
 				temp.control.data.resize(cnt);
 				F->Read				(temp.control.data.begin(),cnt*sizeof(u32));
 

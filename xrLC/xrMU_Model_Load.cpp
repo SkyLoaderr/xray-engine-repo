@@ -4,7 +4,7 @@
 void xrMU_Reference::Load(IReader& F)
 {
 	b_mu_reference		R;
-	F.Read				(&R,sizeof(R));
+	F.r					(&R,sizeof(R));
 	model				= pBuild->mu_models[R.model_index];
 	xform				= R.transform;
 	flags				= R.flags;
@@ -16,18 +16,18 @@ void xrMU_Reference::Load(IReader& F)
 
 void xrMU_Model::Load	(IReader& F)
 {
-	F.RstringZ			(m_name);
+	F.r_stringZ			(m_name);
 	clMsg				("* Loading model: '%s'...",m_name);
 
 	// READ: vertices
 	vector<b_vertex>	b_vertices;
-	b_vertices.resize	(F.Rdword());
+	b_vertices.resize	(F.r_u32());
 	m_vertices.reserve	(b_vertices.size());
 	F.Read				(b_vertices.begin(),b_vertices.size()*sizeof(b_vertex));
 
 	// READ: faces
 	vector<b_face>		b_faces;
-	b_faces.resize		(F.Rdword());
+	b_faces.resize		(F.r_u32());
 	m_faces.reserve		(b_faces.size());
 	F.Read				(b_faces.begin(),b_faces.size()*sizeof(b_face));
 
