@@ -293,6 +293,7 @@ void CUIZoneMap::UpdateRadar(CActor* pActor)
 		Level().MapLocations().end() != it;
 		it++)
 	{
+		draw_entity = true;
 		SMapLocation* map_location = (*it);
 
 		if ( Level().name() != map_location->LevelName() ) 

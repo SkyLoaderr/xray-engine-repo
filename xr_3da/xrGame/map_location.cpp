@@ -42,7 +42,12 @@ shared_str SMapLocation::LevelName()
 	{
 		if(ai().get_alife() && ai().get_game_graph())		
 		{
-			CSE_Abstract* E = Level().Server->game->get_entity_from_eid(object_id); VERIFY(E);
+			CSE_Abstract* E = Level().Server->game->get_entity_from_eid(object_id); //VERIFY(E);
+			if(!E){
+				Msg("! SMapLocation binded to non-existent object id=%d",object_id);			
+				return level_name;
+			}
+			
 			CSE_ALifeObject* AO = smart_cast<CSE_ALifeObject*>(E);
 			if(AO)	
 				return  ai().game_graph().header().level(ai().game_graph().vertex(AO->m_tGraphID)->level_id()).name();

@@ -85,9 +85,22 @@ void CLevel::RemoveMapLocationByInfo(INFO_INDEX info_portion_id)
 	std::for_each(m_MapLocationVector.begin(), m_MapLocationVector.end(), pred);
 }
 
+struct FindLocationByID{
+	u16 m_id;
+	FindLocationByID(u16 id):m_id(id){};
+	bool operator == (const SMapLocation* loc){
+		return (loc->object_id == m_id);
+	}
+};
+
 SMapLocation*  CLevel::GetMapLocationByID(u16 object_id)
 {
-	return NULL;
+	FindLocationByID F(object_id);
+	LOCATIONS_PTR_VECTOR_IT it = std::find_if(m_MapLocationVector.begin(),m_MapLocationVector.end(),F);
+	if( it!=m_MapLocationVector.end() )
+		return *it;
+	else
+		return NULL;
 }
 
 
