@@ -59,8 +59,8 @@ void CDetail::Load		(CStream* S)
 
 	// Params
 	flags			= S->Rdword	();
-	float s_min		= S->Rfloat	();
-	float s_max		= S->Rfloat	();
+	s_min			= S->Rfloat	();
+	s_max			= S->Rfloat	();
 	number_vertices	= S->Rdword	();
 	number_indices	= S->Rdword	();
 	R_ASSERT		(0==(number_indices%3));
@@ -523,7 +523,7 @@ void CDetailManager::UpdateCache	(int limit)
 				if (selected.size()==1)	index = selected[0];
 				else					index = selected[r_selection.randI(selected.size())]; 
 				
-				
+				CDetail&	Dobj = objects[DS.items[index]];
 				SlotItem	Item;
 				
 				// Position (XZ)
@@ -551,7 +551,7 @@ void CDetailManager::UpdateCache	(int limit)
 				Item.P.y	= y;
 				
 				// Angles and scale
-				Item.scale	= r_scale.randF		(0.5f,1.8f);
+				Item.scale	= r_scale.randF		(Dobj.s_min,Dobj.s_max);
 				Item.phase_x= ::Random.randFs	(phase_range);
 				Item.phase_z= ::Random.randF	(phase_range);
 				Item.mRotY.rotateY(r_yaw.randF	(0,PI_MUL_2));

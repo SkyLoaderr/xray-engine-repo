@@ -34,6 +34,8 @@ public:
 public:
 	Shader*		shader;	
 	DWORD		flags;	
+	float		s_min;
+	float		s_max;
 	float		radius;
 
 	fvfVertexIn	*vertices;
