@@ -147,15 +147,15 @@
 				AdditionalOptions="/MACHINE:I386 "
 				AdditionalDependencies="msacm32.lib vfw32.lib"
 				OutputFile="x:\XR_3DA.exe"
-				LinkIncremental="1"
+				LinkIncremental="2"
 				SuppressStartupBanner="TRUE"
 				GenerateDebugInformation="TRUE"
 				ProgramDatabaseFile="$(OutDir)/$(TargetName).pdb"
 				GenerateMapFile="FALSE"
 				MapFileName=""
 				SubSystem="2"
-				OptimizeReferences="2"
-				EnableCOMDATFolding="2"
+				OptimizeReferences="0"
+				EnableCOMDATFolding="0"
 				TargetMachine="0"
 				FixedBaseAddress="1"/>
 			<Tool

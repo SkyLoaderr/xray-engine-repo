@@ -130,8 +130,8 @@ void CGameFont::OnRender()
 
 				switch(PS.align)
 				{
-				case alCenter:	X-=SizeOf(PS.string,PS.size)*.5f;	break;
-				case alRight:	X-=SizeOf(PS.string,PS.size);		break;
+				case alCenter:	X-=iFloor(SizeOf(PS.string,PS.size)*.5f);	break;
+				case alRight:	X-=iFloor(SizeOf(PS.string,PS.size));		break;
 				}
 
 				u32	clr,clr2;

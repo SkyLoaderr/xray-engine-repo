@@ -442,18 +442,18 @@ void CKinematics::AddWallmark(const Fmatrix* parent_xform, const Fvector3& start
 					if (LL_GetChild(i)->PickBone(normal,dist,S,D,k)) picked=TRUE;
 		}
 	}
-	if (!picked) return;
-
+	if (!picked) return; 
+ 
 	// calculate contact point
-	Fvector cp;	cp.mad		(S,D,dist);
-
+	Fvector cp;	cp.mad		(S,D,dist); 
+ 
 	// collect collide boxes
 	Fsphere test_sphere;
     test_sphere.set			(cp,size); 
 	U16Vec					test_bones;
 	test_bones.reserve		(LL_BoneCount());
 	for (k=0; k<LL_BoneCount(); k++){
-		CBoneData& BD		= LL_GetData(k); 
+		CBoneData& BD		= LL_GetData(k);  
 		if (LL_GetBoneVisible(k)&&!BD.shape.flags.is(SBoneShape::sfNoPickable)){
 			Fobb& obb		= cache_obb[k];
 			if (CDB::TestSphereOBB(test_sphere, obb))
