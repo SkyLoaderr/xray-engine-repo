@@ -335,10 +335,11 @@ public:
 	u16						bone_part;
 	
 	bool					b_velocity_reset;
-
 	bool					force_real_speed;
+	
+	bool					script_processing_active;
 
-			bool			GetNodeInRadius		(u32 src_node, float min_radius, float max_radius, u32 attempts, u32 &dest_node);
+	bool					GetNodeInRadius		(u32 src_node, float min_radius, float max_radius, u32 attempts, u32 &dest_node);
 
 #ifdef DEBUG
 	CMonsterDebug	*HDebug;

@@ -110,9 +110,8 @@ void CAI_Biting::reinit()
 #endif
 
 	prev_size						= 0;
-
 	force_real_speed				= false;
-
+	script_processing_active		= false;
 }
 
 void CAI_Biting::Load(LPCSTR section)

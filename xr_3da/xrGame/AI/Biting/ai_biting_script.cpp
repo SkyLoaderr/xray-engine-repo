@@ -192,6 +192,10 @@ bool CAI_Biting::bfAssignMonsterAction(CScriptEntityAction *tpEntityAction)
 void CAI_Biting::ProcessScripts()
 {
 	if (!g_Alive()) return;
+	if (script_processing_active) return;
+	
+	script_processing_active = true;
+
 
 	// Инициализировать action
 	MotionMan.m_tAction = ACT_STAND_IDLE;
@@ -236,6 +240,8 @@ void CAI_Biting::ProcessScripts()
 	HDebug->SetActive						(true);
 #endif
 
+
+	script_processing_active = false;
 }
 
 CEntity *CAI_Biting::GetCurrentEnemy()
