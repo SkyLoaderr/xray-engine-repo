@@ -316,7 +316,11 @@ Shader*	CShaderManager::Create(LPCSTR s_shader, LPCSTR s_textures, LPCSTR s_cons
 	Shader		S;
 	CBlender*	B		= _GetBlender	(s_shader);
 	CBlender_Recorder	Recorder		(&S);
-	B->Compile			(Recorder, L_textures, L_constants, L_matrices);
+#ifdef M_BORLAND
+	B->Compile			(Recorder, L_textures, L_constants, L_matrices,0,TRUE);
+#else
+	B->Compile			(Recorder, L_textures, L_constants, L_matrices,0,FALSE);
+#endif
 	
 	// Search equal in shaders array
 	for (DWORD it=0; it<shaders.size(); it++)
