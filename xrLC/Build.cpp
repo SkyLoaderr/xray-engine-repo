@@ -138,7 +138,8 @@ CBuild::CBuild(b_transfer * L)
 		BT.pSurface = Surface_Load(N,w,h);
 		BT.dwWidth	= w;
 		BT.dwHeight	= h;
-		if (BT.THM.HasAlphaChannel() || (BT.THM.flag.bImplicitLighted))	
+		BT.bHasAlpha= BT.THM.HasAlphaChannel();
+		if ( || (BT.THM.flag.bImplicitLighted))	
 		{
 			BT.Vflip	();
 		} else {
