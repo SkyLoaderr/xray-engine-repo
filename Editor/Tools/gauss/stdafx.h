@@ -63,19 +63,6 @@
 #include <string.h>
 #include <process.h>
 
-/*
-#ifndef DEBUG
-#pragma inline_depth	( 254 )
-#pragma inline_recursion( on )
-#pragma intrinsic		(abs, fabs, fmod, sin, cos, tan, asin, acos, atan, sqrt, exp, log, log10, strcpy, strcat)
-#define inline			__forceinline
-#define _inline			__forceinline
-#define __inline		__forceinline
-#define IC				__forceinline
-#else
-#define IC				__forceinline
-#endif
-*/
 #define IC				__forceinline
 
 // Warnings
@@ -94,6 +81,7 @@
 #include <map>
 #include <deque>
 #include <string>
+#include <sys\utime.h>
 using namespace std;
 
 // Property-set support
@@ -104,12 +92,6 @@ using namespace std;
 enum TMsgDlgType { mtWarning, mtError, mtInformation, mtConfirmation, mtCustom };
 enum TMsgDlgBtn { mbYes, mbNo, mbOK, mbCancel, mbAbort, mbRetry, mbIgnore, mbAll, mbNoToAll, mbYesToAll, mbHelp };
 typedef TMsgDlgBtn TMsgDlgButtons[mbHelp];
-
-// CLASS ID type
-typedef unsigned __int64	CLASS_ID;
-#define MK_CLSID(a,b,c,d,e,f,g,h) \
-	CLASS_ID(	((CLASS_ID(a)<<CLASS_ID(24))|(CLASS_ID(b)<<CLASS_ID(16))|(CLASS_ID(c)<<CLASS_ID(8))|(CLASS_ID(d)))<<CLASS_ID(32) | \
-				((CLASS_ID(e)<<CLASS_ID(24))|(CLASS_ID(f)<<CLASS_ID(16))|(CLASS_ID(g)<<CLASS_ID(8))|(CLASS_ID(h))) )
 
 // Our headers
 #define NO_XR_NETWORK
@@ -128,6 +110,9 @@ typedef unsigned __int64	CLASS_ID;
 #define _DELETE(a)      {delete(a); (a)=NULL;}
 #define _DELETEARRAY(a) {delete[](a); (a)=NULL;}
 
+#define	AnsiString string
+
+#include "clsid.h"
 #include "math.h"
 #include "vector.h"
 #include "fixedvector.h"
@@ -147,8 +132,6 @@ typedef unsigned __int64	CLASS_ID;
 #pragma comment( lib, "dsound.lib"		)
 #pragma comment( lib, "dinput.lib"		)
 #pragma comment( lib, "dxguid.lib"		)
-
-#define	AnsiString string
 
 #define DEFINE_SVECTOR(type,sz,lst,it)\
 	typedef svector<type,sz> lst;\

@@ -11,9 +11,9 @@ class CFS_Base;
 class CStream;
 
 class CBone{
-	char			name[MAX_OBJ_NAME];
-	char			parent[MAX_OBJ_NAME];
-	char			wmap[MAX_OBJ_NAME];
+	string64		name;
+	string64		parent;
+	string64		wmap;
 	Fvector			rest_offset;
 	Fvector			rest_rotate;
 	float			rest_length;
