@@ -138,6 +138,7 @@ public:
 	virtual void			reload							(LPCSTR section);
 	virtual const SRotation	Orientation						() const					{return inherited::Orientation();}
 	virtual void			renderable_Render				()							{return inherited::renderable_Render();} 
+	virtual	void			PitchCorrection					();
 
 	// ---------------------------------------------------------------------------------
 	// Process scripts
@@ -281,7 +282,6 @@ public:
 
 	xr_vector<STravelParams> velocities;
 	
-	void		PitchCorrection	();
 };
 
 #include "ai_biting_inline.h"
