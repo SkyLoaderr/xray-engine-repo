@@ -338,6 +338,7 @@ bool Script::bfGetNamespaceTable(CLuaVirtualMachine *tpLuaVM, LPCSTR N)
 	} 
 	return	(true); 
 }
+
 bool	Script::bfIsObjectPresent	(CLuaVirtualMachine *tpLuaVM, LPCSTR identifier, int type)
 {
 	lua_pushnil (tpLuaVM); 

@@ -14,7 +14,7 @@
 #include "../../CustomMonster.h"
 #include "../../stalker_movement_manager.h"
 #include "../../sight_manager.h"
-#include "../../state_internal.h"
+#include "../../script_binder.h"
 #include "ai_stalker_animations.h"
 #include "ai_stalker_space.h"
 
@@ -53,14 +53,14 @@ class CAI_Stalker :
 	public CStalkerAnimations, 
 	public CStalkerMovementManager,
 #ifdef OLD_DECISION_BLOCK
-	public CStateManagerStalker
+	public CStateManagerStalker,
 #else
-	public CMotivationActionManagerStalker
+	public CMotivationActionManagerStalker,
 #endif
+	public CScriptBinder
 {
 private:
-	typedef CCustomMonster							inherited;
-	typedef CStateInternal<CAI_Stalker>				CSStateInternal;
+	typedef CCustomMonster		inherited;
 	
 	u32							m_dwParticularState;
 	ALife::ETaskState			m_tTaskState;

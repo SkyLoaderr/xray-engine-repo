@@ -60,6 +60,7 @@ void CAI_Stalker::reinit			()
 #else
 	CMotivationActionManagerStalker::reinit(this,false);
 #endif
+	CScriptBinder::reinit			();
 
 	m_pPhysics_support->in_Init		();
 	
@@ -85,6 +86,7 @@ void CAI_Stalker::reload			(LPCSTR section)
 #else
 	CMotivationActionManagerStalker::reload(section);
 #endif
+	CScriptBinder::reload			(section);
 }
 
 void CAI_Stalker::Die				()
@@ -116,6 +118,7 @@ void CAI_Stalker::Load				(LPCSTR section)
 #else
 	CMotivationActionManagerStalker::Load	(section);
 #endif
+	CScriptBinder::Load				(section);
 
 	CSelectorManager::add<
 		CVertexEvaluator<
@@ -157,6 +160,9 @@ BOOL CAI_Stalker::net_Spawn			(LPVOID DC)
 	if (!inherited::net_Spawn(DC))
 		return						(FALSE);
 	if (!CInventoryOwner::net_Spawn(DC))
+		return						(FALSE);
+
+	if (!CScriptBinder::net_Spawn(DC))
 		return						(FALSE);
 
 	CStalkerAnimations::reload		(Visual(),pSettings,*cNameSect());
@@ -207,6 +213,7 @@ void CAI_Stalker::net_Destroy()
 {
 	inherited::net_Destroy				();
 	CInventoryOwner::net_Destroy		();
+	CScriptBinder::net_Destroy			();
 	m_pPhysics_support->in_NetDestroy	();
 }
 
@@ -251,6 +258,7 @@ void CAI_Stalker::net_Export		(NET_Packet& P)
 	P.w_u32							(0);
 	P.w_u32							(0);
 //	P.w_u32							(0);
+	CScriptBinder::net_Export		(P);
 }
 
 void CAI_Stalker::net_Import		(NET_Packet& P)
@@ -294,6 +302,7 @@ void CAI_Stalker::net_Import		(NET_Packet& P)
 
 	setVisible						(TRUE);
 	setEnabled						(TRUE);
+	CScriptBinder::net_Export		(P);
 }
 
 void CAI_Stalker::UpdateCL(){

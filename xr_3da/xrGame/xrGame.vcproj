@@ -2515,6 +2515,12 @@
 					<Filter
 						Name="ScriptBinder"
 						Filter="">
+						<File
+							RelativePath=".\script_binder.cpp">
+						</File>
+						<File
+							RelativePath=".\script_binder.h">
+						</File>
 					</Filter>
 					<Filter
 						Name="ScriptClasses"
