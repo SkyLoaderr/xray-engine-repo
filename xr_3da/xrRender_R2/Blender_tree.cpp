@@ -109,8 +109,8 @@ void	CBlender_Tree::Compile	(CBlender_Compile& C)
 	if (C.bLighting)	
 	{
 	} else {
-		if (oBlend.value)		C.r2_Pass				("r2_deffer_tree_flat","r2_deffer_tree_aref_flat");
-		else					C.r2_Pass				("r2_deffer_tree_flat","r2_deffer_tree_flat");
+		if (oBlend.value)		C.r2_Pass				("r2_deffer_tree_flat","r2_deffer_base_aref_flat");
+		else					C.r2_Pass				("r2_deffer_tree_flat","r2_deffer_base_flat");
 		C.r2_Sampler			("s_base",C.L_textures[0]);
 		C.r2_End				();
 	}
