@@ -133,10 +133,9 @@ function CBoarPlayWithCorpse:update(delta)
 		if(self.actor_near == false) then
 			reset_action(self.object, script_name())
 			self.actor_near	= true
+			// Выбираем, в какую точку побежим
+			self:select_run_point()
 		end
-		
-		// Выбираем, в какую точку побежим
-		self:select_run_point()
 		
 		if(self.object:action() == nil) then
 			action(self.object, move(move.run_fwd, self.point), sound(sound.panic), cond(cond.move_end))
