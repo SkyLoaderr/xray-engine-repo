@@ -1,6 +1,7 @@
 class "stalker_script"
 
-function stalker_script:__init()
+function stalker_script:__init(object)
+	self.object			= object
 end
 
 function stalker_script:reinit()
@@ -21,7 +22,7 @@ end
 function stalker_script:net_import(packet)
 end
 
-function init(obj)
-	printf				("stalker.init is called with %s!",obj:name())
-	obj:set_lua_object	(stalker.stalker_script())
+function init(object)
+	printf				("stalker.init is called with %s!",object:name())
+	obj:set_lua_object	(stalker.stalker_script(object))
 end
