@@ -356,7 +356,6 @@ void CCustomMonster::UpdateCL	()
 		// BAD.	extrapolation
 		NET_Last		= N;
 		if (SUB_CLS_ID != CLSID_AI_RAT) {
-			Fvector		l_tPosition = Position();
 			if (dwTime - N.dwTimeStamp > Device.dwTimeDelta)
 				AI_Path.Calculate(this,Position(),Position(),m_fCurSpeed,Device.fTimeDelta);
 			else
@@ -381,7 +380,6 @@ void CCustomMonster::UpdateCL	()
 		}
 		if (select>=0)
 		{
-			Fvector		l_tPosition = Position();
 			// Interpolate state
 			net_update&	A			= NET[select+0];
 			net_update&	B			= NET[select+1];
