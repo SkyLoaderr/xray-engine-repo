@@ -266,7 +266,7 @@ CLAItem* ELightAnimLibrary::AppendItem(LPCSTR folder_name, CLAItem* parent)
     Items.push_back(I);
 	return I;
 }
-
+#ifdef _EDITOR
 BOOL ELightAnimLibrary::RemoveObject(LPCSTR _fname, EItemType type)   
 {
 	if (TYPE_FOLDER==type){
@@ -292,4 +292,4 @@ void ELightAnimLibrary::RenameObject(LPCSTR nm0, LPCSTR nm1, EItemType type)
 	}
 }
 //---------------------------------------------------------------------------
-
+#endif

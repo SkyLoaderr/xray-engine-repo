@@ -159,8 +159,8 @@ public:
     PropValue*			propCollideParticles;
     PropValue*			propCollideMarks;
     void __fastcall 	OnFlagChange	(PropValue* sender);
-	void __fastcall 	OnParentClick	(PropValue* sender, bool& bModif);
-	void __fastcall 	OnCommandClick	(PropValue* sender, bool& bModif);
+	void __fastcall 	OnParentClick	(PropValue* sender, bool& bModif, bool& bSafe);
+	void __fastcall 	OnCommandClick	(PropValue* sender, bool& bModif, bool& bSafe);
 #endif
 public:
 	SGameMtlPair		(CGameMtlLibrary* owner)

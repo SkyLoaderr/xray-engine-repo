@@ -33,10 +33,11 @@ struct STextureParams{
 		tbmForceU32	= u32(-1)
     };
     enum ETMaterial{
-		tmBlinBumpLowSpec_BlinBumpHighSpec 	= 0,
-		tmBlinBumpHighSpec_AnisotropicLow, 
-		tmAnisotropicLow_AnisotropicHigh,
-		tmForceU32	= u32(-1)
+		tmOrenNayar_Blin	= 0,
+		tmBlin_Phong, 
+		tmPhong_Metal,
+        tmMetal_OrenNayar,
+		tmForceU32			= u32(-1)
     };
 	enum{
         dMIPFilterBox				= 0,

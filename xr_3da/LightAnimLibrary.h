@@ -3,8 +3,9 @@
 #ifndef LightAnimLibraryH
 #define LightAnimLibraryH
 //---------------------------------------------------------------------------
-
-#include "FolderLib.h"              
+#ifdef _EDITOR
+	#include "FolderLib.h"              
+#endif
 
 class ENGINE_API CLAItem{
 public:
@@ -42,9 +43,10 @@ public:
 public:
 					ELightAnimLibrary	();
 					~ELightAnimLibrary	();
-
+#ifdef _EDITOR
     BOOL __fastcall	RemoveObject		(LPCSTR fname, EItemType type);
     void __fastcall	RenameObject		(LPCSTR fn0, LPCSTR fn1, EItemType type);
+#endif
 
     void			OnCreate			();
     void			OnDestroy			();

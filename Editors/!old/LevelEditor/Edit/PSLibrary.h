@@ -59,7 +59,7 @@ public:
 	void				OnDeviceDestroy	();
 };
 
-#define PSLIB_FILENAME 			"particles.xr"
+#define PSLIB_FILENAME 			"particles.xr2"
 
 #define PS_LIB_SIGN 			"PS_LIB"
 

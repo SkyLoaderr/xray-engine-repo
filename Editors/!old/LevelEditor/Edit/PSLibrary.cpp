@@ -10,11 +10,11 @@
 #define _game_data_			"$game_data$"
 
 bool ps_sort_pred	(const PS::SDef& a, 	const PS::SDef& b)		{	return xr_strcmp(a.m_Name,b.m_Name)<0;	}
-bool ped_sort_pred	(const PS::CPEDef* a, 	const PS::CPEDef* b)	{	return xr_strcmp(a->m_Name,b->m_Name)<0;}
+bool ped_sort_pred	(const PS::CPEDef* a, 	const PS::CPEDef* b)	{	return xr_strcmp(a->Name(),b->Name())<0;}
 bool pgd_sort_pred	(const PS::CPGDef* a, 	const PS::CPGDef* b)	{	return xr_strcmp(a->m_Name,b->m_Name)<0;}
 
 bool ps_find_pred	(const PS::SDef& a, 	LPCSTR b)				{	return xr_strcmp(a.m_Name,b)<0;	}
-bool ped_find_pred	(const PS::CPEDef* a, 	LPCSTR b)				{	return xr_strcmp(a->m_Name,b)<0;}
+bool ped_find_pred	(const PS::CPEDef* a, 	LPCSTR b)				{	return xr_strcmp(a->Name(),b)<0;}
 bool pgd_find_pred	(const PS::CPGDef* a, 	LPCSTR b)				{	return xr_strcmp(a->m_Name,b)<0;}
 //----------------------------------------------------
 void CPSLibrary::OnCreate()
@@ -49,9 +49,8 @@ void CPSLibrary::OnDeviceCreate			()
 	for (PS::PSIt s_it = m_PSs.begin(); s_it!=m_PSs.end(); s_it++)
 		if (s_it->m_ShaderName[0]&&s_it->m_TextureName[0])	
 			s_it->m_CachedShader.create(s_it->m_ShaderName,s_it->m_TextureName);
-	for (PS::PEDIt g_it = m_PEDs.begin(); g_it!=m_PEDs.end(); g_it++)
-		if (((*g_it)->m_ShaderName&&(*g_it)->m_ShaderName[0]&&(*g_it)->m_TextureName&&(*g_it)->m_TextureName[0]))	
-			(*g_it)->m_CachedShader.create((*g_it)->m_ShaderName,(*g_it)->m_TextureName);
+	for (PS::PEDIt e_it = m_PEDs.begin(); e_it!=m_PEDs.end(); e_it++)
+    	(*e_it)->CreateShader();
 }
 
 void CPSLibrary::OnDeviceDestroy		()
@@ -59,7 +58,7 @@ void CPSLibrary::OnDeviceDestroy		()
 	for (PS::PSIt s_it = m_PSs.begin(); s_it!=m_PSs.end(); s_it++)
 		s_it->m_CachedShader.destroy	();
 	for (PS::PEDIt e_it = m_PEDs.begin(); e_it!=m_PEDs.end(); e_it++)
-		(*e_it)->m_CachedShader.destroy	();
+    	(*e_it)->DestroyShader();
 }
 PS::SDef* CPSLibrary::FindPS			(LPCSTR Name)
 {
@@ -78,7 +77,7 @@ PS::PEDIt CPSLibrary::FindPEDIt(LPCSTR Name)
 {
 #ifdef _EDITOR
 	for (PS::PEDIt it=m_PEDs.begin(); it!=m_PEDs.end(); it++)
-    	if (0==xr_strcmp((*it)->m_Name,Name)) return it;
+    	if (0==xr_strcmp((*it)->Name(),Name)) return it;
 	return m_PEDs.end();
 #else
 	PS::PEDIt I = std::lower_bound(m_PEDs.begin(),m_PEDs.end(),Name,ped_find_pred);
@@ -139,7 +138,7 @@ void CPSLibrary::Remove(const char* nm)
     }else{
     	PS::PEDIt it = FindPEDIt(nm);
         if (it!=m_PEDs.end()){
-	    	(*it)->m_CachedShader.destroy();
+	    	(*it)->DestroyShader();
         	xr_delete		(*it);
 	       	m_PEDs.erase	(it);
         }else{

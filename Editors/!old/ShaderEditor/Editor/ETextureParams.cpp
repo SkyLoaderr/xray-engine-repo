@@ -33,9 +33,10 @@ xr_token					tfmt_token								[ ]={
 };
 
 xr_token					tmtl_token								[ ]={
-	{ "Blin Bump Low Spec <-> Blin Bump High Spec",						STextureParams::tmBlinBumpLowSpec_BlinBumpHighSpec			},
-	{ "Blin Bump High Spec <-> Anisotropic Low",						STextureParams::tmBlinBumpHighSpec_AnisotropicLow			},
-	{ "Anisotropic Low <-> Anisotropic High",							STextureParams::tmAnisotropicLow_AnisotropicHigh			},
+	{ "OrenNayar <-> Blin",	STextureParams::tmOrenNayar_Blin			},
+	{ "Blin <-> Phong",		STextureParams::tmBlin_Phong				},
+	{ "Phong <-> Metal",	STextureParams::tmPhong_Metal				},
+	{ "Metal <-> OrenNayar",STextureParams::tmMetal_OrenNayar			},
 	{ 0,					0											}
 };
 
