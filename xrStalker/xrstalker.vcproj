@@ -378,6 +378,9 @@
 						RelativePath=".\Config\text\rus\string_table_items.xml">
 					</File>
 					<File
+						RelativePath=".\Config\text\rus\string_table_level_tips.xml">
+					</File>
+					<File
 						RelativePath=".\Config\text\rus\string_table_news.xml">
 					</File>
 					<File

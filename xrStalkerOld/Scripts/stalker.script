@@ -1,3 +1,5 @@
+module("level_tips")
+
 function init    (obj)
 	xr_motivator.AddToMotivator(obj)
 end
@@ -20,6 +22,7 @@ function actor_binder:net_spawn(data)
 			self.object:give_info_portion("storyline_actor_start")
 			self.object:give_info_portion("level_changer_icons")		
 		end
+		level_tips.fill_tips()
 		return true
 	end
 end
@@ -32,6 +35,10 @@ if false then
 	lasthealth = self.object.health
 	lasttime = game.time()
 end
+
+	--' Выдача подсказок
+	level_tips.get_tips(self.object)
+
        		if self.object:has_info("escape_trader_need_artefact") and
        		   self.object:object("af_night_star") ~= nil
        		then
