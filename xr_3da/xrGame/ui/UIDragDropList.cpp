@@ -45,6 +45,8 @@ CUIDragDropList::CUIDragDropList()
 
 	m_bGridVisible				= true;
 	m_bUnlimitedCapacity		= false;
+	m_needScrollToTop			= false;
+	m_needScrollRecalculate		= false;
 }
 
 CUIDragDropList::~CUIDragDropList()
@@ -61,13 +63,15 @@ CUIDragDropList::~CUIDragDropList()
 
 void CUIDragDropList::AttachChild(CUIWindow* pChild)
 {
+//	CTimer	T;
+
 	CUIDragDropItem* pDragDropItem = smart_cast<CUIDragDropItem*>(pChild);
 	if(pDragDropItem) 
 	{
+//	T.Start();
 		PlaceItemInGrid(pDragDropItem);
+//		Msg("-CUIDragDropList::AttachChild:PlaceItemInGrid: %f",T.GetElapsed_sec());
 
-//		pDragDropItem->SetWidth(GetCellWidth()*pDragDropItem->GetGridWidth());
-//		pDragDropItem->SetHeight(GetCellHeight()*pDragDropItem->GetGridHeight());
 
 		pDragDropItem->SetCellWidth(GetCellWidth());
 		pDragDropItem->SetCellHeight(GetCellHeight());
@@ -79,6 +83,7 @@ void CUIDragDropList::AttachChild(CUIWindow* pChild)
 	}
 
 	inherited::AttachChild(pChild);
+
 }
 void CUIDragDropList::DetachChild(CUIWindow* pChild)
 {
@@ -384,7 +389,7 @@ bool CUIDragDropList::PlaceItemInGrid(CUIDragDropItem* pItem)
 	{
 		while (!CanPlaceItemInGrid(pItem, place_row, place_col))
 		{
-			InitGrid(GetRows() + 1, GetCols(), m_bGridVisible, m_iViewRowsNum);
+			InitGrid(GetRows() + 7, GetCols(), m_bGridVisible, m_iViewRowsNum);
 		}
 		found_place = true;
 	}
@@ -607,6 +612,9 @@ void CUIDragDropList::Draw()
 }
 void CUIDragDropList::Update()
 {
+	if(m_needScrollRecalculate)
+		ScrollBarRecalculateTotal();
+
 	inherited::Update();
 }
 
@@ -691,8 +699,7 @@ int CUIDragDropList::GetLastBottomFullCell()
 }
 
 //////////////////////////////////////////////////////////////////////////
-
-void CUIDragDropList::ScrollBarRecalculate(bool needScrollToTop)
+void CUIDragDropList::ScrollBarRecalculateTotal()
 {
 	const int bottom = GetLastBottomFullCell();
 
@@ -718,12 +725,19 @@ void CUIDragDropList::ScrollBarRecalculate(bool needScrollToTop)
 			SetScrollPos(m_ScrollBar.GetScrollPos() - max + bottom);
 		}
 
-		if (needScrollToTop)
+		if (m_needScrollToTop)
 		{
 			SetScrollPos(0);
 		}
 	}
 	UpdateList();
+	m_needScrollRecalculate = false;
+}
+
+void CUIDragDropList::ScrollBarRecalculate(bool needScrollToTop)
+{
+	m_needScrollRecalculate	= true;
+	m_needScrollToTop			= needScrollToTop;
 }
 
 //////////////////////////////////////////////////////////////////////////

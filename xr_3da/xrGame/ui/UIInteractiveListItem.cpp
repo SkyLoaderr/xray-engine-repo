@@ -123,7 +123,7 @@ void CUIInteractiveListItem::Draw()
 {
 	inherited::Draw();
 
-	Irect rect = GetAbsoluteSubRect();
+
 
 	// Подсвечиваем интерактивный элемент
 	if (itCurrIItem != vPositions.end() && m_bCursorOverWindow && m_bInteractiveBahaviour)

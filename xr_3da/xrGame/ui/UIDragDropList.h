@@ -28,6 +28,9 @@ class CUIDragDropList: public CUIWindow
 {
 private:
 	typedef CUIWindow inherited;
+	bool m_needScrollToTop;
+	bool m_needScrollRecalculate;
+	void ScrollBarRecalculateTotal();
 public:
 	////////////////////////////////////
 	//конструктор/деструктор

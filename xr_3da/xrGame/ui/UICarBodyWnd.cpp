@@ -19,7 +19,7 @@
 #include "../inventory.h"
 #include "UIInventoryUtilities.h"
 #include "../level.h"
-
+#include "../profiler.h"
 //////////////////////////////////////////////////////////////////////////
 
 using namespace InventoryUtilities;
@@ -129,7 +129,7 @@ void CUICarBodyWnd::Init()
 void CUICarBodyWnd::InitCarBody(CInventory* pOurInv,    CGameObject* pOurObject,
 								CInventory* pOthersInv, CGameObject* pOthersObject)
 {
-	
+
     m_pOurObject = pOurObject;
 	m_pOthersObject = pOthersObject;
 
@@ -149,14 +149,17 @@ void CUICarBodyWnd::InitCarBody(CInventory* pOurInv,    CGameObject* pOurObject,
 	UIMessageBox.Hide();
 	EnableAll();
 
+
 	UpdateLists();
+
 }  
 
 //////////////////////////////////////////////////////////////////////////
 
 void CUICarBodyWnd::UpdateLists()
 {
-
+//	CTimer	T;
+//	T.Start();
 	//очистить после предыдущего запуска
 	UIOurBagList.DropAll();
 	UIOthersBagList.DropAll();
@@ -173,8 +176,8 @@ void CUICarBodyWnd::UpdateLists()
 	{
 		if((*it)) 
 		{
-	//		CUIDragDropItem& UIDragDropItem = m_vDragDropItems[m_iUsedItems];		
 			m_vDragDropItems.push_back(xr_new<CUIWpnDragDropItem>());
+	
 			CUIDragDropItem& UIDragDropItem = *m_vDragDropItems.back();
 
 
@@ -201,12 +204,9 @@ void CUICarBodyWnd::UpdateLists()
 			if(pEatableItem) UIDragDropItem.SetCustomDraw(FoodDrawProc);
 
 
-			//установить коэффициент масштабирования
-//.			UIDragDropItem.SetTextureScaleXY(TRADE_ICONS_SCALE, TRADE_ICONS_SCALE);
 			UIDragDropItem.SetStretchTexture(true);
 				
 			UIOurBagList.AttachChild(&UIDragDropItem);
-	//		++m_iUsedItems;
 		}
 	}
 
@@ -220,12 +220,13 @@ void CUICarBodyWnd::UpdateLists()
 	{
 		if((*it)) 
 		{
-			//CUIDragDropItem& UIDragDropItem = m_vDragDropItems[m_iUsedItems];		
 			m_vDragDropItems.push_back(xr_new<CUIWpnDragDropItem>());
+		
 			CUIDragDropItem& UIDragDropItem = *m_vDragDropItems.back();
 
 				
 			UIDragDropItem.CUIStatic::Init(0, 0, INV_GRID_WIDTH, INV_GRID_HEIGHT);
+
 			UIDragDropItem.SetShader(GetEquipmentIconsShader());
 
 			UIDragDropItem.SetGridHeight((*it)->GetGridHeight());
@@ -236,7 +237,6 @@ void CUICarBodyWnd::UpdateLists()
 									(*it)->GetYPos()*INV_GRID_HEIGHT,
 									(*it)->GetGridWidth()*INV_GRID_WIDTH,
 									(*it)->GetGridHeight()*INV_GRID_HEIGHT);
-
 			UIDragDropItem.SetData((*it));
 
 			UIDragDropItem.SetFont(HUD().Font().pFontLetterica16Russian);
@@ -247,15 +247,16 @@ void CUICarBodyWnd::UpdateLists()
 			CEatableItem* pEatableItem = smart_cast<CEatableItem*>((*it));
 			if(pEatableItem) UIDragDropItem.SetCustomDraw(FoodDrawProc);
 
-			//установить коэффициент масштабирования
-//.			UIDragDropItem.SetTextureScaleXY(TRADE_ICONS_SCALE,TRADE_ICONS_SCALE);
 			UIDragDropItem.SetStretchTexture(true);
 
 			UIOthersBagList.AttachChild(&UIDragDropItem);
-//			++m_iUsedItems;
 		}
 	}
+
 	UpdateWeight(UIOurBagWnd);
+
+//	Msg("-CUICarBodyWnd::UpdateLists: %f",T.GetElapsed_sec());
+	
 }
 
 //////////////////////////////////////////////////////////////////////////
@@ -275,17 +276,20 @@ void CUICarBodyWnd::SendMessage(CUIWindow *pWnd, s16 msg, void *pData)
 	}
 	else if(msg == DRAG_DROP_ITEM_DB_CLICK)
 	{
-		if (m_pCurrentDragDropItem) m_pCurrentDragDropItem->Highlight(false);
-		PIItem pInvItem = (PIItem)((CUIDragDropItem*)pWnd)->GetData();
+		bool bTakeAll = (*(int*)pData==111) ;
+		if (!bTakeAll && m_pCurrentDragDropItem) m_pCurrentDragDropItem->Highlight(false);
 		m_pCurrentDragDropItem = (CUIDragDropItem*)pWnd;
 		
-		SetCurrentItem(pInvItem);
+		if(!bTakeAll){
+			PIItem pInvItem = (PIItem)((CUIDragDropItem*)pWnd)->GetData();
+			SetCurrentItem(pInvItem);
+		}
 
-		if(m_pCurrentDragDropItem->GetParent() == &UIOurBagList)
+		if(m_pCurrentDragDropItem->GetParent() == &UIOurBagList){
 			ToOthersBag();
-		else if(m_pCurrentDragDropItem->GetParent() == &UIOthersBagList)
+		}else if(m_pCurrentDragDropItem->GetParent() == &UIOthersBagList){
 			ToOurBag();
-		else
+		}else
 			R_ASSERT2(false, "wrong parent for car_body wnd");
 	}
 	else if (BUTTON_CLICKED == msg && &UITakeAll == pWnd)
@@ -394,12 +398,23 @@ bool CUICarBodyWnd::OthersBagProc(CUIDragDropItem* pItem, CUIDragDropList* pList
 
 bool CUICarBodyWnd::ToOurBag()
 {
-	if(!OurBagProc(m_pCurrentDragDropItem, 
-				   &UIOurBagList)) return false;
+//	CTimer T;
+	bool b;
+//	T.Start();
+	b= OurBagProc(m_pCurrentDragDropItem, &UIOurBagList);
+//	Msg("----CUICarBodyWnd::ToOurBag:OurBagProc(): %f",T.GetElapsed_sec());
+
+	if(!b)return false;
+		
 
 	((CUIDragDropList*)m_pCurrentDragDropItem->GetParent())->
 											   DetachChild(m_pCurrentDragDropItem);
+	
+
+//	T.Start();
+//	Msg("----CUICarBodyWnd::ToOurBag:AttachChild()---BEGIN: %f",T.GetElapsed_sec());
 	UIOurBagList.AttachChild(m_pCurrentDragDropItem);
+//	Msg("----CUICarBodyWnd::ToOurBag:AttachChild()---END: %f",T.GetElapsed_sec());
 
 	m_pMouseCapturer = NULL;
 	UpdateWeight(UIOurBagWnd);
@@ -456,9 +471,14 @@ void CUICarBodyWnd::SetCurrentItem(CInventoryItem* pItem)
 
 void CUICarBodyWnd::TakeAll()
 {
+//	CTimer T;
+//	T.Start();
 	for (DRAG_DROP_LIST_it it = UIOthersBagList.GetDragDropItemsList().begin();
 		 it != UIOthersBagList.GetDragDropItemsList().end();)
 	{
-		SendMessage(*it++, DRAG_DROP_ITEM_DB_CLICK, NULL);
+		int iData = 111;
+		SendMessage(*it++, DRAG_DROP_ITEM_DB_CLICK, (void*)(&iData) );
 	}
+//	Msg("-CUICarBodyWnd::TakeAll: %f",T.GetElapsed_sec());
+	SetCurrentItem(NULL);
 }
