@@ -78,9 +78,9 @@ void CLocatorAPI::ProcessArchive(const char* path)
 		hdr->RstringZ	(name);
 		strconcat		(full,base,name);
 
-		u32 vfs		= archives.size()-1;
+		u32 vfs			= archives.size()-1;
 		BOOL  bPacked	= (hdr->Rdword())?FALSE:TRUE;
-		u32 ptr		= hdr->Rdword();
+		u32 ptr			= hdr->Rdword();
 		u32 size		= hdr->Rdword();
 		Register		(full,vfs,ptr,size,bPacked);
 	}
@@ -135,6 +135,7 @@ void CLocatorAPI::Initialize	()
 {
 	Log		("Initializing File System...");
 	Recurse	("");
+	Recurse	(Path.GameData);
 	Msg		("FS: %d files cached",files.size());
 }
 void CLocatorAPI::Destroy		()
