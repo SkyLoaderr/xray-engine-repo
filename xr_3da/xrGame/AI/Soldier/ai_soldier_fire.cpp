@@ -137,6 +137,9 @@ void CAI_Soldier::HitSignal(int amount, Fvector& vLocalDir, CEntity* who)
 			return;
 		pSounds->PlayAtPos	(S,this,vPosition);
 	}
+	else {
+		iHealth = iHealth;
+	}
 }
 
 void CAI_Soldier::SelectEnemy(SEnemySelected& S)

@@ -37,7 +37,7 @@ void CAI_Soldier::OnFight()
 	switch (tfUpdateActionType()) {
 		case ACTION_TYPE_GROUP  : SWITCH_TO_NEW_STATE_THIS_UPDATE_AND_UPDATE(aiSoldierFightGroup);
 		case ACTION_TYPE_ALONE  : SWITCH_TO_NEW_STATE_THIS_UPDATE_AND_UPDATE(aiSoldierFightAlone);
-		default				    : GO_TO_PREV_STATE;
+		default				    : GO_TO_PREV_STATE_THIS_UPDATE;
 	}
 }
 
@@ -767,18 +767,20 @@ void CAI_Soldier::Die()
 	AI_Path.Direction(dir);
 	SelectAnimation(clTransform.k,dir,AI_Path.fSpeed);
 
-	while (tStateStack.size())
-		tStateStack.pop();
+	//while (tStateStack.size())
+	//	tStateStack.pop();
 
+	vfAddStateToList(aiSoldierDie);
+	
 	bActive = false;
-	//bEnabled = false;
+	bEnabled = false;
 }
 
 void CAI_Soldier::OnTurnOver()
 {
 	WRITE_TO_LOG("turn over");
 	
-	CHECK_IF_GO_TO_NEW_STATE_THIS_UPDATE(bfAmIDead(),aiSoldierDie)
+	CHECK_IF_SWITCH_TO_NEW_STATE_THIS_UPDATE_AND_UPDATE(bfAmIDead(),aiSoldierDie)
 		
 	CHECK_IF_SWITCH_TO_NEW_STATE_THIS_UPDATE_AND_UPDATE(bfCheckForDanger(),aiSoldierFight)
 
@@ -798,7 +800,7 @@ void CAI_Soldier::OnWaitForAnimation()
 {
 	WRITE_TO_LOG("wait for animation");
 
-	CHECK_IF_GO_TO_NEW_STATE_THIS_UPDATE(bfAmIDead(),aiSoldierDie)
+	CHECK_IF_SWITCH_TO_NEW_STATE_THIS_UPDATE_AND_UPDATE(bfAmIDead(),aiSoldierDie)
 
 	vfSetMovementType(WALK_NO);
 
@@ -816,7 +818,7 @@ void CAI_Soldier::OnWaitForTime()
 {
 	WRITE_TO_LOG("wait for time");
 
-	CHECK_IF_GO_TO_NEW_STATE_THIS_UPDATE(bfAmIDead(),aiSoldierDie)
+	CHECK_IF_SWITCH_TO_NEW_STATE_THIS_UPDATE_AND_UPDATE(bfAmIDead(),aiSoldierDie)
 
 	CHECK_IF_SWITCH_TO_NEW_STATE_THIS_UPDATE_AND_UPDATE(bfCheckForDanger(),aiSoldierFight)
 
@@ -830,7 +832,7 @@ void CAI_Soldier::OnRecharge()
 {
 	WRITE_TO_LOG("recharge");
 	
-	CHECK_IF_GO_TO_NEW_STATE_THIS_UPDATE(bfAmIDead(),aiSoldierDie)
+	CHECK_IF_SWITCH_TO_NEW_STATE_THIS_UPDATE_AND_UPDATE(bfAmIDead(),aiSoldierDie)
 
 	CHECK_IF_GO_TO_PREV_STATE(bfNoAmmo());
 	
@@ -848,7 +850,7 @@ void CAI_Soldier::OnLookingOver()
 {
 	WRITE_TO_LOG("looking over");
 	
-	CHECK_IF_GO_TO_NEW_STATE_THIS_UPDATE(bfAmIDead(),aiSoldierDie)
+	CHECK_IF_SWITCH_TO_NEW_STATE_THIS_UPDATE_AND_UPDATE(bfAmIDead(),aiSoldierDie)
 	
 	CHECK_IF_SWITCH_TO_NEW_STATE_THIS_UPDATE_AND_UPDATE((g_Squad() != SPECIAL_SQUAD) && bfCheckForDanger(),aiSoldierFight)
 	
@@ -882,7 +884,7 @@ void CAI_Soldier::OnPatrolReturnToRoute()
 {
 	WRITE_TO_LOG("return to route");
 
-	CHECK_IF_GO_TO_NEW_STATE_THIS_UPDATE(bfAmIDead(),aiSoldierDie)
+	CHECK_IF_SWITCH_TO_NEW_STATE_THIS_UPDATE_AND_UPDATE(bfAmIDead(),aiSoldierDie)
 	
 	CHECK_IF_SWITCH_TO_NEW_STATE_THIS_UPDATE_AND_UPDATE(bfCheckForDanger(),aiSoldierFight);
 
@@ -953,7 +955,7 @@ void CAI_Soldier::OnPatrolRoute()
 {
 	WRITE_TO_LOG("patrol route");
 
-	CHECK_IF_GO_TO_NEW_STATE_THIS_UPDATE(bfAmIDead(),aiSoldierDie)
+	CHECK_IF_SWITCH_TO_NEW_STATE_THIS_UPDATE_AND_UPDATE(bfAmIDead(),aiSoldierDie)
 	
 	CHECK_IF_SWITCH_TO_NEW_STATE_THIS_UPDATE_AND_UPDATE(bfCheckForDanger(),aiSoldierFight);
 
@@ -1055,7 +1057,7 @@ void CAI_Soldier::OnFollowLeaderPatrol()
 {
 	WRITE_TO_LOG("follow leader patrol");
 
-	CHECK_IF_GO_TO_NEW_STATE_THIS_UPDATE(bfAmIDead(),aiSoldierDie)
+	CHECK_IF_SWITCH_TO_NEW_STATE_THIS_UPDATE_AND_UPDATE(bfAmIDead(),aiSoldierDie)
 	
 	CHECK_IF_SWITCH_TO_NEW_STATE_THIS_UPDATE_AND_UPDATE(bfCheckForDanger(),aiSoldierFight);
 		
