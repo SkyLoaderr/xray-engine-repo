@@ -184,7 +184,32 @@ function fraction_sleepers.setup_jobs( a )
 		end
 	until false
 
-	printf( "capacity = %d", a.capacity )
+--	printf( "capacity = %d", a.capacity )
+end
+
+----------------------------------------------------------------------------------------------------------------------
+-- класс фракции типа "один сталкер что-то ищет"
+----------------------------------------------------------------------------------------------------------------------
+class "fraction_searcher"
+
+function fraction_searcher:__init()
+end
+
+function fraction_searcher.setup_jobs( a )
+	table.insert(
+		a.fraction.Job,
+		{
+			name      = "search",
+			idle      = 0,
+			prior     = 1,
+			state     = { 0 },
+			group     = a.group,
+			squad     = a.squad,
+			path_main = a.prefix .. "_search"
+		}
+	)
+
+	a.capacity = 1 -- searcher всегда одиночка
 end
 
 ----------------------------------------------------------------------------------------------------------------------
@@ -193,6 +218,9 @@ end
 
 local fraction_types = {}
 fraction_types.sleepers = fraction_sleepers()
+fraction_types.searcher = fraction_searcher()
+
+
 
 
 ----------------------------------------------------------------------------------------------------------------------
@@ -204,15 +232,17 @@ function zone_fractions:__init( zone, ini )
 	-- общие настройки системы управлени€ фракци€ми дл€ данной зоны
 	local sect = "fractions"
 
-	if not ini:line_exist( sect, "squad" ) or
-	   not ini:line_exist( sect, "group" )
-	then
-		return
-	end
+--	if not ini:line_exist( sect, "squad" ) or
+--	   not ini:line_exist( sect, "group" )
+--	then
+--		return
+--	end
 
 	self.zone            = zone
-	self.squad           = ini:r_float( sect, "squad" )
-	self.group           = ini:r_float( sect, "group" )
+--	self.squad           = ini:r_float( sect, "squad" )
+--	self.group           = ini:r_float( sect, "group" )
+	self.squad           = r_num( ini, sect, "squad" )
+	self.group           = r_num( ini, sect, "group" )
 	self.stalkers        = {}    -- group и squad дл€ каждого
 	self.fractions       = {}    -- настройки фракций, возможных в этой зоне
 	self.fraction        = nil   -- экземпл€р текущей фракции
@@ -289,7 +319,9 @@ function zone_fractions:free_stalker( obj )
 		   k == "follower" or
 		   k == "patrol" or
 		   k == "guard" or
-		   k == "bodyguard" 
+		   k == "bodyguard" or
+		   k == "search" or
+		   k == "walker"
 		then
 			v.enabled = false
 		end
@@ -323,6 +355,8 @@ function zone_fractions:create_fraction()
 	self.fraction      = xr_gulag.fract( self.fraction_name )
 
 	fraction_types[fparams.type].setup_jobs( self )
+
+	printf( "[zone] creating fraction %s of type %s", self.fraction_name, fparams.type )
 end
 
 -- всех освободить, убить фракцию
