@@ -56,11 +56,12 @@ bool TUI::Command( int _Command, int p1, int p2 ){
         }
     	}break;
 	case COMMAND_DESTROY:
-		Scene.OnDestroy	();
-    	PSLib.OnDestroy	();
-		Lib.OnDestroy	();
-		Tools.OnDestroy	();
-        UI.OnDestroy	();
+		Command				(COMMAND_CLEAR);
+		Scene.OnDestroy		();
+    	PSLib.OnDestroy		();
+		Lib.OnDestroy		();
+		Tools.OnDestroy		();
+        UI.OnDestroy		();
 		//----------------
         _DELETE(fraLeftBar);
 	    _DELETE(fraTopBar);

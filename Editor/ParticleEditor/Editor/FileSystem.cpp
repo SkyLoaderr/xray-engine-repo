@@ -479,7 +479,7 @@ void CFileSystem::RegisterAccess(LPSTR fn)
     CInifile::Destroy(ini);
 
 	string128 dt_buf, tm_buf;
-	m_AccessLog->Msg(mtInformation,"Lock: '%s' from computer: '%s' by user: '%s' at %s %s",fn,computer,user,_strdate(dt_buf),_strtime(tm_buf));
+	m_AccessLog->Msg(mtInformation,"Lock:   '%s' from computer: '%s' by user: '%s' at %s %s",fn,computer,user,_strdate(dt_buf),_strtime(tm_buf));
 }
 
 BOOL CFileSystem::CheckLocking(FSPath *initial, LPSTR fname, bool bOnlySelf, bool bMsg)
