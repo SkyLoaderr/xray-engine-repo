@@ -11,6 +11,7 @@
 #include "ai_stalker_animations.h"
 #include "..\..\..\motion.h"
 #include "..\\..\\weapon.h"
+#include "..\\..\\ai_script_actions.h"
 
 static const float y_spin_factor			= 0.25f;
 static const float y_shoulder_factor		= 0.25f;
@@ -121,6 +122,7 @@ void __stdcall CAI_Stalker::HeadCallback(CBoneInstance *B)
 			break;
 		}
 		case eLookTypeLookOver :
+		case eLookTypePathDirection :
 		case eLookTypeDirection :
 		case eLookTypeSearch :
 		case eLookTypeDanger :
@@ -153,6 +155,7 @@ void __stdcall CAI_Stalker::ShoulderCallback(CBoneInstance *B)
 			break;
 		}
 		case eLookTypeLookOver :
+		case eLookTypePathDirection :
 		case eLookTypeDirection :
 		case eLookTypeSearch :
 		case eLookTypeDanger :
@@ -185,6 +188,7 @@ void __stdcall CAI_Stalker::SpinCallback(CBoneInstance *B)
 			break;
 		}
 		case eLookTypeLookOver :
+		case eLookTypePathDirection :
 		case eLookTypeDirection :
 		case eLookTypeSearch :
 		case eLookTypeDanger :
@@ -206,11 +210,21 @@ void __stdcall CAI_Stalker::SpinCallback(CBoneInstance *B)
 void CAI_Stalker::vfAssignGlobalAnimation(CMotionDef *&tpGlobalAnimation)
 {
 	if (g_Alive()) {
-		if ((m_tStateType == eStateTypePanic) && (AI_Path.fSpeed > EPS_L))
+		if ((m_tMentalState == eMentalStatePanic) && (AI_Path.fSpeed > EPS_L))
 			tpGlobalAnimation = m_tAnims.A[IsLimping() ? eBodyStateStandDamaged : eBodyStateStand].m_tGlobal.A[1].A[0];
 	}
 	//else
 	//	tpGlobalAnimation = m_tAnims.A[eBodyStateStand].m_tGlobal.A[2].A[0];
+}
+
+#pragma todo("Dima to Dima : Recover code from fatal error : C1055")
+
+void ScriptCallBack(CBlend* B)
+{
+	CAI_Stalker		*l_tpStalker = static_cast<CAI_Stalker*>(B->CallbackParam);
+//	R_ASSERT		(l_tpStalker);
+	if (l_tpStalker->GetCurrentAction())
+		l_tpStalker->GetCurrentAction()->m_tAnimationAction.m_bCompleted = true;
 }
 
 void CAI_Stalker::vfAssignTorsoAnimation(CMotionDef *&tpTorsoAnimation)
@@ -267,9 +281,9 @@ void CAI_Stalker::vfAssignTorsoAnimation(CMotionDef *&tpTorsoAnimation)
 //	Msg			("[%s] Current movement type : %d",cName(),m_tMovementType);
 
 	EBodyState l_tBodyState = (m_tBodyState == eBodyStateStand) && IsLimping() ? eBodyStateStandDamaged : m_tBodyState;
-	if (m_tStateType == eStateTypeNormal) {
+	if (m_tMentalState == eMentalStateFree) {
 		tpTorsoAnimation = 0;
-		VERIFY(m_tBodyState == eBodyStateStand);
+//		R_ASSERT(m_tBodyState == eBodyStateStand);
 		if (m_tMovementType == eMovementTypeStand)
 			tpTorsoAnimation = m_tAnims.A[l_tBodyState].m_tTorso.A[dwCurrentAniSlot].A[9].A[0];
 		else
@@ -358,9 +372,9 @@ void CAI_Stalker::vfAssignLegsAnimation(CMotionDef *&tpLegsAnimation)
 	if	(((m_tDesirableDirection == eMovementDirectionRight) && (m_tMovementDirection == eMovementDirectionLeft))	||	((m_tDesirableDirection == eMovementDirectionLeft) && (m_tMovementDirection == eMovementDirectionRight)))
 		fAnimationSwitchFactor = .0f;
 
-	if (m_tStateType != eStateTypeDanger)
+	if (m_tMentalState != eMentalStateDanger)
 		if (getAI().bfTooSmallAngle(r_torso_current.yaw,yaw,PI_DIV_6)) {
-			tpLegsAnimation = m_tAnims.A[l_tBodyState].m_tMoves.A[m_tMovementType].A[eMovementDirectionForward].A[m_tStateType];
+			tpLegsAnimation = m_tAnims.A[l_tBodyState].m_tMoves.A[m_tMovementType].A[eMovementDirectionForward].A[m_tMentalState];
 			return;
 		}
 		else
@@ -432,7 +446,7 @@ void CAI_Stalker::vfAssignLegsAnimation(CMotionDef *&tpLegsAnimation)
 	}
 //	Msg("----%d\n[W=%7.2f][TT=%7.2f][TC=%7.2f][T=%7.2f][C=%7.2f]",Level().timeServer(),yaw,r_torso_target.yaw,r_torso_current.yaw,r_target.yaw,r_current.yaw);
 //	Msg("Trying %s\nMoving %s",caMovementActionNames[m_tDesirableDirection],caMovementActionNames[m_tMovementDirection]);
-//	if (m_tStateType == eStateTypeNormal)
+//	if (m_tMentalState == eMentalStateFree)
 //		m_tMovementDirection = eMovementDirectionForward;
 
 	tpLegsAnimation			= m_tAnims.A[l_tBodyState].m_tMoves.A[m_tMovementType].A[m_tMovementDirection].A[0];
@@ -443,6 +457,13 @@ void CAI_Stalker::vfAssignLegsAnimation(CMotionDef *&tpLegsAnimation)
 void CAI_Stalker::SelectAnimation(const Fvector& _view, const Fvector& _move, float speed)
 {
 	CKinematics				&tVisualObject		=	*(PKinematics(Visual()));
+
+	if (GetScriptControl() && GetCurrentAction() && !GetCurrentAction()->m_tAnimationAction.m_bCompleted && strlen(GetCurrentAction()->m_tAnimationAction.m_caAnimationToPlay)) {
+		CMotionDef			*l_tpMotionDef = tVisualObject.ID_Cycle_Safe(GetCurrentAction()->m_tAnimationAction.m_caAnimationToPlay);
+		if (m_tpCurrentGlobalAnimation != l_tpMotionDef)
+			tVisualObject.PlayCycle(m_tpCurrentGlobalAnimation = l_tpMotionDef,TRUE,ScriptCallBack,this);
+		return;
+	}
 
 	if (m_tAnims.A.empty())
 		return;

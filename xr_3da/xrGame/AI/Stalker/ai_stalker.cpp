@@ -35,7 +35,7 @@ void CAI_Stalker::Init()
 	m_pPhysics_support->in_Init		();
 	m_tMovementDirection			= eMovementDirectionForward;
 	m_tDesirableDirection			= eMovementDirectionForward;
-	m_tLookType						= eLookTypeDirection;
+	m_tLookType						= eLookTypePathDirection;
 	m_tBodyState					= eBodyStateStand;
 	m_dwDirectionStartTime			= 0;
 	m_dwAnimationSwitchInterval		= 500;
@@ -66,7 +66,7 @@ void CAI_Stalker::Init()
 	m_tMovementType					= eMovementTypeStand;
 	m_tPathState					= ePathStateSearchNode;
 	m_tPathType						= ePathTypeDodge;
-	m_tStateType					= eStateTypeNormal;
+	m_tMentalState					= eMentalStateFree;
 
 	m_dwActionStartTime				= 0;
 	m_dwActionEndTime				= 0;

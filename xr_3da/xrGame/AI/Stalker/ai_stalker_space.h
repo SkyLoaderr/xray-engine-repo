@@ -46,12 +46,6 @@ namespace StalkerSpace {
 		eMovementTypeStand,
 	};
 
-	enum EStateType {
-		eStateTypeDanger = 0,
-		eStateTypeNormal,
-		eStateTypePanic,
-	};
-
 	enum EMovementDirection {
 		eMovementDirectionForward = 0,
 		eMovementDirectionBack,
@@ -60,13 +54,14 @@ namespace StalkerSpace {
 	};
 
 	enum ELookType {
-		eLookTypeDirection = 0,
+		eLookTypePathDirection = 0,
 		eLookTypeSearch,
 		eLookTypeDanger,
 		eLookTypePoint,
 		eLookTypeFirePoint,
 		eLookTypeLookOver,
 		eLookTypeLookFireOver,
+		eLookTypeDirection,
 	};
 
 	enum EDirectionType {
@@ -93,10 +88,15 @@ namespace StalkerSpace {
 		ePathTypeDodgeCriteria,
 	};
 
-	enum EWeaponState {
-		eWeaponStateIdle = 0,
-		eWeaponStatePrimaryFire,
-		eWeaponStateSecondaryFire,
+	enum EObjectAction {
+		eObjectActionIdle = u32(0),
+		eObjectActionPrimaryFire,
+		eObjectActionSecondaryFire,
+		eObjectActionReload,
+		eObjectActionActivate,
+		eObjectActionHide,
+		eObjectActionUse,
+		eObjectActionDummy = u32(-1)
 	};
 
 	enum EActionState {
@@ -116,6 +116,7 @@ namespace StalkerSpace {
 	enum EMentalState {
 		eMentalStateFree = u32(0),
 		eMentalStateDanger,
+		eMentalStatePanic,
 		eMentalStateAsleep,
 		eMentalStateZombied,
 		eMentalStateDummy = u32(-1),

@@ -9,6 +9,8 @@
 #include "stdafx.h"
 #include "ai_script_classes.h"
 #include "ai_script_actions.h"
+#include "Inventory.h"
+#include "weapon.h"
 
 void CLuaGameObject::Hit(CLuaHit &tLuaHit)
 {
@@ -26,30 +28,72 @@ void CLuaGameObject::Hit(CLuaHit &tLuaHit)
 	m_tpGameObject->u_EventSend(P);
 }
 
+CLuaGameObject *CLuaGameObject::GetCurrentWeapon() const
+{
+	CAI_Stalker		*l_tpStalker = dynamic_cast<CAI_Stalker*>(m_tpGameObject);
+	if (!l_tpStalker) {
+		Log		("* [LUA] CAI_Stalker : cannot access class member GetCurrentWeapon!");
+		return		(0);
+	}
+	return			(xr_new<CLuaGameObject>(l_tpStalker->GetCurrentWeapon()));
+}
+
+CLuaGameObject *CLuaGameObject::GetCurrentEquipment() const
+{
+	CAI_Stalker		*l_tpStalker = dynamic_cast<CAI_Stalker*>(m_tpGameObject);
+	if (!l_tpStalker) {
+		Log		("* [LUA] CAI_Stalker : cannot access class member GetCurrentWeapon!");
+		return		(0);
+	}
+	return			(xr_new<CLuaGameObject>(l_tpStalker->GetCurrentEquipment()));
+}
+
+CLuaGameObject *CLuaGameObject::GetFood() const
+{
+	CAI_Stalker		*l_tpStalker = dynamic_cast<CAI_Stalker*>(m_tpGameObject);
+	if (!l_tpStalker) {
+		Log		("* [LUA] CAI_Stalker : cannot access class member GetCurrentWeapon!");
+		return		(0);
+	}
+	return			(xr_new<CLuaGameObject>(l_tpStalker->GetFood()));
+}
+
+CLuaGameObject *CLuaGameObject::GetMedikit() const
+{
+	CAI_Stalker		*l_tpStalker = dynamic_cast<CAI_Stalker*>(m_tpGameObject);
+	if (!l_tpStalker) {
+		Log		("* [LUA] CAI_Stalker : cannot access class member GetCurrentWeapon!");
+		return		(0);
+	}
+	return			(xr_new<CLuaGameObject>(l_tpStalker->GetMedikit()));
+}
+
 CMovementAction::CMovementAction(StalkerSpace::EBodyState tBodyState, StalkerSpace::EMovementType tMovementType, StalkerSpace::EPathType tPathType, CLuaGameObject *tpObjectToGo)
 {
 	SetBodyState		(tBodyState);
 	SetMovementType		(tMovementType);
 	SetPathType			(tPathType);
 	SetObjectToGo		(tpObjectToGo);
-	m_bCompleted		= false;
 }
 
 void CMovementAction::SetObjectToGo(CLuaGameObject *tpObjectToGo)
 {
 	m_tpObjectToGo		= tpObjectToGo->operator CObject*();
 	m_tGoalType			= eGoalTypeObject;
+	m_bCompleted		= false;
 }
 
 void CWatchAction::SetWatchObject(CLuaGameObject *tpObjectToWatch)
 {
 	m_tpObjectToWatch	= tpObjectToWatch->operator CObject*();
 	m_tGoalType			= eGoalTypeObject;
+	m_bCompleted		= false;
 }
 
 void CObjectAction::SetObject(CLuaGameObject *tpLuaGameObject)
 {
 	m_tpObject			= tpLuaGameObject->operator CObject*();
+	m_bCompleted		= false;
 }
 
 #pragma todo("Dima to Dima : find out why user defined conversion operators work incorrect")

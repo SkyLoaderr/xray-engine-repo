@@ -228,7 +228,7 @@ void Script::vfExportParticles(CLuaVirtualMachine *tpLuaVirtualMachine)
 {
 	module(tpLuaVirtualMachine)
 	[
-		class_<CParticlesObject>("partciles")
+		class_<CParticlesObject>("particles")
 			.def(								constructor<LPCSTR, bool>())
 			.def("position",					&CParticlesObject::Position)
 			.def("play_at_pos",					&CParticlesObject::play_at_pos)
@@ -253,8 +253,8 @@ void Script::vfExportSound(CLuaVirtualMachine *tpLuaVirtualMachine)
 			.property("max_distance",			&CLuaSound::GetMaxDistance,	&CLuaSound::SetMaxDistance)
 			.property("volume",					&CLuaSound::GetVolume,		&CLuaSound::SetVolume)
 			.def(								constructor<LPCSTR>())
-			.def("get_position",					&CLuaSound::GetPosition)
-			.def("set_position",					&CLuaSound::SetPosition)
+			.def("get_position",				&CLuaSound::GetPosition)
+			.def("set_position",				&CLuaSound::SetPosition)
 			.def("play",						&CLuaSound::Play)
 			.def("play_at_pos",					&CLuaSound::PlayAtPos)
 			.def("play_unlimited",				&CLuaSound::PlayUnlimited)
@@ -316,7 +316,6 @@ void Script::vfExportActions(CLuaVirtualMachine *tpLuaVirtualMachine)
 				value("curve",					int(StalkerSpace::ePathTypeStraightDodge)),
 				value("curve_criteria",			int(StalkerSpace::ePathTypeDodgeCriteria))
 			]
-
 			.def(								constructor<>())
 			.def(								constructor<StalkerSpace::EBodyState,StalkerSpace::EMovementType,StalkerSpace::EPathType,CLuaGameObject*>())
 			.def(								constructor<StalkerSpace::EBodyState,StalkerSpace::EMovementType,StalkerSpace::EPathType,LPCSTR>())
@@ -331,18 +330,19 @@ void Script::vfExportActions(CLuaVirtualMachine *tpLuaVirtualMachine)
 		class_<CWatchAction>("look")
 			.enum_("look")
 			[
-				value("direction",				int(StalkerSpace::eLookTypeDirection)),
+				value("path_dir",				int(StalkerSpace::eLookTypePathDirection)),
 				value("search",					int(StalkerSpace::eLookTypeSearch)),
 				value("danger",					int(StalkerSpace::eLookTypeDanger)),
 				value("point",					int(StalkerSpace::eLookTypePoint)),
-				value("fire_point",				int(StalkerSpace::eLookTypeFirePoint))
+				value("fire_point",				int(StalkerSpace::eLookTypeFirePoint)),
+				value("direction",				int(StalkerSpace::eLookTypeDirection))
 			]
 			.def(								constructor<>())
-			.def(								constructor<CLuaGameObject*>())
 			.def(								constructor<StalkerSpace::ELookType>())
-			.def(								constructor<const Fvector &>())
+			.def(								constructor<StalkerSpace::ELookType, const Fvector &>())
+			.def(								constructor<StalkerSpace::ELookType, CLuaGameObject*>())
 			.def("object",						&CWatchAction::SetWatchObject)		// time
-			.def("direction",					&CWatchAction::SetWatchDirection)		// time
+			.def("direct",						&CWatchAction::SetWatchDirection)		// time
 			.def("type",						&CWatchAction::SetWatchType),
 
 		class_<CAnimationAction>("anim")
@@ -363,17 +363,19 @@ void Script::vfExportActions(CLuaVirtualMachine *tpLuaVirtualMachine)
 		class_<CSoundAction>("sound")
 			.def(								constructor<>())
 			.def(								constructor<LPCSTR>())
-			.def("set",							&CSoundAction::SetSound),
+			.def(								constructor<LPCSTR, const Fvector &>())
+			.def("set",							&CSoundAction::SetSound)
+			.def("set",							&CSoundAction::SetPosition),
 
 		class_<CObjectAction>("object")
 			.enum_("state")
 			[
-				value("idle",					int(StalkerSpace::eWeaponStateIdle)),
-				value("primary_fire",			int(StalkerSpace::eWeaponStatePrimaryFire)),
-				value("secondary_fire"			,int(StalkerSpace::eWeaponStateSecondaryFire))
+				value("idle",					int(StalkerSpace::eObjectActionIdle)),
+				value("primary_fire",			int(StalkerSpace::eObjectActionPrimaryFire)),
+				value("secondary_fire",			int(StalkerSpace::eObjectActionSecondaryFire))
 			]
 			.def(								constructor<>())
-				.def(								constructor<CLuaGameObject*,CObjectAction::EObjectActionType>())
+			.def(								constructor<CLuaGameObject*,StalkerSpace::EObjectAction>())
 			.def("action",						&CObjectAction::SetObjectAction)
 			.def("object",						&CObjectAction::SetObject),
 			
@@ -404,6 +406,7 @@ void Script::vfExportActions(CLuaVirtualMachine *tpLuaVirtualMachine)
 			.def("anim",						&CEntityAction::CheckIfAnimationCompleted)
 			.def("sound",						&CEntityAction::CheckIfSoundCompleted)
 			.def("object",						&CEntityAction::CheckIfObjectCompleted)
+			.def("time",						&CEntityAction::CheckIfTimeOver)
 			.def("wait",						(bool (CEntityAction::*)() const)(CEntityAction::CheckIfActionCompleted))
 	];
 }

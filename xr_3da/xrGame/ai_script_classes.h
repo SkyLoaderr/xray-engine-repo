@@ -8,10 +8,6 @@
 
 #pragma once
 
-#include "GameObject.h"
-#include "Entity.h"
-#include "Inventory.h"
-#include "CustomMonster.h"
 #include "ai\\stalker\\ai_stalker.h"
 
 #define DECLARE_FUNCTION10(A,D)\
@@ -329,43 +325,8 @@ public:
 	BIND_FUNCTION01	(m_tpGameObject,	AddAction,			CAI_Stalker,	AddAction,			const CEntityAction *,				const CEntityAction *);
 	BIND_FUNCTION10	(m_tpGameObject,	GetCurrentAction,	CAI_Stalker,	GetCurrentAction,	const CEntityAction *,				0);
 	
-	IC		CLuaGameObject	*GetCurrentWeapon() const
-	{
-		CAI_Stalker		*l_tpStalker = dynamic_cast<CAI_Stalker*>(m_tpGameObject);
-		if (!l_tpStalker) {
-			Log		("* [LUA] CAI_Stalker : cannot access class member GetCurrentWeapon!");
-			return		(0);
-		}
-		return			(xr_new<CLuaGameObject>(l_tpStalker->GetCurrentWeapon()));
-	}
-
-	IC		CLuaGameObject	*GetCurrentEquipment() const
-	{
-		CAI_Stalker		*l_tpStalker = dynamic_cast<CAI_Stalker*>(m_tpGameObject);
-		if (!l_tpStalker) {
-			Log		("* [LUA] CAI_Stalker : cannot access class member GetCurrentWeapon!");
-			return		(0);
-		}
-		return			(xr_new<CLuaGameObject>(l_tpStalker->GetCurrentEquipment()));
-	}
-
-	IC		CLuaGameObject	*GetFood() const
-	{
-		CAI_Stalker		*l_tpStalker = dynamic_cast<CAI_Stalker*>(m_tpGameObject);
-		if (!l_tpStalker) {
-			Log		("* [LUA] CAI_Stalker : cannot access class member GetCurrentWeapon!");
-			return		(0);
-		}
-		return			(xr_new<CLuaGameObject>(l_tpStalker->GetFood()));
-	}
-
-	IC		CLuaGameObject	*GetMedikit() const
-	{
-		CAI_Stalker		*l_tpStalker = dynamic_cast<CAI_Stalker*>(m_tpGameObject);
-		if (!l_tpStalker) {
-			Log		("* [LUA] CAI_Stalker : cannot access class member GetCurrentWeapon!");
-			return		(0);
-		}
-		return			(xr_new<CLuaGameObject>(l_tpStalker->GetMedikit()));
-	}
+			CLuaGameObject	*GetCurrentWeapon	() const;
+			CLuaGameObject	*GetCurrentEquipment() const;
+			CLuaGameObject	*GetFood			() const;
+			CLuaGameObject	*GetMedikit			() const;
 };

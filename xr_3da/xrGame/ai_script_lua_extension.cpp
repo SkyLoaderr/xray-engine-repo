@@ -13,6 +13,7 @@ using namespace Script;
 
 void Script::vfLoadStandardScripts(CLuaVirtualMachine *tpLuaVirtualMachine, LPCSTR caScriptName)
 {
+#pragma todo("Dima to Dima : Recover code from fatal error : C1055")
 	string256		S,S1;
 	FS.update_path	(S,"$game_data$","script.ltx");
 	CInifile		*l_tpIniFile = xr_new<CInifile>(S);
@@ -36,8 +37,12 @@ void Script::vfLoadStandardScripts(CLuaVirtualMachine *tpLuaVirtualMachine, LPCS
 	}
 	xr_delete		(l_tpIniFile);
 
-	sprintf			(S,"\nscript_name = %s\n",caScriptName);
-	lua_dostring	(tpLuaVirtualMachine,S);
+	sprintf			(S,"\nfunction script_name()\nreturn \"%s\"\nend\n",caScriptName);
+	int				l_iErrorCode = lua_dobuffer(tpLuaVirtualMachine,S,strlen(S),"@preprocessor.script");
+	Msg				("* Loading common script %s","preprocessor.script");
+	vfPrintOutput	(tpLuaVirtualMachine,S);
+	if (l_iErrorCode)
+		vfPrintError(tpLuaVirtualMachine,l_iErrorCode);
 }
 
 void Script::vfExportToLua(CLuaVirtualMachine *tpLuaVirtualMachine, LPCSTR caScriptName)

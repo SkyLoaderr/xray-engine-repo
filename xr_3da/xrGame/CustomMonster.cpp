@@ -63,6 +63,9 @@ CCustomMonster::CCustomMonster()
 		self->spatial.type	|= STYPE_VISIBLEFORAI;
 		self->spatial.type	|= STYPE_REACTTOSOUND;
 	}
+
+	m_bScriptControl	= false;
+	strcpy				(m_caScriptName,"");
 }
 
 CCustomMonster::~CCustomMonster	()

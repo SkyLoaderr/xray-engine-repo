@@ -56,9 +56,9 @@ void CAI_Stalker::vfContinueWithALifeGoals(IBaseAI_NodeEvaluator *tpNodeEvaluato
 	GetDirectionAngles		(yaw,pitch);
 	yaw						= angle_normalize_signed(-yaw);
 	if (!getAI().bfTooSmallAngle(r_torso_current.yaw,yaw,PI_DIV_6))
-		vfSetParameters(tpNodeEvaluator,0,false,eWeaponStateIdle,!tpNodeEvaluator ? ePathTypeStraight : ePathTypeCriteria,eBodyStateStand,eMovementTypeWalk,eStateTypeNormal,eLookTypeDirection);
+		vfSetParameters(tpNodeEvaluator,0,false,eObjectActionIdle,!tpNodeEvaluator ? ePathTypeStraight : ePathTypeCriteria,eBodyStateStand,eMovementTypeWalk,eMentalStateFree,eLookTypePathDirection);
 	else
-		vfSetParameters(tpNodeEvaluator,0,false,eWeaponStateIdle,!tpNodeEvaluator ? ePathTypeStraight : ePathTypeCriteria,eBodyStateStand,eMovementTypeWalk,eStateTypeNormal,eLookTypeSearch);
+		vfSetParameters(tpNodeEvaluator,0,false,eObjectActionIdle,!tpNodeEvaluator ? ePathTypeStraight : ePathTypeCriteria,eBodyStateStand,eMovementTypeWalk,eMentalStateFree,eLookTypeSearch);
 
 	switch (m_tActionState) {
 		case eActionStateWatch : {
@@ -115,5 +115,5 @@ void CAI_Stalker::vfSearchObject()
 		}
 	}
 
-	vfSetParameters	(0,0,false,eWeaponStateIdle,ePathTypeStraight,eBodyStateStand,eMovementTypeWalk,eStateTypeNormal,eLookTypeSearch);
+	vfSetParameters	(0,0,false,eObjectActionIdle,ePathTypeStraight,eBodyStateStand,eMovementTypeWalk,eMentalStateFree,eLookTypeSearch);
 }

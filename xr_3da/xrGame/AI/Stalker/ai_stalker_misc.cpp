@@ -12,18 +12,43 @@
 #include "..\\..\\actor.h"
 #include "..\\..\\bolt.h"
 
-void CAI_Stalker::vfSetParameters(IBaseAI_NodeEvaluator *tpNodeEvaluator, Fvector *tpDesiredPosition, bool bSearchNode, EWeaponState tWeaponState, EPathType tPathType, EBodyState tBodyState, EMovementType tMovementType, EStateType tStateType, ELookType tLookType)
+#pragma todo("Dima to Dima : Recover code from fatal error : C1055")
+
+void CAI_Stalker::SetPointLookAngles(const Fvector &tPosition, float &yaw, float &pitch)
 {
-	VERIFY			(tLookType != eLookTypePoint);
-	vfSetParameters	(tpNodeEvaluator,tpDesiredPosition,bSearchNode,tWeaponState,tPathType,tBodyState,tMovementType,tStateType, tLookType, Fvector().set(0,0,0));
+	Fvector			tTemp;
+	tTemp.sub		(tPosition,eye_matrix.c);
+	tTemp.getHP		(yaw,pitch);
+//	VERIFY			(_valid(yaw));
+//	VERIFY			(_valid(pitch));
+	yaw				*= -1;
+	pitch			*= -1;
 }
 
-void CAI_Stalker::vfSetParameters(IBaseAI_NodeEvaluator *tpNodeEvaluator, Fvector *tpDesiredPosition, bool bSearchNode, EWeaponState tWeaponState, EPathType tPathType, EBodyState tBodyState, EMovementType tMovementType, EStateType tStateType, ELookType tLookType, Fvector tPointToLook, u32 dwLookOverDelay)
+void CAI_Stalker::SetFirePointLookAngles(const Fvector &tPosition, float &yaw, float &pitch)
+{
+	Fvector			tTemp;
+	Center			(tTemp);
+	tTemp.sub		(tPosition,tTemp);
+	tTemp.getHP		(yaw,pitch);
+//	VERIFY			(_valid(yaw));
+//	VERIFY			(_valid(pitch));
+	yaw				*= -1;
+	pitch			*= -1;
+}
+
+void CAI_Stalker::vfSetParameters(IBaseAI_NodeEvaluator *tpNodeEvaluator, Fvector *tpDesiredPosition, bool bSearchNode, EObjectAction tWeaponState, EPathType tPathType, EBodyState tBodyState, EMovementType tMovementType, EMentalState tMentalState, ELookType tLookType)
+{
+//	R_ASSERT		(tLookType != eLookTypePoint);
+	vfSetParameters	(tpNodeEvaluator,tpDesiredPosition,bSearchNode,tWeaponState,tPathType,tBodyState,tMovementType,tMentalState, tLookType, Fvector().set(0,0,0));
+}
+
+void CAI_Stalker::vfSetParameters(IBaseAI_NodeEvaluator *tpNodeEvaluator, Fvector *tpDesiredPosition, bool bSearchNode, EObjectAction tWeaponState, EPathType tPathType, EBodyState tBodyState, EMovementType tMovementType, EMentalState tMentalState, ELookType tLookType, const Fvector &tPointToLook, u32 dwLookOverDelay)
 {
 	m_tPathType		= tPathType;
 	m_tBodyState	= tBodyState;
 	m_tMovementType = tMovementType;
-	m_tStateType	= tStateType;
+	m_tMentalState	= tMentalState;
 	bool			bLookChanged = (m_tLookType != tLookType);
 	m_tLookType		= tLookType;
 
@@ -51,8 +76,8 @@ void CAI_Stalker::vfSetParameters(IBaseAI_NodeEvaluator *tpNodeEvaluator, Fvecto
 //				//GetDirectionAngles(yaw1,pitch1);
 //				if (!getAI().bfTooSmallAngle(yaw1,yaw2,1*PI_DIV_6)) {
 //					m_tMovementType = eMovementTypeWalk;
-//					if (m_tStateType == eStateTypePanic)
-//						m_tStateType = eStateTypeDanger;
+//					if (m_tMentalState == eMentalStatePanic)
+//						m_tMentalState = eMentalStateDanger;
 //				}
 //			}
 //		}
@@ -69,17 +94,17 @@ void CAI_Stalker::vfSetParameters(IBaseAI_NodeEvaluator *tpNodeEvaluator, Fvecto
 		}
 		switch (m_tMovementType) {
 			case eMovementTypeWalk : {
-				switch (m_tStateType) {
-					case eStateTypeDanger : {
+				switch (m_tMentalState) {
+					case eMentalStateDanger : {
 						m_fCurSpeed *= IsLimping() ? m_fDamagedWalkFactor : m_fWalkFactor;
 						break;
 					}
-					case eStateTypeNormal : {
+					case eMentalStateFree : {
 						m_fCurSpeed *= IsLimping() ? m_fDamagedWalkFreeFactor : m_fWalkFreeFactor;
 						break;
 					}
-					case eStateTypePanic : {
-						VERIFY(false);
+					case eMentalStatePanic : {
+						Debug.fatal("");
 						break;
 					}
 				}
@@ -88,16 +113,16 @@ void CAI_Stalker::vfSetParameters(IBaseAI_NodeEvaluator *tpNodeEvaluator, Fvecto
 				break;
 			}
 			case eMovementTypeRun : {
-				switch (m_tStateType) {
-					case eStateTypeDanger : {
+				switch (m_tMentalState) {
+					case eMentalStateDanger : {
 						m_fCurSpeed *= IsLimping() ? m_fDamagedRunFactor : m_fRunFactor;
 						break;
 					}
-					case eStateTypeNormal : {
+					case eMentalStateFree : {
 						m_fCurSpeed *= IsLimping() ? m_fDamagedRunFreeFactor : m_fRunFreeFactor;
 						break;
 					}
-					case eStateTypePanic : {
+					case eMentalStatePanic : {
 						m_fCurSpeed *= IsLimping() ? m_fDamagedPanicFactor : m_fPanicFactor;
 						break;
 					}
@@ -117,8 +142,14 @@ void CAI_Stalker::vfSetParameters(IBaseAI_NodeEvaluator *tpNodeEvaluator, Fvecto
 	}
 	
 	switch (m_tLookType) {
-		case eLookTypeDirection : {
+		case eLookTypePathDirection : {
 			SetDirectionLook();
+			break;
+		}
+		case eLookTypeDirection : {
+			tPointToLook.getHP	(r_target.yaw,r_target.pitch);
+			r_target.yaw		*= -1;
+			r_target.pitch		*= -1;
 			break;
 		}
 		case eLookTypeSearch : {
@@ -130,24 +161,11 @@ void CAI_Stalker::vfSetParameters(IBaseAI_NodeEvaluator *tpNodeEvaluator, Fvecto
 			break;
 		}
 		case eLookTypePoint : {
-			Fvector tTemp;
-			tTemp.sub	(tPointToLook,eye_matrix.c);
-			tTemp.getHP	(r_target.yaw,r_target.pitch);
-			VERIFY					(_valid(r_target.yaw));
-			VERIFY					(_valid(r_target.pitch));
-			r_target.yaw *= -1;
-			r_target.pitch *= -1;
+			SetPointLookAngles(tPointToLook,r_target.yaw,r_target.pitch);
 			break;
 		}
 		case eLookTypeFirePoint : {
-			Fvector tTemp;
-			Center(tTemp);
-			tTemp.sub	(tPointToLook,tTemp);
-			tTemp.getHP	(r_target.yaw,r_target.pitch);
-			VERIFY					(_valid(r_target.yaw));
-			VERIFY					(_valid(r_target.pitch));
-			r_target.yaw *= -1;
-			r_target.pitch *= -1;
+			SetFirePointLookAngles(tPointToLook,r_target.yaw,r_target.pitch);
 			break;
 		}
 		case eLookTypeLookOver : {
@@ -156,8 +174,8 @@ void CAI_Stalker::vfSetParameters(IBaseAI_NodeEvaluator *tpNodeEvaluator, Fvecto
 			Fvector tTemp;
 			tTemp.sub	(tPointToLook,eye_matrix.c);
 			tTemp.getHP	(r_target.yaw,r_target.pitch);
-			VERIFY					(_valid(r_target.yaw));
-			VERIFY					(_valid(r_target.pitch));
+//			VERIFY					(_valid(r_target.yaw));
+//			VERIFY					(_valid(r_target.pitch));
 			if (Level().timeServer() - m_dwLookChangedTime > dwLookOverDelay)
 				if (Level().timeServer() - m_dwLookChangedTime < 2*dwLookOverDelay)
 					r_target.yaw += PI_DIV_6*2;
@@ -177,8 +195,8 @@ void CAI_Stalker::vfSetParameters(IBaseAI_NodeEvaluator *tpNodeEvaluator, Fvecto
 			Center(tTemp);
 			tTemp.sub	(tPointToLook,tTemp);
 			tTemp.getHP	(r_target.yaw,r_target.pitch);
-			VERIFY					(_valid(r_target.yaw));
-			VERIFY					(_valid(r_target.pitch));
+//			VERIFY					(_valid(r_target.yaw));
+//			VERIFY					(_valid(r_target.pitch));
 			if (Level().timeServer() - m_dwLookChangedTime > dwLookOverDelay)
 				if (Level().timeServer() - m_dwLookChangedTime < 2*dwLookOverDelay)
 					r_target.yaw += PI_DIV_6*2;

@@ -13,19 +13,20 @@
 #include "ai_stalker_animations.h"
 #include "ai_stalker_space.h"
 #include "..\\..\\inventory.h"
-#include "..\\..\\weapon.h"
 
 using namespace StalkerSpace;
 
 class CSE_ALifeSimulator;
 class CCharacterPhysicsSupport;
+class CWeapon;
+class CEntityAction;
+
 //#define LOG_PARAMETERS
 
 #ifdef LOG_PARAMETERS
 extern FILE	*ST_VF;
 #endif
 
-class CEntityAction;
 
 class CAI_Stalker : public CCustomMonster, public CStalkerAnimations, public CInventoryOwner {
 private:
@@ -40,9 +41,9 @@ private:
 	EPathState					m_tPathState;	
 	EPathType					m_tPathType;
 	EPathType					m_tPrevPathType;
-	EWeaponState				m_tWeaponState;
+	EObjectAction				m_tWeaponState;
 	EActionState				m_tActionState;
-	EStateType					m_tStateType;
+	EMentalState				m_tMentalState;
 	u32							m_dwActionStartTime;
 	u32							m_dwActionEndTime;
 	bool						m_bIfSearchFailed;
@@ -272,19 +273,21 @@ private:
 	static	void __stdcall	SpinCallback					(CBoneInstance *B);
 			// look
 			bool			bfCheckForVisibility			(CEntity* tpEntity);
+			void			SetPointLookAngles				(const Fvector &tPosition, float &yaw, float &pitch);
+			void			SetFirePointLookAngles			(const Fvector &tPosition, float &yaw, float &pitch);
 			void			SetDirectionLook				();
 			void			SetLessCoverLook				(NodeCompressed *tpNode, bool bDifferenceLook);
 			void			SetLessCoverLook				(NodeCompressed *tpNode, float fMaxHeadTurnAngle, bool bDifferenceLook);
 			void			vfValidateAngleDependency		(float x1, float &x2, float x3);
 			// movement and look
-			void			vfSetParameters					(IBaseAI_NodeEvaluator *tpNodeEvaluator, Fvector *tpDesiredPosition, bool bSearchNode, EWeaponState tWeaponState, EPathType tPathType, EBodyState tBodyState, EMovementType tMovementType, EStateType tStateType, ELookType tLookType);
-			void			vfSetParameters					(IBaseAI_NodeEvaluator *tpNodeEvaluator, Fvector *tpDesiredPosition, bool bSearchNode, EWeaponState tWeaponState, EPathType tPathType, EBodyState tBodyState, EMovementType tMovementType, EStateType tStateType, ELookType tLookType, Fvector tPointToLook, u32 dwLookOverDelay = 2000);
+			void			vfSetParameters					(IBaseAI_NodeEvaluator *tpNodeEvaluator, Fvector *tpDesiredPosition, bool bSearchNode, EObjectAction tWeaponState, EPathType tPathType, EBodyState tBodyState, EMovementType tMovementType, EMentalState tMentalState, ELookType tLookType);
+			void			vfSetParameters					(IBaseAI_NodeEvaluator *tpNodeEvaluator, Fvector *tpDesiredPosition, bool bSearchNode, EObjectAction tWeaponState, EPathType tPathType, EBodyState tBodyState, EMovementType tMovementType, EMentalState tMentalState, ELookType tLookType, const Fvector &tPointToLook, u32 dwLookOverDelay = 2000);
 			// fire
 			bool			bfCheckForMember				(Fvector &tFireVector, Fvector &tMyPoint, Fvector &tMemberPoint);
 			bool			bfCheckIfCanKillEnemy			();
 			bool			bfCheckIfCanKillMember			();
 			bool			bfCheckIfCanKillTarget			(CEntity *tpEntity, Fvector target_pos, float yaw2, float pitch2, float fSafetyAngle = FIRE_SAFETY_ANGLE);
-			void			vfSetWeaponState				(EWeaponState tWeaponState);
+			void			vfSetWeaponState				(EObjectAction tWeaponState);
 			void			vfCheckForItems					();
 			
 			// miscellanious
@@ -452,9 +455,7 @@ public:
 
 protected:
 	xr_deque<CEntityAction*>	m_tpActionQueue;
-
 public:
-
 	virtual void				UseObject				(const CObject			*tpObject);
 	virtual ALife::EStalkerRank	GetRank					() const;
 	virtual CWeapon				*GetCurrentWeapon		() const;
@@ -464,6 +465,11 @@ public:
 	virtual CInventoryItem		*GetFood				() const;
 	virtual	void				AddAction				(const CEntityAction	*tpEntityAction);
 	virtual void				ProcessScripts			();
-			const CEntityAction *GetCurrentAction		();
-			void				ResetScriptData			();
+			CEntityAction		*GetCurrentAction		();
+			void				ResetScriptData			(bool			bResetPath = true);
+			void				vfAssignMovement		(CEntityAction *tpEntityAction);
+			void				vfAssignWatch			(CEntityAction *tpEntityAction);
+			void				vfAssignAnimation		(CEntityAction *tpEntityAction);
+			void				vfAssignSound			(CEntityAction *tpEntityAction);
+			void				vfAssignObject			(CEntityAction *tpEntityAction);
 };

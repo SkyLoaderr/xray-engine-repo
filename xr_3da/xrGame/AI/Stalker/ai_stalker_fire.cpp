@@ -33,7 +33,7 @@ void CAI_Stalker::g_WeaponBones	(int &L, int &R1, int &R2)
 	CKinematics *V	= PKinematics(Visual());
 	R1				= V->LL_BoneID("bip01_r_hand");
 	R2				= V->LL_BoneID("bip01_r_finger2");
-	if (IsLimping() && (m_tStateType == eStateTypeNormal))
+	if (IsLimping() && (m_tMentalState == eMentalStateFree))
 		L				= R2;
 	else
 		L				= V->LL_BoneID("bip01_l_finger1");
@@ -200,14 +200,14 @@ bool CAI_Stalker::bfCheckForNodeVisibility(u32 dwNodeID, bool bIfRayPick)
 		return(false);
 }
 
-void CAI_Stalker::vfSetWeaponState(EWeaponState tWeaponState)
+void CAI_Stalker::vfSetWeaponState(EObjectAction tWeaponState)
 {
 	CWeapon *tpWeapon = dynamic_cast<CWeapon*>(m_inventory.ActiveItem());
 	
 	if (!m_inventory.ActiveItem() || !tpWeapon)
 		return;
 
-	if (m_tStateType == eStateTypePanic) {
+	if (m_tMentalState == eMentalStatePanic) {
 		m_inventory.Activate(u32(-1));
 		return;
 	}
@@ -325,8 +325,8 @@ void CAI_Stalker::vfSetWeaponState(EWeaponState tWeaponState)
 				tpWeaponMagazined->SetQueueSize(1);
 	}
 
-//	Msg	("Time : %d\nDESIRED : %s\nREAL : %s\nFIRING : %d",m_dwCurrentUpdate,(tWeaponState == eWeaponStateIdle) ? "IDLE" : "FIRE",(tpWeapon->STATE == CWeapon::eFire) ? "FIRING" : ((tpWeapon->STATE == CWeapon::eIdle) ? "IDLE" : ((tpWeapon->STATE == CWeapon::eReload) ? "RELOAD" : "UNKNOWN")),int(m_bFiring));
-	if (tWeaponState == eWeaponStateIdle) {
+//	Msg	("Time : %d\nDESIRED : %s\nREAL : %s\nFIRING : %d",m_dwCurrentUpdate,(tWeaponState == eObjectActionIdle) ? "IDLE" : "FIRE",(tpWeapon->STATE == CWeapon::eFire) ? "FIRING" : ((tpWeapon->STATE == CWeapon::eIdle) ? "IDLE" : ((tpWeapon->STATE == CWeapon::eReload) ? "RELOAD" : "UNKNOWN")),int(m_bFiring));
+	if (tWeaponState == eObjectActionIdle) {
 		m_bFiring = false;
 		if (tpWeapon->STATE == CWeapon::eFire)
 			m_inventory.Action(kWPN_FIRE, CMD_STOP);
@@ -340,7 +340,7 @@ void CAI_Stalker::vfSetWeaponState(EWeaponState tWeaponState)
 			m_inventory.Activate(best_slot);
 	}
 	else
-		if (tWeaponState == eWeaponStatePrimaryFire)
+		if (tWeaponState == eObjectActionPrimaryFire)
 			if (tpWeapon->STATE == CWeapon::eFire)
 				if (bfCheckIfCanKillEnemy() && !bfCheckIfCanKillMember()) {
 					u32 dwStartFireAmmo = tpWeapon->GetAmmoElapsed();

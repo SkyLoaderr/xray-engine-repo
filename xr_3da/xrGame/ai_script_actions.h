@@ -36,11 +36,10 @@ public:
 	StalkerSpace::EBodyState		m_tBodyState;
 	StalkerSpace::EMovementType		m_tMovementType;
 	StalkerSpace::EPathType			m_tPathType;
-	union {
-		CObject						*m_tpObjectToGo;
-		string32					m_caPatrolPathToGo;
-		Fvector						m_tDestinationPosition;
-	};
+	CObject							*m_tpObjectToGo;
+	string32						m_caPatrolPathToGo;
+	Fvector							m_tDestinationPosition;
+	u32								m_tNodeID;
 	EGoalType						m_tGoalType;
 
 							CMovementAction		()
@@ -59,37 +58,36 @@ public:
 
 							CMovementAction		(StalkerSpace::EBodyState tBodyState, StalkerSpace::EMovementType tMovementType, StalkerSpace::EPathType tPathType, LPCSTR caPatrolPathToGo)
 	{
-		m_tBodyState		= tBodyState;
-		m_tMovementType		= tMovementType;
-		m_tPathType			= tPathType;
-		strcpy				(m_caPatrolPathToGo,m_caPatrolPathToGo);
-		m_tGoalType			= eGoalTypePatrolPath;
-		m_bCompleted		= false;
+		SetBodyState		(tBodyState);
+		SetMovementType		(tMovementType);
+		SetPathType			(tPathType);
+		SetPatrolPath		(caPatrolPathToGo);
 	}
 
 							CMovementAction		(StalkerSpace::EBodyState tBodyState, StalkerSpace::EMovementType tMovementType, StalkerSpace::EPathType tPathType, const Fvector &tPosition)
 	{
-		m_tBodyState		= tBodyState;
-		m_tMovementType		= tMovementType;
-		m_tPathType			= tPathType;
-		m_tDestinationPosition = tPosition;
-		m_tGoalType			= eGoalTypePosition;
-		m_bCompleted		= false;
+		SetBodyState		(tBodyState);
+		SetMovementType		(tMovementType);
+		SetPathType			(tPathType);
+		SetPosition			(tPosition);
 	}
 
 			void			SetBodyState		(const StalkerSpace::EBodyState tBodyState)
 	{
 		m_tBodyState		= tBodyState;
+		m_bCompleted		= false;
 	}
 
 			void			SetMovementType		(const StalkerSpace::EMovementType tMovementType)
 	{
 		m_tMovementType		= tMovementType;
+		m_bCompleted		= false;
 	}
 
 			void			SetPathType			(const StalkerSpace::EPathType tPathType)
 	{
 		m_tPathType			= tPathType;
+		m_bCompleted		= false;
 	}
 
 			void			SetObjectToGo		(CLuaGameObject *tpObjectToGo);
@@ -98,12 +96,14 @@ public:
 	{
 		strcpy				(m_caPatrolPathToGo,caPatrolPath);
 		m_tGoalType			= eGoalTypePatrolPath;
+		m_bCompleted		= false;
 	}
 
 			void			SetPosition			(const Fvector &tPosition)
 	{
 		m_tDestinationPosition = tPosition;
 		m_tGoalType			= eGoalTypePosition;
+		m_bCompleted		= false;
 	}
 };
 
@@ -115,37 +115,35 @@ public:
 		eGoalTypeDirection,
 		eGoalTypeDummy = u32(-1),
 	};
-	union {
-		CObject						*m_tpObjectToWatch;
-		StalkerSpace::ELookType		m_tWatchType;
-		Fvector						m_tDirectionToWatch;
-	};
+	CObject							*m_tpObjectToWatch;
+	StalkerSpace::ELookType			m_tWatchType;
 	EGoalType						m_tGoalType;
+	Fvector							m_tWatchVector;
 
 							CWatchAction		()
 	{
 		m_tpObjectToWatch	= 0;
-		m_tWatchType		= eLookTypeDirection;
-		m_tDirectionToWatch.set(0,0,0);
+		m_tWatchType		= eLookTypePathDirection;
+		m_tWatchVector.set	(0,0,0);
 		m_tGoalType			= eGoalTypeWatchType;
-	}
-
-							CWatchAction		(CLuaGameObject *tpObjectToWatch)
-	{
-		SetWatchObject		(tpObjectToWatch);
-		m_bCompleted		= false;
 	}
 
 							CWatchAction		(StalkerSpace::ELookType tWatchType)
 	{
 		SetWatchType		(tWatchType);
-		m_bCompleted		= false;
+		m_tGoalType			= eGoalTypeWatchType;
 	}
 
-							CWatchAction		(const Fvector &tDirection)
+							CWatchAction		(StalkerSpace::ELookType tWatchType, const Fvector &tDirection)
 	{
 		SetWatchDirection	(tDirection);
-		m_bCompleted		= false;
+		SetWatchType		(tWatchType);
+	}
+
+							CWatchAction		(StalkerSpace::ELookType tWatchType, CLuaGameObject *tpObjectToWatch)
+	{
+		SetWatchType		(tWatchType);
+		SetWatchObject		(tpObjectToWatch);
 	}
 
 			void			SetWatchObject		(CLuaGameObject *tpObjectToWatch);
@@ -153,13 +151,14 @@ public:
 			void			SetWatchType		(StalkerSpace::ELookType tWatchType)
 	{
 		m_tWatchType		= tWatchType;
-		m_tGoalType			= eGoalTypeWatchType;
+		m_bCompleted		= false;
 	}
 
-			void			SetWatchDirection	(Fvector tDirection)
+			void			SetWatchDirection	(const Fvector &tDirection)
 	{
-		m_tDirectionToWatch = tDirection;
+		m_tWatchVector		= tDirection;
 		m_tGoalType			= eGoalTypeDirection;
+		m_bCompleted		= false;
 	}
 };
 
@@ -170,73 +169,100 @@ public:
 		eGoalTypeMental,
 		eGoalTypeDummy = u32(-1),
 	};
-	union {
-		string32					m_caAnimationToPlay;
-		StalkerSpace::EMentalState	m_tMentalState;
-	};
+	string32						m_caAnimationToPlay;
+	StalkerSpace::EMentalState		m_tMentalState;
 	EGoalType						m_tGoalType;
 
 							CAnimationAction	()
 	{
 		strcpy				(m_caAnimationToPlay,"");
-		m_tMentalState		= eMentalStateFree;
+		m_tMentalState		= eMentalStateDanger;
 		m_tGoalType			= eGoalTypeMental;
+		m_bCompleted		= false;
 	}
 
 							CAnimationAction	(LPCSTR caAnimationToPlay)
 	{
 		SetAnimation		(caAnimationToPlay);
-		strcpy				(m_caAnimationToPlay,caAnimationToPlay);
-		m_tGoalType			= eGoalTypeAnimation;
-		m_bCompleted		= false;
 	}
 
 							CAnimationAction	(StalkerSpace::EMentalState tMentalState)
 	{
 		SetMentalState		(tMentalState);
-		m_tMentalState		= tMentalState;
-		m_tGoalType			= eGoalTypeMental;
-		m_bCompleted		= false;
 	}
 
 			void			SetAnimation		(LPCSTR caAnimationToPlay)
 	{
 		strcpy				(m_caAnimationToPlay,caAnimationToPlay);
+		m_tMentalState		= eMentalStateDanger;
 		m_tGoalType			= eGoalTypeAnimation;
+		m_bCompleted		= false;
 	}
 
 			void			SetMentalState		(StalkerSpace::EMentalState tMentalState)
 	{
 		m_tMentalState		= tMentalState;
 		m_tGoalType			= eGoalTypeMental;
+		m_bCompleted		= false;
 	}
 };
 
 class CSoundAction : public CAbstractAction {
 public:
 	enum EGoalType {
-		eGoalTypeSound = u32(0),
+		eGoalTypeSoundAttached = u32(0),
+		eGoalTypeSoundPosition,
 		eGoalTypeDummy = u32(-1),
 	};
 	string32						m_caSoundToPlay;
 	EGoalType						m_tGoalType;
+	ref_sound						*m_tpSound;
+	bool							m_bStartedToPlay;
+	Fvector							m_tSoundPosition;
 
 							CSoundAction		()
 	{
 		strcpy				(m_caSoundToPlay,"");
-		m_tGoalType			= eGoalTypeSound;
+		m_tGoalType			= eGoalTypeDummy;
+		m_bCompleted		= false;
+		m_bStartedToPlay	= false;
+		m_tpSound			= 0;
 	}
 
 							CSoundAction		(LPCSTR caSoundToPlay)
 	{
 		SetSound			(caSoundToPlay);
-		m_bCompleted		= false;
+	}
+
+							CSoundAction		(LPCSTR caSoundToPlay, const Fvector &tPosition)
+	{
+		SetSound			(caSoundToPlay);
+		SetPosition			(tPosition);
 	}
 
 			void			SetSound			(LPCSTR caSoundToPlay)
 	{
 		strcpy				(m_caSoundToPlay,caSoundToPlay);
-		m_tGoalType			= eGoalTypeSound;
+		m_tGoalType			= eGoalTypeSoundAttached;
+		m_tpSound			= 0;
+		m_bStartedToPlay	= false;
+		string256			l_caFileName;
+		if (FS.exist(l_caFileName,"$game_sounds$",m_caSoundToPlay,".wav")) {
+			::Sound->create	(*(m_tpSound = xr_new<ref_sound>()),TRUE,m_caSoundToPlay,0);
+			m_bStartedToPlay= true;
+			m_bCompleted	= true;
+		}
+		else {
+			Log				("* [LUA] File not found \"%s\"!",l_caFileName);
+			m_tpSound		= 0;
+			m_bCompleted	= false;
+		}
+	}
+			void			SetPosition			(const Fvector &tPosition)
+	{
+		m_tSoundPosition	= tPosition;
+		m_tGoalType			= eGoalTypeSoundPosition;
+		m_bStartedToPlay	= false;
 	}
 };
 
@@ -250,15 +276,16 @@ public:
 		eObjectActionTypeDummy = u32(-1),
 	};
 	CObject							*m_tpObject;
-	EObjectActionType				m_tGoalType;
+	StalkerSpace::EObjectAction		m_tGoalType;
 
 							CObjectAction		()
 	{
 		m_tpObject			= 0;
-		m_tGoalType			= eObjectActionTypeDummy;
+		m_tGoalType			= eObjectActionIdle;
+		m_bCompleted		= false;
 	}
 
-							CObjectAction		(CLuaGameObject *tpLuaGameObject, EObjectActionType tObjectActionType)
+							CObjectAction		(CLuaGameObject *tpLuaGameObject, StalkerSpace::EObjectAction tObjectActionType)
 	{
 		SetObject			(tpLuaGameObject);
 		SetObjectAction		(tObjectActionType);
@@ -266,9 +293,10 @@ public:
 
 			void			SetObject			(CLuaGameObject *tpLuaGameObject);
 
-			void			SetObjectAction		(EObjectActionType tObjectActionType)
+			void			SetObjectAction		(StalkerSpace::EObjectAction tObjectActionType)
 	{
 		m_tGoalType			= tObjectActionType;
+		m_bCompleted		= false;
 	}
 };
 
