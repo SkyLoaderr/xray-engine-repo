@@ -211,15 +211,13 @@ void CEnvironment::RenderFirst()
 				for (; I!=E; I++)		
 				{
 					IVisual* V				= *I;
-					RCache.set_Shader	(V->hShader);
-					CHK_DX						(HW.pDevice->SetRenderState(D3DRS_TEXTUREFACTOR,Current.Sky.get()));
-					V->Render					(1.f);
+					RCache.set_Shader		(V->hShader);
+					V->Render				(1.f);
 				}
 			}
 			break;
 		default:
-			RCache.set_Shader	(pSkydome->hShader);
-			CHK_DX						(HW.pDevice->SetRenderState(D3DRS_TEXTUREFACTOR,Current.Sky.get()));
+			RCache.set_Shader			(pSkydome->hShader);
 			pSkydome->Render			(1.f);
 			break;
 		}
@@ -228,8 +226,10 @@ void CEnvironment::RenderFirst()
 	}
 
 	// Sun sources
+	/* *********************** interfere with R2
 	if (psEnvFlags.test(effSunGlare))
 		for(u32 i=0; i<Suns.size(); i++) Suns[i]->RenderSource();
+	*/
 }
 
 void CEnvironment::RenderLast()
