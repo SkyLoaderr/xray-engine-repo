@@ -568,7 +568,7 @@ public:
     {
         shared_str draw_val;
         if (!OnDrawText.empty())	OnDrawText(this, draw_val);
-        else			for(u32 k=0; k<token_count; k++) if (token[k].id==GetValue()) return *token[k].name;
+        else			for(u32 k=0; k<token_count; k++) if ((T)token[k].id==GetValue()) return *token[k].name;
         return draw_val.c_str();
     }
 };
