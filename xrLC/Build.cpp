@@ -7,8 +7,6 @@
 #include "Image.h"
 #include "xr_func.h"
 
-//OGF_Base*	g_TREE_ROOT = 0;
-
 vector<OGF_Base *>	g_tree;
 vector<DetailPatch>	g_pathes;
 b_params			g_params;
