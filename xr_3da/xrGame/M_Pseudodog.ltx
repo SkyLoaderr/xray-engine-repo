@@ -67,10 +67,10 @@ Steal					= 1.5	;1.5
 
 ; speed factors			linear angular min		max
 Velocity_Stand			= 0,	5,		1,		1
-Velocity_WalkFwdNormal	= 1.0,	3.0,	0.5,	2.0
-Velocity_WalkFwdDamaged	= 0.6,	3.0,	0.5,	2.0	
-Velocity_RunFwdNormal	= 8.0,	2.5,	0.2,	1	
-Velocity_RunFwdDamaged	= 6.0,  2.5,	0.2,	1
+Velocity_WalkFwdNormal		= 1.0,	3.0,	0.5,	2.0
+Velocity_WalkFwdDamaged		= 0.6,	3.0,	0.5,	2.0	
+Velocity_RunFwdNormal		= 8.0,	2.5,	0.2,	1	
+Velocity_RunFwdDamaged		= 6.0,  2.5,	0.2,	1
 Velocity_Drag			= 1.0,	3.0,	1,		1
 Velocity_Steal			= 1.5,	3,0,	1,		1
 
@@ -85,17 +85,17 @@ MaxAttackDist		= 2.0
 
 
 ; "Rest" state specific 
-ProbRestWalkFree	= 50    ; при выборе действия, в 50% случаях монстр будет ходить
+ProbRestWalkFree	= 50    ; яЁш тvсюЁх фхщёЄтш , т 50% ёыєўр ї ьюэёЄЁ сєфхЄ їюфшЄ№
 ProbRestStandIdle	= 10		
 ProbRestLieIdle		= 30
 ProbRestTurnLeft	= 10	
 
-DayTime_Begin		= 0	;6			; начала дня для монстра
-DayTime_End			= 21		; конец дня для монстра
-Min_Satiety			= 0.85	;0.6		; мин. норма сытости (меньше - уже голодный)
-Max_Satiety			= 1.0		; макс. норма сытости (больше - очень сытый)
+DayTime_Begin		= 0	;6			; эрўрыр фэ  фы  ьюэёЄЁр
+DayTime_End			= 21		; ъюэхЎ фэ  фы  ьюэёЄЁр
+Min_Satiety			= 0.85	;0.6		; ьшэ. эюЁьр ёvЄюёЄш (ьхэ№°х - єцх уюыюфэvщ)
+Max_Satiety			= 1.0		; ьръё. эюЁьр ёvЄюёЄш (сюы№°х - юўхэ№ ёvЄvщ)
 
-distance_to_corpse	= 1.8		; дист. до трупа, при которой он переходит в состояние еды
+distance_to_corpse	= 1.8		; фшёЄ. фю ЄЁєяр, яЁш ъюЄюЁющ юэ яхЁхїюфшЄ т ёюёЄю эшх хфv
 
 ;							  fSearchRange,fOptEnemyDistance,fOptEnemyDistanceWeight,fMinEnemyDistance,fMinEnemyDistanceWeight,fMaxEnemyDistance,fMaxEnemyDistanceWeight
 selector_free_hunting    =      20.0,            20.0,                 1000.0,                 0.0,               10000.0,               1000.0,               10000.0,      
@@ -114,36 +114,36 @@ hit_type = strike
 
 ;entity condition
 
-satiety_v = 0.1				;0.01			;скорость уменьшения сытости со временем
-radiation_v = 0.00001		;0.004			;скорость уменьшения радиации
-satiety_power_v = 0.15		;0.01			;увеличение силы при уменьшении сытости 
-satiety_health_v = 0.15		;0.03			;увеличение здоровья при уменьшении сытости 
-satiety_critical = 0		;0.25			;критическое значения сытости (в процентах от 0..1) когда здоровье начианает уменьшаться
-radiation_health_v = 0.01	;0.006			;уменьшение здоровья при воздействии радиации
-bleeding_v = 0.005			;0.02			;потеря крови при максимальной ране
-wound_incarnation_v = 0.01	;0.001		    ;скорость заживания раны 
-morale_v			= 0.01					;скорость восстановления морали
-health_hit_part = 1.0		;0.8			;процент хита, уходящий на отнимание здоровья
-power_hit_part = 1.0		;0.9			;процент хита, уходящий на отнимание силы
+satiety_v 		= 0.0001				;0.01			;скорость уменьшения сытости со временем
+radiation_v 		= 0.00001		;0.004			;скорость уменьшения радиации
+satiety_power_v 	= 0.005		;0.01			;увеличение силы при уменьшении сытости 
+satiety_health_v 	= 0.001	;0.03			;увеличение здоровья при уменьшении сытости 
+satiety_critical 	= 0		;0.25			;критическое значения сытости (в процентах от 0..1) когда здоровье начианает уменьшаться
+radiation_health_v 	= 0.01	;0.006			;уменьшение здоровья при воздействии радиации
+bleeding_v 		= 0.05			;0.02			;потеря крови при максимальной ране
+wound_incarnation_v 	= 0.1	;0.001		    ;скорость заживания раны 
+morale_v		= 0.1					;скорость восстановления морали
+health_hit_part 	= 0.7		;0.8			;процент хита, уходящий на отнимание здоровья
+power_hit_part 		= 1.0		;0.9			;процент хита, уходящий на отнимание силы
 
-burn_immunity = 1.0				;коэффициенты иммунитета 
-strike_immunity = 1.0
-shock_immunity = 1.0
-wound_immunity = 0.40	;0.15	;0.05	;0.15	
+burn_immunity = 0.5				;коэффициенты иммунитета 
+strike_immunity = 0.7
+shock_immunity = 0.5
+wound_immunity = 0.30	;0.75	;1.0		
 radiation_immunity = 1.0
 telepatic_immunity = 1.0
 chemical_burn_immunity = 1.0
 explosion_immunity = 1.0
-fire_wound_immunity  = 1.0
+fire_wound_immunity  = 0.7
 
-sleep_health = 1.0		;1.5				;коэффициенты скоростей изменения параметров во время сна
+sleep_health = 1.0		;1.5				;ъю¤ЇЇшЎшхэЄv ёъюЁюёЄхщ шчьхэхэш  ярЁрьхЄЁют тю тЁхь  ёэр
 sleep_power = 1.0		;1.5
 sleep_satiety = 1.0		;0.8
 sleep_radiation = 1.0	;1.1
 
-eat_freq			=	5.0		; частота укусов в сек
-eat_slice			=	0.001	; увеличение сытости при 1 укусе
-eat_slice_weight	=	10.0	; уменьшение еды у трупа
+eat_freq			=	5.0		; ўрёЄюЄр єъєёют т ёхъ
+eat_slice			=	0.001	; єтхышўхэшх ёvЄюёЄш яЁш 1 єъєёх
+eat_slice_weight	=	10.0	; єьхэ№°хэшх хфv є ЄЁєяр
 
 ; Morale
 MoraleSuccessAttackQuant	= 0.3;
@@ -169,9 +169,9 @@ idle_sound_delay		= 15000
 eat_sound_delay			= 3000
 attack_sound_delay		= 2000
 
-jump_factor				= 1.7			;(чем больше, тем выше прыжок)
-jump_delay				= 5000	;3000	;4000	;6000	;(частота прыжков)
-jump_min_dist			= 8.0 
+jump_factor				= 1.7			;(ўхь сюы№°х, Єхь тv°х яЁvцюъ)
+jump_delay				= 5000	;3000	;4000	;6000	;(ўрёЄюЄр яЁvцъют)
+jump_min_dist			= 2.0 
 jump_max_dist			= 7.0	;10.0	;5.0
 jump_max_angle			= 0.5	;1.0	;1.8
 jump_trace_dist			= 1.0
@@ -195,26 +195,3 @@ step_snd_drag			= 0.3, 0.3
 squad_attack_algorithm	= 1
 
 attack_effector			= monster_attack_effector
-psi_effector			= pseudodog_psi_effector
-
-[pseudodog_psi_effector]
-duality_h		= 0.31
-duality_v		= 0.31
-blur			= 0.01
-gray			= 0.5
-noise_intensity = 1.0
-noise_grain		= 3
-noise_fps		= 30
-color_base		= 0.1,0.15,0.4
-color_gray		= 0.333,0.333,0.333
-color_add		= 0,0,0
-time			= 1.5
-time_attack		= 0.5		; fade in
-time_release	= 0.5		; fade out
-
-; camera effects
-ce_time				= 1.5
-ce_amplitude		= 15.0
-ce_period_number	= 10.0
-ce_power			= 0.7
-

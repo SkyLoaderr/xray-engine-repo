@@ -51,17 +51,17 @@ ImpulseMax			 = 550.0
 
 ; speed factors			linear angular min		max		
 Velocity_Stand			= 0,	3.05,	1,		1		
-Velocity_WalkFwdNormal	= 1.8,	3.0,	0.5,	2.0		
-Velocity_WalkFwdDamaged	= 1.0,	3.0,	0.5,	2.0	
-Velocity_RunFwdNormal	= 6.5,	3.0,	0.2,	1	
-Velocity_RunFwdDamaged	= 2.3,  3.0,	0.2,	1
+Velocity_WalkFwdNormal		= 1.65,	3.0,	0.2,	2.0		
+Velocity_WalkFwdDamaged		= 1.2,	3.0,	0.2,	2.0	
+Velocity_RunFwdNormal		= 6.0,	5.0,	0.5,	1	
+Velocity_RunFwdDamaged		= 2.5,  3.0,	0.5,	1
 Velocity_Drag			= 1.5,	3.0,	1,		1
 Velocity_Steal			= 0.7,	3.0,	1,		1
 
 ; acceleration
 Accel_Generic			= 1.5
-Accel_Calm				= 1.5
-Accel_Aggressive		= 1.5
+Accel_Calm			= 2.5
+Accel_Aggressive		= 5.5
 
 
 ;attack parameters
@@ -70,27 +70,27 @@ MaxAttackDist		= 2.5	;3.8
 EffectDistance		= 20.0
 
 ; "Rest" state specific 
-ProbRestWalkFree	= 60	;50    ; при выборе действия, в 50% случаях монстр будет ходить
+ProbRestWalkFree	= 60	;50    ; яЁш тvсюЁх фхщёЄтш , т 50% ёыєўр ї ьюэёЄЁ сєфхЄ їюфшЄ№
 ProbRestStandIdle	= 15		
 ProbRestLieIdle		= 15	;25
 ProbRestTurnLeft	= 10
 
-; параметры невидимости
-BlinkTime			= 400	;300		; время мерцания
-BlinkMicroInterval  = 30		; время кванта мерцания
-RestoreInterval		= 5000		; время восстановления 5 сек
-InvisibilityTimeMin	= 2000		; мин время, на которое монстр становится невидимым
-InvisibilityTimeMax	= 5000	;4000		; макс время, на которое монстр становится невидимым
-PowerDownFactor		= 0.10		; [0..1] коэффициент, на который падает сила монстра при активации невидимости
-PowerThreshold		= 0.70		; [0..1] порог силы, после которого нельзя стать невидимым 
-InvisibilityDist	= 8.0		; [1..n] дистанция до врага, на которой монстр может становиться нивидимым
+; ярЁрьхЄЁv эхтшфшьюёЄш
+BlinkTime			= 400	;300		; тЁхь  ьхЁЎрэш 
+BlinkMicroInterval  = 30		; тЁхь  ътрэЄр ьхЁЎрэш 
+RestoreInterval		= 5000		; тЁхь  тюёёЄрэютыхэш  5 ёхъ
+InvisibilityTimeMin	= 2000		; ьшэ тЁхь , эр ъюЄюЁюх ьюэёЄЁ ёЄрэютшЄё  эхтшфшьvь
+InvisibilityTimeMax	= 5000	;4000		; ьръё тЁхь , эр ъюЄюЁюх ьюэёЄЁ ёЄрэютшЄё  эхтшфшьvь
+PowerDownFactor		= 0.10		; [0..1] ъю¤ЇЇшЎшхэЄ, эр ъюЄюЁvщ ярфрхЄ ёшыр ьюэёЄЁр яЁш ръЄштрЎшш эхтшфшьюёЄш
+PowerThreshold		= 0.70		; [0..1] яюЁюу ёшыv, яюёых ъюЄюЁюую эхы№ч  ёЄрЄ№ эхтшфшьvь 
+InvisibilityDist	= 8.0		; [1..n] фшёЄрэЎш  фю тЁрур, эр ъюЄюЁющ ьюэёЄЁ ьюцхЄ ёЄрэютшЄ№ё  эштшфшьvь
 
-DayTime_Begin		= 6	;6			; начала дня для монстра
-DayTime_End			= 21		; конец дня для монстра
-Min_Satiety			= 0.85 	;0.06		; мин. норма сытости (меньше - уже голодный)
-Max_Satiety			= 1.0	;0.9		; макс. норма сытости (больше - очень сытый)
+DayTime_Begin		= 6	;6			; эрўрыр фэ  фы  ьюэёЄЁр
+DayTime_End			= 21		; ъюэхЎ фэ  фы  ьюэёЄЁр
+Min_Satiety			= 0.85 	;0.06		; ьшэ. эюЁьр ёvЄюёЄш (ьхэ№°х - єцх уюыюфэvщ)
+Max_Satiety			= 1.0	;0.9		; ьръё. эюЁьр ёvЄюёЄш (сюы№°х - юўхэ№ ёvЄvщ)
 
-distance_to_corpse	= 0.8		; дист. до трупа, при которой он переходит в состояние еды
+distance_to_corpse	= 0.8		; фшёЄ. фю ЄЁєяр, яЁш ъюЄюЁющ юэ яхЁхїюфшЄ т ёюёЄю эшх хфv
 
 ; spin spin sugar
 bone_spin				= bip01_spine1
@@ -112,36 +112,36 @@ terrain					= 255,255,255,255,30,40
 hit_type				= wound
 
 ; entity condition
-satiety_v = 0.01			;0.01			;скорость уменьшения сытости со временем
-radiation_v = 0.00001		;0.004			;скорость уменьшения радиации
-satiety_power_v = 0.001		;0.01			;увеличение силы при уменьшении сытости 
-satiety_health_v = 0.0		;0.03			;увеличение здоровья при уменьшении сытости 
-satiety_critical = 0		;0.25			;критическое значения сытости (в процентах от 0..1) когда здоровье начианает уменьшаться
-radiation_health_v = 0.01	;0.006			;уменьшение здоровья при воздействии радиации
-bleeding_v = 0.05			;0.02			;потеря крови при максимальной ране
-wound_incarnation_v = 0.05	;0.05	;0.001	;скорость заживания раны 
-morale_v			= 0.01					;скорость восстановления морали
-health_hit_part = 1.0		;0.8			;процент хита, уходящий на отнимание здоровья
-power_hit_part = 1.0		;0.9			;процент хита, уходящий на отнимание силы
+satiety_v 		= 0.0001				;0.01			;скорость уменьшения сытости со временем
+radiation_v 		= 0.00001		;0.004			;скорость уменьшения радиации
+satiety_power_v 	= 0.005		;0.01			;увеличение силы при уменьшении сытости 
+satiety_health_v 	= 0.001	;0.03			;увеличение здоровья при уменьшении сытости 
+satiety_critical 	= 0		;0.25			;критическое значения сытости (в процентах от 0..1) когда здоровье начианает уменьшаться
+radiation_health_v 	= 0.01	;0.006			;уменьшение здоровья при воздействии радиации
+bleeding_v 		= 0.05			;0.02			;потеря крови при максимальной ране
+wound_incarnation_v 	= 0.1	;0.001		    ;скорость заживания раны 
+morale_v		= 0.01					;скорость восстановления морали
+health_hit_part 	= 0.2		;0.8			;процент хита, уходящий на отнимание здоровья
+power_hit_part 		= 1.0		;0.9			;процент хита, уходящий на отнимание силы
 
-burn_immunity = 1.0							;коэффициенты иммунитета 
-strike_immunity = 1.0
-shock_immunity = 1.0
-wound_immunity = 0.60	;0.4 ; 0.75	; 0.1	;1.0		
-radiation_immunity = 1.0
+burn_immunity = 0.5				;коэффициенты иммунитета 
+strike_immunity = 0.5
+shock_immunity = 0.5
+wound_immunity = 0.50	;0.75	;1.0		
+radiation_immunity = 0.5
 telepatic_immunity = 1.0
-chemical_burn_immunity = 1.0
-explosion_immunity = 1.0
-fire_wound_immunity  = 1.0
+chemical_burn_immunity = 0.5
+explosion_immunity = 0.5
+fire_wound_immunity  = 0.5
 
-sleep_health = 1.0		;1.5				;коэффициенты скоростей изменения параметров во время сна
+sleep_health = 1.0		;1.5				;ъю¤ЇЇшЎшхэЄv ёъюЁюёЄхщ шчьхэхэш  ярЁрьхЄЁют тю тЁхь  ёэр
 sleep_power = 1.0		;1.5
 sleep_satiety = 1.0		;0.8
 sleep_radiation = 1.0	;1.1
 
-eat_freq			=	5.0		; частота укусов в сек
-eat_slice			=	0.001	; увеличение сытости при 1 укусе
-eat_slice_weight	=	10.0	; уменьшение еды у трупа
+eat_freq			=	5.0		; ўрёЄюЄр єъєёют т ёхъ
+eat_slice			=	0.001	; єтхышўхэшх ёvЄюёЄш яЁш 1 єъєёх
+eat_slice_weight	=	10.0	; єьхэ№°хэшх хфv є ЄЁєяр
 
 ; Morale
 MoraleSuccessAttackQuant	= 0.3;
