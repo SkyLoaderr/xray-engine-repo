@@ -200,7 +200,7 @@ void CAI_Boar::CheckSpecParams(u32 spec_params)
 		// calculate angular speed
 		float new_angular_velocity; 
 		float delta_yaw = angle_difference(yaw,m_body.current.yaw);
-		float time = MotionMan.GetAnimTime(anim, 0);
+		float time = MotionMan.GetCurAnimTime();
 		new_angular_velocity = 2.5f * delta_yaw / time; 
 
 		MotionMan.ForceAngularSpeed(new_angular_velocity);

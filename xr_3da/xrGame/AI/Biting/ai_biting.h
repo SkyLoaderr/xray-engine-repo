@@ -288,10 +288,6 @@ public:
 	void					FaceTarget				(const CEntity *entity);
 	void					FaceTarget				(const Fvector &position);
 	
-	float					anim_speed;
-	void					SetAnimSpeed			(float val) {anim_speed = val;}
-	CBlend					*cur_blend;
-	
 	bool					b_script_state_must_execute;
 
 	void					TranslateActionToPathParams ();
@@ -316,7 +312,7 @@ public:
 ////////////////////////////////////////////////////////
 
 
-
+	u16						bone_part;
 
 #ifdef DEBUG
 	CMonsterDebug	*HDebug;

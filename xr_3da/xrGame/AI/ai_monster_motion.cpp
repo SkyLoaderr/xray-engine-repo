@@ -5,6 +5,7 @@
 #include "ai_monster_utils.h"
 #include "../PHMovementControl.h"
 #include "anim_triple.h"
+#include "ai_monster_debug.h"
 
 // DEBUG purpose only
 char *dbg_action_name_table[] = {
@@ -67,6 +68,9 @@ void CMotionManager::reinit()
 	UpdateAnimCount			();
 
 	pJumping				= 0;
+
+	anim_speed				= -1.f;
+	cur_blend				= 0;
 }
 
 
@@ -274,7 +278,7 @@ bool CMotionManager::AA_TimeTest(SAAParam &params)
 	if (it == get_sd()->aa_map.end()) return false;
 	
 	// вычислить смещённое время хита в соответствии с параметрами анимации атаки
-	TTime offset_time = pMonster->cur_anim.started + u32(1000 * GetAnimTime(*pMonster->cur_anim.name) * it->second.time);
+	TTime offset_time = pMonster->cur_anim.started + u32(1000 * GetCurAnimTime() * it->second.time);
 
 	if ((offset_time >= (cur_time - TIME_OFFSET)) && (offset_time <= (cur_time + TIME_OFFSET)) ){
 		params = it->second;
@@ -337,28 +341,13 @@ void CMotionManager::FX_Play(EHitSide side, float amount)
 }
 
 
-float CMotionManager::GetAnimTime(EMotionAnim anim, u32 index)
+float CMotionManager::GetCurAnimTime()
 {
-	// получить элемент SAnimItem соответствующий anim
-	ANIM_ITEM_MAP_IT anim_it = get_sd()->m_tAnims.find(anim);
-	VERIFY(get_sd()->m_tAnims.end() != anim_it);
+	//if (!cur_blend) return 9999.0f;
+	VERIFY(cur_blend);
 
-	CMotionDef			*def = get_motion_def(anim_it, index);
-	CBoneData			&bone_data = PKinematics(pMonster->Visual())->LL_GetData(0);
-	CBoneDataAnimated	*bone_anim = dynamic_cast<CBoneDataAnimated *>(&bone_data);
-
-	return  bone_anim->Motions[def->motion].GetLength() / def->Dequantize(def->speed);
+	return cur_blend->timeTotal;
 }
-
-float CMotionManager::GetAnimTime(LPCSTR anim_name)
-{
-	CMotionDef			*def		= PSkeletonAnimated(pMonster->Visual())->ID_Cycle(anim_name);
-	CBoneData			&bone_data	= PSkeletonAnimated(pMonster->Visual())->LL_GetData(0);
-	CBoneDataAnimated	*bone_anim	= dynamic_cast<CBoneDataAnimated *>(&bone_data);
-
-	return  bone_anim->Motions[def->motion].GetLength() / def->Dequantize(def->speed);
-}
-
 
 float CMotionManager::GetAnimSpeed(EMotionAnim anim)
 {
@@ -492,8 +481,8 @@ void CMotionManager::SelectVelocities()
 
 	if (accel_chain_get(real_speed, cur_anim,new_anim, a_speed)) {
 		cur_anim = new_anim;
-		pMonster->SetAnimSpeed(a_speed);
-	} else pMonster->SetAnimSpeed(-1.f);
+		SetAnimSpeed(a_speed);
+	} else SetAnimSpeed(-1.f);
 
 	// установка угловой скорости
 	if (!b_forced_velocity) {
@@ -580,7 +569,7 @@ void CMotionManager::STEPS_Update(u8 legs_num)
 	TTime		cur_time	= Level().timeServer();
 
 	// время одного цикла анимации
-	float cycle_anim_time	= GetAnimTime(*pMonster->cur_anim.name) / step.cycles;
+	float cycle_anim_time	= GetCurAnimTime() / step.cycles;
 
 	for (u32 i=0; i<legs_num; i++) {
 		
@@ -601,9 +590,6 @@ void CMotionManager::STEPS_Update(u8 legs_num)
 				SELECT_RANDOM(step_info.activity[i].sound, mtl_pair, StepSounds);
 				step_info.activity[i].sound.play_at_pos	(pMonster,sound_pos);
 
-//				if (step_info.activity[i].sound.handle) {
-//					Msg("play sound = %s", step_info.activity[i].sound.handle->file_name());
-//				}
 			}
 			
 			// Играть партиклы
@@ -705,28 +691,57 @@ bool CMotionManager::TA_IsActive()
 
 void CMotionManager::CheckAnimWithPath()
 {
-	ANIM_ITEM_MAP_IT item_it = get_sd()->m_tAnims.find(pMonster->cur_anim.anim);
-	VERIFY(get_sd()->m_tAnims.end() != item_it);
+	//ANIM_ITEM_MAP_IT item_it = get_sd()->m_tAnims.find(pMonster->cur_anim.anim);
+	//VERIFY(get_sd()->m_tAnims.end() != item_it);
 
-	bool is_moving_anim		= !fis_zero(item_it->second.velocity->velocity.linear);
-	bool is_moving_on_path	= pMonster->IsMovingOnPath();
+	//bool is_moving_anim		= !fis_zero(item_it->second.velocity->velocity.linear);
+	//bool is_moving_on_path	= pMonster->IsMovingOnPath();
 
-	if ( is_moving_on_path && is_moving_anim) {
-		pMonster->SetDirectionLook(item_it->first == eAnimDragCorpse);
-		return;
+	//if ( is_moving_on_path && is_moving_anim) {
+	//	pMonster->SetDirectionLook(item_it->first == eAnimDragCorpse);
+	//	return;
+	//}
+
+	//if (!is_moving_on_path && is_moving_anim) {
+	//	m_tpCurAnim = 0;
+	//	cur_anim = eAnimStandIdle;
+	//	pMonster->m_velocity_linear.current	 = pMonster->m_velocity_linear.target	= 0.f;
+	//	return;
+	//}
+
+	//if (is_moving_on_path && !is_moving_anim) {
+	//	pMonster->m_velocity_linear.current	 = pMonster->m_velocity_linear.target	= 0.f;
+	//	return;
+	//}
+
+	
+	if (pMonster->IsMovingOnPath()) {
+		pMonster->HDebug->L_Clear();
+		for (u32 i=0; i<pMonster->CDetailPathManager::path().size();i++) {
+			xr_map<u32,CDetailPathManager::STravelParams>::const_iterator it = pMonster->m_movement_params.find(pMonster->CDetailPathManager::path()[i].velocity);
+			VERIFY(it != pMonster->m_movement_params.end());
+			
+			if (fis_zero((*it).second.linear_velocity))
+				pMonster->HDebug->L_AddPoint(pMonster->CDetailPathManager::path()[i].position,0.15f,D3DCOLOR_XRGB(255,0,100));
+			else 
+				pMonster->HDebug->L_AddPoint(pMonster->CDetailPathManager::path()[i].position,0.15f,D3DCOLOR_XRGB(0,255,100));
+		}
 	}
 
-	if (!is_moving_on_path && is_moving_anim) {
-		m_tpCurAnim = 0;
-		cur_anim = eAnimStandIdle;
-		pMonster->m_velocity_linear.current	 = pMonster->m_velocity_linear.target	= 0.f;
-		return;
-	}
 
-	if (is_moving_on_path && !is_moving_anim) {
-		pMonster->m_velocity_linear.current	 = pMonster->m_velocity_linear.target	= 0.f;
-		return;
-	}
+	//if (pMonster->ps_Size() < 2) return;
+
+	//CObject::SavedPosition	pos0 = pMonster->ps_Element	(pMonster->ps_Size()-1);
+	//CObject::SavedPosition	pos1 = pMonster->ps_Element	(pMonster->ps_Size()-2);
+
+	//float h1,p1,h2,p2;
+	//pMonster->Direction().getHP(h1,p1);
+	//Fvector().sub(pos0.vPosition,pos1.vPosition).getHP(h2,p2);
+
+	//if ((angle_difference(h1,h2) > PI_DIV_6)  && (pMonster->m_PhysicMovementControl->GetVelocityMagnitude() > 0)) {
+	//	pMonster->m_velocity_linear.current	 = pMonster->m_velocity_linear.target = 0.f;
+	//	Msg("Velocity Fixed");
+	//}
 }
 
 ///////////////////////////////////////////////////////////////////////////////////////

@@ -259,7 +259,7 @@ void CBurer::UpdateGraviObject()
 	dir.sub(enemy_center, new_pos);
 	dir.normalize();
 
-	float trace_dist = float(m_gravi_step * 2);
+	float trace_dist = float(m_gravi_step);
 
 	Collide::rq_result	l_rq;
 	if (Level().ObjectSpace.RayPick(new_pos, dir, trace_dist, Collide::rqtBoth, l_rq)) {

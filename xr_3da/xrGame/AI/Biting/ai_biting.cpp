@@ -92,14 +92,13 @@ void CAI_Biting::reinit()
 	m_bDamaged						= false;
 	m_bAngry						= false;
 
-	anim_speed						= -1.f;
-	cur_blend						= 0;
-
 	cur_anim.anim					= eAnimStandIdle;
 	cur_anim.index					= 0;
 	cur_anim.started				= 0;
 
 	state_invisible					= false;
+
+	bone_part						= PSkeletonAnimated(Visual())->LL_PartID("default");
 
 
 #ifdef 	DEEP_TEST_SPEED	
@@ -356,6 +355,8 @@ void CAI_Biting::UpdateCL()
 
 
 	m_pPhysics_support->in_UpdateCL();
+
+	//MotionMan.CheckAnimWithPath();
 
 	// ќбновить угловую и линейную скорости движени€
 	CMonsterMovement::update_velocity();

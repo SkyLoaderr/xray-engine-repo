@@ -69,7 +69,6 @@ class CMotionManager : public CSharedClass<_motion_shared, CLASS_ID> {
 
 	CAnimTriple					*pCurAnimTriple;
 
-
 public:
 
 	EAction					m_tAction;
@@ -174,8 +173,7 @@ public:
 	void		ForceAnimSelect			();
 	
 	void		ForceAngularSpeed		(float vel);
-	float		GetAnimTime				(EMotionAnim anim, u32 index);
-	float		GetAnimTime				(LPCSTR anim_name);
+	float		GetCurAnimTime			();
 	float		GetAnimSpeed			(EMotionAnim anim);
 
 	bool		IsStandCurAnim			();
@@ -237,5 +235,11 @@ public:
 		
 		void	ActivateJump			();
 		void	DeactivateJump			();
+
+public:
+		float	anim_speed;
+		CBlend	*cur_blend;
+		
+		void	SetAnimSpeed			(float val) {anim_speed = val;}
 };
 

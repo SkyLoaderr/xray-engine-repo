@@ -20,10 +20,10 @@ static void __stdcall vfPlayEndCallBack(CBlend* B)
 void CAI_Biting::SelectAnimation(const Fvector &/**_view/**/, const Fvector &/**_move/**/, float /**speed/**/)
 {
 	if (MotionMan.PrepareAnimation()) {
-		cur_blend = PSkeletonAnimated(Visual())->PlayCycle(MotionMan.m_tpCurAnim,TRUE,vfPlayEndCallBack,this);
+		MotionMan.cur_blend = MotionMan.m_tpCurAnim->PlayCycle(PSkeletonAnimated(Visual()), bone_part, TRUE, vfPlayEndCallBack, this);
 	}
 
-	if (anim_speed > 0.f && cur_blend) cur_blend->speed = anim_speed;
+	if (MotionMan.anim_speed > 0.f && MotionMan.cur_blend) MotionMan.cur_blend->speed = MotionMan.anim_speed;
 }
 
 
