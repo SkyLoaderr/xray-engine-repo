@@ -640,7 +640,13 @@ void CAI_Stalker::OnRender			()
 
 void CAI_Stalker::Think			()
 {
-	brain().update				(Level().timeServer() - m_dwLastUpdateTime);
+	try {
+		brain().update			(Level().timeServer() - m_dwLastUpdateTime);
+	}
+	catch(...) {
+		brain().setup			(this);
+		brain().update			(Level().timeServer() - m_dwLastUpdateTime);
+	}
 	movement().update			(Level().timeServer() - m_dwLastUpdateTime);
 	setup().update				();
 }

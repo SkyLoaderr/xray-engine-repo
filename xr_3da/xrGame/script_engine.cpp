@@ -65,16 +65,25 @@ void CScriptEngine::lua_error			(CLuaVirtualMachine *L)
 {
 	print_error				(L,LUA_ERRRUN);
 
+#ifndef XRAY_EXCEPTIONS
 	Debug.fatal				("LUA error: %s",lua_tostring(L,-1));
+#else
+	Msg						("! LUA error: %s",lua_tostring(L,-1));
+	throw lua_tostring(L,-1);
+#endif
 }
 
 int  CScriptEngine::lua_pcall_failed	(CLuaVirtualMachine *L)
 {
 	print_error				(L,LUA_ERRRUN);
 	
+#ifndef XRAY_EXCEPTIONS
 	Debug.fatal				("LUA error: %s",lua_tostring(L,-1));
-
 	return					(-1);
+#else
+	Msg						("! LUA error: %s",lua_tostring(L,-1));
+	throw lua_tostring(L,-1);
+#endif
 }
 
 void lua_cast_failed					(CLuaVirtualMachine *L, LUABIND_TYPE_INFO info)
@@ -95,13 +104,13 @@ void CScriptEngine::setup_callbacks		()
 	if (!debugger() || !debugger()->Active() ) 
 #endif
 	{
-#ifndef DEBUG
+#ifndef XRAY_EXCEPTIONS
 		luabind::set_error_callback		(CScriptEngine::lua_error);
 #endif
 		luabind::set_pcall_callback		(CScriptEngine::lua_pcall_failed);
 	}
 
-#ifndef DEBUG
+#ifndef XRAY_EXCEPTIONS
 	luabind::set_cast_failed_callback	(lua_cast_failed);
 #endif
 	lua_atpanic							(lua(),CScriptEngine::lua_panic);
