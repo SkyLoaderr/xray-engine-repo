@@ -854,7 +854,7 @@ idle_light		= off
 idle_particles		= anomaly2\heat_00
 blowout_particles	= anomaly2\heat_01
 
-hit_small_particles	    	= damage_fx\burn_creatures2
+hit_small_particles	    	= damage_fx\burn_creatures
 hit_big_particles			= damage_fx\burn_creatures00
 idle_small_particles		= damage_fx\burn_creatures
 idle_big_particles			= damage_fx\burn_creatures00
@@ -886,7 +886,7 @@ light_height		= 1.5			;подъем источника света на высоту
 idle_light			= on
 idle_light_range	= 15.0
 idle_light_range_delta = 0.2
-idle_light_anim		= warning_01
+idle_light_anim		= koster_01
 idle_light_height	= 1.5			;подъем источника света на высоту
 
 awaking_time		= 1000
@@ -900,3 +900,68 @@ blowout_wind		= off
 ;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;
 ;рождение артефактов во время срабатывания
 spawn_blowout_artefacts = off
+
+
+
+[fireball_zone]
+GroupControlSection		= spawn_group_zone
+$spawn					= "zones\fireball"
+;$prefetch 				= 8
+class					= Z_TORRID
+hit_impulse_scale	=   0
+postprocess		= postprocess_flame
+
+artefacts		= 
+BirthProbability = 0.9
+idle_light		= off
+
+idle_particles		= anomaly2\heat_02
+blowout_particles	= anomaly2\heat_03
+
+hit_small_particles	    	= damage_fx\burn_creatures
+hit_big_particles			= damage_fx\burn_creatures00
+idle_small_particles		= damage_fx\burn_creatures
+idle_big_particles			= damage_fx\burn_creatures00
+entrance_small_particles	= damage_fx\burn_creatures
+entrance_big_particles		= damage_fx\burn_creatures00 ;
+
+idle_sound			= ambient\fire2						;постоянный звук
+blowout_sound		= ambient\fire2		;во время выброса(удара) в центре аномалии	
+hit_sound			= ambient\fire2								;на персонаже, когда тот получает хит
+entrance_sound		= ambient\fire2									;при попадании объекта в аномалию
+
+hit_type		= burn
+
+disable_time		= 0	;время игнорирования неживого объекта в зоне (-1 если не нужно)
+disable_time_small	= 0	;время игнорирования маленького неживого объекта в зоне (-1 если не нужно)
+disable_idle_time	= 50000	;время отключения idle партиклов
+
+ignore_nonalive		= false
+ignore_small		= false
+ignore_artefacts	= true
+
+blowout_light		= on
+light_color		    = 1.8,1.7,1.4
+light_range		    = 15.0
+light_time 		    = 2
+light_height		= 1.0			;подъем источника света на высоту
+
+
+idle_light			= on
+idle_light_range	= 15.0
+idle_light_range_delta = 0.2
+idle_light_anim		= koster_01
+idle_light_height	= 1.0			;подъем источника света на высоту
+
+awaking_time		= 100
+blowout_time		= 300	
+accamulate_time		= 100
+
+visible_by_detector = off
+
+blowout_wind		= off
+
+;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;
+;рождение артефактов во время срабатывания
+spawn_blowout_artefacts = off
+
