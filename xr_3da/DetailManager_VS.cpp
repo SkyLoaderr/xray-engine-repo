@@ -160,9 +160,9 @@ void CDetailManager::hw_Render()
 	hw_Render_dump			(hw_VS_wave,	visible[1], c_hdr );
 
 	// Wave1
-	VSC.set					(1,	1.f/4.99f,	1.f/7.f,	1.f/2.99f,	Device.fTimeGlobal*psDetail_w_speed);	// wave
+	VSC.set					(1,	1.f/3.f,	1.f/7.f,	1.f/5.f,	Device.fTimeGlobal*psDetail_w_speed);	// wave
 	VSC.set					(2,	dir2);																		// wind-dir
-	VSC.flush				(1,	1);
+	VSC.flush				(1,	2);
 	hw_Render_dump			(hw_VS_wave,	visible[2], c_hdr );
 
 	// Still
