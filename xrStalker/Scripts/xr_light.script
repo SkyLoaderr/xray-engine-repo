@@ -9,7 +9,7 @@ end
 function torch_light:update ()
 
     local obj = self.npc:object ("device_torch")
-    if obj == nil then return end
+    if obj == nil or self.npc:alive () == false then return end
     
     if utils.is_day () == false or self.always_on == true then
        obj:enable_attachable_item (true)
