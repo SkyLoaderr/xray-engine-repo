@@ -24,20 +24,6 @@ function main()
 		cond	(cond.time_end, 120000)
 	)
 
-	while stalker1:action() do		
-			action(
-				stalker1,
-			  	move	(move.standing, move.stand,move.line,patrol("way0000")),
-				sound	("nemedlenno","bip01_spine2",vector():set(0,0,0),vector():set(0,0,0),false),
-				look	(look.fire_point, actor),
-				anim	(anim.danger),
-				cond	(cond.time_end, 100000)
-			)
-			wait		(1500)			
-                	break		
-		end
-	wait()			
-
 
 	while stalker1:action() and stalker2:action() do
 
