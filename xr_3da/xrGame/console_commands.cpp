@@ -713,8 +713,24 @@ public:
 		if (!OnServer())	return;
 		
 		char	Name[128];	Name[0]=0;
-		sscanf	(args,"%s", Name);
+		char	Number[128]; Number[0] = 0;
+		sscanf	(args,"%s %s", Name, Number);
 		
+		if (Name[0] == '#')
+		{
+			u32 Num = atol(Number);
+			xrClientData *l_pC = (xrClientData*)	Level().Server->client_Get	(Num-1);
+			if (!l_pC) return;
+			if (Level().Server->GetServer_client() == l_pC)
+			{
+				Msg("! Can't disconnect server's client");
+				return;
+			};
+			Msg("Disconnecting : %s", l_pC->ps->getName());
+			Level().Server->DisconnectClient(l_pC);
+			return;
+		};
+
 		u32	cnt = Level().Server->game->get_players_count();
 		for(u32 it=0; it<cnt; it++)	
 		{
@@ -1225,11 +1241,11 @@ void CCC_RegisterCommands()
 	CMD4(CCC_Integer,	"string_table_error_msg",	&CStringTable::m_bWriteErrorsToLog,	0,	1);
 #endif
 
-	CMD1(CCC_KickPlayer,	"g_kick"					);		// graph-point info
-	CMD1(CCC_ListPlayers,	"g_listplayers"				);		// graph-point info
+	CMD1(CCC_KickPlayer,	"sv_kick"					);		// graph-point info
+	CMD1(CCC_ListPlayers,	"sv_listplayers"				);		// graph-point info
 	
-	CMD1(CCC_ChangeGameType,	"g_changegametype"			);
-	CMD1(CCC_ChangeLevel,		"g_changelevel"				);
-	CMD1(CCC_ChangeLevelGameType,		"g_changelevelgametype"				);
+	CMD1(CCC_ChangeGameType,	"sv_changegametype"			);
+	CMD1(CCC_ChangeLevel,		"sv_changelevel"				);
+	CMD1(CCC_ChangeLevelGameType,		"sv_changelevelgametype"				);
 }
 
