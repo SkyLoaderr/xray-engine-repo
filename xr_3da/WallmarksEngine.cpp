@@ -3,16 +3,13 @@
 //////////////////////////////////////////////////////////////////////
 
 #include "stdafx.h"
-#include "xr_creator.h"
 #include "WallmarksEngine.h"
-#include "frustum.h"
-#include "xr_object.h"
-#include "xr_effsun.h"
 
-#include "render.h"
+#include "..\xr_object.h"
+#include "..\x_ray.h"
+#include "..\GameFont.h"
 
-#include "x_ray.h"
-#include "GameFont.h"
+// #include "xr_effsun.h"
 
 const float W_TTL			= 30.f;
 const float W_DIST_FADE		= 15.f;

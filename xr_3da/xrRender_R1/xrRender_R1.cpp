@@ -2,7 +2,8 @@
 //
 
 #include "stdafx.h"
-#include "..\xr_io_console.h"
+#include "..\xr_ioconsole.h"
+#include "..\xr_ioc_cmd.h"
 
 #pragma comment(lib,"x:\\xr3DA")
 
@@ -18,7 +19,8 @@ extern float		ssaLOD_A;
 extern float		ssaLOD_B;
 extern float		ssaHZBvsTEX;
 extern int			psGlowsPerFrame;
-
+extern int			psSupersample;
+extern int			psSH_Blur;
 
 BOOL APIENTRY DllMain( HANDLE hModule, 
                        DWORD  ul_reason_for_call, 

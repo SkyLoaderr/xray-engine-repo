@@ -4,11 +4,10 @@
 
 #include "stdafx.h"
 #include "GlowManager.h"
-#include "xrlevel.h"
 
 // font
-#include "x_ray.h"
-#include "GameFont.h"
+#include "..\x_ray.h"
+#include "..\GameFont.h"
 
 #define FADE_SCALE			1024.f
 #define MAX_GlowsDist1		float(pCreator->Environment.Current.Far)
