@@ -862,7 +862,8 @@ void CPHSimpleCharacter::SetMas(dReal mass){
 	m_mass=mass;
 	if(!b_exist) return;
 	dMass m;
-	dMassSetBox(&m,1,1000000.f,1000000.f,1000000.f);
+	//dMassSetBox(&m,1,1000000.f,1000000.f,1000000.f);
+	dMassSetSphere(&m,1,1000000.f/2.f);
 	dMassAdjust(&m,mass);
 	dBodySetMass(m_body,&m);
 }
