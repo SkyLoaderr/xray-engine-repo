@@ -20,9 +20,12 @@
 #pragma link "ELVCLUtils"
 #pragma resource "*.dfm"
 
+#define TSTRING_COUNT 	4
+#define MCSTRING_COUNT 	11
+
 const LPSTR BOOLString[2]={"False","True"};
-const LPSTR TEXTUREString[3]={"Custom...","-","$base0"};
-const LPSTR MCString[11]={"Custom...","-","$null","$base0","$base1","$base2","$base3","$base4","$base5","$base6","$base7"};
+const LPSTR TEXTUREString[TSTRING_COUNT]={"Custom...","-","$null","$base0"};
+const LPSTR MCString[MCSTRING_COUNT]={"Custom...","-","$null","$base0","$base1","$base2","$base3","$base4","$base5","$base6","$base7"};
 
 #define BPID_TYPE 	0x1000
 #define BPID_WAVE 	0x1001
@@ -336,7 +339,7 @@ void __fastcall TfrmShaderProperties::tvPropertiesMouseDown(TObject *Sender,
         case BPID_WAVE: CustomClick(item); break;
 		case BPID_TEXTURE:{
             pmEnum->Items->Clear();
-            for (DWORD i=0; i<3; i++){
+            for (DWORD i=0; i<TSTRING_COUNT; i++){
                 TMenuItem* mi = new TMenuItem(0);
                 mi->Caption = TEXTUREString[i];
                 mi->OnClick = PMItemClick;
@@ -346,7 +349,7 @@ void __fastcall TfrmShaderProperties::tvPropertiesMouseDown(TObject *Sender,
         case BPID_CONSTANT:
         case BPID_MATRIX:{
             pmEnum->Items->Clear();
-            for (DWORD i=0; i<11; i++){
+            for (DWORD i=0; i<MCSTRING_COUNT; i++){
                 TMenuItem* mi = new TMenuItem(0);
                 mi->Caption = MCString[i];
                 mi->OnClick = PMItemClick;
@@ -429,7 +432,7 @@ void __fastcall TfrmShaderProperties::PMItemClick(TObject *Sender)
 		            item->ColumnText->Strings[0]= name;
 			    	SHTools.Modified();
                 }
-            }else if (mi->MenuIndex==2){
+            }else if (mi->MenuIndex>=2){
             	if (strcmp(tex,TEXTUREString[mi->MenuIndex])!=0){
 					strcpy(tex,TEXTUREString[mi->MenuIndex]);
 		            item->ColumnText->Strings[0]= TEXTUREString[mi->MenuIndex];
