@@ -153,7 +153,7 @@
 				SubSystem="2"
 				OptimizeReferences="2"
 				EnableCOMDATFolding="2"
-				ImportLibrary="$(OutDir)\xrNetServer.lib"/>
+				ImportLibrary="x:\xrNetServer.lib"/>
 			<Tool
 				Name="VCMIDLTool"
 				PreprocessorDefinitions=""
