@@ -5,6 +5,7 @@
 
 class CPHObject {
 xr_list<CPHObject*>::iterator m_ident;
+
 public:
 	virtual void PhDataUpdate(dReal step)=0;
 	virtual void PhTune(dReal step)=0;

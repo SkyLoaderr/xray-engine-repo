@@ -691,26 +691,24 @@ void	CPHMovementControl::PHCaptureObject(CGameObject* object)
 if(m_capture) return;
 
 if(!object||!object->m_pPhysicsShell||!object->m_pPhysicsShell->bActive) return;
-//if(m_capture_bone[0]=='0')   return;
-
-CObject* capturer_object=dynamic_cast<CObject*>(m_character->PhysicsRefObject());
-CKinematics* p_kinematics=PKinematics(capturer_object->Visual());
-CInifile* ini=p_kinematics->LL_UserData();
-CBoneInstance * capture_bone_instance=&p_kinematics->LL_GetInstance(
-	p_kinematics->LL_BoneID(ini->r_string("capture","bone"))
-																	);
-
-
-
 m_capture=xr_new<CPHCapture>(m_character,
-							 object->m_pPhysicsShell->NearestToPoint(capture_bone_instance->mTransform.c),
-							 capture_bone_instance,
-							 ini->r_float("capture","distance"),					//distance
-							 ini->r_u32("capture","time_limit")*1000,				//time
-							 ini->r_float("capture","pull_force"),				//pull force
-							 ini->r_float("capture","capture_force")				//capture force
+							 object
 							 );
-//CPHCapture::CPHCapture()
+}
+
+void	CPHMovementControl::PHCaptureObject(CGameObject* object,int element)
+{
+	if(m_capture) return;
+
+	if(!object||!object->m_pPhysicsShell||!object->m_pPhysicsShell->bActive) return;
+	m_capture=xr_new<CPHCapture>(m_character,
+		object,
+		element
+		);
+}
+void CPHMovementControl::PHReleaseObject()
+{
+xr_delete(m_capture);
 }
 
 void	CPHMovementControl::DeleteCharacterObject()

@@ -4,19 +4,22 @@
 class CPHCapture : public CPHObject
 {
 public:
-					CPHCapture							(CPHCharacter   *a_character,
-														 CPhysicsElement*a_taget,
-														 CBoneInstance  *a_capture_bone,
-														 float			a_capture_distance,
-														 u32			a_capture_time,
-														 float			a_pull_force,
-														 float			a_capture_force);
+					CPHCapture							(CPHCharacter     *a_character,
+														 CGameObject	  *a_taget_object
+														 );
+					CPHCapture							(CPHCharacter     *a_character,
+														 CGameObject	  *a_taget_object,
+														 int			   a_taget_elemrnt
+														 );
 virtual				~CPHCapture							();
+
+
 bool				Failed								(){return b_failed;};
 
 protected:
 CPHCharacter		*m_character;
-CPhysicsElement		*m_taget;
+CPhysicsElement*	m_taget_element;
+CGameObject*		m_taget_object;
 dJointID			m_joint;
 dJointID			m_ajoint;
 dJointFeedback		m_joint_feedback;
@@ -24,6 +27,7 @@ Fvector				m_capture_pos;
 float				m_pull_force;
 float				m_capture_force;
 float				m_capture_distance;
+float				m_pull_distance;
 u32					m_capture_time;
 u32					m_time_start;
 CBoneInstance		*m_capture_bone;
@@ -39,7 +43,14 @@ private:
 
 			void PullingUpdate();
 			void CapturedUpdate();
+			void Init(CInifile* ini);
+			void Fail();
 			void CreateBody();
+			bool Invalid(){return 
+							!m_taget_object->m_pPhysicsShell||
+							!m_taget_object->m_pPhysicsShell->bActive||
+							!m_character->b_exist;
+							};
 
 static void object_contactCallbackFun(bool& do_colide,dContact& c);
 

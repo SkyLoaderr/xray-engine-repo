@@ -1139,6 +1139,10 @@ void CActor::g_cl_ValidateMState(float dt, u32 mstate_wf)
 
 	else
 		mstate_real				&=~mcClimb;
+
+	if(Movement.PHCapture()&&isAccelerated(mstate_real))
+		
+		mstate_real				^=mcAccel;
 }
 
 void CActor::g_cl_CheckControls(u32 mstate_wf, Fvector &vControlAccel, float &Jump, float dt)
@@ -1196,7 +1200,7 @@ void CActor::g_cl_CheckControls(u32 mstate_wf, Fvector &vControlAccel, float &Ju
 		// check player move state
 		if (mstate_real&mcAnyMove)
 		{
-			BOOL	bAccelerated		= isAccelerated(mstate_real);
+			BOOL	bAccelerated		= isAccelerated(mstate_real)&&!Movement.PHCapture();
 
 			// update player accel
 			if (mstate_real&mcFwd)		vControlAccel.z +=  1;

@@ -175,7 +175,10 @@ void CActor::ActorUse()
 	int element=-1;
 	CGameObject* object =pick_Object(element);	
 	if(use_Vehicle(object,element)) return;
-	Movement.PHCaptureObject(object);
+	if(!Movement.PHCapture())
+		Movement.PHCaptureObject(object,element);
+	else
+		Movement.PHReleaseObject();
 	
 }
 //void CActor::IR_OnMousePress(int btn)

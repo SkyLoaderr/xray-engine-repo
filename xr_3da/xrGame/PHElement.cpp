@@ -1066,9 +1066,13 @@ void CPHElement::InterpolateGlobalPosition(Fvector* v){
 
 void CPHElement::GetGlobalPositionDynamic(Fvector* v)
 {
-	//PHDynamicData::DMXPStoFMX(dBodyGetRotation(m_body),dBodyGetPosition(m_body),*m);
-	v->add(*((Fvector*)dBodyGetPosition(m_body)),m_inverse_local_transform.c);
+	//Fmatrix m;
 
+	//PHDynamicData::DMXPStoFMX(dBodyGetRotation(m_body),dBodyGetPosition(m_body),m);
+	//m.transform_tiny(*v,m_inverse_local_transform.c);
+
+	//v->add(*((Fvector*)dBodyGetPosition(m_body)),tv);
+	v->set((*(Fvector*)dBodyGetPosition(m_body)));
 }
 
 void CPHElement::DynamicAttach(CPHElement* E)
