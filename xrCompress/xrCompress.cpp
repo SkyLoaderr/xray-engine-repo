@@ -68,6 +68,7 @@ ALIAS*	testALIAS		(CVirtualFileStream& base, u32& a_tests)
 		{
 			return	&I->second;
 		}
+		I++;
 	}
 	return 0;
 }
