@@ -28,7 +28,6 @@ CGraviArtifact::CGraviArtifact(void)
 
 CGraviArtifact::~CGraviArtifact(void) 
 {
-	SoundDestroy(m_detectorSound);
 }
 
 void CGraviArtifact::Load(LPCSTR section) 
@@ -53,20 +52,20 @@ void CGraviArtifact::UpdateCL()
 	if(getVisible() && m_pPhysicsShell) 
 	{
 		m_pPhysicsShell->Update	();
-		XFORM().set			(m_pPhysicsShell->mXFORM);
+		XFORM().set(m_pPhysicsShell->mXFORM);
 		Position().set(m_pPhysicsShell->mXFORM.c);
 		if(m_fJumpHeight) 
 		{
-			Fvector l_dir; 
-			l_dir.set(0, -1.f, 0);
+			Fvector dir; 
+			dir.set(0, -1.f, 0);
 			Collide::ray_query RQ;
 			setEnabled(false);
 			
 			//проверить высоту артифакта
-			if(Level().ObjectSpace.RayPick(Position(), l_dir, m_fJumpHeight, RQ)) 
+			if(Level().ObjectSpace.RayPick(Position(), dir, m_fJumpHeight, RQ)) 
 			{
-				l_dir.y = 1.f; 
-				m_pPhysicsShell->applyImpulse(l_dir, 
+				dir.y = 1.f; 
+				m_pPhysicsShell->applyImpulse(dir, 
 											  30.f * Device.fTimeDelta * 
 											  m_pPhysicsShell->getMass());
 			}
@@ -74,4 +73,3 @@ void CGraviArtifact::UpdateCL()
 		}
 	} else if(H_Parent()) XFORM().set(H_Parent()->XFORM());
 }
-

@@ -53,6 +53,10 @@
 
 // Artifacts
 #define CLSID_AF_MERCURY_BALL		MK_CLSID('A','F','_','M','B','A','L','L')
+#define CLSID_AF_GRAVI				MK_CLSID('A','F','_','G','R','A','V','I')
+#define CLSID_AF_BLACKDROPS			MK_CLSID('A','F','_','B','D','R','O','P')
+#define CLSID_AF_NEEDLES			MK_CLSID('A','F','_','N','E','E','D','L')
+
 #define CLSID_ARTEFACT				MK_CLSID('A','R','T','E','F','A','C','T')
 
 // Weapons

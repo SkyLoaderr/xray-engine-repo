@@ -1,3 +1,36 @@
+///////////////////////////////////////////////////////////////
+// MercuryBall.h
+// MercuryBall - переливающийся и колыхающийся шар
+// перекатывается с места на место
+///////////////////////////////////////////////////////////////
+
+#pragma once
+#include "artifact.h"
+
+class CMercuryBall : public CArtifact 
+{
+private:
+	typedef CArtifact inherited;
+public:
+	CMercuryBall(void);
+	virtual ~CMercuryBall(void);
+
+	virtual void Load				(LPCSTR section);
+	virtual void UpdateCL			();
+
+protected:
+	//время последнего обновления поведения шара
+	_TIME_ID m_timeLastUpdate;
+	//время между апдейтами
+	_TIME_ID m_timeToUpdate;
+
+	//диапазон импульсов катания шара
+	float m_fImpulseMin;
+	float m_fImpulseMax;
+};
+
+/*
+
 #pragma once
 #include "gameobject.h"
 #include "PhysicsShell.h"
@@ -20,3 +53,4 @@ public:
 	//virtual	void Hit					(float P, Fvector &dir,	CObject* who, s16 element,Fvector p_in_object_space, float impulse){};
 	virtual BOOL			net_Spawn			(LPVOID DC);
 };
+*/

@@ -787,7 +787,6 @@ BOOL APIENTRY DllMain( HANDLE hModule,
 #include "customitem.h"
 #include "flyer.h"
 #include "customevent.h"
-#include "mercuryball.h"
 #include "customdoor.h"
 #include "customlift.h"
 #include "demoactor.h"
@@ -832,8 +831,12 @@ BOOL APIENTRY DllMain( HANDLE hModule,
 #include "f1.h"
 #include "rgd5.h"
 #include "Spectator.h"
+
 #include "artifact.h"
 #include "GraviArtifact.h"
+#include "MercuryBall.h"
+#include "BlackDrops.h"
+#include "Needles.h"
 
 #include "customzone.h"
 #include "mosquitobald.h"
@@ -879,6 +882,9 @@ extern "C" {
 
 			// Artifacts
 			case CLSID_AF_MERCURY_BALL:		P = xr_new<CMercuryBall>();			break;
+			case CLSID_AF_BLACKDROPS:		P = xr_new<CBlackDrops>();			break;
+			case CLSID_AF_NEEDLES:			P = xr_new<CNeedles>();				break;
+			case CLSID_AF_GRAVI:	
 			case CLSID_ARTEFACT:			P = xr_new<CGraviArtifact>();		break;
 
 			// Targets

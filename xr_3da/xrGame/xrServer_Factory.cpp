@@ -46,7 +46,10 @@ CSE_Abstract *F_entity_Create			(LPCSTR caSection)
 		case CLSID_AI_TRADER:			return xr_new<CSE_ALifeTrader>					(caSection); 
 
 		// Artifacts
-//		case CLSID_AF_MERCURY_BALL:		return xr_new<xrSE_MercuryBall>					(caSection);
+		case CLSID_AF_MERCURY_BALL:		//return xr_new<xrSE_MercuryBall>					(caSection);
+		case CLSID_AF_GRAVI:
+		case CLSID_AF_BLACKDROPS:
+		case CLSID_AF_NEEDLES:
 		case CLSID_ARTEFACT:			return xr_new<CSE_ALifeItemArtefact>			(caSection);
 
 		// Zones
