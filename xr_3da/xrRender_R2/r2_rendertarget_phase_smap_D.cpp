@@ -13,7 +13,7 @@ void	CRenderTarget::phase_smap_direct		(light* L)
 	RCache.set_Stencil					( FALSE );
 
 	// Misc		- draw only back-faces
-	RCache.set_CullMode					( CULL_CCW );
+	RCache.set_CullMode					( CULL_CW );
 	if (RImplementation.o.HW_smap)		RCache.set_ColorWriteEnable	(FALSE);
 }
 

@@ -35,21 +35,25 @@ void CRenderTarget::accum_direct		()
 		float	_w					= float			(Device.dwWidth);
 		float	_h					= float			(Device.dwHeight);
 
-		Fvector2					p0,p1;
+		// Analyze depth
+		Fvector2					p0,p1,j0,j1;
 		p0.set						(.5f/_w, .5f/_h);
 		p1.set						((_w+.5f)/_w, (_h+.5f)/_h );
-
-		// Analyze depth
 		float	d_Z	= EPS_S, d_W = 1.f;
+		float	scale_X				= float(Device.dwWidth)	/ float(TEX_jitter);
+		float	scale_Y				= float(Device.dwHeight)/ float(TEX_jitter);
+		float	offset				= (.5f / float(TEX_jitter));
+		j0.set						(offset,offset);
+		j1.set						(scale_X,scale_X).add(offset);
 
 		// Fill vertex buffer
-		FVF::TL* pv					= (FVF::TL*) RCache.Vertex.Lock	(4,g_combine->vb_stride,Offset);
-		pv->set						(EPS,			float(_h+EPS),	d_Z,	d_W, C, p0.x, p1.y);	pv++;
-		pv->set						(EPS,			EPS,			d_Z,	d_W, C, p0.x, p0.y);	pv++;
-		pv->set						(float(_w+EPS),	float(_h+EPS),	d_Z,	d_W, C, p1.x, p1.y);	pv++;
-		pv->set						(float(_w+EPS),	EPS,			d_Z,	d_W, C, p1.x, p0.y);	pv++;
-		RCache.Vertex.Unlock		(4,g_combine->vb_stride);
-		RCache.set_Geometry			(g_combine);
+		FVF::TL2uv* pv				= (FVF::TL2uv*) RCache.Vertex.Lock	(4,g_combine_2UV->vb_stride,Offset);
+		pv->set						(EPS,			float(_h+EPS),	d_Z,	d_W, C, p0.x, p1.y, j0.x, j1.y);	pv++;
+		pv->set						(EPS,			EPS,			d_Z,	d_W, C, p0.x, p0.y, j0.x, j0.y);	pv++;
+		pv->set						(float(_w+EPS),	float(_h+EPS),	d_Z,	d_W, C, p1.x, p1.y, j1.x, j1.y);	pv++;
+		pv->set						(float(_w+EPS),	EPS,			d_Z,	d_W, C, p1.x, p0.y, j1.x, j0.y);	pv++;
+		RCache.Vertex.Unlock		(4,g_combine_2UV->vb_stride);
+		RCache.set_Geometry			(g_combine_2UV);
 
 		// Common constants
 		Fvector		L_dir,L_clr;	float L_spec;
@@ -88,13 +92,13 @@ void CRenderTarget::shadow_direct	(light* L, u32 dls_phase)
 		float	d_Z	= EPS_S, d_W = 1.f;
 
 		// Fill vertex buffer
-		FVF::TL* pv					= (FVF::TL*) RCache.Vertex.Lock	(4,g_combine->vb_stride,Offset);
+		FVF::TL2uv* pv					= (FVF::TL2uv*) RCache.Vertex.Lock	(4,g_combine_2UV->vb_stride,Offset);
 		pv->set						(EPS,			float(_h+EPS),	d_Z,	d_W, C, p0.x, p1.y);	pv++;
 		pv->set						(EPS,			EPS,			d_Z,	d_W, C, p0.x, p0.y);	pv++;
 		pv->set						(float(_w+EPS),	float(_h+EPS),	d_Z,	d_W, C, p1.x, p1.y);	pv++;
 		pv->set						(float(_w+EPS),	EPS,			d_Z,	d_W, C, p1.x, p0.y);	pv++;
-		RCache.Vertex.Unlock		(4,g_combine->vb_stride);
-		RCache.set_Geometry			(g_combine);
+		RCache.Vertex.Unlock		(4,g_combine_2UV->vb_stride);
+		RCache.set_Geometry			(g_combine_2UV);
 
 		// Shader + constants
 		float circle				= ps_r2_ls_dsm_kernel / float(RImplementation.o.smapsize);
@@ -144,13 +148,13 @@ void CRenderTarget::accum_direct()
 		p1.set						((_w+.5f)/_w, (_h+.5f)/_h );
 
 		// Fill vertex buffer
-		FVF::TL* pv					= (FVF::TL*) RCache.Vertex.Lock	(4,g_combine->vb_stride,Offset);
+		FVF::TL2uv* pv					= (FVF::TL2uv*) RCache.Vertex.Lock	(4,g_combine_2UV->vb_stride,Offset);
 		pv->set						(EPS,			float(_h+EPS),	d_Z,	d_W, C, p0.x, p1.y);	pv++;
 		pv->set						(EPS,			EPS,			d_Z,	d_W, C, p0.x, p0.y);	pv++;
 		pv->set						(float(_w+EPS),	float(_h+EPS),	d_Z,	d_W, C, p1.x, p1.y);	pv++;
 		pv->set						(float(_w+EPS),	EPS,			d_Z,	d_W, C, p1.x, p0.y);	pv++;
-		RCache.Vertex.Unlock		(4,g_combine->vb_stride);
-		RCache.set_Geometry			(g_combine);
+		RCache.Vertex.Unlock		(4,g_combine_2UV->vb_stride);
+		RCache.set_Geometry			(g_combine_2UV);
 		RCache.set_Element			(s_accum_mask->E[2]);
 
 		// Calculate light-brightness
@@ -185,13 +189,13 @@ void CRenderTarget::accum_direct()
 
 	// Fill vertex buffer
 	float	d_Z	= EPS_S, d_W = 1.f;
-	FVF::TL* pv					= (FVF::TL*) RCache.Vertex.Lock	(4,g_combine->vb_stride,Offset);
+	FVF::TL2uv* pv					= (FVF::TL2uv*) RCache.Vertex.Lock	(4,g_combine_2UV->vb_stride,Offset);
 	pv->set						(EPS,			float(_h+EPS),	d_Z,	d_W, C, p0.x, p1.y);	pv++;
 	pv->set						(EPS,			EPS,			d_Z,	d_W, C, p0.x, p0.y);	pv++;
 	pv->set						(float(_w+EPS),	float(_h+EPS),	d_Z,	d_W, C, p1.x, p1.y);	pv++;
 	pv->set						(float(_w+EPS),	EPS,			d_Z,	d_W, C, p1.x, p0.y);	pv++;
-	RCache.Vertex.Unlock		(4,g_combine->vb_stride);
-	RCache.set_Geometry			(g_combine);
+	RCache.Vertex.Unlock		(4,g_combine_2UV->vb_stride);
+	RCache.set_Geometry			(g_combine_2UV);
 	RCache.set_Element			(s_accum_direct->E[2]);
 
 	// Constants

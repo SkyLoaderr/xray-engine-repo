@@ -95,6 +95,7 @@ private:
 
 	// Combine
 	ref_geom					g_combine;
+	ref_geom					g_combine_2UV;
 	ref_geom					g_aa_blur;
 	ref_geom					g_aa_AA;
 	ref_shader					s_combine_dbg_0;

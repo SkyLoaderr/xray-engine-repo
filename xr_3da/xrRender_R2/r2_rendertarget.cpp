@@ -284,6 +284,7 @@ void	CRenderTarget::OnDeviceCreate	()
 		s_combine_dbg_1.create				("effects\\screen_set",		r2_RT_luminance_t8	);
 		s_combine_dbg_Accumulator.create	("effects\\screen_set",		r2_RT_accum			);
 		g_combine.create					(FVF::F_TL,		RCache.Vertex.Buffer(), RCache.QuadIB);
+		g_combine_2UV.create				(FVF::F_TL2uv,	RCache.Vertex.Buffer(), RCache.QuadIB);
 
 		u32 fvf_aa_blur				= D3DFVF_XYZRHW|D3DFVF_TEX4|D3DFVF_TEXCOORDSIZE2(0)|D3DFVF_TEXCOORDSIZE2(1)|D3DFVF_TEXCOORDSIZE2(2)|D3DFVF_TEXCOORDSIZE2(3);
 		g_aa_blur.create			(fvf_aa_blur,	RCache.Vertex.Buffer(), RCache.QuadIB);
