@@ -1954,9 +1954,6 @@
 		<File
 			RelativePath=".\todo.txt">
 		</File>
-		<File
-			RelativePath="..\..\xrCDB\xrCDB.cpp">
-		</File>
 	</Files>
 	<Globals>
 	</Globals>

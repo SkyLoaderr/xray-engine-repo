@@ -283,6 +283,9 @@
 				</FileConfiguration>
 			</File>
 			<File
+				RelativePath="xrCDB.cpp">
+			</File>
+			<File
 				RelativePath=".\xrCDB.h">
 			</File>
 			<File
