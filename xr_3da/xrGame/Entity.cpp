@@ -71,7 +71,8 @@ void CEntity::OnEvent		(NET_Packet& P, u16 type)
 		break;
 	case GE_DIE:
 		{
-			u16				id,cl;
+			u16				id;
+			u32				cl;
 			P.r_u16			(id);
 			P.r_u32			(cl);
 			CObject* who	= Level().Objects.net_Find	(id);
