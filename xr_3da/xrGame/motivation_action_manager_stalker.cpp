@@ -151,6 +151,7 @@ void CMotivationActionManagerStalker::add_evaluators		()
 {
 	add_evaluator			(eWorldPropertyAlreadyDead		,xr_new<CStalkerPropertyEvaluatorConst>				(false));
 	add_evaluator			(eWorldPropertyPuzzleSolved		,xr_new<CStalkerPropertyEvaluatorConst>				(false));
+	add_evaluator			(eWorldPropertySquadAction		,xr_new<CStalkerPropertyEvaluatorConst>				(false));
 
 	add_evaluator			(eWorldPropertyDead				,xr_new<CStalkerPropertyEvaluatorMember>			(&m_storage,eWorldPropertyDead,true));
 	add_evaluator			(eWorldPropertyEnemyAimed		,xr_new<CStalkerPropertyEvaluatorMember>			(&m_storage,eWorldPropertyEnemyAimed,true,true));
@@ -402,4 +403,10 @@ void CMotivationActionManagerStalker::add_actions			()
 	add_condition			(action,eWorldPropertyFireEnough,	true);
 	add_effect				(action,eWorldPropertyFireEnough,	false);
 	add_operator			(eWorldOperatorTakeCover,			action);
+
+	action					= xr_new<CStalkerActionSquad>		(m_object,"squad_action");
+	add_condition			(action,eWorldPropertyAlive,		true);
+	add_condition			(action,eWorldPropertySquadAction,	false);
+	add_effect				(action,eWorldPropertySquadAction,	true);
+	add_operator			(eWorldOperatorSquadAction,			action);
 }

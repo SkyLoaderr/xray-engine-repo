@@ -415,4 +415,19 @@ public:
 	virtual _edge_value_type	weight				(const CSConditionState &condition0, const CSConditionState &condition1) const;
 };
 
+//////////////////////////////////////////////////////////////////////////
+// CStalkerActionSquad
+//////////////////////////////////////////////////////////////////////////
+
+class CStalkerActionSquad : public CStalkerActionBase {
+protected:
+	typedef CStalkerActionBase inherited;
+
+public:
+						CStalkerActionSquad			(CAI_Stalker *object, LPCSTR action_name = "");
+	virtual void		initialize					();
+	virtual void		execute						();
+	virtual void		finalize					();
+};
+
 #include "stalker_actions_inline.h"

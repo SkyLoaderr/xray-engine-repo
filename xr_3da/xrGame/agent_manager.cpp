@@ -15,7 +15,7 @@
 
 using namespace AgentManager;
 
-#define SECTION "squad_manager"
+#define SECTION "agent_manager"
 
 CAgentManager::CAgentManager		()
 {

@@ -59,8 +59,11 @@ class CAI_Stalker :
 {
 private:
 	typedef CCustomMonster								inherited;
-	typedef CSetupManager<CSetupAction,CAI_Stalker,u32>	CSSetupManager;
 	
+public:
+	typedef CSetupManager<CSetupAction,CAI_Stalker,u32>	CSSetupManager;
+
+private:
 	u32							m_dwParticularState;
 	ALife::ETaskState			m_tTaskState;
 	ALife::_GRAPH_ID			m_tDestGraphPointIndex;

@@ -10,7 +10,7 @@
 
 IC	CObjectAction::CObjectAction	()
 {
-	m_item_action	= MonsterSpace::eObjectActionNoItems;
+	m_item_action	= MonsterSpace::eObjectActionIdle;
 	m_item			= 0;
 }
 

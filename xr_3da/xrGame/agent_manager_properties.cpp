@@ -10,6 +10,7 @@
 #include "agent_manager_properties.h"
 #include "agent_manager.h"
 #include "agent_manager_space.h"
+#include "ai/stalker/ai_stalker.h"
 
 //////////////////////////////////////////////////////////////////////////
 // CAgentManagerPropertyEvaluatorGlobal
@@ -17,7 +18,12 @@
 
 CAgentManagerPropertyEvaluatorItem::_value_type CAgentManagerPropertyEvaluatorItem::evaluate	()
 {
-	return			(false);
+	CAgentManager::iterator	I = m_object->members().begin();
+	CAgentManager::iterator	E = m_object->members().end();
+	for ( ; I != E; ++I)
+		if ((*I).object()->item())
+			return			(true);
+	return					(false);
 }
 
 //////////////////////////////////////////////////////////////////////////
@@ -26,5 +32,10 @@ CAgentManagerPropertyEvaluatorItem::_value_type CAgentManagerPropertyEvaluatorIt
 
 CAgentManagerPropertyEvaluatorEnemy::_value_type CAgentManagerPropertyEvaluatorEnemy::evaluate	()
 {
-	return			(false);
+	CAgentManager::iterator	I = m_object->members().begin();
+	CAgentManager::iterator	E = m_object->members().end();
+	for ( ; I != E; ++I)
+		if ((*I).object()->enemy())
+			return			(true);
+	return					(false);
 }

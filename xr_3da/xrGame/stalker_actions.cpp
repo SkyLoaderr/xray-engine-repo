@@ -13,6 +13,7 @@
 #include "stalker_decision_space.h"
 #include "cover_point.h"
 #include "cover_evaluators.h"
+#include "agent_manager.h"
 
 using namespace StalkerDecisionSpace;
 
@@ -1596,4 +1597,31 @@ _edge_value_type CStalkerActionTakeCover::weight	(const CSConditionState &condit
 	else
 		return				(_edge_value_type(100));
 #endif
+}
+
+//////////////////////////////////////////////////////////////////////////
+// CStalkerActionSquad
+//////////////////////////////////////////////////////////////////////////
+
+CStalkerActionSquad::CStalkerActionSquad	(CAI_Stalker *object, LPCSTR action_name) :
+	inherited				(object,action_name)
+{
+}
+
+void CStalkerActionSquad::initialize		()
+{
+	VERIFY					(m_object->agent_manager().member(m_object).order_type() == AgentManager::eOrderTypeAction);
+	m_object->CSSetupManager::clear();
+	m_object->CSSetupManager::add_action(0,xr_new<CSetupAction>(m_object->agent_manager().member(m_object).action()));
+}
+
+void CStalkerActionSquad::execute			()
+{
+	VERIFY					(m_object->agent_manager().member(m_object).order_type() == AgentManager::eOrderTypeAction);
+	m_object->CSSetupManager::action(0).update(m_object->agent_manager().member(m_object).action());
+}
+
+void CStalkerActionSquad::finalize			()
+{
+	m_object->CSSetupManager::clear();
 }

@@ -31,19 +31,32 @@ protected:
 	CSoundAction		m_sound_action;
 
 public:
-	IC						CSetupAction		(float weight, u32 inertia_time);
-	IC		void			set_object			(CAI_Stalker *object);
-	virtual	bool			applicable			() const;
-	virtual bool			completed			() const;
-	virtual void			initialize			();
-	virtual void			execute				();
-	virtual void			finalize			();
-	virtual float			weight				() const;
-	IC		CSetupAction	&animation			(const CAnimationAction &animation_action);
-	IC		CSetupAction	&movement			(const CMovementAction &movement_action);
-	IC		CSetupAction	&object				(const CObjectAction &object_action);
-	IC		CSetupAction	&sight				(const CSightAction	&sight_action);
-	IC		CSetupAction	&sound				(const CSoundAction	&sound_action);
+	IC								CSetupAction(float weight, u32 inertia_time);
+	IC		void					set_object	(CAI_Stalker *object);
+	virtual	bool					applicable	() const;
+	virtual bool					completed	() const;
+	virtual void					initialize	();
+	virtual void					execute		();
+	virtual void					finalize	();
+	virtual float					weight		() const;
+	IC		void					animation	(const CAnimationAction &animation_action);
+	IC		void					movement	(const CMovementAction &movement_action);
+	IC		void					object		(const CObjectAction &object_action);
+	IC		void					sight		(const CSightAction	&sight_action);
+	IC		void					sound		(const CSoundAction	&sound_action);
+	IC		const CAnimationAction	&animation	() const;
+	IC		const CMovementAction	&movement	() const;
+	IC		const CObjectAction		&object		() const;
+	IC		const CSightAction		&sight		() const;
+	IC		const CSoundAction		&sound		() const;
+
+	IC		CAnimationAction		&animation	();
+	IC		CMovementAction			&movement	();
+	IC		CObjectAction			&object		();
+	IC		CSightAction			&sight		();
+	IC		CSoundAction			&sound		();
+
+	IC		void					update		(const CSetupAction &setup_action);
 };
 
 #include "setup_action_inline.h"
