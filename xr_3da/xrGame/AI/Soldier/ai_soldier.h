@@ -70,7 +70,9 @@ class CAI_Soldier : public CCustomMonster, public soundListener
 	protected:
 		
 		vector<SDynamicObject>	tpaDynamicObjects;
+		vector<SDynamicSound>	tpaDynamicSounds;
 		DWORD					m_dwMaxDynamicObjectsCount;
+		DWORD					m_dwMaxDynamicSoundsCount;
 
 		////////////////////////////////////////////////////////////////////////////
 		// normal animations

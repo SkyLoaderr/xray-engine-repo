@@ -55,6 +55,16 @@ protected:
 		CEntity			*tpEntity;
 	} SDynamicObject;
 
+	typedef struct tagSDynamicSound {
+		ESoundTypes		eSoundType;
+		DWORD			dwTime;
+		float			fPower;
+		DWORD			dwUpdateCount;
+		Fvector			tSavedPosition;
+		Fvector			tMySavedPosition;
+		CEntity			*tpEntity;
+	} SDynamicSound;
+
 public:
 
 	enum EBodyStates {
