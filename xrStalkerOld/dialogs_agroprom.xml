@@ -81,10 +81,6 @@
                 <text>agr_factory_krot_about_3</text>
                 <next>31</next>
             </phrase>
-            <phrase id="0">
-                <text>agr_factory_krot_about_0</text>
-                <next>1</next>
-            </phrase>
             <phrase id="31">
                 <text>agr_factory_krot_about_31</text>
             </phrase>
@@ -133,15 +129,19 @@
                 <next>211111</next>
                 <next>211112</next>
             </phrase>
+            <phrase id="0">
+                <text>agr_factory_krot_about_0</text>
+                <next>1</next>
+            </phrase>
             <phrase id="211111">
                 <text>agr_factory_krot_about_211111</text>
                 <precondition>dialogs.is_not_friend</precondition>
-                <action>dialogs.sell_krot_flash</action>
+                <action>agroprom_dialog.sell_krot_flash</action>
             </phrase>
             <phrase id="211112">
                 <text>agr_factory_krot_about_211112</text>
                 <precondition>dialogs.is_friend</precondition>
-                <action>dialogs.sell_krot_flash_to_friend</action>
+                <action>agroprom_dialog.sell_krot_flash_to_friend</action>
             </phrase>
         </phrase_list>
     </dialog>

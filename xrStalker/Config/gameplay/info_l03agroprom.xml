@@ -4,34 +4,37 @@
 
     <info_portion id="agroprom_military_case">
 		<task>agroprom_get_military_documents</task>
+		<location>
+			<level>l03_agroprom</level>
+			<object>200</object>
+			<icon name="" x="5" y="1" width="1" height="1" r="238" g="155" b="23" marker="1"></icon>
+			<text>Добыдть военные документы</text>
+		</location>    
     </info_portion>
     <info_portion id="agroprom_military_case_have">
+    	<disable>agroprom_military_case</disable>
     </info_portion>
     <info_portion id="agroprom_military_case_done">
     </info_portion>
 
-    <info_portion id="agroprom_gunslinger_band">
+    <info_portion id="agr_krot_band">
 		<location>
 			<level>l03_agroprom</level>
-			<x>-6</x>
-			<y>10</y>
-			<icon name="" x="3" y="6" width="1" height="1" r="238" g="155" b="23" marker="1"></icon>
+			<x>12</x>
+			<y>8</y>
+			<icon name="" x="1" y="0" width="1" height="1" r="238" g="155" b="23" marker="1"></icon>
 			<text>Встретиться со сталкерами.</text>
 		</location>    
-		<task>agroprom_meet_gunslinger_band</task>
+		<task>agr_meet_krot_band</task>
     </info_portion>
-	<info_portion id="agroprom_gunslinger_band_find">
-    </info_portion>
-    <info_portion id="agroprom_gunslinger_band_done">
+    <info_portion id="agr_krot_band_done">
+    	<disable>agr_krot_band</disable>
     </info_portion>
 
     <info_portion id="agroprom_find_gunslinger_hide">
 		<task>agroprom_find_gunslinger_hide</task>
     </info_portion>
 
-
-    <info_portion id="agroprom_factory_combat">
-    </info_portion>
 
     <info_portion id="agroprom_find_stalker_ghost">
     </info_portion>

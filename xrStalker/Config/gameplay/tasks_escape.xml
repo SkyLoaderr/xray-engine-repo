@@ -127,7 +127,7 @@
 		<title>agroprom_get_military_documents</title>
 		<objective>
 			<text>agroprom_get_military_documents_0</text>
-			<icon x="200" y="50" width="50" height="50">ui\ui_icons_task</icon>			
+			<icon x="350" y="0" width="50" height="50">ui\ui_icons_task</icon>			
 		</objective>
 		<objective>
 			<text>agroprom_get_military_documents_1</text>
@@ -139,11 +139,11 @@
 		</objective>
 	</game_task>
 
-	<game_task id="agroprom_meet_gunslinger_band">
-		<title>agroprom_meet_gunslinger_band</title>
+	<game_task id="agr_meet_krot_band">
+		<title>agr_meet_krot_band</title>
 		<objective>
-			<text>agroprom_meet_gunslinger_band_0</text>
-			<icon x="200" y="0" width="50" height="50">ui\ui_icons_task</icon>			
+			<text>agr_meet_krot_band_0</text>
+			<icon x="200" y="50" width="50" height="50">ui\ui_icons_task</icon>			
 		</objective>
 	</game_task>
 
