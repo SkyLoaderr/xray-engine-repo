@@ -131,6 +131,12 @@
 		<disable>escape_stalker_help</disable>
 	</info_portion>
 
+	<info_portion id="escape_stalker_to_trader_give">
+		<task>esc_wounded_to_trader_gift</task>
+	</info_portion>
+	<info_portion id="escape_stalker_to_trader_done">
+		<disable>escape_stalker_to_trader_give</disable>
+	</info_portion>
 	
 	<info_portion id="escape_blockpost_case">
 		<location>

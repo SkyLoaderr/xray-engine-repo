@@ -49,7 +49,7 @@
         <text>Про Стрелка не слышал?</text>
     </string>
     <string id="escape_lager_hlam_flame_111">
-        <text>Попадался мне как-то костюм с надписью &amp;amp;amp;amp;quot;группировка Стрелка&amp;amp;amp;amp;quot;. Перепродал с хорошим наваром. Что-то такое увидишь - тащи ко мне.</text>
+        <text>Попадался мне как-то костюм с надписью &amp;amp;amp;amp;amp;quot;группировка Стрелка&amp;amp;amp;amp;amp;quot;. Перепродал с хорошим наваром. Что-то такое увидишь - тащи ко мне.</text>
     </string>
     <string id="escape_lager_hlam_flame_12">
         <text>Как жизнь? Чем занимаешься?</text>
@@ -85,7 +85,7 @@
         <text>Что за Бармен такой?</text>
     </string>
     <string id="escape_lager_volk_flame_11111">
-        <text>На заводе &amp;amp;amp;amp;amp;amp;quot;Росток&amp;amp;amp;amp;amp;amp;quot; есть бар сталкеров. Вот он там главный. Но вход открыт только для ветеранов.</text>
+        <text>На заводе &amp;amp;amp;amp;amp;amp;amp;quot;Росток&amp;amp;amp;amp;amp;amp;amp;quot; есть бар сталкеров. Вот он там главный. Но вход открыт только для ветеранов.</text>
     </string>
     <string id="escape_lager_volk_flame_1112">
         <text>А где находится лагерь Ученых?</text>
@@ -100,7 +100,7 @@
         <text>Большинство разбогатеть хотят - на артефакты охотятся. Однако есть кое-что получше, чем россыпь артефактов… Исполнитель желаний там, а это гораздо ценнее любых богатств.</text>
     </string>
     <string id="escape_lager_volk_flame_1211">
-        <text>&amp;amp;amp;amp;amp;amp;quot;Исполнитель желаний&amp;amp;amp;amp;amp;amp;quot;? Это еще что такое?</text>
+        <text>&amp;amp;amp;amp;amp;amp;amp;quot;Исполнитель желаний&amp;amp;amp;amp;amp;amp;amp;quot;? Это еще что такое?</text>
     </string>
     <string id="escape_lager_volk_flame_12111">
         <text>Сам не знаю. Но он там точно есть... Я надеюсь…</text>
@@ -129,6 +129,18 @@
     <string id="escape_lager_volk_hello_12">
         <text>Привет. Мне передали, что ты одного из наших от смерти спас. Спасибо тебе. Держи артефакт в знак нашей благодарности - его можешь поменять у Торговца на оружие, патроны или еду.</text>
     </string>
+    <string id="escape_raid_wounded_0">
+        <text>Слышь, худо мне. Возвращался из рейда глубокого, почти до мертвого города добрался, много интересного видел. А когда возвращался, нарвался на кровососа, еле живой ушел. Поделись аптечкой, если есть.</text>
+    </string>
+    <string id="escape_raid_wounded_1">
+        <text>Легко, держи, мне не жалко.</text>
+    </string>
+    <string id="escape_raid_wounded_11">
+        <text>Спасибо за помощь. Мы с напарником много чего раскопали в рейде. Напарник на свалке остался, хабар сторожить, а я решил по быстрому к торговцу смататься, за медикаментами, да и информацию кое какую передать надо было. Так что будь добр, передай это торговцу [получен фейковый предмет]. Кстати, можешь поговорить с моим напарником. Он о Стрелке поболее меня знает. Найти его можно в гаражах на свалке.</text>
+    </string>
+    <string id="escape_raid_wounded_2">
+        <text>Не, не могу.</text>
+    </string>
     <string id="escape_talk_about_escape_0">
         <text>Расскажи мне об этом месте.</text>
     </string>
@@ -143,6 +155,12 @@
     </string>
     <string id="escape_talk_about_escape_21">
         <text>Там свалка. Мрачное место. Местами из-за мусора пройти невозможно.</text>
+    </string>
+    <string id="escape_trader_done_artefact_0">
+        <text>Вот твой артефакт!</text>
+    </string>
+    <string id="escape_trader_done_artefact_2">
+        <text>Ну, спасибо за сотрудничество.</text>
     </string>
     <string id="escape_trader_done_blockpost_box_0">
         <text>Вот твой ящик.</text>
@@ -360,19 +378,10 @@
     <string id="tutorial_wounded_1">
         <text>Конечно, об чем речь.</text>
     </string>
+    <string id="tutorial_wounded_11">
+        <text>Спасибо, брат! Обратись к Волку в лагере около торговца, ты можешь быть ему полезен.</text>
+    </string>
     <string id="tutorial_wounded_3">
         <text>Не, нету.</text>
     </string>
-    <string id="tutorial_wounded_11">
-        <text>Спасибо, брат! Обратись к Волку в лагере около торговца, ты можешь быть ему полезен.</text>
-    </string>        
-    <string id="escape_trader_done_artefact_0">
-        <text>Вот твой артефакт!</text>
-    </string>        
-    <string id="escape_trader_done_artefact_2">
-        <text>Ну, спасибо за сотрудничество.</text>
-    </string>        
-    
-
-    
 </string_table>
