@@ -385,7 +385,7 @@ void CInventoryItem::net_Export			(NET_Packet& P)
 	CPHSynchronize* pSyncObj = NULL;
 	SPHNetState	State;
 	pSyncObj = PHGetSyncItem(0);
-	if (pSyncObj) 
+	if (pSyncObj && !H_Parent()) 
 		pSyncObj->get_State(State);
 	else 	
 		State.position.set(Position());
