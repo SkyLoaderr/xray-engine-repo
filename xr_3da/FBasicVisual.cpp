@@ -67,6 +67,7 @@ void CVisual::Load		(const char* N, CStream *data, u32 dwFlags)
 	// Msg	("DBG: [%f,%f,%f] - [%f,%f,%f]",VPUSH(bbox.min),VPUSH(bbox.max));
 
 	// Sphere (if exists)
+	/*
 	if (data->FindChunk(OGF_BSPHERE))
 	{
 		data->Read(&bv_Position,3*sizeof(float));
@@ -80,6 +81,8 @@ void CVisual::Load		(const char* N, CStream *data, u32 dwFlags)
 		bv_Radius		= bv_Position.magnitude();
 		bv_Position.add	(bbox.min);
 	}
+	*/
+
 	Log	("---");
 	Log	("pos",bv_Position);
 	Log	("r  ",bv_Radius);
