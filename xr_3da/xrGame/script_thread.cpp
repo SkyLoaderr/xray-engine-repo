@@ -14,6 +14,8 @@
 #include "script_thread.h"
 #include "ai_space.h"
 
+#define LUABIND_HAS_BUGS_WITH_LUA_THREADS
+
 #ifdef USE_DEBUGGER
 #	include "script_debugger.h"
 #endif
@@ -60,7 +62,9 @@ CScriptThread::~CScriptThread()
 	Msg						("* Destroying script thread %s",m_script_name);
 #endif
 	try {
+#ifndef LUABIND_HAS_BUGS_WITH_LUA_THREADS
 		luaL_unref			(ai().script_engine().lua(),LUA_REGISTRYINDEX,m_thread_reference);
+#endif
 		xr_delete			(m_script_name);
 	}
 	catch(...) {
