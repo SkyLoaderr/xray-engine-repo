@@ -719,6 +719,4 @@ void CRender::OnDeviceDestroy	()
 	L_Projector.OnDeviceDestroy	();
 	L_Shadows.OnDeviceDestroy	();
 	Target.OnDeviceDestroy		();
-
-	Models.Destroy				();
 }

@@ -118,6 +118,36 @@ extern float		r_ssaLOD_A;
 extern float		r_ssaLOD_B;
 extern float		r_ssaHZBvsTEX;
 
-void CRender::Calculate()
+void CRender::Calculate		()
 {
+}
+
+void CRender::flush_Models	()
+{
+	/*
+	mapMatrix.traverseANY	(matrix_L1);
+	mapMatrix.clear			();
+	*/
+}
+
+// Device events
+void CRender::OnDeviceCreate	()
+{
+	REQ_CREATE					();
+	Target.OnDeviceCreate		();
+
+	PSystems.xrStartUp			();
+	PSystems.OnDeviceCreate		();
+	level_Load					();
+
+	rmNormal					();
+}
+
+void CRender::OnDeviceDestroy	()
+{
+	level_Unload				();
+	PSystems.OnDeviceDestroy	();
+	PSystems.xrShutDown			();
+
+	Target.OnDeviceDestroy		();
 }
