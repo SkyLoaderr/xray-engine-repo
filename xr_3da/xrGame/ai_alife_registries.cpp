@@ -620,8 +620,8 @@ void CSE_ALifeSpawnRegistry::Load(IReader	&tFileStream)
 	m_tpSpawnPoints.resize		(m_dwSpawnCount);
 	m_baAliveSpawnObjects.assign(m_dwSpawnCount,false);
 	m_tArtefactAnomalyMap.clear	();
-	D_OBJECT_P_IT			I = m_tpSpawnPoints.begin();
-	D_OBJECT_P_IT			E = m_tpSpawnPoints.end();
+	D_OBJECT_P_IT				I = m_tpSpawnPoints.begin();
+	D_OBJECT_P_IT				E = m_tpSpawnPoints.end();
 	NET_Packet					tNetPacket;
 	IReader						*S = 0;
 	u16							ID;
