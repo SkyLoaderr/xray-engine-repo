@@ -1064,7 +1064,7 @@ const u8 CUIBuyWeaponWnd::GetBeltSize()
 bool CUIBuyWeaponWnd::OnKeyboard(int dik, EUIMessages keyboard_action)
 {
 	if (WINDOW_KEY_RELEASED == keyboard_action) 
-		return false;
+		return true;
 
 	switch (UIBagWnd.GetMenuLevel())
 	{
@@ -1091,10 +1091,6 @@ bool CUIBuyWeaponWnd::OnKeyboard(int dik, EUIMessages keyboard_action)
 	
 	else if (DIK_A == dik)
 		UIBtnAutobuy.OnClick();
-
-	else if (DIK_F12 == dik)
-		return false;
-
 
 	return true;
 }
