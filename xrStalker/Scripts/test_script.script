@@ -1,1 +1,6 @@
-main
+module("ui_save_dialog")
+
+function main()
+local dlg = ui_save_dialog.save_dialog()
+level.start_stop_menu(dlg,true)
+end
