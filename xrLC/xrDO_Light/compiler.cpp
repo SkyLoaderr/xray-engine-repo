@@ -280,14 +280,14 @@ public:
 				Fbox		BB;
 				BB.min.set	(slt_x*DETAIL_SLOT_SIZE,	DS.y_min,	slt_z*DETAIL_SLOT_SIZE);
 				BB.max.set	(BB.min.x+DETAIL_SLOT_SIZE,	DS.y_max,	BB.min.z+DETAIL_SLOT_SIZE);
-				BB.grow		(0.01f);
+				BB.grow		(0.05f);
 
 				Fsphere		S;
 				BB.getsphere(S.P,S.R);
 				
 				// Select polygons
 				Fvector				bbC,bbD;
-				BB.get_CD			(bbC,bbD);
+				BB.get_CD			(bbC,bbD);	bbD.add(0.01f);
 				DB.box_query		(&Level,bbC,bbD);
 
 				box_result.clear	();
