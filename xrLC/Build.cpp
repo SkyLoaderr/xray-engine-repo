@@ -164,7 +164,8 @@ CBuild::CBuild(b_transfer * L)
 	 
 	// Parameter block
 	CopyMemory(&g_params,&L->params,sizeof(b_params));
-	g_params.m_lm_pixels_per_meter = 1;
+	g_params.m_lm_pixels_per_meter	= 1;
+	g_params.m_SS_DedicateCached	= 16;
 }
 
 CBuild::~CBuild()
