@@ -203,7 +203,7 @@ void	CEffect_Rain::p_free(Particle* P)
 	p_insert	(P,particle_idle);
 }
 
-// startup new particle system
+// startup _new_ particle system
 void	CEffect_Rain::Hit		(Fvector& pos)
 {
 	if (0!=::Random.randI(2))	return;
@@ -244,7 +244,7 @@ void	CEffect_Rain::Render	()
 		break;
 	}
 	
-	// Born new if needed
+	// Born _new_ if needed
 	float	b_radius		= 10.f;
 	float	b_radius_wrap	= b_radius+.5f;
 	float	b_height		= 40.f;

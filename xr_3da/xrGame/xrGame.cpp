@@ -608,16 +608,3 @@ extern "C" {
 		xr_delete(O);
 	}
 };
-
-/*
-//		case CLSID_OBJECT_DUMMY:		P = new CDummyObject();			break;
-//		case CLSID_EVENT:				P = new CCustomEvent();			break;
-//		case CLSID_OBJECT_W_M134:		P = new CWeaponM134();			break;
-//		case CLSID_OBJECT_W_RAIL:	P = new	CWeaponRail();		break;
-//		case CLSID_OBJECT_ITEM_STD:	P = new CCustomItem();		break;
-//		case CLSID_OBJECT_FLYER:	P = new CFlyer();			break;
-//		case CLSID_OBJECT_DOOR:		P = new CCustomDoor();		break;
-//		case CLSID_OBJECT_LIFT:		P = new CCustomLift();		break;
-//		case CLSID_OBJECT_DACTOR:	P = new CDemoActor();		break;
-//		case CLSID_AI_HUMAN:		P = new CAI_Human();		break;
-*/

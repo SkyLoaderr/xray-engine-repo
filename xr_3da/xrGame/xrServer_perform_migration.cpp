@@ -13,7 +13,7 @@ void xrServer::PerformMigration(xrServerEntity* E, xrClientData* from, xrClientD
 		SendTo				(from->ID,P,net_flags(TRUE,TRUE));
 	}
 
-	// Send to new 'client' signal to activate 'entity'
+	// Send to _new_ 'client' signal to activate 'entity'
 	{
 		P.w_begin			(M_MIGRATE_ACTIVATE);
 		P.w_u16				(E->ID);

@@ -1025,39 +1025,39 @@ xrServerEntity*	F_entity_Create		(LPCSTR name)
 	CLASS_ID cls = pSettings->ReadCLSID(name,"class");
 
 	switch (cls){
-	case CLSID_OBJECT_ACTOR:		return new	xrSE_Actor;
-	case CLSID_OBJECT_DUMMY:		return new  xrSE_Dummy;
-	case CLSID_AI_CROW:				return new	xrSE_Crow;
-	case CLSID_AI_RAT:				return new	xrSE_Rat;
-	case CLSID_AI_ZOMBIE:			return new	xrSE_Zombie;
-	case CLSID_AI_DOG:				return new	xrSE_Dog;
-	case CLSID_AI_SOLDIER:			return new	xrSE_Enemy;
-	case CLSID_EVENT:				return new  xrSE_Event;
-	case CLSID_CAR_NIVA:			return new  xrSE_Car;
-	case CLSID_SPECTATOR:			return new	xrSE_Spectator;
+	case CLSID_OBJECT_ACTOR:		return xr_new<xrSE_Actor>			();
+	case CLSID_OBJECT_DUMMY:		return xr_new<xrSE_Dummy>			();
+	case CLSID_AI_CROW:				return xr_new<xrSE_Crow>			();
+	case CLSID_AI_RAT:				return xr_new<xrSE_Rat>				();
+	case CLSID_AI_ZOMBIE:			return xr_new<xrSE_Zombie>			();
+	case CLSID_AI_DOG:				return xr_new<xrSE_Dog>				();
+	case CLSID_AI_SOLDIER:			return xr_new<xrSE_Enemy>			();
+	case CLSID_EVENT:				return xr_new<xrSE_Event>			();
+	case CLSID_CAR_NIVA:			return xr_new<xrSE_Car>				();
+	case CLSID_SPECTATOR:			return xr_new<xrSE_Spectator>		();
 
 	// Artifacts
-	case CLSID_AF_MERCURY_BALL:		return new  xrSE_MercuryBall;
+	case CLSID_AF_MERCURY_BALL:		return xr_new<xrSE_MercuryBall>		();
 
 	// Zones
-	case CLSID_ZONE:				return new  xrSE_Zone;
+	case CLSID_ZONE:				return xr_new<xrSE_Zone>			();
 
-	case CLSID_OBJECT_W_M134:		return new	xrSE_Weapon;
-	case CLSID_OBJECT_W_FN2000:		return new	xrSE_Weapon;
-	case CLSID_OBJECT_W_AK74:		return new	xrSE_Weapon;
-	case CLSID_OBJECT_W_LR300:		return new	xrSE_Weapon;
-	case CLSID_OBJECT_W_HPSA:		return new	xrSE_Weapon;
-	case CLSID_OBJECT_W_PM:			return new	xrSE_Weapon;
-	case CLSID_OBJECT_W_FORT:		return new	xrSE_Weapon;
-	case CLSID_OBJECT_W_BINOCULAR:	return new	xrSE_Weapon;
-	case CLSID_OBJECT_W_SHOTGUN:	return new	xrSE_Weapon;
-	case CLSID_OBJECT_W_SVD:		return new	xrSE_Weapon;
-	case CLSID_OBJECT_W_SVU:		return new	xrSE_Weapon;
-	case CLSID_OBJECT_HEALTH:		return new	xrSE_Health;
-	case CLSID_TARGET_ASSAULT:		return new	xrSE_Target_Assault;
-	case CLSID_TARGET_CS_BASE:		return new	xrSE_Target_CSBase;
-	case CLSID_TARGET_CS:			return new	xrSE_Target_CS;
-	case CLSID_TARGET_CS_CASK:		return new	xrSE_Target_CSCask;
+	case CLSID_OBJECT_W_M134:		return xr_new<xrSE_Weapon>			();
+	case CLSID_OBJECT_W_FN2000:		return xr_new<xrSE_Weapon>			();
+	case CLSID_OBJECT_W_AK74:		return xr_new<xrSE_Weapon>			();
+	case CLSID_OBJECT_W_LR300:		return xr_new<xrSE_Weapon>			();
+	case CLSID_OBJECT_W_HPSA:		return xr_new<xrSE_Weapon>			();
+	case CLSID_OBJECT_W_PM:			return xr_new<xrSE_Weapon>			();
+	case CLSID_OBJECT_W_FORT:		return xr_new<xrSE_Weapon>			();
+	case CLSID_OBJECT_W_BINOCULAR:	return xr_new<xrSE_Weapon>			();
+	case CLSID_OBJECT_W_SHOTGUN:	return xr_new<xrSE_Weapon>			();
+	case CLSID_OBJECT_W_SVD:		return xr_new<xrSE_Weapon>			();
+	case CLSID_OBJECT_W_SVU:		return xr_new<xrSE_Weapon>			();
+	case CLSID_OBJECT_HEALTH:		return xr_new<xrSE_Health>			();
+	case CLSID_TARGET_ASSAULT:		return xr_new<xrSE_Target_Assault>	();
+	case CLSID_TARGET_CS_BASE:		return xr_new<xrSE_Target_CSBase>	();
+	case CLSID_TARGET_CS:			return xr_new<xrSE_Target_CS>		();
+	case CLSID_TARGET_CS_CASK:		return xr_new<xrSE_Target_CSCask>	();
 	}
 	return 0;
 }

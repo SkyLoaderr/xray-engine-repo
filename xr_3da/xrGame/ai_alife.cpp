@@ -216,7 +216,7 @@ void CAI_ALife::vfGenerateSpawnPoints(const u32 dwTotalCount, FLOAT_VECTOR &fpFa
 	SPAWN_P_IT					E = m_tpSpawnPoints.end() - 2;
 	SPAWN_P_IT					I = B;
 	for ( ; I != E; I++) {
-		(*I)							= new CALifeSpawnPoint();
+		(*I)							= xr_new<CALifeSpawnPoint> ();
 		(*I)->m_tNearestGraphPointID	= _GRAPH_ID(I - B);
 		(*I)->m_wGroupID				= wGroupID++;
 		j								= ::Random.randI(5);
@@ -231,7 +231,7 @@ void CAI_ALife::vfGenerateSpawnPoints(const u32 dwTotalCount, FLOAT_VECTOR &fpFa
 		(*I)->m_fAnomalyDeathProbability= 0.0f;
 		(*I)->m_tpRouteGraphPoints.clear();
 	}
-	(*I)							= new CALifeSpawnPoint();
+	(*I)							= xr_new<CALifeSpawnPoint> ();
 	(*I)->m_tNearestGraphPointID	= _GRAPH_ID(::Random.randI(Level().AI.GraphHeader().dwVertexCount));
 	(*I)->m_wGroupID				= wGroupID++;
 	j								= 1;
@@ -248,7 +248,7 @@ void CAI_ALife::vfGenerateSpawnPoints(const u32 dwTotalCount, FLOAT_VECTOR &fpFa
 
 	I++;
 
-	(*I)							= new CALifeSpawnPoint();
+	(*I)							= xr_new<CALifeSpawnPoint> ();
 	(*I)->m_tNearestGraphPointID	= _GRAPH_ID(::Random.randI(Level().AI.GraphHeader().dwVertexCount));
 	(*I)->m_wGroupID				= wGroupID++;
 	j								= 2;

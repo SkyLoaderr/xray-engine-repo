@@ -49,7 +49,7 @@ xrServerEntity*	xrServer::ID_to_entity		(u16 ID)
 //--------------------------------------------------------------------
 IClient*	xrServer::client_Create		()
 {
-	return new xrClientData;
+	return xr_new<xrClientData> ();
 }
 void		xrServer::client_Replicate	()
 {

@@ -131,5 +131,5 @@ void CUI::AddMessage(LPCSTR S, LPCSTR M, u32 C, float life_time)
 		xr_delete(messages.front());
 		messages.erase(u32(0));
 	}
-	messages.push_back(new SUIMessage(S,M,C,life_time));
+	messages.push_back(xr_new<SUIMessage> (S,M,C,life_time));
 }

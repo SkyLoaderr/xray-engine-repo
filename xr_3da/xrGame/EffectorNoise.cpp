@@ -25,7 +25,7 @@ BOOL CEffectorNoise::Process(Fvector &p, Fvector &d, Fvector &n)
 {
 	fStepTime-=Device.fTimeDelta;
 	if (fStepTime<0) {
-		// select new step
+		// select _new_ step
 		vStep.set(rnd_noise(),rnd_noise(),rnd_noise());
 		vStep.mul(rnd_noise()*fForce);
 		fStepTime=_abs(rnd_noise())*.03f;

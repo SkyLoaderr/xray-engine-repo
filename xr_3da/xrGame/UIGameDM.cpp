@@ -9,10 +9,10 @@
 //--------------------------------------------------------------------
 CUIGameDM::CUIGameDM(CUI* parent):CUIGameCustom(parent)
 {
-	pFragList	= new CUIDMFragList		();
-	pPlayerList	= new CUIDMPlayerList	();
-	pFragList->Init						();
-	pPlayerList->Init					();
+	pFragList	= xr_new<CUIDMFragList>		();
+	pPlayerList	= xr_new<CUIDMPlayerList>	();
+	pFragList->Init							();
+	pPlayerList->Init						();
 }
 //--------------------------------------------------------------------
 

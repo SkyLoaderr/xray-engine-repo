@@ -36,13 +36,13 @@ BOOL xrServer::Connect(LPCSTR session_name)
 		switch (type_id)
 		{
 		case GAME_SINGLE:	
-			game				= new game_sv_Single();
+			game				= xr_new<game_sv_Single> ();
 			break;
 		case GAME_DEATHMATCH:
-			game				= new game_sv_Deathmatch();
+			game				= xr_new<game_sv_Deathmatch> ();
 			break;
 		case GAME_CS:
-			game				= new game_sv_CS();
+			game				= xr_new<game_sv_CS> ();
 			break;
 		default:
 			return				FALSE;

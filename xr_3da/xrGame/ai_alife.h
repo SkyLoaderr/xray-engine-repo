@@ -175,28 +175,28 @@ public:
 		if (pSettings->LineExists((*I)->m_caModel, "scheduled") && pSettings->ReadBOOL((*I)->m_caModel, "scheduled")) {
 			if (pSettings->LineExists((*I)->m_caModel, "human") && pSettings->ReadBOOL((*I)->m_caModel, "human"))
 				if (((*I)->m_wCount > 1) && pSettings->LineExists((*I)->m_caModel, "single") && pSettings->ReadBOOL((*I)->m_caModel, "single"))
-					tpALifeDynamicObject	= new CALifeHumanGroup;
+					tpALifeDynamicObject	= xr_new<CALifeHumanGroup> ();
 				else
 					if (pSettings->LineExists((*I)->m_caModel, "trader") && pSettings->ReadBOOL((*I)->m_caModel, "trader"))
-						tpALifeDynamicObject	= new CALifeTrader;
+						tpALifeDynamicObject	= xr_new<CALifeTrader>	();
 					else
-						tpALifeDynamicObject	= new CALifeHuman;
+						tpALifeDynamicObject	= xr_new<CALifeHuman>	();
 			else
 				if (pSettings->LineExists((*I)->m_caModel, "monster") && pSettings->ReadBOOL((*I)->m_caModel, "monster"))
 					if (((*I)->m_wCount > 1) && pSettings->LineExists((*I)->m_caModel, "single") && pSettings->ReadBOOL((*I)->m_caModel, "single"))
-						tpALifeDynamicObject	= new CALifeMonsterGroup;
+						tpALifeDynamicObject	= xr_new<CALifeMonsterGroup> ();
 					else
-						tpALifeDynamicObject	= new CALifeMonster;
+						tpALifeDynamicObject	= xr_new<CALifeMonster> ();
 				else
 					if (pSettings->LineExists((*I)->m_caModel, "zone") && pSettings->ReadBOOL((*I)->m_caModel, "zone"))
-						tpALifeDynamicObject	= new CALifeDynamicAnomalousZone;
+						tpALifeDynamicObject	= xr_new<CALifeDynamicAnomalousZone> ();
 					else {
 						Msg("!Unspecified ALife monster type!");
 						R_ASSERT(false);
 					}
 		}
 		else
-			tpALifeDynamicObject			= new CALifeItem;
+			tpALifeDynamicObject			= xr_new<CALifeItem> ();
 
 		tpALifeDynamicObject->Init			(_SPAWN_ID(I - m_tpSpawnPoints.begin()),m_tpSpawnPoints);
 		CALifeObjectRegistry::Add			(tpALifeDynamicObject);
