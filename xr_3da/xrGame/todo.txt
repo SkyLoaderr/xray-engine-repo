@@ -68,6 +68,21 @@ Oles:
 			+ TODO: Specialized pipeline for Cached visuals
 			. TODO: Cached visuals SSE/3Dnow! optimizations
 -----------------------------------------------------------------------------------------------------------
+	. TODO: LevelCompiler
+			+ TODO: Pixel(texel) level lightmap packer
+			+ TODO: Read textures (any format) from editor's folder
+				+ 25 formats supported, including Photoshop's PSD
+			+ TODO: "unique" textures (lighting on landscape, etc)
+			+ TODO: Actual (calculated) per-pixel(texel) lightmap packer
+			+ TODO: partial lightmap calculation
+			+ TODO: partial lightmap shrinking
+			+ TODO: partial lightmap merging (don't scale uv's)
+			+ TODO: Auto merging visual's (Cached)
+				. TODO: Don't inter-merge, if strictly sorted
+			. TODO: относительный объем CHULLa от сферы - коеффициент
+			. TODO: collision database simplification
+			? TODO: detail objects
+-----------------------------------------------------------------------------------------------------------
 	. BUG:	Memory leaks (4)
 	. BUG:	vid_restart
 	. BUG:	STATE:_Attack: Иногда монстрик подходит вплотную и тупит :(
@@ -155,21 +170,6 @@ Sanya:
 	. TODO: относительный объем CHULLa от сферы - коеффициент
 	. TODO: collision LOD per object (flag: top-level / detail) (dyn-dyn)
 	. TODO: PS доделать box update
------------------------------------------------------------------------------------------------------------
-	. TODO: LevelCompiler
-			+ TODO: Pixel(texel) level lightmap packer
-			+ TODO: Read textures (any format) from editor's folder
-				+ 25 formats supported, including Photoshop's PSD
-			+ TODO: "unique" textures (lighting on landscape, etc)
-			+ TODO: Actual (calculated) per-pixel(texel) lightmap packer
-			+ TODO: partial lightmap calculation
-			+ TODO: partial lightmap shrinking
-			+ TODO: partial lightmap merging (don't scale uv's)
-			+ TODO: Auto merging visual's (Cached)
-				. TODO: Don't inter-merge, if strictly sorted
-			. TODO: относительный объем CHULLa от сферы - коеффициент
-			. TODO: collision database simplification
-			? TODO: detail objects
 -----------------------------------------------------------------------------------------------------------
 1. Передвижение
 	Данные:	

@@ -13,7 +13,7 @@
 		. TODO: collision database simplification
 
 	/ EFFECTS
-		+ TODO: Blurred output, gray output
+		+ TODO: Blurred output, grayed output
 		+ TODO: Static HeightMap
 		. TODO: Dynamic HeightMap
 		+ TODO: Rain with collisions
