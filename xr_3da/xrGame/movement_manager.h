@@ -20,8 +20,7 @@ class CMovementManager :
 	public CGamePathManager,
 	public CLevelPathManager,
 	public CDetailPathManager,
-	public CLocationSelector,
-	virtual public CGameObject
+	public CLocationSelector
 {
 private:
 	enum EPathState {

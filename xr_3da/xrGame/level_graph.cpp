@@ -84,13 +84,11 @@ u32 CLevelGraph::vertex		(u32 current_node_id, const Fvector& position, bool ful
 		return				(current_node_id);
 	}
 
-#pragma todo("Dima to Dima : implement pathfinding search here!")
 	u32						id, id_prev = valid_vertex_id(current_node_id) ? current_node_id : 1;
 	float					distance = dInfinity;
 	CGraphSearchEngine::CPositionParameters	position_params(position,1.f,30.f);
-	xr_vector<u32>			temp;
 
-	if (ai().graph_search_engine().build_path(*this,id_prev,id_prev,temp,position_params)) {
+	if (ai().graph_search_engine().build_path(*this,id_prev,id_prev,0,position_params)) {
 		VERIFY				(valid_vertex_id(position_params.m_vertex_id));
 		return				(position_params.m_vertex_id);
 	}

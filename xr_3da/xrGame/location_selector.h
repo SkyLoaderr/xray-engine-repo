@@ -8,8 +8,13 @@
 
 #pragma once
 
-class CLocationSelector {
+class CLocationSelector : virtual public CGameObject {
 protected:
+	Fvector					m_tHitDirection;
+	u32						m_dwHitTime;
+	u32						m_dwCurrentUpdate;
+	SEnemySelected			m_tSelectedEnemy;
+	u32						m_dwLastLocationSelectionTime;
 public:
 					CLocationSelector		();
 	virtual			~CLocationSelector		();

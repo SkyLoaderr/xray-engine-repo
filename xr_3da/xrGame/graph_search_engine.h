@@ -66,7 +66,7 @@ public:
 				const _Graph			&graph, 
 				u32						start_node, 
 				u32						dest_node, 
-				xr_vector<u32>			&node_path,
+				xr_vector<u32>			*node_path,
 				const _Parameters		&parameters
 			)
 	{
@@ -81,7 +81,7 @@ public:
 		path_manager.setup			(
 			&graph,
 			m_data_storage,
-			&node_path,
+			node_path,
 			start_node,
 			dest_node,
 			parameters
@@ -97,7 +97,7 @@ public:
 				const _Graph			&graph, 
 				u32						start_node, 
 				u32						dest_node, 
-				xr_vector<u32>			&node_path,
+				xr_vector<u32>			*node_path,
 				_Parameters				&parameters
 			)
 	{
@@ -112,7 +112,7 @@ public:
 		path_manager.setup			(
 			&graph,
 			m_data_storage,
-			&node_path,
+			node_path,
 			start_node,
 			dest_node,
 			parameters

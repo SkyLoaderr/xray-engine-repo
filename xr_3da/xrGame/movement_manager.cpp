@@ -127,96 +127,11 @@ void CMovementManager::move_along_path	(CPHMovementControl *movement_control, fl
 	Device.Statistic.Physics.End	();
 }
 
-void CMovementManager::init_selector(PathManagers::CAbstractNodeEvaluator &S, CSquad &Squad, CEntity* &Leader)
-{
-	CSquad						&Squad = Level().Teams[g_Team()].Squads[g_Squad()];
-	CEntity						*Leader = Squad.Leader;
-	if (Leader->g_Health() <= 0)
-		Leader					= this;
-	R_ASSERT					(Leader);
-
-	S.m_tHitDir			= m_tHitDir;
-	S.m_dwHitTime		= m_dwHitTime;
-	S.m_dwCurTime		= m_dwCurrentUpdate;
-	S.m_tMe				= this;
-	S.m_tpMyNode		= AI_Node;
-	S.m_tMyPosition		= Position();
-	
-	if (m_tEnemy.Enemy) {
-		vfSaveEnemy();
-		S.m_tEnemy			= m_tEnemy.Enemy;
-		S.m_tEnemyPosition	= m_tEnemy.Enemy->Position();
-		S.m_dwEnemyNode		= m_tEnemy.Enemy->AI_NodeID;
-		S.m_tpEnemyNode		= m_tEnemy.Enemy->AI_Node;
-	}
-	else {
-		S.m_tEnemy			= m_tSavedEnemy;
-		S.m_tEnemyPosition	= m_tSavedEnemyPosition;
-		S.m_dwEnemyNode		= m_dwSavedEnemyNodeID;
-		R_ASSERT2			(int(m_dwSavedEnemyNodeID) > 0, "Invalid enemy vertex");
-		S.m_tpEnemyNode		= m_tpSavedEnemyNode;
-	}
-	
-	S.m_taMembers		= &(Squad.Groups[g_Group()].Members);
-	S.m_dwStartNode		= AI_NodeID;
-	S.m_tStartPosition	= Position();
-}
-
-void CMovementManager::find_position(PathManagers::CAbstractNodeEvaluator &tNodeEvaluator, CSquad &Squad, CEntity* &Leader)
-{
-	CSquad						&Squad = Level().Teams[g_Team()].Squads[g_Squad()];
-	CEntity						*Leader = Squad.Leader;
-	if (Leader->g_Health() <= 0)
-		Leader					= this;
-	R_ASSERT					(Leader);
-
-//	Device.Statistic.AI_Range.Begin();	// определение времени вып. функции
-//	
-//	if ((!m_dwLastRangeSearch) || (m_detail_path.empty()) || (int(m_detail_cur_point_index) > int(m_detail_path.size()) - 4) || (speed() < EPS_L) || ((tNodeEvaluator.m_dwCurTime - m_dwLastRangeSearch > MIN_RANGE_SEARCH_TIME_INTERVAL))) {
-//		
-//		m_dwLastRangeSearch = tNodeEvaluator.m_dwCurTime;
-//		
-//		float fOldCost = MAX_NODE_ESTIMATION_COST;
-//		
-//		if (m_level_dest_node != u32(-1)) {
-//			tNodeEvaluator.m_tpCurrentNode	= ai().level_graph().vertex(m_level_dest_node);
-//			tNodeEvaluator.m_fDistance		= Position().distance_to(ai().level_graph().vertex_position(m_level_dest_node));
-//			fOldCost						= tNodeEvaluator.ffEvaluateNode();
-////			Msg								("Old  : [%d][%f]",AI_NodeID,fOldCost);
-//		}
-//
-//		Squad.Groups[g_Group()].GetAliveMemberInfo(tNodeEvaluator.m_taMemberPositions, tNodeEvaluator.m_taMemberNodes, tNodeEvaluator.m_taDestMemberPositions, tNodeEvaluator.m_taDestMemberNodes, this);
-//		
-//		Device.Statistic.AI_Range.End();
-//		
-//		tNodeEvaluator.vfShallowGraphSearch(ai().q_mark_bit);
-//		
-//		Device.Statistic.AI_Range.Begin();
-//
-////		Msg									("Best : [%d][%f]",tNodeEvaluator.m_dwBestNode,tNodeEvaluator.m_fBestCost);
-////		Msg									("Params : %f - [%f][%f][%f][%f][%f][%f]",m_tEnemy.Enemy->Position().distance_to(Position()),tNodeEvaluator.m_fMaxEnemyDistance,tNodeEvaluator.m_fOptEnemyDistance,tNodeEvaluator.m_fMinEnemyDistance,tNodeEvaluator.m_fMaxEnemyDistanceWeight,tNodeEvaluator.m_fOptEnemyDistanceWeight,tNodeEvaluator.m_fMinEnemyDistanceWeight);
-////		Msg									("Evaluator : [%f][%f][%f]",tNodeEvaluator.m_fMaxEnemyDistance,tNodeEvaluator.m_fOptEnemyDistance,tNodeEvaluator.m_fMinEnemyDistance);
-//		if ((m_level_dest_node != tNodeEvaluator.m_dwBestNode) && (tNodeEvaluator.m_fBestCost < fOldCost - 0.f)){
-//			m_level_dest_node		= tNodeEvaluator.m_dwBestNode;
-//			if (!m_level_dest_node) {
-//				Msg("! Invalid vertex Evaluator vertex");
-//			}
-//			m_level_path.clear		();
-//			m_tPathState			= ePathStateBuildNodePath;
-//			m_bIfSearchFailed		= false;
-//		} 
-//		else
-//			m_bIfSearchFailed		= true;
-//	}
-//
-//	Device.Statistic.AI_Range.End();
-}
-
 void CMovementManager::find_path(PathManagers::CAbstractNodeEvaluator *tpNodeEvaluator)
 {
 //	Device.Statistic.AI_Path.Begin();
 //	
-//	if (m_level_dest_node == AI_NodeID) {
+//	if (m_level_dest_node == m_dwLevelVertexID) {
 //		m_level_path.clear		();
 //		m_detail_path.clear();
 //		m_detail_cur_point_index		= 0;
@@ -227,16 +142,16 @@ void CMovementManager::find_path(PathManagers::CAbstractNodeEvaluator *tpNodeEva
 //	}
 //	
 //	if (tpNodeEvaluator)
-//		ai().m_tpAStar->ffFindOptimalPath(AI_NodeID,m_level_dest_node,AI_Path,tpNodeEvaluator->m_dwEnemyNode,tpNodeEvaluator->m_fOptEnemyDistance);
+//		ai().m_tpAStar->ffFindOptimalPath(m_dwLevelVertexID,m_level_dest_node,AI_Path,tpNodeEvaluator->m_dwEnemyNode,tpNodeEvaluator->m_fOptEnemyDistance);
 //	else
-//		ai().m_tpAStar->ffFindMinimalPath(AI_NodeID,m_level_dest_node,AI_Path);
+//		ai().m_tpAStar->ffFindMinimalPath(m_dwLevelVertexID,m_level_dest_node,AI_Path);
 //	
 //	if (m_level_path.empty()) {
 //#ifdef DEBUG
-//		Msg("! !!!! node_start %d, node_finish %d",AI_NodeID,m_level_dest_node);
+//		Msg("! !!!! node_start %d, node_finish %d",m_dwLevelVertexID,m_level_dest_node);
 //#endif
 ////		if (tpNodeEvaluator) {
-//			ai().m_tpAStar->ffFindMinimalPath(AI_NodeID,m_level_dest_node,AI_Path);
+//			ai().m_tpAStar->ffFindMinimalPath(m_dwLevelVertexID,m_level_dest_node,AI_Path);
 //			if (m_level_path.empty())
 //				m_tPathState = ePathStateSearchNode;
 //			else
@@ -301,12 +216,12 @@ void CMovementManager::build_path(PathManagers::CAbstractNodeEvaluator *node_evl
 			break;
 		}
 		case ePathStateBuildNodePath : {
-			if ((m_level_dest_node != AI_NodeID) && (m_level_path.empty() || (m_level_path[m_level_path.size() - 1] != m_level_dest_node) || m_detail_path.empty() || ((m_detail_path.size() - 1) <= m_detail_cur_point_index)))
+			if ((m_level_dest_node != m_dwLevelVertexID) && (m_level_path.empty() || (m_level_path[m_level_path.size() - 1] != m_level_dest_node) || m_detail_path.empty() || ((m_detail_path.size() - 1) <= m_detail_cur_point_index)))
 				vfBuildPathToDestinationPoint(tpNodeEvaluator);
 			else
-				if ((m_level_dest_node == AI_NodeID) && tpDestinationPosition) {
+				if ((m_level_dest_node == m_dwLevelVertexID) && tpDestinationPosition) {
 					m_level_path.clear();
-					m_level_path.push_back(AI_NodeID);
+					m_level_path.push_back(m_dwLevelVertexID);
 					m_tPathState = ePathStateBuildTravelLine;
 				}
 				else
@@ -326,4 +241,3 @@ void CMovementManager::build_path(PathManagers::CAbstractNodeEvaluator *node_evl
 	}
 	m_tPathType = tPathType;
 }
-
