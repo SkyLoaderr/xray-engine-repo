@@ -87,7 +87,36 @@ public:
 	void Shoot(const dReal* rayO,const dReal* rayD);
 
 };
+////////////////////////////////////////////////////////////////////////////
+class CPHWorld {
+	dSpaceID Space;
+	
+	CPHMesh Mesh;
+public:
+	CPHGun Gun;
+	CPHJeep Jeep;
+	
+	//vector<CPHElement*> elements;
+//	CPhysicsWorld(){};
+	~CPHWorld(){};
 
+	dSpaceID GetSpace(){return Space;};
+	
+	void Create();
+	//CPHElement* AddElement(){
+	//CPHElement* phelement=new CPHElement(Space);
+	//elements.push_back(phelement);
+	//return phelement;
+	//}
+	void Destroy();
+
+	void Step(dReal step=0.025f);
+
+	void Render();
+
+//private:
+//static void FUNCCALL NearCallback(void* /*data*/, dGeomID o1, dGeomID o2);
+};
 /////////////////////////////////////////////////////////////////////////////
 static dWorldID phWorld;
 /////////////////////////////////
@@ -103,67 +132,66 @@ vector <dGeomID> m_trans;
 vector <Fsphere> m_spheras_data;
 vector <Fobb>    m_boxes_data;
 float m_volume;
+Fvector m_mass_center;
 dMass m_mass;
 dSpaceID m_space;
-//Fvector m_start;
 dBodyID m_body;
 dGeomID m_group;
+Fmatrix m_m0,m_m2;
 void			create_Sphere				(Fsphere&	V);
 void			create_Box					(Fobb&		V);
 void			calculate_it_data			(const Fvector& mc,float mass);
 public:
 ///
-	virtual	void			add_Sphere				(Fsphere&	V);
+	virtual	void			add_Sphere				(const Fsphere&	V);
 														
-	virtual	void			add_Box					(Fobb&		V);
+	virtual	void			add_Box					(const Fobb&		V);
 
 	void			build(dSpaceID space);
+	void			destroy();
 	Fvector			get_mc_data();
 	Fvector			get_mc_geoms();
-//////////////////////////////////////////////////////
-	virtual void			Activate				(Fmatrix& m0, float dt01, Fmatrix& m2){;};
-	virtual void			Deactivate				(){;};
+	void			Start();
+	dBodyID			get_body(){return m_body;};
+	float			get_volume(){get_mc_data();return m_volume;};
+	void			SetTransform(const Fmatrix& m0);
+//////////////////////////////////////////////////////////////////////////////////////////////////////////
+/////////////////////////////////////////////////////////////////////////////////////////////////////////
+	virtual void			Activate				(const Fmatrix& m0, float dt01, const Fmatrix& m2);
+	virtual void			Deactivate				();
 	virtual void			setMass					(float M);
-	virtual void			applyForce				(Fvector& dir, float val){;};
-	virtual void			applyImpulse			(Fvector& dir, float val){;};
-	virtual void			Update					(){;};
-	CPHElement(dSpaceID a_space){ m_space=a_space;};
+	virtual void			applyForce				(const Fvector& dir, float val){;};
+	virtual void			applyImpulse			(const Fvector& dir, float val){;};
+	virtual void			Update					();
+	CPHElement(dSpaceID a_space){ 
+								m_space=a_space;
+								m_body=NULL;};
 	//CPHElement(){ m_space=ph_world->GetSpace();};
 	virtual ~CPHElement	();
 };
 ///////////////////////////////////////////////////////////////////////
-
-class CPHWorld {
-	dSpaceID Space;
-	
-	CPHMesh Mesh;
+class CPHShell: public CPhysicsShell {
+vector<CPHElement*> elements;
+Fmatrix m_m2;
+Fmatrix m_m0;
+dBodyID m_body;
 public:
-	CPHGun Gun;
-	CPHJeep Jeep;
-	
-	vector<CPHElement*> elements;
-//	CPhysicsWorld(){};
-	~CPHWorld(){};
+	virtual	void			add_Element				(CPhysicsElement* E)		  {elements.push_back((CPHElement*)E);};
+	virtual	void			add_Joint				(CPhysicsJoint* E, int E1, int E2)					{};
+	virtual void			applyImpulseTrace		(const Fvector& pos, const Fvector& dir, float val)	{};
 
-	dSpaceID GetSpace(){return Space;};
-	
-	void Create();
-/*
-	CPHElement* AddElement(){
-	CPHElement* phelement=new CPHElement(Space);
-	elements.push_back(phelement);
-	return phelement;
-	}
-*/
-	void Destroy();
+	virtual void			Update					()	;											
 
-	void Step(dReal step=0.025f);
+	virtual void			Activate				(const Fmatrix& m0, float dt01, const Fmatrix& m2);
+	virtual void			Deactivate				()		;
 
-	void Render();
+	virtual void			setMass					(float M)									;
 
-//private:
-//static void FUNCCALL NearCallback(void* /*data*/, dGeomID o1, dGeomID o2);
+	virtual void			applyForce				(const Fvector& dir, float val)				{};
+	virtual void			applyImpulse			(const Fvector& dir, float val)				{};
+
 };
 
 
+///////////////////////////////////////////////////////////////////////////////////////////////////
 #endif PHYSICS_H
