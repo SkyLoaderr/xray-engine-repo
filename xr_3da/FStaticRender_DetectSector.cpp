@@ -1,7 +1,7 @@
 #include "stdafx.h"
 #include "fstaticrender.h"
 #include "xr_creator.h"
-
+ 
 CSector* CRender::detectSector(Fvector& P)
 {
 	XRC.ray_options	(CDB::OPT_ONLYNEAREST);
