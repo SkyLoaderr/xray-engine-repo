@@ -448,6 +448,7 @@ void CPathNodes::Calculate(CCustomMonster* Me, Fvector& p_dest, Fvector& p_src, 
 	}
 
 	if (mdist < EPS_L) {
+		TravelStart = TravelPath.size() - 1;
 		fSpeed = 0;
 		return;
 	}
