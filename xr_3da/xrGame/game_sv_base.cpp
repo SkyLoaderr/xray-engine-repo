@@ -26,6 +26,15 @@ game_PlayerState*	game_sv_GameState::get_id					(DWORD id)								// DPNID
 	if (0==C)			return 0;
 	else				return &C->ps;
 }
+
+u32					game_sv_GameState::get_it_2_id				(DWORD it)
+{
+	xrServer*		S	= Level().Server;
+	xrClientData*	C	= (xrClientData*)S->client_Get		(it);
+	if (0==C)			return 0;
+	else				return C->ID;
+}
+
 string64*			game_sv_GameState::get_name_it				(DWORD it)
 {
 	xrServer*		S	= Level().Server;

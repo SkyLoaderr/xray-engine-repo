@@ -338,7 +338,7 @@ BOOL CLevel::Load_GameSpecific_Before()
 
 BOOL CLevel::Load_GameSpecific_After()
 {
-	if (Game.type == GAME_SINGLE) 
+	if (GameID() == GAME_SINGLE) 
 	{
 		m_tpAI_DDD	= new CAI_DDD();
 		m_tpAI_DDD->vfLoad();

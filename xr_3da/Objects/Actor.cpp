@@ -248,7 +248,7 @@ void CActor::Hit		(float iLost, Fvector &dir, CObject* who)
 {
 	if (g_Alive()<=0) return;
 
-	switch (Game())
+	switch (GameID())
 	{
 	case GAME_SINGLE:		
 		{

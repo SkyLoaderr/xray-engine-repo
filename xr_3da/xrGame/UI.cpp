@@ -40,7 +40,7 @@ CUI::~CUI()
 
 void CUI::Load()
 {
-	switch (Game())
+	switch (GameID())
 	{
 	case GAME_CS:
 	case GAME_ASSAULT:
@@ -91,7 +91,7 @@ void CUI::OnFrame()
 		CWeaponList* wpns = m_Actor->GetItemList();
 		if (wpns) UIWeapon.Out(wpns->ActiveWeapon());
 		// out GAME-style depend information
-		switch (Game())
+		switch (GameID())
 		{
 			case GAME_SINGLE:		
 				break;
@@ -144,7 +144,7 @@ bool CUI::Render()
 	UIHealth.Render();
 
 	// out GAME-style depend information
-	switch (Game())
+	switch (GameID())
 	{
 	case GAME_SINGLE:		
 		break;
@@ -170,7 +170,7 @@ bool CUI::Render()
 bool CUI::OnKeyboardPress(int dik)
 {
 	// global
-	switch (Game())
+	switch (GameID())
 	{
 	case GAME_ASSAULT:
 	case GAME_CS:		

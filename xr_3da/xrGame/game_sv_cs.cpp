@@ -32,7 +32,7 @@ void	game_sv_CS::OnStartRound	()
 		for		(u32 it=0; it<cnt; it++)	
 		{
 			game_PlayerState*	ps	=	get_it	(it);
-			ps->money_total			+=	ps->money_for_round;
+			ps->money_total			=	ps->money_total + ps->money_for_round;
 			ps->money_for_round		=	0;
 		}
 		Unlock	();
