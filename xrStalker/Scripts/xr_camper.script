@@ -25,7 +25,7 @@ function evaluator_place:__init(name, storage) super (nil, name)
 	self.a = storage
 end
 function evaluator_place:evaluate()
-	if self.a.retreat == true then 
+	if self.a.retreat == false then 
 		return true
 	end
 	

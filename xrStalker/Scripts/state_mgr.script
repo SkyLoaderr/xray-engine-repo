@@ -585,12 +585,13 @@ function state_manager:__init(npc)
 	self.target_state = "idle"
 	self.current_direction = nil
 	self.target_position = nil
+	self.no_rotate = false
 	self.combat = false
 	self.alife = true
 	self.emerg = {}
 end
 function state_manager:set_state(state_name, callback, timeout, target, emerg)
-	printf("Set Stated called: for %s State: %s", self.npc:name(), state_name)
+	printf("Set State called: for %s State: %s", self.npc:name(), state_name)
 	if state_lib.states[state_name] == nil then
 		utils.abort("ERROR: ILLEGAL SET STATE CALLED!!! %s fo %s", state_name, self.npc:name())
 	end
@@ -630,9 +631,11 @@ function state_manager:set_state(state_name, callback, timeout, target, emerg)
 		if target.look_object ~= nil then 
 			self.look_object = target.look_object:id()
 		end
+		self.no_rotate = false
 	else
 		self.look_position = nil
 		self.look_object = nil
+		self.no_rotate = true
 	end
 	
 	self.callback = callback
