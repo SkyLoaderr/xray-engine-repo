@@ -212,7 +212,7 @@ end
 ----------------------------------------------------------------------------------------------------------------------
 function Trader:set_wait ()
 
-    self.need_interrupt == false
+    self.need_interrupt = false
     reset_action (self.npc, self.script)
     local variant = round (math.random (1.0, 2.0))
     if variant == 1 then
