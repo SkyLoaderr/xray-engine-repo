@@ -24,3 +24,14 @@ void CSE_ALifeObjectHangingLamp::script_register(lua_State *L)
 		)
 	];
 }
+void CSE_ALifeObjectPhysic::script_register(lua_State *L)
+{
+	module(L)[
+		luabind_class_alife2(
+			CSE_ALifeObjectPhysic,
+			"cse_alife_object_physic",
+			CSE_ALifeDynamicObjectVisual,
+			CSE_PHSkeleton
+		)
+	];
+}
