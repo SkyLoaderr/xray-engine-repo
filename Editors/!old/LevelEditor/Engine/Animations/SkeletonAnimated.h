@@ -235,6 +235,6 @@ public:
 	virtual	CSkeletonAnimated*	dcast_PSkeletonAnimated	()				{ return this;	}
 	virtual						~CSkeletonAnimated	();
 };
-IC CSkeletonAnimated* PSkeletonAnimated(IRender_Visual* V) { return V->dcast_PSkeletonAnimated(); }
+IC CSkeletonAnimated* PSkeletonAnimated(IRender_Visual* V) { return V?V->dcast_PSkeletonAnimated():0; }
 //---------------------------------------------------------------------------
 #endif

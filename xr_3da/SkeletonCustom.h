@@ -147,6 +147,6 @@ public:
 
 	virtual	CKinematics*		dcast_PKinematics		()				{ return this;	}
 };
-IC CKinematics* PKinematics		(IRender_Visual* V)		{ return V->dcast_PKinematics(); }
+IC CKinematics* PKinematics		(IRender_Visual* V)		{ return V?V->dcast_PKinematics():0; }
 //---------------------------------------------------------------------------
 #endif
