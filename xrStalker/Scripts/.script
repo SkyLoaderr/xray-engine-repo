@@ -133,7 +133,6 @@ function pp_linear_lerp:__init(effector_type,start_time,life_time,start_power,de
 end
 
 function pp_linear_lerp:process(pp)
-	printf			("inherited")
 	effector.process(self,pp)
 
 	local curr_time	= device():time_global()
@@ -150,7 +149,6 @@ function pp_linear_lerp:process(pp)
 		end
 	end
 	
-	printf			("computing")
 	local dual		= duality()
 	local noise		= noise()
 	local blend		= color()
@@ -173,7 +171,6 @@ function pp_linear_lerp:process(pp)
 	blend.b			= self.min_power.blend_color.b 	 + (self.max_power.blend_color.b 	- self.min_power.blend_color.b 	)	* d 
 	blend.a			= self.min_power.blend_color.a 	 + (self.max_power.blend_color.a 	- self.min_power.blend_color.a 	)	* d 
 
-	printf			("assigning")
 	pp.blend_color	= blend
 	noise.color		= color
 	pp.dual			= dual
@@ -181,7 +178,6 @@ function pp_linear_lerp:process(pp)
 	
 	self.info		= pp
 	
-	printf			("exiting")
 	return          true
 end
 
