@@ -146,7 +146,7 @@ IC char*						xr_strlwr				(char* S)
 {	return strlwr(S);				}
 
 #ifdef BREAK_AT_STRCMP
-XRCORE_API	int					xr_strcmp				( const char* S1, const char* S2 );
+XRCORE_API	int	__stdcall		xr_strcmp				( const char* S1, const char* S2 );
 #else
 IC int							xr_strcmp				( const char* S1, const char* S2 )
 {	return (int)strcmp(S1,S2);  }
