@@ -41,6 +41,7 @@ CSE_ALifeSimulator::CSE_ALifeSimulator(xrServer *tpServer)
 	m_tpTrader1.reserve		(MAX_STACK_DEPTH);
 	m_tpSums1.reserve		(MAX_STACK_DEPTH);
 	m_tpSums2.reserve		(MAX_STACK_DEPTH);
+	m_changing_level		= false;
 }
 
 CSE_ALifeSimulator::~CSE_ALifeSimulator()
@@ -313,9 +314,18 @@ void CSE_ALifeSimulator::vfInitAI_ALifeMembers()
 
 bool CSE_ALifeSimulator::change_level	(NET_Packet &net_packet)
 {
-	Fvector						m_safe_angles = m_tpActor->o_Angle, m_safe_position = m_tpActor->o_Position;
-	u32							m_safe_level_vertex_id = m_tpActor->m_tNodeID;
-	ALife::_GRAPH_ID			m_safe_graph_vertex_id = m_tpActor->m_tGraphID;
+	if (m_changing_level)
+		return					(false);
+
+	m_changing_level			= true;
+	for (u32 i=0, n = m_tpActor->children.size(); i<n; ++i)
+		if (tpfGetObjectByID(m_tpActor->children[i],true))
+			Msg					("%2d[%5d] : Item %s",i,m_tpActor->children[i],tpfGetObjectByID(m_tpActor->children[i])->s_name_replace);
+
+	ALife::_GRAPH_ID			safe_graph_vertex_id	= m_tpActor->m_tGraphID;
+	u32							safe_level_vertex_id	= m_tpActor->m_tNodeID;
+	Fvector						safe_position			= m_tpActor->o_Position;
+	Fvector						safe_angles				= m_tpActor->o_Angle;
 	
 	net_packet.r				(&m_tpActor->m_tGraphID,sizeof(m_tpActor->m_tGraphID));
 	net_packet.r				(&m_tpActor->m_tNodeID,sizeof(m_tpActor->m_tNodeID));
@@ -324,10 +334,10 @@ bool CSE_ALifeSimulator::change_level	(NET_Packet &net_packet)
 	
 	Save						();
 
-	m_tpActor->o_Angle			= m_safe_angles;
-	m_tpActor->o_Position		= m_safe_position;
-	m_tpActor->m_tNodeID		= m_safe_level_vertex_id;
-	m_tpActor->m_tGraphID		= m_safe_graph_vertex_id;
+	m_tpActor->m_tGraphID		= safe_graph_vertex_id;
+	m_tpActor->m_tNodeID		= safe_level_vertex_id;
+	m_tpActor->o_Position		= safe_position;
+	m_tpActor->o_Angle			= safe_angles;
 
 	return						(true);
 }

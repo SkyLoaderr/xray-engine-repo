@@ -82,8 +82,8 @@ void CSE_ALifeSimulator::vfCreateOnlineObject(CSE_ALifeDynamicObject *tpALifeDyn
 			}
 #endif
 
-//			R_ASSERT3				(ai().level_graph().valid_vertex_id(l_tpALifeDynamicObject->m_tNodeID),"Invalid vertex for object ",l_tpALifeInventoryItem->s_name_replace);
-			m_tpServer->Process_spawn(tNetPacket,0,FALSE,l_tpALifeInventoryItem);
+//			R_ASSERT3								(ai().level_graph().valid_vertex_id(l_tpALifeDynamicObject->m_tNodeID),"Invalid vertex for object ",l_tpALifeInventoryItem->s_name_replace);
+			m_tpServer->Process_spawn				(tNetPacket,0,FALSE,l_tpALifeInventoryItem);
 			l_tpALifeDynamicObject->o_Position		= tpALifeDynamicObject->o_Position;
 			l_tpALifeDynamicObject->m_tNodeID		= tpALifeDynamicObject->m_tNodeID;
 			l_tpALifeDynamicObject->s_flags.and		(u16(-1) ^ M_SPAWN_UPDATE);

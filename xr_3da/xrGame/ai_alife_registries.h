@@ -28,8 +28,9 @@ public:
 	{
 		ALife::D_OBJECT_PAIR_IT		I = m_tObjectRegistry.find(tObjectID);
 		
-		if (!bNoAssert)
+		if (!bNoAssert) {
 			R_ASSERT2				(m_tObjectRegistry.end() != I,"Specified object hasn't been found in the Object registry!");
+		}
 		else
 			if (m_tObjectRegistry.end() == I)
 				return				(0);

@@ -71,8 +71,7 @@ class CSE_ALifeSimulator :
 
 	DWORD_VECTOR					m_tpTempPath;
 
-	Fvector							m_actor_angles;
-	ALife::_GRAPH_ID				m_actor_vertex_id;
+	bool							m_changing_level;
 
 	// common
 			void					vfUpdateDynamicData			(bool						bReserveID = true);
