@@ -1394,6 +1394,6 @@ void CUIInventoryWnd::UpdateWeight()
 		strcpy(cl, weightColor);
 	}
 
-	sprintf(buf, "%%cdefaultCarry weight %s%6.1f %s/%5.1f", cl, total, weightColor, max);
+	sprintf(buf, "%%cdefaultcarry weight %s%4.1f %s/%4.1f", cl, total, weightColor, max);
 	UIStaticWeight.SetText(buf);
 }
