@@ -294,6 +294,9 @@ function action_help:execute ()
     action_base.execute (self)
     
     if distance_between (self.object, self.a.npc) < 40 and self.first == false then
+       if self.object:active_sound_count () ~= 0 then
+          return 
+       end     
        self.first = true
        self.object:clear_animations ()
        self.object:add_animation ("waunded_ruka_0", true)
@@ -373,6 +376,9 @@ function action_enemy:execute ()
     action_base.execute (self)
     
     if distance_between (self.object, self.object:best_enemy ()) < 20 and self.object:see (self.object:best_enemy ()) and self.first == false then
+       if self.object:active_sound_count () ~= 0 then
+          return 
+       end     
        self.first = true
        self.object:clear_animations ()
        self.object:add_animation ("waunded_monser_0", true)
