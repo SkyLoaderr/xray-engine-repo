@@ -569,8 +569,8 @@ IC	void CLevelNavigationGraph::select_sector	(CCellVertex *v, u32 &right, u32 &d
 	if (!completed)
 		return;
 
-//	VERIFY					(!v->m_all_computed_dirs || (v->m_computed_right == right));
-//	VERIFY					(!v->m_all_computed_dirs || (v->m_computed_down == down));
+	VERIFY					(!v->m_all_computed_dirs || (v->m_computed_right == right));
+	VERIFY					(!v->m_all_computed_dirs || (v->m_computed_down == down));
 
 	v->m_computed_right		= u16(right);
 	v->m_computed_down		= u16(down);
