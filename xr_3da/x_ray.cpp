@@ -111,20 +111,24 @@ static BOOL CALLBACK logDlgProc( HWND hw, UINT msg, WPARAM wp, LPARAM lp )
 
 void	test_rtc	()
 {
-	CStatTimer		tC,tD;
+	CStatTimer		tM,tC,tD;
 	u32				bytes=0;
+	tM.FrameStart	();
 	tC.FrameStart	();
 	tD.FrameStart	();
 	for		(u32 test=0; test<1000; test++)
 	{
-		u32			in_size			= ::Random.randI(1024,16*1024);
+		u32			in_size			= ::Random.randI(1024,96*1024);
 		u32			out_size_max	= rtc_csize		(in_size);
 		u8*			p_in			= xr_alloc<u8>	(in_size);
 		u8*			p_in_tst		= xr_alloc<u8>	(in_size);
 		u8*			p_out			= xr_alloc<u8>	(out_size_max);
 		for (u32 git=0; git<in_size; git++)			p_in[git] = (u8)::Random.randI	(8);	// garbage
-
 		bytes		+= in_size;
+
+		tM.Begin	();
+		Memory.mem_copy(p_in_tst,p_in,in_size);
+		tM.End		();
 
 		tC.Begin	();
 		u32			out_size		= rtc_compress	(p_out,out_size_max,p_in,in_size);
@@ -142,8 +146,10 @@ void	test_rtc	()
 		xr_free		(p_in_tst);
 		xr_free		(p_in);
 	}
+	tM.FrameEnd		();
 	tC.FrameEnd		();
 	tD.FrameEnd		();
+	Msg				("* mm-memcpy:	   %f K/ms",(float(bytes)/tM.result)/1024.f);
 	Msg				("* compression:   %f K/ms",(float(bytes)/tC.result)/1024.f);
 	Msg				("* decompression: %f K/ms",(float(bytes)/tD.result)/1024.f);
 }
