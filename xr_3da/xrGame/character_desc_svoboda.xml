@@ -403,7 +403,12 @@
 		</supplies>
 			
 		<start_dialog>hello_dialog</start_dialog>
-		<actor_dialog>mil_cook_common</actor_dialog>
+		<actor_dialog>mil_cook_common1</actor_dialog>
+		<actor_dialog>mil_cook_common2</actor_dialog>
+		<actor_dialog>mil_cook_common3</actor_dialog>
+		<actor_dialog>mil_cook_common4</actor_dialog>
+		<actor_dialog>mil_cook_common5</actor_dialog>
+		<actor_dialog>mil_cook_common6</actor_dialog>
 	</specific_character>
 
 
