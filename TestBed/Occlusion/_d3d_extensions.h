@@ -48,10 +48,6 @@ public:
     float			power;          /* Sharpness if specular highlight */
 	
 	IC	D3DMATERIAL8	*d3d(void) { return (D3DMATERIAL8 *)this; };
-	IC	void	set(_material& m)
-	{
-		CopyMemory(this,&m,sizeof(m));
-	}
 	IC	void	set(float r, float g, float b)
 	{
 		VERIFY(sizeof(_material)==sizeof(D3DMATERIAL8));

@@ -48,6 +48,7 @@
 #include "xrXRC.h"
 
 #include "sound.h"
+#include "_d3d_extensions.h"
 
 // TODO: reference additional headers your program requires here
 
