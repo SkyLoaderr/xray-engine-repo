@@ -113,8 +113,8 @@ BOOL	game_sv_CS::OnTargetTouched	(u32 id_who, u32 eid_target)
 		if(ps_who->team == -1) ps_who->team = l_pCSBase->g_team(); // @@@ WT : Пока не сделан респавн
 
 		if(l_pCSBase->g_team() == ps_who->team) {				// Если игрок пришел на свою базу
-			ps_who->flags |= GAME_PLAYER_FLAG_ONCSBASE;
-			if(ps_who->flags&GAME_PLAYER_FLAG_HASARTFCT) {		// и у него есть артефакт
+			ps_who->flags |= GAME_PLAYER_FLAG_CS_ON_BASE;
+/*			if(ps_who->flags&GAME_PLAYER_FLAG_HASARTFCT) {		// и у него есть артефакт
 				teams[ps_who->team].num_targets++;
 				// @@@ WT : нужно выбросить артефакт
 				ps_who->flags &= ~GAME_PLAYER_FLAG_HASARTFCT;
@@ -127,16 +127,19 @@ BOOL	game_sv_CS::OnTargetTouched	(u32 id_who, u32 eid_target)
 					}											//
 					OnRoundEnd("MISSION_complete");
 				}
-			}
-		}
+			}*/
+		} else ps_who->flags |= GAME_PLAYER_FLAG_CS_ON_ENEMY_BASE;
 		Unlock();
 		return false;
 	}
 	xrSE_MercuryBall *l_pMBall =  dynamic_cast<xrSE_MercuryBall*>(e_entity);
 	if(l_pMBall) {
-		if(ps_who->flags&GAME_PLAYER_FLAG_ONCSBASE) return false;
+		if(ps_who->flags&GAME_PLAYER_FLAG_CS_HAS_ARTEFACT) return false;
+		if(ps_who->flags&GAME_PLAYER_FLAG_CS_ON_BASE) return false;
 		Lock();
-		ps_who->flags |= GAME_PLAYER_FLAG_HASARTFCT;
+		if(ps_who->flags&GAME_PLAYER_FLAG_CS_ON_BASE) teams[ps_who->team].num_targets--;
+		else if(ps_who->flags&GAME_PLAYER_FLAG_CS_ON_ENEMY_BASE) teams[(ps_who->team+1)%2].num_targets--;
+		ps_who->flags |= GAME_PLAYER_FLAG_CS_HAS_ARTEFACT;
 		Unlock();
 	}
 	return TRUE;
@@ -150,9 +153,33 @@ BOOL	game_sv_CS::OnTargetDetouched	(u32 id_who, u32 eid_target)
 	xrSE_Target_CSBase *l_pCSBase =  dynamic_cast<xrSE_Target_CSBase*>(e_entity);
 	if(l_pCSBase) {
 		Lock();
-		if(l_pCSBase->g_team() == ps_who->team) ps_who->flags &= ~GAME_PLAYER_FLAG_ONCSBASE;
+		if(l_pCSBase->g_team() == ps_who->team) ps_who->flags &= ~GAME_PLAYER_FLAG_CS_ON_BASE;
+		else ps_who->flags &= ~GAME_PLAYER_FLAG_CS_ON_ENEMY_BASE;
 		Unlock();
 		return false;
+	}
+	xrSE_MercuryBall *l_pMBall =  dynamic_cast<xrSE_MercuryBall*>(e_entity);
+	if(l_pMBall) {
+		Lock();
+		s16 l_team = -1;
+		if(ps_who->flags&GAME_PLAYER_FLAG_CS_ON_BASE) {
+			l_team = ps_who->team;
+			teams[l_team].num_targets++;
+		} else if(ps_who->flags&GAME_PLAYER_FLAG_CS_ON_ENEMY_BASE) {
+			l_team = (ps_who->team+1)%2;
+			teams[l_team].num_targets++;
+		}
+		ps_who->flags &= ~GAME_PLAYER_FLAG_CS_HAS_ARTEFACT;
+		if(teams[l_team].num_targets == 3) {		// если у команды 3 артефакта - Победа!!!
+			OnTeamScore(l_team);
+			u32	cnt = get_count();						// Доп. бонус за выполнение задания
+			for(u32 it=0; it<cnt; it++)	{
+				game_PlayerState* ps = get_it(it);
+				if(ps->team == l_team) ps->money_for_round += 1000;
+			}											//
+			OnRoundEnd("MISSION_complete");
+		}
+		Unlock();
 	}
 	return TRUE;
 }
