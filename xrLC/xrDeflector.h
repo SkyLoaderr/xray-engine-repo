@@ -47,7 +47,7 @@ public:
 	Fvector				N;
 	struct Layer
 	{
-		b_light*		base;
+		int				base_id;
 		b_texture		lm;
 		
 		DWORD			Area ()	{ return (lm.dwWidth+2*BORDER)*(lm.dwHeight+2*BORDER); }
@@ -71,7 +71,7 @@ public:
 	void	OA_Export			();
 		
 	void	GetRect				(UVpoint &min, UVpoint &max);
-	Layer*	GetLayer			(b_light* base);
+	Layer*	GetLayer			(int base_id);
 	DWORD	GetFaceCount()		{ return UVpolys.size();	};
 		
 	VOID	Light				(CDB::COLLIDER* DB, LSelection* LightsSelected, HASH& H	);

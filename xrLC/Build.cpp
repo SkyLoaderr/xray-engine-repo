@@ -7,7 +7,6 @@
 #include "Image.h"
 
 vector<OGF_Base *>	g_tree;
-vector<DetailPatch>	g_pathes;
 b_params			g_params;
 
 //////////////////////////////////////////////////////////////////////
@@ -27,7 +26,7 @@ void transfer(const char *name, vector<T> &dest, CStream& F, DWORD chunk)
 extern DWORD*	Surface_Load	(char* name, DWORD& w, DWORD& h);
 extern void		Surface_Init	();
 
-CBuild::CBuild	(b_params* L, CStream& FS)
+CBuild::CBuild	(b_params& Params, CStream& FS)
 {
 	DWORD			i	= 0;
 
@@ -53,7 +52,7 @@ CBuild::CBuild	(b_params* L, CStream& FS)
 		DWORD v_count			=	F->Length()/sizeof(b_vertex);
 		g_vertices.reserve		(3*v_count/2);
 		scene_bb.invalidate		();
-		for (i=0; i<L->v_count; i++)
+		for (i=0; i<v_count; i++)
 		{
 			Vertex*	pV			= new Vertex;
 			F->Rvector			(pV->P);
@@ -72,27 +71,27 @@ CBuild::CBuild	(b_params* L, CStream& FS)
 		F = FS.OpenChunk		(EB_Faces);
 		DWORD f_count			=	F->Length()/sizeof(b_face);
 		g_faces.reserve			(f_count);
-		for (i=0; i<L->f_count; i++)
+		for (i=0; i<f_count; i++)
 		{
 			Face*	_F			= new Face;
 			b_face	B;
 			F->Read				(&B,sizeof(B));
 
-			_F->dwMaterial		= WORD(B->dwMaterial);
+			_F->dwMaterial		= WORD(B.dwMaterial);
 
 			// Vertices and adjacement info
 			for (DWORD it=0; it<3; it++)
 			{
-				int id			= B->v[it];
+				int id			= B.v[it];
 				R_ASSERT		(id<(int)g_vertices.size());
 				_F->SetVertex	(it,g_vertices[id]);
 			}
 
 			// transfer TC
 			UVpoint				uv1,uv2,uv3;
-			uv1.set				(B->t[0].x,B->t[0].y);
-			uv2.set				(B->t[1].x,B->t[1].y);
-			uv3.set				(B->t[2].x,B->t[2].y);
+			uv1.set				(B.t[0].x,B.t[0].y);
+			uv2.set				(B.t[1].x,B.t[1].y);
+			uv3.set				(B.t[2].x,B.t[2].y);
 			_F->AddChannel		( uv1, uv2, uv3 );
 		}
 		Progress			(p_total+=p_cost);
@@ -168,40 +167,46 @@ CBuild::CBuild	(b_params* L, CStream& FS)
 	
 	// process textures
 	Status			("Processing textures...");
-	Surface_Init	();
-	for (DWORD t=0; t<L->tex_count; t++)
 	{
-		Progress(float(t)/float(L->tex_count));
-		
-		b_texture&		TEX = L->textures[t];
-		b_BuildTexture	BT;
-		CopyMemory		(&BT,&TEX,sizeof(TEX));
-		
-		// load thumbnail
-		LPSTR N			= BT.name;
-		if (strchr(N,'.')) *(strchr(N,'.')) = 0;
-		char th_name[256]; strconcat(th_name,"\\\\x-ray\\stalkerdata$\\textures\\",N,".thm");
-		CCompressedStream THM	(th_name,THM_SIGN);
-		
-		// analyze thumbnail information
-		R_ASSERT(THM.ReadChunk(THM_CHUNK_TEXTUREPARAM,&BT.THM));
-		
-		// load surface if it has an alpha channel or has "implicit lighting" flag
-		BT.dwWidth	= BT.THM.width;
-		BT.dwHeight	= BT.THM.height;
-		BT.bHasAlpha= BT.THM.HasAlphaChannel();
-		if (BT.bHasAlpha || (BT.THM.flag&STextureParams::flImplicitLighted))	
+		Surface_Init	();
+		F = FS.OpenChunk(EB_Textures);
+		DWORD tex_count	= F->Length()/sizeof(b_texture);
+		for (DWORD t=0; t<tex_count; t++)
 		{
-			Msg			("- loading: %s",N);
-			DWORD w=0,	h=0;
-			BT.pSurface = Surface_Load(N,w,h);
-			BT.Vflip	();
-		} else {
-			// Free surface memory
+			Progress		(float(t)/float(tex_count));
+
+			b_texture		TEX;
+			F->Read			(&TEX,sizeof(TEX));
+
+			b_BuildTexture	BT;
+			CopyMemory		(&BT,&TEX,sizeof(TEX));
+
+			// load thumbnail
+			LPSTR N			= BT.name;
+			if (strchr(N,'.')) *(strchr(N,'.')) = 0;
+			char th_name[256]; strconcat(th_name,"\\\\x-ray\\stalkerdata$\\textures\\",N,".thm");
+			CCompressedStream THM	(th_name,THM_SIGN);
+
+			// analyze thumbnail information
+			R_ASSERT(THM.ReadChunk(THM_CHUNK_TEXTUREPARAM,&BT.THM));
+
+			// load surface if it has an alpha channel or has "implicit lighting" flag
+			BT.dwWidth	= BT.THM.width;
+			BT.dwHeight	= BT.THM.height;
+			BT.bHasAlpha= BT.THM.HasAlphaChannel();
+			if (BT.bHasAlpha || (BT.THM.flag&STextureParams::flImplicitLighted))	
+			{
+				Msg			("- loading: %s",N);
+				DWORD w=0,	h=0;
+				BT.pSurface = Surface_Load(N,w,h);
+				BT.Vflip	();
+			} else {
+				// Free surface memory
+			}
+
+			// save all the stuff we've created
+			textures.push_back	(BT);
 		}
-		
-		// save all the stuff we've created
-		textures.push_back	(BT);
 	}
 
 	// post-process materials
@@ -211,21 +216,21 @@ CBuild::CBuild	(b_params* L, CStream& FS)
 		b_material &M = materials[m];
 		if (65535==M.shader_xrlc)	{
 			// No compiler shader
-			M.reserved	= DWORD(-1);
+			M.reserved	= WORD(-1);
 		} else {
-			int id = shaders.GetID(shader_xrlc_names[M.shader_xrlc].name);
+			int id = shaders.GetID(shader_compile[M.shader_xrlc].name);
 			if (id<0) {
 				Msg("ERROR: Shader '%s' not found in library",shader_compile[M.shader].name);
 				R_ASSERT(id>=0);
 			}
-			M.reserved = DWORD(id);
+			M.reserved = WORD(id);
 		}
 	}
 
 	Progress(p_total+=p_cost);
 	 
 	// Parameter block
-	CopyMemory(&g_params,&L->params,sizeof(b_params));
+	CopyMemory(&g_params,&Params,sizeof(b_params));
 	g_params.m_SS_DedicateCached	= 8;
 	g_params.m_bConvertProgressive	= FALSE;
 }
@@ -237,10 +242,10 @@ CBuild::~CBuild()
  
 extern int RegisterString(string &T);
 
-void CBuild::Run()
+void CBuild::Run	(LPCSTR path)
 {
-	CFS_File fs		((string(g_params.L_path)+"level.").c_str());
-	fs.open_chunk(	fsL_HEADER);
+	CFS_File fs		(path);
+	fs.open_chunk	(fsL_HEADER);
 	hdrLEVEL H;		ZeroMemory(&H,sizeof(H));
 	H.XRLC_version = XRCL_PRODUCTION_VERSION;
 	strcpy			(H.name,g_params.L_name);

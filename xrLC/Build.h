@@ -73,7 +73,7 @@ public:
 	void	mem_Compact				();
 	void	mem_CompactSubdivs		();
 public:
-	void	Run						();
+	void	Run						(LPCSTR path);
 
 	void	PreOptimize				();
 	void	CorrectTJunctions		();

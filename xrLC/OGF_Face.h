@@ -130,26 +130,6 @@ struct OGF_Base
 };
 extern vector<OGF_Base *>		g_tree;
 
-struct OGF_Patch : public OGF_Base
-{
-	DWORD				treeID;
-	vector<DetailPatch>	data;
-
-	OGF_Patch(vector<DetailPatch>& source) : OGF_Base(0)
-	{
-		data = source;
-		isPatch = TRUE;
-	}
-
-	virtual void		Save(CFS_Base &fs);
-	virtual void		GetGeometry(vector<Fvector> &RES)
-	{
-		vector<DetailPatch>::iterator I;
-		for (I=data.begin(); I!=data.end(); I++)
-			RES.push_back(I->P);
-	}
-};
-
 struct OGF : public OGF_Base
 {
 	DWORD				treeID;

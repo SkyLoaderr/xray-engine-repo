@@ -96,7 +96,7 @@ void Startup(LPSTR     lpCmdLine)
 	_DELETE					(FS);
 	
 	// Call for builder
-	pBuild->Run				();
+	pBuild->Run				(("game\\data\\levels\\"+string(name)+"\\level.").c_str());
 	delete					pBuild;
 
 	// Show statistic
