@@ -298,6 +298,7 @@ public:
 	bool IsTalkEnabled();
 
 	void TransferItem(CLuaGameObject* pItem, CLuaGameObject* pForWho);
+	void TransferMoney(int money, CLuaGameObject* pForWho);
 	void SetGoodwill(int goodwill, CLuaGameObject* pWhoToSet);
 	void SetRelation(ALife::ERelationType relation, CLuaGameObject* pWhoToSet);
 	void SetStartDialog(LPCSTR dialog_id);

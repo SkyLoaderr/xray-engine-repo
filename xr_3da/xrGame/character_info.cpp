@@ -71,6 +71,8 @@ bool CCharacterInfo::Load(LPCSTR name_id, LPCSTR xml_file)
 			m_sTeamName			= xml_doc.Read("team", 0, NULL);
 			m_sRank				= xml_doc.Read("rank", 0, NULL);
 			m_sVisualName		= xml_doc.Read("visual", 0, NULL);
+			m_sStartDialog		= xml_doc.Read("start_dialog", 0, NULL);
+
 			m_iIconX			= xml_doc.ReadAttribInt("icon", 0, "x");
 			m_iIconY			= xml_doc.ReadAttribInt("icon", 0, "y");
 			m_iMapIconX			= xml_doc.ReadAttribInt("map_icon", 0, "x");

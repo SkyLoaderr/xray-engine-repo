@@ -230,7 +230,7 @@ void CPhraseDialog::load_shared	(LPCSTR xml_file)
 	//loading from XML
 
 	XML_NODE* dialog_node = uiXml.NavigateToNodeWithAttribute("dialog", "id", *m_sDialogID);
-	R_ASSERT3(dialog_node, "dialog id=", *m_sDialogID);
+	R_ASSERT3(dialog_node, "not found dialog id=", *m_sDialogID);
 	uiXml.SetLocalRoot(dialog_node);
 
 	//заголовок 

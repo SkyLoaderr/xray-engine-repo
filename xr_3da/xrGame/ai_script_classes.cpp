@@ -180,6 +180,19 @@ void CLuaGameObject::TransferItem(CLuaGameObject* pItem, CLuaGameObject* pForWho
 }
 
 
+void CLuaGameObject::TransferMoney(int money, CLuaGameObject* pForWho)
+{
+	R_ASSERT(pForWho);
+	CInventoryOwner* pOurOwner		= dynamic_cast<CInventoryOwner*>(m_tpGameObject); VERIFY(pOurOwner);
+	CInventoryOwner* pOtherOwner	= dynamic_cast<CInventoryOwner*>(pForWho->m_tpGameObject); VERIFY(pOtherOwner);
+
+	R_ASSERT3(pOurOwner->m_dwMoney-money>=0, "Character does not have enought money", pOurOwner->CharacterInfo().Name());
+	
+	pOurOwner->m_dwMoney	-= money;
+	pOtherOwner->m_dwMoney	+= money;
+}
+
+
 void CLuaGameObject::SetGoodwill(int goodwill, CLuaGameObject* pWhoToSet)
 {
 	CInventoryOwner* pInventoryOwner = dynamic_cast<CInventoryOwner*>(m_tpGameObject);

@@ -17,6 +17,7 @@
 
 #include "ai_space.h"
 #include "script_engine.h"
+#include "AI_PhraseDialogManager.h"
 
 //////////////////////////////////////////////////////////////////////////
 // CInventoryOwner class 
@@ -87,6 +88,11 @@ BOOL CInventoryOwner::net_Spawn		(LPVOID DC)
 	{
 		LPCSTR name_id = pThis->spawn_ini()->r_string("game_info", "name_id");
 		init_default_profile = !CharacterInfo().Load(name_id);
+		
+		CAI_PhraseDialogManager* dialog_manager = dynamic_cast<CAI_PhraseDialogManager*>(this);
+		if(dialog_manager && *CharacterInfo().m_sStartDialog != NULL)
+			dialog_manager->SetStartDialog(*CharacterInfo().m_sStartDialog);
+
 	}
 	
 	if(init_default_profile)

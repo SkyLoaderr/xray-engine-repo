@@ -129,7 +129,7 @@ void CInfoPortion::load_shared	(LPCSTR xml_file)
 	info_data()->m_DisableInfo.clear();
 	for(i=0; i<disable_num; ++i)
 	{
-		INFO_ID info_id = (INFO_ID)uiXml.ReadInt(pNode, "disable", i);
+		INFO_ID info_id = CInfoPortion::StrToID(uiXml.Read(pNode, "disable", NULL));
 		info_data()->m_DisableInfo.push_back(info_id);
 	}
 

@@ -249,6 +249,7 @@ void CScriptEngine::export_object()
 			.def("is_talk_enabled",				&CLuaGameObject::IsTalkEnabled)
 
 			.def("transfer_item",				&CLuaGameObject::TransferItem)
+			.def("transfer_money",				&CLuaGameObject::TransferMoney)
 			.def("set_goodwill",				&CLuaGameObject::SetGoodwill)
 			.def("set_relation",				&CLuaGameObject::SetRelation)
 			.def("set_start_dialog",			&CLuaGameObject::SetStartDialog)

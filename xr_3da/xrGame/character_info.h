@@ -70,6 +70,9 @@ protected:
 	ref_str m_sTeamName;
 	ref_str m_sRank;
 
+	//начальный диалог
+	ref_str m_sStartDialog;
+
 
 	//отношения которые мы имеем о других персонажей
 	DEFINE_MAP(u16, SRelation, RELATION_MAP, RELATION_MAP_IT);
