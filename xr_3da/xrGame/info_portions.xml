@@ -1,0 +1,37 @@
+<?xml version='1.0' encoding="UTF-8"?>
+
+<game_information_portions>
+
+	<info_portion index="1" id="actor_start">
+		<location >
+			<level>0</level>
+			<x>-250</x>
+			<y>-127</y>
+			<icon name="Dealer" x="2" y="2" width="1" height="1"></icon>
+			<text>Bring artefacts to the Dealer</text>
+		</location>
+		<!-- список диалогов, который может инициировать InfoPortion -->
+		<dialog>trader_job</dialog>
+		<dialog>trader_talk_about</dialog>
+	</info_portion>
+
+	<info_portion index="2" id="trader_start1">
+		<location >
+			<level>0</level>
+			<object>trader1</object>
+			<icon name="stalker 'Dog'" x="0" y="5" width="1" height="1"></icon>
+			<text>You must kill the "Dog"... \nTake artefact from his body...</text>
+		</location>
+		<dialog>another_test_dialog</dialog>
+	
+		<!-- список деактивируемы info_portions -->
+		<disable>1</disable>
+	</info_portion>
+
+	<info_portion index="3" id="trader_start2">
+		<dialog>job_box</dialog>
+	</info_portion>
+
+
+
+</game_information_portions>

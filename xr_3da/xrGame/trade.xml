@@ -1,0 +1,77 @@
+﻿<?xml version='1.0' encoding="UTF-8"?>
+<window x="0" y="0" w="640" h="480" r="227" g="121" b="222" texture="1">
+	<!-- ICONS OF TRADING CHARACTERS -->	
+	<static_icon x="27" y="22" width="256" height="256">
+		<texture>ui\ui_trade_character</texture>
+	</static_icon>
+	<static_icon x="818" y="22" width="256" height="256">
+		<texture>ui\ui_trade_character</texture>
+	</static_icon>
+
+
+	<!-- BUTTONS -->
+	<button x="345" y="690" width="138" height="30">
+		<texture>ui\ui_button_04</texture>
+		<text>Perform trade</text>
+	</button>
+	<button x="545" y="690" width="138" height="30">
+		<texture>ui\ui_button_04</texture>
+		<text>To talk</text>
+	</button>
+
+
+	<!-- OUR BAG -->
+	<frame_window x="20" y="270" width="290" height="450">
+		<base_texture>ui\ui_frame</base_texture>
+		<left_top_texture x="15" y="20">ui\ui_inv_info_over_lt</left_top_texture>
+		<left_bottom_texture x="19" y="155">ui\ui_frame_over_lb</left_bottom_texture>
+		<title x="10" y="-12" width="240" height="60"><text font="letterica18" r="255" g="255" b="255"></text></title>
+	</frame_window>
+
+	<dragdrop_list x="20" y="20" width="240" height="450"
+			cell_width = "40" cell_height="40"
+			rows_num="18" cols_num="6" rows_num_view="10"></dragdrop_list>
+
+
+	<!-- OTHERS BAG -->
+	<frame_window x="705" y="270" width="290" height="450">
+		<base_texture>ui\ui_frame</base_texture>
+		<left_top_texture x="15" y="20">ui\ui_inv_info_over_lt</left_top_texture>
+		<left_bottom_texture x="19" y="155">ui\ui_frame_over_lb</left_bottom_texture>
+		<title x="10" y="-12" width="240" height="60"><text font="letterica18" r="255" g="255" b="255"></text></title>
+	</frame_window>
+
+	<dragdrop_list x="20" y="20" width="240" height="400"
+			cell_width = "40" cell_height="40"
+			rows_num="18" cols_num="6" rows_num_view="10"></dragdrop_list>
+
+	<!-- OUR TRADE -->
+	<static x="338" y="260" width="347" height="212">
+		<texture>ui\ui_trade_list_back</texture>
+		<text font="letterica18" r="255" g="255" b="255" x="50" y="10"></text>
+	</static>
+
+	<dragdrop_list x="30" y="35" width="280" height="160"
+			cell_width = "40" cell_height="40"
+			rows_num="18" cols_num="7" rows_num_view="4"></dragdrop_list>
+
+
+	<!-- OTHERS TRADE -->
+	<static x="338" y="480" width="347" height="212">
+		<texture>ui\ui_trade_list_back</texture>
+		<text font="letterica18" r="255" g="255" b="255" x="50" y="10"></text>
+	</static>
+
+	<dragdrop_list x="30" y="35" width="280" height="160"
+			cell_width = "40" cell_height="40"
+			rows_num="18" cols_num="7" rows_num_view="4"></dragdrop_list>
+
+
+	<!-- DESCRIPTION WINDOW -->
+	<desc_frame_window x="350" y="22" width="320" height="256">
+		<base_texture>ui\ui_frame_03</base_texture>
+	</desc_frame_window>
+
+
+</window>
+

@@ -1,0 +1,72 @@
+<?xml version='1.0' encoding="UTF-8"?>
+
+<xml>
+	<!-- PERSON INFORMATION  -->
+	<character name_id="novice">
+		<name>Unknown Stalker</name>
+		<icon x="0" y="9"></icon>
+		<map_icon x="0" y="4"></map_icon>
+		<visual>string_name</visual>
+		<rank>Novice</rank>
+		<team>Lonewolf</team>
+	</character>
+	<character name_id="veteran">
+		<name>Unknown Stalker</name>
+		<icon x="2" y="9"></icon>
+		<map_icon x="0" y="4"></map_icon>
+		<visual>string_name2</visual>
+		<rank>veteran</rank>
+		<team>Lonewolf</team>
+	</character>
+	<character name_id="veteran2">
+		<name>Unknown Stalker</name>
+		<icon x="6" y="9"></icon>
+		<map_icon x="0" y="4"></map_icon>
+		<visual>string_name2</visual>
+		<rank>veteran</rank>
+		<team>Lonewolf</team>
+	</character>
+
+	<character name_id="monolith">
+		<name>Unknown Stalker</name>
+		<icon x="4" y="9"></icon>
+		<map_icon x="0" y="4"></map_icon>
+		<visual>string_name2</visual>
+		<rank>veteran</rank>
+		<team>clan Monolith</team>
+	</character>
+	<character name_id="dolg">
+		<name>Dolg</name>
+		<icon x="10" y="9"></icon>
+		<map_icon x="0" y="4"></map_icon>
+		<visual>string_name2</visual>
+		<rank>veteran</rank>
+		<team>clan Dolg</team>
+	</character>
+	<character name_id="freedom">
+		<name>Freedom</name>
+		<icon x="8" y="9"></icon>
+		<map_icon x="0" y="4"></map_icon>
+		<visual>string_name2</visual>
+		<rank>veteran</rank>
+		<team>clan Freedom</team>
+	</character>
+	<character name_id="trader">
+		<name>Trader</name>
+		<icon x="3" y="1"></icon>
+		<map_icon x="0" y="4"></map_icon>
+		<visual>string_name2</visual>
+		<rank>veteran</rank>
+		<team>trader</team>
+	</character>
+	<character name_id="actor">
+		<name>Gunner</name>
+		<icon x="0" y="9"></icon>
+		<map_icon x="0" y="4"></map_icon>
+		<visual>string_name2</visual>
+		<rank>novice</rank>
+		<team>Lonewolf</team>
+	</character>
+
+
+</xml>

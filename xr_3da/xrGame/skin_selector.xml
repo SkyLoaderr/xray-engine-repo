@@ -1,0 +1,23 @@
+﻿<?xml version='1.0' encoding="UTF-8"?>
+<window>
+<!-- WINDOW FOR CHOOSING SKINS -->
+
+    <!-- SKIN WINDOW TEMPLATE -->
+	<frame_window x="0" y="0" width="320" height="700">
+		<base_texture>ui\ui_frame_03</base_texture>
+		<title x="20" y="0" width="240" height="60">
+			<text font="header" r="255" g="255" b="255"></text>
+		</title>
+	</frame_window>
+
+	<!-- OK and CANCEL buttons -->
+	<button x="0" y="900" width="150" height="40">
+		<texture>ui\ui_button_01</texture>
+		<text x="25" y="2" font="header" r="255" g="255" b="255" a="130">Ok</text>
+	</button>
+	<button x="0" y="900" width="150" height="40">
+		<texture>ui\ui_button_01</texture>
+		<text x="25" y="2" font="header" r="255" g="255" b="255" a="130">Cancel</text>
+	</button>
+
+</window>

@@ -1,0 +1,234 @@
+<?xml version='1.0' encoding="UTF-8"?>
+
+<game_dialogs>
+	<dialog id="test_dialog">
+		<!-- название диалога, если оно не задано, то в качестве названия будет
+		     использоваться текст первой фразы. -->	
+		<caption>Say 'Hello'</caption>
+
+		<!-- cкриптовый предикат активизации диалога -->
+		<precondition>info_test1.test_predicate</precondition>
+		<!-- их может быть несколько -->
+		<precondition>info_test1.test_predicate</precondition>
+
+
+		<phrase_list>
+			<!-- фразы - пустышки, полезны, если мы хотим пропустить 
+			     очередь говорить одного из собеседников -->	
+			<phrase id="0">
+				<next>1</next>
+			</phrase>
+			<phrase id="1">
+				<next>2</next>
+				<next>3</next>
+			</phrase>
+
+			<phrase id="2">
+				<precondition>info_test1.test_predicate1</precondition>
+				<text>Hello, man!</text>
+				<next>4</next>
+				<next>5</next>
+			</phrase>
+			<phrase id="3">
+				<text>HI!</text>
+				<next>4</next>
+				<next>5</next>
+			</phrase>
+
+			<phrase id="5">
+				<goodwill>60</goodwill>
+				<text>Oh!, glad to see you again</text>
+				<next>6</next>
+			</phrase>
+			<phrase id="4">
+				<text>Hey, who the f@%%k are you?!</text>
+				<next>6</next>
+			</phrase>
+
+
+
+			<phrase id="6">
+				<text>Sorry, but I have to go.</text>
+				<next>7</next>
+				<!-- cкриптовые функции, которые могут быть вызваны -->
+				<action>info_test1.test_action</action>
+				<action>info_test1.test_action1</action>
+			</phrase>
+			<phrase id="7">
+				<text>Don't worry, Se'ya</text>
+			</phrase>
+		</phrase_list>
+	</dialog>
+
+
+	<dialog id="another_test_dialog">
+		<phrase_list>
+			<phrase id="0">
+				<text>execuse me mister</text>
+				<next>1</next>
+				<next>2</next>
+			</phrase>
+			<phrase id="1">
+				<text>yes, what do you want!</text>
+				<next>3</next>
+			</phrase>
+			<phrase id="2">
+				<text>ah, it's you again</text>
+				<next>3</next>
+			</phrase>
+			<phrase id="3">
+				<text>I need to hury up</text>
+			</phrase>
+		</phrase_list>
+	</dialog>
+
+	<dialog id="trader_hello_dialog">
+		<phrase_list>
+			<phrase id="0">
+				<text>Привет! У меня для тебя есть работка на выходных.</text>
+			</phrase>
+		</phrase_list>
+	</dialog>
+
+	<dialog id="trader_job">
+		<phrase_list>
+			<phrase id="0">
+				<text>Какая у тебя есть работа?</text>
+				<next>1</next>
+			</phrase>
+			<phrase id="1">
+				<text>Есть два задания. Притащить ящик с блокпоста и выкрасть кое-что с Агропрома.</text>
+				<next>2</next>
+				<next>3</next>
+			</phrase>
+			<phrase id="2">
+				<goodwill>70</goodwill>
+				<text>Я возьмусь за ящик с блокпоста.</text>
+				<next>4</next>
+			</phrase>
+			<phrase id="3">
+				<text>Я возьмусь выкрасть кое-что с Агропрома.</text>
+				<next>5</next>
+			</phrase>
+			<phrase id="4">
+				<text>Надо проникнуть на блокпост и тихо украсть ящик, так чтоб никто не заметил.</text>
+				<next>6</next>
+				<next>7</next>
+			</phrase>
+			<phrase id="5">
+				<text>На Агропроме что-то раскопали военные сталкеры... Принеси мне это и я тебе хорошо заплачу.</text>
+				<next>7</next>
+				<next>8</next>
+			</phrase>
+			<phrase id="6">
+				<text>Ок. Я принесу ящик.</text>
+				<action>trader_job.give_job_box01</action>
+				<next>9</next>
+			</phrase>
+			<phrase id="7">
+				<text>Нет, не буду браться.</text>
+				<next>10</next>
+			</phrase>
+			<phrase id="8">
+				<text>Ок. Я принесу то, что раскопали военные сталкеры.</text>
+				<next>9</next>
+			</phrase>
+			<phrase id="9">
+				<text>Я заплачу, когда ты принесешь это мне.</text>
+			</phrase>
+			<phrase id="10">
+				<text>Ну как знаешь.</text>
+			</phrase>
+		</phrase_list>
+	</dialog>
+
+	<dialog id="trader_talk_about">
+		<phrase_list>
+			<phrase id="0">
+				<text>Расскажи мне о...</text>
+				<next>1</next>
+			</phrase>
+			<phrase id="1">
+				<text>Что тебя интересует?</text>
+				<next>2</next>
+				<next>3</next>
+				<next>4</next>
+				<next>5</next>
+			</phrase>
+			<phrase id="2">
+				<goodwill>70</goodwill>
+				<text>Что ты знаешь о Стрелке?</text>
+				<next>6</next>
+			</phrase>
+			<phrase id="3">
+				<text>Расскажи мне о Зоне.</text>
+				<next>7</next>
+			</phrase>
+			<phrase id="4">
+				<text>Мне нужно оружие и экипировка, где я могу их достать?</text>
+				<next>8</next>
+			</phrase>
+			<phrase id="5">
+				<text>Мне нужны деньги, как я могу их заработать в Зоне?</text>
+				<next>9</next>
+			</phrase>
+			<phrase id="6">
+				<text>Слышал, что о нем знает сталкер в гаражах.</text>
+			</phrase>
+			<phrase id="7">
+				<text>В Зоне без оружия опасно...</text>
+			</phrase>
+			<phrase id="8">
+				<text>Ты можешь купить их у меня.</text>
+			</phrase>
+			<phrase id="9">
+				<text>Выполняй мои задания и приноси артефакты, я за них хорошо плачу.</text>
+			</phrase>
+		</phrase_list>
+	</dialog>
+
+
+	<dialog id="job_box">
+                <precondition>trader_job.is_box_present</precondition>
+		<phrase_list>
+			<phrase id="0">
+				<text>Я выполнил работу! Принес ящик с блокпоста.</text>
+				<next>1</next>
+			</phrase>
+			<phrase id="1">
+				<text>Отлично, ты хорошо поработал. Вот твои деньги.</text>
+				<action>trader_job.give_box_to_trader</action>
+			</phrase>
+		</phrase_list>
+	</dialog>
+
+
+	<dialog id="hello_dialog">
+		<phrase_list>
+			<phrase id="0">
+				<next>1</next>
+			</phrase>
+			<phrase id="1">
+				<next>2</next>
+				<next>3</next>
+			</phrase>
+			<phrase id="2">
+				<goodwill>70</goodwill>
+				<text>Hi, how do you do?</text>
+				<next>4</next>
+				<next>5</next>
+			</phrase>
+			<phrase id="3">
+				<text>It's you again?!</text>
+			</phrase>
+
+			<phrase id="4">
+				<text>Fine, thank you</text>
+			</phrase>
+			<phrase id="5">
+				<text>So so...Don't mind</text>
+			</phrase>
+		</phrase_list>
+	</dialog>
+
+</game_dialogs>

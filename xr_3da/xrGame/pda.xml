@@ -1,0 +1,40 @@
+﻿<?xml version='1.0' encoding="UTF-8"?>
+<window x="0" y="0" w="640" h="480" r="227" g="121" b="222" texture="1">
+	<!-- MAIN PDA WINDOW FRAME -->
+	<background_static x="40" y="40" width="940" height="680">
+		<texture>ui\ui_pda_back_big</texture>
+	</background_static>
+
+	<!-- PDA STATIC HEADER -->
+	<static x="0" y="0" width="940" height="128">
+		<texture>ui\ui_pda_frame_top</texture>
+	</static>
+	
+	<!-- Main buttons background -->
+	<mbbackground_frame_line x="115" y="585" width="605" height="30">
+		<base_texture>ui\ui_string_01</base_texture>
+	</mbbackground_frame_line>
+
+	<!-- TIME DISPLAY BACKGROUND -->
+	<timer_frame_line x="730" y="585" width="150" height="30">
+		<base_texture>ui\ui_string_01</base_texture>
+	</timer_frame_line>
+                   
+	<!-- TAB CONTROL -->
+	<tab x="132" y="580" width="600" height="30">
+		<!-- BUTTONS -->
+		<button x="0" y="10" width="55" height="20">
+			<text x="0" y="0" font="letterica18" r="255" g="255" b="255">Events</text>
+		</button>
+		<button x="70" y="10" width="60" height="20">
+			<text x="0" y="0" font="letterica18" r="255" g="255" b="255">Contacts</text>
+		</button>
+		<button x="148" y="10" width="30" height="20">
+			<text x="0" y="0" font="letterica18" r="255" g="255" b="255">Map</text>
+		</button>
+		<button x="195" y="10" width="95" height="20">
+			<text x="0" y="0" font="letterica18" r="255" g="255" b="255">Encyclopedia</text>
+		</button>
+	</tab>
+
+</window>

@@ -1,0 +1,27 @@
+﻿<?xml version='1.0' encoding="UTF-8"?>
+<!-- CHARACTER INFO IN THE INVENTORY MENU -->
+<window>
+	<!-- ICON -->
+	<icon_static x="12" y="30" width="128" height="128"></icon_static>
+
+	<!-- NAME -->
+	<static x="20" y="162" width="240" height="60">
+		<text x="0" y="0" font="small" r="255" g="128" b="64"></text>
+	</static>
+
+	<!-- RANK -->
+	<static x="20" y="172" width="240" height="60">
+		<text x="0" y="0" font="small" r="255" g="255" b="255">Rank</text>
+	</static>
+
+	<!-- COMMUNITY -->
+	<static x="20" y="182" width="240" height="60">
+		<text x="0" y="0" font="small" r="255" g="255" b="255"></text>
+	</static>
+
+	<!-- RELATION -->
+	<relation_static x="20" y="192" width="240" height="60">
+		<text x="0" y="0" font="small" r="255" g="255" b="255"></text>
+	</relation_static>
+</window>
+
