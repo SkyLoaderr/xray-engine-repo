@@ -74,8 +74,8 @@ void	light::set_position	(const Fvector& P)
 	while (0==S && cnt<32) 
 	{
 		cnt		++;
-		_P.y	+=	.1;
-		S		=	RImplementation.detectSector(position);
+		_P.y	+=	.1f;
+		S		=	(CSector*) RImplementation.detectSector(position);
 	}
 
 	if (0==S && sector)			return;
