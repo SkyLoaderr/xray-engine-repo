@@ -64,7 +64,7 @@ void CUIOutfitSlot::AttachChild(CUIWindow *pChild)
 	//в этот слот могут помещаться только костюмы
 	R_ASSERT(pOutfit);
 
-	if (Game().type == GAME_SINGLE)
+	if (Game().type != GAME_SINGLE)
 	{
 		UIOutfitIcon.SetShader(GetMPCharIconsShader());
 		CObject *pInvOwner = dynamic_cast<CObject*>(Level().CurrentEntity());
