@@ -59,7 +59,8 @@ CInifile::CInifile( LPCSTR szFileName, BOOL ReadOnly)
 
 #ifdef ENGINE_BUILD
 	if (!Engine.FS.Exist(szFileName))
-#else
+#endif
+#ifdef _EDITOR
 	if (!FS.Exist(szFileName))
 #endif
 	{
@@ -228,16 +229,36 @@ CInifile::Sect& CInifile::ReadSection( LPCSTR S )
 {
 	char	section[256]; strcpy(section,S); strlwr(section);
 	Sect Test; Test.Name = section; RootIt I = lower_bound(DATA.begin(),DATA.end(),Test,sect_pred());
+#ifdef ENGINE_BUILD
 	if (I!=DATA.end() && strcmp(I->Name,section)==0)	return *I;
 	else												Device.Fatal("Can't open section '%s'",S);
+#else
+	#ifdef _EDITOR
+	if (I!=DATA.end() && strcmp(I->Name,section)==0)	return *I;
+	else												Device.Fatal("Can't open section '%s'",S);
+	#else
+	R_ASSERT(I!=DATA.end() && strcmp(I->Name,section)==0);
+	return *I;
+	#endif
+#endif
 }
 
 LPCSTR	CInifile::ReadSTRING(LPCSTR S, LPCSTR L )
 {
 	Sect&	I = ReadSection(S);
 	Item Test; Test.first=(char*)L; SectIt	A = lower_bound(I.begin(),I.end(),Test,item_pred());
+#ifdef ENGINE_BUILD
 	if (A!=I.end() && strcmp(A->first,L)==0)	return A->second;
 	else										Device.Fatal("Can't find variable '%s'",L);
+#else
+	#ifdef _EDITOR
+		if (A!=I.end() && strcmp(A->first,L)==0)	return A->second;
+		else										Device.Fatal("Can't find variable '%s'",L);
+	#else
+		R_ASSERT(A!=I.end() && strcmp(A->first,L)==0);
+		return A->second;
+	#endif
+#endif
 }
 
 int  CInifile::ReadINT(LPCSTR S, LPCSTR L)
