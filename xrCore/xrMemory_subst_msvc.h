@@ -1,3 +1,7 @@
+// Global new/delete override
+IC void*	operator new	(size_t size)		{	return Memory.mem_alloc(size);	}
+IC void		operator delete (void *p)			{	Memory.mem_free(p);				}
+
 // new(0)
 template <class T>
 IC	T*		xr_new		()
