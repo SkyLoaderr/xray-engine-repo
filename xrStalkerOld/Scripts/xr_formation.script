@@ -26,7 +26,7 @@ local snd_replic = xr_sounds_id.chugai_sounds + 500
 -------------------------------------------------------------------------------------------------------------------
 class "evaluator_formation" ( property_evaluator )
 
-function evaluator_formation:__init( name, a ) super()
+function evaluator_formation:__init( name, a ) super(nil, name)
 	self.a = a
 end
 
@@ -39,7 +39,7 @@ end
 -------------------------------------------------------------------------------------------------------------------
 class "evaluator_position" ( property_evaluator )
 
-function evaluator_position:__init( name, a ) super()
+function evaluator_position:__init( name, a ) super(nil, name)
 	self.a = a
 end
 
@@ -53,7 +53,7 @@ end
 -------------------------------------------------------------------------------------------------------------------
 class "evaluator_i_am_commander" ( property_evaluator )
 
-function evaluator_i_am_commander:__init( name, a ) super()
+function evaluator_i_am_commander:__init( name, a ) super(nil, name)
 	self.a = a
 end
 
@@ -325,9 +325,9 @@ function add_to_binder( npc )
 
 	local manager = npc:motivation_action_manager()
 
-	manager:add_evaluator( prop_formation,      evaluator_formation( "property_formation", a ) )
-	manager:add_evaluator( prop_i_am_commander, evaluator_i_am_commander( "property_i_am_commander", a ) )
-	manager:add_evaluator( prop_position,       evaluator_position( "property_position", a ) )
+	manager:add_evaluator( prop_formation,      evaluator_formation( "formation_formation", a ) )
+	manager:add_evaluator( prop_i_am_commander, evaluator_i_am_commander( "formation_i_am_commander", a ) )
+	manager:add_evaluator( prop_position,       evaluator_position( "formation_position", a ) )
 
 	local action = action_go_to_pos( "action_go_to_position", a )
 	action:add_precondition( world_property( stalker_ids.property_alive,   	true  ) )
