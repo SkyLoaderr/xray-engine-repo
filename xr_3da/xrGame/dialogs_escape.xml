@@ -628,36 +628,36 @@
     </dialog>
     <dialog id="escape_trader_tutorial">
         <phrase_list>
-            <phrase id="1121">
-                <text>escape_trader_tutorial_1121</text>
-            </phrase>
             <phrase id="0">
 				<text>escape_trader_tutorial_3</text>
 				<give_info>esc_trader_monolog_1</give_info>
                 <next>1</next>
-            </phrase>
-            <phrase id="11">
-                <text>escape_trader_tutorial_11</text>
-                <next>112</next>
-                <next>111</next>
             </phrase>
             <phrase id="1">
                 <text>escape_trader_tutorial_1</text>
                 <give_info>esc_trader_tutorial_choice</give_info>
                 <next>11</next>
             </phrase>
-            <phrase id="1111">
-                <text>escape_trader_tutorial_1111</text>
+            <phrase id="11">
+                <text>escape_trader_tutorial_11</text>
+                <next>112</next>
+                <next>111</next>
             </phrase>
             <phrase id="112">
                 <text>escape_trader_tutorial_112</text>
                 <give_info>esc_trader_experienced</give_info>
                 <next>1121</next>
             </phrase>
+            <phrase id="1121">
+                <text>escape_trader_tutorial_1121</text>
+            </phrase>
             <phrase id="111">
                 <text>escape_trader_tutorial_111</text>
                 <give_info>esc_trader_newbie</give_info>
                 <next>1111</next>
+            </phrase>
+            <phrase id="1111">
+                <text>escape_trader_tutorial_1111</text>
             </phrase>
         </phrase_list>
     </dialog>
