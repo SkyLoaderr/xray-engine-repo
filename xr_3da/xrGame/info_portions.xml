@@ -1,44 +1,6 @@
 <?xml version='1.0' encoding="windows-1251"?>
 
 <game_information_portions>
-    <info_portion id="escape_novice_need_weapon">
-        <location>
-            <level></level>
-            <object>trivial_novice3_0_1</object>
-            <icon name="unknown" x="2" y="3" width="1" height="1"></icon>
-            <text>Помочь ограбленному новичку</text>
-        </location>
-    </info_portion>
-    <info_portion id="escape_novice_has_weapon">
-        <disable>escape_novice_need_weapon</disable>
-    </info_portion>
-
-    <info_portion id="escape_factory_bandits_dead">
-    </info_portion>
-
-    <info_portion id="escape_need_blockpost_case">
-        <location>
-            <level></level>
-            <object>blockpost_case</object>
-	    <icon name="Case" x="2" y="8" width="1" height="1"></icon>
-            <text>Украсть ящик с блокпоста</text>
-        </location>
-	<dialog>escape_trader_done_blockpost_box</dialog>
-    </info_portion>
-    <info_portion id="escape_have_blockpost_case">
-        <disable>escape_need_blockpost_case</disable>
-    </info_portion>
-
-
-
-
-
-    <info_portion id="garbage_robber_processed">
-    </info_portion>
-
-    <info_portion id="agroprom_factory_combat">
-    </info_portion>
-
 	<info_portion id="dolg_territory">
 		<text>Вы находитесь на территории группировки "Долг".</text>
 	</info_portion>
