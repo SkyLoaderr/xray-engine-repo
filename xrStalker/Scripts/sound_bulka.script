@@ -1,8 +1,0 @@
-function main()
-	local 	snd = sound_object("beavis")
-	local	obj = get_level_object("m_idol_e0006")
-	snd:play_at_pos(obj,obj:position(),1);
-	while true do
-		wait()
-	end
-end
