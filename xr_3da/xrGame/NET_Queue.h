@@ -16,6 +16,7 @@ public:
 		u16				ID;	
 		P.r_begin		(ID			);	VERIFY(M_EVENT==ID);
 		P.r_u32			(timestamp	);
+		timestamp	= Level().timeServer();
 		P.r_u16			(type		);
 		P.r_u16			(destination);
 
