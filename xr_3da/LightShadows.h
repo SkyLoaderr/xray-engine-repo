@@ -27,7 +27,8 @@ private:
 	struct	shadow 
 	{
 		int					slot;
-		Fmatrix				mXFORM;
+		Fmatrix				M;
+		xrLIGHT*			L;
 	};
 private:
 	CObject*				current;

@@ -125,8 +125,6 @@ void CLightShadows::calculate	()
 			// combine and build frustum
 			Fmatrix		mCombine;
 			mCombine.mul			(mProject,mView);
-			CFrustum	F;
-			F.CreateFromMatrix		(mCombine,FRUSTUM_P_ALL);
 
 			// Select slot and set viewport
 			int		s_x			=	slot_id%slot_line;
@@ -143,8 +141,18 @@ void CLightShadows::calculate	()
 				V->Render				(.7f);
 			}
 
-			// increment slot
+			// register shadow and increment slot
+			shadows.push_back	(shadow());
+			shadows.back().slot	=	slot_id;
+			shadows.back().M	=	mCombine;
+			shadows.back().L	=	L;
 			slot_id	++;
 		}
 	}
+}
+
+void CLightShadows::render	()
+{
+	CFrustum	F;
+	F.CreateFromMatrix		(mCombine,FRUSTUM_P_ALL);
 }
