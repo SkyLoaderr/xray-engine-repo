@@ -131,7 +131,6 @@ function action_sleeper_activity:execute()
 	printf("sleeper[%d]: self.state = %d", device():time_global(), self.state)
 	if self.state == self.state_standing_before_anim and self.expiration_time and
 	   device():time_global() >= self.expiration_time then
-		xr_state.change_state(self.object, 0)
 		xr_state.change_state(self.object, 4)
 		self.state = self.state_anim_playing
 	end
