@@ -3,7 +3,6 @@
 
 #include "UI_Main.h"
 #include "UI_Camera.h"
-#include "Scene.h"
 
 CUI_Camera::CUI_Camera(){
 	m_Style = csPlaneMove; 
@@ -151,7 +150,6 @@ bool CUI_Camera::MoveStart(TShiftState Shift){
         UI->iGetMousePosScreen(m_StartPos);
 		m_bMoving	= true;
 		m_Shift 	= Shift;
-        Scene->lock	();
         return true;
     }
 	m_Shift = Shift;
@@ -162,7 +160,6 @@ bool CUI_Camera::MoveEnd(TShiftState Shift){
 	if (!Shift.Contains(ssLeft)||!Shift.Contains(ssShift)){
 	    SetCursorPos(m_StartPos.x, m_StartPos.y);
     	ShowCursor	(TRUE);
-        Scene->unlock();
 		m_bMoving	= false;
 		m_Shift 	= Shift;
         return true;

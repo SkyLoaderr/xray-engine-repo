@@ -7,7 +7,6 @@
 
 #include "EditObject.h"
 #include "FileSystem.h"
-#include "Library.h"
 #include "UI_Main.h"
 #include "Shader.h"
 #include "EditMesh.h"
