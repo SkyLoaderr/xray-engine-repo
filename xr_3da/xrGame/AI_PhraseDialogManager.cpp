@@ -98,8 +98,8 @@ void CAI_PhraseDialogManager::SetStartDialog(PHRASE_DIALOG_ID phrase_dialog)
 	m_sStartDialog = phrase_dialog;
 
 #ifdef _DEBUG
-	CInventoryOwner* pOwner = smart_cast<CInventoryOwner*>(this);
-	Msg("[PhraseDialogManager] %s set start dialog %s",pOwner->Name(), *m_sStartDialog);
+	//CInventoryOwner* pOwner = smart_cast<CInventoryOwner*>(this);
+	//Msg("[PhraseDialogManager] %s set start dialog %s",pOwner->Name(), *m_sStartDialog);
 #endif
 }
 
