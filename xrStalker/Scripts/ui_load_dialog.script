@@ -52,7 +52,7 @@ function load_dialog:InitControls()
 	----- DATA ----
 	local indent          = 50
 	local screen          = {width = 1024,height = 768}	
-	local main_rect       = {x = 0,      y = 0,      width = 400, height = 600}	
+	local main_rect       = {x = 0,      y = 0,      width = 600, height = 600}	
 	main_rect.x = (screen.width - main_rect.width)/2
 	main_rect.y = (screen.height - main_rect.height)/2
 	local caption_rect    = {x = 0,      y = 0,      width = main_rect.width, height = indent*2}
