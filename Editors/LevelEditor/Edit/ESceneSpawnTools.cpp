@@ -23,7 +23,7 @@ void __stdcall  FillSpawnItems	(ChooseItemVec& lst, void* param)
     ObjectList objects;
     Scene->GetQueryObjects		(objects,OBJCLASS_SPAWNPOINT,-1,-1,-1);
     
-    std::string itm;
+    xr_string itm;
     int cnt 					= _GetItemCount(gcs);
     for (int k=0; k<cnt; k++){
         _GetItem				(gcs,k,itm);

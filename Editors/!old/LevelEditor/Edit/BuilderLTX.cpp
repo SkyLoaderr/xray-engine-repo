@@ -30,7 +30,7 @@ BOOL SceneBuilder::BuildLTX()
 	int objcount = Scene->ObjCount();
 	if( objcount <= 0 ) return true;
 
-	std::string ltx_filename	= MakeLevelPath("level.ltx");
+	xr_string ltx_filename	= MakeLevelPath("level.ltx");
 
     if (FS.exist(ltx_filename.c_str()))
     	EFS.MarkFile(ltx_filename.c_str(),true);

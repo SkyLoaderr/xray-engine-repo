@@ -112,7 +112,7 @@ public:
 
 void SceneBuilder::SaveBuild()
 {
-    std::string fn	= MakeLevelPath("build.prj");
+    xr_string fn	= MakeLevelPath("build.prj");
 	IWriter* F		= FS.w_open(fn.c_str());
     
     F->open_chunk	(EB_Version);
@@ -809,7 +809,7 @@ int SceneBuilder::BuildTexture(const char* name)
 int	SceneBuilder::BuildObjectLOD(const Fmatrix& parent, CEditableObject* E, int sector_num)
 {
 	if (!E->m_Flags.is(CEditableObject::eoUsingLOD)) return -1;
-    std::string lod_name = E->GetLODTextureName();
+    xr_string lod_name = E->GetLODTextureName();
 
     b_material 		mtl;
     mtl.surfidx		= BuildTexture		(LEVEL_LODS_TEX_NAME);
@@ -989,7 +989,7 @@ BOOL SceneBuilder::CompileStatic()
         }       
 
         SSimpleImage merged_image;
-        std::string fn 		= ChangeFileExt	(MakeLevelPath(LEVEL_LODS_TEX_NAME).c_str(),".dds").c_str();
+        xr_string fn 		= ChangeFileExt	(MakeLevelPath(LEVEL_LODS_TEX_NAME).c_str(),".dds").c_str();
         if (1==ImageLib.CreateMergedTexture	(images,merged_image,512,2048,64,1024,offsets,scales,rotated,remap)){
             // all right, make texture
             ImageLib.MakeGameTexture		(fn.c_str(),merged_image.data.begin(),merged_image.w,merged_image.h,STextureParams::tfDXT5,STextureParams::ttImage,STextureParams::flDitherColor|STextureParams::flGenerateMipMaps);
@@ -1019,6 +1019,6 @@ BOOL SceneBuilder::CompileStatic()
 
 BOOL SceneBuilder::BuildSceneStat()
 {
-    std::string dest_name = MakeLevelPath(LEVEL_DI_TEX_NAME);
+    xr_string dest_name = MakeLevelPath(LEVEL_DI_TEX_NAME);
     return l_scene_stat->flush(dest_name.c_str());
 }

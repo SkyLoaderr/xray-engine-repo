@@ -108,8 +108,8 @@ protected:
 
 	Fbox 	m_LevelBox;
 public:
-	std::string m_LevelPath;
-    std::string	MakeLevelPath		(LPCSTR nm){return m_LevelPath+nm;}
+	xr_string 	m_LevelPath;
+    xr_string	MakeLevelPath		(LPCSTR nm){return m_LevelPath+nm;}
 protected:
 	bool 	EvictResource			();
 	bool 	PrepareFolders          ();

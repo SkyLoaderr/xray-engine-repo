@@ -89,7 +89,7 @@ void SSceneSummary::OnFileClick(PropValue* sender, bool& bModif, bool& bSafe)
 	ButtonValue* V = dynamic_cast<ButtonValue*>(sender); R_ASSERT(V);
     switch (V->btn_num){
     case 0:{
-    	std::string fn = Scene->m_LevelOp.m_FNLevelPath.c_str();
+    	xr_string fn = Scene->m_LevelOp.m_FNLevelPath.c_str();
     	if (EFS.GetSaveName(_import_,fn,0,2))
 	    	ExportSummaryInfo(fn.c_str());
         ELog.DlgMsg(mtInformation,"Export completed.");
@@ -108,7 +108,7 @@ void SSceneSummary::ExportSummaryInfo(LPCSTR fn)
     for (u32 stt=sttFirst; stt<sttLast; stt++){
         u32 cur_mem_usage	= 0; 
         float cur_area		= 0; 
-    	std::string pref	= "[";
+    	xr_string pref	= "[";
         pref				+= get_token_name(summary_texture_type_tokens,stt);
         pref				+= "]";
         F->w_string			(pref.c_str());

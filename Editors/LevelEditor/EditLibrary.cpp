@@ -208,7 +208,7 @@ void __fastcall TfrmEditLibrary::OnItemFocused(TElTreeItem* item)
         // change thm
         ListItem* prop 	= (ListItem*)item->Tag; VERIFY(prop);
         AnsiString nm	= prop->Key();
-        std::string 	obj_fn,thm_fn;
+        xr_string 	obj_fn,thm_fn;
 
         FS.update_path			(obj_fn,_objects_,ChangeFileExt(nm,".object").c_str());
         FS.update_path			(thm_fn,_objects_,ChangeFileExt(nm,".thm").c_str());
@@ -343,16 +343,16 @@ bool TfrmEditLibrary::GenerateLOD(TElTreeItem* node)
 {
 	if (node&&FHelper.IsObject(node)){
         ListItem* prop 	= (ListItem*)node->Tag; VERIFY(prop);
-        std::string nm	= prop->Key();
+        xr_string nm	= prop->Key();
         ChangeReference	(nm.c_str());
         CEditableObject* O = m_pEditObject->GetReference();
         if (O&&O->IsMUStatic()){
             BOOL bLod 	= O->m_Flags.is(CEditableObject::eoUsingLOD);
             O->m_Flags.set(CEditableObject::eoUsingLOD,FALSE);
-            std::string tex_name;
+            xr_string tex_name;
             tex_name 	= EFS.ChangeFileExt(nm,".tga");
             string256 nm; strcpy(nm,tex_name.c_str()); _ChangeSymbol(nm,'\\','_');
-            tex_name 	= std::string("lod_")+nm;
+            tex_name 	= xr_string("lod_")+nm;
             tex_name 	= ImageLib.UpdateFileName(tex_name);
             ImageLib.CreateLODTexture(O->GetBox(), tex_name.c_str(),LOD_IMAGE_SIZE,LOD_IMAGE_SIZE,LOD_SAMPLE_COUNT,O->m_Version);
             O->OnDeviceDestroy();
@@ -460,7 +460,7 @@ void __fastcall TfrmEditLibrary::ebMakeLWOClick(TObject *Sender)
     TElTreeItem* node = m_Items->GetSelected();
     if (node&&FHelper.IsObject(node)){
     	AnsiString name; FHelper.MakeName(node,0,name,false);
-        std::string save_nm;
+        xr_string save_nm;
         if (EFS.GetSaveName(_import_,save_nm,0,1)){
             CEditableObject* obj = Lib.CreateEditObject(name.c_str());
             if (obj){
@@ -482,7 +482,7 @@ void __fastcall TfrmEditLibrary::ebMakeLWOClick(TObject *Sender)
 //---------------------------------------------------------------------------
 void __fastcall TfrmEditLibrary::ebImportClick(TObject *Sender)
 {
-    std::string open_nm, save_nm, nm;
+    xr_string open_nm, save_nm, nm;
     if (EFS.GetOpenName(_import_,open_nm,true)){
     	// remove selected object
         ResetSelected();
@@ -496,13 +496,13 @@ void __fastcall TfrmEditLibrary::ebImportClick(TObject *Sender)
         if (item) FHelper.MakeName(item,0,folder,true);
         //
 //		AnsiString path; // нужен при multi-open для сохранения последнего пути
-		std::string m_LastSelection;
+		xr_string m_LastSelection;
         for (AStringIt it=lst.begin(); it!=lst.end(); it++){
         	nm = ChangeFileExt(ExtractFileName(*it),"").c_str();
             CEditableObject* O = xr_new<CEditableObject>(nm.c_str());
             if (O->Load(it->c_str())){
                 O->m_Version = FS.get_file_age(it->c_str());
-                save_nm = std::string(FS.get_path(_objects_)->m_Path)+folder.c_str()+EFS.ChangeFileExt(nm,".object");
+                save_nm = xr_string(FS.get_path(_objects_)->m_Path)+folder.c_str()+EFS.ChangeFileExt(nm,".object");
 
                 if (FS.exist(save_nm.c_str()))
 			        if (mrNo==ELog.DlgMsg(mtConfirmation,TMsgDlgButtons() << mbYes << mbNo,"Object '%s' already exist. Owerwrite it?",nm)){
@@ -512,7 +512,7 @@ void __fastcall TfrmEditLibrary::ebImportClick(TObject *Sender)
                 
                 O->SaveObject	(save_nm.c_str());
                 EFS.MarkFile	(it->c_str(),true);
-                EFS.BackupFile	(_objects_,std::string(folder.c_str()+EFS.ChangeFileExt(nm,".object")).c_str());
+                EFS.BackupFile	(_objects_,xr_string(folder.c_str()+EFS.ChangeFileExt(nm,".object")).c_str());
                 EFS.WriteAccessLog(save_nm.c_str(),"Import");
                 bNeedUpdate		= true;
             }else{
@@ -522,10 +522,10 @@ void __fastcall TfrmEditLibrary::ebImportClick(TObject *Sender)
 
             LPCSTR p = FS.get_path(_objects_)->m_Path;
             if (folder.Pos(p)>0){ 
-            	m_LastSelection = std::string(folder.c_str()+strlen(p))+nm;
+            	m_LastSelection = xr_string(folder.c_str()+strlen(p))+nm;
                 xr_strlwr		(m_LastSelection);
             }else{
-            	m_LastSelection = std::string(folder.c_str())+nm;
+            	m_LastSelection = xr_string(folder.c_str())+nm;
             }
         }
         if (bNeedUpdate){

@@ -203,7 +203,7 @@ void TfraObject::RefreshList()
 	    FS_QueryPairIt	it	= lst.begin();            
     	FS_QueryPairIt	_E	= lst.end();
 	    for (; it!=_E; it++){
-            std::string fn;
+            xr_string fn;
             FS.update_path	(fn,_objects_,ChangeFileExt(it->first.c_str(),".thm").c_str());
 	    	ListItem* I=LHelper().CreateItem(items,it->first.c_str(),0,FS.exist(fn.c_str())?ListItem::flDrawThumbnail:0,0);
             if (I->m_Flags.is(ListItem::flDrawThumbnail)) I->OnDrawThumbnail.bind(this,&TfraObject::OnDrawObjectThumbnail);

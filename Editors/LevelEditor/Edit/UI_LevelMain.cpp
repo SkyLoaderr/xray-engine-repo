@@ -78,10 +78,10 @@ void CommandFileMenu(u32 p1, u32 p2, u32& res)
 void CommandLoad(u32 p1, u32 p2, u32& res)
 {
     if( !Scene->locked() ){
-        std::string temp_fn	= AnsiString((char*)p1).LowerCase().c_str();
+        xr_string temp_fn	= AnsiString((char*)p1).LowerCase().c_str();
         if( p1 || EFS.GetOpenName( _maps_, temp_fn ) ){
             if (0==temp_fn.find(FS.get_path(_maps_)->m_Path)){
-                temp_fn = std::string(temp_fn.c_str()+strlen(FS.get_path(_maps_)->m_Path));
+                temp_fn = xr_string(temp_fn.c_str()+strlen(FS.get_path(_maps_)->m_Path));
                 xr_strlwr(temp_fn);
             }
                 
@@ -152,18 +152,18 @@ void CommandSave(u32 p1, u32 p2, u32& res)
 }
 void CommandSaveBackup(u32 p1, u32 p2, u32& res)
 {
-    std::string 	fn;
-    fn				= std::string(Core.CompName)+"_"+Core.UserName+"_backup.level";
+    xr_string 	fn;
+    fn				= xr_string(Core.CompName)+"_"+Core.UserName+"_backup.level";
     FS.update_path	(fn,_maps_,fn.c_str());
     ExecCommand	  	(COMMAND_SAVEAS,(int)fn.c_str());
 }
 void CommandSaveAs(u32 p1, u32 p2, u32& res)
 {
     if( !Scene->locked() ){
-        std::string temp_fn	= AnsiString((char*)p1).LowerCase().c_str();
+        xr_string temp_fn	= AnsiString((char*)p1).LowerCase().c_str();
         if(p1 || EFS.GetSaveName( _maps_, temp_fn ) ){
             if (0==temp_fn.find(FS.get_path(_maps_)->m_Path)){
-                temp_fn 	= std::string(temp_fn.c_str()+strlen(FS.get_path(_maps_)->m_Path));
+                temp_fn 	= xr_string(temp_fn.c_str()+strlen(FS.get_path(_maps_)->m_Path));
                 xr_strlwr	(temp_fn);
             }
 
@@ -226,14 +226,14 @@ void CommandClearCompilerError(u32 p1, u32 p2, u32& res)
 
 void CommandImportCompilerError(u32 p1, u32 p2, u32& res)
 {
-    std::string fn;
+    xr_string fn;
     if(EFS.GetOpenName("$logs$", fn, false, NULL, 0)){
         Scene->LoadCompilerError(fn.c_str());
     }
 }
 void CommandExportCompilerError(u32 p1, u32 p2, u32& res)
 {
-    std::string fn;
+    xr_string fn;
     if(EFS.GetSaveName("$logs$", fn, NULL, 0)){
         Scene->SaveCompilerError(fn.c_str());
     }
@@ -300,7 +300,7 @@ void CommandPaste(u32 p1, u32 p2, u32& res)
 void CommandLoadSelection(u32 p1, u32 p2, u32& res)
 {
     if( !Scene->locked() ){
-        std::string fn;
+        xr_string fn;
         if( EFS.GetOpenName( _maps_, fn ) ){
             UI->SetStatus		("Fragment loading...");
             Scene->LoadSelection(0,fn.c_str());
@@ -318,7 +318,7 @@ void CommandLoadSelection(u32 p1, u32 p2, u32& res)
 void CommandSaveSelection(u32 p1, u32 p2, u32& res)
 {
     if( !Scene->locked() ){
-        std::string fn;
+        xr_string fn;
         if( EFS.GetSaveName		( _maps_, fn ) ){
             UI->SetStatus		("Fragment saving...");
             Scene->SaveSelection(LTools->CurrentClassID(),0,fn.c_str());

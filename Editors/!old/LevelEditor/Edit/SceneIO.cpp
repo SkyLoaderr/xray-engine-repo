@@ -101,7 +101,7 @@ void EScene::Save(LPCSTR initial, LPCSTR map_name, bool bUndo)
 {
 	VERIFY(map_name);
 
-    std::string full_name;
+    xr_string full_name;
     if (initial)	FS.update_path	(full_name,initial,map_name);
     else			full_name		= map_name;
     
@@ -227,7 +227,7 @@ bool EScene::Load(LPCSTR initial, LPCSTR map_name, bool bUndo)
 
 	if (!map_name||(0==map_name[0])) return false;
     
-    std::string full_name;
+    xr_string full_name;
     if (initial)	FS.update_path	(full_name,initial,map_name);
     else			full_name 		= map_name;
     
@@ -334,7 +334,7 @@ void EScene::SaveSelection( EObjClass classfilter, LPCSTR initial, LPCSTR fname 
 {
 	VERIFY( fname );
 
-    std::string full_name;
+    xr_string full_name;
     if (initial)	FS.update_path	(full_name,initial,fname);
     else			full_name 		= fname;
 
@@ -381,7 +381,7 @@ bool EScene::LoadSelection( LPCSTR initial, LPCSTR fname )
 
 	VERIFY( fname );
 
-    std::string 	full_name;
+    xr_string 	full_name;
     if (initial)	FS.update_path	(full_name,initial,fname);
     else			full_name 		= fname;
 

@@ -370,9 +370,9 @@ bool EScene::Validate(bool bNeedOkMsg, bool bTestPortal, bool bTestHOM, bool bTe
     return bRes;
 }
 
-std::string EScene::LevelPath()
+xr_string EScene::LevelPath()
 {
-    std::string path;
+    xr_string path;
 	if (m_LevelOp.m_FNLevelPath.size()){
         FS.update_path	(path,"$level$",m_LevelOp.m_FNLevelPath.c_str());
         path			+= "\\";

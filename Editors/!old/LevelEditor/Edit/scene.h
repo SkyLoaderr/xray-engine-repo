@@ -276,7 +276,7 @@ public:
 
     void			ShowSummaryInfo	();
 
-    std::string		LevelPath		();
+    xr_string		LevelPath		();
     shared_str 		LevelPrefix		(){return m_LevelOp.m_LevelPrefix; }
 };
 
