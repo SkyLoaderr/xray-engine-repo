@@ -7,7 +7,7 @@ bool	pred_mdbg	(const xrMemory::mdbg& A)	{
 	return (0==A._p && 0==A._size);
 }
 
-void	xrMemory::dbg_register		(void* _p, u32 _size)
+void	xrMemory::dbg_register		(void* _p, size_t _size)
 {
 	VERIFY					(debug_mode);
 	debug_cs.Enter			();
@@ -34,7 +34,7 @@ void	xrMemory::dbg_unregister	(void* _p)
 
 	if (!debug_info.empty())
 	{
-		for (int it=debug_info.size()-1; it>=0; it--)
+		for (int it=int(debug_info.size()-1); it>=0; it--)
 			if (debug_info[it]._p==_p)	{ _found=it; break; }
 	}
 

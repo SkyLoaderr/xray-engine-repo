@@ -10,7 +10,7 @@ class XRCORE_API		xrMemory
 public:
 	struct				mdbg {
 		void*			_p;
-		u32				_size;
+		size_t 			_size;
 	};
 public:
 	xrMemory			();
@@ -25,7 +25,7 @@ public:
 	u32					stat_calls;
 	s32					stat_counter;
 public:
-	void				dbg_register	(void* _p, u32 _size);
+	void				dbg_register	(void* _p,	size_t _size);
 	void				dbg_unregister	(void* _p);
 	void				dbg_check		();
 

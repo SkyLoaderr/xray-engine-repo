@@ -136,8 +136,8 @@ void CreateLog(LogCallback cb, BOOL nl)
     }
 
 	// Calculating build
-	long Time;
-	time(&Time);
+	time_t	Time;
+	time	(&Time);
 	int build=0, mnum=0, dnum, ynum, mcnt;
 	char mon[4];
 	char buf[128];

@@ -2,6 +2,24 @@
 #pragma hdrstop
 
 #include "cpuid.h"
+
+#ifdef _M_AMD64
+
+int _cpuid (_processor_info *pinfo)
+{
+	_processor_info&	P	= *pinfo;
+	strcpy				(P.v_name,		"AuthenticAMD");
+	strcpy				(P.model_name,	"AMD64 family");
+	P.family			=	8;
+	P.model				=	8;
+	P.stepping			=	0;
+	P.feature			=	_CPU_FEATURE_SSE | _CPU_FEATURE_SSE2;
+	P.os_support		=	_CPU_FEATURE_SSE | _CPU_FEATURE_SSE2;
+	return P.feature;
+}
+
+#else
+
 #ifdef	M_VISUAL
 #include "mmintrin.h"
 #endif
@@ -222,7 +240,6 @@ void map_mname( int family, int model, const char * v_name, char *m_name)
 
 int _cpuid (_processor_info *pinfo)
 {
-
     u32 dwStandard = 0;
     u32 dwFeature = 0;
     u32 dwMax = 0;
@@ -314,3 +331,5 @@ notamd:
     }
    return feature;
 }
+
+#endif
