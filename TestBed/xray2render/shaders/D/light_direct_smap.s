@@ -58,9 +58,9 @@ p2f 	p_main	( v2p_in IN )
   
   // 1. Sample shadowmap 
   // 2. Compare (if (depth_pixel > depth_smap) then in shadow)
-  float4 s0,s1,s2,s3,sC;
-  float3 sA;
-  float4 one	= float4	(1,1,1,1);
+  half4 s0,s1,s2,s3,sC;
+  half3 sA;
+  half4 one		= float4	(1,1,1,1);
  
   s0			= tex2D		(s_shadowmap,uv0+float2(jitter[0].x,jitter[0].y));
   s1			= tex2D		(s_shadowmap,uv0+float2(jitter[0].w,jitter[0].z));
@@ -83,7 +83,7 @@ p2f 	p_main	( v2p_in IN )
   sC			= step		(float4(depth-s0.x,depth-s1.x,depth-s2.x,depth-s3.x),	0);
   sA.z			= dot		(sC,one);
   
-  float	 shadow	= (sA.x + sA.y + sA.z)/12;
+  half	 shadow	= (sA.x + sA.y + sA.z)/12;
   
   // Normal, vector2eye, vector2light
   float3 N		= float3	(_N.x,_N.y,_N.z);
