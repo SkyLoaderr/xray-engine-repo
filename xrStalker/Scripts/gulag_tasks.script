@@ -152,7 +152,7 @@ function loadStates(gname, type)
 			if gulag.state == 1 then return 1 end
 			
 			local actor = level.actor()
-			local zone = level.object("garbage_shooting")
+			local zone = level.object("gar_shooting")
 			if actor ~= nil and zone ~= nil then
 				local st = actor:position():distance_to(zone:position())
 				printf("%s", st)
