@@ -7,6 +7,13 @@
 #include "gamefont.h"
 #include "xrLevel.h"
 
+LPCSTR		CCreator::getString	(int id);	
+{
+	if (id<0)	return 0;
+	R_ASSERT	(id<int(LL_strings.size()));
+	return LL_strings[id];
+}
+
 CCreator::CCreator( ) 
 {
 	pCreator					= this;

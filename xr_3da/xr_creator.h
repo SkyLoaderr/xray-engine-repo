@@ -23,16 +23,9 @@ class	ENGINE_API				CCreator	:
 {
 public:
 	// Loader
-	typedef xr_vector<char *>	vecC;
-	typedef vecC::iterator		vecCIT;
 	IReader*					LL_Stream;
-	vecC						LL_strings;
-	LPCSTR						getString	(int id)	
-	{
-		if (id<0)	return 0;
-		R_ASSERT	(id<int(LL_strings.size()));
-		return LL_strings[id];
-	}
+	xr_vector<char *>			LL_strings;
+	LPCSTR						getString	(int id);
 protected:
 	// Network interface
 	CObject*					pCurrentEntity;
@@ -72,9 +65,9 @@ public:
 	virtual void				OnRender				( void );
 
 	// Main interface
-	CObject*					CurrentEntity			( void )const	{ return pCurrentEntity; }
-	CObject*					CurrentViewEntity		( void )const	{ return pCurrentViewEntity; }
-	void						SetEntity				( CObject* O  ) { pCurrentEntity=pCurrentViewEntity=O; }
+	CObject*					CurrentEntity			( void ) const							{ return pCurrentEntity; }
+	CObject*					CurrentViewEntity		( void ) const							{ return pCurrentViewEntity; }
+	void						SetEntity				( CObject* O  )							{ pCurrentEntity=pCurrentViewEntity=O; }
 
 	// Loader interface
 	Shader*						LL_CreateShader			(int S, int T, int M, int C);
