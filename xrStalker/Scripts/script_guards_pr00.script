@@ -242,9 +242,11 @@ function main()
 		if final_guard01:see(actor) then
 			wait(1000)			
 			prof_k_bou:play_at_pos			(final_guard01,final_guard01:position(),0);
-			final_guard01:script	(false,script_guards_pr00.script_name())
-			final_guard02:script	(false,script_guards_pr00.script_name())
-			final_guard03:script	(false,script_guards_pr00.script_name())
+			wait(1000)			
+			final_guard01:script			(false,script_guards_pr00.script_name())
+			final_guard02:script			(false,script_guards_pr00.script_name())
+			final_guard03:script			(false,script_guards_pr00.script_name())
+			rainbow_monstri:play_at_pos		(final_guard02,final_guard02:position(),0);
 		break
 		end
 	    wait	()
