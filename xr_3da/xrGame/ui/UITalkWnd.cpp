@@ -379,5 +379,5 @@ bool CUITalkWnd::IR_OnKeyboardPress(int dik)
 		GetHolder()->StartStopMenu(this, true);
 		return true;
 	}
-	return false;
+	return inherited::IR_OnKeyboardPress(dik);
 }
