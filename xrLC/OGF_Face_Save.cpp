@@ -101,7 +101,7 @@ void	OGF::Save_Normal_PM		(CFS_Base &fs, ogf_header& H, DWORD FVF, BOOL bColors,
 //	Log				("- saving: normal or clod");
 
 	DWORD ID,Start;
-	g_VB.Begin(FVF);
+	g_VB.Begin		(FVF);
 	for (itOGF_V V=vertices.begin(); V!=vertices.end(); V++)
 	{
 		if (bLighting)		g_VB.Add(V,6*sizeof(float));	// Position & normal
@@ -110,7 +110,7 @@ void	OGF::Save_Normal_PM		(CFS_Base &fs, ogf_header& H, DWORD FVF, BOOL bColors,
 		for (DWORD uv=0; uv<dwRelevantUV; uv++)
 			g_VB.Add(V->UV.begin()+uv,2*sizeof(float));
 	}
-	g_VB.End(&ID,&Start);
+	g_VB.End		(&ID,&Start);
 	
 	fs.open_chunk	(OGF_VCONTAINER);
 	fs.Wdword		(ID);
@@ -120,6 +120,7 @@ void	OGF::Save_Normal_PM		(CFS_Base &fs, ogf_header& H, DWORD FVF, BOOL bColors,
 	
 	// Faces
 	fs.open_chunk	(OGF_ICONTAINER);
+
 	fs.Wdword		(faces.size()*3);
 	for (itOGF_F F=faces.begin(); F!=faces.end(); F++)	fs.write(F,3*sizeof(WORD));
 	fs.close_chunk	();

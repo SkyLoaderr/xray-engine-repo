@@ -27,12 +27,9 @@ extern vecDefl					g_deflectors;
 extern CDB::MODEL				RCAST_Model;
 extern CDeflector*				Deflector;
 extern VBContainer				g_VB;
-
+extern IBContainer				g_IB;
 extern OGF_Base*				g_TREE_ROOT;
-
 extern b_params					g_params;
-
 extern const int				edge2idx	[3][2];
 extern const int				edge2idx3	[3][3];
 extern const int				idx2edge	[3][3];
-
