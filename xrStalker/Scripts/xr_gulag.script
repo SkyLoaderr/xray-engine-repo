@@ -24,7 +24,7 @@ function fract:__init(smrttrn_id, name, type, squad, groups)
 	self.Object = {}
 	self.Job = {}
 
-	self.StalkerJob = {}
+	self.ObjectJob = {}
 
 	self.music = gulag_tasks.get_megafone(type, name) --' матюгальник
 	
@@ -40,7 +40,7 @@ function fract:loadObject( obj_id, jobN )
 	self.Object[obj_id] = true
 
 	-- запомнить работу, которую он должен занять
-	self.StalkerJob[obj_id] = jobN
+	self.ObjectJob[obj_id] = jobN
 
 	-- подписаться на объект
 	level.client_spawn_manager():add( obj_id, self.smrttrn_id, self, "spawn_callback" )
@@ -50,8 +50,8 @@ function fract:spawn_callback( id, obj )
 		self.Object[id] = obj
 
 		-- восстановить на работе, если она у него была
-		if self.StalkerJob[id] then
-			self.Job[self.StalkerJob[id]].object = obj
+		if self.ObjectJob[id] then
+			self.Job[self.ObjectJob[id]].object = obj
 		end
 	end
 end
@@ -358,8 +358,10 @@ function changeCasualities(fraction, delta)
 	end
 end
 
-function checkNpc(npc_community, gulag_type)
---	printf("COMM %s !! %s", npc_community, gulag_type)
+function checkStalker(npc_community, gulag_type)
+	if gulag_type == "test" or gulag_type == "test1" then
+		return true
+	end
 
 	if gulag_type == "blockpost"
 	then
@@ -377,10 +379,6 @@ function checkNpc(npc_community, gulag_type)
 	if gulag_type == "gar_dolg" then
 	   return npc_community == "dolg"
 	end    
-
-	if gulag_type == "test" or gulag_type == "test1" then
-		return true
-	end
 
 	if gulag_type == "esc_lager" then
 		return npc_community == "stranger"
@@ -407,4 +405,22 @@ function checkNpc(npc_community, gulag_type)
 	end
 
 	return false
+end
+
+function checkMonster(npc_community, gulag_type)
+	if gulag_type == "test_mob" then
+		return true
+	end
+
+	return false
+end
+
+function checkNpc(npc_community, is_stalker, gulag_type)
+	printf("COMM %s !! %s", npc_community, gulag_type)
+
+	if is_stalker then
+		return checkStalker(npc_community, gulag_type)
+	else
+		return checkMonster(npc_community, gulag_type)
+	end
 end

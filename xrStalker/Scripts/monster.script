@@ -5,10 +5,7 @@
 function bind(obj)
 	printf("_bp: monster.bind: name='%s', id='%d'", obj:name(), obj:id())
 
-	local char_ini = obj:spawn_ini()
-	if not char_ini then
-		return
-	end
+	local char_ini = obj:spawn_ini() or ini_file("scripts\\dummy")
 
 	// Для спауна
 	xr_spawner.spawn_client(obj)

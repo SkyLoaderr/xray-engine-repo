@@ -21,8 +21,18 @@ function loadJob(sj, gname, type, squad, groups)
 		}
 		table.insert(sj, t)
 	end
+
 	if type == "test1" then
 		t = { section = "sleeper@test1",
+			idle = 0,
+			prior = 0, state = {0},
+			in_rest = "", out_rest = ""
+		}
+		table.insert(sj, t)
+	end
+
+	if type == "test_mob" then
+		t = { section = "mob_walker@test_mob",
 			idle = 0,
 			prior = 0, state = {0},
 			in_rest = "", out_rest = ""

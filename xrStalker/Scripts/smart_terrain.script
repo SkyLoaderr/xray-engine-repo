@@ -1,24 +1,22 @@
 --[[------------------------------------------------------------------------------------------------------------------
-Smart Terrain (места, где сталкеры могут оседать на некоторое время и заниматься чем-то)
+Smart Terrain (места, где npc могут оседать на некоторое время и заниматься чем-то)
 Чугай Саша
 !без симуляции не работает!
 
 Сделать:
 	- разные умолчания для разных типов гулагов
 	- роспуск гулага по infoprtions
-	+ сохранение гулага
-
-	- монстры
+	- в гулаге заменить сталкеров на npc
 
 Идеи:
 	- дополнительные условия начала, конца smart_terrain. Например, ночь и день
-	- дополнительные условия ухода сталкеров
+	- дополнительные условия ухода npc
 	- специальные диалоги
 	- критерии checkNpc в custom_data
 
 
 Изменения script_version:
-	1  - jobN для каждого сталкера и begin для каждой работы; параметры гулага state, stateBegin, casualities
+	1  - jobN для каждого npc и begin для каждой работы; параметры гулага state, stateBegin, casualities
 --------------------------------------------------------------------------------------------------------------------]]
 
 local h2ms = 60 * 60 * 1000
@@ -33,6 +31,8 @@ if not editor() then
 end
 
 local the_actor, n, ini, sect, g, gi, ggi, o, oT, o_id, sim, t
+
+local monster_classes
 
 ----------------------------------------------------------------------------------------------------------------------
 -- Разные полезные функции
@@ -167,9 +167,9 @@ function se_smart_terrain:__finalize()
 end
 
 function se_smart_terrain:print()
-	printf( "Stalkers:" )
-	if self.stalkers then
-		for id, v in self.stalkers do
+	printf( "NPCs:" )
+	if self.npcs then
+		for id, v in self.npcs do
 			printf( "    %d", id )
 		end
 	end
@@ -187,16 +187,16 @@ function se_smart_terrain:STATE_Write( packet )
 	w_CTime( packet, self.duration_end )
 	w_CTime( packet, self.idle_end )
 
-	-- список сталкеров
+	-- список npc
 	n = 0
-	if self.stalkers then
-		for id, v in self.stalkers do
+	if self.npcs then
+		for id, v in self.npcs do
 			n = n + 1
 		end
 
 		packet:w_u8( n )
 
-		for id, v in self.stalkers do
+		for id, v in self.npcs do
 			packet:w_u16  ( id )
 			packet:w_u8   ( v.group )
 			packet:w_u8   ( v.squad )
@@ -268,15 +268,15 @@ function se_smart_terrain:STATE_Read( packet, size )
 	self.duration_end = r_CTime( packet )
 	self.idle_end     = r_CTime( packet )
 
-	-- список сталкеров
+	-- список npc
 	n = packet:r_u8()
 
---	printf( "stalkers=%s", to_str( n ) )
+--	printf( "npcs=%s", to_str( n ) )
 
 	for i = 1, n do
 		o_id = packet:r_u16()
-		self.stalkers[o_id] = {}
-		o = self.stalkers[o_id]
+		self.npcs[o_id] = {}
+		o = self.npcs[o_id]
 
 		o.group          = packet:r_u8()
 		o.squad          = packet:r_u8()
@@ -335,7 +335,7 @@ end
 -- установка имитации гулага
 function se_smart_terrain:setGulag()
 	-- сам этот класс и будет якобы гулагом
-	self.Object     = self.stalkers
+	self.Object     = self.npcs
 	self.check_time = CTime_0
 	return self
 end
@@ -353,7 +353,7 @@ end
 function se_smart_terrain:destroyGulag()
 end
 
-function se_smart_terrain:free_stalker( obj_id )
+function se_smart_terrain:free_npc( obj_id )
 	return true
 end
 
@@ -363,7 +363,7 @@ end
 
 function se_smart_terrain:get_population()
 	n = 0
-	for k, v in self.stalkers do
+	for k, v in self.npcs do
 		n = n + 1
 	end
 
@@ -379,11 +379,11 @@ function se_smart_terrain:calculate()
 
 	sim = alife()
 
-	for id, v in self.stalkers do
+	for id, v in self.npcs do
 		o = cast_alife_object_to_creature( sim:object( id ) )
 
 		if not o:alive() then
-			free_stalker( self, id )
+			free_npc( self, id )
 		end
 	end
 end
@@ -397,7 +397,7 @@ class "cl_smart_terrain"
 function cl_smart_terrain:__init( se_obj, ini )
 	-- взять свойства из серверного объекта
 	self.id                 = se_obj.id
-	self.stalkers           = se_obj.stalkers
+	self.npcs               = se_obj.npcs
 	self.gulags             = se_obj.gulags
 	self.gulagN             = se_obj.gulagN
 	self.gparams            = se_obj.gulags[se_obj.gulagN]
@@ -418,8 +418,8 @@ function cl_smart_terrain:__init( se_obj, ini )
 		self.gulag.stateBegin  = se_obj.stateBegin  or self.gulag.stateBegin
 		self.gulag.casualities = se_obj.casualities or self.gulag.casualities
 
-		-- восстановить сталкеров с должностями
-		for id, v in self.stalkers do
+		-- восстановить npc с должностями
+		for id, v in self.npcs do
 			self.gulag:loadObject( id, v.jobN )
 		end
 
@@ -445,7 +445,7 @@ function cl_smart_terrain:save()
 	sim = alife()
 	o   = sim:object( self.id )
 
-	o.stalkers     = self.stalkers
+	o.npcs         = self.npcs
 	o.idle_end     = self.idle_end
 	o.duration_end = self.duration_end
 	o.gulagN       = self.gulagN
@@ -459,7 +459,7 @@ function cl_smart_terrain:save()
 
 		o.Job         = {}
 
-		for id, u in self.stalkers do
+		for id, u in self.npcs do
 			u.jobN = nil
 		end
 
@@ -467,11 +467,11 @@ function cl_smart_terrain:save()
 		for i, v in self.gulag.Job do
 			table.insert( o.Job, v.begin or 0 )
 
-			-- для сталкера, занятого на этой работе, запомнить номер работы
+			-- для npc, занятого на этой работе, запомнить номер работы
 			if v.object then
 				o_id = v.object:id()
 
-				for id, u in self.stalkers do
+				for id, u in self.npcs do
 					if id == o_id then
 						u.jobN = i
 						break
@@ -516,14 +516,14 @@ function cl_smart_terrain:destroyGulag()
 	xr_gulag.destroyGulag( self:name() )
 end
 
-function cl_smart_terrain:free_stalker( obj_id )
+function cl_smart_terrain:free_npc( obj_id )
 	o = self.gulag.Object[obj_id]
 	n = type( o )
 	-- если объект уже порождён в онлайн, то вернуть его изначальные параметры.
 	if n == "userdata" then
 		self.gulag:removeObject( obj_id )
 
---		n = self.stalkers[obj_id]
+--		n = self.npcs[obj_id]
 --		o:change_team( o:team(), n.squad, n.group )
 		return true
 	-- если объекта в гулаге уже нету, значит он мёртв и его можно удалять
@@ -544,7 +544,7 @@ end
 ----------------------------------------------------------------------------------------------------------------------
 -- чтение custom data. ТОЛЬКО ДЛЯ СЕРВЕРНОГО ОБЪЕКТА!
 function read_ini( self )
-	self.stalkers        = {}          -- group и squad для каждого сталкера
+	self.npcs            = {}          -- group и squad для каждого npc
 	self.gulags          = {}          -- настройки гулагов, возможных в этом smart_terrain
 	self.gulag           = nil         -- экземпляр текущего гулага
 
@@ -607,23 +607,27 @@ function read_ini( self )
 	end
 end
 
--- добавить сталкера в гулаг
-function add_stalker( self, obj )
+-- добавить npc в гулаг
+function add_npc( self, obj )
 	-- если в гулаге есть свободные места и он подходит гулагу, то добавить
 	n = self.gulag:get_population()
 	if n < self.gparams.capacity then
+		sim  = alife()
 		o_id = self:obj_id( obj )
+		o    = sim:object( o_id )
 
-		sim = alife()
-		o = sim:object( o_id )
+		if obj:clsid() == clsid.stalker then
+			oT = cast_alife_object_to_trader_abstract( o ):community()	
+		else
+			oT = monster_classes[obj:clsid()]
+		end
 
-		oT = cast_alife_object_to_trader_abstract( o )
-		printf( "comm=%s", oT:community() )
+		printf( "community=%s", oT )
 
-		if xr_gulag.checkNpc( oT:community(), self.gparams.type ) then
-			o  = cast_alife_object_to_creature( o )
+		if xr_gulag.checkNpc( oT, obj:clsid() == clsid.stalker, self.gparams.type ) then
+			o = cast_alife_object_to_creature( o )
 
-			self.stalkers[o_id] = {
+			self.npcs[o_id] = {
 				group          = o:g_group(),
 				squad          = o:g_squad(),
 				move_offline   = o:move_offline(),
@@ -631,9 +635,9 @@ function add_stalker( self, obj )
 				stay_end       = game.CTime()
 			}
 
-			--printf( "squad=%s group=%s", utils.to_str ( self.stalkers[o_id].squad ), utils.to_str ( self.stalkers[o_id].group ) )
+			--printf( "squad=%s group=%s", utils.to_str ( self.npcs[o_id].squad ), utils.to_str ( self.npcs[o_id].group ) )
 
-			t = self.stalkers[o_id].stay_end
+			t = self.npcs[o_id].stay_end
 			t:setHMSms( 0, 0, 0, math.random( self.gparams.stay_min * h2ms, self.gparams.stay_max * h2ms ) )
 			t:add( game.get_game_time() )
 
@@ -648,19 +652,19 @@ function add_stalker( self, obj )
 	end
 end
 
--- отпустить сталкера
-function free_stalker( self, obj_id )
-	if self:free_stalker( obj_id ) then
+-- отпустить npc
+function free_npc( self, obj_id )
+	if self:free_npc( obj_id ) then
 		sim = alife()
 		o = sim:object( obj_id )
 
-		n = self.stalkers[obj_id]
+		n = self.npcs[obj_id]
 		o:move_offline( n.move_offline )
 		sim:set_switch_offline( obj_id, n.switch_offline )
 		o.squad = n.squad
 		o.group = n.group
 
-		self.stalkers[obj_id] = nil
+		self.npcs[obj_id] = nil
 
 		printf( "[smart_terrain %s] removing %s from gulag type=%s", self:name(), o:name(), self.gparams.type )
 
@@ -727,7 +731,7 @@ function remove_gulag( self )
 	o = true
 	-- освободить всех, кто ещё жив в гулаге
 	for id, v in self.gulag.Object do
-		o = free_stalker( self, id ) and o
+		o = free_npc( self, id ) and o
 	end
 
 	-- если все успешно освобождены, то можно уничтожать гулаг
@@ -746,18 +750,37 @@ function remove_gulag( self )
 	end
 end
 
--- обработка входа сталкера в smart terrain
+-- обработка входа существа в smart terrain
 function on_touch( self, obj )
-	if obj:clsid() == clsid.stalker then
+	if not monster_classes then
+		monster_classes = {
+			[clsid.bloodsucker   ] = "bloodsucker",
+			[clsid.boar          ] = "boar",
+			[clsid.burer         ] = "burer",
+			[clsid.cat           ] = "cat",
+			[clsid.chimera       ] = "chimera",
+			[clsid.controller    ] = "controller",
+			[clsid.dog_black     ] = "dog_black",
+			[clsid.dog_red       ] = "dog_red",
+			[clsid.flesh         ] = "flesh",
+			[clsid.fracture      ] = "fracture",
+			[clsid.poltergeist   ] = "poltergeist",
+			[clsid.pseudo_gigant ] = "pseudo_gigant",
+			[clsid.snork         ] = "snork"
+		}		
+	end
+
+	local cls = obj:clsid()
+	if cls == clsid.stalker or monster_classes[cls] then
 		ini = obj:spawn_ini()
 
-		if ini and not ini:section_exist( "no_smart" ) then
+		if ( ini and not ini:section_exist( "no_smart" ) ) or not ini then
 			if self.gulag then
-				add_stalker( self, obj )
+				add_npc( self, obj )
 			else
 				if not self.idle_end or self.idle_end < game.get_game_time() then
 					if create_gulag( self ) then
-						add_stalker( self, obj )
+						add_npc( self, obj )
 					end
 				end
 			end
@@ -777,9 +800,9 @@ function update( self )
 				-- проверять, не собрался ли кто-то к этому времени уже уходить
 				sn = 0
 				for id, v in self.gulag.Object do
-					if self.stalkers[id].stay_end < game.get_game_time() then
-						-- попытка освободить сталкера. если неудачно, то он всё ещё числится
-						if not free_stalker( self, id ) then
+					if self.npcs[id].stay_end < game.get_game_time() then
+						-- попытка освободить npc. если неудачно, то он всё ещё числится
+						if not free_npc( self, id ) then
 							sn = sn + 1
 						end
 					else
