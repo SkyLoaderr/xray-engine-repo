@@ -158,6 +158,7 @@ public:
 	void						accum_direct			(u32	sub_phase);
 	void						accum_direct_f			(u32	sub_phase);
 	void						accum_direct_lum		();
+	void						accum_direct_blend		();
 	void						accum_point				(light* L);
 	void						accum_spot				(light* L);
 	void						accum_reflected			(light* L);
