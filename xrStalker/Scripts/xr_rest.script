@@ -20,7 +20,7 @@ function evaluator_satiety:evaluate ()
     if self.object.satiety < self.treshold then
        self.value = true
     end    
-  --  if self.value == true then printf ("ZHRAT !!!") else printf ("NA PARASHU !!!") end
+    --if self.value == true then printf ("ZHRAT !!!") else printf ("NA PARASHU !!!") end
     return self.value
 end
 ----------------------------------------------------------------------------------------------------------------------
@@ -36,7 +36,7 @@ function evaluator_food:evaluate ()
        self.object:object ("kolbasa") ~= nil or 
        self.object:object ("conserva") ~= nil or
        self.object:object ("vodka") ~= nil then
-    --   printf ("FOOD PRESENT")
+       --printf ("FOOD PRESENT")
        return true
     end    
     --printf ("NO FOOD")
@@ -80,17 +80,18 @@ function action_rest:__init (name) super (nil, name)
     self.drink_object = nil
     self.state = 0
     self.time_to_eat = 0
+    self.stage = 0
 end
 ----------------------
 function action_rest:initialize ()
-    printf ("INITIALIZED !!!")
     action_base.initialize (self)
     
+    self.object:set_movement_type (move.stand)
+    --self.object:set_item (object.hide, self.object:best_weapon ())
+    
     if self.state == 0 then
-       if xr_state.change_state (self.object, 3) == true then
+       if xr_state.change_state (self.object, xr_state.sit) == true then
           printf ("CHANGE STATE")  
-          self.state = 1
-          return
        end   
     end   
     
@@ -101,41 +102,50 @@ function action_rest:initialize ()
           self.eat_object = self.object:object ("conserva") 
        end
     end
+    
     self.eat_enable = self.eat_object ~= nil
     self.drink_object = self.object:object ("vodka")
     self.drink_enable = self.drink_object ~= nil
+    
+    if self.state == 0 then
+       self.state = 1  
+       return 
+    end
+       
     self.time_to_eat = device ():time_global () + 30000
+    
 end
 ----------------------
 function action_rest:execute ()
-    printf ("EXECUTED !!!")
     action_base.execute (self)
-    if xr_state.change_state (self.object, 3) == true then return end
     
     if self.eat_enable == true then
-       self.object:activate (self.eat_object)
-       if device ():time_global () - self.time_to_eat < 0 then
-          self.object:deactivate (self.eat_object)
+       if self.stage == 0 then 
+          self.object:set_item (object.activate, self.eat_object)
+          self.stage = 1 
+       else   
+          self.object:set_item (object.use, self.eat_object)
+       end   
+       printf ("Activate eat object")
+       if device ():time_global () - self.time_to_eat > 0 then
+          self.object:set_item (object.deactivate, self.eat_object)
           self.eat_enable = false
+          self.stage = 0
           self.time_to_eat = device ():time_global () + 20000
        end
        return
-    else   
-       self.object:deactivate (self.eat_object)
-       self.eat_enable = false
-       self.time_to_eat = device ():time_global () + 20000
-    end
+    end   
     
     if self.drink_enable == true then
-       self.object:activate (self.drink_object)
-       if device ():time_global () - self.time_to_eat < 0 then
-          self.object:deactivate (self.drink_object)
+       self.object:set_item (object.activate, self.drink_object)
+       printf ("Activate drink object")
+       if device ():time_global () - self.time_to_eat > 0 then
+          self.object:set_item (object.deactivate, self.drink_object)
           self.drink_enable = false
           self.time_to_eat = device ():time_global () + 20000
        end
        return
     else   
-       self.object:deactivate (self.drink_object)
        self.drink_enable = false
        self.object:motivation_action_manager ():evaluator (properties["rest"]).value = false
     end
@@ -144,7 +154,6 @@ end
 ----------------------
 function  action_rest:finalize ()
     action_base.finalize (self)
-    printf ("FINALIZED !!!")
     if self.state == 0 then 
        self.state = 1 
        return
@@ -174,11 +183,11 @@ function add_to_binder (obj, property_id)
    	action:add_precondition     	(world_property (stalker_ids.property_enemy,    false))
    	action:add_precondition         (world_property (properties["food"],            true))
    	action:add_precondition         (world_property (properties["rest"],            true))
+   	action:add_precondition         (world_property (properties["state"],           true))
    	action:add_effect               (world_property (properties["rest"],            false))
    	manager:add_action              (operators["action_rest"], action)
    	     	   
-    action = manager:action (property_id)
-   	action:add_precondition (world_property (properties["rest"],  false))
+    manager:action (property_id):add_precondition (world_property (properties["rest"],  false))
     
 end
 ----------------------------------------------------------------------------------------------------------------------
