@@ -70,7 +70,8 @@ protected:
 	virtual	void	update							(float time_delta);
 			float	object_visible_distance			(const CGameObject *game_object, float &object_distance) const;
 			float	get_visible_value				(float distance, float object_distance, float time_delta, float object_velocity) const;
-			float	get_object_velocity				(const CGameObject *game_object) const;
+			float	get_object_velocity				(const CGameObject *game_object, const CNotYetVisibleObject &not_yet_visible_object) const;
+			u32		get_prev_time					(const CGameObject *game_object) const;
 			void	add_not_yet_visible_object		(const CNotYetVisibleObject &not_yet_visible_object);
 			CNotYetVisibleObject *not_yet_visible_object(const CGameObject *game_object);
 

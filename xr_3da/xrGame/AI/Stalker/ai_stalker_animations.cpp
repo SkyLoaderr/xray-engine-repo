@@ -68,7 +68,7 @@ LPCSTR caWeaponActionNames	[] = {
 	"run_",			// 8
 	"idle_",		// 9
 	"escape_",		// 10
-	"prepare",		// 11
+	"prepare_",		// 11
 	"playing",		// 12
 	0
 };
@@ -195,37 +195,28 @@ void CStalkerAnimations::vfAssignGlobalAnimation(CMotionDef *&tpGlobalAnimation)
 
 	CFoodItem				*food_item = dynamic_cast<CFoodItem*>(m_object->inventory().ActiveItem());
 	if (food_item) {
-		u32					dwCurrentAniSlot = u32(-1);
-		switch (food_item->SUB_CLS_ID) {
-			case CLSID_IITEM_BOTTLE : {
-				dwCurrentAniSlot = 0;
-				break;
-			}
-			default : NODEFAULT;
-		}
+		u32					dwCurrentAniSlot = food_item->animation_slot();
 		switch (food_item->STATE) {
+			case FOOD_HIDDEN:
 			case FOOD_SHOWING: {
-				tpGlobalAnimation = m_tAnims.A[eBodyStateStand].m_tGlobalItem.A[dwCurrentAniSlot].A[0].A[0];
+				tpGlobalAnimation = m_tGlobalItem.A[dwCurrentAniSlot].A[0].A[0];
 				break;
 			}
 			case FOOD_HIDING : {
-				tpGlobalAnimation = m_tAnims.A[eBodyStateStand].m_tGlobalItem.A[dwCurrentAniSlot].A[3].A[0];
+				tpGlobalAnimation = m_tGlobalItem.A[dwCurrentAniSlot].A[3].A[0];
 				break;
 			}
+			case FOOD_PLAYING :
 			case FOOD_IDLE	 : {
-				tpGlobalAnimation = m_tAnims.A[eBodyStateStand].m_tGlobalItem.A[dwCurrentAniSlot].A[9].A[0];
+				tpGlobalAnimation = m_tGlobalItem.A[dwCurrentAniSlot].A[6].A[0];
 				break;
 			}
 			case FOOD_PREPARE: {
-				tpGlobalAnimation = m_tAnims.A[eBodyStateStand].m_tGlobalItem.A[dwCurrentAniSlot].A[11].A[0];
+				tpGlobalAnimation = m_tGlobalItem.A[dwCurrentAniSlot].A[11].A[0];
 				break;
 			}
 			case FOOD_EATING : {
-				tpGlobalAnimation = m_tAnims.A[eBodyStateStand].m_tGlobalItem.A[dwCurrentAniSlot].A[1].A[0];
-				break;
-			}
-			case FOOD_PLAYING : {
-				tpGlobalAnimation = m_tAnims.A[eBodyStateStand].m_tGlobalItem.A[dwCurrentAniSlot].A[12].A[0];
+				tpGlobalAnimation = m_tGlobalItem.A[dwCurrentAniSlot].A[1].A[0];
 				break;
 			}
 			default			 : NODEFAULT;
@@ -736,6 +727,7 @@ void CStalkerAnimations::reload				(IRender_Visual *Visual, CInifile *ini, LPCST
 	m_visual								= Visual;
 	m_tAnims.Load							(PSkeletonAnimated(Visual),"");
 	m_tHead.Load							(PSkeletonAnimated(Visual),"");
+	m_tGlobalItem.Load						(PSkeletonAnimated(Visual),"item_");
 	int										head_bone = PKinematics(Visual)->LL_BoneID(ini->r_string(section,"bone_head"));
 	PKinematics(Visual)->LL_GetBoneInstance	(u16(head_bone)).set_callback(HeadCallback,m_object);
 

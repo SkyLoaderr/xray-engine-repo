@@ -171,7 +171,7 @@ void CActor::g_SetAnimation( u32 mstate_rl )
 		CWeapon		*W = dynamic_cast<CWeapon*>(inventory().ActiveItem());
 		CMissile	*M = dynamic_cast<CMissile*>(inventory().ActiveItem());
 		if (W || M) {
-			SActorMotions::SActorState::STorsoWpn* TW	= &ST->m_torso[(W ? W->HandDependence() : M->HandDependence()) - 1];
+			SActorMotions::SActorState::STorsoWpn* TW	= &ST->m_torso[(W ? W->HandDependence() : M->animation_slot()) - 1];
 			if (!b_DropActivated&&!fis_zero(f_DropPower)){
 				M_torso					= TW->drop;
 				m_bAnimTorsoPlayed		= TRUE;

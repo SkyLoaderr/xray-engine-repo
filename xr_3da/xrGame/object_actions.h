@@ -12,6 +12,7 @@
 
 class CAI_Stalker;
 class CInventoryItem;
+class CFoodItem;
 
 //////////////////////////////////////////////////////////////////////////
 // CObjectActionBase
@@ -237,6 +238,45 @@ public:
 						CObjectActionAim		(CInventoryItem *item, CAI_Stalker *owner, CPropertyStorage *storage, _condition_type condition_id, _value_type value, LPCSTR action_name = "");
 	virtual void		initialize				();
 	virtual void		execute					();
+};
+
+//////////////////////////////////////////////////////////////////////////
+// CObjectActionPrepare
+//////////////////////////////////////////////////////////////////////////
+
+class CObjectActionPrepare : public CObjectActionBase<CInventoryItem> {
+protected:
+	typedef CObjectActionBase<CInventoryItem> inherited;
+
+public:
+						CObjectActionPrepare	(CInventoryItem *item, CAI_Stalker *owner, CPropertyStorage *storage, LPCSTR action_name = "");
+	virtual void		execute					();
+};
+
+//////////////////////////////////////////////////////////////////////////
+// CObjectActionUse
+//////////////////////////////////////////////////////////////////////////
+
+class CObjectActionUse : public CObjectActionBase<CFoodItem> {
+protected:
+	typedef CObjectActionBase<CFoodItem> inherited;
+
+public:
+						CObjectActionUse		(CFoodItem *item, CAI_Stalker *owner, CPropertyStorage *storage, LPCSTR action_name = "");
+	virtual void		execute					();
+};
+
+//////////////////////////////////////////////////////////////////////////
+// CObjectActionIdle
+//////////////////////////////////////////////////////////////////////////
+
+class CObjectActionIdle : public CObjectActionBase<CInventoryItem> {
+protected:
+	typedef CObjectActionBase<CInventoryItem> inherited;
+
+public:
+						CObjectActionIdle		(CInventoryItem *item, CAI_Stalker *owner, CPropertyStorage *storage, LPCSTR action_name = "");
+	virtual void		initialize				();
 };
 
 #include "object_actions_inline.h"

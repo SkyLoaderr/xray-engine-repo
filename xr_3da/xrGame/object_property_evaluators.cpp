@@ -12,6 +12,7 @@
 #include "ai/stalker/ai_stalker.h"
 #include "inventory.h"
 #include "missile.h"
+#include "fooditem.h"
 
 //////////////////////////////////////////////////////////////////////////
 // CObjectPropertyEvaluatorState
@@ -114,3 +115,36 @@ CObjectPropertyEvaluatorMissile::_value_type CObjectPropertyEvaluatorMissile::ev
 	VERIFY			(m_item);
 	return			(_value_type((m_item->State() == m_state) == m_equality));
 }
+
+//////////////////////////////////////////////////////////////////////////
+// CObjectPropertyEvaluatorFood
+//////////////////////////////////////////////////////////////////////////
+
+CObjectPropertyEvaluatorFood::CObjectPropertyEvaluatorFood	(CFoodItem *item, CAI_Stalker *owner, u32 state, bool equality) :
+	inherited		(item,owner),
+	m_state			(state),
+	m_equality		(equality)
+{
+}
+
+CObjectPropertyEvaluatorFood::_value_type CObjectPropertyEvaluatorFood::evaluate	()
+{
+	VERIFY			(m_item);
+	return			(_value_type((m_item->State() == m_state) == m_equality));
+}
+
+//////////////////////////////////////////////////////////////////////////
+// CObjectPropertyEvaluatorPrepared
+//////////////////////////////////////////////////////////////////////////
+
+CObjectPropertyEvaluatorPrepared::CObjectPropertyEvaluatorPrepared	(CFoodItem *item, CAI_Stalker *owner) :
+	inherited		(item,owner)
+{
+}
+
+CObjectPropertyEvaluatorPrepared::_value_type CObjectPropertyEvaluatorPrepared::evaluate	()
+{
+	VERIFY			(m_item);
+	return			(_value_type(m_item->ready_to_eat()));
+}
+

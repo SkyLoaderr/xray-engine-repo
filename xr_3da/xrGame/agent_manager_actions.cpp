@@ -11,6 +11,7 @@
 #include "agent_manager.h"
 #include "ai/stalker/ai_stalker.h"
 #include "sight_action.h"
+#include "inventory.h"
 
 //////////////////////////////////////////////////////////////////////////
 // CAgentManagerActionBase
@@ -65,6 +66,7 @@ void CAgentManagerActionNoOrders::execute			()
 //		(*I).order_type			(AgentManager::eOrderTypeAction);
 //		(*I).action				(CSetupAction(0.f,0));
 //		(*I).action().movement().set_level_dest_vertex_id((*I).object()->level_vertex_id());
+//		(*I).action().object	(CObjectAction(MonsterSpace::eObjectActionUse,(*I).object()->inventory().item(CLSID_IITEM_BOTTLE)));
 //		(*I).action().sight		(CSightAction(dynamic_cast<CGameObject*>(Level().CurrentEntity()),false,""));
 	}
 }

@@ -80,7 +80,8 @@ public:
 	// »щет на по€се или в рюкзаке IItem с указанным именем (id)
 	PIItem Get(const u16  id,	 bool bSearchRuck) const;
 	// »щет на по€се или в рюкзаке IItem с указанным CLS_ID
-	PIItem Get(CLASS_ID cls_id,  bool bSearchRuck) const;
+	PIItem Get	(CLASS_ID cls_id,  bool bSearchRuck) const;
+	PIItem item (CLASS_ID cls_id) const;
 	
 	// clearing Inventory
 	void   Clear();											

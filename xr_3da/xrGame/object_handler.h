@@ -24,7 +24,7 @@ struct CMapLocator {
 class CAI_Stalker;
 class CWeapon;
 class CMissile;
-class CEatableItem;
+class CFoodItem;
 
 class CObjectHandler : 
 	public CActionPlanner<CAI_Stalker>,
@@ -62,8 +62,8 @@ protected:
 			void			add_operators			(CWeapon		*weapon);
 			void			add_evaluators			(CMissile		*missile);
 			void			add_operators			(CMissile		*missile);
-			void			add_evaluators			(CEatableItem	*eatable_item);
-			void			add_operators			(CEatableItem	*eatable_item);
+			void			add_evaluators			(CFoodItem		*food_item);
+			void			add_operators			(CFoodItem		*food_item);
 			void			remove_evaluators		(CObject		*object);
 			void			remove_operators		(CObject		*object);
 	IC		ObjectHandlerSpace::EWorldProperties object_property		(MonsterSpace::EObjectAction object_action) const;

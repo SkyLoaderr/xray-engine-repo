@@ -75,6 +75,7 @@ IC	ObjectHandlerSpace::EWorldProperties CObjectHandler::object_property(MonsterS
 		case MonsterSpace::eObjectActionDeactivate	: return(ObjectHandlerSpace::eWorldPropertyNoItemsIdle);
 		case MonsterSpace::eObjectActionAimReady1	: return(ObjectHandlerSpace::eWorldPropertyAimingReady1);
 		case MonsterSpace::eObjectActionAimReady2	: return(ObjectHandlerSpace::eWorldPropertyAimingReady2);
+		case MonsterSpace::eObjectActionUse			: return(ObjectHandlerSpace::eWorldPropertyUsed);
 		default							: NODEFAULT;
 	}
 #ifdef DEBUG

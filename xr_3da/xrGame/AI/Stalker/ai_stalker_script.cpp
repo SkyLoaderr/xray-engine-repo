@@ -270,7 +270,8 @@ bool CAI_Stalker::bfAssignObject(CEntityAction *tpEntityAction)
 			break;
 		}
 		case eObjectActionUse : {
-			l_tObjectAction.m_bCompleted = true;
+			CObjectHandler::set_goal	(eObjectActionUse);
+			return	((l_tObjectAction.m_bCompleted = (CObjectHandler::goal_reached())) == false);
 			break;
 		}
 		case eObjectActionTake : {

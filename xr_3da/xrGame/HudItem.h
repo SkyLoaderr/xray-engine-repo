@@ -40,6 +40,10 @@ public:
 	
 	// Events/States
 	u32				STATE, NEXT_STATE;
+	IC		u32		State				() const
+	{
+		return		(STATE);
+	}
 	//посылка сообщения на сервер о смене состояния оружия 
 	virtual void	SwitchState			(u32 S);
 	//прием сообщения с сервера и его обработка

@@ -667,7 +667,6 @@ PIItem CInventory::Get(const char *name, bool bSearchRuck) const
 	return NULL;
 }
 
-
 PIItem CInventory::Get(CLASS_ID cls_id, bool bSearchRuck) const
 {
 	const TIItemList &list = bSearchRuck ? m_ruck : m_belt;
@@ -690,6 +689,20 @@ PIItem CInventory::Get(const u16 id, bool bSearchRuck) const
 	{
 		PIItem pIItem = *it;
 		if(pIItem->ID() == id) 
+			return pIItem;
+	}
+	return NULL;
+}
+
+PIItem CInventory::item(CLASS_ID cls_id) const
+{
+	const TIItemSet &list = m_all;
+
+	for(TIItemSet::const_iterator it = list.begin(); list.end() != it; ++it) 
+	{
+		PIItem pIItem = *it;
+		if(pIItem->SUB_CLS_ID == cls_id && 
+			pIItem->Useful()) 
 			return pIItem;
 	}
 	return NULL;
@@ -913,7 +926,7 @@ CInventoryItem	*CInventory::GetItemFromInventory(LPCSTR caItemName)
 {
 	TIItemSet	&l_list = m_all;
 	for(PSPIItem l_it = l_list.begin(); l_list.end() != l_it; ++l_it)
-		if (!xr_strcmp((*l_it)->cName(),caItemName))
+		if (!xr_strcmp((*l_it)->cNameSect(),caItemName))
 			return	(*l_it);
 	ai().script_engine().script_log	(ScriptStorage::eLuaMessageTypeError,"Object with name %s is not found in the %s inventory!",caItemName,*dynamic_cast<CGameObject*>(m_pOwner)->cName());
 	return	(0);

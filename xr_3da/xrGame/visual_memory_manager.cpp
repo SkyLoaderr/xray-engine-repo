@@ -119,10 +119,10 @@ float CVisualMemoryManager::object_visible_distance(const CGameObject *game_obje
 	return								(distance);
 }
 
-float CVisualMemoryManager::get_object_velocity	(const CGameObject *game_object) const
+float CVisualMemoryManager::get_object_velocity	(const CGameObject *game_object, const CNotYetVisibleObject &not_yet_visible_object) const
 {
 #pragma todo("Dima to Oles: Please make ps_Size and ps_Element functions const")
-	if (game_object->ps_Size() < 2)
+	if ((game_object->ps_Size() < 2) || (not_yet_visible_object.m_prev_time == game_object->ps_Element(game_object->ps_Size() - 2).dwTime))
 		return							(0.f);
 
 	CObject::SavedPosition	pos0 = game_object->ps_Element	(game_object->ps_Size() - 2);
@@ -172,6 +172,15 @@ void CVisualMemoryManager::add_not_yet_visible_object	(const CNotYetVisibleObjec
 	m_not_yet_visible_objects.push_back	(not_yet_visible_object);
 }
 
+u32	 CVisualMemoryManager::get_prev_time				(const CGameObject *game_object) const
+{
+	if (!game_object->ps_Size())
+		return			(0);
+	if (game_object->ps_Size() == 1)
+		return			(game_object->ps_Element(0).dwTime);
+	return				(game_object->ps_Element(game_object->ps_Size() - 2).dwTime);
+}
+
 bool CVisualMemoryManager::visible				(const CGameObject *game_object, float time_delta)
 {
 	VERIFY						(game_object);
@@ -196,8 +205,10 @@ bool CVisualMemoryManager::visible				(const CGameObject *game_object, float tim
 	if (!object) {
 		CNotYetVisibleObject	new_object;
 		new_object.m_object		= game_object;
-		new_object.m_value		= get_visible_value(distance,object_distance,time_delta,get_object_velocity(game_object));
+		new_object.m_prev_time	= 0;
+		new_object.m_value		= get_visible_value(distance,object_distance,time_delta,get_object_velocity(game_object,new_object));
 		new_object.m_updated	= true;
+		new_object.m_prev_time	= get_prev_time(game_object);
 		add_not_yet_visible_object(new_object);
 #ifdef VISIBILITY_TEST
 		if ((new_object.m_value > m_visibility_value) && dynamic_cast<const CActor*>(game_object))
@@ -209,7 +220,8 @@ bool CVisualMemoryManager::visible				(const CGameObject *game_object, float tim
 	}
 	
 	object->m_updated			= true;
-	object->m_value				+= get_visible_value(distance,object_distance,time_delta,get_object_velocity(game_object));
+	object->m_value				+= get_visible_value(distance,object_distance,time_delta,get_object_velocity(game_object,*object));
+	object->m_prev_time			= get_prev_time(game_object);
 
 #ifdef VISIBILITY_TEST
 	if ((object->m_value > m_visibility_value) && dynamic_cast<const CActor*>(game_object))

@@ -12,6 +12,7 @@
 #include "ai/stalker/ai_stalker.h"
 #include "xr_level_controller.h"
 #include "xrmessages.h"
+#include "fooditem.h"
 
 //////////////////////////////////////////////////////////////////////////
 // CObjectActionCommand
@@ -81,6 +82,7 @@ void CObjectActionHide::execute		()
 	inherited::execute				();
 	VERIFY							(m_item);
 	m_object->inventory().Activate	(NO_ACTIVE_SLOT);
+	set_property					(ObjectHandlerSpace::eWorldPropertyUseEnough,false);
 }
 
 //////////////////////////////////////////////////////////////////////////
@@ -289,4 +291,51 @@ void CObjectActionAim::initialize			()
 void CObjectActionAim::execute				()
 {
 	inherited::execute					();
+}
+
+//////////////////////////////////////////////////////////////////////////
+// CObjectActionPrepare
+//////////////////////////////////////////////////////////////////////////
+
+CObjectActionPrepare::CObjectActionPrepare(CInventoryItem *item, CAI_Stalker *owner, CPropertyStorage *storage, LPCSTR action_name) :
+	inherited			(item,owner,storage,action_name)
+{
+}
+
+void CObjectActionPrepare::execute	()
+{
+	inherited::execute();
+	m_object->inventory().Action(kWPN_FIRE,CMD_START);
+}
+
+//////////////////////////////////////////////////////////////////////////
+// CObjectActionUse
+//////////////////////////////////////////////////////////////////////////
+
+CObjectActionUse::CObjectActionUse(CFoodItem *item, CAI_Stalker *owner, CPropertyStorage *storage, LPCSTR action_name) :
+	inherited			(item,owner,storage,action_name)
+{
+}
+
+void CObjectActionUse::execute	()
+{
+	inherited::execute();
+	m_object->inventory().Action(kWPN_FIRE,CMD_START);
+	if (m_item->State() != FOOD_EATING)
+		m_storage->set_property(ObjectHandlerSpace::eWorldPropertyUseEnough,true);
+}
+
+//////////////////////////////////////////////////////////////////////////
+// CObjectActionIdle
+//////////////////////////////////////////////////////////////////////////
+
+CObjectActionIdle::CObjectActionIdle(CInventoryItem *item, CAI_Stalker *owner, CPropertyStorage *storage, LPCSTR action_name) :
+	inherited			(item,owner,storage,action_name)
+{
+}
+
+void CObjectActionIdle::initialize	()
+{
+	inherited::initialize();
+	m_storage->set_property	(ObjectHandlerSpace::eWorldPropertyUseEnough,false);
 }

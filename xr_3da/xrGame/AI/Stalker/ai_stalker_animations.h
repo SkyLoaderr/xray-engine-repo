@@ -13,6 +13,8 @@
 extern LPCSTR caStateNames			[];
 extern LPCSTR caWeaponNames			[];
 extern LPCSTR caWeaponActionNames	[];
+extern LPCSTR caFoodNames			[];
+extern LPCSTR caFoodActionNames		[];
 extern LPCSTR caMovementNames		[];
 extern LPCSTR caMovementActionNames	[];
 extern LPCSTR caInPlaceNames		[];
@@ -35,8 +37,6 @@ public:
 	CAniCollection<CMovementActions,caMovementNames>	m_tMoves;
 	// in-place 
 	CAniFVector	  <caInPlaceNames>						m_tInPlace;
-	// global item
-	CAniCollection<CWeaponActions,	caWeaponNames>		m_tGlobalItem;
 
 	IC	void		Load(CSkeletonAnimated *tpKinematics, LPCSTR caBaseName)
 	{
@@ -45,7 +45,6 @@ public:
 		m_tTorso.Load		(tpKinematics,strconcat(S,caBaseName,"torso_"));
 		m_tMoves.Load		(tpKinematics,caBaseName);
 		m_tInPlace.Load		(tpKinematics,caBaseName);
-		m_tGlobalItem.Load	(tpKinematics,strconcat(S,caBaseName,"item_"));
 	};
 };
 
@@ -64,7 +63,10 @@ public:
 
 	CAniCollection<CStateAnimations,caStateNames>	m_tAnims;
 	// head
-	CAniFVector<caHeadNames>							m_tHead;
+	CAniFVector<caHeadNames>						m_tHead;
+	// weapon item
+	CAniCollection<CStateAnimations::CWeaponActions,caWeaponNames>		m_tGlobalItem;
+
 	CMotionDef					*m_tpCurrentGlobalAnimation;
 	CMotionDef					*m_tpCurrentHeadAnimation;
 	CMotionDef					*m_tpCurrentTorsoAnimation;

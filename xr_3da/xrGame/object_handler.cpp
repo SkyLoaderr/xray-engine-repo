@@ -17,6 +17,7 @@
 #include "object_property_evaluators.h"
 #include "object_actions.h"
 #include "torch.h"
+#include "xr_level_controller.h"
 
 using namespace ObjectHandlerSpace;
 
@@ -59,6 +60,7 @@ void CObjectHandler::reinit			(CAI_Stalker *object)
 
 	m_storage.set_property			(eWorldPropertyAimed1,false);
 	m_storage.set_property			(eWorldPropertyAimed2,false);
+	m_storage.set_property			(eWorldPropertyUseEnough,false);
 	
 	add_evaluator					(u32(eWorldPropertyNoItems),			xr_new<CObjectPropertyEvaluatorNoItems>(m_object));
 	add_evaluator					(u32(eWorldPropertyNoItemsIdle),		xr_new<CObjectPropertyEvaluatorConst>(false));
@@ -175,7 +177,7 @@ void CObjectHandler::add_item			(CInventoryItem *inventory_item)
 {
 	CWeapon						*weapon		= dynamic_cast<CWeapon*>		(inventory_item);
 	CMissile					*missile	= dynamic_cast<CMissile*>		(inventory_item);
-	CEatableItem				*eatable	= dynamic_cast<CEatableItem*>	(inventory_item);
+	CFoodItem				*eatable	= dynamic_cast<CFoodItem*>	(inventory_item);
 
 	if (weapon) {
 		add_evaluators			(weapon);
@@ -256,7 +258,8 @@ LPCSTR CObjectHandler::action2string(const _action_id_type &id)
 		case ObjectHandlerSpace::eWorldOperatorThrowStart	: {strcat(S,"ThrowStart");	break;}
 		case ObjectHandlerSpace::eWorldOperatorThrowIdle	: {strcat(S,"ThrowIdle");	break;}
 		case ObjectHandlerSpace::eWorldOperatorThrow		: {strcat(S,"Throwing");	break;}
-		case ObjectHandlerSpace::eWorldOperatorThreaten		: {strcat(S,"Threaten");	break;}
+		case ObjectHandlerSpace::eWorldOperatorPrepare		: {strcat(S,"Preparing");	break;}
+		case ObjectHandlerSpace::eWorldOperatorUse			: {strcat(S,"Using");		break;}
 		default												: NODEFAULT;
 	}
 	return		(S);
@@ -303,6 +306,8 @@ LPCSTR CObjectHandler::property2string(const _condition_type &id)
 		case ObjectHandlerSpace::eWorldPropertyThrowIdle	: {strcat(S,"ThrowIdle");	break;}
 		case ObjectHandlerSpace::eWorldPropertyThrow		: {strcat(S,"Throwing");	break;}
 		case ObjectHandlerSpace::eWorldPropertyThreaten		: {strcat(S,"Threaten");	break;}
+		case ObjectHandlerSpace::eWorldPropertyPrepared		: {strcat(S,"Prepared");	break;}
+		case ObjectHandlerSpace::eWorldPropertyUsed			: {strcat(S,"Used");		break;}
 		case ObjectHandlerSpace::eWorldPropertyItemID		: {S[xr_strlen(S) - 1] = 0;	break;}
 		default												: NODEFAULT;
 	}
@@ -614,12 +619,70 @@ void CObjectHandler::add_operators		(CMissile *missile)
 	this->action(uid(id,eWorldOperatorThrowIdle)).set_inertia_time	(2000);
 }
 
-void CObjectHandler::add_evaluators		(CEatableItem *eatable_item)
+void CObjectHandler::add_evaluators		(CFoodItem *food_item)
 {
+	u16					id = food_item->ID();
+	// dynamic state properties
+	add_evaluator		(uid(id,eWorldPropertyHidden)		,xr_new<CObjectPropertyEvaluatorFood>(food_item,m_object,FOOD_HIDDEN));
+	add_evaluator		(uid(id,eWorldPropertyPrepared)		,xr_new<CObjectPropertyEvaluatorPrepared>(food_item,m_object));
+	add_evaluator		(uid(id,eWorldPropertyUseEnough)	,xr_new<CObjectPropertyEvaluatorMember>(&m_storage,eWorldPropertyUseEnough,true));
+	
+	// const properties
+	add_evaluator		(uid(id,eWorldPropertyDropped)		,xr_new<CObjectPropertyEvaluatorConst>(false));
+	add_evaluator		(uid(id,eWorldPropertyIdle)			,xr_new<CObjectPropertyEvaluatorConst>(false));
+	add_evaluator		(uid(id,eWorldPropertyUsed)			,xr_new<CObjectPropertyEvaluatorConst>(false));
 }
 
-void CObjectHandler::add_operators		(CEatableItem *eatable_item)
+void CObjectHandler::add_operators		(CFoodItem *food_item)
 {
+	u16					id = food_item->ID(), ff = u16(-1);
+	CActionBase<CAI_Stalker>	*action;
+
+	// show
+	action				= xr_new<CObjectActionShow>(food_item,m_object,&m_storage,"show");
+	add_condition		(action,id,eWorldPropertyHidden,	true);
+	add_condition		(action,ff,eWorldPropertyItemID,	true);
+	add_effect			(action,ff,eWorldPropertyItemID,	false);
+	add_effect			(action,id,eWorldPropertyHidden,	false);
+	add_operator		(uid(id,eWorldOperatorShow),		action);
+
+	// hide
+	action				= xr_new<CObjectActionHide>(food_item,m_object,&m_storage,"hide");
+	add_condition		(action,id,eWorldPropertyHidden,	false);
+	add_condition		(action,ff,eWorldPropertyItemID,	false);
+	add_effect			(action,ff,eWorldPropertyItemID,	true);
+	add_effect			(action,id,eWorldPropertyHidden,	true);
+	add_operator		(uid(id,eWorldOperatorHide),		action);
+
+	// drop
+	action				= xr_new<CObjectActionDrop>(food_item,m_object,&m_storage,"drop");
+	add_condition		(action,id,eWorldPropertyHidden,	false);
+	add_effect			(action,id,eWorldPropertyDropped,	true);
+	add_operator		(uid(id,eWorldOperatorDrop),		action);
+
+	// idle
+	action				= xr_new<CObjectActionIdle>(food_item,m_object,&m_storage,"idle");
+	add_condition		(action,id,eWorldPropertyHidden,	false);
+	add_condition		(action,id,eWorldPropertyUseEnough,	true);
+	add_effect			(action,id,eWorldPropertyIdle,		true);
+	add_effect			(action,id,eWorldPropertyUseEnough,	false);
+	add_operator		(uid(id,eWorldOperatorIdle),		action);
+
+	// prepare
+	action				= xr_new<CObjectActionPrepare>(food_item,m_object,&m_storage,"prepare");
+	add_condition		(action,id,eWorldPropertyHidden,	false);
+	add_condition		(action,id,eWorldPropertyPrepared,	false);
+	add_effect			(action,id,eWorldPropertyPrepared,	true);
+	add_operator		(uid(id,eWorldOperatorPrepare),		action);
+
+	// action
+	action				= xr_new<CObjectActionUse>(food_item,m_object,&m_storage,"use");
+	add_condition		(action,id,eWorldPropertyHidden,	false);
+	add_condition		(action,id,eWorldPropertyPrepared,	true);
+	add_condition		(action,id,eWorldPropertyUsed,		false);
+	add_condition		(action,id,eWorldPropertyUseEnough,	false);
+	add_effect			(action,id,eWorldPropertyUsed,		true);
+	add_operator		(uid(id,eWorldOperatorUse),			action);
 }
 
 void CObjectHandler::set_goal	(MonsterSpace::EObjectAction object_action, CGameObject *game_object)

@@ -24,6 +24,10 @@ class CFoodItem: public CEatableItem,
 {
 private:
     typedef	CHudItem inherited;
+
+protected:
+	u32			m_animation_slot;
+
 public:
 	CFoodItem(void);
 	virtual ~CFoodItem(void);
@@ -56,6 +60,8 @@ public:
 	virtual bool IsPending()	const	{return inherited::IsPending();}
 	virtual bool IsHidden()		const	{return FOOD_HIDDEN == STATE;}
 	virtual bool IsHiding()		const	{return FOOD_HIDING == STATE;}
+	IC		u32  animation_slot	() const {return	(m_animation_slot);}
+	IC		bool ready_to_eat	() const {return	(m_bReadyToEat);}
 
 protected:
 	bool m_bReadyToEat;

@@ -42,6 +42,10 @@ namespace ObjectHandlerSpace {
 		eWorldPropertyThrow,
 		eWorldPropertyThreaten,
 
+		eWorldPropertyPrepared,
+		eWorldPropertyUsed,
+		eWorldPropertyUseEnough,
+
 		eWorldPropertyNoItems				= u32((u16(-1) << 16) | eWorldPropertyItemID),
 		eWorldPropertyNoItemsIdle			= u32((u16(-1) << 16) | eWorldPropertyIdle),
 		eWorldPropertyDummy					= u32(-1),
@@ -72,6 +76,9 @@ namespace ObjectHandlerSpace {
 		eWorldOperatorThrowIdle,
 		eWorldOperatorThrow,
 		eWorldOperatorThreaten,
+
+		eWorldOperatorPrepare,
+		eWorldOperatorUse,
 
 		eWorldOperatorNoItemsIdle	= u32((u16(-1) << 16) | eWorldOperatorIdle),
 		eWorldOperatorDummy			= u32(-1),

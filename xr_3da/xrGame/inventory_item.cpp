@@ -711,7 +711,7 @@ void CInventoryItem::UpdateXForm	()
 	// Get matrices
 	int				boneL,boneR,boneR2;
 	E->g_WeaponBones(boneL,boneR,boneR2);
-	//	if ((HandDependence() == 1) || (STATE == eReload) || (!E->g_Alive()))
+	//	if ((HandDependence() == hd1Hand) || (STATE == eReload) || (!E->g_Alive()))
 	//		boneL = boneR2;
 	V->Calculate	();
 	Fmatrix& mL		= V->LL_GetTransform(u16(boneL));
