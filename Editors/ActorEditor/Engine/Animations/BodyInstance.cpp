@@ -548,8 +548,10 @@ void CKinematics::Copy(IVisual *P)
 	Update_ID		= ::Random.randI(psSkeletonUpdate);
 }
 
-void CKinematics::Spawn()
+void CKinematics::Spawn	()
 {
+	inherited::Spawn		();
+
 	IBlend_Startup			();
 
 	for (u32 i=0; i<bones->size(); i++)
@@ -561,11 +563,13 @@ void CKinematics::IBlend_Startup	()
 	CBlend B; ZeroMemory(&B,sizeof(B));
 	B.blend				= CBlend::eFREE_SLOT;
 	blend_pool.clear	();
-	blend_fx.clear		();
 	for (int i=0; i<MAX_BLENDED_POOL; i++)
 		blend_pool.push_back(B);
+
+	// cycles+fx clear
 	for (i=0; i<MAX_PARTS; i++)
-		blend_pool.clear();
+		blend_cycles[i].clear();
+	blend_fx.clear		();
 }
 
 void CKinematics::Load(const char* N, IReader *data, u32 dwFlags)
