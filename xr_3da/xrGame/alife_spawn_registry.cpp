@@ -52,7 +52,7 @@ void CALifeSpawnRegistry::load	(IReader &file_stream, LPCSTR game_name)
 	string256					file_name;
 	IReader						*stream;
 	bool						file_exists = !!FS.exist(file_name, "$game_spawn$", *m_spawn_name, ".spawn");
-	R_ASSERT3					(file_exists,"Can't find file spawn file:",*m_spawn_name);
+	R_ASSERT3					(file_exists,"Can't find spawn file:",*m_spawn_name);
 	int							spawn_age = FS.get_file_age(file_name);
 	
 	R_ASSERT					(FS.exist(game_name));
@@ -82,7 +82,7 @@ void CALifeSpawnRegistry::load	(LPCSTR spawn_name)
 
 	string256					file_name;
 	IReader						*stream;
-	R_ASSERT3					(FS.exist(file_name, "$game_spawn$", *m_spawn_name, ".spawn"),"Can't find file spawn file:",*m_spawn_name);
+	R_ASSERT3					(FS.exist(file_name, "$game_spawn$", *m_spawn_name, ".spawn"),"Can't find spawn file:",*m_spawn_name);
 	int							spawn_age = FS.get_file_age(file_name);
 	
 	string256					graph_file_name;
