@@ -39,11 +39,11 @@ void xrServer::OnCL_Connected		(IClient* _CL)
 
 	Level().HUD()->outMessage		(0xffffffff,"SERVER","Player '%s' connected",CL->Name);
 	NET_Packet		P;
-	u32			mode			= net_flags(TRUE,TRUE);
+	u32			mode				= net_flags(TRUE,TRUE);
 
 	// Game config (all, info includes new player)
-	game->OnPlayerConnect			(CL->ID);
 	Perform_game_export				();
+	game->OnPlayerConnect			(CL->ID);
 
 	// Replicate current entities on to this client
 	xrS_entities::iterator	I=entities.begin(),E=entities.end();
