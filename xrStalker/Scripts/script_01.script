@@ -94,10 +94,8 @@ function main()
 				anim	(anim.danger),
 				cond	(cond.time_end, 9000)
 				)
-				wait(20000)
                	break		
 		end
-		wait()
 		if stalker1:see(actor) or stalker2:see(actor) then
 			printf("script 2!")
 			flush()
