@@ -195,11 +195,13 @@ class ImplicitThread : public CThread
 	ImplicitDeflector*	DATA;			// Data for this thread
 	DWORD				y_start,y_end;
 
-	ImplicitThread		(ImplicitDeflector* _DATA, DWORD _y_start, DWORD _y_end)
+	ImplicitThread		(DWORD ID, ImplicitDeflector* _DATA, DWORD _y_start, DWORD _y_end)
 	{
 		DATA			= _DATA;
 		y_start			= _y_start;
 		y_end			= _y_end;
+
+		CThread			(ID);
 	}
 	virtual void		Exectute()
 	{
@@ -343,20 +345,10 @@ void CBuild::ImplicitLighting()
 		}
 
 		// Start threads
-		ThreadParams	THP[NUM_THREADS];
+		ImplicitThread*	THP	[NUM_THREADS];
+		DWORD	stride		= defl.Height()/NUM_THREADS;
 		for (DWORD thID=0; thID<NUM_THREADS; thID++)
-		{
-			THP[thID].ID			= thID;
-			THP[thID].DATA			= &defl;
-			THP[thID].bCompleted	= FALSE;
-			THP[thID].progress		= 0;
-
-			DWORD	stride			= defl.Height()/NUM_THREADS;
-			THP[thID].y_start		= thID*stride;
-			THP[thID].y_end			= thID*stride+stride;
-
-			_beginthread			(ImplicitThread,0,&THP[thID]);
-		}
+			THP[thID]	= new ImplicitThread(thID,&defl,thID*stride,thID*stride+stride);
 
 		// Wait for completition
 		for (;;)
@@ -367,8 +359,8 @@ void CBuild::ImplicitLighting()
 			DWORD	sumComplete=0;
 			for (DWORD ID=0; ID<NUM_THREADS; ID++)
 			{
-				sumProgress += THP[ID].progress;
-				sumComplete	+= THP[ID].bCompleted?1:0;
+				sumProgress += THP[ID]->fProgress;
+				sumComplete	+= THP[ID]->bCompleted?1:0;
 			}
 
 			Progress(sumProgress/float(NUM_THREADS));
