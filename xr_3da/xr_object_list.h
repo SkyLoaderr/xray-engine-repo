@@ -8,7 +8,9 @@ class ENGINE_API CObject;
 class ENGINE_API CInifile;
 class ENGINE_API NET_Packet;
 
-class	ENGINE_API 				CObjectList
+class	ENGINE_API 				CObjectList : 
+	pureDeviceCreate,
+	pureDeviceDestroy
 {
 public:
 	typedef vector<CObject*>::iterator	OBJ_IT;
@@ -44,6 +46,9 @@ public:
 
 	void						SLS_Save			(CFS_Base&	fs		);
 	void						SLS_Load			(CStream&	fs		);
+
+	virtual void				OnDeviceCreate		();
+	virtual void				OnDeviceDestroy		();
 };
 
 #endif //__XR_OBJECT_LIST_H__

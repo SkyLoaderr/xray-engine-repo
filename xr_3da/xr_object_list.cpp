@@ -177,3 +177,21 @@ void	CObjectList::SLS_Load			(CStream&	fs		)
 		ID ++;
 	}
 }
+
+void	CObjectList::OnDeviceCreate	()
+{
+	for (DWORD i=0; i<objects.size(); i++) 
+	{
+		CObject *O			= objects[i];
+		O->OnDeviceCreate	();
+	}
+}
+
+void	CObjectList::OnDeviceDestroy()
+{
+	for (DWORD i=0; i<objects.size(); i++) 
+	{
+		CObject *O			= objects[i];
+		O->OnDeviceDestroy	();
+	}
+}
