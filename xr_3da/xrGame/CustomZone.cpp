@@ -701,6 +701,10 @@ void CCustomZone::UpdateIdleLight	()
 	float range = m_fIdleLightRange + m_fIdleLightRangeDelta*::Random.randF(-1.f,1.f);
 	m_pIdleLight->set_range	(range);
 	m_pIdleLight->set_color	(fclr);
+
+	Fvector pos = Position();
+	pos.y += m_fIdleLightHeight;
+	m_pIdleLight->set_position(pos);
 }
 
 
@@ -918,6 +922,10 @@ void CCustomZone::UpdateBlowoutLight	()
 							m_LightColor.g*scale, 
 							m_LightColor.b*scale);
 		m_pLight->set_range(m_fLightRange*scale);
+
+		Fvector pos = Position();
+		pos.y += m_fLightHeight;
+		m_pLight->set_position(pos);
 
 		//!!!
 		//Msg("blowout light of zone %s, set range %3.2f", cName(), m_fLightRange*scale);

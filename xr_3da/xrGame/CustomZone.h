@@ -242,14 +242,14 @@ protected:
 	float				m_fIdleLightRangeDelta;
 	CLAItem*			m_pIdleLAnim;
 
-	virtual	void		StartIdleLight	();
-	virtual	void		StopIdleLight	();
-	virtual	void		UpdateIdleLight	();
+	void		StartIdleLight	();
+	void		StopIdleLight	();
+	void		UpdateIdleLight	();
 
 
 	//подсветка выброса
 	bool				m_bBlowoutLight;
-	ref_light		m_pLight;
+	ref_light			m_pLight;
 	float				m_fLightRange;
 	Fcolor				m_LightColor;
 	float				m_fLightTime;
@@ -258,9 +258,9 @@ protected:
 
 
 
-	virtual	void		StartBlowoutLight	();
-	virtual	void		StopBlowoutLight	();
-	virtual	void		UpdateBlowoutLight	();
+	void		StartBlowoutLight	();
+	void		StopBlowoutLight	();
+	void		UpdateBlowoutLight	();
 
 	//список партиклов для объетов внутри зоны
 	DEFINE_MAP (CObject*, SZoneObjectInfo, OBJECT_INFO_MAP, OBJECT_INFO_MAP_IT);
