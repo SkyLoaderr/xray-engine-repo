@@ -13,7 +13,7 @@
 #pragma package(smart_init)
 #pragma resource "*.dfm"
 TfrmBonePart *frmBonePart;
-TElTree* 	T[4];
+TElTree* 	T[4];                       
 TEdit* 		E[4];
 TLabel* 	L[4];
 //---------------------------------------------------------------------------
