@@ -1,6 +1,9 @@
 #include "stdafx.h"
 #pragma hdrstop
 
+#include <d3dx9.h>
+#include "frustum.h"
+
 void CBackend::OnFrameEnd	()
 {
 	for (u32 stage=0; stage<HW.Caps.pixel.dwStages; stage++)
@@ -66,7 +69,7 @@ void	CBackend::set_ClipPlanes(u32 _enable, Fplane*	_planes /*=NULL */, u32 count
 	D3DXMatrixTranspose	(&worldToClipMatrixIT,&worldToClipMatrixIT);
 	for		(u32 it=0; it<count; it++)		{
 		Fplane&		P			= _planes	[it];
-		D3DXPLANE	planeWorld	(P.n.x,P.n.y,P.n.z,P.d), planeClip;
+		D3DXPLANE	planeWorld	(-P.n.x,-P.n.y,-P.n.z,-P.d), planeClip;
 		D3DXPlaneNormalize		(&planeWorld,	&planeWorld);
 		D3DXPlaneTransform		(&planeClip,	&planeWorld, &worldToClipMatrixIT);
 		CHK_DX					(HW.pDevice->SetClipPlane(it,planeClip));

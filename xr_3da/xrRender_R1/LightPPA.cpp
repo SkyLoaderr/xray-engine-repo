@@ -234,7 +234,9 @@ void CLightR_Manager::render_spot	()
 			);
 
 		//		4. Dump sorting tree
+		//	RCache.set_ClipPlanes					(true,	&L_combine);
 		RImplementation.r_dsgraph_render_graph		(0);
+		//	RCache.set_ClipPlanes					(false,	&L_combine);
 	}
 	//		??? grass ???
 }
