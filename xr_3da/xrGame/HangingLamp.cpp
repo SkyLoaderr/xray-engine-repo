@@ -6,7 +6,7 @@
 #include "PhysicsShell.h"
 #include "Physics.h"
 #include "xrserver_objects_alife.h"
-
+#include "PHElement.h"
 //////////////////////////////////////////////////////////////////////
 // Construction/Destruction
 //////////////////////////////////////////////////////////////////////
@@ -129,26 +129,19 @@ void CHangingLamp::UpdateCL	()
 	inherited::UpdateCL		();
 
 	if(m_pPhysicsShell)
+	{
 		m_pPhysicsShell->InterpolateGlobalTransform(&XFORM());
+		guid_physic_bone->BonesCallBack(&PKinematics(Visual())->LL_GetBoneInstance(u16(guid_physic_bone->m_SelfID)));
+	}
+		
 
 	if (Alive()&&light_render->get_active())
 	{
 		Fmatrix xf;
 		if (guid_bone!=BI_NONE)
 		{
-			if(m_pPhysicsShell&&!lanim)
-			{
-				//Fmatrix f;
-				//guid_physic_bone->InterpolateGlobalTransform(&f);
-				//xf.mul(f,guid_bone_offset);
-				Fmatrix& M = PKinematics(Visual())->LL_GetTransform(u16(guid_bone));
-				xf.mul		(XFORM(),M);
-			}
-			else
-			{
-				Fmatrix& M = PKinematics(Visual())->LL_GetTransform(u16(guid_bone));
-				xf.mul		(XFORM(),M);
-			} 
+			Fmatrix& M = PKinematics(Visual())->LL_GetTransform(u16(guid_bone));
+			xf.mul		(XFORM(),M);
 		}
 		else 
 		{
@@ -251,14 +244,16 @@ void CHangingLamp::CreateBody(CSE_ALifeObjectHangingLamp	*lamp)
 	m_pPhysicsShell->Activate(true,true);//,
 	//m_pPhysicsShell->SmoothElementsInertia(0.3f);
 	m_pPhysicsShell->SetAirResistance();//0.0014f,1.5f
+
 	BONE_P_PAIR_IT g_i= bone_map.find(guid_bone);
-	guid_physic_bone=g_i->second.element;
+	guid_physic_bone=dynamic_cast<CPHElement*>(g_i->second.element);
 	bone_map.erase(g_i);
-	pKinematics->Calculate();
-	Fmatrix InvET;
-	InvET.set(pKinematics->LL_GetTransform(guid_physic_bone->m_SelfID));
-	InvET.invert();
-	guid_bone_offset.mul(InvET,pKinematics->LL_GetTransform(guid_bone));
+
+	//if(!lanim)pKinematics->Calculate();
+	//Fmatrix InvET;
+	//InvET.set(pKinematics->LL_GetTransform(guid_physic_bone->m_SelfID));
+	//InvET.invert();
+	//guid_bone_offset.mul(InvET,pKinematics->LL_GetTransform(guid_bone));
 
 	BONE_P_PAIR_IT i=bone_map.begin(),e=bone_map.end();
 	for(;i!=e;i++)

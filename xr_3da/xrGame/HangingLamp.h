@@ -12,7 +12,7 @@
 class CLAItem;
 class CPhysicsElement;
 class CSE_ALifeObjectHangingLamp;
-
+class CPHElement;
 class CHangingLamp: public CGameObject {
 	typedef	CGameObject		inherited;
 private:
@@ -26,8 +26,8 @@ private:
 	
 	float			fHealth;
 	float			fBrightness;
-	CPhysicsElement * guid_physic_bone;
-	Fmatrix			guid_bone_offset;
+	CPHElement*		guid_physic_bone;
+	//Fmatrix			guid_bone_offset;
 	void			CreateBody		(CSE_ALifeObjectHangingLamp	*lamp);
 	bool			Alive			(){return fHealth>0.f;}
 
