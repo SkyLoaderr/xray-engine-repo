@@ -59,6 +59,7 @@ private:
 public:
 	// Cache
 	CSoundRender_Cache					cache;
+	u32									cache_bytes_per_line;
 public:
 	CSoundRender_Core					();
 	~CSoundRender_Core					();

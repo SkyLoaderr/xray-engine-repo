@@ -177,8 +177,8 @@ void CSoundRender_Core::_initialize	(u64 window)
 	}
 
 	// Cache
-	u32		bytes_per_line		= (sdef_target_block/8)*wfm.nAvgBytesPerSec/1000;
-    cache.initialize			(psSoundCacheSizeMB*1024,bytes_per_line);
+	cache_bytes_per_line		= (sdef_target_block/8)*wfm.nAvgBytesPerSec/1000;
+    cache.initialize			(psSoundCacheSizeMB*1024,cache_bytes_per_line);
 }
 
 void CSoundRender_Core::_destroy	()
@@ -236,9 +236,8 @@ void CSoundRender_Core::env_unload	()
 
 void CSoundRender_Core::_restart		()
 {
-	u32		bytes_per_line		= (sdef_target_block/8)*wfm.nAvgBytesPerSec/1000;
 	cache.destroy				();
-	cache.initialize			(psSoundCacheSizeMB*1024,bytes_per_line);
+	cache.initialize			(psSoundCacheSizeMB*1024,cache_bytes_per_line);
 	env_apply					();
 }
 
