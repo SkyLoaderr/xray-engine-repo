@@ -116,6 +116,7 @@ CAgentManagerActionKillEnemy::CAgentManagerActionKillEnemy	(CAgentManager *objec
 void CAgentManagerActionKillEnemy::initialize		()
 {
 	m_level_time					= Level().timeServer() + 10000;
+	m_object->clear_danger_covers	();
 }
 
 void CAgentManagerActionKillEnemy::finalize			()

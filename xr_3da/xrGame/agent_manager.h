@@ -19,6 +19,9 @@ class CAgentManager :
 	public CMotivationActionManager<CAgentManager>,
 	public ISheduled
 {
+	enum {
+		DANGER_INTERVAL = u32(30000),
+	};
 public:
 	class CMemberPredicate {
 	protected:
@@ -41,6 +44,8 @@ public:
 		_flags<MemorySpace::squad_mask_type>	m_mask;
 		_flags<MemorySpace::squad_mask_type>	m_distribute_mask;
 		float									m_probability;
+		Fvector									m_enemy_position;
+		u32										m_level_time;
 
 		IC				CEnemy			(const CEntityAlive *object, MemorySpace::squad_mask_type	mask)
 		{
@@ -61,6 +66,23 @@ public:
 		}
 	};
 
+	struct CDangerCover {
+		CCoverPoint		*m_cover;
+		u32				m_level_time;
+
+		IC	bool	operator==	(CCoverPoint *cover) const
+		{
+			return		(m_cover == cover);
+		}
+	};
+
+	struct CRemoveOldDangerCover {
+		IC	bool	operator()	(const CAgentManager::CDangerCover &cover) const
+		{
+			return						(Level().timeServer() > cover.m_level_time + CAgentManager::DANGER_INTERVAL);
+		}
+	};
+
 public:
 	typedef xr_vector<CMemberOrder>					MEMBER_STORAGE;
 	typedef MEMBER_STORAGE::iterator				iterator;
@@ -77,7 +99,7 @@ protected:
 	xr_vector<CSoundObject>					*m_sound_objects;
 	xr_vector<CHitObject>					*m_hit_objects;
 	xr_vector<CEnemy>						m_enemies;
-
+	mutable xr_vector<CDangerCover>			m_danger_covers;
 
 protected:
 			void							add_motivations		();
@@ -101,6 +123,7 @@ protected:
 			void							assign_enemy_masks	();
 			float							evaluate			(const CEntityAlive *object0, const CEntityAlive *object1) const;
 			void							exchange_enemies	(CMemberOrder &member0, CMemberOrder &member1);
+			void							remove_old_danger_covers	();
 
 public:
 											CAgentManager		();
@@ -122,7 +145,12 @@ public:
 	IC		void							set_squad_objects	(xr_vector<CVisibleObject> *objects);
 	IC		void							set_squad_objects	(xr_vector<CSoundObject> *objects);
 	IC		void							set_squad_objects	(xr_vector<CHitObject> *objects);
-			bool							suitable_location	(CAI_Stalker *object, CCoverPoint *location) const;
+			bool							suitable_location	(CAI_Stalker *object, CCoverPoint *location, bool use_enemy_info) const;
+	IC		bool							group_behaviour		() const;
+			void							add_danger_cover	(CCoverPoint *cover, u32 time) const;
+	IC		CDangerCover					*danger_cover		(CCoverPoint *cover) const;
+			float							cover_danger		(CCoverPoint *cover) const;
+	IC		void							clear_danger_covers	();
 };
 
 #include "agent_manager_inline.h"

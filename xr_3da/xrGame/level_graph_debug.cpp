@@ -269,16 +269,16 @@ void CLevelGraph::render()
 				CVertex				*v = vertex((*I)->level_vertex_id());
 				Fvector				direction;
 
-				//			for (u32 i=0; i<36; ++i) {
-				//				float				value = cover_in_direction(float(10*i)/180.f*PI,v);
-				//				direction.setHP		(float(10*i)/180.f*PI,0);
-				//				direction.normalize	();
-				//				direction.mul		(value*half_size);
-				//				direction.add		(position);
-				//				direction.y			= position.y;
-				//				RCache.dbg_DrawLINE(Fidentity,position,direction,D3DCOLOR_XRGB(0,0,255));
-				//			}
-				//
+				for (u32 i=0; i<36; ++i) {
+					float				value = cover_in_direction(float(10*i)/180.f*PI,v);
+					direction.setHP		(float(10*i)/180.f*PI,0);
+					direction.normalize	();
+					direction.mul		(value*half_size);
+					direction.add		(position);
+					direction.y			= position.y;
+					RCache.dbg_DrawLINE(Fidentity,position,direction,D3DCOLOR_XRGB(0,0,255));
+				}
+
 				direction.set		(position.x - half_size*float(v->cover(0))/15.f,position.y,position.z);
 				RCache.dbg_DrawLINE(Fidentity,position,direction,D3DCOLOR_XRGB(255,0,0));
 
@@ -532,8 +532,10 @@ void CLevelGraph::render()
 			RCache.dbg_DrawLINE			(Fidentity,position,direction,D3DCOLOR_XRGB(255,0,0));
 
 			direction.setHP				(m_best_angle + PI,0.f);
-			direction.mul				(half_size);
+			direction.mul				(half_size*cover_in_direction(m_best_angle,mem_object.m_object_params.m_level_vertex_id));
 			direction.add				(position);
+			direction.y					+= .5f;
+			position.y					+= .5f;
 			RCache.dbg_DrawLINE			(Fidentity,position,direction,D3DCOLOR_XRGB(255,255,255));
 		}
 	}

@@ -11,7 +11,7 @@
 #include "item_manager.h"
 #include "entity_alive.h"
 
-class CHitMemoryManager;
+class CMemoryManager;
 class CActor;
 
 class CEnemyManager : public CObjectManager<const CEntityAlive> {
@@ -22,8 +22,9 @@ protected:
 	float				m_ignore_monster_threshold;
 	float				m_max_ignore_distance;
 	CEntityAlive		*m_self_entity_alive;
-	CHitMemoryManager	*m_self_hit_manager;
+	CMemoryManager		*m_self_memory_manager;
 	mutable bool		m_ready_to_save;
+	mutable bool		m_visible_now;
 
 public:
 						CEnemyManager				();

@@ -19,6 +19,8 @@
 #include "clsid_game.h"
 #include "../skeletonanimated.h"
 
+extern int g_AI_inactive_time;
+
 #ifdef DEBUG
 Flags32		psAI_Flags	= {0};
 #else
@@ -275,7 +277,8 @@ void CCustomMonster::shedule_Update	( u32 DT )
 		if (GetScriptControl())
 			ProcessScripts();
 		else {
-			Think						();
+			if (Device.dwFrame > spawn_time() + g_AI_inactive_time)
+				Think					();
 		}
 		m_dwLastUpdateTime				= Level().timeServer();
 		Device.Statistic.TEST1.End();

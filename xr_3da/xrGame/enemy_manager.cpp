@@ -11,13 +11,15 @@
 #include "stdafx.h"
 #include "enemy_manager.h"
 #include "ef_storage.h"
-#include "hit_memory_manager.h"
+#include "memory_manager.h"
 #include "level.h"
 #include "actor.h"
 #include "ai/stalker/ai_stalker.h"
 #include "map_location.h"
 #include "clsid_game.h"
 #include "autosave_manager.h"
+
+#define USE_EVALUATOR
 
 bool CEnemyManager::useful					(const CEntityAlive *entity_alive) const
 {
@@ -50,12 +52,22 @@ float CEnemyManager::evaluate				(const CEntityAlive *object) const
 	if (object->SUB_CLS_ID == CLSID_OBJECT_ACTOR)
 		m_ready_to_save					= false;
 
+	bool				visible = m_self_memory_manager->visible_now(object);
+	if (!visible && m_visible_now)
+		return			(1000.f);
+	
+	m_visible_now		= visible;
+
+#ifdef USE_EVALUATOR
 	ai().ef_storage().m_tpCurrentMember = m_self_entity_alive;
 	ai().ef_storage().m_tpCurrentEnemy	= object;
-	return								(ai().ef_storage().m_pfVictoryProbability->ffGetValue()/100.f);
-//	float				distance = smart_cast<const CEntityAlive *>(this)->Position().distance_to_sqr(object->Position());
-//	distance			= !fis_zero(distance) ? distance : EPS_L;
-//	return				(1.f/distance);
+	float				distance = smart_cast<const CEntityAlive *>(this)->Position().distance_to_sqr(object->Position());
+	return				(1000.f*(visible ? 0.f : 1.f) + distance/100.f + ai().ef_storage().m_pfVictoryProbability->ffGetValue()/100.f);
+#else
+	float				distance = smart_cast<const CEntityAlive *>(this)->Position().distance_to_sqr(object->Position());
+	distance			= !fis_zero(distance) ? distance : EPS_L;
+	return				(1000.f*(visible ? 0.f : 1.f) + 1.f/distance);
+#endif
 }
 
 bool CEnemyManager::expedient				(const CEntityAlive *object) const
@@ -67,8 +79,8 @@ bool CEnemyManager::expedient				(const CEntityAlive *object) const
 	if (ai().ef_storage().m_pfExpediency->dwfGetDiscreteValue())
 		return				(true);
 
-	VERIFY					(m_self_hit_manager);
-	if (m_self_hit_manager->hit(ai().ef_storage().m_tpCurrentEnemy))
+	VERIFY					(m_self_memory_manager);
+	if (m_self_memory_manager->hit(ai().ef_storage().m_tpCurrentEnemy))
 		return				(true);
 	return					(false);
 }
@@ -76,7 +88,7 @@ bool CEnemyManager::expedient				(const CEntityAlive *object) const
 void CEnemyManager::Load					(LPCSTR section)
 {
 	m_self_entity_alive		= smart_cast<CEntityAlive*>(this);
-	m_self_hit_manager		= smart_cast<CHitMemoryManager*>(this);
+	m_self_memory_manager	= smart_cast<CMemoryManager*>(this);
 }
 
 void CEnemyManager::reload					(LPCSTR section)
@@ -102,7 +114,8 @@ void CEnemyManager::update					()
 		Level().autosave_manager().dec_not_ready();
 
 	m_ready_to_save				= true;
-	
+	m_visible_now				= false;
+
 	inherited::update			();
 
 	if (!m_ready_to_save)

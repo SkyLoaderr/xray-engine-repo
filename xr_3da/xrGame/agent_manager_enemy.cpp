@@ -12,6 +12,8 @@
 #include "ef_storage.h"
 #include "cover_point.h"
 
+const float DANGER_DISTANCE = 5.f;
+
 struct CEnemyFiller {
 	xr_vector<CAgentManager::CEnemy>	*m_enemies;
 	MemorySpace::squad_mask_type		m_mask;
@@ -22,13 +24,22 @@ struct CEnemyFiller {
 		m_mask						= mask;
 	}
 
-	IC	void	operator()			(const CEntityAlive *enemy) const
+	template <typename T>
+	IC	void	operator()			(const CEntityAlive *enemy, const T &object) const
 	{
 		xr_vector<CAgentManager::CEnemy>::iterator	I = std::find(m_enemies->begin(),m_enemies->end(),enemy);
-		if (I == m_enemies->end())
+		if (I == m_enemies->end()) {
 			m_enemies->push_back	(CAgentManager::CEnemy(enemy,m_mask));
-		else
+			m_enemies->back().m_enemy_position	= object.m_object_params.m_position;
+			m_enemies->back().m_level_time			= object.m_last_level_time;
+		}
+		else {
 			(*I).m_mask.set			(m_mask,TRUE);
+			if (object.m_last_level_time > (*I).m_level_time) {
+				(*I).m_level_time				= object.m_last_level_time;
+				(*I).m_enemy_position	= object.m_object_params.m_position;
+			}
+		}
 	}
 };
 
@@ -224,6 +235,18 @@ void CAgentManager::permutate_enemies	()
 		}
 	}
 	while						(changed);
+
+	{
+		iterator					I = m_members.begin();
+		iterator					E = m_members.end();
+		for ( ; I != E; ++I) {
+			xr_vector<CEnemy>::iterator	i = m_enemies.begin();
+			xr_vector<CEnemy>::iterator	e = m_enemies.end();
+			for ( ; i != e; ++i)
+				if ((*I).object()->visible_now((*i).m_object))
+					(*i).m_distribute_mask.assign((*i).m_distribute_mask.get() | mask((*I).object()));
+		}
+	}
 }
 
 void CAgentManager::assign_enemy_masks	()
@@ -243,15 +266,27 @@ void CAgentManager::distribute_enemies	()
 	assign_enemy_masks				();
 }
 
-bool CAgentManager::suitable_location	(CAI_Stalker *object, CCoverPoint *location) const
+bool CAgentManager::suitable_location	(CAI_Stalker *object, CCoverPoint *location, bool use_enemy_info) const
 {
 	const_iterator					I = members().begin();
 	const_iterator					E = members().end();
 	for ( ; I != E; ++I) {
 		if ((*I).object()->ID() == object->ID())
 			continue;
-		if ((*I).object()->dest_position().distance_to(location->position()) <= 2.f)
+
+		if (!(*I).cover())
+			continue;
+
+		if ((*I).cover()->m_position.distance_to(location->position()) <= 5.f)
 			if ((*I).object()->Position().distance_to(location->position()) <= object->Position().distance_to(location->position()))
+				return				(false);
+	}
+
+	if (use_enemy_info) {
+		xr_vector<CEnemy>::const_iterator	I = m_enemies.begin();
+		xr_vector<CEnemy>::const_iterator	E = m_enemies.end();
+		for ( ; I != E; ++I)
+			if ((*I).m_enemy_position.distance_to_sqr(location->position()) < 100.f)
 				return				(false);
 	}
 	return							(true);
@@ -263,4 +298,50 @@ void CAgentManager::distribute_locations()
 
 void CAgentManager::setup_actions		()
 {
+}
+
+void CAgentManager::add_danger_cover	(CCoverPoint *cover, u32 time) const
+{
+	CDangerCover					*danger = danger_cover(cover);
+	if (!danger) {
+		CDangerCover				danger;
+		danger.m_cover				= cover;
+		danger.m_level_time			= time;
+		m_danger_covers.push_back	(danger);
+		return;
+	}
+	danger->m_level_time			= time;
+}
+
+void CAgentManager::remove_old_danger_covers	()
+{
+	xr_vector<CDangerCover>::iterator	I = remove_if(m_danger_covers.begin(),m_danger_covers.end(),CRemoveOldDangerCover());
+	m_danger_covers.erase				(I,m_danger_covers.end());
+}
+
+float CAgentManager::cover_danger		(CCoverPoint *cover) const
+{
+//	const CDangerCover	*danger = danger_cover(cover);
+//	if (!danger)
+//		return		(1.f);
+//
+//	if (Level().timeServer() > danger->m_level_time + DANGER_INTERVAL)
+//		return		(1.f);
+//	
+//	return			(float(Level().timeServer() - danger->m_level_time)/float(DANGER_INTERVAL));
+	float			result = 1;
+	xr_vector<CDangerCover>::const_iterator	I = m_danger_covers.begin();
+	xr_vector<CDangerCover>::const_iterator	E = m_danger_covers.end();
+	for ( ; I != E; ++I) {
+		if (Level().timeServer() > (*I).m_level_time + DANGER_INTERVAL)
+			continue;
+
+		float		distance = 1.f + (*I).m_cover->position().distance_to(cover->position());
+		if (distance > DANGER_DISTANCE)
+			continue;
+
+		result		*= distance/DANGER_DISTANCE*float(Level().timeServer() - (*I).m_level_time)/float(DANGER_INTERVAL);
+	}
+
+	return			(result);
 }

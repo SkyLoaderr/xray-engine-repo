@@ -28,8 +28,6 @@
 #include "script_zone.h"
 #include "script_callback.h"
 #include "../skeletoncustom.h"
-
-
 #include "pda.h"
 #include "InfoPortion.h"
 
@@ -570,17 +568,20 @@ void		CScriptGameObject::set_character_pda_info	(LPCSTR info_id)
 	CPda* pda = pInventoryOwner->GetPDA(); VERIFY(pda);
 	pda->SetInfoPortion(CInfoPortion::IdToIndex(info_id));
 }
+
 LPCSTR		CScriptGameObject::get_character_pda_info	()
 {
 	CInventoryOwner	 *pInventoryOwner = smart_cast<CInventoryOwner*>(m_tpGameObject); VERIFY(pInventoryOwner);
 	CPda* pda = pInventoryOwner->GetPDA(); VERIFY(pda);
 	return *CInfoPortion::IndexToId(pda->GetInfoPortion());
 }
+
 void		CScriptGameObject::set_pda_info				(LPCSTR info_id)
 {
 	CPda* pda = smart_cast<CPda*>(m_tpGameObject); VERIFY(pda);
 	pda->SetInfoPortion(CInfoPortion::IdToIndex(info_id));
 }
+
 LPCSTR		CScriptGameObject::get_pda_info				()
 {
 	CPda* pda = smart_cast<CPda*>(m_tpGameObject); VERIFY(pda);
@@ -654,6 +655,23 @@ void CScriptGameObject::set_item		(MonsterSpace::EObjectAction object_action, CS
 		object_handler->set_goal(object_action,lua_game_object ? lua_game_object->object() : 0);
 }
 
+void CScriptGameObject::set_item(MonsterSpace::EObjectAction object_action, CScriptGameObject *lua_game_object, u32 queue_size)
+{
+	CObjectHandler			*object_handler = smart_cast<CObjectHandler*>(m_tpGameObject);
+	if (!object_handler)
+		ai().script_engine().script_log					(ScriptStorage::eLuaMessageTypeError,"CObjectHandler : cannot access class member set_item!");
+	else
+		object_handler->set_goal(object_action,lua_game_object ? lua_game_object->object() : 0, queue_size);
+}
+
+void CScriptGameObject::set_item(MonsterSpace::EObjectAction object_action, CScriptGameObject *lua_game_object, u32 queue_size, u32 queue_interval)
+{
+	CObjectHandler			*object_handler = smart_cast<CObjectHandler*>(m_tpGameObject);
+	if (!object_handler)
+		ai().script_engine().script_log					(ScriptStorage::eLuaMessageTypeError,"CObjectHandler : cannot access class member set_item!");
+	else
+		object_handler->set_goal(object_action,lua_game_object ? lua_game_object->object() : 0, queue_size, queue_interval);
+}
 //////////////////////////////////////////////////////////////////////////
 //////////////////////////////////////////////////////////////////////////
 //////////////////////////////////////////////////////////////////////////

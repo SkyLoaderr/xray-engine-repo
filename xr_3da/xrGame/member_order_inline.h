@@ -16,6 +16,7 @@ IC	CMemberOrder::CMemberOrder					(CAI_Stalker *object) :
 {
 	VERIFY				(m_object);
 	m_enemies.reserve	(16);
+	m_cover				= 0;
 }
 
 IC	bool CMemberOrder::initialized				() const
@@ -103,4 +104,14 @@ IC	u32	 CMemberOrder::selected_enemy			() const
 IC	void CMemberOrder::selected_enemy			(u32 selected_enemy)
 {
 	m_selected_enemy = selected_enemy;
+}
+
+IC	void CMemberOrder::cover					(CCoverPoint *object_cover) const
+{
+	m_cover			= object_cover;
+}
+
+IC	CCoverPoint	*CMemberOrder::cover			() const
+{
+	return			(m_cover);
 }

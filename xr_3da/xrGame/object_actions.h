@@ -13,6 +13,7 @@
 class CAI_Stalker;
 class CInventoryItem;
 class CFoodItem;
+class CWeaponMagazined;
 
 //////////////////////////////////////////////////////////////////////////
 // CObjectActionBase
@@ -108,10 +109,10 @@ protected:
 	typedef CObjectActionBase<CInventoryItem> inherited;
 
 protected:
-	u32					m_type;
+	_condition_type		m_type;
 
 public:
-						CObjectActionReload	(CInventoryItem *item, CAI_Stalker *owner, CPropertyStorage *storage, u32 type, LPCSTR action_name = "");
+						CObjectActionReload	(CInventoryItem *item, CAI_Stalker *owner, CPropertyStorage *storage, _condition_type type, LPCSTR action_name = "");
 	virtual void		initialize			();
 	virtual void		execute				();
 };
@@ -125,10 +126,10 @@ protected:
 	typedef CObjectActionBase<CInventoryItem> inherited;
 
 protected:
-	u32					m_type;
+	_condition_type		m_type;
 
 public:
-						CObjectActionFire	(CInventoryItem *item, CAI_Stalker *owner, CPropertyStorage *storage, u32 type, LPCSTR action_name = "");
+						CObjectActionFire	(CInventoryItem *item, CAI_Stalker *owner, CPropertyStorage *storage, _condition_type type, LPCSTR action_name = "");
 	virtual void		initialize			();
 	virtual void		execute				();
 	virtual void		finalize			();
@@ -173,10 +174,11 @@ protected:
 	typedef CObjectActionBase<CInventoryItem> inherited;
 
 protected:
-	u32					m_type;
+	_condition_type		m_type;
+	CWeaponMagazined	*m_magazined;
 
 public:
-						CObjectActionQueueWait	(CInventoryItem *item, CAI_Stalker *owner, CPropertyStorage *storage, u32 type, LPCSTR action_name = "");
+						CObjectActionQueueWait	(CInventoryItem *item, CAI_Stalker *owner, CPropertyStorage *storage, _condition_type type, LPCSTR action_name = "");
 	virtual void		initialize				();
 	virtual void		execute					();
 	virtual void		finalize				();
@@ -191,10 +193,10 @@ protected:
 	typedef CObjectActionBase<CInventoryItem> inherited;
 
 protected:
-	u32					m_type;
+	_condition_type		m_type;
 
 public:
-						CObjectActionSwitch	(CInventoryItem *item, CAI_Stalker *owner, CPropertyStorage *storage, u32 type, LPCSTR action_name = "");
+						CObjectActionSwitch	(CInventoryItem *item, CAI_Stalker *owner, CPropertyStorage *storage, _condition_type type, LPCSTR action_name = "");
 	virtual void		initialize			();
 	virtual void		execute				();
 	virtual void		finalize			();

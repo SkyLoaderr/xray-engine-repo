@@ -53,6 +53,6 @@ IC	void CMemoryManager::fill_enemies	(const xr_vector<T> &objects, const _predic
 
 		const CEntityAlive			*entity_alive = smart_cast<const CEntityAlive*>((*I).m_object);
 		if (entity_alive && CEnemyManager::useful(entity_alive))
-			predicate				(entity_alive);
+			predicate				(entity_alive,*I);
 	}
 }

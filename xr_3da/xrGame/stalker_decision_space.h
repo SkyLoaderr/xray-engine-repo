@@ -48,16 +48,17 @@ namespace StalkerDecisionSpace {
 		eWorldPropertyItems,
 		eWorldPropertyEnemy,
 		
-		eWorldPropertySeeEnemy,
 		eWorldPropertyItemToKill,
 		eWorldPropertyFoundItemToKill,
 		eWorldPropertyItemCanKill,
 		eWorldPropertyFoundAmmo,
 		eWorldPropertyReadyToKill,
-		eWorldPropertyEnemyAimed,
-		eWorldPropertySafeToKill,
-		eWorldPropertyFireEnough,
+		eWorldPropertySeeEnemy,
 		eWorldPropertyPanic,
+		eWorldPropertyInCover,
+		eWorldPropertyLookedOut,
+		eWorldPropertyPositionHolded,
+		eWorldPropertyEnemyDetoured,
 
 		eWorldPropertySquadAction,
 		eWorldPropertySquadGoal,
@@ -70,46 +71,49 @@ namespace StalkerDecisionSpace {
 	};
 
 	enum EWorldOperators {
+// death
 		eWorldOperatorAlreadyDead	= u32(0),
 		eWorldOperatorDead,
 		
+// alfie
+		eWorldOperatorGatherItems,
+
+// alife : tasks
 		eWorldOperatorFreeNoALife,
 		eWorldOperatorFreeALife,
 		eWorldOperatorReachTaskLocation,
 		eWorldOperatorAccomplishTask,
 		eWorldOperatorReachCustomerLocation,
 		eWorldOperatorCommunicateWithCustomer,
-		
-		eWorldOperatorGatherItems,
-		eWorldOperatorGetKillDistance,
-		eWorldOperatorGetEnemy,
-		eWorldOperatorGetEnemySeen,
+
+// anomaly
+		eWorldOperatorGetOutOfAnomaly,
+		eWorldOperatorDetectAnomaly,
+
+// combat
 		eWorldOperatorGetItemToKill,
 		eWorldOperatorFindItemToKill,
 		eWorldOperatorMakeItemKilling,
 		eWorldOperatorFindAmmo,
 
-
-
 		eWorldOperatorAimEnemy,
+		eWorldOperatorGetReadyToKill,
+		eWorldOperatorKillEnemy,
 		eWorldOperatorRetreatFromEnemy,
-
-		eWorldOperatorGetReadyToKillModerate,
-		eWorldOperatorKillEnemyModerate,
-		eWorldOperatorCamping,
-		eWorldOperatorGetEnemySeenModerate,
-		eWorldOperatorKillEnemyLostModerate,
 		eWorldOperatorTakeCover,
-		
-		eWorldOperatorGetOutOfAnomaly,
-		eWorldOperatorDetectAnomaly,
+		eWorldOperatorLookOut,
+		eWorldOperatorHoldPosition,
+		eWorldOperatorDetourEnemy,
+		eWorldOperatorSearchEnemy,
 
+// global
 		eWorldOperatorSquadAction,
 		eWorldOperatorDeathPlanner,
 		eWorldOperatorALifePlanner,
 		eWorldOperatorCombatPlanner,
 		eWorldOperatorAnomalyPlanner,
 
+// script
 		eWorldOperatorScript,
 		eWorldOperatorDummy			= u32(-1),
 	};

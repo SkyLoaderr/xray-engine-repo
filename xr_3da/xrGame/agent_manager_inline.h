@@ -113,3 +113,21 @@ IC	void CAgentManager::reset_memory_masks				()
 	reset_memory_masks				(*m_sound_objects);
 	reset_memory_masks				(*m_hit_objects);
 }
+
+IC	bool CAgentManager::group_behaviour					() const
+{
+	return							(members().size() > 1);
+}
+
+IC	CAgentManager::CDangerCover *CAgentManager::danger_cover	(CCoverPoint *cover) const
+{
+	xr_vector<CDangerCover>::iterator	I = std::find(m_danger_covers.begin(),m_danger_covers.end(),cover);
+	if (I != m_danger_covers.end())
+		return							(&*I);
+	return								(0);
+}
+
+IC	void CAgentManager::clear_danger_covers	()
+{
+	m_danger_covers.clear			();
+}

@@ -14,6 +14,7 @@
 #include "xrmessages.h"
 #include "fooditem.h"
 #include "weapon.h"
+#include "weaponmagazined.h"
 
 //////////////////////////////////////////////////////////////////////////
 // CObjectActionCommand
@@ -90,7 +91,7 @@ void CObjectActionHide::execute		()
 // CObjectActionReload
 //////////////////////////////////////////////////////////////////////////
 
-CObjectActionReload::CObjectActionReload	(CInventoryItem *item, CAI_Stalker *owner, CPropertyStorage *storage, u32 type, LPCSTR action_name) :
+CObjectActionReload::CObjectActionReload	(CInventoryItem *item, CAI_Stalker *owner, CPropertyStorage *storage, _condition_type type, LPCSTR action_name) :
 	inherited		(item,owner,storage,action_name),
 	m_type			(type)
 {
@@ -115,7 +116,7 @@ void CObjectActionReload::execute			()
 // CObjectActionFire
 //////////////////////////////////////////////////////////////////////////
 
-CObjectActionFire::CObjectActionFire	(CInventoryItem *item, CAI_Stalker *owner, CPropertyStorage *storage, u32 type, LPCSTR action_name) :
+CObjectActionFire::CObjectActionFire	(CInventoryItem *item, CAI_Stalker *owner, CPropertyStorage *storage, _condition_type type, LPCSTR action_name) :
 	inherited		(item,owner,storage,action_name),
 	m_type			(type)
 {
@@ -125,24 +126,24 @@ void CObjectActionFire::initialize		()
 {
 	inherited::inherited::initialize	();
 	if (!m_object->can_kill_member())
-		m_object->inventory().Action(kWPN_FIRE,	CMD_START);
+		m_object->inventory().Action	(kWPN_FIRE,	CMD_START);
 	else
-		m_object->inventory().Action(kWPN_FIRE,	CMD_STOP);
+		m_object->inventory().Action	(kWPN_FIRE,	CMD_STOP);
 }
 
 void CObjectActionFire::execute			()
 {
 	inherited::execute					();
 	if (!m_object->can_kill_member())
-		m_object->inventory().Action(kWPN_FIRE,	CMD_START);
+		m_object->inventory().Action	(kWPN_FIRE,	CMD_START);
 	else
-		m_object->inventory().Action(kWPN_FIRE,	CMD_STOP);
+		m_object->inventory().Action	(kWPN_FIRE,	CMD_STOP);
 }
 
 void CObjectActionFire::finalize		()
 {
 	inherited::finalize					();
-	m_object->inventory().Action(kWPN_FIRE,	CMD_STOP);
+	m_object->inventory().Action		(kWPN_FIRE,	CMD_STOP);
 }
 
 //////////////////////////////////////////////////////////////////////////
@@ -197,21 +198,23 @@ void CObjectActionUnstrapping::finalize		()
 // CObjectActionQueueWait
 //////////////////////////////////////////////////////////////////////////
 
-CObjectActionQueueWait::CObjectActionQueueWait	(CInventoryItem *item, CAI_Stalker *owner, CPropertyStorage *storage, u32 type, LPCSTR action_name) :
+CObjectActionQueueWait::CObjectActionQueueWait	(CInventoryItem *item, CAI_Stalker *owner, CPropertyStorage *storage, _condition_type type, LPCSTR action_name) :
 	inherited				(item,owner,storage,action_name),
 	m_type					(type)
 {
+	m_magazined		= smart_cast<CWeaponMagazined*>(item);
 }
 
 void CObjectActionQueueWait::initialize		()
 {
 	inherited::inherited::initialize	();
-//	m_object->set_aimed		(m_type ? 0 : 1,FALSE);
 }
 
 void CObjectActionQueueWait::execute			()
 {
 	inherited::execute		();
+	if (completed())
+		m_magazined->StopedAfterQueueFired(false);
 }
 
 void CObjectActionQueueWait::finalize		()
@@ -223,7 +226,7 @@ void CObjectActionQueueWait::finalize		()
 // CObjectActionSwitch
 //////////////////////////////////////////////////////////////////////////
 
-CObjectActionSwitch::CObjectActionSwitch	(CInventoryItem *item, CAI_Stalker *owner, CPropertyStorage *storage, u32 type, LPCSTR action_name) :
+CObjectActionSwitch::CObjectActionSwitch	(CInventoryItem *item, CAI_Stalker *owner, CPropertyStorage *storage, _condition_type type, LPCSTR action_name) :
 	inherited		(item,owner,storage,action_name),
 	m_type			(type)
 {

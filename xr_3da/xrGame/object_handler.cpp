@@ -369,9 +369,9 @@ void CObjectHandler::add_evaluators		(CWeapon *weapon)
 	add_evaluator		(uid(id,eWorldPropertyEmpty2)		,xr_new<CObjectPropertyEvaluatorEmpty>(weapon,m_object,1));
 	add_evaluator		(uid(id,eWorldPropertyReady1)		,xr_new<CObjectPropertyEvaluatorReady>(weapon,m_object,0));
 	add_evaluator		(uid(id,eWorldPropertyReady2)		,xr_new<CObjectPropertyEvaluatorReady>(weapon,m_object,1));
+	add_evaluator		(uid(id,eWorldPropertyQueueWait1)	,xr_new<CObjectPropertyEvaluatorQueue>(weapon,m_object,0));
+	add_evaluator		(uid(id,eWorldPropertyQueueWait2)	,xr_new<CObjectPropertyEvaluatorQueue>(weapon,m_object,1));
 	// temporarile const properties
-	add_evaluator		(uid(id,eWorldPropertyQueueWait1)	,xr_new<CObjectPropertyEvaluatorConst>(false));
-	add_evaluator		(uid(id,eWorldPropertyQueueWait2)	,xr_new<CObjectPropertyEvaluatorConst>(false));
 	add_evaluator		(uid(id,eWorldPropertySwitch1)		,xr_new<CObjectPropertyEvaluatorConst>(true));
 	add_evaluator		(uid(id,eWorldPropertySwitch2)		,xr_new<CObjectPropertyEvaluatorConst>(false));
 	add_evaluator		(uid(id,eWorldPropertyStrapping)	,xr_new<CObjectPropertyEvaluatorConst>(false));
@@ -469,7 +469,7 @@ void CObjectHandler::add_operators		(CWeapon *weapon)
 	add_operator		(uid(id,eWorldOperatorAim2),		action);
 
 	// aim_queue1
-	action				= xr_new<CObjectActionQueueWait>(weapon,m_object,&m_storage,0,"aim_queue1");
+	action				= xr_new<CObjectActionQueueWait>(weapon,m_object,&m_storage,uid(id,eWorldPropertyQueueWait1),"aim_queue1");
 	add_condition		(action,id,eWorldPropertyHidden,	false);
 	add_condition		(action,id,eWorldPropertySwitch1,	true);
 	add_condition		(action,id,eWorldPropertyQueueWait1,false);
@@ -478,33 +478,33 @@ void CObjectHandler::add_operators		(CWeapon *weapon)
 	add_operator		(uid(id,eWorldOperatorQueueWait1),	action);
 
 	// aim_queue2
-	action				= xr_new<CObjectActionQueueWait>(weapon,m_object,&m_storage,1,"aim_queue2");
+	action				= xr_new<CObjectActionQueueWait>(weapon,m_object,&m_storage,uid(id,eWorldPropertyQueueWait2),"aim_queue2");
 	add_condition		(action,id,eWorldPropertyHidden,	false);
 	add_condition		(action,id,eWorldPropertySwitch1,	true);
 	add_condition		(action,id,eWorldPropertyQueueWait2,false);
 	add_effect			(action,id,eWorldPropertyQueueWait2,true);
-	add_effect			(action,id,eWorldPropertyAimed2,	false);
+	add_effect			(action,id,eWorldPropertyAimed1,	false);
 	add_operator		(uid(id,eWorldOperatorQueueWait2),	action);
 
 	// fire1
-	action				= xr_new<CObjectActionFire>(weapon,m_object,&m_storage,0,"fire1");
+	action				= xr_new<CObjectActionFire>(weapon,m_object,&m_storage,uid(id,eWorldPropertyQueueWait1),"fire1");
 	add_condition		(action,id,eWorldPropertyHidden,	false);
 	add_condition		(action,id,eWorldPropertyReady1,	true);
 	add_condition		(action,id,eWorldPropertyEmpty1,	false);
 	add_condition		(action,id,eWorldPropertyAimed1,	true);
 	add_condition		(action,id,eWorldPropertySwitch1,	true);
-	add_condition		(action,id,eWorldPropertyQueueWait1,false);
+	add_condition		(action,id,eWorldPropertyQueueWait1,true);
 	add_effect			(action,id,eWorldPropertyFiring1,	true);
 	add_operator		(uid(id,eWorldOperatorFire1),		action);
 
 	// fire2
-	action				= xr_new<CObjectActionFire>(weapon,m_object,&m_storage,1,"fire2");
+	action				= xr_new<CObjectActionFire>(weapon,m_object,&m_storage,uid(id,eWorldPropertyQueueWait2),"fire2");
 	add_condition		(action,id,eWorldPropertyHidden,	false);
 	add_condition		(action,id,eWorldPropertyReady2,	true);
 	add_condition		(action,id,eWorldPropertyEmpty2,	false);
 	add_condition		(action,id,eWorldPropertyAimed2,	true);
 	add_condition		(action,id,eWorldPropertySwitch2,	true);
-	add_condition		(action,id,eWorldPropertyQueueWait2,false);
+	add_condition		(action,id,eWorldPropertyQueueWait2,true);
 	add_effect			(action,id,eWorldPropertyFiring2,	true);
 	add_operator		(uid(id,eWorldOperatorFire2),		action);
 
@@ -582,10 +582,12 @@ void CObjectHandler::add_operators		(CWeapon *weapon)
 	add_effect			(action,id,eWorldPropertyAmmo2,		true);
 	add_operator		(uid(id,eWorldOperatorGetAmmo2),	action);
 
-	this->action(uid(id,eWorldOperatorAim1)).set_inertia_time(1000);
-	this->action(uid(id,eWorldOperatorAim2)).set_inertia_time(1000);
-	this->action(uid(id,eWorldOperatorAimingReady1)).set_inertia_time(1000);
-	this->action(uid(id,eWorldOperatorAimingReady2)).set_inertia_time(1000);
+	this->action(uid(id,eWorldOperatorAim1)).set_inertia_time(500);
+	this->action(uid(id,eWorldOperatorAim2)).set_inertia_time(500);
+	this->action(uid(id,eWorldOperatorAimingReady1)).set_inertia_time(500);
+	this->action(uid(id,eWorldOperatorAimingReady2)).set_inertia_time(500);
+	this->action(uid(id,eWorldOperatorQueueWait1)).set_inertia_time(300);
+	this->action(uid(id,eWorldOperatorQueueWait2)).set_inertia_time(300);
 }
 
 void CObjectHandler::add_evaluators		(CMissile *missile)
@@ -808,7 +810,7 @@ IC	ObjectHandlerSpace::EWorldProperties CObjectHandler::object_property(MonsterS
 #endif
 }
 
-void CObjectHandler::set_goal	(MonsterSpace::EObjectAction object_action, CGameObject *game_object)
+void CObjectHandler::set_goal	(MonsterSpace::EObjectAction object_action, CGameObject *game_object, u32 queue_size, u32 queue_interval)
 {
 	EWorldProperties		goal = object_property(object_action);
 	u32						condition_id = goal;
@@ -827,6 +829,17 @@ void CObjectHandler::set_goal	(MonsterSpace::EObjectAction object_action, CGameO
 	CState					condition;
 	condition.add_condition	(CWorldProperty(condition_id,true));
 	set_target_state		(condition);
+
+	if (!game_object || !queue_size)
+		return;
+
+	CWeaponMagazined		*weapon = smart_cast<CWeaponMagazined*>(game_object);
+	if (!weapon)
+		return;
+
+	weapon->SetQueueSize	(queue_size);
+	this->action(uid(weapon->ID(),eWorldOperatorQueueWait1)).set_inertia_time(queue_interval ? queue_interval : 300);
+	this->action(uid(weapon->ID(),eWorldOperatorQueueWait2)).set_inertia_time(queue_interval ? queue_interval : 300);
 }
 
 void CObjectHandler::update()

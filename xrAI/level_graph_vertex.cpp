@@ -599,3 +599,43 @@ float CLevelGraph::vertex_less_cover(u32 vertex_id, float inc_angle) const
 	
 	return best_angle;
 }
+
+bool CLevelGraph::neighbour_in_direction	(const Fvector &direction, u32 start_vertex_id) const
+{
+	u32						cur_vertex_id = start_vertex_id, prev_vertex_id = u32(-1);
+	Fbox2					box;
+	Fvector2				identity, start, dest, dir;
+
+	identity.x = identity.y	= header().cell_size()*.5f;
+	start					= v2d(vertex_position(start_vertex_id));
+	dir						= v2d(direction);
+	dir.normalize_safe		();
+	dest					= dir;
+	dest.mul				(header().cell_size()*4.f);
+	dest.add				(start);
+	Fvector2				temp;
+	unpack_xz				(vertex(start_vertex_id),temp.x,temp.y);
+
+	float					cur_sqr = _sqr(temp.x - dest.x) + _sqr(temp.y - dest.y);
+	const_iterator			I,E;
+	begin					(cur_vertex_id,I,E);
+	bool					found = false;
+	for ( ; I != E; ++I) {
+		u32					next_vertex_id = value(cur_vertex_id,I);
+		if ((next_vertex_id == prev_vertex_id) || !is_accessible(next_vertex_id))
+			continue;
+		unpack_xz			(vertex(next_vertex_id),temp.x,temp.y);
+		box.min				= box.max = temp;
+		box.grow			(identity);
+		if (box.pick_exact(start,dir)) {
+			Fvector2		temp;
+			temp.add		(box.min,box.max);
+			temp.mul		(.5f);
+			float			dist = _sqr(temp.x - dest.x) + _sqr(temp.y - dest.y);
+			if (dist > cur_sqr)
+				continue;
+			return			(true);
+		}
+	}
+	return					(false);
+}

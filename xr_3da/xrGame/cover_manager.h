@@ -40,6 +40,7 @@ public:
 	template <typename _evaluator_type>
 	IC		CCoverPoint				*best_cover			(const Fvector &position, float radius, _evaluator_type &evaluator) const;
 	IC		bool					operator()			(const CCoverPoint *) const;
+	IC		float					weight				(const CCoverPoint *) const;
 };
 
 #include "cover_manager_inline.h"

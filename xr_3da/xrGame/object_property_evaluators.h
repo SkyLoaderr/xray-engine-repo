@@ -16,6 +16,7 @@ class CAI_Stalker;
 class CWeapon;
 class CMissile;
 class CFoodItem;
+class CWeaponMagazined;
 
 typedef CPropertyEvaluatorMember<CAI_Stalker> CObjectPropertyEvaluatorMember;
 
@@ -90,6 +91,23 @@ protected:
 
 public:
 							CObjectPropertyEvaluatorReady	(CWeapon *item, CAI_Stalker *owner, u32 ammo_type);
+	virtual _value_type		evaluate						();
+};
+
+//////////////////////////////////////////////////////////////////////////
+// CObjectPropertyEvaluatorQueue
+//////////////////////////////////////////////////////////////////////////
+
+class CObjectPropertyEvaluatorQueue : public CObjectPropertyEvaluatorBase<CWeapon> {
+protected:
+	typedef CObjectPropertyEvaluatorBase<CWeapon> inherited;
+
+protected:
+	u32						m_type;
+	CWeaponMagazined		*m_magazined;
+
+public:
+							CObjectPropertyEvaluatorQueue	(CWeapon *item, CAI_Stalker *owner, u32 type);
 	virtual _value_type		evaluate						();
 };
 

@@ -303,6 +303,11 @@ void CStalkerMovementManager::parse_velocity_mask	()
 
 	m_stalker->CSightManager::enable	(true);
 
+	if (fis_zero(speed())) {
+		if (angle_difference(m_body.current.yaw,m_head.current.yaw) > (left_angle(-m_head.current.yaw,-m_body.current.yaw) ? PI_DIV_6 : PI_DIV_3))
+			m_body.target.yaw			= m_head.current.yaw;
+	}
+
 	if ((movement_type() == eMovementTypeStand) || path().empty() || (path().size() <= curr_travel_point_index())) {
 		m_stalker->m_fCurSpeed			= 0;
 		if (mental_state() != eMentalStateDanger)
@@ -311,8 +316,6 @@ void CStalkerMovementManager::parse_velocity_mask	()
 			m_stalker->m_body.speed		= PI_MUL_2;
 		set_desirable_speed				(m_stalker->m_fCurSpeed);
 		setup_head_speed				();
-		if (angle_difference(m_body.current.yaw,m_head.current.yaw) > (left_angle(-m_head.current.yaw,-m_body.current.yaw) ? PI_DIV_6 : PI_DIV_3))
-			m_body.target.yaw			= m_head.current.yaw;
 		return;
 	}
 

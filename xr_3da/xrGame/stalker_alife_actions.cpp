@@ -12,6 +12,7 @@
 #include "inventory_item.h"
 #include "script_game_object.h"
 #include "inventory.h"
+#include "weaponmagazined.h"
 
 #ifdef _DEBUG
 //#	define STALKER_DEBUG_MODE
@@ -93,20 +94,20 @@ void CStalkerActionNoALife::initialize	()
 	m_object->CSightManager::setup	(CSightAction(SightManager::eSightTypeCover,false,true));
 #else
 //	m_object->CObjectHandler::set_goal	(eObjectActionAimReady1,m_object->best_weapon());
-	m_object->CSightManager::setup	(CSightAction(SightManager::eSightTypeCover,false,true));
+	m_object->CSightManager::setup	(CSightAction(SightManager::eSightTypeCurrentDirection));
 	m_object->set_node_evaluator	(0);
 	m_object->set_path_evaluator	(0);
 	m_object->set_desired_direction	(0);
-//	m_object->set_desired_position	(0);
-
-	m_object->CObjectHandler::set_goal	(eObjectActionIdle);
-
+	m_object->set_path_type			(MovementManager::ePathTypeLevelPath);
+	m_object->set_detail_path_type	(DetailPathManager::eDetailPathTypeSmooth);
+	m_object->set_level_dest_vertex	(m_object->level_vertex_id());
+	m_object->set_desired_position	(&m_object->Position());
 //	Fvector							direction = Fvector().set(0.f,0.f,1.f);//Fvector().set(::Random.randF(1.f),0.f,::Random.randF(1.f));
 //	direction.normalize_safe		();
 //	m_object->set_desired_direction	(&direction);
 //	m_object->set_desired_position	(0);
-	m_object->set_path_type			(MovementManager::ePathTypePatrolPath);
-	m_object->set_path				("way0000",PatrolPathManager::ePatrolStartTypeNearest,PatrolPathManager::ePatrolRouteTypeContinue,false);
+//	m_object->set_path_type			(MovementManager::ePathTypePatrolPath);
+//	m_object->set_path				("way0000",PatrolPathManager::ePatrolStartTypeNearest,PatrolPathManager::ePatrolRouteTypeContinue,false);
 
 //	CGameObject						*actor = smart_cast<CGameObject*>(Level().CurrentEntity());
 //	m_object->set_desired_position	(&actor->Position());
@@ -116,9 +117,9 @@ void CStalkerActionNoALife::initialize	()
 //	look_pos.y						+= .8f;
 //	m_object->CSightManager::setup	(CSightAction(SightManager::eSightTypePosition,look_pos,true));
 
-	m_object->set_detail_path_type	(eDetailPathTypeSmooth);
+//	m_object->set_detail_path_type	(eDetailPathTypeSmooth);
 	m_object->set_body_state		(eBodyStateStand);
-	m_object->set_movement_type		(eMovementTypeWalk);
+	m_object->set_movement_type		(eMovementTypeStand);
 	m_object->set_mental_state		(eMentalStateDanger);
 //	m_object->CObjectHandler::set_goal	(eObjectActionUse,m_object->inventory().GetItemFromInventory("bread"));
 //	smart_cast<CAttachableItem*>(m_object->inventory().GetItemFromInventory("hand_radio"))->enable(false);
@@ -166,6 +167,15 @@ void CStalkerActionNoALife::execute		()
 //	look_pos.y						+= .8f;
 //	m_object->CSightManager::setup	(CSightAction(SightManager::eSightTypePosition,look_pos,true));
 //	m_object->play					(eStalkerSoundAttack,10000);
+
+//	CWeaponMagazined					*weapon = smart_cast<CWeaponMagazined*>(m_object->best_weapon());
+//	VERIFY								(weapon);
+//	weapon->SetQueueSize				(3);
+//	m_object->CObjectHandler::set_goal	(eObjectActionFire1,m_object->best_weapon(),5,2000);
+	Fvector2						start_position, finish_position;
+	start_position.set				(-123.55067,-4.5493350);
+	finish_position.set				(-102.20000,-20.300003);
+	ai().level_graph().check_position_in_direction_slow(8053,start_position,finish_position);
 #endif
 }
 

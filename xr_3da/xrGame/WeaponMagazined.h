@@ -116,6 +116,7 @@ public:
 	virtual bool	SingleShotMode			()			{return 1 == m_iQueueSize;}
 	virtual void	SetQueueSize			(int size)  {m_iQueueSize = size; }
 	virtual bool	StopedAfterQueueFired	()			{return m_bStopedAfterQueueFired; }
+	virtual void	StopedAfterQueueFired	(bool value){m_bStopedAfterQueueFired = value; }
 
 protected:
 	//максимальный размер очереди, которой можно стрельнуть

@@ -97,7 +97,7 @@ public:
 			u32				weapon_state			(const CWeapon *weapon) const;
 			void			add_item				(CInventoryItem *inventory_item);
 			void			remove_item				(CInventoryItem *inventory_item);
-			void			set_goal				(MonsterSpace::EObjectAction object_action, CGameObject *game_object = 0);
+			void			set_goal				(MonsterSpace::EObjectAction object_action, CGameObject *game_object = 0, u32 queue_size = 0, u32 queue_interval = 300);
 	IC		void			add_condition			(CActionBase<CAI_Stalker> *action, u16 id, ObjectHandlerSpace::EWorldProperties property, _value_type value);
 	IC		void			add_effect				(CActionBase<CAI_Stalker> *action, u16 id, ObjectHandlerSpace::EWorldProperties property, _value_type value);
 };

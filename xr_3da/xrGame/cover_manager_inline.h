@@ -33,7 +33,7 @@ IC	CCoverPoint *CCoverManager::best_cover(const Fvector &position, float radius,
 	xr_vector<CCoverPoint*>::const_iterator	E = m_nearest.end();
 	for ( ; I != E; ++I)
 		if (evaluator.accessible((*I)->position()) && restrictor(*I))
-			evaluator.evaluate	(*I);
+			evaluator.evaluate	(*I,restrictor.weight(*I));
 
 	evaluator.finalize		();
 
@@ -49,4 +49,9 @@ IC	CCoverPoint	*CCoverManager::best_cover	(const Fvector &position, float radius
 IC	bool CCoverManager::operator()			(const CCoverPoint *) const
 {
 	return					(true);
+}
+
+IC	float CCoverManager::weight				(const CCoverPoint *) const
+{
+	return					(1.f);
 }

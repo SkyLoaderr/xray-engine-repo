@@ -18,15 +18,15 @@
 // CCoverEvaluatorCloseToEnemy
 //////////////////////////////////////////////////////////////////////////
 
-void CCoverEvaluatorCloseToEnemy::evaluate			(CCoverPoint *cover_point)
+void CCoverEvaluatorCloseToEnemy::evaluate			(CCoverPoint *cover_point, float weight)
 {
 	float					enemy_distance	= m_enemy_position.distance_to(cover_point->position());
 	float					my_distance		= m_start_position.distance_to(cover_point->position());
 
-	if (enemy_distance <= m_min_distance)
+	if ((enemy_distance <= m_min_distance) && (m_current_distance > enemy_distance))
 		return;
 
-	if (enemy_distance >= m_max_distance)
+	if((enemy_distance >= m_max_distance) && (m_current_distance < enemy_distance))
 		return;
 
 	if (enemy_distance >= m_current_distance + m_deviation)
@@ -37,7 +37,7 @@ void CCoverEvaluatorCloseToEnemy::evaluate			(CCoverPoint *cover_point)
 	direction.sub			(m_enemy_position,cover_point->position());
 	direction.getHP			(y,p);
 	float					cover_value = ai().level_graph().cover_in_direction(y,cover_point->level_vertex_id());
-	if (cover_value >= 2.f*m_best_value)
+	if (cover_value >= 1.f*m_best_value)
 		return;
 
 	m_selected				= cover_point;
@@ -49,15 +49,15 @@ void CCoverEvaluatorCloseToEnemy::evaluate			(CCoverPoint *cover_point)
 // CCoverEvaluatorFarFromEnemy
 //////////////////////////////////////////////////////////////////////////
 
-void CCoverEvaluatorFarFromEnemy::evaluate			(CCoverPoint *cover_point)
+void CCoverEvaluatorFarFromEnemy::evaluate			(CCoverPoint *cover_point, float weight)
 {
 	float					enemy_distance	= m_enemy_position.distance_to(cover_point->position());
 //	float					my_distance		= m_start_position.distance_to(cover_point->position());
 
-	if (enemy_distance <= m_min_distance)
+	if ((enemy_distance <= m_min_distance) && (m_current_distance > enemy_distance))
 		return;
 
-	if (enemy_distance >= m_max_distance)
+	if((enemy_distance >= m_max_distance) && (m_current_distance < enemy_distance))
 		return;
 
 	if (enemy_distance <= m_current_distance - m_deviation)
@@ -79,23 +79,31 @@ void CCoverEvaluatorFarFromEnemy::evaluate			(CCoverPoint *cover_point)
 // CCoverEvaluatorBest
 //////////////////////////////////////////////////////////////////////////
 
-void CCoverEvaluatorBest::evaluate			(CCoverPoint *cover_point)
+void CCoverEvaluatorBest::evaluate			(CCoverPoint *cover_point, float weight)
 {
-	float					enemy_distance	= m_enemy_position.distance_to(cover_point->position());
-	float					my_distance		= m_start_position.distance_to_sqr(cover_point->position());
-
-	if (enemy_distance <= m_min_distance)
+	if (fis_zero(weight))
 		return;
 
-	if (enemy_distance >= m_max_distance)
+	float					enemy_distance	= m_enemy_position.distance_to(cover_point->position());
+
+	if ((enemy_distance <= m_min_distance) && (m_current_distance > enemy_distance))
+		return;
+
+	if((enemy_distance >= m_max_distance) && (m_current_distance < enemy_distance))
 		return;
 
 	Fvector					direction;
 	float					y,p;
 	direction.sub			(m_enemy_position,cover_point->position());
 	direction.getHP			(y,p);
+
 	float					cover_value = ai().level_graph().cover_in_direction(y,cover_point->level_vertex_id());
-	float					value = 1*_sqr(cover_value) + 1*_sqr(my_distance/300.f);
+	float					value = cover_value;
+	if (ai().level_graph().neighbour_in_direction(direction,cover_point->level_vertex_id()))
+		value				+= 10.f;
+
+	value					/= weight;
+
 	if (value >= m_best_value)
 		return;
 
@@ -110,7 +118,7 @@ void CCoverEvaluatorBest::evaluate			(CCoverPoint *cover_point)
 void CCoverEvaluatorAngle::initialize		(const Fvector &start_position)
 {
 	inherited::initialize		(start_position);
-	m_best_alpha				= 0.f;
+	m_best_alpha				= -1.f;
 	m_direction.sub				(m_start_position,m_enemy_position);
 	m_direction.normalize_safe	();
 	float						best_value = -1.f;
@@ -122,45 +130,35 @@ void CCoverEvaluatorAngle::initialize		(const Fvector &start_position)
 			m_best_angle		= alpha;
 		}
 	}
-	m_best_direction.setHP		(m_best_angle + 0*PI,0.f);
+	m_best_direction.setHP		(m_best_angle + PI,0.f);
 }
 
-void CCoverEvaluatorAngle::evaluate			(CCoverPoint *cover_point)
+void CCoverEvaluatorAngle::evaluate			(CCoverPoint *cover_point, float weight)
 {
 	float					enemy_distance	= m_enemy_position.distance_to(cover_point->position());
-//	float					my_distance		= m_start_position.distance_to(cover_point->position());
 
-	if (enemy_distance <= m_min_distance)
+	if ((enemy_distance <= m_min_distance) && (m_current_distance > enemy_distance))
 		return;
 
-	if (enemy_distance >= m_max_distance)
+	if((enemy_distance >= m_max_distance) && (m_current_distance < enemy_distance))
 		return;
 
 	Fvector					direction;
-	float					y,p;
 	direction.sub			(cover_point->position(),m_enemy_position);
-	direction.getHP			(y,p);
-	float					cover_value = ai().level_graph().cover_in_direction(y + PI,cover_point->level_vertex_id());
-//	if (cover_value >= 2.f*m_best_value)
-//		return;
-
 	direction.normalize_safe();
 	float					cos_a = direction.dotproduct(m_best_direction);
-	clamp					(cos_a,-0.99999f,0.99999f);
-	float					alpha = _abs(acosf(cos_a));
-	if (alpha <= m_best_alpha)
+	if (cos_a < m_best_alpha)
 		return;
 
 	m_selected				= cover_point;
-	m_best_value			= cover_value;
-	m_best_alpha			= alpha;
+	m_best_alpha			= cos_a;
 }
 
 //////////////////////////////////////////////////////////////////////////
 // CCoverEvaluatorSafe
 //////////////////////////////////////////////////////////////////////////
 
-void CCoverEvaluatorSafe::evaluate			(CCoverPoint *cover_point)
+void CCoverEvaluatorSafe::evaluate			(CCoverPoint *cover_point, float weight)
 {
 	if (m_start_position.distance_to(cover_point->position()) <= m_min_distance)
 		return;
@@ -186,7 +184,7 @@ void CCoverEvaluatorRandomGame::setup		(ALife::_GRAPH_ID game_vertex_id, float m
 	m_covers.clear			();
 }
 
-void CCoverEvaluatorRandomGame::evaluate	(CCoverPoint *cover_point)
+void CCoverEvaluatorRandomGame::evaluate	(CCoverPoint *cover_point, float weight)
 {
 	if (m_start_position.distance_to_sqr(cover_point->position()) >= m_max_distance_sqr)
 		if (ai().cross_table().vertex(cover_point->level_vertex_id()).game_vertex_id() != m_game_vertex_id)
@@ -201,4 +199,45 @@ void CCoverEvaluatorRandomGame::finalize	()
 		return;
 
 	m_selected				= m_covers[::Random.randI((int)m_covers.size())];
+}
+
+//////////////////////////////////////////////////////////////////////////
+// CCoverEvaluatorAmbush
+//////////////////////////////////////////////////////////////////////////
+
+void CCoverEvaluatorAmbush::setup			(const Fvector &my_position, const Fvector &enemy_position, float min_enemy_distance)
+{
+	inherited::setup		();
+	m_my_position			= my_position;
+	m_enemy_position		= enemy_position;
+	m_min_enemy_distance	= min_enemy_distance;
+}
+
+void CCoverEvaluatorAmbush::evaluate		(CCoverPoint *cover_point, float weight)
+{
+//	float					enemy_distance = m_enemy_position.distance_to(cover_point->position());
+	float					my_distance = m_my_position.distance_to(cover_point->position());
+
+	if (my_distance <= m_min_enemy_distance)
+		return;
+
+	Fvector					direction;
+	float					y,p;
+	float					cover_from_enemy;
+	float					cover_from_myself;
+
+	direction.sub			(m_enemy_position,cover_point->position());
+	direction.getHP			(y,p);
+	cover_from_enemy		= ai().level_graph().cover_in_direction(y,cover_point->level_vertex_id());
+
+	direction.sub			(m_my_position,cover_point->position());
+	direction.getHP			(y,p);
+	cover_from_myself		= ai().level_graph().cover_in_direction(y,cover_point->level_vertex_id());
+
+	float					value = cover_from_enemy/cover_from_myself;
+	if (value >= m_best_value)
+		return;
+
+	m_selected				= cover_point;
+	m_best_value			= value;
 }

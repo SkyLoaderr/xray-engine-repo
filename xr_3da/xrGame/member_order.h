@@ -13,10 +13,12 @@
 #include "stalker_decision_space.h"
 
 class CAI_Stalker;
+class CCoverPoint;
 
 class CMemberOrder {
 protected:
 	CAI_Stalker								*m_object;
+	mutable CCoverPoint						*m_cover;
 	AgentManager::EOrderType				m_order_type;
 	CGraphEngine::CWorldState				m_goal;
 	CSetupAction							m_action;
@@ -44,6 +46,8 @@ public:
 	IC		xr_vector<u32>					&enemies		();
 	IC		void							processed		(bool processed);
 	IC		void							selected_enemy	(u32 selected_enemy);
+	IC		void							cover			(CCoverPoint *object_cover) const;
+	IC		CCoverPoint						*cover			() const;
 };
 
 #include "member_order_inline.h"

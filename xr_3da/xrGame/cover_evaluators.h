@@ -59,7 +59,7 @@ public:
 	IC					CCoverEvaluatorCloseToEnemy	(CRestrictedObject *object);
 	IC		void		initialize			(const Fvector &start_position);
 	IC		void		setup				(const Fvector &enemy_position, float min_enemy_distance, float	max_enemy_distance, float deviation = 0.f);
-			void		evaluate			(CCoverPoint *cover_point);
+			void		evaluate			(CCoverPoint *cover_point, float weight);
 };
 
 //////////////////////////////////////////////////////////////////////////
@@ -75,7 +75,7 @@ protected:
 
 public:
 	IC					CCoverEvaluatorFarFromEnemy	(CRestrictedObject *object);
-			void		evaluate			(CCoverPoint *cover_point);
+			void		evaluate			(CCoverPoint *cover_point, float weight);
 };
 
 //////////////////////////////////////////////////////////////////////////
@@ -88,7 +88,7 @@ protected:
 
 public:
 	IC					CCoverEvaluatorBest	(CRestrictedObject *object);
-			void		evaluate			(CCoverPoint *cover_point);
+			void		evaluate			(CCoverPoint *cover_point, float weight);
 };
 
 //////////////////////////////////////////////////////////////////////////
@@ -109,7 +109,7 @@ public:
 	IC					CCoverEvaluatorAngle(CRestrictedObject *object);
 	IC		void		setup				(const Fvector &enemy_position, float min_enemy_distance, float	max_enemy_distance, u32 level_vertex_id);
 			void		initialize			(const Fvector &start_position);
-			void		evaluate			(CCoverPoint *cover_point);
+			void		evaluate			(CCoverPoint *cover_point, float weight);
 };
 
 //////////////////////////////////////////////////////////////////////////
@@ -126,7 +126,7 @@ protected:
 public:
 	IC					CCoverEvaluatorSafe	(CRestrictedObject *object);
 	IC		void		setup				(float min_distance);
-			void		evaluate			(CCoverPoint *cover_point);
+			void		evaluate			(CCoverPoint *cover_point, float weight);
 };
 
 //////////////////////////////////////////////////////////////////////////
@@ -146,8 +146,27 @@ protected:
 public:
 	IC					CCoverEvaluatorRandomGame	(CRestrictedObject *object);
 			void		setup						(ALife::_GRAPH_ID game_vertex_id, float max_distance);
-			void		evaluate					(CCoverPoint *cover_point);
+			void		evaluate					(CCoverPoint *cover_point, float weight);
 	virtual	void		finalize					();
+};
+
+//////////////////////////////////////////////////////////////////////////
+// CCoverEvaluatorAmbush
+//////////////////////////////////////////////////////////////////////////
+
+class CCoverEvaluatorAmbush : public CCoverEvaluatorBase {
+protected:
+	typedef CCoverEvaluatorBase inherited;
+
+private:
+	Fvector				m_my_position;
+	Fvector				m_enemy_position;
+	float				m_min_enemy_distance;
+
+public:
+	IC					CCoverEvaluatorAmbush	(CRestrictedObject *object);
+			void		setup					(const Fvector &my_position, const Fvector &enemy_position, float min_enemy_distance);
+			void		evaluate				(CCoverPoint *cover_point, float weight);
 };
 
 #include "cover_evaluators_inline.h"

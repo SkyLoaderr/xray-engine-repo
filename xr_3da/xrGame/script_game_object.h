@@ -357,6 +357,8 @@ public:
 
 			void				set_item				(MonsterSpace::EObjectAction object_action);
 			void				set_item				(MonsterSpace::EObjectAction object_action, CScriptGameObject *game_object);
+			void				set_item				(MonsterSpace::EObjectAction object_action, CScriptGameObject *game_object, u32 queue_size);
+			void				set_item				(MonsterSpace::EObjectAction object_action, CScriptGameObject *game_object, u32 queue_size, u32 queue_interval);
 			void				set_desired_position	();
 			void				set_desired_position	(const Fvector *desired_position);
 			void				set_desired_direction	();

@@ -39,6 +39,7 @@ void CAgentManager::shedule_Update	(u32 time_delta)
 {
 	ISheduled::shedule_Update	(time_delta);
 	reset_memory_masks			();
+	remove_old_danger_covers	();
 	inherited::update			();
 }
 

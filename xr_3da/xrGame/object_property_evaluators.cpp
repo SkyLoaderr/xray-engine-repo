@@ -13,6 +13,7 @@
 #include "inventory.h"
 #include "missile.h"
 #include "fooditem.h"
+#include "weaponmagazined.h"
 
 //////////////////////////////////////////////////////////////////////////
 // CObjectPropertyEvaluatorState
@@ -83,6 +84,22 @@ CObjectPropertyEvaluatorReady::_value_type CObjectPropertyEvaluatorReady::evalua
 		return		(_value_type(!m_item->IsMisfire() && m_item->GetAmmoElapsed()));
 	else
 		return		(_value_type(false));
+}
+
+//////////////////////////////////////////////////////////////////////////
+// CObjectPropertyEvaluatorQueue
+//////////////////////////////////////////////////////////////////////////
+
+CObjectPropertyEvaluatorQueue::CObjectPropertyEvaluatorQueue(CWeapon *item, CAI_Stalker *owner, u32 type) :
+	inherited		(item,owner),
+	m_type			(type)
+{
+	m_magazined		= smart_cast<CWeaponMagazined*>(item);
+}
+
+CObjectPropertyEvaluatorQueue::_value_type CObjectPropertyEvaluatorQueue::evaluate	()
+{
+	return			(!m_magazined ? true : !m_magazined->StopedAfterQueueFired());
 }
 
 //////////////////////////////////////////////////////////////////////////

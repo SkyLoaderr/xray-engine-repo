@@ -132,3 +132,12 @@ IC	void CCoverEvaluatorSafe::setup		(float min_distance)
 IC	CCoverEvaluatorRandomGame::CCoverEvaluatorRandomGame	(CRestrictedObject *object) : inherited(object)
 {
 }
+
+//////////////////////////////////////////////////////////////////////////
+// CCoverEvaluatorAmbush
+//////////////////////////////////////////////////////////////////////////
+
+IC	CCoverEvaluatorAmbush::CCoverEvaluatorAmbush			(CRestrictedObject *object) :
+	inherited	(object)
+{
+}

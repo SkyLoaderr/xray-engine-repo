@@ -58,6 +58,8 @@ extern	int		g_dwInputUpdateDelta		;
 		u32		g_dwDebugNodeDest		= 0;
 #endif
 
+int g_AI_inactive_time = 0;
+
 // console commands
 class CCC_Spawn : public IConsole_Command
 {
@@ -1485,6 +1487,7 @@ void CCC_RegisterCommands()
 	CMD3(CCC_Mask,				"ai_dbg_anim",			&psAI_Flags,	aiAnimation);
 	CMD3(CCC_Mask,				"ai_dbg_vision",		&psAI_Flags,	aiVision);
 	CMD3(CCC_Mask,				"ai_dbg_monster",		&psAI_Flags,	aiMonsterDebug);
+	CMD4(CCC_Integer,			"ai_dbg_inactive_time",	&g_AI_inactive_time, 0, 1000000);
 	CMD3(CCC_Mask,				"ai_stats",				&psAI_Flags,	aiStats);
 	
 	

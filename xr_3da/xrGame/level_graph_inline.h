@@ -598,8 +598,11 @@ IC	void CLevelGraph::iterate_vertices		(const Fvector &min_position, const Fvect
 	else
 		I						= m_nodes;
 
-	if (valid_vertex_position(max_position))
-		E						= std::upper_bound(m_nodes,m_nodes + header().vertex_count(),vertex_position(max_position).xz()) + 1;
+	if (valid_vertex_position(max_position)) {
+		E						= std::upper_bound(m_nodes,m_nodes + header().vertex_count(),vertex_position(max_position).xz());
+		if (E != (m_nodes + header().vertex_count()))
+			++E;
+	}
 	else
 		E						= m_nodes + header().vertex_count();
 

@@ -13,6 +13,8 @@
 #include "cover_point.h"
 #include "object_broker.h"
 
+#define MIN_COVER_VALUE 16
+
 CCoverManager::CCoverManager				()
 {
 	m_covers				= 0;
@@ -28,10 +30,10 @@ IC	bool CCoverManager::edge_vertex		(u32 index)
 {
 	CLevelGraph::CVertex	*v = ai().level_graph().vertex(index);
 	return					(
-		(!ai().level_graph().valid_vertex_id(v->link(0)) && (v->cover(0) < 12)) ||
-		(!ai().level_graph().valid_vertex_id(v->link(1)) && (v->cover(1) < 12)) ||
-		(!ai().level_graph().valid_vertex_id(v->link(2)) && (v->cover(2) < 12)) ||
-		(!ai().level_graph().valid_vertex_id(v->link(3)) && (v->cover(3) < 12))
+		(!ai().level_graph().valid_vertex_id(v->link(0)) && (v->cover(0) < MIN_COVER_VALUE)) ||
+		(!ai().level_graph().valid_vertex_id(v->link(1)) && (v->cover(1) < MIN_COVER_VALUE)) ||
+		(!ai().level_graph().valid_vertex_id(v->link(2)) && (v->cover(2) < MIN_COVER_VALUE)) ||
+		(!ai().level_graph().valid_vertex_id(v->link(3)) && (v->cover(3) < MIN_COVER_VALUE))
 	);
 }
 
