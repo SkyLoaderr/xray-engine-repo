@@ -710,21 +710,21 @@ void CStalkerAnimations::reinit				()
 	m_tMovementDirection			= eMovementDirectionForward;
 	m_tDesirableDirection			= eMovementDirectionForward;
 	m_script_animations.clear		();
-	m_object						= dynamic_cast<CAI_Stalker*>(this);
-	VERIFY							(m_object);
 }
 
 void CStalkerAnimations::reload				(IRender_Visual *Visual, CInifile *ini, LPCSTR section)
 {
+	m_object								= dynamic_cast<CAI_Stalker*>(this);
+	VERIFY									(m_object);
 	m_visual								= Visual;
 	m_tAnims.Load							(PSkeletonAnimated(Visual),"");
 	m_tHead.Load							(PSkeletonAnimated(Visual),"");
 	int										head_bone = PKinematics(Visual)->LL_BoneID(ini->r_string(section,"bone_head"));
-	PKinematics(Visual)->LL_GetBoneInstance	(u16(head_bone)).set_callback(HeadCallback,this);
+	PKinematics(Visual)->LL_GetBoneInstance	(u16(head_bone)).set_callback(HeadCallback,m_object);
 
 	int										shoulder_bone = PKinematics(Visual)->LL_BoneID(ini->r_string(section,"bone_shoulder"));
-	PKinematics(Visual)->LL_GetBoneInstance	(u16(shoulder_bone)).set_callback(ShoulderCallback,this);
+	PKinematics(Visual)->LL_GetBoneInstance	(u16(shoulder_bone)).set_callback(ShoulderCallback,m_object);
 
 	int										spin_bone = PKinematics(Visual)->LL_BoneID(ini->r_string(section,"bone_spin"));
-	PKinematics(Visual)->LL_GetBoneInstance	(u16(spin_bone)).set_callback(SpinCallback,this);
+	PKinematics(Visual)->LL_GetBoneInstance	(u16(spin_bone)).set_callback(SpinCallback,m_object);
 };
