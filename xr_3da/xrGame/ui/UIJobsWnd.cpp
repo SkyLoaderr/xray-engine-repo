@@ -123,8 +123,7 @@ void CUIJobsWnd::ReloadJobs()
 		pActor->game_task_registry.objects().end() != it; ++it)
 	{
 		CGameTask task;
-		task.Load((*it).index);
-		task.m_ObjectiveStates = (*it).states;
+		task.Init(*it);
 		AddTask(&task);
 	}
 }

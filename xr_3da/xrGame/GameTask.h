@@ -54,6 +54,8 @@ public:
 	virtual void Load	(TASK_ID	str_id);
 	virtual void Load	(TASK_INDEX  index);
 
+	virtual void Init	(const TASK_DATA&  data);
+
 protected:
 	TASK_INDEX	m_TaskIndex;
 	void load_shared	(LPCSTR);
@@ -69,4 +71,6 @@ public:
 	virtual ETaskState	ObjectiveState  (u32 index);
 	//инициализируется значениями из реестра актера
 	TASK_STATE_VECTOR	m_ObjectiveStates;
+	ALife::_TIME_ID		m_ReceiveTime;
+	ALife::_TIME_ID		m_FinishTime;
 };

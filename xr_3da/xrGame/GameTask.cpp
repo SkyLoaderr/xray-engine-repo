@@ -114,3 +114,13 @@ ETaskState	CGameTask::ObjectiveState  (u32 index)
 	VERIFY(index<m_ObjectiveStates.size());
 	return m_ObjectiveStates[index];
 }
+
+void CGameTask::Init(const TASK_DATA& tast_data)
+{
+	Load(tast_data.index);
+	m_ObjectiveStates = tast_data.states;
+
+	m_ReceiveTime = tast_data.receive_time;
+	m_FinishTime = tast_data.finish_time;
+
+}
