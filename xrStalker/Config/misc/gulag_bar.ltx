@@ -168,11 +168,11 @@ def_state_campering_fire = hide_fire
 
 ; ÂÅÒÅĞÀÍÛ ÄÎËÃÀ
 
-[logic@bar_dolg_guard_bunker1]
-active = zoneguard4@bar_dolg_guard_bunker1
+[logic1@bar_dolg_veterans_guard_bunker1]
+active = zoneguard4@bar_dolg_veterans_guard_bunker1
 actor_dialogs = actor_dialogs
 
-[zoneguard4@bar_dolg_guard_bunker1]
+[zoneguard4@bar_dolg_veterans_guard_bunker1]
 path_walk = guard_bunker_1_walk
 path_look = guard_bunker_1_look
 team = bar_dolg_guard_bunker_team
@@ -181,10 +181,10 @@ zone_warn = bunker_warn_zone
 no_move = true
 meet_talk_enabled = true
 meet_dialog = bar_dolg_guard_bunker_start 
-on_info = {+bar_dolg_bunker_pass} zoneguard44@bar_dolg_guard_bunker1_friend
+on_info = {+bar_dolg_bunker_pass} zoneguard44@bar_dolg_veterans_guard_bunker1_friend
 snd_greet = bar_dolg_base_guard_backoff
 
-[zoneguard44@bar_dolg_guard_bunker1_friend]
+[zoneguard44@bar_dolg_veterans_guard_bunker1_friend]
 path_walk = guard_bunker_1_walk
 path_look = guard_bunker_1_look
 team = bar_dolg_guard_bunker_team
@@ -195,11 +195,11 @@ meet_dialog = bar_dolg_guard_bunker_start
 anim = guard
 
 
-[logic@bar_dolg_guard_bunker2]
-active = zoneguard5@bar_dolg_guard_bunker2
+[logic2@bar_dolg_veterans_guard_bunker2]
+active = zoneguard5@bar_dolg_veterans_guard_bunker2
 actor_dialogs = actor_dialogs
 
-[zoneguard5@bar_dolg_guard_bunker2]
+[zoneguard5@bar_dolg_veterans_guard_bunker2]
 path_walk = guard_bunker_2_walk
 path_look = guard_bunker_2_look
 team = bar_dolg_guard_bunker_team1
@@ -208,10 +208,10 @@ zone_warn = bunker_warn_zone
 no_move = true
 meet_talk_enabled = true
 meet_dialog = bar_dolg_guard_bunker_start
-on_info = {+bar_dolg_base_pass} zoneguard55@bar_dolg_guard_bunker2_friend
+on_info = {+bar_dolg_base_pass} zoneguard55@bar_dolg_veterans_guard_bunker2_friend
 snd_greet = bar_dolg_base_guard_no_talk
 
-[zoneguard55@bar_dolg_guard_bunker2_friend]
+[zoneguard55@bar_dolg_veterans_guard_bunker2_friend]
 path_walk = guard_bunker_1_walk
 path_look = guard_bunker_1_look
 team = bar_dolg_guard_bunker_team1
@@ -222,7 +222,7 @@ meet_dialog = bar_dolg_guard_bunker_start
 anim = guard
 
 
-[logic1@bar_dolg_veterans_bunker]
+[logic7@bar_dolg_veterans_bunker]
 active = walker1@bar_dolg_veterans_bunker
 
 [walker1@bar_dolg_veterans_bunker]
@@ -230,7 +230,7 @@ path_walk = guard_bunker
 path_look = look_bunker
 
 
-[logic2@bar_dolg_veterans_gates1]
+[logic3@bar_dolg_veterans_gates1]
 active = walker2@bar_dolg_veterans_gates1
 
 [walker2@bar_dolg_veterans_gates1]
@@ -238,7 +238,7 @@ path_walk = guard_gates_walk1
 path_look = guard_gates_look1
 
 
-[logic3@bar_dolg_veterans_gates2]
+[logic4@bar_dolg_veterans_gates2]
 active = walker3@bar_dolg_veterans_gates2
 
 [walker3@bar_dolg_veterans_gates2]
@@ -246,22 +246,7 @@ path_walk = guard_gates_walk2
 path_look = guard_gates_look2
 
 
-[logic5@bar_dolg_veterans_patrol2]
-active = walker5@bar_dolg_veterans_patrol2
-
-[walker5@bar_dolg_veterans_patrol2]
-path_walk = patrol_walk2
-path_look = patrol_look2
-
-
-[logic6@bar_dolg_veterans_kamp]
-active = kamp1@bar_dolg_veterans_kamp
-
-[kamp1@bar_dolg_veterans_kamp]
-center_point = sit_point
-
-
-[logic7@bar_dolg_veterans_gates_alarm1]
+[logic5@bar_dolg_veterans_gates_alarm1]
 active = walker6@bar_dolg_veterans_gates_alarm1
 
 [walker6@bar_dolg_veterans_gates_alarm1]
@@ -269,7 +254,7 @@ path_walk = guard_gates_walk1
 path_look = guard1_alarm
 
 
-[logic8@bar_dolg_veterans_gates_alarm2]
+[logic6@bar_dolg_veterans_gates_alarm2]
 active = walker7@bar_dolg_veterans_gates_alarm2
 
 [walker7@bar_dolg_veterans_gates_alarm2]
@@ -277,15 +262,7 @@ path_walk = guard_gates_walk2
 path_look = guard2_alarm
 
 
-[logic9@bar_dolg_veterans_bunker_alarm]
-active = walker8@bar_dolg_veterans_bunker_alarm
-
-[walker8@bar_dolg_veterans_bunker_alarm]
-path_walk = bunker_guard
-path_look = bunker_guard_look
-
-
-[logic10@bar_dolg_veterans_bunker_camper]
+[logic8@bar_dolg_veterans_bunker_camper]
 active = camper1@bar_dolg_veterans_bunker_camper
 
 [camper1@bar_dolg_veterans_bunker_camper]
@@ -293,14 +270,6 @@ path_walk = guard_bunker
 path_look = camper_look1
 radius = 4
 
-
-[logic11@bar_dolg_veterans_enter_camper]
-active = camper2@bar_dolg_veterans_enter_camper
-
-[camper2@bar_dolg_veterans_enter_camper]
-path_walk = main_enter
-path_look = camper_look2
-radius = 4
 
 
 ; ÁÓÍÊÅĞ ÄÎËÃÀ
