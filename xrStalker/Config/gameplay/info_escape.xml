@@ -160,17 +160,33 @@
     <disable>agroprom_meet_gunslinger_band</disable>
     </info_portion>
 
-  <!-- Используется для отладки скрипта -->
-  <info_portion id="escape_stalker_help">
-  </info_portion>
+	<!-- Используется для отладки скрипта -->
+	<info_portion id="escape_stalker_help">
+	</info_portion>
 
-  <info_portion id="storyline_start">
-  </info_portion>
 
-  <info_portion id="tutorial_artefact_gain">
-  </info_portion>
 
-  <info_portion id="tutorial_artefact_start">
-  </info_portion>
+	<info_portion id="storyline_start">
+	</info_portion>
+
+	<info_portion id="tutorial_artefact_gain">
+	</info_portion>
+
+	<info_portion id="tutorial_artefact_start">
+	</info_portion>
+
+	<info_portion id="tutorial_wounded_help">
+	</info_portion>
+
+	<info_portion id="tutorial_wounded_die">
+	</info_portion>
+
+	<info_portion id="tutorial_trader_search_corpses">
+		<text>Обыщи трупы</text>
+	</info_portion>
+
+	<info_portion id="tutorial_trader_help_wounded">
+		<text>Дай раненому аптечку</text>
+	</info_portion>
 
 </game_information_portions>
