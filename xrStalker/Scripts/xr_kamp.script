@@ -435,7 +435,7 @@ function action_wait:execute()
 
 	if self.a.action == 5 then
 		--!!! ПРОСТО СИДИМ И ВТЫКАЕМ
-		xr_state.change_state(self.object, 3)
+		xr_state.change_state(self.object, xr_state.sit_wait)
 		-- повернуть его лицом к центру
 		local pp = patrol(self.a.center_point):point(0)
 		pp.y = pp.y + 0.7

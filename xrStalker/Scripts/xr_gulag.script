@@ -589,18 +589,21 @@ function evaluator_alarm:evaluate()
 	-- если мы сейчас патрульные - то не поднимать тревогу(возвращать что типа тревога уже поднята)
 	local f = xr_gulag.isUnderFraction(self.object)
 	if f ~= nil then
-		if xr_gulag.getJob(f, self.object) == "patrol" or
-		   xr_gulag.getJob(f, self.object) == "follower"		
-		then
-			return true		
-		end
+		if f == "blockpost" then
+			if xr_gulag.getJob(f, self.object) == "patrol" or
+			   xr_gulag.getJob(f, self.object) == "follower"		
+			then
+				return true		
+			end
 
-		local s = xr_gulag.getFractionState(f)
-		if s == 1 then
-			return true
-		else 
-			return false
+			local s = xr_gulag.getFractionState(f)
+			if s == 1 then
+				return true
+			else 
+				return false
+			end
 		end
+		return true
 	else
 		return true
 	end
@@ -645,7 +648,6 @@ function add_to_binder(object)
 	local manager = object:motivation_action_manager()
 
 	properties["alarm"]		= xr_evaluators_id.stohe_gulag_base + 0
-	properties["state_end"]		= xr_evaluators_id.state_change
 	properties["stand"]		= xr_evaluators_id.stohe_state_base + 1
 
 	operators["alarm"]		= xr_actions_id.stohe_gulag_base + 0
@@ -657,8 +659,6 @@ function add_to_binder(object)
 	local action = this.action_alarm (object:name(),"action_alarm")
 	action:add_precondition		(world_property(stalker_ids.property_alive, 	true))
 	action:add_precondition		(world_property(properties["alarm"], 		false))
-	action:add_precondition		(world_property(properties["stand"],		true))
-	action:add_precondition		(world_property(properties["state_end"],	true))
 	action:add_effect 		(world_property(properties["alarm"], 		true))
 	manager:add_action (operators["alarm"], action)
 

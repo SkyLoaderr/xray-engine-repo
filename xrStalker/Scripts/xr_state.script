@@ -6,6 +6,7 @@
 
 stand = 0
 sit   = 2
+sit_wait = 3
 sleep = 4
 
 ---------------------------------------------------------------------------------------------------------------------
@@ -46,69 +47,8 @@ function action_change_state:initialize()
 
 	self.object:clear_animations()
 
-	if self.a.body_state == 0 then
-		if self.a.target_state == 0 then
-			--
-		elseif self.a.target_state == 1 then
-			self.object:add_animation("stalker_1_down", true)
-		elseif self.a.target_state == 2 then
-			self.object:add_animation("stalker_2_down", true)
-		elseif self.a.target_state == 3 then
-			self.object:add_animation("stalker_3_down", true)
-		elseif self.a.target_state == 4 then
-			self.object:add_animation("stalker_2_down", true)
-			self.object:add_animation("spit_0", true)			
-		end
-	elseif self.a.body_state == 1 then
-		if self.a.target_state == 0 then
-			self.object:add_animation("stalker_1_up", true)
-		elseif self.a.target_state == 1 then
-			--
-		elseif self.a.target_state == 2 then
-			--!!!!
-		elseif self.a.target_state == 3 then
-			--!!!!
-		elseif self.a.target_state == 4 then
-			--!!!!
-		end
-	elseif self.a.body_state == 2 then
-		if self.a.target_state == 0 then
-			self.object:add_animation("stalker_2_up", true)
-		elseif self.a.target_state == 1 then
-			--!!!!
-		elseif self.a.target_state == 2 then
-			--
-		elseif self.a.target_state == 3 then
-			self.object:add_animation("stalker_2v3", true)
-		elseif self.a.target_state == 4 then
-			self.object:add_animation("spit_0", true)
-		end
-	elseif self.a.body_state == 3 then
-		if self.a.target_state == 0 then
-			self.object:add_animation("stalker_3_up", true)
-		elseif self.a.target_state == 1 then
-			--!!!!
-		elseif self.a.target_state == 2 then
-			self.object:add_animation("stalker_3v2", true)
-		elseif self.a.target_state == 3 then
-			--
-		elseif self.a.target_state == 4 then
-			--!!!!
-		end
-	elseif self.a.body_state == 4 then
-		if self.a.target_state == 0 then
-			self.object:add_animation("spit_3", true)
-			self.object:add_animation("stalker_2_up", true)
-		elseif self.a.target_state == 1 then
-			--!!!!
-		elseif self.a.target_state == 2 then
-			self.object:add_animation("spit_3", true)
-		elseif self.a.target_state == 3 then
-			--!!!!
-		elseif self.a.target_state == 4 then
-			--
-		end
-	end
+	xr_state.transanim(self.object, self.a)
+
 	a = xr_state.getIdle(self.a.target_state)
 	if a ~= nil then
 		self.object:add_animation(a, true)
@@ -143,7 +83,7 @@ function action_stand_up:initialize()
 	self.object:set_path_evaluator()
 	self.object:set_desired_position()
 	self.object:set_desired_direction()  
-	xr_state.change_state(self.object, 0, true)
+	xr_state.change_state(self.object, 0, "true")
 end
 function action_stand_up:execute ()
 	action_base.execute (self)
@@ -170,8 +110,18 @@ function change_state(object, new, emerg)
 	end
 	   	            
 	if st.body_state ~= new then 
+--		if emerg == "true" then
+--			printf("Called emerg change state for %s: old %d, new %d", object:name(), st.body_state, new)
+--		else
+--			printf("Called change state for %s: old %d, new %d", object:name(), st.body_state, new)
+--		end
+
 	      	st.target_state = new
-		if emerg == true then
+		-- add transfer animation
+
+		if emerg == "true" then
+			object:clear_animations()
+			xr_state.transanim(object, st)
 			st.body_state = st.target_state
 		end
 
@@ -192,7 +142,71 @@ function getIdle(id)
 		return "spit_2"
 	end
 end
-
+function transanim(object, a)
+	if a.body_state == 0 then
+		if a.target_state == 0 then
+			--
+		elseif a.target_state == 1 then
+			object:add_animation("stalker_1_down", true)
+		elseif a.target_state == 2 then
+			object:add_animation("stalker_2_down", true)
+		elseif a.target_state == 3 then
+			object:add_animation("stalker_3_down", true)
+		elseif a.target_state == 4 then
+			object:add_animation("stalker_2_down", true)
+			object:add_animation("spit_0", true)			
+		end
+	elseif a.body_state == 1 then
+		if a.target_state == 0 then
+			object:add_animation("stalker_1_up", true)
+		elseif a.target_state == 1 then
+			--
+		elseif a.target_state == 2 then
+			--!!!!
+		elseif a.target_state == 3 then
+			--!!!!
+		elseif a.target_state == 4 then
+			--!!!!
+		end
+	elseif a.body_state == 2 then
+		if a.target_state == 0 then
+			object:add_animation("stalker_2_up", true)
+		elseif a.target_state == 1 then
+			--!!!!
+		elseif a.target_state == 2 then
+			--
+		elseif a.target_state == 3 then
+			object:add_animation("stalker_2v3", true)
+		elseif a.target_state == 4 then
+			object:add_animation("spit_0", true)
+		end
+	elseif a.body_state == 3 then
+		if a.target_state == 0 then
+			object:add_animation("stalker_3_up", true)
+		elseif a.target_state == 1 then
+			--!!!!
+		elseif a.target_state == 2 then
+			object:add_animation("stalker_3v2", true)
+		elseif a.target_state == 3 then
+			--
+		elseif a.target_state == 4 then
+			--!!!!
+		end
+	elseif a.body_state == 4 then
+		if a.target_state == 0 then
+			object:add_animation("spit_3", true)
+			object:add_animation("stalker_2_up", true)
+		elseif a.target_state == 1 then
+			--!!!!
+		elseif a.target_state == 2 then
+			object:add_animation("spit_3", true)
+		elseif a.target_state == 3 then
+			--!!!!
+		elseif a.target_state == 4 then
+			--
+		end
+	end
+end
 ----------------------------------------------------------------------------------------------------------------------
 --State binder
 ----------------------------------------------------------------------------------------------------------------------

@@ -90,7 +90,6 @@ function action_sleeper_activity:execute()
 	end
 end
 function action_sleeper_activity:finalize()
-	xr_state.change_state(self.object, 0)
 	self.object:set_sound_mask (-1)
     	self.object:set_sound_mask (0)
     	action_base.finalize(self)
