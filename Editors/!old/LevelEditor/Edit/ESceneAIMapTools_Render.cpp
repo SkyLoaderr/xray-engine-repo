@@ -51,6 +51,7 @@ void ESceneAIMapTools::OnDeviceDestroy()
 static const u32 block_size = 0x2000;
 void ESceneAIMapTools::OnRender(int priority, bool strictB2F)
 {
+	if (m_Flags.is(flHideNodes)) return;
     if (1==priority){
         if (false==strictB2F){
             RCache.set_xform_world(Fidentity);
@@ -78,7 +79,7 @@ void ESceneAIMapTools::OnRender(int priority, bool strictB2F)
                         if (nodes){
                             for (AINodeIt it=nodes->begin(); it!=nodes->end(); it++){
                                 SAINode& N = **it;
-                                if (N.flags.is(SAINode::flHide)) continue;
+//								if (N.flags.is(SAINode::flHide)) continue;
                                 if (Render->ViewBase.testSphere_dirty(N.Pos,m_Params.fPatchSize)){
                                     u32 clr;
                                     if (N.flags.is(SAINode::flSelected))clr = 0xffffffff;

@@ -376,7 +376,7 @@ void ESceneAIMapTools::SelectNodesByLink(int link)
     // remove link to sel nodes
     for (AINodeIt it=m_Nodes.begin(); it!=m_Nodes.end(); it++)
         if ((*it)->Links()==link)
-			if (!(*it)->flags.is(SAINode::flHide))
+//			if (!(*it)->flags.is(SAINode::flHide))
 	            (*it)->flags.set(SAINode::flSelected,TRUE);
     UI->RedrawScene		();
 }
@@ -388,7 +388,7 @@ int ESceneAIMapTools::SelectObjects(bool flag)
     switch (LTools->GetSubTarget()){
     case estAIMapNode:{
         for (AINodeIt it=m_Nodes.begin(); it!=m_Nodes.end(); it++)
-			if (!(*it)->flags.is(SAINode::flHide))
+//			if (!(*it)->flags.is(SAINode::flHide))
 	            (*it)->flags.set(SAINode::flSelected,flag);
 		count = m_Nodes.size();
     }break;
@@ -447,7 +447,7 @@ int ESceneAIMapTools::InvertSelection()
     switch (LTools->GetSubTarget()){
     case estAIMapNode:{
         for (AINodeIt it=m_Nodes.begin(); it!=m_Nodes.end(); it++)
-			if (!(*it)->flags.is(SAINode::flHide))
+//			if (!(*it)->flags.is(SAINode::flHide))
 	            (*it)->flags.invert(SAINode::flSelected);
 	    count = m_Nodes.size();
     }break;
@@ -472,6 +472,8 @@ int ESceneAIMapTools::SelectionCount(bool testflag)
 
 int ESceneAIMapTools::ShowObjects(bool flag, bool bAllowSelectionFlag, bool bSelFlag)
 {
+	return 0;
+/*    
 	int count=0;
     for (AINodeIt it=m_Nodes.begin(); it!=m_Nodes.end(); it++)
         if (bAllowSelectionFlag){
@@ -487,13 +489,15 @@ int ESceneAIMapTools::ShowObjects(bool flag, bool bAllowSelectionFlag, bool bSel
         }
     UpdateHLSelected();
     return count;
+*/
 }
 
 void ESceneAIMapTools::FillProp(LPCSTR pref, PropItemVec& items)
 {
-    PHelper.CreateFloat	(items, FHelper.PrepareKey(pref,"Visibility radius"),	&m_VisRadius, 10, 250);
-    PHelper.CreateU32	(items, FHelper.PrepareKey(pref,"Brush size"),			&m_BrushSize, 1, 100);
-    PHelper.CreateFloat	(items, FHelper.PrepareKey(pref,"Params\\Can Up"),		&m_Params.fCanUP, 	0.f, 10.f);
-    PHelper.CreateFloat	(items, FHelper.PrepareKey(pref,"Params\\Can Down"),	&m_Params.fCanDOWN, 0.f, 10.f);
+    PHelper.CreateFlag<Flags32>	(items, FHelper.PrepareKey(pref,"Visibility\\Draw Nodes"),	&m_Flags, 		flHideNodes, 0,0, FlagValueCustom::flInvertedDraw);
+    PHelper.CreateFloat			(items, FHelper.PrepareKey(pref,"Visibility\\Radius"),		&m_VisRadius, 	10, 250);
+    PHelper.CreateU32			(items, FHelper.PrepareKey(pref,"Params\\Brush Size"),		&m_BrushSize, 	1, 100);
+    PHelper.CreateFloat			(items, FHelper.PrepareKey(pref,"Params\\Can Up"),			&m_Params.fCanUP, 	0.f, 10.f);
+    PHelper.CreateFloat			(items, FHelper.PrepareKey(pref,"Params\\Can Down"),		&m_Params.fCanDOWN, 0.f, 10.f);
 }
 

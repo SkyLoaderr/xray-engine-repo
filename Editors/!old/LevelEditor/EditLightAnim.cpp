@@ -402,7 +402,7 @@ void __fastcall TfrmEditLightAnim::OnIdle()
 	if (form){
 		if (form->m_CurrentItem){
         	int frame;
-			form->paColor->Color=TColor(form->m_CurrentItem->Calculate(Device.fTimeGlobal,frame));
+			form->paColor->Color=TColor(form->m_CurrentItem->CalculateBGR(Device.fTimeGlobal,frame));
             form->lbCurFrame->Caption=frame;
         }
         UI->RedrawScene();

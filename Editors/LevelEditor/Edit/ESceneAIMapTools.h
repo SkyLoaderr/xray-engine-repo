@@ -31,7 +31,7 @@ struct SAINode					// definition of "patch" or "node"
     enum{
     	flSelected 	= (1<<0),
     	flHLSelected= (1<<1),
-    	flHide		= (1<<2),
+//    	flHide		= (1<<2), 	// obsolette
 
     	flN1		= (1<<4),
     	flN2		= (1<<5),
@@ -123,6 +123,7 @@ public:
     };
 	enum{
     	flUpdateSnapList	= (1<<0),
+    	flHideNodes			= (1<<1),
     	flUpdateHL 			= (1<<15),
     };
     Flags32				m_Flags;
