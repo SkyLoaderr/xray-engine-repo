@@ -8402,10 +8402,13 @@
 					RelativePath="xrServer_Space.h">
 				</File>
 				<Filter
-					Name="EditorProperties"
+					Name="Editor"
 					Filter="">
 					<File
 						RelativePath=".\ChooseTypes.h">
+					</File>
+					<File
+						RelativePath=".\DrawUtils.h">
 					</File>
 					<File
 						RelativePath=".\FastDelegate.h">
@@ -8682,9 +8685,6 @@
 				<Filter
 					Name="ServerEntities"
 					Filter="">
-					<File
-						RelativePath=".\DrawUtils.h">
-					</File>
 					<File
 						RelativePath="PropertiesListTypes.h">
 					</File>
