@@ -1345,6 +1345,9 @@
 					Name="Libraries"
 					Filter="">
 					<File
+						RelativePath=".\scripts\level_tips.script">
+					</File>
+					<File
 						RelativePath=".\scripts\mob_sound.script">
 					</File>
 					<File
@@ -1356,16 +1359,6 @@
 					<File
 						RelativePath=".\scripts\utils.script">
 					</File>
-					<Filter
-						Name="LevelTasks"
-						Filter="">
-						<File
-							RelativePath=".\scripts\level_tasks.script">
-						</File>
-						<File
-							RelativePath=".\scripts\level_tips.script">
-						</File>
-					</Filter>
 				</Filter>
 				<Filter
 					Name="Deprecated"
@@ -1463,6 +1456,13 @@
 						</File>
 						<File
 							RelativePath=".\scripts\garbage_dialogs.script">
+						</File>
+					</Filter>
+					<Filter
+						Name="LevelTasks"
+						Filter="">
+						<File
+							RelativePath=".\scripts\level_tasks.script">
 						</File>
 					</Filter>
 				</Filter>
