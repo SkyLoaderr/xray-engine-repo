@@ -288,6 +288,7 @@ xr_motivator.storage[self.object:id()].follower = {
 
 xr_motivator.storage[self.object:id()].reactions = {
         enabled = true,
+	time_wait = 60, -- 60 секунд ждем повтора
         evn = xr_reactions.events(self.object),
 	-- позицию раздражителя
 	position = nil,
