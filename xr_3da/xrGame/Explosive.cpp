@@ -116,11 +116,6 @@ void CExplosive::Explode()
 	pStaticPG->UpdateParent(XFORM(),vel);
 	pStaticPG->Play();
 
-//pStaticPG->SetXFORM(XFORM());
-//	pStaticPG->play_at_pos(Position());
-
-
-	
 	//включаем подсветку от взрыва
 	if(m_dwLightTime>0)
 	{
