@@ -57,7 +57,7 @@
 				Name="VCLinkerTool"
 				IgnoreImportLibrary="TRUE"
 				AdditionalOptions="/MACHINE:I386 "
-				AdditionalDependencies="odbc32.lib odbccp32.lib x:\xr_3da.lib magicfm.lib"
+				AdditionalDependencies="odbc32.lib odbccp32.lib x:\xr_3da.lib"
 				ShowProgress="0"
 				OutputFile="x:\xrGame.dll"
 				LinkIncremental="2"
@@ -2663,58 +2663,6 @@
 					<File
 						RelativePath=".\AI_Utilities.cpp">
 					</File>
-					<Filter
-						Name="ConvexHull"
-						Filter="">
-						<File
-							RelativePath=".\ConvexHull2D.cpp">
-						</File>
-						<File
-							RelativePath=".\ConvexHull2D.h">
-						</File>
-						<File
-							RelativePath=".\ConvexHull3D.cpp">
-						</File>
-						<File
-							RelativePath=".\ConvexHull3D.h">
-						</File>
-						<File
-							RelativePath=".\Line3D.h">
-							<FileConfiguration
-								Name="Debug|Win32"
-								ExcludedFromBuild="TRUE">
-								<Tool
-									Name="VCCustomBuildTool"/>
-							</FileConfiguration>
-						</File>
-						<File
-							RelativePath=".\Segment3D.h">
-							<FileConfiguration
-								Name="Debug|Win32"
-								ExcludedFromBuild="TRUE">
-								<Tool
-									Name="VCCustomBuildTool"/>
-							</FileConfiguration>
-						</File>
-						<File
-							RelativePath=".\Triangle3D.cpp">
-							<FileConfiguration
-								Name="Debug|Win32"
-								ExcludedFromBuild="TRUE">
-								<Tool
-									Name="VCCLCompilerTool"/>
-							</FileConfiguration>
-						</File>
-						<File
-							RelativePath=".\Triangle3D.h">
-							<FileConfiguration
-								Name="Debug|Win32"
-								ExcludedFromBuild="TRUE">
-								<Tool
-									Name="VCCustomBuildTool"/>
-							</FileConfiguration>
-						</File>
-					</Filter>
 				</Filter>
 				<Filter
 					Name="AStar"

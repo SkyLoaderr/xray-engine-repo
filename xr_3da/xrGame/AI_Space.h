@@ -35,7 +35,6 @@ namespace AI {
 };
 
 class CAStar;
-class CConvexHull3D;
 
 class CAI_Space			: public CSE_ALifeGraph, public CAI_DDD, public CSE_ALifeCrossTable
 {
@@ -180,19 +179,6 @@ public:
 	void	vfFindGraphPointNodeInDirection	(u32 dwStartNode, Fvector tStartPoint, Fvector tDirection, u32 &dwFinishNode, _GRAPH_ID tGraphID);
 
 #ifdef DEBUG
-public:
-	class CConvexHull {
-	public:
-		xr_vector<Fvector>					m_tpVertices;
-		CConvexHull3D						*m_tpConvexHull;
-		bool								m_bAlreadyMerged;
-
-					CConvexHull				();
-		virtual		~CConvexHull			();
-
-		bool		bfIsCloseEnough			(const CConvexHull &tConvexHull, const float fDistance) const;
-		void		vfMergeConvexHulls		(CConvexHull &tConvexHull);
-	};
 private:
 	Fvector									m_tStartPoint;
 	Fvector									m_tFinishPoint;
@@ -204,7 +190,6 @@ private:
 	xr_vector<Fvector>						m_tpaLine;
 	xr_vector<u32>							m_tpaNodes;
 	xr_vector<Fvector>						m_tpaTempPath;
-	xr_vector<CConvexHull*>					m_tpConvexGroups;
 public:
 
 	IC		void	SetStartPoint			(const Fvector &tStartPoint)
@@ -220,11 +205,8 @@ public:
 			void	ComputeTravelLine		(AI::NodePath &AI_Path, u32 dwStartNodeID, u32 dwFinishNodeID);
 			void	ComputePath				();
 			void	DrawTravelLine			();
-			void	dbg_DrawOBBVertices		(Fmatrix &T, Fvector &half_dim, u32 C);
+			void	dbg_DrawOBB				(Fmatrix &T, Fvector &half_dim, u32 C, u32 C1);
 			void	DrawDynamicObstacles	();
-			void	PushOBBVertices			(xr_vector<Fvector> &tpVertices, Fmatrix &T, Fvector &half_dim);
-//			void	PushOBBVertices			(Mgc::Vector2 *tpVertices, Fmatrix &T, Fvector &half_dim, u32 &C);
-			void	ComputeDynamicObstacles	();
 #endif
 };
 

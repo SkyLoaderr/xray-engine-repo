@@ -13,17 +13,10 @@
 
 #include "_fbox.h"
 
-#pragma warning(disable:4995)
-#pragma warning(disable:4267)
-
-#include "ConvexHull3D.h"
-//#include "Triangle3D.h"
-
-#pragma warning(default:4267)
-#pragma warning(default:4995)
-
-void CAI_Space::dbg_DrawOBBVertices(Fmatrix &T, Fvector &half_dim, u32 C)
+void CAI_Space::dbg_DrawOBB(Fmatrix &T, Fvector &half_dim, u32 C, u32 C1)
 {
+	RCache.dbg_DrawOBB				(T,half_dim,C1);
+
 	Fmatrix mL2W_Transform,mScaleTransform;
 
 	mScaleTransform.scale(half_dim);
@@ -104,8 +97,6 @@ void CAI_Space::ComputeTravelLine(AI::NodePath &AI_Path, u32 dwStartNodeID, u32 
 		m_tpTravelLine.clear	();
 		return;
 	}
-
-	ComputeDynamicObstacles		();
 
 	Fvector						tStartPosition = m_tStartPoint;
 	u32							dwCurNode = dwStartNodeID;
@@ -201,158 +192,7 @@ void CAI_Space::DrawDynamicObstacles()
 			Fmatrix							M = (*I)->XFORM();
 			M.transform_tiny				(C2,c);
 			M.c								= C2;
-			RCache.dbg_DrawOBB				(M,d,color_rgba(0,255,0,255));
-			dbg_DrawOBBVertices				(M,d,color_rgba(0,0,255,255));
-		}
-	}
-
-	{
-		xr_vector<CConvexHull*>::iterator	I = m_tpConvexGroups.begin();
-		xr_vector<CConvexHull*>::iterator	E = m_tpConvexGroups.end();
-		for ( ; I != E; ++I) {
-			VERIFY							(!(*I)->m_bAlreadyMerged);
-			for (int i=0, n=(*I)->m_tpConvexHull->GetTriangleQuantity(); i<n; i++) {
-				CConvexHull3D::Triangle		a = (*I)->m_tpConvexHull->GetTriangle(i);
-				RCache.dbg_DrawLINE			(Fidentity,(*I)->m_tpVertices[a.m_aiVertex[0]],(*I)->m_tpVertices[a.m_aiVertex[1]],color_rgba(255,0,0,255));
-				RCache.dbg_DrawLINE			(Fidentity,(*I)->m_tpVertices[a.m_aiVertex[0]],(*I)->m_tpVertices[a.m_aiVertex[2]],color_rgba(255,0,0,255));
-				RCache.dbg_DrawLINE			(Fidentity,(*I)->m_tpVertices[a.m_aiVertex[2]],(*I)->m_tpVertices[a.m_aiVertex[1]],color_rgba(255,0,0,255));
-				RCache.dbg_DrawAABB			((*I)->m_tpVertices[a.m_aiVertex[0]],.1f,.1f,.1f,color_rgba(255,0,0,255));
-				RCache.dbg_DrawAABB			((*I)->m_tpVertices[a.m_aiVertex[1]],.1f,.1f,.1f,color_rgba(255,0,0,255));
-				RCache.dbg_DrawAABB			((*I)->m_tpVertices[a.m_aiVertex[2]],.1f,.1f,.1f,color_rgba(255,0,0,255));
-			}
-		}
-	}
-}
-
-void CAI_Space::PushOBBVertices			(xr_vector<Fvector> &tpVertices, Fmatrix &T, Fvector &half_dim)
-{
-	Fmatrix								mL2W_Transform,mScaleTransform;
-	Fvector								aabb[8], V;
-
-	mScaleTransform.scale				(half_dim);
-	mL2W_Transform.mul_43				(T,mScaleTransform);
-
-	aabb[0].set							( -1, -1, -1); // 0
-	aabb[1].set							( -1, +1, -1); // 1
-	aabb[2].set							( +1, +1, -1); // 2
-	aabb[3].set							( +1, -1, -1); // 3
-	aabb[4].set							( -1, -1, +1); // 4
-	aabb[5].set							( -1, +1, +1); // 5
-	aabb[6].set							( +1, +1, +1); // 6
-	aabb[7].set							( +1, -1, +1); // 7
-
-	for (int i=0; i<8; i++) {
-		mL2W_Transform.transform_tiny	(V,aabb[i]);
-		tpVertices.push_back			(V);
-	}
-}
-
-CAI_Space::CConvexHull::CConvexHull		()
-{
-	m_tpConvexHull					= 0;
-	m_bAlreadyMerged				= false;
-}
-
-CAI_Space::CConvexHull::~CConvexHull	()
-{
-	xr_delete						(m_tpConvexHull);
-}
-
-bool CAI_Space::CConvexHull::bfIsCloseEnough(const CConvexHull &tConvexHull, const float fDistance) const
-{
-	xr_vector<Fvector>::const_iterator	I = m_tpVertices.begin();
-	xr_vector<Fvector>::const_iterator	E = m_tpVertices.end();
-	for ( ; I != E; ++I) {
-		xr_vector<Fvector>::const_iterator	i = tConvexHull.m_tpVertices.begin();
-		xr_vector<Fvector>::const_iterator	e = tConvexHull.m_tpVertices.end();
-		for ( ; i != e; ++i)
-			if ((*I).distance_to(*i) <= fDistance)
-				return					(true);
-	}
-	return								(false);
-//	float								fDistanceSqr = _sqr(fDistance);
-//	for (int i=0, in=m_tpConvexHull->GetTriangleQuantity(); i<in; ++i) {
-//		const CConvexHull3D::Triangle	&ii = m_tpConvexHull->GetTriangle(i);
-//		for (int j=0, jn = tConvexHull.m_tpConvexHull->GetTriangleQuantity(); j<jn; ++j) {
-//			const CConvexHull3D::Triangle	&jj = tConvexHull.m_tpConvexHull->GetTriangle(j);
-//			if (ii.SqrDistance(jj) <= fDistanceSqr)
-//				return					(true);
-//		}
-//	}
-//	return								(false);
-}
-
-void CAI_Space::CConvexHull::vfMergeConvexHulls(CConvexHull &tConvexHull)
-{
-	tConvexHull.m_bAlreadyMerged		= true;
-	m_tpVertices.insert					(m_tpVertices.end(),tConvexHull.m_tpVertices.begin(),tConvexHull.m_tpVertices.end());
-	xr_delete							(m_tpConvexHull);
-	xr_delete							(tConvexHull.m_tpConvexHull);
-	tConvexHull.m_tpVertices.clear		();
-	m_tpConvexHull						= xr_new<CConvexHull3D>(m_tpVertices.size(),&m_tpVertices.front());
-}
-
-class CRemoveConvexPredicate {
-public:
-	bool operator()(const CAI_Space::CConvexHull *tConvexHull) const
-	{
-		return							(tConvexHull->m_bAlreadyMerged);
-	}
-};
-
-void CAI_Space::ComputeDynamicObstacles	()
-{
-	// getting nearest list, i.e. dynamic obstacles
-	Level().CurrentEntity()->setEnabled	(false);
-	Level().ObjectSpace.GetNearest		(m_tStartPoint,100.f); 
-	xr_vector<CObject*>					&l_tpNearestList = Level().ObjectSpace.q_nearest; 
-	Level().CurrentEntity()->setEnabled	(true);
-
-	// reserving memory for the vertices
-	m_tpConvexGroups.clear				();
-	m_tpConvexGroups.resize				(l_tpNearestList.size());
-	// iterating on objects to fill the vertex buffer
-	{
-		xr_vector<CObject*>::const_iterator	I = l_tpNearestList.begin(), B = I;
-		xr_vector<CObject*>::const_iterator	E = l_tpNearestList.end();
-		for ( ; I != E; ++I) {
-			Fvector							c, d, C2;
-			(*I)->Visual()->vis.box.get_CD	(c,d);
-			Fmatrix							M = (*I)->XFORM();
-			M.transform_tiny				(C2,c);
-			M.c								= C2;
-			m_tpConvexGroups[I - B]			= xr_new<CConvexHull>();
-			PushOBBVertices					(m_tpConvexGroups[I - B]->m_tpVertices,M,d);
-			m_tpConvexGroups[I - B]->m_tpConvexHull = xr_new<CConvexHull3D>(8,&m_tpConvexGroups[I - B]->m_tpVertices.front());
-		}
-	}
-	{
-		for (;;) {
-			xr_vector<CConvexHull*>::iterator	I = m_tpConvexGroups.begin(), B = I;
-			xr_vector<CConvexHull*>::iterator	E = m_tpConvexGroups.end();
-			for ( ; I != E; ++I) {
-				if ((*I)->m_bAlreadyMerged)
-					continue;
-				xr_vector<CConvexHull*>::iterator	i = I + 1;
-				for ( ; i != E; ++i) {
-					if ((*i)->m_bAlreadyMerged)
-						continue;
-					if ((*I)->bfIsCloseEnough	(**i,.7f)) {
-						(*I)->vfMergeConvexHulls(**i);
-						for (int ii=0; ii<(int)m_tpConvexGroups.size(); ii++)
-							if (!m_tpConvexGroups[ii]->m_bAlreadyMerged && !m_tpConvexGroups[ii]->m_tpConvexHull) {
-								ii = ii;
-							}
-					}
-				}
-			}
-
-			B									= remove_if(m_tpConvexGroups.begin(),m_tpConvexGroups.end(),CRemoveConvexPredicate());
-			if (B == E)
-				break;
-//			for ( I = B; I != E; ++I)
-//				xr_delete						(*I);
-			m_tpConvexGroups.erase				(B,m_tpConvexGroups.end());
+			dbg_DrawOBB						(M,d,color_rgba(0,0,255,255),color_rgba(0,255,0,255));
 		}
 	}
 }
