@@ -28,9 +28,9 @@ BOOL xrServer::Connect(LPCSTR session_name)
 		strcpy					(options,strchr(session_name,'|')+1);
 		
 		// Parse game type
-		if (0==strchr(options,'/'))			return FALSE;
 		string64				type;
-		strcpy					(type,strchr(options,'/')+1);
+		strcpy					(type,options);
+		if (strchr(type,'/'))	*strchr(type,'/') = 0;
 		game					= NULL;
 		switch (_ParseItem(type,game_type_token))
 		{
