@@ -265,6 +265,12 @@
 			</File>
 			<File
 				RelativePath="xrCore.cpp">
+				<FileConfiguration
+					Name="Mixed|Win32">
+					<Tool
+						Name="VCCLCompilerTool"
+						ShowIncludes="TRUE"/>
+				</FileConfiguration>
 			</File>
 			<File
 				RelativePath="xrCore.h">

@@ -5,9 +5,9 @@
 #ifndef FileSystemH
 #define FileSystemH
 
-DEFINE_MAP(std::string,HANDLE,HANDLEMap,HANDLEPairIt);
-
 class XRCORE_API EFS_Utils {
+	DEFINE_MAP	(std::string,HANDLE,HANDLEMap,HANDLEPairIt);
+
     HANDLEMap 	m_LockFiles;
     std::string	m_LastAccessFN;
     std::string	m_AccessLog;

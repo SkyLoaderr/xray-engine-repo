@@ -85,7 +85,7 @@ public:
 
 class XRCORE_API CMemoryWriter : public IWriter
 {
-	BYTE*			data;
+	u8*				data;
 	u32				position;
 	u32				mem_size;
 	u32				file_size;
@@ -101,13 +101,13 @@ public:
 	// kernel
 	virtual void	w			(const void* ptr, u32 count);
 
-	virtual void	seek		(u32 pos)	{	position = pos;		}
-	virtual u32		tell		() 			{	return position;	}
+	virtual void	seek		(u32 pos)	{	position = pos;				}
+	virtual u32		tell		() 			{	return position;			}
 
 	// specific
-	IC u8*			pointer		()			{ return data; }
-	IC u32			size		() const 	{ return file_size;	}
-	IC void			clear		()			{ file_size=0; position=0;	}
+	IC u8*			pointer		()			{	return data;				}
+	IC u32			size		() const 	{	return file_size;			}
+	IC void			clear		()			{	file_size=0; position=0;	}
 	void			save_to		(const char* fn);
 };
 
@@ -211,26 +211,10 @@ public:
 class XRCORE_API CVirtualFileRW : public IReader
 {
 private:
-	HANDLE	hSrcFile,hSrcMap;
+	void	*hSrcFile, *hSrcMap;
 public:
-	CVirtualFileRW(const char *cFileName) {
-		// Open the file
-		hSrcFile = CreateFile(cFileName, GENERIC_READ|GENERIC_WRITE, FILE_SHARE_READ, 0, OPEN_EXISTING, 0, 0);
-		R_ASSERT(hSrcFile!=INVALID_HANDLE_VALUE);
-		Size = (int)GetFileSize(hSrcFile, NULL);
-		R_ASSERT(Size);
-		
-		hSrcMap = CreateFileMapping (hSrcFile, 0, PAGE_READWRITE, 0, 0, 0);
-		R_ASSERT(hSrcMap!=INVALID_HANDLE_VALUE);
-		
-		data = (char*)MapViewOfFile (hSrcMap, FILE_MAP_ALL_ACCESS, 0, 0, 0);
-		R_ASSERT(data);
-	}
-	virtual ~CVirtualFileRW() 
-	{
-        UnmapViewOfFile ((void*)data);
-		CloseHandle		(hSrcMap);
-		CloseHandle		(hSrcFile);
-	}
+			CVirtualFileRW		(const char *cFileName);
+	virtual ~CVirtualFileRW		();
 };
+
 #endif // fsH

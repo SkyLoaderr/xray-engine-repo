@@ -161,7 +161,7 @@ DEFINE_VECTOR	(xr_rtoken,RTokenVec,RTokenVecIt);
 #include "xr_trims.h"
 #include "xr_ini.h"
 #include "LocatorAPI.h"
-#include "FileSystem.h"
+// #include "FileSystem.h"
 #include "FTimer.h"
 #include "fastdelegate.h"
 

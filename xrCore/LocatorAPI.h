@@ -111,7 +111,7 @@ private:
 
 	void						Register		(LPCSTR name, u32 vfs, u32 ptr, u32 size_real, u32 size_compressed, u32 modif);
 	void						ProcessArchive	(LPCSTR path);
-	void						ProcessOne		(LPCSTR path, LPVOID F);
+	void						ProcessOne		(LPCSTR path, void* F);
 	bool						Recurse			(LPCSTR path);
 
     void						SetEventNotification	();
