@@ -1,3 +1,4 @@
+
 //----------------------------------------------------
 // file: TextureParam.h
 //----------------------------------------------------
@@ -35,15 +36,36 @@ struct STextureParams{
     WORD			fade_mips;
     WORD			reserved;
     STextureParams(){ZeroMemory(this,sizeof(STextureParams)); flag=EF_GENMIPMAP|EF_DITHER;}
+	IC BOOL HasAlphaChannel()
+	{
+		switch (fmt)
+		{
+		case tfADXT1:
+		case tfDXT3:
+		case tfDXT5:
+		case tf4444:
+		case tf1555:
+		case tfRGBA:
+			return TRUE;
+		default:
+			return FALSE;
+		}
+	}
 };
 #pragma pack( pop )
 
 //----------------------------------------------------
-#define THM_CURRENT_VERSION				0x0010
+#define THM_CURRENT_VERSION				0x0011
 //----------------------------------------------------
 #define THM_CHUNK_VERSION				0x0810
 #define THM_CHUNK_DATA					0x0811
 #define THM_CHUNK_TEXTUREPARAM			0x0812
+#define THM_CHUNK_SIZE					0x0813
+//----------------------------------------------------
+#define THM_SIGN 		"THM_FILE"
+#define THUMB_WIDTH 	128
+#define THUMB_HEIGHT 	128
+#define THUMB_SIZE 		THUMB_HEIGHT*THUMB_WIDTH
 //----------------------------------------------------
 #endif /*_INCDEF_TextureParam_H_*/
 
