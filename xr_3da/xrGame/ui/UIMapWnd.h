@@ -41,6 +41,7 @@ protected:
 	void ConvertToLocal(const Fvector& src, Ivector2& dest);
 
 	void RemoveAllSpots();
+	void AddObjectSpot(CGameObject* pGameObject);
 
 	//элементы интерфейса
 	CUIFrameWindow	UIMainMapFrame;

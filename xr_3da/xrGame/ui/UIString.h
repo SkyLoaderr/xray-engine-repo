@@ -12,8 +12,8 @@ public:
 	CUIString();
 	virtual ~CUIString();
 
-	void SetText(LPSTR str);
-	void AppendText(LPSTR str);
+	void SetText(LPCSTR str);
+	void AppendText(LPCSTR str);
 	
 	char* GetBuf();
 

@@ -10,6 +10,9 @@
 #include "targetcscask.h"
 #include "targetcsbase.h"
 
+#include "InfoPortion.h"
+#include "Pda.h"
+
 #define MAX_VIEW_DISTANCE 50.f
 #define VIEW_DISTANCE	(MAX_VIEW_DISTANCE/m_fScale)
 
@@ -139,6 +142,8 @@ void CUIZoneMap::EntityOut(float diff, u32 color, const Ivector2& pt)
 
 void CUIZoneMap::UpdateRadar(CEntity* Actor, CTeam& Team)
 {
+	CActor* pActor = dynamic_cast<CActor*>(Actor);
+
 	entity.Clear		();
 	entity_up.Clear		();
 	entity_down.Clear	();
@@ -170,7 +175,8 @@ void CUIZoneMap::UpdateRadar(CEntity* Actor, CTeam& Team)
 	case GAME_CTF:			bRender = TRUE;	break;
 	case GAME_CS:			bRender = TRUE;	break;
 	}
-	if (bRender)
+	
+/*	if (bRender)
 	{
 		for (u32 i=0; i<Team.Squads.size(); ++i){
 			CSquad& S = Team.Squads[i];
@@ -206,7 +212,69 @@ void CUIZoneMap::UpdateRadar(CEntity* Actor, CTeam& Team)
 				}
 			}
 		}
+	}*/
+
+
+	////////////////////////////////////////////
+	//добавить локации, имеющиеся в памяти PDA
+	////////////////////////////////////////////
+	
+	CObject* pObject = NULL;
+	Fvector  world_pos;
+	Fvector  src;
+
+
+	for(KNOWN_INFO_PAIR_IT it = pActor->GetPDA()->m_mapKnownInfo.begin();
+		pActor->GetPDA()->m_mapKnownInfo.end() != it;
+		++it)
+	{
+		//подгрузить кусочек информации с которым мы работаем
+		CInfoPortion info_portion;
+		info_portion.Load((*it).first);
+
+		//цвет по умолчанию
+		u32 entity_color = COLOR_BASE;
+
+		//локации заданные в порцие информации	
+		for(int i=0; i<info_portion.GetLocationsNum(); i++)
+		{
+			SMapLocation& map_location = info_portion.GetLocation(i);
+			if(map_location.attached_to_object)
+			{
+				pObject = Level().Objects.net_Find	(map_location.object_id);
+				
+				CEntity* pEntity = NULL;
+				if(pObject)
+					pEntity = dynamic_cast<CEntity*>(pObject);
+
+				if(pEntity)
+				{
+					if(pEntity->g_Team() == pActor->g_Team())
+						entity_color = COLOR_FRIEND;
+					else
+						entity_color = COLOR_ENEMY;
+				}
+
+				src.x = pObject->Position().x;
+				src.y = 0;
+				src.z = pObject->Position().z;
+			}
+			else
+			{
+				src.x = map_location.x;
+				src.y = 0;
+				src.z = map_location.y;
+
+				pObject = NULL;
+				world_pos.set(map_location.x,0.f,map_location.y);
+			}
+
+			ConvertToLocal(LM, src, P);
+			entity.Out(P.x,P.y,entity_color);
+		}
 	}
+
+
 
 	// draw self
 	ConvertToLocal	(LM,Actor->Position(),P);
@@ -232,7 +300,6 @@ void CUIZoneMap::UpdateRadar(CEntity* Actor, CTeam& Team)
 
 	Fvector2 LTt,RBt, LBt, RTt;
 	Fvector p;
-	Fvector src;
 	Fmatrix m;
 	m.identity();
 	m.rotateY(-heading);

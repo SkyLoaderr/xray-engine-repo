@@ -113,6 +113,8 @@ void CUIMapWnd::Init()
 
 void CUIMapWnd::InitMap()
 {
+	UIMapBackground.m_pActiveMapSpot = NULL;
+
 	if (Level().pLevel->section_exist("level_map"))	
 	{
 		UIMapBackground.m_LevelBox.x1 = Level().pLevel->r_float("level_map","x1");
@@ -123,6 +125,7 @@ void CUIMapWnd::InitMap()
 	}
 	else
 	{
+		//в отладочных целях задаем хоть какой-то размер уровня
 		UIMapBackground.m_LevelBox.x1 = -443.66000f;
 		UIMapBackground.m_LevelBox.z1 = -131.66000f;
 		UIMapBackground.m_LevelBox.x2 = 196.33000f;
@@ -143,53 +146,18 @@ void CUIMapWnd::InitMap()
 	RemoveAllSpots();
 
 	Ivector2 P;
+	Fvector src;
 	
 	CActor* pActor = dynamic_cast<CActor*>(Level().CurrentEntity());
 		
 	if (!pActor) return;
 
-	CTeam& Team = Level().Teams[pActor->id_Team];
+//	CTeam& Team = Level().Teams[pActor->id_Team];
 
 	int left = UIMapBackground.GetWndRect().left;
 	int top = UIMapBackground.GetWndRect().top;
 
-	for (u32 i=0; i<Team.Squads.size(); ++i)
-	{
-			CSquad& S = Team.Squads[i];
-			for (u32 j=0; j<S.Groups.size(); ++j)
-			{
-				CGroup& G = S.Groups[j];
-				for (u32 k=0; k<G.Members.size(); ++k)
-				{
-					if (G.Members[k]->IsVisibleForHUD())
-					{
-						UIMapBackground.ConvertToLocal(G.Members[k]->Position(),P);
 
-						CUIMapSpot* map_spot;
-						map_spot = xr_new<CUIMapSpot>();
-
-						map_spot->m_pObject = G.Members[k];
-						
-						CEntity* pEntity = dynamic_cast<CEntity*>(G.Members[k]);
-
-						map_spot->SetShader(GetCharIconsShader());
-						map_spot->SetWidth(MAP_ICON_WIDTH);
-						map_spot->SetHeight(MAP_ICON_HEIGHT);
-						map_spot->MoveWindow(P.x + left, P.y + top);
-						map_spot->m_bCenter = true;
-
-						map_spot->GetUIStaticItem().SetOriginalRect(
-											pEntity->GetMapIconX()*ICON_GRID_WIDTH,
-											pEntity->GetMapIconY()*ICON_GRID_HEIGHT,
-											(pEntity->GetMapIconX()+1)*ICON_GRID_WIDTH,
-											(pEntity->GetMapIconY()+1)*ICON_GRID_HEIGHT);
-						//if(Level().CurrentEntity() == G.Members[k]) map_spot->SetText("we");
-						UIMapBackground.m_vMapSpots.push_back(map_spot);
-						UIMapBackground.AttachChild(map_spot);
-					}
-				}
-			}
-		}
 
 	////////////////////////////////////////////
 	//добавить локации, имеющиеся в памяти PDA
@@ -203,33 +171,87 @@ void CUIMapWnd::InitMap()
 		CInfoPortion info_portion;
 		info_portion.Load((*it).first);
 
-		if(!info_portion.LocationExist()) continue;
-		SMapLocation& map_location = info_portion.GetLocation();
-		
-		Fvector src;
-		src.x = map_location.x;
-		src.y = 0;
-		src.z = map_location.y;
+		//локации заданные в порцие информации	
+		for(int i=0; i<info_portion.GetLocationsNum(); i++)
+		{
+			CUIMapSpot* map_spot;
+			map_spot = xr_new<CUIMapSpot>();
 
-		UIMapBackground.ConvertToLocal(src,P);
-		CUIMapSpot* map_spot;
-		map_spot = xr_new<CUIMapSpot>();
-		
-		map_spot->SetShader(GetCharIconsShader());
-		map_spot->MoveWindow(P.x + left, P.y + top);
-		map_spot->SetWidth(MAP_ICON_WIDTH);
-		map_spot->SetHeight(MAP_ICON_HEIGHT);
-		map_spot->GetUIStaticItem().SetOriginalRect(
-						map_location.icon_x*ICON_GRID_WIDTH,
-						map_location.icon_y*ICON_GRID_HEIGHT,
-						map_location.icon_width*ICON_GRID_WIDTH,
-						map_location.icon_height*ICON_GRID_HEIGHT);
-		
-		map_spot->m_pObject = NULL;
-		map_spot->m_vWorldPos.set(map_location.x,0.f,map_location.y);
-		UIMapBackground.m_vMapSpots.push_back(map_spot);
-		UIMapBackground.AttachChild(map_spot);
+			SMapLocation& map_location = info_portion.GetLocation(i);
+
+			if(map_location.attached_to_object)
+			{
+				map_spot->m_pObject = Level().Objects.net_Find	(map_location.object_id);
+
+				src.x = map_spot->m_pObject->Position().x;
+				src.y = 0;
+				src.z = map_spot->m_pObject->Position().z;
+			}
+			else
+			{
+				src.x = map_location.x;
+				src.y = 0;
+				src.z = map_location.y;
+
+				map_spot->m_pObject = NULL;
+				map_spot->m_vWorldPos.set(map_location.x,0.f,map_location.y);
+			}
+
+			UIMapBackground.ConvertToLocal(src,P);
+
+			map_spot->SetShader(GetCharIconsShader());
+			map_spot->MoveWindow(P.x + left, P.y + top);
+			map_spot->SetWidth(MAP_ICON_WIDTH);
+			map_spot->SetHeight(MAP_ICON_HEIGHT);
+			map_spot->GetUIStaticItem().SetOriginalRect(
+								map_location.icon_x*ICON_GRID_WIDTH,
+								map_location.icon_y*ICON_GRID_HEIGHT,
+								map_location.icon_width*ICON_GRID_WIDTH,
+								map_location.icon_height*ICON_GRID_HEIGHT);
+			
+			map_spot->m_bCenter = true;
+			map_spot->m_sDescText.SetText("");
+			map_spot->m_sNameText.SetText("");
+			if(xr_strlen(map_location.text)>1)
+			{
+				map_spot->m_sDescText = map_location.text;
+				map_spot->m_sNameText = map_location.name;
+			}
+
+
+			UIMapBackground.m_vMapSpots.push_back(map_spot);
+			UIMapBackground.AttachChild(map_spot);
+		}
 	}
+
+
+	////////////////////////////////
+	//добавить на карту актера
+	////////////////////////////////
+
+    UIMapBackground.ConvertToLocal(pActor->Position(),P);
+	CUIMapSpot* map_spot;
+	map_spot = xr_new<CUIMapSpot>();
+	map_spot->m_pObject = pActor;
+	
+	map_spot->SetShader(GetCharIconsShader());
+	map_spot->SetWidth(MAP_ICON_WIDTH);
+	map_spot->SetHeight(MAP_ICON_HEIGHT);
+	map_spot->MoveWindow(P.x + left, P.y + top);
+	map_spot->m_bCenter = true;
+	map_spot->m_sDescText.SetText("It's you.");
+	map_spot->m_sNameText.SetText("You");
+
+	map_spot->GetUIStaticItem().SetOriginalRect(
+						pActor->GetMapIconX()*ICON_GRID_WIDTH,
+						pActor->GetMapIconY()*ICON_GRID_HEIGHT,
+						(pActor->GetMapIconX()+1)*ICON_GRID_WIDTH,
+						(pActor->GetMapIconY()+1)*ICON_GRID_HEIGHT);
+
+	UIMapBackground.m_vMapSpots.push_back(map_spot);
+	UIMapBackground.AttachChild(map_spot);
+
+
 
 
 	//информация о выбранном объекте
@@ -237,6 +259,40 @@ void CUIMapWnd::InitMap()
 	UICharacterInfo.Show(false);
 }
 
+void CUIMapWnd::AddObjectSpot(CGameObject* pGameObject)
+{	
+	//!!! пока только для CEntity
+	CEntity* pEntity = dynamic_cast<CEntity*>(pGameObject);
+	if(!pEntity) return;
+
+
+	int left = UIMapBackground.GetWndRect().left;
+	int top = UIMapBackground.GetWndRect().top;
+
+	Ivector2 P;
+    UIMapBackground.ConvertToLocal(pGameObject->Position(),P);
+	
+	CUIMapSpot* map_spot;
+	map_spot = xr_new<CUIMapSpot>();
+	map_spot->m_pObject = pEntity;
+	
+	map_spot->SetShader(GetCharIconsShader());
+	map_spot->SetWidth(MAP_ICON_WIDTH);
+	map_spot->SetHeight(MAP_ICON_HEIGHT);
+	map_spot->MoveWindow(P.x + left, P.y + top);
+	map_spot->m_bCenter = true;
+	map_spot->m_sDescText.SetText("");
+	map_spot->m_sNameText.SetText("");
+
+	map_spot->GetUIStaticItem().SetOriginalRect(
+						pEntity->GetMapIconX()*ICON_GRID_WIDTH,
+						pEntity->GetMapIconY()*ICON_GRID_HEIGHT,
+						(pEntity->GetMapIconX()+1)*ICON_GRID_WIDTH,
+						(pEntity->GetMapIconY()+1)*ICON_GRID_HEIGHT);
+
+	UIMapBackground.m_vMapSpots.push_back(map_spot);
+	UIMapBackground.AttachChild(map_spot);
+}
 
 void CUIMapWnd::SendMessage(CUIWindow* pWnd, s16 msg, void* pData)
 {
@@ -248,13 +304,27 @@ void CUIMapWnd::SendMessage(CUIWindow* pWnd, s16 msg, void* pData)
 			{
 				UIStaticInfo.Show(true);
 				CInventoryOwner* pInvOwner = dynamic_cast<CInventoryOwner*>(UIMapBackground.m_pActiveMapSpot->m_pObject);
-				if(pInvOwner)
+
+				if(xr_strlen(UIMapBackground.m_pActiveMapSpot->m_sDescText.GetBuf())>1)
 				{
-					UICharacterInfo.InitCharacter(pInvOwner);
 					UICharacterInfo.Show(true);
+					UICharacterInfo.ResetAllStrings();
+
+					UICharacterInfo.UIName.SetText(UIMapBackground.m_pActiveMapSpot->m_sNameText);
+					UICharacterInfo.UIText.SetText(UIMapBackground.m_pActiveMapSpot->m_sDescText);
+					
 				}
 				else
-					UICharacterInfo.Show(false);
+				{
+					UICharacterInfo.ResetAllStrings();
+					if(pInvOwner)
+					{
+						UICharacterInfo.InitCharacter(pInvOwner);
+						UICharacterInfo.Show(true);
+					}
+					else
+						UICharacterInfo.Show(false);
+				}
             }
 		}
 		else if(CUIMapBackground::MAPSPOT_FOCUS_LOST == msg)

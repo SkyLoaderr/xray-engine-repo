@@ -181,8 +181,6 @@ bool CWeaponMagazined::IsAmmoAvailable()
 
 void CWeaponMagazined::OnMagazineEmpty() 
 {
-	m_bPending = true;
-
 	//FireEnd();
 
 	SwitchState(eMagEmpty); 

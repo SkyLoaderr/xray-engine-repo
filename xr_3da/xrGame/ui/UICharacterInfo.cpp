@@ -73,6 +73,15 @@ void CUICharacterInfo::Init(int x, int y, int width, int height, const char* xml
 		UICommunity.Show(false);
 		UICommunity.Enable(false);
 	}
+
+	AttachChild(&UIText);
+	if(uiXml.NavigateToNode("description", 0))
+		xml_init.InitStatic(uiXml, "description", 0, &UIText);
+	else
+	{
+		UIText.Show(false);
+		UIText.Enable(false);
+	}
 }
 
 void CUICharacterInfo::InitCharacter(CInventoryOwner* pInvOwner)
@@ -95,4 +104,12 @@ void CUICharacterInfo::InitCharacter(CInventoryOwner* pInvOwner)
 					pInvOwnerEntity->GetTradeIconY()*ICON_GRID_HEIGHT,
 					pInvOwnerEntity->GetTradeIconX()+CHAR_ICON_WIDTH*ICON_GRID_WIDTH,
 					pInvOwnerEntity->GetTradeIconY()+CHAR_ICON_HEIGHT*ICON_GRID_HEIGHT);
+}
+
+void CUICharacterInfo::ResetAllStrings()
+{
+	UIName.SetText("");
+	UIRank.SetText("");
+	UICommunity.SetText("");
+	UIText.SetText("");
 }

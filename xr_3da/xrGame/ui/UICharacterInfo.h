@@ -20,9 +20,12 @@ public:
 
 	void Init(int x, int y, int width, int height, const char* xml_name);
 	void InitCharacter(CInventoryOwner* pInvOwner);
+	
+	void ResetAllStrings();
 
 	CUIStatic UIIcon;
 	CUIStatic UIName;
 	CUIStatic UIRank;
 	CUIStatic UICommunity;
+	CUIStatic UIText;
 };

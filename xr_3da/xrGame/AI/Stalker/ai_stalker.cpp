@@ -15,6 +15,8 @@
 #include "../../game_level_cross_table.h"
 #include "../../game_graph.h"
 #include "../../inventory.h"
+#include "../../artifact.h"
+
 
 CAI_Stalker::CAI_Stalker			() : CStateManagerStalker("StalkerManager")
 {
@@ -389,10 +391,17 @@ void CAI_Stalker::shedule_Update		( u32 DT )
 				else
 					if((*I).m_pIItem) inventory().Ruck((*I).m_pIItem);
 
-			/*TIItemList &l_list = inventory().m_ruck;
+			///!!!
+			TIItemList &l_list = inventory().m_ruck;
 			for(PPIItem l_it = l_list.begin(); l_list.end() != l_it; ++l_it)
-				if ((*l_it)->Useful())
-					(*l_it)->Drop();*/
+			{
+				CArtifact* pArtifact = dynamic_cast<CArtifact*>(*l_it);
+				if(pArtifact)
+					pArtifact->Drop();
+
+				//if ((*l_it)->Useful())
+					//(*l_it)->Drop();
+			}
 		}
 		else {
 			inventory().Action(kWPN_FIRE,	CMD_START);

@@ -55,7 +55,6 @@ static void LoadAllToMemory()
 
 CInfoPortion::CInfoPortion()
 {
-	m_bLocationSet = false;
 	m_bLoaded = false;
 
 	m_QuestionsList.clear();
@@ -112,21 +111,52 @@ void CInfoPortion::LoadInfoPortionFromXml(CUIXml& uiXml, int num_in_file)
 		m_QuestionsList.push_back(question);
 	}
 
-	//загрузить позицию на карте, если она задана
-	XML_NODE* pMapNode = uiXml.NavigateToNode(pNode,"location",0);
+	
+	//загрузить позиции на карте
+	SMapLocation map_location;
+	m_MapLocationVector.clear();
+	int location_num = uiXml.GetNodesNum(pNode, "location");
 
-	if(pMapNode)
+	for(i=0; i<location_num; ++i)
 	{
-		m_bLocationSet = true;
-		m_sMapLocation.level_num = uiXml.ReadInt(pMapNode,"level",0);
-		m_sMapLocation.x = (float)atof(uiXml.Read(pMapNode,"x",0));
-		m_sMapLocation.y = (float)atof(uiXml.Read(pMapNode,"y",0));
+		XML_NODE* pMapNode = uiXml.NavigateToNode(pNode,"location",i);
 
-		m_sMapLocation.name.SetText(uiXml.ReadAttrib(pMapNode, "icon", 0, "name"));
-		m_sMapLocation.icon_x = uiXml.ReadAttribInt(pMapNode, "icon", 0, "x");
-		m_sMapLocation.icon_y = uiXml.ReadAttribInt(pMapNode, "icon", 0, "y");
-		m_sMapLocation.icon_width = uiXml.ReadAttribInt(pMapNode, "icon", 0, "width");
-		m_sMapLocation.icon_height = uiXml.ReadAttribInt(pMapNode, "icon", 0, "height");
+		if(pMapNode)
+		{
+			map_location.level_num = uiXml.ReadInt(pMapNode,"level",0);
+			map_location.x = (float)atof(uiXml.Read(pMapNode,"x",0));
+			map_location.y = (float)atof(uiXml.Read(pMapNode,"y",0));
+
+			map_location.name.SetText(uiXml.ReadAttrib(pMapNode, "icon", 0, "name"));
+			map_location.icon_x = uiXml.ReadAttribInt(pMapNode, "icon", 0, "x");
+			map_location.icon_y = uiXml.ReadAttribInt(pMapNode, "icon", 0, "y");
+			map_location.icon_width = uiXml.ReadAttribInt(pMapNode, "icon", 0, "width");
+			map_location.icon_height = uiXml.ReadAttribInt(pMapNode, "icon", 0, "height");
+
+			map_location.text.SetText(uiXml.Read(pMapNode, "text", 0));
+
+			//присоединить к объекту на уровне, если тот задан
+			if(uiXml.NavigateToNode(pMapNode,"object",0))
+			{
+				ref_str object_name = uiXml.Read(pMapNode, "object", 0, "name");
+				CGameObject *pGameObject = NULL;
+				if(*object_name)
+					pGameObject = dynamic_cast<CGameObject*>(Level().Objects.FindObjectByName(*object_name));
+
+				if (pGameObject)
+				{
+					map_location.attached_to_object = true;
+					map_location.object_id = (u16)pGameObject->ID();
+				}
+				else
+				{
+					map_location.attached_to_object = false;
+					map_location.object_id = 0xffff;
+				}
+			}
+
+			m_MapLocationVector.push_back(map_location);
+		}
 	}
 }
 

@@ -15,8 +15,19 @@
 #define NO_INFO_INDEX (-1)
 
 //структура для локации на карте
-typedef struct tagSMapLocation
+struct SMapLocation
 {
+	SMapLocation() 
+	{
+		level_num = 0;
+		x = y = 0;
+		name.SetText("");
+		text.SetText("");
+		
+		attached_to_object = false;
+		object_id = 0xffff;
+	}
+
 	//номер уровня
 	int level_num;
 	//координаты на уровне
@@ -24,11 +35,18 @@ typedef struct tagSMapLocation
 	float y;
 	//имя локации
 	CUIString name;
+	//текст описания
+	CUIString text;
+	
+	//присоединина ли локация к объекту
+	bool attached_to_object;
+	//имя объекта на уровне
+	u16 object_id;
 
 	//размеры и положение иконки
 	int icon_x, icon_y, icon_width, icon_height;
 
-} SMapLocation;
+};
 
 
 DEF_LIST (INFO_INDEX_LIST, int);
@@ -54,6 +72,7 @@ typedef struct tagSInfoQuestion
 
 
 DEF_LIST (INFO_QUESTIONS_LIST, SInfoQuestion);
+DEFINE_VECTOR (SMapLocation, LOCATIONS_VECTOR, LOCATIONS_VECTOR_IT);
 
 //квант  - порция информации
 class CInfoPortion 
@@ -62,32 +81,29 @@ public:
 	CInfoPortion(void);
 	virtual ~CInfoPortion(void);
 
-	int				GetIndex()		{return m_iIndex;}
-	SMapLocation&	GetLocation()	{return m_sMapLocation;}
-	bool			LocationExist() {return m_bLocationSet;}
+	int				GetIndex()			{return m_iIndex;}
+	int				GetLocationsNum()	  {return m_MapLocationVector.size();}
+	SMapLocation&	GetLocation(int index) {return	m_MapLocationVector[index];}
 	char*			GetText()		{return m_text.GetBuf();}
 
 	//загрузка структуры информацией из файла
 	void			Load(int index);
 	void			GetQuestion(SInfoQuestion& question, int question_num);
 	//функция загрузки из XML
-	void LoadInfoPortionFromXml(CUIXml& uiXml, int num_in_file);
+	void			LoadInfoPortionFromXml(CUIXml& uiXml, int num_in_file);
 
 	//список вопросов, которые игрок может задавать после получения 
 	//информации
 	INFO_QUESTIONS_LIST m_QuestionsList;
-
+	
 
 protected:
 	bool m_bLoaded;
 
 	//уникальный индекс в списке всех возможных квантов информации
 	int	m_iIndex;
-
-	//указывает локацию, если она задана
-	bool m_bLocationSet;
-	SMapLocation m_sMapLocation;
-
+	//список локаций на карте
+	LOCATIONS_VECTOR	m_MapLocationVector;
 	//текстовое представление информации
 	CUIString m_text;
 };

@@ -14,7 +14,7 @@ CUIString::~CUIString()
 {
 	m_str.clear();
 }
-void CUIString::SetText(LPSTR str) 
+void CUIString::SetText(LPCSTR str) 
 {
 	m_str.clear();
 
@@ -32,7 +32,7 @@ void CUIString::SetText(LPSTR str)
 }
 
 
-void CUIString::AppendText(LPSTR str)
+void CUIString::AppendText(LPCSTR str)
 {
 	//выкинуть символ конца строки
 	m_str.pop_back();
