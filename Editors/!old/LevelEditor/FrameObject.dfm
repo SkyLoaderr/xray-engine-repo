@@ -471,7 +471,7 @@ object fraObject: TfraObject
     end
     object Bevel2: TBevel
       Left = 1
-      Top = 37
+      Top = 50
       Width = 196
       Height = 1
       Align = alTop
@@ -479,9 +479,9 @@ object fraObject: TfraObject
     end
     object paItems: TPanel
       Left = 1
-      Top = 38
+      Top = 51
       Width = 196
-      Height = 136
+      Height = 123
       Align = alClient
       BevelOuter = bvNone
       ParentColor = True
@@ -491,7 +491,7 @@ object fraObject: TfraObject
       Left = 1
       Top = 14
       Width = 196
-      Height = 23
+      Height = 36
       Align = alTop
       BevelOuter = bvNone
       ParentColor = True
@@ -514,6 +514,25 @@ object fraObject: TfraObject
         Font.Style = []
         ParentFont = False
         OnClick = ExtBtn4Click
+      end
+      object ExtBtn9: TExtBtn
+        Left = 1
+        Top = 20
+        Width = 195
+        Height = 15
+        Align = alNone
+        BevelShow = False
+        HotTrack = True
+        HotColor = 15790320
+        CloseButton = False
+        Caption = 'Refresh List'
+        Font.Charset = DEFAULT_CHARSET
+        Font.Color = clWindowText
+        Font.Height = -11
+        Font.Name = 'MS Sans Serif'
+        Font.Style = []
+        ParentFont = False
+        OnClick = ExtBtn9Click
       end
     end
   end

@@ -8,6 +8,7 @@
 #include "SceneObject.h"
 #include "PropertiesList.h"
 #include "PropertiesListHelper.h"
+#include "library.h"
 
 // chunks
 static const u16 OBJECT_TOOLS_VERSION  	= 0x0000;
@@ -140,4 +141,5 @@ void ESceneObjectTools::FillAppendRandomProperties()
     TProperties::DestroyForm	(m_Props);
 }
 //----------------------------------------------------
+
 

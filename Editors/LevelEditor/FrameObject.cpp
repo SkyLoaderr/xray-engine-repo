@@ -193,12 +193,9 @@ void __fastcall TfraObject::paCurrentObjectResize(TObject *Sender)
 }
 //---------------------------------------------------------------------------
 
-void __fastcall TfraObject::FormShow(TObject *Sender)
+void TfraObject::RefreshList()
 {
-    m_Items->LoadSelection	(fsStorage);
-    m_Items->LoadParams		(fsStorage);
     ListItemsVec items;
-    
     FS_QueryMap lst;
     if (Lib.GetObjects(lst)){
 	    FS_QueryPairIt	it	= lst.begin();
@@ -211,6 +208,15 @@ void __fastcall TfraObject::FormShow(TObject *Sender)
         }
     }
     m_Items->AssignItems	(items,false,true);
+}
+//---------------------------------------------------------------------------
+
+void __fastcall TfraObject::FormShow(TObject *Sender)
+{
+    m_Items->LoadSelection	(fsStorage);
+    m_Items->LoadParams		(fsStorage);
+
+    RefreshList				();
 
     ebRandomAppendMode->Down= ParentTools->IsAppendRandomActive();
 }
@@ -245,6 +251,12 @@ void __fastcall TfraObject::ebRandomAppendModeClick(TObject *Sender)
 void __fastcall TfraObject::ExtBtn8Click(TObject *Sender)
 {
     ParentTools->FillAppendRandomProperties();
+}
+//---------------------------------------------------------------------------
+
+void __fastcall TfraObject::ExtBtn9Click(TObject *Sender)
+{
+	RefreshList();	
 }
 //---------------------------------------------------------------------------
 

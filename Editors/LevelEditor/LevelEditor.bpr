@@ -48,21 +48,21 @@
       intermediate\ESceneWayTools.obj intermediate\EShape.obj 
       intermediate\ESound_Environment.obj intermediate\ESound_Source.obj 
       intermediate\FS2.obj intermediate\Glow.obj intermediate\GroupObject.obj 
-      intermediate\ImageManagerDO.obj intermediate\portal.obj 
-      intermediate\portalutils.obj intermediate\Scene.obj 
-      intermediate\Scene_Tools.obj intermediate\SceneIO.obj 
-      intermediate\SceneObject.obj intermediate\SceneObjectIO.obj 
-      intermediate\ScenePick.obj intermediate\SceneRender.obj 
-      intermediate\SceneSelection.obj intermediate\SceneSnap.obj 
-      intermediate\SceneSummaryInfo.obj intermediate\SceneUndo.obj 
-      intermediate\SceneUtil.obj intermediate\sector.obj 
-      intermediate\SoundManager_LE.obj intermediate\SpawnPoint.obj 
-      intermediate\UI_AIMapTools.obj intermediate\ui_control.obj 
-      intermediate\UI_ObjectTools.obj intermediate\UI_PortalTools.obj 
-      intermediate\UI_PSTools.obj intermediate\UI_SectorTools.obj 
-      intermediate\UI_ShapeTools.obj intermediate\UI_SpawnTools.obj 
-      intermediate\UI_WayPointTools.obj intermediate\DetailModel.obj 
-      intermediate\DetailManager.obj intermediate\DetailManager_CACHE.obj 
+      intermediate\portal.obj intermediate\portalutils.obj 
+      intermediate\Scene.obj intermediate\Scene_Tools.obj 
+      intermediate\SceneIO.obj intermediate\SceneObject.obj 
+      intermediate\SceneObjectIO.obj intermediate\ScenePick.obj 
+      intermediate\SceneRender.obj intermediate\SceneSelection.obj 
+      intermediate\SceneSnap.obj intermediate\SceneSummaryInfo.obj 
+      intermediate\SceneUndo.obj intermediate\SceneUtil.obj 
+      intermediate\sector.obj intermediate\SoundManager_LE.obj 
+      intermediate\SpawnPoint.obj intermediate\UI_AIMapTools.obj 
+      intermediate\ui_control.obj intermediate\UI_ObjectTools.obj 
+      intermediate\UI_PortalTools.obj intermediate\UI_PSTools.obj 
+      intermediate\UI_SectorTools.obj intermediate\UI_ShapeTools.obj 
+      intermediate\UI_SpawnTools.obj intermediate\UI_WayPointTools.obj 
+      intermediate\DetailModel.obj intermediate\DetailManager.obj 
+      intermediate\DetailManager_CACHE.obj 
       intermediate\DetailManager_Decompress.obj 
       intermediate\DetailManager_soft.obj intermediate\DetailManager_VS.obj 
       intermediate\xrServer_Objects_ALife_Monsters.obj 
@@ -206,7 +206,6 @@
       <FILE FILENAME="Edit\FS2.CPP" FORMNAME="" UNITNAME="FS2.CPP" CONTAINERID="CCompiler" DESIGNCLASS="" LOCALCOMMAND=""/>
       <FILE FILENAME="Edit\Glow.cpp" FORMNAME="" UNITNAME="Glow.cpp" CONTAINERID="CCompiler" DESIGNCLASS="" LOCALCOMMAND=""/>
       <FILE FILENAME="Edit\GroupObject.cpp" FORMNAME="" UNITNAME="GroupObject.cpp" CONTAINERID="CCompiler" DESIGNCLASS="" LOCALCOMMAND=""/>
-      <FILE FILENAME="Edit\ImageManagerDO.cpp" FORMNAME="" UNITNAME="ImageManagerDO.cpp" CONTAINERID="CCompiler" DESIGNCLASS="" LOCALCOMMAND=""/>
       <FILE FILENAME="Edit\portal.cpp" FORMNAME="" UNITNAME="portal.cpp" CONTAINERID="CCompiler" DESIGNCLASS="" LOCALCOMMAND=""/>
       <FILE FILENAME="Edit\portalutils.cpp" FORMNAME="" UNITNAME="portalutils.cpp" CONTAINERID="CCompiler" DESIGNCLASS="" LOCALCOMMAND=""/>
       <FILE FILENAME="Edit\Scene.cpp" FORMNAME="" UNITNAME="Scene.cpp" CONTAINERID="CCompiler" DESIGNCLASS="" LOCALCOMMAND=""/>

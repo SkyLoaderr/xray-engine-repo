@@ -57,6 +57,7 @@ __published:	// IDE-managed Components
 	TPanel *Panel1;
 	TExtBtn *ExtBtn4;
 	TMultiObjSpinEdit *seSelPercent;
+	TExtBtn *ExtBtn9;
     void __fastcall PaneMinClick(TObject *Sender);
     void __fastcall ebSelectByRefsClick(TObject *Sender);
     void __fastcall ebDeselectByRefsClick(TObject *Sender);
@@ -73,6 +74,7 @@ __published:	// IDE-managed Components
 	void __fastcall FormDestroy(TObject *Sender);
 	void __fastcall ebRandomAppendModeClick(TObject *Sender);
 	void __fastcall ExtBtn8Click(TObject *Sender);
+	void __fastcall ExtBtn9Click(TObject *Sender);
 private:	// User declarations
     void __fastcall MultiSelByRefObject ( bool clear_prev );
     void __fastcall SelByRefObject  	( bool flag );
@@ -82,6 +84,7 @@ private:	// User declarations
 	bool __fastcall OnDrawObjectThumbnail(ListItem* sender, TCanvas *Surface, TRect &R);
 public:		// User declarations
 	ESceneObjectTools* ParentTools;
+    void			RefreshList();
 public:		// User declarations
         __fastcall TfraObject(TComponent* Owner,ESceneObjectTools* parent_tools);
     LPCSTR 			Current	(){return m_Current;}

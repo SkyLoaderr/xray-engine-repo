@@ -17,11 +17,14 @@
 #include "ui_main.h"
 #include "xrHemisphere.h"
 #include "ResourceManager.h"
+#include "ImageManager.h"
 
 #include "ESceneLightTools.h"
 //------------------------------------------------------------------------------
 // !!! использовать prefix если нужно имя !!! (Связано с группами)
 //------------------------------------------------------------------------------
+
+#define LEVEL_LODS_TEX_NAME "level_lods"
 
 void SceneBuilder::SaveBuild()
 {
@@ -83,11 +86,12 @@ void SceneBuilder::SaveBuild()
     F.close_chunk	();
 
     F.open_chunk	(EB_LOD_models);
-    F.w				(l_lods.begin(),sizeof(b_lod)*l_lods.size());
+    for (int k=0; k<(int)l_lods.size(); k++)
+	    F.w			(&l_lods[k].lod,sizeof(b_lod));
     F.close_chunk	();
 
     F.open_chunk	(EB_MU_models);
-    for (int k=0; k<(int)l_mu_models.size(); k++){
+    for (k=0; k<(int)l_mu_models.size(); k++){
     	b_mu_model&	m= l_mu_models[k];
         // name
         F.w_stringZ	(m.name);
@@ -676,7 +680,7 @@ int	SceneBuilder::BuildObjectLOD(const Fmatrix& parent, CEditableObject* e, int 
     }
 
     b_material 		mtl;
-    mtl.surfidx		= BuildTexture		(lod_name.c_str());
+    mtl.surfidx		= BuildTexture		(LEVEL_LODS_TEX_NAME);//lod_name.c_str());
     mtl.shader      = BuildShader		(e->GetLODShaderName());
     mtl.sector		= sector_num;
     mtl.shader_xrlc	= -1;
@@ -688,18 +692,19 @@ int	SceneBuilder::BuildObjectLOD(const Fmatrix& parent, CEditableObject* e, int 
         mtl_idx 	= l_materials.size()-1;
     }
 
-    l_lods.push_back(b_lod());
-    b_lod& b		= l_lods.back();
+    l_lods.push_back(e_b_lod());
+    e_b_lod& b		= l_lods.back();
     Fvector    		p[4];
     Fvector2 		t[4];
     for (int frame=0; frame<LOD_SAMPLE_COUNT; frame++){
         e->GetLODFrame(frame,p,t,&parent);
         for (int k=0; k<4; k++){
-            b.faces[frame].v[k].set(p[k]);
-            b.faces[frame].t[k].set(t[k]);
+            b.lod.faces[frame].v[k].set(p[k]);
+            b.lod.faces[frame].t[k].set(t[k]);
         }
     }
-    b.dwMaterial	= mtl_idx;
+    b.lod.dwMaterial= mtl_idx;
+    b.tex_name		= fname.c_str();
     return l_lods.size()-1;
 }
 //------------------------------------------------------------------------------
@@ -831,7 +836,46 @@ BOOL SceneBuilder::CompileStatic()
             if (mt&&!ParseStaticObjects(mt->GetObjects())){bResult = FALSE; break;}
         }
 	UI->ProgressEnd();
+// process lods
+	if (bResult){
+        UI->ProgressStart	(l_lods.size()*2,"Merge LOD textures...");
+        Fvector2Vec			offsets;
+        Fvector2Vec			scales;
+        boolVec				rotated;
+        AStringVec 			textures;
+        for (int k=0; k<(int)l_lods.size(); k++){
+            e_b_lod& l		= l_lods[k];
+            for (AStringIt it=textures.begin(); it!=textures.end(); it++)
+                if (*it==*l.tex_name){
+                    l.tex_id= it-textures.begin();
+                    break;
+                }
+            if (l.tex_id==-1){ 	
+                l.tex_id	= textures.size();
+                textures.push_back(*l.tex_name);
+            }
+	        UI->ProgressInc	();                  
+        }                           
+        AnsiString fn 		= m_LevelPath+LEVEL_LODS_TEX_NAME;
+        if (1==ImageLib.CreateMergedTexture(textures,fn.c_str(),STextureParams::tfDXT5,512,2048,256,1024,offsets,scales,rotated)){
+	        for (k=0; k<(int)l_lods.size(); k++){        
+	            e_b_lod& l	= l_lods[k];
+                for (u32 f=0; f<8; f++){
+                	for (u32 t=0; t<4; t++){
+                    	Fvector2& uv = l.lod.faces[f].t[t];
+                    	ImageLib.MergedTextureRemapUV(uv.x,uv.y,uv.x,uv.y,offsets[l.tex_id],scales[l.tex_id],rotated[l.tex_id]);
+                    }
+                }
+		        UI->ProgressInc	();
+			}
+        }else{
+            ELog.DlgMsg		(mtError,"Failed to build merged LOD texture.");
+        	bResult			= FALSE;
+        }
+        UI->ProgressEnd		();
+    }
 
+// save build    
     if (bResult&&!UI->NeedAbort()) SaveBuild();
 
     ResetStructures();

@@ -28,6 +28,14 @@ struct sb_light_control						// controller or "layer", 30fps
 	string64			name;				// empty for base layer
     U32Vec				data;
 };
+
+struct e_b_lod{
+	b_lod				lod;
+    ref_str				tex_name;
+    int					tex_id;
+    					e_b_lod():tex_id(-1){;}
+};
+
 class SceneBuilder{
 	int							l_vert_cnt, l_vert_it;
 	int							l_face_cnt, l_face_it;
@@ -36,7 +44,7 @@ class SceneBuilder{
     SVertVec					l_svertices;
     xr_vector<b_mu_model>		l_mu_models;
     xr_vector<b_mu_reference>	l_mu_refs;
-    xr_vector<b_lod>			l_lods;
+    xr_vector<e_b_lod>			l_lods;
     xr_vector<sb_light_control>	l_light_control;
     xr_vector<b_light_static>	l_light_static;
     xr_vector<b_light_dynamic>	l_light_dynamic;

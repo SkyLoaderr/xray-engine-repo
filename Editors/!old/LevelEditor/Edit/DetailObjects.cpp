@@ -408,21 +408,15 @@ bool EDetailManager::Export(LPCSTR fn)
     	*remap_object_it= textures_set.find(((EDetail*)(*d_it))->GetTextureName())==textures_set.end()?DetailSlot::ID_Empty:new_idx++;
 //    	textures_set.insert(((EDetail*)(*d_it))->GetTextureName());
         
-    AnsiString 			do_tex_name = ChangeFileExt(fn,"_details.dds");
-    int res;
-    if (0==(res=ImageLib.CreateMergedTexture(textures,do_tex_name.c_str(),256,256,offsets,scales,rotated)))
-        if (0==(res=ImageLib.CreateMergedTexture(textures,do_tex_name.c_str(),512,256,offsets,scales,rotated)))
-            if (0==(res=ImageLib.CreateMergedTexture(textures,do_tex_name.c_str(),512,512,offsets,scales,rotated)))
-                if (0==(res=ImageLib.CreateMergedTexture(textures,do_tex_name.c_str(),1024,256,offsets,scales,rotated)))
-                    if (0==(res=ImageLib.CreateMergedTexture(textures,do_tex_name.c_str(),1024,512,offsets,scales,rotated)))
-                        res=ImageLib.CreateMergedTexture(textures,do_tex_name.c_str(),1024,1024,offsets,scales,rotated);
-    if (1!=res)		bRes=FALSE;
+    AnsiString 			do_tex_name = ChangeFileExt(fn,"_details");
+    int res				= ImageLib.CreateMergedTexture(textures,do_tex_name.c_str(),STextureParams::tfADXT1,256,1024,256,1024,offsets,scales,rotated);
+    if (1!=res)			bRes=FALSE;
 
 	UI->ProgressInc		("export geometry");
     // objects
     int object_idx		= 0;
     if (bRes){
-	    do_tex_name 	= ChangeFileExt(ExtractFileName(do_tex_name),"");
+	    do_tex_name 	= ExtractFileName(do_tex_name);
         F.open_chunk	(DETMGR_CHUNK_OBJECTS);
         for (DetailIt it=objects.begin(); it!=objects.end(); it++){
         	if (remap_object[it-objects.begin()]!=DetailSlot::ID_Empty){
