@@ -2591,6 +2591,14 @@ SOURCE=.\ParticleSorter.h
 # End Group
 # Begin Source File
 
+SOURCE=.\DetailModel.cpp
+# End Source File
+# Begin Source File
+
+SOURCE=.\DetailModel.h
+# End Source File
+# Begin Source File
+
 SOURCE=.\FStaticRender.cpp
 
 !IF  "$(CFG)" == "XR_3DA - Win32 Release"

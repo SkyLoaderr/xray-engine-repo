@@ -8,45 +8,13 @@
 
 #include "xr_list.h"
 #include "detailformat.h"
+#include "detailmodel.h"
 
 const int		dm_max_objects	= 32;
 const int		dm_obj_in_slot	= 4;
 const int		dm_size			= 7;
 const int		dm_cache_line	= 1+dm_size+1+dm_size+1;
 const int		dm_cache_size	= dm_cache_line*dm_cache_line;
-
-class ENGINE_API CDetailManager;
-
-class ENGINE_API CDetail 
-{
-public:
-	struct fvfVertexIn
-	{
-		Fvector P;
-		float	u,v;
-	};
-	struct fvfVertexOut
-	{
-		Fvector P;
-		DWORD	C;
-		float	u,v;
-	};
-public:
-	Shader*		shader;	
-	DWORD		flags;	
-	float		s_min;
-	float		s_max;
-	float		radius;
-
-	fvfVertexIn	*vertices;
-	DWORD		number_vertices;
-	WORD		*indices;
-	DWORD		number_indices;
-
-	void		Load		(CStream* S);
-	void		Unload		();
-	void		Transfer	(Fmatrix& mXform, fvfVertexOut* vDest, DWORD C, WORD* iDest, DWORD iOffset);
-};
 
 class ENGINE_API CDetailManager  
 {
