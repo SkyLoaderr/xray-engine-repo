@@ -70,8 +70,8 @@ public:
 		IReader					*S = 0;
 		NET_Packet				P;
 		int						S_id	= 0;
-		xr_map<LPCSTR,xr_vector<CSE_ALifeObject*>*>	l_tpSpawnGroupObjectsMap;
-		xr_map<LPCSTR,CSE_SpawnGroup*>				l_tpSpawnGroupControlsMap;
+		xr_map<LPCSTR,xr_vector<CSE_ALifeObject*>*,pred_str>	l_tpSpawnGroupObjectsMap;
+		xr_map<LPCSTR,CSE_SpawnGroup*,pred_str>					l_tpSpawnGroupControlsMap;
 		while (0!=(S = SP->open_chunk(S_id)))
 		{
 			P.B.count			= S->length();
@@ -99,7 +99,7 @@ public:
 					if (!strlen(tpALifeObject->m_caGroupControl))
 						tpALifeObject->m_dwSpawnGroup = (*dwGroupOffset)++;
 					else {
-						xr_map<LPCSTR,xr_vector<CSE_ALifeObject*>*>::iterator I = l_tpSpawnGroupObjectsMap.find(tpALifeObject->m_caGroupControl);
+						xr_map<LPCSTR,xr_vector<CSE_ALifeObject*>*,pred_str>::iterator I = l_tpSpawnGroupObjectsMap.find(tpALifeObject->m_caGroupControl);
 						if (I == l_tpSpawnGroupObjectsMap.end()) {
 							xr_vector<CSE_ALifeObject*> *tpTemp = xr_new<xr_vector<CSE_ALifeObject*> >();
 							tpTemp->clear();
@@ -111,7 +111,7 @@ public:
 					}
 				}
 				else {
-					CSE_SpawnGroup *l_tpSpawnGroup = dynamic_cast<CSE_SpawnGroup*>(tpALifeObject);
+					CSE_SpawnGroup *l_tpSpawnGroup = dynamic_cast<CSE_SpawnGroup*>(E);
 					if (l_tpSpawnGroup) {
 						l_tpSpawnGroup->m_dwSpawnGroup = *dwGroupOffset++;
 						l_tpSpawnGroupControlsMap.insert(mk_pair(l_tpSpawnGroup->s_name_replace,l_tpSpawnGroup));
@@ -128,11 +128,11 @@ public:
 		R_ASSERT2(m_tpSpawnPoints.size(),"There are no spawn-points!");
 		
 		{
-			xr_map<LPCSTR,xr_vector<CSE_ALifeObject*>*>::iterator	I = l_tpSpawnGroupObjectsMap.begin();
-			xr_map<LPCSTR,xr_vector<CSE_ALifeObject*>*>::iterator	E = l_tpSpawnGroupObjectsMap.end();
+			xr_map<LPCSTR,xr_vector<CSE_ALifeObject*>*,pred_str>::iterator	I = l_tpSpawnGroupObjectsMap.begin();
+			xr_map<LPCSTR,xr_vector<CSE_ALifeObject*>*,pred_str>::iterator	E = l_tpSpawnGroupObjectsMap.end();
 			
 			for ( ; I != E; I++) {
-				xr_map<LPCSTR,CSE_SpawnGroup*>::iterator			J = l_tpSpawnGroupControlsMap.find((*I).first);
+				xr_map<LPCSTR,CSE_SpawnGroup*,pred_str>::iterator			J = l_tpSpawnGroupControlsMap.find((*I).first);
 
 				R_ASSERT(J != l_tpSpawnGroupControlsMap.end());
 
@@ -173,8 +173,8 @@ public:
 		}
 		// freeing resources being allocated
 		{
-			xr_map<LPCSTR,xr_vector<CSE_ALifeObject*>*>::iterator	I = l_tpSpawnGroupObjectsMap.begin();
-			xr_map<LPCSTR,xr_vector<CSE_ALifeObject*>*>::iterator	E = l_tpSpawnGroupObjectsMap.end();
+			xr_map<LPCSTR,xr_vector<CSE_ALifeObject*>*,pred_str>::iterator	I = l_tpSpawnGroupObjectsMap.begin();
+			xr_map<LPCSTR,xr_vector<CSE_ALifeObject*>*,pred_str>::iterator	E = l_tpSpawnGroupObjectsMap.end();
 			
 			for ( ; I != E; I++) {
 				(*I).second->clear();
