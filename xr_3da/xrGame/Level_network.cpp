@@ -5,28 +5,17 @@
 #include "xrmessages.h"
 #include "game_cl_base.h"
 #include "PHCommander.h"
+
 void CLevel::net_Stop		()
 {
 	Msg							("- Disconnect");
 	if (Server)					Server->SLS_Clear	();
-	ClientReceive				();
-	ProcessGameEvents			();
-
-	ClientReceive				();
-	ProcessGameEvents			();
-
-	ClientReceive				();
-	ProcessGameEvents			();
+	for (int i=0; i<6; ++i) {
+		ClientReceive			();
+		ProcessGameEvents		();
+		Objects.Update			();
+	}
 	
-	ClientReceive				();
-	ProcessGameEvents			();
-
-	ClientReceive				();
-	ProcessGameEvents			();
-
-	ClientReceive				();
-	ProcessGameEvents			();
-
 	IGame_Level::net_Stop		();
 	IPureClient::Disconnect		();
 
