@@ -1,5 +1,18 @@
 #include "stdafx.h"
 
+BOOL ValidateIndices(DWORD vCount, DWORD iCount, WORD* pIndices)
+{
+	if (vCount>65535)	return FALSE;
+	if (iCount%3)		return FALSE;
+
+	for (DWORD I=0; I<iCount; I++)
+	{
+		if (DWORD(pIndices[I])>=vCount)	return FALSE;
+	}
+	return TRUE;
+}
+
+//-----------------------------------------------------------------------------------------------------------------
 static DWORD dwPositionPart[8] =
 {
 	0,	// no position

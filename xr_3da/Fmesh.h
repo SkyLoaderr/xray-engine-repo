@@ -42,6 +42,8 @@
                           D3DFVF_TEX1 )
 */
 
+BOOL ValidateIndices(DWORD vCount, DWORD iCount, WORD* pIndices);
+
 ///////////////////////////////////////////////////////////////////////////////////////////////////////
 // MESH as it is represented in file
 enum MT {
