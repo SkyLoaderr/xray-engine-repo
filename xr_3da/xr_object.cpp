@@ -135,6 +135,7 @@ BOOL CObject::Spawn		(BOOL bLocal, int server_id, Fvector& o_pos, Fvector& o_ang
 	net_Local			= bLocal;
 	net_ID				= server_id;
 	net_Ready			= TRUE;
+	pCreator->Objects.net_Register	(this);
 
 	// Sector detection
 	Sector_Detect		();
