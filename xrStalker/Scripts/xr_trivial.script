@@ -166,7 +166,8 @@ function stalker_novice_action:execute ()
     if( self.a.curState == walk ) then
 		self:state_walk()
         if( device():time_global() > self.a.time + time_walk ) then
-        	self:state_sit_down( "init" )            	--Init state sit down
+			printf( "11111111111111111" )        	
+			self:state_sit_down( "init" )            	--Init state sit down
         end
     else
         self:state_sit_down()
