@@ -34,13 +34,17 @@ public:
 	virtual const char* NameShort();
 	virtual char*	NameComplex();
 
+	
+	virtual void OnEvent (NET_Packet& P, u16 type);
+	
 	virtual bool	Useful();									// !!! Переопределить. (см. в Inventory.cpp)
-	virtual bool	Attach(PIItem pIItem, bool force = false);	// !!! Переопределить. (см. в Inventory.cpp)
-	virtual bool	Detach(PIItem pIItem, bool force = true);	// !!! Переопределить. (см. в Inventory.cpp)
+	virtual bool	Attach(PIItem pIItem) {return false;}
+	virtual bool	Detach(PIItem pIItem) {return false;}
 	
 	virtual bool	Activate();									// !!! Переопределить. (см. в Inventory.cpp)
 	virtual void	Deactivate();								// !!! Переопределить. (см. в Inventory.cpp)
 	virtual bool	Action(s32 cmd, u32 flags) {return false;}	// true если известная команда, иначе false
+	
 	virtual bool	IsHidden()					{return true;}	// вещь спрятано в инвентаре
 	virtual bool	IsPending()					{return false;}	// true если вещь чем-то занята
 	
@@ -64,12 +68,12 @@ public:
 	bool DetachAll();										// Разобрать иерархию объектов. Объект должен быть в рюкзаке
 	void Drop();											// Если объект в инвенторе, то он будет выброшен
 
-	u32	Cost() {return m_cost;}
+	u32		Cost()		{return m_cost;}
+	float	Weight()	{return m_weight;}		
 
-	f32 m_weight;											// Вес объекта
 	u32 m_slot;												// Слот в который можно установить объект (0xffffffff если нельзя)
 	bool m_belt, m_ruck;									// Может ли объект быть на поясе или в рюкзаке
-	TIItemList m_subs;										// Присоединенные объекты
+	
 	CInventory *m_pInventory;								// Указатель на инвентарь. Всегда полезно знать где находишься :)
 	const char *m_name, *m_nameShort;
 	char m_nameComplex[255];
@@ -90,7 +94,10 @@ public:
 	void  ChangeCondition(float fDeltaCondition);
 	
 protected:
-	u32	m_cost;												// цена по умолчанию
+	// цена по умолчанию
+	u32	m_cost;
+	// вес объекта (без подсоединненых вещей)
+	float m_weight;
 	
 	//состояние вещи, 1.0 - полностью работоспособная
 	// 0 - испорченная

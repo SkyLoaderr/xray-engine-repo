@@ -137,12 +137,12 @@ char* CInventoryItem::NameComplex()
 	else 
 		m_nameComplex[0] = 0;
 
-	for(PPIItem l_it = m_subs.begin(); l_it != m_subs.end(); l_it++) 
+	/*for(PPIItem l_it = m_subs.begin(); l_it != m_subs.end(); l_it++) 
 	{
 		const char *l_subName = (*l_it)->NameShort();
 		if(l_subName)
 			strcpy(&m_nameComplex[xr_strlen(m_nameComplex)], l_subName);
-	}
+	}*/
 
 
 	if(m_bUsingCondition)
@@ -166,7 +166,7 @@ bool CInventoryItem::Useful()
 	// Если IItem нельзя использовать, вернуть false
 	return true;
 }
-
+/*
 bool CInventoryItem::Attach(PIItem pIItem, bool force) 
 {
 	// Аргумент force всегда равен false
@@ -180,8 +180,8 @@ bool CInventoryItem::Attach(PIItem pIItem, bool force)
 	} 
 	else 
 		return false;
-}
-
+}*/
+/*
 bool CInventoryItem::Detach(PIItem pIItem, bool force) 
 {
 	// Аргумент force всегда равен true
@@ -197,20 +197,20 @@ bool CInventoryItem::Detach(PIItem pIItem, bool force)
 		return false;
 	}
 	else return false; 
-}
+}*/
 
-bool CInventoryItem::DetachAll() 
+bool CInventoryItem::DetachAll()
 {
 	if(!m_pInventory || std::find(m_pInventory->m_ruck.begin(), 
 								    m_pInventory->m_ruck.end(), this) == 
 									m_pInventory->m_ruck.end()) return false;
 
-	for(PPIItem l_it = m_subs.begin(); l_it != m_subs.end(); l_it++) 
+/*	for(PPIItem it = m_subs.begin(); it != m_subs.end(); it++) 
 	{
-		Detach(*l_it);
+		Detach(*it);
 		//m_pInventory->m_ruck.insert(m_pInventory->m_ruck.end(), *l_it);
-		(*l_it)->DetachAll();
-	}
+		(*it)->DetachAll();
+	}*/
 	return true;
 }
 
@@ -295,6 +295,13 @@ void CInventoryItem::UpdateCL()
 		Position().set			(XFORM().c);
 	}*/
 }
+
+
+void CInventoryItem::OnEvent (NET_Packet& P, u16 type)
+{
+	inherited::OnEvent(P, type);
+}
+
 ///////////////////////////////////////////
 // CEatableItem class 
 ///////////////////////////////////////////
@@ -338,19 +345,21 @@ bool CEatableItem::Useful()
 
 void MergeSame(TIItemList &itemList) 
 {
-	PPIItem l_it = itemList.begin(), l_it2;
+	PPIItem it = itemList.begin();
+	PPIItem it2;
 	
-	while(l_it != itemList.end()) 
+	while(it != itemList.end()) 
 	{
-		l_it2 = l_it; l_it2++;
-		while(l_it2 != itemList.end()) 
+		it2 = it; 
+		it2++;
+		while(it2 != itemList.end()) 
 		{
-			(*l_it2)->Merge(*l_it);
-			if(!(*l_it)->Useful()) break;
-			l_it2++;
+			(*it2)->Merge(*it);
+			if(!(*it)->Useful()) break;
+			it2++;
 		}
-		if(!(*l_it)->Useful()) (*l_it)->Drop();
-		l_it++;
+		if(!(*it)->Useful()) (*it)->Drop();
+		it++;
 	}
 }
 
@@ -358,36 +367,39 @@ void SortRuckAndBelt(CInventory *pInventory)
 {
 	for(int i = 0; i < 2; i++) 
 	{
-		TIItemList &l_list = i?pInventory->m_ruck:pInventory->m_belt;
-		PPIItem l_it = l_list.begin(), l_it2, l_first, l_last, l_erase;
+		TIItemList &list = i?pInventory->m_ruck:pInventory->m_belt;
+		PPIItem it = list.begin();
+		PPIItem it2, first, last, erase;
 		
-		while(l_it != l_list.end()) 
+		while(it != list.end()) 
 		{
-			l_first = l_last = l_it; l_last++;
-			while((l_last != l_list.end()) && ((*l_first)->Sort(*l_last) > 0)) 
-						l_last++;
+			first = last = it; 
+			last++;
+			while((last != list.end()) && ((*first)->Sort(*last) > 0)) 
+						last++;
 			
-			l_it2 = l_last;
-			while(l_it2 != l_list.end()) 
+			it2 = last;
+			while(it2 != list.end()) 
 			{
-				l_erase = l_list.end();
-				s32 l_sort = (*l_first)->Sort(*l_it2);
-				if(l_sort > 0)
+				erase = list.end();
+				s32 sort = (*first)->Sort(*it2);
+				if(sort > 0)
 				{
-					l_list.insert(l_last, *l_it2); l_erase = l_it2;
+					list.insert(last, *it2); 
+					erase = it2;
 				} 
-				else if(l_sort < 0) 
+				else if(sort < 0) 
 				{
-					l_first = l_list.insert(l_first, *l_it2); l_erase = l_it2;
+					first = list.insert(first, *it2); 
+					erase = it2;
 				}
 				
-				l_it2++;
-				if(l_erase != l_list.end()) 
-								l_list.erase(l_erase);
+				it2++;
+				if(erase != list.end()) list.erase(erase);
 			}
-			l_it++;
+			it++;
 		}
-		MergeSame(l_list);
+		MergeSame(list);
 	}
 }
 
@@ -438,69 +450,69 @@ bool CInventory::FreeBeltRoom()
 
 bool CInventory::Take(CGameObject *pObj, bool bNotActivate)
 {
-	CInventoryItem *l_pIItem = dynamic_cast<CInventoryItem*>(pObj);
-	//if(l_pIItem && l_pIItem->Useful() && (l_pIItem->m_weight + TotalWeight() < m_maxWeight) && (m_ruck.size() < m_maxRuck) && (m_all.find(l_pIItem) == m_all.end())) {
+	CInventoryItem *pIItem = dynamic_cast<CInventoryItem*>(pObj);
 	
-	if(m_all.find(l_pIItem) != m_all.end()) 
+	if(m_all.find(pIItem) != m_all.end()) 
 	{
 		Debug.fatal("Item already exist in inventory: %s(%s)",pObj->cName(),pObj->cNameSect());
 	}
 
-	if(!l_pIItem || !l_pIItem->Useful() || 
-	  !(l_pIItem->m_weight + TotalWeight() < m_maxWeight)) return false;
+	if(!pIItem || !pIItem->Useful() || 
+		!(pIItem->Weight() + TotalWeight() < m_maxWeight)) return false;
 
-	l_pIItem->m_pInventory = this;
-	l_pIItem->m_drop = false;
-	m_all.insert(l_pIItem);
+	pIItem->m_pInventory = this;
+	pIItem->m_drop = false;
+	m_all.insert(pIItem);
 		
 	//сначала закинуть вещь в рюкзак
-	if(l_pIItem->m_ruck) m_ruck.insert(m_ruck.end(), l_pIItem); 
+	if(pIItem->m_ruck) m_ruck.insert(m_ruck.end(), pIItem); 
 		
-	SortRuckAndBelt(this);
+//	SortRuckAndBelt(this);
+//	l_subs.insert(l_subs.end(), l_pIItem->m_subs.begin(), l_pIItem->m_subs.end());
 		
-	l_subs.insert(l_subs.end(), l_pIItem->m_subs.begin(), l_pIItem->m_subs.end());
-		
-	while(l_subs.size())
+	/*while(l_subs.size())
 	{
 		l_pIItem = *l_subs.begin();
 		l_pIItem->m_pInventory = this;
 		m_all.insert(l_pIItem);
 		l_subs.insert(l_subs.end(), l_pIItem->m_subs.begin(), l_pIItem->m_subs.end());
 		l_subs.erase(l_subs.begin());
-	}
+	}*/
 		
 	//поытаться закинуть в слот
-	if(!Slot(l_pIItem)) 
+	if(!Slot(pIItem)) 
 	{
-		if(l_pIItem->m_slot < NO_ACTIVE_SLOT) 
+		if(pIItem->m_slot < NO_ACTIVE_SLOT) 
 		{
-			if(m_slots[l_pIItem->m_slot].m_pIItem &&
-			   m_slots[l_pIItem->m_slot].m_pIItem->Attach(l_pIItem))
+			if(m_slots[pIItem->m_slot].m_pIItem &&
+			   m_slots[pIItem->m_slot].m_pIItem->Attach(pIItem))
 			{
-				m_ruck.erase(std::find(m_ruck.begin(), m_ruck.end(), l_pIItem));
+				m_ruck.erase(std::find(m_ruck.begin(), m_ruck.end(), pIItem));
 				return true;
 			} 
-			else if(!Belt(l_pIItem)/* || !FreeBeltRoom()*/) 
+			else if(!Belt(pIItem)/* || !FreeBeltRoom()*/) 
 				 if(m_ruck.size() > m_maxRuck || 
-					!l_pIItem->m_ruck || !FreeRuckRoom()) 
+					!pIItem->m_ruck || !FreeRuckRoom()) 
 			{
 				//return true;
 				//else 
-				return !Drop(l_pIItem);
+				return !Drop(pIItem);
 			}
 		} 
-		else if(!Belt(l_pIItem)/* || !FreeBeltRoom()*/) 
+		else if(!Belt(pIItem)/* || !FreeBeltRoom()*/) 
 				  if(m_ruck.size() > m_maxRuck || !FreeRuckRoom()) 
 		{
 //				if(Belt(l_pIItem)) 
 //					return true;
 //				else 
-				return !Drop(l_pIItem);
+				return !Drop(pIItem);
 		}
 	} 
+	//если активного предмета в руках нету, то активизировать
+	//то что только что подняли
 	else if(m_activeSlot == NO_ACTIVE_SLOT && !bNotActivate) 
 	{
-		Activate(l_pIItem->m_slot);
+		Activate(pIItem->m_slot);
 	}
 	return true;
 }
@@ -515,7 +527,7 @@ bool CInventory::Drop(CGameObject *pObj)
 		m_all.erase(pIItem);
 		pIItem->m_pInventory = NULL;
 		
-		TIItemList subs; 
+		/*TIItemList subs; 
 		subs.insert(subs.end(), pIItem->m_subs.begin(), pIItem->m_subs.end());
 		
 		while(subs.size()) 
@@ -525,7 +537,7 @@ bool CInventory::Drop(CGameObject *pObj)
 			m_all.erase(pIItem);
 			subs.insert(subs.end(), pIItem->m_subs.begin(), pIItem->m_subs.end());
 			subs.erase(subs.begin());
-		}
+		}*/
 		return true;
 	}
 	return false;
@@ -895,7 +907,7 @@ f32 CInventory::TotalWeight()
 {
 	f32 weight = 0;
 	for(PSPIItem it = m_all.begin(); it != m_all.end(); it++) 
-					weight += (*it)->m_weight;
+					weight += (*it)->Weight();
 	
 	return weight;
 }

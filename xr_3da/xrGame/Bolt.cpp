@@ -5,18 +5,23 @@
 #include "inventory.h"
 
 
-CBolt::CBolt(void) {
+CBolt::CBolt(void) 
+{
 	//m_belt = true;
 	m_weight = .1f;
 	m_slot = BOLT_SLOT;
 	m_ruck = false;
 }
 
-CBolt::~CBolt(void) {}
+CBolt::~CBolt(void) 
+{
+}
 
-void CBolt::OnH_A_Chield() {
+void CBolt::OnH_A_Chield() 
+{
 	inherited::OnH_A_Chield();
-	if(!m_subs.size() && !dynamic_cast<CBolt*>(H_Parent())) {
+	if(!m_subs.size() && !dynamic_cast<CBolt*>(H_Parent())) 
+	{
 		CSE_Abstract*		D	= F_entity_Create(cNameSect());
 		R_ASSERT			(D);
 		CSE_ALifeDynamicObject				*l_tpALifeDynamicObject = dynamic_cast<CSE_ALifeDynamicObject*>(D);
@@ -41,22 +46,26 @@ void CBolt::OnH_A_Chield() {
 	}
 }
 
-void CBolt::OnEvent(NET_Packet& P, u16 type) {
+void CBolt::OnEvent(NET_Packet& P, u16 type) 
+{
 	inherited::OnEvent(P,type);
 	u16 id;
-	switch (type) {
-		case GE_OWNERSHIP_TAKE : {
-			P.r_u16(id);
-			CBolt *l_pB = dynamic_cast<CBolt*>(Level().Objects.net_Find(id));
-			Attach(l_pB, true);
-			l_pB->H_SetParent(this);
-		} break;
-		case GE_OWNERSHIP_REJECT : {
-			P.r_u16(id);
-			CBolt *l_pB = dynamic_cast<CBolt*>(Level().Objects.net_Find(id));
-			Detach(l_pB);
-			l_pB->H_SetParent(0);
-		} break;
+	switch (type) 
+	{
+	case GE_OWNERSHIP_TAKE: 
+			{
+				P.r_u16(id);
+				CBolt *l_pB = dynamic_cast<CBolt*>(Level().Objects.net_Find(id));
+				Attach(l_pB);
+				l_pB->H_SetParent(this);
+			} break;
+	case GE_OWNERSHIP_REJECT: 
+			{
+				P.r_u16(id);
+				CBolt *l_pB = dynamic_cast<CBolt*>(Level().Objects.net_Find(id));
+				Detach(l_pB);
+				l_pB->H_SetParent(0);
+			} break;
 	}
 }
 
@@ -71,16 +80,32 @@ void CBolt::Deactivate()
 	Hide();
 }
 
-bool CBolt::Attach(PIItem pIItem, bool force) {
-	if(!strcmp(cNameSect(), pIItem->cNameSect())) { force = true;}
-	return inherited::Attach(pIItem, force);
+bool CBolt::Attach(PIItem pIItem)
+{
+	if(!strcmp(cNameSect(), pIItem->cNameSect())) 
+	{ 
+		m_subs.insert(m_subs.end(), pIItem);
+		return true;
+	}
+	return false;
 }
-
-void CBolt::Throw() {
+bool CBolt::Detach(PIItem pIItem) 
+{
+	if(m_subs.erase(std::find(m_subs.begin(), 
+		m_subs.end(), pIItem)) != m_subs.end()) 
+	{
+		return true;
+	}
+	return false;
+}
+void CBolt::Throw() 
+{
 	if(!m_subs.size()) return;
 	inherited::Throw();
 	CBolt *l_pBolt = dynamic_cast<CBolt*>(*m_subs.begin());
-	if(l_pBolt) {
+	
+	if(l_pBolt) 
+	{
 		//Detach(l_pBolt);
 		l_pBolt->m_destroyTime = 100000;
 		l_pBolt->m_force = m_force;
@@ -88,13 +113,15 @@ void CBolt::Throw() {
 		{
 			NET_Packet				P;
 			u_EventGen				(P,GE_OWNERSHIP_REJECT,/*H_Parent()->*/ID());
-			P.w_u16					(u16(l_pBolt->ID()));
+			P.w_u16
+				(u16(l_pBolt->ID()));
 			u_EventSend				(P);
 		}
 
 		// Спавним болты, чтоб у актера всегда было 5 болтов
 		u32 l_c = 2 - (u32)m_subs.size();
-		while(l_c--) {
+		while(l_c--) 
+		{
 			CSE_Abstract*		D	= F_entity_Create(cNameSect());
 			R_ASSERT			(D);
 			CSE_ALifeDynamicObject				*l_tpALifeDynamicObject = dynamic_cast<CSE_ALifeDynamicObject*>(D);
@@ -117,26 +144,33 @@ void CBolt::Throw() {
 			// Destroy
 			F_entity_Destroy	(D);
 		}
-		//
 	}
 }
 
-bool CBolt::Useful() {
+bool CBolt::Useful() 
+{
 	// Если IItem еще не полностью использованый, вернуть true
 	return m_destroyTime == 0xffffffff;
 }
 
-bool CBolt::Action(s32 cmd, u32 flags) {
+bool CBolt::Action(s32 cmd, u32 flags) 
+{
 	if(inherited::Action(cmd, flags)) return true;
-	switch(cmd) {
-		case kDROP : {
-			if(flags&CMD_START) {
+	switch(cmd) 
+	{
+	case kDROP:
+		{
+			if(flags&CMD_START) 
+			{
 				 m_throw = false;
 				if(State() == MS_IDLE) State(MS_THREATEN);
-			} else if(State() == MS_READY || State() == MS_THREATEN) {
+			} 
+			else if(State() == MS_READY || State() == MS_THREATEN) 
+			{
 				m_throw = true; if(State() == MS_READY) State(MS_THROW);
 			}
-		} return true;
+		} 
+		return true;
 	}
 	return false;
 }
@@ -149,6 +183,5 @@ void CBolt::Destroy()
 void CBolt::OnH_B_Independent()
 {
 	inherited::OnH_B_Independent();
-
 	m_pPhysicsShell->SetAirResistance(.0001f);
 }
