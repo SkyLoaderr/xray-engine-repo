@@ -600,7 +600,7 @@ BOOL CImageManager::RemoveTexture(LPCSTR fname)
         Engine.FS.BackupFile		(&Engine.FS.m_Textures,thm_name.c_str());
         Engine.FS.DeleteFileByName	(&Engine.FS.m_Textures,thm_name.c_str());
         // game
-        AnsiString game_name 		= ChangeFileExt(fname,".thm");
+        AnsiString game_name 		= ChangeFileExt(fname,".dds");
         Engine.FS.DeleteFileByName	(&Engine.FS.m_GameTextures,game_name.c_str());
         return TRUE;
     }

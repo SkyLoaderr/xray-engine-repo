@@ -213,6 +213,37 @@ void DrawPointLight(const Fvector& p, float radius, DWORD c)
 	DrawCross(p, radius,radius,radius, radius,radius,radius, c, true);
 }
 
+void DrawEntity(DWORD clr, Shader* s)
+{
+	// fill VB
+	DWORD			vBase;
+	FVF::L*	pv	 	= (FVF::L*)Device.Streams.Vertex.Lock(5,vs_L->dwStride,vBase);
+    pv->set			(0.f,0.f,0.f,clr); pv++;
+    pv->set			(0.f,1.f,0.f,clr); pv++;
+    pv->set			(0.f,1.f,.5f,clr); pv++;
+    pv->set			(0.f,.5f,.5f,clr); pv++;
+    pv->set			(0.f,.5f,0.f,clr); pv++;
+	Device.Streams.Vertex.Unlock	(5,vs_L->dwStride);
+	// render flagshtok
+    Device.SetShader(Device.m_WireShader);
+    Device.DP		(D3DPT_LINESTRIP,vs_L,vBase,4);
+
+    if (s) Device.SetShader(s);
+    {
+        // fill VB
+        FVF::LIT*	pv	 = (FVF::LIT*)Device.Streams.Vertex.Lock(6,vs_LIT->dwStride,vBase);
+        pv->set		(0.f,1.f,0.f,clr,0.f,0.f);	pv++;
+        pv->set		(0.f,1.f,.5f,clr,1.f,0.f);	pv++;
+        pv->set		(0.f,.5f,.5f,clr,1.f,1.f);	pv++;
+        pv->set		(0.f,.5f,0.f,clr,0.f,1.f);	pv++;
+        pv->set		(0.f,.5f,.5f,clr,1.f,1.f);	pv++;
+        pv->set		(0.f,1.f,.5f,clr,1.f,0.f);	pv++;
+        Device.Streams.Vertex.Unlock	(6,vs_LIT->dwStride);
+        // and Render it as line list
+        Device.DP		(D3DPT_TRIANGLEFAN,vs_LIT,vBase,4);
+    }
+}
+
 void DrawFlag(const Fvector& p, float heading, float height, float sz, float sz_fl, DWORD clr, bool bDrawEntity){
 	// fill VB
 	DWORD			vBase;

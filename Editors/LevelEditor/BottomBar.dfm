@@ -1,7 +1,7 @@
 object fraBottomBar: TfraBottomBar
   Left = 0
   Top = 0
-  Width = 582
+  Width = 443
   Height = 277
   VertScrollBar.Visible = False
   Align = alClient
@@ -9,13 +9,13 @@ object fraBottomBar: TfraBottomBar
   object paBottomBar: TPanel
     Left = 0
     Top = 0
-    Width = 582
+    Width = 443
     Height = 17
     Align = alTop
     BevelOuter = bvLowered
     TabOrder = 0
     object paInfo: TPanel
-      Left = 258
+      Left = 119
       Top = 1
       Width = 323
       Height = 15
@@ -281,7 +281,8 @@ object fraBottomBar: TfraBottomBar
       'miDrawObjectsPivot.Checked'
       'miDrawDOBaseTexture.Checked'
       'miDrawDOBlended.Checked'
-      'miDrawHOM.Checked')
+      'miDrawHOM.Checked'
+      'miSpawnPointDrawText.Checked')
     StoredValues = <>
     Left = 185
     Top = 33
@@ -490,6 +491,15 @@ object fraBottomBar: TfraBottomBar
       GroupIndex = 4
       object miGlowTestVisibility: TMenuItem
         Caption = 'Test Visibility'
+        OnClick = ClickOptionsMenuItem
+      end
+    end
+    object SpawnPoint1: TMenuItem
+      Caption = 'Spawn Point'
+      GroupIndex = 4
+      object miSpawnPointDrawText: TMenuItem
+        Caption = 'Draw Text'
+        Checked = True
         OnClick = ClickOptionsMenuItem
       end
     end

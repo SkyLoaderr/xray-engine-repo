@@ -16,6 +16,7 @@ namespace DU{
 
     //----------------------------------------------------
     void DrawCross(const Fvector& p, float szx1, float szy1, float szz1, float szx2, float szy2, float szz2, DWORD clr, bool bRot45=false);
+    void DrawEntity(DWORD clr, Shader* s);
     void DrawFlag(const Fvector& p, float heading, float height, float sz, float sz_fl, DWORD clr, bool bDrawEntity);
     void DrawRomboid(const Fvector& p, float radius, DWORD clr);
     void DrawDirectionalLight(const Fvector& p, const Fvector& d, float radius, float range, DWORD clr);

@@ -10,6 +10,8 @@
 
 #define RPOINT_SIZE 0.5f
 
+DEFINE_MAP(AnsiString,Shader*,ShaderMap,ShaderPairIt);
+
 class CSpawnPoint : public CCustomObject {
 	typedef CCustomObject inherited;
 
@@ -20,6 +22,10 @@ public:
 
     EPointType		m_Type;
     DWORD			m_dwTeamID;
+
+    static ShaderMap m_Icons;
+    static Shader* 	CreateIcon(LPCSTR name);
+    static Shader* 	GetIcon(LPCSTR name);
 protected:
     virtual Fvector& GetPosition	()				{ return m_SpawnData?m_SpawnData->o_Position:FPosition;}
     virtual void 	SetPosition		(Fvector& pos)	{ if (m_SpawnData) m_SpawnData->o_Position.set(pos);else FPosition.set(pos);	UpdateTransform();}
@@ -42,6 +48,9 @@ public:
     virtual bool	ExportGame		(SExportStreams& data);
 
 	virtual void	FillProp		(LPCSTR pref, PropValueVec& values);
+
+    virtual void	OnDeviceCreate	();
+    virtual void	OnDeviceDestroy	();
 };
 
 #endif /*_INCDEF_Glow_H_*/

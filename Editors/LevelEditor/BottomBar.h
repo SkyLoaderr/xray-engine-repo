@@ -87,6 +87,8 @@ __published:	// IDE-managed Components
 	TMenuItem *miDrawHOM;
 	TPanel *paUICursor;
 	TPanel *paCamera;
+	TMenuItem *SpawnPoint1;
+	TMenuItem *miSpawnPointDrawText;
     void __fastcall ClickOptionsMenuItem(TObject *Sender);
     void __fastcall QualityClick(TObject *Sender);
     void __fastcall fsStorageRestorePlacement(TObject *Sender);

@@ -9,6 +9,8 @@
 #include "clsid_game.h"
 #include "d3dutils.h"
 #include "render.h"
+#include "xr_hudfont.h"
+#include "bottombar.h"
 
 #define SPAWNPOINT_VERSION   			0x0012
 //----------------------------------------------------
@@ -27,6 +29,8 @@
 #define MAX_TEAM 8
 const DWORD RP_COLORS[MAX_TEAM]={0xff0000,0x00ff00,0x0000ff,0xffff00,0x00ffff,0x7f0000,0x007f00,0x00007f};
 
+ShaderMap CSpawnPoint::m_Icons;
+//----------------------------------------------------
 CSpawnPoint::CSpawnPoint(LPVOID data, LPCSTR name):CCustomObject(data,name){
 	Construct(data);
 }
@@ -53,17 +57,21 @@ void CSpawnPoint::Construct(LPVOID data){
     }
 }
 
-CSpawnPoint::~CSpawnPoint(){
+CSpawnPoint::~CSpawnPoint()
+{
 	F_entity_Destroy(m_SpawnData);
+    OnDeviceDestroy();
 }
 
-bool CSpawnPoint::CreateSpawnData(LPCSTR entity_ref){
+bool CSpawnPoint::CreateSpawnData(LPCSTR entity_ref)
+{
 	R_ASSERT(entity_ref&&entity_ref[0]);
 	F_entity_Destroy(m_SpawnData);
 	m_SpawnData = F_entity_Create(entity_ref);
     if (m_SpawnData){ 
 		m_SpawnClassID = pSettings->ReadCLSID(entity_ref,"class");
     	strcpy(m_SpawnData->s_name,entity_ref);
+        OnDeviceCreate();
     }
     return !!m_SpawnData;
 }
@@ -85,38 +93,33 @@ bool CSpawnPoint::GetBox( Fbox& box ){
 void CSpawnPoint::Render( int priority, bool strictB2F )
 {
 	inherited::Render(priority, strictB2F);
-    if ((1==priority)&&(false==strictB2F)){
-    	Fbox bb; GetBox(bb);
-	    if (::Render->occ_visible(bb)){
-        	if (m_SpawnData){
-                switch (m_SpawnClassID){
-                case CLSID_OBJECT_ACTOR:		break;
-                case CLSID_OBJECT_DUMMY:		break;
-                case CLSID_AI_HEN:				break;
-                case CLSID_AI_RAT:				break;
-                case CLSID_AI_SOLDIER:			break;
-                case CLSID_AI_ZOMBIE:			break;
-                case CLSID_AI_CROW:				break;
-                case CLSID_EVENT:				break;
-                case CLSID_CAR_NIVA:			break;
-                case CLSID_OBJECT_W_M134:		break;
-                case CLSID_OBJECT_W_FN2000:		break;
-                case CLSID_OBJECT_W_AK74:		break;
-                case CLSID_OBJECT_W_LR300:		break;
-                case CLSID_OBJECT_W_HPSA:		break;
-                case CLSID_OBJECT_W_PM:			break;
-                case CLSID_OBJECT_W_FORT:		break;
-                case CLSID_OBJECT_W_BINOCULAR:	break;
-                default:
-	            	DU::DrawFlag(PPosition,PRotation.y,RPOINT_SIZE*2,RPOINT_SIZE,.3f,0xffffff,true);
+    if (1==priority){
+		Fbox bb; GetBox(bb);
+		if (::Render->occ_visible(bb)){
+            if (strictB2F){
+                Device.SetTransform(D3DTS_WORLD,_Transform());
+                if (m_SpawnData){
+                    if (fraBottomBar->miSpawnPointDrawText->Checked&&m_SpawnData->s_name){
+                        FVF::TL	P;
+                        float 			cx,cy;
+                        P.transform		( PPosition, Device.mFullTransform );
+                        cx				= iFloor(Device._x2real(P.p.x));
+                        cy				= iFloor(Device._y2real(P.p.y));
+                        Device.pHUDFont->Color	(0xffffffff);
+                        Device.pHUDFont->Out	(cx,cy,m_SpawnData->s_name);
+                    }
+                    Shader* s = GetIcon(m_SpawnData->s_name);
+                    DU::DrawEntity(0xffffffff,s);
+                }else{
+                    DU::DrawEntity(RP_COLORS[m_dwTeamID],Device.m_WireShader);
                 }
-				DU::DrawFlag(PPosition,PRotation.y,RPOINT_SIZE*2,RPOINT_SIZE,.3f,0xffffff,true);
-            }else				
-            	DU::DrawFlag(PPosition,PRotation.y,RPOINT_SIZE*2,RPOINT_SIZE,.3f,RP_COLORS[m_dwTeamID],false);
-            if( Selected() ){
-                Fbox bb; GetBox(bb);
-	            DWORD clr = Locked()?0xFFFF0000:0xFFFFFFFF;
-    	        DU::DrawSelectionBox(bb,&clr);
+            }else{
+                if( Selected() ){
+                    Fbox bb; GetBox(bb);
+                    DWORD clr = Locked()?0xFFFF0000:0xFFFFFFFF;
+                    Device.SetShader(Device.m_WireShader);
+                    DU::DrawSelectionBox(bb,&clr);
+                }
             }
         }
     }
@@ -277,6 +280,41 @@ void CSpawnPoint::FillProp(LPCSTR pref, PropValueVec& values)
         default: THROW;
         }
     }
+}
+//----------------------------------------------------
+
+void CSpawnPoint::OnDeviceCreate()
+{
+}
+//----------------------------------------------------
+
+void CSpawnPoint::OnDeviceDestroy()
+{
+	if (m_Icons.empty()) return;
+	for (ShaderPairIt it=m_Icons.begin(); it!=m_Icons.end(); it++)
+    	Device.Shader.Delete(it->second);
+    m_Icons.clear();
+}
+//----------------------------------------------------
+
+Shader* CSpawnPoint::CreateIcon(LPCSTR name)
+{
+    Shader* S = 0;
+    if (pSettings->LineExists(name,"$ed_icon")){
+	    LPCSTR tex_name = pSettings->ReadSTRING(name,"$ed_icon");
+    	S = Device.Shader.Create("editor\\spawn_icon",tex_name);
+        m_Icons[name] = S;
+    }else{
+        S = 0;
+    }
+    return S;
+}
+
+Shader* CSpawnPoint::GetIcon(LPCSTR name)
+{
+	ShaderPairIt it = m_Icons.find(name);
+	if (it==m_Icons.end())	return CreateIcon(name);
+	else					return it->second;
 }
 //----------------------------------------------------
 
