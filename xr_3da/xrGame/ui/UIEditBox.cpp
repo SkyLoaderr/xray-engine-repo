@@ -19,7 +19,7 @@ static xr_map<u32, char> gs_DIK2CHR;
 
 void draw_buff(STRING& s)
 {
-	for(int i=0; i<s.size(); ++i)
+	for(int i=0; i<(int)s.size(); ++i)
 		printf("%c",s[i]);
 
 	printf("\n");
@@ -315,7 +315,7 @@ void  CUIEditBox::Draw()
 		outY = 0;
 
 		GetFont()->SetColor(0xAAFFFF00);
-	Irect r = GetClipRect();
+//		Irect r = GetClipRect();
 		HUD().OutText(GetFont(), GetClipRect(), (float)rect.left+outX, 
 					   (float)rect.top+outY,  "|");
 
