@@ -183,7 +183,7 @@ BOOL CLevel::Load_GameSpecific_After()
 void CLevel::Load_GameSpecific_CFORM	( CDB::TRI* tris, u32 count )
 {
 	// 1.
-	u16		default_id	= (u16)GMLib.GetMaterialIdx("default");
+	u16		default_id	= (u16)GMLib.GetMaterialIdx("default_static");
 
 	// 2. Build mapping
 	xr_map<u32,u16>		translator;

@@ -259,7 +259,7 @@ void CActor::Load		(LPCSTR section )
 
 	// get self game material id
 	self_gmtl_id		= GMLib.GetMaterialIdx("creatures\\human"); 
-	last_gmtl_id		= GMLib.GetMaterialIdx("default");
+	last_gmtl_id		= GMLib.GetMaterialIdx("default_static");
 }
 
 //--------------------------------------------------------------------

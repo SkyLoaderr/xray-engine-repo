@@ -38,7 +38,7 @@ void CGamePersistent::RegisterModel(IRender_Visual* V)
 	switch (V->Type){
 	case MT_SKELETON_ANIM:
 	case MT_SKELETON_RIGID:{
-		u16 def_idx		= GMLib.GetMaterialIdx("default_object");
+		u16 def_idx		= GMLib.GetMaterialIdx("default");
 		R_ASSERT2		(GMLib.GetMaterial(def_idx)->Flags.is(SGameMtl::flDynamic),"'default_object' - must be dynamic");
 		CKinematics* K	= PKinematics(V); VERIFY(K);
 		int cnt = K->LL_BoneCount();
