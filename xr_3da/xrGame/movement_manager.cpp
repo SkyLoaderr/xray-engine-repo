@@ -141,6 +141,7 @@ void CMovementManager::move_along_path	(CPHMovementControl *movement_control, fl
 
 void CMovementManager::build_path()
 {
+	Device.Statistic.AI_Path.Begin();
 	time_start				();
 	if (!actual()) {
 		switch (m_path_type) {
@@ -176,6 +177,7 @@ void CMovementManager::build_path()
 		}
 		default :				NODEFAULT;
 	}
+	Device.Statistic.AI_Path.End();
 }
 
 void CMovementManager::process_game_path()
