@@ -46,7 +46,7 @@ void CBitingExploreNDE::Run()
 		pMonster->MotionMan.m_tAction = ACT_STAND_IDLE;
 		pMonster->LookPosition(m_tSound.position);
 		
-		if (angle_difference(pMonster->m_body.target.yaw, pMonster->m_body.current.yaw) < PI_DIV_6) m_tAction = ACTION_GOTO_SOUND_SOURCE;
+		if (angle_difference(pMonster->CMovementManager::m_body.target.yaw, pMonster->CMovementManager::m_body.current.yaw) < PI_DIV_6) m_tAction = ACTION_GOTO_SOUND_SOURCE;
 		break;
 	
 	case ACTION_GOTO_SOUND_SOURCE:			// идти к источнику

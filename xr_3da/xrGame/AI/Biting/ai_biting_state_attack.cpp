@@ -323,7 +323,7 @@ bool CBitingAttack::CheckStartThreaten()
 	// проверка угла
 	float h,p;
 	Fvector().sub(m_tEnemy.obj->Position(),pMonster->Position()).getHP(h,p);
-	if (angle_difference(angle_normalize(-pMonster->m_body.current.yaw),h) > PI / 15) {
+	if (angle_difference(angle_normalize(-pMonster->CMovementManager::m_body.current.yaw),h) > PI / 15) {
 		return false;
 	}
 
@@ -342,7 +342,7 @@ bool CBitingAttack::CheckEndThreaten()
 
 	float h,p;
 	Fvector().sub(m_tEnemy.obj->Position(),pMonster->Position()).getHP(h,p);
-	if (angle_difference(angle_normalize(-pMonster->m_body.current.yaw),h) > PI_DIV_6) return true;
+	if (angle_difference(angle_normalize(-pMonster->CMovementManager::m_body.current.yaw),h) > PI_DIV_6) return true;
 	
 	// проверка флагов
 	if (!flags.is(AF_LOW_MORALE) || flags.is(AF_ENEMY_DOESNT_SEE_ME) || flags.is(AF_ENEMY_GO_FARTHER_FAST) || flags.is(AF_REMEMBER_HIT_FROM_THIS_ENEMY)) {

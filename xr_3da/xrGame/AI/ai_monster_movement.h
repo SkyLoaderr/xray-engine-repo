@@ -2,12 +2,13 @@
 
 #include "../movement_manager.h"
 #include "ai_monster_defs.h"
+#include "ai_monster_motion_stats.h"
 
 class CMotionStats;
 class PathManagers::CAbstractVertexEvaluator;
 class CAI_Biting;
 
-class CMonsterMovement : public CMovementManager {
+class CMonsterMovement : virtual public CMovementManager {
 
 public:
 

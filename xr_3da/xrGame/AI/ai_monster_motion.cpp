@@ -303,8 +303,8 @@ void CMotionManager::ProcessAction()
 		
 		if (!seq_playing) {
 			// проверить необходимость установки анимации поворота
-			float &cur_yaw		= pMonster->m_body.current.yaw;
-			float &target_yaw	= pMonster->m_body.target.yaw;
+			float &cur_yaw		= pMonster->CMovementManager::m_body.current.yaw;
+			float &target_yaw	= pMonster->CMovementManager::m_body.target.yaw;
 			if (MI.is_turn_params) {
 				if (angle_difference(cur_yaw, target_yaw) > MI.turn.min_angle) {
 					// необходим поворот влево или вправо
@@ -351,7 +351,7 @@ void CMotionManager::ApplyParams()
 	R_ASSERT(_sd->m_tAnims.end() != item_it);
 
 	pMonster->m_fCurSpeed		= item_it->second.speed.linear;
-	pMonster->m_body.speed		= item_it->second.speed.angular;
+	pMonster->CMovementManager::m_body.speed		= item_it->second.speed.angular;
 }
 
 // Callback на завершение анимации

@@ -151,7 +151,7 @@ void CAI_Boar::LookPosition(Fvector to_point, float angular_speed)
 	float yaw,pitch;
 	dir.getHP(yaw,pitch);
 
-	m_body.target.yaw = angle_normalize(-yaw);
+	CMovementManager::m_body.target.yaw = angle_normalize(-yaw);
 }
 
 // проверка включения поворота костей

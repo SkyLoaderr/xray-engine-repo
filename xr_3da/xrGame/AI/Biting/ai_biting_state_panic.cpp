@@ -46,7 +46,7 @@ void CBitingPanic::Run()
 			// если не видел врага > 8 сек 
 			if (m_tEnemy.time + 8000 < m_dwCurrentTime) {
 				m_tAction = ACTION_FACE_BACK_SCARED;
-				pMonster->m_body.target.yaw = angle_normalize(pMonster->m_body.target.yaw + PI);
+				pMonster->CMovementManager::m_body.target.yaw = angle_normalize(pMonster->CMovementManager::m_body.target.yaw + PI);
 			}
 
 			break;

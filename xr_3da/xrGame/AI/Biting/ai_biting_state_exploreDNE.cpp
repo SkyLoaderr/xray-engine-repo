@@ -91,7 +91,7 @@ void CBitingExploreDNE::Run()
 		DO_ONCE_END();
 
 		// если уже повернулся, перейти в след. состояние
-		if (angle_difference(pMonster->m_body.current.yaw, pMonster->m_body.target.yaw) <= PI_DIV_6/6) m_tAction = ACTION_LOOK_AROUND;
+		if (angle_difference(pMonster->CMovementManager::m_body.current.yaw, pMonster->CMovementManager::m_body.target.yaw) <= PI_DIV_6/6) m_tAction = ACTION_LOOK_AROUND;
 		break;
 
 	case ACTION_LOOK_AROUND:

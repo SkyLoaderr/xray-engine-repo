@@ -69,7 +69,10 @@ void CAI_Biting::Init()
 
 }
 
-
+void CAI_Biting::reinit()
+{
+	inherited::reinit();
+}
 
 void CAI_Biting::Die()
 {

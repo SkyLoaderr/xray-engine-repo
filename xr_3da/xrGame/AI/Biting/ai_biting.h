@@ -42,6 +42,9 @@
 //#define TEST_EAT_STATE
 
 
+#pragma warning( disable : 4250 )
+
+
 class CCharacterPhysicsSupport;
 
 typedef VisionElem SEnemy;
@@ -122,7 +125,8 @@ public:
 	virtual void			shedule_Update					(u32 dt);
 
 	virtual void			Think							();
-			void			Init							();
+	virtual	void			Init							();
+	virtual	void			reinit							();
 
 	virtual void			feel_sound_new					(CObject* who, int eType, const Fvector &Position, float power);
 	virtual BOOL			feel_vision_isRelevant			(CObject* O);
@@ -278,6 +282,7 @@ public:
 
 };
 
+//#pragma warning( default : 4250 )
 
 #include "ai_biting_inline.h"
 
