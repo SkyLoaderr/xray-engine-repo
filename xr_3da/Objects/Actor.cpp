@@ -360,7 +360,6 @@ void CActor::Update	(DWORD DT)
 {
 	if (!bEnabled)	return;
 
-	Msg				("ACTOR: %f,%f,%f",vPosition.x,vPosition.y,vPosition.z);
 	clamp			(DT,0ul,66ul);
 	float	dt		= float(DT)/1000.f;
 	
