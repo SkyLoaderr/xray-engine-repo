@@ -361,7 +361,6 @@ void CCF_Shape::ComputeBounds()
 				A.set( +.5f, +.5f, -.5f); T.transform_tiny	(B,A); s_box.modify(B);
 				A.set( +.5f, -.5f, +.5f); T.transform_tiny	(B,A); s_box.modify(B);
 				A.set( +.5f, -.5f, -.5f); T.transform_tiny	(B,A); s_box.modify(B);
-				return TRUE;
 			}
 			break;
 		}
