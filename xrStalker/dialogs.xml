@@ -106,8 +106,11 @@
             </phrase>
         </phrase_list>
     </dialog>
+
+<!-- FINAL DIALOGS -->
     
 	<dialog id="general_pda_talk" pda="1">
+	<precondition>dialogs.is_bad_relation</precondition>
 	<phrase_list>
 	   	<phrase id="0">
 			<text>Свинья, это дятел, как слышно? Прием.</text>
@@ -266,7 +269,6 @@
                 <next>3</next>
                 <next>10</next>
             </phrase>
-
             <phrase id="10">
                 <text>Уже все, спасибо.</text>
                 <action>dialogs.disable_helper_2</action>

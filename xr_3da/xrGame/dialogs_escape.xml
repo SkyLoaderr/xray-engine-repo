@@ -299,7 +299,7 @@
             </phrase>
             <phrase id="4">
                 <text>Спасибо, брат... Я не забуду твою помощь. Теперь урки поплатятся.\n          [отношение изменены до "Друга"]</text>
-		<action>escape_dialog.set_dialog_thank</action>
+				<action>escape_dialog.set_dialog_thank</action>
             </phrase>
             <phrase id="5">
                 <text>Ну давай, я буду тут если что.</text>

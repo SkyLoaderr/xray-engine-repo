@@ -14,8 +14,7 @@
 		<reputation>50</reputation>
 			
 		<start_dialog>hello_dialog</start_dialog>
-		<actor_dialog>actor_break_dialog</actor_dialog>
-		<actor_dialog>general_pda_talk</actor_dialog>		
+		<actor_dialog>general_pda_talk</actor_dialog>
 	</specific_character>
 
 	<specific_character id="stalker_demon">
@@ -33,8 +32,7 @@
 		<reputation>70</reputation>
 			
 		<start_dialog>hello_dialog</start_dialog>
-		<actor_dialog>actor_break_dialog</actor_dialog>
-		<actor_dialog>general_pda_talk</actor_dialog>		
+		<actor_dialog>general_pda_talk</actor_dialog>
 	</specific_character>
 
 	<specific_character id="stalker_leshiy">
@@ -51,8 +49,7 @@
 		<reputation>60</reputation>
 			
 		<start_dialog>hello_dialog</start_dialog>
-		<actor_dialog>actor_break_dialog</actor_dialog>
-		<actor_dialog>general_pda_talk</actor_dialog>		
+		<actor_dialog>general_pda_talk</actor_dialog>
 	</specific_character>
 
 	<specific_character id="stalker_steck">
@@ -70,8 +67,7 @@
 		<reputation>70</reputation>
 				
 		<start_dialog>hello_dialog</start_dialog>
-		<actor_dialog>actor_break_dialog</actor_dialog>
-		<actor_dialog>general_pda_talk</actor_dialog>		
+		<actor_dialog>general_pda_talk</actor_dialog>
 	</specific_character>
 
 	<specific_character id="stalker_chuchelo">
@@ -90,8 +86,7 @@
 		<reputation>25</reputation>
 			
 		<start_dialog>hello_dialog</start_dialog>
-		<actor_dialog>actor_break_dialog</actor_dialog>
-		<actor_dialog>general_pda_talk</actor_dialog>		
+		<actor_dialog>general_pda_talk</actor_dialog>
 	</specific_character>
 
 	<specific_character id="stalker_upir">
@@ -107,8 +102,7 @@
 		<reputation>10</reputation>
 			
 		<start_dialog>hello_dialog</start_dialog>
-		<actor_dialog>actor_break_dialog</actor_dialog>
-		<actor_dialog>general_pda_talk</actor_dialog>		
+		<actor_dialog>general_pda_talk</actor_dialog>
 	</specific_character>
 
 	<specific_character id="stalker_sokol">
@@ -126,8 +120,7 @@
 		<reputation>80</reputation>
 			
 		<start_dialog>hello_dialog</start_dialog>
-		<actor_dialog>actor_break_dialog</actor_dialog>
-		<actor_dialog>general_pda_talk</actor_dialog>		
+		<actor_dialog>general_pda_talk</actor_dialog>
 	</specific_character>
 
 	<specific_character id="stalker_diodor">
@@ -145,8 +138,7 @@
 		<reputation>90</reputation>
 			
 		<start_dialog>hello_dialog</start_dialog>
-		<actor_dialog>actor_break_dialog</actor_dialog>
-		<actor_dialog>general_pda_talk</actor_dialog>		
+		<actor_dialog>general_pda_talk</actor_dialog>
 	</specific_character>
 
 	<specific_character id="stalker_zob">
@@ -166,8 +158,7 @@
 		<reputation>40</reputation>
 			
 		<start_dialog>hello_dialog</start_dialog>
-		<actor_dialog>actor_break_dialog</actor_dialog>
-		<actor_dialog>general_pda_talk</actor_dialog>		
+		<actor_dialog>general_pda_talk</actor_dialog>
 	</specific_character>
 
 	<specific_character id="stalker_neumeha">
@@ -186,8 +177,7 @@
 		<reputation>10</reputation>
 			
 		<start_dialog>hello_dialog</start_dialog>
-		<actor_dialog>actor_break_dialog</actor_dialog>
-		<actor_dialog>general_pda_talk</actor_dialog>		
+		<actor_dialog>general_pda_talk</actor_dialog>
 	</specific_character>
 
 	<specific_character id="trader" team_default = "1">
@@ -204,7 +194,6 @@
 		<actor_dialog>escape_trader_talk_about</actor_dialog>
 		<actor_dialog>escape_trader_talk_flame</actor_dialog>
 		<actor_dialog>escape_trader_jobs</actor_dialog>
-		<actor_dialog>actor_break_dialog</actor_dialog>
 	</specific_character>
 
 	<specific_character id="actor" team_default = "1">
