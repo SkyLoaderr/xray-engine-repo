@@ -23,6 +23,7 @@ enum EWayType{
 enum ERPpointType{		// [0..255]
 	rptActorSpawn		= 0,
 	rptArtefactSpawn	,
+	rptTeamBaseParticle,
 };
 
 
