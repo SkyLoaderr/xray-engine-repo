@@ -7,8 +7,6 @@
 #include "gamemtllib.h"
 #include "../skeletoncustom.h"
 #include "profiler.h"
-#include "ai_space.h"
-#include "script_engine.h"
 #include "MainUI.h"
 #include "UICursor.h"
 
@@ -83,7 +81,6 @@ void CGamePersistent::OnAppStart()
 {
 	// load game materials
 	GMLib.Load								();
-//	ai().script_engine().setup_callbacks	();
 	__super::OnAppStart						();
 	m_pMainUI = xr_new<CMainUI>				();
 }

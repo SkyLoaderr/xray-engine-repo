@@ -211,7 +211,7 @@ void CScriptEngine::process	()
 
 void CScriptEngine::register_script_classes	()
 {
-	setup_callbacks				();
+//	setup_callbacks				();
 	
 	u32							n = _GetItemCount(*m_class_registrators);
 	string256					I;
