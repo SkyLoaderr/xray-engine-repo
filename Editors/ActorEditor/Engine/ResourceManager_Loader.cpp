@@ -13,7 +13,7 @@ public:
 	cl_dt_scaler		(float s) : scale(s)	{};
 	virtual void setup	(R_constant* C)
 	{
-		RCache.set_c	(C,scale,scale,scale,1/psDT_Range);
+		RCache.set_c	(C,scale,scale,scale,1/rsDT_Range);
 	}
 };
 
