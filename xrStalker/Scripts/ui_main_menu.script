@@ -107,8 +107,8 @@ function main_menu:InitControls()
 	self:Register(btn)
 	self.main_frame:AttachChild(btn)	
 	
-	
-	
+	tab:AddItem(btn)
+		
 	--------->> MULTIPLAYER
 	btn = CUIButton()
 	btn:SetAutoDelete(true)
@@ -121,7 +121,7 @@ function main_menu:InitControls()
 	self:Register(btn)
 	self.main_frame:AttachChild(btn)
 	
-	
+	tab:AddItem(btn)
 	
 	--------->> OPTIONS
 	btn = CUIButton()
