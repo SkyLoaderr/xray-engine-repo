@@ -34,7 +34,7 @@ class PropValue;
 class TfrmEditLightAnim : public TForm
 {
 __published:	// IDE-managed Components
-	TPanel *paItemMain;
+	TPanel *paItemProps;
 	TFormStorage *fsStorage;
 	TPanel *paColor;
 	TPanel *Panel3;
@@ -59,9 +59,8 @@ __published:	// IDE-managed Components
 	TExtBtn *ebFirstFrame;
 	TExtBtn *ebLastFrame;
 	TMxLabel *lbCurFrame;
-	TPanel *paItemProps;
+	TPanel *paProps;
 	TPanel *paItems;
-	TPanel *paKeyProps;
     void __fastcall FormShow(TObject *Sender);
     void __fastcall FormClose(TObject *Sender, TCloseAction &Action);
     void __fastcall FormKeyDown(TObject *Sender, WORD &Key,
@@ -101,20 +100,16 @@ private:	// User declarations
     bool 	bFinalClose;
     bool 	IsClose();
 	static 	TfrmEditLightAnim *form;
-    CLAItem* 				m_CurrentItem;
-    void					SetCurrentItem			(CLAItem* item, ListItem* owner);
-
-    int 					m_CurrentKey;
-    int 					m_TgtMoveKey;
-    void					SetCurrentKey			(int key);
-
+    CLAItem* 		m_CurrentItem;
+    void	SetCurrentItem	(CLAItem* item, ListItem* owner);
     void	UpdateView		();
+    int		iMoveKey;
+    int 	iTgtMoveKey;
     void __stdcall 			OnFrameCountAfterEdit	(PropValue* v, s32& val, bool& accepted);
 	void __stdcall  		OnItemFocused			(TElTreeItem* item);
 
     TItemList*				m_Items;
-    TProperties*			m_ItemProps;
-    TProperties*			m_KeyProps;
+    TProperties*			m_Props;
     void __stdcall 			OnModified				(void);
 public:		// User declarations
     __fastcall 				TfrmEditLightAnim		(TComponent* Owner);

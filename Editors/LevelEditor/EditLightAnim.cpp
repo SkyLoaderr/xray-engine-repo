@@ -29,18 +29,15 @@ __fastcall TfrmEditLightAnim::TfrmEditLightAnim(TComponent* Owner)
     DEFINE_INI(fsStorage);
     bFinalClose		= false;
     m_CurrentItem 	= 0;
-    m_CurrentKey	= -1;
-    m_TgtMoveKey	= -1;
-    m_ItemProps 	= 0;
-    m_KeyProps 		= 0;
+    iMoveKey        = -1;
+    m_Props 		= 0;
     m_Items			= 0;
 }
 //---------------------------------------------------------------------------
 void __fastcall TfrmEditLightAnim::FormCreate(TObject *Sender)
 {
-    m_ItemProps 	= TProperties::CreateForm	("LAProps",	paItemProps,alClient,TOnModifiedEvent(this,&TfrmEditLightAnim::OnModified));
-    m_KeyProps 		= TProperties::CreateForm	("KeyProps",paKeyProps,	alClient,TOnModifiedEvent(this,&TfrmEditLightAnim::OnModified));
-    m_Items			= TItemList::CreateForm		("LA Items",paItems,	alClient,TItemList::ilEditMenu|TItemList::ilDragAllowed|TItemList::ilFolderStore);
+    m_Props = TProperties::CreateForm("LAProps",paProps,alClient,TOnModifiedEvent(this,&TfrmEditLightAnim::OnModified));
+    m_Items	= TItemList::CreateForm("LA Items",paItems,alClient,TItemList::ilEditMenu|TItemList::ilDragAllowed|TItemList::ilFolderStore);
     m_Items->SetOnModifiedEvent		(TOnModifiedEvent(this,&TfrmEditLightAnim::OnModified));
     m_Items->SetOnItemFocusedEvent	(TOnILItemFocused().bind(this,&TfrmEditLightAnim::OnItemFocused));
     m_Items->SetOnItemRemoveEvent	(TOnItemRemove().bind(&LALib,&ELightAnimLibrary::RemoveObject));
@@ -50,24 +47,21 @@ void __fastcall TfrmEditLightAnim::FormCreate(TObject *Sender)
 
 void __fastcall TfrmEditLightAnim::FormDestroy(TObject *Sender)
 {
-	TProperties::DestroyForm(m_KeyProps);
-	TProperties::DestroyForm(m_ItemProps);
-    TItemList::DestroyForm	(m_Items);
+	TProperties::DestroyForm(m_Props);
+    TItemList::DestroyForm(m_Items);
 }
 //---------------------------------------------------------------------------
 
 void __fastcall TfrmEditLightAnim::fsStorageRestorePlacement(
       TObject *Sender)
 {            
-	m_ItemProps->RestoreParams(fsStorage);
-	m_KeyProps->RestoreParams(fsStorage);
+	m_Props->RestoreParams(fsStorage);
 }                    
 //---------------------------------------------------------------------------
 
 void __fastcall TfrmEditLightAnim::fsStorageSavePlacement(TObject *Sender)
 {
-	m_ItemProps->SaveParams(fsStorage);
-	m_KeyProps->SaveParams(fsStorage);
+	m_Props->SaveParams(fsStorage);
 }
 //---------------------------------------------------------------------------
 
@@ -186,28 +180,10 @@ void __fastcall	TfrmEditLightAnim::OnFrameCountAfterEdit  (PropValue* v, s32& va
 }
 //---------------------------------------------------------------------------
 
-void TfrmEditLightAnim::SetCurrentKey(int key)
-{
-	m_CurrentKey				= key;
-    m_TgtMoveKey				= m_CurrentKey;
-    // fill data
-    PropItemVec items;
-	if (m_CurrentItem){
-        m_CurrentItem->MoveKey	(m_CurrentKey,m_TgtMoveKey);
-        PHelper().CreateColor	(items,	"Key Color",	&m_CurrentItem->fFPS,		0.1f,1000,1.f,1);
-        S32Value* V;
-        V=PHelper().CreateS32	(items,	"Frame Count",	&m_CurrentItem->iFrameCount,1,100000,1);
-        V->OnAfterEditEvent.bind(this,&TfrmEditLightAnim::OnFrameCountAfterEdit);
-    }
-    m_KeyProps->AssignItems	(items);
-    UpdateView					();
-}
-//---------------------------------------------------------------------------
-
 void TfrmEditLightAnim::SetCurrentItem(CLAItem* I, ListItem* owner)
 {
 	m_CurrentItem 				= I;
-    paItemMain->Visible 		= !!I;
+    paItemProps->Visible 		= !!I;
     // fill data
     PropItemVec items;
 	if (m_CurrentItem){
@@ -217,7 +193,7 @@ void TfrmEditLightAnim::SetCurrentItem(CLAItem* I, ListItem* owner)
         V=PHelper().CreateS32	(items,	"Frame Count",	&m_CurrentItem->iFrameCount,1,100000,1);
         V->OnAfterEditEvent.bind(this,&TfrmEditLightAnim::OnFrameCountAfterEdit);
     }
-    m_ItemProps->AssignItems	(items);
+    m_Props->AssignItems		(items);
     UpdateView					();
 }
 //---------------------------------------------------------------------------
@@ -253,8 +229,7 @@ void __fastcall TfrmEditLightAnim::ebReloadClick(TObject *Sender)
 	ebSave->Enabled 			= false;
 	m_CurrentItem 				= 0;
 	LALib.Reload				();
-	m_ItemProps->ClearProperties();
-	m_KeyProps->ClearProperties	();
+	m_Props->ClearProperties	();
     m_Items->ClearList			();
     InitItems					();
 }
@@ -274,7 +249,8 @@ void __fastcall TfrmEditLightAnim::pbGMouseDown(TObject *Sender,
         	ebCreateKeyClick(Sender);
         else{
         	if (m_CurrentItem->IsKey(sePointer->Value)&&(sePointer->Value!=0)){
-                SetCurrentKey	(sePointer->Value);
+            	iMoveKey 	= sePointer->Value;
+                iTgtMoveKey = iMoveKey;
             }
         }
     }
@@ -285,13 +261,13 @@ void __fastcall TfrmEditLightAnim::pbGMouseMove(TObject *Sender,
       TShiftState Shift, int X, int Y)
 {
     if (Shift.Contains(ssLeft))
-        if (m_CurrentKey>=0){
+        if (iMoveKey>=0){
             TRect R 	= pbG->ClientRect;
             TPoint pt(X,Y);
             pbG->ScreenToClient(pt);
             int new_key = iFloor(float(m_CurrentItem->iFrameCount)*float(X)/float(R.Width()));
-            if ((new_key!=m_TgtMoveKey)&&(new_key<m_CurrentItem->iFrameCount)&&(!m_CurrentItem->IsKey(new_key)||(new_key==m_CurrentKey))){
-				m_TgtMoveKey = new_key;
+            if ((new_key!=iTgtMoveKey)&&(new_key<m_CurrentItem->iFrameCount)&&(!m_CurrentItem->IsKey(new_key)||(new_key==iMoveKey))){
+				iTgtMoveKey = new_key;
             	pbG->Repaint();
             }
         }
@@ -301,15 +277,14 @@ void __fastcall TfrmEditLightAnim::pbGMouseMove(TObject *Sender,
 void __fastcall TfrmEditLightAnim::pbGMouseUp(TObject *Sender,
       TMouseButton Button, TShiftState Shift, int X, int Y)
 {
-    if (m_CurrentKey>=0){
-    	if (m_TgtMoveKey!=m_CurrentKey){
-        	m_CurrentItem->MoveKey(m_CurrentKey,m_TgtMoveKey);
-	        sePointer->Value = m_TgtMoveKey;
+    if (iMoveKey>=0){
+    	if (iTgtMoveKey!=iMoveKey){
+        	m_CurrentItem->MoveKey(iMoveKey,iTgtMoveKey);
+	        sePointer->Value = iTgtMoveKey;
             pbG->Repaint();
             OnModified();
         }
-        SetCurrentKey	(-1);
-//		iMoveKey = -1;
+		iMoveKey = -1;
     }
 }
 //---------------------------------------------------------------------------
@@ -324,12 +299,27 @@ void __fastcall TfrmEditLightAnim::ebDeleteKeyClick(TObject *Sender)
 
 void __fastcall TfrmEditLightAnim::ebCreateKeyClick(TObject *Sender)
 {
-    u32 color=m_CurrentItem->Interpolate(sePointer->Value);
-    if (SelectColorWin(&color)){
-        m_CurrentItem->InsertKey(sePointer->Value,color);
-        UpdateView();
-        OnModified();
-    }
+    u32 color				= m_CurrentItem->Interpolate(sePointer->Value);
+
+    float 	alpha			= float		(color_get_A(color))/255.f;
+    u32 	base_color		= color_rgba(color_get_B(color),color_get_G(color),color_get_R(color),0);
+    
+	TProperties* P 			= TProperties::CreateModalForm("Key Properties",false,TOnModifiedEvent(this,&TfrmEditLightAnim::OnModified));
+    // fill data
+    PropItemVec items;
+    PHelper().CreateColor	(items, "Color",		&base_color);
+    PHelper().CreateFloat	(items,	"Alpha",		&alpha);
+    P->AssignItems			(items);
+
+    P->ShowPropertiesModal	();
+    
+    TProperties::DestroyForm(P);
+
+    color					= color_rgba(color_get_B(base_color),color_get_G(base_color),color_get_R(base_color),u8(alpha*255.f));
+    m_CurrentItem->InsertKey(sePointer->Value,color);
+
+    UpdateView();
+    OnModified();
 }
 //---------------------------------------------------------------------------
 
@@ -365,7 +355,7 @@ void __fastcall TfrmEditLightAnim::pbGPaint(TObject *Sender)
             for (int k=0; k<g_cnt; k++){
 	            cb.Left		= iFloor(x_prev+k*segment);
     	        cb.Right	= iFloor(x_prev+k*segment+segment+1);
-			    B->Canvas->Brush->Color	= TColor(m_CurrentItem->Interpolate(prev_key->first+k));
+			    B->Canvas->Brush->Color	= TColor(subst_alpha(m_CurrentItem->Interpolate(prev_key->first+k),0));
 		    	B->Canvas->FillRect(cb);
             }
             prev_key 	= it;
@@ -387,8 +377,8 @@ void __fastcall TfrmEditLightAnim::pbGPaint(TObject *Sender)
 	    B->Canvas->Pen->Color= TColor(0x0000FF00);
     	B->Canvas->MoveTo(t,R.Bottom);
     	B->Canvas->LineTo(t,R.Top+R.Height()*0.75f);
-	    if ((m_CurrentKey>=0)&&(m_TgtMoveKey!=m_CurrentKey))
-        	t=iFloor((m_TgtMoveKey/float(m_CurrentItem->iFrameCount))*R.Width())+half_segment;
+	    if ((iMoveKey>=0)&&(iTgtMoveKey!=iMoveKey))
+        	t=iFloor((iTgtMoveKey/float(m_CurrentItem->iFrameCount))*R.Width())+half_segment;
         TRect rp=R;
         rp.Left 	= t-2;
         rp.Right 	= t+3;
@@ -427,7 +417,7 @@ void __fastcall TfrmEditLightAnim::OnIdle()
 	if (form){
 		if (form->m_CurrentItem){
         	int frame;
-			form->paColor->Color=TColor(form->m_CurrentItem->CalculateBGR(Device.fTimeGlobal,frame));
+			form->paColor->Color=TColor(subst_alpha(form->m_CurrentItem->CalculateBGR(Device.fTimeGlobal,frame),0));
             form->lbCurFrame->Caption=frame;
         }
         UI->RedrawScene();
