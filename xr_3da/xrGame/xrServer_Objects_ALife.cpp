@@ -2,7 +2,7 @@
 //	Module 		: xrServer_Objects_ALife.cpp
 //	Created 	: 19.09.2002
 //  Modified 	: 04.06.2003
-//	Author		: Oles Shishkovtsov, Alexander Maksimchuk, Victor Retsky and Dmitriy Iassenev
+//	Author		: Oles Shishkovtsov, Alexander Maksimchuk, Victor Reutskiy and Dmitriy Iassenev
 //	Description : Server objects for ALife simulator
 ////////////////////////////////////////////////////////////////////////////
 
