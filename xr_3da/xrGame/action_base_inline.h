@@ -8,9 +8,7 @@
 
 #pragma once
 
-#ifdef DEBUG
-#	include "level.h"
-#endif
+#include "level.h"
 
 #define TEMPLATE_SPECIALIZATION template <typename _object_type>
 #define CBaseAction				CActionBase<_object_type>
