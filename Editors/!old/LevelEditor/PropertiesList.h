@@ -27,7 +27,7 @@
 // refs
 class TItemList;
 
-class ECORE_API TProperties : public TForm
+class XR_EPROPS_API TProperties : public TForm
 {
 __published:	// IDE-managed Components
 	TElTree 			*tvProperties;

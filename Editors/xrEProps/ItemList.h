@@ -21,8 +21,13 @@
 #include "FolderLib.h"
 #include "PropertiesListTypes.h"
 
+class XR_EPROPS_API IItemList
+{
+public:
+	virtual void	AAA()=0;
+};
 
-class ECORE_API TItemList: public TForm
+class XR_EPROPS_API TItemList: public TForm, public IItemList
 {
 __published:	// IDE-managed Components
 	TElTree *tvItems;
@@ -174,6 +179,8 @@ public:		// User declarations
     void 				RemoveSelItems			(CFolderHelper::TOnItemRemove on_remove=0);
     void 				RenameSelItem			();
     void				FireOnItemFocused		();
+
+	virtual void		AAA(){}
 };
 //---------------------------------------------------------------------------
 #endif

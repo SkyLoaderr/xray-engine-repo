@@ -2,9 +2,8 @@
 #pragma hdrstop
 
 #include "ShaderFunction.h"
-#include "Shader.h"
 #include "WaveForm.h"
-#include "ui_main.h"
+//#include "ui_main.h"
 //---------------------------------------------------------------------------
 #pragma package(smart_init)
 #pragma link "ExtBtn"
@@ -57,11 +56,9 @@ u32 GetTokenValFromName(const LPCSTR val, const xr_token *token_list)
 __fastcall TfrmShaderFunction::TfrmShaderFunction(TComponent* Owner)
     : TForm(Owner)
 {
-	DEFINE_INI(fsStorage);
 	FillMenuFromToken(pmFunction, function_token, stFunctionClick);
 }
 //---------------------------------------------------------------------------
-
 
 void __fastcall TfrmShaderFunction::DrawGraph()
 {
@@ -221,12 +218,10 @@ void __fastcall TfrmShaderFunction::FormClose(TObject *Sender,
 }
 //---------------------------------------------------------------------------
 
-
-
 void __fastcall TfrmShaderFunction::FormShow(TObject *Sender)
 {
 	// check window position
-	UI->CheckWindowPos(this);
+	CheckWindowPos	(this);
 }
 //---------------------------------------------------------------------------
 

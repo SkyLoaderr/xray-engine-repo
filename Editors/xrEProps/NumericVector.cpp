@@ -2,7 +2,7 @@
 #pragma hdrstop
 
 #include "NumericVector.h"
-#include "ui_main.h"
+//#include "ui_main.h"
 //---------------------------------------------------------------------------
 #pragma package(smart_init)
 #pragma resource "*.dfm"
@@ -34,7 +34,7 @@ void __fastcall TfrmNumericVector::FormShow(TObject *Sender)
 {
     ebOk->Enabled       = false;
 	// check window position
-	UI->CheckWindowPos(this);
+	CheckWindowPos		(this);
 }
 //---------------------------------------------------------------------------
 

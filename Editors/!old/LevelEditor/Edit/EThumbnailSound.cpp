@@ -2,7 +2,7 @@
 #pragma hdrstop
 
 #include "EThumbnail.h"
-#include "ImageManager.h"
+//#include "ImageManager.h"
 
 //------------------------------------------------------------------------------
 #define THM_SOUND_VERSION				0x0014
@@ -38,7 +38,7 @@ bool ESoundThumbnail::Load(LPCSTR src_name, LPCSTR path)
 
     R_ASSERT(F->r_chunk(THM_CHUNK_VERSION,&version));
     if( version!=THM_SOUND_VERSION ){
-        ELog.Msg	( mtError, "Thumbnail: Unsupported version.");
+		Msg			("!Thumbnail: Unsupported version.");
         return 		false;
     }
 

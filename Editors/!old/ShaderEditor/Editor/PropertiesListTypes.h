@@ -3,7 +3,7 @@
 #define PropertiesListTypesH
 
 #include "ElTree.hpp"
-#include "ChooseTypes.H"
+#include "WaveForm.H"
 
 //---------------------------------------------------------------------------
 enum EPropType{
@@ -42,8 +42,12 @@ enum EPropType{
 struct 	xr_token;        
 class PropValue;
 class PropItem;
+DEFINE_VECTOR			(PropItem*,PropItemVec,PropItemIt);
 
 //------------------------------------------------------------------------------
+#include "ChooseTypes.H"     
+//------------------------------------------------------------------------------
+
 typedef void 	__fastcall (__closure *TBeforeEdit)			(PropItem* sender, LPVOID edit_val);
 typedef void 	__fastcall (__closure *TAfterEdit)			(PropItem* sender, LPVOID edit_val);
 typedef void 	__fastcall (__closure *TOnDrawTextEvent)	(PropValue* sender, LPVOID draw_val);
@@ -56,12 +60,12 @@ typedef void 	__fastcall (__closure *TOnItemFocused)		(TElTreeItem* item);
 typedef void 	__fastcall (__closure *TOnPropItemFocused)	(PropItem* sender);
 typedef void 	__fastcall (__closure *TOnDrawCanvasEvent)	(PropValue* sender, TCanvas* canvas, const TRect& rect);
 typedef bool 	__fastcall (__closure *TOnTestEqual)		(PropValue* a, PropValue* b);
-typedef void 	__fastcall (__closure *TOnChoose)			(PropValue* sender, ChooseItemVec& lst);
+typedef void 	__fastcall (__closure* TOnChooseFillProp)	(ChooseItemVec& lst);
 //------------------------------------------------------------------------------
 extern AnsiString prop_draw_text;
 //------------------------------------------------------------------------------
 
-class ECORE_API PropValue{
+class XR_EPROPS_API PropValue{
 	friend class		CPropHelper;
     friend class		PropItem;
 protected:
@@ -89,7 +93,7 @@ IC void set_value(T& val, const T& _val)
 };
 
 template <class T>
-class ECORE_API CustomValue: public PropValue
+class XR_EPROPS_API CustomValue: public PropValue
 {
 public:
 	typedef T			TYPE;
@@ -122,7 +126,7 @@ public:
     }
 };
 
-class ECORE_API PropItem{
+class XR_EPROPS_API PropItem{
 	friend class		CPropHelper;
     friend class		TProperties;
     AnsiString			key;
@@ -229,12 +233,10 @@ public:
     }
 };
 
-DEFINE_VECTOR			(PropItem*,PropItemVec,PropItemIt);
-
 //------------------------------------------------------------------------------
 // values
 //------------------------------------------------------------------------------
-class ECORE_API CaptionValue: public PropValue{
+class XR_EPROPS_API CaptionValue: public PropValue{
 	AnsiString			value;
 public:
 						CaptionValue	(AnsiString val){value=val;}
@@ -248,7 +250,7 @@ public:
     virtual	bool		ApplyValue		(LPVOID val){value=*(AnsiString*)val; return false;}
 };
 
-class ECORE_API CanvasValue: public PropValue{
+class XR_EPROPS_API CanvasValue: public PropValue{
 	AnsiString			value;
 public:
     int					height;
@@ -265,7 +267,7 @@ public:
     virtual	bool		ApplyValue		(LPVOID val){return false;}
 };
 
-class ECORE_API ButtonValue: public PropValue{
+class XR_EPROPS_API ButtonValue: public PropValue{
 public:
 	AStringVec			value;
     int					btn_num;
@@ -296,7 +298,7 @@ public:
     bool				OnBtnClick		(bool& bSafe){if(OnBtnClickEvent)	{ bool bDModif=true; OnBtnClickEvent(this,bDModif,bSafe); return bDModif;}else return false;}
 };
 
-class ECORE_API TextValue: public PropValue{
+class XR_EPROPS_API TextValue: public PropValue{
 	AnsiString			init_value;
 	LPSTR				value;
 public:
@@ -321,7 +323,7 @@ public:
 };
 //------------------------------------------------------------------------------
 
-class ECORE_API ATextValue: public CustomValue<AnsiString>{
+class XR_EPROPS_API ATextValue: public CustomValue<AnsiString>{
 public:
 						ATextValue		(TYPE* val):CustomValue<AnsiString>(val){};
     virtual LPCSTR		GetText			(TOnDrawTextEvent OnDrawText);
@@ -335,7 +337,7 @@ public:
     }
 };
 
-class ECORE_API RTextValue: public CustomValue<ref_str>{
+class XR_EPROPS_API RTextValue: public CustomValue<ref_str>{
 public:
 						RTextValue		(TYPE* val):CustomValue<ref_str>(val){};
     virtual LPCSTR		GetText			(TOnDrawTextEvent OnDrawText);
@@ -355,35 +357,35 @@ public:
     }
 };
 
-class ECORE_API ChooseValueCustom{
+class XR_EPROPS_API ChooseValueCustom{
 public:
-	EChooseMode			choose_mode;
-    TOnChoose			OnChooseEvent;
+	u32					choose_id;
     AnsiString			start_path;
+    TOnChooseFillProp	OnChooseFillEvent;
 public:
-						ChooseValueCustom	(EChooseMode mode, LPCSTR path):choose_mode(mode),OnChooseEvent(0),start_path(path){;}
+						ChooseValueCustom	(LPCSTR path,u32 cid):choose_id(cid),start_path(path),OnChooseFillEvent(0){}
 };
 
-class ECORE_API ChooseValue: public TextValue, public ChooseValueCustom{
+class XR_EPROPS_API ChooseValue: public TextValue, public ChooseValueCustom{
 public:
-						ChooseValue			(LPSTR val, int len, EChooseMode mode, LPCSTR path):TextValue(val,len),ChooseValueCustom(mode,path){;}
+						ChooseValue			(LPSTR val, int len, u32 cid, LPCSTR path):TextValue(val,len),ChooseValueCustom(path,cid){}
 };
 
-class ECORE_API AChooseValue: public ATextValue, public ChooseValueCustom{
+class XR_EPROPS_API AChooseValue: public ATextValue, public ChooseValueCustom{
 public:
-						AChooseValue		(AnsiString* val, EChooseMode mode, LPCSTR path):ATextValue(val),ChooseValueCustom(mode,path){;}
+						AChooseValue		(AnsiString* val, u32 cid, LPCSTR path):ATextValue(val),ChooseValueCustom(path,cid){}
 };
 
-class ECORE_API RChooseValue: public RTextValue, public ChooseValueCustom{
+class XR_EPROPS_API RChooseValue: public RTextValue, public ChooseValueCustom{
 public:
-						RChooseValue		(ref_str* val, EChooseMode mode, LPCSTR path):RTextValue(val),ChooseValueCustom(mode,path){;}
+						RChooseValue		(ref_str* val, u32 cid, LPCSTR path):RTextValue(val),ChooseValueCustom(path,cid){}
 };
 
 typedef CustomValue<BOOL>		BOOLValue;
 //------------------------------------------------------------------------------
 
 IC bool operator == (const WaveForm& A, const WaveForm& B){return A.Similar(B);}
-class ECORE_API WaveValue: public CustomValue<WaveForm>{
+class XR_EPROPS_API WaveValue: public CustomValue<WaveForm>{
 public:
 						WaveValue		(TYPE* val):CustomValue<WaveForm>(val){};
     virtual LPCSTR		GetText			(TOnDrawTextEvent){return "[Wave]";}
@@ -400,7 +402,7 @@ IC AnsiString& astring_sprintf(AnsiString& s, const T& V, int tag)
 {	s = V; return s;}
 
 template <class T>
-class ECORE_API NumericValue: public CustomValue<T>
+class XR_EPROPS_API NumericValue: public CustomValue<T>
 {
 public:
     T					lim_mn;
@@ -467,7 +469,7 @@ IC AnsiString& astring_sprintf(AnsiString& s, const Fvector& V, int dec)
 	s.sprintf(fmt.c_str(),V.x,V.y,V.z);
     return s;
 }
-class ECORE_API VectorValue: public NumericValue<Fvector>{
+class XR_EPROPS_API VectorValue: public NumericValue<Fvector>{
 public:
 						VectorValue		(Fvector* val, float mn, float mx, float increment, int decimal):NumericValue<Fvector>(val)
     {
@@ -479,7 +481,7 @@ public:
 };
 //------------------------------------------------------------------------------
 
-class ECORE_API FlagValueCustom: public PropValue
+class XR_EPROPS_API FlagValueCustom: public PropValue
 {
 public:
     AnsiString			caption[2];
@@ -489,7 +491,7 @@ public:
 };
 
 template <class T>
-class ECORE_API FlagValue: public FlagValueCustom
+class XR_EPROPS_API FlagValue: public FlagValueCustom
 {
 public:
 	typedef T			TYPE;
@@ -534,13 +536,13 @@ typedef FlagValue<Flags16>	Flag16Value;
 typedef FlagValue<Flags32>	Flag32Value;
 //------------------------------------------------------------------------------
 
-class ECORE_API TokenValueCustom{
+class XR_EPROPS_API TokenValueCustom{
 public:
 	xr_token* 			token;
     					TokenValueCustom(xr_token* _token):token(_token){;}
 };
 template <class T>
-class ECORE_API TokenValue: public CustomValue<T>, public TokenValueCustom
+class XR_EPROPS_API TokenValue: public CustomValue<T>, public TokenValueCustom
 {
 public:
 						TokenValue		(T* val, xr_token* _token):TokenValueCustom(_token),CustomValue<T>(val){};
@@ -558,13 +560,13 @@ typedef TokenValue<u16>	Token16Value;
 typedef TokenValue<u32>	Token32Value;
 //------------------------------------------------------------------------------
 
-class ECORE_API ATokenValueCustom{
+class XR_EPROPS_API ATokenValueCustom{
 public:
 	ATokenVec*			token;
     					ATokenValueCustom(ATokenVec* _token):token(_token){;}
 };
 template <class T>
-class ECORE_API ATokenValue: public CustomValue<T>, public ATokenValueCustom
+class XR_EPROPS_API ATokenValue: public CustomValue<T>, public ATokenValueCustom
 {
 public:
 						ATokenValue		(T* val, ATokenVec* _token):CustomValue<T>(val),ATokenValueCustom(_token){};
@@ -582,13 +584,13 @@ typedef ATokenValue<u16>AToken16Value;
 typedef ATokenValue<u32>AToken32Value;
 //------------------------------------------------------------------------------
 
-class ECORE_API TokenValue2Custom{
+class XR_EPROPS_API TokenValue2Custom{
 public:
 	AStringVec 			items;
     					TokenValue2Custom(AStringVec* _items):items(*_items){;}
 };
 template <class T>
-class ECORE_API TokenValue2: public CustomValue<T>, public TokenValue2Custom
+class XR_EPROPS_API TokenValue2: public CustomValue<T>, public TokenValue2Custom
 {
 public:
 						TokenValue2		(T* val, AStringVec* _items):CustomValue<T>(val),TokenValue2Custom(_items){};
@@ -606,7 +608,7 @@ typedef TokenValue2<u16> 	Token16Value2;
 typedef TokenValue2<u32> 	Token32Value2;
 //------------------------------------------------------------------------------
 
-class ECORE_API TokenValue3Custom{
+class XR_EPROPS_API TokenValue3Custom{
 public:
 	struct Item {
 		u32				ID;
@@ -618,7 +620,7 @@ public:
     					TokenValue3Custom(const ItemVec* _items):items(_items){;}
 };
 template <class T>
-class ECORE_API TokenValue3: public CustomValue<T>, public TokenValue3Custom 
+class XR_EPROPS_API TokenValue3: public CustomValue<T>, public TokenValue3Custom 
 {
 public:
 						TokenValue3		(T* val, const ItemVec* _items):CustomValue<T>(val),TokenValue3Custom(_items){};
@@ -637,7 +639,7 @@ typedef TokenValue3<u16> 	Token16Value3;
 typedef TokenValue3<u32> 	Token32Value3;
 //------------------------------------------------------------------------------
 
-class ECORE_API TokenValueSH: public CustomValue<u32>{
+class XR_EPROPS_API TokenValueSH: public CustomValue<u32>{
 public:
 	struct Item {
 		u32				ID;
@@ -652,7 +654,7 @@ public:
 };
 //------------------------------------------------------------------------------
 
-class ECORE_API ListValue: public TextValue{
+class XR_EPROPS_API ListValue: public TextValue{
 public:                                   
 	AStringVec 			items;
 public:                                   
@@ -670,25 +672,6 @@ public:
 };
 //------------------------------------------------------------------------------
 
-class ECORE_API SceneItemValue: public RTextValue{
-public:                  	
-	EObjClass			clsID;
-	AnsiString			specific;
-public:
-						SceneItemValue	(ref_str* val, EObjClass class_id, LPCSTR _type):RTextValue(val),clsID(class_id){if(_type) specific=_type;};
-	virtual bool		Equal			(PropValue* val)
-    {
-    	if (OnTestEqual) return OnTestEqual(this,val);
-    	if ((clsID!=((SceneItemValue*)val)->clsID)||(specific!=((SceneItemValue*)val)->specific)){
-        	m_Owner->m_Flags.set(PropItem::flDisabled,TRUE); 
-            return false;
-        }
-        return RTextValue::Equal(val);
-    }
-};
-//------------------------------------------------------------------------------
-
-//---------------------------------------------------------------------------
 #endif
 
 

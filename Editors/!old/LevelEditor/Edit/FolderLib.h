@@ -12,7 +12,7 @@ enum EItemType{
 	TYPE_FOLDER	= 0,
 	TYPE_OBJECT	= 1
 };
-class ECORE_API CFolderHelper{
+class XR_EPROPS_API CFolderHelper{
     IC AnsiString		FolderAppend	(LPCSTR val)
     {
     	if (val&&val[0]) return AnsiString(val)+"\\";
@@ -91,5 +91,5 @@ public:
 //------------------------------------------------------------------------------
 };
 
-extern ECORE_API CFolderHelper FHelper;
+extern XR_EPROPS_API CFolderHelper FHelper;
 #endif

@@ -2,7 +2,9 @@
 #pragma hdrstop
 
 #include "EThumbnail.h"
-#include "ImageManager.h"
+#ifndef XR_EPROPS_EXPORTS
+	#include "ImageManager.h"
+#endif
 
 //------------------------------------------------------------------------------
 #define THM_TEXTURE_VERSION				0x0012
@@ -11,7 +13,12 @@
 //------------------------------------------------------------------------------
 ETextureThumbnail::ETextureThumbnail(LPCSTR src_name, bool bLoad):EImageThumbnail(src_name,ETTexture)
 {
-    if (bLoad) 	if (!Load()) ImageLib.CreateTextureThumbnail(this,src_name);
+    if (bLoad) 	
+#ifdef XR_EPROPS_EXPORTS
+    	Load(); 
+#else
+		if (!Load()) ImageLib.CreateTextureThumbnail(this,src_name);
+#endif
 }
 //------------------------------------------------------------------------------
 
@@ -73,7 +80,7 @@ bool ETextureThumbnail::Load(LPCSTR src_name, LPCSTR path)
 
     R_ASSERT(F->r_chunk(THM_CHUNK_VERSION,&version));
     if( version!=THM_TEXTURE_VERSION ){
-        ELog.Msg	( mtError, "Thumbnail: Unsupported version.");
+		Msg			("!Thumbnail: Unsupported version.");
         return 		false;
     }
 

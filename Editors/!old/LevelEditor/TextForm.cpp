@@ -2,7 +2,7 @@
 #pragma hdrstop
 
 #include "TextForm.h"
-#include "ui_main.h"
+//#include "ui_main.h"
 //---------------------------------------------------------------------------
 #pragma package(smart_init)
 #pragma link "ExtBtn"
@@ -28,9 +28,9 @@ void __fastcall TfrmText::FormKeyDown(TObject *Sender, WORD &Key, TShiftState Sh
 {
     if (Key==VK_ESCAPE) ebCancel->Click();
     else if (Shift.Contains(ssCtrl)&&(Key==VK_RETURN)) ebOk->Click();
-    else{
-    	UI->ApplyGlobalShortCut(Key, Shift);
-    }
+//.	else{
+//.    	UI->ApplyGlobalShortCut(Key, Shift);
+//.	}
 }
 
 //----------------------------------------------------
@@ -39,7 +39,7 @@ void __fastcall TfrmText::FormShow(TObject *Sender)
 	ebApply->Visible 	= !!OnApplyClick;
     ebOk->Enabled       = false;
 	// check window position
-	UI->CheckWindowPos(this);
+	CheckWindowPos		(this);
 }
 //---------------------------------------------------------------------------
 

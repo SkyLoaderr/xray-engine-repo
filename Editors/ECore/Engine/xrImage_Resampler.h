@@ -1,5 +1,5 @@
-#ifndef _XRIMAGE_RESAMPLER_H_
-#define _XRIMAGE_RESAMPLER_H_
+#ifndef xrImage_ResamplerH
+#define xrImage_ResamplerH
 
 #pragma once
 
@@ -15,6 +15,6 @@ enum	EIMF_Type
 
 	imf_FORCEDWORD=0xffffffff
 };
+void imf_Process(u32* dst, u32 dstW, u32 dstH, u32* src, u32 srcW, u32 srcH, EIMF_Type FILTER);
 
-ENGINE_API	extern	void imf_Process(u32* dst, u32 dstW, u32 dstH, u32* src, u32 srcW, u32 srcH, EIMF_Type FILTER);
 #endif

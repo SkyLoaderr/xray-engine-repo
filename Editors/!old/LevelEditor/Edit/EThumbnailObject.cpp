@@ -2,7 +2,7 @@
 #pragma hdrstop
 
 #include "EThumbnail.h"
-#include "ImageManager.h"
+//#include "ImageManager.h"
 
 //------------------------------------------------------------------------------
 #define THM_OBJECT_VERSION				0x0012
@@ -41,7 +41,7 @@ bool EObjectThumbnail::Load(LPCSTR src_name, LPCSTR path)
 
     R_ASSERT(F->r_chunk(THM_CHUNK_VERSION,&version));
     if( version!=THM_OBJECT_VERSION ){
-        ELog.Msg	( mtError, "Thumbnail: Unsupported version.");
+		Msg			("!Thumbnail: Unsupported version.");
         return 		false;
     }
 

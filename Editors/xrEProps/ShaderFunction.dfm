@@ -1,6 +1,6 @@
 object frmShaderFunction: TfrmShaderFunction
-  Left = -939
-  Top = 398
+  Left = 465
+  Top = 371
   BorderStyle = bsDialog
   Caption = 'Wave Form'
   ClientHeight = 157
@@ -395,6 +395,7 @@ object frmShaderFunction: TfrmShaderFunction
   object fsStorage: TFormStorage
     IniSection = 'Shader Function'
     Options = [fpPosition]
+    UseRegistry = True
     StoredValues = <>
     Top = 65520
   end

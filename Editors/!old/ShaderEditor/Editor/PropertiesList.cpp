@@ -20,7 +20,7 @@
 #include "FolderLib.h"
 #include "NumericVector.h"
 #include "TextForm.h"
-#include "ui_main.h"
+//#include "ui_main.h"
 #include "EThumbnail.h"
 #include "ItemList.h"
 
@@ -50,7 +50,7 @@ const LPSTR TEXTUREString[TSTRING_COUNT]={"Custom...","-","$null","$base0"};
 void TProperties::ClearParams(TElTreeItem* node)
 {
 	if (node){
-    	THROW2("ClearParams - node");
+    	Debug.fatal("ClearParams - node");
     	//S когда будут все итемы удалить у каждого
 /*
 //s
@@ -103,7 +103,6 @@ __fastcall TProperties::TProperties(TComponent* Owner) : TForm(Owner)
 {
 	m_FirstClickItem= 0;
 	bModified 		= false;
-    DEFINE_INI		(fsStorage);
 	m_BMCheck 		= xr_new<Graphics::TBitmap>();
     m_BMDot 		= xr_new<Graphics::TBitmap>();
     m_BMEllipsis 	= xr_new<Graphics::TBitmap>();
@@ -590,15 +589,10 @@ void __fastcall TProperties::tvPropertiesItemDraw(TObject *Sender,
             }break;
             case PROP_CHOOSE:{
                 OutText(prop->GetText(),Surface,R,prop->Enabled(),m_BMEllipsis);
-                ChooseValueCustom* V= dynamic_cast<ChooseValueCustom*>(prop->GetFrontValue());
-                switch(V->choose_mode){
-                case smTexture:
-                    if (miDrawThumbnails->Checked){ 
-                        R.top	+=	tvProperties->LineHeight-4;
-                        R.left 	= 	R.Right-(R.bottom-R.top);
-                        FHelper.DrawThumbnail	(Surface,R,prop->GetText(),EImageThumbnail::ETTexture);
-                    }
-                break;
+                if (miDrawThumbnails->Checked&&prop->m_Flags.is(PropItem::flDrawThumbnail)){ 
+                    R.top	+=	tvProperties->LineHeight-4;
+                    R.left 	= 	R.Right-(R.bottom-R.top);
+                    FHelper.DrawThumbnail	(Surface,R,prop->GetText(),EImageThumbnail::ETTexture);
                 }
             }break;
             case PROP_TEXTURE2:
@@ -644,7 +638,7 @@ void __fastcall TProperties::tvPropertiesItemDraw(TObject *Sender,
                     OutText(prop->GetText(),Surface,R,prop->Enabled());
             break;
             default:
-                THROW2("Unknown prop type");
+                Debug.fatal("Unknown prop type");
             };
         }
         // show LW edit
@@ -862,7 +856,7 @@ void __fastcall TProperties::tvPropertiesMouseDown(TObject *Sender,
                     }
                 }break;
                 default:
-                    THROW2("Unknown prop type");
+                    Debug.fatal("Unknown prop type");
                 };
                 switch(prop->type){
                 case PROP_TOKEN:
@@ -1017,7 +1011,7 @@ void __fastcall TProperties::PMItemClick(TObject *Sender)
             LPCSTR new_val 		 	= 0;
             bool bRes				= true;
         	if (mi->Tag==0){
-            	bRes				= TfrmChoseItem::SelectItem(smTexture,new_val,prop->subitem,edit_val.c_str());//,true);
+            	bRes				= TfrmChoseItem::SelectItem(smTexture,new_val,prop->subitem,edit_val.c_str());
             }else if (mi->Tag>=2){
             	new_val			 	= TEXTUREString[mi->Tag];
             }
@@ -1102,7 +1096,7 @@ void __fastcall TProperties::ColorClick(TElTreeItem* item)
             }
         }
     }break;
-    default: THROW2("Unsupported type");
+    default: Debug.fatal("Unsupported type");
     }
 }
 //---------------------------------------------------------------------------
@@ -1143,16 +1137,13 @@ void __fastcall TProperties::ChooseClick(TElTreeItem* item)
             if (RV){
             	edit_val	= *RV->GetValue();
 				CV			= dynamic_cast<ChooseValueCustom*>(RV); R_ASSERT(CV);
-            }else THROW		("Unknown choose value type");
+            }else Debug.fatal("Unknown choose value type");
         }
     }
 	if (!edit_val.Length()) edit_val = CV->start_path;
 	prop->OnBeforeEdit		(&edit_val);
     LPCSTR new_val			= 0;
-    ChooseItemVec 			items;
-    if (CV->choose_mode==smCustom)
-    	if (CV->OnChooseEvent) CV->OnChooseEvent(V,items);
-    if (TfrmChoseItem::SelectItem(CV->choose_mode,new_val,prop->subitem,edit_val.c_str(),&items)){
+    if (TfrmChoseItem::SelectItem(CV->choose_id,new_val,prop->subitem,edit_val.c_str(),CV->OnChooseFillEvent)){
         edit_val			= new_val;
         prop->OnAfterEdit	(&edit_val);
         if (prop->ApplyValue(edit_val.c_str())){
@@ -1346,7 +1337,7 @@ void TProperties::ApplyLWNumber()
             	Modified		();
             }
         }break;
-        default: THROW2("Wrong switch.");
+        default: Debug.fatal("Wrong switch.");
     	}
 		item->ColumnText->Strings[0] = prop->GetText();
     }
@@ -1650,7 +1641,7 @@ void __fastcall TProperties::FormDeactivate(TObject *Sender)
 void __fastcall TProperties::FormShow(TObject *Sender)
 {
 	// check window position
-	UI->CheckWindowPos(this);
+	CheckWindowPos	(this);
 }
 //---------------------------------------------------------------------------
 

@@ -4,23 +4,7 @@
 #pragma hdrstop
 
 #include "ChoseForm.h"
-#include "shader.h"
-#include "shader_xrlc.h"
-#include "texture.h"
-#include "Library.h"
-#include "EditObject.h"
-#include "LevelGameDef.h"
 #include "EThumbnail.h"
-#include "FolderLib.h"
-#include "LightAnimLibrary.h"
-#include "ImageManager.h"
-#include "SoundManager.h"
-#include "ui_main.h"
-#include "PSLibrary.h"
-#include "GameMtlLib.h"
-#include "soundrender_source.h"
-#include "render.h"
-#include "ResourceManager.h"
 #include "PropertiesList.h"               
 //---------------------------------------------------------------------------
 #pragma package(smart_init)
@@ -31,13 +15,29 @@
 #pragma link "ElXPThemedControl"
 #pragma link "Gradient"
 #pragma resource "*.dfm"
-TfrmChoseItem *TfrmChoseItem::form=0;
-AnsiString TfrmChoseItem::select_item="";
-AnsiString TfrmChoseItem::m_LastSelection[smMaxMode];
+TfrmChoseItem*				TfrmChoseItem::form			= 0;
+AnsiString 					TfrmChoseItem::select_item	= "";
+TfrmChoseItem::EventsMap	TfrmChoseItem::m_Events;
+TOnChooseFillEvents 		TfrmChoseItem::fill_events	= 0;
+
+//---------------------------------------------------------------------------
+SChooseEvents* TfrmChoseItem::GetEvents	(u32 choose_ID)
+{
+	EventsMapIt it 	= m_Events.find(choose_ID);
+    if (it!=m_Events.end()){
+    	return &it->second;
+    }else return 0;
+}
+void TfrmChoseItem::AppendEvents(u32 choose_ID, LPCSTR caption, TOnChooseFill on_fill, TOnChooseSelect on_sel, bool bTHM)
+{
+	EventsMapIt it 	= m_Events.find(choose_ID); VERIFY(it==m_Events.end());
+    m_Events.insert	(std::make_pair(choose_ID,SChooseEvents(caption,on_fill,on_sel,bTHM)));
+}
 //---------------------------------------------------------------------------
 void __fastcall TfrmChoseItem::FormCreate(TObject *Sender)
 {
     m_Props = TProperties::CreateForm("Info",paInfo,alClient);
+    m_Thm	= 0;
 }
 //---------------------------------------------------------------------------
 
@@ -47,80 +47,74 @@ void __fastcall TfrmChoseItem::FormDestroy(TObject *Sender)
 }
 //---------------------------------------------------------------------------
 
-int __fastcall TfrmChoseItem::SelectItem(EChooseMode mode, LPCSTR& dest, int sel_cnt, LPCSTR init_name, ChooseItemVec* items)
+int __fastcall TfrmChoseItem::SelectItem(u32 choose_ID, LPCSTR& dest, int sel_cnt, LPCSTR init_name, TOnChooseFillProp item_fill, TOnChooseSelect item_select)
 {
+	if (m_Events.empty()){
+    	VERIFY						(fill_events);
+	    fill_events					();
+    }
 	VERIFY(!form);
 	form 							= xr_new<TfrmChoseItem>((TComponent*)0);
-	form->Mode						= mode;
     form->bMultiSel 				= sel_cnt>1;
     form->iMultiSelLimit 			= sel_cnt;
+
 	// init
-	if (init_name) m_LastSelection[form->Mode] = init_name;
-	form->tvItems->IsUpdating		= true;
+	if (init_name&&init_name[0]) 
+    	form->m_LastSelection 		= init_name;
     form->tvItems->Selected 		= 0;
-    form->tvItems->Items->Clear		();
 
-    // insert [none]
-    FHelper.AppendObject			(form->tvItems,NONE_CAPTION,false,true);
-
-    // fill
-    switch (form->Mode){
-    case smCustom: 	  	form->FillCustom(items);break;
-    case smSoundSource:	form->FillSoundSource();break;
-    case smSoundEnv:	form->FillSoundEnv();	break;
-    case smObject: 		form->FillObject();		break;
-    case smEShader:		form->FillEShader();	break;
-    case smCShader: 	form->FillCShader();	break;
-//    case smPS: 			form->FillPS();			break;
-    case smPE:			form->FillPE();			break;
-    case smParticles:	form->FillParticles();	break;
-    case smTexture: 	form->FillTexture();	break;
-    case smEntity: 		form->FillEntity();		break;
-    case smLAnim: 		form->FillLAnim();		break;
-    case smGameObject: 	form->FillGameObject();	break;
-    case smGameMaterial:form->FillGameMaterial();break;
-    case smGameAnim:	form->FillGameAnim();	break;
-    default:
-    	THROW2("ChooseForm: Unknown Item Type");
+    // fill items
+    if (item_fill){
+    	// custom
+        item_fill					(form->m_Items);
+	    form->Caption				= "Select Item";
+	    form->item_select_event		= item_select;
+    }else{
+    	SChooseEvents* E			= GetEvents(choose_ID); VERIFY(E);
+        E->on_fill					(form->m_Items);
+	    form->Caption				= E->caption;
+	    form->item_select_event		= item_select?item_select:E->on_sel;
     }
-    // sort
-    form->tvItems->Sort			(true);
-    form->tvItems->SortMode 	= smAdd;
-    // redraw
-	form->tvItems->IsUpdating 	= false;
-	form->paItemsCount->Caption	= AnsiString(" Items in list: ")+AnsiString(form->tvItems->Items->Count);
+    form->FillItems					();
+    
+	form->paItemsCount->Caption		= AnsiString(" Items in list: ")+AnsiString(form->tvItems->Items->Count);
 
 	// show
-    bool bRes 			= (form->ShowModal()==mrOk);
-    dest				= 0;
+    bool bRes 						= (form->ShowModal()==mrOk);
+    dest							= 0;
     if (bRes){
-		int item_cnt	= _GetItemCount(select_item.c_str(),',');
-    	dest 			= (select_item==NONE_CAPTION)?0:select_item.c_str();
-	    m_LastSelection[mode]=select_item;
-        return 			item_cnt;
+		int item_cnt				= _GetItemCount(select_item.c_str(),',');
+    	dest 						= (select_item==NONE_CAPTION)?0:select_item.c_str();
+	    form->m_LastSelection		= select_item;
+        return 						item_cnt;
     }
     return 0;
 }
 // Constructors
 //---------------------------------------------------------------------------
 
-void __fastcall TfrmChoseItem::AppendItem(LPCSTR name, LPCSTR info)
+void __fastcall TfrmChoseItem::AppendItem(SChooseItem* item)
 {
-    TElTreeItem* node		= FHelper.AppendObject(form->tvItems,name,false,true);
-    node->Hint				= (info&&info[0])?info:name;
-    node->CheckBoxEnabled 	= form->bMultiSel;
-    node->ShowCheckBox 		= form->bMultiSel;
+    TElTreeItem* node				= FHelper.AppendObject(form->tvItems,item->name,false,true);
+    node->Tag						= (int)item;
+    node->Hint						= item->hint.Length()?item->hint:AnsiString("-");
+    node->CheckBoxEnabled 			= form->bMultiSel;
+    node->ShowCheckBox 				= form->bMultiSel;
 }
 
-void __fastcall TfrmChoseItem::FillCustom(ChooseItemVec* items)
+void __fastcall TfrmChoseItem::FillItems()
 {
-	R_ASSERT2(items,"Invalid list pointer received.");
-    form->Caption				= "Select Item";
-    ChooseItemVecIt  it			= items->begin();
-    ChooseItemVecIt  _E			= items->end();
-    for (; it!=_E; it++)		AppendItem(it->name.c_str(),it->hint.c_str());
+	form->tvItems->IsUpdating		= true;
+    tvItems->Items->Clear			();
+    FHelper.AppendObject			(tvItems,NONE_CAPTION,false,true);
+    ChooseItemVecIt  it				= m_Items.begin();
+    ChooseItemVecIt  _E				= m_Items.end();
+    for (; it!=_E; it++)			AppendItem(&(*it));
+    form->tvItems->Sort				(true);
+	form->tvItems->IsUpdating 		= false;
 }
 
+/*
 void __fastcall TfrmChoseItem::FillEntity()
 {
     form->Caption					= "Select Entity";
@@ -216,14 +210,6 @@ void __fastcall TfrmChoseItem::FillCShader()
 	for ( ;_F!=_E;_F++)				AppendItem(_F->Name);
 }
 //---------------------------------------------------------------------------
-/*
-void __fastcall TfrmChoseItem::FillPS()
-{
-    form->Caption					= "Select Particle System";
-    for (PS::PSIt S=::Render->PSLibrary.FirstPS(); S!=::Render->PSLibrary.LastPS(); S++)AppendItem(S->m_Name);
-}
-//---------------------------------------------------------------------------
-*/
 void __fastcall TfrmChoseItem::FillPE()
 {
     form->Caption					= "Select Particle System";
@@ -255,6 +241,7 @@ void __fastcall TfrmChoseItem::FillGameMaterial()
 	GameMtlIt _E 					= GMLib.LastMaterial();
 	for ( ;_F!=_E;_F++)				AppendItem(*(*_F)->m_Name);
 }
+*/
 //---------------------------------------------------------------------------
 //---------------------------------------------------------------------------
 // implementation
@@ -265,7 +252,6 @@ __fastcall TfrmChoseItem::TfrmChoseItem(TComponent* Owner)
 	tvItems->MultiSelect = false;
     bMultiSel = false;
     tvItems->ShowCheckboxes = false;
-	DEFINE_INI(fsStorage);
     grdFon->Caption = "";
 }
 //---------------------------------------------------------------------------
@@ -286,7 +272,7 @@ void __fastcall TfrmChoseItem::sbSelectClick(TObject *Sender)
                 Close();
                 ModalResult = mrOk;
             }else{
-                ELog.DlgMsg(mtInformation,"Select item first.");
+				Msg		("#Select item first.");
             }
         }else{
             Close();
@@ -298,7 +284,7 @@ void __fastcall TfrmChoseItem::sbSelectClick(TObject *Sender)
 	        Close();
     	    ModalResult = mrOk;
 	    }else{
-			ELog.DlgMsg(mtInformation,"Select item first.");
+			Msg			("#Select item first.");
         }
     }
 }
@@ -320,14 +306,14 @@ void __fastcall TfrmChoseItem::FormKeyDown(TObject *Sender, WORD &Key,
 void __fastcall TfrmChoseItem::FormShow(TObject *Sender)
 {
     tvItems->ShowCheckboxes 	= bMultiSel;
-	int itm_cnt = _GetItemCount(m_LastSelection[form->Mode].c_str());
+	int itm_cnt = _GetItemCount(m_LastSelection.c_str());
 	if (bMultiSel){
 	    string256 T;
         for (int i=0; i<itm_cnt; i++){
-            TElTreeItem* itm_node = FHelper.FindObject(tvItems,_GetItem(m_LastSelection[form->Mode].LowerCase().c_str(),i,T),0,0);//,bIgnoreExt);
+            TElTreeItem* itm_node = FHelper.FindObject(tvItems,_GetItem(m_LastSelection.LowerCase().c_str(),i,T),0,0);//,bIgnoreExt);
 	        TElTreeItem* fld_node = 0;
             if (itm_node){
-				tvMulti->Items->AddObject(0,_GetItem(m_LastSelection[form->Mode].c_str(),i,T),(void*)TYPE_OBJECT);
+				tvMulti->Items->AddObject(0,_GetItem(m_LastSelection.c_str(),i,T),(void*)TYPE_OBJECT);
             	itm_node->Checked = true;
                 tvItems->EnsureVisible(itm_node);
                 fld_node=itm_node->Parent;
@@ -335,7 +321,7 @@ void __fastcall TfrmChoseItem::FormShow(TObject *Sender)
             }
         }
     }else{
-        TElTreeItem* itm_node = FHelper.FindItem(tvItems,m_LastSelection[form->Mode].LowerCase().c_str(),0,0);//,bIgnoreExt);
+        TElTreeItem* itm_node = FHelper.FindItem(tvItems,m_LastSelection.LowerCase().c_str(),0,0);//,bIgnoreExt);
         TElTreeItem* fld_node = 0;
         if (itm_node){
             tvItems->Selected = itm_node;
@@ -350,15 +336,13 @@ void __fastcall TfrmChoseItem::FormShow(TObject *Sender)
     }
     paMulti->Visible = bMultiSel;
 	// check window position
-	UI->CheckWindowPos(this);
+	CheckWindowPos	(this);
 }
 //---------------------------------------------------------------------------
 
 void __fastcall TfrmChoseItem::FormClose(TObject *Sender, TCloseAction &Action)
 {
-    if (tvItems->Selected) m_LastSelection[form->Mode]=tvItems->Selected->Text;
-	xr_delete		(m_Thm);
-	m_Snd.destroy	();
+    if (tvItems->Selected) m_LastSelection=tvItems->Selected->Text;
 	Action 			= caFree;
     form 			= 0;
 }
@@ -402,8 +386,8 @@ void __fastcall TfrmChoseItem::tvItemsItemChange(TObject *Sender,
 	    	if ((tvMulti->Items->Count+1)<=iMultiSelLimit){
     	        tvMulti->Items->AddObject(0,fn,(void*)TYPE_OBJECT);
             }else{
-            	Item->Checked = false;
-	        	ELog.DlgMsg(mtInformation,"Limit %d item(s).",iMultiSelLimit);
+            	Item->Checked 	= false;
+	        	Msg				("#Limit %d item(s).",iMultiSelLimit);
             }
         }
     }
@@ -473,10 +457,19 @@ void __fastcall TfrmChoseItem::ebMultiClearClick(TObject *Sender)
 void __fastcall TfrmChoseItem::tvItemsItemFocused(TObject *Sender)
 {
 	TElTreeItem* Item 	= tvItems->Selected;
+    PropItemVec 		items;
 	xr_delete			(m_Thm);
 	m_Snd.destroy		();
-    PropItemVec 		items;
 	if (Item&&FHelper.IsObject(Item)){
+    	if (item_select_event)	item_select_event((SChooseItem*)Item->Tag,m_Thm,m_Snd,items);
+        lbItemName->Caption 	= Item->Text;
+        lbHint->Caption 		= Item->Hint;
+    }
+    if (m_Thm)	m_Thm->FillInfo	(items);
+    m_Props->AssignItems		(items);
+    paInfo->Visible				= !items.empty();
+	paImage->Repaint			();
+/*    
     	switch (Mode){
         case smTexture:{
             if (ebExt->Down){
@@ -543,6 +536,7 @@ void __fastcall TfrmChoseItem::tvItemsItemFocused(TObject *Sender)
     m_Props->AssignItems			(items);
     paInfo->Visible					= !items.empty();
 	paImage->Repaint				();
+*/
 }
 //---------------------------------------------------------------------------
 
@@ -583,4 +577,5 @@ void __fastcall TfrmChoseItem::tvItemsCompareItems(TObject *Sender,
     else if (type2==TYPE_FOLDER)	    	res =  1;
 }
 //---------------------------------------------------------------------------
+
 

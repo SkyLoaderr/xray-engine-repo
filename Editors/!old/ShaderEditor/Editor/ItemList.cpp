@@ -5,14 +5,14 @@
 #include <ElVCLUtils.hpp>
 #include <ElTools.hpp>
 
-#include "ShaderFunction.h"
+//#include "ShaderFunction.h"
 #include "ColorPicker.h"
-#include "ChoseForm.h"
+//#include "ChoseForm.h"
 #include "FolderLib.h"
 #include "NumericVector.h"
 #include "TextForm.h"
-#include "ui_main.h"
-#include "EThumbnail.h"
+//#include "ui_main.h"
+//#include "EThumbnail.h"
 //---------------------------------------------------------------------------
 #pragma package(smart_init)
 #pragma link "multi_edit"
@@ -47,7 +47,7 @@ void TItemList::OnFrame()
 void TItemList::ClearParams(TElTreeItem* node)
 {
 	if (node){
-    	THROW2("ClearParams - node");
+    	Debug.fatal("ClearParams - node");
     }else{
         // save last selected items
         ElItemsVec items;
@@ -118,7 +118,6 @@ void __fastcall TItemList::SelectItem(const AnsiString& full_name, bool bVal, bo
 
 __fastcall TItemList::TItemList(TComponent* Owner) : TForm(Owner)
 {
-    DEFINE_INI		(fsStorage);
     m_Flags.zero	();
     OnItemFocused	= 0;
     OnItemsFocused	= 0;
@@ -217,7 +216,7 @@ void __fastcall TItemList::AssignItems(ListItemsVec& items, bool full_expand, bo
         }else{
             prop->item			= FHelper.AppendObject(tvItems,prop->key,false,!m_Flags.is(ilSuppressIcon));
             if (!prop->item){
-                ELog.DlgMsg		(mtError,"Duplicate item name found: '%s'",prop->key);
+				Msg				("#!Duplicate item name found: '%s'",prop->key);
                 break;
             }
             prop->item->ImageIndex	= prop->icon_index;
@@ -379,7 +378,7 @@ void __fastcall TItemList::FormShow(TObject *Sender)
     InplaceEdit->Editor->Color		= TColor(0x00A0A0A0);
     InplaceEdit->Editor->AutoSelect	= true;
 	// check window position
-	UI->CheckWindowPos(this);
+	CheckWindowPos					(this);
 }
 //---------------------------------------------------------------------------
 

@@ -25,7 +25,7 @@ typedef void __fastcall (__closure *TOnApplyClick)();
 typedef void __fastcall (__closure *TOnCloseClick)(bool& can_close);
 typedef bool __fastcall (__closure *TOnCodeIndight)(const AnsiString& src_line, AnsiString& hint);
 
-class TfrmText : public TForm
+class XR_EPROPS_API TfrmText : public TForm
 {
 __published:	// IDE-managed Components
 	TPanel *paBottomBar;

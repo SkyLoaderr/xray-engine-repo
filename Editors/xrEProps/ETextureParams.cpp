@@ -118,8 +118,10 @@ void STextureParams::Save(IWriter& F)
 
 #ifdef _EDITOR
 #include "PropertiesListHelper.h"
-#include "ui_main.h"
-#include "ImageEditor.h"
+
+#ifndef XR_EPROPS_EXPORTS    
+	#include "ImageEditor.h"
+#endif
 void STextureParams::OnTypeChange(PropValue* prop)
 {
 	switch (type){
@@ -130,7 +132,9 @@ void STextureParams::OnTypeChange(PropValue* prop)
 	    flags.set	(flGenerateMipMaps,FALSE);
     break;
     }
+#ifndef XR_EPROPS_EXPORTS    
     TfrmImageLib::UpdateProperties();
+#endif
 }
 
 void STextureParams::FillProp(PropItemVec& items)

@@ -3,7 +3,7 @@
 
 #include "PropertiesListHelper.h"
 #include "ItemListHelper.h"
-#include "EThumbnail.h"
+#include "ChoseForm.h"
 //---------------------------------------------------------------------------
               
 CPropHelper PHelper;
@@ -44,5 +44,4 @@ void CPropHelper::NameDraw(PropValue* sender, LPVOID draw_val)
 	N = _SetPos(N.c_str(),cnt-1,'\\');
 }
 //------------------------------------------------------------------------------
-
 

@@ -2,8 +2,6 @@
 #pragma hdrstop
 
 #include "ItemListHelper.h"
-#include "EThumbnail.h"
-#include "ImageManager.h"
 //---------------------------------------------------------------------------
 
 CListHelper LHelper;

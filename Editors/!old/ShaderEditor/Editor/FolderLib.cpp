@@ -4,7 +4,6 @@
 #include "FolderLib.h"
 #include "PropertiesListHelper.h"
 #include "EThumbnail.h"
-#include "ImageManager.h"
 
 //---------------------------------------------------------------------------
 #pragma package(smart_init)
@@ -304,7 +303,7 @@ void CFolderHelper::DragDrop(TObject *Sender, TObject *Source, int X, int Y, TOn
     	EItemType type 	= EItemType(item->Data);
 		TElTreeItem* pNode = FindItemInFolder(type,tv,cur_folder,item->Text);
 		if (pNode&&IsObject(item)){
-            ELog.DlgMsg	(mtError,"Item '%s' already exist in folder '%s'.",AnsiString(item->Text).c_str(),AnsiString(cur_folder->Text).c_str());
+			Msg			("#!Item '%s' already exist in folder '%s'.",AnsiString(item->Text).c_str(),AnsiString(cur_folder->Text).c_str());
             item		= item->GetNext();
         	continue;
         }
@@ -463,7 +462,8 @@ BOOL CFolderHelper::RemoveItem(TElTree* tv, TElTreeItem* pNode, TOnItemRemove On
 	    if (!pSelNode) pSelNode = pNode->GetNextSibling();
 		AnsiString full_name;
     	if (IsFolder(pNode)){
-	        if (ELog.DlgMsg(mtConfirmation, TMsgDlgButtons() << mbYes << mbNo,"Delete selected folder?") == mrYes){
+//!	        if (ELog.DlgMsg(mtConfirmation, TMsgDlgButtons() << mbYes << mbNo,"Delete selected folder?") == mrYes)
+            {
                 bRes = TRUE;
 		        for (TElTreeItem* item=pNode->GetFirstChild(); item&&(item->Level>pNode->Level); item=item->GetNext()){
                     MakeName(item,0,full_name,false);
@@ -479,7 +479,8 @@ BOOL CFolderHelper::RemoveItem(TElTree* tv, TElTreeItem* pNode, TOnItemRemove On
         	}
         }
     	if (IsObject(pNode)){
-	        if (ELog.DlgMsg(mtConfirmation, TMsgDlgButtons() << mbYes << mbNo,"Delete selected item?") == mrYes){
+//!	        if (ELog.DlgMsg(mtConfirmation, TMsgDlgButtons() << mbYes << mbNo,"Delete selected item?") == mrYes)
+            {
 				MakeName(pNode,0,full_name,false);
                 bRes = OnRemoveItem(full_name.c_str(),TYPE_OBJECT);
 	            if (bRes){
@@ -492,7 +493,7 @@ BOOL CFolderHelper::RemoveItem(TElTree* tv, TElTreeItem* pNode, TOnItemRemove On
         tv->IsUpdating 	= false;
         tv->SetFocus();
     }else{
-		ELog.DlgMsg(mtInformation, "At first select item.");
+		Msg				("#At first select item.");
     }
     return bRes;
 }
@@ -571,7 +572,7 @@ bool CFolderHelper::NameAfterEdit(TElTreeItem* node, AnsiString value, AnsiStrin
 bool CFolderHelper::DrawThumbnail(TCanvas *Surface, TRect &R, LPCSTR fname, u32 thm_type)
 {
 	if (fname&&fname[0]){
-        EImageThumbnail* m_Thm 	= ImageLib.CreateThumbnail(fname,EImageThumbnail::THMType(thm_type));
+        EImageThumbnail* m_Thm 	= CreateThumbnail(fname,EImageThumbnail::THMType(thm_type));
         VERIFY		(m_Thm);
         int dw 		= R.Width()-R.Height();
         if (dw>=0) 	R.right		-= dw;

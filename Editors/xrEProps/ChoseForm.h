@@ -12,7 +12,6 @@
 #include <ExtCtrls.hpp>
 #include <ImgList.hpp>
 
-#include "Library.h"
 #include <Dialogs.hpp>
 #include "ElTree.hpp"
 #include "ExtBtn.hpp"
@@ -24,10 +23,9 @@
 
 //---------------------------------------------------------------------------
 // refs
-class EImageThumbnail;
 class TProperties;
 
-class ECORE_API TfrmChoseItem : public TForm
+class XR_EPROPS_API TfrmChoseItem : public TForm
 {
 __published:	// IDE-managed Components
     TPanel *Panel1;
@@ -86,40 +84,34 @@ private:	// User declarations
 	static TfrmChoseItem* form;
     static AnsiString select_item;
 
+    TProperties*   	m_Props;
+    void 		   	InitItemsList	(const char* nm=0);
+
+    bool 			bMultiSel;
+    int 			iMultiSelLimit;
+
     EImageThumbnail* 	m_Thm;
 	ref_sound			m_Snd;
 
-    TProperties*	m_Props;
-    void 	InitItemsList(const char* nm=0);
-
-    bool 	bMultiSel;
-    int 	iMultiSelLimit;
-// fill routines
-    void __fastcall FillCustom		(ChooseItemVec* items);
-    void __fastcall FillSoundSource	();
-    void __fastcall FillSoundEnv	();
-    void __fastcall FillObject		();
-    void __fastcall FillLAnim		();
-    void __fastcall FillEShader		();
-    void __fastcall FillCShader		();
-//    void __fastcall FillPS			();
-    void __fastcall FillPE			();
-    void __fastcall FillParticles	();
-    void __fastcall FillTexture		();
-    void __fastcall FillEntity		();
-    void __fastcall FillGameObject	();
-    void __fastcall FillGameAnim	();
-    void __fastcall FillGameMaterial();
-
-    void __fastcall AppendItem		(LPCSTR name, LPCSTR info="");
-public:		// User declarations
+	TOnChooseSelect	item_select_event;
+    
+    ChooseItemVec	m_Items;
+	void __fastcall FillItems		();
+    void __fastcall AppendItem		(SChooseItem* item);
 protected:
-    EChooseMode Mode;
-    static AnsiString m_LastSelection[smMaxMode]; 
+    AnsiString 			m_LastSelection; 
+
+    DEFINE_MAP(u32,SChooseEvents,EventsMap,EventsMapIt);     
+    static EventsMap	m_Events;
+
+    static SChooseEvents*		GetEvents		(u32 choose_ID);
+public:
+	static TOnChooseFillEvents 	fill_events;
 public:		// User declarations
     __fastcall 					TfrmChoseItem	(TComponent* Owner);
-    static int	 	__fastcall 	SelectItem		(EChooseMode mode, LPCSTR& dest, int sel_cnt=1, LPCSTR init_name=0, ChooseItemVec* items=0);
-    static bool 	__fastcall 	Visible			(){return !!form;}
+	static int	 	__fastcall 	SelectItem		(u32 choose_ID, LPCSTR& dest, int sel_cnt=1, LPCSTR init_name=0, TOnChooseFillProp item_fill=0, TOnChooseSelect item_select=0);
+
+    static void					AppendEvents	(u32 choose_ID, LPCSTR caption, TOnChooseFill on_fill, TOnChooseSelect on_sel, bool bTHM);
 };
 //---------------------------------------------------------------------------
 #endif

@@ -135,5 +135,7 @@ public:
 };
 //------------------------------------------------------------------------------
 
+EImageThumbnail* CreateThumbnail	(LPCSTR src_name, ECustomThumbnail::THMType type, bool bLoad=true);
+
 #endif
 

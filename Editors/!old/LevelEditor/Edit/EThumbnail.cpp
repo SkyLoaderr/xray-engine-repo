@@ -127,3 +127,14 @@ void EImageThumbnail::Draw(TMxPanel* panel, u32 w, u32 h, bool bUseAlpha)
     }
 }
 
+EImageThumbnail* CreateThumbnail(LPCSTR src_name, ECustomThumbnail::THMType type, bool bLoad)
+{
+    switch (type){
+    case ECustomThumbnail::ETObject: 	return xr_new<EObjectThumbnail>	(src_name,bLoad);
+    case ECustomThumbnail::ETTexture:	return xr_new<ETextureThumbnail>(src_name,bLoad);
+    default: NODEFAULT;
+    }
+    return 0;
+}
+
+
