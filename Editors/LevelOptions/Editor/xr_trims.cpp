@@ -45,7 +45,7 @@ LPCSTR _SetPos (LPCSTR src, u32 pos, char separator )
 {
 	LPCSTR	res			= src;
 	u32		p			= 0;
-	while( (p<pos) && (res=strchr(res,separator)) )
+	while( (p<pos) && (0!=(res=strchr(res,separator))) )
 	{
 		res		++;
 		p		++;
@@ -69,7 +69,7 @@ int				_GetItemCount ( LPCSTR src, char separator )
 	LPCSTR	res			= src;
 	LPCSTR	last_res	= res;
 	u32		cnt			= 0;
-	while( res=strchr(res,separator) )
+	while( 0!=(res=strchr(res,separator)) )
 	{
 		res		++;
         last_res=res;

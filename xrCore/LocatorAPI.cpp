@@ -108,7 +108,7 @@ void CLocatorAPI::Register		(LPCSTR name, u32 vfs, u32 ptr, u32 size, BOOL bComp
 			desc.ptr			= 0;
 			desc.size			= 0;
 			desc.bCompressed	= FALSE;
-            desc.modif			= -1;
+            desc.modif			= u32(-1);
 			files.insert		(desc); 
 		}
 		strcpy(temp,folder);
@@ -349,7 +349,7 @@ int CLocatorAPI::file_list		(vector<char*>& dest, const char* initial, u32 flags
 			dest.push_back	(xr_strdup(entry_begin));
 		}
 	}
-	return dest.size();
+	return int(dest.size());
 }
 
 IReader* CLocatorAPI::r_open	(LPCSTR path, LPCSTR _fname)
