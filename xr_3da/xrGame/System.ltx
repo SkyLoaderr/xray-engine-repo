@@ -3845,11 +3845,10 @@ FreeWalkTimeMin		= 3000
 FreeWalkTimeMax		= 5000
 
 ; "Rest" state specific 
-ProbRestWalkFree	= 10    ; при выборе действия, в 50% случаях монстр будет ходить
+ProbRestWalkFree	= 50    ; при выборе действия, в 50% случаях монстр будет ходить
 ProbRestStandIdle	= 10		
-ProbRestLieIdle		= 10
-ProbRestTurnLeft	= 70	
-
+ProbRestLieIdle		= 30
+ProbRestTurnLeft	= 10	
 
 
 ;							  fSearchRange,fOptEnemyDistance,fOptEnemyDistanceWeight,fMinEnemyDistance,fMinEnemyDistanceWeight,fMaxEnemyDistance,fMaxEnemyDistanceWeight
@@ -3923,10 +3922,10 @@ FreeWalkTimeMin		= 3000
 FreeWalkTimeMax		= 5000
 
 ; "Rest" state specific 
-ProbRestWalkFree	= 10    ; при выборе действия, в 50% случаях монстр будет ходить
-ProbRestStandIdle	= 10		
-ProbRestLieIdle		= 50
-ProbRestTurnLeft	= 30	
+ProbRestWalkFree	= 50    ; при выборе действия, в 50% случаях монстр будет ходить
+ProbRestStandIdle	= 15		
+ProbRestLieIdle		= 25
+ProbRestTurnLeft	= 10
 
 
 ; spin spin sugar
@@ -3994,8 +3993,21 @@ RunRSpeed			= 1.57						; PI_DIV_2
 RunAttackMinAngle	= 0.52						; PI_DIV_6
 AttackFastRSpeed	= 2.36						; 3 * PI_DIV_4
 ScaredRSpeed		= 2.36						; 3 * PI_DIV_4
-
 AttackFastRSpeed2	= 3.14						; PI	- not needed for dog, remove it later
+
+; state times
+LieIdleTimeMin		= 5000
+LieIdleTimeMax		= 7000
+StandIdleTimeMin	= 3000
+StandIdleTimeMax	= 5000
+FreeWalkTimeMin		= 3000
+FreeWalkTimeMax		= 5000
+
+; "Rest" state specific 
+ProbRestWalkFree	= 30    ; при выборе действия, в 50% случаях монстр будет ходить
+ProbRestStandIdle	= 15		
+ProbRestLieIdle		= 50
+ProbRestTurnLeft	= 5
 
 ;                           fSearchRange,fOptEnemyDistance,fOptEnemyDistanceWeight,fMinEnemyDistance,fMinEnemyDistanceWeight,fMaxEnemyDistance,fMaxEnemyDistanceWeight
 selector_free_hunting    =      20.0,            20.0,                 1000.0,                 0.0,               10000.0,               1000.0,               10000.0,      
