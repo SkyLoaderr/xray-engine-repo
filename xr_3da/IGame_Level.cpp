@@ -19,13 +19,15 @@ IGame_Level::IGame_Level	()
 	pCurrentViewEntity			= NULL;
 	LL_Stream					= NULL;
 	pHUD						= (CCustomHUD*)NEW_INSTANCE	(CLSID_HUDMANAGER);
+	Environment					= xr_new<CEnvironment>		();
 }
 
 IGame_Level::~IGame_Level	()
 {
-	DEL_INSTANCE				( pHUD		);
-	xr_delete					( pLevel	);
-	FS.r_close					( LL_Stream	);
+	xr_delete					( Environment	);
+	DEL_INSTANCE				( pHUD			);
+	xr_delete					( pLevel		);
+	FS.r_close					( LL_Stream		);
 
 	Sound->destroy				(Sounds_Ambience);
 
