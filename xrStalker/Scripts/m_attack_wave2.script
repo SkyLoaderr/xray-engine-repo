@@ -53,10 +53,6 @@ end
 function Defender:initialize ()
 	self.npc:script (true, self.script_name)
 	action (self.npc, anim (anim.free), cond (cond.time_end, time_infinite))	
-	self.weapon = self.npc:active_item ()
-	if self.weapon ~= nil then
-	   printf ("Object %s has weapon %s", self.npc:name (), self.weapon:name ())	
-	end
 end
 
 function Defender:find_enemy ()
@@ -108,6 +104,13 @@ function Defender:process ()
 	if self.pre_state == true and self:prestate () == false then 
 	   return 
     end
+
+	if self.weapon == nil then
+  	   self.weapon = self.npc:active_item ()
+	   if self.weapon ~= nil then
+	      printf ("Object %s have weapon %s", self.npc:name (), self.weapon:name ())	
+	   end
+	end
 
 	--если мы еще не сидим, то сядем 
 	if self.setdown == false then
@@ -209,7 +212,10 @@ function Monster:process ()
 	end
 
 	if self.moving == true then 
-	   if self.npc:action () then return end
+	   if self.npc:action () then 
+		  printf ("Attacker %s in move", self.npc:name ())
+		  return 
+       end
 	   printf ("Attacker %s is end move", self.npc:name ())	
 	   self.moving = false
     end	 
