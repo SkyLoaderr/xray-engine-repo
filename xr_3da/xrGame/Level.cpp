@@ -417,7 +417,10 @@ void CLevel::OnRender()
 	inherited::OnRender	();
 	Tracers.Render		();
 	eff_Rain.Render		();
-	if (bDebug)			AI.Render();
+	if (bDebug)			{
+		ObjectSpace.dbgRender	();
+		AI.Render				();
+	}
 }
 
 void CLevel::OnEvent(EVENT E, DWORD P1, DWORD P2)

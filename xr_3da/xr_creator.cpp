@@ -160,8 +160,6 @@ void CCreator::OnRender()
 	Render.Calculate			();
 	Render.Render				();
 
-	if (bDebug) ObjectSpace.dbgRender	();
-
 	// Environment render
 	Environment.RenderLast		();
 
