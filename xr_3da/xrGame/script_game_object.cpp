@@ -96,12 +96,6 @@ CScriptGameObject::CScriptGameObject		(CGameObject *tpGameObject)
 	R_ASSERT2		(m_tpGameObject,"Null actual object passed!");
 }
 
-CScriptGameObject::CScriptGameObject		(const CScriptGameObject *tpLuaGameObject)
-{
-	m_tpGameObject	= tpLuaGameObject->m_tpGameObject;
-	R_ASSERT2		(m_tpGameObject,"Null actual object passed!");
-}
-
 CScriptGameObject::CScriptGameObject		(LPCSTR caObjectName)
 {
 	m_tpGameObject	= dynamic_cast<CGameObject*>(Level().Objects.FindObjectByName(caObjectName));

@@ -85,7 +85,6 @@ void CScriptGameObject::script_register(lua_State *L)
 			.property("morale",					&CScriptGameObject::GetMorale,			&CScriptGameObject::SetMorale)
 
 			.def(								constructor<LPCSTR>())
-			.def(								constructor<const CScriptGameObject *>())
 			.def("position",					&CScriptGameObject::Position)
 			.def("direction",					&CScriptGameObject::Direction)
 			.def("clsid",						&CScriptGameObject::clsid)
