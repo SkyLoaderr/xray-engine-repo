@@ -140,7 +140,7 @@ void CDetailManager::hw_Unload()
 void CDetailManager::hw_Render()
 {
 	// Render-prepare
-	CEnvDescriptor&	desc	= g_pGamePersistent->Environment.Current;
+	CEnvDescriptor&	desc	= g_pGamePersistent->Environment.CurrentEnv;
 	Fvector4	dir1,dir2;
 	Fvector3	wnd;
 	float	tm_rot1			= PI_MUL_2*Device.fTimeGlobal/ps_r__Detail_w_rot1;
@@ -182,7 +182,7 @@ void	CDetailManager::hw_Render_dump	(R_constant* x_array, u32 var_id, u32 lod_id
 
 	vis_list& list	=	visible	[var_id];
 
-	CEnvDescriptor&	desc	= g_pGamePersistent->Environment.Current;
+	CEnvDescriptor&	desc	= g_pGamePersistent->Environment.CurrentEnv;
 	Fvector					c_sun,c_ambient,c_lmap,c_hemi;
 	c_sun.set				(desc.sun_color.x,	desc.sun_color.y, desc.sun_color.z);	c_sun.mul(.5f);
 	c_lmap.set				(desc.lmap_color.x,	desc.lmap_color.y,	desc.lmap_color.z);

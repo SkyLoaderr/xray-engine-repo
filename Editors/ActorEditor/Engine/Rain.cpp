@@ -64,10 +64,10 @@ void	CEffect_Rain::Born		(Item& dest, float radius, float height)
 {
 	Fvector		axis;	
     //axis.set			(0,-1,0);
-	float	factor		= drop_max_angle*(g_pGamePersistent->Environment.Current.wind_velocity/drop_max_wind_vel);
+	float	factor		= drop_max_angle*(g_pGamePersistent->Environment.CurrentEnv.wind_velocity/drop_max_wind_vel);
     clamp				(factor,0.f,1.f);
     factor				+= -PI_DIV_2;
-    axis.setHP			(g_pGamePersistent->Environment.Current.wind_direction,factor);
+    axis.setHP			(g_pGamePersistent->Environment.CurrentEnv.wind_direction,factor);
     
 	Fvector&	view	= Device.vCameraPosition;
 	float		angle	= ::Random.randF	(0,PI_MUL_2);
@@ -215,7 +215,7 @@ void	CEffect_Rain::Render	()
 	if (!g_pGameLevel)			return;
 #endif
 	// Parse states
-	float	factor				= g_pGamePersistent->Environment.Current.rain_density;
+	float	factor				= g_pGamePersistent->Environment.CurrentEnv.rain_density;
 
 	switch (state)
 	{
@@ -242,7 +242,7 @@ void	CEffect_Rain::Render	()
 	snd_Ambient.set_position	(sndP);
 
 	// 
-	Fvector3&	f_rain_color	= g_pGamePersistent->Environment.Current.rain_color;
+	Fvector3&	f_rain_color	= g_pGamePersistent->Environment.CurrentEnv.rain_color;
 	u32			u_rain_color	= color_rgba_f(f_rain_color.x,f_rain_color.y,f_rain_color.z,1);
 
 	// Born _new_ if needed

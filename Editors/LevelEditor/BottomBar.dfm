@@ -283,6 +283,7 @@ object fraBottomBar: TfraBottomBar
   end
   object pmOptions: TMxPopupMenu
     Alignment = paCenter
+    AutoHotkeys = maManual
     AutoPopup = False
     TrackButton = tbLeftButton
     OnPopup = pmOptionsPopup
@@ -521,10 +522,17 @@ object fraBottomBar: TfraBottomBar
       Caption = '-'
       GroupIndex = 4
     end
-    object miEnvironment: TMenuItem
-      Caption = 'Environment'
+    object miWeather: TMenuItem
+      Caption = 'Weather'
       GroupIndex = 4
-      OnClick = ClickOptionsMenuItem
+      object miWeatherNone: TMenuItem
+        Tag = -1
+        Caption = 'none'
+        OnClick = miWeatherClick
+      end
+      object N6: TMenuItem
+        Caption = '-'
+      end
     end
     object miFog: TMenuItem
       Caption = 'Fog'

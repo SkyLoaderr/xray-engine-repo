@@ -29,8 +29,8 @@ int EDetailManager::RaySelect(bool flag, float& distance, const Fvector& start, 
         for (u32 x=0; x<dtH.size_x; x++){
 			DetailSlot* slot= dtSlots+z*dtH.size_x+x;
             fx		= fromSlotX(x);
-            bbox.min.set(fx-DETAIL_SLOT_SIZE_2, slot->y_min, fz-DETAIL_SLOT_SIZE_2);
-            bbox.max.set(fx+DETAIL_SLOT_SIZE_2, slot->y_max, fz+DETAIL_SLOT_SIZE_2);
+            bbox.min.set(fx-DETAIL_SLOT_SIZE_2, slot->r_ybase(), 					fz-DETAIL_SLOT_SIZE_2);
+            bbox.max.set(fx+DETAIL_SLOT_SIZE_2, slot->r_ybase()+slot->r_yheight(), 	fz+DETAIL_SLOT_SIZE_2);
             if (bbox.Pick2(start,direction,P)){
             	float d = start.distance_to_sqr(P);
                 if (d<dist){
@@ -64,8 +64,8 @@ int EDetailManager::FrustumSelect(bool flag, const CFrustum& frustum)
             DetailSlot* slot = dtSlots+z*dtH.size_x+x;
             fx			= fromSlotX(x);
 
-            bbox.min.set(fx-DETAIL_SLOT_SIZE_2, slot->y_min, fz-DETAIL_SLOT_SIZE_2);
-            bbox.max.set(fx+DETAIL_SLOT_SIZE_2, slot->y_max, fz+DETAIL_SLOT_SIZE_2);
+            bbox.min.set(fx-DETAIL_SLOT_SIZE_2, slot->r_ybase(), 					fz-DETAIL_SLOT_SIZE_2);
+            bbox.max.set(fx+DETAIL_SLOT_SIZE_2, slot->r_ybase()+slot->r_yheight(), 	fz+DETAIL_SLOT_SIZE_2);
 			u32 mask	= 0xff;
             bool bRes 	= !!frustum.testAABB(bbox.min,bbox.max,mask);
             if (bRes==flag){

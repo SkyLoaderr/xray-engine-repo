@@ -19,6 +19,8 @@ public:
 	void				Initialize	    ();
 	void				Destroy		    ();
     LPCSTR              LastWindowsError();
+
+    void				ReloadSettings	();
 };
 
 

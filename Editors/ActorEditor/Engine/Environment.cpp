@@ -92,21 +92,13 @@ static	u16			hbox_faces[18*3]	=
 };
 
 //////////////////////////////////////////////////////////////////////////
-// environment
-CEnvironment::CEnvironment	()
+// environment desc
+void CEnvDescriptor::load	(LPCSTR exec_tm, LPCSTR S, CEnvironment* parent)
 {
-	eff_Rain				= 0;
-    eff_LensFlare 			= xr_new<CLensFlare>();
-	OnDeviceCreate			();
-}
-CEnvironment::~CEnvironment	()
-{
-	OnDeviceDestroy			();
-    xr_delete				(eff_LensFlare);
-}
-
-void CEnvDescriptor::load	(LPCSTR S, CEnvironment* parent)
-{
+	Ivector3 tm				={0,0,0};
+	sscanf					(exec_tm,"%d:%d:%d",&tm.x,&tm.y,&tm.z);
+    R_ASSERT3				((tm.x>=0)&&(tm.x<24)&&(tm.y>=0)&&(tm.y<60)&&(tm.z>=0)&&(tm.z<60),"Incorrect weather time",S);
+	exec_time				= tm.x*3600+tm.y*60+tm.z;
 	sky_texture				= Device.Resources->_CreateTexture(pSettings->r_string(S,"sky_texture"));
 	sky_color				= pSettings->r_fvector3	(S,"sky_color");		sky_color.mul(.5f);
 	far_plane				= pSettings->r_float	(S,"far_plane");
@@ -114,6 +106,8 @@ void CEnvDescriptor::load	(LPCSTR S, CEnvironment* parent)
 	fog_density				= pSettings->r_float	(S,"fog_density");
 	rain_density			= pSettings->r_float	(S,"rain_density");
 	rain_color				= pSettings->r_fvector3	(S,"rain_color");            
+	bolt_period				= pSettings->r_float	(S,"bolt_period");
+	bolt_duration			= pSettings->r_float	(S,"bolt_duration");
     wind_velocity			= pSettings->r_float	(S,"wind_velocity");
     wind_direction			= deg2rad(pSettings->r_float(S,"wind_direction"));
 	ambient					= pSettings->r_fvector3	(S,"ambient");
@@ -144,6 +138,8 @@ void CEnvDescriptor::lerp	(CEnvDescriptor& A, CEnvDescriptor& B, float f)
 	fog_far					= 0.95f * far_plane;
 	rain_density			= fi*A.rain_density + f*B.rain_density;
 	rain_color.lerp			(A.rain_color,B.rain_color,f);
+	bolt_period				= fi*A.bolt_period + f*B.bolt_period;
+	bolt_duration			= fi*A.bolt_duration + f*B.bolt_duration;
     wind_velocity			= fi*A.wind_velocity + f*B.wind_velocity;
     wind_direction			= fi*A.wind_direction + f*B.wind_direction;
 	ambient.lerp			(A.ambient,B.ambient,f);
@@ -153,47 +149,138 @@ void CEnvDescriptor::lerp	(CEnvDescriptor& A, CEnvDescriptor& B, float f)
 	sun_dir.lerp			(A.sun_dir,B.sun_dir,f).normalize();
 }
 
+//////////////////////////////////////////////////////////////////////////
+// environment
+CEnvironment::CEnvironment	()
+{
+	CurrentA				= 0;
+	CurrentB				= 0;
+	ABcurrent				= 0.f;
+    ABlength				= 0.f;
+    ABspeed					= 1.f;
+    CurrentWeather			= 0;
+    CurrentWeatherName		= 0;
+	eff_Rain				= 0;
+    eff_LensFlare 			= 0;
+    eff_Thunderbolt			= 0;
+	OnDeviceCreate			();
+}
+CEnvironment::~CEnvironment	()
+{
+	OnDeviceDestroy			();
+}
+
+IC bool sort_env_pred(const CEnvDescriptor*& x, const CEnvDescriptor*& y)
+{	return x->exec_time < y->exec_time;	}
+
 void CEnvironment::load		()
 {
     if (!eff_Rain)			eff_Rain 		= xr_new<CEffect_Rain>();
-	if (Palette.empty()){
-        for(int env=0; env<24; env++) 
-        {
-            LPCSTR	sect		= "environment";
-            string32 name;
-            sprintf				(name,"%d",env);
-            if (!pSettings->line_exist	(sect,name))	continue;
-            CEnvDescriptor		D;
-            D.load				(pSettings->r_string(sect,name),this);
-            Palette.push_back	(D);
+    if (!eff_LensFlare)		eff_LensFlare 	= xr_new<CLensFlare>();
+    if (!eff_Thunderbolt)	eff_Thunderbolt	= xr_new<CEffect_Thunderbolt>();
+	if (Weathers.empty()){
+    	LPCSTR first_weather=0;
+    	int weather_count	= pSettings->line_count("weathers");
+        for (int w_idx=0; w_idx<weather_count; w_idx++){
+        	LPCSTR weather, sect_w;
+			if (pSettings->r_line("weathers",w_idx,&weather,&sect_w)){
+            	if (0==first_weather) first_weather=weather;
+                int env_count	= pSettings->line_count(sect_w);
+	        	LPCSTR exec_tm, sect_e;
+                for (int env_idx=0; env_idx<env_count; env_idx++){
+					if (pSettings->r_line(sect_w,env_idx,&exec_tm,&sect_e)){
+                        CEnvDescriptor*		D=xr_new<CEnvDescriptor>();
+                        D->load				(exec_tm,sect_e,this);
+                        Weathers[weather].push_back	(D);
+                	}
+                }
+            }
         }
+        // sorting weather envs
+        WeatherPairIt _I=Weathers.begin();
+        WeatherPairIt _E=Weathers.end();
+		for (; _I!=_E; _I++){
+        	R_ASSERT3	(_I->second.size()>1,"Environment in weather must >=2",*_I->first);
+        	std::sort(_I->second.begin(),_I->second.end(),sort_env_pred);
+        }
+        R_ASSERT2	(!Weathers.empty(),"Empty weathers.");
+        SetWeather	(first_weather);
     }
 }
 
 void CEnvironment::unload	()
 {
-    xr_delete				(eff_Rain);
-	Palette.clear			();
-    Current.unload			();
+    WeatherPairIt _I=Weathers.begin();
+    WeatherPairIt _E=Weathers.end();
+    for (; _I!=_E; _I++)
+    	for (EnvIt it=_I->second.begin(); it!=_I->second.end(); it++)
+        	xr_delete	(*it);
+	Weathers.clear		();
+    xr_delete			(eff_Rain);
+    xr_delete			(eff_LensFlare);
+    xr_delete			(eff_Thunderbolt);
+    CurrentWeather		= 0;
+    CurrentWeatherName	= 0;
+    CurrentEnv.unload	();
+    CurrentA			= 0;
+    CurrentB			= 0;
+    ABcurrent			= 0;
+    ABlength			= 0;
+}
+
+void CEnvironment::SetWeather(LPCSTR name)
+{
+	R_ASSERT2			(name&&name[0],"Empty weather name");
+	WeatherPairIt it	= Weathers.find(name);
+    R_ASSERT3			(it!=Weathers.end(),"Invalid weather name.",name);
+	CurrentWeather		= &it->second;
+    CurrentWeatherName	= *it->first;
+}
+
+IC bool lb_env_pred(const CEnvDescriptor*& x, float val)
+{	return x->exec_time < val;	}
+
+void CEnvironment::SelectEnv()
+{
+	VERIFY				(CurrentWeather);
+    if ((CurrentA==CurrentB)&&(CurrentA==0)){
+        CurrentA		= *CurrentWeather->begin();
+        CurrentB		= *(CurrentWeather->begin()+1);
+        ABlength		= CurrentB->exec_time-CurrentA->exec_time;
+        ABcurrent		= 0.f;
+    }else{
+        CurrentA		= CurrentB;
+        EnvIt env		= std::lower_bound(CurrentWeather->begin(),CurrentWeather->end(),CurrentB->exec_time+1.f,lb_env_pred);
+        if (env==CurrentWeather->end()){
+            CurrentB	= CurrentWeather->front();
+            ABlength	= (24*60*60-CurrentA->exec_time)+CurrentB->exec_time;
+        }else{
+            CurrentB	= *env;
+            ABlength	= CurrentB->exec_time-CurrentA->exec_time;
+        }
+        ABcurrent		= 0.f;
+    }
 }
 
 void CEnvironment::OnFrame()
 {
-	// ******************** Environment params (interpolation)
-	float		t_pos	= Device.fTimeGlobal/10;
-	float		t_ip;
-	float		t_fact	= modff		(t_pos, &t_ip);
-	int			f_1		= iFloor	(t_ip)	% Palette.size();
-	int			f_2		= (f_1 + 1)			% Palette.size();
-	CEnvDescriptor&	_A	= Palette	[f_1];
-	CEnvDescriptor&	_B	= Palette	[f_2];
-	Current.lerp		(_A,_B,t_fact);
-	eff_LensFlare->lerp	(_A.lens_flare_id,_B.lens_flare_id,t_fact);
+#ifdef _EDITOR
+	ABcurrent			+= Device.fTimeDelta*ABspeed;
+#else
+	ABcurrent			+= Device.fTimeDelta*Level().GetGameTimeFactor();
+#endif
+    if (ABcurrent>ABlength)	SelectEnv();
+
+    VERIFY(CurrentA&&CurrentB);
+    float t_fact		= ABcurrent/ABlength; VERIFY(t_fact<1.f);
+	CurrentEnv.lerp		(*CurrentA,*CurrentB,t_fact);
+	eff_LensFlare->lerp	(CurrentA->lens_flare_id,CurrentB->lens_flare_id,t_fact);
+    eff_Thunderbolt->lerp(CurrentEnv.bolt_period,CurrentEnv.bolt_duration);
 
 	// ******************** Environment params (setting)
-	CHK_DX(HW.pDevice->SetRenderState( D3DRS_FOGCOLOR,	color_rgba_f(Current.fog_color.x,Current.fog_color.y,Current.fog_color.z,0) )); 
-	CHK_DX(HW.pDevice->SetRenderState( D3DRS_FOGSTART,	*(u32 *)(&Current.fog_near)	));
-	CHK_DX(HW.pDevice->SetRenderState( D3DRS_FOGEND,	*(u32 *)(&Current.fog_far)	));
+	CHK_DX(HW.pDevice->SetRenderState( D3DRS_FOGCOLOR,	color_rgba_f(CurrentEnv.fog_color.x,CurrentEnv.fog_color.y,CurrentEnv.fog_color.z,0) )); 
+	CHK_DX(HW.pDevice->SetRenderState( D3DRS_FOGSTART,	*(u32 *)(&CurrentEnv.fog_near)	));
+	CHK_DX(HW.pDevice->SetRenderState( D3DRS_FOGEND,	*(u32 *)(&CurrentEnv.fog_far)	));
 }
 
 extern float psHUD_FOV;
@@ -207,7 +294,7 @@ void CEnvironment::RenderFirst	()
 		RCache.set_xform_world		(mSky);
 
 		u32		i_offset,v_offset;
-		Fcolor	clr					= { Current.sky_color.x, Current.sky_color.y, Current.sky_color.z, Current.sky_factor };
+		Fcolor	clr					= { CurrentEnv.sky_color.x, CurrentEnv.sky_color.y, CurrentEnv.sky_color.z, CurrentEnv.sky_factor };
 		u32		C					= clr.get	();
 
 		// Fill index buffer
@@ -224,7 +311,7 @@ void CEnvironment::RenderFirst	()
 		// Render
 		RCache.set_Geometry			(sh_2geom);
 		RCache.set_Shader			(sh_2sky);
-		RCache.set_Textures			(&Current.sky_r_textures);
+		RCache.set_Textures			(&CurrentEnv.sky_r_textures);
 		RCache.Render				(D3DPT_TRIANGLELIST,v_offset,0,12,i_offset,18);
 
 		::Render->rmNormal			();
@@ -237,6 +324,7 @@ void CEnvironment::RenderLast		()
 {
     eff_LensFlare->Render			(FALSE,TRUE,TRUE);
 	eff_Rain->Render				();
+    eff_Thunderbolt->Render			();
 }
 
 void CEnvironment::OnDeviceCreate()
@@ -244,14 +332,20 @@ void CEnvironment::OnDeviceCreate()
 	sh_2sky.create			(&b_skybox,"skybox_2t");
 	sh_2geom.create			(v_skybox_fvf,RCache.Vertex.Buffer(), RCache.Index.Buffer());
     load					();
-    eff_LensFlare->OnDeviceCreate();
+//    eff_LensFlare->OnDeviceCreate();
 }
 
 void CEnvironment::OnDeviceDestroy()
 {
-    eff_LensFlare->OnDeviceDestroy();
 	unload					();
 	sh_2sky.destroy			();
 	sh_2geom.destroy		();
 }
+
+void CEnvironment::ED_Reload()
+{
+	OnDeviceDestroy			();
+	OnDeviceCreate			();
+}
+
 

@@ -150,7 +150,7 @@ public:
 	void				AppendIndexObject		(u32 color,LPCSTR name,bool bTestUnique=true);
     EDetail*			FindObjectInColorIndices(u32 index, LPCSTR name);
     void				ExportColorIndices		(LPCSTR fname);
-    void				ImportColorIndices		(LPCSTR fname);
+    bool				ImportColorIndices		(LPCSTR fname);
 
     void				ClearColorIndices		();
     void				ClearSlots				();

@@ -42,6 +42,35 @@ void CDetail::transfer	(Fmatrix& mXform, fvfVertexOut* vDest, u32 C, u16* iDest,
 	}
 }
 
+void CDetail::transfer	(Fmatrix& mXform, fvfVertexOut* vDest, u32 C, u16* iDest, u32 iOffset, float du, float dv)
+{
+	// Transfer vertices
+	{
+		CDetail::fvfVertexIn	*srcIt = vertices, *srcEnd = vertices+number_vertices;
+		CDetail::fvfVertexOut	*dstIt = vDest;
+		for	(; srcIt!=srcEnd; srcIt++, dstIt++)
+		{
+			mXform.transform_tiny	(dstIt->P,srcIt->P);
+			dstIt->C	= C;
+			dstIt->u	= srcIt->u+du;
+			dstIt->v	= srcIt->v+dv;
+		}
+	}
+	
+	// Transfer indices (in 32bit lines)
+	VERIFY	(iOffset<65535);
+	{
+		u32	item	= (iOffset<<16) | iOffset;
+		u32	count	= number_indices/2;
+		LPDWORD	sit		= LPDWORD(indices);
+		LPDWORD	send	= sit+count;
+		LPDWORD	dit		= LPDWORD(iDest);
+		for		(; sit!=send; dit++,sit++)	*dit=*sit+item;
+		if		(number_indices&1)	
+			iDest[number_indices-1]=indices[number_indices-1]+u16(iOffset);
+	}
+}
+
 void CDetail::Load		(IReader* S)
 {
 	// Shader

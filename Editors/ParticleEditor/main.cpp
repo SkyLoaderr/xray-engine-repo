@@ -158,10 +158,10 @@ void __fastcall TfrmMain::D3DWindowPaint(TObject *Sender)
 
 void __fastcall TfrmMain::fsStorageRestorePlacement(TObject *Sender)
 {
+	psDeviceFlags.set(fsStorage->ReadInteger("Device Flags",rsStatistic|rsFilterLinear|rsFog|rsDrawGrid));
     fraLeftBar->fsStorage->RestoreFormPlacement();
     fraBottomBar->fsStorage->RestoreFormPlacement();
     fraTopBar->fsStorage->RestoreFormPlacement();
-	psDeviceFlags.set(fsStorage->ReadInteger("Device Flags",rsStatistic|rsFilterLinear|rsFog|rsDrawGrid));
 	// read recent list    
     for (int i=frmEditPrefs->seRecentFilesCount->Value; i>=0; i--){
 		AnsiString recent_fn= frmMain->fsStorage->ReadString	(AnsiString("RecentFiles")+AnsiString(i),"");

@@ -75,6 +75,7 @@ void CGlow::Render(int priority, bool strictB2F)
     if ((1==priority)&&(true==strictB2F)){
     	if (!m_bDefLoad) OnDeviceCreate();
         ESceneGlowTools* gt = dynamic_cast<ESceneGlowTools*>(ParentTools); VERIFY(gt);
+        RCache.set_xform_world(Fidentity);
         if (gt->m_Flags.is(ESceneGlowTools::flTestVisibility)){ 
             Fvector D;	D.sub(Device.vCameraPosition,PPosition);
             float dist 	= D.normalize_magn();

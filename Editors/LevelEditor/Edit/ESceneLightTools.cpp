@@ -77,7 +77,7 @@ void ESceneLightTools::BeforeRender()
             Flight L;
             Fvector C;
             if (psDeviceFlags.is(rsEnvironment)){
-	            C			= g_pGamePersistent->Environment.Current.sun_color;
+	            C			= g_pGamePersistent->Environment.CurrentEnv.sun_color;
             }else{
             	C.set		(1.f,1.f,1.f);
             }
@@ -91,7 +91,7 @@ void ESceneLightTools::BeforeRender()
         }
 		// ambient
         if (psDeviceFlags.is(rsEnvironment)){
-	        Fvector& V		= g_pGamePersistent->Environment.Current.ambient;
+	        Fvector& V		= g_pGamePersistent->Environment.CurrentEnv.ambient;
             Fcolor C;		C.set(V.x,V.y,V.z,1.f);
             Device.SetRS	(D3DRS_AMBIENT,C.get());
         }else				Device.SetRS(D3DRS_AMBIENT,0x00000000);

@@ -87,7 +87,9 @@ __published:	// IDE-managed Components
 	TMenuItem *miMuteSounds;
 	TMenuItem *miDrawObjectLOD;
 	TMenuItem *N5;
-	TMenuItem *miEnvironment;
+	TMenuItem *miWeather;
+	TMenuItem *miWeatherNone;
+	TMenuItem *N6;
     void __fastcall ClickOptionsMenuItem(TObject *Sender);
     void __fastcall QualityClick(TObject *Sender);
     void __fastcall fsStorageRestorePlacement(TObject *Sender);
@@ -97,6 +99,7 @@ __published:	// IDE-managed Components
 	void __fastcall ebOptionsMouseDown(TObject *Sender, TMouseButton Button,
           TShiftState Shift, int X, int Y);
 	void __fastcall pmOptionsPopup(TObject *Sender);
+	void __fastcall miWeatherClick(TObject *Sender);
 private:	// User declarations
 public:
 	float fStatusProgress;

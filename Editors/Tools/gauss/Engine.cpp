@@ -16,6 +16,7 @@ CEngine	Engine;
 
 CEngine::CEngine()
 {
+	pSettings = 0;
 }
 
 CEngine::~CEngine()
@@ -62,6 +63,12 @@ void CEngine::Initialize(void)
     PSGP.skin2W				= xrSkin2W_x86;
 #endif
 
+	ReloadSettings			();
+}
+
+void CEngine::ReloadSettings()
+{
+	xr_delete				(pSettings);
     // game configure
     string256 si_name;
     FS.update_path			(si_name,_game_data_,"system.ltx");

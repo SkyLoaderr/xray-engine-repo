@@ -112,7 +112,7 @@ CCustomObject *EScene::RayPickObject(float nearest_dist, const Fvector& start, c
                 if (mt&&mt->RayPick(obj,nearest_dist,start,direction,pinf)) nearest_object = obj;
             }
         }else{
-            ESceneCustomOTools* mt = GetOTools(classfilter); VERIFY(mt);
+            ESceneCustomOTools* mt = GetOTools(classfilter);
             if (mt) mt->RayPick(nearest_object,nearest_dist,start,direction,pinf);
         }
     }

@@ -340,11 +340,12 @@ void __fastcall TfrmDOShuffle::ebLoadListClick(TObject *Sender)
 {
 	AnsiString fname;
 	if (EFS.GetOpenName(_detail_objects_,fname)){
-		bColorIndModif 			= true;
-		DM->ImportColorIndices	(fname.c_str());
-        DM->InvalidateSlots		();
-		ClearIndexForms			();
-        FillData				();
+		if (DM->ImportColorIndices(fname.c_str())){
+			bColorIndModif 		= true;
+	        DM->InvalidateSlots	();
+			ClearIndexForms		();
+        	FillData			();
+        }
     }
 }
 //---------------------------------------------------------------------------

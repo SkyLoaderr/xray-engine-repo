@@ -26,77 +26,77 @@
 #define BLEND_DEC_SPEED 4.0f
 
 //------------------------------------------------------------------------------
-void CLensFlareDescriptor::SetSource(float fRadius, const char* tex_name)
+void CLensFlareDescriptor::SetSource(float fRadius, BOOL ign_color, LPCSTR tex_name, LPCSTR sh_name)
 {
 	m_Source.fRadius	= fRadius;
-    strcpy				(m_Source.texture,tex_name);
+    m_Source.shader		= sh_name;
+    m_Source.texture	= tex_name;
+    m_Source.ignore_color=ign_color;
 }
 
-void CLensFlareDescriptor::SetGradient(float fMaxRadius, float fOpacity, const char* tex_name)
+void CLensFlareDescriptor::SetGradient(float fMaxRadius, float fOpacity, LPCSTR tex_name, LPCSTR sh_name)
 {
 	m_Gradient.fRadius	= fMaxRadius;
 	m_Gradient.fOpacity	= fOpacity;
-    strcpy				(m_Gradient.texture,tex_name);
+    m_Gradient.shader	= sh_name;
+    m_Gradient.texture	= tex_name;
 }
 
-void CLensFlareDescriptor::AddFlare(float fRadius, float fOpacity, float fPosition, const char* tex_name)
+void CLensFlareDescriptor::AddFlare(float fRadius, float fOpacity, float fPosition, LPCSTR tex_name, LPCSTR sh_name)
 {
 	SFlare F;
 	F.fRadius	= fRadius;
 	F.fOpacity	= fOpacity;
     F.fPosition	= fPosition;
-    strcpy				(F.texture,tex_name);
+    F.shader	= sh_name;
+    F.texture	= tex_name;
 	m_Flares.push_back	(F);
 }
 
-ref_shader CLensFlareDescriptor::CreateSourceShader(const char* tex_name)
+ref_shader CLensFlareDescriptor::CreateShader(LPCSTR tex_name, LPCSTR sh_name)
 {
 	ref_shader	R;
-	if			(tex_name&&tex_name[0])	R.create("effects\\sun",tex_name);
-	return		R;
-}
-
-ref_shader CLensFlareDescriptor::CreateFlareShader(const char* tex_name)
-{
-	ref_shader	R;
-	if			(tex_name&&tex_name[0])	R.create("effects\\flare",tex_name);
+	if			(tex_name&&tex_name[0])	R.create(sh_name,tex_name);
 	return		R;
 }
 
 void CLensFlareDescriptor::load(CInifile* pIni, LPCSTR sect)
 {
 	strcpy		(section,sect);
-	LPCSTR		T,R,O,P;
-	string256	name;
-	float r, o, p;
 	m_Flags.set	(flSource,pIni->r_bool(section,"source" ));
 	if (m_Flags.is(flSource)){
-		T = pIni->r_string 	( section,"source_texture" );
-		r = pIni->r_float	( section,"source_radius" );
-		SetSource(r,T);
+		LPCSTR S= pIni->r_string 	( section,"source_shader" );
+		LPCSTR T= pIni->r_string 	( section,"source_texture" );
+		float r = pIni->r_float		( section,"source_radius" );
+		BOOL i 	= pIni->r_bool		( section,"source_ignore_color" );
+		SetSource(r,i,T,S);
 	}
 	m_Flags.set	(flFlare,pIni->r_bool ( section,"flares" ));
 	if (m_Flags.is(flFlare)){
-		T = pIni->r_string 	( section,"flare_textures" );
-		R = pIni->r_string 	( section,"flare_radius" );
-		O = pIni->r_string 	( section,"flare_opacity");
-		P = pIni->r_string 	( section,"flare_position");
-		u32 tcnt = _GetItemCount(T);
+	    LPCSTR S= pIni->r_string 	( section,"flare_shader" );
+		LPCSTR T= pIni->r_string 	( section,"flare_textures" );
+		LPCSTR R= pIni->r_string 	( section,"flare_radius" );
+		LPCSTR O= pIni->r_string 	( section,"flare_opacity");
+		LPCSTR P= pIni->r_string 	( section,"flare_position");
+		u32 tcnt= _GetItemCount(T);
+        string256 name;
 		for (u32 i=0; i<tcnt; i++){
-			_GetItem(R,i,name); r=(float)atof(name);
-			_GetItem(O,i,name); o=(float)atof(name);
-			_GetItem(P,i,name); p=(float)atof(name);
+			_GetItem(R,i,name); float r=(float)atof(name);
+			_GetItem(O,i,name); float o=(float)atof(name);
+			_GetItem(P,i,name); float p=(float)atof(name);
 			_GetItem(T,i,name);
-			AddFlare(r,o,p,name);
+			AddFlare(r,o,p,name,S);
 		}
 	}
 	m_Flags.set	(flGradient,CInifile::IsBOOL(pIni->r_string( section, "gradient")));
 	if (m_Flags.is(flGradient)){
-		T = pIni->r_string( section,"gradient_texture" );
-		r = pIni->r_float	( section,"gradient_radius"  );
-		o = pIni->r_float	( section,"gradient_opacity" );
-		SetGradient(r,o,T);
+		LPCSTR S= pIni->r_string 	( section,"gradient_shader" );
+		LPCSTR T= pIni->r_string	( section,"gradient_texture" );
+		float r	= pIni->r_float		( section,"gradient_radius"  );
+		float o = pIni->r_float		( section,"gradient_opacity" );
+		SetGradient(r,o,T,S);
 	}
+    m_StateBlendSpeed 	= 1.f/(_max(pIni->r_float( section,"blend_time" ),0.f)+EPS_S);
 
 	OnDeviceCreate();
 }
@@ -104,9 +104,9 @@ void CLensFlareDescriptor::load(CInifile* pIni, LPCSTR sect)
 void CLensFlareDescriptor::OnDeviceCreate()
 {
 	// shaders
-	m_Gradient.hShader	= CreateFlareShader		(m_Gradient.texture);
-	m_Source.hShader	= CreateSourceShader	(m_Source.texture);
-    for (FlareIt it=m_Flares.begin(); it!=m_Flares.end(); it++) it->hShader = CreateFlareShader(it->texture);
+	m_Gradient.hShader	= CreateShader	(*m_Gradient.texture,*m_Gradient.shader);
+	m_Source.hShader	= CreateShader	(*m_Source.texture,*m_Source.shader);
+    for (FlareIt it=m_Flares.begin(); it!=m_Flares.end(); it++) it->hShader = CreateShader(*it->texture,*it->shader);
 }
 
 void CLensFlareDescriptor::OnDeviceDestroy()
@@ -129,8 +129,12 @@ CLensFlare::CLensFlare()
 	fGradientValue				= 0.f;
 
     hGeom						= 0;
-	first_desc					= 0;
-	second_desc					= 0;
+	m_Current					= 0;
+
+    m_State						= lfsNone;
+    m_StateBlend				= 0.f;
+
+    OnDeviceCreate				();	
 }
 
 
@@ -153,14 +157,28 @@ void CLensFlare::lerp(int a, int b, float f)
     Fvector& c		= g_pGamePersistent->Environment.CurrentEnv.sun_color;
 	LightColor.set	(c.x,c.y,c.z,1.f);
 
-	first_desc		= (a<0)?0:&m_Palette[a];
-	second_desc		= (b<0)?0:&m_Palette[b];
+    CLensFlareDescriptor* desc = (f<0.5f)?&m_Palette[a]:&m_Palette[b];
 
-    if ((first_desc==second_desc)&&(first_desc==0)) {bRender=false; return;}
-    if (LightColor.magnitude_rgb()==0.f)			{bRender=false; return;}
+    switch(m_State){
+    case lfsNone: m_State=lfsShow; m_Current=&m_Palette[a]; break;
+    case lfsIdle: if (desc!=m_Current) m_State=lfsHide; 	break;
+    case lfsShow: 
+        m_StateBlend 	= m_StateBlend + m_Current->m_StateBlendSpeed * Device.fTimeDelta;
+        if (m_StateBlend>1.f) m_State=lfsIdle;
+    break;
+    case lfsHide: 
+        m_StateBlend 	= m_StateBlend - m_Current->m_StateBlendSpeed * Device.fTimeDelta;
+        if (m_StateBlend<0.f){ 	
+            m_State		= lfsShow;
+            m_Current	= &m_Palette[b];
+	        m_StateBlend= m_Current->m_StateBlendSpeed * Device.fTimeDelta;
+        }
+    break;
+    }
+    clamp(m_StateBlend,0.f,1.f);
 
-    factor 			= f;
-	float factor_i	= 1.f-factor;
+    if ((m_Current==0)||(LightColor.magnitude_rgb()==0.f)){bRender=false; return;}
+
 	//
 	// Compute center and axis of flares
 	//
@@ -235,7 +253,7 @@ void CLensFlare::lerp(int a, int b, float f)
 #endif
 
 	// gradient
-	if ((first_desc&&first_desc->m_Flags.is(CLensFlareDescriptor::flGradient))||(second_desc&&second_desc->m_Flags.is(CLensFlareDescriptor::flGradient)))
+	if (m_Current->m_Flags.is(CLensFlareDescriptor::flGradient))
     {
 		Fvector				scr_pos;
 		Device.mFullTransform.transform	( scr_pos, vecLight );
@@ -248,7 +266,7 @@ void CLensFlare::lerp(int a, int b, float f)
 		if (_abs(scr_pos.y) > sun_blend)	ky = ((sun_max - (float)_abs(scr_pos.y))) / (sun_max - sun_blend);
 
 		if (!((_abs(scr_pos.x) > sun_max) || (_abs(scr_pos.y) > sun_max))){
-        	float op		= factor_i*(first_desc?first_desc->m_Gradient.fOpacity:0.f)+factor*(second_desc?second_desc->m_Gradient.fOpacity:0.f);
+        	float op		= m_StateBlend*m_Current->m_Gradient.fOpacity;
 			fGradientValue	= kx * ky *  op * fBlend;
 		}else
 			fGradientValue	= 0;
@@ -258,7 +276,7 @@ void CLensFlare::lerp(int a, int b, float f)
 void CLensFlare::Render(BOOL bSun, BOOL bFlares, BOOL bGradient)
 {
 	if (!bRender)		return;
-	VERIFY				(first_desc||second_desc);
+	VERIFY				(m_Current);
 
 	Fcolor				dwLight;
 	Fcolor				color;
@@ -269,36 +287,23 @@ void CLensFlare::Render(BOOL bSun, BOOL bFlares, BOOL bGradient)
 	svector<ref_shader,MAX_Flares>		_2render;
 
 	u32									VS_Offset;
-	FVF::LIT *pv						= (FVF::LIT*) RCache.Vertex.Lock(2*MAX_Flares*4,hGeom.stride(),VS_Offset);
+	FVF::LIT *pv						= (FVF::LIT*) RCache.Vertex.Lock(MAX_Flares*4,hGeom.stride(),VS_Offset);
 
 	float 	fDistance		= FAR_DIST*0.75f;
 
-	float factor_i 			= 1.f-factor;
-
 	if (bSun){
-    	if (first_desc&&first_desc->m_Flags.is(CLensFlareDescriptor::flSource)){
-            vecSx.mul			(vecX, first_desc->m_Source.fRadius*fDistance);
-            vecSy.mul			(vecY, first_desc->m_Source.fRadius*fDistance);
-            color.set			( dwLight );
-	        color.mul_rgba		(factor_i);
+    	if (m_Current->m_Flags.is(CLensFlareDescriptor::flSource)){
+            vecSx.mul			(vecX, m_Current->m_Source.fRadius*fDistance);
+            vecSy.mul			(vecY, m_Current->m_Source.fRadius*fDistance);
+            if (m_Current->m_Source.ignore_color) 	color.set(1.f,1.f,1.f,1.f);
+            else									color.set(dwLight);
+	        color.a				*= m_StateBlend;
             u32 c				= color.get();
             pv->set				(vecLight.x+vecSx.x-vecSy.x, vecLight.y+vecSx.y-vecSy.y, vecLight.z+vecSx.z-vecSy.z, c, 0, 0); pv++;
             pv->set				(vecLight.x+vecSx.x+vecSy.x, vecLight.y+vecSx.y+vecSy.y, vecLight.z+vecSx.z+vecSy.z, c, 0, 1); pv++;
             pv->set				(vecLight.x-vecSx.x-vecSy.x, vecLight.y-vecSx.y-vecSy.y, vecLight.z-vecSx.z-vecSy.z, c, 1, 0); pv++;
             pv->set				(vecLight.x-vecSx.x+vecSy.x, vecLight.y-vecSx.y+vecSy.y, vecLight.z-vecSx.z+vecSy.z, c, 1, 1); pv++;
-            _2render.push_back	(first_desc->m_Source.hShader);
-        }
-    	if (second_desc&&second_desc->m_Flags.is(CLensFlareDescriptor::flSource)){
-            vecSx.mul			(vecX, second_desc->m_Source.fRadius*fDistance);
-            vecSy.mul			(vecY, second_desc->m_Source.fRadius*fDistance);
-            color.set			( dwLight );
-            color.mul_rgba		(factor);
-            u32 c				= color.get();   
-            pv->set				(vecLight.x+vecSx.x-vecSy.x, vecLight.y+vecSx.y-vecSy.y, vecLight.z+vecSx.z-vecSy.z, c, 0, 0); pv++;
-            pv->set				(vecLight.x+vecSx.x+vecSy.x, vecLight.y+vecSx.y+vecSy.y, vecLight.z+vecSx.z+vecSy.z, c, 0, 1); pv++;
-            pv->set				(vecLight.x-vecSx.x-vecSy.x, vecLight.y-vecSx.y-vecSy.y, vecLight.z-vecSx.z-vecSy.z, c, 1, 0); pv++;
-            pv->set				(vecLight.x-vecSx.x+vecSy.x, vecLight.y-vecSx.y+vecSy.y, vecLight.z-vecSx.z+vecSy.z, c, 1, 1); pv++;
-            _2render.push_back	(second_desc->m_Source.hShader);
+            _2render.push_back	(m_Current->m_Source.hShader);
         }
 	}
 	if (fBlend>=EPS_L)
@@ -306,34 +311,14 @@ void CLensFlare::Render(BOOL bSun, BOOL bFlares, BOOL bGradient)
 		if(bFlares){
 			vecDx.normalize		(vecAxis);
 			vecDy.crossproduct	(vecDx, vecDir);
-	    	if (first_desc&&first_desc->m_Flags.is(CLensFlareDescriptor::flFlare)){
-                for (CLensFlareDescriptor::FlareIt it=first_desc->m_Flares.begin(); it!=first_desc->m_Flares.end(); it++)
-                {
+	    	if (m_Current->m_Flags.is(CLensFlareDescriptor::flFlare)){
+                for (CLensFlareDescriptor::FlareIt it=m_Current->m_Flares.begin(); it!=m_Current->m_Flares.end(); it++){
                     CLensFlareDescriptor::SFlare&	F = *it;
                     vec.mul				(vecAxis, F.fPosition);
                     vec.add				(vecCenter);
                     vecSx.mul			(vecDx, F.fRadius*fDistance);
                     vecSy.mul			(vecDy, F.fRadius*fDistance);
-                    float    cl			= F.fOpacity * fBlend * factor_i;
-                    color.set			( dwLight );
-                    color.mul_rgba		( cl );
-                    u32 c				= color.get();
-                    pv->set				(vec.x+vecSx.x-vecSy.x, vec.y+vecSx.y-vecSy.y, vec.z+vecSx.z-vecSy.z, c, 0, 0); pv++;
-                    pv->set				(vec.x+vecSx.x+vecSy.x, vec.y+vecSx.y+vecSy.y, vec.z+vecSx.z+vecSy.z, c, 0, 1); pv++;
-                    pv->set				(vec.x-vecSx.x-vecSy.x, vec.y-vecSx.y-vecSy.y, vec.z-vecSx.z-vecSy.z, c, 1, 0); pv++;
-                    pv->set				(vec.x-vecSx.x+vecSy.x, vec.y-vecSx.y+vecSy.y, vec.z-vecSx.z+vecSy.z, c, 1, 1); pv++;
-                    _2render.push_back	(it->hShader);
-                }
-            }
-	    	if (second_desc&&second_desc->m_Flags.is(CLensFlareDescriptor::flFlare)){
-                for (CLensFlareDescriptor::FlareIt it=second_desc->m_Flares.begin(); it!=second_desc->m_Flares.end(); it++)
-                {
-                    CLensFlareDescriptor::SFlare&	F = *it;
-                    vec.mul				(vecAxis, F.fPosition);
-                    vec.add				(vecCenter);
-                    vecSx.mul			(vecDx, F.fRadius*fDistance);
-                    vecSy.mul			(vecDy, F.fRadius*fDistance);
-                    float    cl			= F.fOpacity * fBlend *factor;
+                    float    cl			= F.fOpacity * fBlend * m_StateBlend;
                     color.set			( dwLight );
                     color.mul_rgba		( cl );
                     u32 c				= color.get();
@@ -347,33 +332,19 @@ void CLensFlare::Render(BOOL bSun, BOOL bFlares, BOOL bGradient)
 		}
 		// gradient
 		if (bGradient&&(fGradientValue>=EPS_L)){
-            if (first_desc&&first_desc->m_Flags.is(CLensFlareDescriptor::flGradient)){
-                vecSx.mul			(vecX, first_desc->m_Gradient.fRadius*fGradientValue*fDistance);
-                vecSy.mul			(vecY, first_desc->m_Gradient.fRadius*fGradientValue*fDistance);
+            if (m_Current->m_Flags.is(CLensFlareDescriptor::flGradient)){
+                vecSx.mul			(vecX, m_Current->m_Gradient.fRadius*fGradientValue*fDistance);
+                vecSy.mul			(vecY, m_Current->m_Gradient.fRadius*fGradientValue*fDistance);
 
                 color.set			( dwLight );
-                color.mul_rgba		( fGradientValue*factor_i );
+                color.mul_rgba		( fGradientValue*m_StateBlend );
 
                 u32 c				= color.get	();
                 pv->set				(vecLight.x+vecSx.x-vecSy.x, vecLight.y+vecSx.y-vecSy.y, vecLight.z+vecSx.z-vecSy.z, c, 0, 0); pv++;
                 pv->set				(vecLight.x+vecSx.x+vecSy.x, vecLight.y+vecSx.y+vecSy.y, vecLight.z+vecSx.z+vecSy.z, c, 0, 1); pv++;
                 pv->set				(vecLight.x-vecSx.x-vecSy.x, vecLight.y-vecSx.y-vecSy.y, vecLight.z-vecSx.z-vecSy.z, c, 1, 0); pv++;
                 pv->set				(vecLight.x-vecSx.x+vecSy.x, vecLight.y-vecSx.y+vecSy.y, vecLight.z-vecSx.z+vecSy.z, c, 1, 1); pv++;
-                _2render.push_back	(first_desc->m_Gradient.hShader);
-            }
-            if (second_desc&&second_desc->m_Flags.is(CLensFlareDescriptor::flGradient)){
-                vecSx.mul				(vecX, second_desc->m_Gradient.fRadius*fGradientValue*fDistance);
-                vecSy.mul				(vecY, second_desc->m_Gradient.fRadius*fGradientValue*fDistance);
-
-                color.set				( dwLight );
-                color.mul_rgba			( fGradientValue*factor );
-
-                u32 c					= color.get	();
-                pv->set					(vecLight.x+vecSx.x-vecSy.x, vecLight.y+vecSx.y-vecSy.y, vecLight.z+vecSx.z-vecSy.z, c, 0, 0); pv++;
-                pv->set					(vecLight.x+vecSx.x+vecSy.x, vecLight.y+vecSx.y+vecSy.y, vecLight.z+vecSx.z+vecSy.z, c, 0, 1); pv++;
-                pv->set					(vecLight.x-vecSx.x-vecSy.x, vecLight.y-vecSx.y-vecSy.y, vecLight.z-vecSx.z-vecSy.z, c, 1, 0); pv++;
-                pv->set					(vecLight.x-vecSx.x+vecSy.x, vecLight.y-vecSx.y+vecSy.y, vecLight.z-vecSx.z+vecSy.z, c, 1, 1); pv++;
-                _2render.push_back		(second_desc->m_Gradient.hShader);
+                _2render.push_back	(m_Current->m_Gradient.hShader);
             }
 		}
 	}

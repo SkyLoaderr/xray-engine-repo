@@ -7,6 +7,8 @@
 #include "LogForm.h"
 #include "EditorPref.h"
 #include "ui_main.h"
+#include "igame_persistent.h"
+#include "environment.h"
 
 //---------------------------------------------------------------------------
 #pragma package(smart_init)
@@ -30,7 +32,6 @@ void __fastcall TfraBottomBar::ClickOptionsMenuItem(TObject *Sender)
         mi->Checked = !mi->Checked;
         if (mi==miDrawGrid)     			UI.Command(COMMAND_TOGGLE_GRID);
         else if (mi==miRenderWithTextures)	psDeviceFlags.set(rsRenderTextures,mi->Checked);
-        else if (mi==miEnvironment)			psDeviceFlags.set(rsEnvironment,mi->Checked);
         else if (mi==miMuteSounds)			psDeviceFlags.set(rsMuteSounds,mi->Checked);
         else if (mi==miLightScene)  		psDeviceFlags.set(rsLighting,mi->Checked);
         else if (mi==miRenderLinearFilter)	psDeviceFlags.set(rsFilterLinear,mi->Checked);
@@ -79,6 +80,92 @@ void __fastcall TfraBottomBar::fsStorageRestorePlacement(TObject *Sender)
     else if (N25->Checked)	QualityClick(N25);
     // statistic
     ebStatClick(Sender);
+
+    // setup menu
+    miWeather->Clear();
+
+    TMenuItem* mi	= xr_new<TMenuItem>((TComponent*)0);
+    mi->Caption 	= "none";
+    mi->OnClick 	= miWeatherClick;
+    mi->Tag			= -1;
+    mi->Checked		= true;
+    mi->RadioItem	= true;
+    miWeather->Add	(mi);
+    mi				= xr_new<TMenuItem>((TComponent*)0);
+    mi->Caption 	= "-";
+    miWeather->Add	(mi);
+
+    // append weathers
+    CEnvironment::WeatherPairIt _I=g_pGamePersistent->Environment.Weathers.begin();
+    CEnvironment::WeatherPairIt _E=g_pGamePersistent->Environment.Weathers.end();
+    for (; _I!=_E; _I++){
+        mi				= xr_new<TMenuItem>((TComponent*)0);
+        mi->Caption 	= *_I->first;
+        mi->OnClick 	= miWeatherClick;
+	    mi->RadioItem	= true;
+        miWeather->Add	(mi);
+    }
+    mi				= xr_new<TMenuItem>((TComponent*)0);
+    mi->Caption 	= "-";
+    miWeather->Add	(mi);
+    
+    TMenuItem* miSp	= xr_new<TMenuItem>((TComponent*)0);
+    miSp->Caption 	= "Speed";
+    miWeather->Add	(miSp);
+    
+    mi				= xr_new<TMenuItem>((TComponent*)0);
+    mi->Caption 	= "x1";
+    mi->OnClick 	= miWeatherClick;
+    mi->Tag			= 1;
+    mi->RadioItem	= true;
+    mi->Checked		= true;
+    miSp->Add		(mi);
+    mi				= xr_new<TMenuItem>((TComponent*)0);
+    mi->Caption 	= "x5";
+    mi->OnClick 	= miWeatherClick;
+    mi->Tag			= 5;
+    mi->RadioItem	= true;
+    miSp->Add		(mi);
+    mi				= xr_new<TMenuItem>((TComponent*)0);
+    mi->Caption 	= "x10";
+    mi->OnClick 	= miWeatherClick;
+    mi->Tag			= 10;
+    mi->RadioItem	= true;
+    miSp->Add		(mi);
+    mi				= xr_new<TMenuItem>((TComponent*)0);
+    mi->Caption 	= "x20";
+    mi->OnClick 	= miWeatherClick;
+    mi->Tag			= 20;
+    mi->RadioItem	= true;
+    miSp->Add		(mi);
+    mi				= xr_new<TMenuItem>((TComponent*)0);
+    mi->Caption 	= "x100";
+    mi->OnClick 	= miWeatherClick;
+    mi->Tag			= 100;
+    mi->RadioItem	= true;
+    miSp->Add		(mi);
+    mi				= xr_new<TMenuItem>((TComponent*)0);
+    mi->Caption 	= "x1000";
+    mi->OnClick 	= miWeatherClick;
+    mi->Tag			= 1000;
+    mi->RadioItem	= true;
+    miSp->Add		(mi);
+    mi				= xr_new<TMenuItem>((TComponent*)0);
+    mi->Caption 	= "x2000";
+    mi->OnClick 	= miWeatherClick;
+    mi->Tag			= 2000;
+    mi->RadioItem	= true;
+    miSp->Add		(mi);
+
+    mi				= xr_new<TMenuItem>((TComponent*)0);
+    mi->Caption 	= "-";
+    miWeather->Add	(mi);
+    mi				= xr_new<TMenuItem>((TComponent*)0);
+    mi->Caption 	= "Reload";
+    mi->OnClick 	= miWeatherClick;
+    mi->Tag			= -2;
+    miWeather->Add	(mi);
+    psDeviceFlags.set	(rsEnvironment,FALSE);
 }
 //---------------------------------------------------------------------------
 
@@ -114,7 +201,6 @@ void __fastcall TfraBottomBar::ebOptionsMouseDown(TObject *Sender,
 void __fastcall TfraBottomBar::pmOptionsPopup(TObject *Sender)
 {
     miRenderWithTextures->Checked	= psDeviceFlags.is(rsRenderTextures);
-    miEnvironment->Checked			= psDeviceFlags.is(rsEnvironment);
     miLightScene->Checked			= psDeviceFlags.is(rsLighting);
     miMuteSounds->Checked			= psDeviceFlags.is(rsMuteSounds);
     miRenderLinearFilter->Checked	= psDeviceFlags.is(rsFilterLinear);
@@ -127,4 +213,25 @@ void __fastcall TfraBottomBar::pmOptionsPopup(TObject *Sender)
 }
 //---------------------------------------------------------------------------
 
+void __fastcall TfraBottomBar::miWeatherClick(TObject *Sender)
+{
+    TMenuItem* mi = dynamic_cast<TMenuItem*>(Sender);
+    if (mi){
+    	if (mi->Tag==0){
+		    psDeviceFlags.set	(rsEnvironment,TRUE);
+    	    g_pGamePersistent->Environment.SetWeather(mi->Caption.c_str());
+        	mi->Checked = !mi->Checked;
+        }else if (mi->Tag==-1){
+		    psDeviceFlags.set	(rsEnvironment,FALSE);
+        	mi->Checked = !mi->Checked;
+        }else if (mi->Tag==-2){
+        	Engine.ReloadSettings();
+    	    g_pGamePersistent->Environment.ED_Reload();
+        }else if (mi->Tag>0){
+        	g_pGamePersistent->Environment.ED_SetSpeed(mi->Tag);
+        	mi->Checked = !mi->Checked;
+        }
+    }
+}
+//---------------------------------------------------------------------------
 

@@ -95,7 +95,7 @@
       intermediate\UI_MainCommand.obj intermediate\UI_MainExtern.obj 
       intermediate\UI_MainMail.obj intermediate\UI_ObjectTools.obj 
       intermediate\UI_PSTools.obj intermediate\UI_SpawnTools.obj 
-      intermediate\UI_SectorTools.obj intermediate\UI_ShapeTools.obj 
+      intermediate\UI_PortalTools.obj intermediate\UI_ShapeTools.obj 
       intermediate\ui_tools.obj intermediate\UI_WayPointTools.obj 
       intermediate\TopBar.obj intermediate\BottomBar.obj 
       intermediate\ChoseForm.obj intermediate\DOOneColor.obj 
@@ -135,7 +135,8 @@
       intermediate\ESceneWayTools.obj intermediate\ESceneSoundEnvTools.obj 
       intermediate\ESceneSoundSrcTools.obj intermediate\Scene_Tools.obj 
       intermediate\ESceneGlowTools.obj intermediate\ESceneDummyTools.obj 
-      intermediate\FrameSpawn.obj"/>
+      intermediate\FrameSpawn.obj intermediate\UI_SectorTools.obj 
+      intermediate\thunderbolt.obj"/>
     <RESFILES value="resource.res LevelEditor.res"/>
     <IDLFILES value=""/>
     <IDLGENFILES value=""/>
@@ -370,7 +371,7 @@
       <FILE FILENAME="edit\UI_ObjectTools.cpp" FORMNAME="" UNITNAME="UI_ObjectTools.cpp" CONTAINERID="CCompiler" DESIGNCLASS="" LOCALCOMMAND=""/>
       <FILE FILENAME="edit\UI_PSTools.cpp" FORMNAME="" UNITNAME="UI_PSTools.cpp" CONTAINERID="CCompiler" DESIGNCLASS="" LOCALCOMMAND=""/>
       <FILE FILENAME="edit\UI_SpawnTools.cpp" FORMNAME="" UNITNAME="UI_SpawnTools" CONTAINERID="CCompiler" DESIGNCLASS="" LOCALCOMMAND=""/>
-      <FILE FILENAME="edit\UI_SectorTools.cpp" FORMNAME="" UNITNAME="UI_SectorTools.cpp" CONTAINERID="CCompiler" DESIGNCLASS="" LOCALCOMMAND=""/>
+      <FILE FILENAME="edit\UI_PortalTools.cpp" FORMNAME="" UNITNAME="UI_PortalTools" CONTAINERID="CCompiler" DESIGNCLASS="" LOCALCOMMAND=""/>
       <FILE FILENAME="edit\UI_ShapeTools.cpp" FORMNAME="" UNITNAME="UI_ShapeTools.cpp" CONTAINERID="CCompiler" DESIGNCLASS="" LOCALCOMMAND=""/>
       <FILE FILENAME="edit\ui_tools.cpp" FORMNAME="" UNITNAME="ui_tools.cpp" CONTAINERID="CCompiler" DESIGNCLASS="" LOCALCOMMAND=""/>
       <FILE FILENAME="edit\UI_WayPointTools.cpp" FORMNAME="" UNITNAME="UI_WayPointTools.cpp" CONTAINERID="CCompiler" DESIGNCLASS="" LOCALCOMMAND=""/>
@@ -448,6 +449,8 @@
       <FILE FILENAME="edit\ESceneGlowTools.cpp" FORMNAME="" UNITNAME="ESceneGlowTools" CONTAINERID="CCompiler" DESIGNCLASS="" LOCALCOMMAND=""/>
       <FILE FILENAME="edit\ESceneDummyTools.cpp" FORMNAME="" UNITNAME="ESceneDummyTools" CONTAINERID="CCompiler" DESIGNCLASS="" LOCALCOMMAND=""/>
       <FILE FILENAME="FrameSpawn.cpp" FORMNAME="fraSpawn" UNITNAME="FrameSpawn" CONTAINERID="CCompiler" DESIGNCLASS="" LOCALCOMMAND=""/>
+      <FILE FILENAME="edit\UI_SectorTools.cpp" FORMNAME="" UNITNAME="UI_SectorTools" CONTAINERID="CCompiler" DESIGNCLASS="" LOCALCOMMAND=""/>
+      <FILE FILENAME="Engine\thunderbolt.cpp" FORMNAME="" UNITNAME="thunderbolt" CONTAINERID="CCompiler" DESIGNCLASS="" LOCALCOMMAND=""/>
   </FILELIST>
   <BUILDTOOLS>
   </BUILDTOOLS>

@@ -208,6 +208,7 @@ void CSector::OnDestroy( )
 
 void CSector::OnSceneUpdate()
 {
+/*
 	bool bUpdate=false;
     for(SItemIt it = sector_items.begin();it!=sector_items.end();it++){
     	if (!(Scene.ContainsObject(it->object,OBJCLASS_SCENEOBJECT)&&it->object->GetReference()->ContainsMesh(it->mesh))){
@@ -216,6 +217,7 @@ void CSector::OnSceneUpdate()
         }
     }
     if (bUpdate) PortalUtils.RemoveSectorPortal(this);
+*/
 	m_Flags.set(flNeedUpdateVolume,TRUE);
 }
 //----------------------------------------------------

@@ -25,15 +25,6 @@
 #include "render.h"
 #include "PropertiesListHelper.h"
 
-static Fvector down_vec	={0.f,-1.f,0.f};
-static Fvector left_vec	={-1.f,0.f,0.f};
-static Fvector right_vec={1.f,0.f,0.f};
-static Fvector fwd_vec	={0.f,0.f,1.f};
-static Fvector back_vec	={0.f,0.f,-1.f};
-
-static CRandom DetailRandom(0x26111975);
-
-const u32	vs_size				= 3000;
 //------------------------------------------------------------------------------
 
 #define DETMGR_CHUNK_VERSION		0x1000
@@ -46,7 +37,7 @@ const u32	vs_size				= 3000;
 #define DETMGR_CHUNK_SNAP_OBJECTS 	0x1004
 #define DETMGR_CHUNK_DENSITY	 	0x1005
 
-#define DETMGR_VERSION 				0x0002
+#define DETMGR_VERSION 				0x0003
 //------------------------------------------------------------------------------
 EDetailManager::EDetailManager():ESceneCustomMTools(OBJCLASS_DO)
 {
@@ -134,11 +125,11 @@ void EDetailManager::OnRender(int priority, bool strictB2F)
                             bool bSel 	= m_Selected[z*dtH.size_x+x];
                             DetailSlot* slot = dtSlots+z*dtH.size_x+x;
                             c.x			= fromSlotX(x);
-                            c.y			= (slot->y_max+slot->y_min)*0.5f;
+                            c.y			= slot->r_ybase()+slot->r_yheight()*0.5f; //(slot->y_max+slot->y_min)*0.5f;
                             float dist = Device.m_Camera.GetPosition().distance_to_sqr(c);
                          	if ((dist<dist_lim)&&::Render->ViewBase.testSphere_dirty(c,DETAIL_SLOT_SIZE_2)){
-								bbox.min.set(c.x-DETAIL_SLOT_SIZE_2, slot->y_min, c.z-DETAIL_SLOT_SIZE_2);
-                            	bbox.max.set(c.x+DETAIL_SLOT_SIZE_2, slot->y_max, c.z+DETAIL_SLOT_SIZE_2);
+								bbox.min.set(c.x-DETAIL_SLOT_SIZE_2, slot->r_ybase(), 					c.z-DETAIL_SLOT_SIZE_2);
+                            	bbox.max.set(c.x+DETAIL_SLOT_SIZE_2, slot->r_ybase()+slot->r_yheight(),	c.z+DETAIL_SLOT_SIZE_2);
                             	bbox.shrink	(0.05f);
 								DU.DrawSelectionBox(bbox,bSel?&selected:&inactive);
 							}
@@ -189,12 +180,18 @@ void EDetailManager::ExportColorIndices(LPCSTR fname)
     F.save_to(fname);
 }
 
-void EDetailManager::ImportColorIndices(LPCSTR fname)
+bool EDetailManager::ImportColorIndices(LPCSTR fname)
 {
-	ClearColorIndices	();
-	IReader* F=FS.r_open(fname); R_ASSERT(F);
-	LoadColorIndices	(*F);
-	FS.r_close			(F);
+	IReader* F=FS.r_open(fname);
+    if (F){
+        ClearColorIndices	();
+        LoadColorIndices	(*F);
+        FS.r_close			(F);
+        return true;
+    }else{
+    	ELog.DlgMsg			(mtError,"Can't open file '%s'.",fname);
+        return false;
+    }
 }
 
 void EDetailManager::SaveColorIndices(IWriter& F)
@@ -392,18 +389,18 @@ bool EDetailManager::Export(LPCSTR fn)
 	for (int slot_idx=0; slot_idx<slot_cnt; slot_idx++){
     	DetailSlot* it = &dtSlots[slot_idx];
         for (int part=0; part<4; part++){
-        	u8 id		= it->items[part].id;
-        	if (id!=0xff) textures_set.insert(((EDetail*)(objects[id]))->GetTextureName());
+        	u8 id		= it->r_id(part);
+        	if (id!=DetailSlot::ID_Empty) textures_set.insert(((EDetail*)(objects[id]))->GetTextureName());
         }
     }
     textures.assign		(textures_set.begin(),textures_set.end());
 
-    U8Vec remap_object	(objects.size(),0xff);
+    U8Vec remap_object	(objects.size(),DetailSlot::ID_Empty);
     U8It remap_object_it= remap_object.begin();
 
     int new_idx			= 0;
     for (DetailIt d_it=objects.begin(); d_it!=objects.end(); d_it++,remap_object_it++)
-    	*remap_object_it= textures_set.find(((EDetail*)(*d_it))->GetTextureName())==textures_set.end()?0xff:new_idx++;
+    	*remap_object_it= textures_set.find(((EDetail*)(*d_it))->GetTextureName())==textures_set.end()?DetailSlot::ID_Empty:new_idx++;
 //    	textures_set.insert(((EDetail*)(*d_it))->GetTextureName());
         
     AnsiString 			do_tex_name = ChangeFileExt(fn,"_details.dds");
@@ -418,12 +415,12 @@ bool EDetailManager::Export(LPCSTR fn)
 
 	UI.ProgressInc		("export geometry");
     // objects
-    int object_idx= 0;
+    int object_idx		= 0;
     if (bRes){
 	    do_tex_name 	= ChangeFileExt(ExtractFileName(do_tex_name),"");
         F.open_chunk	(DETMGR_CHUNK_OBJECTS);
         for (DetailIt it=objects.begin(); it!=objects.end(); it++){
-        	if (remap_object[it-objects.begin()]!=0xff){
+        	if (remap_object[it-objects.begin()]!=DetailSlot::ID_Empty){
                 F.open_chunk	(object_idx++);
                 if (!((EDetail*)(*it))->m_pRefs){
                     ELog.DlgMsg(mtError, "Bad object or object not found '%s'.", ((EDetail*)(*it))->m_sRefs.c_str());
@@ -449,8 +446,8 @@ bool EDetailManager::Export(LPCSTR fn)
         for (slot_idx=0; slot_idx<slot_cnt; slot_idx++){
             DetailSlot& it = dt_slots[slot_idx];
             for (int part=0; part<4; part++){
-                u8 id		= it.items[part].id;
-                if (id!=0xff) it.items[part].id = remap_object[id];
+                u8 id		= it.r_id(part);
+                if (id!=DetailSlot::ID_Empty) it.w_id(part,remap_object[id]);
             }
         }
 		F.open_chunk	(DETMGR_CHUNK_SLOTS);
