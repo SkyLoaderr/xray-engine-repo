@@ -143,10 +143,10 @@ BOOL CHangingLamp::net_Spawn(CSE_Abstract* DC)
 		TurnOff					();	// -> and here is disable :)
 	}
 	
-	if (Visual())setVisible	(TRUE);
-	setEnabled				(TRUE);
+	setVisible					(!!Visual());
+	setEnabled					(TRUE);
 
-	return					(TRUE);
+	return						(TRUE);
 }
 
 
@@ -238,6 +238,7 @@ void CHangingLamp::UpdateCL	()
 
 void CHangingLamp::renderable_Render()
 {
+	VERIFY							(Visual());
 	inherited::renderable_Render	();
 }
 
