@@ -91,10 +91,11 @@ void	CCar::cam_Update			(float dt)
 	clCenter						(P);
 	Da.set							(0,0,0);
 
-	float yaw_dest	= 0,p;
-	clXFORM().k.getHP				(yaw_dest,p);
+	float yaw_dest,pitch_dest;
+	clXFORM().k.getHP				(yaw_dest,pitch_dest);
 
-	angle_lerp					(camera->yaw,-yaw_dest,PI_DIV_4,dt);
+	angle_lerp						(camera->yaw,-yaw_dest,PI_DIV_4,dt);
+	angle_lerp						(camera->pitch,-pitch_dest,PI_DIV_4,dt);
 	camera->Update					(P,Da);
 	Level().Cameras.Update			(camera);
 }
