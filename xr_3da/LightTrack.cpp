@@ -82,7 +82,7 @@ void	CLightDB_Static::Track(Fvector &pos, float fRadius, CLightTrack& dest)
 			else														amount +=	lt_inc;
 		}
 		
-		I->test			+= amount * dt;
+		I->test			+= amount/3 * dt;
 		clamp			(I->test,-.5f,1.f);
 		I->energy		= I->test; // .9f*I->energy + .1f*I->test;
 
