@@ -69,7 +69,7 @@ public:
 	virtual		void			spatial_register	();
 	virtual		void			spatial_unregister	();
 	virtual		void			spatial_move		();
-	virtual		Fvector			spatial_sector_point()	{ return center; }
+	virtual		Fvector			spatial_sector_point()	{ return spatial.center; }
 
 	ISpatial					();
 	~ISpatial					();
