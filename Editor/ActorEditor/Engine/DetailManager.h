@@ -68,7 +68,7 @@ public:
 	svector<CList<SlotItem*>,dm_max_objects> visible;
 
 public:
-	IC bool					UseVS			()	{ return false; /*return HW.Caps.vertex.dwVersion >= CAP_VERSION(1,1);*/ }
+	IC bool					UseVS			()	{ return HW.Caps.vertex.dwVersion >= CAP_VERSION(1,1); }
 
 	CVertexStream*			soft_VS;
 	void					soft_Load		();
