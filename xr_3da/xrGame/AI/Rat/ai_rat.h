@@ -77,6 +77,7 @@ class CAI_Rat : public CCustomMonster
 		_GRAPH_ID			m_tCurGP;
 		_GRAPH_ID			m_tNextGP;
 		u32					m_dwTimeToChange;
+		float				m_fGoingSpeed;
 		TERRAIN_VECTOR		m_tpaTerrain;
 
 		// FSM

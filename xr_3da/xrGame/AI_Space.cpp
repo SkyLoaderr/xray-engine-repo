@@ -107,11 +107,12 @@ void CAI_Space::Load(LPCSTR name)
 	CALifeCrossTable::Load(fName);
 }
 
-#define NORMALIZE_VECTOR(t) t.x /= 10.f, t.x -= 70.f, t.y /= 10.f, t.y += 20.f, t.z /= 10.f, t.z -= 10.f;
+#define NORMALIZE_VECTOR(t) t.x /= 10.f, t.x += tCameraPosition.x, t.y /= 10.f, t.y += 20.f, t.z /= 10.f, t.z += tCameraPosition.z;
 void CAI_Space::Render()
 {
 	if (bfCheckIfGraphLoaded())
 	{
+		Fvector tCameraPosition = Device.vCameraPosition;
 		CGameFont* F		= ((CHUDManager*)Level().HUD())->pFontDI;
 		for (int i=0; i<(int)GraphHeader().dwVertexCount; i++) {
 			Fvector t1 = m_tpaGraph[i].tGlobalPoint;
