@@ -25,6 +25,9 @@ namespace boost {void __stdcall throw_exception(const std::exception &A);};
 
 #include "smart_cast.h"
 
+#define READ_IF_EXISTS(ltx,method,section,name,default_value)\
+	(ltx->line_exist(section,name)) ? ltx->method(section,name) : default_value
+
 #if XRAY_EXCEPTIONS
 #	define	THROW(xpr)				if (!(xpr)) {throw __FILE__LINE__"\""#xpr"\"";}
 #	define	THROW2(xpr,msg0)		if (!(xpr)) {throw *shared_str().sprintf("%s \"%s\" : %s",__FILE__LINE__,#xpr,msg0 ? msg0 : "");}
