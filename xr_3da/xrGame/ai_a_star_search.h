@@ -142,7 +142,8 @@ public:
 				fValue = tpBestNode->f;
 				tpTemp1 = tpBestNode;
 				tpTemp = tpTemp1->tpBack;
-				for (u32 i=1; tpTemp; tpTemp1 = tpTemp, tpTemp = tpTemp->tpBack, i++) ;
+				for (u32 i=1; tpTemp; tpTemp = tpTemp->tpBack, i++) 
+					tpTemp1 = tpTemp;
 
 				tpaNodes.resize(i);
 
@@ -162,9 +163,6 @@ public:
 			for (  ; tIterator != tEnd; tIterator++) {
 				// checking if that node is in the path of the BESTNODE ones
 				int iNodeIndex = tTemplateNode.get_value(tIterator);
-				if (iNodeIndex == 408) {
-					iNodeIndex = iNodeIndex;
-				}
 				// checking if that node the node of the moving object 
 				if ((bUseMarks) && (!tTemplateNode.bfCheckIfAccessible(iNodeIndex)))
 					continue;
@@ -186,12 +184,9 @@ public:
 					}
 					
 					// initialize node
-					float dG = tpBestNode->g + tTemplateNode.ffEvaluate(iBestIndex,iNodeIndex);
+					float dG = tpBestNode->g + tTemplateNode.ffEvaluate(iBestIndex,iNodeIndex,tIterator);
 					
 					// check if this node is already in the opened list
-					if (tpTemp - tpHeap == 62) {
-						tpTemp = tpTemp;
-					}
 					if (tpTemp->ucOpenCloseMask) {
 						if (tpTemp->g > dG) {
 							tpTemp->g = dG;
@@ -234,7 +229,7 @@ public:
 
 					tpTemp2->iIndex = iNodeIndex;
 					tpTemp2->tpBack = tpBestNode;
-					tpTemp2->g = tpBestNode->g + tTemplateNode.ffEvaluate(iBestIndex,iNodeIndex);
+					tpTemp2->g = tpBestNode->g + tTemplateNode.ffEvaluate(iBestIndex,iNodeIndex,tIterator);
 
 					// put that node to the opened list if wasn't found there and in the closed one
 					tpTemp2->h = tTemplateNode.ffAnticipate();

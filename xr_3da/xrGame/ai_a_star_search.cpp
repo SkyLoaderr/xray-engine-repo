@@ -105,7 +105,7 @@ IC bool CAIMapShortestPathNode::bfCheckIfAccessible(u32 dwNode)
 	return(tData.tpAI_Space->q_mark_bit[dwNode]);
 }
 
-IC float CAIMapShortestPathNode::ffEvaluate(u32 dwStartNode, u32 dwFinishNode)
+IC float CAIMapShortestPathNode::ffEvaluate(u32 dwStartNode, u32 dwFinishNode, iterator &tIterator)
 {
 	if (m_dwLastBestNode != dwStartNode) {
 		m_dwLastBestNode = dwStartNode;
@@ -180,7 +180,7 @@ IC bool CAIMapLCDPathNode::bfCheckIfAccessible(u32 dwNode)
 	return(tData.tpAI_Space->q_mark_bit[dwNode]);
 }
 
-IC float CAIMapLCDPathNode::ffEvaluate(u32 dwStartNode, u32 dwFinishNode)
+IC float CAIMapLCDPathNode::ffEvaluate(u32 dwStartNode, u32 dwFinishNode, iterator &tIterator)
 {
 	if (m_dwLastBestNode != dwStartNode) {
 		m_dwLastBestNode = dwStartNode;
@@ -269,7 +269,7 @@ IC bool CAIMapEnemyPathNode::bfCheckIfAccessible(u32 dwNode)
 	return(tData.tpAI_Space->q_mark_bit[dwNode]);
 }
 
-IC float CAIMapEnemyPathNode::ffEvaluate(u32 dwStartNode, u32 dwFinishNode)
+IC float CAIMapEnemyPathNode::ffEvaluate(u32 dwStartNode, u32 dwFinishNode, iterator &tIterator)
 {
 	if (m_dwLastBestNode != dwStartNode) {
 		m_dwLastBestNode = dwStartNode;
@@ -357,7 +357,7 @@ IC bool CAIMapEnemyPositionPathNode::bfCheckIfAccessible(u32 dwNode)
 	return(tData.tpAI_Space->q_mark_bit[dwNode]);
 }
 
-IC float CAIMapEnemyPositionPathNode::ffEvaluate(u32 dwStartNode, u32 dwFinishNode)
+IC float CAIMapEnemyPositionPathNode::ffEvaluate(u32 dwStartNode, u32 dwFinishNode, iterator &tIterator)
 {
 	if (m_dwLastBestNode != dwStartNode) {
 		m_dwLastBestNode = dwStartNode;
@@ -429,9 +429,10 @@ IC bool CAIGraphShortestPathNode::bfCheckIfAccessible(u32 dwNode)
 	return(true);
 }
 
-IC float CAIGraphShortestPathNode::ffEvaluate(u32 dwStartNode, u32 dwFinishNode)
+IC float CAIGraphShortestPathNode::ffEvaluate(u32 dwStartNode, u32 dwFinishNode, iterator &tIterator)
 {
-	return(((AI::SGraphEdge *)((BYTE *)tData.tpAI_Space->m_tpaGraph + tData.tpAI_Space->m_tpaGraph[dwStartNode].dwEdgeOffset) + (m_dwLastBestNode = dwFinishNode))->fPathDistance);
+	m_dwLastBestNode = dwFinishNode;
+	return(tIterator->fPathDistance);
 }
 
 IC float CAIGraphShortestPathNode::ffAnticipate(u32 dwStartNode)

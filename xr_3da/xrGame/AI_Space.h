@@ -131,7 +131,7 @@ public:
 	IC void		begin					(u32 dwNode, iterator &tStart, iterator &tEnd);
 	IC u32		get_value				(iterator &tIterator);
 	IC bool		bfCheckIfAccessible		(u32 dwNode);
-	IC float	ffEvaluate				(u32 dwStartNode, u32 dwFinishNode);
+	IC float	ffEvaluate				(u32 dwStartNode, u32 dwFinishNode, iterator &tIterator);
 	IC float	ffAnticipate			(u32 dwStartNode);
 	IC float	ffAnticipate			();
 };
@@ -144,7 +144,7 @@ public:
 	IC void		begin					(u32 dwNode, iterator &tStart, iterator &tEnd);
 	IC u32		get_value				(iterator &tIterator);
 	IC bool		bfCheckIfAccessible		(u32 dwNode);
-	IC float	ffEvaluate				(u32 dwStartNode, u32 dwFinishNode);
+	IC float	ffEvaluate				(u32 dwStartNode, u32 dwFinishNode, iterator &tIterator);
 	IC float	ffAnticipate			(u32 dwStartNode);
 	IC float	ffAnticipate			();
 };
@@ -160,7 +160,7 @@ public:
 	IC void		begin					(u32 dwNode, iterator &tStart, iterator &tEnd);
 	IC u32		get_value				(iterator &tIterator);
 	IC bool		bfCheckIfAccessible		(u32 dwNode);
-	IC float	ffEvaluate				(u32 dwStartNode, u32 dwFinishNode);
+	IC float	ffEvaluate				(u32 dwStartNode, u32 dwFinishNode, iterator &tIterator);
 	IC float	ffAnticipate			(u32 dwStartNode);
 	IC float	ffAnticipate			();
 };
@@ -176,7 +176,7 @@ public:
 	IC void		begin					(u32 dwNode, iterator &tStart, iterator &tEnd);
 	IC u32		get_value				(iterator &tIterator);
 	IC bool		bfCheckIfAccessible		(u32 dwNode);
-	IC float	ffEvaluate				(u32 dwStartNode, u32 dwFinishNode);
+	IC float	ffEvaluate				(u32 dwStartNode, u32 dwFinishNode, iterator &tIterator);
 	IC float	ffAnticipate			(u32 dwStartNode);
 	IC float	ffAnticipate			();
 };
@@ -187,7 +187,7 @@ public:
 				CAIGraphShortestPathNode(SAIMapData &tAIMapData);
 	IC void		begin					(u32 dwNode, iterator &tStart, iterator &tEnd);
 	IC bool		bfCheckIfAccessible		(u32 dwNode);
-	IC float	ffEvaluate				(u32 dwStartNode, u32 dwFinishNode);
+	IC float	ffEvaluate				(u32 dwStartNode, u32 dwFinishNode, iterator &tIterator);
 	IC float	ffAnticipate			(u32 dwStartNode);
 	IC float	ffAnticipate			();
 };

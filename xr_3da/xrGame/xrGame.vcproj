@@ -1684,9 +1684,6 @@
 			RelativePath=".\Shedule.txt">
 		</File>
 		<File
-			RelativePath="X:\engine.log">
-		</File>
-		<File
 			RelativePath="..\network.txt">
 		</File>
 		<File
