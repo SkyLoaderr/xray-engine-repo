@@ -334,9 +334,9 @@ bool NVMeshMender::Munge(  const NVMeshMender::VAVector& input,
 
 			vec3 delta = maxPosition - minPosition;
 
-			delta.x = (float)_abs( delta.x );
-			delta.y = (float)_abs( delta.y );
-			delta.z = (float)_abs( delta.z );
+			delta.x = _abs( delta.x );
+			delta.y = _abs( delta.y );
+			delta.z = _abs( delta.z );
 
 			bool maxx,maxy,maxz;
 			maxx = maxy = maxz = false;
@@ -393,7 +393,7 @@ bool NVMeshMender::Munge(  const NVMeshMender::VAVector& input,
 
 				vec3 texCoords = ( ( maxPosition + minPosition ) / 2.0f ) - pPositions[ p ];
 				
-				float Major, Minor, Other = nv_zero;
+				nv_scalar Major, Minor, Other = nv_zero;
 
 				if ( maxx )
 				{
@@ -434,7 +434,7 @@ bool NVMeshMender::Munge(  const NVMeshMender::VAVector& input,
 					}
 				}
 
-				float longitude = nv_zero;
+				nv_scalar longitude = nv_zero;
 
 				// Prevent zero or near-zero from being passed into atan2
 				if ( _abs( Other ) < 0.0001f )
@@ -449,7 +449,7 @@ bool NVMeshMender::Munge(  const NVMeshMender::VAVector& input,
 
 				// perform cylindrical mapping onto object, and remap from -pi,pi to -1,1
 
-				longitude = (float)(( atan2( Minor, Other ) ) / 3.141592654);
+				longitude = (( atan2( Minor, Other ) ) / 3.141592654);
 
 				texCoords.x = 0.5f * longitude + 0.5f;
 				texCoords.y = (Major/deltaMajor) + 0.5f;
@@ -487,9 +487,9 @@ bool NVMeshMender::Munge(  const NVMeshMender::VAVector& input,
 						end = f;
 					}
 
-					float dS = texcoords[ indices[ end ] * 3 + 0 ] - texcoords[ indices[ start ] * 3 + 0 ];
+					nv_scalar dS = texcoords[ indices[ end ] * 3 + 0 ] - texcoords[ indices[ start ] * 3 + 0 ];
 
-					float newS = nv_zero;
+					nv_scalar newS = nv_zero;
 
 					bool bDoS = false;
 
@@ -557,9 +557,9 @@ bool NVMeshMender::Munge(  const NVMeshMender::VAVector& input,
 						end = f;
 					}
 
-					float dT = texcoords[ indices[ end ] * 3 + 1 ] - texcoords[ indices[ start ] * 3 + 1 ];
+					nv_scalar dT = texcoords[ indices[ end ] * 3 + 1 ] - texcoords[ indices[ start ] * 3 + 1 ];
 
-					float newT = nv_zero;
+					nv_scalar newT = nv_zero;
 
 					bool bDoT = false;
 
@@ -704,17 +704,17 @@ bool NVMeshMender::Munge(  const NVMeshMender::VAVector& input,
 
 			vec3 sxt	= edge0 ^ edge1;
 
-            float a = sxt.x;
-            float b = sxt.y;
-            float c = sxt.z;
+            nv_scalar a = sxt.x;
+            nv_scalar b = sxt.y;
+            nv_scalar c = sxt.z;
 
-            float ds_dx = nv_zero;
+            nv_scalar ds_dx = nv_zero;
             if ( _abs( a ) > nv_eps )
             {
                 ds_dx = - b / a;
             }
 
-            float dt_dx = nv_zero;
+            nv_scalar dt_dx = nv_zero;
             if ( _abs( a ) > nv_eps )
             {
                 dt_dx = - c / a;
@@ -731,13 +731,13 @@ bool NVMeshMender::Munge(  const NVMeshMender::VAVector& input,
             b = sxt.y;
             c = sxt.z;
 
-            float ds_dy = nv_zero;
+            nv_scalar ds_dy = nv_zero;
             if ( _abs( a ) > nv_eps )
             {
                 ds_dy = -b / a;
             }
 
-            float dt_dy = nv_zero;
+            nv_scalar dt_dy = nv_zero;
             if ( _abs( a ) > nv_eps )
             {
                 dt_dy = -c / a;
@@ -754,13 +754,13 @@ bool NVMeshMender::Munge(  const NVMeshMender::VAVector& input,
             b = sxt.y;
             c = sxt.z;
 
-            float ds_dz = nv_zero;
+            nv_scalar ds_dz = nv_zero;
             if ( _abs( a ) > nv_eps )
             {
                 ds_dz = -b / a;
             }
 
-            float dt_dz = nv_zero;
+            nv_scalar dt_dz = nv_zero;
             if ( _abs( a ) > nv_eps )
             {
                 dt_dz = -c / a;
@@ -812,12 +812,12 @@ bool NVMeshMender::Munge(  const NVMeshMender::VAVector& input,
 					else
 					{
 						// otherwise, check our neighbor's s,t & sxt vectors vs our own
-						const float sAgreement		= dot(s, sVector[(*iter).face]);
-						const float tAgreement		= dot(t, tVector[(*iter).face]);
-						const float sxtAgreement	= dot(sxt, sxtVector[(*iter).face]);
+						const nv_scalar sAgreement		= dot(s, sVector[(*iter).face]);
+						const nv_scalar tAgreement		= dot(t, tVector[(*iter).face]);
+						const nv_scalar sxtAgreement	= dot(sxt, sxtVector[(*iter).face]);
 
 						// Check Radian angle split limit
-						const float epsilon			= _cos( bSmoothCreaseAngleRadians );
+						const nv_scalar epsilon			= _cos( bSmoothCreaseAngleRadians );
 
 						//  if the discontinuity in s, t, or sxt is greater than some epsilon,
 						//   duplicate the vertex so it won't smooth with its neighbor anymore
