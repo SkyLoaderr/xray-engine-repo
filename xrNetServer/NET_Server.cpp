@@ -655,3 +655,8 @@ void			IPureServer::BannedList_Save	()
 	};
 	FS.w_close		(fs);
 }
+
+LPCSTR			IPureServer::GetBannedListName	()
+{
+	return nameBanned;
+}

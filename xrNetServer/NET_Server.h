@@ -125,6 +125,7 @@ protected:
 			void			BannedAddress_Save	(u32 it, IWriter* fs);
 			void			BannedList_Save		();
 			void			BannedList_Load		()	{};
+			LPCSTR			GetBannedListName	();
 
 public:
 	IPureServer				(CTimer* timer);
