@@ -27,7 +27,7 @@ public:
 		{
 			// Get task
 			task_CS.Enter		();
-			Progress			(1.f - float(task_pool.size())/float(g_deflectors.size()));
+			thProgress			= 1.f - float(task_pool.size())/float(g_deflectors.size());
 			if (task_pool.empty())	
 			{
 				task_CS.Leave		();
