@@ -3,6 +3,56 @@
 #include "ai_space.h"
 #include "ai_pathnodes.h"
 
+/*
+class fBASE
+{
+public:
+	virtual void	GetValue	(CObject* O, LPVOID val) = 0;
+	virtual void	Load		() = 0;
+};
+
+class fHEALTH : public fBASE
+{
+public:
+	virtual void	GetValue	(CObject* O, LPVOID val)
+	{
+		*((int*) val) = O->g_Health();
+	}
+};
+
+class fCONSTANT : public fBASE
+{
+	int constant;
+public:
+	virtual void	GetValue	(CObject* O, LPVOID val)
+	{
+		*((int*) val) = constant;
+	}
+	virtual void	Load		()
+	{
+		constant = ini->ReadINT("aaa","bbb");
+	}
+};
+
+class fFUNCTION : public fBASE
+{
+public:
+	virtual void	GetValue	(CObject* O, LPVOID val)
+	{
+		*((float*) val) = ffEvaluate	(O);
+	}
+};
+
+
+fBASE*		array_of_functions[1000];
+
+{
+	float result;
+	array_of_functions [ 768 ] -> GetValue(this,&result);
+}
+
+*/
+
 extern void	UnpackContour(PContour& C, DWORD ID);
 extern void	IntersectContours(PSegment& Dest, PContour& C1, PContour& C2);
 
