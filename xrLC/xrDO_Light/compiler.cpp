@@ -1,4 +1,35 @@
 #include "stdafx.h"
+#include "xr_func.h"
+#include "xrlevel.h"
+#include "communicate.h"
+#include "cl_rapid.h"
+
+#define LT_DIRECT		0
+#define LT_POINT		1
+#define LT_SECONDARY	2
+
+struct R_Light
+{
+    DWORD           type;				// Type of light source		
+    float			amount;				// Diffuse color of light	
+    Fvector         position;			// Position in world space	
+    Fvector         direction;			// Direction in world space	
+    float		    range;				// Cutoff range
+	float			range2;				// ^2
+    float	        attenuation0;		// Constant attenuation		
+    float	        attenuation1;		// Linear attenuation		
+    float	        attenuation2;		// Quadratic attenuation	
+	
+	Fvector			tri[3];				// Cached triangle for ray-testing
+};
+
+
+DEF_VECTOR		(Lights,R_Light);
+
+Lights			g_lights;
+RAPID::Model	Level;
+Fbox			LevelBB;
+
 
 #define HEMI1_LIGHTS	26
 #define HEMI2_LIGHTS	91
@@ -117,9 +148,10 @@ void xrLoad(LPCSTR name)
 			}
 		}
 	}
+}
 
-	// Init params
-	g_params.Init		();
+void xrLight	()
+{
 }
 
 void xrCompiler(LPCSTR name)

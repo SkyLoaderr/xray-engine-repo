@@ -67,7 +67,7 @@ LINK32=link.exe
 # PROP Intermediate_Dir "Debug"
 # PROP Target_Dir ""
 # ADD BASE CPP /nologo /W3 /Gm /GX /ZI /Od /D "WIN32" /D "_DEBUG" /D "_WINDOWS" /D "_MBCS" /YX /FD /GZ /c
-# ADD CPP /nologo /GB /MDd /W3 /Gm /GX /ZI /Od /D "WIN32" /D "_DEBUG" /D "_WINDOWS" /D "_MBCS" /Yu"stdafx.h" /FD /GZ /c
+# ADD CPP /nologo /MDd /W3 /Gm /GX /ZI /Od /D "WIN32" /D "_DEBUG" /D "_WINDOWS" /D "_MBCS" /Yu"stdafx.h" /FD /GZ /c
 # ADD BASE MTL /nologo /D "_DEBUG" /mktyplib203 /win32
 # ADD MTL /nologo /D "_DEBUG" /mktyplib203 /win32
 # ADD BASE RSC /l 0x409 /d "_DEBUG"
@@ -408,11 +408,27 @@ SOURCE=.\xrThread.h
 # End Group
 # Begin Source File
 
+SOURCE=.\communicate.h
+# End Source File
+# Begin Source File
+
 SOURCE=.\compiler.cpp
 # End Source File
 # Begin Source File
 
+SOURCE=.\light.h
+# End Source File
+# Begin Source File
+
 SOURCE=.\xrDO_Light.cpp
+# End Source File
+# Begin Source File
+
+SOURCE=.\xrLevel.h
+# End Source File
+# Begin Source File
+
+SOURCE=.\xrShaderTypes.h
 # End Source File
 # End Target
 # End Project
