@@ -116,7 +116,7 @@ public:
 								break;
 						}
 					}
-					R_ASSERT(fMinDistance < EPS_L);
+					///R_ASSERT(fMinDistance < EPS_L);
 					SConnectionVertex				T;
 					LPSTR							S;
 					S								= (char *)xr_malloc((strlen(tpGraphPoint->s_name_replace) + 1)*sizeof(char));

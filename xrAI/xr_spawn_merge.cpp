@@ -172,20 +172,24 @@ public:
 				m_tData.dwFinishNode	= *I;
 				m_tData.m_tpAI_Map		= m_tpAI_Map;
 				float					fDistance;
-				m_tpMapPath.vfFindOptimalPath(
-					m_tppHeap,
-					m_tpHeap,
-					m_tpIndexes,
-					m_dwAStarStaticCounter,
-					m_tData,
-					m_tpSpawnNodes[i],
-					*I,
-					fDistance,
-					fCurrentBestDistance,
-					m_tpSpawnPoints[i]->o_Position,
-					tpaGameGraph[I - BB].tLocalPoint,
-					m_tpaNodes,
-					m_dwMaxNodeCount);
+				if (m_tpSpawnNodes[i] != *I) {
+					m_tpMapPath.vfFindOptimalPath(
+						m_tppHeap,
+						m_tpHeap,
+						m_tpIndexes,
+						m_dwAStarStaticCounter,
+						m_tData,
+						m_tpSpawnNodes[i],
+						*I,
+						fDistance,
+						fCurrentBestDistance,
+						m_tpSpawnPoints[i]->o_Position,
+						tpaGameGraph[I - BB].tLocalPoint,
+						m_tpaNodes,
+						m_dwMaxNodeCount);
+				}
+				else
+					fDistance = m_tpSpawnPoints[i]->o_Position.distance_to(tpaGameGraph[I - BB].tLocalPoint);
 				if (fDistance < fCurrentBestDistance) {
 					fCurrentBestDistance = fDistance;
 					dwBest = I - B;
@@ -252,32 +256,37 @@ void vfLoadGameGraph()
 void xrMergeSpawns()
 {
 	// load all the graphs
-	Phase						("Reading level graphs");
-	CInifile ENGINE_API *pIni	= xr_new<CInifile>(INI_FILE);
+	Phase						("Loading game graph");
 	vfLoadGameGraph				();
+	
+	Phase						("Reading level graphs");
+	CInifile 					*Ini = xr_new<CInifile>(INI_FILE);
 	SSpawnHeader				tSpawnHeader;
 	tSpawnHeader.dwVersion		= XRAI_CURRENT_VERSION;
 	tSpawnHeader.dwLevelCount	= 0;
 	tSpawnHeader.dwSpawnCount	= 0;
 	vector<CSpawn *>			tpLevels;
-	string256					S1;
 	SLevel						tLevel;
-	float						fDummy;
-	u32							dwLevelID;
-	for (dwLevelID = 0; pIni->LineExists("game_levels",itoa(dwLevelID,S1,10)); dwLevelID++) {
-		Msg("Reading level %d...",dwLevelID);
-		sscanf(pIni->ReadSTRING("game_levels",itoa(dwLevelID,S1,10)),"%f,%f,%f,%s",&fDummy,&fDummy,&fDummy,S1);
-		Memory.mem_copy(tLevel.caLevelName,S1,strlen(S1) + 1);
-		tpLevels.push_back(xr_new<CSpawn>(tLevel,dwLevelID));
-	}
-	R_ASSERT(tpLevels.size());
+	
+	
+	R_ASSERT					(Ini->SectionExists("levels"));
+    LPCSTR N,V;
+    for (u32 k = 0; Ini->ReadLINE("levels",k,&N,&V); k++) {
+		R_ASSERT				(Ini->SectionExists(N));
+		V						= Ini->ReadSTRING(N,"name");
+		Memory.mem_copy			(tLevel.caLevelName,V,strlen(V) + 1);
+		Msg						("Reading level %s...",tLevel.caLevelName);
+		u32						id = Ini->ReadINT(N,"id");
+		tpLevels.push_back		(xr_new<CSpawn>(tLevel,id));
+    }
+	R_ASSERT					(tpLevels.size());
 	
 	CThreadManager				tThreadManager;		// multithreading
 
 	Phase						("Searching for corresponding graph vertices");
 	for (u32 i=0, N = tpLevels.size(); i<N; i++)
 		tThreadManager.start(tpLevels[i]);
-//		tpLevels[i]->Execute();
+		//tpLevels[i]->Execute();
 	tThreadManager.wait();
 	
 	Phase						("Merging spawn files");
