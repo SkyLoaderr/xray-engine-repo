@@ -80,7 +80,7 @@ void vfLoadAIPoints(LPCSTR name)
 			Status							("Vertexes being read : %d",i);
 	}
 	O->close								();
-	xr_delete								(pSettings);
+	//xr_delete								(pSettings);
 	Status									("Vertexes being read : %d",i);
 }
 
@@ -328,7 +328,7 @@ void xrBuildGraph(LPCSTR name)
 	CThreadManager		tThreadManager;		// multithreading
 	xrCriticalSection	tCriticalSection;	// thread synchronization
 	CAI_Map				*tpAI_Map;
-	pSettings			= xr_new<CInifile>(SYSTEM_LTX);
+	//pSettings			= xr_new<CInifile>(SYSTEM_LTX);
 
 	Msg("Building Level %s",name);
 

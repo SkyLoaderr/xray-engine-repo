@@ -106,7 +106,7 @@ public:
 		}
 		// fill vertex map
 		{
-			pSettings								= xr_new<CInifile>(SYSTEM_LTX);
+			//pSettings								= xr_new<CInifile>(SYSTEM_LTX);
 			string256								fName;
 			//strconcat								(fName,name,tLevel.caLevelName);
 			strconcat								(fName,S,"level.spawn");
@@ -158,7 +158,7 @@ public:
 				xr_delete							(E);
 			}
 			O->close								();
-			xr_delete								(pSettings);
+			//xr_delete								(pSettings);
 		}
 	};
 
