@@ -84,6 +84,7 @@ struct b_lod_face
 struct b_lod
 {
 	b_lod_face			faces	[4];
+	DWORD				dwMaterial;
 };
 
 struct b_params
