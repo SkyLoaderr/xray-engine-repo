@@ -38,8 +38,8 @@ void CLight_DB::Load			(IReader *fs)
 			L->set_shadow				(false);
 #else
 			L->set_type					(IRender_Light::SPOT);
-			Fvector	tmp_D; tmp_D.set	(0,-1,0);
-			L->set_direction			(tmp_D);
+			Fvector	tmpD,tmpR; tmpD.set(0,-1,0);tmpR.set(1,0,0);
+			L->set_rotation				(tmpD,tmpR);
 			L->set_shadow				(true);
 #endif
 			u32 controller				= 0;
@@ -50,7 +50,7 @@ void CLight_DB::Load			(IReader *fs)
 				sun_base			= L;
 				L->set_type			(IRender_Light::DIRECT);
 				L->set_shadow		(true);
-				L->set_direction	(Ldata.direction);
+				L->set_rotation		(Ldata.direction);
 				
 				// copy to env-sun
 				sun		=	L		= Create();
@@ -76,6 +76,7 @@ void CLight_DB::Load			(IReader *fs)
 	R_ASSERT2(sun,"Where is sun?");
 
 	// fake spot
+	/*
 	if (0)
 	{
 		Fvector	P;			P.set(-5.58f,	-0.00f + 2, -3.63f);
@@ -89,6 +90,7 @@ void CLight_DB::Load			(IReader *fs)
 		fake->set_range		(3.f);
 		fake->set_active	(true);
 	}
+	*/
 }
 
 void			CLight_DB::Unload	()
