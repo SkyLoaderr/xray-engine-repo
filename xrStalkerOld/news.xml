@@ -1,6 +1,9 @@
 ﻿<?xml version='1.0' encoding="UTF-8"?>
 <window>
 	<!-- NEWS LIST -->
-	<list x="21" y="88" width="430" height="360" item_height="16"></list>
+	<list x="21" y="88" width="430" height="360" item_height="15">
+        <font font="letterica18" r="225" g="225" b="250"></font>
+    </list>
+
 </window>
 

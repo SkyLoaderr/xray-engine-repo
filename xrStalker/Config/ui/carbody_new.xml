@@ -8,14 +8,14 @@
 	<static_icon x="27" y="22" width="256" height="256">
 		<texture>ui\ui_trade_character</texture>
 	</static_icon>
-	<static_icon x="843" y="22" width="256" height="256">
-		<texture>ui\ui_trade_character</texture>
+	<static_icon x="843" y="22" width="143" height="199">
+		<texture mirror="h" width="141" height="199">ui\ui_trade_character</texture>
 	</static_icon>
 
 	<!-- OUR BAG -->
 	<our_bag_static x="20" y="270" width="290" height="450">
 		<texture>ui\ui_dg_inventory_exchange_trade</texture>
-		<text x="30" y="8" font="graffiti22" r="255" g="255" b="255" a="128">Our items</text>
+		<text x="30" y="8" font="graffiti22" r="238" g="153" b="26"></text>
 	</our_bag_static>
 
 	<dragdrop_list x="29" y="35" width="250" height="460"
@@ -36,15 +36,22 @@
 	<frame_window x="375" y="274" width="267" height="460">
 		<base_texture>ui\ui_frame</base_texture>
 		<left_top_texture x="5" y="10">ui\ui_inv_info_over_lt</left_top_texture>
-		<title x="20" y="-5" width="240" height="60">
-			<text font="graffiti22" r="255" g="255" b="255" a="128">Description</text>
-		</title>
 	</frame_window>
 
 	<!-- description static -->
 	<descr_static x="5" y="180" width="260" height="310">
 		<texture>ui\ui_inv_info_over_b</texture>
 	</descr_static>
+
+	<auto_static x="395" y="461" width="240" height="60">
+		<text font="graffiti22" r="255" g="255" b="255" a="128">Description</text>
+	</auto_static>
+
+	<!-- TAKE ALL -->
+	<take_all_btn x="865" y="725" width="110" height="40" hR="0" hB="0" hG="0">
+        <texture>ui\ui_button_06</texture>
+        <text align="c" font="graffiti22" r="238" g="153" b="26">Take All</text>
+	</take_all_btn>
 
 </window>
 

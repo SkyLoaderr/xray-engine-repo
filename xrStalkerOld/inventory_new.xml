@@ -4,7 +4,7 @@
     <!-- BAG FRAME WINDOW -->
     <bag_static x="10" y="260" width="350" height="480">
 		<texture>ui\ui_dg_inventory</texture>
-        <text x="30" y="8" font="graffiti22" r="255" g="255" b="255" a="128">Bag</text>
+        <text x="30" y="8" font="graffiti22" r="238" g="153" b="26"></text>
     </bag_static>
 
     <!-- ARTIFACT MERGER WINDOW -->
@@ -20,7 +20,7 @@
     <!-- DESCRIPTION WINDOW -->
     <descr_static x="370" y="260" width="335" height="475">
         <texture> ui\ui_dg_info</texture>
-        <text x="25" y="110" font="graffiti22" r="255" g="255" b="255" a="125">Description</text>
+        <text x="25" y="196" font="graffiti22" r="255" g="255" b="255" a="125">Description</text>
     </descr_static>
 
     <!-- CHARACTER WINDOW -->
@@ -94,7 +94,7 @@
 
     <!-- OUTFIT SLOT -->
     <!-- <dragdrop_list x="828" y="314" width="150" height="220" -->
-    <dragdrop_list x="858" y="314" width="150" height="220"
+    <dragdrop_list x="858" y="314" width="86" height="340"
             cell_width = "51" cell_height="51"
             rows_num="4" cols_num="4" show_grid="0"></dragdrop_list>
 
@@ -128,8 +128,9 @@
         <text x="20" y="8" font="medium" r="240" g="217" b="182" a="255"></text>
 	</time_static>
 
-    <weight_static x="-4" y="380" width="200" height="30">
-        <text x="20" y="8" font="letterica18" r="216" g="186" b="140" a="255">WEIGHT</text>
+	<!-- !!!! OLD OLD OLD !!!!!-->
+    <weight_static x="20" y="259" width="315" height="30">
+        <text x="20" y="8" font="graffiti22" r="238" g="153" b="26" a="255"></text>
 	</weight_static>
 
 	<!-- Exit button -->

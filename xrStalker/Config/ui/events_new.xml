@@ -27,7 +27,9 @@
 	<tree_root_font font="letterica18" r="225" g="225" b="250">Encyclopedia</tree_root_font>
     <!-- FONT FOR TREE ITEMS -->
 	<tree_item_font font="letterica16" r="255" g="255" b="255">Encyclopedia</tree_item_font>
-	<u   <!-- EVENTS LIST HEADER -->
+	<unread_color r="0" g="255" b="0"/>
+
+    <!-- EVENTS LIST HEADER -->
     <right_frame_line x="8" y="16" width="284" height="27">
         <title x="10" y="2" width="545" height="440">
             <text font="letterica25" r="225" g="225" b="250">Notebook</text>

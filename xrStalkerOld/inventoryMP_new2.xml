@@ -10,7 +10,7 @@
 	<!-- DESCRIPTION WINDOW -->
 	<desc_static x="340" y="260" width="420" height="400">
 		<texture>ui\ui_dg_info_multiplayer</texture>
-		<text x="40" y="7" font="graffiti22" r="255" g="255" b="255" a="130">Description</text>
+		<text x="20" y="195" font="graffiti22" r="255" g="255" b="255" a="130">Description</text>
 	</desc_static>
 
 	<!-- CHARACTER WINDOW -->
