@@ -185,11 +185,17 @@ BOOL CLevel::net_Client		( LPCSTR name_of_server )
 
 		//
 #pragma todo("spawning monsters")
+		char		Parsed	[128];
 		{
-			char		Parsed	[128];
 			int id		= Level().get_RPID	("RP_04");
 			R_ASSERT	(id>=0);
 			sprintf		(Parsed,"m_enemy,%d,1,0,0",id);
+			Engine.Event.Signal	("LEVEL:spawn",DWORD(LPCSTR(Parsed)));
+		}
+		{
+			int id		= Level().get_RPID	("RP_F01");
+			R_ASSERT	(id>=0);
+			sprintf		(Parsed,"m_friend,%d,0,0,0",id);
 			Engine.Event.Signal	("LEVEL:spawn",DWORD(LPCSTR(Parsed)));
 		}
 
