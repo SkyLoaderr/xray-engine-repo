@@ -416,7 +416,7 @@ CGraphMerger::CGraphMerger(LPCSTR name)
 	
 	CInifile *Ini = xr_new<CInifile>(INI_FILE);
 	if (!Ini->section_exist("levels"))
-		THROW;
+		THROW(false);
 	R_ASSERT						(Ini->section_exist("levels"));
 
 	GRAPH_P_MAP						tpGraphs;
