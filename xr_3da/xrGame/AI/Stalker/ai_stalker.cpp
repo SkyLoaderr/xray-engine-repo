@@ -300,10 +300,6 @@ void CAI_Stalker::net_Export		(NET_Packet& P)
 		P.w					(&f1,						sizeof(f1));
 	}
 
-	P.w_float						(inventory().TotalWeight());
-	P.w_u32							(m_dwMoney);
-	P.w_u32							(0);
-
 	ALife::ETaskState				task_state = ALife::eTaskStateChooseTask;
 	P.w								(&task_state,sizeof(task_state));
 	P.w_u32							(0);
@@ -316,6 +312,10 @@ void CAI_Stalker::net_Import		(NET_Packet& P)
 	net_update						N;
 
 	u8 flags;
+
+	P.r_float						();
+	m_dwMoney						= P.r_u32();
+	P.r_u32							();
 
 	float health;
 	P.r_float_q16		(health,-500,1000);
@@ -344,11 +344,6 @@ void CAI_Stalker::net_Import		(NET_Packet& P)
 
 	P.r_float						();
 	P.r_float						();
-
-	P.r_float						();
-
-	m_dwMoney						= P.r_u32();
-	P.r_u32							();
 
 	ALife::ETaskState				task_state;
 	P.r								(&task_state,sizeof(task_state));
