@@ -617,7 +617,7 @@ void CDetailPathManager::build_path_via_key_points(
 				ai().level_graph().v2d(m_path[m_path.size() - 2].position)
 			);
 			
-			VERIFY						(!fis_sero(s.direction.square_magnitude()));
+			VERIFY						(!fis_zero(s.direction.square_magnitude()));
 			s.direction.normalize		();
 			m_path.pop_back				();
 
