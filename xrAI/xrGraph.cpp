@@ -440,13 +440,6 @@ void xrBuildGraph(LPCSTR name)
 
 	R_ASSERT2				(tpaGraph.size(), "There are no graph points!");
 
-//	vfSaveEmptyGraph		();
-//	xrBuildCrossTable		(name);
-//
-//	string256				fName;
-//	strconcat				(fName,name,CROSS_TABLE_NAME_RAW);
-//	CGameLevelCrossTable	*cross_table = xr_new<CGameLevelCrossTable>(name);
-//	
 #pragma todo("Dima to Dima : make removing incoherent points faster")
 #pragma todo("Dima to Dima : make graph building faster")
 	Phase("Allocating memory");
