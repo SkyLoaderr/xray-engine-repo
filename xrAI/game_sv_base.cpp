@@ -271,8 +271,14 @@ void game_sv_GameState::Create					(LPSTR &/**options/**/)
 				type					= O->r_u8	();
 				//u16 res					= 
 					O->r_u16	();
-				rpoints[team].push_back	(R);
-			}
+				switch (type)
+				{
+				case rptActorSpawn:
+					{
+						rpoints[team].push_back	(R);
+					}break;
+				};
+			};
 			O->close();
 		}
 

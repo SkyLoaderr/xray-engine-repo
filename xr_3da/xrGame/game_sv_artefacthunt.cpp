@@ -2,14 +2,60 @@
 #include "game_sv_ArtefactHunt.h"
 #include "HUDmanager.h"
 #include "xrserver_objects_alife_monsters.h"
+#include "LevelGameDef.h"
 
 void	game_sv_ArtefactHunt::Create					(LPSTR &options)
 {
 	inherited::Create					(options);
 
-	m_dwArtefactsTotal	= get_option_i		(options,"NumberArtefacts",11);
+	m_dwArtefactRespawnDelta = get_option_i		(options,"ArtefactRDelta",0);
+	m_dwArtefactsTotal	= get_option_i		(options,"NumberArtefacts",0);
+	
 	if (m_dwArtefactsTotal%2 == 0) m_dwArtefactsTotal++;
 	m_dwArtefactsHalf = m_dwArtefactsTotal/2;
+
+	m_delayedRoundEnd = false;
+	//---------------------------------------------------
+	// loading respawn points for artefacts
+	Artefact_rpoints.clear();
+
+	string256	fn_game;
+	if (FS.exist(fn_game, "$level$", "level.game")) 
+	{
+		IReader *F = FS.r_open	(fn_game);
+		IReader *O = 0;
+
+		// Load RPoints
+		if (0!=(O = F->open_chunk	(RPOINT_CHUNK)))
+		{ 
+			for (int id=0; O->find_chunk(id); ++id)
+			{
+				RPoint					R;
+				u8						team;
+				u8						type;
+
+				O->r_fvector3			(R.P);
+				O->r_fvector3			(R.A);
+				team					= O->r_u8	();	VERIFY(team>=0 && team<4);
+				type					= O->r_u8	();
+				u16 res					= O->r_u16	();
+				switch (type)
+				{
+				case rptArtefactSpawn:
+					{
+						Artefact_rpoints.push_back	(R);
+					}break;
+				};
+				res = 0;
+			}
+			O->close();
+		}
+
+		FS.r_close	(F);
+	}
+	R_ASSERT2 (!Artefact_rpoints.empty(), "No points to spawn ARTEFACT");
+	//---------------------------------------------------------------
+	m_dwArtefactSpawnTime = 0;
 }
 
 void	game_sv_ArtefactHunt::OnRoundStart			()
@@ -17,6 +63,7 @@ void	game_sv_ArtefactHunt::OnRoundStart			()
 	inherited::OnRoundStart	();
 
 	m_dwArtefactsSpawned = 0;
+	m_delayedRoundEnd = false;
 /*
 	// Respawn all players and some info
 	u32		cnt = get_count();
@@ -219,7 +266,6 @@ BOOL	game_sv_ArtefactHunt::OnTouch				(u16 eid_who, u16 eid_what)
 		CSE_ALifeItemArtefact* pIArtefact	=	dynamic_cast<CSE_ALifeItemArtefact*> (e_what);
 		if (pIArtefact)
 		{
-			m_dwArtefactID = eid_what;
 			xrClientData* xrCData	= e_who->owner;
 			game_PlayerState*	ps_who	=	&xrCData->ps;
 			if (ps_who)
@@ -249,7 +295,6 @@ BOOL	game_sv_ArtefactHunt::OnDetach				(u16 eid_who, u16 eid_what)
 		CSE_ALifeItemArtefact* pIArtefact	=	dynamic_cast<CSE_ALifeItemArtefact*> (e_what);
 		if (pIArtefact)
 		{	
-			m_dwArtefactID = eid_what;
 			xrClientData* xrCData	= e_who->owner;
 			game_PlayerState*	ps_who	=	&xrCData->ps;
 			if (ps_who)
@@ -321,12 +366,12 @@ void		game_sv_ArtefactHunt::OnArtefactOnBase		(u32 id_who)
 	teams[ps->team-1].score++;
 	//-----------------------------------------------
 	//remove artefact from player
-	NET_Packet	P;
-	P.w_begin				(M_EVENT);
-	P.w_u32					(Device.dwTimeGlobal);
-	P.w_u16					(GE_OWNERSHIP_REJECT);
-	P.w_u16					(ps->GameID);
-	P.w_u16					(m_dwArtefactID);
+	NET_Packet			P;
+	P.w_begin			(M_EVENT);
+	P.w_u32				(Device.dwTimeGlobal);
+	P.w_u16				(GE_DESTROY);
+	P.w_u16				(m_dwArtefactID);
+
 	u_EventSend(P);
 	//-----------------------------------------------
 	P.w_begin			(M_GAMEMESSAGE);
@@ -339,13 +384,36 @@ void		game_sv_ArtefactHunt::OnArtefactOnBase		(u32 id_who)
 	{
 		OnTeamScore(ps->team-1);
 		phase = u16((ps->team-1)?GAME_PHASE_TEAM2_SCORES:GAME_PHASE_TEAM1_SCORES);
+		switch_Phase		(phase);
 	};
+};
+
+void	game_sv_ArtefactHunt::SpawnArtefact			()
+{
+	CSE_Abstract			*E	=	spawn_begin	("af_magnet");
+	E->s_flags.set			(M_SPAWN_OBJECT_LOCAL);	// flags
+
+	spawn_end				(E,Level().Server->GetServer_client()->ID);
 };
 
 void	game_sv_ArtefactHunt::Update			()
 {
 	inherited::Update	();
-	/*
+
+	if (m_dwArtefactSpawnTime == 0)
+	{
+		m_dwArtefactSpawnTime = Device.dwTimeGlobal + m_dwArtefactRespawnDelta;
+	}
+	else
+	{
+		if (m_dwArtefactSpawnTime != -1 && u32(m_dwArtefactSpawnTime) < Device.dwTimeGlobal)
+		{
+			m_dwArtefactSpawnTime = -1;
+			//time to spawn Artefact;
+			SpawnArtefact();
+		};
+	};
+
 	switch(phase) 	{
 		case GAME_PHASE_TEAM1_SCORES :
 		case GAME_PHASE_TEAM2_SCORES :
@@ -358,5 +426,19 @@ void	game_sv_ArtefactHunt::Update			()
 			if ((Device.TimerAsync()-start_time)>u32(30*1000)) OnRoundStart();
 								  } break;
 	}
-	*/
+
 }
+void	game_sv_ArtefactHunt::OnDelayedRoundEnd		(LPCSTR /**reason/**/)
+{
+	m_delayedRoundEnd = true;
+	m_roundEndDelay = Device.TimerAsync() + 10000;
+}
+
+void	game_sv_ArtefactHunt::OnCreate				(u16 id_who)
+{
+	CSE_Abstract	*pEntity	= get_entity_from_eid(id_who);
+	if (!pEntity) return;
+	CSE_ALifeItemArtefact* pIArtefact	=	dynamic_cast<CSE_ALifeItemArtefact*> (pEntity);
+	if (pIArtefact)
+		m_dwArtefactID = pIArtefact->ID;
+};

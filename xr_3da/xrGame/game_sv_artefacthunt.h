@@ -11,6 +11,14 @@ protected:
 	s32			m_dwArtefactsSpawned;
 	s32			m_dwArtefactsTotal;
 	s32			m_dwArtefactsHalf;
+
+	BOOL		m_delayedRoundEnd;
+	u32			m_roundEndDelay;
+
+	s32			m_dwArtefactRespawnDelta;
+	s32			m_dwArtefactSpawnTime;
+
+	xr_vector<RPoint>				Artefact_rpoints;
     	
 public:
 	virtual		void				Create					(LPSTR &options);
@@ -35,7 +43,12 @@ public:
 
 	virtual		BOOL				OnTouch					(u16 eid_who, u16 eid_what);
 	virtual		BOOL				OnDetach				(u16 eid_who, u16 eid_what);
+	virtual		void				OnCreate				(u16 id_who);
+
 
 	virtual		void				Update					();
+
+				void				OnDelayedRoundEnd		(LPCSTR /**reason/**/);
+				void				SpawnArtefact			();
 
 };
