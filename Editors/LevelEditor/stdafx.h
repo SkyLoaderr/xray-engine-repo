@@ -282,6 +282,16 @@ typedef	char FILE_NAME	[ _MAX_PATH	];
 #define NONE_CAPTION "<none>" 
 #define MULTIPLESEL_CAPTION "<multiple selection>" 
 
+#pragma comment(lib,"dinput.lib")
+#pragma comment(lib,"d3dx8d.lib")
+#pragma comment(lib,"freeimage.lib")
+#pragma comment(lib,"d3d8.lib")
+#pragma comment(lib,"xrCDB.lib")
+#pragma comment(lib,"dxt.lib")
+#pragma comment(lib,"xrProgressive.lib")
+#pragma comment(lib,"MagicFMd.lib")
+#pragma comment(lib,"ETools.lib")
+#pragma comment(lib,"LWO.lib")
 
 #endif /*stdafxH*/
 

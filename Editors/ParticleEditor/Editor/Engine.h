@@ -30,6 +30,7 @@
         return memory;
     }
 */
+#define		xr_delete	delete
 #define		xr_malloc	malloc
 #define		xr_free		free
 #define		xr_realloc	realloc

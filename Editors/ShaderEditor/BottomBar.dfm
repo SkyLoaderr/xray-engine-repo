@@ -396,6 +396,7 @@ object fraBottomBar: TfraBottomBar
     object miDrawSafeRect: TMenuItem
       Caption = 'Draw Safe Rect'
       GroupIndex = 4
+      OnClick = ClickOptionsMenuItem
     end
     object miDrawGrid: TMenuItem
       Caption = 'Draw Grid'

@@ -232,6 +232,7 @@ bool TUI::Command( int _Command, int p1, int p2 ){
     	break;
     case COMMAND_TOGGLE_SAFE_RECT:
     	psDeviceFlags.set(rsDrawSafeRect,!psDeviceFlags.is(rsDrawSafeRect));
+        frmMain->paWindowResize(0);
     	break;
     case COMMAND_TOGGLE_GRID:
     	psDeviceFlags.set(rsDrawGrid,!psDeviceFlags.is(rsDrawGrid));

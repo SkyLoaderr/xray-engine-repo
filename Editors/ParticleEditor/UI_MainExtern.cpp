@@ -66,10 +66,6 @@ void TUI::Redraw(){
 
         Tools.Render();
 
-	// draw safe rect
-        if (psDeviceFlags.is(rsDrawSafeRect)){
-        	DU::DrawSafeRect();
-        }
     // draw selection rect
 		if(m_SelectionRect) DU::DrawSelectionRect(m_SelStart,m_SelEnd);
 
