@@ -516,12 +516,6 @@
 						RelativePath=".\CustomMonster_VCPU.cpp">
 					</File>
 					<File
-						RelativePath=".\ai_commands.h">
-					</File>
-					<File
-						RelativePath=".\ai_goals.h">
-					</File>
-					<File
 						RelativePath=".\dbg_draw_frustum.cpp">
 					</File>
 				</Filter>

@@ -7,7 +7,6 @@
 #pragma once
 
 #include "movementcontrol.h"
-#include "ai_goals.h"
 #include "gameobject.h"
 
 // refs
