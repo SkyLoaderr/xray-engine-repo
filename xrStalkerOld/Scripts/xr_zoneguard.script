@@ -251,7 +251,7 @@ function add_to_binder(npc, ini, scheme, section, storage)
 	new_action:add_effect(world_property(properties["need_zoneguard"], false))
 	manager:add_action(operators["action_zoneguard"], new_action)
 
-	xr_logic.subscribe_action_for_events(storage, new_action)
+	xr_logic.subscribe_action_for_events(npc, storage, new_action)
 
 	new_action = manager:action(xr_actions_id.alife)
 	new_action:add_precondition(world_property(properties["need_zoneguard"], false))
