@@ -149,7 +149,7 @@ void CLightmap::Save()
 		fmt.flags.set			(STextureParams::flDitherColor,		FALSE);
 		fmt.flags.set			(STextureParams::flGenerateMipMaps,	FALSE);
 		fmt.flags.set			(STextureParams::flBinaryAlpha,		FALSE);
-		DXTCompress				(FN,raw_data,w,h,pitch,&fmt,4);
+		DXTCompress				(FN,raw_data,0,w,h,pitch,&fmt,4);
 	}
 	Status			("Compression hemi..."); //.
 	{
@@ -191,7 +191,7 @@ void CLightmap::Save()
 		fmt.flags.set			(STextureParams::flDitherColor,		FALSE);
 		fmt.flags.set			(STextureParams::flGenerateMipMaps,	FALSE);
 		fmt.flags.set			(STextureParams::flBinaryAlpha,		FALSE);
-		DXTCompress				(FN,raw_data,w,h,pitch,&fmt,4);
+		DXTCompress				(FN,raw_data,0,w,h,pitch,&fmt,4);
 	}
 
 	lm_texture.bHasAlpha		= TRUE;
