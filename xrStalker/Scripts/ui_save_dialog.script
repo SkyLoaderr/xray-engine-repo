@@ -168,6 +168,10 @@ end
 
 function save_dialog:OnListItemClicked()
 	local list_box = self:GetListBox("list_window")
+	local item_id = list_box:GetFocusedItem()
+	local item = list_box:GetItem(intem_id)
+	
+	local item_text = item:GetText()
 end
 
 function save_dialog:OnMsgOk()

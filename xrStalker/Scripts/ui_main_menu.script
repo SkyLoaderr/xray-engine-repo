@@ -84,6 +84,7 @@ function main_menu:InitControls()
 	main_frame:AttachChild(txt_caption)	
 
 -------- BUTTONS ------------------------------- 
+	--------->> SAVE
     local btn   = CUIButton()
 	btn:SetAutoDelete(true)
 	btn:SetWindowName("btn_save")
@@ -94,6 +95,12 @@ function main_menu:InitControls()
 	btn:SetTextY(7)
 	self:Register(btn)
 	main_frame:AttachChild(btn)
+	--------->> LOAD
+	
+	btn = CUIButton()
+	btn:SetAutoDelete(true)
+	btn:SetWindowName("btn_load")
+	btn:Init("ui\\ui_button_")
 	
 	
 	
