@@ -22,12 +22,13 @@ function main()
 		cond			(cond.time_end,10000)
     )
     
+	if (stalker:get_script()) then
+		printf			("stalker is under script control")
+	else
+		printf			("stalker is free")
+	end
+	
 	while stalker:action() do
-		if (stalker:get_script()) then
-			printf		("stalker is under script control")
-		else
-			printf		("stalker is free")
-		end
 		wait			()
     end
     
