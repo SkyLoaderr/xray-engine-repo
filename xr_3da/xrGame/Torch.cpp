@@ -134,19 +134,22 @@ void CTorch::UpdateCL()
 		H_Parent()->setEnabled(false);
 		Fvector l_p, l_d; dynamic_cast<CEntity*>(H_Parent())->g_fireParams(l_p,l_d);
 		//Fmatrix l_cam; Level().Cameras.unaffected_Matrix(l_cam);
-		if(Level().ObjectSpace.RayPick(l_p, l_d, 500.f, RQ)) {
-			Fvector l_end, l_up; l_end.mad(l_p, l_d, RQ.range); l_up.set(0, 1.f, 0);
+		Fvector l_end, l_up; 
+		if(Level().ObjectSpace.RayPick(l_p, l_d, 50.f, RQ)) {
+			l_end.mad(l_p, l_d, RQ.range); l_up.set(0, 1.f, 0);
 			svTransform.k.sub(l_end, l_p); svTransform.k.normalize();
 			svTransform.i.crossproduct(l_up, svTransform.k); svTransform.i.normalize();
 			svTransform.j.crossproduct(svTransform.k, svTransform.i);
 		}
 
-		Fvector _P;
-		_P.mad	(l_p,Device.vCameraRight,	m_pos.x);
-		_P.mad	(Device.vCameraTop,			m_pos.y);
+		Fvector _P,_D;
+		_P.mad		(l_p,Device.vCameraRight,	m_pos.x);
+		_P.mad		(Device.vCameraTop,			m_pos.y);
+		_D.sub		(l_end,_P);
+		_D.normalize();
 		H_Parent()->setEnabled		(true);
-		light_render->set_direction	(svTransform.k);//clXFORM().k); // l_d
-		light_render->set_position	(_P);			//clXFORM().c); // l_p
+		light_render->set_direction	(_D);	//clXFORM().k); // l_d
+		light_render->set_position	(_P);	//clXFORM().c); // l_p
 	}
 	// update light source
 	if (light_render->get_active()){
