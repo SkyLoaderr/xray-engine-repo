@@ -20,7 +20,7 @@ class CPHJeep {
 	dGeomID Geoms[NofGeoms];
 	dJointID Joints[NofJoints];
 	dVector3 startPosition;
-	
+
 	void CreateDynamicData();
 public:
 	//CPHJeep(){}
@@ -31,6 +31,8 @@ public:
 	void Steer1(const char& velocity, const char& steering);
 	void Steer(const char& steering);
 	void Drive(const char& velocity,dReal force=500.f);
+	void Drive();
+	void NeutralDrive();
 	void JointTune(dReal step);
 	void Revert();
 	void SetStartPosition(Fvector pos){dBodySetPosition(Bodies[0],pos.x,pos.y,pos.z);}
@@ -56,6 +58,11 @@ public:
 	dVector3 jeepBox;
 	dVector3 cabinBox;
 	dReal VelocityRate;
+	dReal DriveForce;
+	
+	dReal DriveVelocity;
+	char  DriveDirection;
+	bool Breaks;
 };
 
 //////////////////////////////////////////////////////////////////////////////////

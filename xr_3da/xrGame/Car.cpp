@@ -182,15 +182,22 @@ void	CCar::OnKeyboardPress		(int cmd)
 
 	switch (cmd)	
 	{
-	case kACCEL:	ph_world->Jeep.VelocityRate=1.f;
+	case kACCEL:	ph_world->Jeep.DriveVelocity=6*M_PI;
 					break;
 	case kR_STRAFE:	ph_world->Jeep.Steer(1);//vPosition.x+=1; 
 					break;
 	case kL_STRAFE:	ph_world->Jeep.Steer(-1);//vPosition.x-=1;
 					break;
-	case kFWD:		ph_world->Jeep.Drive(1);//vPosition.z+=1; 
+	case kFWD:		ph_world->Jeep.DriveDirection=1;
+					ph_world->Jeep.DriveForce=500;
+					ph_world->Jeep.Drive();//vPosition.z+=1; 
 					break;
-	case kBACK:		ph_world->Jeep.Drive(-1);//vPosition.z-=1; 
+	case kBACK:		ph_world->Jeep.DriveDirection=-1;
+					ph_world->Jeep.DriveForce=500;
+					ph_world->Jeep.Drive();//vPosition.z-=1; 
+					break;
+	case kJUMP:		ph_world->Jeep.Breaks=true;
+					ph_world->Jeep.Drive();
 					break;
 	
 	};
@@ -202,15 +209,24 @@ void	CCar::OnKeyboardRelease		(int cmd)
 	if (Remote())					return;
 		switch (cmd)	
 	{
-	case kACCEL:	ph_world->Jeep.VelocityRate=3.f;
+	case kACCEL:	ph_world->Jeep.DriveVelocity=12*M_PI;
 					break;
 	case kR_STRAFE:	ph_world->Jeep.Steer(0);//vPosition.x+=1; 
 					break;
 	case kL_STRAFE:	ph_world->Jeep.Steer(0);//vPosition.x-=1;
 					break;
-	case kFWD:		ph_world->Jeep.Drive(1,300);//vPosition.z+=1; 
+					
+					
+	case kFWD:		ph_world->Jeep.NeutralDrive();
+					ph_world->Jeep.DriveForce=0;
+					//ph_world->Jeep.Drive();//vPosition.z+=1; 
 					break;
-	case kBACK:		ph_world->Jeep.Drive(-1,300);//vPosition.z-=1; 
+	case kBACK:		ph_world->Jeep.NeutralDrive();
+					ph_world->Jeep.DriveForce=0;
+					//ph_world->Jeep.Drive();//vPosition.z-=1; 
+					break;
+	case kJUMP:		ph_world->Jeep.Breaks=false;
+					ph_world->Jeep.Drive();
 					break;
 	//default:        ph_world->Jeep.Steer(0,0);
 	};
@@ -222,7 +238,7 @@ void	CCar::OnKeyboardHold		(int cmd)
 
 	switch(cmd)
 	{
-	case kACCEL:	ph_world->Jeep.VelocityRate=0.5f;
+	case kACCEL://	ph_world->Jeep.VelocityRate=0.01f;
 	break;
 	case kUP:
 	case kDOWN: 
@@ -233,8 +249,13 @@ void	CCar::OnKeyboardHold		(int cmd)
 	case kRIGHT:
 		camera->Move(cmd); break;
 	case kREPAIR:	ph_world->Jeep.Revert(); break;
-	case kJUMP:  ph_world->Jeep.Drive(0); break; 
-
+	case kJUMP:		
+					//ph_world->Jeep.Drive(0);
+					break; 
+	case kFWD:		//ph_world->Jeep.Drive(1,300);//vPosition.z+=1; 
+					break;
+	case kBACK:		//ph_world->Jeep.Drive(-1,300);//vPosition.z-=1; 
+					break;
 	}
 }
 

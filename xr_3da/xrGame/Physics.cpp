@@ -190,8 +190,12 @@ void CPHJeep::Create(dSpaceID space, dWorldID world){
 	cabinBox[0]=scaleBox[0]*1.9f;cabinBox[1]=scaleBox[1]*0.6;cabinBox[2]=scaleBox[2]*2.08;
 
 	static const dReal wheelRadius = REAL(0.79/2.)* scaleParam;
-	VelocityRate=3.f;
 
+	VelocityRate=3.f;
+	DriveForce=0;
+	DriveVelocity=12.f * M_PI;
+	DriveDirection=0;
+	Breaks=false;
 	startPosition[0]=10.0f;startPosition[1]=1.f;startPosition[2]=0.f;
 	static const dReal weelSepX=scaleBox[0]*2.74f/2.f,weelSepZ=scaleBox[2]*1.7f/2.f,weelSepY=scaleBox[1]*0.6f;
 
@@ -441,6 +445,45 @@ void CPHJeep::Drive(const char& velocity,dReal force)
 	}
 	for(i=0;i<4;i++)
 			dJointSetHinge2Param(Joints[i], dParamFMax2, force);
+}
+//////////////////////////////////////////////////////////
+void CPHJeep::Drive()
+{
+
+	static const dReal wheelVelocity = 12.f * M_PI;//3*18.f * M_PI;
+	ULONG i;
+
+if(!Breaks)
+	switch(DriveDirection)
+	{
+	case 1:
+        for(i = 0; i < 4; ++i)
+			dJointSetHinge2Param(Joints[i], dParamVel2, ((i % 2) == 0) ? -DriveVelocity : DriveVelocity);
+		break;
+
+	case -1:
+        for(i = 0; i < 4; ++i)
+			dJointSetHinge2Param(Joints[i], dParamVel2, ((i % 2) == 0) ? DriveVelocity : -DriveVelocity);
+		break;
+	}
+	else {
+		for(i = 0; i < 4; ++i){
+			dJointSetHinge2Param(Joints[i], dParamFMax2, 500);
+			dJointSetHinge2Param(Joints[i], dParamVel2, 0);
+			}
+		return;
+		}
+	
+	for(i=0;i<4;i++)
+			dJointSetHinge2Param(Joints[i], dParamFMax2, DriveForce);
+}
+/////////////////////////////////////////
+void CPHJeep::NeutralDrive(){
+	
+	for(UINT i = 0; i < 4; ++i){
+			dJointSetHinge2Param(Joints[i], dParamFMax2, 10);
+			dJointSetHinge2Param(Joints[i], dParamVel2, 0);
+			}
 }
 //////////////////////////////////////////////////////////
 void CPHJeep::Revert(){
