@@ -21,6 +21,7 @@
 #include "luabind\\iterator_policy.hpp"
 #include "ParticlesObject.h"
 #include "ArtifactMerger.h"
+#include "actor.h"
 
 using namespace luabind;
 using namespace Script;
@@ -117,9 +118,9 @@ void Script::vfExportGlobals(CLuaVirtualMachine *tpLuaVirtualMachine)
 
 CLuaGameObject *tpfGetActor()
 {
-	CGameObject *l_tpGameObject = dynamic_cast<CGameObject*>(Level().CurrentEntity());
-	if (l_tpGameObject)
-		return(xr_new<CLuaGameObject>(l_tpGameObject));
+	CActor *l_tpActor = dynamic_cast<CActor*>(Level().CurrentEntity());
+	if (l_tpActor)
+		return(xr_new<CLuaGameObject>(dynamic_cast<CGameObject*>(l_tpActor)));
 	else
 		return(0);
 }
