@@ -72,7 +72,7 @@ bool CGOAPStateManager::condition_contradiction(const CState &state0, const CSta
 				}
 				else {
 					if ((*I).m_value != (*II).m_value)
-						return			(false);
+						return			(true);
 					++I;
 					++II;
 				}
@@ -88,7 +88,7 @@ bool CGOAPStateManager::condition_contradiction(const CState &state0, const CSta
 			}
 			else {
 				if ((*i).m_value != (*II).m_value)
-					return				(false);
+					return				(true);
 				++i;
 				++II;
 				if ((*I).m_parameter < (*II).m_parameter)
@@ -97,7 +97,7 @@ bool CGOAPStateManager::condition_contradiction(const CState &state0, const CSta
 	}
 
 	if (II == EE)
-		return							(true);
+		return							(false);
 
 	if (I == E) {
 		I = i;
@@ -112,11 +112,11 @@ bool CGOAPStateManager::condition_contradiction(const CState &state0, const CSta
 				++II;
 			else {
 				if ((*I).m_value != (*II).m_value)
-					return				(false);
+					return				(true);
 				++I;
 				++II;
 			}
-	return								(true);
+	return								(false);
 }
 
 TEMPLATE_SPECIALIZATION
