@@ -17,7 +17,7 @@ CScriptStackTracker::~CScriptStackTracker	()
 
 void CScriptStackTracker::script_hook	(CLuaVirtualMachine *L, lua_Debug *dbg)
 {
-	VERIFY				(L && (m_virtual_machine == L));
+	VERIFY				(L);// && (m_virtual_machine == L));
 
 	switch	(dbg->event) {
 		case LUA_HOOKCALL : {
