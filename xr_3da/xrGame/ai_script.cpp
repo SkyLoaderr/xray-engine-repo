@@ -31,7 +31,7 @@ CScript::CScript(LPCSTR caFileName)
 
 	vfExportToLua	(m_tpLuaVirtualMachine);
 
-	Msg				("* Loading script %s",caFileName);
+	Msg				("* Loading design script %s",caFileName);
 	IReader			*l_tpFileReader = FS.r_open(caFileName);
 	R_ASSERT		(l_tpFileReader);
 
