@@ -971,6 +971,10 @@ SOURCE=.\Stats.cpp
 
 SOURCE=.\Stats.h
 # End Source File
+# Begin Source File
+
+SOURCE=.\Stats_Timer.h
+# End Source File
 # End Group
 # Begin Group "Sound"
 
