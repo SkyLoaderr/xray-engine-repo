@@ -7,7 +7,7 @@
 #pragma once
 
 #include "FVisual.h"
-#include "FProgressiveFixedVisual.h"
+#include "FProgressive.h"
 
 // refs
 class ENGINE_API CKinematics;
@@ -65,8 +65,8 @@ protected:
 	};
 
 	void					_Copy			(CSkeletonX *V);
-	void					_Render_soft	(ref_geom& hGeom,	u32 vCount,		u32 pCount);
-	void					_Render			(ref_geom& hGeom,	u32 vCount,		u32 pCount);
+	void					_Render_soft	(ref_geom& hGeom, 	u32 vCount,	u32 iOffset, u32 pCount);
+	void					_Render			(ref_geom& hGeom, 	u32 vCount,	u32 iOffset, u32 pCount);
 	void					_Load			(const char* N,		IReader *data,	u32& dwVertCount);
 	void					_Load_hw		(Fvisual& V,		void *data);
 public:
@@ -89,10 +89,10 @@ public:
 	virtual void			Release			();
 };
 
-class ENGINE_API CSkeletonX_PM	: public FProgressiveFixedVisual, public CSkeletonX
+class ENGINE_API CSkeletonX_PM	: public FProgressive, public CSkeletonX
 {
 private:
-	typedef FProgressiveFixedVisual	inherited;
+	typedef FProgressive	inherited;
 	u16*					indices;
 public:
 	CSkeletonX_PM()	: indices(0) {};

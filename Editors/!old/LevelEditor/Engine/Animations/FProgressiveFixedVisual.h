@@ -2,8 +2,8 @@
 //
 //////////////////////////////////////////////////////////////////////
 
-#if !defined(AFX_FPROGRESSIVEFIXEDVISUAL_H__778ADCC0_9140_11D3_B4E3_4854E82A090D__INCLUDED_)
-#define AFX_FPROGRESSIVEFIXEDVISUAL_H__778ADCC0_9140_11D3_B4E3_4854E82A090D__INCLUDED_
+#ifndef FProgressiveFixedVisualH
+#define FProgressiveFixedVisualH
 #pragma once
 
 #include "FVisual.h"

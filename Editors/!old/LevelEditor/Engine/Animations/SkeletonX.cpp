@@ -39,8 +39,9 @@ void CSkeletonX::_Copy		(CSkeletonX *B)
 }
 void CSkeletonX_PM::Copy	(IRender_Visual *V) 
 {
-	Fvisual::Copy			(V);
-	pm_copy					(V);
+//.	Fvisual::Copy			(V);
+    FProgressive::Copy		(V);
+//.	pm_copy					(V);
 
 	CSkeletonX_PM *X		= (CSkeletonX_PM*)(V);
 	_Copy					((CSkeletonX*)X);
@@ -66,26 +67,27 @@ void CSkeletonX_ST::Copy	(IRender_Visual *P)
 //////////////////////////////////////////////////////////////////////
 void CSkeletonX_PM::Render		(float LOD) 
 {
-	SetLOD		(LOD);
-	_Render		(hGeom,V_Current,I_Current/3);
+	int lod_id				= iFloor((1.f-LOD)*float(SW_count-1));
+	SlideWindow& SW			= pSWs[lod_id];
+	_Render		(hGeom,SW.offset,SW.num_verts,SW.num_tris);
 }
 void CSkeletonX_ST::Render		(float LOD) 
 {
-	_Render		(hGeom,vCount,dwPrimitives);
+	_Render		(hGeom,0,vCount,dwPrimitives);
 }
-void CSkeletonX::_Render		(ref_geom& hGeom, u32 vCount, u32 pCount)
+void CSkeletonX::_Render		(ref_geom& hGeom, u32 vCount, u32 iOffset, u32 pCount)
 {
 	switch (RenderMode)
 	{
 	case RM_SKINNING_SOFT:
-		_Render_soft			(hGeom,vCount,pCount);
+		_Render_soft			(hGeom,iOffset,vCount,pCount);
 		break;
 	case RM_SINGLE:	
 		{
 			Fmatrix	W;	W.mul_43	(RCache.xforms.m_w,Parent->LL_GetTransform_R	(u16(RMS_boneid)));
 			RCache.set_xform_world	(W);
 			RCache.set_Geometry		(hGeom);
-			RCache.Render			(D3DPT_TRIANGLELIST,0,0,vCount,0,pCount);
+			RCache.Render			(D3DPT_TRIANGLELIST,0,0,vCount,iOffset,pCount);
 		}
 		break;
 	case RM_SKINNING_1B:
@@ -104,12 +106,12 @@ void CSkeletonX::_Render		(ref_geom& hGeom, u32 vCount, u32 pCount)
 
 			// render
 			RCache.set_Geometry		(hGeom);
-			RCache.Render			(D3DPT_TRIANGLELIST,0,0,vCount,0,pCount);
+			RCache.Render			(D3DPT_TRIANGLELIST,0,0,vCount,iOffset,pCount);
 		}
 		break;
 	}
 }
-void CSkeletonX::_Render_soft	(ref_geom& hGeom, u32 vCount, u32 pCount)
+void CSkeletonX::_Render_soft	(ref_geom& hGeom, u32 vCount, u32 iOffset, u32 pCount)
 {
 	u32 vOffset				= cache_vOffset;
 
@@ -143,7 +145,7 @@ void CSkeletonX::_Render_soft	(ref_geom& hGeom, u32 vCount, u32 pCount)
 	}
 
 	RCache.set_Geometry		(hGeom);
-	RCache.Render			(D3DPT_TRIANGLELIST,vOffset,0,vCount,0,pCount);
+	RCache.Render			(D3DPT_TRIANGLELIST,vOffset,0,vCount,iOffset,pCount);
 }
 
 //////////////////////////////////////////////////////////////////////
