@@ -16,10 +16,13 @@ CGrenade::CGrenade(void) {
 	m_eSoundExplode = ESoundTypes(SOUND_TYPE_WEAPON_SHOOTING);
 	m_eSoundRicochet = ESoundTypes(SOUND_TYPE_WEAPON_BULLET_RICOCHET);
 	m_expoldeTime = 0xffffffff;
+	m_pLight = ::Render->light_create();
+	m_pLight->set_shadow(true);
 }
 
 CGrenade::~CGrenade(void) {
 	if(hWallmark) Device.Shader.Delete(hWallmark);
+	::Render->light_destroy(m_pLight);
 }
 
 void CGrenade::Load(LPCSTR section) {
@@ -45,6 +48,10 @@ void CGrenade::Load(LPCSTR section) {
 		}
 		l_effectsSTR++;
 	}
+
+	sscanf(pSettings->r_string(section,"light_color"), "%f,%f,%f", &m_lightColor.r, &m_lightColor.g, &m_lightColor.b);
+	m_lightRange = pSettings->r_float(section,"light_range");
+	m_lightTime = pSettings->r_u32(section,"light_time");
 
 	SoundCreate(sndExplode, "explode", m_eSoundExplode);
 	SoundCreate(sndRicochet[0], "ric1", m_eSoundRicochet);
@@ -193,6 +200,7 @@ void CGrenade::Explode() {
 	for(s32 i = 0; i < l_c; i++) {
 		pStaticPG = xr_new<CPGObject>(m_effects[i],Sector()); pStaticPG->play_at_pos(vPosition);
 	}
+	m_pLight->set_position(vPosition); m_pLight->set_active(true);
 	setEnabled(true);
 }
 
@@ -296,6 +304,16 @@ void CGrenade::OnAnimationEnd() {
 
 void CGrenade::UpdateCL() {
 	inherited::UpdateCL();
-	if(m_expoldeTime > 0 && m_expoldeTime <= Device.dwTimeDelta) { m_expoldeTime = 0; inherited::Destroy(); }
-	else if(m_expoldeTime < 0xffffffff) m_expoldeTime -= Device.dwTimeDelta;
+	if(m_expoldeTime > 0 && m_expoldeTime <= Device.dwTimeDelta) {
+		m_expoldeTime = 0;
+		m_pLight->set_active(false);
+		inherited::Destroy();
+	} else if(m_expoldeTime < 0xffffffff) {
+		m_expoldeTime -= Device.dwTimeDelta;
+		if(m_expoldeTime > (500 - m_lightTime)) {
+			f32 l_scale = f32(m_expoldeTime - (500 - m_lightTime))/f32(m_lightTime);
+			m_pLight->set_color(m_lightColor.r*l_scale, m_lightColor.g*l_scale, m_lightColor.b*l_scale);
+			m_pLight->set_range(m_lightRange*l_scale);
+		} else m_pLight->set_range(0);
+	} else m_pLight->set_active(false);
 }
