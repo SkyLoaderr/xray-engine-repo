@@ -768,13 +768,9 @@ void CCustomMonster::OnEvent(NET_Packet& P, u16 type)
 
 void CCustomMonster::net_Destroy()
 {
-	inherited::net_Destroy	();
-	CScriptMonster::net_Destroy();
-	CMovementManager::net_Destroy();
-	//if (m_client_update_activated) {
-	//	processing_deactivate	();
-	//	m_client_update_activated = false;
-	//}
+	inherited::net_Destroy			();
+	CScriptMonster::net_Destroy		();
+	CMovementManager::net_Destroy	();
 }
 
 BOOL CCustomMonster::UsedAI_Locations()
