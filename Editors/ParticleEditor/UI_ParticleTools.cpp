@@ -159,7 +159,7 @@ void CParticleTools::Render()
     	if (m_EditPG&&m_Flags.is(flDrawDomain)){
          	int cnt = m_EditPG->children.size();
             for (int k=0; k<cnt; k++){
-                PS::CParticleEffect* E		= m_EditPG->children[k];
+                PS::CParticleEffect* E		= (PS::CParticleEffect*)m_EditPG->children[k];
 				if (E&&E->GetDefinition())	E->GetDefinition()->Render();
             }
         }
@@ -543,7 +543,7 @@ void CParticleTools::PlayCurrent(int idx)
     case emGroup:	
     	if (idx>-1){
         	VERIFY(idx<m_EditPG->children.size());
-            m_LibPED = m_EditPG->children[idx]->GetDefinition();
+            m_LibPED = ((PS::CParticleEffect*)m_EditPG->children[idx])->GetDefinition();
             m_EditPE->Compile(m_LibPED);
         	m_EditPE->Play	();
         }else{

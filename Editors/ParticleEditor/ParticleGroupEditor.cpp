@@ -63,11 +63,11 @@ void __fastcall PS::CPGDef::OnEffectEditClick(PropValue* sender, bool& bDataModi
 	ButtonValue* B 		= dynamic_cast<ButtonValue*>(sender); R_ASSERT(B);
     switch (B->btn_num){
     case 0:		    	
-    	PTools->PlayCurrent(B->Owner()->tag);    
+    	PTools->PlayCurrent	(B->Owner()->tag);    
 		bDataModified	= false;
     break;
-    case 1:
-        if (ELog.DlgMsg(mtConfirmation, TMsgDlgButtons() << mbYes << mbNo,"Delete selected folder?") == mrYes){
+    case 1:        
+        if (ELog.DlgMsg(mtConfirmation, TMsgDlgButtons() << mbYes << mbNo,"Remove effect?") == mrYes){
             m_Effects.erase	(m_Effects.begin()+B->Owner()->tag);
             UI->Command		(COMMAND_UPDATE_PROPERTIES);
             OnParamsChange	(sender);
