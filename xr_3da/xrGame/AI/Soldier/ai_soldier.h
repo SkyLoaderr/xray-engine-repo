@@ -451,7 +451,6 @@ class CAI_Soldier : public CCustomMonster
 		void vfLoadSounds();
 		void vfLoadSelectors(CInifile *ini, const char *section);
 		void vfAssignBones(CInifile *ini, const char *section);
-		//void vfCheckForPatrol();
 		void vfLoadAnimations();
 		bool bfCheckForMember(Fvector &tFireVector, Fvector &tMyPoint, Fvector &tMemberPoint);
 		bool bfCheckPath(AI::Path &Path);

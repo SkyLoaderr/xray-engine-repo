@@ -203,14 +203,16 @@ void CAI_Soldier::OnEvent(EVENT E, DWORD P1, DWORD P2)
 					if ((strlen(monster_name)) && (strcmp(monster_name,cName())))
 						return;
 					
-					sscanf(buf2,"%d,%d,%d",&team,&squad,&group);
-					
-					if ((team != g_Team()) || (squad != g_Squad()) || (group != g_Group()))
-						return;
-					
-					for (int komas=0; komas<3; buf2++)
-						if (*buf2 == ',')
-							komas++;
+					if (!(strlen(monster_name)) {
+						sscanf(buf2,"%d,%d,%d",&team,&squad,&group);
+						
+						if ((team != g_Team()) || (squad != g_Squad()) || (group != g_Group()))
+							return;
+						
+						for (int komas=0; komas<3; buf2++)
+							if (*buf2 == ',')
+								komas++;
+					}
 				}
 				
 				vector<CLevel::SPatrolPath> &tpaPatrolPaths = Level().tpaPatrolPaths;
