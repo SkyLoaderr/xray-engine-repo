@@ -391,6 +391,7 @@ void CActor::ZoneEffect	(float z_amount)
 void CActor::Update	(DWORD DT)
 {
 	if (!getEnabled())	return;
+	if (!net_Ready())	return;
 
 	// patch
 	if (patch_frame<patch_frames)	{
