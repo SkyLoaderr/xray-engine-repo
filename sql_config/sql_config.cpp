@@ -25,7 +25,7 @@ bool _Connect(LPSQLDMOSERVER pSQLServer, char* sName, char* user_name, char* pwd
 	HRESULT hr;
 	if ( (hr=pSQLServer->Connect(A2W(sName), A2W(user_name), A2W(pwd) )) != S_OK)
 	{	
-		MessageBox( NULL, "Connect to SQL Server failed", "Error", MB_OK | MB_ICONINFORMATION );
+//		MessageBox( NULL, "Connect to SQL Server failed", "Error", MB_OK | MB_ICONINFORMATION );
 		return false;
 	}
 	return true;
