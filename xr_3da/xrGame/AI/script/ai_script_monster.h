@@ -127,7 +127,6 @@ public:
 	virtual CEntity				*GetCurrentCorpse		();
 	virtual int					get_enemy_strength		();
 
-	virtual void				set_visible				(bool vis);
 			void				process_sound_callbacks	();
 private:
 			void				FreeAll					();

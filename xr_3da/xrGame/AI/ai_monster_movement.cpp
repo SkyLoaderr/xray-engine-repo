@@ -256,4 +256,9 @@ void CMonsterMovement::set_dest_direction(const Fvector &dir)
 	CDetailPathManager::set_dest_direction(dir);
 }
 
-
+void CMonsterMovement::stop_now()
+{
+	CMovementManager::enable_movement	(false);
+	pMonster->m_velocity_linear.target	= 0.f;
+	pMonster->m_velocity_linear.current = 0.f;
+}

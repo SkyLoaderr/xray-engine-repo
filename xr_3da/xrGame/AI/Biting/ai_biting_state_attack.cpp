@@ -351,11 +351,11 @@ void CBitingAttack::Run()
 
 		if (pBS && pA && bActorIsEnemy && (pA->Position().distance_to(pBS->Position()) < pBS->m_fEffectDist)) {
 			if ((dist < pBS->m_fInvisibilityDist) && (pBS->GetPower() > pBS->m_fPowerThreshold)) {
-				if (pBS->CMonsterInvisibility::Switch(false)) {
-					pBS->set_visible(false);
-					pBS->ChangePower(pBS->m_ftrPowerDown);
-					pBS->ActivateEffector(pBS->CMonsterInvisibility::GetInvisibleInterval() / 1000.f);
-				}
+				//if (pBS->CMonsterInvisibility::Switch(false)) {
+				//	pBS->set_visible(false);
+				//	pBS->ChangePower(pBS->m_ftrPowerDown);
+				//	pBS->ActivateEffector(pBS->CMonsterInvisibility::GetInvisibleInterval() / 1000.f);
+				//}
 			}
 		}
 	}

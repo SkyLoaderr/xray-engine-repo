@@ -39,17 +39,25 @@ void CPoltergeist::Load(LPCSTR section)
 	m_particles_hidden		= pSettings->r_string(section,"Hidden_Particles");
 	m_particles_hide		= pSettings->r_string(section,"Hide_Particles");
 
+	MotionMan.AddReplacedAnim(&m_bDamaged, eAnimWalkFwd, eAnimWalkDamaged);
+	MotionMan.AddReplacedAnim(&m_bDamaged, eAnimRun,	 eAnimRunDamaged);
+	
 	if (!MotionMan.start_load_shared(SUB_CLS_ID)) return;
 
-	MotionMan.AddAnim(eAnimStandIdle,		"stand_idle_",			-1, &inherited::get_sd()->m_fsVelocityNone,				PS_STAND);
-	MotionMan.AddAnim(eAnimStandTurnLeft,	"stand_turn_ls_",		-1, &inherited::get_sd()->m_fsVelocityStandTurn,		PS_STAND);
-	MotionMan.AddAnim(eAnimStandTurnRight,	"stand_turn_rs_",		-1, &inherited::get_sd()->m_fsVelocityStandTurn,		PS_STAND);
-	MotionMan.AddAnim(eAnimWalkFwd,			"stand_walk_fwd_",		-1, &inherited::get_sd()->m_fsVelocityWalkFwdNormal,	PS_STAND);
-	MotionMan.AddAnim(eAnimRun,				"stand_walk_fwd_",		-1,	&inherited::get_sd()->m_fsVelocityRunFwdNormal,		PS_STAND);
-	MotionMan.AddAnim(eAnimAttack,			"stand_attack_",		-1, &inherited::get_sd()->m_fsVelocityStandTurn,		PS_STAND);
-	MotionMan.AddAnim(eAnimDie,				"stand_turn_ls_",		-1, &inherited::get_sd()->m_fsVelocityNone,				PS_STAND);
-	MotionMan.AddAnim(eAnimMiscAction_00,	"fall_down_",			-1, &inherited::get_sd()->m_fsVelocityNone,				PS_STAND);
-	MotionMan.AddAnim(eAnimMiscAction_01,	"fly_",					-1, &inherited::get_sd()->m_fsVelocityNone,				PS_STAND);
+	MotionMan.AddAnim(eAnimStandIdle,		"stand_idle_",			-1, &inherited::get_sd()->m_fsVelocityNone,				PS_STAND,	"fx_stand_f", "fx_stand_b", "fx_stand_l", "fx_stand_r");
+	MotionMan.AddAnim(eAnimStandTurnLeft,	"stand_turn_ls_",		-1, &inherited::get_sd()->m_fsVelocityStandTurn,		PS_STAND,	"fx_stand_f", "fx_stand_b", "fx_stand_l", "fx_stand_r");
+	MotionMan.AddAnim(eAnimStandTurnRight,	"stand_turn_rs_",		-1, &inherited::get_sd()->m_fsVelocityStandTurn,		PS_STAND,	"fx_stand_f", "fx_stand_b", "fx_stand_l", "fx_stand_r");
+	MotionMan.AddAnim(eAnimWalkFwd,			"stand_walk_fwd_",		-1, &inherited::get_sd()->m_fsVelocityWalkFwdNormal,	PS_STAND,	"fx_stand_f", "fx_stand_b", "fx_stand_l", "fx_stand_r");
+	MotionMan.AddAnim(eAnimRun,				"stand_run_fwd_",		-1,	&inherited::get_sd()->m_fsVelocityRunFwdNormal,		PS_STAND,	"fx_stand_f", "fx_stand_b", "fx_stand_l", "fx_stand_r");
+	MotionMan.AddAnim(eAnimAttack,			"stand_attack_",		-1, &inherited::get_sd()->m_fsVelocityStandTurn,		PS_STAND,	"fx_stand_f", "fx_stand_b", "fx_stand_l", "fx_stand_r");
+	MotionMan.AddAnim(eAnimDie,				"stand_idle_",			 0, &inherited::get_sd()->m_fsVelocityNone,				PS_STAND,	"fx_stand_f", "fx_stand_b", "fx_stand_l", "fx_stand_r");
+	MotionMan.AddAnim(eAnimMiscAction_00,	"fall_down_",			-1, &inherited::get_sd()->m_fsVelocityNone,				PS_STAND,	"fx_stand_f", "fx_stand_b", "fx_stand_l", "fx_stand_r");
+	MotionMan.AddAnim(eAnimMiscAction_01,	"fly_",					-1, &inherited::get_sd()->m_fsVelocityNone,				PS_STAND,	"fx_stand_f", "fx_stand_b", "fx_stand_l", "fx_stand_r");
+	MotionMan.AddAnim(eAnimCheckCorpse,		"stand_check_corpse_",	-1,	&inherited::get_sd()->m_fsVelocityNone,				PS_STAND,	"fx_stand_f", "fx_stand_b", "fx_stand_l", "fx_stand_r");
+	MotionMan.AddAnim(eAnimEat,				"stand_eat_",			-1, &inherited::get_sd()->m_fsVelocityNone,				PS_STAND,	"fx_stand_f", "fx_stand_b", "fx_stand_l", "fx_stand_r");
+	MotionMan.AddAnim(eAnimLookAround,		"stand_look_around_",	-1,	&inherited::get_sd()->m_fsVelocityNone,				PS_STAND,	"fx_stand_f", "fx_stand_b", "fx_stand_l", "fx_stand_r");	
+	MotionMan.AddAnim(eAnimWalkDamaged,		"stand_walk_dmg_",		-1, &inherited::get_sd()->m_fsVelocityWalkFwdDamaged,	PS_STAND,	"fx_stand_f", "fx_stand_b", "fx_stand_l", "fx_stand_r");	
+	MotionMan.AddAnim(eAnimRunDamaged,		"stand_walk_dmg_",		-1, &inherited::get_sd()->m_fsVelocityRunFwdDamaged,	PS_STAND,	"fx_stand_f", "fx_stand_b", "fx_stand_l", "fx_stand_r");	
 
 	MotionMan.LinkAction(ACT_STAND_IDLE,	eAnimStandIdle);
 	MotionMan.LinkAction(ACT_SIT_IDLE,		eAnimStandIdle);
@@ -57,14 +65,16 @@ void CPoltergeist::Load(LPCSTR section)
 	MotionMan.LinkAction(ACT_WALK_FWD,		eAnimWalkFwd);
 	MotionMan.LinkAction(ACT_WALK_BKWD,		eAnimWalkFwd);
 	MotionMan.LinkAction(ACT_RUN,			eAnimRun);
-	MotionMan.LinkAction(ACT_EAT,			eAnimStandIdle);
+	MotionMan.LinkAction(ACT_EAT,			eAnimEat);
 	MotionMan.LinkAction(ACT_SLEEP,			eAnimStandIdle);
 	MotionMan.LinkAction(ACT_REST,			eAnimStandIdle);
 	MotionMan.LinkAction(ACT_DRAG,			eAnimStandIdle);
 	MotionMan.LinkAction(ACT_ATTACK,		eAnimAttack);
 	MotionMan.LinkAction(ACT_STEAL,			eAnimWalkFwd);
-	MotionMan.LinkAction(ACT_LOOK_AROUND,	eAnimStandIdle);
+	MotionMan.LinkAction(ACT_LOOK_AROUND,	eAnimLookAround);
 	MotionMan.LinkAction(ACT_TURN,			eAnimStandIdle); 
+
+	MotionMan.AA_Load(pSettings->r_string(section, "attack_params"));
 
 	MotionMan.finish_load_shared();
 }

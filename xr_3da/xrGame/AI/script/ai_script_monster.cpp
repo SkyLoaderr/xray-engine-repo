@@ -708,10 +708,6 @@ int CScriptMonster::get_enemy_strength()
 	return (0);
 }
 
-void CScriptMonster::set_visible(bool vis)
-{
-}
-
 void CScriptMonster::process_sound_callbacks()
 {
 	if (!m_tSoundCallback.assigned()) {
@@ -734,3 +730,4 @@ void CScriptMonster::process_sound_callbacks()
 
 	m_saved_sounds.clear					();
 }
+

@@ -66,4 +66,8 @@ void CEnergyHolder::schedule_update()
 	if (!is_active() && can_activate() && m_auto_activate)			activate	();
 }
 
-
+void CEnergyHolder::enable()
+{
+	m_enable			= true;
+	m_time_last_update	= Level().timeServer();
+}

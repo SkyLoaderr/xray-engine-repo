@@ -4,12 +4,26 @@
 #include "state_move_to_point.h"
 #include "state_hide_from_point.h"
 #include "state_custom_action.h"
+#include "monster_state_eat_eat.h"
+#include "../../../PhysicsShell.h"
+#include "../../../PHMovementControl.h"
 
 #define TEMPLATE_SPECIALIZATION template <\
 	typename _Object\
 >
 
 #define CStateMonsterEatAbstract CStateMonsterEat<_Object>
+
+TEMPLATE_SPECIALIZATION
+CStateMonsterEatAbstract::CStateMonsterEat(_Object *obj) : inherited(obj)
+{
+	add_state	(eStateCorpseApproachRun,	xr_new<CStateMonsterMoveToPoint<_Object> >(obj));
+	add_state	(eStateCorpseApproachWalk,	xr_new<CStateMonsterMoveToPoint<_Object> >(obj));
+	add_state	(eStateCheckCorpse,			xr_new<CStateMonsterCustomAction<_Object> >(obj));
+	add_state	(eStateEat,					xr_new<CStateMonsterEating<_Object> >(obj));
+	add_state	(eStateWalkAway,			xr_new<CStateMonsterHideFromPoint<_Object> >(obj));
+	add_state	(eStateRest,				xr_new<CStateMonsterCustomAction<_Object> >(obj));
+}
 
 TEMPLATE_SPECIALIZATION
 CStateMonsterEatAbstract::CStateMonsterEat(_Object *obj, state_ptr state_eat) : inherited(obj)

@@ -61,6 +61,9 @@ public:
 	IC	void	set_path_targeted		(bool val = true) {b_targeted_path = val;}
 	// -------------------------------------------------------------------
 
+
+		void	stop_now				();
+
 public:
 						CMonsterMovement	();
 						~CMonsterMovement	();

@@ -2,7 +2,6 @@
 #include "ai_bloodsucker.h"
 #include "ai_bloodsucker_effector.h"
 #include "../ai_monsters_misc.h"
-
 #include "../ai_monster_utils.h"
 #include "../ai_monster_effector.h"
 
@@ -32,31 +31,20 @@ CAI_Bloodsucker::~CAI_Bloodsucker()
 	xr_delete(stateSquadTask);
 }
 
-void CAI_Bloodsucker::reinit()
-{
-	inherited::reinit();
-	CurrentState					= stateRest;
-	CurrentState->Reset				();
-
-	Bones.Reset();
-
-	visibility_steady				= true;
-}
-
 void CAI_Bloodsucker::Load(LPCSTR section) 
 {
 	inherited::Load(section);
 
-	CMonsterInvisibility::Load(section);
+	//CMonsterInvisibility::Load(section);
 
-	m_fInvisibilityDist = pSettings->r_float(section,"InvisibilityDist");
-	m_ftrPowerDown		= pSettings->r_float(section,"PowerDownFactor");	
-	m_fPowerThreshold	= pSettings->r_float(section,"PowerThreshold");	
-	m_fEffectDist		= pSettings->r_float(section,"EffectDistance");	
+	//m_fInvisibilityDist = pSettings->r_float(section,"InvisibilityDist");
+	//m_ftrPowerDown		= pSettings->r_float(section,"PowerDownFactor");	
+	//m_fPowerThreshold	= pSettings->r_float(section,"PowerThreshold");	
+	//m_fEffectDist		= pSettings->r_float(section,"EffectDistance");	
 
 	MotionMan.AddReplacedAnim(&m_bDamaged, eAnimRun,		eAnimRunDamaged);
 	MotionMan.AddReplacedAnim(&m_bDamaged, eAnimWalkFwd,	eAnimWalkDamaged);
-	
+
 	MotionMan.accel_load			(section);
 	MotionMan.accel_chain_add		(eAnimWalkFwd,		eAnimRun);
 	MotionMan.accel_chain_add		(eAnimWalkDamaged,	eAnimRunDamaged);
@@ -65,7 +53,7 @@ void CAI_Bloodsucker::Load(LPCSTR section)
 
 	invisible_vel.set(pSettings->r_float(section,"Velocity_Invisible_Linear"),pSettings->r_float(section,"Velocity_Invisible_Angular"));
 	m_movement_params.insert(std::make_pair(eVelocityParameterInvisible,STravelParams(invisible_vel.linear, invisible_vel.angular)));
-	
+
 	invisible_particle_name = pSettings->r_string(section,"Particle_Invisible");
 
 	if (!MotionMan.start_load_shared(SUB_CLS_ID)) return;
@@ -121,6 +109,26 @@ void CAI_Bloodsucker::Load(LPCSTR section)
 
 	MotionMan.finish_load_shared();
 }
+
+
+void CAI_Bloodsucker::reinit()
+{
+	inherited::reinit();
+	CInvisibility::reinit();
+
+	CurrentState					= stateRest;
+	CurrentState->Reset				();
+
+	Bones.Reset();
+	
+}
+
+void CAI_Bloodsucker::reload(LPCSTR section)
+{
+	inherited::reload(section);
+	CInvisibility::reload(section);
+}
+
 
 void CAI_Bloodsucker::LoadEffector(LPCSTR section)
 {
@@ -245,30 +253,7 @@ BOOL CAI_Bloodsucker::net_Spawn (LPVOID DC)
 void CAI_Bloodsucker::UpdateCL()
 {
 	inherited::UpdateCL();
-
-	// Blink processing
-	bool saved_steady	=	visibility_steady;
-
-	bool PrevVis	=	IsCurrentVisible();
-	bool NewVis		=	CMonsterInvisibility::Update();
-	if (NewVis != PrevVis) setVisible(NewVis);
-
-	if (!CMonsterInvisibility::IsActiveBlinking()) state_invisible = !PrevVis;
-	else {
-		if (state_invisible) {
-			CMovementManager::enable_movement(false);
-			CMovementManager::enable_movement(true);
-			m_velocity_linear.current = m_velocity_linear.target = 0.f;
-		}
-	}
-	
-	if (CMonsterInvisibility::IsActiveBlinking()) visibility_steady = false;
-	else visibility_steady = true;
-
-	// начал мерцать
-	if ((saved_steady == true) && (visibility_steady == false)) {
-		CParticlesPlayer::StartParticles(invisible_particle_name,Fvector().set(0.0f,0.1f,0.0f),ID());		
-	}
+	CInvisibility::frame_update();
 }
 
 void CAI_Bloodsucker::StateSelector()
@@ -299,16 +284,14 @@ void CAI_Bloodsucker::StateSelector()
 
 ////////////////////////////////////////////////////////////////////////////////////////////////
 
-void CAI_Bloodsucker::set_visible(bool val) 
-{
-	CMonsterInvisibility::Switch(val);
-}
-
 void CAI_Bloodsucker::shedule_Update(u32 dt)
 {
 	inherited::shedule_Update(dt);
+	
+	if (!g_Alive())	setVisible(TRUE);
+	CInvisibility::schedule_update();
 
-	if (state_invisible) {
+	if (state_invisible && g_Alive() && (m_fCurSpeed != 0)) {
 		SGameMtlPair* mtl_pair		= CMaterialManager::get_current_pair();
 		if (!mtl_pair) return;
 
@@ -333,25 +316,39 @@ void CAI_Bloodsucker::shedule_Update(u32 dt)
 	}
 }
 
-void CAI_Bloodsucker::ProcessTurn()
+void CAI_Bloodsucker::on_change_visibility(bool b_visibility)
 {
-	float delta_yaw = angle_difference(m_body.target.yaw, m_body.current.yaw);
-	if (delta_yaw < deg(1)) return;
-
-	EMotionAnim anim = MotionMan.GetCurAnim();
-
-	bool turn_left = true;
-	if (from_right(m_body.target.yaw, m_body.current.yaw)) turn_left = false; 
-
-	switch (anim) {
-		case eAnimStandIdle: 
-			(turn_left) ? MotionMan.SetCurAnim(eAnimStandTurnLeft) : MotionMan.SetCurAnim(eAnimStandTurnRight);
-			return;
-		default:
-			if (delta_yaw > deg(30)) {
-				(turn_left) ? MotionMan.SetCurAnim(eAnimStandTurnLeft) : MotionMan.SetCurAnim(eAnimStandTurnRight);
-			}
-			return;
-	}
-
+	setVisible(b_visibility);
 }
+
+void CAI_Bloodsucker::on_activate()
+{
+	CInvisibility::on_activate();
+	
+	CParticlesPlayer::StartParticles(invisible_particle_name,Fvector().set(0.0f,0.1f,0.0f),ID());		
+	state_invisible = true;
+}
+
+void CAI_Bloodsucker::on_deactivate()
+{
+	CInvisibility::on_deactivate();
+	
+	CParticlesPlayer::StartParticles(invisible_particle_name,Fvector().set(0.0f,0.1f,0.0f),ID());
+	state_invisible = false;
+}
+
+void CAI_Bloodsucker::net_Destroy()
+{
+	CInvisibility::deactivate(); 
+	CInvisibility::disable();
+	inherited::net_Destroy();
+}
+
+void CAI_Bloodsucker::Die()
+{
+	CInvisibility::deactivate(); 
+	CInvisibility::disable();
+
+	inherited::Die();
+}
+

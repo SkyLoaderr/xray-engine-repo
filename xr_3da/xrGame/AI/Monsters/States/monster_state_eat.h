@@ -18,6 +18,7 @@ protected:
 	};
 
 public:
+						CStateMonsterEat		(_Object *obj);
 						CStateMonsterEat		(_Object *obj, state_ptr state_eat);
 	virtual				~CStateMonsterEat		();
 

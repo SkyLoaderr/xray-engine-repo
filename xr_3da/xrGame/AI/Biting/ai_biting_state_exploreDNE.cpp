@@ -49,11 +49,11 @@ void CBitingExploreDNE::Run()
 
 		if (pBS && pA && (pA->Position().distance_to(pBS->Position()) < pBS->m_fEffectDist)) {
 			if ((pBS->GetPower() > pBS->m_fPowerThreshold)) {
-				if (pBS->CMonsterInvisibility::Switch(false)) {
-					pBS->set_visible(false);
-					pBS->ChangePower(pBS->m_ftrPowerDown);
-					pBS->ActivateEffector(pBS->CMonsterInvisibility::GetInvisibleInterval() / 1000.f);
-				}
+				//if (pBS->CMonsterInvisibility::Switch(false)) {
+				//	pBS->set_visible(false);
+				//	pBS->ChangePower(pBS->m_ftrPowerDown);
+				//	pBS->ActivateEffector(pBS->CMonsterInvisibility::GetInvisibleInterval() / 1000.f);
+				//}
 			}
 		}
 	}

@@ -155,21 +155,31 @@ bool CAI_Biting::bfAssignMonsterAction(CScriptEntityAction *tpEntityAction)
 	CScriptMonsterAction	&l_tAction = tpEntityAction->m_tMonsterAction;	
 	if (l_tAction.completed()) return false;
 
+	CEntityAlive *pE = dynamic_cast<CEntityAlive *>(l_tAction.m_tObject);
+
 	switch(l_tAction.m_tAction) {
 		case eGA_Rest:		
 			SetState(stateRest, true);	
 			break;
 		case eGA_Eat:		
-			SetState(stateEat, true);	
-			CorpseMan.force_corpse(dynamic_cast<CEntityAlive *>(l_tAction.m_tObject));
+			if (pE && !pE->getDestroy() && !pE->g_Alive()){
+				SetState(stateEat, true);	
+				CorpseMan.force_corpse(pE);
+			} else SetState(stateRest, true);	
+
 			break;
 		case eGA_Attack:
-			SetState(stateAttack, true);	
-			EnemyMan.force_enemy(dynamic_cast<CEntityAlive *>(l_tAction.m_tObject));
+			if (pE && !pE->getDestroy() && pE->g_Alive()){
+				SetState(stateAttack, true);	
+				EnemyMan.force_enemy(pE);
+			} else SetState(stateRest, true);	
+
 			break;
 		case eGA_Panic:		
-			SetState(statePanic, true);
-			EnemyMan.force_enemy(dynamic_cast<CEntityAlive *>(l_tAction.m_tObject));
+			if (pE && !pE->getDestroy() && pE->g_Alive()){
+				SetState(statePanic, true);
+				EnemyMan.force_enemy(pE);
+			} else SetState(stateRest, true);	
 			break;
 	}
 

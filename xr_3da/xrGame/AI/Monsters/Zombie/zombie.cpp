@@ -52,15 +52,18 @@ void CZombie::Load(LPCSTR section)
 
 bool CZombie::UpdateStateManager()
 {
+	if (MotionMan.TA_IsActive()) return true;
+	
 	StateMan->execute	();
 
-	if (!Bones.IsActive()) {
-		
-		float look_k = (Random.randI(2) ? (-1.f) : (1.f));
-		
-		Bones.SetMotion(bone_spine, AXIS_Z, 2 * look_k * PI_DIV_6/2,	2 * PI_DIV_6 / 2,	1);		
-		Bones.SetMotion(bone_spine, AXIS_Y, 2 * look_k * PI_DIV_6,		2 * PI_DIV_6,		1);
-	}
+	//if (!Bones.IsActive()) {
+	//	
+	//	float look_k = (Random.randI(2) ? (-1.f) : (1.f));
+	//	
+	//	Bones.SetMotion(bone_spine, AXIS_Z, 2 * look_k * PI_DIV_6/2,	2 * PI_DIV_6 / 2,	1);		
+	//	Bones.SetMotion(bone_spine, AXIS_Y, PI_DIV_6,					2 * PI_DIV_6,		1);
+	//	Bones.SetMotion(bone_spine, AXIS_X, 2 * look_k * PI_DIV_6,		2 * PI_DIV_6,		1);
+	//}
 	
 	return true;
 }
@@ -69,7 +72,30 @@ void CZombie::reinit()
 {
 	inherited::reinit();
 	Bones.Reset();
+	
+	time_dead_start = 0;
+	last_hit_frame	= 0;
+	time_resurrect	= 0;
 }
+
+void CZombie::reload(LPCSTR section)
+{
+	inherited::reload(section);
+
+	// Load triple death animations
+	CMotionDef *def1, *def2, *def3;
+	def1 = PSkeletonAnimated(Visual())->ID_Cycle_Safe("fake_death_0");
+	VERIFY(def1);
+
+	def2 = PSkeletonAnimated(Visual())->ID_Cycle_Safe("fake_death_1");
+	VERIFY(def2);
+
+	def3 = PSkeletonAnimated(Visual())->ID_Cycle_Safe("fake_death_2");
+	VERIFY(def3);
+
+	anim_triple_death.init_external	(def1, def2, def3);
+}
+
 
 void __stdcall CZombie::BoneCallback(CBoneInstance *B)
 {
@@ -91,7 +117,7 @@ void CZombie::vfAssignBones()
 
 	// Bones settings
 	Bones.Reset();
-	Bones.AddBone(bone_spine, AXIS_Z);	Bones.AddBone(bone_spine, AXIS_Y);
+	Bones.AddBone(bone_spine, AXIS_Z);	Bones.AddBone(bone_spine, AXIS_Y); Bones.AddBone(bone_spine, AXIS_X);
 	Bones.AddBone(bone_head, AXIS_Z);	Bones.AddBone(bone_head, AXIS_Y);
 }
 
@@ -104,3 +130,44 @@ BOOL CZombie::net_Spawn (LPVOID DC)
 
 	return(TRUE);
 }
+
+#define TIME_FAKE_DEATH			5000
+#define TIME_RESURRECT_RESTORE	20000
+#define HEALTH_DEATH_THRESHOLD	0.4f
+
+void CZombie::Hit(float P,Fvector &dir,CObject*who,s16 element,Fvector p_in_object_space,float impulse, ALife::EHitType hit_type)
+{
+	inherited::Hit(P,dir,who,element,p_in_object_space,impulse,hit_type);
+	
+	if (!MotionMan.TA_IsActive() && (time_resurrect + TIME_RESURRECT_RESTORE < Level().timeServer())
+		&& (GetHealth() < HEALTH_DEATH_THRESHOLD)) {
+			
+			if ((hit_type == ALife::eHitTypeFireWound) && (Device.dwFrame != last_hit_frame)) {
+				MotionMan.TA_Activate(&anim_triple_death);
+				CMonsterMovement::stop_now();
+				time_dead_start = Level().timeServer();
+			}
+	}
+
+	last_hit_frame = Device.dwFrame;
+}
+
+
+void CZombie::shedule_Update(u32 dt)
+{
+	inherited::shedule_Update(dt);
+
+	if (time_dead_start != 0) {
+		if (time_dead_start + TIME_FAKE_DEATH < Level().timeServer()) {
+			time_dead_start  = 0;
+
+			VERIFY(anim_triple_death.is_active());
+
+			MotionMan.TA_PointBreak();	
+
+			time_resurrect = Level().timeServer();
+		}
+	}
+	
+}
+

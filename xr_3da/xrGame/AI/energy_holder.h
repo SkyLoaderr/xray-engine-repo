@@ -41,7 +41,7 @@ public:
 	IC		void	set_auto_activate		(bool b_auto = true)  {m_auto_activate = b_auto;}
 	IC		void	set_auto_deactivate		(bool b_auto = true)  {m_auto_deactivate = b_auto;}
 
-	IC		void	enable					(){m_enable = true;}
+			void	enable					();
 	IC		void	disable					(){m_enable = false;}
 };
 
