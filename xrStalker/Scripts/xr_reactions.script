@@ -65,7 +65,6 @@ function action_wait:initialize()
 		     lastsound = nil,
 		 	sounds = {      {pack = sounds["relax"], id = 0},
 					{pack = sounds["relax"], id = 1} }}
-
 	self.sound_search = {idle = 0,
 		     begin = nil,
 		     maxidle = 5, 
@@ -76,7 +75,6 @@ function action_wait:initialize()
 					{pack = sounds["search"], id = 1},
 					{pack = sounds["search"], id = 2},
 					{pack = sounds["search"], id = 3} }}
-
 	self.sound_wait = {idle = 0,
 		     begin = nil,
 		     maxidle = 5, 
@@ -92,7 +90,6 @@ function action_wait:initialize()
 					{pack = sounds["wait"], id = 6},
 					{pack = sounds["wait"], id = 7},
 					{pack = sounds["wait"], id = 8} }}
-
 	self.anim = {idle = 0,
 		     begin = nil,
 		     maxidle = 4, 
@@ -329,7 +326,6 @@ function events:__init(npc)
 	self.hear = {} 	-- звуки, которые мы слышали менее чем x секунду назад. “ак как один и тот же звук может приходить несколько раз 
 			-- то таким образом мы обрубаем повторное включение одного и того же звука
 
-
 	self.descr = {	visibility = nil,  -- дескриптор раздражителей
 			sound_kat = nil,
 			sound_power = nil,
@@ -342,7 +338,6 @@ function events:__init(npc)
 			corpse 	= { type = nil,
 				    relation = nil }
 			}
-
 	self.stype3 = { snd_type.weapon,
 			snd_type.shoot,
 			snd_type.bullet_hit,
@@ -374,6 +369,7 @@ function events:__init(npc)
 	self.time_reaction = 1500 	-- 1.5 секунд
 	self.time_memory = 600000 	-- 5 минут
 	self.visio	= 0.25 		-- если объект виден
+	self.hear_distance = 100 	-- на каком рассто€нии мы слышим
 	-- онстанты дл€ настройки реакций
 --[[
 	"no_item" 	- игнорирует итем€
@@ -438,7 +434,7 @@ function events:calculate()  -- ѕроизводить перерасчет и обновление раздражителе
 			end
 		end
 
-		if continue and self.npc:position():distance_to(so:position()) > 50 then
+		if continue and self.npc:position():distance_to(so:position()) > self.hear_distance then
 			continue = false
 		end
 
