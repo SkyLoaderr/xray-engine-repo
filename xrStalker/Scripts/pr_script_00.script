@@ -97,6 +97,7 @@ function main()
 		else
 			printf("DON'T SEE")
 		end
+		wait()
 	end
 
 
