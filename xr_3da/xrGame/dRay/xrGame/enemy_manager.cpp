@@ -24,7 +24,7 @@ bool CEnemyManager::useful					(const CEntityAlive *entity_alive) const
 	if (m_self_entity_alive && ((m_self_entity_alive->ID() == entity_alive->ID()) || (m_self_entity_alive->tfGetRelationType(entity_alive) != ALife::eRelationTypeEnemy)))
 		return				(false);
 
-	if (!ai().level_graph().valid_vertex_id(entity_alive->level_vertex_id()))
+	if (!ai().get_level_graph() || !ai().level_graph().valid_vertex_id(entity_alive->level_vertex_id()))
 		return				(false);
 
 	if	(

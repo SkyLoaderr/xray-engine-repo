@@ -22,7 +22,7 @@ bool CItemManager::useful			(const CGameObject  *object) const
 	if (object->H_Parent())
 		return				(false);
 
-	if (!ai().level_graph().valid_vertex_id(object->level_vertex_id()))
+	if (!ai().get_level_graph() || !ai().level_graph().valid_vertex_id(object->level_vertex_id()))
 		return				(false);
 
 	return					(true);
