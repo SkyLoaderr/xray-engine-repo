@@ -1,47 +1,6 @@
 <?xml version='1.0' encoding="windows-1251"?>
 
 <game_dialogs>
-	<dialog id="loser_hello_dialog">
-		<phrase_list>
-			<phrase id="0">
-				<text>Урки ограбили!!! Принеси мне какое-нибудь серьезное оружие...\nПринеси! Я этого не забуду...</text>
-				<next>1</next>
-				<next>2</next>
-				<next>3</next>
-				<next>6</next>
-			</phrase>
-			<phrase id="1">
-				<text>Я посмотрю что можно сделать.</text>
-				<give_info>escape_novice_need_weapon</give_info>
-				<next>5</next>
-			</phrase>
-			<phrase id="2">
-				<text>Как нибудь в другой раз.</text>
-				<action>escape.break_dialog</action>
-			</phrase>
-			<phrase id="3">
-				<precondition>escape.haveAK</precondition>
-				<text>На, возьми калаш, может он тебе подойдет...</text>
-				<next>4</next>
-				<action>escape.give_kalash_to_loser</action>
-				<give_info>escape_novice_has_weapon</give_info>
-			</phrase>
-			<phrase id="6">
-				<precondition>escape.haveTOZ</precondition>
-				<text>На, возьми винтовку, может она тебе подойдет...</text>
-				<next>4</next>
-				<action>escape.give_toz_to_loser</action>
-				<give_info>escape_novice_has_weapon</give_info>
-			</phrase>
-			<phrase id="4">
-				<text>Спасибо, брат... Я не забуду твою помощь. Теперь урки поплатятся.\n          [отношение изменены до "Друга"]</text>
-			</phrase>
-			<phrase id="5">
-				<text>Ну давай, я буду тут если что.</text>
-				<action>escape.break_dialog</action>
-			</phrase>
-		</phrase_list>
-	</dialog>
 
 
 
