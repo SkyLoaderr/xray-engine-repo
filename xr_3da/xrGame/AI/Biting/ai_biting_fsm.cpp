@@ -26,13 +26,7 @@ void CAI_Biting::Think()
 	
 	MotionStats->update						();
 	
-	Msg("----------------------------------------");
-	LOG_EX2("-- New frame :: Time = [%u]", *"*/ Level().timeServer() /*"*);
-	LOG_EX("----------------------------------------");
-	
-	CTimer T; T.Start();
 	vfUpdateParameters						();
-	Msg("ST :: UpdateParameters = [%f s]", T.GetElapsed_sec());
 
 	if (m_PhysicMovementControl->JumpState()) enable_movement(false);
 
@@ -45,7 +39,6 @@ void CAI_Biting::Think()
 	}
 
 	
-	T.Start();
 	// Squad calculations
 	CMonsterSquad	*pSquad = Level().SquadMan.GetSquad((u8)g_Squad());
 	if (pSquad && pSquad->SquadActive()) {
@@ -54,25 +47,19 @@ void CAI_Biting::Think()
 			pSquad->UpdateDecentralized();
 		} 
 	}
-	Msg("ST :: Squad = [%f s]",T.GetElapsed_sec());
 
 	
-	T.Start();	
 	if (MotionMan.Seq_Active()) disable_path();
 	else {
 		// ¬ыбор текущего состо€ни€
 		StateSelector						();
-//		CurrentState->Execute				(m_current_update);
+		CurrentState->Execute				(m_current_update);
 		UpdatePathWithAction					();
 	}
-	Msg("ST :: State Execute = [%f s]", T.GetElapsed_sec());
 
 	// построить путь
-	T.Start();
 	CMonsterMovement::Frame_Update			();
-	Msg("ST :: Path Build = [%f s]", T.GetElapsed_sec());
 
-	T.Start();
 	// в зависимости от маршрута установить action
 	UpdateActionWithPath					();
 
@@ -84,7 +71,6 @@ void CAI_Biting::Think()
 	
 	// установить текущую скорость
 	CMonsterMovement::Frame_Finalize		();
-	Msg("ST :: Finalization = [%f s]", T.GetElapsed_sec());
 
 	// Debuging
 #ifdef DEBUG

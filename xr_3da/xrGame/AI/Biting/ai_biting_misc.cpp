@@ -60,9 +60,6 @@ void CAI_Biting::vfUpdateParameters()
 	}
 	K					= C | D | E | F;
 	
-	Msg("Time = %u :: M[%s] = [%u]", Level().timeServer(), *cName(), K);
-
-
 	// K должно быть true, только если корректный ve.obj
 	R_ASSERT(ve.obj || !K);
 
