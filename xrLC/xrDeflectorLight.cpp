@@ -52,52 +52,57 @@ IC void GET(
 	else if (x>=(int)lm.dwWidth)	return;
 	if (y<0) return;
 	else if (y>=(int)lm.dwHeight)	return;
-
+	
 	// summarize
 	DWORD pixel = lm.pSurface[y*lm.dwWidth + x];
 	if (RGBA_GETALPHA(pixel)<=ref) return;
-
+	
 	r+=RGBA_GETRED	(pixel);
 	g+=RGBA_GETGREEN(pixel);
 	b+=RGBA_GETBLUE	(pixel);
 	count++;
 }
- 
+
 BOOL ApplyBorders(b_texture &lm, DWORD ref) 
 {
 	BOOL	bNeedContinue = FALSE;
-
-	DWORD	result[512*512];
-
-	R_ASSERT(lm.dwHeight<=512	);
-	R_ASSERT(lm.dwWidth<=512	);
-
-	CopyMemory(result,lm.pSurface,lm.dwHeight*lm.dwWidth*4);
-	for (int y=0; y<(int)lm.dwHeight; y++) {
-		for (int x=0; x<(int)lm.dwWidth; x++)
-		{
-			if (RGBA_GETALPHA(lm.pSurface[y*lm.dwWidth+x])==0) {
-				
-				DWORD C=0,r=0,g=0,b=0;
-				GET(lm,x-1,y-1,ref,C,r,g,b);
-				GET(lm,x  ,y-1,ref,C,r,g,b);
-				GET(lm,x+1,y-1,ref,C,r,g,b);
-				
-				GET(lm,x-1,y  ,ref,C,r,g,b);
-				GET(lm,x+1,y  ,ref,C,r,g,b);
-				
-				GET(lm,x-1,y+1,ref,C,r,g,b);
-				GET(lm,x  ,y+1,ref,C,r,g,b);
-				GET(lm,x+1,y+1,ref,C,r,g,b);
-				
-				if (C) {
-					result[y*lm.dwWidth+x]=RGBA_MAKE(r/C,g/C,b/C,ref);
-					bNeedContinue = TRUE;
+	
+	try {
+		DWORD	result[512*512];
+		
+		R_ASSERT(lm.dwHeight<=512	);
+		R_ASSERT(lm.dwWidth<=512	);
+		
+		CopyMemory(result,lm.pSurface,lm.dwHeight*lm.dwWidth*4);
+		for (int y=0; y<(int)lm.dwHeight; y++) {
+			for (int x=0; x<(int)lm.dwWidth; x++)
+			{
+				if (RGBA_GETALPHA(lm.pSurface[y*lm.dwWidth+x])==0) {
+					
+					DWORD C=0,r=0,g=0,b=0;
+					GET(lm,x-1,y-1,ref,C,r,g,b);
+					GET(lm,x  ,y-1,ref,C,r,g,b);
+					GET(lm,x+1,y-1,ref,C,r,g,b);
+					
+					GET(lm,x-1,y  ,ref,C,r,g,b);
+					GET(lm,x+1,y  ,ref,C,r,g,b);
+					
+					GET(lm,x-1,y+1,ref,C,r,g,b);
+					GET(lm,x  ,y+1,ref,C,r,g,b);
+					GET(lm,x+1,y+1,ref,C,r,g,b);
+					
+					if (C) {
+						result[y*lm.dwWidth+x]=RGBA_MAKE(r/C,g/C,b/C,ref);
+						bNeedContinue = TRUE;
+					}
 				}
 			}
 		}
+		CopyMemory(lm.pSurface,result,lm.dwHeight*lm.dwWidth*4);
+	} catch (...)
+	{
+		Msg("* ERROR: ApplyBorders");
 	}
-	CopyMemory(lm.pSurface,result,lm.dwHeight*lm.dwWidth*4);
 	return bNeedContinue;
 }
 
@@ -107,47 +112,52 @@ float getLastRP_Scale(RAPID::XRCollide* DB, R_Light& L)
 	float	scale		= 1.f;
 	Fvector B;
 
-	for (DWORD I=0; I<tris_count; I++)
-	{
-		RAPID::raypick_info& rpinf = DB->RayContact[I];
-
-		// Access to texture
-		Face* F										= (Face*)(RCAST_Model.tris[rpinf.id].dummy);
-		if (0==F)									continue;
-
-		Shader_xrLC&	SH							= F->Shader();
-		if (!SH.flags.bLIGHT_CastShadow)			continue;
-		
-		if (F->bOpaque)		{
-			// Opaque poly - cache it
-			L.tri[0].set	(rpinf.p[0]);
-			L.tri[1].set	(rpinf.p[1]);
-			L.tri[2].set	(rpinf.p[2]);
-			return 0;
+	try {
+		for (DWORD I=0; I<tris_count; I++)
+		{
+			RAPID::raypick_info& rpinf = DB->RayContact[I];
+			
+			// Access to texture
+			Face* F										= (Face*)(RCAST_Model.tris[rpinf.id].dummy);
+			if (0==F)									continue;
+			
+			Shader_xrLC&	SH							= F->Shader();
+			if (!SH.flags.bLIGHT_CastShadow)			continue;
+			
+			if (F->bOpaque)		{
+				// Opaque poly - cache it
+				L.tri[0].set	(rpinf.p[0]);
+				L.tri[1].set	(rpinf.p[1]);
+				L.tri[2].set	(rpinf.p[2]);
+				return 0;
+			}
+			
+			b_material& M	= pBuild->materials			[F->dwMaterial];
+			b_texture&	T	= pBuild->textures			[M.surfidx];
+			
+			// barycentric coords
+			// note: W,U,V order
+			B.set(1.0f - rpinf.u - rpinf.v,rpinf.u,rpinf.v);
+			
+			// calc UV
+			_TCF	&C = F->tc[0];
+			UVpoint uv;
+			uv.u = C.uv[0].u*B.x + C.uv[1].u*B.y + C.uv[2].u*B.z;
+			uv.v = C.uv[0].v*B.x + C.uv[1].v*B.y + C.uv[2].v*B.z;
+			
+			int U = iFloor(uv.u*float(T.dwWidth) + .5f);
+			int V = iFloor(uv.v*float(T.dwHeight)+ .5f);
+			U %= T.dwWidth;		if (U<0) U+=T.dwWidth;
+			V %= T.dwHeight;	if (V<0) V+=T.dwHeight;
+			
+			DWORD pixel		= T.pSurface[V*T.dwWidth+U];
+			DWORD pixel_a	= RGBA_GETALPHA(pixel);
+			float opac		= 1.f - float(pixel_a)/255.f;
+			scale			*= opac;
 		}
-
-		b_material& M	= pBuild->materials			[F->dwMaterial];
-		b_texture&	T	= pBuild->textures			[M.surfidx];
-
-		// barycentric coords
-		// note: W,U,V order
-		B.set(1.0f - rpinf.u - rpinf.v,rpinf.u,rpinf.v);
-		
-		// calc UV
-		_TCF	&C = F->tc[0];
-		UVpoint uv;
-		uv.u = C.uv[0].u*B.x + C.uv[1].u*B.y + C.uv[2].u*B.z;
-		uv.v = C.uv[0].v*B.x + C.uv[1].v*B.y + C.uv[2].v*B.z;
-		
-		int U = iFloor(uv.u*float(T.dwWidth) + .5f);
-		int V = iFloor(uv.v*float(T.dwHeight)+ .5f);
-		U %= T.dwWidth;		if (U<0) U+=T.dwWidth;
-		V %= T.dwHeight;	if (V<0) V+=T.dwHeight;
-		
-		DWORD pixel		= T.pSurface[V*T.dwWidth+U];
-		DWORD pixel_a	= RGBA_GETALPHA(pixel);
-		float opac		= 1.f - float(pixel_a)/255.f;
-		scale			*= opac;
+	} catch (...)
+	{
+		Msg("* ERROR: getLastRP_Scale");
 	}
 	
 	return scale;
@@ -155,62 +165,72 @@ float getLastRP_Scale(RAPID::XRCollide* DB, R_Light& L)
 
 float rayTrace(RAPID::XRCollide* DB, R_Light& L, Fvector& P, Fvector& D, float R)
 {
-	// 1. Check cached polygon
-	float _u,_v,range;
-	bool res = RAPID::TestRayTri(P,D,L.tri,_u,_v,range,false);
-	if (res) {
-		if (range>0 && range<R) return 0;
-	}
-
-	// 2. Polygon doesn't pick - real database query
-	DB->RayPick(0,&RCAST_Model,P,D,R);
-	if (0==DB->GetRayContactCount()) {
-		return 1;
-	} else {
-		// analyze polygons and cache nearest if possible
-		return getLastRP_Scale(DB,L);
+	try {
+		// 1. Check cached polygon
+		float _u,_v,range;
+		bool res = RAPID::TestRayTri(P,D,L.tri,_u,_v,range,false);
+		if (res) {
+			if (range>0 && range<R) return 0;
+		}
+		
+		// 2. Polygon doesn't pick - real database query
+		DB->RayPick(0,&RCAST_Model,P,D,R);
+		if (0==DB->GetRayContactCount()) {
+			return 1;
+		} else {
+			// analyze polygons and cache nearest if possible
+			return getLastRP_Scale(DB,L);
+		}
+	} catch (...)
+	{
+		Msg("* ERROR: rayTrace");
 	}
 }
 
 void LightPoint(RAPID::XRCollide* DB, Fcolor &C, Fvector &P, Fvector &N, R_Light* begin, R_Light* end)
 {
-	Fvector		Ldir,Pnew;
-	Pnew.direct(P,N,0.01f);
-
-	R_Light	*L = begin, *E=end;
-	for (;L!=E; L++)
-	{
-		if (L->type==LT_DIRECT) {
-			// Cos
-			Ldir.invert	(L->direction);
-			float D		= Ldir.dotproduct( N );
-			if( D <=0 ) continue;
-
-			// Trace Light
-			float scale	= D*L->energy*rayTrace(DB,*L,Pnew,Ldir,1000.f);
-			C.r += scale * L->diffuse.r; 
-			C.g += scale * L->diffuse.g;
-			C.b += scale * L->diffuse.b;
-		} else {
-			// Distance
-			float sqD	= P.distance_to_sqr(L->position);
-			if (sqD > L->range2) continue;
-			
-			// Dir
-			Ldir.sub	(L->position,P);
-			Ldir.normalize_safe();
-			float D		= Ldir.dotproduct( N );
-			if( D <=0 ) continue;
-			
-			// Trace Light
-			float R		= sqrtf(sqD);
-			float scale = D*L->energy*rayTrace(DB,*L,Pnew,Ldir,R);
-			float A		= scale / (L->attenuation0 + L->attenuation1*R + L->attenuation2*sqD);
-			
-			C.r += A * L->diffuse.r;
-			C.g += A * L->diffuse.g;
-			C.b += A * L->diffuse.b;
+	try {
+		Fvector		Ldir,Pnew;
+		Pnew.direct(P,N,0.01f);
+		
+		R_Light	*L = begin, *E=end;
+		for (;L!=E; L++)
+		{
+			if (L->type==LT_DIRECT) {
+				// Cos
+				Ldir.invert	(L->direction);
+				float D		= Ldir.dotproduct( N );
+				if( D <=0 ) continue;
+				
+				// Trace Light
+				float scale	= D*L->energy*rayTrace(DB,*L,Pnew,Ldir,1000.f);
+				C.r += scale * L->diffuse.r; 
+				C.g += scale * L->diffuse.g;
+				C.b += scale * L->diffuse.b;
+			} else {
+				// Distance
+				float sqD	= P.distance_to_sqr(L->position);
+				if (sqD > L->range2) continue;
+				
+				// Dir
+				Ldir.sub	(L->position,P);
+				Ldir.normalize_safe();
+				float D		= Ldir.dotproduct( N );
+				if( D <=0 ) continue;
+				
+				// Trace Light
+				float R		= sqrtf(sqD);
+				float scale = D*L->energy*rayTrace(DB,*L,Pnew,Ldir,R);
+				float A		= scale / (L->attenuation0 + L->attenuation1*R + L->attenuation2*sqD);
+				
+				C.r += A * L->diffuse.r;
+				C.g += A * L->diffuse.g;
+				C.b += A * L->diffuse.b;
+			}
 		}
+	} catch (...)
+	{
+		Msg("* ERROR: LightPoint");
 	}
 }
 
