@@ -90,7 +90,7 @@ void FTreeVisual::Render	(float LOD)
 	float	scale			= 1.f/float(FTreeVisual_quant);
 
 	// fog
-	float	f_near			= pCreator->Environment.c_FogNear;
+	float	f_near			= pCreator->Environment.c_FogNear;k
 	float	f_far			= 1/(pCreator->Environment.c_FogFar - f_near);
 	Fvector4 plane;			
 
