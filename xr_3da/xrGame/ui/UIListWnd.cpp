@@ -6,10 +6,15 @@
 #include"stdafx.h"
 
 #include ".\uilistwnd.h"
+#include "UIInteractiveListItem.h"
 
 #define ACTIVE_BACKGROUND "ui\\ui_pop_up_active_back"
 #define ACTIVE_BACKGROUND_WIDTH 16
 #define ACTIVE_BACKGROUND_HEIGHT 16
+
+// разделитель для интерактивных строк в листе
+static const char cSeparatorChar = '%';
+
 
 CUIListWnd::CUIListWnd(void)
 {
@@ -29,6 +34,8 @@ CUIListWnd::CUIListWnd(void)
 	m_bUpdateMouseMove = false;
 
 	m_bForceFocusedItem = false;
+
+	m_iLastUniqueID = 0;
 }
 
 CUIListWnd::~CUIListWnd(void)
@@ -564,4 +571,70 @@ void CUIListWnd::SetFocusedItem(int iNewFocusedItem)
 	EnableActiveBackground(true);
 	if (m_iFocusedItem >= 0)
 		m_iFocusedItemGroupID = GetItem(m_iFocusedItem)->GetGroupID();
+}
+
+//=============================================================================
+//  Interactive element insertion
+//=============================================================================
+
+xr_vector<int> CUIListWnd::AddInteractiveItem(const char *str2, const char StartShift,
+											  const u32 &MsgColor, CGameFont* pFont)
+{
+	string1024	str = {0};
+	// скопируем строку для возможности записи
+	std::strcpy(str, str2);
+	// Распарсиваем строку, для определения принадлежности типа строки к обычным или
+	// интерактивным элементам
+	char				*pSep = str;
+	int					count = 0;
+	xr_vector<char *>	vSubItems;
+	xr_vector<int>		IDs;
+
+	vSubItems.clear();
+
+	// Считаем количество знаков-разделителей
+	while (pSep < str + xr_strlen(str) + 1)
+	{
+		pSep = std::find(pSep, str + xr_strlen(str) + 1, cSeparatorChar);
+		if (pSep < str + xr_strlen(str) + 1)
+		{
+			++count;
+			vSubItems.push_back(pSep - count + 1 );
+			pSep++;
+		}
+	}
+
+	// Завершить строку нулем
+	if (count != 0)
+	{
+		char *b = std::remove(str, str + xr_strlen(str) + 1, cSeparatorChar);
+		*b = '\n';
+	}
+
+	// Если нет ни одного знака-разделителя, или их количество нечетно, то считаем, что строка 
+	// не интерактивна
+	if (count % 2 == 1 || count == 0)
+	{
+		// Возвращаем NULL если строка не интерактивна.
+		// В этом случае ListWnd должен сам добавить строку обычным способом
+		CUIString A;
+		A.SetText(str);
+		AddParsedItem(A, StartShift, MsgColor, pFont);
+		return IDs;
+	}
+	int k = 0;
+	while (k < count / 2)
+	{
+		IDs.push_back(m_iLastUniqueID++);
+		++k;
+	}
+
+	// Если строка таки интерактивна, то конструируем интерактивную структуру - член листа
+	CUIInteractiveListItem *pILItem = xr_new<CUIInteractiveListItem>();
+	AddItem(pILItem);
+	pILItem->Init(str, vSubItems, IDs, GetItemHeight(), StartShift);
+	pILItem->SetFont(pFont);
+	pILItem->SetTextColor(MsgColor);
+	pILItem->SetMessageTarget(GetMessageTarget());
+	return IDs;
 }
