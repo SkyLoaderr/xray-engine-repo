@@ -3,20 +3,19 @@
 --///////////////////////////////////////////////////
 class "motivation_global"	(motivation)
 
-function motivation_global:__init(obj,motivations) super()
-	self.obj				= obj
+function motivation_global:__init(motivations) super()
 	self.motivations		= motivations
 end
 
 function motivation_global:evaluate(motivation_id)
 	if self.motivations["alive"] == motivation_id then
-		if self.obj:alive() == true then
+		if self.object:alive() == true then
 			return			1.0
 		else
 			return			0.0
 		end
 	else
-		if self.obj:alive() == false then
+		if self.object:alive() == false then
 			return			1.0
 		else
 			return			0.0
@@ -42,12 +41,11 @@ end
 --///////////////////////////////////////////////////
 class "evaluator_alive"		(property_evaluator)
 
-function evaluator_alive:__init(obj) super()
-	self.obj				= obj
+function evaluator_alive:__init() super()
 end
 
 function evaluator_alive:evaluate()
-	return					self.obj:alive()
+	return					self.object:alive()
 end
 
 --///////////////////////////////////////////////////
@@ -123,7 +121,7 @@ function stalker_script:reload		(section)
 	operators["free"]		= 1
 
 	-- // motivations
-	manager:add_motivation	(motivations["global"],		this.motivation_global(self.object,motivations))
+	manager:add_motivation	(motivations["global"],		this.motivation_global(motivations))
 
 	goal:clear				()
 	goal:add_property		(world_property(properties["dead"],	true))
@@ -137,7 +135,7 @@ function stalker_script:reload		(section)
 	manager:add_connection	(motivations["global"],		motivations["alive"])
 
 	-- // evaluators
-	manager:add_evaluator	(properties["alive"],		this.evaluator_alive	(self.object))
+	manager:add_evaluator	(properties["alive"],		this.evaluator_alive	())
 	manager:add_evaluator	(properties["dead"],		this.evaluator_const	(false))
 	manager:add_evaluator	(properties["solved"],		this.evaluator_const	(false))
 
