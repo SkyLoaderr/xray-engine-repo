@@ -59,13 +59,13 @@ bool TUI_CustomControl::HiddenMode(){
 //------------------------------------------------------------------------------
 // add
 //------------------------------------------------------------------------------
-CCustomObject* __fastcall TUI_CustomControl::DefaultAddObject(TShiftState Shift, LPVOID data){
+CCustomObject* __fastcall TUI_CustomControl::DefaultAddObject(TShiftState Shift, LPVOID data, LPCSTR prefix){
     if (Shift==ssRBOnly){ UI.Command(COMMAND_SHOWCONTEXTMENU,parent_tool->objclass); return 0;}
     Fvector p,n;
     CCustomObject* obj=0;
     if (UI.PickGround(p,UI.m_CurrentRStart,UI.m_CurrentRNorm,1,&n)){
 		char namebuffer[MAX_OBJ_NAME];
-		Scene.GenObjectName(parent_tool->objclass, namebuffer);
+		Scene.GenObjectName(parent_tool->objclass, namebuffer, prefix);
 		obj = NewObjectFromClassID(parent_tool->objclass, data);
         if (!obj->Valid()){
         	_DELETE(obj);

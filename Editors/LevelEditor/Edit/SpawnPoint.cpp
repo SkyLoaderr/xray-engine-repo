@@ -121,7 +121,6 @@ bool CSpawnPoint::Load(CStream& F){
     string64 entity_ref;
     F.RstringZ	(entity_ref);
 
-
     NET_Packet 	Packet;
     R_ASSERT(F.FindChunk(SPAWNPOINT_CHUNK_SPAWNDATA));
     Packet.B.count = F.Rdword();
@@ -146,6 +145,10 @@ void CSpawnPoint::Save(CFS_Base& F){
 	F.Wword			(SPAWNPOINT_VERSION);
 	F.close_chunk	();
 
+    F.open_chunk	(SPAWNPOINT_CHUNK_ENTITYREF);
+    F.WstringZ		(m_SpawnData->s_name);
+	F.close_chunk	();
+    
     F.open_chunk	(SPAWNPOINT_CHUNK_SPAWNDATA);
     NET_Packet 		Packet;
     m_SpawnData->Spawn_Write(Packet,FALSE);

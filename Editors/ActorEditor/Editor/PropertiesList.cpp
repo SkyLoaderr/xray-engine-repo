@@ -218,7 +218,51 @@ void __fastcall TfrmProperties::FormClose(TObject *Sender,
 }
 //---------------------------------------------------------------------------
 
-TElTreeItem* __fastcall TfrmProperties::AddItem(TElTreeItem* parent, EPropType type, LPCSTR key, LPVOID value){
+//CBlender* CSHEngineTools::AppendBlender(CLASS_ID cls_id, LPCSTR folder_name, CBlender* parent){
+void __fastcall TfrmProperties::AddItems(TElTreeItem* parent, CStream& data, int adv)
+{
+	// parse data
+    data.Advance(adv);
+    DWORD type;
+    char key[255];
+	TElTreeItem* marker_parent=parent;
+
+    while (!data.Eof()){
+        int sz=0;
+        type = data.Rdword();
+        data.RstringZ(key);
+        switch(type){
+        case xrPID_MARKER:							marker_parent=AddItem(marker_parent,PROP_MARKER,key); break;
+        case xrPID_INTEGER:{	
+        	sz=sizeof(xrP_Integer);	
+            xrP_Integer* V = (xrP_Integer*)data.Pointer();
+            AddItem(marker_parent,PROP_INTEGER,key,MakeIntValue(&V->value,V->min,V->max,1)); 
+        }break;
+        case xrPID_FLOAT:{ 
+        	sz=sizeof(xrP_Float); 	
+            xrP_Float* V = (xrP_Float*)data.Pointer();
+            AddItem(marker_parent,PROP_FLOAT,key,MakeFloatValue(&V->value,V->min,V->max,0.01f,2)); 
+        }break;
+        case xrPID_BOOL:{ 	
+        	sz=sizeof(xrP_BOOL); 	
+            xrP_BOOL* V = (xrP_BOOL*)data.Pointer();
+            AddItem(marker_parent,PROP_BOOL,key,&V->value); 
+        }break;
+        case xrPID_TOKEN:{ 	
+        	sz=sizeof(xrP_TOKEN)+sizeof(xrP_TOKEN::Item)*(((xrP_TOKEN*)data.Pointer())->Count);
+            xrP_TOKEN* V = (xrP_TOKEN*)data.Pointer();
+            AddItem(marker_parent,PROP_TOKEN3,key,MakeTokenValue3(&V->IDselected,V->Count,(TokenValue3::Item*)(LPBYTE(data.Pointer()) + sizeof(xrP_TOKEN))));
+        }break;
+        default: THROW2("xrPID_????");
+        }
+        data.Advance(sz);
+    }
+    data.Seek(0);
+}
+//---------------------------------------------------------------------------
+
+TElTreeItem* __fastcall TfrmProperties::AddItem(TElTreeItem* parent, EPropType type, LPCSTR key, LPVOID value)
+{
 	R_ASSERT(iFillMode>0);
     TElTreeItem* TI     = tvProperties->Items->AddChildObject(parent,key,(TObject*)value);
     TI->Tag	            = type;
@@ -226,13 +270,14 @@ TElTreeItem* __fastcall TfrmProperties::AddItem(TElTreeItem* parent, EPropType t
     TElCellStyle* CS    = TI->AddStyle();
     CS->OwnerProps 		= true;
     CS->CellType 		= sftUndef;
+    CS->Style 			= ElhsOwnerDraw;
 
     switch (type){
     case PROP_MARKER:		break;
-    case PROP_MARKER2:		TI->ColumnText->Add(AnsiString((LPSTR)value)); 		break;
-    case PROP_BOOL:			CS->Style = ElhsOwnerDraw; 							break;
-    case PROP_WAVE:			TI->ColumnText->Add("[Wave]");						CS->Style = ElhsOwnerDraw; break;
-    case PROP_COLOR:		CS->Style = ElhsOwnerDraw; 							break;
+    case PROP_MARKER2:		TI->ColumnText->Add(AnsiString((LPSTR)value)); break;
+    case PROP_BOOL:			break;
+    case PROP_WAVE:			TI->ColumnText->Add("[Wave]");	break;
+    case PROP_COLOR:		break;
     case PROP_ANSI_TEXT:
     case PROP_TEXT:
     case PROP_FLAG:
@@ -249,7 +294,7 @@ TElTreeItem* __fastcall TfrmProperties::AddItem(TElTreeItem* parent, EPropType t
     case PROP_ANSI_TEXTURE:
     case PROP_ANSI_SH_ENGINE:
     case PROP_ANSI_SH_COMPILE:
-    case PROP_INTEGER:{		PropValue*  P=(PropValue*)value; TI->ColumnText->Add(P->GetText()); CS->Style = ElhsOwnerDraw; }break;
+    case PROP_INTEGER:{		PropValue*  P=(PropValue*)value; TI->ColumnText->Add(P->GetText()); }break;
     default: THROW2("PROP_????");
     }
     return TI;
@@ -273,18 +318,26 @@ void __fastcall TfrmProperties::tvPropertiesItemDraw(TObject *Sender,
       TElTreeItem *Item, TCanvas *Surface, TRect &R, int SectionIndex)
 {
 	TRect  R1;
-    int  sid;
 	Surface->Brush->Style = bsClear;
     if (Item->Enabled){
 	    Surface->Font->Color 	= clBlack;
     	Surface->Font->Style 	= TFontStyles();
     }else{
 	    Surface->Font->Color 	= clSilver;
-    	Surface->Font->Style 	= TFontStyles()<< fsItalic;
+	   	Surface->Font->Style 	= TFontStyles()<< fsBold;
     }
   	if (SectionIndex == 1){
     	DWORD type = (DWORD)Item->Tag;
         switch(type){
+	    case PROP_MARKER:		
+        break;
+    	case PROP_MARKER2:{
+		   	Surface->Font->Style = TFontStyles()<< fsBold;
+            R.Right-= 1;
+            R.Left += 1;
+            AnsiString name = Item->ColumnText->Strings[0];
+            DrawText(Surface->Handle, name.c_str(), -1, &R, DT_LEFT | DT_SINGLELINE | DT_VCENTER);
+        }break;
         case PROP_WAVE:{
             R.Right	-=	12;
             R.Left 	+= 	1;
@@ -899,4 +952,5 @@ void __fastcall TfrmProperties::FormDeactivate(TObject *Sender)
 	ApplyEditControl();
 }
 //---------------------------------------------------------------------------
+
 

@@ -35,7 +35,7 @@ protected:
     void RotateProcess	(TShiftState _Shift);
     bool RotateEnd		(TShiftState _Shift);
 protected:
-    CCustomObject*		DefaultAddObject(TShiftState Shift, LPVOID data);
+    CCustomObject*		DefaultAddObject(TShiftState Shift, LPVOID data, LPCSTR prefix=0);
     bool				DefaultMovingProcess(TShiftState Shift, Fvector& amount);
 public:
     TUI_CustomTools* 	parent_tool;

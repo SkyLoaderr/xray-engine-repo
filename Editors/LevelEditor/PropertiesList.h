@@ -14,7 +14,7 @@
 #include <Controls.hpp>
 #include <Menus.hpp>
 #include <StdCtrls.hpp>
-#include <ExtCtrls.hpp>
+#include <ExtCtrls.hpp>               
 #include "ElTreeAdvEdit.hpp"
 #include <Mask.hpp>
 
@@ -283,6 +283,7 @@ public:		// User declarations
     TElTreeItem* __fastcall BeginEditMode	(LPCSTR section=0);
     void __fastcall EndEditMode				(TElTreeItem* expand_node=0);
 	TElTreeItem* __fastcall AddItem			(TElTreeItem* parent, EPropType type, LPCSTR key, LPVOID value=0);
+	void __fastcall AddItems				(TElTreeItem* parent, CStream& F, int adv);
     void __fastcall GetColumnWidth			(int& c0, int& c1)
     {
     	c0=tvProperties->HeaderSections->Item[0]->Width;

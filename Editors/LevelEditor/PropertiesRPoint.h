@@ -33,21 +33,19 @@ __published:	// IDE-managed Components
     void __fastcall ebCancelClick(TObject *Sender);
     void __fastcall ebOkClick(TObject *Sender);
     void __fastcall FormShow(TObject *Sender);
-    void __fastcall OnMModified(TObject *Sender);
 	void __fastcall FormClose(TObject *Sender, TCloseAction &Action);
 	void __fastcall fsStorageRestorePlacement(TObject *Sender);
 	void __fastcall fsStorageSavePlacement(TObject *Sender);
 	void __fastcall FormDestroy(TObject *Sender);
 private:	// User declarations
 	static TfrmPropertiesSpawnPoint* form;
-    static bool bLoadMode;
     TfrmProperties* m_Props;
-    list<CCustomObject*>* m_Objects;
-    void GetObjectsInfo     ();
-    bool ApplyObjectsInfo   ();
-    bool bMultiSel;
+    CFS_Memory 		m_SPData;
+    CSpawnPoint* 	m_SPObject;
+    void GetObjectInfo	();
+    bool ApplyObjectInfo();
     void __fastcall OnModified();
-    void __fastcall UpdateProps(CSpawnPoint*);
+    void __fastcall UpdateProps();
     // props events
     void __fastcall OnNameAfterEdit(TElTreeItem* item, PropValue* sender, LPVOID edit_val);
 public:		// User declarations

@@ -15,42 +15,32 @@
 #pragma resource "*.dfm"
 
 TfrmPropertiesSpawnPoint* TfrmPropertiesSpawnPoint::form = 0;
-bool TfrmPropertiesSpawnPoint::bLoadMode=false;
 //---------------------------------------------------------------------------
 __fastcall TfrmPropertiesSpawnPoint::TfrmPropertiesSpawnPoint(TComponent* Owner)
     : TForm(Owner)
 {
 	m_Props = TfrmProperties::CreateProperties(paProps,alClient,OnModified);
-	bLoadMode = false;
-    bMultiSel = false;
 	DEFINE_INI(fsStorage);
 }
 //---------------------------------------------------------------------------
 
-
-void TfrmPropertiesSpawnPoint::GetObjectsInfo(){
-	bLoadMode = true;
-
-	VERIFY(!m_Objects->empty());
-	ObjectIt _F = m_Objects->begin();
-    VERIFY( (*_F)->ClassID==OBJCLASS_SPAWNPOINT );
-
-    {
-        CSpawnPoint* _S 		= (CSpawnPoint*)(*_F);
-        CSpawnPoint* _N 		= _S;
-        UpdateProps(_S);
-	}
-
-    _F++;
-    for(;_F!=m_Objects->end();_F++){
-		VERIFY( (*_F)->ClassID==OBJCLASS_SPAWNPOINT );
-    	CSpawnPoint *_N = (CSpawnPoint*)(*_F);
-	    bMultiSel = true;
-	}
-	bLoadMode = false;
+void TfrmPropertiesSpawnPoint::GetObjectInfo()
+{
+    m_Props->BeginFillMode();
+    TElTreeItem* M=0;
+	M = m_Props->AddItem(0,PROP_MARKER2,	"Entity",	m_SPObject->m_SpawnData->s_name);
+	m_Props->AddItem	(0,PROP_TEXT,		"Name",		m_Props->MakeTextValue(m_SPObject->FName,sizeof(m_SPObject->FName),OnNameAfterEdit));
+	M = m_Props->AddItem(0,PROP_MARKER,		"Spawn data");
+    m_SPObject->m_SpawnData->P_Write(m_SPData);
+    CStream F(m_SPData.pointer(),m_SPData.size());
+    m_Props->AddItems(M,F,sizeof(xrServerEntity_DESC));
+    m_Props->EndFillMode();
 }
+//---------------------------------------------------------------------------
 
-bool TfrmPropertiesSpawnPoint::ApplyObjectsInfo(){
+bool TfrmPropertiesSpawnPoint::ApplyObjectInfo(){
+    CStream F(m_SPData.pointer(),m_SPData.size());
+    m_SPObject->m_SpawnData->P_Read(F);
     return true;
 }
 //---------------------------------------------------------------------------
@@ -61,19 +51,6 @@ void __fastcall TfrmPropertiesSpawnPoint::OnNameAfterEdit(TElTreeItem* item, Pro
 	AnsiString* new_name = (AnsiString*)edit_val;
 	if (Scene.FindObjectByName(new_name->c_str(),0)) *new_name = V->val;
     else *new_name = new_name->LowerCase();
-}
-//---------------------------------------------------------------------------
-
-void __fastcall TfrmPropertiesSpawnPoint::UpdateProps(CSpawnPoint* S)
-{
-    m_Props->BeginFillMode();
-    TElTreeItem* M=0;
-//    TElTreeItem* N=0;
-//    M = m_Props->AddItem(0,PROP_MARKER,	"Source");
-//	m_Props->AddItem(M,PROP_FLAG,	"Enabled",	m_Props->MakeFlagValue(&F.m_Flags,CEditFlare::flSource));
-	M = m_Props->AddItem(0,PROP_TEXT,	"Name",	m_Props->MakeTextValue(S->FName,sizeof(S->FName),OnNameAfterEdit));
-    M->Enabled = false;
-    m_Props->EndFillMode();
 }
 //---------------------------------------------------------------------------
 
@@ -88,27 +65,19 @@ void __fastcall TfrmPropertiesSpawnPoint::FormKeyDown(TObject *Sender,
 void __fastcall TfrmPropertiesSpawnPoint::FormShow(TObject *Sender)
 {
     ebOk->Enabled       = false;
-    GetObjectsInfo		();
-}
-//---------------------------------------------------------------------------
-
-void __fastcall TfrmPropertiesSpawnPoint::OnMModified(TObject* Sender)
-{
-	if (bLoadMode) return;
-    ebOk->Enabled = true;
+    GetObjectInfo		();
 }
 //---------------------------------------------------------------------------
 
 void __fastcall TfrmPropertiesSpawnPoint::OnModified()
 {
-	if (bLoadMode) return;
     ebOk->Enabled = true;
 }
 //---------------------------------------------------------------------------
 
 void __fastcall TfrmPropertiesSpawnPoint::ebOkClick(TObject *Sender)
 {
-    if (!ApplyObjectsInfo()) return;
+    if (!ApplyObjectInfo()) return;
     Close();
     ModalResult = mrOk;
 }
@@ -125,9 +94,13 @@ void __fastcall TfrmPropertiesSpawnPoint::ebCancelClick(TObject *Sender)
 int __fastcall TfrmPropertiesSpawnPoint::Run(ObjectList* pObjects, bool& bChange)
 {
 	VERIFY(!TfrmPropertiesSpawnPoint::form);
+    if (pObjects->size()>1){
+    	ELog.DlgMsg(mtError,"Unsupport multiple selection.");
+    	return mrCancel;
+    }
 	form = new TfrmPropertiesSpawnPoint(0);
-    form->m_Objects = pObjects;
-    VERIFY(form->m_Objects);
+    form->m_SPObject = (CSpawnPoint*)pObjects->front();
+    VERIFY(form->m_SPObject);
     int res = form->ShowModal();
     bChange = (res==mrOk);
     return res;

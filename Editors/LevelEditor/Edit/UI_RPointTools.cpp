@@ -30,7 +30,7 @@ __fastcall TUI_ControlSpawnPointAdd::TUI_ControlSpawnPointAdd(int st, int act, T
 bool __fastcall TUI_ControlSpawnPointAdd::Start(TShiftState Shift){
     AnsiString ref_name = ((TfraSpawnPoint*)parent_tool->pFrame)->GetCurrentEntity();
     if (ref_name.IsEmpty()) return false;
-    DefaultAddObject(Shift,ref_name.c_str());
+    DefaultAddObject(Shift,ref_name.c_str(),ref_name.c_str());
     return false;
 }
 

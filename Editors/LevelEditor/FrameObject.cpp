@@ -81,7 +81,7 @@ void TfraObject::SelByRefObject( bool flag ){
 //---------------------------------------------------------------------------
 void __fastcall TfraObject::ebCurObjClick(TObject *Sender)
 {
-	LPCSTR N = TfrmChoseItem::SelectEntity((ebCurObj->Caption!="<none>")?ebCurObj->Caption.c_str():0);
+	LPCSTR N = TfrmChoseItem::SelectObject(false,0,(ebCurObj->Caption!=NONE_CAPTION)?ebCurObj->Caption.c_str():0);
     if (!N) return;
     Lib.SetCurrentObject(N);
     // set current object
@@ -90,7 +90,7 @@ void __fastcall TfraObject::ebCurObjClick(TObject *Sender)
 //---------------------------------------------------------------------------
 void __fastcall TfraObject::OutCurrentName(){
 	LPCSTR N = Lib.GetCurrentObject();
-	ebCurObj->Caption = (N&&N[0])?N:"<none>";
+	ebCurObj->Caption = (N&&N[0])?N:NONE_CAPTION;
 }
 //---------------------------------------------------------------------------
 
