@@ -236,8 +236,8 @@ BOOL CEntity::net_Spawn		(CSE_Abstract* DC)
 		m_game_death_time		= Level().GetGameTime();
 	}
 	
-	Engine.Sheduler.Unregister	(this);
-	Engine.Sheduler.Register	(this);
+	//Engine.Sheduler.Unregister	(this);
+	//Engine.Sheduler.Register		(this);
 
 	CKinematics* pKinematics=smart_cast<CKinematics*>(Visual());
 	CInifile* ini = NULL;
