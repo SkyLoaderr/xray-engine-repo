@@ -73,6 +73,7 @@ float rad(float a) { return a*3.14159265358f / 180.f; }
 const float p_c		= 32.7f;
 const float p_r		= 25.4f;
 const float p_r2	= 30.4f;
+const float p_a		= 10.f;
 
 void edges(occTri& T)
 {
@@ -87,10 +88,10 @@ int __cdecl main	(int argc, char* argv[])
 
 	for (int test=0; test<36; test++)
 	{
-		float		a0	= rad(test*5.f);
-		float		a1	= rad(test*5.f + 60.f);
-		float		a2	= rad(test*5.f + 100.f);
-		float		a3	= rad(test*5.f + 30.f);
+		float		a0	= rad(test*p_a);
+		float		a1	= rad(test*p_a + 60.f);
+		float		a2	= rad(test*p_a + 100.f);
+		float		a3	= rad(test*p_a + 30.f);
 		
 		// setup tri(s)
 		occTri	T1,T2;
