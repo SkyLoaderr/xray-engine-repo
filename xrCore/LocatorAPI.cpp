@@ -21,9 +21,9 @@ CLocatorAPI*	xr_FS	= NULL;
 //////////////////////////////////////////////////////////////////////
 FS_Path::FS_Path	(LPCSTR _Root, LPCSTR _Add, LPCSTR _DefExt, LPCSTR _FilterCaption, u32 flags)
 {
-	VERIFY			(_Root);
+	VERIFY			(_Root&&_Root[0]);
 	string256		temp;
-    strcpy			(temp,_Root);
+    strcpy			(temp,_Root); 
     if (_Add) 		strcat(temp,_Add);
 	if (temp[0] && temp[xr_strlen(temp)-1]!='\\') strcat(temp,"\\");
 	m_Path			= xr_strdup(temp);
@@ -272,6 +272,18 @@ void CLocatorAPI::_initialize	(BOOL bBuildCopy, LPCSTR root_path)
 	string256		id, temp, root, add, def, capt;
 	LPCSTR			lp_add, lp_def, lp_capt;
     string16		b_v;
+	// append appliction path
+    {
+        string256		app_root,fn,dr,di;
+        GetModuleFileName(GetModuleHandle(MODULE_NAME),fn,sizeof(fn));
+        _splitpath		(fn,dr,di,0,0);
+        strconcat		(app_root,dr,di);                                       
+        FS_Path* P		= xr_new<FS_Path>(strlwr(app_root),LPCSTR(0),LPCSTR(0),LPCSTR(0),0);
+        bNoRecurse		= !(P->m_Flags.is(FS_Path::flRecurse));
+        Recurse			(P->m_Path);
+        pathes.insert	(mk_pair(xr_strdup("$app_root$"),P));
+    }
+    // append all pathes    
 	while(!F->eof()){
 		F->r_string	(buf);
         _GetItem(buf,0,id,'=');
@@ -471,10 +483,9 @@ IReader* CLocatorAPI::r_open	(LPCSTR path, LPCSTR _fname)
 	if ( R && m_Flags.is(flBuildCopy|flReady) )
 	{
 		string512	cpy_name;
-		FS_Path* P	= get_path("$server_root$"); 
-		R_ASSERT	(P);
-		if (fname==strstr(fname,P->m_Path))
-		{
+		FS_Path* 	P; 
+		if (fname==strstr(fname,(P=get_path("$server_root$"))->m_Path)||
+        	fname==strstr(fname,(P=get_path("$server_data_root$"))->m_Path)){
 			update_path			(cpy_name,"$build_copy$",fname+xr_strlen(P->m_Path));
 			IWriter* W = w_open	(cpy_name);
 			W->w				(R->pointer(),R->length());
