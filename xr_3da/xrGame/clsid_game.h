@@ -1,11 +1,14 @@
 #pragma once
 
 //#define CLSID_AI_HUMAN			MK_CLSID('A','I','_','H','U','M','A','N')
+#define CLSID_OBJECT_ACTOR		MK_CLSID('O','_','A','C','T','O','R',' ')
+#define CLSID_OBJECT_DACTOR		MK_CLSID('O','_','D','E','M','O',' ',' ')
+#define CLSID_OBJECT_DUMMY		MK_CLSID('O','_','D','U','M','M','Y',' ')
+#define CLSID_ENTITY			MK_CLSID('E','N','T','I','T','Y',' ',' ')
 #define CLSID_AI_HEN			MK_CLSID('A','I','_','H','E','N',' ',' ')
 #define CLSID_AI_RAT			MK_CLSID('A','I','_','R','A','T',' ',' ')
 #define CLSID_AI_SOLDIER		MK_CLSID('A','I','_','S','O','L','D',' ')
 #define CLSID_AI_ZOMBY			MK_CLSID('A','I','_','Z','O','M','B','Y')
-#define CLSID_OBJECT_DACTOR		MK_CLSID('O','_','D','E','M','O',' ',' ')
 
 #define CLSID_EVENT				MK_CLSID('E','V','E','N','T',' ',' ',' ')
 #define CLSID_OBJECT_FLYER		MK_CLSID('O','_','F','L','Y','E','R',' ')
