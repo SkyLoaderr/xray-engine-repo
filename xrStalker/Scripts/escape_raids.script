@@ -2,24 +2,24 @@ local patrols = {
                 --command 1
                    {
                    on_patrol = false,
-                   script_zone = "script_zone",
+                   script_zone = "raid_script_zone",
                    zone_obj = nil,
                       {
-                      name = "patrol_leader_0_1",
+                      name = "raid_soldier_0_1",
                       id = -1,
                       on_move = false,
                       dead = false,
                       npc = nil
                       },
                       {
-                      name = "patrol_leader_0_2",
+                      name = "raid_soldier_0_2",
                       id = -1,
                       on_move = false,
                       dead = false,
                       npc = nil
                       },
                       {
-                      name = "patrol_leader_0_3",
+                      name = "raid_soldier_0_3",
                       id = -1,
                       on_move = false,
                       dead = false,
