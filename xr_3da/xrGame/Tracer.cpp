@@ -160,6 +160,8 @@ void CTracer::Render	(const Fvector& pos, const Fvector& dir,
 void  CTracer::Render	(const Fvector& head, const Fvector& trail,
 						float length, float width)
 {
+	float tracer_length = length;
+
 	u32	vOffset;
 	FVF::V	*verts		=	(FVF::V	*) RCache.Vertex.Lock((u32)4,sh_Geom->vb_stride,vOffset);
 	FVF::V	*start		=	verts;
@@ -178,9 +180,9 @@ void  CTracer::Render	(const Fvector& head, const Fvector& trail,
 	lineD.normalize(sC);
 
 
-	float tracer_length = sC.magnitude();
-	if(tracer_length>length) 
-		tracer_length = length;
+///	float tracer_length = sC.magnitude();
+//	if(tracer_length>length) 
+//		tracer_length = length;
 	pos_trail.mad	(pos_head, lineD, -tracer_length);
 
 

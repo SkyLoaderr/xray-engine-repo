@@ -137,22 +137,19 @@ void CUI::OnFrame()
 bool CUI::Render()
 {
 	CEntity* m_Actor = dynamic_cast<CEntity*>(Level().CurrentEntity());
-	if (m_Actor){
-
+	if (m_Actor)
+	{
 #ifdef UI_INTERFACE_ON
 		//Draw main window and its children
 		if(m_bShowIndicators)
 			UIMainIngameWnd.Draw();
 #endif
-		
-
 		//render cursor only when it visible
 		if(UICursor.IsVisible())
-					UICursor.Render();
+            UICursor.Render();
 	}
 	// out GAME-style depend information
 	if (pUIGame) pUIGame->Render	();
-
 
 	return false;
 }

@@ -23,7 +23,6 @@
 #include "EffectorPPHit.h"
 #include "EffectorHit.h"
 #include "ShootingHitEffector.h"
-#include "SleepEffector.h"
 #include "ActorEffector.h"
 #include "EffectorZoomInertion.h"
 
@@ -37,6 +36,7 @@
 #include "ActorAnimation.h"
 
 #include "HudItem.h"
+#include "WeaponMagazined.h"
 
 #include "targetassault.h"
 #include "targetcs.h"
@@ -1072,58 +1072,6 @@ ALife::_TIME_ID	 CActor::TimePassedAfterDeath()	const
 		return 0;
 }
 
-
-void CActor::GoSleep(u32 sleep_time)
-{
-	CActorCondition::GoSleep();
-
-	//поставить будильник
-	m_dwWakeUpTime = Level().GetGameTime() + sleep_time;
-
-	m_fOldTimeFactor = Level().GetGameTimeFactor();
-	Level().SetGameTimeFactor(m_fSleepTimeFactor*m_fOldTimeFactor);
-
-
-	if(m_pSleepEffectorPP)
-	{
-		m_pSleepEffectorPP->m_bSleeping = false;
-		m_pSleepEffectorPP = NULL;
-	}
-	m_pSleepEffectorPP = xr_new<CSleepEffectorPP>(m_pSleepEffector->ppi, m_pSleepEffector->time,		m_pSleepEffector->time_attack, m_pSleepEffector->time_release);
-	//m_pSleepEffectorPP->m_bSleeping = true;
-		
-	Level().Cameras.AddEffector(m_pSleepEffectorPP);
-}
-void CActor::Awoke()
-{
-	if(!IsSleeping()) return;
-
-	Level().SetGameTimeFactor(m_fOldTimeFactor);
-
-	if(m_pSleepEffectorPP)
-	{
-		//m_pSleepEffectorPP->m_bSleeping = false;
-		m_pSleepEffectorPP = NULL;
-	}
-
-	CActorCondition::Awoke();
-}
-
-void CActor::UpdateSleep()
-{
-	if(!IsSleeping()) return;
-	
-	if(m_pSleepEffectorPP)
-	{
-//		if(m_pSleepEffectorPP->m_bFallAsleep = true;
-	}
-
-	//разбудить актера, если он проспал столько сколько задумал
-	if(Level().GetGameTime()>m_dwWakeUpTime)
-		Awoke();
-}
-
-#include "WeaponMagazined.h"
 
 void CActor::OnItemTake			(CInventoryItem *inventory_item)
 {

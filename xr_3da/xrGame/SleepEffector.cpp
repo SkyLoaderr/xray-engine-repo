@@ -7,7 +7,6 @@
 #include "stdafx.h"
 #include "SleepEffector.h"
 
-#define SLEEP_EFFECTOR_TYPE_ID 8
 
 //////////////////////////////////////////////////////////////////////////
 // CMonsterEffector
@@ -24,9 +23,7 @@ CSleepEffectorPP::CSleepEffectorPP(const SPPInfo &ppi, float life_time, float at
 	VERIFY(!fsimilar(m_release, 1.0f));
 	VERIFY(!fis_zero(m_attack));
 
-
-	m_bSleeping  = false;
-	m_bFallAsleep = true;
+	m_eSleepState = BEGIN_SLEEP;
 }
 
 BOOL CSleepEffectorPP::Process(SPPInfo& pp)
@@ -35,28 +32,31 @@ BOOL CSleepEffectorPP::Process(SPPInfo& pp)
 
 	// amount of time passed in percents
 	float time_past_perc = (m_total - fLifeTime) / m_total;
-    
-	float factor;
+    float factor;
 
-	m_bFallAsleep = false;
-	
+
 	if (time_past_perc < m_attack) 
 	{
 		factor = time_past_perc / m_attack;
-		m_bFallAsleep = true;
+		m_eSleepState = BEGIN_SLEEP;
 	}
-	else if (m_bSleeping)
+	else if (BEGIN_SLEEP == m_eSleepState && 
+				(time_past_perc >= m_attack) && 
+				(time_past_perc <= m_release)) 
+	{
+		factor = 1.0f;
+		m_eSleepState = BEFORE_SLEEPING;
+	}
+	else if (SLEEPING == m_eSleepState)
 	{
 		//не изменять значение fLifeTime пока спим
 		fLifeTime = m_attack*m_total;
 		factor = 1.0f;
 	}
-	else if ((time_past_perc >= m_attack) && (time_past_perc <= m_release)) 
-		factor = 1.0f;
-	else
+	else if (AWAKING == m_eSleepState)//просыпаемся
 		factor = (1.0f - time_past_perc) / (1.0f - m_release);
 
-	clamp(factor,0.01f,1.0f);
+	clamp(factor,0.01f, 1.0f);
 
 	SPPInfo	def;
 

@@ -47,7 +47,6 @@ CWeapon::CWeapon(LPCSTR name)
 
 	SetDefaults			();
 
-	m_WpnName			= name;
 	m_Offset.identity	();
 
 	vLastFP.set			(0,0,0);

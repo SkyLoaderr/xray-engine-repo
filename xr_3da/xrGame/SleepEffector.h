@@ -10,6 +10,8 @@
 #include "../effector.h"
 
 
+#define SLEEP_EFFECTOR_TYPE_ID 8
+
 //////////////////////////////////////////////////////////////////////////
 // CSleepEffector
 //////////////////////////////////////////////////////////////////////////
@@ -22,16 +24,16 @@ class CSleepEffectorPP : public CEffectorPP {
 	float	m_release;		// release time in percents	[0..1]
 
 public:
-	CSleepEffectorPP	(const SPPInfo &ppi, float life_time, float attack_time = 0.0f, float release_time = 0.0f);
-	virtual	BOOL	Process					(SPPInfo& pp);
+	CSleepEffectorPP			(const SPPInfo &ppi, float life_time, float attack_time = 0.0f, float release_time = 0.0f);
+	virtual	BOOL	Process		(SPPInfo& pp);
 
-	//флажок, который показывает эффектору, что мы еще спим
-	//и поэтому никаких обновлений не происходит
-	bool	m_bSleeping;
-
-	//устанавливается эффектором в true на стадии затухания
-	//экрана
-	bool	m_bFallAsleep;
+	
+	//текущий статус сна
+	enum SLEEP_STATE { BEGIN_SLEEP,
+					   BEFORE_SLEEPING,
+					   SLEEPING,
+					   AWAKING};
+	SLEEP_STATE m_eSleepState;
 };
 
 

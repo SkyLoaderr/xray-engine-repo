@@ -247,6 +247,8 @@ void CLevel::OnRender()
 	
 	//отрисовать трассы пуль
 	BulletManager().Render();
+	//отрисовать интерфей пользователя
+	HUD().RenderUI();
 
 //	ph_world->Render	();
 #ifdef DEBUG

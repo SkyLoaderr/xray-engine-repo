@@ -229,7 +229,7 @@ void CUIInventoryWnd::InitInventory()
 	
 	UIPropertiesBox.Hide();
 	UIArtifactMergerWnd.Hide();
-	UISleepWnd.Hide();
+	StopSleepWnd();
 
 	m_pInv = pInv;
 

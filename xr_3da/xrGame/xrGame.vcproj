@@ -3248,15 +3248,6 @@
 						RelativePath=".\Level.h">
 					</File>
 					<File
-						RelativePath=".\Level_Bullet_Manager.cpp">
-					</File>
-					<File
-						RelativePath=".\Level_Bullet_Manager.h">
-					</File>
-					<File
-						RelativePath=".\Level_bullet_manager_firetrace.cpp">
-					</File>
-					<File
 						RelativePath="Level_input.cpp">
 					</File>
 					<File
@@ -3287,17 +3278,40 @@
 						RelativePath="Level_start.cpp">
 					</File>
 					<File
-						RelativePath=".\LevelFogOfWar.cpp">
-					</File>
-					<File
-						RelativePath=".\LevelFogOfWar.h">
-					</File>
-					<File
 						RelativePath="LevelGameDef.cpp">
 					</File>
 					<File
 						RelativePath="LevelGameDef.h">
 					</File>
+					<Filter
+						Name="Map Fog Of War"
+						Filter="">
+						<File
+							RelativePath=".\LevelFogOfWar.cpp">
+						</File>
+						<File
+							RelativePath=".\LevelFogOfWar.h">
+						</File>
+					</Filter>
+					<Filter
+						Name="Bullet Manager"
+						Filter="">
+						<File
+							RelativePath=".\Level_Bullet_Manager.cpp">
+						</File>
+						<File
+							RelativePath=".\Level_Bullet_Manager.h">
+						</File>
+						<File
+							RelativePath=".\Level_bullet_manager_firetrace.cpp">
+						</File>
+						<File
+							RelativePath=".\Tracer.cpp">
+						</File>
+						<File
+							RelativePath=".\Tracer.h">
+						</File>
+					</Filter>
 				</Filter>
 				<Filter
 					Name="Cameras"
@@ -3344,6 +3358,9 @@
 						</File>
 						<File
 							RelativePath=".\Actor_Network.cpp">
+						</File>
+						<File
+							RelativePath=".\Actor_Sleep.cpp">
 						</File>
 						<File
 							RelativePath=".\Actor_Weapon.cpp">
@@ -4724,12 +4741,6 @@
 				<Filter
 					Name="Effects"
 					Filter="">
-					<File
-						RelativePath=".\Tracer.cpp">
-					</File>
-					<File
-						RelativePath=".\Tracer.h">
-					</File>
 					<Filter
 						Name="Core"
 						Filter="">

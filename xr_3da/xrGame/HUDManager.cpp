@@ -161,12 +161,16 @@ void CHUDManager::Render_Last()
 
 void CHUDManager::Render_Direct	()
 {
+}
+//отрисовка элементов интерфейса
+void  CHUDManager::RenderUI()
+{
 	BOOL bAlready					= FALSE;
 	if (psHUD_Flags.test(HUD_DRAW))
 	{
 		// draw hit marker
 		HitMarker.Render			();
-		
+
 		// UI
 		bAlready					= ! (pUI && !pUI->Render());
 		pFontDI->OnRender			();
@@ -188,7 +192,8 @@ void CHUDManager::Render_Direct	()
 		if(pUI && pUI->GetCursor() && pUI->GetCursor()->IsVisible())
 			pUI->GetCursor()->Render();
 	}
-	if (psHUD_Flags.test(HUD_CROSSHAIR) && !bAlready)	m_pHUDCursor->Render();
+	if (psHUD_Flags.test(HUD_CROSSHAIR) && !bAlready)	
+		m_pHUDCursor->Render();
 }
 
 //--------------------------------------------------------------------

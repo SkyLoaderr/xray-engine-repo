@@ -54,6 +54,8 @@ public:
 	virtual		void		Render_Direct		();
 	virtual		void		OnFrame				();
 
+	virtual		void		RenderUI			();
+
 	virtual		IC CUI*		GetUI				(){return pUI;}
 
 	virtual		void		Hit					(int idx){HitMarker.Hit(idx);}

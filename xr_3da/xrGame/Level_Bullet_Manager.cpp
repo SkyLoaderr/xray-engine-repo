@@ -200,7 +200,7 @@ bool CBulletManager::CalcBullet (SBullet* bullet, u32 delta_time)
 
 #define TRACER_WIDTH 0.07f
 #define TRACER_LENGHT 25.f
-#define TRACER_LENGTH_TO_WIDTH_RATIO 5.f
+#define TRACER_LENGTH_TO_WIDTH_RATIO 10.f
 
 void CBulletManager::Render	()
 {
@@ -208,16 +208,20 @@ void CBulletManager::Render	()
 		it != m_BulletList.end(); it++)
 	{
 		SBullet* bullet = *it;
-	//	RCache.dbg_DrawLINE(Fidentity,bullet->prev_pos,bullet->pos,D3DCOLOR_XRGB(0,255,0));
 
-		float length = TRACER_LENGHT;
+		Fvector dist;
+		dist.sub(bullet->prev_pos,bullet->pos);
+		float length = dist.magnitude();
 
-//		if(length>TRACER_LENGHT)
-//			length = TRACER_LENGHT;
-		float width = length>(TRACER_WIDTH*TRACER_LENGTH_TO_WIDTH_RATIO)?
-						TRACER_WIDTH:(length/TRACER_LENGTH_TO_WIDTH_RATIO);
-		
-		//tracers.Render	(bullet->pos, bullet->dir, length, width);
+		if(length>TRACER_LENGHT)
+			length = TRACER_LENGHT;
+
+		float width;
+		if(length>(TRACER_WIDTH*TRACER_LENGTH_TO_WIDTH_RATIO))
+			width = TRACER_WIDTH;
+		else 
+			width = length/TRACER_LENGTH_TO_WIDTH_RATIO;
+
 		tracers.Render	(bullet->pos, bullet->prev_pos, length, width);
 	}
 }
