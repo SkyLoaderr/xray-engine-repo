@@ -317,7 +317,7 @@ function activate_by_section(npc, ini, section)
 			utils.abort("xr_logic: scheme '%s' is not registered in modules.script", scheme)
 		end
 		printf("_bp: calling module('%s')", filename)
-		--module(filename)
+		module(filename)
 		if not _G[filename] then
 			utils.abort("xr_logic: can't call %s.set_scheme() - a nil value", filename)
 		end
