@@ -6,7 +6,7 @@
 
 
 
-int RunXRLauncher()
+int RunXRLauncher(int initial_state)
 {
 
 //	xrLauncher::xrLauncherControl* frm = new xrLauncher::xrLauncherControl();
@@ -18,8 +18,7 @@ int RunXRLauncher()
 	
 */
 	xrLauncher::xrLauncher_main_frm* frm = new xrLauncher::xrLauncher_main_frm();
-	frm->Init();
-	frm->ShowDialog();
-	return 1;
+//	frm->Init(initial_state);
+	return frm->_Show(initial_state);
 }
 

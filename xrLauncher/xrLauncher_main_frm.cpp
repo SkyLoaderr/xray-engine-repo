@@ -140,7 +140,24 @@ System::Void xrLauncher_main_frm::benchmarkBtn_Click(System::Object *  sender, S
 	if(!m_benchmark_dlg)
 		m_benchmark_dlg = new xrLauncher_benchmark_frm();
 
-	m_benchmark_dlg->Init();
+/*	m_benchmark_dlg->Init();
 	m_benchmark_dlg->ShowDialog();
+*/
+	m_benchmark_dlg->_Show(0);
 	
 }
+
+void	 xrLauncher_main_frm::_Close(int res)
+{
+	m_modal_result = res;
+	Close();
+}
+
+int	 xrLauncher_main_frm::_Show(int initial_state)
+{
+	m_init_state = initial_state;
+	Init();
+	ShowDialog();
+	return m_modal_result;
+}
+

@@ -34,9 +34,11 @@ namespace xrLauncher
 			m_mod_info			= new MOD_INFO();
 			InitializeComponent();
 		}
-	void Init();
-	void InitMod();
-	void addFileInfo(LPCSTR fn);
+	private: void Init();
+	private: void InitMod();
+	private: void addFileInfo(LPCSTR fn);
+	public : void _Close(int res);
+	public : int  _Show(int initial_state);
         
 	protected: 
 		void Dispose(Boolean disposing)
@@ -47,6 +49,8 @@ namespace xrLauncher
 			}
 			__super::Dispose(disposing);
 		}
+	private : int		m_modal_result;
+	private : int		m_init_state;
 	private : MOD_INFO*	m_mod_info;
 	private : xrLauncher_about_dlg* m_about_dlg;
 	private : xrLauncher_benchmark_frm* m_benchmark_dlg;

@@ -74,6 +74,7 @@ System::Void xrLauncher_benchmark_frm::runBenchmarkBtn_Click(System::Object *  s
 		return;
 
 	prepareBenchmarkFile("tmp_benchmark.ini");
+	_Close(1);
 }
 
 void xrLauncher_benchmark_frm::prepareBenchmarkFile(LPCSTR file_name)
@@ -101,4 +102,18 @@ void xrLauncher_benchmark_frm::prepareBenchmarkFile(LPCSTR file_name)
 		ini.w_string("benchmark",test_num,command);
 	}
 
+}
+
+void xrLauncher_benchmark_frm::_Close(int res)
+{
+	m_modal_result = res;
+	Close();
+}
+
+int	 xrLauncher_benchmark_frm::_Show(int initial_state)
+{
+	m_init_state = initial_state;
+	Init();
+	ShowDialog();
+	return m_modal_result;
 }

@@ -27,9 +27,12 @@ namespace xrLauncher
 			InitializeComponent();
 			m_test_cmds = new ArrayList();
 		}
-   	void Init();
-	bool check_all_correct();
-	void prepareBenchmarkFile(LPCSTR file_name);
+   	private: void Init();
+	private: bool check_all_correct();
+	private: void prepareBenchmarkFile(LPCSTR file_name);
+
+	public : void _Close(int res);
+	public : int  _Show(int initial_state);
 
 	protected: 
 		void Dispose(Boolean disposing)
@@ -40,6 +43,9 @@ namespace xrLauncher
 			}
 			__super::Dispose(disposing);
 		}
+	private : int		m_modal_result;
+	private : int		m_init_state;
+
 	private: ArrayList*							m_test_cmds;
 	private: System::Windows::Forms::Panel *  panel1;
 	private: System::Windows::Forms::CheckBox *  config1checkBox;
