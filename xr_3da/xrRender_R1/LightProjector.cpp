@@ -199,7 +199,10 @@ void CLightProjector::calculate	()
 		R.UVclamp_min.set		(min).add	(.05f);	// shrink a little
 		R.UVclamp_max.set		(max).sub	(.05f);	// shrink a little
 		ISpatial*	spatial		= dynamic_cast<ISpatial*>	(O);
-		if (spatial)			RImplementation.r_dsgraph_render_R1_box		(spatial->spatial.sector,BB,SE_R1_LMODELS);
+		if (spatial)			{
+			spatial->spatial_updatesector			();
+			RImplementation.r_dsgraph_render_R1_box	(spatial->spatial.sector,BB,SE_R1_LMODELS);
+		}
 		//if (spatial)		RImplementation.r_dsgraph_render_subspace	(spatial->spatial.sector,mCombine,v_C,FALSE);
 	}
 
