@@ -139,6 +139,14 @@ end
 function action_zoneguard_activity:execute()
 	action_base.execute(self)
 
+	local prev_state
+	repeat
+		prev_state = self.state
+		self:fsm_step()
+	until prev_state == self.state
+end
+
+function action_zoneguard_activity:fsm_step()
 	if not self.st.zone_guard_obj and self.st.zone_guard then
 		self.st.zone_guard_obj = db.zone_by_name[self.st.zone_guard]
 		if self.st.zone_guard_obj then

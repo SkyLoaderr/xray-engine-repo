@@ -100,7 +100,9 @@ function val_fighting_prisoner(actor, npc)
 end    
 
 function actor_wears_bandit_outfit(actor, npc)
-	return xr_conditions_impl.actor_has_object(actor, "bandit_outfit") ~= nil
+	local wears = xr_conditions_impl.actor_has_object(actor, "bandit_outfit")
+	printf("_bp: actor_wears_bandits_outfit: %s", utils.to_str(wears))
+	return wears
 end
 
 
