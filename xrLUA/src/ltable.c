@@ -87,7 +87,7 @@ static Node *hashnum (const Table *t, lua_Number n) {
   int i;
   n += 1;  /* normalize number (avoid -0) */
   lua_assert(sizeof(a) <= sizeof(n));
-  memcpy(a, &n, sizeof(a));
+  Memory.mem_copy(a, &n, sizeof(a));
   for (i = 1; i < numints; i++) a[0] += a[i];
   return hashmod(t, cast(lu_hash, a[0]));
 }

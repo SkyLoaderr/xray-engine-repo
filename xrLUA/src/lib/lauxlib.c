@@ -397,7 +397,7 @@ LUALIB_API void luaL_addvalue (luaL_Buffer *B) {
   lua_State *L = B->L;
   size_t vl = lua_strlen(L, -1);
   if (vl <= bufffree(B)) {  /* fit into buffer? */
-    memcpy(B->p, lua_tostring(L, -1), vl);  /* put it there */
+    Memory.mem_copy(B->p, lua_tostring(L, -1), vl);  /* put it there */
     B->p += vl;
     lua_pop(L, 1);  /* remove from stack */
   }

@@ -25,10 +25,10 @@
 #pragma warning(disable:4530)
 #pragma warning(disable:4267)
 #pragma warning(disable:4505)
-extern "C"
-{
+//extern "C"
+//{
 	#include "lua.h"
-}
+//}
 
 #include <luabind/luabind.hpp>
 

@@ -336,7 +336,7 @@ void luaV_concat (lua_State *L, int total, int last) {
       tl = 0;
       for (i=n; i>0; i--) {  /* concat all strings */
         size_t l = tsvalue(top-i)->tsv.len;
-        memcpy(buffer+tl, svalue(top-i), l);
+        Memory.mem_copy(buffer+tl, svalue(top-i), l);
         tl += l;
       }
       setsvalue2s(top-n, luaS_newlstr(L, buffer, tl));

@@ -55,7 +55,7 @@ static int math_cos (lua_State *L) {
 }
 
 static int math_tan (lua_State *L) {
-  lua_pushnumber(L, _tan(TORAD(luaL_checknumber(L, 1))));
+  lua_pushnumber(L, tanf(TORAD(luaL_checknumber(L, 1))));
   return 1;
 }
 

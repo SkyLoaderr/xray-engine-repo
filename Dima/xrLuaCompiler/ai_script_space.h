@@ -18,12 +18,12 @@
 
 #pragma comment(lib,"x:\\xrLUA.lib")
 
-extern "C" {
+//extern "C" {
 	#include "lua.h"
 	#include "lualib.h"
 	#include "lauxlib.h"
 	__declspec(dllimport) LPSTR g_ca_stdout;
-}
+//}
 
 // Lua-bind
 #include <luabind\\luabind.hpp>
