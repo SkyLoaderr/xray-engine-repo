@@ -78,3 +78,4 @@ jon_sniper_enabled     = jon_actions + 10
 jon_sniper_see_monster = jon_actions + 11
 jon_sniper_see_enemy   = jon_actions + 12
 jon_sniper_camper      = jon_actions + 13
+//+5 Занято
