@@ -300,14 +300,17 @@ void vfSaveGraph(LPCSTR name)
 	tGraphHeader.dwLevelCount	= 1;
 	SLevel						tLevel;
 	tLevel.tOffset.set			(0,0,0);
+	Memory.mem_copy(tLevel.caLevelName,name,strlen(name) + 1);
 	tGraphHeader.tpLevels.push_back(tLevel);
 	tGraph.Wdword				(tGraphHeader.dwVersion);
 	tGraph.Wdword				(tGraphHeader.dwVertexCount);
 	tGraph.Wdword				(tGraphHeader.dwLevelCount);
 	vector<SLevel>::iterator	I = tGraphHeader.tpLevels.begin();
 	vector<SLevel>::iterator	E = tGraphHeader.tpLevels.end();
-	for ( ; I != E; I++)
+	for ( ; I != E; I++) {
+		tGraph.WstringZ((*I).caLevelName);
 		tGraph.Wvector((*I).tOffset);
+	}
 
 	u32		dwPosition = tGraph.size();
 	
