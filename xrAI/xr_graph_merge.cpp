@@ -7,9 +7,8 @@
 ////////////////////////////////////////////////////////////////////////////
 
 #include "stdafx.h"
-#include "xr_ini.h"
+#include "xrAI.h"
 #include "xrLevel.h"
-
 #include "xrGraph.h"
 
 class CLevelGraph;
@@ -105,6 +104,7 @@ void xrMergeGraphs()
 {
 	// load all the graphs
 	Phase("Reading level graphs");
+	pSettings = xr_new<CInifile>(INI_FILE);
 	if (!pSettings->SectionExists("game_levels"))
 		THROW;
 	GRAPH_P_VECTOR					tpGraphs;
@@ -171,4 +171,5 @@ void xrMergeGraphs()
 		for ( ; I != E; I++)
 			xr_free(*I);
 	}
+	xr_delete			(pSettings);
 }

@@ -6,8 +6,7 @@
 //	Description : Building graph for off-line AI NPC computations
 ////////////////////////////////////////////////////////////////////////////
 
-#ifndef __XRAI_XR_GRAPH__
-#define __XRAI_XR_GRAPH__
+#pragma once
 
 #pragma pack(push,4)
 typedef struct tagSGraphEdge {
@@ -55,5 +54,3 @@ extern vector<SGraphVertex>	tpaGraph;		// graph
 
 void xrBuildGraph(LPCSTR name);
 void xrMergeSpawns();
-
-#endif

@@ -250,6 +250,9 @@
 				RelativePath=".\xrAI.cpp">
 			</File>
 			<File
+				RelativePath="xrAI.h">
+			</File>
+			<File
 				RelativePath=".\xrShaderTypes.h">
 			</File>
 			<File
@@ -453,6 +456,13 @@
 			Name="ALife"
 			Filter="">
 			<Filter
+				Name="AStar"
+				Filter="">
+				<File
+					RelativePath="ai_a_star_search.h">
+				</File>
+			</Filter>
+			<Filter
 				Name="Graph"
 				Filter="">
 				<File
@@ -478,13 +488,6 @@
 				</File>
 				<File
 					RelativePath="xr_graph_merge.h">
-				</File>
-			</Filter>
-			<Filter
-				Name="AStar"
-				Filter="">
-				<File
-					RelativePath="ai_a_star_search.h">
 				</File>
 			</Filter>
 			<Filter

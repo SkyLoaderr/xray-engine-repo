@@ -3,7 +3,7 @@
 
 #include "stdafx.h"
 #include "process.h"
-#include "xr_ini.h"
+#include "xrAI.h"
 
 #include "xrGraph.h"
 #include "xr_graph_merge.h"
@@ -18,8 +18,6 @@
 #pragma comment(lib,"x:\\xrcdb.LIB")
 #pragma comment(lib,"x:\\MagicFM.LIB")
 #pragma comment(lib,"x:\\xrCore.LIB")
-
-#define INI_FILE	"xrAI.ini"
 
 extern void	xrCompiler			(LPCSTR name);
 extern void __cdecl logThread	(void *dummy);
@@ -73,14 +71,15 @@ void Startup(LPSTR     lpCmdLine)
 		if (strstr(cmd,"-g"))
 			xrBuildGraph		(prjName.c_str());
 		else {
-			pSettings = xr_new<CInifile>(INI_FILE);
-			if (strstr(cmd,"-m"))
+			if (strstr(cmd,"-m")) {
 				xrMergeGraphs		();
+			}
 			else
-				if (strstr(cmd,"-s"))
+				if (strstr(cmd,"-s")) {
+					pSettings	= xr_new<CInifile>(SYSTEM_LTX);
 					xrMergeSpawns		();
+				}
 		}
-
 	// Show statistic
 	char	stats[256];
 	extern	string make_time(DWORD sec);

@@ -6,8 +6,7 @@
 //	Description : AI nodes structures and functions
 ////////////////////////////////////////////////////////////////////////////
 
-#ifndef __XRAI_AI_NODES__
-#define __XRAI_AI_NODES__
+#pragma once
 
 #include "compiler.h"
 #include "xrThread.h"
@@ -321,5 +320,3 @@ public:
 		thProgress = 1.0f;
 	}
 };
-
-#endif

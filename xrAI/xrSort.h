@@ -6,4 +6,6 @@
 //	Description : Sort routines
 ////////////////////////////////////////////////////////////////////////////
 
+#pragma once
+
 extern void vfQuickSortEdges(SGraphEdge *tpaEdges, u32 *uiaSortOrder, int n);
