@@ -1,0 +1,288 @@
+--[[------------------------------------------------------------------------------------------------------------------
+Скрипт "Два бандита на заводе (escape)"
+Чугай Саша
+
+Сделать:
+    - настоящие звуки
+    - анимации
+--------------------------------------------------------------------------------------------------------------------]]
+
+local snd_base         = xr_sounds_id.chugai_escape_factory_bandits_base
+local snd_about_novice = snd_base + 0
+local snd_about_zone   = snd_base + 1
+local snd_hiding_place = snd_base + 2
+local snd_novice_again = snd_base + 3
+local snd_on_actor     = snd_base + 4
+
+local actor
+
+local storage = {}
+
+---------------------------------------------------------------------------------------------------------------------
+
+function check_enemy( npc )
+    local enemy = npc:best_enemy()
+    if enemy then
+        npc:set_sound_mask( -1 )
+        npc:set_sound_mask( 0 )
+
+        if enemy:id() == actor:id() then
+            npc:play_sound( snd_on_actor, 1, 0 )
+        elseif enemy:name() == "novice" then
+            npc:play_sound( snd_novice_again, 1, 0 )
+        end
+    end
+end
+
+---------------------------------------------------------------------------------------------------------------------
+-- Эвалуатор свойства "бандит управляется этим скриптом"
+---------------------------------------------------------------------------------------------------------------------
+class "evaluator_factory_bandit" (property_evaluator)
+
+function evaluator_factory_bandit:__init( name, storage ) super ()
+    self.a = storage
+end
+
+function evaluator_factory_bandit:evaluate()
+    --printf( "s1" )
+    local b = self.a.enabled == true
+--    if b then sb = "true" else sb = "false" end
+--    printf( "s2 "..sb )
+    return b
+end
+
+---------------------------------------------------------------------------------------------------------------------
+-- Эвалуатор свойства "нахожусь на позиции"
+---------------------------------------------------------------------------------------------------------------------
+class "evaluator_in_pos" (property_evaluator)
+
+function evaluator_in_pos:__init( name, npc ) super ()
+    self.npc = npc
+end
+
+function evaluator_in_pos:evaluate()
+--    printf( "p1" )
+    local b = self.npc:level_vertex_id() == self.dest_vert_id
+--    if b then sb = "true" else sb = "false" end
+--    printf( sb )
+--    printf( "p2" )
+    return b
+end
+
+---------------------------------------------------------------------------------------------------------------------
+-- Действие "идти на позицию"
+---------------------------------------------------------------------------------------------------------------------
+
+class "action_go_to_pos" (action_base)
+
+function action_go_to_pos:__init( name, way_name ) super( nil, name )
+    self.way_name = way_name
+end
+
+function action_go_to_pos:initialize()
+    action_base.initialize( self )
+
+    self.object:set_node_evaluator      ()
+    self.object:set_path_evaluator      ()
+    self.object:set_desired_direction   ()
+    self.object:set_sight               ( look.danger, nil, 0 )
+    self.object:set_item                ( object.idle, self.object:best_weapon() )
+    self.object:set_body_state          ( move.standing )
+    self.object:set_movement_type       ( move.walk )
+    self.object:set_mental_state        ( anim.free )
+    self.object:set_path_type           ( game_object.patrol_path )
+    self.object:set_detail_path_type    ( move.line )
+    self.object:set_patrol_path         ( self.way_name, patrol.nearest, patrol.stop, true )
+
+    self.lp = nil
+    self.object:set_callback( self, "move_callback", game_object.movement )
+
+    printf( "go_to_pos initialized" )
+end
+
+function action_go_to_pos:execute()
+    action_base.execute( self )
+
+    if self.lp then
+        self.object:set_previous_point( self.lp )
+    end
+
+    globals.set_sound( self.object, storage[self.object:id()].random_phrases, false )
+end
+
+function action_go_to_pos:finalize()
+    action_base.finalize( self )
+
+    self.object:clear_callback( game_object.movement )
+
+    this.check_enemy( self.object )
+end
+
+function action_go_to_pos:move_callback( obj, action_type, index )
+    --printf( "%d", index )
+
+    if index == -1 then return end
+
+    self.lp = index
+    --printf( "index=%d", index )
+end
+
+---------------------------------------------------------------------------------------------------------------------
+-- Действие "стоять и болтать"
+---------------------------------------------------------------------------------------------------------------------
+
+class "action_stand" (action_base)
+
+function action_stand:__init( name, eva_pos, positions, partner_name ) super( nil, name )
+    self.eva_pos        = eva_pos
+    self.positions      = positions
+    self.partner_name   = partner_name
+end
+
+function action_stand:initialize()
+    action_base.initialize( self )
+    
+    self.partner = level.object( self.partner_name )
+
+    self.object:set_node_evaluator      ()
+    self.object:set_path_evaluator      ()
+    self.object:set_desired_direction   ()
+    self.object:set_sight               ( look.danger, nil, 0 )
+    self.object:set_item                ( object.idle, self.object:best_weapon() )
+    self.object:set_body_state          ( move.standing )
+    self.object:set_movement_type       ( move.stand )
+    self.object:set_mental_state        ( anim.free )
+
+    if self.partner then
+        self.object:set_sight( look.point, self.partner:position():add( vector():set( 0, 1.5, 0 ) ), 0 )
+        --self.object:set_sight( look.point, self.partner:position(), 0 )
+    end
+
+    if self.object:level_vertex_id() == self.positions[1] then
+        self.timer = device():time_global() + 20000
+        self.next_pos = 2
+    else
+        self.timer = device():time_global() + 10000
+        self.next_pos = 1
+    end
+
+    printf( "look_around initialized" )
+end
+
+function action_stand:execute()
+    action_base.execute( self )
+
+    globals.set_sound( self.object, storage[self.object:id()].random_phrases, false )
+
+    if self.timer <= device():time_global() then
+        self.eva_pos.dest_vert_id = self.positions[self.next_pos]
+    else
+--        if not self.object:is_body_turning() and self.object:animation_count() < 1 then
+        if self.object:animation_count() < 3 then
+            self.object:add_animation(
+                random_choice_weighted{
+                    ["komandir_4"] = 60,
+                    ["komandir_2"] = 30,
+                    ["komandir_3"] = 20 },
+                true )
+        end
+    end
+end
+
+function action_stand:finalize()
+    action_base.finalize( self )
+
+    self.object:clear_animations()
+
+    this.check_enemy( self.object )
+end
+
+----------------------------------------------------------------------------------------------------------------------
+-- Настройка скрипта и GOAP
+----------------------------------------------------------------------------------------------------------------------
+function add_to_binder( obj )
+    -- скрипт
+    local a = xr_motivator.storage[obj:id()].escape_factory_bandit
+
+    local name = obj:name()
+    local num  = string.sub( name, string.len( name ) )
+    local way_name = "way_factory_bandit_" .. num
+    local partner_num
+
+    if num == "1" then
+        partner_num = 2
+    else
+        partner_num = 1
+    end
+
+    local way = patrol( way_name )
+    local positions = { way:level_vertex_id( 0 ),
+                        way:level_vertex_id( way:count() - 1 ) }
+
+    if not actor then
+        actor = level.actor()
+    end
+
+    -- звуки
+
+    obj:add_sound( "script_replics\\bandit_1\\replics\\bandit_about_novice_", 10, snd_type.talk, 2, 1, snd_about_novice )
+    obj:add_sound( "script_replics\\bandit_1\\replics\\bandit_about_zone_",    5, snd_type.talk, 2, 1, snd_about_zone )
+    obj:add_sound( "script_replics\\bandit_1\\replics\\bandit_hiding_place_",  5, snd_type.talk, 2, 1, snd_hiding_place )
+    obj:add_sound( "script_replics\\bandit_1\\replics\\bandit_novice_again_",  5, snd_type.talk, 2, 1, snd_novice_again )
+    obj:add_sound( "script_replics\\bandit_1\\replics\\bandit_on_actor_",      5, snd_type.talk, 2, 1, snd_on_actor )
+
+    local rnd_phrases = {
+        idle    = 0,
+        maxidle = 2,
+        sumidle = 3,
+        rnd     = 100,
+        sounds  = {}
+    }
+    for i = 0, 1 do
+        table.insert( rnd_phrases.sounds, { pack = snd_about_novice, id = i } )
+    end
+    for i = 0, 3 do
+        table.insert( rnd_phrases.sounds, { pack = snd_about_zone, id = i } )
+    end
+    for i = 0, 1 do
+        table.insert( rnd_phrases.sounds, { pack = snd_hiding_place, id = i } )
+    end
+
+    storage[obj:id()] = { random_phrases = rnd_phrases }
+    
+    -- GOAP
+
+    local operators  = {}
+    local properties = {}
+
+    local base_id = xr_evaluators_id.chugai_escape_factory_bandits_base
+    properties["escape_factory_bandit"] = base_id + 0
+    properties["in_pos"]                = base_id + 1
+
+    base_id = xr_actions_id.chugai_escape_factory_bandits_base
+    operators["go_to_pos"] = base_id + 0
+    operators["stand"]     = base_id + 1
+
+    local eva_pos = this.evaluator_in_pos( "property_in_pos", obj )
+    eva_pos.dest_vert_id = positions[1]
+
+    local manager = obj:motivation_action_manager()
+    manager:add_evaluator( properties["in_pos"], eva_pos )
+    manager:add_evaluator( properties["escape_factory_bandit"], this.evaluator_factory_bandit( "property_escape_factory_bandit", a ) )
+
+    local action = this.action_go_to_pos( "action_go_to_pos", way_name )
+    action:add_precondition( world_property( stalker_ids.property_alive, true  ) )
+    action:add_precondition( world_property( stalker_ids.property_enemy, false ) )
+    action:add_effect      ( world_property( properties["in_pos"],       true  ) )
+    manager:add_action     ( operators["go_to_pos"], action )
+
+    action = this.action_stand( "action_stand", eva_pos, positions, "factory_bandit_" .. partner_num )
+    action:add_precondition( world_property( stalker_ids.property_alive, true  ) )
+    action:add_precondition( world_property( stalker_ids.property_enemy, false ) )
+    action:add_precondition( world_property( properties["in_pos"],       true  ) )
+    action:add_effect      ( world_property( properties["escape_factory_bandit"], false ) )
+    manager:add_action     ( operators["stand"], action )
+
+    action = manager:action( stalker_ids.action_puzzle_solver )
+    action:add_precondition( world_property (properties["escape_factory_bandit"], false ) )
+end
