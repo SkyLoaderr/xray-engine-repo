@@ -92,15 +92,19 @@ void CDetailManager::soft_Render	()
 						float	height		= Object.bv_bb.max.y-Object.bv_bb.min.y;
 						Fvector& src		= srcIt->P;
 						Fvector dir2D;
-						dir2D.set			(sinf(tm*0.1f),0,cosf(tm*0.15f));
-						dir2D.normalize		();
+						float	c1			= 1.f/5.f;
+						float	c2			= 1.f/3.f;
 
 						//
 						Fvector pos;		mXform.transform_tiny	(pos,src);			// normal coords
 						Fvector pos2D;		pos2D.set				(pos.x,0,pos.z);	// 2D pos
 						float	H			= pos.y - mXform.c.y;						// height of vertex (scaled)
 						float	frac		= src.y/height;								// fraction of model height
-						float	inten		= sinf					(tm+pos.x+pos.z)*H;
+						float	inten		= H * sinf(tm);
+						dir2D.x				= sinf(pos.x*c1)+sinf(pos.z*c2);
+						dir2D.y				= 0;
+						dir2D.z				= cosf(pos.x*c1)+cosf(pos.z*c2);
+						dir2D.normalize		();
 
 						//
 						Fvector ctrl1;		ctrl1.set	(0,				0,		0				);
