@@ -339,6 +339,9 @@ void CWeaponMagazined::OnShellDrop(BOOL bHUD)
 {
 	// shells
 	CPSObject* PS				= new CPSObject("weapons\\shells_generic",m_pParent->Sector(),true);
-	PS->m_Emitter.m_ConeDirection.set(vLastFD);
+	Fmatrix M;
+	M.setHPB(PS->m_Emitter.m_ConeHPB.x, PS->m_Emitter.m_ConeHPB.y, PS->m_Emitter.m_ConeHPB.z);
+	Fvector V; M.transform_dir(V,vLastFD);
+	PS->m_Emitter.m_ConeDirection.set(V);
 	PS->PlayAtPos				(vLastSP);
 }
