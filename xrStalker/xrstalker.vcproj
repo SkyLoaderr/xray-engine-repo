@@ -264,6 +264,9 @@
 						RelativePath=".\Config\gameplay\dialogs_garbage.xml">
 					</File>
 					<File
+						RelativePath=".\config\gameplay\dialogs_military.xml">
+					</File>
+					<File
 						RelativePath=".\Config\gameplay\dialogs_test.xml">
 					</File>
 					<File
@@ -457,6 +460,9 @@
 						RelativePath=".\Config\text\rus\stable_dialogs_garbage.xml">
 					</File>
 					<File
+						RelativePath=".\config\text\rus\stable_dialogs_military.xml">
+					</File>
+					<File
 						RelativePath=".\Config\text\rus\stable_dialogs_test.xml">
 					</File>
 					<File
@@ -525,6 +531,9 @@
 					</File>
 					<File
 						RelativePath=".\Config\text\eng\stable_dialogs_garbage.xml">
+					</File>
+					<File
+						RelativePath=".\config\text\eng\stable_dialogs_military.xml">
 					</File>
 					<File
 						RelativePath=".\Config\text\eng\stable_dialogs_test.xml">

@@ -1,0 +1,22 @@
+<?xml version='1.0' encoding="windows-1251"?>
+
+<game_dialogs>
+
+    <dialog id="bar_security_dialog">
+        <phrase_list>
+            <phrase id="0">
+                <text>Я не хочу с тобой разговаривать.</text>
+                <next>1</next>
+            </phrase>
+            <phrase id="1">
+                <text>Good by.</text>
+                <next>2</next>
+            </phrase>
+            <phrase id="2">
+                <action>dialogs.break_dialog</action>
+            </phrase>
+        </phrase_list>
+    </dialog>
+
+
+</game_dialogs>
