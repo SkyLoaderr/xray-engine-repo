@@ -11,7 +11,7 @@ local state_wait = 3
 ---------------------------------------------------------------------------------------------------------------------
 class "evaluator_need_guide" (property_evaluator)
 
-function evaluator_need_guide:__init(storage) super()
+function evaluator_need_guide:__init(storage) super(nil, name)
   	self.st = storage
 end
 
@@ -160,7 +160,7 @@ function add_to_binder(npc, char_ini)
 	 	operators["action_guide_2"] = xr_actions_id.zmey_guide_base + 2
 
 	   	-- // evaluators
-		manager:add_evaluator(properties["need_guide"], this.evaluator_need_guide(xr_motivator.storage[npc:id()].guide))
+		manager:add_evaluator(properties["need_guide"], this.evaluator_need_guide(xr_motivator.storage[npc:id()].guide, "guide_need_guide"))
 
 		local new_action = this.action_guide_activity(npc, "action_guide_activity", xr_motivator.storage[npc:id()].guide)
 		new_action:add_precondition(world_property(stalker_ids.property_alive, true))

@@ -22,7 +22,7 @@ local sync = {}
 ---------------------------------------------------------------------------------------------------------------------
 class "evaluator_need_guard" (property_evaluator)
 
-function evaluator_need_guard:__init(storage) super()
+function evaluator_need_guard:__init(storage) super(nil, name)
   	self.st = storage
 end
 
@@ -35,7 +35,7 @@ end
 ---------------------------------------------------------------------------------------------------------------------
 class "evaluator_override_fight" (property_evaluator)
 
-function evaluator_override_fight:__init(storage) super()
+function evaluator_override_fight:__init(storage) super(nil, name)
   	self.st = storage
 end
 
@@ -614,8 +614,8 @@ function add_to_binder(npc, char_ini)
 	 	operators["action_guard_2"] = xr_actions_id.zmey_guard_base + 2
 
 	   	-- // evaluators
-		manager:add_evaluator(properties["need_guard"], this.evaluator_need_guard(xr_motivator.storage[npc:id()].guard))
-		manager:add_evaluator(properties["override_fight"], this.evaluator_override_fight(xr_motivator.storage[npc:id()].guard))
+		manager:add_evaluator(properties["need_guard"], this.evaluator_need_guard(xr_motivator.storage[npc:id()].guard, "guard_need_guard"))
+		manager:add_evaluator(properties["override_fight"], this.evaluator_override_fight(xr_motivator.storage[npc:id()].guard, "guard_override_fight"))
 
 		local new_action = this.action_guard_activity(npc, "action_guard_activity", xr_motivator.storage[npc:id()].guard)
 		new_action:add_precondition(world_property(stalker_ids.property_alive, true))
