@@ -1,6 +1,6 @@
 local t
 
-function loadJob(sj, gname, type)
+function loadJob(sj, gname, type, squad, groups)
 --'-----------------------------------------------------------------------------------------
 --' ESCAPE BLOCKPOST
 --'-----------------------------------------------------------------------------------------
@@ -9,7 +9,7 @@ function loadJob(sj, gname, type)
 		t = { name = "patrol",
 			object = nil, begin = nil, idle = 6*60*60*1000,
 			prior = 8, state = {0,1},
-			squad = 0, group = 1,
+			squad = squad, group = groups[2],
 			in_rest = "", out_rest = "",
 			patrol_path = gname.."_patrol_0",
 			path_look = gname.."_patrol_look_0",
@@ -18,7 +18,7 @@ function loadJob(sj, gname, type)
 		t = { name = "follower",
 			object = nil, begin = nil, idle = 6*60*60*1000,
 			prior = 7, state = {0,1},
-			squad = 0, group = 1,
+			squad = squad, group = groups[2],
 			in_rest = "", out_rest = "",
 			leader_name = nil,
 			escape_path = gname.."_patrol_look_0" }
@@ -26,7 +26,7 @@ function loadJob(sj, gname, type)
 		t = { name = "follower",
 			object = nil, begin = nil, idle = 6*60*60*1000,
 			prior = 7, state = {0,1},
-			squad = 0, group = 1,
+			squad = squad, group = groups[2],
 			in_rest = "", out_rest = "",
 			leader_name = nil,
 			escape_path = gname.."_patrol_look_0" }
@@ -34,7 +34,7 @@ function loadJob(sj, gname, type)
 		t = { name = "walker",
 			object = nil, begin = nil, idle = 0,
 			prior = 10, state = {0,1},
-			squad = 0, group = 0,
+			squad = squad, group = groups[1],
 			in_rest = "", out_rest = gname.."_zone",
 			path_walk = gname.."_guard_house_walk",
 			path_look = nil }
@@ -42,7 +42,7 @@ function loadJob(sj, gname, type)
 		t = { name = "walker",
 			object = nil, begin = nil, idle = 0,
 			prior = 6, state = {0},
-			squad = 0, group = 0,
+			squad = squad, group = groups[1],
 			in_rest = "", out_rest = gname.."_zone",
 			path_walk = gname.."_guard_left_walk",
 			path_look = nil }
@@ -50,7 +50,7 @@ function loadJob(sj, gname, type)
 		t = { name = "walker",
 			object = nil, begin = nil, idle = 0,
 			prior = 6, state = {0},
-			squad = 0, group = 0,
+			squad = squad, group = groups[1],
 			in_rest = "", out_rest = gname.."_zone",
 			path_walk = gname.."_guard_right_walk",
 			path_look = nil }
@@ -58,7 +58,7 @@ function loadJob(sj, gname, type)
 		t = { name = "walker",
 			object = nil, begin = nil, idle = 0,
 			prior = 9, state = {0,1},
-			squad = 0, group = 0,
+			squad = squad, group = groups[1],
 			in_rest = "", out_rest = gname.."_zone",
 			path_walk = gname.."_guard_light_walk",
 			path_look = gname.."_guard_light_look" }
@@ -66,7 +66,7 @@ function loadJob(sj, gname, type)
 		t = { name = "walker",
 			object = nil, begin = nil, idle = 0,
 			prior = 5, state = {0,1},
-			squad = 0, group = 0,
+			squad = squad, group = groups[1],
 			in_rest = "", out_rest = gname.."_zone",
 			path_walk = gname.."_gb_left_walk",
 			path_look = nil }
@@ -74,7 +74,7 @@ function loadJob(sj, gname, type)
 		t = { name = "walker",
 			object = nil, begin = nil, idle = 0,
 			prior = 5, state = {0,1},
-			squad = 0, group = 0,
+			squad = 0, group = groups[1],
 			in_rest = "", out_rest = gname.."_zone",
 			path_walk = gname.."_gb_right_walk",
 			path_look = nil }
@@ -82,42 +82,42 @@ function loadJob(sj, gname, type)
 		t = { name = "sleeper",
 			object = nil, begin = nil, idle = 0,
 			prior = 1, state = {0,1},
-			squad = 1, group = 0,
+			squad = squad, group = groups[1],
 			in_rest = "", out_rest = gname.."_zone",
 			path_main = gname.."_sleep_1"}
 		table.insert(sj, t)			
 		t = { name = "sleeper",
 			object = nil, begin = nil, idle = 0,
 			prior = 1, state = {0,1},
-			squad = 1, group = 0,
+			squad = squad, group = groups[1],
 			in_rest = "", out_rest = gname.."_zone",
 			path_main = gname.."_sleep_2"}
 		table.insert(sj, t)			
 		t = { name = "sleeper",
 			object = nil, begin = nil, idle = 0,
 			prior = 1, state = {0,1},
-			squad = 1, group = 0,
+			squad = squad, group = groups[1],
 			in_rest = "", out_rest = gname.."_zone",
 			path_main = gname.."_sleep_3"}
 		table.insert(sj, t)			
 		t = { name = "sleeper",
 			object = nil, begin = nil, idle = 0,
 			prior = 1, state = {0,1},
-			squad = 1, group = 0,
+			squad = squad, group = groups[1],
 			in_rest = "", out_rest = gname.."_zone",
 			path_main = gname.."_sleep_4"}
 		table.insert(sj, t)			
 		t = { name = "sleeper",
 			object = nil, begin = nil, idle = 0,
 			prior = 1, state = {0,1},
-			squad = 1, group = 0,
+			squad = squad, group = groups[1],
 			in_rest = "", out_rest = gname.."_zone",
 			path_main = gname.."_sleep_5"}
 		table.insert(sj, t)			
 		t = { name = "sleeper",
 			object = nil, begin = nil, idle = 0,
 			prior = 1, state = {0,1},
-			squad = 1, group = 0,
+			squad = squad, group = groups[1],
 			in_rest = "", out_rest = gname.."_zone",
 			path_main = gname.."_sleep_6"}
 		table.insert(sj, t)			
@@ -126,7 +126,7 @@ function loadJob(sj, gname, type)
 		t = { name = "walker",
 			object = nil, begin = nil, idle = 0,
 			prior = 6, state = {1},
-			squad = 0, group = 0,
+			squad = squad, group = groups[1],
 			in_rest = "", out_rest = gname.."_zone",
 			path_walk = gname.."_alarm_left_walk",
 			path_look = gname.."_alarm_left_look" }
@@ -134,7 +134,7 @@ function loadJob(sj, gname, type)
 		t = { name = "walker",
 			object = nil, begin = nil, idle = 0,
 			prior = 6, state = {1},
-			squad = 0, group = 0,
+			squad = squad, group = groups[1],
 			in_rest = "", out_rest = gname.."_zone",
 			path_walk = gname.."_alarm_right_walk",
 			path_look = gname.."_alarm_right_look" }
@@ -142,7 +142,7 @@ function loadJob(sj, gname, type)
 		t = { name = "walker",
 			object = nil, begin = nil, idle = 0,
 			prior = 6, state = {1},
-			squad = 0, group = 0,
+			squad = squad, group = groups[1],
 			in_rest = "", out_rest = gname.."_zone",
 			path_walk = gname.."_alarm_center_walk",
 			path_look = gname.."_alarm_center_look" }
@@ -166,7 +166,7 @@ function loadJob(sj, gname, type)
 					name = "walker",
 					idle = 0,
 					prior = 1, state = {0},
-					squad = 1, group = 1,
+					squad = squad, group = groups[1],
 					in_rest = "", out_rest = "",
 					path_walk = sn1
 				}
@@ -196,7 +196,7 @@ function loadJob(sj, gname, type)
 					name = "sleeper",
 					idle = 0,
 					prior = 0, state = {0},
-					squad = 1, group = 1,
+					squad = squad, group = groups[1],
 					in_rest = "", out_rest = "",
 					path_main = sn1
 				}

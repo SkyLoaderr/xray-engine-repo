@@ -1,9 +1,11 @@
 fraction = {}
 
 class "fract"
-function fract:__init(name, type)
-	self.name = name
-	self.type = type
+function fract:__init(name, type, squad, groups)
+	self.name   = name
+	self.type   = type
+	self.squad  = squad
+	self.groups = groups or {}
 
 	self.state = 0
 	self.stateBegin = nil
@@ -18,7 +20,7 @@ function fract:__init(name, type)
 
 	self.music = gulag_tasks.get_megafone(type, name) --' матюгальник
 	
-	gulag_tasks.loadJob(self.Job, name, type)
+	gulag_tasks.loadJob(self.Job, name, type, squad, self.groups)
 	table.sort(self.Job, function(a,b) return a.prior > b.prior end)
 	self.calculateStates = gulag_tasks.loadStates(self.States, name, type)
 end
@@ -65,7 +67,6 @@ function fract:checkNpc(npc)
 	if self.type == "bandits_camp" and
 	   type == "bandit"
 	then
-		printf( "BANDIT" )
 		return true
 	end
 
@@ -230,7 +231,7 @@ function fract:setJob(npc, job)
 			xr_sniper.set_sniper(npc, true, job.rest_path, job.camper_path, job.point_path)
 	end
 	--' Смена тим, сквад, груп
-	job.object:change_team(job.object:team(), job.object:squad(), job.group)
+	job.object:change_team(job.object:team(), job.squad or job.object:squad(), job.group or job.object:group())
 	--' Спейс рестрикторы
 	--job.object:remove_all_restrictions()
 	--job.object:add_restrictions(job.out_rest, job.in_rest)
@@ -292,9 +293,9 @@ end
 ----------------------------------------------------------------------------------------------------------------------
 -- Function
 ----------------------------------------------------------------------------------------------------------------------
-function createGulag(name, type)
+function createGulag(name, type, squad, groups)
 	if xr_gulag.fraction[name] == nil then
-		xr_gulag.fraction[name] = xr_gulag.fract(name, type)
+		xr_gulag.fraction[name] = xr_gulag.fract(name, type, squad, groups)
 	end
 	return xr_gulag.fraction[name]
 end
