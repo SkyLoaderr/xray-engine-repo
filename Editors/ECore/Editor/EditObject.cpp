@@ -69,12 +69,6 @@ void CEditableObject::VerifyMeshNames()
     }
 }
 
-void CEditableObject::GenerateMeshNames()
-{
-	int idx=0;
-    for(EditMeshIt m_def=m_Meshes.begin();m_def!=m_Meshes.end();m_def++,idx++)
-    	sprintf((*m_def)->m_Name,"Mesh_#%d",idx);
-}
 bool CEditableObject::ContainsMesh(const CEditableMesh* m)
 {
     VERIFY(m);

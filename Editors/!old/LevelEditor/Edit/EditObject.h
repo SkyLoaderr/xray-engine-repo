@@ -373,7 +373,6 @@ public:
 
     // contains methods
     CEditableMesh* 	FindMeshByName			(LPCSTR name, CEditableMesh* Ignore=0);
-    void			GenerateMeshNames		();
     void			VerifyMeshNames			();
     bool 			ContainsMesh			(const CEditableMesh* m);
 	CSurface*		FindSurfaceByName		(LPCSTR surf_name, int* s_id=0);
