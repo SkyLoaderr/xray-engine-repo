@@ -353,26 +353,6 @@ CParticleEffect::~CParticleEffect()
 	pDeleteActionLists		(m_HandleActionList);
 }
 
-void CParticleEffect::OnDeviceCreate()
-{
-	if (m_Def){
-        if (m_Def->m_Flags.is(CPEDef::dfSprite)){
-            hGeom.create	(FVF::F_LIT, RCache.Vertex.Buffer(), RCache.QuadIB);
-            if (m_Def) hShader = m_Def->m_CachedShader;
-        }
-    }
-}
-
-void CParticleEffect::OnDeviceDestroy()
-{
-	if (m_Def){
-        if (m_Def->m_Flags.is(CPEDef::dfSprite)){
-            hGeom.destroy		();
-            hShader.destroy		();
-        }    
-    }
-}
-
 void CParticleEffect::Play()
 {
 	m_RT_Flags.zero		();
@@ -527,6 +507,25 @@ void CParticleEffect::Copy(IRender_Visual* pFrom)
 }
 
 #ifdef _EDITOR
+void CParticleEffect::OnDeviceCreate()
+{
+	if (m_Def){
+		if (m_Def->m_Flags.is(CPEDef::dfSprite)){
+			hGeom.create	(FVF::F_LIT, RCache.Vertex.Buffer(), RCache.QuadIB);
+			if (m_Def) hShader = m_Def->m_CachedShader;
+		}
+	}
+}
+
+void CParticleEffect::OnDeviceDestroy()
+{
+	if (m_Def){
+		if (m_Def->m_Flags.is(CPEDef::dfSprite)){
+			hGeom.destroy		();
+			hShader.destroy		();
+		}    
+	}
+}
 //----------------------------------------------------
 IC void FillSprite	(FVF::LIT*& pv, const Fvector& pos, const Fvector2& lt, const Fvector2& rb, float r1, float r2, u32 clr, float angle)
 {
@@ -628,6 +627,26 @@ void CParticleEffect::Render(float LOD)
 	}
 }
 #else
+void CParticleEffect::OnDeviceCreate()
+{
+	if (m_Def){
+		if (m_Def->m_Flags.is(CPEDef::dfSprite)){
+			hGeom.create	(FVF::F_TL, RCache.Vertex.Buffer(), RCache.QuadIB);
+			if (m_Def) hShader = m_Def->m_CachedShader;
+		}
+	}
+}
+
+void CParticleEffect::OnDeviceDestroy()
+{
+	if (m_Def){
+		if (m_Def->m_Flags.is(CPEDef::dfSprite)){
+			hGeom.destroy		();
+			hShader.destroy		();
+		}    
+	}
+}
+
 IC void FillSprite	(FVF::TL*& pv, const Fmatrix& M, const Fvector& pos, const Fvector2& lt, const Fvector2& rb, float a, float b, u32 clr, float angle, float scale, float w_2, float h_2)
 {
 	FVF::TL			PT;
