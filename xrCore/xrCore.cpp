@@ -33,11 +33,11 @@ namespace CPU
 static u32	init_counter	= 0;
 void xrCore::_initialize	(LPCSTR _ApplicationName, LogCallback cb, BOOL init_fs)
 {
+	strcpy					(ApplicationName,_ApplicationName);
 	if (0==init_counter){	
 		// Init COM so we can use CoCreateInstance
 		CoInitializeEx		(NULL, COINIT_MULTITHREADED);
 
-		strcpy				(ApplicationName,_ApplicationName);
 		strlwr				(strcpy(Params,GetCommandLine()));
 
 		// User/Comp Name
