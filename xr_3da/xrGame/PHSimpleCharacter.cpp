@@ -7,6 +7,7 @@
 #include "../cl_intersect.h"
 #include "tri-colliderKNoOPC\__aabb_tri.h"
 #include "PHSimpleCharacter.h"
+#include "PHContactBodyEffector.h"
 
 const float LOSE_CONTROL_DISTANCE=0.5f; //fly distance to lose control
 const float CLAMB_DISTANCE=0.5f;
@@ -363,6 +364,12 @@ void CPHSimpleCharacter::PhDataUpdate(dReal /**step/**/){
 }
 
 void CPHSimpleCharacter::PhTune(dReal /**step/**/){
+
+	//if(!b_exist)return;
+	CPHContactBodyEffector* contact_effector=
+		(CPHContactBodyEffector*) dBodyGetData(m_body);
+	if(contact_effector)contact_effector->Apply();
+
 	if(!dBodyIsEnabled(m_body)) 
 	{	
 		b_lose_control=false;

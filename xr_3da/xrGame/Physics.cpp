@@ -239,7 +239,7 @@ void CPHWorld::Step(dReal step)
 		dSpaceCollide		(Space, 0, &NearCallback); 
 		Device.Statistic.ph_collision.End	();
 
-		ContactEffectors.for_each(SApplyBodyEffectorPred());
+//		ContactEffectors.for_each(SApplyBodyEffectorPred());
 
 		Device.Statistic.ph_core.Begin		();
 		for(iter=m_objects.begin();m_objects.end() != iter;++iter)
@@ -381,7 +381,29 @@ static void NearCallback(void* /*data*/, dGeomID o1, dGeomID o2){
 				surface.bounce	  =_min(material_1->fPHBouncing,material_2->fPHBouncing);
 			}
 			/////////////////////////////////////////////////////////////////////////////////////////////////
-
+			if(is_tri_1)
+			{
+				
+				if(material_1->Flags.is(SGameMtl::flSlowDown))
+				{
+					dBodyID body=dGeomGetBody(g2);
+					R_ASSERT2(body,"static - static collision !!!");
+					add_contact_body_effector(body,c,material_1->fFlotationFactor);
+				}
+				if(material_1->Flags.is(SGameMtl::flPassable)) continue;
+			}
+			if(is_tri_2)
+			{
+	
+				if(material_2->Flags.is(SGameMtl::flSlowDown))
+				{
+					dBodyID body=dGeomGetBody(g1);
+					R_ASSERT2(body,"static - static collision !!!");
+					add_contact_body_effector(body,c,material_2->fFlotationFactor);
+				}
+				if(material_2->Flags.is(SGameMtl::flPassable)) continue;
+			}
+			/////////////////////////////////////////////////////////////////////////////////////////////////
 			if(pushing_neg) 
 					surface.mu=dInfinity;
 			
@@ -503,6 +525,8 @@ void SaveContacts(dGeomID o1, dGeomID o2,dJointGroupID jointGroup){
 
 void __stdcall ContactShotMark(CDB::TRI* T,dContactGeom* c)
 {
+	return ;
+	/*
 	dBodyID b=dGeomGetBody(c->g1);
 	dxGeomUserData* data;
 	if(!b) 
@@ -514,7 +538,7 @@ void __stdcall ContactShotMark(CDB::TRI* T,dContactGeom* c)
 	{
 		data=dGeomGetUserData(c->g1);
 	}
-
+	
 	dVector3 vel;
 	dMass m;
 	dBodyGetMass(b,&m);
@@ -534,13 +558,13 @@ void __stdcall ContactShotMark(CDB::TRI* T,dContactGeom* c)
 				
 #pragma TODO("Oles to Slipch: NO WALLMARKS FROM PHYSICAL HITS. Need vertices here")
 					;
-					/*
-					::Render->add_Wallmark	(
-					SELECT_RANDOM(mtl_pair->HitMarks),
-					*((Fvector*)c->pos),
-					0.09f,
-					T);
-					*/
+					
+					//::Render->add_Wallmark	(
+					//SELECT_RANDOM(mtl_pair->HitMarks),
+					//*((Fvector*)c->pos),
+					//0.09f,
+					//T);
+					
 				}
 				if(vel_cret>15.f && !mtl_pair->CollideSounds.empty())
 				{
@@ -559,6 +583,7 @@ void __stdcall ContactShotMark(CDB::TRI* T,dContactGeom* c)
 		//				T);
 
 	} 
+	*/
 }
 
 

@@ -6,7 +6,9 @@
 void CPHContactBodyEffector::Merge(dContact& contact, float	flotation)
 {
 	m_flotation=_max(flotation,m_flotation);
-	//m_contact.geom.normal...................
+	m_contact.geom.normal[0]+=contact.geom.normal[0];
+	m_contact.geom.normal[1]+=contact.geom.normal[1];
+	m_contact.geom.normal[2]+=contact.geom.normal[2];
 }
 
 void CPHContactBodyEffector::Apply()

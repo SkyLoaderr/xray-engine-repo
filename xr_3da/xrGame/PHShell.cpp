@@ -199,14 +199,17 @@ void CPHShell::Deactivate(){
 
 void CPHShell::PhDataUpdate(dReal step){
 
-	ELEMENT_I i;
-	for(i=elements.begin();elements.end() != i;++i)
+	ELEMENT_I i=elements.begin(),e=elements.end();
+	for(; e!=i ;++i)
 		(*i)->PhDataUpdate(step);
 }
 
 
 
 void CPHShell::PhTune(dReal step){
+	ELEMENT_I i=elements.begin(),e=elements.end();
+	for(; e!=i ;++i)
+		(*i)->PhTune(step);
 }
 
 void CPHShell::Update(){
@@ -430,8 +433,9 @@ void CPHShell::build_FromKinematics(CKinematics* K,BONE_P_MAP* p_geting_map)
 	m_pKinematics			=K;
 	spGetingMap				=p_geting_map;
 	//CBoneData& bone_data	= m_pKinematics->LL_GetData(0);
-
+	if(!m_spliter_holder) m_spliter_holder=xr_new<CPHShellSplitterHolder>(this);
 	AddElementRecursive(0,m_pKinematics->LL_GetBoneRoot(),Fidentity,0);
+	if(m_spliter_holder->isEmpty())xr_delete(m_spliter_holder);
 }
 
 void CPHShell::AddElementRecursive(CPhysicsElement* root_e, u16 id,Fmatrix global_parent,u16 element_number)
@@ -446,7 +450,13 @@ void CPHShell::AddElementRecursive(CPhysicsElement* root_e, u16 id,Fmatrix globa
 
 	CPhysicsElement* E  = 0;
 	CPhysicsJoint*   J	= 0;
-	bool breakable=joint_data.ik_flags.test(SJointIKData::flBreakable) && root_e;
+	bool	breakable=joint_data.ik_flags.test(SJointIKData::flBreakable)	&& 
+			root_e															&&
+			!(
+			SBoneShape::stNone==bone_data.shape.type&&
+			joint_data.type==jtRigid
+			)				
+		;
 	bool element_added=false;//set true when if elemen createt and added by this call
 	u16	 splitter_position=0;
 	u16 fracture_num=u16(-1);

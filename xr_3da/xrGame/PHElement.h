@@ -16,198 +16,199 @@ class CPHFracturesHolder;
 class CPHElement	:  public CPhysicsElement 
 {
 	friend class CPHFracturesHolder;
-	GEOM_STORAGE			m_geoms;					//e
-	float					m_start_time;				//uu ->to shell ??
-	float					m_volume;					//e ??
-	Fvector					m_mass_center;				//e ??
-	u32						ul_material;				//e ??
-	dMass					m_mass;						//e ??
-	dBodyID					m_body;						//e
-	dSpaceID				m_group;					//e
-	dReal					m_l_scale;					// ->to shell ??
-	dReal					m_w_scale;					// ->to shell ??
-	dReal					m_disw_param;				// ->to shell ??
-	dReal					m_disl_param;				// ->to shell ??
-	CPhysicsRefObject*		m_phys_ref_object;			//->to shell ??
-	CPHElement				*m_parent_element;			//bool !
-	CPHShell				*m_shell;					//e
-	CPHInterpolation		m_body_interpolation;		//e
-	CPHFracturesHolder		*m_fratures_holder;			//e
+	GEOM_STORAGE			m_geoms;					//e					//bl
+	float					m_start_time;				//uu ->to shell ??	//aux
+	float					m_volume;					//e ??				//bl
+	Fvector					m_mass_center;				//e ??				//bl
+	u32						ul_material;				//e ??				//bl
+	dMass					m_mass;						//e ??				//bl
+	dBodyID					m_body;						//e					//st
+	dSpaceID				m_group;					//e					//bl
+	dReal					m_l_scale;					// ->to shell ??	//bl
+	dReal					m_w_scale;					// ->to shell ??	//bl
+	dReal					m_disw_param;				// ->to shell ??	//bl
+	dReal					m_disl_param;				// ->to shell ??	//bl
+	CPhysicsRefObject*		m_phys_ref_object;			//->to shell ??		//bl
+	CPHElement				*m_parent_element;			//bool !			//bl
+	CPHShell				*m_shell;					//e					//bl
+	CPHInterpolation		m_body_interpolation;		//e					//bl
+	CPHFracturesHolder		*m_fratures_holder;			//e					//bl
 	/////disable///////////////////////
 	//dVector3 mean_w;
 	//dVector3 mean_v;
-	dReal						m_w_limit ;				//->to shell ??
-	dReal						m_l_limit ;				//->to shell ??
+	dReal						m_w_limit ;				//->to shell ??		//bl
+	dReal						m_l_limit ;				//->to shell ??		//bl
 
-	dVector3					m_safe_position;		//e
-	dVector3					m_safe_velocity;		//e
-	dVector3					previous_p;				//e
-	dMatrix3					previous_r;				//e//to angles
-	dVector3					previous_p1;			//e
-	dMatrix3					previous_r1;			//e//to angles
+	dVector3					m_safe_position;		//e					//st
+	dVector3					m_safe_velocity;		//e					//st
+	dVector3					previous_p;				//e					//st
+	dMatrix3					previous_r;				//e//to angles		//st
+	dVector3					previous_p1;			//e					//st
+	dMatrix3					previous_r1;			//e//to angles		//st
+	Fmatrix						m_inverse_local_transform;//e				//bt
 	//dVector3 previous_f;
 	//dVector3 previous_t;
-	dReal						previous_dev;			//e
-	dReal						previous_v;				//e
-	UINT						dis_count_f;			//e
-	UINT						dis_count_f1;			//e
-	dReal						k_w;					//->to shell ??
-	dReal						k_l;//1.8f;				//->to shell ??
+	dReal						previous_dev;			//e					//st
+	dReal						previous_v;				//e					//st
+	UINT						dis_count_f;			//e					//st
+	UINT						dis_count_f1;			//e					//st
+	dReal						k_w;					//->to shell ??		//st
+	dReal						k_l;//1.8f;				//->to shell ??		//st
 
-	bool						b_contacts_saved;		//e
-	dJointGroupID				m_saved_contacts;		//e
+	bool						b_contacts_saved;		//e					//aux
+	dJointGroupID				m_saved_contacts;		//e					//bt
 	
-	ContactCallbackFun*			contact_callback;		//->to shell ??
-	ObjectContactCallbackFun*	object_contact_callback;//->to shell ??
-	ObjectContactCallbackFun*	temp_for_push_out;		//->to shell ??
+	ContactCallbackFun*			contact_callback;		//->to shell ??		//bt
+	ObjectContactCallbackFun*	object_contact_callback;//->to shell ??		//st
+	ObjectContactCallbackFun*	temp_for_push_out;		//->to shell ??		//aux
 
-	u32							push_untill;			//->to shell ??
-	bool						bUpdate;				//->to shell ??
+	u32							push_untill;			//->to shell ??		//st
+	bool						bUpdate;				//->to shell ??		//st
 public:
 	IC	CODEGeom*				Geom(u16 num){R_ASSERT2 (num<m_geoms.size(),"out of range"); return m_geoms[num]; }
 	/////////////////////////////////////////////////////////////////////////////
 
 	////////////////////////////
 private:
-	void					build_Geom						(CODEGeom&	V);
-	void					build_Geom						(u16 i);
-	void					calculate_it_data				(const Fvector& mc,float mass);
-	void					calculate_it_data_use_density	(const Fvector& mc,float density);
-	void					calc_it_fract_data_use_density  (const Fvector& mc,float density);//sets element mass and fractures parts mass
-	dMass					recursive_mass_summ				(u16 start_geom,FRACTURE_I cur_fracture);
-	void					Disabling						();
-	void					unset_Pushout					();
-	void					FillInterpolation				()
+	void					build_Geom						(CODEGeom&	V);																	//aux
+	void					build_Geom						(u16 i);																		//aux
+	void					calculate_it_data				(const Fvector& mc,float mass);													//aux
+	void					calculate_it_data_use_density	(const Fvector& mc,float density);												//aux
+	void					calc_it_fract_data_use_density  (const Fvector& mc,float density);//sets element mass and fractures parts mass	//aux
+	dMass					recursive_mass_summ				(u16 start_geom,FRACTURE_I cur_fracture);										//aux
+	void					Disabling						();																				//caled by ph upadate state influent
+	void					unset_Pushout					();																				//caled by ph upadate state influent
+	void					FillInterpolation				()																				//interpolation called anywhere visual influent
 	{
 		m_body_interpolation.ResetPositions();
 		m_body_interpolation.ResetRotations();
 		bUpdate=true;
 	}
-IC	void					UpdateInterpolation				()
+IC	void					UpdateInterpolation				()																				//interpolation called from ph update visual influent
 	{
 		m_body_interpolation.UpdatePositions();
 		m_body_interpolation.UpdateRotations();
 		bUpdate=true;
 	}
 public:
-	void					Disable							();
-	void					ReEnable						();
-	void					ResetDisable					();
-	void					Enable							();
-	virtual void			SetAirResistance				(dReal linear=default_k_l, dReal angular=default_k_w) 
+	void					Disable							();																				//ph state influent called from ph update
+	void					ReEnable						();																				//ph state influent called from ph update
+	void					ResetDisable					();																				//aux
+	void					Enable							();																				//aux
+	virtual void			SetAirResistance				(dReal linear=default_k_l, dReal angular=default_k_w)							//aux (may not be)
 	{
 		k_w= angular;
 		k_l=linear;
 	}
-	void					CallBack						(CBoneInstance* B);
-	void					CallBack1						(CBoneInstance* B);
-	void					PhDataUpdate					(dReal step);
+	void					CallBack						(CBoneInstance* B);																//called from updateCL visual influent
+	void					CallBack1						(CBoneInstance* B);																//called from updateCL visual influent
+	void					PhDataUpdate					(dReal step);																	//ph update
+	void					PhTune							(dReal step);																	//ph update
+	virtual CPhysicsShell*	PhysicsShell					();																				//aux
+	virtual void			get_Extensions					(const Fvector& axis,float center_prg,float& lo_ext, float& hi_ext);			//aux
+	virtual void			set_ParentElement				(CPhysicsElement* p){m_parent_element=(CPHElement*)p;}							//aux
+	virtual void			set_DisableParams				(float dis_l=default_disl,float dis_w=default_disw);							//aux (may not be)
+	virtual void			applyImpulseTrace				(const Fvector& pos, const Fvector& dir, float val,u16 id)	;					//called anywhere ph state influent
 
-	virtual CPhysicsShell*	PhysicsShell					();
-	virtual void			get_Extensions					(const Fvector& axis,float center_prg,float& lo_ext, float& hi_ext);
-	virtual void			set_ParentElement				(CPhysicsElement* p){m_parent_element=(CPHElement*)p;}
-	virtual void			set_DisableParams				(float dis_l=default_disl,float dis_w=default_disw);
-	virtual void			applyImpulseTrace				(const Fvector& pos, const Fvector& dir, float val,u16 id)	;
-	Fmatrix					m_inverse_local_transform;
 
 	///
-	virtual	void			add_Sphere						(const Fsphere&		V);
-	virtual	void			add_Box							(const Fobb&		V);
-	virtual	void			add_Cylinder					(const Fcylinder&	V);
-	virtual void			add_Shape						(const SBoneShape& shape);
-	virtual void			add_Shape						(const SBoneShape& shape,const Fmatrix& offset);
-	virtual CODEGeom*		last_geom						(){return m_geoms.back();}
+	virtual	void			add_Sphere						(const Fsphere&		V);															//aux
+	virtual	void			add_Box							(const Fobb&		V);															//aux
+	virtual	void			add_Cylinder					(const Fcylinder&	V);															//aux
+	virtual void			add_Shape						(const SBoneShape& shape);														//aux
+	virtual void			add_Shape						(const SBoneShape& shape,const Fmatrix& offset);								//aux
+	virtual CODEGeom*		last_geom						(){return m_geoms.back();}														//aux
 	
-	virtual void			set_ContactCallback				(ContactCallbackFun* callback);
-	virtual void			set_DynamicLimits				(float l_limit=default_l_limit,float w_limit=default_w_limit);
-	virtual void			set_DynamicScales				(float l_scale=default_l_scale,float w_scale=default_w_scale);
-	virtual void			set_ObjectContactCallback		(ObjectContactCallbackFun* callback);
-	virtual void			set_PhysicsRefObject			(CPhysicsRefObject* ref_object);
-	virtual CPhysicsRefObject*	PhysicsRefObject			(){return m_phys_ref_object;}
-	virtual void			set_PushOut						(u32 time,PushOutCallbackFun* push_out=PushOutCallback);
-	virtual void			get_LinearVel					(Fvector& velocity);
-	virtual void			get_AngularVel					(Fvector& velocity);
-	virtual void			set_LinearVel					(const Fvector& velocity);
-	virtual void			set_AngularVel					(const Fvector& velocity);
-	virtual	void			set_BoxMass						(const Fobb& box, float mass);
-	virtual void			add_Mass						(const SBoneShape& shape,const Fmatrix& offset,const Fvector& mass_center,float mass,CPHFracture* fracture=NULL);
-	virtual float			getRadius						();
-	virtual void			InterpolateGlobalTransform		(Fmatrix* m);
-	virtual void			InterpolateGlobalPosition		(Fvector* v);
-	virtual void			GetGlobalTransformDynamic		(Fmatrix* m);
-	virtual void			GetGlobalPositionDynamic		(Fvector* v);
-	void					SetShell						(CPHShell* p){m_shell=p;}
+	virtual void			set_ContactCallback				(ContactCallbackFun* callback);													//aux (may not be)
+	virtual void			set_DynamicLimits				(float l_limit=default_l_limit,float w_limit=default_w_limit);					//aux (may not be)
+	virtual void			set_DynamicScales				(float l_scale=default_l_scale,float w_scale=default_w_scale);					//aux (may not be)
+	virtual void			set_ObjectContactCallback		(ObjectContactCallbackFun* callback);											//called anywhere ph state influent
+	virtual void			set_PhysicsRefObject			(CPhysicsRefObject* ref_object);												//aux
+	virtual CPhysicsRefObject*	PhysicsRefObject			(){return m_phys_ref_object;}													//aux
+	virtual void			set_PushOut						(u32 time,PushOutCallbackFun* push_out=PushOutCallback);						//ph state influent called anywhere
+	virtual void			get_LinearVel					(Fvector& velocity);															//aux
+	virtual void			get_AngularVel					(Fvector& velocity);															//aux
+	virtual void			set_LinearVel					(const Fvector& velocity);														//called anywhere ph state influent
+	virtual void			set_AngularVel					(const Fvector& velocity);														//called anywhere ph state influent
+	virtual	void			set_BoxMass						(const Fobb& box, float mass);													//aux
+	virtual void			add_Mass						(const SBoneShape& shape,const Fmatrix& offset,const Fvector& mass_center,float mass,CPHFracture* fracture=NULL);//aux
+	virtual float			getRadius						();																				//aux
+	virtual void			InterpolateGlobalTransform		(Fmatrix* m);																	//called UpdateCL vis influent
+	virtual void			InterpolateGlobalPosition		(Fvector* v);																	//aux
+	virtual void			GetGlobalTransformDynamic		(Fmatrix* m);																	//aux
+	virtual void			GetGlobalPositionDynamic		(Fvector* v);																	//aux
+	void					SetShell						(CPHShell* p){m_shell=p;}														//aux
 	//virtual CKinematics*	PKinematics						(){return m_shell->PKinematics();}
-	void					SetPhObjectInGeomData			(CPHObject* O);
+	void					SetPhObjectInGeomData			(CPHObject* O);																	//aux
 	
 	
-	void			build									();
-	void			destroy									();
-	Fvector			get_mc_data								();
-	Fvector			get_mc_geoms							();
-	void			calc_volume_data						();
-	void			Start									();
-	void			RunSimulation							();
-	IC CPHFracturesHolder* FracturesHolder					(){return m_fratures_holder;}
+	void			build									();																				//aux
+	void			destroy									();																				//called anywhere ph state influent
+	Fvector			get_mc_data								();																				//aux
+	Fvector			get_mc_geoms							();																				//aux
+	void			calc_volume_data						();																				//aux
+	void			Start									();																				//aux
+	void			RunSimulation							();																				//called anywhere ph state influent
+	IC CPHFracturesHolder* FracturesHolder					(){return m_fratures_holder;}													//aux
 
-	float			get_volume								()	{calc_volume_data();return m_volume;};
-	void			SetTransform							(const Fmatrix& m0);
+	float			get_volume								()	{calc_volume_data();return m_volume;};										//aux
+	void			SetTransform							(const Fmatrix& m0);															//called anywhere ph state influent
 	//////////////////////////////////////////////////////////////////////////////////////////////////////////
 	/////////////////////////////////////////////////////////////////////////////////////////////////////////
-	virtual void			SetMaterial				(u32 m);
+	virtual void			SetMaterial				(u32 m);																				//aux
 
-	virtual void			SetMaterial				(LPCSTR m){SetMaterial(GMLib.GetMaterialIdx(m));}
-	virtual	dBodyID			get_body				()		{return m_body;};
-	virtual const Fvector&	mass_Center				()						;
-	virtual const Fvector&	local_mass_Center		()		{return m_mass_center;}
-	virtual void			Activate				(const Fmatrix& m0, float dt01, const Fmatrix& m2,bool disable=false);
-	virtual void			Activate				(const Fmatrix &transform,const Fvector& lin_vel,const Fvector& ang_vel,bool disable=false);
-	virtual void			Activate				(bool place_current_forms=false,bool disable=false);
-	virtual void			Activate				(const Fmatrix& start_from, bool disable=false);
+	virtual void			SetMaterial				(LPCSTR m){SetMaterial(GMLib.GetMaterialIdx(m));}										//aux
+	virtual	dBodyID			get_body				()		{return m_body;};																//aux
+	virtual const Fvector&	mass_Center				()						;																//aux
+	virtual const Fvector&	local_mass_Center		()		{return m_mass_center;}															//aux
+	virtual void			Activate				(const Fmatrix& m0, float dt01, const Fmatrix& m2,bool disable=false);					//some isues not to be aux
+	virtual void			Activate				(const Fmatrix &transform,const Fvector& lin_vel,const Fvector& ang_vel,bool disable=false);//some isues not to be aux
+	virtual void			Activate				(bool place_current_forms=false,bool disable=false);									//some isues not to be aux
+	virtual void			Activate				(const Fmatrix& start_from, bool disable=false);										//some isues not to be aux
 
-	virtual void			Deactivate				();
-	virtual float			getVolume				(){return m_volume;}
-	virtual void			setMass					(float M);
-	virtual float			getMass					(){return m_mass.mass;}
-	virtual bool			isBreakable				();
-	virtual void			setDensity				(float M);
-	virtual float			getDensity				(){return m_mass.mass/m_volume;}
-	virtual void			setMassMC				(float M,const Fvector& mass_center);
-	virtual void			setDensityMC			(float M,const Fvector& mass_center);
-	virtual void			setInertia				(const Fmatrix& M)																					{}
-	virtual u16				setGeomFracturable		(CPHFracture& fracture);
-	virtual CPHFracture&	Fracture				(u16 num);
-	virtual u16				numberOfGeoms			();
-	dGeomID					dSpacedGeometry			();
-			void			PassEndGeoms			(u16 from,u16 to,CPHElement* dest);
+	virtual void			Deactivate				();																						//aux
+	virtual float			getVolume				(){return m_volume;}																	//aux
+	virtual void			setMass					(float M);																				//aux
+	virtual float			getMass					(){return m_mass.mass;}																	//aux
+	virtual bool			isBreakable				();																						//aux
+	virtual void			setDensity				(float M);																				//aux
+	virtual float			getDensity				(){return m_mass.mass/m_volume;}														//aux
+	virtual void			setMassMC				(float M,const Fvector& mass_center);													//aux
+	virtual void			setDensityMC			(float M,const Fvector& mass_center);													//aux
+	virtual void			setInertia				(const Fmatrix& M)																	{}	//aux
+	virtual u16				setGeomFracturable		(CPHFracture& fracture);																//aux
+	virtual CPHFracture&	Fracture				(u16 num);																				//aux
+	virtual u16				numberOfGeoms			();																						//aux
+	dGeomID					dSpacedGeometry			();																						//aux
+			void			PassEndGeoms			(u16 from,u16 to,CPHElement* dest);														//aux
 
-			void			CreateSimulBase			();//create body & cpace
-			void			ReInitDynamics			(const Fmatrix &shift_pivot,float density);//set body & geom positions
-			void			ReAdjustMassPositions	(const Fmatrix &shift_pivot,float density);
-			void			ResetMass				(float density);
-			void			SplitProcess			(ELEMENT_PAIR_VECTOR &new_elements);
-			void			PresetActive			();
-virtual		dMass*			getMassTensor			()
+			void			CreateSimulBase			();//create body & cpace																//aux
+			void			ReInitDynamics			(const Fmatrix &shift_pivot,float density);//set body & geom positions					//aux
+			void			ReAdjustMassPositions	(const Fmatrix &shift_pivot,float density);												//aux
+			void			ResetMass				(float density);																		//aux
+			void			SplitProcess			(ELEMENT_PAIR_VECTOR &new_elements);													//aux
+			void			PresetActive			();																						//aux
+virtual		dMass*			getMassTensor			()																						//aux
 	{
 		return &m_mass;
 	}
 
-	virtual void			applyForce				(const Fvector& dir, float val)
+	virtual void			applyForce				(const Fvector& dir, float val)															//aux
 	{
 		applyForce				(dir.x*val,dir.y*val,dir.z*val);
 	};
-	virtual void			applyForce				(float x,float y,float z)
+	virtual void			applyForce				(float x,float y,float z)																//called anywhere ph state influent
 	{
 		if( !dBodyIsEnabled(m_body)) dBodyEnable(m_body);
 		dBodyAddForce(m_body,x,y,z);
 	}
-	virtual void			applyImpulse			(const Fvector& dir, float val){
+	virtual void			applyImpulse			(const Fvector& dir, float val){														//aux
 		
 		applyForce(dir.x*val/fixed_step,dir.y*val/fixed_step,dir.z*val/fixed_step);
 	};
-	virtual void			Update					();
+	virtual void			Update					();																						//called update CL visual influence
 
-	CPHElement()
+	CPHElement()																															//aux
 	{ 
 		m_w_limit = default_w_limit;
 		m_l_limit = default_l_limit;
@@ -234,7 +235,7 @@ virtual		dMass*			getMassTensor			()
 		m_fratures_holder=NULL;
 	};
 	//CPHElement(){ m_space=ph_world->GetSpace();};
-	virtual ~CPHElement	();
+	virtual ~CPHElement	();																															//aux
 };
 
 #endif

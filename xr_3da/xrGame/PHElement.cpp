@@ -3,6 +3,7 @@
 #include "Physics.h"
 #include "tri-colliderknoopc/dTriList.h"
 #include "PHFracture.h"
+#include "PHContactBodyEffector.h"
 ///////////////////////////////////////////////////////////////
 #pragma warning(disable:4995)
 #pragma warning(disable:4267)
@@ -399,7 +400,14 @@ void CPHElement::Update(){
 	VERIFY2(_valid(mXFORM),"invalid position in update");
 }
 
+void CPHElement::PhTune(dReal step)
+{
+	if(!bActive) return;
+	CPHContactBodyEffector* contact_effector=
+						(CPHContactBodyEffector*) dBodyGetData(m_body);
+	if(contact_effector)contact_effector->Apply();
 
+}
 void CPHElement::PhDataUpdate(dReal step){
 
 	if(! bActive)return;

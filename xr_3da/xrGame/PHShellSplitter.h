@@ -55,6 +55,7 @@ virtual					~CPHShellSplitterHolder();
 		void			AddToGeomMap(const id_geom& id_rootgeom);
 		u16				FindRootGeom (u16 bone_id);
 IC      bool			Breaked(){return m_has_breaks;}
+IC		bool			isEmpty(){return m_splitters.empty();}
 };
 
 
