@@ -262,6 +262,10 @@ void CObjectHandlerPlanner::add_item			(CInventoryItem *inventory_item)
 
 void CObjectHandlerPlanner::remove_item		(CInventoryItem *inventory_item)
 {
+	VERIFY					(target_state().conditions().size() == 1);
+	if (action_object_id(target_state().conditions().back().condition()) == inventory_item->object().ID())
+		set_goal			(MonsterSpace::eObjectActionIdle);
+
 	remove_evaluators		(&inventory_item->object());
 	remove_operators		(&inventory_item->object());
 }
