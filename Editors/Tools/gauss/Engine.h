@@ -6,15 +6,15 @@
 #define AFX_ENGINE_H__22802DD7_D7EB_4234_9781_E237657471AC__INCLUDED_
 #pragma once
 
-#include "FS.h"
-#include "FileSystem.h"
-#include "xrCPU_Pipe.h"
-                      
 #define		xr_malloc	malloc
 #define		xr_free		free
 #define		xr_realloc	realloc
 #define		xr_strdup	strdup
 
+#include "FS.h"
+#include "FileSystem.h"
+#include "xrCPU_Pipe.h"
+                      
 class ENGINE_API CEngine
 {
 	HMODULE				hPSGP;
