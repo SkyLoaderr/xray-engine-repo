@@ -15,7 +15,7 @@ public:
 	{
 		GetCursorPos(p.d3d());
 	}
-	IC void	iGetMousePosReal			(HANDLE hwnd, Ipoint &p)
+	IC void	iGetMousePosReal			(HWND hwnd, Ipoint &p)
 	{
 		iGetMousePosScreen(p);
 		if (hwnd) ScreenToClient(hwnd, p.d3d());

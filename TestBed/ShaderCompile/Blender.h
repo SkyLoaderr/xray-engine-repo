@@ -12,22 +12,22 @@
 
 #define		BP_W_MARKER(a)	BP_write_c(FS,BPID_MARKER,a,0,0)
 #define		BP_WRITE(a,b,c)	BP_write_c(FS,b,a,&c,sizeof(c))
-#define		BP_R_MARKER()	R_ASSERT(BPID_MARKER==BP_read(FS))
-#define		BP_READ(a,c)	R_ASSERT(a==BP_read(FS)); FS.Read(&c,sizeof(c))
+#define		BP_R_MARKER()	R_ASSERT(BPID_MARKER==BP_read_c(FS))
+#define		BP_READ(a,c)	R_ASSERT(a==BP_read_c(FS)); FS.Read(&c,sizeof(c))
 
 class ENGINE_API CBlender_DESC
 {
 public:
-	CLSID		CLS;
+	CLASS_ID	CLS;
 	char		cName		[128];
 	char		cComputer	[32];
 	DWORD		cTime;
 
 	CBlender_DESC()	
 	{
-		CLS			= 0;
-		cName		= "";
-		cComputer	= "";
+		CLS			= CLASS_ID(0);
+		cName[0]	= 0;
+		cComputer[0]= 0;
 		cTime		= 0;
 	}
 
@@ -71,9 +71,9 @@ protected:
 	DWORD		BP_read_c   (CStream&  FS);
 	BOOL		c_XForm		();
 public:
-	static		CBlender*	Create			(CLSID cls);
+	static		CBlender*	Create			(CLASS_ID cls);
 
-	CBlender_DESC&			getDescription()= 0;
+	CBlender_DESC&			getDescription();
 	virtual		LPCSTR		getComment()	= 0;
 
 	virtual		void		Save			(CFS_Base&  FS);
