@@ -1,5 +1,6 @@
 #include "stdafx.h"
 #include "ai_boar.h"
+#include "../ai_monster_utils.h"
 
 CAI_Boar::CAI_Boar()
 {
@@ -11,8 +12,7 @@ CAI_Boar::CAI_Boar()
 	statePanic			= xr_new<CBitingPanic>		(this, false);
 	stateExploreNDE		= xr_new<CBitingExploreNDE>	(this);
 	stateExploreDNE		= xr_new<CBitingExploreDNE>	(this, false);
-
-	stateTest			= xr_new<CBitingNull>		(this);
+	stateNull			= xr_new<CBitingNull>		();
 
 	CurrentState		= stateRest;
 
@@ -28,8 +28,7 @@ CAI_Boar::~CAI_Boar()
 	xr_delete(stateDetour);
 	xr_delete(statePanic);
 	xr_delete(stateExploreNDE);
-
-	xr_delete(stateTest);
+	xr_delete(stateNull);
 }
 
 
@@ -39,6 +38,7 @@ void CAI_Boar::Init()
 
 	CurrentState					= stateRest;
 	CurrentState->Reset				();
+
 }
 
 void CAI_Boar::Load(LPCSTR section)
@@ -68,6 +68,8 @@ void CAI_Boar::Load(LPCSTR section)
 	MotionMan.AddAnim(eAnimLookAround,		"stand_idle_",			 2, 0,									0,									PS_STAND);
 	MotionMan.AddAnim(eAnimSteal,			"stand_steal_",			-1, inherited::_sd->m_fsSteal,			inherited::_sd->m_fsWalkAngular,	PS_STAND);
 	MotionMan.AddAnim(eAnimDie,				"stand_idle_",			-1, 0,									0,									PS_STAND);
+	MotionMan.AddAnim(eAnimJumpLeft,		"stand_jump_left_",		-1, 0,									inherited::_sd->m_fsRunAngular,		PS_STAND);
+	MotionMan.AddAnim(eAnimJumpRight,		"stand_jump_right_",	-1, 0,									inherited::_sd->m_fsRunAngular,		PS_STAND);
 
 	// define transitions
 	MotionMan.AddTransition(eAnimStandLieDown,	eAnimSleep,		eAnimLieToSleep,		false);
@@ -86,7 +88,7 @@ void CAI_Boar::Load(LPCSTR section)
 	MotionMan.LinkAction(ACT_SLEEP,			eAnimSleep);
 	MotionMan.LinkAction(ACT_REST,			eAnimLieIdle);
 	MotionMan.LinkAction(ACT_DRAG,			eAnimDragCorpse);
-	MotionMan.LinkAction(ACT_ATTACK,		eAnimAttack, eAnimRun, eAnimRun, PI_DIV_6/6);
+	MotionMan.LinkAction(ACT_ATTACK,		eAnimAttack, eAnimStandTurnLeft, eAnimStandTurnRight, PI_DIV_6/6);
 	MotionMan.LinkAction(ACT_STEAL,			eAnimSteal);
 	MotionMan.LinkAction(ACT_LOOK_AROUND,	eAnimLookAround);
 
@@ -109,39 +111,37 @@ void CAI_Boar::Load(LPCSTR section)
 void CAI_Boar::StateSelector()
 {	
 
+	IState *state;
 	VisionElem ve;
 
-	if (C && H && I)			SetState(statePanic);
-	else if (C && H && !I)		SetState(statePanic);
-	else if (C && !H && I)		SetState(statePanic);
-	else if (C && !H && !I) 	SetState(statePanic);
-	else if (D && H && I)		SetState(stateAttack);
-	else if (D && H && !I)		SetState(stateAttack);  //тихо подобраться и начать аттаку
-	else if (D && !H && I)		SetState(stateAttack);
+	if (C && H && I)			state = statePanic;
+	else if (C && H && !I)		state = statePanic;
+	else if (C && !H && I)		state = statePanic;
+	else if (C && !H && !I) 	state = statePanic;
+	else if (D && H && I)		state = stateAttack;
+	else if (D && H && !I)		state = stateAttack;  //тихо подобраться и начать аттаку
+	else if (D && !H && I)		state = stateAttack;
 	//else if (D && !H && !I) 	SetState(stateHide);	// отход перебежками через укрытия
-	else if (D && !H && !I)		SetState(statePanic);
-	else if (E && H && I)		SetState(stateAttack); 
-	else if (E && H && !I)  	SetState(stateAttack);  //тихо подобраться и начать аттаку
+	else if (D && !H && !I)		state = statePanic;
+	else if (E && H && I)		state = stateAttack; 
+	else if (E && H && !I)  	state = stateAttack;  //тихо подобраться и начать аттаку
 	//else if (E && !H && I) 		SetState(stateDetour); 
 	//else if (E && !H && !I)		SetState(stateDetour); 
-	else if (E && !H && I) 		SetState(stateAttack);
-	else if (E && !H && !I)		SetState(stateAttack);
-	else if (F && H && I) 		SetState(stateAttack); 		
-	else if (F && H && !I)  	SetState(stateAttack); 
+	else if (E && !H && I) 		state = stateAttack;
+	else if (E && !H && !I)		state = stateAttack;
+	else if (F && H && I) 		state = stateAttack; 		
+	else if (F && H && !I)  	state = stateAttack; 
 	//else if (F && !H && I)  	SetState(stateDetour); 
 	//else if (F && !H && !I) 	SetState(stateHide);
-	else if (A && !K && !H)		SetState(stateExploreNDE);  //SetState(stateExploreDNE);  // слышу опасный звук, но не вижу, враг не выгодный		(ExploreDNE)
-	else if (A && !K && H)		SetState(stateExploreNDE);  //SetState(stateExploreDNE);	//SetState(stateExploreDE);	// слышу опасный звук, но не вижу, враг выгодный			(ExploreDE)		
-	else if (B && !K && !H)		SetState(stateExploreNDE);	// слышу не опасный звук, но не вижу, враг не выгодный	(ExploreNDNE)
-	else if (B && !K && H)		SetState(stateExploreNDE);	// слышу не опасный звук, но не вижу, враг выгодный		(ExploreNDE)
+	else if (A && !K && !H)		state = stateExploreNDE;  //SetState(stateExploreDNE);  // слышу опасный звук, но не вижу, враг не выгодный		(ExploreDNE)
+	else if (A && !K && H)		state = stateExploreNDE;  //SetState(stateExploreDNE);	//SetState(stateExploreDE);	// слышу опасный звук, но не вижу, враг выгодный			(ExploreDE)		
+	else if (B && !K && !H)		state = stateExploreNDE;	// слышу не опасный звук, но не вижу, враг не выгодный	(ExploreNDNE)
+	else if (B && !K && H)		state = stateExploreNDE;	// слышу не опасный звук, но не вижу, враг выгодный		(ExploreNDE)
 	else if (GetCorpse(ve) && (ve.obj->m_fFood > 1) && ((GetSatiety() < 0.85f) || flagEatNow))	
-								SetState(stateEat);
-	else						SetState(stateRest); 
-}
+								state = stateEat;
+	else						state = stateRest; 
 
-void CAI_Boar::CheckSpecParams(u32 /**spec_params/**/)
-{
-
+	SetState(state);
 }
 
 void CAI_Boar::LookPosition(Fvector to_point, float angular_speed)
@@ -154,9 +154,33 @@ void CAI_Boar::LookPosition(Fvector to_point, float angular_speed)
 	CMovementManager::m_body.target.yaw = angle_normalize(-yaw);
 }
 
-// проверка включения поворота костей
-void CAI_Boar::ProcessTurn()
-{
-}
 
+void CAI_Boar::CheckSpecParams(u32 spec_params)
+{
+	if ((spec_params & ASP_ROTATION_JUMP) == ASP_ROTATION_JUMP) {
+		float yaw, pitch;
+		Fvector().sub(m_tEnemy.obj->Position(), Position()).getHP(yaw,pitch);
+		yaw *= -1;
+		yaw = angle_normalize(yaw);
+
+		EMotionAnim anim = eAnimJumpLeft;
+		if (from_right(yaw,m_body.current.yaw)) {
+			anim = eAnimJumpRight;
+			yaw = angle_normalize(yaw + PI / 20);	
+		} else yaw = angle_normalize(yaw - PI / 20);
+
+		MotionMan.Seq_Add(anim);
+		MotionMan.Seq_Switch();
+
+		CMovementManager::m_body.target.yaw = yaw;
+
+		// calculate angular speed
+		float new_angular_velocity;  //= 4.0f;
+		float delta_yaw = angle_difference(yaw,m_body.current.yaw);
+		float time = MotionMan.GetAnimTime(anim, 0);
+		new_angular_velocity = 2.5f * delta_yaw / time; 
+
+		MotionMan.ForceAngularSpeed(new_angular_velocity);
+	}
+}
 

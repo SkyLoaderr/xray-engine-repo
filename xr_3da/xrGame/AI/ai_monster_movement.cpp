@@ -41,10 +41,10 @@ void CMonsterMovement::reinit()
 // Init Movement
 void CMonsterMovement::Frame_Init()
 {
-	enable_movement							(true);
 	CLevelLocationSelector::set_evaluator	(0);
 	CDetailPathManager::set_path_type		(eDetailPathTypeSmooth);
 	b_try_min_time							= true;		
+	b_enable_movement						= true;
 }
 
 
@@ -53,6 +53,7 @@ void CMonsterMovement::Frame_Init()
 void CMonsterMovement::Frame_Update()
 {
 	CDetailPathManager::set_try_min_time	(b_try_min_time); 
+	enable_movement							(b_enable_movement);
 	update_path								();
 }
 
@@ -176,7 +177,7 @@ bool CMonsterMovement::IsMoveAlongPathFinished()
 
 bool CMonsterMovement::IsMovingOnPath()
 {
-	return (!IsMoveAlongPathFinished() && CMovementManager::enabled());
+	return (!IsMoveAlongPathFinished() && CMovementManager::enabled() && b_enable_movement);
 }
 
 //-------------------------------------------------------------------------------------------

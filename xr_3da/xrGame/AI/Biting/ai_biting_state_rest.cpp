@@ -80,11 +80,9 @@ void CBitingRest::Run()
 
 			break;
 		case ACTION_SATIETY_GOOD:				// стоять, ничего не делать
-			pMonster->enable_movement(false);
 			pMonster->MotionMan.m_tAction = ACT_REST;
 			break;
 		case ACTION_SLEEP:						// лежать
-			pMonster->enable_movement(false);
 			pMonster->MotionMan.m_tAction = ACT_SLEEP;
 			break;
 		case ACTION_WALK_CIRCUMSPECTION:		// повернуться на 90 град.

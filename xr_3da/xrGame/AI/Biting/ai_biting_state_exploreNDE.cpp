@@ -41,9 +41,9 @@ void CBitingExploreNDE::Run()
 	switch (m_tAction) {
 	case ACTION_LOOK_DESTINATION:			// повернуться в сторону звука
 		LOG_EX("nde: LOOK DEST");
-		pMonster->enable_movement(false);
 		
 		pMonster->MotionMan.m_tAction = ACT_STAND_IDLE;
+		pMonster->disable_path();
 		pMonster->LookPosition(m_tSound.position);
 		
 		if (angle_difference(pMonster->CMovementManager::m_body.target.yaw, pMonster->CMovementManager::m_body.current.yaw) < PI_DIV_6) m_tAction = ACTION_GOTO_SOUND_SOURCE;
@@ -62,7 +62,7 @@ void CBitingExploreNDE::Run()
 	case ACTION_LOOK_AROUND:
 		LOG_EX("nde: LOOK_AROUND");
 		pMonster->MotionMan.m_tAction = ACT_LOOK_AROUND;
-		pMonster->enable_movement(false);
+		pMonster->disable_path();
 		break;
 	}
 

@@ -31,6 +31,8 @@
 #define AF_HAS_JUMP_ABILITY				(1 << 12)
 #define AF_HAS_INVISIBILITY_ABILITY		(1 << 13)
 
+#define AF_CAN_EXEC_ROTATION_JUMP		(1 << 14)
+
 ///////////////////////////////////////////////////////////////////////////////////////////////////////////
 // CBitingAttack implementation
 ///////////////////////////////////////////////////////////////////////////////////////////////////////////
@@ -72,6 +74,8 @@ void CBitingAttack::Init()
 
 	m_tAction					= ACTION_RUN;
 	m_tPrevAction				= ACTION_RUN;
+
+	next_rot_jump_enabled		= 0;
 }
 
 #define TIME_WALK_PATH						5000
@@ -81,6 +85,7 @@ void CBitingAttack::Init()
 #define BUILD_HALF_PATH_DIST				5.f			// дистанци€ не полного пути
 
 #define THREATEN_DISTANCE					3.0f
+#define MAX_DIST_ROTATION_JUMP				5.f
 
 void CBitingAttack::Run()
 {
@@ -130,6 +135,9 @@ void CBitingAttack::Run()
 	// восстановить некоторые переменные
 	if (!b_attack_melee) bEnableBackAttack = true;
 	
+	if ((m_tAction == ACTION_RUN) && flags.is(AF_CAN_EXEC_ROTATION_JUMP) && (dist < MAX_DIST_ROTATION_JUMP))
+		m_tAction = ACTION_ROTATION_JUMP;
+	
 	bool bNeedRebuild = false;
 
 	// ¬ыполнение состо€ни€
@@ -138,7 +146,6 @@ void CBitingAttack::Run()
 		// ************
 		case ACTION_RUN:		 // бежать на врага
 		// ************	
-				
 			LOG_EX("ATTACK: RUN");
 			pMonster->MotionMan.m_tAction	= ACT_RUN;
 			pMonster->CMonsterMovement::set_try_min_time(false);
@@ -189,9 +196,8 @@ void CBitingAttack::Run()
 		// *********************
 
 			LOG_EX("ATTACK: ATTACK_MELEE");
-			pMonster->MotionMan.m_tAction = ACT_ATTACK;
-			pMonster->enable_movement(false);			
-			bCanThreaten			= false;
+			pMonster->MotionMan.m_tAction	= ACT_ATTACK;
+			bCanThreaten					= false;
 
 			// если враг крыса под монстром подпрыгнуть и убить
 //			if (m_bAttackRat) {
@@ -225,21 +231,18 @@ void CBitingAttack::Run()
 		case ACTION_STEAL:
 		// ****************
 
-
 			LOG_EX("ATTACK: STEAL");
 			pMonster->MotionMan.m_tAction = ACT_STEAL;
 			pMonster->MoveToTarget(m_tEnemy.obj);
 			pMonster->set_use_dest_orientation	(false);
 			break;
 		
-		
 		// ******************
 		case ACTION_THREATEN: 
 		// ******************
 
 			LOG_EX("ATTACK: THREATEN");
-			pMonster->MotionMan.m_tAction = ACT_STAND_IDLE;
-			pMonster->enable_movement(false);
+			pMonster->MotionMan.m_tAction	= ACT_STAND_IDLE;
 
 			// —мотреть на врага 
 			DO_IN_TIME_INTERVAL_BEGIN(m_dwFaceEnemyLastTime, 1200);
@@ -263,6 +266,15 @@ void CBitingAttack::Run()
 			
 			pMonster->CSoundPlayer::play(MonsterSpace::eMonsterSoundAttack, 0,0,pMonster->_sd->m_dwAttackSndDelay);
 
+			break;
+
+		// **********************
+		case ACTION_ROTATION_JUMP: 
+		// **********************
+			
+			pMonster->MotionMan.SetSpecParams	(ASP_ROTATION_JUMP);
+			next_rot_jump_enabled				= m_dwCurrentTime + Random.randI(3000,4000);
+			pMonster->disable_path				();
 			break;
 	}
 
@@ -488,6 +500,25 @@ void CBitingAttack::UpdateFrameFlags()
 
 	if (m_tEnemy.time == m_dwCurrentTime)	frame_flags.or(AF_SEE_ENEMY);
 
+	if (pMonster->CanExecRotationJump() && CheckRotationJump()) frame_flags.or(AF_CAN_EXEC_ROTATION_JUMP);
 }
 
+#define MIN_ROTATION_JUMP_ANGLE 2*PI_DIV_3
+
+bool CBitingAttack::CheckRotationJump()
+{
+	//if (MotionMan.Seq_Active()) return false;
+
+	// check angle
+	float yaw, pitch;
+	Fvector().sub(m_tEnemy.obj->Position(), pMonster->Position()).getHP(yaw,pitch);
+	yaw *= -1;	yaw = angle_normalize(yaw);
+
+	if (angle_difference(yaw,pMonster->m_body.current.yaw) < MIN_ROTATION_JUMP_ANGLE) return false;
+
+	// timing
+	if (next_rot_jump_enabled > m_dwCurrentTime)  return false;
+
+	return true;
+}
 

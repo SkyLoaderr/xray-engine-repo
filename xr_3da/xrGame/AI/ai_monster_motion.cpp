@@ -38,6 +38,8 @@ void CMotionManager::Init (CAI_Biting	*pM)
 	saved_anim				= cur_anim;
 
 	fx_time_last_play		= 0;
+	
+	b_forced_velocity		= false;
 }
 
 // «агрузка параметров анимации. ¬ызывать необходимо на Monster::Load
@@ -194,7 +196,7 @@ void CMotionManager::Load(LPCTSTR pmt_name, ANIM_VECTOR	*pMotionVect)
 		else {
 			if (i == 0) {
 				string128	s;
-				sprintf(s, "Error! No animation: %s", pmt_name);
+				sprintf(s, "Error! No animation: %s for monster %s", pmt_name, pMonster->cName());
 				R_ASSERT2(i != 0, s);
 			}
 			break;
@@ -233,7 +235,7 @@ bool CMotionManager::PrepareAnimation()
 	// установить анимацию	
 	m_tpCurAnim = anim_it->second.pMotionVect[index];
 	
-	//LOG_EX2("SET_ANIM = [%s]", *"*/ *anim_it->second.target_name /*"*);
+	//LOG_EX2("Anim: name = [%s] length = [%f]", *"*/ *anim_it->second.target_name, GetAnimTime(cur_anim, index) /*"*);
 
 	// установить параметры атаки
 	AA_SwitchAnimation(cur_anim, index);
@@ -290,6 +292,7 @@ void CMotionManager::ProcessAction()
 	if (pJumping && pJumping->IsActive()) return;
 
 	if (!seq_playing) {
+		b_forced_velocity		= false;
 
 		// преобразовать Action в Motion и получить новую анимацию
 		SMotionItem MI = _sd->m_tMotions[m_tAction];
@@ -302,6 +305,7 @@ void CMotionManager::ProcessAction()
 		if (prev_anim != cur_anim) CheckTransition(prev_anim, cur_anim);
 		
 		if (!seq_playing) {
+			
 			// проверить необходимость установки анимации поворота
 			float &cur_yaw		= pMonster->CMovementManager::m_body.current.yaw;
 			float &target_yaw	= pMonster->CMovementManager::m_body.target.yaw;
@@ -310,9 +314,6 @@ void CMotionManager::ProcessAction()
 					// необходим поворот влево или вправо
 					if (angle_normalize_signed(target_yaw - cur_yaw) > 0) 	cur_anim = MI.turn.anim_right;	// вправо
 					else													cur_anim = MI.turn.anim_left; 	// влево
-					// ѕроверить, €вл€етс€ ли это хорошим методом (вроде не очень)
-					// Seq_Add(cur_anim);
-					// Seq_Switch();
 				}
 			}	
 
@@ -329,10 +330,9 @@ void CMotionManager::ProcessAction()
 				FixBadState();
 			}
 		}
-	} else if (seq_playing) {
-		cur_anim = *seq_it;
-		pMonster->enable_movement(false);
-	}
+	} 
+	
+	if (seq_playing) cur_anim = *seq_it;
 
 	ApplyParams();
 
@@ -351,7 +351,7 @@ void CMotionManager::ApplyParams()
 	R_ASSERT(_sd->m_tAnims.end() != item_it);
 
 	pMonster->m_fCurSpeed		= item_it->second.speed.linear;
-	pMonster->CMovementManager::m_body.speed		= item_it->second.speed.angular;
+	if (!b_forced_velocity) pMonster->CMovementManager::m_body.speed = item_it->second.speed.angular;
 }
 
 // Callback на завершение анимации
@@ -664,3 +664,21 @@ void CMotionManager::FX_Play(u16 bone, bool is_front, float amount)
 }
 
 
+float CMotionManager::GetAnimTime(EMotionAnim anim, u32 index)
+{
+	// получить элемент SAnimItem соответствующий anim
+	ANIM_ITEM_MAP_IT anim_it = _sd->m_tAnims.find(anim);
+	R_ASSERT(_sd->m_tAnims.end() != anim_it);
+
+	CMotionDef			*def = anim_it->second.pMotionVect[index];
+	CBoneData			&bone_data = PKinematics(pVisual)->LL_GetData(0);
+	CBoneDataAnimated	*bone_anim = dynamic_cast<CBoneDataAnimated *>(&bone_data);
+
+	return  bone_anim->Motions[def->motion].GetLength();
+}
+
+void CMotionManager::ForceAngularSpeed(float vel)
+{
+	pMonster->CMovementManager::m_body.speed = vel;
+	b_forced_velocity = true;
+}

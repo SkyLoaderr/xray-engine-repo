@@ -15,8 +15,6 @@ CAI_PseudoDog::CAI_PseudoDog()
 
 	CurrentState		= stateRest;
 
-	stateTest			= xr_new<CBitingNull>		(this);
-
 	Init();
 }
 
@@ -31,7 +29,6 @@ CAI_PseudoDog::~CAI_PseudoDog()
 	xr_delete(stateExploreNDE);
 	xr_delete(stateExploreDNE);
 
-	xr_delete(stateTest);
 }
 
 

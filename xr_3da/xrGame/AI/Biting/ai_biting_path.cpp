@@ -73,7 +73,6 @@ void CAI_Biting::FaceTarget(const Fvector &position)
 }
 
 
-
 void CAI_Biting::SetupVelocityMasks(bool force_real_speed)
 {
 	bool bEnablePath = true;
@@ -120,10 +119,11 @@ void CAI_Biting::SetupVelocityMasks(bool force_real_speed)
 	if (force_real_speed) vel_mask = des_mask;
 
 	if (bEnablePath) {
-		set_velocity_mask(vel_mask);	
-		set_desirable_mask(des_mask);
+		set_velocity_mask	(vel_mask);	
+		set_desirable_mask	(des_mask);
+		enable_path			();		
 	} else {
-		enable_movement(false);
+		disable_path		();
 	}
 }
 

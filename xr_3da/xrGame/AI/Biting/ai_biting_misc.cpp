@@ -178,7 +178,7 @@ bool CAI_Biting::bfAssignMovement (CEntityAction *tpEntityAction)
 	MotionMan.m_tAction = EAction(l_tMovementAction.m_tActState);
 
 	// pre-update path parameters
-	enable_movement							(true);
+	enable_path								();
 	CLevelLocationSelector::set_evaluator	(0);
 	CDetailPathManager::set_path_type		(eDetailPathTypeSmooth);
 	CDetailPathManager::set_try_min_time	(true);	
@@ -187,12 +187,12 @@ bool CAI_Biting::bfAssignMovement (CEntityAction *tpEntityAction)
 	
 	update_path();
 	
-	PreprocessAction();
+	UpdateActionWithPath();
 	MotionMan.ProcessAction();
 
 	//if (IsMovingOnPath()) UpdateVelocities(STravelParams(m_fCurSpeed,m_body.speed));
 
-	SetVelocity();
+	UpdateVelocityWithPath();
 
 #pragma todo("Dima to Jim : This method will be automatically removed after 22.12.2003 00:00")
 	set_desirable_speed		(m_fCurSpeed);

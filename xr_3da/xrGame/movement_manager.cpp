@@ -71,6 +71,9 @@ void CMovementManager::reload		(LPCSTR section)
 
 void CMovementManager::update_path()
 {
+	if (!enabled())
+		return;
+	
 	time_start				();
 	
 	if (!CGamePathManager::evaluator()) 		

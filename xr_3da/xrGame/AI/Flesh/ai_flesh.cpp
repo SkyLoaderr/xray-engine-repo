@@ -16,7 +16,6 @@ CAI_Flesh::CAI_Flesh()
 	stateExploreNDE		= xr_new<CBitingExploreNDE>	(this);
 	CurrentState		= stateRest;
 
-	stateTest			= xr_new<CBitingTest>		(this);
 	stateSearchEnemy	= xr_new<CBitingSearchEnemy>(this);
 
 	Init();
@@ -34,7 +33,6 @@ CAI_Flesh::~CAI_Flesh()
 	xr_delete(stateExploreDE);
 	xr_delete(stateExploreNDE);
 
-	xr_delete(stateTest);
 	xr_delete(stateSearchEnemy);
 }
 

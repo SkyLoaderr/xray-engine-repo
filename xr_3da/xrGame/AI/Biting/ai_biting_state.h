@@ -19,6 +19,7 @@ class CAI_Biting;
 #include "ai_biting_state_attack.h"
 #include "ai_biting_state_exploreNDE.h"
 #include "ai_biting_state_panic.h"
+#include "ai_biting_state_misc.h"
 
 ///////////////////////////////////////////////////////////////////////////////////////////////////////////
 // CBitingRest class
@@ -217,7 +218,6 @@ private:
 //////////////////////////////////////////////////////////////////////////
 class CBitingNull : public IState {
 public:
-	CBitingNull(CAI_Biting * /**p/**/) {}
 	void Run() {}
 };
 

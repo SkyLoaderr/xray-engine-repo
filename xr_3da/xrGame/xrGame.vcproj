@@ -854,6 +854,12 @@
 							RelativePath=".\ai\biting\ai_biting_state_hide.cpp">
 						</File>
 						<File
+							RelativePath=".\ai\biting\ai_biting_state_misc.cpp">
+						</File>
+						<File
+							RelativePath=".\ai\biting\ai_biting_state_misc.h">
+						</File>
+						<File
 							RelativePath=".\ai\biting\ai_biting_state_panic.cpp">
 						</File>
 						<File

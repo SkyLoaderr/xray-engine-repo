@@ -112,6 +112,7 @@ enum EPState {
 #define	ASP_STAND_SCARED		(1 << 5)
 #define ASP_THREATEN			(1 << 6)
 #define ASP_BACK_ATTACK			(1 << 7)
+#define ASP_ROTATION_JUMP		(1 << 8)
 
 
 DEFINE_VECTOR	(CMotionDef*, ANIM_VECTOR, ANIM_IT);
@@ -277,6 +278,7 @@ class CMotionManager : public CSharedClass<_motion_shared> {
 	TTime					fx_time_last_play;
 
 	bool					bad_motion_fixed;		// true, если монстр пытается двигаться, но стоит на месте
+	bool					b_forced_velocity;
 
 public:
 	
@@ -337,6 +339,7 @@ public:
 	void		Seq_Switch				();					// Перейти в следующее состояние, если такового не имеется - завершить
 	void		Seq_Finish				();
 	EMotionAnim	Seq_CurAnim				() {return ((seq_playing) ? *seq_it : eAnimStandIdle );}
+	bool		Seq_Active				() {return seq_playing;}
 
 
 	// работа с анимациями атак
@@ -384,8 +387,10 @@ public:
 
 	// Вызов PrepareAnimation() и установка анимации
 	void		ForceAnimSelect			();
-
-
+	
+	void		ForceAngularSpeed		(float vel);
+	float		GetAnimTime				(EMotionAnim anim, u32 index);
+	
 };
 
 

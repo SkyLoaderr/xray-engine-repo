@@ -28,11 +28,10 @@ public:
 
 	virtual void	OnJumpStop			();
 	virtual bool	CanJump				() {return true;}
+	virtual bool	CanExecRotationJump	() {return false;}
 
 private:
 	static	void __stdcall	BoneCallback			(CBoneInstance *B);
-	
-	CBitingNull		*stateTest;
 	
 			void	BonesInMotion		();
 };

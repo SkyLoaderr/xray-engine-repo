@@ -101,7 +101,6 @@ public:
 	friend	class 			CBitingSquadTask;
 	friend	class			CBitingRest;
 
-
 							CAI_Biting						();
 	virtual					~CAI_Biting						();
 	virtual	BOOL			renderable_ShadowReceive		()	{ return TRUE;	}  
@@ -138,12 +137,13 @@ public:
 
 	// ---------------------------------------------------------------------------------
 	
-	virtual void			ProcessTurn						() {};
+	virtual void			ProcessTurn						() {}
 	virtual bool			AA_CheckHit						();
 	// установка специфических анимаций 
 	virtual	void			CheckSpecParams					(u32 /**spec_params/**/) {}
 	virtual void			LookPosition					(Fvector to_point, float angular_speed = PI_DIV_3);		// каждый монстр может по-разному реализвать эту функ (e.g. кровосос с поворотом головы и т.п.)
 
+	virtual bool			CanExecRotationJump				() {return false;}
 
 	// ---------------------------------------------------------------------------------
 
@@ -184,8 +184,8 @@ public:
 			void			GetStepSound					(EMotionAnim a, float &vol, float &freq);
 	
 			void			SetupVelocityMasks				(bool force_real_speed);
-			void			SetVelocity						();
-
+			void			UpdateVelocityWithPath			();
+			void			UpdateActionWithPath			();
 	
 // members
 public:
@@ -237,6 +237,7 @@ public:
 	CBitingExploreNDE		*stateExploreNDE;
 	CBitingSquadTask		*stateSquadTask;
 	CBitingTest				*stateTest;
+	CBitingNull				*stateNull;
 
 	bool					A,B,C,D,E,F,G,H,I,J,K,L,M;
 	IState					*CurrentState;
@@ -260,7 +261,7 @@ public:
 
 	void FaceTarget				(const CEntity *entity);
 	void FaceTarget				(const Fvector &position);
-	void			PreprocessAction				();
+	
 
 	bool			IsObstacle						(TTime time);
 	bool			IsStanding						(TTime time);		// проверить, стоит ли монстр на протяжении времени time

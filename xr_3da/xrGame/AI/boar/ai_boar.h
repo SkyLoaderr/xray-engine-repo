@@ -13,12 +13,9 @@ public:
 
 			void	Init				();
 	virtual void	StateSelector		();
-	virtual void	CheckSpecParams		(u32 spec_params);
-
-	virtual void	ProcessTurn			();
 
 	virtual	void	LookPosition		(Fvector to_point, float angular_speed = PI_DIV_3);
 
-	CBitingNull		*stateTest;
-
+	virtual bool	CanExecRotationJump	() {return true;}
+	virtual void	CheckSpecParams		(u32 spec_params);
 };

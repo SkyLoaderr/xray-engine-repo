@@ -11,7 +11,8 @@ class CBitingAttack : public IState {
 		ACTION_FIND_ENEMY,
 		ACTION_STEAL,
 		ACTION_THREATEN,
-		ACTION_ENEMY_POSITION_APPROACH
+		ACTION_ENEMY_POSITION_APPROACH,
+		ACTION_ROTATION_JUMP
 	} m_tAction,m_tPrevAction;
 
 	VisionElem		m_tEnemy;
@@ -41,6 +42,8 @@ class CBitingAttack : public IState {
 
 	CJumping		*pJumping;
 
+	TTime			next_rot_jump_enabled;
+
 public:	
 					CBitingAttack		(CAI_Biting *p, bool bVisibility);
 
@@ -60,4 +63,5 @@ public:
 			void	UpdateInitFlags		(); 
 			void	UpdateFrameFlags	(); 
 
+			bool	CheckRotationJump	();
 };

@@ -20,18 +20,11 @@ void CAI_Biting::Think()
 
 	vfUpdateParameters						();
 
-//	LOG_EX("---------------------------------------------------------");
-//	LOG_EX2("-- Next Frame :: Time = [%u]", *"*/ Level().timeServer() /*"*);
-//	LOG_EX2("-- Current Node [%u], Current Pos = [%f,%f,%f]", *"*/ level_vertex_id(), VPUSH(Position()) /*"*);
-//	LOG_EX2("-- Target Node [%u] Target Pos = [%f,%f,%f]", *"*/ dynamic_cast<CAI_ObjectLocation *>(Level().CurrentEntity())->level_vertex_id(), VPUSH(Level().CurrentEntity()->Position()) /*"*);
-//	LOG_EX("---------------------------------------------------------");
-
 	if (m_PhysicMovementControl.JumpState()) enable_movement(false);
 
-	// pre-update path parameters
 	CMonsterMovement::Frame_Init();
 
-	// fix off-line displacement
+	// fix off-line displa`cement
 	if ((flagsEnemy & FLAG_ENEMY_GO_OFFLINE) == FLAG_ENEMY_GO_OFFLINE) {
 		CurrentState->Reset					();
 		SetState							(stateRest);
@@ -44,20 +37,26 @@ void CAI_Biting::Think()
 		pSquad->UpdateDecentralized();
 	} 
 
-	StateSelector							();
-	CurrentState->Execute					(m_current_update);
-	
-// Test /////
-//	MotionMan.m_tAction						= ACT_RUN;
-//	CMonsterMovement::MoveToTarget(Level().CurrentEntity()->Position());
-/////////////
+	if (MotionMan.Seq_Active()) disable_path();
+	else {
+		// Выбор текущего состояния
+		StateSelector						();
+		CurrentState->Execute				(m_current_update);
+	}
 
+	// построить путь
 	CMonsterMovement::Frame_Update			();
 
-	PreprocessAction						();
+	// в зависимости от маршрута установить action
+	UpdateActionWithPath					();
+
+	// Обработать action
 	MotionMan.ProcessAction					();
 
-	SetVelocity								();
+	// Выбрать скорости в соответствии с параметрами, записанными в маршруте
+	UpdateVelocityWithPath					();
+	
+	// установить текущую скорость
 	CMonsterMovement::Frame_Finalize		();
 
 	// Debuging
@@ -69,7 +68,7 @@ void CAI_Biting::Think()
 
 
 // В зависимости от маршрута - изменить Action
-void CAI_Biting::PreprocessAction()
+void CAI_Biting::UpdateActionWithPath()
 {
 	if (IsMovingOnPath()) {
 		u32 cur_point_velocity_index = CDetailPathManager::path()[curr_travel_point_index()].velocity;
@@ -102,7 +101,7 @@ void CAI_Biting::PreprocessAction()
 }
 
 // Установить линейную и угловую скорости в соответствии с построенным путем
-void CAI_Biting::SetVelocity()
+void CAI_Biting::UpdateVelocityWithPath()
 {
 	if (IsMovingOnPath()) {
 		u32 cur_point_velocity_index = CDetailPathManager::path()[curr_travel_point_index()].velocity;

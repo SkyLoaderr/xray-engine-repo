@@ -1,6 +1,6 @@
 #include "stdafx.h"
 #include "ai_dog.h"
-
+#include "../ai_monster_utils.h"
 
 CAI_Dog::CAI_Dog()
 {
@@ -14,8 +14,6 @@ CAI_Dog::CAI_Dog()
 	stateExploreDNE		= xr_new<CBitingExploreDNE>	(this, false);
 	
 	CurrentState		= stateRest;
-
-	stateTest			= xr_new<CBitingNull>		(this);
 
 	Init();
 	
@@ -32,7 +30,6 @@ CAI_Dog::~CAI_Dog()
 	xr_delete(stateExploreNDE);
 	xr_delete(stateExploreDNE);
 
-	xr_delete(stateTest);
 }
 
 
@@ -91,6 +88,9 @@ void CAI_Dog::Load(LPCSTR section)
 	MotionMan.AddAnim(eAnimSitStandUp,		"sit_stand_up_",		-1, 0,									0,										PS_SIT);
 	MotionMan.AddAnim(eAnimLieToSleep,		"lie_to_sleep_",		-1,	0,									0,										PS_LIE);
 	MotionMan.AddAnim(eAnimSleepStandUp,	"lie_to_stand_up_",		-1, 0,									0,										PS_LIE);
+
+	MotionMan.AddAnim(eAnimJumpLeft,		"stand_jump_left_",		-1, 0,									inherited::_sd->m_fsRunAngular,			PS_STAND);
+	MotionMan.AddAnim(eAnimJumpRight,		"stand_jump_right_",	-1, 0,									inherited::_sd->m_fsRunAngular,			PS_STAND);
 
 
 	// define transitions
@@ -187,6 +187,36 @@ void CAI_Dog::CheckSpecParams(u32 spec_params)
 	if ((spec_params & ASP_THREATEN) == ASP_THREATEN) {
 		MotionMan.SetCurAnim(eAnimThreaten);
 	}
+
+	if ((spec_params & ASP_ROTATION_JUMP) == ASP_ROTATION_JUMP) {
+		float yaw, pitch;
+		Fvector().sub(m_tEnemy.obj->Position(), Position()).getHP(yaw,pitch);
+		yaw *= -1;
+
+		EMotionAnim anim = eAnimJumpLeft;
+		yaw = angle_normalize(yaw - PI / 20);
+
+		if (from_right(yaw,m_body.current.yaw)) {
+			anim = eAnimJumpRight;
+			yaw = angle_normalize(yaw + PI / 20);	
+		} 
+
+		MotionMan.Seq_Add(anim);
+		MotionMan.Seq_Switch();
+
+		
+		CMovementManager::m_body.target.yaw = yaw;
+
+		// calculate angular speed
+		float new_angular_velocity = 4.0f;
+		float delta_yaw = angle_difference(yaw,m_body.current.yaw);
+		float time = MotionMan.GetAnimTime(anim, 0);
+		//new_angular_velocity = 2.5f * delta_yaw / time; 
+
+		MotionMan.ForceAngularSpeed(new_angular_velocity);
+
+	}
+
 }
 
 void CAI_Dog::OnSoundPlay()

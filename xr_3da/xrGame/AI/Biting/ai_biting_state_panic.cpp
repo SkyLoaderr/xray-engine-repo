@@ -58,7 +58,6 @@ void CBitingPanic::Run()
 			LOG_EX("PANIC:: Face Back scared!");
 			pMonster->MotionMan.SetSpecParams(ASP_STAND_SCARED);
 			pMonster->MotionMan.m_tAction	= ACT_STAND_IDLE;
-			pMonster->enable_movement		(false);
 
 			// если враг виден
 			if (m_tEnemy.time + 1000 > m_dwCurrentTime) m_tAction = ACTION_RUN;

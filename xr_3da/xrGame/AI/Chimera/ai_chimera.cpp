@@ -12,8 +12,6 @@ CAI_Chimera::CAI_Chimera()
 	stateExploreNDE		= xr_new<CBitingExploreNDE>	(this);
 	CurrentState		= stateRest;
 
-	stateTest			= xr_new<CBitingNull>		(this);
-
 	Init();
 }
 
@@ -27,7 +25,6 @@ CAI_Chimera::~CAI_Chimera()
 	xr_delete(stateHide);
 	xr_delete(stateDetour);
 
-	xr_delete(stateTest);
 }
 
 

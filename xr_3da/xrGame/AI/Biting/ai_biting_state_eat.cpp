@@ -136,7 +136,6 @@ void CBitingEat::Run()
 	case ACTION_EAT:
 
 		pMonster->MotionMan.m_tAction	= ACT_EAT;
-		pMonster->enable_movement		(false);
 
 		bEating = true;
 		if (pMonster->GetSatiety() >= 0.9f) bHideAfterLunch = true;
@@ -186,8 +185,6 @@ void CBitingEat::Run()
 						  }
 		break;
 	case ACTION_LITTLE_REST:
-		pMonster->enable_movement	(false);
-
 		pMonster->MotionMan.m_tAction = ACT_REST; 
 		
 		if (m_dwTimeStartRest + REST_AFTER_LUNCH_TIME < m_dwCurrentTime) {

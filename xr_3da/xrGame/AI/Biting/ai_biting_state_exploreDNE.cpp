@@ -86,7 +86,6 @@ void CBitingExploreDNE::Run()
 		pMonster->MotionMan.m_tAction = ACT_STAND_IDLE;
 
 		DO_ONCE_BEGIN(flag_once_1);
-			pMonster->enable_movement(false);
 			pMonster->LookPosition(SavedPosition);
 		DO_ONCE_END();
 

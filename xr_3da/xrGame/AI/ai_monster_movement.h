@@ -13,6 +13,7 @@ class CMonsterMovement : virtual public CMovementManager {
 
 	CAI_Biting			*pMonster;
 	bool				b_try_min_time;
+	bool				b_enable_movement;
 
 	TTime				time_last_approach;
 
@@ -43,6 +44,8 @@ public:
 	// -------------------------------------------------------------------
 
 	IC	void	set_try_min_time	(bool new_val) {b_try_min_time = new_val;}
+	IC	void	disable_path		() {b_enable_movement = false;}
+	IC	void	enable_path			() {b_enable_movement = true;}
 
 	// -------------------------------------------------------------------
 

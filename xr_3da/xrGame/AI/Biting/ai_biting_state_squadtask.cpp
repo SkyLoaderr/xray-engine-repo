@@ -80,7 +80,6 @@ void CBitingSquadTask::Run()
 			pMonster->CMovementManager::set_path_type (CMovementManager::ePathTypeLevelPath);
 
 		} else {
-			pMonster->CMovementManager::enable_movement(false);
 			pMonster->MotionMan.m_tAction = ACT_STAND_IDLE;
 			pMonster->LookPosition(pos);
 		}
@@ -92,7 +91,6 @@ void CBitingSquadTask::Run()
 
 	case SC_FEEL_DANGER:
 		
-		pMonster->CMovementManager::enable_movement(false);
 		pMonster->MotionMan.m_tAction = ACT_STAND_IDLE;
 		pMonster->MotionMan.SetSpecParams(ASP_STAND_SCARED);
 
@@ -138,7 +136,6 @@ void CBitingSquadTask::Run()
 			pMonster->MotionMan.m_tAction = ACT_WALK_FWD;
 
 		} else {
-			pMonster->enable_movement(false);
 			pMonster->MotionMan.m_tAction = ACT_LOOK_AROUND;
 		}
 		
