@@ -76,7 +76,7 @@ function fract:calculate() -- просчет лагеря
 	end
 end
 function fract:print()
-	printf("---------------------- %s ----------------------", self.name)
+	printf("---------------------- %s ---------------------- State: %d", self.name, self.state)
 	printf("Resources:")
 	for k,v in self.Object do
 		printf("id: %d name: %s", k, v:name())
@@ -150,6 +150,14 @@ function fract:loadJob(name) -- загружает список заданий
 			leader_name = nil,
 			escape_path = "blockpost_escape_0" }
 		table.insert(self.Job, t)			
+		t = { name = "follower",
+			object = nil,
+			begin = nil, 
+			idle = 600000,	-- раз в какое время запускается работа
+			prior = 7,
+			state = { 0, 1 }, -- в каких состояниях это задание существует
+			leader_name = nil,
+			escape_path = "blockpost_escape_0" }
 		table.insert(self.Job, t)			
 		t = { name = "sleeper",
 			object = nil,
@@ -216,10 +224,6 @@ function fract:setJob(npc) -- выбирает для данного npc наиболее приоритетное зад
 		end
 		-- проверка что данное задание не занято
 		if v.object ~= nil then ena = false end
-		-- проверка что пришло время.
-		if v.begin ~= nil then
-			printf("Time checking %s %s, %d %d %d", npc:name(), v.name, device():time_global(), v.begin, device():time_global()-v.begin)
-		end
 
 		if v.begin ~= nil and device():time_global() - v.begin < v.idle then
 			ena = false
@@ -323,9 +327,15 @@ function fract:setState(id)
 		if v.id == id then	
 			self.stateBegin = device():time_global()	
 			self.state = id
-			return
+			self:print()
+			return true
 		end
 	end
+	self:print()
+	return false
+end
+function fract:getState()
+	return	self.state
 end
 function fract:stalkerExsist(npc)
 	-- существует ли сталкер
@@ -335,7 +345,84 @@ function fract:stalkerExsist(npc)
 	return false
 end
 
+----------------------------------------------------------------------------------------------------------------------
+-- Evaluators
+----------------------------------------------------------------------------------------------------------------------
+class "evaluator_alarm" (property_evaluator)
+function evaluator_alarm:__init() super()
+end
+function evaluator_alarm:evaluate()
+	local f = xr_gulag.isUnderFraction(self.object)
+	if f ~= nil then
+		local s = xr_gulag.getFractionState(f)
+		if s == 1 then
+			return true
+		else 
+			return false
+		end
+	else
+		return true
+	end
+end
+----------------------------------------------------------------------------------------------------------------------
+-- Actions
+----------------------------------------------------------------------------------------------------------------------
+-- Инициализация торговли
+class "action_alarm" (action_base)
+function action_alarm:__init (npc_name,action_name) super (nil, action_name)
+end
+function action_alarm:initialize()
+	action_base.initialize(self)
+	self.object:set_node_evaluator()
+	self.object:set_path_evaluator()
+	self.object:set_desired_position()
+	self.object:set_desired_direction()    
 
+	local f = xr_gulag.isUnderFraction(self.object)
+	if f ~= nil then
+		xr_gulag.setFractionState(f, 1)
+	end
+end
+function action_alarm:execute ()
+	action_base.execute (self)
+end
+function action_alarm:finalize ()
+	action_base.finalize (self)
+end
+----------------------------------------------------------------------------------------------------------------------
+-- BLOCKPOST BINDER
+----------------------------------------------------------------------------------------------------------------------
+function add_to_binder(object)
+	local operators		= {}
+	local properties	= {}
+
+	local manager = object:motivation_action_manager()
+
+	properties["alarm"]		= xr_evaluators_id.stohe_gulag_base + 0
+	properties["state_end"]		= xr_evaluators_id.state_change
+	properties["stand"]		= xr_evaluators_id.stohe_state_base + 1
+
+	operators["alarm"]		= xr_actions_id.stohe_gulag_base + 0
+
+	-- Evaluators
+	manager:add_evaluator (properties["alarm"], 		this.evaluator_alarm		())
+
+	-- Actions
+	local action = this.action_alarm (object:name(),"action_alarm")
+	action:add_precondition		(world_property(stalker_ids.property_alive, 	true))
+	action:add_precondition		(world_property(properties["alarm"], 		false))
+	action:add_precondition		(world_property(properties["stand"],		true))
+	action:add_precondition		(world_property(properties["state_end"],	true))
+	action:add_effect 		(world_property(properties["alarm"], 		true))
+	manager:add_action (operators["alarm"], action)
+
+
+	action = manager:action (stalker_ids.action_combat_planner)	
+	action:add_precondition		(world_property(properties["alarm"],		true))
+end
+----------------------------------------------------------------------------------------------------------------------
+-- Function
+----------------------------------------------------------------------------------------------------------------------
 function addMember(name, npc)
 	if xr_gulag.fraction[name] == nil then
 		xr_gulag.fraction[name] = xr_gulag.fract(name)
@@ -347,6 +434,9 @@ end
 function setFractionState(name, id)
 	xr_gulag.fraction[name]:setState(id)
 end
+function getFractionState(name)
+	return xr_gulag.fraction[name]:getState()
+end
 function isUnderFraction(npc)
 	for k,v in xr_gulag.fraction do
 		if v:stalkerExsist(npc) == true then
@@ -356,7 +446,6 @@ function isUnderFraction(npc)
 	return nil
 end             
 function resetJob(fraction, npc)
-	printf("CALLED resetJob: %s, %s", fraction, npc:name())
 	xr_gulag.fraction[fraction]:clearAllJob(npc)
 	xr_gulag.fraction[fraction]:setJob(npc)
 end         
