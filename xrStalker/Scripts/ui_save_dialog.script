@@ -199,6 +199,7 @@ end
 
 
 -- We need to customize behavior of ListBox
+--[[
 class "CUISatanListBox" (CUIListBox)
 
 function CUISatanListBox:__init() super()
@@ -209,3 +210,4 @@ function CUISatanListBox:__finalize()
 
 end
 
+]]
