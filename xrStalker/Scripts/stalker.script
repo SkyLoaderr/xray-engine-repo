@@ -23,7 +23,7 @@ function init    (obj)
        return
     elseif name == "report" then
        xr_report.add_to_binder (obj)
-       return    
+       return
     elseif name == "tradeseller" or name == "kamp" or name == "commander" or name == "scout" then
        xr_motivator.AddToMotivator(obj)
        return
@@ -43,7 +43,7 @@ function init    (obj)
     elseif name == "swat" then
        xr_swat.AddSwat  (obj)
 	elseif name == "trivial" then
-       if( command == "novice" ) then
+       if( command == "novice" or command == "novice2" ) then
 	   	   xr_motivator.AddToMotivator( obj )
        else
            xr_trivial.bind_object( obj, command )

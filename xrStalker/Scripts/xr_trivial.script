@@ -464,31 +464,9 @@ end
 function add_novice2(obj)
     local operators     = {}
     local properties    = {}
-    local st            = {
-                            path     = nil,         --Путь, по которому ходить
-                            curState = 1,
-                            time     = 0,
-                            stand    = false,
-                            enabled  = true
-                          }
-    --Чтение данных из кастом даты
-    local char_ini = obj:spawn_ini()
-    if( char_ini:section_exist ("novice2") == true ) then
-        if( char_ini:line_exist("novice2", "path") == true ) then
-            st.path = char_ini:r_string("novice2", "path")
-        else
-            printf( "________Error.    Section novice2/path not found" )
-        end
-    else
-        printf( "________Error.    Section novice2 not found" )
-    end
-
-    xr_motivator.storage[obj:id()]         = { novice2 = {} }
-    xr_motivator.storage[obj:id()].novice2 = st
 
     printf( "binding stalker novice2" )
 
---    obj:add_sound ( "Scripts\\Patrol\\Commander1_", 20, snd_type.talk, 2, 1, stand_speak )
     obj:add_sound ( "script_replics\\stalker_1\\newbie\\newbie_phrase_artifact_", 20, snd_type.talk, 2, 1, walk_speak )
 
     properties[ "novice2_alife" ]      = xr_evaluators_id.jon_stalker_novice2
