@@ -57,6 +57,10 @@ public:
 	adopt_sampler			_sampler		(LPCSTR _name)							{	u32 s = C->r_Sampler(_name,0); return adopt_sampler(C,s);	}
 };
 
+class	adopt_blend
+{
+public:
+};
 
 void LuaLog(LPCSTR caMessage)
 {
@@ -115,7 +119,24 @@ void	CResourceManager::LS_Load			()
 			.def("zb",							&adopt_compiler::_ZB			)
 			.def("blend",						&adopt_compiler::_blend			)
 			.def("aref",						&adopt_compiler::_aref			)
-			.def("sampler",						&adopt_compiler::_sampler		)
+			.def("sampler",						&adopt_compiler::_sampler		),
+
+		class_<adopt_blend>("blend")
+			.enum_("blend")
+			[
+				value("zero",					int(D3DBLEND_ZERO)),
+				value("one",					int(D3DBLEND_ONE)),
+				value("srccolor",				int(D3DBLEND_SRCCOLOR)),
+				value("invsrccolor",			int(D3DBLEND_INVSRCCOLOR)),
+				value("srcalpha",				int(D3DBLEND_SRCALPHA)),
+				value("invsrcalpha",			int(D3DBLEND_INVSRCALPHA)),
+				value("destalpha",				int(D3DBLEND_DESTALPHA)),
+				value("invdestalpha",			int(D3DBLEND_INVDESTALPHA)),
+				value("destcolor",				int(D3DBLEND_DESTCOLOR)),
+				value("invdestcolor",			int(D3DBLEND_INVDESTCOLOR)),
+				value("srcalphasat",			int(D3DBLEND_SRCALPHASAT)),
+				value("bothinvsrcalpha",		int(D3DBLEND_BOTHINVSRCALPHA))
+			]
 	];
 
 	// load shaders
