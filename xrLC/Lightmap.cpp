@@ -33,9 +33,10 @@ VOID CLightmap::Capture		(CDeflector *D, int b_u, int b_v, int s_u, int s_v, BOO
 	if (0==lm.pSurface)	{
 		DWORD	size	= 512*512*sizeof(u32);
 		lm.pSurface		= LPDWORD(malloc(size));
-		ZeroMemory		(lm.pSurface,size);
 		lm.dwWidth		= 512;
 		lm.dwHeight		= 512;
+		lm.bHasAlpha	= FALSE;
+		ZeroMemory		(lm.pSurface,size);
 	}
 	
 	// Addressing
