@@ -75,7 +75,7 @@
 		<!-- Rank caption -->
 		<phrase x="0" y="0" font="letterica16" r="128" g="128" b="128" a="255">Rank:</phrase>
 		<!-- Relation caption -->
-		<phrase x="0" y="90" font="letterica16" r="128" g="128" b="128" a="255">Rank:</phrase>
+		<phrase x="0" y="90" font="letterica16" r="128" g="128" b="128" a="255">Relation:</phrase>
 	</charinfo_mt_static>
 
 </window>
