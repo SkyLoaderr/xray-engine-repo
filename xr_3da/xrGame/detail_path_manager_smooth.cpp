@@ -823,7 +823,7 @@ void CDetailPathManager::build_smooth_path		(
 		start_pos.y						= ai().level_graph().vertex_plane_y(start.vertex_id,start_pos.x,start_pos.z);
 		bool							alvi = m_restricted_object->accessible(start.vertex_id);
 		bool							asp = m_restricted_object->accessible(start_pos);
-		VERIFY							((alvi && asp) || !asp);
+		VERIFY							((alvi && asp) || (!asp && !alvi));
 		m_restricted_object->add_border	(start.vertex_id,dest.vertex_id);
 	}
 
