@@ -25,16 +25,16 @@ private:
 	};
 	struct ModelDef
 	{
-		string128			name;
+		ref_str				name;
 		IRender_Visual*		model;
         u32					refs;
-        ModelDef(){name[0]=0;refs=0;model=0;}
+        ModelDef()			{ refs=0;model=0; }
 	};
 
 	typedef xr_multimap<LPCSTR,IRender_Visual*,str_pred>	POOL;
-	typedef POOL::iterator							POOL_IT;
-	typedef xr_map<IRender_Visual*,LPCSTR>			REGISTRY;
-	typedef REGISTRY::iterator						REGISTRY_IT;
+	typedef POOL::iterator									POOL_IT;
+	typedef xr_map<IRender_Visual*,LPCSTR>					REGISTRY;
+	typedef REGISTRY::iterator								REGISTRY_IT;
 private:
 	xr_vector<ModelDef>		Models;				// Reference / Base
 	REGISTRY				Registry;			// Just pairing of pointer / Name
