@@ -83,6 +83,58 @@ void CAI_Biting::Panic()
 	vfSetParameters				(ePathTypeStraight,&m_tSelectorFreeHunting,0,true,0);
 }
 
+void CAI_Biting::Scared()
+{
+	WRITE_TO_LOG("----------");
+	WRITE_TO_LOG("Scared....");
+
+	if (m_bStateChanged) {
+		m_tActionState = eActionStateWatch;
+		m_dwActionStartTime = m_dwCurrentUpdate + 10000; // ::Random.randI(10000);
+
+		Fvector ptr = vPosition;
+		ptr.sub(m_tSavedEnemy->Position());
+		ptr.normalize();
+		ptr.mul(3.f);
+		ptr.add(vPosition);
+		m_EnemyPos = ptr;
+
+//		float y,h;
+//		ptr.getHP(y,h);
+//	
+//		Fvector newptr;
+//		newptr.set(1.f,1.f,1.f); // newptr = ptr; newptr.normalize(); newptr.mul(3.f);
+//		newptr.setHP(y,h);
+//		newptr.mul(3.f);
+//		ptr.add(newptr);
+	}
+
+	if (m_dwActionStartTime < m_dwCurrentUpdate) {
+		m_tActionState = eActionStateDontWatch;
+	}
+
+	m_dwInertion				= 60000;
+
+	switch (m_tActionState) {
+		case eActionStateWatch :		// пятиться
+			// построить путь в обратную от врага сторону
+			
+			vfSetMotionActionParams(eBodyStateStand, eMovementTypeWalk, eMovementDirectionForward, 
+				eStateTypeDanger,eActionTypeWalk);
+			
+			vfSetParameters	 (ePathTypeStraight,0,&m_EnemyPos,true,0,true);
+			
+
+			break;
+		case eActionStateDontWatch :	// убегать
+
+			break;
+	}
+}
+
+
+
+
 void CAI_Biting::BackCover(bool bFire)
 {
 	WRITE_TO_LOG("Back Cover");
@@ -564,13 +616,6 @@ void CAI_Biting::Think()
 
 
 
-
-
-
-
-
-
-
 	m_dwLastUpdateTime		= m_dwCurrentUpdate;
 	m_dwCurrentUpdate		= Level().timeServer();
 
@@ -613,7 +658,7 @@ void CAI_Biting::Think()
 	} else 				   
 
 	if (C && H && I) {
-		Panic			();
+		Scared	();
 	} else
 	if (C && H && !I) {
 		Panic();

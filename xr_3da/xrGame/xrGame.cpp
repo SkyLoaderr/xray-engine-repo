@@ -721,7 +721,7 @@ BOOL APIENTRY DllMain( HANDLE hModule,
 #include "weapongroza.h"
 #include "weaponmagazinedwgrenade.h"
 #include "bolt.h"
-#include "knife.h"
+#include "weaponknife.h"
 #include "torch.h"
 #include "f1.h"
 #include "rgd5.h"

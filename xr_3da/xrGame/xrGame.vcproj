@@ -527,16 +527,16 @@
 						<File
 							RelativePath="AI\Biting\ai_biting_space.h">
 						</File>
-					</Filter>
-					<Filter
-						Name="ai_crow"
-						Filter="">
-						<File
-							RelativePath=".\AI\Crow\ai_crow.cpp">
-						</File>
-						<File
-							RelativePath=".\AI\Crow\ai_crow.h">
-						</File>
+						<Filter
+							Name="ai_crow"
+							Filter="">
+							<File
+								RelativePath=".\AI\Crow\ai_crow.cpp">
+							</File>
+							<File
+								RelativePath=".\AI\Crow\ai_crow.h">
+							</File>
+						</Filter>
 					</Filter>
 					<Filter
 						Name="ai_idol"
@@ -1228,10 +1228,10 @@
 							Name="Knife"
 							Filter="">
 							<File
-								RelativePath=".\Knife.cpp">
+								RelativePath=".\WeaponKnife.cpp">
 							</File>
 							<File
-								RelativePath=".\Knife.h">
+								RelativePath=".\WeaponKnife.h">
 							</File>
 						</Filter>
 					</Filter>

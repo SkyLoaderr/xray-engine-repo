@@ -168,6 +168,9 @@ private:
 			void			ExploreNDE						();
 			void			ExploreNDNE						();
 			void			AccomplishTask					(IBaseAI_NodeEvaluator *tpNodeEvaluator = 0);
+			void			Scared							();
+
+
 
 			// Eat corpse
 			void			SelectCorp						(SEnemySelected& S);
@@ -349,7 +352,9 @@ private:
 	u32						m_AttackInterval;
 	Fvector					m_AttackLastPosition;		// последняя позиция врага во время аттаки
 
-
+	
+	//////////////////////////////////////////////////////////////////////////
+	Fvector					m_EnemyPos;
 	//////////////////////////////////////////////////////////////////////////
 	
 	void vfChoosePointAndBuildPathAtOnce(IBaseAI_NodeEvaluator *tpNodeEvaluator, Fvector *tpDestinationPosition, bool bSearchForNode, bool bSelectorPath = false);
