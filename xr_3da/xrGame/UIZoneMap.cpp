@@ -84,10 +84,20 @@ void CUIZoneMap::Init()
 
 
 	ref_str map_texture;
-	if(Level().pLevel->line_exist("level_map","texture"))
-        map_texture = Level().pLevel->r_string("level_map","texture");
+	if (Game().type == GAME_ARTEFACTHUNT)
+	{
+		if(Level().pLevel->line_exist("level_map","texture_ahunt"))
+			map_texture = Level().pLevel->r_string("level_map","texture_ahunt");
+		else
+			map_texture = "ui\\ui_minimap_level3";
+	}
 	else
-		map_texture = "ui\\ui_minimap_level3";
+	{
+		if(Level().pLevel->line_exist("level_map","texture"))
+			map_texture = Level().pLevel->r_string("level_map","texture");
+		else
+			map_texture = "ui\\ui_minimap_level3";
+	};
 
 	landscape.Init(*map_texture,	"hud\\default",
 					map_center.x - map_radius + 1,
