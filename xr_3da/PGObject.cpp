@@ -68,9 +68,9 @@ void CPGObject::play_at_pos(const Fvector& pos)
 	V->Play			();
 }
 
-void CPGObject::shedule_Update(u32 dt)
+void CPGObject::shedule_Update	(u32 dt)
 {
-	inherited::shedule_Update(dt);
+	inherited::shedule_Update	(dt);
 
 	// visual
 	PS::CParticleEffect* V	= dynamic_cast<PS::CParticleEffect*>(renderable.visual); R_ASSERT(V);
