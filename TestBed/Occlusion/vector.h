@@ -165,7 +165,7 @@ IC float		angle_normalize(float a)
 	if (frac<0)	frac +=	1.f;
 	return		frac *	PI_MUL_2;
 }
-float			angle_normalize_signed(float a)
+IC float		angle_normalize_signed(float a)
 {
 	float angle = angle_normalize(a);
 	if (angle>PI) angle-=PI_MUL_2;
