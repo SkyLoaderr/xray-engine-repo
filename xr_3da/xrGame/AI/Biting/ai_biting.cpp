@@ -159,3 +159,7 @@ void CAI_Biting::net_Import(NET_Packet& P)
 void CAI_Biting::HitSignal(float amount, Fvector &vLocalDir, CObject *who, s16 element)
 {
 }
+
+void CAI_Biting::Think()
+{
+}
