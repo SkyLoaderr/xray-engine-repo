@@ -150,21 +150,26 @@ void CWeaponMagazined::UpdateFP		(BOOL bHUDView)
 
 void CWeaponMagazined::FireStart		()
 {
-	if (!IsWorking() && IsValid())
-	{
-		if (st_current==eReload)			return;
-		if (st_current==eShowing)			return;
-		if (st_current==eHiding)			return;
-		if (!iAmmoElapsed && iAmmoCurrent)	
+	if (IsValid()){
+		if (!IsWorking())
 		{
-			CWeapon::FireStart	();
-			st_target			= eMagEmpty;
+			if (st_current==eReload)			return;
+			if (st_current==eShowing)			return;
+			if (st_current==eHiding)			return;
+			if (!iAmmoElapsed && iAmmoCurrent)	
+			{
+				CWeapon::FireStart	();
+				st_target			= eMagEmpty;
+			}
+			else							
+			{
+				CWeapon::FireStart	();
+				st_target			= eFire;
+			}
 		}
-		else							
-		{
-			CWeapon::FireStart	();
-			st_target			= eFire;
-		}
+	}else{
+		if (!iAmmoElapsed && !iAmmoCurrent)	
+			st_target = eMagEmpty;
 	}
 }
 
@@ -173,8 +178,8 @@ void CWeaponMagazined::FireEnd			()
 	if (IsWorking())
 	{
 		CWeapon::FireEnd	();
-		if (eMagEmpty == st_current)	TryReload	();
-		else							st_target	= eIdle;
+		if (iAmmoCurrent && !iAmmoElapsed)	TryReload	();
+		else								st_target	= eIdle;
 	}
 }
 
@@ -293,10 +298,9 @@ void CWeaponMagazined::state_MagEmpty(BOOL bHUDView, float dt)
 	UpdateFP	(bHUDView);
 	fTime		-=dt;
 	
-	while		(fTime<0)
-	{
-		fTime			+=  fTimeToEmptyClick;
-		OnEmptyClick	(bHUDView);
+	if (fTime<0){
+		OnEmptyClick(bHUDView);
+		st_target	= eIdle;
 	}
 }
 
