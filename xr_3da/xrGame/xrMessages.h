@@ -180,6 +180,7 @@ M_UPDATE
 	{
 		DWORD		timestamp;
 		u8			flags;				// wf_working, wf_visible=selected or independent,  
+		u8			state;
 
 		u16			a_current;
 		u16			a_elapsed;

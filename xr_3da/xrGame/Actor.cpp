@@ -310,7 +310,7 @@ void CActor::feel_touch_delete		(CObject* O)
 {
 }
 
-IC BOOL BE(BOOL A, BOOL B)
+IC BOOL BE	(BOOL A, BOOL B)
 {
 	bool a = !!A;
 	bool b = !!B;

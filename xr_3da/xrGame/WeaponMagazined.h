@@ -48,7 +48,6 @@ protected:
 		eShowing,
 		eHiding
 	};
-	EState			st_current, st_target;
 protected:
 	virtual void	FireShotmark	(const Fvector &vDir, const Fvector &vEnd, Collide::ray_query& R);
 	virtual void	OnMagazineEmpty	();

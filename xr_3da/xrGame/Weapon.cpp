@@ -338,6 +338,7 @@ void CWeapon::net_Export	(NET_Packet& P)
 
 	P.w_u32					(Level().timeServer());
 	P.w_u8					(flags);
+	P.w_u8					(st_current);
 
 	P.w_u16					(u16(iAmmoCurrent));
 	P.w_u16					(u16(iAmmoElapsed));
@@ -361,6 +362,7 @@ void CWeapon::net_Import	(NET_Packet& P)
 
 	P.r_u32					(N.dwTimeStamp);
 	P.r_u8					(N.flags);
+	P.r_u8					(N.state);
 
 	P.r_u16					(N.ammo_current);
 	P.r_u16					(N.ammo_elapsed);
@@ -376,13 +378,6 @@ void CWeapon::net_Import	(NET_Packet& P)
 	if (NET.empty() || (NET.back().dwTimeStamp<N.dwTimeStamp))	
 	{
 		NET.push_back			(N);
-
-		if (N.flags&M_UPDATE_WEAPON_wfWorking)
-		{
-			if (!IsWorking())	{ FireStart(); Log("! START"); }
-		} else {
-			if (IsWorking())	{ FireEnd(); Log("! END"); }
-		}
 	}
 }
 
@@ -398,6 +393,8 @@ void CWeapon::Update		(DWORD dT)
 	clamp					(fireDispersion_Current,0.f,1.f);
 	if (light_time>0)		light_time -= dt;
 
+	//
+
 	if (0==H_Parent()) 
 	{
 		setVisible				(true);
@@ -410,9 +407,66 @@ void CWeapon::Update		(DWORD dT)
 	inherited::Update		(dT);
 }
 
+void CWeapon::net_update::lerp(CWeapon::net_update& A, CWeapon::net_update& B, float f)
+{
+	float invf		= 1.f-f;
+	flags			= (f<0.5f)?A.flags:B.flags;
+	state			= (f<0.5f)?A.state:B.state;
+	ammo_current	= iFloor(invf*float(A.ammo_current)+f*float(B.ammo_current));
+	ammo_elapsed	= iFloor(invf*float(A.ammo_elapsed)+f*float(B.ammo_elapsed));
+	pos.lerp		(A.pos,B.pos,f);
+	angles.x		= u_lerp_angle	(A.angles.x,B.angles.x,	f);
+	angles.y		= u_lerp_angle	(A.angles.y,B.angles.y,	f);
+	angles.z		= u_lerp_angle	(A.angles.z,B.angles.z,	f);
+	fpos.lerp		(A.fpos,B.fpos,f);
+	fdir.lerp		(A.fdir,B.fdir,f);	fdir.normalize	();
+}
+
 void CWeapon::UpdateCL		()
 {
 	inherited::UpdateCL		();
+
+	if (Remote())
+	{
+		// distinguish interpolation/extrapolation
+		DWORD	dwTime		= Level().timeServer()-NET_Latency;
+		net_update&	N		= NET.back();
+		if ((dwTime > N.dwTimeStamp) || (NET.size()<2))
+		{
+			// BAD.	extrapolation
+			NET_Last		= N;
+		} else {
+			// OK.	interpolation
+
+			// Search 2 keyframes for interpolation
+			int select		= -1;
+			for (DWORD id=0; id<NET.size()-1; id++)
+			{
+				if ((NET[id].dwTimeStamp<=dwTime)&&(dwTime<=NET[id+1].dwTimeStamp))	select=id;
+			}
+			if (select>=0)		
+			{
+				// Interpolate state
+				net_update&	A		= NET[select+0];
+				net_update&	B		= NET[select+1];
+				DWORD	d1			= dwTime-A.dwTimeStamp;
+				DWORD	d2			= B.dwTimeStamp - A.dwTimeStamp;
+				float	factor		= (float(d1)/float(d2));
+				NET_Last.lerp		(A,B,factor);
+
+				// 
+				iAmmoCurrent		= NET_Last.ammo_current;
+				iAmmoElapsed		= NET_Last.ammo_elapsed;
+				if (NET_Last.flags&M_UPDATE_WEAPON_wfWorking)
+				{
+					if (!IsWorking())	{ FireStart(); Log("! START"); }
+				} else {
+					if (IsWorking())	{ FireEnd(); Log("! END"); }
+				}
+				st_target			= NET_Last.state;
+			}
+		}
+	}
 }
 
 void CWeapon::OnVisible		()
@@ -513,7 +567,7 @@ BOOL CWeapon::FireTrace		(const Fvector& P, const Fvector& Peff, Fvector& D)
 
 	// ...and trace line
 	H_Parent()->setEnabled	(false);
-	BOOL bResult			= pCreator->ObjectSpace.RayPick( P, dir, fireDistance, RQ );
+	BOOL bResult			= Level().ObjectSpace.RayPick( P, dir, fireDistance, RQ );
 	H_Parent()->setEnabled	(true);
 	D						= dir;
 
@@ -543,10 +597,13 @@ BOOL CWeapon::FireTrace		(const Fvector& P, const Fvector& Peff, Fvector& D)
 	Light_Start			();
 	
 	// Ammo
-	iAmmoElapsed	--;
-	if (iAmmoElapsed==0) 
+	if (Local()) 
 	{
-		OnMagazineEmpty	();
+		iAmmoElapsed	--;
+		if (iAmmoElapsed==0) 
+		{
+			OnMagazineEmpty	();
+		}
 	}
 	
 	return				bResult;

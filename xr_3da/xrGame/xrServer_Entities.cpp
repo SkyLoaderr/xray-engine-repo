@@ -77,6 +77,7 @@ class xrSE_Weapon : public xrServerEntity
 public:
 	u32						timestamp;
 	u8						flags;
+	u8						state;
 
 	u16						a_current;
 	u16						a_elapsed;
@@ -94,6 +95,7 @@ public:
 	{
 		P.r_u32				(timestamp);
 		P.r_u8				(flags);
+		P.r_u8				(state);
 
 		P.r_u16				(a_current);
 		P.r_u16				(a_elapsed);
@@ -110,6 +112,7 @@ public:
 	{
 		P.w_u32				(timestamp);
 		P.w_u8				(flags);
+		P.w_u8				(state);
 
 		P.w_u16				(a_current);
 		P.w_u16				(a_elapsed);

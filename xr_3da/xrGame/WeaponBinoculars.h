@@ -31,7 +31,7 @@ protected:
 		eShowing,
 		eHiding
 	};
-	EState			st_current, st_target;
+
 	virtual void	switch2_Idle	();
 	virtual void	switch2_Hiding	();
 	virtual void	switch2_Showing	();

@@ -97,6 +97,7 @@ protected:
 	{
 		u32					dwTimeStamp;
 		u8					flags;
+		u8					state;
 		u16					ammo_current;
 		u16					ammo_elapsed;
 		Fvector				pos,angles;
@@ -104,7 +105,7 @@ protected:
 		void	lerp		(net_update& A,net_update& B, float f);
 	};
 	deque<net_update>		NET;
-
+	net_update				NET_Last;
 protected:
 	void					Light_Start			();
 	void					Light_Render		(Fvector& P);
@@ -115,14 +116,18 @@ protected:
 
 	virtual void			UpdateFP			();
 	virtual void			UpdateXForm			();
-protected:					
+protected:
+
 	// Utilities
 	void					SoundCreate			(sound&		dest, LPCSTR name, int iType=0, BOOL bCtrlFreq=FALSE);
 	void					SoundDestroy		(sound&		dest);
 	void					ShaderCreate		(Shader*	&dest, LPCSTR S, LPCSTR T);
 	void					ShaderDestroy		(Shader*	&dest);
 public:
-	// Events
+
+	// Events/States
+	DWORD					st_current, st_target;
+
 	virtual void			OnMagazineEmpty		()			{};
 	virtual void			OnAnimationEnd		()			{};
 	virtual void			OnHide				()			{};
