@@ -17,7 +17,6 @@
 #include "ai/zombie/ai_zombie.h"
 #include "ai/idol/ai_idol.h"
 #include "ai/flesh/ai_flesh.h"
-#include "ai/chimera/ai_chimera.h"
 #include "ai/bloodsucker/ai_bloodsucker.h"
 #include "ai/dog/ai_dog.h"
 #include "ai/pseudodog/ai_pseudodog.h"
@@ -1083,7 +1082,6 @@ BOOL APIENTRY DllMain( HANDLE /**hModule/**/,
 #include "weaponusp45.h"
 #include "weapongroza.h"
 #include "weaponmagazinedwgrenade.h"
-#include "WeaponFakeGrenade.h"
 
 #include "scope.h"
 #include "silencer.h"
