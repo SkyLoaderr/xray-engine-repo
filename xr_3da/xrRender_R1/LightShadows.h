@@ -11,28 +11,28 @@
 
 class	CLightShadows			
 {
-	friend class pred_casters;
+	friend class			pred_casters;
 private:
 	//
 	typedef	R_dsgraph::_MatrixItem		NODE;		
-	struct	caster
-	{
+	struct	caster			{
 		IRenderable*		O;
 		Fvector				C;
 		float				D;
 		xr_vector<NODE>		nodes;
 	};
-	struct	shadow 
-	{
-		IRenderable*		O;
+	struct	shadow			{
+#ifdef	DEBUG
+		IRenderable*		dbg_O;
+		float				dbg_HAT;
+#endif
 		int					slot;
 		Fvector				C;
 		Fmatrix				M;
 		light*				L;
 		float				E;
 	};
-	struct	tess_tri
-	{
+	struct	tess_tri		{
 		Fvector				v[3];
 		Fvector				N;
 	};

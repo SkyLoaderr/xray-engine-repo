@@ -490,8 +490,10 @@ void CCustomMonster::Exec_Visibility	( )
 	Engine.Sheduler.Slice();
 }
 
-extern void dbg_draw_frustum (float FOV, float _FAR, float A, Fvector &P, Fvector &D, Fvector &U);
 #ifdef DEBUG
+
+extern void dbg_draw_frustum (float FOV, float _FAR, float A, Fvector &P, Fvector &D, Fvector &U);
+
 void CCustomMonster::OnRender()
 {
 	//if (!bDebug)					return;

@@ -26,8 +26,10 @@ public:
 	xr_vector<CObject*>					q_nearest;
 	clQueryCollision					q_result;
 
+#ifdef DEBUG
 	clQueryCollision					q_debug;
 	xr_vector<std::pair<Fsphere,u32> >	dbg_S;
+#endif
 
 	Collide::rq_results					r_results;
 public:

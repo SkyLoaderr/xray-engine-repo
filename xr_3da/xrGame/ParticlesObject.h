@@ -37,7 +37,9 @@ public:
 	bool				IsPlaying			();
 	void				SetAutoRemove		(bool auto_remove);
 
+#ifdef DEBUG
 	LPCSTR				dbg_ref_name		();
+#endif
 
 public:
 	static CParticlesObject*	Create		(LPCSTR p_name, IRender_Sector* S=0, BOOL bAutoRemove=TRUE)

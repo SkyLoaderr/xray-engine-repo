@@ -1,6 +1,8 @@
 #include "stdafx.h"
 #pragma hdrstop
 
+#ifdef DEBUG
+
 void CBackend::dbg_Draw			(D3DPRIMITIVETYPE T, FVF::L* pVerts, int vcnt, u16* pIdx, int pcnt)
 {
 	OnFrameEnd					();
@@ -144,3 +146,5 @@ void CBackend::dbg_DrawEllipse(Fmatrix& T, u32 C)
 	dbg_Draw(D3DPT_TRIANGLELIST,verts,vcnt,gFaces,224);
 	HW.pDevice->SetRenderState	(D3DRS_FILLMODE, D3DFILL_SOLID);
 }
+
+#endif

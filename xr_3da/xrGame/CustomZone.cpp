@@ -290,6 +290,7 @@ void CCustomZone::spatial_move()
 	ISpatial::spatial_move	();
 }
 
+#ifdef DEBUG
 void CCustomZone::OnRender() 
 {
 	if(!bDebug) return;
@@ -324,7 +325,7 @@ void CCustomZone::OnRender()
 		}
 	}
 }
-
+#endif
 
 void CCustomZone::Affect(CObject* O) 
 {

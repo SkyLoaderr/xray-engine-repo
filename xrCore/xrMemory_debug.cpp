@@ -1,6 +1,7 @@
 #include "StdAfx.h"
 #pragma hdrstop
 
+#ifdef DEBUG
 #include <malloc.h>
 
 bool	pred_mdbg	(const xrMemory::mdbg& A)	{
@@ -93,3 +94,4 @@ void	xrMemory::dbg_check		()
 	debug_mode				= TRUE;
 	debug_cs.Leave			();
 }
+#endif

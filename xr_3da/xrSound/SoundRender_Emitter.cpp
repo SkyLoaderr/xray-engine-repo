@@ -11,9 +11,11 @@ extern	float			psSoundVEffects;
 //////////////////////////////////////////////////////////////////////
 CSoundRender_Emitter::CSoundRender_Emitter(void)
 {
-	static	u32			incrementalID = 0;
 
+#ifdef DEBUG
+	static	u32			incrementalID = 0;
 	dbg_ID				= ++incrementalID;
+#endif
 	target				= NULL;
 	source				= NULL;
 	owner				= NULL;

@@ -61,7 +61,10 @@ public:
     Fvector				center_of_mass;
 public:    
 						CBoneData		(u16 ID):SelfID(ID){}
+#ifdef DEBUG
 	void				DebugQuery		(BoneDebug& L);
+#endif
+
 	// Calculation
 	virtual void		Calculate		(CKinematics* K, Fmatrix *Parent)=0;
 };
@@ -128,7 +131,9 @@ public:
 	void						Callback		(UpdateCallback C, void* Param)	{	Update_Callback	= C; Update_Callback_Param	= Param;	}
 
 	// debug
+#ifdef DEBUG
 	void						DebugRender		(Fmatrix& XFORM);
+#endif
 
 	// General "Visual" stuff
     virtual void				Copy			(IRender_Visual *pFrom);

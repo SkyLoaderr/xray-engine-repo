@@ -86,11 +86,14 @@ void CParticlesObject::UpdateSpatial()
 	}
 }
 
+#ifdef DEBUG
 LPCSTR CParticlesObject::dbg_ref_name()
 {
 	IParticleCustom* V	= dynamic_cast<IParticleCustom*>(renderable.visual); VERIFY(V);
 	return V->Name();
 }
+#endif
+
 //----------------------------------------------------
 void CParticlesObject::Play()
 {

@@ -36,7 +36,9 @@ public:
 	virtual void spatial_unregister();
 	virtual void spatial_move();
 
+#ifdef DEBUG
 	virtual void OnRender();
+#endif
 
 	float GetMaxPower() {return m_fMaxPower;}
 

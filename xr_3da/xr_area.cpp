@@ -116,6 +116,7 @@ void CObjectSpace::Load	()
 	FS.r_close					(F);
 }
 //----------------------------------------------------------------------
+#ifdef DEBUG
 void CObjectSpace::dbgRender()
 {
 	R_ASSERT(bDebug);
@@ -144,3 +145,4 @@ void CObjectSpace::dbgRender()
 	}
 	dbg_S.clear();
 }
+#endif

@@ -4,6 +4,9 @@
 #include "../hudmanager.h"
 
 #define DISABLE_MONSTER_DEBUG
+#ifndef DEBUG
+	#undef DISABLE_MONSTER_DEBUG
+#endif
 
 CMonsterDebug::CMonsterDebug(CEntityAlive *pM, const Fvector &shift_vec, float height)
 {
@@ -12,12 +15,10 @@ CMonsterDebug::CMonsterDebug(CEntityAlive *pM, const Fvector &shift_vec, float h
 	shift			= shift_vec;
 	active			= false;
 }
-
 CMonsterDebug::~CMonsterDebug()
 {
 	
 }
-
 void CMonsterDebug::M_Clear()
 {
 	_data.clear();

@@ -59,6 +59,7 @@ LPCSTR CKinematics::LL_BoneName_dbg	(u16 ID)
 	return 0;
 }
 
+#ifdef DEBUG
 void CKinematics::DebugRender(Fmatrix& XFORM)
 {
 	Calculate();
@@ -95,6 +96,7 @@ void CKinematics::DebugRender(Fmatrix& XFORM)
 		RCache.dbg_DrawOBB(W,obb.m_halfsize,D3DCOLOR_XRGB(0,0,255));
 	}
 }
+#endif
 
 CKinematics::~CKinematics	()
 {

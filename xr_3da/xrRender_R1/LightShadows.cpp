@@ -233,6 +233,7 @@ void CLightShadows::calculate	()
 			float		p_far	=	_min(Lrange,_max(p_dist+S_fade,p_dist+p_R));	
 			if (p_near<eps)			p_near	= eps;
 			if (p_far<(p_near+eps))	p_far	= p_near+eps;
+			if (p_hat>1)			continue;
 			
 			mProject.build_projection_HAT	(p_hat,p_asp,p_near,	p_far);
 			mProjectR.build_projection_HAT	(p_hat,p_asp,p_nearR,	p_far);
@@ -272,7 +273,8 @@ void CLightShadows::calculate	()
 			
 			// register shadow and increment slot
 			shadows.push_back	(shadow());
-			shadows.back().O	=	C.O;
+			shadows.back().dbg_O	=	C.O;
+			shadows.back().dbg_HAT	=	p_hat;
 			shadows.back().slot	=	slot_id;
 			shadows.back().C	=	C.C;
 			shadows.back().M	=	mCombineR;
@@ -357,20 +359,17 @@ void CLightShadows::render	()
 		xrc.frustum_query		(DB,F);
 		if (0==xrc.r_count())	continue;
 		
-		/*
 		Log							("-----: ",		xrc.r_count());
 		Msg							("light: %x,A(%s),R(%f)",	u32(S.L),S.L->get_active()?"true":"false",S.L->range);
-		if (xrc.r_count() > 1000)	{
-			CObject*	O	= dynamic_cast<CObject*>(S.O);
+		if (xrc.r_count() > 5000)	{
+			CObject*	O	= dynamic_cast<CObject*>(S.dbg_O);
 			if (O)	{
 				Log		("object:",O->cName());
 				Log		("radius:",O->Radius());
 			};
-			Log("matrix:",	S.M		);
-			Log("center:",	S.C		);
-			Log("slot:  ",	S.slot	);
+			Log("slot:  ",	S.slot		);
+			Log("HAT:   ",	S.dbg_HAT	);
 		}
-		*/
 
 		// Clip polys by frustum
 		tess.clear				();
