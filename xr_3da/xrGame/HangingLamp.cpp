@@ -76,12 +76,6 @@ void CHangingLamp::UpdateCL	()
 		vPosition.set(m_pPhysicsShell->mXFORM.c);
 		UpdateTransform();
 	}
-}
-
-void CHangingLamp::OnVisible()
-{
-	inherited::OnVisible	();
-
 	if (Alive()){
 		Fmatrix xf;
 		if (light_bone_idx>=0)
@@ -104,6 +98,11 @@ void CHangingLamp::OnVisible()
 			light_render->set_color(fclr);
 		}
 	}
+}
+
+void CHangingLamp::OnVisible()
+{
+	inherited::OnVisible	();
 }
 
 void CHangingLamp::Hit(float P, Fvector &dir,	CObject* who, s16 element,Fvector p_in_object_space, float impulse)
