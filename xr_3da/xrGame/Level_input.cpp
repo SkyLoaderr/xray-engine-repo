@@ -239,25 +239,15 @@ void CLevel::IR_OnKeyboardPress(int key)
 #endif
 	}
 
-	switch (key_binding[key]) {
-	case kCONSOLE:
-		Console->Show				();
-		break;
 
-	case kQUIT:	
-		Console->Execute			("main_menu");
-		break;
-	default:{
-	
 	if(bindConsoleCmds.execute(key))
-		break;
+		return;
 
-		if (CurrentEntity())		{
+	if( HUD().GetUI()->MainInputReceiver() )return;
+	if (CurrentEntity())		{
 			IInputReceiver*		IR	= smart_cast<IInputReceiver*>	(smart_cast<CGameObject*>(CurrentEntity()));
 			if (IR)				IR->IR_OnKeyboardPress(key_binding[key]);
 		}
-	}break;
-	}
 
 
 	//#ifdef _DEBUG
@@ -302,6 +292,7 @@ void CLevel::IR_OnKeyboardRelease(int key)
 	if (pHUD->GetUI()->IR_OnKeyboardRelease(key)) return;
 	if ( Game().OnKeyboardRelease(key_binding[key]) ) return;
 
+	if( HUD().GetUI()->MainInputReceiver() )return;
 	if (CurrentEntity())		{
 		IInputReceiver*		IR	= smart_cast<IInputReceiver*>	(smart_cast<CGameObject*>(CurrentEntity()));
 		if (IR)				IR->IR_OnKeyboardRelease			(key_binding[key]);
