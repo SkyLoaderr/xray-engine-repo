@@ -280,7 +280,7 @@ void	xrCover	()
 
 	// Start threads, wait, continue --- perform all the work
 	u32	start_time		= timeGetTime();
-	CThreadManager			Threads;
+	CThreadManager		Threads;
 	u32	stride			= g_nodes.size()/NUM_THREADS;
 	u32	last			= g_nodes.size()-stride*(NUM_THREADS-1);
 	for (u32 thID=0; thID<NUM_THREADS; thID++)

@@ -6,8 +6,11 @@
 #include "xrThread.h"
 #include "xrSyncronize.h"
 
-xr_vector<OGF_Base *>		g_tree;
+xr_vector<OGF_Base *>	g_tree;
 BOOL					b_R2	= FALSE;
+CThreadManager			mu_base;
+CThreadManager			mu_secondary;
+#define		MU_THREADS	8
 
 //////////////////////////////////////////////////////////////////////
 
@@ -19,8 +22,29 @@ CBuild::~CBuild()
 {
 }
  
-extern int RegisterString(LPCSTR T);
+extern int RegisterString		(LPCSTR T);
 
+class CMULight : public CThread
+{
+	u32			low;
+	u32			high;
+public:
+	CMUThread	(u32 ID, u32 _low, u32 _high) : CThread(ID)	{	thMessages	= FALSE; low=_low; high=_high;	}
+
+	virtual void	Execute	()
+	{
+		// Priority
+		SetThreadPriority	(GetCurrentThread(), THREAD_PRIORITY_BELOW_NORMAL);
+		Sleep				(0);
+
+		// Light references
+		for (m=low; m<high; m++)
+		{
+			pBuild->mu_refs[m]->calc_lighting	();
+			thProgress							= (float(M-low)/float(high-low));
+		}
+	}
+};
 
 class CMUThread : public CThread
 {
@@ -31,7 +55,7 @@ public:
 	}
 	virtual void	Execute()
 	{
-		u32 m;
+		u32					m;
 
 		// Priority
 		SetThreadPriority	(GetCurrentThread(), THREAD_PRIORITY_BELOW_NORMAL);
@@ -45,11 +69,10 @@ public:
 		}
 
 		// Light references
-		for (m=0; m<pBuild->mu_refs.size(); m++)
-		{
-			pBuild->mu_refs[m]->calc_lighting	();
-			thProgress							= (float(m)/float(pBuild->mu_refs.size()));
-		}
+		u32	stride			= pBuild->mu_refs.size()/MU_THREADS;
+		u32	last			= pBuild->mu_refs.size()-stride*(MU_THREADS-1);
+		for (u32 thID=0; thID<MU_THREADS; thID++)
+			mu_secondary.start	(xr_new<CMULight> (thID,thID*stride,thID*stride+((thID==(MU_THREADS-1))?last:stride)));
 	}
 };
 
@@ -127,8 +150,7 @@ void CBuild::Run	(LPCSTR P)
 	for (vecFaceIt I=g_faces.begin(); I!=g_faces.end(); I++) (*I)->CacheOpacity();
 	for (u32 m=0; m<mu_models.size(); m++) mu_models[m]->calc_faceopacity();
 
-	CThreadManager				mu;
-	mu.start					(xr_new<CMUThread> (0));
+	mu_base.start				(xr_new<CMUThread> (0));
 
 	//****************************************** Resolve materials
 	FPU::m64r					();
@@ -174,7 +196,8 @@ void CBuild::Run	(LPCSTR P)
 	FPU::m64r					();
 	Phase						("LIGHT: Waiting for MU-thread...");
 	mem_Compact					();
-	mu.wait						(500);
+	mu_base.wait				(500);
+	mu_secondary.wait			(500);
 
 	//****************************************** Export MU-models
 	{
