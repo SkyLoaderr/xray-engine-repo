@@ -24,6 +24,7 @@ CCustomZone::CCustomZone(void)
 	m_fMaxPower = 100.f;
 	m_fAttenuation = 1.f;
 	m_dwPeriod = 1100;
+	m_fEffectiveRadius = 0.75f;
 	
 	m_bZoneReady = false;
 	m_bZoneActive = false;
@@ -96,6 +97,7 @@ void CCustomZone::Load(LPCSTR section)
 	m_iDisableHitTimeSmall = pSettings->r_s32(section,"disable_time_small");	
 	m_iDisableIdleTime = pSettings->r_s32(section,"disable_idle_time");	
 	m_fHitImpulseScale = pSettings->r_float(section,"hit_impulse_scale");
+	m_fEffectiveRadius = pSettings->r_float(section,"effective_radius");
 	m_eHitTypeBlowout = ALife::g_tfString2HitType(pSettings->r_string(section, "hit_type"));
 
 	m_bIgnoreNonAlive = !!pSettings->r_bool(section, "ignore_nonalive");
@@ -591,7 +593,6 @@ BOOL CCustomZone::feel_touch_contact(CObject* O)
 	return			(object->feel_touch_on_contact(this));
 }
 
-#define REL_POWER_COEFF 0.75f
 
 float CCustomZone::RelativePower(float dist)
 {
@@ -601,7 +602,7 @@ float CCustomZone::RelativePower(float dist)
 }
 float CCustomZone::effective_radius()
 {
-	return Radius()*REL_POWER_COEFF;
+	return Radius()*m_fEffectiveRadius;
 }
 
 float CCustomZone::distance_to_center(CObject* O)

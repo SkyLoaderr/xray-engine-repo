@@ -4,6 +4,8 @@ $spawn 			= "zones\mosquito bald"
 $prefetch 		= 16
 class			= Z_MBALD
 hit_impulse_scale	= 0.2;0.5 ;0.1
+effective_radius	= 0.75 ;размер радиуса в процентах от оригинального, где действует зона
+
 sound			= zone_mosquito_bald
 
 postprocess		= mosquito_bald
@@ -86,6 +88,7 @@ $spawn 			= "zones\mine_field"
 $prefetch 		= 16
 class			= Z_MBALD
 hit_impulse_scale	= 0.2;0.5 ;0.1
+effective_radius	= 0.75 ;размер радиуса в процентах от оригинального, где действует зона
 sound			= 
 
 ;postprocess		= mosquito_bald
@@ -163,6 +166,7 @@ $spawn 			= "zones\death"
 $prefetch 		= 16
 class			= Z_MBALD
 hit_impulse_scale	= 0.3;0.5 ;0.1
+effective_radius	= 0.75 ;размер радиуса в процентах от оригинального, где действует зона
 sound			= zone_mosquito_bald
 
 postprocess		= postprocess_death
@@ -240,6 +244,7 @@ $spawn 			= "zones\radioactive"
 ;$prefetch 		= 16
 class			= Z_RADIO
 hit_impulse_scale	= .001
+effective_radius	= 0.75 ;размер радиуса в процентах от оригинального, где действует зона
 sound			= zone_mosquito_bald
 postprocess		= postprocess_rad
 
@@ -278,6 +283,7 @@ $spawn 			= "zones\lava"
 $prefetch 		= 16
 class			= Z_MBALD
 hit_impulse_scale	= .00
+effective_radius	= 0.75 ;размер радиуса в процентах от оригинального, где действует зона
 sound			= 
 postprocess		= postprocess_flame
 
@@ -342,6 +348,7 @@ $spawn 			= "zones\isparenie"
 class			= Z_MBALD ;Z_RADIO
 
 hit_impulse_scale = .001
+effective_radius	= 0.75 ;размер радиуса в процентах от оригинального, где действует зона
 
 sound			= zone_mosquito_bald
 postprocess		= postprocess_flame
@@ -396,6 +403,7 @@ $spawn 			= "zones\acid fog"
 $prefetch 		= 16
 class			= Z_ACIDF
 hit_impulse_scale	= .1
+effective_radius	= 0.75 ;размер радиуса в процентах от оригинального, где действует зона
 sound			= zone_mosquito_bald
 postprocess		= postprocess_new
 
@@ -434,6 +442,7 @@ $spawn 			= "zones\witches galantine"
 $prefetch 		= 16
 class			= Z_MBALD
 hit_impulse_scale	= .03
+effective_radius	= 0.75 ;размер радиуса в процентах от оригинального, где действует зона
 sound			= zone_mosquito_bald
 postprocess		= postprocess_electra
 
@@ -499,6 +508,7 @@ $spawn 			= "zones\burning fuzz"
 ;$prefetch 		= 16
 class			= Z_MBALD
 hit_impulse_scale	= 0
+effective_radius	= 0.75 ;размер радиуса в процентах от оригинального, где действует зона
 sound			= zone_mosquito_bald
 postprocess		= postprocess_fuzz
 
@@ -558,6 +568,7 @@ class			= Z_BFUZZ
 visual			= physics\anomaly\anomaly_liana
 
 hit_impulse_scale	= 0.0
+effective_radius	= 0.75 ;размер радиуса в процентах от оригинального, где действует зона
 sound			= zone_mosquito_bald
 postprocess		= postprocess_fuzz
 
@@ -617,6 +628,7 @@ class			= Z_RUSTYH
 visual			= physics\anomaly\anomaly_liana
 
 hit_impulse_scale	= 0.5
+effective_radius	= 0.75 ;размер радиуса в процентах от оригинального, где действует зона
 sound			= zone_mosquito_bald
 postprocess		= postprocess_new
 
@@ -659,6 +671,7 @@ class			= Z_AMEBA
 visual			= physics\anomaly\anomaly_studen
 
 hit_impulse_scale	= 0.0
+effective_radius	= 0.75 ;размер радиуса в процентах от оригинального, где действует зона
 max_velocity_in_zone= 0.5
 sound			= zone_mosquito_bald
 postprocess		= postprocess_new
@@ -702,6 +715,7 @@ class			= Z_AMEBA
 visual			= physics\anomaly\anomaly_hvatalka
 
 hit_impulse_scale	= 0.
+effective_radius	= 0.75 ;размер радиуса в процентах от оригинального, где действует зона
 max_velocity_in_zone= 0.5
 sound			= zone_mosquito_bald
 postprocess		= postprocess_new
@@ -743,6 +757,7 @@ $spawn 			= "zones\dead"
 $prefetch 		= 16
 class			= Z_DEAD
 hit_impulse_scale	= .1
+effective_radius	= 0.75 ;размер радиуса в процентах от оригинального, где действует зона
 sound			= zone_mosquito_bald
 postprocess		= postprocess_new
 
@@ -812,6 +827,7 @@ entrance_sound		= anomaly\gravi_idle01								;при попадании объекта в аномалию
 body_tearing_sound	= anomaly\anomaly_body_tear_1						;звук разрывания трупа
 hit_type			= wound
 hit_impulse_scale	= 0.1			;соотношение физического импульса и силы хита
+effective_radius	= 0.75 ;размер радиуса в процентах от оригинального, где действует зона
 
 disable_time		= -1	;время игнорирования неживого объекта в зоне (-1 если не нужно)
 disable_time_small	= -1		;время игнорирования маленького неживого объекта в зоне (-1 если не нужно)
@@ -895,6 +911,7 @@ entrance_sound		= anomaly\gravi_idle01								;при попадании объекта в аномалию
 
 hit_type		= wound
 hit_impulse_scale	= 0.2;0.5;0.1			;соотношение физического импульса и силы хита
+effective_radius	= 0.75 ;размер радиуса в процентах от оригинального, где действует зона
 
 disable_time		= 5000	;время игнорирования неживого объекта в зоне (-1 если не нужно)
 disable_time_small	= 500		;время игнорирования маленького неживого объекта в зоне (-1 если не нужно)
@@ -962,6 +979,7 @@ $spawn 			= "zones\flame"
 $prefetch 		= 16
 class			= Z_MBALD
 hit_impulse_scale	= .00
+effective_radius	= 0.75 ;размер радиуса в процентах от оригинального, где действует зона
 sound			= zone_mosquito_bald
 postprocess		= postprocess_flame
 
@@ -1023,7 +1041,10 @@ GroupControlSection		= spawn_group_zone
 $spawn 					= "zones\campfire"
 $prefetch 				= 16
 class					= Z_MBALD
+
 hit_impulse_scale		= 0.00
+effective_radius		= 1.1 ;размер радиуса в процентах от оригинального, где действует зона
+
 sound					= 
 postprocess				= postprocess_flame
 
@@ -1047,12 +1068,12 @@ entrance_sound			= ambient\fire2		;при попадании объекта в аномалию
 
 hit_type				= burn
 
-disable_time			= 0	;время игнорирования неживого объекта в зоне (-1 если не нужно)
-disable_time_small		= 0	;время игнорирования маленького неживого объекта в зоне (-1 если не нужно)
+disable_time			= 5000	;время игнорирования неживого объекта в зоне (-1 если не нужно)
+disable_time_small		= 1000	;время игнорирования маленького неживого объекта в зоне (-1 если не нужно)
 disable_idle_time		= 50000	;время отключения idle партиклов
 
 ignore_nonalive			= false
-ignore_small			= true
+ignore_small			= false
 ignore_artefacts		= true
 
 blowout_light			= on
@@ -1086,7 +1107,10 @@ GroupControlSection	= spawn_group_zone
 $spawn 			= "zones\zone-x"
 $prefetch 		= 16
 class			= Z_MBALD
+
 hit_impulse_scale	= 0
+effective_radius	= 0.75 ;размер радиуса в процентах от оригинального, где действует зона
+
 sound			= zone_mosquito_bald
 postprocess		= postprocess_psi
 
@@ -1125,6 +1149,7 @@ $spawn 			= "zones\zone-x1"
 $prefetch 		= 16
 class			= Z_MBALD
 hit_impulse_scale	= 0
+effective_radius	= 0.75 ;размер радиуса в процентах от оригинального, где действует зона
 sound			= zone_mosquito_bald
 postprocess		= postprocess_new
 
@@ -1163,6 +1188,8 @@ $spawn 			= "zones\zone-x2"
 $prefetch 		= 16
 class			= Z_MBALD
 hit_impulse_scale	= 0
+effective_radius	= 0.75 ;размер радиуса в процентах от оригинального, где действует зона
+
 sound			= zone_mosquito_bald
 postprocess		= postprocess_new
 
@@ -1201,6 +1228,7 @@ $spawn 			= "zones\zone-x3"
 $prefetch 		= 16
 class			= Z_MBALD
 hit_impulse_scale	= 0
+effective_radius	= 0.75 ;размер радиуса в процентах от оригинального, где действует зона
 sound			= zone_mosquito_bald
 postprocess		= postprocess_new
 
@@ -1239,6 +1267,7 @@ $spawn					= "zones\torrid"
 ;$prefetch 				= 8
 class					= Z_TORRID
 hit_impulse_scale	=   0
+effective_radius	= 0.75 ;размер радиуса в процентах от оригинального, где действует зона
 postprocess		= postprocess_flame
 
 artefacts		= af_drops,0.7, af_fireball, 0.25, af_cristall, 0.05
@@ -1308,6 +1337,7 @@ $spawn					= "zones\fireball"
 ;$prefetch 				= 8
 class					= Z_TORRID
 hit_impulse_scale	=   0
+effective_radius	= 0.75 ;размер радиуса в процентах от оригинального, где действует зона
 postprocess		= postprocess_flame
 
 artefacts		= 

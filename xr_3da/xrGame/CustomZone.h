@@ -101,8 +101,11 @@ protected:
 
 	//линейный коэффициент затухания в зависимости от расстояния
 	float m_fAttenuation;
-	
+	//процент удара зоны, который пойдет на физический импульс	
 	float m_fHitImpulseScale;
+	//размер радиуса в процентах от оригинального, 
+	//где действует зона
+	float m_fEffectiveRadius;
 
 	//тип наносимого хита
 	ALife::EHitType m_eHitTypeBlowout;
