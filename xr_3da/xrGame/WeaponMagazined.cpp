@@ -415,6 +415,7 @@ void CWeaponMagazined::OnShot		()
 #pragma todo("Oles to Vitya: 'ps_Element(0).dwTime' in game time, not in global time")
 #pragma todo("Vitya to Oles: Is this correct?")
 	Fvector l_vel; l_vel.sub(Position(),ps_Element(0).vPosition); l_vel.div((Device.dwTimeGlobal-Game().start_time-ps_Element(0).dwTime)/1000.f);
+#pragma todo("Oles to Vitya: NO ! Use Level().timeServer()")
 	pStaticPG->UpdateParent(l_pos, l_vel); pStaticPG->Play();
 	//pStaticPG->SetTransform(l_pos); pStaticPG->Play();
 }

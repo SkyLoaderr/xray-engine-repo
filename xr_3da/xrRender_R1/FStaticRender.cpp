@@ -25,7 +25,7 @@ IRender_DetailModel*	CRender::model_CreateDM			(IReader*	F)
 	D->Load				(F);
 	return D;
 }
-void						CRender::model_Delete			(IRender_DetailModel* & F)
+void					CRender::model_Delete			(IRender_DetailModel* & F)
 {
 	if (F)
 	{
@@ -35,13 +35,13 @@ void						CRender::model_Delete			(IRender_DetailModel* & F)
 		F				= NULL;
 	}
 }
-IRender_Visual*				CRender::model_CreatePS			(LPCSTR name, PS::SEmitter* E)	
+IRender_Visual*			CRender::model_CreatePS			(LPCSTR name, PS::SEmitter* E)	
 { 
 	PS::SDef*	source		= PSystems.FindPS	(name);
 	VERIFY					(source);
 	return Models.CreatePS	(source,E);
 }
-IRender_Visual*				CRender::model_CreatePE			(LPCSTR name)	
+IRender_Visual*			CRender::model_CreatePE			(LPCSTR name)	
 { 
 	PS::CPEDef*	source		= PSystems.FindPED	(name);
 	VERIFY					(source);

@@ -69,7 +69,7 @@ void	CLightDB_Static::Track	(IRenderable* O)
 	// Select nearest lights
 	Fvector					bb_size	=	{fRadius,fRadius,fRadius};
 	g_SpatialSpace.q_box				(0,STYPE_LIGHTSOURCE,pos,bb_size);
-	g_SpatialSpace.q_result.push_back	(LDirect);
+	g_SpatialSpace.q_result.push_back	(dynamic_cast<ISpatial*>(LDirect));
 
 	// Process selected lights
 	for (u32 o_it=0; o_it<g_SpatialSpace.q_result.size(); o_it++)

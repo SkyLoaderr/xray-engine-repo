@@ -143,7 +143,7 @@ BOOL CGameObject::net_Spawn		(LPVOID	DC)
 		}
 	}
 
-#pragma todo("Incorrect spawning")
+#pragma todo("Oles to Dima: Incorrect spawning, just hackery?")
 	if ((E->ID_Parent != 0xffff) && !Parent) {
 		Parent						= this;
 		inherited::net_Spawn		(DC);
