@@ -80,56 +80,56 @@ void CSightManager::SetLessCoverLook(const CLevelGraph::CVertex *tpNode, bool bD
 
 void CSightManager::SetLessCoverLook(const CLevelGraph::CVertex *tpNode, float fMaxHeadTurnAngle, bool bDifferenceLook)
 {
-//	CAI_Stalker				*stalker = dynamic_cast<CAI_Stalker*>(this);
-//	VERIFY					(stalker);
-//	float fAngleOfView		= stalker->eye_fov/180.f*PI, fMaxSquare = -1.f, fBestAngle = stalker->m_head.target.yaw;
-//
-//	CLevelGraph::CVertex	*tpNextNode = 0;
-//	u32						node_id;
-//	bool bOk = false;
-//	if (bDifferenceLook && !CDetailPathManager::path().empty() && (CDetailPathManager::path().size() - 1 > CDetailPathManager::curr_travel_point_index())) {
-//		CLevelGraph::const_iterator	i, e;
-//		ai().level_graph().begin(tpNode,i,e);
-//		for ( ; i != e; ++i) {
-//			node_id			= ai().level_graph().value(tpNode,i);
-//			if (!ai().level_graph().valid_vertex_id(node_id))
-//				continue;
-//			tpNextNode = ai().level_graph().vertex(node_id);
-//			if (ai().level_graph().inside(tpNextNode,CDetailPathManager::path()[CDetailPathManager::curr_travel_point_index() + 1].position)) {
-//				bOk = true;
-//				break;
-//			}
-//		}
-//	}
-//
-//	if (!bDifferenceLook || !bOk) 
-//		for (float fIncrement = stalker->m_body.current.yaw - fMaxHeadTurnAngle; fIncrement <= stalker->m_body.current.yaw + fMaxHeadTurnAngle; fIncrement += 2*fMaxHeadTurnAngle/60.f) {
-//			float fSquare = ai().level_graph().compute_square(-fIncrement,fAngleOfView,tpNode);
-//			if (fSquare > fMaxSquare) {
-//				fMaxSquare = fSquare;
-//				fBestAngle = fIncrement;
-//			}
-//		}
-//	else {
-//		float fMaxSquareSingle = -1.f, fSingleIncrement = stalker->m_head.target.yaw;
-//		for (float fIncrement = stalker->m_body.current.yaw - fMaxHeadTurnAngle; fIncrement <= stalker->m_body.current.yaw + fMaxHeadTurnAngle; fIncrement += 2*fMaxHeadTurnAngle/60.f) {
-//			float fSquare0 = ai().level_graph().compute_square(-fIncrement,fAngleOfView,tpNode);
-//			float fSquare1 = ai().level_graph().compute_square(-fIncrement,fAngleOfView,tpNextNode);
-//			if (fSquare1 - fSquare0 > fMaxSquare) {
-//				fMaxSquare = fSquare1 - fSquare0;
-//				fBestAngle = fIncrement;
-//			}
-//			if (fSquare0 > fMaxSquareSingle) {
-//				fMaxSquareSingle = fSquare0;
-//				fSingleIncrement = fIncrement;
-//			}
-//		}
-//		if (_sqrt(fMaxSquare) < 0*PI_DIV_6)
-//			fBestAngle = fSingleIncrement;
-//	}
-//
-//	stalker->m_head.target.yaw = fBestAngle;
-//	VERIFY					(_valid(stalker->m_head.target.yaw));
+	CAI_Stalker				*stalker = dynamic_cast<CAI_Stalker*>(this);
+	VERIFY					(stalker);
+	float fAngleOfView		= stalker->eye_fov/180.f*PI, fMaxSquare = -1.f, fBestAngle = stalker->m_head.target.yaw;
+
+	CLevelGraph::CVertex	*tpNextNode = 0;
+	u32						node_id;
+	bool bOk = false;
+	if (bDifferenceLook && !stalker->CDetailPathManager::path().empty() && (stalker->CDetailPathManager::path().size() - 1 > stalker->CDetailPathManager::curr_travel_point_index())) {
+		CLevelGraph::const_iterator	i, e;
+		ai().level_graph().begin(tpNode,i,e);
+		for ( ; i != e; ++i) {
+			node_id			= ai().level_graph().value(tpNode,i);
+			if (!ai().level_graph().valid_vertex_id(node_id))
+				continue;
+			tpNextNode = ai().level_graph().vertex(node_id);
+			if (ai().level_graph().inside(tpNextNode,stalker->CDetailPathManager::path()[stalker->CDetailPathManager::curr_travel_point_index() + 1].position)) {
+				bOk = true;
+				break;
+			}
+		}
+	}
+
+	if (!bDifferenceLook || !bOk) 
+		for (float fIncrement = stalker->m_body.current.yaw - fMaxHeadTurnAngle; fIncrement <= stalker->m_body.current.yaw + fMaxHeadTurnAngle; fIncrement += 2*fMaxHeadTurnAngle/60.f) {
+			float fSquare = ai().level_graph().compute_square(-fIncrement,fAngleOfView,tpNode);
+			if (fSquare > fMaxSquare) {
+				fMaxSquare = fSquare;
+				fBestAngle = fIncrement;
+			}
+		}
+	else {
+		float fMaxSquareSingle = -1.f, fSingleIncrement = stalker->m_head.target.yaw;
+		for (float fIncrement = stalker->m_body.current.yaw - fMaxHeadTurnAngle; fIncrement <= stalker->m_body.current.yaw + fMaxHeadTurnAngle; fIncrement += 2*fMaxHeadTurnAngle/60.f) {
+			float fSquare0 = ai().level_graph().compute_square(-fIncrement,fAngleOfView,tpNode);
+			float fSquare1 = ai().level_graph().compute_square(-fIncrement,fAngleOfView,tpNextNode);
+			if (fSquare1 - fSquare0 > fMaxSquare) {
+				fMaxSquare = fSquare1 - fSquare0;
+				fBestAngle = fIncrement;
+			}
+			if (fSquare0 > fMaxSquareSingle) {
+				fMaxSquareSingle = fSquare0;
+				fSingleIncrement = fIncrement;
+			}
+		}
+		if (_sqrt(fMaxSquare) < 0*PI_DIV_6)
+			fBestAngle = fSingleIncrement;
+	}
+
+	stalker->m_head.target.yaw = fBestAngle;
+	VERIFY					(_valid(stalker->m_head.target.yaw));
 }
 
 bool CSightManager::bfIf_I_SeePosition(Fvector tPosition) const

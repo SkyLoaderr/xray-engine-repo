@@ -436,7 +436,8 @@ void CStalkerActionGetItemToKill::execute	()
 	m_object->set_body_state		(eBodyStateStand);
 	m_object->set_movement_type		(eMovementTypeWalk);
 	m_object->set_mental_state		(eMentalStateDanger);
-	m_object->CSightManager::update	(eLookTypePoint,&m_object->m_best_found_item_to_kill->Position());
+//	m_object->CSightManager::update	(eLookTypePoint,&m_object->m_best_found_item_to_kill->Position());
+	m_object->CSightManager::update	(eLookTypeSearch);
 
 #ifdef OLD_OBJECT_HANDLER
 	m_object->set_dest_state		(eObjectActionNoItems);

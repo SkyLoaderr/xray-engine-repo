@@ -441,15 +441,15 @@ bool CScriptStorage::print_stack_level(CLuaVirtualMachine *L, int iStackLevel)
 
 	lua_getinfo	(L,"nSluf",&l_tDebugInfo);
 
-	Msg			("  Event			: %d",event2string(l_tDebugInfo.event));
-	Msg			("  Name			: %s",l_tDebugInfo.name);
-	Msg			("  Name what		: %s",l_tDebugInfo.namewhat);
-	Msg			("  What			: %s",l_tDebugInfo.what);
-	Msg			("  Source			: %s",l_tDebugInfo.source);
-	Msg			("  Source (short)	: %s",l_tDebugInfo.short_src);
-	Msg			("  Current line	: %d",l_tDebugInfo.currentline);
-	Msg			("  Nups			: %d",l_tDebugInfo.nups);
-	Msg			("  Line defined	: %d",l_tDebugInfo.linedefined);
+//	Msg			("  Event			: %d",event2string(l_tDebugInfo.event));
+//	Msg			("  Name			: %s",l_tDebugInfo.name);
+//	Msg			("  Name what		: %s",l_tDebugInfo.namewhat);
+	Msg			("  What            : %s",l_tDebugInfo.what);
+	Msg			("  Source          : %s",l_tDebugInfo.source);
+//	Msg			("  Source (short)	: %s",l_tDebugInfo.short_src);
+	Msg			("  Current line    : %d",l_tDebugInfo.currentline);
+//	Msg			("  Nups			: %d",l_tDebugInfo.nups);
+//	Msg			("  Line defined	: %d",l_tDebugInfo.linedefined);
 	i			= 1;
 	while (NULL != (name = lua_getlocal(L, &l_tDebugInfo, i++))) {
 		Msg		("    local   %d %s", i-1, name);
