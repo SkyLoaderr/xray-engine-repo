@@ -17,6 +17,7 @@ ObjectFactory::CLIENT_BASE_CLASS *CObjectItemScript::client_object	() const
 {
 	object_factory().set_instance((ObjectFactory::CLIENT_SCRIPT_BASE_CLASS*)0);
 	m_client_creator			(const_cast<CObjectFactory*>(&object_factory()));
+	R_ASSERT					(object_factory().client_instance());
 	return						(object_factory().client_instance());
 }
 
@@ -26,5 +27,6 @@ ObjectFactory::SERVER_BASE_CLASS *CObjectItemScript::server_object	(LPCSTR secti
 {
 	object_factory().set_instance((ObjectFactory::SERVER_SCRIPT_BASE_CLASS*)0);
 	m_server_creator			(const_cast<CObjectFactory*>(&object_factory()),section);
+	R_ASSERT					(object_factory().server_instance());
 	return						(object_factory().server_instance());
 }

@@ -11,18 +11,15 @@
 #include "object_factory_space.h"
 #include "object_item_abstract.h"
 #include "script_space.h"
-#include "object_item_script_server.h"
 
-#ifndef NO_XR_GAME
-#	include "object_item_script_client.h"
-#endif
+class CObjectItemScript : public CObjectItemAbstract {
+protected:
+	typedef CObjectItemAbstract inherited;
 
-class CObjectItemScript : 
-#ifndef NO_XR_GAME
-	public CObjectItemScriptClient,
-#endif
-	public CObjectItemScriptServer 
-{
+protected:
+	luabind::functor<void>						m_client_creator;
+	luabind::functor<void>						m_server_creator;
+
 public:
 	IC											CObjectItemScript	(
 #ifndef NO_XR_GAME
@@ -33,6 +30,11 @@ public:
 													LPCSTR script_clsid
 												);
 #ifndef NO_XR_GAME
+	IC											CObjectItemScript	(
+													luabind::functor<void> creator, 
+													const CLASS_ID &clsid, 
+													LPCSTR script_clsid
+												);
 	virtual ObjectFactory::CLIENT_BASE_CLASS	*client_object		() const;
 #endif
 	virtual ObjectFactory::SERVER_BASE_CLASS	*server_object		(LPCSTR section) const;

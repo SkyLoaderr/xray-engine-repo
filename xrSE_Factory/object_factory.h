@@ -96,10 +96,9 @@ public:
 	IC		int							script_clsid					(const CLASS_ID &clsid) const;
 			void						register_script					() const;
 			void						register_script_class			(LPCSTR client_class, LPCSTR server_class, LPCSTR clsid, LPCSTR script_clsid);
+			void						register_script_class			(LPCSTR unknown_class, LPCSTR clsid, LPCSTR script_clsid);
 			void						register_script_classes			();
-			void						register_script_class_server	(LPCSTR server_class, LPCSTR clsid, LPCSTR script_clsid);
 #	ifndef NO_XR_GAME
-			void						register_script_class_client	(LPCSTR client_class, LPCSTR clsid, LPCSTR script_clsid);
 	IC		void						set_instance					(CLIENT_SCRIPT_BASE_CLASS *instance) const;
 	IC		CLIENT_SCRIPT_BASE_CLASS	*client_instance				() const;
 #	endif

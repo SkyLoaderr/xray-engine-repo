@@ -28,32 +28,20 @@ void CObjectFactory::register_script_class	(LPCSTR client_class, LPCSTR server_c
 	);
 }
 
+void CObjectFactory::register_script_class			(LPCSTR unknwon_class, LPCSTR clsid, LPCSTR script_clsid)
+{
+	luabind::functor<void>		creator = ai().script_engine().create_object_creator<void>(unknwon_class,"");
+	add							(
+		xr_new<CObjectItemScript>(
 #ifndef NO_XR_GAME
-void CObjectFactory::register_script_class_client	(LPCSTR client_class, LPCSTR clsid, LPCSTR script_clsid)
-{
-	
-	add							(
-		xr_new<CObjectItemScriptClient>(
-			ai().script_engine().create_object_creator<void>(client_class,""),
-			TEXT2CLSID(clsid),
-			script_clsid
-		)
-	);
-}
+			creator,
 #endif
-
-void CObjectFactory::register_script_class_server	(LPCSTR server_class, LPCSTR clsid, LPCSTR script_clsid)
-{
-	
-	add							(
-		xr_new<CObjectItemScriptServer>(
-			ai().script_engine().create_object_creator<void>(server_class,"section"),
+			creator,
 			TEXT2CLSID(clsid),
 			script_clsid
 		)
 	);
 }
-
 
 #ifndef NO_XR_GAME
 IC	void CObjectFactory::set_instance	(CLIENT_SCRIPT_BASE_CLASS *instance) const
@@ -97,10 +85,9 @@ void CObjectFactory::script_register(lua_State *L)
 	module(L)
 	[
 		class_<CObjectFactory>("object_factory")
-			.def("register",		&CObjectFactory::register_script_class)
-			.def("register_server",	&CObjectFactory::register_script_class_server)
+			.def("register",		(void (CObjectFactory::*)(LPCSTR,LPCSTR,LPCSTR,LPCSTR))(CObjectFactory::register_script_class))
+			.def("register",		(void (CObjectFactory::*)(LPCSTR,LPCSTR,LPCSTR))(CObjectFactory::register_script_class))
 #ifndef NO_XR_GAME
-			.def("register_client",	&CObjectFactory::register_script_class_client)
 			.def("set_instance",	(void (CObjectFactory::*)(CObjectFactory::CLIENT_SCRIPT_BASE_CLASS*) const)(CObjectFactory::set_instance), adopt(_2))
 #endif
 			.def("set_instance",	(void (CObjectFactory::*)(CObjectFactory::SERVER_SCRIPT_BASE_CLASS*) const)(CObjectFactory::set_instance), adopt(_2))

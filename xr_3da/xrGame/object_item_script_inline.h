@@ -16,22 +16,24 @@ IC	CObjectItemScript::CObjectItemScript	(
 	const CLASS_ID				&clsid, 
 	LPCSTR						script_clsid
 ) : 
-#ifndef NO_XR_GAME
-	CObjectItemScriptClient		(client_creator,clsid,script_clsid),
-#endif
-	CObjectItemScriptServer		(server_creator,clsid,script_clsid),
-	CObjectItemAbstract			(clsid,script_clsid)
+	inherited					(clsid,script_clsid)
 {
+#ifndef NO_XR_GAME
+	m_client_creator			= client_creator;
+#endif
+	m_server_creator			= server_creator;
 }
 
 #ifndef NO_XR_GAME
-ObjectFactory::CLIENT_BASE_CLASS *CObjectItemScript::client_object	() const
-{
-	return			(CObjectItemScriptClient::client_object());
-}
-#endif
 
-ObjectFactory::SERVER_BASE_CLASS *CObjectItemScript::server_object	(LPCSTR section) const
+IC	CObjectItemScript::CObjectItemScript	(
+	luabind::functor<void>		unknown_creator, 
+	const CLASS_ID				&clsid, 
+	LPCSTR						script_clsid
+) : 
+	inherited					(clsid,script_clsid)
 {
-	return			(CObjectItemScriptServer::server_object(section));
+	m_client_creator = m_server_creator = unknown_creator;
 }
+
+#endif
