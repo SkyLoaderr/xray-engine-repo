@@ -272,11 +272,11 @@ void	Face::AddChannel	(Fvector2 &p1, Fvector2 &p2, Fvector2 &p3)
 	tc.push_back(TC);
 }
 
-void	Face::hasImplicitLighting()
+BOOL	Face::hasImplicitLighting()
 {
 	if (0==this)								return FALSE;
 	if (!Shader().flags.bRendering)				return FALSE;
-	b_material& M		= pBuild->materials		[F->dwMaterial];
+	b_material& M		= pBuild->materials		[dwMaterial];
 	b_BuildTexture&	T	= pBuild->textures		[M.surfidx];
 	return (T.THM.flags.test(STextureParams::flImplicitLighted));
 }
