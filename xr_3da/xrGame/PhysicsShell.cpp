@@ -6,7 +6,7 @@
 #include "PHJoint.h"
 #include "PHShell.h"
 #include "PHJoint.h"
-
+#include "PHJointDestroyInfo.h"
 CPhysicsElement*			P_create_Element		()
 {
 	CPHElement* element=xr_new<CPHElement>	();

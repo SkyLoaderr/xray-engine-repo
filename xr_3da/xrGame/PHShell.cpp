@@ -20,7 +20,7 @@
 #include "PHShell.h"
 
 void CPHShell::setDensity(float M){
-	xr_vector<CPHElement*>::iterator i;
+	ELEMENT_I i;
 	//float volume=0.f;
 	//for(i=elements.begin();i!=elements.end();i++)	volume+=(*i)->get_volume();
 
@@ -30,7 +30,7 @@ void CPHShell::setDensity(float M){
 
 
 void CPHShell::setMass(float M){
-	xr_vector<CPHElement*>::iterator i;
+	ELEMENT_I i;
 	float volume=0.f;
 	for(i=elements.begin();i!=elements.end();i++)	volume+=(*i)->get_volume();
 
@@ -41,7 +41,7 @@ void CPHShell::setMass(float M){
 }
 
 void CPHShell::setMass1(float M){
-	xr_vector<CPHElement*>::iterator i;
+	ELEMENT_I i;
 
 
 	for(i=elements.begin();i!=elements.end();i++)
@@ -53,7 +53,7 @@ float CPHShell::getMass()
 {
 	float m=0.f;
 
-	xr_vector<CPHElement*>::iterator i;
+	ELEMENT_I i;
 
 	for(i=elements.begin();i!=elements.end();i++)	m+=(*i)->getMass();
 
@@ -64,7 +64,7 @@ void CPHShell::Activate(const Fmatrix &m0,float dt01,const Fmatrix &m2,bool disa
 		return;
 	CPHObject::Activate();
 
-	xr_vector<CPHElement*>::iterator i;
+	ELEMENT_I i;
 
 	mXFORM.set(m0);
 	m_space=dSimpleSpaceCreate(ph_world->GetSpace());
@@ -85,7 +85,7 @@ void CPHShell::Activate(const Fmatrix &transform,const Fvector& lin_vel,const Fv
 		return;
 	CPHObject::Activate();
 
-	xr_vector<CPHElement*>::iterator i;
+	ELEMENT_I i;
 
 	mXFORM.set(transform);
 	m_space=dSimpleSpaceCreate(ph_world->GetSpace());
@@ -107,11 +107,11 @@ void CPHShell::Activate(const Fmatrix &transform,const Fvector& lin_vel,const Fv
 void CPHShell::Deactivate(){
 	if(!bActive)
 		return;
-	xr_vector<CPHElement*>::iterator i;
+	ELEMENT_I i;
 	for(i=elements.begin();i!=elements.end();i++)
 		(*i)->Deactivate();
 
-	xr_vector<CPHJoint*>::iterator j;
+	JOINT_I j;
 	for(j=joints.begin();j!=joints.end();j++)
 		(*j)->Deactivate();
 
@@ -126,7 +126,7 @@ void CPHShell::Deactivate(){
 
 void CPHShell::PhDataUpdate(dReal step){
 
-	xr_vector<CPHElement*>::iterator i;
+	ELEMENT_I i;
 	for(i=elements.begin();i!=elements.end();i++)
 		(*i)->PhDataUpdate(step);
 }
@@ -138,7 +138,7 @@ void CPHShell::PhTune(dReal step){
 
 void CPHShell::Update(){
 	if(!bActive) return;
-	xr_vector<CPHElement*>::iterator i;
+	ELEMENT_I i;
 	for(i=elements.begin();i!=elements.end();i++)
 		(*i)->Update();
 	mXFORM.set((*elements.begin())->mXFORM);
@@ -205,7 +205,7 @@ void CPHShell::Activate(bool place_current_forms,bool disable)
 		if(!m_space) m_space=dSimpleSpaceCreate(ph_world->GetSpace());
 
 		{		
-		xr_vector<CPHElement*>::iterator i;
+		ELEMENT_I i;
 		if(place_current_forms)
 		for(i=elements.begin();i!=elements.end();i++)	{
 															(*i)->Activate(mXFORM,disable);
@@ -213,7 +213,7 @@ void CPHShell::Activate(bool place_current_forms,bool disable)
 		}
 		
 		{
-		xr_vector<CPHJoint*>::iterator i;
+		JOINT_I i;
 		for(i=joints.begin();i!=joints.end();i++) (*i)->Activate();
 		}	
 	bActive=true;
@@ -222,7 +222,7 @@ void CPHShell::Activate(bool place_current_forms,bool disable)
 
 void CPHShell::SetTransform(Fmatrix m){
 	Fmatrix init;
-	xr_vector<CPHElement*>::iterator i=elements.begin();
+	ELEMENT_I i=elements.begin();
 	(*i)->InterpolateGlobalTransform(&init);
 	init.invert();
 	Fmatrix add;
@@ -246,7 +246,7 @@ void CPHShell::Enable()
 	if(!bActive)
 		return;
 
-	xr_vector<CPHElement*>::iterator i,e;
+	ELEMENT_I i,e;
 	i=elements.begin(); e=elements.end();
 	if(dBodyIsEnabled((*i)->get_body())) return;
 	for( ;i!=e;i++)
@@ -255,7 +255,7 @@ void CPHShell::Enable()
 
 void CPHShell::set_PhysicsRefObject	 (CPhysicsRefObject* ref_object)
 {
-	xr_vector<CPHElement*>::iterator i;
+	ELEMENT_I i;
 	for(i=elements.begin();i!=elements.end();i++)
 	{
 		(*i)->set_PhysicsRefObject(ref_object);
@@ -273,7 +273,7 @@ void CPHShell::set_PhysicsRefObject	 (CPhysicsRefObject* ref_object)
 
 void CPHShell::set_ContactCallback(ContactCallbackFun* callback)
 {
-	xr_vector<CPHElement*>::iterator i;
+	ELEMENT_I i;
 	for(i=elements.begin();i!=elements.end();i++)
 		(*i)->set_ContactCallback(callback);
 }
@@ -281,7 +281,7 @@ void CPHShell::set_ContactCallback(ContactCallbackFun* callback)
 
 void CPHShell::set_ObjectContactCallback(ObjectContactCallbackFun* callback)
 {
-	xr_vector<CPHElement*>::iterator i;
+	ELEMENT_I i;
 	for(i=elements.begin();i!=elements.end();i++)
 		(*i)->set_ObjectContactCallback(callback);
 }
@@ -289,14 +289,14 @@ void CPHShell::set_ObjectContactCallback(ObjectContactCallbackFun* callback)
 void CPHShell::SetPhObjectInElements()
 {
 	if(!bActive) return;
-	xr_vector<CPHElement*>::iterator i;
+	ELEMENT_I i;
 	for(i=elements.begin();i!=elements.end();i++ )
 		(*i)->SetPhObjectInGeomData((CPHObject*)this);
 }
 
 void CPHShell::SetMaterial(LPCSTR m)
 {
-	xr_vector<CPHElement*>::iterator i;
+	ELEMENT_I i;
 	for(i=elements.begin();i!=elements.end();i++)
 	{
 		(*i)->SetMaterial(m);
@@ -305,7 +305,7 @@ void CPHShell::SetMaterial(LPCSTR m)
 
 void CPHShell::SetMaterial(u32 m)
 {
-	xr_vector<CPHElement*>::iterator i;
+	ELEMENT_I i;
 	for(i=elements.begin();i!=elements.end();i++)
 	{
 		(*i)->SetMaterial(m);
@@ -326,7 +326,7 @@ void CPHShell::get_AngularVel(Fvector& velocity)
 
 void CPHShell::set_PushOut(u32 time,PushOutCallbackFun* push_out)
 {
-	xr_vector<CPHElement*>::iterator i;
+	ELEMENT_I i;
 	for(i=elements.begin();i!=elements.end();i++)
 	{
 		(*i)->set_PushOut(time,push_out);
@@ -339,7 +339,7 @@ void CPHShell::SmoothElementsInertia(float k)
 	dMass m_avrg;
 	dReal krc=1.f-k;
 	dMassSetZero(&m_avrg);
-	xr_vector<CPHElement*>::iterator i;
+	ELEMENT_I i;
 	for(i=elements.begin();i!=elements.end();i++)
 	{
 
@@ -712,7 +712,7 @@ void CPHShell::ZeroCallbacksRecursive(int id)
 }
 void CPHShell::set_DynamicLimits(float l_limit,float w_limit)
 {
-	xr_vector<CPHElement*>::iterator i,e;
+	ELEMENT_I i,e;
 	i=elements.begin(); e=elements.end();
 	for( ;i!=e;i++)
 		(*i)->set_DynamicLimits(l_limit,w_limit);
@@ -720,7 +720,7 @@ void CPHShell::set_DynamicLimits(float l_limit,float w_limit)
 
 void CPHShell::set_DynamicScales(float l_scale/* =default_l_scale */,float w_scale/* =default_w_scale */)
 {
-	xr_vector<CPHElement*>::iterator i,e;
+	ELEMENT_I i,e;
 	i=elements.begin(); e=elements.end();
 	for( ;i!=e;i++)
 		(*i)->set_DynamicScales(l_scale,w_scale);
@@ -728,7 +728,7 @@ void CPHShell::set_DynamicScales(float l_scale/* =default_l_scale */,float w_sca
 
 void CPHShell::set_DisableParams(float dis_l/* =default_disl */,float dis_w/* =default_disw */)
 {
-	xr_vector<CPHElement*>::iterator i,e;
+	ELEMENT_I i,e;
 	i=elements.begin(); e=elements.end();
 	for( ;i!=e;i++)
 		(*i)->set_DisableParams(dis_l,dis_w);
@@ -737,7 +737,7 @@ void CPHShell::set_DisableParams(float dis_l/* =default_disl */,float dis_w/* =d
 void CPHShell::UpdateRoot()
 {
 
-xr_vector<CPHElement*>::iterator i=elements.begin();
+ELEMENT_I i=elements.begin();
 if( (!(*i)->bActive) || (*i)->bActivating ) return;
 
 (*i)->InterpolateGlobalTransform(&mXFORM);
@@ -769,7 +769,7 @@ void CPHShell::GetGlobalPositionDynamic(Fvector* v)
 
 CPhysicsElement* CPHShell::NearestToPoint(const Fvector& point)
 {
-	xr_vector<CPHElement*>::iterator i,e;
+	ELEMENT_I i,e;
 	i=elements.begin(); e=elements.end();
 	float min_distance	=dInfinity;
 	CPHElement* nearest_element=NULL;
@@ -787,4 +787,41 @@ CPhysicsElement* CPHShell::NearestToPoint(const Fvector& point)
 		}
 	}
 	return nearest_element;
+}
+
+void CPHShell::PassEndElements(u16 from,CPHShell *dest,u16 position)
+{
+
+	ELEMENT_I i_from=elements.begin()+from,e=elements.end();
+	
+	for(ELEMENT_I i=i_from;i!=e;i++)
+	{
+		dGeomID spaced_geom=(*i)->dSpacedGeometry();
+		dSpaceRemove (m_space,spaced_geom );
+		dSpaceAdd(dest->m_space,spaced_geom);
+	}
+	dest->elements.insert(dest->elements.begin()+position,i_from,e);
+	elements.erase(i_from,e);
+	
+}
+
+void CPHShell::PassEndJoints(u16 from,CPHShell *dest)
+{
+	JOINT_I i_from=joints.begin()+from,e=joints.end();
+
+	dest->joints.insert(dest->joints.begin(),i_from,e);
+	joints.erase(i_from,e);
+}
+
+void CPHShell::DeleteElement(u16 element)
+{
+	elements[element]->Deactivate();
+	xr_delete(elements[element]);
+	elements.erase(elements.begin()+element);
+}
+void CPHShell::DeleteJoint(u16 joint)
+{
+	joints[joint]->Deactivate();
+	xr_delete(joints[joint]);
+	joints.erase(joints.begin()+joint);
 }

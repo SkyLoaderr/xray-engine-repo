@@ -171,7 +171,10 @@ void CODEGeom::add_to_space(dSpaceID space)
 {
 	if(m_geom_transform) dSpaceAdd(space,m_geom_transform);
 }
-
+void CODEGeom::remove_from_space(dSpaceID space)
+{
+	if(m_geom_transform) dSpaceRemove(space,m_geom_transform);
+}
 void CODEGeom::set_material(u32 ul_material)
 {
 	if(!m_geom_transform) return;

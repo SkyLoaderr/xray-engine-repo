@@ -2,15 +2,15 @@
 //////////////////////////////////////////////////////////////////////
 #ifndef PH_JOINT
 #define PH_JOINT
-
+class CPHJointDestroyInfo;
 class CPHJoint: public CPhysicsJoint{
 
-	CPHShell*   pShell;
-	dJointID m_joint;
-	dJointID m_joint1;
-
-	float m_erp;				 //joint erp
-	float m_cfm;				 //joint cfm
+	CPHShell					*pShell;
+	dJointID					m_joint;
+	dJointID					m_joint1;
+	CPHJointDestroyInfo			*m_destroy_info;
+	float						m_erp;				 //joint erp
+	float						m_cfm;				 //joint cfm
 
 
 	struct SPHAxis {
@@ -78,18 +78,17 @@ public:
 	virtual void SetForceAndVelocity		(const float force,const float velocity=0.f,const int axis_num=-1);
 	virtual void SetForce					(const float force,const int axis_num=-1);
 	virtual void SetVelocity				(const float velocity=0.f,const int axis_num=-1);
+	virtual void SetBreakable				(float force,float torque)						;
+	//virtual bool Breaked					(){return m_destroy_info->Breaked();}
 	virtual dJointID GetDJoint				(){return m_joint;}
 	virtual void GetLimits					(float& lo_limit,float& hi_limit,int axis_num);
 	virtual void GetAxisDir					(int num,Fvector& axis,eVs& vs);
 	virtual void GetAxisDirDynamic			(int num,Fvector& axis);
 	virtual void GetAnchorDynamic			(Fvector& anchor);
 	virtual void Deactivate();
-	CPHJoint(CPhysicsJoint::enumType type ,CPhysicsElement* first,CPhysicsElement* second);
-	virtual ~CPHJoint(){
-		if(bActive) Deactivate();
-		axes.clear();
-
-	};
+			void ReattachFirstElement		(CPHElement* new_element);
+				 CPHJoint(CPhysicsJoint::enumType type ,CPhysicsElement* first,CPhysicsElement* second);
+	virtual		 ~CPHJoint();
 	void SetShell					(CPHShell* p)			 {pShell=p;}
 
 };

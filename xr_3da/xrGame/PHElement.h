@@ -3,6 +3,7 @@
 ///////////////////////////Implemetation//for//CPhysicsElement//////////////////
 ////////////////////////////////////////////////////////////////////////////////
 #include "Geometry.h"
+#include "phdefs.h"
 //using namespace std;
 #ifndef PH_ELEMENT
 #define PH_ELEMENT
@@ -12,10 +13,11 @@ typedef		void	__stdcall	ContactCallbackFun		(CDB::TRI* T,dContactGeom* c);
 void				__stdcall	ContactShotMark			(CDB::TRI* T,dContactGeom* c);
 typedef		void	__stdcall	PushOutCallbackFun		(bool& do_colide,dContact& c);
 
-DEFINE_LIST(CODEGeom*,GEOM_STORAGE,GEOM_I)
-
+DEFINE_VECTOR(CODEGeom*,GEOM_STORAGE,GEOM_I)
+class CPHFracturesHolder;
 class CPHElement	:  public CPhysicsElement 
 {
+	friend class CPHFracturesHolder;
 	GEOM_STORAGE			m_geoms;					//e
 	float					m_start_time;				//uu ->to shell ??
 	float					m_volume;					//e ??
@@ -32,7 +34,7 @@ class CPHElement	:  public CPhysicsElement
 	CPHElement				*m_parent_element;			//bool !
 	CPHShell				*m_shell;					//e
 	CPHInterpolation		m_body_interpolation;		//e
-
+	CPHFracturesHolder		*m_fratures_holder;
 	/////disable///////////////////////
 	//dVector3 mean_w;
 	//dVector3 mean_v;
@@ -134,7 +136,7 @@ public:
 	void			calc_volume_data						();
 	void			Start									();
 	void			RunSimulation							();
-
+	IC CPHFracturesHolder* FracturesHolder					(){return m_fratures_holder;}
 
 	float			get_volume								()	{calc_volume_data();return m_volume;};
 	void			SetTransform							(const Fmatrix& m0);
@@ -156,6 +158,9 @@ public:
 	virtual void			setMassMC				(float M,const Fvector& mass_center);
 	virtual void			setDensityMC			(float M,const Fvector& mass_center);
 	virtual void			setInertia				(const Fmatrix& M)																					{}
+	dGeomID					dSpacedGeometry			();
+			void			PassEndGeoms			(u16 from,CPHElement* dest);
+			void			SplitProcess			(ELEMENT_STORAGE &new_elements);
 	dMass*					GetMass					()
 	{
 		return &m_mass;
@@ -200,6 +205,7 @@ public:
 		ul_material=GMLib.GetMaterialIdx("objects\\box_default");
 		k_w=0.05f;
 		k_l=0.0002f;//1.8f;
+		m_fratures_holder=NULL;
 	};
 	//CPHElement(){ m_space=ph_world->GetSpace();};
 	virtual ~CPHElement	();

@@ -2,6 +2,7 @@
 #include "PHDynamicData.h"
 #include "Physics.h"
 #include "tri-colliderknoopc/dTriList.h"
+#include "PHFracture.h"
 ///////////////////////////////////////////////////////////////
 #pragma warning(disable:4995)
 #pragma warning(disable:4267)
@@ -1195,4 +1196,29 @@ const Fvector& CPHElement::mass_Center()
 CPhysicsShell* CPHElement::PhysicsShell()
 {
 	return dynamic_cast<CPhysicsShell*>(m_shell);
+}
+
+dGeomID CPHElement::dSpacedGeometry()
+{
+	if(!bActive) return 0;
+	if(m_group) return (dGeomID)m_group;
+	else return (*m_geoms.begin())->geometry_transform();
+}
+
+void CPHElement::PassEndGeoms(u16 from,CPHElement* dest)
+{
+	GEOM_I i_from=m_geoms.begin()+from,e=m_geoms.end();
+
+	for(GEOM_I i=i_from;i!=e;i++)
+	{
+		(*i)->remove_from_space(m_group);
+		(*i)->add_to_space(dest->m_group);
+		(*i)->set_body(dest->m_body);
+	}
+	dest->m_geoms.insert(dest->m_geoms.begin(),i_from,e);
+	m_geoms.erase(i_from,e);
+}
+void CPHElement::SplitProcess(ELEMENT_STORAGE &new_elements)
+{
+	m_fratures_holder->SplitProcess(this,new_elements);
 }

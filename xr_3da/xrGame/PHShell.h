@@ -4,20 +4,20 @@
 #define PH_SHELL
 
 class CPHShell;
-
+class CPHShellSplitterHolder;
 #include "PHJoint.h"
 #include "PHElement.h"
-
+#include "PHDefs.h"
 class CPHShell: public CPhysicsShell,public CPHObject {
-	xr_vector<CPHElement*> elements;
-	xr_vector<CPHJoint*>	joints;
+
+	friend class CPHShellSplitterHolder;
+
+	ELEMENT_STORAGE			elements;
+	JOINT_STORAGE			joints;
 	dSpaceID			    m_space;
-	
-
-
-
+	CPHShellSplitterHolder* m_spliter_holder;
 public:
-	Fmatrix											m_object_in_root;
+	Fmatrix					m_object_in_root;
 
 	CPHShell				()							
 			{
@@ -25,6 +25,7 @@ public:
 													bActivating=false;
 													m_space=NULL;
 													m_pKinematics=NULL;
+													m_spliter_holder=NULL;
 													m_object_in_root.identity();
 			};
 
@@ -100,7 +101,7 @@ virtual ~CPHShell				()
 	};
 	virtual void			set_JointResistance		(float force)
 	{
-		xr_vector<CPHJoint*>::iterator i;
+		JOINT_I i;
 		for(i=joints.begin();i!=joints.end();i++)
 		{
 			(*i)->SetForce(force);
@@ -147,7 +148,10 @@ virtual ~CPHShell				()
 		if(!m_space) m_space=dSimpleSpaceCreate(ph_world->GetSpace());
 		//dSpaceSetCleanup (m_space, 0);
 	}
-
+	void PassEndElements(u16 from,CPHShell *dest,u16 position);
+	void PassEndJoints(u16 from,CPHShell *dest);
+	void DeleteElement(u16 element);
+	void DeleteJoint(u16 joint);
 	void SetTransform(Fmatrix m);
 private:
 	void AddElementRecursive(CPhysicsElement* root_e, int id,const CBoneData& parent_data);

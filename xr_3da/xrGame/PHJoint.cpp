@@ -2,6 +2,7 @@
 #include "PHDynamicData.h"
 #include "Physics.h"
 #include "tri-colliderknoopc/dTriList.h"
+#include "PHJointDestroyInfo.h"
 ///////////////////////////////////////////////////////////////
 ///#pragma warning(disable:4995)
 ////#include "..\ode\src\collision_kernel.h"
@@ -16,6 +17,13 @@
 #include "PHElement.h"
 #include "PHJoint.h"
 #include "PHShell.h"
+
+CPHJoint::~CPHJoint(){
+	xr_delete(m_destroy_info);
+	if(bActive) Deactivate();
+	axes.clear();
+
+};
 void CPHJoint::CreateBall()
 {
 
@@ -471,6 +479,7 @@ void CPHJoint::SetLimits(const float low, const float high, const int axis_num)
 CPHJoint::CPHJoint(CPhysicsJoint::enumType type ,CPhysicsElement* first,CPhysicsElement* second)
 {
 
+	m_destroy_info=NULL;
 	pFirst_element=first;
 	pSecond_element=second; 
 	eType=type;
@@ -537,6 +546,11 @@ void CPHJoint::Activate()
 	case welding:				CreateWelding();		break;
 	case full_control:			CreateFullControl();	break;
 	}
+	if(m_destroy_info)
+	{
+		dJointSetFeedback(m_joint,m_destroy_info->JointFeedback());
+		dJointSetFeedback(m_joint1,m_destroy_info->JointFeedback());
+	}		
 	bActive=true;
 }
 
@@ -561,7 +575,12 @@ void CPHJoint::Deactivate()
 
 	bActive=false;
 }
-
+void CPHJoint::ReattachFirstElement(CPHElement* new_element)
+{
+	Deactivate();
+	pFirst_element=dynamic_cast<CPhysicsElement*>(new_element);
+	Activate();
+}
 void CPHJoint::SetForceAndVelocity		(const float force,const float velocity,const int axis_num)
 {
 SetForce(force,axis_num);
@@ -1035,3 +1054,7 @@ void CPHJoint::SPHAxis::set_sd_factors(float sf,float df,enumType jt)
 	}
 }
 
+void CPHJoint::SetBreakable(float force,float torque)
+{
+	m_destroy_info=xr_new<CPHJointDestroyInfo>(force,torque);
+}

@@ -59,6 +59,7 @@ virtual			void		get_local_form		(Fmatrix& form)														=0;
 	//element part
 				void		set_body			(dBodyID body)														;
 				void		add_to_space		(dSpaceID space)													;
+				void		remove_from_space	(dSpaceID space)													;
 				void		set_material		(u32 ul_material)													;
 				void		set_contact_cb		(ContactCallbackFun* ccb)											;
 				void		set_obj_contact_cb	(ObjectContactCallbackFun* occb)									;
