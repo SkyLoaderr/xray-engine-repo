@@ -35,8 +35,6 @@ static char			dlgLine		[16];
 
 static INT_PTR CALLBACK DialogProc	( HWND hw, UINT msg, WPARAM wp, LPARAM lp )
 {
-	xr_vector<u32>	aaa	(1,1u);
-
 	switch( msg ){
 	case WM_INITDIALOG:
 		{
