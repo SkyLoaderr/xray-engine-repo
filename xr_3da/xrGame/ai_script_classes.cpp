@@ -9,17 +9,19 @@
 #include "stdafx.h"
 #include "ai_script_classes.h"
 
-void CLuaGameObject::Hit(float power, Fvector &dir, CLuaGameObject *who, s16 element, Fvector p_in_object_space, float impulse, ALife::EHitType hit_type)
+void CLuaGameObject::Hit(CLuaHit &tLuaHit)
 {
 	NET_Packet		P;
 	m_tpGameObject->u_EventGen(P,GE_HIT,m_tpGameObject->ID());
-	P.w_u16			(u16(who->ID()));
-	P.w_dir			(dir);
-	P.w_float		(power);
-	P.w_s16			(element);
-	P.w_vec3		(p_in_object_space);
-	P.w_float		(impulse);
-	P.w_u16			(u16(hit_type));
+	P.w_u16			(u16(tLuaHit.m_tpDraftsman->ID()));
+	P.w_dir			(tLuaHit.m_tDirection);
+	P.w_float		(tLuaHit.m_fPower);
+	CKinematics		*V = PKinematics(m_tpGameObject->Visual());
+	R_ASSERT		(V);
+	P.w_s16			(V->LL_BoneID(tLuaHit.m_caBoneName));
+	P.w_vec3		(Fvector().set(0,0,0));
+	P.w_float		(tLuaHit.m_fImpulse);
+	P.w_u16			(u16(tLuaHit.m_tHitType));
 	m_tpGameObject->u_EventSend(P);
 }
 

@@ -32,11 +32,53 @@ CLuaGameObject *get_object_by_name(LPCSTR caObjectName)
 		return		(0);
 }
 
+void Script::vfLoadStandardScripts(CLuaVirtualMachine *tpLuaVirtualMachine)
+{
+	string256		S,S1;
+	FS.update_path	(S,"$game_data$","script.ltx");
+	CInifile		*l_tpIniFile = xr_new<CInifile>(S);
+	R_ASSERT		(l_tpIniFile);
+	LPCSTR			caScriptString = l_tpIniFile->r_string("common","script");
+
+	u32				N = _GetItemCount(caScriptString);
+	string16		I;
+	for (u32 i=0; i<N; i++) {
+		FS.update_path(S,"$game_scripts$",strconcat(S1,_GetItem(caScriptString,i,I),".script"));
+		R_ASSERT3	(FS.exist(S),"Script file not found!",S);
+		IReader		*F = FS.r_open(S);
+		R_ASSERT	(F);
+		strconcat	(S1,"@",S);		
+		int			l_iErrorCode = lua_dobuffer(tpLuaVirtualMachine,static_cast<LPCSTR>(F->pointer()),F->length(),S1);
+		Msg			("* Loading common script %s",S);
+		vfPrintOutput(tpLuaVirtualMachine,S);
+		if (l_iErrorCode)
+			vfPrintError(tpLuaVirtualMachine,l_iErrorCode);
+		FS.r_close	(F);
+	}
+	xr_delete		(l_tpIniFile);
+}
+
 void Script::vfExportToLua(CLuaVirtualMachine *tpLuaVirtualMachine)
 {
 	open			(tpLuaVirtualMachine);
 
 	function		(tpLuaVirtualMachine,	"log",	LuaLog);
+
+	module(tpLuaVirtualMachine,"Game")
+	[
+		// declarations
+		def("get_time",							get_time),
+//		def("get_surge_time",					Game::get_surge_time),
+//		def("get_object_by_name",				Game::get_object_by_name),
+		
+		namespace_("Level")
+		[
+//			// declarations
+			def("get_object_by_name",			get_object_by_name)
+//			def("get_weather",					Level::get_weather)
+		]
+
+	];
 
 	module(tpLuaVirtualMachine)
 	[
@@ -200,6 +242,29 @@ void Script::vfExportToLua(CLuaVirtualMachine *tpLuaVirtualMachine)
 			.def("PlayAtPos",					&CParticlesObject::play_at_pos)
 			.def("Stop",						&CParticlesObject::Stop),
 
+		class_<CLuaHit>("CHit")
+			.def(								constructor<>())
+			.def(								constructor<const CLuaHit *>())
+			.enum_("EHitType")
+			[
+				value("eHitTypeBurn",			int(ALife::eHitTypeBurn)),
+				value("eHitTypeShock",			int(ALife::eHitTypeShock)),
+				value("eHitTypeStrike",			int(ALife::eHitTypeStrike)),
+				value("eHitTypeWound",			int(ALife::eHitTypeWound)),
+				value("eHitTypeRadiation",		int(ALife::eHitTypeRadiation)),
+				value("eHitTypeTelepatic",		int(ALife::eHitTypeTelepatic)),
+				value("eHitTypeChemicalBurn",	int(ALife::eHitTypeChemicalBurn)),
+				value("eHitTypeExplosion",		int(ALife::eHitTypeExplosion)),
+				value("eHitTypeFireWound",		int(ALife::eHitTypeFireWound))
+			]
+
+			.def_readwrite("Power",				&CLuaHit::m_fPower)
+			.def_readwrite("Direction",			&CLuaHit::m_tDirection)
+			.def_readwrite("Draftsman",			&CLuaHit::m_tpDraftsman)
+			.def_readwrite("BoneName",			&CLuaHit::m_caBoneName)
+			.def_readwrite("Impulse",			&CLuaHit::m_fImpulse)
+			.def_readwrite("HitType",			&CLuaHit::m_tHitType),
+
 		class_<CLuaGameObject>("CGameObject")
 			.def(								constructor<LPCSTR>())
 			.def(								constructor<const CLuaGameObject *>())
@@ -223,52 +288,10 @@ void Script::vfExportToLua(CLuaVirtualMachine *tpLuaVirtualMachine)
 			.def("Squad",						&CLuaGameObject::Squad)
 			.def("Group",						&CLuaGameObject::Group)
 			.def("Kill",						&CLuaGameObject::Kill)
-//			.def("Hit",							&CLuaGameObject::Hit)
+			.def("Hit",							&CLuaGameObject::Hit)
 //			.def("HealthValue",					&CLuaGameObject::HealthValue)
 //			.def("FoodValue",					&CLuaGameObject::FoodValue)
 	];
 
-	module(tpLuaVirtualMachine,"Game")
-	[
-		// declarations
-		def("get_time",							get_time),
-//		def("get_surge_time",					Game::get_surge_time),
-//		def("get_object_by_name",				Game::get_object_by_name),
-		
-		namespace_("Level")
-		[
-//			// declarations
-			def("get_object_by_name",			get_object_by_name)
-//			def("get_weather",					Level::get_weather)
-		]
-
-	];
-
 	vfLoadStandardScripts(tpLuaVirtualMachine);
-}
-
-void Script::vfLoadStandardScripts(CLuaVirtualMachine *tpLuaVirtualMachine)
-{
-	string256		S,S1;
-	FS.update_path	(S,"$game_data$","script.ltx");
-	CInifile		*l_tpIniFile = xr_new<CInifile>(S);
-	R_ASSERT		(l_tpIniFile);
-	LPCSTR			caScriptString = l_tpIniFile->r_string("common","script");
-
-	u32				N = _GetItemCount(caScriptString);
-	string16		I;
-	for (u32 i=0; i<N; i++) {
-		FS.update_path(S,"$game_scripts$",strconcat(S1,_GetItem(caScriptString,i,I),".script"));
-		R_ASSERT3	(FS.exist(S),"Script file not found!",S);
-		IReader		*F = FS.r_open(S);
-		R_ASSERT	(F);
-		strconcat	(S1,"@",S);		
-		int			l_iErrorCode = lua_dobuffer(tpLuaVirtualMachine,static_cast<LPCSTR>(F->pointer()),F->length(),S1);
-		Msg			("* Loading common script %s",S);
-		vfPrintOutput(tpLuaVirtualMachine,S);
-		if (l_iErrorCode)
-			vfPrintError(tpLuaVirtualMachine,l_iErrorCode);
-		FS.r_close	(F);
-	}
-	xr_delete		(l_tpIniFile);
 }

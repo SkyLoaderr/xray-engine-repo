@@ -71,6 +71,37 @@
 	CAST_OBJECT0		(A,B)\
 	CALL_FUNCTION01		(C,F)
 
+class CLuaGameObject;
+
+class CLuaHit {
+public:
+	float				m_fPower; 
+	Fvector				m_tDirection;
+	LPCSTR				m_caBoneName;
+	CLuaGameObject		*m_tpDraftsman;
+	float				m_fImpulse;
+	int					m_tHitType;
+
+							CLuaHit				()
+	{
+		m_fPower		= 100;
+		m_tDirection.set(1,0,0);
+		m_caBoneName	= "";
+		m_tpDraftsman	= 0;
+		m_fImpulse		= 100;
+		m_tHitType		= ALife::eHitTypeWound;
+	}
+
+							CLuaHit				(const CLuaHit *tpLuaHit)
+	{
+		*this			= *tpLuaHit;
+	}
+
+	virtual					~CLuaHit			()
+	{
+	}
+};
+
 class CLuaGameObject {
 	CGameObject			*m_tpGameObject;
 public:
@@ -105,14 +136,8 @@ public:
 		else
 			return		(0);
 	}
-
-			void			Hit					(float power, Fvector &dir, CLuaGameObject *who, s16 element, Fvector p_in_object_space, float impulse, ALife::EHitType hit_type);
-
-
-							operator CObject*() const
-	{
-		return			((CObject*)m_tpGameObject);
-	}
+			
+			void			Hit					(CLuaHit &tLuaHit);
 
 	BIND_MEMBER		(ClassID,	CGameObject,	CLS_ID,			CLASS_ID,			CLASS_ID(-1));
 	BIND_FUNCTION10	(Position,	CGameObject,	Position,		Fvector,			Fvector());
@@ -125,6 +150,8 @@ public:
 	BIND_FUNCTION10	(getEnabled,CGameObject,	getEnabled,		BOOL,				FALSE);
 	BIND_FUNCTION01	(setEnabled,CGameObject,	setEnabled,		BOOL);
 
+	BIND_FUNCTION10	(Cost,		CInventoryItem,	Cost,			u32,				u32(-1));
+
 	BIND_MEMBER		(DeathTime,	CEntity,		m_dwDeathTime,	_TIME_ID,			_TIME_ID(-1));
 	BIND_FUNCTION10	(Armor,		CEntity,		g_Armor,		float,				-1);
 	BIND_FUNCTION10	(Health,	CEntity,		g_Health,		float,				-1);
@@ -134,7 +161,6 @@ public:
 	BIND_FUNCTION10	(Team,		CEntity,		g_Team,			int,				-1);
 	BIND_FUNCTION10	(Squad,		CEntity,		g_Squad,		int,				-1);
 	BIND_FUNCTION10	(Group,		CEntity,		g_Group,		int,				-1);
-//	BIND_FUNCTION01	(Kill,		CEntity,		KillEntity,		CLuaGameObject*);
 	
 	IC		void			Kill				(CLuaGameObject* who)
 	{
@@ -143,24 +169,14 @@ public:
 			Log				("* [LUA] %s cannot access class member!",m_tpGameObject->cName());
 			return;
 		}
-		l_tpEntity->KillEntity					((CObject*)who);
+		l_tpEntity->KillEntity(who->m_tpGameObject);
 	}
 	
-	BIND_FUNCTION10	(Cost,		CInventoryItem,	Cost,			u32,				u32(-1));
-	
-	
-//			.def("Enabled",						&CLuaGameObject::Enabled)
-//			.def("Visible",						&CLuaGameObject::Visible),
-//
-//		class_<CLuaGameItem,"CGameObject">("CGameItem")
 //			.def("HealthValue",					&CLuaGameItem::HealthValue)
 //			.def("FoodValue",					&CLuaGameItem::FoodValue)
 //class CItemObject {
 //public:
-//	Active();
-//	Visible(); // only for NPC
 //	Condition();
-//	get_cost();
 //};
 //
 //class CAliveObject {
@@ -172,7 +188,6 @@ public:
 //	asleep();
 //	zombied();
 //	checkifobjectvisible();
-//
 //};
 //
 };
