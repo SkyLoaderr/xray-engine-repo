@@ -19,6 +19,8 @@ class CAI_PseudoDog : public CAI_Biting, public CJumping {
 	IState			*stateGrowling;
 	TTime			time_growling;			// время нахождения в состоянии пугания
 
+	ref_sound		psy_effect_sound;		// звук, который играется в голове у актера
+
 public:
 					CAI_PseudoDog		();
 	virtual			~CAI_PseudoDog		();	
@@ -39,5 +41,6 @@ public:
 
 	virtual void	CheckSpecParams		(u32 spec_params);
 	virtual u8		get_legs_number		() {return QUADRUPEDAL;}
+	virtual void	play_effect_sound	();
 
 };

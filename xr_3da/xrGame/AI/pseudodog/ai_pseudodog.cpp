@@ -159,6 +159,8 @@ void CAI_PseudoDog::Load(LPCSTR section)
 	m_anger_loud_threshold		= pSettings->r_float(section, "anger_loud_threshold");
 
 	CSoundPlayer::add(pSettings->r_string(section,"sound_psy_attack"),	16,	SOUND_TYPE_MONSTER_ATTACKING,	1,	u32(1 << 31) | 15,	MonsterSpace::eMonsterSoundPsyAttack, "bip01_head");
+	
+	::Sound->create(psy_effect_sound,TRUE, pSettings->r_string(section,"sound_psy_effect"), SOUND_TYPE_WORLD);
 }
 
 #define MIN_ANGRY_TIME		10000
@@ -289,4 +291,14 @@ void CAI_PseudoDog::CheckSpecParams(u32 spec_params)
 	}
 }
 
+
+void CAI_PseudoDog::play_effect_sound()
+{
+	CActor *pA = dynamic_cast<CActor*>(Level().CurrentEntity());
+	if (!pA) return;
+	
+	Fvector pos = pA->Position();
+	pos.y += 1.5f;
+	::Sound->play_at_pos(psy_effect_sound,pA,pos);
+}
 

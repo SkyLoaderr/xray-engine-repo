@@ -10,7 +10,7 @@ class CBurerAttack : public IState {
 	enum {
 		ACTION_MELEE,
 		ACTION_TELE,
-		ACTION_GRAVI_START,
+		ACTION_GRAVI_STARTED,
 		ACTION_GRAVI_CONTINUE,
 		ACTION_GRAVI_FIRE,
 
@@ -19,6 +19,9 @@ class CBurerAttack : public IState {
 
 	const CEntityAlive *enemy;
 
+	TTime time_next_gravi_available;
+	TTime time_gravi_started;
+
 public:	
 					CBurerAttack		(CBurer *p);
 
@@ -26,20 +29,21 @@ public:
 	virtual void	Run					();
 
 private:
+		// Checking			
+			bool	CheckGravi			();
+			bool	CheckGraviFire		();
+	
+		// Executing
 			void	Execute_Telekinetic		();
-			
-			void	Execute_Gravi_Start		();
-			void	Execute_Gravi_Continue	();
-			void	Execute_Gravi_Fire		(){}
-
+			void	Execute_Gravi			();
+			void	Execute_Gravi_Fire		();
 			void	Execute_Melee			();
 
-
-			u32		get_number_available_objects(xr_vector<CObject*> &tpObjects);
-
-			// checking			
-			bool	CheckGraviStart			();
-			bool	CheckGraviContinue		();
-
+		// Updating state
+			
 			void	update					();
+		
+		// additional stuff
+			u32		get_number_available_objects(xr_vector<CObject*> &tpObjects);
+			void	find_tele_objects		();
 };

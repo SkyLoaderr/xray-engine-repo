@@ -28,6 +28,9 @@ public:
 	
 			// бросить все объекты в позицию 'target'
 			void	fire				(const Fvector &target);
+			
+			// бросить объект 'obj' в позицию 'target' с учетом коэф силы 
+			void	fire				(CGameObject *obj, const Fvector &target, float power);
 
 			// вернуть активность телекинеза
 			bool	is_active			() {return active;}

@@ -77,6 +77,18 @@ void CTelekinesis::fire(CGameObject *obj, const Fvector &target)
 	it->fire(target);
 }
 
+// бросить объект 'obj' в позицию 'target' с учетом коэф силы 
+void CTelekinesis::fire(CGameObject *obj, const Fvector &target, float power)
+{
+	// найти объект
+	TELE_OBJECTS_IT it = find(objects.begin(), objects.end(), obj);
+	if (it == objects.end()) return;
+
+	// бросить объект
+	it->fire(target);
+}
+
+
 bool CTelekinesis::is_active_object(CGameObject *obj)
 {
 	// найти объект

@@ -175,37 +175,20 @@ void CLevel::IR_OnKeyboardPress(int key)
 		break;
 	}
 
-//	CObject			*obj		= Level().Objects.FindObjectByName("tele");
-//	if (obj) {
-//		CAI_Bloodsucker *monster = dynamic_cast<CAI_Bloodsucker *>(obj);
-//
-//		if (monster) {
-//			switch (key) {
-//				case DIK_1:
-//					monster->set_visible(false);
-//					break;
-//			}
-//		}
-//	}
+	CObject			*obj		= Level().Objects.FindObjectByName("tele");
+
 
 //	if (obj) {
 //		CBurer		*monster	= dynamic_cast<CBurer *>(obj);
 //
-//		Fvector pos;
-//		pos = Level().CurrentEntity()->Position();
-//		pos.y+=3.f;
-
 //		if (monster) {
 //			switch (key) {
-//		case DIK_1:
-//			monster->TTelekinesis::Activate(monster->Position());
-//			break;
-//		case DIK_2:
-//			monster->TTelekinesis::Deactivate();
-//			break;
-//		case DIK_3:
-//			monster->TTelekinesis::Throw(pos);						
-//			break;
+//			case DIK_1:
+//				monster->MotionMan.TA_Activate(&monster->anim_triple_gravi);
+//				break;
+//			case DIK_2:
+//				monster->MotionMan.TA_PointBreak();
+//				break;
 //			}
 //		}
 //	}

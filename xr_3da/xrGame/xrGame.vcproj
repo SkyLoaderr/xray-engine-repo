@@ -1938,6 +1938,16 @@
 							Name="Properties"
 							Filter="">
 						</Filter>
+						<Filter
+							Name="TripleAnimation"
+							Filter="">
+							<File
+								RelativePath=".\ai\anim_triple.cpp">
+							</File>
+							<File
+								RelativePath=".\ai\anim_triple.h">
+							</File>
+						</Filter>
 					</Filter>
 				</Filter>
 				<Filter

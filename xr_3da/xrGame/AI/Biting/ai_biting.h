@@ -27,6 +27,7 @@
 
 class CMonsterDebug;
 class CCharacterPhysicsSupport;
+class CAnimTriple;
 
 class CAI_Biting : public CCustomMonster, 
 				   virtual public CMonsterMovement,
@@ -288,7 +289,9 @@ public:
 
 	bool					state_invisible;
 
-
+	// проиграть звук у актера
+	virtual void			play_effect_sound		() {}
+	
 
 
 #ifdef DEBUG

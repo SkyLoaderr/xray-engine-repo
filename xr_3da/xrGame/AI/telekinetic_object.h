@@ -36,6 +36,8 @@ public:
 	void				keep					();
 	void				release					();
 	void				fire					(const Fvector &target);
+	void				fire					(const Fvector &target, float power);
+
 
 	ETelekineticState	get_state				() {return state;}
 	CGameObject			*get_object				() {return object;}

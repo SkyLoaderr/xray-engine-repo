@@ -133,6 +133,25 @@ void CTelekineticObject::fire(const Fvector &target)
 	time_fire_started	= Level().timeServer();
 }
 
+void CTelekineticObject::fire(const Fvector &target, float power)
+{
+	// вычислить направление
+	Fvector dir;
+	dir.sub(target,object->Position());
+	dir.normalize();
+
+	// включить гравитацию
+	object->m_pPhysicsShell->set_ApplyByGravity(TRUE);
+
+	// выполнить бросок
+	for (u32 i=0;i<object->m_pPhysicsShell->Elements().size();i++) {
+		object->m_pPhysicsShell->Elements()[i]->applyImpulse(dir, power * 20.f * object->m_pPhysicsShell->getMass() / object->m_pPhysicsShell->Elements().size());
+	}
+
+	state				= TS_Fire;
+	time_fire_started	= Level().timeServer();
+}
+
 bool CTelekineticObject::check_height()
 {
 	return (object->Position().y > target_height);

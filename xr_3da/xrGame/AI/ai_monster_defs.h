@@ -216,7 +216,13 @@ enum EMotionAnim {
 	eAnimUpperThreaten,
 	eAnimUpperAttack,
 	
-	eAnimAttackPsi
+	eAnimAttackPsi,
+
+	eAnimTeleRaise,
+	eAnimTeleFire,
+	eAnimGraviPrepare,
+	eAnimGraviFire
+
 };
 
 // Generic actions

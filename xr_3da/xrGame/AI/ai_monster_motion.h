@@ -5,6 +5,7 @@
 
 class		CAI_Biting;
 class		CJumping;
+class		CAnimTriple;
 
 //////////////////////////////////////////////////////////////////////////
 class CMotionManager : public CSharedClass<_motion_shared> {
@@ -65,6 +66,9 @@ class CMotionManager : public CSharedClass<_motion_shared> {
 
 
 	SStepInfo					step_info;
+
+	CAnimTriple					*pCurAnimTriple;
+
 
 public:
 	
@@ -229,7 +233,11 @@ public:
 		bool	accel_check_braking		(float before_interval);
 
 	//-------------------------------------------------------------------------------
-
-
+	// Triple Animation
+	
+		void	TA_Activate				(CAnimTriple *p_triple);
+		void	TA_Deactivate			();
+		void	TA_PointBreak			();
+		bool	TA_IsActive				();
 };
 

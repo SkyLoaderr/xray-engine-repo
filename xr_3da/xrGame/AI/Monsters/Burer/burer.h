@@ -2,6 +2,7 @@
 #include "../../biting/ai_biting.h"
 #include "burer_state_manager.h"
 #include "../../telekinesis.h"
+#include "../../anim_triple.h"
 
 class CCharacterPhysicsSupport;
 
@@ -21,6 +22,7 @@ public:
 
 			void	Init				();
 	virtual void	reinit				();
+	virtual void	reload				(LPCSTR section);
 
 	virtual void	Load				(LPCSTR section);
 
@@ -33,10 +35,13 @@ public:
 
 	virtual u8		get_legs_number		() {return BIPEDAL;}
 
+	virtual void	CheckSpecParams		(u32 spec_params);
 
 private:
 
-	IState		*stateBurerAttack;
+	IState			*stateBurerAttack;
 
+public:
+	CAnimTriple		anim_triple_gravi;
 };
 

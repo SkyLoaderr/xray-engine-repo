@@ -49,6 +49,25 @@ void CBurer::reinit()
 	
 }
 
+
+void CBurer::reload(LPCSTR section)
+{
+	inherited::reload(section);
+
+	// Load triple animations
+	CMotionDef *def1, *def2, *def3;
+	def1 = PSkeletonAnimated(Visual())->ID_Cycle_Safe("stand_gravi_0");
+	VERIFY(def1);
+
+	def2 = PSkeletonAnimated(Visual())->ID_Cycle_Safe("stand_gravi_1");
+	VERIFY(def2);
+
+	def3 = PSkeletonAnimated(Visual())->ID_Cycle_Safe("stand_gravi_2");
+	VERIFY(def3);
+
+	anim_triple_gravi.init_external	(def1, def2, def3);
+}
+
 void CBurer::Load(LPCSTR section)
 {
 	inherited::Load				(section);
@@ -70,6 +89,12 @@ void CBurer::Load(LPCSTR section)
 	MotionMan.AddAnim(eAnimLookAround,		"stand_idle_",			-1, &inherited::_sd->m_fsVelocityNone,				PS_STAND);
 	MotionMan.AddAnim(eAnimDie,				"stand_die_",			-1, &inherited::_sd->m_fsVelocityNone,				PS_STAND);
 
+//	MotionMan.AddAnim(eAnimTeleRaise,		"",						-1, );
+//	MotionMan.AddAnim(eAnimTeleFire);
+//	MotionMan.AddAnim(eAnimGraviPrepare);
+//	MotionMan.AddAnim(eAnimGraviFire);
+
+
 	MotionMan.LinkAction(ACT_STAND_IDLE,	eAnimStandIdle, eAnimStandTurnLeft, eAnimStandTurnRight, PI_DIV_6);
 	MotionMan.LinkAction(ACT_SIT_IDLE,		eAnimLieIdle);
 	MotionMan.LinkAction(ACT_LIE_IDLE,		eAnimLieIdle);
@@ -90,6 +115,7 @@ void CBurer::Load(LPCSTR section)
 	MotionMan.accel_load			(section);
 	MotionMan.accel_chain_add		(eAnimWalkFwd,		eAnimRun);
 
+
 }
 
 void CBurer::StateSelector()
@@ -108,7 +134,9 @@ void CBurer::StateSelector()
 		if (hear_interesting_sound)			state = stateNull;	
 	} else									state = stateNull; 
 
-	SetState(state); 
+	//SetState(state); 
+
+	SetState(stateNull); 
 }
 
 void CBurer::ProcessTurn()
@@ -149,5 +177,14 @@ void CBurer::shedule_Update(u32 dt)
 
 	TTelekinesis::schedule_update();
 }
+
+void CBurer::CheckSpecParams(u32 spec_params)
+{
+//	if ((spec_params & ASP_GRAVI_ATTACK) == ASP_GRAVI_ATTACK) {
+//		//MotionMan.AT_Activate(&anim_triple_gravi);
+//	}
+}
+
+
 
 

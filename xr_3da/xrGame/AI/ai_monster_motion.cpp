@@ -4,6 +4,7 @@
 #include "biting/ai_biting.h"
 #include "ai_monster_utils.h"
 #include "../PHMovementControl.h"
+#include "anim_triple.h"
 
 // DEBUG purpose only
 char *dbg_action_name_table[] = {
@@ -62,6 +63,8 @@ void CMotionManager::Init (CAI_Biting	*pM)
 	accel_init				();
 
 	aa_time_last_attack		= 0;
+	
+	pCurAnimTriple			= 0;
 }
 
 // Устанавливает текущую анимацию, которую необходимо проиграть.
@@ -70,6 +73,11 @@ bool CMotionManager::PrepareAnimation()
 {
 	if (pJumping && pJumping->IsActive())  return pJumping->PrepareAnimation(&m_tpCurAnim);
 	if (0 != m_tpCurAnim) return false;
+	
+	if (pCurAnimTriple && pCurAnimTriple->is_active()) {
+		if (pCurAnimTriple->prepare_animation(&m_tpCurAnim)) return true;
+	}
+
 
 	// проверка на отыгрывание анимации смерти
 	if (!pMonster->g_Alive()) 
@@ -598,8 +606,15 @@ void CMotionManager::STEPS_Update(u8 legs_num)
 			// Играть звук
 			if (!mtl_pair->StepSounds.empty()) {
 				
+				Fvector sound_pos = pMonster->Position();
+				sound_pos.y += 0.5;
+
 				SELECT_RANDOM(step_info.activity[i].sound, mtl_pair, StepSounds);
-				step_info.activity[i].sound.play_at_pos	(pMonster,pMonster->Position());
+				step_info.activity[i].sound.play_at_pos	(pMonster,sound_pos);
+
+//				if (step_info.activity[i].sound.handle) {
+//					Msg("play sound = %s", step_info.activity[i].sound.handle->file_name());
+//				}
 			}
 			
 			// Играть партиклы
@@ -637,8 +652,10 @@ void CMotionManager::STEPS_Update(u8 legs_num)
 	// позиционировать играемые звуки
 	for (i=0; i<legs_num; i++) {
 		if (step_info.activity[i].handled && step_info.activity[i].sound.feedback) {
-			step_info.activity[i].sound.set_position	(pMonster->Position());
-			step_info.activity[i].sound.set_volume		(step_info.params.step[i].power);
+			Fvector sound_pos = pMonster->Position();
+			sound_pos.y += 0.5;
+			step_info.activity[i].sound.set_position	(sound_pos);
+			//step_info.activity[i].sound.set_volume	(step_info.params.step[i].power);
 		}
 	}
 }
@@ -662,4 +679,36 @@ void CMotionManager::STEPS_Initialize()
 	}
 
 }
+
+/////////////////////////////////////////////////////////////////////////////////////////
+
+void CMotionManager::TA_Activate(CAnimTriple *p_triple)
+{
+	if (pCurAnimTriple && pCurAnimTriple->is_active()) pCurAnimTriple->deactivate();
+	
+	pCurAnimTriple				= p_triple;
+	pCurAnimTriple->activate	();
+
+	ForceAnimSelect				();
+}
+
+void CMotionManager::TA_Deactivate()
+{
+	if (pCurAnimTriple && pCurAnimTriple->is_active()) pCurAnimTriple->deactivate();
+	ForceAnimSelect				();
+}
+
+void CMotionManager::TA_PointBreak()
+{
+	if (pCurAnimTriple && pCurAnimTriple->is_active()) pCurAnimTriple->pointbreak();
+	ForceAnimSelect();
+}
+
+bool CMotionManager::TA_IsActive()
+{	
+	if (pCurAnimTriple && pCurAnimTriple->is_active()) return true;
+
+	return false;
+}
+///////////////////////////////////////////////////////////////////////////////////////
 

@@ -77,6 +77,7 @@ void CAI_Biting::Init()
 	CorpseMan.init_external			(this);
 
 	for (u32 i = 0; i < eLegsMaxNumber; i++) m_FootBones[i] = BI_NONE;
+
 }
 
 void CAI_Biting::reinit()
