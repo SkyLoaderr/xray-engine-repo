@@ -1,0 +1,27 @@
+/********************************************************************
+	created:	2005/01/26
+	created:	26:1:2005   12:24
+	filename: 	x:\gamedata\scripts\se_monster.script
+	file path:	x:\gamedata\scripts
+	file base:	se_monster
+	file ext:	script
+	author:		Tunduk Vladimir
+	
+	purpose:	server object for mutants
+*********************************************************************/
+---------------------------------------------------------------------
+class "se_monster" (cse_alife_monster_abstract)
+--------------------
+function se_monster:__init (section) super (section)
+end
+--------------------
+function se_monster:can_switch_offline ()
+	printf ("se_monster:can_switch_offline () called!")
+	return true
+end
+--------------------
+function se_monster:can_switch_online ()
+    printf ("se_monster:can_switch_online () called!")
+    return true
+end    
+---------------------------------------------------------------------

@@ -1,9 +1,18 @@
+---------------------------------------------------------------------
 class "se_stalker"	(cse_alife_human_stalker)
-
-function se_stalker:__init(section) super(section)
+--------------------
+function se_stalker:__init (section) super (section)
 end
-
-function se_stalker:can_switch_offline()
-	printf	("se_stalker:can_switch_offline() called!")
-	return	(true)
+--------------------
+function se_stalker:can_switch_offline ()
+	printf ("se_stalker:can_switch_offline () called!")
+	return true
 end
+--------------------
+function se_stalker:can_switch_online ()
+    printf ("se_stalker:can_switch_online () called!")
+    return true
+end    
+---------------------------------------------------------------------
+
+

@@ -1507,6 +1507,13 @@
 						RelativePath=".\scripts\smart_terrain.script">
 					</File>
 				</Filter>
+				<Filter
+					Name="monster"
+					Filter="">
+					<File
+						RelativePath=".\Scripts\se_monster.script">
+					</File>
+				</Filter>
 			</Filter>
 			<Filter
 				Name="common"
