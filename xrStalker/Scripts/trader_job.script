@@ -10,7 +10,6 @@ function main()
 
 	wait(15000)
 	GiveInfoViaPda(actor, actor, "actor_start01")
-	GiveInfoViaPda(actor, actor, "actor_start05")
 
 	while true do
 	wait()
