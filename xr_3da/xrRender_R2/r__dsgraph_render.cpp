@@ -42,10 +42,11 @@ void __fastcall mapMatrix_Render	(mapMatrixItems& N)
 	std::sort				(N.begin(),N.end(),cmp_matrix_items);
 	_MatrixItem				*I=&*N.begin(), *E = &*N.end();
 	for (; I!=E; I++)		{
-		_MatrixItem&	Ni			= *I;
-		RCache.set_xform_world		(Ni.Matrix);
-		RImplementation.apply_object(Ni.pObject);
-		Ni.pVisual->Render			(calcLOD(Ni.ssa,Ni.pVisual->vis.sphere.R));
+		_MatrixItem&	Ni				= *I;
+		RCache.set_xform_world			(Ni.Matrix);
+		RImplementation.apply_object	(Ni.pObject);
+		RImplementation.apply_lmaterial	();
+		Ni.pVisual->Render				(calcLOD(Ni.ssa,Ni.pVisual->vis.sphere.R));
 	}
 	N.clear	();
 }
