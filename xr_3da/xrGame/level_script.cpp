@@ -27,6 +27,36 @@
 
 using namespace luabind;
 
+#ifdef DEBUG
+CScriptGameObject *tpfGetActor()
+{
+	static bool first_time = true;
+	if (first_time)
+		ai().script_engine().script_log(eLuaMessageTypeError,"Do not use level.actor function!");
+	first_time = false;
+	
+	CActor *l_tpActor = smart_cast<CActor*>(Level().CurrentEntity());
+	if (l_tpActor)
+		return	(smart_cast<CGameObject*>(l_tpActor)->lua_game_object());
+	else
+		return	(0);
+}
+
+CScriptGameObject *get_object_by_name(LPCSTR caObjectName)
+{
+	static bool first_time = true;
+	if (first_time)
+		ai().script_engine().script_log(eLuaMessageTypeError,"Do not use level.object function!");
+	first_time = false;
+	
+	CGameObject		*l_tpGameObject	= smart_cast<CGameObject*>(Level().Objects.FindObjectByName(caObjectName));
+	if (l_tpGameObject)
+		return		(l_tpGameObject->lua_game_object());
+	else
+		return		(0);
+}
+#endif
+
 CScriptGameObject *get_object_by_id(u32 id)
 {
 #ifdef DEBUG
@@ -217,6 +247,10 @@ void CLevel::script_register(lua_State *L)
 	[
 		// obsolete\deprecated
 		def("object_by_id",						get_object_by_id),
+#ifdef DEBUG
+		def("debug_object",						get_object_by_name),
+		def("debug_actor",						tpfGetActor),
+#endif
 		
 		def("get_weather",						get_weather),
 		def("set_weather",						set_weather),
