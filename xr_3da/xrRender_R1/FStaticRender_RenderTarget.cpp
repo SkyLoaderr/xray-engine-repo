@@ -57,7 +57,7 @@ BOOL CRenderTarget::Create	()
 	}
 
 	// Temp ZB, used by some of the shadowing code
-	R_CHK	(pDevice->CreateDepthStencilSurface	(512,512,fDepth,D3DMULTISAMPLE_NONE,0,TRUE,&pTempZB,NULL));
+	R_CHK	(HW.pDevice->CreateDepthStencilSurface	(512,512,HW.Caps.fDepth,D3DMULTISAMPLE_NONE,0,TRUE,&pTempZB,NULL));
 
 	// Shaders and stream
 	string64	_rt_2_name;
