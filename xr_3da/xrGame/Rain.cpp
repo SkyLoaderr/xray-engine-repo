@@ -18,7 +18,7 @@ const float drop_speed_max	= 80.f;
 
 const int	max_particles	= 1000;
 const int	particles_cache	= 200;
-const float particles_time	= 10.5f;
+const float particles_time	= .5f;
 
 //////////////////////////////////////////////////////////////////////
 // Construction/Destruction
