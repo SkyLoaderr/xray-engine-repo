@@ -40,11 +40,10 @@ void CUIWindow::script_register(lua_State *L)
 		.def("Show",					&CUIWindow::Show)
 		.def("IsShown",					&CUIWindow::IsShown)
 
-		.def("WindowName",				&CUIWindow::WindowName_script),
-
-/*		.def("",						&CUIWindow::)
-		.def("",						&CUIWindow::)
-*/		
+		.def("WindowName",				&CUIWindow::WindowName_script)
+		.def("SetWindowName",			&CUIWindow::SetWindowName),
+//		.def("",						&CUIWindow::)
+		
 		
 		class_<CUIDialogWnd, CUIWindow>("CUIDialogWnd"),
 
