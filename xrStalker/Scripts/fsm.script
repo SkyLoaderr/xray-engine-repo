@@ -143,9 +143,9 @@ function main()
 
 	fsm_stalker:set_transition(0, 1, fsm.if_see_actor)
 	fsm_stalker:set_transition(1, 0, fsm.dont_see_actor)
-	while true do
-		fsm_stalker:run()
-	end
+--	while true do
+--		fsm_stalker:run()
+--	end
 
 	wait()
 end
