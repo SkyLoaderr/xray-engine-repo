@@ -27,10 +27,10 @@ function update()
 	-- вертолёт летает неподалёку
 	if state == state_before then
 		if state_init then
-			heli_mgr:set_path( "heli_path_tutorial" )
+--			heli_mgr:set_path( "heli_path_tutorial" )
 			heli_mgr.not_die = true
 
-			-- запомнить ID раненого и тут же спрятать
+			-- запомнить ID раненого и тут же его спрятать
 			wounded_id = get_level_object( "esc_vagon_wounded" ):id()
 
 			local sim = alife()
@@ -41,7 +41,7 @@ function update()
 		end
 
 		if actor:has_info( "tutorial_artefact_gain" ) then
---			chst( state_heli_attack )
+			chst( state_heli_attack )
 		end
 	end
 
@@ -53,7 +53,7 @@ function update()
 			end
 
 			attack_end = game.CTime()
-			attack_end:setHMS( 0, 4, 0 )
+			attack_end:setHMS( 0, 8, 0 )
 			attack_end:add( game.get_game_time() )
 
 			state_init = false
@@ -111,15 +111,21 @@ function main()
 		chst( state_before )
 	end
 
-	actor:give_info_portion( "tutorial_artefact_gain" )
+	actor:give_info_portion( "tutorial_wounded_help" )
 
 	while true do
 		update()
 		heli_mgr:update()
 		wait()
 
---		if actor:has_info( "tutorial_artefact_gain" ) then
---			printf( "tutorial_artefact_gain" )
---		end
+--[[		if actor:has_info( "tutorial_artefact_gain" ) then
+			printf( "tutorial_artefact_gain" )
+		end
+		if actor:has_info( "tutorial_wounded_help" ) then
+			printf( "tutorial_wounded_help" )
+		end
+		if actor:has_info( "tutorial_volk_acquainted" ) then
+			printf( "tutorial_volk_acquainted" )
+		end]]
 	end
 end

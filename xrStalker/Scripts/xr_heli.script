@@ -36,7 +36,6 @@ function HeliManager:initialize( name, path, patrol_speed, attack_speed )
 end
 
 function HeliManager:HeliOnHit( p )
-	do return end
 --	printf( "HeliOnHit" )
 
 	if self.b_prepared_to_die then
