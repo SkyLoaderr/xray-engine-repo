@@ -10,11 +10,13 @@
 
 #include <xrCore.h>
 
+#pragma warning(disable:4995)
 #include <commctrl.h>
 #include <d3dx9.h>
 #include <io.h>
 #include <fcntl.h>
 #include <sys\stat.h>
+#pragma warning(default:4995)
 
 #ifndef	NDEBUG
 #define X_TRY 
