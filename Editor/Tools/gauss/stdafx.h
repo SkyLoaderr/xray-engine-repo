@@ -101,6 +101,10 @@ using namespace std;
 #define PropertyP(a)	__declspec( property( put=a ) )
 #define PropertyGP(a,b)	__declspec( property( get=a, put=b ) )
 
+enum TMsgDlgType { mtWarning, mtError, mtInformation, mtConfirmation, mtCustom };
+enum TMsgDlgBtn { mbYes, mbNo, mbOK, mbCancel, mbAbort, mbRetry, mbIgnore, mbAll, mbNoToAll, mbYesToAll, mbHelp };
+typedef TMsgDlgBtn TMsgDlgButtons[mbHelp];
+
 // CLASS ID type
 typedef unsigned __int64	CLASS_ID;
 #define MK_CLSID(a,b,c,d,e,f,g,h) \
@@ -124,9 +128,6 @@ typedef unsigned __int64	CLASS_ID;
 #define _DELETE(a)      {delete(a); (a)=NULL;}
 #define _DELETEARRAY(a) {delete[](a); (a)=NULL;}
 
-#define Log //
-#define Msg //
-
 #ifndef NO_MMGR
 #endif
 #include "math.h"
@@ -134,7 +135,9 @@ typedef unsigned __int64	CLASS_ID;
 #include "fixedvector.h"
 #ifndef NO_XRLOG
 #endif
+#include "Log.h"
 #include "FS.h"
+#include "FileSystem.h"
 // TODO: reference additional headers your program requires here
 
 #pragma comment( lib, "imagehlp.lib"	)
