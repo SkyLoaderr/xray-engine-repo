@@ -1128,6 +1128,81 @@ C++ class ZoneMapEntities {
     function push_back(SZoneMapEntityData&);
 };
 
+C++ class CAI_Bloodsucker : CGameObject {
+    CAI_Bloodsucker ();
+    
+    function Visual();
+    function getEnabled() const;
+    function net_Import(net_packet&);
+    function getVisible() const;
+    function net_Spawn(cse_abstract*);
+    function setVisible(number);
+    function _construct();
+    function net_Export(net_packet&);
+    function setEnabled(number);
+    function use(CGameObject*);
+};
+
+C++ class CAI_Boar : CGameObject {
+    CAI_Boar ();
+    
+    function Visual();
+    function getEnabled() const;
+    function net_Import(net_packet&);
+    function getVisible() const;
+    function net_Spawn(cse_abstract*);
+    function setVisible(number);
+    function _construct();
+    function net_Export(net_packet&);
+    function setEnabled(number);
+    function use(CGameObject*);
+};
+
+C++ class CAI_Dog : CGameObject {
+    CAI_Dog ();
+    
+    function Visual();
+    function getEnabled() const;
+    function net_Import(net_packet&);
+    function getVisible() const;
+    function net_Spawn(cse_abstract*);
+    function setVisible(number);
+    function _construct();
+    function net_Export(net_packet&);
+    function setEnabled(number);
+    function use(CGameObject*);
+};
+
+C++ class CAI_Flesh : CGameObject {
+    CAI_Flesh ();
+    
+    function Visual();
+    function getEnabled() const;
+    function net_Import(net_packet&);
+    function getVisible() const;
+    function net_Spawn(cse_abstract*);
+    function setVisible(number);
+    function _construct();
+    function net_Export(net_packet&);
+    function setEnabled(number);
+    function use(CGameObject*);
+};
+
+C++ class CAI_PseudoDog : CGameObject {
+    CAI_PseudoDog ();
+    
+    function Visual();
+    function getEnabled() const;
+    function net_Import(net_packet&);
+    function getVisible() const;
+    function net_Spawn(cse_abstract*);
+    function setVisible(number);
+    function _construct();
+    function net_Export(net_packet&);
+    function setEnabled(number);
+    function use(CGameObject*);
+};
+
 C++ class CAI_Stalker : CGameObject {
     CAI_Stalker ();
     
@@ -1173,6 +1248,51 @@ C++ class artifact_merger {
 C++ class CBlend {
 };
 
+C++ class CBurer : CGameObject {
+    CBurer ();
+    
+    function Visual();
+    function getEnabled() const;
+    function net_Import(net_packet&);
+    function getVisible() const;
+    function net_Spawn(cse_abstract*);
+    function setVisible(number);
+    function _construct();
+    function net_Export(net_packet&);
+    function setEnabled(number);
+    function use(CGameObject*);
+};
+
+C++ class CCat : CGameObject {
+    CCat ();
+    
+    function Visual();
+    function getEnabled() const;
+    function net_Import(net_packet&);
+    function getVisible() const;
+    function net_Spawn(cse_abstract*);
+    function setVisible(number);
+    function _construct();
+    function net_Export(net_packet&);
+    function setEnabled(number);
+    function use(CGameObject*);
+};
+
+C++ class CChimera : CGameObject {
+    CChimera ();
+    
+    function Visual();
+    function getEnabled() const;
+    function net_Import(net_packet&);
+    function getVisible() const;
+    function net_Spawn(cse_abstract*);
+    function setVisible(number);
+    function _construct();
+    function net_Export(net_packet&);
+    function setEnabled(number);
+    function use(CGameObject*);
+};
+
 C++ class client_spawn_manager {
     function remove(number, number);
     function add(number, number, object, string);
@@ -1189,6 +1309,21 @@ C++ class CConsole {
     function get_token(string);
     function show();
     function hide();
+};
+
+C++ class CController : CGameObject {
+    CController ();
+    
+    function Visual();
+    function getEnabled() const;
+    function net_Import(net_packet&);
+    function getVisible() const;
+    function net_Spawn(cse_abstract*);
+    function setVisible(number);
+    function _construct();
+    function net_Export(net_packet&);
+    function setEnabled(number);
+    function use(CGameObject*);
 };
 
 C++ class cover_point {
@@ -1212,6 +1347,21 @@ C++ class cef_storage {
     function evaluate(cef_storage*, string, cse_alife_object*, cse_alife_object*);
     function evaluate(cef_storage*, string, cse_alife_object*, cse_alife_object*, cse_alife_object*);
     function evaluate(cef_storage*, string, cse_alife_object*, cse_alife_object*, cse_alife_object*, cse_alife_object*);
+};
+
+C++ class CFracture : CGameObject {
+    CFracture ();
+    
+    function Visual();
+    function getEnabled() const;
+    function net_Import(net_packet&);
+    function getVisible() const;
+    function net_Spawn(cse_abstract*);
+    function setVisible(number);
+    function _construct();
+    function net_Export(net_packet&);
+    function setEnabled(number);
+    function use(CGameObject*);
 };
 
 C++ class CGameFont {
@@ -1506,11 +1656,41 @@ C++ class physics_shell {
     function get_joint_by_bone_id(number);
 };
 
+C++ class CPoltergeist : CGameObject {
+    CPoltergeist ();
+    
+    function Visual();
+    function getEnabled() const;
+    function net_Import(net_packet&);
+    function getVisible() const;
+    function net_Spawn(cse_abstract*);
+    function setVisible(number);
+    function _construct();
+    function net_Export(net_packet&);
+    function setEnabled(number);
+    function use(CGameObject*);
+};
+
 C++ class property_storage {
     property_storage ();
     
     function property(const number&) const;
     function set_property(const number&, const boolean&);
+};
+
+C++ class CPseudoGigant : CGameObject {
+    CPseudoGigant ();
+    
+    function Visual();
+    function getEnabled() const;
+    function net_Import(net_packet&);
+    function getVisible() const;
+    function net_Spawn(cse_abstract*);
+    function setVisible(number);
+    function _construct();
+    function net_Export(net_packet&);
+    function setEnabled(number);
+    function use(CGameObject*);
 };
 
 C++ class cpure_server_object : ipure_server_object {
@@ -1612,6 +1792,7 @@ C++ class cse_alife_creature_abstract : cse_alife_dynamic_object_visual {
     function can_switch_online() const;
     function UPDATE_Read(net_packet&);
     function g_team();
+    function alive() const;
     function clsid() const;
     function STATE_Write(net_packet&);
     function health() const;
@@ -1650,12 +1831,13 @@ C++ class cse_alife_creature_actor : cse_alife_creature_abstract,cse_alife_trade
     function can_switch_online() const;
     function UPDATE_Read(net_packet&);
     function g_squad();
+    function alive() const;
     function clsid() const;
     function STATE_Write(net_packet&);
     function move_offline() const;
     function move_offline(boolean);
     function init();
-    function g_team();
+    function section_name(const cse_abstract*);
     function name(const cse_abstract*);
     function spawn_ini(cse_abstract*);
     function OnEvent(net_packet&, number, number, ClientID);
@@ -1666,7 +1848,7 @@ C++ class cse_alife_creature_actor : cse_alife_creature_abstract,cse_alife_trade
     function can_switch_offline() const;
     function UPDATE_Write(net_packet&);
     function g_group();
-    function section_name(const cse_abstract*);
+    function g_team();
 };
 
 C++ class cse_alife_creature_crow : cse_alife_creature_abstract {
@@ -1687,12 +1869,13 @@ C++ class cse_alife_creature_crow : cse_alife_creature_abstract {
     function can_switch_online() const;
     function UPDATE_Read(net_packet&);
     function g_squad();
+    function alive() const;
     function clsid() const;
     function STATE_Write(net_packet&);
     function move_offline() const;
     function move_offline(boolean);
     function init();
-    function g_team();
+    function section_name(const cse_abstract*);
     function name(const cse_abstract*);
     function spawn_ini(cse_abstract*);
     function OnEvent(net_packet&, number, number, ClientID);
@@ -1703,7 +1886,7 @@ C++ class cse_alife_creature_crow : cse_alife_creature_abstract {
     function can_switch_offline() const;
     function UPDATE_Write(net_packet&);
     function g_group();
-    function section_name(const cse_abstract*);
+    function g_team();
 };
 
 C++ class cse_custom_zone : cse_alife_dynamic_object,cse_shape {
@@ -1870,15 +2053,16 @@ C++ class cse_alife_human_abstract : cse_alife_trader_abstract,cse_alife_monster
     function update();
     function can_switch_online() const;
     function UPDATE_Read(net_packet&);
-    function g_team();
+    function g_squad();
+    function alive() const;
     function clsid() const;
     function STATE_Write(net_packet&);
-    function section_name(const cse_abstract*);
+    function g_team();
     function init();
-    function used_ai_locations() const;
+    function OnEvent(net_packet&, number, number, ClientID);
     function interactive() const;
     function spawn_ini(cse_abstract*);
-    function OnEvent(net_packet&, number, number, ClientID);
+    function section_name(const cse_abstract*);
     function health() const;
     function STATE_Read(net_packet&, number);
     function name(const cse_abstract*);
@@ -1886,7 +2070,7 @@ C++ class cse_alife_human_abstract : cse_alife_trader_abstract,cse_alife_monster
     function can_switch_offline() const;
     function UPDATE_Write(net_packet&);
     function g_group();
-    function g_squad();
+    function used_ai_locations() const;
 };
 
 C++ class cse_alife_human_stalker : cse_alife_human_abstract,cse_ph_skeleton {
@@ -1902,22 +2086,23 @@ C++ class cse_alife_human_stalker : cse_alife_human_abstract,cse_ph_skeleton {
     
     cse_alife_human_stalker (string);
     
-    function used_ai_locations() const;
+    function move_offline() const;
+    function move_offline(boolean);
     function community() const;
     function can_save() const;
     function update();
     function can_switch_online() const;
     function UPDATE_Read(net_packet&);
     function g_team();
+    function alive() const;
     function clsid() const;
     function STATE_Write(net_packet&);
-    function g_squad();
+    function used_ai_locations() const;
     function init();
-    function move_offline() const;
-    function move_offline(boolean);
+    function section_name(const cse_abstract*);
     function health() const;
     function spawn_ini(cse_abstract*);
-    function section_name(const cse_abstract*);
+    function OnEvent(net_packet&, number, number, ClientID);
     function name(const cse_abstract*);
     function STATE_Read(net_packet&, number);
     function interactive() const;
@@ -1925,7 +2110,7 @@ C++ class cse_alife_human_stalker : cse_alife_human_abstract,cse_ph_skeleton {
     function can_switch_offline() const;
     function UPDATE_Write(net_packet&);
     function g_group();
-    function OnEvent(net_packet&, number, number, ClientID);
+    function g_squad();
 };
 
 C++ class cse_alife_inventory_item {
@@ -2351,12 +2536,13 @@ C++ class cse_alife_monster_abstract : cse_alife_creature_abstract,cse_alife_sch
     function can_switch_online() const;
     function UPDATE_Read(net_packet&);
     function g_squad();
+    function alive() const;
     function clsid() const;
     function STATE_Write(net_packet&);
     function move_offline() const;
     function move_offline(boolean);
     function init();
-    function g_team();
+    function section_name(const cse_abstract*);
     function name(const cse_abstract*);
     function spawn_ini(cse_abstract*);
     function OnEvent(net_packet&, number, number, ClientID);
@@ -2367,7 +2553,7 @@ C++ class cse_alife_monster_abstract : cse_alife_creature_abstract,cse_alife_sch
     function can_switch_offline() const;
     function UPDATE_Write(net_packet&);
     function g_group();
-    function section_name(const cse_abstract*);
+    function g_team();
 };
 
 C++ class cse_alife_monster_base : cse_alife_monster_abstract,cse_ph_skeleton {
@@ -2383,20 +2569,22 @@ C++ class cse_alife_monster_base : cse_alife_monster_abstract,cse_ph_skeleton {
     
     cse_alife_monster_base (string);
     
-    function used_ai_locations() const;
+    function move_offline() const;
+    function move_offline(boolean);
     function can_save() const;
     function update();
     function can_switch_online() const;
     function UPDATE_Read(net_packet&);
-    function g_team();
+    function g_squad();
+    function alive() const;
     function clsid() const;
     function STATE_Write(net_packet&);
-    function section_name(const cse_abstract*);
+    function g_team();
     function init();
-    function g_squad();
+    function used_ai_locations() const;
     function interactive() const;
     function spawn_ini(cse_abstract*);
-    function OnEvent(net_packet&, number, number, ClientID);
+    function section_name(const cse_abstract*);
     function health() const;
     function STATE_Read(net_packet&, number);
     function name(const cse_abstract*);
@@ -2404,8 +2592,7 @@ C++ class cse_alife_monster_base : cse_alife_monster_abstract,cse_ph_skeleton {
     function can_switch_offline() const;
     function UPDATE_Write(net_packet&);
     function g_group();
-    function move_offline() const;
-    function move_offline(boolean);
+    function OnEvent(net_packet&, number, number, ClientID);
 };
 
 C++ class cse_alife_monster_rat : cse_alife_monster_abstract,cse_alife_inventory_item {
@@ -2421,20 +2608,22 @@ C++ class cse_alife_monster_rat : cse_alife_monster_abstract,cse_alife_inventory
     
     cse_alife_monster_rat (string);
     
-    function used_ai_locations() const;
+    function move_offline() const;
+    function move_offline(boolean);
     function can_save() const;
     function update();
     function can_switch_online() const;
     function UPDATE_Read(net_packet&);
-    function g_team();
+    function g_squad();
+    function alive() const;
     function clsid() const;
     function STATE_Write(net_packet&);
-    function section_name(const cse_abstract*);
+    function g_team();
     function init();
-    function g_squad();
+    function used_ai_locations() const;
     function interactive() const;
     function spawn_ini(cse_abstract*);
-    function OnEvent(net_packet&, number, number, ClientID);
+    function section_name(const cse_abstract*);
     function health() const;
     function STATE_Read(net_packet&, number);
     function name(const cse_abstract*);
@@ -2442,8 +2631,7 @@ C++ class cse_alife_monster_rat : cse_alife_monster_abstract,cse_alife_inventory
     function can_switch_offline() const;
     function UPDATE_Write(net_packet&);
     function g_group();
-    function move_offline() const;
-    function move_offline(boolean);
+    function OnEvent(net_packet&, number, number, ClientID);
 };
 
 C++ class cse_alife_monster_zombie : cse_alife_monster_abstract {
@@ -2459,20 +2647,22 @@ C++ class cse_alife_monster_zombie : cse_alife_monster_abstract {
     
     cse_alife_monster_zombie (string);
     
-    function used_ai_locations() const;
+    function move_offline() const;
+    function move_offline(boolean);
     function can_save() const;
     function update();
     function can_switch_online() const;
     function UPDATE_Read(net_packet&);
-    function g_team();
+    function g_squad();
+    function alive() const;
     function clsid() const;
     function STATE_Write(net_packet&);
-    function section_name(const cse_abstract*);
+    function g_team();
     function init();
-    function g_squad();
+    function used_ai_locations() const;
     function interactive() const;
     function spawn_ini(cse_abstract*);
-    function OnEvent(net_packet&, number, number, ClientID);
+    function section_name(const cse_abstract*);
     function health() const;
     function STATE_Read(net_packet&, number);
     function name(const cse_abstract*);
@@ -2480,8 +2670,7 @@ C++ class cse_alife_monster_zombie : cse_alife_monster_abstract {
     function can_switch_offline() const;
     function UPDATE_Write(net_packet&);
     function g_group();
-    function move_offline() const;
-    function move_offline(boolean);
+    function OnEvent(net_packet&, number, number, ClientID);
 };
 
 C++ class cse_alife_mounted_weapon : cse_alife_dynamic_object_visual {
@@ -3289,8 +3478,8 @@ C++ class game_object {
     function who_hit_name();
     function remove_sound(number);
     function set_detail_path_type(enum DetailPathManager::EDetailPathType);
-    function set_node_evaluator();
-    function set_node_evaluator(vertex_evaluator*);
+    function extrapolate_length() const;
+    function extrapolate_length(number);
     function active_item();
     function mental_state() const;
     function clear_animations();
@@ -3301,6 +3490,7 @@ C++ class game_object {
     function range() const;
     function actor_sleep(number, number);
     function mass() const;
+    function clear_perform_trade_callback();
     function section() const;
     function best_sound() const;
     function get_current_point_index();
@@ -3347,21 +3537,23 @@ C++ class game_object {
     function squad() const;
     function reset_action_queue();
     function clear_hear_callback(boolean);
+    function inside(const vector&, number) const;
+    function inside(const vector&) const;
     function snd_character_profile_sect() const;
     function script(boolean, string);
     function set_pda_info(string);
     function set_path_evaluator();
     function set_path_evaluator(vertex_evaluator*);
-    function inside(const vector&, number) const;
-    function inside(const vector&) const;
-    function RemoveEventCallback(number);
     function active_zone_contact(number);
-    function remove_all_restrictions();
     function set_nonscript_usable(boolean);
-    function add_restrictions(string, string);
+    function RemoveEventCallback(number);
     function set_tip_text_default();
-    function get_monster_hit_info();
+    function remove_all_restrictions();
     function set_tip_text(string);
+    function add_restrictions(string, string);
+    function clear_use_callback();
+    function get_monster_hit_info();
+    function get_physics_shell() const;
     function set_use_callback(const function<void>&);
     function set_use_callback(object, string);
     function set_hear_callback(object, string);
@@ -3371,112 +3563,114 @@ C++ class game_object {
     function set_sound_mask(number);
     function community_goodwill(game_object*);
     function vision_enabled() const;
-    function clear_use_callback();
+    function get_hanging_lamp();
     function safe_cover(const vector&, number, number);
     function path_completed() const;
     function clear_info_callback();
-    function get_physics_shell() const;
-    function attachable_item_enabled() const;
-    function get_hanging_lamp();
     function get_helicopter();
+    function attachable_item_enabled() const;
     function disable_anomaly();
     function enable_anomaly();
-    function level_vertex_id() const;
+    function set_perform_trade_callback(const function<void>&);
+    function set_perform_trade_callback(object, string);
     function set_trade_callback(const function<void>&);
     function set_trade_callback(object, string);
+    function level_vertex_id() const;
     function get_character_pda_info();
     function set_character_pda_info(string);
-    function set_start_point(number);
     function group() const;
+    function set_start_point(number);
     function command(const entity_action*, boolean);
+    function use(const game_object*);
     function stop_talk();
     function profile_name();
-    function use(const game_object*);
+    function not_yet_visible_objects() const;
     function set_path_type(enum MovementManager::EPathType);
     function weapon_strapped() const;
     function get_ammo_total() const;
     function give_game_news(string, string, number, number, number, number, number);
-    function visibility_threshold() const;
-    function limping() const;
+    function accessible_nearest(const vector&, vector&);
     function character_reputation();
     function set_character_rank(number);
-    function enable_memory_object(game_object*, boolean);
     function character_rank();
+    function enable_memory_object(game_object*, boolean);
     function motivation_action_manager(game_object*);
     function set_relation(enum ALife::ERelationType, game_object*);
     function general_goodwill(game_object*);
+    function change_goodwill(number, game_object*);
     function animation_count() const;
     function change_community_goodwill(number, game_object*);
     function out_restrictions();
-    function change_goodwill(number, game_object*);
-    function enable_attachable_item(boolean);
     function set_goodwill(number, game_object*);
+    function enable_attachable_item(boolean);
     function clsid() const;
     function restore_default_start_dialog();
     function set_start_dialog(string);
     function run_talk_dialog(game_object*);
+    function switch_to_talk();
     function memory_sound_objects() const;
     function clear_pda_callback();
     function give_info_portion(string);
-    function switch_to_talk();
     function switch_to_trade();
-    function clear_death_callback(boolean);
     function transfer_money(number, game_object*);
+    function clear_death_callback(boolean);
     function transfer_item(game_object*, game_object*);
+    function is_talk_enabled();
     function set_callback(const function<void>&, boolean);
     function set_callback(object, string, boolean);
     function set_callback(object, string, enum ScriptEntity::EActionType);
     function set_callback(const function<void>&, enum ScriptEntity::EActionType);
     function get_corpse() const;
-    function is_talk_enabled();
     function disable_talk();
+    function enable_talk();
     function set_news_show_time(string, number);
     function path_type() const;
     function rank();
-    function enable_talk();
     function is_talking();
-    function movement_type() const;
     function send_pda_message(enum EPdaMsg, game_object*);
+    function movement_type() const;
+    function set_task_state(enum ETaskState, string, number);
     function explode(number);
     function get_ammo_in_magazine();
-    function set_task_state(enum ETaskState, string, number);
+    function get_task_state(string, number);
     function best_enemy();
     function death_time() const;
     function set_dest_level_vertex_id(number);
-    function get_task_state(string, number);
+    function get_info_time(string);
     function best_cover(const vector&, const vector&, number, number, number);
     function armor() const;
     function best_hit() const;
-    function get_info_time(string);
     function set_patrol_extrapolate_callback();
     function set_patrol_extrapolate_callback(const function<boolean>&);
     function set_patrol_extrapolate_callback(const function<boolean>&, object);
-    function get_script_name() const;
     function give_info_portion_via_pda(string, game_object*);
+    function get_script_name() const;
     function set_pda_callback(const function<void>&);
     function set_pda_callback(object, string);
+    function limping() const;
     function set_character_reputation(number);
-    function accessible_nearest(const vector&, vector&);
+    function in_restrictions();
     function accessible(const vector&);
     function accessible(number);
     function spawn_ini() const;
     function binded_object();
-    function in_restrictions();
+    function relation(game_object*);
     function get_manual_invisibility();
     function clear_hit_callback(boolean);
     function position() const;
-    function relation(game_object*);
     function get_script() const;
     function set_movement_type(enum MonsterSpace::EMovementType);
-    function get_enemy() const;
     function restore_sound_threshold();
-    function set_body_state(enum MonsterSpace::EBodyState);
+    function get_enemy() const;
     function parent() const;
+    function set_body_state(enum MonsterSpace::EBodyState);
+    function visibility_threshold() const;
     function character_community();
     function action_by_index(number);
-    function not_yet_visible_objects() const;
-    function set_invisible(boolean);
     function get_sound_info();
+    function set_invisible(boolean);
+    function set_node_evaluator();
+    function set_node_evaluator(vertex_evaluator*);
     function active_sound_count();
     function active_sound_count(boolean);
     function accuracy() const;
@@ -3848,6 +4042,21 @@ C++ class ce_script_zone : DLL_Pure {
 
 C++ class CSkeletonAnimated {
     function PlayCycle(CSkeletonAnimated*, string);
+};
+
+C++ class CSnork : CGameObject {
+    CSnork ();
+    
+    function Visual();
+    function getEnabled() const;
+    function net_Import(net_packet&);
+    function getVisible() const;
+    function net_Spawn(cse_abstract*);
+    function setVisible(number);
+    function _construct();
+    function net_Export(net_packet&);
+    function setEnabled(number);
+    function use(CGameObject*);
 };
 
 C++ class sound_params {
@@ -4925,6 +5134,21 @@ C++ class CUIWindow {
     function IsAutoDelete();
 };
 
+C++ class CZombie : CGameObject {
+    CZombie ();
+    
+    function Visual();
+    function getEnabled() const;
+    function net_Import(net_packet&);
+    function getVisible() const;
+    function net_Spawn(cse_abstract*);
+    function setVisible(number);
+    function _construct();
+    function net_Export(net_packet&);
+    function setEnabled(number);
+    function use(CGameObject*);
+};
+
 C++ class ClientID {
     ClientID ();
     
@@ -5412,23 +5636,26 @@ namespace  {
     function alife();
     function GetFontGraffiti32Russian();
     function bit_or(number, number);
+    function device();
     function cast_alife_object_to_trader_abstract(cse_alife_object*);
     function log(string);
     function system_ini();
     function module(string);
     function GetFontHeaderRussian();
+    function user_name();
+    function GetARGB(number, number, number, number);
     function dik_to_bind(number);
     function cast_planner_to_action(action_planner*);
     function GetFontGraffiti19Russian();
     function GetFontLetterica25();
     function GetFontMedium();
-    function bit_not(number);
     function cast_alife_object_to_creature(cse_alife_object*);
     function GetFontLetterica16Russian();
     function GetFontSmall();
     function flush();
     function ef_storage();
     function editor();
+    function GetFontDI();
     function error_log(string);
     function GetFontGraffiti22Russian();
     function GetFontLetterica18Russian();
@@ -5437,13 +5664,10 @@ namespace  {
     function verify_if_thread_is_running();
     function GetFontGraffiti50Russian();
     function GetFontArialN21Russian();
-    function device();
     function getFS();
-    function GetFontDI();
-    function GetARGB(number, number, number, number);
-    function user_name();
     function bit_xor(number, number);
     function GetFontHeaderEurope();
+    function bit_not(number);
     function script_server_object_version();
     function get_console();
  
