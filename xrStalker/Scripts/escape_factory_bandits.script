@@ -62,6 +62,16 @@ function check_enemy( npc )
     end
 end
 
+function novice_enemy( s )
+    if not s.novice_enemy then
+	    local novice = level.object( novice_name )
+    	if novice then
+	    	s.object:set_relation( game_object.enemy, novice )
+	    	s.novice_enemy = true
+    	end
+    end
+end
+
 function check_actor( npc1, a )
 	if npc1:see( the_actor ) then
 		a.enabled = false
@@ -152,13 +162,7 @@ function action_go_to_pos:initialize()
     	the_actor = level.actor()
     end
 
-    if not self.novice_enemy then
-	    local novice = level.object( novice_name )
-    	if novice then
-	    	self.object:set_relation( game_object.enemy, novice )
-	    	self.novice_enemy = true
-    	end
-    end
+    novice_enemy( self )
 
     self.object:set_node_evaluator      ()
     self.object:set_path_evaluator      ()
@@ -266,13 +270,7 @@ function action_stand:initialize()
         self.a.partner = level.object( self.a.partner_name )
     end
 
-    if not self.novice_enemy then
-	    local novice = level.object( novice_name )
-    	if novice then
-	    	self.object:set_relation( game_object.enemy, novice )
-	    	self.novice_enemy = true
-    	end
-    end
+    novice_enemy( self )
  
     self.object:set_node_evaluator      ()
     self.object:set_path_evaluator      ()
@@ -352,17 +350,16 @@ function action_dead_hook:initialize()
 
     self.a.dead_hook = true
 
-    -- отослать партнёра в безопасную точку
+    -- отослать партнёра в безопасную точку и сделать актёра врагом
     if self.a.partner and self.a.partner:alive() then
         local pa        = xr_motivator.storage[self.a.partner:id()].escape_factory_bandit
         pa.way_safe     = patrol( "way_factory_bandits_safe" )
         pa.dest_vert_id = pa.way_safe:level_vertex_id( 0 )
+
+        self.a.partner:set_relation( game_object.enemy, the_actor )
     end
 
-    local actor = level.actor()
-    if actor then
-        actor:give_info_portion( "escape_factory_bandits_dead" )
-    end
+    the_actor:give_info_portion( "escape_factory_bandits_dead" )
 end
 
 function action_dead_hook:execute()
