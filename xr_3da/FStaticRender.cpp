@@ -251,16 +251,16 @@ void CRender::flush_Patches()
 
 		V->set			(	cx + size * _sin1,	// sx
 							cy + size * _cos1,	// sy
-							TL.p.z, TL.p.w, 0, 0,1 );		V++;
+							TL.p.z, TL.p.w, 0xffffffff, 0,1 );		V++;
 		V->set			(	cx - size * _sin2,	// sx
 							cy - size * _cos2,	// sy
-							TL.p.z, TL.p.w, 0, 0,0 );		V++;
+							TL.p.z, TL.p.w, 0xffffffff, 0,0 );		V++;
 		V->set			(	cx + size * _sin2,	// sx
 							cy + size * _cos2,	// sy
-							TL.p.z, TL.p.w, 0, 1,1 );		V++;
+							TL.p.z, TL.p.w, 0xffffffff, 1,1 );		V++;
 		V->set			(	cx - size * _sin1,	// sx
 							cy - size * _cos1,	// sy
-							TL.p.z, TL.p.w, 0, 1,0 );		V++;
+							TL.p.z, TL.p.w, 0xffffffff, 1,0 );		V++;
 	}
 	groups.push_back	(cur_count);
 	vsPatches->Unlock	(vecPatches.size()*4);
