@@ -20,7 +20,7 @@ public:
 	Fplane			plane;
 	float			area;
 	DWORD			flags;
-	DWORD			dwFrameToRender;
+	DWORD			dwFrame;
 };
 
 class ENGINE_API	occRasterizer  

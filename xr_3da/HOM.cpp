@@ -82,6 +82,7 @@ void CHOM::Load			()
 		rT.flags		= clT.dummy;
 		rT.area			= Area(v0,v1,v2);
 		rT.plane.build	(v0,v1,v2);
+		rT.dwFrame		= 0;
 	}
 
 	// Create AABB-tree
