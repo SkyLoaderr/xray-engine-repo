@@ -214,10 +214,11 @@ IRender_Visual* CModelPool::Instance_Find(LPCSTR N)
 
 IRender_Visual* CModelPool::Create(const char* name, IReader* data)
 {
-	// Msg					("-CREATE %s",name);
 	string128 low_name;		R_ASSERT(xr_strlen(name)<128);
 	strcpy(low_name,name);	strlwr(low_name);
-	IRender_Visual* Model			= NULL;
+	if (strext(low_name))	*strext(low_name)=0;
+	Msg						("-CREATE %s",low_name);
+	IRender_Visual* Model	= NULL;
 
 	// 0. Search POOL
 	POOL_IT	it			=	Pool.find	(low_name);
