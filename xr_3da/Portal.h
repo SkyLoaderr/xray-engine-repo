@@ -28,23 +28,22 @@ public:
 
 	void					Setup(Fvector* V, int vcnt, CSector* face, CSector* back)
 	{
-		poly.assign(V,V+vcnt);
-		pFace = face; 
-		pBack = back;
+		poly.assign	(V,V+vcnt);
+		pFace	= face; 
+		pBack	= back;
 		dwFrame = 0xffffffff; 
 
+		Fvector	N,T;
+		N.set	(0,0,0);
+
 		FPU::m64r();
-		P.n.set(0,0,0);
-		P.d = 0;
 		for (int i=2; i<vcnt; i++) {
-			Fplane T;
-			T.build	(poly[0],poly[i-1],poly[i]);
-			P.n.add(T.n);
-			P.d +=  T.d;
+			T.mk_normal	(poly[0],poly[i-1],poly[i]);
+			N.add		(T);
 		}
-		float tcnt = float(vcnt)-2;
-		P.n.div(tcnt);
-		P.d/=float(tcnt);
+		float	tcnt = float(vcnt)-2;
+		N.div	(tcnt);
+		P.build	(poly[0],N);
 		FPU::m24r();
 
 		VERIFY(fabsf(1-P.n.magnitude())<EPS_S);
