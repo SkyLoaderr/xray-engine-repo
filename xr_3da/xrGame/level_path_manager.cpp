@@ -13,7 +13,7 @@
 
 CLevelPathManager::CLevelPathManager	()
 {
-	init				();
+	init					();
 }
 
 CLevelPathManager::~CLevelPathManager	()

@@ -11,6 +11,7 @@
 #include "game_path_manager.h"
 #include "level_path_manager.h"
 #include "detail_path_manager.h"
+#include "location_selector.h"
 #include "gameobject.h"
 
 class CPHMovementControl;
@@ -19,6 +20,7 @@ class CMovementManager :
 	public CGamePathManager,
 	public CLevelPathManager,
 	public CDetailPathManager,
+	public CLocationSelector,
 	virtual public CGameObject
 {
 private:
@@ -32,7 +34,12 @@ private:
 	};
 	
 	float									m_cumulative_time_delta;
-	EPathState								m_tPathState;
+	EPathState								m_path_state;
+	EPathState								m_path_state_previous;
+
+	void			init_selector			(PathManagers::CAbstractNodeEvaluator &node_evaluator, CSquad &squad) const;
+	void			find_position			(PathManagers::CAbstractNodeEvaluator &node_evaluator, CSquad &squad);
+
 protected:
 	float									m_speed;
 
@@ -40,6 +47,6 @@ public:
 					CMovementManager		();
 	virtual			~CMovementManager		();
 	virtual void	init					();
-			void	build_path				();
+			void	build_path				(PathManagers::CAbstractNodeEvaluator *tpNodeEvaluator, Fvector *tpDestinationPosition, bool bSearchForNode);
 			void	move_along_path			(CPHMovementControl *movement_control, float time_delta);
 };

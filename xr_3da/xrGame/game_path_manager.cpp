@@ -14,6 +14,7 @@
 
 CGamePathManager::CGamePathManager		()
 {
+	init					();
 }
 
 CGamePathManager::~CGamePathManager		()
