@@ -317,7 +317,7 @@ void CAI_Crow::shedule_Update		(u32 DT)
 	m_Sounds.m_idle.SetPosition		(Position());
 
 	// work
-	if (o_workload_rframe	== (Device.dwFrame))	;
+	if (o_workload_rframe	== (Device.dwFrame-1))	;
 	else					UpdateWorkload			(DT);
 }
 
