@@ -83,13 +83,11 @@ void CCustomDetector::Update(u32 dt) {
 		list<CCustomZone*>::iterator l_it;
 		for(l_it = m_zones.begin(); l_it != m_zones.end(); l_it++) {
 			CCustomZone *l_pZ = *l_it;
-			if(l_pZ->feel_touch_contact(this)) {
-				l_buzzer = true;
-			}
 			u32 &l_time = m_times[l_pZ];
 			//Fvector ZP; ZP.set(0,0,0); l_pZ->clXFORM().transform_tiny(ZP,ZP);
 			f32 l_dst = P.distance_to(l_pZ->Position()); if(l_dst > m_radius) l_dst -= m_radius; else l_dst = 0;
 			f32 l_relPow = l_pZ->Power(l_dst) / l_pZ->m_maxPower;
+			if(l_relPow > 0 && l_pZ->feel_touch_contact(this)) l_buzzer = true;
 			l_maxPow = max(l_maxPow, l_relPow); l_relPow = 1.f - l_relPow;
 			if((f32)l_time > 5000.f * (l_relPow/**l_relPow*l_relPow*l_relPow*/)) {
 				l_time = 0;
@@ -99,7 +97,7 @@ void CCustomDetector::Update(u32 dt) {
 				}
 			} else l_time += dt;
 		}
-		if(l_buzzer && l_maxPow > 0)  {
+		if(l_buzzer) {
 			if(!m_buzzer.feedback) Sound->PlayAtPos(m_buzzer, this, P, true);
 			if(m_buzzer.feedback) m_buzzer.feedback->SetPosition(P);
 		} else if(m_buzzer.feedback) m_buzzer.feedback->Stop();
