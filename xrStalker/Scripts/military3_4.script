@@ -10,9 +10,6 @@
 function main ()
 
 	local hero = get_level_object ("hero")
-	local trigger = get_level_object ("init_zone")
-    trigger:clear_callback (true)
-    trigger:set_callback (military3_4.on_enter, true)
 	hero:script (true, military3_4.script_name ())
 	action (hero, anim ("raciya_idle"), cond (cond.anim_end))
 
