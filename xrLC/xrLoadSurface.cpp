@@ -95,7 +95,7 @@ FIBITMAP*	Surface_Load(char* full_name)
 	if (0==map32)		map32	= map;
 	else				FreeImage_Free(map);
 
-	return				map32;
+ 	return				map32;
 }
 
 DWORD*	Surface_Load(char* name, DWORD& w, DWORD& h)
