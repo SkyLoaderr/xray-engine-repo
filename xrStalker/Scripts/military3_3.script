@@ -9,22 +9,9 @@ function main ()
 
 	--тут мы сидим и чистим ружжо :)
 
-	action (stalker, --move (move.standing, move.stand, move.line, patrol ("way_sh")),
-			anim ("stul", true), cond (cond.anim_end))
-
---    while stalker:action () do wait () end
-
---	reset_action (stalker, military3_3.script_name ())
-	action (stalker, --move (move.standing, move.stand, move.line, patrol ("way_sh")),
-			anim ("stul", true), cond (cond.anim_end))
-
---    while stalker:action () do wait () end
-
-	--подъем !!!
---	reset_action (stalker, military3_3.script_name ())
-
-	action (stalker, --move (move.standing, move.stand, move.line, patrol ("way_sh")),
-			anim ("stul_podyem", true), cond (cond.anim_end))
+	action (stalker, anim ("stul", true), cond (cond.anim_end))
+	action (stalker, anim ("stul", true), cond (cond.anim_end))
+	action (stalker, anim ("stul_podyem", true), cond (cond.anim_end))
 
     while stalker:action () do wait () end
 
@@ -35,7 +22,7 @@ function main ()
 
 	stalker:script (false, military3_3.script_name ())
 
-	local patrol = classes.SinglePatrol (stalker, military3_3.script_name (), "way_sh", anim_end, anim_end)
+	local patrol = classes.SinglePatrol (stalker, military3_3.script_name (), "way_sh", anim_end)
 
 	while true do
       	  patrol:process ()
@@ -43,6 +30,5 @@ function main ()
       	  end
 	patrol.finish ()
 
-	printf ("call military3_3");
 
 end
