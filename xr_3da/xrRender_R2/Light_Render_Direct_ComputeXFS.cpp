@@ -30,12 +30,18 @@ void CLight_Render_Direct::compute_xfs	(u32 m_phase, light* L)
 	L->X.S.transluent			= FALSE;
 	float	dist				= Device.vCameraPosition.distance_to(L->spatial.center)-L->spatial.radius;
 	float	ssa					= 0.333f * ps_r2_ls_squality * L->range*L->range / ((dist<=EPS)?EPS:dist*dist);
-	u32		limit				= SMAP_size;
-	if		(ssa >= 1)			L->X.S.size		= limit;
-	else	{
-		// ssa is quadratic
-		L->X.S.size				= iFloor(_sqrt(ssa) * limit);
-		if (L->X.S.size<16)		L->X.S.size	= 16;
-	}
+
+	// Compute intensity
+	float	intensity			= (L->color.r + L->color.g + L->color.b)/3.f;
+
+	// factors
+	float	factor0				= powf	(ssa,		1.f/2.f);		// 
+	float	factor1				= powf	(intensity, 1.f/4.f);		// less perceptually important?
+	float	factor				= factor0*factor1;
+
+	// ssa is quadratic
+	L->X.S.size					= iFloor( factor * SMAP_adapt_optimal );
+	if (L->X.S.size<SMAP_adapt_min)		L->X.S.size	= SMAP_adapt_min;
+	if (L->X.S.size>SMAP_adapt_max)		L->X.S.size	= SMAP_adapt_max;
 	//Msg		("%8X : ssa(%f), size(%d)",u32(L),ssa,S_size);
 }
