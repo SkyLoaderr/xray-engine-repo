@@ -36,8 +36,8 @@ void CBuild::PreOptimize()
 	scale.set			(float(HDIM_X),float(HDIM_Y),float(HDIM_Z));
 	scale.div			(VMscale);
 	
-	DWORD	Vcount		= g_vertices.size();
-	DWORD	Fcount		= g_faces.size();
+	DWORD	Vcount		= g_vertices.size(),	Vremoved=0;
+	DWORD	Fcount		= g_faces.size(),		Fremoved=0;
 	
 	// Pre-alloc memory
 	int		_size	= (HDIM_X+1)*(HDIM_Y+1)*(HDIM_Z+1);
@@ -60,8 +60,8 @@ void CBuild::PreOptimize()
 		once_more:
 
 		if (0==(it%128)) {
-			Progress(sqrtf(sqrtf(float(it)/float(g_vertices.size()))));
-			Status	("Processing... (%d verts removed)",Vcount-g_vertices.size());
+			Progress(sqrtf(float(it)/float(g_vertices.size())));
+			Status	("Processing... (%d verts removed)",Vremoved);
 		}
 
 		if (it>=(int)g_vertices.size()) break;
@@ -71,10 +71,10 @@ void CBuild::PreOptimize()
 
 		// Hash
 		DWORD ix,iy,iz;
-		ix = iFloor((V.x-VMmin.x)*scale.x);
-		iy = iFloor((V.y-VMmin.y)*scale.y);
-		iz = iFloor((V.z-VMmin.z)*scale.z);
-		R_ASSERT(ix<=HDIM_X && iy<=HDIM_Y && iz<=HDIM_Z);
+		ix = iFloor		((V.x-VMmin.x)*scale.x);
+		iy = iFloor		((V.y-VMmin.y)*scale.y);
+		iz = iFloor		((V.z-VMmin.z)*scale.z);
+		R_ASSERT		(ix<=HDIM_X && iy<=HDIM_Y && iz<=HDIM_Z);
 		vecVertex &H	= *(HASH[ix][iy][iz]);
 
 		// Search similar vertices in hash table
@@ -83,46 +83,66 @@ void CBuild::PreOptimize()
 			Vertex *pBase = *T;
 			if (pBase->similar(*pTest,g_params.m_weld_distance)) 
 			{
-				while (pTest->adjacent.size())	pTest->adjacent.front()->VReplace(pTest, pBase);
-				g_vertices.erase(g_vertices.begin()+it);
-				delete pTest;
-				goto once_more;
+				while			(pTest->adjacent.size())	pTest->adjacent.front()->VReplace(pTest, pBase);
+				_DELETE			(g_vertices[it]);
+				Vremoved		+=	1;
+				pTest			=	NULL;
+				break;
 			}
 		}
 		
 		// If we get here - there is no similar vertices - register in hash tables
-		H.push_back	(pTest);
-		
-		DWORD ixE,iyE,izE;
-		ixE = iFloor((V.x+VMeps.x-VMmin.x)*scale.x);
-		iyE = iFloor((V.y+VMeps.y-VMmin.y)*scale.y);
-		izE = iFloor((V.z+VMeps.z-VMmin.z)*scale.z);
-		R_ASSERT(ixE<=HDIM_X && iyE<=HDIM_Y && izE<=HDIM_Z);
-		
-		if (ixE!=ix)							HASH[ixE][iy][iz]->push_back		(pTest);
-		if (iyE!=iy)							HASH[ix][iyE][iz]->push_back		(pTest);
-		if (izE!=iz)							HASH[ix][iy][izE]->push_back		(pTest);
-		if ((ixE!=ix)&&(iyE!=iy))				HASH[ixE][iyE][iz]->push_back		(pTest);
-		if ((ixE!=ix)&&(izE!=iz))				HASH[ixE][iy][izE]->push_back		(pTest);
-		if ((iyE!=iy)&&(izE!=iz))				HASH[ix][iyE][izE]->push_back		(pTest);
-		if ((ixE!=ix)&&(iyE!=iy)&&(izE!=iz))	HASH[ixE][iyE][izE]->push_back		(pTest);
+		if (pTest) 
+		{
+			H.push_back	(pTest);
+
+			DWORD ixE,iyE,izE;
+			ixE = iFloor((V.x+VMeps.x-VMmin.x)*scale.x);
+			iyE = iFloor((V.y+VMeps.y-VMmin.y)*scale.y);
+			izE = iFloor((V.z+VMeps.z-VMmin.z)*scale.z);
+			R_ASSERT(ixE<=HDIM_X && iyE<=HDIM_Y && izE<=HDIM_Z);
+
+			if (ixE!=ix)							HASH[ixE][iy][iz]->push_back		(pTest);
+			if (iyE!=iy)							HASH[ix][iyE][iz]->push_back		(pTest);
+			if (izE!=iz)							HASH[ix][iy][izE]->push_back		(pTest);
+			if ((ixE!=ix)&&(iyE!=iy))				HASH[ixE][iyE][iz]->push_back		(pTest);
+			if ((ixE!=ix)&&(izE!=iz))				HASH[ixE][iy][izE]->push_back		(pTest);
+			if ((iyE!=iy)&&(izE!=iz))				HASH[ix][iyE][izE]->push_back		(pTest);
+			if ((ixE!=ix)&&(iyE!=iy)&&(izE!=iz))	HASH[ixE][iyE][izE]->push_back		(pTest);
+		}
 	}
 	
 	Status("Removing degenerated/duplicated faces...");
-	g_bUnregister = true;
+	g_bUnregister = false;
 	for (it=0; it<(int)g_faces.size(); it++)
 	{
-		R_ASSERT(it>=0 && it<(int)g_faces.size());
-		Face* F = g_faces[it];
+		R_ASSERT		(it>=0 && it<(int)g_faces.size());
+		Face* F		= g_faces[it];
 		if ( F->isDegenerated()) {
-			delete F;
-			it--;
+			_DELETE		(g_faces[it]);
+			Fremoved	++;
+		} else {
+			// Check for duplicate
+			
 		}
 		Progress(float(it)/float(g_faces.size()));
 	}
+
+	Status("Adjacency check...");
+	g_bUnregister = false;
+	for (it = 0; it<(int)g_vertices.size(); it++)
+	{
+		if (g_vertices[it] && (0==g_vertices[it]->adjacent.size()))
+		{
+			_DELETE		(g_vertices[it]);
+			Vremoved	++;
+		}
+	}
 	
-	Status("Freeing memory...");
-	DWORD M1 = mem_Usage();
+	Status	("Cleanup...");
+	DWORD M1			= mem_Usage();
+	g_vertices.erase	(remove(g_vertices.begin(),g_vertices.end(),(Vertex*)0),g_vertices.end());
+	g_faces.erase		(remove(g_faces.begin(),g_faces.end(),(Face*)0),g_faces.end());
 	{
 		for (int ix=0; ix<HDIM_X+1; ix++)
 			for (int iy=0; iy<HDIM_Y+1; iy++)
@@ -131,7 +151,7 @@ void CBuild::PreOptimize()
 					_DELETE(HASH[ix][iy][iz]);
 				}
 	}
-	mem_Compact	();
+	mem_Compact			();
 	DWORD M2 = mem_Usage();
 	Msg("M1(%d) / M2(%d) (M1-M2)=%d",M1/1024,M2/1024,(M1-M2)/1024);
 	Msg("%d vertices removed. (%d left)",Vcount-g_vertices.size(),g_vertices.size());
