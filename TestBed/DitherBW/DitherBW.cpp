@@ -229,6 +229,9 @@ int ditherbw( int x, int y, int val, int divN[256], int modN[256], int magic[16]
 
 int main(int argc, char* argv[])
 {
+	CImage tex("x:\\dbg\\in.tga");
+	
+
 	printf("Hello World!\n");
 	return 0;
 }
