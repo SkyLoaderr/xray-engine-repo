@@ -475,7 +475,10 @@ bool CScriptEntity::bfAssignMovement(CScriptEntityAction *tpEntityAction)
 				vertex_id		= ai().level_graph().check_position_in_direction(object().ai_location().level_vertex_id(),object().Position(),l_tMovementAction.m_tDestinationPosition);
 			
 #ifdef DEBUG
-			THROW2(ai().level_graph().valid_vertex_id(vertex_id),"Cannot find corresponding level vertex for the specified position [%f][%f][%f] for monster %s",VPUSH(l_tMovementAction.m_tDestinationPosition),*m_monster->cName());
+			if (!ai().level_graph().valid_vertex_id(vertex_id)) {
+				ai().script_engine().script_log("Cannot find corresponding level vertex for the specified position [%f][%f][%f] for monster %s",VPUSH(l_tMovementAction.m_tDestinationPosition),*m_monster->cName());
+				THROW(false);
+			}
 #endif
 			m_monster->movement().level_path_manager().set_dest_vertex(vertex_id);
 			m_monster->movement().level_location_selector().set_evaluator(0);
