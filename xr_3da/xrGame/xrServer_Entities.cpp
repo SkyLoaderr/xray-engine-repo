@@ -50,6 +50,14 @@ void	xrServerEntity::Spawn_Read		(NET_Packet& P)
 	P.r_u16				(size			);	// size
 	STATE_Read			(P,size			);
 }
+
+#ifdef _EDITOR
+void	xrServerEntity::FillProp(PropValueVec& values)
+{
+	FILL_PROP(values,	"Active",	&s_flags, 	PROP::CreateFlagValue(M_SPAWN_OBJECT_ACTIVE));
+}
+#endif
+
 void	xrServerEntity::P_Read			(CStream& FS)
 {
 //	FS.Read				(&desc,sizeof(desc));
@@ -137,6 +145,14 @@ public:
 		P.w_u16				(a_elapsed);
 	}
 
+#ifdef _EDITOR
+    virtual void			FillProp		(PropValueVec& values)
+    {
+    	inherited::FillProp(values);
+      	FILL_PROP_EX(values,s_name, "Ammo: total",		&a_current, PROP::CreateIntValue(0,1000,1));
+        FILL_PROP_EX(values,s_name, "Ammo: in magazine",&a_elapsed, PROP::CreateIntValue(0,30,1));
+    }
+#endif
 	virtual void			P_Write				(CFS_Base& FS)
 	{
 		inherited::P_Write	(FS);
@@ -187,6 +203,15 @@ public:
 		P.w_u8				(s_squad);
 		P.w_u8				(s_group);
 	}
+#ifdef _EDITOR
+    virtual void			FillProp		(PropValueVec& values)
+    {
+    	inherited::FillProp(values);
+      	FILL_PROP_EX(values,s_name, "Team",		&s_team, 	PROP::CreateIntValue(0,64,1));
+        FILL_PROP_EX(values,s_name, "Squad",	&s_squad, 	PROP::CreateIntValue(0,64,1));
+        FILL_PROP_EX(values,s_name, "Group",	&s_group, 	PROP::CreateIntValue(0,64,1));
+    }
+#endif
 	virtual void			P_Write				(CFS_Base& FS)
 	{
 		inherited::P_Write	(FS);

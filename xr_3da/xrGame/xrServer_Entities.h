@@ -4,6 +4,7 @@
 #include "xrMessages.h"
 #ifdef _EDITOR
 	#include "net_utils.h"
+	#include "PropertiesListTypes.h"
 #endif
 
 // refs
@@ -66,6 +67,9 @@ public:
 	// editor integration
 	virtual void			P_Write			(CFS_Base& FS);
 	virtual void			P_Read			(CStream& FS);
+#ifdef _EDITOR
+    virtual void			FillProp		(PropValueVec& values);
+#endif
 
 	xrServerEntity			()
 	{
