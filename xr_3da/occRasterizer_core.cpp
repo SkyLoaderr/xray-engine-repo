@@ -44,7 +44,7 @@ void i_order	(float* A, float* B, float* C)
 	
 	currentA[0]	= min[0]+1;	currentB[0]	= mid[0]+1;	currentC[0]	= max[0]+1;
 	currentA[1]	= min[1]+1;	currentB[1]	= mid[1]+1;	currentC[1]	= max[1]+1;
-	currentA[2]	= min[2]+1;	currentB[2]	= mid[2]+1;	currentC[2]	= max[2]+1;
+	currentA[2]	= min[2];	currentB[2]	= mid[2];	currentC[2]	= max[2];
 }
 
 // Find the closest min/max pixels of a point

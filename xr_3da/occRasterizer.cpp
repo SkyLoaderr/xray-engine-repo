@@ -72,7 +72,6 @@ void occRasterizer::propagade	()
 		for (int x=0; x<occ_dim_0; x++)
 		{
 			float	d			= bufDepth[y+1][x+1];
-			if (d<1.f)			__asm int 3;
 			bufDepth_0[y][x]	= d;
 		}
 	}
