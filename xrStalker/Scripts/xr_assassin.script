@@ -1,3 +1,6 @@
+local state_moving = 1
+local state_standing = 2
+
 ---------------------------------------------------------------------------------------------------------------------
 class "evaluator_need_assassin" (property_evaluator)
 
@@ -8,18 +11,8 @@ end
 function evaluator_need_assassin:evaluate()
 	--printf("assassin [%s] best_target = ", self.object:name()--[[,
 	--	if_then_else(self.object:best_target(), self.object:best_target():name(), "none")]])
-	--[[
-	if not self.st.target_obj then
-		if self.st.target == "actor" then
-			self.st.target_obj = level.actor()
-		else
-			self.st.target_obj = level.object(self.st.target)
-		end
-	end
-
-  	return self.st.enabled == true and self.st.target_obj ~= nil and self.st.target_obj:alive()
 	--]]
-	return false
+	return self.st.enabled == true
 end
 
 ----------------------------------------------------------------------------------------------------------------------
@@ -40,32 +33,92 @@ function action_assassin_activity:initialize()
 	self:reset_scheme()
 end
 
+function action_assassin_activity:get_target()
+	if self.st.target == "actor" then
+		return level.actor()
+	else
+		return level.object(self.st.target)
+	end
+end
 
 function action_assassin_activity:reset_scheme()
+	self.object:set_path_type(game_object.level_path)
 	self.object:set_detail_path_type(move.line)
 	self.object:set_body_state(move.standing)
         self.object:set_movement_type(move.stand)
 	self.object:set_sight(look.danger, nil, 0)
 	self.object:set_mental_state(anim.danger)
 
-	if self.st.target_obj then
-		self.object:set_path_type(game_object.level_path)
-		self.object:set_desired_direction(self.st.target_obj:direction())
-		self.object:set_dest_level_vertex_id(whom:level_vertex_id())
-		self.object:set_movement_type(move.run)
-	else
-	end
+	self.object:set_item(object.idle, self.object:best_weapon())
 
 	xr_reactions.add_rule(self.object, "ignore")
 
 	self.object:clear_animations()
+
+	self.move_expiration_time = 0
+
+	self.shall_shoot = 0
+	self.shoot_expiration_time = device():time_global() + 2000
+	
+	self.state = state_standing
 end	
 
 function action_assassin_activity:execute()
 	action_base.execute(self)
 	
+	if not self.target then
+		self.target = self:get_target()
+		if not self.target then
+			printf("_bp: ???")
+			return
+		end
+	end
+	if not self.target:alive() then
+		printf("_bp: DEAD")
+		self.st.enabled = false
+		return
+	end
 
-	printf("Plr, you will die")
+	if device():time_global() >= self.shoot_expiration_time then
+		if self.shall_shoot == 0 then
+			self.shall_shoot = 1
+			self.shoot_expiration_time = device():time_global() + 5000
+		else
+			self.shall_shoot = 0
+			self.shoot_expiration_time = device():time_global() + 3000
+		end
+	end
+	
+	if self.shall_shoot == 0 then 
+		printf("NO SHOOT")
+		self.object:set_item(object.idle, self.object:best_weapon())
+	else
+		printf("SHOOT")
+		self.object:set_item(object.fire1, self.object:best_weapon())
+	end
+
+	if self.state == state_standing or device():time_global() >= self.move_expiration_time then
+		local see_target = self.object:see(self.target)
+		if distance_between(self.target, self.object) > 7 or not see_target then
+			printf("MOVING")
+			self.object:set_path_type(game_object.level_path)
+			self.object:set_detail_path_type(move.line)
+			self.object:set_desired_direction(self.target:direction())
+			self.object:set_dest_level_vertex_id(self.target:level_vertex_id())
+			self.object:set_movement_type(if_then_else(see_target, move.run, move.walk))
+			self.state = state_moving
+			self.move_expiration_time = device():time_global() + 500
+		end
+	end
+		
+	if self.state == state_moving and distance_between(self.target, self.object) <= 5 and
+			self.object:see(self.target) then
+		printf("STANDING")
+		self.object:set_movement_type(move.stand)
+		self.state = state_standing
+	end
+	
+	utils.stalker_look_at_stalker(self.object, self.target)
 end
 
 function action_assassin_activity:finalize()
