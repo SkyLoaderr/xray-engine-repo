@@ -132,13 +132,19 @@ void xrServer::Update	()
 		}
 		else
 		{
-			/*
-			for (u32 id=0; id<NET_SV_Client_Stream.size(); id++)
+			u32 NumPackets = NET_SV_Client_Stream.size();
+
+			for (u32 id=0; id<NumPackets; id++)
 			{
-				NET_SV_Client_Stream
-				Packet.
+				NET_Packet* pPacket = &(NET_SV_Client_Stream[id]);
+				if (!pPacket) continue;
+
+				u16 type;
+				pPacket->r_begin(type);
+				
+				if (Packet.B.count + (pPacket->B.count - pPacket->r_pos) > NET_PacketSizeLimit) continue;
+				Packet.w(pPacket->B.data + pPacket->r_pos, pPacket->B.count - pPacket->r_pos);
 			};
-			*/
 		};
 		if (Client->flags.bLocal) NET_SV_Client_Stream.clear();
 
