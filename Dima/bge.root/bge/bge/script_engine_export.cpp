@@ -24,7 +24,7 @@ template <typename TList> struct Register
 	{
 		Register<TList::Tail>::_Register(L);
 #ifdef _DEBUG
-		ui().log	("	Exporting %s\n",typeid(TList::Head).name());
+		ui().log	("  exporting %s\n",typeid(TList::Head).name());
 #endif
 		TList::Head::script_register(L);
 	}
