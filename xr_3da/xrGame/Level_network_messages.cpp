@@ -42,7 +42,8 @@ void CLevel::ClientReceive()
 			{
 				P->r_u16		(ID);
 				CObject*	O	= Objects.net_Find		(ID);
-				if (O)			O->net_MigrateInactive	(*P);
+				if (0 == O)		break;
+				O->net_MigrateInactive	(*P);
 				Log("! MIGRATE_DEACTIVATE",O->cName());
 			}
 			break;
@@ -50,7 +51,8 @@ void CLevel::ClientReceive()
 			{
 				P->r_u16		(ID);
 				CObject*	O	= Objects.net_Find		(ID);
-				if (O)			O->net_MigrateActive	(*P);
+				if (0 == O)		break;
+				O->net_MigrateActive	(*P);
 				Log("! MIGRATE_ACTIVATE",O->cName());
 			}
 			break;
