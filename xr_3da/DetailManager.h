@@ -54,10 +54,10 @@ public:
 	{
 		u32					type;
 		int					sx,sz;
-		Fbox				BB;
+		vis_data			vis;
 		SlotPart			G[dm_obj_in_slot];
 
-		Slot()				{ type=stReady; sx=sz=0; BB.invalidate(); }
+		Slot()				{ type=stReady; sx=sz=0; vis.clear(); }
 	};
 
 	typedef		vector <vector<SlotItem*> >			vis_list;

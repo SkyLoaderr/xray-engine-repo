@@ -1,5 +1,6 @@
 #pragma once
 
+#pragma pack(push,4)
 struct	vis_data
 {
 	Fsphere		sphere;			//
@@ -18,3 +19,4 @@ struct	vis_data
 		hom_tested		= 0;
 	}
 };
+#pragma pack(pop)
