@@ -166,7 +166,7 @@
 	<info_portion id="bar_get_research_gain"></info_portion>
 	<info_portion id="bar_get_research_done"></info_portion>
 	<info_portion id="bar_get_research_fail"></info_portion>		
-    
+    <info_portion id="bar_volkodav_trup"></info_portion>
     <info_portion id="bar_get_research_dead"></info_portion>
     
     <!-- FREEDOM ATTACK ECOLOG -->
