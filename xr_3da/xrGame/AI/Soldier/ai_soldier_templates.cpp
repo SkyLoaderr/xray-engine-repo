@@ -86,7 +86,7 @@ void CAI_Soldier::vfInitSelector(CAISelectorBase &S, CSquad &Squad, CEntity* &Le
 	S.m_tHitDir			= tHitDir;
 	S.m_dwHitTime		= dwHitTime;
 	
-	S.m_dwCurTime		= m_dwLastUpdate;
+	S.m_dwCurTime		= m_dwCurrentUpdate;
 	//Msg("%d : %d",S.m_dwHitTime,S.m_dwCurTime);
 	
 	S.m_tMe				= this;
@@ -187,7 +187,7 @@ void CAI_Soldier::vfSetFire(bool bFire, CGroup &Group)
 			if (m_dwStartFireAmmo - Weapons->ActiveWeapon()->GetAmmoElapsed() > ::Random.randI(m_dwFireRandomMin,m_dwFireRandomMax + 1)) {
 				q_action.setup(AI::AIC_Action::FireEnd);
 				m_bFiring = false;
-				m_dwNoFireTime = m_dwLastUpdate;
+				m_dwNoFireTime = m_dwCurrentUpdate;
 			}
 			else {
 				if (bfCheckIfCanKillEnemy())
@@ -198,16 +198,16 @@ void CAI_Soldier::vfSetFire(bool bFire, CGroup &Group)
 					else {
 						q_action.setup(AI::AIC_Action::FireEnd);
 						m_bFiring = false;
-						m_dwNoFireTime = m_dwLastUpdate;
+						m_dwNoFireTime = m_dwCurrentUpdate;
 					}
 					else {
 						q_action.setup(AI::AIC_Action::FireEnd);
 						m_bFiring = false;
-						m_dwNoFireTime = m_dwLastUpdate;
+						m_dwNoFireTime = m_dwCurrentUpdate;
 					}
 			}
 			else {
-				if (m_dwLastUpdate - m_dwNoFireTime > ::Random.randI(m_dwNoFireTimeMin,m_dwNoFireTimeMax + 1))
+				if (m_dwCurrentUpdate - m_dwNoFireTime > ::Random.randI(m_dwNoFireTimeMin,m_dwNoFireTimeMax + 1))
 					if (bfCheckIfCanKillEnemy())
 						if (!bfCheckIfCanKillMember()) {
 							m_dwStartFireAmmo = Weapons->ActiveWeapon()->GetAmmoElapsed();
@@ -244,7 +244,7 @@ void CAI_Soldier::vfStopFire()
 	if (m_bFiring) {
 		q_action.setup(AI::AIC_Action::FireEnd);
 		m_bFiring = false;
-		m_dwNoFireTime = m_dwLastUpdate;
+		m_dwNoFireTime = m_dwCurrentUpdate;
 	}
 	m_bFiring = false;
 }

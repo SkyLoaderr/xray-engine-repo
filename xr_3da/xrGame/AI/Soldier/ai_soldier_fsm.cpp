@@ -143,7 +143,7 @@ void CAI_Soldier::OnHurtAlone()
 
 	//AI_Path.TravelPath.clear();
 
-	DWORD dwCurTime = Level().timeServer();
+	DWORD dwCurTime = m_dwCurrentUpdate;
 
 	vfStopFire();
 
@@ -280,14 +280,11 @@ void CAI_Soldier::OnRetreatAloneFire()
 	if (!Enemy.Enemy)
 		SelectorRetreat.m_tEnemyPosition = tSavedEnemyPosition;
 
-	if (AI_Path.bNeedRebuild) {
-		vfInitSelector(SelectorAttack,Squad,Leader);
-		if (!Enemy.Enemy)
-			SelectorAttack.m_tEnemyPosition = tSavedEnemyPosition;
-		vfBuildPathToDestinationPoint(SelectorAttack,);
-	}
+	if (AI_Path.bNeedRebuild)
+		vfBuildPathToDestinationPoint(0);
 	else
-		vfSearchForBetterPosition(SelectorRetreat,Squad,Leader);
+		if (AI_Path.TravelPath.empty() || (AI_Path.TravelPath.size()/2 < AI_Path.TravelStart))
+			vfSearchForBetterPosition(SelectorRetreat,Squad,Leader);
 
 	if (bfTooBigDistance(tSavedEnemyPosition,15.f) || !Enemy.Enemy || ((Enemy.Enemy) && !Enemy.bVisible) || bfCheckStateHistory(aiSoldierHurtAlone,10000))
 		if (AI_Path.fSpeed < EPS_L)
@@ -824,9 +821,9 @@ void CAI_Soldier::OnWaitForTime()
 	CHECK_IF_SWITCH_TO_NEW_STATE_THIS_UPDATE_AND_UPDATE(bfCheckForDanger(),aiSoldierFight)
 
 	if (m_bStateChanged)
-		m_dwLastRangeSearch = Level().timeServer();
+		m_dwLastRangeSearch = m_dwCurrentUpdate;
 		
-	CHECK_IF_GO_TO_PREV_STATE(Level().timeServer() - m_dwLastRangeSearch > m_dwTimeBeingWaited);
+	CHECK_IF_GO_TO_PREV_STATE(m_dwCurrentUpdate - m_dwLastRangeSearch > m_dwTimeBeingWaited);
 }
 
 void CAI_Soldier::OnRecharge()
@@ -963,7 +960,7 @@ void CAI_Soldier::OnPatrolRoute()
 	CHECK_IF_SWITCH_TO_NEW_STATE(m_bStateChanged,aiSoldierPatrolReturnToRoute)
 	
 	INIT_SQUAD_AND_LEADER;
-	DWORD dwCurTime = Level().timeServer();
+	DWORD dwCurTime = m_dwCurrentUpdate;
 	CGroup &Group = Squad.Groups[g_Group()];
 
 	if ((m_dwCreatePathAttempts < 20) && ((!(AI_Path.fSpeed)) || (AI_Path.TravelPath.empty()) || (AI_Path.TravelPath[AI_Path.TravelStart].P.distance_to(AI_Path.TravelPath[AI_Path.TravelPath.size() - 1].P) <= .5f))) {
@@ -1023,7 +1020,7 @@ void CAI_Soldier::OnPatrolRoute()
 					}
 				}
 			}
-			m_dwLastRangeSearch = Level().timeServer();
+			m_dwLastRangeSearch = m_dwCurrentUpdate;
 		}
 	}
 
@@ -1189,7 +1186,7 @@ void CAI_Soldier::OnFollowLeaderPatrol()
 //					AI_Path.TravelStart = i;
 //				}
 
-			m_dwLastRangeSearch = Level().timeServer();
+			m_dwLastRangeSearch = m_dwCurrentUpdate;
 		}
 		else {
 			AI_Path.TravelPath.clear();
@@ -1197,8 +1194,8 @@ void CAI_Soldier::OnFollowLeaderPatrol()
 		}
 	}
 	
-	if ((!m_dwLastRangeSearch) || (Level().timeServer() - m_dwLastRangeSearch >= 5000)) {
-		m_dwLastRangeSearch = Level().timeServer();
+	if ((!m_dwLastRangeSearch) || (m_dwCurrentUpdate - m_dwLastRangeSearch >= 5000)) {
+		m_dwLastRangeSearch = m_dwCurrentUpdate;
 		m_fMinPatrolDistance = MIN_PATROL_DISTANCE;
 		m_fMaxPatrolDistance = MAX_PATROL_DISTANCE - ::Random.randF(0,4);
 	}
@@ -1208,7 +1205,7 @@ void CAI_Soldier::OnFollowLeaderPatrol()
 	tTemp0.normalize();
 	tWatchDirection.normalize();
 	
-	DWORD dwCurTime = Level().timeServer();
+	DWORD dwCurTime = m_dwCurrentUpdate;
 	if (m_cBodyState != BODY_STATE_LIE)
 		StandUp();
 	else {
@@ -1236,6 +1233,8 @@ void CAI_Soldier::OnFollowLeaderPatrol()
 
 void CAI_Soldier::Think()
 {
+	m_dwLastUpdate = m_dwCurrentUpdate;
+	m_dwCurrentUpdate = m_dwCurrentUpdate;
 	bStopThinking = false;
 	do {
 		m_ePreviousState = eCurrentState;
@@ -1556,5 +1555,4 @@ void CAI_Soldier::Think()
 		m_bStateChanged = m_ePreviousState != eCurrentState;
 	}
 	while (!bStopThinking);
-	m_dwLastUpdate = Level().timeServer() - m_fTimeUpdateDelta;
 }

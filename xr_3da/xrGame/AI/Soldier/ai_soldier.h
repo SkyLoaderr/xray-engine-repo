@@ -333,6 +333,7 @@ class CAI_Soldier : public CCustomMonster
 		ESoldierStates	m_ePreviousState;
 		bool			bStopThinking;
 		DWORD			m_dwLastUpdate;
+		DWORD			m_dwCurrentUpdate;
 //		float			m_fAddAngle;
 		
 		// action data
@@ -555,8 +556,8 @@ class CAI_Soldier : public CCustomMonster
 			vfSetMovementType(c,d);
 		}
 	IC	bool bfAmIDead()		{return(g_Health() <= 0);}
-	IC	bool bfAmIHurt()		{return(m_dwLastUpdate >= dwHitTime);}
-	IC	bool bfIsMemberHurt()	{return(m_dwLastUpdate >= getGroup()->m_dwLastHitTime);}
+	IC	bool bfAmIHurt()		{return(m_dwCurrentUpdate >= dwHitTime);}
+	IC	bool bfIsMemberHurt()	{return(m_dwCurrentUpdate >= getGroup()->m_dwLastHitTime);}
 	IC  bool bfDoesEnemyExist()	{return(Enemy.Enemy != 0);}
 	IC  bool bfIsEnemyVisible()	{return(Enemy.bVisible);}
 	IC  bool bfFireEnemy(CEntity *tpEntity)		
@@ -622,13 +623,13 @@ class CAI_Soldier : public CCustomMonster
 	IC	void vfAddStateToList(ESoldierStates eState)
 		{
 			if ((tStateList.size()) && (tStateList[tStateList.size() - 1].eState == eState)) {
-				tStateList[tStateList.size() - 1].dwTime = m_dwLastUpdate;
+				tStateList[tStateList.size() - 1].dwTime = m_dwCurrentUpdate;
 				return;
 			}
 			if (tStateList.size() >= MAX_STATE_LIST_SIZE)
 				tStateList.erase(DWORD(0));
 			SSoldierStates tSoldierStates;
-			tSoldierStates.dwTime = m_dwLastUpdate;
+			tSoldierStates.dwTime = m_dwCurrentUpdate;
 			tSoldierStates.eState = eState;
 			tStateList.push_back(tSoldierStates);
 		}
@@ -638,7 +639,7 @@ class CAI_Soldier : public CCustomMonster
 				if (tStateList[i].eState == eState)
 					return(true);
 				else
-					if (m_dwLastUpdate - tStateList[i].dwTime > dwTimeInterval)
+					if (m_dwCurrentUpdate - tStateList[i].dwTime > dwTimeInterval)
 						return(false);
 			return(false);
 		}

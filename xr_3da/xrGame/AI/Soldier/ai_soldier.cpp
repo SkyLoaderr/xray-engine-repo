@@ -59,6 +59,8 @@ CAI_Soldier::CAI_Soldier()
 	r_torso_speed = q_look.o_look_speed = PI_DIV_2;
 	m_tActionType = ACTION_TYPE_NONE;
 	m_tFightType = FIGHT_TYPE_NONE;
+	m_dwLastUpdate = 0;
+	m_dwCurrentUpdate = Level().timeServer();
 }
 
 CAI_Soldier::~CAI_Soldier()
