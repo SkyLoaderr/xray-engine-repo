@@ -267,7 +267,6 @@ public:
 //-----------------------------------------------------------------------
 ENGINE_API float	psHUD_FOV=0.5f;
 
-extern float		psOSSR;
 extern int			psSkeletonUpdate;
 extern int			psPhysicsFPS;
 extern int			psGlowsPerFrame;
@@ -280,8 +279,10 @@ extern int			psNET_ServerPending;
 extern char			psNET_Name[32];
 extern int			psNET_Port;
 extern int			psSH_Blur;
-extern float		ssaLIMIT_SS;
-extern float		ssaDONTSORT_SS;
+extern float		ssaDISCARD;
+extern float		ssaDONTSORT;
+extern float		ssaLOD_A;
+extern float		ssaLOD_B;
 extern float		psDetailDensity;
 extern int			psSheduler;
 
@@ -326,9 +327,10 @@ void CCC_Register()
 	CMD4(CCC_Float,		"rs_geometry_lod",		&QualityControl.fGeometryLOD, 0,2);
 	CMD4(CCC_Float,		"rs_min_fps",			&QualityControl.fMinFPS, 0, 512	);
 	CMD4(CCC_Float,		"rs_max_fps",			&QualityControl.fMaxFPS, 0, 512	);
-	CMD4(CCC_Float,		"rs_occ_reject",		&psOSSR,			0, 1		);
-	CMD4(CCC_Float,		"rs_ssa_discard",		&ssaLIMIT_SS,		1, 16		);
-	CMD4(CCC_Float,		"rs_ssa_dontsort",		&ssaDONTSORT_SS,	16,65536	);
+	CMD4(CCC_Float,		"rs_ssa_lod_a",			&ssaLOD_A,			16, 96		);
+	CMD4(CCC_Float,		"rs_ssa_lod_b",			&ssaLOD_B,			32, 64		);
+	CMD4(CCC_Float,		"rs_ssa_discard",		&ssaDISCARD,		1,  16		);
+	CMD4(CCC_Float,		"rs_ssa_dontsort",		&ssaDONTSORT,		16, 128		);
 	CMD4(CCC_Float,		"rs_detail_density",	&psDetailDensity,	.05f,0.3f	);
 	
 	CMD1(CCC_Gamma,		"rs_c_gamma"			);

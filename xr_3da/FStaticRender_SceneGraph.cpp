@@ -13,14 +13,15 @@ ENGINE_API BOOL	ShowLM	= FALSE;
 ////////////////////////////////////////////////////////////////////////////////////////////////////
 // Scene graph actual insertion and sorting ////////////////////////////////////////////////////////
 ////////////////////////////////////////////////////////////////////////////////////////////////////
-float ssaLIMIT_SS		= 16.f;
-float ssaDONTSORT_SS	= 25.f*25.f;
-float ssaLIMIT;
-float ssaDONTSORT;
-const float ssLOD_A		= 64.f;
-const float ssLOD_B		= 48.f;
-float ssaLOD_A			= (ssLOD_A*ssLOD_A)/(800*600);
-float ssaLOD_B			= (ssLOD_B*ssLOD_B)/(800*600);
+float ssaDISCARD		= 4.f;
+float ssaDONTSORT		= 32.f;
+float ssaLOD_A			= 64.f;
+float ssaLOD_B			= 48.f;
+
+float r_ssaDISCARD;
+float r_ssaDONTSORT;
+float r_ssaLOD_A;
+float r_ssaLOD_B;
 
 IC	float	CalcSSA(float& distSQ, Fvector& C, CVisual* V)
 {
@@ -31,7 +32,7 @@ IC	float	CalcSSA(float& distSQ, Fvector& C, CVisual* V)
 
 void CRender::InsertSG_Dynamic	(CVisual *pVisual, Fvector& Center)
 {
-	float distSQ;	if (CalcSSA(distSQ,Center,pVisual)<=ssaLIMIT)	return;
+	float distSQ;	if (CalcSSA(distSQ,Center,pVisual)<=r_ssaDISCARD)	return;
 
 	// Select List and add to it
 	ShaderElement*		sh		= L_Projector.shadowing()?pVisual->hShader->lod0:pVisual->hShader->lod1;
@@ -68,7 +69,7 @@ void CRender::InsertSG_Static(CVisual *pVisual)
 		float distSQ;
 		float SSA    = CalcSSA(distSQ,pVisual->bv_Position,pVisual);
 
-		if (SSA<=ssaLIMIT)	return;
+		if (SSA<=r_ssaDISCARD)		return;
 
 		// Select List and add to it
 		ShaderElement*		sh		= ((sqrtf(distSQ)-pVisual->bv_Radius)<10)?pVisual->hShader->lod0:pVisual->hShader->lod1;
@@ -103,7 +104,7 @@ void CRender::InsertSG_Static(CVisual *pVisual)
 						}
 					}
 					
-					if (SSA<ssaDONTSORT)		item.direct.unsorted.push_back		(pVisual);
+					if (SSA<r_ssaDONTSORT)		item.direct.unsorted.push_back		(pVisual);
 					else						item.direct.sorted.insertInAnyWay	(distSQ,pVisual);
 				}
 			}
@@ -120,7 +121,7 @@ void CRender::InsertSG_Cached(CVisual *V)
 		float distSQ;
 		float SSA    = CalcSSA(distSQ,pVisual->bv_Position,pVisual);
 		
-		if (SSA<=ssaLIMIT)	return;
+		if (SSA<=r_ssaDISCARD)	return;
 		
 		// Select List and add to it
 		ShaderElement*		sh		= ShowLM?pVisual->hShader->lighting:pVisual->hShader->lod0;
@@ -149,7 +150,7 @@ void CRender::InsertSG_Cached(CVisual *V)
 					}
 				}
 				
-				if (SSA<ssaDONTSORT)		item.cached.unsorted.push_back		(pVisual);
+				if (SSA<r_ssaDONTSORT)		item.cached.unsorted.push_back		(pVisual);
 				else						item.cached.sorted.insertInAnyWay	(distSQ,pVisual);
 			}
 		}
@@ -234,13 +235,13 @@ void CRender::add_leafs_Static(CVisual *pVisual)
 			FLOD		* pV	= (FLOD*) pVisual;
 			float		D;
 			float		ssa		= CalcSSA(D,pV->bv_Position,pV);
-			if (ssa<ssaLOD_A)	
+			if (ssa<r_ssaLOD_A)	
 			{
 				SceneGraph::mapLOD_Node*	N	= mapLOD.insertInAnyWay(D);
 				N->val.ssa						= ssa;
 				N->val.pVisual					= pVisual;
 			}
-			if (ssa>ssaLOD_B)
+			if (ssa>r_ssaLOD_B)
 			{
 				// Add all children, doesn't perform any tests
 				I = pV->children.begin	();
@@ -356,13 +357,13 @@ void CRender::add_Static(CVisual *pVisual, DWORD planes)
 			FLOD		* pV	= (FLOD*) pVisual;
 			float		D;
 			float		ssa		= CalcSSA(D,pV->bv_Position,pV);
-			if (ssa<ssaLOD_A)	
+			if (ssa<r_ssaLOD_A)	
 			{
 				SceneGraph::mapLOD_Node*	N	= mapLOD.insertInAnyWay(D);
 				N->val.ssa						= ssa;
 				N->val.pVisual					= pVisual;
 			}
-			if (ssa>ssaLOD_B)
+			if (ssa>r_ssaLOD_B)
 			{
 				// Add all children, perform tests
 				I = pV->children.begin	();

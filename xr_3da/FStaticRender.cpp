@@ -167,8 +167,10 @@ CRender::~CRender()
 {
 }
 
-extern float		ssaLIMIT,	ssaLIMIT_SS;
-extern float		ssaDONTSORT,ssaDONTSORT_SS;
+extern float		ssaDISCARD,	r_ssaDISCARD;
+extern float		ssaDONTSORT,r_ssaDONTSORT;
+extern float		ssaLOD_A,	r_ssaLOD_A;
+extern float		ssaLOD_B,	r_ssaLOD_B;
 void CRender::Calculate()
 {
 	Device.Statistic.RenderCALC.Begin();
@@ -178,8 +180,10 @@ void CRender::Calculate()
 	g_fFarSq						*=	g_fFarSq;
 	g_fSCREEN						=	float(Device.dwWidth*Device.dwHeight);
 	g_fLOD							=	QualityControl.fGeometryLOD*g_fLOD_scale;
-	ssaLIMIT						=	(4.f*4.f)/g_fSCREEN;
-	ssaDONTSORT						=	ssaDONTSORT_SS/g_fSCREEN;
+	r_ssaDISCARD					=	(ssaDISCARD*ssaDISCARD)/g_fSCREEN;
+	r_ssaDONTSORT					=	(ssaDONTSORT*ssaDONTSORT)/g_fSCREEN;
+	r_ssaLOD_A						=	(ssaLOD_A*ssaLOD_A)/g_fSCREEN;
+	r_ssaLOD_B						=	(ssaLOD_B*ssaLOD_B)/g_fSCREEN;
 	
 	// Frustum & HOM rendering
 	ViewBase.CreateFromMatrix		(Device.mFullTransform,FRUSTUM_P_LRTB|FRUSTUM_P_FAR);

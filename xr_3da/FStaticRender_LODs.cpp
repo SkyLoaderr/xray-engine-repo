@@ -2,8 +2,8 @@
 #include "fstaticrender.h"
 #include "flod.h"
 
-extern float ssaLOD_A;
-extern float ssaLOD_B;
+extern float r_ssaLOD_A;
+extern float r_ssaLOD_B;
 
 #define RGBA_GETALPHA(rgb)      DWORD((rgb) >> 24)
 #define RGBA_GETRED(rgb)        DWORD(((rgb) >> 16) & 0xff)
@@ -26,7 +26,7 @@ void CRender::flush_LODs()
 	int							cur_count	= 0;
 	DWORD						vOffset;
 	FVF::LIT*					V	= (FVF::LIT*)Device.Streams.Vertex.Lock	(lstLODs.size()*4,firstV->hVS->dwStride, vOffset);
-	float	ssaRange				= ssaLOD_A - ssaLOD_B;
+	float	ssaRange				= r_ssaLOD_A - r_ssaLOD_B;
 	for (DWORD i=0; i<lstLODs.size(); i++)
 	{
 		// sort out redundancy
@@ -39,7 +39,7 @@ void CRender::flush_LODs()
 		}
 
 		// calculate alpha
-		float	ssaDiff					= P.ssa-ssaLOD_B;
+		float	ssaDiff					= P.ssa-r_ssaLOD_B;
 		float	scale					= ssaDiff/ssaRange;
 		int		iA						= iFloor((1-scale)*255.f);	clamp(iA,0,255);
 		DWORD	uA						= DWORD(iA);
