@@ -36,8 +36,8 @@ public:
 	virtual		void				OnPlayerDisconnect		(u32 id_who);
 	virtual		void				OnPlayerReady			(u32 id_who)					{};
 	virtual		void				OnPlayerKillPlayer		(u32 id_killer, u32 id_killed)	= 0;
-	virtual		BOOL				OnTargetTouched			(u32 id_who, u32 eid_target)	= 0;	// TRUE=allow ownership, FALSE=denie
-	virtual		BOOL				OnTargetDetouched		(u32 id_who, u32 eid_target)	= 0;	// TRUE=allow ownership, FALSE=denie
+	virtual		BOOL				OnTargetTouched			(u32 id_who, u32 eid_target)	= 0;	// TRUE=allow ownership, FALSE=denied
+	virtual		BOOL				OnTargetDetouched		(u32 id_who, u32 eid_target)	{};		// TRUE=allow ownership, FALSE=denied
 
 	virtual		void				OnRoundStart			();										// старт раунда
 	virtual		void				OnRoundEnd				(LPCSTR reason);						// конец раунда
