@@ -778,7 +778,7 @@ void CDetailPathManager::add_patrol_point()
 		else
 			return;
 
-		v.mul							(4.f);
+		v.mul							(8.f);
 		t								= m_path.back();
 		t.position.add					(v);
 		ai().level_graph().create_straight_path<false>(
