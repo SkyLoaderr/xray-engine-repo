@@ -15,7 +15,7 @@ function main()
 end
 
 
-class "new_game_dlg" (CUIScriptWnd)
+class "new_game_dlg" (ui_base_dialog.base_dialog)
 
 function new_game_dlg:__init() super()
    self:SetFont(GetFontMedium()) --set base font for dialog.
