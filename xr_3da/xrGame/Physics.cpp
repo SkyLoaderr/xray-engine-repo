@@ -5,6 +5,10 @@
 #include "tri-colliderknoopc/dTriList.h"
 #include "dRay/include/dRay.h"
 #include <ode\src\objects.h>
+#include <ode\src\geom_internal.h>
+float friction_table[2]={5000.f,100.f};
+
+
 //void _stdcall dGeomTransformSetInfo (dGeomID g, int mode);
 /////////////////////////////////////////
 static dContact bulletContact;
@@ -727,6 +731,13 @@ else
 
         contacts[i].surface.mode = dContactBounce;
 		contacts[i].surface.mu = 5000.f;
+		
+		if(contacts[i].geom.g2->data) 
+			contacts[i].surface.mu=*((float*)contacts[i].geom.g2->data);
+		if(contacts[i].geom.g1->data) 
+			contacts[i].surface.mu=*((float*)contacts[i].geom.g1->data);
+		
+	
 		contacts[i].surface.bounce = 0.0f;//0.1f;
 		contacts[i].surface.bounce_vel =0.001f;//0.005f;
 		dJointID c = dJointCreateContact(phWorld, ContactGroup, &contacts[i]);
@@ -779,6 +790,7 @@ void CPHElement::			create_Box		(Fobb&		V){
 																		V.m_halfsize.x*2.f,
 																		V.m_halfsize.y*2.f,
 																		V.m_halfsize.z*2.f);
+														
 														m_geoms.push_back(geom);
 														dGeomSetPosition(geom,
 															V.m_translate.x-m_mass_center.x,
@@ -793,6 +805,10 @@ void CPHElement::			create_Box		(Fobb&		V){
 														m_trans.push_back(trans);
 														dGeomGroupAdd(m_group,trans);
 														dGeomTransformSetInfo(trans,1);
+														
+														trans->data=&friction_table[1];
+														
+														
 														}
 
 void CPHElement::			add_Sphere	(const Fsphere&	V){
@@ -1154,7 +1170,7 @@ void CPHShell::PhDataUpdate(dReal step){
 						memcpy(previous_p1,current_p,sizeof(dVector3));
 						memcpy(previous_r1,current_r,sizeof(dMatrix3));
 					}
-					if(dis_count_f1>20) dis_count_f*=10;
+					if(dis_count_f1>10) dis_count_f*=10;
 					}
 
 
