@@ -45,7 +45,7 @@ protected:
 	typedef u16									_solver_dist_type;
 	typedef CSProblemSolver::_index_type		_solver_index_type;
 	typedef CSProblemSolver::_edge_type			_solver_edge_type;
-	typedef CSProblemSolver::_edge_type			_solver_edge_value_type;
+	typedef CSProblemSolver::_edge_value_type	_solver_edge_value_type;
 
 public:
 	typedef SBaseParameters<_dist_type,_index_type,_iteration_type>				CBaseParameters;

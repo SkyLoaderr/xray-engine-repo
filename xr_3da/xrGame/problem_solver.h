@@ -35,6 +35,7 @@ public:
 	typedef IConditionEvaluator<_value_type>	CConditionEvaluator;
 	typedef CState								_index_type;
 	typedef _operator_id_type					_edge_type;
+	typedef _edge_value_type					_edge_value_type;
 	struct SOperator {
 		_operator_id_type	m_operator_id;
 		COperator			*m_operator;
