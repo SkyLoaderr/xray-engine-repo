@@ -90,7 +90,7 @@ end
 -- Ёвалуатор включени€ схемы
 class "evaluator_enabled" (property_evaluator)
 -----------------------
-function evaluator_enabled:__init (name, storage) super ()
+function evaluator_enabled:__init (name, storage) super (nil, name)
     self.a = storage
 end
 -----------------------
@@ -104,7 +104,7 @@ end
 -- Ёвалуатор доступности сообщени€ SOS
 class "evaluator_pda" (property_evaluator)
 -----------------------
-function evaluator_pda:__init (name, storage) super ()
+function evaluator_pda:__init (name, storage) super (nil, name)
     self.a = storage
 end
 -----------------------
@@ -125,7 +125,7 @@ end
 -- Ёвалуатор необходимости идти за игроком
 class "evaluator_follow" (property_evaluator)
 -----------------------
-function evaluator_follow:__init (name, storage) super ()
+function evaluator_follow:__init (name, storage) super (nil, name)
     self.a = storage
 end
 -----------------------
@@ -138,7 +138,7 @@ end
 -- Ёвалуатор выбора действи€
 class "evaluator_action" (property_evaluator)
 -----------------------
-function evaluator_action:__init (name, storage) super ()
+function evaluator_action:__init (name, storage) super (nil, name)
     self.a = storage
 end 
 -----------------------
@@ -153,7 +153,7 @@ end
 -- Ёвалуатор, который говорит, что была (или не была) инициирована система помощи.
 class "evaluator_init" (property_evaluator)
 -----------------------
-function evaluator_init:__init (name, storage) super ()
+function evaluator_init:__init (name, storage) super (nil, name)
     self.a = storage
 end
 -----------------------
