@@ -419,7 +419,7 @@ end
 
 -- st - storage активной схемы
 function issue_event(npc, st, event_fn, ...)
-	printf("DEBUG: issue_event: npc='%s', event_fn='%s'", npc:name(), event_fn)
+	--printf("DEBUG: issue_event: npc='%s', event_fn='%s'", npc:name(), event_fn)
 	if not st.actions then
 		local global_st = db.storage[npc:id()]
 		printf("WARNING: issue_event: scheme '%s', section '%s': at least one action in a scheme must be " ..
