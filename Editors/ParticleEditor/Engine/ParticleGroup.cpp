@@ -53,6 +53,7 @@ void CPGDef::pAnimate(float speed, BOOL random_playback)
 }
 void CPGDef::pTimeLimit(float time_limit)
 {
+	m_Flags.set			(flTimeLimit,TRUE);
 	m_TimeLimit			= iFloor(time_limit*1000.f);
 }
 void CPGDef::pFrameInitExecute(ParticleGroup *group)
@@ -114,6 +115,11 @@ BOOL CPGDef::Load(IReader& F)
         F.r			(&m_Frame,sizeof(SFrame));
     }
 
+    if (m_Flags.is(flTimeLimit)){
+        R_ASSERT	(F.find_chunk(PGD_CHUNK_TIMELIMIT));
+        m_TimeLimit	= F.r_u32();
+    }
+    
 #ifdef _PARTICLE_EDITOR
 	F.find_chunk		(PGD_CHUNK_SOURCETEXT);
     F.r_stringZ		(m_SourceText);
@@ -156,6 +162,11 @@ void CPGDef::Save(IWriter& F)
         F.close_chunk	();
     }
 
+    if (m_Flags.is(flTimeLimit)){
+        F.open_chunk	(PGD_CHUNK_TIMELIMIT);
+        F.w_u32			(m_TimeLimit);
+        F.close_chunk	();
+    }
 #ifdef _PARTICLE_EDITOR
 	F.open_chunk	(PGD_CHUNK_SOURCETEXT);
     F.w_stringZ		(m_SourceText.c_str());
@@ -171,6 +182,7 @@ CParticleGroup::CParticleGroup():IVisual()
     m_HandleActionList	= pGenActionLists();
     m_bPlaying			= FALSE;
     m_Def				= 0;
+    m_ElapsedLimit		= 0;
 }
 CParticleGroup::~CParticleGroup()
 {
@@ -195,6 +207,11 @@ void CParticleGroup::RefreshShader()
     OnDeviceCreate();
 }
 
+void CParticleGroup::ResetParticles()
+{
+	pSetMaxParticlesG	(m_HandleGroup,0);
+	pSetMaxParticlesG	(m_HandleGroup,m_Def->m_MaxParticles);
+}
 void CParticleGroup::UpdateParent(const Fmatrix& m, const Fvector& velocity)
 {
 	pSetActionListParenting(m_HandleActionList,m,velocity);
@@ -203,6 +220,15 @@ void CParticleGroup::UpdateParent(const Fmatrix& m, const Fvector& velocity)
 void CParticleGroup::OnFrame(u32 dt)
 {
 	if (m_Def&&m_bPlaying){
+    	if (m_Def->m_Flags.is(CPGDef::flTimeLimit)){ 
+        	m_ElapsedLimit 	-= dt;
+            if (m_ElapsedLimit<0){
+            	m_ElapsedLimit 	= m_Def->m_TimeLimit;
+		    	// reset old particles
+                m_bPlaying		= FALSE;
+                ResetParticles	();
+            }
+        }
         pTimeStep			(float(dt)/1000.f);
         pCurrentGroup		(m_HandleGroup);
 
@@ -229,29 +255,30 @@ void CParticleGroup::OnFrame(u32 dt)
 
 BOOL CParticleGroup::Compile(CPGDef* def)
 {
-	m_Def 			= def;
+	m_Def 						= def;
     if (m_Def){
-    	// reset old particles
-        pSetMaxParticlesG(m_HandleGroup,0);
         // set current group for action
-        pCurrentGroup	(m_HandleGroup);
+        pCurrentGroup			(m_HandleGroup);
         // refresh shader
-        RefreshShader	();
-        // set max particles
-        pSetMaxParticlesG(m_HandleGroup,m_Def->m_MaxParticles);
+        RefreshShader			();
+        // reset particles
+        ResetParticles			();
         // load action list
         // get pointer to specified action list.
-        PAPI::PAHeader* pa	= _GetListPtr(m_HandleActionList);
+        PAPI::PAHeader* pa		= _GetListPtr(m_HandleActionList);
         if(pa == NULL)	return FALSE; // ERROR
 
         // start append actions
-        pNewActionList(m_HandleActionList);
+        pNewActionList			(m_HandleActionList);
         for (int k=0; k<m_Def->m_ActionCount; k++)
             pAddActionToList	(m_Def->m_ActionList+k);
         // end append action
         pEndActionList();
+        // time limit
+		if (m_Def->m_Flags.is(CPGDef::flTimeLimit))
+			m_ElapsedLimit 		= m_Def->m_TimeLimit;
     }
-	hShader 		= def?def->m_CachedShader:0;
+	hShader 					= def?def->m_CachedShader:0;
 	return TRUE;
 }
 

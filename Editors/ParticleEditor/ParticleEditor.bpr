@@ -63,14 +63,14 @@
       Intermediate\Blender_Model_EbB.obj Intermediate\HW.obj 
       Intermediate\du_sphere.obj Intermediate\du_box.obj 
       Intermediate\PropertiesListHelper.obj Intermediate\ParticleGroup.obj 
-      Intermediate\ParticleGroupEditor.obj Intermediate\c_dinput.obj 
-      Intermediate\UI_MainCommand.obj Intermediate\PSLibraryEditor.obj 
-      Intermediate\ParticleGroupParser.obj Intermediate\R_Backend_DBG.obj 
+      Intermediate\c_dinput.obj Intermediate\UI_MainCommand.obj 
+      Intermediate\PSLibraryEditor.obj Intermediate\R_Backend_DBG.obj 
       Intermediate\R_Backend_Runtime.obj Intermediate\r_constants.obj 
       Intermediate\r_constants_cache.obj Intermediate\R_DStreams.obj 
       Intermediate\R_Backend.obj Intermediate\Blender_detail_still.obj 
       Intermediate\Blender_tree.obj Intermediate\ELog.obj 
-      Intermediate\Blender_Palette.obj"/>
+      Intermediate\Blender_Palette.obj Intermediate\ParticleGroupEditor.obj 
+      Intermediate\ParticleGroupParser.obj Intermediate\R_Backend_xform.obj"/>
     <RESFILES value="ParticleEditor.res resource.res"/>
     <IDLFILES value=""/>
     <IDLGENFILES value=""/>
@@ -244,11 +244,9 @@
       <FILE FILENAME="Editor\du_box.cpp" FORMNAME="" UNITNAME="du_box.cpp" CONTAINERID="CCompiler" DESIGNCLASS="" LOCALCOMMAND=""/>
       <FILE FILENAME="Editor\PropertiesListHelper.cpp" FORMNAME="" UNITNAME="PropertiesListHelper" CONTAINERID="CCompiler" DESIGNCLASS="" LOCALCOMMAND=""/>
       <FILE FILENAME="Engine\ParticleGroup.cpp" FORMNAME="" UNITNAME="ParticleGroup" CONTAINERID="CCompiler" DESIGNCLASS="" LOCALCOMMAND=""/>
-      <FILE FILENAME="ParticleGroupEditor.cpp" FORMNAME="" UNITNAME="ParticleGroupEditor" CONTAINERID="CCompiler" DESIGNCLASS="" LOCALCOMMAND=""/>
       <FILE FILENAME="Editor\c_dinput.cpp" FORMNAME="" UNITNAME="c_dinput" CONTAINERID="CCompiler" DESIGNCLASS="" LOCALCOMMAND=""/>
       <FILE FILENAME="Editor\UI_MainCommand.cpp" FORMNAME="" UNITNAME="UI_MainCommand" CONTAINERID="CCompiler" DESIGNCLASS="" LOCALCOMMAND=""/>
       <FILE FILENAME="Editor\PSLibraryEditor.cpp" FORMNAME="" UNITNAME="PSLibraryEditor" CONTAINERID="CCompiler" DESIGNCLASS="" LOCALCOMMAND=""/>
-      <FILE FILENAME="Engine\ParticleGroupParser.cpp" FORMNAME="" UNITNAME="ParticleGroupParser" CONTAINERID="CCompiler" DESIGNCLASS="" LOCALCOMMAND=""/>
       <FILE FILENAME="Engine\R_Backend_DBG.cpp" FORMNAME="" UNITNAME="R_Backend_DBG.cpp" CONTAINERID="CCompiler" DESIGNCLASS="" LOCALCOMMAND=""/>
       <FILE FILENAME="Engine\R_Backend_Runtime.cpp" FORMNAME="" UNITNAME="R_Backend_Runtime.cpp" CONTAINERID="CCompiler" DESIGNCLASS="" LOCALCOMMAND=""/>
       <FILE FILENAME="Engine\r_constants.cpp" FORMNAME="" UNITNAME="r_constants.cpp" CONTAINERID="CCompiler" DESIGNCLASS="" LOCALCOMMAND=""/>
@@ -259,6 +257,9 @@
       <FILE FILENAME="Engine\Blenders\Blender_tree.cpp" FORMNAME="" UNITNAME="Blender_tree" CONTAINERID="CCompiler" DESIGNCLASS="" LOCALCOMMAND=""/>
       <FILE FILENAME="editor\ELog.cpp" FORMNAME="" UNITNAME="ELog" CONTAINERID="CCompiler" DESIGNCLASS="" LOCALCOMMAND=""/>
       <FILE FILENAME="Engine\Blenders\Blender_Palette.cpp" FORMNAME="" UNITNAME="Blender_Palette" CONTAINERID="CCompiler" DESIGNCLASS="" LOCALCOMMAND=""/>
+      <FILE FILENAME="Editor\ParticleGroupEditor.cpp" FORMNAME="" UNITNAME="ParticleGroupEditor" CONTAINERID="CCompiler" DESIGNCLASS="" LOCALCOMMAND=""/>
+      <FILE FILENAME="Editor\ParticleGroupParser.cpp" FORMNAME="" UNITNAME="ParticleGroupParser" CONTAINERID="CCompiler" DESIGNCLASS="" LOCALCOMMAND=""/>
+      <FILE FILENAME="Engine\R_Backend_xform.cpp" FORMNAME="" UNITNAME="R_Backend_xform" CONTAINERID="CCompiler" DESIGNCLASS="" LOCALCOMMAND=""/>
   </FILELIST>
   <BUILDTOOLS>
   </BUILDTOOLS>

@@ -280,6 +280,7 @@ public:
         else if (0==strcmp(command,"pSetMaxParticles"))	pSetMaxParticles(P1);
         else if (0==strcmp(command,"pSprite"))        	parent->pSprite	(P2);
         else if (0==strcmp(command,"pFrame"))		  	parent->pFrame	(P6);
+        else if (0==strcmp(command,"pTimeLimit"))		parent->pTimeLimit(P1);
         else if (0==strcmp(command,"pParentMotion"))  	pParentMotion	(P1);
         // actions
         else if (0==strcmp(command,"pAnimate"))			parent->pAnimate(P2);		
@@ -357,6 +358,7 @@ static LPCSTR PStateCommands[]={
 // our     
     "pSprite(LPCSTR sh_name, LPCSTR tex_name);",
     "pFrame(BOOL random_frame=TRUE, u32 frame_count=16, u32 texture_width=128, u32 texture_height=128, u32 frame_width=32, u32 frame_height=32);",
+	"pTimeLimit(float time_limit);",
     0
 };
 

@@ -114,10 +114,13 @@ protected:
 	CPGDef*				m_Def;
 
     BOOL				m_bPlaying;
+    s32					m_ElapsedLimit;
 
 	int					m_HandleGroup;
 	int					m_HandleActionList;
 protected:
+	void				ResetParticles		();
+
 	BOOL 				SaveActionList		(IWriter& F);
 	BOOL 				LoadActionList		(IReader& F);
 
@@ -153,6 +156,7 @@ DEFINE_VECTOR			(PS::CPGDef*,PGVec,PGIt);
 #define PGD_CHUNK_FLAGS			0x0005
 #define PGD_CHUNK_FRAME			0x0006
 #define PGD_CHUNK_SPRITE	   	0x0007
+#define PGD_CHUNK_TIMELIMIT		0x0008
 #define PGD_CHUNK_SOURCETEXT   	0x0020
 
 //---------------------------------------------------------------------------

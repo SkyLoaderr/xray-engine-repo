@@ -1,3 +1,5 @@
+#ifndef r_backend_xformH
+#define r_backend_xformH
 #pragma once
 
 class ENGINE_API	R_xforms
@@ -29,3 +31,4 @@ public:
 	IC void			set_c_vp	(R_constant* C);
 	IC void			set_c_wvp	(R_constant* C);
 };
+#endif

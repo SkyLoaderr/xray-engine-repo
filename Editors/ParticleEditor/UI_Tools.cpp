@@ -107,7 +107,7 @@ void CParticleTools::Render(){
 	if (!m_bReady) return;
 
 	// Draw the particles.
-    if (m_LibPGD) m_EditPG->RenderEditor();
+    if (m_LibPGD) m_EditPG->Render(1.f);
     else if (m_LibPS){
         if (m_EditObject)	m_EditObject->RenderSingle(Fidentity);
         if (m_TestObject){	
