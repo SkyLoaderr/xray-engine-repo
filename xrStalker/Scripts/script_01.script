@@ -7,15 +7,7 @@ function main()
 
 	local 	ps2 = particles("ghoul\\fx-01-camp-fire_00",false)
 
-	local artf1	= get_level_object("af_mercury_ball0001")
-	local artf2	= get_level_object("af_mercury_ball0002")
-	local artf3	= get_level_object("af_mercury_ball0003")
-
-	wait		(3000)
-
-	ps2:play_at_pos		(artf1:position());
-	ps2:play_at_pos		(artf2:position());
-	ps2:play_at_pos		(artf3:position());
+	wait		(1000)
 
 	stalker1:script	(true,script_01.script_name())
 	stalker2:script	(true,script_01.script_name())
@@ -23,13 +15,13 @@ function main()
  	action(                                                                                                       
 	    stalker1,
 	  	move	(move.standing, move.walk,move.line,patrol("way0002")),
-		cond	(cond.time_end, 10000)
+		cond	(cond.time_end, 100000)
 	)
 
 	action(                                                                                                       
 	    stalker2,
 	  	move	(move.standing, move.walk,move.line,patrol("way0001")),
-		cond	(cond.time_end, 120000)
+		cond	(cond.time_end, 100000)
 	)
 
 	while stalker1:action() and stalker2:action() do
