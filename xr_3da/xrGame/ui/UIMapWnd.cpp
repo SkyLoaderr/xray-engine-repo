@@ -195,9 +195,6 @@ void CUIMapWnd::SetLocalMap(const shared_str &levelName)
 	R_ASSERT(currentMapIt->second.mapTexture);
 	UILocalMapBackground.InitMapBackground(currentMapIt->second.mapTexture);
 
-	// Ставим фильтр на мапспоты
-	ApplyFilterToObjectives(levelName);
-
 	// Теперь выводим имя карты
 	UILocalMapName.SetText(*CStringTable()(levelName));
 }
@@ -318,6 +315,8 @@ void CUIMapWnd::InitLocalMapObjectives()
 	//информация о выбранном объекте
 	UIStaticInfo.Show(false);
 	UICharacterInfo.Show(false);
+
+	this->ApplyFilterToObjectives(Level().name());    
 }
 
 //////////////////////////////////////////////////////////////////////////
