@@ -4,6 +4,8 @@
 #include "NVI_Convolution.h"
 #include "NVI_Image.h"
 
+//#include "tga.h"
+
 using namespace xray_nvi;
 
 enum KernelType
@@ -59,7 +61,7 @@ Ivector	vpack      (Fvector src)
 	// dumb test
 	float   e_best  = flt_max;
 	int             r=bx,g=by,b=bz;
-	int             d=3;
+	int             d=2;
 	for (int x=_max(bx-d,0); x<=_min(bx+d,255); x++){
 		for (int y=_max(by-d,0); y<=_min(by+d,255); y++){
 			for (int z=_max(bz-d,0); z<=_min(bz+d,255); z++){
@@ -714,9 +716,13 @@ bool DXTCompressBump(LPCSTR out_name, u8* T_height_gloss, u32 w, u32 h, u32 pitc
 	pSrc->AverageRGBToAlpha();
 
 	// stage 0 
+	pitch				= w*4;
+	//tga_save			("x:\\0-height-gloss.tga",w,h,T_height_gloss,true);
 	ConvertToNormalMap	(pSrc,KERNEL_5x5,fmt->bump_virtual_height*100.f);
 	u8* T_normal_1		= pSrc->GetImageDataPointer();
+	//tga_save			("x:\\1-normal_1.tga",w,h,T_normal_1,true);
 	TW_Iterate_1OP		(w,h,pitch,T_normal_1,T_height_gloss,it_gloss_rev);		// T_height_gloss.a (gloss) -> T_normal_1 + reverse of channels
+	//tga_save			("x:\\2-normal_1.tga",w,h,T_normal_1,true);
 
 	STextureParams		fmt0;
 	fmt0.flags.assign	(STextureParams::flGenerateMipMaps);
@@ -732,10 +738,12 @@ bool DXTCompressBump(LPCSTR out_name, u8* T_height_gloss, u32 w, u32 h, u32 pitc
 			VERIFY			((w==CI->Width())&&(h==CI->Height()));
 			CI->Decompress	();
 			u8* T_normal_1U	= CI->GetDecompDataPointer();
+			//tga_save		("x:\\3-normal_1U.tga",w,h,T_normal_1U,true);
 
 			// Calculate difference
 			u8*	T_normal_1D	= (u8*) calloc( w * h, sizeof( u32 ));
 			TW_Iterate_2OP	(w,h,pitch,T_normal_1D,T_normal_1,T_normal_1U,it_difference);
+			//tga_save		("x:\\4-normal_1D.tga",w,h,T_normal_1D,true);
 
 			// Calculate bounds for centering
 			u32	h_average=0, h_min=255, h_max=0;
@@ -777,6 +785,7 @@ bool DXTCompressBump(LPCSTR out_name, u8* T_height_gloss, u32 w, u32 h, u32 pitc
 
 			// Reverse channels back + transfer heightmap
 			TW_Iterate_1OP	(w,h,pitch,T_normal_1D,T_height_pf,it_height_rev);
+			//tga_save		("x:\\5-normal_1D.tga",w,h,T_normal_1D,true);
 			
 			// Compress
 			STextureParams	fmt0;

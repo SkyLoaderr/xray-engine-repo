@@ -314,11 +314,17 @@ void Image_DXTC::Decompress()
 		break;
 
 	case PF_UNKNOWN :
-		
 		break;
-
 	}
-
+	//. swap R<->B channels
+	for (int y=0; y<m_nHeight; y++)
+	{
+		for (int x=0; x<m_nWidth; x++)
+		{
+			BYTE*	ptr = m_pDecompBytes + (y*m_nWidth+x)*4;
+			swap	(ptr[0],ptr[2]);
+		}
+	}
 }
 
 struct DXTColBlock

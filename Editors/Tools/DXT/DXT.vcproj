@@ -221,6 +221,12 @@
 			<File
 				RelativePath=".\NVI_Image.h">
 			</File>
+			<File
+				RelativePath=".\tga.cpp">
+			</File>
+			<File
+				RelativePath=".\tga.h">
+			</File>
 		</Filter>
 		<Filter
 			Name="lib"
