@@ -96,12 +96,15 @@ void CPhysicItem::net_Destroy		()
 
 void CPhysicItem::UpdateCL()
 {
-	// Log						("--- B - CBastArtifact",renderable.xform);
-	if (!H_Parent() && m_pPhysicsShell)
+//	if (!xr_strcmp("bolt",cName()))
+//		Log					("--- B - CBolt",renderable.xform);
+	if (!H_Parent() && m_pPhysicsShell && m_pPhysicsShell->bActive)
 		m_pPhysicsShell->InterpolateGlobalTransform(&XFORM());
-	// Log						("--- C - CBastArtifact",renderable.xform);
+//	if (!xr_strcmp("bolt",cName()))
+//		Log						("--- C - CBolt",renderable.xform);
 	inherited::UpdateCL		();
-	// Log						("--- D - CBastArtifact",renderable.xform);
+//	if (!xr_strcmp("bolt",cName()))
+//		Log						("--- D - CBolt",renderable.xform);
 }
 
 void CPhysicItem::activate_physic_shell()
