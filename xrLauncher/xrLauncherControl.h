@@ -83,7 +83,7 @@ namespace xrLauncher
 	private: System::Windows::Forms::CheckBox *  disableDistortionCheck;
 	private: System::Windows::Forms::CheckBox *  disableSoundCheck;
 	private: System::Windows::Forms::CheckBox *  ditherShadowsCheck;
-	private: System::Windows::Forms::CheckBox *  checkBox2;
+
 	private: System::Windows::Forms::ComboBox *  renderCombo;
 	private: System::Windows::Forms::Label *  label2;
 
@@ -96,6 +96,7 @@ namespace xrLauncher
 	private: System::Windows::Forms::CheckBox *  force60HzCheck;
 	private: System::Windows::Forms::TrackBar *  textureLodTrack;
 	private: System::Windows::Forms::TrackBar *  rasterTrack;
+	private: System::Windows::Forms::CheckBox *  disableShadowsCheck;
 
 
 
@@ -137,7 +138,7 @@ namespace xrLauncher
 			this->textureLodTrack = new System::Windows::Forms::TrackBar();
 			this->label4 = new System::Windows::Forms::Label();
 			this->label2 = new System::Windows::Forms::Label();
-			this->checkBox2 = new System::Windows::Forms::CheckBox();
+			this->disableShadowsCheck = new System::Windows::Forms::CheckBox();
 			this->ditherShadowsCheck = new System::Windows::Forms::CheckBox();
 			this->disableDistortionCheck = new System::Windows::Forms::CheckBox();
 			this->label1 = new System::Windows::Forms::Label();
@@ -277,7 +278,7 @@ namespace xrLauncher
 			this->renderPage->Controls->Add(this->textureLodTrack);
 			this->renderPage->Controls->Add(this->label4);
 			this->renderPage->Controls->Add(this->label2);
-			this->renderPage->Controls->Add(this->checkBox2);
+			this->renderPage->Controls->Add(this->disableShadowsCheck);
 			this->renderPage->Controls->Add(this->ditherShadowsCheck);
 			this->renderPage->Controls->Add(this->disableDistortionCheck);
 			this->renderPage->Controls->Add(this->label1);
@@ -293,7 +294,6 @@ namespace xrLauncher
 			// rasterTrack
 			// 
 			this->rasterTrack->AutoSize = false;
-			this->rasterTrack->Enabled = false;
 			this->rasterTrack->LargeChange = 1;
 			this->rasterTrack->Location = System::Drawing::Point(208, 176);
 			this->rasterTrack->Maximum = 4;
@@ -331,15 +331,15 @@ namespace xrLauncher
 			this->label2->TabIndex = 13;
 			this->label2->Text = S"Rasterization quality. R1 only";
 			// 
-			// checkBox2
+			// disableShadowsCheck
 			// 
-			this->checkBox2->Location = System::Drawing::Point(8, 224);
-			this->checkBox2->Name = S"checkBox2";
-			this->checkBox2->RightToLeft = System::Windows::Forms::RightToLeft::Yes;
-			this->checkBox2->Size = System::Drawing::Size(336, 16);
-			this->checkBox2->TabIndex = 11;
-			this->checkBox2->Text = S"Disable shadows from transluent surfaces. R2 only";
-			this->checkBox2->TextAlign = System::Drawing::ContentAlignment::MiddleRight;
+			this->disableShadowsCheck->Location = System::Drawing::Point(8, 224);
+			this->disableShadowsCheck->Name = S"disableShadowsCheck";
+			this->disableShadowsCheck->RightToLeft = System::Windows::Forms::RightToLeft::Yes;
+			this->disableShadowsCheck->Size = System::Drawing::Size(336, 16);
+			this->disableShadowsCheck->TabIndex = 11;
+			this->disableShadowsCheck->Text = S"Disable shadows from transluent surfaces. R2 only";
+			this->disableShadowsCheck->TextAlign = System::Drawing::ContentAlignment::MiddleRight;
 			// 
 			// ditherShadowsCheck
 			// 

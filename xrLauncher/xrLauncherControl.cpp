@@ -90,6 +90,7 @@ void xrLauncherControl::InitSoundPage()
 
 void xrLauncherControl::ApplySoundPage()
 {
+	Log("ApplySoundPage -begin");
 	if(!SoundChanged())
 		return;
 	string256 buff;
@@ -97,25 +98,30 @@ void xrLauncherControl::ApplySoundPage()
 	float  fval=.0f, fmin=.0f, fmax=.0f;
 	int  bval=false;
 	CConsole* con = ::Console;
-
+	Log("ApplySoundPage -sndAccelCheck");
 	bval = sndAccelCheck->get_Checked();
 	sprintf		(buff,"%s %s",SND_ACCEL,(bval)?"on":"off" );
 	con->Execute(buff);
 
+	Log("ApplySoundPage -sndEfxCheck");
 	bval = sndEfxCheck->get_Checked();
 	sprintf		(buff,"%s %s",SND_EFX,(bval)?"on":"off" );
 	con->Execute(buff);
 
+	Log("ApplySoundPage -sndTargetsUpDown");
 	ival = (int)sndTargetsUpDown->get_Value();
 	sprintf		(buff,"%s %d", SND_TARGETS, ival);
 	con->Execute(buff);
 
+	Log("ApplySoundPage -soundSampleRateCombo");
 	sprintf		(buff,"%s %s", SND_RATE, getCBActive(soundSampleRateCombo) );
 	con->Execute(buff);
 
+	Log("ApplySoundPage -soundQualityCombo");
 	sprintf		(buff,"%s %s", SND_MODEL, getCBActive(soundQualityCombo));
 	con->Execute(buff);
 
+	Log("ApplySoundPage -disableSoundCheck");
 	if(disableSoundCheck->get_Checked()){
 		setCoreParam(" -nosound");
 	}else{
@@ -127,6 +133,7 @@ void xrLauncherControl::ApplySoundPage()
 
 bool xrLauncherControl::SoundChanged()
 {
+	Log("SoundChanged - begin");
 	int  ival=0, imin=0, imax=0;
 	float  fval=.0f, fmin=.0f, fmax=.0f;
 	int  bval=false;
@@ -192,11 +199,12 @@ void xrLauncherControl::InitRenderPage()
 	rasterTrack->set_Value(ival);
 
 	ditherShadowsCheck->set_Checked( testCoreParam("-sjitter")   );
-	disableDistortionCheck->set_Checked( testCoreParam("-notsh") );
+	disableShadowsCheck->set_Checked( testCoreParam("-notsh") );
 }
 
 void xrLauncherControl::ApplyRenderPage()
 {
+	Log("ApplyRenderPage - begin");
 	string256 buff;
 	int  ival=0, imin=0, imax=0;
 	float  fval=.0f, fmin=.0f, fmax=.0f;
@@ -206,6 +214,7 @@ void xrLauncherControl::ApplyRenderPage()
 	if(!RenderChanged())
 		return;
 
+	Log("ApplyRenderPage - renderCombo");
 	if( testCBActive(renderCombo,"R2") ){
 			// todo: add "-r2" into command line
 			setCoreParam(" -r2");
@@ -214,22 +223,27 @@ void xrLauncherControl::ApplyRenderPage()
 			resetCoreParam(" -r2");
 	};
 
+	Log("ApplyRenderPage - vertSyncCheck");
 	bval = vertSyncCheck->get_Checked();
 	sprintf		(buff,"%s %s",RND_VSYNC,(!bval)?"on":"off" );
 	con->Execute(buff);
 
+	Log("ApplyRenderPage - force60HzCheck");
 	bval = force60HzCheck->get_Checked();
 	sprintf		(buff,"%s %s",RND_FORCE60,(bval)?"on":"off" );
 	con->Execute(buff);
 
+	Log("ApplyRenderPage - textureLodTrack");
 	ival = textureLodTrack->get_Value();
 	sprintf		(buff,"%s %d", RND_TEXTURELOD, ival);
 	con->Execute(buff);
 
+	Log("ApplyRenderPage - rasterTrack");
 	ival = rasterTrack->get_Value();
 	sprintf		(buff,"%s %d", RND_RASTER, ival);
 	con->Execute(buff);
 
+	Log("ApplyRenderPage - disableDistortionCheck");
 	if(disableDistortionCheck->get_Checked()){
 		//add -nodistort
 		setCoreParam(" -nodistort");
@@ -238,6 +252,7 @@ void xrLauncherControl::ApplyRenderPage()
 		resetCoreParam(" -nodistort");
 	}
 
+	Log("ApplyRenderPage - ditherShadowsCheck");
 	if(ditherShadowsCheck->get_Checked() ){
 		//add -sjitter
 		setCoreParam(" -sjitter");
@@ -246,7 +261,8 @@ void xrLauncherControl::ApplyRenderPage()
 		resetCoreParam(" -sjitter");
 	};
 
-	if(disableDistortionCheck->get_Checked() ){
+	Log("ApplyRenderPage - disableShadowsCheck");
+	if(disableShadowsCheck->get_Checked() ){
 		//add -notsh
 		setCoreParam(" -notsh");
 	}else{
@@ -258,6 +274,7 @@ void xrLauncherControl::ApplyRenderPage()
 
 bool xrLauncherControl::RenderChanged()
 {
+	Log("RenderChanged - begin");
 	int  ival=0, imin=0, imax=0;
 	float  fval=.0f, fmin=.0f, fmax=.0f;
 	int  bval=false;
@@ -288,7 +305,7 @@ bool xrLauncherControl::RenderChanged()
 	if(ditherShadowsCheck->get_Checked() != testCoreParam("-sjitter"))
 		return true;
 
-	if(disableDistortionCheck->get_Checked() != testCoreParam("-notsh"))
+	if(disableShadowsCheck->get_Checked() != testCoreParam("-notsh"))
 		return true;
 
 	return false;

@@ -63,6 +63,9 @@ void convert(System::String* src, char* dst)
 
 void setCoreParam(LPCSTR str)
 {
+	if(testCoreParam(str))
+		return;
+
 	string1024 new_param;
 	strconcat(new_param,str,Core.Params);
 	strcat(Core.Params,new_param);
@@ -70,6 +73,9 @@ void setCoreParam(LPCSTR str)
 
 void resetCoreParam(LPCSTR str)
 {
+	if(!testCoreParam(str))
+		return;
+
 	char* c = strstr(Core.Params,str);
 	if(!c)
 		return;
