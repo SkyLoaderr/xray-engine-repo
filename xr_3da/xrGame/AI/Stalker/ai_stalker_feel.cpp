@@ -212,7 +212,9 @@ void CAI_Stalker::Exec_Look(float dt)
 	mRotate.setHPB			(-NET_Last.o_model,0,0);
 	
 	// checking if we have to switch onto another task
+	Device.Statistic.AI_Think.End	();
 	Engine.Sheduler.Slice	();
+	Device.Statistic.AI_Think.Begin	();
 }
 
 void CAI_Stalker::vfUpdateDynamicObjects()
