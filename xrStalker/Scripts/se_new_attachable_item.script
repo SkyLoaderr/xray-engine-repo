@@ -376,7 +376,7 @@ function CSE_NewAttachableItem:FillProps	(pref,items)
 	properties_helper():create_vector(items,"script\\vector\\3",self,"_vector_3",-10,10,0.5)
 	properties_helper():create_vector(items,"script\\vector\\4",self,"_vector_4",-10,10,0.5,4)
 	// vcolor
-	properties_helper():create_vcolor(items,pref + self.section_name + "script\\vcolor\\0",self,"_vcolor_0")
+	properties_helper():create_vcolor(items,pref .. self.section_name .. "script\\vcolor\\0",self,"_vcolor_0")
 	// angle
 	properties_helper():create_float(items,"script\\angle\\0",self,"_angle_0")
 	properties_helper():create_float(items,"script\\angle\\1",self,"_angle_1",0)
