@@ -241,6 +241,8 @@ public:
 
 	void			SetVersionToCurrent		(BOOL bCreate, BOOL bModif);
 
+    void			Optimize				();
+
     IC EditMeshIt	FirstMesh				()	{return m_Meshes.begin();}
     IC EditMeshIt	LastMesh				()	{return m_Meshes.end();}
     IC EditMeshVec& Meshes					()	{return m_Meshes; }

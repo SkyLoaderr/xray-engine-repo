@@ -205,6 +205,7 @@ bool CEditableMesh::LoadMesh(IReader& F){
 		// update vmaps
 		RebuildVMaps();
 	}
+
 //	if (!m_CFModel) GenerateCFModel();
 	return true;
 }

@@ -133,7 +133,7 @@ void CEditableMesh::RebuildVMaps()
 bool CEditableMesh::UpdateAdjacency()
 {
 	if (m_Faces.empty()) return false;
-    ELog.Msg(mtInformation,".. Update Adjacency");
+    ELog.Msg(mtInformation,".. Update adjacency");
     m_Adjs.clear();
     m_Adjs.resize(m_Points.size());
 	for (FaceIt f_it=m_Faces.begin(); f_it!=m_Faces.end(); f_it++)
@@ -204,7 +204,7 @@ bool CEditableMesh::OptimizeFace(st_Face& face){
 	}
 
 	if ((mface[0]==mface[1])||(mface[1]==mface[2])||(mface[0]==mface[2])){
-		ELog.DlgMsg( mtError, "Optimize: Face missing." );
+		Msg("!Optimize: Invalid face found. Removed.");
         return false;
 	}else{
     	face.pv[0].pindex = mface[0];
@@ -217,6 +217,11 @@ bool CEditableMesh::OptimizeFace(st_Face& face){
 void CEditableMesh::Optimize(BOOL NoOpt)
 {
 	if (!NoOpt){
+        UnloadCForm     	();
+        UnloadFNormals   	();
+        UnloadPNormals   	();
+       	UnloadSVertices  	();
+    	
 		// clear static data
 		for (int x=0; x<MX+1; x++)
 			for (int y=0; y<MY+1; y++)
@@ -233,7 +238,8 @@ void CEditableMesh::Optimize(BOOL NoOpt)
 		m_NewPoints.clear();
 		m_NewPoints.reserve(m_Points.size());
 
-		ELog.Msg(mtInformation,"Optimize...");
+		Msg("Optimize...");
+		Msg(".. Merge points");
 
 		IntVec mark_for_del;
 		mark_for_del.clear();

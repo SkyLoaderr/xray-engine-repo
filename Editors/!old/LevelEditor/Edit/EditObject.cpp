@@ -238,4 +238,11 @@ void CEditableObject::GetFaceWorld(const Fmatrix& parent, CEditableMesh* M, int 
 	parent.transform_tiny(verts[2],*PT[2]);
 }
 
+void CEditableObject::Optimize()
+{
+    for(EditMeshIt m_def=m_Meshes.begin();m_def!=m_Meshes.end();m_def++){
+    	(*m_def)->Optimize		(false);
+        (*m_def)->RebuildVMaps	();
+    }
+}
 
