@@ -125,7 +125,7 @@ void CPatrolPathManager::select_point(const Fvector &position, u32 &dest_vertex_
 	CPatrolPath::const_iterator	I = vertex->edges().begin(), E = vertex->edges().end();
 	u32							temp = u32(-1);
 	for ( ; I != E; ++I) {
-		if ((*I).vertex_id() == m_curr_point_index)
+		if ((*I).vertex_id() == m_prev_point_index)
 			continue;
 
 		if (!accessible(m_path->vertex((*I).vertex_id())))
