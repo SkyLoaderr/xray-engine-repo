@@ -319,8 +319,8 @@ public:
 	}
 	// half_fov-angle-tangent
 	IC	void	build_projection_HAT	(T HAT, T fAspect, T fNearPlane, T fFarPlane) {
-		VERIFY( fabsf(fFarPlane-fNearPlane) > 0.01f );
-		VERIFY( fabsf(HAT) > 0.001f );
+		VERIFY( fabsf(fFarPlane-fNearPlane) > EPS_S );
+		VERIFY( fabsf(HAT) > EPS_S );
 		
 		T cot	= 1/HAT;
 		T w		= fAspect * cot;
