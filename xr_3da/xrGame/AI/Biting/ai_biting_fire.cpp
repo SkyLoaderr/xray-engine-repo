@@ -8,6 +8,7 @@
 
 #include "stdafx.h"
 #include "ai_biting.h"
+#include "..\\..\\actor.h"
 
 float CAI_Biting::EnemyHeuristics(CEntity* E)
 {
@@ -24,79 +25,10 @@ float CAI_Biting::EnemyHeuristics(CEntity* E)
 	return  f1*f2;
 }
 
-void CAI_Biting::SelectEnemy(SEnemySelected& S)
-{
-	S.Enemy				= 0;
-	S.bVisible			= FALSE;
-	S.fCost				= flt_max-1;
-
-#pragma todo("Oles to Jim: CMonsterMemory - commented out")
-	// if (!Mem.IsEnemy()) return;
-	
-	//VisionElem &ve = Mem.GetNearestObject(vPosition);
-
-
-
-//	Mem.GetNearestEnemy(vPosition,&pEnemy);
-//
-//	m_tSavedEnemy			= pEnemy;
-//	m_tSavedEnemyPosition	= pEnemy->Position();
-//	m_tpSavedEnemyNode		= pEnemy->AI_Node;
-//	m_dwSavedEnemyNodeID	= pEnemy->AI_NodeID;
-//	m_dwLostEnemyTime		= Level().timeServer();
-//	m_dwSeenEnemyLastTime	= m_dwLostEnemyTime;
-//	m_tMySavedPosition		= vPosition;
-//	m_dwMyNodeID			= AI_NodeID;
-//	vfValidatePosition		 (m_tSavedEnemyPosition,m_dwSavedEnemyNodeID);
-//	m_dwEnemyLastMemoryTime	= m_dwSeenEnemyLastTime;	
-//
-//	S.Enemy					= pEnemy; 
-
-//	if (m_tSavedEnemy && m_tSavedEnemy->g_Alive()) 
-//			if (m_dwLostEnemyTime + m_dwEnemyMemoryTime > m_dwCurrentUpdate) return;
-//	
-//	// Initiate process
-//	objVisible&	Known	= Level().Teams[g_Team()].Squads[g_Squad()].KnownEnemys;
-//	S.Enemy					= 0;
-//	S.bVisible			= FALSE;
-//	S.fCost				= flt_max-1;
-//
-//	if (Known.size()==0)
-//		return;
-//	// Get visible list
-//	feel_vision_get	(m_tpaVisibleObjects);
-//	std::sort		(m_tpaVisibleObjects.begin(),m_tpaVisibleObjects.end());
-//	CGroup &Group = Level().Teams[g_Team()].Squads[g_Squad()].Groups[g_Group()];
-//
-//	for (u32 i=0; i<Known.size(); i++) {
-//		CEntityAlive*	E = dynamic_cast<CEntityAlive*>(Known[i].key);
-//		if (!E || !E->g_Alive())
-//			continue;
-//
-//		float		H = EnemyHeuristics(E);
-//		if (H<S.fCost) {
-//			bool bVisible = false;
-//			for (int i=0; i<(int)m_tpaVisibleObjects.size(); i++)
-//				if (m_tpaVisibleObjects[i] == E) {
-//					bVisible = true;
-//					break;
-//				}
-//				float	cost	 = H*(bVisible?1:_FB_invisible_hscale);
-//				if (cost<S.fCost)	{
-//					S.Enemy		= E;
-//					S.bVisible	= bVisible;
-//					S.fCost		= cost;
-//					Group.m_bEnemyNoticed = true;
-//				}
-//		}
-//	}
-//	
-//	if (m_tEnemy.Enemy)
-//		vfSaveEnemy();
-}
 
 void CAI_Biting::HitSignal(float amount, Fvector& vLocalDir, CObject* who, s16 element)
 {
+	
 	// Save event
 	Fvector D;
 	XFORM().transform_dir(D,vLocalDir);
@@ -168,40 +100,115 @@ float CAI_Biting::CorpHeuristics(CEntity* E)
 		return flt_max;
 }
 
-void CAI_Biting::SelectCorp(SEnemySelected& S)
+//void CAI_Biting::SelectCorp(SEnemySelected& S)
+//{
+//	// Initiate process
+//	objVisible&	Known	= Level().Teams[g_Team()].Squads[g_Squad()].KnownEnemys;
+//	S.Enemy				= 0;
+//	S.bVisible			= FALSE;
+//	S.fCost				= flt_max-1;
+//	
+//	if (Known.size()==0)
+//		return;
+//	// Get visible list
+//	feel_vision_get	(m_tpaVisibleObjects);
+//	std::sort		(m_tpaVisibleObjects.begin(),m_tpaVisibleObjects.end());
+//	
+//	CGroup &Group = Level().Teams[g_Team()].Squads[g_Squad()].Groups[g_Group()];
+//	
+//	for (u32 i=0; i<Known.size(); i++) {
+//		CEntity*	E = dynamic_cast<CEntity*>(Known[i].key);
+//		float		H = CorpHeuristics(E);
+//		if (H < flt_max) {
+//			bool bVisible = false;
+//			for (int i=0; i<(int)m_tpaVisibleObjects.size(); i++)
+//				if (m_tpaVisibleObjects[i] == E) {
+//					bVisible = true;
+//					break;
+//				}
+//				float	cost	 = bVisible? H*.95f : H;
+//			if (cost<S.fCost)	{
+//				S.Enemy		= E;
+//				S.bVisible	= bVisible;
+//				S.fCost		= cost;
+//				Group.m_bEnemyNoticed = true;
+//			}
+//		}
+//	}
+//}
+
+
+// Возвращает true - если необходимо нанести Hit
+bool CAI_Biting::AttackMelee(CObject *obj, bool bAttackRat) 
 {
-	// Initiate process
-	objVisible&	Known	= Level().Teams[g_Team()].Squads[g_Squad()].KnownEnemys;
-	S.Enemy				= 0;
-	S.bVisible			= FALSE;
-	S.fCost				= flt_max-1;
+	// Если actor
+	CActor *pA = dynamic_cast<CActor *>(obj);
+	if (pA) {
+		// получить координаты fire bones
+		Fmatrix MBoneLeft;
+		Fmatrix MBoneRight;
+		
+		MBoneLeft.mul(svTransform, PKinematics(pVisual)->LL_GetInstance(m_iLeftFireBone).mTransform);
+		MBoneRight.mul(svTransform, PKinematics(pVisual)->LL_GetInstance(m_iRightFireBone).mTransform);
+
+		// получить BBox врага
+		Fvector vEnemyBoxCenter;
+		float   fEnemyBoxRadius;
+
+		pA->ph_Movement.GetBoundingSphere(vEnemyBoxCenter,fEnemyBoxRadius);
+
+		// положение костей внутри bbox врага?
+		bool LeftBoneIn = false, RightBoneIn = false;
+
+		if (MBoneLeft.c.distance_to(vEnemyBoxCenter) < fEnemyBoxRadius) LeftBoneIn = true;
+		if (MBoneRight.c.distance_to(vEnemyBoxCenter) < fEnemyBoxRadius) RightBoneIn = true;
+
+		if (LeftBoneIn || RightBoneIn) {
+			
+			if (m_dwAttackActorMeleeTime + 2000 < m_dwCurrentUpdate){
+				m_dwAttackActorMeleeTime = m_dwCurrentUpdate;	
+				return true;
+			}
+			
+		}	
+		return false;
+	}
 	
-	if (Known.size()==0)
-		return;
-	// Get visible list
-	feel_vision_get	(m_tpaVisibleObjects);
-	std::sort		(m_tpaVisibleObjects.begin(),m_tpaVisibleObjects.end());
-	
-	CGroup &Group = Level().Teams[g_Team()].Squads[g_Squad()].Groups[g_Group()];
-	
-	for (u32 i=0; i<Known.size(); i++) {
-		CEntity*	E = dynamic_cast<CEntity*>(Known[i].key);
-		float		H = CorpHeuristics(E);
-		if (H < flt_max) {
-			bool bVisible = false;
-			for (int i=0; i<(int)m_tpaVisibleObjects.size(); i++)
-				if (m_tpaVisibleObjects[i] == E) {
-					bVisible = true;
-					break;
-				}
-				float	cost	 = bVisible? H*.95f : H;
-			if (cost<S.fCost)	{
-				S.Enemy		= E;
-				S.bVisible	= bVisible;
-				S.fCost		= cost;
-				Group.m_bEnemyNoticed = true;
+	// если плоть в прыжке || бьёт 
+	// если "нужное" время аттаки 
+	if (((m_dwAttackMeleeTime + 1000>m_dwCurrentUpdate) && (m_dwAttackMeleeTime + 700 < m_dwCurrentUpdate)) ||
+		(m_dwAttackMeleeTime + 2000 < m_dwCurrentUpdate)){
+		
+		if (obj->Position().distance_to(vPosition) < .8f) {
+			m_dwAttackMeleeTime = m_dwCurrentUpdate;
+			return true;
+		}
+
+
+		this->setEnabled(false);
+		Collide::ray_query	l_rq;
+		Fvector vCenter;
+		clCenter(vCenter);
+		Fvector dir = Direction();
+		if (bAttackRat) {
+			Fvector tempV;
+
+			tempV.set(0,-Radius(),0);
+			dir.add(tempV);
+		} 
+
+
+		if(g_pGameLevel->ObjectSpace.RayPick(vCenter, dir, 1.5f, l_rq)) {
+			if ((l_rq.O == obj) && (l_rq.range < 1.0)) {
+				m_dwAttackMeleeTime = m_dwCurrentUpdate;
+				return true;
 			}
 		}
+		this->setEnabled(true);
 	}
-}
+	
+	// если RayPick успешный
+	return false;
+}	
+
 
