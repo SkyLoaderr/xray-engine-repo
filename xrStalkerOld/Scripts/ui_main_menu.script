@@ -105,7 +105,7 @@ function main_menu:InitControls()
 	self:AttachChild(self.background)
 	
 	-- MAIN FRAME WINDOW
-	self.main_frame = CUIFrameWindow()
+	self.main_frame = CUIStatic()
 	self.main_frame:SetAutoDelete(true)
 	self.main_frame:SetWindowName("main_frame")
 	self.main_frame:Init("ui\\ui_satic_main_menu", self.main_rect.x, 
