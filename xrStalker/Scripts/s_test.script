@@ -39,6 +39,6 @@ function main ()
    
     local cl2 = s_test.Test2 ()
     cl2:set_value (20)
-    cl:print ()
+    cl2:print ()
     
 end
