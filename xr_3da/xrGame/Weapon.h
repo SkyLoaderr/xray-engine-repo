@@ -248,13 +248,9 @@ public:
 //////////////////////////////////////////////////////////////////////////
 
 public:
-	enum EHandDependence{
-		hdNone	= 0,
-		hd1Hand	= 1,
-		hd2Hand	= 2
-	};
 
-	IC EHandDependence		HandDependence		()	const		{	return eHandDependence;}
+
+    virtual EHandDependence		HandDependence		()	const		{	return eHandDependence;}
 protected:
 	EHandDependence			eHandDependence;		// 0-используется без участия рук, 1-одна рука, 2-две руки
 	Fmatrix					m_Offset;

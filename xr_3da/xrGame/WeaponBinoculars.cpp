@@ -53,7 +53,7 @@ void CWeaponBinoculars::Load	(LPCSTR section)
 	camRelaxSpeed		= pSettings->r_float	(section,"cam_relax_speed"	); camRelaxSpeed = deg2rad(camRelaxSpeed);
 	camDispersion		= pSettings->r_float	(section,"cam_dispersion"	); camDispersion = deg2rad(camDispersion);
 
-	eHandDependence		= CWeapon::EHandDependence(pSettings->r_s32(section,"hand_dependence"));
+	eHandDependence		= EHandDependence(pSettings->r_s32(section,"hand_dependence"));
 
 	setVisible			(FALSE);
 

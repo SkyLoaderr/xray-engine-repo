@@ -114,6 +114,8 @@ void CBreakableObject::CreateUnbroken()
 {
 	m_pUnbrokenObject=xr_new<CPHStaticGeomShell>();
 	Fobb b;
+	PKinematics(Visual())->Calculate(TRUE);
+	m_saved_box.set(Visual()->vis.box);
 	Visual()->vis.box.getradius(b.m_halfsize);
 	b.xform_set(Fidentity);
 	m_pUnbrokenObject->add_Box(b);
@@ -200,6 +202,7 @@ void CBreakableObject::net_Destroy()
 	inherited::net_Destroy();
 	xr_delete(collidable.model);
 	Init();
+	Visual()->vis.box.set(m_saved_box);
 }
 void CBreakableObject::Split()
 {

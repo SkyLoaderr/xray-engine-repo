@@ -13,6 +13,12 @@
 #include "phsynchronize.h"
 #include "entitycondition.h"
 
+enum EHandDependence{
+	hdNone	= 0,
+	hd1Hand	= 1,
+	hd2Hand	= 2
+};
+
 class CInventoryItem : public CPhysicItem {
 	typedef CPhysicItem	inherited;
 public:
@@ -38,6 +44,7 @@ public:
 	virtual bool	CanAttach			(PIItem pIItem) {return false;}
 	virtual bool	CanDetach			(LPCSTR item_section_name) {return false;}
 
+	virtual EHandDependence		HandDependence		()	const	{return hd1Hand;};
 	virtual bool	Activate			();									// !!! Переопределить. (см. в Inventory.cpp)
 	virtual void	Deactivate			();								// !!! Переопределить. (см. в Inventory.cpp)
 	virtual bool	Action				(s32 cmd, u32 flags) {return false;}	// true если известная команда, иначе false

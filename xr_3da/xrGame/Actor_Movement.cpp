@@ -206,6 +206,13 @@ void CActor::g_cl_CheckControls(u32 mstate_wf, Fvector &vControlAccel, float &Ju
 	mOrient.rotateY		(-r_model_yaw);
 	mOrient.transform_dir(vControlAccel);
 	//XFORM().transform_dir(vControlAccel);
+	if(mstate_real&mcClimb&&mstate_real&mcAnyMove&&
+	inventory().ActiveItem()&&inventory().ActiveItem()->HandDependence()==hd2Hand)
+	{
+		//inventory().ActiveItem()->Deactivate();
+		inventory().Activate(NO_ACTIVE_SLOT);
+	}
+
 }
 
 void CActor::g_Orientate	(u32 mstate_rl, float dt)
