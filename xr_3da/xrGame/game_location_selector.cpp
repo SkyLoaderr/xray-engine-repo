@@ -94,16 +94,20 @@ IC	void CGameLocationSelector::select_random_location(const _vertex_id_type star
 		ai().game_graph().begin	(start_vertex_id,i,e);
 		int						iChosenBranch = ::Random.randI(0,iBranches);
 		iBranches				= 0;
+		bool					bOk = false;
 		for ( ; i != e; ++i) {
 			for (int j=0; j<iPointCount; ++j)
 				if (ai().game_graph().mask(m_vertex_types[j].tMask,ai().game_graph().vertex((*i).vertex_id()).vertex_type()) && ((*i).vertex_id() != m_tCurGP)) {
 					if (iBranches == iChosenBranch) {
 						dest_vertex_id		= (*i).vertex_id();
 						m_time_to_change	= Level().timeServer() + ::Random.randI(m_vertex_types[j].dwMinTime,m_vertex_types[j].dwMaxTime);
-						return;
+						bOk = true;
+						break;
 					}
 					++iBranches;
 				}
+			if (bOk)
+				break;
 		}
 	}
 	m_previous_vertex_id		= start_vertex_id;
