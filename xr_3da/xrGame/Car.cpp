@@ -149,8 +149,9 @@ void	CCar::UpdateCL				( )
 	clCenter	(C);
 	V.set		(ph_world->Jeep.GetVelocity	());
 	float		velocity						= V.magnitude();
+	float		scale							= .5f+.5f*(velocity/10.f);
 	snd_engine.feedback->SetPosition			(C);
-	snd_engine.feedback->SetFrequencyScale		(velocity/10.f);
+	snd_engine.feedback->SetFrequencyScale		(scale);
 
 	// Camera
 	if (IsMyCamera())				cam_Update	(Device.fTimeDelta);

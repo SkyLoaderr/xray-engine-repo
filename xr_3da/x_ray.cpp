@@ -111,9 +111,10 @@ int APIENTRY WinMain(HINSTANCE hInstance,
 		Startup();
 	}
 	
-	Debug.Stop();
-	CloseLog();
-	mmgrDone();
+	Debug.Stop	();
+	Log			("hhhhhhhhhhhhhhhhhhhhhhhhhhhhhhhhhhhhhhhhhhhhhhhhhhhhhhhhhhhhhhhhhhhhhhhhhhh");
+	CloseLog	();
+	mmgrDone	();
 
 	// check for need to execute something external
 	if (strstr(lpCmdLine,"-exec ")) 
