@@ -19,7 +19,7 @@ public:
 
 	void				Create	(LPCSTR Name, DWORD w, DWORD h);
 	void				Destroy	();
-	BOOL				Valid	()	{ return pTexture; }
+	IC BOOL				Valid	()	{ return 0!=pTexture; }
 };
 
 #endif // SH_RT_H
