@@ -1,0 +1,8 @@
+-- File:        UI_MULTIPLAYER_DIALOG.SCRIPT
+-- Description: Multiplayer dialog
+-- Created:     02.12.2004
+-- Author:      Serhiy O. Vynnychenk0
+-- Mail:        narrator@gsc-game.com
+--
+
+class "multiplayer_dialog" ()
