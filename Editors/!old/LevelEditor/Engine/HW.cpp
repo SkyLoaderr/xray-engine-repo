@@ -31,7 +31,8 @@ void CHW::Reset		()
 	while	(TRUE)	{
 		HRESULT _hr							= HW.pDevice->Reset	(&DevPP);
 		if (SUCCEEDED(_hr))					break;
-		Sleep								(100);
+		Msg		("! ERROR: %s",Debug.error2string(_hr).c_str());
+		Sleep	(100);
 	}
 
 	R_CHK			(pDevice->GetRenderTarget			(0,&pBaseRT));
