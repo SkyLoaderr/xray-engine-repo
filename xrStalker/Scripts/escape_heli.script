@@ -53,7 +53,7 @@ function update()
 			end
 
 			attack_end = game.CTime()
-			attack_end:setHMS( 0, 10, 0 )
+			attack_end:setHMS( 0, 4, 0 )
 			attack_end:add( game.get_game_time() )
 
 			state_init = false
@@ -115,5 +115,9 @@ function main()
 		update()
 		heli_mgr:update()
 		wait()
+
+		if actor:has_info( "tutorial_artefact_gain" ) then
+			printf( "tutorial_artefact_gain" )
+		end
 	end
 end
