@@ -6,8 +6,8 @@
 global_actions        = stalker_ids.action_script
 action_script         = stalker_ids.action_script + 1
 alife                 = stalker_ids.action_alife_planner
-state_mgr             = stalker_ids.action_script + 2
 script_combat_planner = stalker_ids.action_script + 3
+state_mgr             = stalker_ids.action_script + 100 
 
 -- Стохе
 stohe_actions = stalker_ids.action_script + 100
