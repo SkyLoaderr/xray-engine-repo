@@ -5,6 +5,7 @@
 #include "bodyinstance.h"
 #include "fmesh.h"
 #include "fcached.h"
+#include "flod.h"
 
 extern	Shader*	shDEBUG;
 ENGINE_API BOOL	ShowLM	= FALSE;
@@ -347,8 +348,8 @@ void CRender::add_Static(CVisual *pVisual, DWORD planes)
 		{
 			FLOD		* pV	= (FLOD*) pVisual;
 			float		D;
-			if (CalcSSA(D,pV->bv_Position,pV)<ssaLOD)	add_Static	(pV->chields.back());
-			else										add_Static	(pV->chields.front());
+			if (CalcSSA(D,pV->bv_Position,pV)<ssaLOD)	add_Static	(pV->chields.back(),	planes);
+			else										add_Static	(pV->chields.front(),	planes);
 		}
 		break;
 	case MT_CACHED:
