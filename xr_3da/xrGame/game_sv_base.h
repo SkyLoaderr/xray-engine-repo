@@ -143,6 +143,8 @@ public:
 	virtual		void				teleport_object			(NET_Packet &packet, u16 id);
 	virtual		void				add_restriction			(NET_Packet &packet, u16 id);
 	virtual		void				remove_restriction		(NET_Packet &packet, u16 id);
+	virtual		bool				custom_sls_default		() {return false;};
+	virtual		void				sls_default				() {};
 	DECLARE_SCRIPT_REGISTER_FUNCTION
 };
 add_to_type_list(game_sv_GameState)

@@ -280,3 +280,7 @@ void game_sv_Single::remove_restriction	(NET_Packet &packet, u16 id)
 	alife().remove_restriction (id,restriction_id,restriction_type);
 }
 
+void game_sv_Single::sls_default		()
+{
+	alife().shedule_Update	(0);
+}

@@ -21,6 +21,7 @@
 #include "alife_registry_container.h"
 #include "xrserver.h"
 #include "level.h"
+#include "../x_ray.h"
 
 using namespace ALife;
 
@@ -106,6 +107,11 @@ bool CALifeStorageManager::load	(LPCSTR save_name)
 		Msg						("* Cannot find saved game %s",file_name);
 		strcpy					(m_save_name,save);
 		return					(false);
+	}
+
+	{
+		string512				temp;
+		pApp->LoadTitle			(strconcat(temp,"Loading saved game \"",save_name,".",SAVE_EXTENSION,"\"..."));
 	}
 
 	unload						();

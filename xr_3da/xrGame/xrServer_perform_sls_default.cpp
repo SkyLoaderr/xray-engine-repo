@@ -7,9 +7,10 @@
 
 void xrServer::SLS_Default	()
 {
-	// Spawn all other objects
-	if ((game->Type() == GAME_SINGLE) && ai().get_alife())
+	if (game->custom_sls_default()) {
+		game->sls_default	();
 		return;
+	}
 	
 	string256				fn_spawn;
 	if (FS.exist(fn_spawn, "$level$", "level.spawn")) {

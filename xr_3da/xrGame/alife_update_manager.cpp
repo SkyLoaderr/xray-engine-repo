@@ -213,6 +213,8 @@ void CALifeUpdateManager::update(bool switch_objects)
 
 void CALifeUpdateManager::new_game			(LPCSTR save_name)
 {
+	pApp->LoadTitle						("Creating new game...");
+
 	Msg									("* Creating new game...");
 
 	unload								();
@@ -246,15 +248,19 @@ void CALifeUpdateManager::load			(LPCSTR game_name, bool no_assert, bool new_onl
 {
 	pApp->LoadTitle						("SERVER: Loading alife simulator...");
 
+#ifdef DEBUG
 	Memory.mem_compact					();
 	u32									memory_usage = Memory.mem_usage();
+#endif
 
 	if (new_only || !CALifeStorageManager::load(game_name)) {
 		R_ASSERT3						(new_only || no_assert && xr_strlen(game_name),"Cannot find the specified saved game ",game_name);
 		new_game						(game_name);
 	}
 
+#ifdef DEBUG
 	Msg									("* Loading alife simulator is successfully completed (%7.3f Mb)",float(Memory.mem_usage() - memory_usage)/1048576.0);
+#endif
 	pApp->LoadTitle						("SERVER: Connecting...");
 }
 
@@ -287,6 +293,9 @@ bool CALifeUpdateManager::load_game		(LPCSTR game_name, bool no_assert)
 void CALifeUpdateManager::set_switch_online		(ALife::_OBJECT_ID id, bool value)
 {
 	CSE_ALifeDynamicObject			*object = objects().object(id);
+	if (object->can_switch_online() == value)
+		return;
+
 	unregister_object				(object,object->m_bOnline);
 	object->m_alife_simulator		= 0;
 	object->can_switch_online		(value);
@@ -296,6 +305,9 @@ void CALifeUpdateManager::set_switch_online		(ALife::_OBJECT_ID id, bool value)
 void CALifeUpdateManager::set_switch_offline	(ALife::_OBJECT_ID id, bool value)
 {
 	CSE_ALifeDynamicObject			*object = objects().object(id);
+	if (object->can_switch_offline() == value)
+		return;
+
 	unregister_object				(object,object->m_bOnline);
 	object->m_alife_simulator		= 0;
 	object->can_switch_offline		(value);
@@ -305,6 +317,9 @@ void CALifeUpdateManager::set_switch_offline	(ALife::_OBJECT_ID id, bool value)
 void CALifeUpdateManager::set_interactive		(ALife::_OBJECT_ID id, bool value)
 {
 	CSE_ALifeDynamicObject			*object = objects().object(id);
+	if (object->interactive() == value)
+		return;
+
 	unregister_object				(object,object->m_bOnline);
 	object->m_alife_simulator		= 0;
 	object->interactive				(value);
@@ -397,9 +412,15 @@ void CALifeUpdateManager::add_restriction	(ALife::_OBJECT_ID id, ALife::_OBJECT_
 	switch (restriction_type) {
 		case RestrictionSpace::eRestrictorTypeOut : {
 			if (std::find(creature->m_dynamic_out_restrictions.begin(),creature->m_dynamic_out_restrictions.end(),restriction_id) != creature->m_dynamic_out_restrictions.end()) {
+#ifdef DEBUG
 				Msg							("! cannot add out-restriction with id %d, name %s to the entity with id %d, name %s, because it is already added",restriction_id,restrictor->name_replace(),id,creature->name_replace());
+#endif
 				return;
 			}
+
+#ifdef _DEBUG
+			Msg								("Adding out-restriction with id %d, name %s to the entity with id %d, name %s, because it is already added",restriction_id,restrictor->name_replace(),id,creature->name_replace());
+#endif
 
 			creature->m_dynamic_out_restrictions.push_back(restriction_id);
 
@@ -407,9 +428,15 @@ void CALifeUpdateManager::add_restriction	(ALife::_OBJECT_ID id, ALife::_OBJECT_
 		}
 		case RestrictionSpace::eRestrictorTypeIn : {
 			if (std::find(creature->m_dynamic_in_restrictions.begin(),creature->m_dynamic_in_restrictions.end(),restriction_id) != creature->m_dynamic_in_restrictions.end()) {
+#ifdef DEBUG
 				Msg							("! cannot add in-restriction with id %d, name %s to the entity with id %d, name %s, because it is already added",restriction_id,restrictor->name_replace(),id,creature->name_replace());
+#endif
 				return;
 			}
+
+#ifdef _DEBUG
+			Msg								("Adding in-restriction with id %d, name %s to the entity with id %d, name %s, because it is already added",restriction_id,restrictor->name_replace(),id,creature->name_replace());
+#endif
 
 			creature->m_dynamic_in_restrictions.push_back(restriction_id);
 

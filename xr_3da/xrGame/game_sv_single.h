@@ -45,6 +45,8 @@ public:
 	virtual		void				teleport_object			(NET_Packet &packet, u16 id);
 	virtual		void				add_restriction			(NET_Packet &packet, u16 id);
 	virtual		void				remove_restriction		(NET_Packet &packet, u16 id);
+	virtual		bool				custom_sls_default		() {return !!m_alife_simulator;};
+	virtual		void				sls_default				();
 
 	IC			xrServer			&server					() const
 	{

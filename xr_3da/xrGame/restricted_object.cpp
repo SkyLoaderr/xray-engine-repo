@@ -43,6 +43,24 @@ IC	void construct_string					(LPSTR result, const xr_vector<ALife::_OBJECT_ID> &
 	}
 }
 
+#ifdef _DEBUG
+IC	void construct_id_string					(LPSTR result, const xr_vector<ALife::_OBJECT_ID> &restrictions)
+{
+	strcpy			(result,"");
+	string16		temp;
+	u32				count = 0;
+	xr_vector<ALife::_OBJECT_ID>::const_iterator	I = restrictions.begin();
+	xr_vector<ALife::_OBJECT_ID>::const_iterator	E = restrictions.end();
+	for ( ; I != E; ++I) {
+		if (count)
+			strcat	(result,",");
+		sprintf		(temp,"%d",*I);
+		strcat		(result,temp);
+		++count;
+	}
+}
+#endif
+
 BOOL CRestrictedObject::net_Spawn			(CSE_Abstract* data)
 {
 	CSE_Abstract				*abstract	= (CSE_Abstract*)(data);
@@ -61,6 +79,22 @@ BOOL CRestrictedObject::net_Spawn			(CSE_Abstract* data)
 		construct_string		(temp0,monster->m_dynamic_out_restrictions);
 		construct_string		(temp1,monster->m_dynamic_in_restrictions);
 	}
+
+#ifdef _DEBUG
+	string4096					temp2;
+	string4096					temp3;
+
+	construct_id_string			(temp2,monster->m_dynamic_out_restrictions);
+	construct_id_string			(temp3,monster->m_dynamic_in_restrictions);
+
+	Msg							("Restricting object %s with",monster->name_replace());
+	Msg							("STATIC OUT  : %s",*monster->m_out_space_restrictors);
+	Msg							("STATIC IN   : %s",*monster->m_in_space_restrictors);
+	Msg							("DYNAMIC OUT : %s",temp2);
+	Msg							("DYNAMIC IN  : %s",temp3);
+	Msg							("OUT         : %s",temp0);
+	Msg							("IN          : %s",temp1);
+#endif
 
 	Level().space_restriction_manager().restrict	(monster->ID,temp0,temp1);
 	
@@ -237,6 +271,9 @@ struct CRestrictionPredicate {
 
 void CRestrictedObject::add_restrictions	(const xr_vector<ALife::_OBJECT_ID> &out_restrictions, const xr_vector<ALife::_OBJECT_ID> &in_restrictions)
 {
+	if (out_restrictions.empty() && in_restrictions.empty())
+		return;
+
 	START_PROFILE("AI/Restricted Object/Add Restrictions");
 
 	string4096					temp_out_restrictions;
@@ -252,6 +289,9 @@ void CRestrictedObject::add_restrictions	(const xr_vector<ALife::_OBJECT_ID> &ou
 
 void CRestrictedObject::remove_restrictions	(const xr_vector<ALife::_OBJECT_ID> &out_restrictions, const xr_vector<ALife::_OBJECT_ID> &in_restrictions)
 {
+	if (out_restrictions.empty() && in_restrictions.empty())
+		return;
+
 	START_PROFILE("AI/Restricted Object/Remove Restrictions");
 	
 	string4096					temp_out_restrictions;
