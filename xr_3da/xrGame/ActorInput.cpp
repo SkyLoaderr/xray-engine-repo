@@ -238,7 +238,8 @@ void CActor::ActorUse()
 	if(!m_pUsableObject) return;
 
 	m_pUsableObject->use(this);
-
+	
+	bool capture_switch_on=false;
 	if(m_pUsableObject->nonscript_usable())
 	{
 		if(m_pPersonWeLookingAt)
@@ -271,15 +272,24 @@ void CActor::ActorUse()
 				smart_cast<CGameObject*>(m_pVehicleWeLookingAt));
 
 		}
+		Collide::rq_result& RQ = HUD().GetCurrentRayQuery();
+		CPhysicsShellHolder* object = smart_cast<CPhysicsShellHolder*>(RQ.O);
+		u16 element = BI_NONE;
+		if(object) 
+			element = (u16)RQ.element;
 
 		if(Level().IR_GetKeyState(DIK_LSHIFT))
 		{
-			Collide::rq_result& RQ = HUD().GetCurrentRayQuery();
-			CPhysicsShellHolder* object = smart_cast<CPhysicsShellHolder*>(RQ.O);
-			u16 element = BI_NONE;
-			if(object) 
-				element = (u16)RQ.element;
+	
+			if(!m_PhysicMovementControl->PHCapture())
+			{
+				m_PhysicMovementControl->PHCaptureObject(object,element);
+				capture_switch_on=true;
+			}
 
+		}
+		else
+		{
 			if (object)
 			{
 				switch (object->SUB_CLS_ID)
@@ -300,12 +310,10 @@ void CActor::ActorUse()
 					}
 				}
 			}
-
-			if(!m_PhysicMovementControl->PHCapture())
-				m_PhysicMovementControl->PHCaptureObject(object,element);
-			else
-				m_PhysicMovementControl->PHReleaseObject();
 		}
 	}
+
+	if(m_PhysicMovementControl->PHCapture()&&!capture_switch_on)
+						m_PhysicMovementControl->PHReleaseObject();
 }
 //void CActor::IR_OnMousePress(int btn)
