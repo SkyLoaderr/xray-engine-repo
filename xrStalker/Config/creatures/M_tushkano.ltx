@@ -2,9 +2,9 @@
 ;---------------------------------------------------------------------------------------------------------------------------------------------
 ;	anim			| time[0..1] | hit_power | impulse | impulse_dir (x,y,z)  |	Field of hit_test  (left,right, bottom, top ) |	Test Dist
 ;---------------------------------------------------------------------------------------------------------------------------------------------
-stand_attack_0 =	  	0.45,		20,		    100,        0.0, 1.0, 0.0,		 -1.6, 1.6, -1.6, 1.6,							  3.5
-stand_attack_1 =	  	0.45,		20,		    140,        0.0, 1.0, 0.0,		 -1.6, 1.6, -1.6, 1.6,							  3.5
-stand_attack_2 =	  	0.45,		30,		    120,        0.0, 1.0, 0.0,		 -1.6, 1.6, -1.6, 1.6,							  3.5
+stand_attack_0 =	  	0.45,		20,		    20,        0.0, 1.0, 0.0,		 -1.6, 1.6, -1.6, 1.6,							  3.5
+stand_attack_1 =	  	0.45,		20,		    30,        0.0, 1.0, 0.0,		 -1.6, 1.6, -1.6, 1.6,							  3.5
+stand_attack_2 =	  	0.45,		30,		    35,        0.0, 1.0, 0.0,		 -1.6, 1.6, -1.6, 1.6,							  3.5
 
 [m_tushkano_step_params]
 ;---------------------------------------------------------------------------
@@ -28,7 +28,7 @@ MaxSpeed		     = 5.0						; option for ALife Simulator
 going_speed          = 4.5                      ; option for ALife Simulator
 search_speed         = 1.5                       ; option for ALife Simulator
 visual				 = monsters\tushkano\tushkano.ogf
-MaxHealthValue		 = 200			; range [0..200]
+MaxHealthValue		 = 100			; range [0..200]
 DynamicObjectsCount	 = 32
 
 ;---EVALUATION FUNCTIONS----------------------------------------------
@@ -71,10 +71,10 @@ EyeFov				 = 100;
 eye_range			 = 100	;30
 max_hear_dist		 = 80
 
-hit_power			 = 50.0;
+hit_power			 = 20.0;
 
-ImpulseMin			 = 500.0
-ImpulseMax			 = 550.0 
+ImpulseMin			 = 50.0
+ImpulseMax			 = 55.0 
 
 ; speed factors			linear | angular_real | angular_path | min |  max
 Velocity_Stand			= 0,		1.4,			1.4,		1,		1
