@@ -46,6 +46,6 @@ p2f 	p_main	( v2p_in IN )
   half4 L 	= tex2D		(s_accumulator, IN.Tex0);
   
   half4 C	= D*L;		// rgb.gloss * light(rgb.specular)
-  OUT.C 	= float4	(C.x+C.w,C.y+C.w,C.z+C.w,0);
+  OUT.C 	= float4	(C.x+C.w,C.y+C.w,C.z+C.w,C.w+C.w);
   return OUT;
 }

@@ -43,6 +43,6 @@ p2f 	p_main	( v2p_in IN )
   p2f		OUT;
 
   float4 C 	= tex2D		(s_accumulator, float2(IN.Tex0.x, IN.Tex0.y)); 
-  OUT.C 	= float4	(C.x+C.w,C.y+C.w,C.z+C.w,0);
+  OUT.C 	= float4	(C.x+C.w,C.y+C.w,C.z+C.w,C.w+C.w);
   return OUT;
 }
