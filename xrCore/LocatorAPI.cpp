@@ -286,6 +286,7 @@ void CLocatorAPI::_initialize	(BOOL bBuildCopy, LPCSTR root_path)
         _GetItem	(temp,4,def);
         _GetItem	(temp,5,capt);
 		strlwr		(id);
+		if (!m_Flags.is(flBuildCopy)&&(0==strcmp(id,"$build_copy$")) continue;
 		strlwr		(root);
 		lp_add		=(cnt>=4)?strlwr(add):0;
 		lp_def		=(cnt>=5)?def:0;
