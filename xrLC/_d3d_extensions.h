@@ -85,7 +85,4 @@ public:
 } Fmaterial;
 #endif
 
-#ifndef NO_XR_3DBUFFER
-#endif
-
 #endif
