@@ -300,11 +300,14 @@ void CUIMapWnd::InitGlobalMap()
 		LPCSTR name, value;
 		pSettings->r_line(GLOBAL_MAP_LOCATIONS_LTX, i, &name, &value);
 
+		//. ???
+		/*
 #ifndef DEBUG
 		//проверка на существование уровн€ с заданым именем
 		if(ai().get_alife() && ai().get_game_graph())
 			ai().game_graph().header().level(name);
 #endif
+		*/
 
 		// ≈сли дл€ карты уже есть задани€, то инициализируем ее.
 		// ≈сли нет, то удал€ем ее вместе с задани€ми
