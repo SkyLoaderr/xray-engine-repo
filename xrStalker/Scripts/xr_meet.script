@@ -245,6 +245,9 @@ function action_meet_wait:initialize()
 	if self.char_ini:section_exist("dialog") and self.char_ini:line_exist("dialog", "id") then
 		printf("CC: new dialog set")
 		self.object:set_start_dialog(self.char_ini:r_string("dialog", "id"))
+	else
+		printf("CC: dialog restored from npc_profile")
+		self.object:restore_default_start_dialog()
 	end	   	
 end
 function action_meet_wait:execute ()
