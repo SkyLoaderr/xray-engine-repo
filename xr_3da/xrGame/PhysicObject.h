@@ -27,7 +27,7 @@ public:
 	CPhysicObject(void);
 	virtual ~CPhysicObject(void);
 	virtual BOOL	net_Spawn			( LPVOID DC)																	;
-	virtual void	SpawnInitPhysics	(CSE_Abstract	*D)																;
+
 	virtual void	CreatePhysicsShell	(CSE_Abstract* e)																;
 	virtual void	net_Destroy			()																				;
 	virtual void	Load				(LPCSTR section)																;
@@ -37,6 +37,7 @@ public:
 	virtual	BOOL	net_SaveRelevant	()																				;
 	virtual BOOL	UsedAI_Locations	()																				;
 protected:
+	virtual void	SpawnInitPhysics	(CSE_Abstract	*D)																;
 	virtual CPhysicsShellHolder*	PPhysicsShellHolder	()	{return PhysicsShellHolder();}								;
 	virtual	void	InitServerObject	(CSE_Abstract	*po)															;
 	virtual void	PHObjectPositionUpdate()																			;

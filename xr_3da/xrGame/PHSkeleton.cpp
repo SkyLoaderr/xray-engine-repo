@@ -257,6 +257,15 @@ void CPHSkeleton::UnsplitSingle(CPHSkeleton* SO)
 	VERIFY2(mask0.flags,"mask0 -Zero");
 	mask0.invert();
 	mask1.and(mask0.flags);//second part mask
+
+
+	newKinematics->LL_SetBoneRoot		(split_bone);
+	VERIFY2(mask1.flags,"mask1 -Zero");
+	newKinematics->LL_SetBonesVisible	(mask1.flags);
+
+	newKinematics->CalculateBones_Invalidate	();
+	newKinematics->CalculateBones				();
+
 	newPhysicsShell->set_Kinematics(newKinematics);
 	VERIFY(_valid(newPhysicsShell->mXFORM));
 	newPhysicsShell->ResetCallbacks(split_bone,mask1);
@@ -264,16 +273,12 @@ void CPHSkeleton::UnsplitSingle(CPHSkeleton* SO)
 
 	newPhysicsShell->ObjectInRoot().identity();
 
-	newKinematics->LL_SetBoneRoot		(split_bone);
-	VERIFY2(mask1.flags,"mask1 -Zero");
-	newKinematics->LL_SetBonesVisible	(mask1.flags);
 	if(!newPhysicsShell->isEnabled())O->processing_deactivate();
 	newPhysicsShell->set_PhysicsRefObject(O);
 	newPhysicsShell->set_PushOut(5000,PushOutCallback2);
 	m_unsplited_shels.erase(m_unsplited_shels.begin());
 	O->setVisible(true);
 	O->setEnabled(true);
-	newKinematics->CalculateBones	();
 
 
 	SO->CopySpawnInit		();

@@ -824,7 +824,7 @@ bool CSE_ALifeObjectPhysic::can_save			() const
 ////////////////////////////////////////////////////////////////////////////
 // CSE_ALifeObjectHangingLamp
 ////////////////////////////////////////////////////////////////////////////
-CSE_ALifeObjectHangingLamp::CSE_ALifeObjectHangingLamp(LPCSTR caSection) : CSE_ALifeDynamicObjectVisual(caSection)
+CSE_ALifeObjectHangingLamp::CSE_ALifeObjectHangingLamp(LPCSTR caSection) : CSE_ALifeDynamicObjectVisual(caSection),CSE_PHSkeleton(caSection)
 {
 	flags.set					(flPhysic,FALSE);
 	flags.set					(flCastShadow,FALSE);
@@ -854,8 +854,9 @@ CSE_ALifeObjectHangingLamp::~CSE_ALifeObjectHangingLamp()
 void CSE_ALifeObjectHangingLamp::STATE_Read	(NET_Packet	&tNetPacket, u16 size)
 {
 	if (m_wVersion > 20)
-		inherited::STATE_Read	(tNetPacket,size);
-
+		inherited1::STATE_Read	(tNetPacket,size);
+	if (m_wVersion>=69)
+		inherited2::STATE_Read	(tNetPacket,size);
 	if (m_wVersion < 32)
 		visual_read				(tNetPacket);
 
@@ -925,7 +926,9 @@ void CSE_ALifeObjectHangingLamp::STATE_Read	(NET_Packet	&tNetPacket, u16 size)
 
 void CSE_ALifeObjectHangingLamp::STATE_Write(NET_Packet	&tNetPacket)
 {
-	inherited::STATE_Write		(tNetPacket);
+	inherited1::STATE_Write		(tNetPacket);
+	inherited2::STATE_Write		(tNetPacket);
+
 	// model
 	tNetPacket.w_u32			(color);
 	tNetPacket.w_float			(brightness);
@@ -951,14 +954,22 @@ void CSE_ALifeObjectHangingLamp::STATE_Write(NET_Packet	&tNetPacket)
 
 void CSE_ALifeObjectHangingLamp::UPDATE_Read(NET_Packet	&tNetPacket)
 {
-	inherited::UPDATE_Read		(tNetPacket);
+	inherited1::UPDATE_Read		(tNetPacket);
+	inherited2::UPDATE_Read		(tNetPacket);
 }
 
 void CSE_ALifeObjectHangingLamp::UPDATE_Write(NET_Packet	&tNetPacket)
 {
-	inherited::UPDATE_Write		(tNetPacket);
+	inherited1::UPDATE_Write		(tNetPacket);
+	inherited2::UPDATE_Write		(tNetPacket);
+
 }
 
+void CSE_ALifeObjectHangingLamp::load(NET_Packet &tNetPacket)
+{
+	inherited1::load(tNetPacket);
+	inherited2::load(tNetPacket);
+}
 #ifdef _EDITOR
 #include "ui_main.h"
 void __fastcall	CSE_ALifeObjectHangingLamp::OnChangeAnim(PropValue* sender)
@@ -990,7 +1001,8 @@ void __fastcall	CSE_ALifeObjectHangingLamp::OnChangeFlag(PropValue* sender)
 
 void CSE_ALifeObjectHangingLamp::FillProp	(LPCSTR pref, PropItemVec& values)
 {
-	inherited::FillProp			(pref,values);
+	inherited1::FillProp			(pref,values);
+	inherited2::FillProp			(pref,values);
 
     PropValue* P				= 0;
 	PHelper.CreateFlag<Flags16>	(values, FHelper.PrepareKey(pref,s_name,"Flags\\Physic"),		&flags,			flPhysic);
@@ -1123,7 +1135,7 @@ CSE_Abstract *CSE_ALifeSchedulable::init	()
 // CSE_ALifeHelicopter
 ////////////////////////////////////////////////////////////////////////////
 
-CSE_ALifeHelicopter::CSE_ALifeHelicopter	(LPCSTR caSection) : CSE_ALifeDynamicObjectVisual(caSection), CSE_Motion()
+CSE_ALifeHelicopter::CSE_ALifeHelicopter	(LPCSTR caSection) : CSE_ALifeDynamicObjectVisual(caSection), CSE_Motion(),CSE_PHSkeleton(caSection)
 {
 	m_flags.set					(flUseSwitches,		FALSE);
 	m_flags.set					(flSwitchOffline,	FALSE);
@@ -1138,6 +1150,8 @@ void CSE_ALifeHelicopter::STATE_Read		(NET_Packet	&tNetPacket, u16 size)
 {
 	inherited1::STATE_Read		(tNetPacket,size);
     CSE_Motion::motion_read		(tNetPacket);
+	if(m_wVersion>=69)
+		inherited3::STATE_Read		(tNetPacket,size);
     
     tNetPacket.r_string			(startup_animation);
 	tNetPacket.r_string			(engine_sound);
@@ -1152,7 +1166,7 @@ void CSE_ALifeHelicopter::STATE_Write		(NET_Packet	&tNetPacket)
 {
 	inherited1::STATE_Write		(tNetPacket);
     CSE_Motion::motion_write	(tNetPacket);
-
+	inherited3::STATE_Write		(tNetPacket);
     tNetPacket.w_string			(startup_animation);
     tNetPacket.w_string			(engine_sound);
 }
@@ -1160,13 +1174,20 @@ void CSE_ALifeHelicopter::STATE_Write		(NET_Packet	&tNetPacket)
 void CSE_ALifeHelicopter::UPDATE_Read		(NET_Packet	&tNetPacket)
 {
 	inherited1::UPDATE_Read		(tNetPacket);
+	inherited3::UPDATE_Read		(tNetPacket);
 }
 
 void CSE_ALifeHelicopter::UPDATE_Write		(NET_Packet	&tNetPacket)
 {
 	inherited1::UPDATE_Write		(tNetPacket);
+	inherited3::UPDATE_Write		(tNetPacket);
 }
 
+void CSE_ALifeHelicopter::load		(NET_Packet &tNetPacket)
+{
+	inherited1::load(tNetPacket);
+	inherited3::load(tNetPacket);
+}
 #ifdef _EDITOR
 
 void __fastcall	CSE_ALifeHelicopter::OnChangeAnim(PropValue* sender)
@@ -1186,7 +1207,7 @@ void __fastcall	CSE_ALifeHelicopter::OnChooseAnim(ChooseItemVec& lst)
 void CSE_ALifeHelicopter::FillProp(LPCSTR pref, PropItemVec& values)
 {
 	inherited1::FillProp		(pref,	 values);
-
+	inherited3::FillProp		(pref,	 values);
     // motions
     if (visual && PSkeletonAnimated(visual))
     {

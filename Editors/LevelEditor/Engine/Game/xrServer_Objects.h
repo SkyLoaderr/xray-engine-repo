@@ -20,7 +20,7 @@
 #pragma warning(push)
 #pragma warning(disable:4005)
 
-#define SPAWN_VERSION	u16(68)
+#define SPAWN_VERSION	u16(69)
 //------------------------------------------------------------------------------
 // Version history
 //------------------------------------------------------------------------------
@@ -89,6 +89,8 @@
 // 67 - CSE_ALifeCustomZone				new class appended, heritage changed
 // 68 - CSE_ALifeHumanStalker,				
 //		CSE_ALifeMonsterBiting			new class appended, heritage changed
+// 69 - CSE_ALifeObjectHangingLamp,				
+//		CSE_ALifeHelicopter				heritage changed
 //------------------------------------------------------------------------------
 
 SERVER_ENTITY_DECLARE_BEGIN(CSE_Spectator,CSE_Abstract)

@@ -158,7 +158,7 @@ BOOL CHelicopter::net_Spawn(LPVOID	DC)
 	if (!inherited::net_Spawn(DC))
 		return			(FALSE);
 
-//	PPhysicsShell()=P_build_Shell	(this,true);
+
 
 	CRocketLauncher::SpawnRocket(*m_sRocketSection, dynamic_cast<CGameObject*>(this/*H_Parent()*/));
 	CRocketLauncher::SpawnRocket(*m_sRocketSection, dynamic_cast<CGameObject*>(this/*H_Parent()*/));
@@ -239,6 +239,23 @@ void CHelicopter::net_Destroy()
 {
 	inherited::net_Destroy();
 	CShootingObject::Light_Destroy();
+	CPHSkeleton::RespawnInit();
+}
+
+void	CHelicopter::SpawnInitPhysics	(CSE_Abstract	*D)	
+{
+	if(!g_Alive())PPhysicsShell()=P_build_Shell	(this,true);
+}
+
+void	CHelicopter::net_Save			(NET_Packet& P)	
+{
+	inherited::net_Save(P);
+	CPHSkeleton::SaveNetState(P);
+}
+
+BOOL	CHelicopter::net_SaveRelevant	()
+{
+	return BOOL(PPhysicsShell()!=NULL);
 }
 
 void CHelicopter::net_Export(NET_Packet &P)
@@ -259,13 +276,14 @@ void CHelicopter::UpdateCL()
 	inherited::UpdateCL	();
 	
 	m_movMngr.getPathPosition (Level().timeServer()/1000.0f,Device.fTimeDelta, XFORM() );
-/*	if( PPhysicsShell()&&(GetfHealth() < 99.97f) ){
+	if( PPhysicsShell()&&(GetfHealth() < 99.97f) ){
 		PPhysicsShell()->InterpolateGlobalTransform(&XFORM());
 		return;
-	}else{
-		PPhysicsShell()->SetTransform(XFORM());
-		PPhysicsShell()->Disable();
-	}*/
+	}
+//	}else{
+//		PPhysicsShell()->SetTransform(XFORM());
+//		PPhysicsShell()->Disable();
+//	}
 
 
 	m_engineSound.set_position(XFORM().c);
@@ -310,7 +328,7 @@ void CHelicopter::shedule_Update(u32 time_delta)
 {
 	if (!getEnabled())	return;
 	inherited::shedule_Update	(time_delta);
-	
+	CPHSkeleton::Update(time_delta);
 //	if( GetfHealth() >= 0.0f ){
 
 	m_movMngr.shedule_Update (time_delta, this);
@@ -467,10 +485,11 @@ void CHelicopter::OnEvent(	NET_Packet& P, u16 type)
 
 void CHelicopter::Die()
 {
-//	PPhysicsShell()=P_build_Shell	(this,false);
+	if(!PPhysicsShell())
+		PPhysicsShell()=P_build_Shell	(this,false);
 //	setState(CHelicopter::eInitiateWaitBetweenPatrol);
 //	setState(CHelicopter::eDead);
-	SetfHealth(100.0f);
+//	SetfHealth(100.0f);
 //	StartParticles();
 }
 

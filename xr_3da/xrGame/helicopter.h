@@ -5,14 +5,14 @@
 #include "weaponammo.h"
 #include "rocketlauncher.h"
 #include "entity.h"
-
+#include "phskeleton.h"
 
 
 class CHelicopter : 
 	public CEntity,
 	public CShootingObject,
-	public CRocketLauncher
-
+	public CRocketLauncher,
+	public CPHSkeleton
 {
 	typedef CGameObject inherited;
 public:
@@ -114,6 +114,11 @@ public:
 	virtual void			net_Destroy			();
 	virtual void			net_Export			(NET_Packet &P);
 	virtual void			net_Import			(NET_Packet &P);
+
+	virtual void			SpawnInitPhysics	(CSE_Abstract	*D);
+	virtual CPhysicsShellHolder*	PPhysicsShellHolder	()	{return PhysicsShellHolder();}
+	virtual void			net_Save			(NET_Packet& P);
+	virtual	BOOL			net_SaveRelevant	();					
 
 	virtual void			renderable_Render				();
 	virtual BOOL			renderable_ShadowGenerate		()	{ return FALSE;	}

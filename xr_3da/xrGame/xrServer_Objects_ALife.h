@@ -260,7 +260,7 @@ SERVER_ENTITY_DECLARE_END
 add_to_type_list(CSE_ALifeObjectPhysic)
 #define script_type_list save_type_list(CSE_ALifeObjectPhysic)
 
-SERVER_ENTITY_DECLARE_BEGIN(CSE_ALifeObjectHangingLamp,CSE_ALifeDynamicObjectVisual)
+SERVER_ENTITY_DECLARE_BEGIN2(CSE_ALifeObjectHangingLamp,CSE_ALifeDynamicObjectVisual,CSE_PHSkeleton)
 
 #ifdef _EDITOR
     void __fastcall					OnChangeAnim	(PropValue* sender);
@@ -305,6 +305,7 @@ SERVER_ENTITY_DECLARE_BEGIN(CSE_ALifeObjectHangingLamp,CSE_ALifeDynamicObjectVis
 	
                                     CSE_ALifeObjectHangingLamp	(LPCSTR caSection);
     virtual							~CSE_ALifeObjectHangingLamp	();
+	virtual	void					load						(NET_Packet &tNetPacket);
 	virtual bool					used_ai_locations	() const;
 SERVER_ENTITY_DECLARE_END
 add_to_type_list(CSE_ALifeObjectHangingLamp)
@@ -318,7 +319,7 @@ SERVER_ENTITY_DECLARE_END
 add_to_type_list(CSE_ALifeObjectProjector)
 #define script_type_list save_type_list(CSE_ALifeObjectProjector)
 
-SERVER_ENTITY_DECLARE_BEGIN2(CSE_ALifeHelicopter,CSE_ALifeDynamicObjectVisual,CSE_Motion)
+SERVER_ENTITY_DECLARE_BEGIN3(CSE_ALifeHelicopter,CSE_ALifeDynamicObjectVisual,CSE_Motion,CSE_PHSkeleton)
 #ifdef _EDITOR
 	void __fastcall					OnChangeAnim				(PropValue* sender);
 	void __fastcall					OnChooseAnim				(ChooseItemVec& lst);
@@ -327,6 +328,7 @@ SERVER_ENTITY_DECLARE_BEGIN2(CSE_ALifeHelicopter,CSE_ALifeDynamicObjectVisual,CS
 	ref_str							startup_animation;
 									CSE_ALifeHelicopter			(LPCSTR caSection);
 	virtual							~CSE_ALifeHelicopter		();
+	virtual	void					load						(NET_Packet &tNetPacket);
 	virtual bool					used_ai_locations			() const;
 SERVER_ENTITY_DECLARE_END
 add_to_type_list(CSE_ALifeHelicopter)

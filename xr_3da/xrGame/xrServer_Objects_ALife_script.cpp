@@ -132,10 +132,11 @@ void CSE_ALifeObjectPhysic::script_register(lua_State *L)
 void CSE_ALifeObjectHangingLamp::script_register(lua_State *L)
 {
 	module(L)[
-		luabind_class_alife1(
+		luabind_class_alife2(
 			CSE_ALifeObjectHangingLamp,
 			"cse_alife_object_hanging_lamp",
-			CSE_ALifeDynamicObjectVisual
+			CSE_ALifeDynamicObjectVisual,
+			CSE_PHSkeleton
 		)
 	];
 }
@@ -154,11 +155,12 @@ void CSE_ALifeObjectProjector::script_register(lua_State *L)
 void CSE_ALifeHelicopter::script_register(lua_State *L)
 {
 	module(L)[
-		luabind_class_alife2(
+		luabind_class_alife3(
 			CSE_ALifeHelicopter,
 			"cse_alife_helicopter",
 			CSE_ALifeDynamicObjectVisual,
-			CSE_Motion
+			CSE_Motion,
+			CSE_PHSkeleton
 		)
 	];
 }

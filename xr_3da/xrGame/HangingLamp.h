@@ -8,12 +8,16 @@
 
 #include "gameobject.h"
 #include "physicsshellholder.h"
+#include "PHSkeleton.h"
 // refs
 class CLAItem;
 class CPhysicsElement;
 class CSE_ALifeObjectHangingLamp;
 class CPHElement;
-class CHangingLamp: public CPhysicsShellHolder {//need m_pPhysicShell
+class CHangingLamp: 
+public CPhysicsShellHolder,
+public CPHSkeleton
+{//need m_pPhysicShell
 	typedef	CPhysicsShellHolder		inherited;
 private:
 	u16				guid_bone;
@@ -44,6 +48,13 @@ public:
 	virtual void	net_Destroy		();
 	virtual void	shedule_Update	( u32 dt);							// Called by sheduler
 	virtual void	UpdateCL		( );								// Called each frame, so no need for dt
+
+
+	virtual void	SpawnInitPhysics	(CSE_Abstract	*D)																;
+	virtual CPhysicsShellHolder*	PPhysicsShellHolder	()	{return PhysicsShellHolder();}								;
+	virtual void	net_Save			(NET_Packet& P)																	;
+	virtual	BOOL	net_SaveRelevant	()																				;
+
 	virtual void	renderable_Render		( );
 
 	virtual BOOL	renderable_ShadowGenerate	( ) { return TRUE;	}

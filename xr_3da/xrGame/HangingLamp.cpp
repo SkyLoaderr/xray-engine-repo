@@ -62,6 +62,7 @@ void CHangingLamp::net_Destroy()
 	::Render->light_destroy	(light_ambient);
 	::Render->glow_destroy	(glow_render);
 	RespawnInit();
+	CPHSkeleton::RespawnInit();
 }
 
 BOOL CHangingLamp::net_Spawn(LPVOID DC)
@@ -116,7 +117,7 @@ BOOL CHangingLamp::net_Spawn(LPVOID DC)
 
 	lanim					= LALib.FindItem(*lamp->color_animator);
 
-	if (lamp->flags.is(CSE_ALifeObjectHangingLamp::flPhysic))		CreateBody(lamp);
+	CPHSkeleton::Spawn(e);
 	if(PSkeletonAnimated(Visual()))	PSkeletonAnimated	(Visual())->PlayCycle("idle");
 	if(PKinematics(Visual()))		PKinematics			(Visual())->CalculateBones();
 	
@@ -132,8 +133,33 @@ BOOL CHangingLamp::net_Spawn(LPVOID DC)
 	return					(TRUE);
 }
 
+
+void	CHangingLamp::SpawnInitPhysics	(CSE_Abstract	*D)	
+{
+	CSE_ALifeObjectHangingLamp	*lamp	= dynamic_cast<CSE_ALifeObjectHangingLamp*>(D);	
+	if (lamp->flags.is(CSE_ALifeObjectHangingLamp::flPhysic))		CreateBody(lamp);
+}
+
+void	CHangingLamp::net_Save			(NET_Packet& P)	
+{
+	inherited::net_Save(P);
+	CPHSkeleton::SaveNetState(P);
+}
+
+BOOL	CHangingLamp::net_SaveRelevant	()
+{
+	return BOOL(PPhysicsShell()!=NULL);
+}
+
 void CHangingLamp::shedule_Update	(u32 dt)
 {
+	CPHSkeleton::Update(dt);
+	CKinematics* K=PKinematics(Visual());
+	if(
+	!K->LL_GetBoneVisible(guid_bone)||
+	(guid_physic_bone&&!K->LL_GetBoneVisible(guid_physic_bone->m_SelfID))
+	)guid_physic_bone=NULL;
+
 	inherited::shedule_Update		(dt);
 }
 
@@ -144,7 +170,7 @@ void CHangingLamp::UpdateCL	()
 	if(m_pPhysicsShell)
 	{
 		m_pPhysicsShell->InterpolateGlobalTransform(&XFORM());
-		guid_physic_bone->BonesCallBack(&PKinematics(Visual())->LL_GetBoneInstance(u16(guid_physic_bone->m_SelfID)));
+		if(guid_physic_bone)guid_physic_bone->BonesCallBack(&PKinematics(Visual())->LL_GetBoneInstance(u16(guid_physic_bone->m_SelfID)));
 
 	}
 
