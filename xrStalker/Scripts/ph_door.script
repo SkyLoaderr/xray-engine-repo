@@ -47,6 +47,8 @@ function action_door:initialize()
 	self.object:set_nonscript_usable(false)
 	self.object:set_use_callback(self, "door_callback")
 
+	level.add_call(self, "close_check", "close_action")
+
 	if self.st.snd_init then
 		self:door_play_snd_from_set(self.st.snd_init)
 	end
@@ -84,7 +86,8 @@ function action_door:update(delta)
 	end
 
 	xr_logic.try_switch_to_another_section(self.object, self.st)
-
+	
+	--[[
 	if self.block then
 		local angle = self.joint:get_axis_angle(90)
 		printf("_bp: action_door:update(): angle %f limits %f, %f", angle, self.low_limits, self.hi_limits)
@@ -98,6 +101,29 @@ function action_door:update(delta)
 				self:door_play_snd_from_set(self.st.snd_close_stop)
 			end
 		end
+	end
+	--]]
+end
+
+function action_door:close_check()
+	if self.block then
+		local angle = self.joint:get_axis_angle(90)
+		printf("_bp: action_door:update(): angle %f limits %f, %f", angle, self.low_limits, self.hi_limits)
+		if angle >= self.hi_limits then
+			return true
+		end
+	end
+	return false
+end
+
+function action_door:close_action()
+	printf("_bp: action_door:update(): door blocked")
+	-- Закрыли до предела, будем блокировать
+	self.joint:set_max_force_and_velocity(10000, 1, 1)
+	self.block = false
+	-- Отыграть звук когда дверь захлопнулась:
+	if not self.soundless_block and self.st.snd_close_stop then
+		self:door_play_snd_from_set(self.st.snd_close_stop)
 	end
 end
 
