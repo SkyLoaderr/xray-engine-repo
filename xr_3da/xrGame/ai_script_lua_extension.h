@@ -12,7 +12,7 @@
 //struct CLuaVirtualMachine;
 
 namespace Script {
-	void		vfPrintOutput				(CLuaVirtualMachine *tpLuaVirtualMachine, LPCSTR	caScriptName);
+	bool		bfPrintOutput				(CLuaVirtualMachine *tpLuaVirtualMachine, LPCSTR	caScriptName);
 	void		vfExportGlobals				(CLuaVirtualMachine *tpLuaVirtualMachine);
 	void		vfExportFvector				(CLuaVirtualMachine *tpLuaVirtualMachine);
 	void		vfExportFmatrix				(CLuaVirtualMachine *tpLuaVirtualMachine);

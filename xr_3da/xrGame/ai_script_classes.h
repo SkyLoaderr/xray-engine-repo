@@ -11,6 +11,7 @@
 #include "ai_script_space.h"
 #include "ai\\stalker\\ai_stalker.h"
 #include "..\\effectorpp.h"
+#include "script_zone.h"
 
 #define DECLARE_FUNCTION10(A,D)\
 	IC		D				A					() const\
@@ -397,6 +398,24 @@ public:
 			Msg				("* [LUA] CLuaGameObject : cannot access class member object!");
 			return			(0);	
 		}
+	}
+
+	void SetCallback(luabind::functor<void> tpZoneCallback, bool bOnEnter)
+	{
+		CScriptZone	*l_tpScriptZone = dynamic_cast<CScriptZone*>(m_tpGameObject);
+		if (!l_tpScriptZone)
+			Msg		("* [LUA] CScriptZone : cannot access class member set_callback!");
+		else
+			l_tpScriptZone->set_callback(tpZoneCallback,bOnEnter);
+	}
+
+	void ClearCallback(bool bOnEnter)
+	{
+		CScriptZone	*l_tpScriptZone = dynamic_cast<CScriptZone*>(m_tpGameObject);
+		if (!l_tpScriptZone)
+			Msg		("* [LUA] CScriptZone : cannot access class member set_callback!");
+		else
+			l_tpScriptZone->clear_callback(bOnEnter);
 	}
 };
 

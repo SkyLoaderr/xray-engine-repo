@@ -17,6 +17,9 @@ CScriptZone::CScriptZone		()
 
 CScriptZone::~CScriptZone		()
 {
+#pragma todo("Dima to Dima : Memory leak is here, change object destruction sequence")
+//	xr_delete					(m_tpOnEnter);
+//	xr_delete					(m_tpOnExit);
 }
 
 void CScriptZone::spatial_register()
@@ -86,7 +89,7 @@ void CScriptZone::feel_touch_new	(CObject *tpObject)
 	if (!l_tpGameObject)
 		return;
 	if (m_tpOnEnter)
-		m_tpOnEnter(xr_new<CLuaGameObject>(this),xr_new<CLuaGameObject>(l_tpGameObject));
+		(*m_tpOnEnter)(xr_new<CLuaGameObject>(this),xr_new<CLuaGameObject>(l_tpGameObject));
 }
 
 void CScriptZone::feel_touch_delete	(CObject *tpObject)
@@ -94,14 +97,29 @@ void CScriptZone::feel_touch_delete	(CObject *tpObject)
 	CGameObject					*l_tpGameObject = dynamic_cast<CGameObject*>(tpObject);
 	if (!l_tpGameObject)
 		return;
+
 	if (m_tpOnExit)
-		m_tpOnExit(xr_new<CLuaGameObject>(this),xr_new<CLuaGameObject>(l_tpGameObject));
+		(*m_tpOnExit)(xr_new<CLuaGameObject>(this),xr_new<CLuaGameObject>(l_tpGameObject));
 }
 
-void CScriptZone::set_callback(ZoneCallback tpZoneCallback, bool bOnEnter)
+void CScriptZone::set_callback(luabind::functor<void> tpZoneCallback, bool bOnEnter)
 {
 	if (bOnEnter)
-		m_tpOnEnter				= tpZoneCallback;
+		if (tpZoneCallback.is_valid())
+			m_tpOnEnter				= xr_new<luabind::functor<void> >(tpZoneCallback);
+		else
+			xr_delete				(m_tpOnEnter);
 	else
-		m_tpOnExit				= tpZoneCallback;
+		if (tpZoneCallback.is_valid())
+			m_tpOnExit				= xr_new<luabind::functor<void> >(tpZoneCallback);
+		else
+			xr_delete				(m_tpOnExit);
+}
+
+void CScriptZone::clear_callback(bool bOnEnter)
+{
+	if (bOnEnter)
+		m_tpOnEnter				= 0;
+	else
+		m_tpOnExit				= 0;
 }

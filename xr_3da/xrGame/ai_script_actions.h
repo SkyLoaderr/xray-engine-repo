@@ -469,7 +469,6 @@ public:
 		m_bAutoRemove		= true;
 	}
 
-#pragma todo("Dima to Dima : Add velocity for particle systems here")
 							CParticleAction		(LPCSTR caPartcileToRun, LPCSTR caBoneName, const CParticleParams &tParticleParams = CParticleParams(), bool bAutoRemove = false)
 	{
 		SetBone				(caBoneName);

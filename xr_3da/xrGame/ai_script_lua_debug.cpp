@@ -14,23 +14,35 @@
 
 using namespace Script;
 
-void Script::vfPrintOutput(CLuaVirtualMachine *tpLuaVirtualMachine, LPCSTR caScriptFileName)
+bool Script::bfPrintOutput(CLuaVirtualMachine *tpLuaVirtualMachine, LPCSTR caScriptFileName)
 {
 	for (int i=-1; ; i--)
 		if (lua_isstring(tpLuaVirtualMachine,i)) {
 			if (!i)
 				Msg("* [LUA] Output from %s",caScriptFileName);
-			Msg		("* [LUA] %s",lua_tostring(tpLuaVirtualMachine,i));
+			LPCSTR	S = lua_tostring(tpLuaVirtualMachine,i);
+			if (!strcmp(S,"cannot resume dead coroutine")) {
+				Msg		("* [LUA] script %s is finished",caScriptFileName);
+				return	(true);
+			}
+			else
+				Msg		("* [LUA] %s",S);
 		}
 		else {
 			for ( i=0; ; i++)
 				if (lua_isstring(tpLuaVirtualMachine,i)) {
 					if (!i)
 						Msg("* [LUA] Output from %s",caScriptFileName);
-					Msg		("* [LUA] %s",lua_tostring(tpLuaVirtualMachine,i));
+					LPCSTR	S = lua_tostring(tpLuaVirtualMachine,i);
+					if (!strcmp(S,"cannot resume dead coroutine")) {
+						Msg		("* [LUA] script %s is finished",caScriptFileName);
+						return	(true);
+					}
+					else
+						Msg		("* [LUA] %s",S);
 				}
 				else
-					return;
+					return		(false);
 		}
 }
 

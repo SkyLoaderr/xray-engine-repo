@@ -47,7 +47,7 @@ const CCameraManager &get_camera_manager()
 
 void vfLuaErrorHandler(CLuaVirtualMachine *tpLuaVirtualMachine)
 {
-	vfPrintOutput(tpLuaVirtualMachine,"unknown script");
+	bfPrintOutput(tpLuaVirtualMachine,"unknown script");
 	vfPrintError(tpLuaVirtualMachine,LUA_ERRRUN);
 }
 
@@ -62,7 +62,7 @@ CLuaGameObject *get_object_by_name(LPCSTR caObjectName)
 
 int LuaPanic(CLuaVirtualMachine *tpLuaVirtualMachine)
 {
-	vfPrintOutput(tpLuaVirtualMachine,"unknown script");
+	bfPrintOutput(tpLuaVirtualMachine,"unknown script");
 	vfPrintError(tpLuaVirtualMachine,LUA_ERRRUN);
 	return(0);
 }
@@ -654,6 +654,8 @@ void Script::vfExportObject(CLuaVirtualMachine *tpLuaVirtualMachine)
 			.def("object_count",				&CLuaGameObject::GetInventoryObjectCount)
 			.def("object",						(CLuaGameObject *(CLuaGameObject::*)(LPCSTR))(CLuaGameObject::GetObjectByName))
 			.def("object",						(CLuaGameObject *(CLuaGameObject::*)(int))(CLuaGameObject::GetObjectByIndex))
+			.def("set_callback",				&CLuaGameObject::SetCallback)
+			.def("clear_callback",				&CLuaGameObject::ClearCallback)
 	];
 }
 

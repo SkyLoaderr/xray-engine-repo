@@ -121,7 +121,7 @@ bool Script::bfLoadBuffer(CLuaVirtualMachine *tpLuaVirtualMachine, LPCSTR caBuff
 
 	if (l_iErrorCode) {
 #ifdef DEBUG
-		vfPrintOutput	(tpLuaVirtualMachine,caScriptName);
+		bfPrintOutput	(tpLuaVirtualMachine,caScriptName);
 		vfPrintError	(tpLuaVirtualMachine,l_iErrorCode);
 #endif
 		return			(false);
@@ -148,7 +148,7 @@ bool bfDoFile(CLuaVirtualMachine *tpLuaVirtualMachine, LPCSTR caScriptName, bool
 //		int			l_iErrorCode = lua_pcall(tpLuaVirtualMachine,0,0,0);
 //		if (l_iErrorCode) {
 //#ifdef DEBUG
-//			vfPrintOutput	(tpLuaVirtualMachine,caScriptName);
+//			bfPrintOutput	(tpLuaVirtualMachine,caScriptName);
 //			vfPrintError	(tpLuaVirtualMachine,l_iErrorCode);
 //#endif
 //			return	(false);

@@ -167,7 +167,7 @@ void CAI_Biting::vfUpdateParameters()
 	// update standing
 	cur_pos			= Position();
 
-	bStanding		= prev_pos.similar(cur_pos);
+	bStanding		= !!prev_pos.similar(cur_pos);
 	if (bStanding && (time_start_stand == 0)) time_start_stand = Level().timeServer();		// только начинаем стоять на месте
 	if (!bStanding) time_start_stand = 0; 
 

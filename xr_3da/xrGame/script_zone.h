@@ -10,13 +10,13 @@
 
 #include "GameObject.h"
 #include "..\feel_touch.h"
+#include "ai_script_space.h"
 
 class CLuaGameObject;
 
 class CScriptZone : public CGameObject, public Feel::Touch {
-	typedef void (__stdcall *ZoneCallback)(CLuaGameObject*,CLuaGameObject*);
-	ZoneCallback	m_tpOnEnter;
-	ZoneCallback	m_tpOnExit;
+	luabind::functor<void>	*m_tpOnEnter;
+	luabind::functor<void>	*m_tpOnExit;
 public:
 	typedef	CGameObject	inherited;
 
@@ -28,5 +28,6 @@ public:
 			void	UpdateCL			();
 	virtual void	feel_touch_new		(CObject* O);
 	virtual void	feel_touch_delete	(CObject* O);
-			void	set_callback		(ZoneCallback tpZoneCallback, bool bOnEnter);
+			void	set_callback		(luabind::functor<void> tpZoneCallback, bool bOnEnter);
+			void	clear_callback		(bool bOnEnter);
 };

@@ -61,8 +61,8 @@ bool CScript::Update()
 	int				l_iErrorCode = lua_resume(m_tpLuaThread,0);
 	if (l_iErrorCode) {
 #ifdef DEBUG
-		vfPrintOutput(m_tpLuaThread,m_caScriptFileName);
-		vfPrintError(m_tpLuaThread,l_iErrorCode);
+		if (!bfPrintOutput(m_tpLuaThread,m_caScriptFileName));
+			vfPrintError(m_tpLuaThread,l_iErrorCode);
 		m_bActive	= false;
 		return		(false);
 #endif
