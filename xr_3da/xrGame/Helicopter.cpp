@@ -6,11 +6,11 @@
 #include "ExplosiveRocket.h"
 #include "level.h"
 #include "HudManager.h"
-#include "script_game_object.h"
 #include "../LightAnimLibrary.h"
 #include "HelicopterMovementManager.h"
 #include "clsid_game.h"
 #include "../skeletonanimated.h"
+#include "script_game_object.h"
 
 CHelicopter::CHelicopter()
 {
@@ -605,18 +605,6 @@ void CHelicopter::shedule_Update(u32 time_delta)
 	if(state() != CHelicopter::eDead){
 		float dist = GetDistanceToDestPosition();
 
-		if(dist < m_on_point_range_dist  ){
-			NET_Packet P;
-			P.write_start();
-			P.w_float(dist);
-			P.w_vec3(m_currP);
-			s16 curr_idx = -1;
-			if(m_movMngr->m_currPatrolVertex)
-				curr_idx = (s16)m_movMngr->m_currPatrolVertex->vertex_id();
-			
-			P.w_s16(curr_idx);
-			lua_game_object()->OnEventRaised(CHelicopter::EV_ON_POINT,P);
-		}
 
 
 		m_movMngr->shedule_Update (time_delta);

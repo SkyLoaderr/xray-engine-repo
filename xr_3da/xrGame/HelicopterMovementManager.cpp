@@ -5,6 +5,7 @@
 #include "../envelope.h"
 #include "patrol_path.h"
 #include "patrol_path_storage.h"
+#include "script_game_object.h"
 
 #define ROUND_RADIUS 20.0f
 
@@ -771,12 +772,24 @@ void CHelicopterMovManager::UpdatePatrolPath()
 		CPatrolPath::const_iterator b,e;
 		m_currPatrolPath->begin(m_currPatrolVertex->vertex_id(),b,e);
 		if(b!=e){
+		
+			{//GENARATE EVENT	
+				NET_Packet P;
+				P.write_start();
+				P.w_float(dist);
+				P.w_vec3(m_heli->XFORM().c);
+				s16 curr_idx = -1;
+				if(m_currPatrolVertex)
+					curr_idx = (s16)m_currPatrolVertex->vertex_id();
+				P.w_s16(curr_idx);
+				m_heli->lua_game_object()->OnEventRaised(CHelicopter::EV_ON_POINT,P);
+			}
+
 			m_currPatrolVertex =  m_currPatrolPath->vertex((*b).vertex_id());
-//			m_heli->m_data.m_desiredP = m_currPatrolVertex->data().position();
-//			getPathAltitude(m_heli->m_data.m_desiredP, m_heli->m_data.m_wrk_altitude);
 			Fvector p = m_currPatrolVertex->data().position();
 			m_heli->SetDestPosition(&p);
 			m_heli->m_last_point_range_dist = 1000000;
+
 		}else{
 			m_heli->setState(CHelicopter::eIdleState);
 			m_heli->m_last_point_range_dist = 1000000;
