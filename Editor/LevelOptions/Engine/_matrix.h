@@ -4,6 +4,7 @@
 // D3D compatible matrix
 // NOTE_1: positive angle means clockwise rotation
 // NOTE_2: mul(A,B) means transformation B, followed by A
+// NOTE_3: I,J,K,C equals to R,N,D,T
 
 extern ENGINE_API _matrix precalc_identity;
 typedef struct _matrix {
@@ -29,13 +30,14 @@ public:
 	IC void set(const _matrix &a) {
 		CopyMemory(this,&a,16*sizeof(float));
 	}
-	IC void set(const Fvector& R,const Fvector& N,const Fvector& D,const Fvector& C) {
+	IC void set		(const Fvector& R,const Fvector& N,const Fvector& D,const Fvector& C) {
 		i.set(R); _14_=0;
 		j.set(N); _24_=0;
 		k.set(D); _34_=0;
 		c.set(C); _44_=1;
 	}
-	IC void identity(void) {
+	IC void identity(void) 
+	{
 		_11=1; _12=0; _13=0; _14=0;
 		_21=0; _22=1; _23=0; _24=0;
 		_31=0; _32=0; _33=1; _34=0;
@@ -168,9 +170,7 @@ public:
 
 	IC	void	invert(void)				// slower than invert other matrix
 	{
-		_matrix a;
-		a.set(*this);
-		invert(a);
+		_matrix a;	a.set(*this);	invert(a);
 	}
 	IC	void	transpose(const _matrix &matSource)	// faster version of transpose
 	{
@@ -181,9 +181,7 @@ public:
 	}
 	IC	void	transpose(void)						// self transpose - slower
 	{
-		_matrix a;
-		a.set(*this);								// save matrix
-		transpose(a);
+		_matrix a;	a.set(*this);	transpose(a);
 	}
 	IC	void	translate(const Fvector &Loc )		// setup translation matrix
 	{
