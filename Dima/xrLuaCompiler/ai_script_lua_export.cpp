@@ -463,9 +463,11 @@ void Script::vfExportActions(CLuaVirtualMachine *tpLuaVirtualMachine)
 			.def(								constructor<MonsterSpace::ELookType>())
 			.def(								constructor<MonsterSpace::ELookType, const Fvector &>())
 			.def(								constructor<MonsterSpace::ELookType, CLuaGameObject*>())
+			.def(								constructor<MonsterSpace::ELookType, CLuaGameObject*, LPCSTR>())
 			.def("object",						&CWatchAction::SetWatchObject)		// time
 			.def("direct",						&CWatchAction::SetWatchDirection)		// time
-			.def("type",						&CWatchAction::SetWatchType),
+			.def("type",						&CWatchAction::SetWatchType)
+			.def("bone",						&CWatchAction::SetWatchBone),
 
 		class_<CAnimationAction>("anim")
 			.enum_("type")

@@ -99,7 +99,17 @@ bool CAI_Stalker::bfAssignWatch(CEntityAction *tpEntityAction)
 
 	switch (l_tWatchAction.m_tGoalType) {
 		case CWatchAction::eGoalTypeObject : {
-			l_tWatchAction.m_tpObjectToWatch->Center(l_tWatchAction.m_tWatchVector);
+			if (!xr_strlen(l_tWatchAction.m_bone_to_watch))
+				l_tWatchAction.m_tpObjectToWatch->Center(l_tWatchAction.m_tWatchVector);
+			else {
+				CBoneInstance	&l_tBoneInstance = PKinematics(l_tWatchAction.m_tpObjectToWatch->Visual())->LL_GetBoneInstance(PKinematics(l_tWatchAction.m_tpObjectToWatch->Visual())->LL_BoneID(*l_tWatchAction.m_bone_to_watch));
+				Fmatrix			l_tMatrix;
+
+				l_tMatrix		= l_tBoneInstance.mTransform;
+				l_tMatrix.mulA	(l_tWatchAction.m_tpObjectToWatch->XFORM());
+
+				l_tWatchAction.m_tWatchVector	= l_tMatrix.c;
+			}
 			if (eLookTypeFirePoint == l_tWatchAction.m_tWatchType)
 				SetFirePointLookAngles(l_tWatchAction.m_tWatchVector,yaw,pitch);
 			else

@@ -300,6 +300,7 @@ public:
 	MonsterSpace::ELookType			m_tWatchType;
 	EGoalType						m_tGoalType;
 	Fvector							m_tWatchVector;
+	ref_str							m_bone_to_watch;
 
 							CWatchAction		()
 	{
@@ -321,10 +322,11 @@ public:
 		SetWatchType		(tWatchType);
 	}
 
-							CWatchAction		(MonsterSpace::ELookType tWatchType, CLuaGameObject *tpObjectToWatch)
+							CWatchAction		(MonsterSpace::ELookType tWatchType, CLuaGameObject *tpObjectToWatch, LPCSTR bone_to_watch = "")
 	{
 		SetWatchType		(tWatchType);
 		SetWatchObject		(tpObjectToWatch);
+		SetWatchBone		(bone_to_watch);
 	}
 
 			void			SetWatchObject		(CLuaGameObject *tpObjectToWatch);
@@ -339,6 +341,12 @@ public:
 	{
 		m_tWatchVector		= tDirection;
 		m_tGoalType			= eGoalTypeDirection;
+		m_bCompleted		= false;
+	}
+
+			void			SetWatchBone		(LPCSTR bone_to_watch)
+	{
+		m_bone_to_watch		= bone_to_watch;
 		m_bCompleted		= false;
 	}
 };
