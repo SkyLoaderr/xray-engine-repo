@@ -70,6 +70,8 @@ private:
 	bool									m_enabled;
 	u64										m_start_time;
 	u64										m_time_work;
+	u64										m_test_time;
+	u32										m_test_count;
 	CGraphEngine::CBaseParameters			*m_base_game_selector;
 	CGraphEngine::CBaseParameters			*m_base_level_selector;
 

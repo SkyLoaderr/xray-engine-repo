@@ -15,11 +15,14 @@ CMovementManager::CMovementManager	()
 {
 	m_base_game_selector			= xr_new<CGraphEngine::CBaseParameters>();
 	m_base_level_selector			= xr_new<CGraphEngine::CBaseParameters>();
+	m_test_time						= 0;
+	m_test_count					= 0;
 	Init							();
 }
 
 CMovementManager::~CMovementManager	()
 {
+	Msg								("%f[%d] : %f",(float)m_test_time*CPU::cycles2microsec,m_test_count,(float)(m_test_time/m_test_count)*CPU::cycles2microsec);
 	xr_delete						(m_base_game_selector);
 	xr_delete						(m_base_level_selector);
 }
@@ -192,10 +195,14 @@ void CMovementManager::process_game_path()
 				break;
 		}
 		case ePathStateBuildGamePath : {
+			Device.Statistic.TEST0.Begin();
 			CGamePathManager::build_path(m_tGameVertexID,m_game_dest_vertex_id);
-			if (CGamePathManager::failed())
+			if (CGamePathManager::failed()) {
+				Device.Statistic.TEST0.End();
 				break;
+			}
 			m_path_state	= ePathStateContinueGamePath;
+			Device.Statistic.TEST0.End();
 			if (time_over())
 				break;
 		}
@@ -206,15 +213,24 @@ void CMovementManager::process_game_path()
 				break;
 		}
 		case ePathStateBuildLevelPath : {
+			Device.Statistic.TEST1.Begin();
+			u64 s1,f1;
+			s1 = CPU::GetCycleCount();
 			CLevelPathManager::build_path(
 				m_dwLevelVertexID,
 				ai().game_graph().vertex(
 					CGamePathManager::get_intermediate_vertex_id()
 				).level_vertex_id()
 			);
-			if (CLevelPathManager::failed())
+			if (CLevelPathManager::failed()) {
+				Device.Statistic.TEST1.End();
 				break;
+			}
 			m_path_state		= ePathStateContinueLevelPath;
+			f1 = CPU::GetCycleCount();
+			m_test_time += f1 - s1;
+			++m_test_count;
+			Device.Statistic.TEST1.End();
 			if (time_over())
 				break;
 		}
@@ -225,6 +241,7 @@ void CMovementManager::process_game_path()
 				break;
 		}
 		case ePathStateBuildDetailPath : {
+			Device.Statistic.TEST2.Begin();
 			CDetailPathManager::m_start_position = Position();
 			m_detail_dest_position  = 
 				ai().level_graph().vertex_position(
@@ -238,6 +255,7 @@ void CMovementManager::process_game_path()
 				)
 			);
 			m_path_state		= ePathStatePathVerification;
+			Device.Statistic.TEST2.End();
 			break;
 		}
 		case ePathStatePathVerification : {
