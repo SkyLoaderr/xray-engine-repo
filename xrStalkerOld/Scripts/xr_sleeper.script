@@ -88,13 +88,13 @@ function action_sleeper_activity:reset_scheme()
 
 	self.state = state_walking
 	
-	local patrol_main = patrol(self.st.path_main)
-	if not patrol_main then
-		utils.abort("object '%s': unable to find path_main '%s' on the map",
-			self.object:name(), self.st.path_main)
-	end
-
 	if self.st.path_walk_info == nil then
+		local patrol_main = patrol(self.st.path_main)
+		if not patrol_main then
+			utils.abort("object '%s': unable to find path_main '%s' on the map",
+				self.object:name(), self.st.path_main)
+		end
+
 		local num_wayp = patrol_main:count()
 		if num_wayp == 1 then
 			self.st.path_walk = self.st.path_main
