@@ -68,6 +68,7 @@ BEGIN_MESSAGE_MAP(CMainFrame, CMDIFrameWnd)
 	ON_UPDATE_COMMAND_UI(IDR_TOOLS_OPTIONS, OnUpdateToolsOptions)
 	ON_UPDATE_COMMAND_UI(ID_FILE_OPEN, OnUpdateToolsOptions)
 	
+	ON_COMMAND(ID_EDIT_CLEAROUTPUT, OnClearOutput)
 
 	ON_COMMAND(ID_FILE_SAVEALLMODIFIED, OnSaveAllModified)
 	ON_UPDATE_COMMAND_UI(ID_FILE_SAVEALLMODIFIED, OnUpdateSaveAllModified)
@@ -927,6 +928,10 @@ void CMainFrame::OnUpdateSaveAllModified(CCmdUI* pCmdUI)
 void CMainFrame::OnSaveAllModified()
 {
 	AfxGetApp()->SaveAllModified();
+}
+void CMainFrame::OnClearOutput()
+{
+	GetOutputWnd()->GetOutput(COutputWnd::outputDebug)->Clear();
 }
 
 void ActivateXRAY()

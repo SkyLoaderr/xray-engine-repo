@@ -331,6 +331,8 @@ BEGIN
     END
     POPUP "&View"
     BEGIN
+        MENUITEM "Clear output",                32885
+        MENUITEM SEPARATOR
         MENUITEM "&Toolbar",                    ID_VIEW_TOOLBAR
         MENUITEM "&Status Bar",                 ID_VIEW_STATUS_BAR
         MENUITEM SEPARATOR
@@ -365,7 +367,6 @@ BEGIN
         MENUITEM "Save Project As...",          ID_FILE_SAVEPROJECTAS
         MENUITEM "C&lose Project",              ID_FILE_CLOSEPROJECT
         MENUITEM SEPARATOR
-        MENUITEM SEPARATOR
         MENUITEM "Recent File",                 ID_FILE_MRU_FILE1, GRAYED
         MENUITEM SEPARATOR
         MENUITEM "E&xit",                       ID_APP_EXIT
@@ -396,6 +397,8 @@ BEGIN
     END
     POPUP "&View"
     BEGIN
+        MENUITEM "Clear output",                ID_EDIT_CLEAROUTPUT
+        MENUITEM SEPARATOR
         MENUITEM "&Toolbar",                    ID_VIEW_TOOLBAR
         MENUITEM "&Status Bar",                 ID_VIEW_STATUS_BAR
         MENUITEM SEPARATOR
