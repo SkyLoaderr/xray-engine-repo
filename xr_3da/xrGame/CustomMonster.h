@@ -18,7 +18,7 @@ class ENGINE_API CKinematics;
 class ENGINE_API CBoneInstance;
 class CWeaponList;
 
-class CCustomMonster : public CEntity, public pureRender  
+class CCustomMonster : public CEntity, public pureRender, public soundListener
 {
 private:
 	typedef	CEntity		inherited;
@@ -93,6 +93,10 @@ public:
 	float				m_fMaxSpeed;
 	float				m_fCurSpeed;
 	float				m_fCrouchCoefficient;
+
+	DWORD				m_dwSoundUpdate;
+	float				m_fSoundPower;
+	float				m_fStartPower;
 
 	virtual void		Think() = 0;
 
@@ -206,6 +210,7 @@ public:
 public:
 	//typedef BOOL (*QualifierFunction)(CObject*, void*);
 	virtual objQualifier* GetQualifier	();
+	virtual	void		soundEvent	(CObject* who, int type, Fvector& Position, float power) {};
 };
 
 namespace AI{

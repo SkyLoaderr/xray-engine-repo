@@ -48,8 +48,6 @@ CAI_Soldier::CAI_Soldier()
 	m_tpEventAssignPath = Engine.Event.Handler_Attach("level.entity.path.assign",this);
 	m_dwPatrolPathIndex = -1;
 	m_dwCreatePathAttempts = 0;
-	m_fSoundPower = m_fStartPower = 0;
-	m_dwSoundUpdate = 0;
 }
 
 CAI_Soldier::~CAI_Soldier()

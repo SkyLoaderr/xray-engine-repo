@@ -25,6 +25,7 @@
 	#else
 		#define WRITE_TO_LOG(S) {\
 			vfUpdateDynamicObjects();\
+			Msg("%f",m_fSoundPower);\
 			bStopThinking = true;\
 		}
 	#endif

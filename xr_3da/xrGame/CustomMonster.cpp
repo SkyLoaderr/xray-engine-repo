@@ -47,6 +47,8 @@ CCustomMonster::CCustomMonster()
 	r_torso_speed = PI;
 	r_spine_speed = PI;
 	q_look.o_look_speed = PI;
+	m_fSoundPower = m_fStartPower = 0;
+	m_dwSoundUpdate = 0;
 }
 
 CCustomMonster::~CCustomMonster()

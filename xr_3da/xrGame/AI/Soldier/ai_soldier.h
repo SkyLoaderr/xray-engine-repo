@@ -15,7 +15,7 @@
 #include "..\\..\\group.h"
 #include "..\\..\\..\\bodyinstance.h"
 
-class CAI_Soldier : public CCustomMonster, public soundListener
+class CAI_Soldier : public CCustomMonster
 {
 	enum ESoundCcount {
 		SND_HIT_COUNT=4,
@@ -73,9 +73,6 @@ class CAI_Soldier : public CCustomMonster, public soundListener
 		vector<SDynamicSound>	tpaDynamicSounds;
 		DWORD					m_dwMaxDynamicObjectsCount;
 		DWORD					m_dwMaxDynamicSoundsCount;
-		DWORD					m_dwSoundUpdate;
-		float					m_fSoundPower;
-		float					m_fStartPower;
 
 		////////////////////////////////////////////////////////////////////////////
 		// normal animations
