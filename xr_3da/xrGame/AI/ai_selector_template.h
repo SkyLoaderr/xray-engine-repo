@@ -430,7 +430,7 @@ public:
 
 	IC		void vfAddEnemyLookCost						()
 			{
-				if (fabs(m_dwCurTime - m_dwHitTime) < ATTACK_HIT_REACTION_TIME) {
+				if (_abs(s32(m_dwCurTime - m_dwHitTime)) < ATTACK_HIT_REACTION_TIME) {
 					Fvector tTempDirection0, tTempDirection1 = m_tHitDir;
 					tTempDirection0.sub(m_tEnemyPosition,m_tCurrentPosition);
 					vfNormalizeSafe(tTempDirection0);
@@ -442,7 +442,7 @@ public:
 
 	IC		void vfAddEnemyLookCost						(float fAngle)
 			{
-				if (fabs(m_dwCurTime - m_dwHitTime) < ATTACK_HIT_REACTION_TIME) {
+				if (_abs(m_dwCurTime - m_dwHitTime) < ATTACK_HIT_REACTION_TIME) {
 					Fvector tTempDirection0, tTempDirection1 = m_tHitDir;
 					tTempDirection0.sub(m_tEnemyPosition,m_tCurrentPosition);
 					vfNormalizeSafe(tTempDirection0);

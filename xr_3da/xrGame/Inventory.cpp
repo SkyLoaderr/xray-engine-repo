@@ -390,6 +390,15 @@ PIItem CInventory::Get(const char *name, bool bSearchRuck) {
 	return NULL;
 }
 
+PIItem CInventory::Get(const u16 id, bool bSearchRuck) {
+	TIItemList &l_list = bSearchRuck ? m_ruck : m_belt;
+	for(PPIItem l_it = l_list.begin(); l_it != l_list.end(); l_it++) {
+		PIItem l_pIItem = *l_it;
+		if(l_pIItem->ID() == id) return l_pIItem;
+	}
+	return NULL;
+}
+
 f32 CInventory::TotalWeight() {
 	f32 l_weight = 0;
 	for(PSPIItem l_it = m_all.begin(); l_it != m_all.end(); l_it++) l_weight += (*l_it)->m_weight;
