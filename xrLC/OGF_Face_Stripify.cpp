@@ -5,7 +5,7 @@
 #include "NV_Library\NvTriStrip.h"
 #include "NV_Library\VertexCache.h"
 
-int xrSimulate (std::vector<WORD> &indices, int iCacheSize )
+int xrSimulate (std::xr_vector<WORD> &indices, int iCacheSize )
 {
 	VertexCache C(iCacheSize);
 
@@ -20,21 +20,21 @@ int xrSimulate (std::vector<WORD> &indices, int iCacheSize )
 	return count;
 }
 
-void xrStripify		(std::vector<WORD> &indices, std::vector<WORD> &perturb, int iCacheSize, int iMinStripLength)
+void xrStripify		(std::xr_vector<WORD> &indices, std::xr_vector<WORD> &perturb, int iCacheSize, int iMinStripLength)
 {
 	SetCacheSize	(iCacheSize);
 	SetMinStripSize	(iMinStripLength);
 	SetListsOnly	(true);
 
 	// Generate strips
-	vector<PrimitiveGroup>	PGROUP;
+	xr_vector<PrimitiveGroup>	PGROUP;
 	GenerateStrips	(&*indices.begin(),indices.size(),PGROUP);
 	R_ASSERT		(PGROUP.size()==1);
 	R_ASSERT		(PGROUP[0].type==PT_LIST);
 	R_ASSERT		(indices.size()==PGROUP[0].numIndices);
 
 	// Remap indices
-	vector<PrimitiveGroup>	xPGROUP;
+	xr_vector<PrimitiveGroup>	xPGROUP;
 	RemapIndices	(PGROUP,u16(perturb.size()),xPGROUP);
 	R_ASSERT		(xPGROUP.size()==1);
 	R_ASSERT		(xPGROUP[0].type==PT_LIST);
@@ -64,7 +64,7 @@ void OGF::Stripify()
 
 //	set_status("Stripifying",treeID,faces.size(),vertices.size());
 	try {
-		vector<WORD>	indices,permute;
+		xr_vector<WORD>	indices,permute;
 		
 		// Stripify
 		WORD* F			= (WORD*)faces.begin(); 

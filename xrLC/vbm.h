@@ -6,12 +6,12 @@
 // Vertex containers
 class VBContainer 
 {
-	vector<VDeclarator>		vDcl;
-	vector<vector<BYTE> >	vContainers;
+	xr_vector<VDeclarator>		vDcl;
+	xr_vector<xr_vector<BYTE> >	vContainers;
 
 	// Recording
 	VDeclarator				R_DCL;
-	vector<BYTE>			R_DATA;
+	xr_vector<BYTE>			R_DATA;
 
 public:
 	// Constructor & destructor
@@ -96,7 +96,7 @@ public:
 
 class IBContainer
 {
-	vector<vector<u16> >	data;
+	xr_vector<xr_vector<u16> >	data;
 	enum {
 		LIMIT = 1024ul * 1024ul
 	};
@@ -120,7 +120,7 @@ public:
 		// Can't find suitable container - register new
 		*dwContainerID		= data.size();
 		*dwStart			= 0;
-		data.push_back		(vector<u16> ());
+		data.push_back		(xr_vector<u16> ());
 		data.back().assign	(begin,end);
 	}
 	void	Save	(IWriter &fs)

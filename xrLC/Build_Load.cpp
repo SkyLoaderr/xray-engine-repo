@@ -4,7 +4,7 @@ b_params				g_params;
 extern u32				dwInvalidFaces;
 
 template <class T>
-void transfer(const char *name, vector<T> &dest, IReader& F, u32 chunk)
+void transfer(const char *name, xr_vector<T> &dest, IReader& F, u32 chunk)
 {
 	IReader*	O	= F.open_chunk(chunk);
 	u32		count	= O?(O->length()/sizeof(T)):0;
@@ -21,7 +21,7 @@ extern u32*		Surface_Load	(char* name, u32& w, u32& h);
 extern void		Surface_Init	();
 
 /*
-vector<R_Layer>*	CBuild::LLayer_by_name	(LPCSTR N)
+xr_vector<R_Layer>*	CBuild::LLayer_by_name	(LPCSTR N)
 {
 for (u32 L=0; L<L_layers.size(); L++)
 {

@@ -93,15 +93,15 @@ Shader_xrLC_LIB			g_shaders_xrlc;
 
 b_params				g_params;
 
-vector<b_material>		g_materials;
-vector<b_shader>		g_shader_render;
-vector<b_shader>		g_shader_compile;
-vector<b_BuildTexture>	g_textures;
-vector<b_rc_face>		g_rc_faces;
+xr_vector<b_material>		g_materials;
+xr_vector<b_shader>		g_shader_render;
+xr_vector<b_shader>		g_shader_compile;
+xr_vector<b_BuildTexture>	g_textures;
+xr_vector<b_rc_face>		g_rc_faces;
 
 //-----------------------------------------------------------------
 template <class T>
-void transfer(const char *name, vector<T> &dest, IReader& F, u32 chunk)
+void transfer(const char *name, xr_vector<T> &dest, IReader& F, u32 chunk)
 {
 	IReader*	O		= F.open_chunk(chunk);
 	u32		count	= O?(O->length()/sizeof(T)):0;
@@ -471,7 +471,7 @@ public:
 		DB.ray_options	(CDB::OPT_ONLYNEAREST | CDB::OPT_CULL		);
 		DB.box_options	(0);//CDB::OPT_FULL_TEST							);
 
-		vector<R_Light>	Lights = g_lights;
+		xr_vector<R_Light>	Lights = g_lights;
 
 		LSelection		Selected;
 		for (DWORD _z=Nstart; _z<Nend; _z++)

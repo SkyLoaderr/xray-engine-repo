@@ -2,7 +2,7 @@
 #include "build.h"
 #include "sector.h"
 
-vector<CSector*>	g_sectors;
+xr_vector<CSector*>	g_sectors;
 
 void CBuild::BuildSectors()
 {

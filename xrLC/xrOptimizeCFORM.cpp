@@ -6,12 +6,12 @@ using namespace CDB;
 
 struct SectorFaces
 {
-	vector<TRI*>	tris;
+	xr_vector<TRI*>	tris;
 };
 
 void OptimizeCFORM(CDB::CollectorPacked& CL)
 {
-	vector<SectorFaces>	sector_faces;
+	xr_vector<SectorFaces>	sector_faces;
 
 	// Convert to per-sector subdivisions
 	for (int it = 0; it<int(CL.getTS()); it++)

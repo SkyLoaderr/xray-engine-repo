@@ -35,10 +35,10 @@ var _x	= var(x);
 */
 
 //-----------------------------------------------------------------------
-void xrMU_Model::calc_lighting	(vector<Fcolor>& dest, Fmatrix& xform, CDB::MODEL* MDL, vector<R_Light>& Lights_src, BOOL bDisableFaces)
+void xrMU_Model::calc_lighting	(xr_vector<Fcolor>& dest, Fmatrix& xform, CDB::MODEL* MDL, xr_vector<R_Light>& Lights_src, BOOL bDisableFaces)
 {
 	// trans-map
-	typedef	multimap<float,v_vertices>	mapVert;
+	typedef	xr_multimap<float,v_vertices>	mapVert;
 	typedef	mapVert::iterator			mapVertIt;
 	mapVert								g_trans;
 	u32									I;
@@ -57,7 +57,7 @@ void xrMU_Model::calc_lighting	(vector<Fcolor>& dest, Fmatrix& xform, CDB::MODEL
 	// Perform lighting
 	CDB::COLLIDER			DB;
 	DB.ray_options			(0);
-	vector<R_Light>& Lights = Lights_src;
+	xr_vector<R_Light>& Lights = Lights_src;
 	if (Lights.empty())		return;
 
 	// Disable faces if needed
@@ -239,10 +239,10 @@ void xrMU_Reference::calc_lighting	()
 	// A*C + D = B
 	// build data
 	{
-		vector<vector<REAL> >	A(color.size());
-		vector<vector<REAL> >	B(color.size());
-		vector<REAL>			C;
-		vector<REAL>			D;
+		xr_vector<xr_vector<REAL> >	A(color.size());
+		xr_vector<xr_vector<REAL> >	B(color.size());
+		xr_vector<REAL>			C;
+		xr_vector<REAL>			D;
 
 		if (bFirst)
 		{

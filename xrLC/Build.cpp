@@ -6,7 +6,7 @@
 #include "xrThread.h"
 #include "xrSyncronize.h"
 
-vector<OGF_Base *>		g_tree;
+xr_vector<OGF_Base *>		g_tree;
 BOOL					b_R2	= FALSE;
 
 //////////////////////////////////////////////////////////////////////

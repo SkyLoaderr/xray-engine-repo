@@ -38,12 +38,12 @@ struct R_Light
 };
 
 typedef hash2D<UVtri*,128,128>	HASH;
-typedef vector<R_Light>			LSelection;
+typedef xr_vector<R_Light>			LSelection;
 
 class CDeflector
 {
 public:
-	vector<UVtri>		UVpolys;
+	xr_vector<UVtri>		UVpolys;
 	Fvector				N;
 	struct Layer
 	{
@@ -54,7 +54,7 @@ public:
 		
 		Layer()			{ ZeroMemory(this,sizeof(*this)); }
 	};
-	vector<Layer>		layers;
+	xr_vector<Layer>		layers;
 	
 	Fsphere				Sphere;
 	
@@ -99,11 +99,11 @@ public:
 			bounds.merge(B);
 		}
 	}
-	void	RemapUV				(vector<UVtri>& dest, u32 base_u, u32 base_v, u32 size_u, u32 size_v, u32 lm_u, u32 lm_v, BOOL bRotate);
+	void	RemapUV				(xr_vector<UVtri>& dest, u32 base_u, u32 base_v, u32 size_u, u32 size_v, u32 lm_u, u32 lm_v, BOOL bRotate);
 	void	RemapUV				(u32 base_u, u32 base_v, u32 size_u, u32 size_v, u32 lm_u, u32 lm_v, BOOL bRotate);
 };
 
-typedef vector<UVtri>::iterator UVIt;
+typedef xr_vector<UVtri>::iterator UVIt;
 
 extern void		Jitter_Select	(Fvector2* &Jitter, u32& Jcount);
 extern void		blit			(u32* dest, u32 ds_x, u32 ds_y, u32* src, u32 ss_x, u32 ss_y, u32 px, u32 py, u32 aREF);

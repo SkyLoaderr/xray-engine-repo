@@ -15,7 +15,7 @@ IC REAL dfEvaluation(REAL &A, REAL &C, REAL &D)
 	return					(A*C + D);
 }
 
-REAL dfComputeEvalResults(vector<vector<REAL> >	&daEvalResults, vector<vector<REAL> > &A, vector<vector<REAL> > &B, vector<REAL> &C, vector<REAL> &D)
+REAL dfComputeEvalResults(xr_vector<xr_vector<REAL> >	&daEvalResults, xr_vector<xr_vector<REAL> > &A, xr_vector<xr_vector<REAL> > &B, xr_vector<REAL> &C, xr_vector<REAL> &D)
 {
 	REAL dResult			= 0.0;
 	u32 dwTestCount			= B.size();
@@ -32,7 +32,7 @@ REAL dfComputeEvalResults(vector<vector<REAL> >	&daEvalResults, vector<vector<RE
 	return					(dResult);
 }
 
-vector<REAL> &dafGradient(vector<vector<REAL> >	&daEvalResults, vector<REAL> &daResult, vector<vector<REAL> > &B, REAL dNormaFactor)
+xr_vector<REAL> &dafGradient(xr_vector<xr_vector<REAL> >	&daEvalResults, xr_vector<REAL> &daResult, xr_vector<xr_vector<REAL> > &B, REAL dNormaFactor)
 {
 	REAL					dNorma = 0.0;
 	u32						dwTestCount = B.size();
@@ -52,12 +52,12 @@ vector<REAL> &dafGradient(vector<vector<REAL> >	&daEvalResults, vector<REAL> &da
 	return					(daResult);
 }
 
-void vfOptimizeParameters(vector<vector<REAL> > &A, vector<vector<REAL> > &B, vector<REAL> &C, vector<REAL> &D, REAL dEpsilon, REAL dAlpha, REAL dBeta, REAL dNormaFactor, u32 dwMaxIterationCount)
+void vfOptimizeParameters(xr_vector<xr_vector<REAL> > &A, xr_vector<xr_vector<REAL> > &B, xr_vector<REAL> &C, xr_vector<REAL> &D, REAL dEpsilon, REAL dAlpha, REAL dBeta, REAL dNormaFactor, u32 dwMaxIterationCount)
 {
 	u32						dwTestCount	= B.size();
-	vector<REAL>			daGradient;
-	vector<REAL>			daDelta;
-	vector<vector<REAL> >	daEvalResults(dwTestCount);
+	xr_vector<REAL>			daGradient;
+	xr_vector<REAL>			daDelta;
+	xr_vector<xr_vector<REAL> >	daEvalResults(dwTestCount);
 	
 	if (!B.size()) {
 		clMsg				("ERROR : there are no parameters to fit!");

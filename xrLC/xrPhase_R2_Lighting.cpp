@@ -40,7 +40,7 @@ public:
 		CDB::COLLIDER			DB;
 		DB.ray_options			(0);
 
-		vector<R_Light>	Lights = pBuild->L_hemi;
+		xr_vector<R_Light>	Lights = pBuild->L_hemi;
 		if (Lights.empty())		return;
 
 		for (DWORD I = vertStart; I<vertEnd; I++)

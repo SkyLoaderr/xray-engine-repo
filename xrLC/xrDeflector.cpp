@@ -149,7 +149,7 @@ void CDeflector::OA_Place	(vecFace& lst)
 VOID CDeflector::GetRect	(Fvector2 &min, Fvector2 &max)
 {
 	// Calculate bounds
-	vector<UVtri>::iterator it=UVpolys.begin();
+	xr_vector<UVtri>::iterator it=UVpolys.begin();
 	min = max = it->uv[0];
 	for (;it != UVpolys.end(); it++)
 	{
@@ -160,7 +160,7 @@ VOID CDeflector::GetRect	(Fvector2 &min, Fvector2 &max)
 	}
 }
 
-void CDeflector::RemapUV	(vector<UVtri>& dest, u32 base_u, u32 base_v, u32 size_u, u32 size_v, u32 lm_u, u32 lm_v, BOOL bRotate)
+void CDeflector::RemapUV	(xr_vector<UVtri>& dest, u32 base_u, u32 base_v, u32 size_u, u32 size_v, u32 lm_u, u32 lm_v, BOOL bRotate)
 {
 	dest.clear	();
 	dest.reserve(UVpolys.size());
@@ -214,7 +214,7 @@ void CDeflector::RemapUV	(vector<UVtri>& dest, u32 base_u, u32 base_v, u32 size_
 
 void CDeflector::RemapUV(u32 base_u, u32 base_v, u32 size_u, u32 size_v, u32 lm_u, u32 lm_v, BOOL bRotate)
 {
-	vector<UVtri>	tris_new;
+	xr_vector<UVtri>	tris_new;
 	RemapUV			(tris_new,base_u,base_v,size_u,size_v,lm_u,lm_v,bRotate);
 	UVpolys			= tris_new;
 }

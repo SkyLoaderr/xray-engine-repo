@@ -10,9 +10,9 @@ class CSector
 {
 	DWORD				SelfID;
 	OGF_Base *			TreeRoot;
-	vector<WORD>		Portals;
-	vector<WORD>		Glows;
-	vector<WORD>		Lights;
+	xr_vector<WORD>		Portals;
+	xr_vector<WORD>		Glows;
+	xr_vector<WORD>		Lights;
 public: 
 	void add_portal		(WORD P)		{ Portals.push_back(P);		}
 	void add_glow		(WORD G)		{ Glows.push_back(G);		}
@@ -26,6 +26,6 @@ public:
 	~CSector			();
 };
 
-extern vector<CSector*>	g_sectors;
+extern xr_vector<CSector*>	g_sectors;
 
 #endif // !defined(AFX_SECTOR_H__751706E5_383E_40CB_9F3D_6A4D1BB8F3CD__INCLUDED_)

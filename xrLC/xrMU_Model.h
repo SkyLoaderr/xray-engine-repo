@@ -26,11 +26,11 @@ public:
 	};
 
 	//** 
-	typedef	vector<_vertex*>		v_vertices;
+	typedef	xr_vector<_vertex*>		v_vertices;
 	typedef	v_vertices::iterator	v_vertices_it;
-	typedef vector<_face*>			v_faces;
+	typedef xr_vector<_face*>			v_faces;
 	typedef v_faces::iterator		v_faces_it;
-	typedef vector<_subdiv>			v_subdivs;
+	typedef xr_vector<_subdiv>			v_subdivs;
 	typedef v_subdivs::iterator		v_subdivs_it;
 
 	//** 
@@ -84,7 +84,7 @@ public:
 	v_faces				m_faces;
 	v_subdivs			m_subdivs;
 
-	vector<Fcolor>		color;
+	xr_vector<Fcolor>		color;
 private:
 	_face*				load_create_face	(Fvector& P1, Fvector& P2, Fvector& P3, b_face& F);
 	_vertex*			load_create_vertex	(Fvector& P);
@@ -93,7 +93,7 @@ public:
 	void				calc_normals		();
 	void				calc_materials		();
 	void				calc_faceopacity	();
-	void				calc_lighting		(vector<Fcolor>& dest, Fmatrix& xform, CDB::MODEL* M, vector<R_Light>& Lights_src, BOOL bDisableFaces);
+	void				calc_lighting		(xr_vector<Fcolor>& dest, Fmatrix& xform, CDB::MODEL* M, xr_vector<R_Light>& Lights_src, BOOL bDisableFaces);
 	void				calc_lighting		();
 	void				calc_ogf			();
 	void				export_geometry		();
@@ -108,7 +108,7 @@ public:
     Flags32				flags;
 	u16					sector;
 
-	vector<Fcolor>		color;
+	xr_vector<Fcolor>		color;
 
 	Fvector4			c_scale;
 	Fvector4			c_bias;

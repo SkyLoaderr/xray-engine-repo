@@ -22,6 +22,6 @@ public:
 	void	Save				();
 };
 
-extern	vector<CLightmap*>		g_lightmaps;
+extern	xr_vector<CLightmap*>		g_lightmaps;
 
 #endif // !defined(AFX_LIGHTMAP_H__889100E6_CF29_47EA_ABFD_41AE28DAC6B1__INCLUDED_)

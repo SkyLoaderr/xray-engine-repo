@@ -40,16 +40,16 @@ void CBuild::xrPhase_TangentBasis()
 	u32 v_count_reserve			= iFloor(float(g_vertices.size())*1.33f);
 	u32 i_count_reserve			= 3*g_faces.size();
 
-	std::vector<NVMeshMender::VertexAttribute> input,output;
+	std::xr_vector<NVMeshMender::VertexAttribute> input,output;
 	input.push_back	(NVMeshMender::VertexAttribute());	// pos
 	input.push_back	(NVMeshMender::VertexAttribute());	// norm
 	input.push_back	(NVMeshMender::VertexAttribute());	// tex0
 	input.push_back	(NVMeshMender::VertexAttribute());	// *** faces
 
-	input[0].Name_= "position";	vector<float>&	v_position	= input[0].floatVector_;	v_position.reserve	(v_count_reserve);
-	input[1].Name_= "normal";	vector<float>&	v_normal	= input[1].floatVector_;	v_normal.reserve	(v_count_reserve);
-	input[2].Name_= "tex0";		vector<float>&	v_tc		= input[2].floatVector_;	v_tc.reserve		(v_count_reserve);
-	input[3].Name_= "indices";	vector<int>&	v_indices	= input[3].intVector_;		v_indices.reserve	(i_count_reserve);
+	input[0].Name_= "position";	xr_vector<float>&	v_position	= input[0].floatVector_;	v_position.reserve	(v_count_reserve);
+	input[1].Name_= "normal";	xr_vector<float>&	v_normal	= input[1].floatVector_;	v_normal.reserve	(v_count_reserve);
+	input[2].Name_= "tex0";		xr_vector<float>&	v_tc		= input[2].floatVector_;	v_tc.reserve		(v_count_reserve);
+	input[3].Name_= "indices";	xr_vector<int>&	v_indices	= input[3].intVector_;		v_indices.reserve	(i_count_reserve);
 
 	output.push_back(NVMeshMender::VertexAttribute());	// tex0
 	output.push_back(NVMeshMender::VertexAttribute());	// tangent
@@ -66,7 +66,7 @@ void CBuild::xrPhase_TangentBasis()
 	// ************************************* Build vectors + expand TC if nessesary
 	Status						("Building inputs...");
 	std::sort					(g_vertices.begin(),g_vertices.end());
-	vector<vector<u32> >		remap;
+	xr_vector<xr_vector<u32> >		remap;
 	remap.resize				(g_vertices.size());
 	for (u32 f=0; f<g_faces.size(); f++)
 	{
@@ -78,7 +78,7 @@ void CBuild::xrPhase_TangentBasis()
 			Vertex*		V	= F->v[v];	
 			Fvector2	Ftc = F->tc.front().uv[v];
 			u32 ID			= lower_bound(g_vertices.begin(),g_vertices.end(),V)-g_vertices.begin();
-			vector<u32>& m	= remap[ID];
+			xr_vector<u32>& m	= remap[ID];
 
 			// Search
 			BOOL bFound		= FALSE;
@@ -129,10 +129,10 @@ void CBuild::xrPhase_TangentBasis()
 
 	// ************************************* Bind declarators
 	// bind
-	vector<float>&	o_tc		= output[0].floatVector_;	R_ASSERT(output[0].Name_=="tex0");
-	vector<float>&	o_tangent	= output[1].floatVector_;	R_ASSERT(output[1].Name_=="tangent");
-	vector<float>&	o_binormal	= output[2].floatVector_;	R_ASSERT(output[2].Name_=="binormal");
-	vector<int>&	o_indices	= output[3].intVector_;		R_ASSERT(output[3].Name_=="indices");
+	xr_vector<float>&	o_tc		= output[0].floatVector_;	R_ASSERT(output[0].Name_=="tex0");
+	xr_vector<float>&	o_tangent	= output[1].floatVector_;	R_ASSERT(output[1].Name_=="tangent");
+	xr_vector<float>&	o_binormal	= output[2].floatVector_;	R_ASSERT(output[2].Name_=="binormal");
+	xr_vector<int>&	o_indices	= output[3].intVector_;		R_ASSERT(output[3].Name_=="indices");
 
 	// verify
 	R_ASSERT		(3*g_faces.size()	== o_indices.size());

@@ -4,7 +4,7 @@
 
 void xrMU_Reference::export_ogf()
 {
-	vector<u32>		generated_ids;
+	xr_vector<u32>		generated_ids;
 
 	// Export nodes
 	{

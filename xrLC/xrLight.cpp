@@ -4,14 +4,14 @@
 #include "xrSyncronize.h"
 
 xrCriticalSection		task_CS;
-vector<int>				task_pool;
+xr_vector<int>				task_pool;
 
 class CLMThread : public CThread
 {
 public:
 	HASH							H;
 	CDB::COLLIDER					DB;
-	vector<R_Light>					LightsSelected;
+	xr_vector<R_Light>					LightsSelected;
 public:
 	CLMThread	(DWORD ID) : CThread(ID)
 	{
@@ -102,7 +102,7 @@ void CBuild::Light()
 //-----------------------------------------------------------------------
 extern BOOL	hasImplicitLighting		(Face* F);
 
-typedef	multimap<float,vecVertex>	mapVert;
+typedef	xr_multimap<float,vecVertex>	mapVert;
 typedef	mapVert::iterator			mapVertIt;
 mapVert*							g_trans;
 xrCriticalSection					g_trans_CS;
@@ -168,7 +168,7 @@ public:
 		CDB::COLLIDER	DB;
 		DB.ray_options	(0);
 		
-		vector<R_Light>	Lights = pBuild->L_layers.front().lights;
+		xr_vector<R_Light>	Lights = pBuild->L_layers.front().lights;
 		if (Lights.empty())		return;
 		
 		for (DWORD I = faceStart; I<faceEnd; I++)

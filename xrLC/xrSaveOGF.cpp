@@ -4,7 +4,7 @@
  
 VBContainer				g_VB;
 IBContainer				g_IB;
-vector<string>			g_Strings;
+xr_vector<string>		g_Strings;
 
 u32						g_batch_count;
 u32						g_batch_verts;
@@ -18,7 +18,7 @@ u32						g_batch_5000;
 
 int		RegisterString		(string &T) 
 {
-	vector<string>::iterator W = find(g_Strings.begin(), g_Strings.end(), T);
+	xr_vector<string>::iterator W = find(g_Strings.begin(), g_Strings.end(), T);
 	if (W!=g_Strings.end()) return W-g_Strings.begin();
 	g_Strings.push_back(T);
 	return g_Strings.size()-1;
@@ -43,7 +43,7 @@ void CBuild::SaveTREE(IWriter &fs)
 	Status				("Visuals...");
 	//mem_Compact			();
 	fs.open_chunk		(fsL_VISUALS | CFS_CompressMark);
-	for (vector<OGF_Base*>::iterator it = g_tree.begin(); it!=g_tree.end(); it++)
+	for (xr_vector<OGF_Base*>::iterator it = g_tree.begin(); it!=g_tree.end(); it++)
 	{
 		DWORD			idx = it-g_tree.begin();
 		MFS.open_chunk	(idx);
@@ -83,7 +83,7 @@ void CBuild::SaveTREE(IWriter &fs)
 	Status				("String table...");
 	fs.open_chunk		(fsL_STRINGS);
 	fs.w_u32			(g_Strings.size());
-	for (vector<string>::iterator T=g_Strings.begin(); T!=g_Strings.end(); T++)
+	for (xr_vector<string>::iterator T=g_Strings.begin(); T!=g_Strings.end(); T++)
 		fs.w(T->c_str(),T->length()+1);
 	fs.close_chunk		();
 	//mem_Compact			();

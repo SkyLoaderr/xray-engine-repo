@@ -25,7 +25,7 @@ void CBuild::BuildRapid()
 	Status			("Converting faces...");
 	for				(DWORD fit=0; fit<g_faces.size(); fit++)	g_faces[fit]->bProcessed = FALSE;
 
-	vector<Face*>	adjacent;	adjacent.reserve(6*2*3);
+	xr_vector<Face*>	adjacent;	adjacent.reserve(6*2*3);
 	CDB::CollectorPacked	CL	(scene_bb,g_vertices.size(),g_faces.size());
 	for (vecFaceIt it=g_faces.begin(); it!=g_faces.end(); it++)
 	{
@@ -87,7 +87,7 @@ void CBuild::BuildRapid()
 
 	IWriter*		MFS		= FS.w_open	((pBuild->path+"build.cform").c_str());
 
-	vector<b_rc_face>		rc_faces;
+	xr_vector<b_rc_face>		rc_faces;
 	rc_faces.resize			(CL.getTS());
 	// Prepare faces
 	for (u32 k=0; k<CL.getTS(); k++){

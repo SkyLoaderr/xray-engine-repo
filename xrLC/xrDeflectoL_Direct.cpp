@@ -87,7 +87,7 @@ void CDeflector::L_Direct	(CDB::COLLIDER* DB, LSelection* LightsSelected, HASH& 
 					P.x = float(U)/dim.x + half.x + Jitter[J].x * JS.x;
 					P.y = float(V)/dim.y + half.y + Jitter[J].y * JS.y;
 					
-					vector<UVtri*>&	space	= H.query(P.x,P.y);
+					xr_vector<UVtri*>&	space	= H.query(P.x,P.y);
 					
 					// World space
 					Fvector wP,wN,B;

@@ -39,10 +39,10 @@ class Edge;
 class CLightmap;
 
 // Typedefs
-typedef vector<Vertex*>			vecVertex;
+typedef xr_vector<Vertex*>			vecVertex;
 typedef vecVertex::iterator		vecVertexIt;
 
-typedef vector<Face*>			vecFace;
+typedef xr_vector<Face*>			vecFace;
 typedef vecFace::iterator		vecFaceIt;
 
 typedef vecFace					vecAdj;

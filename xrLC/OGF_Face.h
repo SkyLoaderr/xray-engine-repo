@@ -12,10 +12,10 @@ struct OGF_Texture
 	// for build only
 	b_texture*		pSurface;
 };
-typedef vector<OGF_Texture>		vecOGF_T;
+typedef xr_vector<OGF_Texture>		vecOGF_T;
 typedef vecOGF_T::iterator		itOGF_T;
 
-typedef vector<WORD>			vecUnroll;
+typedef xr_vector<WORD>			vecUnroll;
 typedef vecUnroll::iterator		vecUnrollIt;
 
 struct OGF;
@@ -30,7 +30,7 @@ struct OGF_Vertex
 
 	BOOL		similar	(OGF* p, OGF_Vertex&	other);
 };
-typedef vector<OGF_Vertex>		vecOGF_V;
+typedef xr_vector<OGF_Vertex>		vecOGF_V;
 typedef vecOGF_V::iterator		itOGF_V;
 
 #pragma pack(push,1)
@@ -58,7 +58,7 @@ struct OGF_Face
 		return false;
 	}
 };
-typedef vector<OGF_Face>		vecOGF_F;
+typedef xr_vector<OGF_Face>		vecOGF_F;
 typedef vecOGF_F::iterator		itOGF_F;
 #pragma pack(pop)
 
@@ -84,10 +84,10 @@ struct OGF_Base
 	IC BOOL				IsNode()	{ return iLevel; }
 
 	virtual void		Save		(IWriter &fs);
-	virtual void		GetGeometry	(vector<Fvector> &RES) = 0;
+	virtual void		GetGeometry	(xr_vector<Fvector> &RES) = 0;
 	void				CalcBounds	(); 
 };
-extern vector<OGF_Base *>		g_tree;
+extern xr_vector<OGF_Base *>		g_tree;
 
 struct OGF : public OGF_Base
 {
@@ -97,8 +97,8 @@ struct OGF : public OGF_Base
 	vecOGF_F			faces,    faces_saved;
 
 	// Progressive
-	vector<Vsplit>		pmap_vsplit;
-	vector<WORD>		pmap_faces;
+	xr_vector<Vsplit>		pmap_vsplit;
+	xr_vector<WORD>		pmap_faces;
 	DWORD				dwMinVerts;
 	int					I_Current;
 
@@ -128,7 +128,7 @@ struct OGF : public OGF_Base
 	void				Save_Normal_PM	(IWriter &fs, ogf_header& H, DWORD FVF, BOOL bColors, BOOL bLighting);
 	void				Save_Progressive(IWriter &fs, ogf_header& H, DWORD FVF, BOOL bColors, BOOL bLighting);
 
-	virtual void		GetGeometry		(vector<Fvector> &R)
+	virtual void		GetGeometry		(xr_vector<Fvector> &R)
 	{
 		for (OGF_Vertex* I=vertices.begin(); I!=vertices.end(); I++)
 			R.push_back(I->P);
@@ -157,7 +157,7 @@ struct OGF_Reference : public OGF_Base
 					}
 
 	virtual void		Save		(IWriter &fs);
-	virtual void		GetGeometry	(vector<Fvector> &R)
+	virtual void		GetGeometry	(xr_vector<Fvector> &R)
 	{
 		Fvector			P;
 		for (OGF_Vertex* I=model->vertices.begin(); I!=model->vertices.end(); I++)
@@ -170,7 +170,7 @@ struct OGF_Reference : public OGF_Base
 
 struct OGF_Node : public OGF_Base
 {
-	vector<DWORD>		chields;
+	xr_vector<DWORD>		chields;
 
 	OGF_Node(int _L, WORD _Sector) : OGF_Base(_L) { Sector=_Sector; }
 
@@ -183,9 +183,9 @@ struct OGF_Node : public OGF_Base
 		P->bConnected		= TRUE;
 	}
 	virtual void		Save		(IWriter &fs);
-	virtual void		GetGeometry	(vector<Fvector> &R)
+	virtual void		GetGeometry	(xr_vector<Fvector> &R)
 	{
-		for (vector<DWORD>::iterator I=chields.begin(); I!=chields.end(); I++)
+		for (xr_vector<DWORD>::iterator I=chields.begin(); I!=chields.end(); I++)
 			g_tree[*I]->GetGeometry(R);
 	}
 };

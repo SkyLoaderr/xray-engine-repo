@@ -237,7 +237,7 @@ void	OGF::Save_Normal_PM		(IWriter &fs, ogf_header& H, DWORD FVF, BOOL bColors, 
 	}
 }
 
-extern	void xrStripify(std::vector<WORD> &indices, std::vector<WORD> &perturb, int iCacheSize, int iMinStripLength);
+extern	void xrStripify(std::xr_vector<WORD> &indices, std::xr_vector<WORD> &perturb, int iCacheSize, int iMinStripLength);
 
 void	OGF::Save_Progressive	(IWriter &fs, ogf_header& H, DWORD FVF, BOOL bColors, BOOL bNeedNormals)
 {
@@ -327,7 +327,7 @@ void	OGF::Save_Progressive	(IWriter &fs, ogf_header& H, DWORD FVF, BOOL bColors,
 			}
 
 			// ***** Stripify resulting mesh
-			vector<WORD>	strip_indices, strip_permute;
+			xr_vector<WORD>	strip_indices, strip_permute;
 			vecOGF_V		strip_verts;
 			try {
 				// Stripify

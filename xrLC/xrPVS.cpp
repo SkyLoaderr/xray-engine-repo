@@ -5,18 +5,18 @@
 #pragma comment(lib,"x:\\xrOcclusion.lib")
 #pragma comment(lib,"winmm.lib")
 
-typedef vector<WORD>	vecW;
+typedef xr_vector<WORD>	vecW;
 typedef vecW::iterator	vecW_IT;
 
-typedef vector<BOOL>	vecB;
+typedef xr_vector<BOOL>	vecB;
 typedef vecB::iterator	vecB_IT;
 
-typedef multimap<DWORD,DWORD>		treeCompress;
+typedef xr_multimap<DWORD,DWORD>		treeCompress;
 typedef treeCompress::iterator		treeCompressIt;
 typedef treeCompress::value_type	treeCompressType;
 typedef pair<treeCompressIt,treeCompressIt> treeCompressPair;
 
-vector<vecW>	g_pvs;
+xr_vector<vecW>	g_pvs;
 
 treeCompress	g_compress_tree;
 

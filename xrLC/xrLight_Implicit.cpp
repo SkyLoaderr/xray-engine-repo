@@ -160,7 +160,7 @@ public:
 	{
 		R_ASSERT				(DATA);
 		ImplicitDeflector& defl = *DATA;
-		vector<R_Light>			Lights	= pBuild->L_layers.front().lights;
+		xr_vector<R_Light>			Lights	= pBuild->L_layers.front().lights;
 		CDB::COLLIDER			DB;
 		
 		// Setup variables
@@ -192,7 +192,7 @@ public:
 						Fvector2 P;
 						P.x = float(U)/dim.x + half.x + Jitter[J].x * JS.x;
 						P.y	= float(V)/dim.y + half.y + Jitter[J].y * JS.y;
-						vector<Face*>&	space	= ImplicitHash->query(P.x,P.y);
+						xr_vector<Face*>&	space	= ImplicitHash->query(P.x,P.y);
 						
 						// World space
 						Fvector wP,wN,B;

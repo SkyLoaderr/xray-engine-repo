@@ -105,7 +105,7 @@ void CBuild::Tesselate()
 			F2->SetVertices(F->v[1], V2, V1);
 			F3->SetVertices(F->v[2], V3, V2);
 
-			vector<_TCF>::iterator it=F->tc.begin();
+			xr_vector<_TCF>::iterator it=F->tc.begin();
 			for (;it!=F->tc.end();it++)
 			{
 				Fvector2 p1,p2,p3;	// for V1,V2,V3

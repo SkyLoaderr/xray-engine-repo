@@ -44,12 +44,12 @@ struct b_BuildTexture : public b_texture
 struct R_Control
 {
 	string64				name;
-	vector<DWORD>			data;
+	xr_vector<DWORD>			data;
 };
 struct R_Layer
 {
 	R_Control				control;
-	vector<R_Light>			lights;
+	xr_vector<R_Light>			lights;
 };
 
 class CBuild  
@@ -62,30 +62,30 @@ public:
 
 	Fbox					scene_bb;
 	
-	vector<b_material>		materials;
-	vector<b_shader>		shader_render;
-	vector<b_shader>		shader_compile;
-	vector<b_BuildTexture>	textures;
+	xr_vector<b_material>		materials;
+	xr_vector<b_shader>		shader_render;
+	xr_vector<b_shader>		shader_compile;
+	xr_vector<b_BuildTexture>	textures;
 
-	vector<b_glow>			glows;
-	vector<b_portal>		portals;
-	vector<b_lod>			lods;
+	xr_vector<b_glow>			glows;
+	xr_vector<b_portal>		portals;
+	xr_vector<b_lod>			lods;
 
-	vector<R_Layer>			L_layers;
-	vector<R_Light>			L_hemi;
-	vector<b_light_dynamic>	L_dynamic;
+	xr_vector<R_Layer>			L_layers;
+	xr_vector<R_Light>			L_hemi;
+	xr_vector<b_light_dynamic>	L_dynamic;
 	
-	vector<BYTE>			L_control_data;
+	xr_vector<BYTE>			L_control_data;
 	
-	vector<xrMU_Model*>		mu_models;
-	vector<xrMU_Reference*>	mu_refs;
+	xr_vector<xrMU_Model*>		mu_models;
+	xr_vector<xrMU_Reference*>	mu_refs;
 
 	Shader_xrLC_LIB			shaders;
 	string					path;
 
 	void	mem_Compact				();
 	void	mem_CompactSubdivs		();
-	vector<R_Layer>*				LLayer_by_name	(LPCSTR N);
+	xr_vector<R_Layer>*				LLayer_by_name	(LPCSTR N);
 public:
 	void	Load					(const b_params& P, const IReader&  FS);
 	void	Run						(string& path);

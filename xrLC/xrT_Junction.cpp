@@ -30,8 +30,8 @@ struct record
 	Vertex	*T;
 };
 
-vector<record>*	vecJunctions;
-vector<record>*	vecEdges;
+xr_vector<record>*	vecJunctions;
+xr_vector<record>*	vecEdges;
 
 void check(Vertex* vE1, Vertex* vE2, Vertex* vTEST)
 {
@@ -88,8 +88,8 @@ void edge(Vertex* vE1, Vertex* vE2)
 void CBuild::CorrectTJunctions()
 {
 	Status					("Processing...");
-	vecJunctions			= xr_new<vector<record> > (); vecJunctions->reserve	(1024);
-	vecEdges				= xr_new<vector<record> > (); vecEdges->reserve		(1024);
+	vecJunctions			= xr_new<xr_vector<record> > (); vecJunctions->reserve	(1024);
+	vecEdges				= xr_new<xr_vector<record> > (); vecEdges->reserve		(1024);
 
 	for (DWORD I=0; I<g_faces.size(); I++)
 	{

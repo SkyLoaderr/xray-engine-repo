@@ -4,7 +4,7 @@
 #include "freeimage.h"
 
 struct SExts{
-	vector<LPSTR>	exts;
+	xr_vector<LPSTR>	exts;
     void format_register(LPCSTR ext)
     {
     	if (ext&&ext[0]){

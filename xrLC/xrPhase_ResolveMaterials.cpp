@@ -15,7 +15,7 @@ void	CBuild::xrPhase_ResolveMaterials()
 {
 	// Count number of materials
 	Status		("Calculating materials/subdivs...");
-	vector<_counter>	counts;
+	xr_vector<_counter>	counts;
 	{
 		counts.reserve		(256);
 		for (vecFaceIt F_it=g_faces.begin(); F_it!=g_faces.end(); F_it++)

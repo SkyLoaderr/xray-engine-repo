@@ -43,7 +43,7 @@ void xrMU_Reference::export_cform_game(CDB::CollectorPacked& CL)
 	xrMU_Model::v_faces*	cfFaces		= xr_new<xrMU_Model::v_faces>		();
 	xrMU_Model::v_vertices*	cfVertices	= xr_new<xrMU_Model::v_vertices>	();
 	{
-		vector<bool>	cfVertexMarks	(model->m_vertices.size(),false);
+		xr_vector<bool>	cfVertexMarks	(model->m_vertices.size(),false);
 
 		std::sort			(model->m_vertices.begin(),model->m_vertices.end());
 

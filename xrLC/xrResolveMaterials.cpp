@@ -72,8 +72,8 @@ void CBuild::ResolveMaterials()
 	Fbox	bb;	bb.invalidate();
 	Fvector size;
 
-	vector<Fbox> bbox;
-	vector<int>	 id;
+	xr_vector<Fbox> bbox;
+	xr_vector<int>	 id;
 
 	float merge_lim = g_params.m_SS_maxsize*g_params.m_SS_merge_coeff;
 	for (int X=0; X<int(g_XSplit.size()); X++)

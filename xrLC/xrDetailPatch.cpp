@@ -45,7 +45,7 @@ void LightPatch(Fcolor &C, Fvector &P, float scale)
 	}
 }
 
-extern vector<DetailPatch>	g_pathes;
+extern xr_vector<DetailPatch>	g_pathes;
 
 float g_merge_limit = 6.f;
 
@@ -73,7 +73,7 @@ void CBuild::LightPatches()
 	}
 
 	Status("Subdividing...");
-	vector<DetailPatch> one_subd;
+	xr_vector<DetailPatch> one_subd;
 	while (!g_pathes.empty())
 	{
 		// Prepare

@@ -4,10 +4,10 @@
 #include "ffileops.h"
 
 // from xrPVS
-typedef vector<WORD>	vecW;
+typedef xr_vector<WORD>	vecW;
 typedef vecW::iterator	vecW_IT;
 
-extern vector<vecW>		g_pvs;
+extern xr_vector<vecW>		g_pvs;
 extern DWORD			g_pvs_X,g_pvs_Y,g_pvs_Z;
 
 struct V_Header {
@@ -16,7 +16,7 @@ struct V_Header {
 	Fvector	min;
 };
 
-DWORD PlaceData(vector<vecW> &C, vecW &P)
+DWORD PlaceData(xr_vector<vecW> &C, vecW &P)
 {
 	if (P.size()>1) {
 		std::sort	(P.begin(),P.end());
@@ -27,7 +27,7 @@ DWORD PlaceData(vector<vecW> &C, vecW &P)
 	// Search placeholder
 	DWORD sz	= P.size();
 	DWORD pos	= 0;
-	for (vector<vecW>::iterator it=C.begin(); it!=C.end(); it++)
+	for (xr_vector<vecW>::iterator it=C.begin(); it!=C.end(); it++)
 	{
 		DWORD S = it->size();
 		if (S!=sz) { pos+=S+1; continue; }
@@ -45,9 +45,9 @@ exit:
 	return pos*sizeof(WORD);
 }
 
-void SaveDATA(IWriter &fs, vector<vecW> &C)
+void SaveDATA(IWriter &fs, xr_vector<vecW> &C)
 {
-	for (vector<vecW>::iterator it=C.begin(); it!=C.end(); it++)
+	for (xr_vector<vecW>::iterator it=C.begin(); it!=C.end(); it++)
 	{
 		fs.Wword(it->size());
 		fs.write(it->begin(),it->size()*sizeof(WORD));
@@ -139,11 +139,11 @@ void CBuild::BuildRelevance(IWriter &fs)
 	fs.close_chunk	();
 
 	// Build Visibility
-	static vector< DWORD >		slots;
-	static vector< vecW >		vis_nodes;
-	static vector< vecW >		vis_lights;
-	static vector< vecW >		vis_glows;
-	static vector< vecW >		vis_occluders;
+	static xr_vector< DWORD >		slots;
+	static xr_vector< vecW >		vis_nodes;
+	static xr_vector< vecW >		vis_lights;
+	static xr_vector< vecW >		vis_glows;
+	static xr_vector< vecW >		vis_occluders;
 	static vecW					rel_set;
 	static vecW					unroll;
 

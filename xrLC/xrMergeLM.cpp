@@ -11,13 +11,13 @@ IC bool cmp_defl(CDeflector *p1, CDeflector *p2)
 	return C.distance_to_sqr(p1->Sphere.P) < C.distance_to_sqr(p1->Sphere.P);
 }
 
-typedef vector<_rect>	vecR;
+typedef xr_vector<_rect>	vecR;
 typedef vecR::iterator	vecRIT;
 
-typedef vector<_point>	vecP;
+typedef xr_vector<_point>	vecP;
 typedef vecP::iterator	vecPIT;
 
-typedef vector<int>		vecI;
+typedef xr_vector<int>		vecI;
 typedef vecI::iterator	vecIIT;
 
 // Data in

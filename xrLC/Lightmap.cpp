@@ -9,7 +9,7 @@
 #include "xrDXTC.h"
 #include "xrImage_Filter.h"
 
-vector<CLightmap*>		g_lightmaps;
+xr_vector<CLightmap*>		g_lightmaps;
 
 extern BOOL ApplyBorders(b_texture &lm, u32 ref);
 
@@ -40,7 +40,7 @@ VOID CLightmap::Capture		(CDeflector *D, int b_u, int b_v, int s_u, int s_v, BOO
 	}
 	
 	// Addressing
-	vector<UVtri>		tris;
+	xr_vector<UVtri>		tris;
 	D->RemapUV			(tris,b_u+BORDER,b_v+BORDER,s_u-2*BORDER,s_v-2*BORDER,lmap_size,lmap_size,bRotated);
 	
 	// Capture faces and setup their coords

@@ -5,7 +5,7 @@
 // hemi
 struct		hemi_data
 {
-	vector<R_Light>*	dest;
+	xr_vector<R_Light>*	dest;
 	R_Light				T;
 };
 void		__stdcall	hemi_callback(float x, float y, float z, float E, LPVOID P)
@@ -40,7 +40,7 @@ void CBuild::SoftenLights()
 		RL.energy				=	L->diffuse.magnitude_rgb();
 		
 		// select destination container
-		vector<R_Light>* dest	=	0;
+		xr_vector<R_Light>* dest	=	0;
 		if (L->flags.bProcedural)	{
 			// one of the procedural lights
 			lights.push_back		( b_LightLayer() );

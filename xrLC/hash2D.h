@@ -3,7 +3,7 @@
 template <class T, DWORD s_X, DWORD s_Y>
 class hash2D 
 {
-	vector<T>*	table[s_Y][s_X];
+	xr_vector<T>*	table[s_Y][s_X];
 	Fbox2		bounds;
 	Fvector2	size;
 public:
@@ -14,7 +14,7 @@ public:
 
 		for (DWORD y=0; y<s_Y; y++)
 			for (DWORD x=0; x<s_Y; x++)
-				table[y][x]	= xr_new<vector<T> > ();
+				table[y][x]	= xr_new<xr_vector<T> > ();
 	}
 	~hash2D()
 	{
@@ -49,7 +49,7 @@ public:
 			for (int x=x1; x<=x2; x++)
 				table[y][x]->push_back(value);
 	};
-	vector<T>&	query		(float x, float y)
+	xr_vector<T>&	query		(float x, float y)
 	{
 		int _x	= iFloor(float(s_X)*(x-bounds.min.x)/size.x); clamp(_x,0,int(s_X-1));
 		int _y	= iFloor(float(s_Y)*(y-bounds.min.y)/size.y); clamp(_y,0,int(s_Y-1));

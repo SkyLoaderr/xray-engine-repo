@@ -130,7 +130,7 @@ void CSector::Validate()
 void CSector::Save(IWriter &fs)
 {
 	// Root
-	vector<OGF_Base *>::iterator F = find(g_tree.begin(),g_tree.end(),TreeRoot);
+	xr_vector<OGF_Base *>::iterator F = find(g_tree.begin(),g_tree.end(),TreeRoot);
 	R_ASSERT(F!=g_tree.end());
 	DWORD ID = F-g_tree.begin();
 	fs.w_chunk(fsP_Root,&ID,sizeof(DWORD));
