@@ -27,6 +27,12 @@ public:
 
 	IC bool			_box		(const Fvector& bCenter, const Fvector& bExtents, Fvector& coord)
 	{
+		Fbox		BB;
+		BB.min.sub	(bCenter,bExtents);
+		BB.max.add	(bCenter,bExtents);
+        return 		!!BB.Pick2(rC,rD,coord);
+		
+		/*
 		BOOL		Inside = TRUE;
 		Fvector		MaxT,bMin,bMax;
 		MaxT.set	(-1.f,-1.f,-1.f);
@@ -92,6 +98,7 @@ public:
 			return false;
 #endif
 		}
+		*/
 	}
 	
 	IC bool			_tri		(Fvector** p, float& u, float& v, float& range)

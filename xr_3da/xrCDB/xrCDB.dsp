@@ -251,6 +251,11 @@ SOURCE=.\vector.h
 # PROP Default_Filter ""
 # Begin Source File
 
+SOURCE=.\cl_raypick.cpp
+# PROP Exclude_From_Build 1
+# End Source File
+# Begin Source File
+
 SOURCE=.\StdAfx.cpp
 # ADD CPP /Yc"stdafx.h"
 # End Source File
