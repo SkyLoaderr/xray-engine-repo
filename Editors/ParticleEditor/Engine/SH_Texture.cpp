@@ -91,6 +91,7 @@ void CTexture::Load()
 		return;
 	}
 
+	// Log							("- loding texture: ",*cName);
 	// Check for AVI
 	string256 fn;
 	if (FS.exist(fn,"$game_textures$",*cName,".avi")){
