@@ -121,8 +121,7 @@ void CBuild::xrPhase_Subdivide()
 		{
 			Progress(1.f - float(it)/float(g_vertices.size()));
 			
-			Vertex* V = g_vertices[it];
-			if (V && V->adjacent.empty())	_DELETE			(V);
+			if (g_vertices[it] && g_vertices[it]->adjacent.empty())	_DELETE	(g_vertices[it]);
 		}
 		Msg("Removing references...");
 		vecVertexIt	_end	= std::remove	(g_vertices.begin(),g_vertices.end(),(Vertex*)0);
