@@ -156,7 +156,11 @@ void CCharacterPhysicsSupport::in_shedule_Update(u32 /**DT/**/)
 
 void CCharacterPhysicsSupport::in_Hit(float /**P/**/, Fvector &dir, CObject * /**who/**/,s16 element,Fvector p_in_object_space, float impulse,bool is_killing)
 {
-	if(!m_pPhysicsShell&&is_killing)ActivateShell();
+	if(!m_pPhysicsShell&&is_killing)
+	{
+		ActivateShell();
+		impulse*=skel_fatal_impulse_factor;
+	}
 	if(!(m_pPhysicsShell&&m_pPhysicsShell->bActive))
 	{
 		m_saved_impulse=impulse*skel_fatal_impulse_factor;
