@@ -30,8 +30,22 @@ void CSheduler::Destroy			()
 			it	--;
 		}
 	}
-
-	R_ASSERT			(Items.empty()); 
+	
+	if (!Items.empty())
+	{
+		string1024	_objects; _objects[0]=0;
+		string64	_hex;
+		for (u32 it=0; it<Items.size(); it++)
+		{
+			CObject*	O	= dynamic_cast<CObject*> (Items[it].Object);
+			if (O)			strconcat(_objects,*O->cName(),":",*O->cNameSect(),",");
+			else			{ 
+				sprintf		(_hex,"%X",size_t(Items[it].Object));
+				strconcat	(_objects,"unknown:",_hex,",");
+			}
+		}
+		Debug.fatal		("Sheduler work-list is not empty\n%s",_objects);
+	}
 	DeleteFiber			(fiber_thread);
 }
 

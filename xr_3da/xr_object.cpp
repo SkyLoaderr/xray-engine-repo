@@ -45,7 +45,18 @@ void CObject::cNameVisual_set	(ref_str N)
 }
 
 // flagging
-void CObject::setEnabled		(BOOL _enabled)
+void CObject::processing_activate	()
+{
+	VERIFY3	(255!= Props.bActiveCounter, "Invalid sequence of processing enable/disable calls: overflow",*cName());
+	Props.bActiveCounter			++;
+}
+void CObject::processing_deactivate	()
+{
+	VERIFY3	(0	!= Props.bActiveCounter, "Invalid sequence of processing enable/disable calls: underflow",*cName());
+	Props.bActiveCounter			--;
+}
+
+void CObject::setEnabled			(BOOL _enabled)
 {
 	if (_enabled)
 	{
@@ -58,8 +69,7 @@ void CObject::setEnabled		(BOOL _enabled)
 		spatial.type							&=	~STYPE_COLLIDEABLE;
 	}
 }
-
-void CObject::setVisible		(BOOL _visible)
+void CObject::setVisible			(BOOL _visible)
 {
 	if (_visible)				// Parent should control object visibility itself (??????)
 	{

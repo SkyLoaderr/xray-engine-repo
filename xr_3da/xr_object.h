@@ -39,6 +39,7 @@ public:
 		struct 
 		{
 			u32	net_ID			:	16;
+			u32	bActiveCounter	:	8;
 			u32	bEnabled		:	1;
 			u32	bVisible		:	1;
 			u32	bDestroy		:	1;
@@ -120,6 +121,10 @@ public:
 	void								cNameVisual_set		(ref_str N);
 	
 	// Properties
+	void								processing_activate		();				// request	to enable	UpdateCL
+	void								processing_deactivate	();				// request	to disable	UpdateCL
+	bool								processing_enabled		()				{ return 0!=Props.bActiveCounter;	}
+
 	void								setVisible			(BOOL _visible);
 	IC BOOL								getVisible			()			const	{ return Props.bVisible;			}
 	void								setEnabled			(BOOL _enabled);
