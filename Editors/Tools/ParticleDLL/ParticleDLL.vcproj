@@ -44,13 +44,13 @@
 				Name="VCLinkerTool"
 				AdditionalOptions="/MACHINE:I386"
 				AdditionalDependencies="odbc32.lib odbccp32.lib"
-				OutputFile="x:\ParticleDLL.dll"
+				OutputFile="$(OutDir)\ParticleDLL.dll"
 				LinkIncremental="1"
 				SuppressStartupBanner="TRUE"
 				GenerateDebugInformation="TRUE"
-				ProgramDatabaseFile=".\Release/ParticleDLL.pdb"
+				ProgramDatabaseFile="$(OutDir)\ParticleDLL.pdb"
 				SubSystem="2"
-				ImportLibrary=".\Release/ParticleDLL.lib"/>
+				ImportLibrary="$(OutDir)\ParticleDLL.lib"/>
 			<Tool
 				Name="VCMIDLTool"
 				PreprocessorDefinitions="NDEBUG"
@@ -139,6 +139,12 @@
 			Filter="">
 			<File
 				RelativePath="StdAfx.cpp">
+				<FileConfiguration
+					Name="Release|Win32">
+					<Tool
+						Name="VCCLCompilerTool"
+						UsePrecompiledHeader="1"/>
+				</FileConfiguration>
 				<FileConfiguration
 					Name="Debug|Win32">
 					<Tool

@@ -696,11 +696,10 @@ PARTICLEDLL_API void pSetActionListParenting(int action_list_num, const Fmatrix&
 	if(pa == NULL)
 		return; // ERROR
 
-	int num_act = pa->count-1;
-	PAHeader *action= pa+1;
+	int num_act = pa->count-1; pa++;
 
 	// Step through all the actions in the action list.
-	for(int act = 0; act < num_act; act++, action++)
+	for(int act = 0; act < num_act; act++, pa++)
 	{
 		if (!pa->flags.is(ParticleAction::ALLOW_PARENT)) continue;
 		switch(pa->type)
