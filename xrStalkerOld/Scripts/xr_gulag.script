@@ -365,7 +365,7 @@ function checkNpc(npc_community, gulag_type)
 	   gulag_type == "rest" or
 	   gulag_type == "search"
 	then
-		return true
+		return npc_community ~= "military"
 	end
 
 	if gulag_type == "gar_maniac" then
