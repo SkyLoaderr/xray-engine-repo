@@ -360,6 +360,7 @@ void CRender::add_leafs_Static(IRender_Visual *pVisual)
 			}
 		}
 		return;
+		/*
 	case MT_TREE_PM:
 	case MT_TREE_ST:
 		{
@@ -370,10 +371,11 @@ void CRender::add_leafs_Static(IRender_Visual *pVisual)
 			r_dsgraph_insert_dynamic	(pVisual,pV->vis.sphere.P);
 		}
 		return;
+		*/
 	default:
 		{
 			// General type of visual
-			r_dsgraph_insert_static(pVisual);
+			r_dsgraph_insert_static		(pVisual);
 		}
 		return;
 	}
@@ -532,6 +534,7 @@ void CRender::add_Static(IRender_Visual *pVisual, u32 planes)
 			}
 		}
 		break;
+		/*
 	case MT_TREE_ST:
 	case MT_TREE_PM:
 		{
@@ -542,6 +545,7 @@ void CRender::add_Static(IRender_Visual *pVisual, u32 planes)
 			r_dsgraph_insert_dynamic	(pVisual,pV->vis.sphere.P);
 		}
 		return;
+		*/
 	default:
 		{
 			// General type of visual
