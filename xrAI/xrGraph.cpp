@@ -173,7 +173,7 @@ u32 dwfErasePoints()
 	u32 dwPointsWONodes = 0, dwTemp = 0;
 	Progress(0.0f);
 	for (int i=0; i<(int)tpaGraph.size(); 	Progress(float(++i)/tpaGraph.size()))
-		if (tpaGraph[i].tNodeID == u32(-1)) {
+		if (int(tpaGraph[i].tNodeID) <= 0) {
 			Msg("Point %3d [%7.2f,%7.2f,%7.2f] has no corresponding node",i + dwPointsWONodes++,tpaGraph[i].tLocalPoint.x,tpaGraph[i].tLocalPoint.y,tpaGraph[i].tLocalPoint.z);
 			tpaGraph.erase(tpaGraph.begin() + i--);
 		}
