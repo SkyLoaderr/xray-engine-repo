@@ -16,13 +16,4 @@ extern "C" {
 	};
 };
 
-class ETOOLS_API CTestInterface{
-public:
-	virtual u32	Run()=0;
-};
-
-extern "C" {
-	ETOOLS_API CTestInterface* CreateTestClass();
-};
-
 #endif // EToolsH

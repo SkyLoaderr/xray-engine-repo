@@ -124,16 +124,3 @@ namespace ETOOLS{
 		return true;
 	}
 }
-
-class CTestImplementation: public CTestInterface{
-public:
-	virtual u32 Run()
-	{
-		return 32;
-	}
-};
-
-ETOOLS_API CTestInterface* CreateTestClass()
-{
-	return xr_new<CTestImplementation>();
-}
