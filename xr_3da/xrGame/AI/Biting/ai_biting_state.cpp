@@ -92,7 +92,6 @@ void CBitingRest::Run()
 		if (m_dwCurrentTime > m_dwLastPlanTime + m_dwReplanTime) Replanning();
 	}
 	
-
 	// FSM 2-го уровня
 	switch (m_tAction) {
 		case ACTION_WALK:		// обход точек графа
@@ -126,24 +125,25 @@ void CBitingRest::Replanning()
 
 	m_dwLastPlanTime = m_dwCurrentTime;	
 	u32		rand_val = ::Random.randI(100);
-	u32		dwMinRand = 0, dwMaxRand = 0;
-
-	if (rand_val < 50) {	
+	u32		cur_val;
+	u32		dwMinRand, dwMaxRand;
+	
+	if (rand_val < (cur_val = pMonster->m_dwProbRestWalkFree)) {	
 		m_tAction = ACTION_WALK;
 		// Построить путь обхода точек графа
 		pMonster->vfUpdateDetourPoint();	
 		pMonster->AI_Path.DestNode	= getAI().m_tpaGraph[pMonster->m_tNextGP].tNodeID;
 
-		dwMinRand = 3000;
-		dwMaxRand = 5000;
+		dwMinRand = pMonster->m_timeFreeWalkMin;
+		dwMaxRand = pMonster->m_timeFreeWalkMax;
 
-	} else if (rand_val < 60) {	
+	} else if (rand_val < (cur_val = cur_val + pMonster->m_dwProbRestStandIdle)) {	
 		m_tAction = ACTION_STAND;
 
-		dwMinRand = 3000;
-		dwMaxRand = 5000;
+		dwMinRand = pMonster->m_timeStandIdleMin;
+		dwMaxRand = pMonster->m_timeStandIdleMax;
 
-	} else if (rand_val < 70) {	
+	} else if (rand_val < (cur_val = cur_val + pMonster->m_dwProbRestLieIdle)) {	
 		m_tAction = ACTION_LIE;
 		// проверить лежит уже?
 		if (pMonster->m_tAnim != eMotionLieIdle) {
@@ -151,8 +151,8 @@ void CBitingRest::Replanning()
 			pMonster->Motion.m_tSeq.Switch();
 		}
 
-		dwMinRand = 5000;
-		dwMaxRand = 7000;
+		dwMinRand = pMonster->m_timeLieIdleMin;
+		dwMaxRand = pMonster->m_timeLieIdleMax;
 
 	} else  {	
 		m_tAction = ACTION_TURN;

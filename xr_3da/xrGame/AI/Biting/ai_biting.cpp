@@ -124,7 +124,19 @@ void CAI_Biting::Load(LPCSTR section)
 	m_ftrAttackFastRSpeed2			= pSettings->r_float(section,"AttackFastRSpeed2");
 	m_ftrScaredRSpeed				= pSettings->r_float(section,"ScaredRSpeed");
 
+	m_timeLieIdleMin				= pSettings->r_u32   (section,"LieIdleTimeMin");
+	m_timeLieIdleMax				= pSettings->r_u32   (section,"LieIdleTimeMax");
+	m_timeStandIdleMin				= pSettings->r_u32   (section,"StandIdleTimeMin");
+	m_timeStandIdleMax				= pSettings->r_u32   (section,"StandIdleTimeMax");
+	m_timeFreeWalkMin				= pSettings->r_u32   (section,"FreeWalkTimeMin");
+	m_timeFreeWalkMax				= pSettings->r_u32   (section,"FreeWalkTimeMax");
 
+	m_dwProbRestWalkFree			= pSettings->r_u32   (section,"ProbRestWalkFree");
+	m_dwProbRestStandIdle			= pSettings->r_u32   (section,"ProbRestStandIdle");
+	m_dwProbRestLieIdle				= pSettings->r_u32   (section,"ProbRestLieIdle");
+	m_dwProbRestTurnLeft			= pSettings->r_u32   (section,"ProbRestTurnLeft");
+
+	R_ASSERT2 ((m_dwProbRestWalkFree + m_dwProbRestStandIdle + m_dwProbRestLieIdle + m_dwProbRestTurnLeft) == 100, "Probability sum isn't 1");
 }
 
 BOOL CAI_Biting::net_Spawn (LPVOID DC) 

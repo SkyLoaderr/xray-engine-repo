@@ -81,7 +81,7 @@ void CAI_Biting::SelectAnimation(const Fvector &_view, const Fvector &_move, flo
 		if (!m_tpCurAnim && m_bActionFinished) {
 
 			int i1, i2, i3;
-			i1 = i2 = i3 = 0;			// comment bug protection ;)
+			i1 = i2 = i3 = 0;			// bug protection ;) todo: find out the reason
 			MotionToAnim(m_tAnim,i1,i2,i3);
 			if (i3 == -1) {
 				i3 = ::Random.randI((int)m_tAnimations.A[i1].A[i2].A.size());

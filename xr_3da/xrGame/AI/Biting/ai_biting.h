@@ -175,6 +175,7 @@ public:
 	SEnemy					m_tEnemy;				// Current frame enemy 
 	SEnemy					m_tEnemyPrevFrame;		// Previous frame enemy 
 
+	// External Values
 	// float motion factors
 	float					m_ftrStandTurnRSpeed;
 	float					m_ftrWalkSpeed;
@@ -190,4 +191,17 @@ public:
 	float 					m_ftrAttackFastRSpeed;
 	float 					m_ftrAttackFastRSpeed2;
 	float 					m_ftrScaredRSpeed;	
+
+	TTime					m_timeLieIdleMin;
+	TTime					m_timeLieIdleMax;
+	TTime					m_timeStandIdleMin;
+	TTime					m_timeStandIdleMax;
+	TTime					m_timeFreeWalkMin;
+	TTime					m_timeFreeWalkMax;
+
+	u32						m_dwProbRestWalkFree;
+	u32						m_dwProbRestStandIdle;
+	u32						m_dwProbRestLieIdle;
+	u32						m_dwProbRestTurnLeft;
+
 };

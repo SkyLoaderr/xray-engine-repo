@@ -32,6 +32,7 @@ enum {
 	GE_DESTROY,					// authorative client request for entity-destroy
 
 	GE_BUY,
+	GE_SELL,
 
 	GE_WPN_AMMO_ADD,
 	GE_WPN_STATE_CHANGE,

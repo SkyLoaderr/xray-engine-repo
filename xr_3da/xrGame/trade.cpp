@@ -9,6 +9,8 @@
 
 TradeFactors CTrade::m_tTradeFactors;
 
+
+
 //////////////////////////////////////////////////////////////////////////////////////////
 // CTrade class //////////////////////////////////////////////////////////////////////////
 CTrade::CTrade(CInventoryOwner	*p_io) 
@@ -224,17 +226,15 @@ void CTrade::ShowItems()
 		}
 	}
 
-//	for (PSPIItem it = pThis.inv_owner->m_inventory.m_all.begin(); it != pThis.inv_owner->m_inventory.m_all.end(); it ++, i++) {
-//		Msg("--TRADE:: [%s]: %i. %s ($%i)",pThis.base->cName(),i,(*it)->Name(),(int)(((float) (*it)->Cost()) * factor ));
-//	}
-
 	string128	CurName;
 	u32			num = 0;
 	u32			i = 0;
 	u32			l_dwCost = 0;
 	CurName[0]	= 0;
-	PSPIItem	B = pThis.inv_owner->m_inventory.m_all.begin(), I = B;
-	PSPIItem	E = pThis.inv_owner->m_inventory.m_all.end();
+
+	GetTradeInv(pThisType)
+	PSPIItem	B = GetTradeInv(pThis)->m_all.begin(), I = B;
+	PSPIItem	E = GetTradeInv(pThis)->m_all.end();
 
 	for ( ; I != E; I++) {
 		if (strcmp(CurName, (*I)->Name()) != 0) {
@@ -252,8 +252,6 @@ void CTrade::ShowItems()
 	// Вывести последний item
 	if (B != E) 
 		Msg("--TRADE:: [%s]: %i. %s ($%i) /%i items/ ",pThis.base->cName(),++i,CurName,l_dwCost, num);
-		
-////
 	
 }
 
@@ -277,7 +275,7 @@ void CTrade::ShowArtifactPrices()
 		ARTEFACT_TRADER_ORDER_IT	ii = l_pTrader->m_tpOrderedArtefacts.begin();
 		ARTEFACT_TRADER_ORDER_IT	ee = l_pTrader->m_tpOrderedArtefacts.end();
 		for ( ; ii != ee; ii++) {
-			u32						l_dwAlreadyPurchased = pThis.inv_owner->m_inventory.dwfGetSameItemCount((*ii).m_caSection);
+			u32						l_dwAlreadyPurchased = GetTradeInv(pThis)->dwfGetSameItemCount((*ii).m_caSection);
 			R_ASSERT				(l_dwAlreadyPurchased <= (*ii).m_dwTotalCount);
 			Msg						("-   Artefact %s (total %d items) :",pSettings->r_string((*ii).m_caSection,"inv_name"),(*ii).m_dwTotalCount - l_dwAlreadyPurchased);
 			ARTEFACT_ORDER_IT		iii = (*ii).m_tpOrders.begin();
@@ -320,55 +318,55 @@ void CTrade::SellItem(int id)
 		}
 	}
 	
+	// id - в списке, т.е. найти первый элемент из группы в списке
+	PSPIItem first_in_group_it;
+	for (PSPIItem  it = first_in_group_it = GetTradeInv(pThis)->m_all.begin(); it != GetTradeInv(pThis)->m_all.end(); it++) {
+		if ((it != first_in_group_it) && (strcmp((*first_in_group_it)->Name(), (*it)->Name()) != 0)) {
+			i++;
+			it = first_in_group_it;
+		}
 
-	for (PSPIItem it = pThis.inv_owner->m_inventory.m_all.begin(); it != pThis.inv_owner->m_inventory.m_all.end(); it++, i++) {
 		if (i == id) {
 			l_pIItem = (*it);
-			if((l_pIItem->m_weight + pPartner.inv_owner->m_inventory.TotalWeight() < pPartner.inv_owner->m_inventory.m_maxWeight) && (pPartner.inv_owner->m_inventory.m_all.find(l_pIItem) == pPartner.inv_owner->m_inventory.m_all.end()) && (pPartner.inv_owner->m_dwMoney >= (u32)(((float) (*it)->Cost()) * factor ) )) {
+			if((l_pIItem->m_weight + GetTradeInv(pPartner)->TotalWeight() < GetTradeInv(pPartner)->m_maxWeight) && (GetTradeInv(pPartner)->m_all.find(l_pIItem) == pPartner.inv_owner->m_inventory.m_all.end()) && (pPartner.inv_owner->m_dwMoney >= (u32)(((float) (*it)->Cost()) * factor ) )) {
 				
 				if (strcmp(l_pIItem->Name(),"Bolt") == 0) {
 					Msg("Cannot sell bolt!");
 					break;
 				}
-				
-//				if (pThis.type != TT_TRADER) {
-//					if (l_pIItem == l_pIItem->m_pInventory->ActiveItem()) {
-//						Msg("Cannot sell active weapon!");
-//						break;
-//					}
-//				}
-//
-//				// удалить у себя
-//				CInventory *inv = &pThis.inv_owner->m_inventory;
-//				inv->Drop(l_pIItem);
 
+				// выбросить у себя 
 				NET_Packet				P;
 				CGameObject				*O = dynamic_cast<CGameObject *>(pThis.inv_owner);
-				O->u_EventGen			(P,GE_OWNERSHIP_REJECT,O->ID());
+				O->u_EventGen			(P,GE_SELL,O->ID());
 				P.w_u16					(u16(l_pIItem->ID()));
 				O->u_EventSend			(P);
 
+				// сумма сделки учитывая ценовой коэффициент
+				u32	dwTransferMoney = (u32)(((float) (*it)->Cost()) * factor );
+
 				// добавить себе денег
-				pThis.inv_owner->m_dwMoney += (u32)(((float) (*it)->Cost()) * factor );
-				
-//				// добавить партнеру
-//				inv = &pPartner.inv_owner->m_inventory;
-//				if (!inv->Take(l_pIItem)) Msg("Item cannot be taken!");
+				pThis.inv_owner->m_dwMoney += dwTransferMoney;
 
-/////			l_pIItem->H_SetParent(dynamic_cast<CObject *>(pPartner.inv_owner));
-
+				// взять у партнера
 				O					= dynamic_cast<CGameObject *>(pPartner.inv_owner);
-				O->u_EventGen		(P,GE_OWNERSHIP_TAKE,O->ID());
+				O->u_EventGen		(P,GE_BUY,O->ID());
 				P.w_u16				(u16(l_pIItem->ID()));
 				O->u_EventSend		(P);
 
 				// уменьшить денег у партнера
-				pPartner.inv_owner->m_dwMoney -= (u32)(((float) (*it)->Cost()) * factor );
+				pPartner.inv_owner->m_dwMoney -= dwTransferMoney;
 				
 				Msg("--TRADE:: [%s]: Ok, item sold!",pThis.base->cName());
-
 			}
 			break;
 		}
 	}
+}
+
+CInventory *CTrade::GetTradeInv(SInventoryOwner owner)
+{
+	R_ASSERT(owner.type != TT_NONE);
+
+	return ((owner.type == TT_TRADER) ? (&owner.inv_owner->m_ammunition_depot) : (&owner.inv_owner->m_inventory));
 }

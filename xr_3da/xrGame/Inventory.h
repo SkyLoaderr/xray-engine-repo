@@ -118,7 +118,8 @@ public:
 	virtual ~CInventoryOwner();
 
 	CInventory	m_inventory;									// Инвентарь
-
+	CInventory	m_trade_storage;								// склад
+	
 	CTrade		*m_trade;										// торговля
 
 	// свойства

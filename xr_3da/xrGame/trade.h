@@ -70,5 +70,6 @@ private:
 	bool		SetPartner(CEntity *p);
 	void		RemovePartner();
 
-
+	// выбор инвентаря для торговли (если TRADER, то торговать через ammunition_depot)
+	CInventory *GetTradeInv(SInventoryOwner owner);				
 };
