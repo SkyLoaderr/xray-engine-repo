@@ -4,7 +4,7 @@
 #define LightAnimLibraryH
 //---------------------------------------------------------------------------
 
-class CLAItem{
+class ENGINE_API CLAItem{
 public:
     string64    cName;
     float   	fFPS;
@@ -30,7 +30,7 @@ public:
 };
 DEFINE_VECTOR(CLAItem*,LAItemVec,LAItemIt);
 
-class ELightAnimLibrary{
+class ENGINE_API ELightAnimLibrary{
     LPCSTR			GenerateName		(LPSTR name, LPCSTR source);
 public:
     LAItemVec       Items;
@@ -51,6 +51,6 @@ public:
     LAItemVec&		Objects				(){return Items;}
 };
 
-extern ELightAnimLibrary LALib;
+extern ENGINE_API ELightAnimLibrary LALib;
 
 #endif
