@@ -19,7 +19,7 @@ CAI_Space::CAI_Space	()
 
 	Device.seqDevCreate.Add		(this);
 	Device.seqDevDestroy.Add	(this);
-	OnDeviceDestroy				();
+	OnDeviceCreate				();
 }
 
 CAI_Space::~CAI_Space	()
