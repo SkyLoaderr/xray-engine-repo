@@ -186,7 +186,7 @@ BOOL CLevel::net_Client		( LPCSTR name_of_server )
 
 		// Spawn all other objects
 		FILE_NAME	fn_spawn;
-		if (FALSE && Engine.FS.Exist(fn_spawn, Path.Current, "level.spawn"))
+		if (Engine.FS.Exist(fn_spawn, Path.Current, "level.spawn"))
 		{
 			CStream*		SP	= Engine.FS.Open(fn_spawn);
 			NET_Packet		P;
