@@ -34,7 +34,7 @@ OPT:	precompute invisible list (visuals) for static lights at load time
 +FEATURE:	materials:
 +FEATURE:	anisotropic
 +FEATURE:	linear-fog
-particles/transparency
++FEATURE:	particles/transparency
 self-ilum
 volume-fog
 
