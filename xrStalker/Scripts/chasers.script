@@ -37,6 +37,8 @@ function main ()
     local scr_monster = nil                      
     local old_monster = 0
     
+    printf ("Chasers started")
+    
     while true do
           
           if scr_monster ~= nil and distance_between (scr_monster, actor) < 10 then
@@ -45,6 +47,7 @@ function main ()
              scr_monster = nil   
              wait (10000)
           end
+    printf ("Start find chasers")
           
           if scr_monster == nil then
              local distance = 1000000
@@ -57,6 +60,7 @@ function main ()
                     end   
                  end   
              end
+    printf ("End find chasers")
              if scr_monster ~= nil then
                 printf ("Attacker %s", scr_monster:name ())
                 scr_monster:script (true, chasers.script_name ())
