@@ -30,7 +30,22 @@ void	xrMemory::_initialize	()
 	}
 }
 
-//
+#ifdef __BORLANDC__
+// Borland doesn't support marked aligned allocs ???
+void*	xrMemory::mem_alloc		(size_t size)
+{
+	return	malloc	(size);
+}
+void	xrMemory::mem_free		(void* P)
+{
+	free			(P);
+}
+void*	xrMemory::mem_realloc	(void* P, size_t size)
+{	
+	return realloc 	(P,size); 
+}
+#else  
+// MSVC
 void*	xrMemory::mem_alloc		(size_t size)
 {
 	return	xr_aligned_malloc	(size,16);
@@ -43,6 +58,8 @@ void*	xrMemory::mem_realloc	(void* P, size_t size)
 {	
 	return xr_aligned_realloc	(P,size,16); 
 }
+#endif
+
 void	xrMemory::mem_compact	()
 {
 	RegFlushKey			( HKEY_CLASSES_ROOT );
@@ -91,7 +108,7 @@ u32		xrMemory::mem_usage		(u32* pBlocksUsed, u32* pBlocksFree)
 }
 
 // xr_strdup
-IC char*	xr_strdup	(const char* string)
+char*	xr_strdup	(const char* string)
 {	
 	VERIFY	(string);
 	u32		len			= u32(strlen(string))+1;
@@ -99,3 +116,4 @@ IC char*	xr_strdup	(const char* string)
 	Memory.mem_copy		(memory,string,len);
 	return	memory;
 }
+

@@ -20,6 +20,10 @@
 
 #define IS_2_POW_N(X)   (((X)&(X-1)) == 0)
 #define PTR_SZ          sizeof(void *)
+
+#ifdef __BORLANDC__
+	typedef _W64 unsigned int  uintptr_t;
+#endif
 /***
 *
 * |1|___6___|2|3|4|_________5__________|_6_|
@@ -79,7 +83,7 @@ void * __stdcall xr_aligned_malloc(
 *******************************************************************************/
 
 
-void * xr_aligned_offset_malloc(
+void * __stdcall xr_aligned_offset_malloc(
 	size_t size,
 	size_t align,
 	size_t offset
@@ -137,7 +141,7 @@ void * xr_aligned_offset_malloc(
 *
 *******************************************************************************/
 
-void * xr_aligned_realloc(
+void * __stdcall xr_aligned_realloc(
 									 void *memblock,
 									 size_t size,
 									 size_t alignment
@@ -173,7 +177,7 @@ void * xr_aligned_realloc(
 *
 *******************************************************************************/
 
-void * xr_aligned_offset_realloc(
+void * __stdcall xr_aligned_offset_realloc(
 	void *memblock,
 	size_t size,
 	size_t align,
@@ -283,7 +287,7 @@ void * xr_aligned_offset_realloc(
 *
 *******************************************************************************/
 
-void xr_aligned_free(void *memblock)
+void __stdcall xr_aligned_free(void *memblock)
 {
 	uintptr_t ptr;
 

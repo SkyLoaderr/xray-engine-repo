@@ -1,8 +1,6 @@
 // xrCore.cpp : Defines the entry point for the DLL application.
 //
 #include "stdafx.h"
-#pragma hdrstop
-
 #include "xrCore.h"
 
 #pragma comment(lib,"winmm.lib")

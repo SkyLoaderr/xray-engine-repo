@@ -33,7 +33,10 @@
 #define _WIN32_DCOM
 
 #include <windows.h>
-#include <windowsx.h>
+
+#ifndef __BORLANDC__
+	#include <windowsx.h>
+#endif
 
 // mmsystem.h
 #define MMNOSOUND
@@ -66,16 +69,18 @@
 #include <typeinfo.h>
 
 #ifdef __BORLANDC__
+	#define MODULE_NAME 	"xrCoreB.dll"
     #ifndef DEBUG
-    #pragma inline_depth	( 254 )
-    #pragma inline_recursion( on )
-    #pragma intrinsic		(abs, fabs, fmod, sin, cos, tan, asin, acos, atan, sqrt, exp, log, log10, strcpy, strcat)
-    #define __forceinline	inline
-    #define _inline			inline
-    #define __inline		inline
-    #define IC				inline
+    	#pragma inline_depth	( 254 )
+	    #pragma inline_recursion( on )
+	    #pragma intrinsic		(abs, fabs, fmod, sin, cos, tan, asin, acos, atan, sqrt, exp, log, log10, strcpy, strcat)
+	    #define __forceinline	inline
+	    #define _inline			inline
+	    #define __inline		inline
+	    #define IC				inline
     #else
-    #define IC				inline
+	    #define __forceinline	inline
+	    #define IC				inline
     #endif
     // function redefinition
     #define fabsf(a) fabs(a)
@@ -87,7 +92,6 @@
     #define atanf(a) atan(a)
     #define sqrtf(a) sqrt(a)
     #define expf(a) ::exp(a)
-    #define __forceinline __inline
     #define floorf floor
     #define atan2f atan2
     #define logf log
@@ -98,6 +102,7 @@
 	#define _RC_CHOP RC_CHOP
 	#define _RC_NEAR RC_NEAR
 #else
+	#define MODULE_NAME 	"xrCore.dll"
     #ifndef DEBUG
     #pragma inline_depth	( 254 )
     #pragma inline_recursion( on )
@@ -131,8 +136,6 @@ using namespace std;
 #pragma warning (disable : 4127 )		// conditional expression is constant
 #pragma warning (disable : 4324 )		// structure was padded due to __declspec(align())
 #pragma warning (disable : 4714 )		// 'function' marked as __forceinline not inlined
-
-//#define ALIGN(a) __declspec(align(a))
 
 // Our headers
 #ifdef XRCORE_EXPORTS

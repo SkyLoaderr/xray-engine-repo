@@ -39,7 +39,7 @@ namespace CPU {
 #endif
 
 #ifdef M_BORLAND
-	u64	__fastcall	GetCycleCount		(void);
+	XRCORE_API u64 __fastcall	GetCycleCount		(void);
 #endif
 };
 

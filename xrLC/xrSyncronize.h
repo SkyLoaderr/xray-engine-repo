@@ -1,3 +1,5 @@
+#ifndef xrSyncronizeH
+#define xrSyncronizeH
 #pragma once
 
 // Desc: Simple wrapper for critical section
@@ -30,3 +32,4 @@ public:
 		return TryEnterCriticalSection( &m_CritSec );
 	};
 };
+#endif

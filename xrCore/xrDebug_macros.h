@@ -1,3 +1,5 @@
+#ifndef xrDebug_macrosH
+#define xrDebug_macrosH
 #pragma once
 
 // ---==( Extended Debugging Support (R) )==---
@@ -40,3 +42,4 @@
 	" -------------------------------------------------\n" )
 #define todo( x )  message( __FILE__LINE__" TODO :   " #x "\n" ) 
 #define fixme( x )  message( __FILE__LINE__" FIXME:   " #x "\n" ) 
+#endif

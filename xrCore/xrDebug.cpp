@@ -1,10 +1,17 @@
 #include "StdAfx.h"
 #include "xrdebug.h"
 #include "resource.h"
-#include "dxerr9.h"
 #include "dbghelp.h"
 
-#pragma comment(lib,"dxerr9.lib")
+#ifdef __BORLANDC__
+	#include "dxerr8.h"
+	#pragma comment(lib,"dxerr8.lib")
+	static BOOL			bException	= TRUE;
+#else
+	#include "dxerr9.h"
+	#pragma comment(lib,"dxerr9.lib")
+	static BOOL			bException	= FALSE;
+#endif
 
 XRCORE_API	xrDebug		Debug;
 
@@ -12,7 +19,6 @@ XRCORE_API	xrDebug		Debug;
 static const char * dlgExpr		= NULL;
 static const char * dlgFile		= NULL;
 static char			dlgLine		[16];
-static BOOL			bException	= FALSE;
 
 static BOOL CALLBACK DialogProc	( HWND hw, UINT msg, WPARAM wp, LPARAM lp )
 {
@@ -66,7 +72,7 @@ void xrDebug::backend(const char* reason, const char *file, int line)
 	sprintf		(dlgLine,"%d",line);
 	INT_PTR res	= DialogBox
 		(
-		GetModuleHandle("xrCore.dll"),
+		GetModuleHandle(MODULE_NAME),
 		MAKEINTRESOURCE(IDD_STOP),
 		NULL,
 		DialogProc 
@@ -92,7 +98,11 @@ void xrDebug::error		(HRESULT hr, const char* expr, const char *file, int line)
 	string1024	buffer;
 	string1024	reason;
 
+#ifdef __BORLANDC__    
+	const char *desc	= DXGetErrorString8A		(hr);
+#else
 	const char *desc	= DXGetErrorDescription9	(hr);
+#endif
 	if (desc==0) 
 	{
 		FormatMessage	(FORMAT_MESSAGE_FROM_SYSTEM,0,hr,0,buffer,1024,0);
