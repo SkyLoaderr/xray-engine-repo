@@ -32,11 +32,13 @@ public:
 
 void CBuild::Light()
 {
+	/*
 	Phase	(
 		(string("Raytracing lightmaps (")+
 		string(g_params.m_bRadiosity?"Radiosity":"Direct") +
 		string(" lighting)...")).c_str()
 		);
+	*/
 
 	// Main process (4 threads)
 	const	DWORD			thNUM = 5;
