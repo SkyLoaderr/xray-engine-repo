@@ -81,7 +81,7 @@ public:
 	ref_smem<T>&		operator=	(ref_smem<T> const &rhs)		{	_set(rhs);	return (ref_smem<T>&)*this;						}
 	T*					operator*	() const						{	return p_?p_->value:0;										}
 	bool				operator!	() const						{	return p_ == 0;												}
-	T&					operator[]	(size_t id)						{	return p_->value[id];										}
+	T&					operator[]	(size_t id)						{	return ((T*)(p_->value))[id];								}
 
 	// misc func
 	u32					size		()								{	if (0==p_) return 0; else return p_->dwLength/sizeof(T);	}
