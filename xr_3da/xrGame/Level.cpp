@@ -531,7 +531,8 @@ u8 CLevel::GetDayTime()
 	u32 dummy32;
 	u32 hours;
 	GetGameDateTime(dummy32, dummy32, dummy32, hours, dummy32, dummy32, dummy32);
-	return hours; 
+	VERIFY	(hours<256);
+	return	u8(hours); 
 }
 float CLevel::GetGameDayTimeSec()
 {
