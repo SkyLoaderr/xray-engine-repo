@@ -14,6 +14,6 @@
 	</cntd_frame_line>
 
 	<!-- CONTACT LIST -->
-	<list x="20" y="80" width="390" height="460" item_height = "74"></list>
+	<list x="20" y="80" width="430" height="400" item_height = "74"></list>
 
 </window>
