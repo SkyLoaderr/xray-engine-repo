@@ -436,6 +436,18 @@ void CInventory::Clear()
 	m_belt.clear();
 }
 
+u32 CInventory::dwfGetSameItemCount(LPCSTR caSection)
+{
+	u32			l_dwCount = 0;
+	TIItemList	&l_list = m_ruck;
+	for(PPIItem l_it = l_list.begin(); l_it != l_list.end(); l_it++) {
+		PIItem	l_pIItem = *l_it;
+		if (!strcmp(l_pIItem->cNameSect(), caSection))
+			l_dwCount++;
+	}
+	return		(l_dwCount);
+}
+
 // CInventorySlot class //////////////////////////////////////////////////////////////////////////
 
 CInventorySlot::CInventorySlot() {

@@ -239,11 +239,18 @@ void CTrade::ShowArtifactPrices()
 		ARTEFACT_TRADER_ORDER_IT	ii = l_pTrader->m_tpOrderedArtefacts.begin();
 		ARTEFACT_TRADER_ORDER_IT	ee = l_pTrader->m_tpOrderedArtefacts.end();
 		for ( ; ii != ee; ii++) {
-			Msg						("-   Artefact %s (total %d items) :",pSettings->r_string((*ii).m_caSection,"inv_name"),(*ii).m_dwTotalCount);
+			u32						l_dwAlreadyPurchased = pThis.inv_owner->m_inventory.dwfGetSameItemCount((*ii).m_caSection);
+			R_ASSERT				(l_dwAlreadyPurchased <= (*ii).m_dwTotalCount);
+			Msg						("-   Artefact %s (total %d items) :",pSettings->r_string((*ii).m_caSection,"inv_name"),(*ii).m_dwTotalCount - l_dwAlreadyPurchased);
 			ARTEFACT_ORDER_IT		iii = (*ii).m_tpOrders.begin();
 			ARTEFACT_ORDER_IT		eee = (*ii).m_tpOrders.end();
 			for ( ; iii != eee; iii++)
-				Msg					("-       %d items for $%d for organization %s",(*iii).m_dwCount,(*iii).m_dwPrice,(*iii).m_caSection);
+				if (l_dwAlreadyPurchased < (*iii).m_dwCount) {
+					Msg				("-       %d items for $%d for organization %s",(*iii).m_dwCount - l_dwAlreadyPurchased,(*iii).m_dwPrice,(*iii).m_caSection);
+					l_dwAlreadyPurchased = 0;
+				}
+				else
+					l_dwAlreadyPurchased -= (*iii).m_dwCount;
 		}
 	}
 	else 
