@@ -12,6 +12,7 @@ enum
 enum
 {
 	GAME_PLAYER_FLAG_LOCAL		= (1<<0),
+	GAME_PLAYER_FLAG_READY		= (1<<1),
 
 	GAME_PLAYER_FLAG_FORCEDWORD	= DWORD(-1)
 };
@@ -48,6 +49,7 @@ public:
 	s32								start_time;
 	s32								fraglimit;
 	s32								timelimit;
+	u16								phase;
 	vector<game_TeamState>			teams;
 public:
 	game_GameState();

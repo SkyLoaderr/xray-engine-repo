@@ -26,13 +26,15 @@ public:
 	virtual		s32					get_option_i			(LPCSTR lst, LPCSTR name, s32 def = 0);
 
 	// Events
-	virtual		void				OnRoundStart			()								= 0;	// старт раунда
+	virtual		void				OnPlayerReady			(BOOL bReady)					{};
+	virtual		void				OnPlayerKillPlayer		(u32 id_killer, u32 id_killed)	{};
+	virtual		BOOL				OnTargetTouched			(u32 id_who, u32 eid_target)	{};		// TRUE=allow ownership, FALSE=denie
+
+	virtual		void				OnRoundStart			()								{};		// старт раунда
 	virtual		void				OnRoundEnd				(LPCSTR reason)					{};		// конец раунда
 
-	virtual		void				OnTeamScore				(u32 team)						= 0;	// команда выиграла
-	virtual		void				OnTeamsInDraw			()								= 0;	// ничья
-	virtual		BOOL				OnTargetTouched			(u32 id_who, u32 eid_target)	= 0;	// TRUE=allow ownership, FALSE=denie
-	virtual		void				OnPlayerKillPlayer		(u32 id_killer, u32 id_killed)	= 0;
+	virtual		void				OnTeamScore				(u32 team)						{};		// команда выиграла
+	virtual		void				OnTeamsInDraw			()								{};		// ничья
 
 	// Main
 	virtual		void				Update					()								= 0;

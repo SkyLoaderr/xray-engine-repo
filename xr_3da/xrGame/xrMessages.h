@@ -31,7 +31,9 @@ enum {
 	GE_DIE,						// 
 	GE_DESTROY,					// authorative client request for entity-destroy
 
-	GEG_ASSAULT_ACOMPLISHED,
+	GEG_PLAYER_READY,
+	GEG_ROUND_START,
+	GEG_ROUND_END
 };
 
 enum
@@ -56,6 +58,7 @@ enum
 /*
 M_SV_CONFIG_GAME
 {
+	game-specific
 }
 
 M_EVENT
