@@ -3,9 +3,11 @@ Microsoft Visual Studio Solution File, Format Version 9.00
 # Visual Studio 2005
 Project("{8BC9CEB8-8B4A-11D0-8D11-00A0C91BC942}") = "bge", "bge\bge.vcproj", "{86E121CC-DC44-4134-A11F-E20271A93EC2}"
 EndProject
+Project("{8BC9CEB8-8B4A-11D0-8D11-00A0C91BC942}") = "vo", "vo\vo.vcproj", "{0C3B03D9-92B5-4EF8-89F4-6187291F3192}"
+EndProject
 Global
 	GlobalSection(SourceCodeControl) = preSolution
-		SccNumberOfProjects = 2
+		SccNumberOfProjects = 3
 		SccProviderRegKey = Software\Microsoft\SourceSafe
 		SccLocalPath0 = .
 		CanCheckoutShared = true
@@ -14,6 +16,10 @@ Global
 		SccLocalPath1 = .
 		CanCheckoutShared = true
 		SccProjectFilePathRelativizedFromConnection1 = bge\\
+		SccProjectUniqueName2 = vo\\vo.vcproj
+		SccLocalPath2 = .
+		CanCheckoutShared = true
+		SccProjectFilePathRelativizedFromConnection2 = vo\\
 	EndGlobalSection
 	GlobalSection(SolutionConfigurationPlatforms) = preSolution
 		Debug|Win32 = Debug|Win32
@@ -24,6 +30,10 @@ Global
 		{86E121CC-DC44-4134-A11F-E20271A93EC2}.Debug|Win32.Build.0 = Debug|Win32
 		{86E121CC-DC44-4134-A11F-E20271A93EC2}.Release|Win32.ActiveCfg = Release|Win32
 		{86E121CC-DC44-4134-A11F-E20271A93EC2}.Release|Win32.Build.0 = Release|Win32
+		{0C3B03D9-92B5-4EF8-89F4-6187291F3192}.Debug|Win32.ActiveCfg = Debug|Win32
+		{0C3B03D9-92B5-4EF8-89F4-6187291F3192}.Debug|Win32.Build.0 = Debug|Win32
+		{0C3B03D9-92B5-4EF8-89F4-6187291F3192}.Release|Win32.ActiveCfg = Release|Win32
+		{0C3B03D9-92B5-4EF8-89F4-6187291F3192}.Release|Win32.Build.0 = Release|Win32
 	EndGlobalSection
 	GlobalSection(SolutionProperties) = preSolution
 		HideSolutionNode = FALSE

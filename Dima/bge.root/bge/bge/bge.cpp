@@ -10,7 +10,7 @@
 #include "hardware.h"
 #include "script.h"
 
-//#define TEST
+#define TEST
 
 #ifdef TEST
 #include "othello_board.h"
