@@ -18,11 +18,20 @@ u32		get_pool				(size_t size)
 void*	xrMemory::mem_alloc		(size_t size)
 {
 	stat_calls++;
-	if (!)
 
+	void* _ptr					= 0;
+	if (!mem_initialized)		
+	{
+		// generic
+		void*	_real			= xr_aligned_offset_malloc	(size,16,0x1);
+		_ptr					= (void*)(((u8*)_real)+1);
+		*acc_header(_ptr)		= mem_generic;
+		return	_ptr;
+	}
+
+	//	accelerated
 	cs.Enter					();
 	u32	pool					= get_pool	(size);
-	void* _ptr					= 0;
 	if (mem_generic==pool)		
 	{
 		// generic

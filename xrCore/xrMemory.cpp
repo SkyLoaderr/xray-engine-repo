@@ -38,6 +38,7 @@ void	xrMemory::_initialize	()
 		mem_pools[pid]._initialize(element,sector,0x1);
 		element		+=	mem_pools_ebase;
 	}
+	mem_initialized	= TRUE;
 }
 
 void	xrMemory::mem_compact	()
