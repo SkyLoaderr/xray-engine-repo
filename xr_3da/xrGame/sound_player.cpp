@@ -112,11 +112,10 @@ void CSoundPlayer::update_playing_sounds()
 		if ((*I).m_sound->feedback)
 			(*I).m_sound->feedback->set_position(compute_sound_point(*I));
 		else
-			if (Level().timeServer() >= (*I).m_start_time) {
+			if (!(*I).started() && (Level().timeServer() >= (*I).m_start_time)) {
 				CObject						*object = dynamic_cast<CObject*>(this);
 				VERIFY						(object);
-				(*I).m_sound->play_at_pos	(object,compute_sound_point(*I));
-				(*I).m_start_time			= (*I).m_stop_time + 1;
+				(*I).play_at_pos			(object,compute_sound_point(*I));
 			}
 	}
 }
@@ -146,9 +145,7 @@ void CSoundPlayer::play				(u32 internal_type, u32 max_start_time, u32 min_start
 	VERIFY						(object);
 
 	Msg							("%6d : Playing new sound!",Level().timeServer());
-	if (Level().timeServer() >= m_playing_sounds.back().m_start_time) {
-		m_playing_sounds.back().m_sound->play_at_pos(object,compute_sound_point(m_playing_sounds.back()));
-		m_playing_sounds.back().m_start_time = m_playing_sounds.back().m_stop_time + 1;
-	}
+	if (Level().timeServer() >= m_playing_sounds.back().m_start_time)
+		m_playing_sounds.back().play_at_pos(object,compute_sound_point(m_playing_sounds.back()));
 }
 

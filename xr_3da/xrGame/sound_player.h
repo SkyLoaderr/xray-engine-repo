@@ -36,12 +36,29 @@ public:
 		ref_sound								*m_sound;
 		u32										m_start_time;
 		u32										m_stop_time;
+		bool									m_started;
+
+				CSoundSingle					()
+		{
+			m_started							= false;
+		}
 
 				void	destroy					()
 		{
 			VERIFY								(m_sound);
 			if (m_sound->feedback)
 				m_sound->stop					();
+		}
+
+				void	play_at_pos				(CObject *object, const Fvector &position)
+		{
+			m_sound->play_at_pos				(object,position);
+			m_started							= true;
+		}
+
+		IC		bool	started					() const
+		{
+			return								(m_started);
 		}
 	};
 
