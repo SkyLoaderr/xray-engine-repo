@@ -470,7 +470,7 @@ void CAI_Rat::AttackRun()
 	vfSetFire(false,Group);
 
 	if (!Level().AI.bfTooSmallAngle(r_torso_target.yaw, r_torso_current.yaw,PI_DIV_8) || m_bNoWay) {
-		m_fSpeed = .1f;
+		m_fSpeed = EPS_S;//.1f;
 		if (m_bNoWay) {
 			float fAngle = ::Random.randF(MIN_TURN_VALUE,MAX_TURN_VALUE);
 			r_torso_target.yaw = r_torso_current.yaw + fAngle;
@@ -514,6 +514,10 @@ void CAI_Rat::Retreat()
 
 	m_tGoalDir = m_tSpawnPosition;
 	
+	vfUpdateTime(m_fTimeUpdateDelta);
+	vfComputeNewPosition();
+	SetDirectionLook();
+
 	if (!Level().AI.bfTooSmallAngle(r_torso_target.yaw, r_torso_current.yaw,PI_DIV_8) || m_bNoWay) {
 		m_fSpeed = .1f;
 		if (m_bNoWay) {
@@ -523,8 +527,9 @@ void CAI_Rat::Retreat()
 			SWITCH_TO_NEW_STATE_THIS_UPDATE(aiRatTurn);
 		}
 	}
-	else 
+	else {
 		m_fSafeSpeed = m_fSpeed = m_fAttackSpeed;
+	}
 }
 
 void CAI_Rat::Pursuit()
