@@ -50,6 +50,7 @@ m_update_time=0.f;
 b_meet_control=false;
 b_jumping=false;
 m_contact_velocity=0.f;
+jump_up_velocity=6.f;
 }
 
 CPHCharacter::~CPHCharacter(void)
@@ -362,7 +363,8 @@ if(b_valide_wall_contact && (m_contact_count>1)&& b_clamb_jump)
 				const dReal* vel=dBodyGetLinearVel(m_body);
 				dReal amag =m_acceleration.magnitude();
 				if(amag<1.f)amag=1.f;
-				dBodySetLinearVel(m_body,vel[0]*JUMP_INCREASE_VELOCITY_RATE+m_acceleration.x/amag*0.2f,vel[1]+JUMP_UP_VELOCITY,vel[2]*JUMP_INCREASE_VELOCITY_RATE +m_acceleration.z/amag*0.2f);
+				//dBodySetLinearVel(m_body,vel[0]*JUMP_INCREASE_VELOCITY_RATE+m_acceleration.x/amag*0.2f,vel[1]+JUMP_UP_VELOCITY,vel[2]*JUMP_INCREASE_VELOCITY_RATE +m_acceleration.z/amag*0.2f);
+				dBodySetLinearVel(m_body,vel[0]*JUMP_INCREASE_VELOCITY_RATE+m_acceleration.x/amag*0.2f,vel[1]+jump_up_velocity,vel[2]*JUMP_INCREASE_VELOCITY_RATE +m_acceleration.z/amag*0.2f);
 				memcpy(m_jump_depart_position,dBodyGetPosition(m_body),sizeof(dVector3));
 				m_jump_accel=m_acceleration;
 				b_jump=false;

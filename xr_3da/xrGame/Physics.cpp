@@ -1333,11 +1333,11 @@ void CPHShell::PhDataUpdate(dReal step){
 				}
 /////////////////////////////////////////////////////////////////
 	
-			//	const dReal k_w=0.05f;
-			//	dBodyAddTorque(m_body,-rot[0]*k_w,-rot[1]*k_w,-rot[2]*k_w);
+				const dReal k_w=0.05f;
+				dBodyAddTorque(m_body,-rot[0]*k_w,-rot[1]*k_w,-rot[2]*k_w);
 	
-			//	const dReal k_l=1.8f;
-			//	dBodyAddForce(m_body,-pos[0]*k_l,-pos[1]*k_l,-pos[2]*k_l);			
+				const dReal k_l=1.8f;
+				dBodyAddForce(m_body,-pos[0]*k_l,-pos[1]*k_l,-pos[2]*k_l);			
 				
 				m_body_interpolation.UpdatePositions();
 				m_body_interpolation.UpdateRotations();

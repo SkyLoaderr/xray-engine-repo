@@ -109,6 +109,8 @@ void CActor::Load		(LPCSTR section )
 	m_fRunFactor		= pSettings->ReadFLOAT(section,"run_coef");
 	m_fCrouchFactor		= pSettings->ReadFLOAT(section,"crouch_coef");
 
+	ph_Movement.SetJumpUpVelocity(m_fJumpSpeed);
+
 	Weapons				= new CWeaponList(this);
 
 	// sounds

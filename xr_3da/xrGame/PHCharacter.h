@@ -38,6 +38,7 @@ dVector3 m_depart_position;
 dVector3 m_wall_contact_position;
 dVector3 m_ground_contact_position;
 dReal	m_jump_depart_hight;
+dReal jump_up_velocity;//=6.0f;//5.6f;
 Fvector* pvPosition;
 dReal m_mass;
 dReal m_max_velocity;
@@ -75,6 +76,7 @@ bool b_exist;
 float m_update_time;
 public:
 void		SetMaximumVelocity						(dReal vel){m_max_velocity=vel;}
+void		SetJupmUpVelocity								(dReal velocity){jump_up_velocity=velocity;}
 const Fvector&	Position									() {return m_position;}
 const Fvector&	Velocity									() {return m_velocity;}
 const float&	ContactVelocity								() {return m_contact_velocity;}
