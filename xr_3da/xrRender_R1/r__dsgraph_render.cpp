@@ -576,10 +576,12 @@ void	R_dsgraph_structure::r_dsgraph_render_R1_box	(IRender_Sector* _S, Fbox& BB,
 			{
 				// Renderable visual
 				ShaderElement* E	= V->hShader->E[sh]._get();
-				for (u32 pass=0; pass<E->passes.size(); pass++)
-				{
-					RCache.set_Element			(E,pass);
-					V->Render					(-1.f);
+				if (E) {
+					for (u32 pass=0; pass<E->passes.size(); pass++)
+					{
+						RCache.set_Element			(E,pass);
+						V->Render					(-1.f);
+					}
 				}
 			}
 			break;
