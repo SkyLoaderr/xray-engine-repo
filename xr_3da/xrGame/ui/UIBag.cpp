@@ -86,40 +86,23 @@ u8 CUIBag::GetItemIndex(CUIDragDropItemMP* pDDItem, u8 &sectionNum){
 	if (!pDDItem)
 		return returnID;
     
-	for (WPN_LISTS::const_iterator it = m_wpnSectStorage.begin(); it != m_wpnSectStorage.end(); ++it)
+	returnID = static_cast<u8>(pDDItem->GetPosInSectionsGroup());
+	sectionNum = static_cast<u8>(pDDItem->GetSectionGroupID());
+
+	// Проверяем на наличие приаттаченых аддонов к оружию
+	if (pDDItem->bAddonsAvailable)
 	{
-		WPN_SECT_NAMES::difference_type diff = std::distance(
-			(*it).begin(), 
-			std::find(
-						(*it).begin(), 
-						(*it).end(), 
-						pDDItem->GetSectionName()
-					)
-															);
-		if (diff < static_cast<WPN_SECT_NAMES::difference_type>((*it).size()))
+		u8	flags = 0;
+		for (int i = 0; i < 3; ++i)
 		{
-			returnID = static_cast<u8>(diff);
-
-			// Проверяем на наличие приаттаченых аддонов к оружию
-			if (pDDItem->bAddonsAvailable)
-			{
-				u8	flags = 0;
-				for (int i = 0; i < 3; ++i)
-				{
-					if (1 == pDDItem->m_AddonInfo[i].iAttachStatus)
-						flags |= 1;
-
-					flags = flags << 1;
-				}
-				flags = flags << 4;
-
-				// В результате старшие 3 бита являются флагами признаков аддонов:
-				// FF - Scope, FE - Silencer, FD - Grenade Launcher
-				returnID |= flags;
-			}
-			return returnID;
+			if (1 == pDDItem->m_AddonInfo[i].iAttachStatus)
+				flags |= 1;
+			flags = flags << 1;
 		}
-		++sectionNum;
+		flags = flags << 4;
+		// В результате старшие 3 бита являются флагами признаков аддонов:
+		// FF - Scope, FE - Silencer, FD - Grenade Launcher
+		returnID |= flags;
 	}
 	return returnID;
 }

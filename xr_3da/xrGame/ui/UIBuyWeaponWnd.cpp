@@ -1134,11 +1134,11 @@ void CUIBuyWeaponWnd::SectionToSlot(const char *sectionName, bool bRealRepresent
 
 void CUIBuyWeaponWnd::SectionToSlot(const u8 grpNum, u8 uIndexInSlot, bool bRealRepresentationSet)
 {
-	CUIDragDropItemMP* pDDItem = UIBagWnd.GetItemBySectoin(grpNum, uIndexInSlot);
-
 	// "Выкусываем" флаги аддонов
 	u8 uAddonFlags = GetWeaponAddonInfoByIndex(uIndexInSlot);
 	uIndexInSlot &= 0x1f; // 0x1f = 00011111;
+
+	CUIDragDropItemMP* pDDItem = UIBagWnd.GetItemBySectoin(grpNum, uIndexInSlot);
 
 	if (UIBagWnd.IsItemInBag(pDDItem))
 		if (UITopList[pDDItem->GetSlot()].GetDragDropItemsList().empty() || GRENADE_SLOT == pDDItem->GetSlot() || NO_ACTIVE_SLOT == pDDItem->GetSlot())
