@@ -17,7 +17,8 @@
 //=============================================================================
 CUINewsWnd::CUINewsWnd()
 {
-	
+	// Remove this for enable interactive behaviour of list
+	UIListWnd.ActivateList(false);
 }
 
 CUINewsWnd::~CUINewsWnd()

@@ -17,6 +17,7 @@
 
 #include "../actor.h"
 #include "../weapon.h"
+#include "../ai_alife_space.h"
 
 //для режима настройки HUD
 extern int				g_bHudAdjustMode;
@@ -29,7 +30,7 @@ public:
 	virtual ~CUIMainIngameWnd();
 
 	virtual void Init();
-	//virtual void SendMessage(CUIWindow *pWnd, s16 msg, void *pData);
+//	virtual void SendMessage(CUIWindow *pWnd, s16 msg, void *pData);
 	virtual void Draw();
 	virtual void Update();
 
@@ -92,8 +93,6 @@ protected:
 	// Добавлено для поддержки fadein/fadeout реалтаймовых подсказок
 	float				fuzzyShowInfo;
 	// Отображение подсказок при наведении прицела на объект
-	// Эта процедура почти полная копия куска процедуры CHUDCursor::Render().
-	// Возможно, необходимо сделать таки 1 процедуру отрисовки.
 	void RenderQuickInfos();
 
 	// ассоциативный массив с типсами. Выбор пал на map, так как заполнение произойдет 1 раз,
@@ -102,4 +101,26 @@ protected:
 
 	// для лога сообщений на экране устанавливаем время постепенного исчезновения надписи
 	int					m_iFade_mSec;
+	
+	//-----------------------------------------------------------------------------/
+	//	News related routines
+	//-----------------------------------------------------------------------------/
+
+	// Читаем заготовки стандартных собщений
+	void LoadNewsTemplates();
+
+	// Array of news templates
+	typedef std::map<u32, ref_str>	NewsTemplates;
+	NewsTemplates					m_NewsTemplates;
+
+	// Обработчик события получения новости
+	void OnNewsReceived(const ALife::SGameNews &newsItem);
+	// Проверяем не появились ли новые ньюсы
+	// Return:	true - новые новости есть
+	bool CheckForNewNews();
+
+	// Период проверки ньюсов в моллисекундах
+	static const int	NEWS_CHECK_INTERVAL = 1000;
+	ALife::_TIME_ID		m_iPrevTime;
+
 };

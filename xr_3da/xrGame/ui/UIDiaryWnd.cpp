@@ -88,10 +88,6 @@ void CUIDiaryWnd::SendMessage(CUIWindow* pWnd, s16 msg, void* pData)
 {
 	if (pWnd == &UITabControl && CUITabControl::TAB_CHANGED == msg)
 	{
-		// TEST!!!!
-		UINewsWnd.UIListWnd.AddInteractiveItem("Hello from Haiti! %SOSO% %Interactive element%");
-		UINewsWnd.UIListWnd.AddInteractiveItem("Hello from Haiti! %Test2% test %Ab%", 5, 0xffaa1230);
-		// END TEST!!!
 		m_pActiveSubdialog->Hide();
 
 		switch (UITabControl.GetActiveIndex())
@@ -113,28 +109,25 @@ void CUIDiaryWnd::SendMessage(CUIWindow* pWnd, s16 msg, void* pData)
 	else if (&UINewsWnd == pWnd && 
 		CUIInteractiveListItem::INTERACTIVE_ITEM_CLICK == msg)
 	{
-		// -- This is only for test purposes --
-		CUIString str;
-		u32 tmpi = *static_cast<u32*>(pData);
-		str.SetText("This message should not to appear");
+//		u32 tmpi = *static_cast<u32*>(pData);
 
-		CUIPdaWnd *pPda = dynamic_cast<CUIPdaWnd*>(GetMessageTarget());
-
-		R_ASSERT(pPda);
-
-		if (tmpi == 0)
-		{
-			str.SetText("SOSO pressed");
-			pPda->FocusOnMap(100, 0, 500);
-		}
-		else if (tmpi == 1)
-			str.SetText("jsd pressed");
-		else if (tmpi == 2)
-			str.SetText("Test2 PRESSED!!!!");
-		else if (tmpi == 3)
-			str.SetText("Ababalamaga OHAYO!");
-		//		UINewInfoWnd.UIListWnd.AddInteractiveItem(str);
-		// -- End <fortest> block --
+//		for (u32 i = 0; i < IDs.size(); ++i)
+//		{
+//			if (IDs[i] == tmpi)
+//				pPda->FocusOnMap(100, 0, 500);
+//		}
 	}
 	inherited::SendMessage(pWnd, msg, pData);
+}
+
+//////////////////////////////////////////////////////////////////////////
+
+void CUIDiaryWnd::AddNewsItem(const char *sData)
+{
+	CUIString			str;
+	str.SetText(sData);
+
+	UINewsWnd.UIListWnd.AddParsedItem(str, 4, 0xffffffff);
+
+	UINewsWnd.UIListWnd.AddItem("");
 }

@@ -135,3 +135,9 @@ void CUIPdaWnd::FocusOnMap(const int x, const int y, const int z)
 	ChangeActiveTab(CUIPdaWnd::TAB_MAP);
 }
 
+//////////////////////////////////////////////////////////////////////////
+
+void CUIPdaWnd::AddNewsItem(const char *sData)
+{
+	UIDiaryWnd.AddNewsItem(sData);
+}

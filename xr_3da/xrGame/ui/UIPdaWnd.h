@@ -45,6 +45,7 @@ public:
 	void ChangeActiveTab(E_PDA_TABS tabNewTab);
 	// Переключиться на карту и сфокусироваться на заданной точке
 	void FocusOnMap(const int x, const int y, const int z);
+	void AddNewsItem(const char *sData);
 
 protected:
 	// Бэкграунд

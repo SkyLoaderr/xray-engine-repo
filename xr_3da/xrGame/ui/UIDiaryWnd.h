@@ -28,6 +28,8 @@ public:
 
 	virtual void Init();
 	virtual void SendMessage(CUIWindow *pWnd, s16 msg, void* pData = NULL);
+	// Добавить новую новость
+	void AddNewsItem(const char *sData);
 private:
 	// Дочерние окна входящие в окно информации
 	CUINewsWnd		UINewsWnd;

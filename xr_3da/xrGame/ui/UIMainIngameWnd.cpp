@@ -19,6 +19,9 @@
 #include "UIInventoryUtilities.h"
 
 #include "../inventory.h"
+#include "../UIGameSP.h"
+#include "../ai_alife_registries.h"
+#include "../ai_alife.h"
 
 using namespace InventoryUtilities;
 
@@ -26,6 +29,7 @@ using namespace InventoryUtilities;
 //hud adjust mode
 int			g_bHudAdjustMode			= 0;
 float		g_fHudAdjustValue			= 0.0f;
+
 const u32	g_clWhite					= 0xffffffff;
 
 #define		RADIATION_ABSENT			0.25f
@@ -46,30 +50,30 @@ const u32	g_clWhite					= 0xffffffff;
 #define		C_ON_ENEMY					D3DCOLOR_XRGB(0xff,0,0)
 #define		C_DEFAULT					D3DCOLOR_XRGB(0xff,0xff,0xff)
 
-
 //-----------------------------------------------------------------------------/
 //  Textual constants
 //-----------------------------------------------------------------------------/
 const char * const PDA_INGAME_SINGLEPLAYER_CFG	= "ingame_msglog_sp.xml";
 const char * const PDA_INGAME_MULTIPLAYER_CFG	= "ingame_msglog_mp.xml";
+const char * const NEWS_TEMPLATES_CFG			= "news_templates.xml";
 
 //////////////////////////////////////////////////////////////////////
-// Construction/Destruction
-//////////////////////////////////////////////////////////////////////
+// Construction/Destruction//////////////////////////////////////////////////////////////////////
 
 CUIMainIngameWnd::CUIMainIngameWnd()
 {
-	m_pActor			= NULL;
-	m_pWeapon			= NULL;
+	m_pActor					= NULL;
+	m_pWeapon					= NULL;
 
-	m_dwMaxShowTime		= 20000;
-	m_dwMsgShowingTime	= 0;
+	m_dwMaxShowTime				= 20000;
+	m_dwMsgShowingTime			= 0;
 
-	m_bShowHudInfo		= true;
-	m_bShowHudCrosshair = false;
+	m_bShowHudInfo				= true;
+	m_bShowHudCrosshair			= false;
 	// Quick infos
-	fuzzyShowInfo		= 0.f;
-	m_iFade_mSec		= 0;
+	fuzzyShowInfo				= 0.f;
+	m_iFade_mSec				= 0;
+	m_iPrevTime					= 0;
 }
 
 CUIMainIngameWnd::~CUIMainIngameWnd()
@@ -184,6 +188,9 @@ void CUIMainIngameWnd::Init()
 		tmpTip.second	= uiXml.Read("tip", i, NULL);
 		m_strTips.insert(tmpTip);
 	}
+
+	// Загружаем заготовки собщений ньюсов
+	LoadNewsTemplates();
 }
 
 void CUIMainIngameWnd::Draw()
@@ -402,6 +409,9 @@ void CUIMainIngameWnd::Update()
 			UIPdaMsgListWnd.RemoveItem(i);
 		}
 	}
+
+	// Check for new news
+	CheckForNewNews();
 
 	CUIWindow::Update();
 }
@@ -654,7 +664,15 @@ bool CUIMainIngameWnd::OnKeyboardPress(int dik)
 			break;
 		}
 	}
-	
+
+	if (DIK_Y == dik)
+	{
+		ALife::SGameNews nI;
+		nI.m_game_time	= 3618876748;
+		nI.m_news_type	= static_cast<ALife::ENewsType>(1);
+		OnNewsReceived(nI);
+	}
+
 	return false;
 }
 
@@ -741,4 +759,117 @@ void CUIMainIngameWnd::RenderQuickInfos()
 		fuzzyShowInfo -= HIDE_INFO_SPEED*Device.fTimeDelta;
 	}
 	clamp(fuzzyShowInfo,0.f,1.f);
+}
+
+//////////////////////////////////////////////////////////////////////////
+
+void CUIMainIngameWnd::OnNewsReceived(const ALife::SGameNews &newsItem)
+{
+	string256	newsPhrase;
+	string128	time;
+	string128	locationName = "";
+	string512	result;
+
+
+	// Get Level name
+	const CGameGraph::CVertex	*game_vertex = ai().game_graph().vertex(newsItem.m_game_vertex_id);
+	if (ai().game_graph().header().levels().find(game_vertex->level_id()) != ai().game_graph().header().levels().end())
+	{
+		sprintf(locationName, "%s ", ai().game_graph().header().levels().find(game_vertex->level_id())->second.name());
+	}
+
+	// Substitute placeholders with real names
+	CSE_ALifeDynamicObject	*newsActorOne = ai().alife().tpfGetObjectByID(newsItem.m_object_id[0]);
+	if (newsItem.m_object_id[1] != static_cast<u16>(-1))
+	{
+		CSE_ALifeDynamicObject	*newsActorTwo = ai().alife().tpfGetObjectByID(newsItem.m_object_id[1]);
+		sprintf(newsPhrase, *m_NewsTemplates[static_cast<u32>(newsItem.m_news_type)], newsActorTwo->s_name_replace, newsActorOne->s_name_replace);
+	}
+	else
+		sprintf(newsPhrase, *m_NewsTemplates[static_cast<u32>(newsItem.m_news_type)], newsActorOne->s_name_replace, "");
+
+
+	// Calc curent time
+	u8 m_CurrMins		= static_cast<u8>(newsItem.m_game_time / (1000 * 60) % 60 & 0xFF);
+	u8 m_CurrHours		= static_cast<u8>(newsItem.m_game_time / (1000 * 3600) % 24 & 0xFF);
+	sprintf(time, "%02i:%02i\\n", m_CurrHours, m_CurrMins);
+	strconcat(result, locationName, time, newsPhrase);
+
+	CUIPdaMsgListItem* pItem = NULL;
+	pItem = xr_new<CUIPdaMsgListItem>();
+	UIPdaMsgListWnd.AddItem(pItem, true); 
+	UIPdaMsgListWnd.ScrollToBegin();
+
+	pItem->InitCharacter(dynamic_cast<CInventoryOwner*>(Level().CurrentEntity()));
+	int* pShowTime = xr_new<int>();
+	*pShowTime = m_dwMaxShowTime;
+	pItem->SetData(pShowTime);
+
+	UIPdaMsgListWnd.Show(true);	
+
+	pItem->UIMsgText.SetText(result);
+
+	m_dwMsgShowingTime = m_dwMaxShowTime;
+
+	CUIGameSP* pGameSP		= dynamic_cast<CUIGameSP*>(HUD().GetUI()->UIGame());
+	pGameSP->PdaMenu.AddNewsItem(result);
+}
+
+//////////////////////////////////////////////////////////////////////////
+
+void CUIMainIngameWnd::LoadNewsTemplates()
+{
+	const char * const NODE_NAME = "news_template";
+	CUIXml uiXml;
+	uiXml.Init("$game_data$", NEWS_TEMPLATES_CFG);
+
+	string256	buf;
+
+	int templatesCount = uiXml.GetNodesNum("", 0, NODE_NAME);
+	strconcat(buf, NODE_NAME,":text");
+	
+	for (int i = 0; i < templatesCount; ++i)
+	{
+		int idx					= uiXml.ReadAttribInt(NODE_NAME, i, "index");
+		ref_str news_template	= uiXml.Read(buf, i, NULL);
+		m_NewsTemplates[idx]	= news_template;
+	}
+}
+
+//////////////////////////////////////////////////////////////////////////
+
+bool CUIMainIngameWnd::CheckForNewNews()
+{
+	// Нет симуляции или время проверки еще не пришло
+	if (!ai().get_alife() || m_iPrevTime + NEWS_CHECK_INTERVAL > Level().GetGameTime())
+	{
+		return false;
+	}
+
+	m_iPrevTime = Level().GetGameTime();
+
+	// последний известный NewsID
+	static ALife::_NEWS_ID	lastKnownNewsID = 0;
+	static bool				emptyNewsQueue	= true;
+
+	CSE_ALifeNewsRegistry::NEWS_REGISTRY::const_iterator cit, cit_i;
+	cit = ai().alife().news().upper_bound(lastKnownNewsID);
+
+	if (emptyNewsQueue && ai().alife().news().size() > 0)
+	{
+		cit = ai().alife().news().begin();
+		emptyNewsQueue = false;
+	}
+
+	if (cit == ai().alife().news().end()) return false;
+
+	// Iterate through all new news and report to OnNewsReceived function
+	for (cit_i = cit; cit_i != ai().alife().news().end(); ++cit_i)
+	{
+		OnNewsReceived(*cit_i->second);
+		// Remember last known news id. Last remembering would last known news id
+		lastKnownNewsID	= cit_i->first;
+	}
+
+	return true;
 }
