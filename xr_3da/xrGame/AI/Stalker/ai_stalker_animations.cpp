@@ -601,7 +601,6 @@ void CStalkerAnimations::vfAssignLegsAnimation(CMotionDef *&tpLegsAnimation)
 	body_orientation.target.yaw		= angle_normalize_signed(yaw + faTurnAngles[m_tMovementDirection]);
 	m_object->set_body_orientation	(body_orientation);
 //	Msg								("Setting up body orientation %f, %f, speed : %f, %d",m_object->m_body.current.yaw,m_object->m_body.target.yaw,m_object->speed(),m_object->movement_type());
-	m_object->adjust_speed_to_animation(m_tMovementDirection);
 //	Msg("[W=%7.2f][TT=%7.2f][TC=%7.2f][T=%7.2f][C=%7.2f]",yaw,m_object->body_orientation().target.yaw,m_object->body_orientation().current.yaw,m_object->head_orientation().target.yaw,m_object->head_orientation().current.yaw);
 	
 	forward_direction	= false;
@@ -645,6 +644,7 @@ void CStalkerAnimations::vfAssignLegsAnimation(CMotionDef *&tpLegsAnimation)
 				direction			= eMovementDirectionRight;
 
 	tpLegsAnimation					= m_tAnims.A[l_tBodyState].m_tMoves.A[m_object->movement_type()].A[direction].A[0];
+	m_object->adjust_speed_to_animation(direction);
 }
 
 static void	HeadPlayCallback(CBlend *B)
