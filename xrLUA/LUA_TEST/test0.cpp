@@ -33,6 +33,8 @@
 #pragma warning(default:4995)
 #pragma warning(default:4530)
 
+#include "boost/shared_ptr.hpp"
+
 __declspec(dllimport) LPSTR g_ca_stdout;
 
 using namespace luabind;
@@ -56,6 +58,19 @@ struct A {
 		printf		("A virtual function a() is called!\n");
 	}
 };
+
+namespace luabind {
+	A* get_pointer(boost::shared_ptr<A>& p) 
+	{ 
+		return p.get(); 
+	}
+
+	boost::shared_ptr<const A>* 
+		get_const_holder(boost::shared_ptr<A>*)
+	{
+		return 0;
+	}
+}
 
 struct A_wrapper : public A {
 public:
@@ -209,24 +224,33 @@ public:
 	}
 };
 
+//#define USE_BOOST_SHARED_PTR
+
 struct M {
 protected:
-	vector<A*>	m_objects;
+#ifndef USE_BOOST_SHARED_PTR
+	typedef A*						pointer;
+#else
+	typedef boost::shared_ptr<A>	pointer;
+#endif
+	vector<pointer>					m_objects;
 
 public:
 
 	virtual			~M			()
 	{
-		vector<A*>::iterator	I = m_objects.begin();
-		vector<A*>::iterator	E = m_objects.end();
+#ifndef USE_BOOST_SHARED_PTR
+		vector<pointer>::iterator	I = m_objects.begin();
+		vector<pointer>::iterator	E = m_objects.end();
 		for ( ; I != E; ++I)
 			delete	*I;
+#endif
 	}
 
 			void	update		()
 	{
-		vector<A*>::iterator	I = m_objects.begin();
-		vector<A*>::iterator	E = m_objects.end();
+		vector<pointer>::iterator	I = m_objects.begin();
+		vector<pointer>::iterator	E = m_objects.end();
 		for ( ; I != E; ++I) {
 			(*I)->a_virtual		();
 //			(*I)->b_virtual		();
@@ -234,7 +258,7 @@ public:
 		}
 	}
 
-			void	add			(A *c)
+			void	add			(pointer c)
 	{
 		m_objects.push_back		(c);
 	}
@@ -262,6 +286,8 @@ void lua_bind_error(lua_State *L)
 
 extern bool load_file_into_namespace(lua_State *L, LPCSTR S, LPCSTR N, bool bCall = true);
 
+struct CEmptyClassEnum {};
+
 void test0()
 {
 	string4096		SSS;
@@ -273,6 +299,8 @@ void test0()
 	if (!L)
 		lua_error	(L);
 
+	lua_setgcthreshold	(L,1024);
+
 	luaopen_base	(L);
 	luaopen_string	(L);
 	luaopen_math	(L);
@@ -283,9 +311,35 @@ void test0()
 
 	luabind::set_error_callback(lua_bind_error);
 
+	std::map<LPCSTR,int>	temp;
+
+	temp.insert(std::make_pair("actor0",0));
+	temp.insert(std::make_pair("actor1",1));
+	temp.insert(std::make_pair("actor2",2));
+	temp.insert(std::make_pair("actor3",3));
+	temp.insert(std::make_pair("actor4",4));
+	temp.insert(std::make_pair("actor5",5));
+	temp.insert(std::make_pair("actor6",6));
+	temp.insert(std::make_pair("actor7",7));
+	temp.insert(std::make_pair("actor8",8));
+	temp.insert(std::make_pair("actor9",9));
+
+	class_<CEmptyClassEnum>		instance("clsid");
+
+	std::map<LPCSTR,int>::const_iterator	I = temp.begin();
+	std::map<LPCSTR,int>::const_iterator	E = temp.end();
+	for ( ; I != E; ++I)
+		instance.enum_("_clsid")[value((*I).first,(*I).second)];
+
 	module(L)
 	[
+		instance,
+
+#ifndef USE_BOOST_SHARED_PTR
 		class_<A>("A")
+#else
+		class_<A, boost::shared_ptr<A> >("A")
+#endif
 			.def(constructor<>())
 			.def("a",	&A::a_virtual),
 
@@ -305,26 +359,58 @@ void test0()
 //			.def("c",	&C_wrapper::c_static),
 
 		class_<M>("M")
-			.def("add",	&M::add,	adopt(_1)),
+#ifndef USE_BOOST_SHARED_PTR
+			.def("add",	&M::add, adopt(_1)),
+#else
+			.def("add",	&M::add),
+#endif
 
 		def("getM", &getM)
 	];
 
-//	load_file_into_namespace(L,"x:\\adopt_test.script","adopt_test",true);
-	lua_dofile		(L,"x:\\adopt_test.script");
+	load_file_into_namespace(L,"x:\\thread_test.script","thread_test",true);
 
-	if (xr_strlen(SSS)) {
-		printf		("\n%s\n",SSS);
-		strcpy		(SSS,"");
-		lua_close	(L);
-		return;
+	printf			("top : %d\n",lua_gettop(L));
+	for (int i=0; i<10000; ++i) {
+		printf			("Starting thread %d\n",i);
+		lua_State		*t = lua_newthread(L);
+		LPCSTR			s = "thread_test.main()";
+		int				err = luaL_loadbuffer	(t,s,strlen(s),"@asdadasda");
+		if (err)
+			lua_bind_error(t);
+		err				= lua_resume		(t,0);
+		if (err)
+			lua_bind_error(t);
+		while (lua_gettop(t)) {
+			lua_pop		(t,1);
+			Sleep		(1);
+			lua_resume	(t,0);
+		}
+		
+		bool			ok = false;
+		for (int i=1, n=lua_gettop(L); i<=n; ++i)
+			if ((lua_type(L,i) == LUA_TTHREAD) && (lua_tothread(L,i) == t)) {
+				lua_remove(L,i);
+				ok		= true;
+				break;
+			}
+		VERIFY			(ok);
+		printf			("top : %d\n",lua_gettop(L));
 	}
 
-	lua_setgcthreshold	(L,0);
-	for (int i=0; i<20; Sleep(100), ++i) {
-		getM().update		();
-		lua_setgcthreshold	(L,0);
-	}
+//	lua_dofile		(L,"x:\\adopt_test.script");
+//
+//	if (xr_strlen(SSS)) {
+//		printf		("\n%s\n",SSS);
+//		strcpy		(SSS,"");
+//		lua_close	(L);
+//		return;
+//	}
+//
+//	for (int i=0; i<20; Sleep(100), ++i) {
+//		getM().update		();
+////		lua_setgcthreshold	(L,0);
+//	}
 
 	delete			m;
 
