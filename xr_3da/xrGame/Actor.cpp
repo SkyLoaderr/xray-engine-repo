@@ -1291,17 +1291,10 @@ void	CActor::SpawnAmmoForWeapon	(CInventoryItem *pIItem)
 
 	CWeaponMagazined* pWM = smart_cast<CWeaponMagazined*> (pIItem);
 	if (!pWM || !pWM->AutoSpawnAmmo()) return;
-	
-	bool UsableAmmoExist = false;
-	for (u32 I = 0; I<pWM->m_ammoTypes.size(); I++)
-	{
-		CWeaponAmmo* pAmmo = smart_cast<CWeaponAmmo*>(inventory().Get(*(pWM->m_ammoTypes[I]), false));
-		if (!pAmmo) continue;
 
-		UsableAmmoExist = true;
-		break;
-	};
-	if (!UsableAmmoExist) pWM->SpawnAmmo(0xffffffff, NULL, ID());
+//	CWeaponAmmo* pAmmo = smart_cast<CWeaponAmmo*>(inventory().Get(*(pWM->m_ammoTypes[0]), false));
+//	if (!pAmmo) 
+		pWM->SpawnAmmo(0xffffffff, NULL, ID());
 };
 
 void	CActor::RemoveAmmoForWeapon	(CInventoryItem *pIItem)
@@ -1311,20 +1304,30 @@ void	CActor::RemoveAmmoForWeapon	(CInventoryItem *pIItem)
 	CWeaponMagazined* pWM = smart_cast<CWeaponMagazined*> (pIItem);
 	if (!pWM || !pWM->AutoSpawnAmmo()) return;
 
-	NET_Packet			P;
-	bool UsableAmmoExist = false;
-
-	for (u32 I = 0; I<pWM->m_ammoTypes.size(); I++)
+	CWeaponAmmo* pAmmo = smart_cast<CWeaponAmmo*>(inventory().Get(*(pWM->m_ammoTypes[0]), false));
+	if (!pAmmo || !pAmmo->m_bCanBeUnlimited) return;
+	//--- мы нашли патроны к текущему оружию	
+	/*
+	//--- проверяем не подходят ли они к чему-то еще
+	bool CanRemove = true;
+	TIItemSet::const_iterator I = inventory().m_all.begin();//, B = I;
+	TIItemSet::const_iterator E = inventory().m_all.end();
+	for ( ; I != E; ++I)
 	{
-		CWeaponAmmo* pAmmo = smart_cast<CWeaponAmmo*>(inventory().Get(*(pWM->m_ammoTypes[I]), false));
-		if (!pAmmo || !pAmmo->m_bCanBeUnlimited) break;
-
-		UsableAmmoExist = true;
-
-		u_EventGen			(P,GE_DESTROY,pAmmo->ID());
-		//			Msg					("ge_destroy: [%d] - %s",pAmmo->ID(),*(pAmmo->cName()));
+		CInventoryItem* pItem = (*I);//->m_pIItem;
+		CWeaponMagazined* pWM = smart_cast<CWeaponMagazined*> (pItem);
+		if (!pWM || !pWM->AutoSpawnAmmo()) continue;
+		if (pWM == pIItem) continue;
+		if (pWM->m_ammoTypes[0] != pAmmo->CInventoryItem::object().cNameSect()) continue;
+		CanRemove = false;
+		break;
 	};
-	if (UsableAmmoExist) u_EventSend			(P);
+
+	if (!CanRemove) return;
+	*/
+	NET_Packet			P;
+	u_EventGen			(P,GE_DESTROY,pAmmo->ID());
+	u_EventSend			(P);
 };
 
 void	CActor::SetZoomRndSeed		(s32 Seed)
