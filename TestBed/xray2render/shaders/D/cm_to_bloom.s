@@ -7,12 +7,18 @@ struct 	a2v
 struct 	v2p_out
 {
   float4 HPos: 		POSITION;	// Clip-space position 	(for rasterization)
-  float2 Tex0: 		TEXCOORD0;	// Texture coordinates 	(for sampling maps)
+  float2 tc0: 		TEXCOORD0;	// Texture coordinates 	(for sampling maps)
+  float2 tc1: 		TEXCOORD1;	// Texture coordinates 	(for sampling maps)
+  float2 tc2: 		TEXCOORD2;	// Texture coordinates 	(for sampling maps)
+  float2 tc3: 		TEXCOORD3;	// Texture coordinates 	(for sampling maps)
 };
 
 struct 	v2p_in
 {
-  half2 Tex0: 		TEXCOORD0;	// Texture coordinates 	(for sampling maps)
+  half2 tc0: 		TEXCOORD0;	// Texture coordinates 	(for sampling maps)
+  half2 tc1: 		TEXCOORD1;	// Texture coordinates 	(for sampling maps)
+  half2 tc2: 		TEXCOORD2;	// Texture coordinates 	(for sampling maps)
+  half2 tc3: 		TEXCOORD3;	// Texture coordinates 	(for sampling maps)
 };
 
 struct 	p2f
