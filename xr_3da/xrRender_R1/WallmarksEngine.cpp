@@ -149,10 +149,10 @@ void CWallmarksEngine::RecurseTri(CDB::TRI* T, Fmatrix &mView, CWallmarksEngine:
 void CWallmarksEngine::BuildMatrix	(Fmatrix &mView, float invsz, const Fvector& from)
 {
 	// build projection
-	Fmatrix		mScale;
-    Fvector		at,up,right,y;
-	at.sub		(from,sml_normal);
-	y.set		(0,1,0);
+	Fmatrix				mScale;
+    Fvector				at,up,right,y;
+	at.sub				(from,sml_normal);
+	y.set				(0,1,0);
 	if (_abs(sml_normal.y)>.99f) y.set(1,0,0);
 	right.crossproduct	(y,sml_normal);
 	up.crossproduct		(sml_normal,right);
@@ -184,7 +184,7 @@ void CWallmarksEngine::AddWallmark	(CDB::TRI* pTri, const Fvector &contact_point
 	// calc sphere
 	if (W->verts.size()<3) { wm_destroy(W); return; }
 	else {
-		Fbox bb; bb.invalidate();
+		Fbox bb;	bb.invalidate();
 
 		FVF::LIT* I=&*W->verts.begin	();
 		FVF::LIT* E=&*W->verts.end		();
