@@ -27,7 +27,6 @@ public:
 		PHASE_SMAP_P	= 2,	// E[2]
 		PHASE_SMAP_S	= 3		// E[3]
 	};
-	u32															phase;
 	BOOL														b_nv3x;
 
 	// Sector detection and visibility

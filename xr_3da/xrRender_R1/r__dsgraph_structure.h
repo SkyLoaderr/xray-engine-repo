@@ -15,6 +15,7 @@ public:
 	Fmatrix*													val_pTransform;
 	BOOL														val_bHUD;
 	BOOL														val_bInvisible;
+	u32															phase;
 	u32															marker;
 	bool														pmask		[2];
 public:
