@@ -5,6 +5,8 @@ module("game_last_tmp")
 module("game_last_dialog")
 module("game_last_charselect_dlg")
 module("game_last_header_wnd")
+--include
+module("ui_save_dialog")
 
 class "game_cl_LastStanding" (game_cl_mp_script)
 
@@ -87,6 +89,8 @@ function game_cl_LastStanding:createGameUI ()
 
    self.m_header_wnd = game_last_header_wnd.header_wnd()
    self.m_game_ui:AddDialogToRender(self.m_header_wnd)  --always visible.use RemoveDialogToRender to hide this window
+
+   --self.m_save_dlg = ui_save_dialog.save_dialog()
    return self.m_game_ui
 end
 
@@ -140,7 +144,13 @@ end
 
 
 function game_cl_LastStanding:OnKeyboardPress(key)
+--- call
+	if key_bindings.kEXT_1 == key then
+      self:StartStopMenu(self.m_save_dlg, true)
+      return true
+   end
 
+--[[
 	if key_bindings.kWPN_FIRE == key  then
 	
 		local b_need_to_send_ready = false
@@ -207,7 +217,7 @@ function game_cl_LastStanding:OnKeyboardPress(key)
    end
 
 
-
+]]
 	return game_cl_mp_script.OnKeyboardPress(self, key)
 
 end
