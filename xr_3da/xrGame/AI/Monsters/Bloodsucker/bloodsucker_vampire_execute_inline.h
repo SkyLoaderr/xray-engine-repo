@@ -8,7 +8,7 @@
 
 #define CStateBloodsuckerVampireExecuteAbstract CStateBloodsuckerVampireExecute<_Object>
 
-#define VAMPIRE_TIME_HOLD		2000
+#define VAMPIRE_TIME_HOLD		4000
 #define VAMPIRE_HIT_IMPULSE		400.f
 #define VAMPIRE_MIN_DIST		0.5f
 #define VAMPIRE_MAX_DIST		1.f

@@ -29,6 +29,7 @@ void CStateMonsterAttackRunAbstract::execute()
 	object->movement().set_cover_params			(5.f, 30.f, 1.f, 30.f);
 	object->movement().set_try_min_time			(false);
 	object->set_state_sound						(MonsterSpace::eMonsterSoundAttack);
+	object->movement().extrapolate_path			(true);
 
 	
 	// обработать squad инфо	
@@ -51,6 +52,14 @@ void CStateMonsterAttackRunAbstract::execute()
 #endif
 
 }
+
+TEMPLATE_SPECIALIZATION
+void CStateMonsterAttackRunAbstract::finalize()
+{
+	inherited::finalize					();
+	object->movement().extrapolate_path	(false);
+}
+
 
 TEMPLATE_SPECIALIZATION
 bool CStateMonsterAttackRunAbstract::check_completion()

@@ -13,6 +13,7 @@ public:
 
 	virtual void		initialize				();
 	virtual	void		execute					();
+	virtual void		finalize				();
 
 	virtual bool 		check_completion		();
 	virtual bool 		check_start_conditions	();

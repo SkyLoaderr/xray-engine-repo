@@ -105,6 +105,7 @@ private:
 		bool		m_path_end;
 		bool		m_failed;
 		bool		m_force_rebuild;
+		bool		m_wait_path_end;
 
 		bool		m_target_actual;		// устанавливаемый таргет соответствует предыдущему
 

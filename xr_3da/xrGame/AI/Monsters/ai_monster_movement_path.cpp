@@ -26,6 +26,7 @@ void CMonsterMovement::initialize_movement()
 
 	m_force_rebuild				= false;
 	m_target_actual				= false;
+	m_wait_path_end				= false;
 }
 
 //////////////////////////////////////////////////////////////////////////
@@ -60,17 +61,22 @@ void CMonsterMovement::set_retreat_from_point(const Fvector &position)
 	// установить глобальные параметры передвижения
 	m_target_type			= eRetreatFromTarget;
 	set_path_type			(MovementManager::ePathTypeLevelPath);
+
+	select_target_desired	();
 }
 
 #define RANDOM_POINT_DISTANCE	20.f
 
 void CMonsterMovement::select_target_desired()
 {
+	if (m_wait_path_end) return;
+	
 	if (m_target_actual && m_failed) {
 		
-		Msg("Target Actual & Failed :: select random");
+		//Msg("Target Actual & Failed :: select random");
 		
 		m_force_rebuild		= true;
+		m_wait_path_end		= true;
 		
 		// если путь завершен или failed - выбрать другую случайную точку
 		Fvector	pos_random;	
@@ -164,14 +170,24 @@ void CMonsterMovement::select_target_desired()
 //////////////////////////////////////////////////////////////////////////
 bool CMonsterMovement::target_point_need_update()
 {
-	if (m_force_rebuild) return true;
+	if (m_force_rebuild) {
+		m_force_rebuild		= false;
+		return				true;
+	}
 
 	// если путь ещё не завершен
-	if (!IsPathEnd(m_distance_to_path_end)) {
+	if (!IsPathEnd(m_distance_to_path_end) && !path_completed()) {
+		
+		if (m_wait_path_end) return false;
+		
 		// если время движения по пути не вышло, не перестраивать
 		return (m_last_time_target_set + m_time < m_object->m_current_update);
 	}
 	
+	// конец пути
+
+	m_wait_path_end	= false;
+
 	// если путь ещё не построен - выход
 	if (!detail_path_manager().actual() && (detail_path_manager().time_path_built() < m_last_time_target_set)) return false;
 	return true;
@@ -182,7 +198,7 @@ bool CMonsterMovement::target_point_need_update()
 // если на выходе функции m_target_selected.node != u32(-1) - нода найдена
 void CMonsterMovement::select_target()
 {
-	Msg("Select Target Point :: M_Target_Selected");
+	//Msg("Select Target Point :: M_Target_Selected");
 	
 	m_target_selected.node	= m_target_desired.node;
 
