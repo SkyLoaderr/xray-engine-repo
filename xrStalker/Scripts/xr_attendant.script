@@ -201,7 +201,7 @@ function action_follow:execute ()
        else
           if leader ~= nil and leader:is_talking () == true then
              printf ("LEADER IS TALKING !!!")
-             state_mgr.set_state (self.object, self.st.state_if_leader_in_dialog, nil, nil, db.actor)
+             state_mgr.set_state (self.object, self.st.state_if_leader_in_meet, nil, nil, db.actor)
           else   
              printf ("LEADER IS NOT TALKING !!!")
              state_mgr.set_state (self.object, "idle")
@@ -400,5 +400,5 @@ function set_scheme (npc, ini, scheme, section, gulag_name)
 	   end
 	end   
 	st.sound_theme = utils.cfg_get_string (ini, section, "snd",  npc, false, "", "state")
-    st.state_if_leader_in_dialog = utils.cfg_get_string (ini, section, "state_if_leader_in_dialog", npc, false, "", "idle")
+    st.state_if_leader_in_meet = utils.cfg_get_string (ini, section, "state_if_leader_in_meet", npc, false, "", "idle")
 end
