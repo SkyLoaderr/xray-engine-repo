@@ -17,12 +17,13 @@ void xrServer::OnCL_Disconnected	(IClient* CL)
 
 	//
 	xrS_entities::iterator	I=entities.begin(),E=entities.end();
-	if (client_Count()>1)
+	if (client_Count()>1 && !CL->flags.bLocal)
 	{
 		// Migrate entities
 		for (; I!=E; ++I)
 		{
 			CSE_Abstract*	entity		= I->second;
+//			R_ASSERT(entity->owner->flags.bLocal);
 			if (entity->owner == CL)	PerformMigration	(entity,(xrClientData*)CL,SelectBestClientToMigrateTo(entity,TRUE));
 		}
 	} else {
