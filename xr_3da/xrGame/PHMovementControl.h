@@ -103,11 +103,12 @@ public:
 	void				CalcMaximumVelocity	(float& dest, float accel, float friction){};
 
 	void				ActivateBox		(DWORD id)	{ 
-		aabb.set				(boxes[id]);
-		m_character->Destroy	();
-		CreateCharacter			();	
-		m_character->SetPosition(vPosition);	
-	}
+														aabb.set(boxes[id]);
+													    if(!m_character->b_exist) return;
+														m_character->Destroy();
+														CreateCharacter();	
+														m_character->SetPosition(vPosition);	
+													}
 
 	EEnvironment		Environment		( )			{ return eEnvironment; }
 	EEnvironment		OldEnvironment	( )			{ return eOldEnvironment; }
