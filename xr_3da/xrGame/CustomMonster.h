@@ -233,7 +233,7 @@ private:
 	CSound_UserDataVisitor			*m_sound_user_data_visitor;
 
 protected:
-	virtual CSoundUserDataVisitor	*create_sound_visitor	();
+	virtual CSound_UserDataVisitor	*create_sound_visitor	();
 	virtual CMemoryManager			*create_memory_manager	();
 	virtual CMovementManager		*create_movement_manager();
 
