@@ -2,6 +2,7 @@
 
 #include "resourcemanager.h"
 #include "xr_effgamma.h"
+#include "render.h"
 
 void CRenderDevice::_Create	(LPCSTR shName)
 {

@@ -1,6 +1,7 @@
 #include "stdafx.h"
 
 #include "ResourceManager.h"
+#include "render.h"
 
 void CRenderDevice::_Destroy	(BOOL bKeepTextures)
 {
