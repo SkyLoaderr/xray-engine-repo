@@ -35,6 +35,7 @@ sidor_rest                          =   sidor_evaluator + 80
 sidor_bar                           =   sidor_evaluator + 90
 sidor_chaser                        =   sidor_evaluator + 100
 sidor_sos                           =   sidor_evaluator + 110
+sidor_ptr                           =   sidor_evaluator + 120
 
 -- эвалуаторы Чугай
 chugai_evaluators                   = stalker_ids.property_script + 3000

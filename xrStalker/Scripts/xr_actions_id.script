@@ -36,6 +36,7 @@ sidor_act_rest          = sidor_actions + 80
 sidor_act_bar           = sidor_actions + 90
 sidor_act_chaser        = sidor_actions + 100
 sidor_act_sos           = sidor_actions + 110
+sidor_act_ptr           = sidor_actions + 120  
 
 -- chugai
 chugai_actions                      = sidor_actions  + 1024
