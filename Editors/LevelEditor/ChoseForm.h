@@ -86,6 +86,7 @@ private:	// User declarations
         smEntity,
         smEntityCLSID,
         smLAnim,
+        smGameObject,
         smMaxMode
     };
     ESelectMode Mode;
@@ -108,6 +109,7 @@ public:		// User declarations
     static LPCSTR __fastcall SelectTexture	(bool bMulti=false, LPCSTR init_name=0, bool bIgnoreExt=false);
     static LPCSTR __fastcall SelectEntity	(LPCSTR init_name=0);
     static LPCSTR __fastcall SelectEntityCLSID(LPCSTR init_name=0);
+    static LPCSTR __fastcall SelectGameObject(bool bMulti=false, LPCSTR start_folder=0, LPCSTR init_name=0);
     static bool __fastcall Visible(){return !!form;}
 };
 //---------------------------------------------------------------------------

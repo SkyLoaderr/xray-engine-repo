@@ -374,6 +374,7 @@ void __fastcall TProperties::tvPropertiesItemDraw(TObject *Sender,
             case PROP_LIBSOUND:
             case PROP_LIGHTANIM:
             case PROP_LIBOBJECT:
+            case PROP_GAMEOBJECT:
             case PROP_ENTITY:
             case PROP_TEXTURE:
             case PROP_TEXTURE2:
@@ -548,6 +549,7 @@ void __fastcall TProperties::tvPropertiesMouseDown(TObject *Sender,
         case PROP_LIBSOUND:
         case PROP_LIGHTANIM:
         case PROP_LIBOBJECT:
+        case PROP_GAMEOBJECT:
         case PROP_ENTITY:
         case PROP_TEXTURE:
         case PROP_ESHADER:
@@ -759,6 +761,7 @@ void __fastcall TProperties::CustomTextClick(TElTreeItem* item)
     case PROP_TEXTURE:		new_val = TfrmChoseItem::SelectTexture(false,edit_val.c_str(),true);break;
 	case PROP_LIGHTANIM:	new_val = TfrmChoseItem::SelectLAnim(false,0,edit_val.c_str());		break;
     case PROP_LIBOBJECT:	new_val = TfrmChoseItem::SelectObject(false,0,edit_val.c_str());	break;
+    case PROP_GAMEOBJECT:	new_val = TfrmChoseItem::SelectGameObject(false,0,edit_val.c_str());break;
     case PROP_ENTITY:		new_val = TfrmChoseItem::SelectEntity(edit_val.c_str());			break;
     case PROP_LIBSOUND:		new_val = TfrmChoseItem::SelectSound(false,edit_val.c_str(),true);	break;
     default: THROW2("Unknown prop");

@@ -160,6 +160,37 @@ LPCSTR __fastcall TfrmChoseItem::SelectObject(bool bMulti, LPCSTR start_folder, 
     return select_item.c_str();
 }
 //---------------------------------------------------------------------------
+LPCSTR __fastcall TfrmChoseItem::SelectGameObject(bool bMulti, LPCSTR start_folder, LPCSTR start_name){
+	VERIFY(!form);
+	form 							= new TfrmChoseItem(0);
+    form->Caption					= "Select OGF";
+	form->Mode 						= smGameObject;
+    form->bMultiSel 				= bMulti;
+    form->iMultiSelLimit 			= 32;
+	// init
+	if (start_name) m_LastSelection[form->Mode] = start_name;
+	form->tvItems->IsUpdating		= true;
+    form->tvItems->Selected 		= 0;
+    form->tvItems->Items->Clear		();
+    // fill object list
+    FileMap lst;
+    Engine.FS.GetFileList			(Engine.FS.m_GameMeshes.m_Path,lst,true,true,false,"*.ogf");
+	AnsiString fld;
+    FilePairIt it=lst.begin();
+    FilePairIt _E=lst.end();   		// check without extension
+    for (; it!=_E; it++)
+		if (!start_folder||(start_folder&&(stricmp(start_folder,FOLDER::GetFolderName(it->first.c_str(),fld))==0))){
+        	TElTreeItem* node=FOLDER::AppendObject(form->tvItems,it->first.c_str());
+            node->CheckBoxEnabled 	= bMulti;
+            node->ShowCheckBox 		= bMulti;
+        }
+    // redraw
+	form->tvItems->IsUpdating		= false;
+	// show
+    if (form->ShowModal()!=mrOk) return 0;
+    return select_item.c_str();
+}
+//---------------------------------------------------------------------------
 LPCSTR __fastcall TfrmChoseItem::SelectLAnim(bool bMulti, LPCSTR start_folder, LPCSTR start_name)
 {
 	VERIFY(!form);

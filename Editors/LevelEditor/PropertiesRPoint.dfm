@@ -1,10 +1,9 @@
 object frmPropertiesSpawnPoint: TfrmPropertiesSpawnPoint
-  Left = 380
-  Top = 360
-  BorderStyle = bsDialog
+  Left = 578
+  Top = 384
+  Width = 253
+  Height = 319
   Caption = 'Spawn properties'
-  ClientHeight = 292
-  ClientWidth = 245
   Color = 10528425
   Constraints.MinHeight = 319
   Constraints.MinWidth = 253

@@ -34,6 +34,7 @@ enum EPropType{
     PROP_LIGHTANIM,
     PROP_LIBOBJECT,
     PROP_LIBSOUND,
+    PROP_GAMEOBJECT,
     PROP_ENTITY,
 	PROP_WAVE 			
 };
@@ -772,6 +773,12 @@ public:
     {
         TextValue* V	= new TextValue(lim,after,before,draw,change);
         V->type			= PROP_LIBOBJECT;
+        return V;
+    }
+	TextValue* 			CreateGameObject(int lim, TAfterEdit after=0, TBeforeEdit before=0, TOnDrawValue draw=0, TOnChange change=0)
+    {
+        TextValue* V	= new TextValue(lim,after,before,draw,change);
+        V->type			= PROP_GAMEOBJECT;
         return V;
     }
     TextValue*			CreateLibSound(int lim, TAfterEdit after=0, TBeforeEdit before=0, TOnDrawValue draw=0, TOnChange change=0)
