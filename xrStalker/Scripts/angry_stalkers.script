@@ -43,13 +43,16 @@ function main()
 				cond	(cond.time_end, 100000000)
 			)
 
-	if siviy:see(chert) then
-		wait(2000)			
-		siviy_privet:play_at_pos						(siviy,siviy:position(),0);
-		wait(2000)			
-		prof_ne_ojidal_tebya_vstretit:play_at_pos		(chert,chert:position(),0);
-		wait(2000)			
+	while siviy:action() and chert:action() do
+		if siviy:see(chert) then
+			wait(2000)			
+			siviy_privet:play_at_pos						(siviy,siviy:position(),0);
+			wait(2000)			
+			prof_ne_ojidal_tebya_vstretit:play_at_pos		(chert,chert:position(),0);
+			wait(2000)			
 		end
+	    wait	()
+	end
 
 	while siviy:action() and chert:action() do
 	    wait	()
