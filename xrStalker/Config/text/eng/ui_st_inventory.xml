@@ -1,49 +1,84 @@
 <?xml version="1.0" encoding="windows-1251" standalone="yes" ?>
 <string_table>
-	<string id="belt">
-		<text>Belt</text>
-	</string>
-	<string id="weight">
-		<text>Weight</text>
-	</string>
-	<string id="description">
-		<text>Description</text>
-	</string>
-	<string id="rest">
-		<text>Rest</text>
-	</string>
-	<string id="drop">
-		<text>Drop</text>
-	</string>
-	<string id="personal">
-		<text>Personal</text>
-	</string>
-	<string id="time">
-		<text>Current Time</text>
-	</string>
-	<string id="outfit_params">
-		<text>Outfit's characteristics</text>
-	</string>
-	<string id="outfit_burn_protection">
-		<text>burn protection</text>
-	</string>
-	<string id="outfit_strike_protection">
-		<text>strike protection</text>
-	</string>
-	<string id="outfit_shock_protection">
-		<text>shock protection</text>
-	</string>
-	<string id="outfit_chemical_burn_protection">
-		<text>chemical protection</text>
-	</string>
-	<string id="outfit_explosion_protection">
-		<text>explosion protection</text>
-	</string>
-	<string id="outfit_fire_wound_protection">
-		<text>fire wound protection</text>
-	</string>
-	<string id="exit">
-		<text>Exit</text>
-	</string>
+    <string id="ui_inv_items_list">
+        <text>Items List</text>
+    </string>
+    <string id="ui_inv_belt">
+        <text>Belt</text>
+    </string>
+    <string id="ui_inv_weight">
+        <text>Weight</text>
+    </string>
+    <string id="ui_inv_description">
+        <text>Description</text>
+    </string>
+    <string id="ui_inv_rest">
+        <text>Rest</text>
+    </string>
+    <string id="ui_inv_drop">
+        <text>Drop</text>
+    </string>
+    <string id="ui_inv_personal">
+        <text>Personal</text>
+    </string>
+    <string id="ui_inv_time">
+        <text>Current Time</text>
+    </string>
+    <string id="ui_inv_outfit_params">
+        <text>Outfit's characteristics</text>
+    </string>
+    <string id="ui_inv_outfit_burn_protection">
+        <text>burn protection</text>
+    </string>
+    <string id="ui_inv_outfit_strike_protection">
+        <text>strike protection</text>
+    </string>
+    <string id="ui_inv_outfit_shock_protection">
+        <text>shock protection</text>
+    </string>
+    <string id="ui_inv_outfit_chemical_burn_protection">
+        <text>chemical protection</text>
+    </string>
+    <string id="ui_inv_outfit_explosion_protection">
+        <text>explosion protection</text>
+    </string>
+    <string id="ui_inv_outfit_fire_wound_protection">
+        <text>fire wound protection</text>
+    </string>
+    <string id="ui_inv_exit">
+        <text>Exit</text>
+    </string>
+    <string id="ui_inv_shop">
+        <text>Shop</text>
+    </string>
+    <string id="ui_inv_total_money">
+        <text>Total Money</text>
+    </string>
+    <string id="ui_inv_pistols">
+        <text>Pistols</text>
+    </string>
+    <string id="ui_inv_primary_weapons">
+        <text>Primary Weapons</text>
+    </string>
+    <string id="ui_inv_granades">
+        <text>Granades</text>
+    </string>
+    <string id="ui_inv_outfits">
+        <text>Outfits</text>
+    </string>
+    <string id="ui_inv_equipment">
+        <text>Equipment</text>
+    </string>
+    <string id="ui_inv_shotguns">
+        <text>Shot-guns</text>
+    </string>
+    <string id="ui_inv_rifles">
+        <text>Assault rifles and machine guns</text>
+    </string>
+    <string id="ui_inv_sniper_rifles">
+        <text>Sniper rifles</text>
+    </string>
+    <string id="ui_inv_heavy_weapons">
+        <text>Heavy Weapons</text>
+    </string>
 </string_table>
-

@@ -1,49 +1,84 @@
 <?xml version="1.0" encoding="windows-1251" standalone="yes" ?>
 <string_table>
-	<string id="belt">
-		<text>Пояс</text>
-	</string>
-	<string id="weight">
-		<text>Вес</text>
-	</string>
-	<string id="description">
-		<text>Описание</text>
-	</string>
-	<string id="rest">
-		<text>Отдохнуть</text>
-	</string>
-	<string id="drop">
-		<text>Выложить</text>
-	</string>
-	<string id="personal">
-		<text>Персонально</text>
-	</string>
-	<string id="time">
-		<text>Время</text>
-	</string>
-	<string id="outfit_params">
-		<text>Костюм</text>
-	</string>
-	<string id="outfit_burn_protection">
-		<text>ожог</text>
-	</string>
-	<string id="outfit_strike_protection">
-		<text>удар</text>
-	</string>
-	<string id="outfit_shock_protection">
-		<text>шок</text>
-	</string>
-	<string id="outfit_chemical_burn_protection">
-		<text>хим. ожог</text>
-	</string>
-	<string id="outfit_explosion_protection">
-		<text>взрыв</text>
-	</string>
-	<string id="outfit_fire_wound_protection">
-		<text>огнестрел. ранения</text>
-	</string>
-	<string id="exit">
-		<text>Выход</text>
-	</string>
+    <string id="ui_inv_items_list">
+        <text>Список Вещей</text>
+    </string>
+    <string id="ui_inv_belt">
+        <text>Пояс</text>
+    </string>
+    <string id="ui_inv_weight">
+        <text>Вес</text>
+    </string>
+    <string id="ui_inv_description">
+        <text>Описание</text>
+    </string>
+    <string id="ui_inv_rest">
+        <text>Отдохнуть</text>
+    </string>
+    <string id="ui_inv_drop">
+        <text>Выложить</text>
+    </string>
+    <string id="ui_inv_personal">
+        <text>Персонально</text>
+    </string>
+    <string id="ui_inv_time">
+        <text>Время</text>
+    </string>
+    <string id="ui_inv_outfit_params">
+        <text>Параметры Костюма</text>
+    </string>
+    <string id="ui_inv_outfit_burn_protection">
+        <text>ожог</text>
+    </string>
+    <string id="ui_inv_outfit_strike_protection">
+        <text>удар</text>
+    </string>
+    <string id="ui_inv_outfit_shock_protection">
+        <text>шок</text>
+    </string>
+    <string id="ui_inv_outfit_chemical_burn_protection">
+        <text>хим. ожог</text>
+    </string>
+    <string id="ui_inv_outfit_explosion_protection">
+        <text>взрыв</text>
+    </string>
+    <string id="ui_inv_outfit_fire_wound_protection">
+        <text>огнестрел. ранения</text>
+    </string>
+    <string id="ui_inv_exit">
+        <text>Выход</text>
+    </string>
+    <string id="ui_inv_shop">
+        <text>Магазин</text>
+    </string>
+    <string id="ui_inv_total_money">
+        <text>Всего Денег</text>
+    </string>
+    <string id="ui_inv_pistols">
+        <text>Пистолеты</text>
+    </string>
+    <string id="ui_inv_primary_weapons">
+        <text>Основное Оружие</text>
+    </string>
+    <string id="ui_inv_granades">
+        <text>Гранаты</text>
+    </string>
+    <string id="ui_inv_outfits">
+        <text>Костюмы</text>
+    </string>
+    <string id="ui_inv_equipment">
+        <text>Екипировка</text>
+    </string>
+    <string id="ui_inv_shotguns">
+        <text>Винчестеры</text>
+    </string>
+    <string id="ui_inv_rifles">
+        <text>Штурмовые винтовки и автоматы</text>
+    </string>
+    <string id="ui_inv_sniper_rifles">
+        <text>Снайперские винтовки</text>
+    </string>
+    <string id="ui_inv_heavy_weapons">
+        <text>Тяжолое оружие</text>
+    </string>
 </string_table>
-
