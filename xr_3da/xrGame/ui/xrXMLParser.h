@@ -30,6 +30,7 @@ XRXMLPARSER_API void FunctionSampleExport();
 
 #pragma once
 
+
 typedef CkXml XML_NODE;
 
 
@@ -91,10 +92,10 @@ public:
 	XML_NODE* NavigateToNode(XML_NODE* start_node, 
 							 const char* path, int node_index = 0);
 
-	XML_NODE* GetRoot() {return m_root;}
+	XML_NODE* GetRoot() {return &m_root;}
 
 protected:
-	XML_NODE *m_root;
+	XML_NODE m_root;
 
 	//буфферная строка
 	char* buf_str;	
