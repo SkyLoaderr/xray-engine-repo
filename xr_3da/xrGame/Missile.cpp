@@ -130,13 +130,6 @@ BOOL CMissile::net_Spawn(LPVOID DC)
 void CMissile::net_Destroy() 
 {
 	//R_ASSERT(!m_pInventory);
-	if (m_fake_missile) {
-		NET_Packet			P;
-		u_EventGen			(P,GE_DESTROY,m_fake_missile->ID());
-		if (Local())
-			u_EventSend		(P);
-	}
-
 	if(m_pPhysicsShell) m_pPhysicsShell->Deactivate();
 	xr_delete(m_pPhysicsShell);
 	inherited::net_Destroy();
