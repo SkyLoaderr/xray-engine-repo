@@ -10,7 +10,7 @@ local state_standing = 2
 ---------------------------------------------------------------------------------------------------------------------
 class "evaluator_need_robber_guard" (property_evaluator)
 
-function evaluator_need_robber_guard:__init(storage) super ()
+function evaluator_need_robber_guard:__init(storage, name) super (nil, name)
 	self.stor = storage
 end
 
@@ -112,7 +112,7 @@ function add_to_binder(npc, char_ini)
 	operators["action_robber_guard"] = xr_actions_id.zmey_robber_guard_base + 1
 
 	-- // evaluators
-	manager:add_evaluator(properties["need_robber_guard"], this.evaluator_need_robber_guard(xr_motivator.storage[npc:id()].robber_guard))
+	manager:add_evaluator(properties["need_robber_guard"], this.evaluator_need_robber_guard(xr_motivator.storage[npc:id()].robber_guard, "robber_need_guard"))
 
 	local new_action = this.action_robber_guard_activity(npc, "action_robber_guard_activity", xr_motivator.storage[npc:id()].robber_guard)
 	new_action:add_precondition(world_property(stalker_ids.property_alive, true))
