@@ -151,8 +151,12 @@ SVS*	CShaderManager::_CreateVS		(LPCSTR name)
 		else if (HW.Caps.vertex.dwVersion>=CAP_VERSION(2,0))	target="vs_2_0";
 		else 													target="vs_1_1";
 
+
 		// vertex
-		_hr = D3DXCompileShaderFromFile	(cname, NULL, NULL, "main", target, D3DXSHADER_DEBUG | D3DXSHADER_PACKMATRIX_ROWMAJOR, &pShaderBuf, &pErrorBuf, NULL);
+		IReader*					fs			= Engine.FS.Open(cname);
+		_hr = D3DXCompileShader		(LPCSTR(fs->pointer()),fs->length(), NULL, NULL, "main", target, D3DXSHADER_DEBUG | D3DXSHADER_PACKMATRIX_ROWMAJOR, &pShaderBuf, &pErrorBuf, NULL);
+		Engine.FS.Close				(fs);
+
 		if (SUCCEEDED(_hr))
 		{
 			if (pShaderBuf)
@@ -209,7 +213,9 @@ SPS*	CShaderManager::_CreatePS			(LPCSTR name)
 		HRESULT						_hr			= S_OK;
 
 		// pixel
-		_hr = D3DXCompileShaderFromFile	(name, NULL, NULL, "p_main", "ps_2_0", D3DXSHADER_DEBUG | D3DXSHADER_PACKMATRIX_ROWMAJOR, &pShaderBuf, &pErrorBuf, NULL);
+		IReader*					fs			= Engine.FS.Open(cname);
+		_hr = D3DXCompileShader		(LPCSTR(fs->pointer()),fs->length(), NULL, NULL, "main", "ps_2_0", D3DXSHADER_DEBUG | D3DXSHADER_PACKMATRIX_ROWMAJOR, &pShaderBuf, &pErrorBuf, NULL);
+		Engine.FS.Close				(fs);
 		if (SUCCEEDED(_hr))
 		{
 			if (pShaderBuf)
