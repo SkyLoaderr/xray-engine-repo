@@ -350,6 +350,9 @@
 				RelativePath="..\..\..\include\ode\error.h">
 			</File>
 			<File
+				RelativePath="..\..\..\include\ode\export-dif.h">
+			</File>
+			<File
 				RelativePath="..\..\..\include\ode\geom.h">
 			</File>
 			<File
