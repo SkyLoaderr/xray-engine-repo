@@ -372,7 +372,7 @@ namespace
 
 }; // nameless namespace
 
-void Fsphere_compute(const Fvector *verts, int count)
+void Fsphere_compute(Fsphere& dest, const Fvector *verts, int count)
 {
 	Miniball<float> mb;
 
@@ -381,6 +381,6 @@ void Fsphere_compute(const Fvector *verts, int count)
 
 	mb.build	();
 
-	P.set		(mb.center());
-	R =			( sqrtf( mb.squared_radius() ));
+	dest.P.set	(mb.center());
+	dest.R =	( _sqrt( mb.squared_radius() ));
 }

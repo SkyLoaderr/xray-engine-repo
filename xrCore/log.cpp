@@ -6,7 +6,7 @@
 extern BOOL					LogExecCB		= TRUE;
 static string64				logFName		= "engine.log";
 static xrCriticalSection	logCS;
-std::xr_vector <LPCSTR>		LogFile;
+xr_vector <LPCSTR>			LogFile;
 static LogCallback			LogCB			= 0;
 
 void FlushLog			()
