@@ -22,6 +22,23 @@
 		<team>Stalker_master</team>
 	</character>
 
+	<!-- Bandit  -->	
+	<character id="bandit">
+		<team>Bandit_general</team>
+	</character>
+	<character id="bandit_novice">
+		<team>Bandit_novice</team>
+	</character>
+	<character id="bandit_general">
+		<team>Bandit_general</team>
+	</character>
+	<character id="bandit_veteran">
+		<team>Bandit_veteran</team>
+	</character>
+	<character id="bandit_master">
+		<team>Bandit_master</team>
+	</character>
+
 	<!-- Soldier  -->
 	<character id="soldier">
 		<team>Soldier_general</team>
