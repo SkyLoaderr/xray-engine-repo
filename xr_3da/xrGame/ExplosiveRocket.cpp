@@ -98,6 +98,18 @@ void CExplosiveRocket::PH_A_CrPr			()
 	inherited::PH_A_CrPr		();
 }
 
+#ifdef DEBUG
+void CExplosiveRocket::PH_Ch_CrPr			()
+{
+	inherited::PH_Ch_CrPr		();
+}
+
+void CExplosiveRocket::OnRender				()
+{
+	inherited::OnRender			();
+}
+#endif
+
 void CExplosiveRocket::reinit				()
 {
 	inherited::reinit			();

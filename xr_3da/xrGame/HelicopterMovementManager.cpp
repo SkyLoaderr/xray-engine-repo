@@ -627,9 +627,9 @@ void CHelicopterMovManager::makeSmoothKeyPath(	float time_from,
 				continue;
 
 //				if(i <= vKeys.size()-2 )
-					insertRounding(vKeys[i-1], p, ROUND_RADIUS, vTmpKeys);
-				++i;
-				continue;
+//					insertRounding(vKeys[i-1], p, ROUND_RADIUS, vTmpKeys);
+//				++i;
+//				continue;
 			}else
 				vTmpKeys.push_back(p);
 		}else

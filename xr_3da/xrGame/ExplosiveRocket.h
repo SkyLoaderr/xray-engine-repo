@@ -47,6 +47,10 @@ public:
 	virtual void			make_Interpolation	();
 	virtual void			PH_B_CrPr			(); // actions & operations before physic correction-prediction steps
 	virtual void			PH_I_CrPr			(); // actions & operations after correction before prediction steps
+#ifdef DEBUG
+	virtual void			PH_Ch_CrPr			(); // 
+	virtual void			OnRender			();
+#endif
 	virtual void			PH_A_CrPr			(); // actions & operations after phisic correction-prediction steps
 	virtual void			reinit				();
 	virtual void			reload				(LPCSTR section);

@@ -432,6 +432,15 @@ void CAI_Rat::PH_I_CrPr			()
 	CEatableItem::PH_I_CrPr		();
 }
 
+#ifdef DEBUG
+void CAI_Rat::PH_Ch_CrPr		()
+{
+	inherited::PH_Ch_CrPr		();
+	CEatableItem::PH_Ch_CrPr	();
+}
+#endif
+
+
 void CAI_Rat::PH_A_CrPr			()
 {
 	inherited::PH_A_CrPr		();
