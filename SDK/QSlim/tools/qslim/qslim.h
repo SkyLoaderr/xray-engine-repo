@@ -33,6 +33,7 @@ enum OutputFormat { SMF, PM, MMF, LOG, IV, VRML };
 extern float slim_max_error;
 extern unsigned int face_target;
 extern int slim_mode;
+extern int cam_mode;
 extern int placement_policy;
 extern double boundary_weight;
 extern int weighting_policy;

@@ -27,8 +27,12 @@ public:
 
     void look_at(const MxBounds&, double ratio=1.333333);
 
+	bool arc_ball;
+
     void apply();
     void apply(GLenum mode);
+
+	MxCamera(){arc_ball=true;}
 };
 
 

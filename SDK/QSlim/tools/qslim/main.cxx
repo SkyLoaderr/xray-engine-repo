@@ -14,6 +14,7 @@
 
 // Configuration variables and initial values
 //
+int cam_mode = 0; // 0 - plane, 1 - arcball
 int slim_mode = 0; // 0 - edge, 1 - face, 2 - prop
 
 extern float slim_max_error=1.f;

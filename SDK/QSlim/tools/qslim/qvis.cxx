@@ -380,6 +380,7 @@ main(int argc, char **argv)
 
     process_cmdline(argc, argv);
 
+	gui.set_camera_mode(cam_mode);
     // No files were specified on the command line,
     // present the user with a file selector.
     //

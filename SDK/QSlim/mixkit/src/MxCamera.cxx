@@ -27,16 +27,15 @@ void MxCamera::look_at(const MxBounds& bounds, double ratio)
     fovy = 60.0;
     aspect = ratio;
 
-    znear = d/20;
+    znear = 0.1f;//d/20;
     zfar = 10*d;
 }
 
 void MxCamera::apply()
 {
     gluPerspective(fovy, aspect, znear, zfar);
-    gluLookAt(from[X], from[Y], from[Z],
-              at[X], at[Y], at[Z],
-              up[X], up[Y], up[Z]);
+	if (arc_ball)	gluLookAt(from[X], from[Y], from[Z], at[X], at[Y], at[Z], up[X], up[Y], up[Z]);
+	else			gluLookAt(0,0,0, 0,0,1, 0,1,0);
 }
 
 void MxCamera::apply(GLenum mode)

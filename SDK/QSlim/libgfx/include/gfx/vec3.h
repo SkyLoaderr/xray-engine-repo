@@ -66,6 +66,15 @@ public:
     inline TVec3& operator-=(const TVec3& v);
     inline TVec3& operator*=(T s);
     inline TVec3& operator/=(T s);
+
+	inline TVec3& setHP	(T h, T p)
+	{
+        T _ch=cos(h), _cp=cos(p), _sh=sin(h), _sp=sin(p);
+        elt[0] = -_cp*_sh;
+        elt[1] = _sp;
+        elt[2] = _cp*_ch;
+		return *this;	
+    }
 };
 
 ////////////////////////////////////////////////////////////////////////

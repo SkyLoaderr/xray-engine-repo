@@ -22,6 +22,8 @@
 
 #include "MxGeom3D.h"
 #include <gfx/arcball.h>
+#include <gfx/trackball.h>
+#include <gfx/planeball.h>
 #include "MxCamera.h"
 
 class MxStdGUI : public MxGUI
@@ -33,9 +35,9 @@ protected:
     MxDynBlock<MxStdModel *> models;
     uint current;
 
-    MxBounds bounds;
-    Arcball arcball;
-    MxCamera camera;
+    MxBounds	bounds;
+	Baseball*	cam_ball;
+    MxCamera	camera;
 
     uint pick_something(int *where, double radius, uint mode);
     void begin_redraw();
@@ -65,7 +67,9 @@ public:
     // Public interface introduced in this class
     //
     MxStdGUI();
+	~MxStdGUI();
 
+	void set_camera_mode(int cam_mode);
     void asp_setup(MxAspStore *store);
 
     void attach_model(MxStdModel *m0) { attach_models(&m0); }

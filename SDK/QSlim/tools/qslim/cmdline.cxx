@@ -19,7 +19,7 @@
 
 #include "qslim.h"
 
-static char *options = "O:B:W:t:Fo:Po:m:c:rjI:M:qh";
+static char *options = "O:B:W:t:ao:Fo:Po:m:c:rjI:M:qh";
 
 static char *usage_string =
 "-O <n>         Optimal placement policy:\n"
@@ -38,6 +38,7 @@ static char *usage_string =
 "                       {smf, iv, vrml, pm, mmf, log}\n"
 "-q		Be quiet.\n"
 "-j             Join only; do not remove any faces.\n"
+"-a				Arcball camera usage.\n"
 "-h             Print help.\n"
 "\n";
 
@@ -72,6 +73,10 @@ void process_cmdline(int argc, char **argv)
     {
 	switch( opt )
 	{
+	case 'a':
+		cam_mode = 1;
+		break;
+
 	case 'O':
 	    ival = atoi(optarg);
 	    if( ival<MX_PLACE_ENDPOINTS || ival>MX_PLACE_OPTIMAL )

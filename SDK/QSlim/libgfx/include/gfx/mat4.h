@@ -58,6 +58,23 @@ public:
     inline Mat4& operator/=(double s);
 
     static Mat4 I();
+
+	inline Mat4& setHPB	(double h, double p, double b)
+	{
+        double _ch, _cp, _cb, _sh, _sp, _sb, _cc, _cs, _sc, _ss;
+
+        _sh = sin(h); _ch = cos(h);
+        _sp = sin(p); _cp = cos(p);
+        _sb = sin(b); _cb = cos(b);
+        _cc = _ch*_cb; _cs = _ch*_sb; _sc = _sh*_cb; _ss = _sh*_sb;
+
+		row[0][0]=_cc-_sp*_ss;	row[0][1]=-_cp*_sb;	row[0][2]=_sp*_cs+_sc;	row[0][3]=0;
+		row[1][0]=_sp*_sc+_cs;	row[1][1]=_cp*_cb;	row[1][2]=_ss-_sp*_cc;	row[1][3]=0;
+		row[2][0]=-_cp*_sh;		row[2][1]=_sp;		row[2][2]=_cp*_ch;		row[2][3]=0;
+		row[3][0]=0;			row[3][1]=0;		row[3][2]=0;			row[3][3]=1;
+
+		return *this; 
+    }
 };
 
 ////////////////////////////////////////////////////////////////////////
