@@ -1,13 +1,30 @@
+function movement_callback (object, action_type, index)
+	local str = object:patrol ()
+  	printf ("Patrol point %d on path %s",index, str)
+	if index == 7 then
+	   action_first (object, move (move.standing, move.stand, move.line, patrol (str)),
+					 anim ("prisluh"), cond (cond.anim_end))	
+	   end	
+	local ptr = patrol (str)
+	if ptr:flag (index, 1) == true then printf ("Razvilka") end
+	if ptr:flag (index, 2) == true then printf ("End node") end
+
+end
+
+
 
 function main ()
     stalker = get_level_object ("stalker1")
 
     stalker:script (true, s_test.script_name ())
+  	stalker:set_callback (s_test.movement_callback, game_object.movement)
 
-    action (stalker, move (move.standing, move.stand, move.line, patrol ("way_stalker")),
+    action (stalker, move (move.standing, move.walk, move.line, patrol ("way0000")),
             look (look.search), anim (anim.free), cond (cond.time_end, 10000000))
 
-    while true do wait () end
+    while true do 
+		  wait () 
+		 end
 
     stalker:script (false, s_test.script_name ())
 
