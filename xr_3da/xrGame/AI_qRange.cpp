@@ -7,29 +7,19 @@ void CAI_Space::q_Range(DWORD StartNode, const Fvector& BasePos, float Range, AI
 
 	Device.Statistic.AI_Range.Begin	();
 
-	/**
-	{
-		for (int i=0 ; i<m_header.count; i++)	
-			q_mark[i] = false;
-	}
-	/**/
 	// Initialize
 	BOOL bStop = FALSE;
 	NodePosition QueryPos;
 	PackPosition(QueryPos,BasePos);
 	q_stack.clear();
 	q_stack.push_back(StartNode);
-	q_mark [StartNode] = true;
+	q_mark [StartNode]	+= 1;
 	NodeCompressed*	Base = m_nodes_ptr	[StartNode];
-	Estimator.BestNode = StartNode;
-	Estimator.BestCost = MAX_NODE_ESTIMATION_COST;
-	Estimator.BestCost = Estimator.Estimate(Base,u_SqrDistance2Node(BasePos,Base),bStop);
-	float range_sqr	= Range*Range;
+	Estimator.BestNode	= StartNode;
+	Estimator.BestCost	= MAX_NODE_ESTIMATION_COST;
+	Estimator.BestCost	= Estimator.Estimate(Base,u_SqrDistance2Node(BasePos,Base),bStop);
+	float range_sqr		= Range*Range;
 
-	// Cycle
-	for (int i=0; i<Estimator.taMemberNodes.size(); i++)
-		q_mark[Estimator.taMemberNodes[i]] = true;
-	
 	// Cycle
 	for (DWORD it=0; it<q_stack.size(); it++) {
 		DWORD ID = q_stack[it];
@@ -52,7 +42,7 @@ void CAI_Space::q_Range(DWORD StartNode, const Fvector& BasePos, float Range, AI
 				continue;
 
 			// register
-			q_mark[Test]		= true;
+			q_mark[Test]		+= 1;
 			q_stack.push_back	(Test);
 
 			// estimate
@@ -68,15 +58,12 @@ void CAI_Space::q_Range(DWORD StartNode, const Fvector& BasePos, float Range, AI
 	}
 
 	// Clear q_marks
-	for ( i=0; i<Estimator.taMemberNodes.size(); i++)
-		q_mark[Estimator.taMemberNodes[i]] = false;
-	
 	{
 		DWORD* it = q_stack.begin();
 		DWORD* end = q_stack.end();
 		for ( ; it!=end; it++)	
-			q_mark[*it] = false;
-		q_mark [StartNode]	= false;
+			q_mark[*it] -= 1;
+		q_mark [StartNode]	-= 1;
 	}
 
 	Device.Statistic.AI_Range.End();
