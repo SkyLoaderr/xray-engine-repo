@@ -94,17 +94,17 @@ function save_dialog:InitControls()
 
 
 	------------LIST-----------------
---[[    local txt_list   = CUIFrameWindow()  --background for ListView
+    local txt_list   = CUIFrameWindow()  --background for ListView
     txt_list:SetAutoDelete(true)
     txt_list:Init("ui\\ui_pop_up", list_rect.x, list_rect.y, list_rect.width, list_rect.height)
     -- txt_list:ClipperOn()
     main_frame:AttachChild(txt_list) 
-]]
+
     local list_wnd = CUIListWnd()
     list_wnd:SetAutoDelete(true)
     list_wnd:SetWindowName("list_window")
     list_wnd:Init(list_rect.x, list_rect.y, list_rect.width, list_rect.height)
-    list_wnd:SetItemHeight(15)
+    list_wnd:SetItemHeight(25)
     list_wnd:EnableScrollBar(true)
     main_frame:AttachChild(list_wnd)
 
