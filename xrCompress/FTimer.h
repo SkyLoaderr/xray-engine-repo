@@ -2,7 +2,7 @@
 #define _FTIMER_H_
 #pragma once
 
-class CTimer {
+class XRCORE_API CTimer {
 private:
 	u64		qwStartTime;
 	float	fResult;

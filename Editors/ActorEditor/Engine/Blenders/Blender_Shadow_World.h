@@ -8,6 +8,7 @@ class ENGINE_API CBlender_ShWorld : public CBlender
 {
 public:
 	virtual		LPCSTR		getComment()	{ return "INTERNAL: shadow projecting";	}
+	virtual		BOOL		canBeLMAPped()	{ return FALSE; }
 
 	virtual		void		Save			(IWriter&  FS);
 	virtual		void		Load			(IReader&	FS, WORD version);

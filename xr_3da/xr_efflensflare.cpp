@@ -2,9 +2,6 @@
 #pragma hdrstop
 
 #include "xr_efflensflare.h"
-#include "xr_trims.h"
-#include "xr_tokens.h"
-#include "xr_ini.h"
 
 #ifdef _LEVEL_EDITOR
 	#include "ELight.h"
@@ -95,18 +92,18 @@ void CLensFlare::Load( CInifile* pIni, LPCSTR section )
 	LPCSTR		T,R,O,P;
 	string256	name;
 	float r, o, p;
-	m_Flags.set	(flSource,pIni->ReadBOOL ( section,"source" ));
+	m_Flags.set	(flSource,pIni->r_bool(section,"source" ));
 	if (m_Flags.is(flSource)){
-		T = pIni->ReadSTRING ( section,"source_texture" );
-		r = pIni->ReadFLOAT	 ( section,"source_radius" );
+		T = pIni->r_string 	( section,"source_texture" );
+		r = pIni->r_float	( section,"source_radius" );
 		SetSource(r,T);
 	}
-	m_Flags.set	(flFlare,pIni->ReadBOOL ( section,"flares" ));
+	m_Flags.set	(flFlare,pIni->r_bool ( section,"flares" ));
 	if (m_Flags.is(flFlare)){
-		T = pIni->ReadSTRING ( section,"flare_textures" );
-		R = pIni->ReadSTRING ( section,"flare_radius" );
-		O = pIni->ReadSTRING ( section,"flare_opacity");
-		P = pIni->ReadSTRING ( section,"flare_position");
+		T = pIni->r_string 	( section,"flare_textures" );
+		R = pIni->r_string 	( section,"flare_radius" );
+		O = pIni->r_string 	( section,"flare_opacity");
+		P = pIni->r_string 	( section,"flare_position");
 		u32 tcnt = _GetItemCount(T);
 		for (u32 i=0; i<tcnt; i++){
 			_GetItem(R,i,name); r=(float)atof(name);
@@ -116,11 +113,11 @@ void CLensFlare::Load( CInifile* pIni, LPCSTR section )
 			AddFlare(r,o,p,name);
 		}
 	}
-	m_Flags.set	(flGradient,pIni->ReadTOKEN( section, "gradient", BOOL_token));
+	m_Flags.set	(flGradient,CInifile::IsBOOL(pIni->r_string( section, "gradient")));
 	if (m_Flags.is(flGradient)){
-		T = pIni->ReadSTRING( section,"gradient_texture" );
-		r = pIni->ReadFLOAT	( section,"gradient_radius"  );
-		o = pIni->ReadFLOAT	( section,"gradient_opacity" );
+		T = pIni->r_string( section,"gradient_texture" );
+		r = pIni->r_float	( section,"gradient_radius"  );
+		o = pIni->r_float	( section,"gradient_opacity" );
 		SetGradient(r,o,T);
 	}
 

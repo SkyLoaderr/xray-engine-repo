@@ -8,6 +8,7 @@ class ENGINE_API CBlender_Blur : public CBlender
 {
 public:
 	virtual		LPCSTR		getComment()	{ return "INTERNAL: blur";	}
+	virtual		BOOL		canBeLMAPped()	{ return FALSE; }
 
 	virtual		void		Save			(IWriter&  FS);
 	virtual		void		Load			(IReader&	FS, WORD version);

@@ -13,6 +13,7 @@ class ENGINE_API CBlender_Vertex : public CBlender
 public:
 	virtual		LPCSTR		getComment()	{ return "LEVEL: diffuse*base";	}
 	virtual		BOOL		canBeDetailed()	{ return TRUE; }
+	virtual		BOOL		canBeLMAPped()	{ return FALSE; }
 
 	virtual		void		Save			(IWriter&  FS);
 	virtual		void		Load			(IReader&	FS, WORD version);

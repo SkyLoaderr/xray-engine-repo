@@ -355,6 +355,9 @@
 				RelativePath="FS_internal.h">
 			</File>
 			<File
+				RelativePath="FTimer.h">
+			</File>
+			<File
 				RelativePath="LocatorAPI.cpp">
 			</File>
 			<File

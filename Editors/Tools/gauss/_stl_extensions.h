@@ -24,6 +24,7 @@ struct pred_stri	: public std::binary_function<char*, char*, bool>
 #define DEFINE_MMAP(K,T,N,I)		typedef std::multimap<K,T> N;typedef N::iterator I;
 #define DEFINE_SVECTOR(T,C,N,I)		typedef svector<T,C> N;		typedef N::iterator I;
 #define DEFINE_SET(T,N,I)			typedef std::set<T> N;		typedef N::iterator I;
+#define DEFINE_SET_PRED(T,N,I,P)	typedef std::set<T,P> N;	typedef N::iterator I;
 #define DEFINE_STACK(T,N)			typedef std::stack<T> N;
 
 #include "FixedVector.h"

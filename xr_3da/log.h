@@ -19,6 +19,7 @@ void CloseLog					();
 void FlushLog					();
 
 extern 		XRCORE_API	std::vector <LPCSTR>		LogFile;
+extern 		XRCORE_API	BOOL						LogExecCB;
 
 #endif
 

@@ -15,6 +15,7 @@ public:
 	xrP_BOOL	oBlend;
 public:
 	virtual		LPCSTR		getComment()	{ return "LEVEL: lmap*base.aref";	}
+	virtual		BOOL		canBeLMAPped()	{ return TRUE; }
 
 	virtual		void		Save			(IWriter&  FS);
 	virtual		void		Load			(IReader&	FS, WORD version);

@@ -9,6 +9,7 @@ class ENGINE_API CBlender_Editor_Selection : public CBlender
 	string64	oT_Factor;
 public:
 	virtual		LPCSTR		getComment()	{ return "EDITOR: selection"; }
+	virtual		BOOL		canBeLMAPped()	{ return FALSE; }
 	
 	virtual		void		Save			(IWriter&  FS);
 	virtual		void		Load			(IReader&	FS, WORD version);

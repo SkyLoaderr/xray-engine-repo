@@ -15,6 +15,7 @@ public:
 	string64	oT2_xform;		// xform for secondary texture
 public:
 	virtual		LPCSTR		getComment()	{ return "MODEL: env^base";	}
+	virtual		BOOL		canBeLMAPped()	{ return FALSE; }
 
 	virtual		void		Save			(IWriter&  FS);
 	virtual		void		Load			(IReader&	FS, WORD version);

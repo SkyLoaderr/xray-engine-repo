@@ -8,6 +8,7 @@ class ENGINE_API CBlender_ShTex : public CBlender
 {
 public:
 	virtual		LPCSTR		getComment()	{ return "INTERNAL: shadow rendering";	}
+	virtual		BOOL		canBeLMAPped()	{ return FALSE; }
 
 	virtual		void		Save			(IWriter&  FS);
 	virtual		void		Load			(IReader&	FS, WORD version);

@@ -53,7 +53,7 @@ public:
 
 class CALifeMonsterParams : public IPureServerInitObject {
 public:
-	int								m_iHealth;
+	s32								m_iHealth;
 	u16								ID;
 	
 	virtual void					STATE_Write(NET_Packet &tNetPacket);

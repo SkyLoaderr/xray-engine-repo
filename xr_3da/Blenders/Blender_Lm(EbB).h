@@ -19,6 +19,7 @@ public:
 	void		compile_L	(CBlender_Compile& C);
 public:
 	virtual		LPCSTR		getComment()	{ return "LEVEL: lmap*(env^base)";	}
+	virtual		BOOL		canBeLMAPped()	{ return TRUE; }
 
 	virtual		void		Save			(IWriter&  FS);
 	virtual		void		Load			(IReader&	FS, WORD version);

@@ -4,6 +4,7 @@
 #include "resource.h"
 #include "log.h"
 
+extern BOOL					LogExecCB		= TRUE;
 static string64				logFName		= "engine.log";
 static xrCriticalSection	logCS;
 std::vector <LPCSTR>		LogFile;
@@ -31,7 +32,7 @@ void AddOne				(const char *split)
 	LogFile.push_back	(split);
 
 	//exec CallBack
-	if (LogCB)			LogCB(split);
+	if (LogExecCB&&LogCB)LogCB(split);
 
 	logCS.Leave			();
 }

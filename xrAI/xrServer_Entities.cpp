@@ -1,21 +1,9 @@
 #include "stdafx.h"
 #pragma hdrstop
 
-#include "..\\xr_ini.h"
 #include "game_base.h"
 #include "clsid_game.h"
 #include "xrServer_Entities.h"
-
-#ifdef _EDITOR
-	#include "xr_tokens.h"
-	#include "xr_trims.h"
-#else
-	#ifdef AI_COMPILER
-		#include "xr_trims.h"
-	#else
-		#include "..\\xr_trims.h"
-	#endif
-#endif
 
 xrSE_Weapon::xrSE_Weapon()
 {
@@ -78,11 +66,11 @@ void	xrSE_Weapon::OnEvent		(NET_Packet& P, u16 type, u32 time, u32 sender )
 
 u8		xrSE_Weapon::get_slot		()
 {
-	return (u8) pSettings->ReadINT	(s_name,"slot");
+	return (u8) pSettings->r_u8		(s_name,"slot");
 }
 u16		xrSE_Weapon::get_ammo_limit	()
 {
-	return (u16) pSettings->ReadINT	(s_name,"ammo_limit");
+	return (u16) pSettings->r_u16	(s_name,"ammo_limit");
 }
 u16		xrSE_Weapon::get_ammo_total	()
 {
@@ -94,7 +82,7 @@ u16		xrSE_Weapon::get_ammo_elapsed()
 }
 u16		xrSE_Weapon::get_ammo_magsize()
 {
-	if(pSettings->LineExists(s_name,"ammo_mag_size")) return (u16) pSettings->ReadINT	(s_name,"ammo_mag_size");
+	if(pSettings->line_exist(s_name,"ammo_mag_size")) return pSettings->r_u16(s_name,"ammo_mag_size");
 	else return 0;
 }
 
@@ -626,13 +614,13 @@ void CALifeMonsterAbstract::Init(LPCSTR caSection)
 	
 	m_tpaTerrain.clear				();
 	LPCSTR							S;
-	if (pSettings->LineExists(caSection,"monster_section")) {
-		S							= pSettings->ReadSTRING(pSettings->ReadSTRING(caSection,"monster_section"),"terrain");
-		m_fGoingSpeed				= pSettings->ReadFLOAT	(pSettings->ReadSTRING(caSection,"monster_section"), "going_speed");
+	if (pSettings->line_exist		(caSection,"monster_section")) {
+		S							= pSettings->r_string	(pSettings->r_string(caSection,"monster_section"),"terrain");
+		m_fGoingSpeed				= pSettings->r_float	(pSettings->r_string(caSection,"monster_section"), "going_speed");
 	}
 	else {
-		S							= pSettings->ReadSTRING(caSection,"terrain");
-		m_fGoingSpeed				= pSettings->ReadFLOAT	(caSection, "going_speed");
+		S							= pSettings->r_string	(caSection,"terrain");
+		m_fGoingSpeed				= pSettings->r_float	(caSection, "going_speed");
 	}
 	u32								N = _GetItemCount(S);
 	R_ASSERT						(((N % (LOCATION_TYPE_COUNT + 2)) == 0) && (N));
@@ -1128,35 +1116,34 @@ void xrGraphPoint::FillProp			(LPCSTR pref, PropItemVec& items)
 {
     CInifile *Ini 					= 0;
     if(locations[0].empty()||locations[1].empty()||locations[2].empty()||locations[3].empty()||level_ids.empty()){
-	    string256 gm_name			= "game.ltx";
-    	Engine.FS.m_GameRoot.Update	(gm_name);
-    	R_ASSERT2(Engine.FS.Exist(gm_name),"Couldn't find file 'game.ltx'");
+	    string256 gm_name;
+        FS.update_path				(gm_name,_game_data_,"game.ltx");
+    	R_ASSERT2(FS.exist(gm_name),"Couldn't find file 'game.ltx'");
 		Ini							= xr_new<CInifile>(gm_name);
     }
     for (int i=0; i<LOCATION_TYPE_COUNT; i++)
 		if(locations[i].empty()){
 			string256					caSection, T;
 			strconcat					(caSection,SECTION_HEADER,itoa(i,T,10));
-			R_ASSERT					(Ini->SectionExists(caSection));
+			R_ASSERT					(Ini->section_exist(caSection));
 			LPCSTR						N,V;
-			for (u32 k = 0; Ini->ReadLINE(caSection,k,&N,&V); k++) {
+			for (u32 k = 0; Ini->r_line(caSection,k,&N,&V); k++) {
    				locations[i].push_back(TokenValue4::Item());
 				TokenValue4::Item& val	= locations[i].back();
 				val.str					= V;
 				val.ID					= atoi(N);
 			}
 		}
-    
 	if(level_ids.empty()){
-		R_ASSERT					(Ini->SectionExists("levels"));
+		R_ASSERT					(Ini->section_exist("levels"));
         LPCSTR N,V;
-        for (u32 k = 0; Ini->ReadLINE("levels",k,&N,&V); k++) {
-			R_ASSERT(Ini->SectionExists(N));
+        for (u32 k = 0; Ini->r_line("levels",k,&N,&V); k++) {
+			R_ASSERT(Ini->section_exist(N));
    			level_ids.push_back		(TokenValue4::Item());
             TokenValue4::Item& val	= level_ids.back();
-			LPCSTR					S = Ini->ReadSTRING(N,"caption");
+			LPCSTR					S = Ini->r_string(N,"caption");
 			val.str					= S;
-            val.ID					= Ini->ReadINT(N,"id");
+            val.ID					= Ini->r_u32(N,"id");
         }
     }
     if (Ini)	xr_delete(Ini);
@@ -1226,9 +1213,9 @@ void xrSE_Human::FillProp(LPCSTR pref, PropItemVec& items)
 //--------------------------------------------------------------------
 xrServerEntity*	F_entity_Create		(LPCSTR name)
 {
-	if (!pSettings->SectionExists(name)) return 0;
+	if (!pSettings->section_exist(name)) return 0;
     
-	CLASS_ID cls = pSettings->ReadCLSID(name,"class");
+	CLASS_ID cls = pSettings->r_clsid(name,"class");
 
 	switch (cls){
 	case CLSID_OBJECT_ACTOR:		return xr_new<xrSE_Actor>			();

@@ -81,4 +81,30 @@ IC char*						strconcat				( char* dest, const char* S1, const char* S2, const c
 IC char*						strext					( const char* S )
 {	return (char*) strchr(S,'.'); }
 
+IC char*						timestamp				(string64& dest)
+{
+	string64	temp;
+
+	/* Set time zone from TZ environment variable. If TZ is not set,
+	* the operating system is queried to obtain the default value 
+	* for the variable. 
+	*/
+	_tzset		();
+	u32			it;
+
+	// date
+	_strdate	( temp );
+	for (it=0; it<strlen(temp); it++)
+		if ('/'==temp[it]) temp[it]='-';
+	strconcat	( dest, temp, "_" );
+
+	// time
+	_strtime	( temp );
+	for (it=0; it<strlen(temp); it++)
+		if (':'==temp[it]) temp[it]='-';
+	strcat		( dest, temp);
+    return dest;
+}
+
+
 #endif

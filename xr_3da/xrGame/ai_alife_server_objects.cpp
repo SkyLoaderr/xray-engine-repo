@@ -9,17 +9,7 @@
 #include "stdafx.h"
 #pragma hdrstop
 
-#include "..\\xr_ini.h"
 #include "xrServer_Entities.h"
-#ifdef _EDITOR
-	#include "xr_trims.h"
-#else
-	#ifdef AI_COMPILER
-		#include "xr_trims.h"
-	#else
-		#include "..\\xr_trims.h"
-	#endif
-#endif
 
 // CALifeObject
 void CALifeObject::STATE_Write(NET_Packet &tNetPacket)
@@ -94,7 +84,7 @@ void CALifeMonsterParams::UPDATE_Read(NET_Packet &tNetPacket)
 
 void CALifeMonsterParams::Init(LPCSTR caSection)
 {
-	m_iHealth					= pSettings->ReadINT(caSection, "health");
+	m_iHealth					= pSettings->r_s32(caSection, "health");
 };
 
 // CALifeTraderParams
@@ -129,9 +119,9 @@ void CALifeTraderParams::Init(LPCSTR caSection)
 	m_fCumulativeItemMass		= 0.0f;
 	m_dwMoney					= 0;
 	m_tpItemIDs.clear			();
-	if (pSettings->LineExists(caSection, "money"))
-		m_dwMoney = pSettings->ReadINT(caSection, "money");
-	m_tRank						= EStalkerRank(pSettings->ReadINT(caSection, "rank"));
+	if (pSettings->line_exist(caSection, "money"))
+		m_dwMoney 				= pSettings->r_u32(caSection, "money");
+	m_tRank						= EStalkerRank(pSettings->r_u32(caSection, "rank"));
 };
 
 // CALifeHumanParams
@@ -192,7 +182,7 @@ void CALifeTraderAbstract::Init(LPCSTR caSection)
 {
 	m_tpEvents.clear			();
 	m_tpTaskIDs.clear			();
-	m_fMaxItemMass				= pSettings->ReadFLOAT(caSection, "max_item_mass");
+	m_fMaxItemMass				= pSettings->r_float(caSection, "max_item_mass");
 };
 
 // CALifeEventGroup
@@ -402,7 +392,7 @@ void CALifeZone::UPDATE_Read(NET_Packet &tNetPacket)
 
 void CALifeZone::Init(LPCSTR caSection)
 {
-	m_tAnomalousZone			= EAnomalousZoneType(pSettings->ReadINT(caSection, "anomaly_type"));
+	m_tAnomalousZone			= EAnomalousZoneType(pSettings->r_u32(caSection, "anomaly_type"));
 };
 
 // CALifeDynamicObject
@@ -456,10 +446,10 @@ void CALifeItem::UPDATE_Read(NET_Packet &tNetPacket)
 void CALifeItem::Init(LPCSTR caSection)
 {
 	inherited::Init				(caSection);
-	m_fMass						= pSettings->ReadFLOAT(caSection, "ph_mass");
-	m_dwCost					= pSettings->ReadINT(caSection, "cost");
-	if (pSettings->LineExists	(caSection, "health_value"))
-		m_iHealthValue			= pSettings->ReadINT(caSection, "health_value");
+	m_fMass						= pSettings->r_float(caSection, "ph_mass");
+	m_dwCost					= pSettings->r_u32(caSection, "cost");
+	if (pSettings->line_exist	(caSection, "health_value"))
+		m_iHealthValue			= pSettings->r_s32(caSection, "health_value");
 	else
 		m_iHealthValue			= 0;
 };
@@ -647,7 +637,7 @@ void CALifeHumanAbstract::Init(LPCSTR caSection)
 	m_tTaskState				= eTaskStateNoTask;
 	m_dwCurNode					= u32(-1);
 	m_dwCurTaskLocation			= u32(-1);
-	m_fSearchSpeed				= pSettings->ReadFLOAT				(caSection, "search_speed");
+	m_fSearchSpeed				= pSettings->r_float(caSection, "search_speed");
 };
 
 // CALifeHuman

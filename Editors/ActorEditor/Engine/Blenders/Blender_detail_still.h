@@ -14,6 +14,7 @@ public:
 	xrP_BOOL	oBlend;
 public:
 	virtual		LPCSTR		getComment()	{ return "LEVEL: detail objects";	}
+	virtual		BOOL		canBeLMAPped()	{ return FALSE; }
 
 	virtual		void		Save			(IWriter&  FS);
 	virtual		void		Load			(IReader&	FS, WORD version);

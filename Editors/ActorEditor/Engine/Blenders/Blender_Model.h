@@ -12,6 +12,7 @@ class ENGINE_API CBlender_Model : public CBlender
 {
 public:
 	virtual		LPCSTR		getComment()	{ return "MODEL: Default"; }
+	virtual		BOOL		canBeLMAPped()	{ return FALSE; }
 	
 	virtual		void		Save			(IWriter&  FS);
 	virtual		void		Load			(IReader&	FS, WORD version);

@@ -13,6 +13,7 @@ class ENGINE_API CBlender_B : public CBlender
 public:
 	virtual		LPCSTR		getComment()	{ return "LEVEL: Implicit";	}
 	virtual		BOOL		canBeDetailed()	{ return TRUE; }
+	virtual		BOOL		canBeLMAPped()	{ return FALSE; }
 
 	virtual		void		Save			(IWriter&  FS);
 	virtual		void		Load			(IReader&	FS, WORD version);

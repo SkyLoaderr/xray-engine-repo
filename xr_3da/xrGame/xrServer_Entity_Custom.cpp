@@ -69,7 +69,6 @@ BOOL	xrServerEntity::Spawn_Read		(NET_Packet& P)
 }
 
 #ifdef _EDITOR
-#include "xr_tokens.h"
 #include "PropertiesListHelper.h"
 
 xr_token game_types[]={

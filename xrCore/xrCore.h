@@ -79,6 +79,7 @@
 #include <io.h>
 #include <fcntl.h>
 #include <sys\stat.h>
+#include <utime.h>
 
 #ifndef DEBUG
 	#ifdef _DEBUG
@@ -176,6 +177,7 @@ using namespace std;
 #include "xr_trims.h"
 #include "xr_ini.h"
 #include "LocatorAPI.h"
+#include "FTimer.h"
 
 template <class T>
 class destructor

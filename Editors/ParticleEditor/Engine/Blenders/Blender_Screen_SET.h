@@ -19,6 +19,7 @@ class ENGINE_API CBlender_Screen_SET : public CBlender
 	xrP_BOOL	oClamp;
 public:
 	virtual		LPCSTR		getComment()	{ return "basic (simple)"; }
+	virtual		BOOL		canBeLMAPped()	{ return FALSE; }
 	
 	virtual		void		Save			(IWriter&  FS);
 	virtual		void		Load			(IReader&	FS, WORD version);
