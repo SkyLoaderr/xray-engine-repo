@@ -16,7 +16,7 @@ function evaluator_satiety:__init (treshold, name) super ()
 end
 ----------------------
 function evaluator_satiety:evaluate ()
---    printf ("CURRENT SATIETY %f", self.object.satiety)
+    --printf ("CURRENT SATIETY %f", self.object.satiety)
     if self.object.satiety < self.treshold then
        self.value = true
     end    
