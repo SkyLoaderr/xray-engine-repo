@@ -143,7 +143,7 @@ IC	void CSpaceRestrictionManager::update_restrictions		(ref_str &restrictions, r
 //	}
 
 	// commented code explains what we do here (actually, join or intersect token strings)
-	strcpy						(m_temp2,add ? *restrictions ? : *restrictions : "" : "");
+	strcpy						(m_temp2,add ? *restrictions ? *restrictions : "" : "");
 	for (u32 i=0, n=_GetItemCount(add ? *update : *restrictions), count = xr_strlen(m_temp2); i<n; ++i)
 		if (!restriction_presented(add ? m_temp2 : update,_GetItem(add ? *update : *restrictions,i,m_temp1))) {
 			if (count)
