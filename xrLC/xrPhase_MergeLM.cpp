@@ -154,7 +154,7 @@ void CBuild::xrPhase_MergeLM()
 					lmap->Capture		(Layer[it],rT.a.x,rT.a.y,rT.SizeX(),rT.SizeY(),bRotated,L_base);
 					Layer[it]->bMerged	= TRUE;
 				}
-				Progress(float(it)/float(merge_count));
+				Progress(sqrtf(float(it)/float(merge_count)));
 			}
 			Progress	(1.f);
 			
