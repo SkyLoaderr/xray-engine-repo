@@ -560,7 +560,8 @@ void game_cl_mp::OnPlayerKilled			(NET_Packet& P)
 			//suicide
 			if (KilledID == KillerID)
 			{
-				KMS.m_killer.m_name = NULL;
+				KMS.m_victim.m_name = NULL;
+//				KMS.m_victim.m_name = " ";
 
 				KMS.m_ext_info.m_shader = GetKillEventIconsShader();
 				KMS.m_ext_info.m_rect.x1 = 1*KILLEVENT_GRID_WIDTH;

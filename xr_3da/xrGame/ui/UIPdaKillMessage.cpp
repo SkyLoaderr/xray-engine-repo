@@ -37,7 +37,7 @@ CUIPdaKillMessage::~CUIPdaKillMessage(){
 
 void CUIPdaKillMessage::Init(KillMessageStruct& msg){
 #ifdef DEBUG
-	R_ASSERT2(xr_strlen(msg.m_victim.m_name), "CUIPdaKillMessage::Init(msg) - victim has no name");
+//	R_ASSERT2(xr_strlen(msg.m_victim.m_name), "CUIPdaKillMessage::Init(msg) - victim has no name");
 	R_ASSERT2(GetWidth(),  "CUIPdaKillMessage::Init(msg) - need to call ::Init(x, y, width, height) before");
 	R_ASSERT2(GetHeight(), "CUIPdaKillMessage::Init(msg) - need to call ::Init(x, y, width, height) before");
 #endif	
