@@ -258,6 +258,7 @@ function add_to_binder( obj )
     local base_id = xr_evaluators_id.chugai_escape_factory_bandits_base
     properties["escape_factory_bandit"] = base_id + 0
     properties["in_pos"]                = base_id + 1
+    properties["reaction"]              = xr_evaluators_id.reaction
 
     base_id = xr_actions_id.chugai_escape_factory_bandits_base
     operators["go_to_pos"] = base_id + 0
@@ -273,6 +274,7 @@ function add_to_binder( obj )
     local action = this.action_go_to_pos( "action_go_to_pos", way_name )
     action:add_precondition( world_property( stalker_ids.property_alive, true  ) )
     action:add_precondition( world_property( stalker_ids.property_enemy, false ) )
+    action:add_precondition( world_property( properties["reaction"],     false ) )
     action:add_effect      ( world_property( properties["in_pos"],       true  ) )
     manager:add_action     ( operators["go_to_pos"], action )
 
@@ -280,6 +282,7 @@ function add_to_binder( obj )
     action:add_precondition( world_property( stalker_ids.property_alive, true  ) )
     action:add_precondition( world_property( stalker_ids.property_enemy, false ) )
     action:add_precondition( world_property( properties["in_pos"],       true  ) )
+    action:add_precondition( world_property( properties["reaction"],     false ) )
     action:add_effect      ( world_property( properties["escape_factory_bandit"], false ) )
     manager:add_action     ( operators["stand"], action )
 
