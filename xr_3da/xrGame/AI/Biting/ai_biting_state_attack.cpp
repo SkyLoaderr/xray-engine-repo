@@ -43,7 +43,6 @@ void CBitingAttack::Init()
 {
 	LOG_EX("attack init");
 
-
 	IState::Init();
 
 	// Получить врага
@@ -92,10 +91,16 @@ void CBitingAttack::Init()
 	bAngrySubStateActive = false;
 
 	search_vertex_id = u32(-1);
+	
+	EnemySavedPos = m_tEnemy.obj->Position();
+	
 }
 
-#define TIME_WALK_PATH 5000
+#define TIME_WALK_PATH						5000
 #define REAL_DIST_THROUGH_TRACE_THRESHOLD	6.0f
+#define PREDICT_POSITION_MIN_THRESHOLD		6.0f		// мин дистанция при которой 	
+#define BUILD_FULL_PATH_MAX_DIST			10.0f		// макс дистанция до врага, при которой будет строится полный путь
+#define BUILD_HALF_PATH_DIST				8.f			// дистанция не полного пути
 
 void CBitingAttack::Run()
 {
@@ -144,31 +149,32 @@ void CBitingAttack::Run()
 	if (CheckThreaten()) m_tAction = ACTION_THREATEN;
 
 	// Проверить, достижим ли противник
-	if (pMonster->ObjectNotReachable(m_tEnemy.obj) && (m_tAction != ACTION_ATTACK_MELEE)) {
+	if (pMonster->ObjectNotReachable(m_tEnemy.obj) && (m_tAction != ACTION_ATTACK_MELEE)) m_tAction = ACTION_ENEMY_POSITION_APPROACH;
 		
-		// Try to find best node nearest to the point
-		xr_vector<u32> nodes;
-		ai().graph_engine().search( ai().level_graph(), m_tEnemy.obj->level_vertex_id(), m_tEnemy.obj->level_vertex_id(), &nodes, CGraphEngine::CFlooder(m_fDistMax-0.5f));
-		if (nodes.empty()) m_tAction = ACTION_WALK_ANGRY_AROUND;
-		else {
-			u32 nearest_node_id = u32(-1);
-			float dist_nearest = flt_max;
 
-			for (u32 i=0; i<nodes.size(); i++) {
-				float cur_dist = ai().level_graph().vertex_position(nodes[i]).distance_to(m_tEnemy.obj->Position());
-				if (cur_dist < dist_nearest) {
-					dist_nearest	= cur_dist;
-					nearest_node_id = nodes[i];
-				}
-			}
-
-			R_ASSERT(nearest_node_id != u32(-1));
-
-			m_tAction = ACTION_WALK_AWAY;
-			pMonster->MoveToTarget(ai().level_graph().vertex_position(nearest_node_id), nearest_node_id);
-			
-		}
-	}
+		
+//		// Try to find best node nearest to the point
+//		xr_vector<u32> nodes;
+//		ai().graph_engine().search( ai().level_graph(), m_tEnemy.obj->level_vertex_id(), m_tEnemy.obj->level_vertex_id(), &nodes, CGraphEngine::CFlooder(m_fDistMax-0.5f));
+//		if (nodes.empty()) m_tAction = ACTION_WALK_ANGRY_AROUND;
+//		else {
+//			u32 nearest_node_id = u32(-1);
+//			float dist_nearest = flt_max;
+//
+//			for (u32 i=0; i<nodes.size(); i++) {
+//				float cur_dist = ai().level_graph().vertex_position(nodes[i]).distance_to(m_tEnemy.obj->Position());
+//				if (cur_dist < dist_nearest) {
+//					dist_nearest	= cur_dist;
+//					nearest_node_id = nodes[i];
+//				}
+//			}
+//
+//			R_ASSERT(nearest_node_id != u32(-1));
+//
+//			m_tAction = ACTION_WALK_AWAY;
+//			pMonster->MoveToTarget(ai().level_graph().vertex_position(nearest_node_id), nearest_node_id);
+//			
+//		}
 
 	if (m_tAction != ACTION_ATTACK_MELEE) bEnableBackAttack = true;
 
@@ -209,50 +215,80 @@ void CBitingAttack::Run()
 
 	bool bNeedRebuild = false;
 
-	float max_build_dist = 15.f;
-
 	// Выполнение состояния
 	switch (m_tAction) {	
+		
+		// ************
 		case ACTION_RUN:		 // бежать на врага
+		// ************	
+				
 			LOG_EX("ATTACK: RUN");
-			 pMonster->MotionMan.m_tAction = ACT_RUN;
+			pMonster->MotionMan.m_tAction = ACT_RUN;
 
 			DO_IN_TIME_INTERVAL_BEGIN(RebuildPathInterval,500 + 50.f * dist);
 				bNeedRebuild = true; 
 			DO_IN_TIME_INTERVAL_END();
-			
 			if (IS_NEED_REBUILD()) bNeedRebuild = true;
+			
+			
 			if (bNeedRebuild) {
 				
-				if (dist < max_build_dist) {
+				// Враг далеко? Строить полный путь?
+				if (dist < BUILD_FULL_PATH_MAX_DIST) {
+					
+					// Получить позицию, определённую груп. интелл.
 					CMonsterSquad	*pSquad = Level().SquadMan.GetSquad((u8)pMonster->g_Squad());
-					TTime			last_updated;
-					Fvector			target = pSquad->GetTargetPoint(pMonster, last_updated);
+					TTime			squad_ai_last_updated;
+					Fvector			target = pSquad->GetTargetPoint(pMonster, squad_ai_last_updated);
 
-					if (last_updated !=0 ) {
+					// проверить выбрана ли новая позиция
+					if (squad_ai_last_updated !=0 ) {		// новая позиция
 						pMonster->Path_ApproachPoint(0, target);
 						pMonster->m_tSelectorApproach->m_tEnemyPosition = target;
 						pMonster->m_tSelectorApproach->m_tEnemy			= 0;
-
+						
 						pMonster->SetPathParams(pMonster->level_vertex_id(), pMonster->Position()); 
-					} else {
-						pMonster->MoveToTarget(m_tEnemy.obj);
+					} else { 
+						// squad_ai выбрал оптимальную позицию, соответствующую позиции врага	
+						
+						// использовать ли предсказание позиции
+						if (dist > PREDICT_POSITION_MIN_THRESHOLD) {
+							Fvector dir;
+							dir.sub(m_tEnemy.obj->Position(),EnemySavedPos);
+
+							Fvector target_point;
+							target_point.add(m_tEnemy.obj->Position(),dir);
+							pMonster->Path_ApproachPoint(0, target_point);
+							pMonster->SetPathParams(pMonster->level_vertex_id(), pMonster->Position()); 
+							pMonster->m_tSelectorApproach->m_tEnemyPosition = target_point;
+							pMonster->m_tSelectorApproach->m_tEnemy			= 0;
+
+						} else {
+							pMonster->MoveToTarget(m_tEnemy.obj);
+						}
+						
 					}
 				}
-				else {
-					// find_nearest_point_to_point
+				
+				else { // построить не полный путь на расстояние BUILD_HALF_PATH_DIST
 					Fvector pos;
 					Fvector dir;
 					dir.sub(m_tEnemy.obj->Position(), pMonster->Position()); 
 					dir.normalize();
-					pos.mad(pMonster->Position(), dir, 15.f);
+					pos.mad(pMonster->Position(), dir, BUILD_HALF_PATH_DIST);
 					pMonster->Path_ApproachPoint(0, pos);
 					pMonster->SetPathParams(pMonster->level_vertex_id(), pMonster->Position()); 
 				}
 			}
 
+			if (bNeedRebuild) EnemySavedPos = m_tEnemy.obj->Position();
+
 			break;
+
+		// *********************
 		case ACTION_ATTACK_MELEE:		// атаковать вплотную
+		// *********************
+
 			LOG_EX("ATTACK: ATTACK_MELEE");
 			pMonster->MotionMan.m_tAction = ACT_ATTACK;
 			pMonster->enable_movement(false);			
@@ -283,14 +319,24 @@ void CBitingAttack::Run()
 			if (m_bAttackRat) pMonster->MotionMan.SetSpecParams(ASP_ATTACK_RAT);
 
 			break;
+
+
+		// ****************
 		case ACTION_STEAL:
+		// ****************
+
+
 			LOG_EX("ATTACK: STEAL");
 			pMonster->MotionMan.m_tAction = ACT_STEAL;
 			if (dist < (m_fDistMax + 2.f)) bEnemyDoesntSeeMe = false;
 			pMonster->MoveToTarget(m_tEnemy.obj);
 			break;
 		
+		
+		// ******************
 		case ACTION_THREATEN: 
+		// ******************
+
 			LOG_EX("ATTACK: THREATEN");
 			pMonster->MotionMan.m_tAction = ACT_STAND_IDLE;
 			pMonster->enable_movement(false);
@@ -335,11 +381,31 @@ void CBitingAttack::Run()
 //
 //			pMonster->MotionMan.m_tAction = ACT_WALK_FWD;
 //			break;
+
+		// **********************************
+		case ACTION_ENEMY_POSITION_APPROACH:
+		// **********************************
+			pMonster->MotionMan.m_tAction = ACT_RUN;
+
+			DO_IN_TIME_INTERVAL_BEGIN(RebuildPathInterval,500 + 50.f * dist);
+				bNeedRebuild = true; 
+			DO_IN_TIME_INTERVAL_END();
+			if (IS_NEED_REBUILD()) bNeedRebuild = true;
+			
+			if (bNeedRebuild) {
+				pMonster->Path_ApproachPoint(0, m_tEnemy.obj->Position());
+				pMonster->m_tSelectorApproach->m_tEnemyPosition = m_tEnemy.obj->Position();
+				pMonster->m_tSelectorApproach->m_tEnemy			= 0;
+
+				pMonster->SetPathParams(pMonster->level_vertex_id(), pMonster->Position()); 
+			}
+
+			break;
 	}
+
 
 	pMonster->SetSound(SND_TYPE_ATTACK, pMonster->_sd->m_dwAttackSndDelay);
 
-#pragma todo("Jim to Jim: fix nesting: Bloodsucker in Biting state")
 	if (m_bInvisibility && ACTION_THREATEN != m_tAction) {
 		CAI_Bloodsucker *pBS =	dynamic_cast<CAI_Bloodsucker *>(pMonster);
 		CActor			*pA  =  dynamic_cast<CActor*>(Level().CurrentEntity());
@@ -418,86 +484,6 @@ void CBitingAttack::WalkAngrySubState()
 //	// 3. пугать
 //	// 4. построить путь не далеко
 //	// 5. goto 1
-//	
-//	switch (m_tSubAction) {
-//	case ACTION_WALK_END_PATH:
-//	
-//		LOG_EX("ATTACK: WALK_END_PATH");
-//		pMonster->HDebug->M_Add(0,"STATE0: WALK_END_PATH",D3DCOLOR_XRGB(255,0,128));
-//
-//		if (pMonster->IsMovingOnPath()) {
-//			DO_IN_TIME_INTERVAL_BEGIN(RebuildPathInterval,500);
-//				pMonster->MoveToTarget(m_tEnemy.obj, pMonster->eVelocityParamsWalk, pMonster->eVelocityParameterWalkNormal | pMonster->eVelocityParameterStand);
-//			DO_IN_TIME_INTERVAL_END();
-//
-//			pMonster->MotionMan.m_tAction = ACT_RUN;
-//		} else {
-//			m_tSubAction = ACTION_FACE_ENEMY;
-//		}
-//
-//		if (!pMonster->MotionStats->is_good_motion(3)) {
-//			m_tSubAction = ACTION_FACE_ENEMY;
-//		}
-//			
-//		break;
-//	case ACTION_FACE_ENEMY:
-//		LOG_EX("ATTACK: FACE_ENEMY");
-//		pMonster->HDebug->M_Add(0,"STATE1: FACE_ENEMY",D3DCOLOR_XRGB(255,0,128));		
-//		pMonster->enable_movement(false);
-//
-//		// Смотреть на врага 
-//		DO_IN_TIME_INTERVAL_BEGIN(m_dwFaceEnemyLastTime, m_dwFaceEnemyLastTimeInterval);
-//			pMonster->FaceTarget(m_tEnemy.obj);
-//		DO_IN_TIME_INTERVAL_END();
-//
-//		pMonster->MotionMan.m_tAction = ACT_STAND_IDLE;
-//			
-//		if (angle_difference(pMonster->m_body.target.yaw,pMonster->m_body.current.yaw) < PI_DIV_6/6) {
-//			ThreatenTimeStarted = m_dwCurrentTime;
-//			m_tSubAction = ACTION_THREATEN2;
-//		}
-//
-//		break;
-//	case ACTION_THREATEN2:
-//		LOG_EX("ATTACK: THREATEN");
-//		pMonster->HDebug->M_Add(0,"STATE2: THREATEN",D3DCOLOR_XRGB(255,0,128));		
-//		pMonster->enable_movement(false);
-//			
-//		pMonster->MotionMan.m_tAction = ACT_STAND_IDLE;
-//		pMonster->MotionMan.SetSpecParams(ASP_THREATEN);
-//
-//		if (ThreatenTimeStarted + 2000 < m_dwCurrentTime) {
-//			
-//			xr_vector<u32> nodes;
-//			ai().graph_engine().search( ai().level_graph(), m_tEnemy.obj->level_vertex_id(), m_tEnemy.obj->level_vertex_id(), &nodes, CGraphEngine::CFlooder(10.f));
-//			
-//			u32 vertex_id = nodes[::Random.randI(nodes.size())];
-//
-//			pMonster->MoveToTarget(
-//				ai().level_graph().vertex_position(vertex_id),
-//				vertex_id,
-//				pMonster->eVelocityParamsWalk,
-//				pMonster->eVelocityParameterWalkNormal | pMonster->eVelocityParameterStand			
-//			);
-//
-//			m_tSubAction		= ACTION_WALK_AWAY;
-//		}
-//
-//		break;
-//
-//	case ACTION_WALK_AWAY:
-//		LOG_EX("ATTACK: WALK_AWAY");
-//		pMonster->HDebug->M_Add(0,"STATE3: WALK_AWAY",D3DCOLOR_XRGB(255,0,128));		
-//
-//		if (pMonster->IsMovingOnPath()) pMonster->MotionMan.m_tAction = ACT_RUN;
-//		else m_tSubAction = ACTION_FACE_ENEMY;
-//
-//		if (!pMonster->MotionStats->is_good_motion(3)) {
-//			m_tSubAction = ACTION_FACE_ENEMY;
-//		}
-//
-//		break;
-//	}
 
 }
 

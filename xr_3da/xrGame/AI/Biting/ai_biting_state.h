@@ -128,7 +128,8 @@ class CBitingAttack : public IState {
 		ACTION_THREATEN2,
 		ACTION_WALK_END_PATH,
 		ACTION_SEARCH_ENEMY_INIT,
-		ACTION_SEARCH_ENEMY
+		ACTION_SEARCH_ENEMY,
+		ACTION_ENEMY_POSITION_APPROACH,
 	} m_tAction,m_tSubAction;
 
 	VisionElem		m_tEnemy;
@@ -168,6 +169,8 @@ class CBitingAttack : public IState {
 
 	u32				search_vertex_id;
 	bool			bSearchEnemy;
+
+	Fvector			EnemySavedPos;
 
 public:	
 					CBitingAttack	(CAI_Biting *p, bool bVisibility);

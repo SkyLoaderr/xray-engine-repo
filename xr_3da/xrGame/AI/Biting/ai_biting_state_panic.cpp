@@ -55,20 +55,19 @@ void CBitingPanic::Run()
 		pMonster->m_body.target.yaw = angle_normalize(pMonster->m_body.target.yaw + PI);
 	} 
 
-//#pragma todo("Jim to Jim: fix nesting: Bloodsucker in Biting state")
-//	if (m_bInvisibility) {
-//		CAI_Bloodsucker *pBS =	dynamic_cast<CAI_Bloodsucker *>(pMonster);
-//		CActor			*pA  =  dynamic_cast<CActor*>(Level().CurrentEntity());
-//
-//		if (pBS && pA && (pA->Position().distance_to(pBS->Position()) < pBS->m_fEffectDist)) {
-//			if (pBS->GetPower() > pBS->m_fPowerThreshold) {
-//				if (pBS->CMonsterInvisibility::Switch(false)) {
-//					pBS->ChangePower(pBS->m_ftrPowerDown);
-//					pBS->ActivateEffector(pBS->CMonsterInvisibility::GetInvisibleInterval() / 1000.f);
-//				}
-//			}
-//		}
-//	}
+	if (m_bInvisibility) {
+		CAI_Bloodsucker *pBS =	dynamic_cast<CAI_Bloodsucker *>(pMonster);
+		CActor			*pA  =  dynamic_cast<CActor*>(Level().CurrentEntity());
+
+		if (pBS && pA && (pA->Position().distance_to(pBS->Position()) < pBS->m_fEffectDist)) {
+			if (pBS->GetPower() > pBS->m_fPowerThreshold) {
+				if (pBS->CMonsterInvisibility::Switch(false)) {
+					pBS->ChangePower(pBS->m_ftrPowerDown);
+					pBS->ActivateEffector(pBS->CMonsterInvisibility::GetInvisibleInterval() / 1000.f);
+				}
+			}
+		}
+	}
 
 	pMonster->SetSound(SND_TYPE_ATTACK, pMonster->_sd->m_dwAttackSndDelay);
 
@@ -80,9 +79,7 @@ void CBitingPanic::Run()
 	if (!bFacedOpenArea) {
 			pMonster->MotionMan.m_tAction = ACT_RUN;
 	} else {
-		// try to rebuild path if there is need
-		if (!pMonster->CDetailPathManager::completed(pMonster->Position()))
-			pMonster->MotionMan.m_tAction = ACT_RUN;
+		if (!IS_NEED_REBUILD())	pMonster->MotionMan.m_tAction = ACT_RUN;
 		else  {
 			pMonster->MotionMan.SetSpecParams(ASP_STAND_SCARED);
 			pMonster->MotionMan.m_tAction	= ACT_STAND_IDLE;

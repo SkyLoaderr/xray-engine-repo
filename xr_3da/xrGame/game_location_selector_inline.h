@@ -98,7 +98,14 @@ IC	void CGameLocationSelector::select_random_location(const _vertex_id_type star
 	if (!iBranches) {
 		VERIFY					(m_graph->valid_vertex_id(m_previous_vertex_id) && (m_previous_vertex_id != start_vertex_id));
 		dest_vertex_id			= m_previous_vertex_id;
-		m_time_to_change		= Level().timeServer() + ::Random.randI(location_manager->vertex_types()[k].dwMinTime,location_manager->vertex_types()[k].dwMaxTime);
+		for ( ; i != e; ++i)
+			for (int j=0; j<iPointCount; ++j)
+				if (m_graph->mask(location_manager->vertex_types()[j].tMask,m_graph->vertex((*i).vertex_id())->vertex_type())) {
+					m_time_to_change = Level().timeServer() + ::Random.randI(location_manager->vertex_types()[m_previous_vertex_id].dwMinTime,location_manager->vertex_types()[m_previous_vertex_id].dwMaxTime);
+					++iBranches;
+					break;
+				}
+		VERIFY					(iBranches);
 	}
 	else {
 		m_graph->begin			(start_vertex_id,i,e);

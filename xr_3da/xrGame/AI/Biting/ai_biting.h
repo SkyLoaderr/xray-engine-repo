@@ -273,6 +273,11 @@ public:
 	// Step sounds
 			void			AddStepSound					(LPCSTR section, EMotionAnim a, LPCSTR name);
 			void			GetStepSound					(EMotionAnim a, float &vol, float &freq);
+
+
+	virtual bool			useful							(const CGameObject *object) const;
+
+	
 // members
 public:
 

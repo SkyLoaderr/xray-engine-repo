@@ -10,6 +10,9 @@
 #include "movement_manager.h"
 #include "PHMovementControl.h"
 
+#define DISTANCE_PHISICS_ENABLE_CHARACTERS 6.f
+
+
 void CMovementManager::move_along_path	(CPHMovementControl *movement_control, Fvector &dest_position, float time_delta)
 {
 	Fvector				motion;
@@ -87,7 +90,7 @@ void CMovementManager::move_along_path	(CPHMovementControl *movement_control, Fv
 
 #ifndef NO_PHYSICS_IN_AI_MOVE
 	setEnabled(false);
-	Level().ObjectSpace.GetNearest		(dest_position,2.f); 
+	Level().ObjectSpace.GetNearest		(dest_position,DISTANCE_PHISICS_ENABLE_CHARACTERS); 
 	xr_vector<CObject*> &tpNearestList	= Level().ObjectSpace.q_nearest; 
 	setEnabled(true);
 #endif

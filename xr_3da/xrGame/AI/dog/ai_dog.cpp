@@ -181,46 +181,6 @@ void CAI_Dog::OnSoundPlay()
 
 void CAI_Dog::LookPosition(Fvector /**pos/**/, float angular_speed)
 {
-//	if (GetBoneInstance.IsActive()) return;
-//	TTime itime = TTime(MotionMan.jump.ph_time * 1000);
-//
-//	if (MotionMan.jump.started + TTime(itime / 3) > m_dwCurrentTime) return;
-//	float max_bone_angle = PI_DIV_4;
-//	
-//	Fvector to_dir;
-//	to_dir = pos;
-//	to_dir.sub(Position());
-//
-//	// получаем вектор направления к источнику звука и его мировые углы
-//	float		yaw,p;
-//	to_dir.getHP(yaw,p); // yaw - угол на который нужно повернуть монстра
-//
-//	float cur_yaw = -m_body.current.yaw;				// текущий мировой угол монстра
-//	float dy = _abs(angle_normalize_signed(yaw - cur_yaw));		// дельта, на которую нужно поворачиваться
-//
-//	float y1,y2,y3;
-//	y1 = y2 = dy * 0.3f;
-//	y3 = dy * 0.4f;
-//	
-//	// normalize
-//	clamp(y1,0.f,max_bone_angle);
-//	clamp(y2,0.f,max_bone_angle);
-//	clamp(y3,0.f,max_bone_angle);
-//	
-//	float k;													// знаковый коэф. для боны (лево/право)
-//	if (angle_normalize_signed(yaw - cur_yaw) > 0) k = 1.f;		// right side
-//	else k = -1.f;												// left side
-//	
-//	y1 *= k;
-//	y2 *= k;
-//	y3 *= k;
-//	
-//	// Вычислить скорость вращения кости (с учётов возврата в исходное положение)
-//	float t = MotionMan.jump.ph_time;
-//	
-//	GetBoneInstance.SetMotion(GetBoneInstance("bip01_spine1"), AXIS_Z, y1, y1/t * 4.f, 1);
-//	GetBoneInstance.SetMotion(GetBoneInstance("bip01_spine2"), AXIS_Z, y2, y2/t * 4.f, 1);
-//	GetBoneInstance.SetMotion(GetBoneInstance("bip01_head"),	 AXIS_X, y3, y3/t * 4.f, 1);
 }
 
 void CAI_Dog::UpdateCL()
@@ -262,66 +222,6 @@ void CAI_Dog::OnJumpStop()
 {
 	MotionMan.ProcessAction();
 }
-
-/////////////////////////////////////////////////////////
-////
-//void CAI_Dog::UpdateLocation()
-//{
-//	HDebug->L_Clear();
-//
-//	u32 level_vertex_id = dynamic_cast<CAI_ObjectLocation*>(Level().CurrentEntity())->level_vertex_id();
-//
-//	Fvector center_V;
-//	center_V = ai().level_graph().vertex_position(level_vertex_id);
-//
-//	CLevelGraph::SContour contour;
-//	ai().level_graph().contour(contour, level_vertex_id);
-//
-////	HDebug->L_AddLine(contour.v1,contour.v2,D3DCOLOR_XRGB(0,255,255));
-////	HDebug->L_AddLine(contour.v2,contour.v3,D3DCOLOR_XRGB(0,255,255));
-////	HDebug->L_AddLine(contour.v3,contour.v4,D3DCOLOR_XRGB(0,255,255));
-////	HDebug->L_AddLine(contour.v4,contour.v1,D3DCOLOR_XRGB(0,255,255));
-////	HDebug->L_AddPoint(center_V, 0.15f, D3DCOLOR_XRGB(0,255,255));
-//
-//	Fvector new_pos;
-//	new_pos.mad(center_V,Level().CurrentEntity()->Direction(),5.f);
-//	HDebug->L_AddLine(center_V,new_pos, D3DCOLOR_XRGB(0,255,0));	
-//
-//	Fvector nearest;
-//	ai().level_graph().nearest(nearest, new_pos, contour);
-//	HDebug->L_AddPoint(nearest, 0.05f, D3DCOLOR_XRGB(255,0,0));
-//
-//	Fvector sub_dir;
-//
-//	sub_dir.sub(nearest, center_V);
-//	float h,p;
-//	sub_dir.getHP(h,p);
-//
-//	m_body.target.pitch = p;
-//	
-//	// 1. Build plane (use contour.p1,p2,p3)
-////	Fvector pA,pB,pD;
-////	pA = contour.v1; 
-////	pB = contour.v2;
-////	pD = contour.v3;
-////	
-////	float A,B,C,D;
-////
-////	A = (pB.y - pA.y)*(pD.z - pA.z) - (pD.y - pA.y)*(pB.z - pA.z);
-////	B = (pD.x - pA.x)*(pB.z - pA.z) - (pB.x - pA.x)*(pD.z - pA.z);
-////	C = (pB.x - pA.x)*(pD.y - pA.y) - (pD.x - pA.x)*(pB.y - pA.y);
-////	D = -(A*pA.x + B*pA.y + C*pA.z);
-////
-////
-////	Fvector P = new_pos;
-////	float ro = (A * P.x + B * P.y + C * P.z) / (A*A + B*B + C*C);
-////
-////	Fvector Q;
-////	Q.set(P.x - A*ro, P.y - B*ro, P.z - C*ro);
-////
-////	HDebug->L_AddLine(Q,center_V, D3DCOLOR_XRGB(255,255,255));		
-//
-//}
 
 
 

@@ -18,7 +18,7 @@ void CAI_Biting::feel_sound_new(CObject* who, int eType, const Fvector &Position
 
 	// ignore sounds from team
 	CEntityAlive* E = dynamic_cast<CEntityAlive*> (who);
-	if (E && (E->g_Team() == g_Team())) return;
+	if (E && (E->g_Team() == g_Team()) || (this == who)) return;
 	
 	// ignore unknown sounds
 	if (eType == 0xffffffff) return;

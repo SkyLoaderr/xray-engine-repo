@@ -454,5 +454,17 @@ void CAI_Biting::GetStepSound(EMotionAnim a, float &vol, float &freq)
 	freq	= it->second.freq; 
 }
 
+bool CAI_Biting::useful(const CGameObject *object) const
+{
+	if (!CItemManager::useful(object))
+		return			(false);
+
+
+	const CEntityAlive *pCorpse = dynamic_cast<const CEntityAlive *>(object); 
+	if (!pCorpse) return false;
+	
+	if (!pCorpse->g_Alive()) return true;
+	return false;
+}
 
 

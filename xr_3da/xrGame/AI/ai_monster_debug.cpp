@@ -5,7 +5,6 @@
 
 #define DISABLE_MONSTER_DEBUG
 
-
 CMonsterDebug::CMonsterDebug(CEntityAlive *pM, const Fvector &shift_vec, float height)
 {
 	pMonster		= pM;

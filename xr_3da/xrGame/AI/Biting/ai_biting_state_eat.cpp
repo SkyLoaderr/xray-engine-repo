@@ -148,6 +148,8 @@ void CBitingEat::Run()
 		DO_IN_TIME_INTERVAL_END();
 	
 
+		// Реализация 'Трясти труп во время еды'
+
 //		DO_IN_TIME_INTERVAL_BEGIN(m_dwLastImpulse, 100);
 //			Fmatrix global_transform;
 //			Fvector target_pos;
@@ -221,10 +223,7 @@ void CBitingEat::Run()
 					// тащить труп
 					bDragging		= true;
 					m_tAction		= ACTION_DRAG;
-				} else {
-					pMonster->HDebug->M_Add(0,"CAPTURE FAILED",D3DCOLOR_XRGB(255,0,128));
-					LOG_EX("CAPTURE FAILED");
-				}
+				} 
 			} 
 		}
 
