@@ -46,6 +46,7 @@ IC	void CPathManagerTemplate::reinit			(const _Graph *graph)
 	m_graph					= graph;
 	m_current_index			= _index_type(-1);
 	m_intermediate_index	= _index_type(-1);
+	m_dest_vertex_id		= _index_type(-1);
 	m_path.clear			();
 }
 
