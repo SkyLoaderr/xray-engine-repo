@@ -138,10 +138,6 @@ BOOL motions_value::load		(LPCSTR N, IReader *data, vecBones* bones)
                 CKeyQR* r 		= (CKeyQR*)MS->pointer();
 				u32 crc_q		= crc32(r,sizeof(CKeyQR));
 				M._keysR.create	(crc_q,1,r);
-//                M._initR.x		= float(r->x)*KEY_QuantI;
-//                M._initR.y		= float(r->y)*KEY_QuantI;
-//                M._initR.z		= float(r->z)*KEY_QuantI;
-//                M._initR.w		= float(r->w)*KEY_QuantI;
                 MS->advance		(1 * sizeof(CKeyQR));
             }else{
                 u32 crc_q		= MS->r_u32	();

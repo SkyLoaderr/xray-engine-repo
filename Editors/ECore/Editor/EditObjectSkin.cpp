@@ -137,11 +137,11 @@ void CEditableObject::RenderBones(const Fmatrix& parent)
     	        p2.mad			(p1,d,(*b_it)->_Length());
         	    DU.DrawLine		(p1,p2,c_joint);
             }
-//.     	if ((*b_it)->Parent()){
-//		        Device.SetShader(Device.m_SelectionShader);
-//				Fvector& p2 = (*b_it)->Parent()->_LTransform().c;
-//        	    DU.DrawLine	(p1,p2,color_bone_link_color);
-//			}
+	     	if ((*b_it)->Parent()){
+		        Device.SetShader(Device.m_SelectionShader);
+				Fvector& p2 = (*b_it)->Parent()->_LTransform().c;
+        	    DU.DrawLine	(p1,p2,color_bone_link_color);
+			}
 			if (EPrefs.object_flags.is(epoDrawBoneAxis)){ 
             	Fmatrix mat; mat.mul(parent,M);
 	          	DU.DrawObjectAxis(mat,0.03f,(*b_it)->flags.is(CBone::flSelected));
