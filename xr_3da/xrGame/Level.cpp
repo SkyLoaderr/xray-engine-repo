@@ -141,12 +141,18 @@ int	CLevel::get_RPID(LPCSTR name)
 
 void CLevel::OnFrame	()
 {
-	Device.Statistic.netClient.Begin();
-	ClientReceive					();
-	Device.Statistic.netClient.End	();
+	if (net_isDisconnected())	
+	{
+		Engine.Event.Defer			("kernel:disconnect");
+		return;
+	} else {
+		Device.Statistic.netClient.Begin();
+		ClientReceive					();
+		Device.Statistic.netClient.End	();
+	}
 
 	// Inherited update
-	inherited::OnFrame	();
+	inherited::OnFrame					();
 
 	// Physics
 	Device.Statistic.Physics.Begin		();
@@ -182,14 +188,14 @@ void CLevel::OnFrame	()
 
 	// If we have enought bandwidth - replicate client data on to server
 	Device.Statistic.netClient.Begin();
-	ClientSend ();
+	ClientSend						();
 	Device.Statistic.netClient.End	();
 
 	// If server - perform server-update
 	if (Server && CurrentEntity())
 	{
 		Device.Statistic.netServer.Begin();
-		Server->Update	();
+		Server->Update					();
 		Device.Statistic.netServer.End	();
 		if (psDeviceFlags&rsStatistic)
 		{

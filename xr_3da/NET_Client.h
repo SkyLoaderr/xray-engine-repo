@@ -58,6 +58,7 @@ protected:
 
 	BOOL					net_Connected;
 	BOOL					net_Syncronised;
+	BOOL					net_Disconnected;
 
 	INetQueue				net_Queue;
 	IClientStatistic		net_Statistic;
@@ -79,6 +80,7 @@ public:
 	void					net_Syncronize			();
 	BOOL					net_isCompleted_Connect	()	{ return net_Connected;		}
 	BOOL					net_isCompleted_Sync	()	{ return net_Syncronised;	}
+	BOOL					net_isDisconnected		()	{ return net_Disconnected;	}
 	LPCSTR					net_SessionName			()	{ return net_Hosts.front().dpSessionName; }
 
 	// receive

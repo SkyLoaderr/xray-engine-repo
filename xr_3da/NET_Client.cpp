@@ -51,10 +51,11 @@ IPureClient::~IPureClient	()
 
 BOOL IPureClient::Connect(LPCSTR server_name)
 {
-	R_ASSERT(server_name);
+	R_ASSERT		(server_name);
 
 	net_Connected	= FALSE;
 	net_Syncronised	= FALSE;
+	net_Disconnected= FALSE;
 
     // Create the IDirectPlay8Client object.
     R_CHK(CoCreateInstance	(CLSID_DirectPlay8Client, NULL, CLSCTX_INPROC_SERVER, IID_IDirectPlay8Client, (LPVOID*) &NET));
@@ -300,7 +301,7 @@ HRESULT	IPureClient::net_Handler(DWORD dwMessageType, PVOID pMessage)
 		}
 		break;
 	case DPN_MSGID_TERMINATE_SESSION:
-		Engine.Event.Defer	("kernel:disconnect");
+		net_Disconnected	= TRUE;
 		break;
 	default:
 		{
@@ -346,18 +347,20 @@ void	IPureClient::timeServer_Correct(DWORD sv_time, DWORD cl_time)
 
 void	IPureClient::Send(NET_Packet& P, DWORD dwFlags, DWORD dwTimeout)
 {
+	if (net_Disconnected)	return;
+
 	// first - compress message and setup buffer
 	NET_Buffer	Compressed;
-	Compressed.count = net_Compressor.Compress	(Compressed.data,P.B.data,P.B.count);
+	Compressed.count	= net_Compressor.Compress	(Compressed.data,P.B.data,P.B.count);
 
 	// send it
-	DPN_BUFFER_DESC	desc;
+	DPN_BUFFER_DESC		desc;
 	desc.dwBufferSize	= Compressed.count;
 	desc.pBufferData	= Compressed.data;
 	
 	// verify
-	VERIFY		(desc.dwBufferSize);
-	VERIFY		(desc.pBufferData);
+	VERIFY				(desc.dwBufferSize);
+	VERIFY				(desc.pBufferData);
 
     DPNHANDLE	hAsync=0;
 	VERIFY		(NET);
@@ -371,12 +374,13 @@ void	IPureClient::Send(NET_Packet& P, DWORD dwFlags, DWORD dwTimeout)
 
 BOOL	IPureClient::net_HasBandwidth	()
 {
-	DWORD	dwTime			= Device.dwTimeGlobal;
-	DWORD	dwInterval		= 1000/psNET_ClientUpdate;
+	DWORD	dwTime				= Device.dwTimeGlobal;
+	DWORD	dwInterval			= 1000/psNET_ClientUpdate;
+	if		(net_Disconnected)	return FALSE;
 
 	if ((dwTime-net_Time_LastUpdate)>dwInterval)	
 	{
-		R_ASSERT(NET);
+		R_ASSERT			(NET);
 		
 		// check queue for "empty" state
 		DWORD				dwPending=0;
