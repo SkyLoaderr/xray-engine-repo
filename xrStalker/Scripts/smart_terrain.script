@@ -5,25 +5,8 @@ Smart Terrain (места, где сталкеры могут оседать на некоторое время и заниматься
 
 Сделать:
 	- разные умолчания для разных типов гулагов
-	- критерии checkNpc в custom_data
 	- роспуск гулага по infoprtions
-	+ npc community в offline
-	+ флажок в custom data "offline=true/false"
-	- сталкеры должны ходить в офлайн/онлайн под гулагом
-	- проверка умерших в offline
-	+ переделать gulag на id и client_spawn_manager
-	+ switch_offline, move_offline
-	+ затычка gulag для офлайна
-	+ доделать и переименовать онлайновую часть
-	+ printf
-	+ передача параметров offline->online
-	+ передача параметров online->offline
-	+ [zone] перерименовать [smart_terrain], "зона" -> "smart terrain"
-	+ spawn_ini у серверного сталкера
-	+ установка squad, group у серверного
-	+ сохранение и восстановление серверного объекта
-	+ the_actor при reload
-	- script_version
+	+ сохранение гулага
 
 	- монстры
 
@@ -31,7 +14,11 @@ Smart Terrain (места, где сталкеры могут оседать на некоторое время и заниматься
 	- дополнительные условия начала, конца smart_terrain. Например, ночь и день
 	- дополнительные условия ухода сталкеров
 	- специальные диалоги
+	- критерии checkNpc в custom_data
 
+
+Изменения script_version:
+	1  - jobN для каждого сталкера и begin для каждой работы
 --------------------------------------------------------------------------------------------------------------------]]
 
 local h2ms = 60 * 60 * 1000
@@ -172,11 +159,11 @@ function se_smart_terrain:smart_touch( monster )
 end
 
 function se_smart_terrain:__init( section ) super( section )
---	log( "se_smart_terrain::se_smart_terrain called!" )
+	log( "se_smart_terrain::se_smart_terrain called!" )
 end
 
 function se_smart_terrain:__finalize()
---	log( "se_smart_terrain::~se_smart_terrain called!" )
+	log( "se_smart_terrain::~se_smart_terrain called!" )
 end
 
 function se_smart_terrain:print()
@@ -190,15 +177,13 @@ end
 
 -- сохранение
 function se_smart_terrain:STATE_Write( packet )
---	log( "se_smart_terrain::STATE_Write called!" )
+	log( "se_smart_terrain::STATE_Write called!" )
 	cse_alife_smart_zone.STATE_Write( self, packet )
 
 --	self:print()
 
 	packet:w_u8  ( self.gulagN or 0 )
 
---	packet:w_u32 ( if_then_else( self.duration_end,  )
---	packet:w_u32 ( self.idle_end or 0 )
 	w_CTime( packet, self.duration_end )
 	w_CTime( packet, self.idle_end )
 
@@ -217,17 +202,38 @@ function se_smart_terrain:STATE_Write( packet )
 			packet:w_u8   ( v.squad )
 			packet:w_bool ( v.move_offline )
 			packet:w_bool ( v.switch_offline )
---			packet:w_u32  ( v.stay_end )
 			w_CTime( packet, v.stay_end )
+
+			if self.gulag then
+				packet:w_u8( v.jobN or 0 )
+			end
 		end
 	else
 		packet:w_u8( n )
+	end
+
+	if self.gulag then
+		-- параметры гулага
+		packet:w_u8(  self.state       or 0 )
+		packet:w_u32( self.stateBegin  or 0 )
+		packet:w_u8(  self.casualities or 0 )
+ 
+		-- список работ в гулаге
+		if self.Job then
+			packet:w_u8( table.getn( self.Job ) )
+
+			for i, v in self.Job do
+				packet:w_u32( v or 0 )
+			end
+		else
+			packet:w_u8( 0 )
+		end
 	end
 end
 
 -- восстановление
 function se_smart_terrain:STATE_Read( packet, size )
---	log( "se_smart_terrain::STATE_Read called!" )
+	log( "se_smart_terrain::STATE_Read called!" )
 	cse_alife_smart_zone.STATE_Read( self, packet, size )
 
 --	printf( "before read" )
@@ -235,6 +241,7 @@ function se_smart_terrain:STATE_Read( packet, size )
 
 	read_ini( self ) -- прочитать custom_data
 
+	-- под LevelEditor не пытаться читать из пакета ничего
 	if editor() then
 		return
 	end
@@ -244,11 +251,10 @@ function se_smart_terrain:STATE_Read( packet, size )
 		self.gulagN = nil
 	end
 
---	self.duration_end = packet:r_u32()
---	self.idle_end     = packet:r_u32()
 	self.duration_end = r_CTime( packet )
 	self.idle_end     = r_CTime( packet )
 
+	-- список сталкеров
 	n = packet:r_u8()
 
 	for i = 1, n do
@@ -260,11 +266,35 @@ function se_smart_terrain:STATE_Read( packet, size )
 		o.squad          = packet:r_u8()
 		o.move_offline   = packet:r_bool()
 		o.switch_offline = packet:r_bool()
---		o.stay_end       = packet:r_u32()
 		o.stay_end       = r_CTime( packet )
+
+		if self.script_version == 1 then
+			if self.gulagN then
+				o.jobN = packet:r_u8()
+				if o.jobN == 0 then
+					o.jobN = nil
+				end
+			end
+		end
 	end
 
-	-- если гулаг был, то заполнить переменные-заглушки
+	if self.script_version == 1 then
+		if self.gulagN then
+			-- параметры гулага
+			self.state       = packet:r_u8()
+			self.stateBegin  = packet:r_u32()
+			self.casualities = packet:r_u8()
+
+			-- список работ в гулаге
+			self.Job = {}
+
+			n = packet:r_u8()
+			for i = 1, n do
+				table.insert( self.Job, packet:r_u32() )
+			end
+		end
+	end
+
 	if self.gulagN then
 		self.gparams = self.gulags[self.gulagN]
 		self.gulag   = self:setGulag()
@@ -274,11 +304,11 @@ function se_smart_terrain:STATE_Read( packet, size )
 	end
 
 --	printf( "after read" )
---	self:print()
+	self:print()
 end
 
 function se_smart_terrain:FillProps( pref, items )
---	log( "se_smart_terrain::FillProps called!" )
+	log( "se_smart_terrain::FillProps called!" )
 	cse_alife_smart_zone.FillProps( self, pref, items )
 
 --	local prefix = pref .. "\\" .. self.section_name .. "\\smart terrain\\"
@@ -325,8 +355,19 @@ end
 function se_smart_terrain:addObject()
 end
 
+-- просчёт гулага-имитации в офлайне: удаление мёртвых
 function se_smart_terrain:calculate()
-	self:print()
+--	self:print()
+
+	sim = alife()
+
+	for id, v in self.stalkers do
+		o = cast_alife_object_to_creature( sim:object( id ) )
+
+		if not o:alive() then
+			free_stalker( self, id )
+		end
+	end
 end
 
 ----------------------------------------------------------------------------------------------------------------------
@@ -350,12 +391,25 @@ function cl_smart_terrain:__init( se_obj, ini )
 --	printf( if_then_else( self.gulags, "GULAGS", "GULAGS=NIL" ) )
 --	printf( if_then_else( self.gparams, "GPARAMS", "GPARAMS=NIL" ) )
 
-	-- если в офлайне был гулаг-затычка, то создать настоящий такого же типа
+	-- если в офлайне был гулаг-затычка
 	if se_obj.gulag then
+		-- то создать настоящий такого же типа
 		self.gulag = self:createGulag()
 
+		self.gulag.state       = se_obj.state       or self.gulag.state
+		self.gulag.stateBegin  = se_obj.stateBegin  or self.gulag.stateBegin
+		self.gulag.casualities = se_obj.casualities or self.gulag.casualities
+
+		-- восстановить сталкеров с должностями
 		for id, v in self.stalkers do
-			self.gulag:addObjectID( id )
+			self.gulag:loadObject( id, v.jobN )
+		end
+
+		-- восстановить параметры должностей, которые требуют сохранения
+		if se_obj.Job then
+			for i, v in se_obj.Job do
+				self.gulag.Job[i].begin = v
+			end
 		end
 	end
 end
@@ -365,7 +419,7 @@ function cl_smart_terrain:destroy()
 	self:destroyGulag()
 end
 
--- сохранение клиентского объекта, обновляем серверный
+-- сохранение клиентского объекта: обновляем серверный
 function cl_smart_terrain:save()
 --	printf( "smart terrain client save" )
 	sim = alife()
@@ -377,8 +431,34 @@ function cl_smart_terrain:save()
 	o.gulagN       = self.gulagN
 
 	if self.gulag then
-		o.gparams = o.gulags[self.gulagN]
-		o.gulag   = o:setGulag()
+		o.gparams     = o.gulags[self.gulagN]
+		o.gulag       = o:setGulag()
+		o.state       = self.gulag.state
+		o.stateBegin  = self.gulag.stateBegin
+		o.casualities = self.gulag.casualities
+
+		o.Job         = {}
+
+		for id, u in self.stalkers do
+			u.jobN = nil
+		end
+
+		-- запомнить сохраняемые параметры работ
+		for i, v in self.gulag.Job do
+			table.insert( o.Job, v.begin )
+
+			-- для сталкера, занятого на этой работе, запомнить номер работы
+			if v.object then
+				o_id = v.object:id()
+
+				for id, u in self.stalkers do
+					if id == o_id then
+						u.jobN = i
+						break
+					end
+				end
+			end
+		end
 	else
 		o.gparams = nil
 	end

@@ -24,6 +24,8 @@ function fract:__init(smrttrn_id, name, type, squad, groups)
 	self.Object = {}
 	self.Job = {}
 
+	self.StalkerJob = {}
+
 	self.music = gulag_tasks.get_megafone(type, name) --' матюгальник
 	
 	gulag_tasks.loadJob(self.Job, name, type, squad, self.groups)
@@ -33,16 +35,24 @@ end
 function fract:addObject(npc)
 	self.Object[npc:id()] = npc
 end
-function fract:addObjectID( obj_id )
+function fract:loadObject( obj_id, jobN )
 	-- пометить, что объект ожидается
 	self.Object[obj_id] = true
+
+	-- запомнить работу, которую он должен занять
+	self.StalkerJob[obj_id] = jobN
+
 	-- подписаться на объект
 	level.client_spawn_manager():add( obj_id, self.smrttrn_id, self, "spawn_callback" )
 end
 function fract:spawn_callback( id, obj )
 	if obj then
 		self.Object[id] = obj
-		self:calculate()
+
+		-- восстановить на работе, если она у него была
+		if self.StalkerJob[id] then
+			self.Job[self.StalkerJob[id]].object = obj
+		end
 	end
 end
 function fract:removeObject( npc_id )
@@ -89,7 +99,7 @@ function fract:calculate()
 	end
 
 	self:updateJob()
-	--self:print()
+	self:print()
 end
 function fract:changeState(state)
 	if self.music ~= nil then
