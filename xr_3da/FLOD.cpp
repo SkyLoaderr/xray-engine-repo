@@ -35,4 +35,19 @@ void FLOD::Copy			(CVisual *pFrom	)
 }
 void FLOD::Render		(float LOD		)
 {
+	Fvector				Ldir;
+	Ldir.sub			(bv_Position,Device.vCameraPosition);
+	Ldir.normalize		();
+
+	int					best_id		= 0;
+	float				best_dot	= Ldir.dotproduct(facets[0].N);
+	float				dot;
+
+	dot	= Ldir.dotproduct	(facets[1].N); if (dot>best_dot) { best_id=1; best_dot=dot; }
+	dot	= Ldir.dotproduct	(facets[2].N); if (dot>best_dot) { best_id=2; best_dot=dot; }
+	dot	= Ldir.dotproduct	(facets[3].N); if (dot>best_dot) { best_id=3; best_dot=dot; }
+	dot	= Ldir.dotproduct	(facets[4].N); if (dot>best_dot) { best_id=4; best_dot=dot; }
+	dot	= Ldir.dotproduct	(facets[5].N); if (dot>best_dot) { best_id=5; best_dot=dot; }
+	dot	= Ldir.dotproduct	(facets[6].N); if (dot>best_dot) { best_id=6; best_dot=dot; }
+	dot	= Ldir.dotproduct	(facets[7].N); if (dot>best_dot) { best_id=7; best_dot=dot; }
 }
