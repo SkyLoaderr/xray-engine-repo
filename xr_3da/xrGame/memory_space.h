@@ -138,8 +138,6 @@ namespace MemorySpace {
 	struct SLevelTimePredicate {
 		bool		operator()						(const CMemoryObject<T> &object1, const CMemoryObject<T> &object2) const
 		{
-			VERIFY					(object1.m_object);
-			VERIFY					(object2.m_object);
 			return					(object1.m_level_time < object2.m_level_time);
 		}
 	};
