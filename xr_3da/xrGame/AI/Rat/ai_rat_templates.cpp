@@ -25,9 +25,9 @@
 #define MAX_NEIGHBOUR_COUNT				9
 
 bool CAI_Rat::bfCheckPath(AI::Path &Path) {
-	const vector<BYTE> &q_mark = Level().AI.tpfGetNodeMarks();
+	CAI_Space &AI = Level().AI;
 	for (int i=1; i<Path.Nodes.size(); i++) 
-		if (q_mark[Path.Nodes[i]])
+		if (AI.q_mark[Path.Nodes[i]])
 			return(false);
 		return(true);
 }

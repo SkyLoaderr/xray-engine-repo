@@ -26,9 +26,9 @@
 #define DISTANCE_TO_STEP				.65f
 
 bool CAI_Zombie::bfCheckPath(AI::Path &Path) {
-	const vector<BYTE> &q_mark = Level().AI.tpfGetNodeMarks();
+	CAI_Space &AI = Level().AI;
 	for (int i=1; i<Path.Nodes.size(); i++) 
-		if (q_mark[Path.Nodes[i]])
+		if (AI.q_mark[Path.Nodes[i]])
 			return(false);
 		return(true);
 }

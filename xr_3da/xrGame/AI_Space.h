@@ -80,7 +80,6 @@ public:
 	float			vfFindTheXestPath(DWORD dwStartNode, DWORD dwGoalNode, AI::Path& Result, Fvector tEnemyPosition, float fOptimalEnemyDistance, float fLightWeight, float fCoverWeight, float fDistanceWeight, float fEnemyViewWeight);
 	void			vfLoadSearch();
 	void			vfUnloadSearch();
-	IC const vector<BYTE>	tpfGetNodeMarks() {return(q_mark);};
 	// 
 
 	// yet another best node search
