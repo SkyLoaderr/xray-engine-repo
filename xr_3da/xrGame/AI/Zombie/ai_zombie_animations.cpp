@@ -62,20 +62,20 @@ void CAI_Zombie::vfLoadAnimations()
 	CKinematics* tpVisualObject = PKinematics(pVisual);
 	
 	// loading normal animations
-	tZombieAnimations.tNormal.tGlobal.tpaDeath[0] = tpVisualObject->ID_Cycle_Safe("norm_death");
-	tZombieAnimations.tNormal.tGlobal.tpaDeath[1] = tpVisualObject->ID_Cycle_Safe("norm_death_2");
-	tZombieAnimations.tNormal.tGlobal.tpaDeath[2] = tpVisualObject->ID_Cycle_Safe("norm_death_3");
+	tZombieAnimations.tNormal.tGlobal.tpaDeath[0] = tpVisualObject->ID_Cycle("norm_death");
+	tZombieAnimations.tNormal.tGlobal.tpaDeath[1] = tpVisualObject->ID_Cycle("norm_death_2");
+	tZombieAnimations.tNormal.tGlobal.tpaDeath[2] = tpVisualObject->ID_Cycle("norm_death_3");
 	
-	tZombieAnimations.tNormal.tGlobal.tpaAttack[0] = tpVisualObject->ID_Cycle_Safe("attack");
-	tZombieAnimations.tNormal.tGlobal.tpaAttack[1] = tpVisualObject->ID_Cycle_Safe("attack_1");
+	tZombieAnimations.tNormal.tGlobal.tpaAttack[0] = tpVisualObject->ID_Cycle("attack");
+	tZombieAnimations.tNormal.tGlobal.tpaAttack[1] = tpVisualObject->ID_Cycle("attack_1");
 	
 	tZombieAnimations.tNormal.tGlobal.tWalk.Create(tpVisualObject, "norm_walk");
-	tZombieAnimations.tNormal.tGlobal.tpIdle = tpVisualObject->ID_Cycle_Safe("norm_idle");
+	tZombieAnimations.tNormal.tGlobal.tpIdle = tpVisualObject->ID_Cycle("norm_idle");
 	
-	tZombieAnimations.tNormal.tLegs.tpTurn = tpVisualObject->ID_Cycle_Safe("norm_turn");
+	tZombieAnimations.tNormal.tLegs.tpTurn = tpVisualObject->ID_Cycle("norm_turn");
 	
-	tZombieAnimations.tNormal.tGlobal.tpDamageLeft = tpVisualObject->ID_Cycle_Safe("norm_torso_damage_left");
-	tZombieAnimations.tNormal.tGlobal.tpDamageRight = tpVisualObject->ID_Cycle_Safe("norm_torso_damage_right");
+	tZombieAnimations.tNormal.tGlobal.tpDamageLeft = tpVisualObject->ID_Cycle("norm_torso_damage_left");
+	tZombieAnimations.tNormal.tGlobal.tpDamageRight = tpVisualObject->ID_Cycle("norm_torso_damage_right");
 	
 	tpVisualObject->PlayCycle(tZombieAnimations.tNormal.tGlobal.tpIdle);
 }

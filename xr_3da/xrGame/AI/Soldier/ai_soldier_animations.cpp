@@ -62,89 +62,91 @@ void CAI_Soldier::vfLoadAnimations()
 	CKinematics* tpVisualObject = PKinematics(pVisual);
 	
 	// loading normal animations
-	tSoldierAnimations.tNormal.tGlobal.tpaDeath[0] = tpVisualObject->ID_Cycle_Safe("norm_death_0");
-	tSoldierAnimations.tNormal.tGlobal.tpaDeath[1] = tpVisualObject->ID_Cycle_Safe("norm_death_1");
-	tSoldierAnimations.tNormal.tGlobal.tpaDeath[2] = tpVisualObject->ID_Cycle_Safe("norm_death_2");
-	tSoldierAnimations.tNormal.tGlobal.tpaDeath[3] = tpVisualObject->ID_Cycle_Safe("norm_death_3");
-	tSoldierAnimations.tNormal.tGlobal.tpaDeath[4] = tpVisualObject->ID_Cycle_Safe("norm_death_4");
+	tSoldierAnimations.tNormal.tGlobal.tpaDeath[0] = tpVisualObject->ID_Cycle("norm_death_0");
+	tSoldierAnimations.tNormal.tGlobal.tpaDeath[1] = tpVisualObject->ID_Cycle("norm_death_1");
+	tSoldierAnimations.tNormal.tGlobal.tpaDeath[2] = tpVisualObject->ID_Cycle("norm_death_2");
+	tSoldierAnimations.tNormal.tGlobal.tpaDeath[3] = tpVisualObject->ID_Cycle("norm_death_3");
+	tSoldierAnimations.tNormal.tGlobal.tpaDeath[4] = tpVisualObject->ID_Cycle("norm_death_4");
 	
-	tSoldierAnimations.tNormal.tGlobal.tpaRunForward[0] = tpVisualObject->ID_Cycle_Safe("norm_run_fwd_0");
-	tSoldierAnimations.tNormal.tGlobal.tpaRunForward[1] = tpVisualObject->ID_Cycle_Safe("norm_run_fwd_1");
-	tSoldierAnimations.tNormal.tGlobal.tpaRunForward[2] = tpVisualObject->ID_Cycle_Safe("norm_run_fwd_2");
-	tSoldierAnimations.tNormal.tGlobal.tpaRunForward[3] = tpVisualObject->ID_Cycle_Safe("norm_run_fwd_3");
+	tSoldierAnimations.tNormal.tGlobal.tpaRunForward[0] = tpVisualObject->ID_Cycle("norm_run_fwd_0");
+	tSoldierAnimations.tNormal.tGlobal.tpaRunForward[1] = tpVisualObject->ID_Cycle("norm_run_fwd_1");
+	tSoldierAnimations.tNormal.tGlobal.tpaRunForward[2] = tpVisualObject->ID_Cycle("norm_run_fwd_2");
+	tSoldierAnimations.tNormal.tGlobal.tpaRunForward[3] = tpVisualObject->ID_Cycle("norm_run_fwd_3");
 
-	tSoldierAnimations.tNormal.tGlobal.tpaWalkForward[0] = tpVisualObject->ID_Cycle_Safe("norm_walk_fwd_0");
-	tSoldierAnimations.tNormal.tGlobal.tpaWalkForward[1] = tpVisualObject->ID_Cycle_Safe("norm_walk_fwd_1");
-	tSoldierAnimations.tNormal.tGlobal.tpaWalkForward[2] = tpVisualObject->ID_Cycle_Safe("norm_walk_fwd_2");
+	tSoldierAnimations.tNormal.tGlobal.tpaWalkForward[0] = tpVisualObject->ID_Cycle("norm_walk_fwd_0");
+	tSoldierAnimations.tNormal.tGlobal.tpaWalkForward[1] = tpVisualObject->ID_Cycle("norm_walk_fwd_1");
+	tSoldierAnimations.tNormal.tGlobal.tpaWalkForward[2] = tpVisualObject->ID_Cycle("norm_walk_fwd_2");
 	
-	tSoldierAnimations.tNormal.tGlobal.tpaWalkBack[0] = tpVisualObject->ID_Cycle_Safe("norm_walk_back_0");
-	tSoldierAnimations.tNormal.tGlobal.tpaWalkBack[1] = tpVisualObject->ID_Cycle_Safe("norm_walk_back_1");
-	tSoldierAnimations.tNormal.tGlobal.tpaWalkBack[2] = tpVisualObject->ID_Cycle_Safe("norm_walk_back_2");
+	tSoldierAnimations.tNormal.tGlobal.tpaWalkBack[0] = tpVisualObject->ID_Cycle("norm_walk_back_0");
+	tSoldierAnimations.tNormal.tGlobal.tpaWalkBack[1] = tpVisualObject->ID_Cycle("norm_walk_back_1");
+	tSoldierAnimations.tNormal.tGlobal.tpaWalkBack[2] = tpVisualObject->ID_Cycle("norm_walk_back_2");
 	
-	tSoldierAnimations.tNormal.tGlobal.tpWalkLeft = tpVisualObject->ID_Cycle_Safe("norm_walk_ls");
-	tSoldierAnimations.tNormal.tGlobal.tpWalkRight = tpVisualObject->ID_Cycle_Safe("norm_walk_rs");
+	tSoldierAnimations.tNormal.tGlobal.tpWalkLeft = tpVisualObject->ID_Cycle("norm_walk_ls");
+	tSoldierAnimations.tNormal.tGlobal.tpWalkRight = tpVisualObject->ID_Cycle("norm_walk_rs");
 	
-	tSoldierAnimations.tNormal.tGlobal.tpTurnLeft = tpVisualObject->ID_Cycle_Safe("norm_turn_ls");
-	tSoldierAnimations.tNormal.tGlobal.tpTurnRight = tpVisualObject->ID_Cycle_Safe("norm_turn_rs");
+	tSoldierAnimations.tNormal.tGlobal.tpTurnLeft = tpVisualObject->ID_Cycle("norm_turn_ls");
+	tSoldierAnimations.tNormal.tGlobal.tpTurnRight = tpVisualObject->ID_Cycle("norm_turn_rs");
 	
-	tSoldierAnimations.tNormal.tGlobal.tpLieDown = tpVisualObject->ID_Cycle_Safe("norm_lie_down");
-	tSoldierAnimations.tNormal.tGlobal.tpPointSign = tpVisualObject->ID_Cycle_Safe("norm_sign_2");
-	tSoldierAnimations.tNormal.tGlobal.tpIdle = tpVisualObject->ID_Cycle_Safe("norm_idle");
+	tSoldierAnimations.tNormal.tGlobal.tpLieDown = tpVisualObject->ID_Cycle("norm_lie_down");
+	tSoldierAnimations.tNormal.tGlobal.tpPointSign = tpVisualObject->ID_Cycle("norm_sign_2");
+	tSoldierAnimations.tNormal.tGlobal.tpIdle = tpVisualObject->ID_Cycle("norm_idle");
 
-	tSoldierAnimations.tNormal.tTorso.tpAim = tpVisualObject->ID_Cycle_Safe("norm_aim");
-	tSoldierAnimations.tNormal.tTorso.tpAttack = tpVisualObject->ID_Cycle_Safe("norm_attack");
-	tSoldierAnimations.tNormal.tTorso.tpDamageLeft = tpVisualObject->ID_Cycle_Safe("norm_damage_left");
-	tSoldierAnimations.tNormal.tTorso.tpDamageRight = tpVisualObject->ID_Cycle_Safe("norm_damage_right");
-	tSoldierAnimations.tNormal.tTorso.tpReload = tpVisualObject->ID_Cycle_Safe("norm_reload");
-	tSoldierAnimations.tNormal.tTorso.tpRaiseHandSign = tpVisualObject->ID_Cycle_Safe("norm_sign_0");
-	tSoldierAnimations.tNormal.tTorso.tpGoAheadSign = tpVisualObject->ID_Cycle_Safe("norm_sign_1");
+	tSoldierAnimations.tNormal.tTorso.tpAim = tpVisualObject->ID_Cycle("norm_aim");
+	tSoldierAnimations.tNormal.tTorso.tpAttack = tpVisualObject->ID_Cycle("norm_attack");
+	tSoldierAnimations.tNormal.tTorso.tpDamageLeft = tpVisualObject->ID_FX("norm_damage_ls");
+	tSoldierAnimations.tNormal.tTorso.tpDamageRight = tpVisualObject->ID_FX("norm_damage_rs");
+	tSoldierAnimations.tNormal.tTorso.tpReload = tpVisualObject->ID_Cycle("norm_reload");
+	tSoldierAnimations.tNormal.tTorso.tpRaiseHandSign = tpVisualObject->ID_Cycle("norm_sign_0");
+	tSoldierAnimations.tNormal.tTorso.tpGoAheadSign = tpVisualObject->ID_Cycle("norm_sign_1");
 	
-	tSoldierAnimations.tNormal.tLegs.tpJumpBegin = tpVisualObject->ID_Cycle_Safe("norm_jump_begin");
-	tSoldierAnimations.tNormal.tLegs.tpJumpIdle = tpVisualObject->ID_Cycle_Safe("norm_jump_idle");
+	tSoldierAnimations.tNormal.tLegs.tpJumpBegin = tpVisualObject->ID_Cycle("norm_jump_begin");
+	tSoldierAnimations.tNormal.tLegs.tpJumpIdle = tpVisualObject->ID_Cycle("norm_jump_idle");
 	
 	// loading crouch animations
-	tSoldierAnimations.tCrouch.tGlobal.tpaWalkForward[0] = tpVisualObject->ID_Cycle_Safe("cr_walk_fwd_0");
-	tSoldierAnimations.tCrouch.tGlobal.tpaWalkForward[1] = tpVisualObject->ID_Cycle_Safe("cr_walk_fwd_1");
+	tSoldierAnimations.tCrouch.tGlobal.tpaWalkForward[0] = tpVisualObject->ID_Cycle("cr_walk_fwd_0");
+	tSoldierAnimations.tCrouch.tGlobal.tpaWalkForward[1] = tpVisualObject->ID_Cycle("cr_walk_fwd_1");
 	
-	tSoldierAnimations.tCrouch.tGlobal.tpaWalkBack[0] = tpVisualObject->ID_Cycle_Safe("cr_walk_back_0");
-	tSoldierAnimations.tCrouch.tGlobal.tpaWalkBack[1] = tpVisualObject->ID_Cycle_Safe("cr_walk_back_1");
+	tSoldierAnimations.tCrouch.tGlobal.tpaWalkBack[0] = tpVisualObject->ID_Cycle("cr_walk_back_0");
+	tSoldierAnimations.tCrouch.tGlobal.tpaWalkBack[1] = tpVisualObject->ID_Cycle("cr_walk_back_1");
 	
-	tSoldierAnimations.tCrouch.tGlobal.tpDeath = tpVisualObject->ID_Cycle_Safe("cr_death_0");
-	tSoldierAnimations.tCrouch.tGlobal.tpTurnLeft = tpVisualObject->ID_Cycle_Safe("cr_turn_ls");
-	tSoldierAnimations.tCrouch.tGlobal.tpTurnRight = tpVisualObject->ID_Cycle_Safe("cr_turn_rs");
-	tSoldierAnimations.tCrouch.tGlobal.tpIdle = tpVisualObject->ID_Cycle_Safe("cr_idle");
-	tSoldierAnimations.tCrouch.tGlobal.tpWalkLeft = tpVisualObject->ID_Cycle_Safe("cr_walk_ls");
-	tSoldierAnimations.tCrouch.tGlobal.tpWalkRight = tpVisualObject->ID_Cycle_Safe("cr_walk_rs");
-	tSoldierAnimations.tCrouch.tGlobal.tpLieDown = tpVisualObject->ID_Cycle_Safe("cr_lie_down");
-	tSoldierAnimations.tCrouch.tGlobal.tpPointSign = tpVisualObject->ID_Cycle_Safe("cr_sign_2");
+	tSoldierAnimations.tCrouch.tGlobal.tpDeath = tpVisualObject->ID_Cycle("cr_death_0");
+	tSoldierAnimations.tCrouch.tGlobal.tpTurnLeft = tpVisualObject->ID_Cycle("cr_turn_ls");
+	tSoldierAnimations.tCrouch.tGlobal.tpTurnRight = tpVisualObject->ID_Cycle("cr_turn_rs");
+	tSoldierAnimations.tCrouch.tGlobal.tpIdle = tpVisualObject->ID_Cycle("cr_idle");
+	tSoldierAnimations.tCrouch.tGlobal.tpWalkLeft = tpVisualObject->ID_Cycle("cr_walk_ls");
+	tSoldierAnimations.tCrouch.tGlobal.tpWalkRight = tpVisualObject->ID_Cycle("cr_walk_rs");
+	tSoldierAnimations.tCrouch.tGlobal.tpLieDown = tpVisualObject->ID_Cycle("cr_lie_down");
+	tSoldierAnimations.tCrouch.tGlobal.tpPointSign = tpVisualObject->ID_Cycle("cr_sign_2");
 
-	tSoldierAnimations.tCrouch.tTorso.tpAim = tpVisualObject->ID_Cycle_Safe("cr_walk_rs");
-	tSoldierAnimations.tCrouch.tTorso.tpAttack = tpVisualObject->ID_Cycle_Safe("cr_walk_rs");
-	tSoldierAnimations.tCrouch.tTorso.tpReload = tpVisualObject->ID_Cycle_Safe("cr_reload");
-	tSoldierAnimations.tCrouch.tTorso.tpDamageLeft = tpVisualObject->ID_Cycle_Safe("cr_damage_ls");
-	tSoldierAnimations.tCrouch.tTorso.tpDamageRight = tpVisualObject->ID_Cycle_Safe("cr_damage_rs");
-	tSoldierAnimations.tCrouch.tTorso.tpRaiseHandSign = tpVisualObject->ID_Cycle_Safe("cr_sign_0");
-	tSoldierAnimations.tCrouch.tTorso.tpGoAheadSign = tpVisualObject->ID_Cycle_Safe("cr_sign_1");
+	tSoldierAnimations.tCrouch.tTorso.tpAim = tpVisualObject->ID_Cycle("cr_walk_rs");
+	tSoldierAnimations.tCrouch.tTorso.tpAttack = tpVisualObject->ID_Cycle("cr_walk_rs");
+	tSoldierAnimations.tCrouch.tTorso.tpReload = tpVisualObject->ID_Cycle("cr_reload");
+	tSoldierAnimations.tCrouch.tTorso.tpDamageLeft = tpVisualObject->ID_FX("cr_damage_ls");
+	tSoldierAnimations.tCrouch.tTorso.tpDamageRight = tpVisualObject->ID_FX("cr_damage_rs");
+	tSoldierAnimations.tCrouch.tTorso.tpRaiseHandSign = tpVisualObject->ID_Cycle("cr_sign_0");
+	tSoldierAnimations.tCrouch.tTorso.tpGoAheadSign = tpVisualObject->ID_Cycle("cr_sign_1");
 
-	tSoldierAnimations.tCrouch.tLegs.tpJumpBegin = tpVisualObject->ID_Cycle_Safe("cr_jump_begin");
-	tSoldierAnimations.tCrouch.tLegs.tpJumpIdle = tpVisualObject->ID_Cycle_Safe("cr_jump_idle");
+	tSoldierAnimations.tCrouch.tLegs.tpJumpBegin = tpVisualObject->ID_Cycle("cr_jump_begin");
+	tSoldierAnimations.tCrouch.tLegs.tpJumpIdle = tpVisualObject->ID_Cycle("cr_jump_idle");
 
 	// loading lie animations
-	tSoldierAnimations.tLie.tGlobal.tpDeath = tpVisualObject->ID_Cycle_Safe("lie_death");
-	tSoldierAnimations.tLie.tGlobal.tpStandUp = tpVisualObject->ID_Cycle_Safe("stand_up");
-	tSoldierAnimations.tLie.tGlobal.tpIdle = tpVisualObject->ID_Cycle_Safe("lie_idle");
-	tSoldierAnimations.tLie.tGlobal.tpReload = tpVisualObject->ID_Cycle_Safe("lie_reload");
-	tSoldierAnimations.tLie.tGlobal.tpAttack = tpVisualObject->ID_Cycle_Safe("lie_attack");
-	tSoldierAnimations.tLie.tGlobal.tpDamage = tpVisualObject->ID_Cycle_Safe("lie_damage");
-	tSoldierAnimations.tLie.tGlobal.tpTurnLeft = tpVisualObject->ID_Cycle_Safe("lie_turn_ls");
-	tSoldierAnimations.tLie.tGlobal.tpTurnRight = tpVisualObject->ID_Cycle_Safe("lie_turn_rs");
-	tSoldierAnimations.tLie.tGlobal.tpWalkForward = tpVisualObject->ID_Cycle_Safe("lie_walk_fwd");
-	tSoldierAnimations.tLie.tGlobal.tpWalkBack = tpVisualObject->ID_Cycle_Safe("lie_walk_back");
-	tSoldierAnimations.tLie.tGlobal.tpWalkLeft = tpVisualObject->ID_Cycle_Safe("lie_roll_ls");
-	tSoldierAnimations.tLie.tGlobal.tpWalkRight = tpVisualObject->ID_Cycle_Safe("lie_roll_rs");
-	tSoldierAnimations.tLie.tGlobal.tpRaiseHandSign = tpVisualObject->ID_Cycle_Safe("lie_sign_0");
-	tSoldierAnimations.tLie.tGlobal.tpGoAheadSign = tpVisualObject->ID_Cycle_Safe("lie_sign_1");
-	tSoldierAnimations.tLie.tGlobal.tpPointSign = tpVisualObject->ID_Cycle_Safe("lie_sign_2");
+	tSoldierAnimations.tLie.tGlobal.tpDeath = tpVisualObject->ID_Cycle("lie_death");
+	tSoldierAnimations.tLie.tGlobal.tpStandUp = tpVisualObject->ID_Cycle("lie_stand_up");
+	tSoldierAnimations.tLie.tGlobal.tpIdle = tpVisualObject->ID_Cycle("lie_idle");
+	tSoldierAnimations.tLie.tGlobal.tpReload = tpVisualObject->ID_Cycle("lie_reload");
+	tSoldierAnimations.tLie.tGlobal.tpAttack = tpVisualObject->ID_Cycle("lie_attack");
+	tSoldierAnimations.tLie.tGlobal.tpDamage = tpVisualObject->ID_FX("lie_damage");
+	tSoldierAnimations.tLie.tGlobal.tpTurnLeft = tpVisualObject->ID_Cycle("lie_turn_ls");
+	tSoldierAnimations.tLie.tGlobal.tpTurnRight = tpVisualObject->ID_Cycle("lie_turn_rs");
+	tSoldierAnimations.tLie.tGlobal.tpWalkForward = tpVisualObject->ID_Cycle("lie_walk_fwd");
+	tSoldierAnimations.tLie.tGlobal.tpWalkBack = tpVisualObject->ID_Cycle("lie_walk_back");
+	tSoldierAnimations.tLie.tGlobal.tpWalkLeft = tpVisualObject->ID_Cycle("lie_roll_ls");
+	tSoldierAnimations.tLie.tGlobal.tpWalkRight = tpVisualObject->ID_Cycle("lie_roll_rs");
+	tSoldierAnimations.tLie.tGlobal.tpRaiseHandSign = tpVisualObject->ID_Cycle("lie_sign_0");
+	tSoldierAnimations.tLie.tGlobal.tpGoAheadSign = tpVisualObject->ID_Cycle("lie_sign_1");
+	tSoldierAnimations.tLie.tGlobal.tpPointSign = tpVisualObject->ID_Cycle("lie_sign_2");
+	
+	m_tpCurrentGlobalBlend = tpVisualObject->PlayCycle(tSoldierAnimations.tNormal.tGlobal.tpIdle);
 }
 
 void CAI_Soldier::SelectAnimation(const Fvector& _view, const Fvector& _move, float speed)
@@ -687,9 +689,6 @@ void CAI_Soldier::SelectAnimation(const Fvector& _view, const Fvector& _move, fl
 		m_tpCurrentLegsAnimation = tpLegsAnimation;
 		if (tpLegsAnimation) {
 			m_tpCurrentLegsBlend = tpVisualObject->PlayCycle(tpLegsAnimation);
-			if (tpLegsAnimation == m_walk.fwd) {
-				m_tpCurrentLegsBlend->timeCurrent = ::Random.randF(m_tpCurrentLegsBlend->timeTotal);
-			}
 		}
 	}
 }

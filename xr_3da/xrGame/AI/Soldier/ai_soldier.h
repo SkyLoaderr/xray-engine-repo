@@ -353,6 +353,8 @@ class CAI_Soldier : public CCustomMonster
 		void Patrol();
 		void PatrolReturn();
 		void FollowLeaderPatrol();
+
+		void Test();
 		
 		// miscellanious funtions	
 	IC  CGroup getGroup() {return Level().Teams[g_Team()].Squads[g_Squad()].Groups[g_Group()];};
