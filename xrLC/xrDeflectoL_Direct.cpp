@@ -26,8 +26,8 @@ void CDeflector::L_Direct_Edge (UVpoint& p1, UVpoint& p2, Fvector& v1, Fvector& 
 		int	_x  = iFloor(uv.u*float(lm.dwWidth)); 
 		int _y	= iFloor(uv.v*float(lm.dwHeight));
 
-		if ((_x<0)||(_x>=(int)T->dwWidth))	continue;
-		if ((_y<0)||(_y>=(int)T->dwHeight))	continue;
+		if ((_x<0)||(_x>=(int)lm.dwWidth))	continue;
+		if ((_y<0)||(_y>=(int)lm.dwHeight))	continue;
 		
 		DWORD& Lumel	= lm.pSurface[_y*lm.dwWidth+_x];
 		if (RGBA_GETALPHA(Lumel))			continue;
@@ -125,14 +125,13 @@ void CDeflector::L_Direct	(HASH& H)
 	}
 
 	// *** Render Edges
+	float texel_size = (1.f/float(_max(lm.dwWidth,lm.dwHeight)))/4.f;
 	for (DWORD t=0; t<tris.size(); t++)
 	{
 		UVtri&		T	= tris[t];
-		UVpoint&	p1	= T.uv[0]; int x1=iFloor(p1.u*float(lm.dwWidth)); int y1=iFloor(p1.v*float(lm.dwHeight));
-		UVpoint&	p2	= T.uv[1]; int x2=iFloor(p2.u*float(lm.dwWidth)); int y2=iFloor(p2.v*float(lm.dwHeight));
-		UVpoint&	p3	= T.uv[2]; int x3=iFloor(p3.u*float(lm.dwWidth)); int y3=iFloor(p3.v*float(lm.dwHeight));
-		light_edge	(x1,y1,x2,y2,&lm,T);
-		light_edge	(x2,y2,x3,y3,&lm,T);
-		light_edge	(x3,y3,x1,y1,&lm,T);
+		Face*		F	= T.owner;
+		L_Direct_Edge	(T.uv[0], T.uv[1], F->v[0]->P, F->v[1]->P, F->N, texel_size);
+		L_Direct_Edge	(T.uv[1], T.uv[2], F->v[1]->P, F->v[2]->P, F->N, texel_size);
+		L_Direct_Edge	(T.uv[2], T.uv[0], F->v[2]->P, F->v[0]->P, F->N, texel_size);
 	}
 }
