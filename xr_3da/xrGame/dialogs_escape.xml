@@ -786,190 +786,6 @@
             </phrase>
         </phrase_list>
     </dialog>
-    <dialog id="escape_trader_done_gift">
-        <precondition>escape_dialog.have_fox_info</precondition>
-        <has_info>escape_stalker_give</has_info>
-        <phrase_list>
-            <phrase id="11">
-                <text>escape_trader_done_gift_11</text>
-                <next>111</next>
-            </phrase>
-            <phrase id="111">
-                <text>escape_trader_done_gift_111</text>
-                <next>2</next>
-            </phrase>
-            <phrase id="21">
-                <text>escape_trader_done_gift_21</text>
-                <next>211</next>
-            </phrase>
-            <phrase id="211">
-                <text>escape_trader_done_gift_211</text>
-                <next>2111</next>
-            </phrase>
-            <phrase id="2111">
-                <text>escape_trader_done_gift_2111</text>
-                <next>21111</next>
-                <next>21112</next>
-            </phrase>
-            <phrase id="21111">
-                <text>escape_trader_done_gift_21111</text>
-                <give_info>escape_blockpost_case</give_info>
-                <next>211111</next>
-            </phrase>
-            <phrase id="211111">
-                <text>escape_trader_done_gift_211111</text>
-            </phrase>
-            <phrase id="21112">
-                <text>escape_trader_done_gift_21112</text>
-                <next>211121</next>
-            </phrase>
-            <phrase id="211121">
-                <text>escape_trader_done_gift_211121</text>
-            </phrase>
-            <phrase id="2">
-                <text>escape_trader_done_gift_2</text>
-                <next>21</next>
-            </phrase>
-            <phrase id="1">
-                <text>escape_trader_done_gift_1</text>
-                <next>11</next>
-            </phrase>
-            <phrase id="0">
-                <text>escape_trader_done_gift_0</text>
-                <action>escape_dialog.give_fox_info</action>
-                <give_info>escape_stalker_done</give_info>
-                <next>1</next>
-            </phrase>
-        </phrase_list>
-    </dialog>
-    <dialog id="esc_stalker_talk_level" priority="2">
-        <precondition>dialogs.level_escape</precondition>
-        <phrase_list>
-            <phrase id="2">
-                <text>esc_stalker_talk_level_2</text>
-                <next>21</next>
-            </phrase>
-            <phrase id="21">
-                <text>esc_stalker_talk_level_21</text>
-            </phrase>
-            <phrase id="10">
-                <text>esc_stalker_talk_level_10</text>
-            </phrase>
-            <phrase id="1">
-                <text>esc_stalker_talk_level_1</text>
-                <next>2</next>
-                <next>10</next>
-            </phrase>
-            <phrase id="0">
-                <text>esc_stalker_talk_level_0</text>
-                <next>1</next>
-            </phrase>
-        </phrase_list>
-    </dialog>
-    <dialog id="escape_trader_start_dialog">
-        <phrase_list>
-            <phrase id="31">
-                <text>escape_trader_start_dialog_31</text>
-                <give_info>esc_trader_newbie</give_info>
-                <next>311</next>
-            </phrase>
-            <phrase id="311">
-                <text></text>
-                <action>dialogs.break_dialog</action>
-                <action>dialogs.disable_talk_self</action>
-                <give_info>esc_trader_tutorial_chosen</give_info>
-            </phrase>
-            <phrase id="32">
-                <text>escape_trader_start_dialog_32</text>
-                <give_info>esc_trader_experienced</give_info>
-                <give_info>tutorial_artefact_start</give_info>
-                <next>322</next>
-            </phrase>
-            <phrase id="322">
-                <text></text>
-                <give_info>esc_trader_tutorial_chosen</give_info>
-                <next>1</next>
-            </phrase>
-            <phrase id="1">
-                <text></text>
-                <give_info>esc_trader_monolog_1</give_info>
-                <next>2</next>
-                <next>3</next>
-                <next>4</next>
-                <next>5</next>
-                <next>321</next>
-                <next>6</next>
-            </phrase>
-            <phrase id="21">
-                <text>escape_trader_start_dialog_21</text>
-                <give_info>esc_trader_tutorial_choice</give_info>
-                <next>211</next>
-            </phrase>
-            <phrase id="211">
-                <text></text>
-                <give_info>esc_trader_tutorial_choice</give_info>
-                <next>1</next>
-            </phrase>
-            <phrase id="0">
-                <text></text>
-                <next>1</next>
-            </phrase>
-            <phrase id="321">
-                <text>escape_trader_start_dialog_321</text>
-                <precondition>escape_dialog.is_tutorial</precondition>
-                <dont_has_info>esc_trader_can_leave</dont_has_info>
-                <has_info>esc_trader_tutorial_chosen</has_info>
-                <has_info>esc_trader_tutorial_choice</has_info>
-                <next>3211</next>
-            </phrase>
-            <phrase id="3211">
-                <text>escape_trader_start_dialog_3211</text>
-                <give_info>esc_trader_can_leave</give_info>
-                <next>32111</next>
-            </phrase>
-            <phrase id="32111">
-                <text></text>
-                <action>dialogs.break_dialog</action>
-                <action>dialogs.disable_talk_self</action>
-                <give_info>esc_trader_can_leave</give_info>
-            </phrase>
-            <phrase id="6">
-                <text>escape_trader_start_dialog_6</text>
-                <precondition>escape_dialog.is_tutorial</precondition>
-                <has_info>esc_trader_tutorial_chosen</has_info>
-                <has_info>esc_trader_can_leave</has_info>
-                <has_info>esc_trader_tutorial_choice</has_info>
-                <next>61</next>
-            </phrase>
-            <phrase id="61">
-                <give_info>tutorial_alarm_start</give_info>
-            </phrase>
-            <phrase id="5">
-                <text>escape_trader_start_dialog_5</text>
-                <precondition>escape_dialog.trader_alredy_give_job</precondition>
-                <precondition>escape_dialog.is_not_tutorial</precondition>
-            </phrase>
-            <phrase id="4">
-                <text>escape_trader_start_dialog_4</text>
-                <precondition>escape_dialog.trader_dont_give_job</precondition>
-                <precondition>escape_dialog.is_not_tutorial</precondition>
-            </phrase>
-            <phrase id="3">
-                <text>escape_trader_start_dialog_3</text>
-                <precondition>escape_dialog.is_tutorial</precondition>
-                <dont_has_info>esc_trader_tutorial_chosen</dont_has_info>
-                <has_info>esc_trader_tutorial_choice</has_info>
-                <next>31</next>
-                <next>32</next>
-            </phrase>
-            <phrase id="2">
-                <text>escape_trader_start_dialog_2</text>
-                <precondition>escape_dialog.is_tutorial</precondition>
-                <dont_has_info>esc_trader_tutorial_choice</dont_has_info>
-                <next>21</next>
-            </phrase>
-        </phrase_list>
-    </dialog>
     <dialog id="escape_trader_jobs" priority="5">
         <has_info>tutorial_end</has_info>
         <phrase_list>
@@ -1162,6 +978,206 @@
             <phrase id="1">
                 <text>escape_trader_done_tutorial_artefact_1</text>
                 <action>escape_dialog.give_medkit</action>
+            </phrase>
+        </phrase_list>
+    </dialog>
+    <dialog id="esc_stalker_talk_level" priority="2">
+        <precondition>dialogs.level_escape</precondition>
+        <phrase_list>
+            <phrase id="2">
+                <text>esc_stalker_talk_level_2</text>
+                <next>21</next>
+            </phrase>
+            <phrase id="21">
+                <text>esc_stalker_talk_level_21</text>
+            </phrase>
+            <phrase id="10">
+                <text>esc_stalker_talk_level_10</text>
+            </phrase>
+            <phrase id="1">
+                <text>esc_stalker_talk_level_1</text>
+                <next>2</next>
+                <next>10</next>
+            </phrase>
+            <phrase id="0">
+                <text>esc_stalker_talk_level_0</text>
+                <next>1</next>
+            </phrase>
+        </phrase_list>
+    </dialog>
+    <dialog id="escape_trader_done_gift">
+        <precondition>escape_dialog.have_fox_info</precondition>
+        <has_info>escape_stalker_give</has_info>
+        <phrase_list>
+            <phrase id="11">
+                <text>escape_trader_done_gift_11</text>
+                <next>111</next>
+            </phrase>
+            <phrase id="111">
+                <text>escape_trader_done_gift_111</text>
+                <next>2</next>
+            </phrase>
+            <phrase id="21">
+                <text>escape_trader_done_gift_21</text>
+                <next>211</next>
+            </phrase>
+            <phrase id="211">
+                <text>escape_trader_done_gift_211</text>
+                <next>2111</next>
+            </phrase>
+            <phrase id="2111">
+                <text>escape_trader_done_gift_2111</text>
+                <next>21111</next>
+                <next>21112</next>
+            </phrase>
+            <phrase id="21111">
+                <text>escape_trader_done_gift_21111</text>
+                <give_info>escape_blockpost_case</give_info>
+                <next>211111</next>
+            </phrase>
+            <phrase id="211111">
+                <text>escape_trader_done_gift_211111</text>
+            </phrase>
+            <phrase id="21112">
+                <text>escape_trader_done_gift_21112</text>
+                <next>211121</next>
+            </phrase>
+            <phrase id="211121">
+                <text>escape_trader_done_gift_211121</text>
+            </phrase>
+            <phrase id="2">
+                <text>escape_trader_done_gift_2</text>
+                <next>21</next>
+            </phrase>
+            <phrase id="1">
+                <text>escape_trader_done_gift_1</text>
+                <next>11</next>
+            </phrase>
+            <phrase id="0">
+                <text>escape_trader_done_gift_0</text>
+                <action>escape_dialog.give_fox_info</action>
+                <give_info>escape_stalker_done</give_info>
+                <next>1</next>
+            </phrase>
+        </phrase_list>
+    </dialog>
+    <dialog id="escape_trader_start_dialog">
+        <phrase_list>
+            <phrase id="1">
+                <text></text>
+                <precondition>escape_dialog.is_tutorial</precondition>
+                <dont_has_info>esc_trader_tutorial_choice</dont_has_info>
+                <give_info>esc_trader_monolog_1</give_info>
+                <next>2</next>
+            </phrase>
+            <phrase id="2">
+                <text>escape_trader_start_dialog_2</text>
+                <next>21</next>
+            </phrase>
+            <phrase id="21">
+                <text>escape_trader_start_dialog_21</text>
+                <give_info>esc_trader_tutorial_choice</give_info>
+                <next>211</next>
+            </phrase>
+            <phrase id="211">
+                <text></text>
+                <next>1</next>
+                <next>12</next>
+                <next>13</next>
+                <next>14</next>
+                <next>15</next>
+                <next>16</next>
+            </phrase>
+            <phrase id="311">
+                <text></text>
+                <action>dialogs.break_dialog</action>
+                <action>dialogs.disable_talk_self</action>
+            </phrase>
+            <phrase id="12">
+                <text></text>
+                <precondition>escape_dialog.is_tutorial</precondition>
+                <dont_has_info>esc_trader_tutorial_chosen</dont_has_info>
+                <has_info>esc_trader_tutorial_choice</has_info>
+                <next>3</next>
+            </phrase>
+            <phrase id="3">
+                <text>escape_trader_start_dialog_3</text>
+                <next>31</next>
+                <next>32</next>
+            </phrase>
+            <phrase id="32">
+                <text>escape_trader_start_dialog_32</text>
+                <give_info>esc_trader_experienced</give_info>
+                <give_info>tutorial_artefact_start</give_info>
+                <give_info>esc_trader_tutorial_chosen</give_info>
+                <next>211</next>
+            </phrase>
+            <phrase id="31">
+                <text>escape_trader_start_dialog_31</text>
+                <give_info>esc_trader_newbie</give_info>
+                <give_info>esc_trader_tutorial_chosen</give_info>
+                <next>311</next>
+            </phrase>
+            <phrase id="16">
+                <text></text>
+                <precondition>escape_dialog.is_tutorial</precondition>
+                <give_info>tutorial_alarm_start</give_info>
+                <has_info>esc_trader_tutorial_chosen</has_info>
+                <has_info>esc_trader_tutorial_choice</has_info>
+                <has_info>esc_trader_can_leave</has_info>
+                <next>6</next>
+            </phrase>
+            <phrase id="0">
+                <text></text>
+                <next>1</next>
+                <next>12</next>
+                <next>13</next>
+                <next>14</next>
+                <next>15</next>
+                <next>16</next>
+            </phrase>
+            <phrase id="32111">
+                <text></text>
+                <action>dialogs.break_dialog</action>
+                <action>dialogs.disable_talk_self</action>
+            </phrase>
+            <phrase id="3211">
+                <text>escape_trader_start_dialog_3211</text>
+                <give_info>esc_trader_can_leave</give_info>
+                <next>32111</next>
+            </phrase>
+            <phrase id="321">
+                <text>escape_trader_start_dialog_321</text>
+                <next>3211</next>
+            </phrase>
+            <phrase id="15">
+                <text></text>
+                <precondition>escape_dialog.is_tutorial</precondition>
+                <dont_has_info>esc_trader_can_leave</dont_has_info>
+                <has_info>esc_trader_tutorial_choice</has_info>
+                <has_info>esc_trader_tutorial_chosen</has_info>
+                <next>321</next>
+            </phrase>
+            <phrase id="13">
+                <text></text>
+                <precondition>escape_dialog.is_not_tutorial</precondition>
+                <precondition>escape_dialog.trader_dont_give_job</precondition>
+                <next>4</next>
+            </phrase>
+            <phrase id="4">
+                <text>escape_trader_start_dialog_4</text>
+            </phrase>
+            <phrase id="14">
+                <text></text>
+                <precondition>escape_dialog.is_not_tutorial</precondition>
+                <precondition>escape_dialog.trader_alredy_give_job</precondition>
+                <next>5</next>
+            </phrase>
+            <phrase id="5">
+                <text>escape_trader_start_dialog_5</text>
+            </phrase>
+            <phrase id="6">
+                <text>escape_trader_start_dialog_6</text>
             </phrase>
         </phrase_list>
     </dialog>
