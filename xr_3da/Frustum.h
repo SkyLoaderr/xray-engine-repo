@@ -27,11 +27,11 @@ private:
 	Fplane			planes[FRUSTUM_MAXPLANES];
 	int				p_count;
 
-	IC EFC_Visible	AABB_OverlapPlane(Fplane& P,Fvector &m, Fvector &M)
+	IC EFC_Visible	AABB_OverlapPlane(const Fplane& P, const Fvector &m, const Fvector &M) const
 	{
 		// calc extreme pts (neg,pos) along normal axis (pos in dir of norm, etc.)
+		const Fvector &N	= P.n;
 		Fvector Neg, Pos;
-		Fvector &N	= P.n;
 		if(positive(N.x)) {
 			if(positive(N.y)) { 
 				if(positive(N.z))	{ Pos.set(M.x,M.y,M.z); Neg.set(m.x,m.y,m.z); }

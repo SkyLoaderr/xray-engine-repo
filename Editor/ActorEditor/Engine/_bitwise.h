@@ -16,8 +16,8 @@
 #define fdRLE10	0x03ede5bdb     // 1/ln10
 
 // integer math on floats
-IC BOOL negative(float &f)		{ return (*(LPDWORD(&f))&fdSGN);	}
-IC BOOL positive(float &f)		{ return (*(LPDWORD(&f))&fdSGN)==0;	}
+IC BOOL negative(const float &f)	{ return (*(LPDWORD(&f))&fdSGN);	}
+IC BOOL positive(const float &f)	{ return (*(LPDWORD(&f))&fdSGN)==0;	}
 IC void set_negative(float &f)	{ (*LPDWORD(&f)) |= fdSGN; }
 IC void set_positive(float &f)	{ (*LPDWORD(&f)) &= ~fdSGN;			}
 
