@@ -142,6 +142,7 @@ BOOL CHelicopterMotion::NormalizeKeys(float from_time, float to_time, float spee
 #ifdef DEBUG
 void CHelicopterMotion::drawPath()
 {
+	return;
 // motion path
 	FvectorVec path_points;
 	FvectorVec path_rot;
