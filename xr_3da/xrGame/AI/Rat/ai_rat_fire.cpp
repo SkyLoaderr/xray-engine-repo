@@ -102,7 +102,7 @@ void CAI_Rat::HitSignal(int amount, Fvector& vLocalDir, CEntity* who)
 	
 	if (iHealth > 0) {
 		/**
-		if (::Random.randI(0,2))
+		if (dwfRandom(2))
 			PKinematics(pVisual)->PlayFX(tRatAnimations.tNormal.tTorso.tpDamageLeft);
 		else
 			PKinematics(pVisual)->PlayFX(tRatAnimations.tNormal.tTorso.tpDamageRight);

@@ -98,7 +98,7 @@ void CAI_Rat::SelectAnimation(const Fvector& _view, const Fvector& _move, float 
 				break;
 			}
 		if (!tpGlobalAnimation)
-			tpGlobalAnimation = tRatAnimations.tNormal.tGlobal.tpaDeath[::Random.randI(0,2)];
+			tpGlobalAnimation = tRatAnimations.tNormal.tGlobal.tpaDeath[dwfRandom(2)];
 	}
 	else
 		if (m_bFiring) {
@@ -109,7 +109,7 @@ void CAI_Rat::SelectAnimation(const Fvector& _view, const Fvector& _move, float 
 				}
 			
 			if (!tpGlobalAnimation || !m_tpCurrentGlobalBlend || !m_tpCurrentGlobalBlend->playing)
-				tpGlobalAnimation = tRatAnimations.tNormal.tGlobal.tpaAttack[::Random.randI(0,3)];
+				tpGlobalAnimation = tRatAnimations.tNormal.tGlobal.tpaAttack[dwfRandom(3)];
 			
 			tpGlobalAnimation = tRatAnimations.tNormal.tGlobal.tpaAttack[0];
 		}
@@ -129,7 +129,7 @@ void CAI_Rat::SelectAnimation(const Fvector& _view, const Fvector& _move, float 
 //							}
 //						
 //						if (!tpGlobalAnimation || !m_tpCurrentGlobalBlend || !m_tpCurrentGlobalBlend->playing)
-//							tpGlobalAnimation = tRatAnimations.tNormal.tGlobal.tpaIdle[::Random.randI(0,2)];
+//							tpGlobalAnimation = tRatAnimations.tNormal.tGlobal.tpaIdle[dwfRandom(2)];
 						if (this ==  Level().Teams[g_Team()].Squads[g_Squad()].Leader)
 							tpGlobalAnimation = tRatAnimations.tNormal.tGlobal.tpaIdle[1];
 						else
@@ -155,7 +155,7 @@ void CAI_Rat::SelectAnimation(const Fvector& _view, const Fvector& _move, float 
 //							}
 //						
 //						if (!tpGlobalAnimation || !m_tpCurrentGlobalBlend || !m_tpCurrentGlobalBlend->playing)
-//							tpGlobalAnimation = tRatAnimations.tNormal.tGlobal.tpaIdle[::Random.randI(0,2)];
+//							tpGlobalAnimation = tRatAnimations.tNormal.tGlobal.tpaIdle[dwfRandom(2)];
 						if (this ==  Level().Teams[g_Team()].Squads[g_Squad()].Leader)
 							tpGlobalAnimation = tRatAnimations.tNormal.tGlobal.tpaIdle[1];
 						else

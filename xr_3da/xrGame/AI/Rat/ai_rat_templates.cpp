@@ -576,7 +576,7 @@ void CAI_Rat::GoToPointViaSubnodes(Fvector &tLeaderPosition)
 			if (iBestI < 0)
 				if (dwTime - m_dwLastUpdate > 3000) {
 					m_dwLastUpdate = dwTime;
-					iBestI = ::Random.randI(0,tpSubNodes.size());
+					iBestI = dwfRandom(tpSubNodes.size());
 				}
 				//else
 				//	m_bMobility

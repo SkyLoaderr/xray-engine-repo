@@ -181,7 +181,7 @@
 		);
 	}
 
-	DWORD dwRandSeed;
+	static DWORD dwRandSeed;
 
 	IC void  vfSetStartSeed(DWORD dwStartSeed) {
 		dwRandSeed = dwStartSeed;

@@ -16,6 +16,7 @@
 #include "WayPointDef.h"
 #include "PHdynamicdata.h"
 #include "Physics.h"
+#include "AI\\ai_monsters_misc.h"
 
 CPHWorld*	ph_world = 0;
 

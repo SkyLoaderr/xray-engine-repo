@@ -777,7 +777,7 @@ void vfCreatePointSequence(CLevel::SPatrolPath &tpPatrolPath,vector<Fvector> &tp
 					if (tpPatrolPath.tpaWayLinks[i].wFrom != iCurPoint)
 						break;
 				
-				i = i - j - 1 + ::Random.randI(0,j + 1);
+				i = i - j - 1 + dwfRandom(j + 1);
 				
 				if (tpPatrolPath.tpaWayPoints[iCurPoint = tpPatrolPath.tpaWayLinks[i].wTo].dwFlags & FINISH_WAYPOINT) {
 					bStop = true;
