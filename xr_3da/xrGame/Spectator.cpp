@@ -57,79 +57,15 @@ void CSpectator::OnKeyboardPress(int cmd)
 		}
 		return;
 	}
-	/*
-	if (!g_Alive())												return;
-
-	switch(cmd){
-	case kACCEL:	mstate_wishful |= mcAccel;					break;
-	case kR_STRAFE:	mstate_wishful |= mcRStrafe;				break;
-	case kL_STRAFE:	mstate_wishful |= mcLStrafe;				break;
-	case kFWD:		mstate_wishful |= mcFwd;					break;
-	case kBACK:		mstate_wishful |= mcBack;					break;
-	case kJUMP:		mstate_wishful |= mcJump;					break;
-	case kCROUCH:	mstate_wishful |= mcCrouch;					break;
-
-	case kCAM_1:	cam_Set			(eacFirstEye);				break;
-	case kCAM_2:	cam_Set			(eacLookAt);				break;
-	case kCAM_3:	cam_Set			(eacFreeLook);				break;
-
-	case kWPN_FIRE:	g_fireStart		(); 						break;
-	case kWPN_ZOOM:	Weapons->Zoom	(TRUE);						break;
-	case kWPN_1:	
-	case kWPN_2:	
-	case kWPN_3:	
-	case kWPN_4:	
-	case kWPN_5:	
-	case kWPN_6:	
-	case kWPN_7:	
-	case kWPN_8:	
-	case kWPN_9:	
-		Weapons->ActivateWeaponID	(cmd-kWPN_1);			
-		break;
-	case kBINOCULARS:
-		Weapons->ActivateWeaponID	(Weapons->WeaponCount()-1);
-		break;
-	case kWPN_RELOAD:
-		Weapons->Reload			();
-		break;
-	case kUSE:
-		break;
-	case kDROP:
-		b_DropActivated			= TRUE;
-		f_DropPower				= 0;
-		break;
-	}
-*/
 }
 
 void CSpectator::OnKeyboardRelease(int cmd)
 {
-/*	if (Remote())		return;
-
-	if (g_Alive())	
-	{
-		switch(cmd)
-		{
-		case kACCEL:	mstate_wishful &=~mcAccel;		break;
-		case kR_STRAFE:	mstate_wishful &=~mcRStrafe;	break;
-		case kL_STRAFE:	mstate_wishful &=~mcLStrafe;	break;
-		case kFWD:		mstate_wishful &=~mcFwd;		break;
-		case kBACK:		mstate_wishful &=~mcBack;		break;
-		case kJUMP:		mstate_wishful &=~mcJump;		break;
-		case kCROUCH:	mstate_wishful &=~mcCrouch;		break;
-
-		case kWPN_FIRE:	g_fireEnd();					break;
-		case kWPN_ZOOM:	Weapons->Zoom(FALSE);			break;
-
-		case kDROP:		g_PerformDrop();				break;
-		}
-	}
-*/
 }
 
 void CSpectator::OnKeyboardHold(int cmd)
 {
-//	if (Remote())		return;
+	if (Remote())		return;
 
 	switch(cmd)
 	{
