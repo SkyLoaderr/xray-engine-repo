@@ -17,11 +17,12 @@ protected:
 	typedef xr_map<_index_type,_data_type>					OBJECT_REGISTRY;
 	typedef typename OBJECT_REGISTRY::iterator				iterator;
 	typedef typename OBJECT_REGISTRY::const_iterator		const_iterator;
-
 protected:
 	OBJECT_REGISTRY					m_objects;
 
 public:
+	typedef typename _data_type		_data;
+
 	IC								CALifeAbstractRegistry	();
 	virtual							~CALifeAbstractRegistry	();
 	virtual	void					save					(IWriter &memory_stream);
