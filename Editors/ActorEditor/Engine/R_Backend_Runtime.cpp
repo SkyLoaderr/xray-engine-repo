@@ -17,4 +17,5 @@ void CBackend::OnFrameBegin	()
 	Memory.mem_fill		(&stat,0,sizeof(stat));
 	Vertex.Flush		();
 	Index.Flush			();
+	set_Stencil			(FALSE);
 }

@@ -34,7 +34,6 @@ void CRenderDevice::_Create	(LPCSTR shName)
 	}
 	CHK_DX(HW.pDevice->SetRenderState( D3DRS_DITHERENABLE,		TRUE				));
 	CHK_DX(HW.pDevice->SetRenderState( D3DRS_COLORVERTEX,		TRUE				));
-	CHK_DX(HW.pDevice->SetRenderState( D3DRS_STENCILENABLE,		FALSE				));
 	CHK_DX(HW.pDevice->SetRenderState( D3DRS_ZENABLE,			TRUE				));
 	CHK_DX(HW.pDevice->SetRenderState( D3DRS_SHADEMODE,			D3DSHADE_GOURAUD	));
 	CHK_DX(HW.pDevice->SetRenderState( D3DRS_CULLMODE,			D3DCULL_CCW			));

@@ -60,10 +60,10 @@ void CRenderTarget::phase_bloom	()
 	// Clear	- don't clear - it's stupid here :)
 	// Stencil	- disable
 	// Misc		- draw everything (no culling)
-	CHK_DX	(HW.pDevice->SetRenderState	( D3DRS_STENCILENABLE,		FALSE				));
-	CHK_DX	(HW.pDevice->SetRenderState	( D3DRS_CULLMODE,			D3DCULL_NONE		)); 	
+	CHK_DX		(HW.pDevice->SetRenderState	( D3DRS_CULLMODE,		D3DCULL_NONE		)); 	
 
 	// Render skybox/skydome into Bloom1
+	RCache.set_Stencil					(FALSE);
 	RImplementation.rmFar				();
 	pCreator->Environment.RenderFirst	();		// sky
 	RImplementation.rmNormal			();

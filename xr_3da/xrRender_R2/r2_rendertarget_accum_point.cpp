@@ -26,28 +26,15 @@ void CRenderTarget::accum_point_shadow	(light* L)
 	RCache.set_Element				(s_accum_point_s->E[0]);			// masker
 	RCache.set_Geometry				(g_accum_point);
 	CHK_DX							(HW.pDevice->SetRenderState	( D3DRS_COLORWRITEENABLE,	0	));
-	CHK_DX							(HW.pDevice->SetRenderState	( D3DRS_STENCILENABLE,		TRUE				));
 
 	// backfaces: if (stencil>=1 && zfail)	stencil = light_id
-	CHK_DX(HW.pDevice->SetRenderState	( D3DRS_CULLMODE,			D3DCULL_CW			));
-	CHK_DX(HW.pDevice->SetRenderState	( D3DRS_STENCILFUNC,		D3DCMP_LESSEQUAL	));
-	CHK_DX(HW.pDevice->SetRenderState	( D3DRS_STENCILREF,			dwLightMarkerID		));
-	CHK_DX(HW.pDevice->SetRenderState	( D3DRS_STENCILMASK,		0x01				));
-	CHK_DX(HW.pDevice->SetRenderState	( D3DRS_STENCILWRITEMASK,	0xff				));
-	CHK_DX(HW.pDevice->SetRenderState	( D3DRS_STENCILFAIL,		D3DSTENCILOP_KEEP	));
-	CHK_DX(HW.pDevice->SetRenderState	( D3DRS_STENCILPASS,		D3DSTENCILOP_KEEP	));
-	CHK_DX(HW.pDevice->SetRenderState	( D3DRS_STENCILZFAIL,		D3DSTENCILOP_REPLACE));
+	CHK_DX							(HW.pDevice->SetRenderState	( D3DRS_CULLMODE,			D3DCULL_CW			));
+	RCache.set_Stencil				(TRUE,D3DCMP_LESSEQUAL,dwLightMarkerID,0x01,0xff,D3DSTENCILOP_KEEP,D3DSTENCILOP_KEEP,D3DSTENCILOP_REPLACE);
 	RCache.Render					(D3DPT_TRIANGLELIST,0,0,DU_SPHERE_NUMVERTEX,0,DU_SPHERE_NUMFACES);
 
 	// frontfaces: if (stencil>=light_id && zfail)	stencil = 0x1
-	CHK_DX(HW.pDevice->SetRenderState	( D3DRS_CULLMODE,			D3DCULL_CCW			));
-	CHK_DX(HW.pDevice->SetRenderState	( D3DRS_STENCILFUNC,		D3DCMP_LESSEQUAL	));
-	CHK_DX(HW.pDevice->SetRenderState	( D3DRS_STENCILREF,			0x01				));
-	CHK_DX(HW.pDevice->SetRenderState	( D3DRS_STENCILMASK,		0xff				));
-	CHK_DX(HW.pDevice->SetRenderState	( D3DRS_STENCILWRITEMASK,	0xff				));
-	CHK_DX(HW.pDevice->SetRenderState	( D3DRS_STENCILFAIL,		D3DSTENCILOP_KEEP	));
-	CHK_DX(HW.pDevice->SetRenderState	( D3DRS_STENCILPASS,		D3DSTENCILOP_KEEP	));
-	CHK_DX(HW.pDevice->SetRenderState	( D3DRS_STENCILZFAIL,		D3DSTENCILOP_REPLACE));
+	CHK_DX							(HW.pDevice->SetRenderState	( D3DRS_CULLMODE,			D3DCULL_CCW			));
+	RCache.set_Stencil				(TRUE,D3DCMP_LESSEQUAL,0x01,0xff,0xff,D3DSTENCILOP_KEEP,D3DSTENCILOP_KEEP,D3DSTENCILOP_REPLACE);
 	RCache.Render					(D3DPT_TRIANGLELIST,0,0,DU_SPHERE_NUMVERTEX,0,DU_SPHERE_NUMFACES);
 
 	CHK_DX							(HW.pDevice->SetRenderState	( D3DRS_COLORWRITEENABLE,	D3DCOLORWRITEENABLE_RED | D3DCOLORWRITEENABLE_GREEN | D3DCOLORWRITEENABLE_BLUE | D3DCOLORWRITEENABLE_ALPHA ));
@@ -108,17 +95,10 @@ void CRenderTarget::accum_point_shadow	(light* L)
 	}
 
 	// Render if (stencil >= light_id && z-pass)
-	CHK_DX(HW.pDevice->SetRenderState	( D3DRS_STENCILFUNC,		D3DCMP_LESSEQUAL	));
-	CHK_DX(HW.pDevice->SetRenderState	( D3DRS_STENCILREF,			dwLightMarkerID		));
-	CHK_DX(HW.pDevice->SetRenderState	( D3DRS_STENCILMASK,		0xff				));
-	CHK_DX(HW.pDevice->SetRenderState	( D3DRS_STENCILWRITEMASK,	0x00				));
-	CHK_DX(HW.pDevice->SetRenderState	( D3DRS_STENCILFAIL,		D3DSTENCILOP_KEEP	));
-	CHK_DX(HW.pDevice->SetRenderState	( D3DRS_STENCILPASS,		D3DSTENCILOP_KEEP	));
-	CHK_DX(HW.pDevice->SetRenderState	( D3DRS_STENCILZFAIL,		D3DSTENCILOP_KEEP	));
-	dwLightMarkerID						+=	2;	// keep lowest bit always setted up
-
+	RCache.set_Stencil					(TRUE,D3DCMP_LESSEQUAL,dwLightMarkerID,0xff,0x00,D3DSTENCILOP_KEEP,D3DSTENCILOP_KEEP,D3DSTENCILOP_KEEP);
 	RCache.set_Geometry					(g_accum_point);
 	RCache.Render						(D3DPT_TRIANGLELIST,0,0,DU_SPHERE_NUMVERTEX,0,DU_SPHERE_NUMFACES);
+	dwLightMarkerID						+=	2;	// keep lowest bit always setted up
 }
 
 void CRenderTarget::accum_point_unshadow(light* L)
@@ -147,28 +127,15 @@ void CRenderTarget::accum_point_unshadow(light* L)
 	RCache.set_Element				(s_accum_point_uns->E[0]);	// masker
 	RCache.set_Geometry				(g_accum_point);
 	CHK_DX							(HW.pDevice->SetRenderState	( D3DRS_COLORWRITEENABLE,	0	));
-	CHK_DX							(HW.pDevice->SetRenderState	( D3DRS_STENCILENABLE,		TRUE				));
 
 	// backfaces: if (stencil>=1 && zfail)	stencil = light_id
-	CHK_DX(HW.pDevice->SetRenderState	( D3DRS_CULLMODE,			D3DCULL_CW			));
-	CHK_DX(HW.pDevice->SetRenderState	( D3DRS_STENCILFUNC,		D3DCMP_LESSEQUAL	));
-	CHK_DX(HW.pDevice->SetRenderState	( D3DRS_STENCILREF,			dwLightMarkerID		));
-	CHK_DX(HW.pDevice->SetRenderState	( D3DRS_STENCILMASK,		0x01				));
-	CHK_DX(HW.pDevice->SetRenderState	( D3DRS_STENCILWRITEMASK,	0xff				));
-	CHK_DX(HW.pDevice->SetRenderState	( D3DRS_STENCILFAIL,		D3DSTENCILOP_KEEP	));
-	CHK_DX(HW.pDevice->SetRenderState	( D3DRS_STENCILPASS,		D3DSTENCILOP_KEEP	));
-	CHK_DX(HW.pDevice->SetRenderState	( D3DRS_STENCILZFAIL,		D3DSTENCILOP_REPLACE));
+	CHK_DX							(HW.pDevice->SetRenderState	( D3DRS_CULLMODE,			D3DCULL_CW			));
+	RCache.set_Stencil				(TRUE,D3DCMP_LESSEQUAL,dwLightMarkerID,0x01,0xff,D3DSTENCILOP_KEEP,D3DSTENCILOP_KEEP,D3DSTENCILOP_REPLACE);
 	RCache.Render					(D3DPT_TRIANGLELIST,0,0,DU_SPHERE_NUMVERTEX,0,DU_SPHERE_NUMFACES);
 
 	// frontfaces: if (stencil>=light_id && zfail)	stencil = 0x1
-	CHK_DX(HW.pDevice->SetRenderState	( D3DRS_CULLMODE,			D3DCULL_CCW			));
-	CHK_DX(HW.pDevice->SetRenderState	( D3DRS_STENCILFUNC,		D3DCMP_LESSEQUAL	));
-	CHK_DX(HW.pDevice->SetRenderState	( D3DRS_STENCILREF,			0x01				));
-	CHK_DX(HW.pDevice->SetRenderState	( D3DRS_STENCILMASK,		0xff				));
-	CHK_DX(HW.pDevice->SetRenderState	( D3DRS_STENCILWRITEMASK,	0xff				));
-	CHK_DX(HW.pDevice->SetRenderState	( D3DRS_STENCILFAIL,		D3DSTENCILOP_KEEP	));
-	CHK_DX(HW.pDevice->SetRenderState	( D3DRS_STENCILPASS,		D3DSTENCILOP_KEEP	));
-	CHK_DX(HW.pDevice->SetRenderState	( D3DRS_STENCILZFAIL,		D3DSTENCILOP_REPLACE));
+	CHK_DX							(HW.pDevice->SetRenderState	( D3DRS_CULLMODE,			D3DCULL_CCW			));
+	RCache.set_Stencil				(TRUE,D3DCMP_LESSEQUAL,0x01,0xff,0xff,D3DSTENCILOP_KEEP,D3DSTENCILOP_KEEP,D3DSTENCILOP_REPLACE);
 	RCache.Render					(D3DPT_TRIANGLELIST,0,0,DU_SPHERE_NUMVERTEX,0,DU_SPHERE_NUMFACES);
 
 	CHK_DX							(HW.pDevice->SetRenderState	( D3DRS_COLORWRITEENABLE,	D3DCOLORWRITEENABLE_RED | D3DCOLORWRITEENABLE_GREEN | D3DCOLORWRITEENABLE_BLUE | D3DCOLORWRITEENABLE_ALPHA ));
@@ -215,15 +182,8 @@ void CRenderTarget::accum_point_unshadow(light* L)
 	RCache.set_c					("m_tex",			m_Tex);
 
 	// Render if (stencil >= light_id && z-pass)
-	CHK_DX(HW.pDevice->SetRenderState	( D3DRS_STENCILFUNC,		D3DCMP_LESSEQUAL	));
-	CHK_DX(HW.pDevice->SetRenderState	( D3DRS_STENCILREF,			dwLightMarkerID		));
-	CHK_DX(HW.pDevice->SetRenderState	( D3DRS_STENCILMASK,		0xff				));
-	CHK_DX(HW.pDevice->SetRenderState	( D3DRS_STENCILWRITEMASK,	0x00				));
-	CHK_DX(HW.pDevice->SetRenderState	( D3DRS_STENCILFAIL,		D3DSTENCILOP_KEEP	));
-	CHK_DX(HW.pDevice->SetRenderState	( D3DRS_STENCILPASS,		D3DSTENCILOP_KEEP	));
-	CHK_DX(HW.pDevice->SetRenderState	( D3DRS_STENCILZFAIL,		D3DSTENCILOP_KEEP	));
-	dwLightMarkerID						+=	2;	// keep lowest bit always setted up
-
+	RCache.set_Stencil					(TRUE,D3DCMP_LESSEQUAL,dwLightMarkerID,0xff,0x00,D3DSTENCILOP_KEEP,D3DSTENCILOP_KEEP,D3DSTENCILOP_KEEP);
 	RCache.set_Geometry					(g_accum_point);
 	RCache.Render						(D3DPT_TRIANGLELIST,0,0,DU_SPHERE_NUMVERTEX,0,DU_SPHERE_NUMFACES);
+	dwLightMarkerID						+=	2;	// keep lowest bit always setted up
 }

@@ -15,14 +15,7 @@ void CRenderTarget::phase_accumulator_init()
 	// Render white quad where stencil = 0
 	if (1)
 	{
-		CHK_DX(HW.pDevice->SetRenderState	( D3DRS_STENCILENABLE,		TRUE				));
-		CHK_DX(HW.pDevice->SetRenderState	( D3DRS_STENCILFUNC,		D3DCMP_EQUAL		));
-		CHK_DX(HW.pDevice->SetRenderState	( D3DRS_STENCILREF,			0x00				));
-		CHK_DX(HW.pDevice->SetRenderState	( D3DRS_STENCILMASK,		0xff				));
-		CHK_DX(HW.pDevice->SetRenderState	( D3DRS_STENCILWRITEMASK,	0x00				));
-		CHK_DX(HW.pDevice->SetRenderState	( D3DRS_STENCILFAIL,		D3DSTENCILOP_KEEP	));
-		CHK_DX(HW.pDevice->SetRenderState	( D3DRS_STENCILPASS,		D3DSTENCILOP_KEEP	));	
-		CHK_DX(HW.pDevice->SetRenderState	( D3DRS_STENCILZFAIL,		D3DSTENCILOP_KEEP	));
+		RCache.set_Stencil			(TRUE,D3DCMP_EQUAL,0x00,0xff,0x00);
 
 		// Assuming next usage will be for directional light
 		u32		C					= D3DCOLOR_RGBA	(255,255,255,255);
@@ -45,15 +38,15 @@ void CRenderTarget::phase_accumulator_init()
 	// ***** Downsample into bloom2.rgba *****
 	if (0)
 	{
-		// 1. ZB doesn't help
-		// 2. Viewport doesn't help
-		// 3. ZEnable doesn't help
+		// 1. nv3x - ZB doesn't help
+		// 2. nv3x - Viewport doesn't help
+		// 3. nv3x - ZEnable doesn't help
 		u_setrt								(rt_Bloom_2,NULL,NULL,rt_Bloom_ZB);				// No need for ZBuffer at all
 		D3DVIEWPORT9 VP						= {0,0,Device.dwWidth/2,Device.dwHeight/2,0,1.f };
-		CHK_DX	(HW.pDevice->SetViewport(&VP));
+		CHK_DX	(HW.pDevice->SetViewport	(&VP));
 		CHK_DX	(HW.pDevice->SetRenderState	( D3DRS_ZENABLE,			FALSE				));
-		CHK_DX	(HW.pDevice->SetRenderState	( D3DRS_STENCILENABLE,		FALSE				));
 		CHK_DX	(HW.pDevice->SetRenderState	( D3DRS_CULLMODE,			D3DCULL_NONE		)); 	
+		RCache.set_Stencil					(FALSE);
 
 		// Assuming next usage will be for directional light
 		u32		C					= D3DCOLOR_RGBA	(255,255,255,255);
@@ -86,16 +79,8 @@ void CRenderTarget::phase_accumulator_init()
 		// Restore targets
 		u_setrt								(rt_Accumulator,NULL,NULL,HW.pBaseZB);
 		D3DVIEWPORT9 VP						= {0,0,Device.dwWidth,Device.dwHeight,0,1.f };
-		CHK_DX(HW.pDevice->SetViewport(&VP));
-
-		CHK_DX(HW.pDevice->SetRenderState	( D3DRS_STENCILENABLE,		TRUE				));
-		CHK_DX(HW.pDevice->SetRenderState	( D3DRS_STENCILFUNC,		D3DCMP_LESSEQUAL	));
-		CHK_DX(HW.pDevice->SetRenderState	( D3DRS_STENCILREF,			0x03				));
-		CHK_DX(HW.pDevice->SetRenderState	( D3DRS_STENCILMASK,		0x01				));
-		CHK_DX(HW.pDevice->SetRenderState	( D3DRS_STENCILWRITEMASK,	0x02				));
-		CHK_DX(HW.pDevice->SetRenderState	( D3DRS_STENCILFAIL,		D3DSTENCILOP_KEEP	));
-		CHK_DX(HW.pDevice->SetRenderState	( D3DRS_STENCILPASS,		D3DSTENCILOP_REPLACE));	
-		CHK_DX(HW.pDevice->SetRenderState	( D3DRS_STENCILZFAIL,		D3DSTENCILOP_KEEP	));
+		CHK_DX(HW.pDevice->SetViewport		(&VP));
+		RCache.set_Stencil					(TRUE,D3DCMP_LESSEQUAL,0x03,0x01,0x02,D3DSTENCILOP_KEEP,D3DSTENCILOP_REPLACE,D3DSTENCILOP_KEEP);
 
 		// Assuming next usage will be for directional light
 		u32		C					= D3DCOLOR_RGBA	(255,255,255,255);
@@ -134,14 +119,5 @@ void CRenderTarget::phase_accumulator_init()
 		CHK_DX						(HW.pDevice->SetRenderState	( D3DRS_COLORWRITEENABLE,	0		));
 		RCache.Render				(D3DPT_TRIANGLELIST,Offset,0,4,0,2);
 		CHK_DX						(HW.pDevice->SetRenderState	( D3DRS_COLORWRITEENABLE,	D3DCOLORWRITEENABLE_RED | D3DCOLORWRITEENABLE_GREEN | D3DCOLORWRITEENABLE_BLUE | D3DCOLORWRITEENABLE_ALPHA ));
-
-		CHK_DX(HW.pDevice->SetRenderState	( D3DRS_STENCILENABLE,		TRUE				));
-		CHK_DX(HW.pDevice->SetRenderState	( D3DRS_STENCILFUNC,		D3DCMP_LESSEQUAL	));
-		CHK_DX(HW.pDevice->SetRenderState	( D3DRS_STENCILREF,			0x02				));
-		CHK_DX(HW.pDevice->SetRenderState	( D3DRS_STENCILMASK,		0xff				));
-		CHK_DX(HW.pDevice->SetRenderState	( D3DRS_STENCILWRITEMASK,	0x00				));
-		CHK_DX(HW.pDevice->SetRenderState	( D3DRS_STENCILFAIL,		D3DSTENCILOP_KEEP	));
-		CHK_DX(HW.pDevice->SetRenderState	( D3DRS_STENCILPASS,		D3DSTENCILOP_KEEP	));
-		CHK_DX(HW.pDevice->SetRenderState	( D3DRS_STENCILZFAIL,		D3DSTENCILOP_KEEP	));
 	}
 }

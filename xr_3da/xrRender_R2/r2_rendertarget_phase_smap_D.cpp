@@ -12,7 +12,7 @@ void	CRenderTarget::phase_smap_direct()
 	CHK_DX(HW.pDevice->Clear			( 0L, NULL, /*D3DCLEAR_TARGET|*/ D3DCLEAR_ZBUFFER|D3DCLEAR_STENCIL, 0xFFFFFFFF, 1.0f, 0L));
 
 	// Stencil	- disable
-	CHK_DX(HW.pDevice->SetRenderState	( D3DRS_STENCILENABLE,		FALSE				));
+	RCache.set_Stencil					( FALSE );
 
 	// Misc		- draw only back-faces
 	CHK_DX(HW.pDevice->SetRenderState	( D3DRS_CULLMODE,			D3DCULL_CCW			)); 	
