@@ -3,15 +3,12 @@
 #include "ActorAnimation.h"
 #include "..\xr_level_controller.h"
 
-static const float y_spin_factor		= 0.6f;//0.3f;
-static const float y_shoulder_factor	= 0.8f;//0.6f;
-static const float y_head_factor		= 1.0f;//0.1f;
-static const float p_spin_factor		= 0.5f;//0.2f;
-static const float p_shoulder_factor	= 0.8f;//0.7f;
-static const float p_head_factor		= 1.0f;//0.1f;
-
-#define p_default			PI/8
-
+static const float y_spin_factor		= 0.4f;
+static const float y_shoulder_factor	= 0.4f;
+static const float y_head_factor		= 0.2f;
+static const float p_spin_factor		= 0.2f;
+static const float p_shoulder_factor	= 0.7f;
+static const float p_head_factor		= 0.1f;
 
 #include "hudmanager.h"
 
@@ -21,11 +18,12 @@ void __stdcall CActor::SpinCallback(CBoneInstance* B)
 
 	Fmatrix				spin;
 	float				bone_yaw	= angle_normalize_signed(A->r_torso.yaw - A->r_model_yaw - A->r_model_yaw_delta)*y_spin_factor;
-	float				bone_pitch	= angle_normalize_signed(A->r_torso.pitch)*p_spin_factor+p_default;
+	float				bone_pitch	= angle_normalize_signed(A->r_torso.pitch)*p_spin_factor;
 
-	spin.setXYZ			(-bone_pitch,bone_yaw,-PI_DIV_2);
-	spin.c.set			(B->mTransform.c);
-   	B->mTransform		= spin;
+	Fvector c			= B->mTransform.c;
+	spin.setXYZ			(-bone_pitch,bone_yaw,0);
+	B->mTransform.mulA_43(spin);
+	B->mTransform.c		= c;
 
 //	spin.setXYZ			(bone_yaw,bone_pitch,0);
 //	B->mTransform		= mulB_43(spin);
@@ -36,12 +34,12 @@ void __stdcall CActor::ShoulderCallback(CBoneInstance* B)
 	CActor*	A			= dynamic_cast<CActor*>(static_cast<CObject*>(B->Callback_Param));	R_ASSERT(A);
 	Fmatrix				spin;
 	float				bone_yaw	= angle_normalize_signed(A->r_torso.yaw - A->r_model_yaw - A->r_model_yaw_delta)*y_shoulder_factor;
-	float				bone_pitch	= angle_normalize_signed(A->r_torso.pitch)*p_shoulder_factor+p_default;
+	float				bone_pitch	= angle_normalize_signed(A->r_torso.pitch)*p_shoulder_factor;
 
-	spin.setXYZ			(-bone_pitch,bone_yaw,-PI_DIV_2);
-	spin.c.set			(B->mTransform.c);
-	B->mTransform		= spin;
-
+	Fvector c			= B->mTransform.c;
+	spin.setXYZ			(-bone_pitch,bone_yaw,0);
+	B->mTransform.mulA_43(spin);
+	B->mTransform.c		= c;
 //	spin.setXYZ			(bone_yaw,bone_pitch,0);
 //	B->mTransform.mulB_43(spin);
 }
@@ -50,12 +48,12 @@ void __stdcall CActor::HeadCallback(CBoneInstance* B)
 	CActor*	A			= dynamic_cast<CActor*>(static_cast<CObject*>(B->Callback_Param));	R_ASSERT(A);
 	Fmatrix				spin;
 	float				bone_yaw	= angle_normalize_signed(A->r_torso.yaw - A->r_model_yaw - A->r_model_yaw_delta)*y_head_factor;
-	float				bone_pitch	= angle_normalize_signed(A->r_torso.pitch)*p_head_factor+p_default;
+	float				bone_pitch	= angle_normalize_signed(A->r_torso.pitch)*p_head_factor;
 	
-	spin.setXYZ			(-bone_pitch,bone_yaw,-PI_DIV_2);
-	spin.c.set			(B->mTransform.c);
-	B->mTransform		= spin;
-
+	Fvector c			= B->mTransform.c;
+	spin.setXYZ			(-bone_pitch,bone_yaw,0);
+	B->mTransform.mulA_43(spin);
+	B->mTransform.c		= c;
 //	spin.setXYZ			(bone_yaw,bone_pitch,0);
 //	B->mTransform.mulB_43(spin);
 }
@@ -64,8 +62,8 @@ void CActor::SActorState::SAnimState::Create(CKinematics* K, LPCSTR base0, LPCST
 	char			buf[128];
 	legs_fwd		= K->ID_Cycle(strconcat(buf,base0,base1,"_fwd"));
 	legs_back		= K->ID_Cycle(strconcat(buf,base0,base1,"_back"));
-	legs_ls			= K->ID_Cycle(strconcat(buf,base0,base1,"_fwd"));//_ls"));
-	legs_rs			= K->ID_Cycle(strconcat(buf,base0,base1,"_fwd"));//"_rs"));
+	legs_ls			= K->ID_Cycle(strconcat(buf,base0,base1,"_ls"));
+	legs_rs			= K->ID_Cycle(strconcat(buf,base0,base1,"_rs"));
 }
 
 void CActor::SActorState::Create(CKinematics* K, LPCSTR base){
