@@ -135,6 +135,8 @@ void CAI_Zombie::Load(LPCSTR section)
 BOOL CAI_Zombie::net_Spawn	(LPVOID DC)
 {
 	if (!inherited::net_Spawn(DC))	return FALSE;
+	r_torso_current = r_current;
+	r_torso_target = r_target;
 	tStateStack.push(eCurrentState = aiZombieFreeHunting);
 	return TRUE;
 }
