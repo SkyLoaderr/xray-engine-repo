@@ -1,23 +1,26 @@
-
-***[OLES]*** In progress:
+***[OLES]*** Done:
 ------------------------
-		*	conditional shading 				(#define :)
 		*	PS for everything even for R1			(?)
 		*	one pass detail textures
-		*	detail textures on characters
 		*	d-lighting
 				hemisphere
 					- xrLC tesselation
-					- EQ-ps: 		base * (diffuse.rgb + lmap*diffuse.a)
+					- EQ-ps: 			base * (diffuse.rgb + lmap*diffuse.a)
 					- EQ-vs-light: 		diffuse.rgb = (lights(pos,norm) + fonarik(s) + hemi_color*diffuse.a), diffuse.a = lmap_scale
 					- EQ-vs-fog:		???
 					- VS for everything
 					- PS for everything
 					- 32bit normals for everything
 					- 16bit lmap-TC for level	
-					- LMAP geom: 	3*4(pos) + 4(norm) + 2*4(tc0) + 2*2(tc1) + 4(diffuse.rgb + hemi) 	= 32bytes = ideal
-					- VLIGHT geom:	3*4(pos) + 4(norm) + 2*4(tc0) + 4(diffuse.rgb + hemi)			= 28bytes = ~ideal
+					- LMAP geom: 	3*4(pos) + 4(norm.hemi) + 2*4(tc0) + 2*2(tc1)  					= 28bytes = ~ideal
+					- VLIGHT geom:	3*4(pos) + 4(norm)      + 2*4(tc0) + 4(diffuse.rgb + hemi)		= 28bytes = ~ideal
 		*	xrLC - hemisphere (R1)
+		*	wallmarks shouldn't use connectivity		( - 16 bytes per CFORM triangle)
+
+***[OLES]*** In progress:
+-------------------------
+		*	conditional shading 					(#define :)
+		*	detail textures on characters
 				
 		bugs/features:
 		*	освещение монстров вдали (загасить проекцию)
@@ -47,14 +50,13 @@
 		*	Animation sharing				(? how ?)
 
 		*	wallmark на персонажах
-		*	wallmarks shouldn't use connectivity		( - 12 bytes per CFORM triangle)
 		*	кровь, следы от машин
 
 		*	xrLC - optimize cform 				( )
 		*	xrRenderR1/R2 - statistical flow analysis (yarigra :()
 		*	hierrarchical profiler
-		*	R2 - shaders (ATI rm/ nvCG FX)
-		*	R2 - light materials (3D tex)
+		*	R2 - shaders			(ATI rm/ nvCG FX)
+		*	R2 - light materials	(3D tex)
 
 		*	пригибание травы + ветер
 		*	дальность для травы
@@ -63,12 +65,12 @@
 
 		*	progressive+hierrarchical volume shrink for ISpatial
 
-		*	учесть материалы при рей-пике (12 бит + флаги для Кости и всех остальных :)
+		*	учесть материалы при рей-пике (12 бит + флаги для Кости и всех остальных ? :)
 
 
 		bugs/features:
 		* 	трава и лоды в Zoom-е
-		*	models/model_trans 		- черный
+		*	models/model_trans 			- черный
 		*	dynamic_cast<ISpatial>(this) в конструкторе
 
 		to think:
@@ -78,7 +80,7 @@
 		*	освещение партиклов
 		*	PVS ???
 		*	вариации оккл. кулинга ???
-		*	коллижен для партиклов
+		*	коллижен для партиклов ???
 
 		очень большой кусок:
 		*	сеть
