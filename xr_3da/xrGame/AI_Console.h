@@ -1,6 +1,6 @@
 #pragma once
 
-extern u32 psAI_Flags;
+extern	Flags32		psAI_Flags;
 
 #define aiDebug		(1<<0)
 #define aiBrain		(1<<1)

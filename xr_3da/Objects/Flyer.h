@@ -50,8 +50,8 @@ private:
 
 	float				mMaxAirVelocity;
 	IC BOOL				isAccelerated	()	{
-		if (cur_mstate&mcAccel) return (psActorFlags.test(AF_ALWAYSRUN)?FALSE:TRUE ;
-		else					return (psActorFlags.test(AF_ALWAYSRUN)?TRUE :FALSE;
+		if (cur_mstate&mcAccel) return psActorFlags.test(AF_ALWAYSRUN)?FALSE:TRUE ;
+		else					return psActorFlags.test(AF_ALWAYSRUN)?TRUE :FALSE;
 	}
 
 	// Cameras

@@ -4,7 +4,7 @@
 
 #include "fcontroller.h"
 
-ENGINE_API extern u32 psHUD_Flags;
+ENGINE_API extern Flags32		psHUD_Flags;
 #define HUD_CROSSHAIR			(1<<0)
 #define HUD_CROSSHAIR_DIST		(1<<1)
 #define HUD_WEAPON				(1<<2)

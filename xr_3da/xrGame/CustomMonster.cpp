@@ -11,7 +11,7 @@
 
 using namespace AI;
 
-u32 psAI_Flags	= 0;
+Flags32		psAI_Flags	= {0};
 ENGINE_API extern float psGravity;
 
 void CCustomMonster::SAnimState::Create(CKinematics* K, LPCSTR base)
@@ -454,7 +454,7 @@ extern void dbg_draw_frustum (float FOV, float _FAR, float A, Fvector &P, Fvecto
 void CCustomMonster::OnRender()
 {
 	//if (!bDebug)					return;
-	if (0 == (psAI_Flags&aiDebug))	return;
+	if (!psAI_Flags.test(aiDebug))	return;
 	
 	Device.Shader.OnFrameEnd	();
 	{
@@ -547,10 +547,11 @@ void CCustomMonster::OnRender()
 		}
 	}
 
-	if (psAI_Flags&aiFrustum) 
+	if (psAI_Flags.test(aiFrustum))
 		dbg_draw_frustum(eye_fov,eye_range,1,eye_matrix.c,eye_matrix.k,eye_matrix.j);
 	
-	if (psAI_Flags&aiMotion) {
+	if (psAI_Flags.test(aiMotion)) 
+	{
 		Movement.dbg_Draw();
 	}
 	if (bDebug) PKinematics(pVisual)->DebugRender(clTransform);

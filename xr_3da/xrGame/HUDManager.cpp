@@ -103,7 +103,7 @@ ENGINE_API extern float psHUD_FOV;
 
 void CHUDManager::Render_Calcualte()
 {
-	if (0==(psHUD_Flags&HUD_WEAPON))return;
+	if (!psHUD_Flags.test(HUD_WEAPON))return;
 	if (0==pUI)						return;
 	CObject*	O					= pCreator->CurrentViewEntity();
 	if (0==O)						return;
@@ -127,7 +127,7 @@ void CHUDManager::Render_Affected()
 void CHUDManager::Render_Direct	()
 {
 	BOOL bAlready = FALSE;
-	if (psHUD_Flags&HUD_DRAW)
+	if (psHUD_Flags.test(HUD_DRAW))
 	{
 		// draw hit marker
 		HitMarker.Render();
@@ -139,7 +139,7 @@ void CHUDManager::Render_Direct	()
 		pFontMedium->OnRender	();
 		pFontBigDigit->OnRender	();
 	}
-	if ((psHUD_Flags&HUD_CROSSHAIR) && !bAlready)	HUDCursor.Render();
+	if (psHUD_Flags.test(HUD_CROSSHAIR) && !bAlready)	HUDCursor.Render();
 }
 
 //--------------------------------------------------------------------

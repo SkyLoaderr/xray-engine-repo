@@ -72,8 +72,8 @@ CDemoRecord::~CDemoRecord()
 static Fvector cmNorm[6]	= {{0.f,1.f,0.f}, {0.f,1.f,0.f}, {0.f,0.f,-1.f},{0.f,0.f,1.f}, {0.f,1.f,0.f}, {0.f,1.f,0.f}};
 static Fvector cmDir[6]		= {{1.f,0.f,0.f}, {-1.f,0.f,0.f},{0.f,1.f,0.f}, {0.f,-1.f,0.f},{0.f,0.f,1.f}, {0.f,0.f,-1.f}};
 
-static u32 s_hud_flag = 0;
-static u32 s_idx;
+static Flags32	s_hud_flag	= {0};
+static u32		s_idx;
 
 void CDemoRecord::MakeCubeMapFace(Fvector &D, Fvector &N)
 {
@@ -81,8 +81,8 @@ void CDemoRecord::MakeCubeMapFace(Fvector &D, Fvector &N)
 	case 0:
 		N.set		(cmNorm[s_idx]);
 		D.set		(cmDir[s_idx]);
-		s_hud_flag	= psHUD_Flags;
-		psHUD_Flags	= 0;
+		s_hud_flag.set(psHUD_Flags);
+		psHUD_Flags.set	(0);
 	break;
 	case 1: 
 	case 2:
@@ -97,7 +97,7 @@ void CDemoRecord::MakeCubeMapFace(Fvector &D, Fvector &N)
 		Render->Screenshot	(TRUE);
 		N.set		(m_Camera.j);
 		D.set		(m_Camera.k);
-		psHUD_Flags	= s_hud_flag;
+		psHUD_Flags.set(s_hud_flag);
 		m_bMakeCubeMap = FALSE;
 	break;
 	}

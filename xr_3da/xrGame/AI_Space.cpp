@@ -243,7 +243,7 @@ void CAI_Space::Render()
 
 	if (0==vfs)						return;
 	if (0==sh_debug)				return;
-	if (0==(psAI_Flags&aiDebug))	return;
+	if (!psAI_Flags.test(aiDebug))	return;
 	
 	CGameObject*	O	= dynamic_cast<CGameObject*> (Level().CurrentEntity());
 	Fvector	POSITION	= O->Position();
