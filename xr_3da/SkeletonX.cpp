@@ -264,8 +264,8 @@ void CSkeletonX_PM::Load(const char* N, IReader *data, u32 dwFlags)
 	pIndices->Unlock	();
 
 	// Create HW VB in case this is possible
-	vBase							= 0;
-	_Load_hw						(*this,_verts_);
+	vBase				= 0;
+	_Load_hw			(*this,_verts_);
 }
 void CSkeletonX_ST::Load(const char* N, IReader *data, u32 dwFlags) 
 {
