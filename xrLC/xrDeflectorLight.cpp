@@ -414,6 +414,8 @@ VOID CDeflector::L_Calculate(HASH& H)
 		
 		// Calculate
 		{
+			R_ASSERT	(lm.dwWidth<(512-2*BORDER));
+			R_ASSERT	(lm.dwHeight<(512-2*BORDER));
 			DWORD size = lm.dwWidth*lm.dwHeight*4;
 			lm.pSurface = (DWORD *)malloc(size);
 			ZeroMemory	(lm.pSurface,size);
