@@ -10,7 +10,7 @@
     </frame_window>
     
     <!-- BAG FRAME WINDOW -->
-    <bag_static x="20" y="260" width="350" height="480">
+    <bag_static x="15" y="260" width="350" height="480">
 		<texture>ui\ui_dg_inventory</texture>
         <text x="20" y="8" font="header" r="255" g="255" b="255">Bag</text>
     </bag_static>
@@ -34,7 +34,7 @@
     </frame_window>
     
     <!-- DESCRIPTION WINDOW -->
-    <descr_static x="380" y="260" width="267" height="500">
+    <descr_static x="370" y="260" width="267" height="500">
         <texture> ui\ui_dg_info</texture>
     </descr_static>
 
