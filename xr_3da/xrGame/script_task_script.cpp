@@ -31,3 +31,14 @@ void CScriptTask::script_register(lua_State *L)
 				.def_readonly("price",				&CScriptTask::m_iPrice)
 		];
 }
+
+void CScriptTaskList::script_register(lua_State *L)
+{
+	module(L)
+		[
+			class_<CScriptTaskList>("task_list")
+			.def(		constructor<u16>()		)
+			.def("size",&CScriptTaskList::size	)
+			.def("get",	&CScriptTaskList::get	)
+		];
+}

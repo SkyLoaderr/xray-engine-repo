@@ -131,8 +131,6 @@ private:
 	//////////////////////////////////////////////////////////////////////////
 	//генерируемые задания
 public:
-	//подготовка заданий к виду удобному для вывода пользователю
-	virtual	void			PrepareTasks				();
 	//проверяет список артефактов в заказах
 	virtual	u32				ArtifactPrice				(CArtifact* pArtifact);
 	//продажа артефакта, с последуещим изменением списка заказов  (true - если артефакт был в списке)
@@ -141,6 +139,4 @@ public:
 	virtual	void			SyncArtifactsWithServer	();
 public:
 	ALife::ARTEFACT_TRADER_ORDER_MAP	m_tpOrderedArtefacts;
-	//буфферный массив для передачи списка заданий в скрипты
-	ALIFE_TASK_VECTOR					alife_tasks;
 };

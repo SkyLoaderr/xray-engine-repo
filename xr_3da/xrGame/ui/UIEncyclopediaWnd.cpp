@@ -354,7 +354,7 @@ void CUIEncyclopediaWnd::Show()
 		for(ARTICLE_VECTOR::const_iterator it = pActor->encyclopedia_registry.objects_ptr()->begin();
 			it != pActor->encyclopedia_registry.objects_ptr()->end(); it++)
 		{
-			AddArticle(*it);
+			AddArticle((*it).index);
 		}
 	}
 

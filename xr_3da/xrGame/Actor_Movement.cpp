@@ -122,6 +122,9 @@ void CActor::g_cl_CheckControls(u32 mstate_wf, Fvector &vControlAccel, float &Ju
 			mstate_real			&=~	mcJump;
 		}
 	}
+
+	if(!CanMove()) return;
+
 	// update player accel
 	if (mstate_wf&mcFwd)		vControlAccel.z +=  1;
 	if (mstate_wf&mcBack)		vControlAccel.z += -1;
@@ -381,4 +384,12 @@ bool	CActor::CanJump				()
 		&& !m_bJumpKeyPressed &&!m_bZoomAimingMode;
 
 	return can_Jump;
+}
+
+bool	CActor::CanMove				()
+{
+	if(IsTalking())
+		return false;
+	else
+		return true;
 }

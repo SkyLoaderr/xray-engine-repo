@@ -15,6 +15,7 @@ void CActor::IR_OnKeyboardPress(int cmd)
 {
 	if (Remote())		return;
 	if (IsSleeping())	return;
+	if (IsTalking())	return;
 	if (IsControlled())	return;
 
 	if ( (GAME_PHASE_PENDING == Game().phase) || !g_Alive() )
@@ -133,6 +134,7 @@ void CActor::IR_OnKeyboardHold(int cmd)
 	if (Remote() || !g_Alive())		return;
 	if (IsSleeping())				return;
 	if (IsControlled())				return;
+	if (IsTalking())				return;
 
 	if(m_holder)
 	{

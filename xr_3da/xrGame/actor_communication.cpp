@@ -36,6 +36,21 @@ void CActor::AddMapLocationsFromInfo(const CInfoPortion* info_portion)
 	}
 }
 
+class RemoveByIDPred
+{
+public:
+	RemoveByIDPred(ARTICLE_INDEX idx){object_index = idx;}
+	bool operator() (const ARTICLE_DATA& item)
+	{
+		if(item.index == object_index)
+			return true;
+		else
+			return false;
+	}
+private:
+	ARTICLE_INDEX object_index;
+};
+
 void CActor::AddEncyclopediaArticle	 (const CInfoPortion* info_portion)
 {
 	VERIFY(info_portion);
@@ -45,18 +60,19 @@ void CActor::AddEncyclopediaArticle	 (const CInfoPortion* info_portion)
 	ARTICLE_VECTOR::iterator B = article_vector.begin();
 	ARTICLE_VECTOR::iterator E = last_end;
 
-	for(ARTICLE_VECTOR::const_iterator it = info_portion->ArticlesDisable().begin();
+	for(ARTICLE_INDEX_VECTOR::const_iterator it = info_portion->ArticlesDisable().begin();
 									it != info_portion->ArticlesDisable().end(); it++)
 	{
-		last_end = std::remove(B, last_end, *it);
+		RemoveByIDPred pred(*it);
+		last_end = std::remove_if(B, last_end, pred);
 	}
 	article_vector.erase(last_end, E);
 
 	
-	for(ARTICLE_VECTOR::const_iterator it = info_portion->Articles().begin();
+	for(ARTICLE_INDEX_VECTOR::const_iterator it = info_portion->Articles().begin();
 									it != info_portion->Articles().end(); it++)
 	{
-		article_vector.push_back(*it);
+		article_vector.push_back(ARTICLE_DATA(*it, Level().GetGameTime()));
 	}
 }
 

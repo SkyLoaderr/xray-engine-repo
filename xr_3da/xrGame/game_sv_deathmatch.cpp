@@ -889,7 +889,8 @@ void	game_sv_Deathmatch::SetSkin					(CSE_Abstract* E, u16 Team, u16 ID)
 	CSE_Visual* pV = dynamic_cast<CSE_Visual*>(E);
 	if (!pV) return;
 	//-------------------------------------------
-	string256 SkinName = {"actors\\Different_stalkers\\Mp_Skins\\"};
+	string256 SkinName;
+	std::strcpy(SkinName, pSettings->r_string("mp_skins_path", "skin_path"));
 	//загружены ли скины для этой комманды
 	if (SkinID != -1) ID = u16(SkinID);
 

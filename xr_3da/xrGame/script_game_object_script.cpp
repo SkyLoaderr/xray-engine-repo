@@ -288,8 +288,6 @@ void CScriptGameObject::script_register(lua_State *L)
 			.def("set_trade_callback",			(void (CScriptGameObject::*)(const luabind::object &, LPCSTR))(CScriptGameObject::SetTradeCallback))			
 			.def("clear_trade_callback",		(void (CScriptGameObject::*)())(CScriptGameObject::ClearTradeCallback))
 
-			.def("artefact_tasks",				&CScriptGameObject::TraderArtefactTask, return_stl_iterator)
-
 			.enum_("CLSIDS")
 			[
 				value("no_pda_msg",				int(ePdaMsgMax))

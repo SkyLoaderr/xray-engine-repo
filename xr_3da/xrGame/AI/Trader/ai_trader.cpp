@@ -491,32 +491,6 @@ void CAI_Trader::load (IReader &input_packet)
 }
 
 
-void CAI_Trader::PrepareTasks	()
-{
-	alife_tasks.clear();	
-	ALife::ARTEFACT_TRADER_ORDER_MAP::const_iterator i = m_tpOrderedArtefacts.begin();
-	ALife::ARTEFACT_TRADER_ORDER_MAP::const_iterator e = m_tpOrderedArtefacts.end();
-	for ( ; i != e; ++i) 
-	{
-		//			Msg     ("Artefact : section[%s] total_count[%d]",(*i).second->m_caSection,(*i).second->m_dwTotalCount);
-		//			Msg     ("Orders : ");
-		CScriptTask script_task;
-		script_task.m_sName = pSettings->r_string((*i).second->m_caSection, "inv_name");
-
-		ALife::ARTEFACT_ORDER_VECTOR::const_iterator    II = (*i).second->m_tpOrders.begin();
-		ALife::ARTEFACT_ORDER_VECTOR::const_iterator    EE = (*i).second->m_tpOrders.end();
-		for ( ; II != EE; ++II)
-		{
-			script_task.m_iPrice = (*II).m_price; 
-			script_task.m_iQuantity = (*II).m_count;
-			script_task.m_sOrganization = pSettings->r_string((*II).m_section, "name");
-			alife_tasks.push_back(script_task);
-			//Msg("order : section[%s], count[%d], price[%d]",(*II).m_section,(*II).m_count,(*II).m_price);
-		}
-	}
-}
-
-
 //проверяет список артефактов в заказах
 u32 CAI_Trader::ArtifactPrice (CArtifact* pArtifact)
 {

@@ -74,20 +74,3 @@ void CScriptGameObject::ClearTradeCallback() {
 		ai().script_engine().script_log			(ScriptStorage::eLuaMessageTypeError,"CAI_Trader : cannot access class member clear_trade_callback!");
 	else l_tpTrader->clear_trade_callback();
 }
-
-const ALIFE_TASK_VECTOR& CScriptGameObject::TraderArtefactTask ()
-{
-	CAI_Trader	*pTrader = dynamic_cast<CAI_Trader*>	(m_tpGameObject);
-	
-	static ALIFE_TASK_VECTOR dummy_vector;
-	dummy_vector.clear();
-
-	if (!pTrader) 
-	{
-		ai().script_engine().script_log			(ScriptStorage::eLuaMessageTypeError,"the object does not belong to a CAI_Trader class!");
-		return dummy_vector;
-	}
-
-	pTrader->PrepareTasks();
-	return pTrader->alife_tasks;
-}

@@ -20,6 +20,9 @@
 #include "../xrserver.h"
 #include "../xrServer_Objects_ALife_Monsters.h"
 
+#include "../script_space.h"
+#include "../script_engine.h"
+
 //////////////////////////////////////////////////////////////////////////
 
 const char * const	DIARY_XML			= "events_new.xml";
@@ -158,27 +161,11 @@ void CUIDiaryWnd::SendMessage(CUIWindow* pWnd, s16 msg, void* pData)
 				break;
 
 			case idContracts:
-				{
-					VERIFY(m_pLeftHorisontalLine);
-					r = m_pLeftHorisontalLine->GetWndRect();
-					m_pLeftHorisontalLine->MoveWindow(r.left, r.top + contractsOffset);
-					m_pActiveSubdialog = &UIContractsWnd;
-
-
-					CSE_Abstract* E = Level().Server->game->get_entity_from_eid(m_TraderID);
-					CSE_ALifeTrader* pTrader = NULL;
-					if(E) pTrader = dynamic_cast<CSE_ALifeTrader*>(E);
-
-					if(pTrader)
-					{
-						CCharacterInfo character_info;
-						if(NO_PROFILE != pTrader->m_iCharacterProfile)
-					 	{				
-							character_info.Load(pTrader->m_iCharacterProfile);
-							UIContractsWnd.UICharInfo.InitCharacter(&character_info);
-						}
-					}
-				}
+				VERIFY(m_pLeftHorisontalLine);
+				r = m_pLeftHorisontalLine->GetWndRect();
+				m_pLeftHorisontalLine->MoveWindow(r.left, r.top + contractsOffset);
+				m_pActiveSubdialog = &UIContractsWnd;
+				SetContractTrader();
 				break;
 
 			case idNews:
@@ -195,6 +182,33 @@ void CUIDiaryWnd::SendMessage(CUIWindow* pWnd, s16 msg, void* pData)
 				UIFrameWnd.AttachChild(m_pActiveSubdialog);
 				m_pActiveSubdialog->Show();
 				ArticleCaption(*(m_pActiveSubdialog->DialogName()));
+			}
+		}
+	}
+}
+//////////////////////////////////////////////////////////////////////////
+void CUIDiaryWnd::SetContractTrader()
+{
+	CSE_Abstract* E = Level().Server->game->get_entity_from_eid(m_TraderID);
+	CSE_ALifeTrader* pTrader = NULL;
+	if(E) pTrader = dynamic_cast<CSE_ALifeTrader*>(E);
+
+	if(pTrader)
+	{
+		CCharacterInfo character_info;
+		if(NO_PROFILE != pTrader->m_iCharacterProfile)
+		{				
+			character_info.Load(pTrader->m_iCharacterProfile);
+			UIContractsWnd.UICharInfo.InitCharacter(&character_info);
+
+			LPCSTR artefact_list_func = pSettings->r_string("artefacts_tasks", "script_func");
+			luabind::functor<LPCSTR> lua_function;
+			bool functor_exists = ai().script_engine().functor(artefact_list_func ,lua_function);
+			R_ASSERT3(functor_exists, "Cannot find artefacts tasks func", artefact_list_func);
+			LPCSTR artefact_list = lua_function	(NULL, m_TraderID);
+			if(artefact_list)
+			{
+				UIContractsWnd.UIListWnd.AddParsedItem<CUIListItem>(artefact_list, 0, UIContractsWnd.UIListWnd.GetTextColor());
 			}
 		}
 	}
