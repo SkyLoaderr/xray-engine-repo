@@ -15,7 +15,16 @@ CUIXmlInit::~CUIXmlInit()
 {
 }
 
-
+bool CUIXmlInit::InitWindow(CUIXml& xml_doc, const char* path, 	
+							int index, CUIWindow* pWnd)
+{
+	int x = xml_doc.ReadAttribInt(path, index, "x");
+	int y = xml_doc.ReadAttribInt(path, index, "y");
+	int width = xml_doc.ReadAttribInt(path, index, "width");
+	int height = xml_doc.ReadAttribInt(path, index, "height");
+	pWnd->Init(x, y, width, height);
+	return true;
+}
 bool CUIXmlInit::InitFrameWindow(CUIXml& xml_doc, const char* path, 
 									int index, CUIFrameWindow* pWnd)
 {

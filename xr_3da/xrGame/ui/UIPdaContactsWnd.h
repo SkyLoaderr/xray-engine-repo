@@ -39,6 +39,6 @@ public:
 	CUIListWnd UIListWnd;
 
 protected:
-	//ID выбранного контакта 
+	//ID выбранного контакта InventoryOwner
 	u32 m_idContact;
 };

@@ -25,6 +25,8 @@ public:
 	CUIXmlInit();
 	virtual ~CUIXmlInit();
 
+	
+	bool InitWindow(CUIXml& xml_doc, const char* path, 	int index, CUIWindow* pWnd);
 
 	bool InitFrameWindow(CUIXml& xml_doc, const char* path, 
 							int index, CUIFrameWindow* pWnd);

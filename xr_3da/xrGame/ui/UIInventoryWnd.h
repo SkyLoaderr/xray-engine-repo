@@ -6,7 +6,7 @@
 
 #include "..\inventory.h"
 
-
+#include "UIDialogWnd.h"
 #include "UIStatic.h"
 #include "UIButton.h"
 #include "UIDragDropItem.h"
@@ -17,15 +17,18 @@
 
 
 
-class CUIInventoryWnd: public CUIWindow  
+class CUIInventoryWnd: public CUIDialogWnd
 {
+private:
+	typedef CUIDialogWnd inherited;
 public:
 	CUIInventoryWnd();
 	virtual ~CUIInventoryWnd();
 
 	virtual void Init();
 
-	void InitInventory(CInventory* pInv);
+	void InitInventory();
+
 
 	virtual void SendMessage(CUIWindow *pWnd, s16 msg, void *pData);
 	virtual void OnMouse(int x, int y, E_MOUSEACTION mouse_action);
@@ -36,8 +39,7 @@ public:
 	virtual void Update();
 	virtual void Draw();
 
-	void Show(bool status) {m_bIsShown =  status;}
-
+	void Show();
 protected:
 
 	CUIFrameWindow		UIBagWnd;

@@ -7,6 +7,7 @@
 #include "..\inventory.h"
 
 
+#include "UIDialogWnd.h"
 #include "UIStatic.h"
 #include "UIButton.h"
 #include "UIDragDropItem.h"
@@ -17,27 +18,19 @@
 #include "UIListWnd.h"
 
 
-class CUITradeWnd: public CUIWindow  
+class CUITradeWnd: public CUIDialogWnd
 {
+private:
+	typedef CUIDialogWnd inherited;
 public:
 	CUITradeWnd();
 	virtual ~CUITradeWnd();
 
 	virtual void Init();
-
-
-
-	//void InitInventory(CInventory* pInv);
-
-	virtual bool IR_OnKeyboardPress(int dik);
-	virtual bool IR_OnKeyboardRelease(int dik);
-	virtual bool IR_OnMouseMove(int dx, int dy);
-
 	virtual void SendMessage(CUIWindow *pWnd, s16 msg, void *pData);
 
-	//CInventory* GetInventory() {return m_pInv;}
-
 	virtual void Draw();
+	virtual void Show();
 
 protected:
 

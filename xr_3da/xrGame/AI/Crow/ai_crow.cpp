@@ -117,6 +117,10 @@ BOOL CAI_Crow::net_Spawn		(LPVOID DC)
 {
 	BOOL R		= inherited::net_Spawn	(DC);
 	setVisible	(TRUE);
+	
+	//by Dandy 7.09.03 otherwise we can't hit the crow
+	setEnabled	(TRUE);
+
 	AI_Node		= 0;
 
 	// animations
@@ -350,7 +354,7 @@ void CAI_Crow::HitSignal	(float HitAmount, Fvector& local_dir, CObject* who, s16
 //---------------------------------------------------------------------
 void CAI_Crow::HitImpulse	(float	amount,		Fvector& vWorldDir, Fvector& vLocalDir)
 {
-/*
+	/*
 	switch (st_current){
 	case eDeathDead:{
 		float Q	= float(amount)/Movement.GetMass();

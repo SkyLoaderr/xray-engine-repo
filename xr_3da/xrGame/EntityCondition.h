@@ -63,6 +63,10 @@ protected:
 	virtual void UpdateCircumspection();
 	virtual void UpdateEntityMorale();
 
+	//изменение силы хита в зависимости от надетого костюма
+	//(только для InventoryOwner)
+	virtual float HitOutfitEffect(float hit_power, ALife::EHitType hit_type);
+
 
 	//для подсчета состояния открытых ран,
 	//запоминается кость куда был нанесен хит

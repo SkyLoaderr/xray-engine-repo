@@ -128,6 +128,11 @@
 // Inventory items
 #define CLSID_IITEM_BOLT			MK_CLSID('I','I','_','B','O','L','T',' ')
 
+#define CLSID_IITEM_MEDKIT			MK_CLSID('I','I','_','M','E','D','K','I')
+#define CLSID_IITEM_BREAD			MK_CLSID('I','I','_','B','R','E','A','D')
+#define CLSID_IITEM_ANTIRAD			MK_CLSID('I','I','_','A','N','T','I','R')
+
+
 // Grenades
 #define CLSID_GRENADE_F1			MK_CLSID('G','_','F','1',' ',' ',' ',' ')
 #define CLSID_OBJECT_G_RPG7			MK_CLSID('G','_','R','P','G','7',' ',' ')

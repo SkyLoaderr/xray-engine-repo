@@ -130,6 +130,11 @@ void CUIPdaDialogWnd::ContactRestore()
 	UIMsgButton2.Enable(true);
 	UIMsgButton3.Show(true);
 	UIMsgButton3.Enable(true);
+
+	UIMsgButton1.Reset();
+	UIMsgButton2.Reset();
+	UIMsgButton3.Reset();
+
 }
 
 void CUIPdaDialogWnd::ContactWaitForReply()

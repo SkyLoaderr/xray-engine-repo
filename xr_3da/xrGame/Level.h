@@ -43,6 +43,10 @@ public:
 	svector<CSquad,maxTeams>	Squads;
 };
 
+//by Dandy
+//for the fog over the map
+class CFogOfWar;
+
 class CLevel					: public IGame_Level, public IPureClient
 {
 protected:
@@ -201,6 +205,8 @@ public:
 	{
 		return(this->Server->game->GetGameTime());
 	}
+
+	CFogOfWar* m_pFogOfWar;
 
 	// by Jim
 	// gets current daytime [0..23]

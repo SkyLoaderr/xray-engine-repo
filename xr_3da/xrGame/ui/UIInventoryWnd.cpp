@@ -17,16 +17,20 @@
 
 
 
-
-
 //////////////////////////////////////////////////////////////////////
 // Construction/Destruction
 //////////////////////////////////////////////////////////////////////
 
 CUIInventoryWnd::CUIInventoryWnd()
 {
+	Hide();
+
 	m_pCurrentItem = NULL;
 	m_pCurrentDragDropItem = NULL;
+
+	Init();
+
+	SetFont(HUD().pFontMedium);
 }
 
 CUIInventoryWnd::~CUIInventoryWnd()
@@ -188,8 +192,14 @@ bool CUIInventoryWnd::GreaterRoomInRuck(PIItem item1, PIItem item2)
    	return false;
 }
 
-void CUIInventoryWnd::InitInventory(CInventory* pInv) 
+void CUIInventoryWnd::InitInventory() 
 {
+	CInventoryOwner *pInvOwner = dynamic_cast<CInventoryOwner*>(Level().CurrentEntity());
+
+	if(!pInvOwner) return;
+
+	CInventory* pInv = &pInvOwner->m_inventory;
+	
 	m_pMouseCapturer = NULL;
 
 	m_pCurrentItem = NULL;
@@ -570,6 +580,18 @@ void CUIInventoryWnd::Update()
 		UIProgressBarSatiety.SetProgressPos(s16(l_pA->GetSatiety()*1000));
 		UIProgressBarPower.SetProgressPos(s16(l_pA->GetPower()*1000));
 		UIProgressBarRadiation.SetProgressPos(s16(l_pA->GetRadiation()*1000));
+
+		
+		//убрать объект drag&drop для уже использованной вещи
+		for(int i = 0; i <m_iUsedItems; i++) 
+		{
+			CInventoryItem* pItem = (CInventoryItem*)m_vDragDropItems[i].GetData();
+			if(pItem && !pItem->Useful())
+			{
+				m_vDragDropItems[i].GetParent()->DetachChild(&m_vDragDropItems[i]);
+				m_vDragDropItems[i].SetData(NULL);
+			}
+		}
 	}
 
 	CUIWindow::Update();
@@ -612,10 +634,11 @@ void CUIInventoryWnd::EatItem()
 	l_pA->u_EventGen(P,GE_DESTROY,m_pCurrentItem->ID());
 	P.w_u16(u16(m_pCurrentItem->ID()));
 	l_pA->u_EventSend(P);*/
-
-	
-	
-
 }
 
 
+void CUIInventoryWnd::Show() 
+{ 
+	InitInventory();
+	inherited::Show();
+}

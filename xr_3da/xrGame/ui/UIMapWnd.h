@@ -4,32 +4,29 @@
 
 #pragma once
 
-#include "..\inventory.h"
-
-#include "UIPdaContactsWnd.h"
-#include "UIPdaDialogWnd.h"
-
+#include "UIDialogWnd.h"
 #include "UIStatic.h"
+
 #include "UIButton.h"
-#include "UIEditBox.h"
+#include "UICheckButton.h"
+
 #include "UIListWnd.h"
 #include "UIFrameWindow.h"
 
+#include "UIMapSpot.h"
+#include "UIMapBackground.h"
 
-class CUIMapWnd: public CUIWindow  
+class CUIMapWnd: public CUIDialogWnd
 {
 private:
-	typedef CUIWindow inherited;
+	typedef CUIDialogWnd inherited;
 public:
 	CUIMapWnd();
 	virtual ~CUIMapWnd();
 
 	virtual void Init();
 	virtual void InitMap();
-
-	virtual bool IR_OnKeyboardPress(int dik);
-	virtual bool IR_OnKeyboardRelease(int dik);
-	virtual bool IR_OnMouseMove(int dx, int dy);
+	virtual void Show();
 
 	virtual void SendMessage(CUIWindow* pWnd, s16 msg, void* pData = NULL);
 
@@ -38,5 +35,34 @@ public:
 
 protected:
 
-	CUIFrameWindow		UIMainMapFrame;
+	void DrawMap();
+	void ConvertToLocal(const Fvector& src, Ivector2& dest);
+
+	void RemoveAllSpots();
+
+	//элементы интерфейса
+	CUIFrameWindow	UIMainMapFrame;
+	
+	CUICheckButton UICheckButton1;
+	CUICheckButton UICheckButton2;
+	CUICheckButton UICheckButton3;
+	CUICheckButton UICheckButton4;
+		
+	CUIStatic UIStaticInfo;
+
+	CUIMapBackground UIMapBackground;
+
+
+	//подложка для карты
+	CUIStaticItem	landscape;
+
+	//ширина и высота карты в пикселях на экране
+	int m_iMapWidth;
+	int m_iMapHeight;
+
+	//координаты мировой карты
+	float m_fWorldMapWidth;
+	float m_fWorldMapHeight;
+	float m_fWorldMapLeft;
+	float m_fWorldMapTop;
 };

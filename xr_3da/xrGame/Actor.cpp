@@ -14,7 +14,6 @@
 #include "Actor_Flags.h"
 #include "UI.h"
 
-
 // breakpoints
 #include "..\xr_input.h"
 
@@ -30,6 +29,7 @@
 #include "ai_space.h"
 
 #include "trade.h"
+#include "LevelFogOfWar.h"
 
 const u32		patch_frames	= 50;
 const float		respawn_delay	= 1.f;
@@ -58,9 +58,6 @@ static Fvector	vFootCenter;
 static Fvector	vFootExt;
 
 Flags32			psActorFlags={0};
-
-
-
 
 //--------------------------------------------------------------------
 //////////////////////////////////////////////////////////////////////
@@ -813,13 +810,21 @@ void CActor::UpdateCL()
 {
 	inherited::UpdateCL();
 
-	if (!g_Alive())			
-
+	if (!g_Alive())	
+	{
 		if(m_pPhysicsShell)
 		{
 			XFORM().set(m_pPhysicsShell->mXFORM);
 		}
-		// Analyze Die-State
+	}
+	else
+	{
+		//update the fog of war
+		Level().m_pFogOfWar->UpdateFog(Position(), ACTOR_FOG_REMOVE_RADIUS);
+	}
+		
+	
+	// Analyze Die-State
 		/*
 		if (!g_Alive())			
 		{

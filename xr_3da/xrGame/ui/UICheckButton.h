@@ -11,6 +11,8 @@
 
 class CUICheckButton :public CUIButton
 {
+private:
+	typedef CUIButton inherited;
 public:
 	CUICheckButton(void);
 	~CUICheckButton(void);

@@ -286,7 +286,8 @@ void CUIInventory::Init()
 
 	if(l_pA) 
 	{
-		UIInventoryWnd.InitInventory(&l_pA->m_inventory);
+	//UIInventoryWnd.InitInventory(&l_pA->m_inventory);
+		UIInventoryWnd.InitInventory();
 	}
 
 
@@ -294,8 +295,7 @@ void CUIInventory::Init()
 void CUIInventory::Show() 
 { 
 	m_active = true; 
-	UIInventoryWnd.Show(true);
-	UIInventoryWnd.Enable(true); 
+	UIInventoryWnd.Show(); 
 
 	//remove crosshair if it was shown
 /*	if(Console.GetBool("hud_crosshair"))
@@ -312,8 +312,7 @@ void CUIInventory::Show()
 void CUIInventory::Hide() 
 { 
 	m_active = false;
-	UIInventoryWnd.Show(false);
-	UIInventoryWnd.Enable(false); 
+	UIInventoryWnd.Hide(); 
 
 	if(m_bCrosshair)
 			Console.Execute("hud_crosshair 1");

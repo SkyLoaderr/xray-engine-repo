@@ -30,7 +30,6 @@
 #include "ai_alife.h"
 #include "HangingLamp.h"
 #include "trade.h"
-#include "pda.h"
 
 ENGINE_API extern float		psHUD_FOV;
 extern	float				psSqueezeVelocity;
@@ -823,7 +822,17 @@ BOOL APIENTRY DllMain( HANDLE hModule,
 #include "weaponusp45.h"
 #include "weapongroza.h"
 #include "weaponmagazinedwgrenade.h"
+
 #include "bolt.h"
+#include "medkit.h"
+#include "antirad.h"
+#include "bread.h"
+
+#include "ScientificOutfit.h"
+#include "StalkerOutfit.h"
+#include "MilitaryOutfit.h"
+#include "ExoOutfit.h"
+
 #include "weaponknife.h"
 #include "torch.h"
 #include "f1.h"
@@ -838,6 +847,8 @@ BOOL APIENTRY DllMain( HANDLE hModule,
 #include "level_changer.h"
 
 #include "simpledetector.h"
+#include "pda.h"
+
 #include "physicobject.h"
 
 extern "C" {
@@ -901,6 +912,15 @@ extern "C" {
 
 		// Inventory
 		case CLSID_IITEM_BOLT:			P = xr_new<CBolt>();				break;
+		case CLSID_IITEM_MEDKIT:		P = xr_new<CMedkit>();				break;
+		case CLSID_IITEM_ANTIRAD:		P = xr_new<CAntirad>();				break;
+		case CLSID_IITEM_BREAD:			P = xr_new<CBread>();				break;
+
+		//Equipment outfit
+		case CLSID_EQUIPMENT_SCIENTIFIC:P = xr_new<CScientificOutfit>();	break;
+		case CLSID_EQUIPMENT_STALKER:	P = xr_new<CStalkerOutfit>();		break;
+		case CLSID_EQUIPMENT_MILITARY:	P = xr_new<CMilitaryOutfit>();		break;
+		case CLSID_EQUIPMENT_EXO:		P = xr_new<CExoOutfit>();			break;
 
 		// Grenades
 		case CLSID_GRENADE_F1:			P = xr_new<CF1>();					break;

@@ -1,5 +1,7 @@
 #include "stdafx.h"
 
+#include "LevelFogOfWar.h"
+
 BOOL CLevel::net_Start	( LPCSTR op_server, LPCSTR op_client )
 {
 	BOOL bResult				= FALSE;
@@ -36,10 +38,14 @@ BOOL CLevel::net_Start	( LPCSTR op_server, LPCSTR op_client )
 		Server->SLS_Default		();
 		
 		strcpy					(m_caServerOptions,op_server);
+
 	}
 
 	// Start client
 	bResult						= net_Start_client(op_client);
+
+	//init the fog of war for the current level
+	m_pFogOfWar->Init();
 
 	pApp->LoadEnd				();
 

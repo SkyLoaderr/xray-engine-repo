@@ -21,9 +21,7 @@
 CUITradeWnd::CUITradeWnd()
 {
 	Init();
-
-	Show(false);
-	Enable(false);
+	Hide();
 
 	SetFont(HUD().pFontHeaderEurope);
 }
@@ -422,48 +420,7 @@ void CUITradeWnd::Draw()
 	CUIWindow::Draw();
 }
 
-bool CUITradeWnd::IR_OnKeyboardPress(int dik)
+void CUITradeWnd::Show()
 {
-	if(!IsEnabled()) return false;
-			
-	//mouse click
-	if(dik==MOUSE_1)
-	{
-		OnMouse(HUD().GetUI()->GetCursor()->GetPos().x,
-				HUD().GetUI()->GetCursor()->GetPos().y,
-                CUIWindow::LBUTTON_DOWN);
-		return true;
-	}
-	
-	
-	return 	OnKeyboard(dik,	CUIWindow::KEY_PRESSED);
-}
-bool CUITradeWnd::IR_OnKeyboardRelease(int dik)
-{
-	if(!IsEnabled()) return false;
-			
-	//mouse click
-	if(dik==MOUSE_1)
-	{
-			OnMouse(HUD().GetUI()->GetCursor()->GetPos().x,
-			 	    HUD().GetUI()->GetCursor()->GetPos().y,	
-					CUIWindow::LBUTTON_UP);
-		return true;
-	}
-
-	return 	OnKeyboard(dik,	CUIWindow::KEY_RELEASED);
-}
-bool CUITradeWnd::IR_OnMouseMove(int dx, int dy)
-{
-	if(!IsEnabled()) return false;
-	
-	if (HUD().GetUI()->GetCursor()->IsVisible())
-	{ 
-		HUD().GetUI()->GetCursor()->MoveBy(dx, dy);
-		OnMouse(HUD().GetUI()->GetCursor()->GetPos().x, 
-				HUD().GetUI()->GetCursor()->GetPos().y, 
-				CUIWindow::MOUSE_MOVE);
-	}
-
-	return true;
+	inherited::Show();
 }

@@ -378,6 +378,12 @@
 					RelativePath="Level_start.cpp">
 				</File>
 				<File
+					RelativePath=".\LevelFogOfWar.cpp">
+				</File>
+				<File
+					RelativePath=".\LevelFogOfWar.h">
+				</File>
+				<File
 					RelativePath="LevelGameDef.cpp">
 				</File>
 				<File
@@ -1410,6 +1416,62 @@
 							RelativePath=".\PDA.h">
 						</File>
 					</Filter>
+					<Filter
+						Name="Food &amp; Drugs"
+						Filter="">
+						<File
+							RelativePath=".\antirad.cpp">
+						</File>
+						<File
+							RelativePath=".\antirad.h">
+						</File>
+						<File
+							RelativePath=".\bread.cpp">
+						</File>
+						<File
+							RelativePath=".\bread.h">
+						</File>
+						<File
+							RelativePath=".\medkit.cpp">
+						</File>
+						<File
+							RelativePath=".\medkit.h">
+						</File>
+					</Filter>
+					<Filter
+						Name="Outfit"
+						Filter="">
+						<File
+							RelativePath=".\CustomOutfit.cpp">
+						</File>
+						<File
+							RelativePath=".\CustomOutfit.h">
+						</File>
+						<File
+							RelativePath=".\ExoOutfit.cpp">
+						</File>
+						<File
+							RelativePath=".\ExoOutfit.h">
+						</File>
+						<File
+							RelativePath=".\MilitaryOutfit.cpp">
+						</File>
+						<File
+							RelativePath=".\MilitaryOutfit.h">
+						</File>
+						<File
+							RelativePath=".\ScientificOutfit.cpp">
+						</File>
+						<File
+							RelativePath=".\ScientificOutfit.h">
+						</File>
+						<File
+							RelativePath=".\StalkerOutfit.cpp">
+						</File>
+						<File
+							RelativePath=".\StalkerOutfit.h">
+						</File>
+					</Filter>
 				</Filter>
 				<Filter
 					Name="_lift"
@@ -1864,10 +1926,32 @@
 						Name="MapWnd"
 						Filter="">
 						<File
+							RelativePath=".\ui\UIMapBackground.cpp">
+						</File>
+						<File
+							RelativePath=".\ui\UIMapBackground.h">
+						</File>
+						<File
+							RelativePath=".\ui\UIMapSpot.cpp">
+						</File>
+						<File
+							RelativePath=".\ui\UIMapSpot.h">
+						</File>
+						<File
 							RelativePath=".\ui\UIMapWnd.cpp">
 						</File>
 						<File
 							RelativePath=".\ui\UIMapWnd.h">
+						</File>
+					</Filter>
+					<Filter
+						Name="Diary"
+						Filter="">
+						<File
+							RelativePath=".\ui\UIDiaryWnd.cpp">
+						</File>
+						<File
+							RelativePath=".\ui\UIDiaryWnd.h">
 						</File>
 					</Filter>
 				</Filter>
@@ -2031,6 +2115,12 @@
 					<Filter
 						Name="Windows"
 						Filter="">
+						<File
+							RelativePath=".\ui\UIDialogWnd.cpp">
+						</File>
+						<File
+							RelativePath=".\ui\UIDialogWnd.h">
+						</File>
 						<File
 							RelativePath=".\ui\UIFrameWindow.cpp">
 						</File>

@@ -3,11 +3,15 @@
 #include "entity.h"
 #include "hudmanager.h"
 
+#include "level.h"
+#include "levelFogOfWar.h"
+
 #include "targetcs.h"
 #include "targetcscask.h"
 #include "targetcsbase.h"
 
-#define VIEW_DISTANCE	(50.f/m_fScale)
+#define MAX_VIEW_DISTANCE 50.f
+#define VIEW_DISTANCE	(MAX_VIEW_DISTANCE/m_fScale)
 
 #define VIEW_DISTANCE2	VIEW_DISTANCE*VIEW_DISTANCE
 #define COLOR_ENEMY		0xffff0000
@@ -193,7 +197,13 @@ void CUIZoneMap::UpdateRadar(CEntity* Actor, CTeam& Team)
 	float map_x = Actor->Position().x;
     float map_y = Actor->Position().z;
 
-	Fbox level_box = Level().ObjectSpace.GetBoundingVolume();
+	//Fbox level_box = Level().ObjectSpace.GetBoundingVolume();
+	Fbox level_box;
+	level_box.x2 = 359.843f;
+	level_box.x1 = -280.157f;
+	level_box.z2 = 253.36f;
+	level_box.z1 = -386.64f;
+
 	
 	float width = level_box.x2 - level_box.x1;
 	float height = level_box.z2 - level_box.z1;
@@ -255,8 +265,6 @@ void CUIZoneMap::UpdateRadar(CEntity* Actor, CTeam& Team)
 	sprintf(buf, "%dx", int(m_fScale));
 	l_pF->Out(float(BASE_LEFT + 12), 
 			  float(map_center.y + map_radius - l_pF->CurrentHeight()),  buf);
-
-
 }
 //--------------------------------------------------------------------
 

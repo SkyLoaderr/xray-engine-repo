@@ -1,8 +1,12 @@
 #pragma once
 #include "uigamecustom.h"
-#include "UIInventory.h"
+
+#include "ui\\UIDialogWnd.h"
+#include "ui\\UIInventoryWnd.h"
 #include "ui\\UITradeWnd.h"
 #include "ui\\UIPdaWnd.h"
+#include "ui\\UIMapWnd.h"
+#include "ui\\UIDiaryWnd.h"
 
 class CUIGameSP :
 	public CUIGameCustom
@@ -20,9 +24,17 @@ public:
 	//by Dandy 4.07.03
 	virtual bool		IR_OnMouseMove			(int dx, int dy);
 
-	CUIInventory		InventoryMenu;
+protected:
+	void StartStopMenu(CUIDialogWnd* pDialog);
+
+	CUIInventoryWnd		InventoryMenu;
 	CUITradeWnd			TradeMenu;
 	CUIPdaWnd			PdaMenu;
+	CUIMapWnd			MapMenu;
+	CUIDiaryWnd			DiaryMenu;
+	
+	//текущее меню пользователя показанное на экране
+	//NULL если 
+	CUIDialogWnd* m_pUserMenu;
 
-	bool m_bUserMenuShown;
 };

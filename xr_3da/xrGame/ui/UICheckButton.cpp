@@ -16,7 +16,7 @@ CUICheckButton::~CUICheckButton(void)
 //реакция на мышь
 void CUICheckButton::OnMouse(int x, int y, E_MOUSEACTION mouse_action)
 {
-	CUIButton::OnMouse(x, y, mouse_action);
+	inherited::OnMouse(x, y, mouse_action);
 	
 	//если кнопка была только что нажата
 	if(m_bButtonClicked)
@@ -35,7 +35,7 @@ void CUICheckButton::OnMouse(int x, int y, E_MOUSEACTION mouse_action)
 //прорисовка окна
 void CUICheckButton::Draw()
 {
-	CUIButton::Draw();
+	inherited::Draw();
 }
 
 
@@ -50,5 +50,5 @@ void CUICheckButton::Update()
 		GetFont()->Out((float)rect.left, (float)rect.top+30,	"X");
 	}
 
-	CUIButton::Update();
+	inherited::Update();
 }

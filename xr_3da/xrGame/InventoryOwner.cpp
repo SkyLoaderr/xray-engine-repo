@@ -53,7 +53,6 @@ BOOL CInventoryOwner::net_Spawn		(LPVOID DC)
 		
 	// Fill
 	strcpy				(D->s_name,"device_pda");
-	//strcpy				(D->s_name,"detector_simple");
 	strcpy				(D->s_name_replace,"");
 	D->s_gameid			=	u8(GameID());
 	D->s_RP				=	0xff;

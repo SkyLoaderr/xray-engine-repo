@@ -31,8 +31,7 @@ CUIPdaWnd::CUIPdaWnd()
 {
 	Init();
 
-	Show(false);
-	Enable(false);
+	Hide();
 	
 	m_pInvOwner = NULL;
 	m_pPda = NULL;
@@ -143,51 +142,6 @@ void CUIPdaWnd::SendMessage(CUIWindow* pWnd, s16 msg, void* pData)
 	inherited::SendMessage(pWnd, msg, pData);
 }
 
-bool CUIPdaWnd::IR_OnKeyboardPress(int dik)
-{
-	if(!IsEnabled()) return false;
-			
-	//mouse click
-	if(dik==MOUSE_1)
-	{
-		OnMouse(HUD().GetUI()->GetCursor()->GetPos().x,
-				HUD().GetUI()->GetCursor()->GetPos().y,
-                CUIWindow::LBUTTON_DOWN);
-		return true;
-	}
-	
-	
-	return 	OnKeyboard(dik,	CUIWindow::KEY_PRESSED);
-}
-bool CUIPdaWnd::IR_OnKeyboardRelease(int dik)
-{
-	if(!IsEnabled()) return false;
-			
-	//mouse click
-	if(dik==MOUSE_1)
-	{
-			OnMouse(HUD().GetUI()->GetCursor()->GetPos().x,
-			 	    HUD().GetUI()->GetCursor()->GetPos().y,	
-					CUIWindow::LBUTTON_UP);
-		return true;
-	}
-
-	return 	OnKeyboard(dik,	CUIWindow::KEY_RELEASED);
-}
-bool CUIPdaWnd::IR_OnMouseMove(int dx, int dy)
-{
-	if(!IsEnabled()) return false;
-	
-	if (HUD().GetUI()->GetCursor()->IsVisible())
-	{ 
-		HUD().GetUI()->GetCursor()->MoveBy(dx, dy);
-		OnMouse(HUD().GetUI()->GetCursor()->GetPos().x, 
-				HUD().GetUI()->GetCursor()->GetPos().y, 
-				CUIWindow::MOUSE_MOVE);
-	}
-
-	return true;
-}
 
 void CUIPdaWnd::Update()
 {
@@ -212,6 +166,14 @@ void CUIPdaWnd::Draw()
 {
 	inherited::Draw();
 }
+
+void CUIPdaWnd::Show()
+{
+	InitPDA();
+	inherited::Show();
+}
+
+
 /////////////////////////////////////////
 // Функции работы с котактами
 ////////////////////////////////////////

@@ -65,6 +65,19 @@ CSE_Abstract *F_entity_Create			(LPCSTR caSection)
 		case CLSID_DETECTOR_SIMPLE:		return xr_new<CSE_ALifeItemDetector>			(caSection);
 		case CLSID_DEVICE_PDA:			return xr_new<CSE_ALifeItemPDA>					(caSection);
 
+		//Inventory items
+		case CLSID_IITEM_ANTIRAD:
+		case CLSID_IITEM_BREAD:
+		case CLSID_IITEM_MEDKIT:		return xr_new<CSE_ALifeItem>					(caSection);
+		
+		//Equipment outfit
+		case CLSID_EQUIPMENT_SCIENTIFIC:
+		case CLSID_EQUIPMENT_STALKER:	
+		case CLSID_EQUIPMENT_MILITARY:	
+		case CLSID_EQUIPMENT_EXO:		return xr_new<CSE_ALifeItem>					(caSection);
+
+
+
 		case CLSID_OBJECT_W_M134:					
 		case CLSID_OBJECT_W_FN2000:		
 		case CLSID_OBJECT_W_AK74:		

@@ -19,6 +19,9 @@
 #include "PHdynamicdata.h"
 #include "Physics.h"
 
+//fog over the map
+#include "LevelFogOfWar.h"
+
 CPHWorld*	ph_world = 0;
 
 //////////////////////////////////////////////////////////////////////
@@ -42,6 +45,11 @@ CLevel::CLevel()
 	m_caClientOptions			= (LPSTR)xr_malloc(256*sizeof(char));
 	m_caServerOptions[0]		= 0;
 	m_caClientOptions[0]		= 0;
+
+	
+	//by Dandy
+	m_pFogOfWar = NULL;
+	m_pFogOfWar = xr_new<CFogOfWar>();
 }
 
 CLevel::~CLevel()
@@ -72,6 +80,11 @@ CLevel::~CLevel()
 		xr_delete		(static_Sounds[i]);
 	}
 	static_Sounds.clear	();
+
+	//by Dandy
+	//destroy fog of war
+	if(m_pFogOfWar) xr_delete(m_pFogOfWar);
+
 
 	xr_delete			(tpAI_Space);
 	xr_free				(m_caServerOptions);

@@ -72,7 +72,8 @@ void CMosquitoBald::Affect(CObject* O)
 			l_P.w_u16			(eHitTypeWound);
 			l_pO->u_EventSend	(l_P);
 
-			CParticlesObject* pStaticPG = xr_new<CParticlesObject>(m_pHitEffect,l_pO->Sector()); pStaticPG->play_at_pos(l_pO->Position());
+			CParticlesObject* pStaticPG = xr_new<CParticlesObject>(m_pHitEffect,l_pO->Sector()); 
+			pStaticPG->play_at_pos(l_pO->Position());
 		}
 	}
 }

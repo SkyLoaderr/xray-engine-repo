@@ -10,6 +10,7 @@
 #include "UIPdaContactsWnd.h"
 #include "UIPdaDialogWnd.h"
 
+#include "UIDialogWnd.h"
 #include "UIStatic.h"
 #include "UIButton.h"
 #include "UIEditBox.h"
@@ -22,10 +23,10 @@
 // Подложка и основные кнопки PDA
 ///////////////////////////////////////
 
-class CUIPdaWnd: public CUIWindow  
+class CUIPdaWnd: public CUIDialogWnd
 {
 private:
-	typedef CUIWindow inherited;
+	typedef CUIDialogWnd inherited;
 public:
 	CUIPdaWnd();
 	virtual ~CUIPdaWnd();
@@ -33,14 +34,12 @@ public:
 	virtual void Init();
 	virtual void InitPDA();
 
-	virtual bool IR_OnKeyboardPress(int dik);
-	virtual bool IR_OnKeyboardRelease(int dik);
-	virtual bool IR_OnMouseMove(int dx, int dy);
-
 	virtual void SendMessage(CUIWindow* pWnd, s16 msg, void* pData = NULL);
 
 	virtual void Draw();
 	virtual void Update();
+		
+	virtual void Show();
 
 protected:
 	//контакты

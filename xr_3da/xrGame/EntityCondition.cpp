@@ -4,6 +4,8 @@
 
 #include "stdafx.h"
 #include ".\entitycondition.h"
+#include ".\inventoryowner.h"
+#include ".\customoutfit.h"
 
 
 #define MAX_HEALTH 1.0f
@@ -258,6 +260,38 @@ void CEntityCondition::Sleep(float hours)
 	Awoke();
 }
 
+float CEntityCondition::HitOutfitEffect(float hit_power, ALife::EHitType hit_type)
+{
+    CInventoryOwner* pInvOwner = dynamic_cast<CInventoryOwner*>(this);
+	if(!pInvOwner) return hit_power;
+
+	CCustomOutfit* pOutfit = (CCustomOutfit*)pInvOwner->m_inventory.m_slots[OUTFIT_SLOT].m_pIItem;
+	if(!pOutfit) return hit_power;
+
+	switch(hit_type)
+	{
+	case eHitTypeBurn:
+		hit_power *= pOutfit->m_fOutfitBurn;
+		break;
+	case eHitTypeStrike:
+		hit_power *= pOutfit->m_fOutfitStrike;
+		break;
+	case eHitTypeTelepatic:
+		hit_power *= pOutfit->m_fOutfitTelepatic;
+		break;
+	case eHitTypeShock:
+		hit_power *= pOutfit->m_fOutfitShock;
+		break;
+	case eHitTypeWound:
+		hit_power *= pOutfit->m_fOutfitWound;
+		break;
+	case eHitTypeRadiation:
+		hit_power *= pOutfit->m_fOutfitRadiation;
+		break;
+	}
+		
+	return hit_power;
+}
 
 void CEntityCondition::ConditionHit(CObject* who, float hit_power, ALife::EHitType hit_type, s16 element)
 {
@@ -266,6 +300,8 @@ void CEntityCondition::ConditionHit(CObject* who, float hit_power, ALife::EHitTy
 
 	//нормализуем силу удара
 	hit_power = hit_power/100.f;
+
+	hit_power = HitOutfitEffect(hit_power, hit_type);
 
 	//кол-во костей в существе
 	//PKinematics(Visual())->LL_BoneCount();

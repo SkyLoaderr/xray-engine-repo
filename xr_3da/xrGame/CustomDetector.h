@@ -31,10 +31,16 @@ public:
 	void SoundDestroy				(ref_sound& dest);
 
 	FLOAT m_radius, m_buzzer_radius;
-	xr_list<CCustomZone*>		m_zones;
+	
+	//список обнаруженных зон
+	xr_list<CCustomZone*>			m_zones;
+	//звуки
 	xr_map<CLASS_ID, ref_sound*>	m_sounds;
-	xr_map<CCustomZone*, u32>	m_times;
+	//время, для воспроизведения звуков с различной скоростью
+	xr_map<CCustomZone*, u32>		m_times;
+	
+	//звуки
 	ref_sound m_noise, m_buzzer;
 
-	virtual void		OnRender				( );
+	virtual void		OnRender	();
 };
