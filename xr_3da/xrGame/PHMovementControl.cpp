@@ -520,7 +520,7 @@ void CPHMovementControl::PathDIrLine(const xr_vector<CTravelNode> &path,  int in
 {
 
 	Fvector to_path_point;
-	to_path_point.sub(vPathPoint,vPosition);//new position
+	to_path_point.sub(vPathPoint,vPosition);	//_new position
 	float mag=to_path_point.magnitude();
 	if(mag<EPS)
 	{
@@ -536,7 +536,7 @@ void CPHMovementControl::PathDIrLine(const xr_vector<CTravelNode> &path,  int in
 void CPHMovementControl::PathDIrPoint(const xr_vector<CTravelNode> &path,  int index,  float distance,  float precesition, Fvector &dir  )
 {
 	Fvector to_path_point,tangent;
-	to_path_point.sub(vPathPoint,vPosition);//new position
+	to_path_point.sub(vPathPoint,vPosition);	//_new position
 	float mag=to_path_point.magnitude();
 
 	if(mag<EPS) //near the point

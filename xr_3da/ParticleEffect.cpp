@@ -141,7 +141,7 @@ void CPEDef::pCollisionExecute(PAPI::ParticleEffect *effect, float dt, CParticle
                         pVector vn(n * nmag); 	// Normal Vn = (V.N)N
                         pVector vt(m.vel - vn);	// Tangent Vt = V - Vn
 
-                        // Compute new velocity heading out:
+                        // Compute _new velocity heading out:
                         // Don't apply friction if tangential velocity < cutoff
                         if(vt.length2() <= m_CollideSqrCutoff){
                             m.vel = vt - vn * m_CollideResilience;

@@ -1178,7 +1178,7 @@ void CPHElement::add_Mass(const SBoneShape& shape,const Fmatrix& offset,const Fv
 
 	Fvector mc;
 	offset.transform_tiny(mc,mass_center);
-	//calculate new mass_center 
+	//calculate _new mass_center 
 	//new_mc=(m_mass_center*m_mass.mass+mc*mass)/(mass+m_mass.mass)
 	Fvector tmp1;
 	tmp1.set(m_mass_center);

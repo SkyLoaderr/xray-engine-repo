@@ -425,7 +425,7 @@ void	R_dsgraph_structure::r_dsgraph_render_subspace	(IRender_Sector* _sector, Fm
 	R_ASSERT						(_sector);
 	RImplementation.marker			++;			// !!! critical here
 
-	// Save and build new frustum, disable HOM
+	// Save and build _new frustum, disable HOM
 	CFrustum	ViewSave			= ViewBase;
 	ViewBase.CreateFromMatrix		(mCombined,	FRUSTUM_P_ALL);
 	View							= &ViewBase;

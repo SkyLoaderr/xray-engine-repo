@@ -755,7 +755,7 @@ void CSE_ALifeSimulator::vfUpdateTasks()
 				}
 				R_ASSERT2					(jj != ee,"Data mismatch!");
 
-				// creating new task
+				// creating _new task
 				CSE_ALifeTask				*l_tpALifeTask = xr_new<CSE_ALifeTask>();
 				l_tpALifeTask->m_tTaskType	= eTaskTypeSearchForItemCG;
 				strcpy						(l_tpALifeTask->m_caSection,(*I).first);

@@ -14,7 +14,7 @@ CSoundRender_Source*	CSoundRender_Core::i_create_source		(LPCSTR name, BOOL _3D	
 		if (0==strcmp(*s_sources[it]->fname,id))	return s_sources[it];
 	}
 
-	// Load a new one
+	// Load a _new one
 	CSoundRender_Source* S	= xr_new<CSoundRender_Source>	();
 	S->load					(id,_3D);
 	s_sources.push_back		(S);

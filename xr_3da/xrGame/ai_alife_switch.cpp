@@ -323,7 +323,7 @@ void CSE_ALifeSimulator::ProcessOnlineOfflineSwitches(CSE_ALifeDynamicObject *I)
 							tpGroupMember->m_bDirectControl	= true;
 							tpALifeGroupAbstract->m_tpMembers.erase(tpALifeGroupAbstract->m_tpMembers.begin() + i);
 							tpGroupMember->m_bOnline		= false;
-							// store the new separate object into the registries
+							// store the __new separate object into the registries
 							vfUpdateDynamicData				(tpGroupMember);
 							// and remove it from the graph point but do not remove it from the current level map
 							CSE_ALifeInventoryItem			*l_tpALifeInventoryItem = dynamic_cast<CSE_ALifeInventoryItem*>(tpGroupMember);

@@ -10,9 +10,9 @@
 
 PHDynamicData::PHDynamicData()
 {
-numOfChilds=0;
-//Childs=NULL;
-p_parent_body_interpolation=NULL;
+	numOfChilds=0;
+	//Childs=NULL;
+	p_parent_body_interpolation=NULL;
 }
 
 PHDynamicData::~PHDynamicData()
@@ -27,23 +27,22 @@ PHDynamicData::~PHDynamicData()
 		Childs.clear();
 		//Childs=NULL;
 		numOfChilds=0;
-		}
+	}
 }
 
 PHDynamicData::PHDynamicData(unsigned int numOfchilds,dBodyID Body)
 {
-numOfChilds=numOfchilds;
-body=Body;
-geom=NULL;
-transform=NULL;
-//Childs=new PHDynamicData[numOfChilds];
-Childs.resize(numOfChilds);
-ZeroTransform.identity();
+	numOfChilds=numOfchilds;
+	body=Body;
+	geom=NULL;
+	transform=NULL;
+	Childs.resize(numOfChilds);
+	ZeroTransform.identity();
 }
 
 bool PHDynamicData::SetChild(unsigned int childNum,unsigned int numOfchilds,dBodyID body)
 {
-	
+
 	if(childNum<numOfChilds){
 		Childs[childNum].body=body;
 		Childs[childNum].geom=NULL;
@@ -60,89 +59,89 @@ bool PHDynamicData::SetChild(unsigned int childNum,unsigned int numOfchilds,dBod
 			//Childs[childNum].Childs=NULL;
 			Childs[childNum].numOfChilds=0;
 
-	Childs[childNum].geom=NULL;
-	Childs[childNum].transform=NULL;
-	return true;
+		Childs[childNum].geom=NULL;
+		Childs[childNum].transform=NULL;
+		return true;
 	}
 	else return false;
 }
 
 void PHDynamicData::CalculateR_N_PosOfChilds(dBodyID parent)
 {
-Fmatrix parent_transform;//,mYM;
-//mYM.rotateY			(deg2rad(-90.f));
-DMXPStoFMX(dBodyGetRotation(parent),dBodyGetPosition(parent),parent_transform);
-DMXPStoFMX(dBodyGetRotation(body),dBodyGetPosition(body),BoneTransform);
-parent_transform.mulB(ZeroTransform);
-//parent_transform.mulA(mYM);
-parent_transform.invert();
+	Fmatrix parent_transform;//,mYM;
+	//mYM.rotateY			(deg2rad(-90.f));
+	DMXPStoFMX(dBodyGetRotation(parent),dBodyGetPosition(parent),parent_transform);
+	DMXPStoFMX(dBodyGetRotation(body),dBodyGetPosition(body),BoneTransform);
+	parent_transform.mulB(ZeroTransform);
+	//parent_transform.mulA(mYM);
+	parent_transform.invert();
 
-//BoneTransform.mulA(mYM);
-BoneTransform.mulA(parent_transform);
+	//BoneTransform.mulA(mYM);
+	BoneTransform.mulA(parent_transform);
 
-for(unsigned int i=0;i<numOfChilds;i++){
+	for(unsigned int i=0;i<numOfChilds;i++){
 
-	Childs[i].CalculateR_N_PosOfChilds(body);
+		Childs[i].CalculateR_N_PosOfChilds(body);
 	}
 
 }
 void PHDynamicData::UpdateInterpolationRecursive(){
 	UpdateInterpolation();
 
-for(unsigned int i=0;i<numOfChilds;i++){
-	Childs[i].UpdateInterpolationRecursive();
+	for(unsigned int i=0;i<numOfChilds;i++){
+		Childs[i].UpdateInterpolationRecursive();
 	}
 }
 
 void PHDynamicData::InterpolateTransform(Fmatrix &transform){
-//DMXPStoFMX(dBodyGetRotation(body),
-//			dBodyGetPosition(body),BoneTransform);
-body_interpolation.InterpolateRotation(transform);
-body_interpolation.InterpolatePosition(transform.c);
-Fmatrix zero;
-zero.set(ZeroTransform);
-zero.invert();
-//BoneTransform.mulB(zero);
-transform.mulB(zero);
+	//DMXPStoFMX(dBodyGetRotation(body),
+	//			dBodyGetPosition(body),BoneTransform);
+	body_interpolation.InterpolateRotation(transform);
+	body_interpolation.InterpolatePosition(transform.c);
+	Fmatrix zero;
+	zero.set(ZeroTransform);
+	zero.invert();
+	//BoneTransform.mulB(zero);
+	transform.mulB(zero);
 }
 void PHDynamicData::InterpolateTransformVsParent(Fmatrix &transform){
-Fmatrix parent_transform;
-//DMXPStoFMX(dBodyGetRotation(parent),dBodyGetPosition(parent),parent_transform);
-//DMXPStoFMX(dBodyGetRotation(body),dBodyGetPosition(body),BoneTransform);
-p_parent_body_interpolation->InterpolateRotation(parent_transform);
-p_parent_body_interpolation->InterpolatePosition(parent_transform.c);
+	Fmatrix parent_transform;
+	//DMXPStoFMX(dBodyGetRotation(parent),dBodyGetPosition(parent),parent_transform);
+	//DMXPStoFMX(dBodyGetRotation(body),dBodyGetPosition(body),BoneTransform);
+	p_parent_body_interpolation->InterpolateRotation(parent_transform);
+	p_parent_body_interpolation->InterpolatePosition(parent_transform.c);
 
-body_interpolation.InterpolateRotation(transform);
+	body_interpolation.InterpolateRotation(transform);
 
-body_interpolation.InterpolatePosition(transform.c);
-parent_transform.mulB(ZeroTransform);
+	body_interpolation.InterpolatePosition(transform.c);
+	parent_transform.mulB(ZeroTransform);
 
-parent_transform.invert();
+	parent_transform.invert();
 
 
-//BoneTransform.mulA(parent_transform);
-transform.mulA(parent_transform);
+	//BoneTransform.mulA(parent_transform);
+	transform.mulA(parent_transform);
 }
 PHDynamicData * PHDynamicData::GetChild(unsigned int ChildNum)
 {
-if(ChildNum<numOfChilds)
+	if(ChildNum<numOfChilds)
 		return &Childs[ChildNum];
-else return NULL;
+	else return NULL;
 }
 
 
 void PHDynamicData::CalculateData()
 {
 
-DMXPStoFMX(dBodyGetRotation(body),
-			dBodyGetPosition(body),BoneTransform);
-Fmatrix zero;
-zero.set(ZeroTransform);
-zero.invert();
-BoneTransform.mulB(zero);
-for(unsigned int i=0;i<numOfChilds;i++){
+	DMXPStoFMX(dBodyGetRotation(body),
+		dBodyGetPosition(body),BoneTransform);
+	Fmatrix zero;
+	zero.set(ZeroTransform);
+	zero.invert();
+	BoneTransform.mulB(zero);
+	for(unsigned int i=0;i<numOfChilds;i++){
 
-	Childs[i].CalculateR_N_PosOfChilds(body);
+		Childs[i].CalculateR_N_PosOfChilds(body);
 	}
 }
 
@@ -150,26 +149,25 @@ for(unsigned int i=0;i<numOfChilds;i++){
 
 void PHDynamicData::Create(unsigned int numOfchilds, dBodyID Body)
 {
-ZeroTransform.identity();
-numOfChilds=numOfchilds;
-body=Body;
-geom=NULL;
-//Childs=new PHDynamicData[numOfChilds];
-Childs.resize(numOfChilds);
-body_interpolation.SetBody(Body);
+	ZeroTransform.identity();
+	numOfChilds=numOfchilds;
+	body=Body;
+	geom=NULL;
+	Childs.resize(numOfChilds);
+	body_interpolation.SetBody(Body);
 }
 
 void PHDynamicData::Destroy()
 {
 	if(numOfChilds){
-				for(unsigned int i=0;i<numOfChilds;i++)
-										Childs[i].Destroy();
-		
+		for(unsigned int i=0;i<numOfChilds;i++)
+			Childs[i].Destroy();
+
 		//delete[] Childs;
 		Childs.clear();
 		//Childs=NULL;
 		numOfChilds=0;
-		}
+	}
 }
 
 bool PHDynamicData::SetGeom(dGeomID ageom)
@@ -177,7 +175,7 @@ bool PHDynamicData::SetGeom(dGeomID ageom)
 	if(! geom){
 		geom=ageom;
 		return true;
-		}
+	}
 	else
 		return false;
 }
@@ -186,7 +184,7 @@ bool PHDynamicData::SetTransform(dGeomID ageom)
 	if(!transform){
 		transform=ageom;
 		return true;
-		}
+	}
 	else
 		return false;
 }
@@ -195,13 +193,13 @@ void PHDynamicData::SetAsZero(){
 }
 
 void PHDynamicData::SetAsZeroRecursive(){
-ZeroTransform.set(BoneTransform);
-for(unsigned int i=0;  i<numOfChilds;i++)
-		{
-				Childs[i].SetAsZeroRecursive();
-		}
+	ZeroTransform.set(BoneTransform);
+	for(unsigned int i=0;  i<numOfChilds;i++)
+	{
+		Childs[i].SetAsZeroRecursive();
+	}
 }
 
 void PHDynamicData::SetZeroTransform(Fmatrix& aTransform){
-ZeroTransform.set(aTransform);
+	ZeroTransform.set(aTransform);
 }

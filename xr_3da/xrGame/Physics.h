@@ -103,11 +103,6 @@ public:
 	void RemoveObject(xr_list<CPHObject*> :: iterator i){
 		m_objects.erase((i));
 	};
-	//CPHElement* AddElement(){
-	//CPHElement* phelement=new CPHElement(Space);
-	//elements.push_back(phelement);
-	//return phelement;
-	//}
 	dGeomID GetMeshGeom() {return Mesh.GetGeom();}
 
 	void Destroy();
