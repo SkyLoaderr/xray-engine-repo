@@ -42,7 +42,8 @@ void xrServer::OnCL_Connected		(IClient* _CL)
 	DWORD			mode			= net_flags(TRUE,TRUE);
 
 	// Game config (all, info includes new player)
-	Perform_game_export		();
+	game->OnPlayerConnect			(CL->ID,CL->Name);
+	Perform_game_export				();
 
 	// Replicate current entities on to this client
 	xrS_entities::iterator	I=entities.begin(),E=entities.end();
@@ -50,6 +51,6 @@ void xrServer::OnCL_Connected		(IClient* _CL)
 	for (I=entities.begin(); I!=E; I++)		Perform_connect_spawn		(I->second,CL,P);
 
 	// Send "finished" signal
-	P.w_begin				(M_SV_CONFIG_FINISHED);
-	SendTo					(CL->ID,P,mode);
+	P.w_begin						(M_SV_CONFIG_FINISHED);
+	SendTo							(CL->ID,P,mode);
 }
