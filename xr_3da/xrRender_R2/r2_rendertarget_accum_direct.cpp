@@ -7,39 +7,75 @@ void CRenderTarget::accum_direct		()
 	// *** assume accumulator setted up ***
 	light*			fuckingsun			= RImplementation.Lights.sun_adapted	;
 
-	// texture adjustment matrix
-	float			fTexelOffs			= (.5f / float(RImplementation.o.smapsize));
-	float			fRange				= ps_r2_sun_depth_scale;
-	float			fBias				= ps_r2_sun_depth_bias;
-	Fmatrix			m_TexelAdjust		= 
-	{
-		0.5f,				0.0f,				0.0f,			0.0f,
-		0.0f,				-0.5f,				0.0f,			0.0f,
-		0.0f,				0.0f,				fRange,			0.0f,
-		0.5f + fTexelOffs,	0.5f + fTexelOffs,	fBias,			1.0f
-	};
+	// Common calc for quad-rendering
+	u32		Offset;
+	u32		C					= color_rgba	(255,255,255,255);
+	float	_w					= float			(Device.dwWidth);
+	float	_h					= float			(Device.dwHeight);
+	Fvector2					p0,p1;
+	p0.set						(.5f/_w, .5f/_h);
+	p1.set						((_w+.5f)/_w, (_h+.5f)/_h );
+	float	d_Z	= EPS_S, d_W = 1.f;
 
-	// compute xforms
-	Fmatrix				m_shadow;
+	// Common constants (light-related)
+	Fvector		L_dir,L_clr;	float L_spec;
+	L_clr.set					(fuckingsun->color.r,fuckingsun->color.g,fuckingsun->color.b);
+	L_spec						= u_diffuse2s	(L_clr)/ps_r2_ls_dynamic_range;
+	L_clr.div					(ps_r2_ls_dynamic_range		);
+	Device.mView.transform_dir	(L_dir,fuckingsun->direction);
+	L_dir.normalize				();
+
+	// Perform masking
 	{
-		Fmatrix			xf_invview;		xf_invview.invert	(Device.mView)	;
-		Fmatrix			xf_project;		xf_project.mul		(m_TexelAdjust,fuckingsun->X.D.combine);
-		m_shadow.mul	(xf_project,	xf_invview);
+		// Fill vertex buffer
+		FVF::TL* pv					= (FVF::TL*)	RCache.Vertex.Lock	(4,g_combine->vb_stride,Offset);
+		pv->set						(EPS,			float(_h+EPS),	d_Z,	d_W, C, p0.x, p1.y);	pv++;
+		pv->set						(EPS,			EPS,			d_Z,	d_W, C, p0.x, p0.y);	pv++;
+		pv->set						(float(_w+EPS),	float(_h+EPS),	d_Z,	d_W, C, p1.x, p1.y);	pv++;
+		pv->set						(float(_w+EPS),	EPS,			d_Z,	d_W, C, p1.x, p0.y);	pv++;
+		RCache.Vertex.Unlock		(4,g_combine->vb_stride);
+		RCache.set_Geometry			(g_combine);
+
+		// setup
+		float	intensity			= 0.3f*fuckingsun->color.r + 0.48f*fuckingsun->color.g + 0.22f*fuckingsun->color.b;
+		Fvector	dir					= L_dir;
+				dir.normalize().mul	(- _sqrt(intensity));
+		RCache.set_Element			(s_accum_mask->E[SE_MASK_DIRECT]);		// masker
+		RCache.set_c				("Ldynamic_dir",		dir.x,dir.y,dir.z,0		);
+
+		// if (stencil>=1 && aref_pass)	stencil = light_id
+		RCache.set_ColorWriteEnable	(FALSE);
+		RCache.set_CullMode			(CULL_NONE);
+		RCache.set_Stencil			(TRUE,D3DCMP_LESSEQUAL,dwLightMarkerID,0x01,0xff,D3DSTENCILOP_KEEP,D3DSTENCILOP_REPLACE,D3DSTENCILOP_KEEP);
+		RCache.Render				(D3DPT_TRIANGLELIST,Offset,0,4,0,2);
 	}
 
 	// Perform lighting
-	// Draw full-screen quad textured with our scene image
 	{
-		u32		Offset;
-		u32		C					= color_rgba	(255,255,255,255);
-		float	_w					= float			(Device.dwWidth);
-		float	_h					= float			(Device.dwHeight);
+		// texture adjustment matrix
+		float			fTexelOffs			= (.5f / float(RImplementation.o.smapsize));
+		float			fRange				= ps_r2_sun_depth_scale;
+		float			fBias				= ps_r2_sun_depth_bias;
+		Fmatrix			m_TexelAdjust		= 
+		{
+			0.5f,				0.0f,				0.0f,			0.0f,
+			0.0f,				-0.5f,				0.0f,			0.0f,
+			0.0f,				0.0f,				fRange,			0.0f,
+			0.5f + fTexelOffs,	0.5f + fTexelOffs,	fBias,			1.0f
+		};
+
+		// compute xforms
+		Fmatrix				m_shadow;
+		{
+			FPU::m64r		();
+			Fmatrix			xf_invview;		xf_invview.invert	(Device.mView)	;
+			Fmatrix			xf_project;		xf_project.mul		(m_TexelAdjust,fuckingsun->X.D.combine);
+			m_shadow.mul	(xf_project,	xf_invview);
+			FPU::m24r		();
+		}
 
 		// Analyze depth
-		Fvector2					p0,p1,j0,j1;
-		p0.set						(.5f/_w, .5f/_h);
-		p1.set						((_w+.5f)/_w, (_h+.5f)/_h );
-		float	d_Z	= EPS_S, d_W = 1.f;
+		Fvector2					j0,j1;
 		float	scale_X				= float(Device.dwWidth)	/ float(TEX_jitter);
 		float	scale_Y				= float(Device.dwHeight)/ float(TEX_jitter);
 		float	offset				= (.5f / float(TEX_jitter));
@@ -54,14 +90,6 @@ void CRenderTarget::accum_direct		()
 		pv->set						(float(_w+EPS),	EPS,			d_Z,	d_W, C, p1.x, p0.y, j1.x, j0.y);	pv++;
 		RCache.Vertex.Unlock		(4,g_combine_2UV->vb_stride);
 		RCache.set_Geometry			(g_combine_2UV);
-
-		// Common constants
-		Fvector		L_dir,L_clr;	float L_spec;
-		L_clr.set					(fuckingsun->color.r,fuckingsun->color.g,fuckingsun->color.b);
-		L_spec						= u_diffuse2s	(L_clr)/ps_r2_ls_dynamic_range;
-		L_clr.div					(ps_r2_ls_dynamic_range		);
-		Device.mView.transform_dir	(L_dir,fuckingsun->direction);
-		L_dir.normalize				();
 
 		// setup
 		RCache.set_Element			(s_accum_direct->E[0]);
