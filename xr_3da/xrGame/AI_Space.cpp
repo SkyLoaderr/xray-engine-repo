@@ -28,7 +28,8 @@ CAI_Space::CAI_Space	()
 	
 	FILE_NAME					caFileName;
 	strconcat					(caFileName,::Path.GameData,GRAPH_NAME);
-	CALifeGraph::Load			(caFileName);
+	if (Engine.FS.Exist(caFileName))
+		CALifeGraph::Load		(caFileName);
 }
 
 CAI_Space::~CAI_Space	()

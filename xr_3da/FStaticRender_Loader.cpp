@@ -108,8 +108,7 @@ void CRender::level_Unload()
 void CRender::LoadBuffers	(CStream *base_fs)
 {
 	Device.Shader.Evict		();
-	u32	dwUsage			= D3DUSAGE_WRITEONLY | (HW.Caps.vertex.bSoftware?D3DUSAGE_SOFTWAREPROCESSING:0);
-	D3DPOOL	dwPool			= HW.Caps.vertex.bSoftware?D3DPOOL_SYSTEMMEM:D3DPOOL_DEFAULT;
+	u32	dwUsage				= D3DUSAGE_WRITEONLY | (HW.Caps.vertex.bSoftware?D3DUSAGE_SOFTWAREPROCESSING:0);
 
 	// Vertex buffers
 	{
@@ -120,7 +119,7 @@ void CRender::LoadBuffers	(CStream *base_fs)
 		for (u32 i=0; i<count; i++)
 		{
 			u32 vFVF			= fs().Rdword	();
-			u32 vCount		= fs().Rdword	();
+			u32 vCount			= fs().Rdword	();
 			u32 vSize			= D3DXGetFVFVertexSize(vFVF);
 			Msg("* [Loading VB] %d verts, %d Kb",vCount,(vCount*vSize)/1024);
 
@@ -128,7 +127,7 @@ void CRender::LoadBuffers	(CStream *base_fs)
 
 			// Create and fill
 			BYTE*	pData		= 0;
-			R_CHK				(HW.pDevice->CreateVertexBuffer(vCount*vSize,dwUsage,vFVF,dwPool,&VB[i],0));
+			R_CHK				(HW.pDevice->CreateVertexBuffer(vCount*vSize,dwUsage,vFVF,D3DPOOL_MANAGED,&VB[i],0));
 			R_CHK				(VB[i]->Lock(0,0,(void**)&pData,0));
 			Memory.mem_copy		(pData,fs().Pointer(),vCount*vSize);
 			VB[i]->Unlock		();
@@ -150,7 +149,7 @@ void CRender::LoadBuffers	(CStream *base_fs)
 
 			// Create and fill
 			BYTE*	pData		= 0;
-			R_CHK				(HW.pDevice->CreateIndexBuffer(iCount*2,dwUsage,D3DFMT_INDEX16,dwPool,&IB[i],0));
+			R_CHK				(HW.pDevice->CreateIndexBuffer(iCount*2,dwUsage,D3DFMT_INDEX16,D3DPOOL_MANAGED,&IB[i],0));
 			R_CHK				(IB[i]->Lock(0,0,(void**)&pData,0));
 			Memory.mem_copy		(pData,fs().Pointer(),iCount*2);
 			IB[i]->Unlock		();

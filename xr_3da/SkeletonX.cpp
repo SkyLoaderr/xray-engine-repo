@@ -33,9 +33,9 @@ void CSkeletonX_PM::Copy(CVisual *V)
 	_Copy				((CSkeletonX*)X);
 	indices				= X->indices;
 
-	u32	dwCount		= dwPrimitives*3;
+	u32	dwCount			= dwPrimitives*3;
 	BOOL	bSoft		= HW.Caps.vertex.bSoftware;
-	u32	dwUsage		= D3DUSAGE_WRITEONLY | (bSoft?D3DUSAGE_SOFTWAREPROCESSING:0);
+	u32	dwUsage			= D3DUSAGE_WRITEONLY | (bSoft?D3DUSAGE_SOFTWAREPROCESSING:0);
 	D3DPOOL	dwPool		= bSoft?D3DPOOL_SYSTEMMEM:D3DPOOL_DEFAULT;
 	BYTE*	bytes		= 0;
 

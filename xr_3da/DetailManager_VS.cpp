@@ -49,17 +49,15 @@ void CDetailManager::hw_Load	()
 	Msg("* [DETAILS] %d v(%d), %d p",dwVerts,vSize,dwIndices/3);
 
 	// Determine POOL & USAGE
-	u32 dwUsage	=	D3DUSAGE_WRITEONLY;
-	D3DPOOL dwPool	=	D3DPOOL_DEFAULT;
+	u32 dwUsage		=	D3DUSAGE_WRITEONLY;
 	if (HW.Caps.vertex.bSoftware)	{
 		dwUsage	|=	D3DUSAGE_SOFTWAREPROCESSING;
-		dwPool	=	D3DPOOL_SYSTEMMEM;
 	}
 
 	// Create VB/IB
 	Device.Shader.Evict		();
-	R_CHK			(HW.pDevice->CreateVertexBuffer(dwVerts*vSize,dwUsage,0,dwPool,&hw_VB,0));
-	R_CHK			(HW.pDevice->CreateIndexBuffer(dwIndices*2,dwUsage,D3DFMT_INDEX16,dwPool,&hw_IB,0));
+	R_CHK			(HW.pDevice->CreateVertexBuffer(dwVerts*vSize,dwUsage,0,D3DPOOL_MANAGED,&hw_VB,0));
+	R_CHK			(HW.pDevice->CreateIndexBuffer(dwIndices*2,dwUsage,D3DFMT_INDEX16,D3DPOOL_MANAGED,&hw_IB,0));
 	Msg("* [DETAILS] Batch(%d), VB(%dK), IB(%dK)",hw_BatchSize,(dwVerts*vSize)/1024, (dwIndices*2)/1024);
 
 	// Fill VB
