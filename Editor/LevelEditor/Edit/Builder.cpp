@@ -38,30 +38,38 @@ bool SceneBuilder::Execute( ){
     // save scene
 	UI.Command(COMMAND_SAVE);
 
-    // check debug
-	if ((Scene.ObjCount(OBJCLASS_SECTOR)==0)&&(Scene.ObjCount(OBJCLASS_PORTAL)==0))
-    	if (ELog.DlgMsg(mtConfirmation,"Can't find sector and portal in scene. Create default?")==mrYes)
-        	PortalUtils.CreateDebugCollection();
+    try{
+        // check debug
+        if ((Scene.ObjCount(OBJCLASS_SECTOR)==0)&&(Scene.ObjCount(OBJCLASS_PORTAL)==0))
+            if (ELog.DlgMsg(mtConfirmation,"Can't find sector and portal in scene. Create default?")==mrYes)
+                PortalUtils.CreateDebugCollection();
 
 
-    // validate scene
-    if (!Scene.Validate()){
-    	ELog.DlgMsg( mtError, "Invalid scene. Building failed." );
-		UI.Command(COMMAND_RELOAD);
+        // validate scene
+        if (!Scene.Validate()){
+            ELog.DlgMsg( mtError, "Invalid scene. Building failed." );
+            UI.Command(COMMAND_RELOAD);
+            return false;
+        }
+
+        // build
+        m_InProgress = true;
+        //---------------
+        UI.BeginEState(esBuildLevel);
+        Thread();
+        UI.EndEState();
+        //---------------
+        UI.ProgressStart(2, "Restoring scene...");
+        UI.ProgressUpdate(1);
+        UI.Command(COMMAND_RELOAD);
+        UI.ProgressEnd();
+    }catch(...){
+        UI.ProgressStart(2, "Restoring scene...");
+        UI.ProgressUpdate(1);
+        UI.Command(COMMAND_RELOAD);
+        UI.ProgressEnd();
         return false;
     }
-
-    // build
-	m_InProgress = true;
-	//---------------
-	UI.BeginEState(esBuildLevel);
-    Thread();
-	UI.EndEState();
-	//---------------
-	UI.ProgressStart(2, "Restoring scene...");
-	UI.ProgressUpdate(1);
-	UI.Command(COMMAND_RELOAD);
-	UI.ProgressEnd();
 
 	return true;
 }
@@ -77,13 +85,6 @@ bool SceneBuilder::MakeLTX( ){
     // validate scene
     if (!Scene.Validate(false,false)){
     	ELog.DlgMsg( mtError, "Invalid scene. Building failed." );
-		UI.Command(COMMAND_RELOAD);
-        return false;
-    }
-
-    // build sky dome
-    if( !BuildSkyModel() ){
-        ELog.DlgMsg( mtError, "Failed to build sky model....");
 		UI.Command(COMMAND_RELOAD);
         return false;
     }
@@ -259,6 +260,13 @@ DWORD SceneBuilder::ThreadMakeLTX(){
         if (UI.NeedAbort()) break;
 		if( !BuildLTX() ){
 			error_text="*ERROR: Failed to build level description....";
+			error_flag = true;
+			break;
+		}
+
+        if (UI.NeedAbort()) break;
+		if( !BuildSkyModel() ){
+			error_text="*ERROR: Failed to build OGF model....";
 			error_flag = true;
 			break;
 		}

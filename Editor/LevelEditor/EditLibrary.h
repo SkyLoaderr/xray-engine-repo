@@ -76,6 +76,7 @@ public:		// User declarations
 	static CEditableObject* __fastcall RayPick(const Fvector& start, const Fvector& direction, SRayPickInfo* pinf);
     static void __fastcall ShowEditor();
     static void __fastcall HideEditor();
+    static void __fastcall ResetSelected();
     static void __fastcall RefreshSelected();
 };
 //---------------------------------------------------------------------------

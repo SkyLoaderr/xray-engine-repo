@@ -162,14 +162,15 @@ void __fastcall TfrmProperties::tvPropertiesItemDraw(TObject *Sender,
     		DrawText	(Surface->Handle, name.IsEmpty()?"[none]":name.c_str(), -1, &R, DT_LEFT | DT_SINGLELINE | DT_VCENTER);
         }break;
         case PROP_COLOR:{
+			Surface->Brush->Style = bsSolid;
+		    Surface->Brush->Color = 0x00000000;
+            Surface->FrameRect(R);
             R.Right	-=	1;
             R.Left 	+= 	1;
-			Surface->Brush->Style = bsSolid;
+            R.Top	+=	1;
+            R.Bottom-= 	1;
 		    Surface->Brush->Color = rgb2bgr(*(LPDWORD)Item->Data);
             Surface->FillRect(R);
-//            R.Left 	= 	R.Right;
-//            R.Right += 	10;
-//            DrawArrow	(Surface, eadDown, R, clWindowText, true);
         }break;
         case PROP_FLAG:
 		case PROP_TOKEN:
@@ -312,6 +313,7 @@ void __fastcall TfrmProperties::ColorClick(TElTreeItem* item)
     LPDWORD color = (LPDWORD)item->Data;
     VERIFY(type==PROP_COLOR);
 	if (SelectColor(color)){
+    	item->RedrawItem(true);
 		bModified = true;
     }
 }
@@ -408,6 +410,7 @@ void TfrmProperties::ApplyLWNumber()
 	TElTreeItem* item = (TElTreeItem*)seNumber->Tag;
     if (item){
 		DWORD type = item->Tag;
+        seNumber->Update();
 	    switch (type){
     	case PROP_INTEGER:{
 	        IntValue* V 	= (IntValue*)item->Data; VERIFY(V);
@@ -433,6 +436,12 @@ void __fastcall TfrmProperties::seNumberExit(TObject *Sender)
 {
 	ApplyLWNumber();
 	HideLWNumber();
+}
+//---------------------------------------------------------------------------
+
+void __fastcall TfrmProperties::seNumberLWChange(TObject *Sender, int Val)
+{
+	ApplyLWNumber();
 }
 //---------------------------------------------------------------------------
 
@@ -483,5 +492,6 @@ void __fastcall TfrmProperties::FillFromStream(CFS_Memory& stream, DWORD advance
 */
 }
 //---------------------------------------------------------------------------
+
 
 

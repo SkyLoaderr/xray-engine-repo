@@ -320,6 +320,15 @@ void __fastcall TfrmEditLibrary::ebMakeThmClick(TObject *Sender)
 }
 //---------------------------------------------------------------------------
 
+void __fastcall TfrmEditLibrary::ResetSelected()
+{
+	if (form){
+		Lib.RemoveEditObject(form->m_SelectedObject);
+	    TfrmPropertiesObject::HideProperties();
+    }
+}
+//---------------------------------------------------------------------------
+
 void __fastcall TfrmEditLibrary::RefreshSelected()
 {
 	if (form){
@@ -371,6 +380,9 @@ void __fastcall TfrmEditLibrary::ebImportClick(TObject *Sender)
 {
     AnsiString open_nm, save_nm, nm;
     if (FS.GetOpenName(FS.m_Import,open_nm,true)){
+    	// remove selected object
+        ResetSelected();
+		// load
     	AStringVec lst;
         SequenceToList(lst,open_nm.c_str());
 		bool bNeedUpdate=false;
@@ -399,6 +411,8 @@ void __fastcall TfrmEditLibrary::ebImportClick(TObject *Sender)
 			Lib.RefreshLibrary();
 			InitObjects();
         }
+        // refresh selected
+		RefreshSelected();
     }
 }
 //---------------------------------------------------------------------------

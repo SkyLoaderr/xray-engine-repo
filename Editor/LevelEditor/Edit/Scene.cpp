@@ -83,7 +83,7 @@ void st_LevelOptions::Reset(){
 }
 //------------------------------------------------------------------------------
 
-#define MAX_VISUALS 4096
+#define MAX_VISUALS 16384
 
 EScene::EScene(){
 	m_Valid = false;

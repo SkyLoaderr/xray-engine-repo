@@ -91,6 +91,7 @@ __published:	// IDE-managed Components
 	void __fastcall seNumberExit(TObject *Sender);
 	void __fastcall seNumberKeyDown(TObject *Sender, WORD &Key,
           TShiftState Shift);
+	void __fastcall seNumberLWChange(TObject *Sender, int Val);
 private:	// User declarations
     void __fastcall PMItemClick(TObject *Sender);
 	void __fastcall CustomClick(TElTreeItem* item);

@@ -53,16 +53,22 @@ bool CEditableObject::Import_LWO(const char* fn, bool bNeedOptimize){
                     m_Surfaces.push_back(Osf);
                     if (Isf->name) Osf->SetName(Isf->name); else Osf->SetName("Default");
                     Osf->Set2Sided((Isf->sideflags==3)?TRUE:FALSE);
-                    AnsiString shader_name;
+                    AnsiString en_shader="default", lc_shader="default";
+                    XRShader* sh_info = 0;
                     if (Isf->nshaders&&(stricmp(Isf->shader->name,SH_PLUGIN_NAME)==0)){
-    //                	XRShader* sh_info = (XRShader*)Isf->shader->data;
-    //	                Osf->shader = SHLib.FindShader(sh_info->sh_name);
-                        shader_name = (char*)Isf->shader->data;
+                    	sh_info 	= (XRShader*)Isf->shader->data;
+                        en_shader 	= sh_info->en_name;
+                        lc_shader 	= sh_info->lc_name;
+                    }else
+						ELog.Msg(mtError,"CEditableObject: Using 'default' shaders.");
+
+                    if (!Device.Shader._FindBlender(en_shader.c_str())){
+						ELog.Msg(mtError,"CEditableObject: Render shader '%s' - can't find in library. Using 'default' shader.", en_shader.c_str());
+	                    en_shader = "default";
                     }
-                    if (!Device.Shader._FindBlender(shader_name.c_str())){
-						ELog.Msg(mtError,"CEditableObject: Shader '%s' - can't find in library. Using 'default' shader.", shader_name.c_str());
-	                    shader_name = "default";
-//	                    shader_name = "particles\\blend";
+                    if (!Device.ShaderXRLC.Get(lc_shader.c_str())){
+						ELog.Msg(mtError,"CEditableObject: Compiler shader '%s' - can't find in library. Using 'default' shader.", lc_shader.c_str());
+	                    lc_shader = "default";
                     }
                     // fill texture layers
                     int cidx;
@@ -95,7 +101,6 @@ bool CEditableObject::Import_LWO(const char* fn, bool bNeedOptimize){
 							Osf->SetTexture(FS.UpdateTextureNameWithFolder(tex_name));
                             // get vmap refs
                             Osf->SetVMap(Itx->param.imap.vmap_name);
-				            Osf->SetShaderXRLC("default");
                         }
                     }
                     if (!bResult) break;
@@ -105,7 +110,8 @@ bool CEditableObject::Import_LWO(const char* fn, bool bNeedOptimize){
                         break;
                     }
 
-                    Osf->SetShader(shader_name.c_str(),Device.Shader.Create(shader_name.c_str(),Osf->_Texture()));
+                    Osf->SetShader(en_shader.c_str(),Device.Shader.Create(en_shader.c_str(),Osf->_Texture()));
+					Osf->SetShaderXRLC(lc_shader.c_str());
 
                     Osf->SetFVF(D3DFVF_XYZ|D3DFVF_NORMAL|(dwNumTextures<<D3DFVF_TEXCOUNT_SHIFT));
                     i++;
