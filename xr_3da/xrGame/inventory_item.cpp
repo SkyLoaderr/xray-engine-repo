@@ -706,10 +706,24 @@ void CInventoryItem::UpdateXForm	()
 	Fmatrix			mRes;
 	Fvector			R,D,N;
 	D.sub			(mL.c,mR.c);	D.normalize_safe();
-	R.crossproduct	(mR.j,D);		R.normalize_safe();
-	N.crossproduct	(D,R);			N.normalize_safe();
-	mRes.set		(R,N,D,mR.c);
-	mRes.mulA_43	(E->XFORM());
+
+	if(fis_zero(D.magnitude()))
+	{
+		mRes.set(E->XFORM());
+		mRes.c.set(mR.c);
+	}
+	else
+	{		
+		D.normalize();
+		R.crossproduct	(mR.j,D);
+
+		N.crossproduct	(D,R);
+		N.normalize();
+
+		mRes.set		(R,N,D,mR.c);
+		mRes.mulA_43	(E->XFORM());
+	}
+
 	//	UpdatePosition	(mRes);
 	Position().set(mRes.c);
 }
