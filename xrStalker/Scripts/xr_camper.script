@@ -132,41 +132,52 @@ function action_kill:initialize ()
 end
 function action_kill:execute ()
 	action_base.execute(self)
-	if self.a.enemy_id ~= nil then		
-		if self.object:memory(level.object_by_id(self.a.enemy_id)) == nil then
-			self.a.enemy_id = nil
-		else
-			self.a.mem_enemy = self.object:memory(level.object_by_id(self.a.enemy_id))
-		end
-	end
-	
+
 	if self.a.enemy_id == nil or
 	  self.a.enemy_id ~= id(self.object:best_enemy()) 
 	then
 		self.a.enemy_id = id(self.object:best_enemy())
 	end
+	
+	if self.a.enemy_id ~= nil then		
+		self.enemy = level.object_by_id(self.a.enemy_id)
+	end
+	
+	if self.enemy ~= nil then		
+		if self.object:memory(self.enemy) == nil then
+			self.a.enemy_id = nil
+			self.enemy = nil
+		else
+			self.a.mem_enemy = self.object:memory(self.enemy)
+		end
+	else
+		self.a.enemy_id = nil
+		self.enemy = nil
+	end
+	
 		
 	if self.a.mem_enemy ~= nil then
-		printf("%s - %s > %s", utils.to_str(device():time_global()), utils.to_str(self.a.mem_enemy.level_time), utils.to_str(self.a.idle))
+--		printf("%s - %s > %s", utils.to_str(device():time_global()), utils.to_str(self.a.mem_enemy.level_time), utils.to_str(self.a.idle))
 		if device():time_global()- self.a.mem_enemy.level_time > self.a.idle then
-			self.object:enable_memory_object(level.object_by_id(self.a.enemy_id), false)
+			self.object:enable_memory_object(self.enemy, false)
 			self.a.enemy_id = nil
+			self.enemy = nil
 		end
 	end
 
-	if self.a.enemy_id ~= nil then 
-		if self.object:see(level.object_by_id(self.a.enemy_id)) == true then
+	if self.enemy ~= nil then 
+		if self.object:see(self.enemy) == true then
 			if self.a.suggested_state.campering_fire then
-				state_mgr.set_state(self.object, self.a.suggested_state.campering_fire, nil, nil, {look_object = level.object_by_id(self.a.enemy_id)})
+				state_mgr.set_state(self.object, self.a.suggested_state.campering_fire, nil, nil, {look_object = self.enemy})
 			else
-				state_mgr.set_state(self.object, "hide_fire", nil, nil, {look_object = level.object_by_id(self.a.enemy_id)})
+				state_mgr.set_state(self.object, "hide_fire", nil, nil, {look_object = self.enemy})
 			end
-			self.enemy_position = level.object_by_id(self.a.enemy_id):position()
+			self.enemy_position = self.enemy:position()
 		else
 			if self.a.suggested_state.campering then
-				state_mgr.set_state(self.object, self.a.suggested_state.campering, nil, nil, {look_object = level.object_by_id(self.a.enemy_id), look_position = self.enemy_position})
+				state_mgr.set_state(self.object, self.a.suggested_state.campering, nil, nil, {look_object = self.enemy, look_position = self.enemy_position})
 			else
-				state_mgr.set_state(self.object, "hide", nil, nil, {look_object = level.object_by_id(self.a.enemy_id), look_position = self.enemy_position})
+				state_mgr.set_state(self.object, "hide", nil, nil, {look_object = self.enemy, look_position = self.enemy_position})
 			end
 		end
 	end
@@ -200,43 +211,54 @@ end
 function action_retreat:execute()
 	action_base.execute(self)
 
-	if level.object_by_id(self.a.enemy_id) ~= nil then		
-		if self.object:memory(level.object_by_id(self.a.enemy_id)) == nil then
-			self.a.enemy_id = nil
-		else
-			self.a.mem_enemy = self.object:memory(level.object_by_id(self.a.enemy_id))
-		end
-	end
-	
 	if self.a.enemy_id == nil or
 	  self.a.enemy_id ~= id(self.object:best_enemy()) 
 	then
 		self.a.enemy_id = id(self.object:best_enemy())
 	end
+	
+	if self.a.enemy_id ~= nil then		
+		self.enemy = level.object_by_id(self.a.enemy_id)
+	end
+	
+	if self.enemy ~= nil then		
+		if self.object:memory(self.enemy) == nil then
+			self.a.enemy_id = nil
+			self.enemy = nil
+		else
+			self.a.mem_enemy = self.object:memory(self.enemy)
+		end
+	else
+		self.a.enemy_id = nil
+		self.enemy = nil
+	end
 		
 	if self.a.mem_enemy ~= nil then
-		printf("%s - %s > %s", utils.to_str(device():time_global()), utils.to_str(self.a.mem_enemy.level_time), utils.to_str(self.a.idle))
+--		printf("%s - %s > %s", utils.to_str(device():time_global()), utils.to_str(self.a.mem_enemy.level_time), utils.to_str(self.a.idle))
 		if device():time_global()- self.a.mem_enemy.level_time > self.a.idle then
-			self.object:enable_memory_object(level.object_by_id(self.a.enemy_id), false)
+			self.object:enable_memory_object(self.enemy, false)
 			self.a.enemy_id = nil
+			self.enemy = nil
 		end
 	end
 
-	if self.a.enemy_id then
-		if self.object:see(level.object_by_id(self.a.enemy_id)) == true then
+
+	if self.enemy ~= nil then 
+		if self.object:see(self.enemy) == true then
 			if self.a.suggested_state.moving_fire then
-				state_mgr.set_state(self.object, self.a.suggested_state.moving_fire, nil, nil, {look_object = level.object_by_id(self.a.enemy_id)})
+				state_mgr.set_state(self.object, self.a.suggested_state.moving_fire, nil, nil, {look_object = self.enemy})
 			else
-				state_mgr.set_state(self.object, "sneak_fire", nil, nil, {look_object = level.object_by_id(self.a.enemy_id)})
+				state_mgr.set_state(self.object, "sneak_fire", nil, nil, {look_object = self.enemy})
 			end
+			self.enemy_position = self.enemy:position()
 		else
 			if self.a.suggested_state.moving then
-				state_mgr.set_state(self.object, self.a.suggested_state.moving, nil, nil, {look_object = level.object_by_id(self.a.enemy_id)})
+				state_mgr.set_state(self.object, self.a.suggested_state.moving, nil, nil, {look_object = self.enemy, look_position = self.enemy_position})
 			else
-				state_mgr.set_state(self.object, "sneak", nil, nil, {look_object = level.object_by_id(self.a.enemy_id)})
-			end			
+				state_mgr.set_state(self.object, "sneak", nil, nil, {look_object = self.enemy, look_position = self.enemy_position})
+			end
 		end
-	end
+	end	
 end
 function action_retreat:finalize()
     action_base.finalize(self)
