@@ -511,7 +511,7 @@ end
 function state_manager:set_state(state_name, callback, timeout, target)
 	printf("Set Stated called: %s for %s", state_name, self.npc:name())
 	if state_lib.states[state_name] == nil then
-		utils.abort("ERROR: ILLEGAL SET STATE CALLED!!!")
+		utils.abort("ERROR: ILLEGAL SET STATE CALLED!!! %s fo %s", state_name, self.npc:name())
 	end
 
 	if target then
@@ -534,6 +534,13 @@ function state_manager:set_state(state_name, callback, timeout, target)
 --	printf("Timeout %s", utils.to_str(timeout))
 	
 	self.target_state = state_name
+	if state_lib.states[state_name].reset == true then
+		self.reset_state = true
+	else
+		self.reset_state = false
+	end
+	
+	
 	if target ~= nil then
 		self.look_position = target.look_position
 		self.look_object = target.look_object
