@@ -101,7 +101,7 @@ BOOL CTeamBaseZone::feel_touch_contact	(CObject* O)
 {
 	CActor*	pActor = dynamic_cast<CActor*>(O);
 	if (!pActor) return (FALSE);
-	return						(TRUE);
+	return ((CCF_Shape*)CFORM())->Contact(O);
 }
 
 #ifdef DEBUG
