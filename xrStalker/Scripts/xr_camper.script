@@ -113,7 +113,7 @@ function action_patrol:execute()
 		end
 	end
 
-
+	self.enemy = nil
 	if self.a.enemy_id == nil or
 	  self.a.enemy_id ~= id(self.object:best_enemy()) 
 	then
