@@ -50,7 +50,8 @@ CScriptTaskList::CScriptTaskList	(u16 trader_id)
 		{
 			script_task.m_iPrice = (*II).m_price; 
 			script_task.m_iQuantity = (*II).m_count;
-			script_task.m_sOrganization = pSettings->r_string((*II).m_section, "name");
+			shared_str ssss = (*II).m_section;
+			script_task.m_sOrganization = pSettings->r_string(ssss, "name");
 			alife_tasks->push_back(script_task);
 			//Msg("order : section[%s], count[%d], price[%d]",(*II).m_section,(*II).m_count,(*II).m_price);
 		}
