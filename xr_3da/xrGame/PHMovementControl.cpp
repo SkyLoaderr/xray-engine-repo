@@ -628,10 +628,10 @@ void CPHMovementControl::Load					(LPCSTR section){
 	bb.set	(vBOX1_center,vBOX1_center); bb.grow(vBOX1_size);
 	SetBox		(1,bb);
 
-	// m_PhysicMovementControl: Foots
-	Fvector	vFOOT_center= pSettings->r_fvector3	(section,"ph_foot_center"	);
-	Fvector	vFOOT_size	= pSettings->r_fvector3	(section,"ph_foot_size"		);
-	bb.set	(vFOOT_center,vFOOT_center); bb.grow(vFOOT_size);
+	//// m_PhysicMovementControl: Foots
+	//Fvector	vFOOT_center= pSettings->r_fvector3	(section,"ph_foot_center"	);
+	//Fvector	vFOOT_size	= pSettings->r_fvector3	(section,"ph_foot_size"		);
+	//bb.set	(vFOOT_center,vFOOT_center); bb.grow(vFOOT_size);
 	//SetFoots	(vFOOT_center,vFOOT_size);
 
 	// m_PhysicMovementControl: Crash speed and mass
