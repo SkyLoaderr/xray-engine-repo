@@ -69,6 +69,8 @@ void	CCustomItem::Load	(LPCSTR section)
 
 void	CCustomItem::OnMove()
 {
+	Fvector	vScale;
+
 	fTime+=Device.fTimeDelta*2.5f; //*.1f;
 	vPosition.y	= start_pos.y +	_sin(fTime)*.1f;
 	Fvector	D,N;

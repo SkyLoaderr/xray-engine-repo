@@ -245,8 +245,8 @@ class CAI_Zombie : public CCustomMonster
 				m_bActive = true;
 				m_eCurrentState = aiZombieFreeHuntingActive;
 				Group.m_dwActiveCount++;
-				shedule_Min	= m_dwActiveScheduleMin;
-				shedule_Max	= m_dwActiveScheduleMax;
+				shedule.t_min	= m_dwActiveScheduleMin;
+				shedule.t_max	= m_dwActiveScheduleMax;
 			}
 			//Msg("* Group : alive[%2d], active[%2d]",Group.m_dwAliveCount,Group.m_dwActiveCount);
 		};
@@ -259,8 +259,8 @@ class CAI_Zombie : public CCustomMonster
 				Group.m_dwActiveCount--;
 				m_bActive = false;
 				m_eCurrentState = aiZombieFreeHuntingPassive;
-				shedule_Min	= m_dwPassiveScheduleMin;
-				shedule_Max	= m_dwPassiveScheduleMax;
+				shedule.t_min	= m_dwPassiveScheduleMin;
+				shedule.t_max	= m_dwPassiveScheduleMax;
 			}
 			//Msg("* Group : alive[%2d], active[%2d]",Group.m_dwAliveCount,Group.m_dwActiveCount);
 		};

@@ -215,11 +215,11 @@ void CAI_Soldier::Exec_Movement	( float dt )
 	/**/
 }
 
-void CAI_Soldier::OnEvent(EVENT E, u32 P1, u32 P2)
+void CAI_Soldier::OnEvent(EVENT E, u64 P1, u64 P2)
 {
 
 	if (E == m_tpEventSay) {
-		if (0==P2 || (u32)(this)==P2) {
+		if (0==P2 || (u64)(this)==P2) {
 			char* caTextToShow;
 			caTextToShow = (char *)(P1);
 			HUD().outMessage(0xffffffff,cName(),"%s",caTextToShow);
@@ -227,7 +227,7 @@ void CAI_Soldier::OnEvent(EVENT E, u32 P1, u32 P2)
 	}
 	else
 		if (E == m_tpEventAssignPath) {
-			if (0==P2 || u32(this)==P2) {
+			if (0==P2 || u64(this)==P2) {
 				char *buf2, *buf, monster_name[100];
 				buf2 = buf = (char *)P1;
 				int iArgCount = _GetItemCount(buf2);

@@ -221,7 +221,7 @@ void CActor::Load		(LPCSTR section )
 	m_current_torso		= 0;
 
 	// sheduler
-	shedule_Min			= shedule_Max = 1;
+	shedule.t_min		= shedule.t_max = 1;
 
 	// get self game material id
 	self_gmtl_id		= GMLib.GetMaterialIdx("actor");

@@ -152,8 +152,8 @@ void CAI_Biting::Load(LPCSTR section)
 	m_dwAttackAngle					= pSettings->r_s32   (section,"AttackAngle");	
 	m_fAttackSuccessProbability		= pSettings->r_float   (section,"AttackSuccessProbability");	
 
-	m_dwActiveScheduleMin			= shedule_Min;
-	m_dwActiveScheduleMax			= shedule_Max;
+	m_dwActiveScheduleMin			= shedule.t_min;
+	m_dwActiveScheduleMax			= shedule.t_max;
 
 	*/
 	// Prepare terrain

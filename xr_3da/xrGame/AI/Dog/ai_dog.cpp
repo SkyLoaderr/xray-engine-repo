@@ -124,8 +124,8 @@ void CAI_Dog::Load(LPCSTR section)
 	m_bCannibalism					= pSettings->r_bool  (section,"Cannibalism");
 	m_dwEatCorpseInterval			= pSettings->r_s32   (section,"EatCorpseInterval");
 
-	m_dwActiveScheduleMin			= shedule_Min;
-	m_dwActiveScheduleMax			= shedule_Max;
+	m_dwActiveScheduleMin			= shedule.t_min;
+	m_dwActiveScheduleMax			= shedule.t_max;
 }
 
 BOOL CAI_Dog::net_Spawn	(LPVOID DC)

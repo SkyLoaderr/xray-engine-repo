@@ -518,11 +518,11 @@ void CAI_ALife::vfSetSwitchDelay			(int	iMilliSeconds)
 
 void CAI_ALife::vfSetScheduleMin			(int	iMilliSeconds)
 {
-	shedule_Min = iMilliSeconds;
+	shedule.t_min = iMilliSeconds;
 }
 
 void CAI_ALife::vfSetScheduleMax			(int	iMilliSeconds)
 {
-	shedule_Max = iMilliSeconds;
+	shedule.t_max = iMilliSeconds;
 }
 #endif

@@ -5,8 +5,8 @@
 xr_set<CArtifact*> CArtifact::m_all;
 
 CArtifact::CArtifact(void) {
-	shedule_Min = 20;
-	shedule_Max = 30;
+	shedule.t_min = 20;
+	shedule.t_max = 50;
 	m_jumpHeight = 0;
 }
 

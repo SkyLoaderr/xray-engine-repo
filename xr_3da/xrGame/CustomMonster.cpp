@@ -115,8 +115,8 @@ void CCustomMonster::Load		(LPCSTR section)
 	fArmor				= 0;
 	
 	// Sheduler
-	shedule_Min			= 50;
-	shedule_Max			= 500; // 30 * NET_Latency / 4;
+	shedule.t_min			= 50;
+	shedule.t_max			= 500; // 30 * NET_Latency / 4;
 
 	// Msg				("! cmonster size: %d",sizeof(*this));
 }

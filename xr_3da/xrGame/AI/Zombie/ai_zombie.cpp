@@ -118,8 +118,8 @@ void CAI_Zombie::Load(LPCSTR section)
 	m_fSoundThreshold				= pSettings->r_float (section,"SoundThreshold");
 	m_fMaxHealthValue	 			= pSettings->r_float (section,"MaxHealthValue");
 
-	m_dwActiveScheduleMin			= shedule_Min;
-	m_dwActiveScheduleMax			= shedule_Max;
+	m_dwActiveScheduleMin			= shedule.t_min;
+	m_dwActiveScheduleMax			= shedule.t_max;
 }
 
 BOOL CAI_Zombie::net_Spawn	(LPVOID DC)

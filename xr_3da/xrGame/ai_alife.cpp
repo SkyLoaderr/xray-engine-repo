@@ -162,8 +162,8 @@ void CAI_ALife::Load(LPCSTR caSaveName)
 	m_dwObjectsBeingSwitched	= 0;
 	
 	Log							("* Loading parameters...");
-	shedule_Min					= pSettings->r_s32	("alife","schedule_min");
-	shedule_Max					= pSettings->r_s32	("alife","schedule_max");
+	shedule.t_min				= pSettings->r_s32	("alife","schedule_min");
+	shedule.t_max				= pSettings->r_s32	("alife","schedule_max");
 	m_qwMaxProcessTime			= pSettings->r_s32	("alife","process_time")*CPU::cycles_per_microsec;
 	m_fOnlineDistance			= pSettings->r_float("alife","online_distance");
 	m_dwSwitchDelay				= pSettings->r_s32	("alife","switch_delay");

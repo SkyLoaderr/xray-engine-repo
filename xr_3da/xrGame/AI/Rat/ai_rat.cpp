@@ -141,8 +141,8 @@ void CAI_Rat::Load(LPCSTR section)
 	m_fAttackASpeed					= pSettings->r_float (section,"AngularAttackSpeed")/180.f*PI;//.15f;
 
 	m_phMass						= pSettings->r_float (section,"corp_mass");
-	m_dwActiveScheduleMin			= shedule_Min;
-	m_dwActiveScheduleMax			= shedule_Max;
+	m_dwActiveScheduleMin			= shedule.t_min;
+	m_dwActiveScheduleMax			= shedule.t_max;
 
 	m_tpaTerrain.clear				();
 	LPCSTR							S = pSettings->r_string(section,"terrain");
