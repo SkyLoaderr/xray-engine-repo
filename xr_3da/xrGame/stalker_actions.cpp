@@ -1341,6 +1341,7 @@ void CStalkerActionKillEnemyModerate::execute		()
 
 	Fvector							position;
 	m_object->enemy()->Center		(position);
+	position.set					(m_object->enemy()->Position().x,position.y,m_object->enemy()->Position().z);
 
 	m_object->set_movement_type		(eMovementTypeStand);
 //	m_object->set_path_type			(MovementManager::ePathTypeLevelPath);
