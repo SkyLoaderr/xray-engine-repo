@@ -1,0 +1,61 @@
+----------------------------------------------------------------------------------------------------
+-- Do nothing
+----------------------------------------------------------------------------------------------------
+
+class "action_tip"
+
+function action_tip:__init(obj, storage)
+	self.object = obj
+	self.st = storage
+end
+
+function action_tip:reset_scheme()
+	--printf("_bp: sr_idle: action_tip:reset_scheme: self.object:name()='%s'", self.object:name())
+end
+
+function action_tip:update(delta)
+	--printf("_br: sr_idle: action_tip:update()")
+
+	--if not xr_logic.is_active(self.object, self.st) then
+	--	return
+	--end
+
+	local actor = db.actor
+
+	if xr_logic.try_switch_to_another_section(self.object, self.st, actor) then
+		return
+	end	
+	
+	if self.object:inside( actor:position() ) and
+	   ( self.conditions == nil or
+	     xr_logic.pick_section_from_condlist( actor, nil, self.conditions.condlist ) ~= nil )
+	then
+		if self.type == "tips" then
+			news_manager.send_tip( actor, self.info, nil, self.sender )
+		elseif self.type == "news" then
+			news_manager.send_news( actor, self.info )
+		end
+	end
+end
+
+---------------------------------------------------------------------------------------------------------------------
+function add_to_binder(npc, ini, scheme, section, storage)
+	printf("DEBUG: add_to_binder: scheme='%s', section='%s'", scheme, section)
+
+	local new_action = action_tip(npc, storage)
+
+	-- Зарегистрировать все actions, в которых должен быть вызван метод reset_scheme при изменении настроек схемы:
+	xr_logic.subscribe_action_for_events(npc, storage, new_action)
+end
+
+function set_scheme(obj, ini, scheme, section, gulag_name)
+	local st = xr_logic.assign_storage_and_bind(obj, ini, scheme, section)
+	st.logic = xr_logic.cfg_get_switch_conditions(ini, section, obj)
+
+	self.info   = utils.cfg_get_string( ini, "tips", "name",   obj, true,  "", "" )
+	self.type   = utils.cfg_get_string( ini, "tips", "type",   obj, false, "", "news" )
+	self.sender = utils.cfg_get_string( ini, "tips", "sender", obj, false, "", nil )
+
+	self.conditions = xr_logic.cfg_get_condlist( ini, "tips", "cond", obj )
+end
+

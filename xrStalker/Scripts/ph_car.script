@@ -5,6 +5,11 @@
 -- Перевод на xr_logic: Andrey Fidrya (Zmey) af@svitonline.com
 ----------------------------------------------------------------------------------------------------
 
+local default_min_delta_per_sec = 0.2
+local default_min_car_explode_time = 1000
+
+local default_speed = 10
+
 local state_none = 0
 local state_moving_fwd = 1
 local state_rotating_left = 2
@@ -76,6 +81,13 @@ function action_car:reset_scheme()
 	action(self.object, move(move.on + move.up + move.fwd, 20.1), cond(cond.time_end, 14750))
 --]]
 
+	self.speed = default_speed
+	self.loop = false
+	self.last_pos = nil
+	self.last_pos_time = 0
+	self.min_delta_per_sec = default_min_delta_per_sec
+	self.min_car_explode_time = default_min_car_explode_time
+
 	self.state = state_none
 
 	self.target_pt = self:get_nearest_waypoint()
@@ -107,6 +119,8 @@ end
 function action_car:get_next_waypoint()
 	if self.target_pt < self.patrol_walk_count - 1 then
 		return self.target_pt + 1
+	elseif self.loop then
+		return 0
 	end
 	return nil
 end
@@ -125,14 +139,43 @@ function action_car:arrival_callback(index)
 	local suggested_explode = self.st.path_walk_info[index]["explode"]
 	if suggested_explode == "true" then
 		printf("action_car:arrival_callback(): EXPLODE")
-		self.object:explode(device():time_global())
+		self.object:car_explode()
+	end
+
+	local suggested_spd = self.st.path_walk_info[index]["spd"]
+	if suggested_spd then
+		self.speed = tonumber(suggested_spd)
+	else
+		self.speed = default_speed
+	end
+
+	local suggested_loop = self.st.path_walk_info[index]["loop"]
+	if suggested_loop == "true" then
+		self.loop = true
+	else
+		self.loop = false
+	end
+
+	local suggested_dps = self.st.path_walk_info[index]["dps"]
+	if suggested_dps then
+		self.min_delta_per_sec = tonumber(suggested_dps)
+	else
+		self.min_delta_per_sec = default_min_delta_per_sec
+	end
+
+	local suggested_exptm = self.st.path_walk_info[index]["exptm"]
+	if suggested_exptm then
+		self.min_car_explode_time = tonumber(suggested_exptm)
+	else
+		self.min_car_explode_time = default_min_car_explode_time
 	end
 
 	-- Выбрать следующую точку езды:
 	self.target_pt = self:get_next_waypoint()
 	if not self.target_pt then
 		-- Остановить машину
-		action(self.object, move(move.off, 0), cond(cond.time_end, 100))
+		xr_logic.mob_capture(self.object, true)
+		action(self.object, move(move.off, 0), cond(cond.time_end, 1000))
 		self.state = state_end
 		return
 	end
@@ -152,7 +195,7 @@ function action_car:go_to_waypoint()
 		if self.state ~= state_moving_fwd then
 	   		xr_logic.mob_capture(self.object, true)
 			action(self.object,
-				move(move.on + move.fwd, 20),
+				move(move.on + move.fwd, self.speed),
 				object("right_light", object.activate),
 				object("left_light", object.activate),
 				cond(cond.time_end, time_infinite))
@@ -168,7 +211,7 @@ function action_car:go_to_waypoint()
 			if self.state ~= state_rotating_left then 
 				xr_logic.mob_capture(self.object, true)
 				action(self.object,
-					move(move.on + move.fwd + move.left, 5),
+					move(move.on + move.fwd + move.left, self.speed),
 					object("right_light", object.activate),
 					object("left_light", object.activate),
 					cond(cond.time_end, time_infinite))
@@ -178,7 +221,7 @@ function action_car:go_to_waypoint()
 			if self.state ~= state_rotating_right then
 				xr_logic.mob_capture(self.object, true)
 				action(self.object,
-					move(move.on + move.fwd + move.right, 5),
+					move(move.on + move.fwd + move.right, self.speed),
 					object("right_light", object.activate),
 					object("left_light", object.activate),
 					cond(cond.time_end, time_infinite))
@@ -201,8 +244,6 @@ function action_car:update(delta)
 	end
 
 	if xr_logic.try_switch_to_another_section(self.object, self.st, actor) then
-		-- Остановить машину перед отпусканием из под скрипта
-		action(self.object, move(move.off, 0), cond(cond.time_end, 100))
 		return
 	end
 	
@@ -219,6 +260,28 @@ function action_car:update(delta)
 		end
 		return
 	end
+
+	if device():time_global() >= self.last_pos_time + self.min_car_explode_time then
+		if not self.last_pos then
+			self.last_pos = self.object:position()
+			self.last_pos_time = device():time_global()
+		else
+			local cur_pos = self.object:position()
+			local diff = self.last_pos:distance_to(cur_pos)
+			if diff < self.min_delta_per_sec then
+				printf("_bp: car got stuck: explode")
+				xr_logic.mob_capture(self.object, true)
+				action(self.object, move(move.off, 0), cond(cond.time_end, 1000))
+				self:car_explode()
+				self.state = state_end
+				return
+			end
+			self.last_pos = cur_pos
+			self.last_pos_time = device():time_global()
+		end
+	else
+		
+	end
 	
 	if self:at_target_waypoint() then
 		-- Прибыли, выбрать новую точку
@@ -227,6 +290,10 @@ function action_car:update(delta)
 		-- Продолжать ехать, или поворачиваться
 		self:go_to_waypoint(self.target_pt)
 	end
+end
+
+function action_car:car_explode()
+	self.object:explode(device():time_global())
 end
 
 ---------------------------------------------------------------------------------------------------------------------

@@ -1,0 +1,20 @@
+---------------------------------------------------------------------
+class "se_car" (cse_alife_car)
+--------------------
+function se_car:__init (section) super (section)
+	log("_bp: set_car:__init")
+end
+--------------------
+function se_car:can_switch_offline ()
+    return true
+end
+--------------------
+function se_car:can_switch_online ()
+    if self:spawn_ini () == nil then 
+       return self:can_switch_online ()
+    end    
+    
+    return xr_spawner.check_spawn (self)
+end    
+---------------------------------------------------------------------
+

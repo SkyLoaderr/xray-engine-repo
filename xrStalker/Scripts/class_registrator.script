@@ -40,6 +40,8 @@ function register(object_factory)
 		"script_stalker"
 	)
 
+	--cs_register	(object_factory, "CCar",            "se_car.se_car",            "C_NIVA",	"car_s")
+	
 	cs_register	(object_factory, "CAI_Bloodsucker",	"se_monster.se_monster",    "SM_BLOOD",	"bloodsucker_s")
 	cs_register	(object_factory, "CAI_Boar",        "se_monster.se_monster",	"SM_BOARW",	"boar_s")
 	cs_register	(object_factory, "CAI_Dog",         "se_monster.se_monster",    "SM_DOG_S",	"dog_s")

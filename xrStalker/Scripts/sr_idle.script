@@ -1,27 +1,20 @@
 ----------------------------------------------------------------------------------------------------
 -- Do nothing
 ----------------------------------------------------------------------------------------------------
--- Исходный скрипт: Oleg Hryptul (Haron) haronk@ukr.net
-----------------------------------------------------------------------------------------------------
 
 class "action_idle"
 
-----------------------------------------------------------------------------------------------------
--- Constructor
-----------------------------------------------------------------------------------------------------
 function action_idle:__init(obj, storage)
 	self.object = obj
 	self.st = storage
 end
 
 function action_idle:reset_scheme()
-	printf("_hr: action_idle:reset_scheme: self.object:name()='%s'", self.object:name())
-	
-	self.object:set_nonscript_usable(self.st.nonscript_usable)
+	--printf("_bp: sr_idle: action_idle:reset_scheme: self.object:name()='%s'", self.object:name())
 end
 
 function action_idle:update(delta)
-	--printf("_hr: action_idle:update()")
+	--printf("_br: sr_idle: action_idle:update()")
 
 	--if not xr_logic.is_active(self.object, self.st) then
 	--	return
@@ -50,6 +43,5 @@ end
 function set_scheme(npc, ini, scheme, section, gulag_name)
 	local st = xr_logic.assign_storage_and_bind(npc, ini, scheme, section)
 	st.logic = xr_logic.cfg_get_switch_conditions(ini, section, npc)
-	
-	st.nonscript_usable = utils.cfg_get_bool(ini, section, "nonscript_usable", npc, false)
 end
+

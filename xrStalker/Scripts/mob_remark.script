@@ -87,9 +87,9 @@ end
 
 function mob_remark:update(delta)
 	--printf("__bp: mob_remark update: %d", device():time_global())
-	if not xr_logic.is_active(self.object, self.st) then
-		return
-	end
+	--if not xr_logic.is_active(self.object, self.st) then
+	--	return
+	--end
 
 	local actor = level.actor()
 	if not actor then

@@ -1,9 +1,10 @@
 
 -- Типы схем:
-stype_stalker = 0
-stype_mobile  = 1
-stype_item    = 2
-stype_heli    = 3
+stype_stalker    = 0
+stype_mobile     = 1
+stype_item       = 2
+stype_heli       = 3
+stype_restrictor = 4
 
 ----------------------------------------------------------------------
 -- Загрузка схем:
@@ -54,3 +55,14 @@ load_scheme("ph_car",         "ph_car",      stype_item)
 ----------------------------------------------------------------------
 --load_scheme("heli_move",      "heli_move",   stype_heli)
 --load_scheme("heli_attack",    "heli_attack", stype_heli)
+
+----------------------------------------------------------------------
+-- Загрузка модулей рестрикторов:
+----------------------------------------------------------------------
+load_scheme("sr_no_weapon",   "sr_no_weapon", stype_restrictor)
+load_scheme("sr_tip",         "sr_tip",       stype_restrictor)
+load_scheme("sr_sound",       "sr_sound",     stype_restrictor)
+load_scheme("sr_idle",        "sr_idle",      stype_restrictor)
+
+
+

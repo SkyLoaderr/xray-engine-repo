@@ -130,9 +130,9 @@ end
 function action_camera_activity:update(delta)
 	--printf("_hr: action_camera_activity:update()")
 
-	if not xr_logic.is_active(self.object, self.st) then
-		return
-	end
+	--if not xr_logic.is_active(self.object, self.st) then
+	--	return
+	--end
 
 	local actor = level.actor()
 	if not actor then

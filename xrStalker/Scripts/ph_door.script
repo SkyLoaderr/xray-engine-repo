@@ -76,9 +76,9 @@ end
 function action_door:update(delta)
 	--printf("_bp: action_door:update()", delta)
 
-	if not xr_logic.is_active(self.object, self.st) then
-		return
-	end
+	--if not xr_logic.is_active(self.object, self.st) then
+	--	return
+	--end
 
 	if not self.initialized then
 		self:initialize()

@@ -37,9 +37,9 @@ end
 function action_hit:update(delta)
 	--printf("_hr: action_hit:update()")
 
-	if not xr_logic.is_active(self.object, self.st) then
-		return
-	end
+	--if not xr_logic.is_active(self.object, self.st) then
+	--	return
+	--end
 
 	local actor = level.actor()
 	if not actor then
