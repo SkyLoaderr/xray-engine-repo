@@ -114,7 +114,7 @@ void CScriptGameObject::set_item(MonsterSpace::EObjectAction object_action, CScr
 
 void CScriptGameObject::play_cycle(LPCSTR anim)
 {
-	CSkeletonAnimated* sa=smart_cast<CSkeletonAnimated*>(&object());
+	CSkeletonAnimated* sa=smart_cast<CSkeletonAnimated*>(object().Visual());
 	if(sa){
 		MotionID m	= sa->ID_Cycle(anim);
 		if (m) sa->PlayCycle(m);
