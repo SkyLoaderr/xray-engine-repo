@@ -833,6 +833,9 @@
 					RelativePath="xrMU_Model_Calc_faceopacity.cpp">
 				</File>
 				<File
+					RelativePath="xrMU_Model_Calc_lighting.cpp">
+				</File>
+				<File
 					RelativePath="xrMU_Model_Calc_materials.cpp">
 				</File>
 				<File
