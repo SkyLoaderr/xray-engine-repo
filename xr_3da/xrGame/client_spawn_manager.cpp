@@ -97,7 +97,7 @@ void CClientSpawnManager::callback			(CSpawnCallback &script_callback, CObject *
 		script_callback.m_object->on_reguested_spawn(object);
 	CGameObject						*game_object = smart_cast<CGameObject*>(object);
 	CScriptGameObject				*script_game_object = !game_object ? 0 : game_object->lua_game_object();
-	SCRIPT_CALLBACK_EXECUTE_2		(script_callback,object->ID(),script_game_object);
+	SCRIPT_CALLBACK_EXECUTE_2		(script_callback.m_callback,object->ID(),script_game_object);
 }
 
 void CClientSpawnManager::callback			(CObject *object)
