@@ -35,7 +35,7 @@ void CSE_ALifeItem::UPDATE_Read				(NET_Packet &tNetPacket)
 };
 
 #ifdef _EDITOR
-void CSE_ALifeItemTorch::FillProp			(LPCSTR pref, PropItemVec& values)
+void CSE_ALifeItem::FillProp				(LPCSTR pref, PropItemVec& values)
 {
 	inherited::FillProp			(pref,	 values);
 }
