@@ -235,13 +235,14 @@ public:
     // debug
     void			DumpAdjacency			();
 
-#ifdef _MAX_EXPORT
 	// convert
+#ifdef _MAX_EXPORT
     void			FlipFaces				();
 	TriObject*		ExtractTriObject		(INode *node, int &deleteIt);
 	bool			Convert					(INode *node);
 	bool			Convert					(CExporter* exporter);
 #endif
+
 	int				FindVMapByName			(VMapVec& vmaps, const char* name, EVMType t, BOOL polymap);
 	void			RebuildVMaps			();
 

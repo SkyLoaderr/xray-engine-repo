@@ -18,6 +18,7 @@ class	CBone;
 class	Shader;
 class	Mtl;
 class	CExporter;
+class	CMayaTranslator;
 struct	FSChunkDef;
 struct	st_ObjectDB;
 
@@ -393,7 +394,6 @@ public:
 #ifdef _LW_EXPORT
 	bool			Import_LWO				(st_ObjectDB *I);
 #endif
-
 #ifdef _LW_IMPORT
 	bool			Export_LW				(LWObjectImport *local);
 #endif
