@@ -442,7 +442,7 @@ void CCustomMonster::OnMoveVisible()
 	::Render.Lights_Dynamic.Add	(&TEST);
 */
 	// weapons
-	Weapons->OnRender			(false);
+//	Weapons->OnRender			(false);
 }
 
 extern void dbg_draw_frustum (float FOV, float _FAR, float A, Fvector &P, Fvector &D, Fvector &U);
