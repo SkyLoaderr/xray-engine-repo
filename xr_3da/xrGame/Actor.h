@@ -286,6 +286,7 @@ public:
 	virtual BOOL			feel_touch_contact			(CObject* O);
 
 	CGameObject*			ObjectWeLookingAt			() {return m_pObjectWeLookingAt;}
+	CInventoryOwner*		PersonWeLookingAt			() {return m_pPersonWeLookingAt;}
 	EActorAction			GetDefaultActionForObject	() {return m_eDefaultObjAction;}
 
 protected:

@@ -7,8 +7,13 @@
 
 #define DEFAULT_CHARACTER_FILE "npc_profile.xml"
 
+
+class CInventoryOwner;
+
 class CCharacterInfo
 {
+private:
+	friend CInventoryOwner;
 public:
 	CCharacterInfo();
 	~CCharacterInfo();

@@ -841,10 +841,10 @@ void CActor::shedule_Update	(u32 DT)
 			// Анализируем какой объект мы видим, и назначаем соответсвующее
 			// действие по умолчанию, которое будет определять всплывающую 
 			// подсказку
-			if (m_pPersonWeLookingAt && pEntityAlive->g_Health() > 0)
+			if (m_pPersonWeLookingAt && pEntityAlive->g_Alive())
 				m_eDefaultObjAction = eaaTalk;
 
-			else if (pEntityAlive)
+			else if (pEntityAlive && !pEntityAlive->g_Alive())
 				m_eDefaultObjAction = eaaSearchCorpse;
 
 			else if (m_pVehicleWeLookingAt)

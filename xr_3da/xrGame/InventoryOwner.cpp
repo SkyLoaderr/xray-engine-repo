@@ -62,7 +62,6 @@ void CInventoryOwner::reinit				()
 
 	m_dwMoney					= 0;
 	m_tRank						= ALife::eStalkerRankNone;
-
 	m_bTalking					= false;
 	m_pTalkPartner				= NULL;
 
@@ -75,6 +74,27 @@ BOOL CInventoryOwner::net_Spawn		(LPVOID DC)
 	//получить указатель на объект, InventoryOwner
 	CGameObject			*pThis = dynamic_cast<CGameObject*>(this);
 	if(!pThis) return FALSE;
+
+	
+	bool init_default_profile = true;
+	if (pThis->spawn_ini() && pThis->spawn_ini()->section_exist("game_info"))
+	{
+		LPCSTR name_id = pThis->spawn_ini()->r_string("game_info", "name_id");
+		init_default_profile = !CharacterInfo().Load(name_id);
+
+		if(!init_default_profile)
+		{
+			pThis->SetIconm_iIconX
+				m_iIconY
+	
+		}
+	}
+	
+	if(init_default_profile)
+	{
+		CharacterInfo().m_sGameName = pThis->cName();
+	}
+
 
 	
 	if(!pThis->Local())  return TRUE;

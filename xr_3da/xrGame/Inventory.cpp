@@ -34,7 +34,7 @@ CInventory::CInventory()
 	m_fMaxWeight = pSettings->r_float("inventory","max_weight"); // 40.f;
 	m_iMaxRuck = pSettings->r_s32("inventory","max_ruck"); // 50;
 	m_iMaxBelt = pSettings->r_s32("inventory","max_belt"); // 18;
-	if (Game().type != GAME_SINGLE) m_iMaxBelt+=2;
+	//if (Game().type != GAME_SINGLE) m_iMaxBelt+=2;
 	
 	u32 l_slotsNum = pSettings->r_s32("inventory","slots"); // 7;			// 6 слотов оружия и слот одежды/защиты.
 	m_slots.resize(l_slotsNum);
@@ -76,6 +76,9 @@ CInventory::~CInventory()
 
 void CInventory::Clear()
 {
+	//for multiplayer modes
+	if (Game().type != GAME_SINGLE) m_iMaxBelt+=2;
+	
 	m_all.clear();
 	m_ruck.clear();
 	m_belt.clear();

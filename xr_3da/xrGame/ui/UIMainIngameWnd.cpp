@@ -15,6 +15,7 @@
 #include "../PDA.h"
 #include "../UIStaticItem.h"
 #include "../WeaponHUD.h"
+#include "../character_info.h"
 
 #include "UIInventoryUtilities.h"
 
@@ -749,13 +750,26 @@ void CUIMainIngameWnd::RenderQuickInfos()
 	CGameObject *pObject = m_pActor->ObjectWeLookingAt();
 
 	UIStaticQuickHelp.SetTextColor(0x00000000);
-
-	if (pObject && m_pActor->GetDefaultActionForObject())
+	
+	ACTOR_DEFS::EActorAction actor_action = m_pActor->GetDefaultActionForObject();
+	if (pObject && eaaNoAction!=actor_action)
 	{
+		LPCSTR object_name = *pObject->cName();
+		if(eaaTalk == actor_action)
+		{
+			object_name = m_pActor->PersonWeLookingAt()->CharacterInfo().Name();
+		} 
+		else if(eaaPickup == actor_action)
+		{
+			CInventoryItem* item = dynamic_cast<CInventoryItem*>(m_pActor->ObjectWeLookingAt());
+			VERIFY(item);
+			object_name =item->Name();
+		}
+
 		if (fuzzyShowInfo>0.5f)
 		{
 			UIStaticQuickHelp.SetTextColor(subst_alpha(C,u8(iFloor(255.f*(fuzzyShowInfo-0.5f)*2.f))));
-			strconcat(text, *pObject->cName(), ": ");
+			strconcat(text, object_name, ": ");
 			strconcat(text, text, *m_strTips[m_pActor->GetDefaultActionForObject()]);
 			UIStaticQuickHelp.SetText(text);
 		}

@@ -163,12 +163,13 @@ public:
 		VERIFY				(m_script_clsid >= 0);
 		return				(m_script_clsid);
 	}
-protected:
-			bool			frame_check			(u32 &frame);
+public:
 	IC		CInifile		*spawn_ini			()
 	{
 		return				(m_ini_file);
 	}
+protected:
+			bool			frame_check			(u32 &frame);
 	virtual	void			spawn_supplies		();
 };
 
