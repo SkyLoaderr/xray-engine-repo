@@ -364,6 +364,7 @@ void __stdcall PushOutCallback2(bool& do_colide,dContact& c);
 void CPhysicObject::UnsplitSingle(CPhysicObject* O)
 {
 	//Msg("%o,received has %d,",this,m_unsplited_shels.size());
+	if (0==m_unsplited_shels.size())	return;	//. hack
 	VERIFY2(m_unsplited_shels.size(),"NO_SHELLS !!");
 	VERIFY2(!O->m_pPhysicsShell,"this has shell already!!!");
 	CPhysicsShell* newPhysicsShell=m_unsplited_shels.front().first;
