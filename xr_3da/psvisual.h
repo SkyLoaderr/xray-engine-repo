@@ -25,7 +25,7 @@ public:
 	// Functionality
 	void				Update			(u32 dt);
 	void				Compile			(PS::SDef* source, PS::SEmitter* E);
-	IC int				ParticleCount	()	{ return m_Particles.size();}
+	IC u32				ParticleCount	()	{ return (u32)m_Particles.size();}
 	IC void				Stop			()	{ m_Particles.clear();      }
 };
 #endif /*_INCDEF_PSVisual_H_*/
