@@ -51,7 +51,7 @@ public:
 	Fvector							vLastCameraPos;
 public:
 	CList<FCached*>						vecCached;
-	CList<SceneGraph::mapNormal_Node*>	vecNormalNodes;
+//	CList<SceneGraph::mapNormal_Node*>	vecNormalNodes;
 
 	// Global vertex-buffer container
 	vector<DWORD>					FVF;
