@@ -1,0 +1,42 @@
+Microsoft Visual Studio Solution File, Format Version 8.00
+Project("{8BC9CEB8-8B4A-11D0-8D11-00A0C91BC942}") = "xrQSlim", "xrQSlim.vcproj", "{F1836CE2-59EF-4189-8B9C-D103A511CB27}"
+	ProjectSection(ProjectDependencies) = postProject
+	EndProjectSection
+EndProject
+Project("{8BC9CEB8-8B4A-11D0-8D11-00A0C91BC942}") = "QSTest", "QSTest\QSTest.vcproj", "{4DAD76BB-E866-4116-A382-4409B5964BF2}"
+	ProjectSection(ProjectDependencies) = postProject
+	EndProjectSection
+EndProject
+Global
+	GlobalSection(SourceCodeControl) = preSolution
+		SccNumberOfProjects = 3
+		SccProjectUniqueName0 = xrQSlim.vcproj
+		SccLocalPath0 = .
+		CanCheckoutShared = true
+		SccProjectUniqueName1 = QSTest\\QSTest.vcproj
+		SccProjectName1 = \u0022$/xrQSlim/QSTest\u0022,\u0020QLVAAAAA
+		SccLocalPath1 = QSTest
+		CanCheckoutShared = true
+		SccLocalPath2 = .
+		CanCheckoutShared = true
+		SolutionUniqueID = {D51D5E03-3C35-43BB-AB83-FE36DE98DA37}
+	EndGlobalSection
+	GlobalSection(SolutionConfiguration) = preSolution
+		Debug = Debug
+		Release = Release
+	EndGlobalSection
+	GlobalSection(ProjectConfiguration) = postSolution
+		{F1836CE2-59EF-4189-8B9C-D103A511CB27}.Debug.ActiveCfg = Debug|Win32
+		{F1836CE2-59EF-4189-8B9C-D103A511CB27}.Debug.Build.0 = Debug|Win32
+		{F1836CE2-59EF-4189-8B9C-D103A511CB27}.Release.ActiveCfg = Release|Win32
+		{F1836CE2-59EF-4189-8B9C-D103A511CB27}.Release.Build.0 = Release|Win32
+		{4DAD76BB-E866-4116-A382-4409B5964BF2}.Debug.ActiveCfg = Debug|Win32
+		{4DAD76BB-E866-4116-A382-4409B5964BF2}.Debug.Build.0 = Debug|Win32
+		{4DAD76BB-E866-4116-A382-4409B5964BF2}.Release.ActiveCfg = Release|Win32
+		{4DAD76BB-E866-4116-A382-4409B5964BF2}.Release.Build.0 = Release|Win32
+	EndGlobalSection
+	GlobalSection(ExtensibilityGlobals) = postSolution
+	EndGlobalSection
+	GlobalSection(ExtensibilityAddIns) = postSolution
+	EndGlobalSection
+EndGlobal
