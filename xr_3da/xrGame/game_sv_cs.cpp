@@ -38,6 +38,15 @@ void	game_sv_CS::OnRoundStart	()
 		teams[0].num_targets = teams[1].num_targets = 0;
 		Unlock	();
 	}
+
+	// Spawn "artifacts"
+	xrServerEntity*		E	=	spawn_begin	("artifact");												// create SE
+	xrSE_Actor*	A			=	(xrSE_Actor*) E;					
+	strcpy					(A->s_name_replace,get_option_s(options,"name","Player"));					// name
+	get_id(id_who)->team = A->s_team = u8(get_option_i(options,"team",AutoTeam()));						// team
+	A->s_flags				=	M_SPAWN_OBJECT_ACTIVE  | M_SPAWN_OBJECT_LOCAL | M_SPAWN_OBJECT_ASPLAYER;// flags
+	assign_RP				(A);
+	spawn_end				(A,id_who);
 }
 
 void	game_sv_CS::OnTeamScore		(u32 team)
@@ -227,7 +236,7 @@ void game_sv_CS::OnPlayerConnect	(u32 id_who)
 	xrServerEntity*		E	=	spawn_begin	("actor");													// create SE
 	xrSE_Actor*	A			=	(xrSE_Actor*) E;					
 	strcpy					(A->s_name_replace,get_option_s(options,"name","Player"));					// name
-	get_id(id_who)->team = A->s_team = u8(get_option_i(options,"team",AutoTeam()));							// team
+	get_id(id_who)->team = A->s_team = u8(get_option_i(options,"team",AutoTeam()));						// team
 	A->s_flags				=	M_SPAWN_OBJECT_ACTIVE  | M_SPAWN_OBJECT_LOCAL | M_SPAWN_OBJECT_ASPLAYER;// flags
 	assign_RP				(A);
 	spawn_end				(A,id_who);

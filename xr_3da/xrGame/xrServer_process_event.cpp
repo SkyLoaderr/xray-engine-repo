@@ -53,8 +53,8 @@ void xrServer::Process_event	(NET_Packet& P, DPNID sender)
 			xrClientData*		c_parent	= e_parent->owner;
 			xrClientData*		c_entity	= e_entity->owner;
 			xrClientData*		c_from		= ID_to_client	(sender);
-			R_ASSERT			(c_entity == c_parent);
-			R_ASSERT			(c_parent == c_from);		// assure client only send request for local units
+			// R_ASSERT			(c_entity == c_parent);
+			// R_ASSERT			(c_parent == c_from);		// assure client only send request for local units
 
 			if (game->OnTargetDetouched(sender,id_entity))
 			{
