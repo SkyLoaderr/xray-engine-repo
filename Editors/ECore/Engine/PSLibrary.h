@@ -7,9 +7,7 @@
 #include "ParticleEffect.h"
 #include "ParticleGroup.h"
 
-class ECORE_API CPSLibrary{
-    PS::PSVec			m_PSs;
-
+class ECORE_API CPSLibrary	{
     PS::PEDVec			m_PEDs;
     PS::PGDVec			m_PGDs;
 
