@@ -79,6 +79,7 @@ public:
 			if (i >= tMaxValue)
 				break;
 		}
+		VERIFY					(m_available_count == m_tBlockCount);
 		for (u32 j=0; j<m_tBlockCount; ++j)
 			std::reverse		(m_tppBlocks[j].m_tpIDs,m_tppBlocks[j].m_tpIDs + m_tppBlocks[j].m_tCount);
 	}
