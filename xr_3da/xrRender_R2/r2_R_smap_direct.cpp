@@ -16,7 +16,7 @@ void	CRender::render_smap_direct		(Fmatrix& mCombined)
 	}
 
 	// Traverse object database
-	g_SpatialSpace.q_frustum
+	g_SpatialSpace->q_frustum
 		(
 		ISpatial_DB::O_ORDERED,
 		STYPE_RENDERABLE,
@@ -24,7 +24,7 @@ void	CRender::render_smap_direct		(Fmatrix& mCombined)
 		);
 
 	// Determine visibility for dynamic part of scene
-	xr_vector<ISpatial*>& lstRenderables	= g_SpatialSpace.q_result;
+	xr_vector<ISpatial*>& lstRenderables	= g_SpatialSpace->q_result;
 	for (u32 o_it=0; o_it<lstRenderables.size(); o_it++)
 	{
 		ISpatial*		spatial			= lstRenderables[o_it];
@@ -63,7 +63,7 @@ void	CRender::render_smap_sector(CSector* _sector, Fmatrix& mCombined, Fvector& 
 	}
 
 	// Traverse object database
-	g_SpatialSpace.q_frustum
+	g_SpatialSpace->q_frustum
 		(
 		ISpatial_DB::O_ORDERED,
 		STYPE_RENDERABLE,
@@ -71,7 +71,7 @@ void	CRender::render_smap_sector(CSector* _sector, Fmatrix& mCombined, Fvector& 
 		);
 
 	// Determine visibility for dynamic part of scene
-	xr_vector<ISpatial*>& lstRenderables	= g_SpatialSpace.q_result;
+	xr_vector<ISpatial*>& lstRenderables	= g_SpatialSpace->q_result;
 	for (u32 o_it=0; o_it<lstRenderables.size(); o_it++)
 	{
 		ISpatial*	spatial		= lstRenderables[o_it];

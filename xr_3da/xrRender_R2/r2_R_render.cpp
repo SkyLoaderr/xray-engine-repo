@@ -50,7 +50,7 @@ void CRender::Render		()
 			}
 
 			// Traverse object database
-			g_SpatialSpace.q_frustum
+			g_SpatialSpace->q_frustum
 				(
 				ISpatial_DB::O_ORDERED,
 				STYPE_RENDERABLE + STYPE_LIGHTSOURCE,
@@ -58,7 +58,7 @@ void CRender::Render		()
 				);
 
 			// (almost)Exact sorting order (front-to-back)
-			xr_vector<ISpatial*>& lstRenderables	= g_SpatialSpace.q_result;
+			xr_vector<ISpatial*>& lstRenderables	= g_SpatialSpace->q_result;
 			std::sort								(lstRenderables.begin(),lstRenderables.end(),pred_sp_sort);
 
 			// Determine visibility for dynamic part of scene
