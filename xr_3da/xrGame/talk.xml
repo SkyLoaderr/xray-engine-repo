@@ -9,7 +9,7 @@
 	</static_icon>
 
 	<!-- BUTTONS -->
-	<button x="485" y="635" width="138" height="30">
+	<button x="437" y="726" width="138" height="30">
 		<texture>ui\ui_button_04</texture>
 		<text>Trade</text>
 	</button>
@@ -35,7 +35,7 @@
 	<font font="normal" r="250" g="151" b="22"></font>
 
 	<!-- STATIC FOR DISPLAYING NAME OF CHARACTER -->
-	<static x="310" y="430" width="347" height="212">
+	<static x="20" y="430" width="347" height="212">
 		<text font="letterica18" r="250" g="151" b="22"></text>
 	</static>
 
