@@ -293,7 +293,7 @@ end
 function action_help:execute ()
     action_base.execute (self)
     
-    if distance_between (self.object, self.a.npc) < 10 and self.first == false then
+    if distance_between (self.object, self.a.npc) < 40 and self.first == false then
        self.first = true
        self.object:clear_animations ()
        self.object:add_animation ("waunded_ruka_0", true)
