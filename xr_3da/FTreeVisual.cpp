@@ -55,7 +55,7 @@ void FTreeVisual::Load		(const char* N, IReader *data, u32 dwFlags)
 	}
 
 	// load tree-def
-	R_ASSERT			(data->find_chunk(OGF_TREEDEF));
+	R_ASSERT			(data->find_chunk(OGF_TREEDEF2));
 	{
 		data->r			(&xform,	sizeof(xform));
 		data->r			(&c_scale,	sizeof(c_scale));
