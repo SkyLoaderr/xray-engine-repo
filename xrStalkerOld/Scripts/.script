@@ -16,6 +16,7 @@ end
 load_scheme("xr_walker", "walker")
 load_scheme("xr_sleeper", "sleeper")
 load_scheme("xr_kamp", "kamp")
+load_scheme("xr_camper", "camper")
 load_scheme("xr_comm_ptr", "patrol")
 load_scheme("xr_follower", "follower")
 
