@@ -72,6 +72,7 @@ class CMyD3DApplication : public CD3DApplication
 
 	LPDIRECT3DVERTEXBUFFER9			m_pFloorVB;
 	LPDIRECT3DVERTEXBUFFER9			m_pQuadVB;
+	LPDIRECT3DVERTEXBUFFER9			m_pOverlayVB;
 
 	LPDIRECT3DVERTEXDECLARATION9	m_pDeclVert;
 	LPDIRECT3DVERTEXDECLARATION9	m_pDeclVert2D;
@@ -93,6 +94,12 @@ class CMyD3DApplication : public CD3DApplication
 	LPDIRECT3DTEXTURE9				d_Accumulator;	// 32bit		(r,g,b,specular)
 	LPDIRECT3DSURFACE9				d_Accumulator_S;
 
+	// Shadow map
+	LPDIRECT3DTEXTURE9				sm_ShadowMap;
+	LPDIRECT3DSURFACE9				sm_ShadowMap_S;
+	LPDIRECT3DSURFACE9				sm_ShadowMap_Z;
+	LPDIRECT3DVERTEXBUFFER9			sm_OverlayVB;
+
 	// Special textures
 	LPDIRECT3DTEXTURE9				t_SpecularPower_32;
 
@@ -109,9 +116,11 @@ class CMyD3DApplication : public CD3DApplication
 
 	// Shaders
 	R_shader						s_Scene2fat;
+	R_shader						s_Scene2smap_direct;
 	R_shader						s_CombineDBG_Normals;
 	R_shader						s_CombineDBG_Accumulator;
 	R_shader						s_Light_Direct;
+	R_shader						s_Light_Direct_smap;
 
 	//  ************************
 	//	**** Shadow mapping ****
@@ -128,19 +137,6 @@ class CMyD3DApplication : public CD3DApplication
 
 	D3DXVECTOR4						m_vecLightDirModel;
 	D3DXVECTOR4						m_vecLightDirFloor;
-
-	// Shadow map
-	LPDIRECT3DTEXTURE9				sm_ShadowMap;
-	LPDIRECT3DSURFACE9				sm_ShadowMap_S;
-	LPDIRECT3DSURFACE9				sm_ShadowMap_Z;
-    LPDIRECT3DVERTEXBUFFER9			sm_OverlayVB;
-
-	// Shaders
-	LPDIRECT3DVERTEXSHADER9			m_pSceneVS;
-	LPDIRECT3DPIXELSHADER9			m_pScenePS;
-	LPDIRECT3DVERTEXSHADER9			m_pShadowMapVS;
-	LPDIRECT3DPIXELSHADER9			m_pShadowMapPS;
-	LPDIRECT3DPIXELSHADER9			m_pShowMapPS;
 public:
     CMyD3DApplication();
 
@@ -194,7 +190,7 @@ INT WINAPI WinMain(HINSTANCE hInst, HINSTANCE, LPSTR, INT)
 CMyD3DApplication::CMyD3DApplication()
 {
     // Override base class members
-	m_strWindowTitle					= _T("xray2 : render");
+	m_strWindowTitle					= _T	("xray2 : render");
     m_d3dEnumeration.AppUsesDepthBuffer = TRUE;
 	m_dwCreationWidth					= 512;
 	m_dwCreationHeight					= 512;
@@ -208,9 +204,9 @@ CMyD3DApplication::CMyD3DApplication()
 	m_pSceneVS							= NULL;
 	m_pScenePS							= NULL;
 
-	m_pShadowMap						= NULL;
-	m_pShadowMapSurf					= NULL;
-	m_pShadowMapZ						= NULL;
+	sm_ShadowMap						= NULL;
+	sm_ShadowMap_S						= NULL;
+	sm_ShadowMap_Z						= NULL;
 
 	m_pShadowMapVS						= NULL;
 	m_pShadowMapPS						= NULL;
@@ -259,7 +255,8 @@ HRESULT CMyD3DApplication::Render		()
 		// RenderOverlay		();
 
 		RenderFAT					();
-		RenderLight_Direct			();
+		RenderShadowMap				();
+		RenderLight_Direct_smap		();
 		RenderCombine				(CM_DBG_ACCUMULATOR);
 
         // Output statistics
@@ -420,12 +417,19 @@ HRESULT CMyD3DApplication::RestoreDeviceObjects()
 	CreateRT						(m_pd3dDevice,w,h,D3DFMT_A16B16G16R16F,	&d_Normal,&d_Normal_S);
 	CreateRT						(m_pd3dDevice,w,h,D3DFMT_A16B16G16R16,	&d_Color,&d_Color_S);
 	CreateRT						(m_pd3dDevice,w,h,D3DFMT_A8R8G8B8,		&d_Accumulator,&d_Accumulator_S);
+	CreateRT						(m_pd3dDevice,SHADOW_MAP_SIZE,SHADOW_MAP_SIZE,D3DFMT_R32F,&sm_ShadowMap,&sm_ShadowMap_S);
+
+	// Create depth buffer for shadow map rendering
+	if (FAILED(m_pd3dDevice->CreateDepthStencilSurface(SHADOW_MAP_SIZE, SHADOW_MAP_SIZE, D3DFMT_D24X8, D3DMULTISAMPLE_NONE, 0, TRUE, &sm_ShadowMap_Z, NULL)))
+		return E_FAIL;
 
 	// Create shaders
 	s_Scene2fat.compile				(m_pd3dDevice,"shaders\\D\\fat_base.s");
+	s_Scene2smap_direct.compile		(m_pd3dDevice,"shaders\\D\\smap_direct.s");
 	s_CombineDBG_Normals.compile	(m_pd3dDevice,"shaders\\D\\cm_dbg_normals.s");
 	s_CombineDBG_Accumulator.compile(m_pd3dDevice,"shaders\\D\\cm_dbg_accumulator.s");
 	s_Light_Direct.compile			(m_pd3dDevice,"shaders\\D\\light_direct.s");
+	s_Light_Direct_smap.compile		(m_pd3dDevice,"shaders\\D\\light_direct_smap.s");
 
 	// Create special textures
 	{
@@ -443,32 +447,8 @@ HRESULT CMyD3DApplication::RestoreDeviceObjects()
 		t_SpecularPower_32->UnlockRect	(0);
 	}
 
-	// Create shadow map texture and retrieve surface
-	if (FAILED(m_pd3dDevice->CreateTexture(SHADOW_MAP_SIZE, SHADOW_MAP_SIZE, 1, D3DUSAGE_RENDERTARGET, SHADOW_MAP_FORMAT, D3DPOOL_DEFAULT, &m_pShadowMap, NULL)))
-		return E_FAIL;
-	if (FAILED(m_pShadowMap->GetSurfaceLevel(0, &m_pShadowMapSurf)))
-		return E_FAIL;
-
-	// Create depth buffer for shadow map rendering
-	if (FAILED(m_pd3dDevice->CreateDepthStencilSurface(SHADOW_MAP_SIZE, SHADOW_MAP_SIZE, D3DFMT_D24X8, D3DMULTISAMPLE_NONE, 0, TRUE, &m_pShadowMapZ, NULL)))
-		return E_FAIL;
-
-    // Create model shaders
-	SAFE_RELEASE(m_pSceneVS);
-	LoadVertexShader(m_pd3dDevice, "shaders\\shadowscene.vsh", &m_pSceneVS);
-	SAFE_RELEASE(m_pScenePS);
-	LoadPixelShader(m_pd3dDevice, "shaders\\shadowscene.psh", &m_pScenePS);
-
-	// Create shadow map shaders
-	SAFE_RELEASE(m_pShadowMapVS);
-	LoadVertexShader(m_pd3dDevice, "shaders\\shadowmap.vsh", &m_pShadowMapVS);
-	SAFE_RELEASE(m_pShadowMapPS);
-	LoadPixelShader(m_pd3dDevice, "shaders\\shadowmap.psh", &m_pShadowMapPS);
-	SAFE_RELEASE(m_pShowMapPS);
-	LoadPixelShader(m_pd3dDevice, "shaders\\showmap.psh", &m_pShowMapPS);
-
-    m_ArcBall.SetWindow(m_d3dsdBackBuffer.Width, m_d3dsdBackBuffer.Height, 1.0f);
-    m_ArcBall.SetRadius(3.0f);
+    m_ArcBall.SetWindow		(m_d3dsdBackBuffer.Width, m_d3dsdBackBuffer.Height, 1.0f);
+    m_ArcBall.SetRadius		(3.0f);
 	m_ArcBall.SetRightHanded(TRUE);
 
     return S_OK;
@@ -481,18 +461,6 @@ HRESULT CMyD3DApplication::RestoreDeviceObjects()
 HRESULT CMyD3DApplication::InvalidateDeviceObjects()
 {
     m_pFont->InvalidateDeviceObjects();
-
-	// Delete shaders
-	SAFE_RELEASE(m_pSceneVS);
-	SAFE_RELEASE(m_pScenePS);
-	SAFE_RELEASE(m_pShadowMapVS);
-	SAFE_RELEASE(m_pShadowMapPS);
-	SAFE_RELEASE(m_pShowMapPS);
-
-	// Delete surfaces
-	SAFE_RELEASE(m_pShadowMapSurf);
-	SAFE_RELEASE(m_pShadowMap);
-	SAFE_RELEASE(m_pShadowMapZ);
 
     return S_OK;
 }
@@ -577,18 +545,17 @@ HRESULT CMyD3DApplication::ConfirmDevice( D3DCAPS9* pCaps, DWORD dwBehavior,
 //-----------------------------------------------------------------------------
 HRESULT CMyD3DApplication::RenderShadowMap()
 {
-	LPDIRECT3DSURFACE9	pOldBackBuffer, pOldZBuffer;
+	LPDIRECT3DSURFACE9	oldBackBuffer, oldZBuffer;
 	D3DVIEWPORT9		oldViewport;
 
 	// Save old render taget
-	m_pd3dDevice->GetRenderTarget			(0, &pOldBackBuffer);
-	m_pd3dDevice->GetDepthStencilSurface	(&pOldZBuffer);
-	// Save old viewport
+	m_pd3dDevice->GetRenderTarget			(0, &oldBackBuffer);
+	m_pd3dDevice->GetDepthStencilSurface	(&oldZBuffer);
 	m_pd3dDevice->GetViewport				(&oldViewport);
 
 	// Set new render target
-	m_pd3dDevice->SetRenderTarget			(0, m_pShadowMapSurf);
-	m_pd3dDevice->SetDepthStencilSurface	(m_pShadowMapZ);
+	m_pd3dDevice->SetRenderTarget			(0, sm_ShadowMap_S);
+	m_pd3dDevice->SetDepthStencilSurface	(sm_ShadowMap_Z);
 
 	// Setup shadow map viewport
 	D3DVIEWPORT9	shadowViewport;
