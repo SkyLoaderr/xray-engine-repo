@@ -233,16 +233,16 @@ function main ()
                       m_attack_wave2.Monster (get_level_object ("boar02"), patrol ("way_boar02"), scrname),
                       m_attack_wave2.Monster (get_level_object ("boar03"), patrol ("way_boar03"), scrname),
                       m_attack_wave2.Monster (get_level_object ("boar04"), patrol ("way_boar04"), scrname),
-                      m_attack_wave2.Monster (get_level_object ("m_dog_e0000"),  patrol ("way0004"), scrname),
-                      m_attack_wave2.Monster (get_level_object ("m_dog_e0001"),  patrol ("way0005"), scrname),
-                      m_attack_wave2.Monster (get_level_object ("m_dog_e0002"),  patrol ("way0006"), scrname),
-                      m_attack_wave2.Monster (get_level_object ("m_dog_e0003"),  patrol ("way0007"), scrname),
-                      m_attack_wave2.Monster (get_level_object ("m_dog_e0004"),  patrol ("way0008"), scrname),
-                      m_attack_wave2.Monster (get_level_object ("m_pseudodog_e0000"),  patrol ("way0009"), scrname),
-                      m_attack_wave2.Monster (get_level_object ("m_pseudodog_e0001"),  patrol ("way0010"), scrname),
-                      m_attack_wave2.Monster (get_level_object ("m_pseudodog_e0002"),  patrol ("way0011"), scrname),
-                      m_attack_wave2.Monster (get_level_object ("m_pseudodog_e0003"),  patrol ("way0012"), scrname),
-                      m_attack_wave2.Monster (get_level_object ("m_flesh_e0000"),  patrol ("way0013"), scrname)
+                      m_attack_wave2.Monster (get_level_object ("dog01"),  patrol ("way_dog01"), scrname),
+                      m_attack_wave2.Monster (get_level_object ("dog02"),  patrol ("way_dog02"), scrname),
+                      m_attack_wave2.Monster (get_level_object ("dog03"),  patrol ("way_dog03"), scrname),
+                      m_attack_wave2.Monster (get_level_object ("dog04"),  patrol ("way_dog04"), scrname),
+                      m_attack_wave2.Monster (get_level_object ("dog05"),  patrol ("way_dog05"), scrname),
+                      m_attack_wave2.Monster (get_level_object ("pdog01"),  patrol ("way_pdog01"), scrname),
+                      m_attack_wave2.Monster (get_level_object ("pdog02"),  patrol ("way_pdog02"), scrname),
+                      m_attack_wave2.Monster (get_level_object ("pdog03"),  patrol ("way_pdog03"), scrname),
+                      m_attack_wave2.Monster (get_level_object ("pdog04"),  patrol ("way_pdog04"), scrname),
+                      m_attack_wave2.Monster (get_level_object ("flesh01"),  patrol ("way_flesh01"), scrname)
 					  }
 					  
 	--monsters[1]:set_callback (m_attack_wave2.boar_callback)					  
