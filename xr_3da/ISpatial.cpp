@@ -189,11 +189,23 @@ void			ISpatial_DB::_insert	(ISpatial_NODE* N, Fvector& n_C, float n_R)
 	}
 }
 
+BOOL			f_valid					(float f)		{	return _finite(f) && !_isnan(f);	}
 void			ISpatial_DB::insert		(ISpatial* S)
 {
 	stat_insert.Begin	();
-	rt_insert_object	= S;
-	_insert				(m_root,m_center,m_bounds);
+	VERIFY				(f_valid(S->spatial.radius) && f_valid(S->spatial.center.x) && f_valid(S->spatial.center.y) && f_valid(S->spatial.center.z) );
+	if (verify_sp(S,m_center,m_bounds))
+	{
+		// Object inside our DB
+		rt_insert_object	= S;
+		_insert				(m_root,m_center,m_bounds);
+	} else {
+		// Object outside our DB, put it into root node and hack bounds
+		// Object will reinsert itself until fits into "real", "controlled" space
+		m_root->_insert								(S);
+		rt_insert_object->spatial.node_center.set	(m_center);
+		rt_insert_object->spatial.node_radius	=	m_bounds;
+	}
 	stat_insert.End		();
 	VERIFY				(S->spatial_inside());
 }
