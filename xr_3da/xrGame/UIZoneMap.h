@@ -11,8 +11,6 @@
 extern const char * const	mapTextureKey;
 // Аналогично её координаты на глобальной карте
 extern const char * const	mapLocalCoordinatesKey;
-// Аналогично её размеры в метрах
-extern const char * const	mapDimentions;
 
 //////////////////////////////////////////////////////////////////////////
 
@@ -40,8 +38,6 @@ class CUIZoneMap
 	float landscape_x2, landscape_y2;
 	float landscape_x3, landscape_y3;
 	float landscape_x4, landscape_y4;
-
-	Fbox level_box;
 
 	void			EntityOut		(float diff, u32 color, const Ivector2& pt);
 	void			ConvertToLocal	(const Fmatrix& LM, const Fvector& src, Ivector2& dest, int border_radius, bool& on_border);

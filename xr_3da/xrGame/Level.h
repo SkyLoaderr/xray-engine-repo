@@ -198,7 +198,7 @@ public:
 	virtual ~CLevel();
 
 	//названияе текущего уровня
-	IC	shared_str			name					() const;
+	virtual shared_str			name					() const;
 
 	//gets the time from the game simulation
 	

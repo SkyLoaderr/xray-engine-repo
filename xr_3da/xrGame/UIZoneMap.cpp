@@ -49,8 +49,6 @@ static float		MAX_VIEW_DISTANCE	=		50.f;
 const char * const	mapTextureKey				= "level_map";
 // Аналогично её координаты на глобальной карте
 const char * const	mapLocalCoordinatesKey		= "ui_map_coords";
-// Аналогично её размеры в метрах
-const char * const	mapDimentions				= "ui_map_dims";
 
 //////////////////////////////////////////////////////////////////////
 // Construction/Destruction
@@ -140,34 +138,13 @@ void CUIZoneMap::Init()
 	FS.update_path					(gameLtxPath, CONFIG_PATH, "game.ltx");
 	CInifile			gameLtx		(gameLtxPath);
 
-	if(currLIt != levelMap.end() &&
-	   gameLtx.line_exist(currLIt->second.section(), mapTextureKey) &&
-	   gameLtx.line_exist(currLIt->second.section(), mapDimentions))
-	{
-
+	if((currLIt != levelMap.end())&&gameLtx.line_exist(currLIt->second.section(), mapTextureKey)){
 		map_texture		= gameLtx.r_string		(currLIt->second.section(), mapTextureKey);
-		Fvector4 f		= gameLtx.r_fvector4	(currLIt->second.section(), mapDimentions);
-
-		level_box.x1	= f.x;
-		level_box.z1	= f.z;
-		level_box.x2	= f.y;
-		level_box.z2	= f.w;
-
-	}
-	else
-	{
+	}else{
 		if(Level().pLevel->line_exist("level_map", "texture"))
 			map_texture = Level().pLevel->r_string("level_map","texture");
 		else
 			map_texture = "ui\\ui_nomap";
-
-		if (Level().pLevel->section_exist("level_map"))	
-		{
-			level_box.x1 = Level().pLevel->r_float("level_map","x1");
-			level_box.z1 = Level().pLevel->r_float("level_map","z1");
-			level_box.x2 = Level().pLevel->r_float("level_map","x2");
-			level_box.z2 = Level().pLevel->r_float("level_map","z2");
-		}
 	}
 
 	landscape.Init(*map_texture,	"hud\\default",
@@ -244,8 +221,7 @@ void CUIZoneMap::UpdateRadar(CActor* pActor)
 	//.hack
 	//нужно обновлять раз в некоторое время
 	Level().UpdateMapLocation			();
-
-
+	const Fbox& level_box	= Level().ObjectSpace.GetBoundingVolume();
 
 	entity.Clear		();
 	entity_story.Clear	();

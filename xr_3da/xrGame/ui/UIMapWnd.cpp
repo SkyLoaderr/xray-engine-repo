@@ -17,8 +17,148 @@
 #include "../alife_registry_wrappers.h"
 #include "../game_graph.h"
 
+
+
+CUIGlobalMap::CUIGlobalMap()
+{
+	m_Box.set			(0,0,0,0);
+	m_MinimizedRect.set	(0,0,0,0);
+	m_NormalRect.set	(0,0,0,0);
+	m_State				= stNone;
+	Show				();
+}
+
+CUIGlobalMap::~CUIGlobalMap()
+{
+}
+
+void CUIGlobalMap::Init()
+{
+	CUIXml uiXml;
+	bool xml_result			= uiXml.Init(CONFIG_PATH, UI_PATH, "pda_map.xml");
+	R_ASSERT3(xml_result, "xml file not found", "global_map.xml");
+
+	// load map background
+	CUIXmlInit xml_init;
+	CUIStatic* background	= xr_new<CUIStatic>();
+	background->SetWindowName("background");
+	xml_init.InitStatic		(uiXml, "main_wnd:global_map:background", 0, background);
+	background->SetAutoDelete(true);
+	AttachChild				(background);
+	string256				path;
+	// load map state definition
+	strcpy					(path,"main_wnd:global_map:background:minimized_rect");
+	R_ASSERT3				(uiXml.NavigateToNode(path,0), "XML node not found", path);
+	m_MinimizedRect.x1		= uiXml.ReadAttribInt(path, 0, "x1", 0);
+	m_MinimizedRect.y1		= uiXml.ReadAttribInt(path, 0, "y1", 0);
+	m_MinimizedRect.x2		= uiXml.ReadAttribInt(path, 0, "x2", 0);
+	m_MinimizedRect.y2		= uiXml.ReadAttribInt(path, 0, "y2", 0);
+	strcpy					(path,"main_wnd:global_map:background:normal_rect");
+	R_ASSERT3				(uiXml.NavigateToNode(path,0), "XML node not found", path);
+	m_NormalRect.x1			= uiXml.ReadAttribInt(path, 0, "x1", 0);
+	m_NormalRect.y1			= uiXml.ReadAttribInt(path, 0, "y1", 0);
+	m_NormalRect.x2			= uiXml.ReadAttribInt(path, 0, "x2", 0);
+	m_NormalRect.y2			= uiXml.ReadAttribInt(path, 0, "y2", 0);
+
+	// minimized button
+	strcpy						(path,"main_wnd:global_map:background:minimized_btn");
+	CUIButton* minimized_btn	= xr_new<CUIButton>();
+	minimized_btn->SetWindowName("minimized_btn");
+	xml_init.InitButton			(uiXml, path, 0, minimized_btn);
+	minimized_btn->SetAutoDelete(true);
+	background->AttachChild		(minimized_btn);
+
+	// maximized button
+	strcpy						(path,"main_wnd:global_map:background:maximized_btn");
+	CUIButton* maximized_btn	= xr_new<CUIButton>();
+	maximized_btn->SetWindowName("maximized_btn");
+	xml_init.InitButton			(uiXml, path, 0, maximized_btn);
+	maximized_btn->SetAutoDelete(true);
+	background->AttachChild		(maximized_btn);
+
+	SwitchTo					(stNormal);
+	//init callbacks
+	Register(minimized_btn);
+	Register(maximized_btn);
+	AddCallback			("minimized_btn",BUTTON_CLICKED,boost::bind(&CUIGlobalMap::OnBtnMinimizedClick,this));
+	AddCallback			("maximized_btn",BUTTON_CLICKED,boost::bind(&CUIGlobalMap::OnBtnMaximizedClick,this));
+}
+
+
+void CUIGlobalMap::SwitchTo(CUIGlobalMap::EState new_state)
+{
+	if (new_state!=m_State){
+		CUIStatic* background	= GetControl<CUIStatic>("background"); VERIFY(background);
+		switch (new_state){
+		case stMinimized:		background->SetWndRect(m_MinimizedRect);			break;
+		case stNormal:			background->SetWndRect(m_NormalRect);				break;
+		case stMaximized:		background->SetWndRect(GetParent()->GetWndRect());	break;
+		}
+		m_State					= new_state;
+	}
+}
+
+void CUIGlobalMap::OnBtnMinimizedClick()
+{
+	switch (m_State){
+	case stMinimized:								break;
+	case stNormal:			SwitchTo(stMinimized);	break;
+	case stMaximized:		SwitchTo(stNormal);		break;
+	}
+}
+
+void CUIGlobalMap::OnBtnMaximizedClick()
+{
+	switch (m_State){
+	case stMinimized:		SwitchTo(stNormal);		break;
+	case stNormal:			SwitchTo(stMaximized);	break;
+	case stMaximized:								break;
+	}
+}
 //////////////////////////////////////////////////////////////////////////
 
+CUIMapWnd::CUIMapWnd()
+{
+	m_GlobalMap				= xr_new<CUIGlobalMap>();
+	m_GlobalMap->SetAutoDelete(true);
+	AttachChild				(m_GlobalMap);
+}
+
+CUIMapWnd::~CUIMapWnd()
+{
+}
+
+void CUIMapWnd::Init()
+{
+	CUIXml uiXml;
+	bool xml_result			= uiXml.Init(CONFIG_PATH, UI_PATH, "pda_map.xml");
+	R_ASSERT3(xml_result, "xml file not found", "global_map.xml");
+
+	// load map background
+	CUIXmlInit xml_init;
+	xml_init.InitWindow		(uiXml, "main_wnd", 0, this);
+
+	m_GlobalMap->Init		();
+}
+
+void CUIMapWnd::Show(bool status)
+{
+	if (status)
+	{
+		InitGlobalMapObjectives			();
+		InitLocalMapObjectives			();
+//		SwitchMapMode					(emmLocal);
+//		SetLocalMap						(Level().name());
+	}
+	if (status)	inherited::Show();
+	else		inherited::Hide();
+}
+
+void CUIMapWnd::Draw()
+{
+	inherited::Draw();
+}
+/*
 using namespace InventoryUtilities;
 
 #define				MAP_LEFT					89
@@ -40,10 +180,6 @@ const				HSCROLLBAR_STEP				= 20; // В пикселях
 //	Global map stuff
 //-----------------------------------------------------------------------------/
 
-const char * const	GLOBAL_MAP_LTX				= "global_map";
-const char * const	GLOBAL_MAP_TEX_LTX			= "texture";
-const char * const	GLOBAL_MAP_W_LTX			= "width";
-const char * const	GLOBAL_MAP_H_LTX			= "height";
 const char * const	GLOBAL_MAP_LOCATIONS_LTX	= "global_map_locations";
 
 const u32			activeLocalMapColor			= 0xffc80000;
@@ -170,12 +306,8 @@ void CUIMapWnd::Init()
 	//Элементы автоматического добавления
 	xml_init.InitAutoStatic(uiXml, "auto_static", this);
 
-	m_GlobalMapWidth			= pSettings->r_float(GLOBAL_MAP_LTX, GLOBAL_MAP_W_LTX);
-	m_GlobalMapHeight			= pSettings->r_float(GLOBAL_MAP_LTX, GLOBAL_MAP_H_LTX);
-
 	// Инициализируем карты
-	InitGlobalMap();
-	InitLocalMaps();
+	InitMaps();
 }
 
 //////////////////////////////////////////////////////////////////////////
@@ -184,13 +316,8 @@ void CUIMapWnd::SetLocalMap(const shared_str &levelName)
 {
 	UILocalMapBackground.m_pActiveMapSpot = NULL;
 
-	LocalMaps_it currentMapIt = m_LocalMaps.find(levelName);
+	LocalMapsPairIt currentMapIt = m_LocalMaps.find(levelName);
 	R_ASSERT3(m_LocalMaps.end() != currentMapIt, "Map data for current level is absent.\nMost possible reason - this level not included in game graph", *levelName);
-
-	UILocalMapBackground.m_LevelBox.x1 = currentMapIt->second.mapDimentions.x;
-	UILocalMapBackground.m_LevelBox.z1 = currentMapIt->second.mapDimentions.z;
-	UILocalMapBackground.m_LevelBox.x2 = currentMapIt->second.mapDimentions.y;
-	UILocalMapBackground.m_LevelBox.z2 = currentMapIt->second.mapDimentions.w;
 
 	R_ASSERT(currentMapIt->second.mapTexture);
 	UILocalMapBackground.InitMapBackground(currentMapIt->second.mapTexture);
@@ -325,19 +452,6 @@ void CUIMapWnd::InitLocalMapObjectives()
 
 //////////////////////////////////////////////////////////////////////////
 
-void CUIMapWnd::InitGlobalMap()
-{
-	// Инициализируем параметры глобальной карты
-	UIGlobalMapBackground.m_LevelBox.x1		= 0.0f;
-	UIGlobalMapBackground.m_LevelBox.z1		= 0.0f;
-	UIGlobalMapBackground.m_LevelBox.x2		= m_GlobalMapWidth;
-	UIGlobalMapBackground.m_LevelBox.z2		= m_GlobalMapHeight;
-
-	m_GlobalMapShader.create("hud\\default", pSettings->r_string(GLOBAL_MAP_LTX, GLOBAL_MAP_TEX_LTX));
-
-	UIGlobalMapBackground.InitMapBackground(m_GlobalMapShader);
-}
-
 //////////////////////////////////////////////////////////////////////////
 
 void CUIMapWnd::InitGlobalMapObjectives()
@@ -345,7 +459,7 @@ void CUIMapWnd::InitGlobalMapObjectives()
 	CActor* pActor = smart_cast<CActor*>(Level().CurrentEntity());
 
 	if (!pActor) return;
-	LocalMaps_it mapIt;
+	LocalMapsPairIt mapIt;
 
 	for (mapIt = m_LocalMaps.begin(); mapIt != m_LocalMaps.end(); ++mapIt)
 	{
@@ -466,64 +580,40 @@ void CUIMapWnd::SendMessage(CUIWindow* pWnd, s16 msg, void* pData)
 
 	CStringTable	stbl;
 
-	if(pWnd == &UILocalMapBackground)
-	{
-		if (MAPSPOT_FOCUS_RECEIVED == msg || MAPSPOT_ARROW_FOCUS_RECEIVED == msg)
-		{
-			if (m_pCurrentMap->m_pActiveMapSpot)
-			{
+	if(pWnd == &UILocalMapBackground){
+		if (MAPSPOT_FOCUS_RECEIVED == msg || MAPSPOT_ARROW_FOCUS_RECEIVED == msg){
+			if (m_pCurrentMap->m_pActiveMapSpot){
 				UIStaticInfo.Show(true);
 				RECT r	= m_pCurrentMap->m_pActiveMapSpot->GetAbsoluteRect();
 				RECT r2	= UIStaticInfo.GetParent()->GetAbsoluteRect();
 				
 				int left = r.right - r2.left;
 				int top = r.top + 2 - r2.top;
-/*				if(left + UIStaticInfo.GetWidth() > m_pCurrentMap->GetWidth())
-					left = r.left - r2.left - UIStaticInfo.GetWidth() - 2;
-				if(top<0)
-					top = r.bottom + 2 - r2.top;
-				else if(top + UIStaticInfo.GetHeight() >  m_pCurrentMap->GetHeight())
-					top = top - (top + UIStaticInfo.GetHeight() -  m_pCurrentMap->GetHeight()) -2;
-*/			
 				UIStaticInfo.MoveWindow(left, top);
 			
 				//CInventoryOwner* pInvOwner = smart_cast<CInventoryOwner*>(m_pCurrentMap->m_pActiveMapSpot->m_pObject);
 
-				if(xr_strlen(m_pCurrentMap->m_pActiveMapSpot->m_sDescText.GetBuf())>1)
-				{
+				if(xr_strlen(m_pCurrentMap->m_pActiveMapSpot->m_sDescText.GetBuf())>1){
 					UICharacterInfo.Show(true);
 					UICharacterInfo.ResetAllStrings();
 
 					UICharacterInfo.UIName.SetText(m_pCurrentMap->m_pActiveMapSpot->m_sNameText);
 					UICharacterInfo.UIRank.SetText(m_pCurrentMap->m_pActiveMapSpot->m_sDescText);
 					
-				}
-				else
-				{
+				}else{
 					UICharacterInfo.ResetAllStrings();
-/*					if(pInvOwner)
-					{
-						UICharacterInfo.InitCharacter(pInvOwner);
-						UICharacterInfo.Show(true);
-					}
-					else*/
 					UICharacterInfo.Show(false);
 				}
             }
-		}
-		else if(MAPSPOT_FOCUS_LOST == msg || MAPSPOT_ARROW_FOCUS_LOST == msg)
-		{
+		}else if(MAPSPOT_FOCUS_LOST == msg || MAPSPOT_ARROW_FOCUS_LOST == msg){
 			UIStaticInfo.Show(false);
 		}
 	}
 
-	if (&UIGlobalMapBackground == pWnd)
-	{
+	if (&UIGlobalMapBackground == pWnd){
 		static CUIMapSpot *prevSpot = NULL;
-		if (MAPSPOT_FOCUS_RECEIVED == msg)
-		{
-			if (UIGlobalMapBackground.m_pActiveMapSpot && prevSpot != UIGlobalMapBackground.m_pActiveMapSpot)
-			{
+		if (MAPSPOT_FOCUS_RECEIVED == msg){
+			if (UIGlobalMapBackground.m_pActiveMapSpot && prevSpot != UIGlobalMapBackground.m_pActiveMapSpot){
 				CUIGlobalMapLocation *pGML = smart_cast<CUIGlobalMapLocation*>(UIGlobalMapBackground.m_pActiveMapSpot);
 				R_ASSERT(pGML);
 				pGML->SetColor(activeLocalMapColor);
@@ -539,13 +629,11 @@ void CUIMapWnd::SendMessage(CUIWindow* pWnd, s16 msg, void* pData)
 			UIMapName.Show(true);
 		}
 
-		if (MAPSPOT_FOCUS_LOST == msg)
-		{
+		if (MAPSPOT_FOCUS_LOST == msg){
 			UIMapGoals.Show(false);
 			UIMapGoals.RemoveAll();
 			prevSpot = NULL;
-			if (UIGlobalMapBackground.m_pActiveMapSpot)
-			{
+			if (UIGlobalMapBackground.m_pActiveMapSpot){
 				CUIGlobalMapLocation *pGML = smart_cast<CUIGlobalMapLocation*>(UIGlobalMapBackground.m_pActiveMapSpot);
 				R_ASSERT(pGML);
 				if (Level().name() == pGML->m_strMapName)
@@ -556,39 +644,32 @@ void CUIMapWnd::SendMessage(CUIWindow* pWnd, s16 msg, void* pData)
 			UIMapName.Show(false);
 		}
 
-		if (MAPSPOT_CLICKED == msg)
-		{
+		if (MAPSPOT_CLICKED == msg){
 			CUIGlobalMapLocation *pGML = smart_cast<CUIGlobalMapLocation*>(UIGlobalMapBackground.m_pActiveMapSpot);
-			if (pGML)
-			{
+			if (pGML){
 				SetLocalMap(pGML->m_strMapName);
 				SwitchMapMode(emmLocal);
 			}
 		}
 	}
 
-	if (&UIMapBgndV == pWnd)
-	{
-		if (SCROLLBAR_VSCROLL == msg)
-		{
+	if (&UIMapBgndV == pWnd){
+		if (SCROLLBAR_VSCROLL == msg){
 			m_pCurrentMap->MoveMap(0, -VSCROLLBAR_STEP * (UIMapBgndV.GetScrollPos() - prevScrollPosV));
 			prevScrollPosV = UIMapBgndV.GetScrollPos();
 			m_pCurrentMap->Update();
 		}
 	}
 
-	if (&UIMapBgndH == pWnd)
-	{
-		if (SCROLLBAR_HSCROLL == msg)
-		{
+	if (&UIMapBgndH == pWnd){
+		if (SCROLLBAR_HSCROLL == msg){
 			m_pCurrentMap->MoveMap(-HSCROLLBAR_STEP * (UIMapBgndH.GetScrollPos() - prevScrollPosH), 0);
 			prevScrollPosH = UIMapBgndH.GetScrollPos();
 			m_pCurrentMap->Update();
 		}
 	}
 
-	if (m_pCurrentMap == pWnd && MAP_MOVED == msg)
-	{
+	if (m_pCurrentMap == pWnd && MAP_MOVED == msg){
 		Fvector2	dest;
 		m_pCurrentMap->ConvertFromLocalToMap(HSCROLLBAR_STEP, VSCROLLBAR_STEP, dest);
 		if (UIMapBgndV.IsShown())
@@ -601,8 +682,7 @@ void CUIMapWnd::SendMessage(CUIWindow* pWnd, s16 msg, void* pData)
 		m_pCurrentMap->Update();
 	}
 	
-	if (&UIMapTypeSwitch == pWnd && BUTTON_CLICKED == msg)
-	{
+	if (&UIMapTypeSwitch == pWnd && BUTTON_CLICKED == msg){
 		SwitchMapMode(emmGlobal);
 		for (WINDOW_LIST_it it = UIMapTypeSwitch.GetChildWndList().begin();
 							it != UIMapTypeSwitch.GetChildWndList().end();
@@ -611,9 +691,7 @@ void CUIMapWnd::SendMessage(CUIWindow* pWnd, s16 msg, void* pData)
 			RECT r = (*it)->GetWndRect();
 			(*it)->MoveWindow(r.left - UIMapTypeSwitch.GetPushOffsetX(), r.top - UIMapTypeSwitch.GetPushOffsetY());
 		}
-	}
-	else if (&UIMapTypeSwitch == pWnd && BUTTON_DOWN == msg)
-	{
+	}else if (&UIMapTypeSwitch == pWnd && BUTTON_DOWN == msg){
 		for (WINDOW_LIST_it it = UIMapTypeSwitch.GetChildWndList().begin();
 							it != UIMapTypeSwitch.GetChildWndList().end();
 							++it)
@@ -693,7 +771,7 @@ void CUIMapWnd::SwitchMapMode(const EMapModes mode)
 		UIGlobalMapBackground.Show(true);
 		SendInfoToActor("ui_pda_map_global");
 
-		for (LocalMaps_it it = m_LocalMaps.begin(); it != m_LocalMaps.end(); ++it)
+		for (LocalMapsPairIt it = m_LocalMaps.begin(); it != m_LocalMaps.end(); ++it)
 		{
 			if (Level().name() == it->first)
 				it->second.mapSpot->SetColor(ourLevelMapColor);
@@ -707,11 +785,14 @@ void CUIMapWnd::SwitchMapMode(const EMapModes mode)
 
 	UIMainMapFrame.AttachChild(m_pCurrentMap);
 
-	m_fWorldMapWidth = m_pCurrentMap->m_LevelBox.x2 - m_pCurrentMap->m_LevelBox.x1;
-	m_fWorldMapHeight = m_pCurrentMap->m_LevelBox.z2 - m_pCurrentMap->m_LevelBox.z1;
 
-	m_fWorldMapLeft = m_pCurrentMap->m_LevelBox.x1;
-	m_fWorldMapTop = m_pCurrentMap->m_LevelBox.z2;
+	const Fbox& level_box	= Level().ObjectSpace.GetBoundingVolume();
+
+	m_fWorldMapWidth = level_box.x2 - level_box.x1;
+	m_fWorldMapHeight = level_box.z2 - level_box.z1;
+
+	m_fWorldMapLeft = level_box.x1;
+	m_fWorldMapTop = level_box.z2;
 
 	Fvector2	dest;
 	m_pCurrentMap->ConvertFromLocalToMap(HSCROLLBAR_STEP, VSCROLLBAR_STEP, dest);
@@ -741,11 +822,8 @@ void CUIMapWnd::SwitchMapMode(const EMapModes mode)
 
 //////////////////////////////////////////////////////////////////////////
 
-void CUIMapWnd::AddLocalMap(const shared_str levelName, const Ivector4 &v, const Fvector4 &d, const shared_str &textureName)
+void CUIMapWnd::AddLocalMap(const shared_str& levelName, const Frect &l, const Frect &g, shared_str textureName)
 {
-	R_ASSERT	(v[2] > 0);
-	R_ASSERT	(v[3] > 0);
-	
 	// If level with this name already exists
 	R_ASSERT2	(m_LocalMaps.end() == m_LocalMaps.find(levelName), "Duplicate level name not allowed");
 	LocalMapDef &currentLevelMap = m_LocalMaps[levelName];
@@ -754,8 +832,8 @@ void CUIMapWnd::AddLocalMap(const shared_str levelName, const Ivector4 &v, const
 	const char * const localMapFrameTexture = "ui\\ui_frame_very_small";
 
 	Ivector4	iTmpV;
-	iTmpV[2] = static_cast<int>(v[2] * UIGlobalMapBackground.m_iMapViewWidthPixels	/ UIGlobalMapBackground.m_fMapViewWidthMeters);
-	iTmpV[3] = static_cast<int>(v[3] * UIGlobalMapBackground.m_iMapViewHeightPixels	/ UIGlobalMapBackground.m_fMapViewHeightMeters);
+	iTmpV[2]	= iFloor(v[2] * UIGlobalMapBackground.m_iMapViewWidthPixels	/ m_GlobalMapWidth);
+	iTmpV[3]	= iFloor(v[3] * UIGlobalMapBackground.m_iMapViewHeightPixels	/ m_GlobalMapHeight);
 
 	float		xSmallMapFactor		= m_GlobalMapWidth	/ globalMapButtonWidth;
 	float		ySmallMapFactor		= m_GlobalMapHeight / globalMapButtonHeight;
@@ -763,87 +841,66 @@ void CUIMapWnd::AddLocalMap(const shared_str levelName, const Ivector4 &v, const
 	// Create local map rect on global map
 	LocalMapDef::GMLptr pGML		(xr_new<CUIGlobalMapLocation>());
 	pGML->Init(iTmpV[2], iTmpV[3], UIGlobalMapBackground.GetAbsoluteRect(), localMapFrameTexture);
-	pGML->m_vWorldPos.x				= static_cast<float>(v[0]);
-	pGML->m_vWorldPos.z				= static_cast<float>(v[1]);
+	pGML->m_vWorldPos.x				= float(v[0]);
+	pGML->m_vWorldPos.z				= float(v[1]);
 	pGML->SetColor(inactiveLocalMapColor);
 	pGML->m_strMapName				= CStringTable()(levelName);
 	currentLevelMap.mapSpot			= pGML;
+	currentLevelMap.level_box		= l;
 	UIGlobalMapBackground.m_vMapSpots.push_back(pGML);
-//	UIGlobalMapBackground.AttachChild(pGML.get());
 
 	// Add map locations to global map button
-	iTmpV[0] = static_cast<int>(v[0] / xSmallMapFactor);
-	iTmpV[1] = static_cast<int>(v[1] / ySmallMapFactor);
-	iTmpV[2] = static_cast<int>(v[2] / xSmallMapFactor);
-	iTmpV[3] = static_cast<int>(v[3] / ySmallMapFactor);
+	iTmpV[0] = iFloor(v[0] / xSmallMapFactor);
+	iTmpV[1] = iFloor(v[1] / ySmallMapFactor);
+	iTmpV[2] = iFloor(v[2] / xSmallMapFactor);
+	iTmpV[3] = iFloor(v[3] / ySmallMapFactor);
 
 	currentLevelMap.smallFrame = xr_new<CUIFrameWindow>();
 	currentLevelMap.smallFrame->Init(localMapFrameTexture, iTmpV[0], globalMapButtonHeight - iTmpV[1], iTmpV[2], iTmpV[3]);
 	currentLevelMap.smallFrame->SetColor(inactiveLocalMapColor);
-//	UIMapTypeSwitch.AttachChild(currentLevelMap.smallFrame);
 
 	// Initialize map itself
 	currentLevelMap.mapTexture.create("hud\\default", *textureName);
-	currentLevelMap.mapDimentions.set(d);
 }
 
 //////////////////////////////////////////////////////////////////////////
 
-void CUIMapWnd::InitLocalMaps()
+void CUIMapWnd::InitMaps()
 {
-	R_ASSERT(ai().get_game_graph());
-
-	// Получаем список уровней игры
-	const GameGraph::LEVEL_MAP &levelMap		= ai().game_graph().header().levels();
-	
 	string256			gameLtxPath;
-	FS.update_path					(gameLtxPath, CONFIG_PATH, "game.ltx");
-	CInifile			gameLtx		(gameLtxPath);
-	// Loop through all levels in graph and initialize its map data
-	for (GameGraph::LEVEL_MAP::const_iterator it = levelMap.begin(); it != levelMap.end(); ++it)
-	{
-		shared_str		levelLtxRecord	= it->second.section	();
- 		string32    levelName;
-		strcpy		(levelName, gameLtx.r_string(levelLtxRecord, "name"));
-		_strlwr		(levelName);
-		
+	FS.update_path		(gameLtxPath, CONFIG_PATH, "game.ltx");
+	CInifile gameLtx	(gameLtxPath);
 
-		Ivector4	mapCoords;	
-		shared_str		mapTextureName;
-		Fvector4	mapDims;
+	// Инициализируем параметры глобальной карты
+	m_GlobalMapWidth	= gameLtx.r_float("ui_global_map", "width");
+	m_GlobalMapHeight	= gameLtx.r_float("ui_global_map", "height");
 
-		if (gameLtx.line_exist(levelLtxRecord, mapTextureKey))
-		{
-			mapTextureName	= gameLtx.r_string		(levelLtxRecord, mapTextureKey);
-
-			R_ASSERT2(gameLtx.line_exist(levelLtxRecord, mapLocalCoordinatesKey), "Local map on global map position data is absent");
-			mapCoords		= gameLtx.r_ivector4	(levelLtxRecord, mapLocalCoordinatesKey);
-
-			R_ASSERT2(gameLtx.line_exist(levelLtxRecord, mapDimentions), "Local map dimentions data is absent");
-			mapDims			= gameLtx.r_fvector4	(levelLtxRecord, mapDimentions);
+	UIGlobalMapBackground.InitMapBackground(m_GlobalMapShader);
+	
+	// initialize local maps
+	if (gameLtx.section_exist("ui_level_maps_single")){
+		CInifile::Sect& S		= gameLtx.r_section("ui_level_maps_single");
+		CInifile::SectIt	it	= S.begin(), end = S.end();
+		for (;it!=end; it++){
+			LPCSTR line	= *it->second;
+			string_path	t_name;
+			Frect		localMapCoords;
+			Frect		globalMapCoords;
+			u32 v_cnt	= sscanf(line,"%[^,],%f,%f,%f,%f,%f,%f,%f,%f",t_name,
+							&localMapCoords.x1,&localMapCoords.y1,	&localMapCoords.x2,&localMapCoords.y2,
+							&globalMapCoords.x1,&globalMapCoords.y1,&globalMapCoords.x2,&globalMapCoords.y2);
+			R_ASSERT	(v_cnt==9);
+			AddLocalMap	(it->first, localMapCoords, globalMapCoords, t_name);
 		}
-		else
-		{
-			// Подставляем фейк
-			mapTextureName	= "ui\\ui_nomap";
-			mapCoords.set	(m_rDefault.left, m_rDefault.top, m_rDefault.right, m_rDefault.bottom);
-            mapDims.set		(-240.0f, 364.0f, -390.0f, 256.0f);
-		}
-
-		AddLocalMap(levelName, mapCoords, mapDims, mapTextureName);
 	}
 }
-
 //////////////////////////////////////////////////////////////////////////
 
 void CUIMapWnd::DeleteLocalMapsData()
 {
-	for (LocalMaps_it it = m_LocalMaps.begin(); it != m_LocalMaps.end(); ++it)
-	{
+	for (LocalMapsPairIt it = m_LocalMaps.begin(); it != m_LocalMaps.end(); ++it){
 		if (it->second.smallFrame->GetParent())
-		{
 			it->second.smallFrame->GetParent()->DetachChild(it->second.smallFrame);
-		}
 		xr_delete(it->second.smallFrame);
 	}
 
@@ -854,7 +911,7 @@ void CUIMapWnd::DeleteLocalMapsData()
 
 void CUIMapWnd::ApplyFilterToObjectives(const shared_str &levelName)
 {
-	for (CUIMapBackground::MAP_SPOT_VECTOR_IT mapSpotIt = UILocalMapBackground.m_vMapSpots.begin();
+	for (CUIMapBackground::MapSpotPtrVecIt mapSpotIt = UILocalMapBackground.m_vMapSpots.begin();
 											  mapSpotIt != UILocalMapBackground.m_vMapSpots.end();
 											  ++mapSpotIt)
 	{
@@ -868,3 +925,4 @@ void CUIMapWnd::OnMouseWheel(int direction)
 	else
 		UIMapBgndV.TryScrollDec();
 }
+*/

@@ -9488,18 +9488,36 @@
 					Filter="">
 					<File
 						RelativePath=".\ui\UIGlobalMapLocation.cpp">
+						<FileConfiguration
+							Name="Debug|Win32"
+							ExcludedFromBuild="TRUE">
+							<Tool
+								Name="VCCLCompilerTool"/>
+						</FileConfiguration>
 					</File>
 					<File
 						RelativePath=".\ui\UIGlobalMapLocation.h">
 					</File>
 					<File
 						RelativePath=".\ui\UIMapBackground.cpp">
+						<FileConfiguration
+							Name="Debug|Win32"
+							ExcludedFromBuild="TRUE">
+							<Tool
+								Name="VCCLCompilerTool"/>
+						</FileConfiguration>
 					</File>
 					<File
 						RelativePath=".\ui\UIMapBackground.h">
 					</File>
 					<File
 						RelativePath=".\ui\UIMapSpot.cpp">
+						<FileConfiguration
+							Name="Debug|Win32"
+							ExcludedFromBuild="TRUE">
+							<Tool
+								Name="VCCLCompilerTool"/>
+						</FileConfiguration>
 					</File>
 					<File
 						RelativePath=".\ui\UIMapSpot.h">

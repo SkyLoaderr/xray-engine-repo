@@ -19,52 +19,90 @@
 #include "UIGlobalMapLocation.h"
 
 #include "UICharacterInfo.h"
+#include "UIScriptWnd.h"
 
 //////////////////////////////////////////////////////////////////////////
+class CUIGlobalMap: public CUIDialogWndEx{
+	Frect			m_Box;
+	Irect			m_MinimizedRect;
+	Irect			m_NormalRect;
+	enum EState{
+		stNone,
+		stMinimized,
+		stNormal,
+		stMaximized
+	};
+	EState			m_State;
+	void			SwitchTo			(EState new_state);
+	void			OnBtnMinimizedClick ();
+	void			OnBtnMaximizedClick ();
+public:
+					CUIGlobalMap		();
+	virtual			~CUIGlobalMap		();
+	
+	virtual void	Init				();
+};
 
+class CUILocalMap: public CUIStatic{
+	Frect			m_LevelBox;
+public:
+					CUILocalMap			();
+	virtual			~CUILocalMap		();
+};
+DEFINE_MAP(shared_str,CUILocalMap*,GameMaps,GameMapsPairIt);
+
+class CUIMapWnd: public CUIDialogWndEx
+{
+	typedef CUIDialogWndEx inherited;
+
+	CUIGlobalMap*	m_GlobalMap;
+	GameMaps		m_GameMaps;
+public:
+					CUIMapWnd				();
+	virtual			~CUIMapWnd				();
+
+	virtual void	Init					();
+	virtual void	Show					(bool status);
+
+	void			InitGlobalMapObjectives	(){}
+	void			InitLocalMapObjectives	(){}
+
+	void			SetActivePoint			(const Fvector &vNewPoint){}
+	virtual void	Draw					();
+};
+
+/*
 class CGameObject;
 
 class CUIMapWnd: public CUIWindow
 {
 private:
 	typedef CUIWindow inherited;
+private:
+	// Размеры глобальной карты в условных единицах
+	float				m_GlobalMapWidth;
+	float				m_GlobalMapHeight;
+
+	// Стандартное значение размеров прямоугольника на кнопке-переключателе на глобальную карту.
+	// Мы сравниваем размеры прамоугольника показываемой карты, и если они равны, то данную карту
+	// не показываем (т.к. для данного левела размеры карты не заданны)
+	RECT				m_rDefault;
 public:
-	CUIMapWnd();
-	virtual ~CUIMapWnd();
-
-	virtual void		Init			();
-	virtual void		Show			(bool status);
-	virtual void		SendMessage		(CUIWindow* pWnd, s16 msg, void* pData = NULL);
-	virtual void		Draw			();
-	virtual void		Update			();
-	virtual void		OnMouseWheel	(int direction);
-
-	// Установить новую позицию на карте, по кторой она будет отцентрована
-	void				SetActivePoint	(const Fvector &vNewPoint);
-
 	// Режимы карты
 	enum EMapModes
 	{
 		emmGlobal,
 		emmLocal
 	};
-	// Переключить режим карты
-	void				SwitchMapMode	(EMapModes mode);
-
 protected:
-	// Конвертация кординат карты из метров в пиксели на экране
-	void				ConvertToLocal	(const Fvector& src, Ivector2& dest);
-	void				AddObjectSpot	(CGameObject* pGameObject);
+	//global map
+	ref_shader			m_GlobalMapShader;
+
 	//элементы интерфейса
 	CUIFrameWindow		UIMainMapFrame;
 	//верхушка PDA
 	CUIFrameLineWnd		UIPDAHeader;
 
-	CUICheckButton		UICheckButton1;
-	CUICheckButton		UICheckButton2;
-	CUICheckButton		UICheckButton3;
-	CUICheckButton		UICheckButton4;
-		
 	//окошко с информацией для локальной карты
 	CUIStatic			UIStaticInfo;
 	//информация о пресонаже
@@ -80,9 +118,9 @@ protected:
 	CUIStatic			UILocalMapName;
 
 	// Current map
-	CUIMapBackground	*m_pCurrentMap;
+	CUIMapBackground*	m_pCurrentMap;
 	CUIScrollBar		UIMapBgndV,
-						UIMapBgndH;
+		UIMapBgndH;
 	//иконка актера
 	CUIMapSpot*			m_pActorSpot;
 	// Кнопка переключения глобальная/локальная карта
@@ -110,56 +148,60 @@ protected:
 	{
 		// Объект локальной карты на глобальной
 		typedef boost::shared_ptr<CUIGlobalMapLocation>	GMLptr;
-		GMLptr					mapSpot;
+		GMLptr			mapSpot;
 		// Заданя на данной карте
-		Objectives				obj;
+		Objectives		obj;
 		// Отдельный фрейм на кнопке переключения на глобальную карту
-		CUIFrameWindow			*smallFrame;
+		CUIFrameWindow*	smallFrame;
 		// Сама тектсура карты
-		ref_shader				mapTexture;
-		// И ее координаты
-		Fvector4				mapDimentions;
+		ref_shader		mapTexture;
 		// Флаг видимости этой карты
-		bool					visible;
+		bool			visible;
+		// Real Level box
+		Frect			level_box;
 
 		LocalMapDef()
-			:	smallFrame		(NULL),
-				mapTexture		(NULL),
-				visible			(false)
+			:smallFrame	(NULL),
+			mapTexture	(NULL),
+			visible		(false)
 		{
-			mapDimentions.set(0.0f, 0.0f, 0.0f, 0.0f);
+			level_box.set(0,0,0,0);
 		}
 	};
-
 	// Ассоциативный массив описателей локальных карт (имя->данные)
-	DEF_MAP				(LocalMaps, shared_str, LocalMapDef);
+	DEFINE_MAP			(shared_str, LocalMapDef, LocalMaps, LocalMapsPairIt);
 	LocalMaps			m_LocalMaps;
+protected:
+	// Конвертация кординат карты из метров в пиксели на экране
+	void				ConvertToLocal			(const Fvector& src, Ivector2& dest);
+	void				AddObjectSpot			(CGameObject* pGameObject);
 
 	// Инициализация карт. Выполняется 1 раз при загрузке игры
-	void				InitGlobalMap			();
-	ref_shader			m_GlobalMapShader;
-	void				AddLocalMap				(const shared_str leveName, const Ivector4 &v, const Fvector4 &d, const shared_str &textureName);
-	void				InitLocalMaps			();
+	void				InitMaps				();
+	void				AddLocalMap				(const shared_str& leveName, const Frect &l, const Frect &g, shared_str textureName);
 	void				DeleteLocalMapsData		();
-	// Инициализация заданий для отображения их на картах. Выполняется при каждом показе.
-
 	// Инициализация локальной карты.Выполняется при каждом показе.
 	void				SetLocalMap				(const shared_str &levelName);
 	// Применить фильтр на маплокейшины, для показа соответсвующих на нужной карте
 	void				ApplyFilterToObjectives	(const shared_str &levelName);
-
 public:
+						CUIMapWnd				();
+	virtual				~CUIMapWnd				();
+
+	virtual void		Init					();
+	virtual void		Show					(bool status);
+	virtual void		SendMessage				(CUIWindow* pWnd, s16 msg, void* pData = NULL);
+	virtual void		Draw					();
+	virtual void		Update					();
+	virtual void		OnMouseWheel			(int direction);
+
+	// Установить новую позицию на карте, по кторой она будет отцентрована
+	void				SetActivePoint			(const Fvector &vNewPoint);
+
+	// Переключить режим карты
+	void				SwitchMapMode			(EMapModes mode);
+
 	void				InitGlobalMapObjectives	();
 	void				InitLocalMapObjectives	();
-
-
-private:
-	// Размеры глобальной карты в условных единицах
-	float				m_GlobalMapWidth;
-	float				m_GlobalMapHeight;
-
-	// Стандартное значение размеров прямоугольника на кнопке-переключателе на глобальную карту.
-	// Мы сравниваем размеры прамоугольника показываемой карты, и если они равны, то данную карту
-	// не показываем (т.к. для данного левела размеры карты не заданны)
-	RECT				m_rDefault;
 };
+*/

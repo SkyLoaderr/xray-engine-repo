@@ -7,13 +7,15 @@
 #include "../script_callback.h"
 
 struct SCallbackInfo{
-	CScriptCallback		m_callback;
+	CScriptCallback			m_callback;
+	boost::function<void()>	m_cpp_callback;
 	shared_str				m_controlName;
-	s16					m_event;
+	s16						m_event;
 	SCallbackInfo():m_controlName(""),m_event(-1){}
 };
+
 struct event_comparer{
-	shared_str				name;
+	shared_str			name;
 	s16					event;
 
 	event_comparer(shared_str n, s16 e):name(n),event(e){}
@@ -22,12 +24,12 @@ struct event_comparer{
 	}
 };
 
-UIDialogWndEx::UIDialogWndEx():inherited()
+CUIDialogWndEx::CUIDialogWndEx():inherited()
 {
 	Hide();
 }
 
-UIDialogWndEx::~UIDialogWndEx()
+CUIDialogWndEx::~CUIDialogWndEx()
 {
 	try {
 		delete_data(m_callbacks);
@@ -35,34 +37,38 @@ UIDialogWndEx::~UIDialogWndEx()
 	catch(...) {
 	}
 }
-void UIDialogWndEx::Register			(CUIWindow* pChild)
+void CUIDialogWndEx::Register			(CUIWindow* pChild)
 {
 	pChild->SetMessageTarget(this);
 }
 
-void UIDialogWndEx::SendMessage(CUIWindow* pWnd, s16 msg, void* pData)
+void CUIDialogWndEx::SendMessage(CUIWindow* pWnd, s16 msg, void* pData)
 {
 	event_comparer ec(pWnd->WindowName(),msg);
 
 	CALLBACK_IT it = std::find_if(m_callbacks.begin(),m_callbacks.end(),ec);
 	if(it==m_callbacks.end())
-		return;
-	SCRIPT_CALLBACK_EXECUTE_0((*it)->m_callback )
+		return inherited::SendMessage(pWnd, msg, pData);
 
+	if ((*it)->m_callback.assigned()) {
+		SCRIPT_CALLBACK_EXECUTE_0((*it)->m_callback );
+	}else 
+		if ( (*it)->m_cpp_callback )	
+			(*it)->m_cpp_callback();
 }
 
-bool UIDialogWndEx::Load(LPCSTR xml_name)
+bool CUIDialogWndEx::Load(LPCSTR xml_name)
 {
 	return true;
 }
 
-SCallbackInfo*	UIDialogWndEx::NewCallback ()
+SCallbackInfo*	CUIDialogWndEx::NewCallback ()
 {
 	m_callbacks.push_back( xr_new<SCallbackInfo>() );
 	return m_callbacks.back();
 }
 
-void UIDialogWndEx::AddCallback(LPCSTR control_id, s16 event, const luabind::functor<void> &lua_function)
+void CUIDialogWndEx::AddCallback(LPCSTR control_id, s16 event, const luabind::functor<void> &lua_function)
 {
 	SCallbackInfo* c	= NewCallback ();
 	c->m_callback.set	(lua_function);
@@ -71,7 +77,7 @@ void UIDialogWndEx::AddCallback(LPCSTR control_id, s16 event, const luabind::fun
 	
 }
 
-void UIDialogWndEx::AddCallback (LPCSTR control_id, s16 event, const luabind::object &lua_object, LPCSTR method)
+void CUIDialogWndEx::AddCallback (LPCSTR control_id, s16 event, const luabind::object &lua_object, LPCSTR method)
 {
 	SCallbackInfo* c	= NewCallback ();
 	c->m_callback.set	(lua_object,method);
@@ -79,15 +85,22 @@ void UIDialogWndEx::AddCallback (LPCSTR control_id, s16 event, const luabind::ob
 	c->m_event			= event;
 }
 
+void CUIDialogWndEx::AddCallback(LPCSTR control_id, s16 event, boost::function<void()> f)
+{
+	SCallbackInfo* c	= NewCallback ();
+	c->m_cpp_callback	= f;
+	c->m_controlName	= control_id;
+	c->m_event			= event;
+}
 
-void UIDialogWndEx::test()
+void CUIDialogWndEx::test()
 {
 	CALLBACK_IT it = m_callbacks.begin();
 	for(;it!=m_callbacks.end();++it)
 		SCRIPT_CALLBACK_EXECUTE_0( (*it)->m_callback )
 }
 
-bool UIDialogWndEx::OnKeyboard(int dik, EUIMessages keyboard_action)
+bool CUIDialogWndEx::OnKeyboard(int dik, EUIMessages keyboard_action)
 {
 	inherited::OnKeyboard(dik,keyboard_action);
 	return true;

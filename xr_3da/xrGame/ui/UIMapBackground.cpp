@@ -43,13 +43,13 @@ void CUIMapBackground::Init(int x, int y, int width, int height)
 {
 	CUIWindow::Init(x, y, width, height);
 
+	m_iMapViewWidthPixels	= width;
+	m_iMapViewHeightPixels	= height;
+
 	m_fMapViewWidthMeters = pSettings->r_float("game_map","local_map_width_meters");
 	//m_fMapViewWidthMeters =  width*MAP_PIXEL_TO_METERS;
 	//m_fMapViewHeightMeters = height*MAP_PIXEL_TO_METERS;
 	m_fMapViewHeightMeters = height*(m_fMapViewWidthMeters/width);
-
-	m_iMapViewWidthPixels = width;
-	m_iMapViewHeightPixels = height;
 	
 	//вычислить ширину одной клеточки тумана в пикселях
 	Fvector cell_world_pos;
@@ -80,12 +80,6 @@ void CUIMapBackground::InitMapBackground(const ref_shader &sh)
 	landscape.SetPos(rect.left, rect.top);
 	landscape.SetRect(0, 0, GetWidth(), GetHeight());
 	landscape.SetShader(sh);
-
-	m_fMapWidthMeters	= m_LevelBox.x2 - m_LevelBox.x1;
-	m_fMapHeightMeters	= m_LevelBox.z2 - m_LevelBox.z1;
-	m_fMapLeftMeters	= m_LevelBox.x1;
-	m_fMapTopMeters		= m_LevelBox.z2;
-	m_fMapBottomMeters	= m_LevelBox.z1;
 
 	if (!m_bNoActorFocus)
 	{
@@ -191,8 +185,17 @@ void CUIMapBackground::ConvertToTexture(float x, float y, Fvector2& dest)
 
 void CUIMapBackground::Update()
 {
-	UpdateMapSpots();
+	const Fbox& level_box	= Level().ObjectSpace.GetBoundingVolume();
+	m_fMapWidthMeters		= level_box.x2 - level_box.x1;
+	m_fMapHeightMeters		= level_box.z2 - level_box.z1;
+	m_fMapLeftMeters		= level_box.x1;
+	m_fMapTopMeters			= level_box.z2;
+	m_fMapBottomMeters		= level_box.z1;
+ 
+	m_fMapViewWidthMeters	= m_fMapWidthMeters;
+	m_fMapViewHeightMeters	= GetHeight()*(m_fMapViewWidthMeters/GetWidth());
 
+	UpdateMapSpots();
 
 	//ignore CUIButton update, call CUIWindow not inherited::Update()
 	CUIWindow::Update();
@@ -456,8 +459,6 @@ void CUIMapBackground::OnMouse(int x, int y, EUIMessages mouse_action)
 			m_eButtonState = BUTTON_PUSHED;
 			
 			GetParent()->SetCapture(this, true);
-			m_previousPos.x = GetWndRect().left;
-			m_previousPos.y = GetWndRect().top;
 		}
 	}
 	else if(m_eButtonState == BUTTON_PUSHED)

@@ -4,11 +4,13 @@
 //#include "../script_callback.h"
 #include "../script_space_forward.h"
 #include "../script_export_space.h"
+#include <boost/function.hpp>
+#include <boost/bind.hpp>
 
 struct SCallbackInfo;
 
 
-class UIDialogWndEx :public CUIDialogWnd, public DLL_Pure
+class CUIDialogWndEx :public CUIDialogWnd, public DLL_Pure
 {
 typedef CUIDialogWnd				inherited;
 typedef xr_vector<SCallbackInfo*>	CALLBACKS;
@@ -23,10 +25,11 @@ protected:
 
 public:
 			void				Register			(CUIWindow* pChild);
-								UIDialogWndEx		();
-	virtual						~UIDialogWndEx		();
+								CUIDialogWndEx		();
+	virtual						~CUIDialogWndEx		();
 			void				AddCallback			(LPCSTR control_id, s16 event, const luabind::functor<void> &lua_function);
 			void				AddCallback			(LPCSTR control_id, s16 event, const luabind::object &lua_object, LPCSTR method);
+			void				AddCallback			(LPCSTR control_id, s16 event, boost::function<void()> f);
 	virtual bool				OnKeyboard			(int dik, EUIMessages keyboard_action);
 			void				test();
 
@@ -36,6 +39,6 @@ IC	T*	GetControl(LPCSTR name);
 	DECLARE_SCRIPT_REGISTER_FUNCTION
 };
 
-add_to_type_list(UIDialogWndEx)
+add_to_type_list(CUIDialogWndEx)
 #undef script_type_list
-#define script_type_list save_type_list(UIDialogWndEx)
+#define script_type_list save_type_list(CUIDialogWndEx)

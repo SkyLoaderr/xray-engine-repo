@@ -12,11 +12,11 @@ struct CWrapperBase : public T, public luabind::wrap_base {
 
 };
 
-typedef CWrapperBase<UIDialogWndEx> WrapType;
-typedef UIDialogWndEx BaseType;
+typedef CWrapperBase<CUIDialogWndEx> WrapType;
+typedef CUIDialogWndEx BaseType;
 
 template<typename T>
-IC T*	UIDialogWndEx::GetControl(LPCSTR name){
+IC T*	CUIDialogWndEx::GetControl(LPCSTR name){
 	shared_str n = name;
 	CUIWindow* pWnd = FindChild(n);
 	if(pWnd == NULL)
@@ -25,4 +25,4 @@ IC T*	UIDialogWndEx::GetControl(LPCSTR name){
 	return smart_cast<T*>(pWnd);
 }
 
-typedef luabind::class_<UIDialogWndEx, WrapType, luabind::bases<CUIDialogWnd,DLL_Pure> > export_class;
+typedef luabind::class_<CUIDialogWndEx, WrapType, luabind::bases<CUIDialogWnd,DLL_Pure> > export_class;
