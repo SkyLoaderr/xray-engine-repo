@@ -281,9 +281,6 @@
 				RelativePath="..\..\..\ode\src\step.h">
 			</File>
 			<File
-				RelativePath="..\..\..\ode\src\stepfast.h">
-			</File>
-			<File
 				RelativePath="..\..\..\ode\src\testing.h">
 			</File>
 		</Filter>
