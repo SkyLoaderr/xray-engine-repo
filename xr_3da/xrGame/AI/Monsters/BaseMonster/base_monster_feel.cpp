@@ -67,7 +67,7 @@ void CBaseMonster::HitEntity(const CEntity *pEntity, float fDamage, float impuls
 		pEntityNC->Hit(fDamage,hit_dir,this, smart_cast<CKinematics*>(pEntityNC->Visual())->LL_GetBoneRoot(),position_in_bone_space,impulse);
 
 		if (smart_cast<CActor *>(pEntityNC)) {
-			HUD().GetUI()->UIMainIngameWnd.PlayClawsAnimation	("monster");
+			//HUD().GetUI()->UIMainIngameWnd.PlayClawsAnimation	("monster");
 			SetAttackEffector									();
 		}
 
