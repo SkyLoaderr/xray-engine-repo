@@ -201,8 +201,10 @@ void CInfoPortion::load_shared	(LPCSTR)
 						map_location.attached_to_object = false;
 						map_location.object_id = 0xffff;
 					}
-					map_location.attached_to_object = true;
-					map_location.object_id = object->ID;
+					else {
+						map_location.attached_to_object = true;
+						map_location.object_id = object->ID;
+					}
 				}
 				else
 				{
