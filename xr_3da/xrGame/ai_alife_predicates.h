@@ -8,31 +8,29 @@
 
 #pragma once
 
-using namespace ALife;
-
-IC _EVENT_ID						tfChooseEventKeyPredicate(const CSE_ALifeEvent *T)
+IC ALife::_EVENT_ID					tfChooseEventKeyPredicate			(const CSE_ALifeEvent *T)
 {
 	return							(T->m_tEventID);
 };
 
-IC _TASK_ID							tfChooseTaskKeyPredicate(const CSE_ALifeTask *T)
+IC ALife::_TASK_ID					tfChooseTaskKeyPredicate			(const CSE_ALifeTask *T)
 {
 	return							(T->m_tTaskID);
 };
 
-IC LPCSTR							cafChooseDiscoveryKeyPredicate(const CSE_ALifeDiscovery *T)
+IC LPCSTR							cafChooseDiscoveryKeyPredicate		(const CSE_ALifeDiscovery *T)
 {
 	return							(T->m_caDiscoveryIdentifier);
 };
 
-IC LPCSTR							cafChooseOrganizationKeyPredicate(const CSE_ALifeOrganization *T)
+IC LPCSTR							cafChooseOrganizationKeyPredicate	(const CSE_ALifeOrganization *T)
 {
 	return							(T->m_caOrganizationIdentifier);
 };
 
 class CCompareTraderRanksPredicate {
 public:
-	bool							operator()(const CSE_ALifeTrader *tpALifeTrader1, const CSE_ALifeTrader *tpALifeTrader2) const
+	bool							operator()							(const CSE_ALifeTrader *tpALifeTrader1, const CSE_ALifeTrader *tpALifeTrader2) const
 	{
 		return						(tpALifeTrader1->m_tRank < tpALifeTrader2->m_tRank);
 	};
@@ -40,14 +38,14 @@ public:
 
 class CRemovePersonalEventPredicate {
 private:
-	EVENT_MAP						*m_tpMap;
+	ALife::EVENT_MAP				*m_tpMap;
 public:
-	CRemovePersonalEventPredicate	(EVENT_MAP &tpMap)
+									CRemovePersonalEventPredicate		(ALife::EVENT_MAP &tpMap)
 	{
 		m_tpMap						= &tpMap;
 	};
 
-	IC bool							operator()(const CSE_ALifePersonalEvent *tPersonalEvent)  const
+	IC bool							operator()							(const CSE_ALifePersonalEvent *tPersonalEvent)  const
 	{
 		return						(m_tpMap->find(tPersonalEvent->m_tEventID) == m_tpMap->end());
 	};
@@ -55,22 +53,22 @@ public:
 
 class CSortItemPredicate {
 private:
-	OBJECT_MAP						*m_tpMap;
+	ALife::OBJECT_MAP				*m_tpMap;
 public:
-	CSortItemPredicate				(OBJECT_MAP &tpMap)
+									CSortItemPredicate					(ALife::OBJECT_MAP &tpMap)
 	{
 		m_tpMap						= &tpMap;
 	};
 
-	IC bool							operator()(const _OBJECT_ID &tObjectID1, const _OBJECT_ID &tObjectID2)  const
+	IC bool							operator()							(const ALife::_OBJECT_ID &tObjectID1, const ALife::_OBJECT_ID &tObjectID2)  const
 	{
-		OBJECT_PAIR_IT				it1 = m_tpMap->find(tObjectID1);
+		ALife::OBJECT_PAIR_IT		it1 = m_tpMap->find(tObjectID1);
 		VERIFY						(it1 != m_tpMap->end());
-		OBJECT_PAIR_IT				it2 = m_tpMap->find(tObjectID2);
+		ALife::OBJECT_PAIR_IT		it2 = m_tpMap->find(tObjectID2);
 		VERIFY						(it2 != m_tpMap->end());
-		CSE_ALifeItem					*tpItem1 = dynamic_cast<CSE_ALifeItem *>((*it1).second);
+		CSE_ALifeItem				*tpItem1 = dynamic_cast<CSE_ALifeItem *>((*it1).second);
 		VERIFY						(tpItem1);
-		CSE_ALifeItem					*tpItem2 = dynamic_cast<CSE_ALifeItem *>((*it2).second);
+		CSE_ALifeItem				*tpItem2 = dynamic_cast<CSE_ALifeItem *>((*it2).second);
 		VERIFY						(tpItem2);
 		return						(float(tpItem1->m_dwCost)/tpItem1->m_fMass > float(tpItem2->m_dwCost)/tpItem2->m_fMass);
 	};

@@ -10,9 +10,7 @@
 
 #define ALIFE_SUPPORT_CONSOLE_COMMANDS
 
-//#include "..\\xrLevel.h"
 #include "ai_alife_interfaces.h"
-//#include "ai_alife_templates.h"
 
 class CSE_ALifeGameTime : public IPureALifeLSObject {
 public:

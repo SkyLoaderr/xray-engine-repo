@@ -12,8 +12,6 @@
 
 #define GRAPH_NAME							"game.graph"
 
-//using namespace ALife;
-
 class CSE_ALifeGraph {
 public:
 	#pragma pack(push,4)

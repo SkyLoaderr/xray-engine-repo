@@ -8,15 +8,10 @@
 
 #pragma once
 
-//#include "xrServer_Objects_ALife_All.h"
-//#include "ai_alife_predicates.h"
 #include "ai_alife_a_star.h"
 #include "ai_alife_space.h"
 #include "ai_alife_objects.h"
 using namespace ALife;
-
-class CSE_ALifeDynamicObject;
-class CSE_ALifeHumanAbstract;;
 
 class CSE_ALifeObjectRegistry : public IPureALifeLSObject {
 public:

@@ -651,6 +651,7 @@ CSE_ALifeObjectPhysic::CSE_ALifeObjectPhysic(LPCSTR caSection) : CSE_ALifeDynami
     fixed_bone[0]				=0;
 	if (pSettings->section_exist(caSection) && pSettings->line_exist(caSection,"visual"))
     	set_visual				(pSettings->r_string(caSection,"visual"));
+	startup_animation[0]		= 0;
 }
 
 CSE_ALifeObjectPhysic::~CSE_ALifeObjectPhysic		() 
@@ -675,6 +676,12 @@ void CSE_ALifeObjectPhysic::STATE_Read		(NET_Packet	&tNetPacket, u16 size)
 		tNetPacket.r_string		(fixed_bone);
 	// internal
 	strlwr						(fixed_bone);
+	if (m_wVersion > 28)
+		tNetPacket.r_string		(startup_animation);
+
+#ifdef _EDITOR    
+	PlayAnimation				(startup_animation[0]?startup_animation:"$editor");
+#endif
 }
 
 void CSE_ALifeObjectPhysic::STATE_Write		(NET_Packet	&tNetPacket)
@@ -684,6 +691,7 @@ void CSE_ALifeObjectPhysic::STATE_Write		(NET_Packet	&tNetPacket)
 	tNetPacket.w_u32			(type);
 	tNetPacket.w_float			(mass);
 	tNetPacket.w_string			(fixed_bone);
+	tNetPacket.w_string			(startup_animation);
 }
 
 void CSE_ALifeObjectPhysic::UPDATE_Read		(NET_Packet	&tNetPacket)
@@ -705,11 +713,40 @@ xr_token po_types[]={
 	{ 0,				0				}
 };
 
+void __fastcall	CSE_ALifeObjectPhysic::OnChangeAnim(PropValue* sender)
+{
+	PlayAnimation				(startup_animation);
+}
+
 void CSE_ALifeObjectPhysic::FillProp		(LPCSTR pref, PropItemVec& values) {
 	inherited::FillProp			(pref,	 values);
 	PHelper.CreateToken			(values, PHelper.PrepareKey(pref,s_name,"Type"), &type,	po_types, 1);
 	PHelper.CreateFloat			(values, PHelper.PrepareKey(pref,s_name,"Mass"), &mass, 0.1f, 10000.f);
 	PHelper.CreateText			(values, PHelper.PrepareKey(pref,s_name,"Fixed bone"),	fixed_bone,	sizeof(fixed_bone));
+    
+	if (visual && PKinematics(visual))
+	{
+		CKinematics::accel		*ll_bones	= PKinematics(visual)->LL_Bones();
+		CKinematics::accel		*ll_motions	= PKinematics(visual)->LL_Motions();
+		CKinematics::accel::iterator _I, _E;
+		AStringVec				vec;
+		bool					bFound;
+		// bones
+		_I						= ll_motions->begin();
+		_E						= ll_motions->end();
+		bFound					= false;
+
+		for (; _I!=_E; _I++) {
+			vec.push_back(_I->first);
+			if (!bFound && startup_animation[0] && (vec.back() == startup_animation))
+				bFound=true;
+		}
+
+		if (!bFound)
+			startup_animation[0]= 0;
+		PropValue				*tNetPacket = PHelper.CreateList	(values,	PHelper.PrepareKey(pref,s_name,"Startup animation"), startup_animation, sizeof(startup_animation), &vec);
+		tNetPacket->OnChangeEvent			= OnChangeAnim;
+	}
 }
 #endif
 
