@@ -320,12 +320,23 @@ DWORD CAI_Soldier::tfGetActionType()
 
 DWORD CAI_Soldier::tfGetAloneFightType()
 {
+	SelectEnemy(Enemy);
+	
+	if (Enemy.Enemy)
+		vfSaveEnemy();
+
 	if (bfAmIHurt())
 		return(FIGHT_TYPE_HURT);
 
 	objVisible &KnownEnemies = Level().Teams[g_Team()].KnownEnemys;
 	float fFightCoefficient = 0.f, fTempCoefficient;
 	CCustomMonster *tpCustomMonster = 0;
+
+	if (KnownEnemies.size() == 1) {
+		CEntity *tpEntity = dynamic_cast<CEntity *>(KnownEnemies[0].key);
+		if ((tpEntity) && (!bfCheckForEntityVisibility(tpEntity)))
+			return(FIGHT_TYPE_ATTACK);
+	}
 
 	for (int i=0; i<KnownEnemies.size(); i++) {
 		tpCustomMonster = dynamic_cast<CCustomMonster *>(KnownEnemies[i].key);

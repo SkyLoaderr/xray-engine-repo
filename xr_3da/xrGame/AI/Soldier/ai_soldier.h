@@ -621,7 +621,7 @@ class CAI_Soldier : public CCustomMonster
 		}
 	IC	void vfAddStateToList(ESoldierStates eState)
 		{
-			if (tStateList.size() > MAX_STATE_LIST_SIZE)
+			if (tStateList.size() >= MAX_STATE_LIST_SIZE)
 				tStateList.erase(DWORD(0));
 			SSoldierStates tSoldierStates;
 			tSoldierStates.dwTime = Level().timeServer();

@@ -141,7 +141,7 @@ void CAI_Soldier::OnHurtAlone()
 
 	m_dwLastRangeSearch = dwHitTime;
 
-	AI_Path.TravelPath.clear();
+	//AI_Path.TravelPath.clear();
 
 	DWORD dwCurTime = Level().timeServer();
 
@@ -184,8 +184,6 @@ void CAI_Soldier::OnAttackAloneNonFire()
 
 	CHECK_IF_GO_TO_PREV_STATE_THIS_UPDATE(bfCheckIfActionOrFightTypeChanged());
 
-	SelectEnemy(Enemy);
-	
 	CHECK_IF_SWITCH_TO_NEW_STATE_THIS_UPDATE_AND_UPDATE(!bfCheckForEntityVisibility(Enemy.Enemy),aiSoldierAttackAloneNonFireSteal)
 
 	CHECK_IF_SWITCH_TO_NEW_STATE_THIS_UPDATE_AND_UPDATE(bfTooFarToEnemy(Enemy.Enemy,ATTACK_NON_FIRE_FIRE_DISTANCE) || bfNeedRecharge(),aiSoldierAttackAloneNonFireRun)
@@ -199,13 +197,11 @@ void CAI_Soldier::OnAttackAloneFire()
 	
 	CHECK_IF_GO_TO_PREV_STATE_THIS_UPDATE(bfCheckIfActionOrFightTypeChanged());
 
-	SelectEnemy(Enemy);
-	
-	CHECK_IF_SWITCH_TO_NEW_STATE_THIS_UPDATE_AND_UPDATE(!bfCheckForEntityVisibility(Enemy.Enemy),aiSoldierAttackAloneNonFireSteal)
+	CHECK_IF_SWITCH_TO_NEW_STATE_THIS_UPDATE_AND_UPDATE(!bfCheckForEntityVisibility(Enemy.Enemy) && !bfTooFarToEnemy(Enemy.Enemy,5.f),aiSoldierAttackAloneFireSteal)
 
-	CHECK_IF_SWITCH_TO_NEW_STATE_THIS_UPDATE_AND_UPDATE(bfTooFarToEnemy(Enemy.Enemy,ATTACK_FIRE_FIRE_DISTANCE),aiSoldierAttackAloneNonFireRun)
-	
-	SWITCH_TO_NEW_STATE_THIS_UPDATE_AND_UPDATE(aiSoldierAttackAloneNonFireFire)
+	CHECK_IF_SWITCH_TO_NEW_STATE_THIS_UPDATE_AND_UPDATE(!bfTooFarToEnemy(Enemy.Enemy,ATTACK_FIRE_FIRE_DISTANCE),aiSoldierAttackAloneFireFire)
+
+	SWITCH_TO_NEW_STATE_THIS_UPDATE_AND_UPDATE(aiSoldierAttackAloneFireRun)
 }
 
 void CAI_Soldier::OnDefendAloneNonFire()
@@ -214,8 +210,6 @@ void CAI_Soldier::OnDefendAloneNonFire()
 	
 	CHECK_IF_GO_TO_PREV_STATE_THIS_UPDATE(bfCheckIfActionOrFightTypeChanged());
 
-	SelectEnemy(Enemy);
-	
 	CHECK_IF_SWITCH_TO_NEW_STATE_THIS_UPDATE_AND_UPDATE(!bfCheckForEntityVisibility(Enemy.Enemy),aiSoldierDefendAloneNonFireSteal)
 
 	CHECK_IF_SWITCH_TO_NEW_STATE_THIS_UPDATE_AND_UPDATE(bfTooFarToEnemy(Enemy.Enemy,ATTACK_NON_FIRE_FIRE_DISTANCE),aiSoldierDefendAloneNonFireRun)
@@ -229,13 +223,11 @@ void CAI_Soldier::OnDefendAloneFire()
 	
 	CHECK_IF_GO_TO_PREV_STATE_THIS_UPDATE(bfCheckIfActionOrFightTypeChanged());
 
-	SelectEnemy(Enemy);
-	
 	CHECK_IF_SWITCH_TO_NEW_STATE_THIS_UPDATE_AND_UPDATE(!bfCheckForEntityVisibility(Enemy.Enemy),aiSoldierDefendAloneNonFireSteal)
 
-	CHECK_IF_SWITCH_TO_NEW_STATE_THIS_UPDATE_AND_UPDATE(bfTooFarToEnemy(Enemy.Enemy,ATTACK_FIRE_FIRE_DISTANCE),aiSoldierDefendAloneNonFireRun)
-	
 	SWITCH_TO_NEW_STATE_THIS_UPDATE_AND_UPDATE(aiSoldierDefendAloneNonFireFire)
+
+	CHECK_IF_SWITCH_TO_NEW_STATE_THIS_UPDATE_AND_UPDATE(bfTooFarToEnemy(Enemy.Enemy,ATTACK_FIRE_FIRE_DISTANCE),aiSoldierDefendAloneNonFireRun)
 }
 
 void CAI_Soldier::OnPursuitAloneNonFire()
@@ -279,8 +271,6 @@ void CAI_Soldier::OnRetreatAloneFire()
 
 	CHECK_IF_GO_TO_PREV_STATE_THIS_UPDATE(bfCheckIfActionOrFightTypeChanged())
 	
-	SelectEnemy(Enemy);
-	
 	INIT_SQUAD_AND_LEADER;
 
 	CGroup &Group = Squad.Groups[g_Group()];
@@ -293,20 +283,16 @@ void CAI_Soldier::OnRetreatAloneFire()
 	if (AI_Path.bNeedRebuild)
 		vfBuildPathToDestinationPoint(0);
 	else
-		if (!m_bStateChanged)
-			vfSearchForBetterPosition(SelectorRetreat,Squad,Leader);
-		else
-			vfSearchForBetterPositionWTime(SelectorRetreat,Squad,Leader);
+		vfSearchForBetterPosition(SelectorRetreat,Squad,Leader);
 
-	//if (bfTooBigDistance(tSavedEnemyPosition,15.f) || !Enemy.bVisible || ((Enemy.Enemy) && !bfCheckForEntityVisibility(Enemy.Enemy)))
-	if (bfTooBigDistance(tSavedEnemyPosition,15.f) || !Enemy.bVisible || bfCheckStateHistory(aiSoldierHurtAlone,10000))
+	if (bfTooBigDistance(tSavedEnemyPosition,15.f) || !Enemy.Enemy || ((Enemy.Enemy) && !Enemy.bVisible) || bfCheckStateHistory(aiSoldierHurtAlone,10000))
 		if (AI_Path.fSpeed < EPS_L)
 			SetLessCoverLook(AI_Node);
 		else
 			SetDirectionLook();
 	else
 		vfAimAtEnemy();
-	
+
 	vfStopFire();
 
 	if (m_cBodyState != BODY_STATE_LIE)
@@ -357,8 +343,6 @@ void CAI_Soldier::OnAttackAloneNonFireRun()
 	
 	vfStopFire();
 	
-	SelectEnemy(Enemy);
-	
 	if (bfNeedRecharge()) {
 		if (!bfSaveFromEnemy(Enemy.Enemy)) {
 			INIT_SQUAD_AND_LEADER;
@@ -408,6 +392,21 @@ void CAI_Soldier::OnAttackAloneFireFire()
 	WRITE_TO_LOG("attack alone fire fire");
 
 	CHECK_IF_GO_TO_PREV_STATE_THIS_UPDATE(bfCheckIfActionOrFightTypeChanged())
+	
+	CHECK_IF_GO_TO_PREV_STATE_THIS_UPDATE(bfNeedRecharge());
+
+	vfAimAtEnemy(true);
+
+	vfSetFire(true,*getGroup());
+	
+	if (m_cBodyState != BODY_STATE_LIE)
+		Squat();
+	else {
+		Squat();
+		m_tpAnimationBeingWaited = tSoldierAnimations.tLie.tGlobal.tpStandUp;
+		SWITCH_TO_NEW_STATE(aiSoldierWaitForAnimation);
+	}
+	vfSetMovementType(WALK_NO);
 }
 
 void CAI_Soldier::OnAttackAloneFireRun()
@@ -422,6 +421,40 @@ void CAI_Soldier::OnAttackAloneFireSteal()
 	WRITE_TO_LOG("attack alone fire steal");
 
 	CHECK_IF_GO_TO_PREV_STATE_THIS_UPDATE(bfCheckIfActionOrFightTypeChanged())
+	
+	if (m_bStateChanged)
+		m_dwLastRangeSearch = 0;
+
+	Fvector tDistance;
+	tDistance.sub(Position(),Enemy.Enemy->Position());
+
+	CHECK_IF_SWITCH_TO_NEW_STATE((Weapons->ActiveWeapon()) && (Weapons->ActiveWeapon()->GetAmmoElapsed() == 0),aiSoldierRecharge)
+
+	CHECK_IF_GO_TO_PREV_STATE_THIS_UPDATE(bfCheckForEntityVisibility(Enemy.Enemy) || (!bfTooFarToEnemy(Enemy.Enemy,5.f)))
+
+	INIT_SQUAD_AND_LEADER;
+	
+	CGroup &Group = Squad.Groups[g_Group()];
+
+	vfInitSelector(SelectorPatrol,Squad,Leader);
+
+	if (AI_Path.bNeedRebuild)
+		vfBuildPathToDestinationPoint(0);
+	else
+		vfSearchForBetterPosition(SelectorPatrol,Squad,Leader);
+
+	vfAimAtEnemy();
+	
+	vfStopFire();
+	
+	if (vPosition.distance_to(Enemy.Enemy->Position()) > 25.f) {
+		StandUp();
+		vfSetMovementType(RUN_FORWARD_3);
+	}
+	else {
+		Squat();
+		vfSetMovementType(WALK_FORWARD_1);
+	}
 }
 
 void CAI_Soldier::OnAttackAloneFireDialog()
