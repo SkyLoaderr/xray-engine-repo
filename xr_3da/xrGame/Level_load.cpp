@@ -89,7 +89,7 @@ BOOL CLevel::Load_GameSpecific_After()
 		Sounds_Random.reserve	(S.size());
 		for (CInifile::SectIt I=S.begin(); S.end()!=I; ++I) {
 			Sounds_Random.push_back	(ref_sound());
-			Sound->create			(Sounds_Random.back(),TRUE,*I->second);
+			Sound->create			(Sounds_Random.back(),TRUE,*I->first);
 		}
 		Sounds_dwNextTime		= Device.TimerAsync	()	+ 5000;
 	}
