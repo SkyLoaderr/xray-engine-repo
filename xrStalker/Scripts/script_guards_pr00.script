@@ -239,6 +239,18 @@ function main()
 	end
 
 	while true do
+		if final_guard01:see(actor) then
+			wait(1000)			
+			prof_k_bou:play_at_pos			(final_guard01,final_guard01:position(),0);
+			final_guard01:script	(false,script_guards_pr00.script_name())
+			final_guard02:script	(false,script_guards_pr00.script_name())
+			final_guard03:script	(false,script_guards_pr00.script_name())
+		break
+		end
+	    wait	()
+	end
+
+	while true do
 		if actor.health <= 0 then
 			guard01:script	(true,script_guards_pr00.script_name())
 			guard02:script	(true,script_guards_pr00.script_name())
