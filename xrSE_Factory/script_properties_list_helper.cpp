@@ -14,6 +14,7 @@
 #include "script_value_wrapper.h"
 #include "ai_space.h"
 #include "script_engine.h"
+#include "script_space.h"
 
 CSE_Abstract *owner				(luabind::object object)
 {

@@ -419,6 +419,9 @@
 			<File
 				RelativePath=".\script_space.h">
 			</File>
+			<File
+				RelativePath=".\script_space_forward.h">
+			</File>
 			<Filter
 				Name="ScriptClasses"
 				Filter="">
