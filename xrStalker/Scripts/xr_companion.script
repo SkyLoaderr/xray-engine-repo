@@ -7,6 +7,11 @@
 
 local desired_distance = 2
 
+local mt_stand = 0
+local mt_walk = 1
+local mt_run = 2
+local mt_sprint = 3
+
 ----------------------------------------------------------------------------------------------------------------------
 class "evaluator_need_companion" (property_evaluator)
 
@@ -14,8 +19,9 @@ function evaluator_need_companion:__init(storage, name) super (nil, name)
 	self.st = storage
 end
 
-function evaluator_need_companion:evaluate ()
-	--printf("evaluator_need_companion:evaluate()")
+function evaluator_need_companion:evaluate()
+	--printf("_bp: evaluator_need_companion:evaluate(): name='%s', self.st.enabled=%s",
+	--	self.object:name(), utils.to_str(self.st.enabled))
 	return self.st.enabled
 end
 
@@ -43,9 +49,10 @@ function action_companion_activity:initialize()
 	self.object:set_desired_direction()
 
 	self.assist_point = nil
- 
-  
-   end
+	
+	self.move_type = mt_stand
+	self.last_state = ""
+end
 
 function action_companion_activity:execute()
 	action_base.execute(self)
@@ -67,31 +74,45 @@ function action_companion_activity:execute()
 	self.object:set_path_type(game_object.level_path)
 	self.object:set_dest_level_vertex_id(self.assist_point)
 
-	local move_type
-	if level.vertex_position(self.assist_point):distance_to(self.object:position()) < 1 then
-		move_type = move.stand
+	local dist = level.vertex_position(self.assist_point):distance_to(self.object:position())
+	
+	printf("_bp: action_companion_activity:execute(): name='%s', dist=%s",
+		self.object:name(), dist)
+	
+	if dist < 1 then
+		self.move_type = mt_stand
 	end
-	if level.vertex_position(self.assist_point):distance_to(self.object:position()) >= 1 and
-	   move_type == move.stand
-	then
-		move_type = move.walk
+	if dist >= 1 and self.move_type == mt_stand then
+		self.move_type = mt_walk
 	end
-	if level.vertex_position(self.assist_point):distance_to(self.object:position()) >= 10 and
-		move_type == move.stand or move_type == move.walk
+	if dist >= 6 and
+		(self.move_type == mt_stand or self.move_type == mt_walk)
 	then
-		move_type = move.run		
+		self.move_type = mt_run		
+	end
+	if dist >= 10 and
+		(self.move_type == mt_stand or self.move_type == mt_walk or
+		self.move_type == mt_run)
+	then
+		self.move_type = mt_sprint		
 	end
 	
-	if move_type == move.stand then
-		state_mgr.set_state(self.object, "guard_na",
-			nil, nil, nil, { animation = true })
-	elseif move_type == move.walk then
-		state_mgr.set_state(self.object, "patrol",
-			nil, nil, nil, { animation = true })
+	local new_state
+	if self.move_type == mt_stand then
+		new_state = "guard_na"
+	elseif self.move_type == mt_walk then
+		new_state = "patrol"
+	elseif self.move_type == mt_run then
+		new_state = "rush"
 	else
-		state_mgr.set_state(self.object, "rush",
-			nil, nil, nil, { animation = true })
+		new_state = "sprint"
 	end
+	
+	if new_state and new_state ~= self.last_state then
+		state_mgr.set_state(self.object, new_state,
+			nil, nil, nil, { animation = true })
+		self.last_state = new_state
+	end 
 
 	-- 4. Если стоим на точке - петь песенки и прочую херню
 	xr_sound.sound_update(self.object, self.sound_wait) 

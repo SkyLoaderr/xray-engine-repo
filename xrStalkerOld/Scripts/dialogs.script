@@ -337,7 +337,12 @@ function companion_will_follow(npc, actor)
 		return false
 	end
 	if st.active_scheme then
-		return false
+		local overrides = xr_logic.generic_scheme_overrides(npc)
+		if overrides and overrides.companion_enabled then
+			-- ok
+		else
+			return false
+		end
 	end
 	return true
 end
@@ -351,13 +356,13 @@ end
 function companion_start_following(npc, actor)
 	printf("_bp: dialogs: companion_start_following: npc='%s', actor='%s'",
 		npc:name(), actor:name())
-	db.storage[npc:id()].companion = { enabled = true }
+	db.storage[npc:id()].companion.enabled = true
 end
 
 function companion_stop_following(npc, actor)
 	printf("_bp: dialogs: companion_stop_following: npc='%s', actor='%s'",
 		npc:name(), actor:name())
-	db.storage[npc:id()].companion = nil
+	db.storage[npc:id()].companion.enabled = false
 end
 
 function is_companion(actor, npc)
