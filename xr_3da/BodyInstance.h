@@ -252,8 +252,8 @@ private:
 	BlendList								blend_cycles	[MAX_PARTS];
 	BlendList								blend_fx;
 
-	u32									iUpdateID;
-	u32									dwUpdate_LastTime;
+	u32										iUpdateID;
+	u32										dwUpdate_LastTime;
 
 	// internal functions
 	void									IBoneInstances_Create	();
@@ -285,6 +285,11 @@ public:
 	{
 		VERIFY((bone_id>=0)&&(bone_id<LL_BoneCount())); 
 		return bone_instances[bone_id];	
+	}
+	IC CBoneData&				LL_GetData		(int bone_id)
+	{
+		VERIFY((bone_id>=0)&&(bone_id<LL_BoneCount())); 
+		return *((*bones)[bone_id]);	
 	}
 	IC int						LL_BoneRoot		()
 	{	return iRoot; }
