@@ -80,14 +80,27 @@ protected:
 		virtual SERVER_BASE_CLASS	*server_object		(LPCSTR section) const;
 	};
 
-	struct CObjectItemPredicate {
-		CLASS_ID					m_clsid;
+	class CObjectItemPredicate {
+	private:
+		enum ESearchType {
+			eSearchTypeCLSID		= u32(0),
+			eSearchTypeScriptName,
+			eSearchTypeDummy		= u32(-1),
+		};
 
-		IC							CObjectItemPredicate(const CLASS_ID &clsid);
+	private:
+		CLASS_ID					m_clsid;
+		ref_str						m_script_clsid_name;
+		ESearchType					m_search_type;
+
+	public:
+
 		IC							CObjectItemPredicate();
+		IC							CObjectItemPredicate(const CLASS_ID &clsid);
+		IC							CObjectItemPredicate(const ref_str &script_clsid_name);
 		IC	bool					operator()			(const CObjectItemAbstract *item) const;
 		IC	bool					operator()			(const CObjectItemAbstract *item1, const CObjectItemAbstract *item2) const;
-		IC	bool					operator()			(const CObjectItemAbstract *item1, const CLASS_ID &clsid) const;
+		IC	bool					operator()			(const CObjectItemAbstract *item, const CLASS_ID &clsid) const;
 	};
 
 #ifndef _EDITOR
@@ -114,6 +127,7 @@ public:
 
 protected:
 	OBJECT_ITEM_STORAGE				m_clsids;
+	bool							m_initialized;
 
 protected:
 	IC		void						add				(CObjectItemAbstract *item);

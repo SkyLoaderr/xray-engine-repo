@@ -28,19 +28,35 @@ IC	ref_str	CObjectFactory::CObjectItemAbstract::script_clsid	() const
 }
 #endif
 
-IC	CObjectFactory::CObjectItemPredicate::CObjectItemPredicate	(const CLASS_ID &clsid) :
-	m_clsid				(clsid)
+IC	CObjectFactory::CObjectItemPredicate::CObjectItemPredicate	() :
+	m_clsid				(CLASS_ID(-1)),
+	m_script_clsid_name	(""),
+	m_search_type		(eSearchTypeDummy)
 {
 }
 
-IC	CObjectFactory::CObjectItemPredicate::CObjectItemPredicate	() :
-	m_clsid				(CLASS_ID(-1))
+IC	CObjectFactory::CObjectItemPredicate::CObjectItemPredicate	(const CLASS_ID &clsid) :
+	m_clsid				(clsid),
+	m_search_type		(eSearchTypeCLSID)
+{
+}
+
+IC	CObjectFactory::CObjectItemPredicate::CObjectItemPredicate	(const ref_str &script_clsid_name) :
+	m_script_clsid_name	(script_clsid_name),
+	m_search_type		(eSearchTypeScriptName)
 {
 }
 
 IC	bool CObjectFactory::CObjectItemPredicate::operator()	(const CObjectItemAbstract *item) const
 {
-	return				(m_clsid == item->clsid());
+	switch (m_search_type) {
+		case eSearchTypeCLSID :			return	(m_clsid == item->clsid());
+		case eSearchTypeScriptName :	return	(m_script_clsid_name == item->script_clsid());
+		default : NODEFAULT;
+	}
+#ifdef DEBUG
+	return				(false);
+#endif
 }
 
 IC	bool CObjectFactory::CObjectItemPredicate::operator()	(const CObjectItemAbstract *item1, const CObjectItemAbstract *item2) const
@@ -134,8 +150,16 @@ IC	void CObjectFactory::add	(const CLASS_ID &clsid, LPCSTR script_clsid)
 
 IC	void CObjectFactory::add	(CObjectItemAbstract *item)
 {
-	const_iterator		I = std::find_if(clsids().begin(),clsids().end(),CObjectItemPredicate(item->clsid()));
+	R_ASSERT			(!m_initialized);
+	
+	const_iterator		I;
+	
+	I					= std::find_if(clsids().begin(),clsids().end(),CObjectItemPredicate(item->clsid()));
 	VERIFY				(I == clsids().end());
+	
+	I					= std::find_if(clsids().begin(),clsids().end(),CObjectItemPredicate(item->script_clsid()));
+	VERIFY				(I == clsids().end());
+	
 	m_clsids.push_back	(item);
 }
 

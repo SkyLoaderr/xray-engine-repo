@@ -160,6 +160,7 @@ void CObjectFactory::script_register	() const
 
 CObjectFactory::CObjectFactory			()
 {
+	m_initialized			= false;
 #ifndef _EDITOR
 	// client entities
 	add<CLevel>												(CLSID_GAME_LEVEL			,"level");
@@ -307,4 +308,5 @@ CObjectFactory::CObjectFactory			()
 	ADD(CBreakableObject	,CSE_ALifeObjectBreakable		,CLSID_OBJECT_BREAKABLE		,"obj_breakable");
 
 	std::sort				(m_clsids.begin(),m_clsids.end(),CObjectItemPredicate());
+	m_initialized			= true;
 }
