@@ -1,0 +1,222 @@
+//---------------------------------------------------------------------------------------------------------
+// 'Монстр излом.  Проба написания скприпта, без fsm. Проба не удачная
+//---------------------------------------------------------------------------------------------------------
+local open_door				= false
+local sound_open_door		= sound_object("$no_sound")
+local sound_close_door		= sound_object("ambient\\iron_moaning1")
+
+
+class "CIzlom"
+function CIzlom:__init(_name, _zone_name, _way, _door_name)
+	self.name			= _name
+	self.zone_name		= _zone_name
+	self.way			= patrol(_way)
+	self.door_name		= _door_name
+	self.door			= nil
+	self.npc			= level.object(_name)
+	self.zone			= nil
+	self.npc_id			= -1
+	self.curState		= nil
+	self.actor_enter	= false
+	self.attack			= false
+	self.start_attack	= false
+	self.start_panic	= false
+	self.start_rest		= false
+	self.time			= 0
+	self.sim			= alife()
+	self.close_door		= false
+	self.blocking		= false
+end
+
+function CIzlom:initialize()
+end
+
+function CIzlom:execute()
+	if(self.npc and self.npc:alive() == false) then
+		//'Проверка, живой ли персонаж
+		return false
+	end
+	
+	if(self.zone == nil and level.object(self.zone_name)) then
+		self.zone		= level.object(self.zone_name)
+		self.zone:set_callback(self, "zone_enter_callback", true)
+	end
+	
+	if(self.door == nil and level.object(self.door_name)) then
+		self.door = level.object(self.door_name)
+		opened_door(self.door)
+	end
+	
+	if(level.object(self.name)) then
+		if(self.npc == nil) then
+			self.npc	= level.object(self.name)
+			printf("_____set script control")
+			if(self.npc:get_script() == false) then
+				self.npc:script(true, script_name())
+			end
+			if(self.start_panic) then
+				//'Убегали от актера и попали в оffline, опять пропадаем на всегда. Теперь ищи, свищи.
+				self.sim:set_switch_online(self.npc_id, false)
+				self.sim:set_switch_offline(self.npc_id, true)
+				return false
+			end	
+		end
+		
+		if(self.attack == false and self.actor_enter == false) then
+			//'Объект в онлайне, актер вне зоны, мы его не атакуем
+			if(self.npc_id == -1) then
+				//'Если еще не знаем id персонажа, то запоминаем его
+				self.npc_id = self.npc:id()
+				printf("Object in online. His id = %d", self.npc_id)
+				self:off_line()
+				printf("Sent izloma in offline")
+			end
+		end
+	else
+		self.npc	= nil
+	end		
+	
+	if(self.attack) then
+		//'Объект в онлайне, актер вне зоны, мы его атакуем		
+		self:state_attack()
+	elseif(self.actor_enter) then
+		self:state_actor_enter()
+	end
+	
+	return true
+end
+
+function CIzlom:state_actor_enter()
+	if(self.blocking and device():time_global() > self.time + 20000) then
+		//'Актер долго в комнате, можно разрешить отрывать дверь
+		self.door:set_use_callback(door_callback)
+	    self.door:set_tip_text("press E to open the door")
+		self.blocking = false
+		printf("Can open to door")
+	end
+
+	if(self.close_door) then
+		//'Надо закрыть дверь, актер зашел в скриптовую зону
+		printf("close door")
+		closed_door(self.door)
+		self.blocking = true
+		self.close_door	= false
+	end
+	
+	if(open_door) then
+		//'Дверь открыли, начинаем атаковать
+		self.attack	= true
+		open_door	= false
+	end
+	
+	if(self.npc == nil) then
+		if(device():time_global() > self.time + 3000) then
+			//'Ждем 3 секунду, чтоб актер прошел дальше
+			self:on_line()
+		end
+	else
+		if(self.npc:position():distance_to(self.way:point(0)) < 1) then
+			//'Стоим на входе
+			if(self.npc:action() == nil) then
+				action(self.npc, anim(anim.turn, 0), look(look.point, self.way:point(1)), cond(cond.look_end))
+				action(self.npc, anim(anim.stand_idle, 0), cond(cond.time_end, 100000))
+			end
+		else
+			//'Идем к входу
+			if(self.npc:action() == nil) then
+				action(self.npc, move(move.walk_fwd, self.way:point(0)), cond(cond.move_end))
+			end
+		end
+	end     //'self.npc == nil			
+end
+
+function CIzlom:state_attack()
+	if(self.npc == nil) then return end
+	
+	if(self.start_attack == false and self.npc:action()) then
+		reset_action(self.npc, script_name())
+		self.start_attack = true
+	end
+	
+	//'Актер мерт, идем отдыхать
+	if(level.actor():alive() == false and self.start_rest == false and self.npc:action()) then
+		reset_action(self.npc, script_name())
+		self.start_rest	= true
+	end
+
+
+	if(level.actor() and level.actor():alive()) then
+		if(self.npc.health > 0.5 and self.start_panic == false) then
+			if(self.npc:action()) then return end
+			action(self.npc, act(act.attack, level.actor()), cond(cond.time_end, 60000))
+		else
+			if(self.start_panic == false and self.npc:action()) then
+				reset_action(self.npc, script_name())
+				self.start_panic	= true
+			end
+			if(self.npc:action()) then return end
+			action(self.npc, act(act.panic, level.actor()), cond(cond.time_end, 60000))			
+		end
+	else
+		action(self.npc, move(move.walk_fwd, self.way:point(2)), sound(sound.idle), cond(cond.move_end))
+		action(self.npc, anim(anim.sit_idle, 0), sound(sound.idle), cond(cond.time_end, 600000))
+	end 		
+end
+
+function CIzlom:off_line()
+		self.sim:set_switch_online(self.npc_id, false)
+		self.sim:set_switch_offline(self.npc_id, true)
+		self.npc	= nil
+end
+
+function CIzlom:on_line()
+		self.sim:set_switch_online(self.npc_id, true)
+		self.sim:set_switch_offline(self.npc_id, true)
+end
+
+function CIzlom:zone_enter_callback(zone, obj)
+	if(level.actor() and level.actor():id() == obj:id()) then
+		self.actor_enter	= true
+		self.zone:clear_callback(true)
+		self.close_door		= true
+		self.time			= device():time_global()
+		printf("Enter")
+	end
+end
+
+function CIzlom:finalize()
+	self.zone:clear_callback(true)
+	if(self.npc and self.npc:get_script()) then	
+		self.npc:script(false, script_name())
+	end
+end
+
+function closed_door(door)
+	local joint  = door:get_physics_shell():get_joint_by_bone_name("door")	
+	joint:set_max_force_and_velocity(10000, 2, 0)
+    door:set_tip_text("Дверь временно заблокирована")	
+	sound_close_door:play_at_pos(door, door:position(), sound_object.s3d)
+end
+
+function opened_door(door)
+	local joint  = door:get_physics_shell():get_joint_by_bone_name("door")
+	door:set_nonscript_usable(false)
+	joint:set_max_force_and_velocity(200, -1, 0)
+    door:set_nonscript_usable(false)
+end
+
+function door_callback(door, actor)
+	local joint  = door:get_physics_shell():get_joint_by_bone_name("door")
+	local angel  = joint:get_axis_angle(0)
+	local low_limits, hi_limits  = 0.0, 0.0
+	low_limits, hi_limits = joint:get_limits(low_limits, hi_limits, 0)
+
+	if(angel - low_limits > hi_limits - angel) then
+		joint:set_max_force_and_velocity(200, -1, 0)
+	else
+		joint:set_max_force_and_velocity(200, 1, 0)
+	end
+	sound_open_door:play_at_pos(door, door:position(), sound_object.s3d)
+	open_door	= true
+end
+

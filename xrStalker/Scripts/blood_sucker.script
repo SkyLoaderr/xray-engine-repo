@@ -701,17 +701,21 @@ end
 class "CBloodsuckerAmbush" (CBaseBloodsucker)
 function CBloodsuckerAmbush:__init(_npc, _can_eat, _state_rest, _state_attack, _state_hit, _state_sound) super(_npc, _can_eat, _state_rest, _state_attack, _state_hit, _state_sound)
     local ini           = self.npc:spawn_ini()
-    self.script_zone  = level.object(ini:r_string("ambush", "zone"))
-    self.friends    = {}
-    self.enter      = false
+    self.script_zone	= level.object(ini:r_string("ambush", "zone"))
+    self.friends		= {}
+    self.enter			= false
     self.stateAmbush    = this.CStateAmbush(self.npc, self.memory)
     self.ambush_attack  = false
-    self.radius      = 10
+    self.radius			= 10
     self.start_attack   = false
+    self.invisible		= false
     if(ini:section_exist ("ambush")) then                    --Если радиус задан в кастом дате, то берем его от туда
         if(ini:line_exist ("ambush", "radius")) then
-			self.radius  = ini:r_float("ambush", "radius")
+			self.radius = ini:r_float("ambush", "radius")
             printf("name = %s  radius = %f", self.npc:name(), self.radius)
+        end
+        if(ini:line_exist ("ambush", "invisible")) then
+			self.invisible = ini:r_bool("ambush", "invisible")
         end
     end
 end
@@ -792,19 +796,29 @@ function CBloodsuckerAmbush:set_state(new_state)
     //Set new state
     if(new_state == s_attack) then
         self.curState      = self.stateAttack
+        self.npc:set_invisible          (false)
 		if(level.actor() and self.memory.enemy:id() == level.actor():id()) then
             //Если уже атакуем врага, то в засаде участия не принимаем
             self.ambush_attack = true
         end
     elseif(new_state == s_ambush) then
+        self.npc:set_manual_invisibility(false)
         self.curState   = self.stateAmbush
     elseif(new_state == s_hit) then
         self.curState   = self.stateHit
+        self.npc:set_manual_invisibility(self.invisible)
+        self.npc:set_invisible          (true)
     elseif(new_state == s_sound) then
         self.curState   = self.stateSound
+        self.npc:set_manual_invisibility(self.invisible)
+        self.npc:set_invisible          (true)
     elseif(new_state == s_eat) then
         self.curState   = self.stateEat
+        self.npc:set_manual_invisibility(self.invisible)
+        self.npc:set_invisible          (true)
     elseif(new_state == s_rest) then
+        self.npc:set_manual_invisibility(self.invisible)
+        self.npc:set_invisible          (true)
         self.curState   = self.stateRest
     end
 
