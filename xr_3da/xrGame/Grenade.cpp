@@ -136,6 +136,7 @@ void CGrenade::Throw()
 	}
 
 	inherited::Throw			();
+	m_fake_missile->processing_activate();//@sliph 
 }
 
 

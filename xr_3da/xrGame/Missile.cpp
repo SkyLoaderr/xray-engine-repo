@@ -431,6 +431,7 @@ void CMissile::Throw()
 		P.w_u16							(u16(m_fake_missile->ID()));
 		u_EventSend						(P);
 	}
+
 }
 
 void CMissile::OnEvent(NET_Packet& P, u16 type) 
