@@ -43,10 +43,12 @@ void CTelekinesis<CMonster>::Activate()
 		objects.push_back(CTelekineticObject().set(obj,TS_Raise));
 		obj->m_pPhysicsShell->set_ApplyByGravity(FALSE);
 
-		if (fis_zero(ar_linear)) obj->m_pPhysicsShell->GetAirResistance(ar_linear, ar_angular);
-		obj->m_pPhysicsShell->SetAirResistance(ar_linear, ar_angular);
+		//if (fis_zero(ar_linear)) obj->m_pPhysicsShell->GetAirResistance(ar_linear, ar_angular);
+		//obj->m_pPhysicsShell->SetAirResistance(ar_linear, ar_angular);
+		//obj->m_pPhysicsShell->SetAirResistance(EPS_L, EPS_L);
 	}
 
+	if (!objects.empty()) monster->CPHObject::Activate();
 }
 
 template <typename CMonster>
@@ -56,10 +58,12 @@ void CTelekinesis<CMonster>::Deactivate()
 
 	for (u32 i = 0; i < objects.size(); i++) {
 		Release(objects[i]);
-		objects[i].obj->m_pPhysicsShell->SetAirResistance();
+		//objects[i].obj->m_pPhysicsShell->SetAirResistance();
 	}
 
 	objects.clear	();
+
+	monster->CPHObject::Deactivate();
 }
 
 template <typename CMonster>
@@ -67,7 +71,9 @@ void CTelekinesis<CMonster>::Raise(CTelekineticObject &obj, float power)
 {
 	Fvector dir;
 	dir.set(0.f,1.0f,0.f);
-	obj.obj->m_pPhysicsShell->applyImpulse(dir, power * obj.obj->m_pPhysicsShell->getMass());
+	obj.obj->m_pPhysicsShell->applyImpulse(dir, 2.0f * obj.obj->m_pPhysicsShell->getMass());
+
+	VelocityCorrection(obj.obj->m_pPhysicsShell, 0.0005f);
 }
 
 #define KEEP_IMPULSE_UPDATE 200
@@ -92,7 +98,8 @@ void CTelekinesis<CMonster>::Keep(CTelekineticObject &obj)
 	}
 	
 	// hit
-	obj.obj->m_pPhysicsShell->applyImpulse(dir, 0.1f * obj.obj->m_pPhysicsShell->getMass());	
+	obj.obj->m_pPhysicsShell->applyImpulse	(dir, 0.5f * obj.obj->m_pPhysicsShell->getMass());	
+	VelocityCorrection						(obj.obj->m_pPhysicsShell, 0.0005f);
 
 	obj.last_time_updated = Level().timeServer();
 }
@@ -190,4 +197,18 @@ void CTelekinesis<CMonster>::UpdateSched()
 	}
 }
 
+template <typename CMonster>
+void CTelekinesis<CMonster>::VelocityCorrection(CPhysicsShell *pShell, float max_val)
+{
+	Fvector vel;
+	pShell->get_LinearVel(vel); 
+	
+	//Msg("Cur Vel = [%f,%f,%f] mag = [%f]", VPUSH(vel), vel.magnitude());
 
+	if (vel.magnitude() > max_val) {
+		vel.normalize();
+		vel.mul(max_val);
+		pShell->set_LinearVel(vel);
+		//Msg("New Vel Set = [%f,%f,%f] mag = [%f]", VPUSH(vel), vel.magnitude());
+	}
+}

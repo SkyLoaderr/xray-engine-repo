@@ -10,7 +10,8 @@ class CCharacterPhysicsSupport;
 class CAI_Chimera : 	public CCustomMonster,
 						public CChimeraMovementManager,
 						public CStateInternal<CAI_Chimera>,
-						public CTelekinesis<CAI_Chimera> {
+						public CTelekinesis<CAI_Chimera>,
+						public CPHObject {
 
 public:
 	typedef CTelekinesis<CAI_Chimera>	TTelekinesis;
@@ -55,6 +56,13 @@ public:
 	virtual BOOL			UsedAI_Locations			()							{return inherited::UsedAI_Locations();}
 	virtual const SRotation	Orientation					() const					{return inherited::Orientation();}
 	virtual void			renderable_Render			()							{return inherited::renderable_Render();} 
+	
+	// CPHObject redifinition
+	virtual void 			PhDataUpdate				(dReal step);
+	virtual void 			PhTune						(dReal step)					{}
+	virtual void 			InitContact					(dContact* c,bool& do_collide)	{}
+	virtual void 			Freeze						()								{}
+	virtual void 			UnFreeze					()								{}
 
 #ifdef DEBUG
 	virtual void			OnRender					() {}

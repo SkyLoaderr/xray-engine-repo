@@ -78,8 +78,8 @@ void CAI_Chimera::UpdateCL()
 	inherited::UpdateCL();
 	
 	m_pPhysics_support->in_UpdateCL();
-
-	TTelekinesis::UpdateCL(Device.fTimeDelta);
+	
+	//Msg("update cl...");
 }
 
 void CAI_Chimera::net_Destroy()
@@ -240,7 +240,15 @@ void CAI_Chimera::net_Import(NET_Packet& P)
 
 }
 
+//////////////////////////////////////////////////////////////////////////
+// Phisics cheating
+//////////////////////////////////////////////////////////////////////////
+void CAI_Chimera::PhDataUpdate(dReal step)
+{
+	TTelekinesis::UpdateCL(step);	
 
+	//Msg("ph_data_update...");
+}
 
 
 

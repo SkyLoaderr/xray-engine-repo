@@ -2,6 +2,7 @@
 
 #include "../entity_alive.h"
 #include "../PhysicsShell.h"
+#include "../../PHObject.h"
 
 enum ETelekineticState {
 	TS_None,
@@ -61,6 +62,7 @@ private:
 	void	Release				(CTelekineticObject &obj);
 	void	Throw				(CTelekineticObject &obj, const Fvector &target);
 
+	void	VelocityCorrection	(CPhysicsShell *pShell, float max_val);
 };
 
 
