@@ -71,6 +71,7 @@ private:
 	ref_shader					s_accum_direct;
 	ref_shader					s_accum_point;
 	ref_shader					s_accum_spot;
+	ref_shader					s_accum_reflected;
 	ref_geom					g_accum_point;
 	ref_geom					g_accum_spot;
 	ref_geom					g_accum_point_tl;
@@ -130,6 +131,7 @@ public:
 	void						accum_direct			();
 	void						accum_point				(light* L);
 	void						accum_spot				(light* L);
+	void						accum_reflected			(light* L);
 	void						phase_bloom				();
 	void						phase_combine			();
 

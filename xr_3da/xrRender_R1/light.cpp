@@ -196,7 +196,8 @@ void	light::xform_calc			()
 	m_xform_frame	= Device.dwFrame;
 
 	switch(flags.type)	{
-	case IRender_Light::POINT	:
+	case IRender_Light::REFLECTED	:
+	case IRender_Light::POINT		:
 		{
 			// scale of identity sphere
 			float		L_R			= range;
@@ -204,7 +205,7 @@ void	light::xform_calc			()
 			m_xform.translate_over	(position);
 		}
 		break;
-	case IRender_Light::SPOT	:
+	case IRender_Light::SPOT		:
 		{
 			// scale to account range and angle
 			float		s			= 2.f*range*tanf(cone/2.f);	

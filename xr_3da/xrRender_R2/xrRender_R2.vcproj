@@ -348,6 +348,9 @@
 					RelativePath="r2_rendertarget_accum_point_geom.cpp">
 				</File>
 				<File
+					RelativePath=".\r2_rendertarget_accum_reflected.cpp">
+				</File>
+				<File
 					RelativePath="r2_rendertarget_accum_spot.cpp">
 				</File>
 				<File
