@@ -187,7 +187,7 @@ function sound_update(npc, sound, now)
 			sound.idle = sound.idle + 10
 		end
 
-		if npc:active_sound_count() > 0 then
+		if npc:active_sound_count() > 0 and not now then
 			return
 		end
 
