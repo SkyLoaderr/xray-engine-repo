@@ -88,8 +88,8 @@ public:
 	typedef CCFModel**				NL_IT;
 
 public:
-	NL_TYPE					nearest_list;
-	clQueryCollision		q_result;
+	NL_TYPE						nearest_list;
+	clQueryCollision			q_result;
 
 	clQueryCollision			q_debug;
 	CList<Fmatrix>				dbg_E;
