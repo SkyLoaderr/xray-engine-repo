@@ -18,7 +18,7 @@ float r_ssaLOD_A;
 float r_ssaLOD_B;
 float r_ssaHZBvsTEX;
 
-IC	float	CalcSSA(float& distSQ, Fvector& C, IVisual* V)
+IC	float	CalcSSA				(float& distSQ, Fvector& C, IVisual* V)
 {
 	float R	= V->vis.sphere.R;
 	distSQ	= Device.vCameraPosition.distance_to_sqr(C);
