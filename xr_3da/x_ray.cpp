@@ -280,7 +280,9 @@ void CApplication::OnFrame( )
 	T.Start	();
 	while	(T.GetElapsed_ms()<10);
 	*/
+	Device.Statistic.Sound.Begin();
 	::Sound->update		(Device.vCameraPosition,Device.vCameraDirection,Device.vCameraTop,Device.fTimeDelta);
+	Device.Statistic.Sound.End();
 	Engine.Event.OnFrame();
 }
 
