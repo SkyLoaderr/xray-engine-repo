@@ -534,6 +534,9 @@ void CActor::Die	( )
 	mstate_wishful	&=		~mcAnyMove;
 	mstate_real		&=		~mcAnyMove;
 	create_Skeleton();
+
+	//остановить звук тяжелого дыхания
+	m_HeavyBreathSnd.stop();
 }
 
 void CActor::g_Physics			(Fvector& _accel, float jump, float dt)

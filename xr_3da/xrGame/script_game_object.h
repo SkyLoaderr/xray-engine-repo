@@ -605,10 +605,14 @@ public:
 			void explode	(u32 level_time)
 	{
 		CExplosive			*explosive = dynamic_cast<CExplosive*>(m_tpGameObject);
-		VERIFY(m_tpGameObject->H_Parent());
+		if (m_tpGameObject->H_Parent())
+		{
+			ai().script_engine().script_log			(ScriptStorage::eLuaMessageTypeError,"CExplosive : cannot explode object wiht parent!");
+			return;
+		}
 		
 		if (!explosive)
-			ai().script_engine().script_log			(ScriptStorage::eLuaMessageTypeError,"CScriptMonster : cannot access class member explode!");
+			ai().script_engine().script_log			(ScriptStorage::eLuaMessageTypeError,"CExplosive : cannot access class member explode!");
 		else {
 			Fvector normal;
 			explosive->FindNormal(normal);
