@@ -21,9 +21,9 @@ weapon_class			 	= sniper_rifle
 
 ammo_limit		         	= 180
 ammo_current		     	= 90
-ammo_elapsed		     	= 20
+ammo_elapsed		     	= 10
 
-ammo_mag_size		     	= 20
+ammo_mag_size		     	= 10
 
 hand_dependence		     	= 1
 single_handed				= 0
@@ -47,7 +47,7 @@ immunities_sect				= weapon
 
 ;-----------------------------------------------------------------------------------
 ;базовая дисперсия
-fire_dispersion_base		= 0.25 ;0.05  ;угол (в градусах) базовой дисперсии оружия (оружия зажатого в тисках)
+fire_dispersion_base		= 0.15 ;0.05  ;угол (в градусах) базовой дисперсии оружия (оружия зажатого в тисках)
 
 ;отдача
 cam_relax_speed        		= 2.5	;скорость возврата в исходное положение
@@ -74,7 +74,7 @@ shell_particles	 			= weapons\generic_shells
 rpm_empty_click 	     	= 200
 
 ; ttc
-hit_power                	= 31.25
+hit_power                	= 51.25 ; 31.25 - увеличил хит поскольку уменьшил размер магазина до стандартных 10 патронов
 hit_impulse		         	= 87
 hit_type = fire_wound
 
