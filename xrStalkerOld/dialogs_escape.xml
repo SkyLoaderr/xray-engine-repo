@@ -52,6 +52,7 @@
     </dialog>
     <dialog id="escape_fox_flash_dialog">
         <has_info>escape_stalker_meet</has_info>
+        <dont_has_info>escape_stalker_give</dont_has_info>
         <phrase_list>
             <phrase id="1">
                 <text>escape_fox_flash_dialog_1</text>
