@@ -27,13 +27,12 @@ public:
 
 protected:
 			void			surge						();
-			void			generate_anomalies			();
+			void			create_objects				();
 			void			generate_anomaly_map		();
 			void			sell_artefacts				(CSE_ALifeTrader &trader);
 			void			buy_supplies				(CSE_ALifeTrader &trader);
 			void			give_military_bribe			(CSE_ALifeTrader &trader);
 			void			kill_creatures				();
-			void			ballance_creatures			();
 			void			update_tasks				();
 			void			assign_stalker_customers	();
 			float			distance					(const DWORD_VECTOR &path) const;

@@ -48,10 +48,11 @@ void CALifeSurgeManager::surge		()
 	for ( ; I != E; ++I)
 		(*I).second->on_surge			();
 	
-	generate_anomalies					();
-	generate_anomaly_map				();
 //	kill_creatures						();
-	ballance_creatures					();
+
+	create_objects						();
+
+	generate_anomaly_map				();
 	VERIFY								(graph().actor());
 	{
 		CALifeTraderRegistry::TRADER_REGISTRY::const_iterator	I = traders().traders().begin();
@@ -81,112 +82,6 @@ void CALifeSurgeManager::surge		()
 #endif
 }
 
-void CALifeSurgeManager::generate_anomalies()
-{
-//	// deactivating all the anomalous zones
-//	D_OBJECT_P_MAP::const_iterator	B = objects().objects().begin(), I = B, J;
-//	D_OBJECT_P_MAP::const_iterator	E = objects().objects().end();
-//	for ( ; I != E; ++I) {
-//		CSE_ALifeAnomalousZone *l_tpALifeAnomalousZone = smart_cast<CSE_ALifeAnomalousZone*>((*I).second);
-//		if (l_tpALifeAnomalousZone)
-//			l_tpALifeAnomalousZone->m_maxPower = 0.f;
-//	}
-//	// for each spawn group activate a zone if any
-//	for (I = B; I != E; ) {
-//		CSE_ALifeAnomalousZone *l_tpALifeAnomalousZone = smart_cast<CSE_ALifeAnomalousZone*>((*I).second);
-//		if (!l_tpALifeAnomalousZone) {
-//			++I;
-//			continue;
-//		}
-//
-//		// counting zones with the same group ID
-//		// !
-//		// spawn points are sorted according to their spawn group number in ascending order
-//		// this condition _must_ guarantee xrAI since it sorts spawn points during 'game.spawn' generation
-//		// we assume that zones in the spawn groups are generated in a row 
-//		// therefore they _must_ have their IDs in a row, since we starts their ID generation with a fullfilled
-//		// ID structure (look id_generator.h for details)
-//		// here we use this information by iterating on vector m_tpSpawnPoints and map objects().objects() 
-//		// (because this map is ordered by ID in ascending order)
-//		// if this condition is _not_ guaranteed we have to rewrite this piece of code
-//		// !
-//		float							fSum = 0;
-//		D_OBJECT_P_VECTOR::const_iterator	i = spawns().spawns().begin() + l_tpALifeAnomalousZone->m_tSpawnID, j = i, e = spawns().spawns().end(), b = spawns().spawns().begin();
-//		u32								l_dwGroupID = (*i)->m_dwSpawnGroup;
-//		for ( ; j != e; ++j)
-//			if ((*j)->m_dwSpawnGroup != l_dwGroupID)
-//				break;
-//			else
-//				fSum += (*j)->m_fProbability;
-//		R_ASSERT2				(fSum < 1 + EPS_L,"Group probability more than 1!");
-//
-//		// computing probability of the anomalous zone activation
-//		float					fProbability = randF(1.f);
-//		fSum					= 0.f;
-//		J						= I;
-//		D_OBJECT_P_VECTOR::const_iterator	m = j;
-//		for ( j = i; (j != e) && ((*j)->m_dwSpawnGroup == l_dwGroupID); ++j, ++I) {
-//			fSum += (*j)->m_fProbability;
-//			if (fSum > fProbability)
-//				break;
-//		}
-//
-//		// if random choosed a number due to which there is no active zones in the current group ID
-//		// then continue loop
-//		if (fSum <= fProbability)
-//			continue;
-//
-//		// otherwise assign random anomaly power to the zone
-//		l_tpALifeAnomalousZone	= smart_cast<CSE_ALifeAnomalousZone*>((*I).second);
-//		R_ASSERT2				(l_tpALifeAnomalousZone,"Anomalous zones are grouped with incompatible objects!");
-//		CSE_ALifeAnomalousZone	*l_tpSpawnAnomalousZone = smart_cast<CSE_ALifeAnomalousZone*>(*j);
-//		R_ASSERT2				(l_tpSpawnAnomalousZone,"Anomalous zones are grouped with incompatible objects!");
-//
-//#pragma todo("Dima to Dima : Correct anomalous zones power")
-//		l_tpALifeAnomalousZone->m_maxPower = l_tpALifeAnomalousZone->m_fStartPower = randF(l_tpALifeAnomalousZone->m_min_start_power,l_tpALifeAnomalousZone->m_max_start_power);
-//		u32						jj = iFloor(l_tpALifeAnomalousZone->m_maxPower/l_tpALifeAnomalousZone->m_power_artefact_factor);
-//
-//		// proceed random artefacts generation for the active zone
-//		for (u32 ii=0; ii<jj; ++ii) {
-//			fProbability		= randF(1.f);
-//			fSum				= 0;
-//			for (u16 p=0; p<l_tpSpawnAnomalousZone->m_wItemCount; ++p) {
-//				fSum			+= l_tpSpawnAnomalousZone->m_faWeights[p];
-//				if (fSum > fProbability)
-//					break;
-//			}
-//			if (p < l_tpSpawnAnomalousZone->m_wItemCount) {
-//				CSE_Abstract	*l_tpSE_Abstract = F_entity_Create(l_tpSpawnAnomalousZone->m_cppArtefactSections[p]);
-//				R_ASSERT3		(l_tpSE_Abstract,"Can't spawn artefact ",l_tpSpawnAnomalousZone->m_cppArtefactSections[p]);
-//				CSE_ALifeDynamicObject	*i = smart_cast<CSE_ALifeDynamicObject*>(l_tpSE_Abstract);
-//				R_ASSERT2		(i,"Non-ALife object in the 'game.spawn'");
-//
-//				i->ID			= server().PerformIDgen(0xffff);
-//				i->m_tSpawnID	= _SPAWN_ID(j - b);
-//				spawns().assign_artefact_position(l_tpSpawnAnomalousZone,i);
-//				i->m_bALifeControl = true;
-//
-//				CSE_ALifeItemArtefact *l_tpALifeItemArtefact = smart_cast<CSE_ALifeItemArtefact*>(i);
-//				R_ASSERT2		(l_tpALifeItemArtefact,"Anomalous zone can't generate non-artefact objects since they don't have an 'anomaly property'!");
-//
-//				l_tpALifeItemArtefact->m_fAnomalyValue = l_tpALifeAnomalousZone->m_maxPower*(1.f - i->o_Position.distance_to(l_tpSpawnAnomalousZone->o_Position)/l_tpSpawnAnomalousZone->m_fRadius);
-//
-//				strcpy					(l_tpALifeItemArtefact->s_name_replace,*l_tpALifeItemArtefact->s_name);
-//				if (l_tpALifeItemArtefact->ID < 1000)
-//					strcat				(l_tpALifeItemArtefact->s_name_replace,"0");
-//				if (l_tpALifeItemArtefact->ID < 100)
-//					strcat				(l_tpALifeItemArtefact->s_name_replace,"0");
-//				if (l_tpALifeItemArtefact->ID < 10)
-//					strcat				(l_tpALifeItemArtefact->s_name_replace,"0");
-//				string16				S1;
-//				strcat					(l_tpALifeItemArtefact->s_name_replace,itoa(l_tpALifeItemArtefact->ID,S1,10));
-//				register_object			(i,true);
-//			}
-//		}
-//		++I;
-//	}
-}
-
 void CALifeSurgeManager::generate_anomaly_map	()
 {
 	anomalies().clear						();
@@ -204,85 +99,6 @@ void CALifeSurgeManager::generate_anomaly_map	()
 		known_anomaly->set_game_vertex_id	(anomaly->m_tGraphID);
 		anomalies().add						(known_anomaly);
 	}
-}
-
-void CALifeSurgeManager::ballance_creatures()
-{
-////	Msg									("BALLANCING OBJECTS");
-//#pragma todo("Dima to Dima : Respawn the objects in the spawn groups only")
-//	// filling array of the survived creatures
-//	{
-//		D_OBJECT_P_MAP::const_iterator	I = objects().objects().begin();
-//		D_OBJECT_P_MAP::const_iterator	E = objects().objects().end();
-//		for ( ; I != E; ++I) {
-//			if (!spawns().valid_spawn_id((*I).second->m_tSpawnID))
-//				continue;
-////			Msg							("object %s, spawn group %d",(*I).second->s_name_replace,(*I).second->m_tSpawnID);
-//			CSE_ALifeCreatureAbstract	*l_tpALifeCreatureAbstract = smart_cast<CSE_ALifeCreatureAbstract*>((*I).second);
-//			CSE_ALifeGroupAbstract		*l_tpALifeGroupAbstract = smart_cast<CSE_ALifeGroupAbstract*>((*I).second);
-//			if (l_tpALifeCreatureAbstract) {
-//				if (l_tpALifeGroupAbstract) {
-//					if (l_tpALifeGroupAbstract->m_wCount) {
-//						m_alive_spawn_objects[(*I).second->m_tSpawnID] = true;
-//#pragma todo("Dima to Dima : Add monster population increase here")
-//						//l_tpALifeGroupAbstract->m_wCount *= l_tpALifeGroupAbstract->m_wCount < 50 ? 1.5 : 0.8;
-//					}
-//				}
-//				else {
-//					if (l_tpALifeCreatureAbstract->fHealth > 0.f)
-//						m_alive_spawn_objects[(*I).second->m_tSpawnID] = true;
-//					else {
-//						CSE_ALifeCreatureAbstract	*creature = smart_cast<CSE_ALifeCreatureAbstract*>(spawns().spawns()[(*I).second->m_tSpawnID]);
-//						VERIFY						(creature);
-//						if (creature->g_Health() <= 0.f)
-//							m_alive_spawn_objects[(*I).second->m_tSpawnID] = true;
-//					}
-//				}
-//			}
-//			else
-//				m_alive_spawn_objects[(*I).second->m_tSpawnID] = true;
-//		}
-//	}
-//	// balancing creatures by spawn groups
-//	// i.e. if there is no object being spawned by the particular spawn group
-//	// then we have to spawn an object from this spawn group
-//	{
-//		D_OBJECT_P_VECTOR::const_iterator	B = spawns().spawns().begin(), I = B, J;
-//		D_OBJECT_P_VECTOR::const_iterator	E = spawns().spawns().end();
-//		for ( ; I != E; ) {
-//			u32						l_dwSpawnGroup = (*I)->m_dwSpawnGroup;
-//			bool					bOk = false;
-//			J						= I;
-//			for ( ; (I != E) && (l_dwSpawnGroup == (*I)->m_dwSpawnGroup); ++I)
-//				if (m_alive_spawn_objects[I - B]) {
-//					bOk = true;
-//					++I;
-//					break;
-//				}
-//			if (!bOk) {
-//				// there is no object being spawned from this spawn group -> spawn it!
-//				float				l_fProbability = randF(0,1.f), l_fSum = 0.f;
-//				D_OBJECT_P_VECTOR::const_iterator	j = J;
-//				D_OBJECT_P_VECTOR::const_iterator	e = I;
-//				for ( ; (j != e); ++j) {
-//					l_fSum			+= (*j)->m_fProbability;
-//					if (l_fSum > l_fProbability)
-//						break;
-//				}
-//				if (l_fSum > l_fProbability) {
-//					CSE_ALifeAnomalousZone		*l_tpALifeAnomalousZone		= smart_cast<CSE_ALifeAnomalousZone*>(*j);
-//					if (l_tpALifeAnomalousZone)
-//						continue;
-//
-//					CSE_ALifeDynamicObject		*l_tpALifeDynamicObject;
-//					create(l_tpALifeDynamicObject,*j,_SPAWN_ID(j - B));
-//				}
-//			}
-//		}
-//	}
-//
-//	// initialize array
-//	m_alive_spawn_objects.assign(m_alive_spawn_objects.size(),false);
 }
 
 void CALifeSurgeManager::kill_creatures()
@@ -589,3 +405,12 @@ void CALifeSurgeManager::assign_stalker_customers()
 		}
 	}
 }
+
+void CALifeSurgeManager::create_objects	()
+{
+}
+
+void CALifeSurgeManager::ballance_creatures()
+{
+}
+

@@ -27,7 +27,6 @@ protected:
 			void		new_game				(LPCSTR	save_name);
 			void		init_ef_storage			() const;
 			void		update					(bool switch_objects);
-			void		create_anomalies		();
 	virtual	void		reload					(LPCSTR section);
 
 public:
