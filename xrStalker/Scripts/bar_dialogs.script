@@ -263,7 +263,7 @@ function has_money_for_informer_2(actor, npc)
 	return actor:money() >= 3000
 end
 
-function give_money_for_informer_1(actor, npc)	
+function give_money_for_informer_2(actor, npc)	
 	actor:transfer_money(3000, npc)
 end
 
