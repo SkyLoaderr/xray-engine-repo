@@ -24,6 +24,13 @@ function wait(time_to_wait)
 	end
 end
 
+function random(low,up)
+	rnd		= math.random(10000)
+	rnd		= rnd/10000
+	rnd		= rnd * (up - low)
+	rnd		= rnd + low
+end
+
 function action(obj,...)
 	local act = entity_action()
 	local i = 1
