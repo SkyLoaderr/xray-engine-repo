@@ -39,7 +39,6 @@ public:
 	CUITalkWnd			TalkMenu;
 	CUICarBodyWnd		UICarBodyMenu;
 
-protected:
 	//текущее меню пользователя показанное на экране
 	//NULL если такого сейчас нет
 	CUIDialogWnd* m_pUserMenu;

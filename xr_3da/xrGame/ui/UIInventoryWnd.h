@@ -13,9 +13,14 @@
 #include "UIDragDropList.h"
 #include "UIProgressBar.h"
 #include "UI3dStatic.h"
+
 #include "UIPropertiesBox.h"
 #include "UIOutfitSlot.h"
+#include "UIArtifactMergerWnd.h"
 
+
+
+class CArtifact;
 
 
 class CUIInventoryWnd: public CUIDialogWnd
@@ -41,6 +46,10 @@ public:
 	virtual void Draw();
 
 	void Show();
+
+	//для работы с сочетателем артефактом извне
+	bool IsArtifactMergeShown() {return UIArtifactMergerWnd.IsShown();}
+	void AddArtifactToMerger(CArtifact* pArtifact);
 protected:
 
 	CUIFrameWindow		UIBagWnd;
@@ -87,6 +96,8 @@ protected:
 
 	//pop-up меню вызываемое по нажатию правой кнопки
 	CUIPropertiesBox UIPropertiesBox;
+	//менюшка для работы с устройством производства артефактов
+	CUIArtifactMerger UIArtifactMergerWnd;
 
     
 	static const int MAX_ITEMS = 70;
@@ -127,18 +138,27 @@ protected:
 	void ActivatePropertiesBox();
 
 	//описание возоможных дейстивий над предметами инвентаря
-	enum {DROP_ACTION, EAT_ACTION, TO_BELT_ACTION, TO_SLOT_ACTION, TO_BAG_ACTION};
+	enum {DROP_ACTION, EAT_ACTION, TO_BELT_ACTION, 
+		  TO_SLOT_ACTION, TO_BAG_ACTION,
+		  ARTIFACT_MERGER_ACTIVATE,
+		  ARTIFACT_MERGER_DEACTIVATE};
 
 	//выбросить элемент
 	void DropItem();
 	//съесть элемент
 	void EatItem();
 	
+	//перемещение вещи
 	bool ToSlot();
 	bool ToBag();
 	bool ToBelt();
 
 
-	//для сортировки вещей
+	//запуск и остановка меню работы с артефактами
+	void StartArtifactMerger();
+	void StopArtifactMerger();
+
+
+	//дополнительные списки для сортировки вещей
 	TIItemList ruck_list;
 };

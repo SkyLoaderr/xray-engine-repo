@@ -14,6 +14,12 @@
 #include "..\\WeaponAmmo.h"
 #include "..\\CustomOutfit.h"
 #include "..\\hudmanager.h"
+#include "..\\ArtifactMerger.h"
+
+#include "..\\ai_script_space.h"
+#include "..\\ai_script_processor.h"
+
+
 
 #include "UIInventoryUtilities.h"
 using namespace InventoryUtilities;
@@ -193,11 +199,16 @@ void CUIInventoryWnd::Init()
 	UIBagList.SetCheckProc(BagProc);
 
 
+	//pop-up menu
 	AttachChild(&UIPropertiesBox);
 	UIPropertiesBox.Init("ui\\ui_frame",0,0,300,300);
 	UIPropertiesBox.Hide();
 
-
+	//для работы с артефактами
+	AttachChild(&UIArtifactMergerWnd);
+	//UIArtifactMergerWnd.Init(0,0,300,300);
+	xml_init.InitWindow(uiXml, "frame_window", 1, &UIArtifactMergerWnd);
+	UIArtifactMergerWnd.Hide();
 }
 
 void CUIInventoryWnd::InitInventory() 
@@ -217,6 +228,7 @@ void CUIInventoryWnd::InitInventory()
 	UIStaticText.SetText(NULL);
 
 	UIPropertiesBox.Hide();
+	UIArtifactMergerWnd.Hide();
 
 	m_pInv = pInv;
 
@@ -478,6 +490,12 @@ bool CUIInventoryWnd::BagProc(CUIDragDropItem* pItem, CUIDragDropList* pList)
 	CUIInventoryWnd* this_inventory = dynamic_cast<CUIInventoryWnd*>(pList->GetParent()->GetParent());
 	R_ASSERT2(this_inventory, "wrong parent addressed as inventory wnd");
 
+
+	//если это артефакт из устройства то положить без всяких проверок
+	if(pItem->GetParent() == &this_inventory->UIArtifactMergerWnd.UIArtifactList)
+		return true;
+
+
 	PIItem pInvItem = (PIItem)pItem->GetData();
 
 	if(!this_inventory->GetInventory()->CanPutInRuck(pInvItem)) return false;
@@ -564,9 +582,25 @@ void CUIInventoryWnd::SendMessage(CUIWindow *pWnd, s16 msg, void *pData)
 			case EAT_ACTION:	//съесть объект
 				EatItem();
 				break;
+			case ARTIFACT_MERGER_ACTIVATE:
+				StartArtifactMerger();
+				break;
+			case ARTIFACT_MERGER_DEACTIVATE:
+				StopArtifactMerger();
+				break;
 			}
 		}
 	}
+	//сообщения от ArtifactMerger
+	else if(pWnd == &UIArtifactMergerWnd && msg == CUIArtifactMerger::PERFORM_BUTTON_CLICKED)
+	{
+	}
+	else if(pWnd == &UIArtifactMergerWnd && msg == CUIArtifactMerger::CLOSE_BUTTON_CLICKED)
+	{
+		StopArtifactMerger();
+	}
+
+	//кнопки cheats
 	else if(pWnd == &UIButton1 && msg == CUIButton::BUTTON_CLICKED)
 	{
 		CActor *l_pA = dynamic_cast<CActor*>(Level().CurrentEntity());
@@ -678,6 +712,12 @@ void CUIInventoryWnd::Update()
 				m_vDragDropItems[i].GetParent()->DetachChild(&m_vDragDropItems[i]);
 				m_vDragDropItems[i].SetData(NULL);
 				m_vDragDropItems[i].SetCustomUpdate(NULL);
+
+				if(m_pCurrentItem == pItem)
+				{	
+					m_pCurrentItem = NULL;
+					m_pCurrentDragDropItem = NULL;
+				}
 			}
 		}
 	}
@@ -692,13 +732,8 @@ void CUIInventoryWnd::DropItem()
 
 	m_pCurrentItem->Drop();
 	
-	/*NET_Packet P;
-	l_pA->u_EventGen(P,GE_OWNERSHIP_REJECT,l_pA->ID());
-	P.w_u16(u16(m_pCurrentItem->ID()));
-	l_pA->u_EventSend(P);*/
-
-	
-	m_pCurrentDragDropItem->GetParent()->DetachChild(m_pCurrentDragDropItem);
+	(dynamic_cast<CUIDragDropList*>(m_pCurrentDragDropItem->GetParent()))->
+										DetachChild(m_pCurrentDragDropItem);
 
 	m_pCurrentItem = NULL;
 	m_pCurrentDragDropItem = NULL;
@@ -744,6 +779,7 @@ void CUIInventoryWnd::ActivatePropertiesBox()
 	
 	CEatableItem* pEatableItem = dynamic_cast<CEatableItem*>(m_pCurrentItem);
 	CCustomOutfit* pOutfit = dynamic_cast<CCustomOutfit*>(m_pCurrentItem);
+	CArtifactMerger* pArtifactMerger = dynamic_cast<CArtifactMerger*>(m_pCurrentItem);
 	
 
 	if(m_pCurrentItem->m_slot<SLOTS_NUM && m_pInv->CanPutInSlot(m_pCurrentItem))
@@ -773,8 +809,27 @@ void CUIInventoryWnd::ActivatePropertiesBox()
 		UIPropertiesBox.AddItem("Eat",  NULL, EAT_ACTION);
 	}
 
-	UIPropertiesBox.AddItem("Drop", NULL, DROP_ACTION);
+	if(pArtifactMerger)
+	{
+		if(!UIArtifactMergerWnd.IsShown())
+		{
+			UIPropertiesBox.AddItem("Activate Merger", NULL, 
+									ARTIFACT_MERGER_ACTIVATE);
+			UIPropertiesBox.AddItem("Drop", NULL, DROP_ACTION);
+		}
+		else
+		{
+			UIPropertiesBox.AddItem("Deactivate Merger", NULL, 
+									ARTIFACT_MERGER_DEACTIVATE);
+		}
+	}
+	else
+	{
+		UIPropertiesBox.AddItem("Drop", NULL, DROP_ACTION);
+	}
 
+	
+		
 	UIPropertiesBox.AutoUpdateHeight();
 	UIPropertiesBox.BringAllToTop();
 	UIPropertiesBox.Show(x-rect.left, y-rect.top);
@@ -833,4 +888,45 @@ bool CUIInventoryWnd::ToBelt()
 	m_pMouseCapturer = NULL;
 
 	return true;
+}
+
+//запуск и остановка меню работы с артефактами
+void CUIInventoryWnd::StartArtifactMerger()
+{
+	UIArtifactMergerWnd.InitArtifactMerger(dynamic_cast<CArtifactMerger*>(m_pCurrentItem));
+	UIArtifactMergerWnd.Show();
+}
+void CUIInventoryWnd::StopArtifactMerger()
+{
+	UIArtifactMergerWnd.Hide();
+	
+	//скинуть все элементы из усторйства артефактов в рюкзак
+	for(DRAG_DROP_LIST_it it = UIArtifactMergerWnd.UIArtifactList.GetDragDropItemsList().begin(); 
+ 						  it!= UIArtifactMergerWnd.UIArtifactList.GetDragDropItemsList().end();
+						  it++)
+	{
+		CUIDragDropItem* pDragDropItem = *it;
+		UIBagList.AttachChild(pDragDropItem);
+	}
+
+	//((CUIDragDropList*)pDragDropItem->GetParent())->DetachChild(pDragDropItem);
+	UIArtifactMergerWnd.UIArtifactList.DropAll();
+}
+
+//для работы с сочетателем артефактом извне
+void CUIInventoryWnd::AddArtifactToMerger(CArtifact* pArtifact)
+{
+	CUIDragDropItem& UIDragDropItem = m_vDragDropItems[m_iUsedItems];		
+	UIDragDropItem.CUIStatic::Init(0,0, 50,50);
+	UIDragDropItem.SetShader(GetEquipmentIconsShader());
+	UIDragDropItem.SetGridHeight(pArtifact->m_iGridHeight);
+	UIDragDropItem.SetGridWidth(pArtifact->m_iGridWidth);
+	UIDragDropItem.GetUIStaticItem().SetOriginalRect(
+										pArtifact->m_iXPos*INV_GRID_WIDTH,
+										pArtifact->m_iYPos*INV_GRID_HEIGHT,
+										pArtifact->m_iGridWidth*INV_GRID_WIDTH,
+										pArtifact->m_iGridHeight*INV_GRID_HEIGHT);
+	UIDragDropItem.SetData(pArtifact);
+	m_iUsedItems++;
+	UIArtifactMergerWnd.UIArtifactList.AttachChild(&UIDragDropItem);
 }

@@ -368,7 +368,7 @@ game_sv_GameState::game_sv_GameState()
 	m_tpScriptProcessor			= 0;
 	m_qwStartProcessorTime		= CPU::GetCycleCount();
 	m_qwStartGameTime			= 12*60*60*1000;
-	m_fTimeFactor				= 12.f;
+	m_fTimeFactor				= pSettings->r_float("alife","time_factor");
 }
 
 game_sv_GameState::~game_sv_GameState()
