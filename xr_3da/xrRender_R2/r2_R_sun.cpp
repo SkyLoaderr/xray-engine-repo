@@ -673,6 +673,10 @@ void CRender::render_sun				()
 			}
 		}
 
+		// some tweaking
+		b_casters.grow				(EPS);
+		b_receivers.grow			(EPS);
+
 		// because caster points are from coarse representation only allow to "shrink" box, not grow
 		// that is the same as if we first clip casters by frustum
 		if (b_receivers.min.x<-1)	b_receivers.min.x	=-1;
@@ -731,7 +735,7 @@ void CRender::render_sun				()
 	Target.accum_direct			();
 
 	// Restore XForms
-	RCache.set_xform_world				(Fidentity			);
-	RCache.set_xform_view				(Device.mView		);
-	RCache.set_xform_project			(Device.mProject	);
+	RCache.set_xform_world		(Fidentity			);
+	RCache.set_xform_view		(Device.mView		);
+	RCache.set_xform_project	(Device.mProject	);
 }
