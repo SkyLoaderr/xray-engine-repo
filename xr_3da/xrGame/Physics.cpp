@@ -1152,12 +1152,21 @@ void CPHShell::PhDataUpdate(dReal step){
 					if(previous_p[0]!=dInfinity) previous_p[0]=dInfinity;
 					return;
 				}
-
+/////////////////////////////////////////////////////////////////
+				const dReal scale=1.001f;
+				const dReal scalew=1.01f;
+				const dReal* vel1= dBodyGetLinearVel(m_body);
+				dBodySetLinearVel(m_body,vel1[0]/scale,vel1[1]/scale,vel1[2]/scale);
+				const dReal* wvel1 = dBodyGetAngularVel(m_body);
+				dBodySetAngularVel(m_body,wvel1[0]/scalew,wvel1[1]/scalew,wvel1[2]/scalew);
+/////////////////////////////////////////////////////////////////
 				static const dReal u = -0.1f;
 				static const dReal w_limit = M_PI/4.f/fixed_step;
 				static const dReal l_limit = 3.f/fixed_step;
-				dReal mag;
+				
+
 				const dReal* pos = dBodyGetLinearVel(m_body);
+				dReal mag;
 				mag=sqrtf(pos[0]*pos[0]+pos[1]*pos[1]+pos[2]*pos[2]);
 				if(!(mag>-dInfinity && mag<dInfinity)) 
 					dBodySetLinearVel(m_body,0.f,0.f,0.f);
