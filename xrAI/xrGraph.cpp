@@ -272,6 +272,7 @@ public:
 			tGraph.w_stringZ		((*I).second.caLevelName);
 			tGraph.w_fvector3		((*I).second.tOffset);
 			tGraph.w_u32			((*I).second.tLevelID);
+			tGraph.w_stringZ		((*I).second.m_section);
 		}
 
 		u32							dwPosition = tGraph.size();
