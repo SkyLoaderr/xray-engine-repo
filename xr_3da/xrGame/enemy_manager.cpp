@@ -21,6 +21,10 @@ bool CEnemyManager::useful					(const CEntityAlive *entity_alive) const
 	if ((entity_alive->spatial.type & STYPE_VISIBLEFORAI) != STYPE_VISIBLEFORAI)
 		return				(false);
 
+	const CEntityAlive		*self = dynamic_cast<const CEntityAlive*>(this);
+	if (self && (entity_alive->g_Team() == self->g_Team()))
+		return				(false);
+
 	return					(true);
 }
 
