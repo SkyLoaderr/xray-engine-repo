@@ -40,7 +40,7 @@ static BOOL __fastcall ZombieQualifier(CObject* O, void* P)
 	if (O->CLS_ID!=CLSID_ENTITY)			
 		return FALSE;
 	else  {
-		CEntity* E = dynamic_cast<CEntity*> (O);
+		CEntityAlive* E = dynamic_cast<CEntityAlive*> (O);
 		if (!E) return FALSE;
 		if (!E->IsVisibleForAI()) return FALSE; 
 		if (E->g_Team() == *((int*)P)) return FALSE;

@@ -199,7 +199,7 @@ static BOOL __fastcall SoldierQualifier(CObject* O, void* P)
 	if (O->CLS_ID!=CLSID_ENTITY)			
 		return FALSE;
 	else {
-		CEntity* E = dynamic_cast<CEntity*> (O);
+		CEntityAlive* E = dynamic_cast<CEntityAlive*> (O);
 		if (!E) return FALSE;
 		if (!E->IsVisibleForAI()) return FALSE; 
 		return TRUE;

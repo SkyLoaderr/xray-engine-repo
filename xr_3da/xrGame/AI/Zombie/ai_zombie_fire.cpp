@@ -113,7 +113,9 @@ void CAI_Zombie::SelectEnemy(SEnemySelected& S)
 	CGroup &Group = Level().Teams[g_Team()].Squads[g_Squad()].Groups[g_Group()];
 	
 	for (u32 i=0; i<Known.size(); i++) {
-		CEntity*	E = dynamic_cast<CEntity*>(Known[i].key);
+		CEntityAlive*	E = dynamic_cast<CEntityAlive*>(Known[i].key);
+		if (!E)
+			continue;
 		float		H = EnemyHeuristics(E);
 		if (H<S.fCost) {
 			bool bVisible = false;

@@ -189,7 +189,9 @@ void CAI_Soldier::SelectEnemy(SEnemySelected& S)
 	// Iterate on known
 	for (u32 i=0; i<Known.size(); i++)
 	{
-		CEntity*	E = dynamic_cast<CEntity*>(Known[i].key);
+		CEntityAlive*	E = dynamic_cast<CEntityAlive*>(Known[i].key);
+		if (!E)
+			continue;
 		float		H = EnemyHeuristics(E);
 		if (H<S.fCost) {
 			if (!Group.m_bEnemyNoticed || !Group.Members.size())
