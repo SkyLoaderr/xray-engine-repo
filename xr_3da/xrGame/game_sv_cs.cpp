@@ -118,7 +118,7 @@ void	game_sv_CS::OnTimelimitExceed	()
 	R_ASSERT(teams.size() == 2);
 	if(teams[0].num_targets == teams[1].num_targets) OnTeamsInDraw();
 	else OnTeamScore((teams[0].num_targets > teams[1].num_targets) ? 0 : 1);
-	OnRoundEnd	("TIME_limit");
+	OnRoundEnd		("TIME_limit");
 }
 
 BOOL	game_sv_CS::OnTargetTouched	(u32 id_who, u32 eid_who, u32 eid_target)
