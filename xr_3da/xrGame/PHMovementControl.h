@@ -244,6 +244,7 @@ public:
 	void				SetJumpUpVelocity		(float velocity)														{m_character->SetJupmUpVelocity(velocity);}
 	void				EnableCharacter			()																		{if(m_character)m_character->Enable();}
 	void				SetOjectContactCallback (ObjectContactCallbackFun* callback){if(m_character)m_character->SetObjectContactCallback(callback);}
+	void				SetFootCallBack			(ObjectContactCallbackFun* callback){VERIFY(m_character);m_character->SetWheelContactCallback(callback);}
 	ObjectContactCallbackFun* ObjectContactCallback(){if(m_character)return m_character->ObjectContactCallBack();else return NULL; }
 	u16					ContactBone				(){return m_character->ContactBone();}
 	void				GetDesiredPos			(Fvector& dpos)

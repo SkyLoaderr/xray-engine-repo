@@ -5674,6 +5674,9 @@
 							RelativePath=".\actor_anim_defs.h">
 						</File>
 						<File
+							RelativePath=".\Actor_BoxActivate.cpp">
+						</File>
+						<File
 							RelativePath=".\actor_communication.cpp">
 						</File>
 						<File

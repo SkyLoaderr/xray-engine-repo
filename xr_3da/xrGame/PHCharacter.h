@@ -92,6 +92,7 @@ virtual		Fvector		GetAcceleration						()															=0 ;
 virtual		void		SetPosition							(Fvector pos)												=0 ;
 virtual		void		SetApplyGravity						(BOOL flag)						{ dBodySetGravityMode(m_body,flag); }
 virtual		void		SetObjectContactCallback			(ObjectContactCallbackFun* callback)						=0 ;
+virtual		void		SetWheelContactCallback				(ObjectContactCallbackFun* callback)						=0 ;
 virtual		ObjectContactCallbackFun* ObjectContactCallBack	()															{return NULL;}
 virtual		void		GetVelocity							(Fvector& vvel)												=0 ;
 virtual		void		SetVelocity							(Fvector vel)												=0 ;

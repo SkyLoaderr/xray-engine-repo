@@ -119,6 +119,7 @@ public:
 	virtual		void		SetBox								(const dVector3 &sizes);
 	//get-set
 	virtual		void		SetObjectContactCallback			(ObjectContactCallbackFun* callback);
+	virtual		void		SetWheelContactCallback				(ObjectContactCallbackFun* callback);
 	virtual		ObjectContactCallbackFun* ObjectContactCallBack	();
 	void					SetStaticContactCallBack			(ContactCallbackFun* calback);
 	virtual		void		SetAcceleration						(Fvector accel)		;

@@ -3,8 +3,20 @@
 extern float object_demage_factor;
 extern float collide_volume_max;
 extern float collide_volume_min;
-extern float vel_cret_sound; 
-extern float vel_cret_wallmark;
-extern float vel_cret_particlles;
+
+
+struct EffectPars
+{
+	const static  float vel_cret_sound;
+	const static float vel_cret_particles;
+	const static float vel_cret_wallmark;
+};
+
+struct CharacterEffectPars
+{
+	const static  float vel_cret_sound;
+	const static float vel_cret_particles;
+	const static float vel_cret_wallmark;
+};
 
 #endif

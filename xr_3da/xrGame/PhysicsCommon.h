@@ -50,7 +50,8 @@ typedef void __stdcall  BoneCallbackFun(CBoneInstance* B);
 
 ObjectContactCallbackFun PushOutCallback;
 ObjectContactCallbackFun PushOutCallback1;
-ContactCallbackFun ContactShotMark;
+extern ContactCallbackFun *ContactShotMark;
+extern ContactCallbackFun *CharacterContactShotMark;
 
 typedef	void	__stdcall	PhysicsStepTimeCallback(u32	step_start,u32	step_end);
 extern			PhysicsStepTimeCallback		*physics_step_time_callback;
