@@ -93,7 +93,7 @@ FIBITMAP*	Surface_Load(char* full_name)
 	if (0==map)			return NULL;
 
 	// check if already 32bpp
-	if (32==FreeImage_GetBPP(map))	map;
+	if (32==FreeImage_GetBPP(map))	return map;
 
 	// convert
 	FIBITMAP*			map32	= FreeImage_ConvertTo32Bits(map);
