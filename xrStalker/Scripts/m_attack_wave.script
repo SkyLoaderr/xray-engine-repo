@@ -162,6 +162,7 @@ function main ()
 		   end
 		   
 		   if nz ~= 0 then
+		      printf ("Monster %s, sound %s", t[nz]:name (), snds[nz])
 		      update_action (t[nz], m_attack_wave.script_name (), 
 		                     sound (snds[nz], "bip01_head", vector ():set (0, 0, 0), vector ():set (0, 0, 0), false))
 		      flags[nz] = true               
