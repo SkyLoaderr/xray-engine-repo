@@ -87,6 +87,7 @@ struct pred_stri	: public std::binary_function<char*, char*, bool>	{
 #define DEF_DEQUE(N,T)				typedef xr_deque< T > N;		typedef N::iterator N##_it;
 #define DEF_MAP(N,K,T)				typedef xr_map< K, T > N;		typedef N::iterator N##_it;
 
+#define DEFINE_DEQUE(T,N,I)			typedef xr_deque< T > N;		typedef N::iterator I;
 #define DEFINE_LIST(T,N,I)			typedef xr_list< T > N;			typedef N::iterator I;
 #define DEFINE_VECTOR(T,N,I)		typedef xr_vector< T > N;		typedef N::iterator I;
 #define DEFINE_MAP(K,T,N,I)			typedef xr_map< K , T > N;		typedef N::iterator I;
