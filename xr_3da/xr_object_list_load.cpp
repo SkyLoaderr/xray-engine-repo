@@ -41,3 +41,13 @@ void CObjectList::Load()
 		Msg					("* [Object-prefetch] average: %f ms, %d bytes", p_time/p_count, p_mem/p_count);
 	}
 }
+
+
+void CObjectList::Unload	( )
+{
+	for (u32 i=0; i<objects.size(); i++) 
+	{
+		Destroy	( objects[i] );
+	}
+	objects.clear();
+}

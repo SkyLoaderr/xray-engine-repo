@@ -33,15 +33,6 @@ CObjectList::~CObjectList	( )
 	R_ASSERT(map_POOL.empty()		);
 }
 
-void CObjectList::Unload	( )
-{
-	for (u32 i=0; i<objects.size(); i++) {
-		CObject *pObject = objects[i];
-		xr_delete	( pObject );
-	}
-	objects.clear();
-}
-
 CObject*	CObjectList::FindObjectByName	( LPCSTR name )
 {
 	OBJ_IT O=find_if(objects.begin(),objects.end(),fNameEQ(name));
@@ -106,10 +97,12 @@ void CObjectList::net_Register	(CObject* O)
 {
 	R_ASSERT		(O);
 	map_NETID.insert(make_pair(O->ID(),O));
+	Msg				("-------------------------------- Register: %s",O->cName());
 }
 
 void CObjectList::net_Unregister(CObject* O)
 {
+	Msg				("-------------------------------- Unregster: %s",O->cName());
 	map<u32,CObject*>::iterator	it = map_NETID.find(O->ID());
 	if ((it!=map_NETID.end()) && (it->second == O))	map_NETID.erase(it);
 }
