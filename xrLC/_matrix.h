@@ -5,6 +5,7 @@
 // NOTE_1: positive angle means clockwise rotation
 // NOTE_2: mul(A,B) means transformation B, followed by A
 // NOTE_3: I,J,K,C equals to R,N,D,T
+// NOTE_4: The rotation sequence is ZXY
 
 extern ENGINE_API _matrix precalc_identity;
 typedef struct _matrix {
