@@ -33,9 +33,9 @@ function action_sleeper_activity:__init (npc_name,action_name,storage) super (ni
 				   maxidle = 10, 
 				   sumidle = 10,
 				   themes = { "weather", "state" } }	
-	self.sound_s = { rnd = 60,
-				   maxidle = 10, 
-				   sumidle = 10,
+	self.sound_s = { rnd = 100,
+				   maxidle = 1, 
+				   sumidle = 0,
 				   themes = { "sleep" } }
 end
 function action_sleeper_activity:initialize()
