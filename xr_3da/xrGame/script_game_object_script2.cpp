@@ -162,6 +162,8 @@ class_<CScriptGameObject> &script_register_game_object1(class_<CScriptGameObject
 		.def("get_invisible",				&CScriptGameObject::get_invisible)
 		.def("get_manual_invisibility",		&CScriptGameObject::get_manual_invisibility)
 
+		// searchlight
+		.def("get_current_direction",		&CScriptGameObject::GetCurrentDirection)
 
 		// movement manager
 		.def("set_body_state",				&CScriptGameObject::set_body_state			)

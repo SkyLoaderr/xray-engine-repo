@@ -11,6 +11,7 @@
 #include "script_monster_hit_info.h"
 #include "script_space.h"
 #include "ai/stalker/ai_stalker.h"
+#include "searchlight.h"
 
 void CScriptGameObject::AddEventCallback			(s16 event, const luabind::functor<void> &lua_function)
 {
@@ -131,6 +132,16 @@ bool CScriptGameObject::get_manual_invisibility()
 		return false;
 	}
 	return monster->is_manual_control();
+}
+
+Fvector CScriptGameObject::GetCurrentDirection()
+{
+	CProjector	*obj = smart_cast<CProjector*>(&object());
+	if (!obj) {
+		ai().script_engine().script_log		(ScriptStorage::eLuaMessageTypeError,"Script Object : cannot access class member GetCurrentDirection!");
+		return Fvector().set(0.f,0.f,0.f);
+	}
+	return obj->GetCurrentDirection();
 }
 
 CScriptGameObject::CScriptGameObject		(CGameObject *game_object)

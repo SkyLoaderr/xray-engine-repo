@@ -42,6 +42,8 @@ public:
 
 	virtual	bool	bfAssignWatch(CScriptEntityAction	*tpEntityAction);
 	virtual	bool	bfAssignObject(CScriptEntityAction *tpEntityAction);
+
+			Fvector GetCurrentDirection	();
 private:
 			void	TurnOn			();
 			void	TurnOff			();

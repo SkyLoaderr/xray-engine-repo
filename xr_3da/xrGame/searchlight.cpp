@@ -229,3 +229,8 @@ void CProjector::SetTarget(const Fvector &target_pos)
 	_target.pitch = tp;
 }
 
+Fvector CProjector::GetCurrentDirection()
+{
+	return (Fvector().setHP(_current.yaw,_current.pitch));
+}
+

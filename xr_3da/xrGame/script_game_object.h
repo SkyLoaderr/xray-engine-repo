@@ -185,6 +185,9 @@ public:
 			template <typename T>
 			IC		T	*motivation_action_manager();
 
+	// CProjector
+			Fvector				GetCurrentDirection		();
+
 	//////////////////////////////////////////////////////////////////////////
 	// CInventoryOwner
 	
