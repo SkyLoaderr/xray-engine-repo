@@ -492,6 +492,8 @@ void __fastcall TProperties::tvPropertiesItemDraw(TObject *Sender,
     PropItem* prop 					= (PropItem*)Item->Tag;
     if (!prop)						return;
 
+    R.left							+= 	4;
+    
 	TRect  R1;
 	Surface->Brush->Style 			= bsClear;
 	if (SectionIndex == 0){
