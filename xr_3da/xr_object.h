@@ -139,6 +139,7 @@ public:
 	// Device dependance
 	virtual void						OnDeviceDestroy	();
 	virtual void						OnDeviceCreate	();
+	virtual void						OnEvent			(EVENT E, DWORD P1, DWORD P2) {};
 };
 
 #endif //__XR_OBJECT_H__
