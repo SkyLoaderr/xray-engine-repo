@@ -321,7 +321,9 @@ function checkNpc(npc_community, gulag_type)
 		return npc_community == "bandit"
 	end
 
-	if gulag_type == "campers" then
+	if gulag_type == "campers" or
+	   gulag_type == "walkers"
+	then
 		return true
 	end
 

@@ -38,6 +38,19 @@ function loadJob(sj, gname, type, squad, groups)
 			t = { section = "camper"..i.."@campers",
 				idle = 0,
 				prior = 0, state = {0},
+				squad = squad, group = groups[i],
+				in_rest = "", out_rest = ""
+			}
+			table.insert(sj, t)
+		end
+	end
+	--' несколько walkers
+	if type == "walkers" then
+		for i = 1, 3 do
+			t = { section = "walker"..i.."@walkers",
+				idle = 0,
+				prior = 0, state = {0},
+				squad = squad, group = groups[i],
 				in_rest = "", out_rest = ""
 			}
 			table.insert(sj, t)
