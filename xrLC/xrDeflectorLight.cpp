@@ -211,7 +211,6 @@ void LightPoint(RAPID::XRCollide* DB, Fcolor &C, Fvector &P, Fvector &N, R_Light
 	}
 }
 
-
 VOID CDeflector::Light()
 {
 	HASH	hash;
@@ -226,9 +225,11 @@ VOID CDeflector::Light()
 		ZeroMemory	(lm_rad,size);
 	}
 
-	DWORD size = lm.dwWidth*lm.dwHeight*4;
-	lm.pSurface = (DWORD *)malloc(size);
-	ZeroMemory	(lm.pSurface,size);
+	{
+		DWORD size = lm.dwWidth*lm.dwHeight*4;
+		lm.pSurface = (DWORD *)malloc(size);
+		ZeroMemory	(lm.pSurface,size);
+	}
 
 	// Filling it with new triangles
 	Fbox bb; bb.invalidate	();
@@ -261,11 +262,19 @@ VOID CDeflector::Light()
 	}
 	if (LightsSelected.empty()) return;
 
-	Deflector			= this;
 	if (g_params.m_bRadiosity)	L_Radiosity	(hash);
 	else						L_Direct	(hash);
-
 	LightsSelected.clear	();
+
+	// Expand LMap with borders
+	LPDWORD	old = lm.pSurface;
+	DWORD	s_x = (lm.dwWidth+2*BORDER);
+	DWORD	s_y = (lm.dwHeight+2*BORDER);
+	DWORD size	= s_x*s_y*4;
+	lm.pSurface	= LPDWORD(malloc(size));
+	ZeroMemory	(lm.pSurface,size);
+	blit		(lm.pSurface,s_x,s_y,old,lm.dwWidth,lm.dwHeight,BORDER,BORDER);
+	_FREE		(old);
 }
 
 float gauss [7][7] =
@@ -399,7 +408,7 @@ void CDeflector::Save()
 	p.maketga		(lm.name);
 	
 	// Borders correction
-	for (DWORD ref=254-BORDER; ref>0; ref--)
+	for (DWORD ref=254/*-BORDER*/; ref>0; ref--)
 		if (!ApplyBorders(lm,ref)) break;
 
 	// Saving

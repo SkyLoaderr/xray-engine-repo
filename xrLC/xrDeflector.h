@@ -96,6 +96,7 @@ IC float Lrnd()
 		(1.f - g_params.m_lm_dither);
 }
 
-extern void		Jitter_Select(UVpoint* &Jitter, DWORD& Jcount);
+extern void		Jitter_Select	(UVpoint* &Jitter, DWORD& Jcount);
+extern void		blit			(LPDWORD dest, DWORD ds_x, DWORD ds_y, LPDWORD src, DWORD ss_x, DWORD ss_y, DWORD px, DWORD py);
 
 #define BORDER 2
