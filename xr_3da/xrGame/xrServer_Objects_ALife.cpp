@@ -317,6 +317,22 @@ void CSE_ALifeGraphPoint::FillProp			(LPCSTR pref, PropItemVec& items)
 ////////////////////////////////////////////////////////////////////////////
 // CSE_ALifeObject
 ////////////////////////////////////////////////////////////////////////////
+CSE_ALifeObject::CSE_ALifeObject			(LPCSTR caSection) : CSE_Abstract(caSection)
+{
+	m_bOnline					= false;
+	m_fDistance					= 0.0f;
+	m_tClassID					= _CLASS_ID(-1);
+	ID							= _OBJECT_ID(-1);
+	m_tGraphID					= _GRAPH_ID(-1);
+	m_tGraphID					= _SPAWN_ID(-1);
+	m_fProbability				= 1.f;
+	m_dwSpawnGroup				= 0;
+	m_bDirectControl			= true;
+	m_bALifeControl				= true;
+	m_tNodeID					= u32(-1);
+	strcpy						(m_caGroupControl,"");
+}
+
 void CSE_ALifeObject::STATE_Write			(NET_Packet &tNetPacket)
 {
 	tNetPacket.w_float			(m_fProbability);
@@ -476,11 +492,14 @@ void CSE_ALifeDynamicObject::FillProp	(LPCSTR pref, PropItemVec& values)
 void CSE_ALifeDynamicObjectVisual::STATE_Write(NET_Packet &tNetPacket)
 {
 	inherited1::STATE_Write		(tNetPacket);
+	visual_write				(tNetPacket);
 }
 
 void CSE_ALifeDynamicObjectVisual::STATE_Read(NET_Packet &tNetPacket, u16 size)
 {
 	inherited1::STATE_Read		(tNetPacket, size);
+	if (m_wVersion > 31)
+		visual_read				(tNetPacket);
 }
 
 void CSE_ALifeDynamicObjectVisual::UPDATE_Write(NET_Packet &tNetPacket)
@@ -667,7 +686,8 @@ void CSE_ALifeObjectPhysic::STATE_Read		(NET_Packet	&tNetPacket, u16 size)
 	if (m_wVersion >= 14)
 		if (m_wVersion >= 16) {
 			inherited::STATE_Read(tNetPacket,size);
-			visual_read			(tNetPacket);
+			if (m_wVersion < 32)
+				visual_read		(tNetPacket);
 		}
 		else {
 			CSE_ALifeObject::STATE_Read(tNetPacket,size);
@@ -691,7 +711,6 @@ void CSE_ALifeObjectPhysic::STATE_Read		(NET_Packet	&tNetPacket, u16 size)
 void CSE_ALifeObjectPhysic::STATE_Write		(NET_Packet	&tNetPacket)
 {
 	inherited::STATE_Write		(tNetPacket);
-	visual_write				(tNetPacket);
 	tNetPacket.w_u32			(type);
 	tNetPacket.w_float			(mass);
 	tNetPacket.w_string			(fixed_bone);
@@ -780,7 +799,8 @@ void CSE_ALifeObjectHangingLamp::STATE_Read	(NET_Packet	&tNetPacket, u16 size)
 	if (m_wVersion > 20)
 		inherited::STATE_Read	(tNetPacket,size);
 
-	visual_read					(tNetPacket);
+	if (m_wVersion < 32)
+		visual_read				(tNetPacket);
 	// model
 	tNetPacket.r_u32			(color);
 	tNetPacket.r_string			(color_animator);
@@ -808,7 +828,6 @@ void CSE_ALifeObjectHangingLamp::STATE_Read	(NET_Packet	&tNetPacket, u16 size)
 void CSE_ALifeObjectHangingLamp::STATE_Write(NET_Packet	&tNetPacket)
 {
 	inherited::STATE_Write		(tNetPacket);
-	visual_write				(tNetPacket);
 	// model
 	tNetPacket.w_u32			(color);
 	tNetPacket.w_string			(color_animator);

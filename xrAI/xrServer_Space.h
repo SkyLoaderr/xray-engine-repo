@@ -44,7 +44,7 @@ enum EPOType {
 DEFINE_VECTOR	(u32,						DWORD_VECTOR,			DWORD_IT);
 DEFINE_VECTOR	(bool,						BOOL_VECTOR,			BOOL_IT);
 
-template <class T> void	F_entity_Destroy	(T*& P)
+template <class T> void	F_entity_Destroy	(T *&P)
 {
 	xr_delete(P);
 };

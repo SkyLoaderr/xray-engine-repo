@@ -108,8 +108,11 @@ void CGrenade::net_Destroy() {
 void CGrenade::OnH_A_Chield() {
 	inherited::OnH_A_Chield();
 	if(!m_pFake && !dynamic_cast<CGrenade*>(H_Parent())) {
-		CSE_Abstract*		D	= F_entity_Create(cNameSect());
+		CSE_Abstract		*D	= F_entity_Create(cNameSect());
 		R_ASSERT			(D);
+		CSE_ALifeDynamicObject				*l_tpALifeDynamicObject = dynamic_cast<CSE_ALifeDynamicObject*>(D);
+		R_ASSERT							(l_tpALifeDynamicObject);
+		l_tpALifeDynamicObject->m_tNodeID	= AI_NodeID;
 		// Fill
 		strcpy				(D->s_name,cNameSect());
 		strcpy				(D->s_name_replace,"");

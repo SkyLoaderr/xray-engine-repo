@@ -162,7 +162,7 @@ CSE_Abstract*	xrServer::entity_Create		(LPCSTR name)
 	return F_entity_Create(name);
 }
 
-void			xrServer::entity_Destroy	(CSE_Abstract* P)
+void			xrServer::entity_Destroy	(CSE_Abstract *&P)
 {
 	R_ASSERT			(P);
 	id_free.push_back	(P->ID);

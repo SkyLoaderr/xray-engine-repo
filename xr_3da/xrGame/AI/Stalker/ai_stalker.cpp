@@ -88,8 +88,10 @@ void CAI_Stalker::Init()
 	//	m_fIntelligence					= 0.f;
 
 	m_fTimeToStep					= 0;
-	m_dwMyMaterialID				= GAMEMTL_NONE;
-	m_dwLastMaterialID				= GAMEMTL_NONE;
+	
+	m_dwMyMaterialID				= GMLib.GetMaterialIdx("actor");
+	m_dwLastMaterialID				= GMLib.GetMaterialIdx("default");
+
 
 	m_dwLookChangedTime				= 0;
 
@@ -208,9 +210,6 @@ void CAI_Stalker::Load				(LPCSTR section)
 	g_vfLoadSounds					(m_tpSoundHumming,pSettings->r_string(section,"sound_humming"),100);
 	g_vfLoadSounds					(m_tpSoundAlarm,pSettings->r_string(section,"sound_alarm"),100);
 	g_vfLoadSounds					(m_tpSoundSurrender,pSettings->r_string(section,"sound_surrender"),100);
-
-	m_dwMyMaterialID				= GMLib.GetMaterialIdx("actor");
-	m_dwLastMaterialID				= GMLib.GetMaterialIdx("default");
 
 	// prefetching
 	cNameVisual_set					("actors\\different_stalkers\\stalker_black_mask");

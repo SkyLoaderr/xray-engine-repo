@@ -61,7 +61,7 @@ void CAI_Stalker::OnEvent		(NET_Packet& P, u16 type)
 			//	return;
 			//}
 
-			//// Test for Artifact
+			//// Test for Artefact
 			//CTargetCS* A	= dynamic_cast<CTargetCS*>	(O);
 			//if (A) 
 			//{
@@ -122,7 +122,7 @@ void CAI_Stalker::OnEvent		(NET_Packet& P, u16 type)
 			//	return;
 			//}
 
-			//// Test for Artifact
+			//// Test for Artefact
 			//CTargetCS* A	= dynamic_cast<CTargetCS*>	(O);
 			//if (A)
 			//{

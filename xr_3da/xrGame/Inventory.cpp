@@ -245,6 +245,16 @@ bool CInventory::DropAll() {
 	return true;
 }
 
+void CInventory::ClearAll() {
+	PSPIItem l_it;
+	for(l_it = m_all.begin(); l_it != m_all.end(); l_it++) {
+		PIItem l_pIItem = *l_it;
+		Ruck(l_pIItem);
+	}
+	m_ruck.clear();
+	m_all.clear();
+}
+
 bool CInventory::Slot(PIItem pIItem) {
 	if(pIItem->m_slot < m_slots.size()) {
 		//if(m_slots[pIItem->m_slot].m_pIItem && !Belt(m_slots[pIItem->m_slot].m_pIItem)) Ruck(m_slots[pIItem->m_slot].m_pIItem);

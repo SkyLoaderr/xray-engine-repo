@@ -520,6 +520,9 @@ BOOL CWeaponRPG7::net_Spawn(LPVOID DC) {
 	if(iAmmoElapsed && !m_pGrenade) {
 		CSE_Abstract*		D	= F_entity_Create("wpn_rpg7_missile");
 		R_ASSERT			(D);
+		CSE_ALifeDynamicObject				*l_tpALifeDynamicObject = dynamic_cast<CSE_ALifeDynamicObject*>(D);
+		R_ASSERT							(l_tpALifeDynamicObject);
+		l_tpALifeDynamicObject->m_tNodeID	= AI_NodeID;
 		// Fill
 		strcpy				(D->s_name,"wpn_rpg7_missile");
 		strcpy				(D->s_name_replace,"");
@@ -555,6 +558,9 @@ void CWeaponRPG7::ReloadMagazine() {
 	if(iAmmoElapsed && !m_pGrenade) {
 		CSE_Abstract*		D	= F_entity_Create("wpn_rpg7_missile");
 		R_ASSERT			(D);
+		CSE_ALifeDynamicObject				*l_tpALifeDynamicObject = dynamic_cast<CSE_ALifeDynamicObject*>(D);
+		R_ASSERT							(l_tpALifeDynamicObject);
+		l_tpALifeDynamicObject->m_tNodeID	= AI_NodeID;
 		// Fill
 		strcpy				(D->s_name,"wpn_rpg7_missile");
 		strcpy				(D->s_name_replace,"");

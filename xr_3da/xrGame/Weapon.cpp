@@ -909,8 +909,8 @@ void CWeapon::SpawnAmmo(u32 boxCurr, LPCSTR ammoSect) {
 	l_type++; l_type %= m_ammoTypes.size();
 
 	// Create
-	CSE_Abstract	*D		= F_entity_Create(ammoSect);
-	CSE_ALifeItemAmmo			*l_pA	= dynamic_cast<CSE_ALifeItemAmmo*>(D);
+	CSE_Abstract		*D		= F_entity_Create(ammoSect);
+	CSE_ALifeItemAmmo	*l_pA	= dynamic_cast<CSE_ALifeItemAmmo*>(D);
 	R_ASSERT(l_pA);
 	// Fill
 	l_pA->m_boxSize = (u16)pSettings->r_s32(ammoSect, "box_size");
@@ -923,6 +923,7 @@ void CWeapon::SpawnAmmo(u32 boxCurr, LPCSTR ammoSect) {
 	D->ID_Phantom = 0xffff;
 	D->s_flags.set(M_SPAWN_OBJECT_LOCAL);
 	D->RespawnTime = 0;
+	l_pA->m_tNodeID	= AI_NodeID;
 	// Send
 	if(boxCurr == 0xffffffff) boxCurr = l_pA->m_boxSize;
 	while(boxCurr) {

@@ -160,24 +160,6 @@ public:
 	}
 };
 
-class CCC_ALifeSave : public CConsoleCommand {
-public:
-	CCC_ALifeSave(LPCSTR N) : CConsoleCommand(N)  { bEmptyArgsHandled = true; };
-	virtual void Execute(LPCSTR args) {
-		if (Level().game.type == GAME_SINGLE) {
-			game_sv_Single *tpGame = dynamic_cast<game_sv_Single *>(Level().Server->game);
-			if (tpGame && tpGame->m_tpALife->m_bLoaded) {
-				tpGame->m_tpALife->Save();
-				Log("* ALife simulation is successfully saved!");
-			}
-			else
-				Log("!ALife simulation cannot be saved!");
-		}
-		else
-			Log("!Not a single player game!");
-	}
-};
-
 #ifdef ALIFE_SUPPORT_CONSOLE_COMMANDS
 class CCC_ALifeListAll : public CConsoleCommand {
 public:
@@ -610,6 +592,46 @@ public:
 
 	}
 };
+
+class CCC_ALifeSave : public CConsoleCommand {
+public:
+	CCC_ALifeSave(LPCSTR N) : CConsoleCommand(N)  { bEmptyArgsHandled = true; };
+	virtual void Execute(LPCSTR args) {
+		if (Level().game.type == GAME_SINGLE) {
+			game_sv_Single *tpGame = dynamic_cast<game_sv_Single *>(Level().Server->game);
+			if (tpGame && tpGame->m_tpALife->m_bLoaded)
+				tpGame->m_tpALife->Save("quick_save");
+			else
+				Log("!ALife simulation cannot be saved!");
+		}
+		else
+			Log("!Not a single player game!");
+	}
+};
+
+class CCC_ALifeSaveTo : public CConsoleCommand {
+public:
+	CCC_ALifeSaveTo(LPCSTR N) : CConsoleCommand(N)  { bEmptyArgsHandled = true; };
+	virtual void Execute(LPCSTR args) {
+		if (Level().game.type == GAME_SINGLE) {
+			game_sv_Single *tpGame = dynamic_cast<game_sv_Single *>(Level().Server->game);
+			if (tpGame && tpGame->m_tpALife->m_bLoaded) {
+				string256	S;
+				S[0]		= 0;
+				sscanf		(args ,"%s",S);
+				if (!strlen(S))
+					Log("* Specify file name!");
+				else
+					tpGame->m_tpALife->Save(S);
+			}
+			else
+				Log("!ALife simulation cannot be saved!");
+		}
+		else
+			Log("!Not a single player game!");
+	}
+};
+
 ///////////////////////////////////////////////////////////////////////////////////////////////////////////
 
 
@@ -632,7 +654,8 @@ BOOL APIENTRY DllMain( HANDLE hModule,
 		
 		// alife
 		CMD1(CCC_ALifePath,			"al_path"				);		// build path
-		CMD1(CCC_ALifeSave,			"al_save"				);		// save alife state
+		CMD1(CCC_ALifeSave,			"save"					);		// save game
+		CMD1(CCC_ALifeSaveTo,		"save_to"				);		// save game to ...
 #ifdef ALIFE_SUPPORT_CONSOLE_COMMANDS
 		CMD1(CCC_ALifeListAll,		"al_la"					);		// list all (objects, events and tasks)
 		CMD1(CCC_ALifeListObjects,	"al_lo"					);		// list objects

@@ -176,8 +176,6 @@ void CTrade::ShowItems()
 	Msg("--TRADE:: ----------------------------------------------");
 	Msg("--TRADE:: [%s]: Here are my items: ",pThis.base->cName());
 
-	int i=1;
-
 	// определение коэффициента
 	float factor = 1.0f;
 	
@@ -195,9 +193,35 @@ void CTrade::ShowItems()
 		}
 	}
 
-	for (PSPIItem it = pThis.inv_owner->m_inventory.m_all.begin(); it != pThis.inv_owner->m_inventory.m_all.end(); it ++, i++) {
-		Msg("--TRADE:: [%s]: %i. %s ($%i)",pThis.base->cName(),i,(*it)->Name(),(int)(((float) (*it)->Cost()) * factor ));
+//	for (PSPIItem it = pThis.inv_owner->m_inventory.m_all.begin(); it != pThis.inv_owner->m_inventory.m_all.end(); it ++, i++) {
+//		Msg("--TRADE:: [%s]: %i. %s ($%i)",pThis.base->cName(),i,(*it)->Name(),(int)(((float) (*it)->Cost()) * factor ));
+//	}
+
+	string128	CurName;
+	u32			num = 0;
+	u32			i = 0;
+	u32			l_dwCost = 0;
+	CurName[0]	= 0;
+	PSPIItem	B = pThis.inv_owner->m_inventory.m_all.begin(), I = B;
+	PSPIItem	E = pThis.inv_owner->m_inventory.m_all.end();
+
+	for ( ; I != E; I++) {
+		if (strcmp(CurName, (*I)->Name()) != 0) {
+			if (num != 0) {
+				Msg("--TRADE:: [%s]: %i. %s ($%i) /%i items/ ",pThis.base->cName(),++i,CurName,l_dwCost, num);
+			} 
+			num = 1;
+			strcpy(CurName,(*I)->Name());
+		} else {
+			l_dwCost = (int)(((float) (*I)->Cost()) * factor );
+			num ++;
+		}
 	}
+	
+	// Вывести последний item
+	if (B != E)
+		Msg("--TRADE:: [%s]: %i. %s ($%i) /%i items/ ",pThis.base->cName(),++i,CurName,l_dwCost, num);
+////
 	
 }
 
@@ -209,7 +233,7 @@ void CTrade::ShowMoney()
 void CTrade::ShowArtifactPrices()
 {
 	if (pThis.type == TT_TRADER) {
-		Msg("--TRADE:: [%s]: Here is my artifact prices: ",pThis.base->cName());
+		Msg("--TRADE:: [%s]: Here is my artefact prices: ",pThis.base->cName());
 
 		xr_set<CArtifact*>::iterator it;
 		for(it = CArtifact::m_all.begin(); it != CArtifact::m_all.end(); it++) {
@@ -218,7 +242,7 @@ void CTrade::ShowArtifactPrices()
 		}
 
 	} else 
-		Msg("--TRADE:: [%s]: I don't buy artifacts! Go to trader",pThis.base->cName());
+		Msg("--TRADE:: [%s]: I don't buy artefacts! Go to trader",pThis.base->cName());
 }
 
 void CTrade::SellItem(int id)

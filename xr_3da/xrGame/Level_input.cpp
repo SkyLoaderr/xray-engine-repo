@@ -2,6 +2,8 @@
 #include "HUDmanager.h"
 #include "..\xr_ioconsole.h"
 #include "entity.h"
+#include "game_sv_single.h"
+#include "ai_alife.h"
 
 // Обработка нажатия клавиш
 void CLevel::IR_OnKeyboardPress(int key)
@@ -21,7 +23,24 @@ void CLevel::IR_OnKeyboardPress(int key)
 		HW.Caps.SceneMode			= (HW.Caps.SceneMode+1)%3;
 		return;
 	case DIK_F6:
-		net_Save					("quick.save");
+		if (Server->game->type == GAME_SINGLE) {
+			game_sv_Single *tpGame	= dynamic_cast<game_sv_Single*>(Server->game);
+			if (tpGame && tpGame->m_tpALife)
+				tpGame->m_tpALife->Save("quick_save");
+			else
+				net_Save			("quick.save");
+		}
+		else
+			net_Save				("quick.save");
+		return;
+	case DIK_F7:
+		if (Server->game->type == GAME_SINGLE) {
+			game_sv_Single *tpGame	= dynamic_cast<game_sv_Single*>(Server->game);
+			if (tpGame && tpGame->m_tpALife) {
+				Engine.Event.Defer	("KERNEL:disconnect");
+				Engine.Event.Defer	("KERNEL:start",size_t(xr_strdup("game00/single/alife")),size_t(xr_strdup("localhost/dima")));
+			}
+		}
 		return;
 	case DIK_F9:
 		// SLS_Load					("quick.save");

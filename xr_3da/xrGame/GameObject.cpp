@@ -40,6 +40,12 @@ void CGameObject::net_Destroy	()
 	g_pGameLevel->Objects.net_Unregister		(this);
 	shedule_Unregister							();
 	if (this == Level().CurrentEntity())		Level().SetEntity(0);
+	if (!H_Parent()) {
+		Msg										("REF_DEC (%s) %d = %d",cName(),AI_NodeID,getAI().q_mark[AI_NodeID] - 1);
+		getAI().ref_dec							(AI_NodeID);
+	}
+	AI_NodeID									= u32(-1);
+	AI_Node										= 0;
 }
 
 void CGameObject::OnEvent		(NET_Packet& P, u16 type)
@@ -73,9 +79,7 @@ void CGameObject::OnEvent		(NET_Packet& P, u16 type)
 
 BOOL CGameObject::net_Spawn		(LPVOID	DC)
 {
-	inherited::net_Spawn			(DC);
-
-	setDestroy	(FALSE);	// @@@ WT
+	setDestroy						(FALSE);	// @@@ WT
 
 	CSE_Abstract*		E			= (CSE_Abstract*)DC;
 	R_ASSERT						(E);
@@ -98,26 +102,44 @@ BOOL CGameObject::net_Spawn		(LPVOID	DC)
 	// AI-DB connectivity
 	CTimer		T; T.Start		();
 	CSE_ALifeObject*		a_obj	= dynamic_cast<CSE_ALifeObject*>(E);
-	if (a_obj)
-	{
-		CAI_Space&	AI		= getAI();
-		R_ASSERT			(AI.bfCheckIfGraphLoaded());
-		//Msg					("G2L : %f",getAI().m_tpaGraph[a_obj->m_tGraphID].tLocalPoint.distance_to(Position()));
-//		AI_NodeID			=	AI.q_Node	(getAI().m_tpaGraph[a_obj->m_tGraphID].tNodeID,Position());
-//		Msg					("G2L : %f",getAI().tfGetNodeCenter(a_obj->m_tNodeID).distance_to(Position()));
-		if (a_obj->m_tNodeID < getAI().Header().count)
-			AI_NodeID			=	AI.q_Node	(a_obj->m_tNodeID,Position());
-		else
-			AI_NodeID			=	AI.q_LoadSearch(Position());
-		
-		if (!AI_NodeID || (AI_NodeID == u32(-1))) {
-			Msg("! GameObject::NET_Spawn : Corresponding node hasn't been found for object %s",cName());
-			AI_NodeID			= u32(-1);
-			AI_Node				= NULL;
+	
+	if (a_obj->ID_Parent == 0xffff) {
+		if (a_obj) {
+			CAI_Space&	AI		= getAI();
+			R_ASSERT			(AI.bfCheckIfGraphLoaded());
+			//Msg					("G2L : %f",getAI().m_tpaGraph[a_obj->m_tGraphID].tLocalPoint.distance_to(Position()));
+			//		AI_NodeID			=	AI.q_Node	(getAI().m_tpaGraph[a_obj->m_tGraphID].tNodeID,Position());
+			//		Msg					("G2L : %f",getAI().tfGetNodeCenter(a_obj->m_tNodeID).distance_to(Position()));
+			if (a_obj->m_tNodeID < getAI().Header().count)
+				AI_NodeID			=	AI.q_Node	(a_obj->m_tNodeID,Position());
+			else
+				AI_NodeID			=	AI.q_LoadSearch(Position());
+
+			if (!AI_NodeID || (AI_NodeID == u32(-1))) {
+				Msg("! GameObject::NET_Spawn : Corresponding node hasn't been found for object %s",cName());
+				AI_NodeID			= u32(-1);
+				AI_Node				= NULL;
+			}
+			else {
+				AI_Node				=	AI.Node		(AI_NodeID);
+				Msg					("REF_ADD (%s) %d = %d",cName(),AI_NodeID,getAI().q_mark[AI_NodeID] + 1);
+				getAI().ref_add		(AI_NodeID);
+			}
 		}
 		else {
-			AI_Node				=	AI.Node		(AI_NodeID);
-			getAI().ref_add		(AI_NodeID);
+			Fvector				nPos	= vPosition;
+			int node					= getAI().q_LoadSearch(nPos);
+
+			if (node<0)			{
+				Msg					("! ERROR: AI node not found for object '%s'. (%f,%f,%f)",cName(),nPos.x,nPos.y,nPos.z);
+				AI_NodeID			= u32(-1);
+				AI_Node				= NULL;
+			} else {
+				AI_NodeID			= u32(node);
+				AI_Node				= getAI().Node(AI_NodeID);
+				Msg					("REF_ADD (%s) %d = %d",cName(),AI_NodeID,getAI().q_mark[AI_NodeID] + 1);
+				getAI().ref_add		(AI_NodeID);
+			}
 		}
 	}
 	else 
@@ -125,16 +147,15 @@ BOOL CGameObject::net_Spawn		(LPVOID	DC)
 		Fvector				nPos	= Position();
 		int node					= getAI().q_LoadSearch(nPos);
 
-		if (node<0)			{
-			Msg					("! ERROR: AI node not found for object '%s'. (%f,%f,%f)",cName(),nPos.x,nPos.y,nPos.z);
-			AI_NodeID			= u32(-1);
-			AI_Node				= NULL;
-		} else {
-			AI_NodeID			= u32(node);
-			AI_Node				= getAI().Node(AI_NodeID);
-			getAI().ref_add  (AI_NodeID);
-		}
+	if ((a_obj->ID_Parent != 0xffff) && !Parent) {
+		Parent						= this;
+		inherited::net_Spawn		(DC);
+		Parent						= 0;
 	}
+	else
+		inherited::net_Spawn		(DC);
+
+
 	//Msg			("--spawn--ai-node: %f ms",1000.f*T.GetAsync());
 
 	// Phantom
@@ -147,14 +168,17 @@ void CGameObject::spatial_move		()
 {
 	if (H_Parent())
 	{
-		// Use parent information
-		CGameObject* O				= dynamic_cast<CGameObject*>(H_Root());
-		VERIFY						(O);
-		CAI_Space&	AI				= getAI();
-		AI.ref_dec					(AI_NodeID);
-		AI_NodeID					= O->AI_NodeID;
-		AI.ref_add					(AI_NodeID);
-		AI_Node						= O->AI_Node;
+//		// Use parent information
+//		CGameObject* O	= dynamic_cast<CGameObject*>(H_Root());
+//		VERIFY						(O);
+//		CAI_Space&	AI				= getAI();
+//		Msg							("REF_DEC (%s) %d = %d",cName(),AI_NodeID,getAI().q_mark[AI_NodeID] - 1);
+//		AI.ref_dec					(AI_NodeID);
+//		AI_NodeID					= O->AI_NodeID;
+//		Msg							("REF_ADD (%s) %d = %d",cName(),AI_NodeID,getAI().q_mark[AI_NodeID] + 1);
+//		AI.ref_add					(AI_NodeID);
+//		AI_Node						= O->AI_Node;
+		// Sector_Move	(O->Sector());
 	} else {
 		// We was moved - so find _new AI-Node
 		if ((AI_Node) && (Visual())) {
@@ -162,14 +186,16 @@ void CGameObject::spatial_move		()
 			Pos.add		(Position());
 			CAI_Space&	AI = getAI();
 
+			Msg						("REF_DEC (%s) %d = %d",cName(),AI_NodeID,getAI().q_mark[AI_NodeID] - 1);
 			AI.ref_dec  (AI_NodeID);
 			AI_NodeID	= AI.q_Node	(AI_NodeID,Position());
 			
 			if (!AI_NodeID)
 				Msg("! GameObject::spatial_move : Corresponding node hasn't been found for monster %s",cName());
 
-			AI.ref_add  (AI_NodeID);
-			AI_Node		= AI.Node	(AI_NodeID);
+			Msg						("REF_ADD (%s) %d = %d",cName(),AI_NodeID,getAI().q_mark[AI_NodeID] + 1);
+			AI.ref_add				(AI_NodeID);
+			AI_Node					= AI.Node(AI_NodeID);
 		}
 
 		// Perform sector detection

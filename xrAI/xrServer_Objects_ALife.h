@@ -79,7 +79,6 @@ class CSE_ALifeObject : virtual public CSE_Abstract {
 public:
 	typedef CSE_Abstract inherited;
 	_CLASS_ID						m_tClassID;
-	_OBJECT_ID						ID;
 	_GRAPH_ID						m_tGraphID;
 	_SPAWN_ID						m_tSpawnID;
 	float							m_fDistance;
@@ -90,21 +89,7 @@ public:
 	u32								m_tNodeID;
 	string64						m_caGroupControl;
 
-									CSE_ALifeObject	(LPCSTR caSection) : CSE_Abstract(caSection)
-	{
-		m_bOnline					= false;
-		m_fDistance					= 0.0f;
-		m_tClassID					= _CLASS_ID(-1);
-		ID							= _OBJECT_ID(-1);
-		m_tGraphID					= _GRAPH_ID(-1);
-		m_tGraphID					= _SPAWN_ID(-1);
-		m_fProbability				= 1.f;
-		m_dwSpawnGroup				= 0;
-		m_bDirectControl			= true;
-		m_tNodeID					= u32(-1);
-		strcpy						(m_caGroupControl,"");
-	};
-
+									CSE_ALifeObject	(LPCSTR caSection);
 	virtual void					STATE_Write		(NET_Packet &tNetPacket);
 	virtual void					STATE_Read		(NET_Packet &tNetPacket, u16 size);
 	virtual void					UPDATE_Write	(NET_Packet &tNetPacket);

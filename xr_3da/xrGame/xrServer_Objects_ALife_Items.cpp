@@ -31,6 +31,7 @@ void CSE_ALifeItem::STATE_Read				(NET_Packet &tNetPacket, u16 size)
 void CSE_ALifeItem::UPDATE_Write			(NET_Packet &tNetPacket)
 {
 	inherited::UPDATE_Write		(tNetPacket);
+
 };
 
 void CSE_ALifeItem::UPDATE_Read				(NET_Packet &tNetPacket)

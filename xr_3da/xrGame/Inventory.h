@@ -76,6 +76,7 @@ public:
 	bool Take(CGameObject *pObj);							// Взять объект. Объект попадает в рюкзак
 	bool Drop(CGameObject *pObj);							// Выбросить объект
 	bool DropAll();											// Выбросить все
+	void ClearAll();										// Очистить всё
 	bool Slot(PIItem pIItem);								// Вставить объект себе в слот. То что было - на пояс. Нельзя - в рюкзак
 	bool Belt(PIItem pIItem);								// Повесить объект на пояс
 	bool Ruck(PIItem pIItem);								// Полжить объект в рюкзак

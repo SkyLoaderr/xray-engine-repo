@@ -534,10 +534,14 @@ BOOL CWeaponMagazinedWGrenade::net_Spawn(LPVOID DC) {
 	V->LL_GetInstance(V->LL_BoneID("grenade_0")).set_callback(GrenadeCallback, this);
 	//V = PKinematics(Visual()); R_ASSERT(V);
 	//V->LL_GetInstance(V->LL_BoneID("grenade")).set_callback(GrenadeCallback, this);
+	CSE_ALifeObject *l_tpALifeObject = (CSE_ALifeObject*)(DC);
 	m_hideGrenade = !iAmmoElapsed;
 	if(iAmmoElapsed && !m_pGrenade) {
 		CSE_Abstract*		D	= F_entity_Create("wpn_fake_missile");
 		R_ASSERT			(D);
+		CSE_ALifeDynamicObject				*l_tpALifeDynamicObject = dynamic_cast<CSE_ALifeDynamicObject*>(D);
+		R_ASSERT							(l_tpALifeDynamicObject);
+		l_tpALifeDynamicObject->m_tNodeID	= l_tpALifeObject->m_tNodeID;
 		// Fill
 		strcpy				(D->s_name,"wpn_fake_missile");
 		strcpy				(D->s_name_replace,"");
@@ -717,6 +721,9 @@ void CWeaponMagazinedWGrenade::ReloadMagazine() {
 	if(iAmmoElapsed && !m_pGrenade) {
 		CSE_Abstract*		D	= F_entity_Create("wpn_fake_missile");
 		R_ASSERT			(D);
+		CSE_ALifeDynamicObject				*l_tpALifeDynamicObject = dynamic_cast<CSE_ALifeDynamicObject*>(D);
+		R_ASSERT							(l_tpALifeDynamicObject);
+		l_tpALifeDynamicObject->m_tNodeID	= AI_NodeID;
 		// Fill
 		strcpy				(D->s_name,"wpn_fake_missile");
 		strcpy				(D->s_name_replace,"");

@@ -52,7 +52,6 @@ CLevel::~CLevel()
 
 	if (ph_world)	ph_world->Destroy		();
 
-//	xr_delete			(m_tpAI_DDD);
 	xr_delete			(ph_world);
 
 	// destroy PSs
@@ -66,6 +65,9 @@ CLevel::~CLevel()
 		xr_delete		(static_Sounds[i]);
 	}
 	static_Sounds.clear();
+
+	xr_delete			(tpAI_Space);
+	xr_delete			(Server);
 }
 
 // Game interface ////////////////////////////////////////////////////

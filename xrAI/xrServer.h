@@ -82,7 +82,7 @@ public:
 
 	// utilities
 	CSE_Abstract*			entity_Create		(LPCSTR name);
-	void					entity_Destroy		(CSE_Abstract* P);
+	void					entity_Destroy		(CSE_Abstract *&P);
 
 	IC void					clients_Lock		()			{	csPlayers.Enter();	}
 	IC void					clients_Unlock		()			{   csPlayers.Leave();	}
@@ -91,7 +91,7 @@ public:
 	CSE_Abstract*			ID_to_entity		(u16 ID);
 
 	// main
-	virtual BOOL			Connect				(LPCSTR		session_name);
+	virtual BOOL			Connect				(LPSTR		&session_name);
 	virtual void			Disconnect			();
 	void					Update				();
 	void					SLS_Default			();

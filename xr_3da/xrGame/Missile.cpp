@@ -91,6 +91,7 @@ BOOL CMissile::net_Spawn(LPVOID DC) {
 
 void CMissile::net_Destroy() {
 	//R_ASSERT(!m_pInventory);
+	m_pInventory = 0;
 	if(m_pPhysicsShell) m_pPhysicsShell->Deactivate();
 	xr_delete(m_pPhysicsShell);
 	inherited::net_Destroy();

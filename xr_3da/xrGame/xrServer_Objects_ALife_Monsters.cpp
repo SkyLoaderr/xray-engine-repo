@@ -66,9 +66,30 @@ void CSE_ALifeTraderAbstract::FillProp	(LPCSTR pref, PropItemVec& values)
 
 CSE_ALifeTrader::CSE_ALifeTrader			(LPCSTR caSection) : CSE_ALifeDynamicObjectVisual(caSection), CSE_ALifeTraderAbstract(caSection), CSE_Abstract(caSection)
 {
-	m_tpOrderedArtefacts.clear				();
 	if (pSettings->section_exist(caSection) && pSettings->line_exist(caSection,"visual"))
 		set_visual				(pSettings->r_string(caSection,"visual"));
+	
+	m_tpOrderedArtefacts.clear	();
+	LPCSTR						l_caSupplies = pSettings->r_string(caSection,"supplies");
+	m_tpSupplies.clear			();
+	string64					S;
+	for (u32 i=0, n=_GetItemCount(l_caSupplies); i<n; ) {
+		STraderSupply			l_tTraderSupply;
+		l_tTraderSupply.m_caSections[0] = 0;
+		for (;;i++) {
+			_GetItem(l_caSupplies,i,S);
+			if (!strlen(S) || ((S[0] > '0') && (S[0] <= '9')))
+				break;
+			strcat				(l_tTraderSupply.m_caSections,S);
+			strcat				(l_tTraderSupply.m_caSections,",");
+		}
+		R_ASSERT2				(strlen(l_tTraderSupply.m_caSections),"No sections in supplies string");
+		l_tTraderSupply.m_caSections[strlen(l_tTraderSupply.m_caSections) - 1] = 0;
+		l_tTraderSupply.m_dwCount		= atoi(_GetItem(l_caSupplies,i++,S));
+		l_tTraderSupply.m_fMinFactor	= (float)atof(_GetItem(l_caSupplies,i++,S));
+		l_tTraderSupply.m_fMaxFactor	= (float)atof(_GetItem(l_caSupplies,i++,S));
+		m_tpSupplies.push_back	(l_tTraderSupply);
+	}
 }
 
 CSE_ALifeTrader::~CSE_ALifeTrader			()
@@ -79,13 +100,26 @@ void CSE_ALifeTrader::STATE_Write			(NET_Packet &tNetPacket)
 {
 	inherited1::STATE_Write		(tNetPacket);
 	inherited2::STATE_Write		(tNetPacket);
-	tNetPacket.w_u32			(m_tpOrderedArtefacts.size());
-	ARTEFACT_ORDER_IT			I = m_tpOrderedArtefacts.begin();
-	ARTEFACT_ORDER_IT			E = m_tpOrderedArtefacts.end();
-	for ( ; I != E; I++) {
-		tNetPacket.w_string		((*I).m_caSection);
-		tNetPacket.w_u32		((*I).m_dwCount);
-		tNetPacket.w_u32		((*I).m_dwPrice);
+	{
+		tNetPacket.w_u32		(m_tpOrderedArtefacts.size());
+		ARTEFACT_ORDER_IT		I = m_tpOrderedArtefacts.begin();
+		ARTEFACT_ORDER_IT		E = m_tpOrderedArtefacts.end();
+		for ( ; I != E; I++) {
+			tNetPacket.w_string	((*I).m_caSection);
+			tNetPacket.w_u32	((*I).m_dwCount);
+			tNetPacket.w_u32	((*I).m_dwPrice);
+		}
+	}
+	{
+		tNetPacket.w_u32		(m_tpSupplies.size());
+		TRADER_SUPPLY_IT		I = m_tpSupplies.begin();
+		TRADER_SUPPLY_IT		E = m_tpSupplies.end();
+		for ( ; I != E; I++) {
+			tNetPacket.w_string	((*I).m_caSections);
+			tNetPacket.w_u32	((*I).m_dwCount);
+			tNetPacket.w_float	((*I).m_fMinFactor);
+			tNetPacket.w_float	((*I).m_fMaxFactor);
+		}
 	}
 }
 
@@ -103,6 +137,19 @@ void CSE_ALifeTrader::STATE_Read			(NET_Packet &tNetPacket, u16 size)
 			tNetPacket.r_string	((*I).m_caSection);
 			tNetPacket.r_u32	((*I).m_dwCount);
 			tNetPacket.r_u32	((*I).m_dwPrice);
+		}
+	}
+	if (m_wVersion > 30) {
+		u32						l_dwCount;
+		tNetPacket.r_u32		(l_dwCount);
+		m_tpSupplies.resize		(l_dwCount);
+		TRADER_SUPPLY_IT		I = m_tpSupplies.begin();
+		TRADER_SUPPLY_IT		E = m_tpSupplies.end();
+		for ( ; I != E; I++) {
+			tNetPacket.r_string	((*I).m_caSections);
+			tNetPacket.r_u32	((*I).m_dwCount);
+			tNetPacket.r_float	((*I).m_fMinFactor);
+			tNetPacket.r_float	((*I).m_fMaxFactor);
 		}
 	}
 }
@@ -124,6 +171,15 @@ void CSE_ALifeTrader::FillProp				(LPCSTR pref, PropItemVec& items)
 {
 	inherited1::FillProp		(pref,items);
 	inherited2::FillProp		(pref,items);
+	TRADER_SUPPLY_IT			B = m_tpSupplies.begin(), I = B;
+	TRADER_SUPPLY_IT			E = m_tpSupplies.end();
+	string64					S;
+	for ( ; I != E; I++) {
+		PHelper.CreateText		(items, PHelper.PrepareKey(pref,s_name,"ALife\\Supplies",itoa(int(I - B),S,10)), (*I).m_caSections, sizeof((*I).m_caSections));
+		PHelper.CreateU32		(items, PHelper.PrepareKey(pref,s_name,"ALife\\Supplies",S),					 &(*I).m_dwCount,	1, 256);
+		PHelper.CreateFLOAT		(items, PHelper.PrepareKey(pref,s_name,"ALife\\Supplies",S),					 &(*I).m_fMinFactor,0.f, 1.f);
+		PHelper.CreateFLOAT		(items, PHelper.PrepareKey(pref,s_name,"ALife\\Supplies",S),					 &(*I).m_fMaxFactor,0.f, 1.f);
+	}
 }
 #endif
 ////////////////////////////////////////////////////////////////////////////
@@ -136,7 +192,6 @@ void CSE_ALifeCreatureAbstract::STATE_Write	(NET_Packet &tNetPacket)
 	tNetPacket.w_u8				(s_squad);
 	tNetPacket.w_u8				(s_group);
 	tNetPacket.w_float			(fHealth);
-	visual_write				(tNetPacket);
 }
 
 void CSE_ALifeCreatureAbstract::STATE_Read	(NET_Packet &tNetPacket, u16 size)
@@ -147,7 +202,8 @@ void CSE_ALifeCreatureAbstract::STATE_Read	(NET_Packet &tNetPacket, u16 size)
 	tNetPacket.r_u8				(s_group);
 	if (m_wVersion > 18)
 		tNetPacket.r_float		(fHealth);
-	visual_read					(tNetPacket);
+	if (m_wVersion < 32)
+		visual_read				(tNetPacket);
 }
 
 void CSE_ALifeCreatureAbstract::UPDATE_Write(NET_Packet &tNetPacket)
@@ -254,7 +310,8 @@ void CSE_ALifeCreatureActor::STATE_Read		(NET_Packet	&tNetPacket, u16 size)
 	else {
 		inherited1::STATE_Read	(tNetPacket,size);
 		inherited2::STATE_Read	(tNetPacket,size);
-		visual_read				(tNetPacket);
+		if (m_wVersion < 32)
+			visual_read			(tNetPacket);
 	}
 };
 
@@ -262,7 +319,6 @@ void CSE_ALifeCreatureActor::STATE_Write	(NET_Packet	&tNetPacket)
 {
 	inherited1::STATE_Write		(tNetPacket);
 	inherited2::STATE_Write		(tNetPacket);
-	visual_write				(tNetPacket);
 };
 
 void CSE_ALifeCreatureActor::UPDATE_Read	(NET_Packet	&tNetPacket)
@@ -301,14 +357,14 @@ void CSE_ALifeMonsterCrow::STATE_Read		(NET_Packet	&tNetPacket, u16 size)
 {
 	if (m_wVersion > 20) {
 		inherited::STATE_Read	(tNetPacket,size);
-		visual_read				(tNetPacket);
+		if (m_wVersion < 32)
+			visual_read			(tNetPacket);
 	}
 }
 
 void CSE_ALifeMonsterCrow::STATE_Write		(NET_Packet	&tNetPacket)
 {
 	inherited::STATE_Write		(tNetPacket);
-	visual_write				(tNetPacket);
 }
 
 void CSE_ALifeMonsterCrow::UPDATE_Read		(NET_Packet	&tNetPacket)

@@ -28,7 +28,7 @@ SERVER_ENTITY_DECLARE_BEGIN(CSE_ALifeItem,CSE_ALifeDynamicObjectVisual)
 
 	bool							bfAttached		()
 	{
-		return						(ID < 0xffff);
+		return						(ID_Parent < 0xffff);
 	};
 SERVER_ENTITY_DECLARE_END
 

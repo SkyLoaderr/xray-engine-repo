@@ -17,31 +17,33 @@
 	#include "PropertiesListHelper.h"
 #endif
 
-#define SPAWN_VERSION	u16(30)
+#define SPAWN_VERSION	u16(32)
 //------------------------------------------------------------------------------
 // Version history
 //------------------------------------------------------------------------------
-// 10 - xrSE_ALifeObjectPhysic		appended with property 'fixed_bone'
-// 11 - xrSE_ALifeObjectHangingLamp	appended with property 'spot_brightness'
-// 12 - xrSE_ALifeObjectHangingLamp	appended with property 'flags'
-// 13 - xrSE_ALifeObjectHangingLamp	appended with property 'mass'
-// 14 - xrSE_ALifeObjectPhysic		inherited from CSE_ALifeObject
-// 15 - xrSE_ALifeAnomalousZone		inherited calls from CSE_ALifeDynamicObject
-// 16 - xrSE_ALifeObjectPhysic		inherited from CSE_ALifeDynamicObject
-// 17 - xrSE_...					inherited from CSE_Visual for smart Level Editor
-// 18 - xrSE_ALifeObjectHangingLamp appended with 'startup_animation'
-// 19 - xrSE_Teamed					didn't save health parameter
-// 20 - xrSE_ALife...				saving vectors in UPDATE_Read/UPDATE_Write changed to STATE_Read/STATE_Write
+// 10 - xrSE_ALifeObjectPhysic			appended with property 'fixed_bone'
+// 11 - xrSE_ALifeObjectHangingLamp		appended with property 'spot_brightness'
+// 12 - xrSE_ALifeObjectHangingLamp		appended with property 'flags'
+// 13 - xrSE_ALifeObjectHangingLamp		appended with property 'mass'
+// 14 - xrSE_ALifeObjectPhysic			inherited from CSE_ALifeObject
+// 15 - xrSE_ALifeAnomalousZone			inherited calls from CSE_ALifeDynamicObject
+// 16 - xrSE_ALifeObjectPhysic			inherited from CSE_ALifeDynamicObject
+// 17 - xrSE_...						inherited from CSE_Visual for smart Level Editor
+// 18 - xrSE_ALifeObjectHangingLamp		appended with 'startup_animation'
+// 19 - xrSE_Teamed						didn't save health parameter
+// 20 - xrSE_ALife...					saving vectors in UPDATE_Read/UPDATE_Write changed to STATE_Read/STATE_Write
 // 21 -	GLOBAL CLASS HIERARCHY UPDATE
-// 22 - CSE_AnomalousZone			appended with a artefact spawns
-// 23 - CSE_ALifeObject				appended with a spawn ID
-// 24 - CSE_ALifeObject				appended with a group control
-// 25 - CSE_ALifeObject				changed type of the property probability from u8 to float
-// 26 - CSE_AnomalousZone			appended with artefact spawn information
-// 27 - CSE_AnomalousZone			weights changed type from u32 to float
-// 28 - CSE_AnomalousZone			appended with an anomalous zone type
-// 29 - CSE_ALifeObjectPhysic		appended with an animation property
-// 30 - CSE_ALifeTrader				appended with an ordered artefacts property
+// 22 - CSE_AnomalousZone				appended with a artefact spawns
+// 23 - CSE_ALifeObject					appended with a spawn ID
+// 24 - CSE_ALifeObject					appended with a group control
+// 25 - CSE_ALifeObject					changed type of the property probability from u8 to float
+// 26 - CSE_AnomalousZone				appended with artefact spawn information
+// 27 - CSE_AnomalousZone				weights changed type from u32 to float
+// 28 - CSE_AnomalousZone				appended with an anomalous zone type
+// 29 - CSE_ALifeObjectPhysic			appended with an animation property
+// 30 - CSE_ALifeTrader					appended with an ordered artefacts property
+// 31 - CSE_ALifeTrader					appended with a supplies property
+// 32 - CSE_ALifeDynamicObjectVisual	the only this class saves and loads visual object
 //------------------------------------------------------------------------------
 
 class xrClientData;
@@ -98,7 +100,6 @@ public:
 	}
 	
 	virtual void					OnEvent			(NET_Packet &tNetPacket, u16 type, u32 time, u32 sender ){};
-	virtual void					Init			(LPCSTR	caSection){};
 	void							Spawn_Write		(NET_Packet &tNetPacket, BOOL bLocal);
 	BOOL							Spawn_Read		(NET_Packet &tNetPacket);
 	// editor integration

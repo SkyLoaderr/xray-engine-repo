@@ -16,7 +16,7 @@ CAI_Trader::CAI_Trader()
 {
 	m_bPlaying						= false;
 
-	m_trade = xr_new<CTrade>(this);
+	m_trade							= xr_new<CTrade>(this);
 } 
 
 CAI_Trader::~CAI_Trader()
@@ -30,7 +30,9 @@ void CAI_Trader::Load(LPCSTR section)
 	inherited::Load					(section);
 
 
-	fHealth							= pSettings->r_float (section,"Health");
+	fHealth							= pSettings->r_float	(section,"Health");
+	m_inventory.m_maxWeight			= pSettings->r_float	(section,"max_item_mass");
+	m_inventory.m_maxRuck			= 10000;
 }
 
 BOOL CAI_Trader::net_Spawn			(LPVOID DC)

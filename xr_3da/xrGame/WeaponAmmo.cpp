@@ -190,7 +190,7 @@ void CWeaponAmmo::UpdateCL() {
 
 
 void CWeaponAmmo::net_Export(NET_Packet& P) {
-	inherited::net_Export(P);
+	//inherited::net_Export(P);
 	P.w_u16(m_boxCurr);
 }
 
