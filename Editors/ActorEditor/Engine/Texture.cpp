@@ -482,7 +482,7 @@ _DDS_CUBE:
 
 			// Log
 #ifdef DEBUG
-			Msg						("* T_C [%d-%d] (%dK): %s",IMG.Width,IMG.Height,CTexture::MemUsage(pTextureCUBE)/1024,fn);
+			Msg						("* T_C [%d-%d] (%dK): %s",IMG.Width,IMG.Height,mem/1024,fn);
 #endif
 			// OK
 			dwWidth					= IMG.Width;
@@ -558,7 +558,7 @@ _DDS_2D:
 
 			// Log
 #ifdef DEBUG
-			Msg						("* T_2 [%d-%d] (%dK): %s",top_width,top_height,CTexture::MemUsage(pTexture2D)/1024,fn);
+			Msg						("* T_2 [%d-%d] (%dK): %s",top_width,top_height,mem/1024,fn);
 #endif
 			// OK
 			dwWidth					= top_width;
