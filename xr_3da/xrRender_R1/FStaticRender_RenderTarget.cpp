@@ -97,6 +97,7 @@ void CRenderTarget::e_render_noise	()
 	CTexture*	T					= RCache.get_ActiveTexture	(0);
 	u32			tw					= iFloor(float(T->get_Width	())*param_noise_scale+EPS_S);
 	u32			th					= iFloor(float(T->get_Height())*param_noise_scale+EPS_S);
+	VERIFY2		(tw && th, "Noise scale can't be zero in any way");
 
 	// calculate shift from FPSes
 	im_noise_time					-= Device.fTimeDelta;

@@ -142,20 +142,7 @@ void CTexture::Load()
 			if (buffer[0])	{
 				// Load another texture
 				D3DFORMAT f; u32 W,H,M;
-				pSurface = TWLoader2D
-					(
-					M,
-					buffer,
-					tpfCompressed,
-					tmBOX4,
-					psTextureLOD,
-					0.5f,
-					false,
-					false,
-
-					// return values
-					f,W,H
-					);
+				pSurface = TWLoader2D		(M,buffer,f,W,H);
 				if (pSurface)	{
 					pSurface->SetPriority	(PRIORITY_LOW);
 					seqDATA.push_back		(pSurface);
@@ -168,20 +155,7 @@ void CTexture::Load()
 	{
 		// Normal texture
 		D3DFORMAT f; u32 W,H,M;
-		pSurface = TWLoader2D
-			(
-			M,
-			*cName,
-			tpf32,
-			tmBOX4,
-			psTextureLOD,
-			0.5f,
-			false,
-			false,
-
-			// return values
-			f,W,H
-			);
+		pSurface = TWLoader2D		(M,*cName,f,W,H);
 
 		// Calc memory usage and preload into vid-mem
 		if (pSurface) {
