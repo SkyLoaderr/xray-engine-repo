@@ -6,6 +6,7 @@
 class CActor;
 class CLAItem;
 
+#define SMALL_OBJECT_RADIUS 0.6f
 
 
 struct SZonePPInfo 

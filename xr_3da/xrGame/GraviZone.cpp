@@ -33,6 +33,16 @@ void CGraviZone::Load(LPCSTR section)
 	m_fTeleHeight = pSettings->r_float(section,		 "tele_height");//1.5f;
     m_dwTimeToTele = pSettings->r_u32(section,		"time_to_tele");//7000;
 	m_dwTelePause = pSettings->r_u32(section,		"tele_pause");//1000
+
+	if(pSettings->line_exist(section,	"tele_particles_big"))
+		m_sTeleParticlesBig = pSettings->r_string(section,	"tele_particles_big");
+	else
+		m_sTeleParticlesBig = NULL;
+	
+	if(pSettings->line_exist(section, "tele_particles_small"))
+		m_sTeleParticlesSmall = pSettings->r_string(section, "tele_particles_small");
+	else
+		m_sTeleParticlesSmall = NULL;
 }
 
 BOOL CGraviZone::net_Spawn(LPVOID DC)
@@ -76,6 +86,20 @@ bool CGraviZone::IdleState()
 
 	if(!result)
 	{
+		if(m_dwTeleTime> m_dwTimeToTele)
+		{
+			xr_set<CObject*>::iterator it;
+			for(it = m_inZone.begin(); m_inZone.end() != it; ++it) 
+			{
+				CGameObject* GO = dynamic_cast<CGameObject*>(*it);
+
+				if(GO && GO->m_pPhysicsShell && TTelekinesis::is_active_object(GO))
+				{
+					TTelekinesis::deactivate(GO);
+					StopTeleParticles(GO);
+				}
+			}
+		}
 		if(m_dwTeleTime> m_dwTimeToTele + m_dwTelePause)
 		{
 			m_dwTeleTime = 0;
@@ -88,6 +112,7 @@ bool CGraviZone::IdleState()
 				if(GO && GO->m_pPhysicsShell && !TTelekinesis::is_active_object(GO))
 				{
 					TTelekinesis::activate(GO, 0.1f, m_fTeleHeight, m_dwTimeToTele);
+					PlayTeleParticles(GO);
 				}
 			}
 		}
@@ -185,3 +210,46 @@ void CGraviZone::Affect(CObject* O)
 		}
 	}
 }
+
+
+void CGraviZone::PlayTeleParticles(CGameObject* pObject)
+{
+	ref_str particle_str = NULL;
+
+	//разные партиклы для объектов разного размера
+	if(pObject->Radius()<SMALL_OBJECT_RADIUS)
+	{
+		if(!m_sTeleParticlesSmall) return;
+		particle_str = m_sTeleParticlesSmall;
+	}
+	else
+	{
+		if(!m_sTeleParticlesBig) return;
+		particle_str = m_sTeleParticlesBig;
+	}
+
+	pObject->StartParticles(*particle_str, Fvector().set(0,1,0), ID());
+}
+void CGraviZone::StopTeleParticles(CGameObject* pObject)
+{
+	ref_str particle_str = NULL;
+
+	//разные партиклы для объектов разного размера
+	if(pObject->Radius()<SMALL_OBJECT_RADIUS)
+	{
+		if(!m_sTeleParticlesSmall) return;
+		particle_str = m_sTeleParticlesSmall;
+	}
+	else
+	{
+		if(!m_sTeleParticlesBig) return;
+		particle_str = m_sTeleParticlesBig;
+	}
+
+	OBJECT_INFO_MAP_IT it	= m_ObjectInfoMap.find(pObject);
+	if(m_ObjectInfoMap.end() == it) return;
+
+	//остановить партиклы
+	pObject->StopParticles	(*particle_str);
+}
+

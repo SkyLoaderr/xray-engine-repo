@@ -7,7 +7,6 @@
 #include "xrserver_objects_alife_monsters.h"
 #include "../LightAnimLibrary.h"
 
-#define SMALL_OBJECT_RADIUS 0.6f
 
 
 CCustomZone::CCustomZone(void) 
@@ -609,12 +608,14 @@ void CCustomZone::PlayHitParticles(CGameObject* pObject)
 		particle_str = m_sHitParticlesBig;
 	}
 
+	if(!particle_str) return;
+
 	// play particles
 	CParticlesPlayer* PP = dynamic_cast<CParticlesPlayer*>(pObject);
 	if (PP){
 		u16 play_bone = pObject->GetRandomBone(); 
 		if (play_bone!=BI_NONE)
-			PP->StartParticles	(*particle_str,play_bone,Fvector().set(0,1,0),(u16)ID());
+			PP->StartParticles	(*particle_str,play_bone,Fvector().set(0,1,0), ID());
 	}
 }
 
@@ -686,14 +687,29 @@ void CCustomZone::PlayObjectIdleParticles(CGameObject* pObject)
 
 	
 	//запустить партиклы на объекте
-	pObject->StartParticles(*particle_str, Fvector().set(0,1,0), (u16)ID());
+	pObject->StartParticles(*particle_str, Fvector().set(0,1,0), ID());
 }
 void CCustomZone::StopObjectIdleParticles(CGameObject* pObject)
 {
 	OBJECT_INFO_MAP_IT it	= m_ObjectInfoMap.find(pObject);
 	if(m_ObjectInfoMap.end() == it) return;
+	
+	
+	ref_str particle_str = NULL;
+	//разные партиклы для объектов разного размера
+	if(pObject->Radius()<SMALL_OBJECT_RADIUS)
+	{
+		if(!m_sIdleObjectParticlesSmall) return;
+		particle_str = m_sIdleObjectParticlesSmall;
+	}
+	else
+	{
+		if(!m_sIdleObjectParticlesBig) return;
+		particle_str = m_sIdleObjectParticlesBig;
+	}
+
 	//остановить партиклы
-	pObject->StopParticles	(ID());
+	pObject->StopParticles	(particle_str);
 }
 
 

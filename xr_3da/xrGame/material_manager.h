@@ -16,7 +16,7 @@ private:
 	float			m_time_to_step;
 	u32				m_step_id;
 	u16				m_my_material_idx;
-	ref_sound		m_step_sound[2];
+	ref_sound		m_step_sound[4];
 protected:
 	u16				m_last_material_idx;
 public:

@@ -45,4 +45,11 @@ protected:
 	u32				m_dwTimeToTele;
 	u32				m_dwTelePause;
 	u32				m_dwTeleTime;
+	
+	//имя партиклов телекинеза
+	void			PlayTeleParticles(CGameObject* pObject);
+	void			StopTeleParticles(CGameObject* pObject);
+
+	ref_str			m_sTeleParticlesBig;
+	ref_str			m_sTeleParticlesSmall;
 };

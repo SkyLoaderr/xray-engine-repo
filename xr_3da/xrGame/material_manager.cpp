@@ -69,15 +69,16 @@ void CMaterialManager::update		(float time_delta, float volume, float step_time,
 	// ref_sound step
 	if (!standing) {
 		if (m_time_to_step < 0) {
-			m_step_id								= m_step_id ^ 1;
-			m_time_to_step							= step_time;
-
 			SoundSVec4& snd_array = mtl_pair->StepSounds;
-			if(m_run_mode && mtl_pair->BreakingSounds.size() >=2)
+			
+			if(m_run_mode && mtl_pair->BreakingSounds.size() >0)
 				snd_array = mtl_pair->BreakingSounds;
 
-			if (snd_array.size() >= 2){
-				m_step_sound[m_step_id]				= snd_array[m_step_id];
+			if (snd_array.size() >0){
+				m_step_id								= ::Random.randI(0, snd_array.size());
+				m_time_to_step							= step_time;
+
+				m_step_sound[m_step_id]					= snd_array[m_step_id];
 				m_step_sound[m_step_id].play_at_pos	(object,position);
 			}
 		}
@@ -86,12 +87,10 @@ void CMaterialManager::update		(float time_delta, float volume, float step_time,
 	else
 		m_time_to_step								= 0;
 
-	if (m_step_sound[0].feedback)		{
-		m_step_sound[0].set_position	(position);
-		m_step_sound[0].set_volume		(m_step_sound[0].handle->start_volume()*volume);
-	}
-	if (m_step_sound[1].feedback)		{
-		m_step_sound[1].set_position	(position);
-		m_step_sound[1].set_volume		(m_step_sound[1].handle->start_volume()*volume);
-	}
+
+	for(int i=0; i<4; i++)
+		if (m_step_sound[i].feedback)		{
+			m_step_sound[i].set_position	(position);
+			m_step_sound[i].set_volume		(m_step_sound[i].handle->start_volume()*volume);
+		}
 }
