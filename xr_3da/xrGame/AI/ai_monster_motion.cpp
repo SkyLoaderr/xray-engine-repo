@@ -664,5 +664,6 @@ bool CMotionManager::JumpActive()
 
 bool CMotionManager::IsCriticalAction()
 {
-	return (JumpActive() || Seq_Active() || TA_IsActive());
+	//return (JumpActive() || Seq_Active() || TA_IsActive());
+	return (JumpActive() || Seq_Active());
 }
