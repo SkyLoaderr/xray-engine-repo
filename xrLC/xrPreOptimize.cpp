@@ -60,7 +60,7 @@ void CBuild::PreOptimize()
 		once_more:
 
 		if (0==(it%128)) {
-			Progress(float(it)/float(g_vertices.size()));
+			Progress(sqrtf(sqrtf(float(it)/float(g_vertices.size()))));
 			Status	("Processing... (%d verts removed)",Vcount-g_vertices.size());
 		}
 
