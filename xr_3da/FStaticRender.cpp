@@ -10,8 +10,8 @@
 #include "xr_creator.h"
 #include "CustomHUD.h"
 
-CRender_interface::~CRender_interface()
-{}
+CRender_interface::CRender_interface()		{};
+CRender_interface::~CRender_interface()		{};
 
 ENGINE_API	CRender				Render_Implementation;
 ENGINE_API	CRender_interface*	Render = &Render_Implementation;
