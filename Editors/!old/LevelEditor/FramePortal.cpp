@@ -53,7 +53,7 @@ void __fastcall TfraPortal::ebComputeClick(TObject *Sender)
 void __fastcall TfraPortal::ebInvertOrientClick(TObject *Sender)
 {
 	ObjectList lst;
-    if (Scene.GetQueryObjects(lst,OBJCLASS_PORTAL,1,1,0)){
+    if (Scene->GetQueryObjects(lst,OBJCLASS_PORTAL,1,1,0)){
     	for (ObjectIt it=lst.begin(); it!=lst.end(); it++){
 			CPortal* _O = (CPortal*)*it;
 		    _O->InvertOrientation(true);

@@ -89,7 +89,7 @@ TElTreeItem* TfrmObjectList::FindObjectByType(int type, void *obj)
 TElTreeItem* TfrmObjectList::AddFolder(EObjClass type)
 {
     AnsiString name;
-    name.sprintf("%ss",Scene.GetMTools(type)->ClassDesc());
+    name.sprintf("%ss",Scene->GetMTools(type)->ClassDesc());
     TElTreeItem* node = tvItems->Items->AddObject(0,name,(void*)type);
     node->ParentStyle = false;
     node->Bold = true;
@@ -106,7 +106,7 @@ void __fastcall TfrmObjectList::InitListBox()
     tvItems->IsUpdating = true;
     tvItems->Items->Clear();
     cur_cls = LTools->CurrentClassID();
-    for(SceneToolsMapPairIt it=Scene.FirstTools(); it!=Scene.LastTools(); it++){
+    for(SceneToolsMapPairIt it=Scene->FirstTools(); it!=Scene->LastTools(); it++){
     	ESceneCustomOTools* ot = dynamic_cast<ESceneCustomOTools*>(it->second);
         if (ot&&((cur_cls==OBJCLASS_DUMMY)||(it->first==cur_cls))){
         	if (it->first==OBJCLASS_DUMMY) continue;
@@ -132,7 +132,7 @@ void __fastcall TfrmObjectList::InitListBox()
 
     UpdateState();
     tvItems->FullExpand();
-    obj_count 	= Scene.ObjCount();
+    obj_count 	= Scene->ObjCount();
 }
 
 void TfrmObjectList::UpdateState()
@@ -160,7 +160,7 @@ void TfrmObjectList::UpdateSelection()
 	if (tvItems->Items->Count){
         bLockUpdate = true;
 
-        Scene.SelectObjects( false, (EObjClass)cur_cls );
+        Scene->SelectObjects( false, (EObjClass)cur_cls );
         for (TElTreeItem* node = tvItems->GetNextSelected(0); node; node=tvItems->GetNextSelected(node))
             if (node->Parent) ((CCustomObject*)(node->Data))->Select(true);
         UI->RedrawScene();
@@ -192,7 +192,7 @@ void __fastcall TfrmObjectList::ebShowSelClick(TObject *Sender)
 
 void __fastcall TfrmObjectList::sbRefreshListClick(TObject *Sender)
 {
-    if ((Scene.ObjCount()!=obj_count)||(cur_cls!=LTools->CurrentClassID()))
+    if ((Scene->ObjCount()!=obj_count)||(cur_cls!=LTools->CurrentClassID()))
 	    InitListBox();
     else
     	UpdateState();

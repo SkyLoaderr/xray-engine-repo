@@ -125,7 +125,7 @@ void CLight::Render(int priority, bool strictB2F)
         if (lt->m_Flags.is(ESceneLightTools::flShowControlName)){ 
             Fvector D;	D.sub(Device.vCameraPosition,PPosition);
             float dist 	= D.normalize_magn();
-        	if (!Scene.RayPickObject(dist,PPosition,D,OBJCLASS_SCENEOBJECT,0,0))
+        	if (!Scene->RayPickObject(dist,PPosition,D,OBJCLASS_SCENEOBJECT,0,0))
 	        	DU.DrawText (PPosition,AnsiString().sprintf(" %s",GetLControlName()).c_str(),0xffffffff,0xff000000);
         }
     }else if ((1==priority)&&(true==strictB2F)){

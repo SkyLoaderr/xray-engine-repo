@@ -64,8 +64,8 @@
       intermediate\DetailManager_Decompress.obj 
       intermediate\DetailManager_soft.obj intermediate\DetailManager_VS.obj 
       intermediate\xrServer_Objects_ALife_Monsters.obj 
-      intermediate\IGame_Persistent.obj intermediate\xrServer_Factory.obj 
-      intermediate\xrServer_Objects.obj intermediate\xrServer_Objects_ALife.obj 
+      intermediate\xrServer_Factory.obj intermediate\xrServer_Objects.obj 
+      intermediate\xrServer_Objects_ALife.obj 
       intermediate\xrServer_Objects_ALife_Items.obj 
       intermediate\ESceneGlowToolsIO.obj intermediate\EScenePortalToolsIO.obj 
       intermediate\ESceneSectorToolsIO.obj intermediate\ESceneSpawnToolsIO.obj 
@@ -247,7 +247,6 @@
       <FILE FILENAME="Engine\DetailManager_soft.cpp" FORMNAME="" UNITNAME="DetailManager_soft.cpp" CONTAINERID="CCompiler" DESIGNCLASS="" LOCALCOMMAND=""/>
       <FILE FILENAME="Engine\DetailManager_VS.cpp" FORMNAME="" UNITNAME="DetailManager_VS.cpp" CONTAINERID="CCompiler" DESIGNCLASS="" LOCALCOMMAND=""/>
       <FILE FILENAME="Engine\Game\xrServer_Objects_ALife_Monsters.cpp" FORMNAME="" UNITNAME="xrServer_Objects_ALife_Monsters.cpp" CONTAINERID="CCompiler" DESIGNCLASS="" LOCALCOMMAND=""/>
-      <FILE FILENAME="Engine\Game\IGame_Persistent.cpp" FORMNAME="" UNITNAME="IGame_Persistent.cpp" CONTAINERID="CCompiler" DESIGNCLASS="" LOCALCOMMAND=""/>
       <FILE FILENAME="Engine\Game\xrServer_Factory.cpp" FORMNAME="" UNITNAME="xrServer_Factory.cpp" CONTAINERID="CCompiler" DESIGNCLASS="" LOCALCOMMAND=""/>
       <FILE FILENAME="Engine\Game\xrServer_Objects.cpp" FORMNAME="" UNITNAME="xrServer_Objects.cpp" CONTAINERID="CCompiler" DESIGNCLASS="" LOCALCOMMAND=""/>
       <FILE FILENAME="Engine\Game\xrServer_Objects_ALife.cpp" FORMNAME="" UNITNAME="xrServer_Objects_ALife.cpp" CONTAINERID="CCompiler" DESIGNCLASS="" LOCALCOMMAND=""/>

@@ -75,7 +75,7 @@ void __fastcall TfrmEditLightAnim::ShowEditor()
 {
 	if (!form){
     	form = xr_new<TfrmEditLightAnim>((TComponent*)0);
-		Scene.lock();
+		Scene->lock();
     }
     form->Show();
 }
@@ -94,7 +94,7 @@ void __fastcall TfrmEditLightAnim::FormClose(TObject *Sender, TCloseAction &Acti
 {
 	form = 0;
 	Action = caFree;
-	Scene.unlock();
+	Scene->unlock();
     UI->EndEState(esEditLightAnim);
 
    	if (ebSave->Enabled&&!bFinalClose)

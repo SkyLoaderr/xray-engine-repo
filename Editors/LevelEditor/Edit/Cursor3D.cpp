@@ -48,11 +48,11 @@ void C3DCursor::GetPickPoint (Fvector& src, Fvector& dst, Fvector* N)
     pinf.pt.set(src);
     Fvector pick_dir;
     pick_dir.set(0,-1,0);
-    if(Scene.RayPickObject(pinf.inf.range, start, pick_dir, OBJCLASS_SCENEOBJECT, &pinf, Scene.GetSnapList(false))){
+    if(Scene->RayPickObject(pinf.inf.range, start, pick_dir, OBJCLASS_SCENEOBJECT, &pinf, Scene->GetSnapList(false))){
         dst.set(pinf.pt);
         if (N){
 			Fvector verts[3];
-			pinf.s_obj->GetFaceWorld(pinf.e_mesh,pinf.inf.id,verts);
+			pinf.e_obj->GetFaceWorld(pinf.s_obj->_Transform(),pinf.e_mesh,pinf.inf.id,verts);
         	N->mknormal(verts[0], verts[1], verts[2]);
         }
     }else{
@@ -126,7 +126,7 @@ bool C3DCursor::PrepareBrush(){
     GetCursorPos(&start_pt); start_pt=UI->GetD3DWindow()->ScreenToClient(start_pt);
     pt.set(iFloor(start_pt.x),iFloor(start_pt.y));
     Device.m_Camera.MouseRayFromPoint(brush_start,brush_dir,pt);
-    bPickObject 			= !!Scene.RayPickObject(pinf.inf.range,brush_start, brush_dir, OBJCLASS_SCENEOBJECT, &pinf, Scene.GetSnapList(false));
+    bPickObject 			= !!Scene->RayPickObject(pinf.inf.range,brush_start, brush_dir, OBJCLASS_SCENEOBJECT, &pinf, Scene->GetSnapList(false));
     if (!bPickObject) bPickGround = LUI->PickGround(pinf.pt, brush_start, brush_dir);
     if (bPickObject||bPickGround){
         N.set(0,1,0); D.set(0,0,1);

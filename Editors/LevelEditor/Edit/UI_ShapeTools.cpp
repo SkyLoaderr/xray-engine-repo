@@ -36,10 +36,10 @@ bool __fastcall TUI_ControlShapeAdd::Start(TShiftState Shift)
 {
 	TfraShape* F 		= (TfraShape*)parent_tool->pFrame;
     if (F->ebAttachShape->Down){
-		CEditShape* from = dynamic_cast<CEditShape*>(Scene.RayPickObject(flt_max,UI->m_CurrentRStart, UI->m_CurrentRNorm, OBJCLASS_SHAPE, 0, 0));
+		CEditShape* from = dynamic_cast<CEditShape*>(Scene->RayPickObject(flt_max,UI->m_CurrentRStart, UI->m_CurrentRNorm, OBJCLASS_SHAPE, 0, 0));
         if (from){
             ObjectList lst;
-            int cnt 		= Scene.GetQueryObjects(lst,OBJCLASS_SHAPE,1,1,0);
+            int cnt 		= Scene->GetQueryObjects(lst,OBJCLASS_SHAPE,1,1,0);
             if (1!=cnt)		ELog.DlgMsg(mtError,"Select one shape.");
             else{
                 CEditShape* base = dynamic_cast<CEditShape*>(lst.back()); R_ASSERT(base);

@@ -27,7 +27,7 @@ BOOL SceneBuilder::ParseLTX(CInifile* pIni, ObjectList& lst, LPCSTR prefix)
 BOOL SceneBuilder::BuildLTX()
 {
 	bool bResult=true;
-	int objcount = Scene.ObjCount();
+	int objcount = Scene->ObjCount();
 	if( objcount <= 0 ) return true;
 
 	AnsiString ltx_filename	= m_LevelPath+"level.ltx";
@@ -38,8 +38,8 @@ BOOL SceneBuilder::BuildLTX()
 	// -- defaults --           
     CMemoryWriter F;          
     F.w_string( "; level script file");
-	if( !Scene.m_LevelOp.m_BOPText.IsEmpty() )
-		F.w_stringZ( Scene.m_LevelOp.m_BOPText.c_str() );
+	if( !Scene->m_LevelOp.m_BOPText.IsEmpty() )
+		F.w_stringZ( Scene->m_LevelOp.m_BOPText.c_str() );
 	F.save_to(ltx_filename.c_str());
 
 	return bResult;

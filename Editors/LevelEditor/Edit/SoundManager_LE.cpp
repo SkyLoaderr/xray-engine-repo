@@ -12,7 +12,7 @@ CLevelSoundManager*& LSndLib=(CLevelSoundManager*)SndLib;
 
 bool CLevelSoundManager::Validate()
 {
-	ObjectList& snd_envs = Scene.ListObj(OBJCLASS_SOUND_ENV);
+	ObjectList& snd_envs = Scene->ListObj(OBJCLASS_SOUND_ENV);
     for (ObjectIt it=snd_envs.begin(); it!=snd_envs.end(); it++){
     	ESoundEnvironment* E = dynamic_cast<ESoundEnvironment*>(*it); R_ASSERT(E);
         if (E->m_EnvInner==E->m_EnvOuter){ 
@@ -20,7 +20,7 @@ bool CLevelSoundManager::Validate()
         	return false;
         }
     }
-	ObjectList& snd_src = Scene.ListObj(OBJCLASS_SOUND_SRC);
+	ObjectList& snd_src = Scene->ListObj(OBJCLASS_SOUND_SRC);
     for (it=snd_src.begin(); it!=snd_src.end(); it++){
     	ESoundSource* S = dynamic_cast<ESoundSource*>(*it); R_ASSERT(S);
         if (!S->GetSourceWAV()||(0==strlen(S->GetSourceWAV()))){
@@ -42,7 +42,7 @@ void CLevelSoundManager::RealRefreshEnvGeometry()
 
 bool CLevelSoundManager::MakeEnvGeometry(CMemoryWriter& F, bool bErrMsg)
 {
-	ObjectList& snd_envs = Scene.ListObj(OBJCLASS_SOUND_ENV);
+	ObjectList& snd_envs = Scene->ListObj(OBJCLASS_SOUND_ENV);
 
     if (snd_envs.empty()){ 
 		if (bErrMsg) ELog.Msg(mtError,"Scene hasn't sound environment geometry.");

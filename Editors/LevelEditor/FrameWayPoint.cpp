@@ -36,10 +36,10 @@ void __fastcall TfraWayPoint::ebAdd1LinksClick(TObject *Sender)
     }
     bool bRes = false;
 	ObjectList lst;
-    Scene.GetQueryObjects(lst, OBJCLASS_WAY, 1, 1, 0);
+    Scene->GetQueryObjects(lst, OBJCLASS_WAY, 1, 1, 0);
     for (ObjectIt it=lst.begin(); it!=lst.end(); it++)
     	bRes|=((CWayObject*)(*it))->Add1Link();
-	if (bRes) Scene.UndoSave();
+	if (bRes) Scene->UndoSave();
 }
 //---------------------------------------------------------------------------
 
@@ -51,10 +51,10 @@ void __fastcall TfraWayPoint::ebAdd2LinkClick(TObject *Sender)
     }
     bool bRes = false;
 	ObjectList lst;
-    Scene.GetQueryObjects(lst, OBJCLASS_WAY, 1, 1, 0);
+    Scene->GetQueryObjects(lst, OBJCLASS_WAY, 1, 1, 0);
     for (ObjectIt it=lst.begin(); it!=lst.end(); it++)
     	bRes|=((CWayObject*)(*it))->Add2Link();
-	if (bRes) Scene.UndoSave();
+	if (bRes) Scene->UndoSave();
 }
 //---------------------------------------------------------------------------
 
@@ -65,10 +65,10 @@ void __fastcall TfraWayPoint::ebRemoveLinksClick(TObject *Sender)
     	return;
     }
 	ObjectList lst;
-    int cnt = Scene.GetQueryObjects(lst, OBJCLASS_WAY, 1, 1, 0);
+    int cnt = Scene->GetQueryObjects(lst, OBJCLASS_WAY, 1, 1, 0);
     for (ObjectIt it=lst.begin(); it!=lst.end(); it++)
     	((CWayObject*)(*it))->RemoveLink();
-	if (cnt) Scene.UndoSave();
+	if (cnt) Scene->UndoSave();
 }
 //---------------------------------------------------------------------------
 
@@ -79,10 +79,10 @@ void __fastcall TfraWayPoint::ebInvertLinkClick(TObject *Sender)
     	return;
     }
 	ObjectList lst;
-    int cnt = Scene.GetQueryObjects(lst, OBJCLASS_WAY, 1, 1, 0);
+    int cnt = Scene->GetQueryObjects(lst, OBJCLASS_WAY, 1, 1, 0);
     for (ObjectIt it=lst.begin(); it!=lst.end(); it++)
     	((CWayObject*)(*it))->InvertLink();
-	if (cnt) Scene.UndoSave();
+	if (cnt) Scene->UndoSave();
 }
 //---------------------------------------------------------------------------
 

@@ -38,7 +38,7 @@ bool __fastcall TUI_ControlObjectAdd::Start(TShiftState Shift)
         }
 
         string256 namebuffer;
-        Scene.GenObjectName(OBJCLASS_SCENEOBJECT, namebuffer, N);
+        Scene->GenObjectName(OBJCLASS_SCENEOBJECT, namebuffer, N);
         CSceneObject *obj = xr_new<CSceneObject>((LPVOID)0,namebuffer);
         CEditableObject* ref = obj->SetReference(N);
         if (!ref){
@@ -71,8 +71,8 @@ bool __fastcall TUI_ControlObjectAdd::Start(TShiftState Shift)
         }
         obj->MoveTo(p,n);
 
-        Scene.SelectObjects(false,OBJCLASS_SCENEOBJECT);
-        Scene.AppendObject( obj );
+        Scene->SelectObjects(false,OBJCLASS_SCENEOBJECT);
+        Scene->AppendObject( obj );
         if (Shift.Contains(ssCtrl)) UI->Command(COMMAND_SHOW_PROPERTIES);
         if (!Shift.Contains(ssAlt)) ResetActionToSelect();
     }

@@ -13,7 +13,7 @@ __fastcall TUI_ControlWayPointAdd::TUI_ControlWayPointAdd(int st, int act, EScen
 
 bool __fastcall TUI_ControlWayPointAdd::Start(TShiftState Shift)
 {
-	ObjectList lst; Scene.GetQueryObjects(lst,OBJCLASS_WAY,1,1,-1);
+	ObjectList lst; Scene->GetQueryObjects(lst,OBJCLASS_WAY,1,1,-1);
 	TfraWayPoint* frame=(TfraWayPoint*)parent_tool->pFrame;
 	if (CWayObject::IsPointMode()){
     	if (1!=lst.size()){
@@ -29,7 +29,7 @@ bool __fastcall TUI_ControlWayPointAdd::Start(TShiftState Shift)
 			if (frame->ebAutoLink->Down){
 	        	if (last_wp) last_wp->AddSingleLink(wp);
             }
-            Scene.UndoSave();
+            Scene->UndoSave();
         }
         if (!Shift.Contains(ssAlt)) ResetActionToSelect();
     }else{

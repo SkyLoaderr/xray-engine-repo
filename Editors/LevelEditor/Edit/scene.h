@@ -9,6 +9,7 @@
 #include "pure.h"
 #include "ElTree.hpp"
 
+#include "SceneCustom.h"
 #include "ESceneCustomMTools.h"
 #include "ESceneCustomOTools.h"
 //refs
@@ -49,7 +50,7 @@ struct st_LevelOptions{
 	void 		InitDefaultText	();
 };
 
-class EScene:
+class EScene: public ISceneCustom,
 	public pureDeviceCreate,
 	public pureDeviceDestroy
 {
@@ -171,8 +172,8 @@ public:
 	void 			Render              (const Fmatrix& camera);
 	void 			OnFrame				(float dT);
 
-	void 			AppendObject		(CCustomObject* object, bool bExecUndo=true);
-	bool 			RemoveObject		(CCustomObject* object, bool bExecUndo=true);
+	virtual void 	AppendObject		(CCustomObject* object, bool bExecUndo=true);
+	virtual bool 	RemoveObject		(CCustomObject* object, bool bExecUndo=true);
     bool 			ContainsObject		(CCustomObject* object, EObjClass classfilter);
 
     // Snap List Part
@@ -187,9 +188,9 @@ public:
     void 			ClearSnapList		(bool bCurrentOnly);
     void 			SelectSnapList		();
     void 			UpdateSnapList 	   	();
-	ObjectList* 	GetSnapList			(bool bIgnoreUse);
+	virtual ObjectList* 	GetSnapList			(bool bIgnoreUse);
 
-	CCustomObject*	RayPickObject 		(float dist, const Fvector& start, const Fvector& dir, EObjClass classfilter, SRayPickInfo* pinf, ObjectList* from_list);
+	virtual CCustomObject*	RayPickObject 		(float dist, const Fvector& start, const Fvector& dir, EObjClass classfilter, SRayPickInfo* pinf, ObjectList* from_list);
 	int 			BoxPickObjects		(const Fbox& box, SBoxPickInfoVec& pinf, ObjectList* from_list);
     int				RayQuery			(SPickQuery& RQ, const Fvector& start, const Fvector& dir, float dist, u32 flags, ObjectList* snap_list);
     int 			BoxQuery			(SPickQuery& RQ, const Fbox& bb, u32 flags, ObjectList* snap_list);
@@ -213,9 +214,9 @@ public:
 	int 			FrustumPick			(const CFrustum& frustum, EObjClass classfilter, ObjectList& ol);
 	int 			SpherePick			(const Fvector& center, float radius, EObjClass classfilter, ObjectList& ol);
 
-	void 			GenObjectName		(EObjClass cls_id, char *buffer, const char* prefix=NULL);
-	CCustomObject* 	FindObjectByName	(LPCSTR name, EObjClass classfilter);
-    CCustomObject* 	FindObjectByName	(LPCSTR name, CCustomObject* pass_object);
+	virtual void			GenObjectName		(EObjClass cls_id, char *buffer, const char* prefix=NULL);
+	virtual CCustomObject* 	FindObjectByName	(LPCSTR name, EObjClass classfilter);
+    virtual CCustomObject* 	FindObjectByName	(LPCSTR name, CCustomObject* pass_object);
     bool 			FindDuplicateName   ();
 
 	void 			UndoClear			();
@@ -271,7 +272,7 @@ public:
 };
 
 //----------------------------------------------------
-extern EScene Scene;
+extern EScene*& Scene;
 //----------------------------------------------------
 
 #endif /*_INCDEF_Scene_H_*/

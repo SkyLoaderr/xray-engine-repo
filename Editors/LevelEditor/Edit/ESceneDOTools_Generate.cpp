@@ -138,7 +138,7 @@ bool EDetailManager::Reinitialize()
 
 bool EDetailManager::UpdateHeader(){
     // get bounding box
-	if (!Scene.GetBox(m_BBox,m_SnapObjects)) return false;
+	if (!Scene->GetBox(m_BBox,m_SnapObjects)) return false;
 
     // fill header
     int mn_x 			= iFloor(m_BBox.min.x/DETAIL_SLOT_SIZE);
@@ -163,7 +163,7 @@ void EDetailManager::UpdateSlotBBox(int sx, int sz, DetailSlot& slot)
 
     SBoxPickInfoVec pinf;
     XRC.box_options(0);
-    if (Scene.BoxPickObjects(bbox,pinf,&m_SnapObjects)){
+    if (Scene->BoxPickObjects(bbox,pinf,&m_SnapObjects)){
 		bbox.grow		(EPS_L_VAR);
     	Fplane			frustum_planes[4];
 		frustum_planes[0].build(bbox.min,left_vec);
@@ -180,7 +180,7 @@ void EDetailManager::UpdateSlotBBox(int sx, int sz, DetailSlot& slot)
         	for (int k=0; k<(int)it->inf.size(); k++){
                 float range;
                 Fvector verts[3];
-                it->s_obj->GetFaceWorld(it->e_mesh,it->inf[k].id,verts);
+                it->e_obj->GetFaceWorld(it->s_obj->_Transform(),it->e_mesh,it->inf[k].id,verts);
                 sPoly sSrc	(verts,3);
                 sPoly sDest;
                 sPoly* sRes = frustum.ClipPoly(sSrc, sDest);

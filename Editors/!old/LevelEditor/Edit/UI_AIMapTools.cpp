@@ -23,7 +23,7 @@ bool __fastcall TUI_ControlAIMapNodeAdd::Start(TShiftState Shift)
         ESceneAIMapTools* S = (ESceneAIMapTools*)parent_tool;
 	    append_nodes		= S->AddNode(p,((TfraAIMap*)parent_tool->pFrame)->ebIgnoreConstraints->Down,((TfraAIMap*)parent_tool->pFrame)->ebAutoLink->Down,S->m_BrushSize);
 		if (!Shift.Contains(ssAlt)){ 
-		    if (append_nodes) Scene.UndoSave();
+		    if (append_nodes) Scene->UndoSave();
         	ResetActionToSelect();
             return false;
         }else return true;
@@ -41,7 +41,7 @@ void TUI_ControlAIMapNodeAdd::Move(TShiftState _Shift)
 bool TUI_ControlAIMapNodeAdd::End(TShiftState _Shift)
 {
 	if (!_Shift.Contains(ssAlt)) ResetActionToSelect();
-    if (append_nodes) Scene.UndoSave();
+    if (append_nodes) Scene->UndoSave();
 	return true;
 }
 

@@ -79,7 +79,7 @@ void ESceneObjectTools::FillAppendRandomProperties()
     
     if (mrOk==m_Props->ShowPropertiesModal()){
     	_SequenceToList			(m_AppendRandomObjects,temp.c_str());
-		Scene.UndoSave			();
+		Scene->UndoSave			();
     }
         
     TProperties::DestroyForm	(m_Props);

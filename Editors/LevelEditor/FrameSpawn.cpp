@@ -50,7 +50,7 @@ void __fastcall TfraSpawn::ebAttachObjectClick(TObject *Sender)
 void __fastcall TfraSpawn::evDetachObjectClick(TObject *Sender)
 {
     ObjectList lst;
-    if (Scene.GetQueryObjects(lst,OBJCLASS_SPAWNPOINT,1,1,0)){
+    if (Scene->GetQueryObjects(lst,OBJCLASS_SPAWNPOINT,1,1,0)){
     	for (ObjectIt it=lst.begin(); it!=lst.end(); it++){
 	        CSpawnPoint* O = dynamic_cast<CSpawnPoint*>(*it); R_ASSERT(O);
         	O->DetachObject();
@@ -101,8 +101,8 @@ void TfraSpawn::SelByRefObject( bool flag )
     ObjectList objlist;
 	LPCSTR N=Current();
 	if (N){
-        ObjectIt _F = Scene.FirstObj(OBJCLASS_SPAWNPOINT);
-        ObjectIt _E = Scene.LastObj(OBJCLASS_SPAWNPOINT);
+        ObjectIt _F = Scene->FirstObj(OBJCLASS_SPAWNPOINT);
+        ObjectIt _E = Scene->LastObj(OBJCLASS_SPAWNPOINT);
         for(;_F!=_E;_F++){
             if((*_F)->Visible() ){
                 CSpawnPoint *_O = (CSpawnPoint*)(*_F);
@@ -117,11 +117,11 @@ void TfraSpawn::MultiSelByRefObject ( bool clear_prev )
 {
     ObjectList 	objlist;
     LPU32Vec 	sellist;
-    if (Scene.GetQueryObjects(objlist,OBJCLASS_SPAWNPOINT,1,1,-1)){
+    if (Scene->GetQueryObjects(objlist,OBJCLASS_SPAWNPOINT,1,1,-1)){
     	for (ObjectIt it=objlist.begin(); it!=objlist.end(); it++){
 	        LPCSTR N = ((CSpawnPoint*)*it)->GetRefName();
-            ObjectIt _F = Scene.FirstObj(OBJCLASS_SPAWNPOINT);
-            ObjectIt _E = Scene.LastObj(OBJCLASS_SPAWNPOINT);
+            ObjectIt _F = Scene->FirstObj(OBJCLASS_SPAWNPOINT);
+            ObjectIt _E = Scene->LastObj(OBJCLASS_SPAWNPOINT);
             for(;_F!=_E;_F++){
 	            CSpawnPoint *_O = (CSpawnPoint *)(*_F);
                 if((*_F)->Visible()&&_O->RefCompare(N)){

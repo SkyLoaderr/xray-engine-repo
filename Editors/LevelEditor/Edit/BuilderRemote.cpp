@@ -118,7 +118,7 @@ void SceneBuilder::SaveBuild()
     F.close_chunk	();
 
     F.open_chunk	(EB_Parameters);
-    F.w				(&Scene.m_LevelOp.m_BuildParams,sizeof(b_params));
+    F.w				(&Scene->m_LevelOp.m_BuildParams,sizeof(b_params));
     F.close_chunk	();
 
     F.open_chunk	(EB_Vertices);
@@ -200,8 +200,8 @@ void SceneBuilder::SaveBuild()
 
 int SceneBuilder::CalculateSector(const Fvector& P, float R)
 {
-    ObjectIt _F = Scene.FirstObj(OBJCLASS_SECTOR);
-    ObjectIt _E = Scene.LastObj(OBJCLASS_SECTOR);
+    ObjectIt _F = Scene->FirstObj(OBJCLASS_SECTOR);
+    ObjectIt _E = Scene->LastObj(OBJCLASS_SECTOR);
     for(;_F!=_E;_F++){
     	CSector* _S=(CSector*)(*_F);
         EVisible vis=_S->Intersect(P,R);
@@ -615,10 +615,10 @@ BOOL SceneBuilder::BuildLight(CLight* e)
         lpSectors		= &sectors;
         Fvector& pos 	= e->PPosition;
         float& range 	= e->m_Range;
-        if (Scene.ObjCount(OBJCLASS_SECTOR)){
+        if (Scene->ObjCount(OBJCLASS_SECTOR)){
             // test fully and partial inside
-            ObjectIt _F = Scene.FirstObj(OBJCLASS_SECTOR);
-            ObjectIt _E = Scene.LastObj(OBJCLASS_SECTOR);
+            ObjectIt _F = Scene->FirstObj(OBJCLASS_SECTOR);
+            ObjectIt _E = Scene->LastObj(OBJCLASS_SECTOR);
             for(;_F!=_E;_F++){
                 if (sectors.size()>=16) break;
                 CSector* _S=(CSector*)(*_F);
@@ -627,7 +627,7 @@ BOOL SceneBuilder::BuildLight(CLight* e)
                     sectors.push_back(_S->sector_num);
             }
             // test partial outside
-            _F = Scene.FirstObj(OBJCLASS_SECTOR);
+            _F = Scene->FirstObj(OBJCLASS_SECTOR);
             for(;_F!=_E;_F++){
                 if (sectors.size()>=16) break;
                 CSector* _S=(CSector*)(*_F);
@@ -896,7 +896,7 @@ BOOL SceneBuilder::CompileStatic()
 
     Clear		();
 
-	int objcount = Scene.ObjCount();
+	int objcount = Scene->ObjCount();
 	if( objcount <= 0 )	return FALSE;
 
 // compute vertex/face count
@@ -904,8 +904,8 @@ BOOL SceneBuilder::CompileStatic()
     l_face_cnt 	= 0;
 	l_vert_it 	= 0;
 	l_face_it	= 0;
-    ObjectIt _O = Scene.FirstObj(OBJCLASS_SCENEOBJECT);
-    ObjectIt _E = Scene.LastObj(OBJCLASS_SCENEOBJECT);
+    ObjectIt _O = Scene->FirstObj(OBJCLASS_SCENEOBJECT);
+    ObjectIt _E = Scene->LastObj(OBJCLASS_SCENEOBJECT);
     for(;_O!=_E;_O++){
     	CSceneObject* obj = (CSceneObject*)(*_O);
 		if (obj->IsStatic()){
@@ -913,8 +913,8 @@ BOOL SceneBuilder::CompileStatic()
     	    l_vert_cnt  += obj->GetVertexCount();
         }
     }
-    _O = Scene.FirstObj	(OBJCLASS_GROUP);
-    _E = Scene.LastObj	(OBJCLASS_GROUP);
+    _O = Scene->FirstObj	(OBJCLASS_GROUP);
+    _E = Scene->LastObj	(OBJCLASS_GROUP);
     for(;_O!=_E;_O++){
     	CGroupObject* group = (CGroupObject*)(*_O);
 	    ObjectIt _O1 = group->GetObjects().begin();
@@ -933,7 +933,7 @@ BOOL SceneBuilder::CompileStatic()
     l_scene_stat= xr_new<CSceneStat>(m_LevelBox);
 
 // make hemisphere
-	ESceneLightTools* lt = dynamic_cast<ESceneLightTools*>(Scene.GetOTools(OBJCLASS_LIGHT));
+	ESceneLightTools* lt = dynamic_cast<ESceneLightTools*>(Scene->GetOTools(OBJCLASS_LIGHT));
     LPCSTR h_control	= lt->FindLightControl(lt->m_HemiControl)->name.c_str();
 	BuildHemiLights		(lt->m_HemiQuality,h_control);
     if (0!=strcmp(LCONTROL_HEMI,h_control))
@@ -941,9 +941,9 @@ BOOL SceneBuilder::CompileStatic()
 // make sun
 	BuildSun		(lt->m_SunShadowQuality,lt->m_SunShadowDir);
 // parse scene
-    UI->ProgressStart(Scene.ObjCount(),"Parse scene objects...");
-    SceneToolsMapPairIt t_it 	= Scene.FirstTools();
-    SceneToolsMapPairIt t_end 	= Scene.LastTools();
+    UI->ProgressStart(Scene->ObjCount(),"Parse scene objects...");
+    SceneToolsMapPairIt t_it 	= Scene->FirstTools();
+    SceneToolsMapPairIt t_end 	= Scene->LastTools();
     for (; t_it!=t_end; t_it++)
         if (t_it->second){
             ESceneCustomOTools* mt = dynamic_cast<ESceneCustomOTools*>(t_it->second);

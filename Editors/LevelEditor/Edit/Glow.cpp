@@ -79,7 +79,7 @@ void CGlow::Render(int priority, bool strictB2F)
         if (gt->m_Flags.is(ESceneGlowTools::flTestVisibility)){ 
             Fvector D;	D.sub(Device.vCameraPosition,PPosition);
             float dist 	= D.normalize_magn();
-            if (!Scene.RayPickObject(dist,PPosition,D,OBJCLASS_SCENEOBJECT,0,0)){
+            if (!Scene->RayPickObject(dist,PPosition,D,OBJCLASS_SCENEOBJECT,0,0)){
                 if (m_GShader){	Device.SetShader(m_GShader);
                 }else{			Device.SetShader(Device.m_WireShader);}
                 m_RenderSprite.Render(PPosition,m_fRadius,m_Flags.is(gfFixedSize));

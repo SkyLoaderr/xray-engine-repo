@@ -53,7 +53,7 @@ void		CDetailManager::cache_Decompress(Slot* S)
 #ifdef _EDITOR
 	// Select polygons
 	SBoxPickInfoVec		pinf;
-	Scene.BoxPickObjects(D.vis.box,pinf,GetSnapList());
+    Scene->BoxPickObjects(D.vis.box,pinf,GetSnapList());
 	u32	triCount		= pinf.size();
 #else
 	xrc.box_query		(g_pGameLevel->ObjectSpace.GetStaticModel(),bC,bD);
@@ -135,7 +135,7 @@ void		CDetailManager::cache_Decompress(Slot* S)
 				for (int k=0; k<(int)I.inf.size(); k++){
 					R_ASSERT(I.s_obj);
 Device.Statistic.TEST0.Begin	();
-					I.s_obj->GetFaceWorld(I.e_mesh,I.inf[k].id,verts);
+					I.e_obj->GetFaceWorld(I.s_obj->_Transform(),I.e_mesh,I.inf[k].id,verts);
 Device.Statistic.TEST0.End		();
 					if (CDB::TestRayTri(Item_P,dir,verts,r_u,r_v,r_range,TRUE))
 					{

@@ -25,11 +25,11 @@ void ESceneGroupTools::UngroupObjects(bool bUndo)
     ObjectList lst 	= m_Objects;
     if (!lst.empty()){
         for (ObjectIt it=lst.begin(); it!=lst.end(); it++){
-            Scene.RemoveObject(*it,false);
+        	Scene->RemoveObject(*it,false);
             ((CGroupObject*)(*it))->UngroupObjects();
             xr_delete(*it);
         }
-	    if (bUndo) Scene.UndoSave();
+	    if (bUndo) Scene->UndoSave();
     }
 }
 //----------------------------------------------------
@@ -37,15 +37,15 @@ void ESceneGroupTools::UngroupObjects(bool bUndo)
 void ESceneGroupTools::GroupObjects(bool bUndo)
 {
 	string256 namebuffer;
-	Scene.GenObjectName(OBJCLASS_GROUP, namebuffer);
+	Scene->GenObjectName(OBJCLASS_GROUP, namebuffer);
     CGroupObject* group = xr_new<CGroupObject>((LPVOID)0,namebuffer);
 
 	// validate objects
     ObjectList lst;
-    if (Scene.GetQueryObjects(lst,OBJCLASS_DUMMY,1,1,0)) group->GroupObjects(lst);
+    if (Scene->GetQueryObjects(lst,OBJCLASS_DUMMY,1,1,0)) group->GroupObjects(lst);
     if (group->ObjectCount()){
 	    ELog.DlgMsg(mtInformation,"Group '%s' successfully created.\nContain %d object(s)",group->Name,group->ObjectCount());
-        Scene.AppendObject(group,bUndo);
+        Scene->AppendObject(group,bUndo);
     }else{
 	    ELog.DlgMsg(mtError,"Group can't created.");
         xr_delete(group);
@@ -59,7 +59,7 @@ void ESceneGroupTools::CenterToGroup()
     if (!lst.empty()){
     	for (ObjectIt it=lst.begin(); it!=lst.end(); it++)
 			((CGroupObject*)(*it))->UpdateBBoxAndPivot(false);
-        Scene.UndoSave();
+        Scene->UndoSave();
     }
 }
 //----------------------------------------------------
@@ -71,7 +71,7 @@ void ESceneGroupTools::AlignToObject()
     	for (ObjectIt it=lst.begin(); it!=lst.end(); it++){
 			((CGroupObject*)(*it))->UpdateBBoxAndPivot(true);
         }
-        Scene.UndoSave();
+        Scene->UndoSave();
     }
 }
 //----------------------------------------------------

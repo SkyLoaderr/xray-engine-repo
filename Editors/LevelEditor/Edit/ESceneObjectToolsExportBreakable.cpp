@@ -157,7 +157,7 @@ public:
         	SBFace* F					= (*f_it);
             if (F->adjs.empty()){	
             	ELog.Msg(mtError,"Error face found at pos: [%3.2f,%3.2f,%3.2f]",VPUSH(F->p[0])); 
-                Scene.m_CompilerErrors.AppendFace(F->p[0],F->p[1],F->p[2]);
+                Scene->m_CompilerErrors.AppendFace(F->p[0],F->p[1],F->p[2]);
                 m_bValid				= false;
             }
         	for (int k=0; k<3; k++){ 
@@ -534,7 +534,7 @@ bool ESceneObjectTools::ExportBreakableObjects(SExportStreams& F)
         	if (P->Valid()){
                 // export visual
                 AnsiString sn		= AnsiString().sprintf("meshes\\obj_%d.ogf",(p_it-parts.begin()));
-                AnsiString fn		= Scene.LevelPath()+sn;
+                AnsiString fn		= Scene->LevelPath()+sn;
                 IWriter* W			= FS.w_open(fn.c_str()); VERIFY(W);
                 if (!P->Export(*W)){
                     ELog.DlgMsg		(mtError,"Invalid breakable object.");

@@ -69,8 +69,8 @@ CCustomObject* __fastcall TUI_CustomControl::DefaultAddObject(TShiftState Shift,
     	if (before&&!before(&P)) return 0;
 
 		string256 namebuffer;
-		Scene.GenObjectName(parent_tool->ClassID, namebuffer, P.name_prefix.c_str());
-		obj=Scene.GetOTools(parent_tool->ClassID)->CreateObject(P.data, namebuffer);
+        Scene->GenObjectName(parent_tool->ClassID, namebuffer, P.name_prefix.c_str());
+		obj=Scene->GetOTools(parent_tool->ClassID)->CreateObject(P.data, namebuffer);
         if (!obj->Valid()){
         	xr_delete(obj);
             return 0;
@@ -81,8 +81,8 @@ CCustomObject* __fastcall TUI_CustomControl::DefaultAddObject(TShiftState Shift,
             return 0;
         }
 		obj->MoveTo(p,n);
-        Scene.SelectObjects(false,parent_tool->ClassID);
-		Scene.AppendObject(obj);
+        Scene->SelectObjects(false,parent_tool->ClassID);
+		Scene->AppendObject(obj);
 		if (Shift.Contains(ssCtrl)) UI->Command(COMMAND_SHOW_PROPERTIES);
         if (!Shift.Contains(ssAlt)) ResetActionToSelect();
     }
@@ -105,19 +105,19 @@ bool __fastcall TUI_CustomControl::AddEnd(TShiftState _Shift)
 bool TUI_CustomControl::CheckSnapList(TShiftState Shift)
 {
 	if (fraLeftBar->ebSnapListMode->Down){
-	    CCustomObject* O=Scene.RayPickObject(flt_max,UI->m_CurrentRStart,UI->m_CurrentRNorm,OBJCLASS_SCENEOBJECT,0,0);
+	    CCustomObject* O=Scene->RayPickObject(flt_max,UI->m_CurrentRStart,UI->m_CurrentRNorm,OBJCLASS_SCENEOBJECT,0,0);
         if (O){
-            if (Scene.FindObjectInSnapList(O)){
+            if (Scene->FindObjectInSnapList(O)){
                 if (Shift.Contains(ssAlt)){
-                    Scene.DelFromSnapList(O);
+                    Scene->DelFromSnapList(O);
                 }else if (Shift.Contains(ssCtrl)){
-                    Scene.DelFromSnapList(O);
+                    Scene->DelFromSnapList(O);
                 }
             }else{
                 if (!Shift.Contains(ssCtrl)&&!Shift.Contains(ssAlt)){
-                    Scene.AddToSnapList(O);
+                    Scene->AddToSnapList(O);
                 }else if (Shift.Contains(ssCtrl)){
-                    Scene.AddToSnapList(O);
+                    Scene->AddToSnapList(O);
                 }
             }
 	        return true;
@@ -137,9 +137,9 @@ bool __fastcall TUI_CustomControl::SelectStart(TShiftState Shift)
 
 	if (CheckSnapList(Shift)) return false;
     if (Shift==ssRBOnly){ UI->Command(COMMAND_SHOWCONTEXTMENU,parent_tool->ClassID); return false;}
-    if (!(Shift.Contains(ssCtrl)||Shift.Contains(ssAlt))) Scene.SelectObjects( false, cls);
+    if (!(Shift.Contains(ssCtrl)||Shift.Contains(ssAlt))) Scene->SelectObjects( false, cls);
 
-    CCustomObject *obj = Scene.RayPickObject( flt_max, UI->m_CurrentRStart,UI->m_CurrentRNorm, cls, 0, 0);
+    CCustomObject *obj = Scene->RayPickObject( flt_max, UI->m_CurrentRStart,UI->m_CurrentRNorm, cls, 0, 0);
     bBoxSelection    = (obj && (Shift.Contains(ssCtrl)||Shift.Contains(ssAlt))) || !obj;
 
     if( bBoxSelection ){
@@ -162,7 +162,7 @@ bool __fastcall TUI_CustomControl::SelectEnd(TShiftState _Shift)
     if (bBoxSelection){
         UI->EnableSelectionRect( false );
         bBoxSelection = false;
-        Scene.FrustumSelect(_Shift.Contains(ssAlt)?0:1,LTools->CurrentClassID());
+        Scene->FrustumSelect(_Shift.Contains(ssAlt)?0:1,LTools->CurrentClassID());
     }
     return true;
 }
@@ -175,7 +175,7 @@ bool __fastcall TUI_CustomControl::MovingStart(TShiftState Shift)
 	EObjClass cls = LTools->CurrentClassID();
 
     if(Shift==ssRBOnly){ UI->Command(COMMAND_SHOWCONTEXTMENU,parent_tool->ClassID); return false;}
-    if(Scene.SelectionCount(true,cls)==0) return false;
+    if(Scene->SelectionCount(true,cls)==0) return false;
 
     if (Shift.Contains(ssCtrl)){
 	    Fvector p,n;
@@ -183,9 +183,9 @@ bool __fastcall TUI_CustomControl::MovingStart(TShiftState Shift)
         Device.m_Camera.MouseRayFromPoint(UI->m_CurrentRStart,UI->m_CurrentRNorm,UI->m_CurrentCp);
     	if (LUI->PickGround(p,UI->m_CurrentRStart,UI->m_CurrentRNorm,1,&n)){
             ObjectList lst;
-            if (Scene.GetQueryObjects(lst,LTools->CurrentClassID(),1,1,0)){
+            if (Scene->GetQueryObjects(lst,LTools->CurrentClassID(),1,1,0)){
                 for(ObjectIt _F = lst.begin();_F!=lst.end();_F++) (*_F)->MoveTo(p,n);
-				Scene.UndoSave();
+				Scene->UndoSave();
             }
         }
         return false;
@@ -231,14 +231,14 @@ void __fastcall TUI_CustomControl::MovingProcess(TShiftState _Shift)
 	Fvector amount;
 	if (DefaultMovingProcess(_Shift,amount)){
         ObjectList lst;
-        if (Scene.GetQueryObjects(lst,LTools->CurrentClassID(),1,1,0))
+        if (Scene->GetQueryObjects(lst,LTools->CurrentClassID(),1,1,0))
             for(ObjectIt _F = lst.begin();_F!=lst.end();_F++) (*_F)->Move(amount);
     }
 }
 
 bool __fastcall TUI_CustomControl::MovingEnd(TShiftState _Shift)
 {
-	Scene.UndoSave();
+	Scene->UndoSave();
     return true;
 }
 
@@ -250,7 +250,7 @@ bool __fastcall TUI_CustomControl::RotateStart(TShiftState Shift)
 	EObjClass cls = LTools->CurrentClassID();
 
     if(Shift==ssRBOnly){ UI->Command(COMMAND_SHOWCONTEXTMENU,parent_tool->ClassID); return false;}
-    if(Scene.SelectionCount(true,cls)==0) return false;
+    if(Scene->SelectionCount(true,cls)==0) return false;
 
     m_RotateVector.set(0,0,0);
     if (etAxisX==Tools->GetAxis()) 		m_RotateVector.set(1,0,0);
@@ -268,7 +268,7 @@ void __fastcall TUI_CustomControl::RotateProcess(TShiftState _Shift)
         if( Tools->GetSettings(etfASnap) ) CHECK_SNAP(m_fRotateSnapAngle,amount,Tools->m_RotateSnapAngle);
 
         ObjectList lst;
-        if (Scene.GetQueryObjects(lst,LTools->CurrentClassID(),1,1,0))
+        if (Scene->GetQueryObjects(lst,LTools->CurrentClassID(),1,1,0))
             for(ObjectIt _F = lst.begin();_F!=lst.end();_F++)
                 if( Tools->GetSettings(etfCSParent) ){
                     (*_F)->RotateParent( m_RotateVector, amount );
@@ -279,7 +279,7 @@ void __fastcall TUI_CustomControl::RotateProcess(TShiftState _Shift)
 }
 bool __fastcall TUI_CustomControl::RotateEnd(TShiftState _Shift)
 {
-	Scene.UndoSave();
+	Scene->UndoSave();
     return true;
 }
 
@@ -290,7 +290,7 @@ bool __fastcall TUI_CustomControl::ScaleStart(TShiftState Shift)
 {
 	EObjClass cls = LTools->CurrentClassID();
     if(Shift==ssRBOnly){ UI->Command(COMMAND_SHOWCONTEXTMENU,parent_tool->ClassID); return false;}
-    if(Scene.SelectionCount(true,cls)==0) return false;
+    if(Scene->SelectionCount(true,cls)==0) return false;
 	return true;
 }
 
@@ -309,12 +309,12 @@ void __fastcall TUI_CustomControl::ScaleProcess(TShiftState _Shift)
     }
 
     ObjectList lst;
-    if (Scene.GetQueryObjects(lst,LTools->CurrentClassID(),1,1,0))
+    if (Scene->GetQueryObjects(lst,LTools->CurrentClassID(),1,1,0))
         for(ObjectIt _F = lst.begin();_F!=lst.end();_F++) (*_F)->Scale( amount );
 }
 bool __fastcall TUI_CustomControl::ScaleEnd(TShiftState _Shift)
 {
-	Scene.UndoSave();
+	Scene->UndoSave();
     return true;
 }
 //------------------------------------------------------------------------------

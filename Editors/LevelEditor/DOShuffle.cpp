@@ -32,7 +32,7 @@ SDOData::SDOData(){
 bool __fastcall TfrmDOShuffle::Run()
 {
 	VERIFY(!form);
-	form = xr_new<TfrmDOShuffle>((TComponent*)0,dynamic_cast<EDetailManager*>(Scene.GetMTools(OBJCLASS_DO)));
+	form = xr_new<TfrmDOShuffle>((TComponent*)0,dynamic_cast<EDetailManager*>(Scene->GetMTools(OBJCLASS_DO)));
 	// show
     return (form->ShowModal()==mrOk);
 }

@@ -27,10 +27,10 @@ bool __fastcall TUI_ControlSpawnAdd::Start(TShiftState Shift)
 {
     TfraSpawn* F = (TfraSpawn*)parent_tool->pFrame;
 	if (F->ebAttachObject->Down){
-		CCustomObject* from = Scene.RayPickObject(flt_max, UI->m_CurrentRStart, UI->m_CurrentRNorm, OBJCLASS_DUMMY, 0, 0);
+		CCustomObject* from = Scene->RayPickObject(flt_max, UI->m_CurrentRStart, UI->m_CurrentRNorm, OBJCLASS_DUMMY, 0, 0);
         if (from->ClassID!=OBJCLASS_SPAWNPOINT){
             ObjectList 	lst;
-            int cnt 	= Scene.GetQueryObjects(lst,OBJCLASS_SPAWNPOINT,1,1,0);
+            int cnt 	= Scene->GetQueryObjects(lst,OBJCLASS_SPAWNPOINT,1,1,0);
             if (1!=cnt)	ELog.DlgMsg(mtError,"Select one shape.");
             else{
                 CSpawnPoint* base = dynamic_cast<CSpawnPoint*>(lst.back()); R_ASSERT(base);

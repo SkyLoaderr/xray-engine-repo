@@ -40,8 +40,8 @@ BOOL ESceneAIMapTools::CreateNode(Fvector& vAt, SAINode& N, bool bIC)
 	Fbox	BB;				BB.set	(PointUp,PointUp);		BB.grow(m_Params.fPatchSize/2);	// box 1
 	Fbox	B2;				B2.set	(PointDown,PointDown);	B2.grow(m_Params.fPatchSize/2);	// box 2
 	BB.merge				(B2);   
-    if (m_CFModel)	Scene.BoxQuery(PQ,BB,CDB::OPT_FULL_TEST,m_CFModel);
-    else			Scene.BoxQuery(PQ,BB,CDB::OPT_FULL_TEST,GetSnapList());
+    if (m_CFModel)	Scene->BoxQuery(PQ,BB,CDB::OPT_FULL_TEST,m_CFModel);
+    else			Scene->BoxQuery(PQ,BB,CDB::OPT_FULL_TEST,GetSnapList());
 	DWORD	dwCount 		= PQ.r_count();
 	if (dwCount==0){
 //		Log("chasm1");
@@ -366,8 +366,8 @@ int ESceneAIMapTools::BuildNodes(const Fvector& pos, int sz, bool bIC)
     Fvector			Dir; Dir.set(0,-1,0);
 
 	int cnt			= 0;		
-    if (m_CFModel)	cnt=Scene.RayQuery(PQ,Pos,Dir,3,CDB::OPT_ONLYNEAREST|CDB::OPT_CULL,m_CFModel);
-    else			cnt=Scene.RayQuery(PQ,Pos,Dir,3,CDB::OPT_ONLYNEAREST|CDB::OPT_CULL,GetSnapList());
+    if (m_CFModel)	cnt=Scene->RayQuery(PQ,Pos,Dir,3,CDB::OPT_ONLYNEAREST|CDB::OPT_CULL,m_CFModel);
+    else			cnt=Scene->RayQuery(PQ,Pos,Dir,3,CDB::OPT_ONLYNEAREST|CDB::OPT_CULL,GetSnapList());
     if (0==cnt) {
         ELog.Msg	(mtInformation,"Can't align position.");
         return		0;
@@ -572,7 +572,7 @@ bool ESceneAIMapTools::GenerateMap()
                     IntVec& face_lst = sp_it->second;
                     for (IntIt it=face_lst.begin(); it!=face_lst.end(); it++){
 //                        st_Face&	F = _faces[*it];
-			        	S->GetFaceWorld	(*m_it,*it,verts);
+			        	E->GetFaceWorld	(S->_Transform(),*m_it,*it,verts);
                         CL->add_face_D(verts[0],verts[1],verts[2], *it);
                         if (sp_it->first->m_Flags.is(CSurface::sf2Sided))
                             CL->add_face_D(verts[2],verts[1],verts[0], *it);
@@ -590,12 +590,12 @@ bool ESceneAIMapTools::GenerateMap()
         
         UI->SetStatus		("Building nodes...");
         // building
-        Scene.lock			();
+        Scene->lock			();
 CTimer tm;
 tm.Start();
         BuildNodes			();
 tm.Stop();
-        Scene.unlock		();
+        Scene->unlock		();
 //.        Log("-test time: ",	g_tm.GetElapsed_sec());
 		Log("-building time: ",tm.GetElapsed_sec());
 //.        Msg("-Rate: %3.2f Count: %d",(g_tm.GetElapsed_sec()/tm.GetElapsed_sec())*100.f,g_tm.count);
@@ -603,7 +603,7 @@ tm.Stop();
         // unload CFModel        
 		xr_delete(m_CFModel);
 	
-        Scene.UndoSave		();
+        Scene->UndoSave		();
         bRes = true;
     }else{ 
     	ELog.DlgMsg(mtError,"Fill snap list before generating slots!");
@@ -632,7 +632,7 @@ bool ESceneAIMapTools::RealUpdateSnapList()
 	fraLeftBar->UpdateSnapList	();
     Fbox nodes_bb;				CalculateNodesBBox(nodes_bb);
 	if (!GetSnapList()->empty()){
-        Fbox snap_bb;			Scene.GetBox(snap_bb,*GetSnapList());
+        Fbox snap_bb;			Scene->GetBox(snap_bb,*GetSnapList());
         Fbox bb;				bb.merge(snap_bb,nodes_bb);
         if (!m_AIBBox.similar(bb)){
             m_AIBBox.set		(bb);
@@ -949,6 +949,6 @@ void ESceneAIMapTools::SmoothNodes()
 
     UpdateHLSelected	();
     
-	if (sm_nodes) 		Scene.UndoSave();
+	if (sm_nodes) 		Scene->UndoSave();
 }
 

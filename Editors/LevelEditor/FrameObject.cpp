@@ -73,11 +73,11 @@ void __fastcall TfraObject::MultiSelByRefObject ( bool clear_prev )
 {
     ObjectList 	objlist;
     LPU32Vec 	sellist;
-    if (Scene.GetQueryObjects(objlist,OBJCLASS_SCENEOBJECT,1,1,-1)){
+    if (Scene->GetQueryObjects(objlist,OBJCLASS_SCENEOBJECT,1,1,-1)){
     	for (ObjectIt it=objlist.begin(); it!=objlist.end(); it++){
 	        LPCSTR N = ((CSceneObject*)*it)->GetRefName();
-            ObjectIt _F = Scene.FirstObj(OBJCLASS_SCENEOBJECT);
-            ObjectIt _E = Scene.LastObj(OBJCLASS_SCENEOBJECT);
+            ObjectIt _F = Scene->FirstObj(OBJCLASS_SCENEOBJECT);
+            ObjectIt _E = Scene->LastObj(OBJCLASS_SCENEOBJECT);
             for(;_F!=_E;_F++){
 	            CSceneObject *_O = (CSceneObject *)(*_F);
                 if((*_F)->Visible()&&_O->RefCompare(N)){
@@ -109,13 +109,13 @@ void TfraObject::SelByRefObject( bool flag )
 {
     ObjectList objlist;
 //    LPCSTR sel_name=0;
-//    if (Scene.GetQueryObjects(objlist,OBJCLASS_SCENEOBJECT,1,1,-1))
+//    if (Scene->GetQueryObjects(objlist,OBJCLASS_SCENEOBJECT,1,1,-1))
 //        sel_name = ((CSceneObject*)objlist.front())->GetRefName();
 	LPCSTR N=Current();
 //    if (!TfrmChoseItem::SelectItem(TfrmChoseItem::smObject,N,1,sel_name)) return;
 	if (N){
-        ObjectIt _F = Scene.FirstObj(OBJCLASS_SCENEOBJECT);
-        ObjectIt _E = Scene.LastObj(OBJCLASS_SCENEOBJECT);
+        ObjectIt _F = Scene->FirstObj(OBJCLASS_SCENEOBJECT);
+        ObjectIt _E = Scene->LastObj(OBJCLASS_SCENEOBJECT);
         for(;_F!=_E;_F++){
             if((*_F)->Visible() ){
                 CSceneObject *_O = (CSceneObject *)(*_F);
@@ -132,13 +132,13 @@ void __fastcall TfraObject::ebMultiAppendClick(TObject *Sender)
     if (TfrmChoseItem::SelectItem(smObject,N,32,0)){
     	Fvector pos={0.f,0.f,0.f};
     	Fvector up={0.f,1.f,0.f};
-        Scene.SelectObjects(false,OBJCLASS_SCENEOBJECT);
+        Scene->SelectObjects(false,OBJCLASS_SCENEOBJECT);
 	    AStringVec lst;
     	_SequenceToList(lst,N);
         UI->ProgressStart(lst.size(),"Append object: ");
         for (AStringIt it=lst.begin(); it!=lst.end(); it++){
             string256 namebuffer;
-            Scene.GenObjectName(OBJCLASS_SCENEOBJECT, namebuffer, it->c_str());
+            Scene->GenObjectName(OBJCLASS_SCENEOBJECT, namebuffer, it->c_str());
             CSceneObject *obj = xr_new<CSceneObject>((LPVOID)0,namebuffer);
             CEditableObject* ref = obj->SetReference(it->c_str());
             if (!ref){
@@ -153,7 +153,7 @@ void __fastcall TfraObject::ebMultiAppendClick(TObject *Sender)
             }
 */
             obj->MoveTo(pos,up);
-            Scene.AppendObject( obj );
+            Scene->AppendObject( obj );
         }
         UI->ProgressEnd();
     }

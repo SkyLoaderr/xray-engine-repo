@@ -53,7 +53,7 @@ void __fastcall TfraAIMap::ExtBtn6Click(TObject *Sender)
 {
 	if (ELog.DlgMsg(mtConfirmation,TMsgDlgButtons() << mbYes << mbNo,"Are you sure to clear AI Map?")==mrYes){
 		tools->Clear();
-		Scene.UndoSave();
+		Scene->UndoSave();
     }
 }
 //---------------------------------------------------------------------------
@@ -79,7 +79,7 @@ void __fastcall TfraAIMap::ebDrawSnapObjectsClick(TObject *Sender)
 void __fastcall TfraAIMap::ebInvertLinkClick(TObject *Sender)
 {
 	tools->InvertLinks();
-    Scene.UndoSave();
+    Scene->UndoSave();
     UI->RedrawScene();
 }
 //---------------------------------------------------------------------------
@@ -117,7 +117,7 @@ void __fastcall TfraAIMap::ebSideClick(TObject *Sender)
     else if (ebModeInvert->Down)	mode = ESceneAIMapTools::mdInvert;
     TExtBtn* btn = dynamic_cast<TExtBtn*>(Sender); R_ASSERT(btn);
 	tools->MakeLinks(fl[ConvertV2L(btn->Tag)], mode, ebIgnoreConstraints->Down);
-    Scene.UndoSave();
+    Scene->UndoSave();
     UI->RedrawScene();      
 }
 //---------------------------------------------------------------------------
@@ -126,7 +126,7 @@ void __fastcall TfraAIMap::ebSelLinkClick(TObject *Sender)
 {
     TExtBtn* btn = dynamic_cast<TExtBtn*>(Sender); R_ASSERT(btn);
 	tools->SelectNodesByLink	(btn->Tag);
-    Scene.UndoSave();
+    Scene->UndoSave();
 }
 //---------------------------------------------------------------------------
 

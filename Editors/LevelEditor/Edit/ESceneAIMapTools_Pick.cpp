@@ -40,7 +40,7 @@ bool ESceneAIMapTools::PickGround(Fvector& dest, const Fvector& start, const Fve
 {         	         
 	SPickQuery	PQ;
 	if (!GetSnapList()->empty()){
-        if (Scene.RayQuery(PQ,start,dir,dist,CDB::OPT_ONLYNEAREST|CDB::OPT_CULL,GetSnapList())){
+        if (Scene->RayQuery(PQ,start,dir,dist,CDB::OPT_ONLYNEAREST|CDB::OPT_CULL,GetSnapList())){
             dest.mad(start,dir,PQ.r_begin()->range);
             return true;
         }

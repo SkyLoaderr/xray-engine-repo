@@ -36,7 +36,7 @@ void TUI_ControlSectorAdd::AddMesh(){
     CSector* sector=PortalUtils.GetSelectedSector();
     if (!sector) return;
     SRayPickInfo pinf;
-    if (Scene.RayPickObject( pinf.inf.range, UI->m_CurrentRStart,UI->m_CurrentRNorm, OBJCLASS_SCENEOBJECT, &pinf, 0))
+    if (Scene->RayPickObject( pinf.inf.range, UI->m_CurrentRStart,UI->m_CurrentRNorm, OBJCLASS_SCENEOBJECT, &pinf, 0))
 		sector->AddMesh(pinf.s_obj,pinf.e_mesh);
 }
 
@@ -45,20 +45,20 @@ void TUI_ControlSectorAdd::DelMesh(){
     CSector* sector=PortalUtils.GetSelectedSector();
     if (!sector) return;
     SRayPickInfo pinf;
-    if (Scene.RayPickObject( pinf.inf.range, UI->m_CurrentRStart,UI->m_CurrentRNorm, OBJCLASS_SCENEOBJECT, &pinf, 0))
+    if (Scene->RayPickObject( pinf.inf.range, UI->m_CurrentRStart,UI->m_CurrentRNorm, OBJCLASS_SCENEOBJECT, &pinf, 0))
 		sector->DelMesh(pinf.s_obj,pinf.e_mesh);
 }
 
 bool TUI_ControlSectorAdd::AddSector(){
 	string256 namebuffer;
-	Scene.GenObjectName( OBJCLASS_SECTOR, namebuffer );
+	Scene->GenObjectName( OBJCLASS_SECTOR, namebuffer );
 	CSector* _O = xr_new<CSector>((LPVOID)0,namebuffer);
     SRayPickInfo pinf;
-    if (Scene.RayPickObject( pinf.inf.range, UI->m_CurrentRStart,UI->m_CurrentRNorm, OBJCLASS_SCENEOBJECT, &pinf, 0)&&
+    if (Scene->RayPickObject( pinf.inf.range, UI->m_CurrentRStart,UI->m_CurrentRNorm, OBJCLASS_SCENEOBJECT, &pinf, 0)&&
     	(_O->AddMesh(pinf.s_obj,pinf.e_mesh)))
     {
-        Scene.SelectObjects(false,OBJCLASS_SECTOR);
-        Scene.AppendObject( _O );
+        Scene->SelectObjects(false,OBJCLASS_SECTOR);
+        Scene->AppendObject( _O );
         return true;
     }else{
     	xr_delete(_O);
@@ -113,7 +113,7 @@ bool __fastcall TUI_ControlSectorAdd::End(TShiftState _Shift)
             CFrustum frustum;
             ObjectList lst;
             if (LUI->SelectionFrustum(frustum)){;
-                Scene.FrustumPick(frustum, OBJCLASS_SCENEOBJECT, lst);
+                Scene->FrustumPick(frustum, OBJCLASS_SCENEOBJECT, lst);
                 for(ObjectIt _F = lst.begin();_F!=lst.end();_F++){
                     O_ref = (CSceneObject*)(*_F);
                     O_lib = O_ref->GetReference();
@@ -131,7 +131,7 @@ bool __fastcall TUI_ControlSectorAdd::End(TShiftState _Shift)
         case saAddMesh:
         case saDelMesh:
         case saMeshBoxSelection:
-			Scene.UndoSave();
+			Scene->UndoSave();
         break;
         }
     }

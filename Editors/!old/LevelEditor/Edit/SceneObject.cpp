@@ -60,15 +60,6 @@ void CSceneObject::Select(BOOL flag)
 }
 
 //----------------------------------------------------
-void CSceneObject::GetFaceWorld(CEditableMesh* M, int idx, Fvector* verts)
-{
-	const Fvector* PT[3];
-	M->GetFacePT(idx, PT);
-	_Transform().transform_tiny(verts[0],*PT[0]);
-    _Transform().transform_tiny(verts[1],*PT[1]);
-	_Transform().transform_tiny(verts[2],*PT[2]);
-}
-
 int CSceneObject::GetFaceCount()
 {
 	return m_pReference?m_pReference->GetFaceCount():0;
@@ -123,7 +114,7 @@ void CSceneObject::Render(int priority, bool strictB2F)
 	inherited::Render(priority,strictB2F);
     if (!m_pReference) return;
 #ifdef _LEVEL_EDITOR
-	ESceneLightTools* lt = dynamic_cast<ESceneLightTools*>(Scene.GetOTools(OBJCLASS_LIGHT)); VERIFY(lt);
+	ESceneLightTools* lt = dynamic_cast<ESceneLightTools*>(Scene->GetOTools(OBJCLASS_LIGHT)); VERIFY(lt);
     lt->SelectLightsForObject(this);
 #endif
 	m_pReference->Render(_Transform(), priority, strictB2F);

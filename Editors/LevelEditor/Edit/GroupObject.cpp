@@ -309,7 +309,7 @@ bool CGroupObject::Load(IReader& F)
 	CCustomObject::Load(F);
 
 	// objects
-    Scene.ReadObjects(F,GROUPOBJ_CHUNK_OBJECT_LIST,AppendObject);
+    Scene->ReadObjects(F,GROUPOBJ_CHUNK_OBJECT_LIST,AppendObject);
 
     F.r_chunk(GROUPOBJ_CHUNK_FLAGS,&m_Flags);
 
@@ -328,7 +328,7 @@ void CGroupObject::Save(IWriter& F)
 	F.close_chunk	();
 
     // objects
-    Scene.SaveObjects(m_Objects,GROUPOBJ_CHUNK_OBJECT_LIST,F);
+    Scene->SaveObjects(m_Objects,GROUPOBJ_CHUNK_OBJECT_LIST,F);
 
     F.w_chunk		(GROUPOBJ_CHUNK_FLAGS,&m_Flags,sizeof(m_Flags));
 }

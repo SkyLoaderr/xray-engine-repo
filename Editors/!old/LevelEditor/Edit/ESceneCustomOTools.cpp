@@ -138,7 +138,7 @@ int ESceneCustomOTools::RemoveSelection()
             count ++;
             if ((*_F)->OnSelectionRemove()){
                 ObjectIt _D = _F; _F++;
-                Scene.RemoveObject(*_D,false);
+                Scene->RemoveObject(*_D,false);
                 xr_delete	(*_D);
             }else{
                 _F++;

@@ -265,7 +265,7 @@ void __fastcall	CSE_ALifeObject::OnChooseGroupControl(ChooseItemVec& lst)
 {
 	LPCSTR gcs					= pSettings->r_string(s_name,"GroupControlSection");
     ObjectList objects;
-    Scene.GetQueryObjects		(objects,OBJCLASS_SPAWNPOINT,-1,-1,-1);
+    Scene->GetQueryObjects		(objects,OBJCLASS_SPAWNPOINT,-1,-1,-1);
     
     for (ObjectIt it=objects.begin(); it!=objects.end(); it++)
         if ((*it)->OnChooseQuery(gcs))	lst.push_back(SChooseItem((*it)->Name,""));

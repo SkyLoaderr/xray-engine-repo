@@ -60,7 +60,7 @@ void __fastcall TfrmEditLibrary::ShowEditor()
 {
 	if (!form){
     	form = xr_new<TfrmEditLibrary>((TComponent*)0);
-		Scene.lock();
+		Scene->lock();
     }
     form->Show();
 }
@@ -144,7 +144,7 @@ void __fastcall TfrmEditLibrary::FormClose(TObject *Sender, TCloseAction &Action
         	Lib.ReloadObject(it->first.c_str());
         UI->ResetStatus();
     }
-	Scene.unlock();
+	Scene->unlock();
 
     UI->EndEState(esEditLibrary);
 

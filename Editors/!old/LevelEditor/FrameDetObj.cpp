@@ -35,14 +35,14 @@ void __fastcall TfraDetailObject::ExpandClick(TObject *Sender)
 
 void __fastcall TfraDetailObject::ExtBtn1Click(TObject *Sender)
 {
-    if (DM->Initialize()) Scene.UndoSave();
+    if (DM->Initialize()) Scene->UndoSave();
 }
 //---------------------------------------------------------------------------
 
 void __fastcall TfraDetailObject::ExtBtn5Click(TObject *Sender)
 {
 	if (TfrmDOShuffle::Run())
-    	Scene.UndoSave();
+    	Scene->UndoSave();
 }
 //---------------------------------------------------------------------------
 
@@ -50,14 +50,14 @@ void __fastcall TfraDetailObject::ExtBtn5Click(TObject *Sender)
 void __fastcall TfraDetailObject::ebUpdateObjectsClick(TObject *Sender)
 {
 	if (DM->UpdateObjects(true,false))
-		Scene.UndoSave();
+		Scene->UndoSave();
 }
 //---------------------------------------------------------------------------
 
 void __fastcall TfraDetailObject::ebInvalidateCacheClick(TObject *Sender)
 {
 	DM->InvalidateCache();
-	Scene.UndoSave();
+	Scene->UndoSave();
 }
 //---------------------------------------------------------------------------
 
@@ -65,7 +65,7 @@ void __fastcall TfraDetailObject::ebResetSlotsClick(TObject *Sender)
 {
 	if (ELog.DlgMsg(mtConfirmation,TMsgDlgButtons() << mbYes << mbNo,"Are you sure to reset slots?")==mrYes){
     	DM->ClearSlots();
-		Scene.UndoSave();
+		Scene->UndoSave();
     }
 }
 //---------------------------------------------------------------------------
@@ -75,7 +75,7 @@ void __fastcall TfraDetailObject::ebClearDetailsClick(TObject *Sender)
 	if (ELog.DlgMsg(mtConfirmation,TMsgDlgButtons() << mbYes << mbNo,"Are you sure to clear details?")==mrYes){
     	UI->Command(COMMAND_UPDATE_PROPERTIES);
 		DM->Clear();
-		Scene.UndoSave();
+		Scene->UndoSave();
     }
 }
 //---------------------------------------------------------------------------
@@ -84,14 +84,14 @@ void __fastcall TfraDetailObject::ebReinitializeSlotObjectsClick(
       TObject *Sender)
 {
 	if (DM->UpdateObjects(false,true))
-		Scene.UndoSave();
+		Scene->UndoSave();
 }
 //---------------------------------------------------------------------------
 
 void __fastcall TfraDetailObject::ExtBtn6Click(TObject *Sender)
 {
 	if (DM->Reinitialize())
-		Scene.UndoSave();
+		Scene->UndoSave();
 }
 //---------------------------------------------------------------------------
 

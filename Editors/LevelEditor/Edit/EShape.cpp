@@ -147,7 +147,7 @@ void CEditShape::Attach(CEditShape* from)
 		}
     }
     // common
-    Scene.RemoveObject		(from,true);
+    Scene->RemoveObject		(from,true);
     xr_delete				(from);
 
 	ComputeBounds			();
@@ -163,8 +163,8 @@ void CEditShape::Detach()
         ShapeIt it=shapes.begin(); it++;
         for (; it!=shapes.end(); it++){
             string256 namebuffer;
-            Scene.GenObjectName	(OBJCLASS_SHAPE, namebuffer, Name);
-            CEditShape* shape 	= (CEditShape*)Scene.GetOTools(ClassID)->CreateObject(0, namebuffer);
+            Scene->GenObjectName	(OBJCLASS_SHAPE, namebuffer, Name);
+            CEditShape* shape 	= (CEditShape*)Scene->GetOTools(ClassID)->CreateObject(0, namebuffer);
             switch (it->type){
             case cfSphere:{
                 Fsphere	T		= it->data.sphere;
@@ -182,7 +182,7 @@ void CEditShape::Detach()
             }break;
             default: THROW;
             }
-            Scene.AppendObject	(shape,false);
+            Scene->AppendObject	(shape,false);
 	    	shape->Select		(true);
         }
         // erase shapes in base object
@@ -191,7 +191,7 @@ void CEditShape::Detach()
 
         ComputeBounds();
 
-        Scene.UndoSave();
+        Scene->UndoSave();
     }
 }
 

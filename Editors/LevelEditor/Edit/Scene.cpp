@@ -18,7 +18,7 @@
 #include "ESceneDOTools.h"
 #include "ESceneLightTools.h"
 //----------------------------------------------------
-EScene Scene;
+EScene*& Scene=(EScene*)IScene;
 //----------------------------------------------------
 st_LevelOptions::st_LevelOptions()
 {
@@ -379,4 +379,5 @@ AnsiString EScene::LevelPath()
     }
     return path;
 }
+
 

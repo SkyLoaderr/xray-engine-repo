@@ -1,8 +1,9 @@
-#include "stdafx.h"   
+#include "stdafx.h"
 #pragma hdrstop
 #include "splash.h"
 #include "LogForm.h"
 #include "main.h"
+#include "scene.h"
 #include "UI_LevelMain.h"
 #include "UI_LevelTools.h"
 //---------------------------------------------------------------------------
@@ -54,6 +55,7 @@ WINAPI WinMain(HINSTANCE hInst, HINSTANCE, LPSTR, int)
 // startup create
         Tools					= xr_new<CLevelTools>();
         UI						= xr_new<CLevelMain>();
+		IScene					= xr_new<EScene>();
 		Application->Title 		= UI->EditorDesc();
         TfrmLog::CreateLog		();
 		Application->CreateForm(__classid(TfrmMain), &frmMain);
@@ -66,6 +68,7 @@ WINAPI WinMain(HINSTANCE hInst, HINSTANCE, LPSTR, int)
 
         TfrmLog::DestroyLog		();
 
+        xr_delete				(IScene);
         xr_delete				(Tools);
         xr_delete				(UI);
 

@@ -165,7 +165,7 @@ bool CPortal::Update(bool bLoadMode){
     }
     float m=m_Normal.magnitude();
     if (fabsf(m)<=EPS_S){
-		Scene.m_CompilerErrors.AppendFace(m_Vertices[0],m_Vertices[1],m_Vertices[2]);
+    	Scene->m_CompilerErrors.AppendFace(m_Vertices[0],m_Vertices[1],m_Vertices[2]);
     	ELog.Msg(mtError,"Portal: Degenerate portal found.");
         SetValid(false);
 		return false;
@@ -205,7 +205,7 @@ void CPortal::InvertOrientation(bool bUndo)
     std::reverse(m_SimplifyVertices.begin(),m_SimplifyVertices.end());
     m_Normal.invert();
     UI->RedrawScene();
-    if (bUndo) Scene.UndoSave();
+    if (bUndo) Scene->UndoSave();
 }
 //------------------------------------------------------------------------------
 
@@ -421,11 +421,11 @@ bool CPortal::Load(IReader& F){
 
 	if (F.find_chunk	(PORTAL_CHUNK_SECTOR_FRONT)){
         F.r_stringZ	(buf);
-        m_SectorFront=(CSector*)Scene.FindObjectByName(buf,OBJCLASS_SECTOR);
+        m_SectorFront=(CSector*)Scene->FindObjectByName(buf,OBJCLASS_SECTOR);
     }
 	if (F.find_chunk	(PORTAL_CHUNK_SECTOR_BACK)){
         F.r_stringZ	(buf);
-		m_SectorBack=(CSector*)Scene.FindObjectByName(buf,OBJCLASS_SECTOR);
+		m_SectorBack=(CSector*)Scene->FindObjectByName(buf,OBJCLASS_SECTOR);
     }
 
     if (!m_SectorBack||!m_SectorFront){

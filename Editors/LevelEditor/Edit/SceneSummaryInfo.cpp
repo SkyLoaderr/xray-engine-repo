@@ -13,7 +13,7 @@
 void SSceneSummary::FillProp(PropItemVec& items)
 {
     // fill items
-    PHelper.CreateCaption(items,"Level Name",					Scene.m_LevelOp.m_FNLevelPath);
+    PHelper.CreateCaption(items,"Level Name",					Scene->m_LevelOp.m_FNLevelPath);
     PHelper.CreateCaption(items,"Geometry\\Total Faces",   		face_cnt);
     PHelper.CreateCaption(items,"Geometry\\Total Vertices",		vert_cnt);
     PHelper.CreateCaption(items,"Geometry\\MU Objects",			mu_objects.size());

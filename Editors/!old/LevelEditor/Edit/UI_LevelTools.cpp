@@ -50,7 +50,7 @@ bool CLevelTools::OnCreate()
     m_Flags.set		(flChangeAction,FALSE);
     m_Flags.set		(flChangeTarget,FALSE);
     // scene creating
-	Scene.OnCreate	();
+    Scene->OnCreate	();
     // change target to Object
 	UI->Command		(COMMAND_CHANGE_TARGET, OBJCLASS_SCENEOBJECT);
 	m_Props 		= TProperties::CreateForm("Object Inspector",0,alClient,OnPropsModified,0,OnPropsClose);
@@ -66,7 +66,7 @@ void CLevelTools::OnDestroy()
 	TProperties::DestroyForm(m_Props);
     // scene destroing
     if (pCurTools) 		pCurTools->OnDeactivate();
-	Scene.OnDestroy		();
+	Scene->OnDestroy		();
 }
 //---------------------------------------------------------------------------
 void CLevelTools::Reset()
@@ -157,7 +157,7 @@ void __fastcall CLevelTools::RealSetTarget   (EObjClass tgt,bool bForced)
             DETACH_FRAME(pCurTools->pFrame);
             pCurTools->OnDeactivate();
         }
-        pCurTools				= Scene.GetMTools(tgt); VERIFY(pCurTools);
+        pCurTools				= Scene->GetMTools(tgt); VERIFY(pCurTools);
         pCurTools->OnActivate	();
         
         pCurTools->SetSubTarget	(sub_target);
@@ -203,13 +203,13 @@ EObjClass CLevelTools::CurrentClassID()
 
 void CLevelTools::OnShowHint(AStringVec& ss)
 {
-	Scene.OnShowHint(ss);
+	Scene->OnShowHint(ss);
 }
 //---------------------------------------------------------------------------
 
 bool CLevelTools::Pick(TShiftState Shift)
 {
-    if( Scene.locked() && (esEditLibrary==UI->GetEState())){
+    if( Scene->locked() && (esEditLibrary==UI->GetEState())){
         UI->IR_GetMousePosReal(Device.m_hRenderWnd, UI->m_CurrentCp);
         UI->m_StartCp = UI->m_CurrentCp;
         Device.m_Camera.MouseRayFromPoint(UI->m_CurrentRStart, UI->m_CurrentRNorm, UI->m_CurrentCp );
@@ -237,18 +237,18 @@ void CLevelTools::ShowProperties()
 void CLevelTools::RealUpdateProperties()
 {
 	if (m_Props->Visible){
-		if (m_Props->IsModified()) Scene.UndoSave();
+		if (m_Props->IsModified()) Scene->UndoSave();
         ObjectList lst;
         EObjClass cls_id			= CurrentClassID();
         PropItemVec items;
         if (OBJCLASS_DUMMY==cls_id){
-            SceneToolsMapPairIt _I 	= Scene.FirstTools();
-            SceneToolsMapPairIt _E	= Scene.LastTools();
+            SceneToolsMapPairIt _I 	= Scene->FirstTools();
+            SceneToolsMapPairIt _E	= Scene->LastTools();
             for (; _I!=_E; _I++)
                 if (_I->second&&(_I->first!=OBJCLASS_DUMMY))	
                 	_I->second->FillProp(_I->second->ClassDesc(),items);
         }else{
-            ESceneCustomMTools* mt	= Scene.GetMTools(cls_id);
+            ESceneCustomMTools* mt	= Scene->GetMTools(cls_id);
             if (mt) mt->FillProp	(mt->ClassDesc(),items);
         }
 
@@ -260,14 +260,14 @@ void CLevelTools::RealUpdateProperties()
 
 void __fastcall CLevelTools::OnPropsClose()
 {
-	if (m_Props->IsModified()) Scene.UndoSave();
+	if (m_Props->IsModified()) Scene->UndoSave();
 }
 //---------------------------------------------------------------------------
 
 void __fastcall CLevelTools::OnPropsModified()
 {
-	Scene.Modified();
-//	Scene.UndoSave();
+	Scene->Modified();
+//	Scene->UndoSave();
 }
 //---------------------------------------------------------------------------
 
@@ -279,7 +279,7 @@ bool CLevelTools::IfModified()
     switch(est){
     case esEditLightAnim: 	return TfrmEditLightAnim::FinalClose();
     case esEditLibrary: 	return TfrmEditLibrary::FinalClose();
-    case esEditScene:		return Scene.IfModified();
+    case esEditScene:		return Scene->IfModified();
     default: THROW;
     }
     return false;
@@ -288,8 +288,8 @@ bool CLevelTools::IfModified()
 
 void CLevelTools::ZoomObject(bool bSelectedOnly)
 {
-    if( !Scene.locked() ){
-        Scene.ZoomExtents(CurrentClassID(),bSelectedOnly);
+    if( !Scene->locked() ){
+        Scene->ZoomExtents(CurrentClassID(),bSelectedOnly);
     } else {
         if (UI->GetEState()==esEditLibrary){
             TfrmEditLibrary::ZoomObject();
@@ -321,14 +321,14 @@ void CLevelTools::GetCurrentFog(u32& fog_color, float& s_fog, float& e_fog)
 LPCSTR CLevelTools::GetInfo()
 {
 	static AnsiString sel;
-	int cnt = Scene.SelectionCount(true,CurrentClassID());
+	int cnt = Scene->SelectionCount(true,CurrentClassID());
 	return sel.sprintf(" Sel: %d",cnt).c_str();
 }
 //---------------------------------------------------------------------------
 
 void __fastcall CLevelTools::OnFrame()
 {
-	Scene.OnFrame		(Device.fTimeDelta);
+	Scene->OnFrame		(Device.fTimeDelta);
     EEditorState est 	= UI->GetEState();
     if ((est==esEditScene)||(est==esEditLibrary)||(est==esEditLightAnim)){
         if (!UI->IsMouseCaptured()){
@@ -366,7 +366,7 @@ void __fastcall CLevelTools::Render()
     case esEditLibrary: 	TfrmEditLibrary::OnRender(); break;
     case esEditLightAnim:
     case esEditScene:
-    	Scene.Render(Device.m_Camera.GetTransform()); 
+    	Scene->Render(Device.m_Camera.GetTransform()); 
 	    if (psDeviceFlags.is(rsEnvironment)) g_pGamePersistent->Environment.RenderLast	();
     break;
     }
@@ -390,17 +390,17 @@ void CLevelTools::RealUpdateObjectList()
 
 bool CLevelTools::IsModified()
 {
-	return Scene.IsUnsaved();
+	return Scene->IsUnsaved();
 }
 //---------------------------------------------------------------------------
 
 #include "EditMesh.h"
 bool CLevelTools::RayPick(const Fvector& start, const Fvector& dir, float& dist, Fvector* pt, Fvector* n)
 {
-    if (Scene.ObjCount()&&(UI->GetEState()==esEditScene)){
+    if (Scene->ObjCount()&&(UI->GetEState()==esEditScene)){
         SRayPickInfo pinf;
         pinf.inf.range	= dist;
-        if (Scene.RayPickObject(dist, start,dir,OBJCLASS_SCENEOBJECT,&pinf,0)){ 
+        if (Scene->RayPickObject(dist, start,dir,OBJCLASS_SCENEOBJECT,&pinf,0)){ 
         	dist		= pinf.inf.range;
         	if (pt) 	pt->set(pinf.pt); 
             if (n){	

@@ -59,7 +59,6 @@ public:
 	IC bool 		IsStatic     			()	{return (m_pReference?m_pReference->IsStatic():false); }
 	IC bool 		IsMUStatic     			()	{return (m_pReference?m_pReference->IsMUStatic():false); }
     int 			GetFaceCount			();
-    void			GetFaceWorld			(CEditableMesh* M, int idx, Fvector* verts);
 	int 			GetVertexCount			();
     int 			GetSurfFaceCount		(const char* surf_name);
 

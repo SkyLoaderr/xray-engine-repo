@@ -20,7 +20,7 @@ CPortalUtils PortalUtils;
 CSector* CPortalUtils::GetSelectedSector()
 {
 	ObjectList lst;
-	Scene.GetQueryObjects(lst,OBJCLASS_SECTOR,1,1,0);
+    Scene->GetQueryObjects(lst,OBJCLASS_SECTOR,1,1,0);
     if (lst.size()==0) return 0;
     if (lst.size()>1){
     	ELog.DlgMsg(mtError,"Please select only one sector.");
@@ -34,7 +34,7 @@ CSector* CPortalUtils::GetSelectedSector()
 void CPortalUtils::RemoveSectorPortal(CSector* S)
 {
     // remove existence sector portal
-    ObjectList& lst = Scene.ListObj(OBJCLASS_PORTAL);
+    ObjectList& lst = Scene->ListObj(OBJCLASS_PORTAL);
     ObjectIt _I = lst.begin();
     ObjectIt _E = lst.end();
     for (;_I!=_E;_I++){
@@ -52,13 +52,13 @@ int CPortalUtils::CalculateSelectedPortals()
     if (Validate(false)){
         // get selected sectors
         ObjectList s_lst;
-		int s_cnt=Scene.GetQueryObjects(s_lst, OBJCLASS_SECTOR, 1, 1, -1);
+		int s_cnt=Scene->GetQueryObjects(s_lst, OBJCLASS_SECTOR, 1, 1, -1);
         if (s_cnt<2){
 			ELog.DlgMsg(mtError,"Select at least 2 sectors.");
             return 0;
         }
         // remove exists portals
-        ObjectList& p_lst=Scene.ListObj(OBJCLASS_PORTAL);
+        ObjectList& p_lst=Scene->ListObj(OBJCLASS_PORTAL);
         for(ObjectIt _F=p_lst.begin(); _F!=p_lst.end(); _F++){
         	CSector* SF = ((CPortal*)(*_F))->m_SectorFront;
         	CSector* SB = ((CPortal*)(*_F))->m_SectorBack;
@@ -81,7 +81,7 @@ int CPortalUtils::CalculateSelectedPortals()
 void CPortalUtils::RemoveAllPortals()
 {
     // remove all existence portal
-	ObjectList& p_lst = Scene.ListObj(OBJCLASS_PORTAL);
+	ObjectList& p_lst = Scene->ListObj(OBJCLASS_PORTAL);
     for (ObjectIt _F=p_lst.begin(); _F!=p_lst.end(); _F++) xr_delete(*_F);
 	p_lst.erase(p_lst.begin(),p_lst.end());
 }
@@ -90,13 +90,13 @@ void CPortalUtils::RemoveAllPortals()
 bool CPortalUtils::CreateDefaultSector()
 {
     Fbox box;
-	if (Scene.GetBox(box,OBJCLASS_SCENEOBJECT)){
+	if (Scene->GetBox(box,OBJCLASS_SCENEOBJECT)){
 		CSector* sector_def=xr_new<CSector>((LPVOID)0,DEFAULT_SECTOR_NAME);
         sector_def->sector_color.set(1,0,0,0);
         sector_def->m_bDefault=true;
         sector_def->CaptureAllUnusedMeshes();
 		if (!sector_def->IsEmpty()){
-         	Scene.AppendObject	(sector_def,true);
+         	Scene->AppendObject	(sector_def,true);
             return true;
         } else xr_delete(sector_def);
     }
@@ -106,11 +106,11 @@ bool CPortalUtils::CreateDefaultSector()
 
 bool CPortalUtils::RemoveDefaultSector()
 {
-    CCustomObject* O=Scene.FindObjectByName(DEFAULT_SECTOR_NAME,OBJCLASS_SECTOR);
+    CCustomObject* O=Scene->FindObjectByName(DEFAULT_SECTOR_NAME,OBJCLASS_SECTOR);
     if (O){
-    	Scene.RemoveObject(O,false);
+    	Scene->RemoveObject(O,false);
         xr_delete(O);
-		Scene.UndoSave();
+		Scene->UndoSave();
         UI->UpdateScene();
         return true;
     }
@@ -128,7 +128,7 @@ int CPortalUtils::CalculateAllPortals2()
 //        CreateDefaultSector();
 
         // transfer from list to vector
-        ObjectList& s_lst=Scene.ListObj(OBJCLASS_SECTOR);
+        ObjectList& s_lst=Scene->ListObj(OBJCLASS_SECTOR);
         xr_vector<CSector*> sectors;
         for(ObjectIt _F=s_lst.begin(); _F!=s_lst.end(); _F++) sectors.push_back((CSector*)(*_F));
 
@@ -141,7 +141,7 @@ int CPortalUtils::CalculateAllPortals2()
                 UI->SetStatus(t.c_str());
             }
 
-        Scene.UndoSave();
+        Scene->UndoSave();
     }else{
 		ELog.DlgMsg(mtError,"*ERROR: Scene has non associated face (face without sector)!");
     }
@@ -152,8 +152,8 @@ int CPortalUtils::CalculateAllPortals2()
 */
 //---------------------------------------------------------------------------
 CSector* CPortalUtils::FindSector(CSceneObject* o, CEditableMesh* m){
-	ObjectIt _F = Scene.FirstObj(OBJCLASS_SECTOR);
-	ObjectIt _E = Scene.LastObj(OBJCLASS_SECTOR);
+	ObjectIt _F = Scene->FirstObj(OBJCLASS_SECTOR);
+	ObjectIt _E = Scene->LastObj(OBJCLASS_SECTOR);
     for(;_F!=_E;_F++)
     	if (((CSector*)(*_F))->Contains(o,m))
         	return (CSector*)(*_F);
@@ -164,7 +164,7 @@ bool CPortalUtils::Validate(bool bMsg)
 {
     Fbox box;
     bool bResult = false;
-	if (Scene.GetBox(box,OBJCLASS_SCENEOBJECT)){
+	if (Scene->GetBox(box,OBJCLASS_SCENEOBJECT)){
 		CSector* sector_def=xr_new<CSector>((LPVOID)0,DEFAULT_SECTOR_NAME);
         sector_def->CaptureAllUnusedMeshes();
         int f_cnt;
@@ -188,7 +188,7 @@ bool CPortalUtils::Validate(bool bMsg)
         xr_delete(sector_def);
 
         // verify sectors
-        ObjectList& s_lst=Scene.ListObj(OBJCLASS_SECTOR);
+        ObjectList& s_lst=Scene->ListObj(OBJCLASS_SECTOR);
         for(ObjectIt _F=s_lst.begin(); _F!=s_lst.end(); _F++){
 	        ((CSector*)(*_F))->GetCounts(0,0,&f_cnt);
         	if (f_cnt<=4){
@@ -465,7 +465,7 @@ public:
     }
     void export_portals()
     {
-	    Scene.ClearCompilerErrors();
+	    Scene->ClearCompilerErrors();
     	for (sPortalIt p_it=portals.begin(); p_it!=portals.end(); p_it++){
 		    if (p_it->e.size()>1)
             {
@@ -483,7 +483,7 @@ public:
 
                 // append portal
                 string256 namebuffer;
-                Scene.GenObjectName( OBJCLASS_PORTAL, namebuffer );
+                Scene->GenObjectName( OBJCLASS_PORTAL, namebuffer );
                 CPortal* _O = xr_new<CPortal>((LPVOID)0,namebuffer);
                 for (u32 i=0; i<vlist.size(); i++) {
 	                _O->Vertices().push_back(verts[vlist[i]]);
@@ -491,7 +491,7 @@ public:
                 _O->SetSectors(p_it->s[0],p_it->s[1]);
                 _O->Update();
                 if (_O->Valid()){
-	 	            Scene.AppendObject(_O,false);
+	 	            Scene->AppendObject(_O,false);
                 }else{
                 	xr_delete(_O);
 				    ELog.Msg(mtError,"Can't simplify Portal :(\nPlease check geometry.\n'%s'<->'%s'",p_it->s[0]->Name,p_it->s[1]->Name);
@@ -503,7 +503,7 @@ public:
                 	Fvector& v0=verts[edges[p_it->e[0]].v[0]];
                 	Fvector& v1=verts[edges[p_it->e[0]].v[1]];
 				    ELog.Msg(mtError,"Can't create Portal from one edge :(\nPlease check geometry.\n'%s'<->'%s'", p_it->s[0]->Name, p_it->s[1]->Name);
-                    Scene.m_CompilerErrors.AppendEdge(v0,v1);
+                    Scene->m_CompilerErrors.AppendEdge(v0,v1);
                 }
 
         }
@@ -513,7 +513,7 @@ public:
 int CPortalUtils::CalculateSelectedPortals(ObjectList& sectors){
     // calculate portals
     Fbox bb;
-    Scene.GetBox(bb,OBJCLASS_SCENEOBJECT);
+    Scene->GetBox(bb,OBJCLASS_SCENEOBJECT);
     sCollector* CL = xr_new<sCollector>(bb);
     Fmatrix T;
 
@@ -552,7 +552,7 @@ int CPortalUtils::CalculateSelectedPortals(ObjectList& sectors){
     UI->SetStatus("building portals...");
     CL->export_portals();
 
-    Scene.UndoSave();
+    Scene->UndoSave();
 
     int iRes = CL->portals.size();
 
@@ -567,7 +567,7 @@ int CPortalUtils::CalculateAllPortals()
     if (Validate(false)){
 		UI->SetStatus("Prepare...");
         RemoveAllPortals();
-        ObjectList& s_lst=Scene.ListObj(OBJCLASS_SECTOR);
+        ObjectList& s_lst=Scene->ListObj(OBJCLASS_SECTOR);
         iPCount = CalculateSelectedPortals(s_lst);
     }else{
 		ELog.DlgMsg(mtError,"*ERROR: Scene has non associated face (face without sector)!");

@@ -22,7 +22,7 @@ bool SceneBuilder::BuildHOMModel()
     F.close_chunk();
 
     F.open_chunk(1);
-    ObjectList& lst = Scene.ListObj(OBJCLASS_SCENEOBJECT);
+    ObjectList& lst = Scene->ListObj(OBJCLASS_SCENEOBJECT);
     for (ObjectIt it=lst.begin(); it!=lst.end(); it++){
     	CSceneObject* S 	= (CSceneObject*)(*it);
     	CEditableObject* E	= S->GetReference(); R_ASSERT(E);
@@ -40,9 +40,9 @@ bool SceneBuilder::BuildHOMModel()
 bool SceneBuilder::BuildAIMap()
 {
 	// build sky ogf
-    if (Scene.GetMTools(OBJCLASS_AIMAP)->Valid()){
+    if (Scene->GetMTools(OBJCLASS_AIMAP)->Valid()){
 	    AnsiString fname = m_LevelPath+"build.aimap";
-        return Scene.GetMTools(OBJCLASS_AIMAP)->Export(fname.c_str());
+        return Scene->GetMTools(OBJCLASS_AIMAP)->Export(fname.c_str());
     }
 	return false;
 }

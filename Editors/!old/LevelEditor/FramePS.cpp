@@ -58,8 +58,8 @@ void __fastcall TfraPS::ebDeselectByRefsClick(TObject *Sender)
 void __fastcall TfraPS::SelByRef( bool flag )
 {
 	if(m_Current){
-		ObjectIt _F = Scene.FirstObj(OBJCLASS_PS);
-        ObjectIt _E = Scene.LastObj(OBJCLASS_PS);
+		ObjectIt _F = Scene->FirstObj(OBJCLASS_PS);
+        ObjectIt _E = Scene->LastObj(OBJCLASS_PS);
 		for(;_F!=_E;_F++){
 			if( (*_F)->Visible() ){
 				EParticlesObject *_O = (EParticlesObject *)(*_F);
@@ -72,8 +72,8 @@ void __fastcall TfraPS::SelByRef( bool flag )
 
 void __fastcall TfraPS::ebCurrentPSPlayClick(TObject *Sender)
 {
-    ObjectIt _F = Scene.FirstObj(OBJCLASS_PS);
-    ObjectIt _E = Scene.LastObj(OBJCLASS_PS);
+    ObjectIt _F = Scene->FirstObj(OBJCLASS_PS);
+    ObjectIt _E = Scene->LastObj(OBJCLASS_PS);
     for(;_F!=_E;_F++){
         if( (*_F)->Visible() && (*_F)->Selected())
             ((EParticlesObject *)(*_F))->Play();
@@ -83,8 +83,8 @@ void __fastcall TfraPS::ebCurrentPSPlayClick(TObject *Sender)
 
 void __fastcall TfraPS::ebCurrentPSStopClick(TObject *Sender)
 {
-    ObjectIt _F = Scene.FirstObj(OBJCLASS_PS);
-    ObjectIt _E = Scene.LastObj(OBJCLASS_PS);
+    ObjectIt _F = Scene->FirstObj(OBJCLASS_PS);
+    ObjectIt _E = Scene->LastObj(OBJCLASS_PS);
     for(;_F!=_E;_F++){
         if( (*_F)->Visible() && (*_F)->Selected())
             ((EParticlesObject *)(*_F))->Stop();

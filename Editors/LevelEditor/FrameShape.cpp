@@ -32,8 +32,8 @@ void __fastcall TfraShape::ExpandClick(TObject *Sender)
 void __fastcall TfraShape::ebDetachAllShapesClick(TObject *Sender)
 {
     ObjectList lst;
-    if (Scene.GetQueryObjects(lst,OBJCLASS_SHAPE,1,1,0)){
-		Scene.SelectObjects(false,OBJCLASS_SHAPE);
+    if (Scene->GetQueryObjects(lst,OBJCLASS_SHAPE,1,1,0)){
+		Scene->SelectObjects(false,OBJCLASS_SHAPE);
     	for (ObjectIt it=lst.begin(); it!=lst.end(); it++)
         	((CEditShape*)*it)->Detach();
     }

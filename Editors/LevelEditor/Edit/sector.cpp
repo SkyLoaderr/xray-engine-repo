@@ -108,7 +108,7 @@ int CSector::DelMesh	(CSceneObject* O, CEditableMesh* M)
 	if (sector_items.empty()){
     	res = 2;
     	ELog.Msg(mtInformation,"Last mesh deleted.\nSector has no meshes and will be removed.");
-		Scene.RemoveObject(this,false);
+		Scene->RemoveObject(this,false);
         delete this;
     }
     return res;
@@ -216,7 +216,7 @@ void CSector::OnSceneUpdate()
 /*
 	bool bUpdate=false;
     for(SItemIt it = sector_items.begin();it!=sector_items.end();it++){
-    	if (!(Scene.ContainsObject(it->object,OBJCLASS_SCENEOBJECT)&&it->object->GetReference()->ContainsMesh(it->mesh))){
+    	if (!(Scene->ContainsObject(it->object,OBJCLASS_SCENEOBJECT)&&it->object->GetReference()->ContainsMesh(it->mesh))){
             sector_items.erase(it); it--;
             bUpdate=true;
         }
@@ -259,7 +259,7 @@ void CSector::CaptureInsideVolume(){
 	// test all mesh faces
 	// fill object list (test bounding sphere intersection)
     ObjectList lst;
-	if (Scene.SpherePick(m_SectorCenter, m_SectorRadius, OBJCLASS_SCENEOBJECT, lst)){
+	if (Scene->SpherePick(m_SectorCenter, m_SectorRadius, OBJCLASS_SCENEOBJECT, lst)){
     // test all object meshes
         Fmatrix matrix;
 	    CSceneObject *obj=NULL;
@@ -290,7 +290,7 @@ void CSector::CaptureAllUnusedMeshes()
 {
     U32Vec fl;
     CSceneObject *obj=NULL;
-    ObjectList& lst=Scene.ListObj(OBJCLASS_SCENEOBJECT);
+    ObjectList& lst=Scene->ListObj(OBJCLASS_SCENEOBJECT);
     // ignore dynamic objects
     UI->ProgressStart(lst.size(),"Capturing unused face...");
     for(ObjectIt _F = lst.begin();_F!=lst.end();_F++){
@@ -350,7 +350,7 @@ void CSector::LoadSectorDef( IReader* F ){
 	// sector item
     R_ASSERT(F->find_chunk(SECTOR_CHUNK_ONE_ITEM));
 	F->r_stringZ(o_name);
-	sitem.object=(CSceneObject*)Scene.FindObjectByName(o_name,OBJCLASS_SCENEOBJECT);
+	sitem.object=(CSceneObject*)Scene->FindObjectByName(o_name,OBJCLASS_SCENEOBJECT);
     if (sitem.object==0){
     	ELog.Msg(mtError,"Sector Item contains object '%s' - can't load.\nObject not found.",o_name);
         m_bHasLoadError = true;

@@ -411,7 +411,7 @@ void CSpawnPoint::Render( int priority, bool strictB2F )
                 Fvector D;	D.sub(Device.vCameraPosition,PPosition);
                 float dist 	= D.normalize_magn();
                 if (!st->m_Flags.is(ESceneSpawnTools::flPickSpawnType)||
-                    !Scene.RayPickObject(dist,PPosition,D,OBJCLASS_SCENEOBJECT,0,0))
+                    !Scene->RayPickObject(dist,PPosition,D,OBJCLASS_SCENEOBJECT,0,0))
                         DU.DrawText	(PPosition,s_name.c_str(),0xffffffff,0xff000000);
             }
             if(Selected()){
@@ -524,7 +524,7 @@ bool CSpawnPoint::Load(IReader& F){
     }
 
 	// objects
-    Scene.ReadObjects(F,SPAWNPOINT_CHUNK_ATTACHED_OBJ,OnAppendObject);
+    Scene->ReadObjects(F,SPAWNPOINT_CHUNK_ATTACHED_OBJ,OnAppendObject);
 
 	UpdateTransform	();
 
@@ -541,7 +541,7 @@ void CSpawnPoint::Save(IWriter& F){
     // save attachment
     if (m_AttachedObject){
 	    ObjectList lst; lst.push_back(m_AttachedObject);
-		Scene.SaveObjects(lst,SPAWNPOINT_CHUNK_ATTACHED_OBJ,F);
+		Scene->SaveObjects(lst,SPAWNPOINT_CHUNK_ATTACHED_OBJ,F);
     }
 
 	if (m_SpawnData.Valid()){

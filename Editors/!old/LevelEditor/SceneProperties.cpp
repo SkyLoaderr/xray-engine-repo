@@ -77,8 +77,8 @@ void __fastcall TfrmSceneProperties::FormShow(TObject *Sender)
 #ifdef _LEVEL_EDITOR
     tvOptions->Items->AddChild(root,"Level options");
     tvOptions->Items->AddChild(root,"Level script");
-	edLevelPath->Text		= Scene.m_LevelOp.m_FNLevelPath;
-	mmText->Text			= Scene.m_LevelOp.m_BOPText;
+	edLevelPath->Text		= Scene->m_LevelOp.m_FNLevelPath;
+	mmText->Text			= Scene->m_LevelOp.m_BOPText;
 
     tsLevelScript->Enabled 	= true;
     tsLevelOptions->Enabled = true;
@@ -156,8 +156,8 @@ void __fastcall TfrmSceneProperties::SetEditParams(){
 void __fastcall TfrmSceneProperties::btContinueClick(TObject *Sender)
 {
 #ifdef _LEVEL_EDITOR
-	Scene.m_LevelOp.m_FNLevelPath 	= edLevelPath->Text;	// Path
-	Scene.m_LevelOp.m_BOPText		= mmText->Text;			// Text
+	Scene->m_LevelOp.m_FNLevelPath 	= edLevelPath->Text;	// Path
+	Scene->m_LevelOp.m_BOPText		= mmText->Text;			// Text
 #endif
     SetSceneParams					();
     Close							();

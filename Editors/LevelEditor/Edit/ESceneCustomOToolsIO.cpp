@@ -16,16 +16,16 @@ static const u32 CHUNK_FLAGS			= 0x0004;
 bool ESceneCustomOTools::OnLoadSelectionAppendObject(CCustomObject* obj)
 {
     string256 buf;
-    Scene.GenObjectName	(obj->ClassID,buf,obj->Name);
+    Scene->GenObjectName	(obj->ClassID,buf,obj->Name);
     obj->Name			= buf;
-    Scene.AppendObject	(obj, false);
+    Scene->AppendObject	(obj, false);
     return true;
 }
 //----------------------------------------------------
 
 bool ESceneCustomOTools::OnLoadAppendObject(CCustomObject* O)
 {
-	Scene.AppendObject	(O,false);
+	Scene->AppendObject	(O,false);
 	UI->ProgressInc		();
     return true;
 }
@@ -39,7 +39,7 @@ bool ESceneCustomOTools::LoadSelection(IReader& F)
 	F.r_chunk		(CHUNK_OBJECT_COUNT,&count);
 
     UI->ProgressStart(count,AnsiString().sprintf("Loading %s's...",ClassDesc()).c_str());
-    Scene.ReadObjects(F,CHUNK_OBJECTS,OnLoadSelectionAppendObject);
+    Scene->ReadObjects(F,CHUNK_OBJECTS,OnLoadSelectionAppendObject);
     UI->ProgressEnd	();
 
     return true;
@@ -55,7 +55,7 @@ void ESceneCustomOTools::SaveSelection(IWriter& F)
     for(ObjectIt it = m_Objects.begin();it!=m_Objects.end();it++){
     	if ((*it)->Selected()){
 	        F.open_chunk(count++);
-    	    Scene.SaveObject(*it,F);
+    	    Scene->SaveObject(*it,F);
         	F.close_chunk();
         }
     }
@@ -73,7 +73,7 @@ bool ESceneCustomOTools::Load(IReader& F)
 	F.r_chunk		(CHUNK_OBJECT_COUNT,&count);
 
     UI->ProgressStart(count,AnsiString().sprintf("Loading %s...",ClassDesc()).c_str());
-    Scene.ReadObjects(F,CHUNK_OBJECTS,OnLoadAppendObject);
+    Scene->ReadObjects(F,CHUNK_OBJECTS,OnLoadAppendObject);
     UI->ProgressEnd	();
 
     return true;
@@ -91,7 +91,7 @@ void ESceneCustomOTools::Save(IWriter& F)
     count			= 0;
     for(ObjectIt it = m_Objects.begin();it!=m_Objects.end();it++){
         F.open_chunk(count++);
-        Scene.SaveObject(*it,F);
+        Scene->SaveObject(*it,F);
         F.close_chunk();
     }
 	F.close_chunk	();
