@@ -110,11 +110,13 @@ void	CBuild::xrPhase_UVmap()
 				break;
 			}
 		}
-		_heapmin			();
-		HeapCompact			(GetProcessHeap(),0);
 	}
 	Msg("%d subdivisions...",g_XSplit.size());
+	mem_CompactSubdivs	();
+}
 
+void CBuild::mem_CompactSubdivs()
+{
 	// Memory compact
 	DWORD dwT = timeGetTime	();
 	vecFace		temp;

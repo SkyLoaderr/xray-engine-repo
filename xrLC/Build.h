@@ -67,6 +67,8 @@ public:
 	vector<b_LightLayer>	lights;
 
 	Shader_xrLC_LIB			shaders;
+	
+	void	mem_CompactSubdivs		();
 public:
 	void	Run();
 
