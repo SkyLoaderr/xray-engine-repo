@@ -912,15 +912,21 @@ cost				= 100
 
 blast				= 350
 blast_r				= 8
+blast_impulse		= 350
+;delete
+blast_impulse_factor = 1
+
+
 frags				= 40
 frags_r				= 40
 frag_hit			= 50
+frag_hit_impulse	= 50
 
 hit_type_blast		= explosion
 hit_type_frag		= fire_wound
 
 up_throw_factor		= 1.5
-blast_impulse_factor = 1.0	;доля хита от взрыва которая пойдет на физ.импульс
+
 
 wm_name                  = wallmarks\wallmark_default
 wm_size                  = 0.1
@@ -990,15 +996,21 @@ cost					 = 100
 
 blast				= 550
 blast_r				= 8
+blast_impulse		= 550
+;delete
+blast_impulse_factor = 1
+
+
 frags				= 50
 frags_r				= 50
 frag_hit			= 50
+frag_hit_impulse	= 50
 
 hit_type_blast		= explosion
 hit_type_frag		= fire_wound
 
 up_throw_factor		= 0.9
-blast_impulse_factor = 1.0	;доля хита от взрыва которая пойдет на физ.импульс
+
 
 wm_name                  = wallmarks\wallmark_default
 wm_size                  = 0.1
@@ -1146,12 +1158,18 @@ cost				= 50
 
 blast				= 500
 blast_r				= 8
+blast_impulse		= 250
+;delete
+blast_impulse_factor = 1
+
+
 frags				= 5
 frags_r				= 10
 frag_hit			= 100
+frag_hit_impulse	= 100
 
 up_throw_factor		 = 0
-blast_impulse_factor = 0.5	;доля хита от взрыва которая пойдет на физ.импульс
+
 
 hit_type_blast		= burn
 hit_type_frag		= burn
@@ -1210,13 +1228,19 @@ inv_grid_y			= 9
 cost				= 50
 
 blast				= 800
+blast_impulse		= 400
 blast_r				= 8
+;delete
+blast_impulse_factor = 1
+
+
 frags				= 15
 frags_r				= 10
 frag_hit			= 100
+frag_hit_impulse	= 100
+
 
 up_throw_factor		 = 0
-blast_impulse_factor = 0.5	;доля хита от взрыва которая пойдет на физ.импульс
 
 hit_type_blast		= burn
 hit_type_frag		= burn

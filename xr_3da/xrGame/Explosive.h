@@ -54,21 +54,18 @@ protected:
 
 	//параметры взрыва
 	float m_fBlastHit;
+	float m_fBlastHitImpulse;
 	float m_fBlastRadius;
 	
 	//параметры и количество осколков
 	float m_fFragsRadius; 
 	float m_fFragHit;
+	float m_fFragHitImpulse;
 	int	  m_iFragsNum;
 
 	//типы наносимых хитов
 	ALife::EHitType m_eHitTypeBlast;
 	ALife::EHitType m_eHitTypeFrag;
-
-	//коэффицент, сколько из нанесенного взрывом хита
-	//пойдет на физический импульс
-	float m_fBlastImpulseFactor;
-
 
 	//фактор подпроса предмета вверх взрывной волной 
 	float m_fUpThrowFactor;

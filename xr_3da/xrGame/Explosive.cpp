@@ -31,7 +31,6 @@ CExplosive::CExplosive(void)
 
 	m_fUpThrowFactor = 0.f;
 
-	m_fBlastImpulseFactor = 1.f;
 
 	m_eSoundExplode = ESoundTypes(SOUND_TYPE_WEAPON_SHOOTING);
 
@@ -59,15 +58,18 @@ void CExplosive::Load(LPCSTR section)
 	inherited::Load		(section);
 	m_fBlastHit			= pSettings->r_float(section,"blast");
 	m_fBlastRadius		= pSettings->r_float(section,"blast_r");
+	m_fBlastHitImpulse	= pSettings->r_float(section,"blast_impulse");
+	
 	m_iFragsNum			= pSettings->r_s32(section,"frags");
 	m_fFragsRadius		= pSettings->r_float(section,"frags_r");
 	m_fFragHit			= pSettings->r_float(section,"frag_hit");
+	m_fFragHitImpulse	= pSettings->r_float(section,"frag_hit_impulse");
 
 	m_eHitTypeBlast		= ALife::g_tfString2HitType(pSettings->r_string(section, "hit_type_blast"));
 	m_eHitTypeFrag		= ALife::g_tfString2HitType(pSettings->r_string(section, "hit_type_frag"));
 
 	m_fUpThrowFactor	= pSettings->r_float(section,"up_throw_factor");
-	m_fBlastImpulseFactor = pSettings->r_float(section,"blast_impulse_factor");
+
 
 	fWallmarkSize		= pSettings->r_float(section,"wm_size");
 	R_ASSERT			(fWallmarkSize>0);
@@ -161,7 +163,7 @@ void CExplosive::Explode()
 		
 		float		m_fCurrentFireDist = m_fFragsRadius;
 		float		m_fCurrentHitPower = m_fFragHit;
-		float		m_fCurrentHitImpulse = m_fFragHit;
+		float		m_fCurrentHitImpulse = m_fFragHitImpulse;
 		ALife::EHitType m_eCurrentHitType = m_eHitTypeFrag;
 		float		m_fCurrentWallmarkSize = fWallmarkSize;
 		Fvector		m_vCurrentShootDir = frag_dir;
@@ -233,7 +235,8 @@ void CExplosive::Explode()
 			l_S = l_d.x*l_d.y;
 		}
 		
-		float l_impuls = m_fBlastHit * (1.f - (l_dst/m_fBlastRadius)*(l_dst/m_fBlastRadius)) * l_S;
+		float l_impuls	= m_fBlastHitImpulse * (1.f - (l_dst/m_fBlastRadius)*(l_dst/m_fBlastRadius)) * l_S;
+		float l_hit		= m_fBlastHit * (1.f - (l_dst/m_fBlastRadius)*(l_dst/m_fBlastRadius)) * l_S;
 
 		if(l_impuls > .001f) 
 		{
@@ -241,6 +244,7 @@ void CExplosive::Explode()
 			l_impuls *= l_pGO->ExplosionEffect(pos, m_fBlastRadius, l_elements, l_bs_positions);
 			setEnabled(true);
 		}
+
 		if(l_impuls > .001f) 
 		{
 			while(l_elements.size()) 
@@ -252,10 +256,10 @@ void CExplosive::Explode()
 				P.w_u16			(m_iCurrentParentID);
 				P.w_u16			(ID());
 				P.w_dir			(l_dir);
-				P.w_float		(l_impuls);
+				P.w_float		(l_hit);
 				P.w_s16			(l_element);
 				P.w_vec3		(l_bs_pos);
-				P.w_float		(l_impuls*m_fBlastImpulseFactor);
+				P.w_float		(l_impuls);
 				P.w_u16			(u16(m_eHitTypeBlast));
 				u_EventSend		(P);
 				l_elements.pop_front();
