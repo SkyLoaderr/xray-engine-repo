@@ -8,6 +8,13 @@
 #include "ui/uistring.h"
 #include "infoportiondefs.h"
 
+//-----------------------------------------------------------------------------/
+//  Forward declarations
+//-----------------------------------------------------------------------------/
+
+class CLAItem;
+
+//////////////////////////////////////////////////////////////////////////
 
 enum EMapLocationFlags
 {
@@ -16,7 +23,7 @@ enum EMapLocationFlags
 	eMapLocationScript			= 0x04
 };
 
-
+//////////////////////////////////////////////////////////////////////////
 
 struct SMapLocation
 {
@@ -51,6 +58,18 @@ struct SMapLocation
 	bool marker_show;
 	//цвет стрелки маркера и иконки на миникарте
 	u32 icon_color;
+
+	// Показывать или не показывать отметку этого маплокейшина на карте
+	void	UpdateAnimation();
+	// Задать цветовую анимацию для спота
+	void	SetColorAnimation(CLAItem *animation);
+
+private:
+	// Анимация индикатора на карте
+	CLAItem	*colorAnimation;
+	// Текущиее время проигрывания анимации
+	float	animationTime;
+	float	prevTimeGlobal;
 };
 
 DEFINE_VECTOR (SMapLocation, LOCATIONS_VECTOR, LOCATIONS_VECTOR_IT);

@@ -141,4 +141,7 @@ void   CLevel::UpdateMapLocation			()
 
 	if(m_MapLocationVector.end()!=last_it)
 		m_MapLocationVector.erase(last_it, m_MapLocationVector.end());
+
+	// Проапдейтить анимацию у оставшихся
+	std::for_each(m_MapLocationVector.begin(), m_MapLocationVector.end(), std::mem_fun(&SMapLocation::UpdateAnimation));
 }

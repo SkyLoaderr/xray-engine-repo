@@ -17,6 +17,7 @@
 #include "../PhraseDialogManager.h"
 
 #include "../game_cl_base.h"
+#include "../string_table.h"
 
 //////////////////////////////////////////////////////////////////////
 // Construction/Destruction
@@ -112,6 +113,7 @@ void CUITalkWnd::InitOthersStartDialog()
 		
 		//сказать фразу
 		CUIString speaker_name;
+		CStringTable stbl;
 		speaker_name.SetText(m_pOthersInvOwner->CharacterInfo().Name());
 		AddAnswer(m_pCurrentDialog->GetPhraseText(START_PHRASE), speaker_name);
 		m_pOthersDialogManager->SayPhrase(m_pCurrentDialog, START_PHRASE);
@@ -303,8 +305,10 @@ void CUITalkWnd::SayPhrase(PHRASE_ID phrase_id)
 
 //////////////////////////////////////////////////////////////////////////
 
-void CUITalkWnd::AddQuestion(CUIString str, void* pData , int value)
+void CUITalkWnd::AddQuestion(LPCSTR text, void* pData , int value)
 {
+	CUIString str(*CStringTable()(text));
+
 	CUIStatic::PreprocessText(str.m_str, UITalkDialogWnd.UIQuestionsList.GetWidth() - MessageShift - 25,
 							  UITalkDialogWnd.UIQuestionsList.GetFont());
 	UITalkDialogWnd.UIQuestionsList.AddParsedItem<CUIListItem>(str, 0, UITalkDialogWnd.UIQuestionsList.GetTextColor(), 
@@ -313,10 +317,12 @@ void CUITalkWnd::AddQuestion(CUIString str, void* pData , int value)
 
 //////////////////////////////////////////////////////////////////////////
 
-void CUITalkWnd::AddAnswer(CUIString str, const CUIString &SpeakerName)
+void CUITalkWnd::AddAnswer(LPCSTR text, const CUIString &SpeakerName)
 {
 	//для пустой фразы вообще ничего не выводим
-	if(xr_strlen((LPCSTR)str) == 0) return;
+	if(xr_strlen(text) == 0) return;
+
+	CUIString str(*CStringTable()(text));
 
 	// Делаем препроцессинг строки
 	CUIStatic::PreprocessText(str.m_str, UITalkDialogWnd.UIAnswersList.GetWidth() - MessageShift - 25, // 20 means approximate scrollbar width value
