@@ -52,6 +52,8 @@ function evaluator_leader_present:evaluate ()
           table.insert (db.storage[self.a.leader:id()].followers, self.a)
        end   
     end
+    self.a.leader = db.obj_by_id[self.a.leader_id]
+    printf ("LEADER ID IS %d", self.a.leader_id) 
     return true
 end
 --------------
@@ -60,21 +62,24 @@ function evaluator_leader_present:get_leader ()
     if gulag == nil then return -1 end
     local t = xr_gulag.fraction[gulag]:getJob (self.object)
     if t ~= nil and t.leader ~= nil then 
+       printf ("LEADER WORK IS %s", t.leader)
        local id = xr_gulag.fraction[gulag]:idStalkerOnJob (t.leader)
-       if id ~= nil and id ~= -1 then 
+       if id ~= nil then
           printf ("LEADER ID IS %d", id) 
           return id
        end   
+       printf ("LEADER NOT FOUND")
     end
     if self.time == 0 then
        self.time = device ():time_global ()
-       return nil
+       return -1
     else
        if device ():time_global () - self.time > 10000 then
           xr_gulag.resetJob (gulag, self.object) 
-          return nil
+          return -1
        end
     end      
+    return -1
 end
 
 ----------------------------------------------------------------------------------------------------------------------
@@ -182,7 +187,10 @@ function action_follow:initialize ()
     
     if self.stage ~= 3 then 
        self.stage = 0 
-       self:check_path ()    
+       self:check_path ()
+       if self.current_vertex_id == -1 then
+          self.current_vertex_id = self.a.leader:level_vertex_id ()
+       end   
        if self.object:accessible (self.current_vertex_id) == false then 
           self.current_vertex_id = self.a.leader:level_vertex_id ()
        end   
@@ -291,7 +299,8 @@ function action_follow:check_path ()
 
     if self.a.leader_id == nil or is_object_online (self.a.leader_id) == false or self.a.leader:alive () == false or self.a.leader_command == leader_return then 
        if self.a.escape_path == nil then 
-          self.a.enabled = false
+          --self.a.enabled = false
+          xr_logic.try_switch_to_another_section (self.object, self.a, db.actor)
           return false
        end         
        self.object:set_path_type (game_object.patrol_path)
@@ -516,7 +525,7 @@ function  add_to_binder(npc, ini, scheme, section, storage)
     action:add_precondition     (world_property (stalker_ids.property_alive,    true))
     action:add_precondition     (world_property (stalker_ids.property_enemy,    false))
     action:add_precondition     (world_property (properties["leader_present"],  false))
-    xr_motivator.addCommonPrecondition(action)
+    --xr_motivator.addCommonPrecondition(action)
     action:add_effect           (world_property (properties["leader_present"],  true))
     manager:add_action (operators["leader_wait"], action)
     military_radio.add (npc, action)
@@ -527,7 +536,7 @@ function  add_to_binder(npc, ini, scheme, section, storage)
     action:add_precondition     (world_property (properties["leader_present"],  true))
     action:add_precondition     (world_property (properties["raid"],            false))
     action:add_precondition     (world_property (properties["follow"],          true))
-    xr_motivator.addCommonPrecondition(action)
+    --xr_motivator.addCommonPrecondition(action)
     action:add_effect           (world_property (properties["follow"],          false))
     manager:add_action (operators["follow"], action)
     military_radio.add (npc, action)
@@ -537,7 +546,7 @@ function  add_to_binder(npc, ini, scheme, section, storage)
     action:add_precondition (world_property(stalker_ids.property_enemy, false))
     action:add_precondition (world_property(properties["follow"], true))
     action:add_precondition (world_property(properties["raid"], true))
-    xr_motivator.addCommonPrecondition(action)
+    --xr_motivator.addCommonPrecondition(action)
     action:add_effect (world_property(properties["raid"], false))
     manager:add_action (operators["raid"], action)
     
