@@ -206,9 +206,8 @@ void CRender::Render		()
 				R_ASSERT2	(!RImplementation.b_nv3x, "Shadowed point lights aren't implemented for nv3X HW");
 
 				// Render shadowmap
-				for (u32 pls_phase=0; pls_phase<6; pls_phase++)
+				for (u32 pls_phase=0; pls_phase<6; pls_phase++)	
 				{
-					marker									++;
 					phase									= PHASE_SMAP_P;
 
 					// calculate
@@ -233,7 +232,6 @@ void CRender::Render		()
 			}
 			else
 			{
-				marker									++;
 				phase									= PHASE_SMAP_S;
 
 				// calculate
@@ -250,7 +248,7 @@ void CRender::Render		()
 					RCache.set_xform_project			(LR.L_project);
 					r_dsgraph_render_graph				(0);
 				}
-
+	
 				// Render light
 				Target.phase_accumulator		();
 				Target.accum_spot_shadow		(L);

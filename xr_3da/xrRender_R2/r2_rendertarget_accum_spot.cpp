@@ -146,7 +146,7 @@ void CRenderTarget::accum_spot_shadow	(light* L)
 		RCache.set_Element			(shader->E[2]);
 
 		// Constants
-		RCache.set_c				("Ldynamic_pos",	L_pos.x,L_pos.y,L_pos.z,1/L->range);
+		RCache.set_c				("Ldynamic_pos",	L_pos.x,L_pos.y,L_pos.z,1/(L->range*L->range));
 		RCache.set_c				("Ldynamic_color",	L_clr.x,L_clr.y,L_clr.z,L_spec);
 		RCache.set_c				("m_texgen",		m_Texgen);
 		RCache.set_c				("m_shadow",		m_Shadow);
