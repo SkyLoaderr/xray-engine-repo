@@ -353,6 +353,7 @@ void CCustomMonster::UpdateCL	()
 	u32	dwTime			= Level().timeServer()-NET_Latency;
 	net_update&	N		= NET.back();
 	if ((dwTime > N.dwTimeStamp) || (NET.size() < 2)) {
+		//Log("--- extra");
 		// BAD.	extrapolation
 		NET_Last		= N;
 #pragma todo("Dima to All : this is FAKE, network is not supported here!")
@@ -370,6 +371,7 @@ void CCustomMonster::UpdateCL	()
 		}
 	}
 	else {
+		//Log("--- inter");
 		// OK.	interpolation
 		NET_WasExtrapolating		= FALSE;
 		// Search 2 keyframes for interpolation

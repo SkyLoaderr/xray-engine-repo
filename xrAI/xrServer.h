@@ -10,7 +10,7 @@
 #include "game_sv_base.h"
 #include "id_generator.h"
 
-const u32	NET_Latency		= 50;		// time in (ms)
+const u32	NET_Latency		= 75;		// time in (ms)
 
 // t-defs
 typedef xr_map<u16,CSE_Abstract*>	xrS_entities;
