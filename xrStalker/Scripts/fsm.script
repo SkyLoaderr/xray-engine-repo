@@ -21,8 +21,7 @@ end
 
 -- 	добавление указателя на булеву
 -- 	функцию условия перехода
-function FSM:add_transition(cond_func, from_state_num, to_state_num)
-
+function FSM:add_transition(from_state_num, to_state_num, cond_func)
 	printf("in add transition %d, %d", from_state_num, to_state_num)
 
 	local transition_vector = self.transition_matrix[from_state_num] 
