@@ -85,22 +85,22 @@ void COLLIDER::frustum_query(const MODEL *m_def, const CFrustum& F)
 		if (frustum_mode&OPT_ONLYFIRST)
 		{
 			frustum_collider<true,true> BC;
-			BC._init	(this,m_def->tris,&F);
+			BC._init	(this,m_def->verts,m_def->tris,&F);
 			BC._stab	(N,mask);
 		} else {
 			frustum_collider<true,false> BC;
-			BC._init	(this,m_def->tris,&F);
+			BC._init	(this,m_def->verts,m_def->tris,&F);
 			BC._stab	(N,mask);
 		}
 	} else {
 		if (frustum_mode&OPT_ONLYFIRST)
 		{
 			frustum_collider<false,true> BC;
-			BC._init	(this,m_def->tris,&F);
+			BC._init	(this,m_def->verts,m_def->tris,&F);
 			BC._stab	(N,mask);
 		} else {
 			frustum_collider<false,false> BC;
-			BC._init	(this,m_def->tris,&F);
+			BC._init	(this,m_def->verts,m_def->tris,&F);
 			BC._stab	(N,mask);
 		}
 	}
