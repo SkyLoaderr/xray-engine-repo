@@ -48,10 +48,6 @@ void i_order	(float* A, float* B, float* C)
 }
 
 // Find the closest min/max pixels of a point
-IC int minPixel(float v)
-{	return iCeil(v);	}
-IC int maxPixel(float v)
-{	return iFloor(v);	}
 IC void Vclamp(int& v, int a, int b)
 {
 	if (v<a)	v=a; else if (v>=b) v=b-1;
@@ -81,12 +77,12 @@ void i_scan		(int curY, float leftX, float lhx, float rightX, float rhx, float s
 	if (end_c<endR)			{endT	= endR;		endX	= end_c;	}
 	
 	// guard-banding and clipping
-	int minT		= maxPixel(startT), maxT = minPixel(endT);
+	int minT		= iFloor(startT), maxT = iCeil(endT);
 	Vclamp			(minT,1,occ_dim0-1);
 	Vclamp			(maxT,1,occ_dim0-1);
 	if (minT >= maxT)		return;
 	
-	int minX		= minPixel(startX), maxX = maxPixel(endX);
+	int minX		= iCeil(startX), maxX = iFloor(endX);
 	Vclamp			(minX,0,occ_dim0);
 	Vclamp			(maxX,0,occ_dim0);
 	int limLeft,limRight;
@@ -217,12 +213,12 @@ IC void i_section	(int Sect, BOOL bMiddle)
 	float	E1[3], E2[3];
 
 	if (Sect == BOTTOM) { 
-		startY	= minPixel(currentA[1]); endY = maxPixel(currentB[1])-1; 
+		startY	= iCeil(currentA[1]); endY = iFloor(currentB[1])-1; 
 		startp1 = startp2 = currentA;
 		if (bMiddle)	endY ++;
 		
 		// check 'endY' for out-of-triangle 
-		int test = maxPixel(currentC[1]);
+		int test = iFloor(currentC[1]);
 		if (endY   >=test) endY --;
 		if (startY > endY) return;
 
@@ -232,12 +228,12 @@ IC void i_section	(int Sect, BOOL bMiddle)
 		E1[2] = currentB[2]-currentA[2]; E2[2] = currentC[2]-currentA[2];
 	}
 	else { 
-		startY  = minPixel(currentB[1]); endY = maxPixel(currentC[1]); 
+		startY  = iCeil(currentB[1]); endY = iFloor(currentC[1]); 
 		startp1 = currentA; startp2 = currentB;
 		if (bMiddle)	startY --;
 		
 		// check 'startY' for out-of-triangle 
-		int test = minPixel(currentA[1]);
+		int test = iCeil(currentA[1]);
 		if (startY < test) startY ++;
 		if (startY > endY) return;
 
