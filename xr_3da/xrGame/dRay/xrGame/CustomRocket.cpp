@@ -132,12 +132,14 @@ void __stdcall CCustomRocket::ObjectContactCallback(bool& do_colide,dContact& c)
 				{
 					Fvector velocity;
 					l_this->PHGetLinearVell(velocity);
-					velocity.normalize();
-					float cosinus=velocity.dotproduct(*((Fvector*)l_pUD->neg_tri.norm));
-					float dist=l_pUD->neg_tri.dist/cosinus;
-					velocity.mul(dist);
-					l_pos.sub(velocity);
-
+					if (velocity.square_magnitude() > EPS)	
+					{	//. desync?
+						velocity.normalize();
+						float cosinus=velocity.dotproduct(*((Fvector*)l_pUD->neg_tri.norm));
+						float dist=l_pUD->neg_tri.dist/cosinus;
+						velocity.mul(dist);
+						l_pos.sub(velocity);
+					}
 				}
 			}
 			l_this->Contact(l_pos, vUp);
