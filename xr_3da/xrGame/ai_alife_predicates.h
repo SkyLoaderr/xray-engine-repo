@@ -150,10 +150,11 @@ public:
 				return				(tpALifeInventoryItem1 < tpALifeInventoryItem2);
 			else
 				return				(true);
-		else {
-			R_ASSERT				(tpALifeInventoryItem2->m_tPreviousParentID == m_tParentID);
-			return					(false);
-		}
+		else
+			if (tpALifeInventoryItem2->m_tPreviousParentID == m_tParentID)
+				return				(false);
+			else
+				return				(tpALifeInventoryItem1 < tpALifeInventoryItem2);
 	}
 };
 
