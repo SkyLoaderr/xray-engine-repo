@@ -38,6 +38,7 @@ uniform float3x4 	m_model2view;
 uniform float4x4 	m_model2view2projection;
 uniform sampler2D 	s_texture;
 uniform sampler2D 	s_nmap;
+uniform samplerCUBE s_NCM;
 
 //////////////////////////////////////////////////////////////////////////////////////////
 // Vertex
