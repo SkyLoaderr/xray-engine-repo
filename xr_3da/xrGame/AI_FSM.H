@@ -18,7 +18,6 @@ namespace AI {
 		aiRetreating,			// retreating
 
 		aiHenDie,
-			
 		aiHenUnderFire,
 		aiHenGoInThisDirection,		
 		aiHenGoToThatPosition,		
@@ -27,11 +26,24 @@ namespace AI {
 		aiHenHoldUnderFire,
 		aiHenFreeHunting,			
 		aiHenFollowMe,
-
 		aiHenAttack,				
 		aiHenDefend,				
 		aiHenPursuit,				
 		aiHenRetreat,			
+			
+		aiRatDie,
+		aiRatUnderFire,
+		aiRatGoInThisDirection,		
+		aiRatGoToThatPosition,		
+		aiRatWaitOnPosition,			
+		aiRatHoldPosition,			
+		aiRatHoldUnderFire,
+		aiRatFreeHunting,			
+		aiRatFollowMe,
+		aiRatAttack,				
+		aiRatDefend,				
+		aiRatPursuit,				
+		aiRatRetreat,			
 			
 		aiLAST,
 		aiFORCEDWORD			= DWORD(-1)
