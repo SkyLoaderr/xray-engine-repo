@@ -74,6 +74,29 @@ void CDetail::Load		(CStream* S)
 	indices			= (WORD*)					_aligned_malloc	(size_indices,64);
 	S->Read			(indices,size_indices);
 
+	/*
+	///*-----
+	number_vertices	= 3;
+	number_indices	= 6;
+
+	DWORD			size_vertices		= number_vertices*sizeof(fvfVertexIn); 
+	vertices		= (CDetail::fvfVertexIn *)	_aligned_malloc	(size_vertices,64);
+	vertices[0].P.set(0,0,0);
+	vertices[0].u=0;
+	vertices[0].v=1;
+	vertices[1].P.set(0,1,0);
+	vertices[1].u=0;
+	vertices[1].v=0;
+	vertices[1].P.set(0,1,0);
+	vertices[1].u=0;
+	vertices[1].v=0;
+	
+	// Indices
+	DWORD			size_indices		= number_indices*sizeof(WORD);
+	indices			= (WORD*)					_aligned_malloc	(size_indices,64);
+	///*-----
+	*/
+
 	// Calc BB & SphereRadius
 	Fbox bb;
 	bb.invalidate	();
@@ -347,6 +370,7 @@ void CDetailManager::Render		(Fvector& EYE)
 			IS->Unlock	(iCount_Lock);
 
 			// Render
+			/*
 			Msg	("items(%d), vC_Lock(%d),vBase(%d),iC_Lock(%d),iBase(%d)",item_range,
 				vCount_Lock,vBase,
 				iCount_Lock,iBase
@@ -355,6 +379,7 @@ void CDetailManager::Render		(Fvector& EYE)
 				for (DWORD t=0; t<iCount_Lock; t++)
 					Msg("%4d: %d",t,dbgIndices[t]);
 			}
+			*/
 			Device.Primitive.setVertices	(VS->getFVF(),VS->getStride(),VS->getBuffer());
 			Device.Primitive.setIndicesUC	(vBase, IS->getBuffer());
 			DWORD	dwNumPrimitives			= iCount_Lock/3;
