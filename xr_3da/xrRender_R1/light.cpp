@@ -79,12 +79,12 @@ void	light::set_range		(float R)			{
 	spatial_move				();
 };
 
-void	set_cone				(float angle)		{
+void	light::set_cone			(float angle)		{
 	if (fsimilar(cone,angle))	return;
 	cone						= angle;
 	spatial_move				();
 }
-void	set_direction			(const Fvector& D)	{ 
+void	light::set_direction	(const Fvector& D)	{ 
 	if (fsimilar(1.f, direction.dotproduct(D)))	return;
 	direction.normalize			(D);
 	spatial_move				();
@@ -92,12 +92,24 @@ void	set_direction			(const Fvector& D)	{
 
 void	light::spatial_move		()
 {
+	spatial.center				= position;
+	spatial.radius				= range;
+	/*
 	if (flags.type == IRender_Light::POINT)				{
 		spatial.center				= position;
 		spatial.radius				= range;
 	} else if (flags.type == IRender_Light::SPOT)		{
 		// minimal enclosing sphere around cone
-		spatial.radius				= range / (2.f * _sqr(_cos(cone/2.f)));
-		spatial.center.mad			(position,direction,spatial.radius);
+		if (cone>=PI_DIV_2)			{
+			// obtused-angled
+			spatial.center.mad			(position,direction,range);
+			spatial.radius				= range * tanf(cone/2.f);
+		} else {
+			// acute-angled
+			spatial.radius				= range / (2.f * _sqr(_cos(cone/2.f)));
+			spatial.center.mad			(position,direction,spatial.radius);
+		}
 	}
+	*/
+	ISpatial::spatial_move		();
 }
