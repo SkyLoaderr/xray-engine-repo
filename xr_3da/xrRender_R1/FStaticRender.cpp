@@ -156,11 +156,6 @@ void					CRender::set_Object				(IRenderable*		O )
 	if (PHASE_NORMAL==phase)	{
 		L_Shadows->set_object	(O);
 		L_Projector->set_object	(O);
-		if (O)	{
-			VERIFY				(O->renderable.ROS);
-			CLightTrack*		T = (CLightTrack*)O->renderable.ROS;
-			T->ltrack			(O);
-		}
 	} else {
 		L_Shadows->set_object	(0);
 		L_Projector->set_object	(0);
@@ -309,6 +304,11 @@ void CRender::Calculate				()
 		// Determine visibility for dynamic part of scene
 		set_Object							(0);
 		g_pGameLevel->pHUD->Render_First	( );
+		u32 uID_LTRACK						= 0xffffffff;
+		if (phase==PHASE_NORMAL)			{
+			uLastLTRACK	++;
+			uID_LTRACK	= uLastLTRACK%lstRenderables.size();
+		}
 		for (u32 o_it=0; o_it<lstRenderables.size(); o_it++)
 		{
 			ISpatial*	spatial		= lstRenderables[o_it];		spatial->spatial_updatesector	();
@@ -340,7 +340,13 @@ void CRender::Calculate				()
 						v_orig.hom_tested				= v_copy.hom_tested;
 						if (!bVisible)					break;	// exit loop on frustums
 
-						// Rendering
+						// rendering
+						if (o_it==uID_LTRACK)	{
+							// track lighting environment
+							VERIFY				(renderable->renderable.ROS);
+							CLightTrack*		T = (CLightTrack*)renderable->renderable.ROS;
+							T->ltrack			(renderable);
+						}
 						set_Object						(renderable);
 						renderable->renderable_Render	();
 						set_Object						(0);	//? is it needed at all

@@ -35,14 +35,14 @@ namespace Collide
 			verts[1].set(0,0,0);
 			verts[2].set(0,0,0);
 		}
-		void				set		(Fvector& _start, Fvector& _dir, float _range, BOOL _result)
+		void				set		(const Fvector& _start, const Fvector& _dir, const float _range,const BOOL _result)
 		{
 			start	= _start;
 			dir		= _dir;
 			range	= _range;
 			result	= _result;
 		}
-		BOOL				similar	(Fvector& _start, Fvector& _dir, float _range)
+		BOOL				similar	(const Fvector& _start, const Fvector& _dir, const float _range)
 		{
 			if (!_start.similar(start))					return FALSE;
 			if (!fsimilar(1.f,dir.dotproduct(_dir)))	return FALSE;
@@ -50,7 +50,7 @@ namespace Collide
 			return			TRUE;
 		}
 	};
-	enum rq_target{
+	enum rq_target	{
 		rqtNone		= (0),
 		rqtObject	= (1<<0),
 		rqtStatic	= (1<<1),
