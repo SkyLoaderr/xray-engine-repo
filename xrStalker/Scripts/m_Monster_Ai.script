@@ -152,14 +152,14 @@ end
 --  10 - stateHit
 
 --==============================================================================
---==============================================================================
+--==========ћонстр который живет возле некоторой точки==========================
 class "m_MonsterPoint" ( m_Monster )
 function m_MonsterPoint:__init( mnstr, script_name, point_o, radius_o ) super( mnstr, script_name )
     self.Rest           = m_rest.stateRestPoint       			   ( self.scr_name, self.memory, point_o, radius_o )
 end
 
 --==============================================================================
---=======================================================
+--===Ѕобик. Ќа врагов гавкает, на опасный звук смотрит, живет возле некоторой точки=====================
 class "m_MonsterBobic" ( m_Monster )
 function m_MonsterBobic:__init( mnstr, script_name, point_o, radius_o ) super( mnstr, script_name )
     self.Rest           = m_rest.stateRestPoint                    ( self.scr_name, self.memory, point_o, radius_o )
@@ -168,7 +168,49 @@ function m_MonsterBobic:__init( mnstr, script_name, point_o, radius_o ) super( m
     self.Attack         = m_attack.stateAttackThreaten			   ( self.scr_name, self.memory )
 --    self.Hit			= m_hit.stateHitRunToHit				   ( self.scr_name, self.memory )
 end
+--==============================================================================
+--===—обаки возле Ѕ“–, при виде врага бегут к некоторой точки и там его ждут====
+class "m_MonsterArtful" ( m_Monster )
+function m_MonsterArtful:__init( mnstr, script_name, way_o, point_o, radius_o ) super( mnstr, script_name )
+    self.Rest           = m_rest.stateRestPoint                 	( self.scr_name, self.memory, point_o, radius_o )
+	self.Attack  		= m_attack.stateAttackArtful				( self.scr_name, self.memory, way_o )
+    self.DangerSound    = m_dangersound.stateDangerSoundLookAround  ( self.scr_name, self.memory )
+	self.attacked       = false
+end
+--------------------------------------------------------------------------------
+function m_MonsterArtful:execute()
 
+    self:is_on_line()
+    if( self.on_line == false ) then return true end
+
+    --ѕровер€ем, живой ли монстр
+    if( self.memory.npc:alive() == false ) then
+        return false
+    end
+
+    self:update_world()
+    --≈сли по€вл€етс€ враг, то состо€ние атаки работает до тех пор, пока оно не закончитс€, а не до тех пор, пока пропадет враг
+	if(self.memory.enemy and self.attacked == false) then
+		--«апоминаем, что по€вилс€ враг и выбираем состо€ние атаки
+    	self.attacked = true
+        self:select_state()
+    end
+
+    if(self.attacked == false) then
+   		--Ќе атакуем, значит выбираем состо€ние
+    	self:select_state()
+    end
+
+    self.curState:execute()
+
+    if(self.attacked and self.curState:id() == 1)then
+    	if(self.curState:check_complited())then
+        	self.attacked = false
+        end
+    end
+
+    return true
+end
 --==============================================================================
 --=========== „ерный пес - патрулирует маршрут, на опасный звук бежит ==========
 class "garbage_black_dog" ( m_Monster )

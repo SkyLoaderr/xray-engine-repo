@@ -29,7 +29,12 @@ function stateHit:execute()
     end
 
 	if( self.memory.npc:action() == nil ) then
-        action( self.memory.npc, act(act.panic, self.memory.hit.who), sound(sound.panic), cond(cond.time_end, 20000) )
+        if(self.memory.hit.who:alive()== false) then
+	        action( self.memory.npc, anim(anim.look_around, 0), sound(sound.idle), cond(cond.time_end, 10000) )
+	        action( self.memory.npc, anim(anim.sit_idle, 0), sound(sound.idle), cond(cond.time_end, 40000) )
+		else
+	        action( self.memory.npc, act(act.panic, self.memory.hit.who), sound(sound.panic), cond(cond.time_end, 20000) )
+        end
     end
 end
 

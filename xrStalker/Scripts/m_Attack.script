@@ -101,7 +101,6 @@ end
 
 class "stateAttackThreaten" ( stateAttack )
 function stateAttackThreaten:__init( script_name, mem ) super( script_name, mem )
-
 end
 
 --------------------------------------------------------------------------------
@@ -130,7 +129,147 @@ function stateAttackThreaten:execute()
 end
 
 
---class "stateAttackArtful" ( stateAttack )
---function stateAttackArtful:__init( script_name, mem ) super( script_name, mem )
---end
+class "stateAttackArtful" ( stateAttack )
+function stateAttackArtful:__init( script_name, mem, way_o ) super( script_name, mem, way_o )
+	self.way  		  = patrol(way_o)
+    self.time 		  = 0
+    self.attack_actor = false
+    self.angry        = false
+end
+
+--------------------------------------------------------------------------------
+
+function stateAttackArtful:initialize()
+    self.time         = 0
+    self.memory.npc:script( true, self.scr_name )
+    self.enemy        = self.memory.enemy
+	if(level.actor() and level.actor():id() == self.enemy:id()) then
+    	self.attack_actor = true
+    end
+    self.angry        = false
+end
+
+--------------------------------------------------------------------------------
+
+function stateAttackArtful:finalize()
+    self.memory.npc:script( false, self.scr_name )
+    self.attack_actor = false
+end
+
+--------------------------------------------------------------------------------
+
+function stateAttackArtful:execute()
+
+    self:testing()
+
+	if(self.attack_actor) then
+    	self:actor()
+        return
+    end
+
+    if( self.memory.npc:action() == nil ) then
+        action( self.memory.npc, act( act.attack, self.enemy ), cond( cond.time_end, 100000 ) )
+    end
+end
+
+--------------------------------------------------------------------------------
+
+function stateAttackArtful:testing()
+    --ѕровер€ем, не помен€лс€ ли враг
+    if( self.enemy ) then
+        if( self.memory.enemy == nil ) then
+            self.enemy = nil
+            return
+        end
+        if( self.enemy:id() ~= self.memory.enemy:id() ) then
+            self.enemy = self.memory.enemy
+			if(level.actor() and self.enemy:id() == level.actor():id())then
+    			self.attack_actor = true
+            else
+           	    self.attack_actor = false
+            end
+            printf( "New enemy  %d  Time  %d ", self.enemy:id(), device():time_global() )
+            self:update()
+        end
+    else
+        if( self.memory.enemy ) then
+            self.enemy = self.memory.enemy
+            self:update()
+        end
+    end
+end
+
+--------------------------------------------------------------------------------
+
+function stateAttackArtful:can_start()
+    return ( self.memory.enemy ~= nil )
+end
+
+--------------------------------------------------------------------------------
+
+function stateAttackArtful:check_complited()
+	if(self.attack_actor)then
+        --≈сли атакуем актера, то конец состо€ни€ если актер мертв, либо долго сидим на нычке
+        if(level.actor():alive() == false) then
+       		return true
+       	end
+
+		if(self.angry == false and device():time_global() > self.time + 40000)then
+        	return true
+        end
+    else
+    	return ( self.memory.enemy == nil )
+    end
+end
+
+--------------------------------------------------------------------------------
+
+function stateAttackArtful:actor()
+	if(self.angry)then
+	--≈сли злые, то атакуем актера
+    	if(self.memory.npc:action() == nil) then
+        	action(self.memory.npc, act(act.attack, level.actor()), cond(cond.time_end, 30000) )
+        end
+    	return
+    end
+
+	if(self.memory.npc:position():distance_to(self.way:point(0)) > 3) then
+	--ƒалеко от точки-нычки
+        if(self.memory.npc:action() == nil) then
+        	action(self.memory.npc, move(move.run_fwd, self.way), sound(sound.idle), cond(cond.move_end))
+        end
+    else
+	--—идим, если видим актера, то атакуем, также атакуем если получили хит, или слышим р€дом звук
+--		printf("device_time = %d  hit_time = %d", device():time_global(), self.memory.hit.time + 3000)
+--        if( distance_between(self.memory.npc, level.actor() ) then
+        if(device():time_global() < self.memory.hit.time + 2000) then
+			--ѕолучили хит, атакуем
+            self.angry = true
+            self:update()
+            return
+		end
+
+        if(device():time_global() < (self.memory.hit.time + 2000) and self.memory.sound.who ~= nil and self.memory.sound.who:id() == level.actor():id()) then
+			--”слышали звук, атакуем.
+            self.angry = true
+            self:update()
+            return
+        end
+
+        if(self.memory.npc:see(level.actor()) )then
+			self.angry = true
+            self:update()
+        else
+        	if(self.memory.npc:action() == nil) then
+            	action(self.memory.npc, anim(anim.sit_idle, 0), cond(cond.time_end, 30000) )
+            end
+        end
+        --«апоминаем врем€.  ак оно истечет, то возвращаемс€ назад, если актер не подошел
+        if(self.time == 0) then
+        	self.time = device():time_global()
+        end
+    end
+end
+
+
 
