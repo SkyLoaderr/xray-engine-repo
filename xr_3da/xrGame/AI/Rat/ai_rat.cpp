@@ -52,6 +52,7 @@ void __stdcall CAI_Rat::SpinCallback(CBoneInstance* B)
 	CAI_Rat*		M = dynamic_cast<CAI_Rat*> (static_cast<CObject*>(B->Callback_Param));
 	Fmatrix				spin;
 
+	/**
 	Fvector tTorsoDirection = M->Direction();
 	tTorsoDirection.invert();
 	float fAlpha = acosf(M->tWatchDirection.dotproduct(tTorsoDirection));
@@ -64,7 +65,8 @@ void __stdcall CAI_Rat::SpinCallback(CBoneInstance* B)
 		spin.rotateZ(fAlpha);
 	else 
 		spin.rotateZ(-fAlpha);
-	
+	/**/
+	spin.setXYZ			(0, M->NET_Last.o_torso.pitch, 0);
 	B->mTransform.mul_43(spin);
 }
 
@@ -107,8 +109,8 @@ void CAI_Rat::Load(CInifile* ini, const char* section)
 	m_tpaDeathAnimations[0] = m_death;
 	m_tpaDeathAnimations[1] = PKinematics(pVisual)->ID_Cycle_Safe("norm_death_2");
 	
-	int spine_bone			= PKinematics(pVisual)->LL_BoneID("bip01_spine2");
-	PKinematics(pVisual)->LL_GetInstance(spine_bone).set_callback(SpinCallback,this);
+	//int spine_bone			= PKinematics(pVisual)->LL_BoneID("bip01_spine2");
+	//PKinematics(pVisual)->LL_GetInstance(spine_bone).set_callback(SpinCallback,this);
 }
 
 BOOL CAI_Rat::Hit(int perc, Fvector &dir, CEntity* who) 
@@ -294,8 +296,22 @@ IC void CAI_Rat::SetDirectionLook()
 			tWatchDirection.normalize();
 			if (tWatchDirection.y < -0.7f)
 				tWatchDirection.y *= -1.f;
-			q_look.setup(AI::AIC_Look::Look, AI::t_Direction, &(tWatchDirection), 1000);
-			q_look.o_look_speed=_FB_look_speed;
+			if (i < 3)
+				q_look.setup(AI::AIC_Look::Look, AI::t_Direction, &(tWatchDirection), 1000);
+			else {
+				Fvector tPreviousDirection;
+				tPreviousDirection.sub(ps_Element(i - 3).vPosition,ps_Element(i - 2).vPosition);
+				if (tPreviousDirection.square_magnitude() > 0.000001) {
+					tPreviousDirection.normalize();
+					Fvector tNormal = tWatchDirection;
+					tWatchDirection.reflect(tPreviousDirection,tNormal);
+					//tWatchDirection.invert();
+					q_look.setup(AI::AIC_Look::Look, AI::t_Direction, &(tWatchDirection), 1000);
+				}
+				else
+					q_look.setup(AI::AIC_Look::Look, AI::t_Direction, &(tWatchDirection), 1000);
+			}
+			q_look.o_look_speed=_FB_look_speed/1;
 		}
 		else {
 			Msg("something's wrong!");
@@ -624,7 +640,7 @@ void CAI_Rat::FollowLeader(Fvector &tLeaderPosition, const float fMinDistance, c
 		if (!(tpNearestList.empty())) {
 			for (CObjectSpace::NL_IT tppObjectIterator=tpNearestList.begin(); tppObjectIterator!=tpNearestList.end(); tppObjectIterator++) {
 				CObject* tpCurrentObject = (*tppObjectIterator)->Owner();
-				if ((tpCurrentObject == this) || (tpCurrentObject == m_tpEnemyBeingAttacked))
+				if ((tpCurrentObject->CLS_ID != CLSID_ENTITY) || (tpCurrentObject == this) || (tpCurrentObject == m_tpEnemyBeingAttacked))
 					continue;
 
 				CCustomMonster* M = dynamic_cast<CCustomMonster*>(tpCurrentObject);
@@ -671,6 +687,7 @@ void CAI_Rat::FollowLeader(Fvector &tLeaderPosition, const float fMinDistance, c
 						//	break;
 						//}
 					}
+				/**/
 			}
 		}
 		/**/
@@ -733,7 +750,7 @@ void CAI_Rat::FollowLeader(Fvector &tLeaderPosition, const float fMinDistance, c
 		if (!tpNearestList.empty()) {
 			for (CObjectSpace::NL_IT tppObjectIterator=tpNearestList.begin(); tppObjectIterator!=tpNearestList.end(); tppObjectIterator++) {
 				CObject* tpCurrentObject = (*tppObjectIterator)->Owner();
-				if (tpCurrentObject == this)
+				if ((tpCurrentObject->CLS_ID != CLSID_ENTITY) || (tpCurrentObject == this) || (tpCurrentObject == m_tpEnemyBeingAttacked))
 					continue;
 				float fRadius = tpCurrentObject->Radius();
 				Fvector tCenter;

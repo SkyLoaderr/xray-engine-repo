@@ -551,7 +551,7 @@ void CAI_Zomby::FollowLeader(Fvector &tLeaderPosition)
 		if (!(tpNearestList.empty())) {
 			for (CObjectSpace::NL_IT tppObjectIterator=tpNearestList.begin(); tppObjectIterator!=tpNearestList.end(); tppObjectIterator++) {
 				CObject* tpCurrentObject = (*tppObjectIterator)->Owner();
-				if (tpCurrentObject == this)
+				if ((tpCurrentObject->CLS_ID != CLSID_ENTITY) || (tpCurrentObject == this) || (tpCurrentObject == m_tpEnemyBeingAttacked))
 					continue;
 				float fRadius = tpCurrentObject->Radius();
 				tpCurrentObject->clCenter(tCenter);
@@ -654,7 +654,7 @@ void CAI_Zomby::FollowLeader(Fvector &tLeaderPosition)
 		if (!tpNearestList.empty()) {
 			for (CObjectSpace::NL_IT tppObjectIterator=tpNearestList.begin(); tppObjectIterator!=tpNearestList.end(); tppObjectIterator++) {
 				CObject* tpCurrentObject = (*tppObjectIterator)->Owner();
-				if (tpCurrentObject == this)
+				if ((tpCurrentObject->CLS_ID != CLSID_ENTITY) || (tpCurrentObject == this) || (tpCurrentObject == m_tpEnemyBeingAttacked))
 					continue;
 				float fRadius = tpCurrentObject->Radius();
 				Fvector tCenter;
@@ -1338,7 +1338,7 @@ void CAI_Zomby::SelectAnimation(const Fvector& _view, const Fvector& _move, floa
 		}
 		else {
 			if (speed<0.2f)
-			//if (!bMobility)
+			//if (!m_bMobility)
 				S = m_idle;
 			else {
 				Fvector view = _view; 
