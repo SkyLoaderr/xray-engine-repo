@@ -370,5 +370,5 @@ void CAI_Trader::OnTradeAction(CGameObject *O, bool bSell)
 
 bool CAI_Trader::use_torch				() const
 {
-	return				(true);
+	return				(false);
 }
