@@ -200,6 +200,19 @@ function sell_medikit (wounded, player)
     wounded:set_goodwill (good, player)
 end
 -------------------
+function transfer_medikit2 (player, wounded)
+    player:transfer_item (player:object ("medkit"), wounded)
+	wounded:set_relation(game_object.friend, player)
+    printf( "wounded=%s goodwill(actor)=%d", wounded:name(), wounded:goodwill(player) )
+end
+-------------------
+function sell_medikit2 (player, wounded)
+    if player:object ("medkit") == nil then return end
+    local good = wounded:goodwill (player) + 5
+    if good > 100 then good = 100 end
+    wounded:set_goodwill (good, player)
+end
+-------------------
 function kozel (wounded, player)
     local good = wounded:goodwill (player) - 20
     if good < 0 then good = 0 end

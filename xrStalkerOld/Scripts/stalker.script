@@ -38,7 +38,11 @@ end
 	--' Выдача подсказок
 	level_tips.get_tips(self.object)
 
-       		if self.object:has_info("escape_trader_need_artefact") and
+	if self.object:object("af_night_star") ~= nil then
+		self.object:give_info_portion("tutorial_artefact_gain")
+	end 
+
+--[[       		if self.object:has_info("escape_trader_need_artefact") and
        		   self.object:object("af_night_star") ~= nil
        		then
        			self.object:give_info_portion("escape_trader_find_artefact")
@@ -72,7 +76,7 @@ end
        		then
        			self.object:give_info_portion("agroprom_find_gunslinger_band")
 				self.object:set_task_state(task.fail, "agroprom_meet_gunslinger_band", 0)
-       		end       		
+       		end]]
 end
 ----------------------------------------------------------------------------------------------------------------------
 function actor_init    (npc)

@@ -71,7 +71,7 @@ function update()
 			end
 
 			attack_end = game.CTime()
-			attack_end:setHMS( 0, 2, 0 )
+			attack_end:setHMS( 0, 10, 0 )
 			attack_end:add( game.get_game_time() )
 
 			state_init = false
@@ -125,7 +125,7 @@ function main()
 	heli_mgr = xr_heli.HeliManager()
 	heli_mgr:initialize( "heli" )
 
-	get_level_object( "z" ):set_callback( cb, true )
+--	get_level_object( "z" ):set_callback( cb, true )
 
 	if not state then
 		chst( state_before )
