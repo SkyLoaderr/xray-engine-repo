@@ -698,8 +698,6 @@ SOURCE=.\Blenders\blender_complex2.cpp
 
 !ELSEIF  "$(CFG)" == "XR_3DA - Win32 Debug"
 
-# PROP Exclude_From_Build 1
-
 !ELSEIF  "$(CFG)" == "XR_3DA - Win32 Mixed"
 
 # PROP BASE Exclude_From_Build 1

@@ -13,8 +13,7 @@
 
 CBlender_complex2::CBlender_complex2	()
 {
-	description.CLS		= B_DEFAULT;
-	
+	description.CLS		= B_COMPLEX2;
 }
 
 CBlender_complex2::~CBlender_complex2	()
@@ -36,7 +35,7 @@ void	CBlender_complex2::Compile(CBlender_Recorder& RS, sh_list& L_textures, sh_l
 		RS.PassBegin		();
 		{
 			RS.PassSET_ZB		(TRUE,TRUE);
-			RS.PassSET_Blend	(FALSE,D3DBLEND_ONE,D3DBLEND_ZERO,FALSE,0);
+			RS.PassSET_Blend	(FALSE,D3DBLEND_ONE,D3DBLEND_ZERO,	FALSE,0);
 			RS.R().SetRS		(D3DRS_LIGHTING,					BC(TRUE));
 			RS.R().SetRS		(D3DRS_FOGENABLE,					BC(TRUE));
 			
@@ -46,9 +45,21 @@ void	CBlender_complex2::Compile(CBlender_Recorder& RS, sh_list& L_textures, sh_l
 				RS.StageSET_Address	(D3DTADDRESS_WRAP);
 				RS.StageSET_Color	(D3DTA_TEXTURE,	  D3DTOP_MODULATE,		D3DTA_DIFFUSE);
 				RS.StageSET_Alpha	(D3DTA_TEXTURE,	  D3DTOP_MODULATE,		D3DTA_DIFFUSE);
-				RS.Stage_Texture	(oT_Name,	L_textures);
-				RS.Stage_Matrix		(oT_xform,	L_matrices,	0);
-				RS.Stage_Constant	("$null",	L_constants);
+				RS.Stage_Texture	(oT_Name,	L_textures		);
+				RS.Stage_Matrix		(oT_xform,	L_matrices,		0);
+				RS.Stage_Constant	("$null",	L_constants		);
+			}
+			RS.StageEnd			();
+
+			// Stage2 - Second texture
+			RS.StageBegin		();
+			{
+				RS.StageSET_Address	(D3DTADDRESS_WRAP);
+				RS.StageSET_Color	(D3DTA_TEXTURE,	  D3DTOP_MODULATE,		D3DTA_DIFFUSE);
+				RS.StageSET_Alpha	(D3DTA_TEXTURE,	  D3DTOP_MODULATE,		D3DTA_DIFFUSE);
+				RS.Stage_Texture	(oT2_Name,		L_textures	);
+				RS.Stage_Matrix		(oT2_xform,		L_matrices,	0);
+				RS.Stage_Constant	(oT2_Constant,	L_constants	);
 			}
 			RS.StageEnd			();
 		}
@@ -66,7 +77,7 @@ void	CBlender_complex2::Compile(CBlender_Recorder& RS, sh_list& L_textures, sh_l
 				RS.PassBegin		();
 				{
 					RS.PassSET_ZB		(TRUE,TRUE);
-					RS.PassSET_Blend	(FALSE,D3DBLEND_ONE,D3DBLEND_ZERO,FALSE,0);
+					RS.PassSET_Blend	(FALSE,D3DBLEND_ONE,D3DBLEND_ZERO,	FALSE,0);
 					RS.R().SetRS		(D3DRS_LIGHTING,					BC(FALSE));
 					RS.R().SetRS		(D3DRS_FOGENABLE,					BC(TRUE));
 					
@@ -76,9 +87,9 @@ void	CBlender_complex2::Compile(CBlender_Recorder& RS, sh_list& L_textures, sh_l
 						RS.StageSET_Address	(D3DTADDRESS_WRAP);
 						RS.StageSET_Color	(D3DTA_TEXTURE,	  D3DTOP_SELECTARG1,	D3DTA_DIFFUSE);
 						RS.StageSET_Alpha	(D3DTA_TEXTURE,	  D3DTOP_SELECTARG1,	D3DTA_DIFFUSE);
-						RS.Stage_Texture	("$base1",L_textures);
-						RS.Stage_Matrix		("$null",L_matrices,1);
-						RS.Stage_Constant	("$null",L_constants);
+						RS.Stage_Texture	("$base1",L_textures	);
+						RS.Stage_Matrix		("$null",L_matrices,	1);
+						RS.Stage_Constant	("$null",L_constants	);
 					}
 					RS.StageEnd			();
 					
@@ -88,9 +99,9 @@ void	CBlender_complex2::Compile(CBlender_Recorder& RS, sh_list& L_textures, sh_l
 						RS.StageSET_Address	(D3DTADDRESS_WRAP);
 						RS.StageSET_Color	(D3DTA_TEXTURE,	  D3DTOP_MODULATE,		D3DTA_CURRENT);
 						RS.StageSET_Alpha	(D3DTA_TEXTURE,	  D3DTOP_MODULATE,		D3DTA_CURRENT);
-						RS.Stage_Texture	(oT_Name,	L_textures);
+						RS.Stage_Texture	(oT_Name,	L_textures	);
 						RS.Stage_Matrix		(oT_xform,	L_matrices,	0);
-						RS.Stage_Constant	("$null",	L_constants);
+						RS.Stage_Constant	("$null",	L_constants	);
 					}
 					RS.StageEnd			();
 				}
@@ -100,7 +111,7 @@ void	CBlender_complex2::Compile(CBlender_Recorder& RS, sh_list& L_textures, sh_l
 				RS.PassBegin		();
 				{
 					RS.PassSET_ZB		(TRUE,FALSE);
-					RS.PassSET_Blend	(TRUE,D3DBLEND_DESTCOLOR,D3DBLEND_SRCCOLOR,FALSE,0);
+					RS.PassSET_Blend	(TRUE,D3DBLEND_DESTCOLOR,D3DBLEND_SRCCOLOR,	FALSE,0);
 					RS.R().SetRS		(D3DRS_LIGHTING,					BC(FALSE));
 					RS.R().SetRS		(D3DRS_FOGENABLE,					BC(FALSE));
 
@@ -112,13 +123,13 @@ void	CBlender_complex2::Compile(CBlender_Recorder& RS, sh_list& L_textures, sh_l
 						RS.StageSET_Alpha	(D3DTA_TEXTURE,	  D3DTOP_SELECTARG1,	D3DTA_DIFFUSE);
 						RS.Stage_Texture	(oT2_Name,		L_textures);
 						RS.Stage_Matrix		(oT2_xform,		L_matrices,0);
-						RS.Stage_Constant	("$null",		L_constants);
+						RS.Stage_Constant	(oT2_Constant,	L_constants);
 					}
 					RS.StageEnd			();
 				}
 				RS.PassEnd			();
 				break;
-			case 3:		// Radeon, Radeon2, Geforce3/4
+			case 3:		// Kyro, Radeon, Radeon2, Geforce3/4
 			default:
 				RS.PassBegin		();
 				{
@@ -133,9 +144,9 @@ void	CBlender_complex2::Compile(CBlender_Recorder& RS, sh_list& L_textures, sh_l
 						RS.StageSET_Address	(D3DTADDRESS_WRAP);
 						RS.StageSET_Color	(D3DTA_TEXTURE,	  D3DTOP_SELECTARG1,	D3DTA_DIFFUSE);
 						RS.StageSET_Alpha	(D3DTA_TEXTURE,	  D3DTOP_SELECTARG1,	D3DTA_DIFFUSE);
-						RS.Stage_Texture	("$base1",L_textures);
-						RS.Stage_Matrix		("$null",L_matrices,1);
-						RS.Stage_Constant	("$null",L_constants);
+						RS.Stage_Texture	("$base1",		L_textures);
+						RS.Stage_Matrix		("$null",		L_matrices, 1);
+						RS.Stage_Constant	("$null",		L_constants);
 					}
 					RS.StageEnd			();
 					
@@ -159,7 +170,7 @@ void	CBlender_complex2::Compile(CBlender_Recorder& RS, sh_list& L_textures, sh_l
 						RS.StageSET_Alpha	(D3DTA_TEXTURE,	  D3DTOP_SELECTARG2,	D3DTA_CURRENT);
 						RS.Stage_Texture	(oT2_Name,		L_textures);
 						RS.Stage_Matrix		(oT2_xform,		L_matrices,	0);
-						RS.Stage_Constant	("$null",		L_constants);
+						RS.Stage_Constant	(oT2_Constant,	L_constants);
 					}
 					RS.StageEnd			();
 				}
