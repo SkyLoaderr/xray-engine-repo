@@ -360,7 +360,7 @@ void CParticleEffect::OnDeviceCreate()
 {
 	if (m_Def){
         if (m_Def->m_Flags.is(CPEDef::dfSprite)){
-            hGeom.create	(FVF::F_TL, RCache.Vertex.Buffer(), RCache.QuadIB);
+            hGeom.create	(FVF::F_LIT, RCache.Vertex.Buffer(), RCache.QuadIB);
             if (m_Def) hShader = m_Def->m_CachedShader;
         }
     }
@@ -514,6 +514,56 @@ void CParticleEffect::Copy(IRender_Visual* pFrom)
 }
 
 //----------------------------------------------------
+IC void FillSprite	(FVF::LIT*& pv, const Fvector& pos, const Fvector2& lt, const Fvector2& rb, float r1, float r2, u32 clr, float angle)
+{
+	float sa	= _sin(angle);  
+    float ca	= _cos(angle);  
+	const Fvector& T 	= Device.vCameraTop;
+	const Fvector& R 	= Device.vCameraRight;
+	Fvector Vr, Vt;
+    Vr.x 		= T.x*r1*sa+R.x*r1*ca;
+    Vr.y 		= T.y*r1*sa+R.y*r1*ca;
+    Vr.z 		= T.z*r1*sa+R.z*r1*ca;
+    Vt.x 		= T.x*r2*ca-R.x*r2*sa;
+    Vt.y 		= T.y*r2*ca-R.y*r2*sa;
+    Vt.z 		= T.z*r2*ca-R.z*r2*sa;
+    
+	Fvector 	a,b,c,d;
+    a.sub		(Vt,Vr);
+    b.add		(Vt,Vr);
+    c.invert	(a);
+    d.invert	(b);
+	pv->set		(d.x+pos.x,d.y+pos.y,d.z+pos.z, clr, lt.x,rb.y);	pv++;
+	pv->set		(a.x+pos.x,a.y+pos.y,a.z+pos.z, clr, lt.x,lt.y);	pv++;
+	pv->set		(c.x+pos.x,c.y+pos.y,c.z+pos.z, clr, rb.x,rb.y);	pv++;
+	pv->set		(b.x+pos.x,b.y+pos.y,b.z+pos.z,	clr, rb.x,lt.y);	pv++;
+}
+
+IC void FillSprite	(FVF::LIT*& pv, const Fvector& pos, const Fvector& dir, const Fvector2& lt, const Fvector2& rb, float r1, float r2, u32 clr, float angle)
+{
+	float sa	= _sin(angle);  
+    float ca	= _cos(angle);  
+	const Fvector& T 	= dir;
+	Fvector R; 	R.crossproduct(T,Device.vCameraDirection).normalize_safe();
+	Fvector Vr, Vt;
+    Vr.x 		= T.x*r1*sa+R.x*r1*ca;
+    Vr.y 		= T.y*r1*sa+R.y*r1*ca;
+    Vr.z 		= T.z*r1*sa+R.z*r1*ca;
+    Vt.x 		= T.x*r2*ca-R.x*r2*sa;
+    Vt.y 		= T.y*r2*ca-R.y*r2*sa;
+    Vt.z 		= T.z*r2*ca-R.z*r2*sa;
+    
+	Fvector 	a,b,c,d;
+    a.sub		(Vt,Vr);
+    b.add		(Vt,Vr);
+    c.invert	(a);
+    d.invert	(b);
+	pv->set		(d.x+pos.x,d.y+pos.y,d.z+pos.z, clr, lt.x,rb.y);	pv++;
+	pv->set		(a.x+pos.x,a.y+pos.y,a.z+pos.z, clr, lt.x,lt.y);	pv++;
+	pv->set		(c.x+pos.x,c.y+pos.y,c.z+pos.z, clr, rb.x,rb.y);	pv++;
+	pv->set		(b.x+pos.x,b.y+pos.y,b.z+pos.z,	clr, rb.x,lt.y);	pv++;
+}
+/*
 IC void FillSprite	(FVF::TL*& pv, const Fmatrix& M, const Fvector& pos, const Fvector2& lt, const Fvector2& rb, float a, float b, u32 clr, float angle, float scale, float w_2, float h_2)
 {
 	FVF::TL			PT;
@@ -579,7 +629,7 @@ IC void FillSprite	(FVF::TL*& pv, const Fmatrix& M, const Fvector& pos, const Fv
 	pv->set			(s1.p.x-l1*R.x,	s1.p.y-l1*R.y,	s2.p.z, s2.p.w, clr, rb.x,rb.y);	pv++;
 	pv->set			(s2.p.x-l2*R.x,	s2.p.y-l2*R.y,	s2.p.z, s2.p.w, clr, rb.x,lt.y);	pv++;
 }
-
+*/
 void CParticleEffect::Render(float LOD)
 {
 	u32			dwOffset,dwCount;
@@ -593,14 +643,8 @@ void CParticleEffect::Render(float LOD)
             if (m_RT_Flags.is(flRT_XFORM))	mSpriteTransform.mul(Device.mFullTransform,m_XFORM);
             else							mSpriteTransform.set(Device.mFullTransform);
 
-            float	w_2			= float(::Render->getTarget()->get_width()) / 2;
-            float	h_2			= float(::Render->getTarget()->get_height()) / 2;
-            float	fov_rate	= (Device.fFOV/90.f);
-            float	fov_scale_w	= float(::Render->getTarget()->get_width()) / fov_rate;
-            float 	factor_r	= (0.2952f*fov_rate*fov_rate - 0.0972f*fov_rate + 0.8007f) * (1.41421356f/Device.fASPECT); // в первых скобках шаманский коеффициент
-
-            FVF::TL* pv_start	= (FVF::TL*)RCache.Vertex.Lock(pe->p_count*4*4,hGeom->vb_stride,dwOffset);
-            FVF::TL* pv			= pv_start;
+            FVF::LIT* pv_start	= (FVF::LIT*)RCache.Vertex.Lock(pe->p_count*4*4,hGeom->vb_stride,dwOffset);
+            FVF::LIT* pv		= pv_start;
 
             for(int i = 0; i < pe->p_count; i++){
                 PAPI::Particle &m = pe->list[i];
@@ -621,16 +665,17 @@ void CParticleEffect::Render(float LOD)
                     float speed	= m.vel.magnitude();
                     if (speed>=EPS_S)	dir.div	(m.vel,speed);
                     else				dir.setHP(-m_Def->m_APDefaultRotation.y,-m_Def->m_APDefaultRotation.x);
-                    FillSprite	(pv,mSpriteTransform,m.pos,lt,rb,r_x,r_y,m.color,dir,fov_scale_w,factor_r,w_2,h_2);
+                    FillSprite	(pv,m.pos,dir,lt,rb,r_x,r_y,m.color,m.rot.x);
                 }else{
-                    FillSprite	(pv,mSpriteTransform,m.pos,lt,rb,r_x,r_y,m.color,m.rot.x,fov_scale_w,w_2,h_2);
+                    FillSprite	(pv,m.pos,lt,rb,r_x,r_y,m.color,m.rot.x);
                 }
             }
             dwCount 			= u32(pv-pv_start);
             RCache.Vertex.Unlock(dwCount,hGeom->vb_stride);
             if (dwCount)    {
-                RCache.set_Geometry	(hGeom);
-                RCache.Render	   	(D3DPT_TRIANGLELIST,dwOffset,0,dwCount,0,dwCount/2);
+				RCache.set_xform_world	(Fidentity);
+                RCache.set_Geometry		(hGeom);
+                RCache.Render	   		(D3DPT_TRIANGLELIST,dwOffset,0,dwCount,0,dwCount/2);
             }
         }
     }
