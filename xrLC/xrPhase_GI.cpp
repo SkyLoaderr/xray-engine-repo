@@ -178,7 +178,7 @@ void	CBuild::xrPhase_Radiosity	()
 
 	// calculate energy
 	float	_energy_before	= 0;
-	for (int l=0; l<task->size(); l++)
+	for (u32 l=0; l<task->size(); l++)
 		if (task->at(l).type == LT_POINT)	_energy_before	+= task->at(l).energy;
 
 	// perform all the work
@@ -192,7 +192,7 @@ void	CBuild::xrPhase_Radiosity	()
 
 	// renormalize
 	float	_energy_after	= 0;
-	for (int l=0; l<task->size(); l++)
+	for (u32 l=0; l<task->size(); l++)
 	{
 		R_Light&	L = (*task)[l];
 		//clMsg		("type[%d], energy[%f]",L.type,L.energy);
@@ -202,7 +202,7 @@ void	CBuild::xrPhase_Radiosity	()
 		}
 	}
 	float	_scale			= 1.f*_energy_before / _energy_after;
-	for (int l=0; l<task->size(); l++)
+	for (u32 l=0; l<task->size(); l++)
 	{
 		R_Light&	L = (*task)[l];
 		if (LT_SECONDARY == L.type)		L.energy	*= _scale;
