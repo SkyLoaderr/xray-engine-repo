@@ -4,6 +4,7 @@
 void	game_sv_CS::Create			(LPCSTR options)
 {
 	timelimit	= get_option_i		(options,"timelimit",0)*60000;	// in (ms)
+	switch_Phase(GAME_PHASE_PENDING);
 }
 
 void	game_sv_CS::OnRoundStart	()
@@ -105,7 +106,15 @@ BOOL	game_sv_CS::OnTargetTouched	(u32 id_who, u32 eid_target)
 
 void	game_sv_CS::Update			()
 {
-	if (s32(Device.TimerAsync()-u32(start_time))>timelimit) OnTimelimitExceed();
+	switch(phase) 	{
+		case GAME_PHASE_INPROGRESS : {
+				if (timelimit) if (s32(Device.TimerAsync()-u32(start_time))>timelimit) OnTimelimitExceed();
+		} break;
+		case GAME_PHASE_PENDING : {
+				if ((Device.TimerAsync()-start_time)>u32(10*1000)) OnRoundStart();
+		} break;
+	}
+	
 }
 
 void	game_sv_CS::OnPlayerReady			(u32 id)
