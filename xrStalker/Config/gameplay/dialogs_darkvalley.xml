@@ -277,7 +277,7 @@
             </phrase>
             <phrase id="111">
                 <text>val_rob_dialog_111</text>
-                <precondition>val_rob_actor_has_money</precondition>
+                <precondition>dialogs_darkvalley.val_rob_actor_has_money</precondition>
                 <action>dialogs.break_dialog</action>
                 <give_info>val_rob_buying</give_info>
             </phrase>
