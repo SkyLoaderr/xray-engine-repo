@@ -103,6 +103,7 @@ void CLightPPA_Manager::Initialize	()
 	Device.seqDevDestroy.Add	(this);
 	OnDeviceCreate		();
 }
+
 void CLightPPA_Manager::Destroy		()
 {
 	Device.seqDevCreate.Remove	(this);
