@@ -600,6 +600,7 @@ CSE_ALifeSpaceRestrictor::CSE_ALifeSpaceRestrictor	(LPCSTR caSection) : CSE_ALif
 {
 	m_flags.set					(flUseSwitches,FALSE);
 	m_space_restrictor_type		= RestrictionSpace::eDefaultRestrictorTypeNone;
+	m_flags.set					(flUsedAI_Locations,FALSE);
 }
 
 CSE_ALifeSpaceRestrictor::~CSE_ALifeSpaceRestrictor	()
@@ -607,6 +608,11 @@ CSE_ALifeSpaceRestrictor::~CSE_ALifeSpaceRestrictor	()
 }
 
 bool CSE_ALifeSpaceRestrictor::can_switch_offline	() const
+{
+	return						(false);
+}
+
+bool CSE_ALifeSpaceRestrictor::used_ai_locations	() const
 {
 	return						(false);
 }
