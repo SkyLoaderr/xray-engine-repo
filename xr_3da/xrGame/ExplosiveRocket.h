@@ -22,6 +22,7 @@ public:
 	virtual ~CExplosiveRocket(void);
 	virtual DLL_Pure	*_construct	();
 public:
+	virtual CExplosive					*cast_explosive			()						{return this;}
 	virtual CInventoryItem*				cast_inventory_item		()						{return this;}
 	virtual CWeapon*					cast_weapon				()						{return NULL;}
 	virtual CGameObject					*cast_game_object		()						{return this;}
