@@ -36,7 +36,7 @@ void CRender::Render	()
 
 	if (ps_r2_ls_flags.test(R2FLAG_SUN) )
 	{
-		for (u32 dls_phase=0; dls_phase<1; dls_phase++)
+		for (u32 dls_phase=0; dls_phase<2; dls_phase++)
 		{
 			//******* Direct lighting+shadow		::: Calculate
 			Device.Statistic.RenderCALC.Begin		();
@@ -92,7 +92,7 @@ void CRender::Render	()
 	}
 
 	// Point/spot lighting (shadowed)
-	if (1)
+	if (0)
 	{
 		HOM.Disable								();
 		vector<light*>&	Lvec	= Lights.v_selected_shadowed;
