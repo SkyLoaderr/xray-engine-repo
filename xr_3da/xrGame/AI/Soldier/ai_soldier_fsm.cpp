@@ -1156,7 +1156,8 @@ void CAI_Soldier::OnPatrol()
 	StandUp();
 	vfSetLookAndFireMovement(false, WALK_FORWARD_4,1.0f,Group,dwCurTime);
 
-	//SetDirectionLook();
+	if (::Random.randF(0,1)) {
+	}
 }
 
 void CAI_Soldier::OnAttackFireAlone()
