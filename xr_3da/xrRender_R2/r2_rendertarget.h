@@ -26,7 +26,7 @@ public:
 	IBlender*					b_combine;
 	IBlender*					b_decompress;
 	IDirect3DQuery9*			Q;
-	xr_vector<Fsphere>			dbg_spheres;
+	xr_vector<std::pair<Fsphere,Fcolor> >		dbg_spheres;
 
 	// MRT-path (or decompressed MET)
 	ref_rt						rt_Depth;		// Z-buffer like - initial depth
