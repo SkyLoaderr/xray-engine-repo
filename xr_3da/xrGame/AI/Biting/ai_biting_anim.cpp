@@ -354,6 +354,7 @@ void CMotionManager::ApplyParams()
 void CMotionManager::OnAnimationEnd() 
 { 
 	if (jump.active && JMP_OnAnimEnd()) m_tpCurAnim = 0;
+	if (!jump.active) m_tpCurAnim = 0;
 	if (seq_playing) Seq_Switch();
 }
 
@@ -555,9 +556,7 @@ void CMotionManager::JMP_Add(EMotionAnim ja_start, EMotionAnim ja_jump, EMotionA
 // Проверка на возможность прыжка
 bool CMotionManager::JMP_Check(Fvector from_pos, Fvector to_pos)
 {
-	TTime &cur_time = pMonster->m_dwCurrentTime;
-
-	if (jump.active || jump.bank.empty() || (jump.next_time_allowed > cur_time) || seq_playing) return false;
+	if (jump.active || jump.bank.empty() || (jump.next_time_allowed > pMonster->m_dwCurrentTime) || seq_playing) return false;
 
 	// растояние до цели	
 	float dist = from_pos.distance_to(to_pos);	
@@ -573,6 +572,7 @@ bool CMotionManager::JMP_Check(Fvector from_pos, Fvector to_pos)
 	// проверка на max_angle и на dist
 	if (!getAI().bfTooSmallAngle(pMonster->r_torso_current.yaw, dest_yaw, pMonster->m_fJumpMaxAngle) || !(pMonster->m_fJumpMinDist <=dist && dist <= pMonster->m_fJumpMaxDist)) return false;
 
+	jump.dest_yaw = dest_yaw;
 	return true;
 }
 
@@ -596,7 +596,10 @@ void CMotionManager::JMP_Start(Fvector from_pos, Fvector to_pos, CObject *pE)
 	pMonster->r_torso_target.yaw = jump.dest_yaw;
 	pMonster->AI_Path.TravelPath.clear();
 
-	if (jump.state == JS_PREPARE) JMP_SetAnim();
+	if (jump.state == JS_PREPARE) {
+		JMP_SetAnim();
+		Msg("No prepare!");
+	}
 	else JMP_Exec();
 }
 
@@ -616,6 +619,7 @@ void CMotionManager::JMP_SetAnim()
 void CMotionManager::JMP_Finish()
 {
 	if ((jump.ptr_cur->states_used & JUMP_FINISH_USED)==JUMP_FINISH_USED) {
+		Msg("No finish!");
 		jump.state = JS_FINISH;
 		JMP_SetAnim();
 	} else {
@@ -659,8 +663,6 @@ void CMotionManager::JMP_Exec()
 		global_transform.set(jump.entity->XFORM());
 		global_transform.mulB(bone.mTransform);
 		jump.target_pos = global_transform.c;
-
-		Msg("bone coords=[%f,%f,%f] monster pos=[%f,%f,%f]",VPUSH(jump.target_pos), VPUSH(jump.entity->Position()));
 	}
 
 	// get time of jump;
