@@ -56,11 +56,12 @@ v2p_out v_main	( a2v  	IN )
 	//					 = object2eye * transpose(object2tangent) (since the inverse of a rotation is its transpose)
 	float3		T	= normalize(-IN.T);
 	float3		B	= normalize(-IN.B);
+	float3		N	= normalize(-IN.N);
 	float3x3 xform	= mul	((float3x3)m_model2view, 
 								float3x3(
-								T.x,B.x,IN.N.x,
-								T.y,B.y,IN.N.y,
-								T.z,B.z,IN.N.z
+								T.x,B.x,N.x,
+								T.y,B.y,N.y,
+								T.z,B.z,N.z
 								)
 								);
 					
