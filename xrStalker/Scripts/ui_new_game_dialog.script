@@ -153,7 +153,18 @@ function new_game_dlg:InitControls()
 end
 
 function new_game_dlg:InitCallBacks()
-	
+	self:AddCallback("button_easy",   ui_events.BUTTON_CLICKED, self, "OnButton_easy_clicked")
+	self:AddCallback("button_normal", ui_events.BUTTON_CLICKED, self, "OnButton_normal_clicked")
+	self:AddCallback("button_hard",   ui_events.BUTTON_CLICKED, self, "OnButton_easy_clicked")
+end
+
+function new_game_dlg:OnButton_easy_clicked()
+end
+
+function new_game_dlg:OnButton_normal_clicked()
+end
+
+function new_game_dlg:OnButton_easy_clicked()
 end
 
 function new_game_dlg:OnKeyboard(dik, keyboard_action)  --virtual function
