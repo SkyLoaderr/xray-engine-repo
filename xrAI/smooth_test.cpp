@@ -327,7 +327,7 @@ IC	bool build_line_trajectory(
 	TIMER_START(BuildLineTrajectory)
 	xr_vector<u32>			node_path;
 	VERIFY					(level_graph.valid_vertex_id(vertex_id));
-	if (level_graph.inside(vertex_id,v3d(dest.point))) {
+	if (level_graph.inside(vertex_id,dest.point)) {
 		if (path) {
 			Fvector			t = v3d(dest.point);
 			t.y				= level_graph.vertex_plane_y(vertex_id,dest.point.x,dest.point.y);
@@ -551,7 +551,7 @@ void build_detail_path(
 		start_point.position				= start.position;
 
 		for (int _i=0, i=0, n=(int)m_tpaNodes.size() - 1, j = n, m=j; _i < n; ) {
-			if (!level_graph.check_vertex_in_direction(start_point.vertex_id,v3d(start_point.position),m_tpaNodes[j])) {
+			if (!level_graph.check_vertex_in_direction(start_point.vertex_id,start_point.position,m_tpaNodes[j])) {
 				m							= j;
 				j							= (i + j)/2;
 			}
@@ -565,7 +565,7 @@ void build_detail_path(
 				_i							= i;
 				key_points.push_back		(start_point);
 				if (i == n) {
-					if (level_graph.valid_vertex_id(level_graph.check_position_in_direction(start_point.vertex_id,v3d(start_point.position),v3d(dest.position)))) {
+					if (level_graph.valid_vertex_id(level_graph.check_position_in_direction(start_point.vertex_id,start_point.position,dest.position))) {
 						key_points.push_back(dest);
 						break;
 					}
@@ -634,9 +634,9 @@ void fill_params(
 	xr_vector<STravelParams>	&dest_set
 )
 {
-//	start.angular_velocity	= PI_DIV_2;
-//	start.linear_velocity	= 0.f;//0.0001f;
-//	start_set.push_back		(start);
+	start.angular_velocity	= PI_DIV_2;
+	start.linear_velocity	= 0.f;//0.0001f;
+	start_set.push_back		(start);
 
 	start.angular_velocity	= PI;
 	start.linear_velocity	= 2.15f;
@@ -650,9 +650,9 @@ void fill_params(
 	start.linear_velocity	= 6.f;
 	start_set.push_back		(start);
 
-//	dest.angular_velocity	= PI_DIV_2;
-//	dest.linear_velocity	= 0.f;
-//	dest_set.push_back		(dest);
+	dest.angular_velocity	= PI_DIV_2;
+	dest.linear_velocity	= 0.f;
+	dest_set.push_back		(dest);
 
 	dest.angular_velocity	= PI;
 	dest.linear_velocity	= 2.15f;
@@ -694,8 +694,8 @@ void test_smooth_path(LPCSTR name)
 
 	RESET_ALL_TIMERS;
 
-//	SetPriorityClass			(GetCurrentProcess(),REALTIME_PRIORITY_CLASS);
-//	SetThreadPriority			(GetCurrentThread(),THREAD_PRIORITY_TIME_CRITICAL);
+	SetPriorityClass			(GetCurrentProcess(),REALTIME_PRIORITY_CLASS);
+	SetThreadPriority			(GetCurrentThread(),THREAD_PRIORITY_TIME_CRITICAL);
 	Sleep						(1);
 	
 	TIMER_START					(BuildDetailPath);
