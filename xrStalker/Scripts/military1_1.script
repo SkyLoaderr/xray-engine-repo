@@ -11,6 +11,8 @@ function main ()
 
     while flesh:see (actor) == false do wait () end
 
+	wait (1000)
+
     reset_action (flesh, military1_1.script_name())
     action (flesh, anim ("stand_scared_0"), sound ("monsters\\flesh\\scare", "bip01_head", vector():set(0,0,0),vector():set(0,0,0), false),
             cond (cond.anim_end))
