@@ -27,7 +27,7 @@ bool TUI::CommandExt(int _Command, int p1, int p2)
         AnsiString temp_fn	= AnsiString((char*)p1).LowerCase();
         if(!p1){
         	LPCSTR new_val;
-            if (!TfrmChoseItem::SelectItem(TfrmChoseItem::smObject,new_val)) return false;
+            if (!TfrmChoseItem::SelectItem(smObject,new_val)) return false;
             temp_fn = AnsiString(new_val)+".object";
         }
         if( !temp_fn.IsEmpty() ){

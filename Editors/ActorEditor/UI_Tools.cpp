@@ -64,7 +64,7 @@ void CActorTools::PreviewModel::Clear()
 void CActorTools::PreviewModel::SelectObject()
 {
     LPCSTR fn;
-    if (!TfrmChoseItem::SelectItem(TfrmChoseItem::smObject,fn,1,m_LastObjectName.c_str())) return;
+    if (!TfrmChoseItem::SelectItem(smObject,fn,1,m_LastObjectName.c_str())) return;
     Lib.RemoveEditObject(m_pObject);
     m_pObject = Lib.CreateEditObject(fn);
     if (!m_pObject)	ELog.DlgMsg(mtError,"Object '%s' can't find in object library.",fn);

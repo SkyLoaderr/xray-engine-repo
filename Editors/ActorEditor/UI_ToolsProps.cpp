@@ -352,7 +352,7 @@ void CActorTools::FillBoneProperties(PropItemVec& items, LPCSTR pref, ListItem* 
     if (BONE){
     	PropValue* V;
         PHelper.CreateCaption		(items, FHelper.PrepareKey(pref,"Bone\\Name"),						BONE->Name());
-		PHelper.CreateGameMtl		(items,	FHelper.PrepareKey(pref,"Bone\\Game Material"),				BONE->game_mtl, sizeof(BONE->game_mtl));
+		PHelper.CreateChoose		(items,	FHelper.PrepareKey(pref,"Bone\\Game Material"),				BONE->game_mtl, sizeof(BONE->game_mtl), smGameMaterial);
         PHelper.CreateFloat			(items, FHelper.PrepareKey(pref,"Bone\\Mass"),						&BONE->mass, 			0.f, 10000.f);
         PHelper.CreateVector		(items, FHelper.PrepareKey(pref,"Bone\\Center Of Mass"),			&BONE->center_of_mass, 	-10000.f, 10000.f);
 //		PHelper.CreateCaption		(items, FHelper.PrepareKey(pref,"Bone\\Bind Position"),				AnsiString().sprintf("{%3.2f, %3.2f, %3.2f}",VPUSH(BONE->_LTransform().c)));

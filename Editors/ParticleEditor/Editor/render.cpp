@@ -126,8 +126,8 @@ void 	CRender::set_Transform	(Fmatrix* M)
 }
 
 void			CRender::add_Visual   		(IRender_Visual* visual)			{ Models->RenderSingle	(visual,current_matrix,1.f);}
-IRender_Visual*	CRender::model_Create		(LPCSTR name)						{ return Models->Create(name);			}
 IRender_Visual*	CRender::model_Create		(LPCSTR name, IReader* data)		{ return Models->Create(name,data);		}
+IRender_Visual*	CRender::model_CreateChild	(LPCSTR name, IReader* data)		{ return Models->CreateChild(name,data);}
 void 			CRender::model_Delete		(IRender_Visual* &V, BOOL bDiscard)	{ Models->Delete(V,bDiscard);			}
 IRender_Visual*	CRender::model_Duplicate	(IRender_Visual* V)					{ return Models->Instance_Duplicate(V);	}
 void 			CRender::model_Render		(IRender_Visual* m_pVisual, const Fmatrix& mTransform, int priority, bool strictB2F, float m_fLOD){Models->Render(m_pVisual, mTransform, priority, strictB2F, m_fLOD);}

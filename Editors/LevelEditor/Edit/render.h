@@ -53,8 +53,8 @@ public:
 	virtual ref_shader		getShader		(int id);
 	IRender_Target*			getTarget		(){return &Target;}
 
-	virtual IRender_Visual*	model_Create			(LPCSTR name);
-	virtual IRender_Visual*	model_Create			(LPCSTR name, IReader* data);
+	virtual IRender_Visual*	model_Create			(LPCSTR name, IReader* data=0);
+	virtual IRender_Visual*	model_CreateChild		(LPCSTR name, IReader* data);
 	virtual IRender_Visual*	model_CreatePE			(LPCSTR name);
 	virtual IRender_Visual*	model_CreateParticles	(LPCSTR name);
     
