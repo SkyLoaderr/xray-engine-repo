@@ -165,12 +165,7 @@ bool CLight::FrustumPick(const CFrustum& frustum, const Fmatrix& parent){
     return (frustum.testSphere(m_D3D.position,VIS_RADIUS))?true:false;
 }
 
-bool CLight::RTL_Pick(
-	float& distance,
-	Fvector& start,
-	Fvector& direction,
-	Fmatrix& parent, SPickInfo* pinf )
-{
+bool CLight::RayPick(float& distance, Fvector& start, Fvector& direction, Fmatrix& parent, SRayPickInfo* pinf){
 	Fvector ray2;
 	ray2.sub( m_D3D.position, start );
 

@@ -5,8 +5,6 @@
 #define _INCDEF_Scene_H_
 
 #include "SceneObject.h";
-#include "cl_defs.h";
-#include "cl_rapid.h";
 #include "SceneClassList.h"
 #include "SceneGraph.h"
 #include "Communicate.h"
@@ -28,19 +26,10 @@ class CDPatchSystem;
 class CInifile;
 class CStream;
 class CFS_Base;
-
-struct SPickInfo{
-    CEditObject*   obj;
-    CEditMesh*mesh;
-    Fvector     pt;
-    RAPID::raypick_info rp_inf;
-    SPickInfo(){Reset();}
-    void __forceinline Reset(){ ZeroMemory(this,sizeof(SPickInfo));rp_inf.range = 5000;}
-};
 /*
 int __cdecl _CompareByDist( const void *a, const void *b)
 {
-    return ((SPickInfo*)a)->rp_inf.range - ((SPickInfo*)b)->rp_inf.range;
+    return ((SRayPickInfo*)a)->rp_inf.range - ((SRayPickInfo*)b)->rp_inf.range;
 }
 */
 
@@ -104,7 +93,7 @@ public:
     b_params    m_BuildParams;
 
     vector<CLight*> frame_light;
-//    CList<SPickInfo> pickFaces;
+//    CList<SRayPickInfo> pickFaces;
 protected:
 	bool m_Valid;
 	int m_Locked;
@@ -149,27 +138,30 @@ public:
 	IC int ObjCount           (EObjClass cat){ return ListObj(cat).size(); }
 	int ObjCount 			        ();
 
-	void Render                     ( Fmatrix *_Camera );
-	void Update                     ( float dT );
+	void Render                     (Fmatrix *_Camera);
+	void Update                     (float dT);
 
-	int AddToSnapList				( );
-    int SetSnapList					( );
-    void ClearSnapList				( );
-    void UpdateSnapList 			( );
-    
-	void AddObject                  ( SceneObject* object, bool bManual=true );
-	void RemoveObject               ( SceneObject* object, bool bManual=true );
-    bool ContainsObject             ( SceneObject* object, EObjClass classfilter );
-	SceneObject *RTL_Pick           ( const Fvector& start, const Fvector& direction, EObjClass classfilter, SPickInfo* pinf, bool bDynamicTest, bool bUseSnapList);
-	int BoxPickSelect               ( bool flag, EObjClass classfilter=OBJCLASS_DUMMY);
-	int SelectObjects               ( bool flag, EObjClass classfilter=OBJCLASS_DUMMY);
-	int LockObjects               	( bool flag, EObjClass classfilter=OBJCLASS_DUMMY, bool bAllowSelectionFlag=false, bool bSelFlag=true );
-	int ShowObjects                 ( bool flag, EObjClass classfilter=OBJCLASS_DUMMY, bool bAllowSelectionFlag=false, bool bSelFlag=true );
-	int InvertSelection             ( EObjClass classfilter );
-	int SelectionCount              ( bool testflag, EObjClass classfilter );
-	int RemoveSelection             ( EObjClass classfilter );
-	int CutSelection                ( EObjClass classfilter );
-	int CopySelection               ( EObjClass classfilter );
+	int AddToSnapList				();
+    int SetSnapList					();
+    void ClearSnapList				();
+    void UpdateSnapList 			();
+
+	void AddObject                  (SceneObject* object, bool bManual=true);
+	void RemoveObject               (SceneObject* object, bool bManual=true);
+    bool ContainsObject             (SceneObject* object, EObjClass classfilter);
+
+	SceneObject *RayPick           	(const Fvector& start, const Fvector& dir, EObjClass classfilter, SRayPickInfo* pinf, bool bDynamicTest, bool bUseSnapList);
+	int BoxPick						(const Fbox& box, SBoxPickInfoVec& pinf, bool bUseSnapList);
+
+	int FrustumSelect               (bool flag, EObjClass classfilter=OBJCLASS_DUMMY);
+	int SelectObjects               (bool flag, EObjClass classfilter=OBJCLASS_DUMMY);
+	int LockObjects               	(bool flag, EObjClass classfilter=OBJCLASS_DUMMY, bool bAllowSelectionFlag=false, bool bSelFlag=true);
+	int ShowObjects                 (bool flag, EObjClass classfilter=OBJCLASS_DUMMY, bool bAllowSelectionFlag=false, bool bSelFlag=true);
+	int InvertSelection             (EObjClass classfilter);
+	int SelectionCount              (bool testflag, EObjClass classfilter);
+	int RemoveSelection             (EObjClass classfilter);
+	int CutSelection                (EObjClass classfilter);
+	int CopySelection               (EObjClass classfilter);
 	int PasteSelection              ();
 
     void ResetAnimation				();
@@ -186,13 +178,13 @@ public:
     void UngroupAll					();
     st_GroupItem& GetGroupItem		(int idx);
 
-    void ZoomExtents				( BOOL bSelectedOnly );
-    
-	int FrustumPick					( const CFrustum& frustum, EObjClass classfilter, ObjectList& ol );
-	int SpherePick					( const Fvector& center, float radius, EObjClass classfilter, ObjectList& ol );
+    void ZoomExtents				(BOOL bSelectedOnly);
 
-	SceneObject* FindObjectByName	( char *name, EObjClass classfilter );
-    SceneObject* FindObjectByName   ( char *name, SceneObject* pass_object );
+	int FrustumPick					(const CFrustum& frustum, EObjClass classfilter, ObjectList& ol);
+	int SpherePick					(const Fvector& center, float radius, EObjClass classfilter, ObjectList& ol);
+
+	SceneObject* FindObjectByName	(char *name, EObjClass classfilter);
+    SceneObject* FindObjectByName   (char *name, SceneObject* pass_object);
     bool FindDuplicateName          ();
 
 	void UndoClear					();

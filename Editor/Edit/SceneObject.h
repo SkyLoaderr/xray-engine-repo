@@ -8,7 +8,7 @@
 
 #define CHUNK_OBJECT_BODY   0x7777
 //----------------------------------------------------
-struct SPickInfo;
+struct SRayPickInfo;
 struct FSChunkDef;
 class CFrustum;
 class CStream;
@@ -48,8 +48,7 @@ public:
 	virtual void 	Render			(Fmatrix& parent, ERenderPriority flag){};
 	virtual void 	RTL_Update		(float dT)	{};
 
-	virtual bool 	RTL_Pick		(float& distance,Fvector& start,Fvector& direction,
-		                			Fmatrix& parent, SPickInfo* pinf = NULL ){ return false; };
+	virtual bool 	RayPick			(float& dist, Fvector& start,Fvector& dir, Fmatrix& parent, SRayPickInfo* pinf=NULL){ return false; };
     virtual bool 	FrustumPick		(const CFrustum& frustum, const Fmatrix& parent){ return false; };
     virtual bool 	SpherePick		(const Fvector& center, float radius, const Fmatrix& parent){ return false; };
 

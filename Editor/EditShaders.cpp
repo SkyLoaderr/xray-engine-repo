@@ -113,8 +113,8 @@ void __fastcall TfrmEditShaders::OnIdle(){
                     UI->Device.m_Camera.MouseRayFromPoint(S, D, CP );
 
                     float dist=flt_max;
-                    SPickInfo pinf;
-                    if (O->RTL_Pick(dist,S,D,precalc_identity,&pinf)){
+                    SRayPickInfo pinf;
+                    if (O->RayPick(dist,S,D,precalc_identity,&pinf)){
 						m_TestExternSurface=pinf.mesh->GetSurfaceByFaceID(pinf.rp_inf.id);
 						if (!ls&0x0001) ebDropper->Down = false;
                         ebAssignShader->Enabled = true;

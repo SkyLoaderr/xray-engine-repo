@@ -41,7 +41,7 @@ bool __fastcall TUI_ControlDPatchSelect::Start(TShiftState Shift)
     if (!Shift.Contains(ssCtrl)) Scene->m_DetailPatches->Select( false );
 
     float d0 = 0;
-    bool bPick = Scene->m_DetailPatches->RTL_PickSelect(&d0, UI->m_CurrentRStart,UI->m_CurrentRNorm);
+    bool bPick = Scene->m_DetailPatches->RayPickSelect(d0, UI->m_CurrentRStart,UI->m_CurrentRNorm);
     bBoxSelection    = (bPick && Shift.Contains(ssCtrl)) || !bPick;
 
     if( bBoxSelection ){
@@ -63,7 +63,7 @@ bool __fastcall TUI_ControlDPatchSelect::End(TShiftState _Shift)
     if (bBoxSelection){
         UI->EnableSelectionRect( false );
         bBoxSelection = false;
-        Scene->m_DetailPatches->BoxPickSelect(true) ;
+        Scene->m_DetailPatches->FrustumSelect(true) ;
         Scene->UndoSave();
     }
     return true;
@@ -107,7 +107,7 @@ void TUI_ControlDPatchAdd::GenerateDPatch(){
 
 bool __fastcall TUI_ControlDPatchAdd::Start(TShiftState Shift)
 {
-    SPickInfo pinf;
+    SRayPickInfo pinf;
     bool bPickObject, bPickGround;
     if (fraDPatch->sTexture=="..."){
         Log->DlgMsg(mtError, "Link texture before add DPatch!");
@@ -117,7 +117,7 @@ bool __fastcall TUI_ControlDPatchAdd::Start(TShiftState Shift)
         Log->DlgMsg(mtError, "Set shader before add DPatch!");
         return false;
     }
-    bPickObject = !!Scene->RTL_Pick( UI->m_CurrentRStart,UI->m_CurrentRNorm, OBJCLASS_EDITOBJECT, &pinf, false, true);
+    bPickObject = !!Scene->RayPick( UI->m_CurrentRStart,UI->m_CurrentRNorm, OBJCLASS_EDITOBJECT, &pinf, false, true);
     if (!bPickObject) bPickGround = UI->PickGround(pinf.pt,UI->m_CurrentRStart,UI->m_CurrentRNorm);
     if (bPickObject||bPickGround){
         Scene->m_DetailPatches->Select(false);

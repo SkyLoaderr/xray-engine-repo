@@ -99,7 +99,7 @@ bool CAITPoint::FrustumPick(const CFrustum& frustum, const Fmatrix& parent){
 }
 //----------------------------------------------------
 
-bool CAITPoint::RTL_Pick(float& distance, Fvector& S, Fvector& D, Fmatrix& parent, SPickInfo* pinf){
+bool CAITPoint::RayPick(float& distance, Fvector& S, Fvector& D, Fmatrix& parent, SRayPickInfo* pinf){
 	Fvector transformed;
 	parent.transform_tiny(transformed, m_Position);
 

@@ -411,12 +411,7 @@ bool CSector::FrustumPick(const CFrustum& frustum, const Fmatrix& parent){
 	return false;
 }
 
-bool CSector::RTL_Pick(
-	float& distance,
-	Fvector& start,
-	Fvector& direction,
-	Fmatrix& parent, SPickInfo* pinf )
-{
+bool CSector::RayPick(float& distance, Fvector& start, Fvector& direction, Fmatrix& parent, SRayPickInfo* pinf){
 	Fvector p[3];
     float u,v;
     float range;

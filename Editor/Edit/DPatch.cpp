@@ -112,7 +112,7 @@ void CDPatchSystem::Render( ){
     UI->Device.SetRS(D3DRENDERSTATE_CLIPPING, TRUE);
 }
 
-void CDPatchSystem::BoxPickSelect( bool flag ){
+void CDPatchSystem::FrustumSelect( bool flag ){
 	CFrustum frustum;
     if (!UI->SelectionFrustum(frustum)) return;
 
@@ -124,7 +124,7 @@ void CDPatchSystem::BoxPickSelect( bool flag ){
     UI->RedrawScene();
 }
 
-bool CDPatchSystem::RTL_PickSelect( float *distance, Fvector& start, Fvector& direction ){
+bool CDPatchSystem::RayPickSelect(float& dist, Fvector& start, Fvector& direction){
     bool b, bRes=false;
     for(PatchMapIt it=m_Patches.begin();it!=m_Patches.end(); it++){
         PatchVec& lst = it->second;
@@ -136,9 +136,11 @@ bool CDPatchSystem::RTL_PickSelect( float *distance, Fvector& start, Fvector& di
             if( d > 0  ){
                 float d2 = ray2.magnitude();
                 if( ((d2*d2-d*d) < ((*i).m_Range*(*i).m_Range)) && (d>(*i).m_Range) ){
-                    (*distance) = d;
-                    b = true;
-                    bRes=true;
+                	if (d<dist){
+                    	dist = d;
+	                    b = true;
+    	                bRes=true;
+                    }
                 }
             }
             (*i).m_Selected = b;

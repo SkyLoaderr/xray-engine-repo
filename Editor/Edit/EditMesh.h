@@ -10,7 +10,7 @@
 
 // refs
 struct st_Surface;
-struct SPickInfo;
+struct SRayPickInfo;
 struct CFrustum;
 struct FSChunkDef;
 
@@ -171,8 +171,8 @@ public:
 	void            Transform				(Fmatrix& parent);
 
     // pick routine
-	bool            Pick					(float& distance, Fvector& start, Fvector& direction,
-    										Fmatrix& parent, SPickInfo* pinf = NULL );
+	bool            RayPick					(float& dist, Fvector& start, Fvector& dir, Fmatrix& parent, SRayPickInfo* pinf = NULL);
+    void 			BoxPick					(const Fbox& box, Fmatrix& parent, SBoxPickInfoVec& pinf);
 	bool            FrustumPick				(const CFrustum& frustum, const Fmatrix& parent);
     void            FrustumPickFaces		(const CFrustum& frustum, Fmatrix& parent, DWORDVec& fl);
     void			CHullPickFaces			(PlaneVec& pl, Fmatrix& parent, DWORDVec& fl);

@@ -53,8 +53,8 @@ void TUI_ControlSectorAdd::AddFace(){
     m_Action = saAddFace;
     CSector* sector=(CSector*)fraSector->cbItems->Items->Objects[fraSector->cbItems->ItemIndex];
     VERIFY(sector);
-    SPickInfo pinf;
-    if (Scene->RTL_Pick( UI->m_CurrentRStart,UI->m_CurrentRNorm, OBJCLASS_EDITOBJECT, &pinf, false, false)){
+    SRayPickInfo pinf;
+    if (Scene->RayPick( UI->m_CurrentRStart,UI->m_CurrentRNorm, OBJCLASS_EDITOBJECT, &pinf, false, false)){
 		if (fraSector->ebUseTies->Down){
             DWORDVec fl;
             pinf.mesh->GetTiesFaces(pinf.rp_inf.id, fl, fraSector->seSoftAngle->Value, fraSector->ebSoftRecursive->Down);
@@ -68,8 +68,8 @@ void TUI_ControlSectorAdd::AddFace(){
 void TUI_ControlSectorAdd::DelFace(){
     m_Action = saDelFace;
     CSector* sector=(CSector*)fraSector->cbItems->Items->Objects[fraSector->cbItems->ItemIndex];
-    SPickInfo pinf;
-    if (Scene->RTL_Pick( UI->m_CurrentRStart,UI->m_CurrentRNorm, OBJCLASS_EDITOBJECT, &pinf, false, false)){
+    SRayPickInfo pinf;
+    if (Scene->RayPick( UI->m_CurrentRStart,UI->m_CurrentRNorm, OBJCLASS_EDITOBJECT, &pinf, false, false)){
 		if (fraSector->ebUseTies->Down){
             DWORDVec fl;
             pinf.mesh->GetTiesFaces(pinf.rp_inf.id, fl, fraSector->seSoftAngle->Value, fraSector->ebSoftRecursive->Down);

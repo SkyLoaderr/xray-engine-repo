@@ -2,7 +2,7 @@ object fraLeftBar: TfraLeftBar
   Left = 0
   Top = 0
   Width = 443
-  Height = 748
+  Height = 558
   HorzScrollBar.Visible = False
   VertScrollBar.Increment = 34
   VertScrollBar.Size = 13
@@ -856,7 +856,7 @@ object fraLeftBar: TfraLeftBar
         OnClick = TargetClick
       end
       object ebTargetDPatch: TExtBtn
-        Left = 3
+        Left = 2
         Top = 196
         Width = 120
         Height = 15

@@ -2,7 +2,6 @@
 #pragma hdrstop
 USERES("ed.res");
 USE("!.txt", File);
-USEOBJ("ed_debug\_math.obj");
 USEUNIT("edit\Texture.cpp");
 USEUNIT("edit\Library.cpp");
 USEUNIT("edit\SceneObject.cpp");
@@ -70,7 +69,6 @@ USEFORM("SceneProperties.cpp", frmSceneProperties);
 USEFORM("ObjectList.cpp", frmObjectList);
 USEFORM("EditorPref.cpp", frmEditorPreferences);
 USEFORM("Splash.cpp", frmSplash);
-USEUNIT("Statistic.cpp");
 USEUNIT("Cursor3D.cpp");
 USEFORM("main.cpp", frmMain);
 USELIB("lib\cg32.lib");
@@ -135,7 +133,6 @@ USEUNIT("edit\DetailObjects.cpp");
 USEFORM("FrameDetObj.cpp", fraDetailObject); /* TFrame: File Type */
 USEUNIT("shared\xr_ini.cpp");
 USE("shared\Communicate.h", File);
-USEOBJ("ed_debug\cpuid.obj");
 USEUNIT("edit\ColorPicker.cpp");
 USEUNIT("edit\Occluder.cpp");
 USEFORM("FrameOccluder.cpp", fraOccluder); /* TFrame: File Type */
@@ -164,6 +161,9 @@ USEUNIT("edit\UI_SoundTools.cpp");
 USEUNIT("edit\ui_tools.cpp");
 USEUNIT("edit\ELight.cpp");
 USEUNIT("shared\FS.cpp");
+USEUNIT("edit\Statistic.cpp");
+USEOBJ("ed_debug\_math.obj");
+USEOBJ("ed_debug\cpuid.obj");
 //---------------------------------------------------------------------------
 #include "main.h"
 #include "splash.h"

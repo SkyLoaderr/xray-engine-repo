@@ -98,8 +98,7 @@ public:
 	IC int 			height			(){ return m_Height; }
     IC int 			alpha			(){ return m_AlphaPresent;}
     IC bool			GetPixel		(DWORD& clr, int x, int y){
-    	if (!Load()) return false;
-        if ((x>m_Width)||(y>m_Height)||(x<0)||(y<0)) return false;
+    	if (!Load()||(x>=m_Width)||(y>=m_Height)||(x<0)||(y<0)) return false;
         clr=m_Pixels[y*m_Width+x];
         return true;
     }

@@ -57,7 +57,7 @@ void CGlow::Render( Fmatrix& parent, ERenderPriority flag ){
     if (flag==rpAlphaNormal){
     	// определяем параметры для RayPick
     	Fvector D;
-        SPickInfo pinf;
+        SRayPickInfo pinf;
         D.sub(UI->Device.m_Camera.GetPosition(),m_Position); 
         pinf.rp_inf.range = D.magnitude();
         if (pinf.rp_inf.range) D.div(pinf.rp_inf.range);
@@ -65,7 +65,7 @@ void CGlow::Render( Fmatrix& parent, ERenderPriority flag ){
 		UI->Device.SetTransform(D3DTRANSFORMSTATE_WORLD,precalc_identity);
         if (UI->Device.m_Frustum.testSphere(m_Position,m_Range)){
         	// рендерим Glow
-//        	if (!Scene->RTL_Pick(m_Position,D,OBJCLASS_EDITOBJECT,&pinf)){
+//        	if (!Scene->RayPick(m_Position,D,OBJCLASS_EDITOBJECT,&pinf)){
                 if (m_GShader){	UI->Device.Shader.Set(m_GShader);
                 }else{			UI->Device.Shader.Set(UI->Device.m_WireShader);}
                 m_RenderSprite.Render(m_Position,m_Range);
@@ -89,12 +89,7 @@ bool CGlow::FrustumPick(const CFrustum& frustum, const Fmatrix& parent){
     return (frustum.testSphere(m_Position,m_Range))?true:false;
 }
 
-bool CGlow::RTL_Pick(
-	float& distance,
-	Fvector& start,
-	Fvector& direction,
-	Fmatrix& parent, SPickInfo* pinf )
-{
+bool CGlow::RayPick(float& distance, Fvector& start, Fvector& direction, Fmatrix& parent, SRayPickInfo* pinf){
 	Fvector transformed;
 	parent.transform_tiny(transformed,m_Position);
 

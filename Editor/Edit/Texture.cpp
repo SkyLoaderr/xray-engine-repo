@@ -101,13 +101,17 @@ bool ETextureCore::GetParams(){
     else if (bBMP) 	{m_LoadName = bmp_name; bRes = GetBMPParams();}
 
     // load texture params
-    VERIFY(m_Thm);
-    if (!m_Thm->LoadTexParams())
-        m_Thm->CreateFromTexture(this);
-    
-//    if (bRes){		CheckVersionAndUpdateFiles();
-//    }else			Log->DlgMsg( mtError, "Error: File '%s' have unsupported texture format.", m_LoadName.c_str() );
+    if (bRes){
+	    VERIFY(m_Thm);
+    	if (!m_Thm->GetTextureParams()){
+        	m_Thm->CreateFromTexture(this);
+            Unload();
+        }
 
+	//    if (bRes){		CheckVersionAndUpdateFiles();
+	//    }else			Log->DlgMsg( mtError, "Error: File '%s' have unsupported texture format.", m_LoadName.c_str() );
+
+    }
 	m_bLoadFailed=!bRes;
 
 	return bRes;
@@ -117,9 +121,9 @@ bool ETextureCore::GetParams(){
 bool ETextureCore::Load(){
     if (!Valid()) return false;
 	if (IsLoading()) return true;
-    
+
     VERIFY(!m_LoadName.IsEmpty());
-    
+
     AnsiString ext = ExtractFileExt(m_LoadName).LowerCase();
     if (ext==".tga") return LoadTGA();
     if (ext==".bmp") return LoadBMP();

@@ -274,8 +274,8 @@ void __fastcall TfrmPropertiesObject::OnIdle(){
                 UI->Device.m_Camera.MouseRayFromPoint(S, D, CP );
 
                 float dist=flt_max;
-                SPickInfo pinf;
-                if (m_EditObject->RTL_Pick(dist,S,D,precalc_identity,&pinf)){
+                SRayPickInfo pinf;
+                if (m_EditObject->RayPick(dist,S,D,precalc_identity,&pinf)){
 					if (pcObjects->ActivePage==tsMeshes){
  	                   	tvMeshes->Selected = tvMeshes->Items->LookForItem(0,pinf.mesh->GetName(),0,0,false,true,false,false,true);
                         tvMeshes->EnsureVisible(tvSurfaces->Selected);

@@ -53,11 +53,11 @@ void __fastcall TfrmEditLibrary::EditLibrary()
     Show();
 }
 //---------------------------------------------------------------------------
-SceneObject* __fastcall TfrmEditLibrary::RTL_Pick(const Fvector& start, const Fvector& direction, SPickInfo* pinf){
+SceneObject* __fastcall TfrmEditLibrary::RayPick(const Fvector& start, const Fvector& direction, SRayPickInfo* pinf){
     CEditObject* O = m_SelectedObject->GetReference();
     if (O){
     	float dist=flt_max;
-    	O->RTL_Pick(dist,start,direction,precalc_identity,pinf);
+    	O->RayPick(dist,start,direction,precalc_identity,pinf);
         return O;
     }
     return 0;

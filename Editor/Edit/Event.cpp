@@ -121,12 +121,7 @@ bool CEvent::FrustumPick(const CFrustum& frustum, const Fmatrix& parent){
     return false;
 }
 
-bool CEvent::RTL_Pick(
-	float& distance,
-	Fvector& start,
-	Fvector& direction,
-	Fmatrix& parent, SPickInfo* pinf )
-{
+bool CEvent::RayPick(float& distance, Fvector& start, Fvector& direction, Fmatrix& parent, SRayPickInfo* pinf){
     float range;
     bool bPick=false;
 

@@ -455,23 +455,38 @@ bool CEditObject::SpherePick(const Fvector& center, float radius, const Fmatrix&
     return false;
 }
 
-bool CEditObject::RTL_Pick(float& dist, Fvector& S, Fvector& D, Fmatrix& parent, SPickInfo* pinf){
+bool CEditObject::RayPick(float& dist, Fvector& S, Fvector& D, Fmatrix& parent, SRayPickInfo* pinf){
     if (!bLibItem&&!UI->Device.m_Frustum.testSphere(m_Center,m_fRadius)) return false;
 
 	bool picked = false;
 
 	if(IsReference()){
-		picked = m_LibRef->RTL_Pick( dist, S, D, mTransform, pinf );
+		picked = m_LibRef->RayPick( dist, S, D, mTransform, pinf );
         if (pinf&&picked) pinf->obj = this;
 	}else{
     	Fmatrix matrix;
         matrix.mul(parent, mTransform);
 		for(EditMeshIt m = m_Meshes.begin();m!=m_Meshes.end();m++)
-            if( (*m)->Pick( dist, S, D, matrix, pinf ) )
+            if( (*m)->RayPick( dist, S, D, matrix, pinf ) )
             	picked = true;
 	}
 
 	return picked;
+}
+
+void CEditObject::BoxPick(const Fbox& box, Fmatrix& parent, SBoxPickInfoVec& pinf){
+	if(IsReference()){
+    	int offs = pinf.size();
+		m_LibRef->BoxPick(box,mTransform,pinf);
+        if (pinf.size()>offs)
+        	for (SBoxPickInfoIt it=pinf.begin()+offs; it!=pinf.end(); it++)
+            	it->obj=this;
+	}else{
+    	Fmatrix matrix;
+        matrix.mul(parent, mTransform);
+		for(EditMeshIt m = m_Meshes.begin();m!=m_Meshes.end();m++)
+            (*m)->BoxPick(box, matrix, pinf);
+	}
 }
 
 void CEditObject::Move(Fvector& amount){

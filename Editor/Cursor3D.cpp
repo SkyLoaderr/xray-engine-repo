@@ -42,13 +42,13 @@ void C3DCursor::SetColor(Fcolor& c){
 //#define UP_OFFS 1
 void C3DCursor::GetPickPoint (Fvector& src, Fvector& dst, Fvector* N){
     Fvector start;
-    SPickInfo pinf;
+    SRayPickInfo pinf;
     start.set(src); start.y+=brush_up_depth;
     pinf.rp_inf.range = brush_up_depth+brush_dn_depth;
     pinf.pt.set(src);
     Fvector pick_dir;
     pick_dir.set(0,-1,0);
-    if(Scene->RTL_Pick(start, pick_dir, OBJCLASS_EDITOBJECT, &pinf, false, true)){
+    if(Scene->RayPick(start, pick_dir, OBJCLASS_EDITOBJECT, &pinf, false, true)){
         dst.set(pinf.pt);
         if (N) N->mknormal(pinf.rp_inf.p[0], pinf.rp_inf.p[1], pinf.rp_inf.p[2]);
     }else{
@@ -60,7 +60,7 @@ void C3DCursor::GetPickPoint (Fvector& src, Fvector& dst, Fvector* N){
 
 void C3DCursor::Render(){
     if (m_Visible&&!UI->Device.m_Camera.IsMoving()){
-        SPickInfo pinf;
+        SRayPickInfo pinf;
         Fvector start, dir, N, D;
         POINT start_pt;
         Fvector2 pt;
@@ -135,7 +135,7 @@ void C3DCursor::Render(){
 //---------------------------------------------------------------------------
 
 bool C3DCursor::PrepareBrush(){
-    SPickInfo pinf;
+    SRayPickInfo pinf;
     bool bPickObject, bPickGround;
     Fvector N, D;
     POINT start_pt;
@@ -143,7 +143,7 @@ bool C3DCursor::PrepareBrush(){
     GetCursorPos(&start_pt); start_pt=UI->GetD3DWindow()->ScreenToClient(start_pt);
     pt.set(float(start_pt.x),float(start_pt.y));
     UI->Device.m_Camera.MouseRayFromPoint(brush_start,brush_dir,pt);
-    bPickObject = !!Scene->RTL_Pick( brush_start, brush_dir, OBJCLASS_EDITOBJECT, &pinf, false, true);
+    bPickObject = !!Scene->RayPick( brush_start, brush_dir, OBJCLASS_EDITOBJECT, &pinf, false, true);
     if (!bPickObject) bPickGround = UI->PickGround(pinf.pt, brush_start, brush_dir);
     if (bPickObject||bPickGround){
         N.set(0,1,0); D.set(0,0,1);
@@ -157,7 +157,7 @@ bool C3DCursor::PrepareBrush(){
 
 void C3DCursor::GetRandomBrushPos(Fvector& pos, Fvector& norm){
     Fvector p, start, dir;
-    SPickInfo pinf;
+    SRayPickInfo pinf;
     float s_a = Random.randF(PI_MUL_2);
     float dist = sqrtf(Random.randF())*brush_radius;
     p.set(cosf(s_a)*dist, sinf(s_a)*dist, 0);

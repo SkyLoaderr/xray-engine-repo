@@ -14,6 +14,8 @@
 #include "Scene.h"
 #include "EditorPref.h"
 #include "leftbar.h"
+#include "cl_intersect.h"
+#include "DetailFormat.h"
 
 #define DOALT_QUANT 					63.f
 
@@ -71,9 +73,27 @@ bool CDOCluster::AppendCluster(int density){
 //----------------------------------------------------
 static FloatVec alt;
 static DWORDVec clr;
+static Fvector down_vec={0.f,-1.f,0.f};
+IC bool TestTris(CEditMesh*& M, int& id, float& h, float& u, float& v, const Fvector& start, SBoxPickInfoVec& tris){
+	h	= flt_max;
+    id	= -1;
+	for (SBoxPickInfoIt it=tris.begin(); it!=tris.end(); it++){
+    	float range;
+		if (RAPID::TestRayTri(start,down_vec,it->bp_inf.p,u,v,range,true))
+        	if (range<h){
+            	h	= range;
+                id 	= it->bp_inf.id;
+                M	= it->mesh;
+            }
+    }
+    if (id>=0){
+    	h = start.y-h;
+		return true;
+    }
+    return false;
+}
 void CDOCluster::Update(){
-	Fvector pos,dir;
-    dir.set(0.f,-1.f,0.f);
+	Fvector pos;
     int cnt = Scene->m_LevelOp.m_DOClusterSize*m_Density;
     int cnt2 = cnt*cnt;
     float cl_size = Scene->m_LevelOp.m_DOClusterSize;
@@ -84,35 +104,47 @@ void CDOCluster::Update(){
     m_MinHeight = flt_max;
     m_MaxHeight = flt_min;
     pos.x = m_Position.x-cl_size*0.5f+delta*.5f;
+
+    //
+    Fbox bb;
+    SBoxPickInfoVec pinf;
+    float h_size = cl_size*0.5f;
+    bb.set(m_Position,m_Position);
+    bb.min.x-=h_size; bb.min.y-=offs; bb.min.z-=h_size;
+    bb.max.x+=h_size; bb.max.y+=offs; bb.max.z+=h_size;
+
+    bool bPick = !!Scene->BoxPick(bb,pinf,fraLeftBar->ebEnableSnapList->Down);
+
     for (int x=0; x<cnt; x++,pos.x+=delta){
 	    pos.z = m_Position.z-cl_size*0.5f+delta*.5f;
 	    for (int z=0; z<cnt; z++,pos.z+=delta){
         	pos.y = m_Position.y+offs;
-            SPickInfo pinf;
-            if (Scene->RTL_Pick(pos, dir, OBJCLASS_EDITOBJECT, &pinf, false, fraLeftBar->ebEnableSnapList->Down)){
-				clr[x*cnt+z]=DetermineColor(pinf);
-                alt[x*cnt+z]=pinf.pt.y;
-                if (pinf.pt.y>m_MaxHeight) m_MaxHeight = pinf.pt.y;
-                if (pinf.pt.y<m_MinHeight) m_MinHeight = pinf.pt.y;
+			float H,U,V;
+            int id;
+            CEditMesh* M;
+            if (bPick&&TestTris(M,id,H,U,V,pos,pinf)){
+				clr[x*cnt+z]=DetermineColor(M,id,U,V);
+                alt[x*cnt+z]=H;
+                if (H>m_MaxHeight) m_MaxHeight = H;
+                if (H<m_MinHeight) m_MinHeight = H;
             }else{
 				alt[x*cnt+z]=0;
             }
         }
     }
-    float sz = m_MaxHeight-m_MinHeight;
+    float sz = m_MaxHeight-m_MinHeight+EPS;
     for (int k=0; k<cnt2; k++) m_Objects[k].m_Alt = DO_PACK(alt[k],m_MinHeight,sz);
 }
 //----------------------------------------------------
-DWORD CDOCluster::DetermineColor(const SPickInfo& pinf){
-	const RAPID::raypick_info& rpinf = pinf.rp_inf;
+DWORD CDOCluster::DetermineColor(CEditMesh* M, int id, float u, float v){
     // barycentric coords
     // note: W,U,V order
     Fvector B;
-    B.set(1.0f - rpinf.u - rpinf.v,rpinf.u,rpinf.v);
+    B.set(1.0f - u - v,u,v);
 
     // calc UV
     const Fvector2* TC[3];
-    st_Surface* surf = pinf.mesh->GetFaceTC(rpinf.id,TC);
+    st_Surface* surf = M->GetFaceTC(id,TC);
     Fvector2 uv;
     uv.x = TC[0]->x*B.x + TC[1]->x*B.y + TC[2]->x*B.z;
     uv.y = TC[0]->y*B.x + TC[1]->y*B.y + TC[2]->y*B.z;
@@ -187,7 +219,7 @@ void CDOCluster::DrawCluster(Fcolor& c){
     V.resize(cnt2,v);
 
     UI->Device.RenderNearer(0.001f);
-    float sz = m_MaxHeight-m_MinHeight;
+    float sz = m_MaxHeight-m_MinHeight+EPS;
     pos.x = m_Position.x-cl_size*0.5f+delta*.5f;
     for (int x=0; x<cnt; x++,pos.x+=delta){
 	    pos.z = m_Position.z-cl_size*0.5f+delta*.5f;
@@ -229,7 +261,7 @@ bool CDOCluster::FrustumPick(const CFrustum& frustum, const Fmatrix& parent){
 }
 //----------------------------------------------------
 
-bool CDOCluster::RTL_Pick(float& distance, Fvector& S, Fvector& D, Fmatrix& parent, SPickInfo* pinf){
+bool CDOCluster::RayPick(float& distance, Fvector& S, Fvector& D, Fmatrix& parent, SRayPickInfo* pinf){
 /*	Fvector transformed;
 	parent.transform_tiny(transformed, m_Position);
 

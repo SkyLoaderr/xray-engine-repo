@@ -54,7 +54,7 @@ class CDOCluster: public SceneObject, public SDOClusterDef{
 
     void            DrawCluster		(Fcolor& c);
     void			DrawObjects		();
-	DWORD 			DetermineColor	(const SPickInfo& pinf);
+	DWORD 			DetermineColor	(CEditMesh* mesh, int id, float u, float v);
     void			ChangeDensity	(int new_density);
 public:
 	                CDOCluster		();
@@ -65,7 +65,7 @@ public:
     const Fvector&	Position		(){return m_Position;}
 
 	virtual void    Render      	(Fmatrix& parent, ERenderPriority flag);
-	virtual bool    RTL_Pick    	(float& distance, Fvector& S, Fvector& D, Fmatrix& parent, SPickInfo* pinf = NULL);
+	virtual bool    RayPick		   	(float& distance, Fvector& S, Fvector& D, Fmatrix& parent, SRayPickInfo* pinf = NULL);
     virtual bool 	FrustumPick		(const CFrustum& frustum, const Fmatrix& parent);
 	virtual void    Move        	(Fvector& amount);
   	virtual bool 	Load			(CStream&);
@@ -74,6 +74,16 @@ public:
 
     bool     		AppendCluster	(int density);
 	void 			Update			();
+};
+
+
+class CDetailManager{
+	DetailHeader		header;
+    CQList<DetailSlot> 	slots;
+	
+public:
+						CDetailManager();
+    virtual 			~CDetailManager();
 };
 #endif /*_INCDEF_DetailObjects_H_*/
 

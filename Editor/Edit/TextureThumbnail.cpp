@@ -29,10 +29,8 @@ ETextureThumbnail::~ETextureThumbnail(){
 }
 
 STextureParams* ETextureThumbnail::GetTextureParams(){
-	if (!m_TexParams){ 
-		m_TexParams = new STextureParams();
-    	LoadTexParams();
-        return m_TexParams;
+	if (!m_TexParams){
+        return LoadTexParams()?m_TexParams:0;
     }
     return m_TexParams;
 }
@@ -64,7 +62,7 @@ bool ETextureThumbnail::CreateFromData(DWORDVec& p, int width, int height, int s
         int H[THUMB_HEIGHT];
         m_Pixels.resize(THUMB_SIZE);
         for (int w=0; w<THUMB_WIDTH; w++){ 
-            float f=float(w)/float(THUMB_WIDTH); 
+            float f=float(w)/float(THUMB_WIDTH);
             W[w]=f*width;
         }
         for (int h=0; h<THUMB_HEIGHT; h++) {
@@ -91,8 +89,7 @@ bool ETextureThumbnail::CreateFromTexture(ETextureCore* tex){
 	STextureParams* TP=GetTextureParams();
     if (FS.Exist(name.c_str())){
         int src_age = FS.GetFileAge(name);
-        if (!tex->IsLoading()) tex->Load();
-        if (!tex->IsLoading()) return false;
+        if (!tex->Load()) return false;
         if (tex->alpha()) TP->fmt = STextureParams::tfDXT3;
         bRes = CreateFromData(tex->m_Pixels,tex->m_Width,tex->m_Height,src_age,false);
         if (bRes) m_bLoadFailed = false;
@@ -146,7 +143,7 @@ bool ETextureThumbnail::LoadTexParams(){
     // loading
 	AnsiString fn=m_LoadName;
     FS.m_TexturesThumbnail.Update(fn);
-    if (!FS.Exist(fn.c_str())){ 
+    if (!FS.Exist(fn.c_str())){
 		m_bLoadFailed = true;
     	return false;
     }
@@ -166,9 +163,9 @@ bool ETextureThumbnail::LoadTexParams(){
         return false;
     }
 
- 	STextureParams* TP=GetTextureParams();    
+	if (!m_TexParams) m_TexParams = new STextureParams;
     R_ASSERT(F.FindChunk(THM_CHUNK_TEXTUREPARAM));
-    F.Read(TP,sizeof(STextureParams));
+    F.Read(m_TexParams,sizeof(STextureParams));
     return true;
 }
 

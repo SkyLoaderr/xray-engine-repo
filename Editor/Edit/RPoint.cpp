@@ -72,12 +72,7 @@ bool CRPoint::FrustumPick(const CFrustum& frustum, const Fmatrix& parent){
     return (frustum.testSphere(m_Position,RPOINT_SIZE))?true:false;
 }
 
-bool CRPoint::RTL_Pick(
-	float& distance,
-	Fvector& start,
-	Fvector& direction,
-	Fmatrix& parent, SPickInfo* pinf )
-{
+bool CRPoint::RayPick(float& distance, Fvector& start, Fvector& direction, Fmatrix& parent, SRayPickInfo* pinf){
 	Fvector pos,ray2;
     pos.set(m_Position.x,m_Position.y+RPOINT_SIZE,m_Position.z);
 	ray2.sub( pos, start );

@@ -49,8 +49,8 @@ public:
     void            Clear       	();
 
 	void            Render      	();
-	bool            RTL_PickSelect	(float *distance, Fvector& start, Fvector& direction);
-	void            BoxPickSelect	(bool flag);
+	bool            RayPickSelect	(float& distance, Fvector& start, Fvector& direction);
+	void            FrustumSelect	(bool flag);
 	void 			Save			(CFS_Base&);
 	bool 			Load			(CStream&);
 	bool            GetBox      	(Fbox& box);

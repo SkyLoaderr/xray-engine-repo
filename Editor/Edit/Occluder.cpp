@@ -217,12 +217,7 @@ bool COccluder::FrustumPick(const CFrustum& frustum, const Fmatrix& parent){
     return false;
 }
 
-bool COccluder::RTL_Pick(
-	float& distance,
-	Fvector& start,
-	Fvector& direction,
-	Fmatrix& parent, SPickInfo* pinf )
-{
+bool COccluder::RayPick(float& distance, Fvector& start, Fvector& direction, Fmatrix& parent, SRayPickInfo* pinf){
     float range;
     bool bPick=false;
 
@@ -247,7 +242,7 @@ bool COccluder::SelectPoint(Fvector& start, Fvector& direction, bool bLeaveSel){
 	float distance=flt_max;
     UpdatePoints3D();
 	if (!bLeaveSel) m_SelPoints.clear();
-    if(RTL_Pick(distance,start, direction,precalc_identity,0)){
+    if(RayPick(distance,start, direction,precalc_identity,0)){
         Fvector I;
         I.direct(start,direction,distance);
         TfraOccluder* F = (TfraOccluder*)UI->m_Tools->GetFrame();

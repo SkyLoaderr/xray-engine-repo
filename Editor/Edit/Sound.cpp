@@ -69,12 +69,7 @@ bool CSound::FrustumPick(const CFrustum& frustum, const Fmatrix& parent){
     return (frustum.testSphere(m_Position,VIS_RADIUS))?true:false;
 }
 
-bool CSound::RTL_Pick(
-	float& distance,
-	Fvector& start,
-	Fvector& direction,
-	Fmatrix& parent, SPickInfo* pinf )
-{
+bool CSound::RayPick(float& distance, Fvector& start, Fvector& direction, Fmatrix& parent, SRayPickInfo* pinf){
 	Fvector transformed;
 	parent.transform_tiny(transformed,m_Position);
 

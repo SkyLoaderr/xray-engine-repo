@@ -91,7 +91,7 @@ bool __fastcall TUI_ControlDOSelect::Start(TShiftState Shift){
     if (Shift==ssRBOnly){UI->Command(COMMAND_SHOWCONTEXTMENU,parent_tool->ObjClass()); return false;}
     Scene->SelectObjects(false, cls);
 
-    CDOCluster *obj = (CDOCluster*)Scene->RTL_Pick( UI->m_CurrentRStart,UI->m_CurrentRNorm, cls, 0, true, false);
+    CDOCluster *obj = (CDOCluster*)Scene->RayPick( UI->m_CurrentRStart,UI->m_CurrentRNorm, cls, 0, true, false);
     bBoxSelection    = (obj && Shift.Contains(ssCtrl)) || !obj;
 
 	if( obj ) obj->Select(obj->Selected()?false:true);

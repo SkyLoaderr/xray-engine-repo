@@ -173,7 +173,7 @@ int EScene::ObjCount(){
 	return cnt;
 }
 
-int EScene::BoxPickSelect( bool flag, EObjClass classfilter ){
+int EScene::FrustumSelect( bool flag, EObjClass classfilter ){
 	CFrustum frustum;
     if (!UI->SelectionFrustum(frustum)) return 0;
 
@@ -333,29 +333,40 @@ int EScene::RemoveSelection( EObjClass classfilter ){
 	return count;
 }
 
-SceneObject *EScene::RTL_Pick(const Fvector& start, const Fvector& direction, EObjClass classfilter, SPickInfo* pinf, bool bDynamicTest, bool bUseSnapList){
+SceneObject *EScene::RayPick(const Fvector& start, const Fvector& direction, EObjClass classfilter, SRayPickInfo* pinf, bool bDynamicTest, bool bUseSnapList){
 	if( !valid() )
 		return 0;
 
 	float nearest_dist = flt_max;
 	SceneObject *nearest_object = 0;
 
-    // не убирать строку объекты тестируются отдельно
     for(ObjectPairIt it=m_Objects.begin(); it!=m_Objects.end(); it++){
 		ObjectList* lst=0;
     	if (it->first==OBJCLASS_EDITOBJECT)
         	 lst=(bUseSnapList&&fraLeftBar->ebEnableSnapList->Down&&!m_SnapObjects.empty())?&m_SnapObjects:&(it->second);
         else lst=&(it->second);
-        if ((classfilter==OBJCLASS_DUMMY)||(classfilter==(*it).first))
-            for(ObjectIt _F=lst->begin();_F!=lst->end();_F++){
-                if((*_F)->Visible()){
-                    if((classfilter==OBJCLASS_EDITOBJECT)&&!bDynamicTest&&((CEditObject*)(*_F))->IsDynamic()) continue;
-                    if((*_F)->RTL_Pick(nearest_dist,start,direction,precalc_identity,pinf))
-                        nearest_object = (*_F);
+        if ((classfilter==OBJCLASS_DUMMY)||(classfilter==(*it).first)){
+		    if (classfilter==OBJCLASS_DPATCH){
+            	m_DetailPatches->RayPickSelect(nearest_dist,start,direction);
+            }else{
+                for(ObjectIt _F=lst->begin();_F!=lst->end();_F++){
+                    if((*_F)->Visible()){
+                        if((classfilter==OBJCLASS_EDITOBJECT)&&!bDynamicTest&&((CEditObject*)(*_F))->IsDynamic()) continue;
+                        if((*_F)->RayPick(nearest_dist,start,direction,precalc_identity,pinf))
+                            nearest_object = (*_F);
+                    }
                 }
             }
+        }
     }
 	return nearest_object;
+}
+
+int EScene::BoxPick(const Fbox& box, SBoxPickInfoVec& pinf, bool bUseSnapList){
+	ObjectList& lst=(bUseSnapList&&fraLeftBar->ebEnableSnapList->Down&&!m_SnapObjects.empty())?m_SnapObjects:ListObj(OBJCLASS_EDITOBJECT);
+	for(ObjectIt _F=lst.begin();_F!=lst.end();_F++)
+        ((CEditObject*)*_F)->BoxPick(box,precalc_identity,pinf);
+    return pinf.size();
 }
 
 int EScene::SelectionCount(bool testflag, EObjClass classfilter){
@@ -969,7 +980,7 @@ void EScene::SynchronizeObjects(){
 }
 
 void EScene::OnShowHint(AStringVec& dest){
-    SceneObject* obj = RTL_Pick(UI->m_CurrentRStart,UI->m_CurrentRNorm,UI->CurrentClassID(),0,true,false);
+    SceneObject* obj = RayPick(UI->m_CurrentRStart,UI->m_CurrentRNorm,UI->CurrentClassID(),0,true,false);
     if (obj) obj->OnShowHint(dest);
 }
 

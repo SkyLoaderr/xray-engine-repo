@@ -6,6 +6,30 @@
 #define _INCDEF_SceneClassList_H_
 //----------------------------------------------------
 
+#include "cl_defs.h";
+#include "cl_rapid.h";
+
+class CEditObject;
+class CEditMesh;
+
+struct SRayPickInfo{
+    CEditObject*	obj;
+    CEditMesh*		mesh;
+    Fvector     	pt;
+    RAPID::raypick_info rp_inf;
+    SRayPickInfo	(){Reset();}
+    IC void Reset	(){ ZeroMemory(this,sizeof(SRayPickInfo));rp_inf.range = 5000;}
+};
+struct SBoxPickInfo{
+    CEditObject*	obj;
+    CEditMesh*		mesh;
+    RAPID::bboxpick_info bp_inf;
+    SBoxPickInfo	(){Reset();}
+    IC void Reset	(){ZeroMemory(this,sizeof(SBoxPickInfo));}
+};
+DEFINE_VECTOR(SBoxPickInfo,SBoxPickInfoVec,SBoxPickInfoIt);
+
+//----------------------------------------------------
 class SceneObject;
 
 enum EObjClass{

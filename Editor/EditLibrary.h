@@ -120,7 +120,7 @@ public:		// User declarations
     void __fastcall OnRender();
     void __fastcall OnIdle();
     void __fastcall ZoomObject();
-	SceneObject *RTL_Pick(const Fvector& start, const Fvector& direction, SPickInfo* pinf);
+	SceneObject *RayPick(const Fvector& start, const Fvector& direction, SRayPickInfo* pinf);
 };
 //---------------------------------------------------------------------------
 extern PACKAGE TfrmEditLibrary *frmEditLibrary;

@@ -52,7 +52,7 @@ void CEditMesh::RecurseTri(int id)
 //----------------------------------------------------
 
 void CEditMesh::GetTiesFaces(int start_id, DWORDVec& fl, float fSoftAngle, bool bRecursive){
-    R_ASSERT(start_id<m_Faces.size());
+    R_ASSERT(start_id<int(m_Faces.size()));
     m_fSoftAngle=cosf(deg2rad(fSoftAngle));
     if (!(m_LoadState&EMESH_LS_FNORMALS)) GenerateFNormals();
     VERIFY(m_FNormals.size());
@@ -70,13 +70,13 @@ void CEditMesh::GetTiesFaces(int start_id, DWORDVec& fl, float fSoftAngle, bool 
 }
 //----------------------------------------------------
 
-bool CEditMesh::Pick(float& distance, Fvector& start, Fvector& direction, Fmatrix& parent, SPickInfo* pinf){
+bool CEditMesh::RayPick(float& distance, Fvector& start, Fvector& direction, Fmatrix& parent, SRayPickInfo* pinf){
 	if (!m_Visible) return false;
 
     if (!m_CFModel) GenerateCFModel();
     float m_r = pinf?pinf->rp_inf.range:UI->ZFar();
 
-    XRC.RayPick(&parent, m_CFModel, start, direction, m_r);
+    XRC.RayPick	(&parent, m_CFModel, start, direction, m_r);
     float new_dist;
     if (XRC.GetMinRayPickDistance(new_dist)){
     	if (new_dist<distance){
@@ -91,6 +91,21 @@ bool CEditMesh::Pick(float& distance, Fvector& start, Fvector& direction, Fmatri
         }
     }
 	return false;
+}
+//----------------------------------------------------
+
+void CEditMesh::BoxPick(const Fbox& box, Fmatrix& parent, SBoxPickInfoVec& pinf){
+    if (!m_CFModel) GenerateCFModel();
+
+    XRC.BBoxCollide(parent, m_CFModel, precalc_identity, box);
+    int cc=XRC.GetBBoxContactCount();
+    if (cc){
+    	for (int i=0; i<cc; i++){
+        	pinf.push_back(SBoxPickInfo());
+            pinf.back().bp_inf 	= XRC.BBoxContact[i];
+            pinf.back().mesh    = this;
+        }
+    }
 }
 //----------------------------------------------------
 

@@ -101,7 +101,7 @@ bool __fastcall TUI_CustomControl::SelectStart(TShiftState Shift){
     if (Shift==ssRBOnly){ UI->Command(COMMAND_SHOWCONTEXTMENU,parent_tool->objclass); return false;}
     if (!Shift.Contains(ssCtrl)) Scene->SelectObjects( false, cls);
 
-    SceneObject *obj = Scene->RTL_Pick( UI->m_CurrentRStart,UI->m_CurrentRNorm, cls, 0, true, false);
+    SceneObject *obj = Scene->RayPick( UI->m_CurrentRStart,UI->m_CurrentRNorm, cls, 0, true, false);
     bBoxSelection    = (obj && Shift.Contains(ssCtrl)) || !obj;
 
     if( bBoxSelection ){
@@ -130,7 +130,7 @@ bool __fastcall TUI_CustomControl::SelectEnd(TShiftState _Shift)
     if (bBoxSelection){
         UI->EnableSelectionRect( false );
         bBoxSelection = false;
-        Scene->BoxPickSelect(true,fraLeftBar->ebIgnoreTarget->Down?OBJCLASS_DUMMY:parent_tool->objclass);
+        Scene->FrustumSelect(true,fraLeftBar->ebIgnoreTarget->Down?OBJCLASS_DUMMY:parent_tool->objclass);
     }
     return true;
 }

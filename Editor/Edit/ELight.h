@@ -51,8 +51,8 @@ public:
     void			CopyFrom	(CLight* src);
 
     // pick functions
-	virtual bool 	RTL_Pick	(float& distance, Fvector& start, Fvector& direction,
-								Fmatrix& parent, SPickInfo* pinf = NULL );
+	virtual bool 	RayPick		(float& distance, Fvector& start, Fvector& direction,
+								Fmatrix& parent, SRayPickInfo* pinf = NULL );
     virtual bool 	FrustumPick	(const CFrustum& frustum, const Fmatrix& parent);
 
     // placement functions

@@ -6,7 +6,7 @@
 
 #include "SceneObject.h"
 //----------------------------------------------------
-struct 	SPickInfo;
+struct 	SRayPickInfo;
 class 	CEditMesh;
 class 	CFrustum;
 class 	Shader;
@@ -188,7 +188,8 @@ public:
 	void		    LightenObject			();
 
     // pick methods
-	virtual bool 	RTL_Pick				(float& dist, Fvector& S, Fvector& D, Fmatrix& parent, SPickInfo* pinf=0);
+    void 			BoxPick					(const Fbox& box, Fmatrix& parent, SBoxPickInfoVec& pinf);
+	virtual bool 	RayPick					(float& dist, Fvector& S, Fvector& D, Fmatrix& parent, SRayPickInfo* pinf=0);
 	virtual bool 	FrustumPick				(const CFrustum& frustum, const Fmatrix& parent);
     virtual bool 	SpherePick				(const Fvector& center, float radius, const Fmatrix& parent);
 

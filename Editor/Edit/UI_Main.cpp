@@ -154,11 +154,11 @@ bool TUI::PickGround(Fvector& hitpoint, const Fvector& start, const Fvector& dir
     // pick object geometry
     if ((bSnap==-1)||(fraTopBar->ebOSnap->Down&&(bSnap==1))){
         bool bPickObject;
-        SPickInfo pinf;
+        SRayPickInfo pinf;
 	    EEditorState est = GetEState();
         switch(est){
-        case esEditLibrary:		bPickObject = !!frmEditLibrary->RTL_Pick(start,direction,&pinf); break;
-        case esEditScene:		bPickObject = !!Scene->RTL_Pick(start,direction,OBJCLASS_EDITOBJECT,&pinf,false,true); break;
+        case esEditLibrary:		bPickObject = !!frmEditLibrary->RayPick(start,direction,&pinf); break;
+        case esEditScene:		bPickObject = !!Scene->RayPick(start,direction,OBJCLASS_EDITOBJECT,&pinf,false,true); break;
         default: THROW;
         }
         if (bPickObject){
@@ -256,12 +256,12 @@ bool TUI::SelectionFrustum(CFrustum& frustum){
 	pt[2].set(max(x1,x2),max(y1,y2));
 	pt[3].set(min(x1,x2),max(y1,y2));
 
-    SPickInfo pinf;
+    SRayPickInfo pinf;
     for (int i=0; i<4; i++){
 	    Device.m_Camera.MouseRayFromPoint(st, d, pt[i]);
         if (frmEditorPreferences->cbBoxPickLimitedDepth->Checked){
 			pinf.rp_inf.range = Device.m_Camera.m_Zfar; // max pick range
-            if (Scene->RTL_Pick(st, d, OBJCLASS_EDITOBJECT, &pinf, false, false))
+            if (Scene->RayPick(st, d, OBJCLASS_EDITOBJECT, &pinf, false, false))
 	            if (pinf.rp_inf.range > depth) depth = pinf.rp_inf.range;
         }
     }
