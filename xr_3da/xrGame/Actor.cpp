@@ -730,9 +730,8 @@ void CActor::OnHUDDraw(CCustomHUD* hud)
 
 	CHUDManager* HUD = (CHUDManager*)hud;
 	CUI* pUI=HUD->GetUI();
-	pUI->OutHealth(iHealth,iArmor);
-	CWeapon* W = Weapons->ActiveWeapon();
-	pUI->OutWeapon	(W);
+	pUI->OutHealth	(iHealth,iArmor);
+	pUI->OutWeapon	(Weapons->ActiveWeapon());
 	pUI->SetHeading	(r_torso.yaw);
 	
 	char buf[128];
