@@ -393,9 +393,9 @@ default:NODEFAULT;
 	dJointSetAMotorParam(m_joint1,dParamStopERP3 ,axes[2].erp);
 	dJointSetAMotorParam(m_joint1,dParamStopCFM3 ,axes[2].cfm);
 /////////////////////////////////////////////////////////////////////
-	dJointSetAMotorParam(m_joint1,dParamFudgeFactor ,0.1f);
-	dJointSetAMotorParam(m_joint1,dParamFudgeFactor2 ,0.1f);
-	dJointSetAMotorParam(m_joint1,dParamFudgeFactor3 ,0.1f);
+	///dJointSetAMotorParam(m_joint1,dParamFudgeFactor ,0.1f);
+	//dJointSetAMotorParam(m_joint1,dParamFudgeFactor2 ,0.1f);
+	//dJointSetAMotorParam(m_joint1,dParamFudgeFactor3 ,0.1f);
 /////////////////////////////////////////////////////////////////////////////
 	dJointSetAMotorParam(m_joint1,dParamCFM ,m_cfm);
 	dJointSetAMotorParam(m_joint1,dParamCFM2 ,m_cfm);

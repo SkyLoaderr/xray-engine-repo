@@ -13,7 +13,7 @@
 class CPHElement;
 class CPHShell;
 class CPHFracture;
-
+struct SPHImpact;
 class CPHFracturesHolder;
 class CPHElement	:  
 	public	CPhysicsElement ,
@@ -149,7 +149,8 @@ public:																																				//
 	{																																				//
 		linear= k_l;																																//
 		angular=k_w;																																//
-	}																																				//
+	}	
+	virtual void			applyImpact						(const SPHImpact& impact);																																	//
 	virtual void			applyImpulseTrace				(const Fvector& pos, const Fvector& dir, float val,const u16 id)	;					//called anywhere ph state influent
 	virtual	void			set_DisableParams				(const SAllDDOParams& params)										;					//
 	virtual void			set_DynamicLimits				(float l_limit=default_l_limit,float w_limit=default_w_limit);							//aux (may not be)

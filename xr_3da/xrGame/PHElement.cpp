@@ -574,13 +574,27 @@ void	CPHElement::	applyImpulseTrace		(const Fvector& pos, const Fvector& dir, fl
 	dBodyAddForceAtRelPos(m_body, impulse.x,impulse.y,impulse.z,body_pos.x, body_pos.y, body_pos.z);
 	if(m_fratures_holder)
 	{
-		impulse.add(*((Fvector*)dBodyGetPosition(m_body)));
+		///impulse.add(*((Fvector*)dBodyGetPosition(m_body)));
 		m_fratures_holder->AddImpact(impulse,body_pos,m_shell->BoneIdToRootGeom(id));
 	}
 
 	BodyCutForce(m_body,m_l_limit,m_w_limit);
 }
-
+void CPHElement::applyImpact(const SPHImpact& I)
+{
+	Fvector pos;
+	pos.add(m_inverse_local_transform.c,I.point);
+	Fvector dir;
+	dir.set(I.force);
+	float val=I.force.magnitude();
+	
+	if(!fis_zero(val))
+	{
+		dir.mul(1.f/val);
+		applyImpulseTrace(pos,dir,val,I.geom);
+	}
+	
+}
 void CPHElement::InterpolateGlobalTransform(Fmatrix* m){
 	m_body_interpolation.InterpolateRotation(*m);
 	m_body_interpolation.InterpolatePosition(m->c);

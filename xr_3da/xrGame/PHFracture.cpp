@@ -20,6 +20,14 @@ CPHFracturesHolder::~CPHFracturesHolder()
 	m_impacts.clear();
 	m_feedbacks.clear();
 }
+void CPHFracturesHolder::ApplyImpactsToElement(CPHElement* E)
+{
+	PH_IMPACT_I i=m_impacts.begin(),e=m_impacts.end();
+	for(;e!=i;++i)
+	{
+		E->applyImpact(*i);
+	}
+}
 element_fracture CPHFracturesHolder::SplitFromEnd(CPHElement* element,u16 fracture)
 {
 	FRACTURE_I fract_i		=m_fractures.begin()+fracture;
@@ -54,11 +62,12 @@ element_fracture CPHFracturesHolder::SplitFromEnd(CPHElement* element,u16 fractu
 	new_element->SetTransform(current_transtform);
 
 
-	dBodyID new_element_body=new_element->get_body();
-	dBodyAddForce(new_element_body,fract_i->m_pos_in_element[0],
-										  fract_i->m_pos_in_element[1],
-										  fract_i->m_pos_in_element[2]);
-	BodyCutForce(new_element_body,default_l_limit,default_w_limit);
+	//dBodyID new_element_body=new_element->get_body();
+	//dBodyAddForce(new_element_body,fract_i->m_pos_in_element[0],
+	//									  fract_i->m_pos_in_element[1],
+	//									  fract_i->m_pos_in_element[2]);
+	ApplyImpactsToElement(new_element);
+	//BodyCutForce(new_element_body,default_l_limit,default_w_limit);
 	//dBodyAddTorque(new_element->get_body(),fract_i->m_break_force,
 	//									   fract_i->m_break_torque,
 	//									   fract_i->m_add_torque_z);
@@ -512,14 +521,16 @@ bool CPHFracture::Update(CPHElement* element)
 	//break_force.add(vtemp);
 	//vtemp.crossproduct(first_in_bone,first_part_torque);
 	//break_force.sub(vtemp);
-#ifdef DBG_BREAK		
-	float bfm_dbg=break_force.magnitude()*phBreakCommonFactor;
-#endif
-	if(m_break_force<break_force.magnitude()*phBreakCommonFactor)
+		
+	float bfm=break_force.magnitude()*phBreakCommonFactor;
+
+	if(m_break_force<bfm)
 	{
 		
+		second_part_force.mul(bfm/m_break_force);
 		m_pos_in_element.set(second_part_force);
-		m_pos_in_element.add(break_force);
+		
+		//m_pos_in_element.add(break_force);
 		m_break_force=second_part_torque.x;
 		m_break_torque=second_part_torque.y;
 		m_add_torque_z=second_part_torque.z;
@@ -529,7 +540,7 @@ bool CPHFracture::Update(CPHElement* element)
 #endif
 	}
 #ifdef DBG_BREAK
-Msg("bone_id %d break_torque - %f(max %f) break_force %f (max %f) breaked %d",m_bone_id,btm_dbg,m_break_torque,bfm_dbg,m_break_force,m_breaked);
+Msg("bone_id %d break_torque - %f(max %f) break_force %f (max %f) breaked %d",m_bone_id,btm_dbg,m_break_torque,bfm,m_break_force,m_breaked);
 #endif
 	return m_breaked;
 }

@@ -35,6 +35,7 @@ void				DistributeAdditionalMass	(u16 geom_num,const dMass& m);//
 void				SubFractureMass				(u16 fracture_num);
 void				AddImpact		(const Fvector& force,const Fvector& point,u16 id);
 PH_IMPACT_STORAGE&	Impacts			(){return m_impacts;}
+
 CPHFracture&		LastFracture	(){return m_fractures.back();}
 protected:
 private:
@@ -50,7 +51,7 @@ u16					AddFracture		(const CPHFracture& fracture);
 CPHFracture&		Fracture		(u16 num);
 void				PhTune			(dBodyID body);										//set feedback for joints called from PhTune of ShellSplitterHolder
 bool				PhDataUpdate	(CPHElement* element);										//collect joints and external impacts in fractures Update which set m_fractured; called from PhDataUpdate of ShellSplitterHolder returns true if has breaks
-
+void				ApplyImpactsToElement(CPHElement* element);
 };
 
 IC	void sub_diapasones(u16 &from1,u16 &to1,const u16 &from0,const u16 &to0)

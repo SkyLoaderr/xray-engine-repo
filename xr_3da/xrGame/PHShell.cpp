@@ -777,7 +777,8 @@ void CPHShell::AddElementRecursive(CPhysicsElement* root_e, u16 id,Fmatrix globa
 				}
 				if(J)
 				{
-					J->SetForceAndVelocity(joint_data.friction);
+					
+					J->SetForceAndVelocity(0.f);//joint_data.friction
 					SetJointRootGeom(root_e,J);
 					J->SetBoneID(id);
 					add_Joint	(J);
