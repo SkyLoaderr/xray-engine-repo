@@ -198,6 +198,9 @@ IC	void CPlanner::add_operator		(const _edge_type &operator_id,	_operator_ptr _o
 {
 	inherited::add_operator	(operator_id,_operator);
 	_operator->setup		(m_object,&m_storage);
+#ifdef LOG_ACTION
+	_operator->set_use_log	(m_use_log);
+#endif
 }
 
 TEMPLATE_SPECIALIZATION
@@ -205,6 +208,9 @@ IC	void CPlanner::add_evaluator	(const _condition_type &condition_id, _condition
 {
 	inherited::add_evaluator(condition_id,evaluator);
 	evaluator->setup		(m_object,&m_storage);
+#ifdef LOG_ACTION
+	evaluator->set_use_log	(m_use_log);
+#endif
 }
 
 #ifdef LOG_ACTION
