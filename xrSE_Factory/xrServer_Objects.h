@@ -98,8 +98,9 @@
 // 79 - CSE_AlifeAnomalousZone			appended with power properties (3)
 // 80 - CSE_Abstract					m_tSpawnID property moved from CSE_ALifeObject to CSE_Abstract
 // 81 - CSE_SpawnGroup					appended with 4 properties
+// 82 - CSE_AlifeTraderAbstract			load/save m_iCharacterProfile on state read/write
 //------------------------------------------------------------------------------
-#define SPAWN_VERSION	u16(81)
+#define SPAWN_VERSION	u16(82)
 
 SERVER_ENTITY_DECLARE_BEGIN2(CSE_Shape,ISE_Shape,CShapeData)
 public:

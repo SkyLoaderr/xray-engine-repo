@@ -51,7 +51,7 @@ CSE_ALifeTraderAbstract::CSE_ALifeTraderAbstract(LPCSTR caSection)
 	m_fMaxItemMass				= pSettings->r_float(caSection, "max_item_mass");
 	m_tpEvents.clear			();
 
-	m_iCharacterProfile			= 0/*NO_PROFILE*/;
+	m_iCharacterProfile			= DEFAULT_PROFILE;
 	m_iSpecificCharacter		= NO_SPECIFIC_CHARACTER;
 
 #ifdef XRGAME_EXPORTS
@@ -65,7 +65,8 @@ CSE_ALifeTraderAbstract::CSE_ALifeTraderAbstract(LPCSTR caSection)
 CSE_Abstract *CSE_ALifeTraderAbstract::init	()
 {
 	string4096					S;
-	sprintf						(S,"%s\r\n[game_info]\r\nname_id = default\r\n",!*base()->m_ini_string ? "" : *base()->m_ini_string);
+	//sprintf						(S,"%s\r\n[game_info]\r\nname_id = default\r\n",!*base()->m_ini_string ? "" : *base()->m_ini_string);
+	sprintf						(S,"%s\r\n[game_info]\r\n",!*base()->m_ini_string ? "" : *base()->m_ini_string);
 	base()->m_ini_string		= S;
 #ifdef XRGAME_EXPORTS
 	m_character_profile_init	= false;
@@ -85,6 +86,7 @@ void CSE_ALifeTraderAbstract::STATE_Write	(NET_Packet &tNetPacket)
 	tNetPacket.w_u32			(m_dwMoney);
 	tNetPacket.w_s32			(m_iSpecificCharacter);
 	tNetPacket.w_u32			(m_trader_flags.get());
+	tNetPacket.w_s32			(m_iCharacterProfile);
 }
 
 void CSE_ALifeTraderAbstract::STATE_Read	(NET_Packet &tNetPacket, u16 size)
@@ -101,6 +103,8 @@ void CSE_ALifeTraderAbstract::STATE_Read	(NET_Packet &tNetPacket, u16 size)
 			tNetPacket.r_s32	(m_iSpecificCharacter);
 		if (m_wVersion > 77)
 			m_trader_flags.assign(tNetPacket.r_u32());
+		if (m_wVersion > 81)
+			tNetPacket.r_s32	(m_iCharacterProfile);
 	}
 
 #ifdef XRGAME_EXPORTS
@@ -222,33 +226,11 @@ PROFILE_INDEX CSE_ALifeTraderAbstract::character_profile()
 {
 	if(m_character_profile_init) return	m_iCharacterProfile;
 
-	//запоминаем index profile
-	if (xr_strlen(base()->m_ini_string)) {
-#pragma warning(push)
-#pragma warning(disable:4238)
-		CInifile					ini(
-			&IReader			(
-			(void*)(*(base()->m_ini_string)),
-			base()->m_ini_string.size()
-			)
-			);
-#pragma warning(pop)
-
-		LPCSTR profile_id = NULL;
-		if (ini.section_exist("game_info") && ini.line_exist("game_info","name_id"))
-			profile_id = ini.r_string("game_info", "name_id");
-
-		if(NULL == profile_id)
-			m_iCharacterProfile = NO_PROFILE;
-		else
-		{
-			m_iCharacterProfile = CCharacterInfo::IdToIndex(PROFILE_ID(profile_id), NO_PROFILE, true);
-			if(NO_PROFILE == m_iCharacterProfile)
-			{
-				CSE_ALifeObject* O = smart_cast<CSE_ALifeObject*>(base()); VERIFY(O);
-				Debug.fatal("wrong profile id %s, for %s at level %s", profile_id, O->name_replace(),ai().game_graph().header().level(ai().game_graph().vertex(O->m_tGraphID)->level_id()).name());
-			}
-		}
+	LPCSTR profile_id = CCharacterInfo::IndexToId(m_iCharacterProfile, NULL, true);
+	if(!profile_id)
+	{
+		CSE_ALifeObject* O = smart_cast<CSE_ALifeObject*>(base()); VERIFY(O);
+		Debug.fatal("wrong profile id %s, for %s at level %s", profile_id, O->name_replace(),ai().game_graph().header().level(ai().game_graph().vertex(O->m_tGraphID)->level_id()).name());
 	}
 
 	m_character_profile_init = true;
