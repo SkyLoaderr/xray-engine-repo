@@ -397,11 +397,18 @@ void CActor::HitSignal(float perc, Fvector& vLocalDir, CObject* who, s16 element
 		if (Local() && (this!=who) && Level().CurrentEntity() == this)	
 		{
 			int id		= -1;
-			float x		= _abs(vLocalDir.x);
-			float z		= _abs(vLocalDir.z);
-			if (z>x)	id = (vLocalDir.z<0)?2:0;
-			else		id = (vLocalDir.x<0)?3:1;
-			HUD().Hit	(id);
+			Fvector a	= {0,0,1};
+			Fvector b	= {vLocalDir.x,0,vLocalDir.z};
+			float mb	= b.magnitude();		
+			if (!fis_zero(mb)){
+				b.mul	(1.f/mb);
+				bool FB	= _abs(a.dotproduct(b))<0.7071f;
+//				float x	= _abs(vLocalDir.x);
+//				float z	= _abs(vLocalDir.z);
+				if (FB)	id = (vLocalDir.z<0)?2:0;
+				else	id = (vLocalDir.x<0)?3:1;
+				HUD().Hit(id);
+			}
 		}
 
 		// stop-motion
