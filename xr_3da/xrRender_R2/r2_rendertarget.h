@@ -18,6 +18,8 @@ private:
 	CBlender*					b_accum_direct;
 	CBlender*					b_accum_point_s;
 	CBlender*					b_accum_point_uns;
+	CBlender*					b_accum_spot_s;
+	CBlender*					b_accum_spot_uns;
 	CBlender*					b_bloom;
 	CBlender*					b_combine;
 
@@ -38,6 +40,10 @@ private:
 	CRTC*						rt_smap_p;
 	IDirect3DSurface9*			rt_smap_p_ZB;
 
+	// S-smap
+	CRT*						rt_smap_s;		// 32bit, (depth)	(eye-space)
+	IDirect3DSurface9*			rt_smap_s_ZB;
+
 	// Textures
 	IDirect3DTexture9*			t_material_surf;
 	CTexture*					t_material;
@@ -49,6 +55,8 @@ private:
 	Shader*						s_accum_direct;
 	Shader*						s_accum_point_s;
 	Shader*						s_accum_point_uns;
+	Shader*						s_accum_spot_s;
+	Shader*						s_accum_spot_uns;
 	SGeometry*					g_accum_point;
 	SGeometry*					g_accum_point_tl;
 	IDirect3DVertexBuffer9*		g_accum_point_vb;

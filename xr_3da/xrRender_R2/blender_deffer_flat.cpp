@@ -52,5 +52,10 @@ void	CBlender_deffer_flat::Compile(CBlender_Compile& C)
 		C.r2_Constant		("light_position",	&RImplementation.Binders.l_position);
 		C.r2_End			();
 		break;
+	case 3:		// smap-spot
+		C.r2_Pass			("r2_shadow_direct_base","r2_shadow_direct_base");
+		C.r2_Sampler		("s_base",C.L_textures[0]);
+		C.r2_End			();
+		break;
 	}
 }
