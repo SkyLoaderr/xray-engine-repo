@@ -95,11 +95,12 @@ HRESULT			xrIDirect3DSurface9::GetDesc		( D3DSURFACE_DESC *pDesc)
 HRESULT			xrIDirect3DSurface9::LockRect		( D3DLOCKED_RECT* pLockedRect,CONST RECT* pRect,DWORD Flags) 		
 {
 	APIDEBUG("xrIDirect3DSurface9::LockRect");
-	
+#ifdef _DEBUG
 	if (m_pLockedData != NULL)
 	{
 		_ASSERT(0);
 	}
+#endif
 	UINT RWidth = (NULL == pRect) ? Width : (pRect->right - pRect->left);
 	UINT RHeight = (NULL == pRect) ? Height : (pRect->bottom - pRect->top);
 	m_pLockedData = new BYTE[RWidth*RHeight*4];
@@ -112,10 +113,12 @@ HRESULT			xrIDirect3DSurface9::UnlockRect		()
 {
 	APIDEBUG("xrIDirect3DSurface9::UnlockRect");
 	
+#ifdef _DEBUG
 	if (m_pLockedData == NULL)
 	{
 		_ASSERT(0);
 	}
+#endif
 	delete[] m_pLockedData;
 	m_pLockedData = NULL;
 
