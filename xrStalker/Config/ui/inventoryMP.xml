@@ -1,86 +1,79 @@
 <?xml version='1.0' encoding="UTF-8"?>
 <window x="0" y="0" w="640" h="480" r="227" g="121" b="222" texture="1">
 
-    <!-- OUTFIT INFO -->
-    <outfit_info_window x="30" y="310" width="268" height="460">
-		<text font="medium" r="255" g="255" b="255" a="130"></text>
-	</outfit_info_window>
+	<autobuy_indication x="607" y="428" width="129" height="15"/>	
 
 	<!-- BAG WINDOW -->
-	<bag_background_static x="10" y="245" width="350" height="440">
-		<texture>ui\ui_dg_inventory_multiplayer</texture>
-		<text x="40" y="7" font="graffiti22" r="255" g="255" b="255" a="130">ui_inv_items_list</text>
+	<bag_background_static x="10" y="234" width="350" height="440">
+		<text x="50" y="10" font="normal" r="255" g="255" b="255" a="180" align="c">ui_inv_items_list</text>
 	</bag_background_static>
 	
 	<!-- BACK BUTTON FOR BAG -->
-	<bag_back_btn x="199" y="0" width="67" height="32">
+	<bag_back_btn x="199" y="3" width="67" height="32">
 			<texture_offset x="-26" y="0"/>
 			<texture>ui\ui_btn_mp_back</texture>			
 			<sound_t>weapons\generic_close</sound_t>
 	</bag_back_btn>
 
 	<!-- DESCRIPTION WINDOW -->
-	<desc_static x="340" y="245" width="420" height="400">
-		<texture>ui\ui_dg_info_multiplayer</texture>
+	<desc_static x="340" y="235" width="420" height="400">
+		<!--texture>ui\ui_dg_info_multiplayer</texture-->
 		<text x="20" y="195" font="graffiti22" r="255" g="255" b="255" a="130">ui_inv_description</text>
 	</desc_static>
 
 	<!-- CHARACTER WINDOW -->
 	<personal_static x="790" y="234" width="200" height="400">
-		<texture>ui\ui_dg_personal_multiplayer</texture>
+		<!--texture>ui\ui_dg_personal_multiplayer</texture-->
 		<text x="60" y="7" font="graffiti22" r="255" g="255" b="255" a="130">ui_inv_personal</text>
 	</personal_static>
 
 	<!-- BELT STATIC BACKGROUND-->
-	<static x="15" y="137" width="1024" height="128">
-		<texture>ui\ui_inv_belt</texture>
-		<text x="25" y="2" font="graffiti22" r="255" g="255" b="255" a="130">ui_inv_belt</text>
+	<static x="15" y="126" width="1024" height="128">
+		<!--texture>ui\ui_inv_belt</texture-->
+		<text x="25" y="6" font="graffiti22" r="255" g="255" b="255" a="130">ui_inv_belt</text>
 	</static>
 
 	<!-- SLOTS BACKGROUND -->
-	<slots_static x="15" y="0" width="1024" height="128">
+	<!--slots_static x="15" y="0" width="1024" height="128">
 		<texture>ui\ui_inv_quick_slots</texture>
-	</slots_static>
+	</slots_static-->
 
 	
 	<!-- BELT LIST -->
-	<dragdrop_list x="32" y="174" width="1024" height="60"
+	<dragdrop_list x="32" y="166" width="1024" height="60"
 			cell_width = "53" cell_height="50"
 			rows_num="1" cols_num="18"></dragdrop_list>
-	<!-- BAG LIST ---------  DELETE ME-->
-	<dragdrop_list x="30" y="40" width="400" height="350"
-			cell_width = "40" cell_height="40"
-			rows_num="24" cols_num="6" rows_num_view="9"></dragdrop_list>
+	<dragdrop_list/>
 	<!-- BAG LIST -->
 	<dragdrop_list_bag x="30" y="40" width="400" height="350"
 			cell_width = "40" cell_height="40"
 			rows_num="24" cols_num="6" rows_num_view="9"/>
 
 	<!-- SLOTS LISTS -->
-	<dragdrop_list x="43" y="14" width="120" height="120"
+	<dragdrop_list x="37" y="40" width="120" height="120"
 			cell_width = "53" cell_height="53"
-			rows_num="2" cols_num="2" show_grid="0" />
+			rows_num="1" cols_num="2" show_grid="1" />
 
-	<dragdrop_list x="188" y="14" width="120" height="120"
+	<dragdrop_list x="188" y="40" width="120" height="120"
 			cell_width = "53" cell_height="53"
-			rows_num="2" cols_num="2" show_grid="0" />
+			rows_num="1" cols_num="2" show_grid="1" />
 
 	<dragdrop_list x="333" y="14" width="320" height="120"
 			cell_width = "53" cell_height="53"
-			rows_num="2" cols_num="6" show_grid="0" />
+			rows_num="2" cols_num="6" show_grid="1" />
 
-	<dragdrop_list x="690" y="14" width="100" height="120"
+	<dragdrop_list x="712" y="40" width="100" height="120"
 			cell_width = "53" cell_height="53"
-			rows_num="2" cols_num="2" show_grid="0" />
+			rows_num="1" cols_num="1" show_grid="1" />
 
 	<dragdrop_list x="838" y="14" width="150" height="120"
 			cell_width = "53" cell_height="53"
-			rows_num="2" cols_num="3" show_grid="0" />
+			rows_num="2" cols_num="3" show_grid="1" />
 
 	<!-- OUTFIT SLOT -->
-	<dragdrop_list x="828" y="314" width="150" height="220"
+	<dragdrop_list x="828" y="300" width="150" height="220"
 			cell_width = "53" cell_height="53"
-			rows_num="4" cols_num="4" show_grid="0" />
+			rows_num="4" cols_num="4" show_grid="1" />
 
 	<!-- TOTAL MONEY AMOUNT -->
 	<total_money_header_static x="631" y="326" width="200" height="50">
@@ -92,16 +85,16 @@
 	</total_money_static>
 
 	<!-- ITEM COST -->
-	<item_cost_header_static x="518" y="395" width="200" height="50">
+	<item_cost_header_static x="518" y="384" width="200" height="50">
 		<text font="small" r="240" g="217" b="182">Item Price:</text>
 	</item_cost_header_static>
 
-	<item_cost_static x="518" y="405" width="200" height="50">
+	<item_cost_static x="518" y="394" width="200" height="50">
 		<text font="graffiti32" r="240" g="217" b="182"></text>
 	</item_cost_static>
 
 	<!-- CHARACTER ICON -->
-	<outfit_static x="858" y="314"  width="86" height="220"></outfit_static>
+	<outfit_static x="858" y="300"  width="86" height="220"></outfit_static>
 
 	<!-- TAB CONTROL FOR WEAPON TYPE SELECT -->
 	<tab x="0" y="701" width="1014" height="200">
