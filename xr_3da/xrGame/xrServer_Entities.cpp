@@ -179,6 +179,13 @@ public:	// actions
 		LPCSTR	event;
 	};
 	vector<tAction>			Actions;
+
+	void					Actions_clear()
+	{
+		for (u32 a=0; a<Actions.size(); a++)
+			_FREE(Actions[a].event);
+		Actions.clear	();
+	}
 public:	
 	virtual void			UPDATE_Read			(NET_Packet& P)
 	{
@@ -188,12 +195,39 @@ public:
 	}
 	virtual void			STATE_Read			(NET_Packet& P, u16 size)
 	{
+		// CForm
 		cform_read			(P);
 
+		// Actions
+		Actions_clear		();
+		u8 count;	P.r_u8	(count);
+		while (count)	{
+			tAction		A;
+			string512	str;
+			P.r_u8		(A.type);
+			P.r_u16		(A.count);
+			P.r_u64		(A.cls);
+			P.r_string	(str);
+			A.event		= strdup(str);
+			Actions.push_back(A);
+			count--;
+		}
 	}
 	virtual void			STATE_Write			(NET_Packet& P)
 	{
+		// CForm
 		cform_write			(P);
+
+		// Actions
+		P.w_u8				(u8(Actions.size()));
+		for (u32 i=0; i<Actions.size(); i++)
+		{
+			tAction&	A = Actions[i];
+			P.w_u8		(A.type	);
+			P.w_u16		(A.count);
+			P.w_u64		(A.cls	);
+			P.w_string	(A.event);
+		}
 	}
 };
 
@@ -205,7 +239,6 @@ xrServerEntity*	xrServer::entity_Create		(LPCSTR name)
 	switch (cls)
 	{
 	case CLSID_OBJECT_ACTOR:	return new	xrSE_Actor;
-	//case CLSID_AI_HUMAN:		return new	xrSE_Enemy;
 	case CLSID_AI_HEN:			return new	xrSE_Enemy;
 	case CLSID_AI_RAT:			return new	xrSE_Enemy;
 	case CLSID_EVENT:			return new  xrSE_Event;
