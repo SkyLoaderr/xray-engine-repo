@@ -43,7 +43,7 @@
 #define MMNOMIDI
 #define MMNOAUX
 #define MMNOMIXER
-#define MMNOTIMER
+//#define MMNOTIMER
 #define MMNOJOY
 #define MMNOMCI
 
