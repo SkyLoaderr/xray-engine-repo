@@ -5,7 +5,7 @@ void CBuild::xrPhase_TangentBasis()
 {
 	// ************************************* Declare inputs
 	Status						("Declarator...");
-	u32 v_count_reserve			= iFloor(float(g_vertices.size())*1.5f);
+	u32 v_count_reserve			= iFloor(float(g_vertices.size())*1.33f);
 	u32 i_count_reserve			= 3*g_faces.size();
 
 	std::vector<NVMeshMender::VertexAttribute> input,output;
@@ -74,9 +74,10 @@ void CBuild::xrPhase_TangentBasis()
 			}
 		}
 	}
-	u32		v_was	= g_vertices.size();
-	u32		v_become= v_position.size()/3;
-	clMsg	("duplication: was[%d] / become[%d] - %2.1f%%",v_was,v_become,100.f*float(v_become-v_was)/float(v_was));
+	remap.clear	();
+	u32			v_was	= g_vertices.size();
+	u32			v_become= v_position.size()/3;
+	clMsg		("duplication: was[%d] / become[%d] - %2.1f%%",v_was,v_become,100.f*float(v_become-v_was)/float(v_was));
 
 	// ************************************* Perform mungle
 	Status						("Calculating basis...");
