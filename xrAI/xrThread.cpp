@@ -52,6 +52,6 @@ void	CThreadManager::wait	(DWORD	sleep_time)
 	
 	// Delete threads
 	for (DWORD thID=0; thID<threads.size(); thID++)
-		xr_delete(threads[thID]);
+		if (threads[thID]->thDestroyOnComplete)	xr_delete(threads[thID]);
 	threads.clear	();
 }

@@ -13,7 +13,7 @@ public:
 	typedef v_faces::iterator		v_faces_it;
 
 	//** 
-	struct	_vertex
+	struct	_vertex	: public ::base_Vertex
 	{
 		Fvector		P;
 		Fvector		N;
@@ -23,10 +23,12 @@ public:
 		void		prep_add			(_face* F);
 		void		prep_remove			(_face* F);
 		void		calc_normal_adjacent();
+
+		virtual ~_vertex()	{ };
 	};
 
 	//**
-	struct	_face
+	struct	_face	: public ::base_Face
 	{
 	public:
 		_vertex*	v	[3];
@@ -61,6 +63,8 @@ public:
 		float			CalcMaxEdge			( );
 		void			CalcCenter			( Fvector &C );
 		BOOL			RenderEqualTo		( Face *F );
+
+		virtual ~_face()	{ };
 	};
 public:
 	string128			m_name;

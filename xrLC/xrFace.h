@@ -2,8 +2,8 @@
 
 #include "shader_xrlc.h"
 
-class base_Vertex	{ virtual ~base_Vertex() = 0; };	base_Vertex::~base_Vertex() {};
-class base_Face		{ virtual ~base_Face() = 0; };		base_Face::~base_Face()		{};
+class base_Vertex	{ public: virtual ~base_Vertex() = 0; };	base_Vertex::~base_Vertex() {};
+class base_Face		{ public: virtual ~base_Face() = 0; };		base_Face::~base_Face()		{};
 
 class Vertex;
 class Face;
@@ -25,7 +25,7 @@ extern const int edge2idx[3][2];
 
 #include "xrUVpoint.h"
 
-class Vertex
+class Vertex	: public base_Vertex
 {
 public:
 	Fvector		P;
@@ -60,7 +60,7 @@ public:
 	void		normalFromAdj();
 
 	Vertex();
-	~Vertex();
+	virtual ~Vertex();
 };
 
 struct _TCF {
@@ -95,7 +95,7 @@ struct _TCF {
 	}
 };
 
-class Face
+class Face	: public base_Face
 {
 public:
 	Vertex*					v[3];			// vertices
@@ -182,7 +182,7 @@ public:
 
 	float		CalcArea	();
 	float		CalcMaxEdge	();
-	IC void	CalcCenter	(Fvector &C)
+	IC void		CalcCenter	(Fvector &C)
 	{
 		C.set(v[0]->P);
 		C.add(v[1]->P);
@@ -202,7 +202,7 @@ public:
 	}
 
 	Face();
-	~Face();
+	virtual ~Face();
 };
 
 //

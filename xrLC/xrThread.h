@@ -10,14 +10,16 @@ public:
 	volatile BOOL		thMessages;
 	volatile BOOL		thMonitor;
 	volatile float		thPerformance;
+	volatile BOOL		thDestroyOnComplete;
 
 	CThread				(DWORD _ID)	
 	{
-		thID			= _ID;
-		thProgress		= 0;
-		thCompleted		= FALSE;
-		thMessages		= TRUE;
-		thMonitor		= FALSE;
+		thID				= _ID;
+		thProgress			= 0;
+		thCompleted			= FALSE;
+		thMessages			= TRUE;
+		thMonitor			= FALSE;
+		thDestroyOnComplete	= TRUE;
 	}
 	void				Start	()
 	{
