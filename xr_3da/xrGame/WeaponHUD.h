@@ -72,6 +72,7 @@ class CWeaponHUD
 	void				StopCurrentAnim	();
 
 	//поворот и смещение для режима приближения
+	float				m_fZoomRotateX;
 	float				m_fZoomRotateY;
 	Fvector				m_fZoomOffset;
 public:
@@ -93,9 +94,12 @@ public:
 	Fvector&			ShellPoint		()	{return m_pSharedHudInfo->vShellPoint;}
 
 	const Fvector&		ZoomOffset		()	const {return m_fZoomOffset;}
+	float				ZoomRotateX		()	const {return m_fZoomRotateX;}
 	float				ZoomRotateY		()	const {return m_fZoomRotateY;}
 	void				SetZoomOffset	(const Fvector& zoom_offset)  { m_fZoomOffset = zoom_offset;}
+	void				SetZoomRotateX	(float zoom_rotate_x)		  { m_fZoomRotateX = zoom_rotate_x;}
 	void				SetZoomRotateY	(float zoom_rotate_y)		  { m_fZoomRotateY = zoom_rotate_y;}
+	
 
 	// Animations
 	void				animPlay		(CMotionDef* M, BOOL bMixIn=TRUE, CInventoryItem*  W=0);

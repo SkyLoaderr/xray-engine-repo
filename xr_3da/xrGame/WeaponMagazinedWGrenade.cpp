@@ -417,6 +417,7 @@ void CWeaponMagazinedWGrenade::InitAddons()
 			if(m_bZoomEnabled && m_pHUD)
 			{
 				m_pHUD->SetZoomOffset(pSettings->r_fvector3(hud_sect, "grenade_zoom_offset"));
+				m_pHUD->SetZoomRotateX(pSettings->r_float(hud_sect, "grenade_zoom_rotate_x"));
 				m_pHUD->SetZoomRotateY(pSettings->r_float(hud_sect, "grenade_zoom_rotate_y"));
 			}
 		}
@@ -425,6 +426,7 @@ void CWeaponMagazinedWGrenade::InitAddons()
 			if(m_bZoomEnabled && m_pHUD)
 			{
 				m_pHUD->SetZoomOffset(pSettings->r_fvector3(hud_sect, "zoom_offset"));
+				m_pHUD->SetZoomRotateX(pSettings->r_float(hud_sect, "zoom_rotate_x"));
 				m_pHUD->SetZoomRotateY(pSettings->r_float(hud_sect, "zoom_rotate_y"));
 			}
 		}

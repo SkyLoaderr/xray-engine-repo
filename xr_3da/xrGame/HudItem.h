@@ -94,6 +94,8 @@ public:
 
 	virtual void	UpdateHudPosition	();
 
+	CWeaponHUD*		GetHUD				() {return m_pHUD;}
+
 protected:
 	//TRUE - оружие занято, выполнением некоторого действия
 	bool					m_bPending;

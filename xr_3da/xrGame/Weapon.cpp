@@ -338,6 +338,7 @@ void CWeapon::Load		(LPCSTR section)
 	if(m_bZoomEnabled && m_pHUD)
 	{
 		m_pHUD->SetZoomOffset(pSettings->r_fvector3(hud_sect, "zoom_offset"));
+		m_pHUD->SetZoomRotateX(pSettings->r_float(hud_sect, "zoom_rotate_x"));
 		m_pHUD->SetZoomRotateY(pSettings->r_float(hud_sect, "zoom_rotate_y"));
 	}
 
@@ -1103,6 +1104,7 @@ void CWeapon::UpdateHudPosition	()
 			{
 				Fmatrix hud_rotation;
 				hud_rotation.identity();
+				hud_rotation.rotateX(m_pHUD->ZoomRotateX()*m_fZoomRotationFactor);
 				hud_rotation.rotateY(m_pHUD->ZoomRotateY()*m_fZoomRotationFactor);
 				Fvector offset = m_pHUD->ZoomOffset();
 				offset.mul(m_fZoomRotationFactor);
