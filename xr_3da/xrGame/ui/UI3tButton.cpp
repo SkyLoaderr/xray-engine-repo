@@ -12,6 +12,8 @@
 #include "../MainUI.h"
 
 CUI3tButton::CUI3tButton(){
+	m_iPushOffsetX = 0;
+	m_iPushOffsetY = 0;
 	m_bTextureEnable = false;
 	m_bUseTextColorD = true;
 	m_bUseTextColorH = false;
