@@ -12,7 +12,7 @@
 const	float	S_distance	= 48;
 const	float	S_distance2	= S_distance*S_distance;
 const	float	S_level		= .1f;
-const	int		S_size		= 64;
+const	int		S_size		= 128;
 const	int		S_rt_size	= 512;
 const	int		batch_size	= 128;
 const	float	S_tess		= .5f;
@@ -270,7 +270,7 @@ void CLightShadows::calculate	()
 		Device.Shader.set_Shader	(sh_BlurTR	);
 		Device.Primitive.Draw		(vs_Blur,	4, 2, Offset,	Device.Streams_QuadIB);
 		
-		for (int it=0; it<10; it++)	
+		for (int it=0; it<50; it++)	
 		{
 			// Actual rendering (pass1, real2temp)
 			Device.Shader.set_RT		(RT_temp->pRT,	0);
