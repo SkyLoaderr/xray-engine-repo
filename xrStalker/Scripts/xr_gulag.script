@@ -93,7 +93,7 @@ function fract:calculate()
 	end
 	
 	self:updateJob()
-	--self:print()
+	self:print()
 end
 function fract:updateJob()
 	function availState(st, state)
@@ -105,7 +105,7 @@ function fract:updateJob()
 
 	for k,v in self.Job do
 		-- проверка на доступность при текущем стейте
-		if availState(v.state, self.state) then
+		if availState(v.state, self.state) == true then
 			v.object = nil
 		else
 			if v.object == nil and
