@@ -34,6 +34,8 @@ BOOL	NeedMerge		(vecFace& subdiv, Fbox& bb_base)
 		bb_base.modify(F->v[1]->P);
 		bb_base.modify(F->v[2]->P);
 	}
+	bb_base.grow		(EPS_S);	// Enshure non-zero volume
+
 	Fvector sz_base;	bb_base.getsize(sz_base);
 	if (sz_base.x<g_params.m_SS_maxsize)		return TRUE;
 	if (sz_base.y<g_params.m_SS_maxsize)		return TRUE;
@@ -57,7 +59,7 @@ BOOL	ValidateMerge	(DWORD f1, Fbox& bb_base, DWORD f2, Fbox& bb, float& volume)
 	float	v1	= bb_base.getvolume	();
 	float	v2	= bb.getvolume		();
 	volume		= merge.getvolume	();
-	if (volume > 2*2*2*(v1+v2))						return FALSE;	// Don't merge too distant groups (8 vol)
+//	if (volume > 2*2*2*(v1+v2))						return FALSE;	// Don't merge too distant groups (8 vol)
 
 	// OK
 	return TRUE;
@@ -96,7 +98,7 @@ void CBuild::xrPhase_MergeGeometry	()
 			subdiv.insert	(subdiv.end(), g_XSplit[selected].begin(), g_XSplit[selected].end());
 			g_XSplit.erase	(g_XSplit.begin()+selected);
 		}
-		Progress(float(split)/float(g_XSplit.size()));
+		Progress(sqrtf(float(split)/float(g_XSplit.size())));
 	}
 	Msg("%d subdivisions.",g_XSplit.size());
 }

@@ -102,6 +102,7 @@ struct OGF_Base
 		Fsphere	S2;
 		bbox.invalidate				();
 		for (I=V.begin(); I!=V.end(); I++)	bbox.modify(*I);
+		bbox.grow					(EPS_S);
 		bbox.getsphere				(S2.P,S2.R);
 		S2.R = -1;
 		for (I=V.begin(); I!=V.end(); I++)	{
