@@ -134,7 +134,7 @@ void CRender::level_Unload()
 void CRender::LoadBuffers	(IReader *base_fs)
 {
 	Device.Resources->Evict		();
-	u32	dwUsage				= D3DUSAGE_WRITEONLY | (HW.Caps.geometry.bSoftware?D3DUSAGE_SOFTWAREPROCESSING:0);
+	u32	dwUsage					= D3DUSAGE_WRITEONLY;
 
 	// Vertex buffers
 	if (base_fs->find_chunk(fsL_VB))

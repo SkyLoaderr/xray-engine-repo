@@ -9,7 +9,7 @@ CDetail::~CDetail()
 void CDetail::Unload	()
 {
 	if (vertices)		{ xr_free(vertices);	vertices=0; }
-	if (indices)		{ xr_free(indices);	indices=0;	}
+	if (indices)		{ xr_free(indices);		indices=0;	}
 	shader.destroy		();
 }
 
@@ -119,8 +119,8 @@ void CDetail::Load		(IReader* S)
 
 void CDetail::Optimize	()
 {
-	xr_vector<u16>		vec_indices, vec_permute;
-	const int			cache	= HW.Caps.geometry.dwVertexCache;
+	xr_vector<u16>		vec_indices,	vec_permute;
+	const int			cache			= HW.Caps.geometry.dwVertexCache;
 
 	// Stripify
 	vec_indices.assign	(indices,indices+number_indices);

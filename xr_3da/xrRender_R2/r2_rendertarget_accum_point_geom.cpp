@@ -281,7 +281,7 @@ u16 du_sphere_faces[DU_SPHERE_NUMFACES*3]={
 
 void CRenderTarget::accum_point_geom_create()
 {
-	u32	dwUsage				= D3DUSAGE_WRITEONLY | (HW.Caps.geometry.bSoftware?D3DUSAGE_SOFTWAREPROCESSING:0);
+	u32	dwUsage				= D3DUSAGE_WRITEONLY;
 
 	// vertices
 	{

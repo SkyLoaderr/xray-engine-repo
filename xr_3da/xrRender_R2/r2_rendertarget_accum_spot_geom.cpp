@@ -60,7 +60,7 @@ u16 du_cone_faces[DU_CONE_NUMFACES*3]=
 
 void CRenderTarget::accum_spot_geom_create	()
 {
-	u32	dwUsage				= D3DUSAGE_WRITEONLY | (HW.Caps.geometry.bSoftware?D3DUSAGE_SOFTWAREPROCESSING:0);
+	u32	dwUsage				= D3DUSAGE_WRITEONLY;
 
 	// vertices
 	{

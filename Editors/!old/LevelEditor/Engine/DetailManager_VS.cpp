@@ -57,9 +57,6 @@ void CDetailManager::hw_Load	()
 
 	// Determine POOL & USAGE
 	u32 dwUsage		=	D3DUSAGE_WRITEONLY;
-	if (HW.Caps.geometry.bSoftware)	{
-		dwUsage	|=	D3DUSAGE_SOFTWAREPROCESSING;
-	}
 
 	// Create VB/IB
 	R_CHK			(HW.pDevice->CreateVertexBuffer(dwVerts*vSize,dwUsage,0,D3DPOOL_MANAGED,&hw_VB,0));

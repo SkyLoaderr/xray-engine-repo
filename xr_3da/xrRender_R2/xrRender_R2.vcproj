@@ -653,6 +653,12 @@
 			Name="Core_Target"
 			Filter="">
 			<File
+				RelativePath=".\du_sphere_part.cpp">
+			</File>
+			<File
+				RelativePath=".\du_sphere_part.h">
+			</File>
+			<File
 				RelativePath="r2_rendertarget.cpp">
 				<FileConfiguration
 					Name="Release|Win32">
@@ -666,6 +672,9 @@
 			</File>
 			<File
 				RelativePath="r2_rendertarget_accum_direct.cpp">
+			</File>
+			<File
+				RelativePath=".\r2_rendertarget_accum_omnipart_geom.cpp">
 			</File>
 			<File
 				RelativePath="r2_rendertarget_accum_point.cpp">

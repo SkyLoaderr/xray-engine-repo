@@ -72,6 +72,10 @@ private:
 
 	IDirect3DVertexBuffer9*		g_accum_point_vb;
 	IDirect3DIndexBuffer9*		g_accum_point_ib;
+
+	IDirect3DVertexBuffer9*		g_accum_omnip_vb;
+	IDirect3DIndexBuffer9*		g_accum_omnip_ib;
+
 	IDirect3DVertexBuffer9*		g_accum_spot_vb	;
 	IDirect3DIndexBuffer9*		g_accum_spot_ib	;
 
@@ -111,6 +115,8 @@ public:
 	void						OnDeviceDestroy			();
 	void						accum_point_geom_create	();
 	void						accum_point_geom_destroy();
+	void						accum_omnip_geom_create	();
+	void						accum_omnip_geom_destroy();
 	void						accum_spot_geom_create	();
 	void						accum_spot_geom_destroy	();
 
