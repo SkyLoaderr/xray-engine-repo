@@ -319,13 +319,12 @@ void CActor::NewPdaContact		(CInventoryOwner* pInvOwner)
 
 	ALife::ERelationType relation = ALife::eRelationTypeDummy;
 	if(Game().Type() == GAME_SINGLE)
-		relation =  pInvOwner->CharacterInfo().Relations().GetRelationType(ID(), CharacterInfo().Community().index());
+		relation =  RELATION_REGISTRY().GetRelationType(pInvOwner, static_cast<CInventoryOwner*>(this));
 	else
 	{
 		CEntityAlive* EA = smart_cast<CEntityAlive*>(GO); VERIFY(EA);
 		relation = EA->tfGetRelationType(this);
 	}
-
 
 	LPCSTR anim_name = NULL;
 
