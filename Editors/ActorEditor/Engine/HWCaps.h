@@ -17,7 +17,7 @@ public:
 		u32 dwClipPlanes	: 4;
 		u32 dwVertexCache	: 8;
 	};
-	struct		caps_Texturing
+	struct		caps_Raster
 	{
 		u32	dwVersion		: 8;		// pixel shader version
 		u32	dwRegisters		: 16;
@@ -42,10 +42,11 @@ public:
 	u32				dwRefreshRate;
 
 	// caps itself
-	caps_Geometry	vertex;
-	caps_Texturing	pixel;
+	caps_Geometry	geometry;
+	caps_Raster		raster;
 
 	BOOL			bStencil;			// stencil buffer present
+	BOOL			bScissor;			// scissor rect supported
 	BOOL			bTableFog;			//
 
 	// some precalculated values
