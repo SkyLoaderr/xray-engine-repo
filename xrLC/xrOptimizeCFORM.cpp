@@ -12,9 +12,6 @@
 // OpenMesh
 #include <OpenMesh/Core/IO/MeshIO.hh>
 #include <OpenMesh/Core/Mesh/Types/TriMesh_ArrayKernelT.hh>
-//#include <OpenMesh/Core/Utils/vector_cast.hh>
-//#include <OpenMesh/Tools/Utils/getopt.h>
-//#include <OpenMesh/Tools/Utils/Timer.hh>
 #include <OpenMesh/Tools/Decimater/DecimaterT.hh>
 #include <OpenMesh/Tools/Decimater/ModNormalFlippingT.hh>
 #include <OpenMesh/Tools/Decimater/ModQuadricT.hh>
@@ -37,6 +34,8 @@ struct		MyTraits : public OpenMesh::DefaultTraits
 		const	u32 props() const			{ return props_;	}
 		void	set_props(const u32 _p)		{ props_ = _p;		}
 	};
+
+	HalfedgeAttributes( OpenMesh::Attributes::None );
 };
 typedef		TriMesh_ArrayKernelT	< MyTraits >			_mesh;			// Mesh type
 typedef		Decimater::DecimaterT	< _mesh >				_decimater;		// Decimater type
@@ -77,6 +76,7 @@ void SimplifyCFORM		(CDB::CollectorPacked& CL)
 	}
 	clMsg		("%d faces failed topology check",fail_cnt);
 	Status		("Building base mesh : normals...");
+	mesh.garbage_collection		();
 	mesh.request_vertex_normals	();
 	mesh.update_vertex_normals	();
 	vhandles.clear_and_free		();
