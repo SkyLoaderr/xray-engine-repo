@@ -118,7 +118,8 @@ void CPhysicItem::activate_physic_shell()
 	R_ASSERT					(object);
 	XFORM().set					(object->XFORM());
 	inherited::activate_physic_shell();
-	///m_pPhysicsShell->Update		();
+
+	///m_pPhysicsShell->Update		();	
 }
 
 void CPhysicItem::setup_physic_shell	()
