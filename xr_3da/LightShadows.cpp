@@ -259,23 +259,26 @@ void CLightShadows::render	()
 	
 	// Clear all shadows
 	shadows.clear			();
-	
-	// UV
-	Fvector2				p0,p1;
-	p0.set					(.5f/S_rt_size, .5f/S_rt_size);
-	p1.set					((S_rt_size+.5f)/S_rt_size, (S_rt_size+.5f)/S_rt_size);
-	
-	// Fill vertex buffer
-	C			=	0xffffffff;
-	DWORD _w	=	S_rt_size/2, _h = S_rt_size/2;
-	FVF::TL* pv =	(FVF::TL*) vs_Screen->Lock(4,Offset);
-	pv->set(0,			float(_h),	.0001f,.9999f, C, p0.x, p1.y);	pv++;
-	pv->set(0,			0,			.0001f,.9999f, C, p0.x, p0.y);	pv++;
-	pv->set(float(_w),	float(_h),	.0001f,.9999f, C, p1.x, p1.y);	pv++;
-	pv->set(float(_w),	0,			.0001f,.9999f, C, p1.x, p0.y);	pv++;
-	vs_Screen->Unlock			(4);
-	
-	// Actual rendering
-	Device.Shader.set_Shader(sh_Screen);
-	Device.Primitive.Draw	(vs_Screen,4,2,Offset,Device.Streams_QuadIB);
+
+	// Debug
+	{
+		// UV
+		Fvector2				p0,p1;
+		p0.set					(.5f/S_rt_size, .5f/S_rt_size);
+		p1.set					((S_rt_size+.5f)/S_rt_size, (S_rt_size+.5f)/S_rt_size);
+		
+		// Fill vertex buffer
+		C			=	0xffffffff;
+		DWORD _w	=	S_rt_size/2, _h = S_rt_size/2;
+		FVF::TL* pv =	(FVF::TL*) vs_Screen->Lock(4,Offset);
+		pv->set(0,			float(_h),	.0001f,.9999f, C, p0.x, p1.y);	pv++;
+		pv->set(0,			0,			.0001f,.9999f, C, p0.x, p0.y);	pv++;
+		pv->set(float(_w),	float(_h),	.0001f,.9999f, C, p1.x, p1.y);	pv++;
+		pv->set(float(_w),	0,			.0001f,.9999f, C, p1.x, p0.y);	pv++;
+		vs_Screen->Unlock			(4);
+		
+		// Actual rendering
+		Device.Shader.set_Shader(sh_Screen);
+		Device.Primitive.Draw	(vs_Screen,4,2,Offset,Device.Streams_QuadIB);
+	}
 }
