@@ -66,8 +66,8 @@ void	CBlender_Detail_Still::Compile	(CBlender_Compile& C)
 				C.PassSET_LightFog	(FALSE,FALSE);
 				switch (C.iLOD)
 				{
-				case 0:	C.PassSET_VS("detail_wave");	break;
-				case 1:	C.PassSET_VS("detail_still");	break;
+				case 0:	C.PassSET_VS("r1_detail_wave");		break;
+				case 1:	C.PassSET_VS("r1_detail_still");	break;
 				}
 				
 				// Stage1 - Base texture
@@ -88,8 +88,8 @@ void	CBlender_Detail_Still::Compile	(CBlender_Compile& C)
 
 				switch (C.iLOD)
 				{
-				case 0:	C.PassSET_VS("detail_wave");	break;
-				case 1:	C.PassSET_VS("detail_still");	break;
+				case 0:	C.PassSET_VS("r1_detail_wave");		break;
+				case 1:	C.PassSET_VS("r1_detail_still");	break;
 				}
 				
 				// Stage1 - Base texture

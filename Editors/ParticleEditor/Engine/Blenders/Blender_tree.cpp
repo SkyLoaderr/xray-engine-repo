@@ -64,7 +64,7 @@ void	CBlender_Tree::Compile	(CBlender_Compile& C)
 				if (oBlend.value)	C.PassSET_Blend_BLEND	(TRUE, 200);
 				else				C.PassSET_Blend_SET		(TRUE, 200);
 				C.PassSET_LightFog	(FALSE,FALSE);
-				C.PassSET_VS		("tree_wave");
+				C.PassSET_VS		("r1_tree_wave");
 				
 				// Stage1 - Base texture
 				C.StageBegin		();
@@ -81,7 +81,7 @@ void	CBlender_Tree::Compile	(CBlender_Compile& C)
 				if (oBlend.value)	C.PassSET_Blend_BLEND	(TRUE, 200);
 				else				C.PassSET_Blend_SET		(TRUE, 200);
 				C.PassSET_LightFog	(FALSE,TRUE);
-				C.PassSET_VS		("tree_wave");
+				C.PassSET_VS		("r1_tree_wave");
 
 				// Stage1 - Base texture
 				C.StageBegin		();
