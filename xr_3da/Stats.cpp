@@ -133,7 +133,7 @@ void CStats::Show()
 		F.OutNext	("spRemove:    %2.2fms, %2.1f%%",g_SpatialSpace->stat_remove.result, PPP(g_SpatialSpace->stat_remove.result));
 		F.OutNext	("Physics:     %2.2fms, %2.1f%%",Physics.result,		PPP(Physics.result));	
 		F.OutNext	("  collider:  %2.2fms", ph_collision.result);	
-		F.OutNext	("  solver:    %2.2fms", ph_core.result);	
+		F.OutNext	("  solver:    %2.2fms, %d",ph_core.result,ph_core.count);	
 		F.OutNext	("aiThink:     %2.2fms, %d",AI_Think.result,AI_Think.count);	
 		F.OutNext	("  aiRange:   %2.2fms, %d",AI_Range.result,AI_Range.count);
 		F.OutNext	("  aiPath:    %2.2fms, %d",AI_Path.result,AI_Path.count);
