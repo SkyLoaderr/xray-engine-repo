@@ -76,10 +76,10 @@ void CUIZoneMap::Init()
 	HUD().ClientToScreen(map_center,MAP_LEFT+BASE_LEFT,MAP_TOP+BASE_TOP,align);
 	map_radius = iFloor(MAP_RADIUS*HUD().GetScale());
 
-	compass.Init("ui\\hud_map_arrow",	"hud\\default",
-		        map_center.x -  16,map_center.y  - 16,align);
-
-
+	LPCSTR actor_arrow	= pSettings->r_string	("game_map", "actor_arrow_small");
+	u32 arrow_size		= pSettings->r_u32		("game_map", "actor_arrow_small_size");
+	compass.Init(actor_arrow,	"hud\\default",  map_center.x - arrow_size/2,
+		                                         map_center.y - arrow_size/2, align);
 
 	back.Init	("ui\\ui_mg_back_map",	"hud\\default",BASE_LEFT,BASE_TOP,align);
 	back.SetRect(0,0,180,180);
@@ -304,7 +304,7 @@ void CUIZoneMap::UpdateRadar(CEntity* Actor, CTeam& Team)
 
 	// draw self
 	ConvertToLocal	(LM,Actor->Position(),P);
-	entity.Out		(map_center.x,P.y,COLOR_SELF);
+	//entity.Out		(map_center.x,P.y,COLOR_SELF);
 	
 
 	/////////////////////
