@@ -44,4 +44,4 @@ commander_radio_talk    = chugai_sounds + 25
 jon_sounds              = chugai_sounds + 1000
 
 zombe_walk_speak	    = jon_sounds + 0
-zombe_stand_speak      = jon_sounds + 1
+zombe_stand_speak       = jon_sounds + 1
