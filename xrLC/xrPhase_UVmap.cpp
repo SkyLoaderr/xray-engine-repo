@@ -120,7 +120,7 @@ void CBuild::mem_CompactSubdivs()
 	// Memory compact
 	DWORD dwT = timeGetTime	();
 	vecFace		temp;
-	for (SP = 0; SP<int(g_XSplit.size()); SP++) 
+	for (int SP = 0; SP<int(g_XSplit.size()); SP++) 
 	{
 		temp	= g_XSplit[SP];
 		g_XSplit[SP].clear	();
