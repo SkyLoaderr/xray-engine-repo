@@ -164,25 +164,26 @@ void CSpectator::cam_Update	(CActor* A)
 {
 	if (A){
 		const Fmatrix& M			= A->clXFORM();
+		CCameraBase* cam		= cameras[cam_active];
 		switch(cam_active) {
 		case eacFirstEye:{
-			CCameraBase* cam		= cameras[cam_active];
 			Fvector P;
 			P.add					(M.c,1.6f);
 			cam->Set				(P,M.k,M.j);
-			pCreator->Cameras.Update(cam);
 			}break;
 		case eacFreeLook:
 		case eacLookAt:{
-			CCameraBase* cam		= cameras[cam_active];
 			cam->SetParent			(A);
 			Fvector point, dangle;
+			float y,p,r;
 			point.set				(0.f,1.6f,0.f);
 			M.transform_tiny		(point);
+			M.getHPB				(y,p,r);
+			cam->Set				(y,p,r);
 			cam->Update				(point,dangle);
-			pCreator->Cameras.Update(cam);
 			}break;
 		}
+		pCreator->Cameras.Update(cam);
 	}else{
 		R_ASSERT(cam_active==eacFreeFly);
 		Fvector point, dangle;
