@@ -191,7 +191,8 @@ void CRender::render_sun				()
 		cull_COP.mad				(Device.vCameraPosition, fuckingsun->direction, tweak_COP_initial_offs	);
 
 		// Create frustum for query
-		Msg	("%d:",cull_planes.size());
+		// Msg	("%d:",cull_planes.size());
+		cull_frustum._clear			();
 		for (int p=0; p<cull_planes.size(); p++)
 			cull_frustum._add		(cull_planes[p]);
 	}
