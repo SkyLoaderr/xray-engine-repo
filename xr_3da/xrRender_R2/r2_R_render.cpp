@@ -259,13 +259,13 @@ void CRender::Render		()
 				for (u32 pls_phase=0; pls_phase<6; pls_phase++)		{
 					phase									= PHASE_SMAP_P;
 					if (!LR.compute_xfp_1(pls_phase, L))	continue;	// frustum doesn't touch primary frustum
-					r_dsgraph_render_subspace				(L->spatial.sector, LR.P_combine, L->position, TRUE);
+					r_dsgraph_render_subspace				(L->spatial.sector, L->X.P.combine, L->position, TRUE);
 					LR.compute_xfp_2						(pls_phase, L);
 					if (mapNormal[0].size() || mapMatrix[0].size())	{
-						Target.phase_smap_point				(pls_phase);
+						Target.phase_smap_point				(L,pls_phase);
 						RCache.set_xform_world				(Fidentity);
-						RCache.set_xform_view				(LR.P_view);
-						RCache.set_xform_project			(LR.P_project);
+						RCache.set_xform_view				(L->X.P.view);
+						RCache.set_xform_project			(L->X.P.project);
 						r_dsgraph_render_graph				(0);
 					}
 				}
@@ -282,13 +282,13 @@ void CRender::Render		()
 			else	{
 				phase									= PHASE_SMAP_S;
 				LR.compute_xfs_1						(0, L);
-				r_dsgraph_render_subspace				(L->spatial.sector, LR.S_combine, L->position, TRUE);
+				r_dsgraph_render_subspace				(L->spatial.sector, L->X.S.combine, L->position, TRUE);
 				LR.compute_xfs_2						(0, L);
 				if (mapNormal[0].size() || mapMatrix[0].size())	{
-					Target.phase_smap_spot				();
+					Target.phase_smap_spot				(L);
 					RCache.set_xform_world				(Fidentity);
-					RCache.set_xform_view				(LR.S_view);
-					RCache.set_xform_project			(LR.S_project);
+					RCache.set_xform_view				(L->X.S.view);
+					RCache.set_xform_project			(L->X.S.project);
 					r_dsgraph_render_graph				(0);
 				}
 			}
