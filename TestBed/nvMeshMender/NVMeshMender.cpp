@@ -692,89 +692,51 @@ bool NVMeshMender::Munge(  const NVMeshMender::VAVector& input,
             pPositions	= (vec3*)( &( positions[ 0 ] ) );
             tex			= (vec3*)&( output[ (*texIter).second ].floatVector_[ 0 ] );
 
-			// create an edge out of x, s and t
-			edge0.x		= pPositions[ indices[ f + 1 ] ].x - pPositions[ indices[ f ] ].x;
+			nv_scalar	_eps	= type_epsilon	(nv_scalar)*10;
+			nv_scalar	a,b,c;
+			vec3		sxt;
+
+			// create an edge(s) out of s and t
 			edge0.y		= tex[ indices[ f + 1 ] ].x - tex[ indices[ f ] ].x;
 			edge0.z		= tex[ indices[ f + 1 ] ].y - tex[ indices[ f ] ].y;
-
-			// create an edge out of x, s and t
-			edge1.x		= pPositions[ indices[ f + 2 ] ].x - pPositions[ indices[ f ] ].x;
 			edge1.y		= tex[ indices[ f + 2 ] ].x - tex[ indices[ f ] ].x;
 			edge1.z		= tex[ indices[ f + 2 ] ].y - tex[ indices[ f ] ].y;
 
-			vec3 sxt	= edge0 ^ edge1;
+			// create an edge out of x, s and t
+			edge0.x		= pPositions[ indices[ f + 1 ] ].x - pPositions[ indices[ f ] ].x;
+			edge1.x		= pPositions[ indices[ f + 2 ] ].x - pPositions[ indices[ f ] ].x;
+			sxt			= edge0 ^ edge1;
 
-            nv_scalar a = sxt.x;
-            nv_scalar b = sxt.y;
-            nv_scalar c = sxt.z;
-			
-			nv_scalar _eps	= type_epsilon(nv_scalar)*10;
-            nv_scalar ds_dx = nv_zero;
-            if ( _abs( a ) > _eps )
-            {
-                ds_dx = - b / a;
-            }
-
-            nv_scalar dt_dx = nv_zero;
-            if ( _abs( a ) > _eps )
-            {
-                dt_dx = - c / a;
-            }
+            a=sxt.x;b=sxt.y;c= sxt.z;
+            nv_scalar ds_dx = nv_zero;		if ( _abs( a ) > _eps )		ds_dx = - b / a;
+            nv_scalar dt_dx = nv_zero;		if ( _abs( a ) > _eps )		dt_dx = - c / a;
 
 			// create an edge out of y, s and t
-			edge0.x = pPositions[ indices[ f + 1 ] ].y - pPositions[ indices[ f ] ].y;
-			// create an edge out of y, s and t
-			edge1.x = pPositions[ indices[ f + 2 ] ].y - pPositions[ indices[ f ] ].y;
+			edge0.x		= pPositions[ indices[ f + 1 ] ].y - pPositions[ indices[ f ] ].y;
+			edge1.x		= pPositions[ indices[ f + 2 ] ].y - pPositions[ indices[ f ] ].y;
+			sxt			= edge0 ^ edge1;
 
-			sxt = edge0 ^ edge1;
-
-            a = sxt.x;
-            b = sxt.y;
-            c = sxt.z;
-
-            nv_scalar ds_dy = nv_zero;
-            if ( _abs( a ) > _eps )
-            {
-                ds_dy = -b / a;
-            }
-
-            nv_scalar dt_dy = nv_zero;
-            if ( _abs( a ) > _eps )
-            {
-                dt_dy = -c / a;
-            }
+            a=sxt.x;b=sxt.y;c= sxt.z;
+			nv_scalar ds_dy = nv_zero;		if ( _abs( a ) > _eps )		ds_dy = -b / a;
+			nv_scalar dt_dy = nv_zero;		if ( _abs( a ) > _eps )		dt_dy = -c / a;
 
 			// create an edge out of z, s and t
-			edge0.x = pPositions[ indices[ f + 1 ] ].z - pPositions[ indices[ f ] ].z;
-			// create an edge out of z, s and t
-			edge1.x = pPositions[ indices[ f + 2 ] ].z - pPositions[ indices[ f ] ].z;
+			edge0.x		= pPositions[ indices[ f + 1 ] ].z - pPositions[ indices[ f ] ].z;
+			edge1.x		= pPositions[ indices[ f + 2 ] ].z - pPositions[ indices[ f ] ].z;
+			sxt			= edge0 ^ edge1;
 
-			sxt = edge0 ^ edge1;
-
-            a = sxt.x;
-            b = sxt.y;
-            c = sxt.z;
-
-            nv_scalar ds_dz = nv_zero;
-            if ( _abs( a ) > _eps )
-            {
-                ds_dz = -b / a;
-            }
-
-            nv_scalar dt_dz = nv_zero;
-            if ( _abs( a ) > _eps )
-            {
-                dt_dz = -c / a;
-            }
+            a=sxt.x;b=sxt.y;c= sxt.z;
+			nv_scalar ds_dz = nv_zero;		if ( _abs( a ) > _eps )		ds_dz = -b / a;
+            nv_scalar dt_dz = nv_zero;		if ( _abs( a ) > _eps )		dt_dz = -c / a;
 
             // generate coordinate frame from the gradients
-            s = vec3( ds_dx, ds_dy, ds_dz );
-            t = vec3( dt_dx, dt_dy, dt_dz );
+            s				= vec3( ds_dx, ds_dy, ds_dz );
+            t				= vec3( dt_dx, dt_dy, dt_dz );
 
-			s.normalize();
-			t.normalize();
-			sxt = s ^ t;
-			sxt.normalize();
+			s.normalize		();
+			t.normalize		();
+			sxt				= s ^ t;
+			sxt.normalize	();
 
             // save vectors for this face
             sVector.push_back( s );
