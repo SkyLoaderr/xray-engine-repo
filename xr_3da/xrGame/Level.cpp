@@ -19,6 +19,8 @@
 #include "PHdynamicdata.h"
 #include "Physics.h"
 
+#include "ShootingObject.h"
+
 //fog over the map
 #include "LevelFogOfWar.h"
 #include "ai_script_processor.h"
@@ -53,6 +55,13 @@ CLevel::CLevel()
 	m_pFogOfWar					= xr_new<CFogOfWar>();
 
 	m_tpScriptProcessor			= 0;
+
+	m_bNeedSync					= false;
+	m_dwNumSteps				= 0;
+
+	//получить материал пули
+	CShootingObject::bullet_material_id  = GMLib.GetMaterialIdx(WEAPON_MATERIAL_NAME);
+
 
 #ifdef DEBUG
 	m_bSynchronization			= false;
@@ -167,6 +176,8 @@ void CLevel::OnFrame	()
 			GO->OnEvent		(P,type);
 		}
 	}
+	//Net sync
+	if (m_bNeedSync) make_NetSync();
 
 	// Inherited update
 	inherited::OnFrame					();
@@ -271,3 +282,53 @@ void CLevel::OnEvent(EVENT E, u64 P1, u64 /**P2/**/)
 	} else return;
 }
 
+/*
+int	lvInterpSteps = 0;
+
+void CLevel::make_NetSync	()
+{
+	m_bNeedSync = false;
+	
+//////////////////////////////////////////////////////////////////////////////////
+	ph_world->Freeze();
+
+	//setting UpdateData and determining number of PH steps from last received update
+	for (xr_vector<CObject*>::iterator O=Objects.objects.begin(); O!=Objects.objects.end(); O++) 
+	{
+		CGameObject* P = dynamic_cast<CGameObject*>(*O);
+		if (!P) continue;
+		P->PH_B_SyncSteps();
+	}
+//	u32 dwNumSteps = iCeil(((dReal)m_dwDeltaTime / 1000) / fixed_step);
+//////////////////////////////////////////////////////////////////////////////////
+	//first prediction from "delivered" to "real current" position
+	//making enought PH steps to calculate current objects position based on their updated state
+	for (u32 i =0; i<m_dwNumSteps; i++)	
+		ph_world->Step();
+
+	ph_world->UnFreeze();
+//////////////////////////////////////////////////////////////////////////////////
+	//setting flags to Interpolation
+	for (xr_vector<CObject*>::iterator O=Objects.objects.begin(); O!=Objects.objects.end(); O++) 
+	{
+		CGameObject* P = dynamic_cast<CGameObject*>(*O);
+		if (!P) continue;
+		P->PH_M_SyncSteps();
+	}
+//////////////////////////////////////////////////////////////////////////////////
+	for (u32 i =0; i<lvInterpSteps; i++)	//second prediction "real current" to "future" position
+		ph_world->Step();
+//////////////////////////////////////////////////////////////////////////////////
+	for (xr_vector<CObject*>::iterator O=Objects.objects.begin(); O!=Objects.objects.end(); O++) 
+	{
+		CGameObject* P = dynamic_cast<CGameObject*>(*O);
+		if (!P) continue;
+		P->PH_A_SyncSteps();
+	}
+};
+
+u32			CLevel::InterpolationSteps	()
+{
+	return lvInterpSteps;
+};
+*/
