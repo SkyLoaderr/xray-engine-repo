@@ -14,7 +14,7 @@
 // Tools
 //////////////////////////////////////////////////////////////////////
 //---------------------------------------------------
-BOOL VerifyPath(LPCSTR path)
+void VerifyPath(LPCSTR path)
 {
 	string1024 tmp;
 	for(int i=0;path[i];i++){
@@ -22,7 +22,7 @@ BOOL VerifyPath(LPCSTR path)
 			continue;
 		Memory.mem_copy( tmp, path, i );
 		tmp[i] = 0;
-		if (!CreateDirectory( tmp, 0 )) return FALSE;
+		CreateDirectory( tmp, 0 );
 	}
     return TRUE;
 }

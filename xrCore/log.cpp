@@ -116,7 +116,7 @@ void CreateLog(LogCallback cb)
 {
 	LogCB				= cb;
 	strconcat			(logFName,"logs\\",Core.ApplicationName,"_",Core.UserName,".log");
-    R_ASSERT2(VerifyPath(logFName),"Can't create directory");
+    VerifyPath			(logFName);
 
 	FILE *f;
 	f = fopen(logFName, "wt");

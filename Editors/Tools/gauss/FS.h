@@ -14,7 +14,7 @@ XRCORE_API void * 	FileDecompress	(const char *fn, const char* sign, u32* size=N
 #define CFS_CompressMark	(1ul << 31ul)
 #define CFS_AlignMark		(1ul << 30ul)
 
-XRCORE_API BOOL VerifyPath(LPCSTR path);
+XRCORE_API void VerifyPath(LPCSTR path);
 //------------------------------------------------------------------------------------
 // Write
 //------------------------------------------------------------------------------------
