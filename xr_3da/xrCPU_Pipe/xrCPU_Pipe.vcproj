@@ -236,6 +236,9 @@
 				RelativePath=".\xrSkin1W.cpp">
 			</File>
 			<File
+				RelativePath="xrSkin2W.cpp">
+			</File>
+			<File
 				RelativePath=".\xrTransfer.cpp">
 			</File>
 		</Filter>
