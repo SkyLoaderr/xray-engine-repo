@@ -177,7 +177,7 @@ void CBaseMonster::load_shared(LPCSTR section)
 }
 
 
-BOOL CBaseMonster::net_Spawn (LPVOID DC) 
+BOOL CBaseMonster::net_Spawn (CSE_Abstract* DC) 
 {
 	if (!frame_check(m_dwFrameSpawn))
 		return	(TRUE);

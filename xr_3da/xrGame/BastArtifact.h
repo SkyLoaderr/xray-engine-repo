@@ -28,7 +28,7 @@ public:
 	virtual void UpdateCL			();
 	virtual void shedule_Update		(u32 dt);
 	
-	virtual BOOL net_Spawn			(LPVOID DC);
+	virtual BOOL net_Spawn			(CSE_Abstract* DC);
 	virtual void net_Destroy		();
 
 	virtual	void Hit				(float P, Fvector &dir,	

@@ -587,7 +587,7 @@ void CActor::NetInput_Update	(u32 Time)
 	};
 };
 
-BOOL CActor::net_Spawn		(LPVOID DC)
+BOOL CActor::net_Spawn		(CSE_Abstract* DC)
 {
 	if (m_pPhysicsShell)
 	{

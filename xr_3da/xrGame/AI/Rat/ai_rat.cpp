@@ -155,7 +155,7 @@ void CAI_Rat::Load(LPCSTR section)
 	m_dwActiveScheduleMax			= shedule.t_max;
 }
 
-BOOL CAI_Rat::net_Spawn	(LPVOID DC)
+BOOL CAI_Rat::net_Spawn	(CSE_Abstract* DC)
 {
 	//////////////////////////////////////////////////////////////////////////
 	CSE_Abstract					*e	= (CSE_Abstract*)(DC);

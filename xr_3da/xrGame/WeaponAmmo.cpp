@@ -79,7 +79,7 @@ void CWeaponAmmo::Load(LPCSTR section)
 		m_bCanBeUnlimited = true;
 }
 
-BOOL CWeaponAmmo::net_Spawn(LPVOID DC) 
+BOOL CWeaponAmmo::net_Spawn(CSE_Abstract* DC) 
 {
 	BOOL bResult = inherited::net_Spawn	(DC);
 	CSE_Abstract					*e		= (CSE_Abstract*)(DC);

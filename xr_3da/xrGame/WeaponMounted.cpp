@@ -67,7 +67,7 @@ void	CWeaponMounted::Load(LPCSTR section)
 
 }
 
-BOOL	CWeaponMounted::net_Spawn(LPVOID DC)
+BOOL	CWeaponMounted::net_Spawn(CSE_Abstract* DC)
 {
 	CSE_Abstract			*e	= (CSE_Abstract*)(DC);
 	CSE_ALifeMountedWeapon	*mw	= smart_cast<CSE_ALifeMountedWeapon*>(e);

@@ -30,7 +30,7 @@ void CScriptObject::reinit				()
 	CGameObject::reinit				();
 }
 
-BOOL CScriptObject::net_Spawn			(LPVOID DC)
+BOOL CScriptObject::net_Spawn			(CSE_Abstract* DC)
 {
 	return	(
 		CGameObject::net_Spawn(DC) &&

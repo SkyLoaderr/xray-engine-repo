@@ -20,7 +20,7 @@ public:
 					CTeamBaseZone		();
 	virtual			~CTeamBaseZone		();
 	virtual void	reinit				();
-	virtual BOOL	net_Spawn			(LPVOID DC);
+	virtual BOOL	net_Spawn			(CSE_Abstract* DC);
 
 	virtual void	Center				(Fvector &C)	const;
 	virtual float	Radius				() const;

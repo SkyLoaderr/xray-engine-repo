@@ -376,7 +376,7 @@ void CWeapon::animGet	(MotionSVec& lst, LPCSTR prefix)
 }
 
 
-BOOL CWeapon::net_Spawn		(LPVOID DC)
+BOOL CWeapon::net_Spawn		(CSE_Abstract* DC)
 {
 	BOOL bResult					= inherited::net_Spawn(DC);
 	CSE_Abstract					*e	= (CSE_Abstract*)(DC);

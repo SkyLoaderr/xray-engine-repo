@@ -103,7 +103,7 @@ void __stdcall CAI_Boar::BoneCallback(CBoneInstance *B)
 	B->mTransform.mulB(M);
 }
 
-BOOL CAI_Boar::net_Spawn (LPVOID DC) 
+BOOL CAI_Boar::net_Spawn (CSE_Abstract* DC) 
 {
 	if (!inherited::net_Spawn(DC))
 		return(FALSE);

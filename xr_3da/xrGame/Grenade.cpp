@@ -40,7 +40,7 @@ void CGrenade::Load(LPCSTR section)
 	//////////////////////////////////////
 }
 
-BOOL CGrenade::net_Spawn(LPVOID DC) 
+BOOL CGrenade::net_Spawn(CSE_Abstract* DC) 
 {
 	m_dwGrenadeIndependencyTime = 0;
 	return (inherited::net_Spawn(DC) && CExplosive::net_Spawn(DC));

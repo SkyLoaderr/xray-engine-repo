@@ -470,7 +470,7 @@ public:
 	// Core events
 	virtual DLL_Pure		*_construct			();
 	virtual void			Load				( LPCSTR section );
-	virtual BOOL			net_Spawn			( LPVOID DC );
+	virtual BOOL			net_Spawn			( CSE_Abstract* DC );
 	virtual void			net_Destroy			();
 	virtual void			UpdateCL			( ); 
 	virtual void			shedule_Update		(u32 dt);

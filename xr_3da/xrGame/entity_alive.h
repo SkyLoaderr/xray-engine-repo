@@ -42,7 +42,7 @@ public:
 	virtual void			load					(IReader &input_packet);
 
 
-	virtual BOOL			net_Spawn				(LPVOID DC);
+	virtual BOOL			net_Spawn				(CSE_Abstract* DC);
 	virtual void			net_Destroy				();
 	virtual	BOOL			net_SaveRelevant		();
 

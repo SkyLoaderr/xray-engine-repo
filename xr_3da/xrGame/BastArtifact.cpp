@@ -80,7 +80,7 @@ void CBastArtefact::BastCollision(CEntityAlive* pEntityAlive)
 	}
 }
 
-BOOL CBastArtefact::net_Spawn(LPVOID DC)
+BOOL CBastArtefact::net_Spawn(CSE_Abstract* DC)
 {
 	BOOL result = inherited::net_Spawn(DC);
 	if(!result) return FALSE;

@@ -77,7 +77,7 @@ void CArtefact::Load(LPCSTR section)
 	}
 }
 
-BOOL CArtefact::net_Spawn(LPVOID DC) 
+BOOL CArtefact::net_Spawn(CSE_Abstract* DC) 
 {
 	BOOL result = inherited::net_Spawn(DC);
 	m_all.insert(this);

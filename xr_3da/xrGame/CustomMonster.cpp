@@ -654,7 +654,7 @@ void CCustomMonster::Die	(CObject* who)
 	//Level().RemoveMapLocationByID(this->ID());
 }
 
-BOOL CCustomMonster::net_Spawn	(LPVOID DC)
+BOOL CCustomMonster::net_Spawn	(CSE_Abstract* DC)
 {
 	if (!inherited::net_Spawn(DC) || !CScriptEntity::net_Spawn(DC) || !movement().net_Spawn(DC))
 		return					(FALSE);

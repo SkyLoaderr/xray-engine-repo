@@ -39,7 +39,7 @@ public:
 	// Generic
 	virtual void			Load				(LPCSTR section);
 
-	virtual BOOL			net_Spawn			(LPVOID DC);
+	virtual BOOL			net_Spawn			(CSE_Abstract* DC);
 	virtual void			net_Destroy			();
 	virtual void			net_Export			(NET_Packet& P);	// export to server
 	virtual void			net_Import			(NET_Packet& P);	// import from server

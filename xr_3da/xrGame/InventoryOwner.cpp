@@ -88,7 +88,7 @@ void CInventoryOwner::reinit				()
 }
 
 //call this after CGameObject::net_Spawn
-BOOL CInventoryOwner::net_Spawn		(LPVOID DC)
+BOOL CInventoryOwner::net_Spawn		(CSE_Abstract* DC)
 {
 	//получить указатель на объект, InventoryOwner
 	CGameObject			*pThis = smart_cast<CGameObject*>(this);

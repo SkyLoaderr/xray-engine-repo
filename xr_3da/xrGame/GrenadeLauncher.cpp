@@ -17,7 +17,7 @@ CGrenadeLauncher::~CGrenadeLauncher()
 {
 }
 
-BOOL CGrenadeLauncher::net_Spawn(LPVOID DC) 
+BOOL CGrenadeLauncher::net_Spawn(CSE_Abstract* DC) 
 {
 	return		(inherited::net_Spawn(DC));
 }

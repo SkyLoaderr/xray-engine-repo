@@ -14,7 +14,7 @@ public:
 	virtual			~CAI_Boar			();	
 
 	virtual void	Load				(LPCSTR section);
-	virtual BOOL	net_Spawn			(LPVOID DC);
+	virtual BOOL	net_Spawn			(CSE_Abstract* DC);
 	virtual void	UpdateCL			();
 
 	virtual	void	LookPosition		(Fvector to_point, float angular_speed = PI_DIV_3);

@@ -12,7 +12,7 @@ public:
 
 	virtual void Load				(LPCSTR section);
 	
-	virtual BOOL net_Spawn			(LPVOID DC);
+	virtual BOOL net_Spawn			(CSE_Abstract* DC);
 	virtual void net_Destroy		();
 
 	virtual void OnH_A_Chield		();

@@ -25,7 +25,7 @@ void CExplosiveRocket::Load(LPCSTR section)
 	CExplosive::Load(section);
 }
 
-BOOL CExplosiveRocket::net_Spawn(LPVOID DC) 
+BOOL CExplosiveRocket::net_Spawn(CSE_Abstract* DC) 
 {
 	BOOL result = inherited::net_Spawn(DC);
 	result |= CExplosive::net_Spawn(DC);

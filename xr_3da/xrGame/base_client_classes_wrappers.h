@@ -229,7 +229,7 @@ public:
 	virtual const Fbox&		BoundingBox			() const;
 	virtual void			Load				(LPCSTR section);
 	virtual void			UpdateCL			();
-	virtual BOOL			net_Spawn			(LPVOID data);
+	virtual BOOL			net_Spawn			(CSE_Abstract* data);
 	virtual void			net_Destroy			();
 	virtual void			net_Export			(NET_Packet& P);
 	virtual void			net_Import			(NET_Packet& P);

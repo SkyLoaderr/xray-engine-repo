@@ -17,7 +17,7 @@ CAntirad::~CAntirad(void)
 }
 
 
-BOOL CAntirad::net_Spawn(LPVOID DC) 
+BOOL CAntirad::net_Spawn(CSE_Abstract* DC) 
 {
 	return		(inherited::net_Spawn(DC));
 }

@@ -17,7 +17,7 @@ CSilencer::~CSilencer()
 {
 }
 
-BOOL CSilencer::net_Spawn(LPVOID DC) 
+BOOL CSilencer::net_Spawn(CSE_Abstract* DC) 
 {
 	return		(inherited::net_Spawn(DC));
 }

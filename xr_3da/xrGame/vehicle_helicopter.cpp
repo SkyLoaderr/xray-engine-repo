@@ -45,7 +45,7 @@ void CVehicleHelicopter::reload				(LPCSTR section)
 	inherited::reload	(section);
 }
 
-BOOL CVehicleHelicopter::net_Spawn			(LPVOID DC)
+BOOL CVehicleHelicopter::net_Spawn			(CSE_Abstract* DC)
 {
 	if (!inherited::net_Spawn(DC))
 		return			(FALSE);

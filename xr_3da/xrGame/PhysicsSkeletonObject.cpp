@@ -17,7 +17,7 @@ CPhysicsSkeletonObject::~CPhysicsSkeletonObject()
 }
 
 
-BOOL CPhysicsSkeletonObject::net_Spawn(LPVOID DC)
+BOOL CPhysicsSkeletonObject::net_Spawn(CSE_Abstract* DC)
 {
 	CSE_Abstract			  *e	= (CSE_Abstract*)(DC);
 

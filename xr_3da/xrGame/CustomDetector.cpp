@@ -21,7 +21,7 @@ CCustomDetector::~CCustomDetector(void)
 		it->second.detect_snd.destroy();
 }
 
-BOOL CCustomDetector::net_Spawn(LPVOID DC) 
+BOOL CCustomDetector::net_Spawn(CSE_Abstract* DC) 
 {
 	m_pCurrentActor = NULL;
 	m_pCurrentInvOwner = NULL;

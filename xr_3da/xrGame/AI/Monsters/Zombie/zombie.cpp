@@ -126,7 +126,7 @@ void CZombie::vfAssignBones()
 	Bones.AddBone(bone_head, AXIS_Z);	Bones.AddBone(bone_head, AXIS_Y);
 }
 
-BOOL CZombie::net_Spawn (LPVOID DC) 
+BOOL CZombie::net_Spawn (CSE_Abstract* DC) 
 {
 	if (!inherited::net_Spawn(DC))
 		return(FALSE);

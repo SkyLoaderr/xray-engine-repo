@@ -28,7 +28,7 @@ CFoodItem::~CFoodItem(void)
 }
 
 
-BOOL CFoodItem::net_Spawn(LPVOID DC) 
+BOOL CFoodItem::net_Spawn(CSE_Abstract* DC) 
 {
 	return		(inherited::net_Spawn(DC));
 }

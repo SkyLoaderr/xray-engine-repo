@@ -122,7 +122,7 @@ void CAI_Crow::Load( LPCSTR section )
 
 }
 
-BOOL CAI_Crow::net_Spawn		(LPVOID DC)
+BOOL CAI_Crow::net_Spawn		(CSE_Abstract* DC)
 {
 	BOOL R		= inherited::net_Spawn	(DC);
 	setVisible	(TRUE);

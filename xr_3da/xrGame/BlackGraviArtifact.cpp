@@ -41,7 +41,7 @@ void CBlackGraviArtefact::Load(LPCSTR section)
 	m_sParticleName = pSettings->r_string(section,"particle");
 }
 
-BOOL CBlackGraviArtefact::net_Spawn(LPVOID DC)
+BOOL CBlackGraviArtefact::net_Spawn(CSE_Abstract* DC)
 {
 	if(!inherited::net_Spawn(DC)) return FALSE;
 

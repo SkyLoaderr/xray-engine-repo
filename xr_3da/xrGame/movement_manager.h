@@ -192,7 +192,7 @@ public:
 	virtual void	Load					(LPCSTR caSection);
 	virtual void	reinit					();
 	virtual void	reload					(LPCSTR caSection);
-	virtual BOOL	net_Spawn				(LPVOID data);
+	virtual BOOL	net_Spawn				(CSE_Abstract* data);
 	IC		bool	actual					() const;
 			bool	actual_all				() const;
 	IC		void	set_path_type			(EPathType path_type);

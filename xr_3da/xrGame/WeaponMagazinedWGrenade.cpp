@@ -109,7 +109,7 @@ void CWeaponMagazinedWGrenade::net_Destroy()
 }
 
 
-BOOL CWeaponMagazinedWGrenade::net_Spawn(LPVOID DC) 
+BOOL CWeaponMagazinedWGrenade::net_Spawn(CSE_Abstract* DC) 
 {
 	m_pGrenadePoint = &vLastFP2;
 	BOOL l_res = inherited::net_Spawn(DC);

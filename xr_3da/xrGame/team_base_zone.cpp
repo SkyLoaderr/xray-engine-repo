@@ -38,7 +38,7 @@ float CTeamBaseZone::Radius			() const
 	return						(CFORM()->getRadius());
 }
 
-BOOL CTeamBaseZone::net_Spawn	(LPVOID DC) 
+BOOL CTeamBaseZone::net_Spawn	(CSE_Abstract* DC) 
 {
 	CCF_Shape					*l_pShape = xr_new<CCF_Shape>(this);
 	collidable.model			= l_pShape;

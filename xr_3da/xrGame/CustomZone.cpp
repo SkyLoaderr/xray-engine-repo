@@ -295,7 +295,7 @@ void CCustomZone::Load(LPCSTR section)
 	}
 }
 
-BOOL CCustomZone::net_Spawn(LPVOID DC) 
+BOOL CCustomZone::net_Spawn(CSE_Abstract* DC) 
 {
 	if (!inherited::net_Spawn(DC))
 		return					(FALSE);

@@ -56,7 +56,7 @@ void CCustomRocket::reinit		()
 }
 
 
-BOOL CCustomRocket::net_Spawn(LPVOID DC) 
+BOOL CCustomRocket::net_Spawn(CSE_Abstract* DC) 
 {
 	BOOL result = inherited::net_Spawn(DC);
 	return result;

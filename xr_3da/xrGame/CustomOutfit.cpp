@@ -32,7 +32,7 @@ CCustomOutfit::~CCustomOutfit()
 }
 
 
-BOOL CCustomOutfit::net_Spawn(LPVOID DC) 
+BOOL CCustomOutfit::net_Spawn(CSE_Abstract* DC) 
 {
 	return		(inherited::net_Spawn(DC));
 }

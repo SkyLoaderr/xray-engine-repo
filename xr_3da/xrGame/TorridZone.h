@@ -13,7 +13,7 @@ public:
 	virtual				~CTorridZone		();
 	virtual void		UpdateCL			();
 	virtual void		shedule_Update		(u32 dt);
-	BOOL				net_Spawn			(LPVOID DC);
+	BOOL				net_Spawn			(CSE_Abstract* DC);
 
 
 	virtual bool		IsVisibleForZones() { return true;		}

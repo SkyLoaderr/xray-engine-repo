@@ -20,7 +20,7 @@ CInfoDocument::~CInfoDocument(void)
 }
 
 
-BOOL CInfoDocument::net_Spawn(LPVOID DC) 
+BOOL CInfoDocument::net_Spawn(CSE_Abstract* DC) 
 {
 	BOOL					res = inherited::net_Spawn(DC);
 

@@ -13,6 +13,7 @@ class	ENGINE_API	IRender_Sector;
 class	ENGINE_API	IRender_ObjectSpecific;
 class	ENGINE_API	CCustomHUD;
 class	NET_Packet	;
+class	CSE_Abstract;
 
 //-----------------------------------------------------------------------------------------------------------
 //	CObject
@@ -145,7 +146,7 @@ public:
 	virtual void						renderable_Render	();
 
 	virtual void						UpdateCL			();									// Called each frame, so no need for dt
-	virtual BOOL						net_Spawn			(LPVOID data);
+	virtual BOOL						net_Spawn			(CSE_Abstract* data);
 	virtual void						net_Destroy			();
 	virtual void						net_Export			(NET_Packet& P) {};					// export to server
 	virtual void						net_Import			(NET_Packet& P) {};					// import from server

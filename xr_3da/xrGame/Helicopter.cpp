@@ -235,7 +235,7 @@ void CollisionCallbackAlife(bool& do_colide,dContact& c,SGameMtl* material_1,SGa
 {
 	do_colide=false;
 }
-BOOL CHelicopter::net_Spawn(LPVOID	DC)
+BOOL CHelicopter::net_Spawn(CSE_Abstract*	DC)
 {
 	SetfHealth(100.0f);
 	setState(CHelicopter::eIdleState);

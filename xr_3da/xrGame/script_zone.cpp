@@ -34,7 +34,7 @@ void CScriptZone::reinit		()
 	m_tpOnExit->clear		();
 }
 
-BOOL CScriptZone::net_Spawn	(LPVOID DC) 
+BOOL CScriptZone::net_Spawn	(CSE_Abstract* DC) 
 {
 	feel_touch.clear			();
 	if (!inherited::net_Spawn(DC))

@@ -200,7 +200,7 @@ void CAI_Trader::LookAtActor(CBoneInstance *B)
 	B->mTransform.mulB(M);
 }
 
-BOOL CAI_Trader::net_Spawn			(LPVOID DC)
+BOOL CAI_Trader::net_Spawn			(CSE_Abstract* DC)
 {
 	CSE_Abstract					*e	= (CSE_Abstract*)(DC);
 	CSE_ALifeTrader					*l_tpTrader = smart_cast<CSE_ALifeTrader*>(e);

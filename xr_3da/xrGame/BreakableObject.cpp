@@ -36,7 +36,7 @@ void CBreakableObject::Load		(LPCSTR section)
 	m_immunity_factor  =pSettings	->r_float(section,"immunity_factor");
 }
 
-BOOL CBreakableObject::net_Spawn(LPVOID DC)
+BOOL CBreakableObject::net_Spawn(CSE_Abstract* DC)
 {
 
 	CSE_Abstract			*e		= (CSE_Abstract*)(DC);

@@ -18,7 +18,7 @@ CAI_Flesh::~CAI_Flesh()
 	xr_delete(StateMan);
 }
 
-BOOL CAI_Flesh::net_Spawn (LPVOID DC) 
+BOOL CAI_Flesh::net_Spawn (CSE_Abstract* DC) 
 {
 	if (!inherited::net_Spawn(DC))
 		return(FALSE);

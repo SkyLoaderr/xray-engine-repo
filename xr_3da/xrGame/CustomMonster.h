@@ -136,7 +136,7 @@ public:
 public:
 
 	virtual DLL_Pure	*_construct				();
-	virtual BOOL		net_Spawn				( LPVOID DC);
+	virtual BOOL		net_Spawn				( CSE_Abstract* DC);
 	virtual void		Die						( CObject* who);
 
 	virtual void		HitSignal				( float P,	Fvector& vLocalDir, CObject* who);

@@ -26,7 +26,7 @@ private:
 public:
 	CPhysicObject(void);
 	virtual ~CPhysicObject(void);
-	virtual BOOL	net_Spawn			( LPVOID DC)																	;
+	virtual BOOL	net_Spawn			( CSE_Abstract* DC)																	;
 
 	virtual void	CreatePhysicsShell	(CSE_Abstract* e)																;
 	virtual void	net_Destroy			()																				;

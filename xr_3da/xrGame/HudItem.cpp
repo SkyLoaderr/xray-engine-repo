@@ -94,7 +94,7 @@ void CHudItem::PlaySound(HUD_SOUND& hud_snd,
 	HUD_SOUND::PlaySound(hud_snd, position, H_Root(), !!hud_mode);
 }
 
-BOOL  CHudItem::net_Spawn(LPVOID DC) 
+BOOL  CHudItem::net_Spawn(CSE_Abstract* DC) 
 {
 	BOOL l_res = inherited::net_Spawn(DC);
 	return l_res;

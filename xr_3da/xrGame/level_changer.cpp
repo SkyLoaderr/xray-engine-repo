@@ -26,7 +26,7 @@ float CLevelChanger::Radius		() const
 	return CFORM()->getRadius	();
 }
 
-BOOL CLevelChanger::net_Spawn	(LPVOID DC) 
+BOOL CLevelChanger::net_Spawn	(CSE_Abstract* DC) 
 {
 	CCF_Shape *l_pShape			= xr_new<CCF_Shape>(this);
 	collidable.model			= l_pShape;

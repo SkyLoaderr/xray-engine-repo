@@ -63,7 +63,7 @@ void CScriptBinder::reload			(LPCSTR section)
 		m_object->reload	(section);
 }
 
-BOOL CScriptBinder::net_Spawn		(LPVOID DC)
+BOOL CScriptBinder::net_Spawn		(CSE_Abstract* DC)
 {
 	CSE_Abstract			*abstract = (CSE_Abstract*)DC;
 	CSE_ALifeObject			*object = smart_cast<CSE_ALifeObject*>(abstract);

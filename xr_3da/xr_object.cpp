@@ -120,7 +120,7 @@ void CObject::Load				(LPCSTR section )
 	setVisible					(false);
 }
 
-BOOL CObject::net_Spawn			(LPVOID data)
+BOOL CObject::net_Spawn			(CSE_Abstract* data)
 {
 	VERIFY						(_valid(renderable.xform));
 

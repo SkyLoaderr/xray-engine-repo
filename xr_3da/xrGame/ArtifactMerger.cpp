@@ -34,7 +34,7 @@ void SetArtefactMergeFunctor(const luabind::functor<void>& artifactMergeFunctor)
 	g_ArtefactMergeFunctor = xr_new<luabind::functor<void> >(artifactMergeFunctor);
 }
 
-BOOL CArtefactMerger::net_Spawn(LPVOID DC) 
+BOOL CArtefactMerger::net_Spawn(CSE_Abstract* DC) 
 {
 	return		(inherited::net_Spawn(DC));
 }

@@ -14,7 +14,7 @@ void CFryupZone::OnRender()
 }
 #endif
 
-//BOOL CCustomZone::net_Spawn(LPVOID DC) 
+//BOOL CCustomZone::net_Spawn(CSE_Abstract* DC) 
 //{
 //	CCF_Shape *l_pShape			= xr_new<CCF_Shape>(this);
 //	collidable.model			= l_pShape;

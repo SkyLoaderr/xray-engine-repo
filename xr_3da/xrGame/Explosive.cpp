@@ -98,7 +98,7 @@ void CExplosive::Load(LPCSTR section)
 	effector.period_number	= pSettings->r_float("explode_effector","period_number");
 }
 
-BOOL CExplosive::net_Spawn		(LPVOID DC)
+BOOL CExplosive::net_Spawn		(CSE_Abstract* DC)
 {
 	return				(inherited::net_Spawn(DC));
 }

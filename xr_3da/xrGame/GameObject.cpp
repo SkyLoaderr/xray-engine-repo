@@ -176,7 +176,7 @@ void CGameObject::OnEvent		(NET_Packet& P, u16 type)
 
 void __stdcall VisualCallback(CKinematics *tpKinematics);
 
-BOOL CGameObject::net_Spawn		(LPVOID	DC)
+BOOL CGameObject::net_Spawn		(CSE_Abstract*	DC)
 {
 	if (!frame_check(m_dwFrameSpawn))
 		return						(TRUE);

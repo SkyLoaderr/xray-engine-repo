@@ -181,7 +181,7 @@ void CAI_Stalker::Load				(LPCSTR section)
 	m_demo_mode						= false;
 }
 
-BOOL CAI_Stalker::net_Spawn			(LPVOID DC)
+BOOL CAI_Stalker::net_Spawn			(CSE_Abstract* DC)
 {
 	CSE_Abstract					*e	= (CSE_Abstract*)(DC);
 	CSE_ALifeHumanStalker			*tpHuman = smart_cast<CSE_ALifeHumanStalker*>(e);

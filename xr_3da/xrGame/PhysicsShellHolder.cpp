@@ -21,7 +21,7 @@ void CPhysicsShellHolder::net_Destroy()
 	inherited::net_Destroy						();
 	xr_delete									(m_pPhysicsShell);
 }
-BOOL CPhysicsShellHolder::net_Spawn				(LPVOID	DC)
+BOOL CPhysicsShellHolder::net_Spawn				(CSE_Abstract*	DC)
 {
 	if (!frame_check(m_dwFrameSpawn))
 		return					(TRUE);

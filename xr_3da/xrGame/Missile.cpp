@@ -78,7 +78,7 @@ void CMissile::Load(LPCSTR section)
 		HUD_SOUND::LoadSound(section,"snd_playing",sndPlaying,TRUE);
 }
 
-BOOL CMissile::net_Spawn(LPVOID DC) 
+BOOL CMissile::net_Spawn(CSE_Abstract* DC) 
 {
 	BOOL l_res = inherited::net_Spawn(DC);
 

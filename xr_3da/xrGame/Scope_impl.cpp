@@ -18,7 +18,7 @@ CScope::~CScope	()
 }
 
 
-BOOL CScope::net_Spawn(LPVOID DC) 
+BOOL CScope::net_Spawn(CSE_Abstract* DC) 
 {
 	return	(inherited::net_Spawn(DC));
 }

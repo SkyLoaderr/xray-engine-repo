@@ -108,7 +108,7 @@ void	CCar::Load					( LPCSTR section )
 	if (self)		self->spatial.type	|=	STYPE_VISIBLEFORAI;	
 }
 
-BOOL	CCar::net_Spawn				(LPVOID DC)
+BOOL	CCar::net_Spawn				(CSE_Abstract* DC)
 {
 #ifdef DEBUG
 	Log("car spawn");

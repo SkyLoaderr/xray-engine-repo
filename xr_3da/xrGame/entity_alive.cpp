@@ -215,7 +215,7 @@ void CEntityAlive::shedule_Update(u32 dt)
 	}
 }
 
-BOOL CEntityAlive::net_Spawn	(LPVOID DC)
+BOOL CEntityAlive::net_Spawn	(CSE_Abstract* DC)
 {
 	//установить команду в соответствии с community
 /*	if(monster_community->team() != 255)

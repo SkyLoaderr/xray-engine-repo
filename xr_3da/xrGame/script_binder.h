@@ -22,7 +22,7 @@ public:
 	virtual void				reinit			();
 	virtual void				Load			(LPCSTR section);
 	virtual void				reload			(LPCSTR section);
-	virtual BOOL				net_Spawn		(LPVOID DC);
+	virtual BOOL				net_Spawn		(CSE_Abstract* DC);
 	virtual void				net_Destroy		();
 	virtual void				shedule_Update	(u32 time_delta);
 	virtual void				save			(NET_Packet &output_packet);

@@ -72,7 +72,7 @@ void CHangingLamp::net_Destroy()
 	CPHSkeleton::RespawnInit();
 }
 
-BOOL CHangingLamp::net_Spawn(LPVOID DC)
+BOOL CHangingLamp::net_Spawn(CSE_Abstract* DC)
 {
 	CSE_Abstract			*e		= (CSE_Abstract*)(DC);
 	CSE_ALifeObjectHangingLamp	*lamp	= smart_cast<CSE_ALifeObjectHangingLamp*>(e);

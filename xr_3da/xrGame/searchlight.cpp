@@ -53,7 +53,7 @@ void __stdcall CProjector::BoneCallbackY(CBoneInstance *B)
 	B->mTransform.mulB(M);
 }
 
-BOOL CProjector::net_Spawn(LPVOID DC)
+BOOL CProjector::net_Spawn(CSE_Abstract* DC)
 {
 	CSE_Abstract				*e		= (CSE_Abstract*)(DC);
 	CSE_ALifeObjectProjector	*slight	= smart_cast<CSE_ALifeObjectProjector*>(e);

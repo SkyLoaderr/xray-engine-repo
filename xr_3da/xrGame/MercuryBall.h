@@ -51,6 +51,6 @@ public:
 	virtual void OnH_B_Independent();
 
 	//virtual	void Hit					(float P, Fvector &dir,	CObject* who, s16 element,Fvector p_in_object_space, float impulse){};
-	virtual BOOL			net_Spawn			(LPVOID DC);
+	virtual BOOL			net_Spawn			(CSE_Abstract* DC);
 };
 */

@@ -96,7 +96,7 @@ void CMovementManager::reload		(LPCSTR section)
 {
 }
 
-BOOL CMovementManager::net_Spawn	(LPVOID data)
+BOOL CMovementManager::net_Spawn	(CSE_Abstract* data)
 {
 	return							(restrictions().net_Spawn(data));
 }

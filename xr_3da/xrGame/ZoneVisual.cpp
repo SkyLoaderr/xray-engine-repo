@@ -11,7 +11,7 @@ CVisualZone::~CVisualZone						()
 
 }
 
-BOOL CVisualZone::	net_Spawn						(LPVOID DC)
+BOOL CVisualZone::	net_Spawn						(CSE_Abstract* DC)
 {
 	BOOL ret					=	inherited::net_Spawn(DC);
 	CSE_Abstract				*e = (CSE_Abstract*)(DC);

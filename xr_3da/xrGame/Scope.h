@@ -14,7 +14,7 @@ public:
 			CScope ();
 	virtual ~CScope();
 
-	virtual BOOL net_Spawn			(LPVOID DC);
+	virtual BOOL net_Spawn			(CSE_Abstract* DC);
 	virtual void Load				(LPCSTR section);
 	virtual void net_Destroy		();
 

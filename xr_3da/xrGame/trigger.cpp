@@ -37,7 +37,7 @@ void CTrigger::Load				( LPCSTR section )
 {
 	inherited::Load			( section );
 }
-BOOL CTrigger::net_Spawn			( LPVOID DC )
+BOOL CTrigger::net_Spawn			( CSE_Abstract* DC )
 {
 	inherited::net_Spawn			( DC );
 	CSE_Abstract		*abstract	=(CSE_Abstract*)(DC);

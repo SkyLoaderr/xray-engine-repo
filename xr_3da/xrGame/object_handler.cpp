@@ -54,7 +54,7 @@ void CObjectHandler::reload			(LPCSTR section)
 	inherited::reload			(section);
 }
 
-BOOL CObjectHandler::net_Spawn		(LPVOID DC)
+BOOL CObjectHandler::net_Spawn		(CSE_Abstract* DC)
 {
 	if (!inherited::net_Spawn(DC))
 		return					(FALSE);

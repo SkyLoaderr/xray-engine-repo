@@ -25,7 +25,7 @@ public:
 					CScriptZone			();
 	virtual			~CScriptZone		();
 	virtual void	reinit				();
-	virtual BOOL	net_Spawn			(LPVOID DC);
+	virtual BOOL	net_Spawn			(CSE_Abstract* DC);
 	virtual void	net_Destroy			();
 	virtual void	net_Relcase			(CObject* O);
 	virtual void	shedule_Update		(u32 dt);

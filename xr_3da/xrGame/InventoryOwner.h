@@ -38,7 +38,7 @@ public:
 	// общие функции
 
 	virtual DLL_Pure	*_construct				();
-	virtual BOOL		net_Spawn				(LPVOID DC);
+	virtual BOOL		net_Spawn				(CSE_Abstract* DC);
 	virtual void		net_Destroy				();
 			void		Init					();
 	virtual void		Load					(LPCSTR section);

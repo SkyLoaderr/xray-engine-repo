@@ -46,7 +46,7 @@ CPda::~CPda(void)
 {
 }
 
-BOOL CPda::net_Spawn(LPVOID DC) 
+BOOL CPda::net_Spawn(CSE_Abstract* DC) 
 {
 	if (!inherited::net_Spawn(DC))
 		return			(FALSE);

@@ -20,7 +20,7 @@ public:
 	virtual						~CScriptObject			();
 	virtual DLL_Pure			*_construct				();
 	virtual	void				reinit					();
-	virtual BOOL				net_Spawn				(LPVOID DC);
+	virtual BOOL				net_Spawn				(CSE_Abstract* DC);
 	virtual void				net_Destroy				();
 	virtual BOOL				UsedAI_Locations		();
 	virtual void				shedule_Update			(u32 DT);

@@ -28,7 +28,7 @@ float CSpaceRestrictor::Radius		() const
 	return							(CFORM()->getRadius());
 }
 
-BOOL CSpaceRestrictor::net_Spawn	(LPVOID data)
+BOOL CSpaceRestrictor::net_Spawn	(CSE_Abstract* data)
 {
 	CSE_Abstract					*abstract = (CSE_Abstract*)data;
 	CSE_ALifeSpaceRestrictor		*se_shape = smart_cast<CSE_ALifeSpaceRestrictor*>(abstract);

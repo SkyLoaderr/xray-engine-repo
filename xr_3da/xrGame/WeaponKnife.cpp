@@ -48,7 +48,7 @@ void CWeaponKnife::Load	(LPCSTR section)
 	knife_material_idx =  GMLib.GetMaterialIdx(KNIFE_MATERIAL_NAME);
 }
 
-BOOL	CWeaponKnife::net_Spawn			(LPVOID DC)
+BOOL	CWeaponKnife::net_Spawn			(CSE_Abstract* DC)
 {
 	BOOL bResult					= inherited::net_Spawn(DC);
 	m_bShotLight = false;

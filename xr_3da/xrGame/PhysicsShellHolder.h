@@ -63,7 +63,7 @@ public:
 	virtual void			setup_physic_shell		();
 
 	virtual void			net_Destroy			();
-	virtual BOOL			net_Spawn			(LPVOID	DC);
+	virtual BOOL			net_Spawn			(CSE_Abstract*	DC);
 			void			init				();
 
 	//для наследования CParticlesPlayer

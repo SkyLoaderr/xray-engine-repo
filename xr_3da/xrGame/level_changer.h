@@ -24,7 +24,7 @@ private:
 
 public:
 	virtual				~CLevelChanger		();
-	virtual BOOL		net_Spawn			(LPVOID DC);
+	virtual BOOL		net_Spawn			(CSE_Abstract* DC);
 	virtual void		Center				(Fvector& C) const;
 	virtual float		Radius				() const;
 	virtual void		shedule_Update		(u32 dt);

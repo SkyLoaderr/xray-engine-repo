@@ -32,7 +32,7 @@ public:
 	virtual void AffectPullAlife			(CEntityAlive* EA,const Fvector& throw_in_dir,float dist);
 	virtual void AffectThrow				(CPhysicsShellHolder* GO,const Fvector& throw_in_dir,float dist);
 	virtual void ThrowInCenter				(Fvector& C);
-	virtual BOOL net_Spawn					(LPVOID DC);
+	virtual BOOL net_Spawn					(CSE_Abstract* DC);
 	virtual void net_Destroy				();
 	virtual void Center						(Fvector& C) const;
 	virtual void OnOwnershipTake			(u16 id);

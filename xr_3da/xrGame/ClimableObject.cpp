@@ -69,7 +69,7 @@ void CClimableObject::	Load				( LPCSTR section)
 {
 	inherited::Load(section);
 }
-BOOL CClimableObject::	net_Spawn			( LPVOID DC)
+BOOL CClimableObject::	net_Spawn			( CSE_Abstract* DC)
 {
 	CSE_Abstract				*e = (CSE_Abstract*)(DC);
 	CSE_ALifeObjectClimable	*CLB=smart_cast<CSE_ALifeObjectClimable*>(e);

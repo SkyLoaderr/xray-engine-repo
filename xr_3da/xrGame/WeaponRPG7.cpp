@@ -50,7 +50,7 @@ void CWeaponRPG7::UpdateGrenadeVisibility(bool visibility)
 }
 
 
-BOOL CWeaponRPG7::net_Spawn(LPVOID DC) 
+BOOL CWeaponRPG7::net_Spawn(CSE_Abstract* DC) 
 {
 	m_pGrenadePoint = &vLastFP;
 

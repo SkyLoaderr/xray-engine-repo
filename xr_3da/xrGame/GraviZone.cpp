@@ -53,7 +53,7 @@ void CBaseGraviZone ::Load(LPCSTR section)
 		m_sTeleParticlesSmall = NULL;
 }
 
-BOOL CBaseGraviZone ::net_Spawn(LPVOID DC)
+BOOL CBaseGraviZone ::net_Spawn(CSE_Abstract* DC)
 {
 	return inherited::net_Spawn(DC);
 }

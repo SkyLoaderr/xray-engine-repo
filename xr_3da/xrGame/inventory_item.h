@@ -232,7 +232,7 @@ public:
 	IC		int		GetVolume				() const;
 	IC		int		GetHeight				() const;
 	IC		int		GetWidth				() const;
-	virtual BOOL	net_Spawn				(LPVOID DC);
+	virtual BOOL	net_Spawn				(CSE_Abstract* DC);
 	virtual void	net_Destroy				();
 	virtual void	renderable_Render		();
 	virtual void	reload					(LPCSTR section);

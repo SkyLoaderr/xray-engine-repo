@@ -20,7 +20,7 @@ CBottleItem::~CBottleItem(void)
 }
 
 
-BOOL CBottleItem::net_Spawn(LPVOID DC) 
+BOOL CBottleItem::net_Spawn(CSE_Abstract* DC) 
 {
 	BOOL res = inherited::net_Spawn(DC);
 
