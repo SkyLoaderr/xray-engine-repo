@@ -157,6 +157,11 @@ void CWeapon::FireShotmark	(const Fvector& vDir, const Fvector &vEnd, Collide::r
 	}
 }
 
+void CWeapon::Update		(float dt, BOOL bHUDView)
+{
+	fireDispersion_Current	-= fireDispersion_Dec*dt;
+}
+
 BOOL CWeapon::FireTrace		(const Fvector& P, const Fvector& Peff, Fvector& D)
 {
 	Collide::ray_query	RQ;

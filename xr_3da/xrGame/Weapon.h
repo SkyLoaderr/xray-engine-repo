@@ -84,7 +84,7 @@ public:
 	IC BOOL			IsUpdating		()				{ return bWorking || bPending || bVisible;	}	// Does weapon need's update?
 	virtual BOOL	HasOpticalAim	()				{ return FALSE; }
 
-	virtual	void	Update			(float dt, BOOL bHUDView)	{};
+	virtual	void	Update			(float dt, BOOL bHUDView);
 	virtual	void	Render			(BOOL bHUDView)				{};
 
 	IC const char*	GetName			()				{return m_WpnName;		}
