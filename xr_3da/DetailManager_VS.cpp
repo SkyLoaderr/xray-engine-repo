@@ -9,9 +9,9 @@ const int			c_size	= 4;
 static DWORD dwDecl[] =
 {
     D3DVSD_STREAM	(0),
-	D3DVSD_REG		(D3DVSDE_POSITION,	D3DVSDT_FLOAT3),	// pos
-	D3DVSD_REG		(D3DVSDE_TEXCOORD0,	D3DVSDT_SHORT4),	// uv
-	D3DVSD_END		()
+		D3DVSD_REG		(D3DVSDE_POSITION,	D3DVSDT_FLOAT3),	// pos
+		D3DVSD_REG		(D3DVSDE_TEXCOORD0,	D3DVSDT_SHORT4),	// uv
+		D3DVSD_END		()
 };
 #pragma pack(push,1)
 struct	vertHW
@@ -29,17 +29,8 @@ short QC (float v)
 
 void CDetailManager::VS_Load()
 {	
-	Msg				("*************************************************** LOAD");
-	
 	// Load vertex shader
-	LPD3DXBUFFER	code	= 0;
-	LPD3DXBUFFER	errors	= 0;
-	CStream*		fs		= Engine.FS.Open("data\\shaders\\detail.vs");
-	R_CHK			(D3DXAssembleShader(LPCSTR(fs->Pointer()),fs->Length(),0,NULL,&code,&errors));
-	Engine.FS.Close	(fs);
-	R_CHK			(HW.pDevice->CreateVertexShader(dwDecl,LPDWORD(code->GetBufferPointer()),&VS_Code,0));
-	_RELEASE		(code);
-	_RELEASE		(errors);
+	VS_Code			= Device.Shader._CreateVS	("detail",dwDecl);
 
 	// Analyze batch-size
 	VS_BatchSize	= (DWORD(HW.Caps.vertex.dwRegisters)-c_hdr)/c_size;
@@ -119,11 +110,10 @@ void CDetailManager::VS_Load()
 
 void CDetailManager::VS_Unload()
 {
-	Msg				("*************************************************** UNLOAD");
 	// Destroy VS/VB/IB
-	R_CHK			(HW.pDevice->DeleteVertexShader(VS_Code));	VS_Code = 0;
-	_RELEASE		(VS_IB);
-	_RELEASE		(VS_VB);
+	if (VS_Code)			Device.Shader._DeleteVS	(VS_Code);
+	_RELEASE				(VS_IB);
+	_RELEASE				(VS_VB);
 }
 
 void CDetailManager::VS_Render()

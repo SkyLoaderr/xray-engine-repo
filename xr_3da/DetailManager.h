@@ -71,7 +71,7 @@ public:
 	void					soft_Unload		();
 	void					soft_Render		();
 
-	DWORD					VS_Code;
+	CVS*					VS_Code;
 	DWORD					VS_BatchSize;
 	IDirect3DVertexBuffer8*	VS_VB;
 	IDirect3DIndexBuffer8*	VS_IB;
