@@ -88,7 +88,7 @@ public:
 					CAI_Crow();
 	virtual			~CAI_Crow();
 	virtual void	Load			( LPCSTR section );
-	virtual BOOL	Spawn			( BOOL bLocal, int server_id, Fvector& o_pos, Fvector& o_angle, NET_Packet& P, u16 flags );
+	virtual BOOL	net_Spawn		( BOOL bLocal, int server_id, Fvector& o_pos, Fvector& o_angle, NET_Packet& P, u16 flags );
 	virtual BOOL	ShadowGenerate	()			{ return FALSE;	}
 	virtual BOOL	ShadowReceive	()			{ return FALSE;	}
 	virtual void	Update			(DWORD DT);

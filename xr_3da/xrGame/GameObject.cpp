@@ -22,9 +22,9 @@ CGameObject::~CGameObject()
 	
 }
 
-BOOL CGameObject::Spawn	(BOOL bLocal, int server_id, Fvector& o_pos, Fvector& o_angle, NET_Packet& P, u16 flags)
+BOOL CGameObject::net_Spawn	(BOOL bLocal, int server_id, Fvector& o_pos, Fvector& o_angle, NET_Packet& P, u16 flags)
 {
-	BOOL bResult		= CObject::Spawn(bLocal,server_id,o_pos,o_angle,P,flags);
+	BOOL bResult		= CObject::net_Spawn(bLocal,server_id,o_pos,o_angle,P,flags);
 	
 	// AI-DB connectivity
 	Fvector				nPos = vPosition;

@@ -96,7 +96,8 @@ public:
 
 	// Core events
 	virtual void			Load				(LPCSTR section);
-	virtual BOOL			Spawn				(BOOL bLocal, int server_id, Fvector& o_pos, Fvector& o_angle, NET_Packet& P, u16 flags);
+	virtual BOOL			net_Spawn			(BOOL bLocal, int server_id, Fvector& o_pos, Fvector& o_angle, NET_Packet& P, u16 flags);
+	virtual void			net_Destroy			();
 	virtual void			Update				(DWORD dt);	
 	virtual void			OnVisible			();
 
@@ -148,7 +149,7 @@ public:
 
 	// Core events
 	virtual void			Load				(LPCSTR section);
-	virtual BOOL			Spawn				(BOOL bLocal, int server_id, Fvector& o_pos, Fvector& o_angle, NET_Packet& P, u16 flags);
+	virtual BOOL			net_Spawn			(BOOL bLocal, int server_id, Fvector& o_pos, Fvector& o_angle, NET_Packet& P, u16 flags);
 	virtual void			HitImpulse			(Fvector& vWorldDir, Fvector& vLocalDir, float amount);
 
 	// Visibility related

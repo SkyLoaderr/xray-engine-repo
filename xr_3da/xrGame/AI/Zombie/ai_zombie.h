@@ -239,7 +239,7 @@ class CAI_Zombie : public CCustomMonster
 		virtual void  Exec_Movement(float dt);
 		virtual void  Exec_Action(float dt);
 		virtual void  OnEvent(EVENT E, DWORD P1, DWORD P2);
-		virtual BOOL  Spawn( BOOL bLocal, int sid, Fvector& o_pos, Fvector& o_angle, NET_Packet& P, u16 flags );
+		virtual BOOL  net_Spawn( BOOL bLocal, int sid, Fvector& o_pos, Fvector& o_angle, NET_Packet& P, u16 flags );
 		virtual objQualifier* GetQualifier();
 		virtual	void  soundEvent(CObject* who, int eType, Fvector& Position, float power);
 };

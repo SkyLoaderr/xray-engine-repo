@@ -236,9 +236,9 @@ void CActor::Load		(LPCSTR section )
 	}
 }
 
-BOOL CActor::Spawn		(BOOL bLocal, int server_id, Fvector& o_pos, Fvector& o_angle, NET_Packet& P, u16 flags)
+BOOL CActor::net_Spawn		(BOOL bLocal, int server_id, Fvector& o_pos, Fvector& o_angle, NET_Packet& P, u16 flags)
 {
-	if (!inherited::Spawn(bLocal,server_id,o_pos,o_angle,P,flags))	return FALSE;
+	if (!inherited::net_Spawn(bLocal,server_id,o_pos,o_angle,P,flags))	return FALSE;
 	r_model_yaw			= o_angle.y;
 	cameras[cam_active]->Set(o_angle.y,0,0);		// set's camera orientation
 

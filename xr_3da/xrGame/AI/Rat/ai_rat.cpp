@@ -117,9 +117,9 @@ void CAI_Rat::Load(LPCSTR section)
 	m_dwHitInterval   = pSettings->ReadINT(section,"HitInterval");
 }
 
-BOOL CAI_Rat::Spawn	(BOOL bLocal, int server_id, Fvector& o_pos, Fvector& o_angle, NET_Packet& P, u16 flags)
+BOOL CAI_Rat::net_Spawn	(BOOL bLocal, int server_id, Fvector& o_pos, Fvector& o_angle, NET_Packet& P, u16 flags)
 {
-	if (!inherited::Spawn(bLocal,server_id,o_pos,o_angle,P,flags))	return FALSE;
+	if (!inherited::net_Spawn(bLocal,server_id,o_pos,o_angle,P,flags))	return FALSE;
 	
 	INIT_SQUAD_AND_LEADER;
 

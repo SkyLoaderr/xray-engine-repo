@@ -137,7 +137,7 @@ void CObject::Load				(LPCSTR section )
 	bVisible					= true;
 }
 
-BOOL CObject::Spawn		(BOOL bLocal, int server_id, Fvector& o_pos, Fvector& o_angle, NET_Packet& P, u16 flags)
+BOOL CObject::net_Spawn	(BOOL bLocal, int server_id, Fvector& o_pos, Fvector& o_angle, NET_Packet& P, u16 flags)
 {
 	// XForm
 	vPosition.set		(o_pos);

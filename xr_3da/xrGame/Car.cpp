@@ -112,9 +112,9 @@ void	CCar::Load					( LPCSTR section )
 	pSounds->Create					(snd_engine,TRUE,"car\\car1",TRUE);
 }
 
-BOOL	CCar::Spawn					( BOOL bLocal, int server_id, Fvector& o_pos, Fvector& o_angle, NET_Packet& P, u16 flags )
+BOOL	CCar::net_Spawn				( BOOL bLocal, int server_id, Fvector& o_pos, Fvector& o_angle, NET_Packet& P, u16 flags )
 {
-	BOOL R = inherited::Spawn		(bLocal,server_id,o_pos,o_angle,P,flags);
+	BOOL R = inherited::net_Spawn	(bLocal,server_id,o_pos,o_angle,P,flags);
 	bVisible						= TRUE;
 	//o_pos.y=1;
 	//o_pos.z=-10;

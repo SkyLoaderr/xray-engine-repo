@@ -119,9 +119,9 @@ void CAI_Zombie::Load(LPCSTR section)
 	m_dwHitInterval   = pSettings->ReadINT(section,"HitInterval");
 }
 
-BOOL CAI_Zombie::Spawn	(BOOL bLocal, int server_id, Fvector& o_pos, Fvector& o_angle, NET_Packet& P, u16 flags)
+BOOL CAI_Zombie::net_Spawn	(BOOL bLocal, int server_id, Fvector& o_pos, Fvector& o_angle, NET_Packet& P, u16 flags)
 {
-	if (!inherited::Spawn(bLocal,server_id,o_pos,o_angle,P,flags))	return FALSE;
+	if (!inherited::net_Spawn(bLocal,server_id,o_pos,o_angle,P,flags))	return FALSE;
 	tStateStack.push(eCurrentState = aiZombieFreeHunting);
 	return TRUE;
 }

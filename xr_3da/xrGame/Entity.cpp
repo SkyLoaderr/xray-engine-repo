@@ -127,9 +127,9 @@ void CEntity::Load		(LPCSTR section)
 	id_Group= -1; if (pSettings->LineExists(section,"group"))	id_Group	= pSettings->ReadINT	(section,"group");
 }
 
-BOOL CEntity::Spawn		(BOOL bLocal, int server_id, Fvector& o_pos, Fvector& o_angle, NET_Packet& P, u16 flags)
+BOOL CEntity::net_Spawn		(BOOL bLocal, int server_id, Fvector& o_pos, Fvector& o_angle, NET_Packet& P, u16 flags)
 {
-	inherited::Spawn	(bLocal,server_id,o_pos,o_angle,P,flags);
+	inherited::net_Spawn	(bLocal,server_id,o_pos,o_angle,P,flags);
 
 	// Read team & squad & group
 	u8					s_team,s_squad,s_group;
@@ -221,12 +221,12 @@ void CEntityAlive::Load		(LPCSTR section)
 	Movement.ActivateBox	(0);
 }
 
-BOOL CEntityAlive::Spawn		(BOOL bLocal, int server_id, Fvector& o_pos, Fvector& o_angle, NET_Packet& P, u16 flags)
+BOOL CEntityAlive::net_Spawn	(BOOL bLocal, int server_id, Fvector& o_pos, Fvector& o_angle, NET_Packet& P, u16 flags)
 {
-	inherited::Spawn	(bLocal,server_id,o_pos,o_angle,P,flags);
-	Movement.SetPosition(o_pos.x,o_pos.y,o_pos.z);
-	Movement.SetVelocity(0,0,0);
-	return				TRUE;
+	inherited::net_Spawn	(bLocal,server_id,o_pos,o_angle,P,flags);
+	Movement.SetPosition	(o_pos.x,o_pos.y,o_pos.z);
+	Movement.SetVelocity	(0,0,0);
+	return					TRUE;
 }
 void CEntityAlive::HitImpulse	(Fvector& vWorldDir, Fvector& vLocalDir, float amount)
 {

@@ -115,9 +115,9 @@ void CAI_Crow::Load( LPCSTR section )
 	Movement.SetParent			(this);
 }
 
-BOOL CAI_Crow::Spawn(BOOL bLocal, int server_id, Fvector& o_pos, Fvector& o_angle, NET_Packet& P, u16 flags)
+BOOL CAI_Crow::net_Spawn		(BOOL bLocal, int server_id, Fvector& o_pos, Fvector& o_angle, NET_Packet& P, u16 flags)
 {
-	BOOL R = inherited::Spawn	(bLocal,server_id,o_pos,o_angle,P,flags);
+	BOOL R = inherited::net_Spawn	(bLocal,server_id,o_pos,o_angle,P,flags);
 	bVisible					= TRUE;
 	AI_Node = 0;
 	return R;
