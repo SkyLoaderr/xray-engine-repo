@@ -48,17 +48,9 @@ void CAI_Bloodsucker::Load(LPCSTR section)
 	m_ftrPowerDown		= pSettings->r_float(section,"PowerDownFactor");	
 	m_fPowerThreshold	= pSettings->r_float(section,"PowerThreshold");	
 	m_fEffectDist		= pSettings->r_float(section,"EffectDistance");	
-}
 
+	START_LOAD_SHARED();
 
-BOOL CAI_Bloodsucker::net_Spawn (LPVOID DC) 
-{
-	if (!inherited::net_Spawn(DC))
-		return(FALSE);
-
-	vfAssignBones	();
-
-	// define animation set
 	MotionMan.AddAnim(eAnimStandIdle,		"stand_idle_",			-1, 0,						0,							PS_STAND);
 	MotionMan.AddAnim(eAnimStandTurnLeft,	"stand_idle_ls_",		-1, 0,						m_fsTurnNormalAngular,		PS_STAND);
 	MotionMan.AddAnim(eAnimStandTurnRight,	"stand_idle_rs_",		-1, 0,						m_fsTurnNormalAngular,		PS_STAND);
@@ -108,10 +100,23 @@ BOOL CAI_Bloodsucker::net_Spawn (LPVOID DC)
 	MotionMan.AA_PushAttackAnim(eAnimAttack, 2, 500,	600,	center,		1.4f, m_fHitPower, PI_DIV_3,	PI_DIV_6);
 
 	// Hit fx's
-	MotionMan.AddHitFX("hit_high_0"); 
-	MotionMan.AddHitFX("hit_high_1");
-	MotionMan.AddHitFX("hit_low_0"); 
-	MotionMan.AddHitFX("hit_low_1");
+//	MotionMan.AddHitFX("hit_high_0"); 
+//	MotionMan.AddHitFX("hit_high_1");
+//	MotionMan.AddHitFX("hit_low_0"); 
+//	MotionMan.AddHitFX("hit_low_1");
+
+	STOP_LOAD_SHARED();
+}
+
+
+
+
+BOOL CAI_Bloodsucker::net_Spawn (LPVOID DC) 
+{
+	if (!inherited::net_Spawn(DC))
+		return(FALSE);
+
+	vfAssignBones	();
 
 	return(TRUE);
 }

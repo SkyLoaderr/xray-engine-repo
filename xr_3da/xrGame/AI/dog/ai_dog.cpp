@@ -46,8 +46,17 @@ void CAI_Dog::Init()
 void CAI_Dog::Load(LPCSTR section)
 {
 	inherited::Load	(section);
-	
 	CJumping::Load	(section);
+
+	//	CJumping::AddState(PSkeletonAnimated(Visual())->ID_Cycle_Safe("run_jump_0"), JT_CUSTOM,	true,	0.f, 0.f);
+	CJumping::AddState(PSkeletonAnimated(Visual())->ID_Cycle_Safe("run_jump_1"), JT_GLIDE,	false,	0.f, m_fsRunAngular);
+	//	CJumping::AddState(PSkeletonAnimated(Visual())->ID_Cycle_Safe("run_jump_0"), JT_CUSTOM,	true,	0.f, 0.f);
+
+	MotionMan.AddReplacedAnim(&m_bDamaged, eAnimRun,		eAnimRunDamaged);
+	MotionMan.AddReplacedAnim(&m_bDamaged, eAnimWalkFwd,	eAnimWalkDamaged);
+	MotionMan.AddReplacedAnim(&m_bDamaged, eAnimStandIdle,	eAnimStandDamaged);
+	
+	START_LOAD_SHARED();
 
 	// define animation set
 	MotionMan.AddAnim(eAnimStandIdle,		"stand_idle_",			-1, 0,						0,							PS_STAND);
@@ -85,6 +94,7 @@ void CAI_Dog::Load(LPCSTR section)
 	MotionMan.AddAnim(eAnimJumpRight,		"jump_right_",			-1,	m_fsWalkFwdNormal,		m_fsRunAngular,			PS_STAND);
 
 
+
 	// define transitions
 	// order : 1. [anim -> anim]	2. [anim->state]	3. [state -> anim]		4. [state -> state]
 	MotionMan.AddTransition_S2S(PS_STAND,	PS_LIE,		eAnimStandLieDown,		false);
@@ -93,6 +103,8 @@ void CAI_Dog::Load(LPCSTR section)
 	//MotionMan.AddTransition_S2S(PS_SIT,		PS_LIE,		eAnimSitLieDown,		false);
 	MotionMan.AddTransition_S2S(PS_LIE,		PS_SIT,		eAnimLieSitUp,			false);
 	MotionMan.AddTransition_S2S(PS_STAND,	PS_SIT,		eAnimStandSitDown,		false);
+
+	
 
 	// define links from Action to animations
 	MotionMan.LinkAction(ACT_STAND_IDLE,	eAnimStandIdle);
@@ -108,11 +120,7 @@ void CAI_Dog::Load(LPCSTR section)
 	MotionMan.LinkAction(ACT_ATTACK,		eAnimAttack, eAnimJumpLeft, eAnimJumpRight, PI_DIV_3);
 	MotionMan.LinkAction(ACT_STEAL,			eAnimSteal);
 	MotionMan.LinkAction(ACT_LOOK_AROUND,	eAnimStandIdle);
-
-	MotionMan.AddReplacedAnim(&m_bDamaged, eAnimRun,		eAnimRunDamaged);
-	MotionMan.AddReplacedAnim(&m_bDamaged, eAnimWalkFwd,	eAnimWalkDamaged);
-	MotionMan.AddReplacedAnim(&m_bDamaged, eAnimStandIdle,	eAnimStandDamaged);
-
+	
 	Fvector center;
 	center.set		(0.f,1.f,0.f);
 
@@ -120,11 +128,8 @@ void CAI_Dog::Load(LPCSTR section)
 	MotionMan.AA_PushAttackAnim(eAnimAttack, 1, 600,	800,	center,		2.5f, m_fHitPower, 0.f, 0.f);
 	MotionMan.AA_PushAttackAnim(eAnimAttack, 2, 600,	700,	center,		1.5f, m_fHitPower, 0.f, 0.f);
 
-//	CJumping::AddState(PSkeletonAnimated(Visual())->ID_Cycle_Safe("run_jump_0"), JT_CUSTOM,	true,	0.f, 0.f);
-	CJumping::AddState(PSkeletonAnimated(Visual())->ID_Cycle_Safe("run_jump_1"), JT_GLIDE,	false,	0.f, m_fsRunAngular);
-//	CJumping::AddState(PSkeletonAnimated(Visual())->ID_Cycle_Safe("run_jump_0"), JT_CUSTOM,	true,	0.f, 0.f);
-
-	MotionMan.NotifyShareLoaded();
+	
+	STOP_LOAD_SHARED();
 }
 
 void CAI_Dog::StateSelector()
@@ -185,6 +190,7 @@ BOOL CAI_Dog::net_Spawn (LPVOID DC)
 	Bones.AddBone(GetBoneInstance("bip01_head"), AXIS_X); 
 
 	
+	Msg("Memory used on animation load: [%u]", mem_used);
 
 	return TRUE;
 }

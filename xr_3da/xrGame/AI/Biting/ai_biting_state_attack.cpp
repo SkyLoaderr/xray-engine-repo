@@ -163,7 +163,6 @@ void CBitingAttack::Run()
 				yaw *= -1;
 				yaw = angle_normalize(yaw);
 				pMonster->r_torso_target.yaw = yaw;
-				Msg("TARGET YAW CHANGED:: attack, face enemy / target_yaw = [%f]", pMonster->r_torso_target.yaw);
 			DO_IN_TIME_INTERVAL_END();
 			
 			if (m_bAttackRat) pMonster->MotionMan.SetSpecParams(ASP_ATTACK_RAT);

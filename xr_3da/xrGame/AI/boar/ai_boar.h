@@ -9,7 +9,7 @@ public:
 					CAI_Boar			();
 	virtual			~CAI_Boar			();	
 
-	virtual	BOOL	net_Spawn			(LPVOID DC);
+	virtual void	Load				(LPCSTR section);
 
 	virtual void	Init				();
 	virtual void	StateSelector		();

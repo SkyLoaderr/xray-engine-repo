@@ -171,7 +171,6 @@ bool CJumping::Check(Fvector from_pos, Fvector to_pos, CObject *pO)
 	ph_time			= 0.f;
 
 	pMonster->r_torso_target.yaw = target_yaw;
-	Msg("TARGET YAW CHANGED:: jumping / target_yaw = [%f]", pMonster->r_torso_target.yaw);
 	pMonster->AI_Path.TravelPath.clear();
 
 	Start();

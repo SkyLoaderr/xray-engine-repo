@@ -35,7 +35,7 @@
 #define MORALE_NORMAL	0.5f
 
 // logging
-#define SILENCE
+//#define SILENCE
 
 #undef	WRITE_TO_LOG
 #ifdef SILENCE
@@ -58,43 +58,10 @@ enum EBitingPathState {
 
 typedef VisionElem SEnemy;
 
-//extern u32		mem_used		= 0;
-//extern u32		mem_used_cur	= 0;
-//
-//#define MEM_COUNT_START()		{Memory.mem_counter_set(0);mem_used_cur = 0;} 
-//#define MEM_COUNT_STOP()		{mem_used_cur = Memory.mem_counter_get(); mem_used += mem_used_cur;} 
-//#define MEM_COUNT_OUT(s)		{Msg(#s" [mem_used_current = %u]",mem_used_cur);}
-//#define MEM_COUNT_OUT_TOTAL()	{Msg("Total Memory Used = %u",mem_used);} 
+extern u32		mem_used;
 
-
-
-//class shared_data {
-//public:
-//	
-//	ANIM_ITEM_MAP			m_tAnims;			// карта анимаций
-//	MOTION_ITEM_MAP			m_tMotions;			// карта соответсвий EAction к SMotionItem
-//	TRANSITION_ANIM_VECTOR	m_tTransitions;		// вектор переходов из одной анимации в другую
-//	REPLACED_ANIM			m_tReplacedAnims;	// анимации подмены
-//	ANIM_VECTOR				m_tHitFXs;
-//
-//	float	m_fsTurnNormalAngular;
-//	float	m_fsWalkFwdNormal;
-//	float	m_fsWalkBkwdNormal;
-//	float	m_fsWalkTurn;
-//	float	m_fsWalkAngular;
-//	float	m_fsWalkTurnAngular;
-//	float	m_fsRunFwdNormal;
-//	float	m_fsRunTurn;
-//	float	m_fsRunTurnAngular;
-//	float	m_fsRunAngular;
-//	float	m_fsDrag;
-//	float	m_fsSteal;
-//
-//	void	Load();
-//	void	
-//};
-//
-
+#define START_LOAD_SHARED() {MotionMan.PrepareSharing();}
+#define STOP_LOAD_SHARED() {MotionMan.NotifyShareLoaded();}
 
 
 class CAI_Biting : public CCustomMonster, 

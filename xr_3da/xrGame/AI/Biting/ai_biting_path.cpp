@@ -432,8 +432,6 @@ void CAI_Biting::SetDirectionLook(bool bReversed)
 	if (bReversed) r_torso_target.yaw = angle_normalize(r_torso_target.yaw + PI);
 	else r_torso_target.yaw = angle_normalize(r_torso_target.yaw);
 	
-	Msg("TARGET YAW CHANGED:: SetDirLook / target_yaw = [%f]", r_torso_target.yaw);
-	
 	r_target = r_torso_target;
 }
 
@@ -451,6 +449,5 @@ void CAI_Biting::LookPosition(Fvector to_point)
 
 	// установить текущий угол
 	r_torso_target.yaw = angle_normalize(-yaw);
-	Msg("TARGET YAW CHANGED:: LookPosition / target_yaw = [%f]", r_torso_target.yaw);
 }
 

@@ -46,18 +46,6 @@ void CAI_Chimera::Init()
 void CAI_Chimera::StateSelector()
 {
 
-//	if (!Bones.IsActive()) {
-//
-//		if (!getAI().bfTooSmallAngle(r_torso_current.yaw,r_torso_target.yaw, PI_DIV_6)) {
-//			float k;	
-//			if (angle_normalize_signed(r_torso_target.yaw - r_torso_current.yaw) > 0) k = -1.0;
-//			else k = 1.0f;
-//
-//			int spin_bone	= PKinematics(Visual())->LL_BoneID("bip01_spine1");
-//			Bones.SetMotion(&PKinematics(Visual())->LL_GetBoneInstance(spin_bone), AXIS_Z, k * PI_DIV_6 , PI, 1);	
-//		}
-//
-//	}
 	VisionElem ve;
 
 	if (C && H && I)			SetState(statePanic);
@@ -86,14 +74,11 @@ void CAI_Chimera::StateSelector()
 
 }
 
-
-
-BOOL CAI_Chimera::net_Spawn (LPVOID DC) 
+void CAI_Chimera::Load(LPCSTR section)
 {
-	if (!inherited::net_Spawn(DC))
-		return(FALSE);
+	inherited::Load(section);
 
-	vfAssignBones(pSettings,cNameSect());
+	START_LOAD_SHARED();
 
 	// define animation set
 	MotionMan.AddAnim(eAnimStandIdle,		"stand_idle_",			-1, 0,						0,							PS_STAND);
@@ -144,8 +129,17 @@ BOOL CAI_Chimera::net_Spawn (LPVOID DC)
 	MotionMan.AA_PushAttackAnim(eAnimAttack, 2, 600,	700,	center,		2.5f, m_fHitPower, 0.f, 0.f);
 	MotionMan.AA_PushAttackAnim(eAnimAttack, 3, 800,	900,	left_side,	1.0f, m_fHitPower, 0.f, 0.f);
 	MotionMan.AA_PushAttackAnim(eAnimAttack, 5, 1500, 1600,	right_side, 2.0f, m_fHitPower, 0.f, 0.f);
-	
-	//MotionMan.AddJump(eAnimJump, 15.f, 300, 10, 2.0f, 7.f, PI_DIV_6);
+
+	STOP_LOAD_SHARED();
+}
+
+
+BOOL CAI_Chimera::net_Spawn (LPVOID DC) 
+{
+	if (!inherited::net_Spawn(DC))
+		return(FALSE);
+
+	vfAssignBones(pSettings,cNameSect());
 	
 	return TRUE;
 }

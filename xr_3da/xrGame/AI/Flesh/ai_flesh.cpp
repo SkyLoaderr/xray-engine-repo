@@ -47,6 +47,15 @@ BOOL CAI_Flesh::net_Spawn (LPVOID DC)
 	if (!inherited::net_Spawn(DC))
 		return(FALSE);
 
+	return TRUE;
+}
+
+void CAI_Flesh::Load(LPCSTR section)
+{
+	inherited::Load(section);
+
+	START_LOAD_SHARED();
+
 	// define animation set
 	MotionMan.AddAnim(eAnimStandIdle,		"stand_idle_",			-1, 0,						0,							PS_STAND);
 	MotionMan.AddAnim(eAnimStandTurnLeft,	"stand_idle_ls_",		-1, 0,						m_fsTurnNormalAngular,		PS_STAND);
@@ -108,9 +117,11 @@ BOOL CAI_Flesh::net_Spawn (LPVOID DC)
 	MotionMan.AA_PushAttackAnim(eAnimAttack,		3, 1300,	1400,	left_side,		0.6f, m_fHitPower, 0.f, 0.f);
 	MotionMan.AA_PushAttackAnim(eAnimAttackRat,		0, 600,		800,	special_side,	2.6f, m_fHitPower, 0.f, 0.f, AA_FLAG_ATTACK_RAT);
 	MotionMan.AA_PushAttackAnim(eAnimAttackJump,	0, 700,		850,	center,			2.6f, m_fHitPower, 0.f, 0.f, AA_FLAG_FIRE_ANYWAY);
-
-	return TRUE;
+	
+	STOP_LOAD_SHARED();
 }
+
+
 
 void CAI_Flesh::StateSelector()
 {

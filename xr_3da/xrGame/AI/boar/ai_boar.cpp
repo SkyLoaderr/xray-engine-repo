@@ -38,43 +38,12 @@ void CAI_Boar::Init()
 	CurrentState->Reset				();
 }
 
-
-void CAI_Boar::StateSelector()
-{	
-	VisionElem ve;
-
-	if (C && H && I)			SetState(statePanic);
-	else if (C && H && !I)		SetState(statePanic);
-	else if (C && !H && I)		SetState(statePanic);
-	else if (C && !H && !I) 	SetState(statePanic);
-	else if (D && H && I)		SetState(stateAttack);
-	else if (D && H && !I)		SetState(stateAttack);  //тихо подобраться и начать аттаку
-	else if (D && !H && I)		SetState(stateAttack);
-	else if (D && !H && !I) 	SetState(stateHide);	// отход перебежками через укрытия
-	else if (E && H && I)		SetState(stateAttack); 
-	else if (E && H && !I)  	SetState(stateAttack);  //тихо подобраться и начать аттаку
-	else if (E && !H && I) 		SetState(stateDetour); 
-	else if (E && !H && !I)		SetState(stateDetour); 
-	else if (F && H && I) 		SetState(stateAttack); 		
-	else if (F && H && !I)  	SetState(stateAttack); 
-	else if (F && !H && I)  	SetState(stateDetour); 
-	else if (F && !H && !I) 	SetState(stateHide);
-	else if (A && !K && !H)		SetState(stateExploreNDE);  //SetState(stateExploreDNE);  // слышу опасный звук, но не вижу, враг не выгодный		(ExploreDNE)
-	else if (A && !K && H)		SetState(stateExploreNDE);  //SetState(stateExploreDNE);	//SetState(stateExploreDE);	// слышу опасный звук, но не вижу, враг выгодный			(ExploreDE)		
-	else if (B && !K && !H)		SetState(stateExploreNDE);	// слышу не опасный звук, но не вижу, враг не выгодный	(ExploreNDNE)
-	else if (B && !K && H)		SetState(stateExploreNDE);	// слышу не опасный звук, но не вижу, враг выгодный		(ExploreNDE)
-	else if (GetCorpse(ve) && (ve.obj->m_fFood > 1) && ((GetSatiety() < 0.85f) || flagEatNow))	
-								SetState(stateEat);
-	else						SetState(stateRest); 
-}
-
-
-BOOL CAI_Boar::net_Spawn (LPVOID DC) 
+void CAI_Boar::Load(LPCSTR section)
 {
-	if (!inherited::net_Spawn(DC))
-		return(FALSE);
+	inherited::Load	(section);
 
-	// define animation set
+	START_LOAD_SHARED();
+	
 	MotionMan.AddAnim(eAnimStandIdle,		"stand_idle_",			-1, 0,						0,							PS_STAND);
 	MotionMan.AddAnim(eAnimLieIdle,			"lie_sleep_",			-1, 0,						0,							PS_LIE);
 	MotionMan.AddAnim(eAnimSleep,			"lie_sleep_",			-1, 0,						0,							PS_LIE);
@@ -119,7 +88,37 @@ BOOL CAI_Boar::net_Spawn (LPVOID DC)
 	MotionMan.AA_PushAttackAnim(eAnimAttack, 1, 500,	600,	center,		2.3f, m_fHitPower, -PI_DIV_6,	PI_DIV_6);
 	MotionMan.AA_PushAttackAnim(eAnimAttack, 2, 500,	600,	center,		3.0f, m_fHitPower, 0,			PI_DIV_6);
 
-	return TRUE;
+	STOP_LOAD_SHARED();
+}
+
+
+void CAI_Boar::StateSelector()
+{	
+	VisionElem ve;
+
+	if (C && H && I)			SetState(statePanic);
+	else if (C && H && !I)		SetState(statePanic);
+	else if (C && !H && I)		SetState(statePanic);
+	else if (C && !H && !I) 	SetState(statePanic);
+	else if (D && H && I)		SetState(stateAttack);
+	else if (D && H && !I)		SetState(stateAttack);  //тихо подобраться и начать аттаку
+	else if (D && !H && I)		SetState(stateAttack);
+	else if (D && !H && !I) 	SetState(stateHide);	// отход перебежками через укрытия
+	else if (E && H && I)		SetState(stateAttack); 
+	else if (E && H && !I)  	SetState(stateAttack);  //тихо подобраться и начать аттаку
+	else if (E && !H && I) 		SetState(stateDetour); 
+	else if (E && !H && !I)		SetState(stateDetour); 
+	else if (F && H && I) 		SetState(stateAttack); 		
+	else if (F && H && !I)  	SetState(stateAttack); 
+	else if (F && !H && I)  	SetState(stateDetour); 
+	else if (F && !H && !I) 	SetState(stateHide);
+	else if (A && !K && !H)		SetState(stateExploreNDE);  //SetState(stateExploreDNE);  // слышу опасный звук, но не вижу, враг не выгодный		(ExploreDNE)
+	else if (A && !K && H)		SetState(stateExploreNDE);  //SetState(stateExploreDNE);	//SetState(stateExploreDE);	// слышу опасный звук, но не вижу, враг выгодный			(ExploreDE)		
+	else if (B && !K && !H)		SetState(stateExploreNDE);	// слышу не опасный звук, но не вижу, враг не выгодный	(ExploreNDNE)
+	else if (B && !K && H)		SetState(stateExploreNDE);	// слышу не опасный звук, но не вижу, враг выгодный		(ExploreNDE)
+	else if (GetCorpse(ve) && (ve.obj->m_fFood > 1) && ((GetSatiety() < 0.85f) || flagEatNow))	
+								SetState(stateEat);
+	else						SetState(stateRest); 
 }
 
 void CAI_Boar::CheckSpecParams(u32 spec_params)

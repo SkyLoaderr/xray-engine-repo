@@ -1,4 +1,4 @@
-	#pragma once
+#pragma once
 
 // Singleton template definition 
 template <class T> class IShared {
@@ -7,31 +7,33 @@ template <class T> class IShared {
 public:
 
 					IShared	()	{}
-					~IShared()	{_self=NULL;}
+			virtual	~IShared()	{_self=NULL;}
 public:
-	static T*		Instance()
-	{
+	static T*		Instance() {
 		if(!_self) _self=xr_new<T>(); 
 		_refcount++;
 		return _self;
 	}
-	void	FreeInst()
-	{
-		if(--_refcount==0) xr_delete(this);
+	void			FreeInst() {
+		if(--_refcount==0) {
+			IShared<T> *ptr = this;
+			xr_delete(ptr);
+		}
 	}
 };
 
-
+template <class T> T*	IShared<T>::_self = NULL;
+template <class T> int	IShared<T>::_refcount=0;
 
 template<class T_shared> class CSharedObj : public IShared<CSharedObj<T_shared> >
 {
-//	xr_map<CLASS_ID, T_shared*> _shared_tab;	
-//	typedef typename xr_map<CLASS_ID, T_shared*>::iterator SHARED_DATA_MAP_IT;
+	xr_map<CLASS_ID, T_shared*> _shared_tab;	
+	typedef typename xr_map<CLASS_ID, T_shared*>::iterator SHARED_DATA_MAP_IT;
 	
 public:
 
 				CSharedObj() {};
-				~CSharedObj();
+				~CSharedObj() {};
 	
 	friend class IShared<CSharedObj<T_shared> >;
 
@@ -40,6 +42,20 @@ public:
 	T_shared *get_shared(CLASS_ID id);
 };
 
+template<class T_shared> T_shared *CSharedObj<T_shared>::get_shared(CLASS_ID id) 
+{
+	SHARED_DATA_MAP_IT shared_it = _shared_tab.find(id);
+
+	T_shared *_data;
+
+	// if not found - create appropriate shared data object
+	if (shared_it == _shared_tab.end()) {
+		_data		= xr_new<T_shared>();
+		_shared_tab.insert(mk_pair(id, _data));
+	} else _data = shared_it->second;
+
+	return _data;
+}
 
 class CSharedResource {
 	bool	loaded;

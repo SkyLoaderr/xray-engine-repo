@@ -7,12 +7,12 @@
 
 CMotionManager::CMotionManager() 
 {
-//	pSharedObj	= CSharedObj<_motion_shared>::Instance();
+	pSharedObj	= CSharedObj<_motion_shared>::Instance();
 }
 
 CMotionManager::~CMotionManager()
 {
-//	pSharedObj->FreeInst();
+	pSharedObj->FreeInst();
 }
 
 
@@ -35,8 +35,11 @@ void CMotionManager::Init (CAI_Biting	*pM)
 	Seq_Init				();
 
 	AA_Clear				();
+}
 
-	//_sd						= pSharedObj->get_shared(pMonster->CLS_ID);
+void CMotionManager::PrepareSharing()
+{
+	_sd = pSharedObj->get_shared(pMonster->SUB_CLS_ID);
 }
 
 // Загрузка параметров анимации. Вызывать необходимо на Monster::Load
@@ -169,15 +172,13 @@ void CMotionManager::LinkAction(EAction act, EMotionAnim pmt_motion)
 
 void CMotionManager::AddReplacedAnim(bool *b_flag, EMotionAnim pmt_cur_anim, EMotionAnim pmt_new_anim)
 {
-	CHECK_SHARED_LOADED();
-
 	SReplacedAnim ra;
 
 	ra.flag		= b_flag;
 	ra.cur_anim = pmt_cur_anim;
 	ra.new_anim = pmt_new_anim;
 
-	_sd->m_tReplacedAnims.push_back(ra);
+	m_tReplacedAnims.push_back(ra);
 }
 
 
@@ -227,8 +228,7 @@ bool CMotionManager::PrepareAnimation()
 	AA_SwitchAnimation(cur_anim, index);
 
 	// todo: find out the reason quick animation changes
-	Msg("--------------------------------------------------------------------");
-	Msg("ANIM_SELECT: anim = [%s] index= [%i] Time = [%i]",*anim_it->second.target_name, index, pMonster->m_dwCurrentTime);
+//	WRITE_TO_LOG("ANIM_SELECT: anim = [%s] index= [%i] Time = [%i]",*anim_it->second.target_name, index, pMonster->m_dwCurrentTime);
 
 	return true;
 }
@@ -380,7 +380,7 @@ void CMotionManager::FixBadState()
 
 void CMotionManager::CheckReplacedAnim()
 {
-	for (REPLACED_ANIM_IT it=_sd->m_tReplacedAnims.begin(); it!= _sd->m_tReplacedAnims.end();it++) 
+	for (REPLACED_ANIM_IT it=m_tReplacedAnims.begin(); it!= m_tReplacedAnims.end();it++) 
 		if ((cur_anim == it->cur_anim) && (*(it->flag) == true)) { 
 			cur_anim = it->new_anim;
 			return;

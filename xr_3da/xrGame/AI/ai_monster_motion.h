@@ -187,25 +187,23 @@ DEFINE_VECTOR	(SAttackAnimation,	ATTACK_ANIM,			ATTACK_ANIM_IT);
 DEFINE_VECTOR	(SReplacedAnim,		REPLACED_ANIM,			REPLACED_ANIM_IT);
 
 
-// specify shared data
 class _motion_shared : public CSharedResource {
 public:
 	ANIM_ITEM_MAP			m_tAnims;			// карта анимаций
 	MOTION_ITEM_MAP			m_tMotions;			// карта соответсвий EAction к SMotionItem
 	TRANSITION_ANIM_VECTOR	m_tTransitions;		// вектор переходов из одной анимации в другую
-	REPLACED_ANIM			m_tReplacedAnims;	// анимации подмены
 	ANIM_VECTOR				m_tHitFXs;
 	ATTACK_ANIM				aa_all;				// список атак
 };
 
-
-
 //////////////////////////////////////////////////////////////////////////
 class CMotionManager {
-
+	
+	REPLACED_ANIM			m_tReplacedAnims;	// анимации подмены
+	
 	// sharing
 	_motion_shared				*_sd;
-	//CSharedObj<_motion_shared>	*pSharedObj;
+	CSharedObj<_motion_shared>	*pSharedObj;
 
 	CAI_Biting				*pMonster;
 	CJumping				*pJumping;
@@ -267,8 +265,10 @@ public:
 	
 	// -------------------------------------
 
+	void		PrepareSharing			(); 
 	void		NotifyShareLoaded		() {_sd->SetLoad();}
-	// 	
+	
+	// -------------------------------------- 	
 	
 	void		ApplyParams				();
 
