@@ -52,8 +52,14 @@ void CAI_Stalker::Die				()
 void CAI_Stalker::OnDeviceCreate	()
 { 
 	inherited::OnDeviceCreate		();
+
+	CTimer		T;
+	T.Start		();
 	CStalkerAnimations::Load		(PKinematics(pVisual));
+	// Msg			("--spawn--dc-anim-load: %f ms",1000.f*T.GetAsync());
+	T.Start		();
 	vfAssignBones					(pSettings,cNameSect());
+	// Msg			("--spawn--dc-anim-bones: %f ms",1000.f*T.GetAsync());
 }
 
 void CAI_Stalker::Load				(LPCSTR section)
@@ -84,6 +90,7 @@ void CAI_Stalker::Load				(LPCSTR section)
 	R_ASSERT						(((N % (LOCATION_TYPE_COUNT + 2)) == 0) && (N));
 	STerrainPlace					tTerrainPlace;
 	tTerrainPlace.tMask.resize		(LOCATION_TYPE_COUNT);
+	m_tpaTerrain.reserve			(32);
 	string16						I;
 	for (u32 i=0; i<N;) {
 		for (u32 j=0; j<LOCATION_TYPE_COUNT; j++, i++)

@@ -47,21 +47,21 @@ public:
 	}
 };
 
-template <typename TYPE_NAME, LPCSTR caBaseNames[]> class CAniCollection {
+template <class TYPE_NAME, LPCSTR caBaseNames[]> class CAniCollection {
 public:
-	vector<TYPE_NAME*>	A;
+	svector<TYPE_NAME,16>	A;
 	
 	virtual			~CAniCollection()
 	{
-		free_vector(A);
+		//free_vector(A);
 	}
 
 	IC	void		Load(CKinematics *tpKinematics, LPCSTR caBaseName)
 	{
 		string256 S;
 		for (int i=0; caBaseNames[i]; i++) {
-			A.push_back	(xr_new<TYPE_NAME>());
-			A[i]->Load	(tpKinematics,strconcat(S,caBaseName,caBaseNames[i]));
+			A.resize	(i + 1);
+			A[i].Load	(tpKinematics,strconcat(S,caBaseName,caBaseNames[i]));
 		}
 	}
 };
