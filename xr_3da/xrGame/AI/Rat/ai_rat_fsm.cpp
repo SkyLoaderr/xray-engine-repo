@@ -424,7 +424,23 @@ void CAI_Rat::Retreat()
 		m_tSpawnPosition.add(Position(),tTemp);
 	}
 	else
-		if ((enemy() && (!enemy()->g_Alive())) || ((Level().timeServer() - memory(enemy()).m_level_time > m_dwRetreatTime) && ((m_tLastSound.dwTime < m_dwLastUpdateTime) || !m_tLastSound.tpEntity || (m_tLastSound.tpEntity->g_Team() == g_Team()) || (!bfCheckIfSoundFrightful())))) {
+		if	(
+				enemy() && 
+				(
+					!enemy()->g_Alive()
+					|| 
+					(
+						(Level().timeServer() - memory(enemy()).m_level_time > m_dwRetreatTime) && 
+						(
+							(m_tLastSound.dwTime < m_dwLastUpdateTime) || 
+							!m_tLastSound.tpEntity || 
+							(m_tLastSound.tpEntity->g_Team() == g_Team()) || 
+							!bfCheckIfSoundFrightful()
+						)
+					)
+				)
+			)
+		{
 			GO_TO_PREV_STATE;
 		}
 
