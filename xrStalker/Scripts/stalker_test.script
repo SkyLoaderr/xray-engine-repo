@@ -3,12 +3,12 @@ function main ()
     stalker:script	(true,stalker_test:script_name());
 	action(                                                                                                       
 	    stalker,                                                                                                      
-	  	look		(look.point,level.object("localhost/dima")),
+	  	look		(look.point,get_level.object("localhost/dima")),
 	 	sound		("simple_detector_noise","bip01_spine2",vector():set(0,0,0),vector():set(0,0,0),true),
 		particle	("vehiclefx\\exhaust_1","bip01_head",particle_params(vector():set(0,0,0.3),vector():set(0,0,0),vector():set(1,0,0)),false),
 --		object		(wpn,object.activate),
 	    anim		(anim.danger),
-		move		(move.standing,move.walk,move.line,patrol("way0000")),
+		move		(move.standing,move.walk,move.line,get_level.object("localhost/dima")),
 		cond		(cond.move_end)
 	)
 	
