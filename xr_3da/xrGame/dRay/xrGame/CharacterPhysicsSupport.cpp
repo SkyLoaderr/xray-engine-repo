@@ -163,7 +163,7 @@ void CCharacterPhysicsSupport::in_UpdateCL()
 		{
 			if(!m_pPhysicsShell->bActivating&&!b_death_anim_on)
 			{
-				if(m_eType==etStalker)
+				///if(m_eType==etStalker)
 				{
 						PSkeletonAnimated(m_EntityAlife.Visual())->PlayCycle("death_init");
 				}

@@ -88,6 +88,7 @@ struct					SActorMotions
 		CMotionDef*		m_damage[DAMAGE_FX_COUNT];
 
 		void			Create(CSkeletonAnimated* K, LPCSTR base);
+		void			CreateClimb(CSkeletonAnimated* K);
 	};
 	CMotionDef*			m_steering_torso_left;
 	CMotionDef*			m_steering_torso_right;

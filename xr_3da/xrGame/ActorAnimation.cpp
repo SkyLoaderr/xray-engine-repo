@@ -88,7 +88,40 @@ void ACTOR_DEFS::SActorMotions::SActorState::SAnimState::Create(CSkeletonAnimate
 	legs_ls			= K->ID_Cycle(strconcat(buf,base0,base1,"_ls_0"));
 	legs_rs			= K->ID_Cycle(strconcat(buf,base0,base1,"_rs_0"));
 }
+void ACTOR_DEFS::SActorMotions::SActorState::CreateClimb(CSkeletonAnimated* K)
+{
+	string128		buf,buf1;
+	string16		base;
+	
+	//climb anims
+	strcpy(base,"cl");
+	legs_idle		= K->ID_Cycle(strconcat(buf,base,"_idle_1"));
+	m_torso_idle	= K->ID_Cycle(strconcat(buf,base,"_torso_0_aim_0"));
+	m_walk.Create	(K,base,"_run");
+	m_run.Create	(K,base,"_run");
 
+	//norm anims
+	strcpy(base,"norm");
+	legs_turn		= K->ID_Cycle(strconcat(buf,base,"_turn"));
+	death			= K->ID_Cycle(strconcat(buf,base,"_death_0"));
+	m_torso[0].Create(K,base,"_1");
+	m_torso[1].Create(K,base,"_2");
+	m_torso[2].Create(K,base,"_3");
+	m_torso[3].Create(K,base,"_4");
+	m_torso[4].Create(K,base,"_5");
+	m_torso[5].Create(K,base,"_6");
+	m_torso[6].Create(K,base,"_7");
+
+
+	m_head_idle		= K->ID_Cycle("head_idle_0");
+	jump_begin		= K->ID_Cycle(strconcat(buf,base,"_jump_begin"));
+	jump_idle		= K->ID_Cycle(strconcat(buf,base,"_jump_idle"));
+	landing[0]		= K->ID_Cycle(strconcat(buf,base,"_jump_end"));
+	landing[1]		= K->ID_Cycle(strconcat(buf,base,"_jump_end_1"));
+
+	for (int k=0; k<12; ++k)
+		m_damage[k]	= K->ID_FX(strconcat(buf,base,"_damage_",itoa(k,buf1,10)));
+}
 void ACTOR_DEFS::SActorMotions::SActorState::Create(CSkeletonAnimated* K, LPCSTR base)
 {
 	string128		buf,buf1;
@@ -128,7 +161,8 @@ void ACTOR_DEFS::SActorMotions::Create(CSkeletonAnimated* V)
 
 	m_normal.Create	(V,"norm");
 	m_crouch.Create	(V,"cr");
-	m_climb.Create	(V,"cr");
+	//m_climb.Create	(V,"cr");
+	m_climb.CreateClimb(V);
 }
 void CActor::steer_Vehicle(float angle)	
 {
@@ -166,36 +200,47 @@ void CActor::g_SetAnimation( u32 mstate_rl )
 		else if (mstate_rl&mcBack)		M_legs	= AS->legs_back;
 		else if (mstate_rl&mcLStrafe)	M_legs	= AS->legs_ls;
 		else if (mstate_rl&mcRStrafe)	M_legs	= AS->legs_rs;
-		
+	
 		// Torso
-		CWeapon		*W = dynamic_cast<CWeapon*>(inventory().ActiveItem());
-		CMissile	*M = dynamic_cast<CMissile*>(inventory().ActiveItem());
-		if (W || M) {
-			SActorMotions::SActorState::STorsoWpn* TW	= &ST->m_torso[(W ? W->HandDependence() : M->animation_slot()) - 1];
-			if (!b_DropActivated&&!fis_zero(f_DropPower)){
-				M_torso					= TW->drop;
-				m_bAnimTorsoPlayed		= TRUE;
-			}else{
-				if (!m_bAnimTorsoPlayed) {
-					if (W) {
-						switch (W->STATE){
-							case CWeapon::eIdle:	M_torso	= TW->aim;		break;
-							case CWeapon::eFire:	M_torso	= TW->attack;	break;
-							case CWeapon::eReload:	M_torso	= TW->reload;	break;
-							case CWeapon::eShowing:	M_torso	= TW->draw;		break;
-							case CWeapon::eHiding:	M_torso	= TW->holster;	break;
+		if(mstate_rl&mcClimb)
+		{
+			if		(mstate_rl&mcFwd)		M_torso	= AS->legs_fwd;
+			else if (mstate_rl&mcBack)		M_torso	= AS->legs_back;
+			else if (mstate_rl&mcLStrafe)	M_torso	= AS->legs_ls;
+			else if (mstate_rl&mcRStrafe)	M_torso	= AS->legs_rs;
+		}
+		
+		if(!M_torso)
+		{
+			CWeapon		*W = dynamic_cast<CWeapon*>(inventory().ActiveItem());
+			CMissile	*M = dynamic_cast<CMissile*>(inventory().ActiveItem());
+			if (W || M) {
+				SActorMotions::SActorState::STorsoWpn* TW	= &ST->m_torso[(W ? W->HandDependence() : M->animation_slot()) - 1];
+				if (!b_DropActivated&&!fis_zero(f_DropPower)){
+					M_torso					= TW->drop;
+					m_bAnimTorsoPlayed		= TRUE;
+				}else{
+					if (!m_bAnimTorsoPlayed) {
+						if (W) {
+							switch (W->STATE){
+								case CWeapon::eIdle:	M_torso	= TW->aim;		break;
+								case CWeapon::eFire:	M_torso	= TW->attack;	break;
+								case CWeapon::eReload:	M_torso	= TW->reload;	break;
+								case CWeapon::eShowing:	M_torso	= TW->draw;		break;
+								case CWeapon::eHiding:	M_torso	= TW->holster;	break;
+							}
 						}
-					}
-					else {
-						switch (M->State()){
-							case MS_SHOWING	 :		M_torso	= TW->draw;		break;
-							case MS_HIDING	 :		M_torso	= TW->holster;	break;
-							case MS_IDLE	 :		M_torso	= TW->aim;		break;
-							case MS_EMPTY	 :		M_torso	= TW->aim;		break;
-							case MS_THREATEN :		M_torso	= TW->attack;	break;
-							case MS_READY	 :		M_torso	= TW->fire_idle;break;
-							case MS_THROW	 :		M_torso	= TW->fire_end;	break;
-							case MS_END		 :		M_torso	= TW->fire_end;	break;
+						else {
+							switch (M->State()){
+								case MS_SHOWING	 :		M_torso	= TW->draw;		break;
+								case MS_HIDING	 :		M_torso	= TW->holster;	break;
+								case MS_IDLE	 :		M_torso	= TW->aim;		break;
+								case MS_EMPTY	 :		M_torso	= TW->aim;		break;
+								case MS_THREATEN :		M_torso	= TW->attack;	break;
+								case MS_READY	 :		M_torso	= TW->fire_idle;break;
+								case MS_THROW	 :		M_torso	= TW->fire_end;	break;
+								case MS_END		 :		M_torso	= TW->fire_end;	break;
+							}
 						}
 					}
 				}
