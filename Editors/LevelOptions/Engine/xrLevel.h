@@ -6,8 +6,6 @@ enum fsL_Chunks {
 	fsL_HEADER=1,		//*
 	fsL_STRINGS,		//*
 	fsL_VISUALS,		//*
-	fsL_VBUFFERS,		//*
-	fsL_CFORM,			//*
 	fsL_PORTALS,		//*		- Portal polygons
 	fsL_LIGHT_CONTROL,	//*
 	fsL_LIGHT_DYNAMIC,	//*
@@ -78,7 +76,7 @@ struct NodeCompressed
 #pragma pack	(pop)
 
 const u32 XRCL_CURRENT_VERSION		=	14;
-const u32 XRCL_PRODUCTION_VERSION	=	9;
+const u32 XRCL_PRODUCTION_VERSION	=	10;
 const u32 CFORM_CURRENT_VERSION		=	3;
 const u32 XRAI_CURRENT_VERSION		=	3;
 #endif // xrLevelH
