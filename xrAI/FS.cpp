@@ -16,7 +16,8 @@ void CFS_Memory::write	(const void* ptr, DWORD count)
 		// reallocate
 		if (mem_size==0)	mem_size=128;
 		while (mem_size <= (position+count)) mem_size*=2;
-		data = (BYTE*) xr_realloc(data,mem_size);
+		if (0==data)		data = (BYTE*)	xr_malloc	(mem_size);
+		else				data = (BYTE*)	xr_realloc	(data,mem_size);
 	}
 #ifdef ENGINE_BUILD	
 	PSGP.memCopy	(data+position,ptr,count);
