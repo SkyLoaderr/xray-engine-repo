@@ -55,8 +55,8 @@ void CUICustomMap::Init	(shared_str name, CInifile& gameLtx)
 		tex			= gameLtx.r_string(name,"texture");
 		tmp		= gameLtx.r_fvector4(name,"bound_rect");
 	}else{
-		tex = "ui\\ui_nomap";
-		tmp.set(-1000.0f,-1000.0f,1000.0f,1000.0f);
+		tex = "ui\\ui_nomap2";
+		tmp.set(-10000.0f,-10000.0f,10000.0f,10000.0f);
 	}
 
 	m_BoundRect.set		(tmp.x, tmp.y, tmp.z, tmp.w);
