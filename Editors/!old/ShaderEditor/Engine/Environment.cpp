@@ -167,7 +167,7 @@ void CEnvDescriptor::lerp	(CEnvironment* parent, CEnvDescriptor& A, CEnvDescript
 	fog_color.lerp			(A.fog_color,B.fog_color,f).add(M.fog_color).mul(_power);
 	fog_density				= (fi*A.fog_density + f*B.fog_density + M.fog_density)*_power;
 	fog_near				= (1.0f - fog_density)*0.85f * far_plane;
-	fog_far					= 0.95f * far_plane;
+	fog_far					= 0.99f * far_plane;
 	rain_density			= fi*A.rain_density + f*B.rain_density;
 	rain_color.lerp			(A.rain_color,B.rain_color,f);
 	bolt_period				= fi*A.bolt_period + f*B.bolt_period;

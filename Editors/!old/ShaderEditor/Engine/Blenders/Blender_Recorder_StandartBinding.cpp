@@ -59,7 +59,7 @@ class cl_fog_params	: public R_constant_setup {
 		if (marker!=Device.dwFrame)
 		{
 			// Near/Far
-			float	n		= g_pGamePersistent->Environment.CurrentEnv.fog_near;
+			float	n		= 0;	//g_pGamePersistent->Environment.CurrentEnv.fog_near;
 			float	f		= g_pGamePersistent->Environment.CurrentEnv.fog_far;
 			float	r		= 1/(f-n);
 			result.set		(-n*r, r, r, r);
