@@ -22,7 +22,7 @@ function play_sound (obj, delay, theme, sub_theme, phrase_set, sub_phrase)
     if sub_phrase == nil or this.get_num_subphrases (theme, sub_theme, phrase_set) < sub_phrase then
        local num = this.get_num_subphrases (theme, sub_theme, phrase_set)
        if num == 0 then 
-          printf ("NO SOUND LOADED !!! Theme : %s, sub theme : %d, phrases set : %d", theme, sub_theme, phrase_set)
+          printf ("NO SOUNDS LOADED !!! Theme : %s, sub theme : %d, phrases set : %d", theme, sub_theme, phrase_set)
           return 
        end
        if num == 1 then 
