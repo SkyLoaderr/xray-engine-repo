@@ -13,6 +13,9 @@
 	<info_portion id="garbage_meetstalker_done">
 		<disable>garbage_meetstalker_start</disable>
 	</info_portion>
+	<info_portion id="garbage_meetstalker_die">
+		<disable>garbage_meetstalker_start</disable>
+	</info_portion>
 
   <!-- Драм-момент -->
   <info_portion id="gar_dm_novice_asked_for_help"></info_portion>
