@@ -165,12 +165,12 @@ function zone_binder:reload( section )
 		//end
   end
 
-   --if zone_ini:section_exist( "factory" ) then
-   	 --z.factory = escape_factory.factory_combat (self.object, zone_ini)
- 	 --if z.factory.ini_ok == false then
-		--z.factory = nil
-     --end
-  --end
+   if zone_ini:section_exist( "factory" ) then
+   	 z.factory = escape_factory.factory_combat (self.object, zone_ini)
+ 	 if z.factory.ini_ok == false then
+		z.factory = nil
+     end
+  end
   
 	if zone_ini:section_exist("spawner") then
 		if zone_ini:line_exist("spawner", "id") == true then
