@@ -8,7 +8,7 @@
 #include "igame_persistent.h"
 #include "environment.h"
 #include "PropertiesListHelper.h"
-#include "PropertiesList.h"
+#include "PropertiesList.h" 
 
 //---------------------------------------------------------------------------
 #pragma package(smart_init)
