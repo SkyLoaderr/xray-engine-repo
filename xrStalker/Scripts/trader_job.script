@@ -31,7 +31,7 @@ function artefacts_task_text(original_text, first_speaker, second_speaker)
 
 	local result_text = string.format("%s\\n", original_text)
 
-	for i = 0, tasks:size(), 1 do 
+	for i = 0, tasks:size()-1, 1 do 
 		K = tasks:get(i)
 		result_text = string.format("%s\\n%s from %s, count %d, price %d", result_text, 
 									K.name, K.organization, K.quantity, K.price)
@@ -48,7 +48,7 @@ function artefacts_task_list_text(original_text, trader_id)
 
 	local result_text = string.format("%s\\n", original_text)
 
-	for i = 0, tasks:size(), 1 do 
+	for i = 0, tasks:size()-1, 1 do 
 		K = tasks:get(i)
 		result_text = string.format("%s\\n%s from %s, count %d, price %d", result_text, 
 									K.name, K.organization, K.quantity, K.price)
