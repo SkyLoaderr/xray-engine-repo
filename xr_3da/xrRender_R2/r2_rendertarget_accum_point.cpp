@@ -43,6 +43,8 @@ void CRenderTarget::accum_point		(light* L)
 	// nv-stencil recompression
 	if (RImplementation.b_nvstecil)	{
 		u32		Offset;
+		float	_w					= float(Device.dwWidth);
+		float	_h					= float(Device.dwHeight);
 		u32		C					= D3DCOLOR_RGBA	(255,255,255,255);
 		FVF::TL* pv					= (FVF::TL*) RCache.Vertex.Lock	(4,g_combine->vb_stride,Offset);
 		pv->set						(EPS,			float(_h+EPS),	EPS_S,	1.f, C, 0, 0);	pv++;
