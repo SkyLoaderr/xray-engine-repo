@@ -406,10 +406,10 @@ void	CRender::Render		()
 	
 	// HUD
 	Device.Statistic.RenderDUMP_HUD.Begin	();
-	HW.pDevice->SetTexture	(1,0);
-	HW.pDevice->SetTexture	(2,0);
-	HW.pDevice->SetTextureStageState(1,D3DTSS_COLOROP,D3DTOP_DISABLE);
-	HW.pDevice->SetTextureStageState(1,D3DTSS_ALPHAOP,D3DTOP_DISABLE);
+//	HW.pDevice->SetTexture	(1,0);
+//	HW.pDevice->SetTexture	(2,0);
+//	HW.pDevice->SetTextureStageState(1,D3DTSS_COLOROP,D3DTOP_DISABLE);
+//	HW.pDevice->SetTextureStageState(1,D3DTSS_ALPHAOP,D3DTOP_DISABLE);
 	pCreator->pHUD->Render	();
 	Device.Statistic.RenderDUMP_HUD.End		();
 
