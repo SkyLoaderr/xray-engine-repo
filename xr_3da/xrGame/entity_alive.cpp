@@ -282,6 +282,7 @@ void CEntityAlive::PHUnFreeze()
 void CEntityAlive::PHFreeze()
 {
 	if(m_PhysicMovementControl->CharacterExist()) m_PhysicMovementControl->Freeze();
+	else if(m_pPhysicsShell) m_pPhysicsShell->Freeze();
 }
 //////////////////////////////////////////////////////////////////////
 
