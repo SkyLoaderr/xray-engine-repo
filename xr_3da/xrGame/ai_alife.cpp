@@ -494,6 +494,14 @@ void CAI_ALife::vfCheckForItems(CALifeHuman	*tpALifeHuman)
 
 void CAI_ALife::vfListObjects()
 {
+	OBJECT_PAIR_IT	it = m_tObjectRegistry.m_tppMap.begin();
+	OBJECT_PAIR_IT	E  = m_tObjectRegistry.m_tppMap.end();
+	string64	tString;
+	for ( ; it != E; it++) {
+		memcpy(tString,&((*it).second->m_tClassID),sizeof((*it).second->m_tClassID));
+		tString[sizeof((*it).second->m_tClassID)] = 0;
+		Msg("* %8s : %6d",tString,(*it).first);
+	}
 }
 
 void CAI_ALife::vfListEvents()

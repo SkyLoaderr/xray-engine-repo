@@ -153,7 +153,7 @@ public:
 
 class CCC_ALifeSave : public CConsoleCommand {
 public:
-	CCC_ALifeSave(LPCSTR N) : CConsoleCommand(N)  { };
+	CCC_ALifeSave(LPCSTR N) : CConsoleCommand(N)  { bEmptyArgsHandled = true; };
 	virtual void Execute(LPCSTR args) {
 		if (Level().game.type == GAME_SINGLE) {
 			game_sv_Single *tpGame = dynamic_cast<game_sv_Single *>(Level().Server->game);
@@ -171,7 +171,7 @@ public:
 
 class CCC_ALifeListObjects : public CConsoleCommand {
 public:
-	CCC_ALifeListObjects(LPCSTR N) : CConsoleCommand(N)  { };
+	CCC_ALifeListObjects(LPCSTR N) : CConsoleCommand(N)  { bEmptyArgsHandled = true; };
 	virtual void Execute(LPCSTR args) {
 		if (Level().game.type == GAME_SINGLE) {
 			game_sv_Single *tpGame = dynamic_cast<game_sv_Single *>(Level().Server->game);
@@ -188,7 +188,7 @@ public:
 
 class CCC_ALifeListEvents : public CConsoleCommand {
 public:
-	CCC_ALifeListEvents(LPCSTR N) : CConsoleCommand(N)  { };
+	CCC_ALifeListEvents(LPCSTR N) : CConsoleCommand(N)  { bEmptyArgsHandled = true; };
 	virtual void Execute(LPCSTR args) {
 		if (Level().game.type == GAME_SINGLE) {
 			game_sv_Single *tpGame = dynamic_cast<game_sv_Single *>(Level().Server->game);
@@ -205,7 +205,7 @@ public:
 
 class CCC_ALifeListTasks : public CConsoleCommand {
 public:
-	CCC_ALifeListTasks(LPCSTR N) : CConsoleCommand(N)  { };
+	CCC_ALifeListTasks(LPCSTR N) : CConsoleCommand(N)  { bEmptyArgsHandled = true; };
 	virtual void Execute(LPCSTR args) {
 		if (Level().game.type == GAME_SINGLE) {
 			game_sv_Single *tpGame = dynamic_cast<game_sv_Single *>(Level().Server->game);

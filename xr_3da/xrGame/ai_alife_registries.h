@@ -15,6 +15,11 @@ public:
 	_OBJECT_ID						m_tObjectID;			// идентификатор карты событий
 	OBJECT_MAP						m_tppMap;				// список событий игры
 
+	CALifeObjectRegistry()
+	{
+		m_tObjectID					= 0;
+	};
+
 	virtual							~CALifeObjectRegistry()
 	{
 		OBJECT_PAIR_IT it			= m_tppMap.begin();
@@ -83,6 +88,11 @@ public:
 	_EVENT_ID						m_tEventID;				// идентификатор карты событий
 	EVENT_MAP						m_tpMap;				// список событий игры
 
+	CALifeEventRegistry()
+	{
+		m_tEventID					= 0;
+	};
+
 	virtual							~CALifeEventRegistry()
 	{
 		EVENT_PAIR_IT it			= m_tpMap.begin();
@@ -139,6 +149,11 @@ class CALifeTaskRegistry {
 public:
 	_TASK_ID						m_tTaskID;				// идентификатор карты событий
 	TASK_MAP						m_tpMap;				// список событий игры
+
+	CALifeTaskRegistry()
+	{
+		m_tTaskID					= 0;
+	};
 
 	virtual	void					Save(CFS_Memory &tMemoryStream)
 	{
