@@ -132,8 +132,6 @@ CDeflector::CDeflector()
 	N.set			(0,1,0);
 	Sphere.P.set	(flt_max,flt_max,flt_max);
 	Sphere.R		= 0;
-	dwWidth			= 0;
-	dwHeight		= 0;
 	bMerged			= FALSE;
 	UVpolys.reserve	(32);
 }
@@ -196,8 +194,9 @@ VOID CDeflector::OA_Export()
 	size.sub	(max,min);
 
 	// Surface
-	dwWidth		= iCeil(size.x*g_params.m_lm_pixels_per_meter*density+.5f); clamp(dwWidth, 1u,512u-2*BORDER);
-	dwHeight	= iCeil(size.y*g_params.m_lm_pixels_per_meter*density+.5f); clamp(dwHeight,1u,512u-2*BORDER);
+	u32 dwWidth		= iCeil(size.x*g_params.m_lm_pixels_per_meter*density+.5f); clamp(dwWidth, 1u,512u-2*BORDER);
+	u32 dwHeight	= iCeil(size.y*g_params.m_lm_pixels_per_meter*density+.5f); clamp(dwHeight,1u,512u-2*BORDER);
+	layer.create	(dwWidth,dwHeight);
 }
 
 BOOL CDeflector::OA_Place	(Face *owner)

@@ -45,8 +45,8 @@ public:
 	lm_layer					layer;
 	Fsphere						Sphere;
 	
-	u32							dwWidth;
-	u32							dwHeight;
+	//u32						dwWidth;
+	//u32						dwHeight;
 	BOOL						bMerged;
 public:
 	CDeflector					();

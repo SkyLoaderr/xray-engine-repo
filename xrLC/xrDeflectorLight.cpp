@@ -467,11 +467,9 @@ VOID CDeflector::L_Calculate(CDB::COLLIDER* DB, base_lighting* LightsSelected, H
 		}
 
 		// Calculate
-		{
-			R_ASSERT			(lm.width	<=(lmap_size-2*BORDER));
-			R_ASSERT			(lm.height	<=(lmap_size-2*BORDER));
-			lm.create			(lm.width,lm.height);
-		}
+		R_ASSERT		(lm.width	<=(lmap_size-2*BORDER));
+		R_ASSERT		(lm.height	<=(lmap_size-2*BORDER));
+		lm.create		(lm.width,lm.height);
 		L_Direct		(DB,LightsSelected,H);
 	} catch (...)
 	{
@@ -498,25 +496,19 @@ VOID CDeflector::Light(CDB::COLLIDER* DB, base_lighting* LightsSelected, HASH& H
 	// Convert lights to local form
 	LightsSelected->select(pBuild->L_static,Sphere.P,Sphere.R);
 
-	// Register _new layer
-	lm_layer& lm		= layer;
-	lm.width			= dwWidth;
-	lm.height			= dwHeight;
-
 	// Calculate and fill borders
 	L_Calculate			(DB,LightsSelected,H);
-	for (u32 ref=254; ref>0; ref--) if (!ApplyBorders(lm,ref)) break;
+	for (u32 ref=254; ref>0; ref--) if (!ApplyBorders(layer,ref)) break;
 
 	// Compression
 	try {
 		u32	w,h;
-		if (compress_Zero(lm,rms_zero))	return;		// already with borders
-		else if (compress_RMS(lm,rms_shrink,w,h))	
+		if (compress_Zero(layer,rms_zero))	return;		// already with borders
+		else if (compress_RMS(layer,rms_shrink,w,h))	
 		{
 			// Reacalculate lightmap at lower resolution
-			lm.width	= w;
-			lm.height	= h;
-			L_Calculate	(DB,LightsSelected,H);
+			layer.create	(w,h);
+			L_Calculate		(DB,LightsSelected,H);
 		}
 	} catch (...)
 	{
@@ -525,18 +517,18 @@ VOID CDeflector::Light(CDB::COLLIDER* DB, base_lighting* LightsSelected, HASH& H
 
 	// Expand with borders
 	try {
-		if (lm.width==1)	
+		if (layer.width==1)	
 		{
 			// Horizontal ZERO - vertical line
 			lm_layer		T;
-			T.create		(2*BORDER,lm.height+2*BORDER);
+			T.create		(2*BORDER,layer.height+2*BORDER);
 
 			// Transfer
 			for (u32 y=0; y<T.height; y++)
 			{
 				int			py		= int(y)-BORDER;
-				clamp				(py,0,int(lm.height-1));
-				base_color	C		= lm.surface[py];
+				clamp				(py,0,int(layer.height-1));
+				base_color	C		= layer.surface[py];
 				T.surface[y*2+0]	= C; 
 				T.marker [y*2+0]	= 255;
 				T.surface[y*2+1]	= C;
@@ -545,20 +537,20 @@ VOID CDeflector::Light(CDB::COLLIDER* DB, base_lighting* LightsSelected, HASH& H
 
 			// Exchange
 			T.width			= 0;
-			T.height		= lm.height;
-			lm				= T;
-		} else if (lm.height==1) 
+			T.height		= layer.height;
+			layer			= T;
+		} else if (layer.height==1) 
 		{
 			// Vertical ZERO - horizontal line
 			lm_layer		T;
-			T.create		(lm.width+2*BORDER, 2*BORDER);
+			T.create		(layer.width+2*BORDER, 2*BORDER);
 
 			// Transfer
 			for (u32 x=0; x<T.width; x++)
 			{
 				int			px			= int(x)-BORDER;
-				clamp					(px,0,int(lm.width-1));
-				base_color	C			= lm.surface[px];
+				clamp					(px,0,int(layer.width-1));
+				base_color	C			= layer.surface[px];
 				T.surface	[0*T.width+x]	= C;
 				T.marker	[0*T.width+x]	= 255;
 				T.surface	[1*T.width+x]	= C;
@@ -566,23 +558,23 @@ VOID CDeflector::Light(CDB::COLLIDER* DB, base_lighting* LightsSelected, HASH& H
 			}
 
 			// Exchange
-			T.width			= lm.width;
+			T.width			= layer.width;
 			T.height		= 0;
-			lm				= T;
+			layer			= T;
 		} else {
 			// Generic blit
-			lm_layer		lm_old	= lm;
+			lm_layer		lm_old	= layer;
 			lm_layer		lm_new;
 			lm_new.create			(lm_old.width+2*BORDER,lm_old.height+2*BORDER);
 			lblit					(lm_new,lm_old,BORDER,BORDER,255-BORDER);
-			lm						= lm_new;
-			ApplyBorders			(lm,254);
-			ApplyBorders			(lm,253);
-			ApplyBorders			(lm,252);
-			ApplyBorders			(lm,251);
-			for	(ref=250; ref>0; ref--) if (!ApplyBorders(lm,ref)) break;
-			lm.width				= lm_old.width;
-			lm.height				= lm_old.height;
+			layer					= lm_new;
+			ApplyBorders			(layer,254);
+			ApplyBorders			(layer,253);
+			ApplyBorders			(layer,252);
+			ApplyBorders			(layer,251);
+			for	(ref=250; ref>0; ref--) if (!ApplyBorders(layer,ref)) break;
+			layer.width				= lm_old.width;
+			layer.height			= lm_old.height;
 		}
 	} catch (...)
 	{
