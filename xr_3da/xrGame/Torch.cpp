@@ -1,6 +1,7 @@
 #include "stdafx.h"
 #include "torch.h"
 #include "entity.h"
+#include "actor.h"
 #include "../LightAnimLibrary.h"
 #include "PhysicsShell.h"
 const float TIME_2_HIDE		= 5.f;
@@ -146,12 +147,24 @@ void CTorch::UpdateCL()
 	CBoneInstance& BI = PKinematics(Visual())->LL_GetBoneInstance(guid_bone);
 	Fmatrix M;
 
-	if (H_Parent()) {
+	if (H_Parent()) 
+	{
 		M.mul(XFORM(),BI.mTransform);
 		light_render->set_direction	(M.k);
 		light_render->set_position	(M.c);
 		glow_render->set_position	(M.c);
-	}else if(getVisible() && m_pPhysicsShell) {
+
+		if(light_render->get_active())
+		{
+			CActor *pActor = dynamic_cast<CActor*>(Level().CurrentEntity());
+			if(pActor && pActor->HUDview())
+				glow_render->set_active(false);
+			else
+				glow_render->set_active(true);
+		}
+	}
+	else if(getVisible() && m_pPhysicsShell) 
+	{
 		m_pPhysicsShell->Update	();
 		XFORM().set				(m_pPhysicsShell->mXFORM);
 		M.mul(XFORM(),BI.mTransform);
