@@ -23,5 +23,6 @@ end
 
 function init(obj)
 	printf	("stalker.init is called!")
-	return	stalker.stalker_script()
+	return	nil
+	--stalker.stalker_script()
 end
