@@ -181,13 +181,13 @@ void CRenderDevice::Create	() {
 	vCameraRight.set(1,0,0);
 
 	HW.Caps.Update();
-	for (DWORD i=0; i<HW.Caps.dwNumBlendStages; i++) 
+	for (DWORD i=0; i<HW.Caps.pixel.dwStages; i++) 
 	{
 		if (psDeviceFlags&rsAnisotropic)	{
 			CHK_DX(HW.pDevice->SetTextureStageState( i, D3DTSS_MINFILTER,	D3DTEXF_ANISOTROPIC ));
 			CHK_DX(HW.pDevice->SetTextureStageState( i, D3DTSS_MAGFILTER,	D3DTEXF_ANISOTROPIC ));
 			CHK_DX(HW.pDevice->SetTextureStageState( i, D3DTSS_MIPFILTER,	D3DTEXF_LINEAR		));
-			CHK_DX(HW.pDevice->SetTextureStageState( i, D3DTSS_MAXANISOTROPY, 16				));
+			CHK_DX(HW.pDevice->SetTextureStageState( i, D3DTSS_MAXANISOTROPY, 4					));
 		} else {
 			CHK_DX(HW.pDevice->SetTextureStageState( i, D3DTSS_MINFILTER,	D3DTEXF_LINEAR 		));
 			CHK_DX(HW.pDevice->SetTextureStageState( i, D3DTSS_MAGFILTER,	D3DTEXF_LINEAR 		));
@@ -241,7 +241,7 @@ void CRenderDevice::Create	() {
 		const DWORD dwIdxCount = dwTriCount*2*3;
 		WORD	*Indices = 0;
 		DWORD	dwUsage=D3DUSAGE_WRITEONLY;
-		if (HW.Caps.bSoftware)	dwUsage|=D3DUSAGE_SOFTWAREPROCESSING;
+		if (HW.Caps.vertex.bSoftware)	dwUsage|=D3DUSAGE_SOFTWAREPROCESSING;
 		R_CHK(HW.pDevice->CreateIndexBuffer(dwIdxCount*2,dwUsage,D3DFMT_INDEX16,D3DPOOL_DEFAULT,&Streams_QuadIB));
 		R_CHK(Streams_QuadIB->Lock(0,0,(BYTE**)&Indices,D3DLOCK_NOSYSLOCK));
 		{

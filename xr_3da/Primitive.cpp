@@ -18,7 +18,7 @@ void	CPrimitive::VB_Create	(DWORD FVF, DWORD dwCount,DWORD dwUsage, DWORD srcFVF
 
 	vShader = FVF;
 	vSize	= D3DXGetFVFVertexSize(FVF);
-	if (HW.Caps.bSoftware)	dwUsage|=D3DUSAGE_SOFTWAREPROCESSING;
+	if (HW.Caps.vertex.bSoftware)	dwUsage|=D3DUSAGE_SOFTWAREPROCESSING;
 	R_CHK(HW.pDevice->CreateVertexBuffer(
 		dwCount*vSize,
 		dwUsage,
@@ -72,7 +72,7 @@ void	CPrimitive::IB_Create	(DWORD dwBaseVert, DWORD dwCount, DWORD dwUsage,VOID*
 	CHK_DX(HW.pDevice->ResourceManagerDiscardBytes(0));
 
 	dwBaseVertex=dwBaseVert;
-	if (HW.Caps.bSoftware)	dwUsage|=D3DUSAGE_SOFTWAREPROCESSING;
+	if (HW.Caps.vertex.bSoftware)	dwUsage|=D3DUSAGE_SOFTWAREPROCESSING;
 	R_CHK(HW.pDevice->CreateIndexBuffer(
 		dwCount*2,dwUsage,D3DFMT_INDEX16,D3DPOOL_DEFAULT,
 		&pIndices
