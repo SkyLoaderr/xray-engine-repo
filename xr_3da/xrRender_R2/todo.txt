@@ -11,7 +11,7 @@
 ----------------------------
 done, ~7% perf-gain		:	intelligent	RT-switches sheduling + give some time to complete RT-rendering
 done, ~5.5% perf-gain	:	cull point-light frustums against real frustum
-done, 					:	fixed coordinate system for point lights - should minimize flickering
+done, works OK			:	fixed coordinate system for point lights - should minimize flickering
 						:	clip every-light frustums against real frustum - difficult
 						:	scissoring ???
 ----------------------------
