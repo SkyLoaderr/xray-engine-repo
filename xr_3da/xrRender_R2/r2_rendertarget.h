@@ -9,6 +9,7 @@ private:
 
 private:
 	// 
+	CBlender*			b_accum_direct_mask;
 	CBlender*			b_accum_direct;
 	CBlender*			b_combine;
 
@@ -29,6 +30,7 @@ private:
 	Shader*				s_smap_d_debug;
 
 	// 
+	Shader*				s_accum_direct_mask;
 	Shader*				s_accum_direct;
 
 	//

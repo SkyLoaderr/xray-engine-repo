@@ -70,6 +70,7 @@ void CRenderTarget::shadow_direct	(u32 dls_phase)
 			J.set(19, 19, 0);			J.sub(11); J.mul(scale);	RCache.set_ca	(_C,3,J.x,J.y,-J.y,-J.x);
 			J.set(9,  7,  15, 9);		J.sub(11); J.mul(scale);	RCache.set_ca	(_C,4,J.x,J.y,J.w,J.z);
 			J.set(13, 15, 7,  13);		J.sub(11); J.mul(scale);	RCache.set_ca	(_C,5,J.x,J.y,J.w,J.z);
+			CHK_DX						(HW.pDevice->SetRenderState	( D3DRS_STENCILREF,		0x02	));
 			RCache.Render				(D3DPT_TRIANGLELIST,Offset,0,4,0,2);
 		} else {
 			Fvector4 J; float scale		= circle/27.f;
@@ -94,6 +95,7 @@ void CRenderTarget::shadow_direct	(u32 dls_phase)
 			J.set(20, 42, 34, 42);	J.sub(27); J.mul(scale); RCache.set_ca	(_D1,3,J.x,J.y,J.w,J.z);
 			J.set(9,  45, 45, 45);	J.sub(27); J.mul(scale); RCache.set_ca	(_D1,4,J.x,J.y,J.w,J.z);
 			J.set(21, 52, 33, 52);	J.sub(27); J.mul(scale); RCache.set_ca	(_D1,5,J.x,J.y,J.w,J.z);
+			CHK_DX						(HW.pDevice->SetRenderState	( D3DRS_STENCILREF,		0x02	));
 			RCache.Render				(D3DPT_TRIANGLELIST,Offset,0,4,0,2);
 		}
 	}
@@ -128,10 +130,7 @@ void CRenderTarget::accum_direct()
 	RCache.set_c				("light_direction",	L_dir.x,L_dir.y,L_dir.z,0.f);
 	RCache.set_c				("light_color",		1.5f,1,1,.2f);
 
-	// RS-set
-	//CHK_DX						(HW.pDevice->SetRenderState	(D3DRS_SEPARATEALPHABLENDENABLE,TRUE));
-	//CHK_DX						(HW.pDevice->SetRenderState	(D3DRS_SRCBLENDALPHA,			D3DBLEND_ONE));
-	//CHK_DX						(HW.pDevice->SetRenderState	(D3DRS_DESTBLENDALPHA,			D3DBLEND_ZERO));
+	// Render if stencil >= 0x2
+	CHK_DX						(HW.pDevice->SetRenderState	( D3DRS_STENCILREF,		0x02	));
 	RCache.Render				(D3DPT_TRIANGLELIST,Offset,0,4,0,2);
-	//CHK_DX						(HW.pDevice->SetRenderState	(D3DRS_SEPARATEALPHABLENDENABLE,FALSE));
 }
