@@ -122,9 +122,25 @@ CObject* CObjectList::net_Find	(u32 ID)
 
 void	CObjectList::SLS_Save			(CFS_Base&	fs		)
 {
-
+	for (DWORD i=0; i<objects.size(); i++) 
+	{
+		CObject *O		= objects[i];
+		fs.open_chunk	(i);
+		fs.Wword		(O->ID());
+		O->SLS_Save		(fs);
+		fs.close_chunk	();
+	}
 }
 
 void	CObjectList::SLS_Load			(CStream&	fs		)
 {
+	u32 ID	= 0; 
+	while (fs.FindChunk(ID)) 
+	{
+		u16 net_ID		= fs.Rword();
+		CObject* O		= net_Find(net_ID);
+		if (0==O)		Msg("! SLS_Load: Invalid ID found. (Object not spawned up to this moment?)");
+		else			O->SLS_Load(fs);
+		ID ++;
+	}
 }

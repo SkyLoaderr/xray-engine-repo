@@ -89,17 +89,23 @@ public:
 	void								clCenter			(Fvector& C) const;
 	IC const Fmatrix&					svXFORM				()			 const	{ return svTransform;	}
 	IC const Fmatrix&					clXFORM				()			 const	{ return clTransform;	}
+
+	IC Fvector&							Direction			() 					{ return mRotate.k;		}
+	IC Fmatrix&							Rotation			()					{ return mRotate;		}
+	virtual float						Radius				() const;
+	virtual Fvector&					Position			() 					{ return vPosition;		}
 	
 	IC CSector*							Sector				()					{ return pSector;		}
 	IC CLightTrack*						Lights				()					{ return pLights;		}
 	virtual float						Ambient				()					{ return 0.f;		 	}
 	virtual BOOL						ShadowGenerate		()					{ return TRUE;			}
 	virtual BOOL						ShadowReceive		()					{ return TRUE;			}
+
+	// SLS
+	virtual void						SLS_Save			(CFS_Base& fs)		{};
+	virtual void						SLS_Load			(CStream& fs)		{};
 	
-	virtual float						Radius				() const;
-	virtual Fvector&					Position			() 					{ return vPosition;		}
-	IC Fvector&							Direction			() 					{ return mRotate.k;		}
-	IC Fmatrix&							Rotation			()					{ return mRotate;		}
+	// Accessors
 	IC CVisual*							Visual				()					{ return pVisual;		}
 	IC CCFModel*						CFORM				() const			{ return cfModel;		}
 
