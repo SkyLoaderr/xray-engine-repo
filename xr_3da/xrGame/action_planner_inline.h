@@ -113,10 +113,7 @@ void CPlanner::update				()
 	}
 #endif
 
-#ifdef DEBUG
-	if (!(!solution().empty()))
-		throw "!solution().empty()";
-#endif
+	THROW							(!solution().empty());
 
 	if (initialized()) {
 		if (current_action_id() != solution().front()) {

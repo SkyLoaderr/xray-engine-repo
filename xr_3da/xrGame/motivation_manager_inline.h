@@ -70,11 +70,7 @@ TEMPLATE_SPECIALIZATION
 IC	void CSMotivationManager::add_motivation_action	(u32 motivation_id, CSMotivation *motivation)
 {
 	ACTIONS::const_iterator	I = m_motivation_actions.find(motivation_id);
-#ifdef DEBUG
-	if (!(I == m_motivation_actions.end()))
-		throw "I == m_motivation_actions.end()";
-#endif
-
+	THROW					(I == m_motivation_actions.end());
 	CSMotivationAction		*action = smart_cast<CSMotivationAction*>(motivation);
 	if (!action)
 		return;
@@ -85,15 +81,9 @@ IC	void CSMotivationManager::add_motivation_action	(u32 motivation_id, CSMotivat
 TEMPLATE_SPECIALIZATION
 IC	void CSMotivationManager::add_motivation	(u32 motivation_id, CSMotivation *motivation)
 {
-#ifdef DEBUG
-	if (!(!graph().vertex(motivation_id)))
-		throw "!graph().vertex(motivation_id)";
-#endif
+	THROW					(!graph().vertex(motivation_id));
 	graph().add_vertex		(motivation,motivation_id);
-#ifdef DEBUG
-	if (!(graph().vertex(motivation_id)))
-		throw "graph().vertex(motivation_id)";
-#endif
+	THROW					(graph().vertex(motivation_id));
 	motivation->setup		(m_object);
 	m_actuality				= false;
 	add_motivation_action	(motivation_id,motivation);
@@ -102,15 +92,9 @@ IC	void CSMotivationManager::add_motivation	(u32 motivation_id, CSMotivation *mo
 TEMPLATE_SPECIALIZATION
 IC	void CSMotivationManager::remove_motivation	(u32 motivation_id)
 {
-#ifdef DEBUG
-	if (!(graph().vertex(motivation_id)))
-		throw "graph().vertex(motivation_id)";
-#endif
+	THROW					(graph().vertex(motivation_id));
 	graph().remove_vertex	(motivation_id);
-#ifdef DEBUG
-	if (!(!graph().vertex(motivation_id)))
-		throw "!graph().vertex(motivation_id)";
-#endif
+	THROW					(!graph().vertex(motivation_id));
 	m_actuality				= false;
 
 	ACTIONS::iterator		I = m_motivation_actions.find(motivation_id);

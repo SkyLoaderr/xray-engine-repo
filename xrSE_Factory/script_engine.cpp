@@ -66,8 +66,7 @@ void CScriptEngine::lua_error			(CLuaVirtualMachine *L)
 #ifndef XRAY_EXCEPTIONS
 	Debug.fatal				("LUA error: %s",lua_tostring(L,-1));
 #else
-	Msg						("! LUA error: %s",lua_tostring(L,-1));
-	throw lua_tostring(L,-1);
+	throw					lua_tostring(L,-1);
 #endif
 }
 
@@ -79,8 +78,7 @@ int  CScriptEngine::lua_pcall_failed	(CLuaVirtualMachine *L)
 	Debug.fatal				("LUA error: %s",lua_tostring(L,-1));
 	return					(-1);
 #else
-	Msg						("! LUA error: %s",lua_tostring(L,-1));
-	throw lua_tostring(L,-1);
+	throw					lua_tostring(L,-1);
 #endif
 }
 

@@ -15,10 +15,7 @@ CPatrolPathParams::CPatrolPathParams	(LPCSTR caPatrolPathToGo, const PatrolPathM
 {
 	m_path_name			= caPatrolPathToGo;
 	m_path				= Level().patrol_paths().path(shared_str(caPatrolPathToGo),true);
-	if (!m_path) {
-		ai().script_engine().script_log	(eLuaMessageTypeError,"There is no patrol path %s",caPatrolPathToGo);
-		throw;
-	}
+	THROW2				(m_path,"There is no patrol path %s",caPatrolPathToGo);
 	m_tPatrolPathStart	= tPatrolPathStart;
 	m_tPatrolPathStop	= tPatrolPathStop;
 	m_bRandom			= bRandom;

@@ -444,10 +444,7 @@ bool CScriptEntity::bfAssignMovement(CScriptEntityAction *tpEntityAction)
 		case CScriptMovementAction::eGoalTypeObject : {
 			CGameObject		*l_tpGameObject = smart_cast<CGameObject*>(l_tMovementAction.m_tpObjectToGo);
 #ifdef DEBUG
-			if (!l_tpGameObject) {
-				ai().script_engine().script_log(eLuaMessageTypeError,"eGoalTypeObject specified, but no object passed!");
-				throw;
-			}
+			THROW2	(l_tpGameObject,"eGoalTypeObject specified, but no object passed!");
 #else
 			R_ASSERT(l_tpGameObject);
 #endif
@@ -478,10 +475,7 @@ bool CScriptEntity::bfAssignMovement(CScriptEntityAction *tpEntityAction)
 				vertex_id		= ai().level_graph().check_position_in_direction(object().ai_location().level_vertex_id(),object().Position(),l_tMovementAction.m_tDestinationPosition);
 			
 #ifdef DEBUG
-			if (!ai().level_graph().valid_vertex_id(vertex_id)) {
-				ai().script_engine().script_log(eLuaMessageTypeError,"Cannot find corresponding level vertex for the specified position [%f][%f][%f] for monster %s",VPUSH(l_tMovementAction.m_tDestinationPosition),*m_monster->cName());
-				throw;
-			}
+			THROW2(ai().level_graph().valid_vertex_id(vertex_id),"Cannot find corresponding level vertex for the specified position [%f][%f][%f] for monster %s",VPUSH(l_tMovementAction.m_tDestinationPosition),*m_monster->cName());
 #endif
 			m_monster->movement().level_path_manager().set_dest_vertex(vertex_id);
 			m_monster->movement().level_location_selector().set_evaluator(0);
