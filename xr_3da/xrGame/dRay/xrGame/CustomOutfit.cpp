@@ -15,10 +15,10 @@ CCustomOutfit::CCustomOutfit()
 
 	m_bUsingCondition = true;
 
-	m_HitTypeK.resize(ALife::eHitTypeMax);
+	m_HitTypeProtection.resize(ALife::eHitTypeMax);
 	for(int i=0; i<ALife::eHitTypeMax; i++)
 	{
-		m_HitTypeK[i] = 1.0f;
+		m_HitTypeProtection[i] = 1.0f;
 	}
 }
 
