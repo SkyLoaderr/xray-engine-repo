@@ -117,7 +117,7 @@ void	test_rtc	()
 	tM.FrameStart	();
 	tC.FrameStart	();
 	tD.FrameStart	();
-	for		(u32 test=0; test<1000; test++)
+	for		(u32 test=0; test<10000; test++)
 	{
 		u32			in_size			= ::Random.randI(1024,96*1024);
 		u32			out_size_max	= rtc_csize		(in_size);
