@@ -360,6 +360,8 @@ bool CScriptMonster::bfAssignMovement(CEntityAction *tpEntityAction)
 					l_tpMovementManager->CDetailPathManager::m_path[1].position = l_tMovementAction.m_tDestinationPosition;
 					l_tpMovementManager->CDetailPathManager::m_current_travel_point	= 0;
 				}
+				if (l_tpMovementManager->CDetailPathManager::m_path[1].position.similar(Position(),.1f))
+					l_tMovementAction.m_bCompleted = true;
 			}
 			break;
 		}

@@ -470,6 +470,7 @@ u32 CObjectHandler::object_state() const
 				case CWeapon::eHiding	: return(uid(eObjectActionHide,weapon->ID()));
 				case CWeapon::eMisfire	: return(uid(eObjectActionMisfire1,weapon->ID()));
 				case CWeapon::eMagEmpty : return(uid(eObjectActionEmpty1,weapon->ID()));
+				case CWeapon::eHidden	: return(eObjectActionNoItems);
 				default			: NODEFAULT;
 			}
 		}

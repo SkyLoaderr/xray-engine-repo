@@ -19,8 +19,12 @@ IC	u32 CObjectHandler::uid(const u32 id0, const u32 id1) const
 	return				((id0 << 16) | id1);
 }
 
-IC	void CObjectHandler::set_dest_state	(const MonsterSpace::EObjectAction object_action, CGameObject *game_object)
+IC	void CObjectHandler::set_dest_state	(MonsterSpace::EObjectAction object_action, CGameObject *game_object)
 {
+	if (object_action == MonsterSpace::eObjectActionActivate)
+		object_action					= MonsterSpace::eObjectActionIdle;
+	if (object_action == MonsterSpace::eObjectActionDeactivate)
+		object_action					= MonsterSpace::eObjectActionNoItems;
 	if (game_object)
 		inherited::set_dest_state		(uid(object_action, game_object->ID()));
 	else
