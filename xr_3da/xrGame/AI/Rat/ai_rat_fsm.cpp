@@ -137,12 +137,12 @@ void CAI_Rat::FreeHuntingActive()
 	}
 
 	if (m_tLastSound.dwTime >= m_dwLastUpdateTime){
-		if (((m_tLastSound.eSoundType & SOUND_TYPE_WEAPON_SHOOTING) != SOUND_TYPE_WEAPON_SHOOTING) && (m_tLastSound.tpEntity->g_Team() != g_Team())) {
+		if (!bfCheckIfSoundFrightful() && (m_tLastSound.tpEntity->g_Team() != g_Team())) {
 			m_tSavedEnemy = m_tLastSound.tpEntity;
 			m_dwLostEnemyTime = Level().timeServer();
 			SWITCH_TO_NEW_STATE_THIS_UPDATE(aiRatAttackRun);
 		}
-		CHECK_IF_SWITCH_TO_NEW_STATE_THIS_UPDATE(((m_tLastSound.eSoundType != SOUND_TYPE_NO_SOUND) && ((m_tLastSound.tpEntity->g_Team() != g_Team()) || ((m_tLastSound.eSoundType & SOUND_TYPE_WEAPON_SHOOTING) == SOUND_TYPE_WEAPON_SHOOTING))),aiRatUnderFire);
+		CHECK_IF_SWITCH_TO_NEW_STATE_THIS_UPDATE((m_tLastSound.eSoundType != SOUND_TYPE_NO_SOUND) && ((m_tLastSound.tpEntity->g_Team() != g_Team()) || bfCheckIfSoundFrightful()),aiRatUnderFire);
 	}
     m_tSpawnPosition.set(m_tSafeSpawnPosition);
 	m_fGoalChangeDelta		= 10.f;
@@ -234,13 +234,13 @@ void CAI_Rat::FreeHuntingPassive()
 	}
 
 	if (m_tLastSound.dwTime >= m_dwLastUpdateTime){
-		if (((m_tLastSound.eSoundType & SOUND_TYPE_WEAPON_SHOOTING) != SOUND_TYPE_WEAPON_SHOOTING) && (m_tLastSound.tpEntity->g_Team() != g_Team())) {
+		if (!bfCheckIfSoundFrightful() && (m_tLastSound.tpEntity->g_Team() != g_Team())) {
 			m_tSavedEnemy = m_tLastSound.tpEntity;
 			m_dwLostEnemyTime = Level().timeServer();
 			vfAddActiveMember(true);
 			SWITCH_TO_NEW_STATE_THIS_UPDATE(aiRatAttackRun);
 		}
-		if ((m_tLastSound.eSoundType != SOUND_TYPE_NO_SOUND) && ((m_tLastSound.tpEntity->g_Team() != g_Team()) || ((m_tLastSound.eSoundType & SOUND_TYPE_WEAPON_SHOOTING) == SOUND_TYPE_WEAPON_SHOOTING))) {
+		if ((m_tLastSound.eSoundType != SOUND_TYPE_NO_SOUND) && ((m_tLastSound.tpEntity->g_Team() != g_Team()) || bfCheckIfSoundFrightful())) {
 			vfAddActiveMember(true);
 			SWITCH_TO_NEW_STATE_THIS_UPDATE(aiRatUnderFire);
 		}
@@ -269,7 +269,7 @@ void CAI_Rat::UnderFire()
 	}
 	else {
 		if (m_tLastSound.dwTime >= m_dwLastUpdateTime) {
-			if ((m_tLastSound.eSoundType & SOUND_TYPE_WEAPON_SHOOTING) != SOUND_TYPE_WEAPON_SHOOTING) {
+			if (!bfCheckIfSoundFrightful()) {
 				m_tSavedEnemy = m_tLastSound.tpEntity;
 				m_dwLostEnemyTime = Level().timeServer();
 				SWITCH_TO_NEW_STATE(aiRatAttackRun);
@@ -462,7 +462,7 @@ void CAI_Rat::Retreat()
 		m_tSpawnPosition.add(vPosition,tTemp);
 	}
 	else
-		if ((Level().timeServer() - m_dwLostEnemyTime > RETREAT_TIME) && ((m_tLastSound.dwTime > m_dwLastUpdateTime) || (m_tLastSound.tpEntity && ((m_tLastSound.tpEntity->g_Team() == g_Team()) || ((m_tLastSound.eSoundType & SOUND_TYPE_WEAPON_SHOOTING) != SOUND_TYPE_WEAPON_SHOOTING))))) {
+		if ((Level().timeServer() - m_dwLostEnemyTime > RETREAT_TIME) && ((m_tLastSound.dwTime > m_dwLastUpdateTime) || (m_tLastSound.tpEntity && ((m_tLastSound.tpEntity->g_Team() == g_Team()) || bfCheckIfSoundFrightful())))) {
 			m_tSafeSpawnPosition.set(Level().Teams[g_Team()].Squads[g_Squad()].Leader->Position());
 			GO_TO_PREV_STATE;
 		}

@@ -67,8 +67,6 @@ void CAI_Rat::HitSignal(float amount, Fvector& vLocalDir, CObject* who)
 		pSounds->PlayAtPos		(S,this,vPosition);
 	}
 	if (g_Health() - amount <= 0) {
-		if (g_Health() > 0)
-			vfAddMorale(m_fMoraleDecreaseQuant, m_fMoraleDecreaseRadius);
 		if ((m_tpCurrentGlobalAnimation) && (!m_tpCurrentGlobalBlend->playing))
 			if (m_tpCurrentGlobalAnimation != m_tRatAnimations.tNormal.tGlobal.tpaDeath[0])
 				m_tpCurrentGlobalBlend = PKinematics(pVisual)->PlayCycle(m_tpCurrentGlobalAnimation = m_tRatAnimations.tNormal.tGlobal.tpaDeath[::Random.randI(0,2)]);
@@ -102,7 +100,6 @@ void CAI_Rat::SelectEnemy(SEnemySelected& S)
 	
 	if (Known.size()==0)
 		return;
-	
 	// Get visible list
 	feel_vision_get	(m_tpaVisibleObjects);
 	std::sort		(m_tpaVisibleObjects.begin(),m_tpaVisibleObjects.end());

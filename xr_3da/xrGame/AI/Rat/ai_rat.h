@@ -267,6 +267,11 @@ class CAI_Rat : public CCustomMonster
 				m_bStanding = false;
 			}
 		};
+
+		IC bool bfCheckIfSoundFrightful()
+		{
+			return((m_tLastSound.eSoundType & SOUND_TYPE_WEAPON) == SOUND_TYPE_WEAPON);
+		};
 		
 		//////////////////////////
 		// MISCELLANIOUS FUNCTIONS
