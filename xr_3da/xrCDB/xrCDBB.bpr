@@ -54,7 +54,7 @@
     <PFLAGS value="-N2Intermediate -N0Intermediate -$Y+ -$W -$O- -$A8 -v -JPHNE -M"/>
     <RFLAGS value=""/>
     <AFLAGS value="/mu /w2 /zi"/>
-    <LFLAGS value="-IIntermediate -D&quot;&quot; -aa -Tpd -x -Gi -v"/>
+    <LFLAGS value="-IIntermediate -D&quot;&quot; -aa -Tpd -x -Gn -Gi -v"/>
     <OTHERFILES value=""/>
   </OPTIONS>
   <LINKER>
