@@ -14,7 +14,7 @@ function boar_callback (obj, action_type, index)
 	obj:clear_callback (game_object.movement)
 	reset_action (obj, m_attack_wave.script_name ())
 	action (obj, anim ("stand_attack_1"), cond (cond.anim_end))
-    action (obj, move (move.act_run, move.force_type, patrol ("way0001", patrol.nearest)), cond (cond.move_end))
+    action (obj, move (move.act_run, move.force_type, patrol ("way0001", start.nearest)), cond (cond.move_end))
 
 end
 
