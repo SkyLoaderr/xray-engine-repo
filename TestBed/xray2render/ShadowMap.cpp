@@ -311,7 +311,7 @@ HRESULT CMyD3DApplication::InitDeviceObjects()
 		std::vector<float>	position;
 		std::vector<float>	texCoord;
 		std::vector<float>	normals;
-		gMesh->LockVertexBuffer	(D3DLOCK_READONLY, (BYTE**)&vertexBuffer);
+		gMesh->LockVertexBuffer	(D3DLOCK_READONLY, (VOID**)&vertexBuffer);
 		for (i = 0; i < numVertices; ++i) {
 			position.push_back	(vertexBuffer[i].p.x);
 			position.push_back	(vertexBuffer[i].p.y);
@@ -329,13 +329,14 @@ HRESULT CMyD3DApplication::InitDeviceObjects()
 		u32 numTriangles	= gMesh->GetNumFaces();
 		WORD (*indexBuffer)[3];
 		std::vector<int> index;
-		HRESULT hr = gMesh->LockIndexBuffer(D3DLOCK_READONLY, (BYTE**)&indexBuffer);
+		HRESULT hr = gMesh->LockIndexBuffer(D3DLOCK_READONLY, (VOID**)&indexBuffer);
 		for (i = 0; i < numTriangles; ++i) {
 			index.push_back(indexBuffer[i][0]);
 			index.push_back(indexBuffer[i][1]);
 			index.push_back(indexBuffer[i][2]);
 		}
 		gMesh->UnlockIndexBuffer();
+
 		gMesh->Release();
 
 		// Prepare the parameters to the mesh mender
@@ -402,6 +403,7 @@ HRESULT CMyD3DApplication::InitDeviceObjects()
 		// Create the new vertex buffer
 		m_dwModelNumVerts = position.size() / 3;
 		D3DXComputeBoundingSphere(&position.front(), m_dwModelNumVerts, 3*sizeof(float), &vecModelCenter, &fModelRad);
+		m_fModelSize = fModelRad * 2.0f;
 
 		u32 size = m_dwModelNumVerts * sizeof(VERTEX);
 		m_pd3dDevice->CreateVertexBuffer(size, D3DUSAGE_WRITEONLY, 0, D3DPOOL_MANAGED, &m_pModelVB, NULL);
@@ -426,32 +428,17 @@ HRESULT CMyD3DApplication::InitDeviceObjects()
 		m_pModelVB->Unlock();
 
 		// Create the new index buffer
-		gNumTriangles = index.size() / 3;
-		size = index.size() * sizeof(unsigned int);
-		gD3DDevice->CreateIndexBuffer(size, D3DUSAGE_WRITEONLY, D3DFMT_INDEX16, D3DPOOL_MANAGED, &gIndexBuffer);
-		gIndexBuffer->Lock(0, size, (BYTE**)&indexBuffer, 0);
-		for (i = 0; i < gNumTriangles; ++i) {
+		m_dwModelNumFaces	= index.size() / 3;
+		size				= m_dwModelNumFaces * 3 * sizeof(WORD);
+		m_pd3dDevice->CreateIndexBuffer(size, D3DUSAGE_WRITEONLY, D3DFMT_INDEX16, D3DPOOL_MANAGED, &m_pModelIB, NULL);
+		m_pModelIB->Lock	(0, 0, (void**)&indexBuffer, 0);
+		for (i = 0; i < m_dwModelNumFaces; ++i) {
 			indexBuffer[i][0] = index[3 * i + 0];
 			indexBuffer[i][1] = index[3 * i + 1];
 			indexBuffer[i][2] = index[3 * i + 2];
 		}
-		gIndexBuffer->Unlock();
+		m_pModelIB->Unlock	();
 	}
-
-	m_fModelSize = fModelRad * 2.0f;
-
-	// Create model IB
-	m_dwModelNumFaces = Mesh.GetSysMemMesh()->GetNumFaces();
-	m_pd3dDevice->CreateIndexBuffer(m_dwModelNumFaces * 3 * sizeof(WORD), D3DUSAGE_WRITEONLY, D3DFMT_INDEX16, D3DPOOL_MANAGED, &m_pModelIB, NULL);
-
-	// Copy indices
-	Mesh.GetSysMemMesh()->GetIndexBuffer(&pMeshSrcIB);
-	pMeshSrcIB->Lock(0, 0, (void**)&pSrc, 0);
-	m_pModelIB->Lock(0, 0, (void**)&pDst, 0);
-	memcpy(pDst, pSrc, 3 * m_dwModelNumFaces * sizeof(WORD));
-	m_pModelIB->Unlock();
-	pMeshSrcIB->Unlock();
-	pMeshSrcIB->Release();
 
 	// Create floor VB
 	m_pd3dDevice->CreateVertexBuffer(4 * sizeof(VERTEX), D3DUSAGE_WRITEONLY, 0, D3DPOOL_MANAGED, &m_pFloorVB, NULL);
