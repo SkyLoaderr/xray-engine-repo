@@ -100,6 +100,7 @@ public:
 	IC Fmatrix&							Rotation			()					{ return mRotate;			}
 	virtual float						Radius				() const;
 	virtual Fvector&					Position			() 					{ return vPosition;			}
+	virtual const Fbox&					BoundingBox			() const;
 	
 	IC IRender_Sector*					Sector				()					{ return H_Root()->pSector;	}
 	IC IRender_ObjectSpecific*			ROS					()					{ return pROS;				}

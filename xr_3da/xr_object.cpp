@@ -51,6 +51,7 @@ void CObject::setEnabled		(BOOL _enabled)
 void	CObject::svCenter			(Fvector& C)	const	{ VERIFY(pVisual); svTransform.transform_tiny(C,pVisual->vis.sphere.P);	}
 void	CObject::clCenter			(Fvector& C)	const	{ VERIFY(pVisual); clTransform.transform_tiny(C,pVisual->vis.sphere.P);	}
 float	CObject::Radius				()				const	{ VERIFY(pVisual); return pVisual->vis.sphere.R;						}
+const Fbox&	CObject::BoundingBox	()				const	{ VERIFY(pVisual); return pVisual->vis.box;								}
 
 //----------------------------------------------------------------------
 // Class	: CXR_Object
