@@ -68,7 +68,7 @@ bool CActorTools::EngineModel::UpdateVisual(CEditableObject* source, bool bUpdGe
 void CActorTools::EngineModel::Render(const Fmatrix& mTransform)
 {
     // render visual
-    Device.SetTransform	(D3DTS_WORLD,mTransform);
+    RCache.set_xform_world(mTransform);
     switch (m_pVisual->Type)
     {
     case MT_SKELETON:{
@@ -79,7 +79,7 @@ void CActorTools::EngineModel::Render(const Fmatrix& mTransform)
         for (; I!=E; I++)
         {
             CVisual* V					= *I;
-            Device.Shader.set_Shader	(V->hShader);
+            RCache.set_Shader			(V->hShader);
             V->Render					(m_fLOD);
         }
     }break;
@@ -91,12 +91,12 @@ void CActorTools::EngineModel::Render(const Fmatrix& mTransform)
         for (; I!=E; I++)
         {
             CVisual* V					= *I;
-            Device.Shader.set_Shader	(V->hShader);
+            RCache.set_Shader			(V->hShader);
             V->Render					(m_fLOD);
         }
     }break;
     default:
-        Device.Shader.set_Shader		(m_pVisual->hShader);
+        RCache.set_Shader				(m_pVisual->hShader);
         m_pVisual->Render				(m_fLOD);
         break;
     }

@@ -22,7 +22,7 @@ void CParticleGroup::RenderEditor()
         if(pg->p_count < 1)	return;
 
         Device.SetShader	(m_Shader);
-        Device.SetTransform	(D3DTS_WORLD,Fidentity);
+        RCache.set_xform_world(Fidentity);
         CTLSprite 			m_Sprite;
         for(int i = 0; i < pg->p_count; i++){
             Particle &m = pg->list[i];
