@@ -193,6 +193,7 @@ float rayTrace	(RAPID::XRCollide* DB, R_Light& L, Fvector& P, Fvector& D, float 
 			return getLastRP_Scale(DB,L);
 		}
 	} catch (...) { Msg("* ERROR: rayTrace :: 3"); }
+	return 0;
 }
 
 void LightPoint(RAPID::XRCollide* DB, Fcolor &C, Fvector &P, Fvector &N, R_Light* begin, R_Light* end)
