@@ -4,9 +4,9 @@
 
 #include "eltree.hpp"
 #include "mxplacemnt.hpp"
-#include "BodyInstance.h"
 #include "ItemListHelper.h"
 #include "EditObject.h"
+#include "SkeletonCustom.h"
 // refs
 class TProperties;
 class CEditableObject;
@@ -91,7 +91,7 @@ class CActorTools: public pureDeviceCreate, public pureDeviceDestroy
     	float			m_fLOD;
 	    IRender_Visual*	m_pVisual;
         CBlend*			m_pBlend;
-        AnsiString		m_BPPlayCache[MAX_PARTS];
+        AnsiString		m_BPPlayCache[4];
     public:
         				EngineModel			(){m_pVisual=0;m_fLOD=1.f;m_pBlend=0;}
         void			DeleteVisual		(){::Render->model_Delete(m_pVisual);m_pBlend=0;}

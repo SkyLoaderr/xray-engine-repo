@@ -209,12 +209,12 @@ bool CBone::ExportOGF(IWriter& F)
     F.w_float	(IK_data.spring_factor);
     F.w_float	(IK_data.damping_factor);
 
-    Fvector xyz;
-    Fmatrix& R	= _RTransform();
-	R.getXYZi	(xyz);
+//    Fvector xyz;
+//    Fmatrix& R	= _RTransform();
+//	R.getXYZi	(xyz);
 
-    F.w_fvector3(xyz);
-    F.w_fvector3(R.c);
+    F.w_fvector3(rest_rotate);
+    F.w_fvector3(rest_offset);
     F.w_float	(mass);
     F.w_fvector3(center_of_mass);
     return true;

@@ -100,12 +100,14 @@ static void Calculate(CBone* bone, CSMotion* motion, bool bCalcInv, bool bCalcRe
         L.mul		(parent_bone?parent_bone->_LTransform():Fidentity,M);
     }
 	if (bCalcInv) bone->_LITransform().invert(L);
+/*
     if (bCalcRest){
     	Fmatrix& R	= bone->_RTransform();
         R.setXYZi	(bone->_RestRotate());
         R.c.set		(bone->_RestOffset());
         if (parent_bone) R.mulA(parent_bone->_RTransform());
     }
+*/    
     bone->flags.set(CBone::flCalculate,TRUE);
 }
 

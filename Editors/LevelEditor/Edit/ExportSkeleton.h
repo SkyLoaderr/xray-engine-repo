@@ -4,8 +4,8 @@
 #define ExportSkeletonH
 
 #include "progmesh.h"
+#include "SkeletonCustom.h"
 //---------------------------------------------------------------------------
-const u32 BONE_NONE 	= 0xffffffff;
 const float KEY_Quant	= 32767.f;
 const int clpSMX = 28, clpSMY=16, clpSMZ=28;
 //---------------------------------------------------------------------------
@@ -21,18 +21,18 @@ struct SSkelVert{
 	Fvector		N0;
 	Fvector		N1;
     Fvector2	UV;
-	u32		B0;
-	u32		B1;
+	u16			B0;
+	u16			B1;
     float 		w;
 	SSkelVert(){
 		P.set	(0,0,0);
         UV.set	(0.f,0.f);
         O0.set	(0,0,0);
 		N0.set	(0,1,0);
-		B0		= BONE_NONE;
+		B0		= BI_NONE;
         O1.set	(0,0,0);
 		N1.set	(0,1,0);
-		B1		= BONE_NONE;
+		B1		= BI_NONE;
         w		= 0;
 	}
     void set(Fvector& p, Fvector2& uv, float _w)

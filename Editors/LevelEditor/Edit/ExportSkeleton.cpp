@@ -329,7 +329,7 @@ bool CExportSkeleton::ExportGeometry(IWriter& F)
     // Header
     ogf_header 		H;
     H.format_version= xrOGF_FormatVersion;
-    H.type			= MT_SKELETON_ANIM;
+    H.type			= m_Source->SMotionCount()?MT_SKELETON_ANIM:MT_SKELETON_RIGID;
     H.shader_id		= 0;
     F.w_chunk		(OGF_HEADER,&H,sizeof(H));
 
@@ -548,8 +548,8 @@ bool CExportSkeleton::ExportMotions(IWriter& F)
 
 bool CExportSkeleton::Export(IWriter& F)
 {
-    if (!ExportGeometry(F)) 	return false;
-    if (!ExportMotions(F)) 		return false;
+    if (!ExportGeometry(F)) 						return false;
+    if (m_Source->SMotionCount()&&!ExportMotions(F))return false;
     return true;
 };
 //----------------------------------------------------

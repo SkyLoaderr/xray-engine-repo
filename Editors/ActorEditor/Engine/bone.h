@@ -79,6 +79,13 @@ struct SJointIKData
     SJointLimit		limits	[3];// by [axis XYZ on joint] and[Z-wheel,X-steer on wheel]
     float			spring_factor;
     float			damping_factor;
+    enum{
+    	flBreakable	= (1<<0),
+    };
+    Flags32			flags;
+    float			break_force;	// [0..+INF]
+    float			break_torque;	// [0..+INF]
+    			
     SJointIKData	(){ Reset();}
     void			Reset	()
     {
@@ -88,6 +95,9 @@ struct SJointIKData
         type			= jtRigid;
         spring_factor	= 1.f;
         damping_factor	= 1.f;
+        flags.zero		();
+    	break_force		= 0.f;
+    	break_torque	= 0.f;
     }
     void			clamp_by_limits(Fvector& dest_xyz);
 };
@@ -147,7 +157,7 @@ public:
     const Fvector&      _Offset			(){return mot_offset;}
     const Fvector&      _Rotate			(){return mot_rotate;}
     float			    _Length			(){return mot_length;}
-    IC Fmatrix&			_RTransform		(){return rest_transform;}
+//    IC Fmatrix&			_RTransform		(){return rest_transform;}
     IC Fmatrix&		    _MTransform		(){return mot_transform;}
     IC Fmatrix&		    _LTransform		(){return last_transform;}
     IC Fmatrix&		    _LITransform	(){return last_i_transform;} 

@@ -15,7 +15,7 @@
 #include "motion.h"
 #include "bone.h"
 #include "library.h"
-#include "BodyInstance.h"
+//#include "BodyInstance.h"
 #include "fmesh.h"
 #include "KeyBar.h"
 #include "main.h"
@@ -54,7 +54,7 @@ void CActorTools::PreviewModel::OnDestroy()
 
 void CActorTools::PreviewModel::OnCreate()
 {
-    m_Props = TProperties::CreateForm(0,alNone);
+    m_Props = TProperties::CreateForm("Preview prefs",0,alNone);
 }
 
 void CActorTools::PreviewModel::Clear()
@@ -86,7 +86,7 @@ void CActorTools::PreviewModel::SetPreferences()
     PHelper.CreateFloat	(items, 	"Speed (m/c)",	&m_fSpeed,		-10000.f,10000.f,0.01f,2);
     PHelper.CreateFloat	(items, 	"Segment (m)",	&m_fSegment,	-10000.f,10000.f,0.01f,2);
     PHelper.CreateToken	(items,		"Scroll axis",	&m_ScrollAxis,	sa_token,sizeof(m_ScrollAxis));
-	m_Props->AssignItems(items,true,"Preview prefs");
+	m_Props->AssignItems(items,true);
     m_Props->ShowProperties();
 }
 void CActorTools::PreviewModel::Render()
@@ -141,9 +141,9 @@ bool CActorTools::OnCreate()
     Device.seqDevDestroy.Add(this);
 
     // props
-    m_ObjectItems 	= TItemList::CreateForm(fraLeftBar->paObjectProps,alClient);
+    m_ObjectItems 	= TItemList::CreateForm("",fraLeftBar->paObjectProps,alClient);
 	m_ObjectItems->OnItemsFocused	= OnObjectItemFocused;
-    m_ItemProps 	= TProperties::CreateForm(fraLeftBar->paItemProps,alClient,OnItemModified);
+    m_ItemProps 	= TProperties::CreateForm("",fraLeftBar->paItemProps,alClient,OnItemModified);
     m_PreviewObject.OnCreate();
 
     // key bar

@@ -129,7 +129,7 @@ void __fastcall TfrmBonePart::ebSaveClick(TObject *Sender)
         }
     }
 	m_BoneParts->clear();
-    for (k=0; k<MAX_PARTS; k++){
+    for (k=0; k<4; k++){
     	if (T[k]->Items->Count){
             m_BoneParts->push_back(SBonePart());
             SBonePart& BP = m_BoneParts->back();

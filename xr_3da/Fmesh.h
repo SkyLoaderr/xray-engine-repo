@@ -44,8 +44,9 @@ enum OGF_Chuncks {
 	OGF_SMPARAMS2	= 20,	// * For skeletons only
 	OGF_LODDEF2		= 21,	// + 5 channel data
 	OGF_TREEDEF2	= 22,	// + 5 channel data
-	OGF_IKDATA		= 23,	// * For skeletons only
+	OGF_IKDATA_obs	= 23,	// * For skeletons only (__obsolete__)
 	OGF_USERDATA	= 24,	// * For skeletons only (Ini-file)
+	OGF_IKDATA		= 25,	// * For skeletons only
     OGF_forcedword	= 0xFFFFFFFF
 };
 

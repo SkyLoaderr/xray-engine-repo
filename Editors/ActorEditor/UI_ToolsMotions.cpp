@@ -10,7 +10,7 @@
 #include "PropertiesList.h"
 #include "motion.h"
 #include "bone.h"
-#include "BodyInstance.h"
+#include "SkeletonAnimated.h"
 #include "fmesh.h"
 #include "folderlib.h"
 #include "ItemList.h"
@@ -66,7 +66,7 @@ bool CActorTools::EngineModel::UpdateVisual(CEditableObject* source, bool bUpdGe
     }
     IReader R(F.pointer(), F.size());
     ::Render->model_Delete(m_pVisual);
-    m_pVisual = ::Render->model_Create(0,&R);
+    m_pVisual = ::Render->model_Create(ChangeFileExt(source->GetName(),"").c_str(),&R);
     m_pBlend = 0;
     return bRes;
 }
@@ -79,11 +79,11 @@ void CActorTools::EngineModel::PlayMotion(CSMotion* M)
         if (M->m_Flags.is(esmFX)){
 			for (int k=0; k<MAX_PARTS; k++){
             	if (!m_BPPlayCache[k].IsEmpty()){
-                	CMotionDef* D = PKinematics(m_pVisual)->ID_Cycle_Safe(m_BPPlayCache[k].c_str());
-                    if (D) D->PlayCycle(PKinematics(m_pVisual),k,false,0,0);
+                	CMotionDef* D = PSkeletonAnimated(m_pVisual)->ID_Cycle_Safe(m_BPPlayCache[k].c_str());
+                    if (D) D->PlayCycle(PSkeletonAnimated(m_pVisual),k,false,0,0);
     	    	}
             }        
-        	m_pBlend = PKinematics(m_pVisual)->PlayFX(M->Name(),1.f);
+        	m_pBlend = PSkeletonAnimated(m_pVisual)->PlayFX(M->Name(),1.f);
         }else{	
         	R_ASSERT(M->iBoneOrPart<MAX_PARTS);
             int idx 		= M->iBoneOrPart;
@@ -93,10 +93,10 @@ void CActorTools::EngineModel::PlayMotion(CSMotion* M)
 
 			for (int k=0; k<MAX_PARTS; k++){
             	if (!m_BPPlayCache[k].IsEmpty()){
-                	CMotionDef* D = PKinematics(m_pVisual)->ID_Cycle_Safe(m_BPPlayCache[k].c_str());
+                	CMotionDef* D = PSkeletonAnimated(m_pVisual)->ID_Cycle_Safe(m_BPPlayCache[k].c_str());
                     CBlend* B=0;
                     if (D){
-                    	B = D->PlayCycle(PKinematics(m_pVisual),k,(idx==k)?!(D->flags&esmNoMix):FALSE,0,0);
+                    	B = D->PlayCycle(PSkeletonAnimated(m_pVisual),k,(idx==k)?!(D->flags&esmNoMix):FALSE,0,0);
 						if (idx==k) m_pBlend = B;
                     }
     	    	}
