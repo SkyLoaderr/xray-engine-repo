@@ -11,8 +11,10 @@ void	CBuild::Flex2LOD()
 		OGF_LOD* pNode					= new OGF_LOD(1,pBuild->materials[lods[it].dwMaterial].sector);
 		for (int o=0; o<complete; o++)
 		{
-			OGF*	P	= (OGF*)g_tree[o];
-
+			OGF*	P		= (OGF*)g_tree[o];
+			int		lod_id	= pBuild->materials[P->material].lod_id;
+			if (it!=lod_id)	continue;
+			pNode->AddChield(o);
 		}
 
 		// Register node

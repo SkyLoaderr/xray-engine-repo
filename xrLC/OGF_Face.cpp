@@ -171,7 +171,7 @@ void OGF::MakeProgressive()
 }
 
 // Represent a node as HierrarhyVisual
-void OGF_Node::Save(CFS_Base &fs)
+void OGF_Node::Save	(CFS_Base &fs)
 {
 	// Header
 	fs.open_chunk		(OGF_HEADER);
@@ -179,8 +179,31 @@ void OGF_Node::Save(CFS_Base &fs)
 	H.format_version	= xrOGF_FormatVersion;
 	H.type				= MT_HIERRARHY;
 	H.flags				= 0;
-	fs.write(&H,sizeof(H));
-	fs.close_chunk();
+	fs.write			(&H,sizeof(H));
+	fs.close_chunk		();
+
+	// BBox (already computed)
+	fs.open_chunk		(OGF_BBOX);
+	fs.write			(&bbox,sizeof(Fvector)*2);
+	fs.close_chunk		();
+
+	// Chields
+	fs.open_chunk		(OGF_CHIELDS_L);
+	fs.Wdword			(chields.size());
+	fs.write			(chields.begin(),chields.size()*sizeof(DWORD));
+	fs.close_chunk		();
+}
+
+void OGF_LOD::Save	(CFS_Base &fs)
+{
+	// Header
+	fs.open_chunk		(OGF_HEADER);
+	ogf_header H;
+	H.format_version	= xrOGF_FormatVersion;
+	H.type				= MT_HIERRARHY;
+	H.flags				= 0;
+	fs.write			(&H,sizeof(H));
+	fs.close_chunk		();
 
 	// BBox (already computed)
 	fs.open_chunk		(OGF_BBOX);
