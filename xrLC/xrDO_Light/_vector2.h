@@ -77,8 +77,8 @@ public:
 	// average geometric
 	IC SelfRef averageG(Self &p1, Self &p2) 
 	{
-		x = sqrtf(p1.x*p2.x);
-		y = sqrtf(p1.y*p2.y);
+		x = _sqrt(p1.x*p2.x);
+		y = _sqrt(p1.y*p2.y);
 		return *this;	
 	}
 

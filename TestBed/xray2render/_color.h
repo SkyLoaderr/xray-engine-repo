@@ -197,7 +197,7 @@ public:
 	}
 	// magnitude
 	IC	T	magnitude_rgb(void) 		const	{
-		return sqrtf(magnitude_sqr_rgb());
+		return _sqrt(magnitude_sqr_rgb());
 	}
 
 	// Normalize

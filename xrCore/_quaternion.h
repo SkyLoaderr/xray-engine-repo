@@ -253,7 +253,7 @@ public:
 	{
 		T	m,one_over_magnitude;
 
-		m =  sqrtf(magnitude());
+		m =  _sqrt(magnitude());
 
 		if (( m < QZERO_TOLERANCE ) && ( m > -QZERO_TOLERANCE ))
 			return;
@@ -406,7 +406,7 @@ public:
 	IC	SelfRef	ln(SelfCRef Q)
 	{
 		T n	 = Q.x*Q.x+Q.y*Q.y+Q.z*Q.z;
-		T r  = sqrtf(n);
+		T r  = _sqrt(n);
 		T t  = (r>EPS_S)?atan2f(r,Q.w)/r: 0.f;
 		x = t*Q.x;
 		y = t*Q.y;
@@ -416,7 +416,7 @@ public:
 	}
 	IC	SelfRef	exp(SelfCRef Q)
 	{
-		T r  = sqrtf(Q.x*Q.x+Q.y*Q.y+Q.z*Q.z);
+		T r  = _sqrt(Q.x*Q.x+Q.y*Q.y+Q.z*Q.z);
 		T et = expf(Q.w);
 		T s  = (r>=EPS_S)? et*_sin(r)/r: 0.f;
 		x = s*Q.x;

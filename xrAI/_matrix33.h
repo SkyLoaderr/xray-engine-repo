@@ -169,10 +169,10 @@ public:
                     if (_abs(h)+g == _abs(h)) t=(a.m[0][1])/h;
                     else{
                         theta=0.5f*h/(a.m[0][1]);
-                        t=1.0f/(_abs(theta)+sqrtf(1.0f+theta*theta));
+                        t=1.0f/(_abs(theta)+_sqrt(1.0f+theta*theta));
                         if (theta < 0.0f) t = -t;
                     }
-                    c=1.0f/sqrtf(1+t*t); s=t*c; tau=s/(1.0f+c); h=t*a.m[0][1];
+                    c=1.0f/_sqrt(1+t*t); s=t*c; tau=s/(1.0f+c); h=t*a.m[0][1];
                     z.x -= h; z.y += h; d.x -= h; d.y += h;
                     a.m[0][1]=0.0f;
                     ROT(a,0,2,1,2); ROT(v,0,0,0,1); ROT(v,1,0,1,1); ROT(v,2,0,2,1);
@@ -188,10 +188,10 @@ public:
                     if (_abs(h)+g == _abs(h)) t=(a.m[0][2])/h;
                     else{
                         theta=0.5f*h/(a.m[0][2]);
-                        t=1.0f/(_abs(theta)+sqrtf(1.0f+theta*theta));
+                        t=1.0f/(_abs(theta)+_sqrt(1.0f+theta*theta));
                         if (theta < 0.0f) t = -t;
                     }
-                    c=1.0f/sqrtf(1+t*t); s=t*c; tau=s/(1.0f+c); h=t*a.m[0][2];
+                    c=1.0f/_sqrt(1+t*t); s=t*c; tau=s/(1.0f+c); h=t*a.m[0][2];
                     z.x -= h; z.z += h; d.x -= h; d.z += h;
                     a.m[0][2]=0.0f;
                     ROT(a,0,1,1,2); ROT(v,0,0,0,2); ROT(v,1,0,1,2); ROT(v,2,0,2,2);
@@ -207,10 +207,10 @@ public:
                     if (_abs(h)+g == _abs(h)) t=(a.m[1][2])/h;
                     else{
                         theta=0.5f*h/(a.m[1][2]);
-                        t=1.0f/(_abs(theta)+sqrtf(1.0f+theta*theta));
+                        t=1.0f/(_abs(theta)+_sqrt(1.0f+theta*theta));
                         if (theta < 0.0) t = -t;
                     }
-                    c=1.0f/sqrtf(1+t*t); s=t*c; tau=s/(1.0f+c); h=t*a.m[1][2];
+                    c=1.0f/_sqrt(1+t*t); s=t*c; tau=s/(1.0f+c); h=t*a.m[1][2];
                     z.y -= h; z.z += h; d.y -= h; d.z += h;
                     a.m[1][2]=0.0f;
                     ROT(a,0,1,0,2); ROT(v,0,1,0,2); ROT(v,1,1,1,2); ROT(v,2,1,2,2);

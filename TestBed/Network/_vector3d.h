@@ -199,7 +199,7 @@ public:
 	{
 		T magnitude=x*x + y*y + z*z;
 		if (magnitude> std::numeric_limits<T>::min()) {
-			magnitude=sqrtf(1/magnitude);
+			magnitude=_sqrt(1/magnitude);
 			x *= magnitude;
 			y *= magnitude;
 			z *= magnitude;
