@@ -87,6 +87,7 @@ void CUITradeWnd::Init()
 
 	UIOurTradeWnd.AttachChild(&UIOurPriceCaption);
 	xml_init.InitMultiTextStatic(uiXml, "price_mt_static", 0, &UIOurPriceCaption);
+	UIOurPriceCaption.GetPhraseByIndex(0)->effect.SetNewRenderMethod(false);
 
 	UIOthersTradeWnd.AttachChild(&UIOthersPriceCaption);
 	xml_init.InitMultiTextStatic(uiXml, "price_mt_static", 0, &UIOthersPriceCaption);
@@ -434,9 +435,11 @@ void CUITradeWnd::PerformTrade()
 	//денег хватает, продать вещи
 	else if(m_iOurTradePrice>0 || m_iOthersTradePrice>0)
 	{
+		if (m_pCurrentDragDropItem) m_pCurrentDragDropItem->Highlight(false);
 		SellItems(&UIOurTradeList, &UIOthersBagList, m_pTrade);
 		SellItems(&UIOthersTradeList, &UIOurBagList, m_pOthersTrade);
 		UpdatePrices();
+		
 
 		UIMessageBox.SetText("The deal is done!");
 	}
@@ -476,6 +479,8 @@ void CUITradeWnd::UpdatePrices()
 	sprintf(buf, "%d$", m_pOthersInvOwner->m_dwMoney);
 	UIOthersBagWnd.SetText(buf);
 }
+
+//////////////////////////////////////////////////////////////////////////
 
 void CUITradeWnd::SellItems(CUIDragDropList* pSellList,
 							CUIDragDropList* pBuyList,

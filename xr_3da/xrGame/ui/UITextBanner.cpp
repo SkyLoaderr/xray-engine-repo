@@ -83,6 +83,7 @@ void CUITextBanner::Out(float x, float y, const char *fmt, ...)
 
 	R_ASSERT(m_pFont);
 	m_pFont->SetColor(m_Cl);
+	m_pFont->SetAligment(CGameFont::EAligment::alLeft);
 	if(fontSize>0.0f)
 		m_pFont->SetSize(fontSize);
 
