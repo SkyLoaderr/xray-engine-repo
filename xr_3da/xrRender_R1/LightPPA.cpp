@@ -51,7 +51,9 @@ void CLightR_Manager::render_point	()
 	RCache.set_Shader			(hShader);
 	for (xr_vector<light*>::iterator it=selected_point.begin(); it!=selected_point.end(); it++)
 	{
-		light&	PPL		= *(*it);
+		//		2. Set global light-params to be used by shading
+		RImplementation.r1_dlight_light		= *it;
+		light&	PPL							= *(*it);
 
 		// Culling
 		if (PPL.range<0.05f)														continue;
