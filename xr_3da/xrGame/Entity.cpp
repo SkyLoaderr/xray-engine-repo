@@ -82,7 +82,7 @@ void CEntity::OnEvent		(NET_Packet& P, u16 type)
 	}
 }
 
-BOOL CEntity::Hit			(float perc, Fvector &dir, CObject* who) 
+void CEntity::Hit			(float perc, Fvector &dir, CObject* who) 
 {
 	// *** process hit calculations
 	// Calc impulse

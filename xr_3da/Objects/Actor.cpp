@@ -242,10 +242,10 @@ BOOL CActor::net_Spawn		(BOOL bLocal, int server_id, Fvector& o_pos, Fvector& o_
 	return				TRUE;
 }
 
-BOOL CActor::Hit(float iLost, Fvector &dir, CObject* who)
+void CActor::Hit		(float iLost, Fvector &dir, CObject* who)
 {
-	if (psActorFlags&AF_GODMODE)	return FALSE;
-	else return inherited::Hit(iLost,dir,who);
+	if (psActorFlags&AF_GODMODE)	return;
+	inherited::Hit		(iLost,dir,who);
 }
 
 void CActor::HitSignal(float perc, Fvector& vLocalDir, CObject* who)
