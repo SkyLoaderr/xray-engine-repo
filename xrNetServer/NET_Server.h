@@ -75,7 +75,7 @@ public:
 		for (int i=0; i<4; i++)
 		{
 			if (HAddr[i] == 0) return true;
-			if (HAddr[i] != Addr[0]) return false;
+			if (HAddr[i] != Addr[i]) return false;
 		};
 		return true;
 	};	
