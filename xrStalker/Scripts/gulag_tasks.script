@@ -275,3 +275,10 @@ function loadStates(st, gname, type, calculateState)
 		end
 	end
 end
+
+function get_megafone(type, name)
+	if type == "blockpost" then
+		self.music = gramofon.m_gramofon(name.."_rupor")
+	end
+	return nil
+end

@@ -16,6 +16,8 @@ function fract:__init(name, type)
 	--' Функция для просчета состояний
 	self.calculateStates = nil
 
+	self.music = gulag_tasks.get_megafone(type, name) --' матюгальник
+	
 	gulag_tasks.loadJob(self.Job, name, type)
 	table.sort(self.Job, function(a,b) return a.prior > b.prior end)
 	gulag_tasks.loadStates(self.States, name, type, self.calculateStates)
@@ -82,6 +84,12 @@ function fract:calculate()
 		end
 	end
 	if self.calculateStates ~= nil then self.calculateStates(self.Object) end
+
+	--' Апдейт матюгальника
+	if self.music ~= nil then
+		self.music:update()
+	end
+	
 	self:updateJob()
 	self:print()
 end
