@@ -40,6 +40,8 @@ public:
 	ref_rt						rt_Generic_1;	// 32bit		(r,g,b,a)				// post-process, intermidiate results, etc.
 	ref_rt						rt_Bloom_1;		// 32bit, dim/4	(r,g,b,?)
 	ref_rt						rt_Bloom_2;		// 32bit, dim/4	(r,g,b,?)
+	ref_rt						rt_LUM_16x16;	// 64bit, 16x16,	log-average
+	ref_rt						rt_LUM_result;	// 64bit, 1x1,		exp-result
 
 	// D-smap
 	ref_rt						rt_smap_d_surf;	// 32bit, depth 
