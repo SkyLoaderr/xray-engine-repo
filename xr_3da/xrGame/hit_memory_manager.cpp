@@ -91,7 +91,7 @@ void CHitMemoryManager::add		(float amount, const Fvector &vLocalDir, const CObj
 		hit_object.m_first_game_time	= Level().GetGameTime();
 
 		if (m_max_hit_count <= m_hits->size()) {
-			HITS::iterator	I = std::min_element(m_hits->begin(),m_hits->end(),SLevelTimePredicate<CEntityAlive>());
+			HITS::iterator		I = std::min_element(m_hits->begin(),m_hits->end(),SLevelTimePredicate<CEntityAlive>());
 			VERIFY				(m_hits->end() != I);
 			*I					= hit_object;
 		}
