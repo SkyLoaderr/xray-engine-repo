@@ -568,7 +568,8 @@ void				CLevel::SetNumCrSteps		( u32 NumSteps )
 
 ALife::_TIME_ID CLevel::GetGameTime()
 {
-	return			(Server->game->GetGameTime());
+	return			(game->GetGameTime());
+//	return			(Server->game->GetGameTime());
 }
 
 u8 CLevel::GetDayTime() 
@@ -593,19 +594,28 @@ void CLevel::GetGameDateTime	(u32& year, u32& month, u32& day, u32& hours, u32& 
 
 float CLevel::GetGameTimeFactor()
 {
-	return			(Server->game->GetGameTimeFactor());
+	return			(game->GetGameTimeFactor());
+//	return			(Server->game->GetGameTimeFactor());
 }
 
 void CLevel::SetGameTimeFactor(const float fTimeFactor)
 {
-	Server->game->SetGameTimeFactor(fTimeFactor);
+	game->SetGameTimeFactor(fTimeFactor);
+//	Server->game->SetGameTimeFactor(fTimeFactor);
 }
 
+void CLevel::SetGameTimeFactor(ALife::_TIME_ID GameTime, const float fTimeFactor)
+{
+	game->SetGameTimeFactor(GameTime, fTimeFactor);
+//	Server->game->SetGameTimeFactor(fTimeFactor);
+}
+/*
 void CLevel::SetGameTime(ALife::_TIME_ID GameTime)
 {
-	Server->game->SetGameTime(GameTime);
+	game->SetGameTime(GameTime);
+//	Server->game->SetGameTime(GameTime);
 }
-
+*/
 bool CLevel::IsServer ()
 {
 //	return (!!Server);

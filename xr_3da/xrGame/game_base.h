@@ -2,6 +2,7 @@
 
 #include "game_base_space.h"
 #include "script_export_space.h"
+#include "alife_space.h"
 
 #pragma pack(push,1)
 
@@ -118,6 +119,21 @@ public:
 //for scripting enhancement
 	static		CLASS_ID			getCLASS_ID				(LPCSTR game_type_name, bool bServer);
 	virtual		game_PlayerState*	createPlayerState()		{return xr_new<game_PlayerState>(); };
+
+//moved from game_sv_base (time routines)
+private:
+	// scripts
+	u64								m_qwStartProcessorTime;
+	u64								m_qwStartGameTime;
+	float							m_fTimeFactor;
+public:
+				void				SetGameTimeFactor		(ALife::_TIME_ID GameTime, const float fTimeFactor);
+	virtual		ALife::_TIME_ID		GetGameTime				();
+	virtual		float				GetGameTimeFactor		();
+//	virtual		void				SetGameTime				(ALife::_TIME_ID GameTime);
+	virtual		void				SetGameTimeFactor		(const float fTimeFactor);
+
+
 	DECLARE_SCRIPT_REGISTER_FUNCTION
 };
 add_to_type_list(game_GameState)

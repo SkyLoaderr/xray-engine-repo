@@ -27,11 +27,13 @@ public:
 
 	BOOL							sv_force_sync;
 	xr_vector<RPoint>				rpoints	[TEAM_COUNT];
+	
+/*	
 	// scripts
 	u64								m_qwStartProcessorTime;
 	u64								m_qwStartGameTime;
 	float							m_fTimeFactor;
-
+*/
 public:
 	virtual		void				OnPlayerConnect			(ClientID id_who);
 	virtual		void				OnPlayerDisconnect		(ClientID id_who, LPSTR Name);
@@ -93,10 +95,12 @@ public:
 	virtual		void				net_Export_State		(NET_Packet& P, ClientID id_to);				// full state
 	virtual		void				net_Export_Update		(NET_Packet& P, ClientID id_to, ClientID id);		// just incremental update for specific client
 	virtual		void				net_Export_GameTime		(NET_Packet& P);						// update GameTime only for remote clients
+/*
 	virtual		ALife::_TIME_ID		GetGameTime				();
 	virtual		float				GetGameTimeFactor		();
 	virtual		void				SetGameTime				(ALife::_TIME_ID GameTime);
 	virtual		void				SetGameTimeFactor		(const float fTimeFactor);
+*/
 	virtual		bool				change_level			(NET_Packet &net_packet, ClientID sender);
 	virtual		void				save_game				(NET_Packet &net_packet, ClientID sender);
 	virtual		bool				load_game				(NET_Packet &net_packet, ClientID sender);

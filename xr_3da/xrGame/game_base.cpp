@@ -101,6 +101,11 @@ game_GameState::game_GameState()
 	type				=	-1;
 	phase				=	GAME_PHASE_NONE;
 	round				=	-1;
+
+	m_qwStartProcessorTime		= CPU::GetCycleCount();
+	m_qwStartGameTime			= 12*60*60*1000;
+	m_fTimeFactor				= pSettings->r_float("alife","time_factor");
+
 }
 
 CLASS_ID game_GameState::getCLASS_ID(LPCSTR game_type_name, bool isServer)
@@ -131,3 +136,35 @@ void game_GameState::switch_Phase		(u32 new_phase)
 		OnSwitchPhase(phase, new_phase);
 }
 
+
+
+ALife::_TIME_ID game_GameState::GetGameTime()
+{
+	return			(m_qwStartGameTime + iFloor(m_fTimeFactor*float(CPU::GetCycleCount() - m_qwStartProcessorTime)*CPU::cycles2milisec));
+}
+
+float game_GameState::GetGameTimeFactor()
+{
+	return			(m_fTimeFactor);
+}
+
+void game_GameState::SetGameTimeFactor (const float fTimeFactor)
+{
+	m_qwStartGameTime			= GetGameTime();
+	m_qwStartProcessorTime		= CPU::GetCycleCount();
+	m_fTimeFactor				= fTimeFactor;
+}
+
+void game_GameState::SetGameTimeFactor	(ALife::_TIME_ID GameTime, const float fTimeFactor)
+{
+	m_qwStartGameTime			= GameTime;
+	m_qwStartProcessorTime		= CPU::GetCycleCount();
+	m_fTimeFactor				= fTimeFactor;
+
+}
+
+/*
+void game_GameState::SetGameTime (ALife::_TIME_ID GameTime)
+{
+	m_qwStartGameTime			= GameTime;
+}*/

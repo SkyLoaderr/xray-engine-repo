@@ -113,8 +113,8 @@ void	game_cl_GameState::net_import_update(NET_Packet& P)
 	float			TimeFactor;
 	P.r_float		(TimeFactor);
 
-	Level().SetGameTime			(GameTime);
-	Level().SetGameTimeFactor	(TimeFactor);
+//	Level().SetGameTime			(GameTime);
+	Level().SetGameTimeFactor	(GameTime,TimeFactor);
 }
 
 void	game_cl_GameState::net_signal		(NET_Packet& P)
