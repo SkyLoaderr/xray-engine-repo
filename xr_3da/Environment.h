@@ -33,6 +33,8 @@ public:
 	Fvector3			sun_dir;
 
 	void				load		(LPCSTR sect);
+    void				unload		();
+    
 	void				lerp		(CEnvDescriptor& A, CEnvDescriptor& B, float f);
 };
 
@@ -44,13 +46,14 @@ public:
 	xr_vector<CEnvDescriptor>	Palette;
 	ref_shader					sh_2sky;
 	ref_geom					sh_2geom;
-	CEffect_Rain				eff_Rain;
-	CLensFlare					eff_LensFlare;
+	CEffect_Rain*				eff_Rain;
+	CLensFlare*					eff_LensFlare;
 public:
 					CEnvironment		();
 					~CEnvironment		();
 
 	void			load				();
+    void			unload				();
 
 	void			OnFrame				();
 

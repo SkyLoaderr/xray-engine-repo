@@ -95,6 +95,8 @@ static	u16			hbox_faces[18*3]	=
 // environment
 CEnvironment::CEnvironment	()
 {
+	eff_Rain				= 0;
+    eff_LensFlare			= 0;
 	OnDeviceCreate			();
 }
 CEnvironment::~CEnvironment	()
@@ -116,6 +118,12 @@ void CEnvDescriptor::load	(LPCSTR S)
 	hemi_color				= pSettings->r_fvector3	(S,"hemi_color");
 	sun_color				= pSettings->r_fvector3	(S,"sun_color");
 	Fvector2 sund			= pSettings->r_fvector2	(S,"sun_dir");	sun_dir.setHP	(deg2rad(sund.y),deg2rad(sund.x));
+}
+void CEnvDescriptor::unload	()
+{
+	sky_r_textures.clear	();
+	sky_r_textures.push_back(0);
+	sky_r_textures.push_back(0);
 }
 void CEnvDescriptor::lerp	(CEnvDescriptor& A, CEnvDescriptor& B, float f)
 {
@@ -141,16 +149,27 @@ void CEnvDescriptor::lerp	(CEnvDescriptor& A, CEnvDescriptor& B, float f)
 
 void CEnvironment::load		()
 {
-	for(int env=0; env<24; env++) 
-	{
-		LPCSTR	sect		= "environment";
-		char	name		[32];
-		sprintf				(name,"%d",env);
-		if (!pSettings->line_exist	(sect,name))	continue;
-		CEnvDescriptor		D;
-		D.load				(pSettings->r_string(sect,name));
-		Palette.push_back	(D);
-	}
+	if (Palette.empty()){
+        for(int env=0; env<24; env++) 
+        {
+            LPCSTR	sect		= "environment";
+            string32 name;
+            sprintf				(name,"%d",env);
+            if (!pSettings->line_exist	(sect,name))	continue;
+            CEnvDescriptor		D;
+            D.load				(pSettings->r_string(sect,name));
+            Palette.push_back	(D);
+        }
+    }
+    // rain
+    if (!eff_Rain)			eff_Rain = xr_new<CEffect_Rain>();
+}
+
+void CEnvironment::unload	()
+{
+    xr_delete				(eff_Rain);
+	Palette.clear			();
+    Current.unload			();
 }
 
 void CEnvironment::OnFrame()
@@ -217,17 +236,19 @@ void CEnvironment::RenderLast		()
 //	if (psEnvFlags.test(effSunGlare))
 //		for(u32 i=0; i<Suns.size(); i++) Suns[i]->RenderFlares();
 
-	eff_Rain.Render					();
+	eff_Rain->Render				();
 }
 
 void CEnvironment::OnDeviceCreate()
 {
 	sh_2sky.create			(&b_skybox,"skybox_2t");
 	sh_2geom.create			(v_skybox_fvf,RCache.Vertex.Buffer(), RCache.Index.Buffer());
+    load					();
 }
 
 void CEnvironment::OnDeviceDestroy()
 {
+	unload					();
 	sh_2sky.destroy			();
 	sh_2geom.destroy		();
 }
