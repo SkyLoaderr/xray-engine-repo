@@ -104,7 +104,7 @@ public:
 				int		m0		= iFloor(mid)	% 4;
 				int		m1		= (m0+1)		% 4;
 				float	frc		= mid - float(iFloor(mid));
-				Msg		("~ material set to [%s]-[%s], with lerp of [%f]",name[m0],name[m1],frc);
+				Msg		("* material set to [%s]-[%s], with lerp of [%f]",name[m0],name[m1],frc);
 			}
 		}
 	}
