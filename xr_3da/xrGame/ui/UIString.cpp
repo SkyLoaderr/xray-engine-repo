@@ -24,7 +24,7 @@ void CUIString::SetText(LPSTR str)
 		return;
 	}
 
-	for(u32 i=0; i<xr_strlen(str); i++)
+	for(u32 i=0, n=xr_strlen(str); i<n; ++i)
 		m_str.push_back(str[i]);
 
 	//символ конца строки
@@ -37,7 +37,7 @@ void CUIString::AppendText(LPSTR str)
 	//выкинуть символ конца строки
 	m_str.pop_back();
 
-	for(u32 i=0; i<xr_strlen(str); i++)
+	for(u32 i=0, n=xr_strlen(str); i<n; ++i)
 		m_str.push_back(str[i]);
 
 	//символ конца строки

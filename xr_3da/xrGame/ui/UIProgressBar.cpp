@@ -100,7 +100,7 @@ bool CUIProgressBar::ProgressDec()
 {
 	if(m_iProgressPos>m_iMinPos)
 	{
-		m_iProgressPos--;
+		--m_iProgressPos;
 		UpdateProgressBar();
 		return true;
 	}
@@ -113,7 +113,7 @@ bool CUIProgressBar::ProgressInc()
 {
 	if(m_iProgressPos<m_iMaxPos)
 	{
-		m_iProgressPos++;
+		++m_iProgressPos;
 		UpdateProgressBar();
 		return true;
 	}
