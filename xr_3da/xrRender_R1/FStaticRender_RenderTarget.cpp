@@ -186,9 +186,10 @@ void CRenderTarget::End		()
 	u32					p_color			= subst_alpha		(param_color_base,nblend);
 	u32					p_gray			= subst_alpha		(param_color_gray,gblend);
 	u32					p_brightness	= param_color_add	;
-	Msg					("base: %d,%d,%d",	color_get_R(p_color),		color_get_G(p_color),		color_get_B(p_color));
-	Msg					("gray: %d,%d,%d",	color_get_R(p_gray),		color_get_G(p_gray),		color_get_B(p_gray));
-	Msg					("add:  %d,%d,%d",	color_get_R(p_brightness),	color_get_G(p_brightness),	color_get_B(p_brightness));
+	// Msg				("param_gray:%f(%d),param_noise:%f(%d)",param_gray,gblend,param_noise,nblend);
+	// Msg				("base: %d,%d,%d",	color_get_R(p_color),		color_get_G(p_color),		color_get_B(p_color));
+	// Msg				("gray: %d,%d,%d",	color_get_R(p_gray),		color_get_G(p_gray),		color_get_B(p_gray));
+	// Msg				("add:  %d,%d,%d",	color_get_R(p_brightness),	color_get_G(p_brightness),	color_get_B(p_brightness));
 	
 	// Draw full-screen quad textured with our scene image
 	u32		Offset;

@@ -805,6 +805,7 @@ void CActor::net_update::lerp(CActor::net_update& A, CActor::net_update& B, floa
 
 void CActor::ZoneEffect	(float z_amount)
 {
+	/*
 	clamp				(z_amount,0.f,1.f);
 
 	// Gray
@@ -830,6 +831,7 @@ void CActor::ZoneEffect	(float z_amount)
 	if (0==sndZoneHeart.feedback)		::Sound->play_at_pos	(sndZoneHeart,		this,Position(),true);
 	sndZoneHeart.set_volume				(z_amount);
 	sndZoneHeart.set_position			(P);
+	*/
 }
 
 void CActor::UpdateCL()

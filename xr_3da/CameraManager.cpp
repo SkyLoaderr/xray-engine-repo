@@ -21,8 +21,8 @@ float	psCamSlideInert	= 0.25f;
 
 void SPPInfo::normalize() 
 {
-	noise.intensity = _max(_min(noise.intensity, 1.f), 0.f);
 	/*
+	noise.intensity = _max(_min(noise.intensity, 1.f), 0.f);
 	noise.color.r = _max(_min(noise.color.r, 1.f), 0.f);
 	noise.color.g = _max(_min(noise.color.g, 1.f), 0.f);
 	noise.color.b = _max(_min(noise.color.b, 1.f), 0.f);
@@ -191,12 +191,15 @@ void CCameraManager::Update(const Fvector& P, const Fvector& D, const Fvector& N
 	// EffectorPP
 	affected_PP = unaffected_PP;
 	if(m_EffectorsPP.size()) {
+		//Log("e-count:",m_EffectorsPP.size());
 		for(int i = m_EffectorsPP.size()-1; i >= 0; i--) {
-			CEffectorPP* eff = m_EffectorsPP[i];
-			SPPInfo l_PPInf = unaffected_PP;
+			CEffectorPP* eff	= m_EffectorsPP[i];
+			SPPInfo l_PPInf		= unaffected_PP;
+			//Log					("camMMGR_gray_unf:",l_PPInf.gray);
 			if((eff->fLifeTime>0)&&eff->Process(l_PPInf)) {
 				affected_PP += l_PPInf;
 			} else RemoveEffector(eff->eType);
+			//Log					("camMMGR_gray_aff:",affected_PP.gray);
 		}
 		affected_PP.normalize();
 	}
@@ -220,6 +223,7 @@ void CCameraManager::Update(const Fvector& P, const Fvector& D, const Fvector& N
 	T->set_duality_v		(affected_PP.duality.v);
 	T->set_blur				(affected_PP.blur);
 	T->set_gray				(affected_PP.gray);
+	//Log						("camMMGR_gray_set:",affected_PP.gray);
 	T->set_noise			(affected_PP.noise.intensity);
 	T->set_noise_scale		(affected_PP.noise.grain);
 	T->set_noise_fps		(affected_PP.noise.fps);
