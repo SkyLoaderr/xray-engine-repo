@@ -5,7 +5,7 @@
 
 #include "SHEngineTools.h"
 #include "Blender.h"
-#include "ShaderTools.h"
+#include "UI_Tools.h"
 #include "ui_main.h"
 #include "LeftBar.h"
 #include "PropertiesShader.h"
@@ -16,8 +16,8 @@ class CCollapseBlender: public CParseBlender{
 public:
 	virtual void Parse(DWORD type, LPCSTR key, LPVOID data){
     	switch(type){
-        case BPID_MATRIX: 	SHTools.Engine.CollapseMatrix		((LPSTR)data); break;
-        case BPID_CONSTANT: SHTools.Engine.CollapseConstant		((LPSTR)data); break;
+        case BPID_MATRIX: 	Tools.Engine.CollapseMatrix		((LPSTR)data); break;
+        case BPID_CONSTANT: Tools.Engine.CollapseConstant		((LPSTR)data); break;
         };
     }
 };
@@ -26,8 +26,8 @@ class CRefsBlender: public CParseBlender{
 public:
 	virtual void Parse(DWORD type, LPCSTR key, LPVOID data){
     	switch(type){
-        case BPID_MATRIX: 	SHTools.Engine.UpdateMatrixRefs		((LPSTR)data); break;
-        case BPID_CONSTANT: SHTools.Engine.UpdateConstantRefs	((LPSTR)data); break;
+        case BPID_MATRIX: 	Tools.Engine.UpdateMatrixRefs		((LPSTR)data); break;
+        case BPID_CONSTANT: Tools.Engine.UpdateConstantRefs	((LPSTR)data); break;
         };
     }
 };
@@ -36,8 +36,8 @@ class CRemoveBlender: public CParseBlender{
 public:
 	virtual void Parse(DWORD type, LPCSTR key, LPVOID data){
     	switch(type){
-        case BPID_MATRIX: 	SHTools.Engine.RemoveMatrix((LPSTR)data); break;
-        case BPID_CONSTANT: SHTools.Engine.RemoveConstant((LPSTR)data); break;
+        case BPID_MATRIX: 	Tools.Engine.RemoveMatrix((LPSTR)data); break;
+        case BPID_CONSTANT: Tools.Engine.RemoveConstant((LPSTR)data); break;
         };
     }
 };

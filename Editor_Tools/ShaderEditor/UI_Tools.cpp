@@ -3,7 +3,7 @@
 #include "stdafx.h"
 #pragma hdrstop
 
-#include "ShaderTools.h"
+#include "UI_Tools.h"
 #include "EditObject.h"
 #include "ChoseForm.h"
 #include "ui_main.h"
@@ -11,12 +11,11 @@
 #include "PropertiesShader.h"
 
 //------------------------------------------------------------------------------
-CShaderTools SHTools;
+CShaderTools Tools;
 //------------------------------------------------------------------------------
 
 CShaderTools::CShaderTools()
 {
-	m_LibObject 		= 0;
 	m_EditObject 		= 0;
 }
 //---------------------------------------------------------------------------
@@ -56,6 +55,7 @@ void CShaderTools::OnCreate(){
 }
 
 void CShaderTools::OnDestroy(){
+	m_EditObject = 0;
     Device.seqDevCreate.Remove(this);
     Device.seqDevDestroy.Remove(this);
 	Engine.OnDestroy();
@@ -119,24 +119,21 @@ void CShaderTools::OnDeviceDestroy(){
 void CShaderTools::SelectPreviewObject(int p){
     LPCSTR fn;
     switch(p){
-        case 0: fn="$ShaderTest_Plane"; 	break;
-        case 1: fn="$ShaderTest_Box"; 		break;
-        case 2: fn="$ShaderTest_Sphere"; 	break;
-        case 3: fn="$ShaderTest_Teapot";	break;
+        case 0: fn="editor\\ShaderTest_Plane"; 	break;
+        case 1: fn="editor\\ShaderTest_Box"; 	break;
+        case 2: fn="editor\\ShaderTest_Sphere"; break;
+        case 3: fn="editor\\ShaderTest_Teapot";	break;
         case -1: fn=m_EditObject?m_EditObject->GetName():""; fn=TfrmChoseItem::SelectObject(false,true,0,fn); if (!fn) return; break;
         default: THROW2("Failed select test object.");
     }
-    m_LibObject = Lib->SearchObject(fn);
-    m_EditObject = 0;
-    if (m_LibObject) m_EditObject = m_LibObject->GetReference();
-    if (!m_LibObject||!m_EditObject)
-        ELog.DlgMsg(mtError,"System object '%s.object' can't find in object library. Preview disabled.",fn);
+    m_EditObject = Lib.GetEditObject(fn);
+    if (!m_EditObject)
+        ELog.DlgMsg(mtError,"Object '%s.object' can't find in object library. Preview disabled.",fn);
 	ZoomObject();
     UI.RedrawScene();
 }
 
 void CShaderTools::ResetPreviewObject(){
-    m_LibObject 	= 0;
     m_EditObject 	= 0;
     UI.RedrawScene();
 }

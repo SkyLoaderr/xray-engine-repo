@@ -22,23 +22,22 @@
       Intermediate\cl_overlap.obj Intermediate\cl_RAPID.obj 
       Intermediate\cl_bboxcollide.obj Intermediate\xr_ini.obj 
       Intermediate\ColorPicker.obj Intermediate\LzHuf.obj 
-      Intermediate\UI_Camera.obj Intermediate\UI_Main.obj 
-      Intermediate\UI_MainCommand.obj Intermediate\FS.obj Intermediate\HW.obj 
-      Intermediate\HWCaps.obj Intermediate\PrimitivesR.obj 
-      Intermediate\Primitive.obj Intermediate\SharedPrimitive.obj 
-      Intermediate\EditObject.obj Intermediate\Xr_input.obj 
-      Intermediate\fcontroller.obj Intermediate\XR_CustomFont.obj 
-      Intermediate\XR_HUDFont.obj Intermediate\c_dinput.obj 
-      Intermediate\pure.obj Intermediate\xrImage_Resampler.obj 
-      Intermediate\cpuid.obj Intermediate\_math.obj Intermediate\LeftBar.obj 
-      Intermediate\ShaderTools.obj Intermediate\PropertiesShader.obj 
-      Intermediate\LogForm.obj Intermediate\Library.obj 
-      Intermediate\ChoseForm.obj Intermediate\xr_avi.obj 
-      Intermediate\SH_Constant.obj Intermediate\SH_Matrix.obj 
-      Intermediate\SH_Texture.obj Intermediate\Shader.obj 
-      Intermediate\Texture.obj Intermediate\TextureManager.obj 
-      Intermediate\TextureManager_Loader.obj Intermediate\tss_def.obj 
-      Intermediate\Image.obj Intermediate\tga.obj 
+      Intermediate\UI_Camera.obj Intermediate\UI_MainCommand.obj 
+      Intermediate\FS.obj Intermediate\HW.obj Intermediate\HWCaps.obj 
+      Intermediate\PrimitivesR.obj Intermediate\Primitive.obj 
+      Intermediate\SharedPrimitive.obj Intermediate\EditObject.obj 
+      Intermediate\Xr_input.obj Intermediate\fcontroller.obj 
+      Intermediate\XR_CustomFont.obj Intermediate\XR_HUDFont.obj 
+      Intermediate\c_dinput.obj Intermediate\pure.obj 
+      Intermediate\xrImage_Resampler.obj Intermediate\cpuid.obj 
+      Intermediate\_math.obj Intermediate\LeftBar.obj 
+      Intermediate\PropertiesShader.obj Intermediate\LogForm.obj 
+      Intermediate\Library.obj Intermediate\ChoseForm.obj 
+      Intermediate\xr_avi.obj Intermediate\SH_Constant.obj 
+      Intermediate\SH_Matrix.obj Intermediate\SH_Texture.obj 
+      Intermediate\Shader.obj Intermediate\Texture.obj 
+      Intermediate\TextureManager.obj Intermediate\TextureManager_Loader.obj 
+      Intermediate\tss_def.obj Intermediate\Image.obj Intermediate\tga.obj 
       Intermediate\ShaderFunction.obj Intermediate\BlenderDefault.obj 
       Intermediate\Blender_default_aref.obj 
       Intermediate\Blender_Editor_Selection.obj 
@@ -48,7 +47,9 @@
       Intermediate\Blender.obj Intermediate\SHEngineTools.obj 
       Intermediate\SHCompilerTools.obj Intermediate\blender_light.obj 
       Intermediate\FolderLib.obj Intermediate\EStats.obj 
-      Intermediate\xrLoadSurface.obj"/>
+      Intermediate\xrLoadSurface.obj Intermediate\UI_Main.obj 
+      Intermediate\UI_Tools.obj Intermediate\UI_MainExtern.obj 
+      Intermediate\ImageThumbnail.obj Intermediate\ImageManager.obj"/>
     <RESFILES value="ShaderEditor.res resource.res"/>
     <IDLFILES value=""/>
     <IDLGENFILES value=""/>

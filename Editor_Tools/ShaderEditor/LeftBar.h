@@ -16,7 +16,7 @@
 #include "ElTree.hpp"
 #include "ElXPThemedControl.hpp"
 
-#include "ShaderTools.h"
+#include "UI_Tools.h"
 #include "ElTreeAdvEdit.hpp"
 #include "ElPgCtl.hpp"
 

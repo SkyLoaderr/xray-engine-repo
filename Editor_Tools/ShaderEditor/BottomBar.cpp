@@ -6,11 +6,20 @@
 #include "UI_main.h"
 #include "leftbar.h"
 #include "LogForm.h"
+#include "editorpref.h"
 
 //---------------------------------------------------------------------------
 #pragma package(smart_init)
 #pragma resource "*.dfm"
 TfraBottomBar *fraBottomBar=0;
+//---------------------------------------------------------------------------
+void TUI::OutGridSize(){
+    if (g_bEditorValid){
+        AnsiString s;
+        s.sprintf("Grid: %1.1f",float(frmEditorPreferences->seGridSquareSize->Value));
+        fraBottomBar->paGridSquareSize->Caption=s; fraBottomBar->paGridSquareSize->Repaint();
+    }
+}
 //---------------------------------------------------------------------------
 void TUI::SetStatus(LPSTR s){
     if (g_bEditorValid){

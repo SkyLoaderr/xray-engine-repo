@@ -8,46 +8,65 @@
 #include "bottombar.h"
 #include "EditorPref.h"
 #include "main.h"
-#include "ShaderTools.h"
+#include "UI_Tools.h"
 #include "PropertiesShader.h"
+#include "Library.h"
+#include "D3DUtils.h"
 
 #include "UI_Main.h"
 
-bool TUI::Command( int _Command, int p1 ){
+bool TUI::Command( int _Command, int p1, int p2 ){
 //	char filebuffer[MAX_PATH]="";
 
     bool bRes = true;
 
 	switch( _Command ){
+	case COMMAND_INITIALIZE:{
+		FS.OnCreate			();
+		InitMath			();
+        if (UI.OnCreate()){
+            Tools.OnCreate	();
+            Lib.OnCreate	();
 
-	case COMMAND_EXIT:{
-    	if (!SHTools.IfModified()) return false;
-        OnDestroy();
-		}break;
+		    Command			(COMMAND_CLEAR);
+			Command			(COMMAND_RENDER_FOCUS);
+		    BeginEState		(esEditScene);
+        }else{
+        	bRes = false;
+        }
+    	}break;
+	case COMMAND_DESTROY:
+		Lib.OnDestroy	();
+		Tools.OnDestroy	();
+        UI.OnDestroy	();
+    	break;
+	case COMMAND_EXIT:
+    	bRes = Tools.IfModified();
+        break;
 	case COMMAND_EDITOR_PREF:
 	    frmEditorPreferences->ShowModal();
         break;
 	case COMMAND_SAVE:
-    	SHTools.Engine.Save();
-    	SHTools.Compiler.Save();
+    	Tools.Engine.Save();
+    	Tools.Compiler.Save();
 		Command(COMMAND_UPDATE_CAPTION);
     	break;
     case COMMAND_RELOAD:
-    	if (SHTools.ActiveEditor()==aeEngine){
-	    	if (!SHTools.Engine.IfModified()) return false;
+    	if (Tools.ActiveEditor()==aeEngine){
+	    	if (!Tools.Engine.IfModified()) return false;
             if (ELog.DlgMsg(mtConfirmation,"Reload shaders?")==mrYes)
-                SHTools.Engine.Reload();
-    	}else if (SHTools.ActiveEditor()==aeCompiler){
-	    	if (!SHTools.Compiler.IfModified()) return false;
+                Tools.Engine.Reload();
+    	}else if (Tools.ActiveEditor()==aeCompiler){
+	    	if (!Tools.Compiler.IfModified()) return false;
             if (ELog.DlgMsg(mtConfirmation,"Reload shaders?")==mrYes)
-                SHTools.Compiler.Reload();
+                Tools.Compiler.Reload();
         }
 		Command(COMMAND_UPDATE_CAPTION);
     	break;
 	case COMMAND_CLEAR:
 		{
 			Device.m_Camera.Reset();
-            SHTools.ResetPreviewObject();
+            Tools.ResetPreviewObject();
 			Command(COMMAND_UPDATE_CAPTION);
 		}
 		break;
@@ -57,7 +76,7 @@ bool TUI::Command( int _Command, int p1 ){
 		break;
 
 	case COMMAND_ZOOM_EXTENTS:
-		SHTools.ZoomObject();
+		Tools.ZoomObject();
     	break;
     case COMMAND_RENDER_FOCUS:
 		if (frmMain->Visible&&g_bEditorValid)
@@ -75,12 +94,36 @@ bool TUI::Command( int _Command, int p1 ){
     	TfrmShaderProperties::ShowProperties();
     	break;
     case COMMAND_SELECT_PREVIEW_OBJ:
-		SHTools.SelectPreviewObject(p1);
+		Tools.SelectPreviewObject(p1);
     	break;
     case COMMAND_APPLY_CHANGES:
-    	if (SHTools.ActiveEditor()==aeEngine)		SHTools.Engine.ApplyChanges();
-    	else if (SHTools.ActiveEditor()==aeCompiler)SHTools.Compiler.ApplyChanges();
+    	if (Tools.ActiveEditor()==aeEngine)		Tools.Engine.ApplyChanges();
+    	else if (Tools.ActiveEditor()==aeCompiler)Tools.Compiler.ApplyChanges();
     	break;
+	case COMMAND_UPDATE_GRID:
+    	DU::UpdateGrid(frmEditorPreferences->seGridNumberOfCells->Value,frmEditorPreferences->seGridSquareSize->Value);
+	    OutGridSize();
+    	break;
+    case COMMAND_GRID_NUMBER_OF_SLOTS:
+    	if (p1)	frmEditorPreferences->seGridNumberOfCells->Value += frmEditorPreferences->seGridNumberOfCells->Increment;
+        else	frmEditorPreferences->seGridNumberOfCells->Value -= frmEditorPreferences->seGridNumberOfCells->Increment;
+        Command(COMMAND_UPDATE_GRID);
+    	break;
+    case COMMAND_GRID_SLOT_SIZE:{
+    	float step = frmEditorPreferences->seGridSquareSize->Increment;
+        float& val = frmEditorPreferences->seGridSquareSize->Value;
+    	if (p1){
+	    	if (val<1) step/=10.f;
+        	frmEditorPreferences->seGridSquareSize->Value += step;
+        }else{
+	    	if (fsimilar(val,1.f)||(val<1)) step/=10.f;
+        	frmEditorPreferences->seGridSquareSize->Value -= step;
+        }
+        Command(COMMAND_UPDATE_GRID);
+    	}break;
+    case COMMAND_CHECK_MODIFIED:
+    	bRes = Tools.IsModified();
+		break;
  	default:
 		ELog.DlgMsg( mtError, "Warning: Undefined command: %04d", _Command );
         bRes = false;
@@ -93,11 +136,13 @@ bool TUI::Command( int _Command, int p1 ){
 void __fastcall TUI::ApplyShortCut(WORD Key, TShiftState Shift)
 {
     if (Shift.Contains(ssCtrl)){
-		if (Key=='S') 				UI.Command(COMMAND_SAVE);
+		if (Key=='S') 				Command(COMMAND_SAVE);
     }else{
         if (Shift.Contains(ssAlt)){
         }else{
-        	if (Key=='P')			UI.Command(COMMAND_EDITOR_PREF);
+        	if (Key=='P')			Command(COMMAND_EDITOR_PREF);
+            else if (Key==VK_OEM_4)	Command(COMMAND_GRID_SLOT_SIZE,false);
+            else if (Key==VK_OEM_6)	Command(COMMAND_GRID_SLOT_SIZE,true);
         }
     }
 }
@@ -106,9 +151,9 @@ void __fastcall TUI::ApplyShortCut(WORD Key, TShiftState Shift)
 void __fastcall TUI::ApplyGlobalShortCut(WORD Key, TShiftState Shift)
 {
     if (Shift.Contains(ssCtrl)){
-        if (Key=='S')				UI.Command(COMMAND_SAVE);
+        if (Key=='S')				Command(COMMAND_SAVE);
     }
-    if (Key==VK_OEM_3)		  		UI.Command(COMMAND_RENDER_FOCUS);
+    if (Key==VK_OEM_3)		  		Command(COMMAND_RENDER_FOCUS);
 }
 //---------------------------------------------------------------------------
 

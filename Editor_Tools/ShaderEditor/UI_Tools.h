@@ -1,6 +1,6 @@
 //---------------------------------------------------------------------------
-#ifndef ShaderToolsH
-#define ShaderToolsH
+#ifndef UIToolsH
+#define UIToolsH
 
 #include "SHEngineTools.h"
 #include "SHCompilerTools.h"
@@ -17,7 +17,6 @@ enum EActiveEditor{
 
 class CShaderTools: public pureDeviceCreate, public pureDeviceDestroy
 {
-	CLibObject*			m_LibObject;
 	CEditableObject*	m_EditObject;
 public:
     CSHEngineTools		Engine;
@@ -46,7 +45,15 @@ public:
 
     EActiveEditor		ActiveEditor		();
     void				OnChangeEditor		();
+
+    bool __fastcall 	MouseStart  		(TShiftState Shift){return false;}
+    bool __fastcall 	MouseEnd    		(TShiftState Shift){return false;}
+    void __fastcall 	MouseMove   		(TShiftState Shift){;}
+	bool __fastcall 	HiddenMode  		(){return false;}
+    bool __fastcall 	KeyDown     		(WORD Key, TShiftState Shift){return false;}
+    bool __fastcall 	KeyUp       		(WORD Key, TShiftState Shift){return false;}
+    bool __fastcall 	KeyPress    		(WORD Key, TShiftState Shift){return false;}
 };
-extern CShaderTools	SHTools;
+extern CShaderTools	Tools;
 //---------------------------------------------------------------------------
 #endif

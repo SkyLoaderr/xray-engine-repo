@@ -61,9 +61,9 @@ bool TUI::Command( int _Command, int p1, int p2 ){
 	case COMMAND_EXIT:{
 	    EEditorState est = GetEState();
     	switch(est){
-        case esEditLibrary: 	if (!TfrmEditLibrary::FinalClose()) return false; break;
-        case esEditImages:		if (!TfrmImageLib::HideImageLib()) return false; break;
-        case esEditScene:		if (!Scene.IfModified()) return false; break;
+        case esEditLibrary: 	bRes = TfrmEditLibrary::FinalClose(); break;
+        case esEditImages:		bRes = TfrmImageLib::HideImageLib(); break;
+        case esEditScene:		bRes = Scene.IfModified(); break;
         }
 		}break;
 	case COMMAND_SHOWPROPERTIES:

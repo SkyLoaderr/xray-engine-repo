@@ -63,6 +63,7 @@ __published:	// IDE-managed Components
 	TExtBtn *ebStat;
     TPanel *paUICursor;
 	TCGauge *cgProgress;
+	TPanel *paGridSquareSize;
     void __fastcall ClickOptionsMenuItem(TObject *Sender);
     void __fastcall QualityClick(TObject *Sender);
     void __fastcall fsStorageRestorePlacement(TObject *Sender);

@@ -50,7 +50,6 @@ USEUNIT("engine\xr_ini.cpp");
 USEUNIT("editor\ColorPicker.cpp");
 USEUNIT("engine\LzHuf.cpp");
 USEUNIT("editor\UI_Camera.cpp");
-USEUNIT("UI_Main.cpp");
 USEUNIT("UI_MainCommand.cpp");
 USEUNIT("engine\FS.cpp");
 USEUNIT("editor\HW.cpp");
@@ -72,7 +71,6 @@ USEUNIT("engine\xrImage_Resampler.cpp");
 USEOBJ("Intermediate\cpuid.obj");
 USEOBJ("Intermediate\_math.obj");
 USEFORM("LeftBar.cpp", fraLeftBar); /* TFrame: File Type */
-USEUNIT("ShaderTools.cpp");
 USEFORM("PropertiesShader.cpp", frmShaderProperties);
 USEFORM("LogForm.cpp", frmLog);
 USEUNIT("Editor\Library.cpp");
@@ -106,6 +104,11 @@ USEUNIT("Editor\FolderLib.cpp");
 USEUNIT("Editor\EStats.cpp");
 USEUNIT("Engine\xrLoadSurface.cpp");
 USELIB("Lib\FreeImage.lib");
+USEUNIT("Editor\UI_Main.cpp");
+USEUNIT("UI_Tools.cpp");
+USEUNIT("UI_MainExtern.cpp");
+USEUNIT("Editor\ImageThumbnail.cpp");
+USEUNIT("Editor\ImageManager.cpp");
 //---------------------------------------------------------------------------
 #include "main.h"
 #include "splash.h"
