@@ -44,7 +44,10 @@ void CAI_Zombie::vfLoadAnimations()
 	m_tZombieAnimations.tNormal.tGlobal.tWalkForwardCSIP = tpVisualObject->ID_Cycle("norm_walk_fwd_1");
 
 	m_tZombieAnimations.tNormal.tGlobal.tRunForward	 = tpVisualObject->ID_Cycle("norm_run_fwd");
-	m_tZombieAnimations.tNormal.tGlobal.tStandUp	 = tpVisualObject->ID_Cycle("norm_stand_up");
+	
+	m_tZombieAnimations.tNormal.tGlobal.tpaStandUp[0] = tpVisualObject->ID_Cycle("norm_stand_up_0");
+	m_tZombieAnimations.tNormal.tGlobal.tpaStandUp[1] = tpVisualObject->ID_Cycle("norm_stand_up_1");
+	m_tZombieAnimations.tNormal.tGlobal.tpaStandUp[2] = tpVisualObject->ID_Cycle("norm_stand_up_2");
 
 	m_tZombieAnimations.tNormal.tGlobal.tpTurnLeft	 = tpVisualObject->ID_Cycle("norm_turn_ls");
 	m_tZombieAnimations.tNormal.tGlobal.tpTurnRight  = tpVisualObject->ID_Cycle("norm_turn_rs");
@@ -87,10 +90,13 @@ void CAI_Zombie::SelectAnimation(const Fvector& _view, const Fvector& _move, flo
 		}
 		else
 			if (eCurrentState == aiZombieResurrect) {
-				if ((m_tpCurrentGlobalAnimation == m_tZombieAnimations.tNormal.tGlobal.tpaDeath[2]) && (!m_tpCurrentGlobalBlend->playing))
-					tpGlobalAnimation = m_tZombieAnimations.tNormal.tGlobal.tStandUp;
+				if (m_tpCurrentGlobalAnimation == m_tZombieAnimations.tNormal.tGlobal.tpaDeath[0])
+					tpGlobalAnimation = m_tZombieAnimations.tNormal.tGlobal.tpaStandUp[0];
 				else
-					tpGlobalAnimation = m_tZombieAnimations.tNormal.tGlobal.tpaDeath[2];
+					if (m_tpCurrentGlobalAnimation == m_tZombieAnimations.tNormal.tGlobal.tpaDeath[1])
+						tpGlobalAnimation = m_tZombieAnimations.tNormal.tGlobal.tpaStandUp[1];
+					else
+						tpGlobalAnimation = m_tZombieAnimations.tNormal.tGlobal.tpaStandUp[2];
 			}
 			else
 				if (_abs(r_torso_target.yaw - r_torso_current.yaw) <= PI)
