@@ -80,7 +80,7 @@ void CUIRadioGroup::SetCheckedPos(int new_pos)
 		for(; it != m_ChildWndList.end() ; ++it)
 			((CUIRadioButton*)(*it))->ResetCheck();
 
-		if(new_pos>=m_ChildWndList.size()) return;
+		if(new_pos>=(int)m_ChildWndList.size()) return;
 		//установить флажок, той кнопке, что вызывала сообщение
 		it = m_ChildWndList.begin();
 		std::advance(it,new_pos);
