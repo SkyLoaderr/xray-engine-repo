@@ -472,30 +472,9 @@ void CWeapon::net_Import	(NET_Packet& P)
 		else OnZoomOut();
 	};
 
-	iAmmoElapsed =			int(ammo_elapsed);
 	m_ammoType = ammoType;
+	SetAmmoElapsed(int(ammo_elapsed));
 
-	u32 uAmmo = u32(iAmmoElapsed);
-
-	if (uAmmo != m_magazine.size())
-	{
-		if (uAmmo > m_magazine.size())
-		{
-			CCartridge l_cartridge; 
-			l_cartridge.Load(*m_ammoTypes[m_ammoType]);
-			while (uAmmo > m_magazine.size())
-			{
-				m_magazine.push(l_cartridge);
-			};
-		}
-		else
-		{
-			while (uAmmo < m_magazine.size())
-			{
-				m_magazine.pop();
-			}
-		};
-	};
 	/*
 	if (iAmmoElapsed && m_magazine.empty())
 	{
@@ -1129,7 +1108,34 @@ const Fmatrix&	CWeapon::ParticlesXFORM() const
 	return m_FireParticlesXForm;
 //	return inherited::XFORM();
 }
-IRender_Sector*	CWeapon::Sector()				
+IRender_Sector*	CWeapon::Sector()
 {
 	return inherited::Sector();
+}
+
+void	CWeapon::SetAmmoElapsed	(int ammo_count)
+{
+	iAmmoElapsed = ammo_count;
+
+	u32 uAmmo = u32(iAmmoElapsed);
+
+	if (uAmmo != m_magazine.size())
+	{
+		if (uAmmo > m_magazine.size())
+		{
+			CCartridge l_cartridge; 
+			l_cartridge.Load(*m_ammoTypes[m_ammoType]);
+			while (uAmmo > m_magazine.size())
+			{
+				m_magazine.push(l_cartridge);
+			};
+		}
+		else
+		{
+			while (uAmmo < m_magazine.size())
+			{
+				m_magazine.pop();
+			}
+		};
+	};
 }

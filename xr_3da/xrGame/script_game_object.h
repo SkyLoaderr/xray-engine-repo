@@ -367,6 +367,14 @@ public:
 		return			(weapon->GetAmmoElapsed());
 	}
 
+	void SetAmmoElapsed(int ammo_elapsed)
+	{
+		CWeapon	*weapon = dynamic_cast<CWeapon*>(m_tpGameObject);
+		if (!weapon) return;
+		weapon->SetAmmoElapsed(ammo_elapsed);
+	}
+
+
 	u32 GetAmmoCurrent() const
 	{
 		const CWeapon	*weapon = dynamic_cast<const CWeapon*>(m_tpGameObject);

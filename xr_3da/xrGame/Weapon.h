@@ -358,6 +358,8 @@ public:
 	IC int					GetAmmoMagSize		()	const		{	return iMagazineSize;						}
 	int						GetAmmoCurrent		()  const;
 
+	void					SetAmmoElapsed		(int ammo_count);
+
 	virtual void			OnMagazineEmpty		();
 			void			SpawnAmmo			(u32 boxCurr = 0xffffffff, 
 													LPCSTR ammoSect = NULL, 

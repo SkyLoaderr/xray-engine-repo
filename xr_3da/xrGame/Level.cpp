@@ -32,6 +32,7 @@
 #include "script_engine.h"
 #include "team_base_zone.h"
 #include "xrServer_Objects_ALife.h"
+#include "xrServer_Objects_ALife_Items.h"
 #include "game_level_cross_table.h"
 
 #include "infoportion.h"
@@ -498,6 +499,15 @@ CSE_Abstract *CLevel::spawn_item		(LPCSTR section, const Fvector &position, u32 
 		if (ai().get_cross_table())
 			dynamic_object->m_tGraphID	= ai().cross_table().vertex(level_vertex_id).game_vertex_id();
 	}
+
+	//оружие спавним с полным магазинои
+	if (dynamic_object)
+	{
+		CSE_ALifeItemWeapon* weapon = dynamic_cast<CSE_ALifeItemWeapon*>(dynamic_object);
+		if(weapon)
+			weapon->a_elapsed = weapon->get_ammo_magsize();
+	}
+	
 	
 	// Fill
 	strcpy					(abstract->s_name,section);

@@ -321,7 +321,9 @@ void CSE_ALifeItemTorch::FillProps			(LPCSTR pref, PropItemVec& values)
 ////////////////////////////////////////////////////////////////////////////
 CSE_ALifeItemWeapon::CSE_ALifeItemWeapon	(LPCSTR caSection) : CSE_ALifeItem(caSection)
 {
-	a_elapsed					= 90;
+	a_current					= 90;
+	a_elapsed					= 0;
+
 	state						= 0;
 	ammo_type					= 0;
 
@@ -333,8 +335,6 @@ CSE_ALifeItemWeapon::CSE_ALifeItemWeapon	(LPCSTR caSection) : CSE_ALifeItem(caSe
         set_visual				(pSettings->r_string(caSection,"visual"));
 
 	m_addon_flags.zero			();
-
-	a_current					= get_ammo_magsize();
 }
 
 CSE_ALifeItemWeapon::~CSE_ALifeItemWeapon	()
