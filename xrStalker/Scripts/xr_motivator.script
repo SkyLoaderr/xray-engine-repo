@@ -251,6 +251,7 @@ function motivator_binder:reload (section)
 		xr_bodyguard.add_to_binder	(self.object, nil)
 		xr_sniper.add_to_binder		(self.object, nil)
 		xr_kamp.add_to_binder		(self.object, nil)
+		xr_robbers.add_to_binder		(self.object, nil)
 		xr_formation.add_to_binder	(self.object)
 	else
 		xr_sniper.add_to_binder			(self.object, char_ini)
