@@ -91,6 +91,7 @@ struct remove_dead_objects_pred {
 			if (pE && pE->g_Alive()) return false;
 			else return true;
 		}
+		return false;
 	}
 };
 
