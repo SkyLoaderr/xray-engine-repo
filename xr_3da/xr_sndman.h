@@ -10,7 +10,7 @@ class ENGINE_API CSoundManager : public pureFrame
 	friend class			C3DSound;
 	friend class			C2DSoundRender;
 	friend class			C2DSound;
-	
+private:	
 	BOOL					bPresent;
 	
 	// saves
@@ -66,6 +66,7 @@ public:
 	void					Play3DAtPos				( sound3D& S, const Fvector &pos, BOOL bLoop=false, int iLoopCnt=0);
 	void					Play3DAtPos_Unlimited	( sound3D& S, const Fvector &pos, BOOL bLoop=false, int iLoopCnt=0);
 	void					Delete3D				( sound3D& S);
+	void					SetGeometry				( RAPID::Model* M );
 	
 	// Stream interface
 	CSoundStream*			CreateStream			( CInifile* ini, LPCSTR section );

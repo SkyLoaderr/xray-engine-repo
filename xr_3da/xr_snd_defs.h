@@ -11,7 +11,9 @@ class	ENGINE_API	C2DSoundRender;
 class	ENGINE_API	CMusicStream;
 class	ENGINE_API	CInifile;
 struct	ENGINE_API	xr_token;
+namespace RAPID		{ class ENGINE_API Model; };
 
+// t-defs
 struct	sound3D
 {
 	int			handle;
