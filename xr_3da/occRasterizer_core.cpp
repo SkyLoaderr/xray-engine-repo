@@ -61,7 +61,7 @@ void Vclamp(int& v, int a, int b)
 /* Rasterize a scan line between given X point values, corresponding Z values
 and current color
 */
-void i_scan	(occRasterizer* OCC, occTri* T, int curY, float startT, float endT, float startX, float endX, float startZ, float endZ)
+void i_scan	(occRasterizer* OCC, occTri* T, int curY, float startT, float endT, float startX, float endX, float startR, float endR, float startZ, float endZ)
 {
 	occTri**	pFrame	= OCC->get_frame();
 	float*		pDepth	= OCC->get_depth();
@@ -76,21 +76,24 @@ void i_scan	(occRasterizer* OCC, occTri* T, int curY, float startT, float endT, 
 	if (minT >= maxT)		return;
 
 	// interpolate
-	float len	= endT - startT;
-	float Z		= startZ + (minT - startT)/len * (endZ - startZ);	// interpolate Z to this start of boundary
-	float dZ	= (endZ-startZ)/len;								// incerement in Z / pixel wrt dX
+	float lenR	= endR - startR;
+	float Zlen	= endZ - startZ;
+	float Zstart= startZ + (minT - startR)/lenR * Zlen;		// interpolate Z to the start
+	float Zend	= startZ + (maxT - startR)/lenR * Zlen;		// interpolate Z to the end
+	float dZ	= (Zend-Zstart)/(maxT-minT);				// incerement in Z / pixel wrt dX
 	int X		= minT;
+	float Z		= Zstart;
 	int	i		= curY*occ_dim0+X;
 	
 	// left connector
 	for (; X<minX; X++, i++, Z+=dZ)
 	{
-//		if (Z < pDepth[i]) 
-//		{	
-//			// update Z buffer + Frame buffer
-//			pFrame[i]	= T;
-//			pDepth[i]	= Z;
-//		}
+		if (Z < pDepth[i]) 
+		{	
+			// update Z buffer + Frame buffer
+			pFrame[i]	= T;
+			pDepth[i]	= Z;
+		}
 	}
 
 	// compute the scanline
@@ -107,12 +110,12 @@ void i_scan	(occRasterizer* OCC, occTri* T, int curY, float startT, float endT, 
 	// right connector
 	for (; X<maxT; X++, i++, Z+=dZ)
 	{
-//		if (Z < pDepth[i]) 
-//		{	
-//			// update Z buffer + Frame buffer
-//			pFrame[i]	= T;
-//			pDepth[i]	= Z;
-//		}
+		if (Z < pDepth[i]) 
+		{	
+			// update Z buffer + Frame buffer
+			pFrame[i]	= T;
+			pDepth[i]	= Z;
+		}
 	}
 }
 
@@ -213,7 +216,7 @@ __forceinline void i_section	(occRasterizer* OCC, float *A, float *B, float *C, 
 		float	maxT	= maxp(rightX-rhx,rightX+rhx);
 		float	minX	= maxp(leftX-lhx,leftX+lhx);
 		float	maxX	= minp(rightX-rhx,rightX+rhx);
-		i_scan	(OCC, T, int(startY), minT,maxT,minX,maxX, leftZ, rightZ);
+		i_scan	(OCC, T, int(startY), minT,maxT,minX,maxX, leftX-lhx, rightX-rhx, leftZ, rightZ);
 		leftX	+= left_dX; rightX += right_dX;
 		leftZ	+= left_dZ; rightZ += right_dZ;
 	}

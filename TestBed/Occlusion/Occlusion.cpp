@@ -99,7 +99,7 @@ int __cdecl main	(int argc, char* argv[])
 		T1.adjacent[2]	= 0;
 		T1.raster[0].x	= p_c + p_r*cosf(a0);
 		T1.raster[0].y	= p_c + p_r*sinf(a0);
-		T1.raster[0].z	= 0.01f;
+		T1.raster[0].z	= 0.1f;
 		
 		T1.raster[1].x	= p_c + p_r*cosf(a1);
 		T1.raster[1].y	= p_c + p_r*sinf(a1);
@@ -107,7 +107,7 @@ int __cdecl main	(int argc, char* argv[])
 		
 		T1.raster[2].x	= p_c + p_r*cosf(a2);
 		T1.raster[2].y	= p_c + p_r*sinf(a2);
-		T1.raster[2].z	= 0.99f;
+		T1.raster[2].z	= 0.9f;
 
 		T2 = T1;
 		T2.adjacent[0]	= &T1;
@@ -117,10 +117,9 @@ int __cdecl main	(int argc, char* argv[])
 		T2.raster[2].y	= p_c + p_r2*sinf(a3);
 		T2.raster[2].z	= 0.99f;
 		
-		
 		// draw tri
 		occ.clear		();
-		occ.rasterize	(&T1);
+//		occ.rasterize	(&T1);
 		occ.rasterize	(&T2);
 		occ.propagade	();
 		
@@ -143,7 +142,7 @@ int __cdecl main	(int argc, char* argv[])
 					}
 			}
 		}
-		edges(T1);
+//		edges(T1);
 		edges(T2);
 		
 		// save
