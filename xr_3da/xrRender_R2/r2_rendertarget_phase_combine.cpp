@@ -63,7 +63,7 @@ void	CRenderTarget::phase_combine	()
 			// Draw COLOR
 			float dr					= ps_r2_ls_dynamic_range;
 			RCache.set_Element			(s_combine->E[1]);
-			RCache.set_c				("light_dynamic_range",	dr,dr,dr,dr);
+			RCache.set_c				("L_hdr",	dr,dr,dr,dr);
 			RCache.set_Geometry			(g_combine);
 			RCache.Render				(D3DPT_TRIANGLELIST,Offset,0,4,0,2);
 		}
@@ -123,7 +123,7 @@ void	CRenderTarget::phase_combine	()
 			// Draw COLOR
 			float dr					= ps_r2_ls_dynamic_range;
 			RCache.set_Element			(s_combine->E[1]);
-			RCache.set_c				("light_dynamic_range",	dr,dr,dr,dr);
+			RCache.set_c				("L_hdr",	dr,dr,dr,dr);
 			RCache.set_Geometry			(g_combine);
 			RCache.Render				(D3DPT_TRIANGLELIST,Offset,0,4,0,2);
 		}

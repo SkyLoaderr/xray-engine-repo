@@ -109,8 +109,7 @@ void CRenderTarget::phase_bloom	()
 		float ldr					= .25f*ps_r2_ls_dynamic_range;	ldr *= lscale;
 		float lh					= .25f*.5f;						lh	*= lscale;
 		RCache.set_Element			(s_bloom->E[0]);
-		RCache.set_c				("light_dynamic_range",	ldr,ldr,ldr,ldr);
-		RCache.set_c				("light_hemi",			lh,lh,lh,0.f);
+		RCache.set_c				("L_hdr",				ldr,ldr,ldr,ldr);
 		RCache.set_Geometry			(g_bloom_build);
 		RCache.Render				(D3DPT_TRIANGLELIST,Offset,0,4,0,2);
 	}

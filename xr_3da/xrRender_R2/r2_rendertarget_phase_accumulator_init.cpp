@@ -109,7 +109,7 @@ void CRenderTarget::phase_accumulator_init()
 		Device.mView.transform_dir	(L_dir,RImplementation.Lights.sun->direction);
 		L_dir.invert				();
 		L_dir.set_length			(L_brightness);
-		RCache.set_c				("light_direction",	L_dir.x,L_dir.y,L_dir.z,0.f);
+		// RCache.set_c				("light_direction",	L_dir.x,L_dir.y,L_dir.z,0.f);
 
 		// Render
 		CHK_DX						(HW.pDevice->SetRenderState	( D3DRS_COLORWRITEENABLE,	0		));

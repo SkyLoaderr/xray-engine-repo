@@ -62,7 +62,7 @@ void CRenderTarget::shadow_direct	(u32 dls_phase)
 
 		// 1
 		RCache.set_Element			(s_accum_direct->E[dls_phase]);
-		R_constant* _C				= RCache.get_c			("jitter");
+		R_constant* _C				= RCache.get_c			("J_direct");
 		if (C)
 		{
 			J.set(11, 0,  0);		J.sub(11); J.mul(scale);	RCache.set_ca	(_C,0,J.x,J.y,-J.y,-J.x);
@@ -106,8 +106,7 @@ void CRenderTarget::accum_direct()
 	L_spec						= L_clr.magnitude()/_sqrt(3.f);
 	Device.mView.transform_dir	(L_dir,RImplementation.Lights.sun->direction);
 	L_dir.normalize				();
-	RCache.set_c				("light_direction",	L_dir.x,L_dir.y,L_dir.z,0.f);
-	RCache.set_c				("light_color",		L_clr.x,L_clr.y,L_clr.z,L_spec);
+	RCache.set_c				("Ldynamic_color",	L_clr.x,L_clr.y,L_clr.z,L_spec);
 
 	// Render if stencil >= 0x2
 	RCache.set_Stencil			(TRUE,D3DCMP_LESSEQUAL,0x02,0xff,0x00);
