@@ -88,7 +88,7 @@ public:
 	void	BuildPortals			(IWriter &fs);
 	void	BuildRapid				(BOOL bSave);
 		
-	void	IsolateVertices			();
+	void	IsolateVertices			(BOOL bProgress);
 	void	xrPhase_ResolveMaterials();
 	void	xrPhase_UVmap			();
 	void	xrPhase_Subdivide		();

@@ -57,6 +57,7 @@ void	CBuild::xrPhase_UVmap()
 	for (int SP = 0; SP<int(g_XSplit.size()); SP++) 
 	{
 		Progress			(p_total+=p_cost);
+		IsolateVertices		();
 		
 		// Detect vertex-lighting and avoid this subdivision
 		R_ASSERT	(!g_XSplit[SP]->empty());
@@ -67,8 +68,6 @@ void	CBuild::xrPhase_UVmap()
 		
 		//   find first poly that doesn't has mapping and start recursion
 		while (TRUE) {
-			IsolateVertices	();
-
 			// Select maximal sized poly
 			Face *	msF		= NULL;
 			float	msA		= 0;
