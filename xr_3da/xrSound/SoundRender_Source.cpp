@@ -28,14 +28,13 @@ void CSoundRender_Source::decompress		(u32 line)
 	u32		left		= _min	(left_file,line_size);
 
 	int					dummy;
-	ov_pcm_seek			(&source->ovf,seek_offs);
+	ov_pcm_seek			(&ovf,seek_offs);
 	while (left)
 	{
-		int ret		= ov_read	(&source->ovf,dest,left,0,2,1,&dummy);
+		int ret		= ov_read	(&ovf,dest,left,0,2,1,&dummy);
 		if (ret==0)	break;
 		if (ret<0)	continue;
 		left		-= ret;
 		dest		+= ret;
-		}
 	}
 }

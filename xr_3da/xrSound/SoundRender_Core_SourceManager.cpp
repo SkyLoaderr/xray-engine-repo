@@ -16,7 +16,7 @@ CSoundRender_Source*	CSoundRender_Core::i_create_source		(LPCSTR name, BOOL _3D	
 
 	// Load a new one
 	CSoundRender_Source* S	= xr_new<CSoundRender_Source>	();
-	S->Load					(id,_3D);
+	S->load					(id,_3D);
 	s_sources.push_back		(S);
 	return S;
 }
