@@ -45,7 +45,7 @@
       Intermediate\FHierrarhyVisual.obj Intermediate\FProgressiveFixedVisual.obj 
       Intermediate\FVisual.obj Intermediate\SkeletonAnimated.obj 
       Intermediate\SkeletonCustom.obj Intermediate\SkeletonRigid.obj 
-      Intermediate\SkeletonX.obj Intermediate\xrSkin1W.obj 
+      Intermediate\skeletonX.obj Intermediate\xrSkin1W.obj 
       Intermediate\UI_MainMail.obj Intermediate\BoneEditor.obj 
       Intermediate\c_dinput.obj Intermediate\ColorPicker.obj 
       Intermediate\CustomObject.obj Intermediate\CustomObjectAnimation.obj 
@@ -208,7 +208,7 @@
       <FILE FILENAME="Engine\Visuals\SkeletonAnimated.cpp" FORMNAME="" UNITNAME="SkeletonAnimated.cpp" CONTAINERID="CCompiler" DESIGNCLASS="" LOCALCOMMAND=""/>
       <FILE FILENAME="Engine\Visuals\SkeletonCustom.cpp" FORMNAME="" UNITNAME="SkeletonCustom.cpp" CONTAINERID="CCompiler" DESIGNCLASS="" LOCALCOMMAND=""/>
       <FILE FILENAME="Engine\Visuals\SkeletonRigid.cpp" FORMNAME="" UNITNAME="SkeletonRigid.cpp" CONTAINERID="CCompiler" DESIGNCLASS="" LOCALCOMMAND=""/>
-      <FILE FILENAME="Engine\Visuals\SkeletonX.cpp" FORMNAME="" UNITNAME="SkeletonX.cpp" CONTAINERID="CCompiler" DESIGNCLASS="" LOCALCOMMAND=""/>
+      <FILE FILENAME="Engine\Visuals\skeletonX.cpp" FORMNAME="" UNITNAME="SkeletonX.cpp" CONTAINERID="CCompiler" DESIGNCLASS="" LOCALCOMMAND=""/>
       <FILE FILENAME="Engine\Visuals\xrSkin1W.cpp" FORMNAME="" UNITNAME="xrSkin1W.cpp" CONTAINERID="CCompiler" DESIGNCLASS="" LOCALCOMMAND=""/>
       <FILE FILENAME="Editor\UI_MainMail.cpp" FORMNAME="" UNITNAME="UI_MainMail.cpp" CONTAINERID="CCompiler" DESIGNCLASS="" LOCALCOMMAND=""/>
       <FILE FILENAME="Editor\BoneEditor.cpp" FORMNAME="" UNITNAME="BoneEditor.cpp" CONTAINERID="CCompiler" DESIGNCLASS="" LOCALCOMMAND=""/>
