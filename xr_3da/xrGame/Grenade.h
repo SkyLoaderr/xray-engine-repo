@@ -55,6 +55,8 @@ public:
 
 	virtual bool			NeedToDestroyObject	() const; 
 	virtual ALife::_TIME_ID	TimePassedAfterIndependant() const;
+
+	virtual void PutNextToSlot	();
 protected:
 	//время удаления оружия
 	ALife::_TIME_ID			m_dwGrenadeRemoveTime;

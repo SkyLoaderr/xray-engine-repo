@@ -50,6 +50,11 @@ void CGrenade::net_Destroy()
 
 void CGrenade::OnH_B_Independent() 
 {
+	if(MS_READY == STATE || 
+		MS_THROW == STATE ||
+		MS_END == STATE)
+		PutNextToSlot();
+
 	m_pHUD->StopCurrentAnimWithoutCallback();
 	inherited::OnH_B_Independent();
 }
@@ -135,6 +140,29 @@ void CGrenade::OnEvent(NET_Packet& P, u16 type)
 	CExplosive::OnEvent(P,type);
 }
 
+void CGrenade::PutNextToSlot	()
+{
+	//выкинуть гранату из инвентаря
+	if (m_pInventory)
+	{
+		m_pInventory->Ruck(this);
+		m_pInventory->SetActiveSlot(NO_ACTIVE_SLOT);
+	}
+
+	if(dynamic_cast<CActor*>(H_Parent()) && m_pInventory)
+	{
+		//найти такую же гранату и положить в рюкзак
+		CGrenade *pNext = dynamic_cast<CGrenade*>(m_pInventory->Same(this,false));
+		//или найти любую другую гранату на поясе
+		if(!pNext) pNext = dynamic_cast<CGrenade*>(m_pInventory->SameSlot(m_slot,false));
+
+		VERIFY(pNext != this);
+
+		if(pNext)
+			m_pInventory->Slot(pNext);
+	}
+}
+
 void CGrenade::OnAnimationEnd() 
 {
 	switch(inherited::State()) 
@@ -156,25 +184,7 @@ void CGrenade::OnAnimationEnd()
 				u_EventSend			(P);
 			};
 
-			//выкинуть гранату из инвентаря
-			if (m_pInventory)
-			{
-				m_pInventory->Ruck(this);
-				m_pInventory->SetActiveSlot(NO_ACTIVE_SLOT);
-			}
-		
-			if(dynamic_cast<CActor*>(H_Parent()) && m_pInventory)
-			{
-				//найти такую же гранату и положить в рюкзак
-				CGrenade *pNext = dynamic_cast<CGrenade*>(m_pInventory->Same(this,false));
-				//или найти любую другую гранату на поясе
-				if(!pNext) pNext = dynamic_cast<CGrenade*>(m_pInventory->SameSlot(m_slot,false));
-
-				R_ASSERT(pNext != this);
-
-				if(pNext) 
-					m_pInventory->Slot(pNext);
-			}
+			PutNextToSlot();
 		}
 		break;
 		default : inherited::OnAnimationEnd();
