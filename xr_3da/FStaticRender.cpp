@@ -416,7 +416,7 @@ void	CRender::Render		()
 		flush_Patches	();
 	}
 
-	Environment.RenderLast	();
+	pCreator->Environment.RenderLast		();
 	
 	// Postprocess
 	Target.End				();

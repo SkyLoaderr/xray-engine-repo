@@ -210,6 +210,7 @@ void CWeaponMagazined::Update			(float dt, BOOL bHUDView)
 		st_current = st_target;
 	}
 
+	/*
 	LPCSTR st_name = 0;
 	switch(st_current)
 	{
@@ -221,6 +222,7 @@ void CWeaponMagazined::Update			(float dt, BOOL bHUDView)
 	case eHiding:		st_name = "hiding";	break;
 	}
 	if (!bHUDView)		pApp->pFont->Out(0,0,"state: %s",st_name);
+	*/
 	
 	// cycle update
 	switch (st_current)
