@@ -76,7 +76,7 @@ void SPHNetState::net_Save(NET_Packet &P,const Fvector& min,const Fvector& max)
 	//P.w_vec3(force);
 	//P.w_vec3(torque);
 	//P.w_vec3(position);
-	w_vec_q8(P,position,min,max);
+	w_vec_q16(P,position,min,max);
 	w_qt_q8(P,quaternion);
 	//P.w_vec4(*((Fvector4*)&quaternion));
 	//P.w_vec4(*((Fvector4*)&previous_quaternion));
