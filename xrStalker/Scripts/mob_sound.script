@@ -16,6 +16,11 @@ local snd = {
 		[[characters_voice\human_01\scenario\trader\trader1b]]
 	},
 
+	trader_monolog1 = {
+		[[characters_voice\human_01\scenario\trader\trader_monolog1]]
+	},
+
+
 	hello = {
 			[[characters_voice\human_01\scenario\trader\trader_script1a_1]],
 			[[characters_voice\human_01\scenario\trader\trader_script1a_2]],
@@ -46,11 +51,6 @@ local snd = {
 			[[characters_voice\human_01\scenario\trader\trader_script1c_8]],
 			[[characters_voice\human_01\scenario\trader\trader_script1c_9]]
 	},
-
-	monolog1 = {
-			[[characters_voice\human_01\scenario\trader\trader_monolog1]]
-	},
-
 	monolog2 = {
 			[[characters_voice\human_01\scenario\trader\trader_monolog2]]
 	},

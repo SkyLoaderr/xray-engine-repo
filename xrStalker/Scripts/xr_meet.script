@@ -462,8 +462,9 @@ function override_meet(npc, flag)
 	xr_motivator.storage[npc:id()].meet.over = flag
 end
 
-
+-- ВНИМАНИЕ: Эта функция вызывается и для сталкеров, и для монстров!
 function dialog_manager_reset(npc)
+	printf("_bp: dialog_manager_reset: npc:name='%s'", npc:name())
 	--' Смена стартового диалога
 	local overrides = xr_logic.generic_scheme_overrides(npc)
 	if overrides ~= nil and
@@ -474,3 +475,4 @@ function dialog_manager_reset(npc)
 		npc:restore_default_start_dialog()	
 	end	
 end
+

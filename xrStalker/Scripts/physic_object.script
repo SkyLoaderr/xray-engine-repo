@@ -28,7 +28,7 @@ function init(obj)
 	-- Новые схемы
 	----------------------------------------------------------------------------------------
 
-	xr_logic.enable_scripts(obj, ini, xr_logic.stype_item)
+	xr_logic.enable_scripts(obj, ini, modules.stype_item)
 end
 
 class "door_binder" (object_binder)

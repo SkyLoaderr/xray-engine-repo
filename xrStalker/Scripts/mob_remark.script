@@ -14,30 +14,22 @@ end
 
 function mob_remark:reset_scheme()
 	printf("_bp: mob_remark:reset_scheme: %s", self.object:name())
-	printf("_bp1")
-	if not self.st.enable_dialog then
-		printf("_bp2")
+	if not self.st.dialog_enabled then
 		self.object:disable_talk()
 	else
-		printf("_bp3")
 		self.object:enable_talk()
 	end
-	printf("_bp4")
 
 	if not self.st.no_reset then
-		printf("_bp5: self.object:name()='%s', script_name='%s'", self.object:name(), script_name())
+		printf("_bp: mob_remark:reset_scheme: %s: reset_action()", self.object:name())
 		reset_action(self.object, script_name())
-		printf("_bp6")
 	else
-		printf("_bp7")
 		if not self.object:get_script() then
 			printf("_bp8")
 			self.object:script(true, script_name())
 		end
-		printf("_bp9")
 	end
 
-	printf("_bp10")
 	local anims = parse_names(self.st.anim)
 	
 	local snds
@@ -96,9 +88,16 @@ function mob_remark:reset_scheme()
 		end
 	end
 
+	if self.st.tip then
+		local actor = level.actor()
+		if actor then
+			actor:give_game_news(self.st.tip, "ui_icons_npc", 50, 0, 50, 50)
+		end
+	end
+	
 	self.st.signals = {}
 	self.action_end_signalled = false
-	printf("_bp: mob_remark:reset_scheme end")
+	--printf("_bp: mob_remark:reset_scheme end")
 end
 
 function mob_remark:update(delta)
@@ -106,7 +105,7 @@ function mob_remark:update(delta)
 		return
 	end
 
-	printf("_bp: mob_remark:update [%s]", self.object:name())
+	--printf("_bp: mob_remark:update [%s]", self.object:name())
 	
 	if self.object:get_script() and not self.object:action() then
 		self.object:script(false, script_name())
@@ -136,11 +135,11 @@ function set_scheme(npc, ini, scheme, section, gulag_name)
 
 	st.logic     = xr_logic.cfg_get_switch_conditions(ini, section, npc)
 
-	st.enable_dialog = utils.cfg_get_bool(ini, section, "enable_dialog", npc, false)
-	st.no_reset      = utils.cfg_get_bool(ini, section, "no_reset", npc, false)
-	st.anim          = utils.cfg_get_string(ini, section, "anim", npc, false, "")
-	st.anim_head     = utils.cfg_get_string(ini, section, "anim_head", npc, false, "")
-	st.tip           = utils.cfg_get_string(ini, section, "tip", npc, false, "")
-	st.snd           = utils.cfg_get_string(ini, section, "snd", npc, false, "")
-	st.time          = utils.cfg_get_string(ini, section, "time", npc, false, "")
+	st.dialog_enabled = utils.cfg_get_bool(ini, section, "dialog_enabled", npc, false)
+	st.no_reset       = utils.cfg_get_bool(ini, section, "no_reset", npc, false)
+	st.anim           = utils.cfg_get_string(ini, section, "anim", npc, false, "")
+	st.anim_head      = utils.cfg_get_string(ini, section, "anim_head", npc, false, "")
+	st.tip            = utils.cfg_get_string(ini, section, "tip", npc, false, "")
+	st.snd            = utils.cfg_get_string(ini, section, "snd", npc, false, "")
+	st.time           = utils.cfg_get_string(ini, section, "time", npc, false, "")
 end

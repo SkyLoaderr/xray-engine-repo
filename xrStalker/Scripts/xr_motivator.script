@@ -102,7 +102,7 @@ function motivator_binder:reinit()
 ----------------------------------------------------------------------------------------------------------------------
 -- Скрипты, управляемые xr_logic
 ----------------------------------------------------------------------------------------------------------------------
-	xr_logic.enable_scripts(self.object, char_ini, xr_logic.stype_stalker)
+	xr_logic.enable_scripts(self.object, char_ini, modules.stype_stalker)
 end
 ----------------------------------------------------------------------------------------------------------------------
 function motivator_binder:net_spawn(sobject)

@@ -21,7 +21,7 @@ function gulag_activate(npc, ini, section, gulag_name)
 	activate_by_section(npc, ini, section)
 end
 
-function enable_scripts(npc, ini)
+function enable_scripts(npc, ini, stype)
 	printf("DEBUG: stalker_enable_scripts")
 	printf("_bp: obj:name()=%s, obj:id()=%s", npc:name(), npc:id())
 
@@ -29,6 +29,7 @@ function enable_scripts(npc, ini)
 
 	xr_motivator.storage[npc_id]["active_section"] = nil
 	xr_motivator.storage[npc_id]["gulag_name"] = ""
+	xr_motivator.storage[npc_id]["stype"] = stype
 
 	if ini:section_exist("logic") then
 		local cfg_filename = utils.cfg_get_string(ini, "logic", "cfg", npc, false, "")
@@ -36,15 +37,16 @@ function enable_scripts(npc, ini)
 		if cfg_filename then
 			printf("enable_scripts: object '%s' has external configuration file '%s'", npc:name(), cfg_filename)
 			actual_ini = ini_file(cfg_filename)
+			if actual_ini:line_count("logic") == 0 then
+				utils.abort("file '%s' does not exist or is empty, or has no section 'logic'", cfg_filename)
+			end
 		else
 			actual_ini = ini
-		end
-		if actual_ini:line_count("logic") == 0 then
-			utils.abort("file '%s' does not exist or is empty, or has no section 'logic'", cfg_filename)
 		end
 		local active_section = utils.cfg_get_string(actual_ini, "logic", "active", npc, true, "")
 		if active_section == "nil" then
 			printf("WARNING: object '%s': active section is 'nil'", npc:name())
+			activate_by_section(npc, actual_ini, active_section)
 		else
 			xr_motivator.storage[npc_id]["stype"] = stypes[utils.get_scheme_by_section(active_section)]
 			activate_by_section(npc, actual_ini, active_section)
@@ -71,6 +73,7 @@ function activate_by_section(npc, ini, section)
 	if section == "nil" then
 		xr_motivator.storage[npc_id].overrides = nil
 		reset_generic_schemes_on_scheme_switch(npc)
+		xr_motivator.storage[npc_id]["active_section"] = nil
 		return
 	end
 
@@ -107,9 +110,20 @@ function activate_by_section(npc, ini, section)
 end
 
 function reset_generic_schemes_on_scheme_switch(npc)
+	printf("_bp: reset_generic_schemes_on_scheme_switch: npc:name()='%s'", npc:name())
 	local st = xr_motivator.storage[npc:id()]
 
-	if st.stype == stype_stalker then
+	if not st.stype then
+		return
+	end
+
+	if st.stype == modules.stype_stalker then
+		xr_meet.dialog_manager_reset(npc)
+	end
+
+	if st.stype == modules.stype_mobile then
+		printf("_bp: disabling talk")
+		npc:disable_talk()
 		xr_meet.dialog_manager_reset(npc)
 	end
 end
@@ -162,11 +176,7 @@ function reset_actions_event(st)
 end
 
 function non_goap_update_actions_event(st)
-	if st.active_section ~= nil then
-		printf("DEBUG: non_goap_update_actions_event [%s]", st.active_section)
-	else
-		printf("DEBUG: non_goap_update_actions_event [nil]")
-	end
+	--printf("DEBUG: non_goap_update_actions_event [%s]", utils.to_str(st.active_section))
 	
 	if not st.actions then
 		printf("WARNING: reset_actions: scheme '%s', section '%s': at least one action in a scheme must be " ..
@@ -193,7 +203,7 @@ function pick_section_from_condlist(actor, npc, condlist)
 					break
 				end
 			elseif infop.func then
-				printf("_bp: infop.func = %s", infop.func)
+				--printf("_bp: infop.func = %s", infop.func)
 				if not xr_conditions[infop.func] then
 					utils.abort("object '%s': pick_section_from_condlist: function '%s' is " ..
 						"not defined in xr_conditions.script", npc:name(), infop.func)
