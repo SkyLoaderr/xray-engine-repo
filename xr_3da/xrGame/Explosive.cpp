@@ -11,30 +11,6 @@
 #include "PSObject.h"
 #include "ParticlesObject.h"
 
-#define INVSQRT2 .70710678118654752440084436210485f
-static void GetBasis(const Fvector &n, Fvector &u, Fvector &v) 
-{
-	if(_abs(n.z) > INVSQRT2) 
-	{
-		FLOAT a = n.y * n.y + n.z * n.z;
-		FLOAT k = 1.f / _sqrt(a);
-		u.x = 0;
-		u.y = -n.z * k;
-		u.z = n.y * k;
-		v.x = a * k;
-		v.y = -n.x * u.z;
-		v.z = n.x * u.y;
-	} else {
-		FLOAT a = n.x * n.x + n.y * n.y;
-		FLOAT k = 1.f / _sqrt(a);
-		u.x = -n.y * k;
-		u.y = n.x * k;
-		u.z = 0;
-		v.x = -n.z * u.y;
-		v.y = n.z * u.x;
-		v.z = a * k;
-	}
-}
 
 CExplosive::CExplosive(void) 
 {
@@ -44,11 +20,11 @@ CExplosive::CExplosive(void)
 	m_fragsR = 30.f;
 	m_fragHit = 50;
 
+	m_fUpThrowFactor = 0.f;
+
 	m_eSoundExplode = ESoundTypes(SOUND_TYPE_WEAPON_SHOOTING);
 	m_eSoundRicochet = ESoundTypes(0);
 	m_eSoundCheckout = ESoundTypes(SOUND_TYPE_WEAPON_RECHARGING);
-
-//	m_expoldeTime = 0xffffffff;
 
 	m_pLight = ::Render->light_create();
 	m_pLight->set_shadow(true);
@@ -72,18 +48,19 @@ CExplosive::~CExplosive(void)
 
 void CExplosive::Load(LPCSTR section) 
 {
-	inherited::Load(section);
 	m_blast = pSettings->r_float(section,"blast");
 	m_blastR = pSettings->r_float(section,"blast_r");
 	m_frags = pSettings->r_s32(section,"frags");
 	m_fragsR = pSettings->r_float(section,"frags_r");
 	m_fragHit = pSettings->r_float(section,"frag_hit");
 
+	m_fUpThrowFactor = pSettings->r_float(section,"up_throw_factor");
+
 	LPCSTR	name = pSettings->r_string(section,"wm_name");
 	pstrWallmark = name;
 	fWallmarkSize = pSettings->r_float(section,"wm_size");
 
-	string256	m_effectsSTR;
+	string256 m_effectsSTR;
 	strcpy(m_effectsSTR, pSettings->r_string(section,"effects"));
 	char* l_effectsSTR = m_effectsSTR; R_ASSERT(l_effectsSTR);
 	m_effects.clear(); m_effects.push_back(l_effectsSTR);
@@ -132,13 +109,66 @@ void CExplosive::Explode()
 #pragma todo("Yura to Yura: adjust explosion effect to objects")
 
 	setVisible(false);
+
+	//играем звук
 	Sound->play_at_pos(sndExplode, 0, Position(), false);
+	
+	//показываем эффекты
+	CParticlesObject* pStaticPG; s32 l_c = (s32)m_effects.size();
+
+	for(s32 i = 0; i < l_c; ++i) 
+	{
+		pStaticPG = xr_new<CParticlesObject>(*m_effects[i],Sector()); pStaticPG->play_at_pos(Position());
+	}
+	m_pLight->set_position(Position()); 
+	m_pLight->set_active(true);
+
+	//trace frags
 	Fvector l_dir; f32 l_dst;
+	Collide::rq_result RQ;
+	setEnabled(false);
+	
+	//осколки
+	for(s32 i = 0; i < m_frags; ++i) 
+	{
+		l_dir.set(::Random.randF(-.5f,.5f), 
+				  ::Random.randF(-.5f,.5f), 
+				  ::Random.randF(-.5f,.5f)); 
+		l_dir.normalize();
+
+		if(Level().ObjectSpace.RayPick(Position(), l_dir, m_fragsR, Collide::rqtBoth, RQ)) 
+		{
+			Fvector l_end, l_bs_pos; 
+			l_end.mad(Position(),l_dir,RQ.range); 
+			l_bs_pos.set(0, 0, 0);
+			
+			if(RQ.O && Local()) 
+			{
+				f32 l_hit = m_fragHit * (1.f - (RQ.range/m_fragsR)*(RQ.range/m_fragsR));
+				CEntity* E = dynamic_cast<CEntity*>(RQ.O);
+				if(E) l_hit *= E->HitScale(RQ.element);
+				NET_Packet		P;
+				u_EventGen		(P,GE_HIT,RQ.O->ID());
+				P.w_u16			(u16(ID()));
+				P.w_dir			(l_dir);
+				P.w_float		(l_hit);
+				P.w_s16			((s16)RQ.element);
+				P.w_vec3		(l_bs_pos);
+				P.w_float		(l_hit/(E?E->HitScale(RQ.element):1.f));
+				P.w_u16			(eHitTypeWound);
+				u_EventSend		(P);
+			}
+			FragWallmark(l_dir, l_end, RQ);
+		}
+	}	
+	setEnabled(true);
+
+	if (Remote()) return;
+	
 	m_blasted.clear();
 	feel_touch_update(Position(), m_blastR);
 	xr_list<s16>		l_elsemnts;
 	xr_list<Fvector>	l_bs_positions;
-
 	while(m_blasted.size()) 
 	{
 		CGameObject *l_pGO = *m_blasted.begin();
@@ -150,7 +180,9 @@ void CExplosive::Explode()
 		
 		l_dir.sub(l_goPos, Position()); 
 		l_dst = l_dir.magnitude(); 
-		l_dir.div(l_dst); l_dir.y += .2f;
+		l_dir.div(l_dst); 
+		l_dir.y += m_fUpThrowFactor;
+		//l_dir.normalize();
 		f32 l_S = (l_pGO->Visual()?l_pGO->Radius()*l_pGO->Radius():0);
 		
 		//взрывная волна
@@ -161,7 +193,7 @@ void CExplosive::Explode()
 			l_b2.invalidate();
 			Fmatrix l_m; l_m.identity(); 
 			l_m.k.set(l_dir); 
-			GetBasis(l_m.k, l_m.i, l_m.j);
+			Fvector::generate_orthonormal_basis(l_m.k, l_m.i, l_m.j);
 			
 			for(int i = 0; i < 8; ++i) 
 			{ 
@@ -204,54 +236,7 @@ void CExplosive::Explode()
 			}
 		}
 		m_blasted.pop_front();
-	}
-	Collide::rq_result RQ;
-	setEnabled(false);
-	
-	
-	//осколки
-	for(s32 i = 0; i < m_frags; ++i) 
-	{
-		l_dir.set(::Random.randF(-.5f,.5f), 
-				  ::Random.randF(-.5f,.5f), 
-				  ::Random.randF(-.5f,.5f)); 
-		l_dir.normalize();
-
-		if(Level().ObjectSpace.RayPick(Position(), l_dir, m_fragsR, Collide::rqtBoth, RQ)) 
-		{
-			Fvector l_end, l_bs_pos; 
-			l_end.mad(Position(),l_dir,RQ.range); 
-			l_bs_pos.set(0, 0, 0);
-			
-			if(RQ.O) 
-			{
-				f32 l_hit = m_fragHit * (1.f - (RQ.range/m_fragsR)*(RQ.range/m_fragsR));
-				CEntity* E = dynamic_cast<CEntity*>(RQ.O);
-				if(E) l_hit *= E->HitScale(RQ.element);
-				NET_Packet		P;
-				u_EventGen		(P,GE_HIT,RQ.O->ID());
-				P.w_u16			(u16(ID()));
-				P.w_dir			(l_dir);
-				P.w_float		(l_hit);
-				P.w_s16			((s16)RQ.element);
-				P.w_vec3		(l_bs_pos);
-				P.w_float		(l_hit/(E?E->HitScale(RQ.element):1.f));
-				P.w_u16			(eHitTypeWound);
-				u_EventSend		(P);
-			}
-			FragWallmark(l_dir, l_end, RQ);
-		}
-	}
-	
-	CParticlesObject* pStaticPG; s32 l_c = (s32)m_effects.size();
-
-	for(s32 i = 0; i < l_c; ++i) 
-	{
-		pStaticPG = xr_new<CParticlesObject>(*m_effects[i],Sector()); pStaticPG->play_at_pos(Position());
-	}
-	m_pLight->set_position(Position()); 
-	m_pLight->set_active(true);
-	setEnabled(true);
+	}	
 }
 
 void CExplosive::FragWallmark	(const Fvector& vDir, const Fvector &vEnd, Collide::rq_result& R) 
@@ -263,7 +248,7 @@ void CExplosive::FragWallmark	(const Fvector& vDir, const Fvector &vEnd, Collide
 		if (R.O->CLS_ID==CLSID_ENTITY)
 		{
 #pragma todo("Oles to Yura: replace 'CPSObject' with 'CParticlesObject'")
-//			/*
+			/*
 			IRender_Sector* S	= R.O->Sector();
 			Fvector D;	D.invert(vDir);
 
@@ -271,9 +256,11 @@ void CExplosive::FragWallmark	(const Fvector& vDir, const Fvector &vEnd, Collide
 			CPSObject* PS		= xr_new<CPSObject> (ps_gibs,S,true);
 			PS->m_Emitter.m_ConeDirection.set(D);
 			PS->play_at_pos		(vEnd);
-//			
+//			*/
 		}
-	} else {
+	} 
+	else 
+	{
 		R_ASSERT(R.element >= 0);
 		::Render->add_Wallmark	(
 			hWallmark,
@@ -288,14 +275,14 @@ void CExplosive::FragWallmark	(const Fvector& vDir, const Fvector &vEnd, Collide
 	
 	if (!R.O) 
 	{
-		// particles
+/*		// particles
 		Fvector N,D;
 		CDB::TRI* pTri		= g_pGameLevel->ObjectSpace.GetStaticTris()+R.element;
 		N.mknormal			(pTri->V(0),pTri->V(1),pTri->V(2));
 		D.reflect			(vDir,N);
 		
 #pragma todo("Oles to Yura: replace 'CPSObject' with 'CParticlesObject'")
-		/*
+	
 		IRender_Sector* S	= ::Render->getSector(pTri->sector);
 		
 		// smoke
@@ -318,17 +305,17 @@ void CExplosive::feel_touch_new(CObject* O)
 	if(pGameObject && this != pGameObject) m_blasted.push_back(pGameObject);
 }
 
-/*
-
 void CExplosive::UpdateCL() 
 {
-	inherited::UpdateCL();
-
 	if(m_expoldeTime > 0 && m_expoldeTime <= Device.dwTimeDelta) 
 	{
 		m_expoldeTime = 0;
 		m_pLight->set_active(false);
-		inherited::Destroy();
+		
+		//ликвидировать сам объект 
+		NET_Packet			P;
+		u_EventGen			(P,GE_DESTROY,ID());
+		if (Local()) u_EventSend			(P);
 	} 
 	else if(m_expoldeTime < 0xffffffff) 
 	{
@@ -348,4 +335,29 @@ void CExplosive::UpdateCL()
 	else m_pLight->set_active(false);
 }
 
-*/
+void CExplosive::SoundCreate(ref_sound& dest, LPCSTR s_name, 
+						   int iType, BOOL /**bCtrlFreq/**/) 
+{
+	string256	name,temp;
+	strconcat	(name,"weapons\\",Name(),"_",s_name,".ogg");
+
+	if (FS.exist(temp,"$game_sounds$",name)) 
+	{
+		dest.create		(TRUE,name,iType);
+		return;
+	}
+
+	strconcat	(name,"weapons\\","generic_",s_name,".ogg");
+
+	if (FS.exist(temp,"$game_sounds$",name))	
+	{
+		dest.create		(TRUE,name,iType);
+		return;
+	}
+	Debug.fatal	("Can't find sound '%s' for weapon '%s'", name, Name());
+}
+
+void CExplosive::SoundDestroy(ref_sound& dest) 
+{
+	dest.destroy();
+}

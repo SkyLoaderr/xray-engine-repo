@@ -17,6 +17,8 @@
 #define FLAME_TIME 0.05f
 #define HIT_POWER_EPSILON 0.05f
 
+#define GROUND_HIT_PARTICLES "weapons\\generic_flame_01"
+//"weapons\\wg-hit-ground"
 
 void CWeapon::FireShotmark	(const Fvector& /**vDir/**/, const Fvector &vEnd, Collide::rq_result& R) 
 {
@@ -49,7 +51,7 @@ void CWeapon::FireShotmark	(const Fvector& /**vDir/**/, const Fvector &vEnd, Col
 			
 		//отыграть партиклы попадания в материал
 		CParticlesObject* pStaticPG;
-		pStaticPG = xr_new<CParticlesObject>("weapons\\wg-hit-ground",Sector());
+		pStaticPG = xr_new<CParticlesObject>(GROUND_HIT_PARTICLES,Sector());
 
 //		Fvector N,D;
 //		Fvector*	pVerts	= Level().ObjectSpace.GetStaticVerts();
@@ -331,15 +333,28 @@ void CWeapon::StartFlameParticles	()
 		return;
 	}
 
-
 	m_pFlameParticles = xr_new<CParticlesObject>(m_sFlameParitcles,Sector(),false);
-	
+/*	m_pFlameParticles = xr_new<CParticlesObject>(m_sFlameParitcles,Sector());
+	Fmatrix pos; 
+	pos.set(XFORM()); 
+	pos.c.set(vLastFP);
+
+	Fvector vel; 
+	vel.sub(Position(),ps_Element(0).vPosition); 
+	vel.div((Level().timeServer()-ps_Element(0).dwTime)/1000.f);
+	m_pFlameParticles->UpdateParent(pos, vel); 
+
+	m_pFlameParticles->Play();
+	m_pFlameParticles = NULL;
+	return;*/
+
 	//если партикл не цикличный то поставить
 	//автоудаление и просто забыть про него
 	if(!m_pFlameParticles->IsLooped())
 	{
 		UpdateFlameParticles();
 		m_pFlameParticles->SetAutoRemove(true);
+		m_pFlameParticles->Play();
 		m_pFlameParticles = NULL;
 	}
 	else
@@ -366,13 +381,15 @@ void CWeapon::UpdateFlameParticles	()
 	Fmatrix pos; 
 	pos.set(XFORM()); 
 	pos.c.set(vLastFP);
+	m_pFlameParticles->SetXFORM(pos); 
+}
+
 /*	Fvector vel; 
 	vel.sub(Position(),ps_Element(0).vPosition); 
 	vel.div((Level().timeServer()-ps_Element(0).dwTime)/1000.f);
 	m_pFlameParticles->UpdateParent(pos, vel); 
 */
-	m_pFlameParticles->SetXFORM(pos); 
-}
+
 
 void CWeapon::FireStart	()
 {
@@ -386,8 +403,6 @@ void CWeapon::FireEnd	()
 }
 void CWeapon::Fire2Start()				{ bWorking2=true;	}
 void CWeapon::Fire2End	()				{ bWorking2=false;	}
-
-
 
 
 /*

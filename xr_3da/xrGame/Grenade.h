@@ -1,12 +1,13 @@
 #pragma once
 #include "missile.h"
+#include "explosive.h"
 #include "../feel_touch.h"
 
 #define SND_RIC_COUNT 5
 
 class CGrenade :
 	public CMissile,
-	public Feel::Touch
+	public CExplosive
 {
 	typedef CMissile inherited;
 public:
@@ -14,23 +15,23 @@ public:
 	virtual ~CGrenade(void);
 
 	virtual void Load(LPCSTR section);
+	
 	virtual BOOL net_Spawn(LPVOID DC);
 	virtual void net_Destroy();
+	
 	virtual void OnH_A_Chield();
 	virtual void OnH_B_Independent();
+	
 	virtual void OnEvent(NET_Packet& P, u16 type);
+	
 	virtual void OnAnimationEnd();
 	virtual void UpdateCL();
-
-	virtual void feel_touch_new(CObject* O);
 
 	virtual bool Activate();
 	virtual void Deactivate();
 	virtual void Throw();
 	virtual void Destroy();
-	virtual void Explode();
-	virtual void FragWallmark(const Fvector& vDir, const Fvector &vEnd, Collide::rq_result& R);
-
+	
 	virtual bool Action(s32 cmd, u32 flags);
 	virtual bool Useful();
 	virtual u32 State(u32 state);
@@ -38,37 +39,20 @@ public:
 	virtual void						net_Import			(NET_Packet& P);					// import from server
 	virtual void						net_Export			(NET_Packet& P);					// export to server
 
+	virtual void renderable_Render() {inherited::renderable_Render();}
+	virtual void OnH_B_Chield() {inherited::OnH_B_Chield();}
+	virtual bool IsHidden() {return inherited::IsHidden();}
+	virtual bool IsPending() {return inherited::IsPending();}
 protected:
-
+	//объект факовой гранаты
 	CGrenade *m_pFake;
 
-	//параметры взрыва
-	float m_blast, m_blastR, m_fragsR, m_fragHit;
-	int m_frags;
-	u32	m_expoldeTime;
-	xr_list<CGameObject*> m_blasted;
-
-	ref_str		pstrWallmark;
-	ref_shader	hWallmark;
-	float		fWallmarkSize;
-
-	//эффекты
-	xr_vector<ref_str>	m_effects;
-	IRender_Light*		m_pLight;
-	Fcolor m_lightColor;
-	f32 m_lightRange;
-	u32 m_lightTime;
-
-	//звуки
-	ref_sound	sndRicochet[SND_RIC_COUNT], sndExplode, sndCheckout;
-	ESoundTypes m_eSoundRicochet, m_eSoundExplode, m_eSoundCheckout;
-protected:
 	struct	net_update 		
 	{
 		u32					dwTimeStamp;
 		Fvector				pos,angles;
-//		void	lerp		(net_update& A,net_update& B, float f);
 	};
+
 	xr_deque<net_update>	NET;
 	net_update				NET_Last;
 };

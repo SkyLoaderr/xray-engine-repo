@@ -15,7 +15,7 @@ class CWeaponHUD;
 #define MS_PLAYING	9
 
 class CMissile :
-	public CInventoryItem
+	virtual public CInventoryItem
 {
 	typedef CInventoryItem inherited;
 public:
