@@ -25,7 +25,9 @@ static CUIStatic*	GetUIStatic();
 //для надписей на иконках с оружием
 void InventoryUtilities::AmmoUpdateProc(CUIDragDropItem* pItem)
 {
-	CWeaponAmmo* pAmmoItem = (CWeaponAmmo*)(pItem->GetData());
+	CInventoryItem* pIItem = (CInventoryItem*)(pItem->GetData());
+	CWeaponAmmo* pAmmoItem = dynamic_cast<CWeaponAmmo*>(pIItem);
+
 	int left	= pItem->GetUIStaticItem().GetPosX() + 5;
 	int bottom	= pItem->GetUIStaticItem().GetPosY() + pItem->GetUIStaticItem().GetRect().height();
 	
@@ -39,8 +41,8 @@ void InventoryUtilities::AmmoUpdateProc(CUIDragDropItem* pItem)
 void InventoryUtilities::FoodUpdateProc(CUIDragDropItem* pItem)
 {
 	//CEatableItem* pEatableItem = (CEatableItem*)(pItem->GetData());
-	CInventoryItem* pIItem = (CInventoryItem*)(pItem->GetData()); VERIFY(pIItem);
-	CEatableItem* pEatableItem = dynamic_cast<CEatableItem*>(pIItem); VERIFY(pEatableItem);
+	CInventoryItem* pIItem = (CInventoryItem*)(pItem->GetData()); R_ASSERT(pIItem);
+	CEatableItem* pEatableItem = dynamic_cast<CEatableItem*>(pIItem); R_ASSERT(pEatableItem);
 
 	RECT rect = pItem->GetAbsoluteRect();
 	
