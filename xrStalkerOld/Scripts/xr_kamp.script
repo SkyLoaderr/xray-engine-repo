@@ -86,8 +86,7 @@ function action_go_position:initialize()
 	self.object:set_desired_position()
 	self.object:set_desired_direction()    
 
-	self.begin = false
-	state_mgr.set_state(self.object, "walk")	
+	self.begin = false	
 end
 function action_go_position:execute ()
 	action_base.execute (self)
@@ -140,6 +139,7 @@ function action_go_position:execute ()
 			if self.object:accessible(pp) then
 				self.object:set_dest_level_vertex_id(pp)
 				self.object:set_path_type(game_object.level_path)
+				state_mgr.set_state(self.object, "walk")	
 			else
 				printf("ERROR: KAMP NODE NOT ACCESIBLE")
 			end
@@ -192,7 +192,6 @@ function action_go_patrol:end_path(mode, number)
 	return false
 end
 function action_go_patrol:finalize()
-	state_mgr.set_state(self.object, "idle")	
 	self.move_mgr:finalize()
 	action_base.finalize (self)
 end
@@ -216,7 +215,7 @@ function action_wait:initialize()
 	self.object:set_node_evaluator()
 	self.object:set_path_evaluator()
 	self.object:set_desired_position()
-	self.object:set_desired_direction()    
+	self.object:set_desired_direction()    	
 end
 function action_wait:execute()
 	action_base.execute (self)
@@ -225,6 +224,7 @@ function action_wait:execute()
 			return
 		end
 	end
+	
 	if self.a.action == 0 or self.a.action == nil then		
 		local actions = {}
 		local i = 1
@@ -259,17 +259,17 @@ function action_wait:execute()
 		self.a.action = actions[rr]
 		self.a.last_action = self.a.action
 		self.timer.begin = device():time_global()/1000
-		self.timer.idle = math.random(self.timer.maxidle) + self.timer.sumidle
-	end
-	if self.a.action == 5 then
-		--'!!! ПРОСТО СИДИМ И ВТЫКАЕМ
+		self.timer.idle = math.random(self.timer.maxidle) + self.timer.sumidle		
 		--' повернуть его лицом к центру
 		local pp = patrol(self.a.center_point):point(0)
---		pp.y = pp.y + 0.7
-		state_mgr.set_state(self.object, "sit", nil, nil, {look_position = pp})
-
+		state_mgr.set_state(self.object, "sit", nil, nil, {look_position = pp})		
+	end
+	if self.a.action == 5 then
+	
+		--'!!! ПРОСТО СИДИМ И ВТЫКАЕМ	
 		if (device():time_global()/1000 - self.timer.begin) < self.timer.idle then
 			--' проверка говорит ли кто нибудь в лагере
+			
 			if speeks[self.a.center_point] ~= nil then
 				--' может быть это мы говорили? :))
 				if speeks[self.a.center_point] == self.object:id() then
@@ -286,7 +286,6 @@ function action_wait:execute()
 	end
 end
 function action_wait:finalize()
-	state_mgr.set_state(self.object, "idle")
 	action_base.finalize (self)
 end
 
