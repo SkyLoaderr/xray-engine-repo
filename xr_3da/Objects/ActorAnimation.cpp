@@ -3,12 +3,12 @@
 #include "ActorAnimation.h"
 #include "..\xr_level_controller.h"
 
-static const float y_spin_factor		= 1;//0.3f;
-static const float y_shoulder_factor	= 0;//0.6f;
-static const float y_head_factor		= 0;//0.1f;
-static const float p_spin_factor		= 1;//0.2f;
-static const float p_shoulder_factor	= 0;//0.7f;
-static const float p_head_factor		= 0;//0.1f;
+static const float y_spin_factor		= 0.3f;
+static const float y_shoulder_factor	= 0.6f;
+static const float y_head_factor		= 0.1f;
+static const float p_spin_factor		= 0.2f;
+static const float p_shoulder_factor	= 0.7f;
+static const float p_head_factor		= 0.1f;
 
 #include "hudmanager.h"
 
