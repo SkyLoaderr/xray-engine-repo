@@ -33,7 +33,7 @@ CPHWorld*	ph_world = 0;
 // Construction/Destruction
 //////////////////////////////////////////////////////////////////////
 
-CLevel::CLevel()
+CLevel::CLevel():IPureClient(Device.GetTimerGlobal())
 {
 //	XML_DisableStringCaching();
 	Server						= NULL;

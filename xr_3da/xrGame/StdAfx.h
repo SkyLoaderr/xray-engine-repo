@@ -20,8 +20,8 @@
 #include "../std_classes.h"
 #include "../GameFont.h"
 
-#include "../NET_Server.h"
-#include "../NET_Client.h"
+#include "NET_Server.h"
+#include "NET_Client.h"
 
 #include "../render.h"
 #include "../fmesh.h"

@@ -11,7 +11,7 @@
 // Construction/Destruction
 //////////////////////////////////////////////////////////////////////
 
-xrServer::xrServer()
+xrServer::xrServer():IPureServer(Device.GetTimerGlobal())
 {
 	SV_Client = NULL;
 }

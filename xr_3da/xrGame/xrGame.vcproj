@@ -5103,6 +5103,28 @@
 					</File>
 				</Filter>
 			</Filter>
+			<Filter
+				Name="NET Shared"
+				Filter="">
+				<File
+					RelativePath=".\NET_Client.h">
+				</File>
+				<File
+					RelativePath=".\NET_Compressor.h">
+				</File>
+				<File
+					RelativePath=".\NET_Messages.h">
+				</File>
+				<File
+					RelativePath=".\NET_Server.h">
+				</File>
+				<File
+					RelativePath=".\NET_Shared.h">
+				</File>
+				<File
+					RelativePath=".\NET_utils.h">
+				</File>
+			</Filter>
 		</Filter>
 		<Filter
 			Name="Physics"

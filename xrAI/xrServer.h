@@ -24,7 +24,7 @@ public:
 
 	game_PlayerState		ps;
 
-	xrClientData	()
+	xrClientData	():IClient(Device.GetTimerGlobal())
 	{
 		owner		= NULL;
 		net_Ready	= FALSE;
