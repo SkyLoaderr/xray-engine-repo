@@ -104,7 +104,7 @@ function Defender:process ()
 	if self.setdown == false then
 	   reset_action (self.npc, self.script_name)
 	   action (self.npc, move (move.crouch, move.stand), look (look.search), anim (anim.danger), cond (cond.time_end, time_infinite))
-	   selt.setdown = true
+	   self.setdown = true
     end
 	
 	
