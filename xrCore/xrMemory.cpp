@@ -128,7 +128,7 @@ void	xrMemory::mem_statistic	()
 		int					heapstatus;
 		hinfo._pentry		= NULL;
 		while( ( heapstatus = _heapwalk( &hinfo ) ) == _HEAPOK )
-			if (hinfo._useflag == _USEDENTRY)	F->w_u32	(hinfo._size);
+			if (hinfo._useflag == _USEDENTRY)	F->w_u32	(u32(hinfo._size));
 		FS.w_close			(F);
 	}
 

@@ -12,7 +12,7 @@ u8*		acc_header				(void* P)	{	u8*		_P		= (u8*)P;	return	_P-1;	}
 u32		get_header				(void* P)	{	return	(u32)*acc_header(P);				}
 u32		get_pool				(size_t size)
 {
-	u32		pid		= size/mem_pools_ebase;
+	u32		pid					= u32(size/mem_pools_ebase);
 	if (pid>=mem_pools_count)	return mem_generic;
 	else						return pid;
 }
@@ -83,7 +83,7 @@ void*	xrMemory::mem_realloc	(void* P, size_t size)
 	} else {
 		R_ASSERT2				(p_current<mem_pools_count,"Memory corruption");
 		u32		s_current		= mem_pools[p_current].get_element();
-		u32		s_dest			= size;
+		u32		s_dest			= (u32)size;
 		void*	p_old			= P;
 		void*	p_new			= mem_alloc(size);
 		mem_copy				(p_new,p_old,_min(s_current,s_dest));
