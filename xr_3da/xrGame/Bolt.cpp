@@ -29,7 +29,7 @@ void CBolt::Throw() {
 	CBolt *l_pBolt = dynamic_cast<CBolt*>(*m_subs.begin());
 	if(l_pBolt) {
 		Detach(l_pBolt);
-		l_pBolt->m_destroyTime = 10000;
+		l_pBolt->m_destroyTime = 100000;
 		l_pBolt->m_force = m_force;
 		//l_pBolt->Drop();
 		{
