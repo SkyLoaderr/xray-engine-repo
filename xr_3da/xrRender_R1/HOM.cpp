@@ -198,7 +198,7 @@ IC	BOOL	xform_b1	(Fvector2& min, Fvector2& max, float& minz, Fmatrix& X, float _
 	t			= 0.f+z*iw;										if (t<minz)	 minz =t;
 	return FALSE;
 }
-IC	BOOL	_visible	(Fbox& B)
+IC	BOOL	_visible	(Fbox& B, Fmatrix& m_xform_01)
 {
 	// Find min/max points of xformed-box
 	Fvector2	min,max;
@@ -217,7 +217,7 @@ IC	BOOL	_visible	(Fbox& B)
 BOOL CHOM::visible		(Fbox3& B)
 {
 	if (!bEnabled)		return TRUE;
-	return _visible		(B);
+	return _visible		(B,m_xform_01);
 }
 
 BOOL CHOM::visible		(Fbox2& B, float depth)
@@ -239,7 +239,7 @@ BOOL CHOM::visible		(vis_data& vis)
 	u32	frame_prev		= frame_current-1;
 
 	Device.Statistic.RenderCALC_HOM.Begin	();
-	BOOL result			= _visible			(vis.box);
+	BOOL result			= _visible			(vis.box,m_xform_01);
 	u32  delay			= 1;
 	if (vis.frame<frame_prev)
 	{

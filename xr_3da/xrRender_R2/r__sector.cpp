@@ -138,7 +138,7 @@ void CSector::traverse			(CFrustum &F, Fbox2& R_scissor)
 				(!RImplementation.HOM.visible(scissor,depth))
 				)	continue;
 		} else {
-			scissor	= R;
+			scissor	= R_scissor;
 
 			// Cull by HOM (slower algo)
 			if  (
