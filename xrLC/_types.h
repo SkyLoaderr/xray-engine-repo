@@ -2,6 +2,10 @@
 #define TYPES_H
 
 // Type defs
+#ifndef _WINDOWS_
+	typedef	int				BOOL;
+#endif
+
 typedef	signed		char	s8;
 typedef	unsigned	char	u8;
 

@@ -15,7 +15,7 @@ public:
 	void		fail		(const char *e1, const char *file, int line);
 	void		fail		(const char *e1, const char *e2, const char *file, int line);
 	void		fail		(const char *e1, const char *e2, const char *e3, const char *file, int line);
-	void		error		(HRESULT hr, const char* e1, const char *file, int line);
+	void		error		(long  code, const char* e1, const char *file, int line);
 	void _cdecl	fatal		(const char* F,...);
 };
 

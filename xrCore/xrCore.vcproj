@@ -272,6 +272,9 @@
 			<File
 				RelativePath="xrCore.rc">
 			</File>
+			<File
+				RelativePath=".\xrCore_platform.h">
+			</File>
 		</Filter>
 		<Filter
 			Name="Math"
