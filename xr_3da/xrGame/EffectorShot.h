@@ -10,9 +10,17 @@
 
 class CEffectorShot : public CEffector  
 {
+	Fvector	vDirectionDiff;
+	float	fTimeCurrent;
+	float	fTimeTotal;
+	float	fAngleCurrent;
+	float	fAngleTotal;
 public:
-	CEffectorShot();
-	virtual ~CEffectorShot();
+	CEffectorShot			(float relax_time, float angle);
+	virtual ~CEffectorShot	();
+	virtual	void	Process	(Fvector &p, Fvector &d, Fvector &n);
+
+	void	Shot			();
 };
 
 #endif // !defined(AFX_EFFECTORSHOT_H__B8CC6918_45D6_485D_8BB4_5A94CEEEFC2E__INCLUDED_)

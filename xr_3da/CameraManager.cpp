@@ -59,6 +59,8 @@ void CCameraManager::Update(const Fvector& P, const Fvector& D, const Fvector& N
 	}
 	
 	Fvector					R;
+	vDirection.normalize	();
+	vNormal.normalize		();
 	R.crossproduct			(vNormal,vDirection);
 	vNormal.crossproduct	(vDirection,R);
 	
