@@ -1,7 +1,7 @@
 ////////////////////////////////////////////////////////////////////////////
 //	Module 		: misc.cpp
 //	Created 	: 20.03.2002
-//  Modified 	: 09.10.2002
+//  Modified 	: 28.12.2002
 //	Author		: Dmitriy Iassenev
 //	Description : Miscellanious routines
 ////////////////////////////////////////////////////////////////////////////
@@ -363,8 +363,6 @@ void vfPrintFunctionHeader(const char *caString)
 	memset(s,0,sizeof(s));
 	memset(s,'/',sizeof(s)-1);
 	vfDualPrintF("\n%s\n/ %s\n%s\n\n",s,caString,s);
-//	memcpy(s,caString,(strlen(caString) + 1)*sizeof(char));
-//	vfDualPrintF("\n%s\n\n",_strupr(s));
 }
 
 void vfPrintFunctionFooter(const char *caString)

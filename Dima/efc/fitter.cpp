@@ -1,22 +1,29 @@
 ////////////////////////////////////////////////////////////////////////////
 //	Module 		: fitter.cpp
 //	Created 	: 25.03.2002
-//  Modified 	: 09.10.2002
+//  Modified 	: 28.12.2002
 //	Author		: Dmitriy Iassenev
 //	Description : Pattern Configuration Generation and Weight Fitting Algorithms
 ////////////////////////////////////////////////////////////////////////////
 
 #include "stdafx.h"
-
 #include "fitter.h"
 #include "misc.h"
 
 // common parameters
+const uint g31							= 0x49249249ul;			// = 0100_1001_0010_0100_1001_0010_0100_1001
+const uint g32							= 0x381c0e07ul;			// = 0011_1000_0001_1100_0000_1110_0000_0111
+
 #define MEGABYTE						((double)1048576.0)
 #define MIN_LINE_LENGTH					256
 #define DOUBLE_DATA_FORMAT				0
 #define FLOAT_DATA_FORMAT				1
 #define EFC_VERSION						1
+#define COUNT_BITS(uiTemp) {\
+	uiTemp = (uiTemp & g31) + ((uiTemp >> 1) & g31) + ((uiTemp >> 2) & g31);\
+	uiTemp = ((uiTemp + (uiTemp >> 3)) & g32) + ((uiTemp >> 6) & g32);\
+	uiMatchCount += (uiTemp + (uiTemp >> 9) + (uiTemp >> 18) + (uiTemp >> 27)) & 0x3f;\
+}
 
 double dEpsilon							= EPSILON;
 double dAlphaCoefficient				= ALPHA;
@@ -56,7 +63,7 @@ double		dMinResultValue;
 double		dMaxResultValue;
 SEFHeader	tEFHeader;
 
-uint uifRandom(uint uiRange)
+__forceinline uint uifRandom(uint uiRange)
 {
     uint uiResult;
     __asm {
@@ -717,109 +724,6 @@ void vfSaveCurrentIterationConfigurations(FILE *fFile, uint **uiaPreviousIterati
 	fflush(fFile);
 	vfDualPrintF("completed\n");
 }
-/**/
-const uint g31 = 0x49249249ul;	// = 0100_1001_0010_0100_1001_0010_0100_1001
-const uint g32 = 0x381c0e07ul;	// = 0011_1000_0001_1100_0000_1110_0000_0111
-
-#define COUNT_BITS(uiTemp) \
-{\
-	uiTemp = (uiTemp & g31) + ((uiTemp >> 1) & g31) + ((uiTemp >> 2) & g31);\
-	uiTemp = ((uiTemp + (uiTemp >> 3)) & g32) + ((uiTemp >> 6) & g32);\
-	uiMatchCount += (uiTemp + (uiTemp >> 9) + (uiTemp >> 18) + (uiTemp >> 27)) & 0x3f;\
-}
-/**
-#define COUNT_BITS(uiTemp) \
-{\
-	for (uint k=0; uiTemp; k++)\
-		uiTemp &= uiTemp - 1;\
-	uiMatchCount += k;\
-}
-/**
-#define COUNT_BITS(uiTemp) \
-{\
-	if (uiTemp &= (uiTemp - 1))\
-	if (uiTemp &= (uiTemp - 1))\
-	if (uiTemp &= (uiTemp - 1))\
-	if (uiTemp &= (uiTemp - 1))\
-	if (uiTemp &= (uiTemp - 1))\
-	if (uiTemp &= (uiTemp - 1))\
-	if (uiTemp &= (uiTemp - 1))\
-	if (uiTemp &= (uiTemp - 1))\
-	if (uiTemp &= (uiTemp - 1))\
-	if (uiTemp &= (uiTemp - 1))\
-	if (uiTemp &= (uiTemp - 1))\
-	if (uiTemp &= (uiTemp - 1))\
-	if (uiTemp &= (uiTemp - 1))\
-	if (uiTemp &= (uiTemp - 1))\
-	if (uiTemp &= (uiTemp - 1))\
-	if (uiTemp &= (uiTemp - 1))\
-	if (uiTemp &= (uiTemp - 1))\
-	if (uiTemp &= (uiTemp - 1))\
-	if (uiTemp &= (uiTemp - 1))\
-	if (uiTemp &= (uiTemp - 1))\
-	if (uiTemp &= (uiTemp - 1))\
-	if (uiTemp &= (uiTemp - 1))\
-	if (uiTemp &= (uiTemp - 1))\
-	if (uiTemp &= (uiTemp - 1))\
-	if (uiTemp &= (uiTemp - 1))\
-	if (uiTemp &= (uiTemp - 1))\
-	if (uiTemp &= (uiTemp - 1))\
-	if (uiTemp &= (uiTemp - 1))\
-	if (uiTemp &= (uiTemp - 1))\
-	if (uiTemp &= (uiTemp - 1))\
-	if (uiTemp &= (uiTemp - 1))\
-	if (uiTemp &= (uiTemp - 1))\
-		 uiMatchCount += 32;\
-	else uiMatchCount += 31;\
-	else uiMatchCount += 30;\
-	else uiMatchCount += 29;\
-	else uiMatchCount += 28;\
-	else uiMatchCount += 27;\
-	else uiMatchCount += 26;\
-	else uiMatchCount += 25;\
-	else uiMatchCount += 24;\
-	else uiMatchCount += 23;\
-	else uiMatchCount += 22;\
-	else uiMatchCount += 21;\
-	else uiMatchCount += 20;\
-	else uiMatchCount += 19;\
-	else uiMatchCount += 18;\
-	else uiMatchCount += 17;\
-	else uiMatchCount += 16;\
-	else uiMatchCount += 15;\
-	else uiMatchCount += 14;\
-	else uiMatchCount += 13;\
-	else uiMatchCount += 12;\
-	else uiMatchCount += 11;\
-	else uiMatchCount += 10;\
-	else uiMatchCount +=  9;\
-	else uiMatchCount +=  8;\
-	else uiMatchCount +=  7;\
-	else uiMatchCount +=  6;\
-	else uiMatchCount +=  5;\
-	else uiMatchCount +=  4;\
-	else uiMatchCount +=  3;\
-	else uiMatchCount +=  2;\
-	else uiMatchCount +=  1;\
-}
-/**
-#define TC 10000000
-
-void vfTest()
-{
-	uint *uipTest = (uint *)malloc(TC*sizeof(uint));
-	for (uint i=0; i<TC; i++)
-		uipTest[i] = uifRandom(0x00000003) << 28;
-	uint uiMatchCount = 0;
-	uint uiStartTime = clock();
-	for ( i=0; i<TC; i++)
-		COUNT_BITS(uipTest[i]);
-	
-	float dTime = (float)(clock() - uiStartTime)/CLOCKS_PER_SEC;
-	vfDualPrintF("%.3f : %d\n",dTime,uiMatchCount);
-	free(uipTest);
-}
-/**/
 
 bool bfMatchCount(uchar ucCardinality, uint *uiaPreviousConfiguration, uint uiAtomicFeature)
 {
