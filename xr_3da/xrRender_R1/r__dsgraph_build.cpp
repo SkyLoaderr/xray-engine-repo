@@ -35,7 +35,7 @@ void R_dsgraph_structure::r_dsgraph_insert_dynamic	(IRender_Visual *pVisual, Fve
 	//pVisual->vis.frame		=	RI.marker;
 
 	float distSQ;
-	float SSA				=	CalcSSA		(distSQ,pVisual->vis.sphere.P,pVisual);
+	float SSA				=	CalcSSA		(distSQ,Center,pVisual);
 	if (SSA<=r_ssaDISCARD)		return;
 
 	// Select shader
