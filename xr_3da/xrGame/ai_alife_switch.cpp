@@ -22,10 +22,10 @@ void CSE_ALifeSimulator::vfReleaseObject(CSE_Abstract *tpSE_Abstract, bool bALif
 	
 	if (!tpALifeDynamicObject->m_bOnline) {
 		vfRemoveObjectFromGraphPoint	(tpALifeDynamicObject,tpALifeDynamicObject->m_tGraphID);
-		if (getAI().m_tpaGraph[tpALifeDynamicObject->m_tGraphID].tLevelID == m_tCurrentLevelID)
-			vfRemoveObjectFromCurrentLevel	(tpALifeDynamicObject);
 		vfRemoveObjectFromScheduled		(tpALifeDynamicObject);
 	}
+	if (getAI().m_tpaGraph[tpALifeDynamicObject->m_tGraphID].tLevelID == m_tCurrentLevelID)
+		vfRemoveObjectFromCurrentLevel	(tpALifeDynamicObject);
 
 	tpSE_Abstract->m_bALifeControl	= false;
 

@@ -189,9 +189,7 @@ void CAI_Space::Render()
 				game_sv_Single *tpGame = dynamic_cast<game_sv_Single *>(Level().Server->game);
 				if ((tpGame) && (tpGame->m_tpALife)) {
 					{
-						ALife::D_OBJECT_P_MAP_PAIR_IT I = tpGame->m_tpALife->m_tLevelMap.find(m_tpaGraph[tpGame->m_tpALife->m_tpActor->m_tGraphID].tLevelID);
-						R_ASSERT2(I != tpGame->m_tpALife->m_tLevelMap.end(),"Can't find corresponding to actor level!");
-						_LEVEL_ID	J = (*I).first;
+						_LEVEL_ID	J = m_tpaGraph[tpGame->m_tpALife->m_tpActor->m_tGraphID].tLevelID;
 						for (int i=0, n=(int)m_tGraphHeader.dwVertexCount; i<n; i++) {
 							if (m_tpaGraph[i].tLevelID != J)
 								continue;
