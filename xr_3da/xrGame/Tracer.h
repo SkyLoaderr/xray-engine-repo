@@ -30,6 +30,9 @@ public:
 	void		Add		(const Fvector& from, const Fvector& to, float bullet_speed, float trail_speed_factor, float start_length, float width);
 	void		Render	();
 
+	virtual void		OnDeviceCreate();
+	virtual void		OnDeviceDestroy();
+	
 	CTracer();
 	~CTracer();
 };
