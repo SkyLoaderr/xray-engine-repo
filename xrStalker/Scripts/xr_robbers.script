@@ -1,0 +1,174 @@
+sounds = {}
+
+function action2(obj,...)
+    local act = entity_action()
+    local i = 1
+    while true do
+        if (arg[i] ~= nil) then
+            act:set_action(arg[i])
+        else
+            break
+        end
+        i = i + 1
+    end
+    if (obj ~= nil) then
+        obj:command(act,false)
+    end
+    return  entity_action(act)
+end
+
+---------------------------------------------------------------------------------------------------------------------
+--Evaluators
+----------------------------------------------------------------------------------------------------------------------
+-- Константа
+class "evaluator_need_robber" (property_evaluator)
+function evaluator_need_robber:__init(storage) super ()
+  self.a = storage
+end
+function evaluator_need_robber:evaluate ()
+  local tt
+
+  tt = self.a.enabled == true
+
+      return tt
+end
+
+----------------------------------------------------------------------------------------------------------------------
+--Actions
+----------------------------------------------------------------------------------------------------------------------
+-- Обычное поведение
+class "action_robber_activity" (action_base)
+function action_robber_activity:__init (npc_name,action_name,storage) super (nil, action_name)
+	--printf("_bp: action_robber_activity: __init")
+	self.a = storage
+
+	self.state_none = 0
+	self.state_waiting_for_plr_to_come = 1 -- ждет игрока
+	self.state_shout_stop = 2 -- кричит "не двигаться!"
+	self.state_shout_drop_your_weapon = 3 -- кричит "если хочешь жить, брось оружие!"
+	self.state_shout_will_live = 4 -- кричит "молодец, будешь жить"
+	self.state_go_to_plr = 5 -- идет к игроку
+	self.state_look_at_plr = 6 -- смотрит на игрока
+	self.state_anim_hit = 6 -- бьет игрока
+
+	self.state = self.state_none
+
+	self.path_main = self.a.path_main
+end
+
+function action_robber_activity:initialize()
+	--printf("_bp: action_robber_activity: initialize")
+	action_base.initialize(self)
+	self.object:set_node_evaluator()
+	self.object:set_path_evaluator()
+	self.object:set_desired_position()
+	self.object:set_desired_direction()
+
+	self.object:set_item(object.idle, self.object:best_weapon())
+	self.object:set_detail_path_type(move.line)
+	self.object:set_body_state(move.standing)
+	self.object:set_movement_type(move.walk)
+	self.object:set_path_type(game_object.patrol_path)
+	self.object:set_patrol_path(self.path_active, patrol.start, patrol.continue, true)
+	--self.object:set_mental_state(anim.free)
+	--self.object:set_sight(look.search, nil, 0)
+	self.object:set_sight(look.danger, nil, 0)
+
+	self.state = self.state_waiting_for_plr_to_come
+end
+
+function action_robber_activity:execute()
+	--printf("_debug_robber [%s]: state [%d], animation_count [%d]", self.object:name(), self.state,
+	--self.object:animation_count())
+
+	if self.state == self.state_waiting_for_plr_to_come then
+		--printf("_debug_robber [%s]: adding animations", self.object:name())
+		while self.object:animation_count() <= 1 do
+			local animate = math.random(1, 10)
+			if animate == 1 then
+				self.object:add_animation("stoya_ruje_ 0", true)
+			elseif animate == 2 then
+				self.object:add_animation("vishka_3", false)
+			elseif animate == 3 then
+				self.object:add_animation("norm_torso_2_idle_1", false)
+			elseif animate == 4 then
+				self.object:add_animation("norm_torso_2_idle_2", true)
+			elseif animate == 5 then
+				self.object:add_animation("norm_torso_2_idle_3", false)
+			elseif animate == 6 then
+				self.object:add_animation("chasovoy_0", true)
+			elseif animate == 7 then
+				self.object:add_animation("chasovoy_1", true)
+			elseif animate == 8 then
+				self.object:add_animation("chasovoy_2", true)
+			elseif animate == 9 then
+				self.object:add_animation("chasovoy_3", true)
+			elseif animate == 10 then
+				self.object:add_animation("chasovoy_4", true)
+			end
+		end
+	end
+
+end
+
+function action_robber_activity:finalize()
+	--printf("_bp: FINALIZE")
+	self.object:clear_animations()
+
+	action_base.finalize(self)
+end
+
+----------------------------------------------------------------------------------------------------------------------
+--Guard binder
+----------------------------------------------------------------------------------------------------------------------
+function add_to_binder(npc)
+	--printf("_bp: add_to_binder (robber)")
+	local operators    = {}
+	local properties  = {}
+
+	sounds["commander_snd"]        = xr_sounds_id.zmey_robber_base + 1
+	sounds["soldiers_idle_snd"]     = xr_sounds_id.zmey_robber_base + 2
+	sounds["soldiers_idle2_snd"]    = xr_sounds_id.zmey_robber_base + 3
+	sounds["soldiers_replics_snd"]  = xr_sounds_id.zmey_robber_base + 4
+	sounds["soldiers_hear_snd"]     = xr_sounds_id.zmey_robber_base + 5
+	sounds["soldier_alarm"]         = xr_sounds_id.zmey_robber_base + 6
+
+	npc:add_sound("Scripts\\Patrol\\Commander1_",           20, snd_type.talk, 2, 1, sounds["commander_snd"])
+	npc:add_sound("Scripts\\Patrol\\soldier_idle_",         20, snd_type.talk, 2, 1, sounds["soldiers_idle_snd"])
+	npc:add_sound("script_replics\\soldier_1\\idle\\soldier_idle_", 20, snd_type.talk, 2, 1, sounds["soldiers_idle2_snd"])
+	npc:add_sound("script_replics\\soldier_1\\replics\\soldier_replic_",     20, snd_type.talk, 2, 1, sounds["soldiers_replics_snd"])
+	npc:add_sound ("script_replics\\soldier_1\\hear_something\\soldier_hear_",   20, snd_type.talk, 2, 1, sounds["soldiers_hear_snd"])
+	npc:add_sound ("script_replics\\soldier_1\\alarm\\soldier_alarm_",     20, snd_type.talk, 2, 2, sounds["soldier_alarm"])
+
+	local manager = npc:motivation_action_manager()
+
+	properties["need_robber"]   = xr_evaluators_id.zmey_robber_base + 1
+
+	operators["action_robber"]   = xr_actions_id.zmey_robber_base + 1
+
+	-- // evaluators
+	manager:add_evaluator (properties["need_robber"],   this.evaluator_need_robber  (xr_motivator.storage[npc:id()].robber))
+
+	local new_action = this.action_robber_activity(npc, "action_robber_activity", xr_motivator.storage[npc:id()].robber)
+	new_action:add_precondition    (world_property(stalker_ids.property_alive,   true))
+	new_action:add_precondition    (world_property(stalker_ids.property_enemy,   false))
+	new_action:add_precondition    (world_property(properties["need_robber"],   true))
+	new_action:add_effect(world_property(properties["need_robber"], false))
+	manager:add_action(operators["action_robber"], new_action)
+
+	new_action = manager:action(stalker_ids.action_free_no_alife)
+	new_action:add_precondition(world_property(properties["need_robber"], false))
+
+	new_action = manager:action(stalker_ids.action_gather_items)
+	new_action:add_precondition(world_property(properties["need_robber"], false))
+end
+
+-- функции
+function vector_copy_by_val(vec)
+	local newvec = vector()
+	newvec.x = vec.x
+	newvec.y = vec.y
+	newvec.z = vec.z
+	return newvec
+end
+
