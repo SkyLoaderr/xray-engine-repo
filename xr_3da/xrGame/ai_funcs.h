@@ -102,12 +102,28 @@ class CDistanceFunction : public CBaseFunction {
 
 public:
 	CDistanceFunction() {
-		m_fMinResultValue = 0.0;
-		m_fMaxResultValue = 150.0;
+		m_fMinResultValue = 1.0;
+		m_fMaxResultValue = 20.0;
 		strcat(m_caName,"Distance");
 		OUT_MESSAGE("Evaluation function %s is successfully initalized",m_caName);
 	}
 	virtual float ffGetValue();
+	
+	virtual DWORD	dwfGetDiscreteValue(DWORD dwDiscretizationValue)
+	{
+		float fTemp = ffGetValue();
+		if (fTemp <= m_fMinResultValue)
+			return(0);
+		else
+			if (fTemp >= m_fMaxResultValue)
+				return(dwDiscretizationValue - 1);
+			else {
+				return(1);
+//				float fDummy = (m_fMaxResultValue - m_fMinResultValue)/float(dwDiscretizationValue);
+//				fDummy = (fTemp - m_fMinResultValue)/fDummy;
+//				return(iFloor(fDummy));
+			}
+	}
 };
  
 class CPersonalHealthFunction : public CBaseFunction {
