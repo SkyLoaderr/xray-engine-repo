@@ -2620,6 +2620,17 @@ SOURCE=.\ParticleSorter.h
 # Begin Source File
 
 SOURCE=.\HOM.cpp
+
+!IF  "$(CFG)" == "XR_3DA - Win32 Release"
+
+# ADD CPP /FAs
+
+!ELSEIF  "$(CFG)" == "XR_3DA - Win32 Debug"
+
+!ELSEIF  "$(CFG)" == "XR_3DA - Win32 Mixed"
+
+!ENDIF 
+
 # End Source File
 # Begin Source File
 

@@ -216,33 +216,39 @@ void CHOM::Debug		()
 	Device.Primitive.Draw	(pStream,4,2,Offset,Device.Streams_QuadIB);
 }
 
-IC	BOOL	xform_b		(Fmatrix& X, Fvector& D, Fvector& S)
+IC	BOOL	xform_b		(Fmatrix& X, Fvector& D, float _x, float _y, float _z)
 {
-	float z = S.x*X._13 + S.y*X._23 + S.z*X._33 + X._43;
+	float z = _x*X._13 + _y*X._23 + _z*X._33 + X._43;
 	if (z<EPS) return TRUE;
-	float w	= S.x*X._14 + S.y*X._24 + S.z*X._34 + X._44;
-	D.x	= 1.f+(S.x*X._11 + S.y*X._21 + S.z*X._31 + X._41)/w;
-	D.y	= 1.f-(S.x*X._12 + S.y*X._22 + S.z*X._32 + X._42)/w;
-	D.z	= 0.f+z/w;
+	float w	= _x*X._14 + _y*X._24 + _z*X._34 + X._44;
+	D.x		= 1.f+(_x*X._11 + _y*X._21 + _z*X._31 + X._41)/w;
+	D.y		= 1.f-(_x*X._12 + _y*X._22 + _z*X._32 + X._42)/w;
+	D.z		= 0.f+z/w;
 	return FALSE;
+}
+IC	void	modify		(float& x1, float& y1, float& x2, float& y2, float& z, Fvector& v)
+{
+	if (v.x<x1)	x1=v.x; else if (v.x>x2) x2=v.x;
+	if (v.y<y1)	y1=v.y; else if (v.y>y2) y2=v.y;
+	if (v.z<z)	z =v.z;
 }
 
 IC	BOOL	_visible	(Fbox& B)
 {
 	// Find min/max points of xformed-box
 	Fmatrix&	XF		= Device.mFullTransform;
-	Fbox		rect;
-	Fvector		test,src;
-	B.getpoint(0,src);	if (xform_b(XF,test,src)) return TRUE;	rect.set	(test,test);
-	B.getpoint(1,src);	if (xform_b(XF,test,src)) return TRUE;	rect.modify	(test);
-	B.getpoint(2,src);	if (xform_b(XF,test,src)) return TRUE;	rect.modify	(test);
-	B.getpoint(3,src);	if (xform_b(XF,test,src)) return TRUE;	rect.modify	(test);
-	B.getpoint(4,src);	if (xform_b(XF,test,src)) return TRUE;	rect.modify	(test);
-	B.getpoint(5,src);	if (xform_b(XF,test,src)) return TRUE;	rect.modify	(test);
-	B.getpoint(6,src);	if (xform_b(XF,test,src)) return TRUE;	rect.modify	(test);
-	B.getpoint(7,src);	if (xform_b(XF,test,src)) return TRUE;	rect.modify	(test);
+	Fvector		test;
+	float		x1,y1,x2,y2,z;
+	if (xform_b(XF,test, B.min.x, B.min.y, B.min.z)) return TRUE;	x1=x2=test.x; y1=y2=test.y; z = test.z;
+	if (xform_b(XF,test, B.min.x, B.min.y, B.max.z)) return TRUE;	modify(x1,y1,x2,y2,z,test);
+	if (xform_b(XF,test, B.max.x, B.min.y, B.max.z)) return TRUE;	modify(x1,y1,x2,y2,z,test);
+	if (xform_b(XF,test, B.max.x, B.min.y, B.min.z)) return TRUE;	modify(x1,y1,x2,y2,z,test);
+	if (xform_b(XF,test, B.min.x, B.max.y, B.min.z)) return TRUE;	modify(x1,y1,x2,y2,z,test);
+	if (xform_b(XF,test, B.min.x, B.max.y, B.max.z)) return TRUE;	modify(x1,y1,x2,y2,z,test);
+	if (xform_b(XF,test, B.max.x, B.max.y, B.max.z)) return TRUE;	modify(x1,y1,x2,y2,z,test);
+	if (xform_b(XF,test, B.max.x, B.max.y, B.min.z)) return TRUE;	modify(x1,y1,x2,y2,z,test);
 	
-	return Raster.test	(rect.min.x,rect.min.y,rect.max.x,rect.max.y,rect.min.z);
+	return Raster.test	(x1,y1,x2,y2,z);
 }
 
 BOOL CHOM::Visible		(Fbox& B)
