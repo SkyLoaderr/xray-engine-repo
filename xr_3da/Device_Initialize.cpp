@@ -44,10 +44,6 @@ void CRenderDevice::Initialize()
 
 	// Command line
 	char *lpCmdLine		= Core.Params;
-	if (strstr(lpCmdLine,"-multipass")!=NULL)	HW.Caps.bForceMultipass		= TRUE;
-	else										HW.Caps.bForceMultipass		= FALSE;
-	if (strstr(lpCmdLine,"-emu_fog")!=NULL)		HW.Caps.bForceVertexFog		= TRUE;
-	else										HW.Caps.bForceVertexFog		= FALSE;
 	if (strstr(lpCmdLine,"-gpu_sw")!=NULL)		HW.Caps.bForceGPU_SW		= TRUE;
 	else										HW.Caps.bForceGPU_SW		= FALSE;
 	if (strstr(lpCmdLine,"-gpu_nopure")!=NULL)	HW.Caps.bForceGPU_NonPure	= TRUE;

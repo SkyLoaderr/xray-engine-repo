@@ -49,7 +49,6 @@ void CHWCaps::Update()
 #ifdef _EDITOR
 	vertex.dwVersion	= 0;
 #endif
-	if (strstr(Core.Params,"-novs"))	vertex.dwVersion=0;
 
 	//
 	bTableFog			=	FALSE;	//BOOL	(caps.RasterCaps&D3DPRASTERCAPS_FOGTABLE);
