@@ -2086,6 +2086,7 @@
         </phrase_list>
     </dialog>
     <dialog id="bar_dolg_leader_quest_borov_finish">
+        <precondition>bar_dialogs.have_borov_flash</precondition>
         <has_info>bar_kill_borov_start</has_info>
         <has_info>val_borov_info_gain</has_info>
         <dont_has_info>bar_kill_borov_done</dont_has_info>
@@ -2102,6 +2103,7 @@
         </phrase_list>
     </dialog>
     <dialog id="bar_dolg_leader_quest_svoboda_ambush_finish">
+        <precondition>bar_dialogs.have_bar_tiran_pda</precondition>
         <has_info>bar_kill_svoboda_ambush_start</has_info>
         <has_info>bar_kill_svoboda_ambush_killed</has_info>
         <dont_has_info>bar_kill_svoboda_ambush_done</dont_has_info>
@@ -3091,6 +3093,7 @@
         </phrase_list>
     </dialog>
     <dialog id="bar_dolg_leader_quest_svoboda_leader_finish">
+        <precondition>bar_dialogs.have_mil_svoboda_leader_pda</precondition>
         <has_info>bar_kill_svoboda_leader_start</has_info>
         <has_info>mil_kill_svoboda_leader_killed</has_info>
         <dont_has_info>bar_kill_svoboda_leader_done</dont_has_info>
