@@ -57,6 +57,7 @@
 #pragma comment( lib, "dinput.lib"		)
 #pragma comment( lib, "dxguid.lib"		)
 
+#define LUABIND_NO_EXCEPTIONS
 #define BOOST_THROW_EXCEPTION_HPP_INCLUDED
 namespace boost {	ENGINE_API	void __stdcall throw_exception(const exception &A);	};
 

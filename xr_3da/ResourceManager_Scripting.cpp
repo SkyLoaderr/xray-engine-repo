@@ -224,11 +224,11 @@ ShaderElement*		CBlender_Compile::_lua_Compile	(LPCSTR name)
 	RS.Invalidate		();
 
 	// Compile
-	adopt_compiler		ac		(this);
-	LPCSTR				t_0		= L_textures[0];
-	LPCSTR				t_1		= (L_textures.size() > 1) ? L_textures[1] : "null";
-	call_function<void>	(Device.Resources->LSVM,name,ac,t_0,t_1);
-	r_End				();
+	adopt_compiler		ac			(this);
+	LPCSTR				t_0			= L_textures[0];
+	LPCSTR				t_1			= (L_textures.size() > 1) ? L_textures[1] : "null";
+	call_function<void>				(Device.Resources->LSVM,name/*,ac,t_0,t_1*/);
+	r_End							();
 
 	return				Device.Resources->_CreateElement(E);
 }
