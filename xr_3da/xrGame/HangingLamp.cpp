@@ -36,10 +36,9 @@ void CHangingLamp::Load		(LPCSTR section)
 
 BOOL CHangingLamp::net_Spawn(LPVOID DC)
 {
-	CSE_Abstract	*e		= (CSE_Abstract*)(DC);
+	CSE_Abstract			*e		= (CSE_Abstract*)(DC);
 	CSE_ALifeObjectHangingLamp	*lamp	= dynamic_cast<CSE_ALifeObjectHangingLamp*>(e);
 	R_ASSERT				(lamp);
-	cNameVisual_set			(lamp->get_visual());
 	inherited::net_Spawn	(DC);
 	Fcolor					clr;
 

@@ -25,7 +25,6 @@ BOOL CPhysicObject::net_Spawn(LPVOID DC)
 	CSE_Abstract			*e	= (CSE_Abstract*)(DC);
 	CSE_ALifeObjectPhysic	*po	= dynamic_cast<CSE_ALifeObjectPhysic*>(e);
 	R_ASSERT				(po);
-	cNameVisual_set			(po->get_visual());
 	inherited::net_Spawn	(DC);
 
 	m_type = EPOType(po->type);

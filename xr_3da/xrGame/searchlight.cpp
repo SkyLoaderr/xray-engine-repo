@@ -59,7 +59,6 @@ BOOL CProjector::net_Spawn(LPVOID DC)
 	CSE_ALifeObjectProjector	*slight	= dynamic_cast<CSE_ALifeObjectProjector*>(e);
 	R_ASSERT				(slight);
 	
-	cNameVisual_set			(slight->get_visual());
 	if (!inherited::net_Spawn(DC))
 		return			(FALSE);
 	
