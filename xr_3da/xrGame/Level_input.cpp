@@ -35,6 +35,11 @@ void CLevel::IR_OnMouseWheel( int direction )
 // Обработка нажатия клавиш
 void CLevel::IR_OnKeyboardPress(int key)
 {
+	if (DIK_F12 == key)
+	{
+		Render->Screenshot();
+		return;
+	}
 
 	switch (key_binding[key]) {
 	case kCONSOLE:
@@ -55,6 +60,7 @@ void CLevel::IR_OnKeyboardPress(int key)
 		return;
 		break;
 	};
+
 	if( Device.Pause()		) return;
 	if(	g_bDisableAllInput	) return;
 
@@ -72,9 +78,9 @@ void CLevel::IR_OnKeyboardPress(int key)
 			HW.Caps.SceneMode			= (HW.Caps.SceneMode+1)%3;
 		return;
 #endif
-	case DIK_F12:
-		Render->Screenshot			();
-		return;
+//	case DIK_F12:
+//		Render->Screenshot			();
+//		return;
 	case DIK_F6: {
 		if (GameID() != GAME_SINGLE) return;
 //		if (!autosave_manager().ready_for_autosave()) {
