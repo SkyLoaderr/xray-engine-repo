@@ -8,6 +8,8 @@
 
 #pragma once
 
+#include "script_engine.h"
+
 IC	CPatrolPathManager::CPatrolPathManager		()
 {
 	Init					();
@@ -119,12 +121,24 @@ IC	void CPatrolPathManager::set_path		(ref_str path_name, const EPatrolStartType
 
 IC	ref_str	CPatrolPathManager::path_name	() const
 {
+	if (!m_path) {
+		ai().script_engine().script_log(eLuaMessageTypeError,"Path not specified!");
+		return				("");
+	}
 	VERIFY					(m_path);
 	return					(m_path_name);
 }
 
 IC	void CPatrolPathManager::set_previous_point	(int point_index)
 {
+	if (!m_path) {
+		ai().script_engine().script_log(eLuaMessageTypeError,"Path not specified!");
+		return;
+	}
+	if ((int)(m_path->tpaWayPoints.size()) <= point_index) {
+		ai().script_engine().script_log(eLuaMessageTypeError,"Start point vialotes path bounds %s!",*m_path_name);
+		return;
+	}
 	VERIFY					(m_path);
 	VERIFY					((int)(m_path->tpaWayPoints.size()) > point_index);
 	m_prev_point_index		= point_index;
@@ -132,6 +146,14 @@ IC	void CPatrolPathManager::set_previous_point	(int point_index)
 
 IC	void CPatrolPathManager::set_start_point	(int point_index)
 {
+	if (!m_path) {
+		ai().script_engine().script_log(eLuaMessageTypeError,"Path not specified!");
+		return;
+	}
+	if ((int)(m_path->tpaWayPoints.size()) <= point_index) {
+		ai().script_engine().script_log(eLuaMessageTypeError,"Start point vialotes path bounds %s!",*m_path_name);
+		return;
+	}
 	VERIFY					(m_path);
 	VERIFY					((int)(m_path->tpaWayPoints.size()) > point_index);
 	m_start_point_index		= point_index;

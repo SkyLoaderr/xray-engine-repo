@@ -60,7 +60,30 @@ bool CVisualMemoryManager::visible(const CGameObject *game_object) const
 	if (game_object->getDestroy())
 		return			(false);
 
-	return				(true);
+	
+	const CCustomMonster	*m_object = dynamic_cast<const CCustomMonster*>(this);
+	if (!m_object)
+		return			(true);
+
+	Fmatrix								&eye_matrix = PKinematics(m_object->Visual())->LL_GetTransform(u16(m_object->eye_bone));
+	VERIFY								(_valid(eye_matrix));
+	const CAI_Stalker					*stalker = dynamic_cast<const CAI_Stalker*>(this);
+	const MonsterSpace::SBoneRotation	&rotation = stalker ? stalker->head_orientation() : m_body;
+	Fvector								current_direction, object_direction;
+	current_direction.setHP				(-rotation.current.yaw,-rotation.current.pitch);
+	game_object->Center					(object_direction);
+	float								object_distance = object_direction.distance_to(eye_matrix.c);
+	object_direction.sub				(eye_matrix.c);
+	object_direction.normalize_safe		();
+	float								cos_alpha = current_direction.dot_product(object_direction);
+	clamp								(cos_alpha,-.99999f,.99999f);
+	float								alpha = acosf(cos_alpha);
+	float								fov = deg2rad(m_object->eye_fov)*.5f;
+	float								distance = (1.f - (fov - alpha)/fov)*(m_max_view_distance - m_min_view_distance) + m_min_view_distance;
+	if (distance < object_distance)
+		return							(false);
+	
+	return								(true);
 ////	if (Level().iGetKeyState(DIK_RCONTROL))
 ////		return(false);
 //#ifdef LOG_PARAMETERS
