@@ -176,6 +176,7 @@ float rayTrace	(CDB::COLLIDER* DB, R_Light& L, Fvector& P, Fvector& D, float R, 
 	}
 	
 	// 2. Polygon doesn't pick - real database query
+	DB->ray_options	(CDB::OPT_CULL);
 	DB->ray_query	(&RCAST_Model,P,D,R);
 	
 	// 3. analyze polygons and cache nearest if possible
@@ -191,7 +192,7 @@ void LightPoint(CDB::COLLIDER* DB, Fcolor &C, Fvector &P, Fvector &N, R_Light* b
 {
 	Fvector		Ldir,Pnew;
 	Pnew.direct(P,N,0.01f);
-	
+
 	R_Light	*L = begin, *E=end;
 	for (;L!=E; L++)
 	{
