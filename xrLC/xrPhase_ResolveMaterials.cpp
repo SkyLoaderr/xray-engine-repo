@@ -56,6 +56,8 @@ void	CBuild::xrPhase_ResolveMaterials()
 			Face*	F			= *F_it;
 			for (DWORD I=0; I<counts.size(); I++)
 			{
+				if (!F->Shader().flags.bRendering)			continue;
+
 				if (F->dwMaterial == counts[I].dwMaterial)
 				{
 					g_XSplit[I]->push_back	(F);
