@@ -125,7 +125,7 @@ void CAI_ALife::Load()
 	}
 	tpStream					= Engine.FS.Open(caFileName);
 	R_ASSERT					(tpStream);
-	Log							("* Loading header...");
+	Log							("* Loading ALife Simulator...");
 	CALifeHeader::Load			(*tpStream);
 	CALifeGameTime::Load		(*tpStream);
 	Log							("* Loading objects...");
@@ -134,7 +134,9 @@ void CAI_ALife::Load()
 	CALifeEventRegistry::Load	(*tpStream);
 	Log							("* Loading tasks...");
 	CALifeTaskRegistry::Load	(*tpStream);
-	Log							("* Creating dynamic data...");
+	Log							("* Loading static data objects and building dynamic data objects...");
+	strconcat					(caFileName,::Path.Current,CROSS_TABLE_NAME);
+	CALifeCrossTable::Load		(caFileName);
 	vfUpdateDynamicData			();
 	Log							("* Loading evaluation functions...");
 	m_tpAI_DDD					= xr_new<CAI_DDD>();

@@ -161,6 +161,6 @@ void					xrBuildCrossTable(LPCSTR caProjectName)
 	}
 	tMemoryStream.close_chunk();
 	
-	strconcat			(caFileName,caProjectName,"level.gct");
+	strconcat			(caFileName,caProjectName,CROSS_TABLE_NAME);
 	tMemoryStream.SaveTo(caFileName,0);
 }
