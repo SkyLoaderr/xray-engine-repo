@@ -270,7 +270,7 @@ class CAI_Rat : public CCustomMonster
 
 		IC bool bfCheckIfSoundFrightful()
 		{
-			return((m_tLastSound.eSoundType & SOUND_TYPE_WEAPON) == SOUND_TYPE_WEAPON);
+			return(((m_tLastSound.eSoundType & SOUND_TYPE_WEAPON_BULLET_RICOCHET) == SOUND_TYPE_WEAPON_BULLET_RICOCHET) || ((m_tLastSound.eSoundType & SOUND_TYPE_WEAPON_SHOOTING) == SOUND_TYPE_WEAPON_SHOOTING));
 		};
 		
 		//////////////////////////

@@ -70,6 +70,8 @@ void CAI_Rat::feel_sound_new(CObject* who, int eType, Fvector& Position, float p
 				m_tLastSound.fPower			= power;
 				m_tLastSound.tSavedPosition = Position;
 				m_tLastSound.tpEntity		= tpEntity;
+				if ((eType & SOUND_TYPE_MONSTER_DYING) == SOUND_TYPE_MONSTER_DYING)
+					m_fMorale += m_fMoraleDecreaseQuant;
 			}
 		}
 	}

@@ -75,7 +75,7 @@ void CAI_Rat::Die()
 	vfRemoveStandingMember();
 	Group.m_dwAliveCount--;
 	eCurrentState = aiRatDie;
-	vfAddMorale(m_fMoraleDecreaseQuant, m_fMoraleDecreaseRadius);
+	//vfAddMorale(m_fMoraleDecreaseQuant, m_fMoraleDecreaseRadius);
 }
 
 void CAI_Rat::OnDeviceCreate()

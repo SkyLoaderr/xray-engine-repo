@@ -22,7 +22,7 @@ float ffGetStartVolume(ESoundTypes eType)
 	else
 		if ((eType & SOUND_TYPE_MONSTER) == SOUND_TYPE_MONSTER) {
 			if ((eType & SOUND_TYPE_MONSTER_DYING) == SOUND_TYPE_MONSTER_DYING)
-				return(.2f);
+				return(.3f);
 			else if ((eType & SOUND_TYPE_MONSTER_INJURING) == SOUND_TYPE_MONSTER_INJURING)
 				return(.15f);
 			else if ((eType & SOUND_TYPE_MONSTER_WALKING) == SOUND_TYPE_MONSTER_WALKING)
