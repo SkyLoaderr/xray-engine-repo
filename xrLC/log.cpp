@@ -177,7 +177,10 @@ void __cdecl logThread(void *dummy)
 	while (TRUE)
 	{
 		// transfer data
-		csLog.Enter			();
+		while (!csLog.TryEnter())	{
+			_process_messages	( );
+			Sleep				(1);
+		}
 		if (progress>1.f) progress=1.f;
 
 		BOOL bWasChanges = FALSE;

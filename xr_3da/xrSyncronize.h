@@ -17,15 +17,19 @@ public:
         DeleteCriticalSection		( &m_CritSec );
     };
 
-    IC void    Enter()
+    IC void		Enter()
     {
         EnterCriticalSection		( &m_CritSec );
     };
 
-    IC void    Leave()
+    IC void		Leave()
     {
         LeaveCriticalSection		( &m_CritSec );
     };
+	IC BOOL		TryEnter ()
+	{
+		return TryEnterCriticalSection( &m_CritSec );
+	};
 private:
     CRITICAL_SECTION    m_CritSec;
 };
