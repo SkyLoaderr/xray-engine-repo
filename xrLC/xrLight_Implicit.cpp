@@ -228,9 +228,9 @@ public:
 					Lumel.a		= 1.f;
 					
 					ImplicitLumel& L = defl.Lumel(U,V);
-					L.color.x	= R.r;
-					L.color.y	= R.g;
-					L.color.z	= R.b;
+					L.color.x	= Lumel.r;
+					L.color.y	= Lumel.g;
+					L.color.z	= Lumel.b;
 					L.marker	= 255;
 				} else {
 					defl.Lumel	(U,V).marker=0;
