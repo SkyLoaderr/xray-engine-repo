@@ -13,6 +13,7 @@ class CPHJoint: public CPhysicsJoint{
 	CPHShell					*pShell;
 	dJointID					m_joint;
 	dJointID					m_joint1;
+	CPhysicsJoint**				m_back_ref;					
 	CPHJointDestroyInfo			*m_destroy_info;
 	
 	float						m_erp;				 //joint erp
@@ -88,6 +89,7 @@ public:
 	virtual void Activate					();
 	virtual void Create						();
 	virtual void RunSimulation				();
+	virtual void SetBackRef					(CPhysicsJoint** j);
 	virtual void SetForceAndVelocity		(const float force,const float velocity=0.f,const int axis_num=-1);
 	virtual void SetForce					(const float force,const int axis_num=-1);
 	virtual void SetVelocity				(const float velocity=0.f,const int axis_num=-1);

@@ -22,8 +22,14 @@ CPHJoint::~CPHJoint(){
 	xr_delete(m_destroy_info);
 	if(bActive) Deactivate();
 	axes.clear();
-
+	if(m_back_ref)*m_back_ref=NULL;
 };
+
+void CPHJoint::SetBackRef(CPhysicsJoint** j)
+{
+	R_ASSERT2(*j==static_cast<CPhysicsJoint*>(this),"wronng reference");
+	m_back_ref=j;
+}
 void CPHJoint::CreateBall()
 {
 
@@ -479,6 +485,7 @@ void CPHJoint::SetLimits(const float low, const float high, const int axis_num)
 CPHJoint::CPHJoint(CPhysicsJoint::enumType type ,CPhysicsElement* first,CPhysicsElement* second)
 {
 
+	m_back_ref	=NULL;
 	m_destroy_info=NULL;
 	pFirstGeom	  =NULL;
 	pFirst_element=dynamic_cast<CPHElement*>(first);

@@ -1207,7 +1207,7 @@ bool CSE_ALifeHelicopter::used_ai_locations	() const
 ////////////////////////////////////////////////////////////////////////////
 // CSE_ALifeCar
 ////////////////////////////////////////////////////////////////////////////
-CSE_ALifeCar::CSE_ALifeCar				(LPCSTR caSection) : CSE_ALifeDynamicObjectVisual(caSection)
+CSE_ALifeCar::CSE_ALifeCar				(LPCSTR caSection) : CSE_ALifePHSkeletonObject(caSection)
 {
 	if (pSettings->section_exist(caSection) && pSettings->line_exist(caSection,"visual"))
     	set_visual				(pSettings->r_string(caSection,"visual"));

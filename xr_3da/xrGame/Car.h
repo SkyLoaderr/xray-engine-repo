@@ -6,7 +6,7 @@
 #include "CarLights.h"
 #include "phobject.h"
 #include "holder_custom.h"
-
+#include "PHSkeleton.h"
 // refs
 class ENGINE_API			CBoneInstance;
 class						CActor;
@@ -20,7 +20,8 @@ class CCar :
 	public CEntity, 
 	public CScriptMonster,
 	public CPHUpdateObject,
-	public CHolderCustom
+	public CHolderCustom,
+	public CPHSkeleton
 {
 	static BONE_P_MAP bone_map; //interface for PhysicsShell
 	virtual void PhDataUpdate(dReal step);
@@ -417,7 +418,10 @@ public:
 
 	// Inventory for the car
 	CInventory*				GetInventory		(){return inventory;}
-
+protected:
+	virtual CPhysicsShellHolder*	PPhysicsShellHolder	()	{return PhysicsShellHolder();}								;
+	virtual void					net_Save			(NET_Packet& P)																	;
+//	virtual	BOOL					net_SaveRelevant	()																				;
 public:
 	CCar(void);
 	virtual ~CCar(void);

@@ -19,7 +19,12 @@ public:
 	{
 		return m_pPhysicsShell;
 	}
-	
+protected:
+	IC CPhysicsShellHolder*	PhysicsShellHolder	()
+	{
+		return this;
+	}
+public:
 	virtual void			PHGetLinearVell		(Fvector& velocity);
 	virtual void			PHSetLinearVell		(Fvector& velocity);
 	virtual void			PHSetMaterial		(LPCSTR m);
@@ -43,6 +48,7 @@ public:
 	virtual void			net_Destroy			();
 	virtual BOOL			net_Spawn			(LPVOID	DC);
 			void			Init				();
+
 protected:
 private:
 };

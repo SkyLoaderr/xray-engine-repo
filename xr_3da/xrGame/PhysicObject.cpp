@@ -42,44 +42,41 @@ BOOL CPhysicObject::net_Spawn(LPVOID DC)
 		default: NODEFAULT; 
 	}
 
-	if(!po->flags.test(CSE_ALifeObjectPhysic::flSpawnCopy))
-											CreatePhysicsShell(po);
-
-	if(Visual()&&PKinematics(Visual()))
+	if(!CPHSkeleton::Spawn(po))
 	{
-
-		CSkeletonAnimated* pSkeletonAnimated=NULL;
-		R_ASSERT(Visual()&&PKinematics(Visual()));
-		pSkeletonAnimated=PSkeletonAnimated(Visual());
-		if(pSkeletonAnimated)
+		CreatePhysicsShell(e);
+		if(Visual()&&PKinematics(Visual()))
 		{
-			R_ASSERT2(*po->startup_animation,"no startup animation");
-			pSkeletonAnimated->PlayCycle(*po->startup_animation);
-		}
-		PKinematics(Visual())->Calculate();
-	}
-	if(po->flags.test(CSE_ALifePHSkeletonObject::flSavedData))
-	{
-		RestoreNetState(po->saved_bones.bones);
-		po->flags.set(CSE_ALifePHSkeletonObject::flSavedData,FALSE);
-	}
 
-	if(!po->flags.test(CSE_ALifePHSkeletonObject::flSpawnCopy))
-	{
+			CSkeletonAnimated* pSkeletonAnimated=NULL;
+			R_ASSERT(Visual()&&PKinematics(Visual()));
+			pSkeletonAnimated=PSkeletonAnimated(Visual());
+			if(pSkeletonAnimated)
+			{
+				R_ASSERT2(*po->startup_animation,"no startup animation");
+				pSkeletonAnimated->PlayCycle(*po->startup_animation);
+			}
+			PKinematics(Visual())->Calculate();
+		}
+
+		RestoreNetState(po);
 		setVisible(true);
 		setEnabled(true);
 	}
+
 	return TRUE;
 }
 
 void CPhysicObject::net_Destroy()
 {
+	RespawnInit();
 	inherited::net_Destroy();
 }
 
 void CPhysicObject::net_Save(NET_Packet& P)
 {
 	inherited::net_Save(P);
+	SaveNetState	   (P);
 }
 void CPhysicObject::CreatePhysicsShell(CSE_Abstract* e)
 {
@@ -101,12 +98,19 @@ void CPhysicObject::CreateSkeleton(CSE_ALifeObjectPhysic* po)
 void CPhysicObject::Load(LPCSTR section)
 {
 	inherited::Load(section);
+	CPHSkeleton::Load(section);
 }
 
 
 void CPhysicObject::shedule_Update		(u32 dt)
 {
 	inherited::shedule_Update(dt);
+	CPHSkeleton::Update(dt);
+}
+void CPhysicObject::UpdateCL()
+{
+	inherited::UpdateCL();
+	PHObjectPositionUpdate();
 }
 void CPhysicObject::PHObjectPositionUpdate	()
 {
@@ -228,7 +232,7 @@ BOOL CPhysicObject::UsedAI_Locations()
 
 void CPhysicObject::InitServerObject(CSE_Abstract * D)
 {
-	inherited::InitServerObject(D);
+	CPHSkeleton::InitServerObject(D);
 	CSE_ALifeObjectPhysic		*l_tpALifePhysicObject = dynamic_cast<CSE_ALifeObjectPhysic*>(D);
 	if(!l_tpALifePhysicObject)return;
 	l_tpALifePhysicObject->type			= u32(m_type);

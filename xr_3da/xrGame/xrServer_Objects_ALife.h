@@ -344,7 +344,7 @@ SERVER_ENTITY_DECLARE_END
 add_to_type_list(CSE_ALifeHelicopter)
 #define script_type_list save_type_list(CSE_ALifeHelicopter)
 
-SERVER_ENTITY_DECLARE_BEGIN(CSE_ALifeCar,CSE_ALifeDynamicObjectVisual)
+SERVER_ENTITY_DECLARE_BEGIN(CSE_ALifeCar,CSE_ALifePHSkeletonObject)
 									CSE_ALifeCar		(LPCSTR caSection);
 	virtual							~CSE_ALifeCar		();
 	virtual bool					used_ai_locations	() const;
