@@ -135,8 +135,13 @@ using namespace std;
 #pragma comment( lib, "winmm.lib"		)
 
 #pragma comment( lib, "d3d8.lib"		)
-#pragma comment( lib, "d3dx8.lib"		)
 #pragma comment( lib, "dxerr8.lib"		)
+
+#ifdef DEBUG
+#pragma comment( lib, "d3dx8d.lib"		)
+#else
+#pragma comment( lib, "d3dx8.lib"		)
+#endif
 
 #pragma comment( lib, "dsound.lib"		)
 #pragma comment( lib, "dinput.lib"		)
