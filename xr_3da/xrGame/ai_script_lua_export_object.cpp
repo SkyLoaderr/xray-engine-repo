@@ -182,6 +182,7 @@ void CScriptEngine::export_object()
 			
 			.def("add_sound",					(void (CLuaGameObject::*)(LPCSTR,u32,ESoundTypes,u32,u32,u32))(CLuaGameObject::add_sound))
 			.def("add_sound",					(void (CLuaGameObject::*)(LPCSTR,u32,ESoundTypes,u32,u32,u32,LPCSTR))(CLuaGameObject::add_sound))
+			.def("add_sound",					(void (CLuaGameObject::*)(LPCSTR,u32,ESoundTypes,u32,u32,u32,LPCSTR,LPCSTR))(CLuaGameObject::add_sound))
 			.def("remove_sound",				&CLuaGameObject::remove_sound)
 			.def("set_sound_mask",				&CLuaGameObject::set_sound_mask)
 			.def("play_sound",					(void (CLuaGameObject::*)(u32))(CLuaGameObject::play_sound))

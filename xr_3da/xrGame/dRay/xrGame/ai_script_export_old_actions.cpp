@@ -223,6 +223,10 @@ void CScriptEngine::export_actions()
 			.def(								constructor<MonsterSpace::EMonsterSounds>())
 			.def(								constructor<MonsterSpace::EMonsterSounds,int>())
 
+			// trader specific
+			.def(								constructor<LPCSTR,LPCSTR,MonsterSpace::EMonsterHeadAnimType>())
+
+
 			.def("set_sound",					(void (CScriptSoundAction::*)(LPCSTR))(CScriptSoundAction::SetSound))
 			.def("set_sound",					(void (CScriptSoundAction::*)(const CLuaSound &))(CScriptSoundAction::SetSound))
 			.def("set_sound_type",				&CScriptSoundAction::SetSoundType)

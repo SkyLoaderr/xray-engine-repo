@@ -258,8 +258,10 @@ void CScriptMonster::ProcessScripts()
 #endif
 
 		vfFinishAction(l_tpEntityAction);
-		
+
+#ifdef DEBUG
 		Msg("Entity Action removed!!!");
+#endif
 
 		xr_delete	(l_tpEntityAction);
 		m_tpActionQueue.erase(m_tpActionQueue.begin());

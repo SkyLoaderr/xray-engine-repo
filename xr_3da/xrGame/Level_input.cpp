@@ -6,7 +6,7 @@
 #include "alife_simulator.h"
 #include "level_graph.h"
 
-#include "ai/monsters/burer/burer.h"
+#include "ai/trader/ai_trader.h"
 
 #include "../fdemorecord.h"
 #include "level.h"
@@ -198,16 +198,13 @@ void CLevel::IR_OnKeyboardPress(int key)
 //	TEST	
 //////////////////////////////////////////////////////////////////////////
 
-//	CObject			*obj	= Level().Objects.FindObjectByName("chimera");
-//	CEntityAlive	*pE		= dynamic_cast<CEntityAlive *>(obj);
-//	Fvector dir, dir_inv;
-//	dir.set(0.f,1.0f,0.f);
-//	dir_inv.set(0.f,-1.0f,0.f);
-//
-//	if (pE) {
+//	CObject			*obj		= Level().Objects.FindObjectByName("trader");
+//	CAI_Trader		*pTrader	= dynamic_cast<CAI_Trader *>(obj);
+//	if (pTrader) {
 //		switch (key) {
 //		case DIK_1:
-//			pE->m_pPhysicsShell->applyImpulse(dir, 5.0f * pE->m_pPhysicsShell->getMass());
+//			pTrader->m_bPlaying	= false;
+//			pTrader->SelectAnimation(pTrader->XFORM().k,pTrader->XFORM().k,0.f);
 //			break;
 //		case DIK_2:
 //			pE->m_pPhysicsShell->applyImpulse(dir_inv, 1.5f * pE->m_pPhysicsShell->getMass());

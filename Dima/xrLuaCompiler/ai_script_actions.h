@@ -499,6 +499,8 @@ public:
 	
 	MonsterSpace::EMonsterSounds	m_monster_sound;
 	int								m_monster_sound_delay;
+	
+	MonsterSpace::EMonsterHeadAnimType m_tHeadAnimType;
 
 
 							CScriptSoundAction		()
@@ -512,6 +514,7 @@ public:
 		m_tSoundAngles.set	(0,0,0);
 		m_bCompleted		= true;
 		m_monster_sound		= MonsterSpace::eMonsterSoundDummy;
+		m_tHeadAnimType		= MonsterSpace::eHeadAnimNone;
 	}
 
 							CScriptSoundAction		(LPCSTR caSoundToPlay, LPCSTR caBoneName, const Fvector &tPositionOffset = Fvector().set(0,0,0), const Fvector &tAngleOffset = Fvector().set(0,0,0), bool bLooped = false, ESoundTypes sound_type = SOUND_TYPE_NO_SOUND)
@@ -523,6 +526,7 @@ public:
 		SetSound			(caSoundToPlay);
 		SetSoundType		(sound_type);
 		m_monster_sound		= MonsterSpace::eMonsterSoundDummy;
+		m_tHeadAnimType		= MonsterSpace::eHeadAnimNone;
 	}
 
 							CScriptSoundAction		(LPCSTR caSoundToPlay, const Fvector &tPosition, const Fvector &tAngleOffset = Fvector().set(0,0,0), bool bLooped = false, ESoundTypes sound_type = SOUND_TYPE_NO_SOUND)
@@ -533,6 +537,7 @@ public:
 		SetAngles			(tAngleOffset);
 		SetSoundType		(sound_type);
 		m_monster_sound		= MonsterSpace::eMonsterSoundDummy;
+		m_tHeadAnimType		= MonsterSpace::eHeadAnimNone;
 	}
 
 							CScriptSoundAction		(CLuaSound &sound, LPCSTR caBoneName, const Fvector &tPositionOffset = Fvector().set(0,0,0), const Fvector &tAngleOffset = Fvector().set(0,0,0), bool bLooped = false, ESoundTypes sound_type = SOUND_TYPE_NO_SOUND)
@@ -544,6 +549,7 @@ public:
 		SetSound			(sound);
 		SetSoundType		(sound_type);
 		m_monster_sound		= MonsterSpace::eMonsterSoundDummy;
+		m_tHeadAnimType		= MonsterSpace::eHeadAnimNone;
 	}
 
 							CScriptSoundAction		(CLuaSound &sound, const Fvector &tPosition, const Fvector &tAngleOffset = Fvector().set(0,0,0), bool bLooped = false, ESoundTypes sound_type = SOUND_TYPE_NO_SOUND)
@@ -554,6 +560,7 @@ public:
 		SetAngles			(tAngleOffset);
 		SetSoundType		(sound_type);
 		m_monster_sound		= MonsterSpace::eMonsterSoundDummy;
+		m_tHeadAnimType		= MonsterSpace::eHeadAnimNone;
 	}
 	
 	////////////////////////////////////////////////////////////////////////////////////
@@ -572,6 +579,20 @@ public:
 		m_monster_sound			= sound_type;
 		m_monster_sound_delay	= delay;
 		m_bCompleted			= false;
+	}
+
+	////////////////////////////////////////////////////////////////////////////////////
+	// Trader Specific
+	///////////////////////////////////////////////////////////////////////////////////
+
+							CScriptSoundAction		(LPCSTR caSoundToPlay, LPCSTR caBoneName, MonsterSpace::EMonsterHeadAnimType head_anim_type)
+	{
+		SetBone				(caBoneName);
+		SetSound			(caSoundToPlay);		
+		m_bCompleted		= false;
+		m_bLooped			= false;
+		m_tHeadAnimType		= head_anim_type;
+		m_monster_sound		= MonsterSpace::eMonsterSoundDummy;
 	}
 
 	///////////////////////////////////////////////////////////////////////////////////

@@ -17,8 +17,6 @@
 
 CAI_Trader::CAI_Trader()
 {
-	m_bPlaying					= false;
-
 	InitTrade();
 	Init();
 } 
@@ -53,11 +51,15 @@ void CAI_Trader::reinit	()
 	CEntityAlive::reinit	();
 	CInventoryOwner::reinit	();
 	CScriptMonster::reinit	();
+	CSoundPlayer::reinit	();
 
 	m_OnStartCallback.clear ();
 	m_OnStopCallback.clear	();
 	m_OnTradeCallback.clear ();
 
+	m_tpHeadDef				= 0;
+	m_tpGlobalDef			= 0;
+	m_cur_head_anim_type	= MonsterSpace::eHeadAnimNone;
 }
 
 void CAI_Trader::reload	(LPCSTR section)
@@ -65,8 +67,115 @@ void CAI_Trader::reload	(LPCSTR section)
 	CEntityAlive::reload	(section);
 	CInventoryOwner::reload	(section);
 	CScriptMonster::reload	(section);
+	CSoundPlayer::reload	(section);
+
+	head_anims.clear		();	
+
+	add_head_anim(MonsterSpace::eHeadAnimNormal, "talk_");
+	add_head_anim(MonsterSpace::eHeadAnimAngry,  "talk_angry_");
+	add_head_anim(MonsterSpace::eHeadAnimGlad,   "talk_glad_");
+	add_head_anim(MonsterSpace::eHeadAnimKind,   "talk_kind_");
 }
 
+/////////////////////////////////////////////////////////////////////////////////////////
+// Animation management
+/////////////////////////////////////////////////////////////////////////////////////////
+
+void CAI_Trader::add_head_anim(u32 index, LPCSTR anim_name)
+{
+	SAnimInfo val;
+	
+	val.name	= anim_name;
+	val.count	= get_anim_count(anim_name);
+
+	head_anims.insert(mk_pair(index, val));
+}
+
+u8 CAI_Trader::get_anim_count(LPCSTR anim)
+{
+	string128	s, s_temp; 
+	u8 count = 0;
+
+	for (int i=0; ; ++i) {
+		if (0 != PSkeletonAnimated(Visual())->ID_Cycle_Safe(strconcat(s_temp, anim,itoa(i,s,10))))  count++;
+		else break;
+	}
+
+	if (count == 0) {
+		sprintf(s, "Error! No animation: %s for monster %s", anim, *cName());
+		R_ASSERT2(count != 0, s);
+	} 
+
+	return count;
+}
+
+void CAI_Trader::select_head_anim(u32 type)
+{
+	MOTION_MAP_IT it = head_anims.find(type);
+	VERIFY(it != head_anims.end());
+
+	// get index
+	u32 index = Random.randI(it->second.count);
+
+	// construct name
+	string128 s1,s2;
+	m_tpHeadDef = PSkeletonAnimated(Visual())->ID_Cycle_Safe(strconcat(s2,*it->second.name,itoa(index,s1,10)));
+}
+
+// Animation Callbacks
+void __stdcall CAI_Trader::AnimGlobalCallback(CBlend* B)
+{
+	CAI_Trader *trader = (CAI_Trader*)B->CallbackParam;
+	trader->m_tpGlobalDef = 0;
+}
+
+void __stdcall CAI_Trader::AnimHeadCallback(CBlend* B)
+{
+	CAI_Trader *trader = (CAI_Trader*)B->CallbackParam;
+	trader->m_tpHeadDef = 0;
+}
+
+
+void CAI_Trader::SelectAnimation		(const Fvector& /**_view/**/, const Fvector& /**_move/**/, float /**speed/**/)
+{
+	if (!g_Alive()) return;
+
+	// назначить глобальную анимацию
+	if (!m_tpGlobalDef) {
+		// выбор анимации
+		m_tpGlobalDef = PSkeletonAnimated(Visual())->ID_Cycle("rot_5");
+		PSkeletonAnimated(Visual())->PlayCycle(m_tpGlobalDef,TRUE,AnimGlobalCallback,this);
+	}
+
+	AssignHeadAnimation();
+}
+
+void CAI_Trader::AssignHeadAnimation()
+{
+	// назначить анимацию головы
+	if (!m_tpHeadDef)	{
+		if ( m_cur_head_anim_type != u32(-1)) {
+			select_head_anim(m_cur_head_anim_type);
+			PSkeletonAnimated(Visual())->PlayCycle(m_tpHeadDef,TRUE,AnimHeadCallback,this);	
+		}
+	}
+}
+////////////////////////////////////////////////////////////////////////////////////////////
+
+
+bool CAI_Trader::bfAssignSound(CEntityAction *tpEntityAction)
+{
+	if (!CScriptMonster::bfAssignSound(tpEntityAction))
+		return			(false);
+
+	CScriptSoundAction	&l_tAction	= tpEntityAction->m_tSoundAction;
+	m_cur_head_anim_type = l_tAction.m_tHeadAnimType;
+
+	return				(true);
+}
+
+
+//////////////////////////////////////////////////////////////////////////
 
 void __stdcall CAI_Trader::BoneCallback(CBoneInstance *B)
 {
@@ -113,7 +222,7 @@ BOOL CAI_Trader::net_Spawn			(LPVOID DC)
 	//m_body.current.yaw			= m_body.target.yaw	= -tpTrader->o_Angle.y;
 	//m_body.current.pitch			= m_body.target.pitch	= 0;
 	
-	m_tAnimation					= PSkeletonAnimated(Visual())->ID_Cycle("trade");
+	//m_tAnimation					= PSkeletonAnimated(Visual())->ID_Cycle("rot_5");
 
 	setVisible						(TRUE);
 	setEnabled						(TRUE);
@@ -151,21 +260,7 @@ void CAI_Trader::net_Import		(NET_Packet& P)
 	setEnabled						(TRUE);
 }
 
-void CAI_Trader::SelectAnimation		(const Fvector& /**_view/**/, const Fvector& /**_move/**/, float /**speed/**/)
-{
-	if (g_Alive()) 
-		if (!m_bPlaying) {
-			PSkeletonAnimated(Visual())->PlayCycle	(m_tAnimation,TRUE,AnimCallback,this);
-			m_bPlaying	= true;
-		}
-}
 
-IC BOOL BE	(BOOL A, BOOL B)
-{
-	bool a = !!A;
-	bool b = !!B;
-	return a==b;
-}
 
 void CAI_Trader::OnEvent		(NET_Packet& P, u16 type)
 {
@@ -297,11 +392,19 @@ void TraderScriptCallBack(CBlend* B)
 
 void CAI_Trader::UpdateCL()
 { 
-	inherited::UpdateCL();
+	inherited::UpdateCL		();
+	CSoundPlayer::update	(Device.fTimeDelta);
 
 	if (!bfScriptAnimation()) {
 		SelectAnimation		(XFORM().k,XFORM().k,0.f);
 	}
+
+	if (!m_current_sound) {
+		m_tpHeadDef				= 0;
+		m_cur_head_anim_type	= MonsterSpace::eHeadAnimNone;
+	}
+
+	AssignHeadAnimation();
 }
 
 BOOL CAI_Trader::UsedAI_Locations()
@@ -378,3 +481,6 @@ void CAI_Trader::spawn_supplies			()
 	inherited::spawn_supplies		();
 	CInventoryOwner::spawn_supplies	();
 }
+
+
+

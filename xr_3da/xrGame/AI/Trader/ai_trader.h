@@ -21,19 +21,35 @@ class CInventoryItem;
 class CAI_Trader :	public CEntityAlive, 
 					public CInventoryOwner, 
 					public CScriptMonster,
-					public CSoundPlayer
-{
+					public CSoundPlayer {
+
+	typedef CEntityAlive inherited;
+	
 	CScriptCallback		m_OnStartCallback;
 	CScriptCallback		m_OnStopCallback;
 	CScriptCallback		m_OnTradeCallback;
 
+	struct SAnimInfo {
+		ref_str		name;			// "talk_"
+		u8			count;			// количество анимаций данного типа
+	};
+
+	DEFINE_MAP(u32, SAnimInfo, MOTION_MAP, MOTION_MAP_IT);
+
+	MOTION_MAP head_anims;
+
+	CMotionDef*			m_tpHeadDef;	
+	CMotionDef*			m_tpGlobalDef;
+
+	MonsterSpace::EMonsterHeadAnimType m_cur_head_anim_type;
+
+
 public:
-	typedef CEntityAlive inherited;
-	CMotionDef*			m_tAnimation;
-	bool				m_bPlaying;
+	
 	ALife::ARTEFACT_TRADER_ORDER_MAP	m_tpOrderedArtefacts;
 
 
+public:
 						CAI_Trader		();
 	virtual				~CAI_Trader		();
 	virtual	void		Init			();
@@ -54,11 +70,8 @@ public:
 	
 	virtual	void		UpdateCL		();
 
-	static void			AnimCallback	(CBlend* B)
-	{
-		CAI_Trader		*tpTrader = (CAI_Trader*)B->CallbackParam;
-		tpTrader->m_bPlaying = false;
-	}
+	static void	__stdcall AnimGlobalCallback	(CBlend* B);
+	static void	__stdcall AnimHeadCallback		(CBlend* B);
 
 	virtual void		g_fireParams			(const CHudItem* pHudItem, Fvector& P, Fvector& D);
 	virtual void		g_WeaponBones			(int &L, int &R1, int &R2);
@@ -99,4 +112,17 @@ public:
 	virtual	bool			can_attach				(const CInventoryItem *inventory_item) const;
 	virtual bool			use_bolts				() const;
 	virtual	void			spawn_supplies			();
+
+
+private:
+			// Animation management
+
+			void			add_head_anim			(u32 index, LPCSTR anim_name);
+			u8				get_anim_count			(LPCSTR anim);
+			void			select_head_anim		(u32 type);
+			void			AssignHeadAnimation		();
+
+
+	virtual	bool			bfAssignSound			(CEntityAction *tpEntityAction);
+
 };

@@ -39,7 +39,7 @@ void CSoundPlayer::reload			(LPCSTR section)
 	VERIFY							(m_playing_sounds.empty());
 }
 
-void CSoundPlayer::add				(LPCSTR prefix, u32 max_count, ESoundTypes type, u32 priority, u32 mask, u32 internal_type, LPCSTR bone_name)
+void CSoundPlayer::add				(LPCSTR prefix, u32 max_count, ESoundTypes type, u32 priority, u32 mask, u32 internal_type, LPCSTR bone_name, LPCSTR head_anim)
 {
 	xr_map<u32,CSoundCollection>::iterator	I = m_sounds.find(internal_type);
 	if (m_sounds.end() != I)

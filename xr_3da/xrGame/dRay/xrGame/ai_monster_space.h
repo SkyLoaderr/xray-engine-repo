@@ -160,6 +160,15 @@ namespace MonsterSpace {
 		eMonsterSoundDummy		= u32(-1),
 	};
 
+	enum EMonsterHeadAnimType {
+		eHeadAnimNormal			= u32(0),
+		eHeadAnimAngry,
+		eHeadAnimGlad,
+		eHeadAnimKind,
+
+		eHeadAnimNone			= u32(-1),
+	};
+
 	struct SBoneRotation {
 		SRotation		current;
 		SRotation		target;
