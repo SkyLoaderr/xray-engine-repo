@@ -733,6 +733,13 @@ void CActor::OnHUDDraw(CCustomHUD* hud)
 	
 	char buf[128];
 	buf[0] = 0;
+	switch (Movement.Environment())
+	{
+	case CMovementControl::peOnGround:	strcat(buf,"ground:");			break;
+	case CMovementControl::peInAir:		strcat(buf,"air:");				break;
+	case CMovementControl::peAtWall:	strcat(buf,"wall:");			break;
+	}
+
 	if (mstate_real&mcAccel)	strcat(buf,"Accel ");
 	if (mstate_real&mcCrouch)	strcat(buf,"Crouch ");
 	if (mstate_real&mcFwd)		strcat(buf,"Fwd ");
