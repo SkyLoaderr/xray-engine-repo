@@ -617,13 +617,16 @@ bool CWeaponMagazined::Attach(PIItem pIItem)
 
 	if(result)
 	{
- 		//уничтожить подсоединенную вещь из инвентаря
-		pIItem->Drop();
-		NET_Packet P;
-		u_EventGen(P,GE_DESTROY,pIItem->ID());
-		Msg					("ge_destroy: [%d] - %s",pIItem->ID(),*pIItem->cName());
-		P.w_u16(u16(pIItem->ID()));
-		u_EventSend(P);
+		if (OnServer())
+		{
+			//уничтожить подсоединенную вещь из инвентаря
+			pIItem->Drop();
+			NET_Packet P;
+			u_EventGen(P,GE_DESTROY,pIItem->ID());
+			Msg					("ge_destroy: [%d] - %s",pIItem->ID(),*pIItem->cName());
+			P.w_u16(u16(pIItem->ID()));
+			u_EventSend(P);
+		};
 
 		UpdateAddonsVisibility();
 		InitAddons();

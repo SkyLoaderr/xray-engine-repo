@@ -278,6 +278,8 @@ void CInventoryItem::OnEvent (NET_Packet& P, u16 type)
 //объекте, поэтому функция должна быть переопределена
 bool CInventoryItem::Detach(const char* item_section_name) 
 {
+	if (OnClient()) return true;
+
 	CSE_Abstract*		D	= F_entity_Create(item_section_name);
 	R_ASSERT		   (D);
 	CSE_ALifeDynamicObject	*l_tpALifeDynamicObject = 
