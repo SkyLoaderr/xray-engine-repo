@@ -11,7 +11,7 @@ void CUIStatic::script_register(lua_State *L)
 		class_<CUIStatic, CUIWindow>("UIStatic")
 		.def(						constructor<>())
 
-		.def("SetText",				&CUIStatic::SetText)
+		.def("SetText",				((void)(CUIStatic::*)(LPCSTR))CUIStatic::SetText)
 		.def("GetText",				&CUIStatic::GetText)
 
 		.def("SetColor",			&CUIStatic::SetColor)
