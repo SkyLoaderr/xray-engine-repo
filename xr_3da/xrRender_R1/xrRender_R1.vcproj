@@ -298,6 +298,12 @@
 				RelativePath="FStaticRender_Volume.cpp">
 			</File>
 			<File
+				RelativePath=".\Particle.h">
+			</File>
+			<File
+				RelativePath=".\ParticleSystem.h">
+			</File>
+			<File
 				RelativePath=".\PSLibrary.cpp">
 			</File>
 			<File

@@ -27,7 +27,7 @@ namespace PS
 #endif
 
 #pragma pack( push,1 )
-	struct ENGINE_API SEmitterDef
+	struct  SEmitterDef
 	{
 		enum EEmitterType{
 			emPoint=0,
@@ -76,7 +76,7 @@ namespace PS
 #endif
 	};
 
-	struct ENGINE_API SAnimation
+	struct  SAnimation
 	{
 		Fvector2		m_TexSize;
 		Fvector2		m_FrameSize;
@@ -113,7 +113,7 @@ namespace PS
 #endif
 	};
 
-	struct ENGINE_API 	SParams
+	struct  	SParams
 	{
 		string64			m_Name;
 		// params
@@ -143,7 +143,7 @@ namespace PS
 #endif
 	};
 
-	struct ENGINE_API SDef: public SParams
+	struct  SDef: public SParams
 	{
 		ref_shader			m_CachedShader;
 		u8					m_Reserved	[60];
@@ -234,7 +234,7 @@ namespace PS
 	};
 #pragma pack( pop )
 
-	struct ENGINE_API SEmitter : public SEmitterDef
+	struct  SEmitter : public SEmitterDef
 	{
 		float			m_fEmissionResidue;
 		BOOL            m_bPlaying;

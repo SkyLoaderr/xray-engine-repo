@@ -952,12 +952,6 @@
 				Name="Particle system"
 				Filter="">
 				<File
-					RelativePath=".\Particle.h">
-				</File>
-				<File
-					RelativePath=".\ParticleSystem.h">
-				</File>
-				<File
 					RelativePath=".\PS_instance.cpp">
 				</File>
 				<File
