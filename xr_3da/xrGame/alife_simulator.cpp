@@ -24,10 +24,12 @@ CALifeSimulator::CALifeSimulator		(xrServer *server, shared_str* command_line) :
 
 	string64					saved_game;
 	strcpy						(saved_game,**command_line);
+	LPSTR						_new = strstr(saved_game,"/new");
+	LPSTR						_load = strstr(saved_game,"/load");
 	LPSTR						temp = strchr(saved_game,'/');
 	R_ASSERT2					(temp,"Invalid server options!");
 	*temp						= 0;
-	load						(saved_game,true);
+	load						(saved_game,_load ? false : true, !!_new);
 }
 
 CALifeSimulator::~CALifeSimulator		()

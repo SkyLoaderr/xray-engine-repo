@@ -242,15 +242,15 @@ void CALifeUpdateManager::new_game			(LPCSTR save_name)
 	Msg									("* New game is successfully created!");
 }
 
-void CALifeUpdateManager::load			(LPCSTR game_name, bool no_assert)
+void CALifeUpdateManager::load			(LPCSTR game_name, bool no_assert, bool new_only)
 {
 	pApp->LoadTitle						("SERVER: Loading alife simulator...");
 
 	Memory.mem_compact					();
 	u32									memory_usage = Memory.mem_usage();
 
-	if (!CALifeStorageManager::load(game_name)) {
-		R_ASSERT3						(no_assert && xr_strlen(game_name),"Cannot find the specified saved game ",game_name);
+	if (new_only || !CALifeStorageManager::load(game_name)) {
+		R_ASSERT3						(new_only || no_assert && xr_strlen(game_name),"Cannot find the specified saved game ",game_name);
 		new_game						(game_name);
 	}
 
