@@ -147,7 +147,7 @@ void game_cl_GameState::TranslateGameMessage	(u32 msg, NET_Packet& P)
 
 	string512 Text;
 	char	Color_Main[]	= "%c192,192,192";
-	LPSTR	Color_Teams[3]	= {"%c255,255,255", "%c64,255,64", "%c64,64,255"};
+	LPSTR	Color_Teams[3]	= {"%c255,240,190", "%c64,255,64", "%c64,64,255"};
 
 	switch (msg)
 	{

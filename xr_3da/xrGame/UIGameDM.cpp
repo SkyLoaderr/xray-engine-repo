@@ -24,6 +24,11 @@
 #define VOTE0_MSG_COLOR	0xffff0000
 #define VOTE1_MSG_COLOR	0xff00ff00
 #define FRAGS_AND_PLACE_COLOR	0xff00ff00
+
+
+#define DI2PX(x) float(iFloor((x+1)*float(Device.dwWidth)*0.5f))
+#define DI2PY(y) float(iFloor((y+1)*float(Device.dwHeight)*0.5f))
+#define SZ(x) x*Device.dwWidth
 //--------------------------------------------------------------------
 CUIGameDM::CUIGameDM()
 {
@@ -32,28 +37,28 @@ CUIGameDM::CUIGameDM()
 	m_pPlayerLists					= xr_new<CUIWindow>();
 
 	m_time_caption = "timelimit";
-	m_gameCaptions.addCustomMessage(m_time_caption, 0.0f, -0.95f, 0.03f, HUD().Font().pFontDI, CGameFont::alCenter, TIME_MSG_COLOR, "");
+	m_gameCaptions.addCustomMessage(m_time_caption, DI2PX(0.0f), DI2PY(-0.95f), SZ(0.03f), HUD().Font().pFontDI, CGameFont::alCenter, TIME_MSG_COLOR, "");
 	m_spectrmode_caption = "spetatormode";
-	m_gameCaptions.addCustomMessage(m_spectrmode_caption, 0.0f, -0.9f, 0.03f, HUD().Font().pFontDI, CGameFont::alCenter, SPECTRMODE_MSG_COLOR, "");
+	m_gameCaptions.addCustomMessage(m_spectrmode_caption, DI2PX(0.0f), DI2PY(-0.9f), SZ(0.03f), HUD().Font().pFontDI, CGameFont::alCenter, SPECTRMODE_MSG_COLOR, "");
 	m_spectator_caption = "spectator";
-	m_gameCaptions.addCustomMessage(m_spectator_caption, 0.0f, 0.0f, 0.03f, HUD().Font().pFontDI, CGameFont::alCenter, NORMAL_MSG_COLOR, "");
+	m_gameCaptions.addCustomMessage(m_spectator_caption, DI2PX(0.0f), DI2PY(0.0f), SZ(0.03f), HUD().Font().pFontDI, CGameFont::alCenter, NORMAL_MSG_COLOR, "");
 	m_pressjump_caption = "pressjump";
-	m_gameCaptions.addCustomMessage(m_pressjump_caption, 0.0f, 0.9f, 0.02f, HUD().Font().pFontDI, CGameFont::alCenter, NORMAL_MSG_COLOR, "");
+	m_gameCaptions.addCustomMessage(m_pressjump_caption, DI2PX(0.0f), DI2PY(0.9f), SZ(0.02f), HUD().Font().pFontDI, CGameFont::alCenter, NORMAL_MSG_COLOR, "");
 	m_pressbuy_caption = "pressbuy";
-	m_gameCaptions.addCustomMessage(m_pressbuy_caption, 0.0f, 0.95f, 0.02f, HUD().Font().pFontDI, CGameFont::alCenter, NORMAL_MSG_COLOR, "");
+	m_gameCaptions.addCustomMessage(m_pressbuy_caption, DI2PX(0.0f), DI2PY(0.95f), SZ(0.02f), HUD().Font().pFontDI, CGameFont::alCenter, NORMAL_MSG_COLOR, "");
 	m_round_result_caption =	"round_result";
-	m_gameCaptions.addCustomMessage(m_round_result_caption, 0.0f, -0.1f, 0.03f, HUD().Font().pFontDI, CGameFont::alCenter, ROUND_RESULT_COLOR, "");
+	m_gameCaptions.addCustomMessage(m_round_result_caption, DI2PX(0.0f), DI2PY(-0.1f), SZ(0.03f), HUD().Font().pFontDI, CGameFont::alCenter, ROUND_RESULT_COLOR, "");
 	m_force_respawn_time_caption =	"force_respawn_time";
-	m_gameCaptions.addCustomMessage(m_force_respawn_time_caption, 0.0f, -0.9f, 0.02f, HUD().Font().pFontDI, CGameFont::alCenter, NORMAL_MSG_COLOR, "");
+	m_gameCaptions.addCustomMessage(m_force_respawn_time_caption, DI2PX(0.0f), DI2PY(-0.9f), SZ(0.02f), HUD().Font().pFontDI, CGameFont::alCenter, NORMAL_MSG_COLOR, "");
 	m_frags_and_place_caption =	"frags_and_place";
-	m_gameCaptions.addCustomMessage(m_frags_and_place_caption, 0.0f, -0.75f, 0.02f, HUD().Font().pFontDI, CGameFont::alCenter, FRAGS_AND_PLACE_COLOR, "");
+	m_gameCaptions.addCustomMessage(m_frags_and_place_caption, DI2PX(0.0f), DI2PY(-0.75f), SZ(0.02f), HUD().Font().pFontDI, CGameFont::alCenter, FRAGS_AND_PLACE_COLOR, "");
 	//-----------------------------------------------------------------------
 	m_vote_caption0 = "votecaption0";
 	m_vote_caption1 = "votecaption1";
 	m_votetimeresult_caption= "votetimeresultcaption";
-	m_gameCaptions.addCustomMessage(m_vote_caption0, -1.0f, -0.45f, 0.018f, HUD().Font().pFontDI, CGameFont::alLeft, VOTE0_MSG_COLOR, "");
-	m_gameCaptions.addCustomMessage(m_vote_caption1, -1.0f, -0.4f, 0.018f, HUD().Font().pFontDI, CGameFont::alLeft, VOTE1_MSG_COLOR, "");
-	m_gameCaptions.addCustomMessage(m_votetimeresult_caption, -1.0f, -0.35f, 0.018f, HUD().Font().pFontDI, CGameFont::alLeft, VOTE0_MSG_COLOR, "");
+	m_gameCaptions.addCustomMessage(m_vote_caption0, DI2PX(-1.0f), DI2PY(-0.45f), SZ(0.018f), HUD().Font().pFontDI, CGameFont::alLeft, VOTE0_MSG_COLOR, "");
+	m_gameCaptions.addCustomMessage(m_vote_caption1, DI2PX(-1.0f), DI2PY(-0.4f), SZ(0.018f), HUD().Font().pFontDI, CGameFont::alLeft, VOTE1_MSG_COLOR, "");
+	m_gameCaptions.addCustomMessage(m_votetimeresult_caption, DI2PX(-1.0f), DI2PY(-0.35f), SZ(0.018f), HUD().Font().pFontDI, CGameFont::alLeft, VOTE0_MSG_COLOR, "");
 }
 //--------------------------------------------------------------------
 void CUIGameDM::SetClGame (game_cl_GameState* g)

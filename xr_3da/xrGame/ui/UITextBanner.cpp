@@ -87,7 +87,7 @@ void CUITextBanner::Out(float x, float y, const char *fmt, ...)
 	m_pFont->SetColor(m_Cl);
 	m_pFont->SetAligment(aligment);
 	if(fontSize>0.0f)
-		m_pFont->SetSizeI(fontSize);
+		m_pFont->SetSize(fontSize);
 
 	// ≈сли разрешение меньше базового, то корректируем положение вывода текста
 	if (x >= 1.0f && y >= 1.0f /* && Device.dwHeight < UI_BASE_HEIGHT */)
@@ -97,7 +97,7 @@ void CUITextBanner::Out(float x, float y, const char *fmt, ...)
 //		x *= static_cast<float>(Device.dwWidth) / UI_BASE_WIDTH;
 //		y *= static_cast<float>(Device.dwHeight) / UI_BASE_HEIGHT;
 	}
-	m_pFont->OutI(x, y, buf.c_str());
+	m_pFont->Out(x, y, buf.c_str());
 	if (m_bNewRenderMethod)
 		m_pFont->OnRender();
 }

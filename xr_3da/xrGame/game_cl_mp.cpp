@@ -208,8 +208,8 @@ bool	game_cl_mp::OnKeyboardRelease		(int key)
 }
 
 char	Color_Weapon[]	= "%c255,1,1";
-u32		Color_Teams_u32[3]	= {color_rgba(255,255,255,255), color_rgba(64,255,64,255), color_rgba(64,64,255,255)};
-LPSTR	Color_Teams[3]	= {"%c255,255,255", "%c64,255,64", "%c64,64,255"};
+u32		Color_Teams_u32[3]	= {color_rgba(255,0,190,255), color_rgba(64,255,64,255), color_rgba(64,64,255,255)};
+LPSTR	Color_Teams[3]	= {"%c255,240,190", "%c64,255,64", "%c64,64,255"};
 char	Color_Main[]	= "%c192,192,192";
 char	Color_Radiation[]	= "%c0,255,255";
 char	Color_Neutral[]	= "%c255,0,255";
