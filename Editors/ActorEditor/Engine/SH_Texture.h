@@ -28,7 +28,7 @@ public:
 	void								desc_update	();
 
 public:
-	void								Load		(LPCSTR Name);
+	void								Load		();
 	void								Unload		(void);
 	void								Apply		(u32 dwStage);
 

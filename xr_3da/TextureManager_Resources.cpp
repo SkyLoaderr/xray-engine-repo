@@ -387,6 +387,8 @@ void		CShaderManager::DeleteGeom		(const SGeometry* Geom)
 //--------------------------------------------------------------------------------------------------------------
 CTexture* CShaderManager::_CreateTexture	(LPCSTR Name)
 {
+	DBG_VerifyTextures	();
+
 	R_ASSERT(Name && Name[0]);
 
 	// ***** first pass - search already loaded texture
@@ -404,6 +406,8 @@ CTexture* CShaderManager::_CreateTexture	(LPCSTR Name)
 }
 void	CShaderManager::_DeleteTexture		(const CTexture* T)
 {
+	DBG_VerifyTextures	();
+
 	if (0==(T->dwFlags&xr_resource::RF_REGISTERED))	return;
 	LPSTR N					= LPSTR		(T->cName);
 	map_Texture::iterator I	= m_textures.find	(N);
@@ -414,13 +418,20 @@ void	CShaderManager::_DeleteTexture		(const CTexture* T)
 	Msg	("! ERROR: Failed to find texture surface '%s'",T->cName);
 }
 
+#ifdef DEBUG
 void	CShaderManager::DBG_VerifyTextures	()
 {
 	map_Texture::iterator I		= m_textures.begin	();
 	map_Texture::iterator E		= m_textures.end	();
-	for (; I!=E; I++)
+	for (; I!=E; I++) 
+	{
+		R_ASSERT(I->first);
+		R_ASSERT(I->second);
+		R_ASSERT(I->second->cName);
 		R_ASSERT(0==strcmp(I->first,I->second->cName));
+	}
 }
+#endif
 
 //--------------------------------------------------------------------------------------------------------------
 CMatrix*	CShaderManager::_CreateMatrix	(LPCSTR Name)

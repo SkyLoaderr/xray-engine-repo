@@ -69,7 +69,7 @@ void CTexture::Apply	(u32 dwStage)
 	CHK_DX(HW.pDevice->SetTexture(dwStage,pSurface));
 }
 
-void CTexture::Load(LPCSTR cName)
+void CTexture::Load()
 {
 	desc_cache						= 0;
 	if (pSurface)					return;
