@@ -29,7 +29,8 @@ void CBuild::BuildRapid()
 	CDB::CollectorPacked	CL	(scene_bb,g_vertices.size(),g_faces.size());
 	for (vecFaceIt it=g_faces.begin(); it!=g_faces.end(); it++)
 	{
-		Face*	F = (*it);
+		Face*	F	= (*it);
+		Progress	(float(it-g_faces.begin())/float(g_faces.size()));
 
 		// Collect
 		adjacent.clear	();
@@ -67,7 +68,6 @@ void CBuild::BuildRapid()
 				0,0,DWORD(F)
 				);
 		}
-		Progress(p_total+=p_cost);
 	}
 
 	Status					("Building OBB tree..");
