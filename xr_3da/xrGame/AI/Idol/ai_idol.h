@@ -10,7 +10,7 @@
 
 #include "..\\..\\CustomMonster.h"
 
-class CAI_Idol : public CCustomMonster
+class CAI_Idol : public CCustomMonster, public CInventoryOwner 
 {
 public:
 	typedef CCustomMonster inherited;
@@ -32,13 +32,18 @@ public:
 	virtual void		HitImpulse		(float P, Fvector &vWorldDir, 	Fvector& vLocalDir){};
 	virtual void		SelectAnimation	(const Fvector& _view, const Fvector& _move, float speed);
 	
-	virtual void		g_fireParams	(Fvector& P, Fvector& D)	{};
-	virtual void		g_WeaponBones	(int &L, int &R1, int &R2)	{};
-	virtual	float		ffGetFov		(){return 150.f;}
-	virtual	float		ffGetRange		(){return 30.f;}
 	static void			AnimCallback	(CBlend* B)
 	{
 		CAI_Idol		*tpIdol = (CAI_Idol*)B->CallbackParam;
 		tpIdol->m_bPlaying = false;
 	}
+
+	virtual void		g_fireParams	(Fvector& P, Fvector& D)	{};
+	virtual void		g_WeaponBones	(int &L, int &R1, int &R2)	{};
+	virtual	float		ffGetFov		(){return 150.f;}
+	virtual	float		ffGetRange		(){return 30.f;}
+	virtual	void		OnEvent			(NET_Packet& P, u16 type);
+	virtual	void		feel_touch_new	(CObject* O);
+	virtual	void		DropItemSendMessage(CObject *O);
+	virtual void		Update			(u32 dt);
 };
