@@ -5,6 +5,8 @@
 #include "stdafx.h"
 #pragma hdrstop
 
+#include <time.h>
+
 #include "Blender.h"
 
 void CBlender_DESC::Setup	(LPCSTR N)
@@ -15,17 +17,8 @@ void CBlender_DESC::Setup	(LPCSTR N)
 	strcpy(cName,N);
 	strlwr(cName);
 	
-	// Computer
-	const u32 comp = MAX_COMPUTERNAME_LENGTH + 1;
-	char	buf	[comp];
-	DWORD	sz = comp;
-	GetComputerName(buf,&sz);
-	if (sz > 31) sz=31;
-	buf[sz] = 0;
-	strcpy(cComputer,buf);
-	
-	// Time
-	_tzset(); time( (long*)&cTime );
+	strcpy(cComputer,Core.CompName);	// Computer
+	_tzset(); time( (long*)&cTime );	// Time
 };
 
 //////////////////////////////////////////////////////////////////////
