@@ -423,14 +423,16 @@ function process_map_spot(info_id)
 
 	elseif info_id == "tutorial_wounded_die" then
 		remove_location(004, "tutorial_wounded_location")
-		if db.actor:dont_has_info("tutorial_end") then
+		if db.actor:dont_has_info("tutorial_wounded_end") then
+			db.actor:give_info_portion("tutorial_wounded_end")
 			set_task_state(task.fail, "tutorial_help_wounded", 0)
 			news_manager.send_news(db.actor, "escape_stalker_killed", 5)
 		end
 
 	elseif info_id == "tutorial_wounded_death" then
 		remove_location(004, "tutorial_wounded_location")
-		if db.actor:dont_has_info("tutorial_end") then
+		if db.actor:dont_has_info("tutorial_wounded_end") then
+			db.actor:give_info_portion("tutorial_wounded_end")
 			set_task_state(task.fail, "tutorial_help_wounded", 0)
 			news_manager.send_news(db.actor, "escape_stalker_death", 5)
 		end
