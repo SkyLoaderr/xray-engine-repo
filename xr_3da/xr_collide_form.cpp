@@ -344,7 +344,7 @@ BOOL CCF_Shape::Contact		( CObject* O )
 	Fmatrix& XF		= Owner()->svTransform;
 	
 	// Iterate
-	for (int el=0; el<shapes.size(); el++)
+	for (u32 el=0; el<shapes.size(); el++)
 	{
 		switch (shapes[el].type)
 		{

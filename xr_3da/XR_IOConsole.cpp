@@ -235,7 +235,7 @@ void CConsole::OnPressKey(int dik, BOOL bHold)
 			if( hmem ){
 				LPCSTR	clipdata = (LPCSTR)GlobalLock(hmem);
 				strncpy (editor,clipdata,255); editor[255]=0;
-				for (int i=0; i<strlen(editor); i++)
+				for (u32 i=0; i<strlen(editor); i++)
 					if (isprint(editor[i]))	editor[i]=tolower(editor[i]);
 					else					editor[i]=' ';
 				
