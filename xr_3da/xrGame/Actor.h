@@ -261,16 +261,14 @@ private:
 	{
 		u32					m_dwTimeStamp;
 
-//		float				m_fJumpTime;
-//		float				m_fFallTime;
-//		float				m_fLandingTime;
 		u32					mstate_wishful;	
-//		u32					mstate_real;
-//		Fvector				NET_SavedAccel;
-//		float				Jump;
-//		BOOL				m_bJumpKeyPressed;
+
+		u8					cam_mode;
+		float				cam_yaw;
+		float				cam_pitch;
 	};
 	xr_deque<net_input>		NET_I;
+	BOOL					NET_I_NeedReculc;
 	void					NetInput_Save			( );
 	//------------------------------
 	void					g_cl_CheckControls		(u32 mstate_wf, Fvector &vControlAccel, float &Jump, float dt);

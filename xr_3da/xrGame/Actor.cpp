@@ -118,6 +118,8 @@ CActor::CActor() : CEntityAlive()
 	m_pPersonWeLookingAt = NULL;
 	m_pCarWeLookingAt = NULL;
 
+	NET_I_NeedReculc = FALSE;
+
 }
 
 
@@ -335,6 +337,20 @@ void CActor::net_Import		(NET_Packet& P)					// import from server
 
 	setVisible					(TRUE);
 	setEnabled					(TRUE);
+
+	if (!Local()) return;
+
+	u32 NumI2R = 0;
+	for (u32 I = 0; I<NET_I.size(); I++)
+	{
+		if (NET_I[I].m_dwTimeStamp <= N.dwTimeStamp) NumI2R++;
+		else break;
+	};
+	if (NumI2R) 
+	{
+		NET_I.erase(NET_I.begin(), NET_I.begin() + NumI2R);
+		NET_I_NeedReculc = TRUE;
+	};	
 }
 
 void CActor::net_ImportInput	(NET_Packet &P)
@@ -350,8 +366,6 @@ void CActor::net_ImportInput	(NET_Packet &P)
 
 	P.r_angle8		(cam_Active()->yaw);
 	P.r_angle8		(cam_Active()->pitch);
-
-
 };
 
 BOOL CActor::net_Spawn		(LPVOID DC)
@@ -918,6 +932,11 @@ void CActor::shedule_Update	(u32 DT)
 	// Check controls, create accel, prelimitary setup "mstate_real"
 	float	Jump	= 0;
 	if (Local())	{
+
+		if (NET_I_NeedReculc)
+		{
+			R_ASSERT (NET.size());
+		};
 
 		NetInput_Save			( );
 
@@ -1564,6 +1583,11 @@ void CActor::NetInput_Save()
 	NI.m_dwTimeStamp		= Level().timeServer();
 	NI.mstate_wishful		= mstate_wishful;
 
+	NI.cam_mode				= u8(cam_active);
+	NI.cam_yaw				= cam_Active()->yaw;
+	NI.cam_pitch			= cam_Active()->pitch;
+
+	NET_I.push_back(NI);
 	//Send Input
 	NET_Packet		NP;
 
@@ -1573,9 +1597,12 @@ void CActor::NetInput_Save()
 	NP.w_u32		(NI.m_dwTimeStamp);
 	NP.w_u32		(NI.mstate_wishful);
 
-	NP.w_u8			(u8(cam_active));
-	NP.w_angle8		(cam_Active()->yaw);
-	NP.w_angle8		(cam_Active()->pitch);
+	NP.w_u8			(NI.cam_mode	);
+	NP.w_angle8		(NI.cam_yaw		);
+	NP.w_angle8		(NI.cam_pitch	);
 
-	if (Level().net_HasBandwidth()) u_EventSend(NP);
+	if (Level().net_HasBandwidth()) 
+	{
+		u_EventSend(NP);
+	};
 };
