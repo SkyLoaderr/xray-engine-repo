@@ -79,8 +79,12 @@ void xrServer::Process_event	(NET_Packet& P, DPNID sender)
 					if (c_dest	!= c_entity)		PerformMigration					(e_entity,c_parent,c_dest);
 
 					// Rebuild parentness
-					R_ASSERT			(0xffff != e_entity->ID_Parent);
-					e_entity->ID_Parent	= 0xffff;
+					R_ASSERT				(0xffff != e_entity->ID_Parent);
+					e_entity->ID_Parent		= 0xffff;
+					vector<u16>& C			= e_parent->chields;
+					vector<u16>::iterator c	= find	(C.begin(),C.end(),id_entity);
+					VERIFY					(c!=C.end());
+					C.erase					(c);
 
 					// Signal to everyone (including sender)
 					SendBroadcast		(0xffffffff,P,MODE);

@@ -38,9 +38,10 @@ public:
 	virtual		void				spawn_end				(xrServerEntity* E, u32 id);
 
 	// Utilities
-	virtual		u32					get_alive_count			(u32 team);
 	virtual		s32					get_option_i			(LPCSTR lst, LPCSTR name, s32 def = 0);
 	virtual		string64&			get_option_s			(LPCSTR lst, LPCSTR name, LPCSTR def = 0);
+	virtual		u32					get_alive_count			(u32 team);
+	virtual		vector<u16>*		get_children			(u32 id_who);
 
 	// Events
 	virtual		void				OnPlayerConnect			(u32 id_who);
@@ -51,11 +52,11 @@ public:
 	virtual		BOOL				OnTargetTouched			(u32 id_who, u32 eid_target)	= 0;			// TRUE=allow ownership, FALSE=denied
 	virtual		BOOL				OnTargetDetouched		(u32 id_who, u32 eid_target)	{return TRUE;};	// TRUE=allow ownership, FALSE=denied
 
-	virtual		void				OnRoundStart			();										// старт раунда
-	virtual		void				OnRoundEnd				(LPCSTR reason);						// конец раунда
+	virtual		void				OnRoundStart			();												// старт раунда
+	virtual		void				OnRoundEnd				(LPCSTR reason);								// конец раунда
 
-	virtual		void				OnTeamScore				(u32 team)						{};		// команда выиграла
-	virtual		void				OnTeamsInDraw			()								{};		// ничья
+	virtual		void				OnTeamScore				(u32 team)						{};				// команда выиграла
+	virtual		void				OnTeamsInDraw			()								{};				// ничья
 
 	// Main
 	virtual		void				Create					(LPCSTR options);

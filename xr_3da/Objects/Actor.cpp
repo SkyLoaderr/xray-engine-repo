@@ -1001,6 +1001,15 @@ float CActor::HitScale(int element)
 	return hit_factor*scale;
 }
 
+void	CActor::BuyItem	(LPCSTR buf)
+{
+	// 
+	NET_Packet	P;
+	u_EventGen	(P,GE_BUY,ID());
+	P.w_string	(buf);
+	u_EventSend	(P);
+}
+
 #ifdef DEBUG
 void dbg_draw_frustum (float FOV, float _FAR, float A, Fvector &P, Fvector &D, Fvector &U);
 

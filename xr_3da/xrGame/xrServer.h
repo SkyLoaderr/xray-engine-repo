@@ -19,9 +19,9 @@ class xrClientData	: public IClient
 public:
 	xrServerEntity*			owner;
 	BOOL					net_Ready;
+	u32						game_replicate_id;
 
 	game_PlayerState		ps;
-	u32						game_replicate_id;
 
 	xrClientData	()
 	{

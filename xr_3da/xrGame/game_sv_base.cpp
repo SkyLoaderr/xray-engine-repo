@@ -63,6 +63,15 @@ u32					game_sv_GameState::get_alive_count			(u32 team)
 	Device.Fatal	("Not implemented");
 	return 0;
 }
+vector<u16>*		game_sv_GameState::get_children				(u32 id)
+{
+	xrServer*		S	= Level().Server;
+	xrClientData*	C	= (xrClientData*)S->ID_to_client	(id);
+	if (0==C)			return 0;
+	xrServerEntity* E	= C->owner;
+	if (0==E)			return 0;
+	return	&(E->children);
+}
 s32					game_sv_GameState::get_option_i				(LPCSTR lst, LPCSTR name, s32 def)
 {
 	string64		op;

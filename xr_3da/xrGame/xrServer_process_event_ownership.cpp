@@ -26,7 +26,8 @@ void xrServer::Process_event_ownership(NET_Packet& P, DPNID sender, u32 time, u1
 		if (c_parent != c_entity)		PerformMigration(e_entity,c_entity,c_parent);
 
 		// Rebuild parentness
-		e_entity->ID_Parent	= id_parent;
+		e_entity->ID_Parent			= id_parent;
+		e_parent->chields.push_back	(id_entity);
 
 		// Signal to everyone (including sender)
 		SendBroadcast		(0xffffffff,P,MODE);

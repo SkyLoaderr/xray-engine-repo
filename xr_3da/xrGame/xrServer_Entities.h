@@ -44,6 +44,7 @@ public:
 	u16						ID_Parent;		// internal ParentID, 0xffff means no parent
 	u16						ID_Phantom;		// internal PhantomID, 0xffff means no phantom
 	xrClientData*			owner;
+	vector<u16>				children;
 
 	// spawn data
 	string64				s_name;

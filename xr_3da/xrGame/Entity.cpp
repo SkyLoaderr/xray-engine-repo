@@ -284,7 +284,8 @@ CEntityAlive::~CEntityAlive()
 {
 }
 
-void CEntityAlive::BuyItem(LPCSTR buf){
+void CEntityAlive::BuyItem(LPCSTR buf)
+{
 	NET_Packet P;
 	u_EventGen	(P,GE_BUY,ID());
 	P.w_string	(buf);
