@@ -42,14 +42,14 @@ end
 function give_medkit(first_speaker, second_speaker)
 	local medkit = first_speaker:object("medkit")
 	if medkit ~= nil then
-		first_speaker:transfer_item(medkit, second_speaker)
+		dialogs.relocate_item(first_speaker, medkit, "in")
 	else
 		printf("ERROR: Escape trader dont has a medkit.")
 	end
 end
 function give_tutorial_artefact(first_speaker, second_speaker)
 	local artefact = first_speaker:object("af_blood_tutorial")
-	first_speaker:transfer_item(artefact, second_speaker)
+	dialogs.relocate_item(second_speaker, artefact, "out")
 	level_tasks.set_task_state(task.completed, "tutorial_find_artefact", 0)
 end
 
@@ -71,12 +71,12 @@ end
 function give_flash_to_actor(npc, actor)
 	local item = npc:object("fox_flash")
 	if item then
-		npc:transfer_item(item, actor)
+		dialogs.relocate_item(npc, item, "in")
 	end
 end
 function give_fox_info(first_speaker, second_speaker)
 	local item = first_speaker:object("fox_flash")
-	first_speaker:transfer_item(item, second_speaker)
+	dialogs.relocate_item(second_speaker, item, "out")
 	level_tasks.set_task_state(task.completed, "esc_help_wounded_from_raid", 0)
 end
 
@@ -97,8 +97,8 @@ function trader_need_blockpost_box(first_speaker, second_speaker)
 end
 function give_blockpost_case(first_speaker, second_speaker)
 	local case = first_speaker:object("quest_case_01")
-	first_speaker:transfer_item (case, second_speaker)
-	second_speaker:transfer_money (500, first_speaker)
+	dialogs.relocate_item(second_speaker, case, "out")
+	dialogs.relocate_money(second_speaker, 500, "in")
 	level_tasks.set_task_state(task.completed, "esc_blockpost_case_to_trader", 0)
 end
 
@@ -122,8 +122,8 @@ function give_artefact_from_fleshes(first_speaker, second_speaker)
 	if artefact == nil then
 		artefact = first_speaker:object("af_gold_fish")
 	end
-	first_speaker:transfer_item (artefact, second_speaker)
-	second_speaker:transfer_money (1500, first_speaker)
+	dialogs.relocate_item(second_speaker, artefact, "out")
+	dialogs.relocate_money(second_speaker, 1500, "in")
 	level_tasks.set_task_state(task.completed, "esc_trader_need_electra_artefact", 0)
 end
 function trader_need_artefact(first_speaker, second_speaker)
@@ -186,7 +186,7 @@ end
 function transfer_wolf_ammo_to_actor(first_speaker, second_speaker)
 	local obj = first_speaker:object("af_medusa")
 	if obj ~= nil then
-		first_speaker:transfer_item(obj, second_speaker)
+		dialogs.relocate_item(first_speaker, obj, "in")
 	end
 end
 
@@ -195,7 +195,7 @@ function have_dynamite(first_speaker, second_speaker)
 end
 function give_dynamite(first_speaker, second_speaker)
 	local case = first_speaker:object("dynamite")
-	first_speaker:transfer_item(case, second_speaker)
+	dialogs.relocate_item(second_speaker, case, "out")
 	second_speaker:transfer_money(1000, first_speaker)
 	level_tasks.set_task_state(task.completed, "esc_dinamit_to_volk", 0)
 end
@@ -214,5 +214,5 @@ function assault_actor_dont_have_vodka(first_speaker, second_speaker)
 end
 function transfer_vodka_to_assault(first_speaker, second_speaker)
 	local obj = first_speaker:object("vodka")
-	first_speaker:transfer_item (obj, second_speaker)
+	dialogs.relocate_item(second_speaker, obj, "out")
 end
