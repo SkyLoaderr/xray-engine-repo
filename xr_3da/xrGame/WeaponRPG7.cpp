@@ -55,7 +55,7 @@ BOOL CWeaponRPG7::net_Spawn(LPVOID DC)
 	BOOL l_res = inherited::net_Spawn(DC);
 
 	UpdateGrenadeVisibility(!!iAmmoElapsed);
-	if(iAmmoElapsed && !m_pRocket)
+	if(iAmmoElapsed && !/*m_pRocket*/getCurrentRocket())
 	{
 		CRocketLauncher::SpawnRocket(*m_sRocketSection, dynamic_cast<CGameObject*>(H_Parent()));
 	}
@@ -73,7 +73,7 @@ void CWeaponRPG7::ReloadMagazine()
 {
 	inherited::ReloadMagazine();
 
-	if(iAmmoElapsed && !m_pRocket) 
+	if(iAmmoElapsed && !getRocketCount()/*m_pRocket*/) 
 	{
 		CRocketLauncher::SpawnRocket(*m_sRocketSection, this);
 	}
@@ -81,7 +81,7 @@ void CWeaponRPG7::ReloadMagazine()
 void CWeaponRPG7::SwitchState(u32 S) 
 {
 	inherited::SwitchState(S);
-	if(STATE == eIdle && S==eFire && m_pRocket) 
+	if(STATE == eIdle && S==eFire && getRocketCount()/*m_pRocket*/) 
 	{
 		Fvector p1, d; 
 		p1.set(vLastFP); 
@@ -103,15 +103,17 @@ void CWeaponRPG7::SwitchState(u32 S)
 		Fvector angular_vel;
 		angular_vel.set(d);
 		angular_vel.mul(1400.f);
+
+
 		CRocketLauncher::LaunchRocket(launch_matrix, d, angular_vel);
 
-		CExplosiveRocket* pGrenade = dynamic_cast<CExplosiveRocket*>(m_pRocket);
+		CExplosiveRocket* pGrenade = dynamic_cast<CExplosiveRocket*>(getCurrentRocket());
 		VERIFY(pGrenade);
 		pGrenade->SetCurrentParentID(H_Parent()->ID());
 
 		NET_Packet P;
 		u_EventGen(P,GE_OWNERSHIP_REJECT,ID());
-		P.w_u16(u16(m_pRocket->ID()));
+		P.w_u16(u16(/*m_pRocket->ID()*/getCurrentRocket()->ID()));
 		u_EventSend(P);
 	}
 }

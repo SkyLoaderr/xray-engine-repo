@@ -267,7 +267,7 @@ void CWeaponMagazinedWGrenade::SwitchState(u32 S)
 	inherited::SwitchState(S);
 	
 	//стрельнуть из подствольника
-	if(m_bGrenadeMode && STATE == eIdle && S == eFire && m_pRocket) 
+	if(m_bGrenadeMode && STATE == eIdle && S == eFire && getRocketCount()/*m_pRocket*/) 
 	{
 		Fvector						p1, d; 
 		p1.set(vLastFP2);
@@ -292,14 +292,14 @@ void CWeaponMagazinedWGrenade::SwitchState(u32 S)
 		d.mul(CRocketLauncher::m_fLaunchSpeed);
 		CRocketLauncher::LaunchRocket(launch_matrix, d, zero_vel);
 
-		CExplosiveRocket* pGrenade = dynamic_cast<CExplosiveRocket*>(m_pRocket);
+		CExplosiveRocket* pGrenade = dynamic_cast<CExplosiveRocket*>(getCurrentRocket()/*m_pRocket*/);
 		VERIFY(pGrenade);
 		pGrenade->SetCurrentParentID(H_Parent()->ID());
 
 		
 		NET_Packet P;
 		u_EventGen(P,GE_OWNERSHIP_REJECT,ID());
-		P.w_u16(m_pRocket->ID());
+		P.w_u16(getCurrentRocket()->ID()/*m_pRocket->ID()*/);
 		u_EventSend(P);
 	}
 }
@@ -330,7 +330,7 @@ void CWeaponMagazinedWGrenade::ReloadMagazine()
 	inherited::ReloadMagazine();
 	
 	//перезарядка подствольного гранатомета
-	if(iAmmoElapsed && !m_pRocket && m_bGrenadeMode) 
+	if(iAmmoElapsed && !getRocketCount()/*m_pRocket*/ && m_bGrenadeMode) 
 	{
 		ref_str fake_grenade_name = pSettings->r_string(*m_pAmmo->cNameSect(), "fake_grenade_name");
 		CRocketLauncher::SpawnRocket(*fake_grenade_name, this);

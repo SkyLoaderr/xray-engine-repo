@@ -77,6 +77,7 @@ CHelicopter::init()
 	m_velocity = 25.0f;
 	//	m_altitude = 4.0f;
 	m_altitude = 30.0f;
+	m_attack_altitude = m_altitude;
 	m_korridor = 10.0f;
 
 	m_destEnemy = 0;
@@ -88,6 +89,10 @@ CHelicopter::init()
 	m_bind_y_rot= 0.f;
 	m_allow_fire= FALSE;
 	m_use_rocket_on_attack = FALSE;
+	m_min_rocket_dist	= 20.0f;
+	m_max_rocket_dist	= 200.0f;
+	m_time_between_rocket_attack = 0;
+	m_last_rocket_attack		= Device.dwTimeGlobal;
 	m_movementMngr.init(this);
 	setState(CHelicopter::eIdleState);
 	SetfHealth(100.0f);
@@ -139,8 +144,12 @@ CHelicopter::Load(LPCSTR section)
 	m_time_delay_between_patrol				= pSettings->r_u32(section,"time_delay_between_patrol")*1000;
 	m_velocity								= pSettings->r_float(section,"velocity");
 	m_altitude								= pSettings->r_float(section,"altitude");
+	m_attack_altitude						= pSettings->r_float(section,"attack_altitude");
 	m_korridor								= pSettings->r_float(section,"alt_korridor");
 	m_use_rocket_on_attack					= pSettings->r_bool(section,"use_rocket");
+	m_min_rocket_dist						= pSettings->r_float(section,"min_rocket_attack_dist");
+	m_max_rocket_dist						= pSettings->r_float(section,"max_rocket_attack_dist");
+	m_time_between_rocket_attack			= pSettings->r_u32(section,"time_between_rocket_attack");
 }
 
 void		
@@ -156,6 +165,9 @@ CHelicopter::net_Spawn(LPVOID	DC)
 		return			(FALSE);
 
 	CRocketLauncher::SpawnRocket(*m_sRocketSection, dynamic_cast<CGameObject*>(this/*H_Parent()*/));
+	CRocketLauncher::SpawnRocket(*m_sRocketSection, dynamic_cast<CGameObject*>(this/*H_Parent()*/));
+	CRocketLauncher::SpawnRocket(*m_sRocketSection, dynamic_cast<CGameObject*>(this/*H_Parent()*/));
+	CRocketLauncher::SpawnRocket(*m_sRocketSection, dynamic_cast<CGameObject*>(this/*H_Parent()*/));
 
 	// assigning m_animator here
 	CSE_Abstract		*abstract=(CSE_Abstract*)(DC);
@@ -169,6 +181,9 @@ CHelicopter::net_Spawn(LPVOID	DC)
 	m_rotate_x_bone		= K->LL_BoneID	(pUserData->r_string("helicopter_definition","wpn_rotate_x_bone"));
 	m_rotate_y_bone		= K->LL_BoneID	(pUserData->r_string("helicopter_definition","wpn_rotate_y_bone"));
 	m_fire_bone			= K->LL_BoneID	(pUserData->r_string("helicopter_definition","wpn_fire_bone"));
+
+	m_left_rocket_bone			= K->LL_BoneID	(pUserData->r_string("helicopter_definition","left_rocket_bone"));
+	m_right_rocket_bone			= K->LL_BoneID	(pUserData->r_string("helicopter_definition","right_rocket_bone"));
 
 	LPCSTR s = pUserData->r_string("helicopter_definition","hit_section");
 
@@ -269,6 +284,11 @@ CHelicopter::UpdateCL()
 	CKinematics* K	= PKinematics(Visual());
 	K->Calculate	();
 
+	m_left_rocket_bone_xform	= K->LL_GetTransform(m_left_rocket_bone);
+	m_left_rocket_bone_xform.mulA(XFORM());
+	m_right_rocket_bone_xform	= K->LL_GetTransform(m_right_rocket_bone);
+	m_right_rocket_bone_xform.mulA(XFORM());
+
 	m_fire_bone_xform	= K->LL_GetTransform(m_fire_bone);
 
 	m_fire_bone_xform.mulA(XFORM());
@@ -322,19 +342,18 @@ CHelicopter::shedule_Update(u32	time_delta)
 		if(m_allow_fire)
 		{
 			FireStart();
-	
-			if(m_pRocket&&m_use_rocket_on_attack)
+			
+			float d = XFORM().c.distance_to_xz(m_destEnemyPos);
+			
+			if( (d > m_min_rocket_dist) && 
+				(d < m_max_rocket_dist) &&
+				(Device.dwTimeGlobal-m_last_rocket_attack > m_time_between_rocket_attack))
 			{
-				CExplosiveRocket* pGrenade = dynamic_cast<CExplosiveRocket*>(m_pRocket);
-				VERIFY(pGrenade);
-				pGrenade->SetCurrentParentID(this->ID());
-				Fmatrix rocketXFORM = ParticlesXFORM();
-				LaunchRocket(rocketXFORM,  m_fire_dir, zero_vel);
-
-				NET_Packet P;
-				u_EventGen(P,GE_OWNERSHIP_REJECT,ID());
-				P.w_u16(u16(m_pRocket->ID()));
-				u_EventSend(P);
+				Log("-----rocket, dist=",d);
+				Log("-----rocket, time=",Device.dwTimeGlobal-m_last_rocket_attack);
+				startRocket(1);
+				startRocket(2);
+				m_last_rocket_attack = Device.dwTimeGlobal;
 			}
 
 		}else
@@ -343,8 +362,11 @@ CHelicopter::shedule_Update(u32	time_delta)
 	}else
 		FireEnd();
 
-	if(!m_pRocket)
-		CRocketLauncher::SpawnRocket(*m_sRocketSection, this);
+	if(!getRocketCount()<4)
+		for(u32 i=getRocketCount(); i<4; ++i)
+		{
+			CRocketLauncher::SpawnRocket(*m_sRocketSection, this);
+		}
 }
 
 void		

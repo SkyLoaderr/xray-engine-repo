@@ -44,6 +44,8 @@ protected:
 	CHelicopterMovementManager		m_movementMngr;
 	xr_map<s16,float>				m_hitBones;
 
+	u16								m_left_rocket_bone;
+	u16								m_right_rocket_bone;
 	Fmatrix							m_left_rocket_bone_xform;
 	Fmatrix							m_right_rocket_bone_xform;
 
@@ -78,6 +80,12 @@ protected:
 
 	typedef xr_map<s16,float>::iterator bonesIt;
 public:
+	float							m_attack_altitude;
+	float							m_min_rocket_dist;
+	float							m_max_rocket_dist;
+	u32								m_time_between_rocket_attack;
+	u32								m_last_rocket_attack;
+
 	float							m_korridor;
 	u32								m_time_delay_before_start;
 	u32								m_time_patrol_period;
@@ -95,6 +103,7 @@ public:
 
 	void							setState(CHelicopter::EHeliState s);
 	Fvector&						lastEnemyPos(){return m_destEnemyPos;};
+	void							startRocket(u16 idx);
 	//CAI_ObjectLocation
 	void				init();
 	virtual	void		reinit();

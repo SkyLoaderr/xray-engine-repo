@@ -1,5 +1,6 @@
 #include "stdafx.h"
 #include "helicopter.h"
+#include "ExplosiveRocket.h"
 
 void __stdcall 
 CHelicopter::BoneMGunCallbackX(CBoneInstance *B)
@@ -111,5 +112,30 @@ CHelicopter::updateMGunDir()
 		float sv_y		= m_tgt_y_rot;
 		clamp			(m_tgt_y_rot,-m_lim_y_rot.y,-m_lim_y_rot.x);
 		if (!fsimilar(sv_y,m_tgt_y_rot,EPS_L)) m_allow_fire=FALSE;
+	}
+}
+
+void							
+CHelicopter::startRocket(u16 idx)
+{
+	if((getRocketCount()>=1)&&m_use_rocket_on_attack)
+	{
+		CExplosiveRocket* pGrenade = dynamic_cast<CExplosiveRocket*>(getCurrentRocket());
+		VERIFY(pGrenade);
+		pGrenade->SetCurrentParentID(this->ID());
+		
+		Fmatrix rocketXFORM;
+		(idx==1)?rocketXFORM=m_left_rocket_bone_xform:rocketXFORM=m_right_rocket_bone_xform;
+
+		Fvector vel;
+		vel.mul(m_fire_dir,CRocketLauncher::m_fLaunchSpeed);
+		LaunchRocket(rocketXFORM,  vel, zero_vel);
+
+		NET_Packet P;
+		u_EventGen(P,GE_OWNERSHIP_REJECT,ID());
+		P.w_u16(u16( getCurrentRocket()->ID()));
+		u_EventSend(P);
+		
+		dropCurrentRocket();
 	}
 }

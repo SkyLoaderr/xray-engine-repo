@@ -26,7 +26,7 @@ CHelicopterMovementManager::buildHuntPath(Fvector& enemyPos)
 		addCurrentPosToTrajectory();
 
 
-	destPoint.y = helicopter()->altitude();
+	destPoint.y = helicopter()->m_attack_altitude;
 //	destPoint.y = 10.0f;
 	m_keyTrajectory.push_back( SWayPoint(destPoint, destDir) );
 
