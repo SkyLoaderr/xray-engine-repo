@@ -49,6 +49,8 @@
 			wpn_fort \n
 			ammo_9x18_pmm = 1 \n
 			device_torch \n
+			wpn_toz34 \n
+			ammo_12x70_buck \n			
 		</supplies>
 					
 		<start_dialog>hello_dialog</start_dialog>
