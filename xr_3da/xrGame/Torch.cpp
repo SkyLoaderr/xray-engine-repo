@@ -125,7 +125,10 @@ void CTorch::UpdateCL()
 {
 	inherited::UpdateCL();
 	
-	guid_bone				= K->LL_BoneID	(pUserData->r_string("torch_definition","guide_bone"));	VERIFY(guid_bone!=BI_NONE);
+//	CKinematics* K			= PKinematics(Visual());
+//	CInifile* pUserData		= K->LL_UserData();
+//	guid_bone				= K->LL_BoneID	(pUserData->r_string("torch_definition","guide_bone"));	VERIFY(guid_bone!=BI_NONE);
+	
 	CBoneInstance& BI = PKinematics(Visual())->LL_GetBoneInstance(guid_bone);
 	Fmatrix M;
 
