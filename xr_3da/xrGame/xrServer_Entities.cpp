@@ -277,12 +277,12 @@ void xrSE_Target::FillProp			(LPCSTR pref, PropValueVec& values)
 #endif
 
 //***** Target Assault
-void xrSE_Target::STATE_Read		(NET_Packet& P, u16 size)	{};
-void xrSE_Target::STATE_Write		(NET_Packet& P)				{};
-void xrSE_Target::UPDATE_Read		(NET_Packet& P)				{};
-void xrSE_Target::UPDATE_Write		(NET_Packet& P)				{};
+void xrSE_Target_Assault::STATE_Read		(NET_Packet& P, u16 size)	{};
+void xrSE_Target_Assault::STATE_Write		(NET_Packet& P)				{};
+void xrSE_Target_Assault::UPDATE_Read		(NET_Packet& P)				{};
+void xrSE_Target_Assault::UPDATE_Write		(NET_Packet& P)				{};
 #ifdef _EDITOR
-void xrSE_Target::FillProp			(LPCSTR pref, PropValueVec& values)
+void xrSE_Target_Assault::FillProp			(LPCSTR pref, PropValueVec& values)
 {
 	inherited::FillProp(pref,values);
 }
