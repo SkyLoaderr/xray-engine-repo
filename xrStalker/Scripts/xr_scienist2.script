@@ -4,7 +4,7 @@ local threshold     =   20
 -------------------------------------------------------------------------------------
 class "evaluator_move" (property_evaluator)
 ---------------------
-function evaluator_move:__init (storage) super ()
+function evaluator_move:__init (storage, name) super (nil, name)
   	self.a = storage
 end
 ---------------------
@@ -15,7 +15,7 @@ end
 -------------------------------------------------------------------------------------
 class "evaluator_wait" (property_evaluator)
 ---------------------
-function evaluator_wait:__init (storage) super ()
+function evaluator_wait:__init (storage, name) super (nil, name)
   	self.a = storage
 end
 ---------------------
@@ -27,7 +27,7 @@ end
 -------------------------------------------------------------------------------------
 class "evaluator_actor" (property_evaluator)
 ---------------------
-function evaluator_actor:__init (storage) super ()
+function evaluator_actor:__init (storage, name) super (nil, name)
     self.a = storage
 end
 ---------------------
@@ -41,7 +41,7 @@ end
 -------------------------------------------------------------------------------------
 class "evaluator_near" (property_evaluator)
 ---------------------
-function evaluator_near:__init (storage) super ()
+function evaluator_near:__init (storage, name) super (nil, name)
     self.a = storage
 end
 ---------------------
@@ -333,10 +333,10 @@ function add_to_binder (npc, char_ini)
  	operators["action_escape"] = xr_actions_id.sidor_act_yantar + 3
  	operators["action_scare"] = xr_actions_id.sidor_act_yantar + 4
  	
-    manager:add_evaluator (properties["enabled"], this.evaluator_move (xr_motivator.storage[npc:id()].scienist2))
-    manager:add_evaluator (properties["wait"], this.evaluator_wait (xr_motivator.storage[npc:id()].scienist2))
-    manager:add_evaluator (properties["actor"], this.evaluator_actor (xr_motivator.storage[npc:id()].scienist2))
-    manager:add_evaluator (properties["near"], this.evaluator_near (xr_motivator.storage[npc:id()].scienist2))
+    manager:add_evaluator (properties["enabled"], this.evaluator_move (xr_motivator.storage[npc:id()].scienist2, "scienist2_enabled"))
+    manager:add_evaluator (properties["wait"], this.evaluator_wait (xr_motivator.storage[npc:id()].scienist2, "scienist2_wait"))
+    manager:add_evaluator (properties["actor"], this.evaluator_actor (xr_motivator.storage[npc:id()].scienist2, "scienist2_actor"))
+    manager:add_evaluator (properties["near"], this.evaluator_near (xr_motivator.storage[npc:id()].scienist2, "scienist2_near"))
 
 	local action = this.scienist_wait ("scienist_wait", xr_motivator.storage[npc:id()].scienist2)
 	action:add_precondition(world_property(stalker_ids.property_alive, true))
