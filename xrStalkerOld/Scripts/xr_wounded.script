@@ -45,8 +45,8 @@ function evaluator_wound:evaluate ()
            --return false
        --end
     --end       
-    
-    if self.object.health < 0.20 then
+
+    if self.object.health < 0.20 then --and self.object:object ("medkit") == nil then
        --self.a.final = false
        return true
     end
