@@ -553,11 +553,11 @@ bool CExportSkeleton::PrepareGeometry()
             SSplit& split=m_Splits[mtl_idx];
             for (IntIt f_it=face_lst.begin(); f_it!=face_lst.end(); f_it++){
             	int f_idx = *f_it;
-                st_Face& face = MESH->m_Faces[f_idx];
+//.                st_Face& face = MESH->m_Faces[f_idx];
                 {
                     SSkelVert v[3];
                     for (int k=0; k<3; k++){
-                        st_FaceVert& 	fv 	= face.pv[k];
+//.                        st_FaceVert& 	fv 	= face.pv[k];
                         st_SVert& 		sv 	= MESH->m_SVertices[f_idx*3+k];
                         if ((sv.bone1==BI_NONE)||(sv.bone0==sv.bone1)){
 	                        v[k].set	(sv.offs,sv.norm,sv.uv,sv.w,sv.bone0,sv.bone0);
@@ -772,7 +772,7 @@ bool CExportSkeleton::ExportMotionKeys(IWriter& F)
             }
             
             // check T
-            u8 t_present	= FALSE;
+            Flags8 tr_present; tr_present.zero();
             R_ASSERT		(dwLen);
             Fvector Mt		= {0,0,0};
             Fvector Ct		= {0,0,0};
@@ -794,9 +794,12 @@ bool CExportSkeleton::ExportMotionKeys(IWriter& F)
             Ct.mul			(0.5f);
             St.sub			(Bt,At);
             St.mul			(0.5f);
+            CKeyQR& R		= _keysQR[0];
             for (t_idx=0; t_idx<dwLen; t_idx++){
             	Fvector& t	= _keysT[t_idx];
-                if (!Mt.similar(t,EPS_L)){t_present=TRUE;}
+            	CKeyQR& r	= _keysQR[t_idx];
+                if (!Mt.similar(t,EPS_L))							tr_present.set(flTKeyPresent,TRUE);
+                if ((R.x!=r.x)||(R.y!=r.y)||(R.z!=r.z)||(R.w!=r.w))	tr_present.set(flRKeyPresent,TRUE);
                 
                 CKeyQT&	Kt 	= _keysQT[t_idx];
                 int	_x 		= int(127.f*(t.x-Ct.x)/St.x); clamp(_x,-128,127); Kt.x =  _x;
@@ -805,10 +808,14 @@ bool CExportSkeleton::ExportMotionKeys(IWriter& F)
             }
             St.div	(127.f);
             // save
-            F.w_u8	(t_present);
-			F.w_u32	(crc32(_keysQR,dwLen*sizeof(CKeyQR)));
-            F.w		(_keysQR,dwLen*sizeof(CKeyQR));
-            if (t_present){	
+            F.w_u8	(tr_present.get());
+            if (tr_present.is(flRKeyPresent)){	
+                F.w_u32	(crc32(_keysQR,dwLen*sizeof(CKeyQR)));
+                F.w		(_keysQR,dwLen*sizeof(CKeyQR));
+            }else{
+                F.w		(&R,sizeof(R));
+            }
+            if (tr_present.is(flTKeyPresent)){	
 	            F.w_u32(crc32(_keysQT,u32(dwLen*sizeof(CKeyQT))));
             	F.w	(_keysQT,dwLen*sizeof(CKeyQT));
 	            F.w_fvector3(St);
@@ -823,7 +830,7 @@ bool CExportSkeleton::ExportMotionKeys(IWriter& F)
         xr_free(_keysT);
 
         F.close_chunk();
-    pb->Inc		();
+    	pb->Inc		();
     }
     F.close_chunk();
 	UI->ProgressEnd(pb);

@@ -562,11 +562,11 @@ void CBoneDataAnimated::Calculate(CKinematics* _K, Fmatrix *parent)
                 CMotion&		M		=	Motions->at(B->motionID);
                 u32				frame	=	iFloor(time);
                 float			delta	=	time-float(frame);
-                u32				count	=	M._count;
+                u32				count	=	M.get_count();
                 CKeyQR*			K1r		=	&M._keysR[(frame+0)%count];
                 CKeyQR*			K2r		=	&M._keysR[(frame+1)%count];
                 // rotation
-                {
+                if (M.is_r_present()){
                     Fquaternion	Q1,Q2;
                     Q1.x		= float(K1r->x)*KEY_QuantI;
                     Q1.y		= float(K1r->y)*KEY_QuantI;
@@ -579,10 +579,12 @@ void CBoneDataAnimated::Calculate(CKinematics* _K, Fmatrix *parent)
                     Q2.w		= float(K2r->w)*KEY_QuantI;
 
                     D->Q.slerp	(Q1,Q2,clampr(delta,0.f,1.f));
+                }else{
+                    D->Q.set	(M._initR);
                 }
 
                 // translate
-                if (*M._keysT){
+                if (M.is_t_present()){
 	                CKeyQT*	K1t	= &M._keysT[(frame+0)%count];
     	            CKeyQT*	K2t	= &M._keysT[(frame+1)%count];
 

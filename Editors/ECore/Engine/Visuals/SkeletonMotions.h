@@ -18,6 +18,10 @@ const	f32		KEY_Quant			= 32767.f;
 const	f32		KEY_QuantI			= 1.f/KEY_Quant;
 
 //*** Key frame definition ************************************************************************
+enum{
+    flTKeyPresent 	= (1<<0),
+    flRKeyPresent 	= (1<<1),
+};
 #pragma pack(push,2)
 struct ENGINE_API CKey
 {
@@ -37,12 +41,28 @@ struct ENGINE_API CKeyQT
 //*** Motion Data *********************************************************************************
 class ENGINE_API		CMotion
 {
+	struct{
+    	u32				_t_present 	: 1;
+    	u32				_r_present 	: 1;
+		u32				_reserved  	: 2;
+		u32				_count 		: 28;
+    };
 public:
-	ref_smem<CKeyQR>	_keysR;
-	ref_smem<CKeyQT>	_keysT;
+    ref_smem<CKeyQR>	_keysR;
+    ref_smem<CKeyQT>	_keysT;
+    Fquaternion			_initR;
     Fvector				_initT;
     Fvector				_sizeT;
-	u32					_count;
+public:    
+    void				set_t_present		(bool val){_t_present=val;}
+    void				set_r_present		(bool val){_r_present=val;}
+
+    bool				is_t_present 		(){return _t_present;}
+    bool				is_r_present 		(){return _r_present;}
+
+    void				set_count			(u32 cnt){_count=cnt;}
+    u32					get_count			(){return (u32(_count)&0x00FFFFFF);}
+
 	float				GetLength			(){ return float(_count)*SAMPLE_SPF; }
 
 	u32					mem_usage			(){ 

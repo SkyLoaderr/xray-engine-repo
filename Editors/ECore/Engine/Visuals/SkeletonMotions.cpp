@@ -12,7 +12,7 @@ motions_container*	g_pMotionsContainer	= 0;
 
 u16 find_bone_id(vecBones* bones, shared_str nm)
 {
-	for (u16 i=0; i<bones->size(); i++)
+	for (u16 i=0; i<(u16)bones->size(); i++)
 		if (bones->at(i)->name==nm) return i;
 	return BI_NONE;
 }
@@ -131,12 +131,24 @@ BOOL motions_value::load		(LPCSTR N, IReader *data, vecBones* bones)
 			u16 bone_id		= rm_bones[i];
 			VERIFY2			(bone_id!=BI_NONE,"Invalid remap index.");
 			CMotion&		M	= m_motions[bones->at(bone_id)->name][m_idx];
-			M._count			= dwLen;
-			u8	t_present		= MS->r_u8	();
-			u32 crc_q			= MS->r_u32	();
-			M._keysR.create		(crc_q,dwLen,(CKeyQR*)MS->pointer());
-			MS->advance			(dwLen * sizeof(CKeyQR));
-			if (t_present)	{
+			M.set_count		(dwLen);
+			Flags8			FL;
+            FL.assign		(MS->r_u8());
+            M.set_t_present	(FL.is(flTKeyPresent));
+            M.set_r_present	(FL.is(flRKeyPresent));
+			if (M.is_r_present())	{
+                u32 crc_q		= MS->r_u32	();
+                M._keysR.create	(crc_q,dwLen,(CKeyQR*)MS->pointer());
+                MS->advance		(dwLen * sizeof(CKeyQR));
+			}else{
+            	CKeyQR* r 		= (CKeyQR*)MS->pointer();
+                M._initR.x		= float(r->x)*KEY_QuantI;
+                M._initR.y		= float(r->y)*KEY_QuantI;
+                M._initR.z		= float(r->z)*KEY_QuantI;
+                M._initR.w		= float(r->w)*KEY_QuantI;
+                MS->advance		(1 * sizeof(CKeyQR));
+			}
+			if (M.is_t_present())	{
 				u32 crc_t		= MS->r_u32	();
 				M._keysT.create	(crc_t,dwLen,(CKeyQT*)MS->pointer());
 				MS->advance		(dwLen * sizeof(CKeyQT));
