@@ -258,7 +258,7 @@ function action_sniper_idle:init_state_walk()
     self.object:set_path_type           (game_object.patrol_path)
     self.object:set_patrol_path			(self.a.rest_path, patrol.start, patrol.continue, true)
     self.object:set_movement_type       (move.walk)
-    self.object:set_previous_point  	(-1)
+--    self.object:set_previous_point  	(-1)
 
 	self.object:set_sight				(look.path_dir, nil, 0)
 
@@ -329,7 +329,7 @@ end
 function action_sniper_idle:move_callback(obj, action_type, index)
 	self.object:set_movement_type	(move.stand)
     self.object:set_sight			(look.fire_point, this.point_with_bit(self.a.point_path, 2), 0)
-    self.object:set_previous_point 	(index)
+--    self.object:set_previous_point 	(index)
     self.state 		= LOOK
     self.time		= device():time_global() + time_to_look
     self.time_sight = device():time_global() + 1000
