@@ -15,10 +15,11 @@
 #define TEMPLATE_SPECIALIZATION template <\
 	typename _Graph,\
 	typename _VertexEvaluator,\
-	typename _vertex_id_type\
+	typename _vertex_id_type,\
+	typename _index_type\
 >
 
-#define CPathManagerTemplate CAbstractPathManager<_Graph,_VertexEvaluator,_vertex_id_type>
+#define CPathManagerTemplate CAbstractPathManager<_Graph,_VertexEvaluator,_vertex_id_type,_index_type>
 
 TEMPLATE_SPECIALIZATION
 IC	CPathManagerTemplate::CAbstractPathManager		()
@@ -110,3 +111,5 @@ IC	const xr_vector<_vertex_id_type> &CPathManagerTemplate::path	() const
 {
 	return					(m_path);
 }
+
+#undef TEMPLATE_SPECIALIZATION

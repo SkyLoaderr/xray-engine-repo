@@ -11,7 +11,8 @@
 template <
 	typename _Graph,
 	typename _VertexEvaluator,
-	typename _vertex_id_type
+	typename _vertex_id_type,
+	typename _index_type
 >
 class CAbstractPathManager {
 private:
@@ -19,8 +20,8 @@ private:
 	bool										m_actuality;
 	bool										m_failed;
 	_VertexEvaluator							*m_evaluator;
-	u32											m_current_index;
-	u32											m_intermediate_index;
+	_index_type									m_current_index;
+	_index_type									m_intermediate_index;
 	xr_vector<_vertex_id_type>					m_path;
 public:
 

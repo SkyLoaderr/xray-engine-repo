@@ -102,3 +102,4 @@ IC	void CSelectorTemplate::perform_search		(const _vertex_id_type vertex_id)
 		m_selected_vertex_id	= m_evaluator->selected_vertex_id();
 }
 
+#undef TEMPLATE_SPECIALIZATION
