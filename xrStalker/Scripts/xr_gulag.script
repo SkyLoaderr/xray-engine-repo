@@ -329,7 +329,7 @@ function fract:loadJob(name) -- загружает список заданий
 			prior = 9,
 			state = { 0, 1, 2}, -- в каких состояниях это задание существует
 			running = false,
-			search_light = "blockpost_search_light",
+			search_light = nil, --' "blockpost_search_light",
 			path_main = "blockpost_guard_light",
 			path_hideout = "blockpost_guard_light" }
 		table.insert(self.Job, t)			
