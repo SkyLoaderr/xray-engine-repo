@@ -14,7 +14,6 @@ enum {
     COMMAND_EXPORT_DM,
     COMMAND_PREVIEW_OBJ_PREF,
     COMMAND_SELECT_PREVIEW_OBJ,
-    COMMAND_RESET_ANIMATION,
 	COMMAND_SHOW_CLIPMAKER,
     COMMAND_OPTIMIZE_MOTIONS,
 
@@ -49,9 +48,11 @@ public:
     virtual LPCSTR	EditorName				(){return "actor";}
     virtual LPCSTR	EditorDesc				(){return "Actor Editor";}
 
-    virtual bool	Command					(int _Command, int p = 0, int p2 = 0);
     virtual bool 	ApplyShortCut			(WORD Key, TShiftState Shift);
     virtual bool 	ApplyGlobalShortCut		(WORD Key, TShiftState Shift);
+
+    // commands
+	virtual	void	RegisterCommands		(); 
 };    
 extern CActorMain*&	AUI;
 //---------------------------------------------------------------------------

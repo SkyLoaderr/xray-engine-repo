@@ -91,7 +91,6 @@ __published:	// IDE-managed Components
     void __fastcall PanelMimimizeClick(TObject *Sender);
     void __fastcall PanelMaximizeClick(TObject *Sender);
     void __fastcall ebEditorPreferencesClick(TObject *Sender);
-	void __fastcall ebResetAnimationClick(TObject *Sender);
 	void __fastcall ebSceneFileMouseDown(TObject *Sender,
           TMouseButton Button, TShiftState Shift, int X, int Y);
 	void __fastcall tvMotionsStartDrag(TObject *Sender,

@@ -40,8 +40,8 @@ __fastcall TfraLeftBar::TfraLeftBar(TComponent* Owner)
 void __fastcall TfraLeftBar::miRecentFilesClick(TObject *Sender)
 {
 	TMenuItem* MI = dynamic_cast<TMenuItem*>(Sender); R_ASSERT(MI&&(MI->Tag==0x1001));
-    AnsiString fn = MI->Caption;
-    UI->Command(COMMAND_LOAD,(u32)fn.c_str());
+    AnsiString fn = MI->Caption;               
+    ExecCommand(COMMAND_LOAD,(u32)fn.c_str());
 }
 //---------------------------------------------------------------------------
 
@@ -111,25 +111,25 @@ void TfraLeftBar::MaximizeAllFrames()
 
 void __fastcall TfraLeftBar::ebSaveClick(TObject *Sender)
 {
-	UI->Command( COMMAND_SAVE );
+	ExecCommand( COMMAND_SAVE );
 }
 //---------------------------------------------------------------------------
 
 void __fastcall TfraLeftBar::Refresh1Click(TObject *Sender)
 {
-	UI->Command( COMMAND_REFRESH_TEXTURES );
+	ExecCommand( COMMAND_REFRESH_TEXTURES );
 }
 //---------------------------------------------------------------------------
 
 void __fastcall TfraLeftBar::Checknewtextures1Click(TObject *Sender)
 {
-	UI->Command( COMMAND_CHECK_TEXTURES );
+	ExecCommand( COMMAND_CHECK_TEXTURES );
 }
 //---------------------------------------------------------------------------
 
 void __fastcall TfraLeftBar::ImageEditor1Click(TObject *Sender)
 {
-	UI->Command( COMMAND_IMAGE_EDITOR );
+	ExecCommand( COMMAND_IMAGE_EDITOR );
 }
 //---------------------------------------------------------------------------
 
@@ -149,19 +149,13 @@ void __fastcall TfraLeftBar::PanelMaximizeClick(TObject *Sender)
 
 void __fastcall TfraLeftBar::ebEditorPreferencesClick(TObject *Sender)
 {
-	UI->Command(COMMAND_EDITOR_PREF);
+	ExecCommand(COMMAND_EDITOR_PREF);
 }
 //---------------------------------------------------------------------------
 
 void __fastcall TfraLeftBar::ebMakePreviewClick(TObject *Sender)
 {
-	UI->Command( COMMAND_MAKE_PREVIEW );
-}
-//---------------------------------------------------------------------------
-
-void __fastcall TfraLeftBar::ebResetAnimationClick(TObject *Sender)
-{
-	UI->Command( COMMAND_RESET_ANIMATION );
+	ExecCommand( COMMAND_MAKE_PREVIEW );
 }
 //---------------------------------------------------------------------------
 
@@ -220,50 +214,50 @@ void __fastcall TfraLeftBar::tvMotionsDragDrop(TObject *Sender,
 
 void __fastcall TfraLeftBar::Import1Click(TObject *Sender)
 {
-	UI->Command( COMMAND_IMPORT );
+	ExecCommand( COMMAND_IMPORT );
 }
 //---------------------------------------------------------------------------
 
 void __fastcall TfraLeftBar::Load1Click(TObject *Sender)
 {
-	UI->Command( COMMAND_LOAD );
+	ExecCommand( COMMAND_LOAD );
 }
 //---------------------------------------------------------------------------
 
 void __fastcall TfraLeftBar::Clear1Click(TObject *Sender)
 {
-	UI->Command( COMMAND_CLEAR );
+	ExecCommand( COMMAND_CLEAR );
 }
 //---------------------------------------------------------------------------
 
 void __fastcall TfraLeftBar::Save2Click(TObject *Sender)
 {
-	UI->Command( COMMAND_SAVE );
+	ExecCommand( COMMAND_SAVE );
 }
 //---------------------------------------------------------------------------
 
 void __fastcall TfraLeftBar::SaevAs1Click(TObject *Sender)
 {
-	UI->Command( COMMAND_SAVEAS );
+	ExecCommand( COMMAND_SAVEAS );
 }
 //---------------------------------------------------------------------------
 
 void __fastcall TfraLeftBar::ebBonePartClick(TObject *Sender)
 {
 	frmBonePart->Run(ATools->CurrentObject());
-	UI->Command(COMMAND_UPDATE_PROPERTIES);
+	ExecCommand(COMMAND_UPDATE_PROPERTIES);
 }
 //---------------------------------------------------------------------------
 
 void __fastcall TfraLeftBar::miExportOGFClick(TObject *Sender)
 {
-	UI->Command( COMMAND_EXPORT_OGF );
+	ExecCommand( COMMAND_EXPORT_OGF );
 }
 //---------------------------------------------------------------------------
 
 void __fastcall TfraLeftBar::miExportOMFClick(TObject *Sender)
 {
-	UI->Command( COMMAND_EXPORT_OMF );
+	ExecCommand( COMMAND_EXPORT_OMF );
 }
 //---------------------------------------------------------------------------
 
@@ -271,11 +265,11 @@ void __fastcall TfraLeftBar::miExportOMFClick(TObject *Sender)
 void __fastcall TfraLeftBar::ebRenderStyleClick(TObject *Sender)
 {
 	if (Sender==ebRenderEngineStyle){
-		if (!ATools->IsVisualPresent()) UI->Command( COMMAND_MAKE_PREVIEW );
+		if (!ATools->IsVisualPresent()) ExecCommand( COMMAND_MAKE_PREVIEW );
         if (!ATools->IsVisualPresent()) SetRenderStyle(false);
         else						  SetRenderStyle(true);
     }
-    UI->Command		(COMMAND_UPDATE_PROPERTIES);
+    ExecCommand		(COMMAND_UPDATE_PROPERTIES);
     UI->RedrawScene	();
 }
 //---------------------------------------------------------------------------
@@ -290,43 +284,43 @@ void TfraLeftBar::SetRenderStyle(bool bEngineStyle)
 
 void __fastcall TfraLeftBar::Custom1Click(TObject *Sender)
 {
-	UI->Command( COMMAND_SELECT_PREVIEW_OBJ, false );
+	ExecCommand( COMMAND_SELECT_PREVIEW_OBJ, false );
 }
 //---------------------------------------------------------------------------
 
 void __fastcall TfraLeftBar::none1Click(TObject *Sender)
 {
-	UI->Command( COMMAND_SELECT_PREVIEW_OBJ, true );
+	ExecCommand( COMMAND_SELECT_PREVIEW_OBJ, true );
 }
 //---------------------------------------------------------------------------
 
 void __fastcall TfraLeftBar::Preferences1Click(TObject *Sender)
 {
-	UI->Command( COMMAND_PREVIEW_OBJ_PREF );
+	ExecCommand( COMMAND_PREVIEW_OBJ_PREF );
 }
 //---------------------------------------------------------------------------
 
 void __fastcall TfraLeftBar::ExportDM1Click(TObject *Sender)
 {
-	UI->Command( COMMAND_EXPORT_DM );
+	ExecCommand( COMMAND_EXPORT_DM );
 }
 //---------------------------------------------------------------------------
 
 void __fastcall TfraLeftBar::ExtBtn1Click(TObject *Sender)
 {
-	UI->Command( COMMAND_SHOW_CLIPMAKER );
+	ExecCommand( COMMAND_SHOW_CLIPMAKER );
 }
 //---------------------------------------------------------------------------
 
 void __fastcall TfraLeftBar::MenuItem2Click(TObject *Sender)
 {
-	UI->Command( COMMAND_SOUND_EDITOR );
+	ExecCommand( COMMAND_SOUND_EDITOR );
 }
 //---------------------------------------------------------------------------
 
 void __fastcall TfraLeftBar::MenuItem4Click(TObject *Sender)
 {
-	UI->Command( COMMAND_SYNC_SOUNDS );
+	ExecCommand( COMMAND_SYNC_SOUNDS );
 }
 //---------------------------------------------------------------------------
 
@@ -347,7 +341,7 @@ void TfraLeftBar::RefreshBar()
 
 void __fastcall TfraLeftBar::OptimizeMotions1Click(TObject *Sender)
 {
-	UI->Command( COMMAND_OPTIMIZE_MOTIONS );
+	ExecCommand( COMMAND_OPTIMIZE_MOTIONS );
 }
 //---------------------------------------------------------------------------
 

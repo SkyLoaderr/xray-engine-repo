@@ -60,8 +60,8 @@ void __fastcall TfrmBonePart::FillBoneParts()
     for (int k=0; k<4; k++) T[k]->IsUpdating = true;
     for (k=0; k<4; k++){T[k]->Items->Clear();E[k]->Text="";}
 	for (BPIt it=m_BoneParts->begin(); it!=m_BoneParts->end(); it++){
-        E[it-m_BoneParts->begin()]->Text = it->alias;
-        for (AStringIt w_it=it->bones.begin(); w_it!=it->bones.end(); w_it++)
+        E[it-m_BoneParts->begin()]->Text = it->alias.c_str();
+        for (RStringVecIt w_it=it->bones.begin(); w_it!=it->bones.end(); w_it++)
         	FHelper.AppendObject(T[it-m_BoneParts->begin()],w_it->c_str(),false,true);
     }
     for (k=0; k<4; k++) T[k]->IsUpdating = false;
@@ -148,9 +148,9 @@ void __fastcall TfrmBonePart::ebSaveClick(TObject *Sender)
     	if (T[k]->Items->Count){
             m_BoneParts->push_back(SBonePart());
             SBonePart& BP = m_BoneParts->back();
-            BP.alias = E[k]->Text;
+            BP.alias = E[k]->Text.c_str();
 		    for ( TElTreeItem* node = T[k]->Items->GetFirstNode(); node; node = node->GetNext())
-            	BP.bones.push_back(node->Text);
+            	BP.bones.push_back(AnsiString(node->Text).c_str());
         }
     }
     ATools->OnMotionDefsModified();

@@ -92,7 +92,7 @@ void CActorTools::OnMotionEditClick(PropValue* sender, bool& bModif, bool& bSafe
             bool bRes = false;
             for (AStringIt it=lst.begin(); it!=lst.end(); it++)
                 if (AppendMotion(it->c_str())) bRes=true;
-            UI->Command	(COMMAND_UPDATE_PROPERTIES);
+            ExecCommand	(COMMAND_UPDATE_PROPERTIES);
 			if (bRes)	OnMotionKeysModified();
             else 		ELog.DlgMsg(mtError,"Append not completed.");
             bModif = false;
@@ -110,7 +110,7 @@ void CActorTools::OnMotionEditClick(PropValue* sender, bool& bModif, bool& bSafe
 		    	m_ObjectItems->LockUpdating();
 				SelectListItem(MOTIONS_PREFIX,0,true,false,false);
 		    	m_ObjectItems->UnlockUpdating();
-                UI->Command(COMMAND_UPDATE_PROPERTIES);
+                ExecCommand(COMMAND_UPDATE_PROPERTIES);
 				OnMotionKeysModified();
                 bModif = false;
             }else{
@@ -192,7 +192,7 @@ void CActorTools::OnMotionControlClick(PropValue* sender, bool& bModif, bool& bS
 void  CActorTools::OnMotionRefsChange(PropValue* sender)
 {
     OnMotionKeysModified	();
-	UI->Command				(COMMAND_UPDATE_PROPERTIES);
+	ExecCommand				(COMMAND_UPDATE_PROPERTIES);
 }
 
 void CActorTools::FillMotionProperties(PropItemVec& items, LPCSTR pref, ListItem* sender)
@@ -282,12 +282,12 @@ static const LPCSTR axis[3]=
 
 void  CActorTools::OnJointTypeChange(PropValue* V)
 {
-	UI->Command(COMMAND_UPDATE_PROPERTIES);
+	ExecCommand(COMMAND_UPDATE_PROPERTIES);
 }
 void  CActorTools::OnShapeTypeChange(PropValue* V)
 {
 	UI->RedrawScene();
-	UI->Command(COMMAND_UPDATE_PROPERTIES);
+	ExecCommand(COMMAND_UPDATE_PROPERTIES);
 }
 void  CActorTools::OnBindTransformChange(PropValue* V)
 {
@@ -313,7 +313,7 @@ void  CActorTools::OnBoneEditClick(PropValue* sender, bool& bModif, bool& bSafe)
     switch (V->btn_num){
     case 0: 
     	m_pEditObject->GotoBindPose(); 
-		UI->Command(COMMAND_UPDATE_PROPERTIES);
+		ExecCommand(COMMAND_UPDATE_PROPERTIES);
 	    bModif = false;
     break;
     case 1:
@@ -323,7 +323,7 @@ void  CActorTools::OnBoneEditClick(PropValue* sender, bool& bModif, bool& bSafe)
     break;
     case 2:
 		m_pEditObject->ClampByLimits(false); 
-		UI->Command(COMMAND_UPDATE_PROPERTIES);
+		ExecCommand(COMMAND_UPDATE_PROPERTIES);
 	    bModif = false;
     break;
 	}

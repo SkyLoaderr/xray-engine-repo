@@ -38,6 +38,7 @@ WINAPI WinMain(HINSTANCE  hInst, HINSTANCE, LPSTR, int)
 // startup create
         ATools					= xr_new<CActorTools>();
         AUI						= xr_new<CActorMain>();
+        AUI->RegisterCommands	();
 
 		Application->Title 		= UI->EditorDesc();
         TfrmLog::CreateLog		();
@@ -52,6 +53,8 @@ WINAPI WinMain(HINSTANCE  hInst, HINSTANCE, LPSTR, int)
 
         TfrmLog::DestroyLog		(); 
 
+		AUI->ClearCommands		();
+        
         xr_delete				(Tools);
         xr_delete				(UI);
 

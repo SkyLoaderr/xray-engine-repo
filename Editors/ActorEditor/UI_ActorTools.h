@@ -258,6 +258,20 @@ public:
     bool				RenameMotion		(LPCSTR old_name, LPCSTR new_name);
 
     void				OptimizeMotions		();
+
+    // commands
+	void 				CommandClear		(u32 p1, u32 p2, u32& res);
+	void 				CommandLoad			(u32 p1, u32 p2, u32& res);
+    void                CommandSaveBackup	(u32 p1, u32 p2, u32& res);
+    void                CommandSaveAs		(u32 p1, u32 p2, u32& res);
+    void                CommandSave			(u32 p1, u32 p2, u32& res);
+    void                CommandImport		(u32 p1, u32 p2, u32& res);
+    void                CommandExportDM		(u32 p1, u32 p2, u32& res);
+    void                CommandExportOGF	(u32 p1, u32 p2, u32& res);
+    void               	CommandExportOMF	(u32 p1, u32 p2, u32& res);
+	void 				CommandUndo			(u32 p1, u32 p2, u32& res);
+	void 				CommandRedo			(u32 p1, u32 p2, u32& res);
+	void 				CommandOptimizeMotions(u32 p1, u32 p2, u32& res);
 };
 
 extern CActorTools*&	ATools;

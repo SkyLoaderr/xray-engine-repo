@@ -774,7 +774,7 @@ void TClipMaker::RealRepaintClips()
     if (O){
 	    BPVec& bps 		= O->BoneParts();
         for (; k<bps.size(); k++)
-        	m_LB[k]->Caption = bps[k].alias;
+        	m_LB[k]->Caption = bps[k].alias.c_str();
     }
 	for (; k<4; k++)	m_LB[k]->Caption	= "-";
     UpdateProperties	();

@@ -49,14 +49,14 @@ void TfraTopBar::OnTimer(){
 //---------------------------------------------------------------------------
 
 void __fastcall TfraTopBar::ebEditUndoClick(TObject *Sender)
-{
- 	UI->Command( COMMAND_UNDO );
+{    
+ 	ExecCommand( COMMAND_UNDO );
 }
 //---------------------------------------------------------------------------
 
 void __fastcall TfraTopBar::ebEditRedoClick(TObject *Sender)
 {
- 	UI->Command( COMMAND_REDO );
+ 	ExecCommand( COMMAND_REDO );
 }
 //---------------------------------------------------------------------------
 
@@ -64,7 +64,7 @@ void __fastcall TfraTopBar::ActionClick(TObject *Sender)
 {
     TExtBtn* btn=dynamic_cast<TExtBtn*>(Sender);
     VERIFY(btn);
-    UI->Command(COMMAND_CHANGE_ACTION, btn->Tag);
+    ExecCommand(COMMAND_CHANGE_ACTION, btn->Tag);
 }
 //---------------------------------------------------------------------------
 
@@ -72,7 +72,7 @@ void __fastcall TfraTopBar::ebAxisClick(TObject *Sender)
 {
     TExtBtn* btn=dynamic_cast<TExtBtn*>(Sender);
     VERIFY(btn);
-    UI->Command(COMMAND_CHANGE_AXIS, btn->Tag);
+    ExecCommand(COMMAND_CHANGE_AXIS, btn->Tag);
 }
 //---------------------------------------------------------------------------
 
@@ -80,7 +80,7 @@ void __fastcall TfraTopBar::ebSettingsClick(TObject *Sender)
 {
     TExtBtn* btn=dynamic_cast<TExtBtn*>(Sender);
     VERIFY(btn);
-    UI->Command(COMMAND_CHANGE_SETTINGS, btn->Tag, btn->Down);
+    ExecCommand(COMMAND_CHANGE_SETTINGS, btn->Tag, btn->Down);
 }
 //---------------------------------------------------------------------------
 
@@ -140,13 +140,13 @@ void __fastcall TfraTopBar::RefreshBar()
 
 void __fastcall TfraTopBar::ebZoomExtentsClick(TObject *Sender)
 {
- 	UI->Command( COMMAND_ZOOM_EXTENTS, FALSE );
+ 	ExecCommand( COMMAND_ZOOM_EXTENTS, FALSE );
 }
 //---------------------------------------------------------------------------
 
 void __fastcall TfraTopBar::ebZoomExtentsSelectedClick(TObject *Sender)
 {
- 	UI->Command( COMMAND_ZOOM_EXTENTS, TRUE );
+ 	ExecCommand( COMMAND_ZOOM_EXTENTS, TRUE );
 }
 //---------------------------------------------------------------------------
 

@@ -52,7 +52,8 @@ __fastcall TfrmMain::TfrmMain(TComponent* Owner)
 	else paLeftBar->Parent 	= frmMain;
 
 	Device.SetHandle		(Handle,D3DWindow->Handle);
-    if (!UI->Command(COMMAND_INITIALIZE,(int)D3DWindow,(int)paRender)){ 
+    EnableReceiveCommands	();
+    if (!ExecCommand(COMMAND_INITIALIZE,(int)D3DWindow,(int)paRender)){ 
     	FlushLog			();
     	TerminateProcess(GetCurrentProcess(),-1);
     }
@@ -61,8 +62,8 @@ __fastcall TfrmMain::TfrmMain(TComponent* Owner)
 void __fastcall TfrmMain::FormShow(TObject *Sender)
 {
     tmRefresh->Enabled 		= true; tmRefreshTimer(Sender);
-    UI->Command				(COMMAND_UPDATE_GRID);
-    UI->Command				(COMMAND_RENDER_FOCUS);
+    ExecCommand				(COMMAND_UPDATE_GRID);
+    ExecCommand				(COMMAND_RENDER_FOCUS);
     FillChooseEvents		();
 }
 //---------------------------------------------------------------------------
@@ -72,7 +73,7 @@ void __fastcall TfrmMain::FormClose(TObject *Sender, TCloseAction &Action)
 
     ClearChooseEvents		();
 
-    UI->Command				(COMMAND_DESTROY);
+    ExecCommand				(COMMAND_DESTROY);
 
 	fraTopBar->Parent       = 0;
 	fraLeftBar->Parent      = 0;
@@ -86,7 +87,7 @@ void __fastcall TfrmMain::FormClose(TObject *Sender, TCloseAction &Action)
 void __fastcall TfrmMain::FormCloseQuery(TObject *Sender, bool &CanClose)
 {
     tmRefresh->Enabled = false;
-    CanClose = UI->Command(COMMAND_EXIT);
+    CanClose = ExecCommand(COMMAND_EXIT);
     if (!CanClose) tmRefresh->Enabled = true;
 }
 //---------------------------------------------------------------------------
@@ -247,7 +248,7 @@ void __fastcall TfrmMain::FormResize(TObject *Sender)
 
 void __fastcall TfrmMain::paRenderResize(TObject *Sender)
 {
-	UI->Command(COMMAND_RENDER_RESIZE);
+	ExecCommand(COMMAND_RENDER_RESIZE);
 }
 //---------------------------------------------------------------------------
 

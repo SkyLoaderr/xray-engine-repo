@@ -190,15 +190,15 @@ void CActorTools::OnDestroy()
 void CActorTools::Modified()
 {
 	m_bObjectModified	= true;
-    UI->Command			(COMMAND_UPDATE_CAPTION);
+    ExecCommand			(COMMAND_UPDATE_CAPTION);
 }
 //---------------------------------------------------------------------------
 
 bool CActorTools::IfModified(){
     if (IsModified()){
-        int mr = ELog.DlgMsg(mtConfirmation, "The '%s' has been modified.\nDo you want to save your changes?",UI->GetEditFileName());
+        int mr = ELog.DlgMsg(mtConfirmation, "The '%s' has been modified.\nDo you want to save your changes?",GetEditFileName());
         switch(mr){
-        case mrYes: if (!UI->Command(COMMAND_SAVE)) return false; else{m_bObjectModified = false;}break;
+        case mrYes: if (!ExecCommand(COMMAND_SAVE)) return false; else{m_bObjectModified = false;}break;
         case mrNo: m_bObjectModified = false; break;
         case mrCancel: return false;
         }
