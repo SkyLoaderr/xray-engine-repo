@@ -388,7 +388,7 @@ void CStalkerAnimations::vfAssignTorsoAnimation(CMotionDef *&tpTorsoAnimation)
 				case ObjectHandlerSpace::eWorldOperatorFire2 :
 				{
 //					Msg				("%6d : weapon state %s",Level().timeServer(),"Aim");
-					tpTorsoAnimation = m_tAnims.A[l_tBodyState].m_tTorso.A[dwCurrentAniSlot].A[m_object->IsLimping() ? 9 : 6].A[0];
+					tpTorsoAnimation = m_tAnims.A[l_tBodyState].m_tTorso.A[dwCurrentAniSlot].A[((l_tBodyState == eBodyStateStand) && m_object->IsLimping()) ? 9 : 6].A[0];
 					break;
 				}
 				default : {
