@@ -32,6 +32,10 @@ void	CBuild::xrPhase_ResolveMaterials()
 		}
 
 		Progress(float(F_it-g_faces.begin())/float(g_faces.size()));
-	}		
+	}
+	for (int it=0; it<g_XSplit.size(); it++)
+	{
+		Detach(&g_XSplit[it]);
+	}
 	Msg("%d subdivisions.",g_XSplit.size());
 }
