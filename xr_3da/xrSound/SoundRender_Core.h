@@ -66,10 +66,10 @@ public:
 	// Sound interface
 	virtual void						create					( ref_sound& S, BOOL _3D,	LPCSTR fName,	int		type=0);
 	virtual void						destroy					( ref_sound& S);
-	virtual void						play					( ref_sound& S, CObject* O,								BOOL bLoop=false, float delay=0.f);
-	virtual void						play_unlimited			( ref_sound& S, CObject* O,								BOOL bLoop=false, float delay=0.f);
-	virtual void						play_at_pos				( ref_sound& S, CObject* O,		const Fvector &pos,		BOOL bLoop=false, float delay=0.f);
-	virtual void						play_at_pos_unlimited	( ref_sound& S, CObject* O,		const Fvector &pos,		BOOL bLoop=false, float delay=0.f);
+	virtual void						play					( ref_sound& S, CObject* O,								u32 flags=0, float delay=0.f);
+	virtual void						play_unlimited			( ref_sound& S, CObject* O,								u32 flags=0, float delay=0.f);
+	virtual void						play_at_pos				( ref_sound& S, CObject* O,		const Fvector &pos,		u32 flags=0, float delay=0.f);
+	virtual void						play_at_pos_unlimited	( ref_sound& S, CObject* O,		const Fvector &pos,		u32 flags=0, float delay=0.f);
 	virtual void						set_geometry_env		( IReader* I );
 	virtual void						set_geometry_occ		( CDB::MODEL* M );
 	virtual void						set_handler				( sound_event* E );
