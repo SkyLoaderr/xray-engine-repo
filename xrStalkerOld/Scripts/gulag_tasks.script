@@ -872,11 +872,13 @@ function loadStates(gname, type)
 	
 	if type == "gar_dolg" then
 		return function(gulag)
-			if gulag.state == 1 then return 1 end
+			--if gulag.state == 1 then return 1 end
 			local actor = level.actor()
 			if actor and actor:has_info ("gar_monsters_rush_wave1") then
+			   --printf ("GARBAGE DOLG GULAG STATE 1") 
                return 1
 			else
+			   --printf ("GARBAGE DOLG GULAG STATE 0") 
 			   return 0
 			end
 		end

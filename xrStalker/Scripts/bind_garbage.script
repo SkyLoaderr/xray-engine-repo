@@ -142,7 +142,7 @@ function CRushMonster:death_callback (self, who)
     printf ("Monsters killed by actor %d", counter)
     this.remove (self:id ())
     -- check for set gulag to normal mode
-    if table.getn (need_monsters) < 5 then
+    if table.getn (need_monsters) < 8 then
        -- set gulag to normal state
        if act:has_info ("gar_monsters_rush_wave1") then
           act:disable_info_portion ("gar_monsters_rush_wave1") 
@@ -150,9 +150,7 @@ function CRushMonster:death_callback (self, who)
        end   
     end
     if counter > 3 then
-       printf ("Set relation") 
        xr_gulag.setGulagRelation ("gar_dolg", game_object.friend, act)
-       printf ("Relation setted") 
     end    
 end
 ------------------------------------------------------------------------------------
