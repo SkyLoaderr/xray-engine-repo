@@ -409,6 +409,53 @@ chemical_burn_protection = 0.6
 explosion_protection = 0.6
 fire_wound_protection  = 0.6
 
+[protection_outfit]
+GroupControlSection	= spawn_group
+discovery_dependency = 
+$spawn 			= "outfit\protection"
+$prefetch 		= 32
+class			= EQU_SCIE
+cform           = skeleton
+visual          = equipments\stalker_scient_suit	
+
+actor_visual	= actors\nauchniy\nauchniy_0.ogf
+
+inv_name			= "Scienific Outfit"
+inv_name_short		= "Scienific Outfit"
+inv_weight			= 6.5
+
+slot				= 6
+
+inv_grid_width		= 2
+inv_grid_height		= 3
+inv_grid_x			= 16
+inv_grid_y			= 13
+cost				= 3500
+
+full_scale_icon_x	= 8			;иконка сталкера в костюме в полный рост
+full_scale_icon_y	= 11
+
+
+burn_immunity = 0.5				;коэффициенты иммунитета самого костюма
+strike_immunity = 0.2	;1.0
+shock_immunity = 0.2
+wound_immunity = 0.5		
+radiation_immunity = 0.01
+telepatic_immunity = 0.01
+chemical_burn_immunity = 0.8
+explosion_immunity = 0.6
+fire_wound_immunity  = 0.5
+
+burn_protection = 0.3			;коэффициенты защиты костюма персонажем 
+strike_protection = 0.6	;0.9
+shock_protection = 0.6
+wound_protection = 0.6		
+radiation_protection = 0.1
+telepatic_protection = 0.3
+chemical_burn_protection = 0.6
+explosion_protection = 0.6
+fire_wound_protection  = 0.6
+
 [stalker_outfit]
 GroupControlSection	= spawn_group
 discovery_dependency = 
