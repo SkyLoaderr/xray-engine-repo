@@ -69,6 +69,7 @@ void SBullet::Init(const Fvector& position,
 
 CBulletManager::CBulletManager()
 {
+	m_Bullets.reserve(100);
 }
 
 CBulletManager::~CBulletManager()
