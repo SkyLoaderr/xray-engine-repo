@@ -9,6 +9,8 @@
 
 void CFontSmall::OnDeviceCreate()
 {
+	if (!Device.bReady)	return;
+	
 	pShader			= Device.Shader.Create("font","fonts\\small");
 
 	TextureSize.x	= 256;
