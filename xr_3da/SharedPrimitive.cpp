@@ -19,7 +19,6 @@ void CVertexStream::Create	()
 	
 	// Calc size
 	R_ASSERT	(mCount);
-	Log			("req:",mCount);
 	DWORD		dwMEM_Request	= mCount*mStride;
 	DWORD		dwMEM_Designed	= rsDVB_Size*1024;
 	DWORD		dwMEM_Alloc		= _MAX(dwMEM_Request,dwMEM_Designed);
