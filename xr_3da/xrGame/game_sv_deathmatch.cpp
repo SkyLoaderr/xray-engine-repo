@@ -38,7 +38,7 @@ void	game_sv_Deathmatch::OnPlayerKillPlayer		(u32 id_killer, u32 id_killed)
 {
 	game_PlayerState*	ps_killer	=	get_id	(id_killer);
 	game_PlayerState*	ps_killed	=	get_id	(id_killed);
-	ps_killed						|=	GAME_PLAYER_FLAG_VERY_VERY_DEAD;
+	ps_killed->flags				|=	GAME_PLAYER_FLAG_VERY_VERY_DEAD;
 	ps_killed->deaths				+=	1;
 	if (ps_killer == ps_killed)	
 	{
