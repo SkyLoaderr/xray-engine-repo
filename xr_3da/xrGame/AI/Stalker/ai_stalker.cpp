@@ -850,7 +850,7 @@ void CAI_Stalker::CreateSkeleton()
 	m_pPhysicsShell->mXFORM.set(m);
 	m_pPhysicsShell->SetAirResistance(0.002f*skel_airr_lin_factor,
 								   0.3f*skel_airr_ang_factor);
-	m_pPhysicsShell->SmoothElementsInertia(0.2f);
+	m_pPhysicsShell->SmoothElementsInertia(0.3f);
 
 }
 

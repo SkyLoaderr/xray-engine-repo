@@ -275,7 +275,7 @@ void	CCar::UpdateCL				( )
 	clCenter	(C);
 	V.set		(lin_vel);
 	float		velocity						= V.magnitude();
-	float		scale							= 1.5f + 1.f*(velocity/10.f);
+	float		scale							= 0.5f+velocity/20.f; clamp(scale,0.5f,1.f);
 
 	snd_engine.set_position			(C);
 	snd_engine.set_frequency		(scale);
