@@ -279,13 +279,14 @@ void	CRenderTarget::OnDeviceCreate	()
 						u16*	p	=	(u16*)		(LPBYTE (R.pBits) + slice*R.SlicePitch + y*R.RowPitch + x*2);
 						float	ld	=	float(x)	/ float	(TEX_material_LdotN-1);
 						float	ls	=	float(y)	/ float	(TEX_material_LdotH-1);
+						ls			*=	powf(ld,1/32.f);
 						float	fd,fs;
 
 						switch	(slice)
 						{
 						case 0:	{ // looks like OrenNayar
 							fd	= sqrt(ld);
-							fs	= powf(ls,16.f);
+							fs	= powf(ls,16.f)*.5f;
 								}	break;
 						case 1:	{// looks like Blinn
 							fd	= ld;
@@ -300,20 +301,20 @@ void	CRenderTarget::OnDeviceCreate	()
 							float	s1	=	_abs	(1-_abs	(0.05f*_cos(33.f*ld*ls)+ld-ls));
 							float	s2	=	_abs	(1-_abs	(ld-ls));
 							fd		= ld;
-							fs		= _max	(_max(s0,s1),s2);
+							fs		=	powf	(_max(_max(s0,s1),s2), 24.f);
+							fs		*=	powf	(ld,1/8.f);
 								}	break;
 						}
-
 						s32		_d	=	clampr	(iFloor	(fd*255.5f),					0,255);
-						s32		_s	=	clampr	(iFloor	(fs*powf(fd,1/64.f)*255.5f),	0,255);
+						s32		_s	=	clampr	(iFloor	(fs*255.5f),	0,255);
 						*p			=	u16		(_s*256 + _d);
 					}
 				}
 			}
 			R_CHK		(t_material_surf->UnlockBox	(0));
-#ifdef DEBUG
-			R_CHK		(D3DXSaveTextureToFile	("x:\\r2_material.dds",D3DXIFF_DDS,t_material_surf,0));
-#endif
+			// #ifdef DEBUG
+			// R_CHK	(D3DXSaveTextureToFile	("x:\\r2_material.dds",D3DXIFF_DDS,t_material_surf,0));
+			// #endif
 		}
 
 		// Build encode table - RG
