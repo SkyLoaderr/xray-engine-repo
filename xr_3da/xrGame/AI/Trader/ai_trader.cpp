@@ -300,7 +300,7 @@ void CAI_Trader::OnEvent		(NET_Packet& P, u16 type)
 		case GE_TRADE_SELL:
 			P.r_u16		(id);
 			Obj			= Level().Objects.net_Find	(id);
-			if	(m_trade_storage->Drop(dynamic_cast<CGameObject*>(Obj))) 
+			if	(m_trade_storage->Drop(dynamic_cast<CGameObject*>(Obj)) || inventory().Drop((dynamic_cast<CGameObject*>(Obj)))) 
 				Obj->H_SetParent(NULL);
 			break;
 		case GE_TRANSFER_AMMO:
