@@ -9,7 +9,8 @@
 using namespace			std;
 
 xr_vector<OGF_Base *>	g_tree;
-BOOL					b_R2	= FALSE;
+BOOL					b_R2		= FALSE;
+BOOL					b_radiosity	= FALSE;
 CThreadManager			mu_base;
 CThreadManager			mu_secondary;
 #define		MU_THREADS	4
@@ -26,7 +27,8 @@ CBuild::~CBuild()
  
 extern u16		RegisterShader		(LPCSTR T);
 
-class CMULight : public CThread
+// mu-light
+class CMULight	: public CThread
 {
 	u32			low;
 	u32			high;
@@ -157,6 +159,16 @@ void CBuild::Run	(LPCSTR P)
 	mem_Compact					();
 	Light_prepare				();
 	BuildRapid					(TRUE);
+
+	//****************************************** GLOBAL-ILLUMINATION
+	if (b_radiosity)			
+	{
+		FPU::m64r					();
+		Phase						("Radiosity-solver-setup...");
+		mem_Compact					();
+		Light_prepare				();
+		xrPhase_Radiosity			();
+	}
 
 	//****************************************** Starting MU
 	FPU::m64r					();

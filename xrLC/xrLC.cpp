@@ -48,6 +48,7 @@ void Startup(LPSTR     lpCmdLine)
 	if (strstr(cmd,"-f")==0)							{ Help(); return; }
 	if (strstr(cmd,"-o"))								bModifyOptions	= TRUE;
 	if (strstr(cmd,"-r2"))								b_R2			= TRUE;
+	if (strstr(cmd,"-gi"))								b_radiosity		= TRUE;
 	
 	// Give a LOG-thread a chance to startup
 	//_set_sbh_threshold(1920);
