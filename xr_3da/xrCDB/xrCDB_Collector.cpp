@@ -14,18 +14,31 @@ namespace CDB
 		return verts.size()-1;
 	}
 
-	void	Collector::add_face	(
+	void	Collector::add_face_D	(
 		Fvector& v0, Fvector& v1, Fvector& v2,	// vertices
-		WORD material, WORD sector, u32 dummy	// misc
+		u16 material, u16 sector, u32 dummy	// misc
 		)
 	{
 		TRI T;
 		T.IDverts()	[0] = verts.size();
 		T.IDverts()	[1] = verts.size()+1;
 		T.IDverts()	[2] = verts.size()+2;
+		T.dummy			= dummy;
+
+		verts.push_back(v0);
+		verts.push_back(v1);
+		verts.push_back(v2);
+		faces.push_back(T);
+	}
+
+	void	Collector::add_face		(	Fvector& v0, Fvector& v1, Fvector& v2, u16 material, u16 sector )
+	{
+		TRI			T;
+		T.IDverts()	[0] = verts.size();
+		T.IDverts()	[1] = verts.size()+1;
+		T.IDverts()	[2] = verts.size()+2;
 		T.material		= material;
 		T.sector		= sector;
-		T.dummy			= dummy;
 
 		verts.push_back(v0);
 		verts.push_back(v1);
@@ -35,8 +48,8 @@ namespace CDB
 
 	void	Collector::add_face_packed	(
 		Fvector& v0, Fvector& v1, Fvector& v2,	// vertices
-		WORD material, WORD sector, u32 dummy,	// misc
-		float eps
+		u16		material, u16 sector,			// misc
+		float	eps
 		)
 	{
 		TRI T;
@@ -45,9 +58,22 @@ namespace CDB
 		T.IDverts()	[2] = VPack(v2,eps);
 		T.material		= material;
 		T.sector		= sector;
+		faces.push_back(T);
+	}
+
+	void	Collector::add_face_packed_D	(
+		Fvector& v0, Fvector& v1, Fvector& v2,	// vertices
+		u32		dummy,	float eps
+		)
+	{
+		TRI T;
+		T.IDverts()	[0] = VPack(v0,eps);
+		T.IDverts()	[1] = VPack(v1,eps);
+		T.IDverts()	[2] = VPack(v2,eps);
 		T.dummy			= dummy;
 		faces.push_back(T);
 	}
+
 
 	void	Collector::calc_adjacency()
 	{
@@ -107,19 +133,27 @@ namespace CDB
 
 	void	CollectorPacked::add_face(
 		Fvector& v0, Fvector& v1, Fvector& v2,	// vertices
-		u32 e01, u32 e12, u32 e20,				// edges
-		WORD material, WORD sector, u32 dummy	// misc
+		u16 material, u16 sector				// misc
 		)
 	{
 		TRI T;
 		T.IDverts()	[0] = VPack(v0);
 		T.IDverts()	[1] = VPack(v1);
 		T.IDverts()	[2] = VPack(v2);
-		T.IDadj()	[0]	= e01;
-		T.IDadj()	[1]	= e12;
-		T.IDadj()	[2]	= e20;
 		T.material		= material;
 		T.sector		= sector;
+		faces.push_back(T);
+	}
+
+	void	CollectorPacked::add_face_D(
+		Fvector& v0, Fvector& v1, Fvector& v2,	// vertices
+		u32 dummy								// misc
+		)
+	{
+		TRI T;
+		T.IDverts()	[0] = VPack(v0);
+		T.IDverts()	[1] = VPack(v1);
+		T.IDverts()	[2] = VPack(v2);
 		T.dummy			= dummy;
 		faces.push_back(T);
 	}
