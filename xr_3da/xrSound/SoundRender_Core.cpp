@@ -226,7 +226,7 @@ void	CSoundRender_Core::play_at_pos_unlimited	( ref_sound& S, CObject* O, const 
 	S.feedback->set_position		(pos);
 	if (flags&sm_2D)				S.feedback->switch_to_2D();
 }
-void	CSoundRender_Core::destroy(ref_sound& S )
+void	CSoundRender_Core::destroy	(ref_sound& S )
 {
 	if (!bPresent || 0==S.handle)	{
 		S.handle	= 0;
