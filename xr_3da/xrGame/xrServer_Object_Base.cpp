@@ -234,7 +234,6 @@ BOOL CSE_Abstract::Spawn_Read				(NET_Packet	&tNetPacket)
 		tNetPacket.r_float		(m_spawn_probability);
 
 	if (m_wVersion > 83) {
-		tNetPacket.r_float		(m_spawn_probability);
 		m_spawn_flags.assign	(tNetPacket.r_u32());
 		tNetPacket.r_stringZ	(m_spawn_control);
 		tNetPacket.r_u32		(m_max_spawn_count);

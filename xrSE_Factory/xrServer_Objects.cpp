@@ -446,7 +446,7 @@ void CSE_SpawnGroup::FillProps				(LPCSTR pref, PropItemVec& values)
 	inherited::FillProps		(pref,values);
 //	PHelper().CreateTime		(values,PrepareKey(pref,*s_name,"Spawn parameters\\Min time spawn interval"),	&m_min_spawn_interval);
 //	PHelper().CreateTime		(values,PrepareKey(pref,*s_name,"Spawn parameters\\Max time spawn interval"),	&m_max_spawn_interval);
-	PHelper().CreateFlag32		(values,PrepareKey(pref,*s_name,"ALife\\Spawn single item only"),	&m_spawn_flags,	flSpawnSingleItemOnly);
+	PHelper().CreateFlag32		(values,PrepareKey(pref,*s_name,"Spawn parameters\\Spawn single item only"),	&m_spawn_flags,	flSpawnSingleItemOnly);
 }
 
 ////////////////////////////////////////////////////////////////////////////
