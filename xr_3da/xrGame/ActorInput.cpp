@@ -4,6 +4,7 @@
 #include "xr_weapon_list.h"
 #include "trade.h"
 #include "..\CameraBase.h"
+#include "Car.h"
 
 void CActor::IR_OnKeyboardPress(int cmd)
 {
@@ -32,7 +33,7 @@ void CActor::IR_OnKeyboardPress(int cmd)
 		}
 	}
 
-	if(m_vehicle)
+	if(m_vehicle && cmd!= kUSE)
 	{
 		m_vehicle->IR_OnKeyboardPress(cmd);
 		return;

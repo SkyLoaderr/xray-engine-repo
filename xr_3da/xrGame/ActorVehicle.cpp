@@ -2,7 +2,7 @@
 #pragma hdrstop
 
 #include "actor.h"
-
+#include "Car.h"
 void CActor::attach_Vehicle(CCar* vehicle)
 {
 	if(!vehicle) return;
@@ -37,9 +37,9 @@ void CActor::attach_Vehicle(CCar* vehicle)
 void CActor::detach_Vehicle()
 {
 	if(!m_vehicle) return;
-	//m_vehicle->detach_Actor();//calling by detach_Actor()
+	m_vehicle->detach_Actor();//
 	ph_Movement.CreateCharacter();
-	ph_Movement.SetPosition(Position());
+	ph_Movement.SetPosition(m_vehicle->ExitPosition());
 	m_vehicle=NULL;
 	CKinematics* V		= PKinematics(Visual());
 	R_ASSERT			(V);
@@ -53,25 +53,33 @@ void CActor::detach_Vehicle()
 
 void CActor::use_Vehicle()
 {
+	int element=-1;
+	CCar* vehicle=pick_VehicleObject(element);
 	if(m_vehicle){
-		detach_Vehicle();
+		if(!vehicle&& m_vehicle->Use(element,Device.vCameraPosition, Device.vCameraDirection)) detach_Vehicle();
+		else
+		{
+		 if(m_vehicle==vehicle)
+			 if(m_vehicle->Use(element,Device.vCameraPosition, Device.vCameraDirection))detach_Vehicle();
+		}
 	}else{
-		if (pCamBobbing){Level().Cameras.RemoveEffector(cefBobbing); pCamBobbing=0;}
-		attach_Vehicle(pick_VehicleObject());
+		if(vehicle && vehicle->Use(element,Device.vCameraPosition, Device.vCameraDirection))
+		{
+			if (pCamBobbing){Level().Cameras.RemoveEffector(cefBobbing); pCamBobbing=0;}
+
+			attach_Vehicle(vehicle);
+		}
 	}
 }
 
-CCar* CActor::pick_VehicleObject()
+CCar* CActor::pick_VehicleObject(int& element)
 {
 	setEnabled(false);
 	Collide::ray_query	l_rq;
 	l_rq.O=NULL;
 	g_pGameLevel->ObjectSpace.RayPick(Device.vCameraPosition, Device.vCameraDirection, 15.f, l_rq);
 	setEnabled(true);
-	CCar* ret=dynamic_cast<CCar*>(l_rq.O);
+	element=l_rq.element;
+	return dynamic_cast<CCar*>(l_rq.O);
 
-	if(!ret)	return NULL;
-	if(!ret->is_Door(l_rq.element)) return NULL;
-
-	return ret;
 }

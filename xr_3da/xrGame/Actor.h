@@ -12,7 +12,7 @@
 #include "PHMovementControl.h"
 #include "PhysicsShell.h"
 #include "inventory.h"
-#include "Car.h"
+
 
 // refs
 class ENGINE_API CCameraBase;
@@ -23,6 +23,8 @@ class ENGINE_API CBlend;
 class CWeaponList;
 class CEffectorBobbing;
 class CTargetCS;
+class CCar;
+
 class CActor: 
 	public CEntityAlive, 
 	public Feel::Touch,
@@ -263,7 +265,7 @@ private:
 	void					create_Skeleton1		();
 	void					attach_Vehicle			(CCar* vehicle);
 	void					use_Vehicle				();
-	CCar*					pick_VehicleObject		();
+	CCar*					pick_VehicleObject		(int& element);
 
 
 public:
