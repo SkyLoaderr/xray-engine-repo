@@ -844,12 +844,6 @@
 				<File
 					RelativePath=".\xr_object_list.h">
 				</File>
-				<File
-					RelativePath="xr_object_list_allocator.cpp">
-				</File>
-				<File
-					RelativePath="xr_object_list_load.cpp">
-				</File>
 			</Filter>
 			<Filter
 				Name="Demo"

@@ -11,23 +11,12 @@ class ENGINE_API NET_Packet;
 class	ENGINE_API 				CObjectList
 {
 private:
-	struct str_pred : public std::binary_function<char*, char*, bool> 
-	{	
-		IC bool operator()(LPCSTR x, LPCSTR y) const
-		{	return strcmp(x,y)<0;	}
-	};
-
-	typedef xr_vector<CObject*>::iterator			OBJ_IT;
-	typedef xr_multimap<LPCSTR,CObject*,str_pred>	POOL;
-	typedef POOL::iterator							POOL_IT;
-private:
-	POOL						map_POOL;
-	xr_map<u32,CObject*>		map_NETID;
-public:
 	// data
+	xr_map<u32,CObject*>		map_NETID;
 	xr_vector<CObject*>			objects;
 	xr_vector<CObject*>			destroy_queue;
 
+public:
 	// methods
 								CObjectList			( );
 								~CObjectList		( );
