@@ -6,8 +6,8 @@
 #pragma hdrstop
 
 #include "Log.h"
-#include "LogForm.h"
 #ifdef _EDITOR
+	#include "LogForm.h"
 	#include "splash.h"
 	#include "ui_main.h"
 #endif
@@ -63,11 +63,12 @@ int CLog::DlgMsg (TMsgDlgType mt, TMsgDlgButtons btn, LPCSTR _Format, ...){
 	va_start( l, _Format );
 	vsprintf( buf, _Format, l );
 
+	int res=0;
 #ifdef _EDITOR
     UI.Command(COMMAND_RENDER_FOCUS);
-#endif
 
-    int res=MessageDlg(buf, mt, btn, 0);
+    res=MessageDlg(buf, mt, btn, 0);
+#endif
 
     Msg(mt, buf);
 	strcat( buf, "\r\n" );
@@ -84,13 +85,13 @@ int CLog::DlgMsg (TMsgDlgType mt, LPCSTR _Format, ...){
 	va_start( l, _Format );
 	vsprintf( buf, _Format, l );
 
+    int res=0;
 #ifdef _EDITOR
     UI.Command(COMMAND_RENDER_FOCUS);
-#endif
 
-    int res=mrNone;
     if (mt==mtConfirmation)	res=MessageDlg(buf, mt, TMsgDlgButtons() << mbYes << mbNo << mbCancel, 0);
     else                   	res=MessageDlg(buf, mt, TMsgDlgButtons() << mbOK, 0);
+#endif
 
     Msg(mt,buf);
 	strcat( buf, "\r\n" );
@@ -107,8 +108,8 @@ void CLog::Msg(TMsgDlgType mt, LPCSTR _Format, ...){
 
 #ifdef _EDITOR
     if (frmSplash) frmSplash->SetStatus(buf);
-#endif
     TfrmLog::AddMessage(mt,AnsiString(buf));
+#endif
 
 	strcat( buf, "\r\n" );
 

@@ -1,9 +1,9 @@
 //----------------------------------------------------
-// file: NetDeviceLog.h
+// file: Log.h
 //----------------------------------------------------
 
-#ifndef _INCDEF_NETDEVICELOG_H_
-#define _INCDEF_NETDEVICELOG_H_
+#ifndef _INCDEF_LOG_H_
+#define _INCDEF_LOG_H_
 
 class CLog{
 protected:
@@ -13,6 +13,7 @@ public:
 				CLog	(){bReady=false;}
 				~CLog	(){bReady=false;}
     void		Create  (LPCSTR _FileName );
+
 	static void Msg   	(TMsgDlgType mt, LPCSTR _Format, ...);
 	static int 	DlgMsg 	(TMsgDlgType mt, LPCSTR _Format, ...);
 	static int 	DlgMsg 	(TMsgDlgType mt, TMsgDlgButtons btn, LPCSTR _Format, ...);

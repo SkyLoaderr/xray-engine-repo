@@ -225,3 +225,14 @@ bool CFileSystem::GetSaveName( FSPath *initial, char *buffer ){
 }
 #endif
 
+void CFileSystem::VerifyPath(LPCSTR path)
+{
+	char tmp[MAX_PATH];
+	for(int i=0;path[i];i++){
+		if( path[i]!='\\' || i==0 )
+			continue;
+		memcpy( tmp, path, i );
+		tmp[i] = 0;
+		CreateDirectory( tmp, 0 );
+	}
+}
