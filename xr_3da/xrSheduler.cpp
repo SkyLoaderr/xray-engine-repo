@@ -223,6 +223,7 @@ void CSheduler::ProcessStep			()
 		Push	(ItemsProcessed.back())	;
 		ItemsProcessed.pop_back		()	;
 	}
+	internal_Registration			();
 
 	// always try to decrease target
 	psShedulerTarget	-= psShedulerReaction;
