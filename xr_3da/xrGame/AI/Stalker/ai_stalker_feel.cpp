@@ -179,6 +179,9 @@ void CAI_Stalker::Exec_Look(float dt)
 	r_target.pitch			= angle_normalize_signed	(r_target.pitch);
 
 	// validating angles
+#ifdef DEBUG
+	Msg						("StalkerA (%d, %s) t=%f, c=%f, tt=%f, tc=%f",Level().timeServer(),cName(),r_target.yaw,r_current.yaw,r_torso_target.yaw,r_torso_current.yaw);
+#endif
 	vfValidateAngleDependency(r_current.yaw,r_target.yaw,r_torso_target.yaw);
 	vfValidateAngleDependency(r_torso_current.yaw,r_torso_target.yaw,r_current.yaw);
 
@@ -199,6 +202,9 @@ void CAI_Stalker::Exec_Look(float dt)
 	// normalizing head angles
 	r_current.yaw			= angle_normalize_signed	(r_current.yaw);
 	r_current.pitch			= angle_normalize_signed	(r_current.pitch);
+#ifdef DEBUG
+	Msg						("StalkerB (%d, %s) t=%f, c=%f, tt=%f, tc=%f",Level().timeServer(),cName(),r_target.yaw,r_current.yaw,r_torso_target.yaw,r_torso_current.yaw);
+#endif
 	
 	// updating rotation matrix
 	Fmatrix mXFORM;

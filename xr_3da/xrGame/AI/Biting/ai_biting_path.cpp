@@ -209,7 +209,10 @@ void CAI_Biting::vfBuildTravelLine(Fvector *tpDestinationPosition)
 		}
 	}
 	
-	AI_Path.Nodes[AI_Path.Nodes.size() - 1] = AI_Path.DestNode;
+	if (AI_Path.Nodes.size())
+		AI_Path.Nodes[AI_Path.Nodes.size() - 1] = AI_Path.DestNode;
+	else
+		AI_Path.Nodes.push_back(AI_Path.DestNode);
 	
 	if ((N > 1) && tpDestinationPosition && AI_Path.TravelPath.size() && AI_Path.TravelPath[AI_Path.TravelPath.size() - 1].P.distance_to(*tpDestinationPosition) > EPS_L) {
 		if (getAI().bfInsideNode(getAI().Node(AI_Path.DestNode),*tpDestinationPosition) && getAI().dwfCheckPositionInDirection(AI_Path.DestNode,T.P,*tpDestinationPosition) != -1) {

@@ -42,6 +42,9 @@ void CAI_Stalker::Death()
 {
 	WRITE_TO_LOG("Death");
 	
+#ifdef DEBUG
+	Msg								("Death position : [%f][%f][%f]",VPUSH(Position()));
+#endif
 	if (!m_bPlayHumming && m_tpCurrentSound) {
 		m_tpCurrentSound->stop();
 		m_tpCurrentSound = 0;
@@ -50,6 +53,9 @@ void CAI_Stalker::Death()
 	Fvector	dir;
 	AI_Path.Direction(dir);
 	SelectAnimation(XFORM().k,dir,AI_Path.fSpeed);
+#ifdef DEBUG
+	Msg								("Death position : [%f][%f][%f]",VPUSH(Position()));
+#endif
 }
 
 void CAI_Stalker::BackCover(bool bFire)

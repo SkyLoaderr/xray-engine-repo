@@ -213,8 +213,10 @@ BOOL CAI_Biting::net_Spawn (LPVOID DC)
 		return(FALSE);
 
 	CSE_Abstract					*e	= (CSE_Abstract*)(DC);
-	CSE_ALifeMonsterBiting						*l_tpSE_Biting	= dynamic_cast<CSE_ALifeMonsterBiting*>(e);
+	CSE_ALifeMonsterBiting			*l_tpSE_Biting	= dynamic_cast<CSE_ALifeMonsterBiting*>(e);
 	
+	r_current.yaw = r_target.yaw = r_torso_current.yaw = r_torso_target.yaw	= angle_normalize_signed(-l_tpSE_Biting->o_Angle.y);
+
 	cNameVisual_set					(l_tpSE_Biting->get_visual());
 	
 	m_tNextGP						= m_tCurGP = getAI().m_tpaCrossTable[AI_NodeID].tGraphIndex;

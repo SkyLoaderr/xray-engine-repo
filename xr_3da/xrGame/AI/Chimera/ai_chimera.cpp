@@ -154,6 +154,8 @@ BOOL CAI_Chimera::net_Spawn (LPVOID DC)
 	CSE_Abstract					*e	= (CSE_Abstract*)(DC);
 	CSE_ALifeMonsterChimera	*l_tpSE_Chimera	= dynamic_cast<CSE_ALifeMonsterChimera*>(e);
 	
+	r_current.yaw = r_target.yaw = r_torso_current.yaw = r_torso_target.yaw	= angle_normalize_signed(-l_tpSE_Chimera->o_Angle.y);
+
 	cNameVisual_set					(l_tpSE_Chimera->get_visual());
 	
 	m_tNextGP						= m_tCurGP = getAI().m_tpaCrossTable[AI_NodeID].tGraphIndex;

@@ -119,16 +119,22 @@ void CAI_Stalker::Die				()
 {
 	//	vfAddStateToList				(m_eCurrentState = eStalkerStateDie);
 
+#ifdef DEBUG
+	Msg								("Death position : [%f][%f][%f]",VPUSH(Position()));
+#endif
 	Fvector	dir;
 	AI_Path.Direction				(dir);
 	SelectAnimation					(XFORM().k,dir,AI_Path.fSpeed);
 	m_dwDeathTime					= Level().timeServer();
 
-	ref_sound							&S  = m_tpSoundDie[::Random.randI((u32)m_tpSoundDie.size())];
+	ref_sound						&S  = m_tpSoundDie[::Random.randI((u32)m_tpSoundDie.size())];
 	S.play_at_pos					(this,Position());
 	S.feedback->set_volume			(1.f);
 	inherited::Die					();
 	m_bHammerIsClutched				= !::Random.randI(0,2);
+#ifdef DEBUG
+	Msg								("Death position : [%f][%f][%f]",VPUSH(Position()));
+#endif
 }
 
 void CAI_Stalker::Load				(LPCSTR section)
@@ -238,7 +244,7 @@ BOOL CAI_Stalker::net_Spawn			(LPVOID DC)
 	R_ASSERT						(tpHuman);
 	cNameVisual_set					(tpHuman->get_visual());
 
-	r_current.yaw = r_target.yaw = r_torso_current.yaw = r_torso_target.yaw	= -tpHuman->o_Angle.y;
+	r_current.yaw = r_target.yaw = r_torso_current.yaw = r_torso_target.yaw	= angle_normalize_signed(-tpHuman->o_Angle.y);
 	r_torso_current.pitch			= r_torso_target.pitch	= 0;
 
 	fHealth							= tpHuman->fHealth;
