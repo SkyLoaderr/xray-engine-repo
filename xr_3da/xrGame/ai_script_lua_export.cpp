@@ -95,7 +95,7 @@ void Script::LuaHookCall(CLuaVirtualMachine *tpLuaVirtualMachine, lua_Debug *tpL
 		default					: NODEFAULT;
 	}
 
-	LuaOut		(l_tLuaMessageType,tpLuaDebug->event == LUA_HOOKLINE ? "%s%s : %s %s %s (current line %d)\n" : "%s%s : %s %s %s\n",S,tpLuaDebug->short_src,tpLuaDebug->what,tpLuaDebug->namewhat,tpLuaDebug->name ? tpLuaDebug->name : "\b",tpLuaDebug->currentline);
+	LuaOut		(l_tLuaMessageType,tpLuaDebug->event == LUA_HOOKLINE ? "%s%s : %s %s %s (current line %d)" : "%s%s : %s %s %s",S,tpLuaDebug->short_src,tpLuaDebug->what,tpLuaDebug->namewhat,tpLuaDebug->name ? tpLuaDebug->name : "",tpLuaDebug->currentline);
 }
 
 void Script::vfExportGlobals(CLuaVirtualMachine *tpLuaVirtualMachine)

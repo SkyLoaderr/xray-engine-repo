@@ -41,7 +41,9 @@ CScript::CScript(CLuaVirtualMachine *tpLuaVirtualMachine, LPCSTR caFileName)
 	
 	m_tpLuaThread	= lua_newthread(m_tpLuaVirtualMachine = tpLuaVirtualMachine);
 	
+#ifdef DEBUG
 	lua_sethook		(m_tpLuaVirtualMachine, Script::LuaHookCall,	LUA_HOOKCALL | LUA_HOOKRET | LUA_HOOKLINE | LUA_HOOKTAILRET,	0);
+#endif
 
 	sprintf			(S,"\n%s.main()\n",l_caNamespaceName);
 	if (!bfLoadBuffer(m_tpLuaThread,S,strlen(S),"@internal.script")) {
