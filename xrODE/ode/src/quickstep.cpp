@@ -32,6 +32,25 @@
 #include "lcp.h"
 #include "util.h"
 #include "stdlib.h"
+#include "float.h"
+
+inline bool		_valid	(const float x)
+{
+	// check for: Signaling NaN, Quiet NaN, Negative infinity ( –INF), Positive infinity (+INF), Negative denormalized, Positive denormalized
+	int			cls			= _fpclass		(double(x));
+	if (cls&(_FPCLASS_SNAN+_FPCLASS_QNAN+_FPCLASS_NINF+_FPCLASS_PINF+_FPCLASS_ND+_FPCLASS_PD))	
+		return	false;	
+
+	/*	*****other cases are*****
+	_FPCLASS_NN Negative normalized non-zero 
+	_FPCLASS_NZ Negative zero ( – 0) 
+	_FPCLASS_PZ Positive 0 (+0) 
+	_FPCLASS_PN Positive normalized non-zero 
+	*/
+	return		true;
+}
+
+
 #define ALLOCA dALLOCA16
 
 typedef const dReal *dRealPtr;
@@ -321,7 +340,7 @@ static void SOR_LCP (int m, int nb, dRealMutablePtr J, int *jb, dxBody * const *
 #ifdef WARM_STARTING
 	// for warm starting, this seems to be necessary to prevent
 	// jerkiness in motor-driven joints. i have no idea why this works.
-	for (i=0; i<m; i++) lambda[i] *= 0.9;
+	for (i=0; i<m; i++) lambda[i] *= REAL(0.9);
 #else
 	dSetZero (lambda,m);
 #endif
@@ -977,8 +996,16 @@ void dxQuickStepper (dxWorld *world, dxBody * const *body, int nb,
 	IFTIMING (dTimerNow ("compute velocity update");)
 	for (i=0; i<nb; i++) {
 		dReal body_invMass = body[i]->invMass;
-		for (j=0; j<3; j++) body[i]->lvel[j] += stepsize * body_invMass * body[i]->facc[j];
-		for (j=0; j<3; j++) body[i]->tacc[j] *= stepsize;	
+		for (j=0; j<3; j++) 
+		{
+			if (_valid(body[i]->facc[j]))
+				body[i]->lvel[j] += stepsize * body_invMass * body	[i]->facc[j];
+		}
+		for (j=0; j<3; j++)
+		{	
+			if(!_valid(body[i]->tacc[j]))body[i]->tacc[j]=0.f;
+			body[i]->tacc[j] *= stepsize;	
+		}
 		dMULTIPLYADD0_331 (body[i]->avel,invI + i*12,body[i]->tacc);
 	}
 
