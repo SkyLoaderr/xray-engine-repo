@@ -85,88 +85,39 @@ void CPHJoint::CreateHinge()
 {
 
 	m_joint=dJointCreateHinge(phWorld,0);
+
 	Fvector pos;
 	Fmatrix first_matrix,second_matrix;
 	Fvector axis;
+	
+
 	CPHElement* first=dynamic_cast<CPHElement*>(pFirst_element);
 	CPHElement* second=dynamic_cast<CPHElement*>(pSecond_element);
 	first->InterpolateGlobalTransform(&first_matrix);
 	second->InterpolateGlobalTransform(&second_matrix);
+
 pos.set(0,0,0);
-switch(vs_anchor){
+switch(vs_anchor)
+{
 case vs_first :first_matrix.transform_tiny(pos,anchor); break;
 case vs_second:second_matrix.transform_tiny(pos,anchor); break;
 case vs_global:pShell->mXFORM.transform_tiny(pos,anchor);break;			
 default:NODEFAULT;	
-	}
+}
 
 
-axis.set(0,0,0);
-	switch(axes[0].vs){
-
-case vs_first :first_matrix.transform_dir(axis,axes[0].direction);	break;
-case vs_second:second_matrix.transform_dir(axis,axes[0].direction); break;
-case vs_global:pShell->mXFORM.transform_dir(axis,axes[1].direction);break;
-default:		NODEFAULT;							
-	}
-
+	axis.set(0,0,0);
 
 	first_matrix.invert();
 
 	Fmatrix rotate;
 	rotate.mul(first_matrix,second_matrix);
-	//rotate.mul(second_matrix,first_matrix);
-	//rotate.mulB(axes[0].zero_transform);
-	//rotate.mulA(axes[0].zero_transform);
 
-	//rotate.transform_dir(axis);
-	float shift_angle;
-	axis_angleA(rotate,axes[0].direction,shift_angle);
-	//axis_angleB(rotate,axis,shift_angle);
-	shift_angle-=axes[0].zero;
+	float hi,lo;
+	CalcAxis(0,axis,lo,hi,first_matrix,second_matrix,rotate);
 
-	//Fvector own_ax;
-	//own_axis_angle(rotate,own_ax,shift_angle);
-
-	if(shift_angle>M_PI) shift_angle-=2.f*M_PI;
-	if(shift_angle<-M_PI) shift_angle+=2.f*M_PI;
-
-
-
-
-
-	float lo=axes[0].low+shift_angle;
-	float hi=axes[0].high+shift_angle;
-	if(lo<-M_PI){ 
-		hi-=(lo+M_PI);
-		lo=-M_PI;
-	}
-	if(lo>0.f) {
-		hi-=lo;
-		lo=0.f;
-	}
-	if(hi>M_PI) {
-		lo-=(hi-M_PI);
-		hi=M_PI;
-	}
-	if(hi<0.f) {
-		lo-=hi;
-		hi=0.f;
-	}
-
-
-
-	//Fvector the_own_axes;
-	//float angle;
-
-	//own_axis_angle(rotate,the_own_axes,angle);
-	//the_own_axes.normalize();
-	//float dotpr=the_own_axes.dotproduct(axis);
-	//axis_angleA(rotate,axis,angle);
-	//axis_angleB(rotate,axis,angle);
-
-	//rotate.transform_dir(the_own_axes);
 	dJointAttach(m_joint,first->get_body(),second->get_body());
+
 	dJointSetHingeAnchor(m_joint,pos.x,pos.y,pos.z);
 	dJointSetHingeAxis(m_joint,axis.x,axis.y,axis.z);
 
@@ -205,7 +156,7 @@ void CPHJoint::CreateHinge2()
 	}
 	//////////////////////////////////////
 
-
+	
 	dJointAttach(m_joint,first->get_body(),second->get_body());
 	dJointSetHinge2Anchor(m_joint,pos.x,pos.y,pos.z);
 
@@ -215,52 +166,16 @@ void CPHJoint::CreateHinge2()
 	first_matrix_inv.set(first_matrix);
 	first_matrix_inv.invert();
 	Fmatrix rotate;
+
 	rotate.mul(first_matrix_inv,second_matrix);
 	/////////////////////////////////////////////
-	float shift_angle;
+
 	float lo;
 	float hi;
 	//////////////////////////////////////////////////////////
 	/////////////////////////////////////////////////////////
 	axis.set(0,0,0);
-	switch(axes[0].vs)
-	{
-	case vs_first :first_matrix.transform_dir(axis,axes[0].direction);	break;
-	case vs_second:second_matrix.transform_dir(axis,axes[0].direction); break;
-	case vs_global:pShell->mXFORM.transform_dir(axis,axes[0].direction);break;
-	default:		NODEFAULT;							
-	}
-
-
-	
-	axis_angleA(rotate,axes[0].direction,shift_angle);
-
-	shift_angle-=axes[0].zero;
-
-	if(shift_angle>M_PI) shift_angle-=2.f*M_PI;
-	if(shift_angle<-M_PI) shift_angle+=2.f*M_PI;
-
-	lo=axes[0].low+shift_angle;
-	hi=axes[0].high+shift_angle;
-	if(lo<-M_PI){ 
-		hi-=(lo+M_PI);
-		lo=-M_PI;
-	}
-	if(lo>0.f) {
-		hi-=lo;
-		lo=0.f;
-	}
-	if(hi>M_PI) {
-		lo-=(hi-M_PI);
-		hi=M_PI;
-	}
-	if(hi<0.f) {
-		lo-=hi;
-		hi=0.f;
-	}
-
-
-
+	CalcAxis(0,axis,lo,hi,first_matrix,second_matrix,rotate);
 	dJointSetHinge2Axis1 (m_joint, axis.x, axis.y, axis.z);
 
 
@@ -272,48 +187,7 @@ void CPHJoint::CreateHinge2()
 		dJointSetHinge2Param(m_joint,dParamVel ,axes[0].velocity);
 	}
 
-
-
-	switch(axes[1].vs)
-	{
-	case vs_first :first_matrix.transform_dir(axis,axes[1].direction);	break;
-	case vs_second:second_matrix.transform_dir(axis,axes[1].direction); break;
-	case vs_global:pShell->mXFORM.transform_dir(axis,axes[1].direction);break;
-	default		  :NODEFAULT;							
-	}
-
-
-
-	axis_angleA(rotate,axes[1].direction,shift_angle);
-
-	shift_angle-=axes[1].zero;
-
-	if(shift_angle>M_PI) shift_angle-=2.f*M_PI;
-	if(shift_angle<-M_PI) shift_angle+=2.f*M_PI;
-
-
-
-
-
-	lo=axes[1].low+shift_angle;
-	hi=axes[1].high+shift_angle;
-	if(lo<-M_PI){ 
-		hi-=(lo+M_PI);
-		lo=-M_PI;
-	}
-	if(lo>0.f) {
-		hi-=lo;
-		lo=0.f;
-	}
-	if(hi>M_PI) {
-		lo-=(hi-M_PI);
-		hi=M_PI;
-	}
-	if(hi<0.f) {
-
-		lo-=hi;
-		hi=0.f;
-	}
+	CalcAxis(1,axis,lo,hi,first_matrix,second_matrix,rotate);
 
 	dJointSetHinge2Axis2 (m_joint, axis.x, axis.y, axis.z);
 
@@ -439,12 +313,8 @@ default:NODEFAULT;
 
 
 	m_joint1=dJointCreateAMotor(phWorld,0);
-
-	//dJointSetAMotorMode (m_joint1, dAMotorUser);
 	dJointSetAMotorMode (m_joint1, dAMotorEuler);
 	dJointSetAMotorNumAxes (m_joint1, 3);
-
-
 
 	dJointAttach(m_joint1,body1,body2);
 
@@ -456,55 +326,15 @@ default:NODEFAULT;
 	Fmatrix rotate;
 	rotate.mul(first_matrix_inv,second_matrix);
 	/////////////////////////////////////////////
-	float shift_angle;
+
 	float lo;
 	float hi;
 	//////////////////////////////////////////////////////////
 	/////////////////////////////////////////////////////////
-axis.set(0,0,0);
-	switch(axes[0].vs){
-
-case vs_first :first_matrix.transform_dir(axis,axes[0].direction);	break;
-case vs_second:second_matrix.transform_dir(axis,axes[0].direction); break;
-case vs_global:pShell->mXFORM.transform_dir(axis,axes[0].direction);break;
-default:		NODEFAULT;							
-	}
-
-
-
-	axis_angleA(rotate,axes[0].direction,shift_angle);
-
-	shift_angle-=axes[0].zero;
-
-	if(shift_angle>M_PI) shift_angle-=2.f*M_PI;
-	if(shift_angle<-M_PI) shift_angle+=2.f*M_PI;
-
-	lo=axes[0].low+shift_angle;
-	hi=axes[0].high+shift_angle;
-	if(lo<-M_PI){ 
-		hi-=(lo+M_PI);
-		lo=-M_PI;
-	}
-	if(lo>0.f) {
-		hi-=lo;
-		lo=0.f;
-	}
-	if(hi>M_PI) {
-		lo-=(hi-M_PI);
-		hi=M_PI;
-	}
-	if(hi<0.f) {
-		lo-=hi;
-		hi=0.f;
-	}
-
-
-
-
-
+	axis.set(0,0,0);
+	//axis 0
+	CalcAxis(0,axis,lo,hi,first_matrix,second_matrix,rotate);
 	dJointSetAMotorAxis (m_joint1, 0, 1, axis.x, axis.y, axis.z);
-	//dJointSetAMotorAxis (m_joint1, 0, 1, axes[0].direction.x, axes[0].direction.y, axes[0].direction.z);
-
 	dJointSetAMotorParam(m_joint1,dParamLoStop ,lo);
 	dJointSetAMotorParam(m_joint1,dParamHiStop ,hi);
 
@@ -513,101 +343,18 @@ default:		NODEFAULT;
 		dJointSetAMotorParam(m_joint1,dParamVel ,axes[0].velocity);
 	}
 
-	//dJointSetAMotorAngle (m_joint1, 0, 0.0f);
-
-	switch(axes[1].vs){
-
-case vs_first :first_matrix.transform_dir(axis,axes[1].direction);	break;
-case vs_second:second_matrix.transform_dir(axis,axes[1].direction); break;
-case vs_global:pShell->mXFORM.transform_dir(axis,axes[1].direction);break;
-default:		NODEFAULT;							
-	}
-
-
-
-	axis_angleA(rotate,axes[1].direction,shift_angle);
-
-	shift_angle-=axes[1].zero;
-
-	if(shift_angle>M_PI) shift_angle-=2.f*M_PI;
-	if(shift_angle<-M_PI) shift_angle+=2.f*M_PI;
-
-
-
-
-
-	lo=axes[1].low+shift_angle;
-	hi=axes[1].high+shift_angle;
-	if(lo<-M_PI){ 
-		hi-=(lo+M_PI);
-		lo=-M_PI;
-	}
-	if(lo>0.f) {
-		hi-=lo;
-		lo=0.f;
-	}
-	if(hi>M_PI) {
-		lo-=(hi-M_PI);
-		hi=M_PI;
-	}
-	if(hi<0.f) {
-		lo-=hi;
-		hi=0.f;
-	}
-
-	//dJointSetAMotorAxis (m_joint1, 1, 2, axis.x, axis.y, axis.z);
-	//dJointSetAMotorAngle (m_joint1, 1, 0.f);
-
+	//axis 1
+	CalcAxis(1,axis,lo,hi,first_matrix,second_matrix,rotate);
 	dJointSetAMotorParam(m_joint1,dParamLoStop2 ,lo);
 	dJointSetAMotorParam(m_joint1,dParamHiStop2 ,hi);
 	if(!(axes[1].force<0.f)){
 		dJointSetAMotorParam(m_joint1,dParamFMax2 ,axes[1].force);
 		dJointSetAMotorParam(m_joint1,dParamVel2 ,axes[1].velocity);
 	}
-	//////////////////////////////////////////////////////////////////
-	switch(axes[2].vs){
 
-case vs_first :first_matrix.transform_dir(axis,axes[2].direction);	break;
-case vs_second:second_matrix.transform_dir(axis,axes[2].direction); break;
-case vs_global:pShell->mXFORM.transform_dir(axis,axes[2].direction);break;
-default:		NODEFAULT;							
-	}
-
-
-
-	axis_angleA(rotate,axes[2].direction,shift_angle);
-
-	shift_angle-=axes[2].zero;
-
-	if(shift_angle>M_PI) shift_angle-=2.f*M_PI;
-	if(shift_angle<-M_PI) shift_angle+=2.f*M_PI;
-
-
-
-
-
-	lo=axes[2].low+shift_angle;
-	hi=axes[2].high+shift_angle;
-	if(lo<-M_PI){ 
-		hi-=(lo+M_PI);
-		lo=-M_PI;
-	}
-	if(lo>0.f) {
-		hi-=lo;
-		lo=0.f;
-	}
-	if(hi>M_PI) {
-		lo-=(hi-M_PI);
-		hi=M_PI;
-	}
-	if(hi<0.f) {
-		lo-=hi;
-		hi=0.f;
-	}
-
+	//axis 2
+	CalcAxis(2,axis,lo,hi,first_matrix,second_matrix,rotate);
 	dJointSetAMotorAxis (m_joint1, 2, 2, axis.x, axis.y, axis.z);
-	//dJointSetAMotorAngle (m_joint1, 2, 0.f);
-
 	dJointSetAMotorParam(m_joint1,dParamLoStop3 ,lo);
 	dJointSetAMotorParam(m_joint1,dParamHiStop3 ,hi);	
 	if(!(axes[2].force<0.f)){
@@ -651,29 +398,8 @@ void CPHJoint::SetAnchorVsSecondElement(const float x,const float y,const float 
 void CPHJoint::SetAxisDir(const float x,const float y,const float z,const int axis_num)
 {
 	int ax=axis_num;
-
-	switch(eType){
-	case ball:
-	case welding:
-		return;						break;
-	case hinge:					ax=0;
-		break;
-	case hinge2:
-
-
-	case universal_hinge:		
-
-	case shoulder1:	
-
-	case shoulder2:	
-
-	case car_wheel:	
-		if(ax>1) ax=1;
-		break;
-	case full_control:
-		if(ax>2) ax=2;
-		break;
-	}
+	 LimitAxisNum(ax);
+	 if(-1==ax) return;
 	axes[ax].vs=vs_global;
 	axes[ax].direction.set(x,y,z);
 }
@@ -681,27 +407,8 @@ void CPHJoint::SetAxisDir(const float x,const float y,const float z,const int ax
 void CPHJoint::SetAxisDirVsFirstElement(const float x,const float y,const float z,const int axis_num)
 {
 	int ax=axis_num;
-
-	switch(eType){
-	case ball:					return;						break;
-	case hinge:					ax=0;
-		break;
-	case hinge2:
-
-
-	case universal_hinge:		
-
-	case shoulder1:	
-
-	case shoulder2:	
-
-	case car_wheel:	
-		if(ax>1) ax=1;
-		break;
-	case full_control:
-		if(ax>2) ax=2;
-		break;
-	}
+    LimitAxisNum(ax);
+	if(-1==ax) return;
 	axes[ax].vs=vs_first;
 	axes[ax].direction.set(x,y,z);
 }
@@ -709,29 +416,8 @@ void CPHJoint::SetAxisDirVsFirstElement(const float x,const float y,const float 
 void CPHJoint::SetAxisDirVsSecondElement(const float x,const float y,const float z,const int axis_num)
 {
 	int ax=axis_num;
-
-	switch(eType){
-	case ball:					
-	case welding:
-		return;						break;
-	case hinge:					ax=0;
-		break;
-	case hinge2:
-
-
-	case universal_hinge:		
-
-	case shoulder1:	
-
-	case shoulder2:	
-
-	case car_wheel:	
-		if(ax>1) ax=1;
-		break;
-	case full_control:
-		if(ax>2) ax=2;
-		break;
-	}
+	LimitAxisNum(ax);
+	if(-1==ax) return;
 	axes[ax].vs=vs_second;
 	axes[ax].direction.set(x,y,z);
 
@@ -1133,4 +819,95 @@ void CPHJoint::SetJointSDfactors(float spring_factor,float damping_factor)
 {
 	m_erp=ERP(world_spring*spring_factor,world_damping*damping_factor);
 	m_cfm=CFM(world_spring*spring_factor,world_damping*damping_factor);
+}
+
+void CPHJoint::CalcAxis(int ax_num,Fvector& axis, float& lo,float& hi,const Fmatrix& first_matrix,const Fmatrix& second_matrix,const Fmatrix& rotate)
+{
+	switch(axes[ax_num].vs)
+	{
+	case vs_first :first_matrix.transform_dir(axis,axes[ax_num].direction)	;	break;
+	case vs_second:second_matrix.transform_dir(axis,axes[ax_num].direction)	; break;
+	case vs_global:pShell->mXFORM.transform_dir(axis,axes[ax_num].direction);break;
+	default:		NODEFAULT;							
+	}
+
+
+	float shift_angle;
+	axis_angleA(rotate,axes[ax_num].direction,shift_angle);
+
+	shift_angle-=axes[ax_num].zero;
+
+	if(shift_angle>M_PI) shift_angle-=2.f*M_PI;
+	if(shift_angle<-M_PI) shift_angle+=2.f*M_PI;
+
+	lo=axes[ax_num].low+shift_angle;
+	hi=axes[ax_num].high+shift_angle;
+
+
+	if(lo<-M_PI){ 
+		hi-=(lo+M_PI);
+		lo=-M_PI;
+	}
+	if(lo>0.f) {
+		hi-=lo;
+		lo=0.f;
+	}
+	if(hi>M_PI) {
+		lo-=(hi-M_PI);
+		hi=M_PI;
+	}
+	if(hi<0.f) {
+		lo-=hi;
+		hi=0.f;
+	}
+}
+
+void CPHJoint::CalcAxis(int ax_num,Fvector& axis,float& lo,float& hi,const Fmatrix& first_matrix,const Fmatrix& second_matrix)
+{
+	switch(axes[ax_num].vs)
+	{
+
+	case vs_first :first_matrix.transform_dir(axis,axes[ax_num].direction);	break;
+	case vs_second:second_matrix.transform_dir(axis,axes[ax_num].direction); break;
+	case vs_global:pShell->mXFORM.transform_dir(axis,axes[ax_num].direction);break;
+	default:		NODEFAULT;							
+	}
+
+
+	Fmatrix inv_first_matrix;
+	inv_first_matrix.set(first_matrix);
+	inv_first_matrix.invert();
+
+	Fmatrix rotate;
+	rotate.mul(inv_first_matrix,second_matrix);
+
+	float shift_angle;
+	axis_angleA(rotate,axes[ax_num].direction,shift_angle);
+
+	shift_angle-=axes[ax_num].zero;
+
+	if(shift_angle>M_PI) shift_angle-=2.f*M_PI;
+	if(shift_angle<-M_PI) shift_angle+=2.f*M_PI;
+
+
+	lo=axes[ax_num].low+shift_angle;
+	hi=axes[ax_num].high+shift_angle;
+	if(lo<-M_PI){ 
+		hi-=(lo+M_PI);
+		lo=-M_PI;
+	}
+	if(lo>0.f) {
+		hi-=lo;
+		lo=0.f;
+	}
+	if(hi>M_PI) {
+		lo-=(hi-M_PI);
+		hi=M_PI;
+	}
+	if(hi<0.f) {
+		lo-=hi;
+		hi=0.f;
+	}
+
+
 }

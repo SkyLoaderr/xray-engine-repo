@@ -27,6 +27,8 @@ class CPHJoint: public CPhysicsJoint{
 	void LimitAxisNum						(int &axis_num);
 	void SetForceActive						(const int axis_num);
 	void SetVelocityActive					(const int axis_num);
+	void CalcAxis							(int ax_num,Fvector& axis,float& lo,float& hi,const Fmatrix& first_matrix,const Fmatrix& second_matrix);
+	void CalcAxis							(int ax_num,Fvector& axis,float& lo,float& hi,const Fmatrix& first_matrix,const Fmatrix& second_matrix,const Fmatrix& rotate);
 
 	virtual void SetAxisSDfactors			(float spring_factor,float damping_factor,int axis_num);
 	virtual void SetJointSDfactors			(float spring_factor,float damping_factor);
@@ -36,8 +38,8 @@ class CPHJoint: public CPhysicsJoint{
 	virtual void SetAnchorVsSecondElement	(const Fvector& position){SetAnchorVsSecondElement(position.x,position.y,position.z);}
 
 	virtual void SetAxisDir					(const Fvector& orientation,const int axis_num){SetAxisDir(orientation.x,orientation.y,orientation.z,axis_num);}	
-	virtual void SetAxisDirVsFirstElement		(const Fvector& orientation,const int axis_num){SetAxisDirVsFirstElement(orientation.x,orientation.y,orientation.z,axis_num);}
-	virtual void SetAxisDirVsSecondElement		(const Fvector& orientation,const int axis_num){SetAxisDirVsSecondElement(orientation.x,orientation.y,orientation.z,axis_num);}
+	virtual void SetAxisDirVsFirstElement	(const Fvector& orientation,const int axis_num){SetAxisDirVsFirstElement(orientation.x,orientation.y,orientation.z,axis_num);}
+	virtual void SetAxisDirVsSecondElement	(const Fvector& orientation,const int axis_num){SetAxisDirVsSecondElement(orientation.x,orientation.y,orientation.z,axis_num);}
 
 	virtual void SetLimits					(const float low,const float high,const int axis_num)	;
 	virtual void SetLimitsVsFirstElement	(const float low,const float high,const int axis_num)	;
@@ -48,8 +50,8 @@ class CPHJoint: public CPhysicsJoint{
 	virtual void SetAnchorVsSecondElement	(const float x,const float y,const float z)	;
 
 	virtual void SetAxisDir					(const float x,const float y,const float z,const int axis_num);
-	virtual void SetAxisDirVsFirstElement		(const float x,const float y,const float z,const int axis_num);
-	virtual void SetAxisDirVsSecondElement		(const float x,const float y,const float z,const int axis_num);
+	virtual void SetAxisDirVsFirstElement	(const float x,const float y,const float z,const int axis_num);
+	virtual void SetAxisDirVsSecondElement	(const float x,const float y,const float z,const int axis_num);
 
 
 public:

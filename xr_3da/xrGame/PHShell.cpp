@@ -375,6 +375,10 @@ void CPHShell::AddElementRecursive(CPhysicsElement* root_e, int id)
 			E->setMassMC(bone_data.mass,bone_data.center_of_mass);
 			add_Element(E);
 			SJointIKData& joint_data=bone_data.IK_data;
+			Fvector x,y,z;
+			x.set(1.f,0.f,0.f);
+			y.set(0.f,1.f,0.f);
+			z.set(0.f,0.f,1.f);
 			if(root_e)
 			switch(joint_data.type) {
 		case jtCloth: 
