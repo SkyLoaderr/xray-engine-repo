@@ -287,6 +287,7 @@ public:
 	virtual float GetfHealth() const;
 	virtual float SetfHealth(float value);
 			void   TurnLighting(bool bOn);
+			void  TurnEngineSound(bool bOn);
 	DECLARE_SCRIPT_REGISTER_FUNCTION
 };
 add_to_type_list(CHelicopter)

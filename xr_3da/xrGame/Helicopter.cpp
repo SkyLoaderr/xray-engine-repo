@@ -959,6 +959,14 @@ void CHelicopter::TurnLighting(bool bOn)
 	m_light_render->set_active						(bOn);
 
 }
+void  CHelicopter::TurnEngineSound(bool bOn)
+{
+	if(bOn)
+		m_engineSound.set_volume(1.0f)
+	else
+		m_engineSound.set_volume(0.0f);
+
+}
 
 bool CHelicopter::isObjectVisible			(CObject* O)
 {
