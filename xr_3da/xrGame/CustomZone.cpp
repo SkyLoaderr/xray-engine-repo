@@ -96,7 +96,7 @@ void CCustomZone::UpdateCL() {
 void CCustomZone::feel_touch_new(CObject* O) {
 	if(bDebug) Level().HUD()->outMessage(0xffffffff,O->cName(),"entering a zone.");
 	m_inZone.insert(O);
-	if(dynamic_cast<CActor*>(O)) m_pLocalActor = dynamic_cast<CActor*>(O);
+	if(dynamic_cast<CActor*>(O) && O == Level().CurrentEntity()) m_pLocalActor = dynamic_cast<CActor*>(O);
 }
 
 void CCustomZone::feel_touch_delete(CObject* O) {
@@ -106,7 +106,7 @@ void CCustomZone::feel_touch_delete(CObject* O) {
 }
 
 BOOL CCustomZone::feel_touch_contact(CObject* O) {
-	if(!O->Local()) return false;
+	if(!O->Local() || !((CGameObject*)O)->IsVisibleForZones()) return false;
 	return ((CCF_Shape*)cfModel)->Contact(O);
 }
 
