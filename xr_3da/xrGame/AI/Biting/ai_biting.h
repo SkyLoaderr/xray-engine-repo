@@ -203,6 +203,8 @@ public:
 
 			bool			IsObstacle						(TTime time);
 
+
+
 	// Other
 			void			vfUpdateParameters				();
 		
@@ -375,15 +377,20 @@ public:
 	
 	xr_vector<STravelParams> velocities;
 
+	u32 GetNextGameVertex(float R);
+
+	bool	NeedRebuildPath		(u32 n_points);
+	bool	NeedRebuildPath		(float dist_to_end);
+	bool	NeedRebuildPath		(u32 n_points, float dist_to_end);
+
 
 	bool RayPickEnemy(CObject *target_obj, const Fvector &trace_from, const Fvector &dir, float dist, float radius, u32 num_picks);
 
-	u32 GetNextGameVertex(float R);
-
+	//////////////////////////////////////////////////////////////////////////
+	// DEBUG
 	
 	CMonsterDebug	*HDebug;
 	CMotionStats	*MotionStats;
-
 
 	void OnRender();
 };

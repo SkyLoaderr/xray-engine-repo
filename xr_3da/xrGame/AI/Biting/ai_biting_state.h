@@ -88,6 +88,7 @@ class CBitingEat : public IState {
 	bool			bRestAfterLunch;
 	bool			bHideAfterLunch;
 	TTime			m_dwTimeStartRest;
+	TTime			rebuild_path;
 
 public:
 					CBitingEat		(CAI_Biting *p, bool pmt_can_drag);

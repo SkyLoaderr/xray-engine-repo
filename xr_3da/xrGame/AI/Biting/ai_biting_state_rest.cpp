@@ -32,7 +32,7 @@ void CBitingRest::Init()
 	IState::Init();
 
 	// если есть путь - дойти до конца (последствия преследования врага)
-	if (!pMonster->path_completed()) m_bFollowPath = true;
+	if (pMonster->IsMovingOnPath()) m_bFollowPath = true;
 	else m_bFollowPath = false;
 }
 
@@ -82,8 +82,6 @@ void CBitingRest::Run()
 {
 	if (m_bFollowPath) 
 		if (pMonster->CDetailPathManager::completed(pMonster->Position())) m_bFollowPath = false;
-	
-
 
 	if (m_bFollowPath) {
 		m_tAction = ACTION_WALK_PATH_END;
@@ -97,8 +95,10 @@ void CBitingRest::Run()
 	// FSM 2-го уровня
 	switch (m_tAction) {
 		case ACTION_WALK:						// обход точек графа
+			pMonster->MotionMan.m_tAction = ACT_WALK_FWD;
 
 			if (!pMonster->IsMovingOnPath()) {
+			
 				// ходить по точкам графа
 				u32 vertex_id = pMonster->GetNextGameVertex(40.f);
 
@@ -111,7 +111,7 @@ void CBitingRest::Run()
 				);
 			}
 
-			pMonster->MotionMan.m_tAction = ACT_WALK_FWD;
+			
 			break;
 		case ACTION_SATIETY_GOOD:				// стоять, ничего не делать
 			pMonster->enable_movement(false);
