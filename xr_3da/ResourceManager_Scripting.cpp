@@ -223,9 +223,12 @@ Shader*	CResourceManager::_lua_Create		(LPCSTR d_shader, LPCSTR s_textures)
 		if (C.bDetail)		S.E[0]	= C._lua_Compile(s_shader,"normal_hq");
 		else				S.E[0]	= C._lua_Compile(s_shader,"normal");
 	} else {
-		C.iElement			= 0;
-		C.bDetail			= FALSE;
-		S.E[0]				= C._lua_Compile		(s_shader,"normal");
+		if (Script::bfIsObjectPresent(LSVM,s_shader,"normal",LUA_TFUNCTION))
+		{
+			C.iElement			= 0;
+			C.bDetail			= FALSE;
+			S.E[1]				= C._lua_Compile(s_shader,"normal");
+		}
 	}
 
 	// Compile element	(LOD1)
