@@ -37,40 +37,45 @@ void CBuild::Flex2OGF()
 			TRY(strcpy(T.name,textures[M->surfidx].name));
 			TRY(T.pSurface = &(textures[M->surfidx]));
 			TRY(pOGF->textures.push_back(T));
-			for (DWORD lmit=0; lmit<F->lmap_layers.size(); lmit++)
-			{
-				// If lightmaps persist
-				CLightmap* LM	= F->lmap_layers[lmit];
-				
-				strcpy			(T.name, LM->lm.name);
-				T.pSurface		= &(LM->lm);
-				pOGF->textures.push_back(T);
-			}
+			
+			try {
+				for (DWORD lmit=0; lmit<F->lmap_layers.size(); lmit++)
+				{
+					// If lightmaps persist
+					CLightmap* LM	= F->lmap_layers[lmit];
+					
+					strcpy			(T.name, LM->lm.name);
+					T.pSurface		= &(LM->lm);
+					pOGF->textures.push_back(T);
+				}
+			} catch (...) {  Msg("* ERROR: Flex2OGF, model# %d, *textures*",MODEL_ID); }
 			
 			// Collect faces & vertices
-			for (vecFaceIt Fit=it->begin(); Fit!=it->end(); Fit++)
-			{
-				OGF_Vertex	V1,V2,V3;
-				
-				Face*	FF = *Fit;
-				
-				// Geometry
-				V1.P.set(FF->v[0]->P);	V1.N.set(FF->v[0]->N); V1.Color = FF->v[0]->Color;
-				V2.P.set(FF->v[1]->P);	V2.N.set(FF->v[1]->N); V2.Color = FF->v[1]->Color;
-				V3.P.set(FF->v[2]->P);	V3.N.set(FF->v[2]->N); V3.Color = FF->v[2]->Color;
-				
-				// Normal order
-				svector<_TCF,8>::iterator TC=FF->tc.begin(); 
-				for (;TC!=FF->tc.end(); TC++)
+			try {
+				for (vecFaceIt Fit=it->begin(); Fit!=it->end(); Fit++)
 				{
-					V1.UV.push_back(TC->uv[0]);
-					V2.UV.push_back(TC->uv[1]);
-					V3.UV.push_back(TC->uv[2]);
+					OGF_Vertex	V1,V2,V3;
+					
+					Face*	FF = *Fit;
+					
+					// Geometry
+					V1.P.set(FF->v[0]->P);	V1.N.set(FF->v[0]->N); V1.Color = FF->v[0]->Color;
+					V2.P.set(FF->v[1]->P);	V2.N.set(FF->v[1]->N); V2.Color = FF->v[1]->Color;
+					V3.P.set(FF->v[2]->P);	V3.N.set(FF->v[2]->N); V3.Color = FF->v[2]->Color;
+					
+					// Normal order
+					svector<_TCF,8>::iterator TC=FF->tc.begin(); 
+					for (;TC!=FF->tc.end(); TC++)
+					{
+						V1.UV.push_back(TC->uv[0]);
+						V2.UV.push_back(TC->uv[1]);
+						V3.UV.push_back(TC->uv[2]);
+					}
+					
+					// build face
+					pOGF->_BuildFace(V1,V2,V3);
 				}
-				
-				// build face
-				pOGF->_BuildFace(V1,V2,V3);
-			}
+			} catch (...) {  Msg("* ERROR: Flex2OGF, model# %d, *faces*",MODEL_ID); }
 		} catch (...)
 		{
 			Msg("* ERROR: Flex2OGF, 1st part, model# %d",MODEL_ID);
