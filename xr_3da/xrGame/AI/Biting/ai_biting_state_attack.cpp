@@ -182,7 +182,7 @@ void CBitingAttack::Run()
 			if (bNeedRebuild) {
 				// Получить позицию, определённую груп. интелл.
 				if (squad_active) {
-					TTime			squad_ai_last_updated;
+					//TTime			squad_ai_last_updated;
 					//Fvector			target = pSquad->GetTargetPoint(pMonster, squad_ai_last_updated);
 					//pMonster->set_dest_direction	(target);
 				}
