@@ -128,7 +128,7 @@ void CAgentManagerActionKillEnemy::execute			()
 	CAgentManager::iterator			E = m_object->members().end();
 	for ( ; I != E; ++I) {
 //		if ((*I).object()->enemy())
-//			Msg						("%s vs %s",*(*I).object()->cName(),*(*I).object()->enemy()->cName());
+//			Msg						("%6d : %s vs %s",Level().timeServer(),*(*I).object()->cName(),*(*I).object()->enemy()->cName());
 //		if (m_level_time >= Level().timeServer()) {
 //			(*I).order_type			(AgentManager::eOrderTypeAction);
 //			(*I).action				(CSetupAction(0.f,0));
