@@ -327,7 +327,7 @@ void CScriptGameObject::bind_object			(CScriptBinderObject *game_object)
 
 void CScriptGameObject::set_previous_point	(int point_index)
 {
-	CCustomMonster		*monster = smart_cast<CCustomMonster*>(this);
+	CCustomMonster		*monster = smart_cast<CCustomMonster*>(&object());
 	if (!monster)
 		ai().script_engine().script_log		(ScriptStorage::eLuaMessageTypeError,"CGameObject : cannot access class member set_previous_point!");
 	else
@@ -336,7 +336,7 @@ void CScriptGameObject::set_previous_point	(int point_index)
 
 void CScriptGameObject::set_start_point	(int point_index)
 {
-	CCustomMonster		*monster = smart_cast<CCustomMonster*>(this);
+	CCustomMonster		*monster = smart_cast<CCustomMonster*>(&object());
 	if (!monster)
 		ai().script_engine().script_log		(ScriptStorage::eLuaMessageTypeError,"CGameObject : cannot access class member set_start_point!");
 	else
@@ -345,7 +345,7 @@ void CScriptGameObject::set_start_point	(int point_index)
 
 u32 CScriptGameObject::get_current_patrol_point_index()
 {
-	CCustomMonster		*monster = smart_cast<CCustomMonster*>(this);
+	CCustomMonster		*monster = smart_cast<CCustomMonster*>(&object());
 	if (!monster) {
 		ai().script_engine().script_log		(ScriptStorage::eLuaMessageTypeError,"CGameObject : cannot call [get_current_patrol_point_index()]!");
 		return			(u32(-1));
