@@ -62,11 +62,14 @@ public:
 	virtual void feel_touch_delete(CObject* O);
 	virtual BOOL feel_touch_contact(CObject* O);
 
-	virtual void Postprocess(f32 /**val/**/) {}
+	virtual void Postprocess(float /**val/**/) {}
 
+	virtual void spatial_move();
 	virtual void spatial_register();
 	virtual void spatial_unregister();
-	virtual void spatial_move();
+
+	virtual void  Center (Fvector& C);
+	virtual float Radius ();
 
 #ifdef DEBUG
 	virtual void OnRender();

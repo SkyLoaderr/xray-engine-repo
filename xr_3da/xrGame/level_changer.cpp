@@ -14,7 +14,7 @@ CLevelChanger::~CLevelChanger	()
 {
 }
 
-void CLevelChanger::spatial_register()
+/*void CLevelChanger::spatial_register()
 {
 	R_ASSERT2					(CFORM(),"Invalid or no CForm!");
 	spatial.center.set			(CFORM()->getSphere().P);
@@ -28,7 +28,17 @@ void CLevelChanger::spatial_move()
 	spatial.center.set			(CFORM()->getSphere().P);
 	spatial.radius				= CFORM()->getRadius();
 	ISpatial::spatial_move		();
+}*/
+
+void CLevelChanger::Center(Fvector& C)
+{
+	XFORM().transform_tiny	(C,CFORM()->getSphere().P);
 }
+float CLevelChanger::Radius()
+{
+	return CFORM()->getRadius();
+}
+
 
 BOOL CLevelChanger::net_Spawn	(LPVOID DC) 
 {
