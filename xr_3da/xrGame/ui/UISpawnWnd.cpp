@@ -39,7 +39,8 @@ void CUISpawnWnd::Init(	const char *strCaptionPrimary, const u32 ColorPrimary,
 						bool bDual)
 {
 	CUIXml uiXml;
-	bool xml_result = uiXml.Init("$game_data$", SPAWN_XML);
+///	bool xml_result = uiXml.Init("$game_data$", SPAWN_XML);
+	bool xml_result = uiXml.Init(CONFIG_PATH, UI_PATH, SPAWN_XML);
 	R_ASSERT3(xml_result, "xml file not found", SPAWN_XML);
 
 	CUIXmlInit xml_init;
