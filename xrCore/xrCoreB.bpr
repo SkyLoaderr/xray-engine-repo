@@ -18,7 +18,8 @@
       Intermediate\rt_lzo.obj Intermediate\rt_compressor.obj 
       Intermediate\FTimer.obj Intermediate\xrstring.obj 
       Intermediate\xrsharedmem.obj Intermediate\_std_extensions.obj 
-      Intermediate\crc32.obj Intermediate\LocatorAPI_Notifications.obj"/>
+      Intermediate\crc32.obj Intermediate\LocatorAPI_Notifications.obj 
+      Intermediate\xrSyncronize.obj"/>
     <RESFILES value="Intermediate\xrCore.res"/>
     <IDLFILES value=""/>
     <IDLGENFILES value=""/>
@@ -159,6 +160,7 @@
       <FILE FILENAME="crc32.cpp" FORMNAME="" UNITNAME="crc32" CONTAINERID="CCompiler" DESIGNCLASS="" LOCALCOMMAND=""/>
       <FILE FILENAME="fastdelegate.h" FORMNAME="" UNITNAME="fastdelegate.h" CONTAINERID="" DESIGNCLASS="" LOCALCOMMAND=""/>
       <FILE FILENAME="LocatorAPI_Notifications.cpp" FORMNAME="" UNITNAME="LocatorAPI_Notifications" CONTAINERID="CCompiler" DESIGNCLASS="" LOCALCOMMAND=""/>
+      <FILE FILENAME="xrSyncronize.cpp" FORMNAME="" UNITNAME="xrSyncronize" CONTAINERID="CCompiler" DESIGNCLASS="" LOCALCOMMAND=""/>
   </FILELIST>
   <BUILDTOOLS>
   </BUILDTOOLS>
