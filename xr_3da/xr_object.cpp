@@ -90,7 +90,7 @@ CObject::~CObject( )
 	_DELETE						( cfModel		);
 	_FREE						( NameObject	);
 	_FREE						( NameSection	);
-	_FREE						( pVisualName	);
+	_FREE						( NameVisual	);
 }
 
 void CObject::UpdateTransform( )

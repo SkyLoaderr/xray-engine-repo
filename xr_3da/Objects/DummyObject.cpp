@@ -16,7 +16,6 @@ CDummyObject::CDummyObject	()
 {
 	style					= 0;
 	s_animator				= NULL;
-	s_model					= NULL;
 	s_particles				= NULL;
 	s_sound.feedback		= NULL;
 	m_pPhysicsShell			= 0;
@@ -26,7 +25,6 @@ CDummyObject::~CDummyObject	()
 {
 	pSounds->Delete			(s_sound);
 	::Render->model_Delete	(s_particles);
-	::Render->model_Delete	(s_model);
 	_DELETE					(s_animator);
 	_DELETE					(m_pPhysicsShell);
 }
@@ -91,7 +89,7 @@ BOOL CDummyObject::net_Spawn(LPVOID DC)
 		pSounds->PlayAtPos		(s_sound,0,Position(),true);
 	}
 
-	if (!s_animator && s_model)
+	if (!s_animator && (style&esModel))
 	{
 		// Physics (Box)
 		Fobb								obb;
