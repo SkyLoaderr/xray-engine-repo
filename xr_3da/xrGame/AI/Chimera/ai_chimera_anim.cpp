@@ -79,29 +79,3 @@ void CAI_Chimera::SpinBoneInAttack(CBoneInstance *B)
 {
 
 }
-
-
-//void CAI_Chimera::LoadAttackAnim()
-//{
-//	Fvector center, left_side, right_side;
-//
-//	center.set		(0.f,0.f,0.f);
-//	left_side.set	(-0.3f,0.f,0.f);
-//	right_side.set	(0.3f,0.f,0.f);
-//
-//	// 1 //
-//	m_tAttackAnim.PushAttackAnim(0, 10, 0, 700,	800,	center,		2.f, m_fHitPower, 0.f, 0.f);
-//	
-//	// 2 //
-//	m_tAttackAnim.PushAttackAnim(0, 10, 1, 500,	600,	right_side, 2.5f, m_fHitPower, 0.f, 0.f);
-//	
-//	// 3 // 
-//	m_tAttackAnim.PushAttackAnim(0, 10, 2, 600,	700,	center,		2.5f, m_fHitPower, 0.f, 0.f);
-//
-//	// 4 // 
-//	m_tAttackAnim.PushAttackAnim(0, 10, 3, 800,	900,	left_side,	1.0f, m_fHitPower, 0.f, 0.f);
-//
-//	// 5 // 
-//	m_tAttackAnim.PushAttackAnim(0, 10, 5, 1500, 1600,	right_side, 2.0f, m_fHitPower, 0.f, 0.f);
-//}
-//

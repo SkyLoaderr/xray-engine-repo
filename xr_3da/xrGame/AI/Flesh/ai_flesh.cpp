@@ -11,7 +11,7 @@ CAI_Flesh::CAI_Flesh()
 	stateEat			= xr_new<CBitingEat>		(this, true);
 	stateHide			= xr_new<CBitingHide>		(this);
 	stateDetour			= xr_new<CBitingDetour>		(this);
-	statePanic			= xr_new<CBitingPanic>		(this);
+	statePanic			= xr_new<CBitingPanic>		(this, false);
 	stateExploreDNE		= xr_new<CBitingExploreDNE>	(this);
 	stateExploreDE		= xr_new<CBitingExploreDE>	(this);
 	stateExploreNDE		= xr_new<CBitingExploreNDE>	(this);

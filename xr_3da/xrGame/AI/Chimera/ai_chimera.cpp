@@ -8,9 +8,7 @@ CAI_Chimera::CAI_Chimera()
 	stateEat			= xr_new<CBitingEat>		(this, true);
 	stateHide			= xr_new<CBitingHide>		(this);
 	stateDetour			= xr_new<CBitingDetour>		(this);
-	statePanic			= xr_new<CBitingPanic>		(this);
-	stateExploreDNE		= xr_new<CBitingExploreDNE>	(this);
-	stateExploreDE		= xr_new<CBitingExploreDE>	(this);
+	statePanic			= xr_new<CBitingPanic>		(this, false);
 	stateExploreNDE		= xr_new<CBitingExploreNDE>	(this);
 	CurrentState		= stateRest;
 
@@ -22,12 +20,10 @@ CAI_Chimera::~CAI_Chimera()
 	xr_delete(stateRest);
 	xr_delete(stateAttack);
 	xr_delete(stateEat);
+	xr_delete(statePanic);
+	xr_delete(stateExploreNDE);
 	xr_delete(stateHide);
 	xr_delete(stateDetour);
-	xr_delete(statePanic);
-	xr_delete(stateExploreDNE);
-	xr_delete(stateExploreDE);
-	xr_delete(stateExploreNDE);
 }
 
 
@@ -88,11 +84,6 @@ void CAI_Chimera::StateSelector()
 		SetState(stateEat);
 	else						SetState(stateRest); 
 
-//	if (IsAnimLocked(m_dwCurrentUpdate)) { 
-//		m_fCurSpeed		= 0.f;
-//		r_torso_speed	= 0.f;
-//	}
-
 }
 
 
@@ -105,32 +96,58 @@ BOOL CAI_Chimera::net_Spawn (LPVOID DC)
 	vfAssignBones(pSettings,cNameSect());
 
 	// define animation set
-	MotionMan.AddAnim(eAnimStandIdle,		"stand_idle_",			-1, 0, 0, PS_STAND);
+	MotionMan.AddAnim(eAnimStandIdle,		"stand_idle_",			-1, 0,						0,							PS_STAND);
+	MotionMan.AddAnim(eAnimLieIdle,			"lie_idle_",			-1, 0,						0,							PS_LIE);
+	MotionMan.AddAnim(eAnimSleep,			"lie_idle_",			-1, 0,						0,							PS_LIE);
+	MotionMan.AddAnim(eAnimWalkFwd,			"stand_walk_fwd_",		-1, m_ftrWalkSpeed,			m_ftrWalkRSpeed,			PS_STAND);
+	MotionMan.AddAnim(eAnimWalkTurnLeft,	"stand_walk_ls_",		-1, m_ftrWalkTurningSpeed,	m_ftrWalkRSpeed,			PS_STAND);
+	MotionMan.AddAnim(eAnimWalkTurnRight,	"stand_walk_rs_",		-1, m_ftrWalkTurningSpeed,	m_ftrWalkRSpeed,			PS_STAND);
+	MotionMan.AddAnim(eAnimRun,				"stand_run_",			-1,	m_ftrRunAttackSpeed,	m_ftrRunRSpeed,				PS_STAND);
+	MotionMan.AddAnim(eAnimRunTurnLeft,		"stand_run_ls_",		-1,	m_ftrRunAttackTurnSpeed,m_ftrRunAttackTurnRSpeed,	PS_STAND);
+	MotionMan.AddAnim(eAnimRunTurnRight,	"stand_run_rs_",		-1,	m_ftrRunAttackTurnSpeed,m_ftrRunAttackTurnRSpeed,	PS_STAND);
+	MotionMan.AddAnim(eAnimEat,				"lie_eat_",				-1, 0,						0,							PS_LIE);
+	MotionMan.AddAnim(eAnimStandLieDown,	"stand_lie_down_",		-1, 0,						0,							PS_STAND);
+	MotionMan.AddAnim(eAnimLieStandUp,		"lie_stand_up_",		-1, 0,						0,							PS_LIE);
+	MotionMan.AddAnim(eAnimAttack,			"stand_attack_",		 0, 0,						m_ftrRunRSpeed,				PS_STAND);
+
+
+	// define transitions
+	// order : 1. [anim -> anim]	2. [anim->state]	3. [state -> anim]		4. [state -> state]
+	MotionMan.AddTransition(PS_STAND,	PS_LIE,		eAnimStandLieDown,		false);
+	MotionMan.AddTransition(PS_LIE,		PS_STAND,	eAnimLieStandUp,		false);
 
 	// define links from Action to animations
 	MotionMan.LinkAction(ACT_STAND_IDLE,	eAnimStandIdle);
-	MotionMan.LinkAction(ACT_SIT_IDLE,		eAnimStandIdle);
-	MotionMan.LinkAction(ACT_LIE_IDLE,		eAnimStandIdle);
-	MotionMan.LinkAction(ACT_WALK_FWD,		eAnimStandIdle);
-	MotionMan.LinkAction(ACT_WALK_BKWD,		eAnimStandIdle);
-	MotionMan.LinkAction(ACT_RUN,			eAnimStandIdle);
-	MotionMan.LinkAction(ACT_EAT,			eAnimStandIdle);
-	MotionMan.LinkAction(ACT_SLEEP,			eAnimStandIdle);
-	MotionMan.LinkAction(ACT_DRAG,			eAnimStandIdle);
-	MotionMan.LinkAction(ACT_ATTACK,		eAnimStandIdle);
-	MotionMan.LinkAction(ACT_STEAL,			eAnimStandIdle);
+	MotionMan.LinkAction(ACT_SIT_IDLE,		eAnimLieIdle);
+	MotionMan.LinkAction(ACT_LIE_IDLE,		eAnimLieIdle);
+	MotionMan.LinkAction(ACT_WALK_FWD,		eAnimWalkFwd,	eAnimWalkTurnLeft,	eAnimWalkTurnRight, PI_DIV_6);
+	MotionMan.LinkAction(ACT_WALK_BKWD,		eAnimWalkFwd);
+	MotionMan.LinkAction(ACT_RUN,			eAnimRun,		eAnimRunTurnLeft,	eAnimRunTurnRight, PI_DIV_6);
+	MotionMan.LinkAction(ACT_EAT,			eAnimEat);
+	MotionMan.LinkAction(ACT_SLEEP,			eAnimSleep);
+	MotionMan.LinkAction(ACT_REST,			eAnimLieIdle);
+	MotionMan.LinkAction(ACT_DRAG,			eAnimWalkFwd);
+	MotionMan.LinkAction(ACT_ATTACK,		eAnimAttack);
+	MotionMan.LinkAction(ACT_STEAL,			eAnimWalkFwd);
 	MotionMan.LinkAction(ACT_LOOK_AROUND,	eAnimStandIdle);
 
 
+	Fvector center, left_side, right_side;
+
+	center.set		(0.f,0.f,0.f);
+	left_side.set	(-0.3f,0.f,0.f);
+	right_side.set	(0.3f,0.f,0.f);
+
+	MotionMan.AA_PushAttackAnim(eAnimAttack, 0, 700,	800,	center,		2.f, m_fHitPower, 0.f, 0.f);
+	MotionMan.AA_PushAttackAnim(eAnimAttack, 1, 500,	600,	right_side, 2.5f, m_fHitPower, 0.f, 0.f);
+	MotionMan.AA_PushAttackAnim(eAnimAttack, 2, 600,	700,	center,		2.5f, m_fHitPower, 0.f, 0.f);
+	MotionMan.AA_PushAttackAnim(eAnimAttack, 3, 800,	900,	left_side,	1.0f, m_fHitPower, 0.f, 0.f);
+	MotionMan.AA_PushAttackAnim(eAnimAttack, 5, 1500, 1600,	right_side, 2.0f, m_fHitPower, 0.f, 0.f);
 	return TRUE;
 }
 
 void CAI_Chimera::Load (LPCSTR section)
 {
 	inherited::Load (section);
-
-//	LockAnim		(eAnimAttack, 0, 1, 1300);
-//	LockAnim		(eAnimAttack, 1, 1, 800);
-//	LockAnim		(eAnimAttack, 2, 1, 1000);
 }
 

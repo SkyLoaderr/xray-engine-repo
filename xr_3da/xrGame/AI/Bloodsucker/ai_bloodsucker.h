@@ -3,13 +3,12 @@
 #include "..\\biting\\ai_biting.h"
 #include "..\\ai_monster_bones.h"
 #include "..\\ai_monster_invisibility.h"
-#include "ai_bloodsucker_state.h"
-
 
 class CAI_Bloodsucker : public CAI_Biting, 
 						public CMonsterInvisibility {
 
 	typedef		CAI_Biting	inherited;
+
 public:
 							CAI_Bloodsucker	();
 	virtual					~CAI_Bloodsucker();	
@@ -33,13 +32,6 @@ public:
 	virtual	void			LookPosition			(Fvector to_point);
 
 			void			ActivateEffector		(float life_time);
-	// Flesh-specific FSM
-	CBloodsuckerHearDNE		*stateHearDNE;
-	CBloodsuckerHearNDE		*stateHearNDE;
-
-	friend	class			CBloodsuckerHearDNE;
-	friend	class			CBloodsuckerHearNDE;
-
 	
 	bonesManipulation		Bones;
 

@@ -38,7 +38,7 @@ void CBitingEat::Init()
 	pCorpse = ve.obj;
 
 	bEatRat = (dynamic_cast<CAI_Rat *>(pCorpse) ? true : false);
-	m_fDistToCorpse = ((bEatRat)? 1.0f : 1.8f);
+	m_fDistToCorpse = ((bEatRat)? 1.0f : pMonster->m_fDistToCorpse); 
 	
 	if (bEatRat) Msg("Eat Rat");
 
@@ -165,7 +165,7 @@ void CBitingEat::Run()
 	
 			pMonster->MotionMan.m_tAction = ACT_WALK_FWD; 
 
-			if (cur_dist  + 0.8f  < m_fDistToCorpse) {
+			if (cur_dist  + 0.2f  < m_fDistToCorpse) {
 				m_tAction = ACTION_EAT;
 			}
 

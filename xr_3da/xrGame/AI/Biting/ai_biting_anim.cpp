@@ -240,13 +240,17 @@ bool CMotionManager::CheckTransition(EMotionAnim from, EMotionAnim to)
 	EPState		state_from	= GetState(cur_from);
 	EPState		state_to	= GetState(to);
 
-	TRANSITION_ANIM_VECTOR_IT I;
-	for (I = m_tTransitions.begin(); I != m_tTransitions.end(); I++) {
+	TRANSITION_ANIM_VECTOR_IT I = m_tTransitions.begin();
+	bool bVectEmpty = !m_tTransitions.empty();
+
+	
+	while (!bVectEmpty) {		// вход в цикл, если вектор переходов не пустой
 		
 		bool from_is_good	= ((I->ps_from_used) ? (I->state_from == state_from) : (I->anim_from == cur_from));
 		bool target_is_good = ((I->ps_target_used) ? (I->state_target == state_to) : (I->anim_target == to));
 
 		if (from_is_good && target_is_good) {
+			
 			// переход годится
 			Seq_Add(I->anim_transition);
 			bActivated	= true;	
@@ -256,10 +260,10 @@ bool CMotionManager::CheckTransition(EMotionAnim from, EMotionAnim to)
 				state_from	= GetState(cur_from);
 				I = m_tTransitions.begin();			// начать сначала
 			} else break;
-
 		}
+		if ((++I) == m_tTransitions.end()) break;
 	}
-	
+
 	if (bActivated) Seq_Switch();
 	return bActivated;
 }

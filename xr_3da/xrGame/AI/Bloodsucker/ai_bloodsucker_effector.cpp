@@ -1,6 +1,5 @@
 #include "stdafx.h"
 #include "ai_bloodsucker_effector.h" 
-#include "..\\..\\actor.h"
 
 CBloodsuckerEffector::CBloodsuckerEffector(float time) 
 					 : CEffectorPP(EEffectorPPType(BLOODSUCKER_EFFECTOR_TYPE_ID), time)

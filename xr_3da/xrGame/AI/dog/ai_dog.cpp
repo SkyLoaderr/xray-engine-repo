@@ -9,7 +9,7 @@ CAI_Dog::CAI_Dog()
 	stateEat			= xr_new<CBitingEat>		(this, true);
 	stateHide			= xr_new<CBitingHide>		(this);
 	stateDetour			= xr_new<CBitingDetour>		(this);
-	statePanic			= xr_new<CBitingPanic>		(this);
+	statePanic			= xr_new<CBitingPanic>		(this, false);
 	stateExploreNDE		= xr_new<CBitingExploreNDE>	(this);
 	CurrentState		= stateRest;
 
@@ -66,45 +66,58 @@ void CAI_Dog::StateSelector()
 	else						SetState(stateRest); 
 }
 
-//
-//void CAI_Dog::LoadAttackAnim()
-//{
-//	Fvector center;
-//
-//	center.set		(0.f,0.f,0.f);
-//
-//	// 1 //
-//	m_tAttackAnim.PushAttackAnim(0, 10, 0, 700,	800,	center,		2.f, m_fHitPower, 0.f, 0.f);
-//
-//	// 2 //
-//	m_tAttackAnim.PushAttackAnim(0, 10, 1, 600,	800,	center,		2.5f, m_fHitPower, 0.f, 0.f);
-//
-//	// 3 // 
-//	m_tAttackAnim.PushAttackAnim(0, 10, 2, 600, 700,	center,		1.5f, m_fHitPower, 0.f, 0.f);
-//}
-
-
 BOOL CAI_Dog::net_Spawn (LPVOID DC) 
 {
 	if (!inherited::net_Spawn(DC))
 		return(FALSE);
 
 	// define animation set
-	MotionMan.AddAnim(eAnimStandIdle,		"stand_idle_",			-1, 0, 0, PS_STAND);
+	MotionMan.AddAnim(eAnimStandIdle,		"stand_idle_",			-1, 0,						0,							PS_STAND);
+	MotionMan.AddAnim(eAnimLieIdle,			"lie_idle_",			-1, 0,						0,							PS_LIE);
+	MotionMan.AddAnim(eAnimSleep,			"lie_idle_",			-1, 0,						0,							PS_LIE);
+	MotionMan.AddAnim(eAnimWalkFwd,			"stand_walk_fwd_",		-1, m_ftrWalkSpeed,			m_ftrWalkRSpeed,			PS_STAND);
+	MotionMan.AddAnim(eAnimRun,				"stand_run_",			-1,	m_ftrRunAttackSpeed,	m_ftrRunRSpeed,				PS_STAND);
+	MotionMan.AddAnim(eAnimCheckCorpse,		"stand_check_corpse_",	-1,	0,						0,							PS_STAND);
+	MotionMan.AddAnim(eAnimEat,				"stand_eat_",			-1, 0,						0,							PS_STAND);
+	MotionMan.AddAnim(eAnimStandLieDown,	"stand_lie_down_",		-1, 0,						0,							PS_STAND);
+	MotionMan.AddAnim(eAnimLieStandUp,		"lie_stand_up_",		-1, 0,						0,							PS_LIE);
+	MotionMan.AddAnim(eAnimSitStandUp,		"sit_stand_up_",		-1, 0,						0,							PS_SIT);
+	MotionMan.AddAnim(eAnimSitLieDown,		"sit_lie_down_",		-1, 0,						0,							PS_SIT);
+	MotionMan.AddAnim(eAnimLieSitUp,		"lie_sit_up_",			-1, 0,						0,							PS_LIE);
+	MotionMan.AddAnim(eAnimStandSitDown,	"stand_sit_down_",		-1, 0,						0,							PS_STAND);	
+	MotionMan.AddAnim(eAnimAttack,			"stand_attack_",		-1, 0,						m_ftrRunRSpeed,				PS_STAND);
+	MotionMan.AddAnim(eAnimStandDamaged,	"stand_damaged_",		-1, 0,						m_ftrRunRSpeed,				PS_STAND);
+
+	// define transitions
+	// order : 1. [anim -> anim]	2. [anim->state]	3. [state -> anim]		4. [state -> state]
+	MotionMan.AddTransition(PS_STAND,	PS_LIE,		eAnimStandLieDown,		false);
+	MotionMan.AddTransition(PS_LIE,		PS_STAND,	eAnimLieStandUp,		false);
+	MotionMan.AddTransition(PS_SIT,		PS_STAND,	eAnimSitStandUp,		false);
+	MotionMan.AddTransition(PS_SIT,		PS_LIE,		eAnimSitLieDown,		false);
+	MotionMan.AddTransition(PS_LIE,		PS_SIT,		eAnimLieSitUp,			false);
+	MotionMan.AddTransition(PS_STAND,	PS_SIT,		eAnimStandSitDown,		false);
 
 	// define links from Action to animations
 	MotionMan.LinkAction(ACT_STAND_IDLE,	eAnimStandIdle);
-	MotionMan.LinkAction(ACT_SIT_IDLE,		eAnimStandIdle);
-	MotionMan.LinkAction(ACT_LIE_IDLE,		eAnimStandIdle);
-	MotionMan.LinkAction(ACT_WALK_FWD,		eAnimStandIdle);
-	MotionMan.LinkAction(ACT_WALK_BKWD,		eAnimStandIdle);
-	MotionMan.LinkAction(ACT_RUN,			eAnimStandIdle);
-	MotionMan.LinkAction(ACT_EAT,			eAnimStandIdle);
-	MotionMan.LinkAction(ACT_SLEEP,			eAnimStandIdle);
-	MotionMan.LinkAction(ACT_DRAG,			eAnimStandIdle);
-	MotionMan.LinkAction(ACT_ATTACK,		eAnimStandIdle);
-	MotionMan.LinkAction(ACT_STEAL,			eAnimStandIdle);
+	MotionMan.LinkAction(ACT_SIT_IDLE,		eAnimSitIdle);
+	MotionMan.LinkAction(ACT_LIE_IDLE,		eAnimLieIdle);
+	MotionMan.LinkAction(ACT_WALK_FWD,		eAnimWalkFwd);
+	MotionMan.LinkAction(ACT_WALK_BKWD,		eAnimWalkFwd);
+	MotionMan.LinkAction(ACT_RUN,			eAnimRun);
+	MotionMan.LinkAction(ACT_EAT,			eAnimEat);
+	MotionMan.LinkAction(ACT_SLEEP,			eAnimSleep);
+	MotionMan.LinkAction(ACT_REST,			eAnimSitIdle);
+	MotionMan.LinkAction(ACT_DRAG,			eAnimWalkFwd);
+	MotionMan.LinkAction(ACT_ATTACK,		eAnimAttack);
+	MotionMan.LinkAction(ACT_STEAL,			eAnimWalkFwd);
 	MotionMan.LinkAction(ACT_LOOK_AROUND,	eAnimStandIdle);
+
+	Fvector center;
+	center.set		(0.f,0.f,0.f);
+
+	MotionMan.AA_PushAttackAnim(eAnimAttack, 0, 700,	800,	center,		2.0f, m_fHitPower, 0.f, 0.f);
+	MotionMan.AA_PushAttackAnim(eAnimAttack, 1, 600,	800,	center,		2.5f, m_fHitPower, 0.f, 0.f);
+	MotionMan.AA_PushAttackAnim(eAnimAttack, 2, 600,	700,	center,		1.5f, m_fHitPower, 0.f, 0.f);
 
 	return TRUE;
 }

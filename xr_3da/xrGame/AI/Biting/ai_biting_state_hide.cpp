@@ -39,13 +39,9 @@ void CBitingHide::Run()
 	if (m_tEnemy.obj) EnemyPos = m_tEnemy.obj->Position();
 	else EnemyPos = m_tEnemy.position;
 
-	pMonster->vfInitSelector(pMonster->m_tSelectorCover, false);
-	pMonster->m_tSelectorCover.m_fMaxEnemyDistance = EnemyPos.distance_to(pMonster->Position()) + pMonster->m_tSelectorCover.m_fSearchRange;
-	pMonster->m_tSelectorCover.m_fOptEnemyDistance = pMonster->m_tSelectorCover.m_fMaxEnemyDistance;
-	pMonster->m_tSelectorCover.m_fMinEnemyDistance = EnemyPos.distance_to(pMonster->Position()) + 3.f;
-
-	pMonster->vfChoosePointAndBuildPath(&pMonster->m_tSelectorCover, 0, true, 0,2000);
+	pMonster->Path_GetAwayFromPoint(m_tEnemy.obj, EnemyPos, 3.f, 2000);
 
 	// Установить параметры движения
 	pMonster->MotionMan.m_tAction = ACT_WALK_FWD;
 }
+

@@ -192,10 +192,11 @@ class CBitingPanic : public IState {
 	Fvector			prev_pos;
 	TTime			m_dwStayTime;
 
+	bool			m_bInvisibility;
 
 	typedef IState inherited;
 public:
-					CBitingPanic			(CAI_Biting *p);
+					CBitingPanic			(CAI_Biting *p, bool invisibility);
 
 	virtual void	Reset			();	
 

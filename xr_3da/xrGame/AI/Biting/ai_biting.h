@@ -204,6 +204,8 @@ public:
 	float					m_fImpulseMin;
 	float					m_fImpulseMax;
 
+	float					m_fDistToCorpse;
+
 	// Biting-specific states
 	CBitingRest				*stateRest;
 	CBitingEat				*stateEat;

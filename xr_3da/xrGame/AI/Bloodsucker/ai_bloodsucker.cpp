@@ -8,7 +8,7 @@ CAI_Bloodsucker::CAI_Bloodsucker()
 	stateRest			= xr_new<CBitingRest>			(this);
 	stateEat			= xr_new<CBitingEat>			(this, false);
 	stateAttack			= xr_new<CBitingAttack>			(this, true);
-	statePanic			= xr_new<CBitingPanic>			(this);
+	statePanic			= xr_new<CBitingPanic>			(this, false);
 	stateExploreDNE		= xr_new<CBitingExploreDNE>		(this);
 	stateExploreNDE		= xr_new<CBitingExploreNDE>		(this);
 
@@ -21,8 +21,8 @@ CAI_Bloodsucker::~CAI_Bloodsucker()
 	xr_delete(stateEat);
 	xr_delete(stateAttack);
 	xr_delete(statePanic);
-	xr_delete(stateHearDNE);
-	xr_delete(stateHearNDE);
+	xr_delete(stateExploreDNE);
+	xr_delete(stateExploreNDE);
 }
 
 
@@ -57,22 +57,54 @@ BOOL CAI_Bloodsucker::net_Spawn (LPVOID DC)
 	vfAssignBones	();
 
 	// define animation set
-	MotionMan.AddAnim(eAnimStandIdle,		"stand_idle_",			-1, 0, 0, PS_STAND);
+	MotionMan.AddAnim(eAnimStandIdle,		"stand_idle_",			-1, 0,						0,							PS_STAND);
+	MotionMan.AddAnim(eAnimStandTurnLeft,	"stand_idle_ls_",		-1, 0,						m_ftrStandTurnRSpeed,		PS_STAND);
+	MotionMan.AddAnim(eAnimStandTurnRight,	"stand_idle_rs_",		-1, 0,						m_ftrStandTurnRSpeed,		PS_STAND);
+	MotionMan.AddAnim(eAnimSleep,			"lie_sleep_",			-1, 0,						0,							PS_LIE);
+	MotionMan.AddAnim(eAnimWalkFwd,			"stand_walk_fwd_",		-1, m_ftrWalkSpeed,			m_ftrWalkRSpeed,			PS_STAND);
+	MotionMan.AddAnim(eAnimWalkBkwd,		"stand_walk_bkwd_",		-1, m_ftrWalkSpeed,			m_ftrWalkRSpeed,			PS_STAND);
+	MotionMan.AddAnim(eAnimRun,				"stand_run_",			-1,	m_ftrRunAttackSpeed,	m_ftrRunRSpeed,				PS_STAND);
+	MotionMan.AddAnim(eAnimCheckCorpse,		"stand_check_corpse_",	-1,	0,						0,							PS_STAND);
+	MotionMan.AddAnim(eAnimEat,				"sit_eat_",				-1, 0,						0,							PS_SIT);
+	MotionMan.AddAnim(eAnimDie,				"stand_idle_",			-1, 0,						0,							PS_STAND);
+	MotionMan.AddAnim(eAnimAttack,			"stand_attack_",		-1, 0,						0,							PS_STAND);
+	MotionMan.AddAnim(eAnimLookAround,		"stand_look_around_",	-1, 0,						0,							PS_STAND);
+	MotionMan.AddAnim(eAnimSitIdle,			"sit_idle_",			-1, 0,						0,							PS_SIT);
+	MotionMan.AddAnim(eAnimSitStandUp,		"sit_stand_up_",		-1, 0,						0,							PS_SIT);
+	MotionMan.AddAnim(eAnimSitToSleep,		"sit_to_sleep_",		-1, 0,						0,							PS_SIT);
+	MotionMan.AddAnim(eAnimStandSitDown,	"stand_sit_down_",		-1, 0,						0,							PS_STAND);
+
+	// define transitions
+	// order : 1. [anim -> anim]	2. [anim->state]	3. [state -> anim]		4. [state -> state]
+	
+	MotionMan.AddTransition(eAnimStandSitDown,	eAnimSleep,	eAnimSitToSleep,	false);
+	MotionMan.AddTransition(PS_STAND,			eAnimSleep,	eAnimStandSitDown,	true);
+	MotionMan.AddTransition(PS_STAND,	PS_SIT,		eAnimStandSitDown,		false);
+	MotionMan.AddTransition(PS_STAND,	PS_LIE,		eAnimStandSitDown,		false);
+	MotionMan.AddTransition(PS_SIT,		PS_STAND,	eAnimSitStandUp,		false);
+	MotionMan.AddTransition(PS_LIE,		PS_STAND,	eAnimSitStandUp,		false);
 
 	// define links from Action to animations
-	MotionMan.LinkAction(ACT_STAND_IDLE,	eAnimStandIdle);
-	MotionMan.LinkAction(ACT_SIT_IDLE,		eAnimStandIdle);
-	MotionMan.LinkAction(ACT_LIE_IDLE,		eAnimStandIdle);
-	MotionMan.LinkAction(ACT_WALK_FWD,		eAnimStandIdle);
-	MotionMan.LinkAction(ACT_WALK_BKWD,		eAnimStandIdle);
-	MotionMan.LinkAction(ACT_RUN,			eAnimStandIdle);
-	MotionMan.LinkAction(ACT_EAT,			eAnimStandIdle);
-	MotionMan.LinkAction(ACT_SLEEP,			eAnimStandIdle);
-	MotionMan.LinkAction(ACT_DRAG,			eAnimStandIdle);
-	MotionMan.LinkAction(ACT_ATTACK,		eAnimStandIdle);
-	MotionMan.LinkAction(ACT_STEAL,			eAnimStandIdle);
-	MotionMan.LinkAction(ACT_LOOK_AROUND,	eAnimStandIdle);
+	MotionMan.LinkAction(ACT_STAND_IDLE,	eAnimStandIdle,	eAnimStandTurnLeft, eAnimStandTurnRight, PI_DIV_6);
+	MotionMan.LinkAction(ACT_SIT_IDLE,		eAnimSitIdle);
+	MotionMan.LinkAction(ACT_LIE_IDLE,		eAnimSitIdle);
+	MotionMan.LinkAction(ACT_WALK_FWD,		eAnimWalkFwd);
+	MotionMan.LinkAction(ACT_WALK_BKWD,		eAnimWalkBkwd);
+	MotionMan.LinkAction(ACT_RUN,			eAnimRun);
+	MotionMan.LinkAction(ACT_EAT,			eAnimEat);
+	MotionMan.LinkAction(ACT_SLEEP,			eAnimSleep);
+	MotionMan.LinkAction(ACT_REST,			eAnimSitIdle);
+	MotionMan.LinkAction(ACT_DRAG,			eAnimWalkBkwd);
+	MotionMan.LinkAction(ACT_ATTACK,		eAnimAttack);
+	MotionMan.LinkAction(ACT_STEAL,			eAnimWalkFwd);
+	MotionMan.LinkAction(ACT_LOOK_AROUND,	eAnimLookAround);	
 
+	Fvector center;
+	center.set		(0.f,0.f,0.f);
+
+	MotionMan.AA_PushAttackAnim(eAnimAttack, 0, 500,	600,	center,		1.3f, m_fHitPower, -PI_DIV_6,	PI_DIV_6);
+	MotionMan.AA_PushAttackAnim(eAnimAttack, 1, 600,	700,	center,		1.3f, m_fHitPower, 0.f,			PI_DIV_6);
+	MotionMan.AA_PushAttackAnim(eAnimAttack, 2, 500,	600,	center,		1.4f, m_fHitPower, PI_DIV_3,	PI_DIV_6);
 
 	return(TRUE);
 }
@@ -109,9 +141,9 @@ void CAI_Bloodsucker::StateSelector()
 	else if (F && H && !I)  	SetState(stateAttack); 
 	else if (F && !H && I)  	SetState(stateAttack); 
 	else if (F && !H && !I) 	SetState(stateAttack);		
-	else if (A && !K)			SetState(stateHearDNE); 
-	else if (B && !K)			SetState(stateHearNDE); 
-	else if (GetCorpse(ve) && (ve.obj->m_fFood > 1) && ((GetSatiety() < 0.85f) || flagEatNow))
+	else if (A && !K)			SetState(stateExploreDNE); 
+	else if (B && !K)			SetState(stateExploreNDE); 
+	else if (GetCorpse(ve) && (ve.obj->m_fFood > 1))// && ((GetSatiety() < 0.85f) || flagEatNow))
 		SetState(stateEat);	
 	else						SetState(stateRest);
 }
@@ -147,22 +179,6 @@ CBoneInstance *CAI_Bloodsucker::GetBone(int bone_id)
 {
 	return (&PKinematics(Visual())->LL_GetInstance(u16(bone_id)));
 }
-
-//void CAI_Bloodsucker::LoadAttackAnim()
-//{
-//	Fvector center;
-//	center.set		(0.f,0.f,0.f);
-//
-//	// 1 //
-//	m_tAttackAnim.PushAttackAnim(0, 10, 0, 500,	600,	center,		1.3f, m_fHitPower, -PI_DIV_6, PI_DIV_6);
-//
-//	// 2 //
-//	m_tAttackAnim.PushAttackAnim(0, 10, 1, 600,	700,	center,		1.3f, m_fHitPower, 0.f, PI_DIV_6);
-//
-//	// 3 // 
-//	m_tAttackAnim.PushAttackAnim(0, 10, 2, 500,	600,	center,		1.4f, m_fHitPower, PI_DIV_3, PI_DIV_6);
-//}
-
 
 void CAI_Bloodsucker::LookDirection(Fvector to_dir, float bone_turn_speed)
 {

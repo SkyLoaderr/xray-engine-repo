@@ -28,6 +28,8 @@ enum EMotionAnim {
 	eAnimLieStandUp,
 	eAnimSitStandUp,
 	eAnimStandLieDownEat,
+	eAnimSitLieDown,
+	eAnimLieSitUp,
 
 	eAnimWalkFwd,
 	eAnimWalkBkwd,
@@ -50,6 +52,8 @@ enum EMotionAnim {
 	eAnimCheckCorpse,
 	eAnimScared,
 	eAnimAttackJump,
+
+	eAnimLookAround,
 };
 
 

@@ -2,12 +2,15 @@
 #include "ai_biting.h"
 #include "ai_biting_state.h"
 
+#include "..\\bloodsucker\\ai_bloodsucker.h"
+
 ///////////////////////////////////////////////////////////////////////////////////////////////////////////
 // CBitingPanic class
 ///////////////////////////////////////////////////////////////////////////////////////////////////////////
-CBitingPanic::CBitingPanic(CAI_Biting *p)
+CBitingPanic::CBitingPanic(CAI_Biting *p, bool invisibility)
 {
 	pMonster = p;
+	m_bInvisibility = invisibility;
 
 	Reset();
 	SetHighPriority();
@@ -54,11 +57,19 @@ void CBitingPanic::Run()
 		pMonster->r_torso_target.yaw = angle_normalize(pMonster->r_torso_target.yaw + PI);
 	} 
 
-// todo: 
-//	// нивидимость (for Bloodsucker)
-//	if (pMonster->GetPower() > pMonster->m_fPowerThreshold) {
-//		if (pMonster->m_tVisibility.Switch(false)) pMonster->ChangePower(pMonster->m_ftrPowerDown);
-//	}
+#pragma todo("Jim to Jim: fix nesting: Bloodsucker in Biting state")
+	if (m_bInvisibility) {
+		CAI_Bloodsucker *pBS =	dynamic_cast<CAI_Bloodsucker *>(pMonster);
+		if (pBS) {
+			if (pBS->GetPower() > pBS->m_fPowerThreshold) {
+				if (pBS->CMonsterInvisibility::Switch(false)) {
+					pBS->ChangePower(pBS->m_ftrPowerDown);
+					pBS->ActivateEffector(pBS->CMonsterInvisibility::GetInvisibleInterval() / 1000.f);
+				}
+			}
+		}
+	}
+
 
 	if (!cur_pos.similar(prev_pos)) {
 		bFacedOpenArea = false;
