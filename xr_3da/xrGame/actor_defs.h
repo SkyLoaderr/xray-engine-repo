@@ -112,32 +112,6 @@ struct					SActorMotions
 	SActorState			m_climb;
 	void				Create(CSkeletonAnimated* K);
 };
-/*
-//буфер сохраненных данных физики по актеру
-struct SMemoryPos
-{
-	u32					dwTime0;
-	u32					dwTime1;
-	u64					u64WorldStep;
-	SPHNetState			SState;
-
-	SMemoryPos (u32 Time0, u32 Time1, u64 WorldStep, SPHNetState State):
-	dwTime0(Time0),
-		dwTime1(Time1),
-		u64WorldStep(WorldStep),
-		SState(State)
-	{
-	};
-	bool operator < (const u32 Time)
-	{
-		return dwTime1 < Time;
-	};
-	bool operator < (const u64 Step)
-	{
-		return u64WorldStep < Step;
-	};
-};
-*/
 //---------------------------------------------
 // ввод с клавиатуры и мыши
 struct					net_input
