@@ -302,16 +302,9 @@ int APIENTRY WinMain(HINSTANCE hInstance,
 			return 0;
 	};
 	Engine.External.Initialize	( );
-	Startup	 				();
-	Core._destroy			();
-
-	// check for need to execute something external
-	if (lpCmdLine && strstr(lpCmdLine,"-exec ")) 
-	{
-		char *N = strstr(lpCmdLine,"-exec ")+6;
-		return (int)_execl(N,N,0);
-	}
-	return 0;
+	Startup	 					( );
+	Core._destroy				( );
+	return						0;
 }
 
 CApplication::CApplication()
