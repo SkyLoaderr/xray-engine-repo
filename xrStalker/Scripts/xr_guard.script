@@ -142,6 +142,7 @@ function action_guard_activity:waypoint_callback(obj, action_type, index)
 		local actor = level.actor()
 		if actor and self.object:relation(actor) ~= game_object.enemy then
 			self.object:set_relation(game_object.enemy, actor)
+			self.object:play_sound (sounds["mad_snd_attack"], 1, 0, 1, 0, 3)
 		end
 	end
 	
@@ -151,6 +152,21 @@ function action_guard_activity:waypoint_callback(obj, action_type, index)
 		self.a.running = false
 	elseif ptr:flag(index, 31) then
 		self.a.running = true
+	end
+
+	if ptr:flag(index, 29) then
+		local phrase = math.random(1, 3)
+		while phrase == self.prev_phrase do
+			phrase = math.random(1, 3)
+		end
+		if phrase == 1 then
+			self.object:play_sound (sounds["mad_snd_talk"], 1, 0, 1, 0, 4)
+		elseif phrase == 2 then
+			self.object:play_sound (sounds["mad_snd_talk"], 1, 0, 1, 0, 6)
+		else
+			self.object:play_sound (sounds["mad_snd_talk"], 1, 0, 1, 0, 7)
+		end
+		self.prev_phrase = phrase
 	end
 	
 	if ptr:flag(index, 1) then
@@ -163,8 +179,9 @@ function action_guard_activity:waypoint_callback(obj, action_type, index)
 	end
 
 	local flagnum = nil
-	for f = 2, 29 do -- точка 0 зарезервирована для начала пути, 1 - для задания пути, состоящего из одной точки
+	for f = 2, 28 do -- точка 0 зарезервирована для начала пути, 1 - для задания пути, состоящего из одной точки
 	-- 30 и 31 зарезервированы для состояний ходьбы и бега
+	-- 29 зарезервирована для звука
 		if ptr:flag(index, f) then
 			flagnum = f
 		end
@@ -288,6 +305,11 @@ function action_guard_activity:execute()
 
 		local need_callback = false
 		if self.path_active ~= suggested_path then
+			if suggested_path == self.path_camp then
+				-- В укрытие!!!
+				self.object:play_sound (sounds["mad_snd_hide"], 1, 0, 1, 0, 0)
+				self.a.running = true
+			end
 			self.last_look_index = nil -- был выбран новый путь и точка уже не актуальна
 			self.path_active = suggested_path
 			self.object:set_patrol_path(self.path_active, patrol.start, patrol.continue, true)
@@ -342,47 +364,57 @@ end
 ----------------------------------------------------------------------------------------------------------------------
 function add_to_binder(npc, char_ini)
 	if char_ini == nil  or char_ini:section_exist ("guard") == true then
-  	local operators	= {}
-  	local properties  = {}
+  		local operators	= {}
+	  	local properties  = {}
 
-  	sounds["commander_snd"]	 	= xr_sounds_id.zmey_guard_base + 1
-  	sounds["soldiers_idle_snd"]	 = xr_sounds_id.zmey_guard_base + 2
-  	sounds["soldiers_idle2_snd"]	= xr_sounds_id.zmey_guard_base + 3
-  	sounds["soldiers_replics_snd"]  = xr_sounds_id.zmey_guard_base + 4
-  	sounds["soldiers_hear_snd"]	 = xr_sounds_id.zmey_guard_base + 5
-  	sounds["soldier_alarm"]	 	= xr_sounds_id.zmey_guard_base + 6
+	  	sounds["commander_snd"]	 	= xr_sounds_id.zmey_guard_base + 1
+	  	sounds["soldiers_idle_snd"]	 = xr_sounds_id.zmey_guard_base + 2
+	  	sounds["soldiers_idle2_snd"]	= xr_sounds_id.zmey_guard_base + 3
+	  	sounds["soldiers_replics_snd"]  = xr_sounds_id.zmey_guard_base + 4
+	  	sounds["soldiers_hear_snd"]	 = xr_sounds_id.zmey_guard_base + 5
+	  	sounds["soldier_alarm"]	 	= xr_sounds_id.zmey_guard_base + 6
+		sounds["mad_snd_talk"] = xr_sounds_id.zmey_guard_base + 7
+		sounds["mad_snd_hide"] = xr_sounds_id.zmey_guard_base + 8
+		sounds["mad_snd_attack"] = xr_sounds_id.zmey_guard_base + 9
 
-  	npc:add_sound ("Scripts\\Patrol\\Commander1_",		   20, snd_type.talk, 2, 1, sounds["commander_snd"])
+	  	npc:add_sound ("Scripts\\Patrol\\Commander1_",		   20, snd_type.talk, 2, 1, sounds["commander_snd"])
 	 	npc:add_sound ("Scripts\\Patrol\\soldier_idle_",		 20, snd_type.talk, 2, 1, sounds["soldiers_idle_snd"])
 	 	npc:add_sound ("script_replics\\soldier_1\\idle\\soldier_idle_",	 20, snd_type.talk, 2, 1, sounds["soldiers_idle2_snd"])
 	 	npc:add_sound ("script_replics\\soldier_1\\replics\\soldier_replic_",	 20, snd_type.talk, 2, 1, sounds["soldiers_replics_snd"])
 	 	npc:add_sound ("script_replics\\soldier_1\\hear_something\\soldier_hear_",   20, snd_type.talk, 2, 1, sounds["soldiers_hear_snd"])
 		npc:add_sound ("script_replics\\soldier_1\\alarm\\soldier_alarm_",	 20, snd_type.talk, 2, 2, sounds["soldier_alarm"])
 
-   	local manager = npc:motivation_action_manager()
+		-- FIXME: hack
+		if char_ini:section_exist ("guard") == true and char_ini:line_exist("guard", "path_camp") == true then
+			npc:add_sound("script_replics\\bandit_1\\combat\\bandit_combat_", 20, snd_type.talk, 2, 1, sounds["mad_snd_talk"])
+			npc:add_sound("script_replics\\soldier_1\\combat\\soldier_combat_", 20, snd_type.talk, 2, 1, sounds["mad_snd_hide"])
+			npc:add_sound("script_replics\\bandit_1\\combat\\bandit_combat_", 20, snd_type.talk, 2, 1, sounds["mad_snd_attack"])
+		end
 
-	properties["event"] 		= xr_evaluators_id.reaction
-	properties["state_end"]		= xr_evaluators_id.state_change
- 	properties["need_guard"]   = xr_evaluators_id.zmey_guard_base + 1
+	   	local manager = npc:motivation_action_manager()
 
- 	operators["action_guard"]   = xr_actions_id.zmey_guard_base + 1
+		properties["event"] 		= xr_evaluators_id.reaction
+		properties["state_end"]		= xr_evaluators_id.state_change
+	 	properties["need_guard"]   = xr_evaluators_id.zmey_guard_base + 1
 
-   	-- // evaluators
-		manager:add_evaluator (properties["need_guard"],   this.evaluator_need_guard  (xr_motivator.storage[npc:id()].guard))
+	 	operators["action_guard"]   = xr_actions_id.zmey_guard_base + 1
 
-	local new_action = this.action_guard_activity(npc, "action_guard_activity", xr_motivator.storage[npc:id()].guard)
+	   	-- // evaluators
+			manager:add_evaluator (properties["need_guard"],   this.evaluator_need_guard  (xr_motivator.storage[npc:id()].guard))
+
+		local new_action = this.action_guard_activity(npc, "action_guard_activity", xr_motivator.storage[npc:id()].guard)
 		new_action:add_precondition	(world_property(stalker_ids.property_alive,   	true))
 		new_action:add_precondition	(world_property(stalker_ids.property_enemy,   	false))
 	  	new_action:add_precondition	(world_property(properties["need_guard"],   	true))
-	new_action:add_precondition	(world_property(properties["event"],		false))
-	new_action:add_precondition	(world_property(properties["state_end"],		true))
-   	new_action:add_effect(world_property(properties["need_guard"], false))
+		new_action:add_precondition	(world_property(properties["event"],		false))
+		new_action:add_precondition	(world_property(properties["state_end"],		true))
+	   	new_action:add_effect(world_property(properties["need_guard"], false))
 		manager:add_action(operators["action_guard"], new_action)
 
-  	new_action = manager:action(stalker_ids.action_puzzle_solver)
+	  	new_action = manager:action(stalker_ids.action_puzzle_solver)
 	  	new_action:add_precondition	(world_property(properties["need_guard"],   	false))
 
-	if char_ini ~= nil then xr_guard.set_guard(npc) end
+		if char_ini ~= nil then xr_guard.set_guard(npc) end
 	end
 end
 
