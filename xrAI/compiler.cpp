@@ -61,7 +61,7 @@ void	mem_Optimize	()
 	Msg("* Memory usage: %d M",Memory.mem_usage()/(1024*1024));
 }
 
-void xrCompiler(LPCSTR name)
+void xrCompiler(LPCSTR name, bool draft_mode)
 {
 	Phase("Loading level...");
 	xrLoad		(name);
@@ -76,15 +76,16 @@ void xrCompiler(LPCSTR name)
 //	xrSmoothNodes();
 //	mem_Optimize();
 	
-	Phase("Lighting nodes...");
-	xrLight		();
-//	xrDisplay	();
-	mem_Optimize();
-	
-	Phase("Calculating coverage...");
-	xrCover		();
-	mem_Optimize();
-	
+	if (!draft_mode) {
+		Phase("Lighting nodes...");
+		xrLight		();
+		//	xrDisplay	();
+		mem_Optimize();
+
+		Phase("Calculating coverage...");
+		xrCover		();
+		mem_Optimize();
+	}
 	/////////////////////////////////////
 
 //	Phase("Palettizing cover values...");

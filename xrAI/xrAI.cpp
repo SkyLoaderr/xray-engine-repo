@@ -22,7 +22,7 @@
 #pragma comment(lib,"x:/MagicFM.LIB")
 #pragma comment(lib,"x:/xrCore.LIB")
 
-extern void	xrCompiler			(LPCSTR name);
+extern void	xrCompiler			(LPCSTR name, bool draft_mode);
 extern void __cdecl logThread	(void *dummy);
 extern volatile BOOL bClose;
 extern void test_smooth_path	(LPCSTR name);
@@ -94,7 +94,7 @@ void Startup(LPSTR     lpCmdLine)
 	pSettings			= xr_new<CInifile>(SYSTEM_LTX);
 
 	if (strstr(cmd,"-f"))
-		xrCompiler			(prjName);
+		xrCompiler			(prjName,!!strstr(cmd,"-draft"));
 	else
 		if (strstr(cmd,"-g")) {
 			xrBuildGraph		(prjName);
