@@ -14,8 +14,8 @@ void __stdcall  hemi_callback	(float x, float y, float z, float E, LPVOID P)
 
 void CBuild::xrPhase_R2_Lights	()
 {
-	L_layers.clear			();
-	L_hemi.clear			();
+	L_layers.clear				();
+	L_hemi.clear				();
 
 	R_Light						RL;
 	RL.type                     = LT_DIRECT;

@@ -15,14 +15,14 @@ public:
 	Fvector					basis_tangent		[3];
 	Fvector					basis_binormal		[3];
 
-	WORD					dwMaterial;		// index of material
-	WORD					dwMaterialGame;	// unique-id of game material (must persist up to game-CForm saving)
+	WORD					dwMaterial;			// index of material
+	WORD					dwMaterialGame;		// unique-id of game material (must persist up to game-CForm saving)
 	union			{
-		bool				bSplitted;		//
+		bool				bSplitted;			//
 		bool				bProcessed;
 	};
 	bool					bDisableShadowCast;
-	bool					bOpaque;		// For ray-tracing speedup
+	bool					bOpaque;			// For ray-tracing speedup
 
 	virtual	Shader_xrLC&	Shader				( );
 	virtual void			CacheOpacity		( );
@@ -40,15 +40,15 @@ class CLightmap;
 
 // Typedefs
 typedef xr_vector<Vertex*>			vecVertex;
-typedef vecVertex::iterator		vecVertexIt;
+typedef vecVertex::iterator			vecVertexIt;
 
 typedef xr_vector<Face*>			vecFace;
-typedef vecFace::iterator		vecFaceIt;
+typedef vecFace::iterator			vecFaceIt;
 
-typedef vecFace					vecAdj;
-typedef vecAdj::iterator		vecAdjIt;
+typedef vecFace						vecAdj;
+typedef vecAdj::iterator			vecAdjIt;
 
-extern const int edge2idx[3][2];
+extern const int edge2idx			[3][2];
 
 #include "xrUVpoint.h"
 
@@ -56,7 +56,7 @@ class Vertex	: public base_Vertex
 {
 public:
 	Fvector		N;
-	Fcolor		Color;		// only used for Per-Vertex lighting
+	Fcolor		Color;				// only used for Per-Vertex lighting
 
 	vecAdj		adjacent;
 
