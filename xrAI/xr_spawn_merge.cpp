@@ -38,7 +38,7 @@ public:
 	};
 };
 
-class CSpawn {
+class CSpawn : public CThread {
 public:
 	SLevel						m_tLevel;
 	CStream*					vfs;			// virtual file
@@ -61,8 +61,9 @@ public:
 	DWORD_VECTOR				m_tpGraphNodes;
 	DWORD_VECTOR				m_tpResultNodes;
 
-								CSpawn(SLevel &tLevel, u32 dwLevelID)
+								CSpawn(SLevel &tLevel, u32 dwLevelID) : CThread(dwLevelID)
 	{
+		thDestroyOnComplete		= FALSE;
 		// loading AI map
 		m_tLevel				= tLevel;
 		m_dwLevelID				= dwLevelID;
@@ -120,8 +121,13 @@ public:
 			S_id++;
 		}
 	};
-								~CSpawn()
+	virtual 					~CSpawn()
 	{
+		for (int i=0; i<(int)m_tpSpawnPoints.size(); i++)
+			xr_delete(m_tpSpawnPoints[i]);
+		xr_free(m_tppHeap);
+		xr_free(m_tpHeap);
+		xr_free(m_tpIndexes);
 		xr_delete(vfs);
 	};
 
@@ -152,7 +158,7 @@ public:
 		return(selected);
 	}
 
-	void						vfAssignCorrespondingVertices()
+	void						Execute()
 	{
 		m_tpGraphNodes.resize	(tGraphHeader.dwVertexCount);
 		m_tpSpawnNodes.resize	(m_tpSpawnPoints.size());
@@ -200,20 +206,33 @@ public:
 			}
 			m_tpResultNodes[i] = dwBest;
 		}
-	}
-};
+	};
+	void						Save(CFS_Memory &FS, u32 &dwOffset)
+	{
+		NET_Packet		P;
+		u32				position;
+		for (u32 i=0; i<m_tpSpawnPoints.size(); i++) {
+			xrServerEntity*	E	= m_tpSpawnPoints[i];
 
-class CSpawnThread : public CThread {
-private:
-	CSpawn					*m_tpSpawn;
-public:
-	CSpawnThread(u32 ID, CSpawn *tpSpawn) : CThread(ID)
-	{
-		m_tpSpawn			= tpSpawn;
-	}
-	virtual void			Execute()
-	{
-		m_tpSpawn->vfAssignCorrespondingVertices();
+			FS.open_chunk		(i);
+
+			// Spawn
+			E->Spawn_Write		(P,TRUE);
+			FS.Wword			(u16(P.B.count));
+			FS.write			(P.B.data,P.B.count);
+
+			// Update
+			P.w_begin			(M_UPDATE);
+			P.w_u16				(E->ID);
+			P.w_chunk_open8		(position);
+			E->UPDATE_Write		(P);
+			P.w_chunk_close8	(position);
+
+			FS.Wword			(u16(P.B.count));
+			FS.write			(P.B.data,P.B.count);
+
+			FS.close_chunk		();
+		}
 	};
 };
 
@@ -259,19 +278,22 @@ void xrMergeSpawns()
 	}
 	R_ASSERT(tpLevels.size());
 	
-	CThreadManager		tThreadManager;		// multithreading
-	xrCriticalSection	tCriticalSection;	// thread synchronization
+	CThreadManager				tThreadManager;		// multithreading
 
 	Phase						("Searching for corresponding graph vertices");
 	for (u32 thID=0, N = tpLevels.size(); thID<N; thID++)
-		tThreadManager.start(xr_new<CSpawnThread>(thID,tpLevels[thID]));
+		tThreadManager.start(tpLevels[thID]);
 	tThreadManager.wait();
 	
-	CFS_Memory					tMemoryStream;
 	Phase						("Merging spawn files");
 	for (u32 i=0, N = tpLevels.size(); i<N; i++)
-		tpLevels[thID]->Save(tMemoryStream);
-	tMemoryStream.SaveTo("game.spawn");
+		tSpawnHeader.dwSpawnCount += tpLevels[i]->m_tpSpawnPoints.size();
+	
+	CFS_Memory					tMemoryStream;
+	tMemoryStream.write			(&tSpawnHeader,sizeof(tSpawnHeader));
+	for (u32 i=0, dwOffset = 0, N = tpLevels.size(); i<N; i++)
+		tpLevels[thID]->Save(tMemoryStream,dwOffset);
+	tMemoryStream.SaveTo("game.spawn",0);
 
 	Phase						("Freeing resources being allocated");
 	for (u32 i=0, N = tpLevels.size(); i<N; i++)
