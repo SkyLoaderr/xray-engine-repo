@@ -12,6 +12,8 @@
 #include "state_combat_attack_weak.h"
 #include "state_combat_cover.h"
 
+//#define TEST
+
 CStateManagerCombat::CStateManagerCombat	(LPCSTR state_name) : inherited(state_name)
 {
 	Init					();
@@ -27,8 +29,11 @@ void CStateManagerCombat::Init			()
 
 void CStateManagerCombat::Load			(LPCSTR section)
 {
+#ifndef TEST
 	add_state				(xr_new<CStateAttackWeak>("AttackWeak"),	eCombatStateAttackWeak,		0);
-//	add_state				(xr_new<CStateCover>("Cover"),				eCombatStateCover,			0);
+#else
+	add_state				(xr_new<CStateCover>("Cover"),				eCombatStateCover,			0);
+#endif
 
 	inherited::Load			(section);
 }
@@ -36,10 +41,13 @@ void CStateManagerCombat::Load			(LPCSTR section)
 void CStateManagerCombat::reinit		(CAI_Stalker *object)
 {
 	inherited::reinit		(object);
+#ifndef TEST
 	set_current_state		(eCombatStateAttackWeak);
 	set_dest_state			(eCombatStateAttackWeak);
-//	set_current_state		(eCombatStateCover);
-//	set_dest_state			(eCombatStateCover);
+#else
+	set_current_state		(eCombatStateCover);
+	set_dest_state			(eCombatStateCover);
+#endif
 }
 
 void CStateManagerCombat::reload		(LPCSTR section)
@@ -55,8 +63,11 @@ void CStateManagerCombat::initialize	()
 
 void CStateManagerCombat::execute		()
 {
+#ifndef TEST
 	set_dest_state			(eCombatStateAttackWeak);
-//	set_dest_state			(eCombatStateCover);
+#else
+	set_dest_state			(eCombatStateCover);
+#endif
 	inherited::execute		();
 }
 

@@ -15,6 +15,7 @@
 #include "ai_space.h"
 #include "ai_script_lua_extension.h"
 #include "cover_manager.h"
+#include "cover_point.h"
 
 CAI_Space *g_ai_space = 0;
 
@@ -23,10 +24,10 @@ CAI_Space::CAI_Space				()
 	m_ef_storage			= xr_new<CEF_Storage>();
 	m_game_graph			= xr_new<CGameGraph>();
 	m_graph_engine			= xr_new<CGraphEngine>(game_graph().header().vertex_count());
+	m_cover_manager			= xr_new<CCoverManager>();
 	m_level_graph			= 0;
 	m_cross_table			= 0;
 	m_alife_simulator		= 0;
-	m_cover_manager			= 0;
 
 	string256				l_caLogFileName;
 	strconcat               (l_caLogFileName,Core.ApplicationName,"_",Core.UserName,"_lua.log");
@@ -87,7 +88,15 @@ void CAI_Space::load				(LPCSTR level_name)
 
 	level_graph().set_level_id((*I).second.id());
 
-	m_cover_manager			= xr_new<CCoverManager>();
+	xr_vector<CCoverPoint*>	nearest;
+	m_cover_manager->covers().nearest(Fvector().set(0.f,0.f,0.f),100000.f,nearest);
+	{
+		xr_vector<CCoverPoint*>::iterator	I = nearest.begin();
+		xr_vector<CCoverPoint*>::iterator	E = nearest.end();
+		for ( ; I != E; ++I)
+			xr_delete		(*I);
+	}
+	m_cover_manager->clear	();
 	m_cover_manager->compute_static_cover();
 }
 

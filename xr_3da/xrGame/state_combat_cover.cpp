@@ -80,7 +80,7 @@ void CStateCover::execute			()
 	direction.sub								(mem_object.m_object_params.m_position,m_object->Position());
 	m_object->CSightManager::update				(eLookTypeDirection,&direction);
 
-	ai().cover_manager().covers().nearest		(m_object->Position(),50.f,m_nearest);
+	ai().cover_manager().covers().nearest		(m_object->Position(),30.f,m_nearest);
 	float										best_value = flt_max;
 	CCoverPoint									*best_point = 0;
 	xr_vector<CCoverPoint*>::const_iterator	I = m_nearest.begin();
@@ -89,21 +89,12 @@ void CStateCover::execute			()
 		Fvector			direction;
 		float			y,p;
 		direction.sub	(mem_object.m_object_params.m_position,(*I)->position());
-		
 		direction.getHP	(y,p);
-		float			value = ai().level_graph().cover_in_direction(y,(*I)->level_vertex_id());
-//		float			value = ai().level_graph().compute_square(y,PI_DIV_2,(*I)->level_vertex_id());
-		if (value < best_value) {
-			Collide::rq_result	ray_query;
-			Fvector				position = (*I)->position();
-			position.y			+= 1.f;
-			Fvector				target = mem_object.m_object_params.m_position;
-			target.y			+= 1.f;
-			direction.normalize	();
-			if (Level().ObjectSpace.RayPick(position, direction, position.distance_to(target) + .5f, Collide::rqtBoth, ray_query) && !ray_query.O)
-				continue;
-
-			best_value	= value;
+		float			cover_value = ai().level_graph().cover_in_direction(y,(*I)->level_vertex_id());
+		float			enemy_distance = mem_object.m_object_params.m_position.distance_to((*I)->position());
+		float			my_distance = m_object->Position().distance_to((*I)->position());
+		if ((cover_value < best_value) && (enemy_distance > 5.f) && (my_distance < 30.f)){
+			best_value	= cover_value;
 			best_point	= *I;
 		}
 	}

@@ -36,3 +36,8 @@ void CCoverManager::compute_static_cover	()
 		if (m_temp[i] && critical_cover(i))
 			m_covers->insert(xr_new<CCoverPoint>(ai().level_graph().vertex_position(ai().level_graph().vertex(i)),i));
 }
+
+void CCoverManager::clear					()
+{
+	m_covers->clear			();
+}
