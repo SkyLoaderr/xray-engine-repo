@@ -90,7 +90,8 @@ position            = 0,0,0
 visual              = weapon\bolt\wpn_bolt_hud.ogf
 
 [grenade_f1]
-$spawn 			= on
+$spawn 				= on
+$prefetch			= 16
 class				= G_F1
 cform				= skeleton
 visual				= weapon\grenade\wpn_f_1.ogf
@@ -1555,20 +1556,20 @@ visual                   = weapon\val\wpn_val_hud.ogf
 ;;;;;;;;;;;;;;;;;;;;;;
 
 [wpn_ak74]
-$spawn 			 = on
-$npc			 = on				; option for Level Editor
-$prefetch 		= 8
-scheduled            = off              ; option for ALife Simulator
-cform                    = skeleton
-class                    = W_AK74
-min_radius               = 30
-max_radius               = 100
+$spawn 					= on
+$npc					= on				; option for Level Editor
+$prefetch 				= 16
+scheduled				= off              ; option for ALife Simulator
+cform                   = skeleton
+class                   = W_AK74
+min_radius              = 30
+max_radius              = 100
 
-ammo_limit		 = 210
-ammo_current		 = 180
-ammo_elapsed		 = 30
+ammo_limit				= 210
+ammo_current			= 180
+ammo_elapsed			= 30
 
-resource		= 6000
+resource				= 6000
 
 ammo_mag_size		 = 30
 ammo_class		 = ammo_5.45x39_fmj, ammo_5.45x39_ap
@@ -2854,7 +2855,7 @@ $spawn			= on
 class			= AMMO
 cform                   = skeleton
 visual                  = munition\patron545_ap.ogf
-$prefetch 		= 16
+$prefetch 		= 64
 
 box_size		= 60
 
