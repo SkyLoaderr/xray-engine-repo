@@ -17,7 +17,7 @@ struct CSaver {
 		template <bool a>
 		IC	static void save_data(const T &data, M &stream, const P &p)
 		{
-			STATIC_CHECK				(!is_polymorphic<T>::result,Cannot_save_non_polymorphic_classes_as_binary_data);
+			VERIFY2						(!is_polymorphic<T>::result,"Cannot save non polymorphic classes as binary data");
 			stream.w					(&data,sizeof(T));
 		}
 
