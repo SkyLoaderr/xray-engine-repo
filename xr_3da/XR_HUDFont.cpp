@@ -1,12 +1,7 @@
-// XR_CustomFont.cpp: implementation of the CFontBase class.
-//
-//////////////////////////////////////////////////////////////////////
-
 #include "stdafx.h"
-#include "x_ray.h"
+#pragma hdrstop
+
 #include "XR_HUDFont.h"
-#include "hw.h"
-#include "xr_creator.h"
 
 //////////////////////////////////////////////////////////////////////
 // Construction/Destruction
