@@ -6,6 +6,7 @@
 #include "PHObject.h"
 #include "PHInterpolation.h"
 #include "_cylinder.h"
+//#define ODE_SLOW_SOLVER
 ///////////////////////////////////////////////////////////////////////////////
 const dReal fixed_step=0.02f;
 const int dis_frames=11;
@@ -18,8 +19,8 @@ const int dis_frames=11;
 
 //const dReal world_spring=24000000.f;//2400000.f;//550000.f;///1000000.f;;
 //const dReal world_damping=400000.f;//erp/cfm1.1363636e-006f,0.54545456f
-const dReal world_cfm=1.1363636e-006f;
-const dReal world_erp=0.54545456f;
+const dReal world_cfm=1.1363636e-007f;
+const dReal world_erp=0.74545456f;
 const dReal world_spring=SPRING(world_cfm,world_erp);
 const dReal world_damping=DAMPING(world_cfm,world_erp);
 
@@ -403,6 +404,9 @@ class CPHJoint: public CPhysicsJoint{
 CPHShell*   pShell;
 dJointID m_joint;
 dJointID m_joint1;
+float erp;
+float cfm;
+
 enum eVs {
 vs_first,
 vs_second,
@@ -429,8 +433,13 @@ SPHAxis(){
 	zero=0.f;
 	//erp=ERP(world_spring/5.f,world_damping*5.f);
 	//cfm=CFM(world_spring/5.f,world_damping*5.f);
-	erp=0.6f;
-	cfm=0.000001f;
+#ifndef ODE_SLOW_SOLVER
+	erp=world_erp;
+	cfm=world_cfm;
+#else
+	erp=world_erp;
+	cfm=world_cfm;
+#endif
 	direction.set(0,0,1);
 	vs=vs_first;
 	force=5.f;

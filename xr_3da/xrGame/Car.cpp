@@ -278,20 +278,24 @@ void	CCar::UpdateCL				( )
 	}
 
 	Fvector ang_vel,res_vel;
-	Fmatrix exhast;
+	Fmatrix exhast,exhast_local;
 	lin_vel=m_jeep.GetVelocity();
 	ang_vel=m_jeep.GetAngularVelocity();
 	
-	
-	exhast.mul(clTransform,PKinematics(pVisual)->LL_GetTransform(m_exhaust_ids[0]));
-	res_vel.crossproduct(ang_vel,exhast.c);
+	exhast_local.set(PKinematics(pVisual)->LL_GetTransform(m_exhaust_ids[0]));
+	exhast.mul(clTransform,exhast_local);
+	res_vel.crossproduct(ang_vel,exhast_local.c);
+
 	res_vel.add(lin_vel);
 	m_pExhaustPG1->UpdateParent(exhast,res_vel);
 
-	exhast.mul(clTransform,PKinematics(pVisual)->LL_GetTransform(m_exhaust_ids[1]));
-	res_vel.crossproduct(ang_vel,exhast.c);
+
+	exhast_local.set(PKinematics(pVisual)->LL_GetTransform(m_exhaust_ids[1]));
+	exhast.mul(clTransform,exhast_local);
+	res_vel.crossproduct(ang_vel,exhast_local.c);
 	res_vel.add(lin_vel);
-	m_pExhaustPG2->UpdateParent(exhast,m_jeep.GetVelocity());
+
+	m_pExhaustPG2->UpdateParent(exhast,res_vel);
 }
 
 void	CCar::OnVisible				( )

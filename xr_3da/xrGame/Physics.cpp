@@ -21,7 +21,7 @@ union dInfBytes dInfinityValue = {{0,0,0x80,0x7f}};
 Shader* CPHElement::hWallmark=NULL;
 
 // #include "contacts.h"
-//#define ODE_SLOW_SOLVER
+
 
 
 
@@ -2909,6 +2909,18 @@ dJointSetAMotorParam(m_joint1,dParamFMax3 ,axes[2].force);
 dJointSetAMotorParam(m_joint1,dParamVel3 ,axes[2].velocity);
 }
 
+dJointSetAMotorParam(m_joint1,dParamStopERP ,axes[0].erp);
+dJointSetAMotorParam(m_joint1,dParamStopCFM ,axes[0].cfm);
+
+dJointSetAMotorParam(m_joint1,dParamStopERP2 ,axes[1].erp);
+dJointSetAMotorParam(m_joint1,dParamStopCFM2 ,axes[1].cfm);
+
+dJointSetAMotorParam(m_joint1,dParamStopERP3 ,axes[2].erp);
+dJointSetAMotorParam(m_joint1,dParamStopCFM3 ,axes[2].cfm);
+
+dJointSetAMotorParam(m_joint1,dParamCFM ,cfm);
+dJointSetAMotorParam(m_joint1,dParamCFM2 ,cfm);
+dJointSetAMotorParam(m_joint1,dParamCFM3 ,cfm);
 }
 
 
@@ -3085,6 +3097,15 @@ pFirst_element=first;
 pSecond_element=second; 
 eType=type;
 bActive=false;
+
+#ifndef ODE_SLOW_SOLVER
+erp=world_erp;
+cfm=world_cfm;
+#else
+erp=world_erp;
+cfm=world_cfm;
+#endif
+
 SPHAxis axis,axis2,axis3;
 axis2.set_direction(1,0,0);
 axis3.direction.crossproduct(axis.direction,axis3.direction);
