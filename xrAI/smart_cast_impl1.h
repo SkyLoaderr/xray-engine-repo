@@ -63,26 +63,6 @@ namespace SmartDynamicCast {
 		typedef typename iterator<List1>::result result;
 	};
 
-//	struct fill_target_list {
-//		template <typename T>
-//		struct iterator {
-//			typedef typename T::Head Head;
-//			typedef typename T::Tail Tail;
-//			typedef typename Head::Tail Tail2;
-//
-//			typedef typename merge<Tail2,typename iterator<Tail>::result>::result result;
-//		};
-//
-//		template <>
-//		struct iterator<Loki::NullType> {
-//			typedef Loki::NullType result;
-//		};
-//
-//		typedef Loki::TL::NoDuplicates<iterator<cast_type_list>::result>::Result result;
-//	};
-//
-//	typedef fill_target_list::result target_list;
-//	
 	template <typename Base, typename Source>
 	struct has_conversion {
 	template <typename T>
@@ -250,7 +230,7 @@ namespace SmartDynamicCast {
 		typedef typename CMatchHelper<cast_type_list>::result result;
 	};
 
-	template <typename Target, typename Source, int max_length, bool can_use_heritage>//, typename Visited = Loki::NullType>
+	template <typename Target, typename Source, int max_length, bool can_use_heritage>
 	struct conversion_sequence {
 		
 		template <typename T>
@@ -261,7 +241,6 @@ namespace SmartDynamicCast {
 
 			template <typename T, int length, bool use_heritage>
 			struct helper {
-//				typedef Loki::Typelist<T,Visited> new_visited;
 				typedef typename conversion_sequence<Target,T,length,use_heritage/**,new_visited/**/>::result search_result;
 
 				template <bool>
@@ -321,20 +300,7 @@ namespace SmartDynamicCast {
 					typedef typename list_iterator<Tail>::result result;
 				};
 
-				template <bool>
-				struct _selector1 {
-					typedef typename _selector<has_conversion<Source,typename Head::Head>::value>::result result;
-				};
-
-				template <>
-				struct _selector1<false> {
-					typedef typename _selector<false>::result result;
-				};
-
-				typedef typename 
-					_selector1<
-						true//has_any_conversion<typename Head::Head>::value
-					>::result result;
+				typedef typename _selector<has_conversion<Source,typename Head::Head>::value>::result result;
 			};
 
 			typedef typename 
@@ -343,8 +309,7 @@ namespace SmartDynamicCast {
 					object_type_traits::is_base_and_derived<
 						typename Head::Head,
 						Source
-					>::value// &&
-//					!visited<typename Head::Head>::value
+					>::value
 				>::result result;
 		};
 
@@ -391,17 +356,6 @@ namespace SmartDynamicCast {
 
 	template <typename T1, typename T2>
 	struct get_conversion_sequence {
-//		template <bool>
-//		struct verify {
-//			typedef typename conversion_sequence<T1,T2,MAX_SEQUENCE_LENGTH,true>::result result;
-//		};
-//
-//		template <>
-//		struct verify<false> {
-//			typedef Loki::NullType result;
-//		};
-//
-//		typedef typename verify<exists<fill_target_list::result,T2>::value/**/>::result result;
 		typedef typename conversion_sequence<T1,T2,MAX_SEQUENCE_LENGTH,true>::result result;
 	};
 
