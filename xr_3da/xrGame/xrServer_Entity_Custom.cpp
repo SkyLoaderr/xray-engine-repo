@@ -33,7 +33,7 @@ void	xrServerEntity::Spawn_Write		(NET_Packet& P, BOOL bLocal)
 	P.w_seek			(position,&size,sizeof(u16));
 }
 
-void	xrServerEntity::Spawn_Read		(NET_Packet& P)
+BOOL	xrServerEntity::Spawn_Read		(NET_Packet& P)
 {
 	u16					dummy16;
 	// generic
@@ -54,9 +54,10 @@ void	xrServerEntity::Spawn_Read		(NET_Packet& P)
 	if (s_flags.is(M_SPAWN_VERSION))
 		P.r_u16			(m_wVersion);
 	
-	if (m_wVersion > SPAWN_VERSION) {
+	if ((0==m_wVersion)||(m_wVersion>SPAWN_VERSION)) {
 		P.r_pos -= sizeof(u16);
 		m_wVersion = 0;
+        return FALSE;
 	}
 	// this is "zaplatka"
 
@@ -64,6 +65,7 @@ void	xrServerEntity::Spawn_Read		(NET_Packet& P)
 	u16					size;
 	P.r_u16				(size			);	// size
 	STATE_Read			(P,size			);
+    return TRUE;
 }
 
 #ifdef _EDITOR

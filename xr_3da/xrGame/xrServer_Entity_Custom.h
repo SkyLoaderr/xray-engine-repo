@@ -66,7 +66,7 @@ public:
 
 	virtual void					Init			(LPCSTR	caSection){};
 	void							Spawn_Write		(NET_Packet &tNetPacket, BOOL bLocal);
-	void							Spawn_Read		(NET_Packet &tNetPacket);
+	BOOL							Spawn_Read		(NET_Packet &tNetPacket);
 	// editor integration
 #ifdef _EDITOR
     virtual void					FillProp		(LPCSTR pref, PropItemVec &items);

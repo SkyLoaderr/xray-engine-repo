@@ -87,7 +87,9 @@ bool CSpawnPoint::SSpawnData::Load(CStream& F)
     Packet.B.count 		= F.Rdword();
     F.Read				(Packet.B.data,Packet.B.count);
     Create				(temp);
-    if (Valid())		m_Data->Spawn_Read	(Packet);
+    if (Valid())		
+    	if (!m_Data->Spawn_Read(Packet))
+        	Destroy		();
 
     return Valid();
 }
@@ -344,7 +346,7 @@ bool CSpawnPoint::Load(CStream& F){
     // new generation
     if (F.FindChunk(SPAWNPOINT_CHUNK_ENTITYREF)){
         if (!m_SpawnData.Load(F)){
-            ELog.Msg( mtError, "SPAWNPOINT: Can't find CLASS_ID.");
+            ELog.Msg( mtError, "SPAWNPOINT: Can't load Spawn Data.");
             return false;
         }
         SetValid	(true);
