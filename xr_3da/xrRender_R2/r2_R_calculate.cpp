@@ -1,4 +1,5 @@
 #include "stdafx.h"
+#include "..\customhud.h"
 
 float				g_fGLOD, g_fFarSq, g_fPOWER;
 float				g_fSCREEN;
@@ -30,7 +31,7 @@ void CRender::Calculate		()
 	ViewBase.CreateFromMatrix		(Device.mFullTransform,FRUSTUM_P_LRTB|FRUSTUM_P_FAR);
 	View							= 0;
 	HOM.Render						(ViewBase);
-	gm_SetNearer					(FALSE);
+	rmNormal						();
 	
 	// Detect camera-sector
 	if (!vLastCameraPos.similar(Device.vCameraPosition,EPS_S)) 
