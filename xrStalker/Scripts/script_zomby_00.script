@@ -4,8 +4,9 @@ stalkers_already_saw_actor = false
 
 function main()
 
-	local stalker1	= get_level_object("m_stalker_e0000")
 	local actor   	= get_actor()
+	local stalker1	= get_level_object("m_stalker_e0000")
+
 	local prof_zomby = sound_object("scripts\\stalker_prof\\prof_zomby")
 	local prof_privet_hosh_potorgovat = sound_object("scripts\\stalker_prof\\prof_privet_hosh_potorgovat")
 	local prof_privet_hosh_potorgovat2 = sound_object("scripts\\stalker_prof\\prof_privet_hosh_potorgovat2")
@@ -20,7 +21,7 @@ function main()
 			cond	(cond.time_end, 10000)
 		)
 
-	while true do
+	while stalker1:action() do	
 		if stalker1:see(actor) then
 			printf("script 2!")
 			flush()
