@@ -1,6 +1,6 @@
 object frmPropertiesSceneObject: TfrmPropertiesSceneObject
-  Left = 742
-  Top = 491
+  Left = 965
+  Top = 745
   BorderIcons = [biSystemMenu, biMinimize]
   BorderStyle = bsSingle
   Caption = 'Scene Object properties'
