@@ -144,7 +144,10 @@ void CGlowManager::Render()
 	if (!Selected_Count) return;
 
 	Device.Statistic.RenderDUMP_Glows.Begin();
-	float	fov_scale	= float(::Render->getTarget()->get_width()) / (Device.fFOV/90.f);
+	float	_width		= float(::Render->getTarget()->get_width());
+	float	_width_2	= _width / 2.f;
+	float	_height_2	= float(::Render->getTarget()->get_height())/2.f;
+	float	fov_scale	= _width / (Device.fFOV/90.f);
 	{
 		// 1. Test some number of glows
 		Fvector &start	= Device.vCameraPosition;
@@ -189,8 +192,8 @@ void CGlowManager::Render()
 				float size		= fov_scale * G.R /TL.p.w;
 				
 				// Convert to screen coords
-				float cx        = Device._x2real(TL.p.x);
-				float cy        = Device._y2real(TL.p.y);
+				float cx        = (1+TL.p.x)*_width_2;
+				float cy        = (1+TL.p.y)*_height_2;
 				float dist		= Device.vCameraPosition.distance_to_sqr(G.C);
 				DWORD C			= iFloor(G.fade*(1-(dist/dlim2)));
 				DWORD clr		= D3DCOLOR_RGBA(C,C,C,C);
