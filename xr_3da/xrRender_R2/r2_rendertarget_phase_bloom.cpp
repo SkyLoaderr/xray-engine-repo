@@ -295,5 +295,9 @@ void CRenderTarget::phase_bloom	()
 		}
 	}
 
-	CHK_DX		(HW.pDevice->SetRenderState	( D3DRS_ZENABLE,		TRUE				));
+	// we are left here with bloom-target setup as primary one
+	g_pGamePersistent->Environment.RenderFlares	();				// lens-flares
+
+	// re-enable z-buffer
+	CHK_DX		(HW.pDevice->SetRenderState	( D3DRS_ZENABLE,	TRUE				));
 }

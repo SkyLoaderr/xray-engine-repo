@@ -436,6 +436,7 @@ void	CRender::Render		()
 	r_dsgraph_render_graph						(1);			// normal level, secondary priority
 	r_dsgraph_render_sorted						();				// strict-sorted geoms
 	L_Glows->Render								();				// glows
+	g_pGamePersistent->Environment.RenderFlares	();				// rain/lens-flares/thunder-bolts
 	g_pGamePersistent->Environment.RenderLast	();				// rain/lens-flares/thunder-bolts
 
 	// Postprocess, if necessary

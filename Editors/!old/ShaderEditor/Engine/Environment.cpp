@@ -528,9 +528,15 @@ void CEnvironment::RenderFirst	()
     eff_LensFlare->Render			(TRUE,FALSE,FALSE);
 }
 
+void CEnvironment::RenderFlares		()
+{
+	// 1
+	eff_LensFlare->Render			(FALSE,TRUE,TRUE);
+}
+
 void CEnvironment::RenderLast		()
 {
-    eff_LensFlare->Render			(FALSE,TRUE,TRUE);
+	// 2
 	eff_Rain->Render				();
     eff_Thunderbolt->Render			();
 }

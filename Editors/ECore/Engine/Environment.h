@@ -133,6 +133,7 @@ public:
 
 	void					OnFrame				();
 
+	void					RenderFlares		();
 	void					RenderFirst			();
 	void					RenderLast			();
 
