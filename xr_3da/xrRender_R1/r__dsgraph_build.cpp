@@ -31,8 +31,8 @@ void R_dsgraph_structure::r_dsgraph_insert_dynamic	(IRender_Visual *pVisual, Fve
 {
 	CRender&	RI			=	RImplementation;
 
-	if (pVisual->vis.frame	==	RI.marker)	return;
-	pVisual->vis.frame		=	RI.marker;
+	//if (pVisual->vis.frame	==	RI.marker)	return;
+	//pVisual->vis.frame		=	RI.marker;
 
 	float distSQ;
 	float SSA				=	CalcSSA		(distSQ,pVisual->vis.sphere.P,pVisual);

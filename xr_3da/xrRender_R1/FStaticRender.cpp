@@ -220,8 +220,8 @@ void CRender::Calculate				()
 		XRC.box_query	(rmPortals,Device.vCameraPosition,box_radius);
 		for (int K=0; K<XRC.r_count(); K++)
 		{
-			CPortal*	pPortal	= (CPortal*) rmPortals->get_tris()[XRC.r_begin()[K].id].dummy;
-			pPortal->bDualRender = TRUE;
+			CPortal*	pPortal		= (CPortal*) rmPortals->get_tris()[XRC.r_begin()[K].id].dummy;
+			pPortal->bDualRender	= TRUE;
 		}
 	}
 
@@ -276,7 +276,6 @@ void CRender::Calculate				()
 			{
 				CFrustum&	view	= sector->r_frustums[v_it];
 				if (!view.testSphere_dirty(spatial->spatial.center,spatial->spatial.radius))	continue;
-
 
 				if (spatial->spatial.type & STYPE_RENDERABLE)
 				{
@@ -371,8 +370,8 @@ void	CRender::Render		()
 	g_pGamePersistent->Environment.RenderLast	();			// rain/lens-flares/thunder-bolts
 
 	// Postprocess, if necessary
-	Target->End				();
-	L_Projector->finalize	();
+	Target->End					();
+	L_Projector->finalize		();
 
 	// HUD
 	Device.Statistic.RenderDUMP_HUD.Begin		();
