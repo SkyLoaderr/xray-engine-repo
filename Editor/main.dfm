@@ -1,6 +1,6 @@
 object frmMain: TfrmMain
-  Left = 693
-  Top = 301
+  Left = 280
+  Top = 289
   Width = 660
   Height = 446
   Color = clBtnFace
@@ -123,7 +123,6 @@ object frmMain: TfrmMain
         OnKeyPress = D3DWindowKeyPress
         OnKeyUp = D3DWindowKeyUp
         OnMouseDown = D3DWindowMouseDown
-        OnMouseUp = D3DWindowMouseUp
         OnResize = D3DWindowResize
         OnPaint = D3DWindowPaint
       end

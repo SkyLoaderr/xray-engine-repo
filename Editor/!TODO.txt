@@ -9,6 +9,8 @@
     	- функцию рендера мешей (режим сектора возможно без текстур только цветом)
 + SceneObject
 	+ LibObject
+- Новые шейдеры:
+	
 - Добавить базовый класс для режимов с набором виртуальный функций с базовой реализацией:
 	- OnDeviceDestroy
     - OnDeviceCreate
@@ -17,11 +19,10 @@
     - BoxPick
     ...
     см. реализацию в Scene.h
-- Новые шейдеры
 - Создать отдельные проекты:
 	- LevelEditor
     - ShaderEditor
     - ParticlesEditor
-    - ModelEditor
+    - ActorEditor
 - Плагины для MAX && LW
 

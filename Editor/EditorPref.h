@@ -55,7 +55,6 @@ __published:	// IDE-managed Components
 	TRxLabel *RxLabel16;
 	TMultiObjColor *mc3DCursorColor;
 	TTabSheet *tsCamera;
-	TRadioGroup *rgCameraStyle;
 	TGroupBox *GroupBox8;
 	TRxLabel *RxLabel19;
 	TRxLabel *RxLabel20;

@@ -122,7 +122,6 @@ void __fastcall TfrmEditorPreferences::fsEditorPrefRestorePlacement(
 	UI->m_AngleSnap = deg2rad(seSnapAngle->Value);
 	UI->m_MoveSnap  = seSnapMove->Value;
 
-	Device.m_Camera.SetStyle(ECameraStyle(rgCameraStyle->ItemIndex));
     Device.m_Camera.SetViewport(seZNear->Value, seZFar->Value, seFOV->Value);
 
     UI->m_MouseSM= 0.2*(float(seSM->Value)/100.f)*(float(seSM->Value)/100.f);

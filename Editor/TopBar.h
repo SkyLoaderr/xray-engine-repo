@@ -49,12 +49,16 @@ __published:	// IDE-managed Components
 	TExtBtn *ebZoomExtentsSelected;
 	TExtBtn *ebVSnap;
 	TFormStorage *fsStorage;
+	TExtBtn *ebCameraPlane;
+	TExtBtn *ebCameraArcBall;
+	TExtBtn *ebCameraFly;
     void __fastcall ebEditUndoClick(TObject *Sender);
     void __fastcall ebEditRedoClick(TObject *Sender);
     void __fastcall ActionClick(TObject *Sender);
     void __fastcall ebViewClick(TObject *Sender);
 	void __fastcall ebZoomExtentsClick(TObject *Sender);
 	void __fastcall ebZoomExtentsSelectedClick(TObject *Sender);
+	void __fastcall ebCameraPlaneClick(TObject *Sender);
 private:	// User declarations
 public:		// User declarations
         __fastcall TfraTopBar(TComponent* Owner);

@@ -1,7 +1,7 @@
 object fraLight: TfraLight
   Left = 0
   Top = 0
-  Width = 123
+  Width = 443
   Height = 277
   VertScrollBar.Visible = False
   Align = alClient
@@ -17,7 +17,7 @@ object fraLight: TfraLight
   object paCommands: TPanel
     Left = 0
     Top = 0
-    Width = 123
+    Width = 443
     Height = 49
     Align = alTop
     Constraints.MaxWidth = 123

@@ -1,7 +1,7 @@
 object fraPortal: TfraPortal
   Left = 0
   Top = 0
-  Width = 123
+  Width = 443
   Height = 277
   VertScrollBar.ButtonSize = 11
   VertScrollBar.Range = 257
@@ -22,7 +22,7 @@ object fraPortal: TfraPortal
   object paCompute: TPanel
     Left = 0
     Top = 90
-    Width = 123
+    Width = 443
     Height = 132
     Align = alTop
     ParentColor = True
@@ -147,7 +147,7 @@ object fraPortal: TfraPortal
     object APHeadLabel2: TLabel
       Left = 1
       Top = 1
-      Width = 121
+      Width = 441
       Height = 13
       Align = alTop
       Alignment = taCenter
@@ -222,7 +222,7 @@ object fraPortal: TfraPortal
   object paCommands: TPanel
     Left = 0
     Top = 0
-    Width = 123
+    Width = 443
     Height = 90
     Align = alTop
     ParentColor = True
@@ -238,7 +238,7 @@ object fraPortal: TfraPortal
     object APHeadLabel1: TLabel
       Left = 1
       Top = 1
-      Width = 121
+      Width = 441
       Height = 13
       Align = alTop
       Alignment = taCenter

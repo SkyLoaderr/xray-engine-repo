@@ -101,8 +101,6 @@ __published:	// IDE-managed Components
           TShiftState Shift, int X, int Y);
 	void __fastcall FormActivate(TObject *Sender);
 	void __fastcall FormDeactivate(TObject *Sender);
-	void __fastcall D3DWindowMouseUp(TObject *Sender, TMouseButton Button,
-          TShiftState Shift, int X, int Y);
 private:	// User declarations
     void __fastcall IdleHandler(TObject *Sender, bool &Done);
 

@@ -311,7 +311,7 @@ void __fastcall TfrmMain::D3DWindowChangeFocus(TObject *Sender)
      	paWindow->Color=TColor(0x090FFFF);
 		// если потеряли фокус, а до этого кликнули мышкой -> вызовим событие MouseUp
         if (UI->IsMouseInUse())
-            UI->OnMouseRelease(TShiftState());
+            UI->OnMouseRelease(0);
         if (UI) UI->iCapture();
     }else{
         if (UI) UI->iRelease();
@@ -399,12 +399,6 @@ void __fastcall TfrmMain::D3DWindowMouseDown(TObject *Sender,
 }
 //---------------------------------------------------------------------------
 
-void __fastcall TfrmMain::D3DWindowMouseUp(TObject *Sender,
-      TMouseButton Button, TShiftState Shift, int X, int Y)
-{
-	UI->OnMouseRelease(Shift);
-}
-//---------------------------------------------------------------------------
 void __fastcall TfrmMain::FormActivate(TObject *Sender)
 {
 	pInput->OnAppActivate();

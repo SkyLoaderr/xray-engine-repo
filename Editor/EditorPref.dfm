@@ -33,32 +33,19 @@ object frmEditorPreferences: TfrmEditorPreferences
       Top = 0
       Width = 396
       Height = 243
-      ActivePage = tsEdit
+      ActivePage = tsCamera
       Align = alClient
       TabOrder = 0
       object tsCamera: TTabSheet
         Caption = 'Camera'
         ImageIndex = 5
-        object rgCameraStyle: TRadioGroup
-          Left = 0
-          Top = 56
-          Width = 192
-          Height = 63
-          Caption = ' Style '
-          ItemIndex = 0
-          Items.Strings = (
-            'Plane moving'
-            '3D Arc Ball'
-            'Free Fly')
-          TabOrder = 0
-        end
         object GroupBox8: TGroupBox
           Left = 196
           Top = 56
           Width = 192
-          Height = 63
+          Height = 61
           Caption = ' Sensitivity '
-          TabOrder = 1
+          TabOrder = 0
           object RxLabel19: TRxLabel
             Left = 10
             Top = 18
@@ -90,7 +77,7 @@ object frmEditorPreferences: TfrmEditorPreferences
           end
           object seCameraSM: TMultiObjSpinEdit
             Left = 93
-            Top = 36
+            Top = 37
             Width = 65
             Height = 18
             LWSensitivity = 0.01
@@ -111,7 +98,7 @@ object frmEditorPreferences: TfrmEditorPreferences
           Height = 56
           Align = alTop
           Caption = ' Viewport '
-          TabOrder = 2
+          TabOrder = 1
           object RxLabel11: TRxLabel
             Left = 6
             Top = 16
@@ -181,28 +168,28 @@ object frmEditorPreferences: TfrmEditorPreferences
         end
         object GroupBox5: TGroupBox
           Left = 0
-          Top = 119
+          Top = 56
           Width = 192
-          Height = 55
+          Height = 61
           Caption = ' Fly Style '
-          TabOrder = 3
+          TabOrder = 2
           object RxLabel21: TRxLabel
             Left = 10
-            Top = 16
+            Top = 18
             Width = 72
             Height = 13
             Caption = 'Fly speed, m/c'
           end
           object RxLabel15: TRxLabel
             Left = 10
-            Top = 34
+            Top = 37
             Width = 66
             Height = 13
             Caption = 'Fly altitude, m'
           end
           object seCameraFlySpeed: TMultiObjSpinEdit
             Left = 117
-            Top = 13
+            Top = 18
             Width = 65
             Height = 18
             LWSensitivity = 0.1
@@ -217,7 +204,7 @@ object frmEditorPreferences: TfrmEditorPreferences
           end
           object seCameraFlyAltitude: TMultiObjSpinEdit
             Left = 117
-            Top = 31
+            Top = 37
             Width = 65
             Height = 18
             LWSensitivity = 0.1
@@ -1003,7 +990,6 @@ object frmEditorPreferences: TfrmEditorPreferences
       'seBrushDnDepth.Value'
       'seBrushUpDepth.Value'
       'mc3DCursorColor.Brush'
-      'rgCameraStyle.ItemIndex'
       'seZFar.Value'
       'seZNear.Value'
       'seRandomRotateMaxX.Value'

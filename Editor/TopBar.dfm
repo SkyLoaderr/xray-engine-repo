@@ -1,7 +1,7 @@
 object fraTopBar: TfraTopBar
   Left = 0
   Top = 0
-  Width = 908
+  Width = 770
   Height = 18
   HorzScrollBar.Visible = False
   VertScrollBar.Visible = False
@@ -1383,7 +1383,7 @@ object fraTopBar: TfraTopBar
   object paView: TPanel
     Left = 502
     Top = 0
-    Width = 91
+    Width = 159
     Height = 18
     Align = alLeft
     BevelOuter = bvNone
@@ -1521,6 +1521,78 @@ object fraTopBar: TfraTopBar
       Spacing = 15
       Transparent = False
       OnClick = ebViewClick
+    end
+    object ebCameraPlane: TExtBtn
+      Left = 91
+      Top = 0
+      Width = 20
+      Height = 18
+      Hint = 'Zoom Extents'
+      Align = alNone
+      HotTrack = True
+      CloseButton = False
+      GroupIndex = 1
+      Down = True
+      Caption = 'P'
+      Font.Charset = DEFAULT_CHARSET
+      Font.Color = clWindowText
+      Font.Height = -11
+      Font.Name = 'MS Sans Serif'
+      Font.Style = []
+      Margin = 1
+      NumGlyphs = 2
+      ParentFont = False
+      Spacing = 15
+      Transparent = False
+      OnClick = ebCameraPlaneClick
+    end
+    object ebCameraArcBall: TExtBtn
+      Tag = 1
+      Left = 111
+      Top = 0
+      Width = 20
+      Height = 18
+      Hint = 'Zoom Extents Selected'
+      Align = alNone
+      HotTrack = True
+      CloseButton = False
+      GroupIndex = 1
+      Caption = 'A'
+      Font.Charset = DEFAULT_CHARSET
+      Font.Color = clWindowText
+      Font.Height = -11
+      Font.Name = 'MS Sans Serif'
+      Font.Style = []
+      Margin = 1
+      NumGlyphs = 2
+      ParentFont = False
+      Spacing = 15
+      Transparent = False
+      OnClick = ebCameraPlaneClick
+    end
+    object ebCameraFly: TExtBtn
+      Tag = 2
+      Left = 131
+      Top = 0
+      Width = 20
+      Height = 18
+      Hint = 'Zoom Extents Selected'
+      Align = alNone
+      HotTrack = True
+      CloseButton = False
+      GroupIndex = 1
+      Caption = 'F'
+      Font.Charset = DEFAULT_CHARSET
+      Font.Color = clWindowText
+      Font.Height = -11
+      Font.Name = 'MS Sans Serif'
+      Font.Style = []
+      Margin = 1
+      NumGlyphs = 2
+      ParentFont = False
+      Spacing = 15
+      Transparent = False
+      OnClick = ebCameraPlaneClick
     end
   end
   object Panel1: TPanel
@@ -1693,7 +1765,10 @@ object fraTopBar: TfraTopBar
       'ebMSnap.Down'
       'ebNonUniformScale.Down'
       'ebOSnap.Down'
-      'ebVSnap.Down')
+      'ebVSnap.Down'
+      'ebCameraArcBall.Down'
+      'ebCameraFly.Down'
+      'ebCameraPlane.Down')
     StoredValues = <>
     Left = 65522
     Top = 65520
