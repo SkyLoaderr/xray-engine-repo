@@ -152,6 +152,7 @@ void CSheduler::ProcessStep			()
 		T.Object->shedule.b_locked	= FALSE;
 
 #ifdef DEBUG
+		VERIFY2						(T.Object->dbg_update_shedule == Device.dwFrame, "Broken sequence of calls to 'shedule_Update'");
 		u32	execTime				= eTimer.GetElapsed_ms		();
 		if (execTime>3)
 		{

@@ -169,11 +169,7 @@ void CObject::UpdateCL			()
 void CObject::shedule_Update	( u32 T )
 {
 	// consistency check
-#ifdef DEBUG
-//	if (Device.dwFrame==dbg_update_shedule)	
-//		Debug.fatal	("'shedule_Update' called twice per frame for %s",*cName());
-	dbg_update_shedule	= Device.dwFrame;
-#endif
+	ISheduled::shedule_Update	(T);
 
 	const	float eps_R	= 0.01f;
 	const	float eps_P	= 0.005f;

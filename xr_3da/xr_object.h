@@ -52,7 +52,6 @@ private:
 	u16									net_ID;
 
 #ifdef DEBUG
-	u32									dbg_update_shedule;
 	u32									dbg_update_cl;
 #endif
 

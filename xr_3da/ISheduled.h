@@ -10,11 +10,15 @@ public:
 		u32		b_locked	:	1;
 	}	shedule;
 
-	ISheduled			();
+#ifdef DEBUG
+	u32									dbg_update_shedule;
+#endif
+
+	ISheduled				();
 
 	void								shedule_register	();
 	void								shedule_unregister	();
 
 	virtual float						shedule_Scale		()			= 0;
-	virtual void						shedule_Update		(u32 dt)	= 0;
+	virtual void						shedule_Update		(u32 dt);
 };
