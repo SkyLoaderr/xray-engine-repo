@@ -264,7 +264,7 @@ Item6=!run
 DebugSourceDirs=$(BCB)\source\vcl
 
 [Parameters]
-RunParams=
+RunParams=-ebuild
 Launcher=
 UseLauncher=0
 DebugCWD=

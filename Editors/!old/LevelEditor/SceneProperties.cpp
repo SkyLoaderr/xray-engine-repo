@@ -11,7 +11,7 @@
  #include "EditObject.h"
  #include "ui_main.h"
 #else
- #include "Communicate.h"
+ #include "engine\Communicate.h"
 #endif
 //---------------------------------------------------------------------------
 #pragma package(smart_init)
@@ -51,7 +51,9 @@ __fastcall TfrmSceneProperties::TfrmSceneProperties(TComponent* Owner, b_params*
 {
     VERIFY(params);
     m_BuildParams = params;
+#ifdef _LEVEL_EDITOR
     DEFINE_INI(fsSceneProps);
+#endif
     SetEditParams();
     ShowPage(AnsiString(""));
 	fsSceneProps->RestoreFormPlacement();
@@ -86,7 +88,6 @@ void __fastcall TfrmSceneProperties::FormShow(TObject *Sender)
 #else
     tsLevelScript->Enabled = false;
     tsLevelOptions->Enabled = false;
-    tsLevelEnvironment->Enabled = false;
     SetEditParams();
 #endif
     tvOptions->Items->AddChild(root,"Optimizing");
