@@ -6,10 +6,6 @@
 
 teams = {}
 
--- Командные состояния
-local rob_state_none = 0 -- ограбление не началось
-local rob_state_rob_victim = 1
-
 -- Индивидуальные состояния
 local state_none = 0 -- начальное состояние
 local state_going_to_camp_point = 1 -- идти в исходную точку дислокации
@@ -114,7 +110,7 @@ function action_robber_activity:reset_scheme()
 	-- все значениями по умолчанию:
 	if not this.teams[self.stor.team] or this.teams[self.stor.team].interrupted_and_blocked_until then
 		local team_info = {
-			rob_state = rob_state_none,
+			rob_state = false,
 			robbers = {},
 			plr_stop_pos = nil, -- точка, в которой игрок остановился после оклика
 			plr_hunt = false, -- если true, бандиты становятся агрессивными к игроку (охотятся на него)
@@ -380,16 +376,19 @@ function action_robber_activity:fsm_step()
 		end
 
 		local dist_to_bait = self:distance_to_bait(actor)
-		if team.rob_state == rob_state_rob_victim or
+		local dist_to_actor = distance_between(self.object, actor)
+		if team.rob_state == true or
 		   (dist_to_bait and dist_to_bait <= 3) or
-		   (see_actor and not self.stor.bait_self and distance_between(self.object, actor) <= 10) then
-			if self.object:animation_count() > 0 then
-				self.object:clear_animations()
+		   (see_actor and not self.stor.bait_self and dist_to_actor <= 10) then
+		   	if dist_to_actor <= 50 then
+				if self.object:animation_count() > 0 then
+					self.object:clear_animations()
+				end
+				team.rob_state = true
+				self.state = state_rob_victim
+				--utils.trace(this.script_name(), "_bp: xr_robbers [%s]: 4 state change: %s",
+				--	self.object:name(), utils.to_str(self.state))
 			end
-			team.rob_state = rob_state_rob_victim
-			self.state = state_rob_victim
-			--utils.trace(this.script_name(), "_bp: xr_robbers [%s]: 4 state change: %s",
-			--	self.object:name(), utils.to_str(self.state))
 		end
 
 		return

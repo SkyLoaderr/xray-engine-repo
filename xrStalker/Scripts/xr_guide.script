@@ -4,35 +4,9 @@
 
 -- Переменные ниже - не настроечные, их менять нельзя :-)
 
-teams = {}
-
--- Командные состояния
-local rob_state_none = 0 -- ограбление не началось
-local rob_state_rob_victim = 1
-
--- Индивидуальные состояния
-local state_none = 0 -- начальное состояние
-local state_going_to_camp_point = 1 -- идти в исходную точку дислокации
-local state_looking_at_bait = 2 -- смотреть на приманку, либо на игрока, если он подошел достаточно близко
-local state_rob_victim = 3 -- состояние, в котором происходит выбор собственно тактики действий
-
-local state_leader_waiting_for_plr_to_stop = 4 -- лидер окрикнул игрока и дает ему пару секунд на то, чтобы остановиться
-local state_leader_shouting_drop_your_weapon = 5 -- лидер крикнул игроку, чтобы тот бросил оружие (ждем, пока он кричит)
-
-local state_helper_waiting_for_leader = 6 -- помощник лидера ждет немного и тоже кричит на игрока
-local state_helper_shouting_stop = 7 -- помощник лидера говорит игроку, чтобы тот не двигался
-
-local state_puncher_waiting_for_plr_to_drop_weapon = 8
-local state_puncher_approaching = 9
-local state_puncher_waiting_to_grab_money = 10
-
-local state_last = 11 -- просто смотреть на игрока, больше никаких активных действий
-
--- Роли
-local role_none = 0
-local role_leader = 1
-local role_helper = 2
-local role_puncher = 3
+local state_walking = 1
+local state_standing = 2
+local state_waiting_for_teammates_to_rob_plr = 3
 
 ---------------------------------------------------------------------------------------------------------------------
 class "evaluator_need_guide" (property_evaluator)
@@ -42,42 +16,6 @@ function evaluator_need_guide:__init(storage) super ()
 end
 
 function evaluator_need_guide:evaluate ()
-	local actor = level.actor()
-	if actor then
-		if not actor:alive() then
-			return false
-		end
-		-- Если у одного бандита испортилось отношение к игроку, испортить с остальными:
-		local team = this.teams[self.stor.team]
-		if team then
-			--utils.trace(this.script_name(), "_bp: xr_guide: bad_relation_set = %s",
-			--	utils.to_str(team.bad_relation_set))
-			if not team.bad_relation_set then
-				local best_enemy = self.object:best_enemy()
-				--utils.trace(this.script_name(), "_bp: xr_guide: best_enemy=%s, enemy_actor=%s, rel_en=%s",
-				--	utils.to_str(best_enemy ~= nil),
-				--	utils.to_str(best_enemy and best_enemy:id() == actor:id()),
-				--	utils.to_str(self.object:relation(actor) == game_object.enemy))
-				if (best_enemy and best_enemy:id() == actor:id()) or
-				   self.object:relation(actor) == game_object.enemy then
-					team.bad_relation_set = true
-					local robbers = team.robbers
-					for key, val in pairs(robbers) do
-						if val.object:relation(actor) ~= game_object.enemy then
-							val.object:set_relation(game_object.enemy, actor)
-							--utils.trace(this.script_name(),
-							--	"_bp: xr_guide: setting bad relation")
-						end
-					end
-				end
-			end
-			if team.interrupted_and_blocked_until and
-			   device():time_global() < team.interrupted_and_blocked_until then
-				return false
-			end
-		end
-	end
-
 	return self.stor.enabled
 end
 
@@ -103,55 +41,22 @@ function action_guide_activity:reset_scheme()
 
 	self.object:set_detail_path_type(move.line)
 	self.object:set_body_state(move.standing)
-        self.object:set_movement_type(move.stand)
+	--self.object:set_movement_type(move.stand)
 	--self.object:set_sight(look.danger, nil, 0)
 	self.object:set_sight(look.search, nil, 0)
 	self.object:set_mental_state(anim.danger)
+	self.object:set_movement_type(move.walk)
 
 	--xr_reactions.add_rule(self.object, "ignore")
 
-	-- Если впервые инициализируется команды, либо скрипт был прерван незапланированным событием, то инициализировать
-	-- все значениями по умолчанию:
-	if not this.teams[self.stor.team] or this.teams[self.stor.team].interrupted_and_blocked_until then
-		local team_info = {
-			rob_state = rob_state_none,
-			robbers = {},
-			plr_stop_pos = nil, -- точка, в которой игрок остановился после оклика
-			plr_hunt = false, -- если true, бандиты становятся агрессивными к игроку (охотятся на него)
-			plr_num_bullets = nil, -- сколько патронов было у игрока, когда его заметили (nil - еще не знают)
-			plr_warned = false, -- если игрок двигался с места и его уже предупреждали, что это делать нельзя
-			approach_player_now = false,
-			bad_relation_set = false,
-			interrupted_and_blocked_until = nil -- если скрипт прерван незапланированным событием, заблокировать
-			-- его выполнение до данного времени у всей команды
-		}
-		this.teams[self.stor.team] = team_info
+	self.patrol_guide = patrol(self.stor.path_guide)
+	if not self.patrol_guide then
+		utils.abort("%s", "xr_guide: unable to find patrol path '" .. self.stor.path_guide .. "'")
 	end
 
-	local robber_info = {
-		object = self.object,
-		dist_to_actor = nil,
-		role = role_none
-	}
-	this.teams[self.stor.team].robbers[self.object:id()] = robber_info
+	self.cur_waypoint = nil
+	self.state = state_standing
 
-	self.patrol_rob = patrol(self.stor.path_rob)
-	if not self.patrol_rob then
-		utils.abort("%s", "xr_guide: unable to find patrol path '" .. self.stor.path_rob .. "'")
-	end
-
-	if not self.stor.bait_path then
-		self.bait_patrol = nil
-	else
-		self.bait_patrol = patrol(self.stor.bait_path)
-		if not self.bait_patrol then
-			utils.abort("%s", "xr_guide: unable to find patrol path '" .. self.stor.path_bait .. "'")
-		end
-	end
-	
-	self.wpn_activated = true
-	
-	self.state = state_none
 	--utils.trace(this.script_name(), "_bp: xr_guide [%s]: 1 state change: %s", self.object:name(), utils.to_str(self.state))
 end
 
@@ -159,403 +64,84 @@ function action_guide_activity:say(what)
 	self.object:play_sound(xr_sounds_id.zmey_guide_base, 1, 0, 1, 0, what)
 end
 
-function action_guide_activity:get_bait_object()
-	if self.stor.bait_object then
-		return level.object(self.stor.bait_object)
-	end
-
-	if self.stor.bait_self then
-		return self.object
-	end
-	return nil
-end
-
-function action_guide_activity:distance_to_bait(actor)
-	if self.bait_patrol then
-		local dist = self.bait_patrol:point(0):distance_to(actor:position())
-		--utils.trace(this.script_name(), "_bp: xr_guide: distance_to_bait() = %d", dist)
-		return dist
-	else
-		local bait_obj = self:get_bait_object()
-		if bait_obj then
-			return distance_between(actor, bait_obj)
-		end
-	end
-	--utils.abort("xr_guide: logic error: unable to determine bait type")
-	return nil -- если нет приманки, просто не триггериться на нее, триггериться только на приближение к себе
-end
-
-function action_guide_activity:pick_role()
-	local robbers = this.teams[self.stor.team].robbers
-	local nearest_without_role = nil -- ближайший к приманке без роли
-	local min_dist = nil
-	
-	local found_leader = nil
-	local found_helper = nil
-	local found_puncher = nil
-	
-	--utils.trace(this.script_name(), "...pick role")
-	if robbers[self.object:id()].role ~= role_none then
-		--utils.trace(this.script_name(), "...role choice cancelled")
-		return robbers[self.object:id()].role
-	end
-	
-        for key, val in pairs(robbers) do
-		if val.role == role_none then
-			if val.dist_to_actor and
-			   (not min_dist or val.dist_to_actor < min_dist) then
-				min_dist = val.dist_to_actor
-				nearest_without_role = key
-			end
-		end
-		if val.role == role_leader then
-			--utils.trace(this.script_name(), "...found leader")
-			found_leader = true
-		elseif val.role == role_helper then
-			--utils.trace(this.script_name(), "...found helper")
-			found_helper = true
-		elseif val.role == role_puncher then
-			--utils.trace(this.script_name(), "...found puncher")
-			found_puncher = true
-		elseif val.role == role_none then
-			if val.dist_to_actor and
-			   (not min_dist or val.dist_to_actor < min_dist) then
-				min_dist = val.dist_to_actor
-				nearest_without_role = key
-			end
+function action_guide_activity:nearest_waypoint()
+	local nearest_pt = nil
+	local nearest_dist = 1000000
+	for i = 0, self.patrol_guide:count() - 1 do
+		local distance = self.object:position():distance_to(self.patrol_guide:point(i))
+		if distance < nearest_dist then
+			nearest_pt = i
+			nearest_dist = distance
 		end
 	end
 
-	--utils.trace(this.script_name(), "...nearest_without_role=%s, self=%s", robbers[nearest_without_role].object:name(),
-	--	self.object:name())
-	if nearest_without_role ~= self.object:id() then
-		return role_none -- мне пока что не нужна роль, есть лучшие претенденты (ближе чем я к жертве и без роли)
+	if not nearest_pt then
+		utils.abort("%s", "xr_guide: unable to nearest point in patrol path '" .. self.stor.path_guide .. "'")
 	end
 
-	if not found_leader then
-		return role_leader
-	elseif not found_helper then
-		return role_helper
-	elseif not found_punched then
-		return role_puncher
-	end
-	
-	return role_none
+	return nearest_pt
 end
 
--- Возвращает true, если никому не присвоена заданная роль
-function action_guide_activity:no_role(which_role)
-	local robbers = this.teams[self.stor.team].robbers
-        for key, val in pairs(robbers) do
-		if val.role == which_role then
-			return false
-		end
+function action_guide_activity:execute()
+	local team = xr_robbers.teams[self.stor.team]
+	if team.rob_state == true then
+		self.stor.enabled = false
+		xr_motivator.storage[self.object:id()].robber.enabled = true
 	end
-	return true
-end
 
-function action_guide_activity:fsm_step()
-	--utils.trace(this.script_name(), "_bp: xr_guide [%s]: self.state = %s",
-	--	self.object:name(), utils.to_str(self.state))
-
-	----------------------------------------------------------------------------------------------------
-	local team = this.teams[self.stor.team]
-
-	local actor = level.actor()
+	local actor = get_actor()
 	if not actor then
 		return
 	end
 
-	if not actor:alive() then
-		return
-	end
-
-	local active_item = actor:active_item()
-	if active_item then
-		if team.plr_num_bullets and team.plr_num_bullets ~= active_item:get_ammo_in_magazine() then
-			if isWeapon(active_item) then
-				team.plr_hunt = true
-			end
+	local dist = distance_between(self.object, actor)
+	if self.state == state_walking and dist >= 10 and device():time_global() >= self.stop_allowed_at then
+		utils.stalker_stop(self.object)
+		self.state = state_standing
+	elseif self.state == state_standing and dist < 10 then
+		if self.cur_waypoint then
+			utils.stalker_go_to_waypoint(self.object, self.patrol_guide, self.cur_waypoint)
 		end
+		self.stop_allowed_at = device():time_global() + 2000
+		self.state = state_walking
 	end
 	
-	if team.plr_hunt then
-		if self.object:relation(actor) ~= game_object.enemy then
-			self.object:set_relation(game_object.enemy, actor)
-		end
-		return
-	end
-
-	if team.plr_stop_pos then
-		local pos = actor:position()
-		local distance = pos:distance_to(team.plr_stop_pos)
-		if distance > 2 and self.role == role_leader and team.plr_warned then
-			self:say(xr_sounds_id.zmey_robber_will_shoot)
-			team.plr_hunt = true
-			return
-		elseif distance > 0.5 and
-		       (self.role == role_helper or (self.role == role_leader and self:no_role(role_helper))) and
-		       not team.plr_warned then
-			self:say(xr_sounds_id.zmey_robber_will_kill)
-			team.plr_warned = true
-		end
-	end
-
-	if self.wpn_activated then
-		self.object:set_item(object.idle, self.object:best_weapon())
-	else
-		self.object:set_item(object.deactivate, self.object:best_weapon())
-	end
-
-	if self.role == role_leader and self:no_role(role_puncher) then
-		if (self.state == state_leader_shouting_drop_your_weapon and not isWeapon(active_item)) or
-		   self.state == state_last then
-			self.state = state_puncher_waiting_for_plr_to_drop_weapon
-			--utils.trace(this.script_name(), "_bp: xr_guide [%s]: 0 state change: %s",
-			--	self.object:name(), utils.to_str(self.state))
-		end
-	end
-	----------------------------------------------------------------------------------------------------
-	if self.state == state_none and not utils.stalker_at_waypoint(self.object, self.patrol_rob, 0) then
-		self.object:set_item(object.idle, self.object:best_weapon())
-
-		utils.stalker_go_to_waypoint(self.object, self.patrol_rob, 0)
-
-		self.state = state_going_to_camp_point
-		--utils.trace(this.script_name(), "_bp: xr_guide [%s]: 2 state change: %s",
-		--	self.object:name(), utils.to_str(self.state))
-		return
-	end
-
-	if self.state == state_going_to_camp_point then
-		if utils.stalker_at_waypoint(self.object, self.patrol_rob, 0) then
-			utils.stalker_stop(self.object)
-			self.state = state_looking_at_bait
-			--utils.trace(this.script_name(), "_bp: xr_guide [%s]: 3 state change: %s",
-			--	self.object:name(), utils.to_str(self.state))
-		end
-		return
-	end
-
-	if self.state == state_looking_at_bait then
-		local dist = distance_between(self.object, actor)
-		team.robbers[self.object:id()].dist_to_actor = dist -- для выбора ролей
-		--utils.trace(this.script_name(), "_bp: xr_guide: dist = %d", dist)
-		local see_actor = self.object:see(actor)
-		if dist <= 20 and see_actor then
-			utils.stalker_look_at_stalker(self.object, actor)
-		else
-			utils.stalker_look_at_waypoint(self.object, self.patrol_rob, 1)
-		end
-
-		--[[ НЕ РАБОТАЕТ
-		if not self.object:is_body_turning() then 
-			xr_state.anim_update("prisluh", self.object)
-		else
-			if self.object:animation_count() > 0 then
-				xr_state.anim_update(nil, self.object)
-			end
-		end
-		]]
-		if self.stor.bait_self then
-			while self.object:animation_count() <= 1 do
-				local animate = math.random(1, 1)
-				if animate == 1 then
-					self.object:add_animation("item_3_aim_0", true)
-				end
-			end
-		else
-			while self.object:animation_count() <= 1 do
-				local animate = math.random(1, 4)
-				if animate == 1 then
-					self.object:add_animation("spetsnaz_0", true)
-				elseif animate == 2 then
-					self.object:add_animation("spetsnaz_1", true)
-				elseif animate == 3 then
-					self.object:add_animation("spetsnaz_2", true)
-				elseif animate == 4 then
-					self.object:add_animation("spetsnaz_3", true)
-				end
-			end
-		end
-
-		local dist_to_bait = self:distance_to_bait(actor)
-		if team.rob_state == rob_state_rob_victim or
-		   (dist_to_bait and dist_to_bait <= 3) or
-		   (see_actor and not self.stor.bait_self and distance_between(self.object, actor) <= 10) then
-			if self.object:animation_count() > 0 then
-				self.object:clear_animations()
-			end
-			team.rob_state = rob_state_rob_victim
-			self.state = state_rob_victim
-			--utils.trace(this.script_name(), "_bp: xr_guide [%s]: 4 state change: %s",
-			--	self.object:name(), utils.to_str(self.state))
-		end
-
-		return
-	end
-
-	if self.state == state_rob_victim then
-		-- Выбрать роль:
-		self.role = self:pick_role()
-		team.robbers[self.object:id()].role = self.role
-
-		if not self.role then
-			-- Для меня все еще нет роли, просто смотреть на сталкера
-			--utils.trace(this.script_name(), "_bp: xr_guide: no role for me")
-			utils.stalker_look_at_stalker(self.object, actor)
-		elseif self.role == role_leader then
-			--utils.trace(this.script_name(), "_bp: xr_guide [%s]: I am leader", self.object:name())
-			self.expiration_time = device():time_global() + 3000
-			self:say(xr_sounds_id.zmey_robber_stop)
-			self.state = state_leader_waiting_for_plr_to_stop
-			--utils.trace(this.script_name(), "_bp: xr_guide [%s]: 5.2 state change: %s",
-			--	self.object:name(), utils.to_str(self.state))
-		elseif self.role == role_helper then
-			--utils.trace(this.script_name(), "_bp: xr_guide [%s]: I am helper", self.object:name())
-			self.expiration_time = device():time_global() + 1000
-			self.state = state_helper_waiting_for_leader
-			--utils.trace(this.script_name(), "_bp: xr_guide [%s]: 5.3 state change: %s",
-			--	self.object:name(), utils.to_str(self.state))
-		elseif self.role == role_puncher then
-			--utils.trace(this.script_name(), "_bp: xr_guide [%s]: I am puncher", self.object:name())
-			self.expiration_time = device():time_global() + 12000
-			self.state = state_puncher_waiting_for_plr_to_drop_weapon
-			--utils.trace(this.script_name(), "_bp: xr_guide [%s]: 5.4 state change: %s",
-			--	self.object:name(), utils.to_str(self.state))
-		end
-		return
-	end
-
-	if self.state == state_leader_waiting_for_plr_to_stop then
+	if self.state == state_standing then
 		utils.stalker_look_at_stalker(self.object, actor)
-		if self.object:active_sound_count() == 0 and device():time_global() >= self.expiration_time then
-			if not team.plr_stop_pos then
-				team.plr_stop_pos = actor:position()
-			end
-			if isWeapon(active_item) then
-				if active_item then
-					team.plr_num_bullets = active_item:get_ammo_in_magazine()
-				end
-				self:say(xr_sounds_id.zmey_robber_drop_weap)
-				self.expiration_time = device():time_global() + 3000
-				self.state = state_leader_shouting_drop_your_weapon
-				--utils.trace(this.script_name(), "_bp: xr_guide [%s]: 6 state change: %s",
-				--	self.object:name(), utils.to_str(self.state))
-			else
-				self.state = state_last
-				--utils.trace(this.script_name(), "_bp: xr_guide [%s]: 6.1 state change: %s",
-				--	self.object:name(), utils.to_str(self.state))
-			end 
-	
-		end
 		return
 	end
 
-	if self.state == state_leader_shouting_drop_your_weapon then
-		utils.stalker_look_at_stalker(self.object, actor)
-		if self.object:active_sound_count() == 0 and device():time_global() >= self.expiration_time and
-		   isWeapon(active_item) then
-			self:say(xr_sounds_id.zmey_robber_do_what_i_say)
-			self.expiration_time = device():time_global() + 5000
-			self.state = state_last
-			--utils.trace(this.script_name(), "_bp: xr_guide [%s]: 7 state change: %s",
-			--	self.object:name(), utils.to_str(self.state))
-		end
-		return
-	end
-
-	if self.state == state_helper_waiting_for_leader then
+	if self.state == state_waiting_for_teammates_to_rob_plr then
+		-- Этот шаг нужен, чтобы дать тиммейтам возможность напасть первыми
 		utils.stalker_look_at_stalker(self.object, actor)
 		if device():time_global() >= self.expiration_time then
-			self:say(xr_sounds_id.zmey_robber_do_not_move)
-			self.state = state_last
+			team.rob_state = true
 		end
 		return
 	end
 
-
-	if self.state == state_puncher_waiting_for_plr_to_drop_weapon then
-		utils.stalker_look_at_stalker(self.object, actor)
-		local isweapon = isWeapon(active_item)
-		if not isweapon or device():time_global() >= self.expiration_time then
-			if not isweapon then
-				team.plr_num_bullets = -1
-				-- чтобы если он опять поднимет оружие, кол-во патронов было бы уже другим
+	if self.state == state_walking then
+		if not self.cur_waypoint or utils.stalker_at_waypoint(self.object, self.patrol_guide, self.cur_waypoint) then
+			if not self.cur_waypoint then
+				self.cur_waypoint = self:nearest_waypoint()
+			else
+				self.cur_waypoint = self.cur_waypoint + 1
 			end
-			self.wpn_activated = false
-			self.object:set_path_type(game_object.level_path)
-			self.object:set_desired_direction(actor:direction())
-			self.object:set_dest_level_vertex_id(actor:level_vertex_id())
-			self.object:set_movement_type(move.run)
-			self.state = state_puncher_approaching
-		end
-		return
-	end
-
-	if self.state == state_puncher_approaching then
-		utils.trace(this.script_name(), "_bp: xr_guide [%s]: puncher approaching", self.object:name())
-		utils.stalker_look_at_stalker(self.object, actor)
-		if self.object:position():distance_to(actor:position()) < 1.5 then
-			self.object:set_movement_type(move.stand)
-			self.object:add_animation("udar_0", true)
-			self.expiration_time = device():time_global() + 700
-			self.state = state_puncher_waiting_to_grab_money
-		else
-			self.object:set_desired_direction(actor:direction())
-			self.object:set_dest_level_vertex_id(actor:level_vertex_id())
-		end
-		return
-	end
 	
-	if self.state == state_puncher_waiting_to_grab_money then
-		utils.trace(this.script_name(), "_bp: xr_guide [%s, %d]: puncher waiting to grab money",
-			self.object:name(), device():time_global())
-		utils.stalker_look_at_stalker(self.object, actor)
-		local time_global = device():time_global()
-		if time_global >= self.expiration_time and time_global - self.expiration_time < 150 then
-			local anim_count = self.object:animation_count()
-			if anim_count > 0 and self.object:position():distance_to(actor:position()) < 2 then
-				local h = hit()
-				h.power = 1000
-				h.direction:set(1, 0, 0)
-				h.bone = "bip01_head"
-				h.draftsman = self.object
-				h.impulse = 10
-				h.type = hit.wound
-				actor:hit(h)
-
-				self.state = state_last
-			elseif anim_count == 0 then
-				self.object:set_path_type(game_object.level_path)
-				self.object:set_desired_direction(actor:direction())
-				self.object:set_dest_level_vertex_id(actor:level_vertex_id())
-				self.object:set_movement_type(move.run)
-				self.state = state_puncher_approaching
+			if self.cur_waypoint >= self.patrol_guide:count() then
+				utils.stalker_stop(self.object)
+				self.expiration_time = device():time_global() + 5000
+				self.state = state_waiting_for_teammates_to_rob_plr
+			else
+				utils.stalker_go_to_waypoint(self.object, self.patrol_guide, self.cur_waypoint)
 			end
 		end
 		return
 	end
-	if self.state == state_last then
-		utils.stalker_look_at_stalker(self.object, actor)
-		-- больше ничего не делать
-		return
-	end
-end
-
-function action_guide_activity:execute()
-	local prev_state
-	repeat
-		prev_state = self.state
-		self:fsm_step()
-	until prev_state == self.state
 end
 	
 function action_guide_activity:finalize()
 	self.object:clear_animations()
-
-	local team = this.teams[self.stor.team]
-	team.interrupted_and_blocked_until = device():time_global() + 15000
 
 	action_base.finalize(self)
 end
@@ -607,7 +193,7 @@ function set_guide(object, enabled, team, path_guide)
 	local st = xr_motivator.storage[object:id()].guide
 
 	st.enabled = utils.conf_get_bool(char_ini, "guide", "enabled", enabled, object, true)
-	st.team = utils.conf_get_string(char_ini, "guide", "team", team, object, false)
+	st.team = utils.conf_get_string(char_ini, "guide", "team", team, object, true)
 	st.path_guide = utils.conf_get_string(char_ini, "guide", "path_guide", path_guide, object, true)
 
 	if st.action ~= nil then

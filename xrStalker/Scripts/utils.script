@@ -107,6 +107,21 @@ function conf_get_string(char_ini, section, field, override, object, mandatory)
 	utils.abort("%s", err)
 end
 
+function conf_get_number(char_ini, section, field, override, object, mandatory)
+	if override ~= nil then
+		return override
+	end
+	if char_ini:section_exist(section) and char_ini:line_exist(section, field) then
+		return char_ini:r_s32(section, field)
+	end
+	if not mandatory then
+		return nil
+	end
+	local err = "object name '" .. object:name() .. "': attempt to read a non-existant numeric field '" ..
+		field .. "' in section '" .. section .. "'";
+	utils.abort("%s", err)
+end
+
 -- ѕровер€ет, находитс€ ли stalker р€дом с точкой path_point пути patrol_path
 function stalker_at_waypoint(stalker, patrol_path, path_point)
 	return stalker:level_vertex_id() == patrol_path:level_vertex_id(path_point)

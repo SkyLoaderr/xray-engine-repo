@@ -21,18 +21,18 @@ end
 class "evaluator_need_guard" (property_evaluator)
 
 function evaluator_need_guard:__init(storage) super ()
-  	self.a = storage
+  	self.st = storage
 end
 
 function evaluator_need_guard:evaluate ()
-  	return self.a.enabled == true
+  	return self.st.enabled == true
 end
 
 ----------------------------------------------------------------------------------------------------------------------
 class "action_guard_activity" (action_base)
 
 function action_guard_activity:__init (npc_name,action_name,storage) super (nil, action_name)
-	self.a = storage
+	self.st = storage
 
 	self.state_none = 0
 	self.state_standing_before_anim = 1
@@ -78,14 +78,14 @@ function action_guard_activity:reset_scheme()
 	self.last_seen_actor = nil
 
 	-- TODO: выбирать активный путь в зависимости от погоды (сделать выбор функцией)
-	self.path_main = self.a.path_main
-	if self.a.path_hideout then
-		self.path_hideout = self.a.path_hideout
+	self.path_main = self.st.path_main
+	if self.st.path_hideout then
+		self.path_hideout = self.st.path_hideout
 	else
 		self.path_hideout = self.path_main
 	end
-	self.path_camp = self.a.path_camp
-	self.projector_name = self.a.projector_name
+	self.path_camp = self.st.path_camp
+	self.projector_name = self.st.projector_name
 	self.path_active = self:pick_path()
 	
 	-- Флажок, включить если прибыли в путь, состоящий из одной точки
@@ -138,9 +138,9 @@ function action_guard_activity:waypoint_callback(obj, action_type, index)
 	local ptr = patrol(self.path_active)
 
 	if ptr:flag(index, 30) then
-		self.a.running = false
+		self.st.running = false
 	elseif ptr:flag(index, 31) then
-		self.a.running = true
+		self.st.running = true
 	end
 
 	if ptr:flag(index, 27) then
@@ -168,8 +168,8 @@ function action_guard_activity:waypoint_callback(obj, action_type, index)
 		self.arrived_to_single_point_path = true
 		self.object:set_movement_type(move.stand)
 	else
-		self.object:set_mental_state(if_then_else(self.a.running, anim.danger, anim.free))
-		self.object:set_movement_type(if_then_else(self.a.running, move.run, move.walk))
+		self.object:set_mental_state(if_then_else(self.st.running, anim.danger, anim.free))
+		self.object:set_movement_type(if_then_else(self.st.running, move.run, move.walk))
 		self.arrived_to_single_point_path = false
 	end
 
@@ -249,8 +249,15 @@ end
 
 function action_guard_activity:execute()
 	local actor = level.actor()
-	if actor and self.object:see(actor) then
-		self.last_seen_actor = device():time_global()
+	if actor then
+		if self.st.switch_to_guide_distance and
+		   distance_between(self.object, actor) <= self.st.switch_to_guide_distance then
+			self.st.enabled = false
+			xr_motivator.storage[self.object:id()].guide.enabled = true
+		end
+		if self.object:see(actor) then
+			self.last_seen_actor = device():time_global()
+		end
 	end
 	
 	self.object:set_item(object.idle, self.object:best_weapon())
@@ -283,11 +290,11 @@ function action_guard_activity:execute()
 			end
 
 			if self.loudspeaker_enabled then
-				if not self.a.loudspeaker_name then
+				if not self.st.loudspeaker_name then
 					abort("%s", "object '" .. self.object:name() ..
 						"': waypoint flag 27 set, but loudspeaker is not specified in customdata")
 				end
-				local lsp = level.object(self.a.loudspeaker_name)
+				local lsp = level.object(self.st.loudspeaker_name)
 				if lsp then
 					local phrase = math.random(1, 3)
 					while phrase == self.prev_lsp_phrase do
@@ -323,7 +330,7 @@ function action_guard_activity:execute()
 			if suggested_path == self.path_camp then
 				-- В укрытие!!!
 				self.object:play_sound (sounds["mad_snd_hide"], 1, 0, 1, 0, 0)
-				self.a.running = true
+				self.st.running = true
 			end
 			self.last_look_index = nil -- был выбран новый путь и точка уже не актуальна
 			self.path_active = suggested_path
@@ -337,8 +344,8 @@ function action_guard_activity:execute()
 			self:waypoint_callback(self.object, self.last_action_type, self.last_index)
 		else
 			self.last_look_index = nil
-			self.object:set_mental_state(if_then_else(self.a.running, anim.danger, anim.free))
-			self.object:set_movement_type(if_then_else(self.a.running, move.run, move.walk))
+			self.object:set_mental_state(if_then_else(self.st.running, anim.danger, anim.free))
+			self.object:set_movement_type(if_then_else(self.st.running, move.run, move.walk))
 			--self.object:set_sight(look.search, nil, 0)
 			self.object:set_sight(look.danger, nil, 0)
 			if need_callback then
@@ -358,9 +365,9 @@ function action_guard_activity:finalize()
 	local enemy = self.object:best_enemy()
 	if enemy then
 		if enemy:alive() and self.object:see(enemy) then
-			if not self.a.alarm_activated then
+			if not self.st.alarm_activated then
 			  self.object:play_sound (sounds["soldier_alarm"], 1, 0, 1, 0, 3) -- was 1
-			  self.a.alarm_activated = true
+			  self.st.alarm_activated = true
 			end
 		end
 	end
@@ -481,7 +488,7 @@ end
 -- 30 - начиная с этой точки и дальше охранник идет спокойно
 -- 31 - начиная с этой точки и дальше охранник побежит
 function set_guard(object, enable, path_main, path_hideout, running, search_light, path_camp, loudspeaker_name,
-	anim_set_1, anim_set_2, anim_set_3, sound_set_1, sound_set_2, sound_set_3)
+	anim_set_1, anim_set_2, anim_set_3, sound_set_1, sound_set_2, sound_set_3, switch_to_guide_distance)
 	utils.trace(this.script_name(), "set_guard called: object:name()='%s', path_main='%s', path_hideout='%s', " ..
 		"running='%s', search_light='%s', path_camp='%s', loudspeaker='%s'",
 		utils.to_str(object:name()),
@@ -508,6 +515,8 @@ function set_guard(object, enable, path_main, path_hideout, running, search_ligh
 	st.sound_set_1 = utils.conf_get_string(char_ini, "guard", "sound_set_1", sound_set_1, object, false)
 	st.sound_set_2 = utils.conf_get_string(char_ini, "guard", "sound_set_2", sound_set_2, object, false)
 	st.sound_set_3 = utils.conf_get_string(char_ini, "guard", "sound_set_3", sound_set_3, object, false)
+	st.switch_to_guide_distance = utils.conf_get_number(char_ini, "guard", "switch_to_guide_distance",
+		switch_to_guide_distance, object, false)
 
 	if st.action ~= nil then
 		st.action.reset_scheme(st.action)
