@@ -1,0 +1,397 @@
+;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;
+;; Artefacts
+;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;
+
+[af_magnet]
+GroupControlSection	= spawn_group
+$spawn				= "artifacts\magnet"
+class				= ARTEFACT
+;class				= AF_GRAVI
+
+cform				= skeleton
+$prefetch 			= 64
+visual				= artifacts\artifact_1.ogf	;weapon\bolt\wpn_bolt.ogf
+;visual				= cs\artefact_magnet.ogf
+;visual				= artifacts\artifact_rtut-sphere.ogf
+inv_name			= "Magnet"
+inv_name_short		= 
+inv_weight			= 1
+
+food_value			= 0
+health_value		= 0
+
+inv_grid_width		= 1
+inv_grid_height		= 1
+inv_grid_x			= 8
+inv_grid_y			= 15
+
+
+cost				= 200	;100
+
+detector_dist		= 8
+detector_sound		= zone_mosquito_bald
+
+jump_height			= .5
+energy				= 1
+
+;particles			= anomaly2\group_items\pe01;anomaly2\group_items\artifact_idle;anomaly2\gravity_damage_02_smoke
+
+lights_enabled = true	;true			;свет вокруг ракеты, во время полета
+trail_light_color = 0.8,0.4,0.2
+trail_light_range = 4.0
+
+[af_mercury_ball]
+GroupControlSection	= spawn_group
+$spawn 			= "artifacts\mercury ball"
+$npc			= on				; option for Level Editor
+;$prefetch 		= 3
+cform           = skeleton
+class   		= AF_MBALL
+
+visual				= artifacts\artifact_2.ogf ;artifacts\artifact_rtut-sphere.ogf
+inv_name			= "Mercury Ball"
+inv_name_short		= 
+inv_weight			= 1
+
+food_value			= 0
+health_value		= 0
+
+inv_grid_width		= 1
+inv_grid_height		= 1
+inv_grid_x			= 8
+inv_grid_y			= 15
+
+cost				= 200	;150
+
+detector_dist		= 8
+detector_sound		= zone_mosquito_bald
+
+time_to_update		= 1000
+impulse_min			= 45.0
+impulse_max			= 90.0
+
+lights_enabled = false			;свет вокруг ракеты, во время полета
+
+[af_black_drops]
+GroupControlSection	= spawn_group
+$spawn 			= "artifacts\black drops"
+$npc			= on				; option for Level Editor
+;$prefetch 		= 3
+cform           = skeleton
+class   		= AF_BDROP
+
+visual				= artifacts\artifact_rtut-sphere.ogf
+inv_name			= "Black Drops"
+inv_name_short		= 
+inv_weight			= 1
+
+food_value			= 0
+health_value		= 0
+
+inv_grid_width		= 2
+inv_grid_height		= 2
+inv_grid_x			= 0
+inv_grid_y			= 0
+
+cost				= 200	;100
+
+detector_dist		= 8
+detector_sound		= zone_mosquito_bald
+
+lights_enabled = false			;свет вокруг ракеты, во время полета
+
+[af_needles]
+GroupControlSection	= spawn_group
+$spawn 			= "artifacts\needles"
+$npc			= on				; option for Level Editor
+;$prefetch 		= 3
+cform           = skeleton
+class   		= AF_NEEDL
+
+visual				= weapon\bolt\wpn_bolt.ogf
+;visual				= cs\artefact_magnet.ogf
+inv_name			= "Needles"
+inv_name_short		= 
+inv_weight			= 1
+
+food_value			= 0
+health_value		= 0
+
+inv_grid_width		= 2
+inv_grid_height		= 2
+inv_grid_x			= 0
+inv_grid_y			= 0
+
+cost				= 200	;100
+
+detector_dist		= 8
+detector_sound		= zone_mosquito_bald
+
+lights_enabled = false			;свет вокруг ракеты, во время полета
+
+[af_bast]
+GroupControlSection	= spawn_group
+$spawn 			= "artifacts\bast"
+$npc			= on				; option for Level Editor
+;$prefetch 		= 3
+cform           = skeleton
+class   		= AF_BAST
+
+visual				= Weapon\vodka\vodka.ogf
+
+inv_name			= "Bast artifact"
+inv_name_short		= 
+inv_weight			= 10000
+
+food_value			= 0
+health_value		= 0
+;!!!!!!
+inv_grid_width		= 2
+inv_grid_height		= 2
+inv_grid_x			= 0
+inv_grid_y			= 0
+
+cost				= 200	;100
+
+detector_dist		= 8
+detector_sound		= zone_mosquito_bald
+
+impulse_threshold		= 10
+radius					= 10
+strike_impulse			= 20
+energy_max				= 100000
+energy_decrease_speed	= 1.5
+particle				= ghoul\fx-01-camp-fire_00
+
+lights_enabled = false			;свет вокруг ракеты, во время полета
+
+[af_black_gravi]
+GroupControlSection	= spawn_group
+$spawn 			= "artifacts\black_gravi"
+$npc			= on				; option for Level Editor
+;$prefetch 		= 3
+cform           = skeleton
+class   		= AF_BGRAV
+
+visual				= weapon\bolt\wpn_bolt.ogf
+inv_name			= "Black Gravi Artifact"
+inv_name_short		= 
+inv_weight			= 1
+
+food_value			= 0
+health_value		= 0
+
+inv_grid_width		= 2
+inv_grid_height		= 2
+inv_grid_x			= 0
+inv_grid_y			= 0
+
+cost				= 200	;100
+
+detector_dist		= 8
+detector_sound		= zone_mosquito_bald
+
+impulse_threshold		= 10
+radius					= 10
+strike_impulse			= 20
+;particle				= ghoul\anomal-02-or-flash
+;particle				= ghoul\fx-01-camp-fire_00
+particle				= ghoul\ps_0001
+
+lights_enabled = false			;свет вокруг ракеты, во время полета
+
+[af_dummy]
+GroupControlSection	= spawn_group
+$spawn 			= "artifacts\dummy"
+$npc			= on				; option for Level Editor
+;$prefetch 		= 3
+cform           = skeleton
+class   		= AF_DUMMY
+
+visual				= weapon\bolt\wpn_bolt.ogf
+inv_name			= "Dummy Artifact"
+inv_name_short		= 
+inv_weight			= 1
+
+food_value			= 0
+health_value		= 0
+
+inv_grid_width		= 2
+inv_grid_height		= 2
+inv_grid_x			= 0
+inv_grid_y			= 0
+
+cost				= 200
+
+detector_dist		= 8
+detector_sound		= zone_mosquito_bald
+
+lights_enabled = false			;свет вокруг ракеты, во время полета
+
+[af_zuda]
+GroupControlSection	= spawn_group
+$spawn 			= "artifacts\zuda"
+$npc			= on				; option for Level Editor
+;$prefetch 		= 3
+cform           = skeleton
+class   		= AF_ZUDA
+
+visual				= weapon\bolt\wpn_bolt.ogf
+inv_name			= "Zuda Artifact"
+inv_name_short		= 
+inv_weight			= 1
+
+food_value			= 0
+health_value		= 0
+
+inv_grid_width		= 2
+inv_grid_height		= 2
+inv_grid_x			= 0
+inv_grid_y			= 0
+
+cost				= 1000	;200
+
+detector_dist		= 8
+detector_sound		= zone_mosquito_bald
+
+lights_enabled = false			;свет вокруг ракеты, во время полета
+
+[af_thorn]
+GroupControlSection	= spawn_group
+$spawn 			= "artifacts\thorn"
+$npc			= on				; option for Level Editor
+;$prefetch 		= 3
+cform           = skeleton
+class   		= AF_THORN
+
+visual				= weapon\bolt\wpn_bolt.ogf
+inv_name			= "Thorn Artifact"
+inv_name_short		= 
+inv_weight			= 1
+
+food_value			= 0
+health_value		= 0
+
+inv_grid_width		= 2
+inv_grid_height		= 2
+inv_grid_x			= 0
+inv_grid_y			= 0
+
+cost				= 200	;100
+
+detector_dist		= 8
+detector_sound		= zone_mosquito_bald
+
+lights_enabled = false			;свет вокруг ракеты, во время полета
+
+[af_faded_ball]
+GroupControlSection	= spawn_group
+$spawn 			= "artifacts\faded ball"
+$npc			= on				; option for Level Editor
+;$prefetch 		= 3
+cform           = skeleton
+class   		= AF_FBALL
+
+visual				= weapon\bolt\wpn_bolt.ogf
+inv_name			= "Faded Ball"
+inv_name_short		= 
+inv_weight			= 1
+
+food_value			= 0
+health_value		= 0
+
+inv_grid_width		= 2
+inv_grid_height		= 2
+inv_grid_x			= 0
+inv_grid_y			= 0
+
+cost				= 200	;100
+
+detector_dist		= 8
+detector_sound		= zone_mosquito_bald
+
+lights_enabled = false			;свет вокруг ракеты, во время полета
+
+[af_electric_ball]
+GroupControlSection	= spawn_group
+$spawn 			= "artifacts\electric ball"
+$npc			= on				; option for Level Editor
+;$prefetch 		= 3
+cform           = skeleton
+class   		= AF_EBALL
+
+visual				= weapon\bolt\wpn_bolt.ogf
+inv_name			= "Electric Ball"
+inv_name_short		= 
+inv_weight			= 1
+
+food_value			= 0
+health_value		= 0
+
+inv_grid_width		= 2
+inv_grid_height		= 2
+inv_grid_x			= 0
+inv_grid_y			= 0
+
+cost				= 1000	;300
+
+detector_dist		= 8
+detector_sound		= zone_mosquito_bald
+
+lights_enabled = false			;свет вокруг ракеты, во время полета
+
+[af_rusty_hair]
+GroupControlSection	= spawn_group
+$spawn 			= "artifacts\rusty hair"
+$npc			= on				; option for Level Editor
+;$prefetch 		= 3
+cform           = skeleton
+class   		= AF_RHAIR
+
+visual				= weapon\bolt\wpn_bolt.ogf
+inv_name			= "Rusty Hair Artifact"
+inv_name_short		= 
+inv_weight			= 1
+
+food_value			= 0
+health_value		= 0
+
+inv_grid_width		= 2
+inv_grid_height		= 2
+inv_grid_x			= 0
+inv_grid_y			= 0
+
+cost				= 200	;100
+
+detector_dist		= 8
+detector_sound		= zone_mosquito_bald
+
+lights_enabled = false			;свет вокруг ракеты, во время полета
+
+[af_galantine]
+GroupControlSection	= spawn_group
+$spawn 			= "artifacts\galantine"
+$npc			= on				; option for Level Editor
+;$prefetch 		= 3
+cform           = skeleton
+class   		= AF_GALAN
+
+visual				= weapon\bolt\wpn_bolt.ogf
+inv_name			= "Galantine Artifact"
+inv_name_short		= 
+inv_weight			= 1
+
+food_value			= 0
+health_value		= 0
+
+inv_grid_width		= 2
+inv_grid_height		= 2
+inv_grid_x			= 0
+inv_grid_y			= 0
+
+cost				= 200	;100
+
+detector_dist		= 8
+detector_sound		= zone_mosquito_bald
+
+lights_enabled = false			;свет вокруг ракеты, во время полета
