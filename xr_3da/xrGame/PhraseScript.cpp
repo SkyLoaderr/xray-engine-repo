@@ -63,7 +63,8 @@ bool  CPhraseScript::CheckInfo		(const CInventoryOwner* pOwner) const
 */
 		if (!pOwner->HasInfo(m_HasInfo[i])) {
 #ifdef DEBUG
-			Msg("----rejected: [%s] has info %s", pOwner->Name(), *m_HasInfo[i]);
+			if(psAI_Flags.test(aiDialogs) )
+				Msg("----rejected: [%s] has info %s", pOwner->Name(), *m_HasInfo[i]);
 #endif
 			return false;
 		}
@@ -78,7 +79,8 @@ bool  CPhraseScript::CheckInfo		(const CInventoryOwner* pOwner) const
 */
 		if (pOwner->HasInfo(m_DontHasInfo[i])) {
 #ifdef DEBUG
-			Msg("----rejected: [%s] dont has info %s", pOwner->Name(), *m_DontHasInfo[i]);
+			if(psAI_Flags.test(aiDialogs) )
+				Msg("----rejected: [%s] dont has info %s", pOwner->Name(), *m_DontHasInfo[i]);
 #endif
 			return false;
 		}
@@ -107,7 +109,7 @@ bool CPhraseScript::Precondition	(const CGameObject* pSpeakerGO, LPCSTR dialog_i
 	if(!CheckInfo(smart_cast<const CInventoryOwner*>(pSpeakerGO))){
 		#ifdef DEBUG
 			if (psAI_Flags.test(aiDialogs))
-			Msg("dialog [%s] phrase[%d] rejected by CheckInfo",dialog_id,phrase_num);
+				Msg("dialog [%s] phrase[%d] rejected by CheckInfo",dialog_id,phrase_num);
 		#endif
 		return false;
 	}

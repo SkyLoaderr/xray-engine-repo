@@ -8,6 +8,7 @@
 #include "GameObject.h"
 #include "xrMessages.h"
 #include "ai_space.h"
+#include "ai_debug.h"
 #include "alife_simulator.h"
 #include "alife_registry_container.h"
 #include "script_game_object.h"
@@ -64,7 +65,8 @@ bool CInventoryOwner::OnReceiveInfo(INFO_ID info_id) const
 		return false;
 
 #ifdef DEBUG
-	Msg("[%s] CInventoryOwner::OnReceiveInfo info id %s", Name(), *info_id);
+	if(psAI_Flags.test(aiInfoPortion))
+		Msg("[%s] Received Info [%s]", Name(), *info_id);
 #endif
 
 	//Запустить скриптовый callback
@@ -110,7 +112,8 @@ void CInventoryOwner::OnDisableInfo(INFO_ID info_id) const
 	//удалить запись из реестра
 	
 #ifdef DEBUG
-	Msg("[%s] CInventoryOwner::OnDisableInfo info id %s", Name(), *info_id);
+	if(psAI_Flags.test(aiInfoPortion))
+		Msg("[%s] Disabled Info [%s]", Name(), *info_id);
 #endif
 
 	KNOWN_INFO_VECTOR& known_info = m_known_info_registry->registry().objects();
