@@ -47,6 +47,7 @@ void CGroup::GetMemberPlacement(MemberPlacement& MP, CEntity* Me)
 {
 	R_ASSERT		(Members.size()<MAX_GROUP_SIZE);
 	MP.clear		();
+	MP.reserve		(Members.size());
 	vCentroid.set	(0,0,0);
 	for (u32 I=0; I<Members.size(); I++) 
 	{
@@ -62,6 +63,7 @@ void CGroup::GetMemberPlacementN(MemberNodes& MP, CEntity* Me)
 {
 	R_ASSERT		(Members.size()<MAX_GROUP_SIZE);
 	MP.clear		();
+	MP.reserve		(Members.size());
 	for (u32 I=0; I<Members.size(); I++) 
 	{
 		CEntity*	E = Members[I];
@@ -73,6 +75,7 @@ void CGroup::GetMemberDedication(MemberPlacement& MP, CEntity* Me)
 {
 	R_ASSERT		(Members.size()<MAX_GROUP_SIZE);
 	MP.clear		();
+	MP.reserve		(Members.size());
 	vCentroid.set	(0,0,0);
 	for (u32 I=0; I<Members.size(); I++) {
 		if (Members[I]->SUB_CLS_ID == CLSID_OBJECT_ACTOR) {
@@ -104,6 +107,7 @@ void CGroup::GetMemberDedicationN(MemberNodes& MP, CEntity* Me)
 {
 	R_ASSERT		(Members.size()<MAX_GROUP_SIZE);
 	MP.clear		();
+	MP.reserve		(Members.size());
 	for (u32 I=0; I<Members.size(); I++) {
 		if (Members[I]->SUB_CLS_ID == CLSID_OBJECT_ACTOR)
 			MP.push_back(Members[I]->AI_NodeID);
@@ -125,6 +129,10 @@ void CGroup::GetMemberInfo(MemberPlacement& P0, MemberNodes& P1, MemberPlacement
 	P1.clear();
 	P2.clear();
 	P3.clear();
+	P0.reserve(Members.size());
+	P1.reserve(Members.size());
+	P2.reserve(Members.size());
+	P3.reserve(Members.size());
 	for (u32 I=0; I<Members.size(); I++) {
 		if (Members[I]->SUB_CLS_ID == CLSID_OBJECT_ACTOR) {
 			CEntity*E = Members[I];
@@ -161,6 +169,7 @@ void CGroup::GetAliveMemberPlacement(MemberPlacement& MP, CEntity* Me)
 {
 	R_ASSERT		(Members.size()<MAX_GROUP_SIZE);
 	MP.clear		();
+	MP.reserve		(Members.size());
 	vCentroid.set	(0,0,0);
 	for (u32 I=0; I<Members.size(); I++) 
 		if (Members[I]->g_Health() > 0) {
@@ -176,6 +185,7 @@ void CGroup::GetAliveMemberPlacementN(MemberNodes& MP, CEntity* Me)
 {
 	R_ASSERT		(Members.size()<MAX_GROUP_SIZE);
 	MP.clear		();
+	MP.reserve		(Members.size());
 	for (u32 I=0; I<Members.size(); I++) 
 		if (Members[I]->g_Health() > 0) {
 			CEntity*	E = Members[I];
@@ -187,6 +197,7 @@ void CGroup::GetAliveMemberDedication(MemberPlacement& MP, CEntity* Me)
 {
 	R_ASSERT		(Members.size()<MAX_GROUP_SIZE);
 	MP.clear		();
+	MP.reserve		(Members.size());
 	vCentroid.set	(0,0,0);
 	for (u32 I=0; I<Members.size(); I++) 
 		if (Members[I]->g_Health() > 0) {
@@ -219,6 +230,7 @@ void CGroup::GetAliveMemberDedicationN(MemberNodes& MP, CEntity* Me)
 {
 	R_ASSERT		(Members.size()<MAX_GROUP_SIZE);
 	MP.clear		();
+	MP.reserve		(Members.size());
 	for (u32 I=0; I<Members.size(); I++) 
 		if (Members[I]->g_Health() > 0) {
 			if (Members[I]->SUB_CLS_ID == CLSID_OBJECT_ACTOR)
@@ -241,6 +253,10 @@ void CGroup::GetAliveMemberInfo(MemberPlacement& P0, MemberNodes& P1, MemberPlac
 	P1.clear();
 	P2.clear();
 	P3.clear();
+	P0.reserve(Members.size());
+	P1.reserve(Members.size());
+	P2.reserve(Members.size());
+	P3.reserve(Members.size());
 	for (u32 I=0; I<Members.size(); I++)
 		if (Members[I]->g_Health() > 0) {
 			if (Members[I]->SUB_CLS_ID == CLSID_OBJECT_ACTOR) {
@@ -278,6 +294,7 @@ void CGroup::GetAliveMemberPlacementWithLeader(MemberPlacement& MP, CEntity* Me,
 {
 	R_ASSERT		(Members.size()<MAX_GROUP_SIZE);
 	MP.clear		();
+	MP.reserve		(Members.size());
 	vCentroid.set	(0,0,0);
 	for (u32 I=0; I<Members.size(); I++) 
 		if (Members[I]->g_Health() > 0) {
@@ -299,6 +316,7 @@ void CGroup::GetAliveMemberPlacementNWithLeader(MemberNodes& MP, CEntity* Me, CE
 {
 	R_ASSERT		(Members.size()<MAX_GROUP_SIZE);
 	MP.clear		();
+	MP.reserve		(Members.size());
 	for (u32 I=0; I<Members.size(); I++) 
 		if (Members[I]->g_Health() > 0)
 			if (Members[I]!=Me)	
@@ -313,6 +331,7 @@ void CGroup::GetAliveMemberDedicationWithLeader(MemberPlacement& MP, CEntity* Me
 {
 	R_ASSERT		(Members.size()<MAX_GROUP_SIZE);
 	MP.clear		();
+	MP.reserve		(Members.size());
 	vCentroid.set	(0,0,0);
 	for (u32 I=0; I<Members.size(); I++) 
 		if (Members[I]->g_Health() > 0) {
@@ -356,6 +375,7 @@ void CGroup::GetAliveMemberDedicationNWithLeader(MemberNodes& MP, CEntity* Me, C
 {
 	R_ASSERT		(Members.size()<MAX_GROUP_SIZE);
 	MP.clear		();
+	MP.reserve		(Members.size());
 	for (u32 I=0; I<Members.size(); I++) 
 		if (Members[I]->g_Health() > 0) {
 			if (Members[I]->SUB_CLS_ID == CLSID_OBJECT_ACTOR)
@@ -385,11 +405,15 @@ void CGroup::GetAliveMemberDedicationNWithLeader(MemberNodes& MP, CEntity* Me, C
 
 void CGroup::GetAliveMemberInfoWithLeader(MemberPlacement& P0, MemberNodes& P1, MemberPlacement& P2, MemberNodes& P3, CEntity* Me, CEntity* Leader)
 {
-	R_ASSERT		(Members.size()<MAX_GROUP_SIZE);
+//	R_ASSERT		(Members.size()<MAX_GROUP_SIZE);
 	P0.clear();
 	P1.clear();
 	P2.clear();
 	P3.clear();
+	P0.reserve(Members.size());
+	P1.reserve(Members.size());
+	P2.reserve(Members.size());
+	P3.reserve(Members.size());
 	for (u32 I=0; I<Members.size(); I++)
 		if (Members[I]->g_Health() > 0) {
 			if (Members[I]->SUB_CLS_ID == CLSID_OBJECT_ACTOR) {

@@ -16,8 +16,12 @@ typedef struct tagSSearchPlace {
 	float	fCost;
 } SSearchPlace;
 
-typedef svector<Fvector,MAX_GROUP_SIZE>						MemberPlacement;
-typedef svector<u32,MAX_GROUP_SIZE>							MemberNodes;
+//typedef svector<Fvector,MAX_GROUP_SIZE>						MemberPlacement;
+//typedef svector<u32,MAX_GROUP_SIZE>							MemberNodes;
+//typedef svector<SSearchPlace,MAX_SUSPICIOUS_NODE_COUNT>		SuspiciousNodes;
+//typedef svector<bool,MAX_SUSPICIOUS_NODE_COUNT>				SuspiciousGroups;
+typedef vector<Fvector>										MemberPlacement;
+typedef vector<u32>											MemberNodes;
 typedef svector<SSearchPlace,MAX_SUSPICIOUS_NODE_COUNT>		SuspiciousNodes;
 typedef svector<bool,MAX_SUSPICIOUS_NODE_COUNT>				SuspiciousGroups;
 typedef FixedSET<CObject*>									objVisible;

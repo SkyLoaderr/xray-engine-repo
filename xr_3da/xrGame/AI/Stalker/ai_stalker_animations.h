@@ -42,14 +42,16 @@ public:
 	IC	void		Load(CKinematics *tpKinematics, LPCSTR caBaseName)
 	{
 		string256 S;
-		for (int i=0; caBaseNames[i]; i++)
-			A.push_back	(tpKinematics->ID_Cycle(strconcat(S,caBaseName,caBaseNames[i])));
+		for (int j=0; caBaseNames[j]; j++);
+		A.resize	(j);
+		for (int i=0; i<j; i++)
+			A[i] = tpKinematics->ID_Cycle(strconcat(S,caBaseName,caBaseNames[i]));
 	}
 };
 
 template <class TYPE_NAME, LPCSTR caBaseNames[]> class CAniCollection {
 public:
-	svector<TYPE_NAME,16>	A;
+	vector<TYPE_NAME>	A;
 	
 	virtual			~CAniCollection()
 	{
@@ -58,11 +60,11 @@ public:
 
 	IC	void		Load(CKinematics *tpKinematics, LPCSTR caBaseName)
 	{
-		string256 S;
-		for (int i=0; caBaseNames[i]; i++) {
-			A.resize	(i + 1);
+		string256	S;
+		for (int j=0; caBaseNames[j]; j++);
+		A.resize	(j);
+		for (int i=0; i<j; i++)
 			A[i].Load	(tpKinematics,strconcat(S,caBaseName,caBaseNames[i]));
-		}
 	}
 };
 
