@@ -154,15 +154,19 @@ void CCar::SDoor::Open()
 		return;
 	}
 
-
-	if(state!=closing)
+	switch(state) 
 	{
-		ClosedToOpening();
-		PlaceInUpdate();
+	case closed:
+			ClosedToOpening();
+			PlaceInUpdate();
+	case closing:
+			state=opening;
+			ApplyOpenTorque();
+	case opened:
+	case opening: break;
+	default: NODEFAULT;
 	}
 
-	state=opening;
-	ApplyOpenTorque();
 }
 
 void CCar::SDoor::Close()
@@ -172,13 +176,19 @@ void CCar::SDoor::Close()
 		state=closed;
 		return;
 	}
-	if(state!=opening)
-	{
-		PlaceInUpdate();
-	}
 
-	state=closing;
-	ApplyCloseTorque();
+	switch(state)
+	{
+	case opened:
+		PlaceInUpdate();
+	case opening:
+		state=closing;
+		ApplyCloseTorque();
+	case closed:
+	case closing:
+		break;
+	default: NODEFAULT;
+	}
 
 }
 

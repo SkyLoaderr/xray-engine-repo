@@ -920,7 +920,64 @@ if(m_owner)return Exit(pos,dir);
 return false;
 	
 }
+bool CCar::DoorUse(u32 id)
+{
+	xr_map<u32,SDoor>::iterator i;
+	if(is_Door(id,i)) 
+	{
+		i->second.Use();
+		return true;
+	}
+	else
+	{
+		return false;
+	}
 
+}
+
+bool CCar::DoorClose(u32 id)
+{
+	xr_map<u32,SDoor>::iterator i;
+	if(is_Door(id,i)) 
+	{
+		i->second.Close();
+		return true;
+	}
+	else
+	{
+		return false;
+	}
+}
+
+bool CCar::DoorOpen(u32 id)
+{
+	xr_map<u32,SDoor>::iterator i;
+	if(is_Door(id,i)) 
+	{
+		i->second.Open();
+		return true;
+	}
+	else
+	{
+		return false;
+	}
+}
+
+bool CCar::DoorUse(u32 id,eDoorAction action)
+{
+	switch(action) {
+	case daAny:
+		return DoorUse(id);
+		break;
+	case daOpen:
+		return DoorOpen(id);
+		break;
+	case daClose:
+		return DoorClose(id);
+	default: NODEFAULT;
+	}
+	return false;
+}
 float CCar::Parabola(float rpm)
 {
 	//float rpm_2=rpm*rpm;

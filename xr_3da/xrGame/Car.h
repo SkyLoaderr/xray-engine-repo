@@ -13,6 +13,13 @@ class						CActor;
 
 class CEntityAction;
 
+enum eDoorAction
+{
+	daAny,
+	daOpen,
+	daClose
+};
+
 class CCar : 
 	public CEntity, 
 	public CScriptMonster,
@@ -365,6 +372,10 @@ public:
 	void					detach_Actor		();
 	bool					attach_Actor		(CActor* actor);
 	bool					is_Door				(u32 id,xr_map<u32,SDoor>::iterator& i);
+	bool					DoorOpen			(u32 id);
+	bool					DoorClose			(u32 id);
+	bool					DoorUse				(u32 id);
+	bool					DoorUse				(u32 id,eDoorAction action);
 	bool					Enter				(const Fvector& pos,const Fvector& dir,const Fvector& foot_pos);
 	bool					Exit				(const Fvector& pos,const Fvector& dir);
 	bool					Use					(const Fvector& pos,const Fvector& dir,const Fvector& foot_pos);
