@@ -140,6 +140,8 @@ bool DXTCompress(LPCSTR out_name, BYTE* raw_data, DWORD w, DWORD h, DWORD pitch,
     nvOpt.FadeToColor.u		= fmt->fade_color;
     nvOpt.FadeAmount		= fmt->fade_amount;
     nvOpt.bDitherColor		= fmt->flag.bDitherColor;
+    nvOpt.bDitherEachMIPLevel=fmt->flag.bDitherEachMIPLevel;
+    nvOpt.bGreyScale		= fmt->flag.bGreyScale;
     nvOpt.TextureType		= dTextureType2D;
     switch(fmt->fmt){
     case STextureParams::tfDXT1: 	nvOpt.TextureFormat = dDXT1; 	break;
