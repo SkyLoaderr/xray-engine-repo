@@ -112,7 +112,10 @@ light*			CLight_DB::Create	()
 
 void			CLight_DB::Destroy	(light* L)
 {
-	xr_delete	(L);
+	// by Dima
+	L->set_active		(false);
+	// end
+	xr_delete			(L);
 }
 
 #if RENDER==R_R1
