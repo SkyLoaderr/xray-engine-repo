@@ -12,7 +12,7 @@ INetQueue::INetQueue()
 INetQueue::~INetQueue()
 {
 	cs.Enter		();
-	int				it;
+	u32				it;
 	for				(it=0; it<free.size(); it++)	_DELETE(free[it]);
 	for				(it=0; it<ready.size(); it++)	_DELETE(ready[it]);
 	cs.Leave		();
