@@ -48,6 +48,8 @@ public:
 	Fvector						m_tHitPosition;
 	DWORD						m_dwLastHitTime;
 	DWORD						m_dwFiring;
+	bool						m_bLessCoverLook;
+	DWORD						m_dwLastViewChange;
 	// Constructor
 								CGroup				();
 	

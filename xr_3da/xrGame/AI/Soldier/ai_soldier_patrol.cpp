@@ -961,7 +961,6 @@ void CAI_Soldier::PatrolHurt()
 	if (m_cBodyState != BODY_STATE_LIE) {
 		tStateStack.push(eCurrentState);
 		eCurrentState = aiSoldierLyingDown;
-		
 		return;
 	}
 	

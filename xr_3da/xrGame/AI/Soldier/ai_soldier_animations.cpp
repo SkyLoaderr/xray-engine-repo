@@ -9,6 +9,49 @@
 #include "stdafx.h"
 #include "ai_soldier.h"
 
+void __stdcall CAI_Soldier::HeadSpinCallback(CBoneInstance* B)
+{
+	CAI_Soldier*		A = dynamic_cast<CAI_Soldier*> (static_cast<CObject*>(B->Callback_Param));
+	
+	Fmatrix				spin;
+	spin.setXYZ			(A->NET_Last.o_torso.yaw - A->r_current.yaw, A->r_current.pitch, 0);
+	B->mTransform.mul_43(spin);
+}
+
+void __stdcall CAI_Soldier::SpineSpinCallback(CBoneInstance* B)
+{
+	CAI_Soldier*		A = dynamic_cast<CAI_Soldier*> (static_cast<CObject*>(B->Callback_Param));
+	
+	Fmatrix				spin;
+	spin.setXYZ			(A->NET_Last.o_torso.yaw - A->r_spine_current.yaw, A->r_spine_current.pitch, 0);
+	B->mTransform.mul_43(spin);
+}
+
+void CAI_Soldier::vfAssignBones(CInifile *ini, const char *section)
+{
+	int head_bone = PKinematics(pVisual)->LL_BoneID(ini->ReadSTRING(section,"bone_head"));
+	PKinematics(pVisual)->LL_GetInstance(head_bone).set_callback(HeadSpinCallback,this);
+	
+	int torso_bone = PKinematics(pVisual)->LL_BoneID(ini->ReadSTRING(section,"bone_torso"));
+	PKinematics(pVisual)->LL_GetInstance(torso_bone).set_callback(SpineSpinCallback,this);
+}
+
+void CAI_Soldier::vfLoadSounds()
+{
+	pSounds->Create3D(sndHit[0],"actor\\bhit_flesh-1");
+	pSounds->Create3D(sndHit[1],"actor\\bhit_flesh-2");
+	pSounds->Create3D(sndHit[2],"actor\\bhit_flesh-3");
+	pSounds->Create3D(sndHit[3],"actor\\bhit_helmet-1");
+	pSounds->Create3D(sndHit[4],"actor\\bullet_hit1");
+	pSounds->Create3D(sndHit[5],"actor\\bullet_hit2");
+	pSounds->Create3D(sndHit[6],"actor\\ric_conc-1");
+	pSounds->Create3D(sndHit[7],"actor\\ric_conc-2");
+	pSounds->Create3D(sndDie[0],"actor\\die0");
+	pSounds->Create3D(sndDie[1],"actor\\die1");
+	pSounds->Create3D(sndDie[2],"actor\\die2");
+	pSounds->Create3D(sndDie[3],"actor\\die3");
+}
+
 void CAI_Soldier::vfLoadAnimations()
 {
 	CKinematics* tpVisualObject = PKinematics(pVisual);

@@ -80,9 +80,12 @@ class CAI_Soldier : public CCustomMonster
 		#define MAX_PATROL_DISTANCE		6.f
 		#define MIN_PATROL_DISTANCE		1.f
 
+		#define MIN_SPINE_TURN_ANGLE	PI_DIV_6
+		#define ASSIGN_SPINE_BONE		r_spine_target.yaw = fabsf(r_torso_target.yaw - r_target.yaw - PI_DIV_6) < MIN_SPINE_TURN_ANGLE ? r_target.yaw : (2*r_torso_target.yaw + r_target.yaw)/3;
+				
 		#ifdef WRITE_LOG
 			#define WRITE_TO_LOG(S) \
-				Msg("creature : %s, mode : %s, %.2f,%.2f,%.2f,%.2f,%.2f,%.2f,%.2f",cName(),S,vPosition.x,vPosition.y,vPosition.z,r_current.yaw,r_current.pitch,r_torso_current.yaw,r_torso_current.pitch);\
+				Msg("%s,%s,%d,%.2f,%.2f,%.2f,%.2f,%.2f,%.2f,%.2f",cName(),S,Level().timeServer(),vPosition.x,vPosition.y,vPosition.z,r_current.yaw,r_current.pitch,r_torso_current.yaw,r_torso_current.pitch);\
 				bStopThinking = true;
 		#else
 			#define WRITE_TO_LOG(S)
@@ -141,7 +144,17 @@ class CAI_Soldier : public CCustomMonster
 		/************************************************************************/
 
 		#define SET_LOOK_FIRE_MOVEMENT(a,b,c)\
-			SetLessCoverLook(AI_Node);\
+			if (!(Group.m_bLessCoverLook)) {\
+				Group.m_bLessCoverLook = m_bLessCoverLook = true;\
+				Group.m_dwLastViewChange = dwCurTime;\
+			}\
+			else\
+				if ((m_bLessCoverLook) && (dwCurTime - Group.m_dwLastViewChange > 5000))\
+					Group.m_bLessCoverLook = m_bLessCoverLook = false;\
+			if (m_bLessCoverLook)\
+				SetLessCoverLook(AI_Node);\
+			else\
+				SetDirectionLook();\
 			\
 			vfSetFire(a,Group);\
 			\
@@ -283,6 +296,7 @@ class CAI_Soldier : public CCustomMonster
 		
 		// head turns
 		static void __stdcall HeadSpinCallback(CBoneInstance*);
+		static void __stdcall SpineSpinCallback(CBoneInstance*);
 		
 		// media
 		sound3D			sndHit[SND_HIT_COUNT];
@@ -352,15 +366,14 @@ class CAI_Soldier : public CCustomMonster
 		DWORD			m_dwUnderFireReturn;
 		// //
 
-
-
 		// patrol structures
 		vector<Fvector>			m_tpaPatrolPoints;
 		vector<Fvector>			m_tpaPointDeviations;
 		DWORD					m_dwStartPatrolNode;
 		float					m_fMinPatrolDistance;
 		float					m_fMaxPatrolDistance;
-		
+		bool					m_bLessCoverLook;
+
 		// finite state machine
 		stack<ESoldierStates>	tStateStack;
 		bool					m_bStateChanged;

@@ -31,16 +31,8 @@ void __stdcall CCustomMonster::TorsoSpinCallback(CBoneInstance* B)
 
 	Fmatrix					spin;
 	spin.setXYZ				(0, M->NET_Last.o_torso.pitch, 0);
-	B->mTransform.mulB_43	(spin);
-	
-/*
-	Fmatrix				spin;
-	float				bone_yaw	= A->r_torso.yaw - A->r_model_yaw - A->r_model_yaw_delta;
-	float				bone_pitch	= A->r_torso.pitch;
-	clamp				(bone_pitch,-PI_DIV_8,PI_DIV_4);
-	spin.setXYZ			(bone_yaw,bone_pitch,0);
-	B->mTransform.mul_43(spin);
-*/
+	B->mTransform.mul_43	(spin);
+	//B->mTransform.mulB_43	(spin);
 }
 
 //////////////////////////////////////////////////////////////////////
@@ -54,6 +46,7 @@ CCustomMonster::CCustomMonster()
 	tWatchDirection = Direction();
 	m_cBodyState = BODY_STATE_STAND;
 	r_torso_speed = PI;
+	r_spine_speed = PI_DIV_2;
 }
 
 CCustomMonster::~CCustomMonster()
@@ -384,11 +377,11 @@ void CCustomMonster::UpdateCL	()
 
 	// Use interpolated/last state
 	// mTransformCL	= mTransform;
-	clTransform.rotateY			(NET_Last.o_model);
+	clTransform.rotateY			(-NET_Last.o_model);
 	clTransform.translate_over	(NET_Last.p_pos);
 
 	if (Remote())		{
-		svTransform.rotateY			(N.o_model);
+		svTransform.rotateY			(-N.o_model);
 		svTransform.translate_over	(N.p_pos);
 		vPosition.set				(NET_Last.p_pos);
 	}
@@ -469,7 +462,8 @@ void CCustomMonster::OnRender()
 	{
 		CTravelNode&	N1 = AI_Path.TravelPath[I-1];	Fvector	P1; P1.set(N1.P); P1.y+=0.1f;
 		CTravelNode&	N2 = AI_Path.TravelPath[I];		Fvector	P2; P2.set(N2.P); P2.y+=0.1f;
-		Device.Primitive.dbg_DrawLINE(Fidentity,P1,P2,D3DCOLOR_XRGB(0,255,0));
+		//Device.Primitive.dbg_DrawLINE(Fidentity,P1,P2,D3DCOLOR_XRGB(0,255,0));
+		Device.Primitive.dbg_DrawLINE(precalc_identity,P1,P2,D3DCOLOR_XRGB(0,255,0));
 		Device.Primitive.dbg_DrawAABB(P1,.1f,.1f,.1f,D3DCOLOR_XRGB(0,0,255));
 	}
 	}
@@ -492,7 +486,8 @@ void CCustomMonster::OnRender()
 		Fvector P2;	P2.set(S.v2); P2.y+=0.1f;
 		Device.Primitive.dbg_DrawAABB(P1,.01f,.01f,.01f,D3DCOLOR_XRGB(255,255,255));
 		Device.Primitive.dbg_DrawAABB(P2,.01f,.01f,.01f,D3DCOLOR_XRGB(255,255,255));
-		Device.Primitive.dbg_DrawLINE(Fidentity,P1,P2,D3DCOLOR_XRGB(255,255,255));
+		Device.Primitive.dbg_DrawLINE(precalc_identity,P1,P2,D3DCOLOR_XRGB(255,255,255));
+		//Device.Primitive.dbg_DrawLINE(Fidentity,P1,P2,D3DCOLOR_XRGB(255,255,255));
 	}
 	}
 

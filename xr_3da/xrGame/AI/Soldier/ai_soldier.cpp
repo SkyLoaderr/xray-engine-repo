@@ -34,11 +34,11 @@ CAI_Soldier::CAI_Soldier()
 	m_fTimorousness = ::Random.randF(0,1);
 	m_bFiring = false;
 	m_tpEventSay = Engine.Event.Handler_Attach	("level.entity.say",this);
+	m_bLessCoverLook = false;
 }
 
 CAI_Soldier::~CAI_Soldier()
 {
-	// removing all data no more being neded 
 	for (int i=0; i<SND_HIT_COUNT; i++) pSounds->Delete3D(sndHit[i]);
 	for (i=0; i<SND_DIE_COUNT; i++) pSounds->Delete3D(sndDie[i]);
 	Engine.Event.Handler_Detach (m_tpEventSay,this);
@@ -53,31 +53,6 @@ void CAI_Soldier::OnEvent(EVENT E, DWORD P1, DWORD P2)
 			Level().HUD()->outMessage(0xffffffff,cName(),"%s",Test);
 		}
 	}
-}
-
-void __stdcall CAI_Soldier::HeadSpinCallback(CBoneInstance* B)
-{
-	CAI_Soldier*		A = dynamic_cast<CAI_Soldier*> (static_cast<CObject*>(B->Callback_Param));
-
-	Fmatrix				spin;
-	spin.setXYZ			(A->NET_Last.o_torso.yaw - A->r_current.yaw, A->r_current.pitch, 0);
-	B->mTransform.mul_43(spin);
-}
-
-void CAI_Soldier::vfLoadSounds()
-{
-	pSounds->Create3D(sndHit[0],"actor\\bhit_flesh-1");
-	pSounds->Create3D(sndHit[1],"actor\\bhit_flesh-2");
-	pSounds->Create3D(sndHit[2],"actor\\bhit_flesh-3");
-	pSounds->Create3D(sndHit[3],"actor\\bhit_helmet-1");
-	pSounds->Create3D(sndHit[4],"actor\\bullet_hit1");
-	pSounds->Create3D(sndHit[5],"actor\\bullet_hit2");
-	pSounds->Create3D(sndHit[6],"actor\\ric_conc-1");
-	pSounds->Create3D(sndHit[7],"actor\\ric_conc-2");
-	pSounds->Create3D(sndDie[0],"actor\\die0");
-	pSounds->Create3D(sndDie[1],"actor\\die1");
-	pSounds->Create3D(sndDie[2],"actor\\die2");
-	pSounds->Create3D(sndDie[3],"actor\\die3");
 }
 
 void CAI_Soldier::vfLoadSelectors(CInifile *ini, const char *section)
@@ -95,75 +70,6 @@ void CAI_Soldier::vfLoadSelectors(CInifile *ini, const char *section)
 	SelectorRetreat.Load(ini,section);
 	SelectorSenseSomething.Load(ini,section);
 	SelectorUnderFire.Load(ini,section);
-}
-
-void CAI_Soldier::vfAssignBones(CInifile *ini, const char *section)
-{
-	int head_bone = PKinematics(pVisual)->LL_BoneID(ini->ReadSTRING(section,"bone_head"));
-	PKinematics(pVisual)->LL_GetInstance(head_bone).set_callback(HeadSpinCallback,this);
-}
-
-void CAI_Soldier::vfCheckForPatrol()
-{
-	m_tpaPatrolPoints.clear();
-	m_tpaPointDeviations.clear();
-	if (Level().pLevel->SectionExists("patrol_path")) {
-		for (int iPathLine=0; ; iPathLine++) {
-			char caLine[100], monster_name[100];
-			sprintf(caLine,"path_%d",iPathLine);
-			
-			if (!(Level().pLevel->LineExists("patrol_path",caLine)))
-				break;
-			
-			LPCSTR buf = Level().pLevel->ReadSTRING("patrol_path",caLine), buf2 = buf;
-			
-			int path_count = _GetItemCount(buf);
-			
-			if (!path_count)
-				break;
-			
-			R_ASSERT(path_count && (path_count % 4 == 0));
-			
-			DWORD team,squad,group, dwDummy;
-			
-			for ( ; ; buf2++)
-				if (*buf2 == ',') {
-					memcpy(monster_name,buf,(buf2 - buf)*sizeof(char));
-					monster_name[buf2++ - buf] = 0;
-					break;
-				}
-				
-			const char *cTest = cName();
-				
-			if ((strlen(monster_name)) && (strcmp(monster_name,this->cName())))
-				continue;
-				
-			sscanf(buf2,"%d,%d,%d",&team,&squad,&group);
-			for (int komas=0; komas<3; buf2++)
-				if (*buf2 == ',')
-					komas++;
-					
-			if ((team != g_Team()) || (squad != g_Squad()) || (group != g_Group()))
-				continue;
-			
-			path_count -= 4;
-			path_count /= 4;
-			m_tpaPatrolPoints.resize(path_count);
-			m_tpaPointDeviations.resize(path_count);
-			
-			for (int i=0; i<path_count; i++) {
-				sscanf(buf2,"%f,%f,%f,%d",&(m_tpaPatrolPoints[i].x),&(m_tpaPatrolPoints[i].y),&(m_tpaPatrolPoints[i].z),&dwDummy);
-				for ( komas=0; komas<4; buf2++)
-					if (*buf2 == ',')
-						komas++;
-			}
-			
-			m_dwStartPatrolNode = Level().AI.q_LoadSearch(m_tpaPatrolPoints[0]);
-			AI_Path.bNeedRebuild = TRUE;
-			
-			break;
-		}
-	}
 }
 
 void CAI_Soldier::Load(CInifile* ini, const char* section)
@@ -296,125 +202,6 @@ void CAI_Soldier::Update(DWORD DT)
 	inherited::Update(DT);
 }
 
-float CAI_Soldier::EnemyHeuristics(CEntity* E)
-{
-	if (E->g_Team()  == g_Team())	
-		return flt_max;		// don't attack our team
-	
-	int	g_strench = E->g_Armor()+E->g_Health();
-	
-	if (g_strench <= 0)					
-		return flt_max;		// don't attack dead enemiyes
-	
-	float	f1	= Position().distance_to_sqr(E->Position());
-	float	f2	= float(g_strench);
-	float   f3  = 1;
-	if (E==Level().CurrentEntity())  f3 = .5f;
-	return  f1*f2*f3;
-}
-
-#define MOVEMENT_IDLE_TIME			m_dwMovementIdleTime //1000
-#define MAX_INVISIBLE_SPEED			m_fMaxInvisibleSpeed // 2.f
-#define MAX_VIEWABLE_SPEED			m_fMaxViewableSpeed  // 10.f
-
-#define MOVEMENT_SPEED_WEIGHT		m_fMovementSpeedWeight // 20.f
-#define DISTANCE_WEIGHT				m_fDistanceWeight //20.f
-#define SPEED_WEIGHT				m_fSpeedWeight // -2.f
-
-bool CAI_Soldier::bfCheckForVisibility(CEntity* tpEntity)
-{
-	float fResult = 0.f;
-	
-	// computing maximum viewable distance in the specified direction
-	Fvector tCurrentWatchDirection, tTemp;
-	tCurrentWatchDirection.direct	(r_current.yaw,r_current.pitch);
-	tCurrentWatchDirection.normalize();
-	tTemp.sub(tpEntity->Position(),vPosition);
-	tTemp.normalize();
-	//float fAlpha = tCurrentWatchDirection.dotproduct(tTemp), fEyeFov = eye_fov*PI/180.f;
-	float fAlpha = tWatchDirection.dotproduct(tTemp), fEyeFov = eye_fov*PI/180.f;
-	clamp(fAlpha,-.99999f,+.99999f);
-	fAlpha = acosf(fAlpha);
-	float fMaxViewableDistanceInDirection = eye_range*(1 - fAlpha/(fEyeFov/1.9f));
-	
-	// computing distance weight
-	tTemp.sub(vPosition,tpEntity->Position());
-	fResult += tTemp.magnitude() >= fMaxViewableDistanceInDirection ? 0.f : DISTANCE_WEIGHT*(1.f - tTemp.magnitude()/fMaxViewableDistanceInDirection);
-	
-	// computing movement speed weight
-	if (tpEntity->ps_Size() > 1) {
-		DWORD dwTime = tpEntity->ps_Element(tpEntity->ps_Size() - 1).dwTime;
-		if (dwTime < MOVEMENT_IDLE_TIME) {
-			tTemp.sub(tpEntity->ps_Element(tpEntity->ps_Size() - 2).vPosition,tpEntity->ps_Size() - 1);
-			float fSpeed = tTemp.magnitude()/dwTime;
-			fResult += fSpeed < MAX_INVISIBLE_SPEED ? MOVEMENT_SPEED_WEIGHT*fSpeed/MAX_INVISIBLE_SPEED : MOVEMENT_SPEED_WEIGHT;
-		}
-	}
-
-	// computing lightness weight
-	fResult *= 2*float(0 + tpEntity->AI_Node->light)/(0 + 255.f);
-	
-	// computing enemy state
-	switch (m_cBodyState) {
-		case BODY_STATE_STAND : {
-			break;
-		}
-		case BODY_STATE_CROUCH : {
-			fResult *= m_fCrouchVisibilityMultiplier;
-			break;
-		}
-		case BODY_STATE_LIE : {
-			fResult *= m_fLieVisibilityMultiplier;
-			break;
-		}
-	}
-
-	// computing my ability to view the enemy
-	//if ()
-	fResult += m_fCurSpeed < MAX_VIEWABLE_SPEED ? SPEED_WEIGHT*(1.f - m_fCurSpeed/MAX_VIEWABLE_SPEED) : SPEED_WEIGHT;
-
-	return(fResult >= m_fVisibilityThreshold);
-}
-
-void CAI_Soldier::SelectEnemy(SEnemySelected& S)
-{
-	// Initiate process
-	objVisible&	Known	= Level().Teams[g_Team()].KnownEnemys;
-	S.Enemy					= 0;
-	S.bVisible			= FALSE;
-	S.fCost				= flt_max-1;
-	if (Known.size()==0)	return;
-
-	// Get visible list
-	ai_Track.o_get	(tpaVisibleObjects);
-	std::sort		(tpaVisibleObjects.begin(),tpaVisibleObjects.end());
-
-	INIT_SQUAD_AND_LEADER;
-	CGroup &Group = Squad.Groups[g_Group()];
-	
-	// Iterate on known
-	for (DWORD i=0; i<Known.size(); i++)
-	{
-		CEntity*	E = dynamic_cast<CEntity*>(Known[i].key);
-		float		H = EnemyHeuristics(E);
-		if (H<S.fCost) {
-			if (!Group.m_bEnemyNoticed)
-				if (!bfCheckForVisibility(E))
-					continue;
-			// Calculate local visibility
-			CObject**	ins	 = lower_bound(tpaVisibleObjects.begin(),tpaVisibleObjects.end(),(CObject*)E);
-			bool	bVisible = ((ins==tpaVisibleObjects.end())?FALSE:((E==*ins)?TRUE:FALSE)) && (bfCheckForVisibility(E));
-			float	cost	 = H*(bVisible?1:_FB_invisible_hscale);
-			if (cost<S.fCost)	{
-				S.Enemy		= E;
-				S.bVisible	= bVisible;
-				S.fCost		= cost;
-				Group.m_bEnemyNoticed = true;
-			}
-		}
-	}
-}
-
 IC bool CAI_Soldier::bfCheckForMember(Fvector &tFireVector, Fvector &tMyPoint, Fvector &tMemberPoint) 
 {
 	Fvector tMemberDirection;
@@ -521,7 +308,10 @@ void CAI_Soldier::SetDirectionLook()
 		if (tWatchDirection.square_magnitude() > EPS_L) {
 			tWatchDirection.normalize();
 			mk_rotation(tWatchDirection,r_torso_target);
-			r_target.yaw = r_torso_target.yaw + 0*PI_DIV_6;
+			r_target.yaw = r_torso_target.yaw;
+			ASSIGN_SPINE_BONE;
+			r_target.yaw += PI_DIV_6;
+			q_look.o_look_speed=PI_DIV_4;
 		}
 	}
 	//r_target.pitch = 0;
@@ -536,9 +326,10 @@ void CAI_Soldier::vfAimAtEnemy()
 	tWatchDirection.sub(pos1,pos2);
 	mk_rotation(tWatchDirection,r_torso_target);
 	r_target.yaw = r_torso_target.yaw;
-	//r_target.yaw += PI/6.f;
-	r_torso_target.yaw = r_torso_target.yaw - EYE_WEAPON_DELTA;
-	//q_look.o_look_speed=8*_FB_look_speed;
+	ASSIGN_SPINE_BONE;
+	//r_target.yaw += 2*PI_DIV_6;
+	//r_torso_target.yaw = r_torso_target.yaw - 2*PI_DIV_6;//EYE_WEAPON_DELTA;
+	q_look.o_look_speed=_FB_look_speed;
 }
 
 void CAI_Soldier::SetLessCoverLook(NodeCompressed *tNode)
@@ -562,9 +353,10 @@ void CAI_Soldier::SetLessCoverLook(NodeCompressed *tNode)
 			}
 			
 			r_target.yaw = fBestAngle;
-			q_look.o_look_speed=_FB_look_speed;
+			ASSIGN_SPINE_BONE;
+			q_look.o_look_speed=PI_DIV_4;
 			//r_torso_speed = _FB_look_speed;//(r_torso_target.yaw - r_torso_current.yaw);
-			r_target.yaw += 0*PI_DIV_6;
+			r_target.yaw += PI_DIV_6;
 		}
 	}
 	//r_target.pitch = 0;
@@ -772,6 +564,69 @@ static BOOL __fastcall SoldierQualifier(CObject* O, void* P)
 objQualifier* CAI_Soldier::GetQualifier	()
 {
 	return(&SoldierQualifier);
+}
+
+void CAI_Soldier::vfCheckForPatrol()
+{
+	m_tpaPatrolPoints.clear();
+	m_tpaPointDeviations.clear();
+	if (Level().pLevel->SectionExists("patrol_path")) {
+		for (int iPathLine=0; ; iPathLine++) {
+			char caLine[100], monster_name[100];
+			sprintf(caLine,"path_%d",iPathLine);
+			
+			if (!(Level().pLevel->LineExists("patrol_path",caLine)))
+				break;
+			
+			LPCSTR buf = Level().pLevel->ReadSTRING("patrol_path",caLine), buf2 = buf;
+			
+			int path_count = _GetItemCount(buf);
+			
+			if (!path_count)
+				break;
+			
+			R_ASSERT(path_count && (path_count % 4 == 0));
+			
+			DWORD team,squad,group, dwDummy;
+			
+			for ( ; ; buf2++)
+				if (*buf2 == ',') {
+					memcpy(monster_name,buf,(buf2 - buf)*sizeof(char));
+					monster_name[buf2++ - buf] = 0;
+					break;
+				}
+				
+				const char *cTest = cName();
+				
+				if ((strlen(monster_name)) && (strcmp(monster_name,this->cName())))
+					continue;
+				
+				sscanf(buf2,"%d,%d,%d",&team,&squad,&group);
+				for (int komas=0; komas<3; buf2++)
+					if (*buf2 == ',')
+						komas++;
+					
+					if ((team != g_Team()) || (squad != g_Squad()) || (group != g_Group()))
+						continue;
+					
+					path_count -= 4;
+					path_count /= 4;
+					m_tpaPatrolPoints.resize(path_count);
+					m_tpaPointDeviations.resize(path_count);
+					
+					for (int i=0; i<path_count; i++) {
+						sscanf(buf2,"%f,%f,%f,%d",&(m_tpaPatrolPoints[i].x),&(m_tpaPatrolPoints[i].y),&(m_tpaPatrolPoints[i].z),&dwDummy);
+						for ( komas=0; komas<4; buf2++)
+							if (*buf2 == ',')
+								komas++;
+					}
+					
+					m_dwStartPatrolNode = Level().AI.q_LoadSearch(m_tpaPatrolPoints[0]);
+					AI_Path.bNeedRebuild = TRUE;
+					
+					break;
+		}
+	}
 }
 
 void CAI_Soldier::vfSetFire(bool bFire, CGroup &Group)
@@ -1607,7 +1462,9 @@ void CAI_Soldier::UnderFire()
 			vfSearchForBetterPosition(SelectorUnderFire,Squad,Leader);
 
 	mk_rotation(tHitDir,r_torso_target);
-	r_target.yaw = r_torso_target.yaw + 0*PI_DIV_6;
+	r_target.yaw = r_torso_target.yaw;
+	ASSIGN_SPINE_BONE;
+	r_target.yaw += PI_DIV_6;
 	r_torso_target.yaw = r_torso_target.yaw - EYE_WEAPON_DELTA;
 	//r_target.pitch = 0;
 	//r_torso_target.pitch = 0;
