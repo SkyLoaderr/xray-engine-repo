@@ -8,7 +8,7 @@ BOOL APIENTRY DllMain( HANDLE hModule,
 { 
 	switch(fdwReason) {
 		case DLL_PROCESS_ATTACH:
-//			Core._initialize("XRayEditorTools",0,"\\\\X-Ray\\stalker$\\");
+			Core._initialize("XRayEditorTools",0,FALSE);
 			//FPU::m64r	();
 			break;
 		case DLL_THREAD_ATTACH:
@@ -16,7 +16,7 @@ BOOL APIENTRY DllMain( HANDLE hModule,
 		case DLL_THREAD_DETACH:
 			break;
 		case DLL_PROCESS_DETACH:
-			//Core._destroy();
+			Core._destroy();
 			break;
 	}
 	return TRUE;
