@@ -14,36 +14,6 @@
 class CAI_Stalker;
 
 class CMotivationActionManagerStalker : public CMotivationActionManagerScript<CAI_Stalker> {
-public:
-	enum EMotivations {
-		eMotivationGlobal			= u32(0),
-		eMotivationAlive,
-		eMotivationDead,
-		eMotivationSolveZonePuzzle,
-		eMotivationDummy			= u32(-1)
-	};
-
-	enum EWorldProperties {
-		eWorldPropertyAlive			= u32(0),
-		eWorldPropertyDead,
-		eWorldPropertyAlreadyDead,
-		
-		eWorldPropertyALife,
-		eWorldPropertyPuzzleSolved,
-
-		eWorldPropertyScript,
-		eWorldPropertyDummy			= u32(-1),
-	};
-
-	enum EWorldOperators {
-		eWorldOperatorAlreadyDead	= u32(0),
-		eWorldOperatorDead,
-		eWorldOperatorFreeNoALife,
-		eWorldOperatorFreeALife,
-		eWorldOperatorScript,
-		eWorldOperatorDummy			= u32(-1),
-	};
-
 protected:
 	typedef CMotivationActionManagerScript<CAI_Stalker>	inherited;
 	typedef CActionScriptBase<CAI_Stalker>				CAction;

@@ -10,6 +10,9 @@
 #include "stalker_motivations.h"
 #include "motivation_action_manager_stalker.h"
 #include "ai/stalker/ai_stalker.h"
+#include "stalker_decision_space.h"
+
+using namespace StalkerDecisionSpace;
 
 //////////////////////////////////////////////////////////////////////////
 // CMotivationGlobal
@@ -18,13 +21,13 @@
 float CMotivationGlobal::evaluate	(u32 sub_motivation_id)
 {
 	VERIFY				(m_object);
-	if (CMotivationActionManagerStalker::eMotivationAlive == sub_motivation_id)
+	if (eMotivationAlive == sub_motivation_id)
 		if (m_object->g_Alive())
 			return		(1.f);
 		else
 			return		(0.f);
 	else
-		if (CMotivationActionManagerStalker::eMotivationDead == sub_motivation_id)
+		if (eMotivationDead == sub_motivation_id)
 			if (!m_object->g_Alive())
 				return	(1.f);
 			else

@@ -52,4 +52,19 @@ public:
 	virtual void		execute						();
 };
 
+//////////////////////////////////////////////////////////////////////////
+// CStalkerActionGatherItems
+//////////////////////////////////////////////////////////////////////////
+
+class CStalkerActionGatherItems : public CStalkerActionBase {
+protected:
+	typedef CStalkerActionBase inherited;
+
+public:
+						CStalkerActionGatherItems	(CAI_Stalker *object, LPCSTR action_name = "");
+	virtual void		initialize					();
+	virtual void		execute						();
+	virtual void		finalize					();
+};
+
 #include "stalker_actions_inline.h"

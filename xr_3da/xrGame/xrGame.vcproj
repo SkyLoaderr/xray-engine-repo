@@ -462,6 +462,9 @@
 						<File
 							RelativePath=".\motivation_action_manager_stalker_inline.h">
 						</File>
+						<File
+							RelativePath=".\stalker_decision_space.h">
+						</File>
 						<Filter
 							Name="actions"
 							Filter="">

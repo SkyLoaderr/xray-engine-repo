@@ -10,7 +10,9 @@
 #include "stalker_actions.h"
 #include "ai/stalker/ai_stalker.h"
 #include "motivation_action_manager_stalker.h"
+#include "stalker_decision_space.h"
 
+using namespace StalkerDecisionSpace;
 //////////////////////////////////////////////////////////////////////////
 // CStalkerActionBase
 //////////////////////////////////////////////////////////////////////////
@@ -33,7 +35,7 @@ void CStalkerActionDead::execute		()
 {
 	inherited::execute		();
 	m_object->CMovementManager::enable_movement(false);
-	set_property			(CMotivationActionManagerStalker::eWorldPropertyDead,true);
+	set_property			(eWorldPropertyDead,true);
 }
 
 //////////////////////////////////////////////////////////////////////////
@@ -61,6 +63,54 @@ void CStalkerActionFreeNoALife::execute		()
 	m_object->set_mental_state		(eMentalStateFree);
 
 	m_object->CSightManager::update				(eLookTypeSearch);
+#ifdef OLD_OBJECT_HANDLER
+	m_object->CObjectHandler::set_dest_state	(eObjectActionNoItems);
+#else
+	m_object->CObjectHandlerGOAP::set_goal		(eObjectActionIdle);
+#endif
+}
+
+//////////////////////////////////////////////////////////////////////////
+// CStalkerActionGatherItems
+//////////////////////////////////////////////////////////////////////////
+
+CStalkerActionGatherItems::CStalkerActionGatherItems	(CAI_Stalker *object, LPCSTR action_name) :
+	inherited				(object,action_name)
+{
+}
+
+void CStalkerActionGatherItems::initialize	()
+{
+	inherited::initialize	();
+	m_object->set_sound_mask(u32(eStalkerSoundMaskHumming));
+}
+
+void CStalkerActionGatherItems::finalize	()
+{
+	inherited::finalize		();
+	m_object->set_sound_mask(0);
+}
+
+void CStalkerActionGatherItems::execute		()
+{
+	inherited::execute		();
+
+	if (!m_object->item())
+		return;
+
+	m_object->set_level_dest_vertex	(m_object->item()->level_vertex_id());
+	
+	m_object->set_node_evaluator	(0);
+	m_object->set_path_evaluator	(0);
+	m_object->set_desired_position	(&m_object->item()->Position());
+	m_object->set_desired_direction	(0);
+	m_object->set_path_type			(CMovementManager::ePathTypeLevelPath);
+	m_object->set_detail_path_type	(CMovementManager::eDetailPathTypeSmooth);
+	m_object->set_body_state		(eBodyStateStand);
+	m_object->set_movement_type		(eMovementTypeWalk);
+	m_object->set_mental_state		(eMentalStateDanger);
+
+	m_object->CSightManager::update				(eLookTypePoint,&m_object->item()->Position());
 #ifdef OLD_OBJECT_HANDLER
 	m_object->CObjectHandler::set_dest_state	(eObjectActionNoItems);
 #else

@@ -27,3 +27,12 @@ CStalkerPropertyEvaluatorAlive::_value_type CStalkerPropertyEvaluatorAlive::eval
 {
 	return			(!!m_object->g_Alive());
 }
+
+//////////////////////////////////////////////////////////////////////////
+// CStalkerPropertyEvaluatorItems
+//////////////////////////////////////////////////////////////////////////
+
+CStalkerPropertyEvaluatorItems::_value_type CStalkerPropertyEvaluatorItems::evaluate	()
+{
+	return			(!!m_object->item());
+}
