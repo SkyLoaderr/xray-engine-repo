@@ -238,8 +238,6 @@ BOOL CSE_Abstract::Spawn_Read				(NET_Packet	&tNetPacket)
         return					FALSE;
 	}
 
-	// this is "zaplatka"
-
 	if (m_wVersion > 69)
 		m_script_version		= tNetPacket.r_u16();
 
