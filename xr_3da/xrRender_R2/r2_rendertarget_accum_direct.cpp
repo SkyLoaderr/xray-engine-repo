@@ -11,7 +11,7 @@ void CRenderTarget::accum_direct	()
 		0.5f,				0.0f,				0.0f,			0.0f,
 		0.0f,				-0.5f,				0.0f,			0.0f,
 		0.0f,				0.0f,				1.0f,			0.0f,
-		0.5f + fTexelOffs,	0.5f + fTexelOffs,	0.0f - .002f,	1.0f
+		0.5f + fTexelOffs,	0.5f + fTexelOffs,	0.0f - .004f,	1.0f
 	};
 
 	// compute xforms
