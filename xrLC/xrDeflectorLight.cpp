@@ -242,11 +242,11 @@ void LightPoint(CDB::COLLIDER* DB, CDB::MODEL* MDL, base_color &C, Fvector &P, F
 				if( D <=0 ) continue;
 
 				// Trace Light
-				float scale	=	D*L->energy*rayTrace(DB,MDL, *L,Pnew,Ldir,1000.f,skip,bUseFaceDisable);
+				float scale	=	L->energy*rayTrace(DB,MDL, *L,Pnew,Ldir,1000.f,skip,bUseFaceDisable);
 				C.sun		+=	scale;
 			} else {
 				// Distance
-				float sqD	= P.distance_to_sqr(L->position);
+				float sqD	=	P.distance_to_sqr(L->position);
 				if (sqD > L->range2) continue;
 
 				// Dir
