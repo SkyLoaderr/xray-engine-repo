@@ -61,13 +61,11 @@ function multiplayer_create_dialog:InitControls()
 	self:Register(btn)
 	self.main_frame:AttachChild(btn)	
 	
---	self.map_tab = ui_multiplayer_base_tab.multiplayer_base_tab()
---	self.map_tab:InitControls(self.left_align_x, self.top_align_y)
---	self.main_frame:AttachChild(self.map_tab)
-	
-	self.tab_video = ui_options_video_tab.options_video_tab()
-	self.tab_video:InitControls(self.left_align_x, self.top_align_y)
-	self.main_frame:AttachChild(self.tab_video)	
+	self.map_tab = ui_multiplayer_base_tab.multiplayer_base_tab()
+	self.map_tab:InitControls("Map",self.left_align_x, self.top_align_y)
+	self.main_frame:AttachChild(self.map_tab)
+	self.map_tab:Show(true)
+
 end
 
 function multiplayer_create_dialog:InitCallbacks()
