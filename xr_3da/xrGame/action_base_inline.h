@@ -84,7 +84,7 @@ TEMPLATE_SPECIALIZATION
 void CBaseAction::initialize		()
 {
 #ifdef LOG_ACTION
-	VERIFY				(!m_switched);
+	VERIFY3				(!m_switched,m_action_name,"::initialize()");
 	m_switched			= true;
 	if (m_use_log && xr_strlen(m_action_name))
 		debug_log		(eActionStateInitialized);
@@ -107,7 +107,7 @@ TEMPLATE_SPECIALIZATION
 void CBaseAction::finalize		()
 {
 #ifdef LOG_ACTION
-	VERIFY				(!m_switched);
+	VERIFY3				(!m_switched,m_action_name,"::finalize()");
 	if (m_use_log && xr_strlen(m_action_name))
 		debug_log		(eActionStateFinalized);
 #endif
