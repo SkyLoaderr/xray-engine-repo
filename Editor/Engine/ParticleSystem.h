@@ -23,7 +23,8 @@ typedef char		sh_name[64];
 #define PARTICLESYSTEM_VERSION 0x0011
 
 #pragma pack( push,1 )
-struct ENGINE_API SEmitterDef{
+struct ENGINE_API SEmitterDef
+{
 	enum EEmitterType{
     	emPoint=0,
         emCone,
@@ -66,7 +67,8 @@ struct ENGINE_API SEmitterDef{
     }
 };
 
-struct ENGINE_API SAnimation{
+struct ENGINE_API SAnimation
+{
 	Fvector2		m_TexSize;
 	Fvector2		m_FrameSize;
 	int     		m_iFrameDimX;
@@ -96,7 +98,8 @@ struct ENGINE_API SAnimation{
     }
 };
 
-struct ENGINE_API 	SParams{
+struct ENGINE_API 	SParams
+{
 	sh_name			m_Name;
 	// params
 	float			m_fLife;
@@ -122,7 +125,8 @@ struct ENGINE_API 	SParams{
 	DWORD			m_dwFlag;
 };
 
-struct ENGINE_API SDef: public SParams{
+struct ENGINE_API SDef: public SParams
+{
     sh_name			m_Folder;
 	sh_name			m_Computer;
     sh_name			m_ShaderName;
@@ -214,7 +218,7 @@ struct ENGINE_API SDef: public SParams{
 };
 #pragma pack( pop )
 
-struct ENGINE_API SEmitter:public SEmitterDef
+struct ENGINE_API SEmitter : public SEmitterDef
 {
 	float			m_fEmissionResidue;
 	BOOL            m_bPlaying;
@@ -307,30 +311,33 @@ public:
 		}
     }
 
-	IC virtual void	GeneratePosAndDir(Fvector& pos, Fvector& dir){
+	IC virtual void	GeneratePosAndDir(Fvector& pos, Fvector& dir)
+	{
         switch (m_EmitterType){
         case emPoint:
-			pos.set(m_Position);
-			dir.random_dir();
+			pos.set			(m_Position);
+			dir.random_dir	();
             break;
         case emCone:
-			pos.set(m_Position);
-			dir.random_dir(m_ConeDirection,m_ConeAngle);
+			pos.set			(m_Position);
+			dir.random_dir	(m_ConeDirection,m_ConeAngle);
             break;
         case emSphere:
 			pos.random_point(m_SphereRadius);
-            pos.add(m_Position);
-			dir.random_dir();
+            pos.add			(m_Position);
+			dir.random_dir	();
             break;
         case emBox:
 			pos.random_point(m_BoxSize);
-            pos.add(m_Position);
-			dir.random_dir();
+            pos.add			(m_Position);
+			dir.random_dir	();
             break;
         default: THROW;
 		}
 	}
-	IC virtual int		CalculateBirth(int p_present, float fTime, float dT){
+
+	IC virtual int		CalculateBirth(int p_present, float fTime, float dT)
+	{
     	if (!m_bPlaying) return 0;
 		// calculate how many particles we should create from ParticlesPerSec and time elapsed taking the
 		// previous frame's EmissionResidue into account.
@@ -368,7 +375,8 @@ public:
 	}
 };
 
-IC void SimulatePosition(Fvector& pos, const SParticle* P, float T, float k){
+IC void SimulatePosition(Fvector& pos, const SParticle* P, float T, float k)
+{
     // this moves the particle using the last known velocity and the time that has passed
     Fvector 	vel;
     vel.lerp	(P->m_Velocity.start,P->m_Velocity.end,k);
@@ -378,22 +386,26 @@ IC void SimulatePosition(Fvector& pos, const SParticle* P, float T, float k){
     pos.y 		= P->m_vLocation.y+vel.y*T+(3*P->m_GravityStart.y+P->m_GravityLambda.y*T)*tt_6;
     pos.z 		= P->m_vLocation.z+vel.z*T+(3*P->m_GravityStart.z+P->m_GravityLambda.z*T)*tt_6;
 }
-IC void SimulateColor(DWORD& C, const SParticle* P, float k, float k_inv, float alpha_factor){
+IC void SimulateColor(DWORD& C, const SParticle* P, float k, float k_inv, float alpha_factor)
+{
     // adjust current Color from calculated Deltas and time elapsed.
 	C = D3DCOLOR_RGBA(	iFloor(P->m_Color.start.r*k_inv+P->m_Color.end.r*k),
 						iFloor(P->m_Color.start.g*k_inv+P->m_Color.end.g*k),
 						iFloor(P->m_Color.start.b*k_inv+P->m_Color.end.b*k),
 						iFloor((P->m_Color.start.a*k_inv+P->m_Color.end.a*k)*alpha_factor));
 }
-IC void SimulateSize(float& sz, const SParticle* P, float k, float k_inv){
+IC void SimulateSize(float& sz, const SParticle* P, float k, float k_inv)
+{
     // adjust current Size & Angle
     sz 			= P->m_Size.start*k_inv+P->m_Size.end*k;
 }
-IC void SimulateAngle(float& angle, const SParticle* P, float T, float k, float k_inv){
+IC void SimulateAngle(float& angle, const SParticle* P, float T, float k, float k_inv)
+{
 	float ang_vel = P->m_ASpeed.start*k_inv+P->m_ASpeed.end*k;
     angle 		= P->m_fAngle+ang_vel*T;
 }
-IC void SimulateAnimation(int& frame, SParams* def, const SParticle* P, float T){
+IC void SimulateAnimation(int& frame, SParams* def, const SParticle* P, float T)
+{
     frame = iFloor(P->m_fAnimSpeed*T)+P->m_iAnimStartFrame;
     frame %=def->m_Animation.m_iFrameCount;
 }
