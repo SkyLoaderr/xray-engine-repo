@@ -510,7 +510,7 @@ void CRender::render_sun				()
 	float m_fCosGamma = m_lightDir.x * m_View._13	+
 						m_lightDir.y * m_View._23	+
 						m_lightDir.z * m_View._33	;
-	float m_fTSM_Delta= ps_r2_sun_projection;
+	float m_fTSM_Delta= ps_r2_sun_tsm_projection;
 
 	// Compute REAL sheared xform based on receivers/casters information
 	FPU::m64r			();
