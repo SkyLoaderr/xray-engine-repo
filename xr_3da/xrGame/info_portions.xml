@@ -15,6 +15,7 @@
 		<dialog>trader_job</dialog>
 		<dialog>trader_talk_about</dialog>
 		<dialog>stalker_talk_about</dialog>
+		<dialog>job_medkit</dialog>
 	</info_portion>
 
 	<info_portion id="actor_start02">
