@@ -22,7 +22,7 @@ function evaluator_contact:evaluate()
 	then
 		return false
 	end
-
+	
 	local actor = level.actor()
 
 	if actor then
@@ -217,7 +217,8 @@ end
 
 --' ѕриглашение к тороговле
 class "action_meet_wait" (action_base)
-function action_meet_wait:__init (npc_name,action_name, storage) super (nil, action_name)
+function action_meet_wait:__init (npc_name,action_name, storage, char_ini) super (nil, action_name)
+	self.char_ini = char_ini
 	self.a = storage
 
 	self.sound_w = { rnd = 80,
@@ -239,6 +240,12 @@ function action_meet_wait:initialize()
 	xr_state.change_state(self.object,xr_state.stand)
    	self.object:set_item(object.deactivate, self.object:best_weapon())	
    	self.a.Buyer = nil
+
+	--' —мена стартового диалога
+	if self.char_ini:section_exist("dialog") and self.char_ini:line_exist("dialog", "id") then
+		printf("CC: new dialog set")
+		self.object:set_start_dialog(self.char_ini:r_string("dialog", "id"))
+	end	   	
 end
 function action_meet_wait:execute ()
 	if xr_state.finish_state(self.object) == true then
@@ -269,7 +276,7 @@ end
 class "action_talk" (action_base)
 function action_talk:__init (npc_name,action_name, storage) super (nil, action_name)
 	self.a = storage
-
+	
 	self.sound_trstart = { rnd = 100,
 				   maxidle = 1, 
 				   sumidle = 0,
@@ -294,7 +301,7 @@ function action_talk:initialize()
 	if self.object:active_sound_count() == 0 then
 		xr_sound.sound_update(self.object, self.sound_trstart)		
 	end
-   	self.object:set_item(object.deactivate, self.object:best_weapon())
+   	self.object:set_item(object.deactivate, self.object:best_weapon())   		
 end
 function action_talk:execute ()
 	-- нужно остановитьс€ и посмотреть в сторону актора
@@ -462,7 +469,7 @@ function add_to_binder(object, char_ini)
 	manager:add_evaluator (properties["talk"], 			evaluator_talk		(xr_motivator.storage[object:id()].meet))
 
 	-- Actions
-	local action = action_meet_wait (object:name(),"action_meet_wait", xr_motivator.storage[object:id()].meet)
+	local action = action_meet_wait (object:name(),"action_meet_wait", xr_motivator.storage[object:id()].meet, char_ini)
 	action:add_precondition		(world_property(stalker_ids.property_alive, true))
 	action:add_precondition		(world_property(stalker_ids.property_enemy,	false))
 	action:add_precondition		(world_property(properties["state_end"], 	true))
