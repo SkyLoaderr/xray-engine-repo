@@ -128,6 +128,7 @@ void	CRenderTarget::OnDeviceCreate	()
 	b_accum_spot					= xr_new<CBlender_accum_spot>			();
 	b_accum_reflected				= xr_new<CBlender_accum_reflected>		();
 	b_bloom							= xr_new<CBlender_bloom_build>			();
+	b_luminance						= xr_new<CBlender_luminance>			();
 	b_combine						= xr_new<CBlender_combine>				();
 	b_decompress					= xr_new<CBlender_decompress>			();
 
@@ -245,6 +246,7 @@ void	CRenderTarget::OnDeviceCreate	()
 		rt_LUM_64.create			(r2_RT_luminance_t64,	64, 64,	D3DFMT_A16B16G16R16F	);
 		rt_LUM_8.create				(r2_RT_luminance_t8,	8,	8,	D3DFMT_A16B16G16R16F	);
 		rt_LUM_1.create				(r2_RT_luminance,		1,	1,	D3DFMT_A16B16G16R16F	);	// need blending here
+		s_luminance.create			(b_luminance,				"r2\\luminance");
 	}
 
 	// COMBINE
@@ -468,6 +470,7 @@ void	CRenderTarget::OnDeviceDestroy	()
 	// Blenders
 	xr_delete					(b_decompress			);
 	xr_delete					(b_combine				);
+	xr_delete					(b_luminance			);
 	xr_delete					(b_bloom				);
 	xr_delete					(b_accum_reflected		);
 	xr_delete					(b_accum_spot			);

@@ -518,6 +518,12 @@
 			<File
 				RelativePath="blender_light_spot.h">
 			</File>
+			<File
+				RelativePath=".\blender_luminance.cpp">
+			</File>
+			<File
+				RelativePath=".\blender_luminance.h">
+			</File>
 			<Filter
 				Name="R1"
 				Filter="">

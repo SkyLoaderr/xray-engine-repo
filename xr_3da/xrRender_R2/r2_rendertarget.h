@@ -24,6 +24,7 @@ public:
 	IBlender*					b_accum_spot;
 	IBlender*					b_accum_reflected;
 	IBlender*					b_bloom;
+	IBlender*					b_luminance;
 	IBlender*					b_combine;
 	IBlender*					b_decompress;
 	xr_vector<std::pair<Fsphere,Fcolor> >		dbg_spheres;
