@@ -215,7 +215,6 @@ DEFINE_VECTOR(int*,LPIntVec,LPIntIt);
 #ifdef __BORLANDC__
 DEFINE_VECTOR(AnsiString,AStringVec,AStringIt);
 DEFINE_VECTOR(AnsiString*,LPAStringVec,LPAStringIt);
-DEFINE_VECTOR(xr_a_token,ATokenVec,ATokenIt);
 #endif
 
 #endif
