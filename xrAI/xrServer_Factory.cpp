@@ -34,7 +34,7 @@ CSE_Abstract *F_entity_Create			(LPCSTR caSection)
 		case CLSID_AI_FLESH_GROUP:		return xr_new<CSE_ALifeGroupTemplate<CSE_ALifeMonsterBiting> >(caSection);
 		case CLSID_AI_CHIMERA:			return xr_new<CSE_ALifeMonsterChimera>			(caSection);
 		case CLSID_AI_ZOMBIE:			return xr_new<CSE_ALifeMonsterZombie>			(caSection);            // Visualed
-		case CLSID_AI_DOG:				return xr_new<CSE_ALifeMonsterBiting>			(caSection);			// Visualed
+		case CLSID_AI_DOG_RED:			return xr_new<CSE_ALifeMonsterChimera>			(caSection);			// Visualed
 		case CLSID_AI_SOLDIER:			return xr_new<CSE_ALifeHumanStalker>			(caSection);           	// Visualed
 		case CLSID_AI_STALKER:			return xr_new<CSE_ALifeHumanStalker>			(caSection);			// Visualed
 		case CLSID_AI_IDOL:				return xr_new<CSE_ALifeObjectIdol>				(caSection);			// Visualed

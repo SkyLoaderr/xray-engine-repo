@@ -836,6 +836,7 @@ extern "C" {
 		case CLSID_AI_RAT:				P = xr_new<CAI_Rat>();				break;
 		case CLSID_AI_FLESH:			P = xr_new<CAI_Biting>();			break;
 		case CLSID_AI_CHIMERA:			P = xr_new<CAI_Chimera>();			break;
+		case CLSID_AI_DOG_RED:			P = xr_new<CAI_Chimera>();			break;
 		case CLSID_AI_SOLDIER:			P =	xr_new<CAI_Soldier>();			break;
 		case CLSID_AI_STALKER:			P =	xr_new<CAI_Stalker>();			break;
 		case CLSID_AI_ZOMBIE:			P = xr_new<CAI_Zombie>();			break;

@@ -144,7 +144,7 @@ void CAI_Chimera::Load(LPCSTR section)
 	fHealth							= (float)m_dwHealth;
 
 	// prefetching
-	cNameVisual_set					("monsters\\chimera\\chimera_ik");
+	cNameVisual_set					(pSettings->r_string(section,"visual"));
 }
 
 BOOL CAI_Chimera::net_Spawn (LPVOID DC) 
