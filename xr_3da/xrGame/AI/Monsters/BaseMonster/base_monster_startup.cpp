@@ -190,13 +190,12 @@ BOOL CBaseMonster::net_Spawn (CSE_Abstract* DC)
 void CBaseMonster::net_Destroy()
 {
 	// функция должена быть вызвана перед inherited
-	if (m_controlled) m_controlled->on_destroy();
+	if (m_controlled) m_controlled->on_destroy	();
+	if (StateMan) StateMan->critical_finalize	();
 
 	inherited::net_Destroy				();
 	m_pPhysics_support->in_NetDestroy	();
 
-	if (StateMan) StateMan->critical_finalize();
-	
 	monster_squad().remove_member((u8)g_Team(),(u8)g_Squad(), this);
 
 #ifdef DEBUG
