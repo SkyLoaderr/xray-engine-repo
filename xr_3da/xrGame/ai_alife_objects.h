@@ -23,6 +23,8 @@
 #define TASK_CHUNK_DATA				0x0004
 
 class CALifeMonsterGroup;
+class CALifeItem;
+class CALifeMonster;
 
 namespace ALife {
 	typedef u64	_CLASS_ID;									// Class ID
@@ -34,6 +36,13 @@ namespace ALife {
 	typedef u16	_SPAWN_ID;									// Spawn ID
 	typedef u8	_LOCATION_ID;								// Location ID
 	typedef u16	_TERRAIN_ID;								// Terrain ID
+
+	DEFINE_VECTOR	(_OBJECT_ID,	OBJECT_VECTOR,			OBJECT_IT);
+	DEFINE_VECTOR	(_GRAPH_ID,		GRAPH_VECTOR,			GRAPH_IT);
+	DEFINE_VECTOR	(_TASK_ID,		TASK_VECTOR,			TASK_IT);
+	DEFINE_VECTOR	(CALifeMonster*,ALIFE_MONSTER_P_VECTOR, ALIFE_MONSTER_P_IT);
+	DEFINE_SVECTOR	(GRAPH_VECTOR,	256,			TERRAIN_SVECTOR, TERRAIN_IT);
+	DEFINE_MAP		(_OBJECT_ID,	CALifeItem *,	OBJECT_MAP,	OBJECT_PAIR_IT);
 
 	enum EInjureType {
 		eInjureTypeEat = u32(0),
@@ -88,7 +97,7 @@ namespace ALife {
 		_EVENT_ID					tEventID;
 		_TIME_ID					tGameTime;
 		_TASK_ID					tTaskID;
-		vector<_OBJECT_ID>			tpItemIDs;
+		OBJECT_VECTOR				tpItemIDs;
 		int							iHealth;
 		EPerception					tPerception;
 	} SPersonalEvent;
@@ -111,13 +120,19 @@ namespace ALife {
 		float						fIncreaseCoefficient;
 		float						fAnomalyDeathProbability;
 		u8							ucRoutePointCount;
-		vector<_GRAPH_ID>			wpRouteGraphPoints;
+		GRAPH_VECTOR				wpRouteGraphPoints;
 	} SSpawnPoint;
 
 	typedef struct tagSALifeHeader {
 		u32							dwVersion;
 		_TIME_ID					tTimeID;
 	} SALifeHeader;
+
+	DEFINE_VECTOR	(SSpawnPoint,	SPAWN_VECTOR,			SPAWN_IT);
+	DEFINE_VECTOR	(SPersonalEvent,PERSONAL_EVENT_VECTOR,	PERSONAL_EVENT_IT);
+
+	DEFINE_MAP		(_EVENT_ID,		SEvent,			EVENT_MAP,	EVENT_PAIR_IT);
+	DEFINE_MAP		(_TASK_ID,		STask,			TASK_MAP,	TASK_PAIR_IT);
 };
 
 using namespace ALife;
@@ -126,7 +141,7 @@ class CALifeObject {
 public:
 	virtual void					Save(CFS_Memory	&tMemoryStream) = 0;
 	virtual void					Load(CStream	&tFileStream)	= 0;
-	virtual void					Init(_SPAWN_ID	tSpawnID, vector<SSpawnPoint> &tpSpawnPoints) = 0;
+	virtual void					Init(_SPAWN_ID	tSpawnID, SPAWN_VECTOR &tpSpawnPoints) = 0;
 };
 
 class CALifeMonsterGroup : public CALifeObject {
@@ -155,7 +170,7 @@ public:
 		tFileStream.Read	(&m_wCount,		sizeof(m_wCount));
 	};
 
-	virtual void					Init(_SPAWN_ID	tSpawnID, vector<SSpawnPoint> &tpSpawnPoints)
+	virtual void					Init(_SPAWN_ID	tSpawnID, SPAWN_VECTOR &tpSpawnPoints)
 	{
 		m_tClassID	= _CLASS_ID(pSettings->ReadSTRING(tpSpawnPoints[tSpawnID].caModel, "class"));
 		m_tGraphID	= tpSpawnPoints[tSpawnID].tNearestGraphPointID;
@@ -182,7 +197,7 @@ public:
 		tFileStream.Read	(&m_tTimeID,	sizeof(m_tTimeID));
 	};
 
-	virtual void					Init(_SPAWN_ID	tSpawnID, vector<SSpawnPoint> &tpSpawnPoints)
+	virtual void					Init(_SPAWN_ID	tSpawnID, SPAWN_VECTOR &tpSpawnPoints)
 	{
 		inherited::Init(tSpawnID,tpSpawnPoints);
 		m_tTimeID = 0;
@@ -207,7 +222,7 @@ public:
 		tFileStream.Read	(&m_tInjureType,	sizeof(m_tInjureType));
 	};
 
-	virtual void					Init(_SPAWN_ID	tSpawnID, vector<SSpawnPoint> &tpSpawnPoints)
+	virtual void					Init(_SPAWN_ID	tSpawnID, SPAWN_VECTOR &tpSpawnPoints)
 	{
 		inherited::Init(tSpawnID,tpSpawnPoints);
 		m_tInjureType = eInjureTypeDummy;
@@ -253,7 +268,7 @@ public:
 		tFileStream.Read	(&m_iHealth,				sizeof(m_iHealth));
 	};
 
-	virtual void					Init(_SPAWN_ID	tSpawnID, vector<SSpawnPoint> &tpSpawnPoints)
+	virtual void					Init(_SPAWN_ID	tSpawnID, SPAWN_VECTOR &tpSpawnPoints)
 	{
 		inherited::Init		(tSpawnID,tpSpawnPoints);
 		m_tNextGraphID		= tpSpawnPoints[tSpawnID].tNearestGraphPointID;
@@ -267,13 +282,15 @@ public:
 	}
 };
 
+DEFINE_VECTOR(_OBJECT_ID,_OBJECT_IDVec,_OBJECT_IDIt);
+
 class CALifeHuman : public CALifeMonster {
 public:
 	typedef	CALifeMonster inherited;
 	
-	vector<_OBJECT_ID>				m_tpItemIDs;
-	vector<SPersonalEvent>			m_tpEvents;
-	vector<_TASK_ID>				m_tpTaskIDs;
+	_OBJECT_IDVec					m_tpItemIDs;
+	PERSONAL_EVENT_VECTOR			m_tpEvents;
+	TASK_VECTOR						m_tpTaskIDs;
 
 	virtual	void					Save(CFS_Memory &tMemoryStream)
 	{
@@ -329,7 +346,7 @@ public:
 			tFileStream.Read	(&(m_tpTaskIDs[i]),sizeof(m_tpTaskIDs[i]));
 	};
 
-	virtual void					Init(_SPAWN_ID	tSpawnID, vector<SSpawnPoint> &tpSpawnPoints)
+	virtual void					Init(_SPAWN_ID	tSpawnID, SPAWN_VECTOR &tpSpawnPoints)
 	{
 		inherited::Init(tSpawnID,tpSpawnPoints);
 		m_tpEvents.	clear();
@@ -337,3 +354,17 @@ public:
 		m_tpTaskIDs.clear();
 	}
 };
+//
+//class CRemovePredicate {
+//	EVENT_MAP	*m_tpMap;
+//public:
+//	CRemovePredicate(EVENT_MAP &tpMap)
+//	{
+//		m_tpMap = &tpMap;
+//	};
+//
+//	operator < (const SPersonalEvent &tPersonalEvent)
+//	{
+//		return(m_tpMap->find(tPersonalEvent.tEventID) != m_tpMap->end());
+//	};
+//};

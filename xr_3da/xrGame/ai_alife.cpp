@@ -33,9 +33,11 @@ void CAI_ALife::vfInitTerrain()
 void CAI_ALife::vfInitLocationOwners()
 {
 	m_tpLocationOwners.resize(Level().AI.GraphHeader().dwVertexCount);
-	for (m_tObjectRegistry.m_tpIterator = m_tObjectRegistry.m_tppMap.begin(); m_tObjectRegistry.m_tpIterator != m_tObjectRegistry.m_tppMap.end(); m_tObjectRegistry.m_tpIterator++) {
-		_SPAWN_ID	tSpawnID	= (*m_tObjectRegistry.m_tpIterator).second->m_tSpawnID;
-		_OBJECT_ID	tObjectID	= (*m_tObjectRegistry.m_tpIterator).second->m_tObjectID;
+	OBJECT_PAIR_IT   it = m_tObjectRegistry.m_tppMap.begin();
+	OBJECT_PAIR_IT   E  = m_tObjectRegistry.m_tppMap.end();
+	for ( ; it != E; it++) {
+		_SPAWN_ID	tSpawnID	= (*it).second->m_tSpawnID;
+		_OBJECT_ID	tObjectID	= (*it).second->m_tObjectID;
 		for (int j=0, iCount = (int)m_tpSpawnPoints[tSpawnID].ucRoutePointCount; j<iCount; j++)
 			m_tpLocationOwners[m_tpSpawnPoints[tSpawnID].wpRouteGraphPoints[j]].push_back(tObjectID);
 	}
@@ -44,15 +46,19 @@ void CAI_ALife::vfInitLocationOwners()
 void CAI_ALife::vfInitGraph()
 {
 	m_tpGraphObjects.resize(Level().AI.GraphHeader().dwVertexCount);
-	for (m_tObjectRegistry.m_tpIterator = m_tObjectRegistry.m_tppMap.begin(); m_tObjectRegistry.m_tpIterator != m_tObjectRegistry.m_tppMap.end(); m_tObjectRegistry.m_tpIterator++)
-		m_tpGraphObjects[(*m_tObjectRegistry.m_tpIterator).second->m_tGraphID].push_back((*m_tObjectRegistry.m_tpIterator).second->m_tObjectID);
+	OBJECT_PAIR_IT	it = m_tObjectRegistry.m_tppMap.begin();
+	OBJECT_PAIR_IT	E  = m_tObjectRegistry.m_tppMap.end();
+	for ( ; it != E; it++)
+		m_tpGraphObjects[(*it).second->m_tGraphID].push_back((*it).second->m_tObjectID);
 }
 
 void CAI_ALife::vfInitScheduledObjects()
 {
 	m_tpScheduledObjects.clear();
-	for (m_tObjectRegistry.m_tpIterator = m_tObjectRegistry.m_tppMap.begin(); m_tObjectRegistry.m_tpIterator != m_tObjectRegistry.m_tppMap.end(); m_tObjectRegistry.m_tpIterator++) {
-		CALifeMonster	*tpALifeMonster = dynamic_cast<CALifeMonster *>((*m_tObjectRegistry.m_tpIterator).second);
+	OBJECT_PAIR_IT	it = m_tObjectRegistry.m_tppMap.begin();
+	OBJECT_PAIR_IT	E  = m_tObjectRegistry.m_tppMap.end();
+	for ( ; it != E; it++) {
+		CALifeMonster	*tpALifeMonster = dynamic_cast<CALifeMonster *>((*it).second);
 		if (tpALifeMonster)
 			m_tpScheduledObjects.push_back(tpALifeMonster);
 	}
@@ -325,9 +331,13 @@ void CAI_ALife::vfProcessNPC(CALifeMonster	*tpALifeMonster)
 //	Msg						("* * Time       : %d",tpALifeMonster->m_dwLastUpdateTime);
 //	Msg						("* * Spawn      : %d",tpALifeMonster->m_tSpawnID);
 //	Msg						("* * Count      : %d",tpALifeMonster->m_wCount);
-	vfCheckForDeletedEvents	(tpALifeMonster);
 	vfChooseNextRoutePoint	(tpALifeMonster);
 	vfCheckForTheBattle		(tpALifeMonster);
+	CALifeHuman *tpALifeHuman = dynamic_cast<CALifeHuman *>(tpALifeMonster);
+	if (tpALifeHuman) {
+		vfCheckForDeletedEvents	(tpALifeHuman);
+		vfCheckForItems			(tpALifeHuman);
+	}
 	tpALifeMonster->m_tTimeID = Level().timeServer();
 //	Msg						("* * PrevPoint  : %d",tpALifeMonster->m_tPrevGraphID);
 //	Msg						("* * GraphPoint : %d",tpALifeMonster->m_tGraphID);
@@ -409,6 +419,12 @@ void CAI_ALife::vfCheckForTheBattle(CALifeMonster	*tpALifeMonster)
 {
 }
 
-void CAI_ALife::vfCheckForDeletedEvents(CALifeMonster	*tpALifeMonster)
+void CAI_ALife::vfCheckForDeletedEvents(CALifeHuman	*tpALifeHuman)
+{
+//	EVENT_PAIR_IT it = remove_if(tpALifeHuman->m_tpEvents.begin(),tpALifeHuman->m_tpEvents.end(),CRemovePredicate(m_tEventRegistry.m_tpMap));
+//	m_tEventRegistry.m_tpMap.erase(it,m_tEventRegistry.m_tpMap.end());
+}
+
+void CAI_ALife::vfCheckForItems(CALifeHuman	*tpALifeHuman)
 {
 }
