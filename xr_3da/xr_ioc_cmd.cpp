@@ -170,6 +170,40 @@ public:
 	}
 };
 //-----------------------------------------------------------------------
+void __cdecl	crashthread			( void* )
+{
+	Sleep		(3*1000);
+	Msg			("! crash thread activated");
+	for (;;)	{
+		try {
+			union	{
+				struct {
+					u8	_b0;
+					u8	_b1;
+					u8	_b2;
+					u8	_b3;
+				};
+				u32*	_ptr;
+			}		rndptr;
+			rndptr._b0		= u8(::Random.randI(0,255));
+			rndptr._b1		= u8(::Random.randI(0,255));
+			rndptr._b2		= u8(::Random.randI(0,255));
+			rndptr._b3		= u8(::Random.randI(0,255));
+			*rndptr._ptr	= 0xBAADF00D;
+		} catch(...) {
+			// OK
+		}
+	}
+}
+class CCC_Crash : public IConsole_Command
+{
+public:
+	CCC_Help(LPCSTR N) : IConsole_Command(N) { bEmptyArgsHandled = TRUE; };
+	virtual void Execute(LPCSTR args) {
+		_beginthread	(crashthread,0,0);
+	}
+};
+//-----------------------------------------------------------------------
 class CCC_SaveCFG : public IConsole_Command
 {
 public:
@@ -360,6 +394,10 @@ void CCC_Register()
 	CMD1(CCC_Disconnect,"disconnect"			);
 	CMD1(CCC_SaveCFG,	"cfg_save"				);
 	CMD1(CCC_LoadCFG,	"cfg_load"				);
+
+#ifdef DEBUG
+	CMD1(CCC_Crash,		"crash"					);
+#endif
 
 	CMD1(CCC_MotionsStat,	"stat_motions"		);
 	CMD1(CCC_MemStats,		"stat_memory"		);
