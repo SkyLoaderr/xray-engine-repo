@@ -12,6 +12,7 @@
 ; -K - from Koan
 
 To OLES : 
+-D	memory leak during reload (press f7 for reload) ~ 346kb on occ_part
 -K	трасеры не рисуются
 -A	актер закрывает собой флары (выключить Enable CFModel у Актера)
 -S	assertion failed  в stl_extensions.cpp 
@@ -34,7 +35,6 @@ To OLES :
 	добавишь какую нибудь spawn point (может даже уберешь) исправляется добавлением или убиранием 
 	spawn point с последующим make game
 	
--D	memory leak during reload (press f7 for reload) ~ 346kb on occ_part
 +J	монстры исчезают в определённых позициях (level - occ_part_jim)
 +О	Обьекты у которых парент - рендерятся
 +O	~160 memory operations per frame
@@ -44,6 +44,8 @@ To OLES :
 +S	после взрыва ручной гранаты обьекты (в том числе актер) становятся невидимыми при FLAGS::bVisible=1
 +J  освещение монстров (химера, плоть) (level - практически на любом (e.g. labaratory_1)) 
 
+
+
 To AlexMX:
 +O	ocasional invalid radius and/or center after update of particle system
 	(pure garbage: #INF, #QNAN, #DEN)
@@ -52,5 +54,12 @@ To AlexMX:
 	(game00/single/alife)
 +D	зоны глючат постоянно из-за партикловой-хрени! (game00/single/alife)
 
+
+
 To Dima:
+-D	Can't update online object во время симуляции
+-D	при выставлении у-ка позиции по ноде при звуке у сталкера только(?) в симуляции
 +K	сталкеры перемещаются быстрее отыгрываемой анимации 
+
+To mr.Bug:
+-D	xrServer::Process_event_reject(...) вылетает R_ASSERT(0xffff != e_entity->ID_Parent) в симуляции

@@ -142,7 +142,6 @@ void CSE_ALifeSimulator::vfCommunicateWithCustomer(CSE_ALifeHumanAbstract *tpALi
 
 void CSE_ALifeSimulator::vfUpdateHuman(CSE_ALifeHumanAbstract *tpALifeHumanAbstract)
 {
-	R_ASSERT3			(tpALifeHumanAbstract->fHealth > 0,"Can't update death object ",tpALifeHumanAbstract->s_name_replace);
 	R_ASSERT3			(!tpALifeHumanAbstract->m_bOnline,"Can't update online object ",tpALifeHumanAbstract->s_name_replace);
 	//bool				bOk;
 	do {

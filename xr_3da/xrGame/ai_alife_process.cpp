@@ -124,6 +124,7 @@ void CSE_ALifeSimulator::vfProcessNPC(CSE_ALifeMonsterAbstract	*tpALifeMonsterAb
 {
 	if (tpALifeMonsterAbstract->fHealth <= 0)
 		return;
+
 	CSE_ALifeHumanAbstract *tpHuman = dynamic_cast<CSE_ALifeHumanAbstract *>(tpALifeMonsterAbstract);
 	if (tpHuman)
 		vfUpdateHuman(tpHuman);
