@@ -95,7 +95,7 @@ __inline float expf	(float val)                           	{ return ::exp(val);}
 #include <dsound.h>
 
 // some user components
-#include "fmesh.h"
+#include "engine\fmesh.h"
 #include "engine\_d3d_extensions.h"
 
 #include "D3DX_Wrapper.h"
@@ -106,7 +106,7 @@ DEFINE_VECTOR		(AnsiString*,LPAStringVec,LPAStringIt);
 
 #include "xrEProps.h"
 #include "Log.h"
-#include "engine.h"
+#include "editor\engine.h"
 #include "defines.h"
 
 struct str_pred : public std::binary_function<char*, char*, bool>
@@ -121,7 +121,7 @@ struct astr_pred : public std::binary_function<const AnsiString&, const AnsiStri
 };
 
 #ifdef _EDITOR
-	#include "device.h"
+	#include "editor\device.h"
 	#include "properties.h"
 	#include "render.h"
 	DEFINE_VECTOR(FVF::L,FLvertexVec,FLvertexIt);

@@ -135,6 +135,11 @@ bool CRenderDevice::Create()
 	if (FS.exist(sh.c_str()))
 		F				= FS.r_open(0,sh.c_str());
 	Resources			= xr_new<CResourceManager>	();
+
+    // if build options - load textures immediately
+    if (strstr(Core.Params,"-build")||strstr(Core.Params,"-ebuild"))
+        Device.Resources->DeferredLoad(FALSE);
+
     _Create				(F);
 	FS.r_close			(F);
 

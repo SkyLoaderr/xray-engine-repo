@@ -43,7 +43,6 @@ bool TUI::Command( int _Command, int p1, int p2 )
             	break;
             }
 			Device.seqAppCycleStart.Process(rp_AppCycleStart);
-
             Command			(COMMAND_RESTORE_UI_BAR);
             Command			(COMMAND_REFRESH_UI_BAR);
 		    Command			(COMMAND_CLEAR);
