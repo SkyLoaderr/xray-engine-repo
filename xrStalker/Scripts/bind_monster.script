@@ -42,6 +42,8 @@ end
 function generic_object_binder:update(delta)
 	object_binder.update(self, delta)
 
+	printf("_bp: generic_object_binder: UPDATE [time = %d]", device():time_global())
+
 	if not self.initialized and db.actor then
 		self.initialized = true
 		xr_logic.initialize_obj(self.object, self.st, self.loaded, db.actor, modules.stype_mobile)
