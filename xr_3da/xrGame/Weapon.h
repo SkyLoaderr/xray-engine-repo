@@ -15,7 +15,7 @@ class CWeaponHUD;
 class CWeapon : public CObject
 {
 	friend class	CWeaponList;
-
+protected:
 	BOOL			bWorking;		// Weapon fires now
 	BOOL			bPending;		// Weapon needs some time to update itself, even if hidden
 	LPSTR			m_WpnName;
@@ -70,5 +70,6 @@ public:
 	IC int			GetAmmoElapsed	(){return iAmmoElapsed;}
 	IC int			GetAmmoLimit	(){return iAmmoLimit;}
 	IC Shader*		GetUIIcon		(){return hUIIcon;};
+};
 
 #endif // !defined(AFX_WEAPON_H__7C42AD7C_0EBD_4AD1_90DE_2F972BF538B9__INCLUDED_)
