@@ -275,21 +275,21 @@ void CCC_Register()
 	CMD3(CCC_Mask,		"rs_wireframe",			&psDeviceFlags,rsWireframe);
 	CMD3(CCC_Mask,		"rs_renormalize",		&psDeviceFlags,rsNormalize);
 	CMD3(CCC_Mask,		"rs_antialias",			&psDeviceFlags,rsAntialias);
+	CMD3(CCC_Mask,		"rs_antialias_tv",		&psDeviceFlags,rsAntialiasBlurred);
 	CMD3(CCC_Mask,		"rs_triplebuffer",		&psDeviceFlags,rsTriplebuffer);
 	CMD3(CCC_Mask,		"rs_fullscreen",		&psDeviceFlags,rsFullscreen);
 	CMD3(CCC_Mask,		"rs_clear_bb",			&psDeviceFlags,rsClearBB);
 	CMD3(CCC_Mask,		"rs_overdraw",			&psDeviceFlags,rsOverdrawView);
 	CMD3(CCC_Mask,		"rs_occlusion",			&psDeviceFlags,rsOcclusion);
-	CMD3(CCC_Mask,		"rs_depth_enhance",		&psDeviceFlags,rsDepthEnhance);
 	CMD3(CCC_Mask,		"rs_stats",				&psDeviceFlags,rsStatistic);
 	
 	CMD4(CCC_Float,		"rs_geometry_lod",		&QualityControl.fGeometryLOD, 0,2);
-	CMD4(CCC_Float,		"rs_min_fps",			&QualityControl.fMinFPS, 0, 512);
-	CMD4(CCC_Float,		"rs_max_fps",			&QualityControl.fMaxFPS, 0, 512);
-	CMD4(CCC_Float,		"rs_occ_reject",		&psOSSR,		0, 1);
-	CMD4(CCC_Float,		"rs_ssa_discard",		&ssaLIMIT,		1, 16);
-	CMD4(CCC_Float,		"rs_ssa_dontsort",		&ssaDONTSORT,	16,65536);
-	CMD4(CCC_Float,		"rs_detail_density",	&psDetailDensity,.05f,0.3f);
+	CMD4(CCC_Float,		"rs_min_fps",			&QualityControl.fMinFPS, 0, 512	);
+	CMD4(CCC_Float,		"rs_max_fps",			&QualityControl.fMaxFPS, 0, 512	);
+	CMD4(CCC_Float,		"rs_occ_reject",		&psOSSR,			0, 1		);
+	CMD4(CCC_Float,		"rs_ssa_discard",		&ssaLIMIT,			1, 16		);
+	CMD4(CCC_Float,		"rs_ssa_dontsort",		&ssaDONTSORT,		16,65536	);
+	CMD4(CCC_Float,		"rs_detail_density",	&psDetailDensity,	.05f,0.3f	);
 	
 	CMD1(CCC_Gamma,		"rs_gamma"				);
 	CMD4(CCC_Integer,	"rs_skeleton_update",	&psSkeletonUpdate,	2,		128	);

@@ -32,4 +32,12 @@ BOOL CRenderTarget::Create	()
 	// Try to create texture/surface
 	_hr = HW.pDevice->CreateTexture(Device.dwWidth,Device.dwHeight,1,D3DUSAGE_RENDERTARGET,D3DFMT_R5G6B5,D3DPOOL_DEFAULT,&pSurface);
 	if (FAILED(_hr) || (0==pSurface))									return FALSE;
+	
+	// OK
+	return TRUE;
+}
+
+void CRenderTarget::OnDeviceCreate()
+{
+	bAvailable	= Create	();
 }
