@@ -55,6 +55,7 @@ CWallmarksEngine::wallmark*	CWallmarksEngine::wm_allocate		(Shader*	S	)
 	W->shader			= S;
 	W->ttl				= W_TTL;
 	W->verts.clear		();
+	return W;
 }
 // destroy
 void		CWallmarksEngine::wm_destroy		(wallmark*	W	)
