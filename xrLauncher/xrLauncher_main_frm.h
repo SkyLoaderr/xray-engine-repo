@@ -72,6 +72,7 @@ namespace xrLauncher
 	private: System::Windows::Forms::ImageList *  imageList2;
 	private: System::Windows::Forms::Label *  label1;
 	private: System::Windows::Forms::ComboBox *  modListCombo;
+	private: System::Windows::Forms::Button *  button1;
 
 	private: System::ComponentModel::IContainer *  components;
 
@@ -99,6 +100,7 @@ namespace xrLauncher
 			this->playBtn = new System::Windows::Forms::Button();
 			this->pictureBox1 = new System::Windows::Forms::PictureBox();
 			this->imageList2 = new System::Windows::Forms::ImageList(this->components);
+			this->button1 = new System::Windows::Forms::Button();
 			this->panel1->SuspendLayout();
 			this->SuspendLayout();
 			// 
@@ -109,6 +111,7 @@ namespace xrLauncher
 				| System::Windows::Forms::AnchorStyles::Right);
 			this->panel1->BackgroundImage = (__try_cast<System::Drawing::Image *  >(resources->GetObject(S"panel1.BackgroundImage")));
 			this->panel1->BorderStyle = System::Windows::Forms::BorderStyle::FixedSingle;
+			this->panel1->Controls->Add(this->button1);
 			this->panel1->Controls->Add(this->modListCombo);
 			this->panel1->Controls->Add(this->label1);
 			this->panel1->Controls->Add(this->aboutBtn);
@@ -153,7 +156,7 @@ namespace xrLauncher
 			this->aboutBtn->FlatStyle = System::Windows::Forms::FlatStyle::Flat;
 			this->aboutBtn->ForeColor = System::Drawing::SystemColors::ControlText;
 			this->aboutBtn->ImageList = this->imageList1;
-			this->aboutBtn->Location = System::Drawing::Point(416, 224);
+			this->aboutBtn->Location = System::Drawing::Point(416, 144);
 			this->aboutBtn->Name = S"aboutBtn";
 			this->aboutBtn->Size = System::Drawing::Size(86, 26);
 			this->aboutBtn->TabIndex = 14;
@@ -172,7 +175,7 @@ namespace xrLauncher
 			this->benchmarkBtn->BackColor = System::Drawing::Color::Transparent;
 			this->benchmarkBtn->FlatStyle = System::Windows::Forms::FlatStyle::Flat;
 			this->benchmarkBtn->ImageList = this->imageList1;
-			this->benchmarkBtn->Location = System::Drawing::Point(416, 184);
+			this->benchmarkBtn->Location = System::Drawing::Point(416, 104);
 			this->benchmarkBtn->Name = S"benchmarkBtn";
 			this->benchmarkBtn->Size = System::Drawing::Size(86, 26);
 			this->benchmarkBtn->TabIndex = 2;
@@ -185,7 +188,7 @@ namespace xrLauncher
 			this->settingsBtn->BackColor = System::Drawing::Color::Transparent;
 			this->settingsBtn->FlatStyle = System::Windows::Forms::FlatStyle::Flat;
 			this->settingsBtn->ForeColor = System::Drawing::SystemColors::ControlText;
-			this->settingsBtn->Location = System::Drawing::Point(416, 144);
+			this->settingsBtn->Location = System::Drawing::Point(416, 64);
 			this->settingsBtn->Name = S"settingsBtn";
 			this->settingsBtn->Size = System::Drawing::Size(86, 26);
 			this->settingsBtn->TabIndex = 1;
@@ -198,7 +201,7 @@ namespace xrLauncher
 			this->playBtn->BackColor = System::Drawing::Color::Transparent;
 			this->playBtn->FlatStyle = System::Windows::Forms::FlatStyle::Flat;
 			this->playBtn->ImageList = this->imageList1;
-			this->playBtn->Location = System::Drawing::Point(416, 104);
+			this->playBtn->Location = System::Drawing::Point(416, 24);
 			this->playBtn->Name = S"playBtn";
 			this->playBtn->Size = System::Drawing::Size(86, 26);
 			this->playBtn->TabIndex = 0;
@@ -221,6 +224,19 @@ namespace xrLauncher
 			this->imageList2->ImageSize = System::Drawing::Size(128, 256);
 			this->imageList2->ImageStream = (__try_cast<System::Windows::Forms::ImageListStreamer *  >(resources->GetObject(S"imageList2.ImageStream")));
 			this->imageList2->TransparentColor = System::Drawing::Color::Transparent;
+			// 
+			// button1
+			// 
+			this->button1->Anchor = (System::Windows::Forms::AnchorStyles)(System::Windows::Forms::AnchorStyles::Top | System::Windows::Forms::AnchorStyles::Right);
+			this->button1->BackColor = System::Drawing::Color::Transparent;
+			this->button1->FlatStyle = System::Windows::Forms::FlatStyle::Flat;
+			this->button1->ImageList = this->imageList1;
+			this->button1->Location = System::Drawing::Point(416, 224);
+			this->button1->Name = S"button1";
+			this->button1->Size = System::Drawing::Size(86, 26);
+			this->button1->TabIndex = 17;
+			this->button1->Text = S"Quit";
+			this->button1->Click += new System::EventHandler(this, button1_Click);
 			// 
 			// xrLauncher_main_frm
 			// 
@@ -313,6 +329,11 @@ private: System::Void xrLauncher_main_frm_KeyDown(System::Object *  sender, Syst
 		 }
 
 private: System::Void settingsBtn_Click(System::Object *  sender, System::EventArgs *  e);
+
+private: System::Void button1_Click(System::Object *  sender, System::EventArgs *  e)
+		 {
+			 _Close(8);
+		 }
 
 };
 }
