@@ -44,7 +44,7 @@ function action_change_state:initialize()
 	self.object:set_path_evaluator()
 	self.object:set_desired_position()
 	self.object:set_desired_direction()  
-
+	self.object:set_movement_type(move.stand)
 	self.object:clear_animations()
 
 	xr_state.transanim(self.object, self.a)
@@ -52,8 +52,7 @@ function action_change_state:initialize()
 	a = xr_state.getIdle(self.a.target_state)
 	if a ~= nil then
 		self.object:add_animation(a, true)
-	end
-
+	end	
 end
 function action_change_state:execute ()
 	if self.a.target_state == 0 then
