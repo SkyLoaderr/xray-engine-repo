@@ -396,32 +396,14 @@ void CAI_Space::Render()
 int	CAI_Space::q_LoadSearch(const Fvector& pos)
 {
 	if (0==vfs)	return	0;
-
-	//vfCreate2DMap("level2_dima.map0", "level2_dima.map1", "level2_dima.map2");
 	Log			("***AAA***");
-
 	NodePosition	P;
 	PackPosition	(P,pos);
 	short min_dist	= 32767;
 	int selected	= -1;
-	for (u32 I=0; I<m_header.count; I++)
-	{
+	for (u32 I=0; I<m_header.count; I++) {
 		NodeCompressed& N = *m_nodes_ptr[I];
-
-		if (I == 1735) {
-			I = I;
-		}
-		if (u_InsideNode(N,P)) 
-		{
-			/**
-			int dist = _abs(iFloor(P.y)-iFloor((N.p0.y + N.p1.y)/2.f));
-			//if (dist>=0) {
-				if (dist<min_dist) {
-					min_dist = dist;
-					selected = I;
-				}
-			//}
-			/**/
+		if (u_InsideNode(N,P)) {
 			Fvector	DUP, vNorm, v, v1, P0;
 			DUP.set(0,1,0);
 			pvDecompress(vNorm,N.plane);
@@ -435,7 +417,6 @@ int	CAI_Space::q_LoadSearch(const Fvector& pos)
 				min_dist = (short)dist;
 				selected = I;
 			}
-			/**/
 		}
 	}
 	return selected;

@@ -484,6 +484,15 @@
 			Name="Graph"
 			Filter="">
 			<File
+				RelativePath="ai_a_star.cpp">
+			</File>
+			<File
+				RelativePath="ai_a_star.h">
+			</File>
+			<File
+				RelativePath="ai_nodes.h">
+			</File>
+			<File
 				RelativePath="xrGraph.cpp">
 			</File>
 			<File

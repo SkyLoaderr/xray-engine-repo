@@ -10,13 +10,11 @@
 
 #include "levelgamedef.h"
 #include "xrLevel.h"
+#include "ai_nodes.h"
+#include "ai_a_star.h"
 #include "xrGraph.h"
 
-CStream*						vfs;			// virtual file
-hdrNODES						m_header;		// m_header
-BYTE*							m_nodes;		// virtual nodes DATA array
-NodeCompressed**				m_nodes_ptr;	// pointers to node's data
-vector<bool>					q_mark_bit;		// temporal usage mark for queries
+#define MAX_DISTANCE_TO_CONNECT		100.f
 
 typedef struct tagRPoint {
 	Fvector	P;
@@ -32,10 +30,17 @@ typedef struct tagSGraphVertex {
 	Fvector				tPoint;
 	u32					dwNodeID;
 	unsigned char		ucVertexType;
-	tagSGraphVertex		*tpaNeighbourVertexes;
+	u32					dwNeighbourCount;
+	tagSGraphEdge		*tpaEdges;
 } SGraphVertex;
 
-vector<SGraphVertex> tpaGraph;
+CStream*					vfs;			// virtual file
+hdrNODES					m_header;		// m_header
+BYTE*						m_nodes;		// virtual nodes DATA array
+NodeCompressed**			m_nodes_ptr;	// pointers to node's data
+vector<bool>				q_mark_bit;		// temporal usage mark for queries
+
+vector<SGraphVertex>			tpaGraph;		// graph
 
 void vfLoafAIMap(LPCSTR name)
 {
@@ -79,51 +84,86 @@ void vfLoadAIPoints(LPCSTR name)
 	{
 		for (int id=0; O->FindChunk(id); id++)
 		{
-			SGraphVertex tGraphVertex;
-			O->Rvector(tGraphVertex.tPoint);
-			tpaGraph.push_back(tGraphVertex);
+			SGraphVertex					tGraphVertex;
+			O->Rvector						(tGraphVertex.tPoint);
+			tGraphVertex.dwNodeID			= 0;
+			tGraphVertex.dwNeighbourCount	= 0;
+			tGraphVertex.ucVertexType		= 0;
+			tGraphVertex.tpaEdges			= 0;
+			tpaGraph.push_back				(tGraphVertex);
 		}
 		O->Close();
 	}
 }
 
-void vfLoadRespawnPoints(LPCSTR name)
+u32 dwfFindCorrespondingNode(Fvector &tPoint)
 {
-	FILE_NAME	fName;
-	strconcat	(fName,name,"level.game");
-	CVirtualFileStream	F(fName);
-
-	CStream *O = 0;
-
-	if (0 != (O = F.OpenChunk(RPOINT_CHUNK))) {
-		for (int i = 0; O->FindChunk(i); i++) {
-			RPoint			R;
-			int				team;
-
-			O->Rvector		(R.P);
-			O->Rvector		(R.A);
-			team			= O->Rdword	();
-			
-			SGraphVertex	tGraphVertex;
-			tGraphVertex.tPoint = R.P;
-			tpaGraph.push_back(tGraphVertex);
+	NodePosition	P;
+	PackPosition	(P,tPoint);
+	short min_dist	= 32767;
+	int selected	= -1;
+	for (int i=0; i<(int)m_header.count; i++) {
+		NodeCompressed& N = *m_nodes_ptr[i];
+		if (u_InsideNode(N,P)) {
+			Fvector	DUP, vNorm, v, v1, P0;
+			DUP.set(0,1,0);
+			pvDecompress(vNorm,N.plane);
+			Fplane PL; 
+			UnpackPosition(P0,N.p0);
+			PL.build(P0,vNorm);
+			v.set(tPoint.x,P0.y,tPoint.z);	
+			PL.intersectRayPoint(v,DUP,v1);
+			int dist = iFloor((v1.y - tPoint.y)*(v1.y - tPoint.y));
+			if (dist < min_dist) {
+				min_dist = (short)dist;
+				selected = i;
+			}
 		}
-		O->Close();
 	}
+	return(selected);
 }
 
-void vfBuildGraph(LPCSTR name)
+u32 dwfInitNodes()
 {
-	FILE_NAME	fName;
-	strconcat	(fName,name,"level.spawn");
-	CVirtualFileStream	FN(fName);
+	u32 dwPointsWONodes = 0;
+	for (int i=0; i<(int)tpaGraph.size(); i++)
+		if ((tpaGraph[i].dwNodeID = dwfFindCorrespondingNode(tpaGraph[i].tPoint)) == u32(-1))
+			dwPointsWONodes++;
+	return(dwPointsWONodes);
 }
 
 void vfSaveGraph(LPCSTR name)
 {
 	FILE_NAME	fName;
-	strconcat	(fName,name,"level.spawn");
-	CVirtualFileStream	FN(fName);
+	strconcat	(fName,name,"level.graph");
+	
+	CFS_Memory	tGraph;
+	tGraph.Wdword(m_header.version);	
+	for (int i=0; i<(int)tpaGraph.size(); i++) {
+		SGraphVertex &tGraphVertex = tpaGraph[i];
+		tGraph.Wvector(tGraphVertex.tPoint);
+		tGraph.Wbyte(tGraphVertex.ucVertexType);
+		tGraph.Wdword(tGraphVertex.dwNodeID);	
+		tGraph.Wdword(tGraphVertex.dwNeighbourCount);	
+		for (int j=0; j<(int)tGraphVertex.dwNeighbourCount; j++) {
+			tGraph.Wdword(tGraphVertex.tpaEdges[j].dwVertexNumber);	
+			tGraph.Wfloat(tGraphVertex.tpaEdges[j].fPathDistance);	
+		}
+	}
+	tGraph.SaveTo(fName,0);
+	Msg("%d bytes saved",int(tGraph.tell()));
+}
+
+void vfBuildGraph()
+{
+	for (int i=0; i<(int)tpaGraph.size() - 1; i++) {
+		SGraphVertex &tCurrentGraphVertex = tpaGraph[i];
+		for (int j = i + 1; j<(int)tpaGraph.size(); j++) {
+			if (tCurrentGraphVertex.tPoint.distance_to(tpaGraph[j].tPoint) < MAX_DISTANCE_TO_CONNECT) {
+//				float fDistance = ffFindTheXestPath(tCurrentGraphVertex.tPoint,tpaGraph[j].tPoint);
+			}
+		}
+	}
 }
 
 void xrBuildGraph(LPCSTR name)
@@ -139,15 +179,21 @@ void xrBuildGraph(LPCSTR name)
 	u32 dwAIPoints;
 	Msg("%d vertexes loaded",int(dwAIPoints = tpaGraph.size()));
 
-	Phase("Loading respawn points");
-	vfLoadRespawnPoints(name);
-	Msg("%d vertexes loaded",int(tpaGraph.size() - dwAIPoints));
+	Phase("Searching AI map for corresponding nodes");
+	Msg("%d points don't have corresponding nodes (they are deleted)",dwfInitNodes());
+
+	Phase("Loading AI path-finding structures");
+	vfLoadSearch();
 
 	Phase("Building graph");
-	vfBuildGraph(name);
-	Msg("%d edges built",int(m_header.count));
+	vfBuildGraph();
+	for (int i=0, j=0; i<(int)tpaGraph.size(); i++)
+		j += tpaGraph[i].dwNeighbourCount;
+	Msg("%d edges built",j);
 
 	Phase("Saving graph");
 	vfSaveGraph(name);
-	Msg("%d bytes saved",int(m_header.count));
+
+	Phase("Unloading AI path-finding structures");
+	vfUnloadSearch();
 }
