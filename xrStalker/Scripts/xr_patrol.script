@@ -201,7 +201,7 @@ function action_single_patrol:set_soldier_positions_raid ()
         end   
         xr_motivator.storage[self.object:id()].followers[count].direction = v
         xr_motivator.storage[self.object:id()].followers[count].distance = dist
-        if count == 2 or count == 4 or count == 6 then
+        if count == 2 or count == 4 or count == 6 or count == 8 or count == 10 then
            dist = dist + dist
         end    
     end    
