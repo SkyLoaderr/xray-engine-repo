@@ -438,24 +438,41 @@ void CAI_ALife::vfCheckForItems(CALifeHuman	*tpALifeHuman)
 		VERIFY(tpALifeDynamicObject);
 		CALifeItem *tpALifeItem = dynamic_cast<CALifeItem *>(tpALifeDynamicObject);
 		if (tpALifeItem) {
+			// adding new item to the item list
 			if (tpALifeHuman->m_fItemMass + tpALifeItem->m_fMass < tpALifeHuman->m_fMaxItemMass) {
 				tpALifeHuman->m_tpItemIDs.push_back(*it);
 				m_tpGraphObjects[tpALifeHuman->m_tGraphID].erase(it);
+				tpALifeHuman->m_fItemMass += tpALifeItem->m_fMass;
 			}
 			else {
 				sort(tpALifeHuman->m_tpItemIDs.begin(),tpALifeHuman->m_tpItemIDs.end(),CSortItemPrdicate(m_tObjectRegistry.m_tppMap));
 				OBJECT_IT	I = tpALifeHuman->m_tpItemIDs.end();
 				OBJECT_IT	S = tpALifeHuman->m_tpItemIDs.begin();
+				float		fItemMass = tpALifeHuman->m_fItemMass;
 				for ( ; I != S; I--) {
 					OBJECT_PAIR_IT II = m_tObjectRegistry.m_tppMap.find((*I));
 					VERIFY(II != m_tObjectRegistry.m_tppMap.end());
 					CALifeItem *tpALifeItemIn = dynamic_cast<CALifeItem *>((*II).second);
+					VERIFY(tpALifeItemIn);
 					tpALifeHuman->m_fItemMass -= tpALifeItemIn->m_fMass;
+					if (tpALifeItemIn->m_fPrice/tpALifeItemIn->m_fMass >= tpALifeItem->m_fPrice/tpALifeItem->m_fMass)
+						break;
 					if (tpALifeHuman->m_fItemMass + tpALifeItem->m_fMass < tpALifeHuman->m_fMaxItemMass)
 						break;
 				}
-				tpALifeHuman->m_tpItemIDs.erase		(I,tpALifeHuman->m_tpItemIDs.end());
-				tpALifeHuman->m_tpItemIDs.push_back	(tpALifeItem->m_tObjectID);
+				if (tpALifeHuman->m_fItemMass + tpALifeItem->m_fMass < tpALifeHuman->m_fMaxItemMass) {
+					tpALifeHuman->m_tpItemIDs.erase		(I,tpALifeHuman->m_tpItemIDs.end());
+					tpALifeHuman->m_tpItemIDs.push_back	(tpALifeItem->m_tObjectID);
+					tpALifeHuman->m_fItemMass			+= tpALifeItem->m_fMass;
+				}
+				else
+					tpALifeHuman->m_fItemMass = fItemMass;
+			}
+		}
+		else {
+			CALifeCorp *tpALifeCorp = dynamic_cast<CALifeCorp *>(tpALifeDynamicObject);
+			if (tpALifeCorp) {
+				
 			}
 		}
 	}
