@@ -13,6 +13,7 @@
 
 class CSE_ALifeInventoryItem : virtual public CSE_Abstract {
 public:
+	typedef CSE_Abstract inherited;
 	float							m_fMass;
 	int								m_iVolume;
 	u32								m_dwCost;
