@@ -40,9 +40,9 @@ private:
 	u32							m_start_point_index;
 	Fvector						m_dest_position;
 	CScriptCallback				*m_callback;
+	CExtrapolateCallback		*m_extrapolate_callback;
 	CRestrictedObject			*m_object;
 	CGameObject					*m_game_object;
-	CExtrapolateCallback		*m_extrapolate_callback;
 
 protected:
 	IC			bool				random					() const;
