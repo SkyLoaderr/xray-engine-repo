@@ -56,7 +56,7 @@ namespace AI {
 	class	Path
 	{
 	public:
-		AI::DWORD_VECTOR	Nodes;
+		DWORD_VECTOR	Nodes;
 	};
 	#define	DEFAULT_LIGHT_WEIGHT		  5.f 
 	#define	DEFAULT_COVER_WEIGHT		 10.f 
