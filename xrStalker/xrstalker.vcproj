@@ -808,6 +808,9 @@
 				<File
 					RelativePath=".\scripts\ui_save_dialog.script">
 				</File>
+				<File
+					RelativePath=".\Scripts\ui_spawn_dialog.script">
+				</File>
 				<Filter
 					Name="multiplayer"
 					Filter="">
