@@ -34,7 +34,9 @@ public:
 	// Взять объект. Объект попадает в рюкзак, 
 	//если bNotActivate == false, то активировать объект, 
 	//если у владельца инвентаря ничего не активировано (e.g. трейдер)
-	bool Take(CGameObject *pObj, bool bNotActivate = false);
+	//strict_placement - сохранить порядок вещей, загруженный из серверного объекта,
+	//иначе вещь ложится на первое доступное место
+	bool Take(CGameObject *pObj, bool bNotActivate, bool strict_placement);
 	//Выбросить предмет
 	bool Drop(CGameObject *pObj, bool call_drop = true);							// Выбросить объект
 	// Выбросить все

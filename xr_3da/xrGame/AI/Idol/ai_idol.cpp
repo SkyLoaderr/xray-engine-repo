@@ -111,7 +111,7 @@ void CAI_Idol::OnEvent		(NET_Packet& P, u16 type)
 			CObject* O	= Level().Objects.net_Find	(id);
 
 			if (bDebug)	Log("Trying to take - ", *O->cName());
-			if(g_Alive() && inventory().Take(dynamic_cast<CGameObject*>(O))) {
+			if(g_Alive() && inventory().Take(dynamic_cast<CGameObject*>(O), false, false)) {
 				O->H_SetParent(this);
 				if (bDebug)	Log("TAKE - ", *O->cName());
 			}

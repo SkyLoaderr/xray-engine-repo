@@ -101,7 +101,7 @@ void CInventory::Clear()
 	m_dwModifyFrame = Device.dwFrame;
 }
 
-bool CInventory::Take(CGameObject *pObj, bool bNotActivate)
+bool CInventory::Take(CGameObject *pObj, bool bNotActivate, bool strict_placement)
 {
 	CInventoryItem *pIItem = dynamic_cast<CInventoryItem*>(pObj);
 	VERIFY(pIItem);
@@ -112,6 +112,9 @@ bool CInventory::Take(CGameObject *pObj, bool bNotActivate)
 	pIItem->m_drop = false;
 
 	m_all.insert(pIItem);
+
+	if(!strict_placement)
+		pIItem->m_eItemPlace = eItemPlaceUndefined;
 
 	bool result = false;
 	switch(pIItem->m_eItemPlace)

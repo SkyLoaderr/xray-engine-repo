@@ -40,7 +40,7 @@ void CActor::OnEvent		(NET_Packet& P, u16 type)
 				break;
 			}
 
-			if(inventory().Take(dynamic_cast<CGameObject*>(O))) 
+			if(inventory().Take(dynamic_cast<CGameObject*>(O), false, true)) 
 			{
 				O->H_SetParent(dynamic_cast<CObject*>(this));
 				

@@ -275,7 +275,7 @@ void CAI_Trader::OnEvent		(NET_Packet& P, u16 type)
 		case GE_OWNERSHIP_TAKE:
 			P.r_u16		(id);
 			Obj = Level().Objects.net_Find	(id);
-			if(inventory().Take(dynamic_cast<CGameObject*>(Obj))) 
+			if(inventory().Take(dynamic_cast<CGameObject*>(Obj), false, false)) 
 				Obj->H_SetParent(this);
 			else
 			{

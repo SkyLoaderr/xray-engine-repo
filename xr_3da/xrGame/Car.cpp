@@ -1169,7 +1169,7 @@ void CCar::OnEvent(NET_Packet& P, u16 type)
 			P.r_u16		(id);
 			CObject* O	= Level().Objects.net_Find	(id);
 
-			if(GetInventory()->Take(dynamic_cast<CGameObject*>(O))) 
+			if(GetInventory()->Take(dynamic_cast<CGameObject*>(O), false, false)) 
 			{
 				O->H_SetParent(this);
 			}
