@@ -5,73 +5,16 @@
 #include "stdafx.h"
 #include "CustomEvent.h"
 
-void	EV_LIST::Create	(const char* DEF)
-{
-	if (0==DEF || 0==strlen(DEF)) return;
-	if (0==strchr(DEF,'}'))	{
-		_CreateOne(DEF);
-		return;
-	}
-	
-	char	ONE[256];
-	int		pos = 0;
-	bool	bInside = FALSE;
-	for (; *DEF; DEF++) {
-		switch (*DEF) {
-		case '{':
-			{
-				R_ASSERT(!bInside);
-				bInside = TRUE;
-			}
-			break;
-		case '}':
-			{
-				R_ASSERT(bInside);
-				bInside = FALSE;
-				ONE[pos]=0;
-				_CreateOne(ONE);
-				pos=0;
-			}
-			break;
-		case ',':
-			{
-				if (bInside) ONE[pos++]=',';
-			}
-			break;
-		default:
-			ONE[pos++] = *DEF;
-			break;
-		}
-	}
-}
-
-void	EV_LIST::Destroy	()
-{
-	for (DWORD i=0; i<List.size(); i++)
-	{
-		Engine.Event.Destroy(List[i].E);
-		_FREE(List[i].P1);
-	}
-	List.clear();
-}
-
-void	EV_LIST::Signal	(DWORD P2)
-{
-	for (DWORD i=0; i<List.size(); i++)
-		Engine.Event.Signal(List[i].E,DWORD(List[i].P1),P2); 
-}
 //////////////////////////////////////////////////////////////////////
 // Construction/Destruction
 //////////////////////////////////////////////////////////////////////
 
 CCustomEvent::CCustomEvent()
 {
-//	Device.seqRender.Add(this,REG_PRIORITY_LOW-1111);
 }
 
 CCustomEvent::~CCustomEvent		()
 {
-//	Device.seqRender.Remove(this);
 	_FREE						(ObjectName);
 	OnEnter.Destroy				();
 	OnExit.Destroy				();
