@@ -115,9 +115,6 @@ void CLightProjector::calculate	()
 	Device.Statistic.RenderDUMP_Pcalc.Begin	();
 	Device.Shader.set_RT		(RT_temp->pRT,0);
 	
-	// set shader
-	Device.Shader.set_Shader	(sh_Texture);
-
 	// sort by distance
 	std::sort	(id.begin(),id.end(),pred_casters(this));
 	
