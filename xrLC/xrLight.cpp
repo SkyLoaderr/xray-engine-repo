@@ -86,33 +86,42 @@ void CBuild::Light()
 //-----------------------------------------------------------------------
 extern BOOL	hasImplicitLighting(Face* F);
 
-vector<vecVertex>			g_trans;
-CCriticalSection			g_trans_CS;
+typedef	multimap<float,vecVertex>	mapVert;
+typedef	mapVert::iterator			mapVertIt;
+volatile mapVert					g_trans;
+CCriticalSection					g_trans_CS;
 
-void	g_trans_reg			(Vertex* V)
+void	g_trans_register			(Vertex* V)
 {
+	const float eps		= EPS_L;
+	const float eps2	= 2.f*eps;
+	
 	// Search
-	for (int it=0; it<g_trans.size(); it++)
+	float		key		= V->P.x;
+	mapVertIt	it		= g_trans.lower_bound	(key);
+
+	// Decrement to the start
+	while (it!=g_trans.begin() && ((it->first+eps2)>key)) it--;
+
+	// Search
+	for (; it!=g_trans.end() && ((it->first-eps2)>key); it++)
 	{
-		vecVertex&	VL		= g_trans[it];
-		if (VL.front()->P.similar(V->P,EPS_L))
+		vecVertex&	VL		= it->second;
+		if (VL.front()->P.similar(V->P,eps))
 		{
-			VL.push_back	(V);
+			g_trans_CS.Enter	();
+			VL.push_back		(V);
+			g_trans_CS.Leave	();
 			return;
 		}
 	}
 
 	// Register
-	g_trans.push_back		(vecVertex());
-	g_trans.back().reserve	(32);
-	g_trans.back().push_back(V);
-}
-
-void	g_trans_register	(Vertex* V)
-{
-	g_trans_CS.Enter	();
-	g_trans_reg			(V);
-	g_trans_CS.Leave	();
+	g_trans_CS.Enter		();
+	mapVertIt	ins			= g_trans.insert(make_pair(key,vecVertex()));
+	ins->second.reserve		(32);
+	ins->second.push_back	(V);
+	g_trans_CS.Leave		();
 }
 
 vecFace	VL_faces;
@@ -145,6 +154,7 @@ public:
 			for (int v=0; v<3; v++)
 			{
 				Vertex* V		= F->v[v];
+				if (!fis_zero(V->Color.a))	continue;
 				
 				Fcolor			C;
 				C.set			(0,0,0,0);
@@ -153,7 +163,7 @@ public:
 				V->Color.r		= C.r*v_inv+v_amb;
 				V->Color.g		= C.g*v_inv+v_amb;
 				V->Color.b		= C.b*v_inv+v_amb;
-				V->Color.a		= 1.f;
+				V->Color.a		= F->Shader().vert_translucency;
 				g_trans_register(V);
 			}
 		}
@@ -211,12 +221,7 @@ void CBuild::LightVertex()
 		for (v=0; v<VL.size(); v++)
 		{
 			// trans-level
-			float	level	= 0.f;
-			for (vecAdjIt adj = VL[v]->adjacent.begin(); adj != VL[v]->adjacent.end(); adj++)
-			{
-				Face*	F		= (*adj);
-				level = _max	(level,F->Shader().vert_translucency);
-			}
+			float	level		= VL[v]->Color.a;
 
 			// 
 			Fcolor				R;
