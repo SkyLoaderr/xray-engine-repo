@@ -18,7 +18,7 @@ public:
 	virtual ~CUITimeWnd();
 	virtual void Init(int x, int y, int widht, int height);
 	virtual void Init(int x, int y);	
-	virtual void InitTexture(LPCSTR tex_name) {/*only STUB!!: we can't change texture*/};
+	virtual void InitTexture(LPCSTR tex_name, LPCSTR sh_name="hud\\default") {/*only STUB!!: we can't change texture*/};
 	virtual void SetFont(CGameFont* pFont);
 	virtual void SetTextColor(u32 color);
 	virtual void SetText(LPCSTR str);
