@@ -738,7 +738,7 @@ void CSE_ALifeHumanAbstract::UPDATE_Write	(NET_Packet &tNetPacket)
 	tNetPacket.w				(&m_tTaskState,sizeof(m_tTaskState));
 	tNetPacket.w_u32			(m_dwCurTaskLocation);
 	tNetPacket.w_u32			(m_dwCurTask);
-	tNetPacket.w_u32			(m_dwCurNode);
+//	tNetPacket.w_u32			(m_dwCurNode);
 };
 
 void CSE_ALifeHumanAbstract::UPDATE_Read	(NET_Packet &tNetPacket)
@@ -749,7 +749,7 @@ void CSE_ALifeHumanAbstract::UPDATE_Read	(NET_Packet &tNetPacket)
 	tNetPacket.r				(&m_tTaskState,sizeof(m_tTaskState));
 	tNetPacket.r_u32			(m_dwCurTaskLocation);
 	tNetPacket.r_u32			(m_dwCurTask);
-	tNetPacket.r_u32			(m_dwCurNode);
+//	tNetPacket.r_u32			(m_dwCurNode);
 };
 
 #ifdef _EDITOR
