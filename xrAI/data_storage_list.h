@@ -1181,7 +1181,7 @@ public:
 	{
 		inherited::init			();
 		min_bucket_id			= bucket_count;
-//		ZeroMemory				(buckets,bucket_count*sizeof(CGraphNode*));
+		ZeroMemory				(buckets,bucket_count*sizeof(CGraphNode*));
 	}
 
 	IC		void		add_best_closed		()
@@ -1203,82 +1203,63 @@ public:
 
 	IC		u32			compute_bucket_id(CGraphNode &node) const
 	{
-		int					f = iFloor(bucket_count*(node.f() - min_bucket_value)/(max_bucket_value - min_bucket_value));// + _dist_type(1.5));
+//		int					f = iFloor(bucket_count*(node.f() - min_bucket_value)/(max_bucket_value - min_bucket_value));// + _dist_type(1.5));
+		int					f = int(bucket_count*(node.f() - min_bucket_value)/(max_bucket_value - min_bucket_value));// + _dist_type(1.5));
 		if (f < 0)
 			f				= 0;
 		else
 			if (f >= bucket_count)
 				f			= bucket_count - 1;
-		if (f == 3384) {
-			f=f;
-		}
 		return					(f);
 	}
 
 	IC		void		verify_buckets	()
 	{
-		for (u32 i=0; i<bucket_count; i++) {
-			CGraphNode	*j = buckets[i], *k;
-			if (!j || (indexes[j->index()].path_id != cur_path_id) || (indexes[j->index()].node != j))
-				continue;
-			u32			count = 0, count1 = 0;
-			for ( ; j; k=j,j=j->next, count++) {
-				VERIFY	(indexes[j->index()].path_id == cur_path_id);
-				VERIFY	(compute_bucket_id(*j) == i);
-				VERIFY	(!j->prev || (j == j->prev->next));
-				VERIFY	(!j->next || (j == j->next->prev));
-				VERIFY	(!j->next || (j != j->next));
-				VERIFY	(!j->prev || (j != j->prev));
-			}
-			for ( ; k; k=k->prev, count1++) {
-				VERIFY	(indexes[k->index()].path_id == cur_path_id);
-				VERIFY	(compute_bucket_id(*k) == i);
-				VERIFY	(!k->prev || (k == k->prev->next));
-				VERIFY	(!k->next || (k == k->next->prev));
-				VERIFY	(!k->next || (k != k->next));
-				VERIFY	(!k->prev || (k != k->prev));
-			}
-			VERIFY		(count == count1);
-		}
+//		for (u32 i=0; i<bucket_count; i++) {
+//			CGraphNode	*j = buckets[i], *k;
+//			if (!j || (indexes[j->index()].path_id != cur_path_id) || (indexes[j->index()].node != j))
+//				continue;
+//			u32			count = 0, count1 = 0;
+//			for ( ; j; k=j,j=j->next, count++) {
+//				VERIFY	(indexes[j->index()].path_id == cur_path_id);
+//				VERIFY	(compute_bucket_id(*j) == i);
+//				VERIFY	(!j->prev || (j == j->prev->next));
+//				VERIFY	(!j->next || (j == j->next->prev));
+//				VERIFY	(!j->next || (j != j->next));
+//				VERIFY	(!j->prev || (j != j->prev));
+//			}
+//			for ( ; k; k=k->prev, count1++) {
+//				VERIFY	(indexes[k->index()].path_id == cur_path_id);
+//				VERIFY	(compute_bucket_id(*k) == i);
+//				VERIFY	(!k->prev || (k == k->prev->next));
+//				VERIFY	(!k->next || (k == k->next->prev));
+//				VERIFY	(!k->next || (k != k->next));
+//				VERIFY	(!k->prev || (k != k->prev));
+//			}
+//			VERIFY		(count == count1);
+//		}
 	}
 
-	IC		CGraphNode	&create_node	(_index_type node_index)
-	{
-		if (indexes[node_index].node && (indexes[node_index].node->index() == node_index) && (buckets[indexes[node_index].node->bucket_id] == indexes[node_index].node)) {
-			if (indexes[node_index].node->bucket_id == 3384) {
-				node_index = node_index;
-			}
-			buckets[indexes[node_index].node->bucket_id] = 0;
-		}
-		CGraphNode				&node = inherited::create_node(node_index);
-		if (buckets[node.bucket_id] == &node) {
-			if (node.bucket_id == 3384) {
-				node_index = node_index;
-			}
-			buckets[node.bucket_id] = 0;
-		}
-		return					(node);
-	}
+//	IC		CGraphNode	&create_node	(_index_type node_index)
+//	{
+//		if (indexes[node_index].node && (indexes[node_index].node->index() == node_index) && (buckets[indexes[node_index].node->bucket_id] == indexes[node_index].node))
+//			buckets[indexes[node_index].node->bucket_id] = 0;
+//		CGraphNode				&node = inherited::create_node(node_index);
+//		if (buckets[node.bucket_id] == &node)
+//			buckets[node.bucket_id] = 0;
+//		return					(node);
+//	}
 
 	IC		void		add_to_bucket	(CGraphNode &node, u32 bucket_id)
 	{
-		//verify_buckets	();
 		if (bucket_id < min_bucket_id)
 			min_bucket_id		= bucket_id;
 
-
-//		u32						node_bucket_id = indexes[node.index()].bucket_id;
-//		if (buckets[node_bucket_id] && (buckets[node_bucket_id]->index() == node.index()))
-//			buckets[node_bucket_id] = 0;
-//		if (buckets[node.bucket_id] == &node)
-//			buckets[node.bucket_id] = 0;
 		node.bucket_id = bucket_id;
 		
 		CGraphNode			*i = buckets[bucket_id];
-		if (i && (i->index() == 134)) {
-			i=i;
-		}
-		if (!i || (indexes[i->index()].path_id != cur_path_id)) {// || (indexes[i->index()].node != i)) {
+//		if (!i || (indexes[i->index()].path_id != cur_path_id)) {
+		if (!i) {
 			buckets[bucket_id]	= &node;
 			node.next			= node.prev = 0;
 			verify_buckets		();
@@ -1293,6 +1274,7 @@ public:
 			verify_buckets		();
 			return;
 		}
+		
 		if (!i->next) {
 			node.prev			= i;
 			node.next			= 0;
@@ -1300,6 +1282,7 @@ public:
 			verify_buckets		();
 			return;
 		}
+		
 		for (i = i->next; i->next; i = i->next) {
 			if (i->f() >= node.f()) {
 				node.next		= i;
@@ -1310,6 +1293,7 @@ public:
 				return;
 			}
 		}
+		
 		if (i->f() >= node.f()) {
 			node.next		= i;
 			node.prev		= i->prev;
@@ -1325,18 +1309,13 @@ public:
 			verify_buckets	();
 			return;
 		}
+		
 		verify_buckets	();
 	}
 
 	IC		void		add_opened		(CGraphNode &node)
 	{
 		node.open_close_mask	= 1;
-//		indexes[node.index()].path_id--;
-//		verify_buckets			();
-//		indexes[node.index()].path_id++;
-		if (node.index() == 134) {
-			node = node;
-		}
 		add_to_bucket			(node,compute_bucket_id(node));
 		verify_buckets			();
 	}
@@ -1344,26 +1323,9 @@ public:
 	IC		void		decrease_opened	(CGraphNode &node, const _dist_type value)
 	{
 		VERIFY					(!is_opened_empty());
-//		verify_buckets			();
-		if (node.index() == 134) {
-			node = node;
-		}
 		if (node.prev)
 			node.prev->next		= node.next;
 		else {
-//			u32					prev_bucket_id;
-//			if (node.next)
-//				prev_bucket_id	= compute_bucket_id(*node.next);
-//			else
-//				if (node.prev)
-//					prev_bucket_id	= compute_bucket_id(*node.prev);
-//				else {
-//					for (prev_bucket_id=min_bucket_id; ; prev_bucket_id++)
-//						if (buckets[prev_bucket_id] == &node)
-//							break;
-//					VERIFY		(buckets[prev_bucket_id] == &node);
-//				}
-//			buckets[prev_bucket_id] = node.next;
 			VERIFY				(buckets[node.bucket_id] == &node);
 			buckets[node.bucket_id] = node.next;
 		}
@@ -1389,12 +1351,10 @@ public:
 	IC		CGraphNode	&get_best		()
 	{
 		VERIFY					(!is_opened_empty());
-//		if (!buckets[min_bucket_id] || (indexes[buckets[min_bucket_id]->index()].path_id != cur_path_id)) {
 		if (!buckets[min_bucket_id]) {
 			verify_buckets		();
-			for ( ++min_bucket_id; !buckets[min_bucket_id] || (indexes[buckets[min_bucket_id]->index()].path_id != cur_path_id); ++min_bucket_id);
 //			for ( ++min_bucket_id; !buckets[min_bucket_id] || (indexes[buckets[min_bucket_id]->index()].path_id != cur_path_id) || (indexes[buckets[min_bucket_id]->index()].node != buckets[min_bucket_id]); ++min_bucket_id);
-//			for ( ++min_bucket_id; !buckets[min_bucket_id]; ++min_bucket_id);
+			for ( ++min_bucket_id; !buckets[min_bucket_id]; ++min_bucket_id);
 			VERIFY				(min_bucket_id < bucket_count);
 			verify_buckets		();
 		}
