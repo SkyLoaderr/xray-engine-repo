@@ -3,6 +3,7 @@ function main()
 	wait(1000)
 	local 	actor = get_actor()
 	local 	trader = get_level_object("m_trader")
+	local 	wounded = get_level_object("tradeseller_stalker_0_1")
 	GiveInfoViaPda(actor, actor, "actor_start")
 	trader:set_start_dialog("trader_hello_dialog")
 
@@ -10,7 +11,6 @@ function main()
 	wait()
 	end
 end
-
 
 function give_job_box01(first_speaker, second_speaker)
 
@@ -24,9 +24,24 @@ function give_job_box02(first_speaker, second_speaker)
 
 end
 
+function give_job_medkit(first_speaker, second_speaker)
+
+	first_speaker:give_info_portion("wounded_start2")
+
+end
+
+
 function is_trader (first_speaker, second_speaker)
 
 	if (clsid.trader == second_speaker:clsid()) then
+		return true
+    end
+	return false
+end
+
+function is_wounded (first_speaker, second_speaker)
+
+	if (clsid.wounded == second_speaker:clsid()) then
 		return true
     end
 	return false
@@ -60,6 +75,17 @@ function is_box02_present(first_speaker, second_speaker)
 
 end
 
+function is_medkit_present(first_speaker, second_speaker)
+
+	printf("whether we have box: first %s, second %s", first_speaker:name(), second_speaker:name())
+	if( first_speaker:object("medkit")  ) then
+		return true
+	end
+	return false
+
+end
+
+
 function give_box_to_trader(first_speaker, second_speaker)
 	local box01 = second_speaker:object("quest_case_01")
 	second_speaker:transfer_item (box01, first_speaker)
@@ -67,6 +93,15 @@ function give_box_to_trader(first_speaker, second_speaker)
 -- передать деньги актеру
 	first_speaker:transfer_money (500, second_speaker)
 end
+
+function give_medkit_to_wounded(first_speaker, second_speaker)
+	local med = second_speaker:object("medkit")
+	second_speaker:transfer_item (med, first_speaker)
+	second_speaker:disable_info_portion ("wounded_start2")
+-- передать деньги актеру
+	first_speaker:transfer_money (500, second_speaker)
+end
+
 
 function give_box02_to_trader(first_speaker, second_speaker)
 	local box02 = second_speaker:object("quest_case_02")
