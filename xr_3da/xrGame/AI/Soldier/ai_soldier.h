@@ -247,6 +247,12 @@ class CAI_Soldier : public CCustomMonster
 		DWORD				m_dwTimeBeingWaited;
 		char				m_cMovementType;
 		CMotionDef*			m_tpaMovementAnimations[3][WALK_NO];
+		sound*				m_tpSoundBeingPlayed;
+		DWORD				m_dwLastSoundRefresh;
+		float				m_fMinRadioIinterval;
+		float				m_fMaxRadioIinterval;
+		float				m_fRadioRefreshRate;
+
 		
 		// head turns
 		static void __stdcall HeadSpinCallback(CBoneInstance*);

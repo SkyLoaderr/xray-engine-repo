@@ -25,9 +25,6 @@
 #define RECHARGE_MEDIAN					(2.f/3.f)
 #define RECHARGE_EPSILON				(0.f/6.f)
 
-#define MIN_RADIO_INTERVAL				20.f
-#define MAX_RADIO_INTERVAL				120.f
-
 /**
 void CAI_Soldier::OnAttackFire()
 {
@@ -1155,18 +1152,26 @@ void CAI_Soldier::OnPatrol()
 			m_dwLastRangeSearch = Level().timeServer();
 		}
 	}
+
+	if	(!m_tpSoundBeingPlayed || !m_tpSoundBeingPlayed->feedback) {
+		if (m_tpSoundBeingPlayed && !m_tpSoundBeingPlayed->feedback) {
+			m_tpSoundBeingPlayed = 0;
+			m_dwLastRadioTalk = dwCurTime;
+		}
+		if ((dwCurTime - m_dwLastSoundRefresh > m_fRadioRefreshRate) && ((dwCurTime - m_dwLastRadioTalk > m_fMaxRadioIinterval) || ((dwCurTime - m_dwLastRadioTalk > m_fMinRadioIinterval) && (::Random.randF(0,1) > (dwCurTime - m_dwLastRadioTalk - m_fMinRadioIinterval)/(m_fMaxRadioIinterval - m_fMinRadioIinterval))))) {
+			m_dwLastSoundRefresh = dwCurTime;
+			// Play hit-sound
+			m_tpSoundBeingPlayed = &(sndRadio[Random.randI(SND_RADIO_COUNT)]);
+			
+			if (m_tpSoundBeingPlayed->feedback)			
+				return;
+
+			pSounds->PlayAtPos(*m_tpSoundBeingPlayed,this,vPosition);
+		}
+	}
 	
 	StandUp();
 	vfSetLookAndFireMovement(false, WALK_FORWARD_4,1.0f,Group,dwCurTime);
-
-	if ((dwCurTime - m_dwLastRadioTalk > MAX_RADIO_INTERVAL) || ((dwCurTime - m_dwLastRadioTalk > MIN_RADIO_INTERVAL) && (::Random.randF(0,1) > (dwCurTime - m_dwLastRadioTalk - MIN_RADIO_INTERVAL)/(MAX_RADIO_INTERVAL - MIN_RADIO_INTERVAL)))) {
-		// Play hit-sound
-		sound& S	= sndRadio[Random.randI(SND_RADIO_COUNT)];
-		
-		if (S.feedback)			
-			return;
-		pSounds->PlayAtPos	(S,this,vPosition);
-	}
 }
 
 void CAI_Soldier::OnAttackFireAlone()

@@ -50,6 +50,8 @@ CAI_Soldier::CAI_Soldier()
 	m_iSoundIndex = -1;
 	m_cGestureState = GESTURE_STATE_NONE;
 	m_dwLastRadioTalk = 0;
+	m_tpSoundBeingPlayed = 0;
+	m_dwLastSoundRefresh = 0;
 }
 
 CAI_Soldier::~CAI_Soldier()
@@ -137,7 +139,11 @@ void CAI_Soldier::Load	(LPCSTR section)
 	m_fMaxMissDistance = pSettings->ReadINT(section,"MaxMissDistance");
 	m_fMaxMissFactor   = pSettings->ReadINT(section,"MaxMissFactor");
 
+	m_fMinRadioIinterval = pSettings->ReadFLOAT(section,"MinRadioIinterval");
+	m_fMaxRadioIinterval = pSettings->ReadFLOAT(section,"MaxRadioIinterval");
+	m_fRadioRefreshRate	 = pSettings->ReadFLOAT(section,"RadioRefreshRate");
 	
+
 	// patrol under fire
 	m_dwPatrolShock = pSettings->ReadINT(section,"PatrolShock");
 	m_dwUnderFireShock = pSettings->ReadINT(section,"UnderFireShock");
