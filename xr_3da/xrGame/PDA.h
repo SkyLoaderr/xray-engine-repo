@@ -89,6 +89,8 @@ public:
 	virtual bool NeedToAnswer(u32 pda_ID);
 	virtual bool WaitForReply(u32 pda_ID);
 
+	virtual u32 ActiveContactsNum() {return m_PDAList.size();}
+
 	//список PDA в зоне достигаемости
 	PDA_LIST m_PDAList;
 
