@@ -26,6 +26,27 @@ local attack_end
 local actor_is_victim
 local actor_was_attacked
 
+function get_actor()
+	while not db.actor do
+		wait()
+	end
+
+	return db.actor
+end
+
+function get_level_object( name )
+	local o
+
+	o = level.debug_object( name )
+
+	while not o do
+		wait()
+		o = level.debug_object( name )
+	end
+
+	return o
+end
+
 function chst( new_state )
 	state      = new_state
 	state_init = true
@@ -82,11 +103,11 @@ function update()
 		end
 
 		if type( newbies[1] ) == "number" then
-			newbies[1] = level.object( "esc_vagon_newbie1" ) or newbies[1]
+			newbies[1] = level.debug_object( "esc_vagon_newbie1" ) or newbies[1]
 		end
 
 		if type( newbies[2] ) == "number" then
-			newbies[2] = level.object( "esc_vagon_newbie2" ) or newbies[2]
+			newbies[2] = level.debug_object( "esc_vagon_newbie2" ) or newbies[2]
 		end
 
 		if type( newbies[1] ) ~= "number" and type( newbies[2] ) ~= "number" then

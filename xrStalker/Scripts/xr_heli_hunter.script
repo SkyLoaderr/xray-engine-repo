@@ -1,5 +1,5 @@
 --[[------------------------------------------------------------------------------------------------------------------
-—хема "ќхотник на вертолЄты"
+—хема "ќхотник за вертолЄтами"
 „угай —аша
 
 —делать:
@@ -26,7 +26,8 @@ function evaluator_shoot:evaluate()
 	overrides = xr_logic.generic_scheme_overrides( self.object )
 	if overrides and overrides.heli_hunter then
 		if not self.a.heli then
-			self.a.heli = level.object( "heli" ) or level.object( "heli1" )
+--			self.a.heli = db.actor--level.object( "heli" ) or level.object( "heli1" )
+			self.a.heli = level.debug_object( "heli" )
 			return false
 		else
 			return self.a.heli:position():distance_to_sqr( self.object:position() ) <= self.a.attack_dist_sqr
@@ -48,28 +49,18 @@ end
 function action_shoot:initialize()
 	action_base.initialize( self )
 
-	self.object:set_movement_type       ( move.stand )
-	self.object:set_mental_state        ( anim.danger )
-
-	self.bw = self.object:best_weapon()
-	if self.bw then
-		self.object:set_item ( object.idle, self.bw )
-	end
-
-	self.aim_end = device():time_global() + math.random( 3000, 4000 )
 end
 
 function action_shoot:execute()
 	action_base.execute( self )
 
-	self.object:set_sight( look.fire_point, self.a.heli:position(), 0 )
-
-	if self.aim_end < device():time_global() then
-		self.bw = self.object:best_weapon()
-		if self.bw then
-			self.object:set_item ( object.fire1, self.bw )
-		end
-	end
+--	if self.object:see( self.a.heli ) then
+		state_mgr.set_state( self.object, "threat_fire", nil, nil,
+		                     {look_object = self.a.heli, look_position = self.a.heli:position()} )
+--	else
+--		state_mgr.set_state( self.object, "threat", nil, nil,
+--		                     {look_object = self.a.heli, look_position = self.a.heli:position()} )
+--	end
 end
 
 function action_shoot:finalize()
