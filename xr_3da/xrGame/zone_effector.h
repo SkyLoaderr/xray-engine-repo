@@ -34,6 +34,7 @@ public:
 	void	Load			(LPCSTR section);
 	void	SetRadius		(float r);
 	void	Update			(float dist);
+	void	Stop			();
 
 	// Test
 	enum PP_Type {

@@ -305,7 +305,12 @@ void CCustomZone::UpdateCL()
 {
 	inherited::UpdateCL();
 
-	if (!IsEnabled()) return;
+	if (!IsEnabled()) 
+	{
+		if (EnableEffector())
+			m_effector.Stop();
+		return;
+	};
 
 	UpdateIdleLight		();
 

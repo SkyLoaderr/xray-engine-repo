@@ -104,6 +104,7 @@ public:
 
 	virtual		void				SpawnWeaponsForActor	(CSE_Abstract* pE, game_PlayerState*	ps);
 
+	
 	virtual		void				LoadTeams				();
 	virtual		void				LoadTeamData			(char* caSection);
 	virtual		void				LoadWeaponsForTeam		(char* caSection, TEAM_WPN_LIST *pTeamWpnList);
@@ -119,9 +120,12 @@ public:
 	void							RemoveItemFromActor		(CSE_Abstract* pItem);
 	//----- Money routines -----------------------------------------------------------------
 	virtual		void				Money_SetStart			(ClientID	id_who);
+	virtual		void				Player_AddMoney			(game_PlayerState* ps, s32 MoneyAmount);
+	virtual		s16					GetMoneyAmount			(char* caSection, char* caMoneyStr);
 //	virtual		s16					GetItemCost				(u32 id_who, s16 ItemID);
 				int					GetTeamScore			(u32 idx);
 				void				SetTeamScore			(u32 idx, int val);
+				
 
 	DECLARE_SCRIPT_REGISTER_FUNCTION
 };

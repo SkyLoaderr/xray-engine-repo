@@ -110,12 +110,12 @@ void	game_sv_ArtefactHunt::OnPlayerKillPlayer		(ClientID id_killer, ClientID id_
 		if (pTeam)
 		{
 			if (ps_killer == ps_killed)
-				ps_killer->money_for_round	=	ps_killer->money_for_round + pTeam->m_iM_KillSelf;
+				Player_AddMoney(ps_killer, pTeam->m_iM_KillSelf);
 			else
 				if (ps_killed->GameID == artefactBearerID)
-					ps_killer->money_for_round	=	ps_killer->money_for_round + pTeam->m_iM_TargetTeam;
+					Player_AddMoney(ps_killer, pTeam->m_iM_TargetTeam);
 				else
-					ps_killer->money_for_round	=	ps_killer->money_for_round + pTeam->m_iM_KillTeam;
+					Player_AddMoney(ps_killer, pTeam->m_iM_KillTeam);
 		}
 	} else {
 		// Opponent killed - frag 
@@ -123,17 +123,9 @@ void	game_sv_ArtefactHunt::OnPlayerKillPlayer		(ClientID id_killer, ClientID id_
 
 		if (pTeam)
 			if (ps_killed->GameID == artefactBearerID)
-				ps_killer->money_for_round	=	ps_killer->money_for_round + pTeam->m_iM_TargetRival;
+				Player_AddMoney(ps_killer, pTeam->m_iM_TargetRival);
 			else
-				ps_killer->money_for_round	=	ps_killer->money_for_round + pTeam->m_iM_KillRival;
-
-		if (m_iReinforcementTime<0 && !CheckAlivePlayersInTeam(ps_killed->team))
-		{
-			OnTeamScore(ps_killer->team, true);
-			phase = u16((ps_killed->team == 2)?GAME_PHASE_TEAM2_ELIMINATED:GAME_PHASE_TEAM1_ELIMINATED);
-			switch_Phase(phase);
-			OnDelayedRoundEnd("Team Eliminated");
-		}
+				Player_AddMoney(ps_killer, pTeam->m_iM_KillRival);
 	}
 	// Send Message About Player Killed
 	SendPlayerKilledMessage(id_killer, id_killed);
@@ -142,9 +134,6 @@ void	game_sv_ArtefactHunt::OnPlayerKillPlayer		(ClientID id_killer, ClientID id_
 	ps_killed->lasthitweapon		= 0;
 	ClearPlayerItems		(ps_killed);
 	SetPlayersDefItems		(ps_killed);
-
-	if (pTeam)
-		if (ps_killer->money_for_round < pTeam->m_iM_Min) ps_killer->money_for_round = pTeam->m_iM_Min;
 
 	signal_Syncronize();
 }
@@ -458,7 +447,7 @@ void		game_sv_ArtefactHunt::OnArtefactOnBase		(ClientID id_who)
 	TeamStruct* pTeam		= GetTeamData(u8(ps->team));
 	if (pTeam)
 	{
-		ps->money_for_round = ps->money_for_round + pTeam->m_iM_TargetSucceed;
+		Player_AddMoney(ps, pTeam->m_iM_TargetSucceed);
 
 		// Add money to players in this team
 		u32		cnt = get_players_count();
@@ -467,8 +456,8 @@ void		game_sv_ArtefactHunt::OnArtefactOnBase		(ClientID id_who)
 			// init
 			game_PlayerState*	pstate	=	get_it	(it);
 			if (pstate->Skip || pstate == ps || pstate->team != ps->team) continue;		
-			
-			pstate->money_for_round = pstate->money_for_round + pTeam->m_iM_TargetSucceedAll;			
+						
+			Player_AddMoney(pstate, pTeam->m_iM_TargetSucceedAll);
 		}
 	}
 
@@ -517,7 +506,13 @@ void		game_sv_ArtefactHunt::OnArtefactOnBase		(ClientID id_who)
 void	game_sv_ArtefactHunt::SpawnArtefact			()
 {
 //	if (OnClient()) return;
-	CSE_Abstract			*E	=	spawn_begin	("af_magnet");
+
+	CSE_Abstract			*E = NULL;
+	if (pSettings->line_exist("artefacthunt_gamedata", "artefact"))
+		E	=	spawn_begin	(pSettings->r_string("artefacthunt_gamedata", "artefact"));
+	else
+		return;
+
 	E->s_flags.assign		(M_SPAWN_OBJECT_LOCAL);	// flags
 
 	Assign_Artefact_RPoint	(E);
@@ -585,8 +580,8 @@ void	game_sv_ArtefactHunt::Update			()
 			{
 				switch_Phase	(GAME_PHASE_INPROGRESS);
 				
-				RemoveArtefact();
-				SpawnArtefact();
+//				RemoveArtefact();
+//				SpawnArtefact();
 			};
 		}break;
 	case GAME_PHASE_PENDING : 
@@ -606,7 +601,10 @@ void	game_sv_ArtefactHunt::Update			()
 				}
 			};
 			if (m_iReinforcementTime == -1 && m_dwArtefactID != 0)
+			{
 				CheckForAnyAlivePlayer();
+				CheckForTeamElimination();
+			};
 			//---------------------------------------------------
 			if (Artefact_NeedToSpawn()) return;
 			if (Artefact_NeedToRemove()) return;
@@ -896,3 +894,47 @@ void	game_sv_ArtefactHunt::MoveAllAlivePlayers			()
 		m_server->SendTo(l_pC->ID,P,net_flags(TRUE,TRUE));
 	};
 };
+
+void	game_sv_ArtefactHunt::CheckForTeamElimination()
+{
+	u8 WinTeam = 0;
+	if (!CheckAlivePlayersInTeam(1)) WinTeam = 2;
+	else if (!CheckAlivePlayersInTeam(2)) WinTeam = 1;
+	if (!WinTeam) return;
+	
+	SetTeamScore( WinTeam - 1, GetTeamScore(WinTeam-1)+1 );
+	//			OnTeamScore(ps_killer->team, false);
+	//-----------------------------------------------------------------------------
+	u32		cnt = get_players_count();
+	TeamStruct* pWTeam		= GetTeamData(WinTeam);
+	if (pWTeam)
+	{
+		for		(u32 it=0; it<cnt; ++it)	
+		{
+			// init
+			game_PlayerState*	pstate	=	get_it	(it);
+			if (pstate->Skip || pstate->team != WinTeam) continue;
+			Player_AddMoney(pstate, pWTeam->m_iM_RivalsWipedOut);
+		};
+	};
+	//-----------------------------------------------------------------------------
+	phase = u16((WinTeam == 1)?GAME_PHASE_TEAM2_ELIMINATED:GAME_PHASE_TEAM1_ELIMINATED);
+	switch_Phase(phase);
+	OnDelayedRoundEnd("Team Eliminated");
+	RemoveArtefact();
+}
+
+void	game_sv_ArtefactHunt::RespawnPlayer			(ClientID id_who, bool NoSpectator)
+{
+	inherited::RespawnPlayer(id_who, NoSpectator);
+
+	xrClientData*	xrCData	= (xrClientData*)m_server->ID_to_client	(id_who);
+	game_PlayerState*	ps	=	xrCData->ps;
+	CSE_Abstract*	pOwner = xrCData->owner;
+	CSE_ALifeCreatureActor	*pA	=	dynamic_cast<CSE_ALifeCreatureActor*>(pOwner);
+	if(!pA) return;
+	
+	TeamStruct*	pTeamData = GetTeamData(u8(ps->team));
+	if (pTeamData)
+		Player_AddMoney(ps, pTeamData->m_iM_OnRespawn);
+}

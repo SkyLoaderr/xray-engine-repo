@@ -116,12 +116,12 @@ void	game_sv_Deathmatch::OnPlayerKillPlayer		(ClientID id_killer, ClientID id_ki
 		ps_killer->kills			-=	1;
 
 		if (pTeam)
-			ps_killer->money_for_round	=	ps_killer->money_for_round + pTeam->m_iM_KillSelf;
+			Player_AddMoney(ps_killer, pTeam->m_iM_KillSelf);
 	} else {
 		// Opponent killed - frag 
 		ps_killer->kills			+=	1;
 		if (pTeam)
-			ps_killer->money_for_round	=	ps_killer->money_for_round + pTeam->m_iM_KillRival;
+			Player_AddMoney(ps_killer, pTeam->m_iM_KillRival);
 
 //		if (fraglimit && (ps_killer->kills >= fraglimit) )OnFraglimitExceed();
 	}
@@ -133,9 +133,6 @@ void	game_sv_Deathmatch::OnPlayerKillPlayer		(ClientID id_killer, ClientID id_ki
 	ps_killed->lasthitweapon		= 0;
 	ClearPlayerItems		(ps_killed);
 	SetPlayersDefItems		(ps_killed);
-
-	if (pTeam)
-		if (ps_killer->money_for_round < pTeam->m_iM_Min) ps_killer->money_for_round = pTeam->m_iM_Min;
 
 	signal_Syncronize();
 }
@@ -372,6 +369,7 @@ void	game_sv_Deathmatch::OnPlayerReady			(ClientID id)
 	case GAME_PHASE_INPROGRESS:
 		{
 //			LPCSTR	options			=	get_name_id	(id);
+			xrClientData*	xrCData	= (xrClientData*)m_server->ID_to_client	(id);
 			game_PlayerState*	ps	=	get_id	(id);
 			if (ps->Skip) break;
 			if (!(ps->testFlag(GAME_PLAYER_FLAG_VERY_VERY_DEAD))) break;
@@ -383,10 +381,12 @@ void	game_sv_Deathmatch::OnPlayerReady			(ClientID id)
 			}
 			//------------------------------------------------------------
 			RespawnPlayer(id, false);
-			CSE_Abstract* pOwner = xrSCData->owner;
+			CSE_Abstract* pOwner = xrCData->owner;
 			CSE_ALifeCreatureActor	*pA	=	dynamic_cast<CSE_ALifeCreatureActor*>(pOwner);
 			if(pA)
+			{
 				SpawnWeaponsForActor(pOwner, ps);
+			}
 		}break;
 	};
 }
@@ -754,8 +754,8 @@ void	game_sv_Deathmatch::SpawnWeaponsForActor(CSE_Abstract* pE, game_PlayerState
 
 		SpawnWeapon4Actor(pA->ID, (*pWpnI).WeaponName.c_str(), u8(ItemID & 0x00FF)>>0x05);
 	};
-
-	ps->money_for_round = ps->money_for_round + ps->LastBuyAcount;
+	
+	Player_AddMoney(ps, ps->LastBuyAcount);
 };
 void	game_sv_Deathmatch::LoadWeaponsForTeam		(char* caSection, TEAM_WPN_LIST *pTeamWpnList)
 {
@@ -973,6 +973,14 @@ void	game_sv_Deathmatch::LoadTeams			()
 	LoadTeamData("deathmatch_team0");
 };
 
+s16		game_sv_Deathmatch::GetMoneyAmount			(char* caSection, char* caMoneyStr)
+{
+	if (pSettings->line_exist(caSection, caMoneyStr))
+		return pSettings->r_s16(caSection, caMoneyStr);
+
+	return 0;
+};
+
 void	game_sv_Deathmatch::LoadTeamData			(char* caSection)
 {
 	TeamStruct	NewTeam;
@@ -985,24 +993,27 @@ void	game_sv_Deathmatch::LoadTeamData			(char* caSection)
 	//-------------------------------------------------------------
 	if( pSettings->section_exist(caSection) )//money
 	{
-		NewTeam.m_iM_Start				= pSettings->r_s16(caSection, "money_start");
-		NewTeam.m_iM_Min				= pSettings->r_s16(caSection, "money_min");
+		NewTeam.m_iM_Start				= GetMoneyAmount(caSection, "money_start");
+		NewTeam.m_iM_OnRespawn			= GetMoneyAmount(caSection, "money_respawn");
+		NewTeam.m_iM_Min				= GetMoneyAmount(caSection, "money_min");
 
-		NewTeam.m_iM_KillRival			= pSettings->r_s16(caSection, "kill_rival");
-		NewTeam.m_iM_KillSelf			= pSettings->r_s16(caSection, "kill_self");
-		NewTeam.m_iM_KillTeam			= pSettings->r_s16(caSection, "kill_team");
+		NewTeam.m_iM_KillRival			= GetMoneyAmount(caSection, "kill_rival");
+		NewTeam.m_iM_KillSelf			= GetMoneyAmount(caSection, "kill_self");
+		NewTeam.m_iM_KillTeam			= GetMoneyAmount(caSection, "kill_team");
 
-		NewTeam.m_iM_TargetRival		= pSettings->r_s16(caSection, "target_rival");
-		NewTeam.m_iM_TargetTeam			= pSettings->r_s16(caSection, "target_team");
-		NewTeam.m_iM_TargetSucceed		= pSettings->r_s16(caSection, "target_succeed");
-		NewTeam.m_iM_TargetSucceedAll	= pSettings->r_s16(caSection, "target_succeed_all");
+		NewTeam.m_iM_TargetRival		= GetMoneyAmount(caSection, "target_rival");
+		NewTeam.m_iM_TargetTeam			= GetMoneyAmount(caSection, "target_team");
+		NewTeam.m_iM_TargetSucceed		= GetMoneyAmount(caSection, "target_succeed");
+		NewTeam.m_iM_TargetSucceedAll	= GetMoneyAmount(caSection, "target_succeed_all");
 
-		NewTeam.m_iM_RoundWin			= pSettings->r_s16(caSection, "round_win");
-		NewTeam.m_iM_RoundLoose			= pSettings->r_s16(caSection, "round_loose");
-		NewTeam.m_iM_RoundDraw			= pSettings->r_s16(caSection, "round_draw");
+		NewTeam.m_iM_RoundWin			= GetMoneyAmount(caSection, "round_win");
+		NewTeam.m_iM_RoundLoose			= GetMoneyAmount(caSection, "round_loose");
+		NewTeam.m_iM_RoundDraw			= GetMoneyAmount(caSection, "round_draw");
 
-		NewTeam.m_iM_RoundWin_Minor		= pSettings->r_s16(caSection, "round_win_minor");
-		NewTeam.m_iM_RoundLoose_Minor	= pSettings->r_s16(caSection, "round_loose_minor");
+		NewTeam.m_iM_RoundWin_Minor		= GetMoneyAmount(caSection, "round_win_minor");
+		NewTeam.m_iM_RoundLoose_Minor	= GetMoneyAmount(caSection, "round_loose_minor");
+
+		NewTeam.m_iM_RivalsWipedOut		= GetMoneyAmount(caSection, "rivals_wiped_out");
 	};
 	//-------------------------------------------------------------
 	TeamList.push_back(NewTeam);
@@ -1115,9 +1126,9 @@ void	game_sv_Deathmatch::OnTeamScore	(u32 Team, bool Minor)
 		if (ps->Skip) continue;		
 
 		if (ps->team == s16(Team))
-			ps->money_for_round = ps->money_for_round + ((Minor) ? pTeam->m_iM_RoundWin_Minor : pTeam->m_iM_RoundWin);
+			Player_AddMoney(ps, ((Minor) ? pTeam->m_iM_RoundWin_Minor : pTeam->m_iM_RoundWin));
 		else
-			ps->money_for_round = ps->money_for_round + ((Minor) ? pTeam->m_iM_RoundLoose_Minor : pTeam->m_iM_RoundLoose);
+			Player_AddMoney(ps, ((Minor) ? pTeam->m_iM_RoundLoose_Minor : pTeam->m_iM_RoundLoose));
 	}
 }
 
@@ -1337,3 +1348,19 @@ void game_sv_Deathmatch::OnPlayerConnect	(ClientID id_who)
 	SetPlayersDefItems(ps_who);
 }
 
+void	game_sv_Deathmatch::Player_AddMoney			(game_PlayerState* ps, s32 MoneyAmount)
+{
+	if (!ps) return;
+	TeamStruct* pTeam		= GetTeamData(u8(ps->team));
+
+	s64 TotalMoney = ps->money_for_round;
+
+	TotalMoney	+= MoneyAmount;
+	
+	if (TotalMoney<pTeam->m_iM_Min) 
+		TotalMoney = pTeam->m_iM_Min;
+	if (TotalMoney > 32767)
+		TotalMoney = 32767;
+
+	ps->money_for_round = s16(TotalMoney);
+};

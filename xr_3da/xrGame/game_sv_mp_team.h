@@ -30,6 +30,7 @@
 
 		//---- Money -------------------
 		s16					m_iM_Start			;
+		s16					m_iM_OnRespawn		;
 		s16					m_iM_Min			;
 		
 		s16					m_iM_KillRival		;
@@ -47,6 +48,7 @@
 
 		s16					m_iM_RoundWin_Minor		;
 		s16					m_iM_RoundLoose_Minor	;
+		s16					m_iM_RivalsWipedOut		;
 
 	};
 

@@ -26,8 +26,6 @@ public:
 
 	virtual		void				OnPlayerHitPlayer		(u16 id_hitter, u16 id_hitted, NET_Packet& P);
 
-//	virtual		void				OnTeamScore				(u32 /**team/**/, bool)						;		// команда выиграла
-
 	virtual		u8					AutoTeam				( );
 	virtual		u32					RP_2_Use				(CSE_Abstract* E);
 

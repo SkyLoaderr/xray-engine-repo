@@ -282,6 +282,8 @@ void game_cl_ArtefactHunt::shedule_Update			(u32 dt)
 	m_game_ui->SetTodoCaption		("");
 	m_game_ui->SetRoundResultCaption	("");
 
+	m_game_ui->SetPressBuyMsgCaption	("");
+
 	switch (phase)
 	{
 	case GAME_PHASE_INPROGRESS:
@@ -329,7 +331,7 @@ void game_cl_ArtefactHunt::shedule_Update			(u32 dt)
 				{
 					sprintf(S,		"Your Team : %3d - Enemy Team %3d - from %3d Artefacts",
 									teams[lt-1].score, 
-									teams[(lt==1)?0:1].score, 
+									teams[(lt==1)?1:0].score, 
 									artefactsNum);
 					m_game_ui->SetScoreCaption(S);
 				};

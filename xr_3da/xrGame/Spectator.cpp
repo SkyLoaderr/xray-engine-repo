@@ -236,12 +236,13 @@ void CSpectator::cam_Update	(CActor* A)
 		cam->Update					(point,dangle);
 		g_pGameLevel->Cameras.Update	(cam);
 		// hud output
+		/*
 		if (true || Game().Phase() != GAME_PHASE_PENDING)
 		{
 			HUD().pFontDI->SetColor		(0xffffffff);
 			HUD().pFontDI->Out			(0.f,0.0f,"SPECTATOR : Free-fly camera");
 		};
-		
+		*/
 	};
 }
 

@@ -112,16 +112,16 @@ void	game_sv_TeamDeathmatch::OnPlayerKillPlayer		(ClientID id_killer, ClientID i
 		if (pTeam)
 		{
 			if (ps_killer == ps_killed)
-				ps_killer->money_for_round	=	ps_killer->money_for_round + pTeam->m_iM_KillSelf;
+				Player_AddMoney(ps_killer, pTeam->m_iM_KillSelf);
 			else
-				ps_killer->money_for_round	=	ps_killer->money_for_round + pTeam->m_iM_KillTeam;
+				Player_AddMoney(ps_killer, pTeam->m_iM_KillTeam);
 		}
 	} else {
 		// Opponent killed - frag 
 		ps_killer->kills			+=	1;
 
 		if (pTeam)
-			ps_killer->money_for_round	=	ps_killer->money_for_round + pTeam->m_iM_KillRival;
+			Player_AddMoney(ps_killer, pTeam->m_iM_KillRival);
 	}
 	
 //	teams[ps_killer->team-1].score = 0;
@@ -146,9 +146,6 @@ void	game_sv_TeamDeathmatch::OnPlayerKillPlayer		(ClientID id_killer, ClientID i
 	SetPlayersDefItems		(ps_killed);
 
 //	if (fraglimit && (teams[ps_killer->team-1].score >= fraglimit ) )OnFraglimitExceed();
-
-	if (pTeam)
-		if (ps_killer->money_for_round < pTeam->m_iM_Min) ps_killer->money_for_round = pTeam->m_iM_Min;
 
 	signal_Syncronize();
 }
@@ -255,23 +252,4 @@ void	game_sv_TeamDeathmatch::LoadTeams			()
 	LoadTeamData("teamdeathmatch_team2");
 };
 
-/*
-void	game_sv_TeamDeathmatch::OnTeamScore	(u32 Team)
-{
-	TeamStruct* pTeam		= GetTeamData(u8(Team));
-	if (!pTeam) return;
-	
-	u32		cnt = get_players_count();
-	for		(u32 it=0; it<cnt; ++it)	
-	{
-		// init
-		game_PlayerState*	ps	=	get_it	(it);
-		if (ps->Skip) continue;		
 
-		if (ps->team == s16(Team))
-			ps->money_for_round = ps->money_for_round + pTeam->m_iM_RoundWin;
-		else
-			ps->money_for_round = ps->money_for_round + pTeam->m_iM_RoundLoose;
-	}
-}
-*/

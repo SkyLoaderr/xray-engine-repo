@@ -69,6 +69,8 @@ public:
 	virtual		void				OnTimelimitExceed		();
 
 	virtual		u32					RP_2_Use				(CSE_Abstract* E);
+	virtual		void				RespawnPlayer			(ClientID id_who, bool NoSpectator);
+
 
 	virtual		void				LoadTeams				();
 
@@ -102,4 +104,5 @@ public:
 	virtual		void				RespawnAllNotAlivePlayers	();
 	virtual		bool				CheckAlivePlayersInTeam		(s16 Team);
 	virtual		void				MoveAllAlivePlayers			();
+	virtual		void				CheckForTeamElimination		();
 };

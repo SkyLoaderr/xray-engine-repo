@@ -102,6 +102,14 @@ void CZoneEffector::Activate()
 	Level().Cameras.AddEffector(p_effector);
 }
 
+void CZoneEffector::Stop()
+{
+	if (!p_effector) return;
+	
+	p_effector->Destroy();
+	p_effector = 0;
+};
+
 void CZoneEffector::Update(float dist)
 {
 	// count r_min && r_max

@@ -15,7 +15,7 @@ protected:
 	TEAM_DATA_LIST					TeamList;
 
 	virtual		void				SendPlayerKilledMessage	(ClientID id_killer, ClientID id_killed);
-				void				RespawnPlayer			(ClientID id_who, bool NoSpectator);
+	virtual		void				RespawnPlayer			(ClientID id_who, bool NoSpectator);
 				void				SpawnPlayer				(ClientID id, LPCSTR N);
 	virtual		void				SetSkin					(CSE_Abstract* E, u16 Team, u16 ID);
 				bool				GetPosAngleFromActor	(ClientID id, Fvector& Pos, Fvector &Angle);

@@ -85,6 +85,7 @@ void	game_sv_mp::KillPlayer				(ClientID id_who)
 	// Remove everything	
 	xrClientData* xrCData	=	m_server->ID_to_client(id_who);
 	if (!xrCData) return;
+	if (xrCData->ps->testFlag(GAME_PLAYER_FLAG_VERY_VERY_DEAD)) return;
 	xrCData->ps->setFlag(GAME_PLAYER_FLAG_VERY_VERY_DEAD);
 	// Kill Player on all clients
 	NET_Packet			P;
@@ -92,10 +93,11 @@ void	game_sv_mp::KillPlayer				(ClientID id_who)
 	P.w_u32				(Level().timeServer());
 	P.w_u16				(GE_DIE);
 	P.w_u16				(xrCData->owner->ID);
-	P.w_u16				(0);
+	P.w_u16				(xrCData->owner->ID);
 	P.w_clientID		(xrCData->ID);
 	ClientID clientID;clientID.setBroadcast();
-	m_server->SendBroadcast	(clientID,P,net_flags(TRUE, TRUE, TRUE));
+///	m_server->SendBroadcast	(clientID,P,net_flags(TRUE, TRUE, TRUE));
+	Level().Send(P,net_flags(TRUE,TRUE));
 	AllowDeadBodyRemove(id_who);
 	signal_Syncronize();
 
