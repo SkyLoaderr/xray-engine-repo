@@ -130,7 +130,6 @@ using namespace std;
 #include "fs.h"
 #include "properties.h"
 #include "xrXRC.h"
-#include "xrSheduler.h"
 
 // TODO: reference additional headers your program requires here
 
