@@ -1,6 +1,6 @@
 #include "stdafx.h"
 #include "build.h"
-
+ 
 struct _point {
 	int x,y;
 	IC void set(int _x, int _y)
