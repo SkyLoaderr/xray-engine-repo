@@ -76,7 +76,7 @@ void CBuild::BuildPVS()
 	ground_dir.set		(0,-1,0);
 
 	// reserve memory
-	CFS_File			pvs_map		("x:\\pvs.temp");
+	CFS_File			pvs_map		("pvs.temp");
 	DWORD				dwSlot		= 0;
 	DWORD				dwSlotsTotal= g_pvs_X*g_pvs_Y*g_pvs_Z;
 	DWORD	pvs_reserve	= dwSlotsTotal/1024 + 512;

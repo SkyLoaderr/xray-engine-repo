@@ -26,7 +26,7 @@ static const char* h_str =
 	"The following keys are supported / required:\n"
 	"-? or -h	== this help\n"
 	"-o			== modify build options\n"
-	"-f<NAME>	== compile level in x:\\GameData\\Levels\\<NAME>\\\n"
+	"-f<NAME>	== compile level in GameData\\Levels\\<NAME>\\\n"
 	"\n"
 	"NOTE: The last key is required for any functionality\n";
 

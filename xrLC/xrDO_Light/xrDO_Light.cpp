@@ -20,7 +20,7 @@ extern volatile BOOL bClose;
 static const char* h_str = 
 	"The following keys are supported / required:\n"
 	"-? or -h	== this help\n"
-	"-f<NAME>	== compile level in x:\\gamedata\\levels\\<NAME>\\\n"
+	"-f<NAME>	== compile level in gamedata\\levels\\<NAME>\\\n"
 	"-o			== modify build options\n"
 	"\n"
 	"NOTE: The last key is required for any functionality\n";

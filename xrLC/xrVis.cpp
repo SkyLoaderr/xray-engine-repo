@@ -150,7 +150,7 @@ void CBuild::BuildRelevance(CFS_Base &fs)
 	CVirtualFileStream*			pvs_map_stream=0;
 	if (g_params.m_bTestOcclusion)
 	{
-		pvs_map_stream  = new CVirtualFileStream("x:\\pvs.temp");
+		pvs_map_stream  = new CVirtualFileStream("pvs.temp");
 		g_pvs_map_vm	= (int *)pvs_map_stream->Pointer();
 	}
  
