@@ -22,7 +22,6 @@ XRCORE_API LPCSTR			_CopyVal				( LPCSTR src, LPSTR dst, char separator=',' );
 XRCORE_API LPSTR			_Trim					( LPSTR str );
 XRCORE_API LPSTR			_TrimLeft				( LPSTR str );
 XRCORE_API LPSTR			_TrimRight				( LPSTR str );
-XRCORE_API LPSTR			_GetFileExt				( LPSTR name );
 XRCORE_API LPSTR			_ChangeSymbol			( LPSTR name, char src, char dest );
 XRCORE_API u32				_ParseItem				( LPSTR src, xr_token* token_list );
 XRCORE_API u32				_ParseItem				( LPSTR src, int ind, xr_token* token_list );

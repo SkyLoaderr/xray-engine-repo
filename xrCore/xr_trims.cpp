@@ -34,13 +34,6 @@ LPSTR _Trim( LPSTR str )
 	return str;
 }
 
-LPSTR _GetFileExt ( LPSTR name )
-{
-	char *point = strchr(name,'.');
-	if (point) return point+1;
-	return NULL;
-}
-
 LPCSTR _SetPos (LPCSTR src, u32 pos, char separator )
 {
 	LPCSTR	res			= src;
