@@ -246,15 +246,14 @@ function action_follow:check_path ()
     end   
     
     self.object:set_mental_state (self.a.mental_state)
-    --self.last_time = self.last_time - device ():time_global ()
     if self.last_time - device ():time_global () > 0 then 
        return false 
     end
     self.last_time = 500 + device ():time_global ()
 
-    --if self.object:level_vertex_id () ~= self.current_vertex_id and self.current_vertex_id ~= -1 then 
---       return false 
---    end
+    if self.object:level_vertex_id () ~= self.current_vertex_id and self.current_vertex_id ~= -1 then 
+       return false 
+    end
     
     if self.a.leader_command == leader_stop then
        self.object:set_movement_type (move.stand)
