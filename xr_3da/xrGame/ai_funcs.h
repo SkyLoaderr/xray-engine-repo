@@ -220,6 +220,48 @@ public:
 	virtual float ffGetValue();
 };
  
+class CPersonalRelationFunction : public CBaseFunction {
+public:
+	
+	CPersonalRelationFunction()
+	{
+		m_fMinResultValue =   0.0;
+		m_fMaxResultValue = 100.0;
+		strcat(m_caName,"PersonalRelation");
+		OUT_MESSAGE("* Evaluation function \"%s\" is successfully initalized",m_caName);
+	};
+
+	virtual float ffGetValue();
+};
+ 
+class CPersonalGreedFunction : public CBaseFunction {
+public:
+	
+	CPersonalGreedFunction()
+	{
+		m_fMinResultValue =   0.0;
+		m_fMaxResultValue = 100.0;
+		strcat(m_caName,"PersonalGreed");
+		OUT_MESSAGE("* Evaluation function \"%s\" is successfully initalized",m_caName);
+	};
+
+	virtual float ffGetValue();
+};
+ 
+class CPersonalAggressivenessFunction : public CBaseFunction {
+public:
+	
+	CPersonalAggressivenessFunction()
+	{
+		m_fMinResultValue =   0.0;
+		m_fMaxResultValue = 100.0;
+		strcat(m_caName,"PersonalAggressiveness");
+		OUT_MESSAGE("* Evaluation function \"%s\" is successfully initalized",m_caName);
+	};
+
+	virtual float ffGetValue();
+};
+ 
 class CEnemyHealthFunction : public CBaseFunction {
 
 public:
@@ -278,6 +320,51 @@ public:
 	virtual float ffGetValue();
 };
  
+class CEnemyEquipmentCostFunction : public CBaseFunction {
+	
+public:
+	
+	CEnemyEquipmentCostFunction()
+	{
+		m_fMinResultValue = 0.0;
+		m_fMaxResultValue = 12.0;
+		strcat(m_caName,"EnemyEquipmentCost");
+		OUT_MESSAGE("* Evaluation function \"%s\" is successfully initalized",m_caName);
+	};
+
+	virtual float ffGetValue();
+};
+ 
+class CEnemyRukzakWeightFunction : public CBaseFunction {
+	
+public:
+	
+	CEnemyRukzakWeightFunction()
+	{
+		m_fMinResultValue = 0.0;
+		m_fMaxResultValue = 12.0;
+		strcat(m_caName,"EnemyRukzakWeight");
+		OUT_MESSAGE("* Evaluation function \"%s\" is successfully initalized",m_caName);
+	};
+
+	virtual float ffGetValue();
+};
+ 
+class CEnemyAnomalityFunction : public CBaseFunction {
+	
+public:
+	
+	CEnemyAnomalityFunction()
+	{
+		m_fMinResultValue = 0.0;
+		m_fMaxResultValue = 12.0;
+		strcat(m_caName,"EnemyAnomality");
+		OUT_MESSAGE("* Evaluation function \"%s\" is successfully initalized",m_caName);
+	};
+
+	virtual float ffGetValue();
+};
+ 
 class CAI_DDD {
 
 public:
@@ -294,22 +381,26 @@ public:
 	CPersonalWeaponTypeFunction				pfPersonalWeaponType;
 	CPersonalAccuracyFunction				pfPersonalAccuracy;
 	CPersonalIntelligenceFunction			pfPersonalIntelligence;
+	CPersonalRelationFunction				pfPersonalRelation;
+	CPersonalGreedFunction					pfPersonalGreed;
+	CPersonalAggressivenessFunction			pfPersonalAggressiveness;
 
 	CEnemyHealthFunction					pfEnemyHealth;
 	CEnemyCreatureTypeFunction				pfEnemyCreatureType;
 	CEnemyWeaponTypeFunction				pfEnemyWeaponType;
+	CEnemyEquipmentCostFunction				pfEnemyEquipmentCost;
+	CEnemyRukzakWeightFunction				pfEnemyRukzakWeight;
+	CEnemyAnomalityFunction					pfEnemyAnomality;
 
 	// complex functions
 	CPatternFunction						pfWeaponEffectiveness;
 	CPatternFunction						pfCreatureEffectiveness;
-
 	CPatternFunction						pfIntellectCreatureEffectiveness;
 	CPatternFunction						pfAccuracyWeaponEffectiveness;
 	CPatternFunction						pfFinalCreatureEffectiveness;
 	CPatternFunction						pfVictoryProbability;
-
-	CPatternFunction						pfAttackSuccessProbability;
-	CPatternFunction						pfDefendSuccessProbability;
+	CPatternFunction						pfEntityCost;
+	CPatternFunction						pfExpediency;
 
 											CAI_DDD()
 	{	
@@ -322,21 +413,25 @@ public:
 		fpaBaseFunctions[24]				= &pfPersonalWeaponType;
 		fpaBaseFunctions[25]				= &pfPersonalAccuracy;
 		fpaBaseFunctions[26]				= &pfPersonalIntelligence;
+		fpaBaseFunctions[27]				= &pfPersonalRelation;
+		fpaBaseFunctions[28]				= &pfPersonalGreed;
+		fpaBaseFunctions[29]				= &pfPersonalAggressiveness;
 		
 		fpaBaseFunctions[41]				= &pfEnemyHealth;
 		fpaBaseFunctions[42]				= &pfEnemyCreatureType;
 		fpaBaseFunctions[43]				= &pfEnemyWeaponType;
+		fpaBaseFunctions[44]				= &pfEnemyEquipmentCost;
+		fpaBaseFunctions[45]				= &pfEnemyRukzakWeight;
+		fpaBaseFunctions[46]				= &pfEnemyAnomality;
 
-		pfWeaponEffectiveness.vfLoadEF		("common\\WeaponEffectiveness.dat",this);
-		pfCreatureEffectiveness.vfLoadEF	("common\\CreatureEffectiveness.dat",this);
-		
-		pfIntellectCreatureEffectiveness.vfLoadEF("common\\IntCreatureEffectiveness.dat",this);
-		pfAccuracyWeaponEffectiveness.vfLoadEF("common\\AccWeaponEffectiveness.dat",this);
-		pfFinalCreatureEffectiveness.vfLoadEF("common\\FinCreatureEffectiveness.dat",this);
-		pfVictoryProbability.vfLoadEF		("common\\VictoryProbability.dat",this);
-
-		pfAttackSuccessProbability.vfLoadEF	("common\\AttackSuccessProbability.dat",this);
-		pfDefendSuccessProbability.vfLoadEF	("common\\DefendSuccessProbability.dat",this);
+		pfWeaponEffectiveness.vfLoadEF				("common\\WeaponEffectiveness.dat",this);
+		pfCreatureEffectiveness.vfLoadEF			("common\\CreatureEffectiveness.dat",this);
+		pfIntellectCreatureEffectiveness.vfLoadEF	("common\\IntCreatureEffectiveness.dat",this);
+		pfAccuracyWeaponEffectiveness.vfLoadEF		("common\\AccWeaponEffectiveness.dat",this);
+		pfFinalCreatureEffectiveness.vfLoadEF		("common\\FinCreatureEffectiveness.dat",this);
+		pfVictoryProbability.vfLoadEF				("common\\VictoryProbability.dat",this);
+		pfEntityCost.vfLoadEF						("common\\EntityCost.dat",this);
+		pfExpediency.vfLoadEF						("common\\Expediency.dat",this);
 	}
 
 	virtual									~CAI_DDD()

@@ -18,41 +18,7 @@ private:
 	typedef CCustomMonster inherited;
 	
 	enum EStalkerStates {
-		eStalkerStateCHI = 0,
-		eStalkerStateCHnI,
-		eStalkerStateCnHI,
-		eStalkerStateCnHnI,
-		
-		eStalkerStateDHI,
-		eStalkerStateDHnI,
-		eStalkerStateDnHI,
-		eStalkerStateDnHnI,
-		
-		eStalkerStateEHI,
-		eStalkerStateEHnI,
-		eStalkerStateEnHI,
-		eStalkerStateEnHnI,
-		
-		eStalkerStateFHI,
-		eStalkerStateFHnI,
-		eStalkerStateFnHI,
-		eStalkerStateFnHnI,
-		
-		eStalkerStateGHI,
-		eStalkerStateGHnI,
-		eStalkerStateGnHI,
-		eStalkerStateGnHnI,
-		
-		eStalkerStateAnKnHnL,
-		eStalkerStateAnKHnL,
-		eStalkerStateAnKnHL,
-		eStalkerStateAnKHL,
-		
-		eStalkerStateBnKnHnL,
-		eStalkerStateBnKHnL,
-		eStalkerStateBnKnHL,
-		eStalkerStateBnKHL,
-		eStalkerStateAccomplishingTask,
+		eStalkerStateAccomplishingTask = 0,
 	};
 
 	typedef struct tagSStalkerStates {
@@ -79,6 +45,7 @@ private:
 	u32						m_dwActionStartTime;
 	u32						m_dwActionEndTime;
 	bool					m_bIfSearchFailed;
+	bool					_A,_B,_C,_D,_E,_F,_G,_H,_I,_J,_K,_L,_M;
 
 	vector<Fvector>			m_tpaPoints;
 	vector<Fvector>			m_tpaDeviations;
@@ -100,8 +67,10 @@ private:
 	u32						m_dwMaxDynamicSoundsCount;
 	float					m_fSensetivity;
 	int						m_iSoundIndex;
+	
 	u32						m_dwDeathTime;
 	bool					m_bHammerIsClutched;
+	
 	// firing
 	bool					m_bFiring;
 	u32						m_dwStartFireAmmo;
@@ -254,10 +223,10 @@ private:
 			// selectors
 			void			vfInitSelector					(IBaseAI_NodeEvaluator &S, CSquad &Squad, CEntity* &Leader);
 			void			vfSearchForBetterPosition		(IBaseAI_NodeEvaluator &S, CSquad &Squad, CEntity* &Leader);
-			void			vfBuildPathToDestinationPoint	(IBaseAI_NodeEvaluator *S);
+			void			vfBuildPathToDestinationPoint	(IBaseAI_NodeEvaluator *tpNodeEvaluator);
 			void			vfBuildTravelLine				(Fvector *tpDestinationPosition = 0);
 			void			vfDodgeTravelLine				();
-			void			vfChoosePointAndBuildPath		(IBaseAI_NodeEvaluator &tSelector, Fvector *tpDestinationPosition = 0);
+			void			vfChoosePointAndBuildPath		(IBaseAI_NodeEvaluator *tpNodeEvaluator, Fvector *tpDestinationPosition = 0);
 			// animations
 			void			vfAssignGlobalAnimation			(CMotionDef *&tpGlobalAnimation);
 			void			vfAssignTorsoAnimation			(CMotionDef *&tpGlobalAnimation);
@@ -274,8 +243,8 @@ private:
 			void			SetLessCoverLook				(NodeCompressed *tpNode, float fMaxHeadTurnAngle, bool bDifferenceLook);
 			void			vfValidateAngleDependency		(float x1, float &x2, float x3);
 			// movement and look
-			void			vfSetParameters					(IBaseAI_NodeEvaluator &tNodeEvaluator, Fvector *tpDesiredPosition, EWeaponState tWeaponState, EPathType tPathType, EBodyState tBodyState, EMovementType tMovementType, ELookType tLookType);
-			void			vfSetParameters					(IBaseAI_NodeEvaluator &tNodeEvaluator, Fvector *tpDesiredPosition, EWeaponState tWeaponState, EPathType tPathType, EBodyState tBodyState, EMovementType tMovementType, ELookType tLookType, Fvector &tPointToLook);
+			void			vfSetParameters					(IBaseAI_NodeEvaluator *tpNodeEvaluator, Fvector *tpDesiredPosition, EWeaponState tWeaponState, EPathType tPathType, EBodyState tBodyState, EMovementType tMovementType, ELookType tLookType);
+			void			vfSetParameters					(IBaseAI_NodeEvaluator *tpNodeEvaluator, Fvector *tpDesiredPosition, EWeaponState tWeaponState, EPathType tPathType, EBodyState tBodyState, EMovementType tMovementType, ELookType tLookType, Fvector &tPointToLook);
 			// fire
 			bool			bfCheckForMember				(Fvector &tFireVector, Fvector &tMyPoint, Fvector &tMemberPoint);
 			bool			bfCheckIfCanKillEnemy			();
@@ -300,7 +269,7 @@ private:
 			int				ifFindDynamicObject				(CEntity *tpEntity);
 			bool			bfAddEnemyToDynamicObjects		(CAI_Stalker *tpStalker);
 			bool			bfCheckIfSound					();
-			void			vfUpdateParameters				(bool &A, bool &B, bool &C, bool &D, bool &E, bool &F, bool &G, bool &H, bool &I, bool &J, bool &K, bool &L);
+			void			vfUpdateParameters				(bool &A, bool &B, bool &C, bool &D, bool &E, bool &F, bool &G, bool &H, bool &I, bool &J, bool &K, bool &L, bool &M);
 
 			// physics
 			void			CreateSkeleton					();

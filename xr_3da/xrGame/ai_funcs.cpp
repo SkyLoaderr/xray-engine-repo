@@ -449,6 +449,33 @@ float CPersonalIntelligenceFunction::ffGetValue()
 	return(m_fLastValue = getAI().m_tpCurrentMember->m_fIntelligence);
 };
 
+float CPersonalRelationFunction::ffGetValue()
+{
+	if ((m_dwLastUpdate == Device.dwTimeGlobal) && (m_tpLastMonster == getAI().m_tpCurrentMember))
+		return(m_fLastValue);
+	m_dwLastUpdate = Device.dwTimeGlobal;
+	m_tpLastMonster = getAI().m_tpCurrentMember;
+	return(m_fLastValue = 0);
+}
+
+float CPersonalGreedFunction::ffGetValue()
+{
+	if ((m_dwLastUpdate == Device.dwTimeGlobal) && (m_tpLastMonster == getAI().m_tpCurrentMember))
+		return(m_fLastValue);
+	m_dwLastUpdate = Device.dwTimeGlobal;
+	m_tpLastMonster = getAI().m_tpCurrentMember;
+	return(m_fLastValue = 0);
+}
+
+float CPersonalAggressivenessFunction::ffGetValue()
+{
+	if ((m_dwLastUpdate == Device.dwTimeGlobal) && (m_tpLastMonster == getAI().m_tpCurrentMember))
+		return(m_fLastValue);
+	m_dwLastUpdate = Device.dwTimeGlobal;
+	m_tpLastMonster = getAI().m_tpCurrentMember;
+	return(m_fLastValue = 0);
+}
+
 // enemy inversion functions	
 float CEnemyHealthFunction::ffGetValue()
 {
@@ -487,4 +514,38 @@ float CEnemyWeaponTypeFunction::ffGetValue()
 	m_fLastValue = getAI().pfPersonalWeaponType.ffGetValue();
 	getAI().m_tpCurrentMember = tpEntity;
 	return(m_fLastValue);
+};
+
+float CEnemyEquipmentCostFunction::ffGetValue()
+{
+	if ((m_dwLastUpdate == Device.dwTimeGlobal) && (m_tpLastMonster == getAI().m_tpCurrentEnemy))
+		return(m_fLastValue);
+	m_dwLastUpdate	= Device.dwTimeGlobal;
+	m_tpLastMonster = getAI().m_tpCurrentEnemy;
+	m_fLastValue	= 0;
+	return			(m_fLastValue);
+};
+
+float CEnemyRukzakWeightFunction::ffGetValue()
+{
+	if ((m_dwLastUpdate == Device.dwTimeGlobal) && (m_tpLastMonster == getAI().m_tpCurrentEnemy))
+		return(m_fLastValue);
+	m_dwLastUpdate	= Device.dwTimeGlobal;
+	m_tpLastMonster = getAI().m_tpCurrentEnemy;
+	CInventoryOwner* tpInventoryOwner = dynamic_cast<CInventoryOwner*>(m_tpLastMonster);
+	if (tpInventoryOwner)
+		m_fLastValue	= tpInventoryOwner->m_inventory.TotalWeight();
+	else
+		m_fLastValue	= 0;
+	return			(m_fLastValue);
+};
+
+float CEnemyAnomalityFunction::ffGetValue()
+{
+	if ((m_dwLastUpdate == Device.dwTimeGlobal) && (m_tpLastMonster == getAI().m_tpCurrentEnemy))
+		return(m_fLastValue);
+	m_dwLastUpdate	= Device.dwTimeGlobal;
+	m_tpLastMonster = getAI().m_tpCurrentEnemy;
+	m_fLastValue	= 0;
+	return			(m_fLastValue);
 };

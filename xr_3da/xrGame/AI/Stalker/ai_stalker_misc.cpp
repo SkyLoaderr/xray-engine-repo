@@ -8,22 +8,24 @@
 
 #include "stdafx.h"
 #include "ai_stalker.h"
+#include "..\\ai_monsters_misc.h"
+#include "..\\..\\actor.h"
 
-void CAI_Stalker::vfSetParameters(IBaseAI_NodeEvaluator &tNodeEvaluator, Fvector *tpDesiredPosition, EWeaponState tWeaponState, EPathType tPathType, EBodyState tBodyState, EMovementType tMovementType, ELookType tLookType)
+void CAI_Stalker::vfSetParameters(IBaseAI_NodeEvaluator *tpNodeEvaluator, Fvector *tpDesiredPosition, EWeaponState tWeaponState, EPathType tPathType, EBodyState tBodyState, EMovementType tMovementType, ELookType tLookType)
 {
 	VERIFY(tLookType != eLookTypePoint);
 	Fvector tDummy;
-	vfSetParameters(tNodeEvaluator,tpDesiredPosition,tWeaponState,tPathType,tBodyState,tMovementType,tLookType,tDummy);
+	vfSetParameters(tpNodeEvaluator,tpDesiredPosition,tWeaponState,tPathType,tBodyState,tMovementType,tLookType,tDummy);
 }
 
-void CAI_Stalker::vfSetParameters(IBaseAI_NodeEvaluator &tNodeEvaluator, Fvector *tpDesiredPosition, EWeaponState tWeaponState, EPathType tPathType, EBodyState tBodyState, EMovementType tMovementType, ELookType tLookType, Fvector &tPointToLook)
+void CAI_Stalker::vfSetParameters(IBaseAI_NodeEvaluator *tpNodeEvaluator, Fvector *tpDesiredPosition, EWeaponState tWeaponState, EPathType tPathType, EBodyState tBodyState, EMovementType tMovementType, ELookType tLookType, Fvector &tPointToLook)
 {
 	m_tPathType		= tPathType;
 	m_tBodyState	= tBodyState;
 	m_tMovementType = tMovementType;
 	m_tLookType		= tLookType;
 
-	vfChoosePointAndBuildPath(tNodeEvaluator,tpDesiredPosition);
+	vfChoosePointAndBuildPath(tpNodeEvaluator,tpDesiredPosition);
 
 	vfSetWeaponState(tWeaponState);
 
@@ -106,4 +108,111 @@ void CAI_Stalker::vfCheckForItems()
 			break;
 		}
 	}
+}
+
+void CAI_Stalker::vfUpdateSearchPosition()
+{
+	if (!g_Alive())
+		return;
+	INIT_SQUAD_AND_LEADER;
+	if (this != Leader)	{
+		CAI_Stalker *tpLeader = dynamic_cast<CAI_Stalker*>(Leader);
+		if (tpLeader) {
+//			if (m_tNextGraphPoint.distance_to(tpLeader->m_tNextGraphPoint) > EPS_L)
+//				m_eCurrentState = eStalkerStateSearching;
+			m_tNextGraphPoint			= tpLeader->m_tNextGraphPoint;
+		}
+	}
+	else {
+		if ((Level().timeServer() >= m_dwTimeToChange) && (getAI().m_tpaCrossTable[AI_NodeID].tGraphIndex == m_tNextGP)) {
+			m_tNextGP					= getAI().m_tpaCrossTable[AI_NodeID].tGraphIndex;
+			vfChooseNextGraphPoint		();
+			m_tNextGraphPoint.set		(getAI().m_tpaGraph[m_tNextGP].tLocalPoint);
+//			if (m_eCurrentState == eStalkerStateAccomplishingTask)
+//				AI_Path.DestNode		= getAI().m_tpaGraph[m_tNextGP].tNodeID;
+		}
+//		else
+//			if (m_eCurrentState == eStalkerStateAccomplishingTask)
+//				AI_Path.DestNode		= getAI().m_tpaGraph[m_tNextGP].tNodeID;
+	}
+}
+
+void CAI_Stalker::vfUpdateParameters(bool &A, bool &B, bool &C, bool &D, bool &E, bool &F, bool &G, bool &H, bool &I, bool &J, bool &K, bool &L, bool &M)
+{
+	SelectSound			(m_iSoundIndex);
+	A					= (m_iSoundIndex > -1) && ((m_tpaDynamicSounds[m_iSoundIndex].eSoundType & SOUND_TYPE_WEAPON) == SOUND_TYPE_WEAPON) && ((m_tpaDynamicSounds[m_iSoundIndex].eSoundType & SOUND_TYPE_WEAPON) == SOUND_TYPE_MONSTER);
+	B					= (m_iSoundIndex > -1) && !A;
+	J					= A || B;
+	
+	C = D = E = F = G	= false;
+	objVisible			&VisibleEnemies = Level().Teams[g_Team()].Squads[g_Squad()].KnownEnemys;
+	if (VisibleEnemies.size())
+		switch (dwfChooseAction(0,m_fAttackSuccessProbability0,m_fAttackSuccessProbability1,m_fAttackSuccessProbability2,m_fAttackSuccessProbability3,g_Team(),g_Squad(),g_Group(),0,1,2,3,4)) {
+			case 0 : 
+				C = true;
+				break;
+			case 1 : 
+				D = true;
+				break;
+			case 2 : 
+				E = true;
+				break;
+			case 3 : 
+				F = true;
+				break;
+			case 4 : 
+				G = true;
+				break;
+		}
+	K					= C | D | E | F | G;
+	I					= false;
+	for (int i=0, n=VisibleEnemies.size(); i<n; i++) {
+		float			yaw1, pitch1, yaw2, pitch2, fYawFov, fPitchFov, fRange;
+		Fvector			tPosition = VisibleEnemies[i].key->Position();
+
+		CCustomMonster	*tpCustomMonster = dynamic_cast<CCustomMonster *>(VisibleEnemies[i].key);
+		if (tpCustomMonster) {
+			yaw1		= tpCustomMonster->r_current.yaw;
+			pitch1		= tpCustomMonster->r_current.pitch;
+			fYawFov		= angle_normalize_signed(tpCustomMonster->ffGetFov()*PI/180.f/2);
+			fRange		= tpCustomMonster->ffGetRange();
+		}
+		else {
+			CActor		*tpActor = dynamic_cast<CActor *>(VisibleEnemies[i].key);
+			if (tpActor) {
+				yaw1	= tpActor->Orientation().yaw;
+				pitch1	= tpActor->Orientation().pitch;
+				fYawFov	= angle_normalize_signed(tpActor->ffGetFov()*PI/180.f/2);
+				fRange	= tpActor->ffGetRange();
+			}
+			else
+				continue;
+		}
+		
+		if (tPosition.distance_to(vPosition) > fRange)
+			continue;
+
+		fPitchFov		= angle_normalize_signed(fYawFov*.75f);
+		tPosition.sub	(vPosition);
+		tPosition.getHP	(yaw2,pitch2);
+		yaw1			= angle_normalize_signed(yaw1);
+		pitch1			= angle_normalize_signed(pitch1);
+		yaw2			= angle_normalize_signed(yaw2);
+		pitch2			= angle_normalize_signed(pitch2);
+		if (I = (getAI().bfTooSmallAngle(yaw1,yaw2,fYawFov) && getAI().bfTooSmallAngle(pitch1,pitch2,fPitchFov)))
+			break;
+	}
+	
+	getAI().m_tpCurrentMember = this;
+	for ( i=0, n=VisibleEnemies.size(); i<n; i++) {
+		if (!(getAI().m_tpCurrentEnemy  = dynamic_cast<CEntityAlive*>(VisibleEnemies[i].key)))
+			continue;
+		if (H	= !!getAI().pfExpediency.dwfGetDiscreteValue(2))
+			break;
+	}
+	
+	L = false;
+
+	vfCheckForItems();
+	M = !!m_tpItemToTake;
 }

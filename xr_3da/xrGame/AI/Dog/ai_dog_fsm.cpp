@@ -390,7 +390,7 @@ void CAI_Dog::AttackRun()
 
 	SelectEnemy(m_Enemy);
 
-	EDogStates eState = EDogStates(dwfChooseAction(m_dwActionRefreshDoge,m_fAttackSuccessProbability,g_Team(),g_Squad(),g_Group(),m_eCurrentState,m_eCurrentState,aiDogRetreat));
+	EDogStates eState = EDogStates(dwfChooseAction(m_dwActionRefreshDoge,m_fAttackSuccessProbability,m_fAttackSuccessProbability,m_fAttackSuccessProbability,m_fAttackSuccessProbability,g_Team(),g_Squad(),g_Group(),m_eCurrentState,m_eCurrentState,m_eCurrentState,aiDogRetreat,aiDogRetreat));
 	if (eState != m_eCurrentState) {
 		GO_TO_NEW_STATE_THIS_UPDATE(eState);
 	}
@@ -441,7 +441,7 @@ void CAI_Dog::Retreat()
 
 	if (m_Enemy.Enemy && m_Enemy.Enemy->g_Alive()) {
 		vfSaveEnemy();
-		EDogStates eState = EDogStates(dwfChooseAction(m_dwActionRefreshDoge,m_fAttackSuccessProbability,g_Team(),g_Squad(),g_Group(),aiDogAttackRun,aiDogAttackRun,aiDogRetreat));
+		EDogStates eState = EDogStates(dwfChooseAction(m_dwActionRefreshDoge,m_fAttackSuccessProbability,m_fAttackSuccessProbability,m_fAttackSuccessProbability,m_fAttackSuccessProbability,g_Team(),g_Squad(),g_Group(),aiDogAttackRun,aiDogAttackRun,aiDogAttackRun,aiDogRetreat,aiDogRetreat));
 		if (eState != m_eCurrentState)
 			GO_TO_NEW_STATE_THIS_UPDATE(eState);
 		m_dwLostEnemyTime = Level().timeServer();

@@ -551,16 +551,19 @@ bool bfGetActionSuccessProbability(EntityVec &Members, objVisible &VisibleEnemie
 	return(j >= J);
 }
 
-u32 dwfChooseAction(u32 dwActionRefreshRate, float fMinProbability, u32 dwTeam, u32 dwSquad, u32 dwGroup, u32 a1, u32 a2, u32 a3)
+u32 dwfChooseAction(u32 dwActionRefreshRate, float fMinProbability0, float fMinProbability1, float fMinProbability2, float fMinProbability3, u32 dwTeam, u32 dwSquad, u32 dwGroup, u32 a0, u32 a1, u32 a2, u32 a3, u32 a4)
 {
 	//return(a1);
 	CGroup &Group = Level().Teams[dwTeam].Squads[dwSquad].Groups[dwGroup];
 	
 	if (Level().timeServer() - Group.m_dwLastActionTime < dwActionRefreshRate) {
 		switch (Group.m_dwLastAction) {
-			case 0: return(a2);
-			case 1: return(a2);
-			default: return(a3);
+			case 0: return(a0);
+			case 1: return(a1);
+			case 2: return(a2);
+			case 3: return(a3);
+			case 4: return(a4);
+			default: return(a4);
 		}
 	}
 
@@ -568,9 +571,12 @@ u32 dwfChooseAction(u32 dwActionRefreshRate, float fMinProbability, u32 dwTeam, 
 	
 	if (!VisibleEnemies.size())
 		switch (Group.m_dwLastAction) {
-			case 0: return(a2);
-			case 1: return(a2);
-			default: return(a3);
+			case 0: return(a0);
+			case 1: return(a1);
+			case 2: return(a2);
+			case 3: return(a3);
+			case 4: return(a4);
+			default: return(a4);
 		}
 
 	EntityVec	Members;
@@ -580,25 +586,34 @@ u32 dwfChooseAction(u32 dwActionRefreshRate, float fMinProbability, u32 dwTeam, 
 	}
 
 	WRITE_QUERY_TO_LOG("\nNew query");
-	if (bfGetActionSuccessProbability(Members,VisibleEnemies,fMinProbability,getAI().pfAttackSuccessProbability)) {
+	if (bfGetActionSuccessProbability(Members,VisibleEnemies,fMinProbability0,getAI().pfVictoryProbability)) {
 		Group.m_dwLastActionTime = Level().timeServer();
-		Group.m_dwLastAction = 0;
 		WRITE_QUERY_TO_LOG("Attack");
-		return(a2);
+		return(Group.m_dwLastAction = a0);
 	}
 	else
-		if (bfGetActionSuccessProbability(Members,VisibleEnemies,fMinProbability,getAI().pfDefendSuccessProbability)) {
+		if (bfGetActionSuccessProbability(Members,VisibleEnemies,fMinProbability1,getAI().pfVictoryProbability)) {
 			Group.m_dwLastActionTime = Level().timeServer();
-			Group.m_dwLastAction = 1;
-			WRITE_QUERY_TO_LOG("Defend");
-			return(Group.m_dwLastAction = a2);
+			WRITE_QUERY_TO_LOG("Attack 1");
+			return(Group.m_dwLastAction = a1);
 		}
-		else {
-			Group.m_dwLastActionTime = Level().timeServer();
-			Group.m_dwLastAction = 2;
-			WRITE_QUERY_TO_LOG("Retreat");
-			return(Group.m_dwLastAction = a3);
-		}
+		else
+			if (bfGetActionSuccessProbability(Members,VisibleEnemies,fMinProbability2,getAI().pfVictoryProbability)) {
+				Group.m_dwLastActionTime = Level().timeServer();
+				WRITE_QUERY_TO_LOG("Defend");
+				return(Group.m_dwLastAction = a2);
+			}
+			else
+				if (bfGetActionSuccessProbability(Members,VisibleEnemies,fMinProbability3,getAI().pfVictoryProbability)) {
+					Group.m_dwLastActionTime = Level().timeServer();
+					WRITE_QUERY_TO_LOG("Defend 1");
+					return(Group.m_dwLastAction = a3);
+				}
+				else {
+					Group.m_dwLastActionTime = Level().timeServer();
+					WRITE_QUERY_TO_LOG("Retreat");
+					return(Group.m_dwLastAction = a4);
+				}
 }
 
 Fvector	tfComputeSpringPull(Fvector &tCurrentPosition, Fvector &tSpringPosition, float fInflexibilityCoefficient)

@@ -57,6 +57,8 @@ CAI_Stalker::CAI_Stalker			()
 
 	m_bIfSearchFailed				= false;
 	m_bStateChanged					= true;
+
+	_A=_B=_C=_D=_E=_F=_G=_H=_I=_J=_K=_L=_M=false;
 	
 //	m_fAccuracy						= 0.f;
 //	m_fIntelligence					= 0.f;
@@ -77,7 +79,7 @@ CAI_Stalker::~CAI_Stalker			()
 // when soldier is dead
 void CAI_Stalker::Die				()
 {
-	vfAddStateToList				(m_eCurrentState = eStalkerStateDie);
+//	vfAddStateToList				(m_eCurrentState = eStalkerStateDie);
 
 	Fvector	dir;
 	AI_Path.Direction				(dir);

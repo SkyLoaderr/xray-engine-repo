@@ -259,7 +259,7 @@ void CAI_Stalker::vfDodgeTravelLine()
 	Device.Statistic.AI_Path.End();
 }
 
-void CAI_Stalker::vfChoosePointAndBuildPath(IBaseAI_NodeEvaluator &tNodeEvaluator, Fvector *tpDestinationPosition)
+void CAI_Stalker::vfChoosePointAndBuildPath(IBaseAI_NodeEvaluator *tpNodeEvaluator, Fvector *tpDestinationPosition)
 {
 	INIT_SQUAD_AND_LEADER;
 
@@ -270,11 +270,14 @@ void CAI_Stalker::vfChoosePointAndBuildPath(IBaseAI_NodeEvaluator &tNodeEvaluato
 	}
 	switch (m_tPathState) {
 		case ePathStateSearchNode : {
-			vfSearchForBetterPosition(tNodeEvaluator,Squad,Leader);
+			if (tpNodeEvaluator)
+				vfSearchForBetterPosition(*tpNodeEvaluator,Squad,Leader);
+			else
+				m_tPathState = ePathStateBuildNodePath;
 			break;
 		}
 		case ePathStateBuildNodePath : {
-			vfBuildPathToDestinationPoint(&tNodeEvaluator);
+			vfBuildPathToDestinationPoint(tpNodeEvaluator);
 			break;
 		}
 		case ePathStateBuildTravelLine : {
@@ -523,7 +526,7 @@ void CAI_Stalker::vfChooseSuspiciousNode(IBaseAI_NodeEvaluator &tSelector)
 			m_tSelectorRetreat.m_tpEnemyNode = getAI().Node(m_dwMyNodeID);
 			m_tSelectorRetreat.m_tMyPosition = vPosition;
 			m_tSelectorRetreat.m_tpMyNode = AI_Node;
-			vfChoosePointAndBuildPath(m_tSelectorRetreat);
+			vfChoosePointAndBuildPath(&m_tSelectorRetreat);
 			m_iCurrentSuspiciousNodeIndex = -1;
 			m_bActionStarted = true;
 		}
@@ -546,7 +549,7 @@ void CAI_Stalker::vfChooseSuspiciousNode(IBaseAI_NodeEvaluator &tSelector)
 				m_tSelectorRetreat.m_tpEnemyNode = getAI().Node(m_dwMyNodeID);
 				m_tSelectorRetreat.m_tMyPosition = vPosition;
 				m_tSelectorRetreat.m_tpMyNode = AI_Node;
-				vfChoosePointAndBuildPath(m_tSelectorRetreat);
+				vfChoosePointAndBuildPath(&m_tSelectorRetreat);
 				m_iCurrentSuspiciousNodeIndex = -1;
 				m_bActionStarted = true;
 			}
