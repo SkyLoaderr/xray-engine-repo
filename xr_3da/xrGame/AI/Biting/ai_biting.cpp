@@ -76,7 +76,7 @@ void CAI_Biting::Init()
 
 	ZeroMemory						(&m_tCorpse, sizeof(SEnemySelected));
 
-	AnimEx.Init						(eActionIdle,ePostureStand);
+	AnimEx.Init						(ePostureStand,eActionIdle);
 }
 
 void CAI_Biting::Die()

@@ -51,36 +51,33 @@ typedef struct tagAnimCell{
 	AI_Biting::EActionAnim		m_tActionAnim;
 	AI_Biting::EPostureAnim		m_tPostureAnim;
 	bool						Locked;
+	bool						PlayOnce;
 	
-	void Set(AI_Biting::EActionAnim action, AI_Biting::EPostureAnim posture, bool lock){
+	void Set( AI_Biting::EPostureAnim posture, AI_Biting::EActionAnim action, bool once, bool lock){
 		m_tActionAnim = action;
 		m_tPostureAnim = posture;
 		Locked = lock;
+		PlayOnce = once;
 	}
 } TAnimCell;
 
 
 class CAnim {
-	bool bPlaying;	
 	TAnimCell	DefState;
-	TAnimCell	CurState;
 public:
+	TAnimCell	CurState;
 
 	typedef std::list<TAnimCell> TAnim;
 	TAnim Anim;
 
-	void Init(AI_Biting::EActionAnim action, AI_Biting::EPostureAnim posture) {		// 	инициализация состояния по умолчанию
-		DefState.Set(action,posture,false);
+	void Init(AI_Biting::EPostureAnim posture,AI_Biting::EActionAnim action) {		// 	инициализация состояния по умолчанию
+		DefState.Set(posture,action,false,false);
 		CurState = DefState;
-		bPlaying = false;
 	}
 
-	void Play() {
-		bPlaying = true;
-	}
-	
 	void ChangeAnimation() {
 		if (Anim.empty()) {
+			//if (CurState.PlayOnce) CurState = DefState;
 			CurState = DefState;
 		} else {
 			CurState = Anim.front();
@@ -88,15 +85,11 @@ public:
 		}
 	}
 
-	void Stop() {
-		bPlaying = false;
-		CurState = DefState;		
-	}
-
-	void Set(AI_Biting::EActionAnim action, AI_Biting::EPostureAnim posture, bool lock, bool critical=false)
+	void Set(AI_Biting::EPostureAnim posture,AI_Biting::EActionAnim action, bool once, bool lock, bool critical=false)
 	{
 		TAnimCell tCell;		
-		tCell.Set(action, posture, lock);
+		tCell.Set(posture, action, lock, once);
+		TAnimCell tempCell;
 
 		if (critical && !CurState.Locked) {
 			CurState = tCell; 
@@ -105,7 +98,10 @@ public:
 			Anim.clear();
 			Anim.push_back(tCell);
 		} else {
-			Anim.push_back(tCell);
+			tempCell = Anim.back();
+			if (tempCell.m_tPostureAnim != posture || tempCell.m_tActionAnim != action)
+				if (Anim.size() < 5) // максимум 5 в стеке
+					Anim.push_back(tCell);
 		}
 	}
 };

@@ -151,7 +151,9 @@ void CAI_Biting::vfSetParameters(IBaseAI_NodeEvaluator *tpNodeEvaluator, Fvector
 	bNeedToTurnInAttack = !getAI().bfTooSmallAngle(r_torso_current.yaw, r_torso_target.yaw, min_angle / 10);
 
 	bool bMoveLeft = true;
-	if (getAI().bfTooSmallAngle(r_torso_target.yaw,angle_normalize_signed(r_torso_current.yaw + PI_DIV_2),PI_DIV_4)) bMoveLeft = false;
+	//if (getAI().bfTooSmallAngle(r_torso_target.yaw,angle_normalize_signed(r_torso_current.yaw + PI_DIV_2),PI_DIV_4)) bMoveLeft = false;
+
+	bMoveLeft = IsLeftSide(r_torso_current.yaw,r_torso_target.yaw);
 
 	// необходим поворот?
 	if (bNeedToTurnInRun) {
@@ -187,9 +189,12 @@ void CAI_Biting::vfSetParameters(IBaseAI_NodeEvaluator *tpNodeEvaluator, Fvector
 		} else {				// поворот на месте
 				m_fCurSpeed		= 0;
 				r_torso_speed	= PI_DIV_4;
-				if (getAI().bfTooSmallAngle(angle_normalize_signed(r_torso_current.yaw + min_angle), r_torso_target.yaw, 5*min_angle))
+				if (getAI().bfTooSmallAngle(angle_normalize_signed(r_torso_current.yaw + min_angle), r_torso_target.yaw, 5*min_angle)) {
 					// right
-					vfSetMotionActionParams(m_tBodyState, eMovementTypeStand, eMovementDirectionLeft, m_tStateType, eActionTypeTurn);		
+					vfSetMotionActionParams(m_tBodyState, eMovementTypeStand, eMovementDirectionLeft, m_tStateType, eActionTypeTurn);
+					
+					AnimEx.Set(ePostureStand, eActionEat,false,false);
+				}
 				else 
 					// left
 					vfSetMotionActionParams(m_tBodyState, eMovementTypeStand, eMovementDirectionLeft, m_tStateType, eActionTypeTurn);		
@@ -328,8 +333,73 @@ void CAI_Biting::SetText()
 	HUD().pFontSmall->OutNext	("Norm Current = [%f] Norm Target = [%f]",rad2deg(angle_normalize(r_torso_current.yaw)),rad2deg(angle_normalize(r_torso_target.yaw)));
 	HUD().pFontSmall->OutSet	(320,450);
 	
+	
+	string128 s;
+	strconcat(s,AI_Biting::caStateNames[AnimEx.CurState.m_tPostureAnim],
+				AI_Biting::caStateNames[AnimEx.CurState.m_tActionAnim]);
+
+	HUD().pFontSmall->OutSet	(100,300);
+	HUD().pFontSmall->OutNext	("Current Animation = [%s]        Stack Size: [%i]",s,AnimEx.Anim.size());
+	
+	
+	
+	std::list<TAnimCell>::iterator It;
+	It = AnimEx.Anim.begin();
+
+	for (int i=0; (i<(int)AnimEx.Anim.size()) && (i<8); i++) {
+		strconcat(s,AI_Biting::caStateNames[It->m_tPostureAnim],
+				AI_Biting::caStateNames[It->m_tActionAnim]);
+		
+		HUD().pFontSmall->OutSet	(100+i*50,350);
+		HUD().pFontSmall->OutNext ("SA[%i]=[%s]",i,s);
+		It++;
+	}
 	// Where is enemy
 
+	
+	
+	if (m_tSavedEnemy){
+		HUD().pFontSmall->OutSet	(300,380);	
+		if (IsLeftSide(m_tSavedEnemy->Position())) {
+			HUD().pFontSmall->OutNext	("LEFT");
+		} else  HUD().pFontSmall->OutNext	("RIGHT");
+
+		HUD().pFontSmall->OutSet	(400,380);
+
+/*		
+		Fvector v1,v2;
+		v1 = mRotate.k;
+		v2 = m_tSavedEnemy->Direction();
+
+		float f1,f2,f3;
+		f1 = v1.magnitude();
+		f2 = v2.magnitude();
+		f3 = v1.dotproduct(v2);
+
+		float a = f3 / (f1 * f2);
+		a = acosf(a);
+*/		
+	
+		float yaw1;
+		CCustomMonster	*tpCustomMonster = dynamic_cast<CCustomMonster *>(m_tSavedEnemy);
+		if (tpCustomMonster) yaw1		= -tpCustomMonster->r_current.yaw;
+		else {
+			CActor		*tpActor = dynamic_cast<CActor *>(m_tSavedEnemy);
+			if (tpActor) yaw1	= tpActor->Orientation().yaw;
+		}
+		
+
+		HUD().pFontSmall->OutNext	("Monster Angle = [%f] Actor Angle = [%f]",R2D(-r_torso_current.yaw),R2D(yaw1));
+		HUD().pFontSmall->OutSet	(400,280);
+		HUD().pFontSmall->OutNext	("Normalized = [%f] Actor Angle = [%f]",R2D(angle_normalize(-r_torso_current.yaw)),R2D(angle_normalize(yaw1)));
+		//float a = angle_normalize(_abs(r_torso_current.yaw - yaw1));
+
+	//	HUD().pFontSmall->OutNext	("Current Angle between = [%f]",rad2deg(a));
+
+		//Msg("ANGLE = [%f]",rad2deg(a));
+	}
+
+	
 //	Fvector temp;
 //	SRotation
 //	if ()
@@ -342,3 +412,28 @@ void CAI_Biting::SetText()
 	//	Msg("%Turn Angles: Current = [%f]  Target = [%f]; TurnToLeft = [%d]",r_torso_current.yaw,r_torso_target.yaw,bMoveLeft);
 }
 
+
+bool CAI_Biting::IsLeftSide(const Fvector &Position)
+{
+	Fvector iV; // i-состовл€юща€ матрицы mRotate
+	Fvector temp;
+
+	iV = mRotate.i;
+	temp = vPosition;
+	temp.sub(Position);
+	float f = temp.dotproduct(iV);
+
+	if (f >= 0) return true;
+	else return false;
+}
+
+bool CAI_Biting::IsLeftSide(float current_yaw,float target_yaw)
+{
+	float cy = angle_normalize(current_yaw);	
+	float ty = angle_normalize(target_yaw);
+
+	if (((cy < ty) && (cy + PI > ty) && (cy>0) && (cy<PI)) && 
+		!((cy > ty) && (ty > cy-PI) && (cy > PI) && (cy < PI_MUL_2))) 
+			return true;
+	return false;
+}

@@ -221,4 +221,6 @@ private:
 	void					SetText();
 	virtual void			UpdateCL();
 
+	bool IsLeftSide(const Fvector &Position);
+	bool IsLeftSide(float current_yaw,float target_yaw);
 };

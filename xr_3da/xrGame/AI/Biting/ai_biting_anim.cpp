@@ -43,8 +43,7 @@ static void __stdcall vfPlayCallBack(CBlend* B)
 {
 	CAI_Biting *tpBiting = (CAI_Biting*)B->CallbackParam;
 	tpBiting->m_tpCurrentGlobalAnimation = 0;
-	tpBiting->AnimEx.ChangeAnimation();
-	//bAnimCanBeNew = true;
+//	tpBiting->AnimEx.ChangeAnimation();
 }
 
 void CAI_Biting::SelectAnimation(const Fvector &_view, const Fvector &_move, float speed )
@@ -54,12 +53,11 @@ void CAI_Biting::SelectAnimation(const Fvector &_view, const Fvector &_move, flo
 	if (!m_tpCurrentGlobalAnimation) {
 		m_tpCurrentGlobalAnimation = m_tAnims.A[m_tPostureAnim].A[m_tActionAnim].A[::Random.randI((int)m_tAnims.A[m_tPostureAnim].A[m_tActionAnim].A.size())];
 		PKinematics(pVisual)->PlayCycle(m_tpCurrentGlobalAnimation,TRUE,vfPlayCallBack,this);
-	}
-
-//	if (!m_tpCurrentGlobalAnimation) {
-//		m_tpCurrentGlobalAnimation = m_tAnims.A[0].A[0].A[::Random.randI(m_tAnims.A[0].A[0].A.size())];
+//		m_tpCurrentGlobalAnimation = m_tAnims.A[AnimEx.CurState.m_tPostureAnim].
+//											  A[AnimEx.CurState.m_tActionAnim].
+//											  A[::Random.randI((s32) m_tAnims.A[AnimEx.CurState.m_tPostureAnim].A[AnimEx.CurState.m_tActionAnim].A.size())];
 //		PKinematics(pVisual)->PlayCycle(m_tpCurrentGlobalAnimation,TRUE,vfPlayCallBack,this);
-//	}
+	}
 
 }
 
