@@ -103,6 +103,7 @@ void CBitingEat::Run()
 	switch (m_tAction) {
 	case ACTION_CORPSE_APPROACH_RUN:	// бежать к трупу
 		pMonster->MotionMan.m_tAction = ACT_RUN;
+		pMonster->MotionMan.accel_activate		(eAT_Calm);
 
 		approach_vertex_id = ai().level_graph().check_position_in_direction(pCorpse->level_vertex_id(), pCorpse->Position(), nearest_bone_pos);
 		if (approach_vertex_id == -1) {
@@ -123,6 +124,7 @@ void CBitingEat::Run()
 		pMonster->CSoundPlayer::play(MonsterSpace::eMonsterSoundIdle, 0,0,pMonster->_sd->m_dwIdleSndDelay);
 		break;
 	case ACTION_CORPSE_APPROACH_WALK:
+		pMonster->MotionMan.accel_activate		(eAT_Calm);
 
 		pMonster->MotionMan.m_tAction = ACT_WALK_FWD;
 		pMonster->MoveToTarget(nearest_bone_pos,pCorpse->level_vertex_id());
@@ -248,6 +250,7 @@ void CBitingEat::Run()
 		pMonster->MotionMan.SetSpecParams(ASP_MOVE_BKWD);
 		
 		pMonster->MoveAwayFromTarget	(pCorpse->Position());
+		pMonster->MotionMan.accel_activate(eAT_Calm);
 
 		// если не может тащить
 		if (0 == pMonster->m_PhysicMovementControl->PHCapture()) m_tAction = ACTION_EAT; 

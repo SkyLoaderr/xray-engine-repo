@@ -488,8 +488,6 @@ void CMotionManager::SelectVelocities()
 		pMonster->m_velocity_angular.target	= pMonster->m_velocity_angular.current = item_it->second.velocity->velocity.angular;
 	}
 	
-	Msg("angular_current = [%f]", pMonster->m_velocity_angular.target);
-
 	// применить 
 	// если установленная анимация отличается от предыдущей - установить новую анимацию
 	if (cur_anim != prev_anim) ForceAnimSelect();		

@@ -225,8 +225,6 @@ void CAI_Boar::CheckSpecParams(u32 spec_params)
 		new_angular_velocity = 2.5f * delta_yaw / time; 
 
 		MotionMan.ForceAngularSpeed(new_angular_velocity);
-
-		Msg("!!!new angular = [%f]", new_angular_velocity);
 	}
 }
 

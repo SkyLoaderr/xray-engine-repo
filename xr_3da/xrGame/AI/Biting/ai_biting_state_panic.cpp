@@ -40,7 +40,9 @@ void CBitingPanic::Run()
 			LOG_EX("PANIC:: Run away");
 			pMonster->MotionMan.m_tAction	= ACT_RUN;
 
-			pMonster->MoveAwayFromTarget	(m_tEnemy.position);	
+			pMonster->MoveAwayFromTarget			(m_tEnemy.position);
+			pMonster->MotionMan.accel_activate		(eAT_Aggressive);
+			pMonster->MotionMan.accel_set_braking	(false);
 
 			// если не видел врага > 15 сек 
 			if (m_tEnemy.time + 15000 < m_dwCurrentTime) {
