@@ -332,10 +332,10 @@ CLuaSoundInfo CLuaGameObject::GetSoundInfo()
 	
 	CAI_Biting *l_tpMonster = dynamic_cast<CAI_Biting *>(m_tpGameObject);
 	if (l_tpMonster) {
-		if (l_tpMonster->IsRememberSound()) {
+		if (l_tpMonster->SoundMemory.IsRememberSound()) {
 			SoundElem se; 
 			bool bDangerous;
-			l_tpMonster->GetSound(se, bDangerous);
+			l_tpMonster->SoundMemory.GetSound(se, bDangerous);
 			
 			CGameObject *pO = const_cast<CGameObject*>(dynamic_cast<const CGameObject *>(se.who));
 			ret_val.set((pO) ?  pO->lua_game_object() : 0, bDangerous, se.position, se.power, int(se.time));

@@ -8,8 +8,6 @@
 #include "../ai_monster_utils.h"
 #include "../ai_monster_effector.h"
 
-//#define AI_SQUAD_ENABLE
-
 
 CAI_Bloodsucker::CAI_Bloodsucker()
 {
@@ -47,9 +45,7 @@ void CAI_Bloodsucker::Init()
 
 	Bones.Reset();
 
-	last_time_finished				= 0;
-
-	task							= 0;
+	invisible_vel.set				(0.1f, 0.1f);
 }
 
 void CAI_Bloodsucker::Load(LPCSTR section) 
@@ -115,11 +111,8 @@ void CAI_Bloodsucker::Load(LPCSTR section)
 	MotionMan.LinkAction(ACT_TURN,			eAnimStandIdle,	eAnimStandTurnLeft, eAnimStandTurnRight, EPS_S); 
 
 	MotionMan.AA_Load(pSettings->r_string(section, "attack_params"));
+	MotionMan.STEPS_Load(pSettings->r_string(section, "step_params"), get_legs_number());
 
-	//MotionMan.AA_PushAttackAnimTest(eAnimAttack, 0, 500, 600, -PI_DIV_6,PI_DIV_6,-PI_DIV_6,PI_DIV_6,2.0f, inherited::_sd->m_fHitPower,Fvector().set(0.f,0.f,2.2f));
-	//MotionMan.AA_PushAttackAnimTest(eAnimAttack, 1, 600, 700, -PI_DIV_6,PI_DIV_6,-PI_DIV_6,PI_DIV_6,2.0f, inherited::_sd->m_fHitPower,Fvector().set(0.f,0.f,2.2f));
-	//MotionMan.AA_PushAttackAnimTest(eAnimAttack, 2, 500, 600, -PI_DIV_6,PI_DIV_6,-PI_DIV_6,PI_DIV_6,2.0f, inherited::_sd->m_fHitPower,Fvector().set(0.f,0.f,2.2f));
-	
 	END_LOAD_SHARED_MOTION_DATA();
 
 	MotionMan.accel_load			(section);
@@ -127,6 +120,12 @@ void CAI_Bloodsucker::Load(LPCSTR section)
 	MotionMan.accel_chain_add		(eAnimWalkDamaged,	eAnimRunDamaged);
 
 	LoadEffector(pSettings->r_string(section,"postprocess_new"));
+
+	invisible_vel.set(pSettings->r_float(section,"Velocity_Invisible_Linear"),pSettings->r_float(section,"Velocity_Invisible_Angular"));
+	m_movement_params.insert(std::make_pair(eVelocityParameterInvisible,STravelParams(invisible_vel.linear, invisible_vel.angular)));
+	
+	invisible_particle_name = pSettings->r_string(section,"Particle_Invisible");
+
 }
 
 
@@ -259,313 +258,87 @@ void CAI_Bloodsucker::UpdateCL()
 	bool NewVis		=	CMonsterInvisibility::Update();
 	if (NewVis != PrevVis) setVisible(NewVis);
 
-	//SquadDebug();
+	if (!CMonsterInvisibility::IsActiveBlinking()) state_invisible = !PrevVis;
+	else {
+		if (state_invisible) {
+			CMovementManager::enable_movement(false);
+			CMovementManager::enable_movement(true);
+			m_velocity_linear.current = m_velocity_linear.target = 0.f;
+		}
+	}
 
 }
 
 void CAI_Bloodsucker::StateSelector()
 {
-	VisionElem ve;
+	IState *pState = CurrentState;
 
-	// save CurrentState
-	pState = CurrentState;
-
-	if (C && H && I)			pState = statePanic; 
-	else if (C && H && !I)		pState = statePanic;
-	else if (C && !H && I)		pState = statePanic;
-	else if (C && !H && !I) 	pState = statePanic;
-	else if (D && H && I)		pState = stateAttack;
-	else if (D && !H && I)		pState = statePanic;
-	else if (D && !H && !I) 	pState = stateAttack;			// :: Hide
-	else if (D && H && !I)		pState = stateAttack;
-	else if (E && H && I)		pState = stateAttack;
-	else if (E && H && !I)  	pState = stateAttack;
-	else if (E && !H && I) 		pState = stateAttack;			// :: Detour
-	else if (E && !H && !I)		pState = stateAttack;			// :: Detour 
-	else if (F && H && I) 		pState = stateAttack; 		
-	else if (F && H && !I)  	pState = stateAttack;
-	else if (F && !H && I)  	pState = stateAttack;
-	else if (F && !H && !I) 	pState = stateAttack;		
-	else if (A && !K)			pState = stateExploreNDE; 
-	else if (B && !K)			pState = stateExploreNDE; 
-	else if ((GetCorpse(ve) && (ve.obj->m_fFood > 1)) && ((GetSatiety() < _sd->m_fMinSatiety) || flagEatNow))
-		pState= stateEat;	
-	else						pState = stateRest;
-
-	EMotionAnim anim = MotionMan.Seq_CurAnim();
-	if ((anim == eAnimCheckCorpse) && K) MotionMan.Seq_Finish();
-
-#ifdef AI_SQUAD_ENABLE
-	ProcessSquad();
-#endif
-
+	if (EnemyMan.get_enemy()) {
+		switch (EnemyMan.get_danger_type()) {
+			case eVeryStrong:				pState = statePanic; break;
+			case eStrong:		
+			case eNormal:
+			case eWeak:						pState = stateAttack; break;
+		}
+	} else if (hear_dangerous_sound || hear_interesting_sound) {
+		if (hear_dangerous_sound)			pState = stateExploreNDE;		
+		if (hear_interesting_sound)			pState = stateExploreNDE;	
+	} else									pState = stateRest; 
+	
 	SetState(pState);
 }
 
 
+////////////////////////////////////////////////////////////////////////////////////////////////
 
-
-
-///////////////////////////////////////////////////////////////////////////////////////////
-// Process Squad AI
-
-void CAI_Bloodsucker::DBG_TranslateTaskBefore()
+void CAI_Bloodsucker::set_visible(bool val) 
 {
-
-	LOG_EX2("SQUAD:: [M =%s] Getting task [time = %u]: ", *"*/ cName(), m_dwCurrentTime /*"*);
-
-	string32 s_type;
-
-	switch (task->state.type) {
-		case TS_REQUEST:	strcpy(s_type, "TS_REQUEST");	break;
-		case TS_PROGRESS:	strcpy(s_type, "TS_PROGRESS");	break;
-		case TS_REFUSED:	strcpy(s_type, "TS_REFUSED");	break;
-	}	
-
-	LOG_EX2("SQUAD:: [M =%s] Task desc: [type = %s], [ttl = %u]: ", *"*/ cName(), s_type, task->state.ttl /*"*);
+	CMonsterInvisibility::Switch(val);
+	CParticlesPlayer::StartParticles(invisible_particle_name,Fvector().set(0.0f,0.1f,0.0f),ID());
 }
 
-void CAI_Bloodsucker::DBG_TranslateTaskAfter()
+Fvector	CAI_Bloodsucker::get_foot_position(u8 leg_id)
 {
+	CKinematics *pK = PKinematics(Visual());
+	Fmatrix bone_transform;
 
-	LOG_EX2("SQUAD:: [M =%s] After: Task [time = %u]: ", *"*/ cName(), m_dwCurrentTime /*"*);
-
-	string32 s_type;
-
-	switch (task->state.type) {
-		case TS_REQUEST:	strcpy(s_type, "TS_REQUEST");	break;
-		case TS_PROGRESS:	strcpy(s_type, "TS_PROGRESS");	break;
-		case TS_REFUSED:	strcpy(s_type, "TS_REFUSED");	break;
-	}	
-
-	LOG_EX2("SQUAD:: [M =%s] Task desc: [type = %s], [ttl = %u]: ", *"*/ cName(), s_type, task->state.ttl /*"*);
-	LOG_EX2("SQUAD:: [M =%s] ------------------------------------ ", *"*/ cName() /*"*);
-}
-
-
-// ----------------------------------------------------------------------------------------------
-
-void CAI_Bloodsucker::ProcessSquad()
-{
-	CMonsterSquad	*pSquad = Level().SquadMan.GetSquad((u8)g_Squad());
-
-	// Если лидер - выполнить планирование (!!!)
-	// Проверить условия перепланирования
-	if ((pSquad->GetLeader() == this) && ShouldReplan()) pSquad->ProcessGroupIntel();
-	
-	// получить свою задачу
-	task = &pSquad->GetTask(this);
-
-	//DBG_TranslateTaskBefore();
-
-	// Проверить на завершение задачи
-	if (IsTaskActive() && IsTaskMustFinished()) StopTask();
-	
-	// Может быть запущена задача?
-	if (CanExecuteSquadTask()) {
-		
-		bool bInitTask = !IsTaskActive();
-
-		// Обновить состояние задачи
-		UpdateTaskStatus();
-		// Выполнить задачу
-		ProcessTask(bInitTask);
-	} else if (IsTaskActive()) StopTask();
-
-	//DBG_TranslateTaskAfter();
-}
-
-// ----------------------------------------------------------------------------------------------
-
-bool CAI_Bloodsucker::IsTaskActive()
-{
-	if (task->state.type == TS_PROGRESS) {
-		if (task->state.ttl > m_dwCurrentTime) return true;
-		else task->state.ttl = 0;
-	}
-		
-	return false;
-}
-
-// ----------------------------------------------------------------------------------------------
-bool CAI_Bloodsucker::IsTaskMustFinished()
-{ 
-	// сначала проверить задачу на завершение
-	if (task->state.ttl < m_dwCurrentTime) return true;
-	
-	if (task->state.command == SC_FOLLOW) {
-		if (task->target.pos.distance_to(Position()) < 1.0f) return true;
+	switch (leg_id) {
+		case 0:	bone_transform = pK->LL_GetBoneInstance(pK->LL_BoneID("bip01_l_toe1")).mTransform;	break;
+		case 1: bone_transform = pK->LL_GetBoneInstance(pK->LL_BoneID("bip01_r_toe1")).mTransform;	break;
 	}
 
-	return false;
-}
-// ----------------------------------------------------------------------------------------------
-void CAI_Bloodsucker::StopTask()
-{
-	task->state.ttl				= 0;
-	last_time_finished			= m_dwCurrentTime;
-	stateSquadTask->Done();
-}
-// ----------------------------------------------------------------------------------------------
+	Fmatrix global_transform;
+	global_transform.set(XFORM());
+	global_transform.mulB(bone_transform);
 
-bool CAI_Bloodsucker::CanExecuteSquadTask()
-{
-	return	(
-		CheckValidity() &&				// проверить валидность задачи (по type && ttl)
-		CheckCanSetWithTime() &&		// после выполненой задачи есть время, во время котторого новую брать задачу - нельзя
-		SquadTaskIsHigherPriority() &&	// приоритет внутреннего состояния меньше приоритета задачи 
-		CheckCanSetWithConditions()		// внутреннее состояние персонажа позволяют взять задание
-		);
+	return global_transform.c;
 }
 
-// ----------------------------------------------------------------------------------------------
-
-bool CAI_Bloodsucker::CheckValidity()
+void CAI_Bloodsucker::shedule_Update(u32 dt)
 {
-	if (task->state.ttl == 0) return false;
+	inherited::shedule_Update(dt);
 
-	if (task->state.ttl < m_dwCurrentTime) {
-		StopTask();
-		return false;
+	if (state_invisible) {
+		SGameMtlPair* mtl_pair		= CMaterialManager::get_current_pair();
+		if (!mtl_pair) return;
+
+		LPCSTR ps_name = *mtl_pair->CollideParticles[::Random.randI(0,mtl_pair->CollideParticles.size())];
+
+		//отыграть партиклы столкновения материалов
+		CParticlesObject* ps = xr_new<CParticlesObject>(ps_name);
+
+		// вычислить позицию и направленность партикла
+		Fmatrix pos; 
+
+		// установить направление
+		pos.k.set(Fvector().set(0.0f,1.0f,0.0f));
+		Fvector::generate_orthonormal_basis(pos.k, pos.i, pos.j);
+		// установить позицию
+		pos.c.set(get_foot_position(u8(0)));
+
+		ps->UpdateParent(pos,Fvector().set(0.f,0.f,0.f));
+		Level().ps_needtoplay.push_back(ps);
 	}
-
-	if (task->state.type == TS_REQUEST) return true;
-	if (task->state.type == TS_PROGRESS) return true;
-	if (task->state.type == TS_REFUSED) return false; 
-
-	return false;
-}
-// -----------------------------------------------------------------------------------------
-
-#define TASK_MIN_INTERVAL		4000
-
-bool CAI_Bloodsucker::CheckCanSetWithTime()
-{
-	if (IsTaskActive()) return true;
-
-	if (last_time_finished + TASK_MIN_INTERVAL < m_dwCurrentTime) return true;
-	return false;
-}
-
-// ----------------------------------------------------------------------------------------------
-
-bool CAI_Bloodsucker::CheckCanSetWithConditions()
-{
-	return true;
-}
-
-// ----------------------------------------------------------------------------------------------
-
-bool CAI_Bloodsucker::SquadTaskIsHigherPriority() 
-{
-	return (Level().SquadMan.TransformPriority(task->state.command) > pState->GetPriority());
-}
-
-// ----------------------------------------------------------------------------------------------
-
-void CAI_Bloodsucker::UpdateTaskStatus()
-{
-	TTime ttl = 0;
-
-	if (!IsTaskActive()) {// first time
-		switch (task->state.command) {
-		case SC_EXPLORE:		ttl = 10000;	break;
-		case SC_ATTACK:			ttl = 5000;		break;
-		case SC_THREATEN:		ttl = 3000;		break;
-		case SC_COVER:			ttl = 10000;	break;
-		case SC_FOLLOW:			ttl = 10000;	break;
-		case SC_FEEL_DANGER:	ttl = 20000;	break;
-		}
-
-		task->state.type	= TS_PROGRESS;
-		task->state.ttl		= m_dwCurrentTime + ttl;
-	}
-
-	task->state.type	= TS_PROGRESS;
-}
-
-// ----------------------------------------------------------------------------------------------
-
-bool CAI_Bloodsucker::ShouldReplan()
-{
-	return true;
-}
-
-// ----------------------------------------------------------------------------------------------
-
-void CAI_Bloodsucker::ProcessTask(bool bInit)
-{
-	pState = stateSquadTask;
-}
- 
-// ----------------------------------------------------------------------------------------------
-
-void CAI_Bloodsucker::SquadDebug()
-{
-	
-	bool bThisIsLeader = Level().SquadMan.GetSquad((u8)g_Squad())->GetLeader() == this;
-
-	if (bThisIsLeader) {
-		HUD().pFontMedium->OutSet	(float(Device.dwWidth/2)-20.f,10.0f);
-		HUD().pFontMedium->SetColor	(D3DCOLOR_XRGB(255,255,255));
-		HUD().pFontMedium->OutNext	("TIME: %d", Level().timeServer());
-	}
-
-	Fmatrix res;
-	res.mul(Device.mFullTransform,XFORM());
-
-	Fvector3 v_src;
-	Fvector4 v_res;
-	v_src.set(0.f,2.2f,0.f);
-
-	res.transform(v_res,v_src);
-
-	if (v_res.z < 0 || v_res.w < 0)	return;
-	if (v_res.x < -1.f || v_res.x > 1.f || v_res.y<-1.f || v_res.y>1.f) return;
-
-	float x = (1.f + v_res.x)/2.f * (Device.dwWidth);
-	float y = (1.f - v_res.y)/2.f * (Device.dwHeight);
-	
-	// Show name
-	HUD().pFontMedium->SetColor(0xff9999bb);
-	HUD().pFontMedium->OutSet(x,y);
-	
-	if (bThisIsLeader) HUD().pFontMedium->OutNext("L:%s", *cName());
-	else HUD().pFontMedium->OutNext("%s", *cName());
-
-	// Show task
-	HUD().pFontMedium->SetColor(0xffffff33);
-	HUD().pFontMedium->OutSet(x,y-=20);
-	
-	if (!task) return;
-
-	string32 s,s1,s2;
-	if (!IsTaskActive()) strcpy(s,"T: NA");
-	else {
-		switch (task->state.type) {
-			case TS_PROGRESS:	strcpy(s,"T:PRG"); break;
-			case TS_REQUEST:	strcpy(s,"T:REQ");	break;
-			case TS_REFUSED:	strcpy(s,"T:REF");	break;
-		}
-
-		if (task->state.type != TS_REFUSED) {
-
-			switch (task->state.command) {
-			case SC_EXPLORE:		strcpy(s2,"EXP");		break;
-			case SC_ATTACK:			strcpy(s2,"ATT");		break;
-			case SC_THREATEN:		strcpy(s2,"THR");		break;
-			case SC_COVER:			strcpy(s2,"COV");		break;
-			case SC_FOLLOW:			strcpy(s2,"FOL");		break;
-			case SC_FEEL_DANGER:	strcpy(s2,"DNG");		break;
-			}
-
-			itoa(task->state.ttl,s1,10);
-			strconcat(s,s,"|TTL:",s1,"|C:", s2);
-		}
-	}
-
-	HUD().pFontMedium->OutNext("%s",s);
 }
 
 
-//MONSTER_DEBUG(str,floor,y,color);

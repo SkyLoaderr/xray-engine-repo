@@ -475,7 +475,6 @@ void CMotionManager::SelectVelocities()
 //	R_ASSERT(fsimilar(path_vel.linear,	anim_vel.linear));
 //	R_ASSERT(fsimilar(path_vel.angular,	anim_vel.angular));
 
-
 	// установка линейной скорости	
 	// - проверить на возможность торможения
 	if (!accel_check_braking(0.f)) {
@@ -484,6 +483,9 @@ void CMotionManager::SelectVelocities()
 	} else {
 		pMonster->m_velocity_linear.target	= 0.1f;
 	}
+
+	// если невидимый, то установить скорость из пути
+	if (pMonster->state_invisible) pMonster->m_velocity_linear.target	= _abs(path_vel.linear);
 
 	// финальная корректировка анимации по физической скорости
 	float  real_speed = pMonster->m_fCurSpeed;
@@ -520,6 +522,7 @@ EAction CMotionManager::VelocityIndex2Action(u32 velocity_index)
 		case pMonster->eVelocityParameterRunDamaged:	return ACT_RUN;
 		case pMonster->eVelocityParameterSteal:			return ACT_STEAL;
 		case pMonster->eVelocityParameterDrag:			return ACT_DRAG;
+		case pMonster->eVelocityParameterInvisible:		return ACT_RUN;
 		default:										NODEFAULT;
 	}
 

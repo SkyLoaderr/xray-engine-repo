@@ -22,7 +22,7 @@ void CBitingExploreNDE::Init()
 	LOG_EX("nde init");
 	inherited::Init();
 
-	m_tSound	= pMonster->GetSound();
+	m_tSound	= pMonster->SoundMemory.GetSound();
 	target_pos	= m_tSound.position;
 
 	m_tAction = ACTION_LOOK_DESTINATION;
@@ -31,7 +31,7 @@ void CBitingExploreNDE::Init()
 void CBitingExploreNDE::Run()
 {
 	// обновить позицию звука
-	SoundElem se = pMonster->GetSound();
+	SoundElem se = pMonster->SoundMemory.GetSound();
 	if ((se.who != m_tSound.who) || (se.position.distance_to(m_tSound.position) > 5.f)) Init();
 	else m_tSound = se;
 

@@ -187,7 +187,8 @@ public:
 //	BIND_FUNCTION10	(m_tpGameObject,	GetCurrentAction,	CScriptMonster,	GetCurrentAction,	const CEntityAction *,				0);
 	
 	BIND_FUNCTION10	(m_tpGameObject,	GetEnemyStrength,	CScriptMonster,	get_enemy_strength,	int,								0);
-
+	
+	BIND_FUNCTION01	(m_tpGameObject,	set_visible,		CScriptMonster,	set_visible,		bool,								bool);
 
 
 	IC		CEntityAction	*GetCurrentAction	() const

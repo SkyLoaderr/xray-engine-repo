@@ -29,6 +29,8 @@ class CMonsterInvisibility {
 
 	TTime				timeCurrent;					// текущее время
 
+	bool				state_visible;
+
 public:
 				CMonsterInvisibility	();
 
@@ -42,4 +44,10 @@ public:
 
 	// Temp 
 	IC	bool	IsActiveBlinking		() {if (timeStartBlinking + timeBlinking > timeCurrent) return true; else return false;}
+
+//		void	Set						(bool b_visibility);
+
+private:
+		
+//		void	StartBlink				();
 };

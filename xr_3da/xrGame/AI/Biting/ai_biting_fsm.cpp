@@ -9,6 +9,7 @@
 #include "stdafx.h"
 #include "ai_biting.h"
 #include "../../phmovementcontrol.h"
+#include "../ai_monster_debug.h"
 
 
 void CAI_Biting::Think()
@@ -31,16 +32,10 @@ void CAI_Biting::Think()
 
 	CMonsterMovement::Frame_Init();
 
-	// fix off-line displacement
-	if ((flagsEnemy & FLAG_ENEMY_GO_OFFLINE) == FLAG_ENEMY_GO_OFFLINE) {
-		CurrentState->Reset					();
-		SetState							(stateRest);
-	}
-	
 	// Squad calculations
 	CMonsterSquad	*pSquad = Level().SquadMan.GetSquad((u8)g_Squad());
 	if (pSquad && pSquad->SquadActive()) {
-		pSquad->UpdateMonsterData(this,const_cast<CEntity *>(m_tEnemy.obj));
+		pSquad->UpdateMonsterData(this,const_cast<CEntityAlive *>(EnemyMan.get_enemy()));
 		if ((pSquad->GetLeader() == this)) {
 			pSquad->UpdateDecentralized();
 		} 

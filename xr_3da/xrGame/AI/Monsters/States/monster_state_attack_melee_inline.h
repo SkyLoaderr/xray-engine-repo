@@ -25,10 +25,8 @@ void CStateMonsterAttackMeleeAbstract::initialize()
 TEMPLATE_SPECIALIZATION
 void CStateMonsterAttackMeleeAbstract::execute()
 {
-	const CEntity *enemy = m_object->m_tEnemy.obj;
-
 	m_object->MotionMan.m_tAction	= ACT_ATTACK;
-	m_object->FaceTarget			(enemy);
+	m_object->FaceTarget			(m_object->EnemyMan.get_enemy());
 	m_object->CSoundPlayer::play	(MonsterSpace::eMonsterSoundAttack, 0,0,m_object->_sd->m_dwAttackSndDelay);
 }
 

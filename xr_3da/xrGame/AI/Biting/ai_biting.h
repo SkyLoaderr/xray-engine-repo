@@ -9,23 +9,21 @@
 #pragma once
 
 #include "../../CustomMonster.h"
-#include "../ai_monsters_misc.h"
 #include "../ai_monster_motion.h"
-#include "ai_biting_state.h"
-#include "../ai_monster_mem.h"
-#include "../ai_monster_sound.h"
-
 #include "../ai_monster_shared_data.h"
-#include "../ai_monster_debug.h"
-
 #include "../ai_monster_movement.h"
 
+#include "../monster_vision_memory.h"
+#include "../monster_sound_memory.h"
+#include "../monster_enemy_manager.h"
+
+#include "ai_biting_state.h"
+
+
+class CMonsterDebug;
 class CCharacterPhysicsSupport;
 
-typedef VisionElem SEnemy;
-
 class CAI_Biting : public CCustomMonster, 
-				   public CMonsterMemory,
 				   virtual public CMonsterMovement,
 				   public CSharedClass<_biting_shared> {
 
@@ -44,7 +42,7 @@ class CAI_Biting : public CCustomMonster,
 		bool	prev_hit;
 	} _as;
 
-
+protected:
 	enum EMovementParameters {
 		eVelocityParameterStand			= u32(1) <<  4,
 		eVelocityParameterWalkNormal	= u32(1) <<  3,
@@ -54,14 +52,17 @@ class CAI_Biting : public CCustomMonster,
 		eVelocityParameterRunDamaged	= u32(1) <<  6,
 		eVelocityParameterSteal			= u32(1) <<  7,
 		eVelocityParameterDrag			= u32(1) <<  8,
+		eVelocityParameterInvisible		= u32(1) <<	 9,
 
-		eVelocityParamsWalk				= eVelocityParameterStand | eVelocityParameterWalkNormal,
-		eVelocityParamsWalkDamaged		= eVelocityParameterStand | eVelocityParameterWalkDamaged,
-		eVelocityParamsRun				= eVelocityParameterStand | eVelocityParameterWalkNormal | eVelocityParameterRunNormal,
-		eVelocityParamsRunDamaged		= eVelocityParameterStand | eVelocityParameterWalkDamaged | eVelocityParameterRunDamaged,
-		eVelocityParamsAttackNorm		= eVelocityParameterStand | eVelocityParameterWalkNormal | eVelocityParameterRunNormal,
-		eVelocityParamsAttackDamaged	= eVelocityParameterStand | eVelocityParameterWalkDamaged | eVelocityParameterRunDamaged,
-		eVelocityParamsSteal			= eVelocityParameterStand | eVelocityParameterSteal,
+		eVelocityParamsWalk				= eVelocityParameterStand		| eVelocityParameterWalkNormal,
+		eVelocityParamsWalkDamaged		= eVelocityParameterStand		| eVelocityParameterWalkDamaged,
+		eVelocityParamsRun				= eVelocityParameterStand		| eVelocityParameterWalkNormal | eVelocityParameterRunNormal,
+		eVelocityParamsRunDamaged		= eVelocityParameterStand		| eVelocityParameterWalkDamaged | eVelocityParameterRunDamaged,
+		eVelocityParamsAttackNorm		= eVelocityParameterStand		| eVelocityParameterWalkNormal | eVelocityParameterRunNormal,
+		eVelocityParamsAttackDamaged	= eVelocityParameterStand		| eVelocityParameterWalkDamaged | eVelocityParameterRunDamaged,
+		eVelocityParamsSteal			= eVelocityParameterStand		| eVelocityParameterSteal,
+		eVelocityParamsInvisible		= eVelocityParameterInvisible	| eVelocityParamsRun,
+
 	};
 
 public:
@@ -213,14 +214,6 @@ public:
 	// State flags
 	bool					m_bDamaged;
 
-	// Combat flags 
-	u32						flagsEnemy; 
-
-	// m_object
-	SEnemy					m_tEnemy;				// Current frame enemy 
-	SEnemy					m_tEnemyPrevFrame;		// Previous frame enemy 
-
-
 	float					m_fCurMinAttackDist;		// according to attack stops
 
 	
@@ -245,22 +238,16 @@ public:
 	CBitingTest				*stateTest;
 	CBitingNull				*stateNull;
 
-	bool					A,B,C,D,E,F,G,H,I,J,K,L,M;
 	IState					*CurrentState;
 
 	// -------------------------------------------------------
-
 	// State flags
 	bool					flagEatNow;				// true - сейчас монстр ест
 
 	CMotionManager			MotionMan; 
 
-	bool RayPickEnemy(const CObject *target_obj, const Fvector &trace_from, const Fvector &dir, float dist, float radius, u32 num_picks);
+	bool					RayPickEnemy			(const CObject *target_obj, const Fvector &trace_from, const Fvector &dir, float dist, float radius, u32 num_picks);
 
-#ifdef DEBUG
-	CMonsterDebug	*HDebug;
-	virtual void	OnRender();
-#endif
 
 	u16						fire_bone_id;
 	float					GetRealDistToEnemy		(const CEntity *pE);
@@ -274,15 +261,39 @@ public:
 	
 	bool					b_script_state_must_execute;
 
+	void					TranslateActionToPathParams ();
+
+	bool					state_invisible;
+
+
+	CMonsterMemoryEnemy		EnemyMemory;
+	CMonsterSoundMemory		SoundMemory;
+	CMonsterEnemyManager	EnemyMan;
+
+	bool					hear_dangerous_sound;
+	bool					hear_interesting_sound;
+
+
+
+#ifdef DEBUG
+	CMonsterDebug	*HDebug;
+	virtual void	OnRender();
+#endif
+
 #ifdef 	DEEP_TEST_SPEED
 	TTime	time_next_update;
 #endif
 
-//////////////////////////////////////////////////////////////////////////
-// Motion Tests
-	void					TranslateActionToPathParams ();
 
+// To Delete
 
+	// Combat flags 
+	//u32						flagsEnemy; 
+	// m_object
+	//SEnemy					m_tEnemy;				// Current frame enemy 
+	//SEnemy					m_tEnemyPrevFrame;		// Previous frame enemy 
+
+	// bool					A,B,C,D,E,F,G,H,I,J,K,L,M;
 };
 
 #include "ai_biting_inline.h"

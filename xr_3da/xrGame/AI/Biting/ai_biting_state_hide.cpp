@@ -9,36 +9,22 @@
 CBitingHide::CBitingHide(CAI_Biting *p)
 {
 	pMonster = p;
-	SetPriority(PRIORITY_NORMAL);
 }
 
 void CBitingHide::Init()
 {
 	inherited::Init();
 
-	if (!pMonster->GetEnemy(m_tEnemy)) R_ASSERT(false);
-
-	SetInertia(20000);
-	pMonster->SetMemoryTime(20000);
-
 }
 
 void CBitingHide::Reset()
 {
 	inherited::Reset();
-
-	m_tEnemy.obj		= 0;
 }
 
 void CBitingHide::Run()
 {
-	Fvector EnemyPos;
-	if (m_tEnemy.obj) EnemyPos = m_tEnemy.obj->Position();
-	else EnemyPos = m_tEnemy.position;
-
-
-	// Установить параметры движения
-	pMonster->MotionMan.m_tAction = ACT_WALK_FWD;
-
+	LOG_EX("Hide state...");
+	pMonster->MotionMan.m_tAction = ACT_SLEEP;
 }
 

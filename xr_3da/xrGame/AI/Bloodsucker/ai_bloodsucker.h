@@ -20,12 +20,17 @@ class CAI_Bloodsucker : public CAI_Biting,
 	CBoneInstance			*bone_spine;
 	CBoneInstance			*bone_head;
 
+	SMotionVel				invisible_vel;
+	LPCSTR					invisible_particle_name;
+
 public:
 							CAI_Bloodsucker	();
 	virtual					~CAI_Bloodsucker();	
 
 			void			Init					();
 	virtual void			UpdateCL				();
+	virtual void			shedule_Update			(u32 dt);
+
 	virtual void			StateSelector			();
 	virtual BOOL			net_Spawn				(LPVOID DC);
 	virtual	void			Load					(LPCSTR section);
@@ -49,34 +54,9 @@ public:
 			
 			SPPInfo			pp_effector;
 
-	// ---------------------------------------------------------------------------------
 
-	
-	
-	GTask					*task;
-	TTime					last_time_finished;
-		
-	bool					IsActiveTaskFinished		();
-	void					StopTask					();
-	bool					CheckValidity				();
-	bool					CheckCanSetWithTime			();
-	bool					CheckCanSetWithConditions	();	
-	bool					CanExecuteSquadTask			();
-	bool					SquadTaskIsHigherPriority	(); 
-	void					UpdateTaskStatus			();
-	bool					IsTaskActive				();
-	bool					ShouldReplan				();
-
-	void					ProcessTask					(bool bInit);
-
-	void					DBG_TranslateTaskBefore		();
-	void					DBG_TranslateTaskAfter		();
-	
-	bool					IsTaskMustFinished			();
-	void					ProcessSquad				();
-
-	IState					*pState; // временное состояние
-	void					SquadDebug();
-	// ---------------------------------------------------------------------------------
+	virtual	void			set_visible				(bool val);
+	virtual u8				get_legs_number			() {return BIPEDAL;}
+	virtual Fvector			get_foot_position		(u8 leg_id);
 
 };

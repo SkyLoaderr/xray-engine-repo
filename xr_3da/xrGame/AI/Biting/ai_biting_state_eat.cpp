@@ -38,9 +38,9 @@ void CBitingEat::Init()
 	IState::Init();
 
 	// Получить инфо о трупе
-	VisionElem ve;
-	if (!pMonster->GetCorpse(ve)) R_ASSERT(false);
-	pCorpse = const_cast<CEntity*>(ve.obj);
+//	VisionElem ve;
+//	if (!pMonster->GetCorpse(ve)) R_ASSERT(false);
+//	pCorpse = const_cast<CEntity*>(ve.obj);
 
 	bEatRat = (dynamic_cast<CAI_Rat *>(pCorpse) ? true : false);
 	m_fDistToCorpse = ((bEatRat)? 1.0f : pMonster->_sd->m_fDistToCorpse); 
@@ -74,9 +74,9 @@ void CBitingEat::Init()
 void CBitingEat::Run()
 {
 	// Если новый труп, снова инициализировать состояние 
-	VisionElem ve;
-	if (!pMonster->GetCorpse(ve) || (!pCorpse->m_pPhysicsShell)) {Done(); return;}
-	if (pCorpse != ve.obj) Init();
+//	VisionElem ve;
+//	if (!pMonster->GetCorpse(ve) || (!pCorpse->m_pPhysicsShell)) {Done(); return;}
+//	if (pCorpse != ve.obj) Init();
 
 	// Определить позицию ближайшей боны у трупа
 	Fvector nearest_bone_pos;
@@ -201,7 +201,7 @@ void CBitingEat::Run()
 		if (m_dwTimeStartRest + REST_AFTER_LUNCH_TIME < m_dwCurrentTime) {
 			pMonster->flagEatNow	= false;
 			bRestAfterLunch			= false; 
-			pMonster->AddIgnoreObject(pCorpse);
+			//pMonster->AddIgnoreObject(pCorpse);
 		}
 
 		pMonster->CSoundPlayer::play(MonsterSpace::eMonsterSoundIdle, 0,0,pMonster->_sd->m_dwIdleSndDelay);
@@ -279,9 +279,9 @@ void CBitingEat::Done()
 
 bool CBitingEat::CheckCompletion()
 {
-	VisionElem ve;
-	if (!pMonster->GetCorpse(ve) || (!ve.obj->m_pPhysicsShell)) return true;
-	if (ve.obj->m_fFood < EPS_L)								return true;
+//	VisionElem ve;
+//	if (!pMonster->GetCorpse(ve) || (!ve.obj->m_pPhysicsShell)) return true;
+//	if (ve.obj->m_fFood < EPS_L)								return true;
 
 	return false;
 }

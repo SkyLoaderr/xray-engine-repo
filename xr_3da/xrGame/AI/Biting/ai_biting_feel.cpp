@@ -38,7 +38,7 @@ void CAI_Biting::feel_sound_new(CObject* who, int eType, const Fvector &Position
 
 	if (power >= _sd->m_fSoundThreshold) {
 		if (this != who) {
-			HearSound(who,eType,Position,power,m_current_update);
+			SoundMemory.HearSound(who,eType,Position,power,m_current_update);
 		}
  	}
 }
@@ -48,10 +48,10 @@ void CAI_Biting::HitEntity(const CEntity *pEntity, float fDamage, float impulse,
 	if (!g_Alive()) return;
 	if (!pEntity) return;
 
-	VisionElem ve;
-	if (!GetEnemy(ve)) return;
+	
+	if (!EnemyMan.get_enemy()) return;
 
-	if ((CLSID_ENTITY == ve.obj->CLS_ID) && (ve.obj == pEntity)) {
+	if ((CLSID_ENTITY == EnemyMan.get_enemy()->CLS_ID) && (EnemyMan.get_enemy() == pEntity)) {
 		Fvector position_in_bone_space;
 		position_in_bone_space.set(0.f,0.f,0.f);
 
@@ -98,7 +98,7 @@ void CAI_Biting::HitSignal(float amount, Fvector& vLocalDir, CObject* who, s16 e
 
 	MotionMan.FX_Play(hit_side, 1.0f);
 
-	AddDangerousEnemy(who,20000);
+	//AddDangerousEnemy(who,20000);
 
 	CScriptMonster	*script_monster = dynamic_cast<CScriptMonster*>(this);
 	if (script_monster)

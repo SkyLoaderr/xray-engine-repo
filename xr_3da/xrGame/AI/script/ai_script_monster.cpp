@@ -698,3 +698,7 @@ int CScriptMonster::get_enemy_strength()
 {
 	return (0);
 }
+
+void CScriptMonster::set_visible(bool vis)
+{
+}

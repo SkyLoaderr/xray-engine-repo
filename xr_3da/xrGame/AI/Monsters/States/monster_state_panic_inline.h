@@ -56,10 +56,10 @@ void CStateMonsterPanicAbstract::finalize()
 TEMPLATE_SPECIALIZATION
 bool CStateMonsterPanicAbstract::completed()
 {
-	bool b_completed = !m_object->m_tEnemy.obj;
+	bool b_completed = !m_object->EnemyMan.get_enemy();
 	Msg("Panic Completed = [%u]",b_completed);
 
-	if (!m_object->m_tEnemy.obj) return true;
+	if (!m_object->EnemyMan.get_enemy()) return true;
 	
 	return false;
 }

@@ -99,6 +99,7 @@ public:
 	virtual CEntity				*GetCurrentCorpse		();
 	virtual int					get_enemy_strength		();
 
+	virtual void				set_visible				(bool vis);
 private:
 			void				FreeAll					();
 };

@@ -31,9 +31,8 @@ bool CAI_Biting::AA_CheckHit()
 {
 	SAAParam params;
 
-	VisionElem ve;
-	if (!GetEnemy(ve)) return false;
-	const CObject *obj = dynamic_cast<const CObject *>(ve.obj);
+	if (!EnemyMan.get_enemy()) return false;
+	const CObject *obj = dynamic_cast<const CObject *>(EnemyMan.get_enemy());
 
 	if (MotionMan.AA_TimeTest(params)) {
 		CSoundPlayer::play(MonsterSpace::eMonsterSoundAttackHit);
@@ -62,10 +61,10 @@ bool CAI_Biting::AA_CheckHit()
 
 		if (!is_angle_between(p, from, to)) should_hit = false;
 
-		if (should_hit) HitEntity(ve.obj, params.hit_power, params.impulse, params.impulse_dir);
+		if (should_hit) HitEntity(EnemyMan.get_enemy(), params.hit_power, params.impulse, params.impulse_dir);
 		
 		// если жертва убита - добавить в список трупов	
-		if (!ve.obj->g_Alive()) AddCorpse(ve);
+		//if (!ve.obj->g_Alive()) AddCorpse(ve);
 
 		if (AS_Active()) AS_Check(should_hit);
 		MotionMan.AA_UpdateLastAttack(m_dwCurrentTime);

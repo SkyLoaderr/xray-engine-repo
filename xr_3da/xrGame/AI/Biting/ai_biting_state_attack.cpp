@@ -55,8 +55,8 @@ void CBitingAttack::Init()
 	IState::Init();
 
 	// Получить врага
-	m_tEnemy = pMonster->m_tEnemy;
-
+	enemy		= pMonster->EnemyMan.get_enemy();
+	
 	UpdateInitFlags();
 
 	// Установка дистанции аттаки
@@ -96,8 +96,7 @@ void CBitingAttack::Run()
 {
 	
 	// Если враг изменился, инициализировать состояние
-	if (pMonster->m_tEnemy.obj != m_tEnemy.obj) Init();
-	else m_tEnemy = pMonster->m_tEnemy;
+	if (pMonster->EnemyMan.get_enemy() != enemy) Init();
 
 	
 	UpdateFrameFlags();
@@ -121,7 +120,7 @@ void CBitingAttack::Run()
 	
 	
 	// если враг не виден на протяжении 1 сек - бежать к нему
-	if (!flags.is(AF_SEE_ENEMY) && (m_tEnemy.time + 1000 < m_dwCurrentTime))	m_tAction = ACTION_RUN;
+	if (!flags.is(AF_SEE_ENEMY) && (pMonster->EnemyMan.get_enemy_time_last_seen() + 1000 < m_dwCurrentTime))	m_tAction = ACTION_RUN;
 	
 	// Проверить, достижим ли противник
 	if (flags.is(AF_ENEMY_IS_NOT_REACHABLE) && !b_attack_melee) m_tAction = ACTION_ENEMY_POSITION_APPROACH;
@@ -133,7 +132,7 @@ void CBitingAttack::Run()
 
 	// проверить на возможность прыжка
 	if (flags.is(AF_HAS_JUMP_ABILITY)) 
-		if (pJumping->Check(pMonster->Position(),m_tEnemy.obj->Position(),m_tEnemy.obj))
+		if (pJumping->Check(pMonster->Position(),enemy->Position(),enemy))
 			pMonster->CSoundPlayer::play(MonsterSpace::eMonsterSoundAttackHit);
 	
 	// восстановить некоторые переменные
@@ -188,13 +187,13 @@ void CBitingAttack::Run()
 						pMonster->set_dest_direction		(target);
 						pMonster->set_use_dest_orientation	(true);
 
-						pMonster->MoveToTarget(m_tEnemy.obj);
+						pMonster->MoveToTarget(enemy);
 						squad_target_selected = true;
 					}
 				}
 
 				if (!squad_target_selected) {
-					pMonster->MoveToTarget(m_tEnemy.obj);
+					pMonster->MoveToTarget(enemy);
 				}
 			}
 			
@@ -224,7 +223,7 @@ void CBitingAttack::Run()
 
 			// Смотреть на врага 
 			DO_IN_TIME_INTERVAL_BEGIN(m_dwFaceEnemyLastTime, 1200);
-				pMonster->FaceTarget(m_tEnemy.obj);
+				pMonster->FaceTarget(enemy);
 			DO_IN_TIME_INTERVAL_END();
 			
 			if (flags.is(AF_CAN_ATTACK_FROM_BACK)) {
@@ -244,7 +243,7 @@ void CBitingAttack::Run()
 
 			LOG_EX("ATTACK: STEAL");
 			pMonster->MotionMan.m_tAction = ACT_STEAL;
-			pMonster->MoveToTarget(m_tEnemy.obj);
+			pMonster->MoveToTarget(enemy);
 
 			pMonster->CSoundPlayer::play(MonsterSpace::eMonsterSoundSteal, 0,0,pMonster->_sd->m_dwAttackSndDelay);
 			break;
@@ -258,7 +257,7 @@ void CBitingAttack::Run()
 
 			// Смотреть на врага 
 			DO_IN_TIME_INTERVAL_BEGIN(m_dwFaceEnemyLastTime, 1200);
-				pMonster->FaceTarget(m_tEnemy.obj);
+				pMonster->FaceTarget(enemy);
 			DO_IN_TIME_INTERVAL_END();
 
 			pMonster->MotionMan.SetSpecParams(ASP_THREATEN);
@@ -272,7 +271,7 @@ void CBitingAttack::Run()
 		// **********************************
 			LOG_EX("ATTACK: ENEMY_POSITION_APPROACH");
 			pMonster->MotionMan.m_tAction		= ACT_RUN;
-			pMonster->MoveToTarget				(m_tEnemy.obj->Position());
+			pMonster->MoveToTarget				(enemy->Position());
 			pMonster->MotionMan.accel_activate	(eAT_Calm);
 			
 			pMonster->CSoundPlayer::play(MonsterSpace::eMonsterSoundAttack, 0,0,pMonster->_sd->m_dwAttackSndDelay);
@@ -285,7 +284,7 @@ void CBitingAttack::Run()
 			LOG_EX("ATTACK: ENEMY_WALK_AWAY");
 
 			pMonster->MotionMan.m_tAction		= ACT_WALK_FWD;
-			pMonster->MoveAwayFromTarget		(random_position(m_tEnemy.position, 2.f));
+			pMonster->MoveAwayFromTarget		(random_position(pMonster->EnemyMan.get_enemy_position(), 2.f));
 			pMonster->CSoundPlayer::play		(MonsterSpace::eMonsterSoundAttack, 0,0,pMonster->_sd->m_dwAttackSndDelay);
 			pMonster->MotionMan.accel_activate	(eAT_Calm);
 		
@@ -317,7 +316,7 @@ void CBitingAttack::Run()
 			{
 				Fvector target_point;
 				Fvector dir;
-				dir.sub(m_tEnemy.obj->Position(), pMonster->Position());
+				dir.sub(enemy->Position(), pMonster->Position());
 				dir.normalize();
 				target_point.mad(pMonster->Position(),dir,1.0f);
 				pMonster->MoveToTarget(target_point);
@@ -336,7 +335,7 @@ void CBitingAttack::Run()
 			
 			// Смотреть на врага 
 			DO_IN_TIME_INTERVAL_BEGIN(m_dwFaceEnemyLastTime, 1200);
-				pMonster->FaceTarget(m_tEnemy.obj);
+				pMonster->FaceTarget(enemy);
 			DO_IN_TIME_INTERVAL_END();
 
 			pMonster->MotionMan.SetSpecParams(ASP_PSI_ATTACK);
@@ -350,11 +349,12 @@ void CBitingAttack::Run()
 		CAI_Bloodsucker *pBS =	dynamic_cast<CAI_Bloodsucker *>(pMonster);
 		CActor			*pA  =  dynamic_cast<CActor*>(Level().CurrentEntity());
 
-		bool			bActorIsEnemy = (dynamic_cast<const CActor*>(m_tEnemy.obj) != 0);	// set !=0 to work
+		bool			bActorIsEnemy = (dynamic_cast<const CActor*>(enemy) != 0);	// set !=0 to work
 
 		if (pBS && pA && bActorIsEnemy && (pA->Position().distance_to(pBS->Position()) < pBS->m_fEffectDist)) {
 			if ((dist < pBS->m_fInvisibilityDist) && (pBS->GetPower() > pBS->m_fPowerThreshold)) {
 				if (pBS->CMonsterInvisibility::Switch(false)) {
+					pBS->set_visible(false);
 					pBS->ChangePower(pBS->m_ftrPowerDown);
 					pBS->ActivateEffector(pBS->CMonsterInvisibility::GetInvisibleInterval() / 1000.f);
 				}
@@ -403,7 +403,7 @@ bool CBitingAttack::CheckStartThreaten()
 
 	// проверка угла
 	float h,p;
-	Fvector().sub(m_tEnemy.obj->Position(),pMonster->Position()).getHP(h,p);
+	Fvector().sub(enemy->Position(),pMonster->Position()).getHP(h,p);
 	if (angle_difference(angle_normalize(-pMonster->CMovementManager::m_body.current.yaw),h) > PI / 15) {
 		return false;
 	}
@@ -422,7 +422,7 @@ bool CBitingAttack::CheckEndThreaten()
 	if (ThreatenTimeStarted + THREATEN_TIME < m_dwCurrentTime) return true;
 
 	float h,p;
-	Fvector().sub(m_tEnemy.obj->Position(),pMonster->Position()).getHP(h,p);
+	Fvector().sub(enemy->Position(),pMonster->Position()).getHP(h,p);
 	if (angle_difference(angle_normalize(-pMonster->CMovementManager::m_body.current.yaw),h) > PI_DIV_6) return true;
 	
 	// проверка флагов
@@ -506,7 +506,7 @@ bool CBitingAttack::CanAttackFromBack()
 
 	// проверить если враг находится сзади
 	Fvector dir;
-	dir.sub(m_tEnemy.obj->Position(), pMonster->Position());
+	dir.sub(enemy->Position(), pMonster->Position());
 
 	float yaw1,p1,yaw2,p2;
 	dir.getHP(yaw1,p1);
@@ -528,7 +528,7 @@ void CBitingAttack::UpdateInitFlags()
 {
 	init_flags.zero();
 
-	const CAI_Rat *tpRat = dynamic_cast<const CAI_Rat *>(m_tEnemy.obj);
+	const CAI_Rat *tpRat = dynamic_cast<const CAI_Rat *>(enemy);
 	if (tpRat) init_flags.or(AF_ATTACK_RAT);
 
 	// определить способности
@@ -543,19 +543,19 @@ void CBitingAttack::UpdateFrameFlags()
 {
 	frame_flags.zero();
 
-	if ((pMonster->flagsEnemy & FLAG_ENEMY_DOESNT_SEE_ME) == FLAG_ENEMY_DOESNT_SEE_ME)		
+	if (pMonster->EnemyMan.get_flags().is(FLAG_ENEMY_DOESNT_SEE_ME))		
 		frame_flags.or(AF_ENEMY_DOESNT_SEE_ME);
 	
-	if ((pMonster->flagsEnemy & FLAG_ENEMY_GO_FARTHER_FAST) == FLAG_ENEMY_GO_FARTHER_FAST) 	
+	if (pMonster->EnemyMan.get_flags().is(FLAG_ENEMY_GO_FARTHER_FAST)) 	
 		frame_flags.or(AF_ENEMY_GO_FARTHER_FAST);
 	
-	if (pMonster->IsDangerousEnemy(m_tEnemy.obj))											
-		frame_flags.or(AF_REMEMBER_HIT_FROM_THIS_ENEMY);
+//	if (pMonster->IsDangerousEnemy(enemy))											
+//		frame_flags.or(AF_REMEMBER_HIT_FROM_THIS_ENEMY);
 	
-	if (pMonster->GetEnemyNumber()==1)		
+	if (pMonster->EnemyMan.get_enemies_count()==1)		
 		frame_flags.or(AF_THIS_IS_THE_ONLY_ENEMY);
 	
-	if (pMonster->ObjectNotReachable(m_tEnemy.obj)) 
+	if (pMonster->ObjectNotReachable(enemy)) 
 		frame_flags.or(AF_ENEMY_IS_NOT_REACHABLE);
 
 	// флаги движения по пути
@@ -566,7 +566,8 @@ void CBitingAttack::UpdateFrameFlags()
 
 	if (CanAttackFromBack())				frame_flags.or(AF_CAN_ATTACK_FROM_BACK);
 
-	if (m_tEnemy.time == m_dwCurrentTime)	frame_flags.or(AF_SEE_ENEMY);
+	if (pMonster->EnemyMan.get_enemy_time_last_seen() == m_dwCurrentTime)	
+											frame_flags.or(AF_SEE_ENEMY);
 
 	if (pMonster->CanExecRotationJump() && CheckRotationJump()) 
 											frame_flags.or(AF_CAN_EXEC_ROTATION_JUMP);
@@ -588,7 +589,7 @@ bool CBitingAttack::CheckRotationJump()
 	
 	// check angle
 	float yaw, pitch;
-	Fvector().sub(m_tEnemy.obj->Position(), pMonster->Position()).getHP(yaw,pitch);
+	Fvector().sub(enemy->Position(), pMonster->Position()).getHP(yaw,pitch);
 	yaw *= -1;	yaw = angle_normalize(yaw);
 
 	if (angle_difference(yaw,pMonster->m_body.current.yaw) < MIN_ROTATION_JUMP_ANGLE) return false;
@@ -603,9 +604,6 @@ bool CBitingAttack::CheckRotationJump()
 
 bool CBitingAttack::CheckCompletion()
 {
-	VisionElem ve;
-	if (!pMonster->GetEnemy(ve))	return true;
-	
 	return false;
 }
 
@@ -628,14 +626,13 @@ bool CBitingAttack::CheckPsiAttack()
 
 	// проверить направленность на цель
 	float h,p;
-	Fvector().sub(m_tEnemy.position, pMonster->Position()).getHP(h,p);
+	Fvector().sub(pMonster->EnemyMan.get_enemy_position(), pMonster->Position()).getHP(h,p);
 	float my_h,my_p;
 	pMonster->Direction().getHP(my_h,my_p);
 	
 	if (angle_difference(h,my_h) > deg(10) ) return false;
 	
-	CEntity *pE = const_cast<CEntity *>	(m_tEnemy.obj);
-	CActor *pA	= dynamic_cast<CActor *>(pE);
+	CActor *pA = const_cast<CActor *>(dynamic_cast<const CActor *>(enemy));
 	if (!pA) return false;
 	
 	if (pMonster != dynamic_cast<CAI_Biting *>(pA->ObjectWeLookingAt())) return false;

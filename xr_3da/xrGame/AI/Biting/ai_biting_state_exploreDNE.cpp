@@ -21,7 +21,7 @@ void CBitingExploreDNE::Init()
 {
 	IState::Init();	
 	bool bTemp;
-	pMonster->GetSound(m_tSound, bTemp);
+	pMonster->SoundMemory.GetSound(m_tSound, bTemp);
 
 	flag_once_1				= false;
 	SavedPosition			= pMonster->Position();
@@ -40,7 +40,7 @@ void CBitingExploreDNE::Run()
 	// если новый звук, restart
 	SoundElem	se;
 	bool		bTemp;
-	pMonster->GetSound(se, bTemp);
+	pMonster->SoundMemory.GetSound(se, bTemp);
 	if (m_tSound.time + 2000 < se.time) Init();
 
 

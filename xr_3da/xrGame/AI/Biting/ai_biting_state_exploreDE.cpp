@@ -16,13 +16,11 @@ CBitingExploreDE::CBitingExploreDE(CAI_Biting *p)
 void CBitingExploreDE::Init()
 {
 	inherited::Init();
-	R_ASSERT(pMonster->IsRememberSound());
+	R_ASSERT(pMonster->SoundMemory.IsRememberSound());
 
 	SoundElem se;
 	bool bDangerous;
-	pMonster->GetSound(se,bDangerous);	// возвращает самый опасный звук
-	m_tEnemy.obj = dynamic_cast<const CEntity *>(se.who);
-	m_tEnemy.position = se.position;
+	pMonster->SoundMemory.GetSound(se,bDangerous);	// возвращает самый опасный звук
 }
 
 void CBitingExploreDE::Run()
@@ -34,7 +32,7 @@ void CBitingExploreDE::Run()
 
 	SoundElem se;
 	bool bDangerous;
-	pMonster->GetSound(se,bDangerous);	// возвращает самый опасный звук
+	pMonster->SoundMemory.GetSound(se,bDangerous);	// возвращает самый опасный звук
 
 	switch(m_tAction) {
 	case ACTION_LOOK_AROUND:

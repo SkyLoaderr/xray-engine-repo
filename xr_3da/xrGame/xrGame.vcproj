@@ -1617,71 +1617,6 @@
 							RelativePath=".\ai\biting\ai_biting_state_test.cpp">
 						</File>
 					</Filter>
-					<Filter
-						Name="State Management"
-						Filter="">
-						<File
-							RelativePath=".\ai\biting\biting_state_manager.cpp">
-						</File>
-						<File
-							RelativePath=".\ai\biting\biting_state_manager.h">
-						</File>
-						<File
-							RelativePath=".\ai\biting\biting_state_manager_inline.h">
-						</File>
-						<Filter
-							Name="States"
-							Filter="">
-							<Filter
-								Name="State Eat"
-								Filter="">
-								<File
-									RelativePath=".\ai\biting\biting_state_eat.cpp">
-								</File>
-								<File
-									RelativePath=".\ai\biting\biting_state_eat.h">
-								</File>
-								<File
-									RelativePath=".\ai\biting\biting_state_eat_approach.cpp">
-								</File>
-								<File
-									RelativePath=".\ai\biting\biting_state_eat_approach.h">
-								</File>
-								<File
-									RelativePath=".\ai\biting\biting_state_eat_drag.cpp">
-								</File>
-								<File
-									RelativePath=".\ai\biting\biting_state_eat_drag.h">
-								</File>
-								<File
-									RelativePath=".\ai\biting\biting_state_eat_eat.cpp">
-								</File>
-								<File
-									RelativePath=".\ai\biting\biting_state_eat_eat.h">
-								</File>
-							</Filter>
-							<Filter
-								Name="State Panic"
-								Filter="">
-								<File
-									RelativePath=".\ai\biting\biting_state_panic.cpp">
-								</File>
-								<File
-									RelativePath=".\ai\biting\biting_state_panic.h">
-								</File>
-								<Filter
-									Name="Run Away"
-									Filter="">
-									<File
-										RelativePath=".\ai\biting\biting_state_panic_run.cpp">
-									</File>
-									<File
-										RelativePath=".\ai\biting\biting_state_panic_run.h">
-									</File>
-								</Filter>
-							</Filter>
-						</Filter>
-					</Filter>
 				</Filter>
 				<Filter
 					Name="ai_bloodsucker"
@@ -1823,7 +1758,7 @@
 					</File>
 				</Filter>
 				<Filter
-					Name="ai_misc"
+					Name="Miscellaneous"
 					Filter="">
 					<File
 						RelativePath=".\ai\ai_monster_defs.h">
@@ -1861,6 +1796,12 @@
 					<File
 						RelativePath=".\AI\ai_monsters_misc.h">
 					</File>
+					<File
+						RelativePath=".\ai\monster_enemy_manager.cpp">
+					</File>
+					<File
+						RelativePath=".\ai\monster_enemy_manager.h">
+					</File>
 					<Filter
 						Name="Components"
 						Filter="">
@@ -1888,10 +1829,16 @@
 							Name="Memory"
 							Filter="">
 							<File
-								RelativePath=".\Ai\ai_monster_mem.cpp">
+								RelativePath=".\ai\monster_sound_memory.cpp">
 							</File>
 							<File
-								RelativePath=".\Ai\ai_monster_mem.h">
+								RelativePath=".\ai\monster_sound_memory.h">
+							</File>
+							<File
+								RelativePath=".\ai\monster_vision_memory.cpp">
+							</File>
+							<File
+								RelativePath=".\ai\monster_vision_memory.h">
 							</File>
 						</Filter>
 						<Filter

@@ -469,3 +469,22 @@ enum EAccelValue {
 #define QUADRUPEDAL		4
 #define BIPEDAL			2
 
+
+struct SMonsterEnemy {
+	Fvector position;
+	u32		vertex;
+	TTime	time;
+	float	danger;
+};
+
+DEFINE_MAP(const CEntityAlive *,SMonsterEnemy,ENEMIES_MAP, ENEMIES_MAP_IT);
+
+enum EDangerType {
+	eWeak,
+	eNormal,
+	eStrong,
+	eVeryStrong,
+	eNone
+};
+
+

@@ -98,15 +98,19 @@ void CPseudoGigant::Load(LPCSTR section)
 
 void CPseudoGigant::StateSelector()
 {	
-	IState *state;
-	VisionElem ve;
+	IState *state = 0;
 
-	if (C)			state = statePanic;
-	else if (K)		state = stateAttack;
-	else if (A || B)		state = stateExploreNDE;  //SetState(stateExploreDNE);  // слышу опасный звук, но не вижу, враг не выгодный		(ExploreDNE)
-	else if (GetCorpse(ve) && (ve.obj->m_fFood > 1) && ((GetSatiety() < _sd->m_fMinSatiety) || flagEatNow))	
-		state = stateEat;
-	else						state = stateRest; 
+	if (EnemyMan.get_enemy()) {
+		switch (EnemyMan.get_danger_type()) {
+			case eVeryStrong:				state = statePanic; break;
+			case eStrong:		
+			case eNormal:
+			case eWeak:						state = stateAttack; break;
+		}
+	} else if (hear_dangerous_sound || hear_interesting_sound) {
+		if (hear_dangerous_sound)			state = stateExploreNDE;		
+		if (hear_interesting_sound)			state = stateExploreNDE;	
+	} else									state = stateRest; 
 
 	SetState(state);
 }

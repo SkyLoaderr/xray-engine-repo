@@ -73,3 +73,13 @@ bool CMonsterInvisibility::Update ()
 	return flagVisibility;
 }
 
+//void CMonsterInvisibility::Set(bool b_visibility)
+//{
+//	state_visible = b_visibility;
+//}
+//
+//void CMonsterInvisibility::StartBlink()
+//{
+//	
+//}
+

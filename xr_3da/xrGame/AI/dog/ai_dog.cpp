@@ -133,27 +133,27 @@ void CAI_Dog::Load(LPCSTR section)
 
 void CAI_Dog::StateSelector()
 {	
-	VisionElem ve;
+	IState *state = 0;
 
-	if (C)						SetState(statePanic);
-	else if (D || E || F)		SetState(stateAttack);
-	else if (A && !K)			SetState(stateExploreNDE);		//SetState(stateExploreDNE);	//SetState(stateExploreDE);	// слышу опасный звук, но не вижу, враг выгодный			(ExploreDE)		
-	else if (B && !K)			SetState(stateExploreNDE);	// слышу не опасный звук, но не вижу, враг выгодный		(ExploreNDE)
-	else if (GetCorpse(ve) && (ve.obj->m_fFood > 1) && ((GetSatiety() < _sd->m_fMinSatiety) || flagEatNow))	
-		SetState(stateEat);
-	else						SetState(stateRest); 
+	if (EnemyMan.get_enemy()) {
+		switch (EnemyMan.get_danger_type()) {
+			case eVeryStrong:				state = statePanic; break;
+			case eStrong:		
+			case eNormal:
+			case eWeak:						state = stateAttack; break;
+		}
+	} else if (hear_dangerous_sound || hear_interesting_sound) {
+		if (hear_dangerous_sound)			state = stateExploreNDE;		
+		if (hear_interesting_sound)			state = stateExploreNDE;	
+	} else									state = stateRest; 
 
-	EMotionAnim anim = MotionMan.Seq_CurAnim();
-	if ((anim == eAnimCheckCorpse) && K) MotionMan.Seq_Finish();
-	
-	//BonesInMotion(); 
 
 	// Temp
 	ChangeEntityMorale(-0.5f);
 
-	if (CurrentState == stateAttack) {
+	if (state == stateAttack) {
 		float yaw,pitch;
-		Fvector().sub(m_tEnemy.position, Position()).getHP(yaw,pitch);
+		Fvector().sub(EnemyMan.get_enemy_position(), Position()).getHP(yaw,pitch);
 		
 		yaw = angle_normalize(-yaw);
 
@@ -163,6 +163,8 @@ void CAI_Dog::StateSelector()
 			else MotionMan.SetSpecParams(ASP_ROTATION_RUN_LEFT);
 		}
 	}
+
+	SetState(state);
 }
 
 
@@ -179,7 +181,7 @@ void CAI_Dog::CheckSpecParams(u32 spec_params)
 
 	if ((spec_params & ASP_ROTATION_JUMP) == ASP_ROTATION_JUMP) {
 		float yaw, pitch;
-		Fvector().sub(m_tEnemy.obj->Position(), Position()).getHP(yaw,pitch);
+		Fvector().sub(EnemyMan.get_enemy()->Position(), Position()).getHP(yaw,pitch);
 		yaw *= -1;
 
 		if (angle_difference(angle_normalize(yaw), m_body.current.yaw) > 120 * PI / 180) {

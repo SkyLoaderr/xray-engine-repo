@@ -96,8 +96,8 @@ void CStateManagerChimera::execute			()
 //	if (!m_object->K) {
 //		int a = 10;
 //	}
-	if (m_object->K) set_dest_state(eStatePanic);
-	else			 set_dest_state(eStateRest);
+	//if (m_object->K) set_dest_state(eStatePanic);
+	//else			 set_dest_state(eStateRest);
 	
 	inherited::execute		();
 }

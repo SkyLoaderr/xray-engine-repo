@@ -27,8 +27,7 @@ void CStateMonsterAttackRunAbstract::initialize()
 TEMPLATE_SPECIALIZATION
 void CStateMonsterAttackRunAbstract::execute()
 {
-	const CEntity *enemy = m_object->m_tEnemy.obj;
-	float dist = enemy->Position().distance_to(m_object->Position());
+	float dist = m_object->EnemyMan.get_enemy()->Position().distance_to(m_object->Position());
 
 	// проверить необходимость перестройки пути
 	bool b_need_rebuild = false;
@@ -42,7 +41,7 @@ void CStateMonsterAttackRunAbstract::execute()
 	}
 	if (PATH_NEED_REBUILD()) b_need_rebuild = true;
 
-	if (b_need_rebuild)	m_object->MoveToTarget(m_object->m_tEnemy.obj);
+	if (b_need_rebuild)	m_object->MoveToTarget(m_object->EnemyMan.get_enemy());
 
 	// установка параметров функциональных блоков
 	m_object->MotionMan.m_tAction					= ACT_RUN;

@@ -115,10 +115,6 @@ void CAI_Flesh::Load(LPCSTR section)
 
 	MotionMan.AA_Load(pSettings->r_string(section, "attack_params"));
 
-//	MotionMan.AA_PushAttackAnimTest(eAnimAttackFromBack,0, 400,		600,	-PI_DIV_6 + PI, PI_DIV_6 + PI, -PI_DIV_6,PI_DIV_6, 3.5f,	inherited::_sd->m_fHitPower, Fvector().set(0.f,0.f,-3.f));
-//	MotionMan.AA_PushAttackAnimTest(eAnimAttackRat,		0, 600,		800,	-PI_DIV_6, PI_DIV_6, -PI_DIV_3 - PI_DIV_2, PI_DIV_3 - PI_DIV_2, 2.f, inherited::_sd->m_fHitPower, Fvector().set(0.f,0.f,1.f), AA_FLAG_ATTACK_RAT);
-
-
 	END_LOAD_SHARED_MOTION_DATA();
 
 	MotionMan.accel_load			(section);
@@ -130,146 +126,32 @@ void CAI_Flesh::Load(LPCSTR section)
 
 void CAI_Flesh::StateSelector()
 {
-	
-	VisionElem ve;
 
-	if (C && H && I)			SetState(statePanic);
-	else if (C && H && !I)		SetState(statePanic);
-	else if (C && !H && I)		SetState(statePanic);
-	else if (C && !H && !I) 	SetState(statePanic);
-	else if (D && H && I)		SetState(stateAttack);
-	else if (D && H && !I)		SetState(stateAttack);		//тихо подобраться и начать аттаку
-	else if (D && !H && I)		SetState(statePanic);
-	else if (D && !H && !I) 	SetState(statePanic);
-	else if (E && H && I)		SetState(stateAttack); 
-	else if (E && H && !I)  	SetState(stateAttack);		//тихо подобраться и начать аттаку
-	else if (E && !H && I) 		SetState(stateAttack); 
-	else if (E && !H && !I)		SetState(stateAttack); 
-	else if (F && H && I) 		SetState(stateAttack); 		
-	else if (F && H && !I)  	SetState(stateAttack); 
-	else if (F && !H && I)  	SetState(stateAttack); 
-	else if (F && !H && !I) 	SetState(stateAttack);
-	else if (A && !K)			SetState(statePanic);		//SetState(stateExploreDNE);	//SetState(stateExploreDE);	// слышу опасный звук, но не вижу, враг выгодный			(ExploreDE)		
-	else if (B && !K)			SetState(stateExploreNDE);	// слышу не опасный звук, но не вижу, враг выгодный		(ExploreNDE)
+	if (EnemyMan.get_enemy()) {
+		switch (EnemyMan.get_danger_type()) {
+			case eVeryStrong:	SetState(statePanic); break;
+			case eStrong:		
+			case eNormal:
+			case eWeak:			SetState(stateAttack); break;
+		}
+	} else if (hear_dangerous_sound || hear_interesting_sound) {
+		if (hear_dangerous_sound)			SetState(statePanic);		
+		if (hear_interesting_sound)			SetState(stateExploreNDE);	
+	} else						SetState(stateRest); 
+
+//#ifdef TEST_EAT_STATE	
+//	else if (GetCorpse(ve) && (ve.obj->m_fFood > 1))
+//		SetState(stateEat);
+//#else
+//	else if (GetCorpse(ve) && (ve.obj->m_fFood > 1) && ((GetSatiety() < _sd->m_fMinSatiety) || flagEatNow))	
+//		SetState(stateEat);
+//#endif
 	
-#ifdef TEST_EAT_STATE	
-	else if (GetCorpse(ve) && (ve.obj->m_fFood > 1))
-		SetState(stateEat);
-#else
-	else if (GetCorpse(ve) && (ve.obj->m_fFood > 1) && ((GetSatiety() < _sd->m_fMinSatiety) || flagEatNow))	
-		SetState(stateEat);
-#endif
-	else						SetState(stateRest); 
 
 ///	if ((CurrentState == stateAttack) && m_tEnemy.obj && (m_tEnemy.time + 1500 < m_current_update) ) 
 ///		SetState(stateSearchEnemy);
 
-
 }
-
-//bool CAI_Flesh::AA_CheckHit()
-//{
-//	// Проверка состояния анимации (атака)
-//	SAttackAnimation apt_anim;
-//
-//	bool was_hit = false;	
-//
-//	if (MotionMan.AA_CheckTime(m_dwCurrentTime,apt_anim)) {
-//		CSoundPlayer::play(MonsterSpace::eMonsterSoundAttackHit);
-//
-//		VisionElem ve;
-//		if (!GetEnemy(ve)) return false;
-//		const CObject *obj = dynamic_cast<const CObject *>(ve.obj);
-//	
-//		// перевод из локальных координат в мировые
-//		Fvector trace_from;
-//		XFORM().transform_tiny(trace_from, apt_anim.trace_from);
-//		
-//		Fvector trace_to;
-//		XFORM().transform_tiny(trace_to, apt_anim.trace_to);
-//
-//		// вычисление вектора направления проверки хита
-//		Fvector dir;
-//		dir.sub(trace_to, trace_from);
-//		float dist = dir.magnitude();
-//		dir.normalize_safe();
-//		
-//		// делаем поправку на pitch (fix it)
-//		Fvector new_dir;
-//		Fvector C1, C2;
-//		Center(C1);
-//		obj->Center(C2);
-//		new_dir.sub(C2,C1);
-//		new_dir.normalize();
-//		dir.y = new_dir.y;
-//		dir.normalize_safe();
-//		
-//		// перевод из локальных координат в мировые вектора направления импульса
-//		Fvector hit_dir;
-//		XFORM().transform_dir(hit_dir,apt_anim.hit_dir);
-//		hit_dir.normalize();
-//
-//#ifndef SIMPLE_ENEMY_HIT_TEST
-//
-//		// трассировка нужна?
-//		if ((apt_anim.flags & AA_FLAG_FIRE_ANYWAY) == AA_FLAG_FIRE_ANYWAY) {
-//			HitEntity(ve.obj, apt_anim.damage,hit_dir);	// не нужна
-//			was_hit = true;
-//		} else if ((apt_anim.flags & AA_FLAG_ATTACK_RAT) == AA_FLAG_ATTACK_RAT) {
-//
-//			// TestIntersection конуса(копыта) и сферы(крысы)
-//			Fvector dir;	dir.set(0.f,-1.f,0.f);		// направление конуса
-//			Fvector vC;		ve.obj->Center(vC);			// центр сферы
-//
-//			if (ConeSphereIntersection(trace_from, PI_DIV_6, dir, vC, ve.obj->Radius())) {
-//				HitEntity(ve.obj,apt_anim.damage,dir);
-//				was_hit = true;
-//			}
-//
-//		} else 	{ // нужна
-//			if (RayPickEnemy(obj, trace_from, dir, dist, 0.2f, 20)) {
-//				HitEntity(ve.obj, apt_anim.damage, hit_dir);
-//				was_hit = true;
-//			}
-//		}
-//
-//#else
-//		dist = 20.f;
-//
-//		bool should_hit = true;
-//		Fvector d;
-//		d.sub(C2,C1);
-//		if (d.magnitude() > apt_anim.dist) should_hit = false;
-//
-//		float my_h,my_p;
-//		float h,p;
-//
-//		Direction().getHP(my_h,my_p);
-//		d.getHP(h,p);
-//
-//		float from	= angle_normalize(my_h + apt_anim.yaw_from);
-//		float to	= angle_normalize(my_h + apt_anim.yaw_to);
-//
-//		if (!is_angle_between(h, from, to)) should_hit = false;
-//
-//		from	= angle_normalize(my_p + apt_anim.pitch_from);
-//		to		= angle_normalize(my_p + apt_anim.pitch_to);
-//
-//		if (!is_angle_between(p, from, to)) should_hit = false;
-//
-//		if (should_hit) {
-//			HitEntity(ve.obj, apt_anim.damage, hit_dir);
-//			was_hit = true;
-//		}
-//
-//#endif
-//		if (!ve.obj->g_Alive()) AddCorpse(ve);	
-//		
-//		if (AS_Active()) AS_Check(was_hit);
-//		MotionMan.AA_UpdateLastAttack(m_dwCurrentTime);
-//	}
-//	return was_hit;
-//}
 
 
 // возвращает true, если после выполнения этой функции необходимо прервать обработку

@@ -8,13 +8,11 @@
 
 #pragma once 
 
-#include "../ai_monster_mem.h"
 #include "../ai_monster_state.h"
 
 class CAI_Biting;
 
 #define IS_NEED_REBUILD() pMonster->IsPathEnd(2,0.5f)
-
 
 #include "ai_biting_state_attack.h"
 #include "ai_biting_state_exploreNDE.h"
@@ -116,8 +114,6 @@ private:
 class CBitingHide : public IState {
 	CAI_Biting		*pMonster;
 
-	VisionElem		m_tEnemy;
-
 	typedef IState inherited;
 public:
 					CBitingHide			(CAI_Biting *p);
@@ -135,8 +131,6 @@ private:
 ///////////////////////////////////////////////////////////////////////////////////////////////////////////
 class CBitingDetour : public IState {
 	CAI_Biting		*pMonster;
-
-	VisionElem		m_tEnemy;
 
 	typedef IState inherited;
 public:
@@ -187,7 +181,6 @@ private:
 ///////////////////////////////////////////////////////////////////////////////////////////////////////////
 class CBitingExploreDE : public IState {
 	CAI_Biting		*pMonster;
-	VisionElem		m_tEnemy;
 
 	TTime			m_dwTimeToTurn;
 	TTime			m_dwSoundTime;
@@ -273,7 +266,7 @@ class CBitingSearchEnemy : public IState {
 		ACTION_SEARCH_ENEMY
 	} m_tAction;
 	
-	VisionElem		m_tEnemy;
+	//VisionElem		m_tEnemy;
 	u32				search_vertex_id;
 
 	TTime			RebuildPathInterval;

@@ -124,15 +124,15 @@ bool CAI_Biting::bfAssignMonsterAction(CEntityAction *tpEntityAction)
 			break;
 		case eGA_Eat:		
 			SetState(stateEat, true);	
-			SetForcedCorpse(dynamic_cast<CEntity *>(l_tAction.m_tObject));
+			//SetForcedCorpse(dynamic_cast<CEntity *>(l_tAction.m_tObject));
 			break;
 		case eGA_Attack:
 			SetState(stateAttack, true);	
-			SetForcedEnemy(dynamic_cast<CEntity *>(l_tAction.m_tObject));
+			//SetForcedEnemy(dynamic_cast<CEntity *>(l_tAction.m_tObject));
 			break;
 		case eGA_Panic:		
 			SetState(statePanic, true);
-			SetForcedEnemy(dynamic_cast<CEntity *>(l_tAction.m_tObject));
+			//SetForcedEnemy(dynamic_cast<CEntity *>(l_tAction.m_tObject));
 			break;
 	}
 
@@ -179,23 +179,22 @@ void CAI_Biting::ProcessScripts()
 
 	// Удалить все враги и объекты, которые были принудительно установлены
 	// во время выполнения скриптового действия
-	ClearForcedEntities							();
+	//ClearForcedEntities							();
 }
 
 CEntity *CAI_Biting::GetCurrentEnemy()
 {
-	VisionElem ve;
-	if (GetEnemy(ve)) return (const_cast<CEntity *>(ve.obj));
+	if (EnemyMan.get_enemy()) return (const_cast<CEntity *>(dynamic_cast<const CEntity*>(EnemyMan.get_enemy())));
 	else return (0);
 }
 CEntity *CAI_Biting::GetCurrentCorpse()
 {
-	VisionElem ve;
-	
-	if (!GetEnemy(ve)) {
-		GetCorpse(ve);
-		return (const_cast<CEntity *>(ve.obj));
-	} else return (0);
+//	if (!GetEnemy(ve)) {
+//		GetCorpse(ve);
+//		return (const_cast<CEntity *>(ve.obj));
+//	} else return (0);
+
+	return (0);
 }
 
 
@@ -253,6 +252,11 @@ void CAI_Biting::TranslateActionToPathParams()
 		break;
 	}
 
+	if (state_invisible) {
+		vel_mask = eVelocityParamsInvisible;
+		des_mask = eVelocityParameterInvisible;
+	}
+
 	//if (force_real_speed) vel_mask = des_mask;
 
 	if (bEnablePath) {
@@ -275,15 +279,15 @@ void CAI_Biting::SetScriptControl(const bool bScriptControl, ref_str caScriptNam
 
 int	CAI_Biting::get_enemy_strength()
 {
-	if (m_tEnemy.obj) {
-		switch (dwfChooseAction(0,m_fAttackSuccessProbability[0],m_fAttackSuccessProbability[1],m_fAttackSuccessProbability[2],m_fAttackSuccessProbability[3],g_Team(),g_Squad(),g_Group(),0,1,2,3,4,this,30.f)) {
-			case 4 : 	return (1);
-			case 3 : 	return (2);
-			case 2 : 	return (3);
-			case 1 : 
-			case 0 : 	return (4);
+	if (EnemyMan.get_enemy()) {
+		switch (EnemyMan.get_danger_type()) {
+			case eVeryStrong	: 	return (4);
+			case eStrong		: 	return (3);
+			case eNormal		: 	return (2);
+			case eWeak			:	return (1);
 		}
-	} 
+	}
+	
 	return (0);
 }
 

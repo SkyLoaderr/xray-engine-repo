@@ -16,6 +16,8 @@
 #include "../../xrserver_objects_alife_monsters.h"
 #include "../ai_monster_jump.h"
 #include "../ai_monster_utils.h"
+#include "../ai_monster_debug.h"
+
 
 CAI_Biting::CAI_Biting()
 {
@@ -49,8 +51,6 @@ void CAI_Biting::Init()
 	m_fAttackSuccessProbability[2]	= .4f;
 	m_fAttackSuccessProbability[3]	= .2f;
 
-	InitMemory						(20000,15000);
-
 	CDetailPathManager::Init();
 
 	m_pPhysics_support				->in_Init();
@@ -70,6 +70,12 @@ void CAI_Biting::Init()
 	cur_anim.anim					= eAnimStandIdle;
 	cur_anim.index					= 0;
 	cur_anim.started				= 0;
+
+	state_invisible					= false;
+
+	EnemyMemory.init_external		(this, 20000);
+	EnemyMan.init_external			(this);
+	SoundMemory.init_external		(this, 20000);
 }
 
 void CAI_Biting::reinit()
@@ -91,7 +97,6 @@ void CAI_Biting::reinit()
 void CAI_Biting::Die()
 {
 	inherited::Die( );
-	DeinitMemory();
 
 	CSoundPlayer::play(MonsterSpace::eMonsterSoundDie);
 
@@ -546,8 +551,8 @@ float CAI_Biting::GetEnemyDistances(float &min_dist, float &max_dist)
 	max_dist = _sd->m_fMaxAttackDist - (_sd->m_fMinAttackDist - m_fCurMinAttackDist);
 
 	// определить расстояние до противника
-	float cur_dist = m_tEnemy.obj->Position().distance_to(Position()); 
-	if (cur_dist < REAL_DIST_THROUGH_TRACE_THRESHOLD) cur_dist = GetRealDistToEnemy(m_tEnemy.obj); 
+	float cur_dist = EnemyMan.get_enemy()->Position().distance_to(Position()); 
+	if (cur_dist < REAL_DIST_THROUGH_TRACE_THRESHOLD) cur_dist = GetRealDistToEnemy(EnemyMan.get_enemy()); 
 
 	return cur_dist;
 }

@@ -1,5 +1,6 @@
 #pragma once
 
+class CEntityAlive;
 
 class CBitingAttack : public IState {
 	typedef	IState inherited;
@@ -18,7 +19,7 @@ class CBitingAttack : public IState {
 		ACTION_PSI_ATTACK,
 	} m_tAction,m_tPrevAction;
 
-	VisionElem		m_tEnemy;
+	const CEntityAlive *enemy;
 
 	float			m_fDistMin;						//!< минимально допустимое рассто€ни€ дл€ аттаки
 	float			m_fDistMax;						//!< максимально допустимое рассто€ние дл€ аттаки

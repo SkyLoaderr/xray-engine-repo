@@ -149,15 +149,18 @@ void CAI_PseudoDog::Load(LPCSTR section)
 
 void CAI_PseudoDog::StateSelector()
 {	
-	VisionElem ve;
 
-	if (C)						SetState(statePanic);
-	else if (D || E || F)		SetState(stateAttack);
-	else if (A && !K)			SetState(stateExploreNDE);		//SetState(stateExploreDNE);	//SetState(stateExploreDE);	// слышу опасный звук, но не вижу, враг выгодный			(ExploreDE)		
-	else if (B && !K)			SetState(stateExploreNDE);	// слышу не опасный звук, но не вижу, враг выгодный		(ExploreNDE)
-	else if (GetCorpse(ve) && (ve.obj->m_fFood > 1) && ((GetSatiety() < _sd->m_fMinSatiety) || flagEatNow))	
-		SetState(stateEat);
-	else						SetState(stateRest); 
+	if (EnemyMan.get_enemy()) {
+		switch (EnemyMan.get_danger_type()) {
+			case eVeryStrong:	SetState(statePanic); break;
+			case eStrong:		
+			case eNormal:
+			case eWeak:			SetState(stateAttack); break;
+		}
+	} else if (hear_dangerous_sound || hear_interesting_sound) {
+		if (hear_dangerous_sound)			SetState(stateExploreNDE);		
+		if (hear_interesting_sound)			SetState(stateExploreNDE);	
+	} else						SetState(stateRest); 
 
 }
 

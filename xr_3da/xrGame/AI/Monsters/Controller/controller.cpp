@@ -83,30 +83,19 @@ void CController::Load(LPCSTR section)
 
 void CController::StateSelector()
 {	
-	IState *state;
-	VisionElem ve;
+	IState *state = 0;
 
-	if (C && H && I)			state = statePanic;
-	else if (C && H && !I)		state = statePanic;
-	else if (C && !H && I)		state = statePanic;
-	else if (C && !H && !I) 	state = statePanic;
-	else if (D && H && I)		state = stateAttack;
-	else if (D && H && !I)		state = stateAttack;  //тихо подобраться и начать аттаку
-	else if (D && !H && I)		state = stateAttack;
-	else if (D && !H && !I)		state = statePanic;
-	else if (E && H && I)		state = stateAttack; 
-	else if (E && H && !I)  	state = stateAttack;  //тихо подобраться и начать аттаку
-	else if (E && !H && I) 		state = stateAttack;
-	else if (E && !H && !I)		state = stateAttack;
-	else if (F && H && I) 		state = stateAttack; 		
-	else if (F && H && !I)  	state = stateAttack; 
-	else if (A && !K && !H)		state = stateExploreNDE;  //SetState(stateExploreDNE);  // слышу опасный звук, но не вижу, враг не выгодный		(ExploreDNE)
-	else if (A && !K && H)		state = stateExploreNDE;  //SetState(stateExploreDNE);	//SetState(stateExploreDE);	// слышу опасный звук, но не вижу, враг выгодный			(ExploreDE)		
-	else if (B && !K && !H)		state = stateExploreNDE;	// слышу не опасный звук, но не вижу, враг не выгодный	(ExploreNDNE)
-	else if (B && !K && H)		state = stateExploreNDE;	// слышу не опасный звук, но не вижу, враг выгодный		(ExploreNDE)
-	else if (GetCorpse(ve) && (ve.obj->m_fFood > 1) && ((GetSatiety() < _sd->m_fMinSatiety) || flagEatNow))	
-		state = stateEat;
-	else						state = stateRest; 
+	if (EnemyMan.get_enemy()) {
+		switch (EnemyMan.get_danger_type()) {
+			case eVeryStrong:				state = statePanic; break;
+			case eStrong:		
+			case eNormal:
+			case eWeak:						state = stateAttack; break;
+		}
+	} else if (hear_dangerous_sound || hear_interesting_sound) {
+		if (hear_dangerous_sound)			state = stateExploreNDE;		
+		if (hear_interesting_sound)			state = stateExploreNDE;	
+	} else									state = stateRest; 
 
 	SetState(state);
 }

@@ -2,7 +2,6 @@
 
 class CBitingPanic : public IState {
 	CAI_Biting		*pMonster;
-	VisionElem		m_tEnemy;
 
 	typedef IState inherited;
 

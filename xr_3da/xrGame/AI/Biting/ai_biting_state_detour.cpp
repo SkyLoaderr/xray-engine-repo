@@ -10,35 +10,23 @@
 CBitingDetour::CBitingDetour(CAI_Biting *p)
 {
 	pMonster = p;
-	SetPriority(PRIORITY_NORMAL);
 }
 
 void CBitingDetour::Reset()
 {
 	inherited::Reset();
-	m_tEnemy.obj		= 0;
 }
 
 void CBitingDetour::Init()
 {
 	inherited::Init();
 
-	if (!pMonster->GetEnemy(m_tEnemy)) R_ASSERT(false);
-
-	SetInertia(15000);
-	pMonster->SetMemoryTime(15000);
 }
 
 void CBitingDetour::Run()
 {
-
-	VisionElem tempEnemy;
-	if (pMonster->GetEnemy(tempEnemy)) m_tEnemy = tempEnemy;
-
-	//pMonster->Path_CoverFromPoint	(m_tEnemy.obj,m_tEnemy.obj->Position());
-
-	pMonster->MotionMan.m_tAction = ACT_WALK_FWD;
-
+	LOG_EX("Detour...");
+	pMonster->MotionMan.m_tAction = ACT_SLEEP;
 }
 
 
