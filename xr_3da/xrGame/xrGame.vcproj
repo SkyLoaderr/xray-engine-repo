@@ -303,6 +303,12 @@
 			<File
 				RelativePath="Level_network_start_server.cpp">
 			</File>
+			<File
+				RelativePath="PhysicsShell.cpp">
+			</File>
+			<File
+				RelativePath="PhysicsShell.h">
+			</File>
 			<Filter
 				Name="Basic"
 				Filter="">
