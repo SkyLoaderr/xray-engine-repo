@@ -92,7 +92,7 @@ void CRender::Render	()
 	}
 
 	// Point/spot lighting (shadowed)
-	if (0)
+	if (1)
 	{
 		HOM.Disable								();
 		vector<light*>&	Lvec	= Lights.v_selected_shadowed;
