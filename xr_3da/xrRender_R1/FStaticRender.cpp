@@ -326,6 +326,11 @@ void CRender::Calculate				()
 		if (phase==PHASE_NORMAL)			{
 			uLastLTRACK	++;
 			if (lstRenderables.size())		uID_LTRACK	= uLastLTRACK%lstRenderables.size();
+
+			// update light-vis for current entity / actor
+			CObject*	O					= g_pGameLevel->CurrentViewEntity();
+			CROS_impl*	R					= (CROS_impl*) O->ROS();
+			R->update						(O);
 		}
 		for (u32 o_it=0; o_it<lstRenderables.size(); o_it++)
 		{
