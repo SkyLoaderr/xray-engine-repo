@@ -293,11 +293,11 @@ function fract:stalkerExist(npc)
 	end
 	return false
 end
-function fract:nameStalkerOnJob(job_name)
+function fract:idStalkerOnJob(job_name)
 	for k,v in self.Job do
 		if v.section == job_name then
 			if v.object ~= nil then
-				return self.Object[v.object:id()]:name()
+				return v.object:id()
 			end
 		end
 	end
