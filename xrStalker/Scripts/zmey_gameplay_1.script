@@ -152,9 +152,11 @@ function main ()
 	debug_log(zmey_gameplay_1.script_name(), "_bp: Waiting for final death animation to finish")
 
 	-- Раскомментарить для отключения смерти от хита (будет лежать живым и играть анимацию мертвого)
-	--while c_stalker_wounded.npc:action() do
-	--	wait()
-	--end
+	if true then
+		while c_stalker_wounded.npc:action() do
+			wait()
+		end
+	end
 
 	debug_log(zmey_gameplay_1.script_name(), "_bp: Final death animation has finished")
 
