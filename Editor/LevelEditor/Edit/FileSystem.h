@@ -52,6 +52,7 @@ public:
 	FSPath 		m_GameLevels;
 	FSPath 		m_Maps;
 	FSPath 		m_Import;
+	FSPath 		m_Export;
 	FSPath 		m_Groups;
 	FSPath 		m_OMotion;
 	FSPath 		m_SMotion;
@@ -69,11 +70,11 @@ public:
     CStream*	Open			(LPCSTR fn);
 	void 		Close			(CStream*& F);
 
-	bool 		GetOpenName		(FSPath& initial, LPSTR buffer, int sz_buf, bool bMulti=false, LPCSTR offset=0 );
-	bool 		GetSaveName		(FSPath& initial, char *buffer, int sz_buf, LPCSTR offset=0 );
+	bool 		GetOpenName		(FSPath& initial, LPSTR buffer, int sz_buf, bool bMulti=false, LPCSTR offset=0, int start_flt_ext=1 );
+	bool 		GetSaveName		(FSPath& initial, char *buffer, int sz_buf, LPCSTR offset=0, int start_flt_ext=1 );
 #ifdef M_BORLAND
-	bool 		GetOpenName		(FSPath& initial, AnsiString& buf, bool bMulti=false, LPCSTR offset=0 );
-	bool 		GetSaveName		(FSPath& initial, AnsiString& buf, LPCSTR offset=0 );
+	bool 		GetOpenName		(FSPath& initial, AnsiString& buf, bool bMulti=false, LPCSTR offset=0, int start_flt_ext=1 );
+	bool 		GetSaveName		(FSPath& initial, AnsiString& buf, LPCSTR offset=0, int start_flt_ext=1 );
 #endif
 
     bool 		Exist			(LPCSTR _FileName, bool bMessage = false);

@@ -74,23 +74,24 @@ void CFileSystem::OnCreate(){
 	m_LocalRoot.Init  	(m_Local, 	"",               		"",     			"" );
 	m_ServerRoot.Init  	(m_Server, 	"",               		"",     			"" );
     m_GameLevels.Init	(m_Server, 	"game\\data\\levels\\",	"",     			"" );
-    m_GameSounds.Init	(m_Server, 	"game\\data\\sounds\\",	"*.wav",			"Wave (*.wav)" );
+    m_GameSounds.Init	(m_Server, 	"game\\data\\sounds\\",	"*.wav",			"Wave files" );
 	m_GameRoot.Init 	(m_Server, 	"game\\",         		"",     			"" );
-	m_GameCForms.Init	(m_Server, 	"game\\data\\cforms\\",	"*.vcf",			"Collision form (*.vcf)" );
-	m_GameMeshes.Init	(m_Server, 	"game\\data\\meshes\\",	"*.ogf",			"Render model (*.ogf)" );
-    m_GameDO.Init		(m_Server,  "game\\data\\meshes\\",	"*.do",				"Detail object (*.do)" );
-    m_GameTextures.Init	(m_Server,	"game\\data\\textures\\","*.dds",			"Textures (*.dds)" );
-	m_GameKeys.Init		(m_Server,  "game\\data\\meshes\\",	"*.key",			"XRay model keys (*.key)" );
+	m_GameCForms.Init	(m_Server, 	"game\\data\\cforms\\",	"*.vcf",			"Collision form files" );
+	m_GameMeshes.Init	(m_Server, 	"game\\data\\meshes\\",	"*.ogf",			"Render model files" );
+    m_GameDO.Init		(m_Server,  "game\\data\\meshes\\",	"*.do",				"Detail object files" );
+    m_GameTextures.Init	(m_Server,	"game\\data\\textures\\","*.dds",			"Texture files" );
+	m_GameKeys.Init		(m_Server,  "game\\data\\meshes\\",	"*.key",			"XRay model key" );
 
-	m_Groups.Init   	(m_Server, 	"objects\\",       		"*.group", 			"Groups (*.group)" );
-    m_Objects.Init  	(m_Server, 	"objects\\",       		"*.object;*.lwo",	"Editor objects (*.object,*.lwo)" );
-	m_Import.Init  		(m_Local, 	"import\\",       		"*.object;*.lwo", 	"Import objects (*.object,*.lwo)" );
-	m_OMotion.Init		(m_Local, 	"import\\", 		   	"*.anm",			"Object animation (*.anm)" );
-	m_OMotions.Init		(m_Local, 	"import\\", 		    "*.anms",	    	"Object animation list (*.anms)" );
-	m_SMotion.Init		(m_Local, 	"import\\", 		    "*.skl",			"Skeleton motion file (*.skl)" );
-	m_SMotions.Init		(m_Local, 	"import\\", 		    "*.skls",			"Skeleton motions file (*.skls)" );
-	m_Maps.Init     	(m_Server, 	"maps\\",         		"*.level",  		"Levels (*.level)" );
-	m_Textures.Init 	(m_Server, 	"textures\\",     		"*.bmp;*.tga",		"Textures (*.bmp;*.tga)" );
+	m_Groups.Init   	(m_Server, 	"objects\\",       		"*.group", 			"Groups" );
+    m_Objects.Init  	(m_Server, 	"objects\\",       		"*.object;*.lwo",	"Editor objects" );
+	m_Import.Init  		(m_Local, 	"import\\",       		"*.object;*.lwo", 	"Import objects" );
+	m_Export.Init  		(m_Local, 	"import\\",       		"*.object;*.lwo", 	"Export objects" );
+	m_OMotion.Init		(m_Local, 	"import\\", 		   	"*.anm",			"Object animation files" );
+	m_OMotions.Init		(m_Local, 	"import\\", 		    "*.anms",	    	"Object animation list files" );
+	m_SMotion.Init		(m_Local, 	"import\\", 		    "*.skl",			"Skeleton motion files" );
+	m_SMotions.Init		(m_Local, 	"import\\", 		    "*.skls",			"Skeleton motions files" );
+	m_Maps.Init     	(m_Server, 	"maps\\",         		"*.level",  		"Level files" );
+	m_Textures.Init 	(m_Server, 	"textures\\",     		"*.bmp;*.tga",		"Texture files" );
 	m_Temp.Init     	(m_Local, 	"temp\\",         		"",     			"" );
 
     strcpy				(m_LastAccessFN,"access.ini"); 	m_ServerRoot.Update(m_LastAccessFN);
@@ -110,11 +111,25 @@ bool FileExists(LPCSTR fn){
 }
 #endif
 
-bool CFileSystem::GetOpenName( FSPath& initial, char *buffer, int sz_buf, bool bMulti, LPCSTR offset ){
+LPCSTR MakeFilter(string1024& dest, LPCSTR info, LPCSTR ext){
+	ZeroMemory(dest,sizeof(dest));
+	int icnt=_GetItemCount(ext,';');
+	LPSTR dst=dest;
+	for (int i=0; i<icnt; i++){
+		string64 buf;
+		_GetItem(ext,i,buf,';');
+		strconcat(dst,info," (",buf,")");
+		dst+=(strlen(dst)+1);
+		strcpy(dst,buf);
+		dst+=(strlen(buf)+1);
+	}
+	return dest;
+}
+
+bool CFileSystem::GetOpenName( FSPath& initial, char *buffer, int sz_buf, bool bMulti, LPCSTR offset, int start_flt_ext ){
 	VERIFY(buffer&&(sz_buf>0));
-	char flt[1024];ZeroMemory(flt,sizeof(char)*1024);
-	strcpy(flt,initial.m_FilterString);
-	strcpy(flt+strlen(flt)+1,initial.m_DefExt);
+	string1024 flt;
+	MakeFilter(flt,initial.m_FilterString,initial.m_DefExt);
 
 	OPENFILENAME ofn;
 	memset( &ofn, 0, sizeof(ofn) );
@@ -124,7 +139,7 @@ bool CFileSystem::GetOpenName( FSPath& initial, char *buffer, int sz_buf, bool b
 	ofn.lpstrFile 		= buffer;
 	ofn.nMaxFile 		= sz_buf;
 	ofn.lpstrFilter 	= flt;
-	ofn.nFilterIndex 	= 1;
+	ofn.nFilterIndex 	= start_flt_ext;
     ofn.lpstrTitle      = "Open a File";
 
     string512 path; strcpy(path,(offset&&offset[0])?offset:initial.m_Path);
@@ -165,12 +180,10 @@ bool CFileSystem::GetOpenName( FSPath& initial, char *buffer, int sz_buf, bool b
     return bRes;
 }
 
-bool CFileSystem::GetSaveName( FSPath& initial, char *buffer, int sz_buf, LPCSTR offset ){
+bool CFileSystem::GetSaveName( FSPath& initial, char *buffer, int sz_buf, LPCSTR offset, int start_flt_ext ){
 	VERIFY(buffer&&(sz_buf>0));
-	char flt[1024];ZeroMemory(flt,sizeof(char)*1024);
-	strcpy(flt,initial.m_FilterString);
-	strcpy(flt+strlen(flt)+1,initial.m_DefExt);
-
+	string1024 flt;
+	MakeFilter(flt,initial.m_FilterString,initial.m_DefExt);
 	OPENFILENAME ofn;
 	memset( &ofn, 0, sizeof(ofn) );
 	ofn.hwndOwner 		= GetForegroundWindow();
@@ -179,7 +192,7 @@ bool CFileSystem::GetSaveName( FSPath& initial, char *buffer, int sz_buf, LPCSTR
 	ofn.lpstrFilter 	= flt;
 	ofn.lStructSize 	= sizeof(ofn);
 	ofn.nMaxFile 		= sz_buf;
-	ofn.nFilterIndex 	= 1;
+	ofn.nFilterIndex 	= start_flt_ext;
     ofn.lpstrTitle      = "Save a File";
     string512 path; strcpy(path,(offset&&offset[0])?offset:initial.m_Path);
 	ofn.lpstrInitialDir = path;
@@ -199,7 +212,7 @@ bool CFileSystem::GetSaveName( FSPath& initial, char *buffer, int sz_buf, LPCSTR
 bool CFileSystem::GetOpenName(FSPath& initial, AnsiString& buffer, bool bMulti, LPCSTR offset ){
 	string4096 buf;
     strcpy(buf,buffer.c_str());
-	bool bRes = GetOpenName(initial,buf,sizeof(buf),bMulti,offset);
+	bool bRes = GetOpenName(initial,buf,sizeof(buf),bMulti,offset,start_flt_ext);
     if (bRes) buffer=buf;
 	return bRes;
 }
@@ -207,7 +220,7 @@ bool CFileSystem::GetOpenName(FSPath& initial, AnsiString& buffer, bool bMulti, 
 bool CFileSystem::GetSaveName( FSPath& initial, AnsiString& buffer, LPCSTR offset ){
 	string4096 buf;
     strcpy(buf,buffer.c_str());
-	bool bRes = GetSaveName(initial,buf,sizeof(buf),offset);
+	bool bRes = GetSaveName(initial,buf,sizeof(buf),offset,start_flt_ext);
     if (bRes) buffer=buf;
 	return bRes;
 }

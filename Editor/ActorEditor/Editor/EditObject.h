@@ -324,8 +324,8 @@ public:
 #endif
 #ifdef _LW_IMPORT
 	bool			Export_LW				(LWObjectImport *local);
-	bool			ExportLWO				(LPCSTR fname);
 #endif
+	bool			ExportLWO				(LPCSTR fname);
 };
 //----------------------------------------------------
 #define EOBJ_CURRENT_VERSION		0x0010
