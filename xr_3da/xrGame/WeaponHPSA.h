@@ -1,16 +1,16 @@
-#ifndef __XR_WEAPON_AK74_H__
-#define __XR_WEAPON_AK74_H__
+#ifndef __XR_WEAPON_HPSA_H__
+#define __XR_WEAPON_HPSA_H__
 #pragma once
 
 #include "WeaponAutoRifle.h"
 
-class CWeaponAK74: public CWeaponAutoRifle
+class CWeaponHPSA: public CWeaponAutoRifle
 {
 private:
 	typedef CWeaponAutoRifle inherited;
 public:
-					CWeaponAK74		();
-	virtual			~CWeaponAK74	();
+					CWeaponHPSA		();
+	virtual			~CWeaponHPSA	();
 };
 
 #endif //__XR_WEAPON_AK74_H__

@@ -408,6 +408,18 @@ SOURCE=.\WeaponFN2000.cpp
 SOURCE=.\WeaponFN2000.h
 # End Source File
 # End Group
+# Begin Group "HPSA"
+
+# PROP Default_Filter ""
+# Begin Source File
+
+SOURCE=.\WeaponHPSA.cpp
+# End Source File
+# Begin Source File
+
+SOURCE=.\WeaponHPSA.h
+# End Source File
+# End Group
 # Begin Source File
 
 SOURCE=.\xr_weapon_list.cpp

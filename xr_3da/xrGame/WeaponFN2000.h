@@ -14,5 +14,4 @@ public:
 	virtual	BOOL	HasOpticalAim	()	{ return TRUE; }
 };
 
-
-#endif //__XR_WEAPON_GROZA_H__
+#endif //__XR_WEAPON_FN2000_H__

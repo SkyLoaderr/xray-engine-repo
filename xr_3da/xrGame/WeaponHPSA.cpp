@@ -1,14 +1,14 @@
 #include "stdafx.h"
-#include "WeaponAK74.h"
+#include "WeaponHPSA.h"
 
 //////////////////////////////////////////////////////////////////////
 // Construction/Destruction
 //////////////////////////////////////////////////////////////////////
-CWeaponAK74::CWeaponAK74() : CWeaponAutoRifle("AK74")
+CWeaponHPSA::CWeaponHPSA() : CWeaponAutoRifle("HPSA")
 {
 }
 
-CWeaponAK74::~CWeaponAK74()
+CWeaponHPSA::~CWeaponHPSA()
 {
 }
 
