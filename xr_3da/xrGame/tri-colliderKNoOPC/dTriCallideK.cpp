@@ -1,21 +1,28 @@
 #include "stdafx.h"
 #include "dTriCollideK.h"
 #include "../dCylinder/dCylinder.h"
-#define CONTACT(Ptr, Stride) ((dContactGeom*) (((byte*)Ptr) + (Stride)))
 
+
+#define CONTACT(Ptr, Stride) ((dContactGeom*) (((byte*)Ptr) + (Stride)))
+#define SURFACE(Ptr, Stride) ((dSurfaceParameters*) (((byte*)Ptr) + (Stride-sizeof(dSurfaceParameters))))
 #define NUMC_MASK (0xffff)
 
 extern "C" int dSortedTriBox (
 						const dReal* triSideAx0,const dReal* triSideAx1,
 						const dReal* triAx,
-						const dReal* v0,
-						const dReal* v1,
-						const dReal* v2,
+						//const dReal* v0,
+						//const dReal* v1,
+						//const dReal* v2,
+						CDB::TRI* T,
 						dReal dist,
 						dxGeom *o1, dxGeom *o2,
 						int flags, dContactGeom *contact, int skip
 						)
 {
+
+//const dReal* v0=(dReal*)T->verts[0];
+//const dReal* v1=(dReal*)T->verts[1];
+//const dReal* v2=(dReal*)T->verts[2];
 
   dIASSERT (skip >= (int)sizeof(dContactGeom));
   dIASSERT (dGeomGetClass(o1) == dBoxClass);
@@ -164,6 +171,11 @@ contact->depth = outDepth;
 	CONTACT(contact,i*skip)->normal[0] = norm[0];
 	CONTACT(contact,i*skip)->normal[1] = norm[1];
 	CONTACT(contact,i*skip)->normal[2] = norm[2];
+	SURFACE(contact,i*skip)->mu=GMLib.GetMaterial(T->material)->fPHFriction;
+	SURFACE(contact,i*skip)->bounce=GMLib.GetMaterial(T->material)->fPHBouncing;
+	SURFACE(contact,i*skip)->bounce_vel=GMLib.GetMaterial(T->material)->fPHBounceStartVelocity;
+	SURFACE(contact,i*skip)->soft_cfm=GMLib.GetMaterial(T->material)->fPHSpring;
+	SURFACE(contact,i*skip)->soft_erp=GMLib.GetMaterial(T->material)->fPHDumping;
   }
   return ret;
 
@@ -173,11 +185,16 @@ contact->depth = outDepth;
  
 }
 extern "C" int dTriBox (
-						const dReal* v0,const dReal* v1,const dReal* v2,
+						CDB::TRI* T,
+						//const dReal* v0,const dReal* v1,const dReal* v2,
 						dxGeom *o1, dxGeom *o2,
 						int flags, dContactGeom *contact, int skip
 						)
 {
+
+const dReal* v0=(dReal*)T->verts[0];
+const dReal* v1=(dReal*)T->verts[1];
+const dReal* v2=(dReal*)T->verts[2];
 
   dIASSERT (skip >= (int)sizeof(dContactGeom));
   dIASSERT (dGeomGetClass(o1) == dBoxClass);
@@ -614,6 +631,11 @@ contact->depth = outDepth;
 	CONTACT(contact,i*skip)->normal[0] = norm[0];
 	CONTACT(contact,i*skip)->normal[1] = norm[1];
 	CONTACT(contact,i*skip)->normal[2] = norm[2];
+	SURFACE(contact,i*skip)->mu=GMLib.GetMaterial(T->material)->fPHFriction;
+	SURFACE(contact,i*skip)->bounce=GMLib.GetMaterial(T->material)->fPHBouncing;
+	SURFACE(contact,i*skip)->bounce_vel=GMLib.GetMaterial(T->material)->fPHBounceStartVelocity;
+	SURFACE(contact,i*skip)->soft_cfm=GMLib.GetMaterial(T->material)->fPHSpring;
+	SURFACE(contact,i*skip)->soft_erp=GMLib.GetMaterial(T->material)->fPHDumping;
   }
   return ret;
 
@@ -716,14 +738,17 @@ bool inline cylinderCrossesLine(const dReal* p,const dReal* R,dReal hlz,
 /////////////////////////////////////////////////////////////////////////////////
 
 extern "C" int dTriCyl (
-						const dReal* v0,const dReal* v1,const dReal* v2,
+						//const dReal* v0,const dReal* v1,const dReal* v2,
+						CDB::TRI* T,
 						dxGeom *o1, dxGeom *o2,
 						int flags, dContactGeom *contact, int skip
 						
 
 						)
 {
-
+const dReal* v0=(dReal*)T->verts[0];
+const dReal* v1=(dReal*)T->verts[1];
+const dReal* v2=(dReal*)T->verts[2];
  // dIASSERT (skip >= (int)sizeof(dContactGeom));
   dIASSERT (dGeomGetClass(o1)== dCylinderClassUser);
   
@@ -1221,6 +1246,12 @@ else {//7-12
 	CONTACT(contact,i*skip)->normal[0] = norm[0];
 	CONTACT(contact,i*skip)->normal[1] = norm[1];
 	CONTACT(contact,i*skip)->normal[2] = norm[2];
+	SURFACE(contact,i*skip)->mu=GMLib.GetMaterial(T->material)->fPHFriction;
+	SURFACE(contact,i*skip)->bounce=GMLib.GetMaterial(T->material)->fPHBouncing;
+	SURFACE(contact,i*skip)->bounce_vel=GMLib.GetMaterial(T->material)->fPHBounceStartVelocity;
+	SURFACE(contact,i*skip)->soft_cfm=GMLib.GetMaterial(T->material)->fPHSpring;
+	SURFACE(contact,i*skip)->soft_erp=GMLib.GetMaterial(T->material)->fPHDumping;
+	
   }
   return ret;  
 }

@@ -6,23 +6,26 @@
 #define DTROCOLLIDERH
 
 extern "C" int dTriBox (
-						const dReal* v0,const dReal* v1,const dReal* v2,
+						//const dReal* v0,const dReal* v1,const dReal* v2,
+						CDB::TRI* T,
 						dxGeom *o1,dxGeom *o2,
 						int flags, dContactGeom *contact, int skip
 						);
 extern "C" int dSortedTriBox (
 						const dReal* triSideAx0,const dReal* triSideAx1,
 						const dReal* triAx,
-						const dReal* v0,
-						const dReal* v1,
-						const dReal* v2,
+						//const dReal* v0,
+						//const dReal* v1,
+						//const dReal* v2,
+						CDB::TRI* T,
 						dReal dist,
 						dxGeom *o1, dxGeom *o2,
 						int flags, dContactGeom *contact, int skip
 						);
 
 extern "C" int dTriCyl (
-						const dReal* v0,const dReal* v1,const dReal* v2,
+						//const dReal* v0,const dReal* v1,const dReal* v2,
+						CDB::TRI* T,
 						dxGeom *o1, dxGeom *o2,
 						int flags, dContactGeom *contact, int skip
 						

@@ -8,6 +8,13 @@
 ///////////////////////////////////////////////////////////////////////////////
 const dReal fixed_step=0.02f;
 const int dis_frames=11;
+
+const dReal world_spring=2400000.f;//550000.f;///1000000.f;;
+const dReal world_damping=200000.f;
+#define ERP(k_p,k_d)	((fixed_step*(k_p)) / (((fixed_step)*(k_p)) + (k_d)))
+#define CFM(k_p,k_d)	(1.f / (((fixed_step)*(k_p)) + (k_d)))
+
+
 class CPHMesh {
 	dGeomID Geom;
 public:

@@ -32,15 +32,12 @@ int dCollideBP (const dxGeom* o1, const dxGeom* o2, int flags, dContactGeom *con
 
 #define CONTACT(Ptr, Stride) ((dContactGeom*) (((byte*)Ptr) + (Stride)))
 
+#define SURFACE(Ptr, Stride) ((dSurfaceParameters*) (((byte*)Ptr) + (Stride-sizeof(dSurfaceParameters))))
 
 
 static 	vector<Triangle> pos_tries;
 //static 	vector<Triangle> neg_tries;
-/*
-static	dVector3 last_pos={dInfinity,0.f,0.f,0.f};
-static bool pushing_neg=false,pushing_b_neg=false;
-Triangle neg_tri={NULL,NULL,NULL,{0,0,0,0},{0,0,0,0},{0,0,0,0},0,0,0},b_neg_tri={NULL,NULL,NULL,{0,0,0,0},{0,0,0,0},{0,0,0,0},0,0,0};
-*/
+
 
 extern "C" int dSortTriBoxCollide (
 								   dxGeom *o1, dxGeom *o2,
@@ -139,16 +136,24 @@ extern "C" int dSortTriBoxCollide (
 	for (CDB::RESULT* Res=R_begin; Res!=R_end; Res++)
 	{
 		CDB::TRI* T = T_array + Res->id;
-		tri.v0=(dReal*)T->verts[0];
-		tri.v1=(dReal*)T->verts[1];
-		tri.v2=(dReal*)T->verts[2];
-		tri.side0[0]=tri.v1[0]-tri.v0[0];
-		tri.side0[1]=tri.v1[1]-tri.v0[1];
-		tri.side0[2]=tri.v1[2]-tri.v0[2];
-		tri.side1[0]=tri.v2[0]-tri.v1[0];
-		tri.side1[1]=tri.v2[1]-tri.v1[1];
-		tri.side1[2]=tri.v2[2]-tri.v1[2];
+		//tri.v0=(dReal*)T->verts[0];
+		//tri.v1=(dReal*)T->verts[1];
+		//tri.v2=(dReal*)T->verts[2];
+		//tri.side0[0]=tri.v1[0]-tri.v0[0];
+		//tri.side0[1]=tri.v1[1]-tri.v0[1];
+		//tri.side0[2]=tri.v1[2]-tri.v0[2];
+		//tri.side1[0]=tri.v2[0]-tri.v1[0];
+		//tri.side1[1]=tri.v2[1]-tri.v1[1];
+		//tri.side1[2]=tri.v2[2]-tri.v1[2];
+		tri.side0[0]=T->verts[1]->x-T->verts[0]->x;
+		tri.side0[1]=T->verts[1]->y-T->verts[0]->y;
+		tri.side0[2]=T->verts[1]->z-T->verts[0]->z;
 
+		tri.side1[0]=T->verts[2]->x-T->verts[1]->x;
+		tri.side1[1]=T->verts[2]->y-T->verts[1]->y;
+		tri.side1[2]=T->verts[2]->z-T->verts[1]->z;
+
+		tri.T=T;
 		dCROSS(tri.norm,=,tri.side0,tri.side1);
 		dNormalize3(tri.norm);
 		dReal sidePr=
@@ -156,15 +161,15 @@ extern "C" int dSortTriBoxCollide (
 			dFabs(dDOT14(tri.norm,R+1)*hside[1])+
 			dFabs(dDOT14(tri.norm,R+2)*hside[2]);
 
-		tri.pos=dDOT(tri.v0,tri.norm);
+		tri.pos=dDOT((dReal*)tri.T->verts[0],tri.norm);
 		tri.dist=dDOT(p,tri.norm)-tri.pos;
 		tri.depth=sidePr-tri.dist;
-		Point vertices[3]={Point(tri.v0),Point(tri.v1),Point(tri.v2)};
+		Point vertices[3]={Point((dReal*)tri.T->verts[0]),Point((dReal*)tri.T->verts[1]),Point((dReal*)tri.T->verts[2])};
 		if(tri.dist<0.f){
 			if((!(dDOT(last_pos,tri.norm)-tri.pos<0.f))||*pushing_neg||*pushing_b_neg)
 				if(__aabb_tri(Point(p),Point((float*)&AABB),vertices))
 				{
-					if(TriContainPoint(tri.v0,tri.v1,tri.v2,
+					if(TriContainPoint((dReal*)tri.T->verts[0],(dReal*)tri.T->verts[1],(dReal*)tri.T->verts[2],
 						tri.norm,tri.side0,
 						tri.side1,p)
 
@@ -207,12 +212,14 @@ extern "C" int dSortTriBoxCollide (
 		bool include = true;
 
 		for(i=pos_tries.begin();i!=pos_tries.end();i++){
-			if(TriContainPoint(i->v0,i->v1,i->v2,
+			if(TriContainPoint(
+				//i->v0,i->v1,i->v2,
+				(dReal*)i->T->verts[0],(dReal*)i->T->verts[1],(dReal*)i->T->verts[2],
 				i->norm,i->side0,
 				i->side1,p))
-				if((dDOT(neg_tri->norm,i->v0)-neg_tri->pos)<0.f||
-					(dDOT(neg_tri->norm,i->v1)-neg_tri->pos)<0.f||
-					(dDOT(neg_tri->norm,i->v2)-neg_tri->pos)<0.f
+				if((dDOT(neg_tri->norm,(dReal*)i->T->verts[0])-neg_tri->pos)<0.f||
+					(dDOT(neg_tri->norm,(dReal*)i->T->verts[1])-neg_tri->pos)<0.f||
+					(dDOT(neg_tri->norm,(dReal*)i->T->verts[2])-neg_tri->pos)<0.f
 					){
 						include=false;
 						break;
@@ -220,7 +227,9 @@ extern "C" int dSortTriBoxCollide (
 		};
 		if(include){		
 			ret+=dSortedTriBox(neg_tri->side0,neg_tri->side1,neg_tri->norm,
-				neg_tri->v0,neg_tri->v1,neg_tri->v2,neg_tri->dist,
+				//neg_tri->v0,neg_tri->v1,neg_tri->v2,
+				neg_tri->T,
+				neg_tri->dist,
 				o1,o2,flags,
 				CONTACT(contact, ret * skip),
 				skip);	
@@ -231,20 +240,27 @@ extern "C" int dSortTriBoxCollide (
 
 	//(*pushing_b_neg)=(*pushing_b_neg)&&(!ret);
 	//if(ret==0)
-	for(i=pos_tries.begin();i!=pos_tries.end();i++)
-		ret+=dTriBox (i->v0,i->v1,i->v2,
+	for(i=pos_tries.begin();i!=pos_tries.end();i++){
+		
+		ret+=dTriBox (
+		//i->v0,i->v1,i->v2,
+		i->T,
 		o1,
 		o2,
 		3,
 		CONTACT(contact, ret * skip),   skip);
-
+	
+		//for(int i=0;i<add;i++)
+				
+		//ret+=add;
+	}
 	//((b_count>1)||(*pushing_b_neg))&&
 	if(b_neg_depth<dInfinity&&ret==0){
 		bool include = true;
 		for(i=pos_tries.begin();i!=pos_tries.end();i++){
-			if((((dDOT(b_neg_tri->norm,i->v0)-b_neg_tri->pos)<0.f)||
-				((dDOT(b_neg_tri->norm,i->v1)-b_neg_tri->pos)<0.f)||
-				((dDOT(b_neg_tri->norm,i->v2)-b_neg_tri->pos)<0.f))
+			if((((dDOT(b_neg_tri->norm,(dReal*)i->T->verts[0])-b_neg_tri->pos)<0.f)||
+				((dDOT(b_neg_tri->norm,(dReal*)i->T->verts[1])-b_neg_tri->pos)<0.f)||
+				((dDOT(b_neg_tri->norm,(dReal*)i->T->verts[2])-b_neg_tri->pos)<0.f))
 				){
 					include=false;
 					break;
@@ -253,7 +269,9 @@ extern "C" int dSortTriBoxCollide (
 
 		if(include)	{	
 			ret+=dSortedTriBox(b_neg_tri->side0,b_neg_tri->side1,b_neg_tri->norm,
-				b_neg_tri->v0,b_neg_tri->v1,b_neg_tri->v2,b_neg_tri->dist,
+				//b_neg_tri->v0,b_neg_tri->v1,b_neg_tri->v2,
+				b_neg_tri->T,
+				b_neg_tri->dist,
 				o1,o2,flags,
 				CONTACT(contact, ret * skip),
 				skip);	
@@ -400,7 +418,9 @@ int dcTriListCollider::CollideCylinder(dxGeom* Cylinder, int Flags, dContactGeom
 	for (CDB::RESULT* Res=R_begin; Res!=R_end; Res++)
 	{
 		CDB::TRI* T = T_array + Res->id;
-		OutTriCount+=dTriCyl ((dReal*)T->verts[0],(dReal*)T->verts[1],(dReal*)T->verts[2],
+		OutTriCount+=dTriCyl (
+			//(dReal*)T->verts[0],(dReal*)T->verts[1],(dReal*)T->verts[2],
+			T,
 			Cylinder,
 			Geometry,
 			3,
@@ -413,12 +433,15 @@ int dcTriListCollider::CollideCylinder(dxGeom* Cylinder, int Flags, dContactGeom
 }
 ///end @slipch
 
-int dTriSphere(const dReal* v0,const dReal* v1,const dReal* v2,
+int dTriSphere(//const dReal* v0,const dReal* v1,const dReal* v2,
+			   CDB::TRI* T,
 			   dxGeom* Sphere,dxGeom* Geometry, int Flags, 
 			   dContactGeom* Contacts){
 const dReal* SphereCenter=dGeomGetPosition(Sphere);
 const float SphereRadius = dGeomSphereGetRadius(Sphere);
-
+const dReal* v0=(dReal*)T->verts[0];
+const dReal* v1=(dReal*)T->verts[1];
+const dReal* v2=(dReal*)T->verts[2];
 		//dVector3 triSideAx0={V[1][0]-V[0][0],V[1][1]-V[0][1],V[1][2]-V[0][2]};
 	//	dVector3 triSideAx1={V[2][0]-V[1][0],V[2][1]-V[1][1],V[2][2]-V[1][2]};
 //		dVector3 triSideAx2={V[0][0]-V[2][0],V[0][1]-V[2][1],V[0][2]-V[2][2]};
@@ -542,6 +565,11 @@ const float SphereRadius = dGeomSphereGetRadius(Sphere);
 					Contacts->pos[2]=ContactPos[2];
 					Contacts->g1 = Geometry;
 					Contacts->g2 = Sphere;
+					SURFACE(Contacts,0)->mu=GMLib.GetMaterial(T->material)->fPHFriction;
+					SURFACE(Contacts,0)->bounce=GMLib.GetMaterial(T->material)->fPHBouncing;
+					SURFACE(Contacts,0)->bounce_vel=GMLib.GetMaterial(T->material)->fPHBounceStartVelocity;
+					SURFACE(Contacts,0)->soft_cfm=GMLib.GetMaterial(T->material)->fPHSpring;
+					SURFACE(Contacts,0)->soft_erp=GMLib.GetMaterial(T->material)->fPHDumping;
 					//////////////////////////////////
 				//	OutTriCount++;
 					return 1;
@@ -556,9 +584,14 @@ const float SphereRadius = dGeomSphereGetRadius(Sphere);
 
 
 ////////////////////////////////////////////////////////////////////////////
-int dSortedTriSphere(const dReal* v0,const dReal* v1,const dReal* v2,
+int dSortedTriSphere(//const dReal* v0,const dReal* v1,const dReal* v2,
+					 CDB::TRI* T,
 					 const dReal* triAx,
 					 dxGeom* Sphere,dxGeom* Geometry, int Flags, dContactGeom* Contacts){
+
+const dReal* v0=(dReal*)T->verts[0];
+//const dReal* v1=(dReal*)T->verts[1];
+//const dReal* v2=(dReal*)T->verts[2];
 const dReal* SphereCenter=dGeomGetPosition(Sphere);
 const float SphereRadius = dGeomSphereGetRadius(Sphere);
 
@@ -589,6 +622,12 @@ const float SphereRadius = dGeomSphereGetRadius(Sphere);
 					Contacts->pos[2]=ContactPos[2];
 					Contacts->g1 = Geometry;
 					Contacts->g2 = Sphere;
+
+					SURFACE(Contacts,0)->mu=GMLib.GetMaterial(T->material)->fPHFriction;
+					SURFACE(Contacts,0)->bounce=GMLib.GetMaterial(T->material)->fPHBouncing;
+					SURFACE(Contacts,0)->bounce_vel=GMLib.GetMaterial(T->material)->fPHBounceStartVelocity;
+					SURFACE(Contacts,0)->soft_cfm=GMLib.GetMaterial(T->material)->fPHSpring;
+					SURFACE(Contacts,0)->soft_erp=GMLib.GetMaterial(T->material)->fPHDumping;
 					//////////////////////////////////
 				//	OutTriCount++;
 					return 1;
@@ -668,29 +707,36 @@ extern "C" int dSortTriSphereCollide (
 	for (CDB::RESULT* Res=R_begin; Res!=R_end; Res++)
 	{
 		CDB::TRI* T = T_array + Res->id;
-		tri.v0=(dReal*)T->verts[0];
-		tri.v1=(dReal*)T->verts[1];
-		tri.v2=(dReal*)T->verts[2];
-		tri.side0[0]=tri.v1[0]-tri.v0[0];
-		tri.side0[1]=tri.v1[1]-tri.v0[1];
-		tri.side0[2]=tri.v1[2]-tri.v0[2];
-		tri.side1[0]=tri.v2[0]-tri.v1[0];
-		tri.side1[1]=tri.v2[1]-tri.v1[1];
-		tri.side1[2]=tri.v2[2]-tri.v1[2];
+		//tri.v0=(dReal*)T->verts[0];
+		//tri.v1=(dReal*)T->verts[1];
+		//tri.v2=(dReal*)T->verts[2];
+		//tri.side0[0]=tri.v1[0]-tri.v0[0];
+		//tri.side0[1]=tri.v1[1]-tri.v0[1];
+		//tri.side0[2]=tri.v1[2]-tri.v0[2];
+		//tri.side1[0]=tri.v2[0]-tri.v1[0];
+		//tri.side1[1]=tri.v2[1]-tri.v1[1];
+		//tri.side1[2]=tri.v2[2]-tri.v1[2];
+		tri.side0[0]=T->verts[1]->x-T->verts[0]->x;
+		tri.side0[1]=T->verts[1]->y-T->verts[0]->y;
+		tri.side0[2]=T->verts[1]->z-T->verts[0]->z;
 
+		tri.side1[0]=T->verts[2]->x-T->verts[1]->x;
+		tri.side1[1]=T->verts[2]->y-T->verts[1]->y;
+		tri.side1[2]=T->verts[2]->z-T->verts[1]->z;
+		tri.T=T;
 		dCROSS(tri.norm,=,tri.side0,tri.side1);
 		dNormalize3(tri.norm);
 
 
-		tri.pos=dDOT(tri.v0,tri.norm);
+		tri.pos=dDOT((dReal*)tri.T->verts[0],tri.norm);
 		tri.dist=dDOT(p,tri.norm)-tri.pos;
 		tri.depth=sidePr-tri.dist;
-		Point vertices[3]={Point(tri.v0),Point(tri.v1),Point(tri.v2)};
+		Point vertices[3]={Point((dReal*)T->verts[0]),Point((dReal*)T->verts[1]),Point((dReal*)T->verts[2])};
 		if(tri.dist<0.f){
 			if((!(dDOT(last_pos,tri.norm)-tri.pos<0.f))||*pushing_neg||*pushing_b_neg)
 				if(__aabb_tri(Point(p),Point((float*)&AABB),vertices))
 				{
-					if(TriContainPoint(tri.v0,tri.v1,tri.v2,
+					if(TriContainPoint((dReal*)tri.T->verts[0],(dReal*)tri.T->verts[1],(dReal*)tri.T->verts[2],
 						tri.norm,tri.side0,
 						tri.side1,p)
 
@@ -733,12 +779,12 @@ extern "C" int dSortTriSphereCollide (
 		bool include = true;
 
 		for(i=pos_tries.begin();i!=pos_tries.end();i++){
-			if(TriContainPoint(i->v0,i->v1,i->v2,
+			if(TriContainPoint((dReal*)i->T->verts[0],(dReal*)i->T->verts[1],(dReal*)i->T->verts[2],
 				i->norm,i->side0,
 				i->side1,p))
-				if((dDOT(neg_tri->norm,i->v0)-neg_tri->pos)<0.f||
-					(dDOT(neg_tri->norm,i->v1)-neg_tri->pos)<0.f||
-					(dDOT(neg_tri->norm,i->v2)-neg_tri->pos)<0.f
+				if((dDOT(neg_tri->norm,(dReal*)i->T->verts[0])-neg_tri->pos)<0.f||
+					(dDOT(neg_tri->norm,(dReal*)i->T->verts[1])-neg_tri->pos)<0.f||
+					(dDOT(neg_tri->norm,(dReal*)i->T->verts[2])-neg_tri->pos)<0.f
 					){
 						include=false;
 						break;
@@ -746,7 +792,9 @@ extern "C" int dSortTriSphereCollide (
 		};
 		if(include){
 			ret+=dSortedTriSphere(
-				neg_tri->v0,neg_tri->v1,neg_tri->v2,neg_tri->norm,
+				//neg_tri->v0,neg_tri->v1,neg_tri->v2,
+				neg_tri->T,
+				neg_tri->norm,
 				o1,o2,flags,
 				CONTACT(contact, ret * skip));	
 
@@ -760,7 +808,9 @@ extern "C" int dSortTriSphereCollide (
 	//if(ret==0)
 	for(i=pos_tries.begin();i!=pos_tries.end();i++)
 		
-		ret+=dTriSphere (i->v0,i->v1,i->v2,
+		ret+=dTriSphere (
+		//i->v0,i->v1,i->v2,
+		i->T,
 		o1,
 		o2,
 		3,
@@ -770,9 +820,9 @@ extern "C" int dSortTriSphereCollide (
 	if(b_neg_depth<dInfinity&&ret==0){
 		bool include = true;
 		for(i=pos_tries.begin();i!=pos_tries.end();i++){
-			if((((dDOT(b_neg_tri->norm,i->v0)-b_neg_tri->pos)<0.f)||
-				((dDOT(b_neg_tri->norm,i->v1)-b_neg_tri->pos)<0.f)||
-				((dDOT(b_neg_tri->norm,i->v2)-b_neg_tri->pos)<0.f))
+			if((((dDOT(b_neg_tri->norm,(dReal*)i->T->verts[0])-b_neg_tri->pos)<0.f)||
+				((dDOT(b_neg_tri->norm,(dReal*)i->T->verts[1])-b_neg_tri->pos)<0.f)||
+				((dDOT(b_neg_tri->norm,(dReal*)i->T->verts[2])-b_neg_tri->pos)<0.f))
 				){
 					include=false;
 					break;
@@ -782,7 +832,9 @@ extern "C" int dSortTriSphereCollide (
 		if(include)	{
 
 			ret+=dSortedTriSphere(
-				b_neg_tri->v0,b_neg_tri->v1,b_neg_tri->v2,b_neg_tri->norm,
+				//b_neg_tri->v0,b_neg_tri->v1,b_neg_tri->v2,
+				b_neg_tri->T,
+				b_neg_tri->norm,
 				o1,o2,flags,
 				CONTACT(contact, ret * skip));	
 			*pushing_b_neg=!!ret;

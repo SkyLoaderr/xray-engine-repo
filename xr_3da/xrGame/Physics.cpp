@@ -244,8 +244,7 @@ void CPHJeep::Create(dSpaceID space, dWorldID world){
 	dGeomCreateUserData(Geoms[6]);
 	//dGeomGetUserData(Geoms[5])->friction=500.f;
 	//dGeomGetUserData(Geoms[7])->friction=500.f;
-	dGeomGetUserData(Geoms[0])->friction=500.f;
-	dGeomGetUserData(Geoms[6])->friction=500.f;
+
 	dGeomSetPosition(Geoms[0], 0.f, MassShift, 0.f); // x,y,z
 	//dGeomSetPosition(Geoms[6], -jeepBox[0]/2.f+cabinBox[0]/2.f+0.55f, cabinBox[1]/2.f+jeepBox[1]/2.f+MassShift, 0.f); // x,y,z
 	dGeomSetPosition(Geoms[6], -cabinSepX, cabinSepY+MassShift, 0.f); // x,y,z
@@ -273,6 +272,8 @@ void CPHJeep::Create(dSpaceID space, dWorldID world){
 		dBodySetQuaternion(Bodies[i], q);
 		//Geoms[i] = dCreateSphere(0, wheelRadius);
 		Geoms[i] = dCreateCylinder(0, wheelRadius,0.19f);
+		dGeomCreateUserData(Geoms[i]);
+		dGeomGetUserData(Geoms[i])->material=GMLib.GetMaterialIdx("mtl_rubber");
 		dGeomSetBody(Geoms[i], Bodies[i]);
 	}
 
@@ -586,6 +587,8 @@ dBodyAddRelTorque(Bodies[0], 300, 0, 0);
 ///////////CPHWorld/////////////////////////////////////////////////////////
 ///////////////////////////////////////////////////////////////////////////
 
+
+
 void CPHWorld::Create(){
 
 	phWorld = dWorldCreate();
@@ -596,10 +599,10 @@ void CPHWorld::Create(){
 	//Jeep.Create(Space,phWorld);//(Space,phWorld)
 	//Gun.Create(Space);
 	//dCreatePlane(Space,0,1,0,102);
-	const  dReal k_p=2400000.f;//550000.f;///1000000.f;
-	const dReal k_d=200000.f;
-	dWorldSetERP(phWorld,  fixed_step*k_p / (fixed_step*k_p + k_d));
-	dWorldSetCFM(phWorld,  1.f / (fixed_step*k_p + k_d));
+	//const  dReal k_p=2400000.f;//550000.f;///1000000.f;
+	//const dReal k_d=200000.f;
+	dWorldSetERP(phWorld, ERP(world_spring,world_damping) );
+	dWorldSetCFM(phWorld, CFM(world_spring,world_damping));
 	//dWorldSetERP(phWorld,  0.2f);
 	//dWorldSetCFM(phWorld,  0.000001f);
 	disable_count=0;
@@ -720,8 +723,17 @@ static void NearCallback(void* /*data*/, dGeomID o1, dGeomID o2){
 	for(i = 0; i < n; ++i)
 	{
 
-        contacts[i].surface.mode =dContactBounce|dContactApprox1;
-		contacts[i].surface.mu =1.f;// 5000.f;
+        contacts[i].surface.mode =dContactBounce|dContactApprox1|dContactSoftERP|dContactSoftCFM;
+
+		if(dGeomGetClass(contacts[i].geom.g1)!=dTriListClass &&
+			dGeomGetClass(contacts[i].geom.g2)!=dTriListClass){
+											contacts[i].surface.mu =1.f;// 5000.f;
+											contacts[i].surface.soft_erp=1.f;//ERP(world_spring,world_damping);
+											contacts[i].surface.soft_cfm=1.f;//CFM(world_spring,world_damping);
+											contacts[i].surface.bounce = 0.01f;//0.1f;
+											}
+
+
 		bool pushing_neg=false;
 		dxGeomUserData* usr_data_1=NULL;
 		dxGeomUserData* usr_data_2=NULL;
@@ -741,7 +753,9 @@ static void NearCallback(void* /*data*/, dGeomID o1, dGeomID o2){
 /////////////////////////////////////////////////////////////////////////////////////////////////
 		if(usr_data_2){ 
 				pushing_neg=usr_data_2->pushing_b_neg||usr_data_2->pushing_neg;
-
+				contacts[i].surface.mu*=GMLib.GetMaterial(usr_data_2->material)->fPHFriction;
+				contacts[i].surface.soft_cfm*=GMLib.GetMaterial(usr_data_2->material)->fPHSpring;
+				contacts[i].surface.soft_erp*=GMLib.GetMaterial(usr_data_2->material)->fPHDumping;
 			if(usr_data_2->ph_object){
 					usr_data_2->ph_object->InitContact(&contacts[i]);
 					if(pushing_neg) contacts[i].surface.mu=dInfinity;
@@ -755,7 +769,9 @@ static void NearCallback(void* /*data*/, dGeomID o1, dGeomID o2){
 
 				pushing_neg=usr_data_1->pushing_b_neg||
 				usr_data_1->pushing_neg;
-
+				contacts[i].surface.mu*=GMLib.GetMaterial(usr_data_1->material)->fPHFriction;
+				contacts[i].surface.soft_cfm*=GMLib.GetMaterial(usr_data_1->material)->fPHSpring;
+				contacts[i].surface.soft_erp*=GMLib.GetMaterial(usr_data_1->material)->fPHDumping;
 			if(usr_data_1->ph_object){
 					usr_data_1->ph_object->InitContact(&contacts[i]);
 					if(pushing_neg) contacts[i].surface.mu=dInfinity;
@@ -765,10 +781,15 @@ static void NearCallback(void* /*data*/, dGeomID o1, dGeomID o2){
 				}
 
 		}
-		if(pushing_neg) contacts[i].surface.mu=dInfinity;
 
-		contacts[i].surface.bounce = 0.01f;//0.1f;
+		contacts[i].surface.soft_erp=ERP(world_spring*contacts[i].surface.soft_cfm,
+										 world_damping*contacts[i].surface.soft_erp);
+		contacts[i].surface.soft_cfm=CFM(world_spring*contacts[i].surface.soft_cfm,
+										 world_damping*contacts[i].surface.soft_erp);
 		contacts[i].surface.bounce_vel =1.5f;//0.005f;
+
+
+		if(pushing_neg) contacts[i].surface.mu=dInfinity;
 		dJointID c = dJointCreateContact(phWorld, ContactGroup, &contacts[i]);
 		dJointAttach(c, dGeomGetBody(contacts[i].geom.g1), dGeomGetBody(contacts[i].geom.g2));
 		}
@@ -815,8 +836,8 @@ void CPHElement::			create_Box		(Fobb&		V){
 														dGeomTransformSetInfo(trans,1);
 														//dGeomCreateUserData(trans);
 														dGeomCreateUserData(geom);
+														dGeomGetUserData(geom)->material=GMLib.GetMaterialIdx("mtl_box_default");
 														//dGeomGetUserData(trans)->friction=friction_table[1];
-														dGeomGetUserData(geom)->friction=friction_table[1];
 															}
 														else{
 													  geom=dCreateBox(ph_world->GetSpace(),
@@ -834,7 +855,7 @@ void CPHElement::			create_Box		(Fobb&		V){
 														PHDynamicData::FMX33toDMX(V.m_rotate,R);
 														dGeomSetRotation(geom,R);
 														dGeomCreateUserData(geom);
-														dGeomGetUserData(geom)->friction=friction_table[1];
+														dGeomGetUserData(geom)->material=GMLib.GetMaterialIdx("mtl_box_default");
 														}
 														//dGeomGetUserData(trans)->friction=dInfinity;
 														
