@@ -269,6 +269,10 @@ function parse_waypoint_data(str)
 end
 
 function path_parse_waypoints(pathname)
+	if not pathname then
+		return nil
+	end
+
 	local ptr = patrol(pathname)
 	local cnt = ptr:count()
 	local rslt = {}
