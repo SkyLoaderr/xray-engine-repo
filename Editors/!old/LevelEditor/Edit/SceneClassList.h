@@ -137,6 +137,7 @@ enum EObjClass{
     OBJCLASS_PS		   	= 11,
     OBJCLASS_DO			= 12,
     OBJCLASS_AIMAP		= 13,
+    OBJCLASS_WM			= 14,
     OBJCLASS_COUNT,
     OBJCLASS_force_dword = -1
 };
