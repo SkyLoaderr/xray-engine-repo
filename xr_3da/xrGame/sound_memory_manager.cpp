@@ -38,7 +38,6 @@ void CSoundMemoryManager::reinit				()
 	m_sounds				= 0;
 	m_priorities.clear		();
 	m_last_sound_time		= 0;
-	m_min_sound_threshold	= 0.05f;
 	m_sound_threshold		= m_min_sound_threshold;
 	m_sound_decrease_quant	= 250;
 	m_decrease_factor		= .95f;
@@ -47,6 +46,10 @@ void CSoundMemoryManager::reinit				()
 
 void CSoundMemoryManager::reload				(LPCSTR section)
 {
+	m_min_sound_threshold	= 0.05f;
+	if (!pSettings->line_exist(section,"sound_threshold"))
+		return;
+	m_min_sound_threshold	= pSettings->r_float(section,"sound_threshold");
 }
 
 #define SILENCE
