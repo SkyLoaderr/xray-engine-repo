@@ -20,9 +20,9 @@ struct CPositionComponent {
 		);
 	}
 };
-vertex_type_add(CPositionComponent)
-#undef final_vertex_type_list
-#define final_vertex_type_list current_vertex_type_list(CPositionComponent)
+object_type_add(CPositionComponent)
+#undef final_object_type_list
+#define final_object_type_list current_object_type_list(CPositionComponent)
 
 struct CDiffuseComponent {
 	DWORD  diffuse; //  diffuse vertex color
@@ -34,9 +34,9 @@ struct CDiffuseComponent {
 		);
 	}
 };
-vertex_type_add(CDiffuseComponent)
-#undef final_vertex_type_list
-#define final_vertex_type_list current_vertex_type_list(CDiffuseComponent)
+object_type_add(CDiffuseComponent)
+#undef final_object_type_list
+#define final_object_type_list current_object_type_list(CDiffuseComponent)
 
 struct CFirstTCComponent {
 	float  u, v;    //  1st texture coordinate set
@@ -49,9 +49,9 @@ struct CFirstTCComponent {
 		);
 	}
 };
-vertex_type_add(CFirstTCComponent)
-#undef final_vertex_type_list
-#define final_vertex_type_list current_vertex_type_list(CFirstTCComponent)
+object_type_add(CFirstTCComponent)
+#undef final_object_type_list
+#define final_object_type_list current_object_type_list(CFirstTCComponent)
 
 struct CSecondTCComponent {
 	float  u2, v2;      //  2nd texture coordinate set
@@ -64,9 +64,9 @@ struct CSecondTCComponent {
 		);
 	}
 };
-vertex_type_add(CSecondTCComponent)
-#undef final_vertex_type_list
-#define final_vertex_type_list current_vertex_type_list(CSecondTCComponent)
+object_type_add(CSecondTCComponent)
+#undef final_object_type_list
+#define final_object_type_list current_object_type_list(CSecondTCComponent)
 
 struct CNormalComponent {
 	float  nx, ny, nz;  // normal
@@ -80,9 +80,9 @@ struct CNormalComponent {
 		);
 	}
 };
-vertex_type_add(CNormalComponent)
-#undef final_vertex_type_list
-#define final_vertex_type_list current_vertex_type_list(CNormalComponent)
+object_type_add(CNormalComponent)
+#undef final_object_type_list
+#define final_object_type_list current_object_type_list(CNormalComponent)
 
 struct VertexA : 
 	public CPositionComponent,
@@ -101,9 +101,9 @@ struct VertexA :
 	}
 };
 
-vertex_type_add(VertexA)
-#undef final_vertex_type_list
-#define final_vertex_type_list current_vertex_type_list(VertexA)
+object_type_add(VertexA)
+#undef final_object_type_list
+#define final_object_type_list current_object_type_list(VertexA)
 
 struct VertexB : 
 	public CPositionComponent,
@@ -123,42 +123,42 @@ struct VertexB :
 		);
 	}
 };
-vertex_type_add(VertexB)
-#undef final_vertex_type_list
-#define final_vertex_type_list current_vertex_type_list(VertexB)
+object_type_add(VertexB)
+#undef final_object_type_list
+#define final_object_type_list current_object_type_list(VertexB)
 
 struct VertexC : public VertexB
 {
 	IC			VertexC	() {}
 	IC			VertexC	(float _x, float _y, float _z) {x = _x; y = _y; z = _z;}
 };
-vertex_type_add(VertexC)
-#undef final_vertex_type_list
-#define final_vertex_type_list current_vertex_type_list(VertexC)
+object_type_add(VertexC)
+#undef final_object_type_list
+#define final_object_type_list current_object_type_list(VertexC)
 
 struct VertexD : public VertexB
 {
 	IC			VertexD	() {}
 	IC			VertexD	(float _x, float _y, float _z) {x = _x; y = _y; z = _z;}
 };
-vertex_type_add(VertexD)
-#undef final_vertex_type_list
-#define final_vertex_type_list current_vertex_type_list(VertexD)
+object_type_add(VertexD)
+#undef final_object_type_list
+#define final_object_type_list current_object_type_list(VertexD)
 
 struct VertexE : public VertexB
 {
 	IC			VertexE	() {}
 	IC			VertexE	(float _x, float _y, float _z) {x = _x; y = _y; z = _z;}
 };
-vertex_type_add(VertexE)
-#undef final_vertex_type_list
-#define final_vertex_type_list current_vertex_type_list(VertexE)
+object_type_add(VertexE)
+#undef final_object_type_list
+#define final_object_type_list current_object_type_list(VertexE)
 
 struct VertexF : public VertexB
 {
 	IC			VertexF	() {}
 	IC			VertexF	(float _x, float _y, float _z) {x = _x; y = _y; z = _z;}
 };
-vertex_type_add(VertexF)
-#undef final_vertex_type_list
-#define final_vertex_type_list current_vertex_type_list(VertexF)
+object_type_add(VertexF)
+#undef final_object_type_list
+#define final_object_type_list current_object_type_list(VertexF)

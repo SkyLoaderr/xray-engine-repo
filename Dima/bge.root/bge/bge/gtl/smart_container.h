@@ -151,9 +151,9 @@ namespace Loki {
 #endif
 };
 
-#define final_vertex_type_list			Loki::NullType
-#define vertex_type_add(a)				typedef Loki::Typelist<a,final_vertex_type_list> vertex_type_list_##a;
-#define current_vertex_type_list(a)		vertex_type_list_##a
+#define final_object_type_list			Loki::NullType
+#define object_type_add(a)				typedef Loki::Typelist<a,final_object_type_list> object_type_list_##a;
+#define current_object_type_list(a)		object_type_list_##a
 
 #include "smart_container_types.h"
 
@@ -307,10 +307,10 @@ IC	static bool	_try_convert(T1 *&p, T2 &iterator)
 	);
 }
 
-template <typename _vertex_type, typename _container_type = typename core_container::type<_vertex_type>::result>
-class vertex_container {
+template <typename _object_type, typename _container_type = typename core_container::type<_object_type>::result>
+class object_container {
 public:
-	typedef _vertex_type							_vertex_type;
+	typedef _object_type							_object_type;
 	typedef _container_type							_container_type;
 	typedef typename _container_type::value_type	value_type;
 	typedef typename _container_type::iterator		iterator;
@@ -318,11 +318,11 @@ private:
 	mutable _container_type	m_objects;
 
 public:
-	IC				vertex_container	()
+	IC				object_container	()
 	{
 	}
 
-	virtual			~vertex_container	()
+	virtual			~object_container	()
 	{
 		clear		();
 	}
@@ -355,7 +355,7 @@ public:
 		save_data	(m_objects,stream);
 	}
 
-	IC		bool	operator==			(const vertex_container &t) const
+	IC		bool	operator==			(const object_container &t) const
 	{
 		return		(equal(objects(),t.objects()));
 	}
@@ -367,68 +367,68 @@ public:
 };
 
 template <typename _type, typename _base>
-struct vertex_hierarchy_helper : public vertex_container<_type>, public _base
+struct object_hierarchy_helper : public object_container<_type>, public _base
 {
-	using vertex_container<_type>::add;
-	using vertex_container<_type>::remove;
+	using object_container<_type>::add;
+	using object_container<_type>::remove;
 	using _base::add;
 	using _base::remove;
 
-	virtual			~vertex_hierarchy_helper	(){};
+	virtual			~object_hierarchy_helper	(){};
 
 	virtual void	load						(IReader &stream)
 	{
-		vertex_container<_type>::load	(stream);
+		object_container<_type>::load	(stream);
 		_base::load						(stream);
 	}
 
 	virtual void	save						(IWriter &stream)
 	{
-		vertex_container<_type>::save	(stream);
+		object_container<_type>::save	(stream);
 		_base::save						(stream);
 	}
 
-	IC		bool	operator==					(const vertex_hierarchy_helper &t) const
+	IC		bool	operator==					(const object_hierarchy_helper &t) const
 	{
 		return		(
 			((_base&)*this == t) &&
-			((vertex_container<_type>&)*this == t)
+			((object_container<_type>&)*this == t)
 		);
 	}
 
 	IC		void	clear						()
 	{
 		((_base*)this)->clear();
-		((vertex_container<_type>*)this)->clear();
+		((object_container<_type>*)this)->clear();
 	}
 };
 
 template <typename _type>
-struct vertex_hierarchy_helper<_type,Loki::EmptyType> : public vertex_container<_type>, public IPureSerializeObject<IReader,IWriter>
+struct object_hierarchy_helper<_type,Loki::EmptyType> : public object_container<_type>, public IPureSerializeObject<IReader,IWriter>
 {
-	using vertex_container<_type>::add;
-	using vertex_container<_type>::remove;
+	using object_container<_type>::add;
+	using object_container<_type>::remove;
 
-	virtual			~vertex_hierarchy_helper	(){};
+	virtual			~object_hierarchy_helper	(){};
 
 	virtual void	load						(IReader &stream)
 	{
-		vertex_container<_type>::load	(stream);
+		object_container<_type>::load	(stream);
 	}
 
 	virtual void	save						(IWriter &stream)
 	{
-		vertex_container<_type>::save	(stream);
+		object_container<_type>::save	(stream);
 	}
 
-	IC		bool	operator==					(const vertex_hierarchy_helper &t) const
+	IC		bool	operator==					(const object_hierarchy_helper &t) const
 	{
-		return		((vertex_container<_type>&)*this == t);
+		return		((object_container<_type>&)*this == t);
 	}
 
 	IC		void	clear						()
 	{
-		((vertex_container<_type>*)this)->clear();
+		((object_container<_type>*)this)->clear();
 	}
 };
 
@@ -454,13 +454,14 @@ template <typename type_list>
 struct _container : 
 	public hierarchy_generator<
 		type_list,
-		vertex_hierarchy_helper
+		object_hierarchy_helper
 	>::result
 {
 	typedef typename hierarchy_generator<
 		type_list,
-		vertex_hierarchy_helper
+		object_hierarchy_helper
 	>::result inherited;
+
 	template <typename Type>
 	struct derived {
 		template <typename T>
@@ -518,8 +519,8 @@ struct _container :
 			template <typename T>
 			IC	bool		init	(const T *holder)
 			{
-				m_iterator	= holder->container((vertex_container<_type>*)0)->objects().begin();
-				m_end		= holder->container((vertex_container<_type>*)0)->objects().end();
+				m_iterator	= holder->container((object_container<_type>*)0)->objects().begin();
+				m_end		= holder->container((object_container<_type>*)0)->objects().end();
 				m_used		= false;
 				if (!_base::init(holder)) {
 					if (m_iterator == m_end)
@@ -534,7 +535,7 @@ struct _container :
 			IC	bool		init	(const T *holder, bool end_iterator)
 			{
 				_base::init	(holder,end_iterator);
-				m_iterator	= m_end	= holder->container((vertex_container<_type>*)0)->objects().end();
+				m_iterator	= m_end	= holder->container((object_container<_type>*)0)->objects().end();
 				m_used		= true;
 				return		(false);
 			}
@@ -599,8 +600,8 @@ struct _container :
 			template <typename T>
 			IC	bool		init	(const T *holder)
 			{
-				m_iterator	= holder->container((vertex_container<_type>*)0)->objects().begin();
-				m_end		= holder->container((vertex_container<_type>*)0)->objects().end();
+				m_iterator	= holder->container((object_container<_type>*)0)->objects().begin();
+				m_end		= holder->container((object_container<_type>*)0)->objects().end();
 				if (m_iterator != m_end) {
 					setup_value	(m_current,m_iterator);
 					return		(true);
@@ -612,7 +613,7 @@ struct _container :
 			template <typename T>
 			IC	bool		init	(const T *holder, bool end_iterator)
 			{
-				m_iterator	= m_end	= holder->container((vertex_container<_type>*)0)->objects().end();
+				m_iterator	= m_end	= holder->container((object_container<_type>*)0)->objects().end();
 				return		(false);
 			}
 
@@ -862,4 +863,7 @@ struct _container :
 	}
 };
 
-typedef _container<Loki::TL::NoDuplicates<final_vertex_type_list>::Result> smart_container;
+template <typename type_list>
+struct _smart_container : public _container<typename Loki::TL::NoDuplicates<type_list>::Result> {};
+
+typedef _smart_container<final_object_type_list> smart_container;

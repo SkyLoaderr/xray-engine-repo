@@ -2475,16 +2475,24 @@
 				Name="randoms"
 				>
 				<Filter
-					Name="32"
+					Name="uniform"
 					>
-					<File
-						RelativePath=".\gtl\random32.cpp"
+					<Filter
+						Name="32"
 						>
-					</File>
-					<File
-						RelativePath=".\gtl\random32.h"
-						>
-					</File>
+						<File
+							RelativePath=".\gtl\random32.cpp"
+							>
+						</File>
+						<File
+							RelativePath=".\gtl\random32.h"
+							>
+						</File>
+					</Filter>
+				</Filter>
+				<Filter
+					Name="normal"
+					>
 				</Filter>
 			</Filter>
 			<Filter
@@ -2530,6 +2538,62 @@
 					RelativePath=".\gtl\smart_container_types.h"
 					>
 				</File>
+			</Filter>
+			<Filter
+				Name="object_factory"
+				>
+			</Filter>
+			<Filter
+				Name="registry_container"
+				>
+			</Filter>
+			<Filter
+				Name="quad_tree"
+				>
+				<File
+					RelativePath=".\gtl\quadtree.h"
+					>
+				</File>
+				<File
+					RelativePath=".\gtl\quadtree_inline.h"
+					>
+				</File>
+			</Filter>
+			<Filter
+				Name="graph"
+				>
+				<File
+					RelativePath=".\gtl\graph_abstract.h"
+					>
+				</File>
+				<File
+					RelativePath=".\gtl\graph_abstract_inline.h"
+					>
+				</File>
+				<Filter
+					Name="vertex"
+					>
+					<File
+						RelativePath=".\gtl\graph_vertex.h"
+						>
+					</File>
+					<File
+						RelativePath=".\gtl\graph_vertex_inline.h"
+						>
+					</File>
+				</Filter>
+				<Filter
+					Name="edge"
+					>
+					<File
+						RelativePath=".\gtl\graph_edge.h"
+						>
+					</File>
+					<File
+						RelativePath=".\gtl\graph_edge_inline.h"
+						>
+					</File>
+				</Filter>
 			</Filter>
 		</Filter>
 	</Files>
