@@ -1027,21 +1027,21 @@ void xrGraphPoint::UPDATE_Write		(NET_Packet& P)				{}
 void xrGraphPoint::FillProp			(LPCSTR pref, PropItemVec& items)
 {
     CInifile *Ini 					= 0;
-    if(loc_base_ids.empty()||loc_aux_ids.empty()||level_ids.empty()){
+    if(locations[0].empty()||locations[1].empty()||locations[2].empty()||locations[3].empty()||level_ids.empty()){
 	    string256 gm_name			= "game.ltx";
     	Engine.FS.m_GameRoot.Update	(gm_name);
     	R_ASSERT2(Engine.FS.Exist(gm_name),"Couldn't find file 'game.ltx'");
 		Ini							= xr_new<CInifile>(gm_name);
     }
     for (int i=0; i<LOCATION_TYPE_COUNT; i++)
-		if(m_tLocations[i].empty()){
+		if(locations[i].empty()){
 			string256					caSection, T;
 			strconcat					(caSection,SECTION_HEADER,itoa(i,T,10))
 			R_ASSERT					(Ini->SectionExists(caSection));
 			LPCSTR						N,V;
 			for (u32 k = 0; Ini->ReadLINE(caSection,k,&N,&V); k++) {
-   				m_tLocations[i].push_back(TokenValue4::Item());
-				TokenValue4::Item& val	= m_tLocations[i].back();
+   				locations[i].push_back(TokenValue4::Item());
+				TokenValue4::Item& val	= locations[i].back();
 				val.str					= V;
 				val.ID					= atoi(N);
 			}
