@@ -299,7 +299,9 @@ bool	CActor::isAccelerated			(u32 mstate)
 
 bool CActor::CanAccelerate			()
 {
-	bool can_accel = !m_PhysicMovementControl->PHCapture()&&!(mstate_real&mcBack)&&
+	bool can_accel = 
+		!m_PhysicMovementControl->PHCapture() &&
+		(!(mstate_real&mcBack) || psActorFlags.test(AF_RUN_BACKWARD)) &&
 		!m_bZoomAimingMode;
 
 	return can_accel;
