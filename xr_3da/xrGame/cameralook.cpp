@@ -1,7 +1,7 @@
 #include "stdafx.h"
 #pragma hdrstop
 
-#include "..\GameFont.h"
+#include "../GameFont.h"
 #include "CameraLook.h"
 
 //////////////////////////////////////////////////////////////////////
@@ -17,8 +17,8 @@ CCameraLook::CCameraLook(CObject* p, CInifile* ini, LPCSTR section, u32 flags ) 
 	lim_zoom			= ini->r_fvector2	(section,"lim_zoom");
 	rot_speed			= ini->r_fvector3	(section,"rot_speed");
 	dist				= (lim_zoom[0]+lim_zoom[1])*0.5f;
-	bClampPitch			= (lim_pitch[0]!=0)||(lim_pitch[1]!=0);
-	bClampYaw			= (lim_yaw[0]!=0)||(lim_yaw[1]!=0);
+	bClampPitch			= (0!=lim_pitch[0])||(0!=lim_pitch[1]);
+	bClampYaw			= (0!=lim_yaw[0])||(0!=lim_yaw[1]);
 	prev_d				= 0;
 	if (bClampPitch)	pitch = (lim_pitch[0]+lim_pitch[1])*0.5f;
 	if (bClampYaw)		yaw	  = (lim_yaw[0]+lim_yaw[1])*0.5f;
@@ -28,7 +28,7 @@ CCameraLook::~CCameraLook()
 {
 }
 
-void CCameraLook::Update(Fvector& point, Fvector& noise_dangle)
+void CCameraLook::Update(Fvector& point, Fvector& /**noise_dangle/**/)
 {
 	vPosition.set		(point);
 	Fmatrix mR;

@@ -14,8 +14,8 @@ CCameraFirstEye::CCameraFirstEye(CObject* p, CInifile* ini, LPCSTR section, u32 
 	lim_pitch			= ini->r_fvector2	(section,"lim_pitch");
 	lim_yaw				= ini->r_fvector2	(section,"lim_yaw");
 	rot_speed			= ini->r_fvector3	(section,"rot_speed");
-	bClampPitch			= (lim_pitch[0]!=0)||(lim_pitch[1]!=0);
-	bClampYaw			= (lim_yaw[0]!=0)||(lim_yaw[1]!=0);
+	bClampPitch			= (0!=lim_pitch[0])||(0!=lim_pitch[1]);
+	bClampYaw			= (0!=lim_yaw[0])||(0!=lim_yaw[1]);
 	if (bClampPitch)	pitch = (lim_pitch[0]+lim_pitch[1])*0.5f;
 	if (bClampYaw)		yaw	  = (lim_yaw[0]+lim_yaw[1])*0.5f;
 }

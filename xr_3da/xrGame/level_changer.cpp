@@ -43,7 +43,7 @@ BOOL CLevelChanger::net_Spawn	(LPVOID DC)
 
 	feel_touch.clear			();
 	
-	for (u32 i=0; i < l_tpALifeLevelChanger->shapes.size(); i++) {
+	for (u32 i=0; i < l_tpALifeLevelChanger->shapes.size(); ++i) {
 		CSE_Shape::shape_def	&S = l_tpALifeLevelChanger->shapes[i];
 		switch (S.type) {
 			case 0 : {

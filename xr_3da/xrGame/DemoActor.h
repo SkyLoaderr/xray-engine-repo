@@ -37,7 +37,7 @@ public:
 	virtual void		shedule_Update	( u32 DT );
 
 	// virtual
-	virtual void		HitSignal		(int HitAmount,Fvector& vLocalDir,CEntity* E, s16 element) {};
+	virtual void		HitSignal		(int /**HitAmount/**/,Fvector& /**vLocalDir/**/,CEntity* /**E/**/, s16 /**element/**/) {};
 	virtual void		Die				(){};
 	virtual void		g_fireParams	(Fvector& P, Fvector& D);
 };

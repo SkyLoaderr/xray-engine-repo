@@ -139,6 +139,6 @@ void CRadioactiveZone::UpdateCL()
 	//inherited::Update(dt);
 }
 
-void CRadioactiveZone::Postprocess(f32 val) 
+void CRadioactiveZone::Postprocess(f32 /**val/**/) 
 {
 }

@@ -1,7 +1,7 @@
 #ifndef __CAMERALOOK_H__
 #define __CAMERALOOK_H__
 
-#include "..\CameraBase.h"
+#include "../CameraBase.h"
 
 class CCameraLook	: public CCameraBase
 {

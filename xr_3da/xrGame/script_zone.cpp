@@ -49,7 +49,7 @@ BOOL CScriptZone::net_Spawn	(LPVOID DC)
 
 	feel_touch.clear			();
 
-	for (u32 i=0; i < l_tpALifeScriptZone->shapes.size(); i++) {
+	for (u32 i=0; i < l_tpALifeScriptZone->shapes.size(); ++i) {
 		CSE_Shape::shape_def	&S = l_tpALifeScriptZone->shapes[i];
 		switch (S.type) {
 			case 0 : {
@@ -134,7 +134,7 @@ void CScriptZone::OnRender()
 	xr_vector<CCF_Shape::shape_def> &l_shapes = ((CCF_Shape*)CFORM())->Shapes();
 	xr_vector<CCF_Shape::shape_def>::iterator l_pShape;
 	
-	for(l_pShape = l_shapes.begin(); l_pShape != l_shapes.end(); l_pShape++) 
+	for(l_pShape = l_shapes.begin(); l_shapes.end() != l_pShape; ++l_pShape) 
 	{
 		switch(l_pShape->type)
 		{

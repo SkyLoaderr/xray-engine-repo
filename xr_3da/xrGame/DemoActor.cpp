@@ -1,9 +1,9 @@
 #include "stdafx.h"
 #include "CameraFirstEye.h"
-#include "..\environment.h"
+#include "../environment.h"
 
 #include "DemoActor.h"
-#include "..\ObjectAnimator.h"
+#include "../ObjectAnimator.h"
 
 //////////////////////////////////////////////////////////////////////
 // Construction/Destruction
@@ -49,7 +49,7 @@ void CDemoActor::shedule_Update(u32 DT)
 	if (IsMyCamera()) UpdateCamera();
 }
 
-void CDemoActor::PlayDemo(const char* name)
+void CDemoActor::PlayDemo(const char* /**name/**/)
 {
 /*
 

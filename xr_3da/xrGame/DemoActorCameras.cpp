@@ -1,6 +1,6 @@
 #include "stdafx.h"
 #include "DemoActor.h"
-#include "..\CameraBase.h"
+#include "../CameraBase.h"
 
 void CDemoActor::UpdateCamera()
 {

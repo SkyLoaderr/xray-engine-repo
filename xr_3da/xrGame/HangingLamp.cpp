@@ -2,7 +2,7 @@
 #pragma hdrstop
 
 #include "HangingLamp.h"
-#include "..\LightAnimLibrary.h"
+#include "../LightAnimLibrary.h"
 #include "PhysicsShell.h"
  
 //////////////////////////////////////////////////////////////////////
@@ -151,7 +151,7 @@ void CHangingLamp::AddElement(CPhysicsElement* root_e, int id)
 	}
 
 	CBoneData& BD		= K->LL_GetData(u16(id));
-	for (vecBonesIt it=BD.children.begin(); it!=BD.children.end(); it++){
+	for (vecBonesIt it=BD.children.begin(); BD.children.end() != it; ++it){
 		AddElement		(E,(*it)->SelfID);
 	}
 }
