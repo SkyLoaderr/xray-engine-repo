@@ -21,7 +21,7 @@
 #ifdef _LW_PLUGIN
 	#include <lwhost.h>
 	extern "C" LWMessageFuncs	*g_msg;
-	void ELogCallback(LPCSTR txt)
+	void __stdcall ELogCallback(LPCSTR txt)
 	{
 //		g_msg->info(string,0);
 	}

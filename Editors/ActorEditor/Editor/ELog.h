@@ -15,7 +15,7 @@ public:
 	int 		DlgMsg 	(TMsgDlgType mt, TMsgDlgButtons btn, LPCSTR _Format, ...);
 };
 
-void __stdcall ELogCallback(LPCSTR string);
+void __stdcall ELogCallback(LPCSTR txt);
 
 extern CLog ELog;
 
