@@ -426,7 +426,7 @@ void CWeapon::UpdateCL		()
 {
 	inherited::UpdateCL		();
 
-	if (Remote())
+	if (Remote() && NET.size())
 	{
 		// distinguish interpolation/extrapolation
 		DWORD	dwTime		= Level().timeServer()-NET_Latency;
