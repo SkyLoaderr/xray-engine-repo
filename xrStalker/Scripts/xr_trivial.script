@@ -508,7 +508,7 @@ function stalker_novice3_action:__init (name, storage) super (nil, name)
     self.a            = storage
     self.a.curState   = walk
     self.a.time       = device():time_global()
-  self.b        = {}
+    self.b        = {}
     self.b.speak_time = self.a.time
     self.b.time_stand = self.a.time
     self.b.stand      = false
@@ -529,7 +529,7 @@ function stalker_novice3_action:initialize ()
     self.object:enable_talk()
     self:init_state_walk()
     self.b.time_speak = device():time_global() - 60000
---    self.object:set_item             ( object.deactivate, self.object:best_weapon() )
+    self.object:set_item             ( object.deactivate, self.object:best_weapon() )
 end
 ---------------------------------------------------------------------------------------------------------------------
 function stalker_novice3_action:execute ()
@@ -606,16 +606,16 @@ function stalker_novice3_action:init_state_walk()
     self.object:set_patrol_path      ( self.a.path, patrol.nearest, patrol.continue, true )
     self.object:set_path_type        ( game_object.patrol_path )
     self.object:set_sight            ( look.path_dir, nil, 0 )
---    self.object:set_item             ( object.deactivate, self.object:best_weapon() )
+    self.object:set_item             ( object.deactivate, self.object:best_weapon() )
 end
 ---------------------------------------------------------------------------------------------------------------------
 function stalker_novice3_action:init_state_actor()
     local pos = level.actor():position()
     pos.y  = pos.y + 1.6
 
-  self.object:clear_animations  ()
+  	self.object:clear_animations  ()
     self.object:set_sight      (look.point, pos, 0)
-  self.object:set_movement_type   (move.stand)
+  	self.object:set_movement_type   (move.stand)
     self.a.curState        = say_hello
     self.a.time         = device():time_global() + 1000
     self.b.speak_time  = device():time_global() + 5000
@@ -624,11 +624,11 @@ end
 function stalker_novice3_action:state_actor()
   --Условия окончания работы этого состояния
     if(level.actor() == nil) then
-      self:init_state_walk()
+      	self:init_state_walk()
         return
     end
     if(distance_between(self.object, level.actor()) > 45 and
-       self.object:see(level.actor()) == false) then
+       	self.object:see(level.actor()) == false) then
         self:init_state_walk()
         return
     end
@@ -638,8 +638,8 @@ function stalker_novice3_action:state_actor()
     end
 
     if(self.a.curState == say_hello) then
-      if(self.object:active_sound_count() == 0 and self.object:is_body_turning() ) then
-            self.phrase       = math.random(1, 4)
+ 		if(self.object:active_sound_count() == 0 and self.object:is_body_turning() ) then
+            self.phrase       = math.random(0, 3)
             xr_sounds.play_sound_rnd    (self.object, 0, 1, "trivial", 4, 2, self.phrase)
             self.a.curState    = wait_actor
             self.b.speak_time  = device():time_global() + 5000
@@ -653,7 +653,7 @@ function stalker_novice3_action:state_actor()
             xr_sounds.play_sound_rnd    (self.object, 1000, 1500, "trivial", 4,2, self.phrase)
             self.a.curState    = wait_actor
             self.b.speak_time  = device():time_global() + 5000
-    end
+    	end
     end
 
 --  if(self.b.talk and self.object:is_talking() == false) then
@@ -670,17 +670,17 @@ function stalker_novice3_action:state_actor()
 --      return
 --    end
 
---    local pos = level.actor():position()
---    pos.y  = pos.y + 1.6
+    local pos = level.actor():position()
+    pos.y  = pos.y + 1.6
 
-    self.object:set_sight           (look.point, level.actor(), 0)
+    self.object:set_sight           (look.point, pos, 0)
     self.object:set_mental_state    (anim.free)
 end
 ---------------------------------------------------------------------------------------------------------------------
 function stalker_novice3_action:select_phrase()
-    local rnd = math.random(1, 4)
+    local rnd = math.random(0, 3)
     while(rnd == self.phrase) do
-       rnd = math.random(1, 4)
+       rnd = math.random(0, 3)
     end
     self.phrase = rnd
 end
