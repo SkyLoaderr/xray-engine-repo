@@ -296,13 +296,22 @@ int CUIXml::GetNodesNum(XML_NODE* node, LPCSTR  tag_name)
 {
 	if(node == NULL) return 0;
 
-	XML_NODE *el = node->FirstChild(tag_name);
+	XML_NODE *el = NULL;
+
+	if (!tag_name)
+		el = node->FirstChild();
+	else
+		el = node->FirstChild(tag_name);
+
 	int result = 0;
 
 	while (el)
 	{
 		++result;
-		el = el->NextSibling(tag_name);
+		if (!tag_name)
+			el = el->NextSibling();
+		else
+			el = el->NextSibling(tag_name);
 	}
 	
 	return result;
@@ -371,6 +380,36 @@ LPCSTR CUIXml::CheckUniqueAttrib (XML_NODE* start_node,
 
 	return NULL;
 }
+
+//////////////////////////////////////////////////////////////////////////
+
+XML_ATTRIBUTE * CUIXml::QueryForAttrib(XML_NODE *node, int attribIdx)
+{
+	R_ASSERT(node);
+
+	XML_ELEM * elem = node->ToElement();
+	R_ASSERT(elem);
+
+	XML_ATTRIBUTE * attrib = elem->FirstAttribute();
+	int idx = 0;
+
+	while (!attrib && idx < attribIdx)
+	{
+		attrib = attrib->Next();
+	}
+
+	return attrib;
+}
+
+//////////////////////////////////////////////////////////////////////////
+
+CUIXml::AttribPair CUIXml::QueryAttribData(XML_ATTRIBUTE *attrib)
+{
+	R_ASSERT(attrib);
+	return std::make_pair(attrib->Name(), attrib->Value());
+}
+
+//////////////////////////////////////////////////////////////////////////
 
 BOOL APIENTRY DllMain( HANDLE hModule, 
                        u32  ul_reason_for_call, 

@@ -8,8 +8,6 @@
 #include "../HUDManager.h"
 #include "../level.h"
 
-#include <string.h>
-
 //////////////////////////////////////////////////////////////////////
 // Construction/Destruction
 //////////////////////////////////////////////////////////////////////
@@ -148,12 +146,40 @@ void CUIStatic::AddLetter(char letter)
 		buf_str[word_length-1] = letter;
 	}
 }
+
+//////////////////////////////////////////////////////////////////////////
+
 //прочитать цвет r,g,b
 u32 CUIStatic::ReadColor(int pos, int& r, int& g, int& b)
 {
 	char buf[12];
 	u32 symbols_to_copy;
 	u32 str_offset = 0;
+	const char * const	clDefault	= "default";
+
+	// Try default color first
+	if (strstr(static_cast<char*>(m_str + pos), clDefault)== m_str + pos)
+	{
+		u32 cl = GetTextColor();
+		r = (cl >> 16) & 0xff;
+		g = (cl >> 8) & 0xff;
+		b = cl & 0xff;
+		return xr_strlen(clDefault);
+
+	}
+
+	// Try predefined colors
+	for (CUIXmlInit::ColorDefs_it it = CUIXmlInit::m_ColorDefs.begin(); it != CUIXmlInit::m_ColorDefs.end(); ++it)
+	{
+		if (strstr(static_cast<char*>(m_str + pos), *it->first) == m_str + pos)
+		{
+			r = (it->second >> 16) & 0xff;
+			g = (it->second >> 8) & 0xff;
+			b = it->second  & 0xff;
+
+			return xr_strlen(it->first);
+		}
+	}
 
 	if(xr_strlen(m_str)-pos>11)
 		symbols_to_copy = 11;
@@ -214,52 +240,18 @@ u32 CUIStatic::ReadColor(int pos, int& r, int& g, int& b)
 	return str_offset;
 }
 
-
-
-	//strcpy(buf_str, m_str);
-
-/*
-	char seps[]   = " \t\n";
-    char *token;
-
-	int token_length;
-	int space_length = (int)GetFont()->SizeOf(" ");
-
-    token = strtok( buf_str, seps );
-    while( NULL != token )
-    {
-	   token_length=(int)GetFont()->SizeOf(token);
-
- 	   if(curretX+token_length<GetWidth())
-	   {
-			outX = curretX;
-			outY = curretY;
-			curretX += token_length + space_length;
-	   }
-	   else
-	   {
-		   //перейти на новую строку
-		   curretX = token_length + space_length;
-   		   curretY += (int)GetFont()->CurrentHeight();
-
-   		   outX = 0;
-		   outY = curretY;
-
-	   }
-
-	    GetFont()->Out((float)rect.left+outX, (float)rect.top+outY,  token);
-
-		// Get next token: 
-		token = strtok( NULL, seps );
-    }*/
+//////////////////////////////////////////////////////////////////////////
 
 void CUIStatic::TextureClipper(int offset_x, int offset_y, RECT* pClipRect)
 {
 	TextureClipper(offset_x, offset_y, pClipRect, m_UIStaticItem);
 }
 
+//////////////////////////////////////////////////////////////////////////
 //offset_x и offset_y - для смещения самой текстуры 
 //относительно окна CUIStatic (используется для центрирования текстур)
+//////////////////////////////////////////////////////////////////////////
+
 void CUIStatic::TextureClipper(int offset_x, int offset_y, RECT* pClipRect,
 							   CUIStaticItem& UIStaticItem)
 {
@@ -595,6 +587,8 @@ void CUIStatic::DrawString(const RECT &rect)
 			{
 				if(m_str[i+1]== 'c')
 				{
+					// First of all try to applying predefined colors
+
 					int r,g,b;
 					u32 offset = ReadColor(i+2, r,g,b);
 

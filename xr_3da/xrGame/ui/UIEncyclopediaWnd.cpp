@@ -153,14 +153,14 @@ void CUIEncyclopediaWnd::AddArticle(ARTICLE_INDEX article_index)
 		pos = group.find('/');
 		if (pos != std::string::npos)
 		{
-			oneLevel.assign(group, 0, pos - 1);
+			oneLevel.assign(group, 0, pos);
 			ref_str str(oneLevel.c_str());
 			groupTree.push_back(CStringTable()(str));
 			group.erase(0, pos + 1);
 		}
 		else
 		{
-			groupTree.push_back(group.c_str());
+			groupTree.push_back(CStringTable()(group.c_str()));
 			break;
 		}
 	}
@@ -207,7 +207,7 @@ void CUIEncyclopediaWnd::AddArticle(ARTICLE_INDEX article_index)
 	if (!pTVItemChilds)
 	{
 		pTVItemChilds = xr_new<CUITreeViewItem>();
-		pTVItemChilds->SetText(*CStringTable()(*groupTree.front()));
+		pTVItemChilds->SetText(*groupTree.front());
 		pTVItemChilds->SetFont(m_pTreeRootFont);
 		pTVItemChilds->SetTextColor(m_uTreeRootColor);
 		pTVItemChilds->SetRoot(true);
@@ -248,7 +248,7 @@ CUITreeViewItem * CUIEncyclopediaWnd::AddTreeTail(GroupTree_it it, GroupTree &co
 	{
 		pNewItem = xr_new<CUITreeViewItem>();
 		pItemToIns->AddItem(pNewItem);
-		pNewItem->SetText(*CStringTable()(*(*it2)));
+		pNewItem->SetText(*(*it2));
 		pNewItem->SetFont(m_pTreeRootFont);
 		pNewItem->SetTextColor(m_uTreeRootColor);
 		pNewItem->SetRoot(true);

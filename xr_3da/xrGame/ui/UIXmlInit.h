@@ -93,6 +93,14 @@ public:
 	static int					ApplyAlignX(int coord, u32 align);
 	static int					ApplyAlignY(int coord, u32 align);
 	static void					ApplyAlign(int &x, int &y, u32 align);
+
+	// Initialize and store predefined colors
+	typedef std::pair<ref_str, int> ColorMap;
+	DEF_VECTOR(ColorDefs, ColorMap);
+	static	ColorDefs m_ColorDefs;
+
+private:
+	static bool m_bColorsInitialized;
 };
 
 #endif // _UI_XML_INIT_H_
