@@ -55,7 +55,7 @@ public:
     void				set_flag			(u8 mask, u8 val)	{if (val)_flags|=mask; else _flags&=~mask;}
     BOOL				test_flag			(u8 mask)			{return BOOL(_flags&mask);}
 
-    void				set_count			(u32 cnt){_count=cnt;}
+    void				set_count			(u32 cnt){VERIFY(cnt); _count=cnt;}
     u32					get_count			(){return (u32(_count)&0x00FFFFFF);}
 
 	float				GetLength			(){ return float(_count)*SAMPLE_SPF; }
