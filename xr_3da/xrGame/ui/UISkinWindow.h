@@ -7,10 +7,8 @@
 
 #pragma once
 
-#include "UIWindow.h"
 #include "UIStatic.h"
 #include "UIFrameWindow.h"
-#include "xrXMLParser.h"
 #include "UIXmlInit.h"
 
 #include "UIInventoryUtilities.h"

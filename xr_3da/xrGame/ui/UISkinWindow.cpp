@@ -9,9 +9,6 @@
 #include "UISkinWindow.h"
 #include "../UI.h"
 #include "UISkinSelector.h"
-//#include "../game_cl_deathmatch.h"
-//#include"../hudmanager.h"
-//#include"../level.h"
 
 const int BORDER = 30;
 
