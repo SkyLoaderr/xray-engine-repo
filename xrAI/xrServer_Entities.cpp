@@ -1434,7 +1434,7 @@ xr_token po_types[]={
 };
 void	xrSE_PhysicObject::FillProp		(LPCSTR pref, PropItemVec& values) {
 	inherited::FillProp		(pref,values);
-	PHelper.CreateToken		(values,	PHelper.PrepareKey(pref,"Type"), &s_gameid,	po_types, 1);
+	PHelper.CreateToken		(values,	PHelper.PrepareKey(pref,s_name,"Type"), &s_gameid,	po_types, 1);
 }
 #endif
 
@@ -1511,6 +1511,8 @@ xrServerEntity*	F_entity_Create		(LPCSTR caSection)
 	case CLSID_OBJECT_W_WALTHER:	return xr_new<xrSE_Weapon>			(caSection);
 	case CLSID_OBJECT_W_USP45:		return xr_new<xrSE_Weapon>			(caSection);
 	case CLSID_OBJECT_W_GROZA:		return xr_new<xrSE_Weapon>			(caSection);
-}
+    case CLSID_OBJECT_PHYSIC:		return xr_new<xrSE_PhysicObject>	(caSection);
+    default: NODEFAULT;
+	}
 	return 0;
 }
