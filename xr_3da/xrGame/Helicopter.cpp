@@ -204,19 +204,16 @@ void CHelicopter::Load(LPCSTR section)
 	ref_str expl_snd					= pSettings->r_string	(section,"explode_sound");
 	m_explodeSound.create(TRUE,*expl_snd);
 
-
 //lighting
-	m_light_render			= ::Render->light_create();
-	m_light_render->set_shadow  (false);
-	m_light_render->set_type	(IRender_Light::POINT);
-	m_light_render->set_range	(pSettings->r_float(section,"light_range"));
+	m_light_range=pSettings->r_float(section,"light_range");
 	m_light_brightness = pSettings->r_float(section,"light_brightness");
-	Fcolor clr = pSettings->r_fcolor(section,"light_color");
-	clr.a = 1.f;
-	clr.mul_rgb				    (m_light_brightness);
-	m_light_render->set_color	(clr);
-	ref_str l_anim = pSettings->r_string	(section,"light_color_animmator");
-	m_lanim					= LALib.FindItem(*l_anim);
+
+	m_light_color			= pSettings->r_fcolor(section,"light_color");
+	m_light_color.a			= 1.f;
+	m_light_color.mul_rgb	(m_light_brightness);
+	m_l_anim				= pSettings->r_string	(section,"light_color_animmator");
+	m_lanim					= LALib.FindItem(*m_l_anim);
+
 
 }
 
@@ -332,6 +329,14 @@ BOOL CHelicopter::net_Spawn(LPVOID	DC)
 	XFORM().getHPB(m_currBodyH, m_currBodyP, m_currBodyB);
 
     m_movMngr.init		(this);
+
+//lighting
+	m_light_render			= ::Render->light_create();
+	m_light_render->set_shadow  (false);
+	m_light_render->set_type	(IRender_Light::POINT);
+	m_light_render->set_range	(m_light_range);
+	m_light_render->set_color	(m_light_color);
+
 
 	return				(TRUE);
 }

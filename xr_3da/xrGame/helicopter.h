@@ -129,6 +129,9 @@ protected:
 	CLAItem*						m_lanim;
 	u16								m_light_bone;
 	float							m_light_brightness;
+	float							m_light_range;
+	Fcolor							m_light_color;
+	ref_str							m_l_anim;
 
 	CHelicopterMovManager			m_movMngr;
 
