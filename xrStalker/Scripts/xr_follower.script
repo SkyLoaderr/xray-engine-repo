@@ -61,7 +61,7 @@ function evaluator_leader_present:get_leader ()
     local t = xr_gulag.fraction[gulag]:getJob (self.object)
     if t ~= nil and t.leader ~= nil then 
        local id = xr_gulag.fraction[gulag]:idStalkerOnJob (t.leader)
-       if id ~= -1 then 
+       if id ~= nil and id ~= -1 then 
           printf ("LEADER ID IS %d", id) 
           return id
        end   
