@@ -198,6 +198,30 @@ void	IReader::r	(void *p,int cnt)
 	advance		(cnt);
 };
 
+IC BOOL			is_term		(char a) { return (a==13)||(a==10); };
+void	IReader::r_string	(char *dest)
+{
+	char *src = (char *) data;
+	while (!eof()) {
+		if (is_term(src[Pos])) {
+			*dest = 0;
+			Pos++;
+			if (!eof() && is_term(src[Pos])) Pos++;
+			return;
+		}
+		*dest++ = src[Pos++];
+	}
+	*dest	=	0;
+};
+void	IReader::r_stringZ	(char *dest)
+{
+	char *src = (char *) data;
+	while ((src[Pos]!=0) && (!eof())) *dest++ = src[Pos++];
+	*dest	=	0;
+	Pos		++;
+};
+
+
 //---------------------------------------------------
 // temp stream
 CTempReader::~CTempReader()

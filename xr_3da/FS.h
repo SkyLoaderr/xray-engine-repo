@@ -116,7 +116,6 @@ protected:
 			return ((p%16)+1)*16 - p;
 		} return 0;
 	}
-	IC BOOL			is_term		(char a) const	{ return (a==13)||(a==10); };
 public:
 	IReader			()
 	{
@@ -140,27 +139,9 @@ public:
 	
 	void			r			(void *p,int cnt);
 
-	IC void			r_string	(char *dest)
-	{
-		char *src = (char *) data;
-		while (!eof()) {
-			if (is_term(src[Pos])) {
-				*dest = 0;
-				Pos++;
-				if (!eof() && is_term(src[Pos])) Pos++;
-				return;
-			}
-			*dest++ = src[Pos++];
-		}
-		*dest	=	0;
-	};
-	IC void			r_stringZ	(char *dest)
-	{
-		char *src = (char *) data;
-		while ((src[Pos]!=0) && (!eof())) *dest++ = src[Pos++];
-		*dest	=	0;
-		Pos		++;
-	};
+	void			r_string	(char *dest);
+	void			r_stringZ	(char *dest);
+
 #ifdef _EDITOR
 	IC void			r_stringZ	(AnsiString& dest)
 	{
