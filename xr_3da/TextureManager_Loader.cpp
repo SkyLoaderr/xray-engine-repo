@@ -214,7 +214,7 @@ void	CShaderManager::OnDeviceCreate	(CStream* FS)
 			float			s;
 
 			CInifile::Item& item		= *I;
-			sscanf			(item.second,"%s,%f",T,&s);
+			sscanf			(item.second,"%[^,],%f",T,&s);
 
 			// Search or create matrix
 			M[0]			= 0;
@@ -237,9 +237,9 @@ void	CShaderManager::OnDeviceCreate	(CStream* FS)
 			}
 
 			// 
-			D.T				= xr_strdup		(T);
-			D.M				= xr_strdup		(M);
-			LPSTR N			= xr_strdup(item.first);
+			D.T				= xr_strdup	(T);
+			D.M				= xr_strdup	(M);
+			LPSTR N			= xr_strdup	(item.first);
 			td.insert		(make_pair(N,D));
 		}
 	}
