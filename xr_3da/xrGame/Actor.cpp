@@ -501,7 +501,10 @@ void CActor::g_cl_ValidateMState(DWORD mstate_wf)
 	}
 	// закончить прыжок
 	if (mstate_real&mcJump)
-		if (Movement.gcontact_Was)	mstate_real &= ~mcJump;
+		if (Movement.gcontact_Was)	{
+			m_bJumpInProgress	=	FALSE;
+			mstate_real			&= ~mcJump;
+		}
 	if ((mstate_wf&mcJump)==0)	m_bJumpKeyPressed = FALSE;
 
 	// Зажало-ли меня/уперся - не двигаюсь
