@@ -91,6 +91,8 @@ public:
 	{
 		return textures	[stage];
 	}
+	IC	R_constant_array&			get_ConstantCache_Vertex	()			{ return constants.a_vertex;	}
+	IC	R_constant_array&			get_ConstantCache_Pixel		()			{ return constants.a_pixel;		}
 
 	// API
 	IC	void						set_xform			(u32 ID, const Fmatrix& M);

@@ -202,6 +202,8 @@ void	CDetailManager::hw_Render_dump		(R_constant* x_array, u32 var_id, u32 lod_i
 		{
 			// Setup matrices + colors (and flush it as nesessary)
 			RCache.set_Element			(Object.shader->E[lod_id]);
+			u32			c_base			= x_array->vs.index;
+			Fvector4*	c_storage		= RCache.get_ConstantCache_Vertex().get_array_f().access(c_base);
 
 			u32 dwBatch	= 0;
 			for (u32 item = 0; item<vis.size(); item++)
@@ -212,24 +214,26 @@ void	CDetailManager::hw_Render_dump		(R_constant* x_array, u32 var_id, u32 lod_i
 				// Build matrix ( 3x4 matrix, last row - color )
 				float		scale		= Instance.scale_calculated;
 				Fmatrix&	M			= Instance.mRotY;
-				RCache.set_ca			(x_array,		base+0,		M._11*scale,	M._21*scale,	M._31*scale,	M._41	);
-				RCache.set_ca			(x_array,		base+1,		M._12*scale,	M._22*scale,	M._32*scale,	M._42	);
-				RCache.set_ca			(x_array,		base+2,		M._13*scale,	M._23*scale,	M._33*scale,	M._43	);
+				c_storage[base+0].set	(M._11*scale,	M._21*scale,	M._31*scale,	M._41	);
+				c_storage[base+1].set	(M._12*scale,	M._22*scale,	M._32*scale,	M._42	);
+				c_storage[base+2].set	(M._13*scale,	M._23*scale,	M._33*scale,	M._43	);
 
 				// Build color
 				Fvector C;
 				C.set					(c_ambient);
 				C.mad					(c_lmap,Instance.c_rgb);
 				C.mad					(c_hemi,Instance.c_hemi);
-				C.mad					(c_sun,Instance.c_sun);
-				RCache.set_ca			(x_array,		base+3,		C.x,			C.y,			C.z,			1.f		);
+				C.mad					(c_sun,	Instance.c_sun);
+				c_storage[base+3].set	(C.x,			C.y,			C.z,			1.f		);
 
 				dwBatch	++;
 				if (dwBatch == hw_BatchSize)	{
 					// flush
-					Device.Statistic.RenderDUMP_DT_Count	+= dwBatch;
+					Device.Statistic.RenderDUMP_DT_Count					+=	dwBatch;
 					u32 dwCNT_verts			= dwBatch * Object.number_vertices;
 					u32 dwCNT_prims			= (dwBatch * Object.number_indices)/3;
+					RCache.get_ConstantCache_Vertex().b_dirty				=	TRUE;
+					RCache.get_ConstantCache_Vertex().get_array_f().dirty	(c_base,c_base+dwBatch*4);
 					RCache.Render			(D3DPT_TRIANGLELIST,vOffset, 0,dwCNT_verts,iOffset,dwCNT_prims);
 
 					// restart
@@ -243,6 +247,8 @@ void	CDetailManager::hw_Render_dump		(R_constant* x_array, u32 var_id, u32 lod_i
 				Device.Statistic.RenderDUMP_DT_Count	+= dwBatch;
 				u32 dwCNT_verts			= dwBatch * Object.number_vertices;
 				u32 dwCNT_prims			= (dwBatch * Object.number_indices)/3;
+				RCache.get_ConstantCache_Vertex().b_dirty				=	TRUE;
+				RCache.get_ConstantCache_Vertex().get_array_f().dirty	(c_base,c_base+dwBatch*4);
 				RCache.Render			(D3DPT_TRIANGLELIST,vOffset,0,dwCNT_verts,iOffset,dwCNT_prims);
 			}
 

@@ -35,6 +35,10 @@ public:
 	ALIGN(16)	t_b					c_b;
 	BOOL							b_dirty;
 public:
+	t_f&					get_array_f		()	{ return c_f;	}
+	t_i&					get_array_i		()	{ return c_i;	}
+	t_b&					get_array_b		()	{ return c_b;	}
+
 	void					set		(R_constant* C, R_constant_load& L, const Fmatrix& A)
 	{
 		VERIFY		(RC_float == C->type);
@@ -128,7 +132,7 @@ public:
 
 class	ENGINE_API R_constants
 {
-private:
+public:
 	ALIGN(16)	R_constant_array	a_pixel;
 	ALIGN(16)	R_constant_array	a_vertex;
 

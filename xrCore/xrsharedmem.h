@@ -10,7 +10,7 @@ struct		XRCORE_API	smem_value
 	u32					dwReference		;
 	u32					dwCRC			;
 	u32					dwLength		;
-	u8					value		[]	;
+	ALIGN(16)	u8		value		[]	;
 };
 // generic predicate for "less"
 IC bool					smem_sort		(const smem_value* A, const smem_value* B)	{
