@@ -22,21 +22,21 @@ typedef unsigned int  uint;
 
 #pragma pack(4)
 typedef struct tagTNode {
-	int			ucOpenCloseMask:1;
-	int			iIndex:31;
-	float		f;
-	float		g;
-	float		h;
-	tagTNode	*tpNext;
-	tagTNode	*tpForward;
-	tagTNode	*tpBack;
-	tagTNode	*tpOpenedNext;
-	tagTNode	*tpOpenedPrev;
+	int		ucOpenCloseMask:8;
+	int		iIndex:24;
+	float	f;
+	float	g;
+	float	h;
+	WORD 	tpNext;
+	WORD	tpForward;
+	WORD	tpBack;
+	WORD	tpOpenedNext;
+	WORD	tpOpenedPrev;
 } TNode;
 
 typedef struct tagTIndexNode {
-	TNode *tpNode;
-	DWORD dwTime;
+	WORD	tpNode;
+	WORD	dwTime;
 } TIndexNode;
 #pragma pack()
 
