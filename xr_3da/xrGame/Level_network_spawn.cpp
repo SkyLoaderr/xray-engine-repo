@@ -11,7 +11,7 @@ void CLevel::g_cl_Spawn		(LPCSTR name, u8 rp, u16 flags)
 	// Fill
 	strcpy				(E->s_name,name);
 	strcpy				(E->s_name_replace,"");
-	E->s_gameid			=	u8(Game());
+	E->s_gameid			=	u8(Game.type);
 	E->s_RP				=	rp;
 	E->ID				=	0xffff;
 	E->ID_Parent		=	0xffff;

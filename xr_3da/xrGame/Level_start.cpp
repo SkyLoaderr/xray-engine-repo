@@ -37,8 +37,11 @@ BOOL CLevel::net_Start	( LPCSTR name, BOOL server )
 	if (bResult) 
 	{
 		u16	spawn_flags					= M_SPAWN_OBJECT_ACTIVE  | M_SPAWN_OBJECT_LOCAL | M_SPAWN_OBJECT_ASPLAYER;
-		switch (Game())
+		switch (Game.type)
 		{
+		default:
+			Device.Fatal	("Unknown game type");
+			break;
 		case GAME_SINGLE:
 			// Already spawned actor on server
 			break;
@@ -65,7 +68,7 @@ BOOL CLevel::net_Start	( LPCSTR name, BOOL server )
 				// Fill
 				strcpy				(A->s_name,"actor");
 				strcpy				(A->s_name_replace,"");
-				A->s_gameid			=	u8(Game());
+				A->s_gameid			=	u8(Game.type);
 				A->s_team			=	u8(0);
 				E->s_RP				=	0xff;
 
