@@ -337,7 +337,7 @@ void CRender::flush_Patches	()
 	svector<int,max_patches>	groups;
 	ShaderElement*				cur_S=vecPatches[0].S;
 	int							cur_count=0;
-	float						scale	= getTarget()->get_width();
+	float						scale	= float	(getTarget()->get_width());
 	for (DWORD i=0; i<vecPatches.size(); i++)
 	{
 		// sort out redundancy
@@ -353,7 +353,7 @@ void CRender::flush_Patches	()
 		FVF::TL			TL;
 		TL.transform	(P.P,Device.mFullTransform);
 		if (P.nearer)	TL.p.z*=0.04f;
-		float size		= Device.dwWidth * P.size / TL.p.w;
+		float size		= scale * P.size / TL.p.w;
 		
 		// Convert to screen coords
 		float cx        = Device._x2real(TL.p.x);
