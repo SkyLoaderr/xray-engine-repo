@@ -63,6 +63,7 @@ void CAI_Stalker::OnEvent		(NET_Packet& P, u16 type)
 			}
 			break;
 		}
+		case GE_TRADE_SELL :
 		case GE_OWNERSHIP_REJECT : {
 			// Log			("CActor::OnEvent - REJECT - : ", *cName());
 			P.r_u16		(id);

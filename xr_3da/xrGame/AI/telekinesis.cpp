@@ -1,6 +1,7 @@
 #include "stdafx.h"
 #include "telekinesis.h"
 #include "../entity_alive.h"
+#include "../PhysicsShell.h"
 
 
 CTelekinesis::CTelekinesis()
@@ -137,7 +138,10 @@ void CTelekinesis::PhDataUpdate(dReal step)
 
 bool RemovePred(CTelekineticObject &tele_object)
 {
-	return (!tele_object.get_object() || tele_object.get_object()->getDestroy());
+	return (!tele_object.get_object() || 
+			tele_object.get_object()->getDestroy() ||
+			!tele_object.get_object()->m_pPhysicsShell ||
+			!tele_object.get_object()->m_pPhysicsShell->bActive);
 }
 
 void  CTelekinesis::PhTune(dReal step)

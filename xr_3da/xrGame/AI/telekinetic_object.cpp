@@ -96,6 +96,9 @@ void CTelekineticObject::keep()
 	//float elem_size = float(object->m_pPhysicsShell->Elements().size());
 	dir.mul(5.0f);
 
+	VERIFY(object);
+	VERIFY(object->m_pPhysicsShell);
+	VERIFY(object->m_pPhysicsShell->bActive);
 	(object->m_pPhysicsShell->Elements()[0])->applyGravityAccel(dir);
 
 	// установить время последнего обновления
@@ -106,6 +109,11 @@ void CTelekineticObject::release()
 {
 	Fvector dir_inv;
 	dir_inv.set(0.f,-1.0f,0.f);
+
+	VERIFY(object);
+	VERIFY(object->m_pPhysicsShell);
+	VERIFY(object->m_pPhysicsShell->bActive);
+
 
 	// включить гравитацию
 	object->m_pPhysicsShell->set_ApplyByGravity(TRUE);
