@@ -151,7 +151,6 @@ public:
 		DATA			= _DATA;
 		y_start			= _y_start;
 		y_end			= _y_end;
-		Start			();
 	}
 	virtual void		Execute	()
 	{
@@ -306,31 +305,11 @@ void CBuild::ImplicitLighting()
 		}
 
 		// Start threads
-		ImplicitThread*	THP	[NUM_THREADS];
-		DWORD	stride		= defl.Height()/NUM_THREADS;
+		CThreadManager			tmanager;
+		DWORD	stride			= defl.Height()/NUM_THREADS;
 		for (DWORD thID=0; thID<NUM_THREADS; thID++)
-			THP[thID]	= new ImplicitThread(thID,&defl,thID*stride,thID*stride+stride);
-
-		// Wait for completition
-		for (;;)
-		{
-			Sleep(500);
-
-			float	sumProgress=0;
-			DWORD	sumComplete=0;
-			for (DWORD ID=0; ID<NUM_THREADS; ID++)
-			{
-				sumProgress += THP[ID]->thProgress;
-				sumComplete	+= THP[ID]->thCompleted?1:0;
-			}
-
-			Progress(sumProgress/float(NUM_THREADS));
-			if (sumComplete == NUM_THREADS)	break;
-		}
-		
-		// Delete threads
-		for (thID=0; thID<NUM_THREADS; thID++)
-			_DELETE(THP[thID]);
+			tmanager.start		(new ImplicitThread(thID,&defl,thID*stride,thID*stride+stride));
+		tmanager.wait			();
 
 		// Expand
 		Status	("Processing lightmap...");
