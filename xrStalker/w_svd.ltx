@@ -23,22 +23,18 @@ ammo_class				= ammo_7.62x54_7h1, ammo_7.62x54_ap, ammo_7.62x54_7h14
 
 ;-----------------------------------------------------------------------------------
 ;базовая дисперсия
-fire_dispersion_base		= 0.025 ;угол (в градусах) базовой дисперсии оружия (оружия зажатого в тисках)
-
+fire_dispersion_base			= 0.025 ;угол (в градусах) базовой дисперсии оружия (оружия зажатого в тисках)
+	
 ;отдача
-cam_relax_speed         	= 4.0	;скорость возврата в исходное положение
-cam_dispersion          	= 3.0	;увеличения угла (в градусах) с каждым выстрелом
-cam_max_angle				= 10	;максимальный угол отдачи
-cam_max_angle_horz	= 5.0	;(degree) maximum shot horizontal degree 
-cam_step_angle_horz	= 0.5	;(degree) size of step camera moved in horizontal position while shooting
-
-;;;destroy it
-cam_horz_prob = 1			;probability of the horizontal deviation of effector while shooting (1 – always deviates)
-cam_horz_factor = 1.5		; empirically determined coefficient  of the horizontal deviation (if raises – dispersal raises) 
+cam_relax_speed         		= 4.0	;скорость возврата в исходное положение
+cam_dispersion          		= 3.0	;увеличения угла (в градусах) с каждым выстрелом
+cam_max_angle					= 10	;максимальный угол отдачи
+cam_max_angle_horz				= 5.0	;(degree) maximum shot horizontal degree 
+cam_step_angle_horz				= 0.5	;(degree) size of step camera moved in horizontal position while shooting
 
 fire_dispersion_condition_factor = 5	;увеличение дисперсии в процентах при максимальном износе 
-misfire_probability 		= 0.0001	;вероятность осечки при максимальном износе 
-condition_shot_dec 			= 0.00003	;увеличение износа при каждом выстреле
+misfire_probability 			= 0.0001	;вероятность осечки при максимальном износе 
+condition_shot_dec 				= 0.00003	;увеличение износа при каждом выстреле
 ;-----------------------------------------------------------------------------------
 
 hand_dependence 		= 2
@@ -53,29 +49,29 @@ inv_weight				= 5.
 
 inv_grid_width			= 6
 inv_grid_height			= 2
-inv_grid_x			= 0
-inv_grid_y			= 0
+inv_grid_x				= 0
+inv_grid_y				= 0
 
 
-immunities_sect		= weapon
+immunities_sect			= weapon
 
 
 
 direction               = 0, 0, 1
 
-fire_point              = 0.0, 0.14, 0.95
+fire_point              = 0.0, 0.129, 0.942
 
 flame_particles		    = weapons\generic_weapon05
 smoke_particles		   	= weapons\generic_shoot_00
 rpm_empty_click 		= 200
 ; ttc
-shell_point		 		= 0.0, 0.15, 0.05
+shell_point		 		= 0.0, 0.129, 0.192	
 shell_dir		 		= 0.0, 0.0, 0.4
 shell_particles	 		= weapons\generic_shells
 
 hit_power               = 95
 hit_impulse		 		= 245
-hit_type = fire_wound
+hit_type 				= fire_wound
 
 fire_distance           = 600
 bullet_speed		 	= 830			;начальная скорость пули
@@ -83,8 +79,8 @@ rpm                     = 200
 ; end ttc
 hud                     = wpn_svd_hud
 normal                  = 0, 1, 0
-position                = -0.03, -0.03, 0.1
-orientation             = -0.0, -12, -5
+position                = -0.026, -0.077, 0.00
+orientation             = 0, 0, 0
 startup_ammo            = 10
 visual                  = weapons\svd\wpn_svd.ogf
 
@@ -110,26 +106,26 @@ zoom_enabled				= true
 zoom_enabled			= true
 scope_zoom_factor	    = 15		;ПСО-1 4X
 
-scope_texture		= wpn\wpn_crosshair
+scope_texture			= wpn\wpn_crosshair
 
 ;звуки
-snd_draw			= weapons\svd_draw
-snd_holster			= weapons\generic_holster
-snd_shoot			= weapons\svd_shoot
-snd_empty			= weapons\gen_empty, 0.5
-snd_reload			= weapons\svd_reload
+snd_draw		= weapons\svd_draw
+snd_holster		= weapons\generic_holster
+snd_shoot		= weapons\svd_shoot
+snd_empty		= weapons\gen_empty, 0.5
+snd_reload		= weapons\svd_reload
 
  
 [wpn_svd_hud]
 
-shell_point		 = -0.05, -0.03, 0.05 ; 0.15, -0.03, 0.05
-shell_dir		 = 0.0, 1.0, 0.0
+shell_point		 		= -0.05, -0.03, 0.05
+shell_dir		 		= 0.0, 1.0, 0.0
 
-fire_point               = 0.2, -0.07, 0.13; 0.3, -0.07, 0.12; 0.3, -0.07, 0.15
-fire_bone                = wpn_body
-orientation              = 0, 0, 0
-position                 = 0, 0, 0
-visual                   = weapons\svd\wpn_svd_hud.ogf
+fire_point              = 0.2, -0.07, 0.13
+fire_bone               = wpn_body
+orientation             = 0, 0, 0
+position                = 0, 0, 0
+visual                  = weapons\svd\wpn_svd_hud.ogf
 
 anim_holster	= holster
 anim_idle		= idle
@@ -140,6 +136,6 @@ anim_holster	= holster
 anim_shoot		= shoot
 
 ;смещения HUD для режима приближения
-zoom_offset			= -0.020000,-0.030000,0.030000
-zoom_rotate_x		= 0.000000
-zoom_rotate_y		= -0.020000
+zoom_offset				= -0.020000,-0.030000,0.030000
+zoom_rotate_x			= 0.000000
+zoom_rotate_y			= -0.020000
