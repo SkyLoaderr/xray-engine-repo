@@ -72,8 +72,10 @@ void CScriptZone::feel_touch_delete	(CObject *tpObject)
 {
 	CGameObject					*l_tpGameObject = smart_cast<CGameObject*>(tpObject);
 	
-	if (!l_tpGameObject || l_tpGameObject->getDestroy())
+	if (!l_tpGameObject)
 		return;
+
+	VERIFY						(!l_tpGameObject->getDestroy());
 	
 	SCRIPT_CALLBACK_EXECUTE_2(*m_tpOnExit, lua_game_object(),l_tpGameObject->lua_game_object());
 }
@@ -84,7 +86,9 @@ void CScriptZone::net_Relcase			(CObject *O)
 	if (!l_tpGameObject)
 		return;
 
-	if (std::find(feel_touch.begin(),feel_touch.end(),O) != feel_touch.end()) {
+	xr_vector<CObject*>::iterator	I = std::find(feel_touch.begin(),feel_touch.end(),O);
+	if (I != feel_touch.end()) {
+		feel_touch.erase			(I);
 		SCRIPT_CALLBACK_EXECUTE_2(*m_tpOnExit, lua_game_object(),l_tpGameObject->lua_game_object());
 	}
 }
