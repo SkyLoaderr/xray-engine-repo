@@ -184,10 +184,10 @@ void CSector::Render_objects_s	(CFrustum& F, Fvector& __P, Fmatrix& __X)
 			if (!RImplementation.occ_visible(*P))	continue;
 
 			// Create _new_ frustum and recurse
-			CFrustum			Clip;
-			Clip.CreateFromPortal(P,__P,__X);
-			PORTAL->dwFrame		= RImplementation.marker;
-			PORTAL->bDualRender	= FALSE;
+			CFrustum				Clip;
+			Clip.CreateFromPortal	(P,__P,__X);
+			PORTAL->dwFrame			= RImplementation.marker;
+			PORTAL->bDualRender		= FALSE;
 			pSector->Render_objects_s(Clip,__P,__X);
 		}
 	}
