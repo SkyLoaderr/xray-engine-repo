@@ -117,13 +117,13 @@ void CExplosive::net_Destroy	()
 //проверка на попадание "осколком" по объекту
 float CExplosive::ExplosionEffect(CGameObject* pExpObject,  const Fvector &expl_centre, const float expl_radius, xr_list<s16> &elements, xr_list<Fvector> &bs_positions) 
 {
-	Collide::rq_result RQ;
+	collide::rq_result RQ;
 	Fvector l_pos; 
 	pExpObject->Center(l_pos);
 	Fvector l_dir; 
 	l_dir.sub(l_pos, expl_centre); 
 	l_dir.normalize();
-	if(!Level().ObjectSpace.RayPick(expl_centre, l_dir, expl_radius, Collide::rqtBoth, RQ)) return 0;
+	if(!Level().ObjectSpace.RayPick(expl_centre, l_dir, expl_radius, collide::rqtBoth, RQ)) return 0;
 	//осколок не попал или попал, но не по нам
 	if(pExpObject != RQ.O) return 0;
 
@@ -410,14 +410,14 @@ void CExplosive::renderable_Render		()
 
 void CExplosive::FindNormal(Fvector& normal)
 {
-	Collide::rq_result RQ;
+	collide::rq_result RQ;
 
 	Fvector pos, dir;
 	dir.set(0,-1.f,0);
 	Center(pos);
 
 	BOOL result = Level().ObjectSpace.RayPick(pos, dir, Radius(), 
-											 Collide::rqtBoth, RQ);
+											 collide::rqtBoth, RQ);
 	if(!result || RQ.O)
 		normal.set(0,1,0);
 	//если лежим на статике

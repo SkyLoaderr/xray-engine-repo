@@ -120,21 +120,21 @@ public:
 protected:
 
 	//функция обработки хитов объектов
-	static BOOL __stdcall firetrace_callback(Collide::rq_result& result, LPVOID params);
+	static BOOL __stdcall firetrace_callback(collide::rq_result& result, LPVOID params);
 	//попадание по динамическому объекту
 	void DynamicObjectHit	(SBullet* bullet, const Fvector& end_point, 
-							Collide::rq_result& R, 	u16 target_material);
+							collide::rq_result& R, 	u16 target_material);
 	//попадание по статическому объекту
 	void StaticObjectHit	(SBullet* bullet, const Fvector& end_point, 
-							Collide::rq_result& R, u16 target_material);
+							collide::rq_result& R, u16 target_material);
 	//попадание по любому объекту, на выходе - импульс и сила переданные пулей объекту
 	std::pair<float, float> ObjectHit (SBullet* bullet, const Fvector& end_point, 
-							Collide::rq_result& R, u16 target_material, 
+							collide::rq_result& R, u16 target_material, 
 							const Fvector& hit_normal);
 
 	//отметка на пораженном объекте
 	void FireShotmark		(const SBullet* bullet, const Fvector& vDir, 
-							 const Fvector &vEnd, Collide::rq_result& R, 
+							 const Fvector &vEnd, collide::rq_result& R, 
 							 u16 target_material,
 							 Fvector& vNormal);
 

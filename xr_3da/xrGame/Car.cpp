@@ -1240,14 +1240,14 @@ bool CCar::Use(const Fvector& pos,const Fvector& dir,const Fvector& foot_pos)
 		if(Enter(pos,dir,foot_pos)) return true;
 	}
 	
-	Collide::ray_defs Q(pos, dir, 3.f, 0,Collide::rqtObject);  // CDB::OPT_ONLYFIRST CDB::OPT_ONLYNEAREST
+	collide::ray_defs Q(pos, dir, 3.f, 0,collide::rqtObject);  // CDB::OPT_ONLYFIRST CDB::OPT_ONLYNEAREST
 	if (g_pGameLevel->ObjectSpace.RayQuery(collidable.model,Q))
 	{
-		Collide::rq_results& R = g_pGameLevel->ObjectSpace.r_results;
+		collide::rq_results& R = g_pGameLevel->ObjectSpace.r_results;
 		int y=R.r_count();
 		for (int k=0; k<y; ++k)
 		{
-			Collide::rq_result* I = R.r_begin()+k;
+			collide::rq_result* I = R.r_begin()+k;
 			if(is_Door((u16)I->element,i)) 
 			{
 				bool front=i->second.IsFront(pos,dir);
