@@ -194,7 +194,7 @@ void CActor::Load(CInifile* ini, const char* section )
 	pSounds->Create		(sndStep[0],		FALSE,	strconcat(buf,cName(),"\\stepL"),0,SOUND_TYPE_MONSTER_WALKING_NORMAL_HUMAN);
 	pSounds->Create		(sndStep[1],		FALSE,	strconcat(buf,cName(),"\\stepR"),0,SOUND_TYPE_MONSTER_WALKING_NORMAL_HUMAN);
 	pSounds->Create		(sndLanding,		FALSE,	strconcat(buf,cName(),"\\landing"),0,SOUND_TYPE_MONSTER_FALLING_HUMAN);
-	pSounds->Create		(sndZoneHeart,		FALSE,	"heart\\1");
+	pSounds->Create		(sndZoneHeart,		FALSE,	"heart\\4");
 	pSounds->Create		(sndZoneDetector,	FALSE,	"detectors\\geiger",	TRUE);
 	pSounds->Create		(sndHit[0],			TRUE,	strconcat(buf,cName(),"\\hurt1"),0,SOUND_TYPE_MONSTER_INJURING_HUMAN);
 	pSounds->Create		(sndHit[1],			TRUE,	strconcat(buf,cName(),"\\hurt2"),0,SOUND_TYPE_MONSTER_INJURING_HUMAN);
@@ -396,11 +396,11 @@ void CActor::ZoneEffect	(float z_amount)
 	Fvector				P;
 	clCenter			(P);
 	if (0==sndZoneHeart.feedback)		pSounds->PlayAtPos	(sndZoneHeart,		this,Position(),true);
-	if (0==sndZoneDetector.feedback)	pSounds->PlayAtPos	(sndZoneDetector,	this,Position(),true);
+//	if (0==sndZoneDetector.feedback)	pSounds->PlayAtPos	(sndZoneDetector,	this,Position(),true);
 	sndZoneHeart.feedback->SetVolume			(z_amount);
 	sndZoneHeart.feedback->SetPosition			(P);
-	sndZoneDetector.feedback->SetFrequencyScale	(1+z_amount);
-	sndZoneDetector.feedback->SetPosition		(P);
+//	sndZoneDetector.feedback->SetFrequencyScale	(.1f+z_amount);
+//	sndZoneDetector.feedback->SetPosition		(P);
 }
 
 void CActor::Update	(DWORD DT)
