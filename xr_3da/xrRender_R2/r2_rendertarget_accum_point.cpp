@@ -81,7 +81,7 @@ void CRenderTarget::accum_point_shadow	(light* L)
 	// Constants
 	RCache.set_c					("Ldynamic_pos",	L_pos.x,L_pos.y,L_pos.z,1/(L_R*L_R));
 	RCache.set_c					("Ldynamic_color",	L_clr.x,L_clr.y,L_clr.z,L_spec);
-	RCache.set_c					("m_tex",			m_Tex);
+	RCache.set_c					("m_texgen",		m_Tex);
 	R_constant* _C					= RCache.get_c		("J_point");
 	if (_C)
 	{
@@ -180,7 +180,7 @@ void CRenderTarget::accum_point_unshadow(light* L)
 	// Constants
 	RCache.set_c						("Ldynamic_pos",	L_pos.x,L_pos.y,L_pos.z,1/(L_R*L_R));
 	RCache.set_c						("Ldynamic_color",	L_clr.x,L_clr.y,L_clr.z,L_spec);
-	RCache.set_c						("m_tex",			m_Tex);
+	RCache.set_c						("m_texgen",		m_Tex);
 
 	// Render if (stencil >= light_id && z-pass)
 	RCache.set_Stencil					(TRUE,D3DCMP_LESSEQUAL,dwLightMarkerID,0xff,0x00,D3DSTENCILOP_KEEP,D3DSTENCILOP_KEEP,D3DSTENCILOP_KEEP);
