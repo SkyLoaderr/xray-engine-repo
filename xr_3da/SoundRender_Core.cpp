@@ -135,12 +135,12 @@ void	CSoundRender_Core::play					( sound& S, CObject* O, BOOL bLoop)
 		CSoundRender_Emitter* E = (CSoundRender_Emitter*)S.feedback;
 		E->rewind	();
 	}	
-	else			pSoundRender->Play	(S.handle,&S,bLoop,iLoopCnt);
+	else			i_play	(&S,bLoop);
 }
 void	CSoundRender_Core::play_unlimited		( sound& S, CObject* O, BOOL bLoop)
 {
 	if (!bPresent || 0==S.handle) return;
-	pSoundRender->Play	(S.handle,0,bLoop,iLoopCnt);
+	i_play				(&S,bLoop);
 }
 void	CSoundRender_Core::play_at_pos			( sound& S, CObject* O, const Fvector &pos, BOOL bLoop)
 {
@@ -151,13 +151,13 @@ void	CSoundRender_Core::play_at_pos			( sound& S, CObject* O, const Fvector &pos
 		CSoundRender_Emitter* E = (CSoundRender_Emitter*)S.feedback;
 		E->rewind	();
 	}	
-	else			pSoundRender->Play		(S.handle,&S,bLoop,iLoopCnt);
+	else				i_play				(&S,bLoop);
 	S.feedback->set_position				(pos);
 }
 void	CSoundRender_Core::play_at_pos_unlimited	( sound& S, CObject* O, const Fvector &pos, BOOL bLoop)
 {
 	if (!bPresent || 0==S.handle) return;
-	pSoundRender->Play		(S.handle,0,bLoop,iLoopCnt);
+	i_play						(&S,bLoop);
 	S.feedback->set_position	(pos);
 }
 void	CSoundRender_Core::destroy(sound& S )
@@ -172,5 +172,5 @@ void	CSoundRender_Core::destroy(sound& S )
 		CSoundRender_Emitter* E = (CSoundRender_Emitter*)S.feedback;
 		E->stop					();
 	}
-	i_destroy_source	(S.handle);
+	i_destroy_source	((CSoundRender_Source*)S.handle);
 }

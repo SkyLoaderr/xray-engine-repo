@@ -6,7 +6,9 @@
 CSoundRender_Emitter*	CSoundRender_Core::i_play(sound* S, BOOL _loop )
 {
 	CSoundRender_Emitter*	E	= xr_new<CSoundRender_Emitter>();
-	E->start				(S,S->handle,_loop);
+	E->start				(S,_loop);
+	s_emitters.push_back	(E);
+	return E;
 }
 
 void CSoundRender_Core::OnFrame	()
