@@ -1267,6 +1267,7 @@ void __fastcall TProperties::tvPropertiesItemChange(TObject *Sender,
 		PropItem* prop 			= (PropItem*)Item->Tag;
 	    if (prop){
         	prop->m_Flags.set	(PropItem::flCBChecked,Item->Checked);
+            prop->OnChange		();
 			Modified			();
     	}
 	    tvProperties->Refresh	();

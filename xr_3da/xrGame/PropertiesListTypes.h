@@ -212,6 +212,11 @@ public:
     	for (PropValueIt it=values.begin(); it!=values.end(); it++)
         	if ((*it)->OnAfterEditEvent) 	(*it)->OnAfterEditEvent(*it,edit_val);
     }
+	IC void				OnChange		()
+    {
+    	for (PropValueIt it=values.begin(); it!=values.end(); it++)
+        	if ((*it)->OnChangeEvent) 	(*it)->OnChangeEvent(*it);
+    }
 	IC void				OnClick			()
     {
     	if (OnClickEvent)	OnClickEvent(this);

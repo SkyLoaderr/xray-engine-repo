@@ -107,6 +107,7 @@ bool CEditableMesh::LoadMesh(CStream& F){
 
     R_ASSERT(F.FindChunk(EMESH_CHUNK_VERTS));
 	DWORD cnt			= F.Rdword();
+    if (cnt<=3) return false;
     m_Points.resize		(cnt);
     m_Adjs.resize		(cnt);
 	F.Read				(m_Points.begin(), cnt*sizeof(Fvector));
@@ -118,6 +119,7 @@ bool CEditableMesh::LoadMesh(CStream& F){
 
     R_ASSERT(F.FindChunk(EMESH_CHUNK_FACES));
 	m_Faces.resize		(F.Rdword());
+    if (m_Faces.size()==0) return false;
 	F.Read				(m_Faces.begin(), m_Faces.size()*sizeof(st_Face));
 
     R_ASSERT(F.FindChunk(EMESH_CHUNK_VMREFS));
