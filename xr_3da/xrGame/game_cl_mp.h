@@ -5,6 +5,7 @@
 
 class CUIChatWnd;
 class CUIChatLog;
+class CUIGameLog;
 
 struct cl_TeamStruct
 {
@@ -29,6 +30,7 @@ protected:
 
 	CUIChatWnd*						pChatWnd;
 	CUIChatLog*						pChatLog;
+	CUIGameLog*						pGameLog;
 
 	virtual void			LoadTeamData			(char* TeamName);
 	virtual	void			ChatSayTeam				(const shared_str &phrase);
@@ -43,6 +45,8 @@ public :
 	virtual							~game_cl_mp();
 
 	virtual		void				TranslateGameMessage	(u32 msg, NET_Packet& P);
+	virtual		void				CommonMessageOut		(LPCSTR msg);
+
 	virtual		bool				OnKeyboardPress			(int key);
 	virtual		bool				OnKeyboardRelease		(int key);
 

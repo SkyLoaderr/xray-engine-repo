@@ -136,6 +136,16 @@ public:
 	}
 };
 
+class CCC_God	: public CCC_Mask {
+public:
+	CCC_God (LPCSTR N, Flags32* V, u32 M) : CCC_Mask(N, V, M) {};
+	virtual void	Execute	(LPCSTR args)
+	{
+		if (GameID() != GAME_SINGLE)
+			return;
+		CCC_Mask::Execute(args);
+	}
+};
 class CCC_Kill : public IConsole_Command {
 public:
 	CCC_Kill(LPCSTR N) : IConsole_Command(N)  { bEmptyArgsHandled = true; };

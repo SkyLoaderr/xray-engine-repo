@@ -50,7 +50,7 @@ protected:
 
 	//for scripting enhancement
 	virtual		void				TranslateGameMessage	(u32 msg, NET_Packet& P);
-				void				CommonMessageOut		(LPCSTR msg);
+	virtual			void				CommonMessageOut		(LPCSTR msg);
 
 	virtual		float				shedule_Scale			();
 

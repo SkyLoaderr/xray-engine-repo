@@ -8,6 +8,7 @@
 #include "hudmanager.h"
 #include "ui/UIChatWnd.h"
 #include "ui/UIChatLog.h"
+#include "ui/UIGameLog.h"
 #include "clsid_game.h"
 #include <dinput.h>
 #include "UIGameCustom.h"
@@ -16,6 +17,7 @@ game_cl_mp::game_cl_mp()
 {
 	pChatWnd		= NULL;
 	pChatLog		= NULL;
+	pGameLog		= NULL;
 
 	m_bVotingActive = false;
 };
@@ -40,6 +42,11 @@ CUIGameCustom*		game_cl_mp::createGameUI			()
 {
 	pChatLog = xr_new<CUIChatLog>();
 	pChatLog->Init();
+
+	pGameLog = xr_new<CUIGameLog>();
+	pGameLog->Init();
+
+
 	pChatWnd = xr_new<CUIChatWnd>(pChatLog);
 	pChatWnd->Init();
 	pChatWnd->SetOwner(this);
@@ -288,12 +295,15 @@ void game_cl_mp::OnChatMessage			(NET_Packet* P)
 	P->r_stringZ(ChatMsg);
 	
 	Msg("%s : %s", PlayerName, ChatMsg);
-	pChatLog->AddLogMessage(ChatMsg, PlayerName);
+	if (pChatLog) pChatLog->AddLogMessage(ChatMsg, PlayerName);
 };
 
-
+void game_cl_mp::CommonMessageOut		(LPCSTR msg)
+{
+//	if (pChatLog) pChatLog->AddLogMessage(msg, "");
+	if (pGameLog) pGameLog->AddLogMessage(msg);
+};
 //////////////////////////////////////////////////////////////////////////
-
 void game_cl_mp::shedule_Update(u32 dt)
 {
 	inherited::shedule_Update(dt);
@@ -303,6 +313,7 @@ void game_cl_mp::shedule_Update(u32 dt)
 		if (HUD().GetUI()->UIGame())
 		{
 			HUD().GetUI()->UIGame()->AddDialogToRender(pChatLog);
+			HUD().GetUI()->UIGame()->AddDialogToRender(pGameLog);
 			offFlag = true;
 		}
 	}

@@ -10165,6 +10165,16 @@
 						RelativePath=".\ui\UIChatWnd.h">
 					</File>
 				</Filter>
+				<Filter
+					Name="GameLog"
+					Filter="">
+					<File
+						RelativePath=".\ui\UIGameLog.cpp">
+					</File>
+					<File
+						RelativePath=".\ui\UIGameLog.h">
+					</File>
+				</Filter>
 			</Filter>
 		</Filter>
 	</Files>

@@ -14,5 +14,9 @@
 	<chat_log_list x="20" y="280" width="500" height="320" item_height = "18" fade="1000">
 		<font font="letterica18" r="255" g="255" b="255"/>
 	</chat_log_list>
-
+	
+	<!-- GAME LOG -->
+	<game_log_list x="20" y="580" width="500" height="320" item_height = "18" fade="1000">
+		<font font="letterica18" r="255" g="255" b="255"/>
+	</game_log_list>
 </window>
