@@ -18,8 +18,8 @@ struct OGF_Vertex
 {
 	Fvector				P;
 	Fvector				N;		// normal
-	Fvector				T;		// tangent
-	Fvector				B;		// binormal
+	base_basis			T;		// tangent
+	base_basis			B;		// binormal
 	base_color			Color;
 	svector<Fvector2,2>	UV;
 

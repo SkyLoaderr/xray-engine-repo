@@ -76,13 +76,13 @@ void CBuild::Flex2OGF()
 					{
 						V[fv].P.set(FF->v[fv]->P);
 						V[fv].N.set(FF->v[fv]->N); 
-						V[fv].T.set(FF->basis_tangent[fv]);
-						V[fv].B.set(FF->basis_binormal[fv]);
-						V[fv].Color=FF->v[fv]->C;
+						V[fv].T		= FF->basis_tangent[fv];
+						V[fv].B		= FF->basis_binormal[fv];
+						V[fv].Color	= FF->v[fv]->C;
 					}
 					
 					// Normal order
-					svector<_TCF,8>::iterator TC=FF->tc.begin(); 
+					svector<_TCF,2>::iterator TC=FF->tc.begin(); 
 					for (;TC!=FF->tc.end(); TC++)
 					{
 						V[0].UV.push_back(TC->uv[0]);
