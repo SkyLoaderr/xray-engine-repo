@@ -696,7 +696,7 @@ void xrSE_Rat::FillProp(LPCSTR pref, PropItemVec& items)
 {
    	inherited::FillProp(pref, items);
 	// model
-    PHelper.CreateGameObject(items,PHelper.PrepareKey(pref,s_name,"Model"), &caModel, sizeof(caModel));
+    PHelper.CreateGameObject(items,PHelper.PrepareKey(pref,s_name,"Model"), caModel, sizeof(caModel));
 /*	FILL_PROP_EX(values, PHelper.PrepareKey(pref,s_name),								"Model",				&caModel,						PHelper.CreateGameObject(sizeof(caModel)));
 	// personal characteristics
    	FILL_PROP_EX(values, PHelper.PrepareKey(pref,PHelper.PrepareKey(s_name,"Personal")),"Field of view",		&fEyeFov,						PHelper.CreateFloat(0,170,10));
