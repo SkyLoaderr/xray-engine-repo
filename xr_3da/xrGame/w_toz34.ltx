@@ -28,9 +28,9 @@ fire_dispersion_base		= 0.12  ;угол (в градусах) базовой дисперсии оружия (оружи
 
 ;отдача
 cam_relax_speed         	= 4.0	;скорость возврата в исходное положение
-cam_dispersion          	= 3.0	;увеличения угла (в градусах) с каждым выстрелом
+cam_dispersion          	= 4.0	;увеличения угла (в градусах) с каждым выстрелом
 cam_max_angle				= 8		;максимальный угол отдачи
-cam_horz_prob				= 0.35	;вероятность отклонения по горизонтали эффектора во время стрельбы (1 - всегда отклоняется)
+cam_horz_prob				= 1		;вероятность отклонения по горизонтали эффектора во время стрельбы (1 - всегда отклоняется)
 cam_horz_factor				= 2.5	;импирический коэффициент отклонения по горизонтали (чем больше, тем сильнее разброс)
 
 
@@ -66,9 +66,9 @@ hit_power        			= 75
 hit_impulse      			= 210
 hit_type 					= fire_wound
 
-fire_distance            = 200
-bullet_speed			 = 300			;начальная скорость пули
-rpm                      = 150
+fire_distance            	= 100
+bullet_speed			 	= 300			;начальная скорость пули
+rpm                      	= 150
 ; end ttc
 
 hud                      = wpn_shotgun_hud
@@ -98,7 +98,7 @@ silencer_status				= 0
 grenade_launcher_status		= 0
 
 zoom_enabled				= true
-scope_zoom_factor	    = 55	;30
+scope_zoom_factor	    	= 55
 
 ;звуки
 snd_draw			= weapons\generic_draw
