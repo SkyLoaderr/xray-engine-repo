@@ -2,6 +2,8 @@
 #include "xrServer.h"
 #include "entity.h"
 
+// EDITOR, NETWORK, SAVE, LOAD, DEMO
+
 class xrSE_Teamed : public xrServerEntity
 {
 public:
@@ -25,6 +27,72 @@ public:
 		P.w_u8				(s_squad);
 		P.w_u8				(s_group);
 	}
+};
+
+class xrSE_Dummy : public xrServerEntity
+{
+protected:
+	enum SStyle{
+		esAnimated			=1<<0,	
+		esModel				=1<<1, 
+		esParticles			=1<<2, 
+		esSound				=1<<3,
+		esRelativePosition	=1<<4
+	};
+protected:
+	u8						s_style;
+	char*					s_Animation;
+	char*					s_Model;
+	char*					s_Particles;
+	char*					s_Sound;
+public:
+	~xrSE_Dummy()
+	{
+		_FREE				(s_Animation	);
+		_FREE				(s_Model		);
+		_FREE				(s_Particles	);
+		_FREE				(s_Sound		);
+	}
+
+	virtual void			STATE_Read			(NET_Packet& P, u16 size)
+	{
+		P.r_u8				(s_style);
+
+		if (style&esAnimated)		{
+			// Load animator
+			string256				fn;
+			P.r_string				(fn);
+			s_Animation				= strdup(fn);
+		}
+		if (style&esModel)			{
+			// Load model
+			string256				fn;
+			P.r_string				(fn);
+			s_Model					= strdup(fn);
+		}
+		if (style&esParticles)		{
+			// Load model
+			string256				fn;
+			P.r_string				(fn);
+			s_Particles				= strdup(fn);
+		}
+		if (style&esSound)			{
+			// Load model
+			string256				fn;
+			P.r_string				(fn);
+			s_Sound					= strdup(fn);
+		}
+	}
+	virtual void			STATE_Write			(NET_Packet& P)
+	{
+		P.w_u8				(s_style		);
+		P.w_string			(s_Animation	);
+		P.w_string			(s_Model		);
+		P.w_string			(s_Particles	);
+		P.w_string			(s_Sound		);
+	}
+	virtual void			UPDATE_Read			(NET_Packet& P)	{};
+	virtual void			UPDATE_Write		(NET_Packet& P)	{};
 };
 
 class xrSE_Car : public xrSE_Teamed

@@ -31,9 +31,9 @@ CDummyObject::~CDummyObject	()
 
 void CDummyObject::Load		(LPCSTR section)
 {
-	/*
 	inherited::Load			(section);
 
+	/*
 	if (pSettings->LineExists(section,"motions")){
 		style			|= esAnimated;
 	}

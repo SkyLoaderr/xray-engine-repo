@@ -82,6 +82,12 @@ M_SPAWN
 		u8			g_team;			// user defined
 		u8			g_squad;		// user defined
 		u8			g_group;		// user defined
+
+		weapons
+		{	weapon0	{
+				name
+			}
+		}
 	}
 	dummy
 	{
