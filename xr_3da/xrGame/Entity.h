@@ -76,38 +76,37 @@ public:
 	CEntity				();
 	virtual ~CEntity	();
 
-	virtual void		Load				(CInifile* ini, LPCSTR section);
-	virtual BOOL		Spawn				(BOOL bLocal, int server_id, int team, int squad, int group, Fvector& o_pos, Fvector& o_angle, NET_Packet& P);
-	virtual float		OnVisible			();
+	virtual void			Load				(CInifile* ini, LPCSTR section);
+	virtual BOOL			Spawn				(BOOL bLocal, int server_id, Fvector& o_pos, Fvector& o_angle, NET_Packet& P, u16 flags);
+	virtual float			OnVisible			();
 
-	bool				IsFocused			()	{ return (pCreator->CurrentEntity()==this);		}
-	bool				IsMyCamera			()	{ return (pCreator->CurrentViewEntity()==this);	}
+	bool					IsFocused			()	{ return (pCreator->CurrentEntity()==this);		}
+	bool					IsMyCamera			()	{ return (pCreator->CurrentViewEntity()==this);	}
 
-	int					g_Armor				()	{ return iArmor;  }
-	int					g_Health			()	{ return iHealth; }
+	int						g_Armor				()	{ return iArmor;  }
+	int						g_Health			()	{ return iHealth; }
 
-	int					g_Team				()	{ return id_Team;  }
-	int					g_Squad				()	{ return id_Squad; }
-	int					g_Group				()	{ return id_Group; }
+	int						g_Team				()	{ return id_Team;  }
+	int						g_Squad				()	{ return id_Squad; }
+	int						g_Group				()	{ return id_Group; }
 
 	// Health calculations
-	virtual	BOOL		Hit					(int iLost, Fvector &dir, CEntity* who);	// TRUE if died
-	virtual	BOOL		Sense				(int iHear, Fvector &dir, CEntity* who);	// TRUE if died
-	virtual void		HitSignal			(int HitAmount, Fvector& local_dir, CEntity* who) = 0;
-	//virtual void		SenseSignal			(int SenseAmount, Fvector& local_dir, CEntity* who) = 0;
-	virtual void		Cure				(int iCnt)	{ iHealth+=iCnt;}
-	virtual void		Die					() = 0;
+	virtual	BOOL			Hit					(int iLost, Fvector &dir, CEntity* who);	// TRUE if died
+	virtual	BOOL			Sense				(int iHear, Fvector &dir, CEntity* who);	// TRUE if died
+	virtual void			HitSignal			(int HitAmount, Fvector& local_dir, CEntity* who) = 0;
+	virtual void			Cure				(int iCnt)	{ iHealth+=iCnt;}
+	virtual void			Die					() = 0;
 
 	// Team visibility
-	virtual void		GetVisible			(objVisible& R)	{};
+	virtual void			GetVisible			(objVisible& R)	{};
 
 	// Fire control
-	virtual void		g_fireParams		(Fvector& P, Fvector& D)			= 0;
-	virtual void		g_cl_fireStart		( )					{;}
-	virtual void		g_sv_fireStart		(NET_Packet* P)		{;}
-	virtual void		g_fireEnd			( )					{;}
+	virtual void			g_fireParams		(Fvector& P, Fvector& D)			= 0;
+	virtual void			g_cl_fireStart		( )					{;}
+	virtual void			g_sv_fireStart		(NET_Packet* P)		{;}
+	virtual void			g_fireEnd			( )					{;}
 
-	virtual BOOL		TakeItem			( DWORD CID ) { return FALSE; }
+	virtual BOOL			TakeItem			( DWORD CID ) { return FALSE; }
 };
 
 #endif // !defined(AFX_ENTITY_H__A2C7300B_20F0_4521_90D3_E883BEF837FE__INCLUDED_)

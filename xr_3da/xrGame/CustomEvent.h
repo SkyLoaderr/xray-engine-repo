@@ -36,14 +36,16 @@ public:
 	CCustomEvent();
 	virtual ~CCustomEvent();
 
-	virtual void						Load					( CInifile* ini, const char * section );
-
+	virtual void			Load				( CInifile* ini, const char * section );
+	virtual BOOL			Spawn				( BOOL bLocal, int server_id, Fvector& o_pos, Fvector& o_angle, NET_Packet& P, u16 flags );
+	
+	
 	// Update
-	virtual void						Update					( DWORD dt );
+	virtual void			Update				( DWORD dt );
 
 	// Collision
-	virtual void						OnNear					( CObject* near   );
-	virtual void						OnRender				( );
+	virtual void			OnNear				( CObject* near   );
+	virtual void			OnRender			( );
 };
 
 #endif // !defined(AFX_CUSTOMEVENT_H__092059D7_D2E8_4BC3_95C5_F2B3D48AAE5C__INCLUDED_)

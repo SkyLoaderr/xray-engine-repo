@@ -16,20 +16,20 @@ public:
 	BOOL								bActive;		// was it activated or not - sleeping, not updating, no network messages etc.
 	
 	// Methods
-	virtual BOOL						Spawn			(BOOL bLocal, int server_id, Fvector& o_pos, Fvector& o_angle);
-	virtual void						Sector_Detect	();
-	virtual float						OnVisible		();
+	virtual BOOL			Spawn				(BOOL bLocal, int server_id, Fvector& o_pos, Fvector& o_angle, NET_Packet& P, u16 flags);
+	virtual void			Sector_Detect		();
+	virtual float			OnVisible			();
 
 	// State flags
-	virtual BOOL						net_Relevant	()	{ return net_Local && bActive;	}	// send messages only if active and local
-	virtual BOOL						Ready			()	{ return net_Ready && bActive;	}	// update only if active and fully initialized by/for network
+	virtual BOOL			net_Relevant		()	{ return net_Local && bActive;	}	// send messages only if active and local
+	virtual BOOL			Ready				()	{ return net_Ready && bActive;	}	// update only if active and fully initialized by/for network
 	
 	// Position stack
-	virtual	SavedPosition				ps_Element		(DWORD ID);
+	virtual	SavedPosition	ps_Element			(DWORD ID);
 
 	// Game-specific events
-	virtual void						OnActivate		();
-	virtual void						OnDeactivate	();
+	virtual void			OnActivate			();
+	virtual void			OnDeactivate		();
 
 	CGameObject();
 	virtual ~CGameObject();

@@ -146,7 +146,7 @@ void CEntity::Load(CInifile* ini, const char* section)
 	Movement.ActivateBox	(0);
 }
 
-BOOL CEntity::Spawn		(BOOL bLocal, int server_id, int team, int squad, int group, Fvector& o_pos, Fvector& o_angle, NET_Packet& P)
+BOOL CEntity::Spawn		(BOOL bLocal, int server_id, Fvector& o_pos, Fvector& o_angle, NET_Packet& P, int team, int squad, int group)
 {
 	CGameObject::Spawn		(bLocal,server_id,o_pos,o_angle);
 
