@@ -53,7 +53,7 @@ void CHUDCursor::OnDeviceDestroy()
 	Device.Shader._DeleteVS		(hVS);
 }
 
-IC u32 subst_alpha(u32 val, u8 a){ return (val&0x00FFFFFF)|(a<<24); }
+IC u32 subst_alpha(u32 val, u8 a){ return u32(val&0x00FFFFFF)|u32(a<<24); }
 
 void CHUDCursor::Render()
 {
@@ -103,8 +103,7 @@ void CHUDCursor::Render()
 			if (E && (E->g_Health()>0)) 
 			{
 				if (fuzzyShowInfo>0.5f){
-					subst_alpha	(C,u8(255.f*(fuzzyShowInfo-0.5f)*2.f));
-					F->SetColor	(C);
+					F->SetColor	(subst_alpha(C,u8(255.f*(fuzzyShowInfo-0.5f)*2.f)));
 					F->SetSize	(0.02f);
 					F->SetAligment(CGameFont::alCenter);
 					F->Out		(PT.p.x,PT.p.y+di_size*4,"%s",RQ.O->cName());
