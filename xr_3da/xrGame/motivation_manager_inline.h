@@ -93,7 +93,7 @@ TEMPLATE_SPECIALIZATION
 IC	void CSMotivationManager::remove_motivation	(u32 motivation_id)
 {
 	VERIFY					(graph().vertex(motivation_id));
-	graph().vertex(motivation_id)->data().destroy();
+	graph().vertex(motivation_id)->data()->destroy();
 	graph().vertex(motivation_id)->destroy();
 	graph().remove_vertex	(motivation_id);
 	VERIFY					(!graph().vertex(motivation_id));

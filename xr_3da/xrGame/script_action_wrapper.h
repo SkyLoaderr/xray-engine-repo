@@ -8,8 +8,10 @@
 
 #pragma once
 
-#include "script_action.h"
+#include "action_base.h"
 #include "ai_script_space.h"
+
+typedef CActionBase<CLuaGameObject> CScriptAction;
 
 class CScriptActionWrapper : public CScriptAction {
 public:

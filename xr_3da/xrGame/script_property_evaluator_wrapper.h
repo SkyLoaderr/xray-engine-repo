@@ -8,8 +8,10 @@
 
 #pragma once
 
-#include "script_property_evaluator.h"
+#include "property_evaluator.h"
 #include "ai_script_space.h"
+
+typedef CPropertyEvaluator<CLuaGameObject> CScriptPropertyEvaluator;
 
 class CPropertyEvaluatorWrapper : public CScriptPropertyEvaluator {
 public:

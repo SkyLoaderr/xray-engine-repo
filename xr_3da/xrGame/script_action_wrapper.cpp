@@ -11,7 +11,6 @@
 
 void CScriptActionWrapper::reinit				(CLuaGameObject *object, bool clear_all)
 {
-	
 	luabind::call_member<void>			(m_lua_instance,"reinit",object,clear_all);
 }
 

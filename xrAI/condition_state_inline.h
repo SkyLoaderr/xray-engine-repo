@@ -47,7 +47,7 @@ IC	void CConditionStateAbstract::add_condition	(const COperatorCondition &condit
 }
 
 TEMPLATE_SPECIALIZATION
-IC	void CConditionStateAbstract::remove_condition	(const typename COperatorCondition::_condition_type condition)
+IC	void CConditionStateAbstract::remove_condition	(const typename COperatorCondition::_condition_type &condition)
 {
 	xr_vector<COperatorCondition>::iterator	I = std::lower_bound(m_conditions.begin(),m_conditions.end(),COperatorCondition(condition,COperatorCondition::_value_type(0)));
 	VERIFY					((I != m_conditions.end()) && ((*I).condition() == condition));
@@ -191,6 +191,16 @@ TEMPLATE_SPECIALIZATION
 IC	u32	CConditionStateAbstract::hash_value		() const
 {
 	return					(m_hash);
+}
+
+TEMPLATE_SPECIALIZATION
+IC	const typename CConditionStateAbstract::COperatorCondition *CConditionStateAbstract::property (const typename CConditionStateAbstract::COperatorCondition::_condition_type &condition) const
+{
+	xr_vector<COperatorCondition>::const_iterator	I = std::lower_bound(conditions().begin(),conditions().end(),COperatorCondition(condition,COperatorCondition::_value_type(0)));
+	if (I == m_conditions.end())
+		return				(0);
+	else
+		return				(&*I);
 }
 
 #undef TEMPLATE_SPECIALIZATION

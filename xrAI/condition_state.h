@@ -12,7 +12,7 @@
 
 template <typename _world_property>
 class CConditionState {
-protected:
+public:
 	typedef _world_property						COperatorCondition;
 
 protected:
@@ -25,7 +25,7 @@ public:
 	IC	const xr_vector<COperatorCondition>		&conditions			() const;
 	IC	u8										weight				(const CConditionState &condition) const;
 	IC	void									add_condition		(const COperatorCondition &condition);
-	IC	void									remove_condition	(const typename COperatorCondition::_condition_type condition);
+	IC	void									remove_condition	(const typename COperatorCondition::_condition_type &condition);
 	IC	void									add_condition		(typename xr_vector<COperatorCondition>::const_iterator &J, const COperatorCondition &condition);
 	IC	void									add_condition_back	(const COperatorCondition &condition);
 	IC	bool									includes			(const CConditionState &condition) const;
@@ -35,6 +35,7 @@ public:
 	IC	bool 									operator==			(const CConditionState &condition);
 	IC											operator u32		() const;
 	IC	u32										hash_value			() const;
+	IC	const COperatorCondition				*property			(const typename COperatorCondition::_condition_type &condition) const;
 };
 
 #include "condition_state_inline.h"

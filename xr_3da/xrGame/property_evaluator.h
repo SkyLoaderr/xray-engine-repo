@@ -17,9 +17,9 @@ protected:
 	typedef CGraphEngine::_solver_value_type _value_type;
 
 public:
-						CPropertyEvaluator	();
+						CPropertyEvaluator	(_object_type *object = 0);
 	virtual 			~CPropertyEvaluator	();
-			void		init				();
+			void		init				(_object_type *object);
 	virtual void		reinit				(_object_type *object);
 	virtual void		Load				(LPCSTR section);
 	virtual void		reload				(LPCSTR section);

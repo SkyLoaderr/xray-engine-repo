@@ -142,6 +142,7 @@ void Script::vfExportToLua(CLuaVirtualMachine *tpLuaVM)
 	vfExportArtifactMerger		(tpLuaVM);
 	vfExportMemoryObjects		(tpLuaVM);
 	vfExportActionManagement	(tpLuaVM);
+	vfExportMotivationManagement(tpLuaVM);
 
 #ifdef DEBUG
 	lua_sethook					(tpLuaVM, LuaHookCall,	LUA_HOOKCALL | LUA_HOOKRET | LUA_HOOKLINE | LUA_HOOKTAILRET,	0);

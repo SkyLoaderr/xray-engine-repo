@@ -45,6 +45,11 @@ void CSMotivation::reload			(LPCSTR section)
 }
 
 TEMPLATE_SPECIALIZATION
+void CSMotivation::destroy			()
+{
+}
+
+TEMPLATE_SPECIALIZATION
 float CSMotivation::evaluate		(u32 sub_motivation_id)
 {
 	return				(0.f);

@@ -8,8 +8,11 @@
 
 #pragma once
 
-#include "script_action_planner.h"
+//#include "script_action_planner.h"
+#include "action_planner.h"
 #include "ai_script_space.h"
+
+typedef CActionPlanner<CLuaGameObject> CScriptActionPlanner;
 
 class CScriptActionPlannerWrapper : public CScriptActionPlanner {
 protected:

@@ -26,7 +26,7 @@ class CActionPlanner :
 		u32
 	> 
 {
-protected:
+public:
 	typedef CProblemSolver<
 		CGraphEngine::CWorldProperty,
 		CGraphEngine::CWorldState,
@@ -38,8 +38,6 @@ protected:
 	typedef typename inherited::_edge_type			_action_id_type;
 	typedef CGraphEngine::CWorldProperty			CWorldProperty;
 	typedef CGraphEngine::CWorldState				CWorldState;
-	typedef CWorldProperty::_condition_type			_condition_type;
-	typedef CWorldProperty::_value_type				_value_type;
 
 protected:
 	bool					m_initialized;

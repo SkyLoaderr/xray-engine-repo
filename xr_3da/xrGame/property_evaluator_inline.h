@@ -12,9 +12,9 @@
 #define CEvaluator				CPropertyEvaluator<_object_type>
 
 TEMPLATE_SPECIALIZATION
-IC	CEvaluator::CPropertyEvaluator	()
+IC	CEvaluator::CPropertyEvaluator	(_object_type *object)
 {
-	init				();
+	init				(object);
 }
 
 TEMPLATE_SPECIALIZATION
@@ -23,8 +23,9 @@ IC	CEvaluator::~CPropertyEvaluator	()
 }
 
 TEMPLATE_SPECIALIZATION
-IC	void CEvaluator::init			()
+IC	void CEvaluator::init			(_object_type *object)
 {
+	m_object			= object;
 }
 
 TEMPLATE_SPECIALIZATION

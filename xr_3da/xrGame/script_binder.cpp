@@ -56,7 +56,7 @@ void CScriptBinder::reload			(LPCSTR section)
 		if (!I)
 			break;
 	}
-	strcpy					(name_space,"");
+	strcpy					(name_space,"_G");
 	if (!J)
 		strcpy				(function,string_to_run);
 	else {
@@ -84,6 +84,7 @@ BOOL CScriptBinder::net_Spawn		(LPVOID DC)
 		return				(FALSE);
 
 //	CSE_Abstract			*abstract = (CSE_Abstract*)DC;
+
 //	if (m_lua_instance && !luabind::call_member<bool>(*m_lua_instance,"net_spawn",abstract))
 	if (m_lua_instance && !luabind::call_member<bool>(*m_lua_instance,"net_spawn",0))
 		return				(FALSE);

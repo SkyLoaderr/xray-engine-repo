@@ -8,16 +8,6 @@
 
 #pragma once
 
-#include "script_world_property.h"
+#include "graph_engine.h"
 
-class CScriptWorldState : public CGraphEngine::CWorldState {
-protected:
-	typedef CGraphEngine::CWorldState inherited;
-public:
-	IC	const COperatorCondition	*property			(COperatorCondition::_condition_type condition) const;
-	IC	void						remove_condition	(COperatorCondition::_condition_type condition);
-	IC	bool						includes			(inherited &condition) const;
-	IC	void						clear				();
-};
-
-#include "script_world_state_inline.h"
+typedef CGraphEngine::CWorldState CScriptWorldState;

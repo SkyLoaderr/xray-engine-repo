@@ -20,6 +20,7 @@ public:
 	virtual void	reinit			(_object_type *object);
 	virtual void	Load			(LPCSTR section);
 	virtual void	reload			(LPCSTR section);
+	virtual void	destroy			();
 	virtual float	evaluate		(u32 sub_motivation_id);
 };
 
