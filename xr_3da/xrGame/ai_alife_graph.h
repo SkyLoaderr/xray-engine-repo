@@ -51,7 +51,11 @@ public:
 	#pragma pack(pop)
 
 	SGraphHeader							m_tGraphHeader;	// graph header
+#ifdef AI_COMPILER
+	CVirtualFileReader						*m_tpGraphVFS;	// virtual file
+#else
 	IReader									*m_tpGraphVFS;	// virtual file
+#endif
 	SGraphVertex							*m_tpaGraph;
 
 	CALifeGraph								()
@@ -80,7 +84,11 @@ public:
 
 	IC void Load							(LPCSTR fName)
 	{ 
+#ifdef AI_COMPILER
+		m_tpGraphVFS					= xr_new<CVirtualFileReader>(fName);
+#else
 		m_tpGraphVFS					= Engine.FS.Open(fName);
+#endif
 		m_tGraphHeader.dwVersion		= m_tpGraphVFS->r_u32();
 		m_tGraphHeader.dwVertexCount	= m_tpGraphVFS->r_u32();
 		m_tGraphHeader.dwLevelCount		= m_tpGraphVFS->r_u32();
