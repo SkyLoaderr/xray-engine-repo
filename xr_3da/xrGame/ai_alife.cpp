@@ -292,7 +292,7 @@ void CAI_ALife::vfSaveSpawnPoints()
 
 void CAI_ALife::vfRandomizeGraphTerrain()
 {
-	SGraphVertex *tpaGraph = (SGraphVertex *)malloc(Level().AI.m_tpGraphVFS->Length());
+	SGraphVertex *tpaGraph = (SGraphVertex *)xr_malloc(Level().AI.m_tpGraphVFS->Length());
 	memcpy(tpaGraph,(BYTE *)Level().AI.m_tpaGraph - sizeof(SGraphHeader),Level().AI.m_tpGraphVFS->Length());
 	tpaGraph = (SGraphVertex *)((BYTE *)tpaGraph + sizeof(SGraphHeader));
 	for (int i=0, m=0; i<(int)Level().AI.GraphHeader().dwVertexCount; i++)
@@ -315,6 +315,7 @@ void CAI_ALife::vfRandomizeGraphTerrain()
 	FILE *F = fopen("level.graph","wb");
 	fwrite(tpaGraph,1,Level().AI.m_tpGraphVFS->Length(),F);
 	fclose(F);
+	_FREE(tpaGraph);
 }
 
 // end of temporary
