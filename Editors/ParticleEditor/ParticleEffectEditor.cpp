@@ -31,7 +31,7 @@ BOOL PS::CPEDef::Equal(const CPEDef* pe)
 
 void PS::CPEDef::Copy(const CPEDef& src)
 {
-    strcpy				(m_Name,src.m_Name); VERIFY(strlen(m_Name)<sizeof(m_Name));
+    m_Name				= src.m_Name; 
     m_Flags				= src.m_Flags;
     m_ShaderName		= src.m_ShaderName?xr_strdup(src.m_ShaderName):0;
     m_TextureName		= src.m_TextureName?xr_strdup(src.m_TextureName):0;
@@ -92,7 +92,7 @@ void PS::CPEDef::FillProp(LPCSTR pref, ::PropItemVec& items, ::ListItem* owner)
 	ButtonValue* B;
 	B=::PHelper.CreateButton(items,FHelper.PrepareKey(pref,"Control"),"Play (F5),Stop,Stop...",ButtonValue::flFirstOnly);
     B->OnBtnClickEvent		= OnControlClick;
-	::PHelper.CreateName	(items,FHelper.PrepareKey(pref,"Name"),m_Name,sizeof(m_Name),owner);
+	::PHelper.CreateRName	(items,FHelper.PrepareKey(pref,"Name"),&m_Name,owner);
     B=::PHelper.CreateButton(items,FHelper.PrepareKey(pref,"Source Text"),"Edit",ButtonValue::flFirstOnly);
     B->OnBtnClickEvent		= OnSourceTextEdit;
 /*

@@ -214,7 +214,7 @@ public:
             	req_params = k+1;
             }
             if (!bRes){ 
-            	ErrMsg(parent->m_Name,BAD_PARAM,0,k,P.s_data.c_str());
+            	ErrMsg(*parent->m_Name,BAD_PARAM,0,k,P.s_data.c_str());
             	break;
             }
         }
@@ -228,11 +228,11 @@ public:
         bool bRes		= true;
         int p_cnt 		= _GetItemCount(pms.c_str());
         if (p_cnt>params.size()){
-        	ErrMsg		(parent->m_Name,MANY_PARAMS,l,0,line);
+        	ErrMsg		(*parent->m_Name,MANY_PARAMS,l,0,line);
         	return false;
         }
         if (p_cnt<req_params){
-        	ErrMsg		(parent->m_Name,FEW_PARAMS,l,0,line);
+        	ErrMsg		(*parent->m_Name,FEW_PARAMS,l,0,line);
         	return false;
         }
         for (int k=0; k<p_cnt; k++){
@@ -248,7 +248,7 @@ public:
             case ptString:	bRes=get_string(pm.c_str(),P.data);			break;
             }
             if (!bRes){ 
-            	ErrMsg(parent->m_Name,BAD_PARAM,l,k,pm.c_str());
+            	ErrMsg(*parent->m_Name,BAD_PARAM,l,k,pm.c_str());
             	break;
             }
         }
@@ -531,14 +531,14 @@ void CPEDef::Compile()
         // check ';' found
         _GetItem		(*it,1,line,')');
         if (line!=strstr(line.c_str(),";")){
-        	ErrMsg		(m_Name,STA_MISSING,i_line,0,*it);
+        	ErrMsg		(*m_Name,STA_MISSING,i_line,0,*it);
             bRes		= false;
             break;
         }
         // find command in templates
     	PFuncPairIt pfp_it = CommandTemplates.find(command.c_str());
         if (pfp_it==CommandTemplates.end()){
-        	ErrMsg		(m_Name,BAD_COMMAND,i_line,0,*it);
+        	ErrMsg		(*m_Name,BAD_COMMAND,i_line,0,*it);
             bRes		= false;
             break;
         }

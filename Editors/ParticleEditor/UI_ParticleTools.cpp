@@ -323,7 +323,7 @@ void CParticleTools::Merge()
         bool bReplaceAll=false,bRenameAll=false,bSkipAll=false;
         {
             for (PS::PEDIt b_it=ps_new.FirstPED(); b_it!=ps_new.LastPED(); b_it++){
-            	PS::CPEDef* x = ::Render->PSLibrary.FindPED((*b_it)->m_Name);
+            	PS::CPEDef* x = ::Render->PSLibrary.FindPED(*(*b_it)->m_Name);
                 if (x){
                 	(*b_it)->Compile();
                 	if (!x->Equal(*b_it)){
@@ -335,23 +335,23 @@ void CParticleTools::Merge()
                         switch(res){
                         case 3: bReplaceAll	= true; 
                         case 0:{
-                        	::Render->PSLibrary.Remove(x->m_Name);
+                        	::Render->PSLibrary.Remove(*x->m_Name);
                             ::Render->PSLibrary.AppendPED(*b_it);
-                            Msg(". Replace: '%s'",(*b_it)->m_Name);
+                            Msg(". Replace: '%s'",*(*b_it)->m_Name);
                             replace_p++;
                         }break;
                         case 4: bRenameAll	= true;
                         case 1:{
-                            AnsiString pref 	= AnsiString(x->m_Name)+"_old";
+                            AnsiString pref 	= AnsiString(*x->m_Name)+"_old";
                             AnsiString new_name = FHelper.GenerateName(pref.c_str(),2,::Render->PSLibrary.FindByName);
-                            strcpy				(x->m_Name,new_name.c_str());
+                            x->m_Name		= new_name.c_str();
                             ::Render->PSLibrary.AppendPED(*b_it);
                             Msg(". Rename: '%s'",new_name.c_str());
                             rename_p++;
                         }break;
                         case 5: bSkipAll	= true;
                         case 2: 
-                            Msg(". Skip: '%s'",(*b_it)->m_Name);
+                            Msg(". Skip: '%s'",*(*b_it)->m_Name);
                         	skip_p++;
                         break;
                         case -1:
@@ -369,34 +369,34 @@ void CParticleTools::Merge()
         // compare groups
         {
             for (PS::PGDIt b_it=ps_new.FirstPGD(); b_it!=ps_new.LastPGD(); b_it++){
-            	PS::CPGDef* x = ::Render->PSLibrary.FindPGD((*b_it)->m_Name);
+            	PS::CPGDef* x = ::Render->PSLibrary.FindPGD(*(*b_it)->m_Name);
                 if (x){
                 	if (!x->Equal(*b_it)){
                         int res;
                         if (bReplaceAll)	res = 0;
                         else if (bRenameAll)res = 1;
                         else if (bSkipAll)	res = 2;
-                        else				res = TfrmItemDialog::Run("Item", AnsiString().sprintf("Overwrite particle group: '%s'",x->m_Name).c_str(), "Replace,Rename,Skip,Replace All,Rename All,Skip All,Cancel");
+                        else				res = TfrmItemDialog::Run("Item", AnsiString().sprintf("Overwrite particle group: '%s'",*x->m_Name).c_str(), "Replace,Rename,Skip,Replace All,Rename All,Skip All,Cancel");
                         switch(res){
                         case 3: bReplaceAll	= true; 
                         case 0:{
-                        	::Render->PSLibrary.Remove(x->m_Name);
+                        	::Render->PSLibrary.Remove(*x->m_Name);
                             ::Render->PSLibrary.AppendPGD(*b_it);
-                            Msg(". Replace: '%s'",(*b_it)->m_Name);
+                            Msg(". Replace: '%s'",*(*b_it)->m_Name);
                             replace_p++;
                         }break;
                         case 4: bRenameAll	= true;
                         case 1:{
-                            AnsiString pref 	= AnsiString(x->m_Name)+"_old";
+                            AnsiString pref 	= AnsiString(*x->m_Name)+"_old";
                             AnsiString new_name = FHelper.GenerateName(pref.c_str(),2,::Render->PSLibrary.FindByName);
-                            strcpy				(x->m_Name,new_name.c_str());
+                            x->m_Name		= new_name.c_str();
                             ::Render->PSLibrary.AppendPGD(*b_it);
                             Msg(". Rename: '%s'",new_name.c_str());
                             rename_p++;
                         }break;
                         case 5: bSkipAll	= true;
                         case 2: 
-                            Msg(". Skip: '%s'",(*b_it)->m_Name);
+                            Msg(". Skip: '%s'",*(*b_it)->m_Name);
                         	skip_p++;
                         break;
                         case -1:
@@ -784,11 +784,11 @@ PS::CPEDef* CParticleTools::AppendPE(PS::CPEDef* src)
 	AnsiString folder_name;
 	FHelper.MakeName	(m_PList->GetSelected(),0,folder_name,true);
     string64 pref		={0};
-    if (src){ 			strcpy(pref,src->m_Name);folder_name="";}
+    if (src){ 			strcpy(pref,*src->m_Name);folder_name="";}
     else strconcat		(pref,folder_name.c_str(),"pe");
     AnsiString new_name	= FHelper.GenerateName(pref,2,::Render->PSLibrary.FindByName);
     PS::CPEDef* S 		= ::Render->PSLibrary.AppendPED(src);
-    strcpy				(S->m_Name,new_name.c_str());
+    S->m_Name			= new_name.c_str();
     S->m_OwnerName		= AnsiString().sprintf("\\\\%s\\%s",Core.CompName,Core.UserName).c_str();
     S->m_ModifName		= S->m_OwnerName;
     S->m_CreateTime		= time(NULL);
@@ -805,11 +805,11 @@ PS::CPGDef*	CParticleTools::AppendPG(PS::CPGDef* src)
 	AnsiString folder_name;
 	FHelper.MakeName	(m_PList->GetSelected(),0,folder_name,true);
     string64 pref		={0};
-    if (src){ 			strcpy(pref,src->m_Name);folder_name="";}
+    if (src){ 			strcpy(pref,*src->m_Name);folder_name="";}
     else strconcat		(pref,folder_name.c_str(),"pg");
     AnsiString new_name	= FHelper.GenerateName(pref,2,::Render->PSLibrary.FindByName);
     PS::CPGDef* S 		= ::Render->PSLibrary.AppendPGD(src);
-    strcpy				(S->m_Name,new_name.c_str());
+    S->m_Name			= new_name.c_str();
     S->m_OwnerName		= AnsiString().sprintf("\\\\%s\\%s",Core.CompName,Core.UserName).c_str();
     S->m_ModifName		= S->m_OwnerName;
     S->m_CreateTime		= time(NULL);

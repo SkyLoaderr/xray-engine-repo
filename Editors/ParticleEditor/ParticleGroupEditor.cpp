@@ -100,7 +100,7 @@ void PS::CPGDef::FillProp(LPCSTR pref, ::PropItemVec& items, ::ListItem* owner)
     B=PHelper.CreateButton		(items,FHelper.PrepareKey(pref,"Edit"),"Append Effect",ButtonValue::flFirstOnly);
     B->OnBtnClickEvent			= OnEffectsEditClick;
     PropValue* V;
-	PHelper.CreateName			(items,FHelper.PrepareKey(pref,"Name"),m_Name,sizeof(m_Name),owner);
+	PHelper.CreateRName			(items,FHelper.PrepareKey(pref,"Name"),&m_Name,owner);
     V=PHelper.CreateFloat		(items,FHelper.PrepareKey(pref,"Time Limit (s)"),	&m_fTimeLimit,	-1.f,1000.f);
     V->OnChangeEvent			= OnParamsChange;
     for (EffectIt it=m_Effects.begin(); it!=m_Effects.end(); it++){

@@ -77,7 +77,7 @@ void CParticleTools::RealUpdateProperties()
         PS::PEDIt Pe = ::Render->PSLibrary.FirstPED();
         PS::PEDIt Ee = ::Render->PSLibrary.LastPED();
         for (; Pe!=Ee; Pe++){
-            ListItem* I=LHelper.CreateItem(items,(*Pe)->m_Name,emEffect,0,*Pe);
+            ListItem* I=LHelper.CreateItem(items,*(*Pe)->m_Name,emEffect,0,*Pe);
             I->SetIcon(1);
         }
 	}
@@ -85,7 +85,7 @@ void CParticleTools::RealUpdateProperties()
         PS::PGDIt Pg = ::Render->PSLibrary.FirstPGD();
         PS::PGDIt Eg = ::Render->PSLibrary.LastPGD();
         for (; Pg!=Eg; Pg++){
-            ListItem* I=LHelper.CreateItem(items,(*Pg)->m_Name,emGroup,0,*Pg);
+            ListItem* I=LHelper.CreateItem(items,*(*Pg)->m_Name,emGroup,0,*Pg);
             I->SetIcon(2);
         }
 	}
