@@ -126,9 +126,9 @@ BOOL CCreator::Load(DWORD dwNum)
 		CInifile::Sect& S = pLevel->ReadSection("static_sounds");
 		Sounds.reserve	(S.size());
 		for (CInifile::SectIt I=S.begin(); I!=S.end(); I++) {
-			Fvector		pos;
-			string128	fname;
-			sscanf		( I->second,"%s,%f,%f,%f",fname,&pos.x,&pos.y,&pos.z);
+			Fvector				pos;
+			string128			fname;
+			sscanf				( I->second,"%s,%f,%f,%f",fname,&pos.x,&pos.y,&pos.z);
 			Sounds.push_back	(sound3D());
 			pSounds->Create3D	(Sounds.back(),fname);
 			pSounds->Play3DAtPos(Sounds.back(),pos,true);
