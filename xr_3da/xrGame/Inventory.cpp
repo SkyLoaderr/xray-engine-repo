@@ -3,6 +3,7 @@
 #include "actor.h"
 #include "trade.h"
 #include "weapon.h"
+//#include "Physics.h"
 
 #include "ui/UIInventoryUtilities.h"
 #include "ai_script_lua_space.h"

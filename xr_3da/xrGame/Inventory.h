@@ -93,6 +93,7 @@ public:
 	bool Eat(PIItem pIItem);								
 
 	u32 GetActiveSlot() const {return m_iActiveSlot;}
+	void SetActiveSlot (u32 ActiveSlot) { m_iActiveSlot = m_iNextActiveSlot = ActiveSlot; }
 
 	bool IsSlotsUseful() {return m_bSlotsUseful;}	 
 	void SetSlotsUseful(bool slots_useful) {m_bSlotsUseful = slots_useful;}
