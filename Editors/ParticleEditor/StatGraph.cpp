@@ -68,12 +68,13 @@ void CStatGraph::OnRender()
     if (!elements.empty()){
         float elem_offs		= float(rb.x-lt.x)/max_item_count;
         float elem_factor	= float(rb.y-lt.y)/float(mx-mn);
+		float base_y		= float(rb.y)+(mn*elem_factor);
         switch (style){
         case stBar:{
             for (ElementsDeqIt it=elements.begin(); it!=elements.end(); it++){
                 float X		= float(it-elements.begin())*elem_offs+lt.x;
-                float Y0	= float(rb.y);
-                float Y1	= lt.y+it->data*elem_factor;
+                float Y0	= base_y;
+                float Y1	= base_y - it->data*elem_factor;
                 pv->set		(X,Y0,it->color); pv++;
                 pv->set		(X,Y1,it->color); pv++;
             }
@@ -82,10 +83,10 @@ void CStatGraph::OnRender()
             for (ElementsDeqIt it=elements.begin()+1; it!=elements.end(); it++){
             	ElementsDeqIt it_prev = it-1;
                 float X0	= float(it_prev-elements.begin())*elem_offs+lt.x;
-                float Y0	= lt.y+it_prev->data*elem_factor;
+                float Y0	= base_y-it_prev->data*elem_factor;
                 pv->set		(X0,Y0,it->color); pv++;
                 float X1	= float(it-elements.begin())*elem_offs+lt.x;
-                float Y1	= lt.y+it->data*elem_factor;
+                float Y1	= base_y-it->data*elem_factor;
                 pv->set		(X1,Y1,it->color); pv++;
             }
         }break;
