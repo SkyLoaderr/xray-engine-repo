@@ -301,3 +301,20 @@ function path_parse_waypoints(pathname)
 
 	return rslt
 end
+
+function action2(obj,...)
+	local act = entity_action()
+	local i = 1
+	while true do
+		if (arg[i] ~= nil) then
+			act:set_action(arg[i])
+		else
+			break
+		end
+		i = i + 1
+	end
+	if (obj ~= nil) then
+		obj:command(act,false)
+	end
+	return  entity_action(act)
+end

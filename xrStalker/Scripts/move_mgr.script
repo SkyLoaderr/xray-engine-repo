@@ -4,6 +4,8 @@
 
 local default_wait_time = 5000
 local default_anim = "idle"
+local sl_speed_h = 0.52 -- горизонтальная скорость вращения прожекторов
+local sl_speed_v = 0.22 -- вертикальная скорость вращения прожекторов
 
 local state_none = 0
 local state_moving = 1
@@ -75,6 +77,8 @@ function move_mgr:reset(path_walk, path_walk_info, path_look, path_look_info, te
 	-- Точка, в которую смотрели в прошлый раз. Ее запоминаем для того, чтобы не делать паузу между анимациями,
 	-- если собираемся смотреть в ту же самую точку, не поворачиваясь никуда...
 	self.last_look_index = nil
+
+	self.sl = nil -- прожектор, запоминается, чтобы отпустить его потом из под скрипта
 	
 	self.object:clear_animations()
 
@@ -126,6 +130,18 @@ function move_mgr:look_at_waypoint(pt)
 	local look_pt = utils.vector_copy_by_val(self.patrol_look:point(pt)):sub(self.object:position())
 	self.object:set_sight(look.direction, look_pt, 0)
 	self.last_look_index = pt
+
+	-- Прожектор:
+	local sl_name = self.path_look_info[pt]["sl"]
+	if sl_name then
+		self:reset_sl() -- отпустить старый прожектор (на всякий случай)
+		self.sl = level.object(sl_name)
+		if self.sl then
+			reset_action(self.sl, "move_mgr")
+			utils.action2(self.sl, look(self.patrol_look:point(pt), sl_speed_h, sl_speed_v),
+					cond(cond.time_end, time_infinite))
+		end
+	end
 end
 
 function move_mgr:update_sound()
@@ -291,6 +307,7 @@ function move_mgr:update()
 			printf("_bp1")
 			self:waypoint_callback(self.object, nil, self.last_index)
 		else
+			self:reset_sl() -- отпустить прожектор
 			self.last_look_index = nil
 			self:update_movement_state() -- идти дальше
 			--self.object:set_sight(look.search, nil, 0)
@@ -309,6 +326,17 @@ function move_mgr:finalize(npc)
 		if s then
 			s[self.object:id()] = nil
 		end
+	end
+
+	self:reset_sl() -- отпустить прожектор
+end
+
+function move_mgr:reset_sl()
+	if self.sl then
+		if self.sl:get_script() then
+			self.sl:script(false, "move_mgr")
+		end
+		self.sl = nil
 	end
 end
 
@@ -473,6 +501,8 @@ function move_mgr:waypoint_callback(obj, action_type, index)
 					themes = parse_names(suggested_snd) }
 				-- Этот звук играть не прямо сейчас, а когда начнется анимация на позиции (после поворота и т.д.):
 				self.play_sound_after_anim_start = true
+				-- И только один раз:
+				self.play_once = true
 			end
 		end
 

@@ -44,8 +44,12 @@ function action_walker_activity:initialize()
 
 	self.move_mgr:initialize(self.object)
 
-	self.path_walk_info = utils.path_parse_waypoints(self.st.path_walk)
-	self.path_look_info = utils.path_parse_waypoints(self.st.path_look)
+	if self.path_walk_info == nil then
+		self.path_walk_info = utils.path_parse_waypoints(self.st.path_walk)
+	end
+	if self.path_look_info == nil then
+		self.path_look_info = utils.path_parse_waypoints(self.st.path_look)
+	end
 	self:reset_scheme()
 end
 
