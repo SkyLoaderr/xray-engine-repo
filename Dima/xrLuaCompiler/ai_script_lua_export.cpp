@@ -305,6 +305,12 @@ void Script::vfExportSound(CLuaVirtualMachine *tpLuaVirtualMachine)
 			.def_readwrite("max_distance",		&CSound_params::max_distance),
 			
 		class_<CLuaSound>("sound_object")
+			.enum_("sound_play_type")
+			[
+				value("looped",					sm_Looped),
+				value("2d",						sm_2D),
+				value("3d",						0)
+			]
 			.property("frequency",				&CLuaSound::GetFrequency,	&CLuaSound::SetFrequency)
 			.property("min_distance",			&CLuaSound::GetMinDistance,	&CLuaSound::SetMinDistance)
 			.property("max_distance",			&CLuaSound::GetMaxDistance,	&CLuaSound::SetMaxDistance)
@@ -315,8 +321,8 @@ void Script::vfExportSound(CLuaVirtualMachine *tpLuaVirtualMachine)
 			.def("set_position",				&CLuaSound::SetPosition)
 			.def("play",						&CLuaSound::Play)
 			.def("play_at_pos",					&CLuaSound::PlayAtPos)
-			.def("play_unlimited",				&CLuaSound::PlayUnlimited)
-			.def("play_at_pos_unlimited",		&CLuaSound::PlayAtPosUnlimited)
+			.def("play_clone",					&CLuaSound::PlayUnlimited)
+			.def("play_at_pos_clone",			&CLuaSound::PlayAtPosUnlimited)
 			.def("stop",						&CLuaSound::Stop)
 			.def("playing",						&CLuaSound::IsPlaying)
 			.def("length",						&CLuaSound::Length)

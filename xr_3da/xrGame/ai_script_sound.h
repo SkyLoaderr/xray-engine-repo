@@ -44,10 +44,10 @@ public:
 		return				(m_tpSound->handle->length_ms());
 	}
 
-			void				Play			(CLuaGameObject *object, float delay = 0.f);
-			void				PlayUnlimited	(CLuaGameObject *object, float delay = 0.f);
-			void				PlayAtPos		(CLuaGameObject *object, const Fvector &position, float delay = 0.f);
-			void				PlayAtPosUnlimited(CLuaGameObject *object, const Fvector &position, float delay = 0.f);
+			void				Play			(CLuaGameObject *object, float delay = 0.f, int flags = 0);
+			void				PlayUnlimited	(CLuaGameObject *object, float delay = 0.f, int flags = 0);
+			void				PlayAtPos		(CLuaGameObject *object, const Fvector &position, float delay = 0.f, int flags = 0);
+			void				PlayAtPosUnlimited(CLuaGameObject *object, const Fvector &position, float delay = 0.f, int flags = 0);
 
 	BIND_FUNCTION00	(m_tpSound,			Stop,				ref_sound,		stop);
 	BIND_FUNCTION01	(m_tpSound,			SetPosition,		ref_sound,		set_position,		const Fvector &,		const Fvector &);
