@@ -56,8 +56,24 @@ condition_shot_dec 			= 0.00003	;увеличение износа при каждом выстреле
 ;-----------------------------------------------------------------------------------
 
 
-ph_mass			 = 1
-;cost			 = 120
+direction                	= 0, 0, 1
+fire_point               	= 0.0, 0.133, 0.205
+
+flame_particles		   		= weapons\generic_weapon05
+smoke_particles		   		= weapons\generic_shoot_00
+rpm_empty_click 	 		= 200
+; ttc
+shell_point		 			= 0.0, 0.133, 0.06
+shell_dir		 			= 0.0, 0.0, 0.4
+shell_particles	 			= weapons\generic_shells
+
+hit_power                	= 55
+hit_impulse		 		 	= 77
+hit_type = fire_wound
+
+fire_distance            	= 150
+bullet_speed			 	= 320			;­ з «м­ п бЄ®а®бвм Їг«Ё
+rpm                      	= 300
 
 ;addons
 scope_status				= 1
