@@ -18,10 +18,11 @@ public:
 	CLuaVirtualMachine	*m_tpLuaVirtualMachine;
 	LUA_VM_VECTOR		m_tpThreads;
 
-						CScript						(LPCSTR caFileName);
+						CScript						(LPCSTR				caFileName);
 	virtual				~CScript					();
 			void		vfExportToLua				();
 			void		Update						();
+			void		vfPrintError				(CLuaVirtualMachine *tpLuaVirtualMachine, int iErrorCode);
 };
 
 DEFINE_VECTOR(CScript*,SCRIPT_VECTOR,SCRIPT_IT);
@@ -30,7 +31,7 @@ class CScriptProcessor {
 public:
 	SCRIPT_VECTOR		m_tpScripts;
 
-						CScriptProcessor			(LPCSTR caFilePath);
+						CScriptProcessor			(LPCSTR				caFilePath);
 	virtual				~CScriptProcessor			();
 			void		Update						();
 };

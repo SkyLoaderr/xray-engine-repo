@@ -16,9 +16,9 @@
 #pragma warning(disable:4267)
 
 extern "C" {
-#include "lua.h"
-#include "lualib.h"
-#include "lauxlib.h"
+	#include "lua.h"
+	#include "lualib.h"
+	#include "lauxlib.h"
 }
 #pragma comment(lib,"x:\\xrLUA.lib")
 
@@ -82,7 +82,7 @@ CScript::CScript(LPCSTR caFileName)
 {
 	m_tpLuaVirtualMachine = lua_open();
 	if (!m_tpLuaVirtualMachine) {
-		Msg			("! ERROR : Cannot initialize script processor!");
+		Msg			("! ERROR : Cannot initialize script virtual machine!");
 		return;
 	}
 
@@ -95,16 +95,17 @@ CScript::CScript(LPCSTR caFileName)
 	luaopen_debug	(m_tpLuaVirtualMachine);
 #endif
 
-	Msg				("* [SP] Exproting C++ data to Lua");
 	vfExportToLua	();
 
 	Msg				("* Loading script %s",caFileName);
 	IReader			*l_tpFileReader = FS.r_open(caFileName);
 	R_ASSERT		(l_tpFileReader);
 
-	Msg				("* Launching script %s",caFileName);
 	m_tpThreads.push_back(lua_newthread(m_tpLuaVirtualMachine));
-	lua_dostring	(m_tpThreads[0],static_cast<LPCSTR>(l_tpFileReader->pointer()));
+	int				l_iErrorCode = lua_dobuffer(m_tpThreads[0],static_cast<LPCSTR>(l_tpFileReader->pointer()),l_tpFileReader->length(),static_cast<LPCSTR>(l_tpFileReader->pointer()));
+	if (l_iErrorCode)
+		vfPrintError(m_tpThreads[0],l_iErrorCode);
+
 	FS.r_close		(l_tpFileReader);
 }
 
@@ -122,10 +123,34 @@ CScript::~CScript()
 
 void CScript::Update()
 {
-	LUA_VM_IT		I = m_tpThreads.begin();
-	LUA_VM_IT		E = m_tpThreads.end();
-	for ( ; I != E; I++)
-		lua_resume	(*I,1);
+	for (int i=0, n = int(m_tpThreads.size()); i<n; i++) {
+		int		l_iErrorCode = lua_resume	(m_tpThreads[i],0);
+		if (l_iErrorCode) {
+			vfPrintError(m_tpThreads[i],l_iErrorCode);
+			m_tpThreads.erase(m_tpThreads.begin() + i);
+			i--;
+			n--;
+		}
+	}
+}
+
+void CScript::vfPrintError(CLuaVirtualMachine *tpLuaVirtualMachine, int iErrorCode)
+{
+	switch (iErrorCode) {
+		case LUA_ERRRUN : {
+			Msg ("! SCRIPT RUNTIME ERROR");
+			break;
+		}
+		case LUA_ERRMEM : {
+			Msg ("! SCRIPT ERROR (memory allocation)");
+			break;
+		}
+		case LUA_ERRERR : {
+			Msg ("! SCRIPT ERROR (while running the error handler function)");
+			break;
+		}
+	}
+	Msg			("! SCRIPT ERROR : %s",lua_tostring(tpLuaVirtualMachine, 0));
 }
 
 void CScript::vfExportToLua()
