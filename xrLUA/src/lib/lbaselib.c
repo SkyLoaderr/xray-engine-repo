@@ -1,13 +1,18 @@
 /*
-** $Id: lbaselib.c,v 1.130b 2003/04/03 13:35:34 roberto Exp $
+** $Id: lbaselib.c,v 1.156 2004/08/30 18:35:14 roberto Exp $
 ** Basic library
 ** See Copyright Notice in lua.h
 */
 
-#include "stdafx.h"
-#pragma hdrstop
+
+
+#include <ctype.h>
+#include <stdio.h>
+#include <stdlib.h>
+#include <string.h>
 
 #define lbaselib_c
+#define LUA_LIB
 
 #include "lua.h"
 
@@ -74,10 +79,8 @@ static int luaB_tonumber (lua_State *L) {
 
 static int luaB_error (lua_State *L) {
   int level = luaL_optint(L, 2, 1);
-  luaL_checkany(L, 1);
-  if (!lua_isstring(L, 1) || level == 0)
-    lua_pushvalue(L, 1);  /* propagate error message without changes */
-  else {  /* add extra information */
+  lua_settop(L, 1);
+  if (lua_isstring(L, 1) && level > 0) {  /* add extra information? */
     luaL_where(L, level);
     lua_pushvalue(L, 1);
     lua_concat(L, 2);
@@ -126,18 +129,9 @@ static void getfunc (lua_State *L) {
 }
 
 
-static int aux_getfenv (lua_State *L) {
-  lua_getfenv(L, -1);
-  lua_pushliteral(L, "__fenv");
-  lua_rawget(L, -2);
-  return !lua_isnil(L, -1);
-}
-
-
 static int luaB_getfenv (lua_State *L) {
   getfunc(L);
-  if (!aux_getfenv(L))  /* __fenv not defined? */
-    lua_pop(L, 1);  /* remove it, to return real environment */
+  lua_getfenv(L, -1);
   return 1;
 }
 
@@ -145,16 +139,14 @@ static int luaB_getfenv (lua_State *L) {
 static int luaB_setfenv (lua_State *L) {
   luaL_checktype(L, 2, LUA_TTABLE);
   getfunc(L);
-  if (aux_getfenv(L))  /* __fenv defined? */
-    luaL_error(L, "`setfenv' cannot change a protected environment");
-  else
-    lua_pop(L, 2);  /* remove __fenv and real environment table */
   lua_pushvalue(L, 2);
-  if (lua_isnumber(L, 1) && lua_tonumber(L, 1) == 0)
+  if (lua_isnumber(L, 1) && lua_tonumber(L, 1) == 0) {
     lua_replace(L, LUA_GLOBALSINDEX);
+    return 0;
+  }
   else if (lua_setfenv(L, -2) == 0)
     luaL_error(L, "`setfenv' cannot change environment of given function");
-  return 0;
+  return 1;
 }
 
 
@@ -183,21 +175,27 @@ static int luaB_rawset (lua_State *L) {
 
 
 static int luaB_gcinfo (lua_State *L) {
-  lua_pushnumber(L, (lua_Number)lua_getgccount(L));
-  lua_pushnumber(L, (lua_Number)lua_getgcthreshold(L));
-  return 2;
+  lua_pushinteger(L, lua_getgccount(L));
+  return 1;
 }
 
 
 static int luaB_collectgarbage (lua_State *L) {
-  lua_setgcthreshold(L, luaL_optint(L, 1, 0));
-  return 0;
+  static const char *const opts[] = {"stop", "restart", "collect", "count",
+                                     "step", NULL};
+  static const int optsnum[] = {LUA_GCSTOP, LUA_GCRESTART,
+                                LUA_GCCOLLECT, LUA_GCCOUNT, LUA_GCSTEP};
+  int o = luaL_findstring(luaL_optstring(L, 1, "collect"), opts);
+  int ex = luaL_optint(L, 2, 0);
+  luaL_argcheck(L, o >= 0, 1, "invalid option");
+  lua_pushinteger(L, lua_gc(L, optsnum[o], ex));
+  return 1;
 }
 
 
 static int luaB_type (lua_State *L) {
   luaL_checkany(L, 1);
-  lua_pushstring(L, lua_typename(L, lua_type(L, 1)));
+  lua_pushstring(L, luaL_typename(L, 1));
   return 1;
 }
 
@@ -216,30 +214,29 @@ static int luaB_next (lua_State *L) {
 
 static int luaB_pairs (lua_State *L) {
   luaL_checktype(L, 1, LUA_TTABLE);
-  lua_pushliteral(L, "next");
-  lua_rawget(L, LUA_GLOBALSINDEX);  /* return generator, */
+  lua_pushvalue(L, lua_upvalueindex(1));  /* return generator, */
   lua_pushvalue(L, 1);  /* state, */
   lua_pushnil(L);  /* and initial value */
   return 3;
 }
 
 
-static int luaB_ipairs (lua_State *L) {
-  lua_Number i = lua_tonumber(L, 2);
+static int ipairsaux (lua_State *L) {
+  int i = luaL_checkint(L, 2);
   luaL_checktype(L, 1, LUA_TTABLE);
-  if (i == 0 && lua_isnone(L, 2)) {  /* `for' start? */
-    lua_pushliteral(L, "ipairs");
-    lua_rawget(L, LUA_GLOBALSINDEX);  /* return generator, */
-    lua_pushvalue(L, 1);  /* state, */
-    lua_pushnumber(L, 0);  /* and initial value */
-    return 3;
-  }
-  else {  /* `for' step */
-    i++;  /* next value */
-    lua_pushnumber(L, i);
-    lua_rawgeti(L, 1, (int)i);
-    return (lua_isnil(L, -1)) ? 0 : 2;
-  }
+  i++;  /* next value */
+  lua_pushinteger(L, i);
+  lua_rawgeti(L, 1, i);
+  return (lua_isnil(L, -1)) ? 0 : 2;
+}
+
+
+static int luaB_ipairs (lua_State *L) {
+  luaL_checktype(L, 1, LUA_TTABLE);
+  lua_pushvalue(L, lua_upvalueindex(1));  /* return generator, */
+  lua_pushvalue(L, 1);  /* state, */
+  lua_pushinteger(L, LUA_FIRSTINDEX - 1);  /* and initial value */
+  return 3;
 }
 
 
@@ -264,15 +261,63 @@ static int luaB_loadstring (lua_State *L) {
 
 static int luaB_loadfile (lua_State *L) {
   const char *fname = luaL_optstring(L, 1, NULL);
-  return load_aux(L, luaL_loadfile(L, fname));
+  const char *path = luaL_optstring(L, 2, NULL);
+  int status;
+  if (path == NULL)
+    status = luaL_loadfile(L, fname);
+  else {
+    fname = luaL_searchpath(L, fname, path);
+    status = (fname) ? luaL_loadfile(L, fname) : 1;
+  }
+  return load_aux(L, status);
+}
+
+
+struct Aux_load {
+  int func;
+  int res;
+};
+
+
+static const char *generic_reader (lua_State *L, void *ud, size_t *size) {
+  struct Aux_load *al = (struct Aux_load *)ud;
+  luaL_unref(L, al->res, LUA_REGISTRYINDEX);
+  lua_getref(L, al->func);
+  lua_call(L, 0, 1);
+  if (lua_isnil(L, -1)) {
+    *size = 0;
+    return NULL;
+  }
+  else if (lua_isstring(L, -1)) {
+    const char *res = lua_tostring(L, -1);
+    *size = lua_strlen(L, -1);
+    al->res = luaL_ref(L, LUA_REGISTRYINDEX);
+    return res;
+  }
+  else luaL_error(L, "reader function must return a string");
+  return NULL;  /* to avoid warnings */
+}
+
+
+static int luaB_load (lua_State *L) {
+  struct Aux_load al;
+  int status;
+  const char *cname = luaL_optstring(L, 2, "=(load)");
+  luaL_checktype(L, 1, LUA_TFUNCTION);
+  lua_settop(L, 1);
+  al.func = luaL_ref(L, LUA_REGISTRYINDEX);
+  al.res = LUA_REFNIL;
+  status = lua_load(L, generic_reader, &al, cname);
+  luaL_unref(L, al.func, LUA_REGISTRYINDEX);
+  luaL_unref(L, al.res, LUA_REGISTRYINDEX);
+  return load_aux(L, status);
 }
 
 
 static int luaB_dofile (lua_State *L) {
   const char *fname = luaL_optstring(L, 1, NULL);
   int n = lua_gettop(L);
-  int status = luaL_loadfile(L, fname);
-  if (status != 0) lua_error(L);
+  if (luaL_loadfile(L, fname) != 0) lua_error(L);
   lua_call(L, 0, LUA_MULTRET);
   return lua_gettop(L) - n;
 }
@@ -282,19 +327,38 @@ static int luaB_assert (lua_State *L) {
   luaL_checkany(L, 1);
   if (!lua_toboolean(L, 1))
     return luaL_error(L, "%s", luaL_optstring(L, 2, "assertion failed!"));
-  lua_settop(L, 1);
-  return 1;
+  return lua_gettop(L);
 }
 
 
 static int luaB_unpack (lua_State *L) {
-  int n, i;
+  int i = luaL_optint(L, 2, LUA_FIRSTINDEX);
+  int e = luaL_optint(L, 3, -1);
+  int n;
   luaL_checktype(L, 1, LUA_TTABLE);
-  n = luaL_getn(L, 1);
+  if (e == -1)
+    e = luaL_getn(L, 1) + LUA_FIRSTINDEX - 1;
+  n = e - i + 1;  /* number of elements */
+  if (n <= 0) return 0;  /* empty range */
   luaL_checkstack(L, n, "table too big to unpack");
-  for (i=1; i<=n; i++)  /* push arg[1...n] */
+  for (; i<=e; i++)  /* push arg[i...e] */
     lua_rawgeti(L, 1, i);
   return n;
+}
+
+
+static int luaB_select (lua_State *L) {
+  int n = lua_gettop(L);
+  if (lua_type(L, 1) == LUA_TSTRING && *lua_tostring(L, 1) == '#') {
+    lua_pushinteger(L, n-1);
+    return 1;
+  }
+  else {
+    int i = luaL_checkint(L, 1);
+    if (i <= 0) i = 1;
+    else if (i >= n) i = n;
+    return n - i;
+  }
 }
 
 
@@ -321,38 +385,36 @@ static int luaB_xpcall (lua_State *L) {
 
 
 static int luaB_tostring (lua_State *L) {
-  char buff[128];
   luaL_checkany(L, 1);
   if (luaL_callmeta(L, 1, "__tostring"))  /* is there a metafield? */
     return 1;  /* use its value */
   switch (lua_type(L, 1)) {
     case LUA_TNUMBER:
       lua_pushstring(L, lua_tostring(L, 1));
-      return 1;
+      break;
     case LUA_TSTRING:
       lua_pushvalue(L, 1);
-      return 1;
+      break;
     case LUA_TBOOLEAN:
       lua_pushstring(L, (lua_toboolean(L, 1) ? "true" : "false"));
-      return 1;
-    case LUA_TTABLE:
-      sprintf(buff, "table: %p", lua_topointer(L, 1));
-      break;
-    case LUA_TFUNCTION:
-      sprintf(buff, "function: %p", lua_topointer(L, 1));
-      break;
-    case LUA_TUSERDATA:
-    case LUA_TLIGHTUSERDATA:
-      sprintf(buff, "userdata: %p", lua_touserdata(L, 1));
-      break;
-    case LUA_TTHREAD:
-      sprintf(buff, "thread: %p", (void *)lua_tothread(L, 1));
       break;
     case LUA_TNIL:
       lua_pushliteral(L, "nil");
-      return 1;
+      break;
+    case LUA_TTABLE:
+      lua_pushfstring(L, "table: %p", lua_topointer(L, 1));
+      break;
+    case LUA_TFUNCTION:
+      lua_pushfstring(L, "function: %p", lua_topointer(L, 1));
+      break;
+    case LUA_TUSERDATA:
+    case LUA_TLIGHTUSERDATA:
+      lua_pushfstring(L, "userdata: %p", lua_topointer(L, 1));
+      break;
+    case LUA_TTHREAD:
+      lua_pushfstring(L, "thread: %p", lua_topointer(L, 1));
+      break;
   }
-  lua_pushstring(L, buff);
   return 1;
 }
 
@@ -390,112 +452,38 @@ static int luaB_newproxy (lua_State *L) {
 */
 
 
-/* name of global that holds table with loaded packages */
-#define REQTAB		"_LOADED"
-
-/* name of global that holds the search path for packages */
-#define LUA_PATH	"LUA_PATH"
-
-#ifndef LUA_PATH_SEP
-#define LUA_PATH_SEP	';'
-#endif
-
-#ifndef LUA_PATH_MARK
-#define LUA_PATH_MARK	'?'
-#endif
-
-#ifndef LUA_PATH_DEFAULT
-#define LUA_PATH_DEFAULT	"?;?.lua"
-#endif
-
-
 static const char *getpath (lua_State *L) {
-  const char *path;
-  lua_getglobal(L, LUA_PATH);  /* try global variable */
-  path = lua_tostring(L, -1);
-  lua_pop(L, 1);
-  if (path) return path;
-  path = getenv(LUA_PATH);  /* else try environment variable */
-  if (path) return path;
-  return LUA_PATH_DEFAULT;  /* else use default */
-}
-
-
-static const char *pushnextpath (lua_State *L, const char *path) {
-  const char *l;
-  if (*path == '\0') return NULL;  /* no more paths */
-  if (*path == LUA_PATH_SEP) path++;  /* skip separator */
-  l = strchr(path, LUA_PATH_SEP);  /* find next separator */
-  if (l == NULL) l = path+strlen(path);
-  lua_pushlstring(L, path, l - path);  /* directory name */
-  return l;
-}
-
-
-static void pushcomposename (lua_State *L) {
-  const char *path = lua_tostring(L, -1);
-  const char *wild;
-  int n = 1;
-  while ((wild = strchr(path, LUA_PATH_MARK)) != NULL) {
-    /* is there stack space for prefix, name, and eventual last sufix? */
-    luaL_checkstack(L, 3, "too many marks in a path component");
-    lua_pushlstring(L, path, wild - path);  /* push prefix */
-    lua_pushvalue(L, 1);  /* push package name (in place of MARK) */
-    path = wild + 1;  /* continue after MARK */
-    n += 2;
+  /* try first `LUA_PATH' for compatibility */
+  lua_getfield(L, LUA_GLOBALSINDEX, "LUA_PATH");
+  if (!lua_isstring(L, -1)) {
+    lua_pop(L, 1);
+    lua_getfield(L, LUA_GLOBALSINDEX, "_PATH");
   }
-  lua_pushstring(L, path);  /* push last sufix (`n' already includes this) */
-  lua_concat(L, n);
+  if (!lua_isstring(L, -1))
+    luaL_error(L, "global _PATH must be a string");
+  return lua_tostring(L, -1);
 }
 
 
 static int luaB_require (lua_State *L) {
-  const char *path;
-  int status = LUA_ERRFILE;  /* not found (yet) */
-  luaL_checkstring(L, 1);
-  lua_settop(L, 1);
-  lua_getglobal(L, REQTAB);
-  if (!lua_istable(L, 2)) return luaL_error(L, "`" REQTAB "' is not a table");
-  path = getpath(L);
-  lua_pushvalue(L, 1);  /* check package's name in book-keeping table */
-  lua_rawget(L, 2);
+  const char *name = luaL_checkstring(L, 1);
+  const char *fname;
+  lua_getfield(L, lua_upvalueindex(1), name);
   if (lua_toboolean(L, -1))  /* is it there? */
     return 1;  /* package is already loaded; return its result */
-  else {  /* must load it */
-    while (status == LUA_ERRFILE) {
-      lua_settop(L, 3);  /* reset stack position */
-      if ((path = pushnextpath(L, path)) == NULL) break;
-      pushcomposename(L);
-      status = luaL_loadfile(L, lua_tostring(L, -1));  /* try to load it */
-    }
-  }
-  switch (status) {
-    case 0: {
-      lua_getglobal(L, "_REQUIREDNAME");  /* save previous name */
-      lua_insert(L, -2);  /* put it below function */
-      lua_pushvalue(L, 1);
-      lua_setglobal(L, "_REQUIREDNAME");  /* set new name */
-      lua_call(L, 0, 1);  /* run loaded module */
-      lua_insert(L, -2);  /* put result below previous name */
-      lua_setglobal(L, "_REQUIREDNAME");  /* reset to previous name */
-      if (lua_isnil(L, -1)) {  /* no/nil return? */
-        lua_pushboolean(L, 1);
-        lua_replace(L, -2);  /* replace to true */
-      }
-      lua_pushvalue(L, 1);
-      lua_pushvalue(L, -2);
-      lua_rawset(L, 2);  /* mark it as loaded */
-      return 1;  /* return value */
-    }
-    case LUA_ERRFILE: {  /* file not found */
-      return luaL_error(L, "could not load package `%s' from path `%s'",
-                            lua_tostring(L, 1), getpath(L));
-    }
-    default: {
-      return luaL_error(L, "error loading package `%s' (%s)",
-                           lua_tostring(L, 1), lua_tostring(L, -1));
-    }
-  }
+  /* else must load it; first mark it as loaded */
+  lua_pushboolean(L, 1);
+  lua_setfield(L, lua_upvalueindex(1), name);  /* _LOADED[name] = true */
+  fname = luaL_searchpath(L, name, getpath(L));
+  if (fname == NULL || luaL_loadfile(L, fname) != 0)
+    return luaL_error(L, "error loading package `%s' (%s)", name,
+                         lua_tostring(L, -1));
+  lua_pushvalue(L, 1);  /* pass name as argument to module */
+  lua_call(L, 1, 1);  /* run loaded module */
+  if (!lua_isnil(L, -1))  /* nil return? */
+    lua_setfield(L, lua_upvalueindex(1), name);
+  lua_getfield(L, lua_upvalueindex(1), name);  /* return _LOADED[name] */
+  return 1;
 }
 
 /* }====================================================== */
@@ -508,14 +496,13 @@ static const luaL_reg base_funcs[] = {
   {"getfenv", luaB_getfenv},
   {"setfenv", luaB_setfenv},
   {"next", luaB_next},
-  {"ipairs", luaB_ipairs},
-  {"pairs", luaB_pairs},
   {"print", luaB_print},
   {"tonumber", luaB_tonumber},
   {"tostring", luaB_tostring},
   {"type", luaB_type},
   {"assert", luaB_assert},
   {"unpack", luaB_unpack},
+  {"select", luaB_select},
   {"rawequal", luaB_rawequal},
   {"rawget", luaB_rawget},
   {"rawset", luaB_rawset},
@@ -526,7 +513,7 @@ static const luaL_reg base_funcs[] = {
   {"loadfile", luaB_loadfile},
   {"dofile", luaB_dofile},
   {"loadstring", luaB_loadstring},
-  {"require", luaB_require},
+  {"load", luaB_load},
   {NULL, NULL}
 };
 
@@ -639,33 +626,51 @@ static const luaL_reg co_funcs[] = {
 /* }====================================================== */
 
 
+static void auxopen (lua_State *L, const char *name,
+                     lua_CFunction f, lua_CFunction u) {
+  lua_pushcfunction(L, u);
+  lua_pushcclosure(L, f, 1);
+  lua_setfield(L, -2, name);
+}
+
 
 static void base_open (lua_State *L) {
-  lua_pushliteral(L, "_G");
+  const char *path;
   lua_pushvalue(L, LUA_GLOBALSINDEX);
   luaL_openlib(L, NULL, base_funcs, 0);  /* open lib into global table */
-  lua_pushliteral(L, "_VERSION");
   lua_pushliteral(L, LUA_VERSION);
-  lua_rawset(L, -3);  /* set global _VERSION */
+  lua_setfield(L, LUA_GLOBALSINDEX, "_VERSION");  /* set global _VERSION */
+  /* `ipairs' and `pairs' need auxliliary functions as upvalues */
+  auxopen(L, "ipairs", luaB_ipairs, ipairsaux);
+  auxopen(L, "pairs", luaB_pairs, luaB_next);
   /* `newproxy' needs a weaktable as upvalue */
-  lua_pushliteral(L, "newproxy");
   lua_newtable(L);  /* new table `w' */
   lua_pushvalue(L, -1);  /* `w' will be its own metatable */
   lua_setmetatable(L, -2);
-  lua_pushliteral(L, "__mode");
-  lua_pushliteral(L, "k");
-  lua_rawset(L, -3);  /* metatable(w).__mode = "k" */
+  lua_pushliteral(L, "kv");
+  lua_setfield(L, -2, "__mode");  /* metatable(w).__mode = "kv" */
   lua_pushcclosure(L, luaB_newproxy, 1);
-  lua_rawset(L, -3);  /* set global `newproxy' */
-  lua_rawset(L, -1);  /* set global _G */
+  lua_setfield(L, LUA_GLOBALSINDEX, "newproxy");  /* set global `newproxy' */
+  /* `require' needs a table to keep loaded chunks */
+  lua_newtable(L);
+  lua_pushvalue(L, -1);
+  lua_setglobal(L, "_LOADED");
+  lua_pushcclosure(L, luaB_require, 1);
+  lua_setfield(L, LUA_GLOBALSINDEX, "require");
+  /* set global _G */
+  lua_pushvalue(L, LUA_GLOBALSINDEX);
+  lua_setfield(L, LUA_GLOBALSINDEX, "_G");
+  /* set global _PATH */
+  path = getenv(LUA_PATH);
+  if (path == NULL) path = LUA_PATH_DEFAULT;
+  lua_pushstring(L, path);
+  lua_setfield(L, LUA_GLOBALSINDEX, "_PATH");
 }
 
 
 LUALIB_API int luaopen_base (lua_State *L) {
   base_open(L);
   luaL_openlib(L, LUA_COLIBNAME, co_funcs, 0);
-  lua_newtable(L);
-  lua_setglobal(L, REQTAB);
-  return 0;
+  return 2;
 }
 

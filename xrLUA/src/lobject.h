@@ -1,11 +1,15 @@
 /*
-** $Id: lobject.h,v 1.159 2003/03/18 12:50:04 roberto Exp $
+** $Id: lobject.h,v 2.5 2004/05/31 18:51:50 roberto Exp $
 ** Type definitions for Lua objects
 ** See Copyright Notice in lua.h
 */
 
+
 #ifndef lobject_h
 #define lobject_h
+
+
+#include <stdarg.h>
 
 
 #include "llimits.h"
@@ -33,36 +37,8 @@ typedef union GCObject GCObject;
 ** Common Header for all collectable objects (in macro form, to be
 ** included in other objects)
 */
-#define CommonHeader	GCObject *next; GCObject* prev; lu_byte tt; lu_byte marked; unsigned short ref
+#define CommonHeader	GCObject *next; lu_byte tt; lu_byte marked
 
-#define lua_addref(o) { TObject* i_o2 = (o); if(iscollectable(i_o2))	\
-        { \
-            gcvalue(i_o2)->gch.ref++; \
-            lua_assert(gcvalue(i_o2)->gch.ref != 0); \
-        }  }
-
-#define lua_addreftobject(o) { gcvalue(o)->gch.ref++; lua_assert(gcvalue(o)->gch.ref != 0); }
-#define lua_addreftable(o) { o->ref++; lua_assert(o->ref != 0); }
-#define lua_addrefproto(o) { o->ref++; lua_assert(o->ref != 0); }
-#define lua_addrefupval(o) { o->ref++; lua_assert(o->ref != 0); }
-#define lua_addrefstring(o) { o->tsv.ref++; lua_assert(o->tsv.ref != 0); }
-
-#define lua_release(L,o) { TObject* i_o2 = (o); if(iscollectable(i_o2) && ((--gcvalue(i_o2)->gch.ref)<=0))	\
-		{	\
-			lua_releaseobject(L,gcvalue(i_o2));	\
-		}	}
-
-#define lua_releasetable(L,o) { Table* i_o2 = (o); if((--i_o2->ref)<=0) lua_releaseobject(L,(GCObject*)i_o2); }
-#define lua_releaseproto(L,o) { Proto* i_o2 = (o); if((--i_o2->ref)<=0) lua_releaseobject(L,(GCObject*)i_o2); }
-#define lua_releasestring(L,o) { TString* i_o2 = (o); if((--i_o2->tsv.ref)<=0) lua_releaseobject(L,(GCObject*)i_o2); }
-
-#define lua_makeobjectbackup(v) TObject bak = *v;
-
-extern void lua_releaseobject(lua_State *L, GCObject* header);
-
-#define newvalue(o) { setnilvalue2n((o)); }
-#define cleanvalue(o) { setnilvalue((o)); }
-#define cleanarray(from,to) { TObject* i_from = (from); TObject* i_to = (to); while (i_from < i_to) { cleanvalue(i_from++); } }
 
 /*
 ** Common header in struct form
@@ -86,12 +62,12 @@ typedef union {
 
 
 /*
-** Lua values (or `tagged objects')
+** Tagged Values
 */
-typedef struct lua_TObject {
+typedef struct lua_TValue {
   int tt;
   Value value;
-} TObject;
+} TValue;
 
 
 /* Macros to test type */
@@ -110,8 +86,10 @@ typedef struct lua_TObject {
 #define gcvalue(o)	check_exp(iscollectable(o), (o)->value.gc)
 #define pvalue(o)	check_exp(ttislightuserdata(o), (o)->value.p)
 #define nvalue(o)	check_exp(ttisnumber(o), (o)->value.n)
-#define tsvalue(o)	check_exp(ttisstring(o), &(o)->value.gc->ts)
-#define uvalue(o)	check_exp(ttisuserdata(o), &(o)->value.gc->u)
+#define rawtsvalue(o)	check_exp(ttisstring(o), &(o)->value.gc->ts)
+#define tsvalue(o)	(&rawtsvalue(o)->tsv)
+#define rawuvalue(o)	check_exp(ttisuserdata(o), &(o)->value.gc->u)
+#define uvalue(o)	(&rawuvalue(o)->uv)
 #define clvalue(o)	check_exp(ttisfunction(o), &(o)->value.gc->cl)
 #define hvalue(o)	check_exp(ttistable(o), &(o)->value.gc->h)
 #define bvalue(o)	check_exp(ttisboolean(o), (o)->value.b)
@@ -119,59 +97,69 @@ typedef struct lua_TObject {
 
 #define l_isfalse(o)	(ttisnil(o) || (ttisboolean(o) && bvalue(o) == 0))
 
-/* Macros to set values */
-#define setnvalue(obj,x) \
-  { TObject *i_o=(obj); lua_release(L,i_o); i_o->tt=LUA_TNUMBER; i_o->value.n=(x); }
-
-#define chgnvalue(obj,x) \
-	check_exp(ttype(obj)==LUA_TNUMBER, (obj)->value.n=(x))
-
-#define setpvalue(obj,x) \
-  { TObject *i_o=(obj); lua_release(L,i_o); i_o->tt=LUA_TLIGHTUSERDATA; i_o->value.p=(x); }
-
-#define setbvalue(obj,x) \
-  { TObject *i_o=(obj); lua_release(L,i_o); i_o->tt=LUA_TBOOLEAN; i_o->value.b=(x); }
-
-#define setsvalue(obj,x) \
-  { TObject *i_o=(obj); lua_makeobjectbackup(i_o); i_o->tt=LUA_TSTRING; \
-    i_o->value.gc=cast(GCObject *, (x)); lua_addreftobject(i_o); lua_release(L,&bak); \
-    lua_assert(i_o->value.gc->gch.tt == LUA_TSTRING); }
-
-#define setuvalue(obj,x) \
-  { TObject *i_o=(obj); lua_makeobjectbackup(i_o); i_o->tt=LUA_TUSERDATA; \
-    i_o->value.gc=cast(GCObject *, (x)); lua_addreftobject(i_o); lua_release(L,&bak); \
-    lua_assert(i_o->value.gc->gch.tt == LUA_TUSERDATA); }
-
-#define setthvalue(obj,x) \
-  { TObject *i_o=(obj); lua_makeobjectbackup(i_o); i_o->tt=LUA_TTHREAD; \
-    i_o->value.gc=cast(GCObject *, (x)); lua_addreftobject(i_o); lua_release(L,&bak); \
-    lua_assert(i_o->value.gc->gch.tt == LUA_TTHREAD); }
-
-#define setclvalue(obj,x) \
-  { TObject *i_o=(obj); lua_makeobjectbackup(i_o); i_o->tt=LUA_TFUNCTION; \
-    i_o->value.gc=cast(GCObject *, (x)); lua_addreftobject(i_o); lua_release(L,&bak); \
-    lua_assert(i_o->value.gc->gch.tt == LUA_TFUNCTION); }
-
-#define sethvalue(obj,x) \
-  { TObject *i_o=(obj); lua_makeobjectbackup(i_o); i_o->tt=LUA_TTABLE; \
-    i_o->value.gc=cast(GCObject *, (x)); lua_addreftobject(i_o); lua_release(L,&bak); \
-    lua_assert(i_o->value.gc->gch.tt == LUA_TTABLE); }
-
-#define setnilvalue(obj) { TObject *i_o=(obj); lua_release(L,i_o); i_o->tt=LUA_TNIL; }
-
-
-
 /*
 ** for internal debug only
 */
 #define checkconsistency(obj) \
   lua_assert(!iscollectable(obj) || (ttype(obj) == (obj)->value.gc->gch.tt))
 
+#define checkliveness(g,obj) \
+  lua_assert(!iscollectable(obj) || \
+  ((ttype(obj) == (obj)->value.gc->gch.tt) && !isdead(g, (obj)->value.gc)))
 
-#define setobj(obj1,obj2) \
-  { TObject *o2=(TObject*)(obj2); TObject *o1=(obj1); \
-    checkconsistency(o2); lua_addref(o2); lua_release(L,o1); \
-    o1->tt=o2->tt; o1->value = o2->value;  }
+
+/* Macros to set values */
+#define setnilvalue(obj) ((obj)->tt=LUA_TNIL)
+
+#define setnvalue(obj,x) \
+  { TValue *i_o=(obj); i_o->value.n=(x); i_o->tt=LUA_TNUMBER; }
+
+#define chgnvalue(obj,x) \
+	check_exp(ttype(obj)==LUA_TNUMBER, (obj)->value.n=(x))
+
+#define setpvalue(obj,x) \
+  { TValue *i_o=(obj); i_o->value.p=(x); i_o->tt=LUA_TLIGHTUSERDATA; }
+
+#define setbvalue(obj,x) \
+  { TValue *i_o=(obj); i_o->value.b=(x); i_o->tt=LUA_TBOOLEAN; }
+
+#define setsvalue(L,obj,x) \
+  { TValue *i_o=(obj); \
+    i_o->value.gc=cast(GCObject *, (x)); i_o->tt=LUA_TSTRING; \
+    checkliveness(G(L),i_o); }
+
+#define setuvalue(L,obj,x) \
+  { TValue *i_o=(obj); \
+    i_o->value.gc=cast(GCObject *, (x)); i_o->tt=LUA_TUSERDATA; \
+    checkliveness(G(L),i_o); }
+
+#define setthvalue(L,obj,x) \
+  { TValue *i_o=(obj); \
+    i_o->value.gc=cast(GCObject *, (x)); i_o->tt=LUA_TTHREAD; \
+    checkliveness(G(L),i_o); }
+
+#define setclvalue(L,obj,x) \
+  { TValue *i_o=(obj); \
+    i_o->value.gc=cast(GCObject *, (x)); i_o->tt=LUA_TFUNCTION; \
+    checkliveness(G(L),i_o); }
+
+#define sethvalue(L,obj,x) \
+  { TValue *i_o=(obj); \
+    i_o->value.gc=cast(GCObject *, (x)); i_o->tt=LUA_TTABLE; \
+    checkliveness(G(L),i_o); }
+
+#define setptvalue(L,obj,x) \
+  { TValue *i_o=(obj); \
+    i_o->value.gc=cast(GCObject *, (x)); i_o->tt=LUA_TPROTO; \
+    checkliveness(G(L),i_o); }
+
+
+
+
+#define setobj(L,obj1,obj2) \
+  { const TValue *o2=(obj2); TValue *o1=(obj1); \
+    o1->tt=o2->tt; o1->value = o2->value; \
+    checkliveness(G(L),o1); }
 
 
 /*
@@ -183,22 +171,15 @@ typedef struct lua_TObject {
 /* to stack (not from same stack) */
 #define setobj2s	setobj
 #define setsvalue2s	setsvalue
+#define sethvalue2s	sethvalue
+#define setptvalue2s	setptvalue
 /* from table to same table */
 #define setobjt2t	setobj
 /* to table */
 #define setobj2t	setobj
 /* to new object */
-#define setobj2n(obj1,obj2)  \
-  { const TObject *o2=(obj2); TObject *o1=(obj1); \
-    checkconsistency(o2); \
-    o1->tt=o2->tt; o1->value = o2->value; lua_addref(o1); }
-
-#define setnilvalue2n(obj) { TObject *i_o=(obj); i_o->tt=LUA_TNIL; }
-
-#define setsvalue2n(obj,x) \
-  { TObject *i_o=(obj); i_o->tt=LUA_TSTRING; \
-    i_o->value.gc=cast(GCObject *, (x)); lua_addreftobject(i_o); \
-    lua_assert(i_o->value.gc->gch.tt == LUA_TSTRING); }
+#define setobj2n	setobj
+#define setsvalue2n	setsvalue
 
 #define setttype(obj, tt) (ttype(obj) = (tt))
 
@@ -207,7 +188,7 @@ typedef struct lua_TObject {
 
 
 
-typedef TObject *StkId;  /* index to stack elements */
+typedef TValue *StkId;  /* index to stack elements */
 
 
 /*
@@ -218,7 +199,7 @@ typedef union TString {
   struct {
     CommonHeader;
     lu_byte reserved;
-    lu_hash hash;
+    unsigned int hash;
     size_t len;
   } tsv;
 } TString;
@@ -246,7 +227,7 @@ typedef union Udata {
 */
 typedef struct Proto {
   CommonHeader;
-  TObject *k;  /* constants used by the function */
+  TValue *k;  /* constants used by the function */
   Instruction *code;
   struct Proto **p;  /* functions defined inside the function */
   int *lineinfo;  /* map from opcodes to source lines */
@@ -268,6 +249,10 @@ typedef struct Proto {
 } Proto;
 
 
+/* mask for new-style vararg */
+#define NEWSTYLEVARARG		2
+
+
 typedef struct LocVar {
   TString *varname;
   int startpc;  /* first point where variable is active */
@@ -282,8 +267,8 @@ typedef struct LocVar {
 
 typedef struct UpVal {
   CommonHeader;
-  TObject *v;  /* points to stack or to its own value */
-  TObject value;  /* the value (when closed) */
+  TValue *v;  /* points to stack or to its own value */
+  TValue value;  /* the value (when closed) */
 } UpVal;
 
 
@@ -297,14 +282,14 @@ typedef struct UpVal {
 typedef struct CClosure {
   ClosureHeader;
   lua_CFunction f;
-  TObject upvalue[1];
+  TValue upvalue[1];
 } CClosure;
 
 
 typedef struct LClosure {
   ClosureHeader;
   struct Proto *p;
-  TObject g;  /* global table for this closure */
+  TValue g;  /* global table for this closure */
   UpVal *upvals[1];
 } LClosure;
 
@@ -324,18 +309,18 @@ typedef union Closure {
 */
 
 typedef struct Node {
-  TObject i_key;
-  TObject i_val;
+  TValue i_key;
+  TValue i_val;
   struct Node *next;  /* for chaining */
 } Node;
 
 
 typedef struct Table {
   CommonHeader;
-  lu_byte flags;  /* 1<<p means tagmethod(p) is not present */
+  lu_byte flags;  /* 1<<p means tagmethod(p) is not present */ 
   lu_byte lsizenode;  /* log2 of size of `node' array */
   struct Table *metatable;
-  TObject *array;  /* array part */
+  TValue *array;  /* array part */
   Node *node;
   Node *firstfree;  /* this position is free; all positions after it are full */
   GCObject *gclist;
@@ -356,13 +341,13 @@ typedef struct Table {
 
 
 
-extern const TObject luaO_nilobject;
+extern const TValue luaO_nilobject;
 
 int luaO_log2 (unsigned int x);
 int luaO_int2fb (unsigned int x);
 #define fb2int(x)	(((x) & 7) << ((x) >> 3))
 
-int luaO_rawequalObj (const TObject *t1, const TObject *t2);
+int luaO_rawequalObj (const TValue *t1, const TValue *t2);
 int luaO_str2d (const char *s, lua_Number *result);
 
 const char *luaO_pushvfstring (lua_State *L, const char *fmt, va_list argp);
