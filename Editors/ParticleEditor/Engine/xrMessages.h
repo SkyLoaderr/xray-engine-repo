@@ -33,6 +33,7 @@ enum
 	M_SPAWN_OBJECT_LOCAL		= (1<<0),	// after spawn it becomes active
 	M_SPAWN_OBJECT_ACTIVE		= (1<<1),	// after spawn it becomes active
 	M_SPAWN_OBJECT_HASUPDATE	= (1<<2),	// after spawn info it has update inside message
+	M_SPAWN_OBJECT_ASPLAYER		= (1<<3),	// after spawn info it has update inside message
 
 	M_SPAWN_OBJECT_FORCEDWORD	= DWORD(-1)
 };
