@@ -145,7 +145,6 @@ void i_scan		(int curY, float leftX, float lhx, float rightX, float rhx, float s
 
 IC void i_test_micro( int x, int y)
 {
-	
 	if (x<1) return; else if (x>=occ_dim0-1)	return;
 	if (y<1) return; else if (y>=occ_dim0-1)	return;
 	int	pos		= y*occ_dim0+x;
