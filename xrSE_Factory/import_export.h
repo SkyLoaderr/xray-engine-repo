@@ -19,13 +19,12 @@ public:
 	FastDelegate1<int>		test1;
 
 private:
-			void			test_0			(LPCSTR);
-			void			test_1			(int);
+//			void			test_0			(LPCSTR);
+//			void			test_1			(int);
 
 public:
-							CTestInterface	();
-	virtual void			test_test0		();
-	virtual void			test_test1		();
+	virtual void			test_test0		()=0;
+	virtual void			test_test1		()=0;
 };
 
 #endif // IMPORT_EXPORT_H

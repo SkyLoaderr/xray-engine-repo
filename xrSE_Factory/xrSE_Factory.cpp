@@ -12,15 +12,27 @@
 #include "script_engine.h"
 #include "object_factory.h"
 
+#include <boost/function.hpp>
+
 extern CSE_Abstract *F_entity_Create	(LPCSTR section);
 
 //////////////////////////////////////////////////////////////////////////
 //////////////////////////////////////////////////////////////////////////
 //////////////////////////////////////////////////////////////////////////
 
+class DLL_API CTestImpl:public CTestInterface{
+private:
+		void			test_0			(LPCSTR);
+		void			test_1			(int);
+public:
+						CTestImpl		();
+	virtual void		test_test0		();
+	virtual void		test_test1		();
+};
+
 DLL_API CTestInterface *create_test_object	()
 {
-	return				(xr_new<CTestInterface>());
+	return				(xr_new<CTestImpl>());
 }
 
 DLL_API void			destroy_test_object	(CTestInterface *&object)
@@ -28,30 +40,36 @@ DLL_API void			destroy_test_object	(CTestInterface *&object)
 	xr_delete			(object);
 }
 
-CTestInterface::CTestInterface	()
+CTestImpl::CTestImpl	()
 {
-	test0.bind			(this,&CTestInterface::test_0);
-	test1.bind			(this,&CTestInterface::test_1);
+	test0.bind			(this,&CTestImpl::test_0);
+	test1.bind			(this,&CTestImpl::test_1);
 }
 
-void CTestInterface::test_0		(LPCSTR str)
+void CTestImpl::test_0		(LPCSTR str)
 {
 	Msg					("TEST_0 : %s",str);
 }
 
-void CTestInterface::test_1		(int num)
+void CTestImpl::test_1		(int num)
 {
 	Msg					("TEST_1 : %d",num);
 }
 
-void CTestInterface::test_test0	()
+void CTestImpl::test_test0	()
 {
+//	CTestImpl*			self;
+//	__asm mov [self],eax;
+//	self->test0			("VC7.1 : OK!");
 	test0				("VC7.1 : OK!");
 }
 
-void CTestInterface::test_test1	()
+void CTestImpl::test_test1	()
 {
-	test1				(1);
+//	CTestImpl*			self;
+//	__asm mov [self],eax;
+//	self->test_1		(1);
+	test_1				(1);
 }
 
 //////////////////////////////////////////////////////////////////////////
