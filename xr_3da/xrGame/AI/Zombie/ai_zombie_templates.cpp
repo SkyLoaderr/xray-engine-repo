@@ -105,7 +105,7 @@ void CAI_Zombie::vfAdjustSpeed()
 			}
 }
 
-void CAI_Zombie::vfComputeNewPosition(bool bCanAdjustSpeed)
+bool CAI_Zombie::bfComputeNewPosition(bool bCanAdjustSpeed)
 {
 	// saving current parameters
 	Fvector tSafeHPB = m_tHPB;
@@ -203,35 +203,38 @@ void CAI_Zombie::vfComputeNewPosition(bool bCanAdjustSpeed)
 		UpdateTransform();
 	}
 
-//	if (!Level().AI.bfTooSmallAngle(r_torso_target.yaw, r_torso_current.yaw,PI_DIV_8) || m_bNoWay) {
-//		m_fSpeed = .1f;
-//		if (m_bNoWay) {
-//			if (m_Enemy.Enemy) {
-//				if (!::Random.randI(4)) {
-//					float fAngle = ::Random.randF(m_fWallMinTurnValue,m_fWallMaxTurnValue);
-//					r_torso_target.yaw = r_torso_current.yaw + fAngle;
-//				}
-//				else {
-//					Fvector tTemp;
-//					tTemp.sub(m_Enemy.Enemy->Position(),vPosition);
-//					tTemp.normalize_safe();
-//					mk_rotation(tTemp,r_torso_target);
-//				}
-//				r_torso_target.yaw = angle_normalize(r_torso_target.yaw);
-//			}
-//			else {
-//				float fAngle = ::Random.randF(m_fWallMinTurnValue,m_fWallMaxTurnValue);
-//				r_torso_target.yaw = r_torso_current.yaw + fAngle;
-//				r_torso_target.yaw = angle_normalize(r_torso_target.yaw);
-//			}
-//		}
-//		tStateStack.push(eCurrentState = aiZombieTurn);
-//	}
-//	else 
-//		m_fSpeed = m_fSafeSpeed;
+	bool m_bResult = false;
+	if (!Level().AI.bfTooSmallAngle(r_torso_target.yaw, r_torso_current.yaw,PI_DIV_8) || m_bNoWay) {
+		m_fSpeed = .1f;
+		if (m_bNoWay) {
+			if (m_Enemy.Enemy) {
+				if (!::Random.randI(4)) {
+					float fAngle = ::Random.randF(m_fWallMinTurnValue,m_fWallMaxTurnValue);
+					r_torso_target.yaw = r_torso_current.yaw + fAngle;
+				}
+				else {
+					Fvector tTemp;
+					tTemp.sub(m_Enemy.Enemy->Position(),vPosition);
+					tTemp.normalize_safe();
+					mk_rotation(tTemp,r_torso_target);
+				}
+				r_torso_target.yaw = angle_normalize(r_torso_target.yaw);
+			}
+			else {
+				float fAngle = ::Random.randF(m_fWallMinTurnValue,m_fWallMaxTurnValue);
+				r_torso_target.yaw = r_torso_current.yaw + fAngle;
+				r_torso_target.yaw = angle_normalize(r_torso_target.yaw);
+			}
+		}
+		m_bResult = true;
+	}
+	else 
+		m_fSpeed = m_fSafeSpeed;
+
+	return(m_bResult);
 }
 
-void CAI_Zombie::vfComputeNextDirectionPosition(bool bCanAdjustSpeed)
+bool CAI_Zombie::bfComputeNextDirectionPosition(bool bCanAdjustSpeed)
 {
 	if (bCanAdjustSpeed)
 		vfAdjustSpeed();
@@ -333,30 +336,33 @@ void CAI_Zombie::vfComputeNextDirectionPosition(bool bCanAdjustSpeed)
 		m_bNoWay = true;
 	}
 	
-//	if (!Level().AI.bfTooSmallAngle(r_torso_target.yaw, r_torso_current.yaw,PI_DIV_8) || m_bNoWay) {
-//		m_fSpeed = .1f;
-//		if (m_bNoWay) {
-//			if (m_Enemy.Enemy) {
-//				if (!::Random.randI(4)) {
-//					float fAngle = ::Random.randF(m_fWallMinTurnValue,m_fWallMaxTurnValue);
-//					r_torso_target.yaw = r_torso_current.yaw + fAngle;
-//				}
-//				else {
-//					Fvector tTemp;
-//					tTemp.sub(m_Enemy.Enemy->Position(),vPosition);
-//					tTemp.normalize_safe();
-//					mk_rotation(tTemp,r_torso_target);
-//				}
-//				r_torso_target.yaw = angle_normalize(r_torso_target.yaw);
-//			}
-//			else {
-//				float fAngle = ::Random.randF(m_fWallMinTurnValue,m_fWallMaxTurnValue);
-//				r_torso_target.yaw = r_torso_current.yaw + fAngle;
-//				r_torso_target.yaw = angle_normalize(r_torso_target.yaw);
-//			}
-//		}
-//		tStateStack.push(eCurrentState = aiZombieTurn);
-//	}
-//	else 
-//		m_fSpeed = m_fSafeSpeed;
+	bool m_bResult = false;
+	if (!Level().AI.bfTooSmallAngle(r_torso_target.yaw, r_torso_current.yaw,PI_DIV_8) || m_bNoWay) {
+		m_fSpeed = .1f;
+		if (m_bNoWay) {
+			if (m_Enemy.Enemy) {
+				if (!::Random.randI(4)) {
+					float fAngle = ::Random.randF(m_fWallMinTurnValue,m_fWallMaxTurnValue);
+					r_torso_target.yaw = r_torso_current.yaw + fAngle;
+				}
+				else {
+					Fvector tTemp;
+					tTemp.sub(m_Enemy.Enemy->Position(),vPosition);
+					tTemp.normalize_safe();
+					mk_rotation(tTemp,r_torso_target);
+				}
+				r_torso_target.yaw = angle_normalize(r_torso_target.yaw);
+			}
+			else {
+				float fAngle = ::Random.randF(m_fWallMinTurnValue,m_fWallMaxTurnValue);
+				r_torso_target.yaw = r_torso_current.yaw + fAngle;
+				r_torso_target.yaw = angle_normalize(r_torso_target.yaw);
+			}
+		}
+		m_bResult = true;
+	}
+	else 
+		m_fSpeed = m_fSafeSpeed;
+
+	return(m_bResult);
 }

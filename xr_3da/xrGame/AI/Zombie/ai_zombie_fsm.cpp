@@ -360,6 +360,8 @@ void CAI_Zombie::AttackRun()
 		return;
 	}
 
+	vfSetFire(false,Group);
+
 	if (m_Enemy.Enemy)
 		m_dwLostEnemyTime = Level().timeServer();
 
@@ -405,7 +407,8 @@ void CAI_Zombie::AttackRun()
 
 	m_fSafeSpeed = m_fSpeed = m_fAttackSpeed;
 
-	vfComputeNextDirectionPosition();
+	if (bfComputeNextDirectionPosition())
+		SWITCH_TO_NEW_STATE_THIS_UPDATE(aiZombieTurn);
 
 	SetDirectionLook();
 
@@ -420,8 +423,6 @@ void CAI_Zombie::AttackRun()
 //		SetDirectionLook();
 //	}
 	
-	vfSetFire(false,Group);
-
 //	if (!Level().AI.bfTooSmallAngle(r_torso_target.yaw, r_torso_current.yaw,PI_DIV_8) || m_bNoWay) {
 //		m_fSpeed = EPS_S;
 //		if (m_bNoWay) {

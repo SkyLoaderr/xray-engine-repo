@@ -271,8 +271,8 @@ class CAI_Zombie : public CCustomMonster
 		// MISCELLANIOUS FUNCTIONS
 		//////////////////////////
 		void	vfAdjustSpeed();
-		void	vfComputeNextDirectionPosition(bool bCanAdjustSpeed = true);
-		void	vfComputeNewPosition(bool bCanAdjustSpeed = true);
+		bool	bfComputeNextDirectionPosition(bool bCanAdjustSpeed = true);
+		bool	bfComputeNewPosition(bool bCanAdjustSpeed = true);
 		void	vfLoadSounds();
 		void	vfLoadAnimations();
 		void	SetDirectionLook();
