@@ -26,6 +26,7 @@ Compiler:
 
 R1:
 	per-pixel displacement	+ secondary channel
+	wallmarks on dynamic objects(?)
 
 R2:
 	work out tonemapping		(?)
@@ -37,7 +38,7 @@ R2:
 	reverse culling	for spot/point with initial clears - should avoid most biasing (?)
 	4*32bit	RT(s) / emissive
 	perspective shadow maps and all that stuff Gary talks about
-	
+	wallmarks :)				(?)
 	surface material:
 		emmisive	map
 		detail-bump	map
