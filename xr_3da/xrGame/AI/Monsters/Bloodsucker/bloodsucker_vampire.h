@@ -16,7 +16,7 @@ public:
 						CStateBloodsuckerVampire		(_Object *obj);
 
 	virtual void		initialize						();
-	virtual	void		reselect_state					();
+	virtual	void		execute							();
 	virtual	void		finalize						();
 	virtual	void		critical_finalize				();
 	virtual bool		check_start_conditions			();

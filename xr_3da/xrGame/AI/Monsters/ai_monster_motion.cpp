@@ -87,9 +87,18 @@ void CMotionManager::reinit()
 // Возвращает false, если в смене анимации нет необходимости
 bool CMotionManager::PrepareAnimation()
 {
-	if (pJumping && pJumping->IsActive())  return pJumping->PrepareAnimation(&m_tpCurAnim);
+	if (pJumping && pJumping->IsActive())  {
+		m_cur_anim.speed.current	= -1.f;
+		m_cur_anim.speed.target		= -1.f;
+		return pJumping->PrepareAnimation(&m_tpCurAnim);
+	}
 	if (0 != m_tpCurAnim) return false;
-	if (TA_IsActive()) return pCurAnimTriple->prepare_animation(&m_tpCurAnim);
+	if (TA_IsActive()) {
+		m_cur_anim.speed.current	= -1.f;
+		m_cur_anim.speed.target		= -1.f;
+
+		return pCurAnimTriple->prepare_animation(&m_tpCurAnim);
+	}
 
 	// перекрыть все определения и установть анимацию
 	pMonster->ForceFinalAnimation();

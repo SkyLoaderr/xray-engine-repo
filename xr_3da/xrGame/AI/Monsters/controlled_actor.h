@@ -26,6 +26,8 @@ public:
 	
 	void	frame_update		();
 
+	bool	is_controlled		();
+
 private:
 	void	reset				();
 	

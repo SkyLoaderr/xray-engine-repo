@@ -10,8 +10,8 @@
 
 #define VAMPIRE_TIME_HOLD		2000
 #define VAMPIRE_HIT_IMPULSE		400.f
-#define VAMPIRE_MIN_DIST		1.f
-#define VAMPIRE_MAX_DIST		2.f
+#define VAMPIRE_MIN_DIST		0.5f
+#define VAMPIRE_MAX_DIST		1.f
 
 TEMPLATE_SPECIALIZATION
 void CStateBloodsuckerVampireExecuteAbstract::initialize()
@@ -28,11 +28,12 @@ void CStateBloodsuckerVampireExecuteAbstract::initialize()
 	global_transform.set(object->XFORM());
 	global_transform.mulB(bone_transform);
 
-	object->CControlledActor::look_point	(5.f, global_transform.c);
-
+	object->CControlledActor::look_point	(2.f, global_transform.c);
 
 	m_action				= eActionPrepare;
 	time_vampire_started	= 0;
+
+	object->CInvisibility::manual_deactivate();
 }
 
 TEMPLATE_SPECIALIZATION
@@ -79,7 +80,8 @@ void CStateBloodsuckerVampireExecuteAbstract::finalize()
 {
 	inherited::finalize();
 
-	object->CControlledActor::free_from_control();
+	object->CControlledActor::free_from_control	();
+	object->CInvisibility::manual_activate		();
 }
 
 TEMPLATE_SPECIALIZATION
@@ -87,8 +89,9 @@ void CStateBloodsuckerVampireExecuteAbstract::critical_finalize()
 {
 	inherited::critical_finalize();
 
-	object->CControlledActor::free_from_control();
+	object->CControlledActor::free_from_control	();
 	object->MotionMan.TA_Deactivate				();
+	object->CInvisibility::manual_activate		();
 }
 
 TEMPLATE_SPECIALIZATION
@@ -135,6 +138,7 @@ void CStateBloodsuckerVampireExecuteAbstract::execute_vampire_hit()
 {
 	object->MotionMan.TA_PointBreak();
 
+	// apply impulse
 	const CEntityAlive *enemy = object->EnemyMan.get_enemy();
 
 	Fvector				dir;
@@ -146,7 +150,11 @@ void CStateBloodsuckerVampireExecuteAbstract::execute_vampire_hit()
 	dir.setHP			(h,p);
 	dir.normalize_safe	();
 
-	object->HitEntity	(enemy, 0.01f, VAMPIRE_HIT_IMPULSE, dir);
+	CEntityAlive	*entity		= const_cast<CEntityAlive*>(enemy);
+	Fvector			position_in_bone_space;
+	position_in_bone_space.set	(0.f,0.f,0.f);
+	s16 element					= smart_cast<CKinematics*>(entity->Visual())->LL_GetBoneRoot();
+	entity->Hit					(0.01f, dir, object, element, position_in_bone_space,VAMPIRE_HIT_IMPULSE);
 }
 
 //////////////////////////////////////////////////////////////////////////

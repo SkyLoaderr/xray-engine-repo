@@ -115,3 +115,8 @@ void CControlledActor::reset()
 	yaw_dir				= DIR_NONE;
 	pitch_dir			= DIR_NONE;
 }
+
+bool CControlledActor::is_controlled()
+{
+	return (m_actor && m_actor->IsControlled());
+}

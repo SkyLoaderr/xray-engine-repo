@@ -25,11 +25,14 @@ CStateBloodsuckerVampireAbstract::CStateBloodsuckerVampire(_Object *obj) : inher
 TEMPLATE_SPECIALIZATION
 void CStateBloodsuckerVampireAbstract::initialize()
 {
-	inherited::initialize					();
+	inherited::initialize						();
+
+	object->CInvisibility::set_manual_switch	();
+	object->CInvisibility::manual_activate		();
 }
 
 TEMPLATE_SPECIALIZATION
-void CStateBloodsuckerVampireAbstract::reselect_state()
+void CStateBloodsuckerVampireAbstract::execute()
 {
 	bool state_selected = false;
 
@@ -68,12 +71,16 @@ TEMPLATE_SPECIALIZATION
 void CStateBloodsuckerVampireAbstract::finalize()
 {
 	inherited::finalize();
+
+	object->CInvisibility::set_manual_switch	(false);
 }
 
 TEMPLATE_SPECIALIZATION
 void CStateBloodsuckerVampireAbstract::critical_finalize()
 {
 	inherited::critical_finalize();
+	
+	object->CInvisibility::set_manual_switch	(false);
 }
 
 TEMPLATE_SPECIALIZATION
@@ -82,6 +89,7 @@ bool CStateBloodsuckerVampireAbstract::check_start_conditions()
 	// является ли враг актером
 	const CEntityAlive *enemy = object->EnemyMan.get_enemy();
 	if (enemy->SUB_CLS_ID != CLSID_OBJECT_ACTOR) return false;
+	if (object->CControlledActor::is_controlled()) return false;
 
 	return true;
 }
@@ -89,7 +97,7 @@ bool CStateBloodsuckerVampireAbstract::check_start_conditions()
 TEMPLATE_SPECIALIZATION
 bool CStateBloodsuckerVampireAbstract::check_completion()
 {
-	if ((current_substate == eStateApproachEnemy) && 
+	if ((current_substate == eStateRunAway) && 
 		get_state_current()->check_completion()) return true;
 
 	return false;
@@ -112,7 +120,7 @@ void CStateBloodsuckerVampireAbstract::setup_substates()
 		data.action.action		= ACT_RUN;
 		data.action.sound_type	= MonsterSpace::eMonsterSoundAttack;
 		data.action.sound_delay = object->get_sd()->m_dwAttackSndDelay;
-		data.action.time_out	= 20000;
+		data.action.time_out	= 15000;
 
 		state->fill_data_with(&data, sizeof(SStateHideFromPoint));
 

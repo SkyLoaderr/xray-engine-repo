@@ -32,7 +32,6 @@ void CStateBloodsuckerVampireApproachAbstract::execute()
 	object->MotionMan.accel_set_braking					(false);
 	object->CMonsterMovement::set_target_point			(object->EnemyMan.get_enemy()->Position(), object->EnemyMan.get_enemy()->level_vertex_id());
 	object->CMonsterMovement::set_rebuild_time			(object->get_attack_rebuild_time());
-	object->CMonsterMovement::set_distance_to_end		(1);
 	object->CMonsterMovement::set_use_covers			(false);
 	object->set_state_sound								(MonsterSpace::eMonsterSoundAttack);
 
