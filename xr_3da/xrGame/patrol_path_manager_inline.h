@@ -122,7 +122,7 @@ IC	void CPatrolPathManager::set_path		(ref_str path_name, const EPatrolStartType
 IC	ref_str	CPatrolPathManager::path_name	() const
 {
 	if (!m_path) {
-		ai().script_engine().script_log(eLuaMessageTypeError,"Path not specified!");
+		ai().script_engine().script_log(eLuaMessageTypeError,"Path not specified (object %s)!",*dynamic_cast<const CObject*>(this)->cName());
 		return				("");
 	}
 	VERIFY					(m_path);
@@ -132,11 +132,11 @@ IC	ref_str	CPatrolPathManager::path_name	() const
 IC	void CPatrolPathManager::set_previous_point	(int point_index)
 {
 	if (!m_path) {
-		ai().script_engine().script_log(eLuaMessageTypeError,"Path not specified!");
+		ai().script_engine().script_log(eLuaMessageTypeError,"Path not specified (object %s)!",*dynamic_cast<CObject*>(this)->cName());
 		return;
 	}
 	if ((int)(m_path->tpaWayPoints.size()) <= point_index) {
-		ai().script_engine().script_log(eLuaMessageTypeError,"Start point vialotes path bounds %s!",*m_path_name);
+		ai().script_engine().script_log(eLuaMessageTypeError,"Start point vialotes path bounds %s (object %s)!",*m_path_name,*dynamic_cast<CObject*>(this)->cName());
 		return;
 	}
 	VERIFY					(m_path);
@@ -147,11 +147,11 @@ IC	void CPatrolPathManager::set_previous_point	(int point_index)
 IC	void CPatrolPathManager::set_start_point	(int point_index)
 {
 	if (!m_path) {
-		ai().script_engine().script_log(eLuaMessageTypeError,"Path not specified!");
+		ai().script_engine().script_log(eLuaMessageTypeError,"Path not specified (object %s)!",*dynamic_cast<CObject*>(this)->cName());
 		return;
 	}
 	if ((int)(m_path->tpaWayPoints.size()) <= point_index) {
-		ai().script_engine().script_log(eLuaMessageTypeError,"Start point vialotes path bounds %s!",*m_path_name);
+		ai().script_engine().script_log(eLuaMessageTypeError,"Start point vialotes path bounds %s (object %s)!",*m_path_name,*dynamic_cast<CObject*>(this)->cName());
 		return;
 	}
 	VERIFY					(m_path);
