@@ -85,7 +85,7 @@ int APIENTRY _tWinMain(HINSTANCE hInstance, HINSTANCE hPrevInstance, LPTSTR lpCm
 {
 	// Gauss filtering coeffs
 	const int	n	= 7;		// kernel size
-	const float r	= 3.3f;		// gaussian radius
+	const float r	= 10.3f;		// gaussian radius
 	const float t	= 1;		// grid dimension
 	const float bs	= 1.2f;		// bilinear interpolation (1=point sampling, 2=twice the kernel size - interpolated)
 
@@ -96,6 +96,10 @@ int APIENTRY _tWinMain(HINSTANCE hInstance, HINSTANCE hPrevInstance, LPTSTR lpCm
 		*_w++	= expf(-float(i*i)/(2*r*r));
 		*_u++	= bs*float(i)/t;
 	}
+	float mag				= 0;
+	float s_out				= 1.f;
+	for (i=0; i<2*n+1; i++)	mag		+= w[i];
+	for (i=0; i<2*n+1; i++)	w[i]	= s_out*w[i]/mag;
 
 	// Create window
 	HWND hWnd = InitInstance(hInstance, nCmdShow);
