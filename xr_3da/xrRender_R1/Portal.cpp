@@ -4,6 +4,7 @@
 
 #include "stdafx.h"
 #include "Portal.h"
+#include "..\xrLevel.h"
 #include "..\xr_object.h"
 #include "..\tempobject.h"
 #include "..\fbasicvisual.h"

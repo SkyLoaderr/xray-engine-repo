@@ -1538,16 +1538,6 @@
 					RelativePath="vis_common.h">
 				</File>
 				<Filter
-					Name="Sector - portal"
-					Filter="">
-					<File
-						RelativePath=".\Portal.cpp">
-					</File>
-					<File
-						RelativePath=".\Portal.h">
-					</File>
-				</Filter>
-				<Filter
 					Name="HOM occlusion"
 					Filter="">
 					<File
