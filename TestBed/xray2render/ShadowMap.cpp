@@ -800,9 +800,9 @@ void	CalcGauss	(
 	vector<float>	w;
 	for (int i=-n; i<=0; i++)
 	{
-		w.push_back		(1.f);
+		//w.push_back		(1.f);
 		float weight	=	expf(-float(i*i)/(2*r*r));
-		//w.push_back		(weight);	// weight
+		w.push_back		(weight);	// weight
 
 		float offset	= bs*float(-i); 
 		H.push_back		(D3DXVECTOR4(offset/tw,0,0,0));
