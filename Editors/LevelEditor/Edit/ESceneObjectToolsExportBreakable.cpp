@@ -306,6 +306,9 @@ bool SBPart::Export	(IWriter& F)
             bRes = false;
             break;
         }
+    	// calculate T&B components
+		split_it->CalculateTB();
+        // subtract offset
 		SkelVertVec& lst = split_it->getV_Verts();
 	    for (SkelVertIt sv_it=lst.begin(); sv_it!=lst.end(); sv_it++){
 		    bone_points[sv_it->B0].push_back(sv_it->O);
@@ -363,6 +366,7 @@ bool SBPart::Export	(IWriter& F)
     for (bone_idx=0; bone_idx<bone_count; bone_idx++){
     	SBBone& bone=m_Bones[bone_idx];
 
+        F.w_u32		(0x0001); VERIFY(0x0001==OGF_IKDATA_VERSION);
         // material
         F.w_stringZ (bone.mtl.c_str());
         // shape
@@ -371,18 +375,12 @@ bool SBPart::Export	(IWriter& F)
         shape.flags.assign(SBoneShape::sfRemoveAfterBreak);
         ComputeOBB	(shape.box,bone_points[bone_idx]);
 	    F.w			(&shape,sizeof(SBoneShape));
-	    F.w_u32		(jtNone);		// joint type
-        for (int k=0; k<3; k++){    // limits
-            F.w_float(0.f);         // min
-            F.w_float(0.f);         // max
-            F.w_float(0.f);         // spring_factor
-            F.w_float(0.f);         // damping_factor
-        }                           
-        F.w_float   (0.f);          // spring_factor
-        F.w_float   (0.f);			// damping_factor
-        F.w_u32     (SJointIKData::flBreakable);
-        F.w_float   (0.f);			// break_force
-        F.w_float   (0.f);			// break_torque
+        // IK data
+        SJointIKData 	ik_data;
+        ik_data.Reset	();
+        ik_data.type	= jtNone;
+        ik_data.ik_flags.set(SJointIKData::flBreakable,TRUE);
+        ik_data.Export	(F);
 
         Fvector rot={0,0,0};
         F.w_fvector3(rot);

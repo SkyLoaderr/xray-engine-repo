@@ -107,7 +107,7 @@ void CExportSkeleton::SSplit::Save(IWriter& F, BOOL b2Link)
     H.type				= (I_Current>=0)?MT_SKELETON_GEOMDEF_PM:MT_SKELETON_GEOMDEF_ST;
     H.shader_id			= 0;
     H.bb.min			= m_Box.min;
-    H.bb.max			= m_Box.max;
+    H.bb.max			= m_Box.max;                    
     m_Box.getsphere		(H.bs.c,H.bs.r);
     F.w					(&H,sizeof(H));
     F.close_chunk		();
