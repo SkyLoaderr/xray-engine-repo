@@ -137,7 +137,7 @@ CSE_Abstract *F_entity_Create			(LPCSTR caSection)
 		case CLSID_OBJECT_PHYSIC:		return xr_new<CSE_ALifeObjectPhysic>			(caSection);            // Visualed
 		case CLSID_SCRIPT_OBJECT:		return xr_new<CSE_ALifeDynamicObjectVisual>		(caSection);            // Visualed
 
-		case CLSID_BREAKABLE:			return xr_new<CSE_ALifeBreakable>				(caSection);
+		case CLSID_OBJECT_BREAKABLE:	return xr_new<CSE_ALifeObjectBreakable>			(caSection);
 
 		default:						NODEFAULT;
 	}

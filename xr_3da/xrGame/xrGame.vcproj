@@ -4128,6 +4128,16 @@
 							RelativePath=".\searchlight.h">
 						</File>
 					</Filter>
+					<Filter
+						Name="Breakable"
+						Filter="">
+						<File
+							RelativePath=".\BreakableObject.cpp">
+						</File>
+						<File
+							RelativePath=".\BreakableObject.h">
+						</File>
+					</Filter>
 				</Filter>
 				<Filter
 					Name="Game Materials"

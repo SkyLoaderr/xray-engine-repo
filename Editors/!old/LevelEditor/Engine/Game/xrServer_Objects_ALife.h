@@ -305,9 +305,10 @@ SERVER_ENTITY_DECLARE_BEGIN(CSE_ALifeCar,CSE_ALifeDynamicObjectVisual)
 	virtual bool					used_ai_locations	() const;
 SERVER_ENTITY_DECLARE_END
 
-SERVER_ENTITY_DECLARE_BEGIN(CSE_ALifeBreakable,CSE_ALifeDynamicObjectVisual)
-									CSE_ALifeBreakable	(LPCSTR caSection);
-	virtual							~CSE_ALifeBreakable	();
+SERVER_ENTITY_DECLARE_BEGIN(CSE_ALifeObjectBreakable,CSE_ALifeDynamicObjectVisual)
+    float							m_health;
+									CSE_ALifeObjectBreakable	(LPCSTR caSection);
+	virtual							~CSE_ALifeObjectBreakable	();
 SERVER_ENTITY_DECLARE_END
 
 #endif

@@ -862,7 +862,7 @@ CSE_ALifeObjectHangingLamp::CSE_ALifeObjectHangingLamp(LPCSTR caSection) : CSE_A
 	spot_range					= 10.f;
 	color						= 0xffffffff;
     brightness					= 1.f;
-	m_health					= 1.f;
+	m_health					= 100.f;
 	m_flags.set					(flUseSwitches,false);
 	m_flags.set					(flSwitchOffline,false);
 
@@ -995,14 +995,14 @@ void CSE_ALifeObjectHangingLamp::FillProp	(LPCSTR pref, PropItemVec& values)
 	PHelper.CreateFlag<Flags16>	(values, FHelper.PrepareKey(pref,s_name,"Flags\\Cast shadow"),	&flags,			flCastShadow);
 	PHelper.CreateFlag<Flags16>	(values, FHelper.PrepareKey(pref,s_name,"Flags\\Allow R1"),		&flags,			flR1);
 	PHelper.CreateFlag<Flags16>	(values, FHelper.PrepareKey(pref,s_name,"Flags\\Allow R2"),		&flags,			flR2);
-	PHelper.CreateFlag<Flags16>	(values, FHelper.PrepareKey(pref,s_name,"Flags\\Allow R2"),		&flags,			flPoint);
+	PHelper.CreateFlag<Flags16>	(values, FHelper.PrepareKey(pref,s_name,"Flags\\Allow Point"),	&flags,			flPoint);
 
 	PHelper.CreateColor			(values, FHelper.PrepareKey(pref,s_name,"Color"),			&color);
     PHelper.CreateFloat			(values, FHelper.PrepareKey(pref,s_name,"Brightness"),		&brightness,		0.1f, 5.f);
 	PHelper.CreateChoose		(values, FHelper.PrepareKey(pref,s_name,"Color animator"),	&color_animator, 	smLAnim);
 	PHelper.CreateFloat			(values, FHelper.PrepareKey(pref,s_name,"Range"),			&spot_range,		0.1f, 1000.f);
 	PHelper.CreateFloat			(values, FHelper.PrepareKey(pref,s_name,"Health"),			&m_health,			0.f, 100.f);
-	PHelper.CreateFloat			(values, FHelper.PrepareKey(pref,s_name,"Visble size"),		&m_visible_size,	0.f, 100.f);
+	PHelper.CreateFloat			(values, FHelper.PrepareKey(pref,s_name,"Visible size"),	&m_visible_size,	0.f, 100.f);
 	
 
 	// motions
@@ -1228,40 +1228,44 @@ void CSE_ALifeCar::FillProp				(LPCSTR pref, PropItemVec& values)
 #endif
 
 ////////////////////////////////////////////////////////////////////////////
-// CSE_ALifeBreakable
+// CSE_ALifeObjectBreakable
 ////////////////////////////////////////////////////////////////////////////
-CSE_ALifeBreakable::CSE_ALifeBreakable	(LPCSTR caSection) : CSE_ALifeDynamicObjectVisual(caSection), CSE_Abstract(caSection)
+CSE_ALifeObjectBreakable::CSE_ALifeObjectBreakable	(LPCSTR caSection) : CSE_ALifeDynamicObjectVisual(caSection), CSE_Abstract(caSection)
+{
+	m_health					= 100.f;
+}
+
+CSE_ALifeObjectBreakable::~CSE_ALifeObjectBreakable	()
 {
 }
 
-CSE_ALifeBreakable::~CSE_ALifeBreakable	()
-{
-}
-
-void CSE_ALifeBreakable::STATE_Read		(NET_Packet	&tNetPacket, u16 size)
+void CSE_ALifeObjectBreakable::STATE_Read		(NET_Packet	&tNetPacket, u16 size)
 {
 	inherited::STATE_Read		(tNetPacket,size);
+	tNetPacket.r_float			(m_health);
 }
 
-void CSE_ALifeBreakable::STATE_Write	(NET_Packet	&tNetPacket)
+void CSE_ALifeObjectBreakable::STATE_Write	(NET_Packet	&tNetPacket)
 {
 	inherited::STATE_Write		(tNetPacket);
+	tNetPacket.w_float			(m_health);
 }
 
-void CSE_ALifeBreakable::UPDATE_Read	(NET_Packet	&tNetPacket)
+void CSE_ALifeObjectBreakable::UPDATE_Read	(NET_Packet	&tNetPacket)
 {
 	inherited::UPDATE_Read		(tNetPacket);
 }
 
-void CSE_ALifeBreakable::UPDATE_Write	(NET_Packet	&tNetPacket)
+void CSE_ALifeObjectBreakable::UPDATE_Write	(NET_Packet	&tNetPacket)
 {
 	inherited::UPDATE_Write		(tNetPacket);
 }
 
 #ifdef _EDITOR
-void CSE_ALifeBreakable::FillProp		(LPCSTR pref, PropItemVec& values)
+void CSE_ALifeObjectBreakable::FillProp		(LPCSTR pref, PropItemVec& values)
 {
   	inherited::FillProp			(pref,values);
+	PHelper.CreateFloat			(values, FHelper.PrepareKey(pref,s_name,"Health"),			&m_health,			0.f, 100.f);
 }
 #endif
 

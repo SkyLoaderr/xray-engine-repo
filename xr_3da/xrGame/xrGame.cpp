@@ -41,6 +41,7 @@
 #include "mincer.h"
 #include "radioactivezone.h"
 #include "PhysicsCommon.h"
+#include "BreakableObject.h"
 
 ENGINE_API extern float		psHUD_FOV;
 extern	float				psSqueezeVelocity;
@@ -1116,6 +1117,7 @@ extern "C" {
 			case CLSID_OBJECT_HLAMP:		P = xr_new<CHangingLamp>();			break;
 			case CLSID_OBJECT_PHYSIC:		P = xr_new<CPhysicObject>();		break;
 			case CLSID_SCRIPT_OBJECT:		P = xr_new<CScriptMonster>();		break;
+			case CLSID_OBJECT_BREAKABLE:	P = xr_new<CBreakableObject>();		break;
 		}
 		R_ASSERT2		(P,"Unknown object class");
 		P->SUB_CLS_ID	= cls;
