@@ -66,7 +66,7 @@ void CStateManagerSnork::execute()
 		else			state_id = eStateRest;
 	}
 
-	state_id = eStateFindEnemy;
+//	state_id = eStateFindEnemy;
 
 	if (state_id == eStateAttack) {
 		if (!object->MotionMan.IsCriticalAction()) object->try_to_jump();

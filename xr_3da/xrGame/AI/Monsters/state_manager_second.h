@@ -32,6 +32,7 @@ public:
 
 protected:
 			bool	can_eat					();
+			bool	check_state				(u32 state_id);
 };
 
 #include "state_manager_second_inline.h"

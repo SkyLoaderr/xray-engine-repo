@@ -22,6 +22,13 @@ CStateAbstract::~CState()
 	free_mem();
 }
 
+TEMPLATE_SPECIALIZATION
+void CStateAbstract::reinit()
+{
+	for (STATE_MAP_IT it = substates.begin(); it != substates.end(); it++) 
+		it->second->reinit();
+}
+
 
 TEMPLATE_SPECIALIZATION
 void CStateAbstract::initialize() 

@@ -20,13 +20,16 @@ public:
 						CStateChimeraThreaten	(_Object *obj);
 	virtual				~CStateChimeraThreaten	();
 
+	virtual void		reinit					();
+
 	virtual	void		initialize				();
 
-	virtual bool 		check_start_conditions	();
 	virtual	void		reselect_state			();
 	virtual void 		finalize				();
 	virtual void 		critical_finalize		();
-	//virtual void 		critical_finalize		();
+	virtual bool 		check_start_conditions	();	
+	virtual bool 		check_completion		();	
+
 };
 
 #include "chimera_state_threaten_inline.h"

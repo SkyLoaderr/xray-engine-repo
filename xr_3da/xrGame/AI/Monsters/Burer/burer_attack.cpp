@@ -68,6 +68,14 @@ void CBurerAttack::Run()
 		b_need_reselect = true;		
 	}
 
+	if (cur_state && (cur_state != stateMelee)) {
+		if (stateMelee->CheckStartCondition()) {
+			cur_state->CriticalInterrupt();
+			cur_state->Reset();
+			b_need_reselect = true;		
+		}
+	}
+
 	// проверить нужно ли перевыбирать состояние
 	if (b_need_reselect) {
 		ReselectState();

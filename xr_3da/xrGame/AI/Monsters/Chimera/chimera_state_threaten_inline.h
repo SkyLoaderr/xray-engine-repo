@@ -24,18 +24,39 @@ CStateChimeraThreatenAbstract::~CStateChimeraThreaten()
 {
 }
 
+TEMPLATE_SPECIALIZATION
+void CStateChimeraThreatenAbstract::reinit()
+{
+	inherited::reinit	();
+
+	m_last_time_threaten = 0;
+}
+
+
 #define MIN_DIST_TO_ENEMY	3.f
 #define MORALE_THRESHOLD	0.8f
+#define THREATEN_DELAY		10000
 
 TEMPLATE_SPECIALIZATION
 bool CStateChimeraThreatenAbstract::check_start_conditions()
 {
+	if (object->tfGetRelationType(object->EnemyMan.get_enemy()) == ALife::eRelationTypeWorstEnemy) return false;
 	if (object->Position().distance_to(object->EnemyMan.get_enemy_position()) < MIN_DIST_TO_ENEMY) return false;
-	if (object->GetEntityMorale() < MORALE_THRESHOLD)	return false;
 	if (object->HitMemory.is_hit())						return false;
 	if (object->hear_dangerous_sound)					return false;
-	
+	if (m_last_time_threaten + THREATEN_DELAY > Level().timeServer()) return false;
+
 	return true;
+}
+
+TEMPLATE_SPECIALIZATION
+bool CStateChimeraThreatenAbstract::check_completion()
+{
+	if (object->Position().distance_to(object->EnemyMan.get_enemy_position()) < MIN_DIST_TO_ENEMY) return true;
+	if (object->HitMemory.is_hit()) return true;
+	if (object->tfGetRelationType(object->EnemyMan.get_enemy()) == ALife::eRelationTypeWorstEnemy) return true;
+
+	return false;
 }
 
 TEMPLATE_SPECIALIZATION
@@ -76,6 +97,7 @@ void CStateChimeraThreatenAbstract::finalize()
 {
 	inherited::finalize		();
 	object->SetUpperState	(false);
+	m_last_time_threaten	 = Level().timeServer();
 }
 
 TEMPLATE_SPECIALIZATION
@@ -83,6 +105,7 @@ void CStateChimeraThreatenAbstract::critical_finalize()
 {
 	inherited::critical_finalize();
 	object->SetUpperState	(false);
+	m_last_time_threaten	 = Level().timeServer();
 }
 
 

@@ -10,6 +10,8 @@ public:
 						CState					(_Object *obj, EStateType s_type = ST_Unknown, void *data = 0);
 	virtual 			~CState					(); 
 
+	virtual	void		reinit					();
+
 	virtual void		initialize				();
 	virtual void 		execute					();
 	virtual void 		finalize				();

@@ -9,6 +9,7 @@
 TEMPLATE_SPECIALIZATION
 void CStateManagerSecondAbstract::reinit()
 {
+	inherited::reinit();
 }
 
 TEMPLATE_SPECIALIZATION
@@ -34,15 +35,20 @@ bool CStateManagerSecondAbstract::can_eat()
 {
 	if (!object->CorpseMan.get_corpse()) return false;
 	
-	if (prev_substate == eStateEat) {
+	return check_state(eStateEat);
+}
+
+TEMPLATE_SPECIALIZATION
+bool CStateManagerSecondAbstract::check_state(u32 state_id) 
+{
+	if (prev_substate == state_id) {
 		if (!get_state_current()->check_completion())		return true;
 	} else {
-		if (get_state(eStateEat)->check_start_conditions())	return true;
+		if (get_state(state_id)->check_start_conditions())	return true;
 	}
 
 	return false;
 }
-
 
 
 #undef CStateManagerSecondAbstract 
