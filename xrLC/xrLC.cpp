@@ -20,6 +20,8 @@
 #pragma comment(lib,"X:\\FreeImage.lib")
 #pragma comment(lib,"X:\\xrHemisphere.lib")
 
+extern unsigned int _amblksiz = 512;
+
 CBuild*	pBuild = NULL;
 
 extern void __cdecl logThread(void *dummy);
