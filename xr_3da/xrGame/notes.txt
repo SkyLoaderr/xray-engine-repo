@@ -1,0 +1,88 @@
+	struct fvfVertexIn
+	{
+		Fvector P;
+		float	u,v;
+	};
+//------------------------------------------------------------------------------
+	// Shader
+	FILE_NAME fnT,fnS;
+	S->RstringZ		(fnT);
+	S->RstringZ		(fnS);
+	shader			= Device.Shader.Create(fnS,fnT);
+
+	// Params
+	flags			= S->Rdword	();
+	number_vertices	= S->Rdword	();
+
+	// Vertices
+	DWORD			size_vertices		= number_vertices*sizeof(fvfVertexIn); 
+	vertices		= _aligned_malloc	(size_vertices,64);
+	S->Read			(vertices,size_vertices);
+//------------------------------------------------------------------------------
+
+
+
+
+4906140
+
+//------------------------------------------------------------------------------
+// Character Animations:
+//------------------------------------------------------------------------------
+Legs:
+	- Переступание с ноги на ногу при поворотах
+	- Walk
+		- forward
+		- back
+		- strafe left
+		- strafe right
+	- Run
+		- forward
+		- back
+		- strafe left
+		- strafe right
+	- Crouch walk
+		- forward
+		- back
+		- strafe left
+		- strafe right
+	- Crouch run
+		- forward
+		- back
+		- strafe left
+		- strafe right
+	- Jump
+		- start
+		- end
+		- idle
+
+Torso:
+	- Aim (Each Weapon Type)
+		- Walk/Run
+		- Crouch Walk/Run
+	- Reload
+	- Attack
+	- Use
+
+Legs&Torso:
+	- Idle
+	- Death
+	- Damage
+		- Fwd
+		- Back
+
+
+//------------------------------------------------------------------------------
+// Управление отрядом
+//--------------------------------------+-----------------------+---------------+
+Команды:								|						|				|
+	1 идти по направлению: "бесконечно" | go in this direction	|				|
+	2 идти в заданную позицию:			| go to that position	|				|
+	3 удерживать позицию				| hold position         |(snippers)		| стек(1,2)
+	4 свободная охота					| free hunting			|(kill'em all)	| стек(1,2)
+	5 идти ко мне (нужна помощь)		| need backup/follow me	|(dog's :)		|
+//--------------------------------------+-----------------------+---------------+
+Тригеры:
+	- стрелять только для защиты / всегда при обнаружении врага
+	- тихо но более медленно пробираться / быстро (особо не прикрываясь) но более шумно
+//--------------------------------------+-----------------------+---------------+
+	? ввязываться в ближний бой или предпочитать атаковать из далека
