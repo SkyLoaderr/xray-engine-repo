@@ -91,6 +91,8 @@ function action_robber_activity:initialize()
 	self.object:set_desired_position()
 	self.object:set_desired_direction()
 
+	printf("action_robber_activity:initialize()")
+
 	self:reset_scheme()
 end
 
