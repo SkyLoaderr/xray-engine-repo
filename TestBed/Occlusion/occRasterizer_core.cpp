@@ -121,7 +121,6 @@ void i_section	(occRasterizer* OCC, float *A, float *B, float *C, occTri* T, int
 	// Find the start/end Y pixel coord, set the starting pts for scan line ends
 	int		startY, endY;
 	float	*startp1, *startp2;
-	BOOL	bMiddle	= FALSE;
 	if (Sect == BOTTOM) { 
 		startY	= minPixel(A[1]); endY = maxPixel(B[1]); 
 		startp1 = startp2 = A;
@@ -186,7 +185,16 @@ void i_section	(occRasterizer* OCC, float *A, float *B, float *C, occTri* T, int
 		rightX	= startp1[0] + E1[0]*t; right_dX = mE1;
 		rightZ	= startp1[2] + E1[2]*t; right_dZ = E1[2]/E1[1];
 	}	
-	i_iterate(OCC,T,startY,endY,leftX,left_dX,rightX,right_dX,leftZ,left_dZ,rightZ,right_dZ);
+
+	// Now scan all lines in this section
+	float lhx = left_dX/2;	leftX	+= lhx;	// half pixel
+	float rhx = right_dX/2;	rightX	+= rhx;	// half pixel
+	for (; startY<=endY; startY++) 
+	{
+		i_scan	(OCC, T, int(startY), maxp(leftX-lhx,leftX+lhx), minp(rightX-rhx,rightX+rhx), leftZ, rightZ);
+		leftX	+= left_dX; rightX += right_dX;
+		leftZ	+= left_dZ; rightZ += right_dZ;
+	}
 }
 
 void occRasterizer::rasterize	(occTri* T)
