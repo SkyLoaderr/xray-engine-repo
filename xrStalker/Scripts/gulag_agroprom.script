@@ -1,0 +1,183 @@
+--'--------------------------------------------------------------------------	
+--' AGROPROM
+--'--------------------------------------------------------------------------	
+
+local t = {}
+
+function load_job(sj, gname, type, squad, groups)
+	--' Agroprom NII
+	if type == "agr_nii" then
+		t = { section = "logic@agr_nii_walker1",
+			idle = 0,
+			prior = 9, state = {0},
+			in_rest = "agroprom_underground_space_restrictor", out_rest = ""
+		}
+		table.insert(sj, t)		
+		t = { section = "logic@agr_nii_walker2",
+			idle = 0,
+			prior = 9, state = {0},
+			in_rest = "agroprom_underground_space_restrictor", out_rest = ""
+		}
+		table.insert(sj, t)		
+		t = { section = "logic@agr_nii_walker3",
+			idle = 0,
+			prior = 9, state = {1},
+			in_rest = "agroprom_underground_space_restrictor", out_rest = ""
+		}
+		table.insert(sj, t)		
+		t = { section = "logic@agr_nii_walker4",
+			idle = 0,
+			prior = 9, state = {1},
+			in_rest = "agroprom_underground_space_restrictor", out_rest = ""
+		}
+		table.insert(sj, t)		
+		t = { section = "logic@agr_nii_camper1",
+			idle = 0,
+			prior = 8, state = {0,1},
+			in_rest = "agroprom_underground_space_restrictor", out_rest = ""
+		}
+		table.insert(sj, t)		
+		t = { section = "logic@agr_nii_walker5",
+			idle = 0,
+			prior = 7, state = {0,1},
+			in_rest = "agroprom_underground_space_restrictor", out_rest = ""
+		}
+		table.insert(sj, t)		
+		t = { section = "logic@agr_nii_camper2",
+			idle = 0,
+			prior = 6, state = {0,1},
+			in_rest = "agroprom_underground_space_restrictor", out_rest = ""
+		}
+		table.insert(sj, t)		
+		t = { section = "logic@agr_nii_walker6",
+			idle = 0,
+			prior = 5, state = {0,1},
+			in_rest = "agroprom_underground_space_restrictor", out_rest = ""
+		}
+		table.insert(sj, t)		
+		t = { section = "logic@agr_nii_walker7",
+			idle = 0,
+			prior = 5, state = {0,1},
+			in_rest = "agroprom_underground_space_restrictor", out_rest = ""
+		}
+		table.insert(sj, t)
+		t = { section = "logic@agr_nii_patrol1",
+			idle = 4 * 1000 * 60 * 60,
+			prior = 4, state = {0},
+			in_rest = "agroprom_underground_space_restrictor", out_rest = ""
+		}
+		table.insert(sj, t)		
+		t = { section = "logic@agr_nii_follower1",
+			idle = 4 * 1000 * 60 * 60,
+			prior = 3, state = {0},
+			in_rest = "agroprom_underground_space_restrictor", out_rest = "",
+			leader = "logic@agr_nii_patrol1"
+		}
+		table.insert(sj, t)		
+		t = { section = "logic@agr_nii_follower2",
+			idle = 4 * 1000 * 60 * 60,
+			prior = 3, state = {0},
+			in_rest = "agroprom_underground_space_restrictor", out_rest = "",
+			leader = "logic@agr_nii_patrol1"
+		}
+		table.insert(sj, t)		
+		t = { section = "logic@agr_nii_sleeper1",
+			idle = 0,
+			prior = 0, state = {0,1},
+			in_rest = "agroprom_underground_space_restrictor", out_rest = ""
+		}
+		table.insert(sj, t)
+		t = { section = "logic@agr_nii_sleeper2",
+			idle = 0,
+			prior = 0, state = {0,1},
+			in_rest = "agroprom_underground_space_restrictor", out_rest = ""
+		}
+		table.insert(sj, t)
+		t = { section = "logic@agr_nii_sleeper3",
+			idle = 0,
+			prior = 0, state = {0,1},
+			in_rest = "agroprom_underground_space_restrictor", out_rest = ""
+		}
+		table.insert(sj, t)
+	end
+
+	--' Agroprom factory
+	if type == "agr_factory" then
+		t = { section = "logic@agr_factory_walker1",
+			idle = 0,
+			prior = 0, state = {0},
+			squad = squad, group = groups[1],
+			in_rest = "", out_rest = "agr_factory_restrictor"
+		}
+		table.insert(sj, t)		
+		t = { section = "logic@agr_factory_walker2",
+			idle = 0,
+			prior = 0, state = {0},
+			squad = squad, group = groups[1],
+			in_rest = "", out_rest = "agr_factory_restrictor"
+		}
+		table.insert(sj, t)		
+		t = { section = "logic@agr_factory_walker3",
+			idle = 0,
+			prior = 0, state = {0},
+			squad = squad, group = groups[1],
+			in_rest = "", out_rest = "agr_factory_restrictor"
+		}
+		table.insert(sj, t)		
+		t = { section = "logic@agr_factory_walker4",
+			idle = 0,
+			prior = 0, state = {0},
+			squad = squad, group = groups[1],
+			in_rest = "", out_rest = "agr_factory_restrictor"
+		}
+		table.insert(sj, t)		
+		t = { section = "logic@agr_factory_walker5",
+			idle = 0,
+			prior = 0, state = {0},
+			squad = squad, group = groups[1],
+			in_rest = "", out_rest = "agr_factory_restrictor"
+		}
+		table.insert(sj, t)		
+		t = { section = "logic@agr_factory_walker6",
+			idle = 0,
+			prior = 0, state = {0},
+			squad = squad, group = groups[1],
+			in_rest = "", out_rest = "agr_factory_restrictor"
+		}
+		table.insert(sj, t)
+	end
+end
+
+function load_states(gname, type)
+	if type == "agr_nii" then
+		return function(gulag)
+			if level.get_time_hours() >= 7 and level.get_time_hours() <= 22 then
+				return 0  -- день
+			else
+				return 1  -- ночь
+			end
+		end
+	end
+
+	if type == "agr_factory" then
+		return function( gulag )
+			if gulag:getCasualities() >= 3 then
+				local actor = db.actor
+				if actor and actor:dont_has_info( "agr_factory_need_help" ) then
+					actor:give_info_portion( "agr_factory_need_help" )
+				end
+			end
+			return 0
+		end
+	end
+
+	return nil
+end
+
+function checkStalker(npc_community, gulag_type)
+	if gulag_type == "agr_nii" or gulag_type == "agr_factory" then
+		return npc_community == "military"
+	end
+
+	return false
+end

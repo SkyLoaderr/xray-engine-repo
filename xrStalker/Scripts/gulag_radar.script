@@ -1,0 +1,82 @@
+local t = {}
+
+function load_job(sj, gname, type, squad, groups)
+	--' Radar antena
+	if type == "rad_antena" then
+		-- охрана ворот
+		t = { section = "logic@rad_antena_gate_walker1",
+			idle = 0,
+			prior = 5, state = {0},
+			squad = squad, group = groups[1],
+			in_rest = "", out_rest = ""
+		}
+		table.insert(sj, t)
+		t = { section = "logic@rad_antena_gate_walker2",
+			idle = 0,
+			prior = 5, state = {0},
+			squad = squad, group = groups[1],
+			in_rest = "", out_rest = ""
+		}
+		table.insert(sj, t)
+		-- шатающиеся по территории
+		t = { section = "logic@rad_antena_walker1",
+			idle = 0,
+			prior = 0, state = {0},
+			squad = squad, group = groups[2],
+			in_rest = "", out_rest = ""
+		}
+		table.insert(sj, t)
+		t = { section = "logic@rad_antena_walker2",
+			idle = 0,
+			prior = 0, state = {0},
+			squad = squad, group = groups[2],
+			in_rest = "", out_rest = ""
+		}
+		table.insert(sj, t)
+		t = { section = "logic@rad_antena_walker3",
+			idle = 0,
+			prior = 0, state = {0},
+			squad = squad, group = groups[2],
+			in_rest = "", out_rest = ""
+		}
+		table.insert(sj, t)
+		t = { section = "logic@rad_antena_walker4",
+			idle = 0,
+			prior = 0, state = {0},
+			squad = squad, group = groups[2],
+			in_rest = "", out_rest = ""
+		}
+		table.insert(sj, t)
+		t = { section = "logic@rad_antena_walker5",
+			idle = 0,
+			prior = 0, state = {0},
+			squad = squad, group = groups[2],
+			in_rest = "", out_rest = ""
+		}
+		table.insert(sj, t)
+		-- мост
+		t = { section = "logic@rad_antena_bridge_walker1",
+			idle = 0,
+			prior = 1, state = {0},
+			squad = squad, group = groups[2],
+			in_rest = "", out_rest = ""
+		}
+		table.insert(sj, t)
+	end
+end
+
+function load_states(gname, type)
+	if type == "rad_antenna" then
+		return function(gulag)
+			return 0
+		end
+	end
+end
+
+function checkStalker(npc_community, gulag_type)
+	if gulag_type == "rad_antena" then
+		return npc_community == "monolith"
+	end
+
+	return false
+end

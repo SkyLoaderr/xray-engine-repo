@@ -415,6 +415,9 @@
 					RelativePath=".\Config\misc\effectors.ltx">
 				</File>
 				<File
+					RelativePath=".\Config\misc\gulag_agroprom.ltx">
+				</File>
+				<File
 					RelativePath=".\Config\misc\gulag_bar.ltx">
 				</File>
 				<File
@@ -422,6 +425,9 @@
 				</File>
 				<File
 					RelativePath=".\Config\misc\gulag_garbage.ltx">
+				</File>
+				<File
+					RelativePath=".\Config\misc\gulag_radar.ltx">
 				</File>
 				<File
 					RelativePath=".\Config\misc\gulag_tasks.ltx">
@@ -1699,6 +1705,9 @@
 						Name="Gulags"
 						Filter="">
 						<File
+							RelativePath=".\Scripts\gulag_agroprom.script">
+						</File>
+						<File
 							RelativePath=".\scripts\gulag_bar.script">
 						</File>
 						<File
@@ -1709,6 +1718,9 @@
 						</File>
 						<File
 							RelativePath=".\Scripts\gulag_military.script">
+						</File>
+						<File
+							RelativePath=".\Scripts\gulag_radar.script">
 						</File>
 					</Filter>
 				</Filter>
