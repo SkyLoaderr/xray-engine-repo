@@ -240,7 +240,9 @@ HRESULT	IPureServer::net_Handler(u32 dwMessageType, PVOID pMessage)
 			P->ID					= msg->dpnidPlayer;
 			P->flags.bLocal			= (Pinfo->dwPlayerFlags&DPNPLAYER_LOCAL);
 			P->flags.bConnected		= TRUE;
-			CHK_DX(WideCharToMultiByte(CP_ACP,0,Pinfo->pwszName,-1,P->Name,sizeof(P->Name),0,0));
+			string256				cname;
+			CHK_DX(WideCharToMultiByte(CP_ACP,0,Pinfo->pwszName,-1,cname,sizeof(cname),0,0));
+			P->Name					= cname;
 
 			// register player
 			csPlayers.Enter			();
