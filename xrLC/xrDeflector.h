@@ -82,4 +82,13 @@ typedef xr_vector<UVtri>::iterator UVIt;
 extern void		Jitter_Select	(Fvector2* &Jitter, u32& Jcount);
 extern void		blit			(u32* dest, u32 ds_x, u32 ds_y, u32* src, u32 ss_x, u32 ss_y, u32 px, u32 py, u32 aREF);
 extern void		blit_r			(u32* dest, u32 ds_x, u32 ds_y, u32* src, u32 ss_x, u32 ss_y, u32 px, u32 py, u32 aREF);
-extern void		LightPoint		(CDB::COLLIDER* DB, CDB::MODEL* MDL, Fcolor &C, Fvector &P, Fvector &N, R_Light* begin, R_Light* end, Face* skip, BOOL bUseFaceDisable=FALSE);
+extern void		LightPoint		(CDB::COLLIDER* DB, CDB::MODEL* MDL, base_color &C, Fvector &P, Fvector &N, base_lighting& lights, u32 flags, Face* skip);
+
+enum
+{
+	LP_DEFAULT			= 0,
+	LP_UseFaceDisable	= (1<<0),
+	LP_dont_rgb			= (1<<1),
+	LP_dont_hemi		= (1<<2),
+	LP_dont_sun			= (1<<3),
+};

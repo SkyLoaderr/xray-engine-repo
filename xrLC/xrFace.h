@@ -18,8 +18,18 @@ class base_color
 	Fvector					rgb;		// - all static lighting
 	float					hemi;		// - hemisphere
 	float					sun;		// - sun
+	float					_tmp_;		// ???
+	base_color()			{ rgb.set(0,0,0); hemi=0; sun=0; _tmp_=0;	}
+
+	void					scale		(int samples)	
+	{
+		float	s			=	1/samples;
+		rgb.mul				(s);
+		hemi				*=	s;
+		sun					*=	s;
+	};
 };
-class base_Vertex	
+class base_Vertex
 {
 public: 
 	Fvector					P;

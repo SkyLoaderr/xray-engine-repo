@@ -82,9 +82,8 @@ void xrMU_Model::calc_lighting	(xr_vector<Fcolor>& dest, Fmatrix& xform, CDB::MO
 		v_trans					/=	float(V->adjacent.size());
 		float v_inv				=	1.f-v_amb;
 
-		Fcolor					vC;
+		base_color				vC;
 		Fvector					vP,vN;
-		vC.set					(0,0,0,0);
 		xform.transform_tiny	(vP,V->P);
 		Rxform.transform_dir	(vN,V->N);
 		vN.normalize			();
@@ -93,25 +92,15 @@ void xrMU_Model::calc_lighting	(xr_vector<Fcolor>& dest, Fmatrix& xform, CDB::MO
 		const int n_samples		= 8;
 		for (u32 sample=0; sample<n_samples; sample++)
 		{
-			float					a	= 0.2f * float(sample) / float(n_samples);
-			Fvector					P,N;
-			N.random_dir			(vN,deg2rad(45.f));
-			P.mad					(vP,N,a);
-
-			Fcolor					C;
-			C.set					(0,0,0,0);
-			LightPoint				(&DB, MDL, C, P, N, &*Lights.begin(), &*Lights.end(), 0, TRUE);
-			vC.r					+=	C.r;
-			vC.g					+=	C.g;
-			vC.b					+=	C.b;
+			float				a	= 0.2f * float(sample) / float(n_samples);
+			Fvector				P,N;
+			N.random_dir		(vN,deg2rad(45.f));
+			P.mad				(vP,N,a);
+			LightPoint			(&DB, MDL, vC, P, N, &*Lights.begin(), &*Lights.end(), 0, TRUE);
 		}
-		vC.mul_rgb				(1/float(n_samples));
-
-		// 
-		V->C.r					= vC.r*v_inv+v_amb;
-		V->C.g					= vC.g*v_inv+v_amb;
-		V->C.b					= vC.b*v_inv+v_amb;
-		V->C.a					= v_trans;
+		vC.scale				(n_samples);
+		vC._tmp_				= v_trans;
+		V->C					= vC;
 
 		// Search
 		const float key			= V->P.x;
