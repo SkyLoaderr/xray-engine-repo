@@ -118,7 +118,7 @@ void execUserScript				( )
 		strcpy					(Console->ConfigFile,"user.ltx");
 	Console->ExecuteScript		(Console->ConfigFile);
 }
-void __cdecl	slowdownthread	( void* )
+void slowdownthread	( void* )
 {
 	Sleep	(30*1000);
 	for (;;)	{
@@ -143,16 +143,14 @@ void CheckPrivilegySlowdown		( )
 	BOOL	bDandy	=	(shared_str(Core.CompName)._get()->dwCRC == 0x09de56e5) && (shared_str(Core.UserName)._get()->dwCRC==0x430b37e7) ;
 	if	(bDima || bJim || bDandy)	{
 		Log			("! slowdown enabled for your pleasure :)");
-		_beginthread(slowdownthread,0,0);
-//		_beginthread(slowdownthread,0,0);
-//		_beginthread(slowdownthread,0,0);
+		thread_spawn(slowdownthread,"slowdown",0,0);
 	}
 	if	(strstr(Core.Params,"-slowdown"))	{
-		_beginthread(slowdownthread,0,0);
+		thread_spawn(slowdownthread,"slowdown",0,0);
 	}
 	if	(strstr(Core.Params,"-slowdown2x"))	{
-		_beginthread(slowdownthread,0,0);
-		_beginthread(slowdownthread,0,0);
+		thread_spawn(slowdownthread,"slowdown",0,0);
+		thread_spawn(slowdownthread,"slowdown",0,0);
 	}
 #endif
 }
@@ -313,8 +311,7 @@ int APIENTRY WinMain(HINSTANCE hInstance,
 		g_hInstance				= hInstance;
 		g_hPrevInstance			= hPrevInstance;
 		g_nCmdShow				= nCmdShow;
-		_beginthread			(Intro_DSHOW,0,"GameData\\Stalker_Intro.avi");
-		// _beginthread			(intro_dshow_x,0,0);
+		thread_spawn			(Intro_DSHOW,"intro",0,"GameData\\Stalker_Intro.avi");
 		Sleep					(100);
 	}
 	*/

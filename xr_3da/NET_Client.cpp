@@ -691,15 +691,15 @@ void	IPureClient::Sync_Average	()
 
 void __cdecl		sync_thread(void* P)
 {
-	SetThreadPriority(GetCurrentThread(),THREAD_PRIORITY_TIME_CRITICAL);
-	IPureClient*	C = (IPureClient*)P;
-	C->Sync_Thread	();
+	SetThreadPriority	(GetCurrentThread(),THREAD_PRIORITY_TIME_CRITICAL);
+	IPureClient*	C	= (IPureClient*)P;
+	C->Sync_Thread		();
 }
 void	IPureClient::net_Syncronize	()
 {
 	net_Syncronised		= FALSE;
 	net_DeltaArray.clear();
-	_beginthread		(sync_thread,0,this);
+	thread_spawn		(sync_thread,"network-time-sync",0,this);
 }
 
 void	IPureClient::ClearStatistic()

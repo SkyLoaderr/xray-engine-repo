@@ -84,9 +84,7 @@ void CRenderDevice::End		(void)
 
 
 volatile u32	mt_Thread_marker		= 0x12345678;
-void __cdecl	mt_Thread	(void *ptr)	{
-	SetThreadName			("X-RAY Secondary thread");
-
+void 			mt_Thread	(void *ptr)	{
 	while (true) {
 		// waiting for Device permission to execute
 		EnterCriticalSection	(&Device.mt_csEnter);
@@ -124,7 +122,7 @@ void CRenderDevice::Run			()
     MSG         msg;
     BOOL		bGotMsg;
 	Log				("Starting engine...");
-	SetThreadName	("X-RAY Primary thread");
+	thread_name		("X-RAY Primary thread");
 
 	// Startup timers and calculate timer delta
 	dwTimeGlobal				= 0;
@@ -142,7 +140,7 @@ void CRenderDevice::Run			()
 	InitializeCriticalSection	(&mt_csLeave);
 	EnterCriticalSection		(&mt_csEnter);
 	mt_bMustExit				= FALSE;
-    _beginthread				( mt_Thread, 0, (void *) 0  );
+	thread_spawn				(mt_Thread,"X-RAY Secondary thread",0,0);
 
 	// Message cycle
     PeekMessage					( &msg, NULL, 0U, 0U, PM_NOREMOVE );

@@ -2,7 +2,7 @@
 #define LocatorAPI_NotificationsH
 #pragma once
 
-class CThread
+class	CThread
 {
 	static void __cdecl startup(void* P);
 protected:
@@ -17,7 +17,7 @@ public:
 	virtual 				~CThread		(){}
 	void					Start			()
 	{
-		_beginthread		(startup,0,this);
+		thread_spawn		(startup,"FS-notify",0,this);
 	}
 	virtual	void			Execute			() = 0;
     void					Terminate		() {Terminated=TRUE;}
