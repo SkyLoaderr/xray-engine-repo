@@ -310,6 +310,30 @@ XML_NODE* CUIXml::SearchForAttribute(XML_NODE* start_node,
 									 attrib, attrib_value_pattern);
 }
 
+
+bool CUIXml::CheckUniqueAttrib (XML_NODE* start_node, 
+								LPCSTR tag_name,
+								LPCSTR attrib_name)
+{
+	m_AttribValues.clear();
+
+	int tags_num = GetNodesNum(start_node, tag_name);
+	for(int i=0; i<tags_num; i++)
+	{
+		LPCSTR attrib = ReadAttrib(start_node, tag_name, i, attrib_name, NULL);
+		
+		std::vector<ref_str>::iterator it = std::find(m_AttribValues.begin(), 
+												 m_AttribValues.end(), ref_str(attrib));
+
+		 if(m_AttribValues.end() != it) 
+			 return false;
+		 
+		 m_AttribValues.push_back(attrib);
+	}
+
+	return true;
+}
+
 BOOL APIENTRY DllMain( HANDLE hModule, 
                        u32  ul_reason_for_call, 
                        LPVOID lpReserved

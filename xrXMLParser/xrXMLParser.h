@@ -85,8 +85,12 @@ public:
 	//возвращает количество узлов с заданым именем
 	int GetNodesNum(LPCSTR path, int index, LPCSTR tag_name);
 	int GetNodesNum(XML_NODE* node, LPCSTR  tag_name);
-	
-	
+
+	//проверка того, что аттрибуты у тегов уникальны
+	bool CheckUniqueAttrib (XML_NODE* start_node, 
+							LPCSTR tag_name,
+							LPCSTR attrib_name);
+		
 	//переместиться по XML дереву 
 	//путь задается в форме PARENT:CHILD:CHIDLS_CHILD
 	//node_index - номер, если узлов с одним именем несколько
@@ -104,6 +108,9 @@ public:
 protected:
 	XML_NODE m_root;
 	XML_NODE* m_pLocalRoot;
+
+	//буфферный вектор для проверки уникальность аттрибутов
+	std::vector<ref_str> m_AttribValues;
 };
 
 #endif //xrXMLParserH
