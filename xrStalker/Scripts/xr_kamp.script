@@ -167,12 +167,11 @@ function action_go_patrol:initialize()
 	self.object:set_desired_direction()    
 
 	xr_state.change_state(self.object, 0)
-	self:reset()
+	self:reset_scheme()
 end
-function action_go_patrol:reset()
+function action_go_patrol:reset_scheme()
 	self.move_mgr:initialize(self.object)
 	local tt = math.random(table.getn(self.a.patrol_path))	
-	printf("%s %s", self.a.patrol_path[tt], self.a.path_look[tt])
 	self.move_mgr:reset(self.a.patrol_path[tt], 
 					utils.path_parse_waypoints(self.a.patrol_path[tt]),
 					self.a.path_look[tt],
@@ -347,7 +346,7 @@ function add_to_binder(object, ini, scheme, section, storage)
 	action:add_precondition		(world_property(properties["contact"],		false))
 	action:add_effect 		(world_property(properties["kamp_end"], 	true))
 	manager:add_action (operators["go_patrol"], action)
-
+	
 	action = this.action_wait (object:name(),"action_kamp_wait", xr_motivator.storage[object:id()].kamp)
 	action:add_precondition		(world_property(stalker_ids.property_alive, 	true))
 	action:add_precondition		(world_property(stalker_ids.property_enemy,	false))
@@ -409,5 +408,5 @@ function set_scheme(npc, ini, scheme, section, gulag_name)
 		end
 		st.path_look[i] = s
 		i = i + 1
-	end		
+	end	
 end
