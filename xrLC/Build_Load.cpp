@@ -61,7 +61,7 @@ void CBuild::Load	(const b_params& Params, const IReader& _in_FS)
 	} 
 	else 
 	{
-		Shader_xrLCVec&			v	= shaders.Library();
+		Shader_xrLCVec&		v	= shaders.Library();
 		/*
 		for (u32 it=0; it<v.size(); it++)
 			clMsg ("-",v[it].Name);
