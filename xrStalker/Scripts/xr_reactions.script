@@ -233,7 +233,7 @@ function action_reaction_wait:execute()
 			if self.a.evn:ruleExist("no_walk") ~= true then 
 				self.near_object = true
 			end
-			if sself.near_object == false and elf.object:accessible(self.a.obj.position) == true then			
+			if self.near_object == false and elf.object:accessible(self.a.obj.position) == true then			
 				--' подойти к трупу
 				if self.object:animation_count() == 0 then
 					self.object:set_path_type(game_object.level_path)
