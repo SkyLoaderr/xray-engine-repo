@@ -64,15 +64,15 @@ power_hit_part = 0.3		;0.9				;процент хита, уходящий на отнимание силы
 accel_power_v = 0.000005		;0.00005			;0.0005			;влияния ускорения на отбирание сил
 jump_power_v = 0.0005		;0.005				;влияния прыжка на отбирание сил
 
-burn_immunity = 1.0				;коэффициенты иммунитета 
-strike_immunity = 1.0
-shock_immunity = 1.0
-wound_immunity = 1.0		;0.3
-radiation_immunity = 1.0
-telepatic_immunity = 1.0
-chemical_burn_immunity = 1.0
-explosion_immunity = 1.0
-fire_wound_immunity  = 	1.1
+burn_immunity 			= 1.0				;коэффициенты иммунитета 
+strike_immunity 		= 1.0
+shock_immunity 			= 1.0
+wound_immunity 			= 1.0		;0.3
+radiation_immunity 		= 1.0
+telepatic_immunity 		= 1.0
+chemical_burn_immunity 	= 1.0
+explosion_immunity 		= 1.0
+fire_wound_immunity 	= 1.0
 
 sleep_health = 1.0		;1.5				;коэффициенты скоростей изменения параметров во время сна
 sleep_power = 1.0		;1.5
@@ -85,12 +85,18 @@ antirad = 0.3					;временно! вместо антирада
 material				= creatures\human
 camera_height_factor	= 0.85
 
-
 ;дисперсия стрельбы с учетом ходьбы и бега
-disp_base			 = 1.2	;угол (в градусах) разлета пуль, когда актер стоит на месте
-disp_vel_factor		 = 2.2	;на сколько процентов увеличится дисперсия при скрости в 10 м/с (не обязательно при беге)
-disp_accel_factor	 = 0.4  ;еще на сколько процентов увеличится, если актер бежит (+ скорость)
-disp_crouch_factor	 = -0.4 ;уменьшение в процентах, если актер сидит
+disp_base			 = 2.0  ;угол (в градусах) разлета пуль, когда актер стоит на месте
+disp_vel_factor		 = 3.0  ;на сколько процентов увеличится дисперсия при скрости в 10 м/с (не обязательно при беге)
+disp_accel_factor	 = 1.5  ;еще на сколько процентов увеличится, если актер бежит (+ скорость)
+disp_crouch_factor	 = -0.3 ;уменьшение в процентах, если актер сидит
+
+;old
+;дисперсия стрельбы с учетом ходьбы и бега
+;disp_base			 = 1.2	;угол (в градусах) разлета пуль, когда актер стоит на месте
+;disp_vel_factor		 = 2.2	;на сколько процентов увеличится дисперсия при скрости в 10 м/с (не обязательно при беге)
+;disp_accel_factor	 = 0.4  ;еще на сколько процентов увеличится, если актер бежит (+ скорость)
+;disp_crouch_factor	 = -0.4 ;уменьшение в процентах, если актер сидит
 
 disp_jump_factor	 = 0.5
 
