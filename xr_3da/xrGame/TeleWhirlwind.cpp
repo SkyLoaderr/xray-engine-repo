@@ -78,7 +78,7 @@ bool		CTeleWhirlwindObject::		init(CTelekinesis* tele,CPhysicsShellHolder *obj, 
 				obj->m_pPhysicsShell->set_ApplyByGravity(TRUE);
 			}
 
-
+			if(object->ph_destroyable())b_destroyable=true;
 			return result;
 }
 void		CTeleWhirlwindObject::		raise_update			()
@@ -229,7 +229,7 @@ void		CTeleWhirlwindObject::		raise					(float step)
 			E->applyForce(force.x,force.y+world_gravity*E->getMass(),force.z);
 		}
 		Fvector dist;dist.sub(center,maxE->mass_Center());
-		if(dist.magnitude()<m_telekinesis->keep_radius())
+		if(dist.magnitude()<m_telekinesis->keep_radius()&&b_destroyable)
 		{
 			p->setTorque(Fvector().set(0,0,0));
 			p->setForce(Fvector().set(0,0,0));

@@ -10,7 +10,7 @@ class CTeleWhirlwindObject : public CTelekineticObject
 {
 	typedef			CTelekineticObject	inherited;
 	CTeleWhirlwind		*m_telekinesis;
-
+	bool				b_destroyable;
 	float				throw_power;
 	
 public:
@@ -38,6 +38,7 @@ typedef	CTelekinesis inherited;
 		CGameObject*		m_owner_object;
 		PH_IMPACT_STORAGE	m_saved_impacts;
 		shared_str			m_destroying_particles;
+
 public: 
 								CTeleWhirlwind			();
 		CGameObject*    		OwnerObject				()const									{return m_owner_object;}
