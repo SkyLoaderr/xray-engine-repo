@@ -71,7 +71,7 @@ void CScriptZone::feel_touch_new	(CObject *tpObject)
 void CScriptZone::feel_touch_delete	(CObject *tpObject)
 {
 	CGameObject					*l_tpGameObject = dynamic_cast<CGameObject*>(tpObject);
-	if (!l_tpGameObject)
+	if (!l_tpGameObject || l_tpGameObject->getDestroy())
 		return;
 	
 	SCRIPT_CALLBACK_EXECUTE_2(*m_tpOnExit, lua_game_object(),l_tpGameObject->lua_game_object());
