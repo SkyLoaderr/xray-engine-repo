@@ -208,7 +208,7 @@ BOOL CLevel::net_Client		( LPCSTR name_of_server )
 		pApp->LoadTitle						("Loading textures...");
 		Device.Shader.DeferredLoad			(FALSE);
 		Device.Shader.DeferredUpload		();
-//		Msg	("* %d K used for textures",	Device.Shader._GetMemoryUsage()/1024);
+		Msg	("* %d K used for textures",	Device.Shader._GetMemoryUsage()/1024);
 
 		// Sync
 		pApp->LoadTitle						("CLIENT: Syncronising...");

@@ -409,3 +409,15 @@ void CShaderManager::ED_UpdateTextures(vector<LPSTR>& names)
 	// 2. Load
 	DeferredUpload	();
 }
+
+DWORD CShaderManager::_GetMemoryUsage()
+{
+	DWORD mem = 0;
+	map<LPSTR,CTexture*,str_pred>::iterator I = textures.begin	();
+	map<LPSTR,CTexture*,str_pred>::iterator E = textures.end	();
+	for (; I!=E; I++)
+	{
+		mem += I->second->dwMemoryUsage;
+	}
+	return mem;
+}
