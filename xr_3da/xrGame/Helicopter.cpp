@@ -141,7 +141,7 @@ CHelicopter::Hit(	float P,
 	if(It != m_hitBones.end())
 	{
 	}
-/*	else
+	else
 		CEntity::Hit(P,dir,who,element,position_in_bone_space,impulse,hit_type );
-*/
+
 }

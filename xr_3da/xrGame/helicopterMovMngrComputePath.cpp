@@ -371,8 +371,7 @@ CHelicopterMovementManager::build_circle_trajectory(
 		t.position.y		= 0.0f;
 		t.angularVelocity	= position.angular_velocity;
 		
-//		if(angle<0.0f)
-//			t.angularVelocity *= -1.0f;
+
 
 		t.velocity			= m_velocity;
 
@@ -386,10 +385,12 @@ CHelicopterMovementManager::build_circle_trajectory(
 		last_dir.sub(v3d(position.center), curr_pos);
 		new_dir.sub(v3d(position.center), t.position);
 		cp.crossproduct(last_dir, new_dir);
-
-		(cp.y>0.0f)?t.clockwise = true:t.clockwise=false;
+		(!is_negative(cp.y))?t.clockwise = true:t.clockwise=false;
 		(fromCenter)?t.clockwise=t.clockwise:t.clockwise=!t.clockwise;
 		
+		if( last_dir.similar(new_dir) )
+			t.angularVelocity = 0.0f;
+
 		if (path) {
 			path->push_back	(t);
 			lastAddedPoint = t;
@@ -521,10 +522,10 @@ CHelicopterMovementManager::build_smooth_path (int startKeyIdx, bool bClearOld)
 			{
 				float h,p;
 				dir.getHP(h,p);
-				b_xyz.y = h;
-				b_xyz.x = m_velocity*PITCH_K;
-				b_xyz.z = computeB( (*B).angularVelocity );
-				
+				b_xyz.y =  h ;
+				b_xyz.x =  m_velocity*PITCH_K ;
+				b_xyz.z =  computeB((*B).angularVelocity) ;
+				R_ASSERT( b_xyz.z<PI_DIV_3+EPS );
 			}else
 				b_xyz = prev_xyz;
 		

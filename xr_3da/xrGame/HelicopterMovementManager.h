@@ -110,6 +110,10 @@ private:
 	Fvector2 v2d(const Fvector &vector3d) const
 	{return			(Fvector2().set(vector3d.x,vector3d.z));}
 	IC float _lerp(float src, float dst, float t);
+
+	bool is_negative(float a)
+	{		return				(!fis_zero(a) && (a < 0.f));	}
+
 protected:
 	float							m_velocity;
 	xr_map<u32,STravelParams>		m_movementParams;
