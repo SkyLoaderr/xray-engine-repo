@@ -58,7 +58,10 @@ void CAI_Rat::SelectAnimation(const Fvector& _view, const Fvector& _move, float 
 				break;
 			}
 		if (!tpGlobalAnimation)
-			tpGlobalAnimation = tRatAnimations.tNormal.tGlobal.tpaDeath[::Random.randI(0,2)];
+			if (m_tpCurrentGlobalAnimation == tRatAnimations.tNormal.tGlobal.tpaIdle[1])
+				tpGlobalAnimation = tRatAnimations.tNormal.tGlobal.tpaDeath[0];
+			else
+				tpGlobalAnimation = tRatAnimations.tNormal.tGlobal.tpaDeath[::Random.randI(0,2)];
 	}
 	else
 		if (m_bFiring) {

@@ -339,7 +339,7 @@ void CAI_Rat::FreeState()
 
 	SelectEnemy(Enemy);
 	
-	//CHECK_IF_SWITCH_TO_NEW_STATE(Enemy.Enemy,aiRatAttackFire)
+	CHECK_IF_SWITCH_TO_NEW_STATE(Enemy.Enemy,aiRatAttackFire)
 
 	if(m_fGoalChangeTime<=0){
 		m_fGoalChangeTime += m_fGoalChangeDelta+m_fGoalChangeDelta*::Random.randF(-0.5f,0.5f);
@@ -414,12 +414,17 @@ void CAI_Rat::FreeState()
 		Fvector tTemp;
 		tTemp.set(vPosition);
 		vPosition.mad(tDirection,m_fSpeed*m_fTimeUpdateDelta);
-		if (!AI_Node) {
-			if (AI_NodeID = Level().AI.q_Node(0,vPosition))
-				AI_Node = Level().AI.Node(AI_NodeID);
+		DWORD dwNewNode = AI_NodeID;
+		NodeCompressed *tpNewNode = AI_Node;
+		NodePosition	QueryPos;
+		Level().AI.PackPosition	(QueryPos,vPosition);
+
+		if (!AI_NodeID || !Level().AI.u_InsideNode(*AI_Node,QueryPos)) {
+			dwNewNode = Level().AI.q_Node(0,vPosition);
+			tpNewNode = Level().AI.Node(dwNewNode);
 		}
-		if (AI_Node && Level().AI.bfInsideNode(AI_Node,vPosition)) {
-			vPosition.y = ffGetY(*AI_Node,vPosition.x,vPosition.z);
+		if (dwNewNode && Level().AI.u_InsideNode(*tpNewNode,QueryPos)) {
+			vPosition.y = ffGetY(*tpNewNode,vPosition.x,vPosition.z);
 			m_tOldPosition.set(tTemp);
 		}
 		else {

@@ -90,6 +90,9 @@ void CAI_Rat::HitSignal(float amount, Fvector& vLocalDir, CObject* who)
 	if (S.feedback)			return;
 	if (Random.randI(2))	return;
 	pSounds->PlayAtPos		(S,this,vPosition);
+	if (g_Health() + amount < 0) {
+		PKinematics(pVisual)->PlayCycle(tRatAnimations.tNormal.tGlobal.tpaDeath[::Random.randI(0,2)]);
+	}
 }
 
 // when someone hit rat
