@@ -23,26 +23,20 @@ class CAI_Soldier : public CCustomMonster
 	};
 
 	enum ESoldierStates 	{
+		/**
 		aiSoldierAttackRun = 0,
 		aiSoldierAttackFire,
 		aiSoldierDefend,
-		aiSoldierDie,
 		aiSoldierFindEnemy,
 		aiSoldierFollowLeader,
 		aiSoldierFreeHunting,
 		aiSoldierInjuring,
-		aiSoldierJumping,
 		
 		aiSoldierStandingUp,
 		aiSoldierSitting,
-		aiSoldierLyingDown,
 
 		aiSoldierMoreDeadThanAlive,
-		aiSoldierNoWeapon,
 		
-		aiSoldierPatrolReturnToRoute,
-		aiSoldierPatrolRoute,
-		aiSoldierFollowLeaderPatrol,
 		aiSoldierPatrolHurt,
 		aiSoldierPatrolHurtAggressiveUnderFire,
 		aiSoldierPatrolHurtNonAggressiveUnderFire,
@@ -50,10 +44,18 @@ class CAI_Soldier : public CCustomMonster
 		aiSoldierTurnOver,
 
 		aiSoldierPursuit,
-		aiSoldierRecharge,
 		aiSoldierRetreat,
 		aiSoldierSenseSomething,
 		aiSoldierUnderFire,
+		/**/
+		aiSoldierDie,
+		aiSoldierJumping,
+		aiSoldierLyingDown,
+		aiSoldierNoWeapon,
+		aiSoldierPatrolReturnToRoute,
+		aiSoldierPatrolRoute,
+		aiSoldierFollowLeaderPatrol,
+		aiSoldierRecharge,
 	};
 	
 	typedef	CCustomMonster inherited;
@@ -341,37 +343,39 @@ class CAI_Soldier : public CCustomMonster
 		CSoldierSelectorSenseSomething		SelectorSenseSomething;
 		CSoldierSelectorUnderFire			SelectorUnderFire;
 
+		/**
 		void AttackRun();
 		void AttackFire();
 		
-		void Die();
 		void Defend();
 		void FindEnemy();
 		void FollowLeader();
 		void FreeHunting();
 		void Injuring();
-		void Jumping();
 		void MoreDeadThanAlive();
-		void NoWeapon();
 
 		void StandingUp();
 		void Sitting();
-		void LyingDown();
 
-		void Patrol();
-		void PatrolReturn();
 		void PatrolHurt();
 		void PatrolHurtAggressiveUnderFire();
 		void PatrolHurtNonAggressiveUnderFire();
 		void PatrolUnderFire();
-		void FollowLeaderPatrol();
 		void TurnOver();
 		
 		void Pursuit();
-		void Recharge();
 		void Retreat();
 		void SenseSomething();
 		void UnderFire();
+		/**/
+		void Die();
+		void Jumping();
+		void LyingDown();
+		void NoWeapon();
+		void Recharge();
+		void Patrol();
+		void PatrolReturn();
+		void FollowLeaderPatrol();
 		
 		// miscellanious funtions	
 	IC  CGroup getGroup() {return Level().Teams[g_Team()].Squads[g_Squad()].Groups[g_Group()];};

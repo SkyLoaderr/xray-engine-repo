@@ -27,8 +27,6 @@ CAI_Soldier::CAI_Soldier()
 	dwSavedEnemyNodeID = -1;
 	dwLostEnemyTime = 0;
 	bBuildPathToLostEnemy = false;
-	eCurrentState = aiSoldierFollowLeader;
-	//eCurrentState = aiSoldierTestMicroActions;
 	m_dwLastRangeSearch = 0;
 	m_dwLastSuccessfullSearch = 0;
 	m_fAggressiveness = ::Random.randF(0,1);
@@ -143,7 +141,13 @@ void CAI_Soldier::Load(CInifile* ini, const char* section)
 BOOL CAI_Soldier::Spawn	(BOOL bLocal, int server_id, Fvector& o_pos, Fvector& o_angle, NET_Packet& P, u16 flags)
 {
 	if (!inherited::Spawn(bLocal,server_id,o_pos,o_angle,P,flags))	return FALSE;
-	//vfCheckForPatrol();
+	
+	INIT_SQUAD_AND_LEADER;
+	if (Leader == this)
+		eCurrentState = aiSoldierPatrolRoute;
+	else
+		eCurrentState = aiSoldierFollowLeaderPatrol;
+	
 	return TRUE;
 }
 
@@ -155,6 +159,8 @@ void CAI_Soldier::Update(DWORD DT)
 
 void CAI_Soldier::Exec_Movement	( float dt )
 {
+	AI_Path.Calculate(this,vPosition,vPosition,m_fCurSpeed,dt);
+	/**
 	if (eCurrentState != aiSoldierJumping)
 		AI_Path.Calculate(this,vPosition,vPosition,m_fCurSpeed,dt);
 	else {
@@ -179,6 +185,7 @@ void CAI_Soldier::Exec_Movement	( float dt )
 		}
 		UpdateTransform	();
 	}
+	/**/
 }
 
 void CAI_Soldier::OnEvent(EVENT E, DWORD P1, DWORD P2)
