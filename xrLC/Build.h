@@ -83,13 +83,14 @@ public:
 
 	void	BuildCForm				();
 	void	BuildPortals			(IWriter &fs);
-	void	BuildRapid				();
+	void	BuildRapid				(BOOL bSave);
 		
 	void	IsolateVertices			();
 	void	xrPhase_ResolveMaterials();
 	void	xrPhase_UVmap			();
 	void	xrPhase_Subdivide		();
 	void	ImplicitLighting		();
+	void	Light_prepare			();
 	void	Light					();
 	void	Light_R2				();
 	void	LightVertex				();

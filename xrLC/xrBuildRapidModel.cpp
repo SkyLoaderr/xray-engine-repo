@@ -17,10 +17,12 @@ IC bool				FaceEqual(Face& F1, Face& F2)
 	return false;
 }
 
-void CBuild::BuildRapid()
+void CBuild::BuildRapid		(BOOL bSaveForOtherCompilers)
 {
 	float	p_total			= 0;
 	float	p_cost			= 1.f/(g_faces.size());
+
+	xr_delete		(RCAST_Model);
 
 	Status			("Converting faces...");
 	for				(u32 fit=0; fit<g_faces.size(); fit++)	g_faces[fit]->flags.bProcessed = false;
@@ -79,43 +81,44 @@ void CBuild::BuildRapid()
 	RCAST_Model->build		(CL.getV(),(int)CL.getVS(),CL.getT(),(int)CL.getTS());
 
 	// Saving for AI/DO usage
-	Status					("Saving...");
-	string256				fn;
+	if (bSaveForOtherCompilers)
+	{
+		Status					("Saving...");
+		string256				fn;
 
-	IWriter*		MFS		= FS.w_open	(strconcat(fn,pBuild->path,"build.cform"));
+		IWriter*		MFS		= FS.w_open	(strconcat(fn,pBuild->path,"build.cform"));
+		xr_vector<b_rc_face>	rc_faces;
+		rc_faces.resize			(CL.getTS());
+		// Prepare faces
+		for (u32 k=0; k<CL.getTS(); k++){
+			CDB::TRI* T			= CL.getT()+k;
+			base_Face* F		= (base_Face*)T->dummy;
+			b_rc_face& cf		= rc_faces[k];
+			cf.dwMaterial		= F->dwMaterial;
+			cf.dwMaterialGame	= F->dwMaterialGame;
+			Fvector2*	cuv		= F->getTC0	();
+			cf.t[0].set			(cuv[0]);
+			cf.t[1].set			(cuv[1]);
+			cf.t[2].set			(cuv[2]);
+		}
 
-	xr_vector<b_rc_face>	rc_faces;
-	rc_faces.resize			(CL.getTS());
-	// Prepare faces
-	for (u32 k=0; k<CL.getTS(); k++){
-		CDB::TRI* T			= CL.getT()+k;
-		base_Face* F		= (base_Face*)T->dummy;
-		T->dummy			= k;
-		b_rc_face& cf		= rc_faces[k];
-		cf.dwMaterial		= F->dwMaterial;
-		cf.dwMaterialGame	= F->dwMaterialGame;
-		Fvector2*	cuv		= F->getTC0();
-		cf.t[0].set			(cuv[0]);
-		cf.t[1].set			(cuv[1]);
-		cf.t[2].set			(cuv[2]);
+		MFS->open_chunk			(0);
+
+		// Header
+		hdrCFORM hdr;
+		hdr.version				= CFORM_CURRENT_VERSION;
+		hdr.vertcount			= (u32)CL.getVS();
+		hdr.facecount			= (u32)CL.getTS();
+		hdr.aabb				= scene_bb;
+		MFS->w					(&hdr,sizeof(hdr));
+
+		// Data
+		MFS->w					(CL.getV(),(u32)CL.getVS()*sizeof(Fvector));
+		MFS->w					(CL.getT(),(u32)CL.getTS()*sizeof(CDB::TRI));
+		MFS->close_chunk		();
+
+		MFS->open_chunk			(1);
+		MFS->w					(&*rc_faces.begin(),(u32)rc_faces.size()*sizeof(b_rc_face));
+		MFS->close_chunk		();
 	}
-
-	MFS->open_chunk			(0);
-
-	// Header
-	hdrCFORM hdr;
-	hdr.version				= CFORM_CURRENT_VERSION;
-	hdr.vertcount			= (u32)CL.getVS();
-	hdr.facecount			= (u32)CL.getTS();
-	hdr.aabb				= scene_bb;
-	MFS->w					(&hdr,sizeof(hdr));
-
-	// Data
-	MFS->w					(CL.getV(),(u32)CL.getVS()*sizeof(Fvector));
-	MFS->w					(CL.getT(),(u32)CL.getTS()*sizeof(CDB::TRI));
-	MFS->close_chunk		();
-
-	MFS->open_chunk			(1);
-	MFS->w					(&*rc_faces.begin(),(u32)rc_faces.size()*sizeof(b_rc_face));
-	MFS->close_chunk		();
 }

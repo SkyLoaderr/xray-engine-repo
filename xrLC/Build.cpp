@@ -76,6 +76,12 @@ public:
 	}
 };
 
+void CBuild::Light_prepare()
+{
+	for (vecFaceIt I=g_faces.begin();	I!=g_faces.end(); I++) (*I)->CacheOpacity();
+	for (u32 m=0; m<mu_models.size(); m++)	mu_models[m]->calc_faceopacity();
+}
+
 void CBuild::Run	(LPCSTR P)
 {
 	//****************************************** Open Level
@@ -100,11 +106,20 @@ void CBuild::Run	(LPCSTR P)
 	PreOptimize					();
 	CorrectTJunctions			();
 
-	//****************************************** RayCast model
+	//****************************************** Collision DB
 	FPU::m64r					();
-	Phase						("Building RayCast model...");
+	Phase						("Building collision database...");
 	mem_Compact					();
-	BuildRapid					();
+	BuildCForm					();
+	BuildPortals				(*fs);
+
+	//****************************************** HEMI-RayCast model
+	FPU::m64r					();
+	Phase						("Building hemisphere-RayCast model...");
+	mem_Compact					();
+	BuildRapid					(FALSE);
+
+	//****************************************** HEMI-Tesselate
 
 	//****************************************** Building normals
 	FPU::m64r					();
@@ -121,20 +136,11 @@ void CBuild::Run	(LPCSTR P)
 		mem_Compact					();
 	}
 
-	//****************************************** Collision DB
-	FPU::m64r();
-	Phase						("Building collision database...");
-	mem_Compact					();
-	BuildCForm					();
-	BuildPortals				(*fs);
-
 	//****************************************** Starting MU
 	FPU::m64r					();
 	Phase						("LIGHT: Starting MU...");
 	mem_Compact					();
-	for (vecFaceIt I=g_faces.begin();	I!=g_faces.end(); I++) (*I)->CacheOpacity();
-	for (u32 m=0; m<mu_models.size(); m++)	mu_models[m]->calc_faceopacity();
-
+	Light_prepare				();
 	mu_base.start				(xr_new<CMUThread> (0));
 
 	//****************************************** Resolve materials
