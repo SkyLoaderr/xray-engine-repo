@@ -167,7 +167,7 @@ int dcTriListCollider::CollideCylinder(dxGeom* Cylinder, int Flags, dContactGeom
 					 ////////////////////////////////////////////////////////////////////////////
 	
 					 ///////////////////////////////////////////////////////////////////////////
-					 int dcTriListCollider::CollideSphere(dxGeom* Sphere, int Flags, dContactGeom* Contacts, int Stride){
+ int dcTriListCollider::CollideSphere(dxGeom* Sphere, int Flags, dContactGeom* Contacts, int Stride){
 
 
 						 // Get sphere 
