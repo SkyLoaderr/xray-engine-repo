@@ -154,7 +154,9 @@ function update()
 	-- рождение раненого
 	if ( state == state_after or
 	   ( state ~= state_before and actor_dist < 50*50 ) ) and
-	   actor:dont_has_info( "tutorial_wounded_start" )
+	   actor:dont_has_info( "tutorial_wounded_start" ) and
+	   actor:dont_has_info( "tutorial_wounded_help" ) and
+	   actor:dont_has_info( "tutorial_wounded_die" )
 	then
 		local sim = alife()
 		if sim then
