@@ -296,6 +296,7 @@ void CStalkerActionGetReadyToKill::execute	()
 CStalkerActionGetEnemy::CStalkerActionGetEnemy	(CAI_Stalker *object, LPCSTR action_name) :
 	inherited				(object,action_name)
 {
+	m_weight				= _edge_value_type(100);
 }
 
 void CStalkerActionGetEnemy::initialize	()
@@ -331,11 +332,6 @@ void CStalkerActionGetEnemy::execute	()
 #else
 	m_object->CObjectHandlerGOAP::set_goal		(eObjectActionIdle);
 #endif
-}
-
-_edge_value_type CStalkerActionGetEnemy::weight	(const CSConditionState &condition0, const CSConditionState &condition1) const
-{
-	return					(_edge_value_type(100));
 }
 
 //////////////////////////////////////////////////////////////////////////
@@ -566,6 +562,7 @@ void CStalkerActionMakeItemKilling::execute	()
 CStalkerActionFindAmmo::CStalkerActionFindAmmo	(CAI_Stalker *object, LPCSTR action_name) :
 	inherited				(object,action_name)
 {
+	m_weight				= _edge_value_type(100);
 }
 
 void CStalkerActionFindAmmo::initialize	()
@@ -601,9 +598,4 @@ void CStalkerActionFindAmmo::execute	()
 #else
 	m_object->CObjectHandlerGOAP::set_goal		(eObjectActionIdle);
 #endif
-}
-
-_edge_value_type CStalkerActionFindAmmo::weight	(const CSConditionState &condition0, const CSConditionState &condition1) const
-{
-	return					(_edge_value_type(100));
 }

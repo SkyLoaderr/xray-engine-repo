@@ -125,7 +125,6 @@ public:
 	virtual void				initialize				();
 	virtual void				execute					();
 	virtual void				finalize				();
-	virtual _edge_value_type	weight					(const CSConditionState &condition0, const CSConditionState &condition1) const;
 };
 
 //////////////////////////////////////////////////////////////////////////
@@ -201,7 +200,6 @@ public:
 	virtual void				initialize				();
 	virtual void				execute					();
 	virtual void				finalize				();
-	virtual _edge_value_type	weight					(const CSConditionState &condition0, const CSConditionState &condition1) const;
 };
 
 #include "stalker_actions_inline.h"
