@@ -18,7 +18,8 @@ public:
 	virtual	void	LoadAttackAnim			();
 			void	CheckAttackHit			();
 
-	//virtual void	FillAttackStructure(u32 i, TTime t);
+			bool	ConeSphereIntersection	(Fvector ConeVertex, float ConeAngle, Fvector ConeDir, 
+											 Fvector SphereCenter, float SphereRadius);
 
 	// Flesh-specific FSM
 	CBitingRest			*stateRest;

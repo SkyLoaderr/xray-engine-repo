@@ -78,7 +78,7 @@ void CAI_Biting::SelectAnimation(const Fvector &_view, const Fvector &_move, flo
 	}
 	
 	if (g_Alive())
-		if (!m_tpCurAnim && m_bActionFinished) {
+		if (!m_tpCurAnim) {
 
 			int i1, i2, i3;
 			i1 = i2 = i3 = 0;			// bug protection ;) todo: find out the reason
@@ -145,7 +145,7 @@ void CAttackAnim::SwitchAnimation(TTime cur_time, u32 i1, u32 i2, u32 i3)
 {
 	time_started = cur_time;
 
-	m_stack.empty();
+	m_stack.clear();
 
 	// найти в m_all анимации с индексами (i1,i2,i3) и заполнить m_stack
 	ATTACK_ANIM_IT I = m_all.begin();

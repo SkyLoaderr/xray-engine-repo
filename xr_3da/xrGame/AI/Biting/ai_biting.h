@@ -129,7 +129,6 @@ public:
 	float					m_fSoundThreshold;
 	float					m_fHitPower;
 	bool					bShowDeath;				//!< need to control animation
-	bool					m_bActionFinished;		//!< true if animation finished
 	CAttackAnim				m_tAttackAnim;			//!< for hit calculation
 
 	CBitingMotion			Motion;					//!< motion frame params

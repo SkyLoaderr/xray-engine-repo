@@ -102,8 +102,16 @@ void CSoundMemory::UpdateHearing(TTime dt)
 
 	// отсортировать по "опасности" звука
 	std::sort(Sounds.begin(),Sounds.end());
+
+	// удалить объекты, которые ушли в оффлайн
+	CheckValidObjects();
 }
 
+void CSoundMemory::CheckValidObjects()
+{
+	xr_vector<SoundElem>::iterator Result = std::remove_if(Sounds.begin(), Sounds.end(), remove_sound_pred());
+	Sounds.erase   (Result,Sounds.end());
+}
 
 //---------------------------------------------------------------------------------------------------------
 ///////////////////////////////////////////////////////////////////////////////////////////////////////////
@@ -170,6 +178,9 @@ void CVisionMemory::UpdateVision(TTime dt)
 	if (IsEnemy()) SelectEnemy();
 	else if (IsObject()) SelectCorpse();
 	else Selected.obj = 0;
+	
+	// удаление объектов, перешедших в оффлайн
+	CheckValidObjects();
 }
  
 
@@ -259,6 +270,14 @@ VisionElem &CVisionMemory::GetNearestObject(EObjectType obj_type)
 	return (*ObjectsVector)[index];
 }
 
+void CVisionMemory::CheckValidObjects()
+{
+	xr_vector<VisionElem>::iterator Result = std::remove_if(Enemies.begin(), Enemies.end(), remove_visual_pred());
+	Enemies.erase   (Result,Enemies.end());
+	
+	Result = std::remove_if(Objects.begin(), Objects.end(), remove_visual_pred());
+	Objects.erase	(Result,Objects.end());
+}
 
 ///////////////////////////////////////////////////////////////////////////////////////////////////////////
 // CMonsterMemory implementation

@@ -107,9 +107,9 @@ void CAI_Biting::Load(LPCSTR section)
 	m_fSoundThreshold				= pSettings->r_float (section,"SoundThreshold");
 
 	m_dwHealth						= pSettings->r_u32   (section,"Health");
-	//m_fHitPower						= pSettings->r_float (section,"HitPower");
+	m_fHitPower						= pSettings->r_float (section,"HitPower");
 	// temp
-	m_fHitPower						= 1.f;
+	///m_fHitPower						= 1.f;
 	fHealth							= (float)m_dwHealth;
 
 	// prefetching

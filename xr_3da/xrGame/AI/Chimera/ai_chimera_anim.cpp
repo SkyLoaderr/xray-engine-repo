@@ -135,7 +135,6 @@ void CAI_Chimera::MotionToAnim(EMotionAnim motion, int &index1, int &index2, int
 
 void CAI_Chimera::LoadAttackAnim()
 {
-	Fvector trace_from;
 	Fvector center, left_side, right_side;
 
 	center.set		(0.f,0.f,0.f);

@@ -161,10 +161,10 @@ void CAI_Flesh::LoadAttackAnim()
 	m_tAttackAnim.PushAttackAnim(0, 9, 3, 1300,	1400,	left_side,	0.6f, m_fHitPower);
 
 	// 5 // 
-	m_tAttackAnim.PushAttackAnim(0, 9, 4, 600, 800,	special_side,	2.6f, m_fHitPower, AA_FLAG_ATTACK_RAT);
+	m_tAttackAnim.PushAttackAnim(0, 10, 0, 600, 800,	special_side,	2.6f, m_fHitPower, AA_FLAG_ATTACK_RAT);
 
 	// 6 //
-	m_tAttackAnim.PushAttackAnim(0, 9, 5, 700, 850,		center,		2.6f, m_fHitPower, AA_FLAG_FIRE_ANYWAY);
+	m_tAttackAnim.PushAttackAnim(0, 19, 0, 700, 850,	center,		2.6f, m_fHitPower, AA_FLAG_FIRE_ANYWAY);
 
 }
 
@@ -192,38 +192,10 @@ void CAI_Flesh::CheckAttackHit()
 		} else if ((apt_anim.flags & AA_FLAG_ATTACK_RAT) == AA_FLAG_ATTACK_RAT) {
 
 			// TestIntersection конуса(копыта) и сферы(крысы)
-			bool Intersected = false;
+			Fvector dir;	dir.set(0.f,-1.f,0.f);		// направление конуса
+			Fvector vC;		ve.obj->Center(vC);			// центр сферы
 
-			float angle = PI_DIV_6;					// угол конуса
-			Fvector fromV = trace_from;				// вершина конуса
-			Fvector dir;							// направление конуса
-			dir.set(0.f,-1.f,0.f);
-
-			float fInvSin = 1.0f/_sin(angle);
-			float fCosSqr = _cos(angle)*_cos(angle);
-
-			Fvector vC;		ve.obj->Center(vC);		// центр сферы
-			Fvector kCmV;	kCmV.sub(vC,fromV);
-			Fvector kD		= kCmV;
-			Fvector tempV	= dir;
-			tempV.mul(ve.obj->Radius()* fInvSin);
-			kD.add(tempV);
-
-			float fDSqrLen = kD.square_magnitude();
-			float fE = kD.dotproduct(dir);
-			if ( fE > 0.0f && fE*fE >= fDSqrLen*fCosSqr )
-			{
-				float fSinSqr = _sin(angle)*_sin(angle);
-
-				fDSqrLen = kCmV.square_magnitude();
-				fE = -kCmV.dotproduct(dir);
-				if ( fE > 0.0f && fE*fE >= fDSqrLen*fSinSqr ) {
-					float fRSqr = ve.obj->Radius()*ve.obj->Radius();
-					Intersected =  fDSqrLen <= fRSqr;
-				}else Intersected = true;
-			} else Intersected = false;
-
-			if (Intersected) {
+			if (ConeSphereIntersection(trace_from, PI_DIV_6, dir, vC, ve.obj->Radius())) {
 				DoDamage(ve.obj,apt_anim.damage);
 				m_tAttackAnim.UpdateLastAttack(cur_time);
 			}
@@ -245,4 +217,38 @@ void CAI_Flesh::CheckAttackHit()
 	}
 }
 
+////////////////////////////////////////////////////////////////////////////////////////////////
+// Функция ConeSphereIntersection
+// Пересечение конуса (не ограниченного) со сферой
+// Необходима для определения пересечения копыта плоти с баунд-сферой крысы
+// Параметры: ConeVertex - вершина конуса, ConeAngle - угол конуса (между поверхностью и высотой)
+// ConeDir - направление конуса, SphereCenter - центр сферы, SphereRadius - радиус сферы
+bool CAI_Flesh::ConeSphereIntersection(Fvector ConeVertex, float ConeAngle, Fvector ConeDir, Fvector SphereCenter, float SphereRadius)
+{
+	float fInvSin = 1.0f/_sin(ConeAngle);
+	float fCosSqr = _cos(ConeAngle)*_cos(ConeAngle);
+
+	
+	Fvector kCmV;	kCmV.sub(SphereCenter,ConeVertex);
+	Fvector kD		= kCmV;
+	Fvector tempV	= ConeDir;
+	tempV.mul		(SphereRadius* fInvSin);
+	kD.add			(tempV);
+
+	float fDSqrLen = kD.square_magnitude();
+	float fE = kD.dotproduct(ConeDir);
+	if ( fE > 0.0f && fE*fE >= fDSqrLen*fCosSqr ) {
+		
+		float fSinSqr = _sin(ConeAngle)*_sin(ConeAngle);
+
+		fDSqrLen = kCmV.square_magnitude();
+		fE = -kCmV.dotproduct(ConeDir);
+		if ( fE > 0.0f && fE*fE >= fDSqrLen*fSinSqr ) {
+			float fRSqr = SphereRadius*SphereRadius;
+			return fDSqrLen <= fRSqr;
+		} else return true;
+	} 
+	
+	return false;
+}
 

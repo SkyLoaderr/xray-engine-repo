@@ -71,6 +71,11 @@ typedef struct tagSoundElement
 	TSoundDangerValue ConvertSoundType(ESoundTypes stype);
 } SoundElem;
 
+// удаление звуков от объектов перешедших в оффлайн
+struct remove_sound_pred : public std::unary_function<SoundElem, bool>
+{
+	bool operator()(const SoundElem &x){ return (x.who && x.who->getDestroy()); }
+};
 
 class CSoundMemory
 {
@@ -89,6 +94,8 @@ protected:
 	void Deinit() {Sounds.clear();}
 
 	void UpdateHearing(TTime dt);
+private:
+	void CheckValidObjects(); 		// удалить объекты которые не прошли тест на GetDestroyed(), т.е. ушли в оффлайн
 };
 
 
@@ -119,6 +126,14 @@ typedef struct tagVisionElem
 		return (obj == ve.obj);
 	}
 } VisionElem;
+
+
+// удаление объектов, перешедших в оффлайн
+struct remove_visual_pred : public std::unary_function<VisionElem, bool>
+{
+	bool operator()(const VisionElem &x){ return (x.obj && x.obj->getDestroy()); }
+};
+
 
 /////////////////////////////////////////////////////////////////////////////////////////////
 // CVisionMemory class
@@ -158,7 +173,7 @@ protected:
 		// Заполняет массивы Objects и Enemies и Selected
 		void		UpdateVision	(TTime dt);
 	
-	DEFINE_THIS_CLASS_AS_POLYMORPHIC();
+		DEFINE_THIS_CLASS_AS_POLYMORPHIC();
 
 private:
 		void		AddObject(const VisionElem &ve);
@@ -170,6 +185,9 @@ private:
 		void		SelectCorpse();
 
 		VisionElem	&GetNearestObject(EObjectType obj_type = ENEMY);
+
+		// удалить объекты которые не прошли тест на getDestroyed(), т.е. ушли в оффлайн
+		void CheckValidObjects();
 };
 
 //---------------------------------------------------------------------------------------------------------
