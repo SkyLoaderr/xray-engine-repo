@@ -113,7 +113,7 @@ void CLevel::g_sv_Spawn		(NET_Packet* Packet)
 		if (S.Leader==0)	S.Leader=E;
 		else				G.Members.push_back(E);
 		if (s_flags&M_SPAWN_OBJECT_ACTIVE)	{
-
+			E->OnActivate	();
 		}
 	}
 }
