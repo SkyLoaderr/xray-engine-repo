@@ -33,6 +33,8 @@ CScriptEngine::CScriptEngine	()
 
 CScriptEngine::~CScriptEngine	()
 {
+	if (m_virtual_machine)
+		lua_close			(lua());
 }
 
 void CScriptEngine::init		()
