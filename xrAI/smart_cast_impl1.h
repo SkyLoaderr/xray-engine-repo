@@ -199,7 +199,7 @@ namespace SmartDynamicCast {
 			typedef object_type_traits::remove_const<T2>::type _T2;
 #ifdef DEBUG
 			T1					*temp = SmartDynamicCast::smart_cast<_T1>(const_cast<_T2*>(p));
-			VERIFY				(temp == dynamic_cast<T1*>(p),"SmartCast result differs from the DynamicCast!");
+			VERIFY2				(temp == dynamic_cast<T1*>(p),"SmartCast result differs from the DynamicCast!");
 			return				(temp);
 #else
 			return				(SmartDynamicCast::smart_cast<_T1>(const_cast<_T2*>(p)));
