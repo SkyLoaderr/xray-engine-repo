@@ -56,7 +56,7 @@ function evaluator_commander:evaluate ()
 end
 
 ----------------------------------------------------------------------------------------------------------------------
--- Главное Действие. Представляет из себя конечный автомат. И пусть мне кто-то докажет, что с GOAP это было бы проще.
+-- Главное Действие. Представляет из себя конечный автомат.
 ----------------------------------------------------------------------------------------------------------------------
 class "action_commander" ( action_base )
 
@@ -69,13 +69,8 @@ end
 function action_commander:initialize()
     action_base.initialize( self )
     
---    self.way             = a.way
---    self.way_inside      = a.way_inside
---    self.way_outside     = a.way_outside
---    self.near_door_index = a.near_door_index
-
     --self.object:set_item( object.idle, self.object:best_weapon() )
-    self.object:set_item( object.idle, nil )
+--    self.object:set_item( object.idle, nil )
 
     self.object:set_callback (self, "move_callback", game_object.movement)
     
@@ -95,8 +90,6 @@ function action_commander:finalize()
             self.object:play_sound( snd_enemy_monster, 1, 0 )
         end
     end
-
-    self.object:clear_animations()
 end
 
 function action_commander:walk_to_pos( way, waypoint )
@@ -155,7 +148,7 @@ function action_commander:execute()
                                    [look_map]     = 10,
                                    [look_outside] = 10,
                                    [radio_talk]   = 20,
-                                   [drink_vodka]  = 10 }
+                                   [drink_vodka]  = 10000 }
                 else
                     self.act = random_choice_weighted{
                                    [walk_inside]  = 60,
@@ -513,25 +506,21 @@ function action_commander:process_radio()
     
     return true
 end
---    self:set_animation ()
---    self.stage = 1
-    
---    return false
---end
 
 function action_commander:exec_drink_vodka()
     if self.pos then
         if self:in_pos() then
             if self.sub_act then
                 if self.object:animation_count() == 0 then
-                --if self.time_end <= device():time_global() then
                     self.decision = true
+                elseif self.object:animation_count() == 6 and self.no_vodka then
+                    self.object:set_item( object.activate, self.object:object( "vodka" ) )
+                    self.no_vodka = false
                 end
             else
                 self:stop()
 
                 self.object:set_sight( look.point, self.a.way:point( self.a.way:index( "mattress_dir" ) ):add( vector():set( 0, 0.5, 0 ) ), 0 )
-                --self.object:set_item ( object.idle, nil )
 
                 self.object:add_animation( "stalker_2_down", true )
                 self.object:add_animation( "vodka_1", true )
@@ -541,19 +530,66 @@ function action_commander:exec_drink_vodka()
                 self.object:add_animation( "vodka_2", true )
                 self.object:add_animation( "stalker_2_up", true )
                
---[[                local vodka = self.object:object( "vodka" )
-                
-                self.object:set_item( object.activate, vodka )
-                self.object:set_item( object.use, vodka )
-                self.object:set_item( object.deactivate, vodka )]]
-                
-                
                 if day_time() > 14 * h2ms then
                     self.drunk = true
                 end
 
                 self.sub_act = true
---                self.time_end = device():time_global() + 60000
+                self.no_vodka = true
+            end
+        else
+            -- если сдвинулся с позиции, то уйти
+            if self.sub_act then
+                self.decision = true
+            end
+        end
+    else
+        self.object:clear_animations()
+        self:walk_to_pos( self.a.way, "mattress" )
+        printf( "decision made: drink_vodka" )
+    end
+end
+
+--[[function action_commander:exec_drink_vodka()
+    if self.pos then
+        if self:in_pos() then
+            if self.sub_act then
+                local dt = self.time_end - device():time_global()
+                
+                if dt < 0 then 
+                    if not xr_state.change_state( self.object, 0 ) then
+                        self.decision = true
+                    end
+                elseif dt < 3000 and self.vodka_active then
+                    self.object:set_item( object.deactivate, self.object:object( "vodka" ) )
+                    self.vodka_active = false
+                    printf( "УБИРАЮ ВОДКУ" )
+                elseif dt < 20000 and not self.vodka_active then
+                    self.object:set_item( object.activate, self.object:object( "vodka" ) )
+                    self.vodka_active = true
+                    printf( "НАЧИНАЮ ПИТЬ" )
+                end
+                
+            else
+                self:stop()
+
+                if xr_state.change_state( self.object, 2 ) then 
+                    self.object:set_sight( look.point, self.a.way:point( self.a.way:index( "mattress_dir" ) ):add( vector():set( 0, 0.5, 0 ) ), 0 )
+                    printf( "НАЧИНАЮ САДИТЬСЯ" )
+                else
+                    -- против глюка
+                    self.object:set_sight( look.point, self.a.way:point( self.a.way:index( "mattress_dir" ) ):add( vector():set( 0, 0.5, 0 ) ), 0 )
+
+                    if day_time() > 14 * h2ms then
+                        self.drunk = true
+                    end
+
+                    self.sub_act = true
+                    self.time_end = device():time_global() + 20000
+                    self.vodka_active = false
+                    
+                    printf( "СЕЛ" )
+                end
             end
         else
             -- если сдвинулся с позиции, то уйти
@@ -567,7 +603,7 @@ function action_commander:exec_drink_vodka()
         self:walk_to_pos( self.a.way, "mattress" )
         printf( "decision made: drink_vodka" )
     end
-end
+end]]
 
 function action_commander:exec_sleep()
     if self.pos then
@@ -667,7 +703,8 @@ function add_to_binder( npc )
 
     manager:add_evaluator( prop_commander, this.evaluator_commander( "property_commander", a ) )
 
-    action:add_precondition( world_property( stalker_ids.property_enemy, false ) )
+    action:add_precondition( world_property( stalker_ids.property_enemy,    false ) )
+    action:add_precondition( world_property( xr_evaluators_id.state_change, true  ) )
     action:add_effect( world_property( prop_commander, false ) )
     manager:add_action( act_commander, action )
 
