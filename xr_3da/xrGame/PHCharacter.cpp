@@ -731,7 +731,7 @@ m_update_time=Device.fTimeGlobal;
 const float CHWON_ACCLEL_SHIFT=0.1f;
 const float CHWON_AABB_FACTOR =1.f;
 const float CHWON_ANG_COS	  =M_SQRT1_2;
-const float CHWON_CALL_UP_SHIFT=0.5f;
+const float CHWON_CALL_UP_SHIFT=0.05f;
 const float CHWON_CALL_FB_HIGHT=1.5f;
 const float CHWON_AABB_FB_FACTOR =1.f;
 
@@ -749,7 +749,8 @@ bool CPHSimpleCharacter::ValidateWalkOn()
 
 	accel_add.set(m_acceleration);
 	float mag=accel_add.magnitude();
-	if(!(mag>0.f)) return false;
+	if(!(mag>0.f)) return 
+						false;
 	accel_add.mul(CHWON_ACCLEL_SHIFT/mag);
 	accel.set(accel_add);
 	accel.div(CHWON_ACCLEL_SHIFT);
@@ -758,7 +759,7 @@ bool CPHSimpleCharacter::ValidateWalkOn()
 	center.add(accel_add);
 	center_forbid.set(center);
 	center_forbid.y+=CHWON_CALL_FB_HIGHT;
-	center.y+=m_radius*(1.f+CHWON_CALL_UP_SHIFT);
+	center.y+=m_radius+CHWON_CALL_UP_SHIFT;
 	CDB::RESULT*    R_begin;
 	CDB::RESULT*    R_end  ;
 	CDB::TRI*       T_array ;
@@ -783,7 +784,8 @@ bool CPHSimpleCharacter::ValidateWalkOn()
 		dCROSS(norm,=,side0,side1);//optimize it !!!
 		dNormalize3(norm);
 		if(dDOT(norm,(float*)&accel)<-CHWON_ANG_COS) 
-		return false;
+		return 
+				false;
 		}
 	}
 
@@ -812,7 +814,8 @@ bool CPHSimpleCharacter::ValidateWalkOn()
 										true;
 		}
 	}
-	return false;
+	return 
+		false;
 }
 void CPHSimpleCharacter::SetAcceleration(Fvector accel){
 	if(!b_exist) return;
@@ -1320,13 +1323,13 @@ void __stdcall CarHitCallback(bool& do_colide,dContact& c)
 			Fvector vel,rvel;
 			Car->GetVelocity(vel);
 			rvel.sub(vel,Character->GetVelocity());
-			if(rvel.magnitude()>1.f)
+			if(rvel.dotproduct(*((Fvector*)c.geom.normal))>1.f)
 			{
 			vel.normalize();
 			Fvector pos;
 
 			pos.set(0,0,0);
-			Obj->Hit(100.f,vel,Car,0,pos,10.f);
+			Obj->Hit(100.f,vel,Car,0,pos,1000.f);
 			Obj->PHSetPushOut();
 			}
 		}
@@ -1342,13 +1345,13 @@ void __stdcall CarHitCallback(bool& do_colide,dContact& c)
 			Fvector vel,rvel;
 			Car->GetVelocity(vel);
 			rvel.sub(vel,Character->GetVelocity());
-			if(rvel.magnitude()>1.f)
+			if(-rvel.dotproduct(*((Fvector*)c.geom.normal))>5.f)
 			{
 			vel.normalize();
 			Fvector pos;
 
 			pos.set(0,0,0);
-			Obj->Hit(100.f,vel,Car,0,pos,100.f);
+			Obj->Hit(100.f,vel,Car,0,pos,10.f);
 			Obj->PHSetPushOut();
 			}
 		}

@@ -27,6 +27,11 @@ void __stdcall PushOutCallback(bool& do_colide,dContact& c)
 	dBodyID body2=dGeomGetBody(c.geom.g2);
 	if(!(body1&&body2)) 
 		return;
+
+	const dReal* pos1=dGeomGetPosition(c.geom.g1);
+	const dReal* pos2=dGeomGetPosition(c.geom.g2);
+
+
 	//do_colide=false;
 	//return;
 	if(c.geom.depth>0.005f)
@@ -53,8 +58,8 @@ void __stdcall PushOutCallback(bool& do_colide,dContact& c)
 		if(usr_data_1&&usr_data_2)
 			if(usr_data_1->object_callback==PushOutCallback&&usr_data_1->object_callback==PushOutCallback)
 			*/
-		const dReal erp=0.01f;
-		const dReal cfm=0.001f;
+		const dReal erp=0.2f;
+		const dReal cfm=0.00000001f;
 
 		//c.surface.soft_erp=5000.f;
 		//c.surface.soft_cfm=0.0001f;
@@ -63,10 +68,6 @@ void __stdcall PushOutCallback(bool& do_colide,dContact& c)
 		c.surface.soft_cfm=erp/cfm/fixed_step /world_spring;
 		
 	}
-
-	const dReal* pos1=dGeomGetPosition(c.geom.g1);
-	const dReal* pos2=dGeomGetPosition(c.geom.g2);
-
 
 	if(pos1[0]==pos2[0]&&pos1[1]==pos2[1]&&pos1[2]==pos2[2])
 	

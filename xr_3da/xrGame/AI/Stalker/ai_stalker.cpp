@@ -800,8 +800,9 @@ void CAI_Stalker::UpdateCL(){
 #ifndef NO_PHYSICS_IN_AI_MOVE
 	//	Movement.GetDeathPosition(vPosition);
 	//	vPosition.y+=3.;
-	//	UpdateTransform();
+		//	UpdateTransform();
 		Movement.DestroyCharacter();
+		PHSetPushOut();
 #endif
 		}
 	if (Level().CurrentViewEntity() == this) {
@@ -812,16 +813,20 @@ void CAI_Stalker::UpdateCL(){
 void CAI_Stalker::Hit(float P, Fvector &dir, CObject *who,s16 element,Fvector p_in_object_space, float impulse){
 	
 	
-	if(!m_pPhysicsShell){
+	if(!(m_pPhysicsShell&&m_pPhysicsShell->bActive))
+	{
 		inherited::Hit(P,dir,who,element,p_in_object_space,impulse);
 		m_saved_impulse=impulse*skel_fatal_impulse_factor;
 		m_saved_element=element;
 		m_saved_hit_dir.set(dir);
 		m_saved_hit_position.set(p_in_object_space);
+#ifndef NO_PHYSICS_IN_AI_MOVE
+		Movement.ApplyImpulse(dir,impulse);
+#endif
 	}
 	else {
 		if (!g_Alive()) {
-			if(m_pPhysicsShell) 
+			if(m_pPhysicsShell&&m_pPhysicsShell->bActive) 
 				m_pPhysicsShell->applyImpulseTrace(p_in_object_space,dir,impulse,element);
 				//m_pPhysicsShell->applyImpulseTrace(position_in_bone_space,dir,impulse);
 			else{

@@ -780,7 +780,7 @@ void CPHWorld::Step(dReal step)
 }
 
 static void NearCallback(void* /*data*/, dGeomID o1, dGeomID o2){
-const ULONG N = 100;
+const ULONG N = 300;
 dContact contacts[N];
 
 		// get the contacts up to a maximum of N contacts
@@ -2174,6 +2174,9 @@ void CPHElement::CallBack(CBoneInstance* B){
 		//m_shell->mXFORM.mulB(parent);
 		
 	}
+
+	if(push_untill)//temp_for_push_out||(!temp_for_push_out&&object_contact_callback)
+		if(push_untill<Device.dwTimeGlobal) unset_Pushout();
 }
 
 void CPHElement::InterpolateGlobalTransform(Fmatrix* m){

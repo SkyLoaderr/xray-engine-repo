@@ -105,7 +105,10 @@ void Disable										();
 
 public:
 	void Enable											(){dBodyEnable(m_body);}
-	bool IsEnabled										(){return !!dBodyIsEnabled(m_body);}
+	bool IsEnabled										(){
+															if(!b_exist)return false;
+															return !!dBodyIsEnabled(m_body);
+															}
 	bool b_exist;
 	float m_update_time;
 public:
