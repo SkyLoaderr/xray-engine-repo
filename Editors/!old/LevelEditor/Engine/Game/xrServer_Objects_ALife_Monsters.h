@@ -43,9 +43,11 @@ SERVER_ENTITY_DECLARE_BEGIN0(CSE_ALifeTraderAbstract)
 	ALife::ERelationType			get_relation			(u16 person_id);
 private:
 	bool							m_character_profile_init;
-	PROFILE_INDEX					m_iCharacterProfile;
 #endif
+
+	PROFILE_INDEX					m_iCharacterProfile;
 	SPECIFIC_CHARACTER_INDEX		m_iSpecificCharacter;
+
 #ifdef XRGAME_EXPORTS
 	//буферный вектор проверенных персонажей
 	xr_vector<SPECIFIC_CHARACTER_INDEX> m_CheckedCharacters;
