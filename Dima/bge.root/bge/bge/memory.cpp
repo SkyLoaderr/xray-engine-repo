@@ -101,28 +101,34 @@ public:
 
 void test()
 {
-	/**
+	/**/
 	const u32 test_count = 100000;
-	const u32 size = 0x1000;
+	const u32 size = 0x8000;
 	char s[size], d[size];
 	typedef memory_processor<true,true,false,false,true> mp;
-	Memory::mem_fill(s,1,128);
+	Memory::mem_fill(s,1,size);
+	u64 start,finish;
+	
+	SetPriorityClass	(GetCurrentProcess(),REALTIME_PRIORITY_CLASS);
+	SetThreadPriority	(GetCurrentThread(),THREAD_PRIORITY_TIME_CRITICAL);
+	Sleep(1);
 	
 	{
-		u64		start = CPU::cycles();
+		start = CPU::cycles();
 		for (u32 i=0; i<test_count; ++i)
 			mp::copy<size>(d,s);
-		u64		finish = CPU::cycles();
-		__asm femms
+		finish = CPU::cycles();
 		ui().log("%f\n",float(finish-start)*CPU::cycles2milisec);
 	}
 
 	{
-		u64		start = CPU::cycles();
+		start = CPU::cycles();
 		for (u32 i=0; i<test_count; ++i)
 			Memory::mem_copy(d,s,size);
-		u64		finish = CPU::cycles();
+		finish = CPU::cycles();
 		ui().log("%f\n",float(finish-start)*CPU::cycles2milisec);
 	}
-	/**/
+
+	SetThreadPriority	(GetCurrentThread(),THREAD_PRIORITY_NORMAL);
+	SetPriorityClass	(GetCurrentProcess(),NORMAL_PRIORITY_CLASS);
 }
