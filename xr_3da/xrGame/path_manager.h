@@ -1171,7 +1171,11 @@ public:
 		xr_vector<_index_type>::iterator	E = path->end();
 		_index_type							dwNode = *I;
 		for ( ++I; I != E; ++I) {
-			fDirectDistance					= graph->check_position_in_direction(dwNode,tPosition,graph->vertex_position(*I),m_parameters->max_range);
+			u32								vertex_id = graph->check_position_in_direction(dwNode,tPosition,graph->vertex_position(*I));
+			if (graph->valid_vertex_id(vertex_id))
+				fDirectDistance				= tPosition.distance_to(graph->vertex_position(*I));
+			else
+				fDirectDistance				= m_parameters->max_range;
 			if (fDirectDistance == m_parameters->max_range) {
 				if (fLastDirectDistance == 0) {
 					fCumulativeDistance		+= graph->distance(dwNode,*I);
@@ -1192,7 +1196,11 @@ public:
 			}
 		}
 
-		fDirectDistance						= graph->check_position_in_direction(dwNode,tPosition,m_parameters->m_dest_point,m_parameters->max_range);
+		u32									vertex_id = graph->check_position_in_direction(dwNode,tPosition,m_parameters->m_dest_point);
+		if (graph->valid_vertex_id(vertex_id))
+			fDirectDistance					= tPosition.distance_to(m_parameters->m_dest_point);
+		else
+			fDirectDistance					= m_parameters->max_range;
 		if (fDirectDistance == m_parameters->max_range)
 			m_parameters->m_distance		= fCumulativeDistance + fLastDirectDistance + m_parameters->m_dest_point.distance_to(graph->vertex_position((*path)[path->size() - 1]));
 		else

@@ -10,37 +10,9 @@
 
 #include "compiler.h"
 #include "xrThread.h"
-
 #include "xrGraph.h"
 #include "level_graph.h"
 #include "graph_engine.h"
-
-class CNodeThread : public CThread
-{
-	u32					m_dwStart;
-	u32					m_dwEnd;
-	const CLevelGraph	*m_tpAI_Map;
-
-public:
-	CNodeThread	(u32 ID, u32 dwStart, u32 dwEnd, const CLevelGraph *tpAI_Map) : CThread(ID)
-	{
-		m_dwStart  = dwStart;
-		m_dwEnd	   = dwEnd;
-		m_tpAI_Map = tpAI_Map;
-	}
-	
-	virtual void Execute()
-	{
-		u32 dwSize = m_dwEnd - m_dwStart + 1;
-		thProgress = 0.0f;
-		for (int i = (int)m_dwStart; i<(int)m_dwEnd; thProgress = float(++i - (int)m_dwStart)/dwSize) {
-			tpaGraph[i].tNodeID = m_tpAI_Map->vertex(tpaGraph[i].tLocalPoint);
-			if (m_tpAI_Map->valid_vertex_id(tpaGraph[i].tNodeID) && !m_tpAI_Map->inside(tpaGraph[i].tNodeID,tpaGraph[i].tLocalPoint,true))
-				tpaGraph[i].tNodeID = u32(-1);
-		}
-		thProgress = 1.0f;
-	}
-};
 
 class CGraphThread : public CThread
 {
@@ -86,8 +58,13 @@ public:
 				float fStraightDistance = tCurrentGraphVertex.tLocalPoint.distance_to(tNeighbourGraphVertex.tLocalPoint);
 				if (fStraightDistance < m_parameters->max_range) {
 					try {
-						if (fStraightDistance < 200.f)
-							fDistance = m_graph->check_position_in_direction(tCurrentGraphVertex.tNodeID,tCurrentGraphVertex.tLocalPoint,tNeighbourGraphVertex.tLocalPoint,m_parameters->max_range);
+						if (fStraightDistance < 200.f) {
+							u32 vertex_id = m_graph->check_position_in_direction(tCurrentGraphVertex.tNodeID,tCurrentGraphVertex.tLocalPoint,tNeighbourGraphVertex.tLocalPoint);
+							if (m_graph->valid_vertex_id(vertex_id))
+								fDistance = tCurrentGraphVertex.tLocalPoint.distance_to(tNeighbourGraphVertex.tLocalPoint);
+							else
+								fDistance = flt_max;
+						}
 						else
 							fDistance = m_parameters->max_range;
 						if (fDistance == m_parameters->max_range) {

@@ -22,7 +22,7 @@
 #include "xr_spawn_merge.h"
 #include "xrCrossTable.h"
 
-#define THREAD_COUNT				6
+#define THREAD_COUNT				1
 
 #define GET_INDEX(N,K)				iFloor((2*N - 1 - _sqrt((2*N - 1)*(2*N - 1) - 4*float(N)*(N - 1)/float(K)))/2.f)
 
@@ -127,14 +127,15 @@ bool bfCheckForGraphConnectivity(CLevelGraph *tpAI_Map)
 				tpAI_Map->q_mark_bit[tDynamicGraphVertex.tpaEdges[i].vertex_id()] = true;
 			}
 	}
+	bool		ok = true;
 	for (int i=0; i<(int)tpaGraph.size(); i++)
 		if (!tpAI_Map->q_mark_bit[i]) {
-			tpAI_Map->q_mark_bit.assign(tpAI_Map->header().vertex_count(),false);
-			return			(false);
+			Msg				("Vertex [%f][%f][%f] is not connected!",VPUSH(tpaGraph[i].tLocalPoint));
+			ok				= false;
 		}
 	
 	tpAI_Map->q_mark_bit.assign(tpAI_Map->header().vertex_count(),false);
-	return					(true);
+	return					(ok);
 }
 
 u32 dwfErasePoints()
@@ -348,6 +349,56 @@ void vfRemoveIncoherentGraphPoints(CLevelGraph *tpAI_Map, u32 &dwVertexCount)
 	Msg					("%d graph points are valid",dwVertexCount);
 }
 
+//extern void	xrBuildCrossTable	(LPCSTR name);
+//
+//void vfSaveEmptyGraph			(LPCSTR name)
+//{
+//	string256					fName;
+//	strconcat					(fName,name,"level.graph");
+//
+//	CMemoryWriter				tGraph;
+//	tGraphHeader.dwVersion		= XRAI_CURRENT_VERSION;
+//	tGraphHeader.dwLevelCount	= 1;
+//	tGraphHeader.dwVertexCount	= tpaGraph.size();
+//	tGraphHeader.dwEdgeCount	= 0;
+//	tGraphHeader.dwDeathPointCount = 0;
+//
+//	CGameGraph::SLevel			tLevel;
+//	tLevel.tOffset.set			(0,0,0);
+//	tLevel.tLevelID				= 0;
+//	Memory.mem_copy				(tLevel.caLevelName,name,(u32)xr_strlen(name) + 1);
+//	tGraphHeader.tpLevels.insert(std::make_pair(tLevel.tLevelID,tLevel));
+//	tGraph.w_u32				(tGraphHeader.dwVersion);
+//	tGraph.w_u32				(tGraphHeader.dwLevelCount);
+//	tGraph.w_u32				(tGraphHeader.dwVertexCount);
+//	tGraph.w_u32				(tGraphHeader.dwEdgeCount);
+//	tGraph.w_u32				(tGraphHeader.dwDeathPointCount);
+//	CGameGraph::LEVEL_PAIR_IT	I = tGraphHeader.tpLevels.begin();
+//	CGameGraph::LEVEL_PAIR_IT	E = tGraphHeader.tpLevels.end();
+//	for ( ; I != E; I++) {
+//		tGraph.w_stringZ		((*I).second.caLevelName);
+//		tGraph.w_fvector3		((*I).second.tOffset);
+//		tGraph.w_u32			((*I).second.tLevelID);
+//	}
+//
+//	CGameGraph::CVertex			tGraphVertex;
+//	for (int i=0, j=0, k=tpaGraph.size()*sizeof(CGameGraph::CVertex); i<(int)tpaGraph.size(); j += tpaGraph[i].tNeighbourCount, Progress(.75f + float(++i)/tpaGraph.size()/4)) {
+//		SDynamicGraphVertex				&tDynamicGraphVertex = tpaGraph[i];
+//		tGraphVertex.tLocalPoint		= tDynamicGraphVertex.tLocalPoint;
+//		tGraphVertex.tGlobalPoint		= tDynamicGraphVertex.tGlobalPoint;
+//		tGraphVertex.tNodeID			= tDynamicGraphVertex.tNodeID;
+//		Memory.mem_copy					(tGraphVertex.tVertexTypes,tDynamicGraphVertex.tVertexTypes,LOCATION_TYPE_COUNT*sizeof(_LOCATION_ID));
+//		tGraphVertex.tLevelID			= tDynamicGraphVertex.tLevelID;
+//		tGraphVertex.tNeighbourCount	= tDynamicGraphVertex.tNeighbourCount;
+//		tGraphVertex.dwEdgeOffset		= k + j*(u32)sizeof(CGameGraph::CEdge);
+//		tGraphVertex.tDeathPointCount	= tDynamicGraphVertex.tDeathPointCount;
+//		tGraphVertex.dwPointOffset		= tDynamicGraphVertex.dwPointOffset;
+//		tGraph.w						(&tGraphVertex,	sizeof(CGameGraph::CVertex));
+//	}
+//
+//	tGraph.save_to				(fName);
+//}
+//
 void xrBuildGraph(LPCSTR name)
 {
 	CThreadManager		tThreadManager;		// multithreading
@@ -374,8 +425,10 @@ void xrBuildGraph(LPCSTR name)
 	vfRemoveDuplicateGraphPoints(dwGraphPoints);
 
 	Phase("Searching AI map for corresponding nodes");
-	START_THREADS(tpaGraph.size(),CNodeThread);
-	tThreadManager.wait();
+	xr_vector<SDynamicGraphVertex>::iterator	I = tpaGraph.begin();
+	xr_vector<SDynamicGraphVertex>::iterator	E = tpaGraph.end();
+	for ( ; I != E; ++I)
+		(*I).tNodeID	= tpAI_Map->vertex_id((*I).tLocalPoint);
 	Progress(1.0f);
 	Msg("%d points don't have corresponding nodes (they are removed)",dwfErasePoints());
 	FlushLog();
@@ -384,8 +437,17 @@ void xrBuildGraph(LPCSTR name)
 	Phase("Removing incoherent graph points");
 	vfRemoveIncoherentGraphPoints(tpAI_Map,dwGraphPoints);
 
-	R_ASSERT2	(tpaGraph.size(), "There are no graph points!");
-	
+	R_ASSERT2				(tpaGraph.size(), "There are no graph points!");
+
+//	vfSaveEmptyGraph		();
+//	xrBuildCrossTable		(name);
+//
+//	string256				fName;
+//	strconcat				(fName,name,CROSS_TABLE_NAME_RAW);
+//	CGameLevelCrossTable	*cross_table = xr_new<CGameLevelCrossTable>(name);
+//	
+#pragma todo("Dima to Dima : make removing incoherent points faster")
+#pragma todo("Dima to Dima : make graph building faster")
 	Phase("Allocating memory");
 	vfAllocateMemory();
 
