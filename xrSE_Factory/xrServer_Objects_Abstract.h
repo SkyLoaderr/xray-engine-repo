@@ -35,8 +35,8 @@ SERVER_ENTITY_DECLARE_BEGIN0(CSE_Visual)
     void __stdcall					OnChangeVisual	(PropValue* sender);  
     void __stdcall					OnChangeAnim	(PropValue* sender);  
 public:
-	shared_str							visual_name;
-	shared_str							startup_animation;
+	shared_str						visual_name;
+	shared_str						startup_animation;
 public:
 									CSE_Visual		(LPCSTR name=0);
 	virtual							~CSE_Visual		();
@@ -49,6 +49,7 @@ public:
 	virtual void					FillProps		(LPCSTR pref, PropItemVec &items);
 
 	virtual CSE_Visual* __stdcall	visual			() = 0;
+	virtual void __stdcall			get_bone_xform	(LPCSTR name, Fmatrix& xform) = 0;
 };
 add_to_type_list(CSE_Visual)
 #define script_type_list save_type_list(CSE_Visual)
