@@ -40,7 +40,10 @@ public:
 		for(i=elements.begin();elements.end()!=i;++i)
 			(*i)->SetAirResistance(linear,angular);
 	}
-
+	virtual void			GetAirResistance		(float& linear, float& angular)
+	{
+		(*elements.begin())->GetAirResistance(linear,angular);
+	}
 	virtual	void			add_Joint				(CPhysicsJoint* J)					{
 		if(!J)return;
 		joints.push_back((CPHJoint*)J);

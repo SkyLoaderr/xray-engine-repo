@@ -100,6 +100,11 @@ public:
 		k_w= angular;
 		k_l=linear;
 	}
+	virtual	void			GetAirResistance				(float &linear, float &angular)
+	{
+		linear= k_l;
+		angular=k_w;
+	}
 	void					BonesCallBack					(CBoneInstance* B);																//called from updateCL visual influent
 																//called from updateCL visual influent
 	void					PhDataUpdate					(dReal step);																	//ph update
