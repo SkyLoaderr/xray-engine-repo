@@ -4,8 +4,8 @@
   
 #include "stdafx.h"
 #include "ModelPool.h"
-#include "fmesh.h"
 
+#include "..\fmesh.h"
 #include "..\fvisual.h"
 #include "..\fprogressivefixedvisual.h"
 #include "..\fhierrarhyvisual.h"

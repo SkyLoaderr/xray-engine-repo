@@ -1504,16 +1504,6 @@
 				</Filter>
 			</Filter>
 			<Filter
-				Name="Model Pool"
-				Filter="">
-				<File
-					RelativePath=".\ModelPool.cpp">
-				</File>
-				<File
-					RelativePath=".\ModelPool.h">
-				</File>
-			</Filter>
-			<Filter
 				Name="Font output"
 				Filter="">
 				<File
