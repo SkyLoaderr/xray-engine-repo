@@ -163,7 +163,7 @@ void	Face::Failure		()
 void	Face::Verify		()
 {
 	// 1st :: area
-	if	(CalcArea()<EPS_S)	{ Failure(); return; }
+	if	(CalcArea()<EPS)	{ Failure(); return; }
 
 	// 2nd :: TC0
 	Fvector2*	tc			= getTC0();
@@ -207,7 +207,7 @@ void	Face::CalcNormal2	()
 	t1.sub			(v1,v0);
 	t2.sub			(v2,v1);
 	dN.crossproduct	(t1,t2);
-	double mag		= dN.magnitude();
+	double mag		= dN.magnitude	();
 	if (mag<dbl_zero)
 	{
 		Failure		();
