@@ -199,28 +199,28 @@ void CStalkerAnimations::vfAssignGlobalAnimation(CMotionDef *&tpGlobalAnimation)
 		switch (food_item->STATE) {
 			case FOOD_HIDDEN:
 			case FOOD_SHOWING: {
-				Msg				("Showing vodka");
+//				Msg				("Showing vodka");
 				tpGlobalAnimation = m_tGlobalItem.A[dwCurrentAniSlot].A[0].A[0];
 				break;
 			}
 			case FOOD_HIDING : {
-				Msg				("Hiding vodka");
+//				Msg				("Hiding vodka");
 				tpGlobalAnimation = m_tGlobalItem.A[dwCurrentAniSlot].A[3].A[0];
 				break;
 			}
 			case FOOD_PLAYING :
 			case FOOD_IDLE	 : {
-				Msg				("Holding vodka");
+//				Msg				("Holding vodka");
 				tpGlobalAnimation = m_tGlobalItem.A[dwCurrentAniSlot].A[6].A[0];
 				break;
 			}
 			case FOOD_PREPARE: {
-				Msg				("Preparing vodka");
+//				Msg				("Preparing vodka");
 				tpGlobalAnimation = m_tGlobalItem.A[dwCurrentAniSlot].A[0].A[1];
 				break;
 			}
 			case FOOD_EATING : {
-				Msg				("Drinking vodka");
+//				Msg				("Drinking vodka");
 				tpGlobalAnimation = m_tGlobalItem.A[dwCurrentAniSlot].A[1].A[0];
 				break;
 			}
