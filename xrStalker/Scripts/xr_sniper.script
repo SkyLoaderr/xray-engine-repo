@@ -502,6 +502,7 @@ function action_camper:execute ()
             self.object:set_mental_state        (anim.free)
             self.time   = device():time_global() + math.random(time_to_camper/2, time_to_camper)
 
+            printf("Call select_look_point")
             self:select_look_point()
         end
     elseif(self.state == camper) then
