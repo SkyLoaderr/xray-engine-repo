@@ -482,3 +482,17 @@ void CUICarBodyWnd::TakeAll()
 //	Msg("-CUICarBodyWnd::TakeAll: %f",T.GetElapsed_sec());
 	SetCurrentItem(NULL);
 }
+
+
+#include "../xr_level_controller.h"
+
+bool CUICarBodyWnd::OnKeyboard(int dik, EUIMessages keyboard_action)
+{
+	if( inherited::OnKeyboard(dik,keyboard_action) )return true;
+
+	if(keyboard_action==WINDOW_KEY_PRESSED){
+
+		if(key_binding[dik]==kUSE)
+			GetHolder()->StartStopMenu(this,true);
+		
+}

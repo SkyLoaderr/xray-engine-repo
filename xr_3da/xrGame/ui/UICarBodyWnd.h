@@ -47,6 +47,7 @@ public:
 
 	void DisableAll();
 	void EnableAll();
+	virtual bool			OnKeyboard			(int dik, EUIMessages keyboard_action);
 
 	//указатели на инвентари
 	CInventory*		m_pInv;
