@@ -30,16 +30,17 @@ struct sb_light_control						// controller or "layer", 30fps
     U32Vec				data;
 };
 
-struct e_b_lod{
+struct e_b_lod{        
 	b_lod				lod;
     U32Vec				data;
     shared_str		   	tex_name;
 };
 
 class SceneBuilder{
+public:
 	CEditableObject*			object_for_render;
 
-	int							l_vert_cnt, l_vert_it;
+    int							l_vert_cnt, l_vert_it;
 	int							l_face_cnt, l_face_it;
     b_vertex*		        	l_verts;
     b_face*  		        	l_faces;
@@ -94,6 +95,11 @@ class SceneBuilder{
 
     int     FindInMaterials (b_material* m);
 	int 	BuildMaterial	(CSurface* surf, int sector_num);
+	int 	BuildMaterial	(LPCSTR esh_name, LPCSTR csh_name, LPCSTR tx_name, u32 tx_cnt, int sector_num);
+
+    BOOL	ParseStaticObjects	(ObjectList& lst, LPCSTR prefix=0);
+
+	int 	CalculateSector		(const Fvector& P, float R);
 
     void 	SaveBuild		();
 protected:
@@ -120,12 +126,10 @@ protected:
     bool 	BuildHOMModel			();
     bool	BuildAIMap				();
     bool	BuildWallmarks			();
-    BOOL	ParseStaticObjects		(ObjectList& lst, LPCSTR prefix=0);
     BOOL 	CompileStatic		   	();
 
 	int 	m_iDefaultSectorNum;
 	bool 	RenumerateSectors		();
-	int 	CalculateSector			(const Fvector& P, float R);
 public:
 			SceneBuilder            ();
 	virtual ~SceneBuilder           ();

@@ -2,6 +2,8 @@
 #pragma hdrstop
 
 #include "ESceneGroupTools.h"
+#include "GroupObject.h"
+#include "SceneObject.h"
 
 // chunks
 static const u16 GROUP_TOOLS_VERSION  	= 0x0000;
@@ -55,4 +57,20 @@ void ESceneGroupTools::SaveSelection(IWriter& F)
 }
 //----------------------------------------------------
 
+void ESceneGroupTools::GetStaticDesc(int& v_cnt, int& f_cnt)
+{
+	for (ObjectIt it=m_Objects.begin(); it!=m_Objects.end(); it++){
+    	CGroupObject* group = (CGroupObject*)(*it);
+	    ObjectIt _O1 = group->GetObjects().begin();
+    	ObjectIt _E1 = group->GetObjects().end();
+	    for(;_O1!=_E1;_O1++){
+	    	CSceneObject* obj = dynamic_cast<CSceneObject*>(*_O1);
+			if (obj&&obj->IsStatic()){
+				f_cnt	+= obj->GetFaceCount();
+    	    	v_cnt  	+= obj->GetVertexCount();
+	        }
+        }
+    }
+}
+//----------------------------------------------------
  

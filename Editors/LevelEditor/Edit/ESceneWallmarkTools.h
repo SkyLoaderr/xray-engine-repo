@@ -23,10 +23,12 @@ public:
 	DEFINE_VECTOR		(wallmark*,WMVec,WMVecIt);
 	struct wm_slot
 	{
-		shared_str			tex_name;
+		shared_str		sh_name;
+		shared_str		tx_name;
 		ref_shader		shader;
 		WMVec			items;
-						wm_slot	(shared_str tname)		{tex_name=tname;shader.create("effects\\wallmark",*tex_name);items.reserve(256);}
+						wm_slot	(shared_str sh, shared_str tx)		{sh_name=sh;tx_name=tx;shader.create(*sh_name,*tx_name);items.reserve(256);}
+    	virtual	void	render	(wallmark*	W, FVF::LIT* &V);
 	};
 	DEFINE_VECTOR		(wm_slot*,WMSVec,WMSVecIt);
 	WMSVec				marks;
@@ -42,15 +44,16 @@ private:
 	CDB::Collector 		sml_collector;
 	xr_vector<u32>		sml_adjacency;
 
-	wm_slot*			FindSlot				(shared_str texture);
-	wm_slot*			AppendSlot				(shared_str texture);
+	wm_slot*			FindSlot				(shared_str sh_name, shared_str tx_name);
+	wm_slot*			AppendSlot				(shared_str sh_name, shared_str tx_name);
 
     void 				RecurseTri				(u32 t, Fmatrix &mView, wallmark &W);
-	void 				BuildMatrix				(Fmatrix &mView, float invsz, const Fvector& from);
+	void 				BuildMatrix				(Fmatrix &mView, float inv_w, float inv_h, float angle, const Fvector& from);
 //	void 				AddWallmark_internal	(ref_shader hShader, const Fvector& pt, const Fvector& n, float sz);
+
+	void				RefiningSlots			();
 private:
 	wallmark*			wm_allocate				();
-	void				wm_render				(wallmark*	W, FVF::LIT* &V);
 	void				wm_destroy				(wallmark*	W);
 private:
     // controls
@@ -59,12 +62,15 @@ private:
 public:
 	enum{
     	flDrawWallmark	= (1<<0),
+        flAxisAlign 	= (1<<1)
     };
     Flags32				m_Flags;
 
-    float				m_MarkSize;
+    float				m_MarkWidth;
+    float				m_MarkHeight;
     float				m_MarkRotate;
-    shared_str			m_TexName;
+    shared_str			m_ShName;
+    shared_str			m_TxName;
 
     int					ObjectCount				();
 public:
@@ -93,7 +99,7 @@ public:
 
     // validation
     virtual bool   		Valid					();
-    virtual bool		Validate				(){return true;}
+    virtual bool		Validate				();
     virtual bool   		IsNeedSave				();
 
     // events
@@ -106,6 +112,8 @@ public:
     virtual bool		LoadSelection      		(IReader&);
     virtual void		SaveSelection      		(IWriter&);
     virtual bool   		Export          		(LPCSTR fn);
+	virtual bool 		ExportStatic			(SceneBuilder* B);
+	virtual void 		GetStaticDesc			(int& v_cnt, int& f_cnt);
 
 	// device dependent funcs    
 	virtual void		OnDeviceCreate			();

@@ -871,14 +871,18 @@ int SceneBuilder::FindInMaterials(b_material* m)
 
 int SceneBuilder::BuildMaterial(CSurface* surf, int sector_num)
 {
+	return BuildMaterial(surf->_ShaderName(),surf->_ShaderXRLCName(),surf->_Texture(),((surf->_FVF()&D3DFVF_TEXCOUNT_MASK)>>D3DFVF_TEXCOUNT_SHIFT),sector_num);
+}
+int SceneBuilder::BuildMaterial(LPCSTR esh_name, LPCSTR csh_name, LPCSTR tx_name, u32 tx_cnt, int sector_num)
+{
     b_material mtl; ZeroMemory(&mtl,sizeof(mtl));
     VERIFY(sector_num>=0);
     int mtl_idx;
-	u32 tex_cnt 	= ((surf->_FVF()&D3DFVF_TEXCOUNT_MASK)>>D3DFVF_TEXCOUNT_SHIFT); VERIFY(tex_cnt==1);
-    mtl.shader      = BuildShader(surf->_ShaderName());
-    mtl.shader_xrlc	= BuildShaderXRLC(surf->_ShaderXRLCName());
+	VERIFY			(tx_cnt==1);
+    mtl.shader      = BuildShader		(esh_name);
+    mtl.shader_xrlc	= BuildShaderXRLC	(csh_name);
     mtl.sector		= sector_num;
-	mtl.surfidx		= BuildTexture(surf->_Texture());
+	mtl.surfidx		= BuildTexture		(tx_name);
     if ((u16(-1)==mtl.shader)||(u16(-1)==mtl.shader_xrlc)||(u16(-1)==mtl.surfidx)) return -1;
 
     mtl_idx 		= FindInMaterials(&mtl);
@@ -942,28 +946,12 @@ BOOL SceneBuilder::CompileStatic()
     l_face_cnt 	= 0;
 	l_vert_it 	= 0;
 	l_face_it	= 0;
-    ObjectIt _O = Scene->FirstObj(OBJCLASS_SCENEOBJECT);
-    ObjectIt _E = Scene->LastObj(OBJCLASS_SCENEOBJECT);
-    for(;_O!=_E;_O++){
-    	CSceneObject* obj = (CSceneObject*)(*_O);
-		if (obj->IsStatic()){
-			l_face_cnt	+= obj->GetFaceCount();
-    	    l_vert_cnt  += obj->GetVertexCount();
-        }
-    }
-    _O = Scene->FirstObj	(OBJCLASS_GROUP);
-    _E = Scene->LastObj	(OBJCLASS_GROUP);
-    for(;_O!=_E;_O++){
-    	CGroupObject* group = (CGroupObject*)(*_O);
-	    ObjectIt _O1 = group->GetObjects().begin();
-    	ObjectIt _E1 = group->GetObjects().end();
-	    for(;_O1!=_E1;_O1++){
-	    	CSceneObject* obj = dynamic_cast<CSceneObject*>(*_O1);
-			if (obj&&obj->IsStatic()){
-				l_face_cnt	+= obj->GetFaceCount();
-    	    	l_vert_cnt  += obj->GetVertexCount();
-	        }
-        }
+    
+    SceneToolsMapPairIt t_it 	= Scene->FirstTools();
+    SceneToolsMapPairIt t_end 	= Scene->LastTools();
+    for (; t_it!=t_end; t_it++){
+        ESceneCustomMTools* mt = t_it->second;
+        if (mt)	mt->GetStaticDesc(l_vert_cnt,l_face_cnt);
     }
 	l_faces		= xr_alloc<b_face>(l_face_cnt);
 	l_verts		= xr_alloc<b_vertex>(l_vert_cnt);
@@ -980,13 +968,13 @@ BOOL SceneBuilder::CompileStatic()
 	BuildSun		(lt->m_SunShadowQuality,lt->m_SunShadowDir);
 // parse scene
     SPBItem* pb = UI->ProgressStart(Scene->ObjCount(),"Parse scene objects...");
-    SceneToolsMapPairIt t_it 	= Scene->FirstTools();
-    SceneToolsMapPairIt t_end 	= Scene->LastTools();
-    for (; t_it!=t_end; t_it++)
-        if (t_it->second){
-            ESceneCustomOTools* mt = dynamic_cast<ESceneCustomOTools*>(t_it->second);
-            if (mt&&!ParseStaticObjects(mt->GetObjects())){bResult = FALSE; break;}
-        }
+    t_it 				= Scene->FirstTools();
+    t_end 				= Scene->LastTools();
+    for (; t_it!=t_end; t_it++){
+   		ESceneCustomMTools* mt = t_it->second;
+        if (mt)
+            if (!mt->ExportStatic(this)) {bResult = FALSE; break;}
+    }
 	UI->ProgressEnd(pb);
 // process lods
 	if (bResult&&!l_lods.empty()){

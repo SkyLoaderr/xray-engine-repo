@@ -26,6 +26,8 @@ public:
     virtual bool		LoadSelection      		(IReader&);
     virtual void		SaveSelection      		(IWriter&);
 
+    virtual void		GetStaticDesc			(int& v_cnt, int& f_cnt);
+
     // group function
     void				UngroupObjects			(bool bUndo=true);
 	void 				GroupObjects			(bool bUndo=true);

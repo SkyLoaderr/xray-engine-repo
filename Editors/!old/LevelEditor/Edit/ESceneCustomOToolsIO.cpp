@@ -4,6 +4,7 @@
 #include "ESceneCustomOTools.h"
 #include "scene.h"
 #include "ui_main.h"
+#include "builder.h"
 
 // chunks
 //----------------------------------------------------
@@ -101,6 +102,12 @@ bool ESceneCustomOTools::ExportGame(SExportStreams& F)
     for(ObjectIt it = m_Objects.begin();it!=m_Objects.end();it++)
         if (!(*it)->ExportGame(F)) bres=false;
 	return bres;
+}
+//----------------------------------------------------
+
+bool ESceneCustomOTools::ExportStatic(SceneBuilder* B)
+{
+	return B->ParseStaticObjects(m_Objects);
 }
 //----------------------------------------------------
  

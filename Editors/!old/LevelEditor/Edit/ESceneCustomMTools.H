@@ -5,6 +5,7 @@
 struct SSceneSummary;
 class TUI_CustomControl;
 class ESceneCustomMTools;
+class SceneBuilder;
 
 DEFINE_VECTOR(TUI_CustomControl*,ControlsVec,ControlsIt);
 
@@ -90,6 +91,9 @@ public:
 
     virtual bool		Export          		(LPCSTR path){return true;}
     virtual bool		ExportGame         		(SExportStreams& F){return true;}
+
+    virtual bool		ExportStatic			(SceneBuilder* B){return true;}
+    virtual void		GetStaticDesc			(int& v_cnt, int& f_cnt){}
 
     // properties
     virtual void		FillProp          		(LPCSTR pref, PropItemVec& items)=0;

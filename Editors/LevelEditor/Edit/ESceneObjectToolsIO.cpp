@@ -2,6 +2,7 @@
 #pragma hdrstop
 
 #include "ESceneObjectTools.h"
+#include "SceneObject.h"
 
 // chunks
 static const u16 OBJECT_TOOLS_VERSION  	= 0x0000;
@@ -101,6 +102,18 @@ bool ESceneObjectTools::ExportGame(SExportStreams& F)
     if (!ExportClimableObjects(F))	return false;
     
 	return true;
+}
+//----------------------------------------------------
+
+void ESceneObjectTools::GetStaticDesc(int& v_cnt, int& f_cnt)
+{
+	for (ObjectIt it=m_Objects.begin(); it!=m_Objects.end(); it++){
+    	CSceneObject* obj = (CSceneObject*)(*it);
+		if (obj->IsStatic()){
+			f_cnt	+= obj->GetFaceCount();
+    	    v_cnt	+= obj->GetVertexCount();
+        }
+    }
 }
 //----------------------------------------------------
 

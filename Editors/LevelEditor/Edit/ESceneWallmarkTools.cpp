@@ -5,15 +5,17 @@
 #include "ESceneWallmarkTools.h"
 #include "ESceneWallmarkControls.h"
 #include "Scene.h"
+#include "Builder.h"
 #include "EditObject.h"
 #include "SceneObject.h"
 #include "UI_ToolsCustom.h"
 #include "scene.h"
 #include "UI_Main.h"
 #include "D3DUtils.h"
+#include "ResourceManager.h"
 
 // chunks
-#define WM_VERSION  				0x0001
+#define WM_VERSION  				0x0002
 //----------------------------------------------------
 #define WM_CHUNK_VERSION			0x0001       
 #define WM_CHUNK_FLAGS				0x0002
@@ -21,11 +23,17 @@
 #define WM_CHUNK_ITEMS				0x0004
 //----------------------------------------------------
 
+#define MAX_WALLMARK_COUNT			500
+#define COMPILER_SHADER				"def_shaders\\def_vertex_ghost_no_shadow"
+
 ESceneWallmarkTools::ESceneWallmarkTools():ESceneCustomMTools(OBJCLASS_WM)
 {
-    m_MarkSize		= 1.f;
+	m_MarkWidth		= 1.f;
+	m_MarkHeight	= 1.f;
     m_MarkRotate	= 0.f;
     m_Flags.assign	(flDrawWallmark);
+    m_ShName	= "effects\\wallmark";
+    m_TxName		= "";
 }
 
 ESceneWallmarkTools::~ESceneWallmarkTools()
@@ -145,77 +153,87 @@ bool ESceneWallmarkTools::Valid		(){return !marks.empty();}
 bool ESceneWallmarkTools::IsNeedSave(){return marks.size();}
 void ESceneWallmarkTools::OnFrame	(){}
 
+struct zero_slot_pred : public std::unary_function<ESceneWallmarkTools::wm_slot*, bool>
+{
+	bool operator()(const ESceneWallmarkTools::wm_slot*& x){ return x==0; }
+};
+void ESceneWallmarkTools::RefiningSlots()
+{
+    for (WMSVecIt slot_it=marks.begin(); slot_it!=marks.end(); slot_it++){
+        wm_slot*& slot		= *slot_it;	
+        if (slot->items.empty()) xr_delete(slot);
+    }
+    WMSVecIt new_end		= std::remove_if(marks.begin(),marks.end(),zero_slot_pred());
+    marks.erase				(new_end,marks.end());
+}
+
 extern ECORE_API float r_ssaDISCARD;
 const int	MAX_TRIS		= 512;
 
 void ESceneWallmarkTools::OnRender(int priority, bool strictB2F)
 {
-	if (!m_Flags.is(flDrawWallmark)) return;
-    if (1==priority){
-        if (marks.empty())			return;
-    	if (false==strictB2F){
-            for (WMSVecIt slot_it=marks.begin(); slot_it!=marks.end(); slot_it++){
-                wm_slot* slot		= *slot_it;	
-                for (WMVecIt w_it=slot->items.begin(); w_it!=slot->items.end(); w_it++){
-                    wallmark* W		= *w_it;
-                    if (W->flags.is(wallmark::flSelected))
-                        if (RImplementation.ViewBase.testSphere_dirty(W->bounds.P,W->bounds.R))
-                            DU.DrawSelectionBox(W->bbox);
-                }
-            }
-        }else if (true==strictB2F){
+	if (!m_Flags.is(flDrawWallmark))return;
+    if (marks.empty())				return;
+    
+    for (WMSVecIt slot_it=marks.begin(); slot_it!=marks.end(); slot_it++){
+        wm_slot* slot		= *slot_it;	
+        VERIFY(slot->shader);
+		if ((u32(priority)==slot->shader->E[0]->flags.iPriority)&&(strictB2F==!!(slot->shader->E[0]->flags.bStrictB2F))){
             // Projection and xform
-            float _43					= Device.mProjection._43;
-            Device.mProjection._43 		-= 0.01f; 
-            RCache.set_xform_world		(Fidentity);
-            RCache.set_xform_project	(Device.mProjection);
+            float _43				= Device.mProjection._43;
+            Device.mProjection._43 	-= 0.01f; 
+            RCache.set_xform_world	(Fidentity);
+            RCache.set_xform_project(Device.mProjection);
 
-            float	ssaCLIP				= r_ssaDISCARD/4;
+            float	ssaCLIP		   	= r_ssaDISCARD/4;
 
-            for (WMSVecIt slot_it=marks.begin(); slot_it!=marks.end(); slot_it++){
-                u32			w_offset= 0;
-                FVF::LIT*	w_verts = (FVF::LIT*)	RCache.Vertex.Lock	(MAX_TRIS*3,hGeom->vb_stride,w_offset);
-                FVF::LIT*	w_start = w_verts;
-                wm_slot* slot		= *slot_it;	
-                for (WMVecIt w_it=slot->items.begin(); w_it!=slot->items.end(); w_it++){
-                    wallmark* W		= *w_it;
-                    if (RImplementation.ViewBase.testSphere_dirty(W->bounds.P,W->bounds.R)){
-                        float dst	= Device.vCameraPosition.distance_to_sqr(W->bounds.P);
-                        float ssa	= W->bounds.R * W->bounds.R / dst;
-                        if (ssa>=ssaCLIP){
-                            u32 w_count		= u32(w_verts-w_start);
-                            if ((w_count+W->verts.size())>=(MAX_TRIS*3)){
-                                if (w_count){
-                                    // Flush stream
-                                    RCache.Vertex.Unlock	(w_count,hGeom->vb_stride);
-                                    RCache.set_Shader		(slot->shader);
-                                    RCache.set_Geometry		(hGeom);
-                                    RCache.Render			(D3DPT_TRIANGLELIST,w_offset,w_count/3);
+            u32			w_offset   	= 0;
+            FVF::LIT*	w_verts = (FVF::LIT*)	RCache.Vertex.Lock	(MAX_TRIS*3,hGeom->vb_stride,w_offset);
+            FVF::LIT*	w_start = w_verts;
 
-                                    // Restart (re-lock/re-calc)
-                                    w_verts		= (FVF::LIT*)	RCache.Vertex.Lock	(MAX_TRIS*3,hGeom->vb_stride,w_offset);
-                                    w_start		= w_verts;
-                                }
+            for (WMVecIt w_it=slot->items.begin(); w_it!=slot->items.end(); w_it++){
+                wallmark* W		= *w_it;
+                if (RImplementation.ViewBase.testSphere_dirty(W->bounds.P,W->bounds.R)){
+                    float dst	= Device.vCameraPosition.distance_to_sqr(W->bounds.P);
+                    float ssa	= W->bounds.R * W->bounds.R / dst;
+                    if (ssa>=ssaCLIP){
+                        u32 w_count		= u32(w_verts-w_start);
+                        if ((w_count+W->verts.size())>=(MAX_TRIS*3)){
+                            if (w_count){
+                                // Flush stream
+                                RCache.Vertex.Unlock	(w_count,hGeom->vb_stride);
+                                RCache.set_Shader		(slot->shader);
+                                RCache.set_Geometry		(hGeom);
+                                RCache.Render			(D3DPT_TRIANGLELIST,w_offset,w_count/3);
+                                // Restart (re-lock/re-calc)
+                                w_verts		= (FVF::LIT*)	RCache.Vertex.Lock	(MAX_TRIS*3,hGeom->vb_stride,w_offset);
+                                w_start		= w_verts;
                             }
-
-                            wm_render	(W,w_verts);
                         }
+                        slot->render(W,w_verts);
                     }
                 }
-                // Flush stream
-                u32 w_count				= u32(w_verts-w_start);
-                RCache.Vertex.Unlock	(w_count,hGeom->vb_stride);
-                if (w_count)			
-                {
-                    RCache.set_Shader	(slot->shader);
-                    RCache.set_Geometry	(hGeom);
-                    RCache.Render		(D3DPT_TRIANGLELIST,w_offset,w_count/3);
-                }
             }
-
+            // Flush stream
+            u32 w_count				= u32(w_verts-w_start);
+            RCache.Vertex.Unlock	(w_count,hGeom->vb_stride);
+            if (w_count)			
+            {
+				RCache.set_Shader	(slot->shader);
+                RCache.set_Geometry	(hGeom);
+                RCache.Render		(D3DPT_TRIANGLELIST,w_offset,w_count/3);
+            }
             // Projection
             Device.mProjection._43		= _43;
             RCache.set_xform_project	(Device.mProjection);
+        }
+        if ((1==priority)&&(false==strictB2F)){
+            for (WMVecIt w_it=slot->items.begin(); w_it!=slot->items.end(); w_it++){
+                wallmark* W		= *w_it;
+                if (W->flags.is(wallmark::flSelected))
+                    if (RImplementation.ViewBase.testSphere_dirty(W->bounds.P,W->bounds.R))
+                        DU.DrawSelectionBox(W->bbox);
+            }
         }
     }
 }
@@ -225,7 +243,8 @@ bool ESceneWallmarkTools::Load(IReader& F)
 	u16 version = 0;
 
     R_ASSERT(F.r_chunk(WM_CHUNK_VERSION,&version));
-    if( version!=WM_VERSION ){
+
+    if( (version!=0x0001) && (version!=WM_VERSION) ){
         ELog.DlgMsg( mtError, "WM: Unsupported version.");
         return false;
     }
@@ -233,28 +252,61 @@ bool ESceneWallmarkTools::Load(IReader& F)
     R_ASSERT(F.find_chunk(WM_CHUNK_FLAGS));
     F.r				(&m_Flags,sizeof(m_Flags));
 
-	R_ASSERT(F.find_chunk(WM_CHUNK_PARAMS));
-    m_MarkSize		= F.r_float	();
-    m_MarkRotate	= F.r_float	();
-    F.r_stringZ		(m_TexName);
+    if(version==0x0001){
+        R_ASSERT(F.find_chunk(WM_CHUNK_PARAMS));
+        m_MarkWidth		= F.r_float	();
+        m_MarkHeight	= m_MarkWidth;
+        m_MarkRotate	= F.r_float	();
+        F.r_stringZ		(m_TxName);
+        m_ShName		= "effects\\wallmark";
 
-	R_ASSERT(F.find_chunk(WM_CHUNK_ITEMS));
-    u32 slot_cnt		= F.r_u32();
-    for (u32 slot_idx=0; slot_idx<slot_cnt; slot_idx++){
-        u32 item_count	= F.r_u32();	
-        if (item_count){
-        	shared_str		tex_name;
-	        F.r_stringZ	(tex_name);
-        	wm_slot* slot	= AppendSlot(tex_name);
-            slot->items.resize(item_count);
-            for (WMVecIt w_it=slot->items.begin(); w_it!=slot->items.end(); w_it++){
-            	*w_it		= wm_allocate();
-                wallmark* W	= *w_it;
-                F.r		(&W->flags,sizeof(W->flags));
-                F.r		(&W->bbox,sizeof(W->bbox));
-                F.r		(&W->bounds,sizeof(W->bounds));
-                W->verts.resize(F.r_u32());
-                F.r		(&*W->verts.begin(),sizeof(FVF::LIT)*W->verts.size());
+        R_ASSERT(F.find_chunk(WM_CHUNK_ITEMS));
+        u32 slot_cnt		= F.r_u32();
+        for (u32 slot_idx=0; slot_idx<slot_cnt; slot_idx++){
+            u32 item_count	= F.r_u32();	
+            if (item_count){
+                shared_str		tex_name;
+                F.r_stringZ		(tex_name);
+                wm_slot* slot	= AppendSlot(m_ShName,tex_name);
+                slot->items.resize(item_count);
+                for (WMVecIt w_it=slot->items.begin(); w_it!=slot->items.end(); w_it++){
+                    *w_it		= wm_allocate();
+                    wallmark* W	= *w_it;
+                    F.r		(&W->flags,sizeof(W->flags));
+                    F.r		(&W->bbox,sizeof(W->bbox));
+                    F.r		(&W->bounds,sizeof(W->bounds));
+                    W->verts.resize(F.r_u32());
+                    F.r		(&*W->verts.begin(),sizeof(FVF::LIT)*W->verts.size());
+                }
+            }
+        }
+    }else{
+        R_ASSERT(F.find_chunk(WM_CHUNK_PARAMS));
+        m_MarkWidth		= F.r_float	();
+        m_MarkHeight	= F.r_float	();
+        m_MarkRotate	= F.r_float	();
+        F.r_stringZ		(m_ShName);
+        F.r_stringZ		(m_TxName);
+
+        R_ASSERT(F.find_chunk(WM_CHUNK_ITEMS));
+        u32 slot_cnt		= F.r_u32();
+        for (u32 slot_idx=0; slot_idx<slot_cnt; slot_idx++){
+            u32 item_count	= F.r_u32();	
+            if (item_count){
+                shared_str		tex_name,sh_name;
+                F.r_stringZ		(sh_name);
+                F.r_stringZ		(tex_name);
+                wm_slot* slot	= AppendSlot(sh_name,tex_name);
+                slot->items.resize(item_count);
+                for (WMVecIt w_it=slot->items.begin(); w_it!=slot->items.end(); w_it++){
+                    *w_it		= wm_allocate();
+                    wallmark* W	= *w_it;
+                    F.r		(&W->flags,sizeof(W->flags));
+                    F.r		(&W->bbox,sizeof(W->bbox));
+                    F.r		(&W->bounds,sizeof(W->bounds));
+                    W->verts.resize(F.r_u32());
+                    F.r		(&*W->verts.begin(),sizeof(FVF::LIT)*W->verts.size());
+                }
             }
         }
     }
@@ -273,9 +325,11 @@ void ESceneWallmarkTools::Save(IWriter& F)
 	F.close_chunk	();
 
 	F.open_chunk	(WM_CHUNK_PARAMS);
-    F.w_float		(m_MarkSize);
+    F.w_float		(m_MarkWidth);
+    F.w_float		(m_MarkHeight);
     F.w_float		(m_MarkRotate);
-    F.w_stringZ		(m_TexName);
+    F.w_stringZ		(m_ShName);
+    F.w_stringZ		(m_TxName);
 	F.close_chunk	();
 
 	F.open_chunk	(WM_CHUNK_ITEMS);
@@ -284,7 +338,8 @@ void ESceneWallmarkTools::Save(IWriter& F)
         wm_slot* slot= *slot_it;	
         F.w_u32		(slot->items.size());
         if (slot->items.size()){
-            F.w_stringZ	(slot->tex_name);
+            F.w_stringZ	(slot->sh_name);
+            F.w_stringZ	(slot->tx_name);
             for (WMVecIt w_it=slot->items.begin(); w_it!=slot->items.end(); w_it++){
                 wallmark* W	= *w_it;
                 F.w		(&W->flags,sizeof(W->flags));
@@ -311,16 +366,19 @@ void ESceneWallmarkTools::SaveSelection(IWriter& F)
 
 bool ESceneWallmarkTools::Export(LPCSTR path)
 {
+	RefiningSlots		();
+    
     AnsiString fn		= AnsiString(path)+"level.wallmarks";
 	IWriter*	F		= FS.w_open(fn.c_str());
                              
-    F->open_chunk		(0);
+    F->open_chunk		(1);
     F->w_u32			(marks.size());
     for (WMSVecIt slot_it=marks.begin(); slot_it!=marks.end(); slot_it++){
         wm_slot* slot= *slot_it;	
         F->w_u32		(slot->items.size());
         if (slot->items.size()){
-            F->w_stringZ(slot->tex_name);
+            F->w_stringZ(slot->sh_name);
+            F->w_stringZ(slot->tx_name);
             for (WMVecIt w_it=slot->items.begin(); w_it!=slot->items.end(); w_it++){
                 wallmark* W	= *w_it;
                 F->w	(&W->bounds,sizeof(W->bounds));
@@ -366,12 +424,9 @@ void		ESceneWallmarkTools::wm_destroy		(wallmark*	W	)
 	pool.push_back		(W);
 }
 // render
-void		ESceneWallmarkTools::wm_render			(wallmark*	W, FVF::LIT* &V)
+void		ESceneWallmarkTools::wm_slot::render	(wallmark*	W, FVF::LIT* &V)
 {
-	float		a		= 0.f;
-	int			aC		= iFloor	( a * 255.f);	clamp	(aC,0,255);
-	u32			C		= color_rgba(128,128,128,aC);
-
+	u32			C		= color_rgba(255,255,255,255);
 	FVF::LIT*	S		= &*W->verts.begin	();
 	FVF::LIT*	E		= &*W->verts.end	();
 	for (; S!=E; S++, V++)
@@ -383,21 +438,22 @@ void		ESceneWallmarkTools::wm_render			(wallmark*	W, FVF::LIT* &V)
 }
 
 struct SWMSlotFindPredicate {
-	shared_str				tex_name;
-						SWMSlotFindPredicate(shared_str tx):tex_name(tx){}
-	bool				operator()			(ESceneWallmarkTools::wm_slot* slot) const
+	shared_str			sh_name;
+	shared_str			tx_name;
+						SWMSlotFindPredicate(shared_str sh, shared_str tx):sh_name(sh),tx_name(tx){}
+	bool				operator()			(const ESceneWallmarkTools::wm_slot* slot) const
 	{
-		return			(slot->tex_name == tex_name);
+		return			(slot->tx_name==tx_name)&&(slot->sh_name==sh_name);
 	}
 };
-ESceneWallmarkTools::wm_slot* ESceneWallmarkTools::FindSlot	(shared_str tex_name)
+ESceneWallmarkTools::wm_slot* ESceneWallmarkTools::FindSlot	(shared_str sh_name, shared_str tx_name)
 {
-	WMSVecIt it					= std::find_if(marks.begin(),marks.end(),SWMSlotFindPredicate(tex_name));
+	WMSVecIt it					= std::find_if(marks.begin(),marks.end(),SWMSlotFindPredicate(sh_name,tx_name));
 	return						(it!=marks.end())?*it:0;
 }
-ESceneWallmarkTools::wm_slot* ESceneWallmarkTools::AppendSlot(shared_str tex_name)
+ESceneWallmarkTools::wm_slot* ESceneWallmarkTools::AppendSlot(shared_str sh_name, shared_str tx_name)
 {
-	marks.push_back				(xr_new<wm_slot>(tex_name));
+	marks.push_back				(xr_new<wm_slot>(sh_name,tx_name));
 	return marks.back			();
 }
 
@@ -455,18 +511,27 @@ void ESceneWallmarkTools::RecurseTri(u32 t, Fmatrix &mView, wallmark &W)
 	}
 }
 
-void ESceneWallmarkTools::BuildMatrix	(Fmatrix &mView, float invsz, const Fvector& from)
+void ESceneWallmarkTools::BuildMatrix	(Fmatrix &mView, float inv_w, float inv_h, float angle, const Fvector& from)
 {
 	// build projection
-	Fmatrix				mScale;
+	Fmatrix				mScale,mRot;
     Fvector				at,up,right,y;
 	at.sub				(from,sml_normal);
-	y.set				(0,1,0);
-	if (_abs(sml_normal.y)>.99f) y.set(1,0,0);
+	y.set				(Device.vCameraTop);
+
+    if (m_Flags.is(flAxisAlign)){
+        y.set			(0,1,0);
+        if (_abs(sml_normal.y)>0.99f) y.set(1,0,0);
+    }else{
+        y.set			(Device.vCameraTop);
+        if (fsimilar(y.dotproduct(sml_normal),1.f,EPS)) y.set(Device.vCameraRight);
+    }
 	right.crossproduct	(y,sml_normal);
 	up.crossproduct		(sml_normal,right);
 	mView.build_camera	(from,at,up);
-	mScale.scale		(invsz,invsz,invsz);
+	mRot.rotateZ		(angle);
+	mView.mulA_43		(mRot);
+	mScale.scale		(inv_w,inv_h,_max(inv_w,inv_h));
 	mView.mulA			(mScale);
 }
 
@@ -478,8 +543,6 @@ int	ESceneWallmarkTools::ObjectCount()
 	return count;
 }
 
-#define MAX_WALLMARK_COUNT	50
-
 BOOL ESceneWallmarkTools::AddWallmark	(const Fvector& start, const Fvector& dir)
 {
 	if (ObjectCount()>=MAX_WALLMARK_COUNT){
@@ -487,7 +550,11 @@ BOOL ESceneWallmarkTools::AddWallmark	(const Fvector& start, const Fvector& dir)
     	return FALSE;
     }
     
-    if (0==m_TexName.size()){
+    if (0==m_ShName.size()){
+    	ELog.DlgMsg			(mtError,"Select texture before add wallmark.");
+    	return 				FALSE;
+    }
+    if (0==m_TxName.size()){
     	ELog.DlgMsg			(mtError,"Select texture before add wallmark.");
     	return 				FALSE;
     }
@@ -511,7 +578,7 @@ BOOL ESceneWallmarkTools::AddWallmark	(const Fvector& start, const Fvector& dir)
     // box pick poly
     Fbox					bbox;
     bbox.set				(contact_pt,contact_pt);
-    bbox.grow				(m_MarkSize*2);
+    bbox.grow				(_max(m_MarkHeight,m_MarkWidth)*2);
     SPickQuery				BQ;
     if (Scene->BoxQuery(BQ,bbox,CDB::OPT_FULL_TEST,snap_list)){ 
     	for (u32 k=0; k<(u32)BQ.r_count(); k++){
@@ -530,10 +597,8 @@ BOOL ESceneWallmarkTools::AddWallmark	(const Fvector& start, const Fvector& dir)
     sml_collector.calc_adjacency		(sml_adjacency);
     
 	// build 3D ortho-frustum
-	Fmatrix				mView,mRot;
-	BuildMatrix			(mView,1/m_MarkSize,contact_pt);
-	mRot.rotateZ		(m_MarkRotate);
-	mView.mulA_43		(mRot);
+	Fmatrix				mView;
+	BuildMatrix			(mView,2/m_MarkWidth,2/m_MarkHeight,m_MarkRotate,contact_pt); // width/2 height/2  (BuildMatrix need radius)
 	sml_clipper.CreateFromMatrix (mView,FRUSTUM_P_LRTB);
 
 	// create wallmark
@@ -554,7 +619,7 @@ BOOL ESceneWallmarkTools::AddWallmark	(const Fvector& start, const Fvector& dir)
 	}
 
 	// search if similar wallmark exists
-	wm_slot* slot	= FindSlot(*m_TexName);
+	wm_slot* slot	= FindSlot(m_ShName,m_TxName);
 	if (slot){
 		WMVecIt		it	= slot->items.begin	();
 		WMVecIt		end	= slot->items.end	();
@@ -568,7 +633,7 @@ BOOL ESceneWallmarkTools::AddWallmark	(const Fvector& start, const Fvector& dir)
 			}
 		}
 	}else{
-		slot		= AppendSlot(*m_TexName);
+		slot		= AppendSlot(m_ShName,m_TxName);
 	}
 
 	// no similar - register _new_
@@ -593,9 +658,72 @@ void ESceneWallmarkTools::RemoveControls()
 void ESceneWallmarkTools::FillProp(LPCSTR pref, PropItemVec& items)
 {
     PHelper().CreateFlag32		(items, PrepareKey(pref,"Common\\Draw Wallmarks"),	&m_Flags, 		flDrawWallmark);
-    PHelper().CreateFloat	 	(items, PrepareKey(pref,"Common\\Default Size"),		&m_MarkSize, 	0.01f, 10.f);
-    PHelper().CreateAngle	 	(items, PrepareKey(pref,"Common\\Default Rotate"),	&m_MarkRotate);
-    PHelper().CreateChoose		(items, PrepareKey(pref,"Common\\Default Texture"),	&m_TexName, 	smTexture);
+    PHelper().CreateFlag32		(items,	PrepareKey(pref,"Common\\Alignment"),		&m_Flags, 		flAxisAlign, "By Camera", "By World Axis");
+    PHelper().CreateFloat	 	(items, PrepareKey(pref,"Common\\Width"),			&m_MarkWidth, 	0.01f, 10.f);
+    PHelper().CreateFloat	 	(items, PrepareKey(pref,"Common\\Height"),			&m_MarkHeight, 	0.01f, 10.f);
+    PHelper().CreateAngle	 	(items, PrepareKey(pref,"Common\\Rotate"),			&m_MarkRotate);
+    PHelper().CreateChoose		(items, PrepareKey(pref,"Common\\Shader"),			&m_ShName, 		smEShader);
+    PHelper().CreateChoose		(items, PrepareKey(pref,"Common\\Texture"),			&m_TxName, 		smTexture);
+}
+//----------------------------------------------------
+
+bool ESceneWallmarkTools::Validate()
+{
+	bool bRes = true;
+
+    for (WMSVecIt slot_it=marks.begin(); slot_it!=marks.end(); slot_it++){
+        wm_slot* slot= *slot_it;	
+        if (slot->items.size()){
+            IBlender* 	B 	= Device.Resources->_FindBlender(*slot->sh_name); 
+            if (!B||B->canBeLMAPped()){
+                ELog.Msg	(mtError,"Wallmarks: Invalid or missing shader '%s'.",*slot->sh_name);
+                bRes 		= false;
+            }
+        }
+    }
+
+    return bRes;
+}
+//----------------------------------------------------
+
+void ESceneWallmarkTools::GetStaticDesc(int& v_cnt, int& f_cnt)
+{
+    for (WMSVecIt slot_it=marks.begin(); slot_it!=marks.end(); slot_it++){
+        wm_slot* slot		= *slot_it;	
+        for (WMVecIt w_it=slot->items.begin(); w_it!=slot->items.end(); w_it++){
+            wallmark* W		= *w_it;
+            v_cnt			+= W->verts.size();
+            f_cnt			+= W->verts.size()/3;
+        }
+    }
+}
+//----------------------------------------------------
+
+bool ESceneWallmarkTools::ExportStatic(SceneBuilder* B)
+{
+    for (WMSVecIt slot_it=marks.begin(); slot_it!=marks.end(); slot_it++){
+        wm_slot* slot		= *slot_it;	
+        for (WMVecIt w_it=slot->items.begin(); w_it!=slot->items.end(); w_it++){
+            wallmark* W		= *w_it;
+		    int sect_num	= B->CalculateSector(W->bounds.P,W->bounds.R);
+	        int m_id		= B->BuildMaterial	(*slot->sh_name,COMPILER_SHADER,*slot->tx_name,1,sect_num);
+            u32 f_cnt 		= W->verts.size()/3;
+            for (u32 f_it=0; f_it<f_cnt; f_it++,B->l_face_it++){
+                R_ASSERT(B->l_face_it<B->l_face_cnt);
+                b_face& dst_f		= B->l_faces[B->l_face_it];
+            	for (u32 k=0; k<3; k++,B->l_vert_it++){
+			    	R_ASSERT(B->l_vert_it<B->l_vert_cnt);
+                	FVF::LIT& src	= W->verts[f_it*3+k];
+                    Fvector& dst_v	= B->l_verts[B->l_vert_it];
+	            	dst_v.set 		(src.p);
+		            dst_f.v[k] 		= B->l_vert_it;
+                    dst_f.t[k].set	(src.t);
+                    dst_f.dwMaterial= m_id;
+                }
+            }
+        }
+    }
+	return true;
 }
 //----------------------------------------------------
 

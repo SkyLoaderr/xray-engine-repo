@@ -64,6 +64,7 @@ public:
 
     // tools
     virtual bool		ExportGame         		(SExportStreams& F);
+    virtual void		GetStaticDesc			(int& v_cnt, int& f_cnt);
 };
 //---------------------------------------------------------------------------
 #endif

@@ -53,6 +53,7 @@ public:
 
     virtual bool		Export          		(LPCSTR path);
     virtual bool		ExportGame         		(SExportStreams& F);
+    virtual bool		ExportStatic			(SceneBuilder* B);
 
     // properties
     virtual void		FillProp          		(LPCSTR pref, PropItemVec& items);
