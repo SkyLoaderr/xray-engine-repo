@@ -134,8 +134,8 @@ bool	game_cl_mp::OnKeyboardPress			(int key)
 			if (!pChatWnd->IsShown() && xr_strlen(pChatWnd->UIEditBox.GetText()) > 0)
 			{
 				ref_str phrase = pChatWnd->UIEditBox.GetText();
-				pChatWnd->Say(phrase);
-				kCHAT == key ? ChatSayAll(phrase) : ChatSayTeam(phrase);
+//				pChatWnd->Say(phrase);
+				(kCHAT == key) ? ChatSayAll(phrase) : ChatSayTeam(phrase);
 				pChatWnd->UIEditBox.SetText("");
 			}
 			return false;
@@ -201,17 +201,43 @@ void game_cl_mp::TranslateGameMessage	(u32 msg, NET_Packet& P)
 
 void game_cl_mp::ChatSayAll(const ref_str &phrase)
 {
-	int x=0;
-	x=x;
+	NET_Packet	P;	
+	P.w_begin(M_CHAT_MESSAGE);
+//	P.w_u16(local_player->GameID);
+	P.w_s16(0);
+	P.w_stringZ(local_player->getName());
+	P.w_stringZ(phrase.c_str());
+	u_EventSend(P);
 }
 
 //////////////////////////////////////////////////////////////////////////
 
 void game_cl_mp::ChatSayTeam(const ref_str &phrase)
 {
-	int x=0;
-	x=x;
+
+	NET_Packet	P;
+	P.w_begin(M_CHAT_MESSAGE);
+//	P.w_u16(local_player->GameID);
+	P.w_s16(local_player->team);
+	P.w_stringZ(local_player->getName());
+	P.w_stringZ(phrase.c_str());
+	u_EventSend(P);
 }
+
+void game_cl_mp::OnChatMessage			(NET_Packet* P)
+{
+//	u16 PlayerID	= P->r_u16();
+//	s16 PlayerTeam	= 
+	P->r_s16();
+	string256 PlayerName;
+	P->r_stringZ(PlayerName);
+	string256 ChatMsg;
+	P->r_stringZ(ChatMsg);
+	
+	Msg("%s : %s", PlayerName, ChatMsg);
+	pChatLog->AddLogMessage(ChatMsg, PlayerName);
+};
+
 
 //////////////////////////////////////////////////////////////////////////
 
@@ -228,3 +254,4 @@ void game_cl_mp::shedule_Update(u32 dt)
 		}
 	}
 }
+

@@ -41,6 +41,8 @@ enum {
 	M_GAMESPY_CDKEY_VALIDATION_CHALLENGE_RESPOND,
 	M_CLIENT_CONNECT_RESULT,
 	M_CLIENT_REQUEST_CONNECTION_DATA,
+
+	M_CHAT_MESSAGE,
 	//-----------------------------------------------------
 	MSG_FORCEDWORD				= u32(-1)
 };

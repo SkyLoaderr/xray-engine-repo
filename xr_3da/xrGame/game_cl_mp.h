@@ -13,8 +13,9 @@ protected:
 	CUIChatWnd*						pChatWnd;
 	CUIChatLog*						pChatLog;
 
-	void					ChatSayTeam				(const ref_str &phrase);
-	void					ChatSayAll				(const ref_str &phrase);
+	virtual	void			ChatSayTeam				(const ref_str &phrase);
+	virtual	void			ChatSayAll				(const ref_str &phrase);
+	virtual	void			OnChatMessage			(NET_Packet* P);
 
 public:
 public :
@@ -26,7 +27,6 @@ public :
 		virtual		bool				OnKeyboardRelease		(int key);
 
 		virtual		bool				CanBeReady				();
-
 		virtual		CUIGameCustom*		createGameUI			();
 		virtual		void				shedule_Update			(u32 dt);
 

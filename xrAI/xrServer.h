@@ -93,6 +93,7 @@ protected:
 	virtual bool			NeedToCheckClient	(IClient* CL)	{ return false; };
 	void					SendConnectResult		(IClient* CL, u8 res, char* ResultStr);
 	void					SendConnectionData		(IClient* CL);
+	void					OnChatMessage			(NET_Packet* P, xrClientData* CL);
 
 public:
 	// constr / destr

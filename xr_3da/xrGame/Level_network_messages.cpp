@@ -157,6 +157,10 @@ void CLevel::ClientReceive()
 			{
 				OnConnectResult(P);
 			}break;
+		case M_CHAT_MESSAGE:
+			{
+				Game().OnChatMessage(P);
+			}break;
 		}
 
 		net_msg_Release();

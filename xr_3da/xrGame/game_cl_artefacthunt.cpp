@@ -210,6 +210,8 @@ void game_cl_ArtefactHunt::TranslateGameMessage	(u32 msg, NET_Packet& P)
 
 CUIGameCustom* game_cl_ArtefactHunt::createGameUI()
 {
+	game_cl_mp::createGameUI();
+
 	CLASS_ID clsid			= CLSID_GAME_UI_ARTEFACTHUNT;
 	m_game_ui	= smart_cast<CUIGameAHunt*> ( NEW_INSTANCE ( clsid ) );
 	R_ASSERT(m_game_ui);

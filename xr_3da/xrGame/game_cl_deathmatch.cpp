@@ -54,7 +54,7 @@ game_cl_Deathmatch::~game_cl_Deathmatch()
 
 CUIGameCustom* game_cl_Deathmatch::createGameUI()
 {
-	inherited::createGameUI();
+	game_cl_mp::createGameUI();
 	CLASS_ID clsid			= CLSID_GAME_UI_DEATHMATCH;
 	m_game_ui	= smart_cast<CUIGameDM*> ( NEW_INSTANCE ( clsid ) );
 	R_ASSERT(m_game_ui);

@@ -98,6 +98,8 @@ void game_cl_TeamDeathmatch::TranslateGameMessage	(u32 msg, NET_Packet& P)
 
 CUIGameCustom* game_cl_TeamDeathmatch::createGameUI()
 {
+	game_cl_mp::createGameUI();
+
 	CLASS_ID clsid			= CLSID_GAME_UI_TEAMDEATHMATCH;
 	CUIGameTDM*			pUIGame	= smart_cast<CUIGameTDM*> ( NEW_INSTANCE ( clsid ) );
 	R_ASSERT(pUIGame);
