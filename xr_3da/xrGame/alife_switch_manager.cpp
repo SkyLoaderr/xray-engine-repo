@@ -72,7 +72,7 @@ void CALifeSwitchManager::add_online(CSE_ALifeDynamicObject *object, bool update
 	ClientID clientID;clientID.set(0);
 	server().Process_spawn			(tNetPacket,clientID,FALSE,l_tpAbstract);
 	object->s_flags.and				(u16(-1) ^ M_SPAWN_UPDATE);
-	R_ASSERT3						(ai().level_graph().valid_vertex_id(object->m_tNodeID),"Invalid vertex for object ",object->name_replace());
+	R_ASSERT3						(!object->used_ai_locations() || ai().level_graph().valid_vertex_id(object->m_tNodeID),"Invalid vertex for object ",object->name_replace());
 
 #ifdef DEBUG
 	if (psAI_Flags.test(aiALife)) {
