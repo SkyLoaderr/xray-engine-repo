@@ -25,6 +25,7 @@ function cb( zone, obj )
 end
 
 function on_enter( zone, obj )
+--	printf( "ZONE CALLBACK" )
 	-- если раненный родился, то запомнить его ID и тут же спрятать
 	if obj:name() == "esc_vagon_wounded" then
 		wounded_id = obj:id()
@@ -52,6 +53,7 @@ function update()
 			heli_mgr.not_die = true
 
 			get_level_object( "esc_vagon_wounded_spawn_zone" ):set_callback( on_enter, true )
+--			printf( "CALLBACK SET" )
 
 			state_init = false
 		end
