@@ -209,6 +209,7 @@ public:
 
 	IC Shader*				GetUIIcon			()				{	return hUIIcon;								}
 	IC void					SetHUDmode			(BOOL H)		{	hud_mode = H;								}
+	IC BOOL					GetHUDmode			()				{	return hud_mode;							}
 	IC int					GetSlot				()				{	return iSlotBinding;						}
 
 	virtual void			OnEvent				(NET_Packet& P, u16 type);

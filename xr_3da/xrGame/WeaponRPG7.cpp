@@ -315,7 +315,8 @@ void CWeaponRPG7Grenade::OnH_B_Independent() {
 	if(m_pPhysicsShell) {
 		Fmatrix trans;
 		Level().Cameras.unaffected_Matrix(trans);
-		Fmatrix l_p1, l_r; l_r.rotateY(M_PI*2.f); l_p1.mul(trans, l_r); l_p1.c.set(m_pos);
+		CWeapon *l_pW = dynamic_cast<CWeapon*>(E);
+		Fmatrix l_p1, l_r; l_r.rotateY(M_PI*2.f); l_p1.mul(l_pW->GetHUDmode()?trans:svTransform, l_r); l_p1.c.set(m_pos);
 		Fvector a_vel; a_vel.set(0, 0, 0);
 		m_pPhysicsShell->Activate(l_p1, m_vel, a_vel);
 		svTransform.set(m_pPhysicsShell->mXFORM);
@@ -347,11 +348,10 @@ void CWeaponRPG7Grenade::UpdateCL() {
 			float l_force = 5300.f * Device.dwTimeDelta / 1000.f;
 			m_pPhysicsShell->applyImpulseTrace(l_pos, l_dir, l_force);
 			l_dir.set(0, 1.f, 0);
-			l_force = 1360.f * Device.dwTimeDelta / 1000.f;
-			//m_pPhysicsShell->applyForce(l_dir, 430.f);
+			l_force = 1200.f/*1360.f*/ * Device.dwTimeDelta / 1000.f;
 			m_pPhysicsShell->applyImpulse(l_dir, l_force);
 		}
-	} //else if(H_Parent()) svTransform.set(H_Parent()->clXFORM());
+	}
 }
 
 void CWeaponRPG7Grenade::SoundCreate(sound& dest, LPCSTR s_name, int iType, BOOL bCtrlFreq) {
@@ -398,6 +398,26 @@ BOOL CWeaponRPG7::net_Spawn(LPVOID DC) {
 	V = PKinematics(Visual()); R_ASSERT(V);
 	V->LL_GetInstance(V->LL_BoneID("grenade")).set_callback(GrenadeCallback, this);
 	m_hideGrenade = !iAmmoElapsed;
+	if(iAmmoElapsed && !m_pGrenade) {
+		xrServerEntity*		D	= F_entity_Create("wpn_rpg7_missile");
+		R_ASSERT			(D);
+		// Fill
+		strcpy				(D->s_name,"wpn_rpg7_missile");
+		strcpy				(D->s_name_replace,"");
+		D->s_gameid			=	u8(GameID());
+		D->s_RP				=	0xff;
+		D->ID				=	0xffff;
+		D->ID_Parent		=	(u16)ID();
+		D->ID_Phantom		=	0xffff;
+		D->s_flags.set		(M_SPAWN_OBJECT_ACTIVE | M_SPAWN_OBJECT_LOCAL);
+		D->RespawnTime		=	0;
+		// Send
+		NET_Packet			P;
+		D->Spawn_Write		(P,TRUE);
+		Level().Send		(P,net_flags(TRUE));
+		// Destroy
+		F_entity_Destroy	(D);
+	}
 	return l_res;
 }
 
