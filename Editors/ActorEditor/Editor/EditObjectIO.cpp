@@ -316,17 +316,6 @@ void CEditableObject::Save(IWriter& F)
 	bOnModified		= false;
 }
 //------------------------------------------------------------------------------
-CSMotion* CEditableObject::LoadSMotion(const char* fname){
-	if (FS.exist(fname)){
-    	CSMotion* M = xr_new<CSMotion>();
-        if (!M->LoadMotion(fname)){
-        	xr_delete(M);
-        }
-        return M;
-    }
-	return 0;
-}
-//------------------------------------------------------------------------------
 #ifdef _EDITOR
 bool CEditableObject::ExportOGF(LPCSTR fn){
 	CMemoryWriter F;

@@ -370,7 +370,11 @@ bool CExportSkeleton::ExportGeometry(IWriter& F)
                     
     F.open_chunk(OGF_IKDATA);
     for (bone_it=m_Source->FirstBone(); bone_it!=m_Source->LastBone(); bone_it++,bone_idx++)
-        if (!(*bone_it)->ExportOGF(F)){ bRes=false; break;}
+        if (!(*bone_it)->ExportOGF(F)){ 
+	    	ELog.Msg(mtError,"Bone '%s' has invalid shape.",(*bone_it)->Name());
+        	bRes=false; 
+//            break;
+        }
     F.close_chunk();
 
     if (!m_Source->GetClassScript().IsEmpty()){
@@ -391,7 +395,10 @@ bool CExportSkeleton::ExportGeometry(IWriter& F)
 
 bool CExportSkeleton::ExportMotionKeys(IWriter& F)
 {
-    if (m_Source->SMotionCount()<1) return false;
+    if (m_Source->SMotionCount()<1){
+    	ELog.Msg(mtError,"Object doesn't have any motion.");
+     	return false;
+    }
 
     UI.ProgressStart(1+m_Source->SMotionCount(),"Export skeleton motions keys...");
     UI.ProgressInc();
@@ -474,7 +481,10 @@ bool CExportSkeleton::ExportMotionKeys(IWriter& F)
 
 bool CExportSkeleton::ExportMotionDefs(IWriter& F)
 {
-    if (m_Source->SMotionCount()<1) return false;
+    if (m_Source->SMotionCount()<1){ 
+    	ELog.Msg(mtError,"Object doesn't have any motion.");
+    	return false;
+    }
 
     UI.ProgressStart	(3,"Export skeleton motions defs...");
     UI.ProgressInc		();

@@ -280,7 +280,7 @@ AutoIncBuild=1
 MajorVer=1
 MinorVer=0
 Release=2
-Build=90
+Build=91
 Debug=1
 PreRelease=0
 Special=0
@@ -292,7 +292,7 @@ CodePage=1252
 [Version Info Keys]
 CompanyName=
 FileDescription=
-FileVersion=1.0.2.90
+FileVersion=1.0.2.91
 InternalName=
 LegalCopyright=
 LegalTrademarks=

@@ -273,11 +273,17 @@ int __fastcall TItemList::GetSelected(ElItemsVec& items)
     return items.size();
 }
 
-int __fastcall TItemList::GetSelected(ListItemsVec& items)
+int __fastcall TItemList::GetSelected(LPCSTR pref, ListItemsVec& items, bool bOnlyObject)
 {
     for (TElTreeItem* item = tvItems->GetNextSelected(0); item; item = tvItems->GetNextSelected(item)){
         ListItem* prop 		= (ListItem*)item->Tag;
-        if (prop)			items.push_back	(prop);
+        if (prop&&(!bOnlyObject||(bOnlyObject&&prop->m_Object))){
+        	if (pref){
+            	if (1==prop->key.Pos(pref))
+                	items.push_back	(prop);
+            }else
+				items.push_back	(prop);
+        }
     }
     return items.size();
 }
@@ -287,7 +293,7 @@ void __fastcall TItemList::tvItemsAfterSelectionChange(TObject *Sender)
 {
 	if (IsLocked()) return;
     ListItemsVec sel_items;
-    GetSelected	(sel_items);
+    GetSelected	(0,sel_items,false);
     if (OnItemsFocused) 	OnItemsFocused(sel_items);
     for (ListItemsIt it=sel_items.begin(); it!=sel_items.end(); it++)
         if ((*it)->OnItemFocused)(*it)->OnItemFocused(*it);

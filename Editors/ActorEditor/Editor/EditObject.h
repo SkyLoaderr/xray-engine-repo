@@ -359,10 +359,8 @@ public:
 
     bool			RemoveSMotion			(LPCSTR name);
     bool			RenameSMotion			(LPCSTR old_name, LPCSTR new_name);
-    CSMotion*		AppendSMotion			(LPCSTR name, LPCSTR fname);
-    bool			ReloadSMotion			(CSMotion* M, LPCSTR fname);
+    bool			AppendSMotion			(LPCSTR fname);
     void			ClearSMotions			();
-    bool			LoadSMotions			(LPCSTR fname);
     bool			SaveSMotions			(LPCSTR fname);
 
     // load/save methods
@@ -371,7 +369,6 @@ public:
 	bool 			Load					(LPCSTR fname);
 	bool 			LoadObject				(LPCSTR fname);
 	void 			SaveObject				(LPCSTR fname);
-    CSMotion*		LoadSMotion				(LPCSTR fname);
   	bool 			Load					(IReader&);
 	void 			Save					(IWriter&);
 #ifdef _EDITOR

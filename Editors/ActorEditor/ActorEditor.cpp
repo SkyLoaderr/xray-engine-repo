@@ -26,31 +26,30 @@ USEFORM("Editor\TopBar.cpp", fraTopBar); /* TFrame: File Type */
 WINAPI WinMain(HINSTANCE hInst, HINSTANCE, LPSTR, int)
 {
 //    try{
-        frmSplash = xr_new<TfrmSplash>((TComponent*)0);
-        frmSplash->Show();
-        frmSplash->Repaint();
-        frmSplash->SetStatus("Core initialize...");
+        frmSplash 				= xr_new<TfrmSplash>((TComponent*)0);
+        frmSplash->Show			();
+        frmSplash->Repaint		();
+        frmSplash->SetStatus	("Core initialize...");
 
-    	Core._initialize	(_EDITOR_FILE_NAME_,ELogCallback);
-        TfrmLog::CreateLog();
+    	Core._initialize		(_EDITOR_FILE_NAME_,ELogCallback);
+        TfrmLog::CreateLog		();
 
-        Application->Initialize();
+        Application->Initialize	();
 
-        frmSplash->SetStatus("Loading...");
+        frmSplash->SetStatus	("Loading...");
 
 // startup create
-		Application->Title = "Actor Editor";
-		Application->CreateForm(__classid(TfrmMain), &frmMain);
-		Application->CreateForm(__classid(TfrmBonePart), &frmBonePart);
-		Application->CreateForm(__classid(TfrmSplash), &frmSplash);
-		frmMain->SetHInst(hInst);
+		Application->Title 		= _EDITOR_NAME_;
+		Application->CreateForm	(__classid(TfrmMain), &frmMain);
+		Application->CreateForm	(__classid(TfrmBonePart), &frmBonePart);
+		frmMain->SetHInst		(hInst);
 
-        xr_delete(frmSplash);
+        xr_delete				(frmSplash);
 
-        Application->Run();
+        Application->Run		();
 
-        TfrmLog::DestroyLog();
-    	Core._destroy();
+        TfrmLog::DestroyLog		();
+    	Core._destroy			();
 //    }
 //    catch (Exception &exception)
 //    {

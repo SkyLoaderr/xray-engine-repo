@@ -109,7 +109,7 @@ public:		// User declarations
     bool __fastcall 	IsFocused				(){return tvItems->Focused();}
 
     int __fastcall		GetSelected				(ElItemsVec& items);
-    int __fastcall		GetSelected				(ListItemsVec& items);
+    int __fastcall		GetSelected				(LPCSTR pref, ListItemsVec& items, bool bOnlyObject);
     TElTreeItem*		GetSelected				(){return (tvItems->MultiSelect)?0:tvItems->Selected;}
 
     void 				LockUpdating			(){ tvItems->IsUpdating = true; m_Flags.set(ilLocked,TRUE); }

@@ -7,7 +7,6 @@
 #include "ui_main.h"
 #include "EditObject.h"
 #include "SceneObject.h"
-#include "propertiesobject.h"
 #include "library.h"
 #include "ChoseForm.h"
 #include "xr_trims.h"

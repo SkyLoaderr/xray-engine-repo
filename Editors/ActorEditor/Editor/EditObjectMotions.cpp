@@ -158,50 +158,10 @@ bool CEditableObject::RemoveSMotion(const char* name)
             return true;
         }
     return false;
-}
+}                         
 
-CSMotion* CEditableObject::AppendSMotion(LPCSTR name, LPCSTR fname)
-{
-	VERIFY(IsSkeleton());
-	CSMotion* M = LoadSMotion(fname);
-    if (M){
-	  	if (CheckBoneCompliance(M)){
-        	M->SortBonesBySkeleton(m_Bones);
-        	M->SetName(name);
-	     	m_SMotions.push_back(M);
-        }else{
-        	ELog.DlgMsg(mtError,"Append failed.",fname);
-	    	xr_delete(M);
-        }
-    }else{
-		ELog.DlgMsg(mtError,"Motion '%s' can't load. Append failed.",fname);
-    }
-    return M;
-}
-
-bool CEditableObject::ReloadSMotion(CSMotion* src, const char* fname)
-{
-	VERIFY(IsSkeleton());
-	CSMotion* M = LoadSMotion(fname);
-    if (M){
-	  	if (CheckBoneCompliance(M)){
-        	src->CopyMotion(M);
-            return true;
-        }else                        ELog.DlgMsg(mtError,"Reload failed.",fname);
-		xr_delete(M);
-    }else{
-		ELog.DlgMsg(mtError,"Motion '%s' can't load. Append failed.",fname);
-    }
-    return false;
-}
-
-void CEditableObject::ClearSMotions()
-{
-	SetActiveSMotion(0);
-    for(SMotionIt m_it=m_SMotions.begin(); m_it!=m_SMotions.end();m_it++)xr_delete(*m_it);
-    m_SMotions.clear();
-}
-
+//---------------------------------------------------------------------------
+/*
 bool CEditableObject::LoadSMotions(const char* fname)
 {
 	IReader* F	= FS.r_open(fname);
@@ -228,6 +188,70 @@ bool CEditableObject::LoadSMotions(const char* fname)
     }
 	FS.r_close(F);
 	return true;
+}
+*/
+bool CEditableObject::AppendSMotion(LPCSTR fname)
+{
+	VERIFY(IsSkeleton());
+
+    bool bRes = true;
+    
+	AnsiString ext=ExtractFileExt(fname).LowerCase();
+    if (ext==".skl"){
+        CSMotion* M = xr_new<CSMotion>();
+        if (!M->LoadMotion(fname)){
+            ELog.DlgMsg(mtError,"Motion '%s' can't load. Append failed.",fname);
+            xr_delete(M);
+            bRes = false;
+        }else{
+        	AnsiString name=ChangeFileExt(ExtractFileName(fname),"");
+            if (CheckBoneCompliance(M)){
+                M->SortBonesBySkeleton(m_Bones);
+                string256 			m_name;
+                GenerateSMotionName	(m_name,name.c_str(),M);
+                M->SetName			(m_name);
+                m_SMotions.push_back(M);
+            }else{
+                ELog.DlgMsg(mtError,"Append failed.",fname);
+                xr_delete(M);
+	            bRes = false;
+            }
+        }
+    }else if (ext==".skls"){
+        IReader* F	= FS.r_open(fname);
+        // object motions
+        int cnt 	= F->r_u32();
+        for (int k=0; k<cnt; k++){
+            CSMotion* M	= xr_new<CSMotion>();
+            if (!M->Load(*F)){
+                ELog.DlgMsg(mtError,"Motion '%s' has different version. Load failed.",M->Name());
+                xr_delete(M);
+	            bRes = false;
+                break;
+            }
+            if (!CheckBoneCompliance(M)){
+                xr_delete(M);
+	            bRes = false;
+                break;
+            }
+            if (bRes){
+                M->SortBonesBySkeleton(m_Bones);
+                string256 			m_name;
+                GenerateSMotionName	(m_name,M->Name(),M);
+                M->SetName			(m_name);
+                m_SMotions.push_back(M);
+            }
+        }
+        FS.r_close(F);
+    }
+    return bRes;
+}
+
+void CEditableObject::ClearSMotions()
+{
+	SetActiveSMotion(0);
+    for(SMotionIt m_it=m_SMotions.begin(); m_it!=m_SMotions.end();m_it++)xr_delete(*m_it);
+    m_SMotions.clear();
 }
 
 bool CEditableObject::SaveSMotions(const char* fname)

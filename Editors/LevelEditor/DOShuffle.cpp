@@ -350,10 +350,12 @@ void __fastcall TfrmDOShuffle::ebDOPropertiesClick(TObject *Sender)
 		DDVec lst;
 	    lst.push_back(((SDOData*)tvItems->Selected->Data));
         TElTreeItem* node = tvItems->Selected;
-		if (frmPropertiesSectorRun(lst,bChange)==mrOk){
+/*		if (frmPropertiesSectorRun(lst,bChange)==mrOk)
+        {
 			tvItems->Selected = 0;
 			tvItems->Selected = node;
         }
+*/
     }
 }
 //---------------------------------------------------------------------------

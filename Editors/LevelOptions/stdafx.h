@@ -177,7 +177,6 @@ struct astr_pred : public std::binary_function<const AnsiString&, const AnsiStri
 #define _omotion_			"$omotion$"
 #define _omotions_			"$omotions$"
 #define _smotion_			"$smotion$"
-#define _smotions_			"$smotions$"
 #define _detail_objects_	"$detail_objects$"
 #endif
 

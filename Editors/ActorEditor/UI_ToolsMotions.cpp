@@ -13,6 +13,7 @@
 #include "BodyInstance.h"
 #include "fmesh.h"
 #include "folderlib.h"
+#include "ItemList.h"
 //---------------------------------------------------------------------------
 
 bool CActorTools::EngineModel::UpdateGeometryStream(CEditableObject* source)
@@ -164,20 +165,10 @@ void CActorTools::OnGeometryModified()
 }
 //---------------------------------------------------------------------------
 
-LPCSTR GenerateSMotionName(CEditableObject* object, AnsiString& nm)
-{
-	AnsiString base_name = nm;
-    u32 idx=0;
-    while(object->FindSMotionByName(nm.c_str()))
-    	nm.sprintf("%s_%d",base_name.c_str(),idx++);
-	return nm.c_str();
-}
-//---------------------------------------------------------------------------
-
-bool CActorTools::AppendMotion(AnsiString& name, LPCSTR fn)
+bool CActorTools::AppendMotion(LPCSTR fn)
 {
 	VERIFY(m_pEditObject);
-    return m_pEditObject->AppendSMotion(GenerateSMotionName(m_pEditObject,name),fn);
+    return m_pEditObject->AppendSMotion(fn);
 }
 
 bool CActorTools::RemoveMotion(LPCSTR name)
@@ -186,16 +177,23 @@ bool CActorTools::RemoveMotion(LPCSTR name)
     return m_pEditObject->RemoveSMotion(name);
 }
 
-bool CActorTools::LoadMotions(LPCSTR name)
+bool CActorTools::SaveMotions(LPCSTR name, bool bSelOnly)
 {
 	VERIFY(m_pEditObject);
-    return m_pEditObject->LoadSMotions(name);
-}
-
-bool CActorTools::SaveMotions(LPCSTR name)
-{
-	VERIFY(m_pEditObject);
-    return (m_pEditObject->SaveSMotions(name));
+    ListItemsVec items;
+    if (bSelOnly){
+        if (m_ObjectItems->GetSelected(MOTIONS_PREFIX,items,true)){
+            CMemoryWriter 	F;
+            F.w_u32			(items.size());
+            for (ListItemsIt it=items.begin(); it!=items.end(); it++)
+                ((CSMotion*)(*it)->m_Object)->Save(F);
+            F.save_to		(name);
+            return true;
+        }
+    }else{
+    	return m_pEditObject->SaveSMotions(name);
+    }
+    return false;
 }
 
 void CActorTools::MakePreview()

@@ -132,7 +132,6 @@ class CActorTools: public pureDeviceCreate, public pureDeviceDestroy
 	void __fastcall 	BPOnDraw				(PropValue* sender, LPVOID draw_val);
 	void __fastcall 	OnMotionNameChange		(PropValue* sender);
 
-	void __fastcall 	OnMotionFileClick		(PropValue* sender, bool& bModif);
 	void __fastcall 	OnMotionEditClick		(PropValue* sender, bool& bModif);
 	void __fastcall 	OnMotionControlClick	(PropValue* sender, bool& bModif);
 
@@ -236,9 +235,8 @@ public:
     bool				Load				(LPCSTR name);
     bool				Save				(LPCSTR name, bool bInternal=false);
     bool				ExportOGF			(LPCSTR name);
-    bool				LoadMotions			(LPCSTR name);
-    bool				SaveMotions			(LPCSTR name);
-    bool				AppendMotion		(AnsiString& name, LPCSTR fn);
+    bool				SaveMotions			(LPCSTR name, bool bSelOnly);
+    bool				AppendMotion		(LPCSTR fn);
     bool				RemoveMotion		(LPCSTR name);
     void				Reload				();
     void 				WorldMotionRotate	(const Fvector& R);

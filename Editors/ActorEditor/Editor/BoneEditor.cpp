@@ -122,6 +122,12 @@ void CBone::BoneRotate(const Fvector& _axis, float angle)
     if (!fis_zero(angle)){
 		if (fraTopBar->ebCSParent->Down){	
         // bind pose CS
+            mot_rotate.x += _axis.x*angle; 
+            mot_rotate.y += _axis.y*angle;
+            mot_rotate.z += _axis.z*angle;
+        	
+        	ClampByLimits		();
+/*            
 			Fmatrix mBind,mBindI,mLocal,mRotate,mLocalBP;
             mBind.setXYZi		(rest_rotate);
             mBindI.invert		(mBind);
@@ -140,6 +146,7 @@ void CBone::BoneRotate(const Fvector& _axis, float angle)
             mLocalBP.setXYZi	(mot);
             mLocal.mul			(mBind,mLocalBP);
             mLocal.getXYZi		(mot_rotate);
+*/
         }else{
         // local CS
 			Fmatrix mBind,mBindI,mRotate,mLocal,mLocalBP;
