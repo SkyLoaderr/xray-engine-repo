@@ -38,7 +38,6 @@ CWeapon::CWeapon(LPCSTR name)
 
 	m_Offset.identity		();
 	m_StrapOffset.identity	();
-	m_strapped_mode		= false;
 
 	iAmmoCurrent		= -1;
 	m_dwAmmoCurrentCalcFrame = 0;
