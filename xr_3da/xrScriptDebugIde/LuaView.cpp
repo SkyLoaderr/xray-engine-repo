@@ -72,13 +72,13 @@ CLuaView::CLuaView()
 	m_bFirstSearch = TRUE;
 	m_bRegularExpression = FALSE;
 	
-	m_pf = NULL;
+	SetProjectFile(NULL);
 }
 
 CLuaView::~CLuaView()
 {
-	if(m_pf)
-		m_pf->m_lua_view = NULL;
+	if(GetProjectFile() )
+		GetProjectFile()->SetLuaView( NULL );
 }
 
 CScintillaCtrl& CLuaView::GetCtrl()
@@ -364,9 +364,11 @@ void CLuaView::Serialize(CArchive& ar)
 {
 	if (ar.IsStoring())
 	{
+
 		CLuaEditor* pEditor = GetEditor();
 		pEditor->Save(ar.GetFile());
-		pEditor->SetBreakPointsIn(m_pf);
+		if( GetProjectFile() )
+			pEditor->SetBreakPointsIn( GetProjectFile() );
 
 	}
 	else
@@ -703,9 +705,9 @@ LRESULT CLuaView::OnFindReplaceCmd(WPARAM /*wParam*/, LPARAM lParam)
 
 void CLuaView::_save()
 {
-	if(m_pf){
+	if( GetProjectFile() ){
 		CFile ff;
-		ff.Open(m_pf->GetPathName(), CFile::modeCreate |
+		ff.Open(GetProjectFile()->GetPathName(), CFile::modeCreate |
 			CFile::modeWrite | CFile::shareExclusive);
 
 	CArchive saveArchive(&ff, CArchive::store | CArchive::bNoFlushOnDelete);

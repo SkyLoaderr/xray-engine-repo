@@ -22,14 +22,35 @@ public:
 // Operations
 public:
 	void RemoveAll();
-	HTREEITEM AddProjectFile(CString strName, long lParam);
+	HTREEITEM AddProjectFile(CString strName, long lParam, HTREEITEM parent=NULL);
 	void AddRoot(CString strProject);
+	void AddFolder(CString& strName,HTREEITEM parent=NULL);
 	void ExpandFiles();
+	bool IsFolder(HTREEITEM itm);
+	bool IsFile(HTREEITEM itm);
+	bool IsRoot(HTREEITEM itm);
+	BOOL Load(CArchive &ar);
+	BOOL Save(CArchive &ar);
+	BOOL Save(HTREEITEM itm, CArchive &ar);
+	BOOL Load(HTREEITEM itm, CArchive &ar);
+	HTREEITEM FindFolder(CString& name, HTREEITEM from = NULL);
+	HTREEITEM FindFile(CString& name, HTREEITEM from = NULL);
+
+
 protected:
 	CTreeCtrl* m_pTree;
 	HTREEITEM m_hRoot, m_hFilesFolder;
 	CImageList m_images;
 	CString working_folder;
+//drag-n-drop
+protected:	
+   CImageList*	m_pDragImage;	//содержит список изображений используемый  во  время переноса
+   BOOL			m_bLDragging;
+   HTREEITEM	m_hitemDrag,m_hitemDrop;
+	HTREEITEM	CopyBranch( HTREEITEM htiBranch, HTREEITEM htiNewParent, 
+                                                HTREEITEM htiAfter = TVI_LAST );
+	HTREEITEM CopyItem( HTREEITEM hItem, HTREEITEM htiNewParent, 
+									HTREEITEM htiAfter = TVI_LAST );
 
 // Overrides
 	// ClassWizard generated virtual function overrides
@@ -40,7 +61,10 @@ protected:
 	virtual void OnProjectAddFiles();
 	virtual void OnRunApplication();
 	virtual void OnDebuggingOptions();
-
+	virtual void OnAddFolder();
+	virtual void OnBeginDrag(NMHDR* pNMHDR, LRESULT* pResult);
+	virtual void OnMouseMove(UINT nFlags, CPoint point);
+	virtual void OnLButtonUp(UINT nFlags, CPoint point);
 	//}}AFX_VIRTUAL
 
 // Implementation
@@ -56,6 +80,8 @@ protected:
 	//{{AFX_MSG(CTreeViewFiles)
 	afx_msg int OnCreate(LPCREATESTRUCT lpCreateStruct);
 	afx_msg void OnItemexpanded(NMHDR* pNMHDR, LRESULT* pResult);
+	afx_msg void OnBeginEdit(NMHDR* pNMHDR, LRESULT* pResult);
+	afx_msg void OnEndEdit(NMHDR* pNMHDR, LRESULT* pResult);
 	afx_msg void OnRclick(NMHDR* pNMHDR, LRESULT* pResult);
 	afx_msg void OnLclick(NMHDR* pNMHDR, LRESULT* pResult);
 	afx_msg void OnDblclk(NMHDR* pNMHDR, LRESULT* pResult);

@@ -14,7 +14,8 @@
 class CWorkspaceWnd;
 
 typedef CTypedPtrArray<CPtrArray, CProjectFile*> CProjectFileArray;
-#define PROJ_VERSION 0x03
+//#define PROJ_VERSION 0x03
+#define PROJ_VERSION 0x04
 
 class CProject  
 {
@@ -45,6 +46,7 @@ public:
 	void AddFile(CProjectFile* pPF);
 	int NofFiles() { return m_files.GetSize(); };
 	void AddFiles();
+	void AddFolder();
 	CProjectFile* GetProjectFile(CString strPathName);
 	void RedrawFilesTree();
 

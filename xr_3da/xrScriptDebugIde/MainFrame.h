@@ -104,6 +104,7 @@ protected:
 	afx_msg void OnFileSaveproject();
 	afx_msg void OnFileSaveprojectas();
 	afx_msg void OnProjectAddFiles();
+	afx_msg void OnAddFolder();
 	afx_msg void OnRunApplication();
 	afx_msg void OnDebuggingOptions();
 	afx_msg void OnClose();

@@ -40,7 +40,7 @@ BEGIN_MESSAGE_MAP(CMainFrame, CMDIFrameWnd)
 	ON_COMMAND(ID_FILE_SAVEPROJECT, OnFileSaveproject)
 	ON_COMMAND(ID_FILE_SAVEPROJECTAS, OnFileSaveprojectas)
 	ON_COMMAND(ID_PROJECT_ADD_FILES, OnProjectAddFiles)
-
+	ON_COMMAND(ID_PROJECT_ADDFOLDER, OnAddFolder)
 
 	ON_COMMAND(ID_PROJECT_RUNPROJECT, OnRunApplication)
 	ON_COMMAND(ID_PROJECT_DEBUGGING,  OnDebuggingOptions)
@@ -66,6 +66,8 @@ BEGIN_MESSAGE_MAP(CMainFrame, CMDIFrameWnd)
 
 	ON_COMMAND(IDR_TOOLS_OPTIONS, OnToolsOptions)
 	ON_UPDATE_COMMAND_UI(IDR_TOOLS_OPTIONS, OnUpdateToolsOptions)
+	ON_UPDATE_COMMAND_UI(ID_FILE_OPEN, OnUpdateToolsOptions)
+	
 
 	ON_COMMAND(ID_FILE_SAVEALLMODIFIED, OnSaveAllModified)
 	ON_UPDATE_COMMAND_UI(ID_FILE_SAVEALLMODIFIED, OnUpdateSaveAllModified)
@@ -295,7 +297,10 @@ void CMainFrame::OnProjectAddFiles()
 {
 	GetProject()->AddFiles();
 }
-
+void CMainFrame::OnAddFolder()
+{
+	GetProject()->AddFolder();
+}
 void CMainFrame::OnRunApplication()
 {
 	GetProject()->OnRunApplication();
@@ -918,7 +923,10 @@ BOOL CMainFrame::checkExistingFolder(CString str)
 
 void CMainFrame::OnUpdateToolsOptions(CCmdUI* pCmdUI)
 {
-	pCmdUI->Enable(TRUE);
+	if(pCmdUI->m_nID == ID_FILE_OPEN)
+		pCmdUI->Enable(FALSE);
+	else
+		pCmdUI->Enable(TRUE);
 }
 
 void CMainFrame::OnUpdateSaveAllModified(CCmdUI* pCmdUI)

@@ -141,7 +141,6 @@ void CProject::RemoveFile(CProjectFile *pPF)
 		}
 
 	SetModifiedFlag(TRUE);
-//	RedrawFilesTree();
 }
 
 void CProject::RemoveProjectFiles()
@@ -161,33 +160,6 @@ void CProject::RemoveProjectFiles()
 }
 
 
-//--------------------------------------------------------------------------------------------------
-//- project new/save/load/close functions
-//--------------------------------------------------------------------------------------------------
-/*
-void CProject::NewProject()
-{
-	AfxMessageBox("ERROR :)");
-	GetCurrentDirectory(MAX_PATH, m_strPathName.GetBuffer(MAX_PATH));
-	m_strPathName.ReleaseBuffer();
-	m_strPathName += "\\project1.lpr";
-	RedrawFilesTree();
-	SetModifiedFlag(FALSE);
-}
-*/
-/*
-BOOL CProject::New(CString sFileName)
-{
-	m_strPathName = sFileName;
-
-	RedrawFilesTree();
-
-	Save();
-	SetModifiedFlag(FALSE);
-
-	return TRUE;
-};
-*/
 BOOL CProject::New()
 {
 	SaveModified();
@@ -245,28 +217,6 @@ BOOL CProject::Load()
 		return FALSE;
 
 	return Load(fd.GetPathName());
-/*
-	CFile fin;
-	if ( !fin.Open(fd.GetPathName(), CFile::modeRead) )
-	{
-		AfxMessageBox("Unable to open project file");
-		return FALSE;
-	}
-
-	m_strPathName = fd.GetPathName();
-
-	CArchive ar(&fin, CArchive::load);
-
-	RemoveProjectFiles();
-	
-	BOOL bResult = Load(ar);
-
-	SetModifiedFlag(FALSE);
-
-	RedrawFilesTree();
-
-	return bResult;
-*/
 }
 
 BOOL CProject::Load(CString sFileName)
@@ -288,11 +238,10 @@ BOOL CProject::Load(CString sFileName)
 
 	RemoveProjectFiles();
 	
+	RedrawFilesTree();
 	BOOL bResult = Load(ar);
 
 	SetModifiedFlag(FALSE);
-
-	RedrawFilesTree();
 
 	return bResult;
 }
@@ -304,6 +253,12 @@ BOOL CProject::Load(CArchive &ar)
 	if( (version > PROJ_VERSION) || (version < 0x03)){
 		AfxMessageBox("Project file is corrupted. Re-create project.");
 		return FALSE;
+	}
+
+	if(version>=0x04){
+		CWorkspaceWnd* pWorkspace = g_mainFrame->GetWorkspaceWnd();
+		CTreeViewFiles* pTree = pWorkspace->GetTreeViewFiles();
+		pTree->Load(ar);
 	}
 
 	long nFiles;
@@ -372,6 +327,10 @@ BOOL CProject::Save(CArchive &ar)
 {
 	int version = PROJ_VERSION;
 	ar << version;
+
+	CWorkspaceWnd* pWorkspace = g_mainFrame->GetWorkspaceWnd();
+	CTreeViewFiles* pTree = pWorkspace->GetTreeViewFiles();
+	pTree->Save(ar);
 
 	long nFiles = m_files.GetSize();
 	ar << nFiles;
@@ -527,42 +486,11 @@ void CProject::SetModifiedFlag(BOOL bModified)
 	m_bModified = bModified; 
 };
 
-
-
-/*
-void CProjectNew::OnProjectSelloc() 
+void CProject::AddFolder()
 {
-	UpdateData(TRUE);
-
-	BROWSEINFO bi;
-	TCHAR szDir[MAX_PATH];
-	LPITEMIDLIST pidl;
-	LPMALLOC pMalloc;
-
-	if (SUCCEEDED(SHGetMalloc(&pMalloc))) 
-	{
-		ZeroMemory(&bi,sizeof(bi));
-		bi.hwndOwner = NULL;
-		bi.pszDisplayName = 0;
-		bi.pidlRoot = 0;
-		bi.ulFlags = BIF_RETURNONLYFSDIRS | BIF_STATUSTEXT;
-		bi.lpfn = BrowseCallbackProc;
-
-		pidl = SHBrowseForFolder(&bi);
-		if (pidl) 
-		{
-			if (SHGetPathFromIDList(pidl,szDir)) 
-			{
-				m_strProjectDir = szDir;
-				UpdateData(FALSE);
-			}
-
-			// In C++: pMalloc->Free(pidl); pMalloc->Release();
-			pMalloc->Free(pidl);
-			pMalloc->Release();
-		}
-	}	
+	CWorkspaceWnd* pWorkspace = g_mainFrame->GetWorkspaceWnd();
+	CTreeViewFiles* pTree = pWorkspace->GetTreeViewFiles();
+	CString f_name("New Folder");
+	pTree->AddFolder(f_name);
+	SetModifiedFlag(TRUE);
 }
-
-
-*/

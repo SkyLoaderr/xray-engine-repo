@@ -112,7 +112,8 @@ BOOL CLuaDoc::OnOpenDocument(LPCTSTR lpszPathName)
 	CProjectFile* pPF = pFrame->GetProject()->GetProjectFile(lpszPathName);
 	if ( pPF ){
 		pPF->SetBreakPointsIn(GetView()->GetEditor());
-		GetView()->m_pf = pPF;
+		GetView()->SetProjectFile(pPF);
+		pPF->SetLuaView( GetView() );
 	}
 	
 	return TRUE;

@@ -95,6 +95,7 @@ IDR_PROJECT_MENU MENU
 BEGIN
     POPUP "&Project"
     BEGIN
+        MENUITEM "Add Folder",                  ID_PROJECT_ADDFOLDER
         MENUITEM "Add &files to project",       ID_PROJECT_ADD_FILES
         MENUITEM "Debugging options",           ID_PROJECT_DEBUGGING
         MENUITEM SEPARATOR

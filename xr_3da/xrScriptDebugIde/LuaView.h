@@ -15,6 +15,8 @@
 
 class CLuaView : public CView
 {
+	CProjectFile* m_projFile;
+
 protected: // create from serialization only
 	CLuaView();
 	DECLARE_DYNCREATE(CLuaView)
@@ -25,7 +27,8 @@ public:
 	CLuaDoc* GetDoc(){return (CLuaDoc*)m_pDocument;};
 	CLuaEditor* GetEditor() { return &m_editor; };
 	void	_save();
-	CProjectFile* m_pf;
+	CProjectFile*	GetProjectFile(){return m_projFile;}
+	void			SetProjectFile(CProjectFile* p){m_projFile = p;}
 // Operations
 public:
 

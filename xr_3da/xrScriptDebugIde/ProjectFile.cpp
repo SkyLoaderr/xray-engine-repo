@@ -46,13 +46,13 @@ CProjectFile::CProjectFile()
 	RemoveAllDebugLines();
 	RemoveAllBreakPoints();
 	m_bBreakPointsSaved = FALSE;
-	m_lua_view	= NULL;
+	SetLuaView(NULL);
 }
 
 CProjectFile::~CProjectFile()
 {
-	if(m_lua_view)
-		m_lua_view->m_pf = NULL;
+	if( GetLuaView() )
+		GetLuaView()->SetProjectFile(NULL);
 }
 
 void CProjectFile::RemoveAllDebugLines()
