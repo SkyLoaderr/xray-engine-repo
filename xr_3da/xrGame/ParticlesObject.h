@@ -14,7 +14,10 @@ class CParticlesObject		:	public CPS_Instance
 	void				Init				(LPCSTR p_name, IRender_Sector* S, BOOL bAutoRemove);
 	void				UpdateSpatial		();
 protected:
-	bool m_bLooped;
+	//флаг, что система зациклена
+	bool				m_bLooped;
+	//вызвана функция Stop()
+	bool				m_bStoppig;
 public:
 						CParticlesObject	(LPCSTR p_name, IRender_Sector* S=0, BOOL bAutoRemove=TRUE);
 						CParticlesObject	(LPCSTR p_name, BOOL bAutoRemove);

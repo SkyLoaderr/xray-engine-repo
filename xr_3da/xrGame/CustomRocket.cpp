@@ -1,0 +1,371 @@
+//////////////////////////////////////////////////////////////////////
+// CustomRocket.cpp:	ракета, которой стреляет RocketLauncher 
+//						(умеет лететь, светиться и отыгрывать партиклы)
+//////////////////////////////////////////////////////////////////////
+
+#include "stdafx.h"
+
+#include "customrocket.h"
+
+
+#include "ParticlesObject.h"
+
+#include "PhysicsShell.h"
+#include "extendedgeom.h"
+
+
+
+CCustomRocket::CCustomRocket() 
+{
+	m_eState = eInactive;
+	m_bEnginePresent = false;
+	m_bStopLightsWithEngine = true;
+	m_bLightsEnabled = false;
+}
+
+CCustomRocket::~CCustomRocket	()
+{
+	::Render->light_destroy(m_pTrailLight);
+}
+
+
+void CCustomRocket::reinit		()
+{
+	inherited::reinit();
+
+	m_pTrailLight = ::Render->light_create();
+	m_pTrailLight->set_shadow(true);
+
+	m_pEngineParticles = NULL;
+	m_pFlyParticles = NULL;
+
+	m_pOwner = NULL;
+}
+
+
+BOOL CCustomRocket::net_Spawn(LPVOID DC) 
+{
+	BOOL result = inherited::net_Spawn(DC);
+	return result;
+}
+
+void CCustomRocket::net_Destroy() 
+{
+	inherited::net_Destroy();
+}
+
+
+void CCustomRocket::SetLaunchParams (const Fmatrix& xform, 
+									 const Fvector& vel,
+									 const Fvector& angular_vel)
+{
+	m_LaunchXForm = xform;
+	m_vLaunchVelocity = vel;
+	m_vLaunchAngularVelocity = angular_vel;
+}
+
+
+void CCustomRocket::activate_physic_shell	()
+{
+	VERIFY(H_Parent());
+
+	m_pPhysicsShell->Activate(m_LaunchXForm, m_vLaunchVelocity, m_vLaunchAngularVelocity);
+	m_pPhysicsShell->Update	();
+
+	XFORM().set(m_pPhysicsShell->mXFORM);
+	Position().set(m_pPhysicsShell->mXFORM.c);
+	m_pPhysicsShell->set_PhysicsRefObject(this);
+	m_pPhysicsShell->set_ObjectContactCallback(ObjectContactCallback);
+	m_pPhysicsShell->set_ContactCallback(NULL);
+}
+
+void CCustomRocket::create_physic_shell	()
+{
+	create_box2sphere_physic_shell();
+}
+
+//////////////////////////////////////////////////////////////////////////
+// Rocket specific functions
+//////////////////////////////////////////////////////////////////////////
+
+
+void __stdcall CCustomRocket::ObjectContactCallback(bool& do_colide,dContact& c) 
+{
+	do_colide = false;
+
+
+	dxGeomUserData *l_pUD1 = NULL;
+	dxGeomUserData *l_pUD2 = NULL;
+	l_pUD1 = retrieveGeomUserData(c.geom.g1);
+	l_pUD2 = retrieveGeomUserData(c.geom.g2);
+
+	CCustomRocket *l_this = l_pUD1 ? dynamic_cast<CCustomRocket*>(l_pUD1->ph_ref_object) : NULL;
+	Fvector vUp;
+	if(!l_this){
+		l_this = l_pUD2 ? dynamic_cast<CCustomRocket*>(l_pUD2->ph_ref_object) : NULL;
+		vUp.invert(*(Fvector*)&c.geom.normal);
+	}else{
+		vUp.set(*(Fvector*)&c.geom.normal);	
+	}
+	if(!l_this) return;
+
+	CGameObject *l_pOwner = l_pUD1 ? dynamic_cast<CGameObject*>(l_pUD1->ph_ref_object) : NULL;
+	if(!l_pOwner || l_pOwner == (CGameObject*)l_this) l_pOwner = l_pUD2 ? dynamic_cast<CGameObject*>(l_pUD2->ph_ref_object) : NULL;
+	if(!l_pOwner || l_pOwner != l_this->m_pOwner) 
+	{
+		if(l_this->m_pOwner) 
+		{
+			Fvector l_pos; l_pos.set(l_this->Position());
+			if(!l_pUD1||!l_pUD2) 
+			{
+				dxGeomUserData *&l_pUD = l_pUD1?l_pUD1:l_pUD2;
+				if(l_pUD->pushing_neg) 
+				{
+					Fvector velocity;
+					l_this->PHGetLinearVell(velocity);
+					velocity.normalize();
+					float cosinus=velocity.dotproduct(*((Fvector*)l_pUD->neg_tri.norm));
+					float dist=l_pUD->neg_tri.dist/cosinus;
+					velocity.mul(dist);
+					l_pos.sub(velocity);
+
+				}
+			}
+			l_this->Contact(l_pos, vUp);
+		}
+	} else {}
+}
+
+void CCustomRocket::Load(LPCSTR section) 
+{
+	inherited::Load	(section);
+
+	reload(section);
+}
+
+void  CCustomRocket::reload		(LPCSTR section)
+{
+	m_eState = eInactive;
+
+	m_bEnginePresent = !!pSettings->r_bool(section, "engine_present");
+	if(m_bEnginePresent)
+	{
+		m_dwEngineWorkTime = pSettings->r_u32(section, "engine_work_time");
+		m_fEngineImpulse = pSettings->r_float(section, "engine_impulse");
+	}
+
+
+	m_bLightsEnabled = !!pSettings->r_bool(section, "lights_enabled");
+	if(m_bLightsEnabled)
+	{
+		sscanf(pSettings->r_string(section,"trail_light_color"), "%f,%f,%f", 
+			&m_TrailLightColor.r, &m_TrailLightColor.g, &m_TrailLightColor.b);
+		m_fTrailLightRange	= pSettings->r_float(section,"trail_light_range");
+	}
+
+	if(pSettings->line_exist(section,"engine_particles")) 
+		m_sEngineParticles	= pSettings->r_string(section,"engine_particles");
+	if(pSettings->line_exist(section,"fly_particles")) 
+		m_sFlyParticles	= pSettings->r_string(section,"fly_particles");
+}
+
+
+void CCustomRocket::Contact(const Fvector &pos, const Fvector &normal)
+{
+	if(eCollide == m_eState) return;
+
+	StopEngine();
+	StopFlying();
+
+
+	m_eState = eCollide;
+
+	//дективировать физическую оболочку,чтоб ракета не летела дальше
+	if(m_pPhysicsShell)
+	{
+		m_pPhysicsShell->set_LinearVel(zero_vel);
+		m_pPhysicsShell->set_AngularVel(zero_vel);
+		m_pPhysicsShell->set_ObjectContactCallback(NULL);
+	}
+	Position().set(pos);
+}
+
+
+void CCustomRocket::OnH_B_Independent() 
+{
+	inherited::OnH_B_Independent();
+}
+
+
+void CCustomRocket::OnH_A_Independent() 
+{
+	inherited::OnH_A_Independent();
+
+	StartFlying();
+	StartEngine();
+}
+
+
+void CCustomRocket::UpdateCL()
+{
+	inherited::UpdateCL();
+	
+	switch (m_eState)
+	{
+	case eInactive:
+		break;
+	//состояния eEngine и eFlying отличаются, тем
+	//что вызывается UpdateEngine у eEngine, остальные
+	//функции общие
+	case eEngine:
+		UpdateEngine();
+	case eFlying:
+		UpdateLights();
+		UpdateParticles();
+		break;
+	}
+}
+
+void CCustomRocket::StartEngine				()
+{
+	VERIFY(NULL == H_Parent());
+
+	if(!m_bEnginePresent)
+	{
+		m_eState = eFlying;
+		return;
+	}
+
+	m_eState = eEngine;
+	m_dwEngineTime = m_dwEngineWorkTime;
+
+	StartEngineParticles();
+}
+
+void CCustomRocket::StopEngine				()
+{
+	m_eState = eFlying;
+
+	m_dwEngineTime = 0;
+
+	if(m_bStopLightsWithEngine)
+		StopLights();
+
+	StopEngineParticles();
+}
+
+
+void CCustomRocket::UpdateEngine				()
+{
+	VERIFY(getVisible() && m_pPhysicsShell);
+
+	if (m_dwEngineTime <= 0) 
+	{
+		StopEngine();
+		return;
+	}
+
+	m_dwEngineTime -= Device.dwTimeDelta;
+	//float force = m_fEngineImpulse * Device.fTimeDelta;
+}
+
+
+
+//////////////////////////////////////////////////////////////////////////
+//	Lights
+//////////////////////////////////////////////////////////////////////////
+void CCustomRocket::StartLights()
+{
+	if(!m_bLightsEnabled) return;
+
+	//включить световую подсветку от двигателя
+	m_pTrailLight->set_color(m_TrailLightColor.r, 
+							 m_TrailLightColor.g, 
+							 m_TrailLightColor.b);
+
+	m_pTrailLight->set_range(m_fTrailLightRange);
+	m_pTrailLight->set_position(Position()); 
+	m_pTrailLight->set_active(true);
+}
+
+void CCustomRocket::StopLights()
+{
+	if(!m_bLightsEnabled) return;
+	m_pTrailLight->set_active(false);
+}
+
+void CCustomRocket::UpdateLights()
+{
+	if(!m_bLightsEnabled || !m_pTrailLight->get_active()) return;
+	m_pTrailLight->set_position(Position());
+}
+
+
+//////////////////////////////////////////////////////////////////////////
+//	Particles
+//////////////////////////////////////////////////////////////////////////
+void CCustomRocket::UpdateParticles()
+{
+	Fvector vel;
+	PHGetLinearVell(vel);
+
+	if(m_pEngineParticles)
+		m_pEngineParticles->UpdateParent(XFORM(), vel);
+	
+	if(m_pFlyParticles)
+		m_pFlyParticles->UpdateParent(XFORM(), vel);
+}
+
+void CCustomRocket::StartEngineParticles()
+{
+	VERIFY(m_pEngineParticles == NULL);
+	if(!m_sEngineParticles) return;
+	m_pEngineParticles = xr_new<CParticlesObject>(*m_sEngineParticles, Sector(),false);
+
+	Fvector vel;
+	PHGetLinearVell(vel);
+	m_pEngineParticles->UpdateParent(XFORM(), vel);
+	m_pEngineParticles->Play();
+
+	VERIFY(m_pEngineParticles);
+	VERIFY3(m_pEngineParticles->IsLooped(), "must be a looped particle system for rocket engine: %s", *m_sEngineParticles);
+}
+void CCustomRocket::StopEngineParticles()
+{
+	if(m_pEngineParticles == NULL) return;
+	m_pEngineParticles->Stop();
+	m_pEngineParticles->SetAutoRemove(true);
+	m_pEngineParticles = NULL;
+}
+void CCustomRocket::StartFlyParticles()
+{
+	VERIFY(m_pFlyParticles == NULL);
+
+	if(!m_sFlyParticles) return;
+	m_pFlyParticles = xr_new<CParticlesObject>(*m_sFlyParticles, Sector(),false);
+	
+	Fvector vel;
+	PHGetLinearVell(vel);
+	m_pFlyParticles->UpdateParent(XFORM(), vel);
+	m_pFlyParticles->Play();
+	
+	VERIFY(m_pFlyParticles);
+	VERIFY3(m_pFlyParticles->IsLooped(), "must be a looped particle system for rocket fly: %s", *m_sFlyParticles);
+}
+void CCustomRocket::StopFlyParticles()
+{
+	if(m_pFlyParticles == NULL) return;
+	m_pFlyParticles->Stop();
+	m_pFlyParticles->SetAutoRemove(true);
+	m_pFlyParticles = NULL;
+}
+
+void CCustomRocket::StartFlying				()
+{
+	StartFlyParticles();
+	StartLights();
+}
+void CCustomRocket::StopFlying				()
+{
+	StopFlyParticles();
+}

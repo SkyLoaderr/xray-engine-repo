@@ -303,7 +303,8 @@ void CWeaponMagazinedWGrenade::OnEvent(NET_Packet& P, u16 type)
 				CWeaponFakeGrenade *l_pG = dynamic_cast<CWeaponFakeGrenade*>(Level().Objects.net_Find(id));
 				VERIFY(l_pG);
 				m_pGrenade = l_pG;
-				m_pGrenade->m_iCurrentParentID = ID();
+				m_pGrenade->m_iCurrentParentID = H_Parent()->ID();
+				m_pGrenade->ExplodeParams(Position(), XFORM().k);
 				l_pG->H_SetParent(this);
 			}
 			break;

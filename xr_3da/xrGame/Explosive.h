@@ -25,15 +25,14 @@ public:
 	
 	virtual BOOL net_Spawn			(LPVOID DC);
 	virtual void net_Destroy		();
-	virtual void net_Export			(NET_Packet& P) = 0;	// export to server
-	virtual void net_Import			(NET_Packet& P) = 0;	// import from server
-
 
 	virtual void UpdateCL();
 
 	virtual void feel_touch_new(CObject* O);
 
 	virtual void Explode();
+	virtual void ExplodeParams(const Fvector& pos, const Fvector& dir);
+	
 
 	virtual void OnH_B_Chield		() {inherited::OnH_B_Chield();}
 	virtual void OnH_B_Independent	() {inherited::OnH_B_Independent();}
@@ -45,10 +44,13 @@ public:
 	virtual void renderable_Render	();
 
 
-
 protected:
 	//ID персонажа который иницировал действие
-	u16			m_iCurrentParentID;
+	u16 m_iCurrentParentID;
+	
+	bool	m_bReadyToExplode;
+	Fvector m_vExplodePos;
+	Fvector m_vExplodeDir;
 
 	//параметры взрыва
 	float m_fBlastHit;
@@ -106,17 +108,4 @@ protected:
 		float amplitude;	
 		float period_number;
 	} effector;
-
-public:	 
-
-	virtual void			make_Interpolation	();
-	virtual void			PH_B_CrPr			(); // actions & operations before physic correction-prediction steps
-	virtual void			PH_I_CrPr			(); // actions & operations after correction before prediction steps
-	virtual void			PH_A_CrPr			(); // actions & operations after phisic correction-prediction steps
-	virtual void			OnH_A_Chield		();
-	virtual	void			reinit				();
-	virtual	void			reload				(LPCSTR section);
-	virtual void			create_physic_shell	();
-	virtual void			activate_physic_shell();
-	virtual void			setup_physic_shell	();
 };

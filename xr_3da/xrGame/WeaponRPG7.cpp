@@ -12,7 +12,6 @@ CWeaponRPG7::CWeaponRPG7(void) : CWeaponCustomPistol("RPG7")
 	m_weight = 5.f;
 	m_slot = 2;
 	m_hideGrenade = false;
-	m_pGrenade = NULL;
 	m_pGrenadePoint = &vLastFP;
 }
 
@@ -27,6 +26,8 @@ void CWeaponRPG7::Load	(LPCSTR section)
 
 	m_sGrenadeBoneName		= pSettings->r_string	(section,"grenade_bone");
 	m_sHudGrenadeBoneName	= pSettings->r_string	(hud_sect,"grenade_bone");
+
+	m_sRocketSection		= pSettings->r_string	(section,"rocket_class");
 }
 
 BOOL CWeaponRPG7::net_Spawn(LPVOID DC) 
@@ -42,30 +43,11 @@ BOOL CWeaponRPG7::net_Spawn(LPVOID DC)
 	V->LL_GetBoneInstance(V->LL_BoneID(*m_sGrenadeBoneName)).set_callback(GrenadeCallback, this);
 
 	m_hideGrenade = !iAmmoElapsed;
-	if(iAmmoElapsed && !m_pGrenade)
+	if(iAmmoElapsed && !m_pRocket)
 	{
-		CSE_Abstract*		D	= F_entity_Create("wpn_rpg7_missile");
-		R_ASSERT			(D);
-		CSE_Temporary		*l_tpTemporary = dynamic_cast<CSE_Temporary*>(D);
-		R_ASSERT							(l_tpTemporary);
-		l_tpTemporary->m_tNodeID	= level_vertex_id();
-		// Fill
-		strcpy				(D->s_name,"wpn_rpg7_missile");
-		strcpy				(D->s_name_replace,"");
-		D->s_gameid			=	u8(GameID());
-		D->s_RP				=	0xff;
-		D->ID				=	0xffff;
-		D->ID_Parent		=	(u16)ID();
-		D->ID_Phantom		=	0xffff;
-		D->s_flags.set		(M_SPAWN_OBJECT_LOCAL);
-		D->RespawnTime		=	0;
-		// Send
-		NET_Packet			P;
-		D->Spawn_Write		(P,TRUE);
-		Level().Send		(P,net_flags(TRUE));
-		// Destroy
-		F_entity_Destroy	(D);
+		CRocketLauncher::SpawnRocket(*m_sRocketSection, dynamic_cast<CGameObject*>(H_Parent()));
 	}
+
 	return l_res;
 }
 
@@ -85,46 +67,41 @@ void CWeaponRPG7::ReloadMagazine()
 {
 	inherited::ReloadMagazine();
 
-	if(iAmmoElapsed && !m_pGrenade) 
+	if(iAmmoElapsed && !m_pRocket) 
 	{
-		CSE_Abstract*		D	= F_entity_Create("wpn_rpg7_missile");
-		R_ASSERT			(D);
-		CSE_Temporary		*l_tpTemporary = dynamic_cast<CSE_Temporary*>(D);
-		R_ASSERT							(l_tpTemporary);
-		l_tpTemporary->m_tNodeID	= level_vertex_id();
-		l_tpTemporary->o_Position	= Position();
-		// Fill
-		strcpy				(D->s_name,"wpn_rpg7_missile");
-		strcpy				(D->s_name_replace,"");
-		D->s_gameid			=	u8(GameID());
-		D->s_RP				=	0xff;
-		D->ID				=	0xffff;
-		D->ID_Parent		=	(u16)ID();
-		D->ID_Phantom		=	0xffff;
-		D->s_flags.set		(M_SPAWN_OBJECT_LOCAL);
-		D->RespawnTime		=	0;
-		// Send
-		NET_Packet			P;
-		D->Spawn_Write		(P,TRUE);
-		Level().Send		(P,net_flags(TRUE));
-		// Destroy
-		F_entity_Destroy	(D);
+		CRocketLauncher::SpawnRocket(*m_sRocketSection, this);
 	}
 }
 void CWeaponRPG7::SwitchState(u32 S) 
 {
 	inherited::SwitchState(S);
-	if(STATE == eIdle && S==eFire && m_pGrenade) 
+	if(STATE == eIdle && S==eFire && m_pRocket) 
 	{
-		Fvector						p1, d; p1.set(vLastFP); d.set(vLastFD);
-		CEntity*					E = dynamic_cast<CEntity*>(H_Parent());
-		if (E) E->g_fireParams		(this, p1,d);
-		m_pGrenade->m_pos.set(p1);
-		m_pGrenade->m_vel.set(d); m_pGrenade->m_vel.y += .0f; m_pGrenade->m_vel.mul(50.f);
-		m_pGrenade->m_pOwner = dynamic_cast<CGameObject*>(H_Parent());
+		Fvector p1, d; 
+		p1.set(vLastFP); 
+		d.set(vLastFD);
+
+		CEntity* E = dynamic_cast<CEntity*>(H_Parent());
+		if (E) E->g_fireParams (this, p1,d);
+		
+		Fmatrix launch_matrix;
+		launch_matrix.identity();
+		launch_matrix.k.set(d);
+		Fvector::generate_orthonormal_basis(launch_matrix.k,
+											launch_matrix.i, launch_matrix.j);
+		launch_matrix.c.set(p1);
+
+		d.normalize();
+		d.mul(50.f);
+		CRocketLauncher::LaunchRocket(launch_matrix, d, zero_vel);
+
+		CWeaponRPG7Grenade* pGrenade = dynamic_cast<CWeaponRPG7Grenade*>(m_pRocket);
+		VERIFY(pGrenade);
+		pGrenade->m_iCurrentParentID = H_Parent()->ID();
+
 		NET_Packet P;
 		u_EventGen(P,GE_OWNERSHIP_REJECT,ID());
-		P.w_u16(u16(m_pGrenade->ID()));
+		P.w_u16(u16(m_pRocket->ID()));
 		u_EventSend(P);
 	}
 }
@@ -132,68 +109,11 @@ void CWeaponRPG7::SwitchState(u32 S)
 void CWeaponRPG7::FireStart()
 {
 	inherited::FireStart();
-	//if(m_pGrenade && STATE==eIdle) {
-	//	Fvector						p1, d; p1.set(vLastFP); d.set(vLastFD);
-	//	CEntity*					E = dynamic_cast<CEntity*>(H_Parent());
-	//	if (E) E->g_fireParams		(p1,d);
-	//	m_pGrenade->m_pos.set(p1);
-	//	m_pGrenade->m_vel.set(d); m_pGrenade->m_vel.y += .0f; m_pGrenade->m_vel.mul(50.f);
-	//	m_pGrenade->m_pOwner = dynamic_cast<CGameObject*>(H_Parent());
-	//	NET_Packet P;
-	//	u_EventGen(P,GE_OWNERSHIP_REJECT,ID());
-	//	P.w_u16(u16(m_pGrenade->ID()));
-	//	u_EventSend(P);
-	//}
 }
 
 void CWeaponRPG7::switch2_Fire	()
 {
-	VERIFY(fTimeToFire>0.f);
-
-	if (fTime<=0)
-	{
-		///UpdateFP					();
-
-		// Fire
-		Fvector						p1, d; p1.set(vLastFP); d.set(vLastFD);
-		CEntity*					E = dynamic_cast<CEntity*>(H_Parent());
-		if (E) E->g_fireParams		(this, p1,d);
-
-		//m_pGrenade->m_pos.set(p1);
-		//m_pGrenade->m_vel.set(d); m_pGrenade->m_vel.y += .0f; m_pGrenade->m_vel.mul(50.f);
-		//m_pGrenade->m_pOwner = dynamic_cast<CGameObject*>(H_Parent());
-		//NET_Packet P;
-		//u_EventGen(P,GE_OWNERSHIP_REJECT,ID());
-		//P.w_u16(u16(m_pGrenade->ID()));
-		//u_EventSend(P);
-
-		OnShot						();
-		FireTrace					(p1,d);
-		fTime						+= fTimeToFire;
-
-		CParticlesObject* pStaticPG;
-		pStaticPG = xr_new<CParticlesObject>("weapons\\rpg_shoot_01",Sector());
-		Fmatrix l_pos; 
-		Fvector zero_vel = {0.f,0.f,0.f};
-		l_pos.set(XFORM()); //l_pos.c.set(p1);
-		pStaticPG->UpdateParent(l_pos, zero_vel); 
-		pStaticPG->Play();
-
-		// Patch for "previous frame position" :)))
-		dwFP_Frame					= 0xffffffff;
-		dwXF_Frame					= 0xffffffff;
-	}
 }
-
-//void CWeaponRPG7::OnShot() {
-//	inherited::OnShot();
-//	R_ASSERT(m_pGrenade);
-//	m_pGrenade->m_vel.set(0, 0, 0);
-//	NET_Packet P;
-//	u_EventGen(P,GE_OWNERSHIP_REJECT,ID());
-//	P.w_u16(u16(m_pGrenade->ID()));
-//	u_EventSend(P);
-//}
 
 void CWeaponRPG7::OnEvent(NET_Packet& P, u16 type) 
 {
@@ -202,15 +122,14 @@ void CWeaponRPG7::OnEvent(NET_Packet& P, u16 type)
 	switch (type) {
 		case GE_OWNERSHIP_TAKE : {
 			P.r_u16(id);
-			CWeaponRPG7Grenade *l_pG = dynamic_cast<CWeaponRPG7Grenade*>(Level().Objects.net_Find(id));
-			m_pGrenade = l_pG;
-			l_pG->H_SetParent(this);
-			l_pG->m_iCurrentParentID = H_Parent()->ID();
+			CRocketLauncher::AttachRocket(id, this);
+			//m_pRocket->m_iCurrentParentID = H_Parent()->ID();
 		} break;
 		case GE_OWNERSHIP_REJECT : {
 			P.r_u16(id);
 			CWeaponRPG7Grenade *l_pG = dynamic_cast<CWeaponRPG7Grenade*>(Level().Objects.net_Find(id));
-			m_pGrenade = NULL;
+			VERIFY(m_pRocket);
+			m_pRocket = NULL;
 			l_pG->H_SetParent(0);
 		} break;
 	}

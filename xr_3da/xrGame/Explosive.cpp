@@ -44,7 +44,7 @@ CExplosive::CExplosive(void)
 
 
 	m_iCurrentParentID = 0xffff;
-
+	m_bReadyToExplode = false;
 }
 
 CExplosive::~CExplosive(void) 
@@ -107,15 +107,18 @@ void CExplosive::net_Destroy	()
 /////////////////////////////////////////////////////////
 // Взрыв 
 /////////////////////////////////////////////////////////
-void CExplosive::Explode() 
+void CExplosive::Explode()
 {
-	VERIFY(0xffff != m_iCurrentParentID);
+	VERIFY(0xffff != m_iCurrentParentID && m_bReadyToExplode);
+
+	Fvector& pos = m_vExplodePos;
+	Fvector& dir = m_vExplodeDir;
 
 	setVisible(false);
 	setEnabled(false);
 
 	//играем звук взрыва
-	Sound->play_at_pos(sndExplode, 0, Position(), false);
+	Sound->play_at_pos(sndExplode, 0, pos, false);
 	
 	//показываем эффекты
 	CParticlesObject* pStaticPG; 
@@ -123,7 +126,14 @@ void CExplosive::Explode()
 	
 	Fvector vel;
 	PHGetLinearVell(vel);
-	pStaticPG->UpdateParent(XFORM(),vel);
+
+	Fmatrix explode_matrix;
+	explode_matrix.identity();
+	explode_matrix.j.set(dir);
+	Fvector::generate_orthonormal_basis(explode_matrix.j, explode_matrix.k, explode_matrix.i);
+	explode_matrix.c.set(pos);
+
+	pStaticPG->UpdateParent(explode_matrix,vel);
 	pStaticPG->Play();
 
 	//включаем подсветку от взрыва
@@ -133,7 +143,7 @@ void CExplosive::Explode()
 			m_LightColor.g, 
 			m_LightColor.b);
 		m_pLight->set_range(m_fLightRange);
-		m_pLight->set_position(Position()); 
+		m_pLight->set_position(pos); 
 		m_pLight->set_active(true);
 	}
 
@@ -154,7 +164,7 @@ void CExplosive::Explode()
 		ALife::EHitType m_eCurrentHitType = m_eHitTypeFrag;
 		float		m_fCurrentWallmarkSize = fWallmarkSize;
 		Fvector		m_vCurrentShootDir = frag_dir;
-		Fvector		m_vCurrentShootPos = Position();
+		Fvector		m_vCurrentShootPos = pos;
 		
 		CCartridge cartridge;
 		cartridge.m_kDist = 1.f;
@@ -179,7 +189,7 @@ void CExplosive::Explode()
 	float l_dst;
 
 	m_blasted.clear();
-	feel_touch_update(Position(), m_fBlastRadius);
+	feel_touch_update(pos, m_fBlastRadius);
 	
 	xr_list<s16>		l_elements;
 	xr_list<Fvector>	l_bs_positions;
@@ -193,7 +203,7 @@ void CExplosive::Explode()
 		else 
 			l_goPos.set(l_pGO->Position());
 		
-		l_dir.sub(l_goPos, Position()); 
+		l_dir.sub(l_goPos, pos); 
 		l_dst = l_dir.magnitude(); 
 		l_dir.div(l_dst); 
 		l_dir.y += m_fUpThrowFactor;
@@ -227,7 +237,7 @@ void CExplosive::Explode()
 		if(l_impuls > .001f) 
 		{
 			setEnabled(false);
-			l_impuls *= l_pGO->ExplosionEffect(Position(), m_fBlastRadius, l_elements, l_bs_positions);
+			l_impuls *= l_pGO->ExplosionEffect(pos, m_fBlastRadius, l_elements, l_bs_positions);
 			setEnabled(true);
 		}
 		if(l_impuls > .001f) 
@@ -259,7 +269,7 @@ void CExplosive::Explode()
 	CActor* pActor =  dynamic_cast<CActor*>(Level().CurrentEntity());
 	if(pActor)
 	{
-		float dist_to_actor = pActor->Position().distance_to(Position());
+		float dist_to_actor = pActor->Position().distance_to(pos);
 		float max_dist		= EFFECTOR_RADIUS;
 		if (dist_to_actor < max_dist) 
 			pActor->EffectorManager().AddEffector(xr_new<CExplodeEffector>(effector.time, effector.amplitude, effector.period_number, (max_dist - dist_to_actor) / max_dist));
@@ -276,6 +286,7 @@ void CExplosive::feel_touch_new(CObject* O)
 
 void CExplosive::UpdateCL() 
 {
+	//время вышло, взрываем сам объект
 	if(m_dwExplodeDuration > 0 && m_dwExplodeDuration <= Device.dwTimeDelta) 
 	{
 		m_dwExplodeDuration = 0;
@@ -320,51 +331,14 @@ void CExplosive::OnEvent(NET_Packet& P, u16 type)
 	}
 }
 
-void CExplosive::make_Interpolation ()
+void  CExplosive::ExplodeParams(const Fvector& pos, 
+								const Fvector& dir)
 {
+	m_bReadyToExplode = true;
+	m_vExplodePos = pos;
+	m_vExplodeDir = dir;
 }
 
-void CExplosive::PH_B_CrPr			()
-{
-}
-
-void CExplosive::PH_I_CrPr			()
-{
-}
-
-void CExplosive::PH_A_CrPr			()
-{
-}
-
-void CExplosive::OnH_A_Chield		()
-{
-	inherited::OnH_A_Chield		();
-}
-
-void CExplosive::reinit				()
-{
-	inherited::reinit			();
-}
-
-void CExplosive::reload					(LPCSTR section)
-{
-	inherited::reload				(section);
-}
-
-void CExplosive::create_physic_shell	()
-{
-	inherited::create_physic_shell	();
-}
-
-void CExplosive::activate_physic_shell	()
-{
-	inherited::activate_physic_shell();
-}
-
-void CExplosive::setup_physic_shell		()
-{
-	inherited::setup_physic_shell	();
-}
 
 void CExplosive::renderable_Render		()
 {

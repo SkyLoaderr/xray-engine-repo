@@ -1,9 +1,11 @@
 #pragma once
 #include "weaponpistol.h"
+#include "rocketlauncher.h"
 
 class CWeaponRPG7Grenade;
 
-class CWeaponRPG7 :	public CWeaponCustomPistol
+class CWeaponRPG7 :	public CWeaponCustomPistol,
+					public CRocketLauncher
 {
 private:
 	typedef CWeaponCustomPistol inherited;
@@ -24,14 +26,13 @@ public:
 	virtual void SwitchState	(u32 S);
 
 	static void	__stdcall GrenadeCallback(CBoneInstance*);
-
-
 protected:
-	CWeaponRPG7Grenade *m_pGrenade;
 	Fvector *m_pGrenadePoint;
 
 	bool	m_hideGrenade;
 
 	ref_str	m_sGrenadeBoneName;
 	ref_str	m_sHudGrenadeBoneName;
+
+	ref_str m_sRocketSection;
 };

@@ -1,0 +1,67 @@
+//////////////////////////////////////////////////////////////////////
+// RocketLauncher.cpp:	интерфейс дл€ семейства объектов 
+//						стрел€ющих гранатами и ракетами
+//////////////////////////////////////////////////////////////////////
+
+#include "stdafx.h"
+#include "RocketLauncher.h"
+#include "CustomRocket.h"
+
+#include "xrserver_objects_alife_items.h"
+
+
+CRocketLauncher::CRocketLauncher()
+{
+	m_pRocket =  NULL;
+}
+CRocketLauncher::~CRocketLauncher()
+{
+}
+void CRocketLauncher::SpawnRocket(LPCSTR rocket_section, CGameObject* parent_rocket_launcher)
+{
+	VERIFY(m_pRocket == NULL);
+
+	CSE_Abstract*		D	= F_entity_Create(rocket_section);
+	R_ASSERT			(D);
+	CSE_Temporary		*l_tpTemporary = dynamic_cast<CSE_Temporary*>(D);
+	R_ASSERT			(l_tpTemporary);
+	l_tpTemporary->m_tNodeID	= parent_rocket_launcher->level_vertex_id();
+	// Fill
+	strcpy				(D->s_name, rocket_section);
+	strcpy				(D->s_name_replace,"");
+	
+	D->s_gameid			=	u8(GameID());
+	D->s_RP				=	0xff;
+	D->ID				=	0xffff;
+	D->ID_Parent		=	parent_rocket_launcher->ID();
+	D->ID_Phantom		=	0xffff;
+	D->s_flags.set		(M_SPAWN_OBJECT_LOCAL);
+	D->RespawnTime		=	0;
+	
+	// Send
+	NET_Packet			P;
+	D->Spawn_Write		(P,TRUE);
+	Level().Send		(P,net_flags(TRUE));
+	// Destroy
+	F_entity_Destroy	(D);
+}
+
+void CRocketLauncher::AttachRocket(u16 rocket_id, CGameObject* parent_rocket_launcher)
+{
+	VERIFY(m_pRocket == NULL);
+	m_pRocket = dynamic_cast<CCustomRocket*>(Level().Objects.net_Find(rocket_id));
+	//хоз€ином выставл€ем того, кто стрел€ет, а не непосредственно оружие
+	m_pRocket->m_pOwner = dynamic_cast<CGameObject*>(parent_rocket_launcher->H_Parent());
+	VERIFY(m_pRocket->m_pOwner);
+	m_pRocket->H_SetParent(parent_rocket_launcher);
+}
+
+
+void CRocketLauncher::LaunchRocket(const Fmatrix& xform,  
+								   const Fvector& vel, 
+								   const Fvector& angular_vel)
+{
+	VERIFY(m_pRocket != NULL);
+	m_pRocket->SetLaunchParams(xform, vel, angular_vel);
+	m_pRocket->H_SetParent(NULL);
+}

@@ -6,7 +6,6 @@
 
 #pragma once
 
-#include "GameObject.h"
 #include "ShootingHitEffector.h"
 
 class CCartridge;
@@ -16,9 +15,7 @@ class CCartridge;
 
 class CShootingObject
 {
-private:
-	typedef CGameObject inherited;
-protected: //чтоб нельзя было вызвать на прямую
+protected:
 	CShootingObject(void);
 	virtual ~CShootingObject(void);
 

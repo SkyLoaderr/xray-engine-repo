@@ -104,7 +104,9 @@ void CWeaponFakeGrenade::Explode(const Fvector &pos, const Fvector &/**normal/**
 	m_flashTime		= FLASH_TIME;
 
 	Position().set(pos);
-	
+	CExplosive::ExplodeParams(Position(), XFORM().k);	
+
+
 	//Generate Expode event
 	if (Local()) 
 	{
@@ -136,6 +138,8 @@ void CWeaponFakeGrenade::net_Destroy()
 void CWeaponFakeGrenade::Destroy() 
 {
 	//Generate Expode event
+	CExplosive::ExplodeParams(Position(), XFORM().k);
+
 	if (Local()) 
 	{
 		NET_Packet		P;
@@ -218,6 +222,7 @@ void CWeaponFakeGrenade::activate_physic_shell	()
 	R_ASSERT	(E);
 	
 	Fmatrix trans;
+	//!!!~! ну и какого такую фигню было писать????
 	Level().Cameras.unaffected_Matrix(trans);
 
 	CWeaponMagazinedWGrenade *l_pW = dynamic_cast<CWeaponMagazinedWGrenade*>(E);

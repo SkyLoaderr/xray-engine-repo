@@ -23,6 +23,7 @@ CParticlesObject::CParticlesObject	(LPCSTR p_name, IRender_Sector* S, BOOL bAuto
 void CParticlesObject::Init(LPCSTR p_name, IRender_Sector* S, BOOL bAutoRemove)
 {
 	m_bLooped = false;
+	m_bStoppig = false;
 	m_bAutoRemove			= bAutoRemove;
 
 	// create visual
@@ -97,6 +98,8 @@ void CParticlesObject::Play()
 	V->Play			();
 	dwLastTime		= Device.dwTimeGlobal-33ul;
 	shedule_Update	(0);
+
+	m_bStoppig = false;
 }
 
 void CParticlesObject::play_at_pos(const Fvector& pos, BOOL xform)
@@ -107,12 +110,16 @@ void CParticlesObject::play_at_pos(const Fvector& pos, BOOL xform)
 	V->Play			();
 	dwLastTime		= Device.dwTimeGlobal-33ul;
 	shedule_Update	(0);
+
+	m_bStoppig = false;
 }
 
 void CParticlesObject::Stop(BOOL bDefferedStop)
 {
 	IParticleCustom* V	= dynamic_cast<IParticleCustom*>(renderable.visual); VERIFY(V);
 	V->Stop			(bDefferedStop);
+
+	m_bStoppig = true;
 }
 
 void CParticlesObject::shedule_Update	(u32 _dt)
@@ -177,7 +184,7 @@ bool CParticlesObject::IsAutoRemove()
 }
 void CParticlesObject::SetAutoRemove(bool auto_remove)
 {
-	VERIFY(!IsLooped());
+	VERIFY(m_bStoppig || !IsLooped());
 	m_bAutoRemove = auto_remove;
 }
 

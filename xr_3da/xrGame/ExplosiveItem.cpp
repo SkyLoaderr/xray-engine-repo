@@ -45,17 +45,19 @@ void CExplosiveItem::Hit(float P, Fvector &dir,	CObject* who, s16 element,
 	inherited::Hit(P,dir,who,element,position_in_object_space,impulse,hit_type);
 
 	
-	
-	if (Local() && GetCondition()<=0.f) 
+	if(GetCondition()<=0.f)
 	{
-		NET_Packet		P;
-		u_EventGen		(P,GE_GRENADE_EXPLODE,ID());	
-		u_EventSend		(P);
-		
 		//запомнить того, кто взорвал вещь
 		m_iCurrentParentID = who->ID();
-	};
+		CExplosive::ExplodeParams(Position(), XFORM().k);
 
+		if (Local()) 
+		{
+			NET_Packet		P;
+			u_EventGen		(P,GE_GRENADE_EXPLODE,ID());	
+			u_EventSend		(P);
+		};
+	}
 }
 
 void  CExplosiveItem::OnEvent (NET_Packet& P, u16 type)

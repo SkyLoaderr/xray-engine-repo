@@ -4132,6 +4132,22 @@
 										</File>
 									</Filter>
 								</Filter>
+								<Filter
+									Name="RocketLauncher"
+									Filter="">
+									<File
+										RelativePath=".\CustomRocket.cpp">
+									</File>
+									<File
+										RelativePath=".\CustomRocket.h">
+									</File>
+									<File
+										RelativePath=".\RocketLauncher.cpp">
+									</File>
+									<File
+										RelativePath=".\RocketLauncher.h">
+									</File>
+								</Filter>
 							</Filter>
 							<Filter
 								Name="Effectors"
