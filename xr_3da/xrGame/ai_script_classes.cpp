@@ -87,7 +87,7 @@ bool CLuaGameObject::SendPdaMessage(EPdaMsg pda_msg, CLuaGameObject* pForWho)
 	NET_Packet		P;
 	m_tpGameObject->u_EventGen(P,GE_PDA,pForWhoInvOwner->GetPDA()->ID());
 	P.w_u16			(u16(pInventoryOwner->GetPDA()->ID()));		//отправитель
-	P.w_s16			(pda_msg);
+	P.w_s16			((u16)pda_msg);
 	P.w_s32			(-1);
 	m_tpGameObject->u_EventSend(P);
 	return			true;
