@@ -59,6 +59,8 @@ public:
 //////////////////////////////////////////////////////////////////////////
 
 class CCoverEvaluatorFarFromEnemy : public CCoverEvaluatorCloseToEnemy {
+protected:
+	float				m_best_distance;
 public:
 			void		evaluate			(CCoverPoint *cover_point);
 };
