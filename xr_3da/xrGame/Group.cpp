@@ -18,6 +18,7 @@ CGroup::CGroup()
 	m_tHitPosition.set(1,0,0);
 	m_dwLastHitTime = 0;
 	m_dwFiring = 0;
+	m_bEnemyNoticed = false;
 }
 
 const Fvector& CGroup::GetCentroid()

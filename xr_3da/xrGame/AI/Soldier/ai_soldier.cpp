@@ -89,29 +89,66 @@ void CAI_Soldier::vfAssignBones(CInifile *ini, const char *section)
 	PKinematics(pVisual)->LL_GetInstance(head_bone).set_callback(HeadSpinCallback,this);
 }
 
-void CAI_Soldier::vfCheckForPatrol(CInifile *ini)
+void CAI_Soldier::vfCheckForPatrol()
 {
-	if (Level().pLevel->LineExists("patrol_path","path_00")) {
-		
-		LPCSTR buf = Level().pLevel->ReadSTRING("patrol_path","path_00"), buf2 = buf;
-		
-		int path_count = _GetItemCount(buf);
-
-		R_ASSERT(path_count && (path_count % 3 == 0));
-
-		path_count /= 3;
-		m_tpaPatrolPoints.resize(path_count);
-		m_tpaPointDeviations.resize(path_count);
-
-		for (int i=0; i<path_count; i++) {
-			sscanf(buf2,"%f,%f,%f",&(m_tpaPatrolPoints[i].x),&(m_tpaPatrolPoints[i].y),&(m_tpaPatrolPoints[i].z));
+	m_tpaPatrolPoints.clear();
+	m_tpaPointDeviations.clear();
+	if (Level().pLevel->SectionExists("patrol_path")) {
+		for (int iPathLine=0; ; iPathLine++) {
+			char caLine[100], monster_name[100];
+			sprintf(caLine,"path_%d",iPathLine);
+			
+			if (!(Level().pLevel->LineExists("patrol_path",caLine)))
+				break;
+			
+			LPCSTR buf = Level().pLevel->ReadSTRING("patrol_path",caLine), buf2 = buf;
+			
+			int path_count = _GetItemCount(buf);
+			
+			if (!path_count)
+				break;
+			
+			R_ASSERT(path_count && ((path_count - 1) % 3 == 0));
+			
+			DWORD team,squad,group;
+			
+			for ( ; ; buf2++)
+				if (*buf2 == ',') {
+					memcpy(monster_name,buf,(buf2 - buf)*sizeof(char));
+					monster_name[buf2++ - buf] = 0;
+					break;
+				}
+				
+			const char *cTest = cName();
+				
+			if ((!(strlen(monster_name))) || (strcmp(monster_name,this->cName())))
+				continue;
+				
+			sscanf(buf2,"%d,%d,%d",&team,&squad,&group);
 			for (int komas=0; komas<3; buf2++)
 				if (*buf2 == ',')
 					komas++;
+					
+			if ((team != g_Team()) || (squad != g_Squad()) || (group != g_Group()))
+				continue;
+			
+			path_count -= 4;
+			path_count /= 3;
+			m_tpaPatrolPoints.resize(path_count);
+			m_tpaPointDeviations.resize(path_count);
+			
+			for (int i=0; i<path_count; i++) {
+				sscanf(buf2,"%f,%f,%f",&(m_tpaPatrolPoints[i].x),&(m_tpaPatrolPoints[i].y),&(m_tpaPatrolPoints[i].z));
+				for ( komas=0; komas<3; buf2++)
+					if (*buf2 == ',')
+						komas++;
+			}
+			
+			m_dwStartPatrolNode = Level().AI.q_LoadSearch(m_tpaPatrolPoints[0]);
+			AI_Path.bNeedRebuild = TRUE;
+			
+			break;
 		}
-
-		m_dwStartPatrolNode = Level().AI.q_LoadSearch(m_tpaPatrolPoints[0]);
-		AI_Path.bNeedRebuild = TRUE;
 	}
 }
 
@@ -129,7 +166,13 @@ void CAI_Soldier::Load(CInifile* ini, const char* section)
 	vfLoadAnimations();
 	vfLoadSelectors(ini,section);
 	vfAssignBones(ini,section);
-	vfCheckForPatrol(ini);
+}
+
+BOOL CAI_Soldier::Spawn	(BOOL bLocal, int server_id, Fvector& o_pos, Fvector& o_angle, NET_Packet& P, u16 flags)
+{
+	if (!inherited::Spawn(bLocal,server_id,o_pos,o_angle,P,flags))	return FALSE;
+	vfCheckForPatrol();
+	return TRUE;
 }
 
 void CAI_Soldier::g_fireParams(Fvector &fire_pos, Fvector &fire_dir)
@@ -144,7 +187,7 @@ void CAI_Soldier::g_fireParams(Fvector &fire_pos, Fvector &fire_dir)
 void CAI_Soldier::OnVisible()
 {
 	inherited::OnVisible();
-
+	
 	Weapons->OnRender(FALSE);
 	//return(0);
 }
@@ -159,7 +202,14 @@ void CAI_Soldier::HitSignal(int amount, Fvector& vLocalDir, CEntity* who)
 	tHitDir.set(D);
 	tHitDir.normalize();
 	tHitPosition = who->Position();
-
+	
+	INIT_SQUAD_AND_LEADER;
+	CGroup &Group = Squad.Groups[g_Group()];
+	
+	Group.m_dwLastHitTime = dwHitTime;
+	Group.m_tLastHitDirection = tHitDir;
+	Group.m_tHitPosition = tHitPosition;
+	
 	// Play hit-sound
 	sound3D& S = sndHit[Random.randI(SND_HIT_COUNT)];
 	if (S.feedback)			return;
@@ -255,7 +305,7 @@ bool CAI_Soldier::bfCheckForVisibility(CEntity* tpEntity)
 	float fAlpha = tWatchDirection.dotproduct(tTemp), fEyeFov = eye_fov*PI/180.f;
 	clamp(fAlpha,-.99999f,+.99999f);
 	fAlpha = acosf(fAlpha);
-	float fMaxViewableDistanceInDirection = eye_range*(1 - fAlpha/(fEyeFov/2.f));
+	float fMaxViewableDistanceInDirection = eye_range*(1 - fAlpha/(fEyeFov/1.9f));
 	
 	// computing distance weight
 	tTemp.sub(vPosition,tpEntity->Position());
@@ -272,7 +322,7 @@ bool CAI_Soldier::bfCheckForVisibility(CEntity* tpEntity)
 	}
 
 	// computing lightness weight
-	fResult *= float(tpEntity->AI_Node->light)/255.f;
+	fResult *= float(0 + tpEntity->AI_Node->light)/(0 + 255.f);
 	
 	// computing enemy state
 	switch (m_cCrouched) {
@@ -309,22 +359,27 @@ void CAI_Soldier::SelectEnemy(SEnemySelected& S)
 	ai_Track.o_get	(tpaVisibleObjects);
 	std::sort		(tpaVisibleObjects.begin(),tpaVisibleObjects.end());
 
+	INIT_SQUAD_AND_LEADER;
+	CGroup &Group = Squad.Groups[g_Group()];
+	
 	// Iterate on known
 	for (DWORD i=0; i<Known.size(); i++)
 	{
 		CEntity*	E = dynamic_cast<CEntity*>(Known[i].key);
 		float		H = EnemyHeuristics(E);
 		if (H<S.fCost) {
-			if (!bfCheckForVisibility(E))
-				continue;
+			if (!Group.m_bEnemyNoticed)
+				if (!bfCheckForVisibility(E))
+					continue;
 			// Calculate local visibility
 			CObject**	ins	 = lower_bound(tpaVisibleObjects.begin(),tpaVisibleObjects.end(),(CObject*)E);
-			bool	bVisible = (ins==tpaVisibleObjects.end())?FALSE:((E==*ins)?TRUE:FALSE);
+			bool	bVisible = ((ins==tpaVisibleObjects.end())?FALSE:((E==*ins)?TRUE:FALSE)) && (bfCheckForVisibility(E));
 			float	cost	 = H*(bVisible?1:_FB_invisible_hscale);
 			if (cost<S.fCost)	{
 				S.Enemy		= E;
 				S.bVisible	= bVisible;
 				S.fCost		= cost;
+				Group.m_bEnemyNoticed = true;
 			}
 		}
 	}
@@ -336,6 +391,7 @@ IC bool CAI_Soldier::bfCheckForMember(Fvector &tFireVector, Fvector &tMyPoint, F
 	tMemberDirection.sub(tMyPoint,tMemberPoint);
 	vfNormalizeSafe(tMemberDirection);
 	float fAlpha = acosf(tFireVector.dotproduct(tMemberDirection));
+	//return(false);
 	return(fAlpha < FIRE_SAFETY_ANGLE);
 }
 
@@ -367,7 +423,7 @@ IC bool CAI_Soldier::bfCheckIfCanKillEnemy()
 		vfNormalizeSafe(tFireVector);
 		float fAlpha = acosf(tFireVector.dotproduct(tMyLook));
 		return(true);
-		return(fAlpha < FIRE_ANGLE);
+		//return(fAlpha < FIRE_ANGLE);
 	}
 	else
 		return(true);
@@ -435,11 +491,24 @@ void CAI_Soldier::SetDirectionLook()
 		if (tWatchDirection.square_magnitude() > EPS_L) {
 			tWatchDirection.normalize();
 			mk_rotation(tWatchDirection,r_torso_target);
-			r_target.yaw = r_torso_target.yaw + PI_DIV_6;
+			r_target.yaw = r_torso_target.yaw + 0*PI_DIV_6;
 		}
 	}
 	r_target.pitch = 0;
 	r_torso_target.pitch = 0;
+}
+
+void CAI_Soldier::vfAimAtEnemy()
+{
+	Fvector	pos1, pos2;
+	Enemy.Enemy->svCenter(pos1);
+	svCenter(pos2);
+	tWatchDirection.sub(pos1,pos2);
+	mk_rotation(tWatchDirection,r_torso_target);
+	r_target.yaw = r_torso_target.yaw;
+	//r_target.yaw += PI/6.f;
+	r_torso_target.yaw = r_torso_target.yaw - EYE_WEAPON_DELTA;
+	//q_look.o_look_speed=8*_FB_look_speed;
 }
 
 void CAI_Soldier::SetLessCoverLook(NodeCompressed *tNode)
@@ -465,7 +534,7 @@ void CAI_Soldier::SetLessCoverLook(NodeCompressed *tNode)
 			r_target.yaw = fBestAngle;
 			q_look.o_look_speed=_FB_look_speed;
 			//r_torso_speed = _FB_look_speed;//(r_torso_target.yaw - r_torso_current.yaw);
-			r_target.yaw += PI/6.f;
+			r_target.yaw += 0*PI_DIV_6;
 		}
 	}
 	r_target.pitch = 0;
@@ -660,17 +729,6 @@ void CAI_Soldier::vfSearchForBetterPositionWTime(CAISelectorBase &S, CSquad &Squ
 
 	if (AI_Path.bNeedRebuild)
 		m_dwLastSuccessfullSearch = S.m_dwCurTime;
-}
-
-void CAI_Soldier::vfAimAtEnemy()
-{
-	Fvector	pos;
-	Enemy.Enemy->svCenter(pos);
-	tWatchDirection.sub(pos,eye_matrix.c);
-	mk_rotation(tWatchDirection,r_torso_target);
-	r_target.yaw = r_torso_target.yaw;
-	r_torso_target.yaw = r_torso_target.yaw - EYE_WEAPON_DELTA;
-	q_look.o_look_speed=8*_FB_look_speed;
 }
 
 static BOOL __fastcall SoldierQualifier(CObject* O, void* P)
@@ -1125,6 +1183,12 @@ void CAI_Soldier::FreeHunting()
 		return;
 	}
 
+	if (m_tpaPatrolPoints.size()) {
+		eCurrentState = aiSoldierPatrolRoute;
+		bStopThinking = true;
+		return;
+	}
+
 	vfInitSelector(SelectorFreeHunting,Squad,Leader);
 
 	if (AI_Path.bNeedRebuild)
@@ -1193,7 +1257,7 @@ void CAI_Soldier::NoWeapon()
 	if (Enemy.Enemy)
 		vfAimAtEnemy();
 	else
-		SetDirectionLook();
+		SetLessCoverLook(AI_Node);
 
 	vfSetFire(false,Group);
 
@@ -1450,7 +1514,7 @@ void CAI_Soldier::UnderFire()
 			vfSearchForBetterPosition(SelectorUnderFire,Squad,Leader);
 
 	mk_rotation(tHitDir,r_torso_target);
-	r_target.yaw = r_torso_target.yaw;
+	r_target.yaw = r_torso_target.yaw + 0*PI_DIV_6;
 	r_torso_target.yaw = r_torso_target.yaw - EYE_WEAPON_DELTA;
 	//r_target.pitch = 0;
 	//r_torso_target.pitch = 0;

@@ -54,8 +54,8 @@ class CAI_Soldier : public CCustomMonster
 		#define WRITE_LOG
 		#define MIN_RANGE_SEARCH_TIME_INTERVAL	15000.f
 		#define MAX_TIME_RANGE_SEARCH			150000.f
-		#define	FIRE_ANGLE						PI/30
-		#define	FIRE_SAFETY_ANGLE				PI/30
+		#define	FIRE_ANGLE						PI/10
+		#define	FIRE_SAFETY_ANGLE				PI/10
 		#define CUBE(x)							((x)*(x)*(x))
 		#define LEFT_NODE(Index)				((Index + 3) & 3)
 		#define RIGHT_NODE(Index)				((Index + 5) & 3)
@@ -63,15 +63,14 @@ class CAI_Soldier : public CCustomMonster
 		#define	AMMO_NEED_RELOAD				6
 		#define	MAX_HEAD_TURN_ANGLE				(PI/3.f)
 		#define VECTOR_DIRECTION(i)				(i == 0 ? tLeft : (i == 1 ? tForward : (i == 2 ? tRight : tBack)))
-		#define EYE_WEAPON_DELTA				(PI/30.f)
-		#define TORSO_ANGLE_DELTA				(PI/30.f)
+		#define EYE_WEAPON_DELTA				(0*PI/30.f)
+		#define TORSO_ANGLE_DELTA				(0*PI/30.f)
 		#define INIT_SQUAD_AND_LEADER \
 			CSquad&	Squad = Level().Teams[g_Team()].Squads[g_Squad()];\
 			CEntity* Leader = Squad.Leader;\
 			if (Leader->g_Health() <= 0)\
 				Leader = this;\
 			R_ASSERT (Leader);
-//#define WRITE_LOG
 
 		// head turns
 		static void __stdcall HeadSpinCallback(CBoneInstance*);
@@ -312,7 +311,7 @@ typedef struct tagSSoldierAnimations{
 		void vfLoadSounds();
 		void vfLoadSelectors(CInifile *ini, const char *section);
 		void vfAssignBones(CInifile *ini, const char *section);
-		void vfCheckForPatrol(CInifile *ini);
+		void vfCheckForPatrol();
 		void vfLoadAnimations();
 	IC	bool bfCheckForMember(Fvector &tFireVector, Fvector &tMyPoint, Fvector &tMemberPoint);
 		bool bfCheckPath(AI::Path &Path);
@@ -346,7 +345,7 @@ typedef struct tagSSoldierAnimations{
 		virtual void  g_fireParams(Fvector &fire_pos, Fvector &fire_dir);
 		virtual void  OnVisible(); 
 		virtual objQualifier* GetQualifier	();
-		
+		virtual BOOL  Spawn( BOOL bLocal, int sid, Fvector& o_pos, Fvector& o_angle, NET_Packet& P, u16 flags );
 };
 		
 #endif

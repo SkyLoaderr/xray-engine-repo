@@ -809,9 +809,9 @@ void CAI_Soldier::PatrolUnderFire()
 
 	/**/
 	if (dwCurTime - dwHitTime >= 0*1000) {
-//		mk_rotation(Group.m_tLastHitDirection,r_torso_target);
-//		r_target.yaw = r_torso_target.yaw;
-//		r_torso_target.yaw = r_torso_target.yaw - EYE_WEAPON_DELTA;
+		//mk_rotation(Group.m_tLastHitDirection,r_torso_target);
+		//r_target.yaw = r_torso_target.yaw + 0*PI_DIV_6;
+		//r_torso_target.yaw = r_torso_target.yaw - EYE_WEAPON_DELTA;
 		tWatchDirection.sub(Group.m_tHitPosition,eye_matrix.c);
 		mk_rotation(tWatchDirection,r_torso_target);
 		r_target.yaw = r_torso_target.yaw;
@@ -840,13 +840,6 @@ void CAI_Soldier::PatrolHurt()
 	INIT_SQUAD_AND_LEADER;
 	CGroup &Group = Squad.Groups[g_Group()];
 	
-	//if (dwCurTime - dwHitTime >= 2000) {
-		Group.m_dwLastHitTime = dwHitTime;
-		Group.m_tLastHitDirection = tHitDir;
-		
-		Group.m_tHitPosition = tHitPosition;
-	//}
-
 	DWORD dwCurTime = Level().timeServer();
 
 	if (dwCurTime - dwHitTime >= 1*1000) {
@@ -860,7 +853,7 @@ void CAI_Soldier::PatrolHurt()
 
 	tWatchDirection.sub(tHitPosition,eye_matrix.c);
 	mk_rotation(tWatchDirection,r_torso_target);
-	r_target.yaw = r_torso_target.yaw;
+	r_target.yaw = r_torso_target.yaw + 0*PI_DIV_6;
 	r_torso_target.yaw = r_torso_target.yaw - EYE_WEAPON_DELTA;
 	/**
 	mk_rotation(tHitDir,r_torso_target);
@@ -895,11 +888,12 @@ void CAI_Soldier::FollowLeaderPatrol()
 	else
 		if ((!(AI_Path.fSpeed)) || (AI_Path.TravelStart >= AI_Path.TravelPath.size() - 4)) {
 			CAI_Soldier *SoldierLeader = dynamic_cast<CAI_Soldier *>(Leader);
-			if ((Level().timeServer() - SoldierLeader->m_dwLastRangeSearch < 3000) && (SoldierLeader->m_dwLastRangeSearch)) {
+			if ((Level().timeServer() - SoldierLeader->m_dwLastRangeSearch < 30000) && (SoldierLeader->m_dwLastRangeSearch)) {
+				AI_Path.TravelPath.clear();
 				AI_Path.TravelPath.resize(SoldierLeader->AI_Path.TravelPath.size());
 				for (int i=0, j=0; i<SoldierLeader->AI_Path.TravelPath.size(); i++, j++) {
-					AI_Path.TravelPath[j] = SoldierLeader->AI_Path.TravelPath[i];
 					AI_Path.TravelPath[j].floating = FALSE;
+					AI_Path.TravelPath[j].P = SoldierLeader->AI_Path.TravelPath[i].P;
 					Fvector tTemp;
 					tTemp.sub(SoldierLeader->AI_Path.TravelPath[i < SoldierLeader->AI_Path.TravelPath.size() - 1 ? i + 1 : 0].P, SoldierLeader->AI_Path.TravelPath[i].P);
 					if (tTemp.magnitude() < .1f) {
@@ -934,24 +928,27 @@ void CAI_Soldier::FollowLeaderPatrol()
 		m_fMaxPatrolDistance = MAX_PATROL_DISTANCE - ::Random.randF(0,4);
 	}
 
-	vfSetFire(false,Group);
-
 	Fvector tTemp0;
 	tTemp0.sub(Leader->Position(),Position());
 	tTemp0.normalize();
 	tWatchDirection.normalize();
 	if (acosf(tWatchDirection.dotproduct(tTemp0)) < PI_DIV_2) {
 		float fDistance = Leader->Position().distance_to(Position());
-		if (fDistance >= m_fMaxPatrolDistance)
-			vfSetMovementType(false,1.1f*m_fMinSpeed);
+		if (fDistance >= m_fMaxPatrolDistance) {
+			SET_LOOK_FIRE_MOVEMENT(false,false,1.1f*m_fMinSpeed);
+		}
 		else
-			if (fDistance <= m_fMinPatrolDistance)
-				vfSetMovementType(false,.9f*m_fMinSpeed);
-			else 
-				vfSetMovementType(false,((fDistance - (m_fMaxPatrolDistance + m_fMinPatrolDistance)*.5f)/((m_fMaxPatrolDistance - m_fMinPatrolDistance)*.5f)*.1f + m_fMinPatrolDistance)*m_fMinSpeed);
+			if (fDistance <= m_fMinPatrolDistance) {
+				SET_LOOK_FIRE_MOVEMENT(false,false,.9f*m_fMinSpeed);
+			}
+			else {
+				SET_LOOK_FIRE_MOVEMENT(false,false,((fDistance - (m_fMaxPatrolDistance + m_fMinPatrolDistance)*.5f)/((m_fMaxPatrolDistance - m_fMinPatrolDistance)*.5f)*.1f + m_fMinPatrolDistance)*m_fMinSpeed);
+			}
 	}
-	else
-		vfSetMovementType(false,.9f*m_fMinSpeed);
+	else {
+		SET_LOOK_FIRE_MOVEMENT(false,false,.9f*m_fMinSpeed);
+	}
+	
 	// stop processing more rules
 	bStopThinking = true;
 }
@@ -997,34 +994,57 @@ void CAI_Soldier::PatrolReturn()
 	else {
 		vfInitSelector(SelectorPatrol,Squad,Leader);
 		SelectorPatrol.m_tEnemyPosition = m_tpaPatrolPoints[0];
-		float fTemp, fDistance = m_tpaPatrolPoints[0].distance_to(Position());
-		/**
-		for (int i=1; i<m_tpaPatrolPoints.size(); i++)
-			if ((fTemp = m_tpaPatrolPoints[i].distance_to(Position())) < fDistance) {
-				fDistance = fTemp;
-				SelectorPatrol.m_tEnemyPosition = m_tpaPatrolPoints[i];
-			}
-		if (fDistance < 2.f) {
-			eCurrentState = tStateStack.top();
-			tStateStack.pop();
-			m_dwLastRangeSearch = 0;
-			bStopThinking = true;
-			return;
+		float fTemp, fDistance;
+		if (Leader == this) {
+			fDistance = m_tpaPatrolPoints[0].distance_to(Position());
+			/**
+			for (int i=1; i<m_tpaPatrolPoints.size(); i++)
+				if ((fTemp = m_tpaPatrolPoints[i].distance_to(Position())) < fDistance) {
+					fDistance = fTemp;
+					SelectorPatrol.m_tEnemyPosition = m_tpaPatrolPoints[i];
+				}
+			/**/
 		}
-		else 
-		/**/
-		vfSearchForBetterPositionWTime(SelectorPatrol,Squad,Leader);
+		else {
+			fDistance = vPosition.distance_to(Leader->Position());
+			SelectorPatrol.m_tEnemyPosition = Leader->Position();
+		}
+		vfSearchForBetterPosition(SelectorPatrol,Squad,Leader);
 		if ((fDistance < 2.f) || (AI_NodeID == AI_Path.DestNode)) {
-			m_ePreviousState = eCurrentState = tStateStack.top();
-			tStateStack.pop();
-			m_dwLastRangeSearch = 0;
-			bStopThinking = true;
-			return;
+			if (this == Leader) {
+				float fDistance = 0.f;
+				for (int i=0; i<SelectorPatrol.taMemberPositions.size(); i++) {
+					Fvector tTemp;
+					tTemp.sub(vPosition,SelectorPatrol.taMemberPositions[i]);
+					if (fDistance < (fTemp = tTemp.magnitude())) {
+						fDistance = fTemp;
+					}
+				}
+				if (fDistance < 5.f) {
+					m_ePreviousState = eCurrentState = tStateStack.top();
+					tStateStack.pop();
+					m_dwLastRangeSearch = 0;
+					bStopThinking = true;
+					return;
+				}
+			}
+			else {
+				m_ePreviousState = eCurrentState = tStateStack.top();
+				tStateStack.pop();
+				m_dwLastRangeSearch = 0;
+				bStopThinking = true;
+				return;
+			}
 		}
 		else {
 			AI_Path.bNeedRebuild = TRUE;
 		}
 	}
 
-	SET_LOOK_FIRE_MOVEMENT(false,false,m_fMinSpeed)
+	if (Leader != this) {
+		SET_LOOK_FIRE_MOVEMENT(false,false,m_fMaxSpeed)
+	}
+	else {
+		SET_LOOK_FIRE_MOVEMENT(false,false,m_fMinSpeed)
+	}
 }

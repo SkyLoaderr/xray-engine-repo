@@ -34,7 +34,7 @@ void	UnpackContour(PContour& C, DWORD ID)
 {
 	CAI_Space&	AI			= Level().AI;
 	NodeCompressed* Node	= AI.Node(ID);
-
+	
 	// decompress positions
 	Fvector P0,P1;
 	AI.UnpackPosition		(P0,Node->p0);
@@ -47,10 +47,18 @@ void	UnpackContour(PContour& C, DWORD ID)
 	
 	// create vertices
 	float		st = AI.Header().size/2;
+	
+	/**/
 	C.v1.set(P0.x-st,P0.y,P0.z-st);	projectPoint(PL,C.v1);	// minX,minZ
 	C.v2.set(P1.x+st,P0.y,P0.z-st);	projectPoint(PL,C.v2);	// maxX,minZ
 	C.v3.set(P1.x+st,P1.y,P1.z+st);	projectPoint(PL,C.v3);	// maxX,maxZ
 	C.v4.set(P0.x-st,P1.y,P1.z+st);	projectPoint(PL,C.v4);	// minX,maxZ
+	/**
+	C.v1.set(P0.x-st,ffGetY(*Node,P0.x-st,P0.z-st),P0.z-st);
+	C.v2.set(P1.x+st,ffGetY(*Node,P1.x+st,P0.z-st),P0.z-st);
+	C.v3.set(P1.x+st,ffGetY(*Node,P1.x+st,P1.z+st),P1.z+st);
+	C.v4.set(P0.x-st,ffGetY(*Node,P0.x-st,P1.z+st),P1.z+st);
+	/**/
 }
 
 /**
@@ -190,10 +198,10 @@ IC void vfIntersectContours(PSegment &tSegment, PContour &tContour0, PContour &t
 
 	if (bFound) {
 		tSegment.v2 = tSegment.v1;
-		Log("! AI_PathNodes: segment has null length");
+		Msg("! AI_PathNodes: segment has null length ([%6.4f,%6.4f],[%6.4f,%6.4f] -> [%6.4f,%6.4f],[%6.4f,%6.4f])",tContour0.v1.x,tContour0.v1.z,tContour0.v3.x,tContour0.v3.z,tContour1.v1.x,tContour1.v1.z,tContour1.v3.x,tContour1.v3.z);
 	}
 	else
-		Log("! AI_PathNodes: Can't find intersection segment");
+		Msg("! AI_PathNodes: Can't find intersection segment ([%6.4f,%6.4f],[%6.4f,%6.4f] -> [%6.4f,%6.4f],[%6.4f,%6.4f])",tContour0.v1.x,tContour0.v1.z,tContour0.v3.x,tContour0.v3.z,tContour1.v1.x,tContour1.v1.z,tContour1.v3.x,tContour1.v3.z);
 }
 /**/
 
@@ -292,8 +300,8 @@ BOOL SegmentsIntersect(Fvector& dst, Fvector& v1, Fvector& v2, Fvector& v3, Fvec
 	float lz	= (v2.z-v1.z);
 	float bary1 = (T.x-v1.x)/lx;
 	float bary2 = (T.z-v1.z)/lz;
-	if (fis_zero(lx))	bary1=bary2;
-	if (fis_zero(lz))	bary2=bary1;
+	if (fis_zero(lx,EPS_L))	bary1=bary2;
+	if (fis_zero(lz,EPS_L))	bary2=bary1;
 	//VERIFY(fsimilar(bary1,bary2,EPS_L));
 
 	float bary	= (bary1+bary2)/2;
@@ -356,10 +364,9 @@ void CPathNodes::BuildTravelLine(const Fvector& current_pos)
 			ClosestPointOnSegment(fp,current.P,F.v1,F.v2);
 		}
 
-		// try to cast an line from 'current.P' to 'fp'
+		// try to cast a line from 'current.P' to 'fp'
 		Fvector	ip;
-		if (SegmentsIntersect(ip,S.v1,S.v2,current.P,fp))
-		{
+		if (SegmentsIntersect(ip,S.v1,S.v2,current.P,fp)) {
 			next.P.set(ip);
 		} else {
 			// find nearest point to segment 'current.P' to 'fp'
@@ -378,6 +385,11 @@ void CPathNodes::BuildTravelLine(const Fvector& current_pos)
 
 	// setup variables
 	TravelStart				= 0;
+	// checking for Y-s
+	for (int i=1; i<TravelPath.size(); i++)
+		if (TravelPath[i].P.y - TravelPath[i - 1].P.y > .5f) {
+			Msg("AI_BuildTravelLine : suspicious Y-point found");
+		}
 }
 
 void CPathNodes::Calculate(CCustomMonster* Me, Fvector& p_dest, Fvector& p_src, float speed, float dt)
