@@ -106,12 +106,13 @@ void i_scan		(int curY, float leftX, float lhx, float rightX, float rhx, float s
 	float Zstart	= startZ + (minT - startR)/lenR * Zlen;		// interpolate Z to the start
 	float Zend		= startZ + (maxT - startR)/lenR * Zlen;		// interpolate Z to the end
 	float dZ		= (Zend-Zstart)/(maxT-minT);				// incerement in Z / pixel wrt dX
-	int X			= minT;
 	float Z			= Zstart;
-	int	i			= curY*occ_dim0+X;
 	
 	// left connector
-	for (; X<limLeft; X++, i++, Z+=dZ)
+	int	i_base		= curY*occ_dim0;
+	int i			= i_base+minT;
+	int limit		= i_base+limLeft;
+	for (; i<limit; i++, Z+=dZ)
 	{
 		if (shared(currentTri,pFrame[i-1])) 
 		{
@@ -121,12 +122,14 @@ void i_scan		(int curY, float leftX, float lhx, float rightX, float rhx, float s
 	}
 
 	// compute the scanline + Y connectors
-	for (; X<maxX; X++, i++, Z+=dZ) 
+	limit			= i_base+maxX;
+	for (; i<limit; i++, Z+=dZ) 
 	{
 		if (Z < pDepth[i])	{ pFrame[i]	= currentTri; pDepth[i] = Z; }
 	}
 	
 	// right connector
+	int X;
 	for (X=maxT-1, Z=Zend-dZ, i=curY*occ_dim0+X; X>=limRight; X--, i--, Z-=dZ)
 	{
 		if (shared(currentTri,pFrame[i+1])) {
