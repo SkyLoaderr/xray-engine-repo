@@ -44,7 +44,7 @@ extern "C" int dSortTriBoxCollide (
 								   int flags,		dContactGeom *contact,	int skip,
 								   CDB::RESULT*		R_begin,
 								   CDB::RESULT*		R_end ,
-								   CDB::TRI*		T_array
+								   CDB::TRI*		T_array,
 								   Fvector			AABB
 								   )
 {
@@ -255,9 +255,9 @@ extern "C" int dSortTriBoxCollide (
 		bool include = true;
 
 		for(i=pos_tries.begin();pos_tries.end() != i;++i){
-			if((((dDOT(b_neg_tri->norm,(dReal*)V_array[i->T->verts[0]])-b_neg_tri->pos)<0.f)||
-				((dDOT(b_neg_tri->norm,(dReal*)V_array[i->T->verts[1]])-b_neg_tri->pos)<0.f)||
-				((dDOT(b_neg_tri->norm,(dReal*)V_array[i->T->verts[2]])-b_neg_tri->pos)<0.f))
+			if((((dDOT(b_neg_tri->norm,(dReal*)&V_array[i->T->verts[0]])-b_neg_tri->pos)<0.f)||
+				((dDOT(b_neg_tri->norm,(dReal*)&V_array[i->T->verts[1]])-b_neg_tri->pos)<0.f)||
+				((dDOT(b_neg_tri->norm,(dReal*)&V_array[i->T->verts[2]])-b_neg_tri->pos)<0.f))
 				){
 					include=false;
 					break;
