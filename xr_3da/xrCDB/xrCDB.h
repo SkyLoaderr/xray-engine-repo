@@ -13,7 +13,9 @@
 
 // forward declarations
 class CFrustum;
-class OPCODE_Model;
+namespace Opcode {
+	class OPCODE_Model;
+};
 
 #pragma pack(push,4)
 namespace CDB
@@ -54,7 +56,7 @@ namespace CDB
 	{
 		friend class COLLIDER;	
 	private:
-		OPCODE_Model*	tree;
+		Opcode::OPCODE_Model*	tree;
 
 		// tris
 		TRI*			tris;

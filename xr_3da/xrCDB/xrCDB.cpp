@@ -5,6 +5,7 @@
 #include "xrCDB.h"
 
 using namespace CDB;
+using namespace Opcode;
 
 BOOL APIENTRY DllMain( HANDLE hModule, 
 					  DWORD  ul_reason_for_call, 
@@ -83,7 +84,7 @@ void	MODEL::build(Fvector* V, int Vcnt, TRI* T, int Tcnt)
 	OPCC.NbTris		= tris_count;
 	OPCC.NbVerts	= verts_count;
 	OPCC.Tris		= tris;
-	OPCC.Verts		= verts;
+	OPCC.Verts		= (Point*)verts;
 	OPCC.Rules		= SPLIT_COMPLETE | SPLIT_SPLATTERPOINTS;
 	OPCC.NoLeaf		= true;
 	OPCC.Quantized	= false;
