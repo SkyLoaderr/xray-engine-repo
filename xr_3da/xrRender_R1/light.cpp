@@ -220,6 +220,7 @@ void	light::export		(light_Package& package)
 						L->set_rotation		(cmDir[f],	R);
 						L->set_cone			(PI_DIV_2);
 						L->set_color		(color);
+						L->spatial.sector	= spatial.sector;	//. dangerous?
 						L->s_spot			= s_spot;
 						L->s_point			= s_point;
 						package.v_shadowed.push_back	(L);
