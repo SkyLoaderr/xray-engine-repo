@@ -874,6 +874,9 @@
 					Name="Particles"
 					Filter="">
 					<File
+						RelativePath=".\ParticleCustom.cpp">
+					</File>
+					<File
 						RelativePath=".\ParticleCustom.h">
 					</File>
 				</Filter>
