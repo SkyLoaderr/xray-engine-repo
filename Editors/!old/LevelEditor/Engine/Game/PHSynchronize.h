@@ -18,6 +18,8 @@ struct SPHNetState
 	};
 	Fquaternion	previous_quaternion;
 	bool		enabled;
+	void								net_Export			(		NET_Packet&		P);					
+	void								net_Import			(		NET_Packet&		P);
 };
 class CPHSynchronize
 {

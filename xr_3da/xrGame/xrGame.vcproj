@@ -5099,6 +5099,9 @@
 							RelativePath="PHElement.h">
 						</File>
 						<File
+							RelativePath=".\PHElementNetState.cpp">
+						</File>
+						<File
 							RelativePath=".\PHGeometryOwner.cpp">
 						</File>
 						<File
@@ -5126,6 +5129,9 @@
 						</File>
 						<File
 							RelativePath=".\PHShellActivate.cpp">
+						</File>
+						<File
+							RelativePath=".\PHShellNetState.cpp">
 						</File>
 					</Filter>
 					<Filter

@@ -1091,3 +1091,4 @@ void CPHShell::set_ApplyByGravity(bool flag)
 	for( ;i!=e;++i)
 		(*i)->set_ApplyByGravity(flag);
 }
+
