@@ -24,7 +24,8 @@ void cl_light_PR::setup		(R_constant* C)					{
 	else													RCache.set_c	(C,P.x,P.y,P.z,1.f/R);
 }
 void cl_light_C::setup		(R_constant* C)					{
-	Fcolor&		_C	= RImplementation.r1_dlight_light->color;
+	Fcolor		_C	= RImplementation.r1_dlight_light->color;
+				_C.mul_rgb	(RImplementation.r1_dlight_scale);
 	RCache.set_c	(C,_C.r,_C.g,_C.b,1.f);
 }
 void cl_light_XFORM::setup	(R_constant* C)					{
@@ -143,10 +144,17 @@ void CLightR_Manager::render_point	()
 void CLightR_Manager::render_point	()
 {
 	// for each light
+	Fvector		lc_COP		= Device.vCameraPosition	;
+	float		lc_limit	= ps_r1_dlights_clip		;
 	for (xr_vector<light*>::iterator it=selected_point.begin(); it!=selected_point.end(); it++)
 	{
 		light*	L					= *it;
 		VERIFY						(L->spatial.sector);
+
+		//		0. Dimm & Clip
+		float	lc_dist				= lc_COP.distance_to	(L->spatial.center);
+		float	lc_scale			= 1 - lc_dist/lc_limit;
+		if		(lc_scale<EPS)		continue;
 
 		//		1. Calculate light frustum
 		Fvector						L_dir,L_up,L_right,L_pos;
@@ -176,6 +184,7 @@ void CLightR_Manager::render_point	()
 
 		//		2. Set global light-params to be used by shading
 		RImplementation.r1_dlight_light		= L;
+		RImplementation.r1_dlight_scale		= clampr(lc_scale,0.f,1.f);
 		RImplementation.r1_dlight_tcgen		= L_texgen;
 
 		//		3. Calculate visibility for light + build soring tree
@@ -207,9 +216,17 @@ void CLightR_Manager::render_spot	()
 {
 	// for each light
 	//	Msg	("l=%d",selected_spot.size());
+	Fvector		lc_COP		= Device.vCameraPosition	;
+	float		lc_limit	= ps_r1_dlights_clip		;
+
 	for (xr_vector<light*>::iterator it=selected_spot.begin(); it!=selected_spot.end(); it++)
 	{
 		light*	L					= *it;
+
+		//		0. Dimm & Clip
+		float	lc_dist				= lc_COP.distance_to	(L->spatial.center);
+		float	lc_scale			= 1 - lc_dist/lc_limit;
+		if		(lc_scale<EPS)		continue;
 
 		//		1. Calculate light frustum
 		Fvector						L_dir,L_up,L_right,L_pos;
@@ -238,6 +255,7 @@ void CLightR_Manager::render_spot	()
 
 		//		2. Set global light-params to be used by shading
 		RImplementation.r1_dlight_light		= L;
+		RImplementation.r1_dlight_scale		= clampr(lc_scale,0.f,1.f);
 		RImplementation.r1_dlight_tcgen		= L_texgen;
 
 		//		3. Calculate visibility for light + build soring tree
