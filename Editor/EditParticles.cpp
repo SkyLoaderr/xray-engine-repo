@@ -42,7 +42,7 @@ void __fastcall TfrmEditParticles::ShowEditor(){
 
     form->Show();
     UI->RedrawScene();
-    UI->Command(COMMAND_RENDER_FOCUS);
+//    UI->Command(COMMAND_RENDER_FOCUS);
 }
 //---------------------------------------------------------------------------
 
@@ -56,7 +56,7 @@ void __fastcall TfrmEditParticles::HideEditor(bool bNeedReload){
         	}else{
 	            if (bNeedReload){
 			        UI->SetStatus("Library reloading...");
-					PSLib->RestoreBackup();
+					PSLib->Reload();// RestoreBackup();
 		    	    UI->SetStatus("");
 	            }
             }
@@ -119,6 +119,11 @@ void __fastcall TfrmEditParticles::OnNameUpdate(){
 }
 //---------------------------------------------------------------------------
 
+PS::SDef* __fastcall TfrmEditParticles::FindPS(LPCSTR name){
+	return PSLib->FindPS(name);
+}
+//---------------------------------------------------------------------------
+
 void __fastcall TfrmEditParticles::ZoomObject(){
 	if (!Visible()) return;
     if (form->m_SelectedPS){
@@ -148,8 +153,6 @@ void __fastcall TfrmEditParticles::FormShow(TObject *Sender)
     InitItemsList();
     ebSave->Enabled = false;
     UI->BeginEState(esEditParticles);
-
-    PSLib->Backup();
 
     // add directional light
     Flight L;
@@ -318,7 +321,7 @@ void __fastcall TfrmEditParticles::ebNewPSClick(TObject *Sender)
     PSLib->GenerateName(name);
     ResetCurrent();
     SetCurrent(PSLib->AddPS(name));
-	PSLib->Save();
+//	PSLib->Save();
     tvItems->Selected = AddItem(0,name);
 	ebPropertiesPSClick(Sender);
     OnModified();
@@ -341,7 +344,7 @@ void __fastcall TfrmEditParticles::ebClonePSClick(TObject *Sender)
             tvItems->Selected = AddItemToFolder(folder.c_str(), name);
 		    TfrmPropertiesPSDef::ShowProperties();
             OnModified();
-            PSLib->Save();
+//            PSLib->Save();
         }
     }else{
 		Log->DlgMsg(mtInformation, "At first selected item.");
@@ -357,7 +360,7 @@ void __fastcall TfrmEditParticles::ebRemovePSClick(TObject *Sender)
 	        if (Log->DlgMsg(mtConfirmation, "Delete selected item?") == mrYes){
 				ResetCurrent();
     	        PSLib->DeletePS(pNode->Text.c_str());
-	    	    PSLib->Save();
+//	    	    PSLib->Save();
 	            pNode->Delete();
     	        OnModified();
         	}
@@ -467,7 +470,7 @@ void __fastcall TfrmEditParticles::ebMergeClick(TObject *Sender)
         if (tvItems->Selected) ps_nm = tvItems->Selected->Text;
         ResetCurrent();
         InitItemsList(ps_nm.c_str());
-		PSLib->Save();
+//		PSLib->Save();
         OnModified();
     }
 }

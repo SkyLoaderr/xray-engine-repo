@@ -125,8 +125,15 @@ bool TfrmPropertiesPSDef::ApplyObjectsInfo(){
 	if (bSetMode) return false;
 	if (m_PS){
     	// base
-        if (m_PS->SetName				(edName->Text.c_str()))
-		    TfrmEditParticles::OnNameUpdate();
+        {
+        	AnsiString name 			= m_PS->m_Name;
+            PS::SDef* F 				= TfrmEditParticles::FindPS(edName->Text.c_str());
+            if (F&&(m_PS!=F)){
+            	Log->DlgMsg				(mtError,"Specify name already present in library. Change name and try again.");
+            }else
+		        if (m_PS->SetName		(edName->Text.c_str()))
+				    TfrmEditParticles::OnNameUpdate();
+        }
         m_PS->SetShader					(lbShader->Caption=="..."?"":lbShader->Caption.c_str());
         m_PS->SetTexture				(lbTexture->Caption=="..."?"":lbTexture->Caption.c_str());
         // params

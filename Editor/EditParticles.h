@@ -130,6 +130,7 @@ public:		// User declarations
     static void __fastcall UpdateCurrent();
     static void __fastcall UpdateEmitter();
     static void __fastcall OnNameUpdate();
+    static PS::SDef* __fastcall FindPS(LPCSTR name);
 };
 //---------------------------------------------------------------------------
 #endif
