@@ -1015,7 +1015,7 @@ void CCar::ReleaseBreaks()
 void CCar::Transmision(size_t num)
 {
 
-	if(0==num||1==num)Starter();
+	//if(0==num||1==num)Starter();
 	if(num<m_gear_ratious.size())
 	{
 		m_current_transmission_num=num;
@@ -1244,7 +1244,8 @@ float CCar::EnginePower()
 	}
 	else
 	{
-		if(b_starting&&Device.dwTimeGlobal-m_dwStartTime>1000) b_starting=false;
+		if(b_starting&&Device.dwTimeGlobal-m_dwStartTime>1000) 
+														b_starting=false;
 	}
 
 	value = Parabola(m_current_rpm);
