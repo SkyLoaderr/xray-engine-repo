@@ -13,11 +13,17 @@ game_PlayerState::game_PlayerState()
 	m_skin				=	0;
 
 	Skip = false;
+	//---------------------------------
+	BeltItems.clear();
+	pItemList.clear();
+
+	LastBuyAcount = 0;
 }
 
 game_PlayerState::~game_PlayerState()
 {
 	BeltItems.clear();
+	pItemList.clear();
 };
 
 void	game_PlayerState::net_Export		(NET_Packet& P)
