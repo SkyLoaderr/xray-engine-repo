@@ -524,3 +524,9 @@ void CHelicopter::goToPoint(Fvector* to, Fvector* via, float time)
 
 	setState(CHelicopter::eInitiateGoToPoint);
 }
+
+float CHelicopter::getLastPointTime	()
+{
+	return m_movMngr.EndTime();
+
+}

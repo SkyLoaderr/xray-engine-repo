@@ -72,6 +72,8 @@ public:
 	void	shedule_Update			(u32 timeDelta, CHelicopter* heli);
 	void	getPathPosition			(float time, float fTimeDelta, Fmatrix& dest);
 
+	float	EndTime					();
+
 	Fvector							m_stayPoint;
 	float							m_time_delay_between_patrol;
 	float							m_time_patrol_period;

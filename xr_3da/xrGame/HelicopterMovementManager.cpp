@@ -724,3 +724,9 @@ void CHelicopterMovManager::insertRounding(const Fvector& fromPos,
 		vKeys.push_back(new_point);
 
 }
+
+float CHelicopterMovManager::EndTime()
+{
+	return m_endTime;
+
+}
