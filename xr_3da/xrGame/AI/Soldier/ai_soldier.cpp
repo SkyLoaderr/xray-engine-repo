@@ -51,7 +51,6 @@ CAI_Soldier::CAI_Soldier()
 	m_bJumping = false;
 	tpaDynamicObjects.clear();
 	tpaDynamicSounds.clear();
-	// event handlers
 	m_tpEventSay = Engine.Event.Handler_Attach("level.entity.say",this);
 	m_tpEventAssignPath = Engine.Event.Handler_Attach("level.entity.path.assign",this);
 	m_dwLastUpdate = 0;
@@ -72,28 +71,6 @@ CAI_Soldier::CAI_Soldier()
 	m_dwUpdateCount = 0;
 	m_iCurrentSuspiciousNodeIndex = -1;
 	m_tpaNodeStack.clear();
-//	if (!bStarted) {
-//		bStarted = true;
-//		u64 uTime = 0;
-//		::Random.seed(6);
-//		Msg("AI-star tests");
-//		for (int i=0; i<1000; i++) {
-//			DWORD dwNode0 = ::Random.randI(1,Level().AI.GetHeader().count);
-//			DWORD dwNode1 = ::Random.randI(1,Level().AI.GetHeader().count);
-//			u64 uStart = CPU::GetCycleCount();
-//			float fDistance = Level().AI.vfFindTheXestPath(dwNode0,dwNode1,AI_Path);
-//			u64 uFinish = CPU::GetCycleCount();
-//			uFinish -= uStart + CPU::cycles_overhead;
-//			uTime += uFinish;
-//			double dTime = double(uFinish)/double(CPU::cycles_per_second);
-//			Msg("%6d : %6d -> %6d = %7.2f (%.3f)",i,dwNode0,dwNode1,fDistance,dTime);
-//		}
-//		double dTime = double(uTime)/double(CPU::cycles_per_second);
-//		Msg("Total %6d tests (%.3f)",i,dTime);
-//	}
-//	for (int i=1; i<Level().AI.GetHeader().count; i++)
-//		vfTestNode(i);
-//	Msg("%d",i);
 }
 
 CAI_Soldier::~CAI_Soldier()
