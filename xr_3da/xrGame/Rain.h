@@ -6,8 +6,10 @@
 #define RainH
 #pragma once
 
+#include "xr_collide_defs.h"
 //refs
 class ENGINE_API IRender_DetailModel;
+
 
 //
 class ENGINE_API CEffect_Rain
@@ -21,6 +23,10 @@ private:
 		float			fSpeed;
 		float			fTime_Life;
 		float			fTime_Hit;
+		void			invalidate	()
+		{
+			fTime_Life	= 0.f;
+		}
 	};
 	struct	Particle
 	{
@@ -67,9 +73,10 @@ private:
 
 	// Some methods
 	void							Born			(Item& dest, float radius, float height);
-	void							RayTest			(Item& dest, float height);
+//	BOOL							RayTest			(Item& dest, float height, Collide::rq_target tgt);
 	void							Hit				(Fvector& pos);
-	BOOL							RayPick			(const Fvector& s, const Fvector& d, float& range);
+	BOOL							RayPick			(const Fvector& s, const Fvector& d, float& range, Collide::rq_target tgt);
+	void							UpdateItem		(Item& dest, float height, BOOL bHit);
 public:
 	void							Render			();
 
