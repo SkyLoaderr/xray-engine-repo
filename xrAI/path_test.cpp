@@ -30,8 +30,8 @@
 
 #define TEST_COUNT 1000
 
-#define ROWS	300
-#define COLUMNS 300
+#define ROWS	900
+#define COLUMNS 900
 typedef float	_dist_type;
 
 typedef CAI_Map																CGraph;
@@ -45,8 +45,8 @@ typedef CAI_Map																CGraph;
 //typedef CDataStorageBinaryHeap<_dist_type,u32,u32,true,24,8>					CDataStorage;
 //typedef CDataStorageBinaryHeapList<256,_dist_type,u32,u32,true,24,8>			CDataStorage;
 //typedef CDataStorageMultiBinaryHeap<1,_dist_type,u32,u32,true,24,8>			CDataStorage;
-//typedef CDataStorageCheapList<35,true,true,_dist_type,u32,u32,true,24,8>	CDataStorage;
-typedef CDataStorageBucketList<6*1024,false,_dist_type,u32,u32,true,24,8>				CDataStorage;
+//typedef CDataStorageCheapList<32,true,true,_dist_type,u32,u32,true,24,8>	CDataStorage;
+typedef CDataStorageBucketList<16*1024,true,_dist_type,u32,u32,true,24,8>				CDataStorage;
 //typedef CDataStoragePriorityQueue<boost::fibonacci_heap,_dist_type,u32,u32,true,24,8>CDataStorage;
 //typedef CDataStoragePriorityQueue<boost::lazy_fibonacci_heap,_dist_type,u32,u32,true,24,8>CDataStorage;
 //typedef CDataStoragePriorityQueue<boost::pairing_heap,_dist_type,u32,u32,true,24,8>CDataStorage;

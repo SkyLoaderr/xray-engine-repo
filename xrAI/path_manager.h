@@ -327,7 +327,8 @@ public:
 		int						i,j;
 		i						= node_index / (columns + 2);
 		j						= node_index % (columns + 2);
-		return					(_abs(_i - i - _j + j) + _abs(_i - i));
+//		return					(_abs(_i - i - _j + j) + _abs(_i - i));
+		return					(_abs(_j - j) + _abs(_i - i));
 	}
 
 	IC	bool		is_limit_reached(const _iteration_type	iteration_count) const

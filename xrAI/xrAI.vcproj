@@ -102,7 +102,7 @@
 				FavorSizeOrSpeed="1"
 				OmitFramePointers="TRUE"
 				EnableFiberSafeOptimizations="FALSE"
-				OptimizeForProcessor="2"
+				OptimizeForProcessor="3"
 				OptimizeForWindowsApplication="FALSE"
 				PreprocessorDefinitions="WIN32,NDEBUG,_WINDOWS,AI_COMPILER"
 				StringPooling="TRUE"
@@ -110,7 +110,7 @@
 				RuntimeLibrary="2"
 				BufferSecurityCheck="FALSE"
 				EnableFunctionLevelLinking="FALSE"
-				EnableEnhancedInstructionSet="1"
+				EnableEnhancedInstructionSet="2"
 				RuntimeTypeInfo="TRUE"
 				UsePrecompiledHeader="3"
 				PrecompiledHeaderThrough="stdafx.h"
@@ -533,6 +533,10 @@
 						<File
 							RelativePath=".\path_test_old.h">
 						</File>
+					</Filter>
+					<Filter
+						Name="graphs"
+						Filter="">
 						<File
 							RelativePath=".\test_table.h">
 						</File>
