@@ -9,7 +9,6 @@
 
 class CEffectorShot : public CCameraEffector
 {
-	Fvector	vDispersionDir;
 	float	fAngleCurrent;
 	float	fRelaxSpeed;
 	float	fMaxAngle;
@@ -25,16 +24,12 @@ public:
 	
 	virtual	BOOL	Process				(Fvector &delta_p, Fvector &delta_d, Fvector &delta_n, float& fFov, float& fFar, float& fAspect);
 			void	Shot				(float angle);
-			void	MountedWeaponShot	();
 
 			void	GetDeltaAngle		(Fvector& delta_angle);
 	virtual	void	SetRndSeed			(s32 Seed);
 	virtual CEffectorShot			*cast_effector_shot				()	{return this;}
 protected:
-			void	UpdateAngles	();
 			float	fAngleHorz;
 			float	fAngleHorzMax;
 			float	fAngleHorzStep;
-
-
 };

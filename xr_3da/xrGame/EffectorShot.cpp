@@ -44,24 +44,14 @@ void CEffectorShot::Shot		(float angle)
 	bActive			= TRUE;
 }
 
-
-void CEffectorShot::MountedWeaponShot		()
-{
-	fAngleCurrent	= (fMaxAngle*.75f+m_Random.randF(-1,1)*fMaxAngle*.25f);
-	float r1		= (m_Random.randF()>fDispProbability)?(fAngleCurrent/fMaxAngle)*m_Random.randF(-1,1):0.f;
-	float r2		= (m_Random.randF()>fDispProbability)?(fAngleCurrent/fMaxAngle)*m_Random.randF(-1,1):0.f;
-	float r3		= (m_Random.randF()>fDispProbability)?(fAngleCurrent/fMaxAngle)*m_Random.randF(-1,1):0.f;
-	vDispersionDir.set(r1,r2,r3); 
-	vDispersionDir.normalize_safe();
-	bActive			= TRUE;
-}
-
 BOOL CEffectorShot::Process		(Fvector &p, Fvector &d, Fvector &n, float& fFov, float& fFar, float& fAspect)
 {
 	if (bActive)
 	{
-		UpdateAngles	();
-		d.add					(vDispersionDir);
+#pragma todo("Andy to Andy: optimize next")
+		float			h,p;
+		d.getHP			(h,p);
+		d.setHP			(h+fAngleHorz,p+fAngleCurrent);
 
 		float time_to_relax = _abs(fAngleCurrent)/fRelaxSpeed;
 		float relax_speed = _abs(fAngleHorz)/time_to_relax;
@@ -99,19 +89,11 @@ BOOL CEffectorShot::Process		(Fvector &p, Fvector &d, Fvector &n, float& fFov, f
 	return TRUE;
 }
 
-
-void CEffectorShot::UpdateAngles	()
-{
-	vDispersionDir.x = 0.0f;
-	vDispersionDir.y = tanf(fAngleCurrent);
-	vDispersionDir.z = tanf(fAngleHorz);
-}
-
 void  CEffectorShot::GetDeltaAngle	(Fvector &delta_angle)
 {
 	delta_angle.x = -fAngleCurrent;
-	delta_angle.y = 0.f;
-	delta_angle.z = 0.f;
+	delta_angle.y = 0.0f;
+	delta_angle.z = 0.0f;
 }
 
 void	CEffectorShot::SetRndSeed			(s32 Seed)
