@@ -76,7 +76,6 @@ BOOL CPhysicItem::net_Spawn			(LPVOID DC)
 	if (!inherited::net_Spawn(DC))
 		return				(FALSE);
 
-	VERIFY					(m_pPhysicsShell);
 	CSE_Abstract			*abstract = (CSE_Abstract*)DC;
 	if (0xffff == abstract->ID_Parent)
 		setup_physic_shell	();

@@ -161,6 +161,9 @@ void CActor::reinit	()
 	CInventoryOwner::reinit	();
 	CDamageManager::reinit	();
 	CMaterialManager::reinit();
+	m_r_hand				= PKinematics(Visual())->LL_BoneID("bip01_r_hand");
+	m_r_finger1				= PKinematics(Visual())->LL_BoneID("bip01_r_finger2");
+	m_r_finger2				= PKinematics(Visual())->LL_BoneID("bip01_r_finger1");
 }
 
 void CActor::reload	(LPCSTR section)
@@ -279,10 +282,6 @@ void CActor::Load	(LPCSTR section )
 
 	// sheduler
 	shedule.t_min		= shedule.t_max = 1;
-
-	// get self game material id
-//	self_gmtl_id		= GMLib.GetMaterialIdx("creatures\\human"); 
-//	last_gmtl_id		= GMLib.GetMaterialIdx("default");
 }
 
 //--------------------------------------------------------------------
@@ -1420,14 +1419,9 @@ void CActor::g_PerformDrop	( )
 
 void CActor::g_WeaponBones	(int &L, int &R1, int &R2)
 {
-	CKinematics* V	= PKinematics(Visual());
-	R1	= V->LL_BoneID("bip01_r_hand");
-	R2	= V->LL_BoneID("bip01_r_finger2");
-	L	= V->LL_BoneID("bip01_l_finger1");
-
-	////VERIFY	(Weapons);
-	//L		=	0;//Weapons->m_iACTboneL;
-	//R		=	0;//Weapons->m_iACTboneR;
+	R1				= m_r_hand;
+	R2				= m_r_finger2;
+	L				= m_r_finger1;
 }
 
 void CActor::Statistic		()

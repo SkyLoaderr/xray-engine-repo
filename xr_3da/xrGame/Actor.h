@@ -217,6 +217,10 @@ private:
 	
 	float					m_fTimeToStep;
 
+	int						m_r_hand;
+	int						m_r_finger1;
+	int						m_r_finger2;
+
 	// Dropping
 	BOOL					b_DropActivated;
 	float					f_DropPower;
