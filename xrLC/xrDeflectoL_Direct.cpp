@@ -136,12 +136,8 @@ void CDeflector::L_Direct	(HASH& H)
 		UVtri&		T	= tris[t];
 		Face*		F	= T.owner;
 		R_ASSERT	(F);
-		try {
-			L_Direct_Edge	(T.uv[0], T.uv[1], F->v[0]->P, F->v[1]->P, F->N, texel_size);
-			L_Direct_Edge	(T.uv[1], T.uv[2], F->v[1]->P, F->v[2]->P, F->N, texel_size);
-			L_Direct_Edge	(T.uv[2], T.uv[0], F->v[2]->P, F->v[0]->P, F->N, texel_size);
-		} catch (...)
-		{
-		}
+		L_Direct_Edge	(T.uv[0], T.uv[1], F->v[0]->P, F->v[1]->P, F->N, texel_size);
+		L_Direct_Edge	(T.uv[1], T.uv[2], F->v[1]->P, F->v[2]->P, F->N, texel_size);
+		L_Direct_Edge	(T.uv[2], T.uv[0], F->v[2]->P, F->v[0]->P, F->N, texel_size);
 	}
 }
