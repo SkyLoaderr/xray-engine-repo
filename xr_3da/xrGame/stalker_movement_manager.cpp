@@ -62,6 +62,8 @@ void CStalkerMovementManager::initialize()
 	set_movement_type		(eMovementTypeStand);
 	set_mental_state		(eMentalStateDanger);
 	set_desired_direction	(0);
+
+	restrictions().remove_all_restrictions();
 	
 	Fvector					desired_position = object().Position();
 	u32						level_vertex_id = object().ai_location().level_vertex_id();

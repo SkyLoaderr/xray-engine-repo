@@ -72,6 +72,7 @@ CCustomZone::CCustomZone(void)
 
 	m_fDistanceToCurEntity = flt_max;
 
+	m_ef_weapon_type	= u32(-1);
 }
 
 CCustomZone::~CCustomZone(void) 
@@ -293,6 +294,9 @@ void CCustomZone::Load(LPCSTR section)
 			m_ArtefactSpawn[i].probability = m_ArtefactSpawn[i].probability/total_probability;
 		}
 	}
+
+	m_ef_anomaly_type			= pSettings->r_u32(section,"ef_anomaly_type");
+	m_ef_weapon_type			= pSettings->r_u32(section,"ef_weapon_type");
 }
 
 BOOL CCustomZone::net_Spawn(CSE_Abstract* DC) 
@@ -1225,4 +1229,15 @@ void CCustomZone::UpdateWind()
 			float(m_dwBlowoutWindTimeEnd - m_dwBlowoutWindTimePeak);
 		clamp(g_pGamePersistent->Environment.wind_strength, 0.f, 1.f);
 	}
+}
+
+u32	CCustomZone::ef_anomaly_type	() const
+{
+	return	(m_ef_anomaly_type);
+}
+
+u32	CCustomZone::ef_weapon_type	() const
+{
+	VERIFY	(m_ef_weapon_type != u32(-1));
+	return	(m_ef_weapon_type);
 }

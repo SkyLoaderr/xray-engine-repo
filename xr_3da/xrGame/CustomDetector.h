@@ -76,4 +76,9 @@ protected:
 #ifdef DEBUG
 	virtual void		OnRender	();
 #endif
+protected:
+	u32					m_ef_detector_type;
+
+public:
+	virtual u32			ef_detector_type	() const;
 };

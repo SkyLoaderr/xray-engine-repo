@@ -334,10 +334,24 @@ CSE_ALifeItemWeapon::CSE_ALifeItemWeapon	(LPCSTR caSection) : CSE_ALifeItem(caSe
 	m_scope_status				=	(EWeaponAddonStatus)pSettings->r_s32(s_name,"scope_status");
 	m_silencer_status			=	(EWeaponAddonStatus)pSettings->r_s32(s_name,"silencer_status");
 	m_grenade_launcher_status	=	(EWeaponAddonStatus)pSettings->r_s32(s_name,"grenade_launcher_status");
+	m_ef_main_weapon_type		= READ_IF_EXISTS(pSettings,r_u32,caSection,"ef_main_weapon_type",u32(-1));
+	m_ef_weapon_type			= READ_IF_EXISTS(pSettings,r_u32,caSection,"ef_weapon_type",u32(-1));
 }
 
 CSE_ALifeItemWeapon::~CSE_ALifeItemWeapon	()
 {
+}
+
+u32	CSE_ALifeItemWeapon::ef_main_weapon_type() const
+{
+	VERIFY	(m_ef_main_weapon_type != u32(-1));
+	return	(m_ef_main_weapon_type);
+}
+
+u32	CSE_ALifeItemWeapon::ef_weapon_type() const
+{
+	VERIFY	(m_ef_weapon_type != u32(-1));
+	return	(m_ef_weapon_type);
 }
 
 void CSE_ALifeItemWeapon::UPDATE_Read		(NET_Packet	&tNetPacket)
@@ -497,10 +511,16 @@ void CSE_ALifeItemAmmo::FillProps			(LPCSTR pref, PropItemVec& values) {
 ////////////////////////////////////////////////////////////////////////////
 CSE_ALifeItemDetector::CSE_ALifeItemDetector(LPCSTR caSection) : CSE_ALifeItem(caSection)
 {
+	m_ef_detector_type	= pSettings->r_u32(caSection,"ef_detector_type");
 }
 
 CSE_ALifeItemDetector::~CSE_ALifeItemDetector()
 {
+}
+
+u32	 CSE_ALifeItemDetector::ef_detector_type	() const
+{
+	return	(m_ef_detector_type);
 }
 
 void CSE_ALifeItemDetector::STATE_Read		(NET_Packet	&tNetPacket, u16 size)
@@ -670,11 +690,18 @@ void CSE_ALifeItemDocument::FillProps		(LPCSTR pref, PropItemVec& items)
 ////////////////////////////////////////////////////////////////////////////
 CSE_ALifeItemGrenade::CSE_ALifeItemGrenade	(LPCSTR caSection): CSE_ALifeItem(caSection)
 {
-	m_dwTimeStamp = 0;
+	m_dwTimeStamp		= 0;
+	m_ef_weapon_type	= READ_IF_EXISTS(pSettings,r_u32,caSection,"ef_weapon_type",u32(-1));
 }
 
 CSE_ALifeItemGrenade::~CSE_ALifeItemGrenade	()
 {
+}
+
+u32	CSE_ALifeItemGrenade::ef_weapon_type() const
+{
+	VERIFY	(m_ef_weapon_type != u32(-1));
+	return	(m_ef_weapon_type);
 }
 
 void CSE_ALifeItemGrenade::STATE_Read		(NET_Packet	&tNetPacket, u16 size)
@@ -745,10 +772,17 @@ CSE_ALifeItemBolt::CSE_ALifeItemBolt		(LPCSTR caSection) : CSE_ALifeItem(caSecti
 {
 	m_flags.set					(flUseSwitches,FALSE);
 	m_flags.set					(flSwitchOffline,FALSE);
+	m_ef_weapon_type			= READ_IF_EXISTS(pSettings,r_u32,caSection,"ef_weapon_type",u32(-1));
 }
 
 CSE_ALifeItemBolt::~CSE_ALifeItemBolt		()
 {
+}
+
+u32	CSE_ALifeItemBolt::ef_weapon_type() const
+{
+	VERIFY	(m_ef_weapon_type != u32(-1));
+	return	(m_ef_weapon_type);
 }
 
 void CSE_ALifeItemBolt::STATE_Write			(NET_Packet &tNetPacket)
@@ -790,10 +824,16 @@ void CSE_ALifeItemBolt::FillProps			(LPCSTR pref, PropItemVec& values)
 CSE_ALifeItemCustomOutfit::CSE_ALifeItemCustomOutfit	(LPCSTR caSection): CSE_ALifeItem(caSection)
 {
 	m_dwTimeStamp = 0;
+	m_ef_equipment_type		= pSettings->r_u32(caSection,"ef_equipment_type");
 }
 
 CSE_ALifeItemCustomOutfit::~CSE_ALifeItemCustomOutfit	()
 {
+}
+
+u32	CSE_ALifeItemCustomOutfit::ef_equipment_type		() const
+{
+	return			(m_ef_equipment_type);
 }
 
 void CSE_ALifeItemCustomOutfit::STATE_Read		(NET_Packet	&tNetPacket, u16 size)

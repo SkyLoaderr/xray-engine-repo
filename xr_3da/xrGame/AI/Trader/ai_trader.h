@@ -172,4 +172,6 @@ public:
 		VERIFY				(m_sound_player);
 		return				(*m_sound_player);
 	}
+	virtual bool			natural_weapon			() const {return false;}
+	virtual bool			natural_detector		() const {return false;}
 };

@@ -22,6 +22,7 @@ CMissile::CMissile(void)
 	///////////////////////////////////
 	m_throw = false;
 	m_constpower = false;
+	m_ef_weapon_type	= u32(-1);
 }
 
 CMissile::~CMissile(void) 
@@ -76,6 +77,8 @@ void CMissile::Load(LPCSTR section)
 
 	if(pSettings->line_exist(section,"snd_playing"))
 		HUD_SOUND::LoadSound(section,"snd_playing",sndPlaying,TRUE);
+
+	m_ef_weapon_type	= READ_IF_EXISTS(pSettings,r_u32,section,"ef_weapon_type",u32(-1));
 }
 
 BOOL CMissile::net_Spawn(CSE_Abstract* DC) 
@@ -619,4 +622,10 @@ void CMissile::create_physic_shell	()
 void CMissile::setup_physic_shell	()
 {
 	// do not delete!!!
+}
+
+u32	CMissile::ef_weapon_type		() const
+{
+	VERIFY	(m_ef_weapon_type != u32(-1));
+	return	(m_ef_weapon_type);
 }

@@ -129,43 +129,7 @@ const CAnimationPair *CStalkerAnimationManager::unknown_object_animation(u32 slo
 
 u32 CStalkerAnimationManager::object_slot	() const
 {
-	if (!m_weapon && !m_missile)
-		return		(0);
-
-	CLASS_ID		clsid = m_weapon ? m_weapon->CLS_ID : m_missile ? m_missile->CLS_ID : 0;
-
-	switch (clsid) {
-		case CLSID_OBJECT_W_VINTOREZ	:
-		case CLSID_OBJECT_W_VAL			:
-		case CLSID_OBJECT_W_GROZA		:
-		case CLSID_OBJECT_W_M134		:
-		case CLSID_OBJECT_W_FN2000		:
-		case CLSID_OBJECT_W_AK74		:
-		case CLSID_OBJECT_W_LR300		: 
-		case CLSID_OBJECT_W_SVU			:
-		case CLSID_OBJECT_W_SVD			:
-			return	(2);
-		case CLSID_OBJECT_W_WALTHER		:
-		case CLSID_OBJECT_W_USP45		:
-		case CLSID_OBJECT_W_HPSA		:
-		case CLSID_OBJECT_W_PM			:
-		case CLSID_OBJECT_W_FORT		:
-			return	(1);
-		case CLSID_OBJECT_W_BINOCULAR	:
-//			return	(5);
-			return	(1);
-		case CLSID_OBJECT_W_SHOTGUN		:
-			return	(3);
-		case CLSID_OBJECT_W_RPG7		:
-			return	(2);
-		case CLSID_GRENADE_F1			:
-		case CLSID_GRENADE_RGD5			:
-			return	(6);
-		case CLSID_IITEM_BOLT			:
-			return	(6);
-#pragma todo("Dima to Dima : Return nodefault")
-	}
-	return			(1);
+	return			(m_weapon ? m_weapon->animation_slot() : (m_missile ? m_missile->animation_slot() : 0));
 }
 
 const CAnimationPair *CStalkerAnimationManager::weapon_animation	(u32 slot, const EBodyState &body_state) const

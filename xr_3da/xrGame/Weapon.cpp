@@ -75,6 +75,8 @@ CWeapon::CWeapon(LPCSTR name)
 	m_StrapOffset.identity	();
 	m_strapped_mode			= false;
 	m_can_be_strapped		= false;
+	m_ef_main_weapon_type	= u32(-1);
+	m_ef_weapon_type		= u32(-1);
 }
 
 CWeapon::~CWeapon		()
@@ -1030,6 +1032,9 @@ void CWeapon::reload			(LPCSTR section)
 	}
 	else
 		m_can_be_strapped	= false;
+
+	m_ef_main_weapon_type	= READ_IF_EXISTS(pSettings,r_u32,section,"ef_main_weapon_type",u32(-1));
+	m_ef_weapon_type		= READ_IF_EXISTS(pSettings,r_u32,section,"ef_weapon_type",u32(-1));
 }
 
 void CWeapon::create_physic_shell()
@@ -1190,3 +1195,16 @@ void	CWeapon::SetAmmoElapsed	(int ammo_count)
 		};
 	};
 }
+
+u32	CWeapon::ef_main_weapon_type	() const
+{
+	VERIFY	(m_ef_main_weapon_type != u32(-1));
+	return	(m_ef_main_weapon_type);
+}
+
+u32	CWeapon::ef_weapon_type	() const
+{
+	VERIFY	(m_ef_weapon_type != u32(-1));
+	return	(m_ef_weapon_type);
+}
+

@@ -604,6 +604,9 @@ CSE_ALifeAnomalousZone::CSE_ALifeAnomalousZone(LPCSTR caSection) : CSE_ALifeSche
 	m_max_start_power			= 150.f;
 	m_power_artefact_factor		= 10.f;
 	m_spawn_flags.set			(flSpawnDestroyOnSpawn,TRUE);
+
+	m_ef_anomaly_type			= pSettings->r_u32(caSection,"ef_anomaly_type");
+	m_ef_weapon_type			= pSettings->r_u32(caSection,"ef_weapon_type");
 }
 
 CSE_Abstract *CSE_ALifeAnomalousZone::init			()
@@ -623,11 +626,25 @@ const CSE_Abstract *CSE_ALifeAnomalousZone::base	() const
 	return						(inherited1::base());
 }
 
-
-CSE_ALifeAnomalousZone::~CSE_ALifeAnomalousZone()
+CSE_ALifeAnomalousZone::~CSE_ALifeAnomalousZone		()
 {
 	xr_free						(m_faWeights);
 	xr_free						(m_cppArtefactSections);
+}
+
+u32	CSE_ALifeAnomalousZone::ef_anomaly_type			() const
+{
+	return						(m_ef_anomaly_type);
+}
+
+u32	CSE_ALifeAnomalousZone::ef_weapon_type			() const
+{
+	return						(m_ef_weapon_type);
+}
+
+u32	CSE_ALifeAnomalousZone::ef_creature_type		() const
+{
+	return						(inherited1::ef_weapon_type());
 }
 
 void CSE_ALifeAnomalousZone::STATE_Read		(NET_Packet	&tNetPacket, u16 size)
@@ -868,10 +885,30 @@ CSE_ALifeCreatureAbstract::CSE_ALifeCreatureAbstract(LPCSTR caSection)	: CSE_ALi
 	m_fAccuracy					= 25.f;
 	m_fIntelligence				= 25.f;
 	m_fMorale					= 100.f;
+	m_ef_creature_type			= pSettings->r_u32(caSection,"ef_creature_type");
+	m_ef_weapon_type			= READ_IF_EXISTS(pSettings,r_u32,caSection,"ef_weapon_type",u32(-1));
+	m_ef_detector_type			= READ_IF_EXISTS(pSettings,r_u32,caSection,"ef_detector_type",u32(-1));
 }
 
 CSE_ALifeCreatureAbstract::~CSE_ALifeCreatureAbstract()
 {
+}
+
+u32	CSE_ALifeCreatureAbstract::ef_creature_type	() const
+{
+	return						(m_ef_creature_type);
+}
+
+u32	 CSE_ALifeCreatureAbstract::ef_weapon_type	() const
+{
+	VERIFY						(m_ef_weapon_type != u32(-1));
+	return						(m_ef_weapon_type);
+}
+
+u32	 CSE_ALifeCreatureAbstract::ef_detector_type() const
+{
+	VERIFY						(m_ef_detector_type != u32(-1));
+	return						(m_ef_detector_type);
 }
 
 void CSE_ALifeCreatureAbstract::STATE_Write	(NET_Packet &tNetPacket)
@@ -1050,6 +1087,21 @@ CSE_Abstract *CSE_ALifeMonsterAbstract::init			()
 CSE_Abstract *CSE_ALifeMonsterAbstract::base			()
 {
 	return						(inherited1::base());
+}
+
+u32	CSE_ALifeMonsterAbstract::ef_creature_type			() const
+{
+	return						(inherited1::ef_creature_type());
+}
+
+u32	CSE_ALifeMonsterAbstract::ef_weapon_type			() const
+{
+	return						(inherited1::ef_weapon_type());
+}
+
+u32	CSE_ALifeMonsterAbstract::ef_detector_type			() const
+{
+	return						(inherited1::ef_detector_type());
 }
 
 const CSE_Abstract *CSE_ALifeMonsterAbstract::base	() const

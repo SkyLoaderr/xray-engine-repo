@@ -106,69 +106,28 @@ float CPersonalMoraleFunction::ffGetValue()
 
 float CPersonalCreatureTypeFunction::ffGetValue()
 {
-	switch (clsid_member()) {
-		case CLSID_AI_RAT				: return 1;
-		case CLSID_AI_CAT:
-		case CLSID_AI_RAT_WOLF			: return 2;
-		case CLSID_AI_ZOMBIE			: return 3;
-		case CLSID_AI_ZOMBIE_HUMAN		: return 4;
-		case CLSID_AI_POLTERGEIST		: return 5;
-		case CLSID_AI_DOG_RED			: return 6;
-		case CLSID_AI_FLESH				: return 7;
-		case CLSID_AI_DWARF				: return 8;
-		case CLSID_AI_SCIENTIST			: return 9;
-		case CLSID_AI_PHANTOM			: return 10;
-		case CLSID_AI_SNORK				:
-		case CLSID_AI_BOAR				: return 11;
-		case CLSID_AI_CONTROLLER		: return 12;
-		case CLSID_AI_BLOODSUCKER		: return 13;
-		case CLSID_AI_SOLDIER			: return 14;
-		case CLSID_AI_STALKER_DARK		: return 15;
-		case CLSID_AI_STALKER_MILITARY	: return 16;
-		case CLSID_OBJECT_ACTOR			: 
-		case CLSID_AI_STALKER			: return 17;
-		case CLSID_AI_BURER				: return 18;
-		case CLSID_AI_GIANT				: return 19;
-		case CLSID_AI_CHIMERA			: return 20;
-		case CLSID_AI_FRACTURE			:
-		case CLSID_AI_DOG_BLACK			: return 21;
-		case CLSID_AI_TRADER			: return 1;
-		default							: NODEFAULT; return 0;
+	u32			result;
+	if (ef_storage().non_alife().member())
+		result	= ef_storage().non_alife().member()->ef_creature_type();
+	else {
+		VERIFY2	(ef_storage().alife().member(),"No object specified for evaluation function");
+		result	= ef_storage().alife().member()->ef_creature_type();
 	}
+
+	VERIFY		(float(result) < m_fMaxResultValue + 1);
+	return		(float(result));
 }
 
 u32 CPersonalWeaponTypeFunction::dwfGetWeaponType()
 {
-	switch (clsid_member_item()) {
-		case CLSID_GRENADE_F1:
-		case CLSID_GRENADE_RGD5:
-			return(10);
-		case CLSID_OBJECT_W_RPG7:
-		case CLSID_OBJECT_W_M134:
-			return(9);
-		case CLSID_OBJECT_W_FN2000:
-		case CLSID_OBJECT_W_SVD:
-		case CLSID_OBJECT_W_SVU:
-		case CLSID_OBJECT_W_VINTOREZ:
-			return(8);
-		case CLSID_OBJECT_W_SHOTGUN:
-			return(7);
-		case CLSID_OBJECT_W_AK74:
-		case CLSID_OBJECT_W_VAL:
-		case CLSID_OBJECT_W_GROZA:
-		case CLSID_OBJECT_W_LR300:
-			return(6);
-		case CLSID_OBJECT_W_HPSA:		
-		case CLSID_OBJECT_W_PM:			
-		case CLSID_OBJECT_W_FORT:		
-		case CLSID_OBJECT_W_WALTHER:	
-		case CLSID_OBJECT_W_USP45:
-			return(5);
-		case CLSID_IITEM_BOLT:
-			return(1);
-		default	:
-			return(0);
+	u32			result;
+	if (ef_storage().non_alife().member_item())
+		result	= ef_storage().non_alife().member_item()->ef_weapon_type();
+	else {
+		VERIFY2	(ef_storage().alife().member_item(),"No object specified for evaluation function");
+		result	= ef_storage().alife().member_item()->ef_weapon_type();
 	}
+	return		(result);
 }
 
 float CPersonalWeaponTypeFunction::ffGetTheBestWeapon() 
@@ -207,46 +166,21 @@ float CPersonalWeaponTypeFunction::ffGetTheBestWeapon()
 
 float CPersonalWeaponTypeFunction::ffGetValue()
 {
-	switch (clsid_member()) {
-		case CLSID_AI_RAT				: return 1;
-		case CLSID_AI_CAT:
-		case CLSID_AI_RAT_WOLF			: return 2;
-		case CLSID_AI_ZOMBIE			: return 1;
-		case CLSID_AI_ZOMBIE_HUMAN		: return 1;
-		case CLSID_AI_POLTERGEIST		: return 12;
-		case CLSID_AI_DOG_RED			: return 2;
-		case CLSID_AI_FLESH				: return 2;
-		case CLSID_AI_DWARF				: return 1;
-		case CLSID_AI_SCIENTIST			: return ffGetTheBestWeapon();
-		case CLSID_AI_PHANTOM			: return 3;
-		case CLSID_AI_SPONGER			: return 2;
-		case CLSID_AI_CONTROLLER		: return 11;
-		case CLSID_AI_BLOODSUCKER		: return 3;
-		case CLSID_AI_SOLDIER			: return ffGetTheBestWeapon();
-		case CLSID_AI_STALKER_DARK		: return ffGetTheBestWeapon();
-		case CLSID_AI_STALKER_MILITARY	: return ffGetTheBestWeapon();
-		case CLSID_OBJECT_ACTOR			: 
-		case CLSID_AI_STALKER			: return ffGetTheBestWeapon();
-		case CLSID_AI_BURER				: return 12;
-		case CLSID_AI_GIANT				: return 3;
-		case CLSID_AI_CHIMERA			: return 3;
-		case CLSID_AI_FRACTURE			: return 4;
-		case CLSID_AI_DOG_BLACK			: return 3;
-		case CLSID_AI_SNORK				:
-		case CLSID_AI_BOAR				: return 2;
-		case CLSID_Z_TORRID				:
-		case CLSID_Z_MBALD				: return 13;
-		case CLSID_Z_MINCER				: return 14;
-		case CLSID_Z_DEAD				:
-		case CLSID_Z_RADIO				: return 15;
-		case CLSID_Z_ACIDF				: return 16;
-		case CLSID_Z_GALANT				: return 17;
-		case CLSID_Z_BFUZZ				: return 18;
-		case CLSID_Z_RUSTYH				: return 19;
-		case CLSID_Z_FRYUP				: return 20;
-		case CLSID_AI_TRADER			: return 1;
-		default							: NODEFAULT; return(0);
+	float			result;
+	if (ef_storage().non_alife().member())
+		if (ef_storage().non_alife().member()->natural_weapon())
+			result	= (float)ef_storage().non_alife().member()->ef_weapon_type();
+		else
+			result	= ffGetTheBestWeapon();
+	else {
+		VERIFY2	(ef_storage().alife().member(),"No object specified for evaluation function");
+		if (ef_storage().alife().member()->natural_weapon())
+			result	= (float)ef_storage().alife().member()->ef_weapon_type();
+		else
+			result	= ffGetTheBestWeapon();
 	}
+	VERIFY		(result < m_fMaxResultValue + 1.f);
+	return		(result);
 }
 
 float CPersonalAccuracyFunction::ffGetValue()
@@ -375,14 +309,15 @@ u32 CPersonalMaxHealth::dwfGetDiscreteValue(u32 dwDiscretizationValue)
 
 float CEquipmentType::ffGetValue()
 {
-	switch (clsid_member_item()) {
-		case CLSID_EQUIPMENT_SIMPLE		: return 1;
-		case CLSID_EQUIPMENT_SCIENTIFIC	: return 2;
-		case CLSID_EQUIPMENT_STALKER	: return 3;
-		case CLSID_EQUIPMENT_MILITARY	: return 4;
-		case CLSID_EQUIPMENT_EXO		: return 5;
-		default							: return 6;
+	u32			result;
+	if (ef_storage().non_alife().member_item())
+		result	= ef_storage().non_alife().member_item()->ef_equipment_type();
+	else {
+		VERIFY2	(ef_storage().alife().member_item(),"No object specified for evaluation function");
+		result	= ef_storage().alife().member_item()->ef_equipment_type();
 	}
+	VERIFY		(float(result) < m_fMaxResultValue + 1.f);
+	return		(float(result));
 }
 
 float CItemDeterioration::ffGetValue()
@@ -413,20 +348,15 @@ float CEquipmentPreference::ffGetValue()
 
 float CMainWeaponType::ffGetValue()
 {
-	switch (clsid_member_item()) {
-		case CLSID_OBJECT_W_SHOTGUN	: return 1.f;
-		case CLSID_OBJECT_W_AK74	:
-		case CLSID_OBJECT_W_VAL		:
-		case CLSID_OBJECT_W_LR300	:
-		case CLSID_OBJECT_W_GROZA	: return 2.f;
-		case CLSID_OBJECT_W_FN2000	:
-		case CLSID_OBJECT_W_SVD		:
-		case CLSID_OBJECT_W_SVU		:
-		case CLSID_OBJECT_W_VINTOREZ: return 3.f;
-		case CLSID_OBJECT_W_RPG7	:
-		case CLSID_OBJECT_W_M134	: return 4.f;
-		default						: return 5.f;
+	u32			result;
+	if (ef_storage().non_alife().member_item())
+		result	= ef_storage().non_alife().member_item()->ef_main_weapon_type();
+	else {
+		VERIFY2	(ef_storage().alife().member_item(),"No object specified for evaluation function");
+		result	= ef_storage().alife().member_item()->ef_main_weapon_type();
 	}
+	VERIFY		(float(result) < m_fMaxResultValue + 1.f);
+	return		(float(result));
 }
 
 float CMainWeaponPreference::ffGetValue()
@@ -493,19 +423,16 @@ u32	 CWeaponAmmoCount::dwfGetDiscreteValue(u32 dwDiscretizationValue)
 
 float CEnemyAnomalyType::ffGetValue()
 {
-	switch (clsid_enemy()) {
-		case CLSID_Z_TORRID :
-		case CLSID_Z_MBALD	: return 1;
-		case CLSID_Z_MINCER : return 2;
-		case CLSID_Z_DEAD	:
-		case CLSID_Z_RADIO	: return 3;
-		case CLSID_Z_ACIDF	: return 4;
-		case CLSID_Z_GALANT : return 5;
-		case CLSID_Z_BFUZZ	: return 6;
-		case CLSID_Z_RUSTYH : return 7;
-		case CLSID_Z_FRYUP	: return 8;
-		default				: NODEFAULT; return(0);
+	u32			result;
+	if (ef_storage().non_alife().enemy())
+		result	= ef_storage().non_alife().enemy()->ef_anomaly_type();
+	else {
+		VERIFY2	(ef_storage().alife().enemy(),"No object specified for evaluation function");
+		result	= ef_storage().alife().enemy()->ef_anomaly_type();
 	}
+	VERIFY		(float(result) < m_fMaxResultValue + 1.f);
+	return		(float(result));
+
 }
 
 float CDetectorType::ffGetValue()
@@ -519,32 +446,21 @@ float CDetectorType::ffGetValue()
 			return				(0);
 	}
 
-	switch (clsid_member_item()) {
-		case CLSID_AI_RAT				: 
-		case CLSID_AI_RAT_WOLF			: 
-		case CLSID_AI_ZOMBIE			: 
-		case CLSID_AI_ZOMBIE_HUMAN		: 
-		case CLSID_AI_POLTERGEIST		: 
-		case CLSID_AI_FLESH				: 
-		case CLSID_AI_DWARF				: 
-		case CLSID_AI_SCIENTIST			: 
-		case CLSID_AI_PHANTOM			: 
-		case CLSID_AI_SPONGER			: 
-		case CLSID_AI_CONTROLLER		: 
-		case CLSID_AI_BLOODSUCKER		: 
-		case CLSID_AI_BURER				: 
-		case CLSID_AI_GIANT				: 
-		case CLSID_AI_CHIMERA			: 
-		case CLSID_AI_FRACTURE			: 
-		case CLSID_AI_DOG_RED			:
-		case CLSID_AI_DOG_BLACK			: 
-		case CLSID_AI_BOAR				: 
-		case CLSID_AI_SNORK				:
-		case CLSID_AI_CAT				:
-		case CLSID_DETECTOR_SIMPLE		: return 2;
-		case CLSID_DETECTOR_VISUAL		: return 3;
-		default							: NODEFAULT; return(0.f);
+	u32			result;
+	if (ef_storage().non_alife().member())
+		if (ef_storage().non_alife().member()->natural_detector())
+			result	= ef_storage().non_alife().member()->ef_detector_type();
+		else
+			result	= ef_storage().non_alife().member_item()->ef_detector_type();
+	else {
+		VERIFY2	(ef_storage().alife().member(),"No object specified for evaluation function");
+		if (ef_storage().alife().member()->natural_detector())
+			result	= ef_storage().alife().member()->ef_detector_type();
+		else
+			result	= ef_storage().alife().member_item()->ef_detector_type();
 	}
+	VERIFY		(float(result) < m_fMaxResultValue + 1.f);
+	return		(float(result));
 }
 
 float CEnemyDistanceToGraphPoint::ffGetValue()

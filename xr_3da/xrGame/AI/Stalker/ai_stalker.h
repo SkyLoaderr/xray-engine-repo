@@ -343,6 +343,8 @@ public:
 
 private:
 	IC		bool						frame_check						(u32 &frame);
+	virtual bool						natural_weapon					() const {return false;}
+	virtual bool						natural_detector				() const {return false;}
 };
 
 #include "ai_stalker_inline.h"

@@ -254,13 +254,19 @@ void CHelicopterMovManager::shedule_Update(u32 timeDelta)
 			m_heli->setState(CHelicopter::eInitiatePatrolZone);
 	};
 */
-	if( m_heli->state()==CHelicopter::eInitiatePatrolByPath) {
-		GoBySpecifiedPatrolPath();
-		m_heli->setState(CHelicopter::eMovingByPatrolPath);
+	try {
+		if( m_heli->state()==CHelicopter::eInitiatePatrolByPath) {
+			GoBySpecifiedPatrolPath();
+			m_heli->setState(CHelicopter::eMovingByPatrolPath);
+		}
+		if( m_heli->state()==CHelicopter::eMovingByPatrolPath) {
+			UpdatePatrolPath();
+		}
 	}
-	if( m_heli->state()==CHelicopter::eMovingByPatrolPath) {
-		UpdatePatrolPath();
+	catch(...) {
+		m_heli->setState(CHelicopter::eInitiateRoundMoving);
 	}
+
 	if( m_heli->state()==CHelicopter::eInitiateRoundMoving) {
 		GoByRoundPatrolPath();
 		m_heli->setState(CHelicopter::eMovingByPatrolPath);

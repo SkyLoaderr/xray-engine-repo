@@ -347,4 +347,12 @@ protected:
 
 	//расстояние от зоны до текущего актера
 	float m_fDistanceToCurEntity;
+
+protected:
+	u32						m_ef_anomaly_type;
+	u32						m_ef_weapon_type;
+
+public:
+	virtual u32				ef_anomaly_type		() const;
+	virtual u32				ef_weapon_type		() const;
 };

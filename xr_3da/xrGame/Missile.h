@@ -121,4 +121,10 @@ public:
 	{
 		m_dwDestroyTime		= delta_destroy_time + Device.dwTimeGlobal;
 	}
+
+protected:
+	u32						m_ef_weapon_type;
+
+public:
+	virtual u32				ef_weapon_type		() const;
 };

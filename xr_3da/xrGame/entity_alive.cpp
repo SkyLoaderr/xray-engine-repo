@@ -53,6 +53,8 @@ CEntityAlive::CEntityAlive()
 	monster_community		= xr_new<MONSTER_COMMUNITY>	();
 
 	m_death_script_callback	= xr_new<CScriptCallback>	();
+	m_ef_weapon_type		= u32(-1);
+	m_ef_detector_type		= u32(-1);
 }
 
 CEntityAlive::~CEntityAlive()
@@ -183,6 +185,10 @@ void CEntityAlive::reload		(LPCSTR section)
 {
 	CEntity::reload			(section);
 //	CEntityCondition::reload(section);
+
+	m_ef_creature_type		= pSettings->r_u32		(section,"ef_creature_type");
+	m_ef_weapon_type		= READ_IF_EXISTS(pSettings,r_u32,section,"ef_weapon_type",u32(-1));
+	m_ef_detector_type		= READ_IF_EXISTS(pSettings,r_u32,section,"ef_detector_type",u32(-1));
 
 	m_fFood					= 100*pSettings->r_float	(section,"ph_mass");
 }
@@ -610,3 +616,20 @@ void CEntityAlive::death_callback(const CObject *who)
 	m_death_script_callback->clear();
 }
 //////////////////////////////////////////////////////////////////////////
+
+u32	CEntityAlive::ef_creature_type	() const
+{
+	return	(m_ef_creature_type);
+}
+
+u32	CEntityAlive::ef_weapon_type	() const
+{
+	VERIFY	(m_ef_weapon_type != u32(-1));
+	return	(m_ef_weapon_type);
+}
+
+u32	 CEntityAlive::ef_detector_type	() const
+{
+	VERIFY	(m_ef_detector_type != u32(-1));
+	return	(m_ef_detector_type);
+}

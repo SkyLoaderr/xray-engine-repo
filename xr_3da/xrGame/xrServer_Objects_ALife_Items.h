@@ -127,10 +127,14 @@ SERVER_ENTITY_DECLARE_BEGIN(CSE_ALifeItemWeapon,CSE_ALifeItem)
 	u32								m_dwSlot;
 	Flags8							m_addon_flags;
 	u8								m_bZoom;
+	u32								m_ef_main_weapon_type;
+	u32								m_ef_weapon_type;
 
 									CSE_ALifeItemWeapon(LPCSTR caSection);
 	virtual							~CSE_ALifeItemWeapon();
 	virtual void					OnEvent			(NET_Packet& P, u16 type, u32 time, ClientID sender );
+	virtual u32						ef_main_weapon_type	() const;
+	virtual u32						ef_weapon_type	() const;
 	u8								get_slot		();
 	u16								get_ammo_limit	();
 	u16								get_ammo_total	();
@@ -141,8 +145,10 @@ add_to_type_list(CSE_ALifeItemWeapon)
 #define script_type_list save_type_list(CSE_ALifeItemWeapon)
 
 SERVER_ENTITY_DECLARE_BEGIN(CSE_ALifeItemDetector,CSE_ALifeItem)
+	u32								m_ef_detector_type;
 									CSE_ALifeItemDetector(LPCSTR caSection);
 	virtual							~CSE_ALifeItemDetector();
+	virtual u32						ef_detector_type() const;
 SERVER_ENTITY_DECLARE_END
 add_to_type_list(CSE_ALifeItemDetector)
 #define script_type_list save_type_list(CSE_ALifeItemDetector)
@@ -175,8 +181,10 @@ add_to_type_list(CSE_ALifeItemDocument)
 #define script_type_list save_type_list(CSE_ALifeItemDocument)
 
 SERVER_ENTITY_DECLARE_BEGIN(CSE_ALifeItemGrenade,CSE_ALifeItem)
-									CSE_ALifeItemGrenade(LPCSTR caSection);
-	virtual							~CSE_ALifeItemGrenade();
+	u32								m_ef_weapon_type;
+									CSE_ALifeItemGrenade	(LPCSTR caSection);
+	virtual							~CSE_ALifeItemGrenade	();
+	virtual u32						ef_weapon_type			() const;
 SERVER_ENTITY_DECLARE_END
 add_to_type_list(CSE_ALifeItemGrenade)
 #define script_type_list save_type_list(CSE_ALifeItemGrenade)
@@ -189,17 +197,21 @@ add_to_type_list(CSE_ALifeItemExplosive)
 #define script_type_list save_type_list(CSE_ALifeItemExplosive)
 
 SERVER_ENTITY_DECLARE_BEGIN(CSE_ALifeItemBolt,CSE_ALifeItem)
-									CSE_ALifeItemBolt(LPCSTR caSection);
-	virtual							~CSE_ALifeItemBolt();
+	u32								m_ef_weapon_type;
+									CSE_ALifeItemBolt	(LPCSTR caSection);
+	virtual							~CSE_ALifeItemBolt	();
 	virtual bool					can_save			() const;
-	virtual bool					used_ai_locations		() const;
+	virtual bool					used_ai_locations	() const;
+	virtual u32						ef_weapon_type		() const;
 SERVER_ENTITY_DECLARE_END
 add_to_type_list(CSE_ALifeItemBolt)
 #define script_type_list save_type_list(CSE_ALifeItemBolt)
 
 SERVER_ENTITY_DECLARE_BEGIN(CSE_ALifeItemCustomOutfit,CSE_ALifeItem)
+	u32								m_ef_equipment_type;
 									CSE_ALifeItemCustomOutfit(LPCSTR caSection);
 	virtual							~CSE_ALifeItemCustomOutfit();
+	virtual u32						ef_equipment_type	() const;
 SERVER_ENTITY_DECLARE_END
 add_to_type_list(CSE_ALifeItemCustomOutfit)
 #define script_type_list save_type_list(CSE_ALifeItemCustomOutfit)

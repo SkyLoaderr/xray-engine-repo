@@ -192,7 +192,7 @@ public:
 			CScriptGameObject	*lua_game_object() const;
 			int				clsid			() const
 	{
-		VERIFY				(m_script_clsid >= 0);
+		THROW				(m_script_clsid >= 0);
 		return				(m_script_clsid);
 	}
 public:
@@ -220,6 +220,16 @@ public:
 		VERIFY				(m_spawned);
 		return				(m_spawn_time);
 	}
+	
+public:
+	virtual u32				ef_creature_type	() const;
+	virtual u32				ef_equipment_type	() const;
+	virtual u32				ef_main_weapon_type	() const;
+	virtual u32				ef_anomaly_type		() const;
+	virtual u32				ef_weapon_type		() const;
+	virtual u32				ef_detector_type	() const;
+	virtual bool			natural_weapon		() const {return true;}
+	virtual bool			natural_detector	() const {return true;}
 };
 
 #endif // !defined(AFX_GAMEOBJECT_H__3DA72D03_C759_4688_AEBB_89FA812AA873__INCLUDED_)

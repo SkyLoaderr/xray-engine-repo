@@ -37,6 +37,12 @@ SERVER_ENTITY_DECLARE_BEGIN(CSE_ALifeSchedulable,IPureSchedulableObject)
 	virtual CSE_ALifeSchedulable	*cast_schedulable		() {return this;};
 	// end of the virtual inheritance dependant code
 	virtual bool					need_update				(CSE_ALifeDynamicObject *object);
+	virtual u32						ef_creature_type		() const;
+	virtual u32						ef_anomaly_type			() const;
+	virtual u32						ef_weapon_type			() const;
+	virtual u32						ef_detector_type		() const;
+	virtual bool					natural_weapon			() const {return true;}
+	virtual bool					natural_detector		() const {return true;}
 #ifdef XRGAME_EXPORTS
 	virtual	CSE_ALifeItemWeapon		*tpfGetBestWeapon		(ALife::EHitType		&tHitType,			float		&fHitPower) = 0;
 	virtual bool					bfPerformAttack			()											{return(true);};
@@ -103,6 +109,10 @@ public:
 			void					can_switch_offline	(bool value);
 			void					interactive			(bool value);
 			void					move_offline		(bool value);
+	virtual u32						ef_equipment_type	() const;
+	virtual u32						ef_main_weapon_type	() const;
+	virtual u32						ef_weapon_type		() const;
+	virtual u32						ef_detector_type	() const;
 #ifdef XRGAME_EXPORTS
 	virtual void					spawn_supplies		(LPCSTR);
 	virtual void					spawn_supplies		();

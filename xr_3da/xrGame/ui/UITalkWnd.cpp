@@ -279,7 +279,7 @@ void CUITalkWnd::AskQuestion()
 	if(TopicMode())
 	{
 		if ( (UITalkDialogWnd.m_iClickedQuestion < 0) ||
-			(UITalkDialogWnd.m_iClickedQuestion >= m_pOurDialogManager->AvailableDialogs().size()) ) {
+			(UITalkDialogWnd.m_iClickedQuestion >= (int)m_pOurDialogManager->AvailableDialogs().size()) ) {
 
 			string128	s;
 			sprintf		(s,"ID = [%i] of selected question is out of range of available dialogs ",UITalkDialogWnd.m_iClickedQuestion);

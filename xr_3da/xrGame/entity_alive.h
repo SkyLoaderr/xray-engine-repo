@@ -167,6 +167,16 @@ public:
 	void						set_death_callback			(const luabind::object &lua_object, LPCSTR method);
 	void						set_death_callback			(const luabind::functor<void> &lua_function);
 	void						clear_death_callback		(bool member_callback);
+	
+protected:
+	u32							m_ef_creature_type;
+	u32							m_ef_weapon_type;
+	u32							m_ef_detector_type;
+
+public:
+	virtual u32					ef_creature_type			() const;
+	virtual u32					ef_weapon_type				() const;
+	virtual u32					ef_detector_type			() const;
 };
 
 #include "entity_alive_inline.h"

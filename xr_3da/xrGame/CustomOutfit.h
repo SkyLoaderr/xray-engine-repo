@@ -52,4 +52,10 @@ protected:
 	HitImmunity::HitTypeSVec m_HitTypeProtection;
 
 	shared_str		m_ActorVisual;
+
+protected:
+	u32				m_ef_equipment_type;
+
+public:
+	virtual u32		ef_equipment_type	() const;
 };

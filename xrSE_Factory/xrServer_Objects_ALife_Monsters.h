@@ -95,6 +95,8 @@ SERVER_ENTITY_DECLARE_BEGIN2(CSE_ALifeTrader,CSE_ALifeDynamicObjectVisual,CSE_AL
 	virtual void					on_surge				();
 	int 							supplies_count;
 			void 	__stdcall		OnSuppliesCountChange	(PropValue* sender);
+	virtual bool					natural_weapon			() const {return false;}
+	virtual bool					natural_detector		() const {return false;}
 
 #ifdef XRGAME_EXPORTS
 			u32						dwfGetItemCost			(CSE_ALifeInventoryItem *tpALifeInventoryItem);
@@ -131,6 +133,8 @@ SERVER_ENTITY_DECLARE_BEGIN2(CSE_ALifeAnomalousZone,CSE_ALifeCustomZone,CSE_ALif
 	float							m_min_start_power;
 	float							m_max_start_power;
 	float							m_power_artefact_factor;
+	u32								m_ef_anomaly_type;
+	u32								m_ef_weapon_type;
 
 									CSE_ALifeAnomalousZone	(LPCSTR caSection);
 	virtual							~CSE_ALifeAnomalousZone	();
@@ -138,6 +142,9 @@ SERVER_ENTITY_DECLARE_BEGIN2(CSE_ALifeAnomalousZone,CSE_ALifeCustomZone,CSE_ALif
 	virtual CSE_Abstract			*base					();
 	virtual const CSE_Abstract		*base					() const;
 	virtual CSE_ALifeSchedulable	*cast_schedulable		()  {return this;};
+	virtual u32						ef_anomaly_type			() const;
+	virtual u32						ef_weapon_type			() const;
+	virtual u32						ef_creature_type		() const;
 #ifndef XRGAME_EXPORTS
 	virtual	void					update					()	{};
 #else
@@ -202,6 +209,10 @@ SERVER_ENTITY_DECLARE_BEGIN(CSE_ALifeCreatureAbstract,CSE_ALifeDynamicObjectVisu
 
 	xr_vector<ALife::_OBJECT_ID>	m_dynamic_out_restrictions;
 	xr_vector<ALife::_OBJECT_ID>	m_dynamic_in_restrictions;
+
+	u32								m_ef_creature_type;
+	u32								m_ef_weapon_type;
+	u32								m_ef_detector_type;
 									
 									CSE_ALifeCreatureAbstract(LPCSTR caSection);
 	virtual							~CSE_ALifeCreatureAbstract();
@@ -212,6 +223,9 @@ SERVER_ENTITY_DECLARE_BEGIN(CSE_ALifeCreatureAbstract,CSE_ALifeDynamicObjectVisu
 	virtual bool					used_ai_locations		() const;
 	virtual bool					can_switch_online		() const;
 	virtual bool					can_switch_offline		() const;
+	virtual u32						ef_creature_type		() const;
+	virtual u32						ef_weapon_type			() const;
+	virtual u32						ef_detector_type		() const;
 #ifdef XRGAME_EXPORTS
 	virtual void					on_spawn				();
 #endif
@@ -222,16 +236,16 @@ add_to_type_list(CSE_ALifeCreatureAbstract)
 SERVER_ENTITY_DECLARE_BEGIN2(CSE_ALifeMonsterAbstract,CSE_ALifeCreatureAbstract,CSE_ALifeSchedulable)
 	GameGraph::_GRAPH_ID				m_tNextGraphID;
 	GameGraph::_GRAPH_ID				m_tPrevGraphID;
-	float							m_fGoingSpeed;
-	float							m_fCurSpeed;
-	float							m_fDistanceFromPoint;
-	float							m_fDistanceToPoint;
-	GameGraph::TERRAIN_VECTOR		m_tpaTerrain;
-	float							m_fMaxHealthValue;
-	float							m_fRetreatThreshold;
-	float							m_fEyeRange;
-	float							m_fHitPower;
-	ALife::EHitType					m_tHitType;
+	float								m_fGoingSpeed;
+	float								m_fCurSpeed;
+	float								m_fDistanceFromPoint;
+	float								m_fDistanceToPoint;
+	GameGraph::TERRAIN_VECTOR			m_tpaTerrain;
+	float								m_fMaxHealthValue;
+	float								m_fRetreatThreshold;
+	float								m_fEyeRange;
+	float								m_fHitPower;
+	ALife::EHitType						m_tHitType;
 	shared_str							m_out_space_restrictors;
 	shared_str							m_in_space_restrictors;
 	svector<float,ALife::eHitTypeMax>	m_fpImmunityFactors;
@@ -243,6 +257,10 @@ SERVER_ENTITY_DECLARE_BEGIN2(CSE_ALifeMonsterAbstract,CSE_ALifeCreatureAbstract,
 	virtual CSE_Abstract			*base					();
 	virtual const CSE_Abstract		*base					() const;
 	virtual CSE_ALifeSchedulable	*cast_schedulable		()  {return this;};
+
+	virtual u32						ef_creature_type		() const;
+	virtual u32						ef_weapon_type			() const;
+	virtual u32						ef_detector_type		() const;
 #ifndef XRGAME_EXPORTS
 	virtual	void					update					()	{};
 #else
@@ -283,7 +301,8 @@ SERVER_ENTITY_DECLARE_BEGIN3(CSE_ALifeCreatureActor,CSE_ALifeCreatureAbstract,CS
 	virtual CSE_Abstract			*init					();
 	virtual void					load					(NET_Packet &tNetPacket);
 	virtual bool					can_save				()const{return true;}
-
+	virtual bool					natural_weapon			() const {return false;}
+	virtual bool					natural_detector		() const {return false;}
 #ifdef XRGAME_EXPORTS
 	virtual void					spawn_supplies			();
 #endif
@@ -388,6 +407,8 @@ SERVER_ENTITY_DECLARE_BEGIN2(CSE_ALifeHumanAbstract,CSE_ALifeTraderAbstract,CSE_
 	virtual CSE_Abstract			*base					();
 	virtual const CSE_Abstract		*base					() const;
 	virtual void					on_surge				();
+	virtual bool					natural_weapon			() const {return false;}
+	virtual bool					natural_detector		() const {return false;}
 #ifdef XRGAME_EXPORTS
 	virtual	void					update					();
 			// FSM

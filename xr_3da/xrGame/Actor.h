@@ -615,6 +615,8 @@ public:
 	IC		CActorCondition		&conditions					() const;
 	IC		CMaterialManager	&material					() const;
 	virtual DLL_Pure			*_construct					();
+	virtual bool				natural_weapon				() const {return false;}
+	virtual bool				natural_detector			() const {return false;}
 };
 
 IC	CActorCondition	&CActor::conditions	() const

@@ -70,6 +70,8 @@ void CCustomDetector::Load(LPCSTR section)
 		}
 		else break;
 	} while(true);
+
+	m_ef_detector_type	= pSettings->r_u32(section,"ef_detector_type");
 }
 
 void CCustomDetector::net_Destroy() 
@@ -273,4 +275,9 @@ void CCustomDetector::OnRender()
 void CCustomDetector::renderable_Render()
 {
 	inherited::renderable_Render();
+}
+
+u32	CCustomDetector::ef_detector_type	() const
+{
+	return	(m_ef_detector_type);
 }

@@ -416,6 +416,14 @@ public:
 	float					m_fCurrentCartirdgeDisp;
 
 	IC	bool				can_be_strapped	() const {return m_can_be_strapped;};
+
+protected:
+	u32						m_ef_main_weapon_type;
+	u32						m_ef_weapon_type;
+
+public:
+	virtual u32				ef_main_weapon_type	() const;
+	virtual u32				ef_weapon_type		() const;
 };
 
 #endif // !defined(AFX_WEAPON_H__7C42AD7C_0EBD_4AD1_90DE_2F972BF538B9__INCLUDED_)

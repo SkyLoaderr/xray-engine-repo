@@ -58,6 +58,8 @@ void CCustomOutfit::Load(LPCSTR section)
 		m_ActorVisual = pSettings->r_string(section, "actor_visual");
 	else
 		m_ActorVisual = NULL;
+
+	m_ef_equipment_type		= pSettings->r_u32(section,"ef_equipment_type");
 }
 
 void CCustomOutfit::net_Destroy() 
@@ -177,3 +179,8 @@ void	CCustomOutfit::OnMoveToRuck		()
 		}
 	}
 };
+
+u32	CCustomOutfit::ef_equipment_type	() const
+{
+	return		(m_ef_equipment_type);
+}

@@ -500,7 +500,7 @@ CScriptGameObject *CGameObject::lua_game_object		() const
 	if (!m_spawned)
 		Msg							("! you are trying to use a destroyed object [%x]",this);
 #endif
-	VERIFY							(m_spawned);
+	THROW							(m_spawned);
 	if (!m_lua_game_object)
 		m_lua_game_object			= xr_new<CScriptGameObject>(const_cast<CGameObject*>(this));
 	return							(m_lua_game_object);
@@ -547,4 +547,49 @@ LPCSTR CGameObject::Name () const
 
 void CGameObject::on_reguested_spawn	(CObject *object)
 {
+}
+
+u32	CGameObject::ef_creature_type		() const
+{
+	string16	temp; CLSID2TEXT(CLS_ID,temp);
+	R_ASSERT3	(false,"Invalid creature type request, virtual function is not properly overloaded!",temp);
+	return		(u32(-1));
+}
+
+u32	CGameObject::ef_equipment_type		() const
+{
+	string16	temp; CLSID2TEXT(CLS_ID,temp);
+	R_ASSERT3	(false,"Invalid equipment type request, virtual function is not properly overloaded!",temp);
+	return		(u32(-1));
+//	return		(6);
+}
+
+u32	CGameObject::ef_main_weapon_type	() const
+{
+	string16	temp; CLSID2TEXT(CLS_ID,temp);
+	R_ASSERT3	(false,"Invalid main weapon type request, virtual function is not properly overloaded!",temp);
+	return		(u32(-1));
+//	return		(5);
+}
+
+u32	CGameObject::ef_anomaly_type		() const
+{
+	string16	temp; CLSID2TEXT(CLS_ID,temp);
+	R_ASSERT3	(false,"Invalid anomaly type request, virtual function is not properly overloaded!",temp);
+	return		(u32(-1));
+}
+
+u32	CGameObject::ef_weapon_type			() const
+{
+	string16	temp; CLSID2TEXT(CLS_ID,temp);
+	R_ASSERT3	(false,"Invalid weapon type request, virtual function is not properly overloaded!",temp);
+	return		(u32(-1));
+//	return		(u32(0));
+}
+
+u32	CGameObject::ef_detector_type		() const
+{
+	string16	temp; CLSID2TEXT(CLS_ID,temp);
+	R_ASSERT3	(false,"Invalid detector type request, virtual function is not properly overloaded!",temp);
+	return		(u32(-1));
 }

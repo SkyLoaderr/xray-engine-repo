@@ -239,42 +239,7 @@ CSE_ALifeItemWeapon	*CSE_ALifeHumanAbstract::tpfGetBestWeapon(EHitType &tHitType
 
 		l_tpALifeItemWeapon->m_dwAmmoAvailable = get_available_ammo_count(l_tpALifeItemWeapon,children);
 		if (l_tpALifeItemWeapon->m_dwAmmoAvailable || (!l_tpALifeItemWeapon->m_dwSlot) || (3 == l_tpALifeItemWeapon->m_dwSlot)) {
-			u32					l_dwCurrentBestWeapon = 0; 
-			switch (l_tpALifeItemWeapon->m_tClassID) {
-				case CLSID_OBJECT_W_RPG7:
-				case CLSID_OBJECT_W_M134: {
-					l_dwCurrentBestWeapon = 9;
-					break;
-				}
-				case CLSID_OBJECT_W_FN2000:
-				case CLSID_OBJECT_W_SVD:
-				case CLSID_OBJECT_W_SVU:
-				case CLSID_OBJECT_W_VINTOREZ: {
-					l_dwCurrentBestWeapon = 8;
-					break;
-				}
-				case CLSID_OBJECT_W_SHOTGUN:
-				case CLSID_OBJECT_W_AK74:
-				case CLSID_OBJECT_W_GROZA:
-				case CLSID_OBJECT_W_VAL:
-				case CLSID_OBJECT_W_LR300:		{
-					l_dwCurrentBestWeapon = 6;
-					break;
-				}
-				case CLSID_OBJECT_W_HPSA:		
-				case CLSID_OBJECT_W_PM:			
-				case CLSID_OBJECT_W_FORT:		
-				case CLSID_OBJECT_W_WALTHER:	
-				case CLSID_OBJECT_W_USP45:		{
-					l_dwCurrentBestWeapon = 5;
-					break;
-				}
-				case CLSID_OBJECT_W_KNIFE: {
-					l_dwCurrentBestWeapon = 1;
-					break;
-				}
-				default : NODEFAULT;
-			}
+			u32					l_dwCurrentBestWeapon = l_tpALifeItemWeapon->ef_weapon_type(); 
 			if (l_dwCurrentBestWeapon > l_dwBestWeapon) {
 				l_dwBestWeapon = l_dwCurrentBestWeapon;
 				m_tpCurrentBestWeapon = l_tpALifeItemWeapon;
