@@ -112,9 +112,11 @@ void IGame_Level::OnRender		( )
 {
 	if (_abs(Device.fTimeDelta)<EPS_S) return;
 
-	// Level render
-	Render->Calculate			();
-	Render->Render				();
+	// Level render, only when no client output required
+	if (!g_pGamePersistent->bDedicatedServer)	{
+		Render->Calculate			();
+		Render->Render				();
+	}
 
 	// Font
 	pApp->pFontSystem->OnRender	();
