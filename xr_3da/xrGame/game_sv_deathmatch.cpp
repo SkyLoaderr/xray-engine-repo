@@ -40,6 +40,7 @@ void	game_sv_Deathmatch::OnPlayerKillPlayer		(u32 id_killer, u32 id_killed)
 {
 	game_PlayerState*	ps_killer	=	get_id	(id_killer);
 	game_PlayerState*	ps_killed	=	get_id	(id_killed);
+	if (!ps_killed || !ps_killer) return;
 	ps_killed->flags				|=	GAME_PLAYER_FLAG_VERY_VERY_DEAD;
 	ps_killed->deaths				+=	1;
 	if (ps_killer == ps_killed)	
@@ -184,25 +185,9 @@ void	game_sv_Deathmatch::OnPlayerReady			(u32 id)
 	case GAME_PHASE_INPROGRESS:
 		{
 			LPCSTR	options			=	get_name_id	(id);
-			//------------------------------------------------------------
-			xrClientData* xrCData	=	Level().Server->ID_to_client(id);
-			if (xrCData->owner)
-			{
-				if (xrCData->owner->owner != Level().Server->GetServer_client())
-				{
-					xrCData->owner->owner = Level().Server->GetServer_client();
-				};
-				CObject* pObject =  Level().Objects.net_Find(xrCData->owner->ID);
-				if (pObject && pObject->SUB_CLS_ID == CLSID_OBJECT_ACTOR)
-				{
-					CActor* pActor = dynamic_cast <CActor*>(pObject);
-					if (pActor)
-					{
-						pActor->m_dwDeathTime = Level().GetGameTime();
-						pActor->m_bAllowDeathRemove = true;
-					};
-				};
-			};
+			Msg		("* [%s] respawned ",get_option_s(options,"name","Player"));
+			//------------------------------------------------------------			
+			AllowDeadBodyRemove(id);
 			//------------------------------------------------------------
 			// Spawn "actor"
 			CSE_Abstract			*E	=	spawn_begin	("actor");													// create SE
@@ -246,25 +231,68 @@ void game_sv_Deathmatch::OnPlayerDisconnect		(u32 id_who)
 
 	xrServer*	S					=	Level().Server;
 	
-	// Remove everything
-	xr_vector<u16>*	C				=	get_children(id_who);
-	if (C)
+	// Remove everything	
+	xrClientData* xrCData	=	S->ID_to_client(id_who);
+	xrClientData* xrSCData	=	S->GetServer_client();	
+
+	if (xrCData != xrSCData)
 	{
-		xr_vector<u16>::iterator i,e;
-		i=C->begin();
-		e=C->end();
-		for(;i!=e;++i)
-			//	while(C->size())
+		// Kill Player on all clients
+		NET_Packet			P;
+		P.w_begin			(M_EVENT);
+		P.w_u32				(Level().timeServer());
+		P.w_u16				(GE_DIE);
+		P.w_u16				(xrCData->owner->ID);
+		P.w_u16				(0);
+		P.w_u32				(xrCData->ID);
+		S->SendBroadcast	(0xffffffff,P,net_flags(TRUE, TRUE, TRUE));
+
+		AllowDeadBodyRemove(id_who);
+	}
+	else
+	{	
+		xr_vector<u16>*	C				=	get_children(id_who);
+
+		if (C)
 		{
-			u16		eid						= (*i);
+			xr_vector<u16>::iterator i,e;
+			i=C->begin();
+			e=C->end();
+			for(;i!=e;++i)
+				//	while(C->size())
+			{
+				u16		eid						= (*i);
 
-			CSE_Abstract*		what		= S->ID_to_entity(eid);
-			if (!what) continue;
-			S->Perform_destroy				(what,net_flags(TRUE, TRUE), TRUE);
-		}
-	};
-	CSE_Abstract*		from		= S->ID_to_entity(get_id_2_eid(id_who));
-	S->Perform_destroy				(from,net_flags(TRUE, TRUE), TRUE);
-
+				CSE_Abstract*		what		= S->ID_to_entity(eid);
+				if (!what) continue;
+				S->Perform_destroy				(what,net_flags(TRUE, TRUE), TRUE);
+			}
+		};
+		CSE_Abstract*		from		= S->ID_to_entity(get_id_2_eid(id_who));
+		S->Perform_destroy				(from,net_flags(TRUE, TRUE), TRUE);
+	}
 //	HUD().outMessage			(0xffffffff,"DM","Player '%s' disconnected",Name);
+};
+
+void	game_sv_Deathmatch::AllowDeadBodyRemove		(u32 id)
+{
+	xrClientData* xrCData	=	Level().Server->ID_to_client(id);
+	if (!xrCData) return;
+	if (!xrCData->owner) return;
+	
+	if (xrCData->owner->owner != Level().Server->GetServer_client())
+	{
+		xrCData->owner->owner = Level().Server->GetServer_client();
+	};
+
+	CObject* pObject =  Level().Objects.net_Find(xrCData->owner->ID);
+	if (pObject && pObject->SUB_CLS_ID == CLSID_OBJECT_ACTOR)
+	{
+		CActor* pActor = dynamic_cast <CActor*>(pObject);
+		if (pActor)
+		{
+			pActor->m_dwDeathTime = Level().GetGameTime();
+			pActor->m_bAllowDeathRemove = true;
+		};
+	};
 };

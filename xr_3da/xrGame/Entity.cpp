@@ -60,6 +60,7 @@ void CEntity::OnEvent		(NET_Packet& P, u16 type)
 
 void CEntity::Die() 
 {
+	fEntityHealth = 0;
 }
 
 //обновление состояния
