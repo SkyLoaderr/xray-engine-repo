@@ -36,6 +36,7 @@ class CPHElement	:
 	dReal						m_w_limit ;					//->to shell ??		//bl
 	dReal						m_l_limit ;					//->to shell ??		//bl
 	dVector3					m_safe_position;			//e					//st
+	dQuaternion					m_safe_quaternion;
 	dVector3					m_safe_velocity;			//e					//st
 	Fmatrix						m_inverse_local_transform;	//e				//bt
 	dReal						k_w;						//->to shell ??		//st

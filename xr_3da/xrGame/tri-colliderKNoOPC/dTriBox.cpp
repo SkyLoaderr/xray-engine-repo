@@ -706,3 +706,28 @@ contact->depth = outDepth;
 
 
 }
+
+int BoxTri::Colide(
+					const dReal* v0,const dReal* v1,const dReal* v2,
+					CDB::TRI* T,
+					dxGeom *o1,dxGeom *o2,
+					int flags, dContactGeom *contact, int skip
+					)
+{
+	return dTriBox(v0,v1,v2,T,o1,o2,flags,contact,skip);
+}
+
+int BoxTri::ColidePlain(
+						 const dReal* triSideAx0,const dReal* triSideAx1,
+						 const dReal* triAx,
+						 //const dReal* v0,
+						 //const dReal* v1,
+						 //const dReal* v2,
+						 CDB::TRI* T,
+						 dReal dist,
+						 dxGeom *o1, dxGeom *o2,
+						 int flags, dContactGeom *contact, int skip
+						 )
+{
+	return dSortedTriBox(triSideAx0,triSideAx1,triAx,T,dist,o1,o2,flags,contact,skip);
+}

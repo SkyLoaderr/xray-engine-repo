@@ -248,6 +248,7 @@ void CPHElement::Activate(const Fmatrix &m0,float dt01,const Fmatrix &m2,bool di
 	dBodySetLinearVel(m_body,m2.c.x-m0.c.x,m2.c.y-m0.c.y,m2.c.z-m0.c.z);
 
 	dVectorSet(m_safe_position,dBodyGetPosition(m_body));
+	dQuaternionSet(m_safe_quaternion,dBodyGetQuaternion(m_body));
 	dVectorSet(m_safe_velocity,dBodyGetLinearVel(m_body));
 
 	//////////////////////////////////////////////////////////////
@@ -291,6 +292,7 @@ void CPHElement::Activate(const Fmatrix &transform,const Fvector& lin_vel,const 
 	dBodySetAngularVel(m_body,ang_vel.x,ang_vel.y,ang_vel.z);
 
 	dVectorSet(m_safe_position,dBodyGetPosition(m_body));
+	dQuaternionSet(m_safe_quaternion,dBodyGetQuaternion(m_body));
 	dVectorSet(m_safe_velocity,dBodyGetLinearVel(m_body));
 
 
@@ -419,6 +421,7 @@ void CPHElement::PhDataUpdate(dReal step){
 	{
 		dVectorSet(m_safe_position,position);
 		dVectorSet(m_safe_velocity,dBodyGetLinearVel(m_body));
+		
 	}
 
 	/////////////////limit & secure angular vel///////////////////////////////////////////////////////////////////////////////
@@ -439,15 +442,15 @@ void CPHElement::PhDataUpdate(dReal step){
 
 	////////////////secure rotation////////////////////////////////////////////////////////////////////////////////////////
 	{
-		const dReal* rotation=dBodyGetRotation(m_body);
 
-		if(!dV_valid(rotation))
+
+		if(!dQ_valid(dBodyGetQuaternion(m_body)))
 		{
-			dMatrix3 m;
-			dRSetIdentity(m);
-			dBodySetRotation(m_body,m);
+
+			dBodySetQuaternion(m_body,m_safe_quaternion);
 
 		}
+		else dQuaternionSet(m_safe_quaternion,dBodyGetQuaternion(m_body));
 
 	}
 
@@ -588,6 +591,7 @@ void CPHElement::Activate(bool place_current_forms,bool disable){
 		SetTransform(mXFORM);
 	}
 	dVectorSet(m_safe_position,dBodyGetPosition(m_body));
+	dQuaternionSet(m_safe_quaternion,dBodyGetQuaternion(m_body));
 	dVectorSet(m_safe_velocity,dBodyGetLinearVel(m_body));
 
 	//////////////////////////////////////////////////////////////
@@ -631,6 +635,7 @@ void CPHElement::RunSimulation(const Fmatrix& start_from)
 		SetTransform(globe);
 	}
 	dVectorSet(m_safe_position,dBodyGetPosition(m_body));
+	dQuaternionSet(m_safe_quaternion,dBodyGetQuaternion(m_body));
 	dVectorSet(m_safe_velocity,dBodyGetLinearVel(m_body));
 
 }
@@ -647,6 +652,7 @@ void CPHElement::Activate(const Fmatrix& start_from,bool disable){
 		SetTransform(globe);
 	}
 	dVectorSet(m_safe_position,dBodyGetPosition(m_body));
+	dQuaternionSet(m_safe_quaternion,dBodyGetQuaternion(m_body));
 	dVectorSet(m_safe_velocity,dBodyGetLinearVel(m_body));
 
 
@@ -1192,6 +1198,7 @@ void CPHElement::PresetActive()
 
 	}
 	dVectorSet(m_safe_position,dBodyGetPosition(m_body));
+	dQuaternionSet(m_safe_quaternion,dBodyGetQuaternion(m_body));
 	dVectorSet(m_safe_velocity,dBodyGetLinearVel(m_body));
 
 	//////////////////////////////////////////////////////////////

@@ -687,7 +687,7 @@ dInternalStepIslandFast (dxWorld * world, dxBody * const *bodies, int nb, dxJoin
 			dMULTIPLY2_333 (tmp, body->invI, body->R);
 			dMULTIPLY0_333 (globalInvI + b * 12, body->R, tmp);
 
-			for (i = 0; i < 4; i++)
+			for (i = 0; i < 3; i++)
 				body->tacc[i] = saveTacc[b * 4 + i];
 			// compute rotational force
 			dMULTIPLY0_331 (tmp, globalI + b * 12, body->avel);
@@ -710,15 +710,18 @@ dInternalStepIslandFast (dxWorld * world, dxBody * const *bodies, int nb, dxJoin
 #endif
 		//randomize the order of the joints by looping through the array
 		//and swapping the current joint pointer with a random one before it.
-		for (j = 0; j < nj; j++)
+		for (j = 1; j < nj; j++)
 		{
-			joint = joints[j];
+			joint			  = joints[j];
 			dxJoint::Info1 i1 = info[j];
 			dxJoint::Info2 i2 = Jinfo[j];
-			int r = rand () % (j + 1);
+
+			int r = rand () % (j+1);
+
 			joints[j] = joints[r];
 			info[j] = info[r];
 			Jinfo[j] = Jinfo[r];
+
 			joints[r] = joint;
 			info[r] = i1;
 			Jinfo[r] = i2;
@@ -786,10 +789,25 @@ dInternalStepIslandFast (dxWorld * world, dxBody * const *bodies, int nb, dxJoin
 		{
 			body = bodies[b];
 
-			for (i = 0; i < 4; i++)
+			for (i = 0; i < 3; i++)
 			{
+#ifdef			NOISING
+				const dReal RAND_MAX_2=16383;
+				const dReal NOISE_EPSILON=0.000000831f;
+#define NOISE()	(1.f+(RAND_MAX_2-rand()%RAND_MAX)*NOISE_EPSILON)
+				dReal noise=NOISE();
+				dReal mul=ministep*noise;
+				body->facc[i] *= mul;
+				noise=NOISE();
+				mul=ministep*noise;
+				body->tacc[i] *= mul;
+#else
+				
 				body->facc[i] *= ministep;
 				body->tacc[i] *= ministep;
+				
+#endif
+
 			}
 
 			//apply torque
@@ -804,7 +822,7 @@ dInternalStepIslandFast (dxWorld * world, dxBody * const *bodies, int nb, dxJoin
 		}
 	}
 	for (b = 0; b < nb; b++)
-		for (j = 0; j < 4; j++)
+		for (j = 0; j < 3; j++)
 			bodies[b]->facc[j] = bodies[b]->tacc[j] = 0;
 }
 
