@@ -19,8 +19,16 @@ function abort(reason)
 end
 
 function trace(script_name, fmt, ...)
-	if debug.trace_script == script_name then
+	if debug_info.trace_script == script_name then
 		log(string.format(fmt, unpack(arg)))
+	end
+end
+
+function to_str(what)
+	if what == nil then
+		return "<nil>"
+	else
+		return tostring(what)
 	end
 end
 

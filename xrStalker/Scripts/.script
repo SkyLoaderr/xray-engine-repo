@@ -7,6 +7,7 @@ module ("xr_sounds_id")
 module ("xr_evaluators")
 module ("xr_storyline")
 
+module ("debug_info")
 module ("utils")
 
 module ("gramofon")

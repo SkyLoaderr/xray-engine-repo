@@ -478,6 +478,16 @@ end
 -- 31 - начиная с этой точки и дальше охранник побежит
 function set_guard(object, enable, path_main, path_hideout, running, search_light, path_camp, loudspeaker_name,
 	anim_set_1, anim_set_2, anim_set_3, sound_set_1, sound_set_2, sound_set_3)
+	utils.trace(this.script_name(), "set_guard called: object:name()='%s', path_main='%s', path_hideout='%s', " ..
+		"running='%s', search_light='%s', path_camp='%s', loudspeaker='%s'",
+		utils.to_str(object:name()),
+		utils.to_str(path_main),
+		utils.to_str(path_hideout),
+		utils.to_str(running),
+		utils.to_str(search_light),
+		utils.to_str(path_camp),
+		utils.to_str(loudspeaker_name) )
+
 	local char_ini = object:spawn_ini()
 	local st = xr_motivator.storage[object:id()].guard
 
