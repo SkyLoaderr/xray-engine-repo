@@ -95,7 +95,7 @@ Oles:
 		..........UNRELIABLE..........
 	+ TODO: SoundMangager - 3D control on/off
 	. TODO: Per sector wallmarks
-	. TODO: Lighting on models
+	. TODO: Lighting on models / ground lighting
 	. TODO: AI
 		. TODO: не стрелять в своего если он находится на линии огня (отойти в сторону, и т.п.)
 		. TODO: модели поведения
