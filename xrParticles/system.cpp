@@ -39,8 +39,10 @@ struct AutoCall
 AutoCall::AutoCall()
 {
 	// The list of groups, etc.	
+	/*
 	_ParticleState::group_vec.reserve(128);
 	_ParticleState::alist_vec.reserve(128);
+	*/
 }
 static AutoCall AC;
 

@@ -18,6 +18,8 @@ u32		get_pool				(size_t size)
 void*	xrMemory::mem_alloc		(size_t size)
 {
 	stat_calls++;
+	if (!)
+
 	cs.Enter					();
 	u32	pool					= get_pool	(size);
 	void* _ptr					= 0;

@@ -7,6 +7,7 @@
 #include "xrMemory_align.h"
 
 xrMemory	Memory;
+BOOL		mem_initialized	= FALSE;
 
 // Processor specific implementations
 extern		pso_MemCopy		xrMemCopy_MMX;
