@@ -134,17 +134,17 @@ function set_storyline(object, char_ini)
 
 
      --Сталкеры в баре
-     xr_motivator.storage[object:id()].bar_stalker = {enabled = false, interlocutor = nil, passive = false}
-     if char_ini:section_exist ("bar_stalker") == true then
-        xr_motivator.storage[object:id()].bar_stalker.enabled = true
-        if char_ini:line_exist ("bar_stalker", "interlocutor") == true then
-           xr_motivator.storage[object:id()].bar_stalker.interlocutor = char_ini:r_string ("bar_stalker", "interlocutor")
-        end
-        if char_ini:line_exist ("bar_stalker", "passive") == true then
-           xr_motivator.storage[object:id()].bar_stalker.passive = char_ini:r_bool ("bar_stalker", "passive")
-        end
-        bar_stalker.add_to_binder (object)
-     end
+     --xr_motivator.storage[object:id()].bar_stalker = {enabled = false, interlocutor = nil, passive = false}
+     --if char_ini:section_exist ("bar_stalker") == true then
+        --xr_motivator.storage[object:id()].bar_stalker.enabled = true
+        --if char_ini:line_exist ("bar_stalker", "interlocutor") == true then
+           --xr_motivator.storage[object:id()].bar_stalker.interlocutor = char_ini:r_string ("bar_stalker", "interlocutor")
+        --end
+        --if char_ini:line_exist ("bar_stalker", "passive") == true then
+           --xr_motivator.storage[object:id()].bar_stalker.passive = char_ini:r_bool ("bar_stalker", "passive")
+        --end
+        --bar_stalker.add_to_binder (object)
+     --end
 
     -- Бармен
     if char_ini:section_exist("barman") then
@@ -152,13 +152,13 @@ function set_storyline(object, char_ini)
     end
 
     --' рыъюуюышъш т срЁх :)
-	xr_motivator.storage[object:id ()].bar = {
-		enabled = false,
-		meat = false,
-		interlocutor = nil,
-		talking = false,
-		pose = nil
-	}
-	bar_stalker.add_to_binder (object, char_ini)
+	--xr_motivator.storage[object:id ()].bar = {
+		--enabled = false,
+		--meat = false,
+		--interlocutor = nil,
+		--talking = false,
+		--pose = nil
+	--}
+	--bar_stalker.add_to_binder (object, char_ini)
 
 end
