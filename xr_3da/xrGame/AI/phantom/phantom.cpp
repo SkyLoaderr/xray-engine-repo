@@ -1,7 +1,7 @@
 #include "stdafx.h"
 #include "phantom.h"
 #include "../../NET_utils.h"
-#include "../level.h"
+#include "../../level.h"
 
 CPhantom::CPhantom()
 {
