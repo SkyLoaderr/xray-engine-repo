@@ -33,33 +33,31 @@ namespace CPU
 static u32	init_counter	= 0;
 void xrCore::_initialize	(LPCSTR _ApplicationName, LogCallback cb, BOOL init_fs)
 {
-	init_counter++;
-	if (init_counter>1)		return;
+	if (0==init_counter){	
+		// Init COM so we can use CoCreateInstance
+		CoInitializeEx		(NULL, COINIT_MULTITHREADED);
 
-	// Init COM so we can use CoCreateInstance
-	CoInitializeEx			(NULL, COINIT_MULTITHREADED);
+		strcpy				(ApplicationName,_ApplicationName);
+		strlwr				(strcpy(Params,GetCommandLine()));
 
-	strcpy					(ApplicationName,_ApplicationName);
-	strlwr					(strcpy(Params,GetCommandLine()));
+		// User/Comp Name
+		DWORD	sz_user		= sizeof(UserName);
+		GetUserName			(UserName,&sz_user);
 
-	// User/Comp Name
-	DWORD	sz_user			= sizeof(UserName);
-	GetUserName				(UserName,&sz_user);
+		DWORD	sz_comp		= sizeof(CompName);
+		GetComputerName		(CompName,&sz_comp);
 
-	DWORD	sz_comp			= sizeof(CompName);
-	GetComputerName			(CompName,&sz_comp);
+		// Mathematics & PSI detection
+		CPU::Detect			();
+		if (strstr(Params,"-mem_debug"))	Memory._initialize		(TRUE);
+		else								Memory._initialize		(FALSE);
+		InitMath			();
+		Debug._initialize	();
 
-	// Mathematics & PSI detection
-	CPU::Detect				();
-	if (strstr(Params,"-mem_debug"))	Memory._initialize		(TRUE);
-	else								Memory._initialize		(FALSE);
-	InitMath				();
-	Debug._initialize		();
-
-	rtc_initialize			();
-	xr_FS					= xr_new<CLocatorAPI>	();
-	xr_EFS					= xr_new<EFS_Utils>		();
-
+		rtc_initialize		();
+		xr_FS				= xr_new<CLocatorAPI>	();
+		xr_EFS				= xr_new<EFS_Utils>		();
+	}
 	if (init_fs){
 		u32 flags			= 0;
 		if (0!=strstr(Params,"-build"))	 flags |= CLocatorAPI::flBuildCopy;
@@ -71,6 +69,7 @@ void xrCore::_initialize	(LPCSTR _ApplicationName, LogCallback cb, BOOL init_fs)
 		EFS._initialize		();
 	}
 	SetLogCB				(cb);
+	init_counter++;
 }
 
 void xrCore::_destroy		()
