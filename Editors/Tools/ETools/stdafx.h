@@ -9,6 +9,7 @@
 
 #pragma once
 #define ENGINE_API 
+#define NO_XRC_STATS
 
 #include <xrCore.h>
 
@@ -23,6 +24,7 @@
 
 #pragma comment(lib,"x:/xrCore.lib")
 #pragma comment(lib,"x:/xrQSlim.lib")
+#pragma comment(lib,"x:/xrCDB.lib")
 //{{AFX_INSERT_LOCATION}}
 // Microsoft Visual C++ will insert additional declarations immediately before the previous line.
 

@@ -123,4 +123,16 @@ namespace ETOOLS{
 		if (v < 0.0f || u + v > 1.0f) return false;
 		return true;
 	}
+
+	ETOOLS_API CDB::RESULT*	r_begin	()	{	return XRC.r_begin();		};
+	ETOOLS_API CDB::RESULT*	r_end	()	{	return XRC.r_end();			};
+	ETOOLS_API int	r_count			()	{	return XRC.r_count();		};
+	ETOOLS_API void ray_options	(u32 flags)
+	{
+		XRC.ray_options(flags);
+	}
+	ETOOLS_API void	ray_query	(const Fmatrix& inv_parent, const CDB::MODEL *m_def, const Fvector& r_start,  const Fvector& r_dir, float r_range)
+	{
+		XRC.ray_query(inv_parent,m_def,r_start,r_dir,r_range);
+	}
 }

@@ -179,7 +179,7 @@
 				FavorSizeOrSpeed="1"
 				EnableFiberSafeOptimizations="TRUE"
 				OptimizeForProcessor="3"
-				PreprocessorDefinitions="WIN32;NDEBUG;_WINDOWS;ETOOLS_EXPORTS"
+				PreprocessorDefinitions="WIN32;NDEBUG;_WINDOWS;_DEBUG;ETOOLS_EXPORTS"
 				StringPooling="TRUE"
 				RuntimeLibrary="2"
 				BufferSecurityCheck="FALSE"
@@ -289,6 +289,15 @@
 			</File>
 			<File
 				RelativePath=".\StdAfx.h">
+			</File>
+			<File
+				RelativePath=".\xrCDB.h">
+			</File>
+			<File
+				RelativePath=".\xrXRC.cpp">
+			</File>
+			<File
+				RelativePath=".\xrXRC.h">
 			</File>
 		</Filter>
 		<Filter
