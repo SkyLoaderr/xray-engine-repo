@@ -59,7 +59,7 @@ function main()
 		"characters_voice\\human_01\\scenario\\gunslinger\\start_dream_l",
 		sound_object.s2d
 	)
-	local actor = level.actor()
+	local actor = db.actor
 	local snd_pos = actor:position()
 	snd_pos.y = snd_pos.y + 1.5
 
