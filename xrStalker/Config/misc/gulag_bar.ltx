@@ -16,6 +16,7 @@ meet_talk_enabled = true
 meet_dialog = bar_dolg_base_guard_start
 on_info = {+bar_dolg_base_pass} zoneguard11@bar_dolg_general_guard_left_friend
 ;snd_greet = bar_dolg_base_guard_no_talk
+on_actor_in_zone = bar_dolg_general_guard_zone | zoneguard111@bar_dolg_general_guard_left
 
 [zoneguard11@bar_dolg_general_guard_left_friend]
 path_walk = guard_left_walk
@@ -26,6 +27,17 @@ no_move = true
 meet_talk_enabled = true
 meet_dialog = bar_dolg_base_guard_start
 anim = guard
+
+[zoneguard111@bar_dolg_general_guard_left]
+path_walk = guard_left_walk
+path_look = guard_left_look
+team = bar_dolg_general_guard_team1
+zone_guard = guard_zone
+zone_warn = warn_zone
+no_move = true
+meet_talk_enabled = true
+meet_dialog = bar_dolg_base_guard_start
+on_info = {+bar_dolg_base_pass} zoneguard11@bar_dolg_general_guard_left_friend
 
 
 [logic2@bar_dolg_general_guard_right]
@@ -43,6 +55,7 @@ meet_talk_enabled = true
 meet_dialog = bar_dolg_base_guard_start
 on_info = {+bar_dolg_base_pass} zoneguard12@bar_dolg_general_guard_right_friend
 ;snd_greet = bar_dolg_base_guard_no_talk
+on_actor_in_zone = bar_dolg_general_guard_zone | zoneguard121@bar_dolg_general_guard_right
 
 [zoneguard12@bar_dolg_general_guard_right_friend]
 path_walk = guard_right_walk
@@ -53,6 +66,17 @@ no_move = true
 meet_talk_enabled = true
 meet_dialog = bar_dolg_base_guard_start
 anim = guard
+
+[zoneguard121@bar_dolg_general_guard_right]
+path_walk = guard_right_walk
+path_look = guard_right_look
+team = bar_dolg_general_guard_team2
+zone_guard = guard_zone
+zone_warn = warn_zone
+no_move = true
+meet_talk_enabled = true
+meet_dialog = bar_dolg_base_guard_start
+on_info = {+bar_dolg_base_pass} zoneguard12@bar_dolg_general_guard_right_friend
 
 
 
@@ -69,10 +93,11 @@ zone_warn = warn_zone
 no_move = true
 meet_talk_enabled = true
 meet_dialog = bar_dolg_base_guard_start
-on_info = {+bar_dolg_base_pass} zoneguard13@bar_dolg_general_guard_center
+on_info = {+bar_dolg_base_pass} zoneguard13@bar_dolg_general_guard_center_friend
 snd_greet = bar_dolg_base_guard_backoff
+on_actor_in_zone = bar_dolg_general_guard_zone | zoneguard131@bar_dolg_general_guard_center
 
-[zoneguard13@bar_dolg_general_guard_center]
+[zoneguard13@bar_dolg_general_guard_center_friend]
 path_walk = guard_center_walk
 path_look = guard_center_look
 team = bar_dolg_general_guard_team3
@@ -81,6 +106,17 @@ no_move = true
 meet_talk_enabled = true
 meet_dialog = bar_dolg_base_guard_start
 anim = guard
+
+[zoneguard131@bar_dolg_general_guard_center]
+path_walk = guard_center_walk
+path_look = guard_center_look
+team = bar_dolg_general_guard_team3
+zone_guard = guard_zone
+zone_warn = warn_zone
+no_move = true
+meet_talk_enabled = true
+meet_dialog = bar_dolg_base_guard_start
+on_info = {+bar_dolg_base_pass} zoneguard13@bar_dolg_general_guard_center_friend
 
 
 
