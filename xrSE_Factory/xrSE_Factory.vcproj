@@ -895,6 +895,9 @@
 					<File
 						RelativePath=".\xrServer_Objects_ALife_Monsters_script2.cpp">
 					</File>
+					<File
+						RelativePath=".\xrserver_objects_alife_monsters_script3.cpp">
+					</File>
 				</Filter>
 				<Filter
 					Name="editor_properties"

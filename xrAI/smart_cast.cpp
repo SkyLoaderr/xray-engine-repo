@@ -16,11 +16,11 @@
 #		include "../ispatial.h"
 #		include "../fbasicvisual.h"
 #		include "inventory_item.h"
-#		include "xrServer_Objects_ALife_Items.h"
 #		include "ui/uiwindow.h"
 #		include "customzone.h"
 #		include "weapon.h"
 #	endif
+#	include "xrServer_Objects_ALife_Items.h"
 #endif
 
 #undef   SMART_CAST_H
