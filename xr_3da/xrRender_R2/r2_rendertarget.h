@@ -44,6 +44,7 @@ private:
 	Shader*						s_accum_direct;
 	Shader*						s_accum_point;
 	SGeometry*					g_accum_point;
+	SGeometry*					g_accum_point_tl;
 	IDirect3DVertexBuffer9*		g_accum_point_vb;
 	IDirect3DIndexBuffer9*		g_accum_point_ib;
 

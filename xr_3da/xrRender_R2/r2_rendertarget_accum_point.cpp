@@ -85,11 +85,13 @@ void CRenderTarget::accum_point_shadow	(light* L)
 		0.0f,				0.0f,				1.0f,			0.0f,
 		0.5f + o_w,			0.5f + o_h,			0.0f,			1.0f
 	};
+	Fmatrix			m_Tex;
+	m_Tex.mul		(m_TexelAdjust,RCache.xforms.m_wvp);
 
 	// Constants
 	RCache.set_c					("light_position",	L_pos.x,L_pos.y,L_pos.z,1/L_R);
 	RCache.set_c					("light_color",		L_clr.x,L_clr.y,L_clr.z,L_spec);
-	RCache.set_c					("m_tex",			m_TexelAdjust);
+	RCache.set_c					("m_tex",			m_Tex);
 	R_constant* _C					= RCache.get_c		("jitter");
 	if (_C)
 	{
@@ -119,14 +121,21 @@ void CRenderTarget::accum_point_shadow	(light* L)
 	RCache.Render						(D3DPT_TRIANGLELIST,0,0,DU_SPHERE_NUMVERTEX,0,DU_SPHERE_NUMFACES);
 
 	// XForm vertices + manual, non projective TC gen
-
-
+	/*
+	Fvector2	p0,p1;	
+	u32			Offset;
+	u32			C						= D3DCOLOR_RGBA	(255,255,255,255);
+	float		d_Z						= EPS_S;
+	float		d_W						= 1.f;
+	FVF::TL* pv							= (FVF::TL*) RCache.Vertex.Lock	(4,g_accum_point_tl->vb_stride,Offset);
+	for (u32 vert=0; vert<DU_SPHERE_NUMVERTEX; vert++)
+	{
+		Fvector4	P;
+		RCache.xforms.m_wvp.transform	()
+	}
+	*/
 	// Draw full-screen quad textured with our scene image
 	/*
-	Fvector2	p0,p1;	u32	Offset;
-	float	d_Z		= EPS_S,	d_W = 1.f;
-	u32		C						= D3DCOLOR_RGBA	(255,255,255,255);
-	p0.set							(.5f/_w, .5f/_h);
 	p1.set							((_w+.5f)/_w, (_h+.5f)/_h );
 	FVF::TL* pv						= (FVF::TL*) RCache.Vertex.Lock	(4,g_combine->vb_stride,Offset);
 	pv->set							(EPS,			float(_h+EPS),	d_Z,	d_W, C, p0.x, p1.y);	pv++;
