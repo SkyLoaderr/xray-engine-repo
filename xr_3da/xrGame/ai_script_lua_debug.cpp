@@ -16,14 +16,22 @@ using namespace Script;
 
 void Script::vfPrintOutput(CLuaVirtualMachine *tpLuaVirtualMachine, LPCSTR caScriptFileName)
 {
-	for (int i=0; ; i++)
+	for (int i=-1; ; i--)
 		if (lua_isstring(tpLuaVirtualMachine,i)) {
 			if (!i)
 				Msg("* [LUA] Output from %s",caScriptFileName);
 			Msg		("* [LUA] %s",lua_tostring(tpLuaVirtualMachine,i));
 		}
-		else
-			return;
+		else {
+			for ( i=0; ; i++)
+				if (lua_isstring(tpLuaVirtualMachine,i)) {
+					if (!i)
+						Msg("* [LUA] Output from %s",caScriptFileName);
+					Msg		("* [LUA] %s",lua_tostring(tpLuaVirtualMachine,i));
+				}
+				else
+					return;
+		}
 }
 
 void Script::vfPrintError(CLuaVirtualMachine *tpLuaVirtualMachine, int iErrorCode)
@@ -32,23 +40,23 @@ void Script::vfPrintError(CLuaVirtualMachine *tpLuaVirtualMachine, int iErrorCod
 		case LUA_ERRRUN : {
 			Msg ("! SCRIPT RUNTIME ERROR");
 			break;
-						  }
+		}
 		case LUA_ERRMEM : {
 			Msg ("! SCRIPT ERROR (memory allocation)");
 			break;
-						  }
+		}
 		case LUA_ERRERR : {
 			Msg ("! SCRIPT ERROR (while running the error handler function)");
 			break;
-						  }
+		}
 		case LUA_ERRFILE : {
 			Msg ("! SCRIPT ERROR (while running file)");
 			break;
-						   }
+		}
 		case LUA_ERRSYNTAX : {
 			Msg ("! SCRIPT SYNTAX ERROR");
 			break;
-							 }
+		}
 		default : NODEFAULT;
 	}
 	

@@ -28,7 +28,14 @@ CScript::CScript(CLuaVirtualMachine *tpLuaVirtualMachine, LPCSTR caFileName)
 	if (!bfLoadBuffer(tpLuaVirtualMachine,S,strlen(S),caFileName))
 		return;
 
-	lua_call		(tpLuaVirtualMachine,0,0);
+	int				l_iErrorCode = lua_pcall(tpLuaVirtualMachine,0,0,0);
+	if (l_iErrorCode) {
+#ifdef DEBUG
+		vfPrintOutput	(tpLuaVirtualMachine,l_caNamespaceName);
+		vfPrintError	(tpLuaVirtualMachine,l_iErrorCode);
+#endif
+		return;
+	}
 	
 	m_tpLuaThread	= lua_newthread(m_tpLuaVirtualMachine = tpLuaVirtualMachine);
 	

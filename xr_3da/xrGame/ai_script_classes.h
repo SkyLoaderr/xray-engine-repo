@@ -9,6 +9,7 @@
 #pragma once
 
 #include "ai\\stalker\\ai_stalker.h"
+#include "..\\effectorpp.h"
 
 #define DECLARE_FUNCTION10(A,D)\
 	IC		D				A					() const\
@@ -371,5 +372,41 @@ public:
 			Msg				("* [LUA] CLuaGameObject : cannot access class member object!");
 			return			(0);	
 		}
+	}
+};
+
+typedef void (__stdcall *EFFECTOR_CALLBACK)(SPPInfo&);
+
+class CLuaEffector : public CEffectorPP {
+public:
+	typedef CEffectorPP inherited;
+	EEffectorPPType		m_tEffectorType;
+	EFFECTOR_CALLBACK	m_fpCallBack;
+
+					CLuaEffector				(int		iType, float time) : CEffectorPP(EEffectorPPType(iType),time)
+	{
+		m_tEffectorType		= EEffectorPPType(iType);
+		m_fpCallBack		= 0;
+	}
+
+	virtual			~CLuaEffector				()
+	{
+	}
+
+	virtual	BOOL	Process						(SPPInfo	&pp)
+	{
+		inherited::Process(pp);
+		if (m_fpCallBack)
+			m_fpCallBack(pp);
+	}
+
+	virtual	void	Add							()
+	{
+		Level().Cameras.AddEffector		(this);
+	}
+
+	virtual	void	Remove							()
+	{
+		Level().Cameras.RemoveEffector	(m_tEffectorType);
 	}
 };
