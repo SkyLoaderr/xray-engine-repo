@@ -379,6 +379,14 @@ bool CActor:: ActivateBox(DWORD id)
 		if(!character_exist)m_PhysicMovementControl->DestroyCharacter();
 		m_PhysicMovementControl->ActivateBox(old_id);
 		m_PhysicMovementControl->SetVelocity(vel);
+		dBodyID b=m_PhysicMovementControl->GetBody();
+		if(b)
+		{
+			dMatrix3 R;
+			dRSetIdentity (R);
+			dBodySetAngularVel(b,0.f,0.f,0.f);
+			dBodySetRotation(b,R);
+		}
 		m_PhysicMovementControl->SetPosition(pos);
 		//Msg("can not activate!");
 	}
