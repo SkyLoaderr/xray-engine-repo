@@ -326,12 +326,3 @@ void CCC_Register()
 	CMD4(CCC_Float,		"ph_gravity",			&psGravity,					1,100);
 };
 
-if( OpenClipboard(0) ){
-	HGLOBAL hmem = GetClipboardData(CF_OEMTEXT);
-	if( hmem ){
-		LPCSTR clipdata = (LPCSTR)GlobalLock(hmem);
-		GlobalUnlock( hmem );
-
-		CloseClipboard();
-	}
-}

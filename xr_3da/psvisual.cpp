@@ -52,7 +52,7 @@ void CPSVisual::Update(DWORD dt)
 		
 	// create/destroy/simulate particles that we own
 	float TM	 		= fTime-dT;
-	float dT_delta 		= dT/iCount_Create;
+	float dT_delta 		= dT/(iCount_Create?iCount_Create:1);
 	float p_size		= 0;
 	Fvector Pos; float size;
 	bv_BBox.invalidate	();

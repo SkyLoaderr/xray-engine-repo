@@ -20,7 +20,6 @@
 #define NOMENUS
 #define NOICONS
 #define NOKEYSTATES
-#define NOCLIPBOARD
 #define NODRAWTEXT
 #define NOMEMMGR
 #define NOMETAFILE

@@ -229,6 +229,18 @@ void CConsole::OnPressKey(int dik, BOOL bHold)
 	case DIK_RETURN:
 		ExecuteCommand();
 		break;
+	case DIK_INSERT:
+		if( OpenClipboard(0) ){
+			HGLOBAL hmem = GetClipboardData(CF_OEMTEXT);
+			if( hmem ){
+				LPCSTR	clipdata = (LPCSTR)GlobalLock(hmem);
+				strncpy (editor,clipdata,255); editor[255]=0;
+				
+				GlobalUnlock( hmem );
+				CloseClipboard();
+			}
+		}
+		break;
 	default:
 		break;
 	}
