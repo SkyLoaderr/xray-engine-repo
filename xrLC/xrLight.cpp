@@ -6,34 +6,6 @@
 xrCriticalSection		task_CS;
 vector<int>				task_pool;
 
-class CMUThread : public CThread
-{
-public:
-	CMUThread	(DWORD ID) : CThread(ID)
-	{
-		thMessages	= FALSE;
-	}
-	virtual void	Execute()
-	{
-		u32 m;
-
-		// Priority
-		SetThreadPriority	(GetCurrentThread(), THREAD_PRIORITY_BELOW_NORMAL);
-		Sleep				(0);
-
-		// Light models
-		for (m=0; m<pBuild->mu_models.size(); m++)
-			pBuild->mu_models[m]->calc_lighting	();
-
-		// Light references
-		for (m=0; m<pBuild->mu_refs.size(); m++)
-		{
-			pBuild->mu_refs[m]->calc_lighting	();
-			thProgress					= (float(m)/float(pBuild->mu_refs.size()));
-		}
-	}
-};
-
 class CLMThread : public CThread
 {
 public:
@@ -79,16 +51,6 @@ public:
 
 void CBuild::Light()
 {
-	//****************************************** Starting MU
-	FPU::m64r		();
-	Phase			("LIGHT: Starting MU...");
-	mem_Compact		();
-	for (vecFaceIt I=g_faces.begin(); I!=g_faces.end(); I++) (*I)->CacheOpacity();
-	for (u32 m=0; m<mu_models.size(); m++) mu_models[m]->calc_faceopacity();
-
-	CThreadManager	mu;
-	mu.start		(xr_new<CMUThread> (0));
-
 	//****************************************** Implicit
 	FPU::m64r		();
 	Phase			("LIGHT: Implicit...");
@@ -127,18 +89,6 @@ void CBuild::Light()
 	mem_Compact		();
 
 	xrPhase_MergeLM	();
-
-	//****************************************** Wait for MU
-	FPU::m64r		();
-	Phase			("LIGHT: Waiting for MU-thread...");
-	mem_Compact		();
-	mu.wait			(500);
-
-	//****************************************** Wait for MU
-	FPU::m64r		();
-	Phase			("Destroying ray-trace model...");
-	mem_Compact		();
-	xr_delete		(RCAST_Model);
 }
 
 //-----------------------------------------------------------------------
