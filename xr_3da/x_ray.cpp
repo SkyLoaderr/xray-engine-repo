@@ -301,18 +301,18 @@ void CApplication::OnEvent(EVENT E, u64 P1, u64 P2)
 	}
 }
 
-void CApplication::LoadBegin()
+void CApplication::LoadBegin	()
 {
 	ll_dwReference++;
 	if (1==ll_dwReference) {
 		ll_hGeom.create	(FVF::F_TL, RCache.Vertex.Buffer(), RCache.QuadIB);
-		ll_hLogo1.create("font","ui\\logo");
+		ll_hLogo1.create("font","ui\\ui_logo");
 		ll_hLogo2.create("font","ui\\ui_logo_nv");
 		ll_hLogo		= ll_hLogo2;
 	}
 }
 
-void CApplication::LoadEnd()
+void CApplication::LoadEnd		()
 {
 	ll_dwReference--;
 }
