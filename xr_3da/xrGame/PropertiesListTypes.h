@@ -621,12 +621,12 @@ public:
 };
 //------------------------------------------------------------------------------
 
-class SceneItemValue: public TextValue{
+class SceneItemValue: public RTextValue{
 public:                  	
 	EObjClass			clsID;
 	AnsiString			specific;
 public:
-						SceneItemValue	(LPSTR val, int lim, EObjClass class_id, LPCSTR _type):TextValue(val,lim),clsID(class_id){if(_type) specific=_type;};
+						SceneItemValue	(ref_str* val, EObjClass class_id, LPCSTR _type):RTextValue(val),clsID(class_id){if(_type) specific=_type;};
 	virtual bool		Equal			(PropValue* val)
     {
     	if (OnTestEqual) return OnTestEqual(this,val);
@@ -634,7 +634,7 @@ public:
         	m_Owner->m_Flags.set(PropItem::flDisabled,TRUE); 
             return false;
         }
-        return TextValue::Equal(val);
+        return RTextValue::Equal(val);
     }
 };
 //------------------------------------------------------------------------------

@@ -240,8 +240,8 @@ public:
 	    if (V->Owner()->m_Flags.is(PropItem::flMixed)) V->Owner()->m_Flags.set(PropItem::flDisabled,TRUE);
         return V;					
     }
-    IC SceneItemValue*	CreateSceneItem	(PropItemVec& items, AnsiString key, LPSTR val, int lim, EObjClass cls, LPCSTR type)
-    {	return			(SceneItemValue*)AppendValue(items,key,xr_new<SceneItemValue>(val,lim,cls,type),PROP_SCENE_ITEM);    }
+    IC SceneItemValue*	CreateSceneItem	(PropItemVec& items, AnsiString key, ref_str* val, EObjClass cls, LPCSTR type)
+    {	return			(SceneItemValue*)AppendValue(items,key,xr_new<SceneItemValue>(val,cls,type),PROP_SCENE_ITEM);    }
 	void 				DrawThumbnail	(TCanvas *Surface, TRect &R, LPCSTR fname);
 };
 //---------------------------------------------------------------------------

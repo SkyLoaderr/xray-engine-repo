@@ -19,6 +19,17 @@ void CPropHelper::NameAfterEdit(PropItem* sender, LPVOID edit_val)
 }
 //---------------------------------------------------------------------------
 
+void CPropHelper::NameAfterEditR_TI(PropItem* sender, LPVOID edit_val)
+{
+	FHelper.NameAfterEdit((TElTreeItem*)sender->tag,*((RTextValue*)sender->GetFrontValue())->GetValue(),*(AnsiString*)edit_val);
+}
+//---------------------------------------------------------------------------
+void CPropHelper::NameAfterEditR(PropItem* sender, LPVOID edit_val)
+{
+	LHelper.NameAfterEdit((ListItem*)sender->tag,*((RTextValue*)sender->GetFrontValue())->GetValue(),*(AnsiString*)edit_val);
+}
+//---------------------------------------------------------------------------
+
 void CPropHelper::NameBeforeEdit(PropItem* sender, LPVOID edit_val)
 {
 	AnsiString& N = *(AnsiString*)edit_val;
