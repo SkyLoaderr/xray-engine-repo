@@ -222,10 +222,12 @@ end
 
 function Monster:process ()
 
+	--если монстр отущен из под скрипта, то вываливаемся
 	if self.freemove == true then return end
 
 --	printf ("Process object %s : ", self.npc:name ())
 
+	--если первый заход, то двигаем монстра по пути
 	if self.first_start == true then
 	   self.first_start = false	
 	   reset_action (self.npc, self.script)
@@ -234,6 +236,7 @@ function Monster:process ()
 	   return	
 	end
 
+	--если монстр еще двигается по пути, то выйдем
 	if self.moving == true then 
 	   if self.npc:action () then 
 		  return 
@@ -245,8 +248,10 @@ function Monster:process ()
 	if table.getn (self.targets) == 0 then 
 	   self.npc:script (false, self.script)
 	   self.freemove = true
+	   return	 
 	end
-	
+
+	--ищем врага в списке. Критерий: враг рядом, он жив и не является целью для другого	мутанта
 	local enemy = nil
 	if self.target == nil or self.target:is_alive () == false then enemy = self:find_enemy () end
 	if enemy == nil then return 
@@ -257,8 +262,10 @@ function Monster:process ()
 	   end	  
 	end   
 
+	--сохраняем цель
 	self.target = enemy
 
+	--если дистанция до цели меньше критической, то отиграем анимацию атаки
 	if distance_between (self.npc, self.target.npc) < 2 then
        reset_action (self.npc, self.script)
 	   action_first (self.npc, move (act_attack, move.default, self.target.npc), cond (cond.time_end, 1000))
