@@ -148,6 +148,9 @@
 			<File
 				RelativePath="r2.h">
 			</File>
+			<File
+				RelativePath="r2_types.h">
+			</File>
 		</Filter>
 		<Filter
 			Name="Details"
