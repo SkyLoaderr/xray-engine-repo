@@ -71,6 +71,8 @@ void xrCompiler(LPCSTR name)
 	Phase("Calculating coverage...");
 	xrCover		();
 
+	/////////////////////////////////////
+
 	Phase("Merging nodes...");
 	xrMerge		();
 
