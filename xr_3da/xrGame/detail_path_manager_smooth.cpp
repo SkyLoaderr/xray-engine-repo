@@ -20,7 +20,8 @@ IC	T sin_apb(T sina, T cosa, T sinb, T cosb)
 
 template <typename T>
 IC	T cos_apb(T sina, T cosa, T sinb, T cosb)
-{return				(cosa*cosb - sina*sinb);
+{
+	return				(cosa*cosb - sina*sinb);
 }
 
 IC	bool is_negative(float a)
@@ -700,7 +701,7 @@ void CDetailPathManager::build_smooth_path		(
 		return;
 	}
 
-	xr_vector<STravelParamsIndex>		&finish_params = m_use_dest_orientation ? m_start_params : m_dest_params;
+	xr_vector<STravelParamsIndex>		finish_params = m_use_dest_orientation ? m_start_params : m_dest_params;
 
 #ifdef OLD_BEHAVIOUR
 	if (compute_path(start,dest,&m_path,m_start_params,finish_params,straight_line_index,straight_line_index_negative)) {
