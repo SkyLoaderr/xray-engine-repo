@@ -31,8 +31,8 @@ SERVER_ENTITY_DECLARE_BEGIN0(CSE_ALifeTraderAbstract)
 	////////////////////////////////////////////////////
 	//character profile info
 #ifndef  AI_COMPILER
-	PROFILE_INDEX					character_profile		();
-	void							set_character_profile	(PROFILE_INDEX);
+	PROFILE_ID						character_profile		();
+	void							set_character_profile	(PROFILE_ID);
 	SPECIFIC_CHARACTER_INDEX		specific_character		();
 	void							set_specific_character	(SPECIFIC_CHARACTER_INDEX);
 #endif
@@ -50,10 +50,12 @@ SERVER_ENTITY_DECLARE_BEGIN0(CSE_ALifeTraderAbstract)
 	CHARACTER_REPUTATION_VALUE		Reputation	() const;
 
 private:
-	bool							m_character_profile_init;
+//	bool							m_character_profile_init;
+
 #endif
 
-	PROFILE_INDEX					m_iCharacterProfile;
+//	PROFILE_INDEX					m_iCharacterProfile;
+	PROFILE_ID						m_sCharacterProfile;
 	SPECIFIC_CHARACTER_INDEX		m_iSpecificCharacter;
 
 	//буферный вектор проверенных персонажей

@@ -112,8 +112,10 @@
 // 93 - CSE_AlifeCar					health added in STATE_Read STATE_Write
 // 94 - CSE_Abstract					client_data size increased
 // 95 - CSE_ALifeCreatureAbstract		appended with m_killer_id property
+// 96 - CSE_ALifeTraderAbstract			changed m_iCharacterProfile(int) to m_sCharacterProfile(shared_str)
+
 //------------------------------------------------------------------------------
-#define SPAWN_VERSION	u16(95)
+#define SPAWN_VERSION	u16(96)
 
 SERVER_ENTITY_DECLARE_BEGIN2(CSE_Shape,ISE_Shape,CShapeData)
 public:

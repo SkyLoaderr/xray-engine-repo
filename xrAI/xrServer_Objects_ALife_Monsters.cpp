@@ -116,11 +116,12 @@ CSE_ALifeTraderAbstract::CSE_ALifeTraderAbstract(LPCSTR caSection)
 	m_fMaxItemMass				= pSettings->r_float(caSection, "max_item_mass");
 	m_tpEvents.clear			();
 
-	m_iCharacterProfile			= DEFAULT_PROFILE;
+//	m_iCharacterProfile			= DEFAULT_PROFILE;
+	m_sCharacterProfile			= "";
 	m_iSpecificCharacter		= NO_SPECIFIC_CHARACTER;
 
 #ifdef XRGAME_EXPORTS
-	m_character_profile_init	= false;
+//	m_character_profile_init	= false;
 	m_community_index			= NO_COMMUNITY_INDEX;
 	m_rank						= NO_RANK;
 	m_reputation				= NO_REPUTATION;
@@ -137,7 +138,7 @@ CSE_Abstract *CSE_ALifeTraderAbstract::init	()
 	sprintf						(S,"%s\r\n[game_info]\r\n",!*base()->m_ini_string ? "" : *base()->m_ini_string);
 	base()->m_ini_string		= S;
 #ifdef XRGAME_EXPORTS
-	m_character_profile_init	= false;
+//	m_character_profile_init	= false;
 #endif
 
 	return						(base());
@@ -159,7 +160,8 @@ void CSE_ALifeTraderAbstract::STATE_Write	(NET_Packet &tNetPacket)
 	tNetPacket.w_s32			(NO_SPECIFIC_CHARACTER);
 #endif
 	tNetPacket.w_u32			(m_trader_flags.get());
-	tNetPacket.w_s32			(m_iCharacterProfile);
+//	tNetPacket.w_s32			(m_iCharacterProfile);
+	tNetPacket.w_stringZ		(m_sCharacterProfile);
 
 #ifdef XRGAME_EXPORTS
 	tNetPacket.w_s32			(m_community_index);
@@ -186,8 +188,15 @@ void CSE_ALifeTraderAbstract::STATE_Read	(NET_Packet &tNetPacket, u16 size)
 			tNetPacket.r_s32	(m_iSpecificCharacter);
 		if (m_wVersion > 77)
 			m_trader_flags.assign(tNetPacket.r_u32());
-		if (m_wVersion > 81)
-			tNetPacket.r_s32	(m_iCharacterProfile);
+		if ( (m_wVersion > 81)&&(m_wVersion < 96) ){
+			int tmp;		
+			tNetPacket.r_s32	(tmp);
+			m_sCharacterProfile=CCharacterInfo::IndexToId(tmp);
+			VERIFY(xr_strlen(m_sCharacterProfile));
+		}else
+			if(m_wVersion > 95)
+				tNetPacket.r_stringZ	(m_sCharacterProfile);
+
 		if (m_wVersion > 85)
 			tNetPacket.r_s32	(m_community_index);
 		if (m_wVersion > 86) {
@@ -219,7 +228,7 @@ SPECIFIC_CHARACTER_INDEX CSE_ALifeTraderAbstract::specific_character()
 		return m_iSpecificCharacter;
 
 
-	VERIFY(character_profile() != NO_PROFILE);
+	VERIFY (xr_strlen( *character_profile() ) );
 	CCharacterInfo char_info;
 	char_info.Load(character_profile());
 
@@ -350,15 +359,17 @@ void CSE_ALifeTraderAbstract::set_specific_character	(SPECIFIC_CHARACTER_INDEX n
 #endif
 }
 
-void CSE_ALifeTraderAbstract::set_character_profile(PROFILE_INDEX new_profile)
+void CSE_ALifeTraderAbstract::set_character_profile(PROFILE_ID new_profile)
 {
-	m_iCharacterProfile = new_profile;
+	m_sCharacterProfile = new_profile;
 }
 
-PROFILE_INDEX CSE_ALifeTraderAbstract::character_profile()
+PROFILE_ID CSE_ALifeTraderAbstract::character_profile()
 {
-
+	return	m_sCharacterProfile;
+/*
 #ifdef XRGAME_EXPORTS
+
 	if(m_character_profile_init) return	m_iCharacterProfile;
 
 	shared_str profile_id = CCharacterInfo::IndexToId(m_iCharacterProfile, NULL, true);
@@ -369,9 +380,11 @@ PROFILE_INDEX CSE_ALifeTraderAbstract::character_profile()
 	}
 
 	m_character_profile_init = true;
+
 #endif
 
-	return	m_iCharacterProfile;
+	return	m_sCharacterProfile;
+*/
 }
 
 #endif

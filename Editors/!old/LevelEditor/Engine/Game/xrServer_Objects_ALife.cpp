@@ -27,15 +27,12 @@
 #endif
 
 
-bool SortTokensByAlphabetPred (const xr_rtoken& token1, const xr_rtoken& token2)
+bool SortStringsByAlphabetPred (const shared_str& s1, const shared_str& s2)
 {
-	R_ASSERT(xr_strlen(*token1.name)>0);
-	R_ASSERT(xr_strlen(*token2.name)>0);
+	R_ASSERT(xr_strlen(*s1)>0);
+	R_ASSERT(xr_strlen(*s2)>0);
 
-	if((*token1.name)[0] < (*token2.name)[0])
-		return true;
-	else
-		return false;
+	return (xr_strcmp(*s1,*s2)<0);
 };
 
 
@@ -43,7 +40,7 @@ struct SFillPropData{
     RTokenVec 	locations[4];
     RStringVec	level_ids;
 	RTokenVec 	story_names;
-	RTokenVec	character_profile_indxs;
+	RStringVec	character_profiles;
 
     u32			counter;
                 SFillPropData	()
@@ -87,13 +84,13 @@ struct SFillPropData{
 
 #ifndef AI_COMPILER
 		//character profiles indexes
-		VERIFY					(character_profile_indxs.empty());
+		VERIFY					(character_profiles.empty());
 		for(PROFILE_INDEX i = 0; i<=CCharacterInfo::GetMaxIndex(); i++)
 		{
-			character_profile_indxs.push_back(xr_rtoken(*CCharacterInfo::IndexToId(i),i));
+			character_profiles.push_back(CCharacterInfo::IndexToId(i));
 		}
 
-		std::sort(character_profile_indxs.begin(), character_profile_indxs.end(), SortTokensByAlphabetPred);
+		std::sort(character_profiles.begin(), character_profiles.end(), SortStringsByAlphabetPred);
 #endif
 		
         // destroy ini
@@ -105,7 +102,7 @@ struct SFillPropData{
             locations[i].clear	();
         level_ids.clear			();
         story_names.clear		();
-		character_profile_indxs.clear();
+		character_profiles.clear();
     }        
     void 		dec				()
     {
@@ -1025,10 +1022,10 @@ void CSE_ALifeObjectHangingLamp::FillProps	(LPCSTR pref, PropItemVec& values)
 
 	// bones
     ChooseValue* V				= PHelper().CreateChoose	(values, 	PrepareKey(pref,*s_name,"Model\\Fixed bones"),	&fixed_bones,		smSkeletonBones,0,(void*)visual()->get_visual(),8);
-	V        					= PHelper().CreateChoose	(values, 	PrepareKey(pref,*s_name,"Model\\Guid bone"),	&guid_bone,			smSkeletonBones,0,(void*)visual()->get_visual());
+	V        					= PHelper().CreateChoose	(values, 	PrepareKey(pref,*s_name,"Model\\Guid bone"),		&guid_bone,			smSkeletonBones,0,(void*)visual()->get_visual());
 
 	if (flags.is(flPointAmbient)){
-        PHelper().CreateFloat	(values, PrepareKey(pref,*s_name,"Ambient\\Radius"),	&m_ambient_radius,	0.f, 1000.f);
+        PHelper().CreateFloat	(values, PrepareKey(pref,*s_name,"Ambient\\Radius"),		&m_ambient_radius,	0.f, 1000.f);
         PHelper().CreateFloat	(values, PrepareKey(pref,*s_name,"Ambient\\Power"),		&m_ambient_power);
 		PHelper().CreateChoose	(values, PrepareKey(pref,*s_name,"Ambient\\Texture"),	&m_ambient_texture,	smTexture, 	"lights");
     }
@@ -1054,8 +1051,15 @@ void CSE_ALifeObjectHangingLamp::on_render(CDUInterface* du, ISE_AbstractLEOwner
 			}else{
 				du->DrawLineSphere	(xform.c, range, clr, true);
 			}
+
+			if(flags.is(flPointAmbient) ){
+				du->DrawLineSphere	(parent.c, m_ambient_radius, clr, true);
+			}
+
 		}
 		du->DrawPointLight		(xform.c,VIS_RADIUS, clr);
+		
+
 	}
 }
 
@@ -1666,9 +1670,14 @@ void CSE_ALifeTraderAbstract::FillProps	(LPCSTR pref, PropItemVec& items)
 	PHelper().CreateU32			(items, PrepareKey(pref,*base()->s_name,"Money"), 	&m_dwMoney,	0, u32(-1));
 	PHelper().CreateFlag32		(items,	PrepareKey(pref,*base()->s_name,"Trader\\Infinite ammo"),&m_trader_flags, eTraderFlagInfiniteAmmo);
 #ifndef AI_COMPILER
-	RToken32Value *value		= PHelper().CreateRToken32	(items,	PrepareKey(pref,*base()->s_name,"npc profile"),	 
+/*	RToken32Value *value		= PHelper().CreateRToken32	(items,	PrepareKey(pref,*base()->s_name,"npc profile"),	 
 		(u32*)&m_iCharacterProfile, 
 		&*fp_data.character_profile_indxs.begin(), fp_data.character_profile_indxs.size());
+	*/
+	RListValue *value		= PHelper().CreateRList	(items,	PrepareKey(pref,*base()->s_name,"npc profile"),	 
+		&m_sCharacterProfile, 
+		&*fp_data.character_profiles.begin(), fp_data.character_profiles.size());
+	
 	value->OnChangeEvent.bind	(this,&CSE_ALifeTraderAbstract::OnChangeProfile);
 #endif
 }
