@@ -32,7 +32,7 @@ void CLight_Render_Direct::compute_xfs_1	(u32 m_phase, light* L)
 	if		(ssa >= 1)			L->X.S.size		= DSM_size;
 	else	{
 		// ssa is quadratic
-		L->X.S.size				= _sqrt(ssa) * DSM_size;
+		L->X.S.size				= iFloor(_sqrt(ssa) * DSM_size);
 		if (L->X.S.size<16)		L->X.S.size	= 16;
 	}
 	//Msg		("%8X : ssa(%f), size(%d)",u32(L),ssa,S_size);

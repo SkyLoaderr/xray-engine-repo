@@ -285,7 +285,7 @@ void	CRenderTarget::OnDeviceCreate	()
 						switch	(slice)
 						{
 						case 0:	{ // looks like OrenNayar
-							fd	= sqrt(ld);
+							fd	= _sqrt(ld);
 							fs	= powf(ls,16.f)*.5f;
 								}	break;
 						case 1:	{// looks like Blinn

@@ -87,6 +87,7 @@ void	CRenderTarget::phase_combine	()
 		float	_h					= float(Device.dwHeight)/2;
 
 		// draw light-spheres
+#ifdef DEBUG
 		for (u32 it=0; it<dbg_spheres.size(); it++)
 		{
 			Fsphere				S	= dbg_spheres[it].first;
@@ -97,7 +98,7 @@ void	CRenderTarget::phase_combine	()
 			RCache.dbg_DrawEllipse	(M,ccc);
 			RCache.dbg_DrawAABB		(S.P,.05f,.05f,.05f,ccc);
 		}
-
+#endif
 		// Draw quater-screen quad textured with our direct-shadow-map-image
 		if (1) //.
 		{

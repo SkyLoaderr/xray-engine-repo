@@ -45,7 +45,7 @@ BOOL CRenderTarget::enable_scissor		(light* L)		// true if intersects near plane
 	R.right		= clampr	(iCeil	(bb.max.x*Device.dwWidth),	int(0),int(Device.dwWidth));
 	R.top		= clampr	(iFloor	(bb.min.y*Device.dwHeight),	int(0),int(Device.dwHeight));
 	R.bottom	= clampr	(iCeil	(bb.max.y*Device.dwHeight),	int(0),int(Device.dwHeight));
-	if	( (Device.dwWidth==(R.right - R.left)) && (Device.dwHeight==(R.bottom-R.top)) )
+	if	( (Device.dwWidth==u32(R.right - R.left)) && (Device.dwHeight==u32(R.bottom-R.top)) )
 	{
 		// full-screen -> do nothing
 	} else {

@@ -928,7 +928,7 @@ void NvStripifier::Stripify(const WordVec &in_indices, const int in_cacheSize,
 		NvEdgeInfo *info = allEdgeInfos[i];
 		while (info != NULL)
 		{
-			NvEdgeInfo *next = (info->m_v0 == i ? info->m_nextV0 : info->m_nextV1);
+			NvEdgeInfo *next = (info->m_v0 == int(i) ? info->m_nextV0 : info->m_nextV1);
 			info->Unref();
 			info = next;
 		}

@@ -140,7 +140,7 @@ void	CRender::render_indirect			(light* L)
 	xr_vector<light_indirect>&	Lvec		= L->indirect;
 	if (Lvec.empty())						return;
 	float	LE								= L->color.intensity	();
-	for (int it=0; it<Lvec.size(); it++)	{
+	for (u32 it=0; it<Lvec.size(); it++)	{
 		light_indirect&	LI				= Lvec[it];
 
 		// energy and color
