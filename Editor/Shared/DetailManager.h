@@ -50,13 +50,14 @@ public:
 	struct	SlotItem
 	{
 		Fvector	P;
-		float	yaw;
+//		float	yaw;
 		float	scale;
 		float	phase_x;
 		float	phase_z;
 		DWORD	C;
 		
 		float	scale_calculated;
+		Fmatrix	mRotY;
 	};
 	struct	SlotPart
 	{

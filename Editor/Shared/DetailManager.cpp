@@ -296,9 +296,8 @@ void CDetailManager::Render		(Fvector& EYE)
 
 				// Build matrix and xform vertices
 				mScale.scale			(scale,scale,scale);
-				mRotY.rotateY			(Instance.yaw);
 				mRotXZ.setXYZ			(Instance.phase_x+fPhaseX,0,Instance.phase_z+fPhaseZ);
-				mRot.mul_43				(mRotXZ,mRotY);
+				mRot.mul_43				(mRotXZ,Instance.mRotY);
 				mXform.mul_43			(mRot,mScale);
 				mXform.translate_over	(Instance.P);
 				Object.Transfer			(mXform, vDest, Instance.C);
@@ -472,10 +471,10 @@ void CDetailManager::UpdateCache	(int limit)
 
 				
 				// Angles and scale
-				Item.yaw	= r_yaw.randF		(0,PI_MUL_2);
 				Item.scale	= r_scale.randF		(0.3f,1.8f);
 				Item.phase_x= ::Random.randFs	(phase_range);
 				Item.phase_z= ::Random.randF	(phase_range);
+				Item.mRotY.rotateY(r_yaw.randF	(0,PI_MUL_2))
 				
 				// Color
 				Item.C		= 0xffffffff;
