@@ -17,7 +17,7 @@ namespace R_dsgraph
 	};
 	struct _MatrixItemS	: public _MatrixItem
 	{
-		ref_selement		se;
+		ShaderElement*		se;
 	};
 	struct _LodItem		{
 		float				ssa;
