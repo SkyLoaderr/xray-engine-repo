@@ -124,7 +124,7 @@ public:
 
 			void			OnStartTrade			();
 			void			OnStopTrade				();
-			void			OnTradeAction			(CGameObject *O, bool bSell);
+			void			OnTradeAction			(CGameObject *O, bool bSell, u32 money);
 
 			//игровое имя 
 			virtual LPCSTR	Name					() const {return CInventoryOwner::Name();}

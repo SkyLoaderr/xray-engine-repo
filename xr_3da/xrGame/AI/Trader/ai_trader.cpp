@@ -441,10 +441,10 @@ void CAI_Trader::clear_trade_callback()
 	m_OnTradeCallback.clear();
 }
 
-void CAI_Trader::OnTradeAction(CGameObject *O, bool bSell)
+void CAI_Trader::OnTradeAction(CGameObject *O, bool bSell,u32 money)
 {
 	if (!O) return;
-	SCRIPT_CALLBACK_EXECUTE_2(m_OnTradeCallback,O->lua_game_object(), bSell);
+	SCRIPT_CALLBACK_EXECUTE_3(m_OnTradeCallback,O->lua_game_object(), bSell, money);
 }
 ////////////////////////////////////////////////////////////////////////////////////////////
 

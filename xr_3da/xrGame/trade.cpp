@@ -289,8 +289,8 @@ void CTrade::SellItem(int id)
 #ifdef DEBUG
 				Msg("--TRADE:: [%s]: Ok, item sold!",*pThis.base->cName());
 #endif
-				if (pThis.type == TT_TRADER) smart_cast<CAI_Trader*>(pThis.base)->OnTradeAction(&l_pIItem->object(), true);
-				else if (pPartner.type == TT_TRADER) smart_cast<CAI_Trader*>(pPartner.base)->OnTradeAction(&l_pIItem->object(), false);
+				if (pThis.type == TT_TRADER) smart_cast<CAI_Trader*>(pThis.base)->OnTradeAction(&l_pIItem->object(), true, dwTransferMoney);
+				else if (pPartner.type == TT_TRADER) smart_cast<CAI_Trader*>(pPartner.base)->OnTradeAction(&l_pIItem->object(), false, dwTransferMoney);
 			}
 			break;
 		}
@@ -332,12 +332,12 @@ void CTrade::SellItem(CInventoryItem* pItem)
 	if (pThis.type == TT_TRADER) 
 	{
 		pTrader = smart_cast<CAI_Trader*>(pThis.base);
-		pTrader->OnTradeAction(&pItem->object(), true);
+		pTrader->OnTradeAction(&pItem->object(), true, dwTransferMoney);
 	}
 	else if (pPartner.type == TT_TRADER) 
 	{
 		pTrader = smart_cast<CAI_Trader*>(pPartner.base);
-		pTrader->OnTradeAction(&pItem->object(), false);
+		pTrader->OnTradeAction(&pItem->object(), false, dwTransferMoney);
 		CArtefact* pArtefact= smart_cast<CArtefact*>(pItem);
 		if(pArtefact)
 			m_bNeedToUpdateArtefactTasks |= pTrader->BuyArtefact(pArtefact);
