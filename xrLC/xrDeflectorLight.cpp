@@ -339,15 +339,25 @@ BOOL	compress_RMS			(b_texture& lm, DWORD rms)
 	if (lm.dwWidth>=2)	{
 		w = lm.dwWidth/2;
 		if (!rms_test(lm,w,lm.dwHeight,rms))	{
+			// 3/4
 			w = (lm.dwWidth*3)/4;
 			if (!rms_test(lm,w,lm.dwHeight,rms))	w = 0;
+		} else {
+			// 1/4
+			DWORD nw = (lm.dwWidth*1)/4;
+			if (rms_test(lm,nw,lm.dwHeight,rms))	w = nw;
 		}
 	}
 	if (lm.dwHeight>=2)	{
 		h = lm.dwHeight/2;
 		if (!rms_test(lm,lm.dwWidth,h,rms))		{
+			// 3/4
 			h = (lm.dwHeight*3)/4;
 			if (!rms_test(lm,lm.dwWidth,h,rms))		h = 0;
+		} else {
+			// 1/4
+			DWORD nh = (lm.dwHeight*1)/4;
+			if (rms_test(lm,lm.dwWidth,nh,rms))		h = nh;
 		}
 	}
 	if (w || h)	{
