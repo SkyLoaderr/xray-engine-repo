@@ -4391,12 +4391,6 @@
 							<File
 								RelativePath=".\PhysicsShellHolder.h">
 							</File>
-							<File
-								RelativePath=".\PhysicsSkeletonObject.cpp">
-							</File>
-							<File
-								RelativePath=".\PhysicsSkeletonObject.h">
-							</File>
 						</Filter>
 						<Filter
 							Name="ParticlesPlayer"
