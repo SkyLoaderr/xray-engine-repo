@@ -23,7 +23,7 @@ BOOL psLibrary_Load(const char *Name, PS::PSVec &LIB)
     DWORD count = F.Rdword();
     if (count){
         LIB.resize		(count);
-        F.Read			(LIB.begin(), count*sizeof(PS::SDef));
+        F.Read			(&*LIB.begin(), count*sizeof(PS::SDef));
     }
     psLibrary_Sort		(LIB);
     return true;
@@ -47,7 +47,7 @@ DWORD	psLibrary_GetCount	(const char *Name)
 PS::SDef* psLibrary_FindSorted(const char* Name, PS::PSVec &LIB)
 {
 	PS::SDef	D; strcpy(D.m_Name,Name);
-	PS::SDef*	P = std::lower_bound(LIB.begin(),LIB.end(),D,sort_pred);
+	PS::SDef*	P = &*std::lower_bound(LIB.begin(),LIB.end(),D,sort_pred);
 	if ((P!=LIB.end()) && (0==strcmp(P->m_Name,Name)) ) return P;
 	return NULL;
 }

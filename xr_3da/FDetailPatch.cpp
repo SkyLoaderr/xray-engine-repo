@@ -37,8 +37,8 @@ void FDetailPatch::Render(float LOD)
 {
 	// actual rendering
 	FVF::TL		PT;
-	DPatch*			i	= patches.begin();
-	DPatch*			end	= patches.end();
+	DPatch*			i	= &*patches.begin();
+	DPatch*			end	= &*patches.end();
 	DWORD			vOffset;
 	FVF::TL*	pv_start= (FVF::TL*)Stream->Lock(patches.size()*4,vOffset);
 	FVF::TL*	pv		= pv_start;

@@ -28,7 +28,7 @@ void xrStripify		(std::vector<WORD> &indices, std::vector<WORD> &perturb, int iC
 	// Generate strips
 	PrimitiveGroup*	PGROUP=0;
 	WORD			PGROUP_Count=0;
-	GenerateStrips	(indices.begin(),indices.size(),&PGROUP,&PGROUP_Count);
+	GenerateStrips	(&*indices.begin(),indices.size(),&PGROUP,&PGROUP_Count);
 	R_ASSERT		(PGROUP);
 	R_ASSERT		(PGROUP_Count==1);
 	R_ASSERT		(PGROUP->type==PT_LIST);
@@ -50,7 +50,7 @@ void xrStripify		(std::vector<WORD> &indices, std::vector<WORD> &perturb, int iC
 	}
 
 	// Copy indices
-	CopyMemory	(indices.begin(),xPGROUP->indices,indices.size()*sizeof(WORD));
+	PSGP.memCopy	(&*indices.begin(),xPGROUP->indices,indices.size()*sizeof(WORD));
 
 	// Release memory
 	delete[]	xPGROUP;

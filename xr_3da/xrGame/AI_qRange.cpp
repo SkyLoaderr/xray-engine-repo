@@ -61,11 +61,10 @@ void CAI_Space::q_Range(DWORD StartNode, const Fvector& BasePos, float Range, AI
 
 	// Clear q_marks
 	{
-		DWORD* it = q_stack.begin();
-		DWORD* end = q_stack.end();
+		vector<DWORD>::iterator it	= q_stack.begin();
+		vector<DWORD>::iterator end	= q_stack.end();
 		for ( ; it!=end; it++)	
 			q_mark[*it] -= 1;
-//		//q_mark [StartNode]	-= 1;
 	}
 
 	Device.Statistic.AI_Range.End();
@@ -132,11 +131,10 @@ void CAI_Space::q_Range(DWORD StartNode, const Fvector& BasePos, float Range, AI
 
 	// Clear q_marks
 	{
-		DWORD* it = q_stack.begin();
-		DWORD* end = q_stack.end();
+		vector<DWORD>::iterator it	= q_stack.begin();
+		vector<DWORD>::iterator end	= q_stack.end();
 		for ( ; it!=end; it++)	
 			q_mark[*it] -= 1;
-//		//q_mark [StartNode]	-= 1;
 	}
 
 	Device.Statistic.AI_Range.End();

@@ -70,8 +70,8 @@ void		CWallmarksEngine::wm_render			(wallmark*	W, FVF::LIT* &V)
 	int			aC	= iFloor	( a * 255.f);	clamp	(aC,0,255);
 	DWORD		C	= D3DCOLOR_RGBA(128,128,128,aC);
 
-	FVF::LIT*	S	= W->verts.begin	();
-	FVF::LIT*	E	= W->verts.end		();
+	FVF::LIT*	S	= &*W->verts.begin	();
+	FVF::LIT*	E	= &*W->verts.end	();
 	for (; S!=E; S++, V++)
 	{
 		V->p.set	(S->p);
@@ -188,8 +188,8 @@ void CWallmarksEngine::AddWallmark	(CDB::TRI* pTri, const Fvector &contact_point
 	else {
 		Fbox bb; bb.invalidate();
 
-		FVF::LIT* I=W->verts.begin		();
-		FVF::LIT* E=W->verts.end		();
+		FVF::LIT* I=&*W->verts.begin	();
+		FVF::LIT* E=&*W->verts.end		();
 		for (; I!=E; I++)	bb.modify	(I->p);
 		bb.getsphere					(W->bounds.P,W->bounds.R);
 	}

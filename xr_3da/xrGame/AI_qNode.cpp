@@ -88,8 +88,8 @@ void CAI_Space::q_Range_Bit(DWORD StartNode, const Fvector& BasePos, float Range
 	}
 	// Clear q_marks
 	{
-		DWORD* it = q_stack.begin();
-		DWORD* end = q_stack.end();
+		vector<DWORD>::iterator it	= q_stack.begin();
+		vector<DWORD>::iterator end	= q_stack.end();
 		for ( ; it!=end; it++)	
 			q_mark_bit[*it] = false;
 	}
@@ -160,8 +160,8 @@ void CAI_Space::q_Range_Bit_X(DWORD StartNode, const Fvector& BasePos, float Ran
 	}
 	// Clear q_marks
 	{
-		DWORD* it = q_stack.begin();
-		DWORD* end = q_stack.end();
+		vector<DWORD>::iterator it	= q_stack.begin();
+		vector<DWORD>::iterator end	= q_stack.end();
 		for ( ; it!=end; it++)	
 			q_mark_bit_x[*it] = false;
 	}
