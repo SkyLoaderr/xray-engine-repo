@@ -212,6 +212,8 @@ BOOL CLevel::net_Client		( LPCSTR name_of_server )
 		// Sync
 		pApp->LoadTitle						("CLIENT: Syncronising...");
 		while (!isCompleted_Sync())			Sleep(5);
+		
+		Engine.Event.Signal					("level.weather.rain.start");
 
 		// signal OK
 		pApp->LoadEnd	();
