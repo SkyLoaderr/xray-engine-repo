@@ -156,9 +156,6 @@
 			Name="Main"
 			Filter="">
 			<File
-				RelativePath="crc32.cpp">
-			</File>
-			<File
 				RelativePath=".\StdAfx.cpp">
 				<FileConfiguration
 					Name="Release|Win32">

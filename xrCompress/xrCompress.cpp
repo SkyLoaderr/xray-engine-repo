@@ -79,8 +79,6 @@ ALIAS*	testALIAS		(IReader* base, u32 crc, u32& a_tests)
 	return 0;
 }
 
-extern	u32	crc32_calc		(void* P, u32 size);
-
 void	Compress			(LPCSTR path, LPCSTR base)
 {
 	filesTOTAL			++;
@@ -96,7 +94,7 @@ void	Compress			(LPCSTR path, LPCSTR base)
 
 	IReader*		src				=	FS.r_open	(fn);
 	bytesSRC						+=	src->length	();
-	u32			c_crc32				=	crc32_calc	(src->pointer(),src->length());
+	u32			c_crc32				=	crc32		(src->pointer(),src->length());
 	u32			c_ptr				=	0;
 	u32			c_size_real			=	0;
 	u32			c_size_compressed	=	0;
