@@ -1,4 +1,5 @@
 #include "stdafx.h"
+#include "..\igame_persistent.h"
 #include "..\fbasicvisual.h"
 #include "..\customhud.h"
 #include "..\irenderable.h"
