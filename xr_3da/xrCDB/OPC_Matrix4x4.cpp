@@ -416,25 +416,25 @@ Matrix& Matrix::ComputeAxisMatrix(Point& axis, float angle)
 	MakeIdentity();
 
 	float length = axis.Magnitude();
-	// Normalize the z basis vector
+	// Normalize the z basis vector3
 	axis /= length;
 
 	// Get the dot product, and calculate the projection of the z basis
-	// vector onto the up vector. The projection is the y basis vector.
+	// vector3 onto the up vector. The projection is the y basis vector.
 	float dotProduct = Point(0, 1, 0) | axis;
 	Point Up = Point(0, 1, 0) - dotProduct * axis;
 
-	// This is to prevent bogus view matrix (up view vector equals to axis)
+	// This is to prevent bogus view matrix (up view vector3 equals to axis)
 	if (Up.Magnitude() < 1e-6f)	{
 		Up = Point(0, 0, 1);
 	}
 	else	{
-	// Normalize the y basis vector
+	// Normalize the y basis vector3
 		Up /= length;
 		Up.Normalize();
 	}
 
-	// The x basis vector is found simply with the cross product of the y
+	// The x basis vector3 is found simply with the cross product of the y
 	// and z basis vectors
 	Point Right = Up ^ axis;
 

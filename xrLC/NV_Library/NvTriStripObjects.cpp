@@ -429,7 +429,7 @@ bool NvStripInfo::Unique(NvFaceInfoVec& faceVec, NvFaceInfo* face)
 				bv2 = true;
 		}
 
-		//the face is not unique, all it's vertices exist in the face vector
+		//the face is not unique, all it's vertices exist in the face vector3
 		if(bv0 && bv1 && bv2)
 			return false;
 	}
@@ -535,7 +535,7 @@ void NvStripInfo::Build(NvEdgeInfoVec &edgeInfos, NvFaceInfoVec &faceInfos){
 		nextFace = NvStripifier::FindOtherFace(edgeInfos, nv0, nv1, nextFace);
 	}
 	
-	// Combine the forward and backwards stripification lists and put into our own face vector
+	// Combine the forward and backwards stripification lists and put into our own face vector3
 	Combine(forwardFaces, backwardFaces);
 }
 
@@ -593,7 +593,7 @@ bool NvStripInfo::SharesEdge(const NvFaceInfo* faceInfo, NvEdgeInfoVec &edgeInfo
 // CommitStrips()
 //
 // "Commits" the input strips by setting their m_experimentId to -1 and adding to the allStrips
-//  vector
+//  vector3
 //
 void NvStripifier::CommitStrips(NvStripInfoVec &allStrips, const NvStripInfoVec &strips)
 {	
@@ -669,7 +669,7 @@ bool NvStripifier::FindTraversal(NvFaceInfoVec &faceInfos,
 ////////////////////////////////////////////////////////////////////////////////////////
 // RemoveSmallStrips()
 //
-// allStrips is the whole strip vector...all small strips will be deleted from this list, to avoid leaking mem
+// allStrips is the whole strip _vector...all small strips will be deleted from this list, to avoid leaking mem
 // allBigStrips is an out parameter which will contain all strips above minStripLength
 // faceList is an out parameter which will contain all faces which were removed from the striplist
 //
@@ -941,7 +941,7 @@ void NvStripifier::Stripify(const WordVec &in_indices, const int in_cacheSize,
 ///////////////////////////////////////////////////////////////////////////////////////////
 // SplitUpStripsAndOptimize()
 //
-// Splits the input vector of strips (allBigStrips) into smaller, cache friendly pieces, then
+// Splits the input _vector of strips (allBigStrips) into smaller, cache friendly pieces, then
 //  reorders these pieces to maximize cache hits
 // The final strips are output through outStrips
 //
@@ -1194,7 +1194,7 @@ int NvStripifier::NumNeighbors(NvFaceInfo* face, NvEdgeInfoVec& edgeInfoVec)
 ///////////////////////////////////////////////////////////////////////////////////////////
 // AvgStripSize()
 //
-// Finds the average strip size of the input vector of strips
+// Finds the average strip size of the input _vector of strips
 //
 float NvStripifier::AvgStripSize(const NvStripInfoVec &strips){
 	int sizeAccum = 0;
@@ -1210,7 +1210,7 @@ float NvStripifier::AvgStripSize(const NvStripInfoVec &strips){
 ///////////////////////////////////////////////////////////////////////////////////////////
 // FindAllStrips()
 //
-// Does the stripification, puts output strips into vector allStrips
+// Does the stripification, puts output strips into _vector allStrips
 //
 // Works by setting runnning a number of experiments in different areas of the mesh, and
 //  accepting the one which results in the longest strips.  It then accepts this, and moves
@@ -1235,10 +1235,10 @@ void NvStripifier::FindAllStrips(NvStripInfoVec &allStrips,
 		//
 		// PHASE 1: Set up numSamples * numEdges experiments
 		//
-		vector<NvStripInfoVec>	experiments;
-		experiments.resize		(numSamples * 6);
-		int						experimentIndex = 0;
-		std::set   <NvFaceInfo*>  resetPoints;
+		xr_vector<NvStripInfoVec>	experiments;
+		experiments.resize			(numSamples * 6);
+		int							experimentIndex = 0;
+		xr_set   <NvFaceInfo*>		resetPoints;
 		for (int i = 0; i < numSamples; i++)
 		{
 			// Try to find another good reset point.
