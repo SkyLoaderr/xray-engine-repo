@@ -341,7 +341,7 @@ public:
 
 						// light point
 						amount[pid]	+= LightPoint(DB,P,t_n,Selected);
-						count[pid]	++;
+						count[pid]	+= 1;
 					}
 				}
 				
