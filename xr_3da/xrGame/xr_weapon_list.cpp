@@ -26,9 +26,11 @@ CWeaponList::CWeaponList	(CEntity* p)
 
 CWeaponList::~CWeaponList	( )
 {
+	/*
 	for (WeaponIt w_it=m_Weapons.begin(); w_it!=m_Weapons.end(); w_it++)
 		_DELETE(*w_it);
 	m_Weapons.clear();
+	*/
 }
 
 #define HUD_BONE_NAME_R "bip01_r_hand"

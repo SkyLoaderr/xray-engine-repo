@@ -326,10 +326,8 @@ BOOL CWeapon::net_Spawn		(BOOL bLocal, int server_id, Fvector& o_pos, Fvector& o
 	P.r_u16					(current);	iAmmoCurrent	= current;
 	P.r_u16					(elapsed);	iAmmoElapsed	= elapsed;
 
-	//
-	bVisible				= TRUE;
-	bEnabled				= TRUE;
-	Sector_Detect			();
+	Engine.Sheduler.Unregister	(this);
+	Engine.Sheduler.RegisterRT	(this);
 
 	return bResult;
 }
@@ -376,6 +374,15 @@ void CWeapon::Update		(DWORD dT)
 	fireDispersion_Current	-=	fireDispersion_Dec*dt;
 	clamp					(fireDispersion_Current,0.f,1.f);
 	if (light_time>0)		light_time -= dt;
+
+	if (0==H_Parent()) 
+	{
+		//
+		bVisible				= TRUE;
+		bEnabled				= TRUE;
+	} else {
+		bEnabled				= FALSE;
+	}
 }
 
 void CWeapon::OnVisible		()
