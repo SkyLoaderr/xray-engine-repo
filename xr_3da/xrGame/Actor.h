@@ -117,6 +117,8 @@ protected:
 				CMotionDef*	drop;
 				CMotionDef*	reload;
 				CMotionDef*	attack;
+				CMotionDef*	fire_idle;
+				CMotionDef*	fire_end;
 				void		Create(CSkeletonAnimated* K, LPCSTR base0, LPCSTR base1);
 			};
 
@@ -128,7 +130,7 @@ protected:
 			CMotionDef*		death;
 			SAnimState		m_walk;
 			SAnimState		m_run;
-			STorsoWpn		m_torso[2];
+			STorsoWpn		m_torso[7];
 			CMotionDef*		m_torso_idle;
 
 			CMotionDef*		m_damage[DAMAGE_FX_COUNT];

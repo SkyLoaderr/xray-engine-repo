@@ -18,8 +18,8 @@ class CMissile : public CHudItem
 {
 	typedef CHudItem inherited;
 public:
-	CMissile(void);
-	virtual ~CMissile(void);
+			CMissile	(void);
+	virtual ~CMissile	(void);
 
 	virtual void reinit				();
 
@@ -98,4 +98,8 @@ protected:
 	//звук анимации "играния"
 	HUD_SOUND sndPlaying;
 
+protected:
+	u32					m_animation_slot;
+public:
+	IC u32				HandDependence		()				{	return m_animation_slot;}
 };

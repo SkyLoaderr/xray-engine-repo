@@ -1,7 +1,8 @@
 #pragma once
 #include "gameobject.h"
 #include "../feel_touch.h"
-#include "actor.h"
+
+class CActor;
 
 struct SZonePPInfo 
 {

@@ -53,7 +53,7 @@ void CStateFreeNoAlife::initialize		()
 
 void CStateFreeNoAlife::execute			()
 {
-	m_object->play								(eStalkerSoundHumming,60000,10000);
+//	m_object->play								(eStalkerSoundHumming,60000,10000);
 	m_object->CStalkerMovementManager::update	(
 		0,
 		0,
@@ -66,8 +66,8 @@ void CStateFreeNoAlife::execute			()
 		eMentalStateFree
 	);
 	m_object->CSightManager::update				(eLookTypePathDirection);
-//	m_object->CObjectHandler::set_dest_state	(eObjectActionFire1,m_object->inventory().m_slots[5].m_pIItem);
-	m_object->CObjectHandler::set_dest_state	(eObjectActionNoItems);
+	m_object->CObjectHandler::set_dest_state	(eObjectActionFire1,m_object->inventory().m_slots[5].m_pIItem);
+//	m_object->CObjectHandler::set_dest_state	(eObjectActionNoItems);
 }
 
 void CStateFreeNoAlife::finalize		()

@@ -69,6 +69,8 @@ void CMissile::Load(LPCSTR section)
 
 	if(pSettings->line_exist(section,"snd_playing"))
 		LoadSound(section,"snd_playing",sndPlaying,TRUE);
+
+	m_animation_slot	= pSettings->r_u32(section,"animation_slot");
 }
 
 #define CHOOSE_MAX(x,inst_x,y,inst_y,z,inst_z)\

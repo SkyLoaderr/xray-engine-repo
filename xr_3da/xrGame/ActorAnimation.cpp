@@ -5,6 +5,7 @@
 #include "UI.h"
 #include "weapon.h"
 #include "inventory.h"
+#include "missile.h"
 
 static const float y_spin_factor		= 0.4f;
 static const float y_shoulder_factor	= 0.4f;
@@ -67,12 +68,14 @@ void __stdcall CActor::CarHeadCallback(CBoneInstance* B)
 void CActor::SActorMotions::SActorState::STorsoWpn::Create(CSkeletonAnimated* K, LPCSTR base0, LPCSTR base1)
 {
 	char			buf[128];
-	aim				= K->ID_Cycle(strconcat(buf,base0,"_torso",base1,"_aim_0"));
-	holster			= K->ID_Cycle(strconcat(buf,base0,"_torso",base1,"_holster_0"));
-	draw			= K->ID_Cycle(strconcat(buf,base0,"_torso",base1,"_draw_0"));
-	reload			= K->ID_Cycle(strconcat(buf,base0,"_torso",base1,"_reload_0"));
-	drop			= K->ID_Cycle(strconcat(buf,base0,"_torso",base1,"_drop_0"));
-	attack			= K->ID_Cycle(strconcat(buf,base0,"_torso",base1,"_attack_0"));
+	aim				= K->ID_Cycle_Safe(strconcat(buf,base0,"_torso",base1,"_aim_0"));
+	holster			= K->ID_Cycle_Safe(strconcat(buf,base0,"_torso",base1,"_holster_0"));
+	draw			= K->ID_Cycle_Safe(strconcat(buf,base0,"_torso",base1,"_draw_0"));
+	reload			= K->ID_Cycle_Safe(strconcat(buf,base0,"_torso",base1,"_reload_0"));
+	drop			= K->ID_Cycle_Safe(strconcat(buf,base0,"_torso",base1,"_drop_0"));
+	attack			= K->ID_Cycle_Safe(strconcat(buf,base0,"_torso",base1,"_attack_0"));
+	fire_idle		= K->ID_Cycle_Safe(strconcat(buf,base0,"_torso",base1,"_attack_1"));
+	fire_end		= K->ID_Cycle_Safe(strconcat(buf,base0,"_torso",base1,"_attack_2"));
 }
 void CActor::SActorMotions::SActorState::SAnimState::Create(CSkeletonAnimated* K, LPCSTR base0, LPCSTR base1)
 {
@@ -96,6 +99,10 @@ void CActor::SActorMotions::SActorState::Create(CSkeletonAnimated* K, LPCSTR bas
 	m_torso[0].Create(K,base,"_1");
 	m_torso[1].Create(K,base,"_2");
 	m_torso[2].Create(K,base,"_3");
+	m_torso[3].Create(K,base,"_4");
+	m_torso[4].Create(K,base,"_5");
+	m_torso[5].Create(K,base,"_6");
+	m_torso[6].Create(K,base,"_7");
 	
 	m_torso_idle	= K->ID_Cycle(strconcat(buf,base,"_torso_0_aim_0"));
 	jump_begin		= K->ID_Cycle(strconcat(buf,base,"_jump_begin"));
@@ -156,20 +163,35 @@ void CActor::g_SetAnimation( u32 mstate_rl )
 		else if (mstate_rl&mcRStrafe)	M_legs	= AS->legs_rs;
 		
 		// Torso
-		CWeapon* W = dynamic_cast<CWeapon*>(inventory().ActiveItem());//(Weapons->ActiveWeapon());
-		if (W){
-			SActorMotions::SActorState::STorsoWpn* TW	= &ST->m_torso[W->HandDependence()-1];
+		CWeapon		*W = dynamic_cast<CWeapon*>(inventory().ActiveItem());
+		CMissile	*M = dynamic_cast<CMissile*>(inventory().ActiveItem());
+		if (W || M) {
+			SActorMotions::SActorState::STorsoWpn* TW	= &ST->m_torso[(W ? W->HandDependence() : M->HandDependence()) - 1];
 			if (!b_DropActivated&&!fis_zero(f_DropPower)){
 				M_torso					= TW->drop;
 				m_bAnimTorsoPlayed		= TRUE;
 			}else{
-				if (!m_bAnimTorsoPlayed){
-					switch (W->STATE){
-					case CWeapon::eIdle:	M_torso	= TW->aim;		break;
-					case CWeapon::eFire:	M_torso	= TW->attack;	break;
-					case CWeapon::eReload:	M_torso	= TW->reload;	break;
-					case CWeapon::eShowing:	M_torso	= TW->draw;		break;
-					case CWeapon::eHiding:	M_torso	= TW->holster;	break;
+				if (!m_bAnimTorsoPlayed) {
+					if (W) {
+						switch (W->STATE){
+							case CWeapon::eIdle:	M_torso	= TW->aim;		break;
+							case CWeapon::eFire:	M_torso	= TW->attack;	break;
+							case CWeapon::eReload:	M_torso	= TW->reload;	break;
+							case CWeapon::eShowing:	M_torso	= TW->draw;		break;
+							case CWeapon::eHiding:	M_torso	= TW->holster;	break;
+						}
+					}
+					else {
+						switch (M->State()){
+							case MS_SHOWING	 :		M_torso	= TW->draw;		break;
+							case MS_HIDING	 :		M_torso	= TW->holster;	break;
+							case MS_IDLE	 :		M_torso	= TW->aim;		break;
+							case MS_EMPTY	 :		M_torso	= TW->aim;		break;
+							case MS_THREATEN :		M_torso	= TW->attack;	break;
+							case MS_READY	 :		M_torso	= TW->fire_idle;break;
+							case MS_THROW	 :		M_torso	= TW->fire_end;	break;
+							case MS_END		 :		M_torso	= TW->fire_end;	break;
+						}
 					}
 				}
 			}
