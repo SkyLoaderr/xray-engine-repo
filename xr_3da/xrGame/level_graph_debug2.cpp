@@ -33,6 +33,9 @@
 #include "space_restrictor.h"
 #include "space_restriction_base.h"
 #include "detail_path_manager.h"
+#include "memory_manager.h"
+#include "enemy_manager.h"
+#include "memory_space.h"
 
 void CLevelGraph::on_render1()
 {
@@ -1262,10 +1265,10 @@ void CLevelGraph::on_render5	()
 			}
 		}
 		CAI_Stalker		*stalker = smart_cast<CAI_Stalker*>(*I);
-		if (!stalker || !stalker->enemy())
+		if (!stalker || !stalker->memory().enemy().selected())
 			continue;
 
-		CMemoryInfo					mem_object = stalker->memory(stalker->enemy());
+		CMemoryInfo					mem_object = stalker->memory().memory(stalker->memory().enemy().selected());
 		if (!mem_object.m_object)
 			continue;
 		Fvector						position = mem_object.m_object_params.m_position;

@@ -33,6 +33,10 @@ namespace StalkerDecisionSpace {
 		eWorldPropertyReachedCustomerLocation,
 		eWorldPropertyCustomerSatisfied,
 
+		eWorldPropertyHumanToDialog,
+		eWorldPropertyReadyToDialog,
+		eWorldPropertyHelloCompleted,
+
 		eWorldPropertyNotEnoughFood,
 		eWorldPropertyCanBuyFood,
 
@@ -75,17 +79,22 @@ namespace StalkerDecisionSpace {
 		eWorldOperatorAlreadyDead	= u32(0),
 		eWorldOperatorDead,
 		
-// alfie
+// alife
 		eWorldOperatorGatherItems,
+		eWorldOperatorALifeEmulation,
 
 // alife : tasks
-		eWorldOperatorFreeNoALife,
-		eWorldOperatorFreeALife,
+		eWorldOperatorSolveZonePuzzle,
 		eWorldOperatorReachTaskLocation,
 		eWorldOperatorAccomplishTask,
 		eWorldOperatorReachCustomerLocation,
 		eWorldOperatorCommunicateWithCustomer,
 
+// alife : dialogs
+		eWorldOperatorGetReadyToDialog,
+		eWorldOperatorHello,
+		eWorldOperatorDialog,
+		
 // anomaly
 		eWorldOperatorGetOutOfAnomaly,
 		eWorldOperatorDetectAnomaly,
@@ -110,6 +119,7 @@ namespace StalkerDecisionSpace {
 		eWorldOperatorSquadAction,
 		eWorldOperatorDeathPlanner,
 		eWorldOperatorALifePlanner,
+		eWorldOperatorALifeDialogPlanner,
 		eWorldOperatorCombatPlanner,
 		eWorldOperatorAnomalyPlanner,
 

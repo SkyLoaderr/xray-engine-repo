@@ -10,6 +10,7 @@
 #include "stalker_alife_planner.h"
 #include "stalker_alife_actions.h"
 #include "stalker_alife_task_actions.h"
+#include "stalker_alife_dialog_planner.h"
 #include "stalker_decision_space.h"
 #include "stalker_property_evaluators.h"
 #include "ai/stalker/ai_stalker.h"
@@ -43,11 +44,14 @@ void CStalkerALifePlanner::setup			(CAI_Stalker *object, CPropertyStorage *stora
 void CStalkerALifePlanner::add_evaluators	()
 {
 	add_evaluator			(eWorldPropertyPuzzleSolved				,xr_new<CStalkerPropertyEvaluatorConst>						(false));
-	add_evaluator			(eWorldPropertyItems					,xr_new<CStalkerPropertyEvaluatorItems>						());
-	add_evaluator			(eWorldPropertyALife					,xr_new<CStalkerPropertyEvaluatorALife>						());
+	add_evaluator			(eWorldPropertyCustomerSatisfied		,xr_new<CStalkerPropertyEvaluatorConst>						(false));
+	
 	add_evaluator			(eWorldPropertyReachedTaskLocation		,xr_new<CStalkerPropertyEvaluatorMember>					(CScriptActionBase::m_storage,eWorldPropertyReachedTaskLocation,true,true));
 	add_evaluator			(eWorldPropertyTaskCompleted			,xr_new<CStalkerPropertyEvaluatorMember>					(CScriptActionBase::m_storage,eWorldPropertyTaskCompleted,true,true));
 	add_evaluator			(eWorldPropertyReachedCustomerLocation	,xr_new<CStalkerPropertyEvaluatorMember>					(CScriptActionBase::m_storage,eWorldPropertyReachedCustomerLocation,true,true));
+	
+	add_evaluator			(eWorldPropertyItems					,xr_new<CStalkerPropertyEvaluatorItems>						());
+	add_evaluator			(eWorldPropertyALife					,xr_new<CStalkerPropertyEvaluatorALife>						());
 	add_evaluator			(eWorldPropertyNotEnoughFood			,xr_new<CStalkerPropertyEvaluatorNotEnoughFood>				());
 	add_evaluator			(eWorldPropertyCanBuyFood				,xr_new<CStalkerPropertyEvaluatorCanBuyFood>				());
 	add_evaluator			(eWorldPropertyNotEnoughMedikits		,xr_new<CStalkerPropertyEvaluatorNotEnoughMedikits>			());
@@ -56,11 +60,19 @@ void CStalkerALifePlanner::add_evaluators	()
 	add_evaluator			(eWorldPropertyCanBuyWeapon				,xr_new<CStalkerPropertyEvaluatorCanBuyWeapon>				());
 	add_evaluator			(eWorldPropertyNotEnoughAmmo			,xr_new<CStalkerPropertyEvaluatorNotEnoughAmmo>				());
 	add_evaluator			(eWorldPropertyCanBuyAmmo				,xr_new<CStalkerPropertyEvaluatorCanBuyAmmo>				());
-	add_evaluator			(eWorldPropertyCustomerSatisfied		,xr_new<CStalkerPropertyEvaluatorConst>						(false));
+	add_evaluator			(eWorldPropertyHumanToDialog			,xr_new<CStalkerPropertyEvaluatorHumanToDialog>				());
+//	add_evaluator			(eWorldPropertyHumanToDialog			,xr_new<CStalkerPropertyEvaluatorMember>					(CScriptActionBase::m_storage,eWorldPropertyHumanToDialog,true,true));
 }
 
 void CStalkerALifePlanner::add_actions		()
 {
+	CActionPlannerActionScript<CAI_Stalker>	*planner;
+
+	planner					= xr_new<CStalkerALifeDialogPlanner>(m_object,"alife_dialog_planner");
+	add_condition			(planner,eWorldPropertyHumanToDialog,true);
+	add_effect				(planner,eWorldPropertyHumanToDialog,false);
+	add_operator			(eWorldOperatorALifeDialogPlanner,	planner);
+
 	CStalkerActionBase		*action;
 
 	action					= xr_new<CStalkerActionGatherItems>	(m_object,"gather_items");
@@ -72,21 +84,24 @@ void CStalkerALifePlanner::add_actions		()
 	add_condition			(action,eWorldPropertyALife,		false);
 	add_condition			(action,eWorldPropertyItems,		false);
 	add_condition			(action,eWorldPropertyPuzzleSolved,	false);
+	add_condition			(action,eWorldPropertyHumanToDialog,false);
 	add_effect				(action,eWorldPropertyPuzzleSolved,	true);
-	add_operator			(eWorldOperatorFreeNoALife,			action);
+	add_operator			(eWorldOperatorALifeEmulation,			action);
 
 	action					= xr_new<CStalkerActionSolveZonePuzzle>	(m_object,"solve_zone_puzzle");
 	add_condition			(action,eWorldPropertyALife,		true);
 	add_condition			(action,eWorldPropertyItems,		false);
 	add_condition			(action,eWorldPropertyPuzzleSolved,	false);
 	add_condition			(action,eWorldPropertyCustomerSatisfied,true);
+	add_condition			(action,eWorldPropertyHumanToDialog,false);
 	add_effect				(action,eWorldPropertyPuzzleSolved,	true);
-	add_operator			(eWorldOperatorFreeALife,			action);
+	add_operator			(eWorldOperatorSolveZonePuzzle,		action);
 
 	action					= xr_new<CStalkerActionReachTaskLocation>	(m_object,"reach_task_location");
 	add_condition			(action,eWorldPropertyALife,		true);
 	add_condition			(action,eWorldPropertyItems,		false);
 	add_condition			(action,eWorldPropertyReachedTaskLocation,	false);
+	add_condition			(action,eWorldPropertyHumanToDialog,false);
 	add_effect				(action,eWorldPropertyReachedTaskLocation,	true);
 	add_operator			(eWorldOperatorReachTaskLocation,	action);
 
@@ -95,6 +110,7 @@ void CStalkerALifePlanner::add_actions		()
 	add_condition			(action,eWorldPropertyItems,		false);
 	add_condition			(action,eWorldPropertyReachedTaskLocation,	true);
 	add_condition			(action,eWorldPropertyTaskCompleted,false);
+	add_condition			(action,eWorldPropertyHumanToDialog,false);
 	add_effect				(action,eWorldPropertyTaskCompleted,true);
 	add_operator			(eWorldOperatorAccomplishTask,		action);
 
@@ -104,45 +120,10 @@ void CStalkerALifePlanner::add_actions		()
 	add_condition			(action,eWorldPropertyReachedTaskLocation,	true);
 	add_condition			(action,eWorldPropertyTaskCompleted,true);
 	add_condition			(action,eWorldPropertyReachedCustomerLocation,false);
+	add_condition			(action,eWorldPropertyHumanToDialog,false);
 	add_effect				(action,eWorldPropertyReachedCustomerLocation,true);
 	add_operator			(eWorldOperatorReachCustomerLocation,action);
-
-//	action					= xr_new<CStalkerActionReachCustomerLocation>	(m_object,"go_to_customer : not enough food");
-//	add_condition			(action,eWorldPropertyALife,		true);
-//	add_condition			(action,eWorldPropertyItems,		false);
-//	add_condition			(action,eWorldPropertyNotEnoughFood,true);
-//	add_condition			(action,eWorldPropertyCanBuyFood,	true);
-//	add_condition			(action,eWorldPropertyReachedCustomerLocation,false);
-//	add_effect				(action,eWorldPropertyReachedCustomerLocation,true);
-//	add_operator			(eWorldOperatorReachCustomerLocation,action);
-//
-//	action					= xr_new<CStalkerActionReachCustomerLocation>	(m_object,"go_to_customer : not enough medikits");
-//	add_condition			(action,eWorldPropertyALife,		true);
-//	add_condition			(action,eWorldPropertyItems,		false);
-//	add_condition			(action,eWorldPropertyNotEnoughMedikits,true);
-//	add_condition			(action,eWorldPropertyCanBuyMedikit,true);
-//	add_condition			(action,eWorldPropertyReachedCustomerLocation,false);
-//	add_effect				(action,eWorldPropertyReachedCustomerLocation,true);
-//	add_operator			(eWorldOperatorReachCustomerLocation,action);
-//
-//	action					= xr_new<CStalkerActionReachCustomerLocation>	(m_object,"go_to_customer : no or bad weapon");
-//	add_condition			(action,eWorldPropertyALife,		true);
-//	add_condition			(action,eWorldPropertyItems,		false);
-//	add_condition			(action,eWorldPropertyNoOrBadWeapon,true);
-//	add_condition			(action,eWorldPropertyCanBuyWeapon,	true);
-//	add_condition			(action,eWorldPropertyReachedCustomerLocation,false);
-//	add_effect				(action,eWorldPropertyReachedCustomerLocation,true);
-//	add_operator			(eWorldOperatorReachCustomerLocation,action);
-//
-//	action					= xr_new<CStalkerActionReachCustomerLocation>	(m_object,"go_to_customer : not enough ammo");
-//	add_condition			(action,eWorldPropertyALife,		true);
-//	add_condition			(action,eWorldPropertyItems,		false);
-//	add_condition			(action,eWorldPropertyNotEnoughAmmo,true);
-//	add_condition			(action,eWorldPropertyCanBuyAmmo,	true);
-//	add_condition			(action,eWorldPropertyReachedCustomerLocation,false);
-//	add_effect				(action,eWorldPropertyReachedCustomerLocation,true);
-//	add_operator			(eWorldOperatorReachCustomerLocation,action);
-//
+	
 	action					= xr_new<CStalkerActionCommunicateWithCustomer>	(m_object,"statisfy_customer");
 	add_condition			(action,eWorldPropertyALife,		true);
 	add_condition			(action,eWorldPropertyItems,		false);

@@ -42,4 +42,3 @@ public:
 	virtual void		execute						();
 	virtual void		finalize					();
 };
-

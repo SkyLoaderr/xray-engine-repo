@@ -9,22 +9,24 @@
 #pragma once
 
 #include "object_manager.h"
+#include "gameobject.h"
 
-class CGameObject;
 class CRestrictedObject;
 
 class CItemManager : public CObjectManager<const CGameObject > {
-private:
-	typedef CObjectManager<const CGameObject > inherited;
+public:
+	typedef CObjectManager<const CGameObject >	inherited;
+	typedef xr_vector<const CGameObject*>		ITEMS;
 
 private:
-	CRestrictedObject	*m_restricted_object;
+	CCustomMonster		*m_object;
 
 public:
-	virtual void	reinit						();
-	virtual bool	useful						(const CGameObject *object) const;
-	virtual	float	evaluate					(const CGameObject *object) const;
-	IC		const xr_vector<const CGameObject*> &items() const;
+	IC					CItemManager	(CCustomMonster *object);
+	virtual bool		useful			(const CGameObject *object) const;
+	virtual bool		is_useful		(const CGameObject *object) const;
+	virtual	float		evaluate		(const CGameObject *object) const;
+	virtual	float		do_evaluate		(const CGameObject *object) const;
 };
 
 #include "item_manager_inline.h"

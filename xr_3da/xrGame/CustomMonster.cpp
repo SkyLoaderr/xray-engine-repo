@@ -19,6 +19,11 @@
 #include "clsid_game.h"
 #include "../skeletonanimated.h"
 #include "detail_path_manager.h"
+#include "memory_manager.h"
+#include "visual_memory_manager.h"
+#include "sound_memory_manager.h"
+#include "enemy_manager.h"
+#include "item_manager.h"
 
 extern int g_AI_inactive_time;
 
@@ -52,26 +57,22 @@ void CCustomMonster::SAnimState::Create(CSkeletonAnimated* K, LPCSTR base)
 
 CCustomMonster::CCustomMonster()
 {
-	init				();
 }
 
 CCustomMonster::~CCustomMonster	()
 {
-}
-
-void CCustomMonster::init()
-{
-	//m_client_update_activated	= false;
+	xr_delete					(m_memory_manager);
 }
 
 void CCustomMonster::Load		(LPCSTR section)
 {
+	m_memory_manager			= xr_new<CMemoryManager>(this);
+
 	inherited::Load				(section);
 	CScriptMonster::Load		(section);
-	CEventMemoryManager::Load	(section);
 	CLocationManager::Load		(section);
 	CMaterialManager::Load		(section);
-	CMemoryManager::Load		(section);
+	memory().Load				(section);
 	CMovementManager::Load		(section);
 
 	ISpatial*		self				= smart_cast<ISpatial*> (this);
@@ -150,12 +151,11 @@ void CCustomMonster::reinit()
 {
 	CScriptMonster::reinit		();
 	CEntityAlive::reinit		();
-	CEventMemoryManager::reinit	();
 	CLocationManager::reinit	();
 	CMaterialManager::reinit	();
-	CMemoryManager::reinit		();
+	memory().reinit				();
 	CMovementManager::reinit	();
-	CSelectorManager::reinit	();
+	CSelectorManager::reinit	(this);
 	CSoundPlayer::reinit		();
 
 	eye_pp_stage				= 0;
@@ -170,16 +170,11 @@ void CCustomMonster::reload		(LPCSTR section)
 	CSoundPlayer::reload		(section);
 	CScriptMonster::reload		(section);
 	CEntityAlive::reload		(section);
-	CEventMemoryManager::reload	(section);
 	CLocationManager::reload	(section);
 	CMaterialManager::reload	(section);
-	CMemoryManager::reload		(section);
+	memory().reload				(section);
 	CMovementManager::reload	(section);
-//	CSelectorManager::reload	(section);
-
-
 	load_killer_clsids			(section);
-	
 }
 
 void CCustomMonster::mk_orientation(Fvector &dir, Fmatrix& mR)
@@ -266,7 +261,7 @@ void CCustomMonster::shedule_Update	( u32 DT )
 	float dt			= float(DT)/1000.f;
 	// *** general stuff
 	if (g_Alive())
-		CMemoryManager::update	(dt);
+		memory().update			(dt);
 	inherited::shedule_Update	(DT);
 
 	// Queue setup
@@ -346,13 +341,7 @@ void CCustomMonster::UpdateCL	()
 { 
 	inherited::UpdateCL					();
 	
-	//if (!g_Alive() && CSoundPlayer::playing_sounds().empty() && m_client_update_activated) {
-	//	processing_deactivate	();
-	//	m_client_update_activated = false;
-	//}
-
 	CScriptMonster::process_sound_callbacks();
-	CEventMemoryManager::update			();
 	CSoundPlayer::update				(Device.fTimeDelta);
 	if	(NET.empty())	return;
 	
@@ -475,7 +464,7 @@ void CCustomMonster::eye_pp_s2			( )
 	u32 dwTime			= Level().timeServer();
 	u32 dwDT			= dwTime-eye_pp_timestamp;
 	eye_pp_timestamp	= dwTime;
-	feel_vision_update						(this,eye_matrix.c,float(dwDT)/1000.f,transparency_threshold());
+	feel_vision_update						(this,eye_matrix.c,float(dwDT)/1000.f,memory().visual().transparency_threshold());
 	Device.Statistic.AI_Vis_RayTests.End	();
 }
 
@@ -667,8 +656,6 @@ void CCustomMonster::Die	(CObject* who)
 
 BOOL CCustomMonster::net_Spawn	(LPVOID DC)
 {
-	//VERIFY						(!m_client_update_activated);
-
 	if (!inherited::net_Spawn(DC) || !CScriptMonster::net_Spawn(DC) || !CMovementManager::net_Spawn(DC))
 		return					(FALSE);
 	
@@ -700,11 +687,6 @@ BOOL CCustomMonster::net_Spawn	(LPVOID DC)
 	}
 
 	// Eyes
-	//if (g_Alive()) {
-	//	processing_activate		();
-	//	m_client_update_activated = true;
-	//}
-
 	eye_bone					= smart_cast<CKinematics*>(Visual())->LL_BoneID(pSettings->r_string(cNameSect(),"bone_head"));
 
 	// weapons
@@ -862,7 +844,7 @@ BOOL CCustomMonster::feel_touch_contact		(CObject *O)
 void CCustomMonster::set_ready_to_save		()
 {
 	inherited::set_ready_to_save		();
-	CMemoryManager::set_ready_to_save	();
+	memory().enemy().set_ready_to_save	();
 }
 
 void CCustomMonster::load_killer_clsids(LPCSTR section)
@@ -879,3 +861,32 @@ bool CCustomMonster::is_special_killer(CObject *obj)
 	return (obj && (std::find(m_killer_clsids.begin(),m_killer_clsids.end(),obj->SUB_CLS_ID) != m_killer_clsids.end()));  
 }
 
+float CCustomMonster::feel_vision_mtl_transp(u32 element)
+{
+	return	(memory().visual().feel_vision_mtl_transp(element));
+}
+
+void CCustomMonster::feel_sound_new	(CObject* who, int type, const Fvector &position, float power)
+{
+	memory().sound().feel_sound_new(who,type,position,power);
+}
+
+bool CCustomMonster::useful			(const CGameObject *object) const
+{
+	return	(memory().item().useful(object));
+}
+
+float CCustomMonster::evaluate		(const CGameObject *object) const
+{
+	return	(memory().item().evaluate(object));
+}
+
+bool CCustomMonster::useful			(const CEntityAlive *object) const
+{
+	return	(memory().enemy().useful(object));
+}
+
+float CCustomMonster::evaluate		(const CEntityAlive *object) const
+{
+	return	(memory().enemy().evaluate(object));
+}

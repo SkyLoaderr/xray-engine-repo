@@ -10,6 +10,9 @@
 #include "ai_rat.h"
 #include "ai_rat_space.h"
 #include "../../clsid_game.h"
+#include "../../memory_manager.h"
+#include "../../enemy_manager.h"
+#include "../../item_manager.h"
 
 using namespace RatSpace;
 
@@ -19,17 +22,17 @@ void CAI_Rat::Exec_Action(float /**dt/**/)
 		case eRatActionAttackBegin : {
 			u32					dwTime = Level().timeServer();
 			CSoundPlayer::play	(eRatSoundAttack);//,0,0,m_dwHitInterval+1,m_dwHitInterval);
-			if (enemy() && enemy()->g_Alive() && (dwTime - m_dwStartAttackTime > m_dwHitInterval)) {
+			if (memory().enemy().selected() && memory().enemy().selected()->g_Alive() && (dwTime - m_dwStartAttackTime > m_dwHitInterval)) {
 				m_bActionStarted = true;
 				m_dwStartAttackTime = dwTime;
 				Fvector tDirection;
 				Fvector position_in_bone_space;
 				position_in_bone_space.set(0.f,0.f,0.f);
-				tDirection.sub(enemy()->Position(),this->Position());
+				tDirection.sub(memory().enemy().selected()->Position(),this->Position());
 				vfNormalizeSafe(tDirection);
 				
-				if ((this->Local()) && enemy() && (CLSID_ENTITY == enemy()->CLS_ID)) {
-					CEntityAlive	*entity_alive = const_cast<CEntityAlive*>(enemy());
+				if ((this->Local()) && memory().enemy().selected() && (CLSID_ENTITY == memory().enemy().selected()->CLS_ID)) {
+					CEntityAlive	*entity_alive = const_cast<CEntityAlive*>(memory().enemy().selected());
 					VERIFY			(entity_alive);
 					entity_alive->Hit(m_fHitPower,tDirection,this,0,position_in_bone_space,0);
 				}
@@ -63,7 +66,7 @@ void CAI_Rat::HitSignal(float amount, Fvector& vLocalDir, CObject* who, s16 /**e
 
 bool CAI_Rat::useful		(const CGameObject *object) const
 {
-	if (!CItemManager::useful(object))
+	if (!memory().item().useful(object))
 		return			(false);
 
 	const CEntityAlive	*entity_alive = smart_cast<const CEntityAlive*>(object);

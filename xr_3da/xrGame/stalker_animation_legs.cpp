@@ -21,7 +21,7 @@ void CStalkerAnimationManager::legs_play_callback		(CBlend *blend)
 {
 	CAI_Stalker				*object = (CAI_Stalker*)blend->CallbackParam;
 	VERIFY					(object);
-	object->animation_manager().legs().reset();
+	object->animation().legs().reset();
 }
 
 const CAnimationPair *CStalkerAnimationManager::assign_legs_animation	()

@@ -8,7 +8,8 @@
 
 #pragma once
 
-IC	const xr_vector<const CGameObject*> &CItemManager::items() const
+IC	CItemManager::CItemManager						(CCustomMonster *object)
 {
-	return					(objects());
+	VERIFY					(object);
+	m_object				= object;
 }

@@ -6,21 +6,22 @@
 //	Description : Enemy manager
 ////////////////////////////////////////////////////////////////////////////
 
-#pragma once
-
 #include "stdafx.h"
 #include "enemy_manager.h"
-#include "ef_storage.h"
 #include "memory_manager.h"
-#include "level.h"
-#include "actor.h"
-#include "ai/stalker/ai_stalker.h"
-#include "map_location.h"
+#include "visual_memory_manager.h"
+#include "hit_memory_manager.h"
 #include "clsid_game.h"
-#include "autosave_manager.h"
+#include "ef_storage.h"
 #include "ef_pattern.h"
+#include "autosave_manager.h"
 
 #define USE_EVALUATOR
+
+bool CEnemyManager::is_useful				(const CEntityAlive *entity_alive) const
+{
+	return					(m_object->useful(entity_alive));
+}
 
 bool CEnemyManager::useful					(const CEntityAlive *entity_alive) const
 {
@@ -30,22 +31,27 @@ bool CEnemyManager::useful					(const CEntityAlive *entity_alive) const
 	if ((entity_alive->spatial.type & STYPE_VISIBLEFORAI) != STYPE_VISIBLEFORAI)
 		return				(false);
 
-	if (m_self_entity_alive && ((m_self_entity_alive->ID() == entity_alive->ID()) || ((m_self_entity_alive->tfGetRelationType(entity_alive) != ALife::eRelationTypeEnemy) && (m_self_entity_alive->tfGetRelationType(entity_alive) != ALife::eRelationTypeWorstEnemy) )))
+	if ((m_object->ID() == entity_alive->ID()) || ((m_object->tfGetRelationType(entity_alive) != ALife::eRelationTypeEnemy) && (m_object->tfGetRelationType(entity_alive) != ALife::eRelationTypeWorstEnemy)))
 		return				(false);
 
 	if (!ai().get_level_graph() || !ai().level_graph().valid_vertex_id(entity_alive->level_vertex_id()))
 		return				(false);
 
 	if	(
-			m_self_entity_alive->human_being() &&
+			m_object->human_being() &&
 			!entity_alive->human_being() &&
 			!expedient(entity_alive) &&
 			(evaluate(entity_alive) >= m_ignore_monster_threshold) &&
-			(m_self_entity_alive->Position().distance_to(entity_alive->Position()) >= m_max_ignore_distance)
+			(m_object->Position().distance_to(entity_alive->Position()) >= m_max_ignore_distance)
 		)
 		return				(false);
 
 	return					(true);
+}
+
+float CEnemyManager::do_evaluate			(const CEntityAlive *object) const
+{
+	return					(m_object->evaluate(object));
 }
 
 float CEnemyManager::evaluate				(const CEntityAlive *object) const
@@ -53,19 +59,19 @@ float CEnemyManager::evaluate				(const CEntityAlive *object) const
 	if (object->SUB_CLS_ID == CLSID_OBJECT_ACTOR)
 		m_ready_to_save					= false;
 
-	bool				visible = m_self_memory_manager->visible_now(object);
+	bool				visible = m_object->memory().visual().visible_now(object);
 	if (!visible && m_visible_now)
 		return			(1000.f);
 	
 	m_visible_now		= visible;
 
 #ifdef USE_EVALUATOR
-	ai().ef_storage().non_alife().member()	= m_self_entity_alive;
+	ai().ef_storage().non_alife().member()	= m_object;
 	ai().ef_storage().non_alife().enemy()	= object;
-	float				distance = m_self_entity_alive->Position().distance_to_sqr(object->Position());
+	float				distance = m_object->Position().distance_to_sqr(object->Position());
 	return				(1000.f*(visible ? 0.f : 1.f) + distance/100.f + ai().ef_storage().m_pfVictoryProbability->ffGetValue()/100.f);
 #else
-	float				distance = m_self_entity_alive->Position().distance_to_sqr(object->Position());
+	float				distance = m_object->Position().distance_to_sqr(object->Position());
 	distance			= !fis_zero(distance) ? distance : EPS_L;
 	return				(1000.f*(visible ? 0.f : 1.f) + 1.f/distance);
 #endif
@@ -73,23 +79,16 @@ float CEnemyManager::evaluate				(const CEntityAlive *object) const
 
 bool CEnemyManager::expedient				(const CEntityAlive *object) const
 {
-	ai().ef_storage().non_alife().member()		= m_self_entity_alive;
+	ai().ef_storage().non_alife().member()		= m_object;
 	VERIFY									(ai().ef_storage().non_alife().member());
 	ai().ef_storage().non_alife().enemy()		= object;
 
 	if (ai().ef_storage().m_pfExpediency->dwfGetDiscreteValue())
 		return				(true);
 
-	VERIFY					(m_self_memory_manager);
-	if (m_self_memory_manager->hit(ai().ef_storage().non_alife().enemy()))
+	if (m_object->memory().hit().hit(ai().ef_storage().non_alife().enemy()))
 		return				(true);
 	return					(false);
-}
-
-void CEnemyManager::Load					(LPCSTR section)
-{
-	m_self_entity_alive		= smart_cast<CEntityAlive*>(this);
-	m_self_memory_manager	= smart_cast<CMemoryManager*>(this);
 }
 
 void CEnemyManager::reload					(LPCSTR section)
@@ -101,12 +100,6 @@ void CEnemyManager::reload					(LPCSTR section)
 		m_ignore_monster_threshold	= pSettings->r_float(section,"ignore_monster_threshold");
 	if (pSettings->line_exist(section,"max_ignore_distance"))
 		m_max_ignore_distance		= pSettings->r_float(section,"max_ignore_distance");
-}
-
-
-CEnemyManager::CEnemyManager		()
-{
-	m_ready_to_save				= true;
 }
 
 void CEnemyManager::update					()

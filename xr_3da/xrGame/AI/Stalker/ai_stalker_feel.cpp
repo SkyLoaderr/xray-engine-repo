@@ -9,6 +9,8 @@
 #include "stdafx.h"
 #include "ai_stalker.h"
 #include "../../inventory_item.h"
+#include "../../memory_manager.h"
+#include "../../visual_memory_manager.h"
 
 BOOL CAI_Stalker::feel_vision_isRelevant(CObject* O)
 {
@@ -34,7 +36,7 @@ void CAI_Stalker::Exec_Look			(float dt)
 
 bool CAI_Stalker::bfCheckForNodeVisibility(u32 dwNodeID, bool bIfRayPick)
 {
-	return							(CVisualMemoryManager::visible(dwNodeID,m_head.current.yaw,ffGetFov()));
+	return							(memory().visual().visible(dwNodeID,m_head.current.yaw,ffGetFov()));
 }
 
 BOOL CAI_Stalker::feel_touch_on_contact	(CObject *O)

@@ -34,6 +34,7 @@
 #include "../../agent_manager.h"
 #include "../../object_handler_planner.h"
 #include "../../object_handler_space.h"
+#include "../../memory_manager.h"
 
 extern int g_AI_inactive_time;
 
@@ -71,7 +72,7 @@ void CAI_Stalker::reinit			()
 	CObjectHandler::reinit			(this);
 	CSightManager::reinit			(this);
 	CCustomMonster::reinit			();
-	animation_manager().reinit		();
+	animation().reinit		();
 	CStalkerMovementManager::reinit	();
 	CStepManager::reinit			();
 
@@ -107,6 +108,8 @@ void CAI_Stalker::reinit			()
 	m_not_enough_ammo				= false;
 	m_can_buy_ammo					= false;
 	m_last_alife_motivations_update	= 0;
+
+	body_action						(eBodyActionNone);
 }
 
 void CAI_Stalker::LoadSounds		(LPCSTR section)
@@ -200,7 +203,7 @@ BOOL CAI_Stalker::net_Spawn			(LPVOID DC)
 	
 	m_dwMoney						= tpHuman->m_dwMoney;
 
-	animation_manager().reload		(this);
+	animation().reload		(this);
 
 	m_head.current.yaw = m_head.target.yaw = m_body.current.yaw = m_body.target.yaw	= angle_normalize_signed(-tpHuman->o_Angle.y);
 	m_body.current.pitch			= m_body.target.pitch	= 0;
@@ -455,7 +458,7 @@ void CAI_Stalker::shedule_Update		( u32 DT )
 	float dt			= float(DT)/1000.f;
 
 	if (g_Alive())
-		CMemoryManager::update			(dt);
+		memory().update					(dt);
 	inherited::inherited::shedule_Update(DT);
 	
 	if (Remote())		{
@@ -584,6 +587,7 @@ void CAI_Stalker::spawn_supplies	()
 }
 
 #ifdef DEBUG
+#include "../../visual_memory_manager.h"
 void CAI_Stalker::OnRender			()
 {
 	inherited::OnRender		();
@@ -626,7 +630,7 @@ void CAI_Stalker::OnRender			()
 	float						x = (1.f + v_res.x)/2.f * (Device.dwWidth);
 	float						y = (1.f - v_res.y)/2.f * (Device.dwHeight);
 
-	CNotYetVisibleObject		*object = not_yet_visible_object(smart_cast<CGameObject*>(Level().CurrentEntity()));
+	CNotYetVisibleObject		*object = memory().visual().not_yet_visible_object(smart_cast<CGameObject*>(Level().CurrentEntity()));
 	string64					out_text;
 	sprintf						(out_text,"%.2f",object ? object->m_value : 0.f);
 
@@ -657,5 +661,5 @@ void CAI_Stalker::load (IReader &input_packet)
 
 void CAI_Stalker::SelectAnimation(const Fvector &view, const Fvector &move, float speed)
 {
-	animation_manager().update();
+	animation().update();
 }

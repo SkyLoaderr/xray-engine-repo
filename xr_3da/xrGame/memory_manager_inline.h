@@ -8,38 +8,12 @@
 
 #pragma once
 
-IC	bool CMemoryManager::visible	(const CObject *object) const
-{
-	xr_vector<CVisibleObject>::const_iterator	I = std::find(memory_visible_objects().begin(),memory_visible_objects().end(),object_id(object));
-	if (memory_visible_objects().end() == I)
-		return				(false);
-
-	return					((*I).visible());
-}
-
-IC	const CGameObject *CMemoryManager::item	() const
-{
-	return					(CItemManager::selected());
-}
-
-IC	const CEntityAlive *CMemoryManager::enemy	() const
-{
-	return					(CEnemyManager::selected());
-}
-
-IC	void CMemoryManager::enable		(const CObject *object, bool enable)
-{
-	CVisualMemoryManager::enable	(object,enable);
-	CSoundMemoryManager::enable		(object,enable);
-	CHitMemoryManager::enable		(object,enable);
-}
-
 template <typename _predicate>
 IC	void CMemoryManager::fill_enemies	(const _predicate &predicate) const
 {
-	fill_enemies					(memory_visible_objects(),predicate);
-	fill_enemies					(sound_objects(),predicate);
-	fill_enemies					(hit_objects(),predicate);
+	fill_enemies					(visual().objects(),predicate);
+	fill_enemies					(sound().objects(),	predicate);
+	fill_enemies					(hit().objects(),	predicate);
 }
 
 template <typename T, typename _predicate>
@@ -52,7 +26,43 @@ IC	void CMemoryManager::fill_enemies	(const xr_vector<T> &objects, const _predic
 			continue;
 
 		const CEntityAlive			*entity_alive = smart_cast<const CEntityAlive*>((*I).m_object);
-		if (entity_alive && CEnemyManager::useful(entity_alive))
+		if (entity_alive && enemy().useful(entity_alive))
 			predicate				(entity_alive,*I);
 	}
+}
+
+IC	CVisualMemoryManager	&CMemoryManager::visual		() const
+{
+	VERIFY					(m_visual);
+	return					(*m_visual);
+}
+
+IC	CSoundMemoryManager		&CMemoryManager::sound		() const
+{
+	VERIFY					(m_sound);
+	return					(*m_sound);
+}
+
+IC	CHitMemoryManager		&CMemoryManager::hit		() const
+{
+	VERIFY					(m_hit);
+	return					(*m_hit);
+}
+
+IC	CEnemyManager			&CMemoryManager::enemy		() const
+{
+	VERIFY					(m_enemy);
+	return					(*m_enemy);
+}
+
+IC	CItemManager			&CMemoryManager::item		() const
+{
+	VERIFY					(m_item);
+	return					(*m_item);
+}
+
+IC	CGreetingManager		&CMemoryManager::greeting	() const
+{
+	VERIFY					(m_greeting);
+	return					(*m_greeting);
 }

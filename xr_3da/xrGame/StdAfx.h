@@ -12,3 +12,7 @@
 #include "smart_cast.h"
 
 #define BOOST_THROW_EXCEPTION_HPP_INCLUDED
+
+#define READ_IF_EXISTS(ltx,method,section,name,default_value)\
+	(ltx->line_exist(section,name)) ? ltx->method(section,name) : default_value
+

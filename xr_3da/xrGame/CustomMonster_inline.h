@@ -35,3 +35,9 @@ IC	bool left_angle(float y1, float y2)
 	dir.crossproduct(dir1,dir2);
 	return			(dir.y <= 0.f);
 }
+
+IC	CMemoryManager &CCustomMonster::memory	() const
+{
+	VERIFY			(m_memory_manager);
+	return			(*m_memory_manager);
+}

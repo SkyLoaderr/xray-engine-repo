@@ -9,7 +9,6 @@
 #pragma once
 
 #include "abstract_path_manager.h"
-#include "level_graph.h"
 
 template <
 	typename _VertexEvaluator,

@@ -161,9 +161,9 @@ void CObjectActionStrapping::initialize		()
 {
 	inherited::initialize				();
 	m_storage->set_property(ObjectHandlerSpace::eWorldPropertyStrapped2Idle,true);
-	m_object->animation_manager().setup_flag(true);
-	m_object->animation_manager().property_id(ObjectHandlerSpace::eWorldPropertyStrapped);
-	m_object->animation_manager().property_value(true);
+	m_object->animation().setup_storage(m_storage);
+	m_object->animation().property_id(ObjectHandlerSpace::eWorldPropertyStrapped);
+	m_object->animation().property_value(true);
 }
 
 void CObjectActionStrapping::execute			()
@@ -174,6 +174,7 @@ void CObjectActionStrapping::execute			()
 void CObjectActionStrapping::finalize		()
 {
 	inherited::finalize();
+	m_object->animation().setup_storage(0);
 }
 
 //////////////////////////////////////////////////////////////////////////
@@ -188,9 +189,9 @@ CObjectActionStrappingToIdle::CObjectActionStrappingToIdle	(CInventoryItem *item
 void CObjectActionStrappingToIdle::initialize		()
 {
 	inherited::initialize				();
-	m_object->animation_manager().setup_flag(true);
-	m_object->animation_manager().property_id(ObjectHandlerSpace::eWorldPropertyStrapped2Idle);
-	m_object->animation_manager().property_value(false);
+	m_object->animation().setup_storage(m_storage);
+	m_object->animation().property_id(ObjectHandlerSpace::eWorldPropertyStrapped2Idle);
+	m_object->animation().property_value(false);
 }
 
 void CObjectActionStrappingToIdle::execute			()
@@ -201,6 +202,7 @@ void CObjectActionStrappingToIdle::execute			()
 void CObjectActionStrappingToIdle::finalize		()
 {
 	inherited::finalize();
+	m_object->animation().setup_storage(0);
 }
 
 //////////////////////////////////////////////////////////////////////////
@@ -216,9 +218,9 @@ void CObjectActionUnstrapping::initialize		()
 {
 	inherited::initialize();
 	m_storage->set_property(ObjectHandlerSpace::eWorldPropertyStrapped2Idle,true);
-	m_object->animation_manager().setup_flag(true);
-	m_object->animation_manager().property_id(ObjectHandlerSpace::eWorldPropertyStrapped);
-	m_object->animation_manager().property_value(false);
+	m_object->animation().setup_storage(m_storage);
+	m_object->animation().property_id(ObjectHandlerSpace::eWorldPropertyStrapped);
+	m_object->animation().property_value(false);
 }
 
 void CObjectActionUnstrapping::execute			()
@@ -229,6 +231,7 @@ void CObjectActionUnstrapping::execute			()
 void CObjectActionUnstrapping::finalize		()
 {
 	inherited::finalize();
+	m_object->animation().setup_storage(0);
 }
 
 //////////////////////////////////////////////////////////////////////////
@@ -243,19 +246,21 @@ CObjectActionUnstrappingToIdle::CObjectActionUnstrappingToIdle	(CInventoryItem *
 void CObjectActionUnstrappingToIdle::initialize		()
 {
 	inherited::initialize				();
-	m_object->animation_manager().setup_flag(true);
-	m_object->animation_manager().property_id(ObjectHandlerSpace::eWorldPropertyStrapped2Idle);
-	m_object->animation_manager().property_value(false);
+	m_object->animation().setup_storage(m_storage);
+	m_object->animation().property_id(ObjectHandlerSpace::eWorldPropertyStrapped2Idle);
+	m_object->animation().property_value(false);
 }
 
 void CObjectActionUnstrappingToIdle::execute			()
 {
 	inherited::execute();
+	m_object->animation().setup_storage(false);
 }
 
 void CObjectActionUnstrappingToIdle::finalize		()
 {
 	inherited::finalize();
+	m_object->animation().setup_storage(0);
 }
 
 //////////////////////////////////////////////////////////////////////////

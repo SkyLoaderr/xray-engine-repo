@@ -8,7 +8,9 @@
 
 #pragma once
 
-IC	const xr_vector<const CEntityAlive*> &CEnemyManager::enemies() const
+IC	CEnemyManager::CEnemyManager							(CCustomMonster *object)
 {
-	return				(objects());
+	VERIFY						(object);
+	m_object					= object;
+	m_ready_to_save				= true;
 }

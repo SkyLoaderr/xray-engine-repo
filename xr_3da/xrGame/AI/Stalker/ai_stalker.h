@@ -61,6 +61,9 @@ private:
 	CMotivationActionManagerStalker	*m_brain;
 
 private:
+	EBodyAction						m_body_action;
+
+private:
 	bool							m_demo_mode;
 
 private:
@@ -321,9 +324,11 @@ public:
 			void						failed_to_complete_alife_task	();
 			bool						alife_task_completed			();
 			void						communicate						(CInventoryOwner *trader);
-	IC	CStalkerAnimationManager		&animation_manager				() const;
+	IC	CStalkerAnimationManager		&animation						() const;
 	IC	CMotivationActionManagerStalker &brain							() const;
 	IC		float						panic_threshold					() const;
+	IC		void						body_action						(const EBodyAction &body_action);
+	IC		const EBodyAction			&body_action					() const;
 };
 
 #include "ai_stalker_inline.h"

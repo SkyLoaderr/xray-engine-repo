@@ -8,36 +8,34 @@
 
 #pragma once
 
-#include "item_manager.h"
+#include "object_manager.h"
 #include "entity_alive.h"
-
-class CMemoryManager;
-class CActor;
+#include "custommonster.h"
 
 class CEnemyManager : public CObjectManager<const CEntityAlive> {
-protected:
-	typedef CObjectManager<const CEntityAlive> inherited;
+public:
+	typedef CObjectManager<const CEntityAlive>	inherited;
+	typedef xr_vector<const CEntityAlive*>		ENEMIES;
+
+private:
+	CCustomMonster			*m_object;
+	float					m_ignore_monster_threshold;
+	float					m_max_ignore_distance;
+	mutable bool			m_ready_to_save;
+	mutable bool			m_visible_now;
 
 protected:
-	float				m_ignore_monster_threshold;
-	float				m_max_ignore_distance;
-	CEntityAlive		*m_self_entity_alive;
-	CMemoryManager		*m_self_memory_manager;
-	mutable bool		m_ready_to_save;
-	mutable bool		m_visible_now;
+			bool			expedient			(const CEntityAlive *object) const;
 
 public:
-						CEnemyManager				();
-	virtual void		Load						(LPCSTR section);
-	virtual void		reload						(LPCSTR section);
-	virtual bool		useful						(const CEntityAlive *object) const;
-	virtual	float		evaluate					(const CEntityAlive *object) const;
-	virtual void		update						();
-			bool		expedient					(const CEntityAlive *object) const;
-	virtual void		set_ready_to_save			();
-
-public:
-	IC		const xr_vector<const CEntityAlive*> &enemies() const;
+	IC						CEnemyManager		(CCustomMonster *object);
+	virtual void			reload				(LPCSTR section);
+	virtual bool			useful				(const CEntityAlive *object) const;
+	virtual bool			is_useful			(const CEntityAlive *object) const;
+	virtual	float			evaluate			(const CEntityAlive *object) const;
+	virtual	float			do_evaluate			(const CEntityAlive *object) const;
+	virtual void			update				();
+	virtual void			set_ready_to_save	();
 };
 
 #include "enemy_manager_inline.h"

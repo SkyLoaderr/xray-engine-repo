@@ -8,10 +8,38 @@
 
 #include "stdafx.h"
 #include "visual_memory_manager.h"
-#include "custommonster.h"
 #include "ai/stalker/ai_stalker.h"
+#include "memory_space_impl.h"
 #include "../skeletoncustom.h"
 #include "clsid_game.h"
+
+struct SRemoveOfflinePredicate {
+	bool		operator()						(const CVisibleObject &object) const
+	{
+		VERIFY	(object.m_object);
+		return	(!!object.m_object->getDestroy() || object.m_object->H_Parent());
+	}
+	
+	bool		operator()						(const CNotYetVisibleObject &object) const
+	{
+		VERIFY	(object.m_object);
+		return	(!!object.m_object->getDestroy() || object.m_object->H_Parent());
+	}
+};
+
+struct CVisibleObjectPredicate {
+	u32			m_id;
+				CVisibleObjectPredicate			(u32 id) : 
+					m_id(id)
+	{
+	}
+
+	bool		operator()						(const CObject *object) const
+	{
+		VERIFY	(object);
+		return	(object->ID() == m_id);
+	}
+};
 
 struct CNotYetVisibleObjectPredicate{
 	const CGameObject *m_game_object;
@@ -27,59 +55,25 @@ struct CNotYetVisibleObjectPredicate{
 	}
 };
 
-IC	const CVisualMemoryManager::CVisionParameters &CVisualMemoryManager::current_state() const
+CVisualMemoryManager::CVisualMemoryManager		(CCustomMonster *object)
 {
-	return				(!m_stalker || (m_stalker->mental_state() != eMentalStateDanger) ? m_free : m_danger);
-}
-
-CVisualMemoryManager::CVisualMemoryManager		()
-{
-	init				();
+	VERIFY				(object);
+	m_object			= object;
+	m_stalker			= smart_cast<CAI_Stalker*>(m_object);
+	m_max_object_count	= 1;
+	m_enabled			= true;
 }
 
 CVisualMemoryManager::~CVisualMemoryManager		()
 {
 }
 
-void CVisualMemoryManager::init					()
-{
-	m_max_object_count			= 0;
-	m_enabled					= true;
-}
-
-void CVisualMemoryManager::CVisionParameters::Load	(LPCSTR section, bool not_a_stalker)
-{
-	m_transparency_threshold	= pSettings->r_float(section,"transparency_threshold");
-	if (!not_a_stalker)
-		return;
-	m_min_view_distance			= pSettings->r_float(section,"min_view_distance");
-	m_max_view_distance			= pSettings->r_float(section,"max_view_distance");
-	m_visibility_threshold		= pSettings->r_float(section,"visibility_threshold");
-	m_always_visible_distance	= pSettings->r_float(section,"always_visible_distance");
-	m_time_quant				= pSettings->r_float(section,"time_quant");
-	m_decrease_value			= pSettings->r_float(section,"decrease_value");
-	m_velocity_factor			= pSettings->r_float(section,"velocity_factor");
-	m_luminocity_factor			= pSettings->r_float(section,"luminocity_factor");
-}
-
 void CVisualMemoryManager::Load					(LPCSTR section)
 {
-	CGameObject::Load			(section);
-	
-	m_max_object_count			= pSettings->r_s32(section,"DynamicObjectsCount");
-
-	m_monster					= smart_cast<CCustomMonster*>(this);
-	m_stalker					= smart_cast<CAI_Stalker*>(this);
-
-	m_free.Load					(m_stalker ? pSettings->r_string(section,"vision_danger_section") : section,!!m_stalker);
-	if (m_stalker)
-		m_danger.Load			(pSettings->r_string(section,"vision_free_section"),!!m_stalker);
 }
 
 void CVisualMemoryManager::reinit					()
 {
-	CGameObject::reinit					();
-	
 	m_objects							= 0;
 	
 	m_visible_objects.clear				();
@@ -88,20 +82,53 @@ void CVisualMemoryManager::reinit					()
 	m_not_yet_visible_objects.clear		();
 	m_not_yet_visible_objects.reserve	(100);
 
-	feel_vision_clear					();
+	m_object->feel_vision_clear			();
 }
 
 void CVisualMemoryManager::reload				(LPCSTR section)
 {
+	m_max_object_count			= READ_IF_EXISTS(pSettings,r_s32,section,"DynamicObjectsCount",1);
+
+	m_free.Load					(m_stalker ? pSettings->r_string(section,"vision_danger_section") : section,!!m_stalker);
+	if (m_stalker)
+		m_danger.Load			(pSettings->r_string(section,"vision_free_section"),!!m_stalker);
+}
+
+IC	const CVisionParameters &CVisualMemoryManager::current_state() const
+{
+	return				(!m_stalker || (m_stalker->mental_state() != eMentalStateDanger) ? m_free : m_danger);
+}
+
+IC	u32	CVisualMemoryManager::visible_object_time_last_seen	(const CObject *object) const
+{
+	VISIBLES::iterator	I = std::find(m_objects->begin(),m_objects->end(),object_id(object));
+	if (I != m_objects->end()) 
+		return (I->m_level_time);	
+	else 
+		return u32(-1);
+}
+
+bool CVisualMemoryManager::visible_now	(const CGameObject *game_object) const
+{
+	VISIBLES::const_iterator	I = std::find(objects().begin(),objects().end(),object_id(game_object));
+	return							((objects().end() != I) && (*I).visible());
+}
+
+void CVisualMemoryManager::enable		(const CObject *object, bool enable)
+{
+	VISIBLES::iterator	J = std::find(m_objects->begin(),m_objects->end(),object_id(object));
+	if (J == m_objects->end())
+		return;
+	(*J).m_enabled					= enable;
 }
 
 float CVisualMemoryManager::object_visible_distance(const CGameObject *game_object, float &object_distance) const
 {
 	Fvector								eye_position = Fvector().set(0.f,0.f,0.f), temp, eye_direction;
-	Fmatrix								&eye_matrix = smart_cast<CKinematics*>(m_monster->Visual())->LL_GetTransform(u16(m_stalker->eye_bone));
+	Fmatrix								&eye_matrix = smart_cast<CKinematics*>(m_object->Visual())->LL_GetTransform(u16(m_stalker->eye_bone));
 
 	eye_matrix.transform_tiny			(temp,eye_position);
-	XFORM().transform_tiny				(eye_position,temp);
+	m_object->XFORM().transform_tiny	(eye_position,temp);
 	eye_direction.setHP					(-m_stalker->m_head.current.yaw, -m_stalker->m_head.current.pitch);
 	
 	Fvector								object_direction;
@@ -242,7 +269,7 @@ bool CVisualMemoryManager::visible				(const CGameObject *game_object, float tim
 void CVisualMemoryManager::add_visible_object	(const CObject *object, float time_delta)
 {
 	const CGameObject *game_object	= smart_cast<const CGameObject*>(object);
-	const CGameObject *self			= this;
+	const CGameObject *self			= m_object;
 	if (!game_object || !visible(game_object,time_delta))
 		return;
 
@@ -288,7 +315,7 @@ void CVisualMemoryManager::update				(float time_delta)
 
 	VERIFY								(m_objects);
 	m_visible_objects.clear				();
-	feel_vision_get						(m_visible_objects);
+	m_object->feel_vision_get			(m_visible_objects);
 
 	{
 		xr_vector<CVisibleObject>::iterator	I = m_objects->begin();
@@ -335,12 +362,12 @@ void CVisualMemoryManager::update				(float time_delta)
 bool CVisualMemoryManager::visible(u32 _level_vertex_id, float yaw, float eye_fov) const
 {
 	Fvector					direction;
-	direction.sub			(ai().level_graph().vertex_position(_level_vertex_id),Position());
+	direction.sub			(ai().level_graph().vertex_position(_level_vertex_id),m_object->Position());
 	direction.normalize_safe();
 	float					y, p;
 	direction.getHP			(y,p);
 	if (angle_difference(yaw,y) <= eye_fov*PI/180.f/2.f)
-		return(ai().level_graph().check_vertex_in_direction(level_vertex_id(),Position(),_level_vertex_id));
+		return(ai().level_graph().check_vertex_in_direction(m_object->level_vertex_id(),m_object->Position(),_level_vertex_id));
 	else
 		return(false);
 }

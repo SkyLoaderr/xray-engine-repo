@@ -11,18 +11,26 @@
 #include "ai/stalker/ai_stalker.h"
 #include "inventory.h"
 #include "fooditem.h"
+#include "property_storage.h"
 
 void	CStalkerAnimationManager::global_play_callback(CBlend *blend)
 {
 	CAI_Stalker					*object = (CAI_Stalker*)blend->CallbackParam;
 	VERIFY						(object);
-	object->animation_manager().global().reset();
+	if (object->animation().setup_storage()) {
+		object->animation().setup_storage()->set_property(object->animation().property_id(),object->animation().property_value());
+		return;
+	}
+	object->animation().global().reset();
 }
 
 const CAnimationPair *CStalkerAnimationManager::assign_global_animation	()
 {
 	if ((eMentalStatePanic == object()->mental_state()) && !fis_zero(object()->speed()))
 		return					(&m_part_animations.A[body_state()].m_global.A[1].A[0]);
+
+	if ((eBodyActionHello == object()->body_action()))
+		return					(&m_part_animations.A[eBodyStateStand].m_global.A[3].A[0]);
 
 	CFoodItem					*food_item = smart_cast<CFoodItem*>(object()->inventory().ActiveItem());
 	if (!food_item)

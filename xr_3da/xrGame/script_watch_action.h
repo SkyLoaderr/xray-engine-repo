@@ -10,7 +10,12 @@
 
 #include "script_abstract_action.h"
 #include "script_export_space.h"
-#include "sight_manager.h"
+
+namespace SightManager {
+	enum ESightType;
+};
+
+class CScriptGameObject;
 
 class CScriptWatchAction : public CScriptAbstractAction {
 public:
@@ -35,7 +40,7 @@ public:
 	float						vel_bone_y;
 
 public:
-	IC				CScriptWatchAction	();
+					CScriptWatchAction	();
 	IC				CScriptWatchAction	(SightManager::ESightType tWatchType);
 	IC				CScriptWatchAction	(SightManager::ESightType tWatchType, const Fvector &tDirection);
 	IC				CScriptWatchAction	(SightManager::ESightType tWatchType, CScriptGameObject *tpObjectToWatch, LPCSTR bone_to_watch = "");

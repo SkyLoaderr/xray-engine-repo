@@ -20,11 +20,12 @@ CStalkerActionBase::CStalkerActionBase		(CAI_Stalker *object, LPCSTR action_name
 void CStalkerActionBase::initialize			()
 {
 	inherited::initialize	();
-	m_object->animation_manager().clear_script_animations	();
+	m_object->animation().clear_script_animations	();
+	m_object->body_action	(eBodyActionNone);
 }
 
 void CStalkerActionBase::finalize			()
 {
 	inherited::finalize		();
-	m_object->animation_manager().clear_script_animations	();
+	m_object->animation().clear_script_animations	();
 }

@@ -15,6 +15,8 @@
 #include "weaponmagazined.h"
 #include "movement_manager_space.h"
 #include "detail_path_manager_space.h"
+#include "memory_manager.h"
+#include "item_manager.h"
 
 #ifdef _DEBUG
 //#	define STALKER_DEBUG_MODE
@@ -65,12 +67,12 @@ void CStalkerActionGatherItems::execute		()
 {
 	inherited::execute		();
 
-	if (!m_object->item())
+	if (!m_object->memory().item().selected())
 		return;
 
-	m_object->set_level_dest_vertex	(m_object->item()->level_vertex_id());
-	m_object->set_desired_position	(&m_object->item()->Position());
-	m_object->CSightManager::setup	(SightManager::eSightTypePosition,&m_object->item()->Position());
+	m_object->set_level_dest_vertex	(m_object->memory().item().selected()->level_vertex_id());
+	m_object->set_desired_position	(&m_object->memory().item().selected()->Position());
+	m_object->CSightManager::setup	(SightManager::eSightTypePosition,&m_object->memory().item().selected()->Position());
 }
 
 //////////////////////////////////////////////////////////////////////////
@@ -242,4 +244,3 @@ void CStalkerActionNoALife::execute		()
 	}
 #endif
 }
-

@@ -9,10 +9,13 @@
 #include "stdafx.h"
 #include "group_hierarchy_holder.h"
 #include "squad_hierarchy_holder.h"
-#include "memory_manager.h"
 #include "entity.h"
 #include "agent_manager.h"
 #include "ai/stalker/ai_stalker.h"
+#include "memory_manager.h"
+#include "visual_memory_manager.h"
+#include "sound_memory_manager.h"
+#include "hit_memory_manager.h"
 
 //#define IMPORTANT_BUILD
 
@@ -81,11 +84,11 @@ void CGroupHierarchyHolder::register_in_agent_manager	(CEntity *member)
 
 void CGroupHierarchyHolder::register_in_group_senses	(CEntity *member)
 {
-	CMemoryManager				*memory_manager = smart_cast<CMemoryManager*>(member);
-	if (memory_manager) {
-		memory_manager->CVisualMemoryManager::set_squad_objects	(&visible_objects());
-		memory_manager->CSoundMemoryManager::set_squad_objects	(&sound_objects());
-		memory_manager->CHitMemoryManager::set_squad_objects	(&hit_objects());
+	CCustomMonster			*monster = smart_cast<CCustomMonster*>(member);
+	if (monster) {
+		monster->memory().visual().set_squad_objects(&visible_objects());
+		monster->memory().sound().set_squad_objects	(&sound_objects());
+		monster->memory().hit().set_squad_objects	(&hit_objects());
 	}
 }
 
@@ -132,11 +135,11 @@ void CGroupHierarchyHolder::unregister_in_agent_manager	(CEntity *member)
 
 void CGroupHierarchyHolder::unregister_in_group_senses	(CEntity *member)
 {
-	CMemoryManager				*memory_manager = smart_cast<CMemoryManager*>(member);
-	if (memory_manager) {
-		memory_manager->CVisualMemoryManager::set_squad_objects	(0);
-		memory_manager->CSoundMemoryManager::set_squad_objects	(0);
-		memory_manager->CHitMemoryManager::set_squad_objects	(0);
+	CCustomMonster			*monster = smart_cast<CCustomMonster*>(member);
+	if (monster) {
+		monster->memory().visual().set_squad_objects(0);
+		monster->memory().sound().set_squad_objects	(0);
+		monster->memory().hit().set_squad_objects	(0);
 	}
 }
 

@@ -302,8 +302,8 @@ bool CAI_Stalker::bfAssignAnimation(CScriptEntityAction *tpEntityAction)
 #ifdef _DEBUG
 //		Msg				("%6d Assigning animation : %s",Level().timeServer(),*tpEntityAction->m_tAnimationAction.m_caAnimationToPlay);
 #endif
-		animation_manager().torso().reset();
-		animation_manager().legs().reset();
+		animation().torso().reset();
+		animation().legs().reset();
 	}
 
 	return				(true);

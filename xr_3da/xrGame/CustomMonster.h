@@ -6,6 +6,8 @@
 #define AFX_CUSTOMMONSTER_H__D44439C3_D752_41AE_AD49_C68E5DE3045F__INCLUDED_
 #pragma once
 
+#include "../feel_vision.h"
+#include "../feel_sound.h"
 #include "../feel_touch.h"
 #include "entity_alive.h"
 
@@ -17,7 +19,6 @@
 #include "event_memory_manager.h"
 #include "location_manager.h"
 #include "material_manager.h"
-#include "memory_manager.h"
 #include "movement_manager.h"
 #include "selector_manager.h"
 #include "sound_player.h"
@@ -27,20 +28,26 @@ using namespace MonsterSpace;
 class CAI_Rat;
 class CMotionDef;
 class CSkeletonAnimated;
+class CMemoryManager;
 
 class CCustomMonster : 
 			public CEntityAlive, 
 			public CScriptMonster,
+			public Feel::Vision,
+			public Feel::Sound,
 			public Feel::Touch,
-			public CEventMemoryManager,
 			public CLocationManager,
 			public CMaterialManager,
-			public CMemoryManager,
 	virtual	public CMovementManager,
 			public CSelectorManager,
 			public CSoundPlayer
 {
+private:
 	typedef	CEntityAlive	inherited;
+
+private:
+	CMemoryManager		*m_memory_manager;
+
 protected:
 	
 	struct				SAnimState
@@ -52,8 +59,6 @@ protected:
 
 		void			Create(CSkeletonAnimated* K, LPCSTR base);
 	};
-private:
-//	bool				m_client_update_activated;
 
 private:
 	xr_vector<CLASS_ID>	m_killer_clsids;
@@ -178,8 +183,6 @@ public:
 	virtual void				PHUnFreeze				()			{return inherited ::PHUnFreeze();}
 	virtual void				PHFreeze				()			{return inherited ::PHFreeze();}
 	///////////////////////////////////////////////////////////////////////
-private:
-			void				init					();
 public:
 	virtual void				Load					(LPCSTR	section);				
 	virtual	void				reinit					();
@@ -208,13 +211,19 @@ public:
 	
 	virtual void				UpdatePositionAnimation	();
 	virtual void				set_ready_to_save		();
-	virtual CPhysicsShellHolder*		cast_physics_shell_holder	()	{return this;}
-	virtual CParticlesPlayer*			cast_particles_player		()	{return this;}
-
+	virtual CPhysicsShellHolder*cast_physics_shell_holder	()	{return this;}
+	virtual CParticlesPlayer*	cast_particles_player		()	{return this;}
 
 			void				load_killer_clsids		(LPCSTR section);
 			bool				is_special_killer		(CObject *obj);
 
+	IC		CMemoryManager		&memory					() const;
+	virtual float				feel_vision_mtl_transp	(u32 element);
+	virtual	void				feel_sound_new			(CObject* who, int type, const Fvector &Position, float power);
+	virtual bool				useful					(const CGameObject *object) const;
+	virtual float				evaluate				(const CGameObject *object) const;
+	virtual bool				useful					(const CEntityAlive *object) const;
+	virtual float				evaluate				(const CEntityAlive *object) const;
 };
 
 #include "custommonster_inline.h"

@@ -16,12 +16,12 @@ bool CSetupAction::applicable	() const
 
 bool CSetupAction::completed	() const
 {
-	return							(Level().timeServer() - m_start_time > m_inertia_time);
+	return							(Device.dwTimeGlobal - m_start_time > m_inertia_time);
 }
 
 void CSetupAction::initialize	()
 {
-	m_start_time					= Level().timeServer();
+	m_start_time					= Device.dwTimeGlobal;
 	m_animation_action.initialize	();
 	m_movement_action.initialize	();
 	m_object_action.initialize		();

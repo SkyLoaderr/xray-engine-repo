@@ -18,7 +18,7 @@ IC	const CAgentManager	&CAI_Stalker::agent_manager	() const
 	return	(Level().seniority_holder().team(g_Team()).squad(g_Squad()).group(g_Group()).agent_manager());
 }
 
-IC	CStalkerAnimationManager &CAI_Stalker::animation_manager() const
+IC	CStalkerAnimationManager &CAI_Stalker::animation() const
 {
 	VERIFY	(m_animation_manager);
 	return	(*m_animation_manager);
@@ -40,3 +40,12 @@ IC	float CAI_Stalker::panic_threshold				() const
 	return	(m_panic_threshold);
 }
 
+IC	void CAI_Stalker::body_action					(const EBodyAction &body_action)
+{
+	m_body_action	= body_action;
+}
+
+IC	const StalkerSpace::EBodyAction	&CAI_Stalker::body_action() const
+{
+	return			(m_body_action);
+}

@@ -27,7 +27,7 @@ void CStalkerAnimationManager::reinit				()
 	m_global.global_animation	(true);
 	m_script.global_animation	(true);
 	
-	m_setup_flag				= false;
+	m_storage					= 0;
 }
 
 void CStalkerAnimationManager::reload				(CAI_Stalker *_object)

@@ -19,6 +19,8 @@
 #include "inventory.h"
 #include "torch.h"
 #include "../skeletoncustom.h"
+#include "memory_manager.h"
+#include "enemy_manager.h"
 
 CObjectHandler::CObjectHandler		()
 {
@@ -106,7 +108,7 @@ CInventoryItem *CObjectHandler::best_weapon() const
 	ai().ef_storage().alife().clear		();
 	ai().ef_storage().non_alife().clear	();
 	ai().ef_storage().non_alife().member()	= planner().object();
-	ai().ef_storage().non_alife().enemy()	= planner().object()->enemy() ? planner().object()->enemy() : planner().object();
+	ai().ef_storage().non_alife().enemy()	= planner().object()->memory().enemy().selected() ? planner().object()->memory().enemy().selected() : planner().object();
 
 	float										best_value = 0;
 	TIItemSet::const_iterator	I = inventory().m_all.begin();

@@ -17,6 +17,9 @@
 #include "cover_manager.h"
 #include "cover_point.h"
 #include "stalker_movement_restriction.h"
+#include "memory_manager.h"
+#include "visual_memory_manager.h"
+#include "enemy_manager.h"
 
 const u32 TOLLS_INTERVAL = 2000;
 
@@ -47,14 +50,14 @@ void CStalkerCombatPlanner::setup				(CAI_Stalker *object, CPropertyStorage *sto
 
 IC	void CStalkerCombatPlanner::update_cover	()
 {
-	if (!m_object->enemy())
+	if (!m_object->memory().enemy().selected())
 		return;
 
-	CMemoryInfo			memory_object = m_object->memory(m_object->enemy());
-	if ((memory_object.m_last_level_time == m_last_level_time) && (m_object->enemy()->ID() == m_last_enemy_id))
+	CMemoryInfo			memory_object = m_object->memory().memory(m_object->memory().enemy().selected());
+	if ((memory_object.m_last_level_time == m_last_level_time) && (m_object->memory().enemy().selected()->ID() == m_last_enemy_id))
 		return;
 
-	m_last_enemy_id		= m_object->enemy()->ID();
+	m_last_enemy_id		= m_object->memory().enemy().selected()->ID();
 	m_last_level_time	= memory_object.m_last_level_time;
 
 	Fvector							position = memory_object.m_object_params.m_position;
@@ -101,7 +104,7 @@ void CStalkerCombatPlanner::initialize			()
 	m_last_cover			= 0;
 	m_last_enemy_id			= u16(-1);
 	m_last_level_time		= 0;
-	if (m_object->visible_now(m_object->enemy()) && m_object->enemy()->human_being())
+	if (m_object->memory().visual().visible_now(m_object->memory().enemy().selected()) && m_object->memory().enemy().selected()->human_being())
 		m_object->play		(eStalkerSoundAlarm);
 }
 

@@ -145,7 +145,6 @@ void CHelicopter::Load(LPCSTR section)
 	inherited::Load						(section);
 	CShootingObject::Load				(section);
 	CRocketLauncher::Load				(section);
-//	CMemoryManager::Load				(section);
 
 ////////////////////////////////////
 	m_last_point_range_dist				= BOUND_DIST;

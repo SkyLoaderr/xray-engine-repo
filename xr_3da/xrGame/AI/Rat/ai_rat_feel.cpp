@@ -9,6 +9,8 @@
 #include "stdafx.h"
 #include "ai_rat.h"
 #include "../../clsid_game.h"
+#include "../../memory_manager.h"
+#include "../../enemy_manager.h"
 
 BOOL CAI_Rat::feel_vision_isRelevant(CObject* O)
 {
@@ -40,7 +42,7 @@ void CAI_Rat::feel_sound_new(CObject* who, int eType, const Fvector &Position, f
 			if ((eType & SOUND_TYPE_MONSTER_DYING) == SOUND_TYPE_MONSTER_DYING)
 				m_fMorale += m_fMoraleDeathQuant;
 			else
-				if (((eType & SOUND_TYPE_WEAPON_SHOOTING) == SOUND_TYPE_WEAPON_SHOOTING) && !enemy())
+				if (((eType & SOUND_TYPE_WEAPON_SHOOTING) == SOUND_TYPE_WEAPON_SHOOTING) && !memory().enemy().selected())
 					m_fMorale += m_fMoraleFearQuant;///fDistance;
 				else
 					if ((eType & SOUND_TYPE_MONSTER_ATTACKING) == SOUND_TYPE_MONSTER_ATTACKING)

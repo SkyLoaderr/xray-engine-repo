@@ -144,7 +144,7 @@ void CMonsterEnemyManager::add_enemy(const CEntityAlive *enemy)
 
 bool CMonsterEnemyManager::see_enemy_now()
 {
-	//return (monster->CVisualMemoryManager::visible_now(enemy));
+	//return (monster->memory().visual().visible_now(enemy));
 
 	if (time_last_seen == monster->m_current_update) return true;
 	return false;

@@ -11,7 +11,6 @@
 #include "script_game_object_impl.h"
 #include "ai_space.h"
 #include "script_engine.h"
-
 #include "explosive.h"
 #include "script_zone.h"
 #include "object_handler.h"
@@ -21,6 +20,16 @@
 #include "InfoPortion.h"
 #include "memory_manager.h"
 #include "ai_phrasedialogmanager.h"
+#include "net_utils.h"
+#include "xrMessages.h"
+#include "custommonster.h"
+#include "memory_manager.h"
+#include "visual_memory_manager.h"
+#include "sound_memory_manager.h"
+#include "hit_memory_manager.h"
+#include "enemy_manager.h"
+#include "item_manager.h"
+#include "memory_space.h"
 
 void CScriptGameObject::explode	(u32 level_time)
 {
@@ -154,116 +163,122 @@ LPCSTR		CScriptGameObject::get_pda_info				()
 	return *CInfoPortion::IndexToId(pda->GetInfoPortion());
 }
 
-const CHitObject *CScriptGameObject::GetBestHit	() const
+const MemorySpace::CHitObject *CScriptGameObject::GetBestHit	() const
 {
-	const CHitMemoryManager	*hit_memory_manager = smart_cast<const CHitMemoryManager*>(object());
-	if (!hit_memory_manager)
+	const CCustomMonster	*monster = smart_cast<const CCustomMonster*>(object());
+	if (!monster)
 		return				(0);
-	return					(hit_memory_manager->hit());
+	return					(monster->memory().hit().hit());
 }
 
-const CSoundObject *CScriptGameObject::GetBestSound	() const
+const MemorySpace::CSoundObject *CScriptGameObject::GetBestSound	() const
 {
-	const CSoundMemoryManager	*sound_memory_manager = smart_cast<const CSoundMemoryManager*>(object());
-	if (!sound_memory_manager)
+	const CCustomMonster	*monster = smart_cast<const CCustomMonster*>(object());
+	if (!monster)
 		return				(0);
-	return					(sound_memory_manager->sound());
+	return					(monster->memory().sound().sound());
 }
 
 CScriptGameObject *CScriptGameObject::GetBestEnemy()
 {
-	const CEnemyManager		*enemy_manager = smart_cast<const CEnemyManager*>(object());
-	if (!enemy_manager || !enemy_manager->selected())
+	const CCustomMonster	*monster = smart_cast<const CCustomMonster*>(object());
+	if (!monster)
 		return				(0);
-	return					(smart_cast<const CGameObject*>(enemy_manager->selected())->lua_game_object());
+
+	if (monster->memory().enemy().selected())
+		return				(monster->memory().enemy().selected()->lua_game_object());
+	return					(0);
 }
 
 CScriptGameObject *CScriptGameObject::GetBestItem()
 {
-	const CItemManager		*item_manager = smart_cast<const CItemManager*>(object());
-	if (!item_manager || !item_manager->selected())
+	const CCustomMonster	*monster = smart_cast<const CCustomMonster*>(object());
+	if (!monster)
 		return				(0);
-	return					(smart_cast<const CGameObject*>(item_manager->selected())->lua_game_object());
+
+	if (monster->memory().item().selected())
+		return				(monster->memory().item().selected()->lua_game_object());
+	return					(0);
 }
 
 MemorySpace::CMemoryInfo *CScriptGameObject::memory(const CScriptGameObject &lua_game_object)
 {
-	CMemoryManager	*memory_manager = smart_cast<CMemoryManager*>(object());
-	if (!memory_manager) {
+	CCustomMonster			*monster = smart_cast<CCustomMonster*>(object());
+	if (!monster) {
 		ai().script_engine().script_log			(ScriptStorage::eLuaMessageTypeError,"CScriptMonster : cannot access class member memory!");
 		return			(0);
 	}
 	else
-		return			(xr_new<MemorySpace::CMemoryInfo>(memory_manager->memory(lua_game_object.object())));
+		return			(xr_new<MemorySpace::CMemoryInfo>(monster->memory().memory(lua_game_object.object())));
 }
 
 void CScriptGameObject::enable_memory_object	(CScriptGameObject *game_object, bool enable)
 {
-	CMemoryManager	*memory_manager = smart_cast<CMemoryManager*>(object());
-	if (!memory_manager)
+	CCustomMonster			*monster = smart_cast<CCustomMonster*>(object());
+	if (!monster)
 		ai().script_engine().script_log		(ScriptStorage::eLuaMessageTypeError,"CGameObject : cannot access class member enable_memory_object!");
 	else
-		memory_manager->enable				(game_object->object(),enable);
+		monster->memory().enable			(game_object->object(),enable);
 }
 
 const xr_vector<CNotYetVisibleObject> &CScriptGameObject::not_yet_visible_objects() const
 {
-	CMemoryManager	*manager = smart_cast<CMemoryManager*>(object());
-	if (!manager) {
+	CCustomMonster			*monster = smart_cast<CCustomMonster*>(object());
+	if (!monster) {
 		ai().script_engine().script_log		(ScriptStorage::eLuaMessageTypeError,"CGameObject : cannot access class member not_yet_visible_objects!");
 		NODEFAULT;
 	}
-	return					(manager->not_yet_visible_objects());
+	return					(monster->memory().visual().not_yet_visible_objects());
 }
 
 float CScriptGameObject::visibility_threshold	() const
 {
-	CMemoryManager	*manager = smart_cast<CMemoryManager*>(object());
-	if (!manager) {
+	CCustomMonster			*monster = smart_cast<CCustomMonster*>(object());
+	if (!monster) {
 		ai().script_engine().script_log		(ScriptStorage::eLuaMessageTypeError,"CGameObject : cannot access class member visibility_threshold!");
 		NODEFAULT;
 	}
-	return					(manager->visibility_threshold());
+	return					(monster->memory().visual().visibility_threshold());
 }
 
 void CScriptGameObject::enable_vision			(bool value)
 {
-	CVisualMemoryManager					*visual_memory_manager = smart_cast<CVisualMemoryManager*>(object());
-	if (!visual_memory_manager) {
+	CCustomMonster			*monster = smart_cast<CCustomMonster*>(object());
+	if (!monster) {
 		ai().script_engine().script_log		(ScriptStorage::eLuaMessageTypeError,"CVisualMemoryManager : cannot access class member enable_vision!");
 		return;
 	}
-	visual_memory_manager->enable			(value);
+	monster->memory().visual().enable		(value);
 }
 
 bool CScriptGameObject::vision_enabled			() const
 {
-	CVisualMemoryManager					*visual_memory_manager = smart_cast<CVisualMemoryManager*>(object());
-	if (!visual_memory_manager) {
+	CCustomMonster			*monster = smart_cast<CCustomMonster*>(object());
+	if (!monster) {
 		ai().script_engine().script_log		(ScriptStorage::eLuaMessageTypeError,"CVisualMemoryManager : cannot access class member vision_enabled!");
 		return								(false);
 	}
-	return									(visual_memory_manager->enabled());
+	return									(monster->memory().visual().enabled());
 }
 
 void CScriptGameObject::set_sound_threshold		(float value)
 {
-	CSoundMemoryManager						*sound_memory_manager = smart_cast<CSoundMemoryManager*>(object());
-	if (!sound_memory_manager) {
+	CCustomMonster			*monster = smart_cast<CCustomMonster*>(object());
+	if (!monster) {
 		ai().script_engine().script_log		(ScriptStorage::eLuaMessageTypeError,"CSoundMemoryManager : cannot access class member set_sound_threshold!");
 		return;
 	}
-	sound_memory_manager->set_threshold		(value);
+	monster->memory().sound().set_threshold		(value);
 }
 
 void CScriptGameObject::restore_sound_threshold	()
 {
-	CSoundMemoryManager						*sound_memory_manager = smart_cast<CSoundMemoryManager*>(object());
-	if (!sound_memory_manager) {
+	CCustomMonster			*monster = smart_cast<CCustomMonster*>(object());
+	if (!monster) {
 		ai().script_engine().script_log		(ScriptStorage::eLuaMessageTypeError,"CSoundMemoryManager : cannot access class member restore_sound_threshold!");
 		return;
 	}
-	sound_memory_manager->restore_threshold	();
+	monster->memory().sound().restore_threshold	();
 }
 
 bool CScriptGameObject::NeedToAnswerPda		()

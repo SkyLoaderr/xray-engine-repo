@@ -9,6 +9,7 @@
 #pragma once
 
 #include "member_order.h"
+#include "memory_space.h"
 
 class CEntity;
 class CAI_Stalker;
@@ -78,7 +79,7 @@ public:
 	struct CRemoveOldDangerCover {
 		IC	bool	operator()	(const CAgentManager::CDangerCover &cover) const
 		{
-			return						(Level().timeServer() > cover.m_level_time + CAgentManager::DANGER_INTERVAL);
+			return						(Device.dwTimeGlobal > cover.m_level_time + CAgentManager::DANGER_INTERVAL);
 		}
 	};
 

@@ -1,6 +1,9 @@
 #include "stdafx.h"
 #include "monster_enemy_memory.h"
 #include "BaseMonster/base_monster.h"
+#include "../../memory_manager.h"
+#include "../../visual_memory_manager.h"
+#include "../../enemy_manager.h"
 
 CMonsterEnemyMemory::CMonsterEnemyMemory()
 {
@@ -22,8 +25,8 @@ void CMonsterEnemyMemory::init_external(CBaseMonster *M, TTime mem_time)
 void CMonsterEnemyMemory::update() 
 {
 	// Обновить врагов
-	for (xr_vector<const CEntityAlive *>::const_iterator I = monster->enemies().begin(); I != monster->enemies().end(); ++I) {
-		if (monster->CMemoryManager::visible_now(*I)) add_enemy(*I);
+	for (xr_vector<const CEntityAlive *>::const_iterator I = monster->memory().enemy().objects().begin(); I != monster->memory().enemy().objects().end(); ++I) {
+		if (monster->memory().visual().visible_now(*I)) add_enemy(*I);
 	}
 
 	// удалить устаревших врагов

@@ -9,8 +9,11 @@
 #pragma once
 
 #include "path_manager_params.h"
-#include "level_graph.h"
 #include "script_export_space.h"
+
+namespace LevelGraph {
+	class CVertex;
+};
 
 class CEntity;
 
@@ -104,13 +107,13 @@ public:
 
 	// myself
 	const CEntity	*m_tMe;
-	const CLevelGraph::CVertex *m_tpMyNode;
+	const LevelGraph::CVertex *m_tpMyNode;
 	Fvector			m_tMyPosition;
 	Fvector			m_tDirection;
 
 	//enemy
 	const CEntity	*m_tEnemy;
-	const CLevelGraph::CVertex *m_tpEnemyNode;
+	const LevelGraph::CVertex *m_tpEnemyNode;
 	u32				m_dwEnemyNode;
 	Fvector			m_tEnemyPosition;
 	Fvector			m_tEnemyDirection;
@@ -127,13 +130,13 @@ public:
 
 	// postion being tested
 	float			m_fDistance;
-	const CLevelGraph::CVertex *m_tpCurrentNode;
+	const LevelGraph::CVertex *m_tpCurrentNode;
 	Fvector			m_tCurrentPosition;
 
 	// members
 	int				m_iAliveMemberCount;
 	int				m_iCurrentMember;
-	const CLevelGraph::CVertex *m_tpCurrentMemberNode;
+	const LevelGraph::CVertex *m_tpCurrentMemberNode;
 	Fvector			m_tCurrentMemberPosition;
 	Fvector			m_tCurrentMemberDirection;
 	xr_vector<u32>	*m_path;

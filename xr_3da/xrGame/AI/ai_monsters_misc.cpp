@@ -19,6 +19,8 @@
 #include "../../skeletonanimated.h"
 #include "ai_monsters_anims.h"
 #include "../ef_pattern.h"
+#include "../memory_manager.h"
+#include "../enemy_manager.h"
 
 bool bfGetActionSuccessProbability(GroupHierarchyHolder::MEMBER_REGISTRY &Members, const xr_vector<const CEntityAlive *> &VisibleEnemies, float fMinProbability, CBaseFunction &fSuccessProbabilityFunction)
 {
@@ -93,9 +95,9 @@ u32 dwfChooseAction(u32 dwActionRefreshRate, float fMinProbability0, float fMinP
 		}
 	}
 
-	const CEnemyManager					*enemy_manager = smart_cast<const CEnemyManager*>(tpEntity);
-	VERIFY								(enemy_manager);
-	const xr_vector<const CEntityAlive*>	&VisibleEnemies = enemy_manager->enemies();
+	const CCustomMonster					*monster = smart_cast<const CCustomMonster*>(tpEntity);
+	VERIFY									(monster);
+	const xr_vector<const CEntityAlive*>	&VisibleEnemies = monster->memory().enemy().objects();
 
 	GroupHierarchyHolder::MEMBER_REGISTRY Members;
 	if (!tpEntity)

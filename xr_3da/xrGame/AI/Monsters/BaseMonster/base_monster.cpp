@@ -21,6 +21,8 @@
 #include "../critical_action_info.h"
 #include "../../../detail_path_manager.h"
 #include "../../../hudmanager.h"
+#include "../../../memory_manager.h"
+#include "../../../visual_memory_manager.h"
 
 CBaseMonster::CBaseMonster()
 {
@@ -238,7 +240,7 @@ void CBaseMonster::SetTurnAnimation(bool turn_left)
 
 bool CBaseMonster::IsVisibleObject(const CGameObject *object)
 {
-	return CMemoryManager::visible_now(object);
+	return memory().visual().visible_now(object);
 }
 
 

@@ -16,16 +16,11 @@
 
 CSightManager::CSightManager		()
 {
-	init						();
+	m_enabled					= true;
 }
 
 CSightManager::~CSightManager		()
 {
-}
-
-void CSightManager::init			()
-{
-	m_enabled					= true;
 }
 
 void CSightManager::Load			(LPCSTR section)

@@ -20,6 +20,7 @@ class CBlend;
 class CAI_Stalker;
 class CWeapon;
 class CMissile;
+class CPropertyStorage;
 
 class CStalkerAnimationManager {
 public:
@@ -63,7 +64,7 @@ private:
 	CMissile				*m_missile;
 
 private:
-	bool					m_setup_flag;
+	CPropertyStorage		*m_storage;
 	_condition_type			m_property_id;
 	_value_type				m_property_value;
 
@@ -114,8 +115,8 @@ public:
 	IC		const CAI_Stalker		*object					() const;
 
 public:
-	IC		void					setup_flag				(bool value);
-	IC		bool					setup_flag				() const;
+	IC		void					setup_storage			(CPropertyStorage *storage);
+	IC		CPropertyStorage		*setup_storage			() const;
 	IC		_condition_type			property_id				() const;
 	IC		void					property_id				(_condition_type value);
 	IC		_value_type				property_value			() const;

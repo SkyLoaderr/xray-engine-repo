@@ -12,10 +12,12 @@
 #include "../../inventory.h"
 #include "../../character_info.h"
 #include "../../relation_registry.h"
+#include "../../memory_manager.h"
+#include "../../item_manager.h"
 
 bool CAI_Stalker::useful		(const CGameObject *object) const
 {
-	if (!CItemManager::useful(object))
+	if (!memory().item().useful(object))
 		return			(false);
 
 	const CInventoryItem *inventory_item = smart_cast<const CInventoryItem*>(object);

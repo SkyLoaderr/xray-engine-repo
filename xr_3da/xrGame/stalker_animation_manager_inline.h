@@ -63,14 +63,14 @@ IC	void CStalkerAnimationManager::clear_script_animations	()
 	script().reset();
 }
 
-IC	void CStalkerAnimationManager::setup_flag				(bool value)
+IC	void CStalkerAnimationManager::setup_storage			(CPropertyStorage *storage)
 {
-	m_setup_flag	= value;
+	m_storage		= storage;
 }
 
-IC	bool CStalkerAnimationManager::setup_flag				() const
+IC	CPropertyStorage *CStalkerAnimationManager::setup_storage	() const
 {
-	return			(m_setup_flag);
+	return			(m_storage);
 }
 
 IC	CStalkerAnimationManager::_condition_type CStalkerAnimationManager::property_id	() const

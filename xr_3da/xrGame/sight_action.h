@@ -9,8 +9,11 @@
 #pragma once
 
 #include "sight_manager_space.h"
-#include "memory_space_impl.h"
 #include "control_action.h"
+
+namespace MemorySpace {
+	struct CMemoryInfo;
+};
 
 class CAI_Stalker;
 class CGameObject;

@@ -19,6 +19,10 @@
 #include "../../stalker_animation_manager.h"
 #include "../../motivation_action_manager_stalker.h"
 #include "../../ef_pattern.h"
+#include "../../memory_manager.h"
+#include "../../hit_memory_manager.h"
+#include "../../enemy_manager.h"
+#include "../../item_manager.h"
 
 float CAI_Stalker::GetWeaponAccuracy	() const
 {
@@ -64,7 +68,7 @@ void CAI_Stalker::g_WeaponBones	(int &L, int &R1, int &R2)
 	if	(
 			(IsLimping() && (mental_state() == eMentalStateFree)) || 
 			(GetCurrentAction() && !GetCurrentAction()->m_tAnimationAction.m_bHandUsage) ||
-			(!animation_manager().script_animations().empty() && animation_manager().script_animations().front().hand_usage())
+			(!animation().script_animations().empty() && animation().script_animations().front().hand_usage())
 		)
 	{
 			L		= R2;
@@ -94,11 +98,11 @@ void CAI_Stalker::HitSignal(float amount, Fvector& vLocalDir, CObject* who, s16 
 		float				power_factor = 3.f*amount/100.f;
 		clamp				(power_factor,0.f,1.f);
 		CSkeletonAnimated	*tpKinematics = smart_cast<CSkeletonAnimated*>(Visual());
-		animation_manager().play_fx(power_factor,iFloor(tpKinematics->LL_GetBoneInstance(element).get_param(1) + (angle_difference(m_body.current.yaw,-yaw) <= PI_DIV_2 ? 0 : 1)));
+		animation().play_fx(power_factor,iFloor(tpKinematics->LL_GetBoneInstance(element).get_param(1) + (angle_difference(m_body.current.yaw,-yaw) <= PI_DIV_2 ? 0 : 1)));
 	}
 	
 	if (g_Alive())
-		add_hit_object		(amount,vLocalDir,who,element);
+		memory().hit().add	(amount,vLocalDir,who,element);
 }
 
 void CAI_Stalker::OnItemTake			(CInventoryItem *inventory_item)
@@ -133,7 +137,7 @@ void CAI_Stalker::update_best_item_info	()
 	// initialize parameters
 	m_item_actuality							= true;
 	ai().ef_storage().non_alife().member()		= this;
-	ai().ef_storage().non_alife().enemy()		= enemy() ? enemy() : this;
+	ai().ef_storage().non_alife().enemy()		= memory().enemy().selected() ? memory().enemy().selected() : this;
 	m_best_item_to_kill			= 0;
 	m_best_ammo					= 0;
 	m_best_found_item_to_kill	= 0;
@@ -166,11 +170,11 @@ void CAI_Stalker::update_best_item_info	()
 	// check if we remember we saw item which can kill
 	// or items which can make my item killing
 	{
-		xr_vector<const CGameObject*>::const_iterator	I = items().begin();
-		xr_vector<const CGameObject*>::const_iterator	E = items().end();
+		xr_vector<const CGameObject*>::const_iterator	I = memory().item().objects().begin();
+		xr_vector<const CGameObject*>::const_iterator	E = memory().item().objects().end();
 		for ( ; I != E; ++I) {
 			const CInventoryItem	*inventory_item = smart_cast<const CInventoryItem*>(*I);
-			if (!inventory_item || !CItemManager::useful(inventory_item))
+			if (!inventory_item || !memory().item().useful(inventory_item))
 				continue;
 			CInventoryItem			*item			= inventory_item->can_kill(&inventory());
 			if (item) {
@@ -206,13 +210,13 @@ void CAI_Stalker::update_best_item_info	()
 
 	// check if we remember we saw item to kill
 	// and item which can make this item killing
-	xr_vector<const CGameObject*>::const_iterator	I = items().begin();
-	xr_vector<const CGameObject*>::const_iterator	E = items().end();
+	xr_vector<const CGameObject*>::const_iterator	I = memory().item().objects().begin();
+	xr_vector<const CGameObject*>::const_iterator	E = memory().item().objects().end();
 	for ( ; I != E; ++I) {
 		const CInventoryItem	*inventory_item = smart_cast<const CInventoryItem*>(*I);
-		if (!inventory_item || !CItemManager::useful(inventory_item))
+		if (!inventory_item || !memory().item().useful(inventory_item))
 			continue;
-		const CInventoryItem	*item = inventory_item->can_kill(items());
+		const CInventoryItem	*item = inventory_item->can_kill(memory().item().objects());
 		if (item) {
 			ai().ef_storage().non_alife().member_item()	= inventory_item;
 			float value							= ai().ef_storage().m_pfWeaponEffectiveness->ffGetValue();

@@ -8,9 +8,12 @@
 
 #pragma once
 
-#include "level_graph.h"
 #include "setup_manager.h"
 #include "sight_control_action.h"
+
+namespace LevelGraph {
+	class CVertex;
+};
 
 class CAI_Stalker;
 
@@ -24,7 +27,6 @@ protected:
 public:
 					CSightManager						();
 	virtual			~CSightManager						();
-			void	init								();
 	virtual	void	Load								(LPCSTR section);
 	virtual	void	reinit								(CAI_Stalker *object);
 	virtual void	Exec_Look							(float dt);
@@ -32,8 +34,8 @@ public:
 			void	SetPointLookAngles					(const Fvector &tPosition, float &yaw, float &pitch);
 			void	SetFirePointLookAngles				(const Fvector &tPosition, float &yaw, float &pitch);
 			void	SetDirectionLook					();
-			void	SetLessCoverLook					(const CLevelGraph::CVertex *tpNode, bool bDifferenceLook);
-			void	SetLessCoverLook					(const CLevelGraph::CVertex *tpNode, float fMaxHeadTurnAngle, bool bDifferenceLook);
+			void	SetLessCoverLook					(const LevelGraph::CVertex *tpNode, bool bDifferenceLook);
+			void	SetLessCoverLook					(const LevelGraph::CVertex *tpNode, float fMaxHeadTurnAngle, bool bDifferenceLook);
 			void	vfValidateAngleDependency			(float x1, float &x2, float x3);
 			bool	need_correction						(float x1, float x2, float x3);
 	IC		void	GetDirectionAnglesByPrevPositions	(float &yaw, float &pitch);

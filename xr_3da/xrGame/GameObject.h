@@ -7,7 +7,6 @@
 #pragma once
 
 #include "../xr_object.h"
-#include "level_graph.h"
 #include "ai_object_location.h"
 #include "prefetch_manager.h"
 #include "xrServer_Space.h"

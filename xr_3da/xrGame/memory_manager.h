@@ -8,47 +8,65 @@
 
 #pragma once
 
-#include "visual_memory_manager.h"
-#include "sound_memory_manager.h"
-#include "hit_memory_manager.h"
-#include "enemy_manager.h"
-#include "item_manager.h"
 
+class CVisualMemoryManager;
+class CSoundMemoryManager;
+class CHitMemoryManager;
+class CEnemyManager;
+class CItemManager;
+class CGreetingManager;
+class CCustomMonster;
 class CAI_Stalker;
 
-class CMemoryManager : 
-	public CVisualMemoryManager,
-	public CSoundMemoryManager,
-	public CHitMemoryManager,
-	public CEnemyManager,
-	public CItemManager
-{
+namespace MemorySpace {
+	struct CMemoryInfo;
+};
+
+class CMemoryManager {
+public:
+	typedef MemorySpace::CMemoryInfo CMemoryInfo;
+
 protected:
-	CAI_Stalker				*m_object;
-	CEntityAlive			*m_self;
+	CVisualMemoryManager	*m_visual;
+	CSoundMemoryManager		*m_sound;
+	CHitMemoryManager		*m_hit;
+	CEnemyManager			*m_enemy;
+	CItemManager			*m_item;
+	CGreetingManager		*m_greeting;
+
+protected:
+	CCustomMonster			*m_object;
+	CAI_Stalker				*m_stalker;
 
 protected:
 	template <typename T>
-		void				update					(const xr_vector<T> &objects);
+			void				update			(const xr_vector<T> &objects);
 	template <typename T, typename _predicate>
-		void				fill_enemies			(const xr_vector<T> &objects, const _predicate &predicate) const;
+			void				fill_enemies	(const xr_vector<T> &objects, const _predicate &predicate) const;
 
 public:
-							CMemoryManager			();
-	virtual					~CMemoryManager			();
-			void			init					();
-	virtual	void			Load					(LPCSTR section);
-	virtual	void			reinit					();
-	virtual	void			reload					(LPCSTR section);
-	virtual	void			update					(float time_delta);
+								CMemoryManager	(CCustomMonster *object);
+	virtual						~CMemoryManager	();
+	virtual	void				Load			(LPCSTR section);
+	virtual	void				reinit			();
+	virtual	void				reload			(LPCSTR section);
+	virtual	void				update			(float time_delta);
 
+public:
+			void				enable			(const CObject *object, bool enable);
+			const CMemoryInfo	memory			(const CObject *object) const;
+
+public:
 	template <typename _predicate>
-	IC		void			fill_enemies			(const _predicate &predicate) const;
-	IC		bool			visible					(const CObject *object) const;
-	IC		const CEntityAlive	*enemy				() const;
-	IC		const CGameObject	*item				() const;
-			const CMemoryInfo	memory				(const CObject *object) const;
-	IC		void			enable					(const CObject *object, bool enable);
+	IC		void				fill_enemies	(const _predicate &predicate) const;
+
+public:
+	IC		CVisualMemoryManager&visual			() const;
+	IC		CSoundMemoryManager	&sound			() const;
+	IC		CHitMemoryManager	&hit			() const;
+	IC		CEnemyManager		&enemy			() const;
+	IC		CItemManager		&item			() const;
+	IC		CGreetingManager	&greeting		() const;
 };
 
 #include "memory_manager_inline.h"

@@ -26,6 +26,17 @@
 #include "object_handler_planner.h"
 #include "object_handler_space.h"
 
+#include "memory_manager.h"
+#include "visual_memory_manager.h"
+#include "sound_memory_manager.h"
+#include "hit_memory_manager.h"
+
+namespace MemorySpace {
+	struct CVisibleObject;
+	struct CSoundObject;
+	struct CHitObject;
+};
+
 const CCoverPoint *CScriptGameObject::best_cover	(const Fvector &position, const Fvector &enemy_position, float radius, float min_enemy_distance, float max_enemy_distance)
 {
 	CAI_Stalker		*stalker = smart_cast<CAI_Stalker*>(object());
@@ -50,34 +61,34 @@ const CCoverPoint *CScriptGameObject::safe_cover	(const Fvector &position, float
 	return			(point);
 }
 
-const xr_vector<CVisibleObject>	&CScriptGameObject::memory_visible_objects	() const
+const xr_vector<MemorySpace::CVisibleObject>	&CScriptGameObject::memory_visible_objects	() const
 {
 	CCustomMonster	*monster = smart_cast<CCustomMonster*>(object());
 	if (!monster) {
 		ai().script_engine().script_log		(ScriptStorage::eLuaMessageTypeError,"CGameObject : cannot access class member memory_visible_objects!");
 		NODEFAULT;
 	}
-	return			(monster->memory_visible_objects());
+	return			(monster->memory().visual().objects());
 }
 
-const xr_vector<CSoundObject>	&CScriptGameObject::memory_sound_objects	() const
+const xr_vector<MemorySpace::CSoundObject>	&CScriptGameObject::memory_sound_objects	() const
 {
 	CCustomMonster	*monster = smart_cast<CCustomMonster*>(object());
 	if (!monster) {
 		ai().script_engine().script_log		(ScriptStorage::eLuaMessageTypeError,"CGameObject : cannot access class member memory_sound_objects!");
 		NODEFAULT;
 	}
-	return			(monster->sound_objects());
+	return			(monster->memory().sound().objects());
 }
 
-const xr_vector<CHitObject>		&CScriptGameObject::memory_hit_objects		() const
+const xr_vector<MemorySpace::CHitObject>		&CScriptGameObject::memory_hit_objects		() const
 {
 	CCustomMonster	*monster = smart_cast<CCustomMonster*>(object());
 	if (!monster) {
 		ai().script_engine().script_log		(ScriptStorage::eLuaMessageTypeError,"CGameObject : cannot access class member memory_hit_objects!");
 		NODEFAULT;
 	}
-	return			(monster->hit_objects());
+	return			(monster->memory().hit().objects());
 }
 
 void CScriptGameObject::ChangeTeam(u8 team, u8 squad, u8 group)
@@ -200,7 +211,7 @@ void CScriptGameObject::add_animation			(LPCSTR animation, bool hand_usage)
 		ai().script_engine().script_log		(ScriptStorage::eLuaMessageTypeError,"CGameObject : cannot access class member add_animation!");
 		return;
 	}
-	stalker->animation_manager().add_script_animation(animation,hand_usage);
+	stalker->animation().add_script_animation(animation,hand_usage);
 }
 
 void CScriptGameObject::clear_animations		()
@@ -210,7 +221,7 @@ void CScriptGameObject::clear_animations		()
 		ai().script_engine().script_log		(ScriptStorage::eLuaMessageTypeError,"CGameObject : cannot access class member clear_animations!");
 		return;
 	}
-	stalker->animation_manager().clear_script_animations();
+	stalker->animation().clear_script_animations();
 }
 
 int	CScriptGameObject::animation_count		() const
@@ -220,7 +231,7 @@ int	CScriptGameObject::animation_count		() const
 		ai().script_engine().script_log		(ScriptStorage::eLuaMessageTypeError,"CGameObject : cannot access class member clear_animations!");
 		return			(-1);
 	}
-	return				((int)stalker->animation_manager().script_animations().size());
+	return				((int)stalker->animation().script_animations().size());
 }
 
 Flags32 CScriptGameObject::get_actor_relation_flags () const

@@ -12,6 +12,11 @@
 #include "ef_storage.h"
 #include "ef_pattern.h"
 #include "cover_point.h"
+#include "memory_manager.h"
+#include "visual_memory_manager.h"
+#include "sound_memory_manager.h"
+#include "hit_memory_manager.h"
+#include "enemy_manager.h"
 
 const float DANGER_DISTANCE = 5.f;
 
@@ -89,7 +94,7 @@ void CAgentManager::fill_enemies		()
 	iterator						E = members().end();
 	for ( ; I != E; ++I) {
 		(*I).probability			(1.f);
-		(*I).object()->fill_enemies	(CEnemyFiller(&m_enemies,mask((*I).object())));
+		(*I).object()->memory().fill_enemies	(CEnemyFiller(&m_enemies,mask((*I).object())));
 	}
 }
 
@@ -261,7 +266,7 @@ void CAgentManager::permutate_enemies	()
 			xr_vector<CEnemy>::iterator	i = m_enemies.begin();
 			xr_vector<CEnemy>::iterator	e = m_enemies.end();
 			for ( ; i != e; ++i)
-				if ((*I).object()->visible_now((*i).m_object))
+				if ((*I).object()->memory().visual().visible_now((*i).m_object))
 					(*i).m_distribute_mask.assign((*i).m_distribute_mask.get() | mask((*I).object()));
 		}
 	}
@@ -363,7 +368,7 @@ bool CAgentManager::process_corpse			(CMemberOrder &member)
 	xr_vector<CMemberCorpse>::iterator	I = m_corpses.begin();
 	xr_vector<CMemberCorpse>::iterator	E = m_corpses.end();
 	for ( ; I != E; ++I) {
-		if (!member.object()->visible_now(member.object()))
+		if (!member.object()->memory().visual().visible_now(member.object()))
 			continue;
 
 		float		dist_sqr = (*I).m_member->Position().distance_to_sqr(member.object()->Position());

@@ -15,7 +15,7 @@ void	CStalkerAnimationManager::script_play_callback(CBlend *blend)
 {
 	CAI_Stalker					*object = (CAI_Stalker*)blend->CallbackParam;
 	VERIFY						(object);
-	CStalkerAnimationManager	&animation_manager = object->animation_manager();
+	CStalkerAnimationManager	&animation_manager = object->animation();
 	if	(
 			animation_manager.script().animation() && 
 			!animation_manager.script_animations().empty() && 

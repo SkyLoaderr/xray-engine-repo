@@ -17,14 +17,13 @@ protected:
 public:
 					CObjectManager				();
 	virtual			~CObjectManager				();
-			void	init						();
 	virtual void	Load						(LPCSTR section);
 	virtual void	reinit						();
 	virtual void	reload						(LPCSTR section);
 	virtual void	update						();
 			bool	add							(const T *object);
-	virtual bool	useful						(const T *object) const;
-	virtual	float	evaluate					(const T *object) const;
+	virtual bool	is_useful					(const T *object) const;
+	virtual	float	do_evaluate					(const T *object) const;
 	virtual	void	reset						();
 	IC		const T *selected					() const;
 	IC		const xr_vector<const T*> &objects	() const;

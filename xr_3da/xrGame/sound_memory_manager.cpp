@@ -8,6 +8,10 @@
 
 #include "stdafx.h"
 #include "sound_memory_manager.h"
+#include "memory_manager.h"
+#include "hit_memory_manager.h"
+#include "enemy_manager.h"
+#include "memory_space_impl.h"
 #include "custommonster.h"
 
 #define SILENCE
@@ -18,23 +22,12 @@
 #define SAVE_FRIEND_SOUNDS
 //#define SAVE_VISIBLE_OBJECT_SOUNDS
 
-#define GET_IF_EXISTS(ltx,method,section,name,default_value)\
-	(ltx->line_exist(section,name)) ? ltx->method(section,name) : default_value
-
-CSoundMemoryManager::CSoundMemoryManager		()
-{
-	m_max_sound_count		= 0;
-}
-
 CSoundMemoryManager::~CSoundMemoryManager		()
 {
 }
 
 void CSoundMemoryManager::Load					(LPCSTR section)
 {
-	m_object				= smart_cast<CCustomMonster*>(this);
-	VERIFY					(m_object);
-	m_max_sound_count		= GET_IF_EXISTS(pSettings,r_s32,section,"DynamicSoundsCount",0);
 }
 
 void CSoundMemoryManager::reinit				()
@@ -48,10 +41,11 @@ void CSoundMemoryManager::reinit				()
 
 void CSoundMemoryManager::reload				(LPCSTR section)
 {
-	m_min_sound_threshold	= GET_IF_EXISTS(pSettings,r_float,section,"sound_threshold",0.05f);
-	m_self_sound_factor		= GET_IF_EXISTS(pSettings,r_float,section,"self_sound_factor",0.f);
-	m_sound_decrease_quant	= GET_IF_EXISTS(pSettings,r_u32,section,"self_decrease_quant",250);
-	m_decrease_factor		= GET_IF_EXISTS(pSettings,r_float,section,"self_decrease_factor",.95f);
+	m_max_sound_count		= READ_IF_EXISTS(pSettings,r_s32,section,"DynamicSoundsCount",1);
+	m_min_sound_threshold	= READ_IF_EXISTS(pSettings,r_float,section,"sound_threshold",0.05f);
+	m_self_sound_factor		= READ_IF_EXISTS(pSettings,r_float,section,"self_sound_factor",0.f);
+	m_sound_decrease_quant	= READ_IF_EXISTS(pSettings,r_u32,section,"self_decrease_quant",250);
+	m_decrease_factor		= READ_IF_EXISTS(pSettings,r_float,section,"self_decrease_factor",.95f);
 }
 
 IC	void CSoundMemoryManager::update_sound_threshold			()
@@ -69,6 +63,25 @@ IC	void CSoundMemoryManager::update_sound_threshold			()
 		m_min_sound_threshold
 	);
 	VERIFY		(_valid(m_sound_threshold));
+}
+
+IC	u32	 CSoundMemoryManager::priority	(const MemorySpace::CSoundObject &sound) const
+{
+	u32					priority = u32(-1);
+	xr_map<ESoundTypes,u32>::const_iterator	I = m_priorities.begin();
+	xr_map<ESoundTypes,u32>::const_iterator	E = m_priorities.end();
+	for ( ; I != E; ++I)
+		if (((*I).second < priority) && ((*I).first & sound.m_sound_type) == (*I).first)
+			priority	= (*I).second;
+	return				(priority);
+}
+
+void CSoundMemoryManager::enable		(const CObject *object, bool enable)
+{
+	xr_vector<CSoundObject>::iterator	J = std::find(m_sounds->begin(),m_sounds->end(),object_id(object));
+	if (J == m_sounds->end())
+		return;
+	(*J).m_enabled		= enable;
 }
 
 void CSoundMemoryManager::feel_sound_new(CObject *object, int sound_type, const Fvector &position, float sound_power)
@@ -96,20 +109,19 @@ void CSoundMemoryManager::feel_sound_new(CObject *object, int sound_type, const 
 	if ((sound_type & SOUND_TYPE_WEAPON_SHOOTING) == SOUND_TYPE_WEAPON_SHOOTING) {
 		// this is fake!
 		sound_power			= 1.f;
-		CHitMemoryManager	*hit_memory_manager = m_object;
 		CEntityAlive		*_entity_alive = smart_cast<CEntityAlive*>(object);
 		if (_entity_alive && (self->ID() != _entity_alive->ID()) && (_entity_alive->g_Team() != entity_alive->g_Team()))
-			hit_memory_manager->add_hit_object(_entity_alive);
+			m_object->memory().hit().add(_entity_alive);
 	}
 	
 	if (sound_power >= m_sound_threshold)
-		add_sound_object	(object,sound_type,position,sound_power);
+		add					(object,sound_type,position,sound_power);
 
 	m_last_sound_time		= Level().timeServer();
 	m_sound_threshold		= _max(m_sound_threshold,sound_power);
 }
 
-void CSoundMemoryManager::add_sound_object(const CObject *object, int sound_type, const Fvector &position, float sound_power)
+void CSoundMemoryManager::add			(const CObject *object, int sound_type, const Fvector &position, float sound_power)
 {
 #ifdef SAVE_OWN_SOUNDS
 	// we do not want to save our own sounds
@@ -125,8 +137,7 @@ void CSoundMemoryManager::add_sound_object(const CObject *object, int sound_type
 
 #ifdef SAVE_NON_ALIVE_OBJECT_SOUNDS
 	// we do not want to save sounds from the non-alive objects (?!)
-	CMemoryManager	*memory_manager = m_object;
-	if (object && !memory_manager->enemy() && !smart_cast<const CEntityAlive*>(object))
+	if (object && !m_object->memory().enemy().selected() && !smart_cast<const CEntityAlive*>(object))
 		return;
 #endif
 
@@ -146,8 +157,7 @@ void CSoundMemoryManager::add_sound_object(const CObject *object, int sound_type
 
 #ifdef SAVE_VISIBLE_OBJECT_SOUNDS
 	// we do not save sounds from the objects we see (?!)
-	CVisualMemoryManager			*visual_memory_manager = m_object;
-	if (visual_memory_manager->visible_now(entity_alive))
+	if (m_object->memory().visual().visible_now(entity_alive))
 		return;
 #endif
 
@@ -203,7 +213,7 @@ void CSoundMemoryManager::update()
 	xr_vector<CSoundObject>::const_iterator	I = m_sounds->begin();
 	xr_vector<CSoundObject>::const_iterator	E = m_sounds->end();
 	for ( ; I != E; ++I) {
-		u32						cur_priority = get_priority(*I);
+		u32						cur_priority = this->priority(*I);
 		if (cur_priority < priority) {
 			m_selected_sound	= &*I;
 			priority			= cur_priority;

@@ -17,18 +17,12 @@
 TEMPLATE_SPECIALIZATION
 CAbstractObjectManager::CObjectManager				()
 {
-	init					();
+	m_objects.reserve		(100);
 }
 
 TEMPLATE_SPECIALIZATION
 CAbstractObjectManager::~CObjectManager				()
 {
-}
-
-TEMPLATE_SPECIALIZATION
-void CAbstractObjectManager::init					()
-{
-	m_objects.reserve		(100);
 }
 
 TEMPLATE_SPECIALIZATION
@@ -56,7 +50,7 @@ void CAbstractObjectManager::update					()
 	xr_vector<const T*>::const_iterator	I = m_objects.begin();
 	xr_vector<const T*>::const_iterator	E = m_objects.end();
 	for ( ; I != E; ++I) {
-		float					value = evaluate(*I);
+		float					value = do_evaluate(*I);
 		if (result > value) {
 			result				= value;
 			m_selected			= *I;
@@ -65,13 +59,13 @@ void CAbstractObjectManager::update					()
 }
 
 TEMPLATE_SPECIALIZATION
-float CAbstractObjectManager::evaluate				(const T *object) const
+float CAbstractObjectManager::do_evaluate			(const T *object) const
 {
 	return					(0.f);
 }
 
 TEMPLATE_SPECIALIZATION
-bool CAbstractObjectManager::useful					(const T *object) const
+bool CAbstractObjectManager::is_useful				(const T *object) const
 {
 	const ISpatial			*self = (const ISpatial*)(object);
 	if (!self)
@@ -86,7 +80,7 @@ bool CAbstractObjectManager::useful					(const T *object) const
 TEMPLATE_SPECIALIZATION
 bool CAbstractObjectManager::add					(const T *object)
 {
-	if (!useful(object))
+	if (!is_useful(object))
 		return				(false);
 
 	xr_vector<const T*>::const_iterator	I = std::find(m_objects.begin(),m_objects.end(),object);

@@ -8,7 +8,6 @@
 
 #pragma once
 
-#include "level_graph.h"
 #include "ai_object_location.h"
 #include "restricted_object.h"
 #include "detail_path_manager_space.h"

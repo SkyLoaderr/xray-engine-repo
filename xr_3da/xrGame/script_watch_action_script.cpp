@@ -10,6 +10,7 @@
 #include "script_watch_action.h"
 #include "script_space.h"
 #include "script_game_object.h"
+#include "sight_manager_space.h"
 
 using namespace luabind;
 

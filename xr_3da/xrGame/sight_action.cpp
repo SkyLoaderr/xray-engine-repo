@@ -73,6 +73,7 @@ void CSightAction::execute		()
 			break;
 		}
 		case SightManager::eSightTypeSearch : {
+			m_torso_look					= false;
 			if (m_torso_look)
 				m_object->SetLessCoverLook(m_object->level_vertex(),PI,m_path);
 			else

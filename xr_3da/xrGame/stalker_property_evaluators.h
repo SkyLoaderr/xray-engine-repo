@@ -270,4 +270,16 @@ public:
 	virtual _value_type	evaluate							();
 };
 
+//////////////////////////////////////////////////////////////////////////
+// CStalkerPropertyEvaluatorHumanToDialog
+//////////////////////////////////////////////////////////////////////////
+
+class CStalkerPropertyEvaluatorHumanToDialog : public CStalkerPropertyEvaluator {
+protected:
+	typedef CStalkerPropertyEvaluator inherited;
+
+public:
+	virtual _value_type	evaluate							();
+};
+
 #include "stalker_property_evaluators_inline.h"

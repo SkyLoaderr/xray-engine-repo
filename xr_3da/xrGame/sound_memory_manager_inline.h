@@ -8,53 +8,42 @@
 
 #pragma once
 
-IC	const xr_vector<MemorySpace::CSoundObject>	&CSoundMemoryManager::sound_objects() const
+IC	CSoundMemoryManager::CSoundMemoryManager	(CCustomMonster *object)
 {
-	return								(*m_sounds);
+	VERIFY						(object);
+	m_object					= object;
+	m_max_sound_count			= 0;
 }
 
-IC	void CSoundMemoryManager::set_sound_type_priority			(ESoundTypes sound_type, u32 priority)
+IC	const CSoundMemoryManager::SOUNDS &CSoundMemoryManager::objects() const
 {
-	xr_map<ESoundTypes,u32>::const_iterator	I = m_priorities.find(sound_type);
-	VERIFY							(m_priorities.end() == I);
-	m_priorities.insert				(std::make_pair(sound_type,priority));
+	VERIFY						(m_sounds);
+	return						(*m_sounds);
+}
+
+IC	void CSoundMemoryManager::priority			(const ESoundTypes &sound_type, u32 priority)
+{
+	PRIORITIES::const_iterator	I = m_priorities.find(sound_type);
+	VERIFY						(m_priorities.end() == I);
+	m_priorities.insert			(std::make_pair(sound_type,priority));
 }
 
 IC	const MemorySpace::CSoundObject *CSoundMemoryManager::sound		() const
 {
-	return				(m_selected_sound);
+	return						(m_selected_sound);
 }
 
-IC	u32	 CSoundMemoryManager::get_priority				(const MemorySpace::CSoundObject &sound) const
+IC	void CSoundMemoryManager::set_squad_objects	(SOUNDS *squad_objects)
 {
-	u32					priority = u32(-1);
-	xr_map<ESoundTypes,u32>::const_iterator	I = m_priorities.begin();
-	xr_map<ESoundTypes,u32>::const_iterator	E = m_priorities.end();
-	for ( ; I != E; ++I)
-		if (((*I).second < priority) && ((*I).first & sound.m_sound_type) == (*I).first)
-			priority	= (*I).second;
-	return				(priority);
+	m_sounds					= squad_objects;
 }
 
-IC	void CSoundMemoryManager::set_squad_objects			(xr_vector<MemorySpace::CSoundObject> *squad_objects)
+IC	void CSoundMemoryManager::set_threshold		(float threshold)
 {
-	m_sounds			= squad_objects;
+	m_sound_threshold			= threshold;
 }
 
-IC	void CSoundMemoryManager::enable		(const CObject *object, bool enable)
+IC	void CSoundMemoryManager::restore_threshold	()
 {
-	xr_vector<CSoundObject>::iterator	J = std::find(m_sounds->begin(),m_sounds->end(),object_id(object));
-	if (J == m_sounds->end())
-		return;
-	(*J).m_enabled		= enable;
-}
-
-IC	void CSoundMemoryManager::set_threshold			(float threshold)
-{
-	m_sound_threshold	= threshold;
-}
-
-IC	void CSoundMemoryManager::restore_threshold		()
-{
-	m_sound_threshold	= m_min_sound_threshold;
+	m_sound_threshold			= m_min_sound_threshold;
 }

@@ -8,70 +8,97 @@
 
 #include "stdafx.h"
 #include "memory_manager.h"
+#include "visual_memory_manager.h"
+#include "sound_memory_manager.h"
+#include "hit_memory_manager.h"
+#include "enemy_manager.h"
+#include "item_manager.h"
+#include "greeting_manager.h"
 #include "ai/stalker/ai_stalker.h"
 #include "agent_manager.h"
+#include "memory_space_impl.h"
 
-CMemoryManager::CMemoryManager		()
+CMemoryManager::CMemoryManager		(CCustomMonster *monster)
 {
-	init							();
+	VERIFY				(monster);
+	m_object			= monster;
+	m_stalker			= smart_cast<CAI_Stalker*>(monster);
+
+	m_visual			= xr_new<CVisualMemoryManager>	(monster);
+	m_sound				= xr_new<CSoundMemoryManager>	(monster);
+	m_hit				= xr_new<CHitMemoryManager>		(monster);
+	m_enemy				= xr_new<CEnemyManager>			(monster);
+	m_item				= xr_new<CItemManager>			(monster);
+	m_greeting			= xr_new<CGreetingManager>		(monster);
 }
 
 CMemoryManager::~CMemoryManager		()
 {
-}
-
-void CMemoryManager::init			()
-{
+	xr_delete			(m_visual);
+	xr_delete			(m_sound);
+	xr_delete			(m_hit);
+	xr_delete			(m_enemy);
+	xr_delete			(m_item);
+	xr_delete			(m_greeting);
 }
 
 void CMemoryManager::Load			(LPCSTR section)
 {
-	CVisualMemoryManager::Load		(section);
-	CSoundMemoryManager::Load		(section);
-	CHitMemoryManager::Load			(section);
-	CEnemyManager::Load				(section);
-	CItemManager::Load				(section);
-	m_object						= smart_cast<CAI_Stalker*>(this);
-	m_self							= smart_cast<CEntityAlive*>(this);
-	VERIFY							(m_self);
+	visual().Load		(section);
+	sound().Load		(section);
+	hit().Load			(section);
+	enemy().Load		(section);
+	item().Load			(section);
+	greeting().Load		(section);
 }
 
 void CMemoryManager::reinit			()
 {
-	CVisualMemoryManager::reinit	();
-	CSoundMemoryManager::reinit		();
-	CHitMemoryManager::reinit		();
-	CEnemyManager::reinit			();
-	CItemManager::reinit			();
+	visual().reinit		();
+	sound().reinit		();
+	hit().reinit		();
+	enemy().reinit		();
+	item().reinit		();
+	greeting().reinit	();
 }
 
 void CMemoryManager::reload			(LPCSTR section)
 {
-	CVisualMemoryManager::reload	(section);
-	CSoundMemoryManager::reload		(section);
-	CHitMemoryManager::reload		(section);
-	CEnemyManager::reload			(section);
-	CItemManager::reload			(section);
+	visual().reload		(section);
+	sound().reload		(section);
+	hit().reload		(section);
+	enemy().reload		(section);
+	item().reload		(section);
+	greeting().reload	(section);
 }
 
 void CMemoryManager::update			(float time_delta)
 {
-	CVisualMemoryManager::update	(time_delta);
-	CSoundMemoryManager::update		();
-	CHitMemoryManager::update		();
+	visual().update		(time_delta);
+	sound().update		();
+	hit().update		();
 	
 	// update enemies and items
-	CEnemyManager::reset			();
-	CItemManager::reset				();
+	enemy().reset		();
+	item().reset		();
+	greeting().reset	();
 
-	if (CVisualMemoryManager::enabled())
-		update						(memory_visible_objects());
+	if (visual().enabled())
+		update			(visual().objects());
 
-	update							(sound_objects());
-	update							(hit_objects());
+	update				(sound().objects());
+	update				(hit().objects());
 	
-	CEnemyManager::update			();
-	CItemManager::update			();
+	enemy().update		();
+	item().update		();
+	greeting().update	();
+}
+
+void CMemoryManager::enable			(const CObject *object, bool enable)
+{
+	visual().enable		(object,enable);
+	sound().enable		(object,enable);
+	hit().enable		(object,enable);
 }
 
 template <typename T>
@@ -83,12 +110,12 @@ void CMemoryManager::update			(const xr_vector<T> &objects)
 		if (!(*I).m_enabled)
 			continue;
 		
-		if (m_object && !(*I).m_squad_mask.is(m_object->agent_manager().mask(m_object)))
+		if (m_stalker && !(*I).m_squad_mask.is(m_stalker->agent_manager().mask(m_stalker)))
 			continue;
 		
 		const CEntityAlive			*entity_alive = smart_cast<const CEntityAlive*>((*I).m_object);
-		if (!entity_alive || !CEnemyManager::add(entity_alive))
-			CItemManager::add		((*I).m_object);
+		if (!entity_alive || !enemy().add(entity_alive))
+			item().add		((*I).m_object);
 	}
 }
 
@@ -96,7 +123,7 @@ const CMemoryInfo	CMemoryManager::memory(const CObject *object) const
 {
 	CMemoryInfo						result;
 	result.m_object					= 0;
-	if (!m_self->g_Alive())
+	if (!m_object->g_Alive())
 		return						(result);
 
 	ALife::_TIME_ID					game_time = 0;
@@ -104,8 +131,8 @@ const CMemoryInfo	CMemoryManager::memory(const CObject *object) const
 	VERIFY							(game_object);
 
 	{
-		xr_vector<CVisibleObject>::const_iterator	I = std::find(memory_visible_objects().begin(),memory_visible_objects().end(),object_id(object));
-		if (memory_visible_objects().end() != I) {
+		xr_vector<CVisibleObject>::const_iterator	I = std::find(visual().objects().begin(),visual().objects().end(),object_id(object));
+		if (visual().objects().end() != I) {
 			(CMemoryObject<CGameObject>&)result = (CMemoryObject<CGameObject>&)(*I);
 			result.m_visible						= (*I).m_visible;
 			result.m_visual_info					= true;
@@ -115,8 +142,8 @@ const CMemoryInfo	CMemoryManager::memory(const CObject *object) const
 	}
 
 	{
-		xr_vector<CSoundObject>::const_iterator	I = std::find(sound_objects().begin(),sound_objects().end(),object_id(object));
-		if ((sound_objects().end() != I) && (game_time < (*I).m_game_time)) {
+		xr_vector<CSoundObject>::const_iterator	I = std::find(sound().objects().begin(),sound().objects().end(),object_id(object));
+		if ((sound().objects().end() != I) && (game_time < (*I).m_game_time)) {
 			(CMemoryObject<CGameObject>&)result = (CMemoryObject<CGameObject>&)(*I);
 			result.m_sound_info						= true;
 			game_time								= (*I).m_game_time;
@@ -125,8 +152,8 @@ const CMemoryInfo	CMemoryManager::memory(const CObject *object) const
 	}
 	
 	{
-		xr_vector<CHitObject>::const_iterator	I = std::find(hit_objects().begin(),hit_objects().end(),object_id(object));
-		if ((hit_objects().end() != I) && (game_time < (*I).m_game_time)) {
+		xr_vector<CHitObject>::const_iterator	I = std::find(hit().objects().begin(),hit().objects().end(),object_id(object));
+		if ((hit().objects().end() != I) && (game_time < (*I).m_game_time)) {
 			(CMemoryObject<CGameObject>&)result = (CMemoryObject<CGameObject>&)(*I);
 			result.m_object							= game_object;
 			result.m_hit_info						= true;

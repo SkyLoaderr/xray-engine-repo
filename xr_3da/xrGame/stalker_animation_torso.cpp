@@ -35,11 +35,11 @@ void CStalkerAnimationManager::torso_play_callback	(CBlend *blend)
 {
 	CAI_Stalker				*object = (CAI_Stalker*)blend->CallbackParam;
 	VERIFY					(object);
-	if (object->animation_manager().setup_flag()) {
-		object->CObjectHandler::planner().m_storage.set_property(object->animation_manager().property_id(),object->animation_manager().property_value());
+	if (object->animation().setup_storage()) {
+		object->animation().setup_storage()->set_property(object->animation().property_id(),object->animation().property_value());
 		return;
 	}
-	object->animation_manager().torso().reset();
+	object->animation().torso().reset();
 }
 
 void CStalkerAnimationManager::fill_object_info		()

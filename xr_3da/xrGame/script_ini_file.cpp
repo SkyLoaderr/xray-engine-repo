@@ -57,3 +57,8 @@ int	 CScriptIniFile::r_token		(LPCSTR S, LPCSTR L, const CScriptTokenList &token
 {
 	return		(inherited::r_token(S,L,&*token_list.tokens().begin()));
 }
+
+LPCSTR CScriptIniFile::r_string_wb	(LPCSTR S, LPCSTR L)
+{
+	return		(*inherited::r_string_wb(S,L));
+}

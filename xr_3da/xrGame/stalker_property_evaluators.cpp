@@ -15,6 +15,10 @@
 #include "inventory.h"
 #include "alife_simulator.h"
 #include "alife_object_registry.h"
+#include "memory_manager.h"
+#include "visual_memory_manager.h"
+#include "item_manager.h"
+#include "enemy_manager.h"
 
 using namespace StalkerDecisionSpace;
 
@@ -50,7 +54,7 @@ _value_type CStalkerPropertyEvaluatorAlive::evaluate	()
 
 _value_type CStalkerPropertyEvaluatorItems::evaluate	()
 {
-	return			(!!m_object->item());
+	return			(!!m_object->memory().item().selected());
 }
 
 //////////////////////////////////////////////////////////////////////////
@@ -59,7 +63,7 @@ _value_type CStalkerPropertyEvaluatorItems::evaluate	()
 
 _value_type CStalkerPropertyEvaluatorEnemies::evaluate	()
 {
-	return			(!!m_object->enemy());
+	return			(!!m_object->memory().enemy().selected());
 }
 
 //////////////////////////////////////////////////////////////////////////
@@ -68,7 +72,7 @@ _value_type CStalkerPropertyEvaluatorEnemies::evaluate	()
 
 _value_type CStalkerPropertyEvaluatorSeeEnemy::evaluate	()
 {
-	return				(m_object->enemy() ? m_object->visible_now(m_object->enemy()) : false);
+	return				(m_object->memory().enemy().selected() ? m_object->memory().visual().visible_now(m_object->memory().enemy().selected()) : false);
 }
 
 //////////////////////////////////////////////////////////////////////////
@@ -125,7 +129,7 @@ _value_type CStalkerPropertyEvaluatorAnomaly::evaluate	()
 	if (!m_object->undetected_anomaly())
 		return			(false);
 
-	if (!m_object->enemy())
+	if (!m_object->memory().enemy().selected())
 		return			(true);
 
 	u32					result = dwfChooseAction(2000,m_object->panic_threshold(),0.f,0.f,0.f,m_object->g_Team(),m_object->g_Squad(),m_object->g_Group(),0,1,2,3,4,m_object,30.f);
@@ -141,7 +145,7 @@ _value_type CStalkerPropertyEvaluatorInsideAnomaly::evaluate	()
 	if (!m_object->inside_anomaly())
 		return			(false);
 
-	if (!m_object->enemy())
+	if (!m_object->memory().enemy().selected())
 		return			(true);
 
 	u32					result = dwfChooseAction(2000,m_object->panic_threshold(),0.f,0.f,0.f,m_object->g_Team(),m_object->g_Squad(),m_object->g_Group(),0,1,2,3,4,m_object,30.f);
@@ -228,4 +232,13 @@ _value_type CStalkerPropertyEvaluatorNotEnoughAmmo::evaluate	()
 _value_type CStalkerPropertyEvaluatorCanBuyAmmo::evaluate	()
 {
 	return				(m_object->can_buy_ammo());
+}
+
+//////////////////////////////////////////////////////////////////////////
+// CStalkerPropertyEvaluatorHumanToDialog
+//////////////////////////////////////////////////////////////////////////
+
+_value_type CStalkerPropertyEvaluatorHumanToDialog::evaluate	()
+{
+	return				(false);//true);
 }

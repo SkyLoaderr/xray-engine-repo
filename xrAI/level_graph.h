@@ -15,37 +15,27 @@
 #endif
 
 #include "alife_space.h"
+#include "level_graph_space.h"
+
+namespace LevelGraph {
+	class	CHeader;
+	class	CVertex;
+	struct	SSegment;
+	struct	SContour;
+};
 
 class CCoverPoint;
 
 class CLevelGraph {
+private:
 	friend class CRenumbererConverter;
+
 public:
-	class CHeader : private hdrNODES {
-		friend class CRenumbererConverter;
-	public:
-		IC	u32				version					() const;
-		IC	u32				vertex_count			() const;
-		IC	float			cell_size				() const;
-		IC	float			factor_y				() const;
-		IC	const Fbox		&box					() const;
-	};
-
-	typedef NodePosition CPosition;
-
-	class CVertex : private NodeCompressed {
-		friend class CRenumbererConverter;
-	public:
-		IC	u32				link					(int i) const;
-		IC	u8				light					() const;
-		IC	u16				cover					(u8 index) const;
-		IC	u16				plane					() const;
-		IC	const CPosition &position				() const;
-		IC	bool			operator<				(const CLevelGraph::CVertex &vertex) const;
-		IC	bool			operator>				(const CLevelGraph::CVertex &vertex) const;
-		IC	bool			operator==				(const CLevelGraph::CVertex &vertex) const;
-		friend class CLevelGraph;
-	};
+	typedef LevelGraph::CPosition	CPosition;
+	typedef LevelGraph::CHeader		CHeader;
+	typedef LevelGraph::CVertex		CVertex;
+	typedef LevelGraph::SSegment	SSegment;
+	typedef LevelGraph::SContour	SContour;
 
 private:
 	enum ELineIntersections {
@@ -64,21 +54,10 @@ private:
 	u32					m_row_length;
 	u32					m_column_length;
 public:
-	struct SSegment
-	{
-		Fvector v1;
-		Fvector v2;
-	};
-
-	struct SContour : public SSegment
-	{
-		Fvector v3;
-		Fvector v4;
-	};
-
 #ifdef AI_COMPILER
 	xr_vector<bool>		q_mark_bit;
 #endif
+
 protected:
 			u32		vertex						(const Fvector &position) const;
 

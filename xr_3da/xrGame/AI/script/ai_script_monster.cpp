@@ -23,6 +23,8 @@
 #include "../../patrol_path_manager_space.h"
 #include "../../level_path_manager.h"
 #include "../../level_location_selector.h"
+#include "../../memory_manager.h"
+#include "../../visual_memory_manager.h"
 
 void __stdcall ActionCallback(CKinematics *tpKinematics);
 
@@ -125,30 +127,26 @@ bool CScriptMonster::CheckObjectVisibility(const CGameObject *tpObject)
 	CCustomMonster		*l_tpCustomMonster = smart_cast<CCustomMonster*>(this);
 	if (!l_tpCustomMonster)
 		return			(false);
-	return				(l_tpCustomMonster->CVisualMemoryManager::visible_now(tpObject));
+	return				(l_tpCustomMonster->memory().visual().visible_now(tpObject));
 }
 
 //определяет видимость определенного типа объектов, 
 //заданного через section_name
 bool CScriptMonster::CheckTypeVisibility(const char* section_name)
 {
-	CCustomMonster		*l_tpCustomMonster = smart_cast<CCustomMonster*>(this);
-	if (!l_tpCustomMonster)
+	CCustomMonster		*monster = smart_cast<CCustomMonster*>(this);
+	if (!monster)
 		return			(false);
-	l_tpCustomMonster->feel_vision_get(l_tpCustomMonster->m_visible_objects);
-	xr_vector<CObject*>::const_iterator	I = l_tpCustomMonster->m_visible_objects.begin();
-	xr_vector<CObject*>::const_iterator	E = l_tpCustomMonster->m_visible_objects.end();
+
+	CVisualMemoryManager::VISIBLES::const_iterator	I = monster->memory().visual().objects().begin();
+	CVisualMemoryManager::VISIBLES::const_iterator	E = monster->memory().visual().objects().end();
 	for ( ; I != E; ++I)
-	{
-		CObject* pObject = smart_cast<CObject*>(*I);
-		if (!xr_strcmp(section_name, pObject->cNameSect()))
+		if (!xr_strcmp(section_name, *(*I).m_object->cNameSect()))
 			return		(true);
-	}
 	return				(false);
 }
 
-
-void CScriptMonster::UseObject(const CObject * /**tpObject/**/)
+void CScriptMonster::UseObject(const CObject *tpObject)
 {
 #pragma todo("Dima to Dima : Use object specified by script")
 }
