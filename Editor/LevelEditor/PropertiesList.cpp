@@ -113,6 +113,7 @@ TfrmProperties* TfrmProperties::CreateProperties	(TWinControl* parent, TAlign al
     	props->Align = align;
 	    props->BorderStyle = bsNone;
         props->ShowProperties();
+        props->fsStorage->Active = false;
     }
 	return props;
 }
@@ -120,6 +121,7 @@ TfrmProperties* TfrmProperties::CreateProperties	(TWinControl* parent, TAlign al
 void TfrmProperties::DestroyProperties(TfrmProperties*& props)
 {
 	VERIFY(props);
+	props->ClearProperties();
 	props->Close();
     _DELETE(props);
 }

@@ -130,6 +130,7 @@ private:	// User declarations
 	void __fastcall SShaderEngineClick(TElTreeItem* item);
 	void __fastcall SShaderCompileClick(TElTreeItem* item);
 	void __fastcall ColorClick(TElTreeItem* item);
+
 //	Graphics::TBitmap* m_BMEllipsis;
     bool bModified;
     bool bFillMode;

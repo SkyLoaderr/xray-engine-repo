@@ -6,11 +6,12 @@
 #include "ElTree.hpp"
 
 namespace FOLDER{
+	const DWORD TYPE_INVALID=-1;
 	const DWORD TYPE_FOLDER=0;
 	const DWORD TYPE_OBJECT=1;
 
-    IC bool				IsFolder			(TElTreeItem* node){return (TYPE_FOLDER==(DWORD)node->Data);}
-    IC bool				IsObject			(TElTreeItem* node){return (TYPE_OBJECT==(DWORD)node->Data);}
+    IC bool				IsFolder			(TElTreeItem* node){return node?(TYPE_FOLDER==(DWORD)node->Data):TYPE_INVALID;}
+    IC bool				IsObject			(TElTreeItem* node){return node?(TYPE_OBJECT==(DWORD)node->Data):TYPE_INVALID;}
 
     bool 			 	MakeName			(TElTreeItem* begin_item, TElTreeItem* end_item, AnsiString& folder, bool bOnlyFolder);
 	TElTreeItem* 		FindItemInFolder	(DWORD type, TElTree* tv, TElTreeItem* start_folder, const AnsiString& name);

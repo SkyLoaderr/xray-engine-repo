@@ -60,7 +60,7 @@
       Intermediate\BodyInstance.obj Intermediate\xrSkin1W.obj 
       Intermediate\xrBoneLerp.obj Intermediate\FProgressive.obj 
       Intermediate\fmesh.obj Intermediate\Engine.obj Intermediate\ModelPool.obj 
-      Intermediate\UI_ToolsMotions.obj"/>
+      Intermediate\UI_ToolsMotions.obj Intermediate\KeyBar.obj"/>
     <RESFILES value="ActorEditor.res resource.res"/>
     <IDLFILES value=""/>
     <IDLGENFILES value=""/>
@@ -68,7 +68,7 @@
     <RESDEPEN value="$(RESFILES) BottomBar.dfm EditorPref.dfm Splash.dfm main.dfm LeftBar.dfm 
       LogForm.dfm Editor\ChoseForm.dfm Editor\ShaderFunction.dfm 
       Editor\FrameEmitter.dfm Editor\TopBar.dfm Editor\PropertiesList.dfm 
-      BonePart.dfm"/>
+      BonePart.dfm KeyBar.dfm"/>
     <LIBFILES value="lib\LWO.lib lib\cg32.lib lib\MagicFMd.lib lib\DXT.lib lib\d3d8.lib 
       lib\d3dx8d.lib lib\dinput.lib Lib\FreeImage.lib Lib\ETools.lib 
       Lib\xrProgressive.lib"/>

@@ -33,13 +33,15 @@ class CActorTools: public pureDeviceCreate, public pureDeviceDestroy
         float			m_fSpeed;
         float			m_fSegment;
         DWORD			m_dwFlags;
+        Fvector			m_vPosition;
+        AnsiString 		m_LastObjectName;
     public:
     	enum{
         	pmScroll	= (1<<0),
         	force_dword = DWORD(-1)
         };
     public:
-        				PreviewModel		(){m_pObject=0;m_fSpeed=5.f;m_fSegment=50.f;m_dwFlags=0;m_Props=0;}
+        				PreviewModel		(){m_pObject=0;m_fSpeed=5.f;m_fSegment=50.f;m_dwFlags=0;m_Props=0;m_vPosition.set(0,0,0);}
     	void			OnCreate			();
     	void			OnDestroy			();
     	void			Clear				();

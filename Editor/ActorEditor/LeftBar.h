@@ -26,19 +26,13 @@ class TfraLeftBar : public TFrame
 {
 __published:	// IDE-managed Components
     TPanel *paLeftBar;
-    TPanel *paScene;
 	TFormStorage *fsStorage;
-	TLabel *APHeadLabel2;
-	TExtBtn *ebSceneMin;
-	TExtBtn *ebSceneCommands;
-	TExtBtn *ebPreferences;
 	TMxPopupMenu *pmMotionsFile;
 	TMenuItem *miLoadMotions;
 	TMenuItem *miSaveMotions;
 	TMxPopupMenu *pmSceneFile;
 	TPanel *paCurrentMotion;
 	TLabel *Label1;
-	TExtBtn *ExtBtn3;
 	TMxPopupMenu *pmShaderList;
 	TMenuItem *ExpandAll1;
 	TMenuItem *CollapseAll1;
@@ -96,13 +90,19 @@ __published:	// IDE-managed Components
 	TSplitter *Splitter1;
 	TSplitter *Splitter2;
 	TPanel *Panel6;
-	TExtBtn *ebPreviewObjectClick;
 	TMxPopupMenu *pmPreviewObject;
 	TMenuItem *Custom1;
 	TMenuItem *N3;
 	TMenuItem *none1;
 	TMenuItem *Preferences1;
 	TMenuItem *Clear1;
+	TPanel *paScene;
+	TLabel *APHeadLabel2;
+	TExtBtn *ebSceneMin;
+	TExtBtn *ebSceneCommands;
+	TExtBtn *ebPreferences;
+	TExtBtn *ExtBtn3;
+	TExtBtn *ebPreviewObjectClick;
     void __fastcall ebSaveClick(TObject *Sender);
     void __fastcall PanelMimimizeClick(TObject *Sender);
     void __fastcall PanelMaximizeClick(TObject *Sender);

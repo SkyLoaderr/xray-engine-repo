@@ -305,6 +305,7 @@ void __fastcall TfraLeftBar::ebMotionsClearClick(TObject *Sender)
     	CEditableObject* object=Tools.CurrentObject();
     	object->ClearSMotions();
         UpdateMotionList();
+		Tools.MotionModified();
     }
 }
 //---------------------------------------------------------------------------

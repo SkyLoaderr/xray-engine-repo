@@ -131,6 +131,7 @@ USEUNIT("Engine\fmesh.cpp");
 USEUNIT("Editor\Engine.cpp");
 USEUNIT("Editor\ModelPool.cpp");
 USEUNIT("UI_ToolsMotions.cpp");
+USEFORM("KeyBar.cpp", frmKeyBar);
 //---------------------------------------------------------------------------
 #include "main.h"
 #include "splash.h"

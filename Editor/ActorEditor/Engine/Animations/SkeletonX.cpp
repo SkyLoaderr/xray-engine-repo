@@ -47,12 +47,12 @@ void CSkeletonX_ST::Render	(float LOD)
 {
 	_Render		(dwVertCount,dwPrimsCount,P.pIndices);
 }
-void CSkeletonX::_Render	(DWORD vCount, DWORD pCount, IDirect3DIndexBuffer8* IB) 
+void CSkeletonX::_Render	(DWORD vCount, DWORD pCount, IDirect3DIndexBuffer8* IB)
 {
 //	Parent->Calculate();
 
 	DWORD vOffset;
-	
+
 	vertRender*	Dest = (vertRender*)Stream->Lock(vCount,vOffset);
 
 	Device.Statistic.RenderDUMP_SKIN.Begin	();

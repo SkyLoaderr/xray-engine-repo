@@ -164,8 +164,10 @@ void __fastcall TfrmMain::fsStorageRestorePlacement(TObject *Sender)
 
 void __fastcall TfrmMain::paWindowResize(TObject *Sender)
 {
-	D3DWindow->Width = paWindow->Width-2;
-	D3DWindow->Height = paWindow->Height-2;
+	D3DWindow->Left  	= 1;
+	D3DWindow->Top  	= 1;
+	D3DWindow->Width 	= paWindow->Width-2;
+	D3DWindow->Height 	= paWindow->Height-2;
 }
 //---------------------------------------------------------------------------
 

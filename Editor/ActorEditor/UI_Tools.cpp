@@ -17,6 +17,8 @@
 #include "library.h"
 #include "BodyInstance.h"
 #include "fmesh.h"
+#include "KeyBar.h"
+#include "main.h"
 
 //------------------------------------------------------------------------------
 CActorTools Tools;
@@ -24,13 +26,22 @@ CActorTools Tools;
 #define CHECK_SNAP(R,A,C){ R+=A; if(fabsf(R)>=C){ A=snapto(R,C); R=0; }else{A=0;}}
 
 void CActorTools::PreviewModel::RestoreParams(TFormStorage* s)
-{
+{          
     m_Props->RestoreColumnWidth(s);
+    m_LastObjectName	= s->ReadString	("preview_name","");
+    int val;
+    val					= s->ReadInteger("preview_speed",0); 	m_fSpeed 	= *((float*)&val);
+    val					= s->ReadInteger("preview_segment",0); 	m_fSegment	= *((float*)&val);
+    m_dwFlags			= s->ReadInteger("preview_flags",0);
 }
 
 void CActorTools::PreviewModel::SaveParams(TFormStorage* s)
 {
     m_Props->SaveColumnWidth(s);
+    s->WriteString	("preview_name",	m_LastObjectName);
+    s->WriteInteger	("preview_speed",	*((int*)&m_fSpeed));
+    s->WriteInteger	("preview_segment",	*((int*)&m_fSegment));
+    s->WriteInteger	("preview_flags",	m_dwFlags);
 }
 
 void CActorTools::PreviewModel::OnDestroy()
@@ -49,49 +60,38 @@ void CActorTools::PreviewModel::Clear()
 }
 void CActorTools::PreviewModel::SelectObject()
 {
-    LPCSTR fn=m_pObject?m_pObject->GetName():"";
+    LPCSTR fn=m_LastObjectName.c_str();
     fn=TfrmChoseItem::SelectObject(false,0,fn);
     if (!fn) return;
     Lib.RemoveEditObject(m_pObject);
     m_pObject = Lib.CreateEditObject(fn);
-    if (!m_pObject)
-        ELog.DlgMsg(mtError,"Object '%s' can't find in object library.",fn);
+    if (!m_pObject)	ELog.DlgMsg(mtError,"Object '%s' can't find in object library.",fn);
+    else			m_LastObjectName = fn;
 }
 void CActorTools::PreviewModel::SetPreferences()
 {
     m_Props->BeginFillMode("Preview object prefs");
-	m_Props->AddItem	(0,PROP_FLAG,	"Scroll",	m_Props->MakeFlagValue(&m_dwFlags,pmScroll));
-	m_Props->AddItem	(0,PROP_FLOAT, 	"Speed",	m_Props->MakeFloatValue(&m_fSpeed, -10000.f,10000.f,0.01f,2));
-	m_Props->AddItem	(0,PROP_FLOAT, 	"Segment",	m_Props->MakeFloatValue(&m_fSegment, -10000.f,10000.f,0.01f,2));
-/*
-
-	m_PreviewProps->AddItem(0,PROP_FLAG,	"Make progressive",	m_ObjectProps->MakeFlagValue(&m_pEditObject->GetFlags(),CEditableObject::eoProgressive));
-    M = m_ObjectProps->AddItem(0,PROP_MARKER,	"Transformation");
-    {
-	    N = m_ObjectProps->AddItem(M,PROP_MARKER,	"Rotate (Grd)");
-        {
-			m_ObjectProps->AddItem(N,PROP_FLOAT, 	"Yaw", 		m_ObjectProps->MakeFloatValue(&m_pEditObject->a_vRotate.y,	-10000.f,10000.f,0.01f,2,FloatOnAfterEdit,FloatOnBeforeEdit,FloatOnDraw));
-			m_ObjectProps->AddItem(N,PROP_FLOAT, 	"Pitch", 	m_ObjectProps->MakeFloatValue(&m_pEditObject->a_vRotate.x,	-10000.f,10000.f,0.01f,2,FloatOnAfterEdit,FloatOnBeforeEdit,FloatOnDraw));
-			m_ObjectProps->AddItem(N,PROP_FLOAT, 	"Heading", 	m_ObjectProps->MakeFloatValue(&m_pEditObject->a_vRotate.z,	-10000.f,10000.f,0.01f,2,FloatOnAfterEdit,FloatOnBeforeEdit,FloatOnDraw));
-        }
-	    N = m_ObjectProps->AddItem(M,PROP_MARKER,	"Offset");
-        {
-			m_ObjectProps->AddItem(N,PROP_FLOAT, 	"X", 		m_ObjectProps->MakeFloatValue(&m_pEditObject->a_vPosition.x,	-100000.f,100000.f,0.01f,2));
-			m_ObjectProps->AddItem(N,PROP_FLOAT, 	"Y", 		m_ObjectProps->MakeFloatValue(&m_pEditObject->a_vPosition.y,	-100000.f,100000.f,0.01f,2));
-			m_ObjectProps->AddItem(N,PROP_FLOAT, 	"Z", 		m_ObjectProps->MakeFloatValue(&m_pEditObject->a_vPosition.z,	-100000.f,100000.f,0.01f,2));
-        }
-    }
-*/
-
+	m_Props->AddItem	(0,PROP_FLAG,	"Scroll",		m_Props->MakeFlagValue(&m_dwFlags,pmScroll));
+	m_Props->AddItem	(0,PROP_FLOAT, 	"Speed (m/c)",	m_Props->MakeFloatValue(&m_fSpeed, -10000.f,10000.f,0.01f,2));
+	m_Props->AddItem	(0,PROP_FLOAT, 	"Segment (m)",	m_Props->MakeFloatValue(&m_fSegment, -10000.f,10000.f,0.01f,2));
     m_Props->EndFillMode();
     m_Props->ShowProperties();
 }
 void CActorTools::PreviewModel::Render()
 {
-	if (m_pObject) m_pObject->RenderSingle(precalc_identity);
+	if (m_pObject){
+		Fmatrix T;
+    	T.translate(m_vPosition);
+    	m_pObject->RenderSingle(T);
+    }
 }
 void CActorTools::PreviewModel::Update()
 {
+    if (m_dwFlags&pmScroll){
+	    m_vPosition.z -= m_fSpeed*Device.fTimeDelta;
+        if (m_vPosition.z<-m_fSegment)
+        	m_vPosition.z+=m_fSegment;
+    }
 }
 
 CActorTools::CActorTools()
@@ -123,6 +123,13 @@ bool CActorTools::OnCreate(){
     m_ObjectProps = TfrmProperties::CreateProperties(fraLeftBar->paObjectProps,alClient,ObjectModified);
     m_MotionProps = TfrmProperties::CreateProperties(fraLeftBar->paMotionProps,alClient,MotionModified);
     m_PreviewObject.OnCreate();
+
+    // key bar
+	TfrmKeyBar* B = new TfrmKeyBar(frmMain->paMain);
+    B->Parent 	= frmMain->paMain;
+    B->Align    = alBottom;
+    B->Show();
+
 
     m_bReady = true;
 
@@ -296,7 +303,7 @@ void CActorTools::Clear(){
     // delete visuals
     _DELETE(m_pEditObject);
     m_RenderObject.Clear();
-	m_PreviewObject.Clear();
+//	m_PreviewObject.Clear();
 
     UI.RedrawScene();
 }

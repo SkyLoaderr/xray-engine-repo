@@ -479,7 +479,9 @@ void	CKinematics::IBoneInstances_Create()
 	R_ASSERT		(bones);
 	DWORD			size	= bones->size();
 	void*			ptr		= _aligned_malloc(size*sizeof(CBoneInstance),64);
+#ifndef _EDITOR
 	R_ASSERT		(DWORD(ptr)%64 == 0);
+#endif
 	bone_instances			= (CBoneInstance*)ptr;
 	for (DWORD i=0; i<size; i++)
 		bone_instances[i].construct();
@@ -648,6 +650,7 @@ void CKinematics::Load(const char* N, CStream *data, DWORD dwFlags)
             if (bCycle)			m_cycle->insert(make_pair(_strlwr(strdup(buf)),D));
             else				m_fx->insert(make_pair(_strlwr(strdup(buf)),D));
 		}
+        MP->Close();
 	}else{
 		// old variant (read params from ltx)
 		R_ASSERT(N && N[0]);

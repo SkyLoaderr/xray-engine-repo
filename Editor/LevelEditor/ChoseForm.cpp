@@ -463,7 +463,7 @@ void __fastcall TfrmChoseItem::tvItemsItemFocused(TObject *Sender)
 	    	    m_Thm 					= new EImageThumbnail(nm.c_str(),EImageThumbnail::EITObject);
     	        if (!m_Thm->Valid()) 	pbImage->Repaint();
         	    else				 	pbImagePaint(Sender);
-            }
+            }else						pbImage->Repaint();
 			lbItemName->Caption 	= "\""+Item->Text+"\"";
 			lbFileName->Caption		= "\""+Item->Text+".object\"";
             lbInfo->Caption			= "-";
