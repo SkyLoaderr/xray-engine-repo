@@ -47,7 +47,7 @@ void CBuild::Light()
 			}
 		}
 		if ((0==threads[0])&&(0==threads[1])&&(0==threads[2])&&(0==threads[3]))	break;
-		Sleep	(300);
+		Sleep	(100);
 	}
 	Msg("%d seconds",(timeGetTime()-dwTimeStart)/1000);
 
