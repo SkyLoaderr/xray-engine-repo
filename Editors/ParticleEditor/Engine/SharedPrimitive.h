@@ -125,7 +125,6 @@ public:
 		VERIFY					(pIB);
 		pIB->Unlock				();
 	}
-	IC DWORD					Remain() { return mSize/2-mPosition; }
 
 	CIndexStream()				{ _clear();				};
 	~CIndexStream()				{ Destroy();			};

@@ -84,7 +84,7 @@ LPCSTR	CShaderManager::DBG_GetRTName	(CRT* T)
 		return 0;
 }
 //--------------------------------------------------------------------------------------------------------------
-CVS*	CShaderManager::_CreateVS		(LPCSTR cName, LPDWORD decl) 
+CVS*	CShaderManager::_CreateVS		(LPCSTR cName, LPDWORD decl, DWORD stride) 
 {
 	R_ASSERT			(cName && cName[0] && decl);
 	string256			Name;
@@ -104,6 +104,7 @@ CVS*	CShaderManager::_CreateVS		(LPCSTR cName, LPDWORD decl)
 	{
 		CVS *VS			=	new CVS;
 		VS->dwReference	=	1;
+		VS->dwStride	=	stride;
 		vs.insert		(make_pair(xr_strdup(Name),VS));
 		
 		// Load vertex shader
@@ -118,6 +119,36 @@ CVS*	CShaderManager::_CreateVS		(LPCSTR cName, LPDWORD decl)
 		_RELEASE		(code);
 		_RELEASE		(errors);
 		
+		// Return
+		return			VS;
+	}
+}
+CVS*	CShaderManager::_CreateVS	(DWORD FVF)
+{
+	string256			Name;
+	sprintf				(Name,"FVF:%x",FVF);
+
+	// ***** first pass - search already loaded shader
+	LPSTR N = LPSTR(Name);
+	VSMap::iterator I = vs.find	(N);
+	if (I!=vs.end())	
+	{
+		CVS *VS			=	I->second;
+		VS->dwReference	+=	1;
+		return			VS;
+	}
+	else
+	{
+		CVS *VS			=	new CVS;
+		VS->dwReference	=	1;
+		VS->dwStride	=	D3DXGetFVFVertexSize	(FVF);
+		vs.insert		(make_pair(xr_strdup(Name),VS));
+
+		// Create shader
+		DWORD			decl[MAX_FVF_DECL_SIZE];
+		R_CHK			(D3DXDeclaratorFromFVF(FVF,decl));
+		R_CHK			(HW.pDevice->CreateVertexShader(decl,0,&VS->dwHandle,0));
+
 		// Return
 		return			VS;
 	}

@@ -104,9 +104,10 @@ public:
 	CConstant*						_CreateConstant		(LPCSTR Name);
 	void							_DeleteConstant		(CConstant* &C);
 	CRT*							_CreateRT			(LPCSTR Name, DWORD w, DWORD h);
-	void							_DeleteRT			(CRT* &RT);
-	CVS*							_CreateVS			(LPCSTR Name, LPDWORD decl);
-	void							_DeleteVS			(CVS* &VS);
+	void							_DeleteRT			(CRT* &RT	);
+	CVS*							_CreateVS			(LPCSTR Name, LPDWORD decl, DWORD stride);
+	CVS*							_CreateVS			(DWORD FVF	);
+	void							_DeleteVS			(CVS* &VS	);
 	CPS*							_CreatePS			(LPCSTR Name);
 	void							_DeletePS			(CPS* &PS);
 	
