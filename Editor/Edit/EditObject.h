@@ -100,10 +100,8 @@ public:
 					CEditableObject			(CLibObject* parent);
 	virtual 		~CEditableObject		();
 
-#ifdef _EDITOR
     LPCSTR			GetName					();
     void			SetName					(LPCSTR name);
-#endif
 
     IC EditMeshIt	FirstMesh				()	{return m_Meshes.begin();}
     IC EditMeshIt	LastMesh				()	{return m_Meshes.end();}
