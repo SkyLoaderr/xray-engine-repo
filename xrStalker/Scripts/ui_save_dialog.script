@@ -33,13 +33,13 @@ end
 function save_dialog:FillList()
 	local f = getFS()
 	local flist = f:file_list_open("$game_saves$",FS.FS_ListFiles)
-	local f_cnt = flist:Size()	
+	local f_cnt = flist:Size()
 	
 	for	it=0, f_cnt-1 	do
 		local file		=	flist:GetAt(it)
 		printf("file[%d]=%s",it,file)
 		table.insert(self.FileTable,file)
-		self:AddItemToList(file)		
+		self:AddItemToList(file)
 	end
 	
 	flist:Free()	
@@ -261,7 +261,7 @@ function save_dialog:AddItemToList(item)
 	local list_box = self:GetListWnd("list_window")
 	local shift = 50
 	local color = GetARGB(255,0,255,255)
-	local parse = false	
+	local parse = false
 	
 	list_box:AddText(item, shift, GetARGB(255,0,255,255), GetFontLetterica25(), parse)
 	
