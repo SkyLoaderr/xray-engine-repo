@@ -39,7 +39,6 @@ void		CRender::flush				()					{ flush_Models();									}
 BOOL		CRender::occ_visible		(sPoly& P)			{ return HOM.visible(P);							}
 BOOL		CRender::occ_visible		(Fbox& P)			{ return HOM.visible(P);							}
 
-void		CRender::set_Object			(CObject*		O )	{ L_Shadows.set_object(O);							}
 void		CRender::add_Visual			(CVisual*		V )	{ add_leafs_Dynamic(V);								}
 void		CRender::add_Geometry		(CVisual*		V )	{ add_Static(V,View->getMask());					}
 void		CRender::add_Lights			(vector<WORD> &	V )	{ L_DB.add_sector_lights(V);						}
@@ -53,6 +52,13 @@ void		CRender::add_Patch			(Shader* S, Fvector& P1, float s, float a, BOOL bNear
 	P.size	= s;
 	P.angle = a;
 	P.nearer= bNearer;
+}
+void		CRender::set_Object			(CObject*		O )	
+{ 
+	Fvector C; 
+	O->clCenter(C); 
+	L_DB.Track(C,O->Radius(),*O->Lights()); 
+	L_Shadows.set_object(O); 
 }
 
 
