@@ -19,6 +19,8 @@ IC bool				FaceEqual(Face& F1, Face& F2)
 	return false;
 }
 
+extern DWORD dwInvalidFaces;
+
 void CBuild::PreOptimize()
 {
 	// We use overlapping hash table to avoid boundary conflicts
@@ -124,6 +126,10 @@ void CBuild::PreOptimize()
 			F->Verify			( );
 		}
 		Progress(float(it)/float(g_faces.size()));
+	}
+	if (dwInvalidFaces)	
+	{
+		Fatal			("* FATAL: %d invalid faces. Compilation aborted",dwInvalidFaces);
 	}
 
 	Status("Adjacency check...");
