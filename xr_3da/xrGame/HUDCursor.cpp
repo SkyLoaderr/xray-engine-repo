@@ -60,7 +60,7 @@ void CHUDCursor::Render()
 	dir = Device.vCameraDirection;
 	
 	// Render cursor
-	float		dist=400.f;
+	float		dist=Device.fFOV;
 	
 	pCreator->CurrentEntity()->setEnabled(false);
 	DWORD C			= C_DEFAULT;
