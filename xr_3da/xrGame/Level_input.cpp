@@ -6,9 +6,6 @@
 #include "alife_simulator.h"
 #include "level_graph.h"
 
-#include "ai/monsters/poltergeist/poltergeist.h"
-#include "ai/monsters/controller/controller.h"
-
 #include "../fdemorecord.h"
 #include "level.h"
 #include "xr_level_controller.h"
@@ -224,39 +221,6 @@ void CLevel::IR_OnKeyboardPress(int key)
 //////////////////////////////////////////////////////////////////////////
 //	TEST	
 //////////////////////////////////////////////////////////////////////////
-
-	CObject			*obj		= Level().Objects.FindObjectByName("monster");
-	CPoltergeist	*monster	= dynamic_cast<CPoltergeist*>(obj);
-	
-	Fvector			pos;
-	pos = Level().CurrentEntity()->Position();
-	pos.y += 1.5f;
-
-	if (monster) {
-		switch (key) {
-		case DIK_0:
-			monster->FireFlame(Level().CurrentEntity());
-			break;
-		case DIK_5:
-			monster->PhysicalImpulse(Level().CurrentEntity()->Position());
-			break;
-		case DIK_6:
-			monster->StrangeSounds(pos);
-			break;
-		case DIK_9:
-			monster->ProcessTelekinesis(Level().CurrentEntity());
-			break;
-		}
-	}
-
-	CController	*m_controller	= dynamic_cast<CController*>(obj);
-	if (m_controller) {
-		switch (key) {
-		case DIK_1:
-			m_controller->control_hit();
-			break;
-		}
-	}
 
 }
 

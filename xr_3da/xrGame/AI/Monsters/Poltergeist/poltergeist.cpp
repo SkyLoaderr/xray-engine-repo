@@ -89,6 +89,8 @@ void CPoltergeist::reinit()
 	Energy::set_auto_activate();
 	Energy::set_auto_deactivate();
 	Energy::enable();
+
+	Hide();
 }
 
 void CPoltergeist::Hide()
@@ -188,11 +190,11 @@ bool CPoltergeist::UpdateStateManager()
 
 void CPoltergeist::on_activate()
 {
-	Hide();
+	//Hide();
 }
 
 void CPoltergeist::on_deactivate()
 {
-	Show();
+	//Show();
 }
 

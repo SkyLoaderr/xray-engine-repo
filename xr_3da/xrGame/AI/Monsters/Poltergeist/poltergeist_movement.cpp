@@ -14,17 +14,20 @@ void CPoltergeist::move_along_path(CPHMovementControl *movement_control, Fvector
 	if (!CMovementManager::enabled() || 
 		CMovementManager::path_completed() || 
 		CDetailPathManager::path().empty() ||
-		CDetailPathManager::completed(dest_position,true) || 
+		CDetailPathManager::completed(m_current_position,true) || 
 		(CDetailPathManager::curr_travel_point_index() >= CDetailPathManager::path().size() - 1) ||
 		fis_zero(CMovementManager::old_desirable_speed())
 		)
 	{
 		m_speed			= 0.f;
+		dest_position	= CalculateRealPosition();
 		return;
 	}
 
-	if (time_delta < EPS) return;
-
+	if (time_delta < EPS) {
+		dest_position	= CalculateRealPosition();
+		return;
+	}
 
 	// ¬ычислить пройденную дистанцию, определить целевую позицию на маршруте, 
 	//			 изменить CDetailPathManager::m_current_travel_point
@@ -78,6 +81,7 @@ void CPoltergeist::move_along_path(CPHMovementControl *movement_control, Fvector
 	if (dist_to_target < EPS_L) {
 		CDetailPathManager::m_current_travel_point = CDetailPathManager::path().size() - 1;
 		m_speed			= 0.f;
+		dest_position	= CalculateRealPosition();
 		return;
 	}
 
@@ -96,8 +100,6 @@ void CPoltergeist::move_along_path(CPHMovementControl *movement_control, Fvector
 	m_current_position	= dest_position;
 	Position()			= CalculateRealPosition();
 	dest_position		= Position();
-
-
 }
 
 Fvector CPoltergeist::CalculateRealPosition()

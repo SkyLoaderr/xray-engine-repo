@@ -357,7 +357,6 @@ void CAI_Biting::net_Import(NET_Packet& P)
 
 	setVisible				(TRUE);
 	setEnabled				(TRUE);
-
 }
 
 void CAI_Biting::UpdateCL()
