@@ -264,11 +264,11 @@ void __fastcall mapNormal_Render	(SceneGraph::mapNormalItems& N)
 	// *** DIRECT ***
 	{
 		// DIRECT:SORTED
-		N.direct.sorted.traverseLR		(normal_L2);
-		N.direct.sorted.clear			();
+		N.sorted.traverseLR		(normal_L2);
+		N.sorted.clear			();
 		
 		// DIRECT:UNSORTED
-		vector<CVisual*>&	L			= N.direct.unsorted;
+		vector<CVisual*>&	L			= N.unsorted;
 		CVisual **I=&*L.begin(), **E = &*L.end();
 		for (; I!=E; I++)
 		{
@@ -413,6 +413,9 @@ IC	bool	cmp_constants		(SceneGraph::mapNormalConstants::TNode* N1, SceneGraph::m
 IC	bool	cmp_vs				(SceneGraph::mapNormalVS::TNode* N1, SceneGraph::mapNormalVS::TNode* N2)
 {	return (N1->val.ssa > N2->val.ssa);		}
 
+IC	bool	cmp_vb				(SceneGraph::mapNormalVB::TNode* N1, SceneGraph::mapNormalVB::TNode* N2)
+{	return (N1->val.ssa > N2->val.ssa);		}
+
 IC	bool	cmp_textures_lex2	(SceneGraph::mapNormalTextures::TNode* N1, SceneGraph::mapNormalTextures::TNode* N2)
 {	
 	STextureList*	t1			= N1->key;
@@ -552,42 +555,54 @@ void	CRender::Render		()
 				for (u32 texture_id=0; texture_id<lstTextures.size(); texture_id++)
 				{
 					SceneGraph::mapNormalTextures::TNode*	Ntexture	= lstTextures[texture_id];
-					SceneGraph::mapNormalVS&	vs						= Ntexture->val;
-					RCache.set_Textures	(Ntexture->key);
+					SceneGraph::mapNormalVS&				vs			= Ntexture->val;
+					RCache.set_Textures						(Ntexture->key);
 
 					vs.getANY_P			(lstVS);
 					if (sort)			std::sort	(lstVS.begin(),lstVS.end(),cmp_vs);
 					for (u32 vs_id=0; vs_id<lstVS.size(); vs_id++)
 					{
 						SceneGraph::mapNormalVS::TNode*	Nvs					= lstVS[vs_id];
-						SceneGraph::mapNormalMatrices& matrices				= Nvs->val;
-						RCache.set_VS		(Nvs->key);
+						SceneGraph::mapNormalVB&		vb					= Nvs->val;
+						RCache.set_VS					(Nvs->key);
 
-						matrices.getANY_P	(lstMatrices);
-						if (sort) std::sort	(lstMatrices.begin(),lstMatrices.end(), cmp_matrices);
-						for (u32 matrix_id=0; matrix_id<lstMatrices.size(); matrix_id++) 
+						vb.getANY_P						(lstVB);
+						if (sort)	std::sort(lstVB.begin(),lstVB.end(),cmp_vb);
+						for (u32 vb_id=0; vb_id<lstVB.size(); vb_id++)
 						{
-							SceneGraph::mapNormalMatrices::TNode*	Nmatrix		= lstMatrices[matrix_id];
-							SceneGraph::mapNormalConstants& constants			= Nmatrix->val;
-							RCache.set_Matrices	(Nmatrix->key);
+							SceneGraph::mapNormalVB::TNode*		Nvb				= lstVB[vb_id];
+							SceneGraph::mapNormalMatrices& matrices				= Nvb->val;
+							// no need to setup that shit - visual defined
 
-							constants.getANY_P	(lstConstants);
-							if (sort) std::sort	(lstConstants.begin(),lstConstants.end(), cmp_constants);
-							for (u32 constant_id=0; constant_id<lstConstants.size(); constant_id++)
+							matrices.getANY_P	(lstMatrices);
+							if (sort) std::sort	(lstMatrices.begin(),lstMatrices.end(), cmp_matrices);
+							for (u32 matrix_id=0; matrix_id<lstMatrices.size(); matrix_id++) 
 							{
-								SceneGraph::mapNormalConstants::TNode*	Nconstant	= lstConstants[constant_id];
-								SceneGraph::mapNormalItems&	items					= Nconstant->val;
-								RCache.set_Constants		(Nconstant->key,FALSE);
-								mapNormal_Render			(Nconstant->val);
-								items.ssa					= 0;
+								SceneGraph::mapNormalMatrices::TNode*	Nmatrix		= lstMatrices[matrix_id];
+								SceneGraph::mapNormalConstants& constants			= Nmatrix->val;
+								RCache.set_Matrices	(Nmatrix->key);
+
+								constants.getANY_P	(lstConstants);
+								if (sort) std::sort	(lstConstants.begin(),lstConstants.end(), cmp_constants);
+								for (u32 constant_id=0; constant_id<lstConstants.size(); constant_id++)
+								{
+									SceneGraph::mapNormalConstants::TNode*	Nconstant	= lstConstants[constant_id];
+									SceneGraph::mapNormalItems&	items					= Nconstant->val;
+									RCache.set_Constants		(Nconstant->key,FALSE);
+									mapNormal_Render			(Nconstant->val);
+									items.ssa					= 0;
+								}
+								lstConstants.clear		();
+								constants.clear			();
+								constants.ssa			= 0;
 							}
-							lstConstants.clear		();
-							constants.clear			();
-							constants.ssa			= 0;
+							lstMatrices.clear		();
+							matrices.clear			();
+							matrices.ssa			= 0;
 						}
-						lstMatrices.clear		();
-						matrices.clear			();
-						matrices.ssa			= 0;
+						lstVB.clear				();
+						vb.clear				();
+						vb.ssa					= 0;
 					}
 					lstVS.clear				();
 					vs.clear				();

@@ -44,6 +44,7 @@ public:
 	vector<SceneGraph::mapNormalTextures::TNode*>	lstTextures;
 	vector<SceneGraph::mapNormalTextures::TNode*>	lstTexturesTemp;
 	vector<SceneGraph::mapNormalVS::TNode*>			lstVS;
+	vector<SceneGraph::mapNormalVB::TNode*>			lstVB;
 	vector<SceneGraph::mapNormalMatrices::TNode*>	lstMatrices;
 	vector<SceneGraph::mapNormalConstants::TNode*>	lstConstants;
 	vector<SceneGraph::_LodItem>					lstLODs;
