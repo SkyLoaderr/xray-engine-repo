@@ -65,6 +65,7 @@ void CRender::Render	()
 	Device.Statistic.RenderDUMP.Begin		();
 	{
 		Target.phase_accumulator				();
+		Target.accum_direct						();
 	}
 	Device.Statistic.RenderDUMP.End			();
 
