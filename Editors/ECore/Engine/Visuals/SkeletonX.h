@@ -80,17 +80,17 @@ protected:
 	void					_FillVerticesHW2W	(const Fmatrix& view, CSkeletonWallmark& wm, const Fvector& normal, float size, Fvisual* V, u16* indices, CBoneData::FacesVec& faces);
 	void					_FillVertices		(const Fmatrix& view, CSkeletonWallmark& wm, const Fvector& normal, float size, Fvisual* V, u16 bone_id, u32 iBase, u32 iCount);
 
-	BOOL					_PickBoneSoft1W		(CSkeletonWallmark::WMFace& face, Fvector& normal, float& range, const Fvector& S, const Fvector& D, u16* indices, CBoneData::FacesVec& faces);
-	BOOL					_PickBoneSoft2W		(CSkeletonWallmark::WMFace& face, Fvector& normal, float& range, const Fvector& S, const Fvector& D,	u16* indices, CBoneData::FacesVec& faces);
-	BOOL					_PickBoneHW1W		(CSkeletonWallmark::WMFace& face, Fvector& normal, float& range, const Fvector& S, const Fvector& D, Fvisual* V, u16* indices, CBoneData::FacesVec& faces);
-	BOOL					_PickBoneHW2W		(CSkeletonWallmark::WMFace& face, Fvector& normal, float& range, const Fvector& S, const Fvector& D, Fvisual* V, u16* indices, CBoneData::FacesVec& faces);
-	BOOL					_PickBone			(CSkeletonWallmark::WMFace& face, Fvector& normal, float& range, const Fvector& S, const Fvector& D, Fvisual* V, u16 bone_id, u32 iBase, u32 iCount);
+	BOOL					_PickBoneSoft1W		(Fvector& normal, float& range, const Fvector& S, const Fvector& D, u16* indices, CBoneData::FacesVec& faces);
+	BOOL					_PickBoneSoft2W		(Fvector& normal, float& range, const Fvector& S, const Fvector& D,	u16* indices, CBoneData::FacesVec& faces);
+	BOOL					_PickBoneHW1W		(Fvector& normal, float& range, const Fvector& S, const Fvector& D, Fvisual* V, u16* indices, CBoneData::FacesVec& faces);
+	BOOL					_PickBoneHW2W		(Fvector& normal, float& range, const Fvector& S, const Fvector& D, Fvisual* V, u16* indices, CBoneData::FacesVec& faces);
+	BOOL					_PickBone			(Fvector& normal, float& range, const Fvector& S, const Fvector& D, Fvisual* V, u16 bone_id, u32 iBase, u32 iCount);
 public:
 							CSkeletonX		()	{ Parent = 0; ChildIDX = u16(-1); }
 
 	virtual void			SetParent		(CKinematics* K)					{ Parent = K; }
 	virtual void			AfterLoad		(CKinematics* parent, u16 child_idx)=0{SetParent(parent);ChildIDX=child_idx;}
-	virtual BOOL			PickBone		(CSkeletonWallmark::WMFace& face, Fvector& normal, float& dist, const Fvector& start, const Fvector& dir, u16 bone_id)=0;
+	virtual BOOL			PickBone		(Fvector& normal, float& dist, const Fvector& start, const Fvector& dir, u16 bone_id)=0;
 	virtual void			FillVertices	(const Fmatrix& view, CSkeletonWallmark& wm, const Fvector& normal, float size, u16 bone_id)=0;
 };
 
@@ -105,7 +105,7 @@ public:
 	virtual void			Copy			(IRender_Visual *pFrom);
 	virtual void			Release			();
 	virtual void			AfterLoad		(CKinematics* parent, u16 child_idx);
-	virtual BOOL			PickBone		(CSkeletonWallmark::WMFace& face, Fvector& normal, float& dist, const Fvector& start, const Fvector& dir, u16 bone_id);
+	virtual BOOL			PickBone		(Fvector& normal, float& dist, const Fvector& start, const Fvector& dir, u16 bone_id);
 	virtual void			FillVertices	(const Fmatrix& view, CSkeletonWallmark& wm, const Fvector& normal, float size, u16 bone_id);
 };
 
@@ -120,7 +120,7 @@ public:
 	virtual void			Copy			(IRender_Visual *pFrom);
 	virtual void			Release			();
 	virtual void			AfterLoad		(CKinematics* parent, u16 child_idx);
-	virtual BOOL			PickBone		(CSkeletonWallmark::WMFace& face, Fvector& normal, float& dist, const Fvector& start, const Fvector& dir, u16 bone_id);
+	virtual BOOL			PickBone		(Fvector& normal, float& dist, const Fvector& start, const Fvector& dir, u16 bone_id);
 	virtual void			FillVertices	(const Fmatrix& view, CSkeletonWallmark& wm, const Fvector& normal, float size, u16 bone_id);
 };
 
