@@ -434,7 +434,7 @@ float CEnemyHealthFunction::ffGetValue()
 		ai().ef_storage().m_tpCurrentMember		= tpEntity;
 	}
 	else {
-		const CSE_ALifeSchedulable					*l_tpALifeSchedulable = ai().ef_storage().m_tpCurrentALifeMember;
+		CSE_ALifeSchedulable						*l_tpALifeSchedulable = ai().ef_storage().m_tpCurrentALifeMember;
 		ai().ef_storage().m_tpCurrentALifeMember	= ai().ef_storage().m_tpCurrentALifeEnemy;
 		m_fLastValue								= ai().ef_storage().m_pfPersonalHealth->ffGetValue();
 		ai().ef_storage().m_tpCurrentALifeMember	= l_tpALifeSchedulable;
@@ -453,9 +453,9 @@ float CEnemyCreatureTypeFunction::ffGetValue()
 		ai().ef_storage().m_tpCurrentMember		= tpEntity;
 	}
 	else {
-		const CSE_ALifeSchedulable			*l_tpALifeSchedulable = ai().ef_storage().m_tpCurrentALifeMember;
+		CSE_ALifeSchedulable						*l_tpALifeSchedulable = ai().ef_storage().m_tpCurrentALifeMember;
 		ai().ef_storage().m_tpCurrentALifeMember	= ai().ef_storage().m_tpCurrentALifeEnemy;
-		m_fLastValue					= ai().ef_storage().m_pfPersonalCreatureType->ffGetValue();
+		m_fLastValue								= ai().ef_storage().m_pfPersonalCreatureType->ffGetValue();
 		ai().ef_storage().m_tpCurrentALifeMember	= l_tpALifeSchedulable;
 	}
 	return								(m_fLastValue);
@@ -474,11 +474,11 @@ float CEnemyWeaponTypeFunction::ffGetValue()
 		ai().ef_storage().m_tpGameObject			= l_tpGameObject;
 	}
 	else {
-		const CSE_ALifeSchedulable			*l_tpALifeSchedulable = ai().ef_storage().m_tpCurrentALifeMember;
-		const CSE_ALifeObject					*l_tpALifeObject = ai().ef_storage().m_tpCurrentALifeObject;
+		CSE_ALifeSchedulable						*l_tpALifeSchedulable = ai().ef_storage().m_tpCurrentALifeMember;
+		const CSE_ALifeObject						*l_tpALifeObject = ai().ef_storage().m_tpCurrentALifeObject;
 		ai().ef_storage().m_tpCurrentALifeObject	= ai().ef_storage().m_tpCurrentALifeEnemy->m_tpCurrentBestWeapon;
 		ai().ef_storage().m_tpCurrentALifeMember	= ai().ef_storage().m_tpCurrentALifeEnemy;
-		m_fLastValue					= ai().ef_storage().m_pfPersonalWeaponType->ffGetValue();
+		m_fLastValue								= ai().ef_storage().m_pfPersonalWeaponType->ffGetValue();
 		ai().ef_storage().m_tpCurrentALifeMember	= l_tpALifeSchedulable;
 		ai().ef_storage().m_tpCurrentALifeObject	= l_tpALifeObject;
 	}
@@ -506,7 +506,7 @@ float CEnemyRukzakWeightFunction::ffGetValue()
 			m_fLastValue	= 0;
 	}
 	else {
-		const CSE_ALifeHumanAbstract *l_tpALifeHumanAbstract = dynamic_cast<const CSE_ALifeHumanAbstract*>(ai().ef_storage().m_tpCurrentALifeMember);
+		CSE_ALifeHumanAbstract *l_tpALifeHumanAbstract = dynamic_cast<CSE_ALifeHumanAbstract*>(ai().ef_storage().m_tpCurrentALifeMember);
 		if (l_tpALifeHumanAbstract)
 			m_fLastValue	= l_tpALifeHumanAbstract->m_fCumulativeItemMass;
 		else
@@ -544,7 +544,7 @@ float CEnemyEyeRange::ffGetValue()
 	if (bfCheckForCachedResult())
 		return(m_fLastValue);
 
-	const CSE_ALifeSchedulable		*l_tpALifeSchedulable = ai().ef_storage().m_tpCurrentALifeMember;
+	CSE_ALifeSchedulable			*l_tpALifeSchedulable = ai().ef_storage().m_tpCurrentALifeMember;
 	ai().ef_storage().m_tpCurrentALifeMember	= ai().ef_storage().m_tpCurrentALifeEnemy;
 	m_fLastValue					= ai().ef_storage().m_pfPersonalEyeRange->ffGetValue();
 	ai().ef_storage().m_tpCurrentALifeMember	= l_tpALifeSchedulable;
@@ -556,7 +556,7 @@ float CPersonalMaxHealth::ffGetValue()
 	if (bfCheckForCachedResult())
 		return						(m_fLastValue);
 	
-	const CSE_ALifeMonsterAbstract	*l_tpALifeMonsterAbstract = dynamic_cast<const CSE_ALifeMonsterAbstract*>(ai().ef_storage().m_tpCurrentALifeMember);
+	CSE_ALifeMonsterAbstract		*l_tpALifeMonsterAbstract = dynamic_cast<CSE_ALifeMonsterAbstract*>(ai().ef_storage().m_tpCurrentALifeMember);
 	R_ASSERT3						(l_tpALifeMonsterAbstract,"Invalid object passed to the evaluation function ",m_caName);
 	const CSE_ALifeGroupAbstract	*l_tpALifeGroupAbstract = dynamic_cast<const CSE_ALifeGroupAbstract*>(ai().ef_storage().m_tpCurrentALifeMember);
 	if (!l_tpALifeGroupAbstract)
@@ -599,7 +599,7 @@ float CEnemyMaxHealth::ffGetValue()
 	if (bfCheckForCachedResult())
 		return						(m_fLastValue);
 
-	const CSE_ALifeSchedulable		*l_tpALifeSchedulable = ai().ef_storage().m_tpCurrentALifeMember;
+	CSE_ALifeSchedulable			*l_tpALifeSchedulable = ai().ef_storage().m_tpCurrentALifeMember;
 	ai().ef_storage().m_tpCurrentALifeMember	= ai().ef_storage().m_tpCurrentALifeEnemy;
 	m_fLastValue					= ai().ef_storage().m_pfPersonalMaxHealth->ffGetValue();
 	ai().ef_storage().m_tpCurrentALifeMember	= l_tpALifeSchedulable;
@@ -608,7 +608,7 @@ float CEnemyMaxHealth::ffGetValue()
 
 u32 CEnemyMaxHealth::dwfGetDiscreteValue(u32 dwDiscretizationValue)
 {
-	const CSE_ALifeSchedulable		*l_tpALifeSchedulable = ai().ef_storage().m_tpCurrentALifeMember;
+	CSE_ALifeSchedulable			*l_tpALifeSchedulable = ai().ef_storage().m_tpCurrentALifeMember;
 	ai().ef_storage().m_tpCurrentALifeMember	= ai().ef_storage().m_tpCurrentALifeEnemy;
 	u32								l_dwResult = ai().ef_storage().m_pfPersonalMaxHealth->dwfGetDiscreteValue(dwDiscretizationValue);
 	ai().ef_storage().m_tpCurrentALifeMember	= l_tpALifeSchedulable;
@@ -680,7 +680,7 @@ float CEquipmentPreference::ffGetValue()
 		return					(m_fLastValue);
 	}
 	else {
-		const CSE_ALifeHumanAbstract	*l_tpALifeHumanAbstract = dynamic_cast<const CSE_ALifeHumanAbstract*>(ai().ef_storage().m_tpCurrentALifeMember);
+		CSE_ALifeHumanAbstract	*l_tpALifeHumanAbstract = dynamic_cast<CSE_ALifeHumanAbstract*>(ai().ef_storage().m_tpCurrentALifeMember);
 		R_ASSERT2				(l_tpALifeHumanAbstract,"Non-human object in EquipmentPreference evaluation function");
 		return					(m_fLastValue = l_tpALifeHumanAbstract->m_cpEquipmentPreferences[ai().ef_storage().m_pfEquipmentType->dwfGetDiscreteValue()]);
 	}
@@ -737,7 +737,7 @@ float CMainWeaponPreference::ffGetValue()
 		return					(m_fLastValue);
 	}
 	else {
-		const CSE_ALifeHumanAbstract	*l_tpALifeHumanAbstract = dynamic_cast<const CSE_ALifeHumanAbstract*>(ai().ef_storage().m_tpCurrentALifeMember);
+		CSE_ALifeHumanAbstract	*l_tpALifeHumanAbstract = dynamic_cast<CSE_ALifeHumanAbstract*>(ai().ef_storage().m_tpCurrentALifeMember);
 		R_ASSERT2				(l_tpALifeHumanAbstract,"Non-human object in EquipmentPreference evaluation function");
 		return					(m_fLastValue = l_tpALifeHumanAbstract->m_cpMainWeaponPreferences[ai().ef_storage().m_pfMainWeaponType->dwfGetDiscreteValue(iFloor(ai().ef_storage().m_pfMainWeaponType->ffGetMaxResultValue() + .5f))]);
 	}
@@ -767,12 +767,9 @@ float CWeaponAmmoCount::ffGetValue()
 		return					(m_fLastValue);
 	}
 	else {
-		const CSE_ALifeHumanAbstract	*l_tpALifeHumanAbstract = dynamic_cast<const CSE_ALifeHumanAbstract*>(ai().ef_storage().m_tpCurrentALifeMember);
+		CSE_ALifeHumanAbstract	*l_tpALifeHumanAbstract = dynamic_cast<CSE_ALifeHumanAbstract*>(ai().ef_storage().m_tpCurrentALifeMember);
 		R_ASSERT2				(l_tpALifeHumanAbstract,"Non-human object in WeaponAmmoCount evaluation function");
-		CSE_ALifeSimulator		*simulator = const_cast<CSE_ALifeSimulator*>(ai().ef_storage().m_tpALife);
-		CSE_ALifeHumanAbstract	*human_abstract = const_cast<CSE_ALifeHumanAbstract*>(l_tpALifeHumanAbstract);
-		VERIFY					(human_abstract);
-		return					(m_fLastValue = human_abstract->get_available_ammo_count(dynamic_cast<const CSE_ALifeItemWeapon*>(ai().ef_storage().m_tpCurrentALifeObject),simulator->m_tpItemVector));
+		return					(m_fLastValue = l_tpALifeHumanAbstract->get_available_ammo_count(dynamic_cast<const CSE_ALifeItemWeapon*>(ai().ef_storage().m_tpCurrentALifeObject),ai().ef_storage().m_tpALife->m_tpItemVector));
 	}
 }
 
@@ -808,7 +805,7 @@ float CEnemyAnomalyType::ffGetValue()
 	if (ai().ef_storage().m_tpCurrentMember)
 		l_tClassID				= ai().ef_storage().m_tpCurrentMember->SUB_CLS_ID;
 	else {
-		const CSE_ALifeDynamicObject	*l_tpALifeDynamicObject = dynamic_cast<const CSE_ALifeDynamicObject*>(ai().ef_storage().m_tpCurrentALifeEnemy);
+		CSE_ALifeDynamicObject	*l_tpALifeDynamicObject = dynamic_cast<CSE_ALifeDynamicObject*>(ai().ef_storage().m_tpCurrentALifeEnemy);
 		R_ASSERT3				(l_tpALifeDynamicObject,"Invalid object passed to the evaluation function ",m_caName);
 		l_tClassID				= l_tpALifeDynamicObject->m_tClassID;
 	}
@@ -907,7 +904,7 @@ float CDetectorType::ffGetValue()
 
 float CEnemyDistanceToGraphPoint::ffGetValue()
 {
-	const CSE_ALifeDynamicObject	*l_tpALifeDynamicObject = dynamic_cast<const CSE_ALifeDynamicObject*>(ai().ef_storage().m_tpCurrentALifeEnemy);
+	CSE_ALifeDynamicObject	*l_tpALifeDynamicObject = dynamic_cast<CSE_ALifeDynamicObject*>(ai().ef_storage().m_tpCurrentALifeEnemy);
 	R_ASSERT3				(l_tpALifeDynamicObject,"Invalid object passed to the evaluation function ",m_caName);
 	if (l_tpALifeDynamicObject->m_fDistance < 5.f)
 		return				(m_fLastValue = 0);

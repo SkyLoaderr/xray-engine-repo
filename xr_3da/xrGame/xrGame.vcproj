@@ -1118,7 +1118,7 @@
 								Name="StateManagerNoALife"
 								Filter="">
 								<Filter
-									Name="StateNoALife"
+									Name="StateFreeNoALife"
 									Filter="">
 									<File
 										RelativePath=".\state_free_no_alife.cpp">

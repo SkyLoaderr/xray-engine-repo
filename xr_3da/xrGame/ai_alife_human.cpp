@@ -320,7 +320,7 @@ void CSE_ALifeHumanAbstract::vfUpdateWeaponAmmo()
 	vfCollectAmmoBoxes();
 }
 
-u16	CSE_ALifeHumanAbstract::get_available_ammo_count(const CSE_ALifeItemWeapon *tpALifeItemWeapon, OBJECT_VECTOR &tpObjectVector) const
+u16	CSE_ALifeHumanAbstract::get_available_ammo_count(const CSE_ALifeItemWeapon *tpALifeItemWeapon, OBJECT_VECTOR &tpObjectVector)
 {
 	if (!tpALifeItemWeapon->m_caAmmoSections)
 		return(u16(-1));

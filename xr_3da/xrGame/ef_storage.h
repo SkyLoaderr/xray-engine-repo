@@ -23,9 +23,9 @@ public:
 	const CEntityAlive						*m_tpCurrentMember;
 	const CEntityAlive						*m_tpCurrentEnemy;
 	const CSE_ALifeObject					*m_tpCurrentALifeObject;
-	const CSE_ALifeSchedulable				*m_tpCurrentALifeMember;
-	const CSE_ALifeSchedulable				*m_tpCurrentALifeEnemy;
-	const CSE_ALifeSimulator				*m_tpALife;
+	CSE_ALifeSchedulable					*m_tpCurrentALifeMember;
+	CSE_ALifeSchedulable					*m_tpCurrentALifeEnemy;
+	CSE_ALifeSimulator						*m_tpALife;
 	// primary functions
 	CBaseFunction							*m_fpaBaseFunctions		[AI_MAX_EVALUATION_FUNCTION_COUNT];
 
