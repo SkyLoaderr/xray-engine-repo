@@ -160,7 +160,7 @@ void GenerateStrips(const u16* in_indices, const s32 in_numIndices, xr_vector<Pr
 			{
 				//if we've got multiple strips, we need to figure out the correct length
 				int i;
-				for(int i = startingLoc; i < stripIndices.size(); i++)
+				for(i = startingLoc; i < stripIndices.size(); i++)
 				{
 					if(stripIndices[i] == -1)
 						break;
