@@ -29,7 +29,7 @@ CHitMarker::~CHitMarker()
 {
 } 
 //--------------------------------------------------------------------
-const static float fShowTime = 0.2f;
+const static float fShowTime = 0.5f;
 void CHitMarker::Render()
 {
 	if (fHitMarks[0]>0 || fHitMarks[1]>0 || fHitMarks[2]>0 || fHitMarks[3]>0)	
