@@ -10,6 +10,7 @@
 #include "object_factory.h"
 #include "ai_space.h"
 #include "script_engine.h"
+#include "script_space.h"
 #include "object_item_script.h"
 #include <luabind/adopt_policy.hpp>
 

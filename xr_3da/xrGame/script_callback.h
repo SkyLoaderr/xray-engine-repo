@@ -8,7 +8,7 @@
 
 #pragma once
 
-#include "script_space.h"
+#include "script_space_forward.h"
 
 class CScriptCallback {
 private:
@@ -19,14 +19,14 @@ private:
 public:
 	IC								CScriptCallback		();
 	virtual							~CScriptCallback	();
-	IC		void					set					(const luabind::functor<void> &lua_function);
-	IC		void					set					(const luabind::object &lua_object, LPCSTR method);
-	IC		void					clear				();
-	IC		void					clear				(bool member);
+			void					set					(const luabind::functor<void> &lua_function);
+			void					set					(const luabind::object &lua_object, LPCSTR method);
+			void					clear				();
+			void					clear				(bool member);
 	IC		luabind::functor<void>	*get_function		();
 	IC		luabind::object			*get_object			();
 	IC		ref_str					get_method			();
-	IC		void					callback			();
+			void					callback			();
 	IC		bool					assigned			() const;
 };
 

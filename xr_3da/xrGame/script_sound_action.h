@@ -51,7 +51,7 @@ public:
 	///////////////////////////////////////////////////////////////////////////////////
 	IC				CScriptSoundAction	(LPCSTR caSoundToPlay, LPCSTR caBoneName, MonsterSpace::EMonsterHeadAnimType head_anim_type);
 	virtual			~CScriptSoundAction	();
-	IC		void	SetSound			(LPCSTR caSoundToPlay);
+			void	SetSound			(LPCSTR caSoundToPlay);
 	IC		void	SetSound			(const CScriptSound &sound);
 	IC		void	SetPosition			(const Fvector &tPosition);
 	IC		void	SetBone				(LPCSTR caBoneName);

@@ -20,6 +20,10 @@
 
 using namespace StalkerDecisionSpace;
 
+#ifdef _DEBUG
+#	define STALKER_DEBUG_MODE
+#endif
+
 #ifdef DEBUG
 EStalkerBehaviour	g_stalker_behaviour = eStalkerBehaviourModerate;//eStalkerBehaviourAggressive;
 #endif
@@ -102,6 +106,7 @@ void CStalkerActionFreeNoALife::finalize	()
 void CStalkerActionFreeNoALife::execute		()
 {
 	inherited::execute				();
+#ifndef STALKER_DEBUG_MODE
 	m_object->play					(eStalkerSoundHumming,60000,10000);
 
 	m_object->set_node_evaluator	(0);
@@ -119,34 +124,35 @@ void CStalkerActionFreeNoALife::execute		()
 		m_object->CObjectHandler::set_goal	(eObjectActionIdle);
 	else
 		m_object->CObjectHandler::set_goal	(eObjectActionIdle,m_object->best_weapon());
+#else
+	m_object->set_node_evaluator	(0);
+	m_object->set_path_evaluator	(0);
+	m_object->set_desired_direction	(0);
 
-//	m_object->set_node_evaluator	(0);
-//	m_object->set_path_evaluator	(0);
-//	m_object->set_desired_direction	(0);
+	m_object->CSightManager::setup		(CSightAction(SightManager::eSightTypeCover,false,true));
+	m_object->CObjectHandler::set_goal	(eObjectActionIdle);
+	
+	Fvector							direction = Fvector().set(0.f,0.f,1.f);//Fvector().set(::Random.randF(1.f),0.f,::Random.randF(1.f));
+	direction.normalize_safe		();
+	m_object->set_desired_direction	(&direction);
+//	m_object->set_desired_position	(0);
+//	m_object->set_path_type			(MovementManager::ePathTypePatrolPath);
+//	m_object->set_path				("way0000",CMovementManager::ePatrolStartTypeFirst,CMovementManager::ePatrolRouteTypeContinue,false);
 //
-//	m_object->CSightManager::setup		(CSightAction(SightManager::eSightTypeCover,false,true));
-//	m_object->CObjectHandler::set_goal	(eObjectActionIdle);
-//	
-//	Fvector							direction = Fvector().set(0.f,0.f,1.f);//Fvector().set(::Random.randF(1.f),0.f,::Random.randF(1.f));
-//	direction.normalize_safe		();
-//	m_object->set_desired_direction	(&direction);
-////	m_object->set_desired_position	(0);
-////	m_object->set_path_type			(MovementManager::ePathTypePatrolPath);
-////	m_object->set_path				("way0000",CMovementManager::ePatrolStartTypeFirst,CMovementManager::ePatrolRouteTypeContinue,false);
-////
-//	CGameObject						*actor = dynamic_cast<CGameObject*>(Level().CurrentEntity());
-//	m_object->set_desired_position	(&actor->Position());
-//	m_object->set_level_dest_vertex	(actor->level_vertex_id());
-//	m_object->set_path_type			(MovementManager::ePathTypeLevelPath);
-////	Fvector							look_pos = actor->Position();
-////	look_pos.y						+= .8f;
-////	m_object->CSightManager::setup	(CSightAction(SightManager::eSightTypePosition,look_pos));
-//
-////	m_object->set_dest_orientation	(Fvector().set(0.f,0.f,1.f));
-//	m_object->set_detail_path_type	(DetailPathManager::eDetailPathTypeSmooth);
-//	m_object->set_body_state		(eBodyStateStand);
-//	m_object->set_movement_type		(eMovementTypeWalk);
-//	m_object->set_mental_state		(eMentalStateFree);
+	CGameObject						*actor = dynamic_cast<CGameObject*>(Level().CurrentEntity());
+	m_object->set_desired_position	(&actor->Position());
+	m_object->set_level_dest_vertex	(actor->level_vertex_id());
+	m_object->set_path_type			(MovementManager::ePathTypeLevelPath);
+//	Fvector							look_pos = actor->Position();
+//	look_pos.y						+= .8f;
+//	m_object->CSightManager::setup	(CSightAction(SightManager::eSightTypePosition,look_pos));
+
+//	m_object->set_dest_orientation	(Fvector().set(0.f,0.f,1.f));
+	m_object->set_detail_path_type	(DetailPathManager::eDetailPathTypeSmooth);
+	m_object->set_body_state		(eBodyStateStand);
+	m_object->set_movement_type		(eMovementTypeWalk);
+	m_object->set_mental_state		(eMentalStateFree);
+#endif
 }
 
 //////////////////////////////////////////////////////////////////////////

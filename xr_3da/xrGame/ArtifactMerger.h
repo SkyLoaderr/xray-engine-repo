@@ -8,7 +8,6 @@
 #pragma once
 
 #include "inventory_item.h"
-//#include "script_space.h"
 #include "Artifact.h"
 #include "MercuryBall.h"
 #include "GraviArtifact.h"

@@ -7,6 +7,7 @@
 ////////////////////////////////////////////////////////////////////////////
 
 #include "stdafx.h"
+#include "script_space.h"
 #include "object_item_script.h"
 #include "object_factory.h"
 
@@ -30,3 +31,33 @@ ObjectFactory::SERVER_BASE_CLASS *CObjectItemScript::server_object	(LPCSTR secti
 	R_ASSERT					(object_factory().server_instance());
 	return						(object_factory().server_instance());
 }
+
+CObjectItemScript::CObjectItemScript	(
+#ifndef NO_XR_GAME
+	luabind::functor<void>		client_creator, 
+#endif
+	luabind::functor<void>		server_creator, 
+	const CLASS_ID				&clsid, 
+	LPCSTR						script_clsid
+) : 
+	inherited					(clsid,script_clsid)
+{
+#ifndef NO_XR_GAME
+	m_client_creator			= client_creator;
+#endif
+	m_server_creator			= server_creator;
+}
+
+#ifndef NO_XR_GAME
+
+CObjectItemScript::CObjectItemScript	(
+	luabind::functor<void>		unknown_creator, 
+	const CLASS_ID				&clsid, 
+	LPCSTR						script_clsid
+) : 
+	inherited					(clsid,script_clsid)
+{
+	m_client_creator = m_server_creator = unknown_creator;
+}
+
+#endif

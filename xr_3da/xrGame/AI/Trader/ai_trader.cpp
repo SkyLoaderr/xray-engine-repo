@@ -14,6 +14,7 @@
 #include "../../script_game_object.h"
 #include "../../inventory.h"
 #include "../../xrserver_objects_alife_monsters.h"
+#include "../../script_space.h"
 
 CAI_Trader::CAI_Trader()
 {

@@ -8,8 +8,6 @@
 
 #pragma once
 
-#include "script_space.h"
-
 class CScriptThread;
 
 DEFINE_VECTOR(CScriptThread*,SCRIPT_VECTOR,SCRIPT_IT);

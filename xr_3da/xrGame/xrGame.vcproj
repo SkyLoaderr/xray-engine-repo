@@ -2799,6 +2799,12 @@
 						Filter="">
 						<File
 							RelativePath=".\Ai\Stalker\ai_stalker.cpp">
+							<FileConfiguration
+								Name="Debug|Win32">
+								<Tool
+									Name="VCCLCompilerTool"
+									ShowIncludes="FALSE"/>
+							</FileConfiguration>
 						</File>
 						<File
 							RelativePath=".\Ai\Stalker\ai_stalker.h">
@@ -6618,10 +6624,6 @@
 								RelativePath=".\object_item_single_inline.h">
 							</File>
 						</Filter>
-					</Filter>
-					<Filter
-						Name="ObjectFactoryAbstract"
-						Filter="">
 					</Filter>
 					<Filter
 						Name="ObjectFactoryStorage"

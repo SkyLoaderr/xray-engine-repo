@@ -8,10 +8,8 @@
 
 #pragma once
 
-#include "script_space.h"
-#include "script_engine.h"
+#include "script_export_space.h"
 #include "ai_sounds.h"
-#include "ai_space.h"
 
 class CScriptGameObject;
 
@@ -22,7 +20,7 @@ class CScriptSound {
 	friend class CScriptSoundAction;
 public:
 
-	IC							CScriptSound		(LPCSTR caSoundName, ESoundTypes sound_type = SOUND_TYPE_NO_SOUND);
+								CScriptSound		(LPCSTR caSoundName, ESoundTypes sound_type = SOUND_TYPE_NO_SOUND);
 	virtual						~CScriptSound		();
 	IC		u32					Length				();
 	IC		void				Play				(CScriptGameObject *object);
@@ -45,7 +43,7 @@ public:
 	IC		void				SetParams			(CSound_params *sound_params);
 			void				SetMinDistance		(const float fMinDistance);
 	IC		void				SetMaxDistance		(const float fMaxDistance);
-	IC		const Fvector		&GetPosition		() const;
+			const Fvector		&GetPosition		() const;
 	IC		const float			GetFrequency		() const;
 	IC		const float			GetMinDistance		() const;
 	IC		const float			GetMaxDistance		() const;

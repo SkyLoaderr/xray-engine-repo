@@ -9,6 +9,7 @@
 #include "stdafx.h"
 #include "patrol_path_manager.h"
 #include "script_game_object.h"
+#include "script_space.h"
 
 void CPatrolPathManager::select_point(const Fvector &position, u32 &dest_vertex_id)
 {

@@ -8,7 +8,6 @@
 
 #pragma once
 
-#include "script_space.h"
 #include "script_stack_tracker.h"
 
 class CScriptThread : public CScriptStackTracker {

@@ -13,6 +13,7 @@
 #include "level.h"
 #include "xr_level_controller.h"
 #include "game_cl_base.h"
+#include "stalker_movement_manager.h"
 
 #ifdef DEBUG
 extern EStalkerBehaviour	g_stalker_behaviour;
@@ -120,6 +121,12 @@ void CLevel::IR_OnKeyboardPress(int key)
 		break;
 
 	case DIK_F9:{
+		CStalkerMovementManager* move = dynamic_cast<CStalkerMovementManager*>(Objects.FindObjectByName("m_stalker_e0000"));
+		if (!move)
+			return;
+
+		move->enable_movement(false);
+		move->enable_movement(true);
 //		ai().level_graph().set_start_point();
 //		if (!Objects.FindObjectByName("m_stalker_e0000") || !Objects.FindObjectByName("localhost/dima"))
 //			return;

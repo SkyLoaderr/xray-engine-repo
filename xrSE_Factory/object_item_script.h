@@ -10,7 +10,6 @@
 
 #include "object_factory_space.h"
 #include "object_item_abstract.h"
-#include "script_space.h"
 
 class CObjectItemScript : public CObjectItemAbstract {
 protected:
@@ -21,7 +20,7 @@ protected:
 	luabind::functor<void>						m_server_creator;
 
 public:
-	IC											CObjectItemScript	(
+												CObjectItemScript	(
 #ifndef NO_XR_GAME
 													luabind::functor<void> client_creator, 
 #endif
@@ -30,7 +29,7 @@ public:
 													LPCSTR script_clsid
 												);
 #ifndef NO_XR_GAME
-	IC											CObjectItemScript	(
+												CObjectItemScript	(
 													luabind::functor<void> creator, 
 													const CLASS_ID &clsid, 
 													LPCSTR script_clsid

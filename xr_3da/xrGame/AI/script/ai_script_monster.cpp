@@ -14,6 +14,7 @@
 #include "../../weapon.h"
 #include "../../ParticlesObject.h"
 #include "../../script_game_object.h"
+#include "../../script_space.h"
 
 void __stdcall ActionCallback(CKinematics *tpKinematics);
 

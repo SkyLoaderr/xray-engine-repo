@@ -11,6 +11,7 @@
 #include "script_game_object.h"
 #include "xrserver_objects_alife_monsters.h"
 #include "script_callback.h"
+#include "script_space.h"
 
 CScriptZone::CScriptZone		()
 {
