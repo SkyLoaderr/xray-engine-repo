@@ -14,7 +14,7 @@ function dump_time(t)
 end
 
 
-function main_()
+function main()
 	
 	local dt = game.get_game_time()
 	dump_time(dt)
