@@ -275,7 +275,9 @@ function process_map_spot(info_id)
 		   remove_location (1006, "mil_rg6_location")
 		   
 	elseif info_id == "mil_bandit_flash_get" then
-	       add_location (1005, "mil_secret_spot")
+	       add_location (1005, "mil_secret_location")
+	elseif info_id == "mil_bandit_secret_found" then
+           remove_location (1005, "mil_secret_location")
 	    
 	elseif info_id == "mil_lukash_go_to_max" then
 	       add_location (1002, "mil_max_location") 
@@ -303,7 +305,16 @@ function process_map_spot(info_id)
 	       add_location (1008, "mil_dolg_location")
 	elseif info_id == "mil_lukash_job_complete" then
 	       remove_location (1008, "mil_dolg_location")
-		   
+	       
+    elseif info_id == "mil_sniper_get_job" then
+           add_location (1004, "mil_sniper_location")
+    elseif info_id == "mil_sniper_dead" and db.actor:has_info ("mil_sniper_get_job") then
+           remove_location (1004, "mil_sniper_location")
+           add_location (1008, "mil_dolg_location")
+    elseif info_id == "mil_sniper_job_complete" then
+		   remove_location (1008, "mil_dolg_location")
+	elseif info_id == "mil_sniper_job_failed" then
+	       remove_location (1004, "mil_sniper_location") 
         		   
 	-- end of military       
 	end
