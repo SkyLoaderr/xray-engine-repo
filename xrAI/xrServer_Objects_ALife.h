@@ -68,12 +68,17 @@ SERVER_ENTITY_DECLARE_BEGIN(CSE_ALifePersonalTask,CSE_ALifeTask)
 	};
 SERVER_ENTITY_DECLARE_END
 
+SERVER_ENTITY_DECLARE_BEGIN(CSE_LevelPoint,CSE_Abstract)
+									CSE_LevelPoint(LPCSTR caSection);
+	virtual							~CSE_LevelPoint();
+SERVER_ENTITY_DECLARE_END
+
 SERVER_ENTITY_DECLARE_BEGIN(CSE_ALifeGraphPoint,CSE_Abstract)
 public:
 	string32						m_caConnectionLevelName;
 	string32						m_caConnectionPointName;
 	u8								m_tLocations[LOCATION_TYPE_COUNT];
-	CSE_ALifeGraphPoint(LPCSTR caSection);
+									CSE_ALifeGraphPoint(LPCSTR caSection);
 SERVER_ENTITY_DECLARE_END
 
 class CSE_ALifeObject : virtual public CSE_Abstract {
@@ -199,10 +204,12 @@ SERVER_ENTITY_DECLARE_BEGIN2(CSE_ALifeDynamicObjectVisual,CSE_ALifeDynamicObject
 SERVER_ENTITY_DECLARE_END
 
 SERVER_ENTITY_DECLARE_BEGIN2(CSE_ALifeLevelChanger,CSE_ALifeDynamicObject,CSE_Shape)
-	u32								m_tLevelToChangeID;
-	u32								m_tGraphPointToChangeID;
+	_GRAPH_ID						m_tNextGraphID;
+	u32								m_dwNextNodeID;
+	Fvector							m_tNextPosition;
+	float							m_fAngle;
 	string32						m_caLevelToChange;
-	string32						m_caGraphPointToChange;
+	string32						m_caLevelPointToChange;
 
 									CSE_ALifeLevelChanger	(LPCSTR caSection);
 	virtual							~CSE_ALifeLevelChanger	();

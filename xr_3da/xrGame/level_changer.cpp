@@ -39,6 +39,8 @@ BOOL CLevelChanger::net_Spawn	(LPVOID DC)
 	R_ASSERT					(l_tpALifeLevelChanger);
 
 	strcpy						(m_caLevelToChange,l_tpALifeLevelChanger->m_caLevelToChange);
+
+	feel_touch.clear			();
 	
 	for (u32 i=0; i < l_tpALifeLevelChanger->shapes.size(); i++) {
 		CSE_Shape::shape_def	&S = l_tpALifeLevelChanger->shapes[i];
@@ -76,9 +78,9 @@ void CLevelChanger::UpdateCL	()
 
 void CLevelChanger::feel_touch_new	(CObject *tpObject)
 {
-	CActor				*l_tpActor = dynamic_cast<CActor*>(tpObject);
+	CActor						*l_tpActor = dynamic_cast<CActor*>(tpObject);
 	if (l_tpActor) {
-		strconcat(Level().m_caServerOptions,m_caLevelToChange,"/single");
+		//strconcat				(Level().m_caServerOptions,m_caLevelToChange,"/single");
 		Level().IR_OnKeyboardPress(DIK_F7);
 	}
 }

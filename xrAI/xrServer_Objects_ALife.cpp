@@ -216,6 +216,37 @@ void CSE_ALifePersonalTask::FillProp	(LPCSTR pref, PropItemVec& values)
 #endif
 
 ////////////////////////////////////////////////////////////////////////////
+// CSE_ALifeLevelPoint
+////////////////////////////////////////////////////////////////////////////
+CSE_LevelPoint::CSE_LevelPoint				(LPCSTR caSection) : CSE_Abstract(caSection)
+{
+}
+
+CSE_LevelPoint::~CSE_LevelPoint				()
+{
+}
+
+void CSE_LevelPoint::STATE_Read				(NET_Packet	&tNetPacket, u16 size)
+{
+};
+
+void CSE_LevelPoint::STATE_Write			(NET_Packet	&tNetPacket)
+{
+};
+void CSE_LevelPoint::UPDATE_Read			(NET_Packet	&tNetPacket)
+{
+}
+
+void CSE_LevelPoint::UPDATE_Write			(NET_Packet	&tNetPacket)
+{
+}
+
+#ifdef _EDITOR              
+void CSE_LevelPoint::FillProp				(LPCSTR pref, PropItemVec& items)
+{
+}
+#endif
+////////////////////////////////////////////////////////////////////////////
 // CSE_ALifeGraphPoint
 ////////////////////////////////////////////////////////////////////////////
 CSE_ALifeGraphPoint::CSE_ALifeGraphPoint	(LPCSTR caSection) : CSE_Abstract(caSection)
@@ -535,20 +566,34 @@ void CSE_ALifeLevelChanger::STATE_Read		(NET_Packet	&tNetPacket, u16 size)
 {
 	inherited1::STATE_Read		(tNetPacket,size);
 	cform_read					(tNetPacket);
-	tNetPacket.r_u32			(m_tLevelToChangeID);
-	tNetPacket.r_u32			(m_tGraphPointToChangeID);
+	if (m_wVersion < 34) {
+		tNetPacket.r_u32		();
+		tNetPacket.r_u32		();
+	}
+	else {
+		tNetPacket.r			(&m_tNextGraphID,sizeof(m_tNextGraphID));
+		tNetPacket.r_u32		(m_dwNextNodeID);
+		tNetPacket.r_float		(m_tNextPosition.x);
+		tNetPacket.r_float		(m_tNextPosition.y);
+		tNetPacket.r_float		(m_tNextPosition.z);
+		tNetPacket.r_float		(m_fAngle);
+	}
 	tNetPacket.r_string			(m_caLevelToChange);
-	tNetPacket.r_string			(m_caGraphPointToChange);
+	tNetPacket.r_string			(m_caLevelPointToChange);
 }
 
 void CSE_ALifeLevelChanger::STATE_Write	(NET_Packet	&tNetPacket)
 {
 	inherited1::STATE_Write		(tNetPacket);
 	cform_write					(tNetPacket);
-	tNetPacket.w_u32			(m_tLevelToChangeID);
-	tNetPacket.w_u32			(m_tGraphPointToChangeID);
+	tNetPacket.w				(&m_tNextGraphID,sizeof(m_tNextGraphID));
+	tNetPacket.w_u32			(m_dwNextNodeID);
+	tNetPacket.w_float			(m_tNextPosition.x);
+	tNetPacket.w_float			(m_tNextPosition.y);
+	tNetPacket.w_float			(m_tNextPosition.z);
+	tNetPacket.w_float			(m_fAngle);
 	tNetPacket.w_string			(m_caLevelToChange);
-	tNetPacket.w_string			(m_caGraphPointToChange);
+	tNetPacket.w_string			(m_caLevelPointToChange);
 }
 
 void CSE_ALifeLevelChanger::UPDATE_Read	(NET_Packet	&tNetPacket)
@@ -587,8 +632,8 @@ void CSE_ALifeLevelChanger::FillProp		(LPCSTR pref, PropItemVec& items)
 	if (Ini)
 		xr_delete				(Ini);
 	
-	PHelper.CreateList			(items,FHelper.PrepareKey(pref,s_name,"Level to change"),		m_caLevelToChange,	sizeof(m_caLevelToChange),	level_ids);
-	PHelper.CreateText			(items,FHelper.PrepareKey(pref,s_name,"Graph point to change"),	m_caGraphPointToChange,		sizeof(m_caGraphPointToChange));
+	PHelper.CreateList			(items,FHelper.PrepareKey(pref,s_name,"Level to change"),		m_caLevelToChange,		sizeof(m_caLevelToChange),	level_ids);
+	PHelper.CreateText			(items,FHelper.PrepareKey(pref,s_name,"Level point to change"),	m_caLevelPointToChange,	sizeof(m_caLevelPointToChange));
 }
 #endif
 ////////////////////////////////////////////////////////////////////////////
