@@ -14,7 +14,7 @@ XRCORE_API void VerifyPath	(LPCSTR path);
 class XRCORE_API IWriter
 {
 private:
-	xr_stack<u32>	chunk_pos;
+	xr_stack<u32>		chunk_pos;
 public:
 	shared_str			fName;
 public:
@@ -116,29 +116,31 @@ public:
 //------------------------------------------------------------------------------------
 class XRCORE_API IReader {
 protected:
-	char *			data;
-	int				Pos;
-	int				Size;
+	char *			data	;
+	int				Pos		;
+	int				Size	;
+	int				iterpos	;
 
-	IC u32			correction	(u32 p)
+	IC u32			correction					(u32 p)
 	{
 		if (p%16) {
 			return ((p%16)+1)*16 - p;
 		} return 0;
 	}
-	u32 			advance_term_string	();
+	u32 			advance_term_string			();
 public:
 	IReader			()
 	{
 		Pos			= 0;
 	}
-	IReader			(void *_data, int _size)
+	IReader			(void *_data, int _size, int _iterpos=0)
 	{
-		data		= (char *)_data;
-		Size		= _size;
-		Pos			= 0;
+		data		= (char *)_data	;
+		Size		= _size			;
+		Pos			= 0				;
+		iterpos		= _iterpos		;
 	};
-	virtual ~IReader() {};
+	virtual ~IReader()							{};
 
 	IC int			elapsed		()	const		{	return Size-Pos;		};
 	IC BOOL			eof			()	const		{	return elapsed()<=0;	};
@@ -209,6 +211,9 @@ public:
 	BOOL			r_chunk_safe(u32 ID, void *dest, u32 dest_size);	// чтение XR Chunk'ов (4b-ID,4b-size,??b-data)
 	IReader*		open_chunk	(u32 ID);
 	void			close		();
+
+	// iterators
+	IReader*		open_chunk_iterator		(u32& ID, IReader* previous=NULL);	// NULL=first
 };
 
 class XRCORE_API CVirtualFileRW : public IReader

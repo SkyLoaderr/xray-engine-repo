@@ -208,6 +208,34 @@ IReader*	IReader::open_chunk(u32 ID)
 void	IReader::close()
 {	xr_delete((IReader*)this); }
 
+IReader*	IReader::open_chunk_iterator	(u32& ID, IReader* _prev)
+{
+	if (0==_prev)	{
+		// first
+		rewind		();
+	} else {
+		// next
+		seek		(_prev->iterpos);
+		_prev->close();
+	}
+
+	//	open
+	if			(elapsed()<8)	return		NULL;
+	ID			= r_u32	()		;
+	u32 _size	= r_u32	()		;
+	if ( ID & CFS_CompressMark )
+	{
+		// compressed
+		u8*				dest	;
+		unsigned		dest_sz	;
+		_decompressLZ	(&dest,&dest_sz,pointer(),_size);
+		return xr_new<CTempReader>	(dest,		dest_sz,	tell()+_size);
+	} else {
+		// normal
+		return xr_new<IReader>		(pointer(),	_size,		tell()+_size);
+	}
+}
+
 void	IReader::r	(void *p,int cnt)
 {
 	VERIFY		(Pos+cnt<=Size);
