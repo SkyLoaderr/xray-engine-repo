@@ -64,6 +64,8 @@ public:
 	virtual const CSE_Abstract		*base					() const = 0;
 	virtual CSE_Abstract			*init					();
 	// end of the virtual inheritance dependant code
+			void					OnChangeProfile			(PropValue* sender);
+
 #ifdef XRGAME_EXPORTS
 			void					attach					(CSE_ALifeInventoryItem *tpALifeInventoryItem,	bool		bALifeRequest,	bool bAddChildren = true);
 			void					detach					(CSE_ALifeInventoryItem *tpALifeInventoryItem,	ALife::OBJECT_IT	*I = 0,	bool bALifeRequest = true,	bool bRemoveChildren = true);

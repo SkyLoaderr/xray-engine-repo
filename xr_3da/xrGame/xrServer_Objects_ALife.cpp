@@ -1495,13 +1495,21 @@ void CSE_ALifeSmartZone::smart_touch	(CSE_ALifeMonsterAbstract *monster)
 }
 
 //////////////////////////////////////////////////////////////////////////
+
+void CSE_ALifeTraderAbstract::OnChangeProfile(PropValue* sender)
+{
+//	set_visual					("");
+	set_editor_flag				(flVisualChange);
+}
+
 void CSE_ALifeTraderAbstract::FillProps	(LPCSTR pref, PropItemVec& items)
 {
 	PHelper().CreateU32			(items, PrepareKey(pref,*base()->s_name,"Money"), 	&m_dwMoney,	0, u32(-1));
 	PHelper().CreateFlag32		(items,	PrepareKey(pref,*base()->s_name,"Trader\\Infinite ammo"),&m_trader_flags, eTraderFlagInfiniteAmmo);
 #ifndef AI_COMPILER
-	PHelper().CreateRToken16	(items,	PrepareKey(pref,*base()->s_name,"npc profile"),	 
-		(u16*)&m_iCharacterProfile, 
+	RToken32Value *value		= PHelper().CreateRToken32	(items,	PrepareKey(pref,*base()->s_name,"npc profile"),	 
+		&m_iCharacterProfile, 
 		&*fp_data.character_profile_indxs.begin(), fp_data.character_profile_indxs.size());
+	value->OnChangeEvent.bind	(this,&CSE_ALifeTraderAbstract::OnChangeProfile);
 #endif
 }
