@@ -53,7 +53,7 @@ private:
 	float				fLastUpdateTime;
 	Fvector				vLastUpdatePosition;
 public:
-	
+	void				DBG_Render			(){m_character->OnRender();}
 	Fvector				vExternalImpulse;
 	BOOL				bSleep;
 
@@ -135,12 +135,13 @@ public:
 		P.set			(vPosition);
 		R =				aabb.getradius();
 	}
-
+	bool				TryPosition		(Fvector& pos){return m_character->TryPosition(pos);}
+	bool				IsCharacterEnabled(){return m_character->IsEnabled();}
 	void				Calculate		(Fvector& vAccel, float ang_speed, float jump, float dt, bool bLight);
-	void				Move			(Fvector& Dest, Fvector& Motion, BOOL bDynamic=FALSE){};
+//	void				Move			(Fvector& Dest, Fvector& Motion, BOOL bDynamic=FALSE){};
 	void				SetApplyGravity	(BOOL flag){ bIsAffectedByGravity=flag; }
 	void				GetDeathPosition(Fvector& pos){pos.set( m_character->DeathPosition());}
-	void SetEnvironment( int enviroment,int old_enviroment);
+	void		SetEnvironment( int enviroment,int old_enviroment);
 	void		ApplyImpulse(const Fvector& dir,const dReal P){m_character->ApplyImpulse(dir,P);};
 	void		SetJumpUpVelocity(float velocity){m_character->SetJupmUpVelocity(velocity);}
 	void		EnableCharacter(){m_character->Enable();}

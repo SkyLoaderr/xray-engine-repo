@@ -1138,7 +1138,7 @@ int dCollideCylPlane
  dReal radius;
  dReal hlz;
  dGeomCylinderGetParams(o1,&radius,&hlz);
- 
+ hlz/=REAL(2.);
  const dReal *R	=	dGeomGetRotation(o1);// rotation of cylinder
  const dReal* p	=	dGeomGetPosition(o1);
  dVector4 n;		// normal vector

@@ -395,8 +395,18 @@ void CPathNodes::BuildTravelLine(const Fvector& current_pos)
 
 void CPathNodes::Calculate(CCustomMonster* Me, Fvector& p_dest, Fvector& p_src, float speed, float dt)
 {
+	Fvector				motion;
 	if ((TravelPath.empty()) || (TravelPath.size() - 1 <= TravelStart))	{
 		fSpeed = 0;
+#ifndef NO_PHYSICS_IN_AI_MOVE
+		if(Me->Movement.IsCharacterEnabled())
+		{
+		motion.set(0,0,0);
+		Me->Movement.Calculate(motion,0,0,0,0);
+		Me->Movement.GetPosition(p_dest);
+		Me->UpdateTransform	();
+		}
+#endif
 		return;
 	}
 	//Msg("TP %d",TravelPath.size());
@@ -410,6 +420,8 @@ void CPathNodes::Calculate(CCustomMonster* Me, Fvector& p_dest, Fvector& p_src, 
 	target.set		(TravelPath[TravelStart+1].P);
 	mdir.sub		(target, p_dest);
 	float	mdist	=	mdir.magnitude();
+
+
 	while (dist>mdist) 
 	{
 		p_dest.set	(target);
@@ -422,8 +434,8 @@ void CPathNodes::Calculate(CCustomMonster* Me, Fvector& p_dest, Fvector& p_src, 
 	}
 
 	// move last quantity
-	Fvector				motion;
-	motion.mul			(mdir,dist/mdist);
+
+
 
 	// resolve stucking
 	Device.Statistic.Physics.Begin	();
@@ -435,7 +447,33 @@ void CPathNodes::Calculate(CCustomMonster* Me, Fvector& p_dest, Fvector& p_src, 
 //		p_dest.set			(final);
 //	}
 //	else
-		p_dest.add			(motion);
+#ifndef NO_PHYSICS_IN_AI_MOVE
+	Me->setEnabled(false);
+	Level().ObjectSpace.GetNearest(p_dest,1.f); 
+	CObjectSpace::NL_TYPE &tpNearestList = Level().ObjectSpace.q_nearest; 
+	Me->setEnabled(true);
+#endif
+
+	motion.mul			(mdir,dist/mdist);
+	p_dest.add			(motion);
+
+#ifndef NO_PHYSICS_IN_AI_MOVE
+	if ((tpNearestList.empty())) {
+		if(!Me->Movement.TryPosition(p_dest))//!Me->Movement.TryPosition(p_dest)
+		{
+			motion.mul			(mdir,speed*10.f/mdir.magnitude());
+			Me->Movement.Calculate(motion,0,0,0,0);
+			Me->Movement.GetPosition(p_dest);
+		}
+
+	}
+	else
+	{
+		motion.mul			(mdir,speed*10.f/mdir.magnitude());
+		Me->Movement.Calculate(motion,0,0,0,0);
+		Me->Movement.GetPosition(p_dest);
+	}
+#endif
 
 	float	real_motion	= motion.magnitude() + dist_save-dist;
 	float	real_speed	= real_motion/dt;

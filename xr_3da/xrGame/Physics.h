@@ -244,6 +244,8 @@ private:
 public:
 	void					Disable					();
 	void					ReEnable				();
+	void					ResetDisable			();
+	void					Enable					();
 	void					DynamicAttach			(CPHElement * E);
 	virtual void			SetAirResistance		(dReal linear=0.0002f, dReal angular=0.05f) {
 													k_w= angular;
@@ -266,6 +268,7 @@ public:
 	Fvector			get_mc_geoms();
 	void			Start();
 	void			RunSimulation();
+
 	dBodyID			get_body(){return m_body;};
 	float			get_volume(){get_mc_data();return m_volume;};
 	void			SetTransform(const Fmatrix& m0);
@@ -473,6 +476,9 @@ public:
 														for(i=joints.begin();i!=joints.end();i++) 
 															(*i)->SetForceAndVelocity(force);
 														}
+
+	virtual void			Enable					();
+
 	virtual	void PhDataUpdate(dReal step);
 	virtual	void PhTune(dReal step);
 	virtual void InitContact(dContact* c){};

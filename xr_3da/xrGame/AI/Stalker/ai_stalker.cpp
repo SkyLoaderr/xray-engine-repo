@@ -66,6 +66,7 @@ void CAI_Stalker::Die				()
 	Fvector	dir;
 	AI_Path.Direction				(dir);
 	SelectAnimation					(clTransform.k,dir,AI_Path.fSpeed);
+	inherited::Die					();
 }
 
 void CAI_Stalker::Load				(LPCSTR section)

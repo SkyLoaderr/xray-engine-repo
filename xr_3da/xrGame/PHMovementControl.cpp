@@ -54,7 +54,7 @@ CPHMovementControl::~CPHMovementControl(void)
 void CPHMovementControl::Calculate(Fvector& vAccel,float ang_speed,float jump,float dt,bool bLight){
 
     vPosition=m_character->IPosition();
-	vAccel.y+=jump;
+	vAccel.y=jump;
 	m_character->SetMaximumVelocity(vAccel.magnitude()/10.f);
 	m_character->SetAcceleration(vAccel);
 	

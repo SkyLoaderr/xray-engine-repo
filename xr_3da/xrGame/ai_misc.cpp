@@ -1031,7 +1031,7 @@ float CAI_Space::ffMarkNodesInDirection(u32 dwStartNode, Fvector tStartPosition,
 			u32 dwIntersect = lines_intersect(tStartPoint.x,tStartPoint.z,tFinishPoint.x,tFinishPoint.z,tSegment.v1.x,tSegment.v1.z,tSegment.v2.x,tSegment.v2.z,&tTravelNode.x,&tTravelNode.z);
 			if (dwIntersect == LI_INTERSECT) {
 				if (
-					(tFinishPoint.distance_to_xz(tTravelNode) < tFinishPoint.distance_to_xz(tTempPoint) + EPS) &&
+					(tFinishPoint.distance_to_xz(tTravelNode) < tFinishPoint.distance_to_xz(tTempPoint) + 0.3f) &&
 					(iNodeIndex != (int)dwPrevNode)
 					) {
 					tTempPoint = tTravelNode;

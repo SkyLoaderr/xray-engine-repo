@@ -9,17 +9,18 @@
 				peInAir
 			};
 
+
 class CPHCharacter : public CPHObject
 #ifdef DEBUG
 	,public pureRender
 #endif
 {
 protected:
-//////////////////////////
+////////////////////////// dynamic
 list<CPHObject*>::iterator m_ident;
 CPHInterpolation m_body_interpolation;
 dBodyID m_body;
-/////////////////////
+////////////////////////// geometry
 dBodyID m_wheel_body;
 dGeomID m_geom_shell;
 dGeomID m_wheel;
@@ -30,9 +31,12 @@ dGeomID m_geom_group;
 dGeomID m_wheel_transform;
 dGeomID m_shell_transform;
 dGeomID m_cap_transform;
+
 /////////////////////////////
 dJointID m_wheel_joint;
 /////////////////////////////
+
+///////////////////////// movement
 dVector3 m_control_force;
 Fvector	 m_acceleration;	
 dVector3 m_wall_contact_normal;
@@ -42,8 +46,8 @@ dVector3 m_depart_position;
 dVector3 m_wall_contact_position;
 dVector3 m_ground_contact_position;
 dReal	 m_jump_depart_hight;
-dReal jump_up_velocity;//=6.0f;//5.6f;
-//Fvector* pvPosition;
+dReal	 jump_up_velocity;//=6.0f;//5.6f;
+
 dReal m_mass;
 dReal m_max_velocity;
 Fvector m_position;
@@ -77,16 +81,19 @@ bool b_at_wall;
 bool was_control;
 bool b_stop_control;
 bool b_on_object;
-u32 m_contact_count;
+u32  m_contact_count;
 dReal m_radius;
 dReal m_cyl_hight;
 dReal m_friction_factor;
-/////disable///////////////////////
+////////////////////////////////////////////////////////////////////////////
+/////disable////////////////////////////////////////////////////////////////
+////////////////////////////////////////////////////////////////////////////
 dVector3 previous_p;
 dVector3 previous_p1;
 dReal previous_v;
 u32 dis_count_f;
 u32 dis_count_f1;
+/////////////////////////////////////////////////////////////////////////////
 /////////////////////////////////////////////////////////////////////////////
 u32* p_lastMaterial;
 
@@ -95,12 +102,12 @@ void Disable										();
 
 public:
 	void Enable											(){dBodyEnable(m_body);}
-
+	bool IsEnabled										(){return !!dBodyIsEnabled(m_body);}
 	bool b_exist;
-float m_update_time;
+	float m_update_time;
 public:
-void		SetPLastMaterial						(u32* p){p_lastMaterial=p;}
-void		SetMaximumVelocity						(dReal vel){m_max_velocity=vel; }
+void		SetPLastMaterial								(u32* p){p_lastMaterial=p;}
+void		SetMaximumVelocity								(dReal vel){m_max_velocity=vel; }
 void		SetJupmUpVelocity								(dReal velocity){jump_up_velocity=velocity;}
 const Fvector&	Position									() {return m_position;}
 const Fvector&	Velocity									() {return m_velocity;}
@@ -131,7 +138,7 @@ virtual		void		Create							(dVector3 sizes)	=0	;
 virtual		void		Destroy								(void)			=0	;
 virtual		void		SetAcceleration						(Fvector accel)	=0	;
 virtual		void		SetPosition							(Fvector pos)	=0	;
-
+virtual		bool		TryPosition							(Fvector pos)	=0	;
 
 virtual		Fvector		GetVelocity							(void)			=0	;
 virtual		void		SetVelocity							(Fvector vel)	=0	;
@@ -163,6 +170,7 @@ virtual		Fvector		GetVelocity							(void)				;
 virtual		void		SetVelocity							(Fvector vel)		;
 virtual		Fvector		GetPosition							(void)				;
 virtual		void		SetMas								(dReal mass)		;
+virtual		bool		TryPosition							(Fvector pos)		;
 private:
 			void		ApplyAcceleration					()					;
 			bool		ValidateWalkOn						()					;
@@ -190,4 +198,8 @@ virtual		Fvector		GetVelocity							(void)			{}	;
 virtual		void		SetVelocity							(Fvector vel)	{}	;
 virtual		Fvector		GetPosition							(void)			{}	;
 virtual		void		SetMas								(dReal mass)		;
+virtual		bool		TryPosition							(Fvector pos)	{}	;
 };
+
+
+//class CPHStalkerCharacter : public CPHCharacter 

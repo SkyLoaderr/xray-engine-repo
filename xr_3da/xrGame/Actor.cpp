@@ -526,7 +526,7 @@ void CActor::g_Physics			(Fvector& _accel, float jump, float dt)
 			if(skel_ddelay==0)
 			{
 			m_phSkeleton->set_JointResistance(5.f*hinge_force_factor1);
-			
+			m_phSkeleton->Enable();
 			}
 			skel_ddelay--;
 		}
@@ -564,8 +564,7 @@ void CActor::g_Physics			(Fvector& _accel, float jump, float dt)
 
 	ph_Movement.Calculate			(_accel,0,jump,dt,false);
 	ph_Movement.GetPosition		(vPosition);
-
-	
+	ph_Movement.bSleep=false;
 	///////////////////////////////////////////////////////////////////////////////////////
 	/////////////////////////////////////////////Update ph_Movement///////////////////////////
 	///////////////////////////////////////////////////////////////////////////////////////
@@ -578,7 +577,7 @@ void CActor::g_Physics			(Fvector& _accel, float jump, float dt)
 	//ph_Movement.SetContactSpeed(ph_Movement.GetContactSpeed());
 	//velocity.y=0.f;
 //	ph_Movement.SetActualVelocity(velocity.magnitude());
-	//ph_Movement.bSleep=false;
+
 	//ph_Movement.gcontact_HealthLost=ph_Movement.gcontact_HealthLost;
 	//ph_Movement.gcontact_Power=ph_Movement.gcontact_Power;
 

@@ -11,7 +11,7 @@ const float CLAMB_DISTANCE=0.5f;
 //const float JUMP_HIGHT=0.5;
 const float JUMP_UP_VELOCITY=6.0f;//5.6f;
 const float JUMP_INCREASE_VELOCITY_RATE=1.2f;
-
+static u32 lastMaterial;
 void dBodyAngAccelFromTorqu(const dBodyID body, dReal* ang_accel, const dReal* torque){
       dMass m;
       dMatrix3 invI;
@@ -23,6 +23,7 @@ void dBodyAngAccelFromTorqu(const dBodyID body, dReal* ang_accel, const dReal* t
 
 CPHCharacter::CPHCharacter(void)
 {
+p_lastMaterial=&lastMaterial;
 b_on_object=false;
 b_climb=false;
 b_pure_climb=true;
@@ -874,6 +875,16 @@ if(!b_exist) return;
 	m_safe_position[1]=pos.y+m_radius;
 	m_safe_position[2]=pos.z;
 	dBodySetPosition(m_body,pos.x,pos.y+m_radius,pos.z);
+}
+
+bool CPHSimpleCharacter::TryPosition(Fvector pos){
+if(!b_exist) return false;
+if(b_on_object) return false;
+SetPosition(pos);
+m_body_interpolation.UpdatePositions();
+m_body_interpolation.UpdatePositions();
+dBodyDisable(m_body);
+return true;
 }
 
 Fvector CPHSimpleCharacter::GetPosition(){

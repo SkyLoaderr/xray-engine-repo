@@ -15,6 +15,7 @@ public:
 	virtual void			Activate				()											= 0;
 
 	virtual void			Deactivate				()											= 0;
+	virtual void			Enable					()											= 0;
 	
 	virtual void			setMass					(float M)									= 0;
 	

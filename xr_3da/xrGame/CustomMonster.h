@@ -10,7 +10,9 @@
 #include "..\feel_sound.h"
 #include "..\feel_touch.h"
 #include "entity.h"
-#include "movementcontrol.h"
+//#include "movementcontrol.h"
+#include "phmovementcontrol.h"
+//#define NO_PHYSICS_IN_AI_MOVE
 #include "ai_commands.h"
 #include "ai_pathnodes.h"
 
@@ -24,7 +26,6 @@ class CCustomMonster :
 private:
 	typedef	CEntityAlive	inherited;
 protected:
-	CMovementControl	Movement;
 	// weapons
 	struct				SAnimState
 	{
@@ -78,6 +79,9 @@ public:
 		BODY_STATE_CROUCH,
 		BODY_STATE_LIE,
 	};
+	
+	//Movement
+	CPHMovementControl	Movement;
 
 	// Pathfinding cache
 	AI::CPathNodes		AI_Path;
@@ -208,6 +212,8 @@ public:
 	virtual void		Exec_Action				( float dt );
 	virtual BOOL		net_Spawn				( LPVOID DC);
 	virtual void		Death					( );
+	virtual void		Die						( );
+
 	virtual void		HitSignal				( float P,	Fvector& vLocalDir, CObject* who);
 	virtual void		g_WeaponBones			( int& L,	int& R	);
 	virtual void		Load					( LPCSTR	section );				

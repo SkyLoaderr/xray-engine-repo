@@ -394,6 +394,7 @@ void CCustomMonster::UpdateCL	()
 		svTransform.rotateY			(N.o_model);
 		svTransform.translate_over	(N.p_pos);
 		vPosition.set				(NET_Last.p_pos);
+
 	}
 }
 
@@ -490,7 +491,9 @@ void CCustomMonster::OnRender()
 {
 	//if (!bDebug)					return;
 	if (!psAI_Flags.test(aiDebug))	return;
-	
+
+	Movement.DBG_Render();
+
 	RCache.OnFrameEnd				();
 	{
 	for (u32 I=1; I<AI_Path.TravelPath.size(); I++)
@@ -601,9 +604,21 @@ void CCustomMonster::Death	()
 {
 }
 
+void CCustomMonster::Die	()
+{
+#ifndef NO_PHYSICS_IN_AI_MOVE
+	Movement.DestroyCharacter();
+#endif
+
+}
 BOOL CCustomMonster::net_Spawn	(LPVOID DC)
 {
 	if (!inherited::net_Spawn(DC))	return FALSE;
+
+#ifndef NO_PHYSICS_IN_AI_MOVE
+	Movement.CreateCharacter();
+#endif
+
 	Movement.SetPosition	(vPosition);
 	Movement.SetVelocity	(0,0,0);
 	xrSE_Enemy* E			= (xrSE_Enemy*)DC;

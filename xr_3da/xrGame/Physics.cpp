@@ -627,7 +627,7 @@ void CPHWorld::Create(){
 	Mesh.Create(Space,phWorld);
 	//Jeep.Create(Space,phWorld);//(Space,phWorld)
 	//Gun.Create(Space);
-	//plane=dCreatePlane(Space,0,1,0,-0.1f);
+	//plane=dCreatePlane(Space,0,1,0,0.1f);
 	//dGeomCreateUserData(plane);
 	//const  dReal k_p=2400000.f;//550000.f;///1000000.f;
 	//const dReal k_d=200000.f;
@@ -1608,7 +1608,24 @@ void	CPHElement::Disabling(){
 
 }
 
+void CPHElement::ResetDisable(){
+	previous_p[0]=dInfinity;
+	previous_r[0]=0.f;
+	dis_count_f	 =0;
+	dis_count_f1 =0;
+}
+
+void CPHElement::Enable(){
+
+	if(!bActive) return;
+	if(dBodyIsEnabled(m_body)) return;
+	ResetDisable();
+	dBodyEnable(m_body);
+	}
+
+
 void CPHElement::Disable(){
+	//return;
 	/*
 	if(!b_contacts_saved){
 		int num=dBodyGetNumJoints(m_body);
@@ -2627,3 +2644,11 @@ element_transform.mulA(add);
  }
 
 
+void CPHShell::Enable()
+{
+if(!bActive)
+		return;
+	vector<CPHElement*>::iterator i;
+	for(i=elements.begin();i!=elements.end();i++)
+	(*i)->Enable();
+}

@@ -219,7 +219,7 @@ const dReal* v2=(dReal*)T->verts[2];
   dCROSS(triAx,=,triSideAx0,triSideAx1);
   int code=0;
   dReal outDepth;
-  char signum;
+  dReal signum;
   //sepparation along tri plane normal;
 dNormalize3(triAx);
 
@@ -232,7 +232,7 @@ dNormalize3(triAx);
 dReal dist=dDOT(triAx,v0)-dDOT(triAx,p);
 dReal depth=sidePr-dFabs(dist);
 outDepth=depth;
-signum=dist<0.f ? -1 : 1;
+signum=dist<0.f ? -1.f : 1.f;
 code=0;
 if(depth<0.f) return 0;
 
@@ -256,7 +256,7 @@ if(depth0>depth1)\
 				if(depth0<outDepth)\
 					{\
 					outDepth=depth0;\
-					signum=dist0<0.f ? -1 : 1;\
+					signum=dist0<0.f ? -1.f : 1.f;\
 					code=c;\
 					}\
 			}\
@@ -267,7 +267,7 @@ if(depth0>depth1)\
 				if(depth2<outDepth) \
 					{\
 					outDepth=depth2;\
-					signum=dist2<0.f ? -1 : 1;\
+					signum=dist2<0.f ? -1.f : 1.f;\
 					code=c+2;\
 					}\
 			}\
@@ -279,7 +279,7 @@ else\
 				if(depth1<outDepth) \
 					{\
 					outDepth=depth1;\
-					signum=dist1<0.f ? -1 : 1;\
+					signum=dist1<0.f ? -1.f : 1.f;\
 					code=c+1;\
 					}\
 			}\
@@ -291,7 +291,7 @@ else\
 				if(depth2<outDepth) \
 					{\
 					outDepth=depth2;\
-					signum=dist2<0.f ? -1 : 1;\
+					signum=dist2<0.f ? -1.f : 1.f;\
 					code=c+2;\
 					}\
 			}\
@@ -368,6 +368,8 @@ depth##ox=sidePr-signum*dist##ox;\
 	}\
 }
 */
+dVector3 pos;
+
 #define TEST(ax,ox,c) \
 for(i=0;i<3;i++){\
 	dCROSS114(axis,=,triSideAx##ax,R+i);\
@@ -389,20 +391,28 @@ depth##ax=sidePr-dFabs(dist##ax);\
 depth##ox=sidePr-dFabs(dist##ox);\
 	if(depth##ax>depth##ox){\
 			if(depth##ax>0.f){\
-				if(depth##ax<outDepth) \
+				if(depth##ax*1.05f<outDepth) \
 					{\
+						dReal sgn=dist##ax<0.f ? -1.f : 1.f;\
+						dReal sgn1=sgn*dDOT14(axis,R+ix1)<0.f ? -1.f : 1.f;\
+						dReal sgn2=sgn*dDOT14(axis,R+ix2)<0.f ? -1.f : 1.f;\
+						for(int ii=0;ii<3;ii++) crpos[ii]=p[ii]+R[ii*4+ix1]*hside[ix1]*sgn1+R[ii*4+ix2]*hside[ix2]*sgn2;\
+						if(CrossProjLine14(v##ax,triSideAx##ax,crpos,R+i,hside[i],pos))\
+						{\
 						outDepth=depth##ax;\
-						signum=dist##ax<0.f ? -1 : 1;\
+						signum=sgn;\
 						outAx[0]=axis[0];\
 						outAx[1]=axis[1];\
 						outAx[2]=axis[2];\
 						code=c+i;\
+						}\
 					}\
 				}\
 			else return 0;\
 	}\
 }
 
+dVector3 crpos;
 TEST(0,2,10)
 TEST(1,0,13)
 TEST(2,1,16)
@@ -411,7 +421,7 @@ TEST(2,1,16)
 
 //////////////////////////////////////////////////////////////////////
 ///if we get to this poit tri touches box
-dVector3 norm,pos;
+dVector3 norm;
 unsigned int ret=1;
 
 if(code==0){
@@ -472,22 +482,25 @@ if(code==0){
   // along the two sides with the smallest projected length.
 
 dReal* pdepth;
-
+dContactGeom* prc,*c=CONTACT(contact,ret*skip);
+prc=c;
 #define FOO(j,op,spoint) \
-	CONTACT(contact,ret*skip)->pos[0] = spoint##[0] op 2.f*hside[j] * R[0+j]; \
-	CONTACT(contact,ret*skip)->pos[1] = spoint##[1] op 2.f*hside[j] * R[4+j]; \
-	CONTACT(contact,ret*skip)->pos[2] = spoint##[2] op 2.f*hside[j] * R[8+j];
+	c->pos[0] = spoint##[0] op 2.f*hside[j] * R[0+j]; \
+	c->pos[1] = spoint##[1] op 2.f*hside[j] * R[4+j]; \
+	c->pos[2] = spoint##[2] op 2.f*hside[j] * R[8+j];
 #define BAR(side,sideinc,spos,sdepth) \
   {\
-  pdepth=&(CONTACT(contact,ret*skip)->depth);\
+  pdepth=&(c->depth);\
   *pdepth =sdepth-B ## sideinc; \
+  if (A ## sideinc > 0) { FOO(side,+,spos) } else { FOO(side,-,spos) } \
+  prc=c;\
   if (!(*pdepth < 0)) \
 	{\
-	if (A ## sideinc > 0) { FOO(side,+,spos) } else { FOO(side,-,spos) } \
 	ret++;\
+	c=CONTACT(contact,ret*skip);\
 	}\
   }
-  //TRI_CONTAIN_POINT(CONTACT(contact,ctact*skip)->pos)
+  //TRI_CONTAIN_POINT(CONTACT(contact,ret*skip)->pos)
 
    if(B1<B2)
   {
@@ -495,13 +508,13 @@ dReal* pdepth;
 	  if(B2<B3) 
 	  {
 		  BAR(1,2,pos,depth);
-		  BAR(0,1,CONTACT(contact,(ret-1)*skip)->pos,CONTACT(contact,(ret-1)*skip)->depth);
+		  BAR(0,1,prc->pos,prc->depth);
 		  
 	  }
 	  else
 	  {
 		  BAR(2,3,pos,depth);
-		  BAR(0,1,CONTACT(contact,(ret-1)*skip)->pos,CONTACT(contact,(ret-1)*skip)->depth);
+		  BAR(0,1,prc->pos,prc->depth);
 	  }
   }
   else
@@ -510,13 +523,13 @@ dReal* pdepth;
 	  if(B1<B3)
 	  {
 		  BAR(0,1,pos,depth);
-		  BAR(1,2,CONTACT(contact,(ret-1)*skip)->pos,CONTACT(contact,(ret-1)*skip)->depth);
+		  BAR(1,2,prc->pos,prc->depth);
 	  }
 	  else
 	  {		
 		  BAR(2,3,pos,depth);
-		  BAR(1,2,CONTACT(contact,(ret-1)*skip)->pos,CONTACT(contact,(ret-1)*skip)->depth);
-	  }
+		  BAR(1,2,prc->pos,prc->depth);
+		}
   }
   /*
 
@@ -546,6 +559,7 @@ dReal* pdepth;
   contact2_3: BAR(2,3,pos); goto done;
 */
 #undef FOO
+#undef FOO1
 #undef BAR
 #undef TRI_CONTAIN_POINT
  //done: ;
@@ -603,10 +617,13 @@ else {
 	norm[1]=outAx[1]*signum;
 	norm[2]=outAx[2]*signum;
 
+	//pos[0]=crpos[0];
+	//pos[1]=crpos[1];
+	//pos[2]=crpos[2];
 
 
 /////////////
- 
+/*
   dReal Q1 = -signum*dDOT14(outAx,R+0);
   dReal Q2 = -signum*dDOT14(outAx,R+1);
   dReal Q3 = -signum*dDOT14(outAx,R+2);
@@ -657,7 +674,9 @@ case 2:
 									pos[1]=(v2[1]+v0[1])/2.f;
 									pos[2]=(v2[2]+v0[2])/2.f;
 								}
+
 }
+*/
 }
 
 
@@ -667,6 +686,11 @@ case 2:
 contact->pos[0] = pos[0];
 contact->pos[1] = pos[1];
 contact->pos[2] = pos[2];
+
+
+//contact->pos[0] = crossprg[0];
+//contact->pos[1] = crossprg[1];
+//contact->pos[2] = crossprg[2];
 
 contact->depth = outDepth;
 
