@@ -1127,6 +1127,21 @@
 						Name="ShaderManager"
 						Filter="">
 						<File
+							RelativePath=".\ai_script_lua_debug.cpp">
+						</File>
+						<File
+							RelativePath=".\ai_script_lua_extension.cpp">
+						</File>
+						<File
+							RelativePath=".\ai_script_lua_extension.h">
+						</File>
+						<File
+							RelativePath=".\ai_script_lua_space.h">
+						</File>
+						<File
+							RelativePath=".\ai_script_space.h">
+						</File>
+						<File
 							RelativePath=".\ResourceManager.cpp">
 						</File>
 						<File
@@ -1140,6 +1155,12 @@
 						</File>
 						<File
 							RelativePath=".\ResourceManager_Scripting.cpp">
+							<FileConfiguration
+								Name="Mixed|Win32"
+								ExcludedFromBuild="TRUE">
+								<Tool
+									Name="VCCLCompilerTool"/>
+							</FileConfiguration>
 						</File>
 					</Filter>
 					<Filter
