@@ -196,10 +196,12 @@ void CLocatorAPI::ProcessArchive(const char* _path)
 	archive& A		= archives.back();
 	A.path			= path;
 	// Open the file
-	A.hSrcFile = CreateFile			(*path, GENERIC_READ, FILE_SHARE_READ|FILE_SHARE_WRITE, 0, OPEN_EXISTING, 0, 0);
-	R_ASSERT						(A.hSrcFile!=INVALID_HANDLE_VALUE);
-	A.hSrcMap = CreateFileMapping	(A.hSrcFile, 0, PAGE_READONLY, 0, 0, 0);
-	R_ASSERT						(A.hSrcMap!=INVALID_HANDLE_VALUE);
+	A.hSrcFile		= CreateFile		(*path, GENERIC_READ, FILE_SHARE_READ|FILE_SHARE_WRITE, 0, OPEN_EXISTING, 0, 0);
+	R_ASSERT							(A.hSrcFile!=INVALID_HANDLE_VALUE);
+	A.hSrcMap		= CreateFileMapping	(A.hSrcFile, 0, PAGE_READONLY, 0, 0, 0);
+	R_ASSERT							(A.hSrcMap!=INVALID_HANDLE_VALUE);
+	A.size			= GetFileSize		(A.hSrcFile,0);
+	R_ASSERT							(A.size>0);
 
 	// Create base path
 	string_path			base;
@@ -712,8 +714,9 @@ IReader* CLocatorAPI::r_open	(LPCSTR path, LPCSTR _fname)
 		u32 end							= (desc.ptr+desc.size_compressed)/dwAllocGranularity;
 		if ((desc.ptr+desc.size_compressed)%dwAllocGranularity)	end+=1;
 		end								*= dwAllocGranularity;
+		if (end>A.size)					end = A.size;
 		u32 sz							= (end-start);
-		u8* ptr							= (u8*)MapViewOfFile(A.hSrcMap, FILE_MAP_READ, 0, start, sz);
+		u8* ptr							= (u8*)MapViewOfFile(A.hSrcMap, FILE_MAP_READ, 0, start, sz); VERIFY(ptr);
 		u32 ptr_offs					= desc.ptr-start;
 		if (desc.size_real != desc.size_compressed)	{
 			// Compressed
