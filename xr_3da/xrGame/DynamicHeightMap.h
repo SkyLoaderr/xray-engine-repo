@@ -36,10 +36,16 @@ class CHM_Static
 			bReady	= TRUE;
 		}
 	};
+	struct Poly
+	{
+		Fvector		v[3];
+	};
+
 	Slot						pool	[dhm_matrix*dhm_matrix];			// pool 
 	Slot*						data	[dhm_matrix][dhm_matrix];			// database
 	int							c_x,c_z;									// center of heighmap
 	svector<Slot*,dhm_total>	task;
+	CList<Poly>					polys;
 public: 
 	void						Update		();
 	float						Query		(float x, float z);				// 2D query

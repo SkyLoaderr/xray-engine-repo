@@ -105,8 +105,21 @@ void CHM_Static::Update	()
 			S->clear	();
 			continue;
 		}
+		
+		// Cull polys
 		RAPID::tri* tris	= pCreator->ObjectSpace.GetStaticTris();
-
+		Fvector		vecUP;	vecUP.set(0,1,0);
+		for (DWORD tid=0; tid<triCount; tid++)
+		{
+			RAPID::tri&	T		= tris[XRC.BBoxContact[tid].id];
+			Poly		P;
+			Fvector		N;
+			P.v[0].set	(*T.verts[0]);	P.v[1].set	(*T.verts[1]);	P.v[2].set	(*T.verts[2]);
+			N.mknormal	(P.v[0],P.v[1],P.v[2]);
+			if (N.dotproduct(vecUP)<=0)	continue;
+			polys.push_back		(P);
+		}
+		
 		// Perform testing
 		for (int z=0; z<dhm_precision; z++)
 		{
@@ -119,10 +132,9 @@ void CHM_Static::Update	()
 				Fvector	dir; dir.set(0,-1,0);
 				
 				float	r_u,r_v,r_range;
-				for (DWORD tid=0; tid<triCount; tid++)
+				for (DWORD tid=0; tid<polys.size(); tid++)
 				{
-					RAPID::tri&	T		= tris[XRC.BBoxContact[tid].id];
-					if (RAPID::TestRayTri(pos,dir,T.verts,r_u,r_v,r_range,TRUE))
+					if (RAPID::TestRayTri(pos,dir,polys[tid].v,r_u,r_v,r_range,TRUE))
 					{
 						if (r_range>=0)	{
 							float y_test	= pos.y - r_range;

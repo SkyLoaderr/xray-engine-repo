@@ -52,7 +52,7 @@ void __stdcall CCustomMonster::SpinCallback(CBoneInstance* B)
 #define Z_SIZE_2 0.35f
 CCustomMonster::CCustomMonster()
 {
-//	Device.seqRender.Add	(this,REG_PRIORITY_LOW-999);
+	Device.seqRender.Add	(this,REG_PRIORITY_LOW-999);
 
 	Weapons					= 0;
 }
