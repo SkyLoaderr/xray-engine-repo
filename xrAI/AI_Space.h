@@ -8,13 +8,14 @@
 
 #pragma once
 
-class CGameGraph;
-class CGameLevelCrossTable;
-class CLevelGraph;
-class CGraphEngine;
-class CEF_Storage;
-class CSE_ALifeSimulator;
-struct lua_State;
+class	CGameGraph;
+class	CGameLevelCrossTable;
+class	CLevelGraph;
+class	CGraphEngine;
+class	CEF_Storage;
+class	CSE_ALifeSimulator;
+struct	lua_State;
+class	CCoverManager;
 
 class CAI_Space {
 	CGameGraph				*m_game_graph;
@@ -25,6 +26,7 @@ class CAI_Space {
 	CSE_ALifeSimulator		*m_alife_simulator;
 	IWriter					*m_lua_output;
 	lua_State				*m_lua_virtual_machine;
+	CCoverManager			*m_cover_manager;
 
 			void						unload			();
 	IC		void						set_alife		(CSE_ALifeSimulator *alife_simulator);
@@ -45,6 +47,8 @@ public:
 	IC		const CSE_ALifeSimulator	*get_alife		() const;
 	IC		IWriter						&lua_output		() const;
 	IC		lua_State					*lua			() const;
+	IC		const CCoverManager			&cover_manager	() const;
+
 #ifdef DEBUG
 			void						validate		(const u32			level_id) const;
 //	xr_vector<u32>						m_visited_nodes;

@@ -14,6 +14,7 @@
 #include "ef_storage.h"
 #include "ai_space.h"
 #include "ai_script_lua_extension.h"
+#include "cover_manager.h"
 
 CAI_Space *g_ai_space = 0;
 
@@ -25,7 +26,7 @@ CAI_Space::CAI_Space				()
 	m_level_graph			= 0;
 	m_cross_table			= 0;
 	m_alife_simulator		= 0;
-
+	m_cover_manager			= 0;
 
 	string256				l_caLogFileName;
 	strconcat               (l_caLogFileName,Core.ApplicationName,"_",Core.UserName,"_lua.log");
@@ -85,6 +86,9 @@ void CAI_Space::load				(LPCSTR level_name)
 	validate				((*I).second.id());
 
 	level_graph().set_level_id((*I).second.id());
+
+	m_cover_manager			= xr_new<CCoverManager>();
+	m_cover_manager->compute_static_cover();
 }
 
 void CAI_Space::unload				()
@@ -92,6 +96,7 @@ void CAI_Space::unload				()
 	xr_delete				(m_graph_engine);
 	xr_delete				(m_level_graph);
 	xr_delete				(m_cross_table);
+	xr_delete				(m_cover_manager);
 	lua_settop				(m_lua_virtual_machine,0);
 }
 

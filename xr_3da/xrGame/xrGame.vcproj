@@ -1080,6 +1080,39 @@
 				</Filter>
 			</Filter>
 			<Filter
+				Name="ACover"
+				Filter="">
+				<File
+					RelativePath=".\cover_manager.cpp">
+				</File>
+				<File
+					RelativePath=".\cover_manager.h">
+				</File>
+				<File
+					RelativePath=".\cover_manager_inline.h">
+				</File>
+				<Filter
+					Name="quadtree"
+					Filter="">
+					<File
+						RelativePath=".\quadtree.h">
+					</File>
+					<File
+						RelativePath=".\quadtree_inline.h">
+					</File>
+				</Filter>
+				<Filter
+					Name="cover_point"
+					Filter="">
+					<File
+						RelativePath=".\cover_point.h">
+					</File>
+					<File
+						RelativePath=".\cover_point_inline.h">
+					</File>
+				</Filter>
+			</Filter>
+			<Filter
 				Name="ADebug"
 				Filter="">
 				<File

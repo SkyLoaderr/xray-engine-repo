@@ -80,3 +80,9 @@ IC	lua_State					*CAI_Space::lua				() const
 	VERIFY			(m_lua_virtual_machine);
 	return			(m_lua_virtual_machine);
 }
+
+IC	const CCoverManager			&CAI_Space::cover_manager	() const
+{
+	VERIFY			(m_cover_manager);
+	return			(*m_cover_manager);
+}
