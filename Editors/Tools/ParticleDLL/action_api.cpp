@@ -60,7 +60,7 @@ PARTICLEDLL_API void __stdcall pBounce(float friction, float resilience, float c
 	S.position = pDomain(dtype, a0, a1, a2, a3, a4, a5, a6, a7, a8);
 	S.oneMinusFriction = 1.0f - friction;
 	S.resilience = resilience;
-	S.cutoffSqr = fsqr(cutoff);
+	S.cutoffSqr = _sqr(cutoff);
 	
 	_pSendAction(&S, PABounceID, sizeof(PABounce));
 }
@@ -81,8 +81,8 @@ PARTICLEDLL_API void __stdcall pDamping(float damping_x, float damping_y, float 
 	PADamping S;
 	
 	S.damping = pVector(damping_x, damping_y, damping_z);
-	S.vlowSqr = fsqr(vlow);
-	S.vhighSqr = fsqr(vhigh);
+	S.vlowSqr = _sqr(vlow);
+	S.vhighSqr = _sqr(vhigh);
 	
 	_pSendAction(&S, PADampingID, sizeof(PADamping));
 }

@@ -33,7 +33,7 @@ static inline float NRand(float sigma = 1.0f)
 	{
 		y = -logf(drand48());
 	}
-	while(drand48() > expf(-fsqr(y - 1.0f)*0.5f));
+	while(drand48() > expf(-_sqr(y - 1.0f)*0.5f));
 	
 	if(rand() & 0x1)
 		return y * sigma * ONE_OVER_SIGMA_EXP;
@@ -277,8 +277,8 @@ void PAAvoid::Execute(ParticleGroup *group)
 		break;
 	case PDDisc:
 		{
-			float r1Sqr = fsqr(position.radius1);
-			float r2Sqr = fsqr(position.radius2);
+			float r1Sqr = _sqr(position.radius1);
+			float r2Sqr = _sqr(position.radius2);
 			
 			// See which particles bounce.
 			for(int i = 0; i < group->p_count; i++)
@@ -361,7 +361,7 @@ void PAAvoid::Execute(ParticleGroup *group)
 					continue; // I'm not heading toward it.
 				
 				// Compute length for second rejection test.
-				float t = v - sqrtf(disc);
+				float t = v - _sqrt(disc);
 				if(t < 0 || t > (vm * look_ahead))
 					continue;
 				
@@ -466,8 +466,8 @@ void PABounce::Execute(ParticleGroup *group)
 		break;
 	case PDDisc:
 		{
-			float r1Sqr = fsqr(position.radius1);
-			float r2Sqr = fsqr(position.radius2);
+			float r1Sqr = _sqr(position.radius1);
+			float r2Sqr = _sqr(position.radius2);
 			
 			// See which particles bounce.
 			for(int i = 0; i < group->p_count; i++)
@@ -753,7 +753,7 @@ void PAExplosion::Execute(ParticleGroup *group)
 	float radius = velocity * age;
 	float magdt = magnitude * dt;
 	float oneOverSigma = 1.0f / stdev;
-	float inexp = -0.5f*fsqr(oneOverSigma);
+	float inexp = -0.5f*_sqr(oneOverSigma);
 	float outexp = ONEOVERSQRT2PI * oneOverSigma;
 	
 	for(int i = 0; i < group->p_count; i++)
@@ -763,8 +763,8 @@ void PAExplosion::Execute(ParticleGroup *group)
 		// Figure direction to particle.
 		pVector dir(m.pos - center);
 		float distSqr = dir.length2();
-		float dist = sqrtf(distSqr);
-		float DistFromWaveSqr = fsqr(radius - dist);
+		float dist = _sqrt(distSqr);
+		float DistFromWaveSqr = _sqr(radius - dist);
 		
 		float Gd = exp(DistFromWaveSqr * inexp) * outexp;
 		
@@ -793,7 +793,7 @@ void PAFollow::Execute(ParticleGroup *group)
 			if(tohimlenSqr < max_radiusSqr)
 			{
 				// Compute force exerted between the two bodies
-				m.vel += tohim * (magdt / (sqrtf(tohimlenSqr) * (tohimlenSqr + epsilon)));
+				m.vel += tohim * (magdt / (_sqrt(tohimlenSqr) * (tohimlenSqr + epsilon)));
 			}
 		}
 	}
@@ -808,7 +808,7 @@ void PAFollow::Execute(ParticleGroup *group)
 			float tohimlenSqr = tohim.length2();
 			
 			// Compute force exerted between the two bodies
-			m.vel += tohim * (magdt / (sqrtf(tohimlenSqr) * (tohimlenSqr + epsilon)));
+			m.vel += tohim * (magdt / (_sqrt(tohimlenSqr) * (tohimlenSqr + epsilon)));
 		}
 	}
 }
@@ -836,7 +836,7 @@ void PAGravitate::Execute(ParticleGroup *group)
 				if(tohimlenSqr < max_radiusSqr)
 				{
 					// Compute force exerted between the two bodies
-					pVector acc(tohim * (magdt / (sqrtf(tohimlenSqr) * (tohimlenSqr + epsilon))));
+					pVector acc(tohim * (magdt / (_sqrt(tohimlenSqr) * (tohimlenSqr + epsilon))));
 					
 					m.vel += acc;
 					mj.vel -= acc;
@@ -859,7 +859,7 @@ void PAGravitate::Execute(ParticleGroup *group)
 				float tohimlenSqr = tohim.length2();
 				
 				// Compute force exerted between the two bodies
-				pVector acc(tohim * (magdt / (sqrtf(tohimlenSqr) * (tohimlenSqr + epsilon))));
+				pVector acc(tohim * (magdt / (_sqrt(tohimlenSqr) * (tohimlenSqr + epsilon))));
 				
 				m.vel += acc;
 				mj.vel -= acc;
@@ -1006,7 +1006,7 @@ void PAMove::Execute(ParticleGroup *group)
 	{
 		Particle &m = group->list[i];
 		// пропустить (на следующем кадре будет удален)
-		if (m.flags&Particle::DYING) continue;
+		if (m.flags.is(Particle::DYING)) continue;
 		// move
 		m.age	+= dt;
 		m.pos	+= m.vel * dt;
@@ -1039,7 +1039,7 @@ void PAOrbitLine::Execute(ParticleGroup *group)
 			
 			if(rSqr < max_radiusSqr)
 				// Step velocity with acceleration
-				m.vel += into * (magdt / (sqrtf(rSqr) + (rSqr + epsilon)));
+				m.vel += into * (magdt / (_sqrt(rSqr) + (rSqr + epsilon)));
 		}
 	}
 	else
@@ -1062,7 +1062,7 @@ void PAOrbitLine::Execute(ParticleGroup *group)
 			float rSqr = into.length2();
 			
 			// Step velocity with acceleration
-			m.vel += into * (magdt / (sqrtf(rSqr) + (rSqr + epsilon)));
+			m.vel += into * (magdt / (_sqrt(rSqr) + (rSqr + epsilon)));
 		}
 	}
 }
@@ -1088,7 +1088,7 @@ void PAOrbitPoint::Execute(ParticleGroup *group)
 			
 			// Step velocity with acceleration
 			if(rSqr < max_radiusSqr)
-				m.vel += dir * (magdt / (sqrtf(rSqr) + (rSqr + epsilon)));
+				m.vel += dir * (magdt / (_sqrt(rSqr) + (rSqr + epsilon)));
 		}
 	}
 	else
@@ -1106,7 +1106,7 @@ void PAOrbitPoint::Execute(ParticleGroup *group)
 			float rSqr = dir.length2();
 			
 			// Step velocity with acceleration
-			m.vel += dir * (magdt / (sqrtf(rSqr) + (rSqr + epsilon)));
+			m.vel += dir * (magdt / (_sqrt(rSqr) + (rSqr + epsilon)));
 		}
 	}
 }
@@ -1342,12 +1342,12 @@ void PASpeedLimit::Execute(ParticleGroup *group)
 		float sSqr = m.vel.length2();
 		if(sSqr<min_sqr && sSqr)
 		{
-			float s = sqrtf(sSqr);
+			float s = _sqrt(sSqr);
 			m.vel *= (min_speed/s);
 		}
 		else if(sSqr>max_sqr)
 		{
-			float s = sqrtf(sSqr);
+			float s = _sqrt(sSqr);
 			m.vel *= (max_speed/s);
 		}
 	}
@@ -1389,14 +1389,14 @@ void PATargetRotate::Execute(ParticleGroup *group)
 {
 	float scaleFac = scale * dt;
 
-	pVector r = pVector(fabsf(rot.x),fabsf(rot.y),fabsf(rot.z));
+	pVector r = pVector(_abs(rot.x),_abs(rot.y),_abs(rot.z));
 
 	for(int i = 0; i < group->p_count; i++)
 	{
 		Particle &m = group->list[i];
 //		m.rot += (r - m.rot) * scaleFac;
 		pVector sign(m.rot.x>=0.f?scaleFac:-scaleFac,m.rot.y>=0.f?scaleFac:-scaleFac,m.rot.z>=0.f?scaleFac:-scaleFac);
-		pVector dif((r.x-fabsf(m.rot.x))*sign.x,(r.y-fabsf(m.rot.y))*sign.x,(r.z-fabsf(m.rot.z))*sign.x);
+		pVector dif((r.x-_abs(m.rot.x))*sign.x,(r.y-_abs(m.rot.y))*sign.x,(r.z-_abs(m.rot.z))*sign.x);
 		m.rot	+= dif;
 	}
 }
@@ -1437,7 +1437,7 @@ void PAVortex::Execute(ParticleGroup *group)
 			if(rSqr > max_radiusSqr)
 				continue;
 			
-			float r = sqrtf(rSqr);
+			float r = _sqrt(rSqr);
 			
 			// Compute normalized offset vector.
 			pVector offnorm(offset / r);
@@ -1477,7 +1477,7 @@ void PAVortex::Execute(ParticleGroup *group)
 			// Compute distance from particle to tip of vortex.
 			float rSqr = offset.length2();
 			
-			float r = sqrtf(rSqr);
+			float r = _sqrt(rSqr);
 			
 			// Compute normalized offset vector.
 			pVector offnorm(offset / r);
@@ -1637,7 +1637,7 @@ pDomain::pDomain(PDomainEnum dtype, float a0, float a1,
 			{
 				radius1 = a7; radius2 = a6;
 			}
-			radius1Sqr = fsqr(radius1);
+			radius1Sqr = _sqr(radius1);
 			
 			// Given an arbitrary nonzero vector n, make two orthonormal
 			// vectors u and v forming a frame [u,v,n.normalize()].
@@ -1666,7 +1666,7 @@ pDomain::pDomain(PDomainEnum dtype, float a0, float a1,
 			p1 = pVector(a0, a1, a2);
 			radius1 = a3;
 			float tmp = 1./radius1;
-			radius2Sqr = -0.5f*fsqr(tmp);
+			radius2Sqr = -0.5f*_sqr(tmp);
 			radius2 = ONEOVERSQRT2PI * tmp;
 		}
 		break;
@@ -1747,10 +1747,10 @@ BOOL pDomain::Within(const pVector &pos) const
 			float rSqr = xrad.length2();
 			
 			if(type == PDCone)
-				return (rSqr <= fsqr(dist * radius1) &&
-				rSqr >= fsqr(dist * radius2));
+				return (rSqr <= _sqr(dist * radius1) &&
+				rSqr >= _sqr(dist * radius2));
 			else
-				return (rSqr <= radius1Sqr && rSqr >= fsqr(radius2));
+				return (rSqr <= radius1Sqr && rSqr >= _sqr(radius2));
 		}
 	case PDBlob:
 		{

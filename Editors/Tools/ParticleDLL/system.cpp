@@ -242,7 +242,7 @@ int _ParticleState::GenerateGroups(int p_group_count)
 	// Couldn't find a big enough gap. Reallocate.
 	int new_count = 16 + group_count + p_group_count;
 	ParticleGroup **glist = new ParticleGroup *[new_count];
-	memcpy(glist, group_list, group_count * sizeof(void*));
+	Memory.mem_copy(glist, group_list, group_count * sizeof(void*));
 	for(i=group_count; i<new_count; i++)
 		glist[i] = NULL;
 	delete [] group_list;
@@ -279,7 +279,7 @@ int _ParticleState::GenerateLists(int list_count)
 	// Couldn't find a big enough gap. Reallocate.
 	int new_count = 16 + alist_count + list_count;
 	PAHeader **new_list = new PAHeader *[new_count];
-	memcpy(new_list, alist_list, alist_count * sizeof(void*));
+	Memory.mem_copy(new_list, alist_list, alist_count * sizeof(void*));
 	for(i=list_count; i<new_count; i++)
 		new_list[i] = NULL;
 	delete [] alist_list;
@@ -420,7 +420,7 @@ void _pAddActionToList(ParticleAction *S, int size)
 		// Must reallocate.
 		int new_alloc = 16 + alist->actions_allocated;
 		PAHeader *new_alist = new PAHeader[new_alloc];
-		memcpy(new_alist, alist, alist->count * sizeof(PAHeader));
+		Memory.mem_copy(new_alist, alist, alist->count * sizeof(PAHeader));
 		
 		delete [] alist;
 		_ps.alist_list[_ps.list_id] = _ps.pact = alist = new_alist;
@@ -429,7 +429,7 @@ void _pAddActionToList(ParticleAction *S, int size)
 	}
 	
 	// Now add it in.
-	memcpy(&alist[alist->count], S, size);
+	Memory.mem_copy(&alist[alist->count], S, size);
 	alist->count++;
 }
 
@@ -786,7 +786,7 @@ PARTICLEDLL_API int __stdcall pSetMaxParticles(int max_count)
 		return pg->max_particles;
 	}
 	
-	memcpy(pg2, pg, (pg->p_count + 2) * sizeof(Particle));
+	Memory.mem_copy(pg2, pg, (pg->p_count + 2) * sizeof(Particle));
 	
 	delete [] pg;
 	

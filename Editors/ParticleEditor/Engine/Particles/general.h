@@ -34,7 +34,7 @@ struct Particle
 	float	alpha;	// This is both cunning and scary.
 	float	age;
 	float	frame;
-	DWORD	flags;
+	Flags32	flags;
 };
 
 // A group of particles - Info and an array of Particles
@@ -48,14 +48,14 @@ struct ParticleGroup
 	inline void Remove(int i)
 	{
 		Particle& m = list[i];
-		if (m.flags&Particle::DYING) m		 = list[--p_count];
-		else						 m.flags |= Particle::DYING;
+		if (m.flags.is(Particle::DYING))	m		 = list[--p_count];
+		else								m.flags.set(Particle::DYING,TRUE);
 	}
 	
 	inline BOOL Add(const pVector &pos, const pVector &posB,
 		const pVector &size, const pVector &rot, const pVector &vel, const pVector &color,
 		const float alpha = 1.0f,
-		const float age = 0.0f, float frame=0, WORD flags=Particle::BIRTH)
+		const float age = 0.0f, float frame=0, u32 flags=Particle::BIRTH)
 	{
 		if(p_count >= max_particles)
 			return FALSE;
@@ -72,7 +72,7 @@ struct ParticleGroup
 			P.alpha = alpha;
 			P.age = age;
 			P.frame = frame;
-			P.flags = flags;
+			P.flags.set(flags);
 			p_count++;
 			return TRUE;
 		}
@@ -473,8 +473,5 @@ extern "C" PARTICLEDLL_API PAHeader* __stdcall _GetListPtr(int action_list_num);
 #endif
 
 #pragma pack( pop ) // push 4
-
-// Just a silly little function.
-static inline float fsqr(float f) { return f * f; }
 
 #endif

@@ -36,7 +36,7 @@ public:
 	
 	inline float length() const
 	{
-		return sqrtf(x*x+y*y+z*z);
+		return _sqrt(x*x+y*y+z*z);
 	}
 	
 	inline float length2() const
@@ -46,7 +46,7 @@ public:
 	
 	inline float normalize()
 	{
-		float onel = 1.0f / sqrtf(x*x+y*y+z*z);
+		float onel = 1.0f / _sqrt(x*x+y*y+z*z);
 		x *= onel;
 		y *= onel;
 		z *= onel;
