@@ -94,6 +94,7 @@ void CEnvironment::Load(CInifile *pIni, char *section)
 
 void CEnvironment::Load_Music(CInifile* INI)
 {
+	/*
 	if (INI->SectionExists("music")) 
 	{
 		for (int i=0; ; i++)
@@ -104,7 +105,7 @@ void CEnvironment::Load_Music(CInifile* INI)
 			if (!INI->LineExists("music",buf)) break;
 
 			LPCSTR N		= INI->ReadSTRING("music",buf);
-			CSoundStream* S = pSounds->CreateStream(N);
+			CSoundStream* S = Sounds->CreateStream(N);
 			R_ASSERT		(S);
 			Music.push_back	(S);
 		}
@@ -121,10 +122,12 @@ void CEnvironment::Load_Music(CInifile* INI)
 			}
 		}
 	}
+	*/
 }
 
 void CEnvironment::Music_Play(int id)
 {
+	/*
 	if (Music.empty()) return;
 
 	id %= Music.size();
@@ -135,6 +138,7 @@ void CEnvironment::Music_Play(int id)
 		Music[id]->Play		(true);
 		Music[id]->SetVolume(1);
 	}
+	*/
 }
 
 void CEnvironment::OnMove()

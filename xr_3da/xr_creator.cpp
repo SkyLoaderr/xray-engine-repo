@@ -25,7 +25,7 @@ CCreator::~CCreator	( )
 	_DELETE						( pLevel	);
 	Engine.FS.Close				( LL_Stream	);
 
-	pSounds->Delete				(Sounds_Ambience);
+	Sound->Delete				(Sounds_Ambience);
 
 	// Render-level unload
 	Render->OnDeviceDestroy		( );
@@ -34,7 +34,7 @@ CCreator::~CCreator	( )
 
 	// Unload sounds
 	for (u32 i=0; i<Sounds.size(); i++)
-		pSounds->Delete	(Sounds[i]);
+		Sound->Delete	(Sounds[i]);
 	Sounds.clear();
 
 	// Unregister
@@ -123,14 +123,14 @@ BOOL CCreator::Load(u32 dwNum)
 			sscanf				( I->second,"%[^,],%f,%f,%f",fname,&pos.x,&pos.y,&pos.z);
 			if (0==stricmp(fname,"ambient"))	continue;
 			Sounds.push_back	(sound());
-			pSounds->Create		(Sounds.back(),TRUE,fname);
-			pSounds->PlayAtPos	(Sounds.back(),0,pos,true);
+			Sound->Create		(Sounds.back(),TRUE,fname);
+			Sound->PlayAtPos	(Sounds.back(),0,pos,true);
 		}
 		if (pLevel->LineExists("static_sounds","ambient"))
 		{
 			LPCSTR fname		= pLevel->ReadSTRING("static_sounds","ambient");
-			pSounds->Create		(Sounds_Ambience,FALSE,fname);
-			pSounds->Play		(Sounds_Ambience,0,true);
+			Sound->Create		(Sounds_Ambience,FALSE,fname);
+			Sound->Play			(Sounds_Ambience,0,true);
 		} 
 	}
 	{
@@ -140,7 +140,7 @@ BOOL CCreator::Load(u32 dwNum)
 			Sounds_Random.reserve	(S.size());
 			for (CInifile::SectIt I=S.begin(); I!=S.end(); I++) {
 				Sounds_Random.push_back	(sound());
-				pSounds->Create			(Sounds_Random.back(),TRUE,I->second);
+				Sound->Create			(Sounds_Random.back(),TRUE,I->second);
 			}
 			Sounds_dwNextTime		= Device.TimerAsync	()	+ 5000;
 		}
@@ -194,6 +194,6 @@ void CCreator::OnFrame	( void )
 		pos.normalize			();
 		pos.mul					(::Random.randF(10,50));
 		pos.add					(Device.vCameraPosition);
-		pSounds->PlayAtPos		(Sounds_Random[::Random.randI(Sounds_Random.size())],0,pos,false);
+		Sound->PlayAtPos		(Sounds_Random[::Random.randI(Sounds_Random.size())],0,pos,false);
 	}
 }
