@@ -67,6 +67,7 @@ BOOL APIENTRY DllMain				(HANDLE module_handle, DWORD call_reason, LPVOID reserv
 		}
 		case DLL_PROCESS_DETACH: {
 			xr_delete					(g_object_factory);
+			xr_delete					(pSettings);
 			if (prop_helper_module)
 				FreeLibrary				(prop_helper_module);
 			Core._destroy				();
