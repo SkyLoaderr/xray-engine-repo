@@ -2,7 +2,6 @@
 
 #include "xrPool.h"
 #include "cl_collector.h"
-#include "cform_build.h"
 
 class xrMU_Model
 {
@@ -79,7 +78,7 @@ public:
 		virtual ~_face()	{ };
 	};
 public:
-	ref_str					m_name;
+	string128				m_name;
 	u16						m_lod_ID;
 	v_vertices				m_vertices;
 	v_faces					m_faces;
@@ -117,7 +116,7 @@ public:
 	void					Load				(IReader& fs);
 	void					calc_lighting		();
 
-	void					export_cform_game	(_mesh& m, xr_vector<cform_FailFace>& ff);
+	void					export_cform_game	(CDB::CollectorPacked& CL);
 	void					export_cform_rcast	(CDB::CollectorPacked& CL);
 	void					export_ogf			();
 };
