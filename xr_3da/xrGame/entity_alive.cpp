@@ -11,6 +11,7 @@
 
 
 #define SMALL_ENTITY_RADIUS		0.6f
+#define BLOOD_MARKS_SECT		"bloody_marks"
 
 
 //отметки крови на стенах 
@@ -34,10 +35,6 @@ u32	  CEntityAlive::m_dwMinBurnTime = 10000;
 float CEntityAlive::m_fStartBurnWoundSize = 0.3f;
 //размер раны, чтоб остановить партиклы
 float CEntityAlive::m_fStopBurnWoundSize = 0.1f;
-//время через которое с раны размером 1.0 будет падать капля крови
-float CEntityAlive::m_fBloodDropTime	= 0.9f;
-float m_fBloodDropTimeMax = 0.9f;
-float m_fBloodDropTimeMin = 0.9f;
 
 STR_VECTOR* CEntityAlive::m_pFireParticlesVector = NULL;
 
@@ -69,7 +66,7 @@ void CEntityAlive::Load		(LPCSTR section)
 
 	//bloody wallmarks
 	if(0==m_pBloodMarksVector)
-		LoadBloodyWallmarks ("bloody_marks");
+		LoadBloodyWallmarks (BLOOD_MARKS_SECT);
 
 	if(0==m_pFireParticlesVector)
 		LoadFireParticles	("entity_fire_particles");
@@ -112,11 +109,6 @@ void CEntityAlive::LoadBloodyWallmarks (LPCSTR section)
 		s.create ("effects\\wallmark",_GetItem(wallmarks_name,k,tmp));
 		m_pBloodDropsVector->push_back	(s);
 	}
-
-	m_fBloodDropTime		= pSettings->r_float(section, "blood_drop_time");
-
-	m_fBloodDropTimeMax = pSettings->r_float(section, "blood_drop_time_max");
-	m_fBloodDropTimeMin = pSettings->r_float(section, "blood_drop_time_min");
 
 
 	m_fStartBloodWoundSize  = pSettings->r_float(section, "start_blood_size");
@@ -453,6 +445,9 @@ void CEntityAlive::StartBloodDrops			(CWound* pWound)
 
 void CEntityAlive::UpdateBloodDrops()
 {
+	static float m_fBloodDropTimeMax = pSettings->r_float(BLOOD_MARKS_SECT, "blood_drop_time_max");
+	static float m_fBloodDropTimeMin = pSettings->r_float(BLOOD_MARKS_SECT, "blood_drop_time_min");
+
 	if(m_BloodWounds.empty()) return;
 
 	if(!g_Alive())

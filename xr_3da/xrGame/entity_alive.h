@@ -130,8 +130,6 @@ protected:
 	static float m_fStartBloodWoundSize;
 	//размер раны, чтоб остановить кровь
 	static float m_fStopBloodWoundSize;
-	//время через которое с раны размером 1.0 будет падать капля крови
-	static float m_fBloodDropTime;
 	static float m_fBloodDropSize;
 
 	//обновление ран, и рисование отметок от капающей крови
