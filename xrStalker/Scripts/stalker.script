@@ -4,8 +4,8 @@ function stalker_script:__init(object)
 	self.object			= object
 end
 
-function stalker_script:reinit()
-end
+--function stalker_script:reinit()
+--end
 
 function stalker_script:reload(section)
 end
