@@ -70,7 +70,8 @@ void CAI_Space::load				(LPCSTR level_name)
 	const CGameGraph::SLevel &current_level = game_graph().header().level(level_name);
 	
 #ifdef DEBUG
-	validate				(current_level.id());
+	if (!xr_strcmp(current_level.name(),level_name))
+		validate			(current_level.id());
 #endif
 
 	level_graph().level_id	(current_level.id());

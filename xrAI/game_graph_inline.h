@@ -144,10 +144,12 @@ IC	const GameGraph::SLevel &GameGraph::CHeader::level	(LPCSTR level_name) const
 		if (!xr_strcmp((*I).second.name(),level_name))
 			return	((*I).second);
 	
+#ifdef DEBUG
+	Msg			("! There is no specified level %s in the game graph!",level_name);
+	return		(levels().begin()->second);
+#else
 	R_ASSERT3	(false,"There is no specified level in the game graph!",level_name);
 	NODEFAULT;
-#ifdef DEBUG
-	return		(levels().begin()->second);
 #endif
 }
 
