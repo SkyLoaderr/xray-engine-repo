@@ -65,7 +65,7 @@ protected:
 	// Death
 	float					hit_slowmo;
 	float					hit_factor;
-
+	bool					bDeathInit;
 	u32						self_gmtl_id;
 	u32						last_gmtl_id;
 	//Death physics			

@@ -81,6 +81,7 @@ CActor::CActor() : CEntityAlive()
 	self_gmtl_id			= GAMEMTL_NONE;
 	last_gmtl_id			= GAMEMTL_NONE;
 	m_phSkeleton			=NULL;
+	bDeathInit				=false;
 }
 
 CActor::~CActor()
@@ -366,7 +367,7 @@ void CActor::Die	( )
 	mstate_real		&=		~mcAnyMove;
 	ph_Movement.GetDeathPosition(vPosition);
 	ph_Movement.DestroyCharacter();
-	create_Skeleton();
+//	create_Skeleton();
 }
 
 void CActor::g_Physics			(Fvector& _accel, float jump, float dt)
@@ -376,6 +377,15 @@ void CActor::g_Physics			(Fvector& _accel, float jump, float dt)
 			mRotate.set(m_phSkeleton->mXFORM);
 			mRotate.c.set(0,0,0);
 			vPosition.set(m_phSkeleton->mXFORM.c);
+		}
+		else
+		{if(bDeathInit)
+		{
+			create_Skeleton();
+			bDeathInit=false;
+			return;
+		}
+			bDeathInit=true;
 		}
 		return;
 	}
@@ -1123,7 +1133,7 @@ float CActor::HitScale	(int element)
 }
 
 void CActor::create_Skeleton(){
-	//PKinematics	(pVisual)->PlayCycle(ST->death_init);
+	
 	//create shell
 	CKinematics* M		= PKinematics(pVisual);			VERIFY(M);
 	m_phSkeleton		= P_create_Shell();
