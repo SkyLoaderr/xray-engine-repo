@@ -283,10 +283,8 @@ void CCustomMonster::shedule_Update	( u32 DT )
 		// here is monster AI call
 		m_fTimeUpdateDelta				= dt;
 		Device.Statistic.AI_Think.Begin	();
-		if (GetScriptControl()) {
+		if (GetScriptControl())
 			ProcessScripts();
-			return;
-		}
 		else {
 			while (!m_tpActionQueue.empty()) {
 				ResetScriptData(false);

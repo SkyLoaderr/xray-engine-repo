@@ -81,6 +81,7 @@ bool CAI_Stalker::bfAssignMovement(CEntityAction *tpEntityAction)
 		l_tWatchAction.m_tWatchVector,
 		0
 	);
+
 	return			(true);
 }
 
@@ -101,7 +102,7 @@ bool CAI_Stalker::bfAssignWatch(CEntityAction *tpEntityAction)
 			else
 				SetPointLookAngles(l_tWatchAction.m_tWatchVector,yaw,pitch);
 			break;
-											 }
+		}
 		case CWatchAction::eGoalTypeDirection : {
 			if (eLookTypeDirection == l_tWatchAction.m_tWatchType) {
 				l_tWatchAction.m_tWatchVector.getHP(yaw,pitch);
@@ -114,10 +115,10 @@ bool CAI_Stalker::bfAssignWatch(CEntityAction *tpEntityAction)
 				else
 					SetPointLookAngles(l_tWatchAction.m_tWatchVector,yaw,pitch);
 			break;
-												}
+		}
 		case CWatchAction::eGoalTypeWatchType : {
 			break;
-												}
+		}
 		default : NODEFAULT;
 	}
 

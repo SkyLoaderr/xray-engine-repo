@@ -88,14 +88,14 @@ void CWatchAction::SetWatchObject(CLuaGameObject *tpObjectToWatch)
 
 CParticleAction::~CParticleAction()
 {
-	xr_delete			(m_tpParticleSystem);
+	//xr_delete			(m_tpParticleSystem);
 }
 
-void CParticleAction::SetParticle(LPCSTR caParticleToRun)
+void CParticleAction::SetParticle(LPCSTR caParticleToRun, bool bAutoRemove)
 {
 	strcpy				(m_caParticleToRun,caParticleToRun);
 	m_tGoalType			= eGoalTypeParticleAttached;
-	m_tpParticleSystem	= xr_new<CParticlesObject>(m_caParticleToRun,true);
+	m_tpParticleSystem	= xr_new<CParticlesObject>(m_caParticleToRun,bAutoRemove);
 	m_bStartedToPlay	= false;
 }
 

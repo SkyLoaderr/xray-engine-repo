@@ -240,37 +240,42 @@ public:
 		eGoalTypeDummy = u32(-1),
 	};
 	string32						m_caSoundToPlay;
+	string32						m_caBoneName;
 	EGoalType						m_tGoalType;
 	ref_sound						*m_tpSound;
 	bool							m_bLooped;
-	bool							m_bSound3D;
 	bool							m_bStartedToPlay;
 	Fvector							m_tSoundPosition;
+	Fvector							m_tSoundAngles;
 
 							CSoundAction		()
 	{
 		strcpy				(m_caSoundToPlay,"");
+		strcpy				(m_caBoneName,"");
 		m_tGoalType			= eGoalTypeDummy;
 		m_bCompleted		= false;
 		m_bStartedToPlay	= false;
 		m_bLooped			= false;
-		m_bSound3D			= false;
 		m_tpSound			= 0;
+		m_tSoundPosition.set(0,0,0);
+		m_tSoundAngles.set	(0,0,0);
 	}
 
-	CSoundAction		(LPCSTR caSoundToPlay, bool bLooped = false, bool bSound3D = true)
+							CSoundAction		(LPCSTR caSoundToPlay, LPCSTR caBoneName, const Fvector &tPositionOffset = Fvector().set(0,0,0), const Fvector &tAngleOffset = Fvector().set(0,0,0), bool bLooped = false)
 	{
 		m_bLooped			= bLooped;
-		m_bSound3D			= bSound3D;
+		SetBone				(caBoneName);
+		SetPosition			(tPositionOffset);
+		SetAngles			(tAngleOffset);
 		SetSound			(caSoundToPlay);
 	}
 
-							CSoundAction		(LPCSTR caSoundToPlay, const Fvector &tPosition, bool bLooped = false, bool bSound3D = true)
+							CSoundAction		(LPCSTR caSoundToPlay, const Fvector &tPosition, const Fvector &tAngleOffset = Fvector().set(0,0,0), bool bLooped = false)
 	{
 		m_bLooped			= bLooped;
-		m_bSound3D			= bSound3D;
 		SetSound			(caSoundToPlay);
 		SetPosition			(tPosition);
+		SetAngles			(tAngleOffset);
 	}
 
 	virtual					~CSoundAction		()
@@ -289,7 +294,7 @@ public:
 		m_bStartedToPlay	= false;
 		string256			l_caFileName;
 		if (FS.exist(l_caFileName,"$game_sounds$",m_caSoundToPlay,".wav")) {
-			::Sound->create	(*(m_tpSound = xr_new<ref_sound>()),m_bSound3D,m_caSoundToPlay);
+			::Sound->create	(*(m_tpSound = xr_new<ref_sound>()),TRUE,m_caSoundToPlay);
 			m_bStartedToPlay= false;
 			m_bCompleted	= false;
 		}
@@ -306,6 +311,18 @@ public:
 		m_tGoalType			= eGoalTypeSoundPosition;
 		m_bStartedToPlay	= false;
 	}
+
+			void			SetBone				(LPCSTR caBoneName)
+	{
+		strcpy				(m_caBoneName,caBoneName);
+		m_bStartedToPlay	= false;
+	}
+	
+			void			SetAngles			(const Fvector &tAngles)
+	{
+		m_tSoundAngles		= tAngles;
+		m_bStartedToPlay	= false;
+	}
 };
 
 class CParticleAction : public CAbstractAction {
@@ -316,39 +333,60 @@ public:
 		eGoalTypeDummy = u32(-1),
 	};
 	string32						m_caParticleToRun;
+	string32						m_caBoneName;
 	EGoalType						m_tGoalType;
 	CParticlesObject				*m_tpParticleSystem;
 	bool							m_bStartedToPlay;
 	Fvector							m_tParticlePosition;
+	Fvector							m_tParticleAngles;
 
 							CParticleAction		()
 	{
 		strcpy				(m_caParticleToRun,"");
+		strcpy				(m_caBoneName,"");
 		m_tGoalType			= eGoalTypeDummy;
 		m_bCompleted		= false;
 		m_bStartedToPlay	= false;
 		m_tpParticleSystem	= 0;
+		m_tParticlePosition.set(0,0,0);
+		m_tParticleAngles.set	(0,0,0);
 	}
 
-							CParticleAction		(LPCSTR caPartcileToRun)
+							CParticleAction		(LPCSTR caPartcileToRun, LPCSTR caBoneName, const Fvector &tPositionOffset = Fvector().set(0,0,0), const Fvector &tAngleOffset = Fvector().set(0,0,0), bool bAutoRemove = false)
 	{
-		SetParticle			(caPartcileToRun);
+		SetBone				(caBoneName);
+		SetPosition			(tPositionOffset);
+		SetAngles			(tAngleOffset);
+		SetParticle			(caPartcileToRun,bAutoRemove);
 	}
 
-							CParticleAction		(LPCSTR caPartcileToRun, const Fvector &tPosition)
+							CParticleAction		(LPCSTR caPartcileToRun, const Fvector &tPosition, const Fvector &tAngleOffset = Fvector().set(0,0,0), bool bAutoRemove = false)
 	{
-		SetParticle			(caPartcileToRun);
+		SetParticle			(caPartcileToRun,bAutoRemove);
 		SetPosition			(tPosition);
+		SetAngles			(tAngleOffset);
 	}
 
 	virtual					~CParticleAction	();
 
-			void			SetParticle			(LPCSTR caParticleToRun);
+			void			SetParticle			(LPCSTR caParticleToRun, bool bAutoRemove);
 			
 			void			SetPosition			(const Fvector &tPosition)
 	{
 		m_tParticlePosition	= tPosition;
 		m_tGoalType			= eGoalTypeParticlePosition;
+		m_bStartedToPlay	= false;
+	}
+
+			void			SetBone				(LPCSTR caBoneName)
+	{
+		strcpy				(m_caBoneName,caBoneName);
+		m_bStartedToPlay	= false;
+	}
+
+			void			SetAngles			(const Fvector &tAngleOffset)
+	{
+		m_tParticleAngles	= tAngleOffset;
 		m_bStartedToPlay	= false;
 	}
 };
@@ -394,8 +432,9 @@ public:
 		WATCH_FLAG		= u32(1 << 1),
 		ANIMATION_FLAG	= u32(1 << 2),
 		SOUND_FLAG		= u32(1 << 3),
-		OBJECT_FLAG		= u32(1 << 4),
-		TIME_FLAG		= u32(1 << 5),
+		PARTICLE_FLAG	= u32(1 << 4),
+		OBJECT_FLAG		= u32(1 << 5),
+		TIME_FLAG		= u32(1 << 6),
 	};
 	u32								m_dwFlags;
 	_TIME_ID						m_tLifeTime;
@@ -459,6 +498,11 @@ public:
 		SetAction			(tSoundAction,m_tSoundAction);
 	}
 
+	IC		void			SetAction(const CParticleAction &tParticleAction)
+	{
+		SetAction			(tParticleAction,m_tParticleAction);
+	}
+
 	IC		void			SetAction(const CObjectAction &tObjectAction)
 	{
 		SetAction			(tObjectAction,m_tObjectAction);
@@ -494,6 +538,11 @@ public:
 		return				(CheckIfActionCompleted(m_tSoundAction));
 	}
 
+	IC		bool			CheckIfParticleCompleted() const
+	{
+		return				(CheckIfActionCompleted(m_tParticleAction));
+	}
+
 	IC		bool			CheckIfObjectCompleted() const
 	{
 		return				(CheckIfActionCompleted(m_tObjectAction));
@@ -514,6 +563,8 @@ public:
 			return			(true);
 		if ((CActionCondition::SOUND_FLAG		& m_tActionCondition.m_dwFlags)	&& CheckIfSoundCompleted	())
 			return			(true);
+		if ((CActionCondition::PARTICLE_FLAG	& m_tActionCondition.m_dwFlags)	&& CheckIfParticleCompleted	())
+			return			(true);
 		if ((CActionCondition::OBJECT_FLAG		& m_tActionCondition.m_dwFlags)	&& CheckIfObjectCompleted	())
 			return			(true);
 		if ((CActionCondition::TIME_FLAG		& m_tActionCondition.m_dwFlags)	&& CheckIfTimeOver			())
@@ -523,6 +574,7 @@ public:
 			&& CheckIfWatchCompleted()
 			&& CheckIfAnimationCompleted()
 			&& CheckIfSoundCompleted()
+			&& CheckIfParticleCompleted()
 			&& CheckIfObjectCompleted()
 			)
 			return			(true);

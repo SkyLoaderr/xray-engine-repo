@@ -451,10 +451,8 @@ void CAI_Stalker::shedule_Update		( u32 DT )
 		VERIFY				(_valid(Position()));
 		m_fTimeUpdateDelta				= dt;
 		Device.Statistic.AI_Think.Begin	();
-		if (GetScriptControl()) {
+		if (GetScriptControl())
 			ProcessScripts();
-			return;
-		}
 		else {
 			while (!m_tpActionQueue.empty()) {
 				ResetScriptData(false);

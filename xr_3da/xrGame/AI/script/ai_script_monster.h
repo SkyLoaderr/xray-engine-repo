@@ -8,7 +8,6 @@
 
 #pragma once
 
-#include "..\\..\\..\\xr_object.h"
 #include "..\\..\\GameObject.h"
 
 class CEntityAction;
@@ -19,22 +18,23 @@ protected:
 	bool						m_bScriptControl;
 	string64					m_caScriptName;
 public:
+	const Fmatrix				GetUpdatedMatrix		(LPCSTR caBoneName, const Fvector &tPositionOffset, const Fvector &tAngleOffset, BoneCallback fpBoneCallback = 0);
 	//	Scripts
-	virtual	void				SetScriptControl		(const bool			bScriptControl, LPCSTR caSciptName);
+	virtual	void				SetScriptControl		(const bool			bScriptControl, LPCSTR	caSciptName);
 	virtual	bool				GetScriptControl		() const;
 	virtual	LPCSTR				GetScriptControlName	() const;
 	virtual bool				CheckObjectVisibility	(const CObject		*tpObject);
 	virtual bool				CheckIfCompleted		() const										{return false;};
 	virtual	CEntityAction		*GetCurrentAction		();
-	virtual	void				AddAction				(const CEntityAction	*tpEntityAction);
+	virtual	void				AddAction				(const CEntityAction*tpEntityAction);
 
-	virtual void				UseObject				(const CObject			*tpObject);
+	virtual void				UseObject				(const CObject		*tpObject);
 	virtual void				ProcessScripts			();
-	virtual	void				ResetScriptData			(void *P = 0) = 0;
-	virtual	bool				bfAssignMovement		(CEntityAction *tpEntityAction);
-	virtual	bool				bfAssignWatch			(CEntityAction *tpEntityAction);
-	virtual	bool				bfAssignAnimation		(CEntityAction *tpEntityAction);
-	virtual	bool				bfAssignSound			(CEntityAction *tpEntityAction);
-	virtual	bool				bfAssignParticles		(CEntityAction *tpEntityAction);
-	virtual	bool				bfAssignObject			(CEntityAction *tpEntityAction);
+	virtual	void				ResetScriptData			(void				*P = 0) = 0;
+	virtual	bool				bfAssignMovement		(CEntityAction		*tpEntityAction);
+	virtual	bool				bfAssignWatch			(CEntityAction		*tpEntityAction);
+	virtual	bool				bfAssignAnimation		(CEntityAction		*tpEntityAction);
+	virtual	bool				bfAssignSound			(CEntityAction		*tpEntityAction);
+	virtual	bool				bfAssignParticles		(CEntityAction		*tpEntityAction);
+	virtual	bool				bfAssignObject			(CEntityAction		*tpEntityAction);
 };

@@ -31,8 +31,8 @@ class CCustomMonster :
 	public Feel::Touch,
 	public CScriptMonster
 {
-protected:
 	typedef	CEntityAlive	inherited;
+protected:
 	
 	struct				SAnimState
 	{
