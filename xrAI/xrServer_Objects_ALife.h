@@ -31,7 +31,7 @@ SERVER_ENTITY_DECLARE_BEGIN(CSE_ALifePersonalEvent,CPureServerObject)
 	_TIME_ID						m_tTimeID;
 	_TASK_ID						m_tTaskID;
 	int								m_iHealth;
-	ERelation						m_tRelation;
+	EEventRelationType				m_tEventRelationType;
 	OBJECT_VECTOR					m_tpItemIDs;
 
 									CSE_ALifePersonalEvent()

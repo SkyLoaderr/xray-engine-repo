@@ -99,18 +99,22 @@ void CSE_ALifeSimulator::vfPerformAttackAction(int iCombatGroupIndex)
 	MONSTER_P_IT		I = l_tCombatGroup.begin();
 	MONSTER_P_IT		E = l_tCombatGroup.end();
 	for ( ; I != E; I++) {
-		vfChooseBestWeapon(*I);
-		vfUseWeapon		(*I,m_tpaCombatGroups[iCombatGroupIndex ^ 1]);
+		getAI().m_tpCurrentALifeMember = *I;
+		for (int i=0, n=iFloor(getAI().m_pfWeaponAttackTimes->ffGetValue()); i<n; i++) {
+			if (randI(100) < (int)getAI().m_pfWeaponSuccessProbability->dwfGetDiscreteValue(100)) {
+				CSE_ALifeItemWeapon	*l_tpALifeItemWeapon = 0;//tpfGetBestWeapon(*I);
+				if (!l_tpALifeItemWeapon)
+					break;
+				// choose random enemy group member and perform hit with random power
+				int		l_iVictimIndex = randI(m_tpaCombatGroups[iCombatGroupIndex ^ 1].size());
+				m_tpaCombatGroups[iCombatGroupIndex ^ 1][l_iVictimIndex]->fHealth -= randF(l_tpALifeItemWeapon->m_fHitPower*0.5f,l_tpALifeItemWeapon->m_fHitPower*1.5f);
+				// check if victim became dead
+				if (m_tpaCombatGroups[iCombatGroupIndex ^ 1][l_iVictimIndex]->fHealth <= 0) {
+					
+				}
+			}
+		}
 	}
-}
-
-void CSE_ALifeSimulator::vfChooseBestWeapon(CSE_ALifeMonsterAbstract *tpALifeMonsterAbstract)
-{
-
-}
-
-void CSE_ALifeSimulator::vfUseWeapon(CSE_ALifeMonsterAbstract *tpALifeMonsterAbstract, MONSTER_P_VECTOR	&l_tCombatGroup)
-{
 }
 
 void CSE_ALifeSimulator::vfFinishCombat(ECombatResult tCombatResult)

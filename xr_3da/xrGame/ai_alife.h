@@ -76,8 +76,6 @@ class CSE_ALifeSimulator :
 			bool					bfCheckIfRetreated			(int						iCombatGroupIndex);
 			void					vfPerformCommunication		(CSE_ALifeHumanAbstract		*tpALifeHumanAbstract1,		CSE_ALifeHumanAbstract		*tpALifeHumanAbstract2);
 			void					vfFinishCombat				(ECombatResult				tCombatResult);
-			void					vfChooseBestWeapon			(CSE_ALifeMonsterAbstract	*tpALifeMonsterAbstract);
-			void					vfUseWeapon					(CSE_ALifeMonsterAbstract	*tpALifeMonsterAbstract,	MONSTER_P_VECTOR			&l_tCombatGroup);
 public:
 	// members
 	bool							m_bLoaded;

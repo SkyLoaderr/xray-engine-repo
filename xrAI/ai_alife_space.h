@@ -101,17 +101,17 @@ namespace ALife {
 		eInjureTypeDummy = u32(-1),
 	};
 
-	enum ERelation {
-		eRelationNone = u32(0),
-		eRelationMeet,
-		eRelationWatch,
-		eRelationHear,
-		eRelationSeeResult,
-		eRelationMeetTold,
-		eRelationWatchTold,
-		eRelationHearTold,
-		eRelationSeeResultTold,
-		eRelationDummy = u32(-1),
+	enum EEventRelationType {
+		eEventRelationTypeNone = u32(0),
+		eEventRelationTypeMeet,
+		eEventRelationTypeWatch,
+		eEventRelationTypeHear,
+		eEventRelationTypeSeeResult,
+		eEventRelationTypeMeetTold,
+		eEventRelationTypeWatchTold,
+		eEventRelationTypeHearTold,
+		eEventRelationTypeSeeResultTold,
+		eEventRelationTypeDummy = u32(-1),
 	};
 
 	enum ECombatResult {
@@ -197,6 +197,23 @@ namespace ALife {
 		eCombatActionRetreat,
 		eCombatActionDummy = u32(-1),
 	};
+
+	enum ERelationType {
+		eRelationTypeFriend = 0,
+		eRelationTypeNeutral,
+		eRelationTypeEnemy,
+	};
+
+	enum EHitType {
+		eHitTypeBurn = u32(0),
+		eHitTypeShock,
+		eHitTypeStrike,
+		eHitTypeWound,
+		eHitTypeRadiation,
+		eHitTypeTelepatic,
+		eHitTypeMax,
+	};
+
 
 	DEFINE_VECTOR	(CSE_ALifeDynamicObject*,	D_OBJECT_P_VECTOR,				D_OBJECT_P_IT);
 	DEFINE_VECTOR	(CSE_ALifeEvent*,			EVENT_P_VECTOR,					EVENT_P_IT);

@@ -80,7 +80,7 @@ void CSE_ALifePersonalEvent::UPDATE_Write	(NET_Packet &tNetPacket)
 	tNetPacket.w				(&m_tTimeID,		sizeof(m_tTimeID));
 	tNetPacket.w				(&m_tTaskID,		sizeof(m_tTaskID));
 	tNetPacket.w_u32			(m_iHealth);
-	tNetPacket.w				(&m_tRelation,		sizeof(m_tRelation));
+	tNetPacket.w				(&m_tEventRelationType,sizeof(m_tEventRelationType));
 };
 
 void CSE_ALifePersonalEvent::UPDATE_Read	(NET_Packet &tNetPacket)
@@ -89,7 +89,7 @@ void CSE_ALifePersonalEvent::UPDATE_Read	(NET_Packet &tNetPacket)
 	tNetPacket.r				(&m_tTimeID,		sizeof(m_tTimeID));
 	tNetPacket.r				(&m_tTaskID,		sizeof(m_tTaskID));
 	tNetPacket.r_s32			(m_iHealth);
-	tNetPacket.r				(&m_tRelation,		sizeof(m_tRelation));
+	tNetPacket.r				(&m_tEventRelationType,	sizeof(m_tEventRelationType));
 };
 
 #ifdef _EDITOR

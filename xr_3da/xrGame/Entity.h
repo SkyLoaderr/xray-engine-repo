@@ -87,13 +87,6 @@ public:
 	virtual void			g_fireParams			(Fvector &, Fvector &){}; 
 };
 
-
-enum ERelationType {
-	eRelationTypeFriend = 0,
-	eRelationTypeNeutral,
-	eRelationTypeEnemy,
-};
-
 class CEntityAlive			: public CEntity
 {
 private:
@@ -123,7 +116,7 @@ public:
 	virtual void			GetVisible				(objVisible& R)	{};
 	virtual	float			ffGetFov				()				= 0;	
 	virtual	float			ffGetRange				()				= 0;	
-	virtual	ERelationType	tfGetRelationType		(CEntityAlive *tpEntityAlive)
+	virtual	ALife::ERelationType	tfGetRelationType		(CEntityAlive *tpEntityAlive)
 	{
 		if (tpEntityAlive->g_Team() != g_Team())
 			return(eRelationTypeEnemy);
