@@ -1130,7 +1130,7 @@
             </phrase>
             <phrase id="11">
                 <dont_has_info>tutorial_end</dont_has_info>
-                <give_info>tutorial_help_wounded_start</give_info>
+                <give_info>tutorial_help_wounded_start</give_info>                
                 <has_info>tutorial_wounded_start</has_info>
                 <next>1</next>
             </phrase>
@@ -1141,6 +1141,7 @@
             <phrase id="13">
                 <dont_has_info>tutorial_end</dont_has_info>
                 <dont_has_info>tutorial_wounded_start</dont_has_info>
+                <give_info>tutorial_wounded_give_info</give_info>
                 <give_info>tutorial_wounded_must_spawn</give_info>
                 <next>3</next>
             </phrase>
