@@ -27,7 +27,7 @@ function main()
 	action(
 		obj1,
 		move(move.act_run, level.object("localhost/jim"):position()),
-	    cond(cond.time_end,10000)                                                                                 
+	    cond(cond.time_end + cond.move_end,10000)                                                                                 
 	)	                                               	
 
 	while obj1:action() do                                                        
