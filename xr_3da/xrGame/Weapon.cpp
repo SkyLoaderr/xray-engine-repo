@@ -504,7 +504,7 @@ void CWeapon::OnH_B_Independent	()
 
 void CWeapon::OnH_A_Independent	()
 {
-	m_dwWeaponIndependencyTime = Level().GetGameTime();
+	m_dwWeaponIndependencyTime = Level().timeServer();
 	inherited::OnH_A_Independent();
 };
 
@@ -963,7 +963,7 @@ bool CWeapon::NeedToDestroyObject()	const
 ALife::_TIME_ID	 CWeapon::TimePassedAfterIndependant()	const
 {
 	if(!H_Parent() && m_dwWeaponIndependencyTime != 0)
-		return Level().GetGameTime() - m_dwWeaponIndependencyTime;
+		return Level().timeServer() - m_dwWeaponIndependencyTime;
 	else
 		return 0;
 }

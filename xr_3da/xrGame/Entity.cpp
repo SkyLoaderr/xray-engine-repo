@@ -270,7 +270,7 @@ void CEntity::KillEntity(CObject* who)
 	if (OnServer())
 		u_EventSend		(P);
 
-	m_dwDeathTime = Level().GetGameTime();
+	m_dwDeathTime = Level().timeServer();
 }
 
 void CEntity::reinit			()

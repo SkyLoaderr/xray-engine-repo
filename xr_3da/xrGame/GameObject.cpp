@@ -18,7 +18,7 @@
 #include "ai_script_classes.h"
 #include "xrserver_objects_alife.h"
 
-#define OBJECT_REMOVE_TIME 100000
+#define OBJECT_REMOVE_TIME 180000
 //////////////////////////////////////////////////////////////////////
 // Construction/Destruction
 //////////////////////////////////////////////////////////////////////
@@ -600,6 +600,7 @@ void CGameObject::setup_physic_shell	()
 
 bool CGameObject::NeedToDestroyObject()	const
 {
+	if (Game().type == GAME_SINGLE) return false;
 	return false;
 }
 

@@ -71,19 +71,6 @@ void	game_sv_ArtefactHunt::OnRoundStart			()
 	m_ArtefactsSpawnedTotal = 0;
 	
 	Artefact_PrepareForSpawn();
-
-/*
-	// Respawn all players and some info
-	u32		cnt = get_count();
-	for		(u32 it=0; it<cnt; ++it)	
-	{
-		// init
-		game_PlayerState*	ps	=	get_it	(it);
-		ClearPlayerState(ps);
-
-		SpawnActor(get_it_2_id(it), "spectator");
-	}
-	*/
 }
 
 void	game_sv_ArtefactHunt::OnPlayerKillPlayer		(u32 id_killer, u32 id_killed)
