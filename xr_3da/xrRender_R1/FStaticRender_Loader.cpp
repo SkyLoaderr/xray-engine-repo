@@ -17,6 +17,7 @@ void CRender::level_Load()
 	Target						= xr_new<CRenderTarget>		();
 	L_Shadows					= xr_new<CLightShadows>		();
 	L_Projector					= xr_new<CLightProjector>	();
+	L_DB						= xr_new<CLightDB_Static>	();
 
 	rmFar						();
 	rmNormal					();
@@ -111,6 +112,7 @@ void CRender::level_Unload()
 	IB.clear				();
 
 	//*** Components
+	xr_delete					(L_DB);
 	xr_delete					(L_Projector);
 	xr_delete					(L_Shadows);
 	xr_delete					(Target);

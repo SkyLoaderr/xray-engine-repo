@@ -66,7 +66,7 @@ public:
 	CLightPPA_Manager*										L_Dynamic;
 	CLightShadows*											L_Shadows;
 	CLightProjector*										L_Projector;
-	CGlowManager*											Glows;
+	CGlowManager*											L_Glows;
 	CWallmarksEngine*										Wallmarks;
 	CDetailManager*											Details;
 	CModelPool*												Models;
