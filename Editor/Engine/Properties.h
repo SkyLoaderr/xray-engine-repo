@@ -123,6 +123,12 @@ IC void		xrPREAD_MARKER	(CStream& FS)
 {
 	R_ASSERT(xrPID_MARKER==xrPREAD(FS));	
 }
+
+IC void		xrPREAD_PROP	(CStream& FS, DWORD ID, string64& data)
+{
+	R_ASSERT(ID==xrPREAD(FS)); FS.Read(&data,sizeof(string64));
+}
+
 template <class T>
 IC void		xrPREAD_PROP	(CStream& FS, DWORD ID, T& data)
 {
