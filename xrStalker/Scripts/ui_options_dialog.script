@@ -77,7 +77,7 @@ function options_dialog:InitControls()
 							 width = btn_rect.width,
 							 height = btn_rect.height}
 	btn_cancel_rect.x = main_rect.width - btn_cancel_rect.width - indent
-	btn_cancel_rect.y = main_rect.height -- btn_cancel_rect.width/2
+	btn_cancel_rect.y = main_rect.height - (btn_cancel_rect.width/2)
 	local btn_accept_rect = {x = btn_rect.x,
 							 y = main_rect.height - btn_rect.height - indent,
 							 width = btn_rect.width,
