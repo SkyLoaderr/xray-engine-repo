@@ -106,6 +106,17 @@ void CSoundMemory::ShowDbgInfo()
 // CVisionMemory implementation
 ///////////////////////////////////////////////////////////////////////////////////////////////////////////
 
+void CVisionMemory::Init(TTime mem_time) 
+{
+	MemoryTime			= mem_time;
+	EnemySelected.obj	= 0;
+}
+void CVisionMemory::Deinit() 
+{
+	Objects.clear(); 
+	Enemies.clear();
+}
+
 ///////////////////////////////////////////////////////////////////////////////////////////////////
 // Обработка видимой информации, обновление и классификация видимых объектов
 void CVisionMemory::UpdateVision(TTime dt, CAI_Biting *pThis) 
@@ -132,19 +143,20 @@ void CVisionMemory::UpdateVision(TTime dt, CAI_Biting *pThis)
 	}
 
 	// удалить старые объекты
-	u32 i;
-	for (i = 0; i<Objects.size(); i++){
+	for (u32 i = 0; i<Objects.size(); i++){
 		if (Objects[i].time < CurrentTime - MemoryTime){
 			Objects[i] = Objects.back();
 			Objects.pop_back();
 		}
 	}
 	for (i = 0; i<Enemies.size(); i++){
- 		if ((Enemies[i].time < CurrentTime - MemoryTime) || (!Enemies[i].obj->g_Alive())){
+ 		if ((Enemies[i].time < CurrentTime - MemoryTime) || (!Enemies[i].obj->g_Alive()) || ((Enemies[i].obj->Position().distance_to(pThis->Position()) > 30) && (Enemies[i].time != CurrentTime))){
 			Enemies[i] = Enemies.back();
 			Enemies.pop_back();
 		}
 	}
+
+	if (EnemySelected.obj && !EnemySelected.obj->g_Alive()) EnemySelected.obj = 0;
 }
  
 
@@ -180,11 +192,11 @@ VisionElem &CVisionMemory::GetNearestObject(const Fvector &pos, EObjectType obj_
 	xr_vector<VisionElem> *ObjectsVector;
 	if (obj_type == ENEMY) ObjectsVector = &Enemies;
 	else ObjectsVector = &Objects;
-
-	optimal_val = pos.distance_to((*ObjectsVector)[index].position) * (*ObjectsVector)[index].time;
+	
+	optimal_val = 1000 * pos.distance_to((*ObjectsVector)[index].position) * (CurrentTime - (*ObjectsVector)[index].time + 1);
 
 	for (u32 i=1; i < ObjectsVector->size(); i++) {
-		cur_val = pos.distance_to((*ObjectsVector)[i].position) * (*ObjectsVector)[i].time;
+		cur_val = 1000 * pos.distance_to((*ObjectsVector)[i].position) * (CurrentTime - (*ObjectsVector)[i].time + 1);
 
 		if ( cur_val < optimal_val){
 			optimal_val = cur_val;
@@ -203,6 +215,37 @@ void CVisionMemory::ShowDbgInfo()
 	for (i=0; i<Enemies.size(); i++) Msg("Visual enemy %i: Name = [%s], time = [%i]",i,Enemies[i].obj->cName(), Enemies[i].time);
 }
 
+
+bool CVisionMemory::SelectEnemy(VisionElem &ve)
+{
+	if (EnemySelected.time + MemoryTime < CurrentTime) EnemySelected.obj = 0;
+
+	if ((!EnemySelected.obj || (EnemySelected.obj && (EnemySelected.time + TIME_TO_RESELECT_ENEMY < CurrentTime))) && IsEnemy()) {
+		
+		CMonsterMemory *pM = dynamic_cast<CMonsterMemory*>(this);
+		EnemySelected = GetNearestObject(pM->pData->Position());
+		EnemySelected.time = CurrentTime;
+	}
+	
+	ve = EnemySelected;
+	
+	if (EnemySelected.obj) return true;
+	return false;
+}
+
+bool CVisionMemory::SelectCorpse(VisionElem &ve)
+{
+	if (!IsObject()) {
+		ve.obj = 0;
+		return false;
+	} 
+
+	CMonsterMemory *pM = dynamic_cast<CMonsterMemory*>(this);
+	ve = GetNearestObject(pM->pData->Position(),OBJECT);
+
+	return true;
+}
+
 ///////////////////////////////////////////////////////////////////////////////////////////////////////////
 // CMonsterMemory implementation
 ///////////////////////////////////////////////////////////////////////////////////////////////////////////
@@ -219,3 +262,4 @@ void CMonsterMemory::ShowDbgInfo()
 	CSoundMemory::ShowDbgInfo();
 	CVisionMemory::ShowDbgInfo();
 }
+

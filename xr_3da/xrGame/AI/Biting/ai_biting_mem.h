@@ -5,11 +5,13 @@
 // MEMORY MANAGMENT
 ///////////////////////////////////////////////////////////////////////////////////////////////////////////
 //*********************************************************************************************************
+class CAI_Biting;
+
+
+#define TIME_TO_RESELECT_ENEMY	3000
+
 
 typedef u32 TTime;
-
-class CAI_Biting;
-class Feel::Vision;
 
 typedef enum {
 	WEAPON_SHOOTING = 0,
@@ -90,6 +92,7 @@ protected:
 ///////////////////////////////////////////////////////////////////////////////////////////////////////////
 // CVisionMemory class
 ///////////////////////////////////////////////////////////////////////////////////////////////////////////
+
 typedef struct tagVisionElem
 {
 	CEntity			*obj;
@@ -103,6 +106,9 @@ typedef struct tagVisionElem
 	IC void Set(CEntity *pE, TTime t) {
 		obj = pE; 	position = pE->Position(); 	node = pE->AI_Node;  node_id = pE->AI_NodeID; time = t; 
 	}
+	void operator = (const tagVisionElem &ve) {
+		obj = ve.obj; 	position = ve.position; node = ve.node;  node_id = ve.node_id; time = ve.time; 
+	}
 
 	bool operator == (const tagVisionElem &ve) {
 		return (obj == ve.obj);
@@ -110,28 +116,31 @@ typedef struct tagVisionElem
 } VisionElem;
 
 
-
 class CVisionMemory : public Feel::Vision
 {
-	TTime	MemoryTime;				// время хранения визуальных объектов
+	TTime					MemoryTime;				// время хранения визуальных объектов
+	TTime					CurrentTime;			// текущее время
+	
+	VisionElem				EnemySelected;			
 
 	xr_vector<VisionElem>	Objects;
 	xr_vector<VisionElem>	Enemies;
 
 	enum EObjectType {ENEMY, OBJECT};
 
-	TTime	CurrentTime;			// текущее время
+	
 public:
 	IC bool IsRememberVisual() {return (IsEnemy() || IsObject());}
 	IC bool IsEnemy() {return (!Enemies.empty());}	 
 	IC bool IsObject() {return (!Objects.empty());}	 
 
-	VisionElem &GetNearestObject(const Fvector &pos, EObjectType obj_type = ENEMY);
+	virtual bool SelectEnemy(VisionElem &ve);
+	bool SelectCorpse(VisionElem &ve);
 	
 	
 protected:
-	void Init(TTime mem_time) {MemoryTime = mem_time;}
-	void Deinit() {Objects.clear(); Enemies.clear();}
+	void Init(TTime mem_time);
+	void Deinit();
 
 	void UpdateVision(TTime dt, CAI_Biting *pThis);
 	void ShowDbgInfo();
@@ -139,6 +148,7 @@ protected:
 private:
 	void AddObject(const VisionElem &ve);
 	void AddEnemy(const VisionElem &ve);
+	VisionElem &GetNearestObject(const Fvector &pos, EObjectType obj_type = ENEMY);
 };
 
 
@@ -146,8 +156,9 @@ private:
 // CMonsterMemory class
 /////////////////////////////////////////////////////////////////////////////////////////////////////////
 class CMonsterMemory : public CSoundMemory, public CVisionMemory {
-	CAI_Biting	*pData;
 public:
+	CAI_Biting	*pData;
+
 	void Init(TTime sound_mem, TTime vision_mem, CAI_Biting *ptr){
 		CSoundMemory::Init(sound_mem);
 		CVisionMemory::Init(vision_mem);
