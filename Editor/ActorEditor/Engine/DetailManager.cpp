@@ -110,6 +110,7 @@ void CDetailManager::Load		()
 	// Hardware specific optimizations
 	if (UseVS())	VS_Load		();
 	else			soft_Load	();
+	 
 }
 
 void CDetailManager::Unload		()
