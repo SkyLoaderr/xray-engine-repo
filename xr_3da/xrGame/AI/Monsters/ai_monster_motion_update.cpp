@@ -49,7 +49,6 @@ void CMotionManager::SelectAnimation()
 }
 
 #define MOVE_TURN_ANGLE		deg(30)
-#define STAND_TURN_ANGLE	deg(1)
 
 void CMotionManager::SetTurnAnimation()
 {
@@ -60,7 +59,7 @@ void CMotionManager::SetTurnAnimation()
 	bool turn_left = true;
 	if (from_right(yaw.target, yaw.current)) turn_left = false; 
 
-	if (IsStandCurAnim() && (delta_yaw > STAND_TURN_ANGLE)) {
+	if (IsStandCurAnim() && (!fis_zero(delta_yaw))) {
 		pMonster->SetTurnAnimation(turn_left);
 		return;
 	}
