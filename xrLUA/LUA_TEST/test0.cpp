@@ -965,14 +965,14 @@ struct CInternal {
 	}
 };
 
-struct CInternalWrapper : wrap_base {
+struct CInternalWrapper : public CInternal, public wrap_base {
 	virtual void update()
 	{
 		printf	("InternalWrapper update is called!\n");
 		call_member<void>("update");
 	}
 
-	static void update(CInternal *self)
+	static void update_static(CInternal *self)
 	{
 		self->update();
 	}
@@ -1056,27 +1056,27 @@ extern void script_test();
 
 void test1()
 {
-	script_test();
-//	printf	("%s\n",typeid(final::Head).name());
-//	printf	("%s\n",typeid(final::Tail::Head).name());
-//	printf("%s",test_string);
-//	boost::function2<int, CSomeClass*, int>	f;
-	CSomeClass					instance;
-	CMemCallbackHolder			holder;
-//	f							= std::bind1st(
-//		std::mem_fun(&CSomeClass::some_function),
-//		&instance
-//	);
-	holder.OnSomeEvent			= _CLOSURE(CSomeClass::some_function,&instance);//std::bind1st(std::mem_fun(&CSomeClass::some_function),&instance);
-//	f							= ;
-//	f							(&instance,5);
-//	if (holder.OnSomeEvent.empty())
-	holder.OnSomeEvent.clear	();
-	if (!holder.OnSomeEvent)
-		printf					("TRUE\n");
-	else
-		printf					("FALSE\n");
-	holder.OnSomeEvent			(5);
+//	script_test();
+////	printf	("%s\n",typeid(final::Head).name());
+////	printf	("%s\n",typeid(final::Tail::Head).name());
+////	printf("%s",test_string);
+////	boost::function2<int, CSomeClass*, int>	f;
+//	CSomeClass					instance;
+//	CMemCallbackHolder			holder;
+////	f							= std::bind1st(
+////		std::mem_fun(&CSomeClass::some_function),
+////		&instance
+////	);
+//	holder.OnSomeEvent			= _CLOSURE(CSomeClass::some_function,&instance);//std::bind1st(std::mem_fun(&CSomeClass::some_function),&instance);
+////	f							= ;
+////	f							(&instance,5);
+////	if (holder.OnSomeEvent.empty())
+//	holder.OnSomeEvent.clear	();
+//	if (!holder.OnSomeEvent)
+//		printf					("TRUE\n");
+//	else
+//		printf					("FALSE\n");
+//	holder.OnSomeEvent			(5);
 	
 	string4096		SSS;
 	strcpy			(SSS,"");
@@ -1106,13 +1106,15 @@ void test1()
 //		class_<CInternal,CInternalWrapper>("internal")
 //			.def("update", &CInternal::update, &CInternalWrapper::update),
 
-		class_<CInternal>("internal"),
+		class_<CInternal,CInternalWrapper>("internal")
+			.def(		constructor<>())
+			.def("update",	&CInternal::update,	&CInternalWrapper::update_static),
 
 		class_<CExternal,CInternal>("external")
 			.def(		constructor<>()),
 
 		class_<CInternalStorage>("internal_storage")
-			.def("add",	&CInternalStorage::add)
+			.def("add",	&CInternalStorage::add, adopt(_2))
 			.def("get",	&CInternalStorage::get),
 
 		def("get_internals",	&get_internals)
@@ -1123,8 +1125,8 @@ void test1()
 //	registrator().script_register(L);
 
 	lua_sethook		(L,hook,LUA_HOOKCALL | LUA_HOOKRET | LUA_HOOKLINE | LUA_HOOKCOUNT, 1);
-//	lua_dofile		(L,"x:\\split_test.script");
-	lua_dofile		(L,"x:\\comment_test.script");
+	lua_dofile		(L,"x:\\virtual_test.script");
+//	lua_dofile		(L,"x:\\comment_test.script");
 	if (xr_strlen(SSS)) {
 		printf		("\n%s\n",SSS);
 		strcpy		(SSS,"");
