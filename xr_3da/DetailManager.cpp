@@ -101,9 +101,9 @@ void CDetailManager::Load		()
 	CStream* m_fs	= dtFS->OpenChunk(1);
 	for (DWORD m_id = 0; m_id < m_count; m_id++)
 	{
-		CDetail				dt;
+		CDetail*		dt	= new CDetail;
 		CStream* S			= m_fs->OpenChunk(m_id);
-		dt.Load				(S);
+		dt->Load			(S);
 		objects.push_back	(dt);
 		S->Close			();
 	}
