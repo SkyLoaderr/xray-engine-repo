@@ -66,6 +66,9 @@
 	<info_portion id="spawn_rat">
 	</info_portion>	
 
+	<info_portion id="start">
+	</info_portion>	
+
 	<info_portion id="location_test1">
 		<article>one</article>
 		<article>two</article>
