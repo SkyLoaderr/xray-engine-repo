@@ -254,6 +254,10 @@ void CEntityAlive::HitImpulse	(float /**amount/**/, Fvector& /**vWorldDir/**/, F
 
 void CEntityAlive::Hit(float P, Fvector &dir,CObject* who, s16 element,Fvector position_in_object_space, float impulse, ALife::EHitType hit_type)
 {
+	//-------------------------------------------------------------------
+	if (hit_type == ALife::eHitTypeWound_2)
+		hit_type = ALife::eHitTypeWound;
+	//-------------------------------------------------------------------
 	CDamageManager::HitScale(element, conditions().hit_bone_scale(), conditions().wound_bone_scale());
 
 	//изменить состояние, перед тем как родительский класс обработает хит

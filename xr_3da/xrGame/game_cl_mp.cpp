@@ -392,7 +392,7 @@ void game_cl_mp::OnPlayerKilled			(NET_Packet& P)
 	u16 KilledID = P.r_u16();
 	u16 KillerID = P.r_u16();
 	u16	WeaponID = P.r_u16();
-	bool HeadShot = !!P.r_u8();
+	u8 SpecialKill = P.r_u8();
 	//-----------------------------------------------------------
 //	CObject* pKilled = Level().Objects.net_Find(KilledID);
 	CObject* pOKiller = Level().Objects.net_Find(KillerID);
@@ -428,14 +428,29 @@ void game_cl_mp::OnPlayerKilled			(NET_Packet& P)
 						pKiller ? pKiller->name : *(pOKiller->cNameSect()));
 				std::strcat(Text, KillerText);
 			};
-			if (HeadShot)
+			//-------------------------------------------
+			string512 SpecialKillText = "";
+			switch (SpecialKill)
 			{
-				string512 HeadShotText;
-				sprintf(HeadShotText, "%swith %sHEADSHOT!",
+			case 0:		// not special
+				{
+				}break;
+			case 1:		// Head Shot
+				{
+					sprintf(SpecialKillText, "%swith %sHEADSHOT!",
+						Color_Main,
+						Color_Weapon);					
+				}break;
+			case 2:		// BackStab
+				{
+					
+					sprintf(SpecialKillText, "%swith %sBACKSTAB!",
 						Color_Main,
 						Color_Weapon);
-				std::strcat(Text, HeadShotText);
+					
+				}break;
 			}
+			std::strcat(Text, SpecialKillText);
 
 		}break;
 	case 1:			//from bleeding

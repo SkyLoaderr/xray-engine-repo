@@ -436,14 +436,28 @@ void CActor::Hit		(float iLost, Fvector &dir, CObject* who, s16 element,Fvector 
 		break;
 	default:
 		{
-//			BOOL WasAlive = g_Alive();
-			float hit_power	= HitArtefactsOnBelt(iLost, hit_type);
-			inherited::Hit	(hit_power,dir,who,element,position_in_bone_space, impulse, hit_type);
-/*			if (WasAlive && !g_Alive())
+			m_bWasBackStabbed = false;
+			if (hit_type == ALife::eHitTypeWound_2)
 			{
-				OnHitKill();
+				// convert impulse into local coordinate system
+				Fmatrix					mInvXForm;
+				mInvXForm.invert		(XFORM());
+				Fvector					vLocalDir;
+				mInvXForm.transform_dir	(vLocalDir,dir);
+				vLocalDir.invert		();
+
+				Fvector a	= {0,0,1};
+				float res = a.dotproduct(vLocalDir);
+				if (res < -0.707)
+					m_bWasBackStabbed = true;
 			};
-*/		}		
+			
+			float hit_power = 0;
+			if (m_bWasBackStabbed) hit_power = 100000;
+			else hit_power	= HitArtefactsOnBelt(iLost, hit_type);
+
+			inherited::Hit	(hit_power,dir,who,element,position_in_bone_space, impulse, hit_type);
+		}		
 		break;
 	}
 

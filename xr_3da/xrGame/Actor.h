@@ -643,6 +643,7 @@ protected:
 	CObject*					m_pLastHitter;
 	CObject*					m_pLastHittingWeapon;
 	s16							m_s16LastHittedElement;
+	bool						m_bWasBackStabbed;
 public:
 	virtual void			SetHitInfo				(CObject* who, CObject* weapon, s16 element);
 

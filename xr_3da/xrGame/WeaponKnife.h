@@ -39,9 +39,13 @@ protected:
 	u16				knife_material_idx;
 
 protected:	
+	ALife::EHitType			m_eHitType;
+
+	ALife::EHitType			m_eHitType_1;
 	int						iHitPower_1;
 	float					fHitImpulse_1;
 
+	ALife::EHitType			m_eHitType_2;
 	int						iHitPower_2;
 	float					fHitImpulse_2;
 protected:

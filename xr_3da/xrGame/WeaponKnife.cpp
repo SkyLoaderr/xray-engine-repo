@@ -9,6 +9,7 @@
 #include "game_cl_base.h"
 #include "../skeletonanimated.h"
 #include "gamemtllib.h"
+#include "level_bullet_manager.h"
 
 #define KNIFE_MATERIAL_NAME "objects\\knife"
 
@@ -142,7 +143,13 @@ void CWeaponKnife::KnifeStrike(const Fvector& pos, const Fvector& dir)
 
 	while(m_magazine.size() < 2) m_magazine.push(cartridge);
 	iAmmoElapsed = m_magazine.size();
-	FireTrace(pos,dir);
+///	FireTrace(pos,dir);
+	//------------------------------------------------------------
+	bool SendHit = SendHitAllowed(H_Parent());
+
+	Level().BulletManager().AddBullet(	pos, dir, m_fStartBulletSpeed, float(iHitPower), 
+										fHitImpulse, H_Parent()->ID(), ID(), 
+										m_eHitType, fireDistance, cartridge, SendHit);
 }
 void CWeaponKnife::StartIdleAnim		()
 {
@@ -253,6 +260,7 @@ void CWeaponKnife::switch2_Showing	()
 void CWeaponKnife::FireStart()
 {
 	//-------------------------------------------
+	m_eHitType = m_eHitType_1;
 	iHitPower = iHitPower_1;
 	fHitImpulse = fHitImpulse_1;
 	//-------------------------------------------
@@ -269,6 +277,7 @@ void CWeaponKnife::FireEnd()
 void CWeaponKnife::Fire2Start () 
 {
 	//-------------------------------------------
+	m_eHitType = m_eHitType_2;
 	iHitPower = iHitPower_2;
 	fHitImpulse = fHitImpulse_2;
 	//-------------------------------------------
@@ -312,6 +321,9 @@ void CWeaponKnife::LoadFireParams		(LPCSTR section, LPCSTR prefix)
 	//сила выстрела и его мощьность
 	iHitPower_1			= iHitPower;
 	fHitImpulse_1		= fHitImpulse;
+	m_eHitType_1		= ALife::g_tfString2HitType(pSettings->r_string(section, "hit_type"));
+	
 	iHitPower_2			= pSettings->r_s32		(section,strconcat(full_name, prefix, "hit_power_2"));
 	fHitImpulse_2		= pSettings->r_float	(section,strconcat(full_name, prefix, "hit_impulse_2"));
+	m_eHitType_2		= ALife::g_tfString2HitType(pSettings->r_string(section, "hit_type_2"));
 }

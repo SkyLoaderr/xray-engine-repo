@@ -208,6 +208,7 @@ namespace ALife {
 		eHitTypeChemicalBurn,
 		eHitTypeExplosion,
 		eHitTypeFireWound,
+		eHitTypeWound_2,		//knife's alternative fire
 		eHitTypeMax,
 	};
 
@@ -268,6 +269,8 @@ namespace ALife {
 				return(eHitTypeChemicalBurn);
 		else if (!stricmp(caHitType,"explosion"))
 				return(eHitTypeExplosion);
+		else if (!stricmp(caHitType,"wound_2"))
+				return(eHitTypeWound_2);
 		else
 				Debug.fatal("Unsupported hit type!");
 		NODEFAULT;

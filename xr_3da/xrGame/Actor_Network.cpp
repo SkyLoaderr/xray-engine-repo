@@ -24,6 +24,7 @@
 #include "client_spawn_manager.h"
 #include "CharacterPhysicsSupport.h"
 #include "Grenade.h"
+#include "WeaponMagazined.h"
 
 #include "actor_anim_defs.h"
 
@@ -1748,12 +1749,14 @@ void				CActor::OnCriticalHitHealthLoss			()
 		(m_pLastHitter ? *(m_pLastHitter->cName()) : ""), 
 		((m_pLastHittingWeapon && m_pLastHittingWeapon != m_pLastHitter) ? *(m_pLastHittingWeapon->cName()) : ""));
 	//-------------------------------------------------------------------
-	bool HeadShot = false;
+	u8 SpecialHit = 0;
 	if (m_s16LastHittedElement > 0)
 	{
 		if (m_s16LastHittedElement == m_head)
 		{
-			HeadShot = true;
+			CWeaponMagazined* pWeaponMagazined = smart_cast<CWeaponMagazined*>(m_pLastHittingWeapon);
+			if (pWeaponMagazined)
+				SpecialHit = 1;
 		}
 		else
 		{
@@ -1765,12 +1768,14 @@ void				CActor::OnCriticalHitHealthLoss			()
 				ParentBone = pKinematics->LL_GetData(ParentBone).GetParentID();
 				if (ParentBone && ParentBone == m_head)
 				{
-					HeadShot = true;
+					SpecialHit = 1;
 					break;
 				};
 			}
 		};
 	};
+	//-------------------------------
+	if (m_bWasBackStabbed) SpecialHit = 2;
 	//-------------------------------
 	NET_Packet P;
 	u_EventGen		(P,GE_GAME_EVENT,ID());
@@ -1779,7 +1784,7 @@ void				CActor::OnCriticalHitHealthLoss			()
 	P.w_u8	(0);
 	P.w_u16 ((m_pLastHitter) ? u16(m_pLastHitter->ID()&0xffff) : 0);
 	P.w_u16 ((m_pLastHittingWeapon && m_pLastHitter != m_pLastHittingWeapon) ? u16(m_pLastHittingWeapon->ID()&0xffff) : 0);
-	P.w_u8	(u8(HeadShot));
+	P.w_u8	(SpecialHit);
 	u_EventSend(P);
 };
 

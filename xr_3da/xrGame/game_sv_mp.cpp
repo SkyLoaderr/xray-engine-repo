@@ -712,17 +712,17 @@ void	game_sv_mp::OnPlayerKilled			(NET_Packet P)
 	u8 KillType = P.r_u8();
 	u16 KillerID = P.r_u16();
 	u16	WeaponID = P.r_u16();
-	bool HeadShot = !!P.r_u8();
+	u8 SpecialKill = P.r_u8();
 
 	game_PlayerState* ps_killer = get_eid(KillerID);
 	game_PlayerState* ps_killed = get_eid(KilledID);
 	OnPlayerKillPlayer(ps_killer, ps_killed);
 
 	//---------------------------------------------------
-	SendPlayerKilledMessage(KilledID, KillType, KillerID, WeaponID, HeadShot);
+	SendPlayerKilledMessage(KilledID, KillType, KillerID, WeaponID, SpecialKill);
 };
 	
-void	game_sv_mp::SendPlayerKilledMessage	(u16 KilledID, u8 KillType, u16 KillerID, u16 WeaponID, bool HeadShot)
+void	game_sv_mp::SendPlayerKilledMessage	(u16 KilledID, u8 KillType, u16 KillerID, u16 WeaponID, u8 SpecialKill)
 {
 	NET_Packet			P;
 	GenerateGameMessage (P);
@@ -732,7 +732,7 @@ void	game_sv_mp::SendPlayerKilledMessage	(u16 KilledID, u8 KillType, u16 KillerI
 	P.w_u16	(KilledID);
 	P.w_u16	(KillerID);
 	P.w_u16	(WeaponID);
-	P.w_u8	(u8(HeadShot));
+	P.w_u8	(SpecialKill);
 
 	u_EventSend(P);
 };
