@@ -53,14 +53,20 @@ private:
 	vector<Shader*>					shaders;
 
 	// cache
-	struct XXX
+	struct XYU
 	{
 		CPass						pass;
 		CTexture*					surfaces	[8];
 		CMatrix*					matrices	[8];
-
+		IDirect3DSurface8*			pRT;
+		IDirect3DSurface8*			pZB;
+		
 		void						Invalidate	()
-		{	ZeroMemory(this,sizeof(*this));		}
+		{	
+			ZeroMemory(&pass,sizeof(pass));
+			ZeroMemory(surfaces,sizeof(surfaces));
+			ZeroMemory(matrices,sizeof(matrices));
+		}
 	}								cache;
 
 	// misc
