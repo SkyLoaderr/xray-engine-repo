@@ -585,7 +585,7 @@ CHelicopterMovementManager::init_build(	int startKeyIdx,
 	}else
 		idxP2 = startKeyIdx+1;
 
-	m_movementParams.insert(std::make_pair(0, STravelParams(helicopter()->velocity(), PI_DIV_2)));
+	m_movementParams.insert(std::make_pair(0, STravelParams(helicopter()->velocity(), PI_DIV_6)));
 //	m_movementParams.insert(std::make_pair(0, STravelParams(33.0f, PI)));
 
 	

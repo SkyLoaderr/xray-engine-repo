@@ -63,7 +63,7 @@ CHelicopter::init()
 {
 	m_destEnemy = 0;
 //	m_velocity = 5.0f;
-	m_velocity = 33.0f;
+	m_velocity = 25.0f;
 	m_altitude = 20.0f;
 	m_cur_x_rot = 0.0f;
 	m_cur_y_rot = 0.0f;
@@ -136,7 +136,7 @@ CHelicopter::net_Spawn(LPVOID	DC)
 		{
 			pUserData->r_line( s, i, &name, &value);
 			boneID=K->LL_BoneID(name);
-			m_hitBones.insert( std::make_pair(boneID, atof(value)) );
+			m_hitBones.insert( std::make_pair(boneID, (float)atof(value)) );
 		}
 	}
 	
@@ -249,7 +249,7 @@ CHelicopter::shedule_Update(u32	time_delta)
 	if( GetfHealth() >= 0.0f )
 	{
 		m_movementMngr.shedule_Update(time_delta);
-		updateMGunDir();
+//		updateMGunDir();
 	};
 
 	if ( GetfHealth() <= 0.0f && !PPhysicsShell() )
@@ -257,6 +257,15 @@ CHelicopter::shedule_Update(u32	time_delta)
 		PPhysicsShell()=P_build_Shell	(this,false);
 	}
 
+	if( state()==CHelicopter::eMovingByAttackTraj )
+	{
+		m_destEnemy->Center(m_destEnemyPos);
+		updateMGunDir();
+		
+		if(m_allow_fire)
+			FireStart();
+	}else
+		FireEnd();
 }
 
 void		
@@ -268,6 +277,7 @@ CHelicopter::Hit(	float P,
 					float impulse,  
 					ALife::EHitType hit_type/* = ALife::eHitTypeWound*/)
 {
+	Log("----Helicopter::Hit().");
 	if(hit_type != ALife::eHitTypeFireWound)
 		return;
 
@@ -281,8 +291,10 @@ CHelicopter::Hit(	float P,
 	}else
 //		CEntity::Hit(P,dir,who,element,position_in_bone_space,impulse,hit_type );
 	{
-//		SetfHealth(GetfHealth()-P*0.2f);
-		SetfHealth(-0.5f);
+		SetfHealth(GetfHealth()-P*0.1f);
+//		SetfHealth(-0.5f);
+		float h= GetfHealth();
+		Log("----Helicopter::Hit(). health=%f",h);
 	};
 
 	CGameObject* GO = dynamic_cast<CGameObject*>(who);

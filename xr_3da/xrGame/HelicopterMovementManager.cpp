@@ -23,7 +23,7 @@ CHelicopterMovementManager::~CHelicopterMovementManager()
 void 
 CHelicopterMovementManager::OnRender()
 {
-//	return;
+	return;
 	Fvector pos, prev_pos;
 
 	RCache.OnFrameEnd	();
