@@ -279,7 +279,7 @@ void CBurer::UpdateGraviObject()
 			
 			if (b_enemy_visible) {
 				float	hit_power		= 50;
-				float	hit_impulse		= 2000;
+				float	hit_impulse		= 400;
 				Fvector impulse_dir;
 
 				impulse_dir.set(0.0f,0.0f,1.0f);
