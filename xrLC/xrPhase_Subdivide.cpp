@@ -115,11 +115,11 @@ void CBuild::xrPhase_Subdivide()
 	{
 		DWORD M1			= mem_Usage();
 		g_bUnregister		= false;
-		for (DWORD it=0; it<g_vertices.size(); it++)
+		for (int it=0; it<int(g_vertices.size()); it++)
 		{
 			Vertex* V = g_vertices[it];
 			if (V->adjacent.empty())	{
-				_DELETE(V);
+				_DELETE			(V);
 				g_vertices.erase(g_vertices.begin()+it);
 				it--;
 			}
