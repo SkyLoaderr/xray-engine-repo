@@ -1634,25 +1634,6 @@ bool	game_sv_Deathmatch::HasChampion()
 
 bool	game_sv_Deathmatch::check_for_Anomalies()
 {
-	if (m_dwLastAnomalySetID == 1001)
-	{
-		if (!m_AnomalySetsList.empty())
-		{
-			for (u32 i=0; i<m_AnomalySetsList.size(); i++)
-			{
-				ANOMALIES* Anomalies = &(m_AnomalySetsList[i]);
-				for (u32 i=0; i<Anomalies->size(); i++)
-				{
-					const char *pName = ((*Anomalies)[i]).c_str();
-					CCustomZone* pZone = smart_cast<CCustomZone*> (Level().Objects.FindObjectByName(pName));
-					if (!pZone) continue;
-//					pZone->ZoneDisable();
-				};
-			};
-		}
-		m_dwLastAnomalySetID = 1000;
-		return false;
-	};
 	if (!m_bAnomaliesEnabled) return false;
 
 	if (m_dwLastAnomalySetID < 1000)
