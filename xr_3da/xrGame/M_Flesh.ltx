@@ -4,9 +4,9 @@
 ;	anim			| time[0..1] | hit_power | impulse | impulse_dir (x,y,z)  |	Field of hit_test  (left,right, top, bottom) |	Test Dist
 ;---------------------------------------------------------------------------------------------------------------------------------------------
 ;Left leg strike
-stand_attack_0 =	  	0.25,		16,		    70,        0.0, 0.5, 1.0,		 -1.6, 1.6, -1.6, 1.6,								  3.5
+stand_attack_0 =	  	0.25,		26,		    70,        0.0, 0.5, 1.0,		 -1.6, 1.6, -1.6, 1.6,								  3.5
 ;Both leg strike
-stand_attack_1 =	  	0.30,		20,		    100,        0.0, 0.5, 1.0,		 -1.6, 1.6, -1.6, 1.6,								  3.5
+stand_attack_1 =	  	0.30,		40,		    150,        0.0, 0.5, 1.0,		 -1.6, 1.6, -1.6, 1.6,								  3.5
 
 
 [m_flesh_attack_effector]
@@ -106,7 +106,7 @@ ph_skel_shot_up_factor        = 2.2
 
 SoundThreshold		 = 0.06						; range [0..1]
 
-eye_fov				 = 90	;100
+eye_fov				 = 160	;100
 eye_range			 = 60	;30
 max_hear_dist		 = 40
 
@@ -156,7 +156,7 @@ selector_walk_around	=      20.0,            6.0,                 1000.0,       
 ;terrain				 = 255,255,255,255,30,40
 terrain				 = flesh_terrain
 
-hit_type = strike
+hit_type = wound
 
 ;entity condition
 
@@ -172,13 +172,13 @@ power_hit_part 		= 1.0		;0.9			;яЁюЎхэЄ їшЄр, єїюф шщ эр юЄэшьрэшх ёшыv
 psy_health_v		= 0.1						;скорость восстановления psy-здоровья
 
 burn_immunity = 1.0				;ъю¤ЇЇшЎшхэЄv шььєэшЄхЄр 
-strike_immunity = 1.0
+strike_immunity = 1
 shock_immunity = 1.0
 wound_immunity = 0.70	;0.75	;1.0		
 radiation_immunity = 0.0; 0.01	;1.0
 telepatic_immunity = 1.0
 chemical_burn_immunity = 1.0
-explosion_immunity = 0.75
+explosion_immunity = 0.55
 fire_wound_immunity  = 0.15
 
 ;открытые раны
@@ -257,7 +257,7 @@ default				= 1.00,	-1,	0.10
 ;bip01_spine 		= 1, -1, 0.1
 ;bip01_spine1 		= 1, -1, 0.1
 ;bip01_neck 			= 1, -1, 0.1
-bip01_head 			= 5.5, -1, 0.10
+bip01_head 			= 2.5, -1, 0.10
 
 [flesh_terrain]
 	255,000,255,255 ;на всех уровнях, по графам без описания
