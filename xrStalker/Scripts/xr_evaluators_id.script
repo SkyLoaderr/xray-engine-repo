@@ -11,6 +11,7 @@ final_trade_init        = id_start + 2
 state_change            = id_start + 3
 position                = id_start + 4
 reaction                = id_start + 5
+state_mgr               = id_start + 6
 
 stohe_tradeseller_base  = id_start + 1000
 stohe_kamp_base         = id_start + 1020
