@@ -111,18 +111,6 @@
                 <has_info>mil_sniper_get_job</has_info>
                 <next>3001</next>
             </phrase>
-            <phrase id="3001">
-                <text>mil_dolg_dialog_3001</text>
-                <next>3002</next>
-            </phrase>
-            <phrase id="2000">
-                <text>mil_dolg_dialog_2000</text>
-                <dont_has_info>mil_sniper_dead</dont_has_info>
-                <dont_has_info>mil_sniper_get_job</dont_has_info>
-                <has_info>mil_sniper_i_think</has_info>
-                <has_info>mil_dolg_first</has_info>
-                <next>2001</next>
-            </phrase>
             <phrase id="1001">
                 <text>mil_dolg_dialog_1001</text>
                 <next>1002</next>
@@ -157,9 +145,6 @@
                 <text>mil_dolg_dialog_2002</text>
                 <next>20020</next>
             </phrase>
-            <phrase id="20020">
-                <text>mil_dolg_dialog_20020</text>
-            </phrase>
             <phrase id="2001">
                 <text>mil_dolg_dialog_2001</text>
                 <next>2002</next>
@@ -171,9 +156,6 @@
                 <disable_info>mil_sniper_get_job</disable_info>
                 <give_info>mil_sniper_i_think</give_info>
                 <next>20030</next>
-            </phrase>
-            <phrase id="20030">
-                <text>mil_dolg_dialog_20030</text>
             </phrase>
             <phrase id="2004">
                 <text>mil_dolg_dialog_2004</text>
@@ -214,6 +196,25 @@
             </phrase>
             <phrase id="40030">
                 <text>mil_dolg_dialog_40030</text>
+            </phrase>
+            <phrase id="20030">
+                <text>mil_dolg_dialog_20030</text>
+            </phrase>
+            <phrase id="20020">
+                <text>mil_dolg_dialog_20020</text>
+            </phrase>
+            <phrase id="2000">
+                <text>mil_dolg_dialog_2000</text>
+                <dont_has_info>mil_sniper_dead</dont_has_info>
+                <dont_has_info>mil_sniper_get_job</dont_has_info>
+                <has_info>mil_sniper_i_think</has_info>
+                <has_info>mil_dolg_first</has_info>
+                <next>2001</next>
+            </phrase>
+            <phrase id="3001">
+                <text>mil_dolg_dialog_3001</text>
+                <action>dialogs.mil_dolg_payment</action>
+                <next>3002</next>
             </phrase>
         </phrase_list>
     </dialog>

@@ -332,3 +332,12 @@ end
 function transfer_vodka (stalker, player)
    player:transfer_item (player:object ("vodka"), stalker) 
 end
+
+
+------------------------------------------------------------------------------------
+-- Military section
+------------------------------------------------------------------------------------
+-- Transfer money as payment for sniper kill
+function mil_dolg_payment (stalker, player)
+   player:transfer_money (stalker:money () / 2, player)
+end
