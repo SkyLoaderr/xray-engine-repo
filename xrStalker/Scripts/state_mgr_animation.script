@@ -272,7 +272,7 @@ function animation:__init(npc, mgr)
 						into	= nil,
 						out		= nil,
 						idle	= nil,
-						rnd		= {	[0]	= {	"gop_stop_1_0" },
+						rnd		= {	[0]	= nil,
 									[1]	= {	"gop_stop_1_0" },
 									[2]	= {	"gop_stop_2_0" },
 									[3]	= {	"gop_stop_3_0" },
@@ -283,7 +283,7 @@ function animation:__init(npc, mgr)
 						into	= nil,
 						out		= nil,
 						idle	= nil,
-						rnd		= {	[0]	= {	"uhodi_1_0" },
+						rnd		= {	[0]	= nil,
 									[1]	= {	"uhodi_1_0" },
 									[2]	= {	"uhodi_2_0" },
 									[3]	= {	"uhodi_3_0" },
@@ -294,7 +294,7 @@ function animation:__init(npc, mgr)
 						into	= nil,
 						out		= nil,
 						idle	= nil,
-						rnd		= {	[0]	= {	"uhodi_1_1" },
+						rnd		= {	[0]	= nil,
 									[1]	= {	"uhodi_1_1" },
 									[2]	= {	"uhodi_2_1" },
 									[3]	= {	"uhodi_3_1" },
@@ -597,6 +597,10 @@ function animation:play_rnd(state, rnd)
 	self.states.idle = (math.random(self.animations[state].prop.maxidle) + 
 									self.animations[state].prop.sumidle) * 1000
 	if math.random(100) < rnd then	
+		if self.animations[state].rnd[self:weapon_slot()] == nil then			
+			return
+		end
+		
 		local r
 		if table.getn(self.animations[state].rnd[self:weapon_slot()]) > 1 then			
 			if self.states.last_id == nil then
