@@ -7,11 +7,11 @@ class CTimer_paused;
 class XRCORE_API pauseMngr
 {
 	xr_vector<CTimer_paused*>	m_timers;
-	bool						m_paused;
+	BOOL						m_paused;
 public:
-	pauseMngr():m_paused(false){}
-	bool Paused(){return m_paused;};
-	void Pause(bool b);
+	pauseMngr():m_paused(FALSE){}
+	BOOL Paused(){return m_paused;};
+	void Pause(BOOL b);
 	void Register (CTimer_paused* t);
 	void UnRegister (CTimer_paused* t);
 };
@@ -23,9 +23,9 @@ protected:
 	u64			qwStartTime;
 	u64			qwPaused_time;
 	float		fResult;
-	bool		bPause;
+	BOOL		bPause;
 public:
-				CTimer			()		: qwPaused_time(0),bPause(false) { }
+				CTimer			()		: qwPaused_time(0),bPause(FALSE) { }
 	IC void		Start			()		{	qwStartTime = CPU::GetCycleCount();								}
 	IC float	Stop			()		{	return (fResult = GetElapsed_sec());							}
 	IC float	Get				()		{	return fResult;													}
@@ -42,8 +42,8 @@ class XRCORE_API CTimer_paused  : public CTimer		{
 public:
 	CTimer_paused				()		{ g_pauseMngr.Register(this);	}
 	~CTimer_paused				()		{ g_pauseMngr.UnRegister(this);	}
-	IC bool		Paused			()		{ return bPause;				}
-	IC void		Pause			(bool b){
+	IC BOOL		Paused			()		{ return bPause;				}
+	IC void		Pause			(BOOL b){
 		if(bPause==b)return;
 
 		if( b ){
