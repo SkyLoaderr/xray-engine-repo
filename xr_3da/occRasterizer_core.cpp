@@ -60,6 +60,12 @@ IC BOOL shared(occTri* T1, occTri* T2)
 	if (T1->adjacent[1]==T2)	return TRUE;
 	return FALSE;
 }
+IC BOOL lesser(float& a, float& b)
+{
+	DWORD* A = LPDWORD(&a);
+	DWORD* B = LPDWORD(&b);
+	return *A<*B;
+}
 
 // Rasterize a scan line between given X point values, corresponding Z values and current color
 void i_scan		(int curY, float leftX, float lhx, float rightX, float rhx, float startZ, float endZ)
@@ -117,13 +123,7 @@ void i_scan		(int curY, float leftX, float lhx, float rightX, float rhx, float s
 	limit				= i_base+maxX;
 	for (; i<limit; i++, Z+=dZ) 
 	{
-		if (Z < pDepth[i])	{ pFrame[i]	= currentTri; pDepth[i] = Z; }
-		i++; if (i>=limit)	break; else Z+=dZ;
-		if (Z < pDepth[i])	{ pFrame[i]	= currentTri; pDepth[i] = Z; }
-		i++; if (i>=limit)	break; else Z+=dZ;
-		if (Z < pDepth[i])	{ pFrame[i]	= currentTri; pDepth[i] = Z; }
-		i++; if (i>=limit)	break; else Z+=dZ;
-		if (Z < pDepth[i])	{ pFrame[i]	= currentTri; pDepth[i] = Z; }
+		if (Z<pDepth[i])		{ pFrame[i]	= currentTri; pDepth[i] = Z; }
 	}
 	
 	// right connector
