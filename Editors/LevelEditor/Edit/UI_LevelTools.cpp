@@ -2,7 +2,7 @@
 #pragma hdrstop
 
 #include "UI_LevelTools.h"
-#include "ui_control.h"
+#include "ESceneControlsCustom.h"
 #include "cursor3d.h"
 #include "LeftBar.h"
 #include "Scene.h"

@@ -1,7 +1,7 @@
-#ifndef UI_SpawnToolsH
-#define UI_SpawnToolsH
+#ifndef ESceneSpawnControlsH
+#define ESceneSpawnControlsH
 
-#include "ui_control.h"
+#include "ESceneControlsCustom.h"
 
 //refs
 class TfraRPoint;

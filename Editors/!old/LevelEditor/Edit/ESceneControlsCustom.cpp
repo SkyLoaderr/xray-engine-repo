@@ -1,7 +1,7 @@
 #include "stdafx.h"
 #pragma hdrstop
 
-#include "ui_control.h"
+#include "ESceneControlsCustom.h"
 #include "ui_leveltools.h"
 #include "scene.h"
 #include "bottombar.h"
@@ -139,16 +139,12 @@ bool __fastcall TUI_CustomControl::SelectStart(TShiftState Shift)
     if (Shift==ssRBOnly){ UI->Command(COMMAND_SHOWCONTEXTMENU,parent_tool->ClassID); return false;}
     if (!(Shift.Contains(ssCtrl)||Shift.Contains(ssAlt))) Scene->SelectObjects( false, cls);
 
-    CCustomObject *obj = Scene->RayPickObject( flt_max, UI->m_CurrentRStart,UI->m_CurrentRNorm, cls, 0, 0);
-    bBoxSelection    = (obj && (Shift.Contains(ssCtrl)||Shift.Contains(ssAlt))) || !obj;
-
+    int cnt 		= Scene->RaySelect(Shift.Contains(ssCtrl)?-1:Shift.Contains(ssAlt)?0:1,parent_tool->ClassID);
+    bBoxSelection    = ((0!=cnt) && (Shift.Contains(ssCtrl)||Shift.Contains(ssAlt))) || (0==cnt);
     if( bBoxSelection ){
         UI->EnableSelectionRect( true );
         UI->UpdateSelectionRect(UI->m_StartCp,UI->m_CurrentCp);
-        if(obj) obj->RaySelect(Shift.Contains(ssCtrl)?-1:Shift.Contains(ssAlt)?0:1,UI->m_CurrentRStart,UI->m_CurrentRNorm,false);
         return true;
-    } else {
-        if(obj) obj->RaySelect(Shift.Contains(ssCtrl)?-1:Shift.Contains(ssAlt)?0:1,UI->m_CurrentRStart,UI->m_CurrentRNorm,false);
     }
     return false;
 }

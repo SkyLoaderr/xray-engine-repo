@@ -16,7 +16,6 @@ USEFORM("EditLibrary.cpp", frmEditLibrary);
 USEFORM("EditLightAnim.cpp", frmEditLightAnim);
 USEFORM("FrameAIMap.cpp", fraAIMap);
 USEFORM("FrameDetObj.cpp", fraDetailObject);
-USEFORM("FrameEmitter.cpp", fraEmitter); /* TFrame: File Type */
 USEFORM("FrameGroup.cpp", fraGroup);
 USEFORM("FrameLight.cpp", fraLight);
 USEFORM("FrameObject.cpp", fraObject);

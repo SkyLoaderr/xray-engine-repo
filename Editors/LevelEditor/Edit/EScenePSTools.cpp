@@ -3,7 +3,7 @@
 
 #include "EScenePSTools.h"
 #include "ui_leveltools.h"
-#include "ui_PStools.h"
+#include "EScenePSControls.h"
 #include "FramePS.h"
 
 void EScenePSTools::CreateControls()

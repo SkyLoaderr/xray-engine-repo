@@ -1,7 +1,7 @@
 object fraPortal: TfraPortal
-  Left = 414
-  Top = 271
-  Width = 206
+  Left = 1518
+  Top = 9
+  Width = 225
   Height = 277
   VertScrollBar.ButtonSize = 11
   VertScrollBar.Range = 257
@@ -22,7 +22,7 @@ object fraPortal: TfraPortal
   object paCommands: TPanel
     Left = 0
     Top = 0
-    Width = 198
+    Width = 217
     Height = 68
     Align = alTop
     ParentColor = True
@@ -30,7 +30,7 @@ object fraPortal: TfraPortal
     object APHeadLabel1: TLabel
       Left = 1
       Top = 1
-      Width = 196
+      Width = 215
       Height = 13
       Align = alTop
       Alignment = taCenter
@@ -40,7 +40,7 @@ object fraPortal: TfraPortal
       OnClick = TopClick
     end
     object ExtBtn2: TExtBtn
-      Left = 185
+      Left = 205
       Top = 2
       Width = 11
       Height = 11
@@ -66,7 +66,7 @@ object fraPortal: TfraPortal
     object ebInvertOrient: TExtBtn
       Left = 2
       Top = 18
-      Width = 195
+      Width = 215
       Height = 15
       Align = alNone
       BevelShow = False
@@ -85,7 +85,7 @@ object fraPortal: TfraPortal
     object ebComputeAllPortals: TExtBtn
       Left = 2
       Top = 34
-      Width = 195
+      Width = 215
       Height = 15
       Align = alNone
       BevelShow = False
@@ -104,7 +104,7 @@ object fraPortal: TfraPortal
     object ebComputeSelPortals: TExtBtn
       Left = 2
       Top = 50
-      Width = 195
+      Width = 215
       Height = 15
       Align = alNone
       BevelShow = False

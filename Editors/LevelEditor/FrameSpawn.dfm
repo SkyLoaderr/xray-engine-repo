@@ -1,14 +1,12 @@
 object fraSpawn: TfraSpawn
-  Left = 466
-  Top = 421
+  Left = 1928
+  Top = 7
   VertScrollBar.Visible = False
   Align = alClient
   BorderStyle = bsNone
   ClientHeight = 273
-  ClientWidth = 198
+  ClientWidth = 217
   Color = 10528425
-  Constraints.MaxWidth = 206
-  Constraints.MinWidth = 206
   Font.Charset = DEFAULT_CHARSET
   Font.Color = clBlack
   Font.Height = -11
@@ -24,7 +22,7 @@ object fraSpawn: TfraSpawn
   object paCurrent: TPanel
     Left = 0
     Top = 98
-    Width = 198
+    Width = 217
     Height = 175
     Align = alClient
     Constraints.MinHeight = 175
@@ -33,7 +31,7 @@ object fraSpawn: TfraSpawn
     object APHeadLabel1: TLabel
       Left = 1
       Top = 1
-      Width = 196
+      Width = 215
       Height = 13
       Align = alTop
       Alignment = taCenter
@@ -45,7 +43,7 @@ object fraSpawn: TfraSpawn
     object Bevel1: TBevel
       Left = 1
       Top = 14
-      Width = 196
+      Width = 215
       Height = 1
       Align = alTop
       Shape = bsSpacer
@@ -53,7 +51,7 @@ object fraSpawn: TfraSpawn
     object paItems: TPanel
       Left = 1
       Top = 15
-      Width = 196
+      Width = 215
       Height = 159
       Align = alClient
       BevelOuter = bvNone
@@ -64,7 +62,7 @@ object fraSpawn: TfraSpawn
   object paCommands: TPanel
     Left = 0
     Top = 47
-    Width = 198
+    Width = 217
     Height = 51
     Align = alTop
     ParentColor = True
@@ -72,7 +70,7 @@ object fraSpawn: TfraSpawn
     object Label1: TLabel
       Left = 1
       Top = 1
-      Width = 196
+      Width = 215
       Height = 13
       Align = alTop
       Alignment = taCenter
@@ -82,7 +80,7 @@ object fraSpawn: TfraSpawn
       OnClick = ExpandClick
     end
     object ExtBtn1: TExtBtn
-      Left = 185
+      Left = 205
       Top = 2
       Width = 11
       Height = 11
@@ -108,7 +106,7 @@ object fraSpawn: TfraSpawn
     object ebAttachObject: TExtBtn
       Left = 2
       Top = 17
-      Width = 195
+      Width = 215
       Height = 15
       Align = alNone
       AllowAllUp = True
@@ -129,7 +127,7 @@ object fraSpawn: TfraSpawn
     object evDetachObject: TExtBtn
       Left = 2
       Top = 32
-      Width = 195
+      Width = 215
       Height = 15
       Align = alNone
       BevelShow = False
@@ -149,7 +147,7 @@ object fraSpawn: TfraSpawn
   object paSelectObject: TPanel
     Left = 0
     Top = 0
-    Width = 198
+    Width = 217
     Height = 47
     Align = alTop
     Color = 10528425
@@ -165,7 +163,7 @@ object fraSpawn: TfraSpawn
     object ebSelectByRefs: TExtBtn
       Left = 97
       Top = 15
-      Width = 22
+      Width = 27
       Height = 14
       Align = alNone
       BevelShow = False
@@ -181,9 +179,9 @@ object fraSpawn: TfraSpawn
       OnClick = ebSelectByRefsClick
     end
     object ebDeselectByRefs: TExtBtn
-      Left = 121
+      Left = 126
       Top = 15
-      Width = 22
+      Width = 27
       Height = 14
       Align = alNone
       BevelShow = False
@@ -201,7 +199,7 @@ object fraSpawn: TfraSpawn
     object APHeadLabel3: TLabel
       Left = 1
       Top = 1
-      Width = 196
+      Width = 215
       Height = 13
       Align = alTop
       Alignment = taCenter
@@ -211,7 +209,7 @@ object fraSpawn: TfraSpawn
       OnClick = ExpandClick
     end
     object ExtBtn3: TExtBtn
-      Left = 185
+      Left = 205
       Top = 2
       Width = 11
       Height = 11
@@ -237,7 +235,7 @@ object fraSpawn: TfraSpawn
     object ebMultiSelectByRefMove: TExtBtn
       Left = 97
       Top = 29
-      Width = 22
+      Width = 27
       Height = 14
       Align = alNone
       BevelShow = False
@@ -253,13 +251,13 @@ object fraSpawn: TfraSpawn
       OnClick = ebMultiSelectByRefMoveClick
     end
     object Bevel2: TBevel
-      Left = 144
+      Left = 154
       Top = 28
-      Width = 40
+      Width = 45
       Height = 16
     end
     object Label2: TLabel
-      Left = 186
+      Left = 201
       Top = 30
       Width = 8
       Height = 13
@@ -272,9 +270,9 @@ object fraSpawn: TfraSpawn
       ParentFont = False
     end
     object ebMultiSelectByRefAppend: TExtBtn
-      Left = 121
+      Left = 126
       Top = 29
-      Width = 22
+      Width = 27
       Height = 14
       Align = alNone
       BevelShow = False
@@ -298,9 +296,9 @@ object fraSpawn: TfraSpawn
       WordWrap = True
     end
     object seSelPercent: TMultiObjSpinEdit
-      Left = 145
+      Left = 155
       Top = 30
-      Width = 38
+      Width = 43
       Height = 13
       LWSensitivity = 1
       ButtonKind = bkLightWave

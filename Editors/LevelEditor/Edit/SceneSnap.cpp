@@ -10,10 +10,11 @@
  
 ObjectList* EScene::GetSnapList(bool bIgnoreUse)
 {
-    EObjClass cls = LTools->CurrentClassID();
-    ESceneCustomMTools* mt = m_SceneTools[cls];
-    if (mt)	return bIgnoreUse?(mt->GetSnapList()?mt->GetSnapList():&m_ESO_SnapObjects):(fraLeftBar->ebUseSnapList->Down?(mt->GetSnapList()?mt->GetSnapList():&m_ESO_SnapObjects):NULL);
-    else	return bIgnoreUse?&m_ESO_SnapObjects:fraLeftBar->ebUseSnapList->Down?&m_ESO_SnapObjects:NULL;
+    EObjClass cls 			= LTools->CurrentClassID();
+    ESceneCustomMTools* mt 	= m_SceneTools[cls]; 
+    if (0==mt)				return 0;
+    ObjectList* snap_list	= mt->GetSnapList()?mt->GetSnapList():&m_ESO_SnapObjects;
+    return bIgnoreUse?snap_list:(fraLeftBar->ebUseSnapList->Down?snap_list:NULL);
 }
 //--------------------------------------------------------------------------------------------------
 

@@ -1,7 +1,7 @@
 #include "stdafx.h"
 #pragma hdrstop
 
-#include "ui_Shapetools.h"
+#include "ESceneShapeControls.h"
 #include "ui_leveltools.h"
 #include "FrameShape.h"
 #include "EShape.h"

@@ -1,7 +1,7 @@
 #include "stdafx.h"
 #pragma hdrstop
 
-#include "UI_PSTools.h"
+#include "EScenePSControls.h"
 #include "ui_leveltools.h"
 #include "PSLibrary.h"
 #include "EParticlesObject.h"

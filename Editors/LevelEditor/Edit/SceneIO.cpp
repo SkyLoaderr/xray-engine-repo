@@ -441,7 +441,7 @@ struct SceneClipData {
 };
 #pragma pack(pop)
 
-int EScene::CopySelection( EObjClass classfilter )
+void EScene::CopySelection( EObjClass classfilter )
 {
 	HGLOBAL hmem = GlobalAlloc(GMEM_MOVEABLE|GMEM_DDESHARE, sizeof(SceneClipData) );
 	SceneClipData *sceneclipdata = (SceneClipData *)GlobalLock(hmem);
@@ -460,11 +460,10 @@ int EScene::CopySelection( EObjClass classfilter )
 		ELog.DlgMsg( mtError, "Failed to open clipboard" );
 		GlobalFree( hmem );
 	}
-
-	return true;
 }
 
-int EScene::PasteSelection(){
+void EScene::PasteSelection()
+{
 	int clipformat = RegisterClipboardFormat( "CF_XRAY_CLASS_LIST" );
 	if( OpenClipboard( 0 ) ){
 
@@ -481,16 +480,13 @@ int EScene::PasteSelection(){
 
 	} else {
 		ELog.DlgMsg( mtError, "Failed to open clipboard" );
-		return false;
 	}
-
-	return true;
 }
 
-int EScene::CutSelection( EObjClass classfilter )
+void EScene::CutSelection( EObjClass classfilter )
 {
 	CopySelection( classfilter );
-	return RemoveSelection( classfilter );
+	RemoveSelection( classfilter );
 }
 //----------------------------------------------------
 

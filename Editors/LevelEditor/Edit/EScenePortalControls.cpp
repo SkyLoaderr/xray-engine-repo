@@ -1,7 +1,7 @@
 #include "stdafx.h"
 #pragma hdrstop
 
-#include "UI_PortalTools.h"
+#include "EScenePortalControls.h"
 #include "framePortal.h"
 
 //------------------------------------------------------------------------------

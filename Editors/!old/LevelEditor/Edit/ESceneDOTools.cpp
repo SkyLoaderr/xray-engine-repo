@@ -262,8 +262,6 @@ bool EDetailManager::LoadColorIndices(IReader& F)
 
 bool EDetailManager::Load(IReader& F)
 {
-	if (!inherited::Load(F)) return false;
-
     string256 buf;
     R_ASSERT			(F.find_chunk(DETMGR_CHUNK_VERSION));
 	u32 version			= F.r_u32();
@@ -331,22 +329,12 @@ bool EDetailManager::Load(IReader& F)
 
 bool EDetailManager::LoadSelection(IReader& F)
 {
-    R_ASSERT			(F.find_chunk(DETMGR_CHUNK_VERSION));
-	u32 version			= F.r_u32();
-
-    if (version!=DETMGR_VERSION){
-    	ELog.Msg(mtError,"EDetailManager: unsupported version.");
-        return false;
-    }
-
-	if (!inherited::LoadSelection(F)) return false;
 	Clear();
 	return Load			(F);
 }
 
 void EDetailManager::Save(IWriter& F)
 {
-	inherited::Save		(F);
 	// version
 	F.open_chunk		(DETMGR_CHUNK_VERSION);
     F.w_u32				(DETMGR_VERSION);
@@ -389,18 +377,12 @@ void EDetailManager::Save(IWriter& F)
 
 void EDetailManager::SaveSelection(IWriter& F)
 {
-	// version
-	F.open_chunk		(DETMGR_CHUNK_VERSION);
-    F.w_u32				(DETMGR_VERSION);
-    F.close_chunk		();
-
-	inherited::SaveSelection(F);
-
 	Save(F);
 }
 
-bool EDetailManager::Export(LPCSTR fn)
+bool EDetailManager::Export(LPCSTR path)
 {
+    AnsiString fn		= AnsiString(path)+"level.details";
     bool bRes=true;
 
     UI->ProgressStart	(5,"Making details...");
@@ -485,7 +467,7 @@ bool EDetailManager::Export(LPCSTR fn)
 
         F.w_chunk		(DETMGR_CHUNK_HEADER,&dtH,sizeof(DetailHeader));
 
-    	F.save_to(fn);
+    	F.save_to(fn.c_str());
     }
 
     UI->ProgressInc		();
@@ -504,10 +486,10 @@ void EDetailManager::FillProp(LPCSTR pref, PropItemVec& values)
     P=PHelper.CreateFloat	(values, FHelper.PrepareKey(pref,"Objects per square"),	&psDetailDensity);
     P->OnChangeEvent		= OnDensityChange;
     m_Base.FillProp			(pref,values);
-    PHelper.CreateFlag<Flags32>(values, FHelper.PrepareKey(pref,"Visualization\\Draw objects"),			&m_Flags,	flObjectsDraw);
-    PHelper.CreateFlag<Flags32>(values, FHelper.PrepareKey(pref,"Visualization\\Draw base texture"),	&m_Flags,	flBaseTextureDraw);
-    PHelper.CreateFlag<Flags32>(values, FHelper.PrepareKey(pref,"Visualization\\Base texture blended"),	&m_Flags,	flBaseTextureBlended);
-    PHelper.CreateFlag<Flags32>(values, FHelper.PrepareKey(pref,"Visualization\\Draw slot boxes"),		&m_Flags,	flSlotBoxesDraw);
+    PHelper.CreateFlag<Flags32>(values, FHelper.PrepareKey(pref,"Common\\Draw objects"),			&m_Flags,	flObjectsDraw);
+    PHelper.CreateFlag<Flags32>(values, FHelper.PrepareKey(pref,"Common\\Draw base texture"),		&m_Flags,	flBaseTextureDraw);
+    PHelper.CreateFlag<Flags32>(values, FHelper.PrepareKey(pref,"Common\\Base texture blended"),	&m_Flags,	flBaseTextureBlended);
+    PHelper.CreateFlag<Flags32>(values, FHelper.PrepareKey(pref,"Common\\Draw slot boxes"),			&m_Flags,	flSlotBoxesDraw);
 }
 
 bool EDetailManager::GetSummaryInfo(SSceneSummary* inf)

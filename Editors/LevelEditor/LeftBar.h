@@ -174,25 +174,12 @@ __published:	// IDE-managed Components
 	TExtBtn *ebSnapListMode;
 	TExtBtn *ebModeInvert;
 	TBevel *Bevel2;
-	TExtBtn *ebViewObject;
-	TExtBtn *ebViewLight;
-	TExtBtn *ebViewSoundSrc;
-	TExtBtn *ebViewSoundEnv;
-	TExtBtn *ebViewGlow;
-	TExtBtn *ebViewShape;
-	TExtBtn *ebViewSpawnPoint;
-	TExtBtn *ebViewWay;
-	TExtBtn *ebViewSector;
-	TExtBtn *ebViewPortal;
-	TExtBtn *ebViewGroup;
-	TExtBtn *ebViewPS;
-	TExtBtn *ebViewDO;
-	TExtBtn *ebViewAIMap;
 	TMenuItem *N21;
 	TMenuItem *ebOpenSel;
 	TMenuItem *ebSaveSel;
 	TMenuItem *N23;
 	TMenuItem *SynchronizeSounds1;
+	TExtBtn *ebTargetWallmarks;
     void __fastcall ebClearClick(TObject *Sender);
     void __fastcall ebLoadClick(TObject *Sender);
     void __fastcall ebSaveClick(TObject *Sender);
@@ -277,7 +264,6 @@ __published:	// IDE-managed Components
 	void __fastcall ebSnapListModeClick(TObject *Sender);
 	void __fastcall ebOpenSelClick(TObject *Sender);
 	void __fastcall ebSaveSelClick(TObject *Sender);
-	void __fastcall ebViewClick(TObject *Sender);
 	void __fastcall MenuItem12Click(TObject *Sender);
 	void __fastcall SynchronizeSounds1Click(TObject *Sender);
 private:	// User declarations

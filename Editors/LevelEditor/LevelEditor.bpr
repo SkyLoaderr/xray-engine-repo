@@ -9,24 +9,23 @@
       intermediate\NET_Compressor.obj intermediate\DOOneColor.obj 
       intermediate\DOShuffle.obj intermediate\EditLibrary.obj 
       intermediate\EditLightAnim.obj intermediate\FrameAIMap.obj 
-      intermediate\FrameDetObj.obj intermediate\FrameEmitter.obj 
-      intermediate\FrameGroup.obj intermediate\FrameLight.obj 
-      intermediate\FrameObject.obj intermediate\FramePortal.obj 
-      intermediate\FramePS.obj intermediate\FrameSector.obj 
-      intermediate\FrameShape.obj intermediate\FrameSpawn.obj 
-      intermediate\FrameWayPoint.obj intermediate\LeftBar.obj 
-      intermediate\ObjectList.obj intermediate\previewimage.obj 
-      intermediate\PropertiesEObject.obj intermediate\SceneProperties.obj 
-      intermediate\Splash.obj intermediate\UI_LevelTools.obj 
-      intermediate\UI_LevelMain.obj intermediate\WayPoint.obj 
-      intermediate\AIMapExport.obj intermediate\Builder.obj 
-      intermediate\BuilderCF.obj intermediate\BuilderCore.obj 
-      intermediate\BuilderGame.obj intermediate\BuilderLTX.obj 
-      intermediate\BuilderOGF.obj intermediate\BuilderRemote.obj 
-      intermediate\Cursor3D.obj intermediate\Custom2DProjector.obj 
-      intermediate\ESceneDOTools.obj intermediate\EditObjectExportLWO.obj 
-      intermediate\ELight.obj intermediate\EParticlesObject.obj 
-      intermediate\ESceneAIMapTools.obj 
+      intermediate\FrameDetObj.obj intermediate\FrameGroup.obj 
+      intermediate\FrameLight.obj intermediate\FrameObject.obj 
+      intermediate\FramePortal.obj intermediate\FramePS.obj 
+      intermediate\FrameSector.obj intermediate\FrameShape.obj 
+      intermediate\FrameSpawn.obj intermediate\FrameWayPoint.obj 
+      intermediate\LeftBar.obj intermediate\ObjectList.obj 
+      intermediate\previewimage.obj intermediate\PropertiesEObject.obj 
+      intermediate\SceneProperties.obj intermediate\Splash.obj 
+      intermediate\UI_LevelTools.obj intermediate\UI_LevelMain.obj 
+      intermediate\WayPoint.obj intermediate\ESceneAIMapTools_Export.obj 
+      intermediate\Builder.obj intermediate\BuilderCF.obj 
+      intermediate\BuilderCore.obj intermediate\BuilderGame.obj 
+      intermediate\BuilderLTX.obj intermediate\BuilderOGF.obj 
+      intermediate\BuilderRemote.obj intermediate\Cursor3D.obj 
+      intermediate\Custom2DProjector.obj intermediate\ESceneDOTools.obj 
+      intermediate\EditObjectExportLWO.obj intermediate\ELight.obj 
+      intermediate\EParticlesObject.obj intermediate\ESceneAIMapTools.obj 
       intermediate\ESceneAIMapTools_Controls.obj 
       intermediate\ESceneAIMapTools_Generate.obj 
       intermediate\ESceneAIMapTools_MotionSimulator.obj 
@@ -54,13 +53,13 @@
       intermediate\SceneSnap.obj intermediate\SceneSummaryInfo.obj 
       intermediate\SceneUndo.obj intermediate\SceneUtil.obj 
       intermediate\sector.obj intermediate\SoundManager_LE.obj 
-      intermediate\SpawnPoint.obj intermediate\UI_AIMapTools.obj 
-      intermediate\ui_control.obj intermediate\UI_ObjectTools.obj 
-      intermediate\UI_PortalTools.obj intermediate\UI_PSTools.obj 
-      intermediate\UI_SectorTools.obj intermediate\UI_ShapeTools.obj 
-      intermediate\UI_SpawnTools.obj intermediate\UI_WayPointTools.obj 
-      intermediate\DetailModel.obj intermediate\DetailManager.obj 
-      intermediate\DetailManager_CACHE.obj 
+      intermediate\SpawnPoint.obj intermediate\ESceneAIMapControls.obj 
+      intermediate\ESceneControlsCustom.obj 
+      intermediate\ESceneObjectControls.obj intermediate\EScenePortalControls.obj 
+      intermediate\EScenePSControls.obj intermediate\ESceneSectorControls.obj 
+      intermediate\ESceneShapeControls.obj intermediate\ESceneSpawnControls.obj 
+      intermediate\ESceneWayControls.obj intermediate\DetailModel.obj 
+      intermediate\DetailManager.obj intermediate\DetailManager_CACHE.obj 
       intermediate\DetailManager_Decompress.obj 
       intermediate\DetailManager_soft.obj intermediate\DetailManager_VS.obj 
       intermediate\xrServer_Objects_ALife_Monsters.obj 
@@ -79,17 +78,18 @@
       intermediate\ESceneObjectToolsExportBreakable.obj 
       intermediate\xrHemisphere.obj intermediate\object_factory.obj 
       intermediate\object_factory_register.obj intermediate\PHNetState.obj 
-      intermediate\alife_event_personal.obj intermediate\LevelGameDef.obj"/>
+      intermediate\alife_event_personal.obj intermediate\LevelGameDef.obj 
+      intermediate\ESceneWallmarkTools.obj intermediate\ESceneWallmarkControls.obj"/>
     <RESFILES value="LevelEditor.res resource.res"/>
     <IDLFILES value=""/>
     <IDLGENFILES value=""/>
     <DEFFILE value=""/>
     <RESDEPEN value="$(RESFILES) BottomBar.dfm main.dfm TopBar.dfm DOOneColor.dfm DOShuffle.dfm 
       EditLibrary.dfm EditLightAnim.dfm FrameAIMap.dfm FrameDetObj.dfm 
-      FrameEmitter.dfm FrameGroup.dfm FrameLight.dfm FrameObject.dfm 
-      FramePortal.dfm FramePS.dfm FrameSector.dfm FrameShape.dfm FrameSpawn.dfm 
-      FrameWayPoint.dfm LeftBar.dfm ObjectList.dfm previewimage.dfm 
-      PropertiesEObject.dfm SceneProperties.dfm Splash.dfm"/>
+      FrameGroup.dfm FrameLight.dfm FrameObject.dfm FramePortal.dfm FramePS.dfm 
+      FrameSector.dfm FrameShape.dfm FrameSpawn.dfm FrameWayPoint.dfm 
+      LeftBar.dfm ObjectList.dfm previewimage.dfm PropertiesEObject.dfm 
+      SceneProperties.dfm Splash.dfm"/>
     <LIBFILES value=""/>
     <LIBRARIES value="elpackB6.lib editor.lib bcbsmp.lib"/>
     <SPARELIBS value="rtl.lib vcl.lib bcbsmp.lib vclx.lib editor.lib elpackB6.lib"/>
@@ -149,7 +149,6 @@
       <FILE FILENAME="EditLightAnim.cpp" FORMNAME="frmEditLightAnim" UNITNAME="EditLightAnim" CONTAINERID="CCompiler" DESIGNCLASS="" LOCALCOMMAND=""/>
       <FILE FILENAME="FrameAIMap.cpp" FORMNAME="fraAIMap" UNITNAME="FrameAIMap" CONTAINERID="CCompiler" DESIGNCLASS="" LOCALCOMMAND=""/>
       <FILE FILENAME="FrameDetObj.cpp" FORMNAME="fraDetailObject" UNITNAME="FrameDetObj" CONTAINERID="CCompiler" DESIGNCLASS="" LOCALCOMMAND=""/>
-      <FILE FILENAME="FrameEmitter.cpp" FORMNAME="fraEmitter" UNITNAME="FrameEmitter" CONTAINERID="CCompiler" DESIGNCLASS="TFrame" LOCALCOMMAND=""/>
       <FILE FILENAME="FrameGroup.cpp" FORMNAME="fraGroup" UNITNAME="FrameGroup" CONTAINERID="CCompiler" DESIGNCLASS="" LOCALCOMMAND=""/>
       <FILE FILENAME="FrameLight.cpp" FORMNAME="fraLight" UNITNAME="FrameLight" CONTAINERID="CCompiler" DESIGNCLASS="" LOCALCOMMAND=""/>
       <FILE FILENAME="FrameObject.cpp" FORMNAME="fraObject" UNITNAME="FrameObject" CONTAINERID="CCompiler" DESIGNCLASS="" LOCALCOMMAND=""/>
@@ -168,7 +167,7 @@
       <FILE FILENAME="Edit\UI_LevelTools.cpp" FORMNAME="" UNITNAME="UI_LevelTools" CONTAINERID="CCompiler" DESIGNCLASS="" LOCALCOMMAND=""/>
       <FILE FILENAME="Edit\UI_LevelMain.cpp" FORMNAME="" UNITNAME="UI_LevelMain" CONTAINERID="CCompiler" DESIGNCLASS="" LOCALCOMMAND=""/>
       <FILE FILENAME="Edit\WayPoint.cpp" FORMNAME="" UNITNAME="WayPoint.cpp" CONTAINERID="CCompiler" DESIGNCLASS="" LOCALCOMMAND=""/>
-      <FILE FILENAME="Edit\AIMapExport.cpp" FORMNAME="" UNITNAME="AIMapExport.cpp" CONTAINERID="CCompiler" DESIGNCLASS="" LOCALCOMMAND=""/>
+      <FILE FILENAME="Edit\ESceneAIMapTools_Export.cpp" FORMNAME="" UNITNAME="ESceneAIMapTools_Export" CONTAINERID="CCompiler" DESIGNCLASS="" LOCALCOMMAND=""/>
       <FILE FILENAME="Edit\Builder.cpp" FORMNAME="" UNITNAME="Builder.cpp" CONTAINERID="CCompiler" DESIGNCLASS="" LOCALCOMMAND=""/>
       <FILE FILENAME="Edit\BuilderCF.cpp" FORMNAME="" UNITNAME="BuilderCF.cpp" CONTAINERID="CCompiler" DESIGNCLASS="" LOCALCOMMAND=""/>
       <FILE FILENAME="Edit\BuilderCore.cpp" FORMNAME="" UNITNAME="BuilderCore.cpp" CONTAINERID="CCompiler" DESIGNCLASS="" LOCALCOMMAND=""/>
@@ -230,15 +229,15 @@
       <FILE FILENAME="Edit\sector.cpp" FORMNAME="" UNITNAME="sector.cpp" CONTAINERID="CCompiler" DESIGNCLASS="" LOCALCOMMAND=""/>
       <FILE FILENAME="Edit\SoundManager_LE.cpp" FORMNAME="" UNITNAME="SoundManager_LE.cpp" CONTAINERID="CCompiler" DESIGNCLASS="" LOCALCOMMAND=""/>
       <FILE FILENAME="Edit\SpawnPoint.cpp" FORMNAME="" UNITNAME="SpawnPoint.cpp" CONTAINERID="CCompiler" DESIGNCLASS="" LOCALCOMMAND=""/>
-      <FILE FILENAME="Edit\UI_AIMapTools.cpp" FORMNAME="" UNITNAME="UI_AIMapTools.cpp" CONTAINERID="CCompiler" DESIGNCLASS="" LOCALCOMMAND=""/>
-      <FILE FILENAME="Edit\ui_control.cpp" FORMNAME="" UNITNAME="ui_control.cpp" CONTAINERID="CCompiler" DESIGNCLASS="" LOCALCOMMAND=""/>
-      <FILE FILENAME="Edit\UI_ObjectTools.cpp" FORMNAME="" UNITNAME="UI_ObjectTools.cpp" CONTAINERID="CCompiler" DESIGNCLASS="" LOCALCOMMAND=""/>
-      <FILE FILENAME="Edit\UI_PortalTools.cpp" FORMNAME="" UNITNAME="UI_PortalTools.cpp" CONTAINERID="CCompiler" DESIGNCLASS="" LOCALCOMMAND=""/>
-      <FILE FILENAME="Edit\UI_PSTools.cpp" FORMNAME="" UNITNAME="UI_PSTools.cpp" CONTAINERID="CCompiler" DESIGNCLASS="" LOCALCOMMAND=""/>
-      <FILE FILENAME="Edit\UI_SectorTools.cpp" FORMNAME="" UNITNAME="UI_SectorTools.cpp" CONTAINERID="CCompiler" DESIGNCLASS="" LOCALCOMMAND=""/>
-      <FILE FILENAME="Edit\UI_ShapeTools.cpp" FORMNAME="" UNITNAME="UI_ShapeTools.cpp" CONTAINERID="CCompiler" DESIGNCLASS="" LOCALCOMMAND=""/>
-      <FILE FILENAME="Edit\UI_SpawnTools.cpp" FORMNAME="" UNITNAME="UI_SpawnTools.cpp" CONTAINERID="CCompiler" DESIGNCLASS="" LOCALCOMMAND=""/>
-      <FILE FILENAME="Edit\UI_WayPointTools.cpp" FORMNAME="" UNITNAME="UI_WayPointTools.cpp" CONTAINERID="CCompiler" DESIGNCLASS="" LOCALCOMMAND=""/>
+      <FILE FILENAME="Edit\ESceneAIMapControls.cpp" FORMNAME="" UNITNAME="ESceneAIMapControls" CONTAINERID="CCompiler" DESIGNCLASS="" LOCALCOMMAND=""/>
+      <FILE FILENAME="Edit\ESceneControlsCustom.cpp" FORMNAME="" UNITNAME="ESceneControlsCustom" CONTAINERID="CCompiler" DESIGNCLASS="" LOCALCOMMAND=""/>
+      <FILE FILENAME="Edit\ESceneObjectControls.cpp" FORMNAME="" UNITNAME="ESceneObjectControls" CONTAINERID="CCompiler" DESIGNCLASS="" LOCALCOMMAND=""/>
+      <FILE FILENAME="Edit\EScenePortalControls.cpp" FORMNAME="" UNITNAME="EScenePortalControls" CONTAINERID="CCompiler" DESIGNCLASS="" LOCALCOMMAND=""/>
+      <FILE FILENAME="Edit\EScenePSControls.cpp" FORMNAME="" UNITNAME="EScenePSControls" CONTAINERID="CCompiler" DESIGNCLASS="" LOCALCOMMAND=""/>
+      <FILE FILENAME="Edit\ESceneSectorControls.cpp" FORMNAME="" UNITNAME="ESceneSectorControls" CONTAINERID="CCompiler" DESIGNCLASS="" LOCALCOMMAND=""/>
+      <FILE FILENAME="Edit\ESceneShapeControls.cpp" FORMNAME="" UNITNAME="ESceneShapeControls" CONTAINERID="CCompiler" DESIGNCLASS="" LOCALCOMMAND=""/>
+      <FILE FILENAME="Edit\ESceneSpawnControls.cpp" FORMNAME="" UNITNAME="ESceneSpawnControls" CONTAINERID="CCompiler" DESIGNCLASS="" LOCALCOMMAND=""/>
+      <FILE FILENAME="Edit\ESceneWayControls.cpp" FORMNAME="" UNITNAME="ESceneWayControls" CONTAINERID="CCompiler" DESIGNCLASS="" LOCALCOMMAND=""/>
       <FILE FILENAME="Engine\DetailModel.cpp" FORMNAME="" UNITNAME="DetailModel.cpp" CONTAINERID="CCompiler" DESIGNCLASS="" LOCALCOMMAND=""/>
       <FILE FILENAME="Engine\DetailManager.cpp" FORMNAME="" UNITNAME="DetailManager.cpp" CONTAINERID="CCompiler" DESIGNCLASS="" LOCALCOMMAND=""/>
       <FILE FILENAME="Engine\DetailManager_CACHE.cpp" FORMNAME="" UNITNAME="DetailManager_CACHE.cpp" CONTAINERID="CCompiler" DESIGNCLASS="" LOCALCOMMAND=""/>
@@ -282,6 +281,8 @@
       <FILE FILENAME="Engine\Game\PHNetState.cpp" FORMNAME="" UNITNAME="PHNetState" CONTAINERID="CCompiler" DESIGNCLASS="" LOCALCOMMAND=""/>
       <FILE FILENAME="Engine\Game\alife_event_personal.cpp" FORMNAME="" UNITNAME="alife_event_personal" CONTAINERID="CCompiler" DESIGNCLASS="" LOCALCOMMAND=""/>
       <FILE FILENAME="Edit\LevelGameDef.cpp" FORMNAME="" UNITNAME="LevelGameDef" CONTAINERID="CCompiler" DESIGNCLASS="" LOCALCOMMAND=""/>
+      <FILE FILENAME="Edit\ESceneWallmarkTools.cpp" FORMNAME="" UNITNAME="ESceneWallmarkTools" CONTAINERID="CCompiler" DESIGNCLASS="" LOCALCOMMAND=""/>
+      <FILE FILENAME="Edit\ESceneWallmarkControls.cpp" FORMNAME="" UNITNAME="ESceneWallmarkControls" CONTAINERID="CCompiler" DESIGNCLASS="" LOCALCOMMAND=""/>
   </FILELIST>
   <BUILDTOOLS>
   </BUILDTOOLS>

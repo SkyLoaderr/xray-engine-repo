@@ -2,7 +2,7 @@
 #pragma hdrstop
 
 #include "ESceneWayTools.h"
-#include "ui_waypointtools.h"
+#include "ESceneWayControls.h"
 #include "ui_leveltools.h"
 #include "FrameWayPoint.h"
 

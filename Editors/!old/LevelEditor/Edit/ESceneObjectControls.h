@@ -1,7 +1,7 @@
-#ifndef UI_ObjectToolsH
-#define UI_ObjectToolsH
+#ifndef ESceneObjectControlsH
+#define ESceneObjectControlsH
 
-#include "ui_control.h"
+#include "ESceneControlsCustom.h"
 
 //------------------------------------------------------------------------------
 class TUI_ControlObjectAdd: public TUI_CustomControl{

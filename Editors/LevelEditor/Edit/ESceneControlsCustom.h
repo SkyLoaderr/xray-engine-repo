@@ -1,5 +1,5 @@
-#ifndef ui_controlH
-#define ui_controlH
+#ifndef ESceneControlsCustomH
+#define ESceneControlsCustomH
 
 #include "customobject.h"
 //---------------------------------------------------------------------------

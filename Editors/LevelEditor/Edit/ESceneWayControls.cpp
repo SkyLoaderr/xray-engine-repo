@@ -1,7 +1,7 @@
 #include "stdafx.h"
 #pragma hdrstop
 
-#include "UI_WayPointTools.h"
+#include "ESceneWayControls.h"
 #include "ui_leveltools.h"
 #include "FrameWayPoint.h"
 #include "WayPoint.h"

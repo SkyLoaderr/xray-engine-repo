@@ -53,14 +53,14 @@ public:
     virtual void		UpdateSnapList			()=0;
     
 	// selection manipulate
-    virtual bool		PickGround				(Fvector& dest, const Fvector& start, const Fvector& dir, float dist)=0;
-	virtual int			RaySelect				(bool flag, float& distance, const Fvector& start, const Fvector& direction)=0;
-	virtual int			FrustumSelect			(bool flag, const CFrustum& frustum)=0;
-	virtual int 		SelectObjects           (bool flag)=0;
-	virtual int 		InvertSelection         ()=0;
-	virtual int 		RemoveSelection         ()=0;
+    // flags: [0 - FALSE, 1 - TRUE, -1 - INVERT]
+	virtual int			RaySelect				(int flag, float& distance, const Fvector& start, const Fvector& direction, BOOL bDistanceOnly)=0;
+	virtual int			FrustumSelect			(int flag, const CFrustum& frustum)=0;
+	virtual void 		SelectObjects           (bool flag)=0;
+	virtual void		InvertSelection         ()=0;
+	virtual void		RemoveSelection         ()=0;
 	virtual int 		SelectionCount          (bool testflag)=0;
-	virtual int 		ShowObjects				(bool flag, bool bAllowSelectionFlag=false, bool bSelFlag=true)=0;
+	virtual void 		ShowObjects				(bool flag, bool bAllowSelectionFlag=false, bool bSelFlag=true)=0;
 
     virtual void		Clear					(bool bSpecific=false)=0;       
 
@@ -88,7 +88,7 @@ public:
     virtual bool		LoadSelection      		(IReader&)=0;
     virtual void		SaveSelection      		(IWriter&)=0;
 
-    virtual bool		Export          		(LPCSTR fn){return false;}
+    virtual bool		Export          		(LPCSTR path){return true;}
     virtual bool		ExportGame         		(SExportStreams& F){return FALSE;}
 
     // properties

@@ -3,7 +3,7 @@
 
 #include "ESceneObjectTools.h"
 #include "ui_leveltools.h"
-#include "ui_ObjectTools.h"
+#include "ESceneObjectControls.h" 
 #include "FrameObject.h"
 #include "SceneObject.h"
 #include "PropertiesList.h"

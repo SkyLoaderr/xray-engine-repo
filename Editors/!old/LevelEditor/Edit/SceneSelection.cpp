@@ -5,22 +5,19 @@
 #include "ui_levelmain.h"
 //------------------------------------------------------------------------------
 
-int EScene::SelectObjects( bool flag, EObjClass classfilter )
+void EScene::SelectObjects( bool flag, EObjClass classfilter )
 {
-	int count = 0;
-
     if (classfilter==OBJCLASS_DUMMY){
         SceneToolsMapPairIt _I = m_SceneTools.begin();
         SceneToolsMapPairIt _E = m_SceneTools.end();
         for (; _I!=_E; _I++)
-            if (_I->second)	count+=_I->second->SelectObjects(flag);
+            if (_I->second)	_I->second->SelectObjects(flag);
     }else{
         ESceneCustomMTools* mt = GetMTools(classfilter);
-        if (mt) 			count+=mt->SelectObjects(flag);
+        if (mt) 			mt->SelectObjects(flag);
     }
 
     UI->RedrawScene();
-	return count;
 }
 //------------------------------------------------------------------------------
 
@@ -45,41 +42,33 @@ int EScene::FrustumSelect( int flag, EObjClass classfilter )
 }
 //------------------------------------------------------------------------------
 
-int EScene::InvertSelection( EObjClass classfilter )
+void EScene::InvertSelection( EObjClass classfilter )
 {
-	int count = 0;
-
     if (classfilter==OBJCLASS_DUMMY){
         SceneToolsMapPairIt _I = m_SceneTools.begin();
         SceneToolsMapPairIt _E = m_SceneTools.end();
         for (; _I!=_E; _I++)
-            if (_I->second)	count+=_I->second->InvertSelection();
+            if (_I->second)	_I->second->InvertSelection();
     }else{
         ESceneCustomMTools* mt = GetMTools(classfilter);
-        if (mt) 			count+=mt->InvertSelection();
+        if (mt) 			mt->InvertSelection();
     }
-    
     UI->RedrawScene();
-	return count;
 }
 //------------------------------------------------------------------------------
 
-int EScene::RemoveSelection( EObjClass classfilter )
+void EScene::RemoveSelection( EObjClass classfilter )
 {
-	int count = 0;
-
     if (classfilter==OBJCLASS_DUMMY){
         SceneToolsMapPairIt _I = m_SceneTools.begin();
         SceneToolsMapPairIt _E = m_SceneTools.end();
         for (; _I!=_E; _I++)
-            if (_I->second)	count+=_I->second->RemoveSelection();
+            if (_I->second)	_I->second->RemoveSelection();
     }else{
         ESceneCustomMTools* mt = GetMTools(classfilter);
-        if (mt) 			count+=mt->RemoveSelection();
+        if (mt) 			mt->RemoveSelection();
     }
-
     UI->UpdateScene	(true);
-	return count;
 }
 //------------------------------------------------------------------------------
 
@@ -145,20 +134,18 @@ int EScene::LockObjects( bool flag, EObjClass classfilter, bool bAllowSelectionF
 }
 //------------------------------------------------------------------------------
 
-int EScene::ShowObjects( bool flag, EObjClass classfilter, bool bAllowSelectionFlag, bool bSelFlag )
+void EScene::ShowObjects( bool flag, EObjClass classfilter, bool bAllowSelectionFlag, bool bSelFlag )
 {
-	int count = 0;
     if (classfilter==OBJCLASS_DUMMY){
         SceneToolsMapPairIt _I = m_SceneTools.begin();
         SceneToolsMapPairIt _E = m_SceneTools.end();
         for (; _I!=_E; _I++)
-            if (_I->second)	count+=_I->second->ShowObjects(flag, bAllowSelectionFlag, bSelFlag);
+            if (_I->second)	_I->second->ShowObjects(flag, bAllowSelectionFlag, bSelFlag);
     }else{
         ESceneCustomMTools* mt = GetMTools(classfilter);
-        if (mt) 			count+=mt->ShowObjects(flag, bAllowSelectionFlag, bSelFlag);
+        if (mt) 			mt->ShowObjects(flag, bAllowSelectionFlag, bSelFlag);
     }
     UI->RedrawScene();
-	return count;
 }
 //------------------------------------------------------------------------------
 

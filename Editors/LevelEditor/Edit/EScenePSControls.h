@@ -1,7 +1,7 @@
-#ifndef UI_PSToolsH
-#define UI_PSToolsH
+#ifndef EScenePSControlsH
+#define EScenePSControlsH
 
-#include "ui_control.h"
+#include "ESceneControlsCustom.h"
 
 //---------------------------------------------------------------------------
 class TUI_ControlPSAdd: public TUI_CustomControl{

@@ -1,7 +1,7 @@
 #include "stdafx.h"
 #pragma hdrstop
 
-#include "UI_SpawnTools.h"
+#include "ESceneSpawnControls.h"
 #include "ui_leveltools.h"
 #include "ui_main.h"
 #include "FrameSpawn.h"

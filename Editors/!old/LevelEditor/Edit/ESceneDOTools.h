@@ -93,14 +93,13 @@ public:
     virtual void		UpdateSnapList			(){};
 
 	// selection manipulate
-    virtual bool		PickGround				(Fvector& dest, const Fvector& start, const Fvector& dir, float dist){return false;}
-	virtual int			RaySelect				(bool flag, float& distance, const Fvector& start, const Fvector& direction);
-	virtual int			FrustumSelect			(bool flag, const CFrustum& frustum);
-	virtual int			SelectObjects           (bool flag);
-	virtual int			InvertSelection         ();
-	virtual int 		RemoveSelection         (){return 0;};
+	virtual int			RaySelect				(int flag, float& distance, const Fvector& start, const Fvector& direction, BOOL bDistanceOnly);
+	virtual int			FrustumSelect			(int flag, const CFrustum& frustum);
+	virtual void		SelectObjects           (bool flag);
+	virtual void		InvertSelection         ();
+	virtual void		RemoveSelection         (){}
 	virtual int			SelectionCount          (bool testflag);
-	virtual int 		ShowObjects				(bool flag, bool bAllowSelectionFlag=false, bool bSelFlag=true){return 0;};
+	virtual void		ShowObjects				(bool flag, bool bAllowSelectionFlag=false, bool bSelFlag=true){}
 
     virtual void		Clear					(bool bSpecific=false);
 

@@ -116,26 +116,20 @@ void ESceneCustomOTools::OnObjectRemove(CCustomObject* O)
         (*_F)->OnObjectRemove(*_F);
 }
 
-int ESceneCustomOTools::SelectObjects(bool flag)
+void ESceneCustomOTools::SelectObjects(bool flag)
 {
-	int count = 0;
     for(ObjectIt _F = m_Objects.begin();_F!=m_Objects.end();_F++)
         if((*_F)->Visible()){
             (*_F)->Select( flag );
-            count++;
         }
     UI->RedrawScene		();
-    return count;
 }
 
-int ESceneCustomOTools::RemoveSelection()
+void ESceneCustomOTools::RemoveSelection()
 {
-	int count=0;
-
     ObjectIt _F = m_Objects.begin();
     while(_F!=m_Objects.end()){
         if((*_F)->Selected()){
-            count ++;
             if ((*_F)->OnSelectionRemove()){
                 ObjectIt _D = _F; _F++;
                 Scene->RemoveObject(*_D,false);
@@ -147,23 +141,17 @@ int ESceneCustomOTools::RemoveSelection()
             _F++;
         }
     }
-
 	UI->RedrawScene		();
-    return count;
 }
 
-int ESceneCustomOTools::InvertSelection()
+void ESceneCustomOTools::InvertSelection()
 {
-	int count=0;
-
     for(ObjectIt _F = m_Objects.begin();_F!=m_Objects.end();_F++)
         if((*_F)->Visible()){
             (*_F)->Select(-1);
-            count++;
         }
         
     UI->RedrawScene		();
-    return count;
 }
 
 int ESceneCustomOTools::SelectionCount(bool testflag)
@@ -176,29 +164,18 @@ int ESceneCustomOTools::SelectionCount(bool testflag)
     return count;
 }
 
-int ESceneCustomOTools::ShowObjects(bool flag, bool bAllowSelectionFlag, bool bSelFlag)
+void ESceneCustomOTools::ShowObjects(bool flag, bool bAllowSelectionFlag, bool bSelFlag)
 {
-	int count=0;
-
     for(ObjectIt _F = m_Objects.begin();_F!=m_Objects.end();_F++){
         if (bAllowSelectionFlag){
             if ((*_F)->Selected()==bSelFlag){
                 (*_F)->Show( flag );
-                count++;
             }
         }else{
             (*_F)->Show( flag );
-            count++;
         }
     }
-    
     UI->RedrawScene();
-    return count;
-}
-
-bool ESceneCustomOTools::PickGround(Fvector& dest, const Fvector& start, const Fvector& dir, float dist)
-{
-	return false;
 }
 
 BOOL ESceneCustomOTools::RayPick(CCustomObject*& object, float& distance, const Fvector& start, const Fvector& direction, SRayPickInfo* pinf)
@@ -226,16 +203,15 @@ BOOL ESceneCustomOTools::SpherePick(ObjectList& lst, const Fvector& center, floa
 	return !lst.empty();
 }
 
-int ESceneCustomOTools::RaySelect(bool flag, float& distance, const Fvector& start, const Fvector& direction)
+int ESceneCustomOTools::RaySelect(int flag, float& distance, const Fvector& start, const Fvector& direction, BOOL bDistanceOnly)
 {
     CCustomObject* nearest_object=0;
-    if (RayPick(nearest_object,distance,start,direction,0)) nearest_object->Select(flag);
-
+    if (RayPick(nearest_object,distance,start,direction,0)&&!bDistanceOnly) nearest_object->Select(flag);
     UI->RedrawScene();
     return !!nearest_object;
 }
 
-int ESceneCustomOTools::FrustumSelect(bool flag, const CFrustum& frustum)
+int ESceneCustomOTools::FrustumSelect(int flag, const CFrustum& frustum)
 {
 	ObjectList lst;
 

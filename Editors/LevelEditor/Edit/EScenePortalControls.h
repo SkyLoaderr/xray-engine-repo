@@ -1,7 +1,7 @@
-#ifndef UI_PortalToolsH
-#define UI_PortalToolsH
+#ifndef EScenePortalControlsH
+#define EScenePortalControlsH
 
-#include "ui_control.h"
+#include "ESceneControlsCustom.h"
 
 //---------------------------------------------------------------------------
 class TUI_ControlPortalSelect: public TUI_CustomControl{

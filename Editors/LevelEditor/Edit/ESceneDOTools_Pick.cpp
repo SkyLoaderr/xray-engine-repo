@@ -10,7 +10,7 @@
 #include "bottombar.h"
 #include "ui_main.h"
 
-int EDetailManager::RaySelect(bool flag, float& distance, const Fvector& start, const Fvector& direction)
+int EDetailManager::RaySelect(int flag, float& dist, const Fvector& start, const Fvector& direction, BOOL bDistanceOnly)
 {
 // box selected only
 
@@ -19,7 +19,6 @@ int EDetailManager::RaySelect(bool flag, float& distance, const Fvector& start, 
 	float			fx,fz;
     Fbox			bbox;
     Fvector 		P;
-    float 			dist=flt_max;
     int 			sx=-1, sz=-1;
 
     int count = 0;
@@ -32,7 +31,7 @@ int EDetailManager::RaySelect(bool flag, float& distance, const Fvector& start, 
             bbox.min.set(fx-DETAIL_SLOT_SIZE_2, slot->r_ybase(), 					fz-DETAIL_SLOT_SIZE_2);
             bbox.max.set(fx+DETAIL_SLOT_SIZE_2, slot->r_ybase()+slot->r_yheight(), 	fz+DETAIL_SLOT_SIZE_2);
             if (bbox.Pick2(start,direction,P)){
-            	float d = start.distance_to_sqr(P);
+            	float d = start.distance_to(P);
                 if (d<dist){
                 	dist = d;
                     sx=x; sz=z;
@@ -41,14 +40,19 @@ int EDetailManager::RaySelect(bool flag, float& distance, const Fvector& start, 
         }
     }
     if ((sx>=0)||(sz>=0)){
-    	m_Selected[sz*dtH.size_x+sx] = flag;
-        count++;
+	    if (!bDistanceOnly){
+            if (flag==-1)	
+                m_Selected[sz*dtH.size_x+sx] = !m_Selected[sz*dtH.size_x+sx];
+            else
+                m_Selected[sz*dtH.size_x+sx] = flag;
+            count++;
+	    	UI->RedrawScene();
+        }
     }
-    UI->RedrawScene();
     return count;
 }
 
-int EDetailManager::FrustumSelect(bool flag, const CFrustum& frustum)
+int EDetailManager::FrustumSelect(int flag, const CFrustum& frustum)
 {
 // box selected only
 
@@ -68,8 +72,12 @@ int EDetailManager::FrustumSelect(bool flag, const CFrustum& frustum)
             bbox.max.set(fx+DETAIL_SLOT_SIZE_2, slot->r_ybase()+slot->r_yheight(), 	fz+DETAIL_SLOT_SIZE_2);
 			u32 mask	= 0xff;
             bool bRes 	= !!frustum.testAABB(bbox.data(),mask);
-            if (bRes==flag){
-	            m_Selected[z*dtH.size_x+x] = flag;
+            if (bRes){
+            	if (flag==-1)	
+                	m_Selected[z*dtH.size_x+x] = !m_Selected[z*dtH.size_x+x];
+                else
+                	m_Selected[z*dtH.size_x+x] = flag;
+                
             	count++;
             }
         }
@@ -78,22 +86,21 @@ int EDetailManager::FrustumSelect(bool flag, const CFrustum& frustum)
     return count;
 }
 
-int EDetailManager::SelectObjects(bool flag){
+void EDetailManager::SelectObjects(bool flag)
+{
 //	for (int i=0; i<m_Selected.size(); i++)
 //    	m_Selected[i] = flag;
 	for (U8It it=m_Selected.begin(); it!=m_Selected.end(); it++)
     	*it = flag;
-    return m_Selected.size();
 }
 
-int EDetailManager::InvertSelection()
+void EDetailManager::InvertSelection()
 {
-	if (!m_Flags.is(flSlotBoxesDraw)) return 0;
+	if (!m_Flags.is(flSlotBoxesDraw)) return;
 //	for (int i=0; i<m_Selected.size(); i++)
 //    	m_Selected[i] = m_Selected[i];
 	for (U8It it=m_Selected.begin(); it!=m_Selected.end(); it++)
     	*it = !*it;
-    return m_Selected.size();
 }
 
 int EDetailManager::SelectionCount(bool testflag)

@@ -1,7 +1,7 @@
-#ifndef UI_ShapeToolsH
-#define UI_ShapeToolsH
+#ifndef ESceneShapeControlsH
+#define ESceneShapeControlsH
 
-#include "ui_control.h"
+#include "ESceneControlsCustom.h"
 
 //---------------------------------------------------------------------------
 class TUI_ControlShapeAdd: public TUI_CustomControl{

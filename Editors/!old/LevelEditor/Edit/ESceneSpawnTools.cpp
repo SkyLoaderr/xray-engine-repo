@@ -3,7 +3,7 @@
 
 #include "ESceneSpawnTools.h"
 #include "ui_leveltools.h"
-#include "ui_SpawnTools.h"
+#include "ESceneSpawnControls.h"
 #include "FrameSpawn.h"
 #include "PropertiesListHelper.h"
 

@@ -5,7 +5,7 @@
 #include "FrameAIMap.h"
 #include "Scene.h"
 #include "ESceneAIMapTools.h"
-#include "UI_AIMapTools.h"
+#include "ESceneAIMapControls.h"
 #include "FolderLib.h"
 #include "ui_main.h"
 //---------------------------------------------------------------------------

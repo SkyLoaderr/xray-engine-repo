@@ -1,14 +1,12 @@
 object fraPS: TfraPS
-  Left = 377
-  Top = 271
+  Left = 1518
+  Top = 61
   VertScrollBar.Visible = False
   Align = alClient
   BorderStyle = bsNone
   ClientHeight = 250
-  ClientWidth = 198
+  ClientWidth = 217
   Color = 10528425
-  Constraints.MaxWidth = 206
-  Constraints.MinWidth = 206
   Font.Charset = DEFAULT_CHARSET
   Font.Color = clBlack
   Font.Height = -11
@@ -24,7 +22,7 @@ object fraPS: TfraPS
   object paSelectObject: TPanel
     Left = 0
     Top = 0
-    Width = 198
+    Width = 217
     Height = 50
     Align = alTop
     ParentColor = True
@@ -75,7 +73,7 @@ object fraPS: TfraPS
     object Label: TLabel
       Left = 1
       Top = 1
-      Width = 196
+      Width = 215
       Height = 13
       Align = alTop
       Alignment = taCenter
@@ -85,7 +83,7 @@ object fraPS: TfraPS
       OnClick = ExpandClick
     end
     object ExtBtn3: TExtBtn
-      Left = 185
+      Left = 205
       Top = 2
       Width = 11
       Height = 11
@@ -184,7 +182,7 @@ object fraPS: TfraPS
   object Panel1: TPanel
     Left = 0
     Top = 50
-    Width = 198
+    Width = 217
     Height = 200
     Align = alClient
     Constraints.MinHeight = 175
@@ -193,7 +191,7 @@ object fraPS: TfraPS
     object APHeadLabel2: TLabel
       Left = 1
       Top = 1
-      Width = 196
+      Width = 215
       Height = 13
       Align = alTop
       Alignment = taCenter
@@ -205,7 +203,7 @@ object fraPS: TfraPS
     object Bevel1: TBevel
       Left = 1
       Top = 14
-      Width = 196
+      Width = 215
       Height = 1
       Align = alTop
       Shape = bsSpacer
@@ -213,7 +211,7 @@ object fraPS: TfraPS
     object paItems: TPanel
       Left = 1
       Top = 15
-      Width = 196
+      Width = 215
       Height = 184
       Align = alClient
       BevelOuter = bvNone

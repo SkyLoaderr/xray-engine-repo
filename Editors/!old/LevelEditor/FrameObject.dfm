@@ -1,11 +1,11 @@
 object fraObject: TfraObject
-  Left = 414
-  Top = 352
+  Left = 1539
+  Top = 291
   VertScrollBar.Visible = False
   Align = alClient
   BorderStyle = bsNone
   ClientHeight = 276
-  ClientWidth = 198
+  ClientWidth = 218
   Color = 10528425
   Font.Charset = DEFAULT_CHARSET
   Font.Color = clBlack
@@ -129,15 +129,15 @@ object fraObject: TfraObject
   object paSelectObject: TPanel
     Left = 0
     Top = 0
-    Width = 198
+    Width = 218
     Height = 46
     Align = alTop
     Color = 10528425
     TabOrder = 0
     object Bevel3: TBevel
-      Left = 144
+      Left = 154
       Top = 28
-      Width = 40
+      Width = 45
       Height = 16
     end
     object Label1: TLabel
@@ -151,7 +151,7 @@ object fraObject: TfraObject
     object ExtBtn1: TExtBtn
       Left = 97
       Top = 15
-      Width = 22
+      Width = 27
       Height = 14
       Align = alNone
       BevelShow = False
@@ -167,9 +167,9 @@ object fraObject: TfraObject
       OnClick = ebSelectByRefsClick
     end
     object ExtBtn3: TExtBtn
-      Left = 121
+      Left = 126
       Top = 15
-      Width = 22
+      Width = 27
       Height = 14
       Align = alNone
       BevelShow = False
@@ -187,7 +187,7 @@ object fraObject: TfraObject
     object APHeadLabel3: TLabel
       Left = 1
       Top = 1
-      Width = 196
+      Width = 216
       Height = 13
       Align = alTop
       Alignment = taCenter
@@ -197,7 +197,7 @@ object fraObject: TfraObject
       OnClick = ExpandClick
     end
     object ExtBtn5: TExtBtn
-      Left = 185
+      Left = 205
       Top = 2
       Width = 11
       Height = 11
@@ -223,7 +223,7 @@ object fraObject: TfraObject
     object ExtBtn6: TExtBtn
       Left = 97
       Top = 29
-      Width = 22
+      Width = 27
       Height = 14
       Align = alNone
       BevelShow = False
@@ -239,7 +239,7 @@ object fraObject: TfraObject
       OnClick = ebMultiSelectByRefMoveClick
     end
     object Label4: TLabel
-      Left = 186
+      Left = 201
       Top = 30
       Width = 8
       Height = 13
@@ -252,9 +252,9 @@ object fraObject: TfraObject
       ParentFont = False
     end
     object ExtBtn7: TExtBtn
-      Left = 121
+      Left = 126
       Top = 29
-      Width = 22
+      Width = 27
       Height = 14
       Align = alNone
       BevelShow = False
@@ -278,9 +278,9 @@ object fraObject: TfraObject
       WordWrap = True
     end
     object seSelPercent: TMultiObjSpinEdit
-      Left = 145
+      Left = 155
       Top = 30
-      Width = 38
+      Width = 43
       Height = 13
       LWSensitivity = 1
       ButtonKind = bkLightWave
@@ -297,7 +297,7 @@ object fraObject: TfraObject
   object paCommands: TPanel
     Left = 0
     Top = 46
-    Width = 198
+    Width = 218
     Height = 55
     Align = alTop
     Color = 10528425
@@ -305,7 +305,7 @@ object fraObject: TfraObject
     object ebMultiAppend: TExtBtn
       Left = 2
       Top = 16
-      Width = 195
+      Width = 215
       Height = 15
       Align = alNone
       BevelShow = False
@@ -325,7 +325,7 @@ object fraObject: TfraObject
     object APHeadLabel1: TLabel
       Left = 1
       Top = 1
-      Width = 196
+      Width = 216
       Height = 13
       Align = alTop
       Alignment = taCenter
@@ -335,7 +335,7 @@ object fraObject: TfraObject
       OnClick = ExpandClick
     end
     object ExtBtn2: TExtBtn
-      Left = 185
+      Left = 205
       Top = 2
       Width = 11
       Height = 11
@@ -361,14 +361,14 @@ object fraObject: TfraObject
     object Bevel4: TBevel
       Left = 1
       Top = 33
-      Width = 196
+      Width = 216
       Height = 1
       Shape = bsBottomLine
     end
     object ebRandomAppendMode: TExtBtn
       Left = 2
       Top = 36
-      Width = 98
+      Width = 108
       Height = 17
       Align = alNone
       AllowAllUp = True
@@ -428,9 +428,9 @@ object fraObject: TfraObject
       OnClick = ebRandomAppendModeClick
     end
     object ExtBtn8: TExtBtn
-      Left = 100
+      Left = 107
       Top = 36
-      Width = 97
+      Width = 107
       Height = 17
       Align = alNone
       BevelShow = False
@@ -450,7 +450,7 @@ object fraObject: TfraObject
   object paCurrentObject: TPanel
     Left = 0
     Top = 101
-    Width = 198
+    Width = 218
     Height = 175
     Align = alClient
     Color = 10528425
@@ -460,7 +460,7 @@ object fraObject: TfraObject
     object APHeadLabel2: TLabel
       Left = 1
       Top = 1
-      Width = 196
+      Width = 216
       Height = 13
       Align = alTop
       Alignment = taCenter
@@ -472,7 +472,7 @@ object fraObject: TfraObject
     object Bevel2: TBevel
       Left = 1
       Top = 50
-      Width = 196
+      Width = 216
       Height = 1
       Align = alTop
       Shape = bsBottomLine
@@ -480,7 +480,7 @@ object fraObject: TfraObject
     object paItems: TPanel
       Left = 1
       Top = 51
-      Width = 196
+      Width = 216
       Height = 123
       Align = alClient
       BevelOuter = bvNone
@@ -490,7 +490,7 @@ object fraObject: TfraObject
     object Panel1: TPanel
       Left = 1
       Top = 14
-      Width = 196
+      Width = 216
       Height = 36
       Align = alTop
       BevelOuter = bvNone
@@ -499,7 +499,7 @@ object fraObject: TfraObject
       object ExtBtn4: TExtBtn
         Left = 1
         Top = 5
-        Width = 195
+        Width = 215
         Height = 15
         Align = alNone
         BevelShow = False
@@ -518,7 +518,7 @@ object fraObject: TfraObject
       object ExtBtn9: TExtBtn
         Left = 1
         Top = 20
-        Width = 195
+        Width = 215
         Height = 15
         Align = alNone
         BevelShow = False

@@ -1,7 +1,7 @@
-#ifndef UI_SectorToolsH
-#define UI_SectorToolsH
+#ifndef ESceneSectorControlsH
+#define ESceneSectorControlsH
 
-#include "ui_control.h"
+#include "ESceneControlsCustom.h"
 
 //---------------------------------------------------------------------------
 // refs

@@ -46,9 +46,6 @@ bool CLevelMain::Command(int _Command, int p1, int p2)
 {
 	bool bRes = true;
 	switch (_Command){
-    case COMMAND_CHANGE_VIEW:
-//    	Scene->ChangeView
-    	break;
 	case COMMAND_CHANGE_TARGET:
 	  	LTools->SetTarget((EObjClass)p1);
         Command(COMMAND_UPDATE_PROPERTIES);
@@ -615,6 +612,7 @@ bool __fastcall CLevelMain::ApplyShortCut(WORD Key, TShiftState Shift)
             else if (Key=='2')			COMMAND1(COMMAND_CHANGE_TARGET, OBJCLASS_PS)          
             else if (Key=='3')  		COMMAND1(COMMAND_CHANGE_TARGET, OBJCLASS_DO)          
             else if (Key=='4')			COMMAND1(COMMAND_CHANGE_TARGET,	OBJCLASS_AIMAP)		
+            else if (Key=='5')			COMMAND1(COMMAND_CHANGE_TARGET, OBJCLASS_WM)
             else if (Key=='W')			COMMAND0(COMMAND_SHOW_OBJECTLIST)              
         }
     }else{

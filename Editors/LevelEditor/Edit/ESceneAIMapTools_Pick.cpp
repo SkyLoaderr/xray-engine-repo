@@ -5,17 +5,16 @@
 #include "scene.h"
 #include "ui_main.h"
 #include "ui_leveltools.h"
-#include "ui_aimaptools.h"   
+#include "ESceneAIMapControls.h"   
 #include "ui_levelmain.h"
 
-SAINode* ESceneAIMapTools::PickNode(const Fvector& start, const Fvector& dir, float dist)
+SAINode* ESceneAIMapTools::PickNode(const Fvector& start, const Fvector& dir, float& dist)
 {
 	SAINode* R 	= 0;
     CFrustum frustum;
     LUI->m_CurrentCp.add(1); 			// fake add min vaalue for calculate frustum 
     float psz	= (m_Params.fPatchSize/2)*(m_Params.fPatchSize/2);
     if (LUI->SelectionFrustum(frustum)){
-        float dist 		= flt_max;
         for (AINodeIt it=m_Nodes.begin(); it!=m_Nodes.end(); it++){
             SAINode& N 	= **it;
             u32 mask 	= 0xffff;
@@ -24,7 +23,7 @@ SAINode* ESceneAIMapTools::PickNode(const Fvector& start, const Fvector& dir, fl
                 Fvector dest;
                 if (N.Plane.intersectRayPoint(start,dir,dest)){
                     if (N.Pos.distance_to_sqr(dest)<psz){
-                        float d = start.distance_to_sqr(dest);
+                        float d = start.distance_to(dest);
                         if (d<dist){
                             R 	= &N;
                             dist= d;
@@ -36,7 +35,7 @@ SAINode* ESceneAIMapTools::PickNode(const Fvector& start, const Fvector& dir, fl
     }
     return R;
 }
-bool ESceneAIMapTools::PickGround(Fvector& dest, const Fvector& start, const Fvector& dir, float dist)
+bool ESceneAIMapTools::PickObjects(Fvector& dest, const Fvector& start, const Fvector& dir, float dist)
 {         	         
 	SPickQuery	PQ;
 	if (!GetSnapList()->empty()){
@@ -50,41 +49,48 @@ bool ESceneAIMapTools::PickGround(Fvector& dest, const Fvector& start, const Fve
     return false;
 }
                              
-int ESceneAIMapTools::RaySelect(bool flag, float& distance, const Fvector& start, const Fvector& direction)
+int ESceneAIMapTools::RaySelect(int flag, float& distance, const Fvector& start, const Fvector& direction, BOOL bDistanceOnly)
 {
 	int count=0;
-    switch (LTools->GetSubTarget()){
-    case estAIMapNode:{
-        SAINode * N = PickNode(start, direction, distance);
-        if (N){ N->flags.set(SAINode::flSelected,flag); count++;}
-    }break;
+	if (!m_Flags.is(flHideNodes)){
+        switch (LTools->GetSubTarget()){
+        case estAIMapNode:{
+            SAINode * N = PickNode(start, direction, distance);
+            if (N&&!bDistanceOnly){ 
+                if (flag==-1) 	N->flags.invert(SAINode::flSelected); 
+                N->flags.set	(SAINode::flSelected,flag); 
+                count++;
+            }
+        }break;
+        }
+        UpdateHLSelected	();
+        UI->RedrawScene		();
     }
-    UpdateHLSelected	();
-    UI->RedrawScene		();
     return count;
 }
 
-int ESceneAIMapTools::FrustumSelect(bool flag, const CFrustum& frustum)
+int ESceneAIMapTools::FrustumSelect(int flag, const CFrustum& frustum)
 {
     int count = 0;
-
-    switch (LTools->GetSubTarget()){
-    case estAIMapNode:{
-        for (AINodeIt it=m_Nodes.begin(); it!=m_Nodes.end(); it++){
-            SAINode& N 	= **it;
-            u32 mask 	= 0xffff;
-            Fbox bb; bb.set(N.Pos,N.Pos); bb.min.sub(m_Params.fPatchSize*0.35f); bb.max.add(m_Params.fPatchSize*0.35f);
-            if (frustum.testSAABB(N.Pos,m_Params.fPatchSize,bb.data(),mask)){
-                (*it)->flags.set(SAINode::flSelected,flag);
-                count++;
+	if (!m_Flags.is(flHideNodes)){
+        switch (LTools->GetSubTarget()){
+        case estAIMapNode:{
+            for (AINodeIt it=m_Nodes.begin(); it!=m_Nodes.end(); it++){
+                SAINode& N 	= **it;
+                u32 mask 	= 0xffff;
+                Fbox bb; bb.set(N.Pos,N.Pos); bb.min.sub(m_Params.fPatchSize*0.35f); bb.max.add(m_Params.fPatchSize*0.35f);
+                if (frustum.testSAABB(N.Pos,m_Params.fPatchSize,bb.data(),mask)){
+                    if (-1==flag)	(*it)->flags.invert(SAINode::flSelected);
+                    else			(*it)->flags.set(SAINode::flSelected,flag);
+                    count++;
+                }
             }
+        }break;
         }
-    }break;
-    }
     
-    UpdateHLSelected	();
-    UI->RedrawScene		();
-
+        UpdateHLSelected	();
+        UI->RedrawScene		();
+ 	}
     return count;
 }
 

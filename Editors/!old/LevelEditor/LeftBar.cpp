@@ -23,20 +23,21 @@ TfraLeftBar *fraLeftBar;
 __fastcall TfraLeftBar::TfraLeftBar(TComponent* Owner)
         : TFrame(Owner)
 {
-	ebTargetGroup->Tag		= OBJCLASS_GROUP;       ebViewGroup->Tag		= 0x1000+OBJCLASS_GROUP;
-    ebTargetObject->Tag     = OBJCLASS_SCENEOBJECT;	ebViewObject->Tag		= 0x1000+OBJCLASS_SCENEOBJECT;
-    ebTargetLight->Tag      = OBJCLASS_LIGHT;       ebViewLight->Tag      	= 0x1000+OBJCLASS_LIGHT;
-    ebTargetShape->Tag		= OBJCLASS_SHAPE;       ebViewShape->Tag		= 0x1000+OBJCLASS_SHAPE;
-    ebTargetSoundSrc->Tag   = OBJCLASS_SOUND_SRC;   ebViewSoundSrc->Tag  	= 0x1000+OBJCLASS_SOUND_SRC;
-    ebTargetSoundEnv->Tag   = OBJCLASS_SOUND_ENV;   ebViewSoundEnv->Tag   	= 0x1000+OBJCLASS_SOUND_ENV;
-    ebTargetGlow->Tag       = OBJCLASS_GLOW;        ebViewGlow->Tag       	= 0x1000+OBJCLASS_GLOW;
-    ebTargetSpawnPoint->Tag = OBJCLASS_SPAWNPOINT;  ebViewSpawnPoint->Tag 	= 0x1000+OBJCLASS_SPAWNPOINT;
-    ebTargetWay->Tag  		= OBJCLASS_WAY;         ebViewWay->Tag  		= 0x1000+OBJCLASS_WAY;
-    ebTargetSector->Tag 	= OBJCLASS_SECTOR;      ebViewSector->Tag 		= 0x1000+OBJCLASS_SECTOR;
-    ebTargetPortal->Tag		= OBJCLASS_PORTAL;      ebViewPortal->Tag		= 0x1000+OBJCLASS_PORTAL;
-    ebTargetPS->Tag			= OBJCLASS_PS;          ebViewPS->Tag			= 0x1000+OBJCLASS_PS;
-    ebTargetDO->Tag			= OBJCLASS_DO;          ebViewDO->Tag			= 0x1000+OBJCLASS_DO;
-    ebTargetAIMap->Tag		= OBJCLASS_AIMAP;       ebViewAIMap->Tag		= 0x1000+OBJCLASS_AIMAP;
+	ebTargetGroup->Tag		= OBJCLASS_GROUP;       
+    ebTargetObject->Tag     = OBJCLASS_SCENEOBJECT;	
+    ebTargetLight->Tag      = OBJCLASS_LIGHT;       
+    ebTargetShape->Tag		= OBJCLASS_SHAPE;       
+    ebTargetSoundSrc->Tag   = OBJCLASS_SOUND_SRC;   
+    ebTargetSoundEnv->Tag   = OBJCLASS_SOUND_ENV;   
+    ebTargetGlow->Tag       = OBJCLASS_GLOW;        
+    ebTargetSpawnPoint->Tag = OBJCLASS_SPAWNPOINT;  
+    ebTargetWay->Tag  		= OBJCLASS_WAY;         
+    ebTargetSector->Tag 	= OBJCLASS_SECTOR;      
+    ebTargetPortal->Tag		= OBJCLASS_PORTAL;      
+    ebTargetPS->Tag			= OBJCLASS_PS;          
+    ebTargetDO->Tag			= OBJCLASS_DO;          
+    ebTargetAIMap->Tag		= OBJCLASS_AIMAP;
+    ebTargetWallmarks->Tag	= OBJCLASS_WM;
 
     DEFINE_INI				(fsStorage);
 }
@@ -334,12 +335,6 @@ void __fastcall TfraLeftBar::TargetClick(TObject *Sender)
 }
 //---------------------------------------------------------------------------
 
-void __fastcall TfraLeftBar::ebViewClick(TObject *Sender)
-{
-    TExtBtn* btn=dynamic_cast<TExtBtn*>(Sender);    VERIFY(btn);
-    UI->Command(COMMAND_CHANGE_VIEW, btn->Tag, btn->Down);
-}
-//---------------------------------------------------------------------------
 
 void __fastcall TfraLeftBar::PanelMimimizeClickClick(TObject *Sender)
 {

@@ -1,7 +1,7 @@
 #include "stdafx.h"
 #pragma hdrstop
 
-#include "ui_Sectortools.h"
+#include "ESceneSectorControls.h"
 #include "scene.h"
 #include "Sector.h"
 #include "editmesh.h"

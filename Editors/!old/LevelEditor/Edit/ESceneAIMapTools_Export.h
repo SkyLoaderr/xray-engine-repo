@@ -1,5 +1,5 @@
-#ifndef AIMapExportH
-#define AIMapExportH
+#ifndef ESceneAIMapTools_ExportH
+#define ESceneAIMapTools_ExportH
 
 //----------------------------------------------------
 struct SAIParams

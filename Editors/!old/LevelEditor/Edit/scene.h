@@ -200,15 +200,15 @@ public:
 
 	int 			RaySelect           (int flag, EObjClass classfilter=OBJCLASS_DUMMY); // flag=0,1,-1 (-1 invert)
 	int 			FrustumSelect       (int flag, EObjClass classfilter=OBJCLASS_DUMMY);
-	int 			SelectObjects       (bool flag, EObjClass classfilter=OBJCLASS_DUMMY);
+	void			SelectObjects       (bool flag, EObjClass classfilter=OBJCLASS_DUMMY);
 	int 			LockObjects         (bool flag, EObjClass classfilter=OBJCLASS_DUMMY, bool bAllowSelectionFlag=false, bool bSelFlag=true);
-	int 			ShowObjects         (bool flag, EObjClass classfilter=OBJCLASS_DUMMY, bool bAllowSelectionFlag=false, bool bSelFlag=true);
-	int 			InvertSelection     (EObjClass classfilter);
+	void 			ShowObjects         (bool flag, EObjClass classfilter=OBJCLASS_DUMMY, bool bAllowSelectionFlag=false, bool bSelFlag=true);
+	void			InvertSelection     (EObjClass classfilter);
 	int 			SelectionCount      (bool testflag, EObjClass classfilter);
-	int 			RemoveSelection     (EObjClass classfilter);
-	int 			CutSelection        (EObjClass classfilter);
-	int 			CopySelection       (EObjClass classfilter);
-	int 			PasteSelection      ();
+	void			RemoveSelection     (EObjClass classfilter);
+	void 			CutSelection        (EObjClass classfilter);
+	void			CopySelection       (EObjClass classfilter);
+	void			PasteSelection      ();
 
     void 			ZoomExtents			(EObjClass cls, BOOL bSelectedOnly);
 

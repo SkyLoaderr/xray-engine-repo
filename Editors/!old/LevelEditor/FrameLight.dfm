@@ -1,14 +1,12 @@
 object fraLight: TfraLight
-  Left = 422
-  Top = 349
+  Left = 1324
+  Top = 280
   VertScrollBar.Visible = False
   Align = alClient
   BorderStyle = bsNone
-  ClientHeight = 250
-  ClientWidth = 198
+  ClientHeight = 115
+  ClientWidth = 217
   Color = 10528425
-  Constraints.MaxWidth = 206
-  Constraints.MinWidth = 206
   Font.Charset = DEFAULT_CHARSET
   Font.Color = clBlack
   Font.Height = -11
@@ -20,7 +18,7 @@ object fraLight: TfraLight
   object paCommands: TPanel
     Left = 0
     Top = 0
-    Width = 198
+    Width = 217
     Height = 49
     Align = alTop
     ParentColor = True
@@ -28,7 +26,7 @@ object fraLight: TfraLight
     object ebUseSelInD3D: TExtBtn
       Left = 2
       Top = 17
-      Width = 95
+      Width = 105
       Height = 15
       Align = alNone
       AllowAllUp = True
@@ -48,7 +46,7 @@ object fraLight: TfraLight
     object APHeadLabel1: TLabel
       Left = 1
       Top = 1
-      Width = 196
+      Width = 215
       Height = 13
       Align = alTop
       Alignment = taCenter
@@ -58,7 +56,7 @@ object fraLight: TfraLight
       OnClick = ExpandClick
     end
     object ExtBtn2: TExtBtn
-      Left = 185
+      Left = 205
       Top = 2
       Width = 11
       Height = 11
@@ -84,7 +82,7 @@ object fraLight: TfraLight
     object ebUnuseSelInD3D: TExtBtn
       Left = 2
       Top = 32
-      Width = 95
+      Width = 105
       Height = 15
       Align = alNone
       AllowAllUp = True
@@ -102,9 +100,9 @@ object fraLight: TfraLight
       OnClick = ebUnuseSelInD3DClick
     end
     object ebUseAllInD3D: TExtBtn
-      Left = 98
+      Left = 110
       Top = 17
-      Width = 95
+      Width = 105
       Height = 15
       Align = alNone
       AllowAllUp = True
@@ -122,9 +120,9 @@ object fraLight: TfraLight
       OnClick = ebUseAllInD3DClick
     end
     object ebUnuseAllInD3D: TExtBtn
-      Left = 98
+      Left = 110
       Top = 32
-      Width = 95
+      Width = 105
       Height = 15
       Align = alNone
       AllowAllUp = True

@@ -2,7 +2,7 @@
 #pragma hdrstop
 
 #include "ESceneCustomMTools.h"
-#include "ui_control.h"
+#include "ESceneControlsCustom.h"
 #include "ui_leveltools.h"
 
 void ESceneCustomMTools::CreateControls()

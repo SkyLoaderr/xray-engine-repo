@@ -6,7 +6,7 @@
 #include "Scene.h"
 #include "ui_levelmain.h"
 #include "ui_leveltools.h"
-#include "ui_aimaptools.h"
+#include "ESceneAIMapControls.h"
 #include "PropertiesListHelper.h"
 
 // chunks
@@ -190,9 +190,7 @@ void ESceneAIMapTools::DenumerateNodes()
 
 bool ESceneAIMapTools::Load(IReader& F)
 {
-	if (!inherited::Load(F)) return false;
-
-	u32 version = 0;
+	u16 version = 0;
 
     R_ASSERT(F.r_chunk(AIMAP_CHUNK_VERSION,&version));
     if( version!=AIMAP_VERSION ){
@@ -244,15 +242,6 @@ bool ESceneAIMapTools::Load(IReader& F)
 
 bool ESceneAIMapTools::LoadSelection(IReader& F)
 {
-	u32 version = 0;
-
-    R_ASSERT(F.r_chunk(AIMAP_CHUNK_VERSION,&version));
-    if( version!=AIMAP_VERSION ){
-        ELog.DlgMsg( mtError, "AIMap: Unsupported version.");
-        return false;
-    }
-
-	if (!inherited::LoadSelection(F)) return false;
 	Clear();
 	return Load(F);
 }
@@ -264,8 +253,6 @@ void ESceneAIMapTools::OnSynchronize()
 
 void ESceneAIMapTools::Save(IWriter& F)
 {
-	inherited::Save(F);
-    
 	F.open_chunk	(AIMAP_CHUNK_VERSION);
 	F.w_u16			(AIMAP_VERSION);
 	F.close_chunk	();
@@ -304,12 +291,6 @@ void ESceneAIMapTools::Save(IWriter& F)
 
 void ESceneAIMapTools::SaveSelection(IWriter& F)
 {
-	F.open_chunk	(AIMAP_CHUNK_VERSION);
-	F.w_u16			(AIMAP_VERSION);
-	F.close_chunk	();
-
-	inherited::SaveSelection(F);
-
 	Save(F);
 }
 
@@ -381,33 +362,27 @@ void ESceneAIMapTools::SelectNodesByLink(int link)
     UI->RedrawScene		();
 }
 
-int ESceneAIMapTools::SelectObjects(bool flag)
+void ESceneAIMapTools::SelectObjects(bool flag)
 {
-	int count = 0;
-
     switch (LTools->GetSubTarget()){
     case estAIMapNode:{
         for (AINodeIt it=m_Nodes.begin(); it!=m_Nodes.end(); it++)
 //			if (!(*it)->flags.is(SAINode::flHide))
 	            (*it)->flags.set(SAINode::flSelected,flag);
-		count = m_Nodes.size();
     }break;
     }
     UpdateHLSelected	();
     UI->RedrawScene		();
-    return count;
 }
 struct sel_node_pred : public std::unary_function<SAINode*, bool>
 {
 	bool operator()(const SAINode*& x){ return x->flags.is(SAINode::flSelected); }
 };
-int ESceneAIMapTools::RemoveSelection()
+void ESceneAIMapTools::RemoveSelection()
 {
-	int count=0;
     switch (LTools->GetSubTarget()){
     case estAIMapNode:{
     	if (m_Nodes.size()==(u32)SelectionCount(true)){
-        	count 	= m_Nodes.size();
         	Clear	(true);
         }else{
         	UI->ProgressStart	(4,"Removing nodes...");
@@ -421,11 +396,9 @@ int ESceneAIMapTools::RemoveSelection()
     		UI->ProgressInc		("erasing nodes");
             // remove sel nodes
            	AINodeIt result		= std::remove_if(m_Nodes.begin(), m_Nodes.end(), sel_node_pred());
-            count				= m_Nodes.size();
 	        for (AINodeIt r_it=m_Nodes.begin(); r_it!=m_Nodes.end(); r_it++) 
             	if ((*r_it)->flags.is(SAINode::flSelected)) xr_delete(*r_it);
             m_Nodes.erase		(result,m_Nodes.end());
-            count				-= m_Nodes.size();
     		UI->ProgressInc		("updating hash");
             hash_Clear		   	();
 		    hash_FillFromNodes 	();
@@ -434,27 +407,21 @@ int ESceneAIMapTools::RemoveSelection()
         }
     }break;
     }
-    if (count){ 
-	    UpdateHLSelected	();
-    	UI->RedrawScene		();
-    }
-    return count;
+    UpdateHLSelected	();
+    UI->RedrawScene		();
 }
 
-int ESceneAIMapTools::InvertSelection()
+void ESceneAIMapTools::InvertSelection()
 {
-	int count=0;
     switch (LTools->GetSubTarget()){
     case estAIMapNode:{
         for (AINodeIt it=m_Nodes.begin(); it!=m_Nodes.end(); it++)
 //			if (!(*it)->flags.is(SAINode::flHide))
 	            (*it)->flags.invert(SAINode::flSelected);
-	    count = m_Nodes.size();
     }break;
     }
     UpdateHLSelected	();
     UI->RedrawScene		();
-    return count;
 }
 
 int ESceneAIMapTools::SelectionCount(bool testflag)
@@ -470,32 +437,10 @@ int ESceneAIMapTools::SelectionCount(bool testflag)
     return count;
 }
 
-int ESceneAIMapTools::ShowObjects(bool flag, bool bAllowSelectionFlag, bool bSelFlag)
-{
-	return 0;
-/*    
-	int count=0;
-    for (AINodeIt it=m_Nodes.begin(); it!=m_Nodes.end(); it++)
-        if (bAllowSelectionFlag){
-	        if ((*it)->flags.is(SAINode::flSelected)==bSelFlag){
-                (*it)->flags.set(SAINode::flHide,!flag);
-                if (false==flag) (*it)->flags.set(SAINode::flSelected,FALSE);
-                count++;
-            }
-        }else{
-            (*it)->flags.set(SAINode::flHide,!flag);
-            if (false==flag) (*it)->flags.set(SAINode::flSelected,FALSE);
-            count++;
-        }
-    UpdateHLSelected();
-    return count;
-*/
-}
-
 void ESceneAIMapTools::FillProp(LPCSTR pref, PropItemVec& items)
 {
-    PHelper.CreateFlag<Flags32>	(items, FHelper.PrepareKey(pref,"Visibility\\Draw Nodes"),	&m_Flags, 		flHideNodes, 0,0, FlagValueCustom::flInvertedDraw);
-    PHelper.CreateFloat			(items, FHelper.PrepareKey(pref,"Visibility\\Radius"),		&m_VisRadius, 	10, 250);
+    PHelper.CreateFlag<Flags32>	(items, FHelper.PrepareKey(pref,"Common\\Draw Nodes"),		&m_Flags, 		flHideNodes, 0,0, FlagValueCustom::flInvertedDraw);
+    PHelper.CreateFloat			(items, FHelper.PrepareKey(pref,"Common\\Visible Radius"),	&m_VisRadius, 	10, 250);
     PHelper.CreateU32			(items, FHelper.PrepareKey(pref,"Params\\Brush Size"),		&m_BrushSize, 	1, 100);
     PHelper.CreateFloat			(items, FHelper.PrepareKey(pref,"Params\\Can Up"),			&m_Params.fCanUP, 	0.f, 10.f);
     PHelper.CreateFloat			(items, FHelper.PrepareKey(pref,"Params\\Can Down"),		&m_Params.fCanDOWN, 0.f, 10.f);

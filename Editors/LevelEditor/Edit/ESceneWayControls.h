@@ -1,7 +1,7 @@
-#ifndef UI_WayPointToolsH
-#define UI_WayPointToolsH
+#ifndef ESceneWayControlsH
+#define ESceneWayControlsH
 
-#include "ui_control.h"
+#include "ESceneControlsCustom.h"
 
 // refs
 class CWayPoint;

@@ -6,7 +6,7 @@
 
 #include "ESceneCustomMTools.H"
 #include "xrLevel.H"
-#include "AIMapExport.H"
+#include "ESceneAIMapTools_Export.H"
 
 // refs
 class ESceneAIMapTools;
@@ -57,7 +57,6 @@ struct SAINode					// definition of "patch" or "node"
     void   		Save	(IWriter&, ESceneAIMapTools*);
 };
 #pragma pack(pop)
-#define DEFINE_LIST(T,N,I)		typedef xr_list< T > N;		typedef N::iterator I;
 
 DEFINE_VECTOR(SAINode*,AINodeVec,AINodeIt);
 
@@ -111,7 +110,7 @@ protected:
 	int 				RemoveOutOfBoundsNodes	();
 
     void				CalculateNodesBBox		(Fbox& bb);
-
+    
     // controls
     virtual void 		CreateControls			();
 	virtual void 		RemoveControls			();
@@ -130,6 +129,8 @@ public:
 
     float 				m_VisRadius;
     u32					m_BrushSize;
+
+    bool				PickObjects				(Fvector& dest, const Fvector& start, const Fvector& dir, float dist);
 public:
 						ESceneAIMapTools 	   	();
 	virtual        	 	~ESceneAIMapTools 		();
@@ -139,15 +140,14 @@ public:
 	virtual ObjectList*	GetSnapList				(){return &m_SnapObjects;}
 
 	// selection manipulate
-    SAINode*			PickNode				(const Fvector& start, const Fvector& dir, float dist);
-    virtual bool		PickGround				(Fvector& dest, const Fvector& start, const Fvector& dir, float dist);
-	virtual int			RaySelect				(bool flag, float& distance, const Fvector& start, const Fvector& direction);
-	virtual int	   		FrustumSelect			(bool flag, const CFrustum& frustum);
-	virtual int    		SelectObjects           (bool flag);
-	virtual int    		InvertSelection         ();
-	virtual int 		RemoveSelection         ();
+    SAINode*			PickNode				(const Fvector& start, const Fvector& dir, float& dist);
+	virtual int			RaySelect				(int flag, float& distance, const Fvector& start, const Fvector& direction, BOOL bDistanceOnly);
+	virtual int	   		FrustumSelect			(int flag, const CFrustum& frustum);
+	virtual void   		SelectObjects           (bool flag);
+	virtual void   		InvertSelection         ();
+	virtual void		RemoveSelection         ();
 	virtual int    		SelectionCount          (bool testflag);
-	virtual int 		ShowObjects				(bool flag, bool bAllowSelectionFlag=false, bool bSelFlag=true);
+	virtual void		ShowObjects				(bool flag, bool bAllowSelectionFlag=false, bool bSelFlag=true){}
 
     virtual void		Clear					(bool bOnlyNodes=false); 
 
@@ -170,7 +170,7 @@ public:
     virtual void   		Save            		(IWriter&);
     virtual bool		LoadSelection      		(IReader&);
     virtual void		SaveSelection      		(IWriter&);
-    virtual bool   		Export          		(LPCSTR fn);
+    virtual bool   		Export          		(LPCSTR path);
 
 	// device dependent funcs    
 	virtual void		OnDeviceCreate			();

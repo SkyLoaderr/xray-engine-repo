@@ -1,13 +1,12 @@
 object fraShape: TfraShape
-  Left = 412
-  Top = 347
+  Left = 1555
+  Top = 396
   VertScrollBar.Visible = False
   Align = alClient
   BorderStyle = bsNone
   ClientHeight = 250
-  ClientWidth = 198
+  ClientWidth = 217
   Color = 10528425
-  Constraints.MaxWidth = 206
   Constraints.MinWidth = 206
   Font.Charset = DEFAULT_CHARSET
   Font.Color = clBlack
@@ -20,7 +19,7 @@ object fraShape: TfraShape
   object paAppend: TPanel
     Left = 0
     Top = 0
-    Width = 198
+    Width = 217
     Height = 48
     Align = alTop
     ParentColor = True
@@ -28,7 +27,7 @@ object fraShape: TfraShape
     object APHeadLabel1: TLabel
       Left = 1
       Top = 1
-      Width = 196
+      Width = 215
       Height = 13
       Align = alTop
       Alignment = taCenter
@@ -38,7 +37,7 @@ object fraShape: TfraShape
       OnClick = ExpandClick
     end
     object ExtBtn2: TExtBtn
-      Left = 185
+      Left = 205
       Top = 2
       Width = 11
       Height = 11
@@ -64,7 +63,7 @@ object fraShape: TfraShape
     object ebTypeSphere: TExtBtn
       Left = 2
       Top = 16
-      Width = 195
+      Width = 215
       Height = 15
       Align = alNone
       BevelShow = False
@@ -84,7 +83,7 @@ object fraShape: TfraShape
     object ebTypeBox: TExtBtn
       Left = 2
       Top = 31
-      Width = 195
+      Width = 215
       Height = 15
       Align = alNone
       BevelShow = False
@@ -104,7 +103,7 @@ object fraShape: TfraShape
   object paEdit: TPanel
     Left = 0
     Top = 48
-    Width = 198
+    Width = 217
     Height = 47
     Align = alTop
     ParentColor = True
@@ -112,7 +111,7 @@ object fraShape: TfraShape
     object Label1: TLabel
       Left = 1
       Top = 1
-      Width = 196
+      Width = 215
       Height = 13
       Align = alTop
       Alignment = taCenter
@@ -122,7 +121,7 @@ object fraShape: TfraShape
       OnClick = ExpandClick
     end
     object ExtBtn3: TExtBtn
-      Left = 185
+      Left = 205
       Top = 2
       Width = 11
       Height = 11
@@ -148,7 +147,7 @@ object fraShape: TfraShape
     object ebAttachShape: TExtBtn
       Left = 2
       Top = 16
-      Width = 195
+      Width = 215
       Height = 14
       Align = alNone
       AllowAllUp = True
@@ -169,7 +168,7 @@ object fraShape: TfraShape
     object ebDetachAllShapes: TExtBtn
       Left = 2
       Top = 30
-      Width = 195
+      Width = 215
       Height = 14
       Align = alNone
       BevelShow = False

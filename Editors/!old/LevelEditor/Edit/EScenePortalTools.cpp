@@ -4,7 +4,7 @@
 #include "EScenePortalTools.h"
 #include "ui_leveltools.h"
 #include "FramePortal.h"
-#include "ui_portaltools.h"
+#include "EScenePortalControls.h"
 #include "PropertiesListHelper.h"
 
 /* TODO 1 -oAlexMX -cTODO: Create tools as AI Map */

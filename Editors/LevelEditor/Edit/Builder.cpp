@@ -97,6 +97,12 @@ BOOL SceneBuilder::MakeGame( )
             VERIFY_COMPILE(GetBounding(),				"Failed to acquire level bounding volume.");
             VERIFY_COMPILE(BuildLTX(),					"Failed to build level description.");
             VERIFY_COMPILE(BuildGame(),					"Failed to build game.");
+    	    // save wallmarks
+            SceneToolsMapPairIt _I 	= Scene->FirstTools();
+            SceneToolsMapPairIt _E	= Scene->LastTools();
+            for (; _I!=_E; _I++){
+            	VERIFY_COMPILE(_I->second->Export(m_LevelPath.c_str()),"Export failed.");
+            }
         } while(0);
 
         if (!error_text.IsEmpty()) 	ELog.DlgMsg(mtError,error_text.c_str());

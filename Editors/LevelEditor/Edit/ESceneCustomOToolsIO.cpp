@@ -33,8 +33,6 @@ bool ESceneCustomOTools::OnLoadAppendObject(CCustomObject* O)
 
 bool ESceneCustomOTools::LoadSelection(IReader& F)
 {
-	if (!inherited::LoadSelection(F)) return false;
-
     int count		= 0;
 	F.r_chunk		(CHUNK_OBJECT_COUNT,&count);
 
@@ -48,8 +46,6 @@ bool ESceneCustomOTools::LoadSelection(IReader& F)
 
 void ESceneCustomOTools::SaveSelection(IWriter& F)
 {
-	inherited::SaveSelection(F);
-
 	F.open_chunk	(CHUNK_OBJECTS);
     int count		= 0;
     for(ObjectIt it = m_Objects.begin();it!=m_Objects.end();it++){
@@ -67,8 +63,6 @@ void ESceneCustomOTools::SaveSelection(IWriter& F)
 
 bool ESceneCustomOTools::Load(IReader& F)
 {
-	if (!inherited::Load(F)) return false;
-
     int count		= 0;
 	F.r_chunk		(CHUNK_OBJECT_COUNT,&count);
 
@@ -82,8 +76,6 @@ bool ESceneCustomOTools::Load(IReader& F)
 
 void ESceneCustomOTools::Save(IWriter& F)
 {
-	inherited::Save	(F);
-
     int count		= m_Objects.size();
 	F.w_chunk		(CHUNK_OBJECT_COUNT,&count,sizeof(count));
 
@@ -98,9 +90,9 @@ void ESceneCustomOTools::Save(IWriter& F)
 }
 //----------------------------------------------------
 
-bool ESceneCustomOTools::Export(LPCSTR fn)
+bool ESceneCustomOTools::Export(LPCSTR path)
 {
-	return false;
+	return true;
 }
 //----------------------------------------------------
  

@@ -1,14 +1,12 @@
 object fraAIMap: TfraAIMap
-  Left = 376
-  Top = 312
+  Left = 1519
+  Top = 250
   VertScrollBar.Visible = False
   Align = alClient
   BorderStyle = bsNone
   ClientHeight = 250
-  ClientWidth = 198
+  ClientWidth = 217
   Color = 10528425
-  Constraints.MaxWidth = 206
-  Constraints.MinWidth = 206
   Font.Charset = DEFAULT_CHARSET
   Font.Color = clBlack
   Font.Height = -11
@@ -20,7 +18,7 @@ object fraAIMap: TfraAIMap
   object paObjectList: TPanel
     Left = 0
     Top = 0
-    Width = 198
+    Width = 217
     Height = 65
     Align = alTop
     ParentColor = True
@@ -28,7 +26,7 @@ object fraAIMap: TfraAIMap
     object Label2: TLabel
       Left = 1
       Top = 1
-      Width = 196
+      Width = 215
       Height = 13
       Align = alTop
       Alignment = taCenter
@@ -38,7 +36,7 @@ object fraAIMap: TfraAIMap
       OnClick = ExpandClick
     end
     object ExtBtn2: TExtBtn
-      Left = 185
+      Left = 205
       Top = 2
       Width = 11
       Height = 11
@@ -64,7 +62,7 @@ object fraAIMap: TfraAIMap
     object ebGenerateMap: TExtBtn
       Left = 1
       Top = 16
-      Width = 195
+      Width = 215
       Height = 15
       Align = alNone
       BevelShow = False
@@ -84,7 +82,7 @@ object fraAIMap: TfraAIMap
     object ebSmoothNodes: TExtBtn
       Left = 1
       Top = 31
-      Width = 195
+      Width = 215
       Height = 15
       Align = alNone
       BevelShow = False
@@ -104,7 +102,7 @@ object fraAIMap: TfraAIMap
     object ExtBtn6: TExtBtn
       Left = 1
       Top = 46
-      Width = 195
+      Width = 215
       Height = 15
       Align = alNone
       BevelShow = False
@@ -125,7 +123,7 @@ object fraAIMap: TfraAIMap
   object paLink: TPanel
     Left = 0
     Top = 65
-    Width = 198
+    Width = 217
     Height = 117
     Align = alTop
     ParentColor = True
@@ -133,7 +131,7 @@ object fraAIMap: TfraAIMap
     object Label3: TLabel
       Left = 1
       Top = 1
-      Width = 196
+      Width = 215
       Height = 13
       Align = alTop
       Alignment = taCenter
@@ -143,7 +141,7 @@ object fraAIMap: TfraAIMap
       OnClick = ExpandClick
     end
     object ExtBtn4: TExtBtn
-      Left = 185
+      Left = 205
       Top = 2
       Width = 11
       Height = 11
@@ -169,7 +167,7 @@ object fraAIMap: TfraAIMap
     object ebModeAppend: TExtBtn
       Left = 6
       Top = 69
-      Width = 40
+      Width = 46
       Height = 15
       Align = alNone
       BevelShow = False
@@ -191,7 +189,7 @@ object fraAIMap: TfraAIMap
     object ebModeRemove: TExtBtn
       Left = 6
       Top = 84
-      Width = 40
+      Width = 46
       Height = 15
       Align = alNone
       BevelShow = False
@@ -211,7 +209,7 @@ object fraAIMap: TfraAIMap
     end
     object ebUp: TExtBtn
       Tag = 1
-      Left = 73
+      Left = 82
       Top = 69
       Width = 24
       Height = 15
@@ -240,7 +238,7 @@ object fraAIMap: TfraAIMap
     end
     object ebDown: TExtBtn
       Tag = 3
-      Left = 73
+      Left = 82
       Top = 99
       Width = 24
       Height = 15
@@ -268,7 +266,7 @@ object fraAIMap: TfraAIMap
       OnClick = ebSideClick
     end
     object ebLeft: TExtBtn
-      Left = 49
+      Left = 58
       Top = 84
       Width = 24
       Height = 15
@@ -297,7 +295,7 @@ object fraAIMap: TfraAIMap
     end
     object ebRight: TExtBtn
       Tag = 2
-      Left = 97
+      Left = 106
       Top = 84
       Width = 24
       Height = 15
@@ -326,7 +324,7 @@ object fraAIMap: TfraAIMap
     end
     object ebFull: TExtBtn
       Tag = 4
-      Left = 73
+      Left = 82
       Top = 84
       Width = 24
       Height = 15
@@ -364,7 +362,7 @@ object fraAIMap: TfraAIMap
     object ebModeInvert: TExtBtn
       Left = 6
       Top = 99
-      Width = 40
+      Width = 46
       Height = 15
       Align = alNone
       BevelShow = False
@@ -398,7 +396,7 @@ object fraAIMap: TfraAIMap
     object ebIgnoreConstraints: TExtBtn
       Left = 2
       Top = 16
-      Width = 195
+      Width = 215
       Height = 15
       Align = alNone
       AllowAllUp = True
@@ -422,7 +420,7 @@ object fraAIMap: TfraAIMap
     object ebAutoLink: TExtBtn
       Left = 2
       Top = 31
-      Width = 195
+      Width = 215
       Height = 15
       Align = alNone
       AllowAllUp = True
@@ -447,13 +445,13 @@ object fraAIMap: TfraAIMap
     object Bevel2: TBevel
       Left = 1
       Top = 48
-      Width = 196
+      Width = 215
       Height = 2
     end
     object ExtBtn1: TExtBtn
-      Left = 128
+      Left = 137
       Top = 69
-      Width = 69
+      Width = 77
       Height = 15
       Align = alNone
       BevelShow = False
@@ -473,9 +471,9 @@ object fraAIMap: TfraAIMap
     end
     object ExtBtn5: TExtBtn
       Tag = 1
-      Left = 128
+      Left = 137
       Top = 84
-      Width = 69
+      Width = 77
       Height = 15
       Align = alNone
       BevelShow = False
@@ -495,9 +493,9 @@ object fraAIMap: TfraAIMap
     end
     object ExtBtn3: TExtBtn
       Tag = 2
-      Left = 128
+      Left = 137
       Top = 99
-      Width = 69
+      Width = 77
       Height = 15
       Align = alNone
       BevelShow = False

@@ -1,7 +1,7 @@
-#include "stdafx.h"   
+#include "stdafx.h"
 #pragma hdrstop                 
                                      
-#include "AIMapExport.h"
+#include "ESceneAIMapTools_Export.h"
 #include "ESceneAIMapTools.h"
 
 void ESceneAIMapTools::UnpackPosition(Fvector& Pdest, const NodePosition& Psrc, Fbox& bb, SAIParams& params)
@@ -29,16 +29,18 @@ void ESceneAIMapTools::PackPosition(NodePosition& Dest, Fvector& Src, Fbox& bb, 
 	clamp	(pz,-32767,32767);	Dest.z = s16	(pz);
 }
 
-bool ESceneAIMapTools::Export(LPCSTR fn)
+bool ESceneAIMapTools::Export(LPCSTR path)
 {
 //.?	if (!RealUpdateSnapList()) return false;
 	if (!Valid()) return false;
 
     // calculate bbox
     Fbox bb;		CalculateNodesBBox(bb);
+
+    AnsiString fn	= AnsiString(path)+"build.aimap";
     
     // export
-    IWriter* F		= FS.w_open(fn);
+    IWriter* F		= FS.w_open(fn.c_str());
     
 	F->open_chunk	(E_AIMAP_CHUNK_VERSION);
 	F->w_u16		(E_AIMAP_VERSION);

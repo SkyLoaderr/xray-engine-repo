@@ -1,8 +1,8 @@
 object fraSector: TfraSector
-  Left = 522
-  Top = 383
-  Width = 206
-  Height = 304
+  Left = 1541
+  Top = 222
+  Width = 226
+  Height = 197
   VertScrollBar.ButtonSize = 11
   VertScrollBar.Range = 257
   VertScrollBar.Smooth = True
@@ -22,7 +22,7 @@ object fraSector: TfraSector
   object paSectorActions: TPanel
     Left = 0
     Top = 83
-    Width = 198
+    Width = 218
     Height = 71
     Align = alTop
     Color = 10528425
@@ -151,7 +151,7 @@ object fraSector: TfraSector
     object ebBoxPick: TExtBtn
       Left = 2
       Top = 53
-      Width = 195
+      Width = 215
       Height = 15
       Align = alNone
       AllowAllUp = True
@@ -218,7 +218,7 @@ object fraSector: TfraSector
     object APHeadLabel2: TLabel
       Left = 1
       Top = 1
-      Width = 196
+      Width = 216
       Height = 13
       Align = alTop
       Alignment = taCenter
@@ -228,7 +228,7 @@ object fraSector: TfraSector
       OnClick = TopClick
     end
     object ExtBtn1: TExtBtn
-      Left = 185
+      Left = 205
       Top = 2
       Width = 11
       Height = 11
@@ -254,7 +254,7 @@ object fraSector: TfraSector
     object ebCreateNew: TExtBtn
       Left = 2
       Top = 16
-      Width = 195
+      Width = 215
       Height = 15
       Align = alNone
       AllowAllUp = True
@@ -313,14 +313,14 @@ object fraSector: TfraSector
     object Bevel1: TBevel
       Left = 1
       Top = 33
-      Width = 196
+      Width = 215
       Height = 2
     end
   end
   object paCommands: TPanel
     Left = 0
     Top = 0
-    Width = 198
+    Width = 218
     Height = 83
     Align = alTop
     Color = 10528425
@@ -328,7 +328,7 @@ object fraSector: TfraSector
     object ebValidate: TExtBtn
       Left = 2
       Top = 16
-      Width = 195
+      Width = 215
       Height = 15
       Align = alNone
       BevelShow = False
@@ -348,7 +348,7 @@ object fraSector: TfraSector
     object APHeadLabel1: TLabel
       Left = 1
       Top = 1
-      Width = 196
+      Width = 216
       Height = 13
       Align = alTop
       Alignment = taCenter
@@ -358,7 +358,7 @@ object fraSector: TfraSector
       OnClick = TopClick
     end
     object ExtBtn2: TExtBtn
-      Left = 185
+      Left = 205
       Top = 2
       Width = 11
       Height = 11
@@ -384,7 +384,7 @@ object fraSector: TfraSector
     object ebCaptureInside: TExtBtn
       Left = 2
       Top = 31
-      Width = 195
+      Width = 215
       Height = 15
       Align = alNone
       BevelShow = False
@@ -404,7 +404,7 @@ object fraSector: TfraSector
     object ebCreateDefault: TExtBtn
       Left = 2
       Top = 51
-      Width = 195
+      Width = 215
       Height = 15
       Align = alNone
       BevelShow = False
@@ -424,7 +424,7 @@ object fraSector: TfraSector
     object ebRemoveDefault: TExtBtn
       Left = 2
       Top = 66
-      Width = 195
+      Width = 215
       Height = 15
       Align = alNone
       BevelShow = False
@@ -444,7 +444,7 @@ object fraSector: TfraSector
     object Bevel2: TBevel
       Left = 1
       Top = 48
-      Width = 196
+      Width = 215
       Height = 2
     end
   end

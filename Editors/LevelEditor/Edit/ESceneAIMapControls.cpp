@@ -1,7 +1,7 @@
 #include "stdafx.h"
 #pragma hdrstop
 
-#include "UI_AIMapTools.h"
+#include "ESceneAIMapControls.h"
 #include "ESceneAIMapTools.h"
 #include "ui_main.h"
 #include "FrameAIMap.h"
@@ -18,10 +18,10 @@ bool __fastcall TUI_ControlAIMapNodeAdd::Start(TShiftState Shift)
 {
 	append_nodes = 0;
 	Fvector p;
-    if (parent_tool->PickGround(p,UI->m_CurrentRStart,UI->m_CurrentRNorm,UI->ZFar())){
-    	parent_tool->SelectObjects(false);
-        ESceneAIMapTools* S = (ESceneAIMapTools*)parent_tool;
-	    append_nodes		= S->AddNode(p,((TfraAIMap*)parent_tool->pFrame)->ebIgnoreConstraints->Down,((TfraAIMap*)parent_tool->pFrame)->ebAutoLink->Down,S->m_BrushSize);
+    ESceneAIMapTools* S 	= (ESceneAIMapTools*)parent_tool;
+    if (S->PickObjects(p,UI->m_CurrentRStart,UI->m_CurrentRNorm,UI->ZFar())){
+    	S->SelectObjects	(false);
+	    append_nodes		= S->AddNode(p,((TfraAIMap*)S->pFrame)->ebIgnoreConstraints->Down,((TfraAIMap*)S->pFrame)->ebAutoLink->Down,S->m_BrushSize);
 		if (!Shift.Contains(ssAlt)){ 
 		    if (append_nodes) Scene->UndoSave();
         	ResetActionToSelect();
@@ -33,9 +33,9 @@ bool __fastcall TUI_ControlAIMapNodeAdd::Start(TShiftState Shift)
 void TUI_ControlAIMapNodeAdd::Move(TShiftState _Shift)
 {
 	Fvector p;
-    if (parent_tool->PickGround(p,UI->m_CurrentRStart,UI->m_CurrentRNorm,UI->ZFar())){
-        ESceneAIMapTools* S = (ESceneAIMapTools*)parent_tool;
-	    append_nodes+=S->AddNode(p,((TfraAIMap*)parent_tool->pFrame)->ebIgnoreConstraints->Down,((TfraAIMap*)parent_tool->pFrame)->ebAutoLink->Down,S->m_BrushSize);
+    ESceneAIMapTools* S 	= (ESceneAIMapTools*)parent_tool;
+    if (S->PickObjects(p,UI->m_CurrentRStart,UI->m_CurrentRNorm,UI->ZFar())){
+	    append_nodes+=S->AddNode(p,((TfraAIMap*)S->pFrame)->ebIgnoreConstraints->Down,((TfraAIMap*)S->pFrame)->ebAutoLink->Down,S->m_BrushSize);
     }
 }
 bool TUI_ControlAIMapNodeAdd::End(TShiftState _Shift)
@@ -45,46 +45,6 @@ bool TUI_ControlAIMapNodeAdd::End(TShiftState _Shift)
 	return true;
 }
 
-//------------------------------------------------------------------------------
-// Node Select
-//------------------------------------------------------------------------------
-TUI_ControlAIMapNodeSelect::TUI_ControlAIMapNodeSelect(int st, int act, ESceneCustomMTools* parent):TUI_CustomControl(st,act,parent)
-{
-}
-bool TUI_ControlAIMapNodeSelect::Start(TShiftState Shift)
-{
-	if (CheckSnapList(Shift)) return false;
-    if (!(Shift.Contains(ssCtrl)||Shift.Contains(ssAlt))) parent_tool->SelectObjects(false);
-
-    SAINode* N 		= ((ESceneAIMapTools*)parent_tool)->PickNode(UI->m_CurrentRStart,UI->m_CurrentRNorm,UI->ZFar());
-    bBoxSelection   = (N && (Shift.Contains(ssCtrl)||Shift.Contains(ssAlt))) || !N;
-
-    if( bBoxSelection ){
-        UI->EnableSelectionRect( true );
-        UI->UpdateSelectionRect(UI->m_StartCp,UI->m_CurrentCp);
-        if(N){
-        	if (Shift.Contains(ssCtrl)) N->flags.invert(SAINode::flSelected);
-			else N->flags.set(SAINode::flSelected,!Shift.Contains(ssAlt));
-        }
-	    ((ESceneAIMapTools*)parent_tool)->UpdateHLSelected();
-        return true;
-    } else {
-        if(N){
-        	if (Shift.Contains(ssCtrl)) N->flags.invert(SAINode::flSelected);
-            else N->flags.set(SAINode::flSelected,!Shift.Contains(ssAlt));
-        }
-    }
-    ((ESceneAIMapTools*)parent_tool)->UpdateHLSelected();
-    return false;
-}
-void __fastcall TUI_ControlAIMapNodeSelect::Move(TShiftState _Shift)
-{
-	SelectProcess(_Shift);
-}
-bool __fastcall TUI_ControlAIMapNodeSelect::End(TShiftState _Shift)
-{
-    return SelectEnd(_Shift);
-}
 
 //------------------------------------------------------------------------------------
 // Node Move

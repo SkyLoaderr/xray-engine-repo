@@ -28,8 +28,3 @@ void ESceneCustomMTools::OnDestroy()
     RemoveControls		();
 }
 
-bool ESceneCustomMTools::Load			(IReader&){return true;}
-void ESceneCustomMTools::Save           (IWriter&){;}
-bool ESceneCustomMTools::LoadSelection  (IReader&){return true;}
-void ESceneCustomMTools::SaveSelection  (IWriter&){;}
-

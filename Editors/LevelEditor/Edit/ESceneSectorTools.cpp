@@ -2,7 +2,7 @@
 #pragma hdrstop
 
 #include "ESceneSectorTools.h"
-#include "ui_sectortools.h"
+#include "ESceneSectorControls.h"
 #include "ui_leveltools.h"
 #include "FrameSector.h"
 #include "SceneObject.h"

@@ -19,6 +19,7 @@
 #include "ESceneShapeTools.h"
 #include "ESceneSpawnTools.h"
 #include "ESceneWayTools.h"
+#include "ESceneWallmarkTools.h"
 
 void EScene::RegisterSceneTools(ESceneCustomMTools* mt)
 {
@@ -43,6 +44,7 @@ void EScene::CreateSceneTools()
     RegisterSceneTools	   	(xr_new<EScenePSTools>		()	);
     RegisterSceneTools	   	(xr_new<EDetailManager>		()	);
     RegisterSceneTools	   	(xr_new<ESceneAIMapTools>	()	);
+    RegisterSceneTools		(xr_new<ESceneWallmarkTools>()	);
 }
 
 void EScene::DestroySceneTools()
