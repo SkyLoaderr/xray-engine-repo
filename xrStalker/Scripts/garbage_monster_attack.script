@@ -334,7 +334,7 @@ function CGarbageRunMonster:update()
 	else
 		// Еще не начали бежать
 		reset_action(self.object, script_name())
-		action(self.object, move(move.run_fwd, self.way), sound(sound.attack), cond(cond.move_end))
+		action(self.object, move(move.run_fwd, self.way, 1), sound(sound.attack), cond(cond.move_end))
 		self.started	= true
 	end
 end
@@ -374,7 +374,7 @@ function CGarbageRunMonster:actions()
 	if(self.attacked == false) then
 		//Если не атакуем, то надо бежать
 		if(self.object:action() == nil) then
-			action(self.object, move(move.run_fwd, self.way), sound(sound.attack), cond(cond.move_end))
+			action(self.object, move(move.run_fwd, self.way, 1), sound(sound.attack), cond(cond.move_end))
 		end
 	end
 	
