@@ -551,8 +551,10 @@ void CPHSimpleCharacter::InitContact(dContact* c){
 		//	dVector3 rel_vel={obj_vel[0]-vel[0],obj_vel[1]-vel[1],obj_vel[2]-vel[2]};
 	//		c_vel=dDOT(obj_vel,c->geom.normal)/m_mass*m.mass;
 	//	}
-		if(c_vel>m_contact_velocity) 
+		if(c_vel>m_contact_velocity) {
 								m_contact_velocity=c_vel;
+						//		b_meet_control=true;
+		}
 		}
 
 		

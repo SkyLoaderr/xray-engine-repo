@@ -1,7 +1,7 @@
 #pragma once
 
 typedef void __stdcall BoneCallbackFun(CBoneInstance* B);
-
+typedef  void __stdcall ContactCallbackFun(CDB::TRI* T,dContactGeom* c);
 
 // ABSTRACT:
 class	CPhysicsBase
@@ -22,6 +22,7 @@ public:
 	virtual void			applyForce				(const Fvector& dir, float val)				= 0;
 	virtual void			applyImpulse			(const Fvector& dir, float val)				= 0;
 	virtual void			SetAirResistance		(dReal linear=0.0002f, dReal angular=0.05f) = 0;
+	virtual void			set_ContactCallback		(ContactCallbackFun* callback)				= 0;
 	
 	virtual ~CPhysicsBase	()																	{};
 };
@@ -30,9 +31,11 @@ public:
 // Element is fully Rigid and consists of one or more forms, such as sphere, box, cylinder, etc.
 class	CPhysicsElement		: public CPhysicsBase
 {
+
 public:
-	virtual	void			add_Sphere				(const Fsphere&		V)								= 0;
-	virtual	void			add_Box					(const Fobb&		V)								= 0;
+	virtual void			set_ContactCallback		(ContactCallbackFun* callback)					= 0;
+	virtual	void			add_Sphere				(const Fsphere&		V)							= 0;
+	virtual	void			add_Box					(const Fobb&		V)							= 0;
 	virtual	void			set_ParentElement		(CPhysicsElement* p)							= 0;
 	virtual void			SetMaterial				(u32 m)											= 0;
 	virtual void			SetMaterial				(LPCSTR m)										= 0;

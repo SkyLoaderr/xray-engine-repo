@@ -1273,7 +1273,7 @@ xrServerEntity*	F_entity_Create		(LPCSTR name)
 	case CLSID_OBJECT_W_SHOTGUN:	return xr_new<xrSE_Weapon>			();
 	case CLSID_OBJECT_W_SVD:		return xr_new<xrSE_Weapon>			();
 	case CLSID_OBJECT_W_SVU:		return xr_new<xrSE_Weapon>			();
-	case CLSID_OBJECT_W_RPG7:		return xr_new<xrSE_Weapon>			();
+	//case CLSID_OBJECT_W_RPG7:		return xr_new<xrSE_Weapon>			();
 	case CLSID_OBJECT_HEALTH:		return xr_new<xrSE_Health>			();
 	case CLSID_TARGET_ASSAULT:		return xr_new<xrSE_Target_Assault>	();
 	case CLSID_TARGET_CS_BASE:		return xr_new<xrSE_Target_CSBase>	();

@@ -1,7 +1,7 @@
 #include "stdafx.h"
 #include "dTriCollideK.h"
 #include "../dCylinder/dCylinder.h"
-
+#include "../ExtendedGeom.h"
 #define CONTACT(Ptr, Stride) ((dContactGeom*) (((byte*)Ptr) + (Stride)))
 #define SURFACE(Ptr, Stride) ((dSurfaceParameters*) (((byte*)Ptr) + (Stride-sizeof(dSurfaceParameters))))
 #define NUMC_MASK (0xffff)
@@ -177,6 +177,7 @@ contact->depth = outDepth;
 	SURFACE(contact,i*skip)->bounce_vel=GMLib.GetMaterial(T->material)->fPHBounceStartVelocity;
 	SURFACE(contact,i*skip)->soft_cfm=GMLib.GetMaterial(T->material)->fPHSpring;
 	SURFACE(contact,i*skip)->soft_erp=GMLib.GetMaterial(T->material)->fPHDamping;
+	if(dGeomGetUserData(o1)->callback)dGeomGetUserData(o1)->callback(T,CONTACT(contact,i*skip));
   }
   return ret;
 
@@ -707,6 +708,7 @@ contact->depth = outDepth;
 	SURFACE(contact,i*skip)->bounce_vel=GMLib.GetMaterial(T->material)->fPHBounceStartVelocity;
 	SURFACE(contact,i*skip)->soft_cfm=GMLib.GetMaterial(T->material)->fPHSpring;
 	SURFACE(contact,i*skip)->soft_erp=GMLib.GetMaterial(T->material)->fPHDamping;
+	if(dGeomGetUserData(o1)->callback)dGeomGetUserData(o1)->callback(T,CONTACT(contact,i*skip));
   }
   return ret;
 
@@ -1328,12 +1330,6 @@ else {//7-12
 }
 
 
-void dSetTriWallMark(dContactGeom* c,CDB::TRI* T)
-{
-//Shader*	hWallmark	= Device.Shader.Create("effects\\wallmark",pstrWallmark);
-//		::Render->add_Wallmark	(
-//			hWallmark,
-//			*((Fvector*)c->pos),
-//			0.3,
-//			T);
-}
+
+
+

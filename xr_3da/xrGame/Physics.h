@@ -187,6 +187,9 @@ static dJointGroupID ContactGroup;
 //using namespace std;
 class CPHElement;
 class CPHShell;
+typedef  void __stdcall ContactCallbackFun(CDB::TRI* T,dContactGeom* c);
+void __stdcall			ContactShotMark(CDB::TRI* T,dContactGeom* c)   ;
+
 class CPHElement:  public CPhysicsElement {
 
 	vector <dGeomID>		m_geoms;
@@ -233,7 +236,8 @@ dJointGroupID				m_saved_contacts;
 public:
 
 /////////////////////////////////////////////////////////////////////////////
-
+static Shader*			hWallmark;
+ContactCallbackFun*			contact_callback;
 ////////////////////////////
 private:
 	void			create_Sphere				(Fsphere&	V);
@@ -260,6 +264,8 @@ public:
 	virtual	void			add_Sphere				(const Fsphere&	V);
 
 	virtual	void			add_Box					(const Fobb&		V);
+
+	virtual void			set_ContactCallback		(ContactCallbackFun* callback);
 	void			SetShell		(CPHShell* p){m_shell=p;}
 	void			InterpolateGlobalTransform(Fmatrix* m);
 	void			build(dSpaceID space);
@@ -290,6 +296,8 @@ public:
 																					};
 	virtual void			Update					();
 	CPHElement(dSpaceID a_space){ 
+		if(!hWallmark)hWallmark	= Device.Shader.Create("effects\\wallmark", "wallmarks\\wallmark_default");
+		contact_callback=ContactShotMark;
 		m_space=a_space;
 		m_body=NULL;
 		bActive=false;
@@ -308,6 +316,7 @@ public:
 		//CPHElement(){ m_space=ph_world->GetSpace();};
 		virtual ~CPHElement	();
 };
+/////////////////////////////////////////////////////////////////////
 //////////////////////////////////////////////////////////////////////
 class CPHJoint: public CPhysicsJoint{
 
@@ -476,7 +485,7 @@ public:
 														for(i=joints.begin();i!=joints.end();i++) 
 															(*i)->SetForceAndVelocity(force);
 														}
-
+	virtual void			set_ContactCallback		(ContactCallbackFun* callback)				;
 	virtual void			Enable					();
 
 	virtual	void PhDataUpdate(dReal step);

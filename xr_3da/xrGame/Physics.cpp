@@ -7,6 +7,7 @@
 //#include "dRay/include/dRay.h"
 #include "ExtendedGeom.h"
 union dInfBytes dInfinityValue = {{0,0,0x80,0x7f}};
+Shader* CPHElement::hWallmark=NULL;
 // #include "contacts.h"
 
 
@@ -980,6 +981,7 @@ void CPHElement::			create_Box		(Fobb&		V){
 														//dGeomGetUserData(geom)->material=GMLib.GetMaterialIdx("box_default");
 														dGeomGetUserData(geom)->material=ul_material;
 														//dGeomGetUserData(trans)->friction=friction_table[1];
+														if(contact_callback)dGeomUserDataSetContactCallback(geom,contact_callback);
 															}
 														else{
 													  geom=dCreateBox(0,
@@ -1010,6 +1012,7 @@ void CPHElement::			create_Box		(Fobb&		V){
 														//dGeomGetUserData(geom)->material=GMLib.GetMaterialIdx("materials\\box_default");
 														dGeomGetUserData(geom)->material=ul_material;
 
+														if(contact_callback)dGeomUserDataSetContactCallback(geom,contact_callback);
 														
 														}
 														//dGeomGetUserData(trans)->friction=dInfinity;
@@ -1042,6 +1045,7 @@ void CPHElement::			create_Sphere	(Fsphere&	V){
 														dGeomCreateUserData(geom);
 														//dGeomGetUserData(geom)->material=GMLib.GetMaterialIdx("box_default");
 														dGeomGetUserData(geom)->material=0;
+														if(contact_callback)dGeomUserDataSetContactCallback(geom,contact_callback);
 														}
 														else
 														{
@@ -1055,6 +1059,7 @@ void CPHElement::			create_Sphere	(Fsphere&	V){
 														dGeomCreateUserData(geom);
 														//dGeomGetUserData(geom)->material=GMLib.GetMaterialIdx("box_default");
 														dGeomGetUserData(geom)->material=0;
+														if(contact_callback)dGeomUserDataSetContactCallback(geom,contact_callback);
 														}
 														};
 void CPHElement::			build	(dSpaceID space){
@@ -2672,4 +2677,42 @@ if(!bActive)
 	vector<CPHElement*>::iterator i;
 	for(i=elements.begin();i!=elements.end();i++)
 	(*i)->Enable();
+}
+
+void CPHElement::set_ContactCallback(ContactCallbackFun* callback)
+{
+if(!bActive)
+	{
+	contact_callback=callback;
+	return;
+	}
+	vector<dGeomID>::iterator i;
+	for(i=m_geoms.begin();i!=m_geoms.end();i++)
+	{
+		dGeomUserDataSetContactCallback(*i,callback);
+	}
+}
+
+void CPHShell::set_ContactCallback(ContactCallbackFun* callback)
+{
+	vector<CPHElement*>::iterator i;
+	for(i=elements.begin();i!=elements.end();i++)
+					(*i)->set_ContactCallback(callback);
+}
+
+void __stdcall ContactShotMark(CDB::TRI* T,dContactGeom* c)
+{
+dBodyID b=dGeomGetBody(c->g1);
+if(!b) b=dGeomGetBody(c->g2);
+dVector3 vel;
+dMass m;
+dBodyGetMass(b,&m);
+
+ dBodyGetPointVel(b,c->pos[0],c->pos[1],c->pos[2],vel);
+ if(dFabs(dDOT(vel,c->normal))* _sqrt(m.mass)>10.f)
+			::Render->add_Wallmark	(
+				CPHElement::hWallmark,
+				*((Fvector*)c->pos),
+				0.09f,
+				T);
 }
