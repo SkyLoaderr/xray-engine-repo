@@ -184,7 +184,7 @@ private:
 		Fsphere		sphere;
 		Fmatrix		box;
 	};
-	union shape_def
+	struct shape_def
 	{
 		int			type;
 		shape_data	data;

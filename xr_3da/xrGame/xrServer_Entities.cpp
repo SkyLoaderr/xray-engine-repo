@@ -93,9 +93,9 @@ public:
 	u8						flags;
 	float					o_model;				// model yaw
 	SRotation				o_torso;				// torso in world coords
-
+	
 	xrSE_Enemy()			{};
-
+	
 	virtual void			UPDATE_Read			(NET_Packet& P)
 	{
 		P.r_u32				(dwTimeStamp	);
@@ -120,9 +120,30 @@ public:
 	};
 };
 //---------------------------------------------------------------------------------------------
-class xrSE_Event : public xrServerEntity
+class xrSE_CFormed
 {
 public:
+	union shape_data
+	{
+		Fsphere		sphere;
+		Fmatrix		box;
+	};
+	struct shape_def
+	{
+		int			type;
+		shape_data	data;
+	};
+	vector<shape_def>	shapes;
+public:
+	void					cform_read			(NET_Packet& P);
+	void					cform_write			(NET_Packet& P);
+};
+
+class xrSE_Event : public xrSE_CFormed, public xrServerEntity
+{
+public:	// actions
+	s
+public:	
 	
 };
 
