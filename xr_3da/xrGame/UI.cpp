@@ -135,7 +135,7 @@ bool CUI::OnMouseMove(int dx,int dy)
 {
 	if (UICursor.bVisible)
 	{ 
-		UICursor.vPos.add(dx,dy);
+		UICursor.vPos.add((float)dx,(float)dy);
 		return true;
 	}
 	return false;
