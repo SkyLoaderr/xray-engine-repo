@@ -454,6 +454,7 @@ xr_motivator.storage[self.object:id()].reactions = {
     xr_meet.add_to_binder(self.object)
 
     -- модели поведения
+    xr_talker.add_to_binder(self.object)
     xr_patrol.add_to_binder (self.object)
     xr_follower.add_to_binder (self.object)
     xr_report.AddScheme (self.object, stalker_ids.action_puzzle_solver)
@@ -463,7 +464,6 @@ xr_motivator.storage[self.object:id()].reactions = {
     xr_camper2.add_to_binder(self.object)
     xr_sleeper.add_to_binder(self.object)
     xr_robbers.add_to_binder(self.object)
-    xr_talker.add_to_binder(self.object)
     xr_scout.add_to_binder(self.object)
 
     -- сюжетные скрипты
@@ -478,9 +478,9 @@ xr_motivator.storage[self.object:id()].reactions = {
         end
     else
         -- включение схем
+	xr_talker.set_talker(self.object)
         xr_kamp.set_kamp(self.object)
         xr_guard.set_guard(self.object)
-	xr_talker.set_talker(self.object)
 	xr_sleeper.set_sleeper(self.object)
         xr_patrol.set_patrol (self.object)
         xr_follower.set_follower (self.object)
