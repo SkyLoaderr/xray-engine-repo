@@ -338,13 +338,15 @@ void	CCar::OnHUDDraw				(CCustomHUD* /**hud/**/)
 void CCar::Hit(float P,Fvector &dir,CObject * who,s16 element,Fvector p_in_object_space, float impulse, ALife::EHitType hit_type)
 {
 	
-	if(WheelHit(P,element,hit_type)) P=0.f;
+	//if(||) P=0.f;
+	WheelHit(P,element,hit_type);
+	DoorHit(P,element,hit_type);
 	float hitScale=1.f,woundScale=1.f;
 	if(hit_type!=ALife::eHitTypeStrike) HitScale(element, hitScale, woundScale);
 	P *= m_HitTypeK[hit_type]*hitScale;
 	inherited::Hit(P,dir,who,element,p_in_object_space,impulse,hit_type);
 	HitEffect();
-	DoorHit(P,element,hit_type);
+
 	HUD().GetUI()->UIMainIngameWnd.SetCarHealth(fEntityHealth/100.f);
 }
 void CCar::PHHit(float P,Fvector &dir,s16 element,Fvector p_in_object_space, float impulse, ALife::EHitType hit_type)
