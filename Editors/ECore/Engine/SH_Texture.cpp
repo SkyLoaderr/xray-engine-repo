@@ -97,8 +97,13 @@ void CTexture::Load()
 		string256	bmode,bparam;	float mid;
 		sscanf		(descr,"bump_mode[%[^:]:%[^]]], material[%f]",bmode,bparam,&mid);
 		m_material							=	mid;
-		// Msg		("%20s : bm[%s:%s] mid:%f",*cName,bmode,bparam,mid);
+		if ((bmode[0]=='u')&&(bmode[1]=='s')&&(bmode[2]=='e')&&(bmode[3]==':'))
+		{
+			// bump-map specified
+			m_bumpmap				=	&(bmode[4]);
+		}
 	}
+
 	// Check for AVI
 	string256 fn;
 	if (FS.exist(fn,"$game_textures$",*cName,".avi")){
