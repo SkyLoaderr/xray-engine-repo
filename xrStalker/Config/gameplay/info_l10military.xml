@@ -70,12 +70,13 @@
 	<info_portion id="mil_rg6_gain"></info_portion>
 	<info_portion id="mil_bandit_secret_found"></info_portion>
 	
-	<info_portion id="mil_leader_quest1_start"><task>mil_lukash_job</task></info_portion>
+	<info_portion id="mil_leader_quest1_start"></info_portion>
 	<info_portion id="mil_leader_quest1_complete"></info_portion>
 	<info_portion id="mil_leader_quest2_start"><task>mil_courier_job</task></info_portion>
 	<info_portion id="mil_leader_quest2_complete"><article>mil_courier_doc</article></info_portion>
 	<info_portion id="mil_leader_quest2_failed"></info_portion>
 	<info_portion id="mil_leader_attach_community"></info_portion>
+	<info_portion id="mil_leader_task_set"><task>mil_lukash_job</task></info_portion>
 	
 	<info_portion id="mil_courier_start"></info_portion>
 	
