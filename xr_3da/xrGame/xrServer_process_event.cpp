@@ -62,6 +62,7 @@ void xrServer::Process_event	(NET_Packet& P, DPNID sender)
 			P.r_u16				(id_entity);
 			xrServerEntity*		e_parent	= ID_to_entity	(id_parent);	// кто забирает (для своих нужд)
 			xrServerEntity*		e_entity	= ID_to_entity	(id_entity);	// кто отдает
+			if (!e_entity)		break;
 			if (0xffff != e_entity->ID_Parent)	break;						// this item already taken
 			xrClientData*		c_parent	= e_parent->owner;
 			xrClientData*		c_from		= ID_to_client	(sender);
