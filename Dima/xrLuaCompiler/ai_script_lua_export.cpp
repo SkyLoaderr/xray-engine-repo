@@ -1,9 +1,9 @@
 ////////////////////////////////////////////////////////////////////////////
-//	Module 		: ai_script_lua_extension.cpp
+//	Module 		: ai_script_lua_export.cpp
 //	Created 	: 19.09.2003
 //  Modified 	: 19.09.2003
 //	Author		: Dmitriy Iassenev
-//	Description : XRay Script extensions
+//	Description : XRay Script export
 ////////////////////////////////////////////////////////////////////////////
 
 #include "stdafx.h"
@@ -13,18 +13,19 @@
 #include "ai_script_actions.h"
 #include "../cameramanager.h"
 #include "../effectorpp.h"
-//#include "luabind/adopt_policy.hpp"
-//#include "luabind/dependency_policy.hpp"
 #include "luabind/return_reference_to_policy.hpp"
 #include "luabind/out_value_policy.hpp"
+//#include "luabind/adopt_policy.hpp"
+//#include "luabind/dependency_policy.hpp"
 //#include "luabind/discard_result_policy.hpp"
 //#include "luabind/iterator_policy.hpp"
 #include "ParticlesObject.h"
 #include "ArtifactMerger.h"
-#include "actor.h"
 
 using namespace luabind;
 using namespace Script;
+
+extern CLuaGameObject *tpfGetActor();
 
 void LuaLog(LPCSTR caMessage)
 {
@@ -114,15 +115,6 @@ void Script::vfExportGlobals(CLuaVirtualMachine *tpLuaVirtualMachine)
 #else
 	function		(tpLuaVirtualMachine,	"flush",FlushLogFake);
 #endif
-}
-
-CLuaGameObject *tpfGetActor()
-{
-	CActor *l_tpActor = dynamic_cast<CActor*>(Level().CurrentEntity());
-	if (l_tpActor)
-		return(xr_new<CLuaGameObject>(dynamic_cast<CGameObject*>(l_tpActor)));
-	else
-		return(0);
 }
 
 void Script::vfExportFvector(CLuaVirtualMachine *tpLuaVirtualMachine)
