@@ -241,6 +241,17 @@ BOOL	game_sv_CS::OnDetouch		(u16 eid_who, u16 eid_what)
 	if (A) 	{
 		game_PlayerState*	ps_who	=	get_id			(e_who->owner->ID);
 
+
+		xrSE_Target_CS *l_pMBall =  dynamic_cast<xrSE_Target_CS*>(e_what);
+		if(l_pMBall) {
+			// ћ€ч
+			if(ps_who->flags&GAME_PLAYER_FLAG_CS_HAS_ARTEFACT)	{
+				ps_who->flags &= ~GAME_PLAYER_FLAG_CS_HAS_ARTEFACT;
+				return true;
+			}
+			return false;
+		}
+
 		xrSE_Target_CSBase *l_pCSBase	=	dynamic_cast<xrSE_Target_CSBase*>(e_what);
 		if(l_pCSBase) {
 			if(l_pCSBase->s_team == ps_who->team) {				// ≈сли игрок пришел на свою базу
