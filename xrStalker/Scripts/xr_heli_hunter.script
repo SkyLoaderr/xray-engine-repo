@@ -82,7 +82,7 @@ function add_to_binder( npc, ini, scheme, section, storage )
 	action:add_effect      ( world_property(xr_evaluators_id.chugai_heli_hunter_base, false ) )
 	manager:add_action( xr_actions_id.chugai_heli_hunter_base, action )
 
-	action = manager:action( stalker_ids.action_puzzle_solver )
+	action = manager:action( xr_actions_id.alife )
 	action:add_precondition( world_property( xr_evaluators_id.chugai_heli_hunter_base, false ) )
 end
 
