@@ -104,8 +104,9 @@
 // 85 - CSE_SpawnGroup					all the properties moved to CSE_Abstract
 // 86 - CSE_AlifeTraderAbstract			appended with m_community_index
 // 87 - CSE_AlifeTraderAbstract			appended with m_rank, m_reputation
+// 88 - CSE_ALifeCreatureAbstract		appended with m_dynamic_restrictions property
 //------------------------------------------------------------------------------
-#define SPAWN_VERSION	u16(87)
+#define SPAWN_VERSION	u16(88)
 
 SERVER_ENTITY_DECLARE_BEGIN2(CSE_Shape,ISE_Shape,CShapeData)
 public:

@@ -827,6 +827,7 @@ void CSE_ALifeCreatureAbstract::STATE_Write	(NET_Packet &tNetPacket)
 	tNetPacket.w_u8				(s_squad);
 	tNetPacket.w_u8				(s_group);
 	tNetPacket.w_float			(fHealth);
+	load_data					(tNetPacket,m_dynamic_restrictions);
 }
 
 void CSE_ALifeCreatureAbstract::STATE_Read	(NET_Packet &tNetPacket, u16 size)
@@ -840,6 +841,9 @@ void CSE_ALifeCreatureAbstract::STATE_Read	(NET_Packet &tNetPacket, u16 size)
 	if (m_wVersion < 32)
 		visual_read				(tNetPacket);
 	o_model						= o_torso.yaw;
+
+	if (m_wVersion > 87)
+		save_data				(tNetPacket,m_dynamic_restrictions);
 }
 
 void CSE_ALifeCreatureAbstract::UPDATE_Write(NET_Packet &tNetPacket)
