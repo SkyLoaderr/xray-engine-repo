@@ -20,19 +20,22 @@ function multiplayer_create_dialog:InitControls()
 	
 	----- DATA ----
 	----- BUTTONS --->>>
-	
-	
 	-- Bottom align
-	local btn_back_rect   = {0,
+	local btn_back_rect   = {x = 0,
 							 y = self.bottom_align_y - self.btn_rect.height,							 
 							 width = self.btn_rect.width,
 							 height = self.btn_rect.height}	
 	btn_back_rect.x = self.main_rect.width - btn_back_rect.width - self.indent
-	local btn_start_rect  = {0,
+	local btn_start_rect  = {x = 0,
 							 y = self.bottom_align_y - self.btn_rect.height,							 
 							 width = self.btn_rect.width,
 							 height = self.btn_rect.height}
 	btn_start_rect.x = btn_back_rect.x - btn_start_rect.width - self.indent
+	local tab_rect        = {x = self.left_align_x,
+							 y = self.top_align_y,
+							 width = self.main_rect.width - self.indent*2,
+							 height = 0}
+	tab_rect.height = self.main_rect.height - tab_rect.x - (self.main_rect.height - btn_back_rect.y)
 	
 	--------->> BACK
 	btn = CUIButton()
