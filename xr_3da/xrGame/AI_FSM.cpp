@@ -305,6 +305,7 @@ namespace AI {
 	//- Pursuit ------------------------------------------------------------------------
 	_Pursuit::_Pursuit(CEntity* E) : State(aiPursuit)
 	{
+		R_ASSERT			(E);
 		victim				= E;
 		savedPosition		= E->Position();
 		savedTime			= Level().timeServer();
