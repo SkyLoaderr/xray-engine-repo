@@ -42,14 +42,14 @@ void Startup()
 	
 	// Execute script
 	strcpy						(Console.ConfigFile,"user.ltx");
-	if (strstr(Engine.Params,"-ltx ")) {
+	if (strstr(Core.Params,"-ltx ")) {
 		string64				c_name;
-		sscanf					(strstr(Engine.Params,"-ltx ")+5,"%[^ ] ",c_name);
+		sscanf					(strstr(Core.Params,"-ltx ")+5,"%[^ ] ",c_name);
 		strcpy					(Console.ConfigFile,c_name);
 	}
 	Console.ExecuteScript		(Console.ConfigFile);
 
-	BOOL bCaptureInput			= !strstr(Engine.Params,"-i");
+	BOOL bCaptureInput			= !strstr(Core.Params,"-i");
 #ifdef DEBUG
 	bCaptureInput				= !bCaptureInput;
 #endif
@@ -59,7 +59,7 @@ void Startup()
 	pApp						= xr_new<CApplication>	();
 
 	// ...command line for auto start
-	LPCSTR	pStartup			= strstr		(Engine.Params,"-start ");
+	LPCSTR	pStartup			= strstr		(Core.Params,"-start ");
 	if (pStartup)				Console.Execute	(pStartup+1);
 
 
@@ -185,9 +185,9 @@ void CApplication::OnEvent(EVENT E, u32 P1, u32 P2)
 		xr_free		(op_client);
 
 		// start any console command
-		if (strstr(Engine.Params,"-$")) {
+		if (strstr(Core.Params,"-$")) {
 			string64			buf,cmd,param;
-			sscanf				(strstr(Engine.Params,"-$")+2,"%[^ ] %[^ ] ",cmd,param);
+			sscanf				(strstr(Core.Params,"-$")+2,"%[^ ] %[^ ] ",cmd,param);
 			strconcat			(buf,cmd," ",param);
 			Console.Execute		(buf);
 		}

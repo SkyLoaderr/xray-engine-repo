@@ -246,7 +246,7 @@ void RemapIndices(const PrimitiveGroup* in_primGroups, const unsigned short numG
 	//caches oldIndex --> newIndex conversion
 	int *indexCache;
 	indexCache = new int[numVerts];
-	memset(indexCache, -1, sizeof(int)*numVerts);
+	FillMemory(indexCache, sizeof(int)*numVerts, -1);
 	
 	//loop over primitive groups
 	unsigned int indexCtr = 0;

@@ -32,7 +32,7 @@ extern XRCORE_API	xrMemory	Memory;
 template <class T>
 IC	T*		xr_new		()
 {
-	T* ptr	= Memory.mem_alloc(sizeof(T));
+	T* ptr	= (T*)Memory.mem_alloc(sizeof(T));
 	return new (ptr) T();
 }
 
@@ -40,7 +40,7 @@ IC	T*		xr_new		()
 template <class T, class P1>
 IC	T*		xr_new		(P1 p1)
 {
-	T* ptr	= Memory.mem_alloc(sizeof(T));
+	T* ptr	= (T*)Memory.mem_alloc(sizeof(T));
 	return new (ptr) T(p1);
 }
 
@@ -48,7 +48,7 @@ IC	T*		xr_new		(P1 p1)
 template <class T, class P1, class P2>
 IC	T*		xr_new		(P1 p1, P2 p2)
 {
-	T* ptr	= Memory.mem_alloc(sizeof(T));
+	T* ptr	= (T*)Memory.mem_alloc(sizeof(T));
 	return new (ptr) T(p1,p2);
 }
 
