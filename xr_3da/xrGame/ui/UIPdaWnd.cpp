@@ -88,7 +88,8 @@ void CUIPdaWnd::Init()
 	UIDiaryWnd.SetMessageTarget(this);
 
 	m_pActiveDialog = &UIPdaCommunication;
-	UITabControl.SetNewActiveTab(1);
+	//!!!
+	//UITabControl.SetNewActiveTab(1);
 }
 
 void CUIPdaWnd::SendMessage(CUIWindow* pWnd, s16 msg, void* pData)
