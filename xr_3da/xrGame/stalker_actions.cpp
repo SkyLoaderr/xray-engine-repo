@@ -883,16 +883,16 @@ void CStalkerActionAimEnemy::execute		()
 	m_object->enemy()->Center		(position);
 //	float							distance = m_object->Position().distance_to(m_object->enemy()->Position());
 
-	if (m_object->Position().distance_to(m_object->enemy()->Position()) > 5.f) {
-		m_object->set_level_dest_vertex	(m_object->enemy()->level_vertex_id());
-		m_object->set_desired_position	(&m_object->enemy()->Position());
-		m_object->set_movement_type		(eMovementTypeStand);
-	}
-	else
+//	if (m_object->Position().distance_to(m_object->enemy()->Position()) > 5.f) {
+//		m_object->set_level_dest_vertex	(m_object->enemy()->level_vertex_id());
+//		m_object->set_desired_position	(&m_object->enemy()->Position());
+//		m_object->set_movement_type		(eMovementTypeStand);
+//	}
+//	else
 		m_object->set_movement_type		(eMovementTypeStand);
 
-	m_object->set_path_type			(CMovementManager::ePathTypeLevelPath);
-	m_object->set_detail_path_type	(CMovementManager::eDetailPathTypeSmooth);
+//	m_object->set_path_type			(CMovementManager::ePathTypeLevelPath);
+//	m_object->set_detail_path_type	(CMovementManager::eDetailPathTypeSmooth);
 //	m_object->set_body_state		(distance > 10.f ? eBodyStateCrouch : eBodyStateStand);
 	m_object->set_mental_state		(eMentalStateDanger);
 
@@ -1310,22 +1310,27 @@ void CStalkerActionKillEnemyModerate::finalize	()
 	m_object->set_sound_mask(0);
 	VERIFY					(m_storage);
 //	if ((Level().timeServer() >= m_start_level_time + 500) && !::Random.randI(0,3))
-	if (!::Random.randI(0,2))
+	if (!::Random.randI(0,2)) {
 		m_storage->set_property	(eWorldPropertyFireEnough,true);
+		m_storage->set_property	(eWorldPropertyEnemyAimed,true);
+	}
 }
 
 void CStalkerActionKillEnemyModerate::execute		()
 {
 	inherited::execute		();
 
+	VERIFY							(m_object->enemy());
 	if (!m_object->enemy())
 		return;
 
 	CMemoryInfo						mem_object = m_object->memory(m_object->enemy());
 
+	VERIFY							(mem_object.m_object);
 	if (!mem_object.m_object)
 		return;
 
+	VERIFY							(m_object->visible(m_object->enemy()));
 	if (!m_object->visible(m_object->enemy()))
 		return;
 
@@ -1342,8 +1347,8 @@ void CStalkerActionKillEnemyModerate::execute		()
 	m_object->enemy()->Center		(position);
 
 	m_object->set_movement_type		(eMovementTypeStand);
-	m_object->set_path_type			(CMovementManager::ePathTypeLevelPath);
-	m_object->set_detail_path_type	(CMovementManager::eDetailPathTypeSmooth);
+//	m_object->set_path_type			(CMovementManager::ePathTypeLevelPath);
+//	m_object->set_detail_path_type	(CMovementManager::eDetailPathTypeSmooth);
 //	m_object->set_body_state		(m_fire_crouch ? eBodyStateCrouch : eBodyStateStand);
 	m_object->set_mental_state		(eMentalStateDanger);
 
@@ -1396,23 +1401,24 @@ void CStalkerActionGetEnemySeenModerate::execute	()
 {
 	inherited::execute		();
 
-	if (!m_object->m_best_item_to_kill)
-		return;
-
+	VERIFY						(m_object->enemy());
 	if (!m_object->enemy())
 		return;
 
 	CMemoryInfo									mem_object = m_object->memory(m_object->enemy());
 
+	VERIFY						(mem_object.m_object);
 	if (!mem_object.m_object)
 		return;
 
-	if (Level().timeServer() >= m_start_level_time + 7000)
+	VERIFY						(!m_object->visible(m_object->enemy()));
+
+	if (Level().timeServer() >= m_start_level_time + 7000) {
 		m_storage->set_property	(eWorldPropertySafeToKill,false);
+		m_storage->set_property	(eWorldPropertyEnemyAimed,false);
+	}
 
 	if (m_object->enemy()) {
-		CMemoryInfo					mem_object = m_object->memory(m_object->enemy());
-
 		if (Level().timeServer() >= m_start_standing_time + 10000) {
 			m_object->set_level_dest_vertex	(mem_object.m_object_params.m_level_vertex_id);
 			m_object->set_desired_position	(&mem_object.m_object_params.m_position);
@@ -1613,7 +1619,10 @@ void CStalkerActionTakeCover::execute	()
 	m_object->set_detail_path_type	(CMovementManager::eDetailPathTypeSmooth);
 	m_object->set_mental_state		(eMentalStateDanger);
 	m_object->set_body_state		(eBodyStateStand);
-	m_object->set_movement_type		(eMovementTypeRun);
+	if (!point->position().similar(m_object->Position(),1.5f))
+		m_object->set_movement_type	(eMovementTypeRun);
+	else
+		m_object->set_movement_type	(eMovementTypeWalk);
 
 #ifdef OLD_OBJECT_HANDLER
 	m_object->CObjectHandler::set_dest_state(eObjectActionAimReady1,m_object->best_weapon());
