@@ -80,6 +80,10 @@ CHelicopter::init()
 	m_attack_altitude = m_altitude;
 	m_korridor = 10.0f;
 
+	m_x_level_bound = 0.0f;
+	m_z_level_bound = 0.0f;
+
+
 	m_destEnemy = 0;
 	m_cur_x_rot = 0.0f;
 	m_cur_y_rot = 0.0f;
@@ -152,6 +156,9 @@ CHelicopter::Load(LPCSTR section)
 	m_max_rocket_dist						= pSettings->r_float(section,"max_rocket_attack_dist");
 	m_time_between_rocket_attack			= pSettings->r_u32(section,"time_between_rocket_attack");
 	m_syncronize_rocket						= pSettings->r_bool(section,"syncronize_rocket");
+	m_x_level_bound							= pSettings->r_float(section,"x_level_bound");
+	m_z_level_bound							= pSettings->r_float(section,"z_level_bound");
+
 }
 
 void		

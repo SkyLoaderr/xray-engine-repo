@@ -89,6 +89,8 @@ public:
 	BOOL							m_syncronize_rocket;
 
 	float							m_korridor;
+	float							m_x_level_bound;
+	float							m_z_level_bound;
 	u32								m_time_delay_before_start;
 	u32								m_time_patrol_period;
 	u32								m_time_delay_between_patrol;

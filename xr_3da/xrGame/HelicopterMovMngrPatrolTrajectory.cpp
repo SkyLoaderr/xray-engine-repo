@@ -22,6 +22,17 @@ CHelicopterMovementManager::createLevelPatrolTrajectory(u32 keyCount, xr_vector<
 	down_dir.set(0.0f, -1.0f, 0.0f);
 
 	Fbox level_box = Level().ObjectSpace.GetBoundingVolume();
+	if(helicopter()->m_x_level_bound*2 < level_box.max.x - level_box.min.x )
+	{
+		level_box.min.x += helicopter()->m_x_level_bound;
+		level_box.max.x -= helicopter()->m_x_level_bound;
+	};
+
+	if(helicopter()->m_z_level_bound*2 < level_box.max.z - level_box.min.z )
+	{
+		level_box.min.z += helicopter()->m_z_level_bound;
+		level_box.max.z -= helicopter()->m_z_level_bound;
+	};
 	
 	for(u32 i = 0; i<keyCount; ++i)	{
 		useXBound	= dice();
