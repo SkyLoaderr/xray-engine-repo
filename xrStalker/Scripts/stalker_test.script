@@ -14,7 +14,7 @@ function main ()
 	action(
 	    stalker,                                                                                                      
 		move		(move.standing, move.stand, move.line, patrol ("way0000")),
-        look		(look.fire_point, get_level_object("localhost/dima"):position ()),
+        look		(look.fire_point, get_level_object("localhost/dima")),
         anim		(anim.danger),
         cond		(cond.time_end, 100000000)
 	)
