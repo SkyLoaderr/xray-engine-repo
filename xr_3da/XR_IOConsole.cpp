@@ -214,12 +214,16 @@ void CConsole::OnPressKey(int dik, BOOL bHold)
 	case DIK_Y:	strcat(editor,"y");	break;
 	case DIK_Z:	strcat(editor,"z");	break;
 	case DIK_SPACE:		strcat(editor," "); break;
+	case DIK_BACKSLASH:
+		if (bShift) strcat(editor,"|");  
+		else		strcat(editor,"\");
+		break;
 	case DIK_LBRACKET:
 		if (bShift) strcat(editor,"{");  
 		else		strcat(editor,"[");
 		break;
 	case DIK_RBRACKET:
-		if (bShift) strcat(editor,"}"");
+		if (bShift) strcat(editor,"}");
 		else		strcat(editor,"]");
 		break;
 	case DIK_APOSTROPHE:
