@@ -181,6 +181,13 @@ public:
 		xr_delete			(m_tpSound);
 	}
 
+			u32					Length			()
+	{
+		VERIFY				(m_tpSound);
+		VERIFY				(m_tpSound->handle);
+		return				(m_tpSound->handle->length_ms());
+	}
+
 	BIND_FUNCTION02	(m_tpSound,			Play,				ref_sound,		play,				CLuaGameObject *,		BOOL,				CObject *,				BOOL);
 	BIND_FUNCTION02	(m_tpSound,			PlayUnlimited,		ref_sound,		play_unlimited,		CLuaGameObject *,		BOOL,				CObject *,				BOOL);
 	BIND_FUNCTION03	(m_tpSound,			PlayAtPos,			ref_sound,		play_at_pos,		CLuaGameObject *,		const Fvector &,	BOOL,					CObject *,		const Fvector &,	BOOL);
