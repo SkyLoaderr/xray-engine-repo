@@ -26,7 +26,7 @@ end
 function zone_binder:net_spawn( server_object )
 	r = object_binder.net_spawn( self, server_object )
 
-	db.add_obj( self.object )
+	db.add_zone( self.object )
 
 	self.object:set_callback( self, "on_enter", true )
 	self.object:set_callback( self, "on_leave", false )
@@ -122,7 +122,7 @@ function zone_binder:net_destroy()
 
 	table.foreach( self.managers, function( k, v ) if v.destroy then v:destroy() end end )
 
-	db.del_obj( self.object )
+	db.del_zone( self.object )
 
 	object_binder.net_destroy( self )
 end
