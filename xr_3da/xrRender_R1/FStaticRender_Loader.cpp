@@ -10,7 +10,7 @@ void CRender::level_Load()
 
 	// Begin
 	pApp->LoadBegin					();
-	Device->Resources->DeferredLoad	(TRUE);
+	Device.Resources->DeferredLoad	(TRUE);
 	IReader*	fs					= g_pGameLevel->LL_Stream;
 	IReader*	chunk;
 
