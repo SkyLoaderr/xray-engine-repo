@@ -59,8 +59,8 @@ void FProgressiveFixedVisual::Release()
 
 void FProgressiveFixedVisual::SetLOD(float LOD)
 {
-	VERIFY	(LOD>=0.0f);
-	VERIFY	(LOD<=1.0f);
+	if (LOD<0)			return;
+	VERIFY				(LOD<=1.0f);
 	
 	DWORD dwCount = V_Minimal + iFloor(float(dwVertCount-V_Minimal)*LOD+.4999f);
 	

@@ -221,7 +221,7 @@ void CLightShadows::calculate	()
 				NODE& N			=	C.nodes[n_it];
 				CVisual *V		=	N.val.pVisual;
 				Device.set_xform_world	(N.val.Matrix);
-				V->Render				(1.0f);
+				V->Render				(-1.0f);
 			}
 			
 			// register shadow and increment slot

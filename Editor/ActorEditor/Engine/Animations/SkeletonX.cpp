@@ -54,7 +54,7 @@ void CSkeletonX::_Render	(DWORD vCount, DWORD pCount, IDirect3DIndexBuffer8* IB)
 {
 	DWORD vOffset			= cache_vOffset;
 
-	if (!((cache_DiscardID==Stream->getDiscard()) && (vCount<=cache_vCount) ))
+	if (cache_DiscardID!=Stream->getDiscard() || vCount>=cache_vCount )
 	{
 		vertRender*	Dest	= (vertRender*)Stream->Lock(vCount,vOffset);
 		cache_DiscardID		= Stream->getDiscard();
