@@ -256,8 +256,8 @@ void CActor::g_SetAnimation( u32 mstate_rl )
 	
 		if	(mstate_rl&mcSprint)
 		{
-			M_torso	= 0;
-			M_head	= 0;
+			M_torso	= M_legs;
+			M_head	= M_legs;
 		}
 		// Torso
 		if(mstate_rl&mcClimb)

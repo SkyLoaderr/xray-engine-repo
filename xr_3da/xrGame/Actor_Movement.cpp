@@ -254,9 +254,13 @@ void CActor::g_cl_CheckControls(u32 mstate_wf, Fvector &vControlAccel, float &Ju
 
 	if(mstate_wf&mcSprint)
 					mstate_real|=mcSprint;
+	else
+					mstate_real&=~mcSprint;
+
 	if(!(mstate_real&(mcFwd|mcLStrafe|mcRStrafe))||mstate_real&(mcCrouch|mcClimb))
 	{
 		mstate_real&=~mcSprint;
+		mstate_wishful&=~mcSprint;
 	}
 
 	
