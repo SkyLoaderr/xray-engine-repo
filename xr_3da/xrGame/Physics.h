@@ -13,7 +13,7 @@ public:
 class CPHJeep {
 	dGeomID GeomsGroup;
 	static const	UINT NofGeoms=5;
-	static const	UINT NofBodies=6;
+	static const	UINT NofBodies=5;
 	static const	UINT NofJoints=4;
 	dBodyID Bodies[NofBodies];
 	dGeomID Geoms[NofGeoms];
