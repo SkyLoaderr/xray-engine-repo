@@ -1492,6 +1492,6 @@ return true;
 
 bool CCar::SDoor::CanEnter(const Fvector& pos,const Fvector& dir)
 {
-if(!joint) return false;
+if(!joint) return true;
  return state==opened && IsInArea(pos) && TestPass(pos,dir);
 }

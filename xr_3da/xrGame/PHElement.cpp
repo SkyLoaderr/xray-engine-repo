@@ -713,7 +713,7 @@ void CPHElement::Update(){
 	
 	
 	mXFORM.mulB(m_inverse_local_transform);
-
+	
 	if(push_untill)//temp_for_push_out||(!temp_for_push_out&&object_contact_callback)
 		if(push_untill<Device.dwTimeGlobal) unset_Pushout();
 	VERIFY2(_valid(mXFORM),"invalid position in update");
@@ -721,23 +721,20 @@ void CPHElement::Update(){
 
 
 void CPHElement::PhDataUpdate(dReal step){
-	//m_body_interpolation.UpdatePositions();
-	//m_body_interpolation.UpdateRotations();
+	//UpdateInterpolation				();
 	//return;
 	if(! bActive)return;
 	///////////////skip body effecting update for attached elements////////////////
 	if(attached) {
 		if( !dBodyIsEnabled(m_body)) return;
-		m_body_interpolation.UpdatePositions();
-		m_body_interpolation.UpdateRotations();
+		UpdateInterpolation				();
 		return;
 	}
 
 	///////////////skip for disabled elements////////////////////////////////////////////////////////////
 	if( !dBodyIsEnabled(m_body)) {
 		//	if(previous_p[0]!=dInfinity) previous_p[0]=dInfinity;//disable
-		m_body_interpolation.UpdatePositions();
-		m_body_interpolation.UpdateRotations();
+		UpdateInterpolation				();
 		return;
 	}
 
@@ -832,8 +829,7 @@ void CPHElement::PhDataUpdate(dReal step){
 		dBodyAddForce(m_body,-pos[0]*l_air,-pos[1]*l_air,-pos[2]*l_air);
 VERIFY2(dV_valid(dBodyGetPosition(m_body)),"invalid body position");
 VERIFY2(dM_valid(dBodyGetRotation(m_body)),"invalid body rotation");
-	m_body_interpolation.UpdatePositions();
-	m_body_interpolation.UpdateRotations();
+UpdateInterpolation				();
 
 }
 
@@ -1037,6 +1033,7 @@ void CPHElement::ReEnable(){
 
 void	CPHElement::	applyImpulseTrace		(const Fvector& pos, const Fvector& dir, float val){
 
+	if(!bActive) return;
 	if( !dBodyIsEnabled(m_body)) dBodyEnable(m_body);
 	val/=fixed_step;
 	Fvector body_pos;
@@ -1051,7 +1048,7 @@ void CPHElement::InterpolateGlobalTransform(Fmatrix* m){
 	m_body_interpolation.InterpolateRotation(*m);
 	m_body_interpolation.InterpolatePosition(m->c);
 	m->mulB(m_inverse_local_transform);
-
+	bUpdate=false;
 }
 void CPHElement::GetGlobalTransformDynamic(Fmatrix* m)
 {
@@ -1298,6 +1295,8 @@ void CPHElement::CallBack1(CBoneInstance* B)
 	if(! bActive)return;
 	if(bActivating)
 	{
+		if(!dBodyIsEnabled(m_body))
+			dBodyEnable(m_body);
 		if(ph_world->GetSpace()->lock_count) return;
 		mXFORM.set(B->mTransform);
 		m_start_time=Device.fTimeGlobal;
@@ -1306,12 +1305,8 @@ void CPHElement::CallBack1(CBoneInstance* B)
 		//if(m_parent_element)
 		global_transform.mulB(mXFORM);
 		SetTransform(global_transform);
-		m_body_interpolation.UpdatePositions();
-		m_body_interpolation.UpdateRotations();
-		m_body_interpolation.UpdatePositions();
-		m_body_interpolation.UpdateRotations();
-		if(!dBodyIsEnabled(m_body))
-			dBodyEnable(m_body);
+		UpdateInterpolation				();
+		UpdateInterpolation				();
 		bActivating=false;
 		if(!m_parent_element) 
 		{
@@ -1322,7 +1317,10 @@ void CPHElement::CallBack1(CBoneInstance* B)
 		B->Callback_overwrite=TRUE;
 		return;
 	}
-	if(!dBodyIsEnabled(m_body))return;
+
+	if(push_untill)//temp_for_push_out||(!temp_for_push_out&&object_contact_callback)
+		if(push_untill<Device.dwTimeGlobal) unset_Pushout();
+	if( !dBodyIsEnabled(m_body) && !bUpdate) return;
 	if(!m_parent_element)
 	{
 			m_shell->InterpolateGlobalTransform(&(m_shell->mXFORM));
@@ -1349,8 +1347,7 @@ void CPHElement::CallBack1(CBoneInstance* B)
 
 	//}
 
-	if(push_untill)//temp_for_push_out||(!temp_for_push_out&&object_contact_callback)
-		if(push_untill<Device.dwTimeGlobal) unset_Pushout();
+
 }
 
 void CPHElement::set_PhysicsRefObject(CPhysicsRefObject* ref_object)

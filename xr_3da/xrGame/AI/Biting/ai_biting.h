@@ -26,6 +26,7 @@
 }
 #endif
 
+class CCharacterPhysicsSupport;
 // Paths
 enum EBitingPathState {
 	PATH_STATE_SEARCH_NODE = 0,
@@ -72,6 +73,7 @@ public:
 	virtual	BOOL			renderable_ShadowReceive	()			{ return TRUE;	}  
 	virtual void			Die							();
 	virtual void			HitSignal					(float amount, Fvector& vLocalDir, CObject* who, s16 element);
+	virtual void			Hit							(float P,Fvector &dir,CObject*who,s16 element,Fvector p_in_object_space,float impulse);
 	virtual void			SelectAnimation				(const Fvector& _view, const Fvector& _move, float speed );
 
 	virtual void			Load						(LPCSTR section);
@@ -81,6 +83,7 @@ public:
 	virtual void			net_Destroy					();
 	virtual void			net_Export					(NET_Packet& P);
 	virtual void			net_Import					(NET_Packet& P);
+
 	virtual void			Exec_Movement				(float dt);
 	
 	virtual void			UpdateCL					();
@@ -108,7 +111,6 @@ public:
 		
 			void			DoDamage						(CEntity *pEntity);
 
-			void			CreateSkeleton					();
 			void			SetState(IState *pS, bool bSkipInertiaCheck = false);
 
 	// Animation control
@@ -119,7 +121,7 @@ public:
 
 // members
 public:
-
+	CCharacterPhysicsSupport *m_pPhysics_support;
 	// graph params
 	TERRAIN_VECTOR			m_tpaTerrain;
 	u32						m_dwTimeToChange;			//!< время смены точки графа

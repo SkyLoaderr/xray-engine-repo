@@ -21,6 +21,7 @@ CCharacterPhysicsSupport::CCharacterPhysicsSupport(EType atype,CEntityAlive* aen
 	//{
 	//	m_eState=esDead;
 	//}
+m_eType=atype;
 m_eState=esAlive;
 };
 
@@ -87,6 +88,7 @@ void CCharacterPhysicsSupport::in_shedule_Update(u32 DT )
 		{
 			if(!m_pPhysicsShell->bActivating&&!b_death_anim_on)
 			{
+				if(m_eType==etStalker)
 				PKinematics(m_EntityAlife.Visual())->PlayCycle("death_init");
 				b_death_anim_on=true;
 			}
@@ -177,11 +179,12 @@ void CCharacterPhysicsSupport::CreateSkeleton()
 	m_pPhysicsShell->SmoothElementsInertia(0.3f);
 
 	m_pPhysicsShell->set_PhysicsRefObject(&m_EntityAlife);
+	if(m_eType==etStalker)
+	{
 	CInifile* ini = PKinematics(m_EntityAlife.Visual())->LL_UserData();
 	R_ASSERT2(ini,"NO INI FILE IN MODEL");
-
-	
 	m_pPhysicsShell->set_DisableParams(default_disl*ini->r_float("disable","linear_factor"),default_disw*ini->r_float("disable","angular_factor"));
+	}
 	m_pPhysicsShell->Activate(true);
 
 	PKinematics(m_EntityAlife.Visual())->Calculate();

@@ -67,7 +67,7 @@ class CPHElement	:  public CPhysicsElement
 	ObjectContactCallbackFun*	object_contact_callback;
 	ObjectContactCallbackFun*	temp_for_push_out;
 	u32							push_untill;
-
+	bool						bUpdate;
 public:
 
 	/////////////////////////////////////////////////////////////////////////////
@@ -82,6 +82,12 @@ private:
 	void					calculate_it_data_use_density	(const Fvector& mc,float density);
 	void					Disabling						();
 	void					unset_Pushout					();
+IC	void					UpdateInterpolation				()
+	{
+		m_body_interpolation.UpdatePositions();
+		m_body_interpolation.UpdateRotations();
+		bUpdate=true;
+	}
 public:
 	void					Disable							();
 	void					ReEnable						();

@@ -9,17 +9,22 @@
 #include "stdafx.h"
 #include "ai_biting.h"
 #include "..\\..\\PhysicsShell.h"
+#include "..\\..\\CharacterPhysicsSupport.h"
+
 CAI_Biting::CAI_Biting()
 {
 	Movement.AllocateCharacterObject(CPHMovementControl::CharacterType::ai_stalker);
+	m_pPhysics_support=xr_new<CCharacterPhysicsSupport>(CCharacterPhysicsSupport::EType::etBitting,this);
 }
 
 CAI_Biting::~CAI_Biting()
 {
+	xr_delete(m_pPhysics_support);
 }
 
 void CAI_Biting::Init()
 {
+	
 	// initializing class members
 	m_tpCurAnim						= 0;
 	m_tCurGP						= _GRAPH_ID(-1);
@@ -53,7 +58,7 @@ void CAI_Biting::Init()
 	AI_Path.Nodes.clear				();
 	AI_Path.TravelStart				= 0;
 	AI_Path.DestNode				= u32(-1);
-
+	m_pPhysics_support				->in_Init();
 }
 
 void CAI_Biting::Die()
@@ -135,7 +140,7 @@ void CAI_Biting::Load(LPCSTR section)
 	m_dwProbRestStandIdle			= pSettings->r_u32   (section,"ProbRestStandIdle");
 	m_dwProbRestLieIdle				= pSettings->r_u32   (section,"ProbRestLieIdle");
 	m_dwProbRestTurnLeft			= pSettings->r_u32   (section,"ProbRestTurnLeft");
-
+	m_pPhysics_support				->in_Load(section);
 	R_ASSERT2 ((m_dwProbRestWalkFree + m_dwProbRestStandIdle + m_dwProbRestLieIdle + m_dwProbRestTurnLeft) == 100, "Probability sum isn't 1");
 }
 
@@ -156,10 +161,8 @@ BOOL CAI_Biting::net_Spawn (LPVOID DC)
 	// loading animations
 	CBitingAnimations::Load			(PKinematics(Visual()));
 
-#ifndef NO_PHYSICS_IN_AI_MOVE
-	Movement.CreateCharacter();
-	Movement.SetPhysicsRefObject(this);
-#endif
+	m_pPhysics_support->in_NetSpawn();
+
 	Movement.SetPosition	(Position());
 	Movement.SetVelocity	(0,0,0);
 
@@ -170,13 +173,7 @@ void CAI_Biting::net_Destroy()
 {
 	inherited::net_Destroy();
 	Init();
-	Movement.DestroyCharacter();
-	if(m_pPhysicsShell)
-	{
-		m_pPhysicsShell->Deactivate();
-		m_pPhysicsShell->ZeroCallbacks();
-	}
-	xr_delete(m_pPhysicsShell);
+	m_pPhysics_support->in_NetDestroy();
 }
 
 void CAI_Biting::net_Export(NET_Packet& P) 
@@ -246,81 +243,19 @@ void CAI_Biting::UpdateCL()
 	//SetText();
 	inherited::UpdateCL();
 
-	if(m_pPhysicsShell&&m_pPhysicsShell->bActive&&!m_pPhysicsShell->bActivating)
-	{
-		//XFORM().set(m_pPhysicsShell->mXFORM);
-		m_pPhysicsShell->InterpolateGlobalTransform(&(XFORM()));
-	}
+m_pPhysics_support->in_UpdateCL();
 }
 
 void CAI_Biting::shedule_Update(u32 dt)
 {
 	inherited::shedule_Update(dt);
 	////physics/////////////////////////////////////////////////////////////////////////////////////
-	if(m_pPhysicsShell)
-	{	
-		if(m_pPhysicsShell->bActive)
-		{
-
-		//	if(m_saved_impulse!=0.f)
-		//	{
-			//	m_pPhysicsShell->applyImpulseTrace(m_saved_hit_position,m_saved_hit_dir,m_saved_impulse*1.f,m_saved_element);
-			//	m_saved_impulse=0.f;
-		//	}
-
-
-		//	if(skel_ddelay==0)
-		//	{
-		//		m_pPhysicsShell->set_JointResistance(5.f*hinge_force_factor1);//5.f*hinge_force_factor1
-				//m_pPhysicsShell->SetAirResistance()
-
-		//	}
-			//if(skel_ddelay==-10)
-			//{
-			//m_pPhysicsShell->set_JointResistance(5.f*hinge_force_factor1);//5.f*hinge_force_factor1
-			//m_pPhysicsShell->SetAirResistance()
-
-			//}
-
-		//	skel_ddelay--;
-
-
-
-		}
-
-	}
-	else if (!g_Alive())
-	{
-
-		CreateSkeleton();
-#ifndef NO_PHYSICS_IN_AI_MOVE
-
-		Movement.DestroyCharacter();
-		PHSetPushOut();
-#endif
-	}
+	m_pPhysics_support->in_shedule_Update(dt);
 
 }
 
-void CAI_Biting::CreateSkeleton()
+void CAI_Biting::Hit(float P,Fvector &dir,CObject*who,s16 element,Fvector p_in_object_space,float impulse)
 {
-	if(m_pPhysicsShell) return;
-#ifndef NO_PHYSICS_IN_AI_MOVE
-	Movement.GetDeathPosition	(Position());
-	//Position().y+=.1f;
-	//#else
-	//Position().y+=0.1f;
-#endif
-
-	if (!Visual())
-		return;
-	m_pPhysicsShell		= P_create_Shell();
-	m_pPhysicsShell->build_FromKinematics(PKinematics(Visual()));
-	m_pPhysicsShell->mXFORM.set(XFORM());
-	//m_pPhysicsShell->SetAirResistance(0.002f*skel_airr_lin_factor,
-	//	0.3f*skel_airr_ang_factor);
-	m_pPhysicsShell->SmoothElementsInertia(0.3f);
-	m_pPhysicsShell->set_PhysicsRefObject(this);
-	m_pPhysicsShell->Activate(true);
-	PKinematics(Visual())->Calculate();
+	if(m_pPhysics_support->isAlive())inherited::Hit(P,dir,who,element,p_in_object_space,impulse);
+	m_pPhysics_support->in_Hit(P,dir,who,element,p_in_object_space,impulse);
 }
