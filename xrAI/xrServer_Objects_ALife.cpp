@@ -455,27 +455,19 @@ CSE_ALifeAnomalousZone::CSE_ALifeAnomalousZone(LPCSTR caSection) : CSE_ALifeDyna
 	m_attn						= 1.f;
 	m_period					= 1000;
 	m_fRadius					= 30.f;
-	if (m_wVersion > 21) {
-		m_fGlobalProbability	= pSettings->r_float(caSection,"GlobalProbability");
-		
-		LPCSTR					l_caParameters = pSettings->r_string(caSection,"artefacts");
-		m_wItemCount			= (u16)_GetItemCount(l_caParameters);
-		R_ASSERT2				(!(m_wItemCount & 1),"Invalid number of parameters in string 'artefacts' in the 'system.ltx'!");
-		m_wItemCount			>>= 1;
-		
-		m_dwaWeights			= (u32*)xr_malloc(m_wItemCount*sizeof(u32));
-		m_cppArtefactSections	= (string64*)xr_malloc(m_wItemCount*sizeof(string64));
-		string512				l_caBuffer;
-		for (u16 i=0; i<m_wItemCount; i++) {
-			m_dwaWeights[i]		= atoi(_GetItem(l_caParameters,i << 1,l_caBuffer));
-			strcpy				(m_cppArtefactSections[i],_GetItem(l_caParameters,(i << 1) | 1,l_caBuffer));
-		}
-	}
-	else {
-		m_fGlobalProbability	= 0.f;
-		m_wItemCount			= 0;
-		m_dwaWeights			= 0;
-		m_cppArtefactSections	= 0;
+	m_fGlobalProbability		= pSettings->r_float(caSection,"GlobalProbability");
+	
+	LPCSTR						l_caParameters = pSettings->r_string(caSection,"artefacts");
+	m_wItemCount				= (u16)_GetItemCount(l_caParameters);
+	R_ASSERT2					(!(m_wItemCount & 1),"Invalid number of parameters in string 'artefacts' in the 'system.ltx'!");
+	m_wItemCount				>>= 1;
+	
+	m_dwaWeights				= (u32*)xr_malloc(m_wItemCount*sizeof(u32));
+	m_cppArtefactSections		= (string64*)xr_malloc(m_wItemCount*sizeof(string64));
+	string512					l_caBuffer;
+	for (u16 i=0; i<m_wItemCount; i++) {
+		m_dwaWeights[i]			= atoi(_GetItem(l_caParameters,i << 1,l_caBuffer));
+		strcpy					(m_cppArtefactSections[i],_GetItem(l_caParameters,(i << 1) | 1,l_caBuffer));
 	}
 }
 
@@ -562,7 +554,7 @@ void CSE_ALifeAnomalousZone::FillProp		(LPCSTR pref, PropItemVec& items)
 	for (u16 i=0; i<m_wItemCount; i++) {
 		strcpy					(S,s_name);
 		strconcat				(S,"\\",m_cppArtefactSections[i]);
-		PHelper.CreateU32		(items,PHelper.PrepareKey(pref,S,"Weight"),					m_dwaWeights + i,20,10000);
+		PHelper.CreateU32		(items,PHelper.PrepareKey(pref,S,	  "Weight"),					m_dwaWeights + i,20,10000);
 	}
     PHelper.CreateFloat			(items,PHelper.PrepareKey(pref,s_name,"Global probability"),&m_fGlobalProbability,0.f,1.f);
 }
