@@ -6,7 +6,7 @@
 #define AFX_PORTAL_H__1FC2D371_4A19_49EA_BD1E_2D0F8DEBBF15__INCLUDED_
 #pragma once
 
-#include "occluder.h"
+#include "frustum.h"
 
 class ENGINE_API CPortal;
 class ENGINE_API CSector;
@@ -88,7 +88,7 @@ protected:
 	vector<CTempObject*>	tempObjects;// временные псевдостатические объекты
 	vector<WORD>			Glows;
 	vector<WORD>			Lights;
-	COccluderSystem			Occluders;
+	CFrustum				Occluders;
 
 	// object query
 	void					ll_GetObjects	(CFrustum& F, Fvector& vBase, Fmatrix& mFullXFORM);

@@ -27,6 +27,7 @@ public:
 	void					Debug		();
 
 	BOOL					visible		(Fbox& B);
+	BOOL					visible		(sPoly& P);
 	
 	CHOM();
 	~CHOM();

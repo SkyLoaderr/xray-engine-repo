@@ -252,11 +252,28 @@ IC	BOOL	_visible	(Fbox& B)
 	return Raster.test	(x1,y1,x2,y2,z);
 }
 
-BOOL CHOM::visible	(Fbox& B)
+BOOL CHOM::visible		(Fbox& B)
 {
 	if (0==m_pModel)	return TRUE;
 	Device.Statistic.TEST.Begin	();
 	BOOL bResult		= _visible(B);
 	Device.Statistic.TEST.End	();
 	return bResult;
+}
+
+BOOL CHOM::visible		(sPoly& P)
+{
+	// Find min/max points of xformed-box
+	Fmatrix&	XF		= Device.mFullTransform;
+	Fvector		test;
+	float		x1,y1,x2,y2,z;
+
+	if (xform_b(XF,test, P.front().x, P.front().y, P.front().z)) return TRUE;	x1=x2=test.x; y1=y2=test.y; z = test.z;
+	for (u32 it=1; it<P.size(); it++)
+	{
+		if (xform_b(XF,test, P[it].x, P[it].y, P[it].z)) return TRUE;
+		modify(x1,y1,x2,y2,z,test);
+	}
+
+	return Raster.test	(x1,y1,x2,y2,z);
 }

@@ -85,11 +85,11 @@ public:
 
 	sPoly*			ClipPoly			(sPoly& src, sPoly& dest) const;
 
-	BYTE			getMask				() const { return (1<<p_count)-1; }
+	DWORD			getMask				() const { return (1<<p_count)-1; }
 
-	IC EFC_Visible	testSphere			(Fvector& c, float r, BYTE& test_mask) const
+	IC EFC_Visible	testSphere			(Fvector& c, float r, DWORD& test_mask) const
 	{
-		BYTE	bit = 1;
+		DWORD	bit = 1;
 		for (int i=0; i<p_count; i++, bit<<=1)
 		{
 			if (test_mask&bit) {
@@ -116,10 +116,10 @@ public:
 		}
 		return TRUE;
 	}
-	IC EFC_Visible	testAABB			(Fvector &m, Fvector &M, BYTE& test_mask) const
+	IC EFC_Visible	testAABB			(Fvector &m, Fvector &M, DWORD& test_mask) const
 	{
 		// go for trivial rejection or acceptance using "faster overlap test"
-		BYTE		bit = 1;
+		DWORD		bit = 1;
 
 		for (int i=0; i<p_count; i++, bit<<=1)
 		{
@@ -133,9 +133,9 @@ public:
 		}
 		return test_mask ? fcvPartial:fcvFully;
 	}
-	IC EFC_Visible	testSAABB			(Fvector& c, float r, Fvector &m, Fvector &M, BYTE& test_mask) const
+	IC EFC_Visible	testSAABB			(Fvector& c, float r, Fvector &m, Fvector &M, DWORD& test_mask) const
 	{
-		BYTE	bit = 1;
+		DWORD	bit = 1;
 		for (int i=0; i<p_count; i++, bit<<=1)
 		{
 			if (test_mask&bit) {

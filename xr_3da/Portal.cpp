@@ -62,25 +62,15 @@ CSector::~CSector()
 
 void CSector::Render(CFrustum &F)
 {
-//	CHK_DX(HW.pDevice->SetRenderState(D3DRS_AMBIENT,COLORS[SelfID%8]));
-
-//	num_portals++;
-
-	// Occluders
-	Occluders.Select	(F,Device.vCameraPosition,Device.mFullTransform);
-	CVisiCache vcc; 
-	Occluders.InitCache	(vcc);
-
 	// Render everything
-//	float l_f = Device.fTimeDelta*fLightSmoothFactor;
-//	float l_i = 1.f-l_f;
 	{
 		Fvector	Tpos;
 		::Render.set_Occluders	(&Occluders);
 		::Render.add_Glows		(Glows);
 		::Render.add_Lights		(Lights);
-		::Render.add_Static		(pRoot,vcc);
+		::Render.add_Static		(pRoot,F.getMask());
 		
+		// Persistant models
 		vector<CObject*>::iterator I=Objects.begin(), E=Objects.end();
 		for (; I!=E; I++) {
 			CObject* O = *I;
@@ -88,7 +78,7 @@ void CSector::Render(CFrustum &F)
 			{
 				FBasicVisual*	pV = O->Visual();
 				O->clTransform.transform_tiny(Tpos, pV->bv_Position);
-				if (Occluders.visibleSphereNC(Tpos,pV->bv_Radius)!=fcvNone)
+				if (F.testSphere_dirty(Tpos,pV->bv_Radius))
 				{
 					float LL					= O->OnVisible	(); 
 					::Render.set_Transform		(&(O->clTransform));
@@ -98,15 +88,16 @@ void CSector::Render(CFrustum &F)
 			}
 		}
 
-		// Visuals
+		// Temporary models
 		{
 			for (int i=0; i<int(tempObjects.size()); i++) 
 			{
 				CTempObject* pV = tempObjects[i];
 				if (pV->Alive())
 				{
-					Occluders.InitCache	(vcc);
-					if (Occluders.visibleVisual(vcc,pV->Visual())!=fcvNone)
+					DWORD planes	=	F.getMask();
+					FBasicVisual* V	=	pV->Visual();
+					if (Occluders.testSAABB(V->bv_Position,V->bv_Radius,V->bv_BBox.min,V->bv_BBox.max,planes)!=fcvNone)
 						::Render.add_leafs_Static(pV->Visual());
 				}
 				else
@@ -140,14 +131,19 @@ void CSector::Render(CFrustum &F)
 			vector<Fvector> &POLY = PORTAL->getPoly();
 			S.assign(POLY.begin(),POLY.size()); D.clear();
 
-			sPoly*	P = Occluders.clipPortal(S,D);
-			if (P) {
-				CFrustum Clip;
-				Clip.CreateFromPortal(P,Device.vCameraPosition,Device.mFullTransform);
-				PORTAL->dwFrame		= Device.dwFrame;
-				PORTAL->bDualRender	= FALSE;
-				pSector->Render(Clip);
-			}
+			// Clip by frustum
+			sPoly* P	= F->ClipPoly(S,D);
+			if (0==P)	continue;
+			
+			// Cull by HOM
+			if (!::Render.HOM.visible(*P))	continue;
+
+			// Create new frustum and recurse
+			CFrustum Clip;
+			Clip.CreateFromPortal(P,Device.vCameraPosition,Device.mFullTransform);
+			PORTAL->dwFrame		= Device.dwFrame;
+			PORTAL->bDualRender	= FALSE;
+			pSector->Render		(Clip);
 		}
 	}
 }

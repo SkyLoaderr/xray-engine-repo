@@ -11,7 +11,6 @@
 #include "fbasicvisual.h"
 #include "scenegraph.h"
 #include "glowmanager.h"
-#include "occluder.h"
 #include "wallmarksengine.h"
 #include "portal.h"
 #include "modelpool.h"
