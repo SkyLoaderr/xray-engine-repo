@@ -38,7 +38,7 @@ public:
 	bool  GetDestroy()			   {return m_bToBeDestroy;}
 
 	//время обновления (для капель крови)
-	float m_fUpdateTime;
+	float m_fDropTime;
 
 protected:
 	//косточка на которой появилась рана

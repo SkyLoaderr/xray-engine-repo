@@ -35,7 +35,9 @@ float CEntityAlive::m_fStartBurnWoundSize = 0.3f;
 //размер раны, чтоб остановить партиклы
 float CEntityAlive::m_fStopBurnWoundSize = 0.1f;
 //время через которое с раны размером 1.0 будет падать капля крови
-float CEntityAlive::m_fBloodDropTime = 0.9f;
+float CEntityAlive::m_fBloodDropTime	= 0.9f;
+float m_fBloodDropTimeMax = 0.9f;
+float m_fBloodDropTimeMin = 0.9f;
 
 STR_VECTOR* CEntityAlive::m_pFireParticlesVector = NULL;
 
@@ -111,7 +113,12 @@ void CEntityAlive::LoadBloodyWallmarks (LPCSTR section)
 		m_pBloodDropsVector->push_back	(s);
 	}
 
-	m_fBloodDropTime		= pSettings->r_float(section, "blood_drop_time");	
+	m_fBloodDropTime		= pSettings->r_float(section, "blood_drop_time");
+
+	m_fBloodDropTimeMax = pSettings->r_float(section, "blood_drop_time_max");
+	m_fBloodDropTimeMin = pSettings->r_float(section, "blood_drop_time_min");
+
+
 	m_fStartBloodWoundSize  = pSettings->r_float(section, "start_blood_size");
 	m_fStopBloodWoundSize   = pSettings->r_float(section, "stop_blood_size");
 	m_fBloodDropSize		= pSettings->r_float(section, "blood_drop_size");
@@ -439,6 +446,7 @@ void CEntityAlive::StartBloodDrops			(CWound* pWound)
 			  pWound) == m_BloodWounds.end())
 		{
 			m_BloodWounds.push_back(pWound);
+			pWound->m_fDropTime = 0.f;
 		}
 	}
 }
@@ -467,33 +475,28 @@ void CEntityAlive::UpdateBloodDrops()
 			continue;
 		}
 
-		if(!fis_zero(blood_size))
+		if(pWound->m_fDropTime<Device.fTimeGlobal)
 		{
-			pWound->m_fUpdateTime += Device.fTimeDelta;
-			float drop_time = m_fBloodDropTime*blood_size*Random.randF(0.8f, 1.2f);
-			if(pWound->m_fUpdateTime>drop_time)
+			float size_k = blood_size - m_fStopBloodWoundSize;
+			size_k = size_k<1.f?size_k:1.f;
+			pWound->m_fDropTime = Device.fTimeGlobal + (m_fBloodDropTimeMax - (m_fBloodDropTimeMax-m_fBloodDropTimeMin)*size_k)*Random.randF(0.8f, 1.2f);
+			VERIFY(m_pBloodDropsVector);
+			if(pWound->GetBoneNum() != BI_NONE)
 			{
-				VERIFY(m_pBloodDropsVector);
-				if(pWound->GetBoneNum() != BI_NONE)
-				{
-					Fvector pos;
-					Fvector pos_distort;
-					pos_distort.random_dir();
-					pos_distort.mul(0.15f);
-					CParticlesPlayer::GetBonePos(this, pWound->GetBoneNum(), Fvector().set(0,0,0), pos);
-					pos.add(pos_distort);
-					PlaceBloodWallmark(Fvector().set(0.f, -1.f, 0.f),
-									pos, m_fBloodMarkDistance, 
-									m_fBloodDropSize, *m_pBloodDropsVector);
-
-				}
+				Fvector pos;
+				Fvector pos_distort;
+				pos_distort.random_dir();
+				pos_distort.mul(0.15f);
+				CParticlesPlayer::GetBonePos(this, pWound->GetBoneNum(), Fvector().set(0,0,0), pos);
+				pos.add(pos_distort);
+				PlaceBloodWallmark(Fvector().set(0.f, -1.f, 0.f),
+								pos, m_fBloodMarkDistance, 
+								m_fBloodDropSize, *m_pBloodDropsVector);
 			}
 		}
 		it++;
 	}
 }
-
-
 
 void CEntityAlive::save	(NET_Packet &output_packet)
 {
