@@ -34,7 +34,9 @@ function main()
 
 			wait(40000)
     	
-			helicopter:heli_goto_stay_point( vecVia, 6000 )
+
+			local vecSp = vector():set(-448,15,-233)
+			helicopter:heli_goto_stay_point( vecSp, 6000 )
 
 
 		end
