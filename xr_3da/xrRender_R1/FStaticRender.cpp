@@ -57,12 +57,6 @@ void					CRender::model_Delete			(IRender_DetailModel* & F)
 		F				= NULL;
 	}
 }
-IRender_Visual*			CRender::model_CreatePS			(LPCSTR name, PS::SEmitter* E)	
-{ 
-	PS::SDef*	source		= PSLibrary.FindPS	(name);
-	VERIFY					(source);
-	return Models->CreatePS	(source,E);
-}
 IRender_Visual*			CRender::model_CreatePE			(LPCSTR name)	
 { 
 	PS::CPEDef*	SE		= PSLibrary.FindPED	(name);		VERIFY(SE);
