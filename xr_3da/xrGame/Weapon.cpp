@@ -20,7 +20,7 @@ CWeapon::CWeapon(LPCSTR name)
 	fTimeToFire	= 0;
 	iHitPower	= 0;
 	m_pParent	= 0;
-	bVisible	= true;
+	bVisible	= false;
 	SetDefaults	();
 	m_pHUD		= new CWeaponHUD();
 	m_WpnName	= strupr(strdup(name));
