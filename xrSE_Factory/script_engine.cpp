@@ -227,6 +227,11 @@ void print_class(lua_State *L, luabind::detail::class_rep *crep)
 		for ( ; I != E; ++I) {
 			std::string S;
 			(*I).get_signature(L,S);
+			strreplaceall	(S,"custom [","");
+			strreplaceall	(S,"]","");
+			strreplaceall	(S,"float","number");
+			strreplaceall	(S,"lua_State*, ","");
+			strreplaceall	(S," ,lua_State*","");
 			Msg		("    %s %s;",crep->name(),S.c_str());
 		}
 		if (!constructors.empty())
