@@ -14,15 +14,15 @@ void CRender::level_Load()
 	IReader*	chunk;
 
 	// Components
-	Target				= xr_new<CRenderTarget>		();
-	L_Shadows			= xr_new<CLightShadows>		();
-	L_Projector			= xr_new<CLightProjector>	();
+	Target						= xr_new<CRenderTarget>		();
+	L_Shadows					= xr_new<CLightShadows>		();
+	L_Projector					= xr_new<CLightProjector>	();
 
 	PSLibrary.OnCreate			();
 	PSLibrary.OnDeviceCreate	();
 	L_Dynamic->Initialize		();
 
-	gm_Nearer					= FALSE;
+	rmFar						();
 	rmNormal					();
 
 	matDetailTexturing			= Device.Resources->_CreateMatrix("$user$detail");
