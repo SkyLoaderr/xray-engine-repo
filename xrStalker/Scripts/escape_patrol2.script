@@ -16,7 +16,7 @@ local units = {
               }
               }              
               
-              
+--------------------------------------------------------------------------------------              
 function main ()
     for a = 1, table.getn (units), 1 do
         npc = get_level_object (units[a].name)
@@ -41,7 +41,7 @@ function main ()
     end    
     
 end              
-
+--------------------------------------------------------------------------------------              
 function on_enter (zone, obj)
     for a = 1, table.getn (units), 1 do
         if obj:id () == units[a].id then
@@ -49,7 +49,7 @@ function on_enter (zone, obj)
         end
     end        
 end
-
+--------------------------------------------------------------------------------------              
 function check_zone ()
     printf ("Check zone called")
     for a = 1, table.getn (units), 1 do
@@ -64,17 +64,18 @@ function check_zone ()
     end    
     return true
 end
-
+--------------------------------------------------------------------------------------              
 function switch_offline (npc)
 
     if npc == nil or npc:alive () == false then return end
     local sim = alife ()
     if sim ~= nil then
-       sim:set_switch_online  (patrols[a][b].id, false) 
-       sim:set_switch_offline (patrols[a][b].id, true)
+       sim:set_switch_online  (npc:id (), false) 
+       sim:set_switch_offline (npc:id (), true)
        printf ("Object %s move to offline at %d time", npc:name (), device ():time_global ())
     else
        printf ("Object %s set sleep", npc:name ()) 
        xr_sleeper.set_sleeper (npc, true)
     end       
 end
+--------------------------------------------------------------------------------------              
