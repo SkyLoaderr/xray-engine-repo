@@ -1492,12 +1492,12 @@ void CActor::OnHUDDraw	(CCustomHUD* /**hud/**/)
 
 #ifdef DEBUG
 	string128 buf;
-	HUD().pFontSmall->SetColor(0xffffffff);
-	HUD().pFontSmall->OutSet	(120,530);
-	HUD().pFontSmall->OutNext("Position:      [%3.2f, %3.2f, %3.2f]",VPUSH(Position()));
-	HUD().pFontSmall->OutNext("Velocity:      [%3.2f, %3.2f, %3.2f]",VPUSH(m_PhysicMovementControl.GetVelocity()));
-	HUD().pFontSmall->OutNext("Vel Magnitude: [%3.2f]",m_PhysicMovementControl.GetVelocityMagnitude());
-	HUD().pFontSmall->OutNext("Vel Actual:    [%3.2f]",m_PhysicMovementControl.GetVelocityActual());
+	HUD().pFontSmall->SetColor	(0xffffffff);
+	HUD().pFontSmall->OutSet	(170,530);
+	HUD().pFontSmall->OutNext	("Position:      [%3.2f, %3.2f, %3.2f]",VPUSH(Position()));
+	HUD().pFontSmall->OutNext	("Velocity:      [%3.2f, %3.2f, %3.2f]",VPUSH(m_PhysicMovementControl.GetVelocity()));
+	HUD().pFontSmall->OutNext	("Vel Magnitude: [%3.2f]",m_PhysicMovementControl.GetVelocityMagnitude());
+	HUD().pFontSmall->OutNext	("Vel Actual:    [%3.2f]",m_PhysicMovementControl.GetVelocityActual());
 	switch (m_PhysicMovementControl.Environment())
 	{
 	case CPHMovementControl::peOnGround:	strcpy(buf,"ground");			break;

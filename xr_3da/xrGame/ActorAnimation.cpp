@@ -235,7 +235,7 @@ void CActor::g_SetAnimation( u32 mstate_rl )
 	if (mstate_rl&mcLanding)	strcat(buf,"Landing ");
 	if (m_bJumpKeyPressed)		strcat(buf,"+Jumping ");
 	HUD().pFontSmall->SetColor	(0xffffffff);
-	HUD().pFontSmall->OutSet		(120,450);
+	HUD().pFontSmall->OutSet	(170,450);
 	HUD().pFontSmall->OutNext	("MSTATE:     [%s]",buf);
 //	if (buf[0]) 
 //		Msg("%s",buf);
