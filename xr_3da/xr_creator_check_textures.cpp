@@ -12,13 +12,13 @@ void CCreator::LL_CheckTextures()
 	if (m_base>64*1024*1024)
 	{
 		LPCSTR msg	= "Too many base-textures (64M limit). Reduce number of textures (better) or their resolution (worse).";
-		Msg			("***FATAL***: ",msg);
+		Msg			("***FATAL***: %s",msg);
 		bError		= TRUE;
 	}
 	if (m_lmaps>32*1024*1024)
 	{
 		LPCSTR msg	= "Too many lmap-textures (32M limit). Reduce pixel density or use more vertex lighting.";
-		Msg			("***FATAL***: ",msg);
+		Msg			("***FATAL***: %s",msg);
 		bError		= TRUE;
 	}
 	if (bError)		Debug.fatal	("Too much memory used for textures.");
