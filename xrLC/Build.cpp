@@ -227,20 +227,20 @@ void CBuild::Run()
 	BuildRapid		();
 
 	FPU::m24r();
+	Phase	("Soften lights...");
+	SoftenLights();
+
+	FPU::m24r();
 	Phase	("Resolving materials...");
 	ResolveMaterials();
 	
 	FPU::m24r();
 	Phase	("Build UV mapping...");
-	BuildUVmap	();
+	BuildUVmap		();
 	
 	FPU::m24r();
 	Phase	("Merging lightmaps...");
-	MergeLM		();
-
-	FPU::m24r();
-	Phase	("Soften lights...");
-	SoftenLights();
+	MergeLM			();
 
 	FPU::m24r();
 	Phase	("Implicit lighting...");
@@ -248,7 +248,7 @@ void CBuild::Run()
 
 	FPU::m24r();
 	Phase	("Raytracing...");
-	Light		();
+	Light			();
 	
 	FPU::m24r();
 	Phase	("Merging geometry...");
