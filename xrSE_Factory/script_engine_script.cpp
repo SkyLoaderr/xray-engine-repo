@@ -16,9 +16,11 @@ using namespace luabind;
 void LuaLog(LPCSTR caMessage)
 {
 	ai().script_engine().script_log	(ScriptStorage::eLuaMessageTypeMessage,"%s",caMessage);
+#ifdef USE_DEBUGGER
 	if( CScriptDebugger::GetDebugger()->Active() ){
 		CScriptDebugger::GetDebugger()->Write(caMessage);
 	}
+#endif
 }
 
 void LoadScriptModule(LPCSTR script_name)
