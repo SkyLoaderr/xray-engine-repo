@@ -285,7 +285,7 @@ HRESULT	IPureServer::net_Handler(u32 dwMessageType, PVOID pMessage)
 				{
 					// ping - save server time and reply
 					m_ping->dwTime_Server	= TimerAsync(device_timer);
-					SendTo_LL	(m_sender,m_data,m_size,net_flags(FALSE,FALSE,TRUE));
+					IPureServer::SendTo_LL	(m_sender,m_data,m_size,net_flags(FALSE,FALSE,TRUE));
 				}
 			} else {
 				// Decompress message
