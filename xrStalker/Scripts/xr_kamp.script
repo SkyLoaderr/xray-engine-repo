@@ -9,32 +9,19 @@ local speeks = {} -- говорит ли кто либо в лагере, чтобы вместе не болтали
 ---------------------------------------------------------------------------------------------------------------------
 --Evaluators
 ----------------------------------------------------------------------------------------------------------------------
--- Условие завершения скрипта
+--' Условие завершения скрипта
 class "evaluator_kamp_end" (property_evaluator)
 function evaluator_kamp_end:__init(storage) super()
 	self.a = storage
 end
 function evaluator_kamp_end:evaluate()
-	local tt
-	if self.a.enabled == false then
-		tt = true
-	else
-		tt = false
-	end
---	if tt == true then
---		printf("[EVA] Kamp: Can go? true")
---	else
---		printf("[EVA] Kamp: Can go? false")
---	end               
-	return tt
+	return self.a.enabled == false
 end
-
--- Находимся ли мы на заданной позиции
+--' Находимся ли мы на заданной позиции
 class "evaluator_on_position" (property_evaluator)
 function evaluator_on_position:__init(storage) super()
 	self.a = storage
-
-	-- таблица векторов, содержащих направления на точки рассадки
+	--' таблица векторов, содержащих направления на точки рассадки
 	self.vectors = {{1, 	0,	0},
 			{1,	0, 	1},
 			{0, 	0,	1},
@@ -46,7 +33,7 @@ function evaluator_on_position:__init(storage) super()
 end
 function evaluator_on_position:evaluate()
 	local tt
-        -- если позиция еще не выбрана
+        --' если позиция еще не выбрана
 	if self.a.pos_id == -1 then
 		tt = false
 	else
@@ -64,38 +51,24 @@ function evaluator_on_position:evaluate()
 	   		end
 		end
 	end
---	if tt == true then
---		printf("[EVA] Kamp: On position? true")
---	else
---		printf("[EVA] Kamp: On position? false")
---	end               
 	return tt
 end
-
--- Необходимо ли нам идти вокруг лагеря
+--' Необходимо ли нам идти вокруг лагеря
 class "evaluator_need_patrol" (property_evaluator)
 function evaluator_need_patrol:__init(storage) super()
 	self.a = storage
 end
 function evaluator_need_patrol:evaluate()
-	local tt
-	tt = self.a.action == 1
---	if tt == true then
---		printf("[EVA] Kamp: Need patrol? true")
---	else
---		printf("[EVA] Kamp: Need patrol? false")
---	end              
-	return tt
+	return self.a.action == 1
 end
 ----------------------------------------------------------------------------------------------------------------------
 --Actions
 ----------------------------------------------------------------------------------------------------------------------
--- Идет в заданную область
+--' Идет в заданную область
 class "action_go_position" (action_base)
 function action_go_position:__init (npc_name,action_name,storage) super (nil,action_name)
 	self.a = storage
-	
-	-- таблица векторов, содержащих направления на точки рассадки
+	--' таблица векторов, содержащих направления на точки рассадки
 	self.vectors = {{1, 	0,	0},
 			{1,	0, 	1},
 			{0, 	0,	1},
@@ -106,7 +79,6 @@ function action_go_position:__init (npc_name,action_name,storage) super (nil,act
 			{1, 	0,	-1} }
 end
 function action_go_position:initialize()
---	printf("[ACT] Start: Go position")
 	action_base.initialize(self)
 	self.object:set_node_evaluator()
 	self.object:set_path_evaluator()
@@ -120,12 +92,10 @@ function action_go_position:initialize()
 	self.started = false
 end
 function action_go_position:execute ()
-
 	if self.started == false then
 		self.started = true
 	 
-		-- для начала надо составить список занятых позиций
---		self.object:set_item(object.idle, self.object:best_weapon())
+		--' для начала надо составить список занятых позиций
 		local used = {}
 		local i = 1
 		for key,value in xr_motivator.storage do 
@@ -136,7 +106,7 @@ function action_go_position:execute ()
 			end
 		end
 
-		-- затем исключить их из списка доступных позиций
+		--' затем исключить их из списка доступных позиций
 		local free = {}
 		local i = 1
 		for key,value in self.vectors do 
@@ -158,7 +128,7 @@ function action_go_position:execute ()
 			end
 		end
 
-		-- затем из доступных позиций выбрать рандомно одну.
+		--' затем из доступных позиций выбрать рандомно одну.
 		if table.getn(free) > 0 then
 			local rr = math.random(table.getn(free))
 
@@ -174,23 +144,22 @@ function action_go_position:execute ()
 			self.object:set_body_state(move.standing)
 			self.object:set_movement_type(move.walk)
 		end
-		-- если доступных не осталось - никуда его не отправлять
+		--' если доступных не осталось - никуда его не отправлять
 	end
 	action_base.execute (self)
 end
 function action_go_position:finalize ()
---	printf("[ACT] Finish: Go position")                                                  
 	self.object:set_movement_type(move.stand)
 	action_base.finalize (self)
 end
 
--- Обходит лагерь по одному из патрульных путей
+--' Обходит лагерь по одному из патрульных путей.
 class "action_go_patrol" (action_base)
 function action_go_patrol:__init (npc_name,action_name,storage) super (nil,action_name)
 	self.a = storage
+	self.move_mgr = move_mgr.move_mgr()
 end
 function action_go_patrol:initialize()
---	printf("[ACT] Start: Go patrol")
 	action_base.initialize(self)
 	self.object:set_node_evaluator()
 	self.object:set_path_evaluator()
@@ -198,142 +167,35 @@ function action_go_patrol:initialize()
 	self.object:set_desired_direction()    
 
 	xr_state.change_state(self.object, 0)
-
-	self.begin = false
-
-	self.final_point = {}
-	self.relax_point = {}
-	self.relax_time = {idle = nil,
-			begin = nil,
-			max_idle = 5,
-			sum_idle = 5 }
-	self.relax_idle = {time = 5000,
-			begin = nil }
-
-	-- Описание предназначения флагов:
-	-- 0 - начало пути
-	-- 1 - конец пути
-	-- 2 - точка для останова и потягиваний
-	-- 5+ - если он находится в этой точке, то он разворачивается и смотрит в одну из точек с установленным аналогичным флагом
+	self:reset()
+end
+function action_go_patrol:reset()
+	self.move_mgr:initialize(self.object)
+	local tt = math.random(table.getn(self.a.patrol_path))	
+	self.move_mgr:reset(self.a.patrol_path[tt], 
+					utils.path_parse_waypoints(self.a.patrol_path[tt]),
+					self.a.path_look[tt],
+					utils.path_parse_waypoints(self.a.path_look[tt]),
+					nil,nil,{obj=self,func=self.end_path})
 end
 function action_go_patrol:execute()
 	action_base.execute (self)
-
-	-- не двигаться с места пока не закончим вставание
-	if self.begin == false and xr_state.finish_state(self.object) then
-		-- Установка на патрульный путь
-		self.begin = true
-		local rr = math.random(table.getn(self.a.patrol_path))
-		self.object:set_sight(look.path_dir, nil, 0)
-		self.object:set_body_state(move.standing)
-		self.object:set_mental_state(anim.free)
---		self.object:set_mental_state(anim.danger)
-		self.object:set_path_type  (game_object.patrol_path)
-	    	self.object:set_patrol_path (self.a.patrol_path[rr], patrol.nearest, patrol.continue, true)
-		self.object:set_movement_type(move.walk)
-
-		self.object:set_item(object.idle, self.object:best_weapon())	                                                            
-
-		local rr = math.random(3) 
-		if rr == 1 then
-			self.object:play_sound (sounds["replics"], 1, 0, 1, 0, 3)
-		elseif rr == 2 then
-			self.object:play_sound (sounds["replics"], 1, 0, 1, 0, 4)
-		else
-			self.object:play_sound (sounds["replics"], 1, 0, 1, 0, 5)
-		end
-
-		-- Определение индексов финальных точек
-		self.ptr = patrol (self.object:patrol ())
-		local ii = 1
-		for i=0, self.ptr:count()-1, 1 do
-			if self.ptr:flag(i, 1) == true then
-				self.final_point[ii] = i
-				ii = ii + 1
-			end
-		end
-		-- Определение индексов точек релаксирования
-		local ii = 1
-		for i=0, self.ptr:count()-1, 1 do
-			if self.ptr:flag(i, 2) == true then
-				self.relax_point[ii] = i
-				ii = ii + 1
-			end
-		end
-	end
-
-	-- тут нужно сделать проверку на отыгрывание разных релаксных анимаций
-	for key,value in self.relax_point do
-		if self.object:level_vertex_id() == self.ptr:level_vertex_id(value) then
-			-- стоим и смотрим, отыгрывая разные анимации
-			if self.relax_time.begin == nil	then
-				if self.relax_idle.begin == nil or (device():time_global() - self.relax_idle.begin) >= self.relax_idle.time then
-					-- инициализируем остановку
-					self.relax_time.begin = device():time_global()
-					self.relax_time.idle = math.random(self.relax_time.max_idle) + self.relax_time.sum_idle
-					self.object:set_movement_type(move.stand)
-					-- нужно его повернуть в одну из указанных позиций
-					self.ptr = patrol (self.object:patrol ())
-					-- определяем список вершин, которые имеют такие же установленные флаги (текущую игнорируем)
-					local points = {}
-                        		for i=0, self.ptr:count()-1, 1 do
-						for j=5, 31, 1 do
-							if self.ptr:flag(value, j) == true and
-							   self.ptr:flag(value, j) == self.ptr:flag(i, j) and
-							   i ~= value 
-							then				
-								table.insert(points, i)
-							end
-						end
-					end
-
-					if table.getn(points) > 0 then
-						local point = self.ptr:level_vertex_id(points[math.random(table.getn(points))])
-						local pt = level.vertex_position(point)
-						self.object:set_sight(look.point, pt, 0)
-					end
-				end
-			else
-				-- Выход из остановки
-				if device():time_global() - self.relax_time.begin >= self.relax_time.idle*1000 then
-					self.object:set_sight(look.path_dir, nil, 0)
-					self.object:set_movement_type(move.walk)				
-					self.relax_time.begin = nil
-					self.relax_idle.begin = device():time_global()
-				end
-			end		
-		end
-	end
-	
-	-- Тут нужно будет сделать проверку что мы закончили патрулирование
-	for key,value in self.final_point do
-		if self.object:level_vertex_id() == self.ptr:level_vertex_id(value) then
-			-- устанавливаем что мы дошли до конца патрульного пути
-			-- также устанавливаем время окончания 
-			self.a.timer.act1.begin = device():time_global()/1000
-			self.a.action = 0
-
-			local rr = math.random(3) 
-			if rr == 1 then
-				self.object:play_sound (sounds["replics"], 1, 0, 1, 0, 6)
-			elseif rr == 2 then
-				self.object:play_sound (sounds["replics"], 1, 0, 1, 0, 7)
-			else
-				self.object:play_sound (sounds["replics"], 1, 0, 1, 0, 8)
-			end
-		end
-	end
+	self.move_mgr:update()
+end
+function action_go_patrol:end_path(mode, number)
+	self.a.timer.act1.begin = device():time_global()/1000
+	self.a.action = 0
+	return false
 end
 function action_go_patrol:finalize()
---	printf("[ACT] Finish: Go patrol")
+	self.move_mgr:finalize()
 	action_base.finalize (self)
 end
 
--- Просто сидит и втыкает
+--' Просто сидит и втыкает
 class "action_wait" (action_base)
 function action_wait:__init (npc_name,action_name,storage) super (nil,action_name)
 	self.a = storage
-
 	self.timer = { begin = nil,
 		       idle = nil,
 		       maxidle = 20,
@@ -343,7 +205,6 @@ function action_wait:__init (npc_name,action_name,storage) super (nil,action_nam
 				   maxidle = 10, 
 				   sumidle = 10,
 				   themes = { "weather", "state" } }
-
 	self.anim = {	idle = 0,
 			begin = nil,
 			maxidle = 5,
@@ -354,25 +215,21 @@ function action_wait:__init (npc_name,action_name,storage) super (nil,action_nam
 					{name = "item_0_idle_3", hand = true}} }
 end
 function action_wait:initialize()
---	printf("[ACT] Start: Wait")
 	action_base.initialize(self)
 	self.object:set_node_evaluator()
 	self.object:set_path_evaluator()
 	self.object:set_desired_position()
 	self.object:set_desired_direction()    
-
 	self.object:set_item(object.deactivate, self.object:best_weapon())
 end
 function action_wait:execute()
 	action_base.execute (self)
 	if self.a.action == 0 or self.a.action == nil then
-		--!!! ОПРЕДЕЛЕНИЕ ДАЛЬНЕЙШЕГО ДЕЙСТВИЯ
 		local actions = {}
 		local i = 1
-	
-		-- Тут выбор действий
+		--' Тут выбор действий
 		if table.getn(self.a.patrol_path) > 0 and self.a.last_action ~= 1 then
-			-- проверка, что на патрульных путях никого нетути
+			--' проверка, что на патрульных путях никого нетути
 			local free = true
 			for key,value in xr_motivator.storage do 
 				if value.kamp.center_point == self.a.center_point and
@@ -381,54 +238,47 @@ function action_wait:execute()
 				   value.kamp.enabled == true then
 					free = false
 				end
-				-- Проверка, что последнее время никто не ходил в обход 
+				--' Проверка, что последнее время никто не ходил в обход 
 				if value.kamp.center_point == self.a.center_point and
 				   value.kamp.timer.act1.begin ~= nil and
 				   (device():time_global()/1000 - value.kamp.timer.act1.begin) < self.a.timer.act1.time and
 				   value.kamp.enabled == true then
 					free = false
 				end
-
-			end
-		
+			end		
 		        if free then
 				actions[i] = 1
 				i = i + 1
 			end             	
 		end
-
-		actions[i] = 5
-   
+		actions[i] = 5  
 		local rr = math.random(table.getn(actions))
 		self.a.action = actions[rr]
 		self.a.last_action = self.a.action
 		self.timer.begin = device():time_global()/1000
 		self.timer.idle = math.random(self.timer.maxidle) + self.timer.sumidle
 	end
-
 	if self.a.action == 5 then
-		--!!! ПРОСТО СИДИМ И ВТЫКАЕМ
+		--'!!! ПРОСТО СИДИМ И ВТЫКАЕМ
 		xr_state.change_state(self.object, xr_state.sit_wait)
-		-- повернуть его лицом к центру
+		--' повернуть его лицом к центру
 		local pp = patrol(self.a.center_point):point(0)
 		pp.y = pp.y + 0.7
 		self.object:set_sight(look.point, pp, 0)
-
 		if (device():time_global()/1000 - self.timer.begin) < self.timer.idle then
-		        -- Анимации
+		    --' Анимации
 			if self.object:animation_count() == 1 then
 				xr_kamp.set_anim(self.object, self.anim, self.a)
 			end
-
-			-- проверка говорит ли кто нибудь в лагере
+			--' проверка говорит ли кто нибудь в лагере
 			if speeks[self.a.center_point] ~= nil then
-				-- может быть это мы говорили? :))
+				--' может быть это мы говорили? :))
 				if speeks[self.a.center_point] == self.object:id() then
-					-- и может быть мы закончили говорить
+					--' и может быть мы закончили говорить
 					if self.object:active_sound_count() == 0 then speeks[self.a.center_point] = nil end
 				end
 			else
-				-- Саунды
+				--' Саунды
 				xr_sound.sound_update(self.object, self.sound)
 			end
 		else
@@ -437,14 +287,13 @@ function action_wait:execute()
 	end
 end
 function action_wait:finalize()
---	printf("[ACT] Finish: Wait")
 	action_base.finalize (self)
 end
 
 ----------------------------------------------------------------------------------------------------------------------
 -- Functions
 ----------------------------------------------------------------------------------------------------------------------
--- Проигрыш анимашек
+--' Проигрыш анимашек
 function set_anim(npc, anim, st)
 	if anim.begin == nil or
 	   (device():time_global()/1000 - anim.begin) > anim.idle 
@@ -470,12 +319,6 @@ function add_to_binder(object, char_ini)
 	local operators		= {}
 	local properties	= {}
 
-	sounds["replics"] 	= xr_sounds_id.stohe_kamp_base + 1
-	sounds["idle"] 		= xr_sounds_id.stohe_kamp_base + 2
-
-	object:add_sound("script_replics\\bandit_1\\replics\\bandit_replic_", 20, snd_type.talk, 2, 1, sounds["replics"])
-	object:add_sound("script_replics\\bandit_1\\idle\\bandit_idle_", 20, snd_type.talk, 2, 1, sounds["idle"])
-
 	local manager = object:motivation_action_manager()
 
 	properties["state_end"]		= xr_evaluators_id.state_change
@@ -483,6 +326,7 @@ function add_to_binder(object, char_ini)
 	properties["kamp_end"]		= xr_evaluators_id.stohe_kamp_base + 1
 	properties["on_position"]	= xr_evaluators_id.stohe_kamp_base + 2
 	properties["need_patrol"]	= xr_evaluators_id.stohe_kamp_base + 3
+	properties["contact"]		= xr_evaluators_id.stohe_meet_base + 1    
 
 	operators["go_position"]	= xr_actions_id.stohe_kamp_base + 1
 	operators["go_patrol"]		= xr_actions_id.stohe_kamp_base + 2
@@ -500,6 +344,7 @@ function add_to_binder(object, char_ini)
 	action:add_precondition		(world_property(properties["event"], 		false))
 	action:add_precondition		(world_property(properties["state_end"], 	true))
 	action:add_precondition		(world_property(properties["need_patrol"],	true))
+	action:add_precondition		(world_property(properties["contact"],		false))
 	action:add_effect 		(world_property(properties["kamp_end"], 	true))
 	manager:add_action (operators["go_patrol"], action)
 
@@ -510,6 +355,7 @@ function add_to_binder(object, char_ini)
 	action:add_precondition		(world_property(properties["state_end"], 	true))
 	action:add_precondition		(world_property(properties["event"], 		false))
 	action:add_precondition		(world_property(properties["need_patrol"],	false))
+	action:add_precondition		(world_property(properties["contact"],		false))
 	action:add_effect 		(world_property(properties["kamp_end"], 	true))
 	manager:add_action (operators["wait"], action)
 
@@ -519,6 +365,7 @@ function add_to_binder(object, char_ini)
 	action:add_precondition		(world_property(properties["state_end"], 	true))
 	action:add_precondition		(world_property(properties["event"], 		false))
 	action:add_precondition 	(world_property(properties["on_position"], 	false))
+	action:add_precondition		(world_property(properties["contact"],		false))
 	action:add_effect 		(world_property(properties["on_position"], 	true))
 	manager:add_action (operators["go_position"], action)
 
@@ -529,7 +376,7 @@ function add_to_binder(object, char_ini)
     end
 end
 -- включение лагеря
-function set_kamp(object, enable, center_point, patrol_path)
+function set_kamp(object, enable, center_point, patrol_path, path_look)
 	-- enable - будет ли работать схема в принципе
 	-- center_point - центр лагеря
 	-- patrol_path - патрульные пути для обхода
@@ -565,6 +412,17 @@ function set_kamp(object, enable, center_point, patrol_path)
 	    		end
 		else
 			st.patrol_path = patrol_path
+		end
+	end
+	if st.enabled == true then
+		if path_look == nil then
+        		local i = 1
+		        while char_ini:section_exist("kamp") == true and char_ini:line_exist("kamp", "path_look_"..i) == true do
+       				st.path_look[i] = char_ini:r_string("kamp", "path_look_"..i)
+				i = i + 1
+	    		end
+		else
+			st.path_look = path_look
 		end
 	end
 	xr_motivator.checkStorage(object)
