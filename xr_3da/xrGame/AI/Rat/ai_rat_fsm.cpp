@@ -100,7 +100,6 @@ void CAI_Rat::Turn()
 
 	CHECK_IF_SWITCH_TO_NEW_STATE(g_Health() <= 0,aiRatDie)
 
-	m_tHPB.x = -r_torso_current.yaw;
 	CHECK_IF_GO_TO_PREV_STATE(Level().AI.bfTooSmallAngle(r_torso_target.yaw, r_torso_current.yaw, PI_DIV_6))
 	
 	INIT_SQUAD_AND_LEADER
@@ -158,7 +157,8 @@ void CAI_Rat::FreeHunting()
 
 	vfUpdateTime(m_fTimeUpdateDelta);
 
-	vfComputeNewPosition();
+	if (m_fSpeed > EPS_L)
+		vfComputeNewPosition();
 
 	SetDirectionLook();
 

@@ -41,6 +41,7 @@ CAI_Rat::CAI_Rat()
 	m_tLastSound.eSoundType	= SOUND_TYPE_NO_SOUND;
 	m_bNoWay				= false;
 	m_dwMoraleLastUpdateTime = 0;
+	q_look.o_look_speed = PI;
 }
 
 CAI_Rat::~CAI_Rat()

@@ -18,7 +18,7 @@ namespace NAI_Rat_Constants
 	const float ATTACK_DISTANCE					= .5f;
 	const float ATTACK_ANGLE					= PI_DIV_6;
 	const DWORD LOST_MEMORY_TIME				= 20000;
-	const DWORD UNDER_FIRE_TIME					= 10000;
+	const DWORD UNDER_FIRE_TIME					= 20000;
 	const float UNDER_FIRE_DISTANCE				= 20.f;
 	const DWORD RETREAT_TIME					= 10000;
 	const float RETREAT_DISTANCE				= 20.f;

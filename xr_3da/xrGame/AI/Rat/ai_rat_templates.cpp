@@ -88,7 +88,7 @@ void CAI_Rat::vfComputeNewPosition()
 
 	// Build the local matrix for the pplane
 	mRotate.setHPB(m_tHPB.x,m_tHPB.y,m_tHPB.z);
-	r_torso_target.yaw = -m_tHPB.x;
+	r_target.yaw = r_torso_target.yaw = -m_tHPB.x;
 	UpdateTransform();
 
 	// Update position
@@ -187,7 +187,7 @@ void CAI_Rat::vfComputeNextDirectionPosition()
 
 	// Build the local matrix for the pplane
 	mRotate.setHPB(m_tHPB.x,m_tHPB.y,m_tHPB.z);
-	r_torso_target.yaw = -m_tHPB.x;
+	r_target.yaw = r_torso_target.yaw = -m_tHPB.x;
 	UpdateTransform();
 	// Update position
 	Fvector tTemp;
