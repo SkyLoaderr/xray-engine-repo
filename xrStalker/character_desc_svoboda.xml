@@ -20,7 +20,7 @@
 	</specific_character>
 
 <!---------------------------SVOBODA NOVICE----------------------->
-	<specific_character id="svoboda_default" team_default = "1">
+	<specific_character id="svoboda_novice_default" team_default = "1">
 		<name>Неизвестный сталкер</name>
 		<icon x="0" y="0"></icon>
 		<map_icon x="0" y="0"></map_icon>
@@ -38,7 +38,7 @@
 	</specific_character>
 
 <!---------------------------SVOBODA GENERAL---------------------->
-	<specific_character id="svoboda_default" team_default = "1">
+	<specific_character id="svoboda_general_default" team_default = "1">
 		<name>Неизвестный сталкер</name>
 		<icon x="0" y="0"></icon>
 		<map_icon x="0" y="0"></map_icon>
@@ -56,7 +56,7 @@
 	</specific_character>
 
 <!---------------------------SVOBODA VETERAN---------------------->
-	<specific_character id="svoboda_default" team_default = "1">
+	<specific_character id="svoboda_veteran_default" team_default = "1">
 		<name>Неизвестный сталкер</name>
 		<icon x="0" y="0"></icon>
 		<map_icon x="0" y="0"></map_icon>
@@ -74,7 +74,7 @@
 	</specific_character>
 
 <!---------------------------SVOBODA MASTER----------------------->
-	<specific_character id="svoboda_default" team_default = "1">
+	<specific_character id="svoboda_master_default" team_default = "1">
 		<name>Неизвестный сталкер</name>
 		<icon x="0" y="0"></icon>
 		<map_icon x="0" y="0"></map_icon>
