@@ -135,8 +135,14 @@ function save_dialog:InitControls()
 	main_frame:AttachChild(btn)
 	
 	
-	
-	
+	-- Message Box --
+	message_box = CUIMessageBox()
+	message_box:SetAutoDelete(true)
+	message_box:SetWindowName("message_box")
+	message_box:Init("ui\\ui_frame",0, 0, 300, 300)
+	message_box:AutoCenter()
+	message_box:Hide()
+	main_frame:AttachChild(message_box)
 end
 
 function save_dialog:InitCallBacks()
@@ -151,11 +157,7 @@ function save_dialog:OnButton_ok_clicked()
 end
 
 function save_dialog:OnButton_cancel_clicked()
-    message_box = CUIMessageBox()
-	message_box:SetAutoDelete(true)
-	message_box:SetWindowName("message_box")
-	message_box:Init(0, 0, 400, 200)
-	message_box:AutoCenter()
+	local message_box = self:GetMessageBox("message_box")
 	
 	message_box:SetText("Do you really want to exit?")
 	message_box:Show()
