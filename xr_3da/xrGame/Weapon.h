@@ -123,6 +123,19 @@ protected:
 	u32						dwXF_Frame;
 
 	float					fZoomFactor;
+
+
+	//возможность подключения различных аддонов
+	CSE_ALifeItemWeapon::EAddonStatus			m_eScopeStatus;
+	CSE_ALifeItemWeapon::EAddonStatus			m_eSilencerStatus;
+	CSE_ALifeItemWeapon::EAddonStatus			m_eGrenadeLauncherStatus;
+
+	ref_str		m_sScopeName;
+	ref_str		m_sSilencerName;
+	ref_str		m_sGrenadeLauncherName;
+
+	//состояние подключенных аддонов
+	u8			m_flagsAddOnState;
 protected:
 	struct	net_update 		
 	{
@@ -171,16 +184,6 @@ public:
 	u32						STATE, NEXT_STATE;
 	
 
-	//возможность подключения различных аддонов
-	CSE_ALifeItemWeapon::EAddonStatus			m_eScopeStatus;
-	CSE_ALifeItemWeapon::EAddonStatus			m_eSilencerStatus;
-	CSE_ALifeItemWeapon::EAddonStatus			m_eGrenadeLauncherStatus;
-
-	//состояние подключенных аддонов
-	u8						m_flagsAddOnState;
-
-
-	
 	float					m_fMinRadius;
 	float					m_fMaxRadius;
 
@@ -192,6 +195,7 @@ public:
 	virtual void			OnZoomOut			()			{};
 	virtual void			OnDrawFlame			();
 	virtual void			OnStateSwitch		(u32 S)		{};
+
 public:
 							CWeapon				(LPCSTR name);
 	virtual					~CWeapon			();
@@ -268,8 +272,15 @@ public:
 	virtual void Deactivate();
 	virtual bool Action(s32 cmd, u32 flags);
 	virtual bool Attach(PIItem pIItem);
-	virtual bool Detach(PIItem pIItem);
 	virtual bool Detach(const char* item_section_name);
+	
+	virtual bool IsGreandeLauncherAttached();
+	virtual bool IsScopeAttached();
+	virtual bool IsSilencerAttached();
+	virtual ref_str GetGrenadeLauncherName() {return m_sGrenadeLauncherName;}
+	virtual ref_str GetScopeName() {return  m_sScopeName;}
+	virtual ref_str GetSilencerName() {return m_sSilencerName;}
+
 	virtual const char* Name();
 
 	void SpawnAmmo		(u32 boxCurr = 0xffffffff, LPCSTR ammoSect = NULL);

@@ -81,7 +81,9 @@ public:
 	virtual void	OnH_B_Independent();
 
 	virtual bool	Attach(PIItem pIItem);
-	virtual bool	Detach(PIItem pIItem);
+	virtual bool	Detach(const char* item_section_name);
+	virtual bool	CanAttach(PIItem pIItem);
+	virtual bool	CanDetach(const char* item_section_name);
 
 	
 	virtual void	OnStateSwitch	(u32 S);

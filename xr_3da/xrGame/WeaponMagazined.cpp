@@ -11,6 +11,10 @@
 #include "actor.h"
 #include "ParticlesObject.h"
 
+#include "scope.h"
+#include "silencer.h"
+
+
 //////////////////////////////////////////////////////////////////////
 // Construction/Destruction
 //////////////////////////////////////////////////////////////////////
@@ -673,11 +677,92 @@ bool CWeaponMagazined::Action(s32 cmd, u32 flags)
 	return false;
 }
 
+bool CWeaponMagazined::CanAttach(PIItem pIItem)
+{
+	CScope* pScope = dynamic_cast<CScope*>(pIItem);
+	CSilencer* pSilencer = dynamic_cast<CSilencer*>(pIItem);
+	
+	if(pScope &&
+	   m_eScopeStatus == CSE_ALifeItemWeapon::eAddondAttachable &&
+	   (m_flagsAddOnState&CSE_ALifeItemWeapon::eWeaponAddonScope) == 0 &&
+	   !strcmp(*m_sScopeName, pIItem->cNameSect()))
+       return true;
+	else if(pSilencer &&
+	   m_eSilencerStatus == CSE_ALifeItemWeapon::eAddondAttachable &&
+	   (m_flagsAddOnState&CSE_ALifeItemWeapon::eWeaponAddonSilencer) == 0 &&
+	   !strcmp(*m_sSilencerName, pIItem->cNameSect()))
+       return true;
+	else
+		return inherited::CanAttach(pIItem);
+}
+
+bool CWeaponMagazined::CanDetach(const char* item_section_name)
+{
+	if( m_eScopeStatus == CSE_ALifeItemWeapon::eAddondAttachable &&
+	   (m_flagsAddOnState&CSE_ALifeItemWeapon::eWeaponAddonScope) != 0 &&
+	   strcmp(*m_sScopeName, item_section_name))
+       return true;
+	else if(m_eSilencerStatus == CSE_ALifeItemWeapon::eAddondAttachable &&
+	   (m_flagsAddOnState&CSE_ALifeItemWeapon::eWeaponAddonSilencer) != 0 &&
+	   strcmp(*m_sSilencerName, item_section_name))
+       return true;
+	else
+		return inherited::CanDetach(item_section_name);
+}
+
 bool CWeaponMagazined::Attach(PIItem pIItem)
 {
-	return inherited::Attach(pIItem);
+	bool result = false;
+
+	CScope* pScope = dynamic_cast<CScope*>(pIItem);
+	CSilencer* pSilencer = dynamic_cast<CSilencer*>(pIItem);
+	
+	if(pScope &&
+	   m_eScopeStatus == CSE_ALifeItemWeapon::eAddondAttachable &&
+	   (m_flagsAddOnState&CSE_ALifeItemWeapon::eWeaponAddonScope) == 0 &&
+	   !strcmp(*m_sScopeName, pIItem->cNameSect()))
+	{
+		m_flagsAddOnState |= CSE_ALifeItemWeapon::eWeaponAddonScope;
+		result = true;
+	}
+	else if(pSilencer &&
+	   m_eSilencerStatus == CSE_ALifeItemWeapon::eAddondAttachable &&
+	   (m_flagsAddOnState&CSE_ALifeItemWeapon::eWeaponAddonSilencer) == 0 &&
+	   !strcmp(*m_sSilencerName, pIItem->cNameSect()))
+	{
+		m_flagsAddOnState |= CSE_ALifeItemWeapon::eWeaponAddonSilencer;
+		result = true;
+	}
+
+	if(result)
+	{
+ 		//уничтожить подсоединенную вещь из инвентаря
+		pIItem->Drop();
+		NET_Packet P;
+		u_EventGen(P,GE_DESTROY,pIItem->ID());
+		P.w_u16(u16(pIItem->ID()));
+		u_EventSend(P);
+		return true;
+	}
+	else
+        return inherited::Attach(pIItem);
 }
-bool CWeaponMagazined::Detach(PIItem pIItem)
+
+
+bool CWeaponMagazined::Detach(const char* item_section_name)
 {
-	return inherited::Detach(pIItem);
+	if(m_eScopeStatus == CSE_ALifeItemWeapon::eAddondAttachable &&
+	   (m_flagsAddOnState&CSE_ALifeItemWeapon::eWeaponAddonScope) != 0)
+	{
+		m_flagsAddOnState &= ~CSE_ALifeItemWeapon::eWeaponAddonScope;
+		return CInventoryItem::Detach(item_section_name);
+	}
+	else if(m_eSilencerStatus == CSE_ALifeItemWeapon::eAddondAttachable &&
+	   (m_flagsAddOnState&CSE_ALifeItemWeapon::eWeaponAddonSilencer) != 0)
+	{
+		m_flagsAddOnState &= ~CSE_ALifeItemWeapon::eWeaponAddonSilencer;
+		return CInventoryItem::Detach(item_section_name);
+	}
+	else
+		return inherited::Detach(item_section_name);;
 }

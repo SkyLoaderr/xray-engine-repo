@@ -95,7 +95,9 @@ public:
 	virtual void	net_Destroy		();
 
 	virtual bool	Attach			(PIItem pIItem);
-	virtual bool	Detach			(PIItem pIItem);
+	virtual bool	Detach(const char* item_section_name);
+	virtual bool	CanAttach(PIItem pIItem);
+	virtual bool	CanDetach(const char* item_section_name);
 
 	virtual bool	Action			(s32 cmd, u32 flags);
 	bool			IsAmmoAvailable	();

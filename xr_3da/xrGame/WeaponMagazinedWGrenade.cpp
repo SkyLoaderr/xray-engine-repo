@@ -978,25 +978,61 @@ void CWeaponMagazinedWGrenade::OnH_B_Independent()
 	}
 }
 
+bool CWeaponMagazinedWGrenade::CanAttach(PIItem pIItem)
+{
+	CGrenadeLauncher* pGrenadeLauncher = dynamic_cast<CGrenadeLauncher*>(pIItem);
+	
+	if(pGrenadeLauncher &&
+	   m_eGrenadeLauncherStatus == CSE_ALifeItemWeapon::eAddondAttachable &&
+	   (m_flagsAddOnState&CSE_ALifeItemWeapon::eWeaponAddonGrenadeLauncher) == 0 &&
+	   !strcmp(*m_sGrenadeLauncherName, pIItem->cNameSect()))
+       return true;
+	else
+		return inherited::CanAttach(pIItem);
+}
+
+bool CWeaponMagazinedWGrenade::CanDetach(const char* item_section_name)
+{
+	if(m_eGrenadeLauncherStatus == CSE_ALifeItemWeapon::eAddondAttachable &&
+	   (m_flagsAddOnState&CSE_ALifeItemWeapon::eWeaponAddonGrenadeLauncher) != 0 &&
+	   !strcmp(*m_sGrenadeLauncherName, item_section_name))
+	   return true;
+	else
+	   return inherited::CanDetach(item_section_name);
+}
+
 bool CWeaponMagazinedWGrenade::Attach(PIItem pIItem)
 {
 	CGrenadeLauncher* pGrenadeLauncher = dynamic_cast<CGrenadeLauncher*>(pIItem);
 	
-	if(pGrenadeLauncher)
+	if(pGrenadeLauncher &&
+	   m_eGrenadeLauncherStatus == CSE_ALifeItemWeapon::eAddondAttachable &&
+	   (m_flagsAddOnState&CSE_ALifeItemWeapon::eWeaponAddonGrenadeLauncher) == 0 &&
+	   !strcmp(*m_sGrenadeLauncherName, pIItem->cNameSect()))
 	{
+		m_flagsAddOnState |= CSE_ALifeItemWeapon::eWeaponAddonGrenadeLauncher;
+
+ 		//уничтожить подствольник из инвентаря
+		pIItem->Drop();
+		NET_Packet P;
+		u_EventGen(P,GE_DESTROY,pIItem->ID());
+		P.w_u16(u16(pIItem->ID()));
+		u_EventSend(P);
+
 		return true;
 	}
 	else
         return inherited::Attach(pIItem);
 }
-bool CWeaponMagazinedWGrenade::Detach(PIItem pIItem)
+bool CWeaponMagazinedWGrenade::Detach(const char* item_section_name)
 {
-	CGrenadeLauncher* pGrenadeLauncher = dynamic_cast<CGrenadeLauncher*>(pIItem);
-
-	if(pGrenadeLauncher)
+	if( m_eGrenadeLauncherStatus == CSE_ALifeItemWeapon::eAddondAttachable &&
+	   (m_flagsAddOnState&CSE_ALifeItemWeapon::eWeaponAddonGrenadeLauncher) != 0)
 	{
-		return true;
+		m_flagsAddOnState &= ~CSE_ALifeItemWeapon::eWeaponAddonGrenadeLauncher;
+		return CInventoryItem::Detach(item_section_name);
 	}
 	else
-		return inherited::Detach(pIItem);
+		return inherited::Detach(item_section_name);;
 }
+

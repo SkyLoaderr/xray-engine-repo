@@ -419,6 +419,14 @@ void CWeapon::Load		(LPCSTR section)
 	m_eScopeStatus			 = (CSE_ALifeItemWeapon::EAddonStatus)pSettings->r_s32(section,"scope_status");
 	m_eSilencerStatus		 = (CSE_ALifeItemWeapon::EAddonStatus)pSettings->r_s32(section,"silencer_status");
 	m_eGrenadeLauncherStatus = (CSE_ALifeItemWeapon::EAddonStatus)pSettings->r_s32(section,"grenade_launcher_status");
+
+	
+	if(m_eScopeStatus == CSE_ALifeItemWeapon::eAddondAttachable)
+						m_sScopeName = pSettings->r_string(section,"scope_name");
+	if(m_eSilencerStatus == CSE_ALifeItemWeapon::eAddondAttachable)
+						m_sSilencerName = pSettings->r_string(section,"silencer_name");
+	if(m_eGrenadeLauncherStatus == CSE_ALifeItemWeapon::eAddondAttachable)
+						m_sGrenadeLauncherName = pSettings->r_string(section,"grenade_launcher_name");
 }
 
 BOOL CWeapon::net_Spawn		(LPVOID DC)
@@ -1015,20 +1023,6 @@ bool CWeapon::Action(s32 cmd, u32 flags)
 	return false;
 }
 
-bool CWeapon::Attach(PIItem pIItem) 
-{
-	return inherited::Attach(pIItem);
-}
-
-bool CWeapon::Detach(PIItem pIItem) 
-{
-	return inherited::Detach(pIItem);
-}
-bool CWeapon::Detach(const char* item_section_name)
-{
-	return inherited::Detach(item_section_name);
-}
-
 void CWeapon::SpawnAmmo(u32 boxCurr, LPCSTR ammoSect) 
 {
 	if(!m_ammoTypes.size()) return;
@@ -1160,4 +1154,30 @@ BOOL CWeapon::IsMisfire()
 }
 void CWeapon::Reload()
 {
+}
+
+bool CWeapon::Attach(PIItem pIItem) 
+{
+	return inherited::Attach(pIItem);
+}
+bool CWeapon::Detach(const char* item_section_name)
+{
+	return inherited::Detach(item_section_name);
+}
+
+bool CWeapon::IsGreandeLauncherAttached()
+{
+	return (m_eGrenadeLauncherStatus == CSE_ALifeItemWeapon::eAddondAttachable &&
+			(m_flagsAddOnState&CSE_ALifeItemWeapon::eWeaponAddonGrenadeLauncher) != 0);
+}
+bool CWeapon::IsScopeAttached()
+{
+	return (m_eScopeStatus == CSE_ALifeItemWeapon::eAddondAttachable &&
+			(m_flagsAddOnState&CSE_ALifeItemWeapon::eWeaponAddonScope) != 0);
+
+}
+bool CWeapon::IsSilencerAttached()
+{
+	return (m_eSilencerStatus == CSE_ALifeItemWeapon::eAddondAttachable &&
+			(m_flagsAddOnState&CSE_ALifeItemWeapon::eWeaponAddonSilencer) != 0);
 }
