@@ -306,7 +306,7 @@ void CBuild::MergeLM()
 				perturb.clear		();
 				best.clear			();
 				best_seq.clear		();
-				brect.iArea = INT_MAX;
+				brect.iArea			= INT_MAX;
 			}
 		} else {
 			deflNew.push_back(Deflector);
