@@ -439,12 +439,11 @@ ENGINE_API IDirect3DBaseTexture9*	TWLoader2D
 	// make file name
 	char fname[_MAX_PATH];
 	strcpy(fname,fRName); if (strext(fname)) *strext(fname)=0;
-#ifdef M_BORLAND
-	if (Engine.FS.Exist(fn,Engine.FS.m_GameTextures.m_Path,fname,	".dds"))	goto _DDS;
+	if (FS.exist(fn,"$game_textures$",fname,	".dds"))	goto _DDS;
+//T	if (FS.Exist(fn,Path.Current,fname,	".dds"))	goto _DDS;
+#ifdef _EDITOR
 	ELog.Msg(mtError,"Can't find texture '%s'",fname);
 #else
-	if (Engine.FS.Exist(fn,Path.Current,fname,	".dds"))	goto _DDS;
-	if (Engine.FS.Exist(fn,Path.Textures,fname,	".dds"))	goto _DDS;
 	Debug.fatal("Can't find texture '%s'",fname);
 #endif
 	return 0;
@@ -453,8 +452,8 @@ _DDS:
 	{
 		// Load and get header
 		D3DXIMAGE_INFO			IMG;
-		IReader* S				= Engine.FS.Open	(fn);
-		mem						= S->length			();
+		IReader* S				= FS.r_open	(fn);
+		mem						= S->length	();
 		R_ASSERT				(S);
 		R_CHK					(D3DXGetImageInfoFromFileInMemory	(S->pointer(),S->length(),&IMG));
 		if (IMG.ResourceType	== D3DRTYPE_CUBETEXTURE)			goto _DDS_CUBE;
@@ -474,7 +473,7 @@ _DDS_CUBE:
 				0,&IMG,0,
 				&pTextureCUBE
 				));
-			Engine.FS.Close			(S);
+			FS.r_close				(S);
 
 			// Log
 #ifdef DEBUG
@@ -509,7 +508,7 @@ _DDS_2D:
 				0,&IMG,0,
 				&T_sysmem
 				));
-			Engine.FS.Close			(S);
+			FS.r_close				(S);
 
 			// Calculate levels & dimensions
 			D3DSURFACE_DESC			T_sysmem_desc0;

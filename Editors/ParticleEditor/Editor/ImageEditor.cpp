@@ -17,9 +17,9 @@
 #pragma link "mxPlacemnt"
 #pragma resource "*.dfm"
 TfrmImageLib* TfrmImageLib::form = 0;
-FileMap TfrmImageLib::texture_map;
-FileMap TfrmImageLib::modif_map;
-FileMap TfrmImageLib::compl_map;
+FS_QueryMap	TfrmImageLib::texture_map;
+FS_QueryMap	TfrmImageLib::modif_map;
+FS_QueryMap	TfrmImageLib::compl_map;
 AnsiString TfrmImageLib::m_LastSelection="";
 bool TfrmImageLib::bFormLocked=false;
 //---------------------------------------------------------------------------
@@ -45,7 +45,7 @@ void __fastcall TfrmImageLib::EditImageLib(AnsiString& title, bool bImport){
         form->ebRemoveTexture->Enabled = !bImport;
         compl_map.clear		();
 
-        if (!form->bImportMode) ImageManager.GetTextures(texture_map);
+        if (!form->bImportMode)  ImageManager.GetTextures(texture_map);
 		form->modif_map.clear	();
         form->m_Thm 			= 0;
         form->m_SelectedName 	= "";
@@ -78,13 +78,15 @@ void __fastcall TfrmImageLib::UpdateImageLib()
         LockForm();
         ImageManager.SafeCopyLocalToServer(texture_map);
 		// rename with folder
-		FileMap files=texture_map;
+		FS_QueryMap	files=texture_map;
         texture_map.clear();
         string256 fn;
-        FilePairIt it=files.begin();
-        FilePairIt _E=files.end();
-        for (;it!=_E; it++)
-            texture_map[Engine.FS.UpdateTextureNameWithFolder(it->first.c_str(),fn)]=it->second;
+        FS_QueryPairIt it=files.begin();
+        FS_QueryPairIt _E=files.end();
+        for (;it!=_E; it++){
+        	EFS.UpdateTextureNameWithFolder(it->first.c_str(),fn);
+            texture_map.insert(make_pair(fn,FS_QueryItem(it->second.size,it->second.modif,it->second.flags.get())));
+        }
         // sync
 		ImageManager.SynchronizeTextures(true,true,true,&texture_map,&modif);
         UnlockForm();
@@ -139,15 +141,15 @@ void TfrmImageLib::InitItemsList(const char* nm)
     tvItems->Selected = 0;
     tvItems->Items->Clear();
     // fill
-	FilePairIt it = texture_map.begin();
-	FilePairIt _E = texture_map.end();
+	FS_QueryPairIt it = texture_map.begin();
+	FS_QueryPairIt _E = texture_map.end();
     if (compl_map.size()){
         for (; it!=_E; it++){
-            TElTreeItem* node = FHelper.AppendObject(tvItems,it->first.c_str());
-            FilePairIt c_it = compl_map.find(it->first);
+            TElTreeItem* node 	= FHelper.AppendObject(tvItems,it->first.c_str());
+            FS_QueryPairIt c_it	= compl_map.find(it->first);
             if (c_it!=compl_map.end()){
                 int A,M;
-                ExtractCompValue(c_it->second,A,M);
+                ExtractCompValue(c_it->second.modif,A,M);
                 if ((A<2)&&(M<50)){
                 	node->ImageIndex = 0;
                     if (node->Parent) node->Parent->Expand(false);
@@ -202,8 +204,8 @@ void __fastcall TfrmImageLib::ebCancelClick(TObject *Sender)
 
 void __fastcall TfrmImageLib::SaveTextureParams(){
 	if (m_Thm&&(ImageProps->IsModified()||bImportMode)){
-        m_Thm->Save(0,bImportMode?&Engine.FS.m_Import:0);
-	    FilePairIt it=texture_map.find(m_SelectedName); R_ASSERT(it!=texture_map.end());
+        m_Thm->Save(0,bImportMode?"$import$":0);
+	    FS_QueryPairIt it=texture_map.find(m_SelectedName); R_ASSERT(it!=texture_map.end());
         modif_map.insert(*it);
     }
 }
@@ -221,11 +223,11 @@ void __fastcall TfrmImageLib::tvItemsItemFocused(TObject *Sender)
         if (bImportMode){
         	m_Thm = xr_new<EImageThumbnail>(m_SelectedName.c_str(),EImageThumbnail::EITTexture,false);
             AnsiString fn = m_SelectedName;
-            Engine.FS.UpdateTextureNameWithFolder(fn);
-//            if (!(m_Thm->Load(m_SelectedName.c_str(),&Engine.FS.m_Import)||m_Thm->Load(fn.c_str(),&Engine.FS.m_Textures)))
-            if (!m_Thm->Load(m_SelectedName.c_str(),&Engine.FS.m_Import)){
-            	bool bLoad = m_Thm->Load(fn.c_str(),&Engine.FS.m_Textures);
-            	ImageManager.CreateTextureThumbnail(m_Thm,m_SelectedName.c_str(),&Engine.FS.m_Import,!bLoad);
+            EFS.UpdateTextureNameWithFolder(fn);
+//            if (!(m_Thm->Load(m_SelectedName.c_str(),&EFS.m_Import)||m_Thm->Load(fn.c_str(),&EFS.m_Textures)))
+            if (!m_Thm->Load(m_SelectedName.c_str(),"$import$")){
+            	bool bLoad = m_Thm->Load(fn.c_str(),"$textures$");
+            	ImageManager.CreateTextureThumbnail(m_Thm,m_SelectedName.c_str(),"$import$",!bLoad);
             }
         }else			 m_Thm = xr_new<EImageThumbnail>(m_SelectedName.c_str(),EImageThumbnail::EITTexture);
         if (!m_Thm->Valid()){
@@ -238,10 +240,10 @@ void __fastcall TfrmImageLib::tvItemsItemFocused(TObject *Sender)
             lbFileName->Caption 	= "\""+ChangeFileExt(m_SelectedName,"")+"\"";
             AnsiString temp; 		temp.sprintf("%d x %d x %s",m_Thm->_Width(),m_Thm->_Height(),m_Thm->_Format().HasAlpha()?"32b":"24b");
             if (!compl_map.empty()){
-				FilePairIt it = compl_map.find(m_SelectedName);
+				FS_QueryPairIt it 	= compl_map.find(m_SelectedName);
                 if (it!=compl_map.end()){
                 	int A,M;
-	                ExtractCompValue(it->second,A,M);
+	                ExtractCompValue(it->second.modif,A,M);
 	    	        AnsiString t2; 	t2.sprintf(" [A:%d%% M:%d%%]",A,M);
             		temp			+= t2;
                 }
@@ -321,10 +323,10 @@ void __fastcall TfrmImageLib::ebCheckSelComplianceClick(TObject *Sender)
 
 	if (tvItems->Selected){
     	int compl=0;
-        AnsiString 	fname=m_SelectedName;
-        Engine.FS.m_Textures.Update(fname);
+        AnsiString 	fname;
+        FS.update_path			(fname,"$textures$",m_SelectedName.c_str());
 	    if (ImageManager.CheckCompliance(fname.c_str(),compl)){
-	    	compl_map[m_SelectedName.c_str()] = compl;
+	    	compl_map.insert	(make_pair(m_SelectedName,FS_QueryItem(0,compl)));
             tvItemsItemFocused(Sender);
         }else{
 	    	ELog.DlgMsg(mtError,"Some error found in check.");
@@ -341,16 +343,16 @@ void __fastcall TfrmImageLib::ebExportAssociationClick(TObject *Sender)
     // save previous data
     SaveTextureParams();
 
-	AnsiString nm = "textures.ltx";
-    Engine.FS.m_GameTextures.Update(nm);
-	CInifile* ini = xr_new<CInifile>(nm.c_str(), FALSE, FALSE, TRUE);
+	AnsiString nm;
+    FS.update_path			(nm,"$game_textures$","textures.ltx");
+	CInifile* ini 			= xr_new<CInifile>(nm.c_str(), FALSE, FALSE, TRUE);
 
 	LockForm();
 
     string256 fn;
-    FilePairIt it=texture_map.begin();
-    FilePairIt _E=texture_map.end();
-    UI.ProgressStart(texture_map.size(),"Export association");
+    FS_QueryPairIt it		= texture_map.begin();
+    FS_QueryPairIt _E		= texture_map.end();
+    UI.ProgressStart		(texture_map.size(),"Export association");
     bool bRes=true;
     for (;it!=_E; it++){
         EImageThumbnail* m_Thm = xr_new<EImageThumbnail>(it->first.c_str(),EImageThumbnail::EITTexture);

@@ -77,11 +77,7 @@ BOOL	Surface_Detect(LPSTR F, LPSTR N)
 {
 	for (u32 i=0; i<formats.size(); i++)
 	{
-#ifdef _EDITOR
-		strconcat(F,Engine.FS.m_Textures.m_Path,N,".",formats[i]);
-#else
-		strconcat(F,"\\\\x-ray\\stalkerdata$\\textures\\",N,".",formats[i]);
-#endif
+		strconcat(F,"$textures$",N,".",formats[i]);
 		int h = _open(F,O_RDONLY|O_BINARY);
 		if (h>0)	{
 			_close(h);

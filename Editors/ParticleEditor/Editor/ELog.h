@@ -15,6 +15,8 @@ public:
 	int 		DlgMsg 	(TMsgDlgType mt, TMsgDlgButtons btn, LPCSTR _Format, ...);
 };
 
+void ELogCallback(LPCSTR string);
+
 extern CLog ELog;
 
 #endif /*_INCDEF_NETDEVICELOG_H_*/

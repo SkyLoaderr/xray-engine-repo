@@ -6,15 +6,7 @@
 
 #pragma once
 
-// disable warn W8059
 #pragma warn -pck
-//#define _USE_OLD_RW_STL
-
-// VCL headers
-#include <vcl.h>
-
-// Windows headers
-#include <mmsystem.h>
 
 #define sqrtf(a) sqrt(a)
 
@@ -65,7 +57,6 @@ __inline float expf	(float val)                           	{ return ::exp(val);}
 #define THROW			R_ASSERT2(0,"THROW");
 #define THROW2(a)		R_ASSERT2(0,a);
 
-
 // core
 #include <xrCore.h>
 
@@ -77,7 +68,6 @@ __inline float expf	(float val)                           	{ return ::exp(val);}
 
 // some user components
 #include "engine\_d3d_extensions.h"
-#include "engine\clsid.h"
 
 #include "D3DX_Wrapper.h"
 
@@ -183,7 +173,7 @@ struct st_Version{
     #endif
 #endif
 
-#define DEFINE_INI(fs) char buf[255];	strcpy(buf,_EDITOR_FILE_NAME_); strcat(buf,".ini"); Engine.FS.m_LocalRoot.Update(buf); fs->IniFileName = buf;
+#define DEFINE_INI(storage){string256 buf;	strconcat(buf,_EDITOR_FILE_NAME_,".ini"); FS.update_path("$local_root$",buf); storage->IniFileName=buf;}
 #define NONE_CAPTION "<none>"
 #define MULTIPLESEL_CAPTION "<multiple selection>"
 

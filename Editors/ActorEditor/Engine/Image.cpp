@@ -32,8 +32,9 @@ void CImage::SaveTGA(LPCSTR name, BOOL b24)
 	tga.width	= dwWidth;
 	tga.scanlenght=dwWidth*4;
 
-	CFileWriter	fs	(name);
-	tga.maketga	(fs);
+	IWriter* F	= FS.w_open(name);
+	tga.maketga	(*F);
+    FS.w_close	(F);
 }
 
 void CImage::Vflip()
@@ -179,7 +180,7 @@ struct TGAHeader
 
 bool CImage::LoadTGA(LPCSTR name)
 {
-	destructor<IReader>	TGA(Engine.FS.Open(name));
+	destructor<IReader>	TGA(FS.r_open(name));
 
 	TGAHeader	hdr;
 	BOOL		hflip, vflip;

@@ -16,7 +16,6 @@ CEngine	Engine;
 
 CEngine::CEngine()
 {
-	hPSGP = 0;
 }
 
 CEngine::~CEngine()
@@ -43,15 +42,12 @@ extern void __stdcall xrBoneLerp_x86(CKey* D, CKeyQ* K1, CKeyQ* K2, float delta)
 
 void CEngine::Initialize(void)
 {
-	strcpy					(Params,GetCommandLine());
-    strlwr					(Params);
-
 	// Other stuff
-	FS.OnCreate				();
+	EFS.OnCreate		   	();
 
 	string256               fn;
     strconcat               (fn,_EDITOR_FILE_NAME_,".log");
-    FS.m_LocalRoot.Update   (fn);
+    FS.update_path			("$local_root$",fn);
 
 #ifdef _EDITOR
 	// Bind PSGP
@@ -68,14 +64,13 @@ void CEngine::Initialize(void)
 
     // game configure
     string256 si_name		= "system.ltx";
-    FS.m_GameRoot.Update	(si_name);
+    FS.update_path			("$game_data$",si_name);
 	pSettings				= xr_new<CInifile>(si_name,TRUE);// FALSE,TRUE,TRUE);
-
 }
 
 void CEngine::Destroy()
 {
     xr_delete				(pSettings);
-	Engine.FS.OnDestroy		();
+	EFS.OnDestroy			();
 	if (hPSGP)	{ FreeLibrary(hPSGP); hPSGP=0; }
 }

@@ -7,53 +7,18 @@
 
 #include "cderr.h"
 
+EFS_Utils EFS;
 //----------------------------------------------------
-CFileSystem::CFileSystem( )
-{
-//	m_Local[0] = 0;
-//	m_Server[0] = 0;
-    m_FindItems = 0;
-}
-
-CFileSystem::~CFileSystem()
+EFS_Utils::EFS_Utils( )
 {
 }
 
-void CFileSystem::OnCreate()
+EFS_Utils::~EFS_Utils()
 {
-/*	strcpy(m_Local,			"x:\\");
-    strcpy(m_Server,		"\\\\X-Ray\\stalker$\\");
-    strcpy(m_ServerData,	"\\\\X-Ray\\stalkerdata$\\");
-    strcpy(m_ServerBackup,	"\\\\X-Ray\\stalkerdata$\\Backup\\");
+}
 
-	m_LocalRoot.Init  		(m_Local, 		"",               		"",     			"" );
-	m_ServerRoot.Init  		(m_Server, 		"",               		"*.err",			"Files" );
-    m_ServerDataRoot.Init	(m_ServerData, 	"",               		"",     			"" );
-    m_ServerBackupRoot.Init	(m_ServerBackup,"",               		"",     			"" );
-    m_GameLevels.Init		(m_Server, 		"gamedata\\levels\\",	"",     			"" );
-    m_GameSounds.Init		(m_Server, 		"gamedata\\sounds\\",	"*.wav",			"Wave files" );
-	m_GameRoot.Init 		(m_Server, 		"gamedata\\",      		"",     			"" );
-	m_GameCForms.Init		(m_Server, 		"gamedata\\cforms\\",	"*.vcf",			"Collision form files" );
-	m_GameMeshes.Init		(m_Server, 		"gamedata\\meshes\\",	"*.ogf",			"Render model files" );
-    m_GameDO.Init			(m_Server,  	"gamedata\\meshes\\",	"*.do",				"Detail object files" );
-    m_GameTextures.Init		(m_Server,		"gamedata\\textures\\",	"*.dds",			"Texture files" );
-	m_GameShaders.Init		(m_Server,		"gamedata\\shaders\\",	"",					"Shader files" );
-	m_GameKeys.Init			(m_Server,  	"gamedata\\meshes\\",	"*.key",			"XRay model key" );
-
-	m_Groups.Init   		(m_Server, 		"objects\\",       		"*.group", 			"Groups" );
-    m_Objects.Init  		(m_Server, 		"objects\\",       		"*.object;*.lwo",	"Editor objects" );
-	m_Import.Init  			(m_Local, 		"import\\",       		"*.object;*.lwo;*.txt","Import files" );
-    m_DetailObjects.Init	(m_Local, 		"import\\",       		"*.dti",		 	"Detail indices" );
-	m_Envelope.Init  		(m_Local, 		"import\\",       		"*.env", 			"Envelope files" );
-	m_OMotion.Init			(m_Local, 		"import\\", 		   	"*.anm",			"Object animation files" );
-	m_OMotions.Init			(m_Local, 		"import\\", 		    "*.anms",	    	"Object animation list files" );
-	m_SMotion.Init			(m_Local, 		"import\\", 		    "*.skl",			"Skeleton motion files" );
-	m_SMotions.Init			(m_Local, 		"import\\", 		    "*.skls",			"Skeleton motions files" );
-	m_Maps.Init     		(m_Server, 		"maps\\",         		"*.level",  		"Level files" );
-	m_Textures.Init 		(m_ServerData, 	"textures\\",     		"*.bmp;*.tga",		"Texture files" );
-	m_Temp.Init     		(m_Local, 		"temp\\",         		"",     			"" );
-
-*/
+void EFS_Utils::OnCreate()
+{
     FS.update_path			(m_LastAccessFN,"$server_data_root$","access.ini");
     FS.update_path			(m_AccessLog,	"$server_data_root$","access.log");
 }                                               
@@ -91,9 +56,9 @@ LPCSTR MakeFilter(string1024& dest, LPCSTR info, LPCSTR ext){
 }
 
 //------------------------------------------------------------------------------
-// start_flt_ext = 1-all 2..n-indices
+// start_flt_ext = -1-all 0..n-indices
 //------------------------------------------------------------------------------
-bool CFileSystem::GetOpenName( LPCSTR initial, char *buffer, int sz_buf, bool bMulti, LPCSTR offset, int start_flt_ext )
+bool EFS_Utils::GetOpenName( LPCSTR initial, char *buffer, int sz_buf, bool bMulti, LPCSTR offset, int start_flt_ext )
 {
 	VERIFY(buffer&&(sz_buf>0));
 	FS_Path& P			= *FS.get_path(initial);
@@ -149,7 +114,7 @@ bool CFileSystem::GetOpenName( LPCSTR initial, char *buffer, int sz_buf, bool bM
     return bRes;
 }
 
-bool CFileSystem::GetSaveName( LPCSTR initial, char *buffer, int sz_buf, LPCSTR offset, int start_flt_ext )
+bool EFS_Utils::GetSaveName( LPCSTR initial, char *buffer, int sz_buf, LPCSTR offset, int start_flt_ext )
 {
 	VERIFY(buffer&&(sz_buf>0));
 	FS_Path& P			= *FS.get_path(initial);
@@ -163,7 +128,7 @@ bool CFileSystem::GetSaveName( LPCSTR initial, char *buffer, int sz_buf, LPCSTR 
 	ofn.lpstrFilter 	= flt;
 	ofn.lStructSize 	= sizeof(ofn);
 	ofn.nMaxFile 		= sz_buf;
-	ofn.nFilterIndex 	= start_flt_ext;
+	ofn.nFilterIndex 	= start_flt_ext+2;
     ofn.lpstrTitle      = "Save a File";
     string512 path; strcpy(path,(offset&&offset[0])?offset:P.m_Path);
 	ofn.lpstrInitialDir = path;
@@ -180,7 +145,7 @@ bool CFileSystem::GetSaveName( LPCSTR initial, char *buffer, int sz_buf, LPCSTR 
 }
 //----------------------------------------------------
 #ifdef M_BORLAND
-bool CFileSystem::GetOpenName(LPCSTR initial, AnsiString& buffer, bool bMulti, LPCSTR offset, int start_flt_ext ){
+bool EFS_Utils::GetOpenName(LPCSTR initial, AnsiString& buffer, bool bMulti, LPCSTR offset, int start_flt_ext ){
 	string4096 buf;
     strcpy(buf,buffer.c_str());
 	bool bRes = GetOpenName(initial,buf,sizeof(buf),bMulti,offset,start_flt_ext);
@@ -188,7 +153,7 @@ bool CFileSystem::GetOpenName(LPCSTR initial, AnsiString& buffer, bool bMulti, L
 	return bRes;
 }
 
-bool CFileSystem::GetSaveName( LPCSTR initial, AnsiString& buffer, LPCSTR offset, int start_flt_ext ){
+bool EFS_Utils::GetSaveName( LPCSTR initial, AnsiString& buffer, LPCSTR offset, int start_flt_ext ){
 	string4096 buf;
     strcpy(buf,buffer.c_str());
 	bool bRes = GetSaveName(initial,buf,sizeof(buf),offset,start_flt_ext);
@@ -198,217 +163,38 @@ bool CFileSystem::GetSaveName( LPCSTR initial, AnsiString& buffer, LPCSTR offset
 #endif
 //----------------------------------------------------
 
-bool CFileSystem::Exist(LPCSTR _FileName, bool bMessage)
-{
-    bool bRes = FileExists(_FileName);
-    if (bMessage&&!bRes){
-        ELog.Msg(mtError,"Can't find required file: '%s'",_FileName);
-        return false;
-    };
-    return bRes;
-}
-//----------------------------------------------------
-
-bool CFileSystem::Exist(char* fn, LPCSTR initial, const char* name, bool bMessage)
-{
-	FS.update_path(fn,initial,name);
-	return Exist(fn,bMessage);
-}
-//----------------------------------------------------
-
-bool CFileSystem::Exist(char* fn, LPCSTR initial, const char* name, const char* ext, bool bMessage)
-{
-	FS.update_path(fn,initial,name);
-    strcat(fn,ext);
-	return Exist(fn,bMessage);
-}
-//----------------------------------------------------
-
-
-bool CFileSystem::Exist(LPCSTR initial, const char *_FileName, bool bMessage)
-{
-	string256 fn;
-	FS.update_path(fn,initial,_FileName);
-	return Exist(fn,bMessage);
-}
-//----------------------------------------------------
-
-void CFileSystem::DeleteFileByName(const char* nm){
-	DeleteFile(nm);
-}
-//----------------------------------------------------
-
-void CFileSystem::DeleteFileByName(LPCSTR initial, const char* nm)
-{
-	string256 fn;
-    FS.update_path(fn,initial,nm);
-    DeleteFileByName(fn);
-}
-//----------------------------------------------------
-
-void CFileSystem::CopyFileTo(LPCSTR src, LPCSTR dest, bool bOverwrite){
-	VerifyPath(dest);
-	CopyFile(src,dest,!bOverwrite);
-}
-//----------------------------------------------------
-
-void CFileSystem::MoveFileTo(LPCSTR src, LPCSTR dest, bool bOverwrite){
-	VerifyPath(dest);
-	MoveFileEx(src,dest,bOverwrite?MOVEFILE_REPLACE_EXISTING|MOVEFILE_COPY_ALLOWED:0);
-}
-//----------------------------------------------------
-
-//----------------------------------------------------
-// Age routines
-//----------------------------------------------------
-/*
-int CFileSystem::GetFileAge( const AnsiString& name ){
-    _finddata_t		sFile;
-    int	hFile		= _findfirst(name.c_str(), &sFile);
-	if (hFile<=0) 	return -1;
-    return			sFile.time_write;
-}
-//----------------------------------------------------
-void CFileSystem::SetFileAge( const AnsiString& name, int age ){
-    utimbuf 	tm;
-    tm.actime	= age;
-    tm.modtime	= age;
-    _utime(name.c_str(),&tm);
-}
-//----------------------------------------------------
-//
-//----------------------------------------------------
-int	CFileSystem::FileLength(LPCSTR fn){
-	if (Exist(fn)){
-        int fh = open(fn, _O_RDWR);
-        int sz = filelength(fh);
-		close(fh);
-        return sz;
-    }
-    return 0;
-}
-*/
 //----------------------------------------------------
 #ifdef M_BORLAND
-void CFileSystem::MarkFile(const AnsiString& fn, bool bDeleteSource)
+void EFS_Utils::MarkFile(const AnsiString& fn, bool bDeleteSource)
 {
 	AnsiString ext = ExtractFileExt(fn);
     ext.Insert("~",2);
 	AnsiString backup_fn = ChangeFileExt(fn,ext);
 	if (bDeleteSource){
-    	DeleteFile(backup_fn);
-		RenameFile(fn,backup_fn);
+    	FS.file_delete(backup_fn.c_str());
+		FS.file_rename(fn.c_str(),backup_fn.c_str());
     }else{
-		CopyFileTo(fn.c_str(),backup_fn.c_str(),true);
-    }
-}
-void CFileSystem::MarkFiles(LPCSTR initial, FileMap& files, bool bDeleteSource)
-{
-    AnsiString fname, init_name;
-	FS.update_path(init_name,initial,"");
-
-    FilePairIt it	= files.begin();
-	FilePairIt _E 	= files.end();
-	for (; it!=_E; it++){
-		fname 		= init_name	+ it->first;
-    	MarkFile	(fname.c_str(),bDeleteSource);
-    }
-}
-void CFileSystem::MarkFiles(LPCSTR initial, LPSTRVec& files, bool bDeleteSource)
-{
-    AnsiString fname, init_name;
-    FS.update_path(init_name,initial,"");
-
-    LPSTRIt it	= files.begin();
-	LPSTRIt _E 	= files.end();
-	for (; it!=_E; it++){
-		fname 		= init_name	+ AnsiString(*it);
-    	MarkFile	(fname.c_str(),bDeleteSource);
+		FS.file_rename(fn.c_str(),backup_fn.c_str());
     }
 }
 
-#ifdef _EDITOR
-void CFileSystem::BackupFile(LPCSTR initial, const AnsiString& fname)
+void EFS_Utils::BackupFile(LPCSTR initial, const AnsiString& fname)
 {
-    long tm; time(&tm);
 	AnsiString src_name; 
     FS.update_path(src_name,initial,fname.c_str());
-    if (Exist(src_name.c_str())){
+    if (FS.exist(src_name.c_str())){
         AnsiString 			dst_name;
         FS_Path* P 			= FS.get_path(initial);
-        dst_name.sprintf	("%s%s.%x",P->m_Add,fname.c_str(),tm);
+        string64			t_stemp;
+        dst_name.sprintf	("%s%s.%s_%s",P->m_Add,fname.c_str(),Core.UserName,timestamp(t_stemp));
         FS.update_path		("$server_backup$",dst_name);
-        VerifyPath			(dst_name.c_str());
-        CopyFileTo			(src_name.c_str(),dst_name.c_str(),true);
+        FS.file_copy		(src_name.c_str(),dst_name.c_str());
         WriteAccessLog		(dst_name.c_str(),"Backup");
     }
 }
 #endif
-#endif
 
-void CFileSystem::ProcessOne(_finddata_t& F, const char* path, bool bOnlyDir, bool bRootOnly)
-{
-	string256	N;
-	strcpy		(N,path);
-	strcat		(N,F.name);
-
-	if (F.attrib&_A_SUBDIR) {
-    	if (bRootOnly) return;
-		if (0==strcmp(F.name,"."))	return;
-		if (0==strcmp(F.name,"..")) return;
-		strcat(N,"\\");
-		Recurse(N,bRootOnly);
-	} else {
-    	if (bOnlyDir) return;
-    	if (bClampExt) if (strext(N)) *strext(N)=0;
-		m_FindItems->insert(std::make_pair(strlwr(N+path_size),F.time_write));
-	}
-}
-
-void CFileSystem::Recurse(const char* path, bool bRootOnly)
-{
-    _finddata_t		sFile;
-    int				hFile;
-
-	string256		N;
-	string256		dst;
-
-    strcpy			(N,path);
-    strcat			(N,"*.*");
-    R_ASSERT		((hFile=_findfirst(N, &sFile)) != -1);
-    ProcessOne		(sFile,path,true,bRootOnly);
-    while			( _findnext( hFile, &sFile ) == 0 )
-        ProcessOne(sFile,path,true,bRootOnly);
-    _findclose		( hFile );
-
-    int cnt			= _GetItemCount(ext_mask,',');
-    for (int i=0; i<cnt; i++){
-	    strcpy		(N,path);
-    	strcat		(N,_GetItem(ext_mask,i,dst,','));
-    	if ((hFile=_findfirst(N, &sFile))==-1) continue;
-        ProcessOne(sFile,path,false,bRootOnly);
-	    while		( _findnext( hFile, &sFile ) == 0 )
-	        ProcessOne(sFile,path,false,bRootOnly);
-	    _findclose	( hFile );
-	}
-}
-
-int CFileSystem::GetFileList(LPCSTR initial, FileMap& items, bool clamp_path, bool clamp_ext, bool bRootOnly, LPCSTR ext_m)
-{
-/*
-	string256 		path;
-    FS.update_path	(path,initial,"");
-    ext_mask		= xr_strdup(ext_m);
-	m_FindItems		= &items;
-    bClampExt		= clamp_ext;
-    path_size		= clamp_path?strlen(path):0;
-	Recurse			(path,bRootOnly);
-    xr_free			(ext_mask);
-    return m_FindItems->size();
-*/
-}
-
-AnsiString&	CFileSystem::UpdateTextureNameWithFolder(AnsiString& tex_name)
+AnsiString&	EFS_Utils::UpdateTextureNameWithFolder(AnsiString& tex_name)
 {
 	string1024 nm;
     strcpy(nm,tex_name.c_str());
@@ -416,14 +202,14 @@ AnsiString&	CFileSystem::UpdateTextureNameWithFolder(AnsiString& tex_name)
     return tex_name;
 }
 
-LPSTR CFileSystem::UpdateTextureNameWithFolder(LPSTR tex_name)
+LPSTR EFS_Utils::UpdateTextureNameWithFolder(LPSTR tex_name)
 {
 	string256 _fn;
 	strcpy(tex_name,UpdateTextureNameWithFolder(tex_name, _fn));
 	return tex_name;
 }
 
-LPSTR CFileSystem::UpdateTextureNameWithFolder(LPCSTR src_name, LPSTR dest_name)
+LPSTR EFS_Utils::UpdateTextureNameWithFolder(LPCSTR src_name, LPSTR dest_name)
 {
     if (_GetItemCount(src_name,'_')>1){
         string256 fld;
@@ -435,7 +221,7 @@ LPSTR CFileSystem::UpdateTextureNameWithFolder(LPCSTR src_name, LPSTR dest_name)
 	return dest_name;
 }
 
-void CFileSystem::WriteAccessLog(LPSTR fn, LPSTR start_msg)
+void EFS_Utils::WriteAccessLog(LPSTR fn, LPSTR start_msg)
 {
 	string1024 buf;
 	string128 dt_buf, tm_buf;
@@ -450,7 +236,7 @@ void CFileSystem::WriteAccessLog(LPSTR fn, LPSTR start_msg)
 	_close( hf );
 }
 
-void CFileSystem::RegisterAccess(LPSTR fn, LPSTR start_msg, bool bLog)
+void EFS_Utils::RegisterAccess(LPSTR fn, LPSTR start_msg, bool bLog)
 {
     CInifile*	ini = CInifile::Create(m_LastAccessFN,false);
 	ini->w_string("last_access",fn,Core.CompName);
@@ -458,13 +244,13 @@ void CFileSystem::RegisterAccess(LPSTR fn, LPSTR start_msg, bool bLog)
     if (bLog) 	WriteAccessLog(fn,start_msg);
 }
 
-BOOL CFileSystem::CheckLocking(LPCSTR initial, LPSTR fname, bool bOnlySelf, bool bMsg)
+BOOL EFS_Utils::CheckLocking(LPCSTR initial, LPSTR fname, bool bOnlySelf, bool bMsg)
 {
 	string256 fn; strcpy(fn,fname);
 	if (initial) FS.update_path(initial,fn);
 
 	if (bOnlySelf) return (m_LockFiles.find(fn)!=m_LockFiles.end());
-    if (Exist(fn)){
+    if (FS.exist(fn)){
         HANDLE handle=CreateFile(fn,GENERIC_READ|GENERIC_WRITE,FILE_SHARE_READ,0,OPEN_EXISTING,FILE_ATTRIBUTE_NORMAL,0);
         CloseHandle(handle);
         if (bMsg&&(INVALID_HANDLE_VALUE==handle))
@@ -473,7 +259,7 @@ BOOL CFileSystem::CheckLocking(LPCSTR initial, LPSTR fname, bool bOnlySelf, bool
     }else return FALSE;
 }
 
-BOOL CFileSystem::LockFile(LPCSTR initial, LPSTR fname, bool bLog)
+BOOL EFS_Utils::LockFile(LPCSTR initial, LPSTR fname, bool bLog)
 {
 	string256 fn; strcpy(fn,fname);
 	if (initial) FS.update_path(initial,fn);
@@ -492,7 +278,7 @@ BOOL CFileSystem::LockFile(LPCSTR initial, LPSTR fname, bool bLog)
     return bRes;
 }
 
-BOOL CFileSystem::UnlockFile(LPCSTR initial, LPSTR fname, bool bLog)
+BOOL EFS_Utils::UnlockFile(LPCSTR initial, LPSTR fname, bool bLog)
 {
 	string256 fn; strcpy(fn,fname);
 	if (initial) FS.update_path(initial,fn);
@@ -508,7 +294,7 @@ BOOL CFileSystem::UnlockFile(LPCSTR initial, LPSTR fname, bool bLog)
     return false;
 }
 
-LPCSTR CFileSystem::GetLockOwner(LPCSTR initial, LPSTR fname)
+LPCSTR EFS_Utils::GetLockOwner(LPCSTR initial, LPSTR fname)
 {
 	string256 fn; strcpy(fn,fname);
 	if (initial) FS.update_path(initial,fn);
@@ -521,13 +307,13 @@ LPCSTR CFileSystem::GetLockOwner(LPCSTR initial, LPSTR fname)
 	return comp;
 }
 
-LPCSTR CFileSystem::GenerateName(LPCSTR base_path, LPCSTR base_name, LPCSTR def_ext, LPSTR out_name)
+LPCSTR EFS_Utils::GenerateName(LPCSTR base_path, LPCSTR base_name, LPCSTR def_ext, LPSTR out_name)
 {
     int cnt = 0;
 	string256 fn;
     if (base_name)	strconcat	(fn,base_path,base_name,def_ext);
 	else 			sprintf		(fn,"%s%02d%s",base_path,cnt++,def_ext);
-	while (Exist(fn))
+	while (FS.exist(fn))
 	    if (base_name)	sprintf(fn,"%s%s%02d%s",base_path,base_name,cnt++,def_ext);
         else 			sprintf(fn,"%s%02d%s",base_path,cnt++,def_ext);
     strcpy(out_name,fn);

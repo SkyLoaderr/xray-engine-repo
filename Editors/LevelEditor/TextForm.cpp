@@ -126,12 +126,12 @@ void __fastcall TfrmText::FormClose(TObject *Sender, TCloseAction &Action)
 void __fastcall TfrmText::ebLoadClick(TObject *Sender)
 {
 	AnsiString fn;
-	if (Engine.FS.GetOpenName(Engine.FS.m_Import,fn,false,NULL,4)){
+	if (EFS.GetOpenName("$import$",fn,false,NULL,4)){
     	string4096 buf;
-    	IReader* F = Engine.FS.Open(fn.c_str());
+    	IReader* F 		= FS.r_open(fn.c_str());
         F->r_stringZ	(buf);
-        mmText->Text= buf;
-        Engine.FS.Close(F);
+        mmText->Text	= buf;
+        FS.r_close		(F);
     }
 }
 //---------------------------------------------------------------------------
@@ -139,10 +139,10 @@ void __fastcall TfrmText::ebLoadClick(TObject *Sender)
 void __fastcall TfrmText::ebSaveClick(TObject *Sender)
 {
 	AnsiString fn;
-	if (Engine.FS.GetSaveName(Engine.FS.m_Import,fn,NULL,4)){
+	if (EFS.GetSaveName("$import$",fn,NULL,2)){
     	CMemoryWriter F;
         F.w_stringZ	(mmText->Text.c_str());
-        F.save_to	(fn.c_str(),0);
+        F.save_to	(fn.c_str());
     }
 }
 //---------------------------------------------------------------------------

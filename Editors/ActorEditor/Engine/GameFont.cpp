@@ -33,11 +33,7 @@ void CGameFont::Initialize		(LPCSTR cShader, LPCSTR cTexture, u32 flags)
 	// check ini exist
 	string256 fn,buf;
 	strcpy		(buf,cTexture); if (strext(buf)) *strext(buf)=0;
-#ifdef M_BORLAND
-	R_ASSERT2(Engine.FS.Exist(fn,Engine.FS.m_GameTextures.m_Path,buf,".ini"),fn);
-#else
-	R_ASSERT2(Engine.FS.Exist(fn,Path.Textures,buf,".ini"),fn);
-#endif
+	R_ASSERT2	(FS.exist(fn,"$game_textures$",buf,".ini"),fn);
 	CInifile* ini				= CInifile::Create(fn);
 	if (ini->section_exist("symbol_coords")){
 		for (int i=0; i<256; i++){

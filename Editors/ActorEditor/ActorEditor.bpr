@@ -12,14 +12,13 @@
       Intermediate\BottomBar.obj Intermediate\EditorPref.obj 
       Intermediate\Splash.obj Intermediate\main.obj 
       Intermediate\EditObjectIO.obj Intermediate\EditObjectMotions.obj 
-      Intermediate\xr_trims.obj Intermediate\interp.obj 
-      Intermediate\Envelope.obj Intermediate\motion.obj Intermediate\bone.obj 
-      Intermediate\clsid.obj Intermediate\xr_ini.obj 
-      Intermediate\ColorPicker.obj Intermediate\UI_Camera.obj 
-      Intermediate\HWCaps.obj Intermediate\EditObject.obj 
-      Intermediate\Xr_input.obj Intermediate\fcontroller.obj 
-      Intermediate\pure.obj Intermediate\xrImage_Resampler.obj 
-      Intermediate\LeftBar.obj Intermediate\LogForm.obj Intermediate\Library.obj 
+      Intermediate\interp.obj Intermediate\Envelope.obj Intermediate\motion.obj 
+      Intermediate\bone.obj Intermediate\ColorPicker.obj 
+      Intermediate\UI_Camera.obj Intermediate\HWCaps.obj 
+      Intermediate\EditObject.obj Intermediate\Xr_input.obj 
+      Intermediate\fcontroller.obj Intermediate\pure.obj 
+      Intermediate\xrImage_Resampler.obj Intermediate\LeftBar.obj 
+      Intermediate\LogForm.obj Intermediate\Library.obj 
       Intermediate\ChoseForm.obj Intermediate\xr_avi.obj 
       Intermediate\SH_Constant.obj Intermediate\SH_Matrix.obj 
       Intermediate\SH_Texture.obj Intermediate\Shader.obj 
@@ -88,7 +87,7 @@
     <DEBUGLIBPATH value="$(BCB)\lib\debug"/>
     <RELEASELIBPATH value="$(BCB)\lib\release"/>
     <LINKER value="ilink32"/>
-    <USERDEFINES value="_EDITOR;_ACTOR_EDITOR"/>
+    <USERDEFINES value="_EDITOR;_ACTOR_EDITOR;_DEBUG"/>
     <SYSDEFINES value="NO_STRICT;_RTLDLL;USEPACKAGES"/>
     <MAINSOURCE value="ActorEditor.cpp"/>
     <INCLUDEPATH value="Engine\Animations;Engine\BLENDERS;r:\borland\components6\alexmx;editor;R:\SDK\DirectX9.0\include;$(BCB)\include;$(BCB)\include\vcl;engine;P:\MagicFM_Borland\Sdk\Include;R:\Borland\Components6\ElPack\Code;R:\Borland\Components6\ElPack\Code\Source;P:\xrCore"/>
@@ -102,13 +101,13 @@
       -Iengine -IP:\MagicFM_Borland\Sdk\Include 
       -IR:\Borland\Components6\ElPack\Code 
       -IR:\Borland\Components6\ElPack\Code\Source -IP:\xrCore -src_suffix cpp 
-      -D_EDITOR -D_ACTOR_EDITOR -boa"/>
-    <CFLAG1 value="-O2 -H=$(BCB)\lib\vcl60.csm -Hc -Q -Vx -Ve -xf -xp -VF -ff -X- -ps -a4 -6 
-      -b- -k -vi -He -c -tW -tWM"/>
-    <PFLAGS value="-N2Intermediate -N0Intermediate -$Y- -$L- -$D- -$A8 -v -JPHNE -M"/>
+      -D_EDITOR -D_ACTOR_EDITOR -D_DEBUG -boa"/>
+    <CFLAG1 value="-Od -H=$(BCB)\lib\vcl60.csm -Hc -Q -Vx -Ve -xf -xp -VF -ff -X- -r- -ps -a4 
+      -6 -b- -k -y -v -vi- -He -c -tW -tWM"/>
+    <PFLAGS value="-N2Intermediate -N0Intermediate -$Y+ -$W -$O- -$A8 -v -JPHNE -M"/>
     <RFLAGS value=""/>
-    <AFLAGS value="/mx /w2 /zn"/>
-    <LFLAGS value="-IIntermediate -D&quot;&quot; -aa -Tpe -GD -x"/>
+    <AFLAGS value="/mx /w2 /zi"/>
+    <LFLAGS value="-IIntermediate -D&quot;&quot; -aa -Tpe -GD -x -v"/>
     <OTHERFILES value=""/>
   </OPTIONS>
   <LINKER>
@@ -139,13 +138,10 @@
       <FILE FILENAME="editor\EditObjectIO.cpp" FORMNAME="" UNITNAME="EditObjectIO" CONTAINERID="CCompiler" DESIGNCLASS="" LOCALCOMMAND=""/>
       <FILE FILENAME="editor\EditObjectMotions.cpp" FORMNAME="" UNITNAME="EditObjectMotions" CONTAINERID="CCompiler" DESIGNCLASS="" LOCALCOMMAND=""/>
       <FILE FILENAME="engine\nvdxt_options.h" FORMNAME="" UNITNAME="nvdxt_options" CONTAINERID="" DESIGNCLASS="" LOCALCOMMAND=""/>
-      <FILE FILENAME="editor\xr_trims.cpp" FORMNAME="" UNITNAME="xr_trims" CONTAINERID="CCompiler" DESIGNCLASS="" LOCALCOMMAND=""/>
       <FILE FILENAME="engine\interp.cpp" FORMNAME="" UNITNAME="interp" CONTAINERID="CCompiler" DESIGNCLASS="" LOCALCOMMAND=""/>
       <FILE FILENAME="engine\Envelope.cpp" FORMNAME="" UNITNAME="Envelope" CONTAINERID="CCompiler" DESIGNCLASS="" LOCALCOMMAND=""/>
       <FILE FILENAME="engine\motion.cpp" FORMNAME="" UNITNAME="motion" CONTAINERID="CCompiler" DESIGNCLASS="" LOCALCOMMAND=""/>
       <FILE FILENAME="engine\bone.cpp" FORMNAME="" UNITNAME="bone" CONTAINERID="CCompiler" DESIGNCLASS="" LOCALCOMMAND=""/>
-      <FILE FILENAME="engine\clsid.cpp" FORMNAME="" UNITNAME="clsid" CONTAINERID="CCompiler" DESIGNCLASS="" LOCALCOMMAND=""/>
-      <FILE FILENAME="engine\xr_ini.cpp" FORMNAME="" UNITNAME="xr_ini" CONTAINERID="CCompiler" DESIGNCLASS="" LOCALCOMMAND=""/>
       <FILE FILENAME="editor\ColorPicker.cpp" FORMNAME="" UNITNAME="ColorPicker" CONTAINERID="CCompiler" DESIGNCLASS="" LOCALCOMMAND=""/>
       <FILE FILENAME="editor\UI_Camera.cpp" FORMNAME="" UNITNAME="UI_Camera" CONTAINERID="CCompiler" DESIGNCLASS="" LOCALCOMMAND=""/>
       <FILE FILENAME="engine\HWCaps.cpp" FORMNAME="" UNITNAME="HWCaps" CONTAINERID="CCompiler" DESIGNCLASS="" LOCALCOMMAND=""/>
@@ -265,7 +261,7 @@ AutoIncBuild=1
 MajorVer=1
 MinorVer=0
 Release=2
-Build=60
+Build=61
 Debug=1
 PreRelease=0
 Special=0
@@ -277,7 +273,7 @@ CodePage=1252
 [Version Info Keys]
 CompanyName=
 FileDescription=
-FileVersion=1.0.2.60
+FileVersion=1.0.2.61
 InternalName=
 LegalCopyright=
 LegalTrademarks=
@@ -360,8 +356,8 @@ Item2=$(BCB)\source\vcl
 
 [HistoryLists\hlConditionals]
 Count=12
-Item0=_EDITOR;_ACTOR_EDITOR
-Item1=_EDITOR;_ACTOR_EDITOR;_DEBUG
+Item0=_EDITOR;_ACTOR_EDITOR;_DEBUG
+Item1=_EDITOR;_ACTOR_EDITOR
 Item2=_EDITORS;_ACTOR_EDITOR;_DEBUG
 Item3=_EDITOR_FAMILY;_ACTOR_EDITOR;_DEBUG
 Item4=_ACTOR_EDITOR;_DEBUG

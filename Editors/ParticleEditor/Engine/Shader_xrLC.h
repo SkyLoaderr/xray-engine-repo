@@ -64,9 +64,9 @@ public:
 	}
 	void					Save	(LPCSTR name)
 	{
-		CMemoryWriter		fs;
-		fs.w				(library.begin(),library.size()*sizeof(Shader_xrLC));
-		fs.save_to			(name,0);
+		IWriter* F			= FS.w_open(name);
+		F->w				(library.begin(),library.size()*sizeof(Shader_xrLC));
+        FS.w_close			(F);
 	}
 	void					Unload	()
 	{

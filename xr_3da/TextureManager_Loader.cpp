@@ -166,7 +166,7 @@ void	CShaderManager::OnDeviceDestroy(BOOL bKeepTextures)
     v_geoms.clear();
 }
 
-void	CShaderManager::OnDeviceCreate	(IReader* FS)
+void	CShaderManager::OnDeviceCreate	(IReader* F)
 {
 	if (!Device.bReady) return;
 
@@ -174,7 +174,7 @@ void	CShaderManager::OnDeviceCreate	(IReader* FS)
 
 	// Load constants
 	{
-		IReader*	fs		= FS->open_chunk	(0);
+		IReader*	fs		= F->open_chunk	(0);
 		while (fs && !fs->eof())	{
 			fs->r_stringZ	(name);
 			CConstant*		C = xr_new<CConstant>();
@@ -186,7 +186,7 @@ void	CShaderManager::OnDeviceCreate	(IReader* FS)
 
 	// Load matrices
 	{
-		IReader*	fs		= FS->open_chunk(1);
+		IReader*	fs		= F->open_chunk(1);
 		while (fs&&!fs->eof())	{
 			fs->r_stringZ	(name);
 			CMatrix*		M	= xr_new<CMatrix>();
@@ -198,7 +198,7 @@ void	CShaderManager::OnDeviceCreate	(IReader* FS)
 
 	// Load blenders
 	{
-		IReader*	fs		= FS->open_chunk	(2);
+		IReader*	fs		= F->open_chunk	(2);
 		IReader*	chunk	= NULL;
 		int			chunk_id= 0;
 
@@ -225,13 +225,9 @@ void	CShaderManager::OnDeviceCreate	(IReader* FS)
 	}
 
 	// Load detail textures association
-#ifdef _EDITOR
-	string256 fname; strconcat	(fname,Engine.FS.m_GameTextures.m_Path,"textures.ltx");
-#else
-	string256 fname; strconcat	(fname,Path.Textures,"textures.ltx");
-#endif
+	string256 fname; strconcat	(fname,"$game_textures","textures.ltx");
 	LPCSTR		Iname		= fname;
-	if (Engine.FS.Exist(Iname))
+	if (FS.exist(Iname))
 	{
 		CInifile	ini		(Iname);
         if (ini.section_exist("association")){
@@ -278,20 +274,19 @@ void	CShaderManager::OnDeviceCreate	(IReader* FS)
 void	CShaderManager::OnDeviceCreate	(LPCSTR shName)
 {
 #ifdef _EDITOR
-	if (!Engine.FS.Exist(shName)) return;
+	if (!FS.exist(shName)) return;
 #endif
 
 	// Check if file is compressed already
 	string32	ID			= "shENGINE";
 	string32	id;
-	IReader*	F			= Engine.FS.Open(shName);
+	IReader*	F			= FS.r_open(shName);
 	F->r		(&id,8);
 	if (0==strncmp(id,ID,8))
 	{
-		Engine.FS.Close			(F);
-		F						= xr_new<CCompressedReader>(shName,ID);
+		FS.r_close			(F);
+		F					= xr_new<CCompressedReader>(shName,ID);
 	}
-	IReader&				FS	= *F;
-
-	OnDeviceCreate			(&FS);
+	OnDeviceCreate			(F);
+    FS.r_close	(F);
 }

@@ -88,9 +88,18 @@ bool TUI::OnCreate(){
 
     m_bReady		= true;
 
-    Engine.FS.WriteAccessLog(_EDITOR_FILE_NAME_,"Started");
+    EFS.WriteAccessLog(_EDITOR_FILE_NAME_,"Started");
 
-    CreateMailslot	();
+    if (!CreateMailslot()){
+    	ELog.DlgMsg	(mtError,"Can't create mail slot.\nIt's possible two Editors started.");
+        return 		false;
+    }
+
+    if (!FS.path_exist("$local_root$")){
+    	ELog.DlgMsg	(mtError,"Undefined Editor local directory.");
+        return 		false;
+    }
+    
 
 	BeginEState		(esEditScene);
 
@@ -99,7 +108,7 @@ bool TUI::OnCreate(){
 
 void TUI::OnDestroy()
 {
-    Engine.FS.WriteAccessLog(_EDITOR_FILE_NAME_,"Finished");
+    EFS.WriteAccessLog(_EDITOR_FILE_NAME_,"Finished");
 
 	VERIFY(m_bReady);
 	m_bReady		= false;

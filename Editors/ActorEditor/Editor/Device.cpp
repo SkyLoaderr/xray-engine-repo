@@ -64,18 +64,18 @@ void CRenderDevice::Initialize()
 	Surface_Init();
 
 	// game materials
-	AnsiString fn_gm = "gamemtl.xr";
-    Engine.FS.m_GameRoot.Update(fn_gm);
-    if (Engine.FS.Exist(fn_gm.c_str())){
+	AnsiString fn_gm;
+    FS.update_path(fn_gm,"$game_data$","gamemtl.xr");
+    if (FS.exist(fn_gm.c_str())){
     	GMLib.Load(fn_gm.c_str());
     }else{
     	ELog.DlgMsg(mtInformation,"Can't find file '%s'",fn_gm.c_str());
     }
 
 	// compiler shader
-	AnsiString fn = "shaders_xrlc.xr";
-    Engine.FS.m_GameRoot.Update(fn);
-    if (Engine.FS.Exist(fn.c_str())){
+	AnsiString fn;
+    FS.update_path(fn,"$game_data$","shaders_xrlc.xr");
+    if (FS.exist(fn.c_str())){
     	ShaderXRLC.Load(fn.c_str());
     }else{
     	ELog.DlgMsg(mtInformation,"Can't find file '%s'",fn.c_str());
@@ -127,14 +127,14 @@ bool CRenderDevice::Create(){
 	// after creation
 	dwFrame				= 0;
 
-	AnsiString sh		= "shaders.xr";
-    Engine.FS.m_GameRoot.Update(sh);
+	AnsiString sh;
+    FS.update_path		(sh,"$game_data$","shaders.xr");
 
-    IReader* FS			= 0;
-	if (Engine.FS.Exist(sh.c_str()))
-		FS				= Engine.FS.Open(sh.c_str());
-    _Create				(FS);
-	Engine.FS.Close		(FS);
+    IReader* F			= 0;
+	if (FS.exist(sh.c_str()))
+		F				= FS.r_open(0,sh.c_str());
+    _Create				(F);
+	FS.r_close			(F);
 
 	ELog.Msg			(mtInformation, "D3D: initialized");
 

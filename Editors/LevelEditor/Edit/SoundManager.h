@@ -1,13 +1,13 @@
 //---------------------------------------------------------------------------
-#ifndef ESoundManagerH
-#define ESoundManagerH
+#ifndef SoundManagerH
+#define SoundManagerH
 
 class CSoundManager{
 public:
 				CSoundManager		(){;}
 				~CSoundManager		(){;}
 	// texture routines
-    int			GetSounds			(FileMap& files);
+    int			GetSounds			(FS_QueryMap& files);
 };
 
 extern CSoundManager SoundManager;

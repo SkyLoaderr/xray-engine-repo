@@ -214,7 +214,7 @@ bool CEditableObject::SaveSMotions(const char* fname){
 	CMemoryWriter F;
     F.w_u32		(m_SMotions.size());
     for (SMotionIt m_it=m_SMotions.begin(); m_it!=m_SMotions.end(); m_it++) (*m_it)->Save(F);
-    F.save_to		(fname,0);
+    F.save_to		(fname);
     return true;
 }
 

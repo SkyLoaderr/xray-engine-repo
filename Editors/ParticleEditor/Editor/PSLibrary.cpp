@@ -13,11 +13,11 @@ CPSLibrary PSLib;
 void CPSLibrary::OnCreate()
 {
 	AnsiString fn;
-//    fn = "particles.xr";
-    fn = PSLIB_FILENAME;
-    Engine.FS.m_GameRoot.Update(fn);
-	if (Engine.FS.Exist(fn.c_str(),true)){
+    FS.update_path(fn,"$game_data$",PSLIB_FILENAME);
+	if (FS.exist(fn.c_str())){
     	if (!Load(fn.c_str())) Msg("PS Library: Unsupported version.");
+    }else{
+    	ELog.Msg(mtError,"Can't find file: '%s'",fn.c_str());
     }
 }
 
@@ -77,34 +77,34 @@ bool CPSLibrary::Load(const char* nm)
 	// Check if file is compressed already
 	string32	ID			= PS_LIB_SIGN;
 	string32	id;
-	IReader*	F			= Engine.FS.Open(nm);
+	IReader*	F			= FS.r_open(nm);
 	F->r		(&id,8);
 	if (0==strncmp(id,ID,8)){
-		Engine.FS.Close		(F);
+		FS.r_close			(F);
 		F					= xr_new<CCompressedReader> (nm,ID);
 	}else{
     	F->seek	(0);
     }
-	IReader&				FS	= *F;
+	IReader&				f	= *F;
 
 	m_PSs.clear				();
 
 	bool bRes 				= true;
-    R_ASSERT(FS.find_chunk(PS_CHUNK_VERSION));
-    u16 ver				= FS.r_u16();
+    R_ASSERT(f.find_chunk(PS_CHUNK_VERSION));
+    u16 ver					= f.r_u16();
     if (ver!=PS_VERSION) return false;
     // two version
     // first generation
-    R_ASSERT(FS.find_chunk(PS_CHUNK_FIRSTGEN));
-    u32 count 			= FS.r_u32();
+    R_ASSERT(f.find_chunk(PS_CHUNK_FIRSTGEN));
+    u32 count 				= f.r_u32();
     if (count){
-        m_PSs.resize	(count);
-        FS.r			(m_PSs.begin(), count*sizeof(PS::SDef));
+        m_PSs.resize		(count);
+        f.r					(m_PSs.begin(), count*sizeof(PS::SDef));
     }
     // second generation
-    IReader* OBJ 		= FS.open_chunk(PS_CHUNK_SECONDGEN);
+    IReader* OBJ 			= f.open_chunk(PS_CHUNK_SECONDGEN);
     if (OBJ){
-        IReader* O   	= OBJ->open_chunk(0);
+        IReader* O   		= OBJ->open_chunk(0);
         for (int count=1; O; count++) {
             PS::CPGDef*	def	= xr_new<PS::CPGDef>();
             if (def->Load(*O)) m_PGs.push_back(def);
@@ -117,7 +117,7 @@ bool CPSLibrary::Load(const char* nm)
     }
 
     // final
-	Engine.FS.Close		(F);
+	FS.r_close			(F);
     return bRes;
 }
 //----------------------------------------------------

@@ -80,12 +80,12 @@ void COMotion::SaveMotion(const char* buf){
 	F.open_chunk	(EOBJ_OMOTION);
 	Save			(F);
 	F.close_chunk	();
-	F.save_to		(buf,0);
+	F.save_to		(buf);
 }
 
 bool COMotion::LoadMotion(const char* buf)
 {
-	destructor<IReader>	F(Engine.FS.Open(buf));
+	destructor<IReader>	F(FS.r_open(buf));
 	R_ASSERT(F().find_chunk(EOBJ_OMOTION));
 	return Load		(F());
 }
@@ -199,11 +199,11 @@ void CSMotion::SaveMotion(const char* buf){
 	F.open_chunk	(EOBJ_SMOTION);
 	Save			(F);
 	F.close_chunk	();
-	F.save_to		(buf,0);
+	F.save_to		(buf);
 }
 
 bool CSMotion::LoadMotion(const char* buf){
-	destructor<IReader>	F(Engine.FS.Open(buf));
+	destructor<IReader>	F(FS.r_open(buf));
 	R_ASSERT		(F().find_chunk(EOBJ_SMOTION));
 	return Load		(F());
 }

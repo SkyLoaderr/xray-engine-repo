@@ -9,11 +9,8 @@ CSoundManager SoundManager;
 //------------------------------------------------------------------------------
 // возвращает список всех звуков
 //------------------------------------------------------------------------------
-int CSoundManager::GetSounds(FileMap& files)
+int CSoundManager::GetSounds(FS_QueryMap& files)
 {
-    AnsiString p_base;
-    Engine.FS.m_GameSounds.Update(p_base);
-    if (0==Engine.FS.GetFileList(p_base.c_str(),files,true,true,false,"*.wav")) return 0;
-    return files.size();
+    return FS.file_list(files,"$game_sounds$",FS_ListFiles|FS_ClampExt,".wav");
 }
 

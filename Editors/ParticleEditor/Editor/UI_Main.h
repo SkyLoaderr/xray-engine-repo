@@ -204,7 +204,7 @@ public:
     void			OnDeviceDestroy		();
 
     // mailslot
-	void 			CreateMailslot		();
+	bool 			CreateMailslot		();
 	void 			CheckMailslot		();
 	void 			OnReceiveMail		(LPCSTR msg);
 //	void 			SendMail			();

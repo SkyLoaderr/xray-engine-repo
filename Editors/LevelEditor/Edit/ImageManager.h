@@ -13,15 +13,15 @@ public:
 	// texture routines
     BOOL __fastcall	RemoveTexture	(LPCSTR fname);
     BOOL		CheckCompliance		(LPCSTR fname, int& compl);
-    void		CheckCompliance		(FileMap& files, FileMap& compl);
-    int			GetTextures			(FileMap& files);
-	int			GetServerModifiedTextures(FileMap& files);
-	int 		GetLocalNewTextures	(FileMap& files);
-	void		SafeCopyLocalToServer(FileMap& files);
-	void		SynchronizeTextures	(bool sync_thm, bool sync_game, bool bForceGame, FileMap* source_map, AStringVec* sync_list_without_extention, FileMap* modif_map=0);
+    void		CheckCompliance		(FS_QueryMap& files, FS_QueryMap& compl);
+    int			GetTextures			(FS_QueryMap& files);
+//	int			GetServerModifiedTextures(CLocatorAPI::files_query& files);
+	int 		GetLocalNewTextures	(FS_QueryMap& files);
+	void		SafeCopyLocalToServer(FS_QueryMap& files);
+	void		SynchronizeTextures	(bool sync_thm, bool sync_game, bool bForceGame, FS_QueryMap* source_map, AStringVec* sync_list_without_extention, FS_QueryMap* modif_map=0);
     void 		SynchronizeTexture	(LPCSTR tex_name, int age);
 	// make/update routines
-    void		CreateTextureThumbnail(EImageThumbnail* THM, const AnsiString& src_name, FSPath* path=0, bool bSetDefParam=true);
+    void		CreateTextureThumbnail(EImageThumbnail* THM, const AnsiString& src_name, LPCSTR path=0, bool bSetDefParam=true);
     BOOL		CreateOBJThumbnail	(LPCSTR tex_name, CEditableObject* obj, int age);
     void		CreateLODTexture	(Fbox bbox, LPCSTR tex_name, u32 tgt_w, u32 tgt_h, int samples, int age);
     void		CreateGameTexture	(const AnsiString& src_name, EImageThumbnail* thumb=0);

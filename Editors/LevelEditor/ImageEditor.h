@@ -45,7 +45,6 @@ __published:	// IDE-managed Components
 	TExtBtn *ebCheckSelCompliance;
 	TExtBtn *ebCancel;
 	TBevel *Bevel3;
-	TExtBtn *ebExportAssociation;
 	TBevel *Bevel4;
 	TExtBtn *ebRemoveTexture;
     void __fastcall ebOkClick(TObject *Sender);
@@ -78,9 +77,9 @@ private:	// User declarations
     Fvector init_cam_hpb;
     Fvector init_cam_pos;
     void OnModified();
-    static FileMap compl_map;
-    static FileMap texture_map;
-    static FileMap modif_map;
+    static FS_QueryMap	compl_map;
+    static FS_QueryMap	texture_map;
+    static FS_QueryMap	modif_map;
 	void __fastcall SaveTextureParams();
     bool bImportMode;
     TProperties* ImageProps;

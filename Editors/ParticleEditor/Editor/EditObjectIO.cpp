@@ -61,19 +61,17 @@ void CEditableObject::SaveObject(const char* fname)
         }
     }
 
-    CMemoryWriter F;
-    F.open_chunk(EOBJ_CHUNK_OBJECT_BODY);
-    Save(F);
-    F.close_chunk();
+    CMemoryWriter 	F;
+    F.open_chunk	(EOBJ_CHUNK_OBJECT_BODY);
+    Save			(F);
+    F.close_chunk	();
 
-	string256 save_nm,dir,path,nm;
-    _splitpath( fname, dir, path, nm, 0 );
-	strconcat(save_nm,dir,path,nm,".object");
+	string256 		save_nm,dir,path,nm;
+    _splitpath		(fname,dir,path,nm,0);
+	strconcat		(save_nm,dir,path,nm,".object");
 
-    VerifyPath(save_nm);
-
-    F.save_to(save_nm,0);
-	m_LoadName = save_nm;
+    F.save_to		(save_nm);
+	m_LoadName 		= save_nm;
 }
 
 
@@ -304,7 +302,7 @@ void CEditableObject::Save(IWriter& F){
 }
 //------------------------------------------------------------------------------
 CSMotion* CEditableObject::LoadSMotion(const char* fname){
-	if (Engine.FS.Exist(fname)){
+	if (FS.exist(fname)){
     	CSMotion* M = xr_new<CSMotion>();
         if (!M->LoadMotion(fname)){
         	xr_delete(M);
@@ -318,7 +316,7 @@ CSMotion* CEditableObject::LoadSMotion(const char* fname){
 bool CEditableObject::ExportSkeletonOGF(LPCSTR fn){
 	CMemoryWriter F;
     if (PrepareSV(F)){
-    	F.save_to(fn,0);
+    	F.save_to(fn);
         return true;
     }
     return false;
@@ -328,7 +326,7 @@ bool CEditableObject::ExportObjectOGF(LPCSTR fname)
 {
 	CMemoryWriter F;
     if (PrepareOGF(F)){
-    	F.save_to(fname,0);
+    	F.save_to(fname);
         return true;
     }
     return false;
@@ -363,7 +361,7 @@ bool CEditableObject::ExportHOM(LPCSTR fname)
     F.open_chunk(1);
     ExportHOMPart(Fidentity,F);
     F.close_chunk();
-    F.save_to(fname,0);
+    F.save_to(fname);
 	return true;
 }
 //------------------------------------------------------------------------------

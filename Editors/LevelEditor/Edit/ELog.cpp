@@ -21,7 +21,12 @@
 //----------------------------------------------------
 
 CLog ELog;
+//----------------------------------------------------
 
+void ELogCallback(LPCSTR string)
+{
+    TfrmLog::AddMessage(mtInformation,AnsiString(string));
+}
 //----------------------------------------------------
 int CLog::DlgMsg (TMsgDlgType mt, TMsgDlgButtons btn, LPCSTR _Format, ...)
 {
@@ -133,6 +138,8 @@ void CLog::Msg(TMsgDlgType mt, LPCSTR _Format, ...)
 	g_msg->info(buf,0);
 #endif
 
-    ::Msg(buf);
+	::LogExecCB = FALSE;
+    ::Msg		(buf);
+	::LogExecCB	= TRUE;
 }
 //----------------------------------------------------

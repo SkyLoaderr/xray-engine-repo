@@ -69,7 +69,8 @@ int __fastcall TfrmChoseItem::SelectItem(ESelectMode mode, LPCSTR& dest, int sel
     	THROW2("ChooseForm: Unknown Item Type");
     }
     // redraw
-	form->tvItems->IsUpdating = false;
+	form->tvItems->IsUpdating 	= false;
+	form->paItemsCount->Caption	= AnsiString(" Items in list: ")+AnsiString(form->tvItems->Items->Count);
 
 	// show
     bool bRes 			= (form->ShowModal()==mrOk);
@@ -118,31 +119,34 @@ void __fastcall TfrmChoseItem::FillEntity()
 void __fastcall TfrmChoseItem::FillSound()
 {
     form->Caption					= "Select Sound";
-    FileMap lst;
+    FS_QueryMap lst;
     if (SoundManager.GetSounds(lst)){
-	    FilePairIt it=lst.begin();
-    	FilePairIt _E=lst.end();
-        for (; it!=_E; it++)		AppendItem(it->first.c_str());
+	    FS_QueryPairIt  it			= lst.begin();
+    	FS_QueryPairIt	_E			= lst.end();
+	    for (; it!=_E; it++)		AppendItem(it->first.c_str());
     }
 }
 //---------------------------------------------------------------------------
 void __fastcall TfrmChoseItem::FillObject()
 {
     form->Caption					= "Select Library Object";
-    FileMap& lst 					= Lib.Objects();
-    FilePairIt it					= lst.begin();
-    FilePairIt _E					= lst.end();   		// check without extension
-    for (; it!=_E; it++)			AppendItem(it->first.c_str());
+    FS_QueryMap lst;
+    if (Lib.GetObjects(lst)){
+	    FS_QueryPairIt	it			= lst.begin();
+    	FS_QueryPairIt	_E			= lst.end();
+	    for (; it!=_E; it++)		AppendItem(it->first.c_str());
+    }
 }
 //---------------------------------------------------------------------------
 void __fastcall TfrmChoseItem::FillGameObject()
 {
     form->Caption					= "Select OGF";
-    FileMap lst;
-    Engine.FS.GetFileList			(Engine.FS.m_GameMeshes.m_Path,lst,true,true,false,"*.ogf");
-    FilePairIt it					= lst.begin();
-    FilePairIt _E					= lst.end();
-    for (; it!=_E; it++)			AppendItem(it->first.c_str());
+    FS_QueryMap lst;
+    if (FS.file_list(lst,"$game_meshes$",FS_ListFiles|FS_ClampExt,".ogf")){
+	    FS_QueryPairIt	it			= lst.begin();
+    	FS_QueryPairIt	_E			= lst.end();
+	    for (; it!=_E; it++)		AppendItem(it->first.c_str());
+    }
 }
 //---------------------------------------------------------------------------
 void __fastcall TfrmChoseItem::FillLAnim()
@@ -181,10 +185,10 @@ void __fastcall TfrmChoseItem::FillPS()
 void __fastcall TfrmChoseItem::FillTexture()
 {
     form->Caption					= "Select Texture";
-    FileMap lst;
+    FS_QueryMap	lst;
     if (ImageManager.GetTextures(lst)){
-	    FilePairIt it				= lst.begin();
-    	FilePairIt _E				= lst.end();
+	    FS_QueryPairIt	it			= lst.begin();
+    	FS_QueryPairIt	_E			= lst.end();
 	    for (; it!=_E; it++)		AppendItem(it->first.c_str());
     }
 }
@@ -453,8 +457,8 @@ void __fastcall TfrmChoseItem::tvItemsItemFocused(TObject *Sender)
 	        AnsiString nm,fn;
         	FHelper.MakeName		(Item,0,nm,false);
             fn						= ChangeFileExt(nm,".thm");
-            Engine.FS.m_Objects.Update(fn);
-            if (Engine.FS.Exist(fn.c_str())){
+		    FS.update_path			("$objects$",fn);
+            if (FS.exist(fn.c_str())){
 	    	    m_Thm 					= xr_new<EImageThumbnail>(nm.c_str(),EImageThumbnail::EITObject);
     	        if (!m_Thm->Valid()) 	pbImage->Repaint();
         	    else				 	pbImagePaint(Sender);

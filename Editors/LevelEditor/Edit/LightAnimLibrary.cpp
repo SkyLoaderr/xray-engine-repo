@@ -185,9 +185,9 @@ void ELightAnimLibrary::Unload()
 
 void ELightAnimLibrary::Load()
 {
-	AnsiString fn="lanims.xr";
-    Engine.FS.m_ServerRoot.Update(fn);
-	IReader* fs=Engine.FS.Open(fn.c_str());
+	AnsiString fn;
+    FS.update_path(fn,"$game_data$","lanims.xr");
+	IReader* fs=FS.r_open(fn.c_str());
     if (fs){
         IReader* OBJ = fs->open_chunk(CHUNK_ITEM_LIST);
         if (OBJ){
@@ -202,7 +202,7 @@ void ELightAnimLibrary::Load()
 	        OBJ->close();
         }
 
-		Engine.FS.Close(fs);
+		FS.r_close(fs);
     }
 }
 
@@ -218,9 +218,9 @@ void ELightAnimLibrary::Save()
     }
 	F.close_chunk	();
 
-	AnsiString fn="lanims.xr";
-    Engine.FS.m_ServerRoot.Update(fn);
-    F.save_to(fn.c_str(),0);
+	AnsiString fn;
+    FS.update_path(fn,"$game_data$","lanims.xr");
+    F.save_to(fn.c_str());
 }
 
 void ELightAnimLibrary::Reload()

@@ -64,9 +64,8 @@ void SGameMtl::Load(IReader& fs)
 
 void CGameMtlLibrary::Load(LPCSTR name)
 {
-	destructor<IReader>	FS(Engine.FS.Open(name));
-    IReader& fs			= FS();
-
+	destructor<IReader>	F(FS.r_open(name));
+    IReader& fs			= F();
 
     R_ASSERT(fs.find_chunk(GAMEMTLS_CHUNK_VERSION));
     u16 version			= fs.r_u16();

@@ -40,8 +40,8 @@ public:
     void			VFlip			();
     // thumbnail public routines
     IC STextureParams& _Format		(){R_ASSERT(Valid());return m_TexParams;}
-	bool 			Load			(LPCSTR src_name=0, FSPath* path=0);
-	void 			Save			(int age=0,FSPath* path=0);
+	bool 			Load			(LPCSTR src_name=0, LPCSTR path=0);
+	void 			Save			(int age=0,LPCSTR path=0);
     IC bool			Valid			(){return !m_Pixels.empty();}
 	void			FillProp		(PropItemVec& values);
 

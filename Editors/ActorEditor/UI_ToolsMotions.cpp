@@ -7,13 +7,11 @@
 #include "UI_Main.h"
 #include "leftbar.h"
 #include "EditObject.h"
-#include "xr_tokens.h"
 #include "PropertiesList.h"
 #include "motion.h"
 #include "bone.h"
 #include "BodyInstance.h"
 #include "fmesh.h"
-#include "xr_trims.h"
 #include "folderlib.h"
 //---------------------------------------------------------------------------
 
@@ -207,9 +205,8 @@ void CActorTools::FillMotionProperties()
 		PropItemVec items;
         PropValue* P=0;
         P=PHelper.CreateText	(items,"Name",		&SM->Name(), sizeof(SM->Name()));
-        P->OnAfterEditEvent		= FHelper.NameAfterEdit;
-        P->OnBeforeEditEvent	= FHelper.NameBeforeEdit;
-        P->Owner()->OnDrawEvent	= FHelper.NameDraw;
+        P->SetEvents			(FHelper.NameAfterEdit,FHelper.NameBeforeEdit,0);
+        P->Owner()->SetEvents	(FHelper.NameDraw);
         P->Owner()->tag			= (int)FHelper.FindObject(fraLeftBar->tvMotions,SM->Name()); VERIFY(P->Owner()->tag);
         PHelper.CreateFloat		(items,"Speed",		&SM->fSpeed,  0.f,20.f,0.01f,2);
         PHelper.CreateFloat		(items,"Accrue",	&SM->fAccrue, 0.f,20.f,0.01f,2);
@@ -217,15 +214,14 @@ void CActorTools::FillMotionProperties()
 
         PropValue *C=0,*F=0,*TV=0;
         TV = PHelper.CreateFlag32(items,"Type FX", &SM->m_Flags, esmFX);
-        TV->OnChangeEvent		= MotionOnChange;
+        TV->SetEvents			(0,0,MotionOnChange);
         {
             AStringVec lst;
             lst.push_back("--none--");
             for (BPIt it=m_pEditObject->FirstBonePart(); it!=m_pEditObject->LastBonePart(); it++) lst.push_back(it->alias);
 			C=PHelper.CreateToken2	(items,"Cycle\\Bone part",	(u32*)&SM->iBoneOrPart,	&lst);
-            C->OnAfterEditEvent		= BPOnAfterEdit;
-            C->OnBeforeEditEvent	= BPOnBeforeEdit;
-            C->Owner()->OnDrawEvent=BPOnDraw;
+            C->SetEvents		(BPOnAfterEdit,BPOnBeforeEdit);
+            C->Owner()->SetEvents(BPOnDraw);
             PHelper.CreateFlag32	(items,"Cycle\\Stop at end",	&SM->m_Flags,	esmStopAtEnd);
             PHelper.CreateFlag32	(items,"Cycle\\No mix",			&SM->m_Flags,	esmNoMix);
         }

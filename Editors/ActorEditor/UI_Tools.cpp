@@ -10,8 +10,6 @@
 #include "ui_main.h"
 #include "leftbar.h"
 #include "topbar.h"
-#include "xr_trims.h"
-#include "xr_tokens.h"
 #include "PropertiesList.h"               
 #include "motion.h"
 #include "bone.h"
@@ -28,7 +26,7 @@ CActorTools Tools;
 
 void CActorTools::PreviewModel::RestoreParams(TFormStorage* s)
 {          
-    m_Props->RestoreColumnWidth(s);
+    m_Props->RestoreParams(s);
     m_LastObjectName	= s->ReadString	("preview_name","");
     int val;
     val					= s->ReadInteger("preview_speed",0); 	m_fSpeed 	= *((float*)&val);
@@ -39,7 +37,7 @@ void CActorTools::PreviewModel::RestoreParams(TFormStorage* s)
 
 void CActorTools::PreviewModel::SaveParams(TFormStorage* s)
 {
-    m_Props->SaveColumnWidth(s);
+    m_Props->SaveParams(s);
     s->WriteString	("preview_name",	m_LastObjectName);
     s->WriteInteger	("preview_speed",	*((int*)&m_fSpeed));
     s->WriteInteger	("preview_segment",	*((int*)&m_fSegment));
@@ -332,7 +330,9 @@ bool CActorTools::Load(LPCSTR name)
 	VERIFY(m_bReady);
 	CEditableObject* O = xr_new<CEditableObject>(name);
 	if (O->Load(name)){
-    	if (O->m_Flags.is(CEditableObject::eoDynamic)){
+    	O->m_Flags.set(CEditableObject::eoDynamic,TRUE);
+//    	if (O->m_Flags.is(CEditableObject::eoDynamic))
+        {
             xr_delete(m_pEditObject);
             m_pEditObject = O;
             // delete visual
@@ -340,9 +340,8 @@ bool CActorTools::Load(LPCSTR name)
             fraLeftBar->SetRenderStyle(false);
             fraLeftBar->SkeletonPartEnabled(m_pEditObject->IsSkeleton());
             return true;
-        }else{
-        	ELog.DlgMsg(mtError,"Can't load non dynamic object '%s'.",name);
         }
+//        else{ ELog.DlgMsg(mtError,"Can't load non dynamic object '%s'.",name); }
     }else{
        	ELog.DlgMsg(mtError,"Can't load object file '%s'.",name);
     }
@@ -531,12 +530,10 @@ void CActorTools::FillObjectProperties()
 	PropValue* V=0;
 	PHelper.CreateFlag32	(items, "Make Progressive",		&m_pEditObject->m_Flags,		CEditableObject::eoProgressive);
     V=PHelper.CreateVector	(items, "Transform\\Position",	&m_pEditObject->a_vPosition, 	-10000,	10000,0.01,2);
-    V->OnChangeEvent		= OnChangeTransform;
+    V->SetEvents(0,0,OnChangeTransform);
     V=PHelper.CreateVector	(items, "Transform\\Rotation",	&m_pEditObject->a_vRotate, 		-10000,	10000,0.1,1);
-    V->OnChangeEvent		= OnChangeTransform;
-    V->OnAfterEditEvent		= PHelper.FvectorRDOnAfterEdit;
-    V->OnBeforeEditEvent	= PHelper.FvectorRDOnBeforeEdit;
-    V->Owner()->OnDrawEvent	= PHelper.FvectorRDOnDraw;
+    V->SetEvents			(PHelper.FvectorRDOnAfterEdit,PHelper.FvectorRDOnBeforeEdit,OnChangeTransform);
+    V->Owner()->SetEvents	(PHelper.FvectorRDOnDraw);
     m_pEditObject->FillPropSurf		(0,items);
     m_pEditObject->FillSummaryProps	(0,items);
     

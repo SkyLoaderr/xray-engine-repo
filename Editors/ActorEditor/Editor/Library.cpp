@@ -23,16 +23,17 @@ ELibrary::~ELibrary(){
 }
 //----------------------------------------------------
 
-void ELibrary::OnCreate(){
+void ELibrary::OnCreate()
+{
 	m_Current = "";
-    Engine.FS.GetFileList(Engine.FS.m_Objects.m_Path,m_Objects,true,true,false,"*.object");
 	Device.seqDevCreate.Add	(this,REG_PRIORITY_NORMAL);
 	Device.seqDevDestroy.Add(this,REG_PRIORITY_NORMAL);
     m_bReady = true;
 }
 //----------------------------------------------------
 
-void ELibrary::OnDestroy(){
+void ELibrary::OnDestroy()
+{
 	VERIFY(m_bReady);
     m_bReady = false;
 	Device.seqDevCreate.Remove(this);
@@ -50,21 +51,15 @@ void ELibrary::OnDestroy(){
     	xr_delete(O->second);
     }
 	m_EditObjects.clear();
-
-    m_Objects.clear();
 }
 //----------------------------------------------------
 
-void ELibrary::SetCurrentObject(LPCSTR nm){
+void ELibrary::SetCurrentObject(LPCSTR nm)
+{
 	VERIFY(m_bReady);
 	R_ASSERT(nm&&nm[0]);
     string256 name; strcpy(name,nm); strlwr(name);
-    FilePairIt it = m_Objects.find(name);
-    if (it!=m_Objects.end()) m_Current = name;
-}
-int ELibrary::ObjectCount(){
-	VERIFY(m_bReady);
-	return m_Objects.size();
+    m_Current = name;
 }
 //----------------------------------------------------
 
@@ -120,18 +115,22 @@ void ELibrary::EvictObjects()
 }
 //----------------------------------------------------
 
-CEditableObject* ELibrary::LoadEditObject(LPCSTR name, int age){
+CEditableObject* ELibrary::LoadEditObject(LPCSTR name, int age)
+{
 	VERIFY(m_bReady);
     CEditableObject* m_EditObject = xr_new<CEditableObject>(name);
     AnsiString fn=ChangeFileExt(name,".object");
-    Engine.FS.m_Objects.Update(fn);
-    if (Engine.FS.Exist(fn.c_str(), true))
+    FS.update_path("$objects$",fn);
+    if (FS.exist(fn.c_str())){
         if (m_EditObject->Load(fn.c_str())){
             m_EditObject->m_ObjVer.f_age = age;
             return m_EditObject;
         }
+    }else{
+		ELog.Msg(mtError,"Can't find object '%s'",name);
+    }
     xr_delete(m_EditObject);
-	return m_EditObject;
+	return 0;
 }
 //---------------------------------------------------------------------------
 
@@ -139,16 +138,17 @@ CEditableObject* ELibrary::CreateEditObject(LPCSTR nm,int* age)
 {
 	VERIFY(m_bReady);
     R_ASSERT(nm&&nm[0]);
-    string1024 name; strcpy(name,nm); strlwr(name);
-    UI.ProgressInfo(name);
+    AnsiString name;
+    FS.update_path(name,"$objects$",nm);
+    UI.ProgressInfo(name.c_str());
     CEditableObject* m_EditObject = 0;
-    FilePairIt p_it = m_Objects.find(name);
-    if (p_it==m_Objects.end()) return 0;
-    if (age) *age = p_it->second;
-	EditObjPairIt it = m_EditObjects.find(name);
+    const CLocatorAPI::file* F = FS.exist(name.c_str());
+    if (!F) return 0;
+    if (age) *age 		= F->modif;
+	EditObjPairIt it 	= m_EditObjects.find(name);
     if (it!=m_EditObjects.end())	m_EditObject = it->second;
-    else if (m_EditObject=LoadEditObject(name,p_it->second))
-		m_EditObjects[name] = m_EditObject;
+    else if (m_EditObject=LoadEditObject(name.c_str(),F->modif))
+		m_EditObjects[name]	= m_EditObject;
 	if (m_EditObject) m_EditObject->m_RefCount++;
 	return m_EditObject;
 }
@@ -172,12 +172,16 @@ void ELibrary::Save()
 	EditObjPairIt E = m_EditObjects.end();
     for(; O!=E; O++)
     	if (O->second->IsModified()){
-        	AnsiString nm=O->second->GetName();
-            Engine.FS.m_Objects.Update(nm);
+        	AnsiString nm;
+		    FS.update_path(nm,"$objects$",O->second->GetName());
         	O->second->SaveObject(nm.c_str());
         }
-    m_Objects.clear();
-    Engine.FS.GetFileList(Engine.FS.m_Objects.m_Path,m_Objects,true,true,false,"*.object");
+}
+//---------------------------------------------------------------------------
+
+int ELibrary::GetObjects(FS_QueryMap& files)
+{
+    return FS.file_list(files,"$objects$",FS_ListFiles|FS_ClampExt,".object");
 }
 //---------------------------------------------------------------------------
 

@@ -27,7 +27,10 @@ bool IsValidSize(u32 w, u32 h){
 
 bool Surface_Load(LPCSTR full_name, U32Vec& data, u32& w, u32& h, u32& a)
 {
-    if (!Engine.FS.Exist(full_name,true)) return false;
+    if (!FS.exist(full_name)){ 
+    	ELog.Msg(mtError,"Can't find file: '%s'",full_name);
+    	return false;
+    }
 	AnsiString ext = ExtractFileExt(full_name).LowerCase();
 	if (ext==".tga"){
     	CImage img;
@@ -74,11 +77,11 @@ void CImageManager::MakeThumbnailImage(EImageThumbnail* THM, u32* data, u32 w, u
 //------------------------------------------------------------------------------
 // создает тхм
 //------------------------------------------------------------------------------
-void CImageManager::CreateTextureThumbnail(EImageThumbnail* THM, const AnsiString& src_name, FSPath* path, bool bSetDefParam){
+void CImageManager::CreateTextureThumbnail(EImageThumbnail* THM, const AnsiString& src_name, LPCSTR initial, bool bSetDefParam){
 	R_ASSERT(src_name.Length());
-	AnsiString base_name 		= src_name;
-    if (path)	path->Update	(base_name);
-    else		Engine.FS.m_Textures.Update	(base_name);
+	AnsiString base_name;
+    if (initial)	FS.update_path(base_name,initial,src_name.c_str());
+    else			FS.update_path(base_name,"$textures$",src_name.c_str());
     U32Vec data;
     u32 w, h, a;
     if (!Surface_Load(base_name.c_str(),data,w,h,a)){
@@ -89,7 +92,7 @@ void CImageManager::CreateTextureThumbnail(EImageThumbnail* THM, const AnsiStrin
 
     // выставить начальные параметры
 	if (bSetDefParam){
-		THM->m_Age 			= Engine.FS.GetFileAge(base_name);
+		THM->m_Age 			= FS.get_file_age(base_name.c_str());
 		THM->m_TexParams.fmt= (a)?STextureParams::tfDXT3:STextureParams::tfDXT1;
 	    if ((h*6)==w) THM->m_TexParams.type	= STextureParams::ttCubeMap;
     }
@@ -102,16 +105,16 @@ void CImageManager::CreateGameTexture(const AnsiString& src_name, EImageThumbnai
     EImageThumbnail* THM 	= thumb?thumb:xr_new<EImageThumbnail>(src_name.c_str(),EImageThumbnail::EITTexture);
 	AnsiString base_name 	= src_name;
 	AnsiString game_name 	= ChangeFileExt(src_name,".dds");
-	Engine.FS.m_Textures.Update(base_name);
-	Engine.FS.m_GameTextures.Update(game_name);
-    int base_age 			= Engine.FS.GetFileAge(base_name);
+	FS.update_path			("$textures$",base_name);
+	FS.update_path			("$game_textures$",game_name);
+    int base_age 			= FS.get_file_age(base_name.c_str());
 
     U32Vec data;
     u32 w, h, a;
     if (!Surface_Load(base_name.c_str(),data,w,h,a)) return;
     MakeGameTexture(THM,game_name.c_str(),data.begin());
 
-    Engine.FS.SetFileAge(game_name, base_age);
+    FS.set_file_age(game_name.c_str(), base_age);
     if (!thumb) xr_delete(THM);
 }
 
@@ -128,11 +131,11 @@ void CImageManager::MakeGameTexture(EImageThumbnail* THM, LPCSTR game_name, u32*
     // compress
     bool bRes 	= DXTCompress(game_name, (u8*)load_data, w, h, w4, &THM->m_TexParams, 4);
     if (!bRes){
-    	Engine.FS.DeleteFileByName(game_name);
+    	FS.file_delete(game_name);
     	ELog.DlgMsg(mtError,"Can't make game texture '%s'.\nCheck texture size (%dx%d).",game_name,w,h);
 		return;
     }
-    R_ASSERT(bRes&&Engine.FS.FileLength(game_name));
+    R_ASSERT(bRes&&FS.file_length(game_name));
 }
 
 //------------------------------------------------------------------------------
@@ -140,8 +143,8 @@ void CImageManager::MakeGameTexture(EImageThumbnail* THM, LPCSTR game_name, u32*
 //------------------------------------------------------------------------------
 bool CImageManager::LoadTextureData(const AnsiString& src_name, U32Vec& data, u32& w, u32& h)
 {
-	AnsiString fn = src_name;
-	Engine.FS.m_Textures.Update(fn);
+	AnsiString fn;
+	FS.update_path			(fn,"$textures$",src_name.c_str());
     u32 a;
     if (!Surface_Load(fn.c_str(),data,w,h,a)) return false;
     return true;
@@ -151,78 +154,73 @@ bool CImageManager::LoadTextureData(const AnsiString& src_name, U32Vec& data, u3
 // копирует обновленные текстуры с Import'a в Textures
 // files - список файлов для копирование
 //------------------------------------------------------------------------------
-void CImageManager::SafeCopyLocalToServer(FileMap& files)
+void CImageManager::SafeCopyLocalToServer(FS_QueryMap& files)
 {
     AnsiString p_import;
     AnsiString p_textures;
     AnsiString src_name,dest_name;
-    Engine.FS.m_Import.Update(p_import);
-    Engine.FS.m_Textures.Update(p_textures);
+    FS.update_path			(p_import,"$import$","");
+    FS.update_path			(p_textures,"$textures$","");
 
-    FilePairIt it	= files.begin();
-	FilePairIt _E 	= files.end();
+    FS_QueryPairIt it	= files.begin();
+	FS_QueryPairIt _E 	= files.end();
 	for (; it!=_E; it++){
         // copy thm
 		AnsiString fn = ChangeFileExt(it->first,".thm");
 		src_name 	= p_import	+ AnsiString(fn);
-		Engine.FS.UpdateTextureNameWithFolder(fn);
+		EFS.UpdateTextureNameWithFolder(fn);
 		dest_name 	= p_textures+ AnsiString(fn);
-		Engine.FS.MoveFileTo	(src_name.c_str(),dest_name.c_str(),true);
+		FS.file_rename(src_name.c_str(),dest_name.c_str());
     	// copy sources
 		fn 			= it->first;
 		src_name 	= p_import	+ AnsiString(fn);
-		Engine.FS.UpdateTextureNameWithFolder(fn);
+		EFS.UpdateTextureNameWithFolder(fn);
 		dest_name 	= p_textures+ AnsiString(fn);
-        Engine.FS.BackupFile	(&Engine.FS.m_Textures,AnsiString(fn));
-		Engine.FS.CopyFileTo	(src_name.c_str(),dest_name.c_str(),true);
-        Engine.FS.WriteAccessLog(dest_name.c_str(),"Replace");
-        Engine.FS.MarkFile		(src_name,true);
+        EFS.BackupFile	("$textures$",AnsiString(fn));
+		FS.file_copy(src_name.c_str(),dest_name.c_str());
+        EFS.WriteAccessLog(dest_name.c_str(),"Replace");
+        EFS.MarkFile		(src_name,true);
     }
-}
+}    
 //------------------------------------------------------------------------------
 // возвращает список не синхронизированных (модифицированных) текстур
 // source_list - содержит список текстур с расширениями
 // sync_list - реально сохраненные файлы (после использования освободить)
 //------------------------------------------------------------------------------
-void CImageManager::SynchronizeTextures(bool sync_thm, bool sync_game, bool bForceGame, FileMap* source_list, AStringVec* sync_list, FileMap* modif_map)
+void CImageManager::SynchronizeTextures(bool sync_thm, bool sync_game, bool bForceGame, FS_QueryMap* source_list, AStringVec* sync_list, FS_QueryMap* modif_map)
 {
-	FileMap M_BASE;
-	FileMap M_THUM;
-    FileMap M_GAME;
-
-    AnsiString p_base;
-    AnsiString p_game;
-    Engine.FS.m_Textures.Update(p_base);
-    Engine.FS.m_GameTextures.Update(p_game);
+	FS_QueryMap M_BASE;
+	FS_QueryMap M_THUM;
+    FS_QueryMap M_GAME;
 
     if (source_list) M_BASE = *source_list;
-    else Engine.FS.GetFileList(p_base.c_str(),M_BASE,true,false,false,"*.tga,*.bmp");
+    else FS.file_list(M_BASE,"$textures$",FS_ListFiles,".tga,.bmp");
     if (M_BASE.empty()) return;
-    if (sync_thm) Engine.FS.GetFileList(p_base.c_str(),M_THUM,true,true,false,"*.thm");
-    if (sync_game) Engine.FS.GetFileList(p_game.c_str(),M_GAME,true,true,false,"*.dds");
+    if (sync_thm) 	FS.file_list(M_THUM,"$textures$",FS_ListFiles|FS_ClampExt,".thm");
+    if (sync_game) 	FS.file_list(M_GAME,"$game_textures$",FS_ListFiles|FS_ClampExt,".dds");
 
     // sync assoc
-	AnsiString ltx_nm = "textures.ltx";
-    Engine.FS.m_GameTextures.Update(ltx_nm);
+	AnsiString ltx_nm;
+    FS.update_path(ltx_nm,"$game_textures$","textures.ltx");
 	CInifile* ltx_ini = xr_new<CInifile>(ltx_nm.c_str(), FALSE, TRUE, TRUE);
     
     UI.ProgressStart(M_BASE.size(),"Synchronize textures...");
-    FilePairIt it=M_BASE.begin();
-	FilePairIt _E = M_BASE.end();
+    FS_QueryPairIt it=M_BASE.begin();
+	FS_QueryPairIt _E = M_BASE.end();
 	for (; it!=_E; it++){
 	    U32Vec data;
     	u32 w, h, a;
 
         string256 base_name; strcpy(base_name,it->first.c_str()); strlwr(base_name);
         UI.ProgressInc(base_name);
-        AnsiString fn = it->first;
-        Engine.FS.m_Textures.Update(fn);
+        AnsiString fn;
+        FS.update_path			(fn,"$textures$",it->first.c_str());
         if (strext(base_name)) *strext(base_name)=0;
 
-		FilePairIt th = M_THUM.find(base_name);
-    	bool bThm = ((th==M_THUM.end()) || ((th!=M_THUM.end())&&(th->second!=it->second)));
-		FilePairIt gm = M_GAME.find(base_name);
-    	bool bGame= bThm || ((gm==M_GAME.end()) || ((gm!=M_GAME.end())&&(gm->second!=it->second)));
+		FS_QueryPairIt th = M_THUM.find(base_name);
+    	bool bThm = ((th==M_THUM.end()) || ((th!=M_THUM.end())&&(th->second.modif!=it->second.modif)));
+  		FS_QueryPairIt gm = M_GAME.find(base_name);
+    	bool bGame= bThm || ((gm==M_GAME.end()) || ((gm!=M_GAME.end())&&(gm->second.modif!=it->second.modif)));
 
 		EImageThumbnail* THM=0;
 
@@ -231,7 +229,7 @@ void CImageManager::SynchronizeTextures(bool sync_thm, bool sync_game, bool bFor
         	THM = xr_new<EImageThumbnail>(it->first.c_str(),EImageThumbnail::EITTexture);
 		    bool bRes = Surface_Load(fn.c_str(),data,w,h,a); R_ASSERT(bRes);
             MakeThumbnailImage(THM,data.begin(),w,h,a);
-            THM->Save	(it->second);
+            THM->Save	(it->second.modif);
         }
         // check game textures
     	if (bForceGame||(sync_game&&bGame)){
@@ -240,11 +238,11 @@ void CImageManager::SynchronizeTextures(bool sync_thm, bool sync_game, bool bFor
             if (data.empty()){ bool bRes = Surface_Load(fn.c_str(),data,w,h,a); R_ASSERT(bRes);}
 			if (IsValidSize(w,h)){
                 AnsiString game_name=AnsiString(base_name)+".dds";
-                Engine.FS.m_GameTextures.Update(game_name);
+                FS.update_path			("$game_textures$",game_name);
                 MakeGameTexture(THM,game_name.c_str(),data.begin());
-                Engine.FS.SetFileAge(game_name, it->second);
+                FS.set_file_age(game_name.c_str(), it->second.modif);
                 if (sync_list) sync_list->push_back(base_name);
-                if (modif_map) (*modif_map)[it->first]=it->second;
+                if (modif_map) modif_map->insert(*it);
                 // save to assoc ltx
                 STextureParams& FMT = THM->_Format();
                 if (FMT.flags.is(STextureParams::flHasDetailTexture)){
@@ -270,13 +268,17 @@ void CImageManager::SynchronizeTextures(bool sync_thm, bool sync_game, bool bFor
 void CImageManager::SynchronizeTexture(LPCSTR tex_name, int age)
 {
     AStringVec modif;
-    FileMap t_map;
-    t_map[tex_name]=age;
-    SynchronizeTextures(true,true,true,&t_map,&modif);
-   	Device.RefreshTextures(&modif);
+    const CLocatorAPI::file* F = FS.exist(tex_name);
+    if (F){
+	    FS_QueryMap t_map;
+		u32 fl = (F->vfs?FS_QueryItem::flVFS:0);
+        t_map.insert(make_pair(tex_name,FS_QueryItem(F->size,F->modif,fl)));
+	    SynchronizeTextures(true,true,true,&t_map,&modif);
+   		Device.RefreshTextures(&modif);
+    }
 }
-
-int	CImageManager::GetServerModifiedTextures(FileMap& files)
+/*
+int	CImageManager::GetServerModifiedTextures(FS_QueryMap& files)
 {
 	FileMap M_BASE;
 	FileMap M_THUM;
@@ -284,12 +286,12 @@ int	CImageManager::GetServerModifiedTextures(FileMap& files)
 
     AnsiString p_base;
     AnsiString p_game;
-    Engine.FS.m_Textures.Update(p_base);
-    Engine.FS.m_GameTextures.Update(p_game);
+    FS.update_path			(p_base,"$textures$","");
+    FS.update_path			(p_game,"$game_textures$","");
 
-    if (0==Engine.FS.GetFileList(p_base.c_str(),M_BASE,true,false,false,"*.tga,*.bmp")) return 0;
-    Engine.FS.GetFileList(p_base.c_str(),M_THUM,true,true,false,"*.thm");
-    Engine.FS.GetFileList(p_game.c_str(),M_GAME,true,true,false,"*.dds");
+    if (0==EFS.GetFileList(p_base.c_str(),M_BASE,true,false,false,"*.tga,*.bmp")) return 0;
+    EFS.GetFileList(p_base.c_str(),M_THUM,true,true,false,"*.thm");
+    EFS.GetFileList(p_game.c_str(),M_GAME,true,true,false,"*.dds");
 
     FilePairIt it=M_BASE.begin();
 	FilePairIt _E = M_BASE.end();
@@ -311,25 +313,20 @@ int	CImageManager::GetServerModifiedTextures(FileMap& files)
     }
     return files.size();
 }
+*/
 //------------------------------------------------------------------------------
 // возвращает список всех текстур
 //------------------------------------------------------------------------------
-int CImageManager::GetTextures(FileMap& files)
-{
-    AnsiString p_base;
-    Engine.FS.m_Textures.Update(p_base);
-    if (0==Engine.FS.GetFileList(p_base.c_str(),files,true,false,false,"*.tga,*.bmp")) return 0;
-    return files.size();
+int CImageManager::GetTextures(FS_QueryMap& files)
+{                	
+    return FS.file_list(files,"$textures$",FS_ListFiles,".tga,.bmp");
 }
 //------------------------------------------------------------------------------
 // возвращает список текстур, которые нужно обновить
 //------------------------------------------------------------------------------
-int CImageManager::GetLocalNewTextures(FileMap& files)
+int CImageManager::GetLocalNewTextures(FS_QueryMap& files)
 {
-    AnsiString p_base;
-    Engine.FS.m_Import.Update(p_base);
-    if (0==Engine.FS.GetFileList(p_base.c_str(),files,true,false,true,"*.tga,*.bmp")) return 0;
-    return files.size();
+    return FS.file_list(files,"$textures$",FS_ListFiles|FS_RootOnly,".tga,.bmp");
 }
 //------------------------------------------------------------------------------
 // проверяет соответствие размера текстур
@@ -343,7 +340,7 @@ BOOL CImageManager::CheckCompliance(LPCSTR fname, int& compl)
     U32Vec data;
     u32 w, h, a;
     if (!Surface_Load(fname,data,w,h,a)) return FALSE;
-    if (1==w & 1==h)					 return TRUE;
+    if ((1==w) || (1==h))				 return TRUE;
 
     u32 w_2 	= (1==w)?w:w/2;
     u32 h_2 	= (1==h)?h:h/2;
@@ -389,19 +386,19 @@ BOOL CImageManager::CheckCompliance(LPCSTR fname, int& compl)
     xr_free   		(pRestored);
     return 			TRUE;
 }
-void CImageManager::CheckCompliance(FileMap& files, FileMap& compl)
+void CImageManager::CheckCompliance(FS_QueryMap& files, FS_QueryMap& compl)
 {
-	UI.ProgressStart(files.size(),"Check texture compliance...");
-    FilePairIt it	= files.begin();
-	FilePairIt _E 	= files.end();
+	UI.ProgressStart(files.size(),"Check texture compliance: ");
+    FS_QueryPairIt it	= files.begin();
+	FS_QueryPairIt _E 	= files.end();
 	for (; it!=_E; it++){
     	int val	= 0;
-        AnsiString 	fname=it->first.c_str();
-        Engine.FS.m_Textures.Update(fname);
+        AnsiString 	fname;
+        FS.update_path			(fname,"$textures$",it->first.c_str());
     	if (!CheckCompliance(fname.c_str(),val))
         	ELog.Msg(mtError,"Bad texture: '%s'",it->first.c_str());
-    	compl[it->first] = iFloor(val);
-    	UI.ProgressInc();
+        compl.insert			(make_pair(it->first,FS_QueryItem(it->second.size,iFloor(val))));
+    	UI.ProgressInc	(it->first.c_str());
 		if (UI.NeedAbort()) break;
     }
 	UI.ProgressEnd();
@@ -539,16 +536,15 @@ void CImageManager::CreateLODTexture(Fbox bbox, LPCSTR tex_name, u32 tgt_w, u32 
     for (int t=0; t<int(new_pixels.size()); t++)
         new_pixels[t]=subst_alpha(new_pixels[t],color_get_A(border_pixels[t]));
 
-    AnsiString out_name=tex_name;
-    Engine.FS.m_Textures.Update(out_name);
-    VerifyPath(out_name.c_str());
+    AnsiString out_name;
+    FS.update_path			(out_name,"$textures$",tex_name);
 
-    CImage* I = xr_new<CImage>();
+    CImage* I 	= xr_new<CImage>();
     I->Create	(tgt_w*samples,tgt_h,new_pixels.begin());
     I->Vflip	();
     I->SaveTGA	(out_name.c_str());
-    xr_delete		(I);
-    Engine.FS.SetFileAge(out_name.c_str(), age);
+    xr_delete	(I);
+    FS.set_file_age(out_name.c_str(), age);
 
     SynchronizeTexture(tex_name,age);
 
@@ -589,27 +585,27 @@ BOOL CImageManager::CreateOBJThumbnail(LPCSTR tex_name, CEditableObject* obj, in
 
 BOOL CImageManager::RemoveTexture(LPCSTR fname)
 {
-	AnsiString src_name=fname;
-    Engine.FS.m_Textures.Update(src_name);
-	if (Engine.FS.Exist(src_name.c_str())){
-        AnsiString base_name 		= ChangeFileExt(fname,"");
+	AnsiString src_name;
+    FS.update_path			(src_name,"$textures$",fname);
+	if (FS.exist(src_name.c_str())){
+        AnsiString base_name= ChangeFileExt(fname,"");
+        AnsiString thm_name = ChangeFileExt(fname,".thm");
+        AnsiString game_name= ChangeFileExt(fname,".dds");
     	// source
-        Engine.FS.BackupFile		(&Engine.FS.m_Textures,fname);
-        Engine.FS.DeleteFileByName	(src_name.c_str());
-        Engine.FS.WriteAccessLog	(src_name.c_str(),"Remove");
+        EFS.BackupFile		("$textures$",fname);
+        FS.file_delete		(src_name.c_str());
+        EFS.WriteAccessLog	(src_name.c_str(),"Remove");
         // thumbnail
-        AnsiString thm_name 		= ChangeFileExt(fname,".thm");
-        Engine.FS.BackupFile		(&Engine.FS.m_Textures,thm_name.c_str());
-        Engine.FS.DeleteFileByName	(&Engine.FS.m_Textures,thm_name.c_str());
+        EFS.BackupFile		("$textures$",thm_name.c_str());
+        FS.file_delete		("$textures$",thm_name.c_str());
         // game
-        AnsiString game_name 		= ChangeFileExt(fname,".dds");
-        Engine.FS.DeleteFileByName	(&Engine.FS.m_GameTextures,game_name.c_str());
+        FS.file_delete		("$game_textures$",game_name.c_str());
         // assoc
-        AnsiString ltx_nm 			= "textures.ltx";
-        Engine.FS.m_GameTextures.Update(ltx_nm);
-        CInifile* ltx_ini 			= xr_new<CInifile>(ltx_nm.c_str(), FALSE, TRUE, TRUE);
-		ltx_ini->remove_line		("association", base_name.c_str());
-        xr_delete					(ltx_ini);
+        AnsiString ltx_nm;
+        FS.update_path		(ltx_nm,"$game_textures$","textures.ltx");
+        CInifile* ltx_ini 	= xr_new<CInifile>(ltx_nm.c_str(), FALSE, TRUE, TRUE);
+		ltx_ini->remove_line("association", base_name.c_str());
+        xr_delete			(ltx_ini);
         return TRUE;
     }
     return FALSE;

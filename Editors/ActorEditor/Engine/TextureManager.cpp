@@ -144,11 +144,7 @@ SVS*	CShaderManager::_CreateVS		(LPCSTR name)
 		LPD3DXSHADER_CONSTANTTABLE	pConstants	= NULL;
 		HRESULT						_hr			= S_OK;
 		string64					cname;
-#ifdef _EDITOR
-		strconcat					(cname, Engine.FS.m_GameShaders.m_Path, name, ".vs");
-#else
-		strconcat					(cname, Path.Shaders, name, ".vs");
-#endif
+		strconcat					(cname, "$game_shaders$", name, ".vs");
 		LPCSTR						target		= NULL;
 
 		if (HW.Caps.vertex.dwVersion>=CAP_VERSION(3,0))			target="vs_3_0";
@@ -157,9 +153,9 @@ SVS*	CShaderManager::_CreateVS		(LPCSTR name)
 
 
 		// vertex
-		IReader*					fs			= Engine.FS.Open(cname);
+		IReader*					fs			= FS.r_open(cname);
 		_hr = D3DXCompileShader		(LPCSTR(fs->pointer()),fs->length(), NULL, NULL, "main", target, D3DXSHADER_DEBUG | D3DXSHADER_PACKMATRIX_ROWMAJOR, &pShaderBuf, &pErrorBuf, NULL);
-		Engine.FS.Close				(fs);
+		FS.r_close					(fs);
 
 		if (SUCCEEDED(_hr))
 		{
@@ -216,16 +212,11 @@ SPS*	CShaderManager::_CreatePS			(LPCSTR name)
 		LPD3DXSHADER_CONSTANTTABLE	pConstants	= NULL;
 		HRESULT						_hr			= S_OK;
 		string64					cname;
-#ifdef _EDITOR
-		strconcat					(cname, Engine.FS.m_GameShaders.m_Path, name, ".ps");
-#else
-		strconcat					(cname, Path.Shaders, name, ".ps");
-#endif
-
+		strconcat					(cname, "$game_shaders$", name, ".ps");
 		// pixel
-		IReader*					fs			= Engine.FS.Open(cname);
+		IReader*					fs			= FS.r_open(cname);
 		_hr = D3DXCompileShader		(LPCSTR(fs->pointer()),fs->length(), NULL, NULL, "main", "ps_2_0", D3DXSHADER_DEBUG | D3DXSHADER_PACKMATRIX_ROWMAJOR, &pShaderBuf, &pErrorBuf, NULL);
-		Engine.FS.Close				(fs);
+		FS.r_close					(fs);
 		if (SUCCEEDED(_hr))
 		{
 			if (pShaderBuf)
@@ -404,9 +395,9 @@ CPS*	CShaderManager::_CreatePS		(LPCSTR cName)
 		strconcat		(fname,Path.GameData,"shaders\\",Name,".ps");
 		LPD3DXBUFFER	code	= 0;
 		LPD3DXBUFFER	errors	= 0;
-		IReader*		fs		= Engine.FS.Open(fname);
+		IReader*		fs		= FS.r_open(fname);
 		R_CHK			(D3DXAssembleShader(LPCSTR(fs->Pointer()),fs->Length(),0,NULL,&code,&errors));
-		Engine.FS.Close	(fs);
+		FS.r_close		(fs);
 		R_CHK			(HW.pDevice->CreatePixelShader(LPDWORD(code->GetBufferPointer()),&PS->dwHandle));
 		_RELEASE		(code);
 		_RELEASE		(errors);
@@ -725,7 +716,7 @@ Shader*	CShaderManager::Create(LPCSTR s_shader, LPCSTR s_textures, LPCSTR s_cons
 	C.bEditor			= FALSE;
 	C.iLayers			= 1;
 	C.bDetail			= FALSE;
-#ifdef M_BORLAND
+#ifdef _EDITOR
     if (!C.BT)			{ ELog.Msg(mtError,"Can't find shader '%s'",s_shader); return 0; }
 	C.bEditor			= TRUE;
 #endif

@@ -9,7 +9,6 @@
 #include "EditorPref.h"
 #include "D3DUtils.h"
 #include "bottombar.h"
-#include "xr_trims.h"
 #include "main.h"
 #include "xr_input.h"
 
@@ -28,7 +27,7 @@ bool TUI::CommandExt(int _Command, int p1, int p2)
         	break;
         }
 		AnsiString fn;
-		if (Engine.FS.GetOpenName(Engine.FS.m_SMotions,fn)){
+		if (EFS.GetOpenName("$smotions$",fn)){
         	Tools.LoadMotions(fn.c_str());
             fraLeftBar->UpdateMotionList();
         }
@@ -40,25 +39,27 @@ bool TUI::CommandExt(int _Command, int p1, int p2)
         	break;
         }
 		AnsiString fn;
-		if (Engine.FS.GetSaveName(Engine.FS.m_SMotions,fn)) Tools.SaveMotions(fn.c_str());
+		if (EFS.GetSaveName("$smotions$",fn)) Tools.SaveMotions(fn.c_str());
         }break;
     case COMMAND_SAVE_BACKUP:{
     	AnsiString fn = AnsiString(Core.UserName)+"_backup.object";
-        Engine.FS.m_Objects.Update(fn);
+        FS.update_path("$objects$",fn);
     	Command(COMMAND_SAVEAS,(int)fn.c_str());
     }break;
     case COMMAND_SAVEAS:{
-		AnsiString fn = m_LastFileName;
-		if (p1||Engine.FS.GetSaveName(Engine.FS.m_Objects,fn)){ 
+		AnsiString fn = ChangeFileExt(m_LastFileName,".object");
+		if (p1||EFS.GetSaveName("$objects$",fn,NULL,0)){ 
         	if (p1) fn= (LPCSTR)p1;
         	bRes=Command(COMMAND_SAVE, (u32)fn.c_str());
+        }else{
+        	bRes=false;
         }
         if (bRes){
 			// unlock
-   	        Engine.FS.UnlockFile(0,m_LastFileName);
+   	        EFS.UnlockFile(0,m_LastFileName);
         	strcpy(m_LastFileName,fn.c_str());
         	Command(COMMAND_UPDATE_CAPTION);
-            Engine.FS.LockFile(0,m_LastFileName);
+            EFS.LockFile(0,m_LastFileName);
             fraLeftBar->AppendRecentFile(m_LastFileName);
         }
     	}break;
@@ -66,18 +67,18 @@ bool TUI::CommandExt(int _Command, int p1, int p2)
     	AnsiString fn;
         if (p1)	fn = (char*)p1;
         else	fn = m_LastFileName;
-        Engine.FS.UnlockFile(0,m_LastFileName);
+        EFS.UnlockFile(0,m_LastFileName);
 		if (Tools.Save(fn.c_str())){
         	Command(COMMAND_UPDATE_CAPTION);
 			fraLeftBar->AppendRecentFile(fn.c_str());
         }else{
         	bRes=false;
         }
-        Engine.FS.LockFile(0,m_LastFileName);
+        EFS.LockFile(0,m_LastFileName);
     	}break;
     case COMMAND_IMPORT:{
     	AnsiString fn;
-    	if (Engine.FS.GetOpenName(Engine.FS.m_Import,fn)){
+    	if (EFS.GetOpenName("$import$",fn)){
             if (!Tools.IfModified()){
                 bRes=false;
                 break;
@@ -89,7 +90,7 @@ bool TUI::CommandExt(int _Command, int p1, int p2)
             }
 			strcpy(m_LastFileName,ExtractFileName(fn).c_str());
 			if (Command( COMMAND_SAVEAS )){
-	            Engine.FS.MarkFile(fn.c_str(),true);
+	            EFS.MarkFile(fn.c_str(),true);
 			    fraLeftBar->UpdateMotionList();
             }else{
             	Command( COMMAND_CLEAR );
@@ -98,13 +99,13 @@ bool TUI::CommandExt(int _Command, int p1, int p2)
     	}break;
     case COMMAND_EXPORT_SKELETON:{
     	AnsiString fn;
-    	if (Engine.FS.GetSaveName(Engine.FS.m_GameMeshes,fn))
+    	if (EFS.GetSaveName("$game_meshes$",fn))
             if (Tools.ExportSkeleton(fn.c_str()))	ELog.DlgMsg(mtInformation,"Export complete.");
             else			        		    	ELog.DlgMsg(mtError,"Export failed.");
     	}break;
     case COMMAND_EXPORT_OBJECT:{
     	AnsiString fn;
-    	if (Engine.FS.GetSaveName(Engine.FS.m_GameMeshes,fn))
+    	if (EFS.GetSaveName("$game_meshes$",fn))
             if (Tools.ExportObject(fn.c_str()))	ELog.DlgMsg(mtInformation,"Export complete.");
             else			        		    	ELog.DlgMsg(mtError,"Export failed.");
     	}break;
@@ -112,17 +113,17 @@ bool TUI::CommandExt(int _Command, int p1, int p2)
     	AnsiString fn;
         if (p1)	fn = (char*)p1;
         else	fn = m_LastFileName;
-        if( p1 || Engine.FS.GetOpenName( Engine.FS.m_Objects, fn ) ){
+        if( p1 || EFS.GetOpenName("$objects$", fn ) ){
             if (!Tools.IfModified()){
                 bRes=false;
                 break;
             }
-            if ((0!=stricmp(fn.c_str(),m_LastFileName))&&Engine.FS.CheckLocking(0,fn.c_str(),false,true)){
+            if ((0!=stricmp(fn.c_str(),m_LastFileName))&&EFS.CheckLocking(0,fn.c_str(),false,true)){
                 bRes=false;
                 break;
             }
-            if ((0==stricmp(fn.c_str(),m_LastFileName))&&Engine.FS.CheckLocking(0,fn.c_str(),true,false)){
-                Engine.FS.UnlockFile(0,fn.c_str());
+            if ((0==stricmp(fn.c_str(),m_LastFileName))&&EFS.CheckLocking(0,fn.c_str(),true,false)){
+                EFS.UnlockFile(0,fn.c_str());
             }
 			Command( COMMAND_CLEAR );
 	    	if (!Tools.Load(fn.c_str())){
@@ -134,14 +135,14 @@ bool TUI::CommandExt(int _Command, int p1, int p2)
 		    fraLeftBar->UpdateMotionList();
         	Command(COMMAND_UPDATE_CAPTION);
 			// lock
-			Engine.FS.LockFile(0,m_LastFileName);
+			EFS.LockFile(0,m_LastFileName);
         }
     	}break;
 	case COMMAND_CLEAR:
 		{
             if (!Tools.IfModified()) return false;
 			// unlock
-			Engine.FS.UnlockFile(0,m_LastFileName);
+			EFS.UnlockFile(0,m_LastFileName);
 			m_LastFileName[0]=0;
 			Device.m_Camera.Reset();
             Tools.Clear();

@@ -2,8 +2,8 @@
 // file: Library.h
 //----------------------------------------------------
 
-#ifndef _INCDEF_Library_H_
-#define _INCDEF_Library_H_
+#ifndef LibraryH
+#define LibraryH
 
 #include "pure.h"
 //----------------------------------------------------
@@ -16,7 +16,6 @@ class ELibrary:	public pureDeviceCreate, public pureDeviceDestroy
 	bool				m_bReady;
 	friend class TfrmChoseObject;
 	EditObjMap			m_EditObjects;
-    FileMap				m_Objects;
     AnsiString			m_Current;
 
     CEditableObject*	LoadEditObject		(LPCSTR name, int age);
@@ -31,17 +30,13 @@ public:
     void 				ReloadObjects		();
     void 				RefreshLibrary		();
     void 				ReloadObject		(LPCSTR name);
-//    void				ResetAnimation		();
-
-//	void 				GenerateObjectName	(char* buffer, const char* start_name, const CLibObject* pass_object);
 
     void				SetCurrentObject	(LPCSTR T);
     LPCSTR				GetCurrentObject	(){return m_Current.IsEmpty()?0:m_Current.c_str();}
     CEditableObject*	CreateEditObject	(LPCSTR name,int* age=0);
     void				RemoveEditObject	(CEditableObject*& object);
 
-	int 				ObjectCount        	();
-	FileMap&			Objects	        	(){return m_Objects;}
+    int					GetObjects			(FS_QueryMap& files);
 
     void				EvictObjects		();
 

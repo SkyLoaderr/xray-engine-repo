@@ -27,7 +27,6 @@ class TfrmChoseItem : public TForm
 {
 __published:	// IDE-managed Components
     TPanel *Panel1;
-	TElTree *tvItems;
 	TFormStorage *fsStorage;
 	TPanel *paMulti;
 	TElTree *tvMulti;
@@ -47,6 +46,9 @@ __published:	// IDE-managed Components
 	TLabel *lbInfo;
 	TPanel *paImage;
 	TPaintBox *pbImage;
+	TPanel *Panel4;
+	TElTree *tvItems;
+	TPanel *paItemsCount;
     void __fastcall sbSelectClick(TObject *Sender);
     void __fastcall sbCancelClick(TObject *Sender);
     void __fastcall FormShow(TObject *Sender);

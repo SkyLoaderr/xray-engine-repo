@@ -86,12 +86,7 @@ void CTexture::Load(LPCSTR cName)
 
 	// Check for AVI
 	string256 fn;
-#ifndef M_BORLAND
-	if (Engine.FS.Exist(fn,Path.Textures,cName,".avi"))
-#else
-	if (Engine.FS.Exist(fn,Engine.FS.m_GameTextures.m_Path,cName,".avi"))
-#endif
-	{
+	if (FS.exist(fn,"$game_textures$",cName,".avi")){
 		// AVI
 		pAVI = xr_new<CAviPlayerCustom>();
 		if (!pAVI->Load(fn)) {
@@ -117,15 +112,10 @@ void CTexture::Load(LPCSTR cName)
 
 		}
 	} else
-#ifndef M_BORLAND
-    if (Engine.FS.Exist(fn,Path.Textures,cName,".seq"))
-#else
-    if (Engine.FS.Exist(fn,Engine.FS.m_GameTextures.m_Path,cName,".seq"))
-#endif
-	{
+    if (FS.exist(fn,"$game_textures$",cName,".seq")){
 		// Sequence
 		char buffer[256];
-		destructor<IReader>	fs(Engine.FS.Open(fn));
+		destructor<IReader>	fs(FS.r_open(fn));
 
 		seqCycles	= FALSE;
 		fs().r_string	(buffer);

@@ -5,14 +5,14 @@
 #include "ui_main.h"
 //---------------------------------------------------------------------------
 
-void TUI::CreateMailslot()
+bool TUI::CreateMailslot()
 {
 	AnsiString slot_name = AnsiString("\\\\.\\mailslot\\")+AnsiString(_EDITOR_FILE_NAME_);
     hMailSlot = ::CreateMailslot(slot_name.c_str(),
         0,                             // no maximum message size
         MAILSLOT_WAIT_FOREVER,         // no time-out for operations
         (LPSECURITY_ATTRIBUTES) NULL); // no security attributes
-    R_ASSERT2(hMailSlot != INVALID_HANDLE_VALUE,"Can't create mailslot");
+    return (hMailSlot != INVALID_HANDLE_VALUE);
 }
 //---------------------------------------------------------------------------
 

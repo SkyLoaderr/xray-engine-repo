@@ -5,7 +5,6 @@
 #include "BottomBar.h"
 #include "UI_Main.h"
 #include "main.h"
-#include "xr_trims.h"
 #include "UI_Tools.h"
 #include "FolderLib.h"
 #include "EditObject.h"
@@ -103,7 +102,7 @@ void __fastcall TfraLeftBar::miRecentFilesClick(TObject *Sender)
 {
 	TMenuItem* MI = dynamic_cast<TMenuItem*>(Sender); R_ASSERT(MI&&(MI->Tag==0x1001));
     AnsiString fn = MI->Caption;
-    if (Engine.FS.Exist(fn.c_str()))	UI.Command(COMMAND_LOAD,(u32)fn.c_str());
+    if (FS.exist(fn.c_str()))	UI.Command(COMMAND_LOAD,(u32)fn.c_str());
     else						ELog.DlgMsg(mtError, "Error reading file '%s'",fn.c_str());
 }
 //---------------------------------------------------------------------------
@@ -111,8 +110,8 @@ void __fastcall TfraLeftBar::miRecentFilesClick(TObject *Sender)
 
 void __fastcall TfraLeftBar::fsStorageSavePlacement(TObject *Sender)
 {
-    Tools.m_ObjectProps->SaveColumnWidth(fsStorage);
-    Tools.m_MotionProps->SaveColumnWidth(fsStorage);
+    Tools.m_ObjectProps->SaveParams(fsStorage);
+    Tools.m_MotionProps->SaveParams(fsStorage);
     Tools.m_PreviewObject.SaveParams(fsStorage);
 	for (int i = 0; i < miRecentFiles->Count; i++)
 	{
@@ -124,8 +123,8 @@ void __fastcall TfraLeftBar::fsStorageSavePlacement(TObject *Sender)
 
 void __fastcall TfraLeftBar::fsStorageRestorePlacement(TObject *Sender)
 {
-    Tools.m_ObjectProps->RestoreColumnWidth(fsStorage);
-    Tools.m_MotionProps->RestoreColumnWidth(fsStorage);
+    Tools.m_ObjectProps->RestoreParams(fsStorage);
+    Tools.m_MotionProps->RestoreParams(fsStorage);
     Tools.m_PreviewObject.RestoreParams(fsStorage);
 }
 //---------------------------------------------------------------------------
@@ -388,7 +387,7 @@ void __fastcall TfraLeftBar::InplaceParticleEditValidateResult(
 void __fastcall TfraLeftBar::ebMotionsAppendClick(TObject *Sender)
 {
     AnsiString folder,nm,fnames,full_name;
-    if (Engine.FS.GetOpenName(Engine.FS.m_SMotion,fnames,true)){
+    if (EFS.GetOpenName("$smotion$",fnames,true)){
 	    AStringVec lst;
     	_SequenceToList(lst,fnames.c_str());
         tvMotions->IsUpdating = true;

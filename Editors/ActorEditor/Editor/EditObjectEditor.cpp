@@ -242,7 +242,7 @@ AnsiString CEditableObject::GetLODTextureName()
 	AnsiString l_name;
     string256 nm; strcpy(nm,m_LibName.c_str()); _ChangeSymbol(nm,'\\','_');
     l_name = "lod_"+AnsiString(nm);
-    l_name = Engine.FS.UpdateTextureNameWithFolder(l_name);
+    l_name = EFS.UpdateTextureNameWithFolder(l_name);
     return l_name;
 }
 
@@ -276,7 +276,7 @@ void CEditableObject::DefferedLoadRP()
 	AnsiString l_name = GetLODTextureName();
     AnsiString fname = l_name+AnsiString(".tga");
     Device.Shader.Delete(m_LODShader);
-    if (Engine.FS.Exist(&Engine.FS.m_Textures,fname.c_str()))
+    if (FS.exist("$textures$",fname.c_str()))
     	m_LODShader = Device.Shader.Create(GetLODShaderName(),l_name.c_str());
     m_LoadState |= EOBJECT_LS_DEFFEREDRP;
 }
