@@ -28,8 +28,35 @@ struct st_WB{
 			st_WB	(int b, float w):bone(b),weight(w){;}
 	void	set		(int b, float w){bone=b;weight=w;}
 };
-IC bool operator < (const st_WB& x, const st_WB& y){ return x.weight > y.weight; } // отсортировать по убыванию
 DEFINE_VECTOR(st_WB,WBVec,WBIt);
+bool compare_by_weight(const st_WB& a, const st_WB& b)
+{
+	return a.weight > b.weight; // отсортировать по убыванию
+}
+bool compare_by_bone(const st_WB& a, const st_WB& b)
+{
+	return a.bone < b.bone; // отсортировать по возрастанию
+}
+IC void WB_SortByBone(WBVec& wb)
+{
+	std::sort(wb.begin(),wb.end(),compare_by_weight);
+}
+IC void WB_SortByWeight(WBVec& wb)
+{
+	std::sort(wb.begin(),wb.end(),compare_by_bone);
+}
+IC void WB_NormalizeWeights(WBVec& wb, int max_influence)
+{
+	if (wb.size()>max_influence){	
+		WBIt it;
+		wb.erase		(wb.begin()+2,wb.end()); // delete >2 weight
+		WB_SortByWeight	(wb);
+		float sum_weight=0;
+		for (it=wb.begin(); it!=wb.end(); it++) sum_weight+=it->weight;
+		for (it=wb.begin(); it!=wb.end(); it++) it->weight/=sum_weight;
+		WB_SortByBone	(wb);
+	}
+}
 
 struct st_VMapPt{
 	int				vmap_index;	// ссылка на мапу
