@@ -144,10 +144,9 @@ void CWeaponMagazined::ReloadMagazine	()
 }
 void CWeaponMagazined::Update(float dt, BOOL bHUDView)
 {
-	BOOL bShot			= false;
-
 	inherited::Update	(dt,bHUDView);
 	VERIFY				(m_pParent);
+	bVisible			= FALSE;
 	
 	// on state change
 	if (st_target!=st_current)
@@ -197,10 +196,12 @@ void CWeaponMagazined::Update(float dt, BOOL bHUDView)
 	case eIdle:
 	case eShowing:
 	case eHiding:
+		bVisible		= TRUE;
 		fTime			-=	dt;
 		if (fTime<0)	fTime = 0;
 		break;
 	case eFire:
+		bVisible		= TRUE;
 		{
 			UpdateFP				(bHUDView);
 			fTime					-=dt;
@@ -218,6 +219,7 @@ void CWeaponMagazined::Update(float dt, BOOL bHUDView)
 		}
 		break;
 	case eMagEmpty:
+		bVisible		= TRUE;
 		{
 			UpdateFP	(bHUDView);
 			fTime		-=dt;
@@ -275,12 +277,12 @@ void CWeaponMagazined::SetDefaults	()
 void CWeaponMagazined::Hide		()
 {
 	inherited::Hide				();
-	Log							("Hide: ",GetName());
+//	Log							("Hide: ",GetName());
 }
 void CWeaponMagazined::Show		()
 {
 	inherited::Show				();
-	Log							("Show: ",GetName());
+//	Log							("Show: ",GetName());
 }
 void CWeaponMagazined::OnShow	()
 {
