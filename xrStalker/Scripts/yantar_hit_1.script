@@ -1,0 +1,33 @@
+module("blood_sucker")
+
+function main()
+	local npc_name	= "m_stalker_e0003"
+	local work		= false
+	local hit		= nil
+	
+	while(true) do
+		if(level.object(npc_name)) then
+			if(work == false) then
+				hit		= blood_sucker.CObjectHit(npc_name)
+				work 	= true
+				hit:initialize()
+			end
+		else
+			work = false
+			if(hit) then
+				hit:finalize()
+				nit = nil
+			end
+		end
+		
+		if(work and hit) then
+			if(hit:execute() == false) then
+				// Условие окончания скрипта
+				hit:finalize()
+				return
+			end
+		end
+		
+		wait()
+	end
+end 
