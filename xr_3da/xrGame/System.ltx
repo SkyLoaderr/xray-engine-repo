@@ -227,7 +227,7 @@ slot_name_8		= PDA
 GroupControlSection	= spawn_group
 $spawn 				= "physics\hanging lamp"
 class				= O_HLAMP
-script_binding      = physic_object.init
+script_binding      = bind_physic_object.init
 
 [physic_object]
 GroupControlSection	= spawn_group
@@ -235,7 +235,7 @@ $spawn 				= "physics\object"
 $prefetch 			= 8
 class				= O_PHYSIC
 remove_time			= 120; after this time  unbreaked removable bone will be removed
-script_binding      = physic_object.init
+script_binding      = bind_physic_object.init
 
 [physic_destroyable_object]
 GroupControlSection	= spawn_group
@@ -243,7 +243,7 @@ $spawn 				= "physics\destroyable_object"
 ;$prefetch 			= 8
 class				= P_DSTRBL
 remove_time			= 120; after this time  unbreaked removable bone will be removed
-script_binding      = physic_object.init
+script_binding      = bind_physic_object.init
 
 [search_light]
 GroupControlSection	= spawn_group
