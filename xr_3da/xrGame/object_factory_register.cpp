@@ -161,10 +161,10 @@ void CObjectFactory::register_classes	()
 {
 #ifndef NO_XR_GAME
 	// client entities
-	add<CLevel>													(CLSID_GAME_LEVEL			,"level");
-	add<CGamePersistent>										(CLSID_GAME_PERSISTANT		,"game");
-	add<CHUDManager>											(CLSID_HUDMANAGER			,"hud_manager");
-	add<CCustomTarget>											(CLSID_TARGET				,"custom_target");
+	add<CLevel>													(CLSID_GAME_LEVEL				,"level");
+	add<CGamePersistent>										(CLSID_GAME_PERSISTANT			,"game");
+	add<CHUDManager>											(CLSID_HUDMANAGER				,"hud_manager");
+	add<CCustomTarget>											(CLSID_TARGET					,"custom_target");
 
 	//Server Game type
 	add<game_sv_Single>											(CLSID_SV_GAME_SINGLE			,"game_sv_single");
@@ -186,154 +186,154 @@ void CObjectFactory::register_classes	()
 #endif
 
 	// server entities
-	add<CSE_ALifeGroupTemplate<CSE_ALifeMonsterRat>	>			(CLSID_AI_RAT_GROUP			,"rat_group");
-	add<CSE_ALifeGroupTemplate<CSE_ALifeMonsterBase> >		(CLSID_AI_FLESH_GROUP		,"flesh_group");
-	add<CSE_SpawnGroup>											(CLSID_AI_SPAWN_GROUP		,"spawn_group");
-	add<CSE_Event>												(CLSID_EVENT				,"event");
-	add<CSE_ALifeGraphPoint>									(CLSID_AI_GRAPH				,"graph_point");
+	add<CSE_ALifeGroupTemplate<CSE_ALifeMonsterRat>	>			(CLSID_AI_RAT_GROUP				,"rat_group");
+	add<CSE_ALifeGroupTemplate<CSE_ALifeMonsterBase> >			(CLSID_AI_FLESH_GROUP			,"flesh_group");
+	add<CSE_SpawnGroup>											(CLSID_AI_SPAWN_GROUP			,"spawn_group");
+	add<CSE_Event>												(CLSID_EVENT					,"event");
+	add<CSE_ALifeGraphPoint>									(CLSID_AI_GRAPH					,"graph_point");
 
 	// client and server entities
-	ADD(CActor					,CSE_ALifeCreatureActor			,CLSID_OBJECT_ACTOR			,"actor");
-	ADD(CSpectator				,CSE_Spectator					,CLSID_SPECTATOR			,"spectator");
+	ADD(CActor					,CSE_ALifeCreatureActor			,CLSID_OBJECT_ACTOR				,"actor");
+	ADD(CSpectator				,CSE_Spectator					,CLSID_SPECTATOR				,"spectator");
 
-	ADD(CAI_Rat					,CSE_ALifeMonsterRat			,CLSID_AI_RAT				,"rat");
-	ADD(CAI_Flesh				,CSE_ALifeMonsterBase			,CLSID_AI_FLESH				,"flesh");
-	ADD(CChimera				,CSE_ALifeMonsterBase			,CLSID_AI_CHIMERA			,"chimera");
-	ADD(CAI_Dog					,CSE_ALifeMonsterBase			,CLSID_AI_DOG_RED			,"dog_red");
-	ADD(CAI_Stalker				,CSE_ALifeHumanStalker			,CLSID_AI_SOLDIER			,"soldier");
-	ADD(CAI_Stalker				,CSE_ALifeHumanStalker			,CLSID_AI_STALKER			,"stalker");
-	ADD(CAI_Idol				,CSE_ALifeObjectIdol			,CLSID_AI_IDOL				,"idol");
-	ADD(CAI_Bloodsucker			,CSE_ALifeMonsterBase			,CLSID_AI_BLOODSUCKER		,"bloodsucker");
-	ADD(CAI_Boar				,CSE_ALifeMonsterBase			,CLSID_AI_BOAR				,"boar");
-	ADD(CAI_PseudoDog			,CSE_ALifeMonsterBase			,CLSID_AI_DOG_BLACK			,"dog_black");
-	ADD(CBurer					,CSE_ALifeMonsterBase			,CLSID_AI_BURER				,"burer");
-	ADD(CPseudoGigant			,CSE_ALifeMonsterBase			,CLSID_AI_GIANT				,"pseudo_gigant");
-	ADD(CController				,CSE_ALifeMonsterBase			,CLSID_AI_CONTROLLER		,"controller");
-	ADD(CPoltergeist			,CSE_ALifeMonsterBase			,CLSID_AI_PHANTOM			,"poltergeist");
-	ADD(CZombie					,CSE_ALifeMonsterBase			,CLSID_AI_ZOMBIE			,"zombie");
-	ADD(CFracture				,CSE_ALifeMonsterBase			,CLSID_AI_FRACTURE			,"fracture");
-	ADD(CSnork					,CSE_ALifeMonsterBase			,CLSID_AI_SNORK				,"snork");
+	ADD(CAI_Rat					,CSE_ALifeMonsterRat			,CLSID_AI_RAT					,"rat");
+	ADD(CAI_Flesh				,CSE_ALifeMonsterBase			,CLSID_AI_FLESH					,"flesh");
+	ADD(CChimera				,CSE_ALifeMonsterBase			,CLSID_AI_CHIMERA				,"chimera");
+	ADD(CAI_Dog					,CSE_ALifeMonsterBase			,CLSID_AI_DOG_RED				,"dog_red");
+	ADD(CAI_Stalker				,CSE_ALifeHumanStalker			,CLSID_AI_SOLDIER				,"soldier");
+	ADD(CAI_Stalker				,CSE_ALifeHumanStalker			,CLSID_AI_STALKER				,"stalker");
+	ADD(CAI_Idol				,CSE_ALifeObjectIdol			,CLSID_AI_IDOL					,"idol");
+	ADD(CAI_Bloodsucker			,CSE_ALifeMonsterBase			,CLSID_AI_BLOODSUCKER			,"bloodsucker");
+	ADD(CAI_Boar				,CSE_ALifeMonsterBase			,CLSID_AI_BOAR					,"boar");
+	ADD(CAI_PseudoDog			,CSE_ALifeMonsterBase			,CLSID_AI_DOG_BLACK				,"dog_black");
+	ADD(CBurer					,CSE_ALifeMonsterBase			,CLSID_AI_BURER					,"burer");
+	ADD(CPseudoGigant			,CSE_ALifeMonsterBase			,CLSID_AI_GIANT					,"pseudo_gigant");
+	ADD(CController				,CSE_ALifeMonsterBase			,CLSID_AI_CONTROLLER			,"controller");
+	ADD(CPoltergeist			,CSE_ALifeMonsterBase			,CLSID_AI_PHANTOM				,"poltergeist");
+	ADD(CZombie					,CSE_ALifeMonsterBase			,CLSID_AI_ZOMBIE				,"zombie");
+	ADD(CFracture				,CSE_ALifeMonsterBase			,CLSID_AI_FRACTURE				,"fracture");
+	ADD(CSnork					,CSE_ALifeMonsterBase			,CLSID_AI_SNORK					,"snork");
 
 	// Trader
-	ADD(CAI_Trader				,CSE_ALifeTrader				,CLSID_AI_TRADER			,"trader");
+	ADD(CAI_Trader				,CSE_ALifeTrader				,CLSID_AI_TRADER				,"trader");
 
-	ADD(CAI_Crow				,CSE_ALifeCreatureCrow			,CLSID_AI_CROW				,"crow");
-	ADD(CCar					,CSE_ALifeCar					,CLSID_CAR					,"car");
+	ADD(CAI_Crow				,CSE_ALifeCreatureCrow			,CLSID_AI_CROW					,"crow");
+	ADD(CCar					,CSE_ALifeCar					,CLSID_CAR						,"car");
 
-	ADD(CHelicopter				,CSE_ALifeHelicopter			,CLSID_VEHICLE_HELICOPTER	,"helicopter");
+	ADD(CHelicopter				,CSE_ALifeHelicopter			,CLSID_VEHICLE_HELICOPTER		,"helicopter");
 
 	// Artefacts
-	ADD(CMercuryBall			,CSE_ALifeItemArtefact			,CLSID_AF_MERCURY_BALL		,"art_mercury_ball");
-	ADD(CBlackDrops				,CSE_ALifeItemArtefact			,CLSID_AF_BLACKDROPS		,"art_black_drops");
-	ADD(CBlackGraviArtefact		,CSE_ALifeItemArtefact			,CLSID_AF_NEEDLES			,"art_needles");
-	ADD(CBastArtefact			,CSE_ALifeItemArtefact			,CLSID_AF_BAST				,"art_bast_artefact");
-	ADD(CBlackGraviArtefact		,CSE_ALifeItemArtefact			,CLSID_AF_BLACK_GRAVI		,"art_gravi_black");
-	ADD(CDummyArtefact			,CSE_ALifeItemArtefact			,CLSID_AF_DUMMY				,"art_dummy");
-	ADD(CZudaArtefact			,CSE_ALifeItemArtefact			,CLSID_AF_ZUDA				,"art_zuda");
-	ADD(CThornArtefact			,CSE_ALifeItemArtefact			,CLSID_AF_THORN				,"art_thorn");
-	ADD(CFadedBall				,CSE_ALifeItemArtefact			,CLSID_AF_FADED_BALL		,"art_faded_ball");
-	ADD(CElectricBall			,CSE_ALifeItemArtefact			,CLSID_AF_ELECTRIC_BALL		,"art_electric_ball");
-	ADD(CRustyHairArtefact		,CSE_ALifeItemArtefact			,CLSID_AF_RUSTY_HAIR		,"art_rusty_hair");
-	ADD(CGalantineArtefact		,CSE_ALifeItemArtefact			,CLSID_AF_GALANTINE			,"art_galantine");
-	ADD(CGraviArtefact			,CSE_ALifeItemArtefact			,CLSID_AF_GRAVI				,"art_gravi");
-	ADD(CGraviArtefact			,CSE_ALifeItemArtefact			,CLSID_ARTEFACT				,"artefact");
+	ADD(CMercuryBall			,CSE_ALifeItemArtefact			,CLSID_AF_MERCURY_BALL			,"art_mercury_ball");
+	ADD(CBlackDrops				,CSE_ALifeItemArtefact			,CLSID_AF_BLACKDROPS			,"art_black_drops");
+	ADD(CBlackGraviArtefact		,CSE_ALifeItemArtefact			,CLSID_AF_NEEDLES				,"art_needles");
+	ADD(CBastArtefact			,CSE_ALifeItemArtefact			,CLSID_AF_BAST					,"art_bast_artefact");
+	ADD(CBlackGraviArtefact		,CSE_ALifeItemArtefact			,CLSID_AF_BLACK_GRAVI			,"art_gravi_black");
+	ADD(CDummyArtefact			,CSE_ALifeItemArtefact			,CLSID_AF_DUMMY					,"art_dummy");
+	ADD(CZudaArtefact			,CSE_ALifeItemArtefact			,CLSID_AF_ZUDA					,"art_zuda");
+	ADD(CThornArtefact			,CSE_ALifeItemArtefact			,CLSID_AF_THORN					,"art_thorn");
+	ADD(CFadedBall				,CSE_ALifeItemArtefact			,CLSID_AF_FADED_BALL			,"art_faded_ball");
+	ADD(CElectricBall			,CSE_ALifeItemArtefact			,CLSID_AF_ELECTRIC_BALL			,"art_electric_ball");
+	ADD(CRustyHairArtefact		,CSE_ALifeItemArtefact			,CLSID_AF_RUSTY_HAIR			,"art_rusty_hair");
+	ADD(CGalantineArtefact		,CSE_ALifeItemArtefact			,CLSID_AF_GALANTINE				,"art_galantine");
+	ADD(CGraviArtefact			,CSE_ALifeItemArtefact			,CLSID_AF_GRAVI					,"art_gravi");
+	ADD(CGraviArtefact			,CSE_ALifeItemArtefact			,CLSID_ARTEFACT					,"artefact");
 
 	// Targets
-	ADD(CTargetAssault			,CSE_TargetAssault				,CLSID_TARGET_ASSAULT		,"net_target_assault");
-	ADD(CTargetCSBase			,CSE_Target_CS_Base				,CLSID_TARGET_CS_BASE		,"net_target_cs_base");
-	ADD(CTargetCSCask			,CSE_Target_CS_Cask				,CLSID_TARGET_CS_CASK		,"net_target_cs_cask");
-	ADD(CTargetCS				,CSE_Target_CS					,CLSID_TARGET_CS			,"net_target_cs");
+	ADD(CTargetAssault			,CSE_TargetAssault				,CLSID_TARGET_ASSAULT			,"net_target_assault");
+	ADD(CTargetCSBase			,CSE_Target_CS_Base				,CLSID_TARGET_CS_BASE			,"net_target_cs_base");
+	ADD(CTargetCSCask			,CSE_Target_CS_Cask				,CLSID_TARGET_CS_CASK			,"net_target_cs_cask");
+	ADD(CTargetCS				,CSE_Target_CS					,CLSID_TARGET_CS				,"net_target_cs");
 	
-	ADD(CWeaponFN2000			,CSE_ALifeItemWeapon			,CLSID_OBJECT_W_FN2000		,"wpn_fn2000");
-	ADD(CWeaponAK74				,CSE_ALifeItemWeapon			,CLSID_OBJECT_W_AK74		,"wpn_ak74");
-	ADD(CWeaponLR300			,CSE_ALifeItemWeapon			,CLSID_OBJECT_W_LR300		,"wpn_lr300");
-	ADD(CWeaponHPSA				,CSE_ALifeItemWeapon			,CLSID_OBJECT_W_HPSA		,"wpn_hpsa");
-	ADD(CWeaponPM				,CSE_ALifeItemWeapon			,CLSID_OBJECT_W_PM			,"wpn_pm");
-	ADD(CWeaponFORT				,CSE_ALifeItemWeapon			,CLSID_OBJECT_W_FORT		,"wpn_fort");
-	ADD(CWeaponBinoculars		,CSE_ALifeItem					,CLSID_OBJECT_W_BINOCULAR	,"wpn_binocular");
-	ADD(CWeaponShotgun			,CSE_ALifeItemWeapon			,CLSID_OBJECT_W_SHOTGUN		,"wpn_shotgun");
-	ADD(CWeaponSVD				,CSE_ALifeItemWeapon			,CLSID_OBJECT_W_SVD			,"wpn_svd");
-	ADD(CWeaponSVU				,CSE_ALifeItemWeapon			,CLSID_OBJECT_W_SVU			,"wpn_svu");
-	ADD(CWeaponRPG7				,CSE_ALifeItemWeapon			,CLSID_OBJECT_W_RPG7		,"wpn_rpg7");
-	ADD(CWeaponVal				,CSE_ALifeItemWeapon			,CLSID_OBJECT_W_VAL			,"wpn_val");
-	ADD(CWeaponVintorez			,CSE_ALifeItemWeapon			,CLSID_OBJECT_W_VINTOREZ	,"wpn_vintorez");
-	ADD(CWeaponWalther			,CSE_ALifeItemWeapon			,CLSID_OBJECT_W_WALTHER		,"wpn_walther");
-	ADD(CWeaponUSP45			,CSE_ALifeItemWeapon			,CLSID_OBJECT_W_USP45		,"wpn_usp45");
-	ADD(CWeaponGroza			,CSE_ALifeItemWeapon			,CLSID_OBJECT_W_GROZA		,"wpn_groza");
-	ADD(CWeaponKnife			,CSE_ALifeItemWeapon			,CLSID_OBJECT_W_KNIFE		,"wpn_knife");
+	ADD(CWeaponFN2000			,CSE_ALifeItemWeapon			,CLSID_OBJECT_W_FN2000			,"wpn_fn2000");
+	ADD(CWeaponAK74				,CSE_ALifeItemWeapon			,CLSID_OBJECT_W_AK74			,"wpn_ak74");
+	ADD(CWeaponLR300			,CSE_ALifeItemWeapon			,CLSID_OBJECT_W_LR300			,"wpn_lr300");
+	ADD(CWeaponHPSA				,CSE_ALifeItemWeapon			,CLSID_OBJECT_W_HPSA			,"wpn_hpsa");
+	ADD(CWeaponPM				,CSE_ALifeItemWeapon			,CLSID_OBJECT_W_PM				,"wpn_pm");
+	ADD(CWeaponFORT				,CSE_ALifeItemWeapon			,CLSID_OBJECT_W_FORT			,"wpn_fort");
+	ADD(CWeaponBinoculars		,CSE_ALifeItem					,CLSID_OBJECT_W_BINOCULAR		,"wpn_binocular");
+	ADD(CWeaponShotgun			,CSE_ALifeItemWeapon			,CLSID_OBJECT_W_SHOTGUN			,"wpn_shotgun");
+	ADD(CWeaponSVD				,CSE_ALifeItemWeapon			,CLSID_OBJECT_W_SVD				,"wpn_svd");
+	ADD(CWeaponSVU				,CSE_ALifeItemWeapon			,CLSID_OBJECT_W_SVU				,"wpn_svu");
+	ADD(CWeaponRPG7				,CSE_ALifeItemWeapon			,CLSID_OBJECT_W_RPG7			,"wpn_rpg7");
+	ADD(CWeaponVal				,CSE_ALifeItemWeapon			,CLSID_OBJECT_W_VAL				,"wpn_val");
+	ADD(CWeaponVintorez			,CSE_ALifeItemWeapon			,CLSID_OBJECT_W_VINTOREZ		,"wpn_vintorez");
+	ADD(CWeaponWalther			,CSE_ALifeItemWeapon			,CLSID_OBJECT_W_WALTHER			,"wpn_walther");
+	ADD(CWeaponUSP45			,CSE_ALifeItemWeapon			,CLSID_OBJECT_W_USP45			,"wpn_usp45");
+	ADD(CWeaponGroza			,CSE_ALifeItemWeapon			,CLSID_OBJECT_W_GROZA			,"wpn_groza");
+	ADD(CWeaponKnife			,CSE_ALifeItemWeapon			,CLSID_OBJECT_W_KNIFE			,"wpn_knife");
 	//-----------------------------------------------------------------------------------------------------
-	ADD(CWeaponAmmo				,CSE_ALifeItemAmmo				,CLSID_OBJECT_A_PM			,"wpn_ammo");
-	ADD(CWeaponAmmo				,CSE_ALifeItemAmmo				,CLSID_OBJECT_A_VOG25		,"wpn_ammo_vog25");
-	ADD(CWeaponAmmo				,CSE_ALifeItemAmmo				,CLSID_OBJECT_A_OG7B		,"wpn_ammo_og7b");
-	ADD(CWeaponAmmo				,CSE_ALifeItemAmmo				,CLSID_OBJECT_A_M209		,"wpn_ammo_m209");
+	ADD(CWeaponAmmo				,CSE_ALifeItemAmmo				,CLSID_OBJECT_A_PM				,"wpn_ammo");
+	ADD(CWeaponAmmo				,CSE_ALifeItemAmmo				,CLSID_OBJECT_A_VOG25			,"wpn_ammo_vog25");
+	ADD(CWeaponAmmo				,CSE_ALifeItemAmmo				,CLSID_OBJECT_A_OG7B			,"wpn_ammo_og7b");
+	ADD(CWeaponAmmo				,CSE_ALifeItemAmmo				,CLSID_OBJECT_A_M209			,"wpn_ammo_m209");
 	//-----------------------------------------------------------------------------------------------------
 
 	//Weapons Add-on
-	ADD(CScope					,CSE_ALifeItem					,CLSID_OBJECT_W_SCOPE		,"wpn_scope");
-	ADD(CSilencer				,CSE_ALifeItem					,CLSID_OBJECT_W_SILENCER	,"wpn_silencer");
-	ADD(CGrenadeLauncher		,CSE_ALifeItem					,CLSID_OBJECT_W_GLAUNCHER	,"wpn_grenade_launcher");
+	ADD(CScope					,CSE_ALifeItem					,CLSID_OBJECT_W_SCOPE			,"wpn_scope");
+	ADD(CSilencer				,CSE_ALifeItem					,CLSID_OBJECT_W_SILENCER		,"wpn_silencer");
+	ADD(CGrenadeLauncher		,CSE_ALifeItem					,CLSID_OBJECT_W_GLAUNCHER		,"wpn_grenade_launcher");
 
 	// Inventory
-	ADD(CBolt					,CSE_ALifeItemBolt				,CLSID_IITEM_BOLT			,"obj_bolt");
-	ADD(CMedkit					,CSE_ALifeItem					,CLSID_IITEM_MEDKIT			,"obj_medkit");
-	ADD(CAntirad				,CSE_ALifeItem					,CLSID_IITEM_ANTIRAD		,"obj_antirad");
-	ADD(CFoodItem				,CSE_ALifeItem					,CLSID_IITEM_FOOD			,"obj_food");
-	ADD(CBottleItem				,CSE_ALifeItem					,CLSID_IITEM_BOTTLE			,"obj_bottle");
-	ADD(CExplosiveItem			,CSE_ALifeItemExplosive			,CLSID_IITEM_EXPLOSIVE		,"obj_explosive");
+	ADD(CBolt					,CSE_ALifeItemBolt				,CLSID_IITEM_BOLT				,"obj_bolt");
+	ADD(CMedkit					,CSE_ALifeItem					,CLSID_IITEM_MEDKIT				,"obj_medkit");
+	ADD(CAntirad				,CSE_ALifeItem					,CLSID_IITEM_ANTIRAD			,"obj_antirad");
+	ADD(CFoodItem				,CSE_ALifeItem					,CLSID_IITEM_FOOD				,"obj_food");
+	ADD(CBottleItem				,CSE_ALifeItem					,CLSID_IITEM_BOTTLE				,"obj_bottle");
+	ADD(CExplosiveItem			,CSE_ALifeItemExplosive			,CLSID_IITEM_EXPLOSIVE			,"obj_explosive");
 	
 	//Info Document
-	ADD(CInfoDocument			,CSE_ALifeItemDocument			,CLSID_IITEM_DOCUMENT		,"obj_document");
-	ADD(CAttachableItem			,CSE_ALifeItem					,CLSID_IITEM_ATTACH			,"obj_attachable");
+	ADD(CInfoDocument			,CSE_ALifeItemDocument			,CLSID_IITEM_DOCUMENT			,"obj_document");
+	ADD(CAttachableItem			,CSE_ALifeItem					,CLSID_IITEM_ATTACH				,"obj_attachable");
 
 	//Equipment outfit
-	ADD(CScientificOutfit		,CSE_ALifeItemCustomOutfit		,CLSID_EQUIPMENT_SCIENTIFIC	,"equ_scientific");
-	ADD(CStalkerOutfit			,CSE_ALifeItemCustomOutfit		,CLSID_EQUIPMENT_STALKER	,"equ_stalker");
-	ADD(CMilitaryOutfit			,CSE_ALifeItemCustomOutfit		,CLSID_EQUIPMENT_MILITARY	,"equ_military");
-	ADD(CExoOutfit				,CSE_ALifeItemCustomOutfit		,CLSID_EQUIPMENT_EXO		,"equ_exo");
+	ADD(CScientificOutfit		,CSE_ALifeItemCustomOutfit		,CLSID_EQUIPMENT_SCIENTIFIC		,"equ_scientific");
+	ADD(CStalkerOutfit			,CSE_ALifeItemCustomOutfit		,CLSID_EQUIPMENT_STALKER		,"equ_stalker");
+	ADD(CMilitaryOutfit			,CSE_ALifeItemCustomOutfit		,CLSID_EQUIPMENT_MILITARY		,"equ_military");
+	ADD(CExoOutfit				,CSE_ALifeItemCustomOutfit		,CLSID_EQUIPMENT_EXO			,"equ_exo");
 
 	// Grenades
-	ADD(CF1						,CSE_ALifeItemGrenade			,CLSID_GRENADE_F1			,"wpn_grenade_f1");
-	ADD(CRGD5					,CSE_ALifeItemGrenade			,CLSID_GRENADE_RGD5			,"wpn_grenade_rgd5");
+	ADD(CF1						,CSE_ALifeItemGrenade			,CLSID_GRENADE_F1				,"wpn_grenade_f1");
+	ADD(CRGD5					,CSE_ALifeItemGrenade			,CLSID_GRENADE_RGD5				,"wpn_grenade_rgd5");
 
 	// Rockets
-	ADD(CExplosiveRocket		,CSE_Temporary					,CLSID_OBJECT_G_RPG7		,"wpn_grenade_rpg7");
-	ADD(CExplosiveRocket		,CSE_Temporary					,CLSID_OBJECT_G_FAKE		,"wpn_grenade_fake");
+	ADD(CExplosiveRocket		,CSE_Temporary					,CLSID_OBJECT_G_RPG7			,"wpn_grenade_rpg7");
+	ADD(CExplosiveRocket		,CSE_Temporary					,CLSID_OBJECT_G_FAKE			,"wpn_grenade_fake");
 
 	// Zones
-	ADD(CCustomZone				,CSE_ALifeAnomalousZone			,CLSID_ZONE					,"zone");
-	ADD(CMosquitoBald			,CSE_ALifeAnomalousZone			,CLSID_Z_MBALD				,"zone_mosquito_bald");
-	ADD(CMincer					,CSE_ALifeAnomalousZone			,CLSID_Z_MINCER				,"zone_mincer");
-	ADD(CMosquitoBald			,CSE_ALifeAnomalousZone			,CLSID_Z_ACIDF				,"zone_acid_fog");
-	ADD(CGraviZone				,CSE_ALifeAnomalousZone			,CLSID_Z_GALANT				,"zone_galantine");
-	ADD(CRadioactiveZone		,CSE_ALifeAnomalousZone			,CLSID_Z_RADIO				,"zone_radioactive");
-	ADD(CMosquitoBald			,CSE_ALifeAnomalousZone			,CLSID_Z_BFUZZ				,"zone_bfuzz");
-	ADD(CMosquitoBald			,CSE_ALifeAnomalousZone			,CLSID_Z_RUSTYH				,"zone_rusty_hair");
-	ADD(CMosquitoBald			,CSE_ALifeAnomalousZone			,CLSID_Z_DEAD				,"zone_dead");
-	ADD(CLevelChanger			,CSE_ALifeLevelChanger			,CLSID_LEVEL_CHANGER		,"level_changer");
-	ADD(CScriptZone				,CSE_ALifeSpaceRestrictor		,CLSID_SCRIPT_ZONE			,"script_zone");
-	ADD(CScriptZone				,CSE_ALifeSmartZone				,CLSID_SMART_ZONE			,"smart_zone");
-	ADD(CTeamBaseZone			,CSE_ALifeTeamBaseZone			,CLSID_Z_TEAM_BASE			,"team_base_zone");
-	ADD(CTorridZone				,CSE_ALifeTorridZone			,CLSID_Z_TORRID				,"torrid_zone");
-	ADD(CSpaceRestrictor		,CSE_ALifeSpaceRestrictor		,CLSID_SPACE_RESTRICTOR		,"space_restrictor");
+	ADD(CCustomZone				,CSE_ALifeAnomalousZone			,CLSID_ZONE						,"zone");
+	ADD(CMosquitoBald			,CSE_ALifeAnomalousZone			,CLSID_Z_MBALD					,"zone_mosquito_bald");
+	ADD(CMincer					,CSE_ALifeAnomalousZone			,CLSID_Z_MINCER					,"zone_mincer");
+	ADD(CMosquitoBald			,CSE_ALifeAnomalousZone			,CLSID_Z_ACIDF					,"zone_acid_fog");
+	ADD(CGraviZone				,CSE_ALifeAnomalousZone			,CLSID_Z_GALANT					,"zone_galantine");
+	ADD(CRadioactiveZone		,CSE_ALifeAnomalousZone			,CLSID_Z_RADIO					,"zone_radioactive");
+	ADD(CMosquitoBald			,CSE_ALifeAnomalousZone			,CLSID_Z_BFUZZ					,"zone_bfuzz");
+	ADD(CMosquitoBald			,CSE_ALifeAnomalousZone			,CLSID_Z_RUSTYH					,"zone_rusty_hair");
+	ADD(CMosquitoBald			,CSE_ALifeAnomalousZone			,CLSID_Z_DEAD					,"zone_dead");
+	ADD(CLevelChanger			,CSE_ALifeLevelChanger			,CLSID_LEVEL_CHANGER			,"level_changer");
+	ADD(CScriptZone				,CSE_ALifeSpaceRestrictor		,CLSID_SCRIPT_ZONE				,"script_zone");
+	ADD(CScriptZone				,CSE_ALifeSmartZone				,CLSID_SMART_ZONE				,"smart_zone");
+	ADD(CTeamBaseZone			,CSE_ALifeTeamBaseZone			,CLSID_Z_TEAM_BASE				,"team_base_zone");
+	ADD(CTorridZone				,CSE_ALifeTorridZone			,CLSID_Z_TORRID					,"torrid_zone");
+	ADD(CSpaceRestrictor		,CSE_ALifeSpaceRestrictor		,CLSID_SPACE_RESTRICTOR			,"space_restrictor");
 
 	// Detectors
-	ADD(CSimpleDetector			,CSE_ALifeItemDetector			,CLSID_DETECTOR_SIMPLE		,"device_detector_simple");
+	ADD(CSimpleDetector			,CSE_ALifeItemDetector			,CLSID_DETECTOR_SIMPLE			,"device_detector_simple");
 
 	// Devices
-	ADD(CTorch					,CSE_ALifeItemTorch				,CLSID_DEVICE_TORCH			,"device_torch");
-	ADD(CPda					,CSE_ALifeItemPDA				,CLSID_DEVICE_PDA			,"device_pda");
-	ADD(CArtefactMerger			,CSE_ALifeItem					,CLSID_DEVICE_AF_MERGER		,"device_art_merger");
+	ADD(CTorch					,CSE_ALifeItemTorch				,CLSID_DEVICE_TORCH				,"device_torch");
+	ADD(CPda					,CSE_ALifeItemPDA				,CLSID_DEVICE_PDA				,"device_pda");
+	ADD(CArtefactMerger			,CSE_ALifeItem					,CLSID_DEVICE_AF_MERGER			,"device_art_merger");
 
 	// objects
-	ADD(CProjector				,CSE_ALifeObjectProjector		,CLSID_OBJECT_PROJECTOR		,"projector");
-	ADD(CWeaponMounted			,CSE_ALifeMountedWeapon			,CLSID_OBJECT_W_MOUNTED		,"wpn_mounted");
+	ADD(CProjector				,CSE_ALifeObjectProjector		,CLSID_OBJECT_PROJECTOR			,"projector");
+	ADD(CWeaponMounted			,CSE_ALifeMountedWeapon			,CLSID_OBJECT_W_MOUNTED			,"wpn_mounted");
 
 	// entity
-	ADD(CHangingLamp			,CSE_ALifeObjectHangingLamp		,CLSID_OBJECT_HLAMP			,"hanging_lamp");
-	ADD(CPhysicObject			,CSE_ALifeObjectPhysic			,CLSID_OBJECT_PHYSIC		,"obj_physic");
-	ADD(CScriptMonster			,CSE_ALifeDynamicObjectVisual	,CLSID_SCRIPT_OBJECT		,"script_object");
-	ADD(CBreakableObject		,CSE_ALifeObjectBreakable		,CLSID_OBJECT_BREAKABLE		,"obj_breakable");
-	ADD(CClimableObject			,CSE_ALifeObjectClimable		,CLSID_OBJECT_CLIMABLE		,"obj_climable");
-	ADD(CPhysicsSkeletonObject	,CSE_ALifePHSkeletonObject		,CLSID_PH_SKELETON_OBJECT	,"obj_phskeleton");
+	ADD(CHangingLamp			,CSE_ALifeObjectHangingLamp		,CLSID_OBJECT_HLAMP				,"hanging_lamp");
+	ADD(CPhysicObject			,CSE_ALifeObjectPhysic			,CLSID_OBJECT_PHYSIC			,"obj_physic");
+	ADD(CScriptMonster			,CSE_ALifeDynamicObjectVisual	,CLSID_SCRIPT_OBJECT			,"script_object");
+	ADD(CBreakableObject		,CSE_ALifeObjectBreakable		,CLSID_OBJECT_BREAKABLE			,"obj_breakable");
+	ADD(CClimableObject			,CSE_ALifeObjectClimable		,CLSID_OBJECT_CLIMABLE			,"obj_climable");
+	ADD(CPhysicsSkeletonObject	,CSE_ALifePHSkeletonObject		,CLSID_PH_SKELETON_OBJECT		,"obj_phskeleton");
 
 }
