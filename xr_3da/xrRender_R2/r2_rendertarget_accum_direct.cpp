@@ -50,6 +50,10 @@ void CRenderTarget::accum_direct		()
 		RCache.Render				(D3DPT_TRIANGLELIST,Offset,0,4,0,2);
 	}
 
+	// nv-stencil recompression
+	if (RImplementation.o.nvstencil)	u_stencil_optimize();
+	RCache.set_ColorWriteEnable			();
+
 	// Perform lighting
 	{
 		// texture adjustment matrix
@@ -97,7 +101,7 @@ void CRenderTarget::accum_direct		()
 		RCache.set_c				("Ldynamic_color",		L_clr.x,L_clr.y,L_clr.z,L_spec	);
 		RCache.set_c				("m_shadow",			m_shadow						);
 
-		RCache.set_Stencil			(TRUE,D3DCMP_LESSEQUAL,	0x01,0xff,0x00);
+		RCache.set_Stencil			(TRUE,D3DCMP_LESSEQUAL,dwLightMarkerID,0xff,0x00);
 		RCache.Render				(D3DPT_TRIANGLELIST,Offset,0,4,0,2);
 	}
 }
