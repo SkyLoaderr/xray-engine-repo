@@ -452,7 +452,7 @@ void CALifeSwitchManager::switch_object	(CSE_ALifeDynamicObject	*I)
 		if (0xffff == I->ID_Parent) {
 			// checking if the object is not an empty group of objects
 			CSE_ALifeGroupAbstract *tpALifeGroupAbstract = smart_cast<CSE_ALifeGroupAbstract*>(I);
-			if (tpALifeGroupAbstract && !tpALifeGroupAbstract->bfActive()) {
+			if (tpALifeGroupAbstract && tpALifeGroupAbstract->m_tpMembers.empty()) {
 				// release empty group of objects
 				release(I);
 				return;
