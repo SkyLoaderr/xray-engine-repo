@@ -122,7 +122,7 @@ void  CUICharacterInfo::InitCharacter(CCharacterInfo* pCharInfo, bool withPrefix
 	sprintf(str, *patterns[1], pCharInfo->Rank());
 	UIRank.SetText(str);
 
-	sprintf(str, *patterns[2], pCharInfo->Community());
+	sprintf(str, *patterns[2], *pCharInfo->Community());
 	UICommunity.SetText(str);
 
 	UIIcon.SetShader(GetCharIconsShader());

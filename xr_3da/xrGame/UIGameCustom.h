@@ -66,7 +66,9 @@ public:
 	//NULL если такого сейчас нет
 
 
-	xr_vector<CUIWindow*>					m_dialogsToRender;
+	xr_vector<CUIWindow*>	m_dialogsToRender;
+	xr_vector<CUIWindow*>	m_dialogsToErase;
+
 	void					AddDialogToRender	(CUIWindow* pDialog);
 	void					RemoveDialogToRender(CUIWindow* pDialog);
 	

@@ -98,7 +98,7 @@ void CUIPdaListItem::InitCharacter(CInventoryOwner* pInvOwner)
 	sprintf(str, "%d", pInvOwner->CharacterInfo().Rank());
 	UICharText.GetPhraseByIndex(eRank)->str = str;
 
-	sprintf(str, "%s", pInvOwner->CharacterInfo().Community());
+	sprintf(str, "%s", *pInvOwner->CharacterInfo().Community());
 	UICharText.GetPhraseByIndex(eCommunity)->str = str;
 
 	UIIcon.SetShader(InventoryUtilities::GetCharIconsShader());

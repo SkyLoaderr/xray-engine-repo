@@ -32,6 +32,16 @@ void CUIGameCustom::shedule_Update		(u32 dt)
 	for(; it!=m_dialogsToRender.end();++it)
 		(*it)->Update();
 
+
+	for(it = m_dialogsToErase.begin(); it!=m_dialogsToErase.end(); ++it)
+	{
+		xr_vector<CUIWindow*>::iterator it_find = std::find(m_dialogsToRender.begin(),
+															m_dialogsToRender.end(), *it);
+		if (it_find != m_dialogsToRender.end())
+		{
+			m_dialogsToRender.erase(it_find);
+		}
+    }
 }
 
 void CUIGameCustom::OnFrame() 
@@ -92,7 +102,8 @@ void CUIGameCustom::RemoveDialogToRender(CUIWindow* pDialog)
 	if(it != m_dialogsToRender.end())
 	{
 		(*it)->Show(false);
-		m_dialogsToRender.erase(it);
+		(*it)->Enable(false);
+		m_dialogsToErase.push_back(*it);
 	}
 }
 
