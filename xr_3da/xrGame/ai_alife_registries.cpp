@@ -333,7 +333,7 @@ void CSE_ALifeGraphRegistry::vfRemoveObjectFromGraphPoint(CSE_ALifeDynamicObject
 	R_ASSERT3					(m_tpGraphObjects[tGraphID].tpObjects.end() != I,"Specified object not found on the given graph point!",tpALifeDynamicObject->s_name_replace);
 	m_tpGraphObjects[tGraphID].tpObjects.erase(I);
 	
-	if (bUpdateSwitchObjects && m_tpCurrentLevel && (m_tCurrentLevelID == ai().game_graph().vertex(tpALifeDynamicObject->m_tGraphID)->level_id()))
+	if (bUpdateSwitchObjects && m_tpCurrentLevel && (m_tCurrentLevelID == ai().game_graph().vertex(tGraphID)->level_id()))
 		vfRemoveObjectFromCurrentLevel(tpALifeDynamicObject);
 }
 
