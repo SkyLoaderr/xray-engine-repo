@@ -100,9 +100,9 @@ void xrMU_Model::calc_lighting	(vector<Fcolor>& dest, Fmatrix& xform, CDB::MODEL
 		vC.mul_rgb				(1/float(n_samples));
 
 		// 
-		V->C.r					= vC.r*v_inv+v_amb;
-		V->C.g					= vC.g*v_inv+v_amb;
-		V->C.b					= vC.b*v_inv+v_amb;
+		V->C.r					= vC.r+v_amb;
+		V->C.g					= vC.g+v_amb;
+		V->C.b					= vC.b+v_amb;
 		V->C.a					= v_trans;
 
 		// Search
