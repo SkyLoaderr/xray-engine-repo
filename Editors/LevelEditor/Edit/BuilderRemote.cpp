@@ -470,7 +470,7 @@ BOOL SceneBuilder::BuildPointLight(b_light* b, const Flags32& usage, svector<WOR
 
 BOOL SceneBuilder::BuildLight(CLight* e)
 {
-    if (!e->m_Flags.is(CLight::flAffectStatic|CLight::flAffectDynamic))
+    if (!e->m_Flags.is_any(CLight::flAffectStatic|CLight::flAffectDynamic))
     	return FALSE;
 
     b_light	L;
@@ -743,7 +743,10 @@ BOOL SceneBuilder::ParseStaticObjects(ObjectList& lst, LPCSTR prefix)
             bResult = ParseStaticObjects(group->GetObjects(),group->Name);
         }break;
         }// end switch
-        if (!bResult) break;
+        if (!bResult){ 
+            ELog.DlgMsg(mtError,"Failed to build object: '%s'",(*_F)->Name);
+        	break;
+        }
     }
     return bResult;
 }
