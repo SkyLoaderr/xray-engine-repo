@@ -53,9 +53,9 @@ void	Vertex::normalFromAdj()
 
 Face::Face()
 {
-	pDeflector	= 0;
-	bSplitted	= FALSE;
-	g_faces.push_back(this);
+	pDeflector			= 0;
+	bSplitted			= FALSE;
+	g_faces.push_back	(this);
 }
 Face::~Face()
 {

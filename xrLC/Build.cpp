@@ -81,6 +81,7 @@ CBuild::CBuild	(b_params& Params, CStream& FS)
 				F->Read				(&B,sizeof(B));
 
 				_F->dwMaterial		= WORD(B.dwMaterial);
+				_F->dwMaterialGame	= B.dwMaterialGame;
 
 				// Vertices and adjacement info
 				for (DWORD it=0; it<3; it++)
