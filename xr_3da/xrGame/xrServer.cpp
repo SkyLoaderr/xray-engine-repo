@@ -110,6 +110,9 @@ BOOL xrServer::PerformRP	(xrServerEntity* EEE)
 		break;
 	case 0xFF:	// Search for best RP for this entity
 		{
+			selected	= ::Random.randI	(0,RP.size());
+
+			/*
 			float	best		= -1;
 			for (DWORD id=0; id<RP.size(); id++)
 			{
@@ -144,6 +147,7 @@ BOOL xrServer::PerformRP	(xrServerEntity* EEE)
 				cost /= float(count);
 				if (cost>best)	{ selected = id; best = cost; }
 			}
+			*/
 		}
 		break;
 	}
