@@ -1,4 +1,5 @@
 local zone_name		= "rush_zone"
+local zone_count	= "rush_zone_1"				// Скрипт срабатывает если пересекли первую зону и были во второй(этой)
 local path_pause 	= 5000						// Пауза между монстрома бегущими в одном забеге по одному пути
 local group_pause 	= 20000						// Пауза между набегами
 
@@ -70,7 +71,7 @@ function main()
 	
 	printf("start print")
 	Print(g_monsters_id)
-	local GarbageTroop = GarbageRaidManager(ways, g_monsters_id, zone_name)
+	local GarbageTroop = GarbageRaidManager(ways, g_monsters_id, zone_name, zone_count)
 	
 	GarbageTroop:Initialize()
 	
@@ -130,16 +131,19 @@ end
 // Менеджер толпы
 //----------------------------------------------------------------------------------------
 class "GarbageRaidManager"
-function GarbageRaidManager:__init(_ways, _g_monsters_id, _zone_name)
+function GarbageRaidManager:__init(_ways, _g_monsters_id, _zone_name, _zone_count)
 	self.ways		= _ways
 	self.monstrs	= _g_monsters_id
 	self.zone_name	= _zone_name
+	self.zone2_name = _zone_count
 	self.zone		= nil
+	self.zone2		= nil				// Скрипт будет работать если игрок точно был в этой зоне и вышел с self.zone
 	self.time		= 0
 	self.index		= 1					// индекс группы, которыя была отправленна
 	self.enter		= false
 	self.start		= false
 	self.run		= false				// Все ли монстры бегут
+	self.was		= false				// Был ли игрок во второй зоне
 	self.runs		= {}
 end
 
@@ -148,6 +152,10 @@ function GarbageRaidManager:Initialize()
 	self.time		= device():time_global()
 	self.zone:set_callback(self, "on_exit", false)
 	self.zone:set_callback(self, "on_enter", true)
+
+	self.zone2		= level.object(self.zone2_name)
+	self.zone2:set_callback(self, "visit", true)
+
 end
 
 function GarbageRaidManager:Update()
@@ -223,15 +231,24 @@ function GarbageRaidManager:on_enter(zone, obj)
 	//end
 end
 
+function GarbageRaidManager:visit(zone, obj)
+	if(level.actor() and level.actor():id() == obj:id()) then
+		self.was	= true
+		printf("Actor enter in second zone")
+	end
+end
+
 function GarbageRaidManager:on_exit(zone, obj)
 	printf("callback")
 	if(level.actor() and level.actor():id() == obj:id()) then
+		if(self.was == false) then return end				// Еще не были во второй зоне, не можем работать
 		self.enter	= false
 		self.start	= true
 		self.time	= device():time_global()
 		printf("Actor exit")
 		self.zone:clear_callback(true)
 		self.zone:clear_callback(false)
+		self.zone2:clear_callback(true)
 	end
 end
 
