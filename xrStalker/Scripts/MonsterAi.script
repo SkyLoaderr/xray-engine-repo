@@ -53,7 +53,7 @@ function CMonsterBase:__init(_name, sRest, sAttack, sHit, sDangerSound, sNotDang
 	else
 		self.stateNotDangerSound	= statenotdangersound.CStateNotDangerSound(self.data, self.memory)
 	end
-
+	
 	if(sRest) then
 		self.stateRest	= staterest.CStateRest(self.data, self.memory, sRest)
 	else
@@ -192,6 +192,7 @@ class "CMonsterBaseBind" (object_binder)
 function CMonsterBaseBind:__init(obj, time, sRest, sAttack, sHit, sDangerSound, sNotDangerSound) super(obj)
 	self.npc_name	= _name
 	self.end_work 	= true
+	self.courage	= courage_monster(get_clsid(obj))
 	
 	if(time) then
 		self.end_time 	= device():time_global() + time
@@ -227,7 +228,13 @@ function CMonsterBaseBind:__init(obj, time, sRest, sAttack, sHit, sDangerSound, 
 		self.stateDangerSound	= sDangerSound
 		self.stateDangerSound:set_data(self.data, self.memory)
 	else
-		self.stateDangerSound	= statedangersound.CStateDangerSound(self.data, self.memory)
+		if(courage_monster(get_clsid(obj))) then
+			// ћонстр который не боитс€ опасных звуков
+			self.stateDangerSound	= statenotdangersound.CStateNotDangerSound(self.data, self.memory)
+		else
+			// ћонстр, который боитс€ опасных звуков
+			self.stateDangerSound	= statedangersound.CStateDangerSound(self.data, self.memory)
+		end
 	end
 
 	if(sNotDangerSound) then
@@ -324,9 +331,15 @@ function CMonsterBaseBind:update_memory()
 	end
 	
 	self.memory.corpse		= self.data.npc:get_corpse()
-	self.memory.sound		= self.data.npc:get_sound_info()
 	self.memory.hit			= self.data.npc:get_monster_hit_info()
+	self.memory.sound		= self.data.npc:get_sound_info()
+	
+	// ≈сли монстр не боитс€ опасных звуков, то делаем их неопасными
+	if(self.courage and self.memory.sound.danger == 1) then
+		self.memory.sound.danger	= 0
+	end
 end
+
 
 function CMonsterBaseBind:finalize()
 	if(self.data.npc and self.data.npc:get_script()) then
@@ -336,3 +349,21 @@ function CMonsterBaseBind:finalize()
 	//' тут должны отбиндить монстра
 	self.end_work	= false
 end
+
+//--------------------------------------------------------------------------------------
+
+function courage_monster(clsid_monster)
+	// ¬озвращает, боитс€ ли монстр опасных звуков
+	
+	if(clsid_monster == clsid.zombie or
+		clsid_monster == clsid.controller or
+		clsid_monster == clsid.clsid.bloodsucker or
+		clsid_monster == clsid.boar
+	   ) then
+		return true
+	end
+	
+	return false
+end
+
+

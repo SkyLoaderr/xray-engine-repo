@@ -37,3 +37,19 @@ end
 function CStorage:empty()
 	return(table.getn(self.data) == 0)
 end
+
+function CStorage:use_count()
+	return table.getn(self.use)
+end
+
+function CStorage:data_count()
+	return table.getn(self.data)
+end
+
+function CStorage:count()
+	return self:use_count() + self:data_count()
+end
+
+function CStorage:use_data(npc_id)
+	return (self.use[npc_id] ~= nil)
+end
