@@ -216,8 +216,11 @@ class_<CScriptGameObject> &script_register_game_object2(class_<CScriptGameObject
 			value("no_pda_msg",				int(ePdaMsgMax))
 		]
 
-		//HELICOPTER
+		//CustomZone
+		.def("enable_anomaly",              &CScriptGameObject::EnableAnomaly)
+		.def("disable_anomaly",             &CScriptGameObject::DisableAnomaly)
 
+		//HELICOPTER
 		.def("get_helicopter",              &CScriptGameObject::get_helicopter)
 		.def("get_helicopter",              &CScriptGameObject::get_hanging_lamp)
 		.def("get_physics_shell",			&CScriptGameObject::get_physics_shell)

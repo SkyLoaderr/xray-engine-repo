@@ -20,6 +20,8 @@
 #include "weapon.h"
 #include "inventory.h"
 
+#include "customzone.h"
+
 const CCoverPoint *CScriptGameObject::best_cover	(const Fvector &position, const Fvector &enemy_position, float radius, float min_enemy_distance, float max_enemy_distance)
 {
 	CAI_Stalker		*stalker = smart_cast<CAI_Stalker*>(object());
@@ -515,4 +517,16 @@ CScriptGameObject	*CScriptGameObject::GetObjectByIndex	(int iIndex) const
 		ai().script_engine().script_log			(ScriptStorage::eLuaMessageTypeError,"CScriptGameObject : cannot access class member object!");
 		return			(0);	
 	}
+}
+
+void CScriptGameObject::EnableAnomaly()
+{
+	CCustomZone		*zone = smart_cast<CCustomZone*>(object()); VERIFY(zone);
+	zone->ZoneEnable();
+}
+
+void CScriptGameObject::DisableAnomaly()
+{
+	CCustomZone		*zone = smart_cast<CCustomZone*>(object()); VERIFY(zone);
+	zone->ZoneDisable();
 }

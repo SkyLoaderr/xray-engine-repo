@@ -419,6 +419,9 @@ public:
 			void				set_pda_info		   (LPCSTR info_id);
 			LPCSTR				get_pda_info		   ();
 			//////////////////////////////////////////////////////////////////////////
+			// CustomZone
+			void				EnableAnomaly			();
+			void				DisableAnomaly			();
 			
 	
 			// HELICOPTER
