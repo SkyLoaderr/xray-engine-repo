@@ -955,6 +955,12 @@
 			Name="XRay"
 			Filter="">
 			<File
+				RelativePath=".\src\xr_LuaAllocator.c">
+			</File>
+			<File
+				RelativePath=".\src\xr_LuaAllocator.h">
+			</File>
+			<File
 				RelativePath=".\src\xr_print.c">
 				<FileConfiguration
 					Name="Debug|Win32">

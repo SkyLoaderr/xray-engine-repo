@@ -22,3 +22,12 @@ void __cdecl xr_printf(FILE *stream, const char *fmt, ...)
 
 	va_end			(marker);              
 }
+
+size_t	__cdecl xr_memusage	()
+{
+	/*
+	mallinfo	_i	= dlmallinfo();
+	return		_i.uordblks;
+	*/
+	return	0;	// don't working at this moment
+}

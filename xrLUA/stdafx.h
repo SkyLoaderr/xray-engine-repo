@@ -18,6 +18,8 @@
 #include <string.h>
 #include <time.h>
 
+#include "src\\xr_LuaAllocator.h"
+
 #include "lua.h"
 #include "lauxlib.h"
 #include "lualib.h"

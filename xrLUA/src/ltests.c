@@ -91,9 +91,9 @@ static void *checkblock (void *block, size_t size) {
 static void freeblock (void *block, size_t size) {
   if (block) {
     lua_assert(checkblocksize(block, size));
-    block = checkblock(block, size);
-    fillmem(block, size+HEADER+MARKSIZE);	/* erase block */
-    xr_free(block);							/* _free original block */
+    block	= checkblock(block, size);
+    fillmem	(block, size+HEADER+MARKSIZE);	/* erase block */
+    dlfree	(block);							/* _free original block */
     memdebug_numblocks--;
     memdebug_total -= size;
   }
@@ -116,7 +116,7 @@ void *debug_realloc (void *block, size_t oldsize, size_t size) {
     size_t realsize = HEADER+size+MARKSIZE;
     size_t commonsize = (oldsize < size) ? oldsize : size;
     if (realsize < size) return NULL;  /* overflow! */
-    newblock = xr_malloc(realsize);  /* alloc a new block */
+    newblock = dlmalloc(realsize);  /* alloc a new block */
     if (newblock == NULL) return NULL;
     if (block) {
       memcpy(cast(char *, newblock)+HEADER, block, commonsize);
