@@ -562,7 +562,7 @@ function move_mgr:waypoint_callback(obj, action_type, index)
 			snd_prob = 100
 		end
 
-		local suggested_snd_once = self.path_walk_info[index]["sc"]
+		local suggested_snd_cont = self.path_walk_info[index]["sc"]
 		if suggested_snd_cont == "true" then
 			self.play_once = false
 		else
