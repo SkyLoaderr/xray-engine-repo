@@ -1,25 +1,17 @@
 function main ()
 
-    local stalker1 = get_level_object ("stalker_guard1")
-    local stalker2 = get_level_object ("stalker_guard2")
+    local stalker_guard3 = get_level_object ("stalker_guard3")
 
-    stalker1:script (true, move1.script_name())
-    stalker2:script (true, move1.script_name())
+    stalker_guard3:script (true, move1_2.script_name())
 
-    action (stalker1, 
-			move (move.standing, move.walk, move.line, patrol ("guard_way1")),
-      		look (look.search), 
-			anim (anim.free), 
-			cond (cond.time_end, 1000000))
-    action (stalker2, 
-			move (move.standing, move.walk, move.line, patrol ("guard_way2")),
+    action (stalker_guard3, 
+			move (move.standing, move.walk, move.line, patrol ("guard_way3")),
       		look (look.search), 
 			anim (anim.free), 
 			cond (cond.time_end, 1000000))
 
-    while stalker1:action () and stalker2:action () do wait () end
+    while stalker_guard3:action () do wait () end
 
-    stalker1:script (false, move1.script_name())
-    stalker2:script (false, move1.script_name())
+    stalker_guard3:script (false, move1_2.script_name())
 
 end
