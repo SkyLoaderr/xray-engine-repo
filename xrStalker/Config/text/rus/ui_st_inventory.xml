@@ -22,25 +22,25 @@
 		<text>Время</text>
 	</string>
 	<string id="outfit_params">
-		<text>Характеристики Костюма</text>
+		<text>Костюм</text>
 	</string>
 	<string id="outfit_burn_protection">
-		<text>защита от ожога</text>
+		<text>ожог</text>
 	</string>
 	<string id="outfit_strike_protection">
-		<text>защита от удара</text>
+		<text>удар</text>
 	</string>
 	<string id="outfit_shock_protection">
-		<text>защита от шока</text>
+		<text>шока</text>
 	</string>
 	<string id="outfit_chemical_burn_protection">
-		<text>защита от химического ожога</text>
+		<text>хим. ожог</text>
 	</string>
 	<string id="outfit_explosion_protection">
-		<text>защита от взрыва</text>
+		<text>взрыв</text>
 	</string>
 	<string id="outfit_fire_wound_protection">
-		<text>защита от огнестрельного ранения</text>
+		<text>огнестрел. ранения</text>
 	</string>
 	<string id="exit">
 		<text>Выход</text>
