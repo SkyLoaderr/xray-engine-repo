@@ -8,7 +8,7 @@
 
 #include "stdafx.h"
 #include "script_space.h"
-#include "lstate.h"
+#include "lua.h"
 #include "script_engine.h"
 #include "script_thread.h"
 #include "ai_space.h"
@@ -75,11 +75,11 @@ bool CScriptThread::Update()
 		m_bActive		= false;
 	}
 	else
-		if (!(lua()->ci->state & CI_YIELD)) {
-			m_bActive	= false;
-			ai().script_engine().script_log	(ScriptStorage::eLuaMessageTypeInfo,"Script %s is finished!",m_script_name);
-		}
-		else {
+//		if (!(lua()->ci->state & CI_YIELD)) {
+//			m_bActive	= false;
+//			ai().script_engine().script_log	(ScriptStorage::eLuaMessageTypeInfo,"Script %s is finished!",m_script_name);
+//		}
+//		else {
 #ifdef USE_DEBUGGER
 			if( !CScriptDebugger::GetDebugger()->Active() ) 
 #endif
@@ -88,7 +88,7 @@ bool CScriptThread::Update()
 				--m_current_stack_level;
 			}
 			VERIFY2		(!lua_gettop(lua()),"Do not pass any value to coroutine.yield()!");
-		}
+//		}
 	
 	ai().script_engine().set_current_thread	(0);
 	
