@@ -96,21 +96,17 @@ function main()
 			)
 			action(
 				stalker2,
+			  	move	(move.standing, move.walk,move.line,patrol("way0000")),
 				sound	("scripts\\prover","bip01_spine2",vector():set(0,0,0),vector():set(0,0,0),false),
-				cond	(cond.time_end, 3000)
+				look	(look.fire_point, actor),
+				anim	(anim.danger),
+				cond	(cond.time_end, 300000)
 			)
                 	break		
 		end
 		wait()
 	end
 
- 	action(                                                                                                       
-	    stalker1,
-	  	move	(move.standing, move.walk,move.line,patrol("way0000")),
-		cond	(cond.time_end, 100000)
-	)
-
-	
 	while stalker1:action() and stalker2:action() do
 	    wait	()
 
