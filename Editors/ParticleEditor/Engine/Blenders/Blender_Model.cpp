@@ -95,7 +95,7 @@ void	CBlender_Model::Compile	(CBlender_Compile& C)
 			if (oBlend.value)	C.r_Pass	(sname,sname_ps,FALSE,TRUE,FALSE,TRUE,D3DBLEND_ONE,	D3DBLEND_ONE,TRUE,oAREF.value);
 			else				C.r_Pass	(sname,sname_ps,FALSE,TRUE,FALSE,TRUE,D3DBLEND_ONE, D3DBLEND_ONE,TRUE);
 			C.r_Sampler			("s_base",	C.L_textures[0]);
-			C.r_Sampler_clf		("s_lmap",	"effects\\light");
+			C.r_Sampler_clf		("s_lmap",	"internal\\internal_light_att");
 			C.r_Sampler_clf		("s_att",	"internal\\internal_light_attclip");
 			C.r_Constant		("L_dynamic_pos",	&RImplementation.r1_dlight_binder_PR);
 			C.r_Constant		("L_dynamic_color",	&RImplementation.r1_dlight_binder_color);
