@@ -57,12 +57,16 @@ void CLight_DB::Load			(IReader *fs)
 				sun_dir.set			(Ldata.direction);
 				sun_dir.y			+= -1.f;
 				sun_dir.normalize	();
-				sun_color.set		(Ldata.diffuse.r,Ldata.diffuse.g,Ldata.diffuse.b,1.f);
+				sun_color.set		(Ldata.diffuse.r,Ldata.diffuse.g,Ldata.diffuse.b);
 
 				sun_tm_next			=	0;
 				sun_dir_base		=	sun_dir;
 				sun_dir_0			=	sun_dir;
 				sun_dir_1			=	sun_dir;
+
+				sun_color_base		=	sun_color;
+				sun_color_0			=	sun_color;
+				sun_color_1			=	sun_color;
 			}
 			else
 			{
@@ -170,10 +174,18 @@ void			CLight_DB::Update()
 		sun_dir_1.random_dir	();
 		sun_dir_1.add			(sun_dir_base);
 		sun_dir_1.normalize		();
+
+		sun_color_0.set			(sun_color_1);
+		sun_color_1.set			(::Random.randF(.5f,1.5f),::Random.randF(.5f,1.5f),::Random.randF(.5f,1.5f));
 	}
 	
-	sun_dir.lerp			(sun_dir_0,sun_dir_1,float(t-sun_tm_base)/float(sun_tm_next-sun_tm_base));
+	float f					= float(t-sun_tm_base)/float(sun_tm_next-sun_tm_base);
+
+	sun_dir.lerp			(sun_dir_0,sun_dir_1,f);
 	sun_dir.normalize		();
 	sun_dir.lerp			(sun_dir,sun_dir_base,.6f);
 	sun_dir.normalize		();
+
+	sun_color.lerp			(sun_color_0,sun_color_1,f);
+	sun_color.lerp			(sun_color,sun_color_base,.5f);
 }

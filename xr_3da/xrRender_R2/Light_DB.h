@@ -7,11 +7,16 @@ class CLight_DB
 {
 public:
 	Fvector3				sun_dir;
-	Fvector4				sun_color;
+	Fvector3				sun_color;
 
 	Fvector3				sun_dir_base;
 	Fvector3				sun_dir_0;
 	Fvector3				sun_dir_1;
+
+	Fvector3				sun_color_base;
+	Fvector3				sun_color_0;
+	Fvector3				sun_color_1;
+
 	u32						sun_tm_base;
 	u32						sun_tm_next;
 
