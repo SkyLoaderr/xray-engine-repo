@@ -159,7 +159,7 @@ void __fastcall TfrmSceneProperties::btContinueClick(TObject *Sender)
 {
 #ifdef _LEVEL_EDITOR
 	Scene->m_LevelOp.m_FNLevelPath 	= edLevelPath->Text.c_str();	// Path
-    Scene->m_LevelOp.m_LevelPrefix	= edLevelPrefix->Text.c_str();	// Prefix
+    Scene->m_LevelOp.m_LevelPrefix	= edLevelPrefix->Text.LowerCase().c_str();	// Prefix
 	Scene->m_LevelOp.m_BOPText		= mmText->Text.c_str();			// Text
 #endif
     SetSceneParams					();

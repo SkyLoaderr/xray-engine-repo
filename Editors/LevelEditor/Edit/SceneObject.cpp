@@ -301,3 +301,11 @@ void CSceneObject::Blink(CSurface* surf)
 }
 //----------------------------------------------------
 
+bool CSceneObject::Validate()
+{
+	CEditableObject* E 	= GetReference(); R_ASSERT(E);
+    return E->Validate();
+}
+//----------------------------------------------------
+
+

@@ -102,6 +102,8 @@ public:
     virtual void 	OnShowHint				(AStringVec& dest);
 
     void			Blink					(CSurface* surf=0);
+
+    virtual bool	Validate				();
 };
 //----------------------------------------------------
 #endif /*_INCDEF_EditObject_H_*/

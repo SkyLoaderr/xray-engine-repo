@@ -29,32 +29,38 @@ void SSceneSummary::Prepare()
 
 void SSceneSummary::STextureInfo::Prepare	()
 {
-    ETextureThumbnail* T 	= (ETextureThumbnail*)ImageLib.CreateThumbnail(file_name.c_str(),ECustomThumbnail::ETTexture,true);
-    if (!T->Valid()){
-        Msg("!Can't get info from texture: '%s'",file_name.c_str());
+	if (file_name.size()){
+        ETextureThumbnail* T 	= (ETextureThumbnail*)ImageLib.CreateThumbnail(file_name.c_str(),ECustomThumbnail::ETTexture,true);
+        if (!T->Valid()){
+            Msg("!Can't get info from texture: '%s'",file_name.c_str());
+        }else{
+            info			= T->_Format();
+        }
+        xr_delete			(T);
     }else{
-    	info			= T->_Format();
+        Msg("!Empty texture name found.");
     }
-    xr_delete			(T);
 }
 
 void SSceneSummary::STextureInfo::FillProp	(PropItemVec& items, LPCSTR main_pref, u32& mem_use)
 {
-    int tex_mem			= info.MemoryUsage(*file_name);
-    mem_use				+= tex_mem;
-    AnsiString pref		= PrepareKey(AnsiString(main_pref).c_str(),*file_name).c_str();
-    PropValue* V=0;
-    V=PHelper().CreateChoose(items,PrepareKey(pref.c_str(),"Texture"), 		&file_name, smTexture); V->Owner()->Enable(FALSE);
-    PHelper().CreateCaption(items,PrepareKey(pref.c_str(),"Format"),		info.FormatString());
-    PHelper().CreateCaption(items,PrepareKey(pref.c_str(),"Size"), 			shared_str().sprintf("%d x %d x %s",info.width,info.height,info.HasAlpha()?"32b":"24b"));
-    PHelper().CreateCaption(items,PrepareKey(pref.c_str(),"Memory Usage"),	shared_str().sprintf("%d Kb",iFloor(tex_mem/1024)));
-    PHelper().CreateCaption(items,PrepareKey(pref.c_str(),"Effective Area"),shared_str().sprintf("%3.2f m^2",effective_area));
-    if (info.flags.is_any(STextureParams::flDiffuseDetail|STextureParams::flBumpDetail)){
-        if (0!=info.detail_name.size()){
-            V=PHelper().CreateChoose(items,PrepareKey(pref.c_str(),"Detail Texture"),	&info.detail_name,smTexture); 	V->Owner()->Enable(FALSE);
-            PHelper().CreateCaption(items,PrepareKey(pref.c_str(), "Detail Scale"),		shared_str().sprintf("%3.2f",info.detail_scale));
-        }else{
-            ELog.Msg(mtError,"Empty details on texture: '%s'",*file_name);
+	if (0!=xr_strlen(file_name)){
+        int tex_mem			= info.MemoryUsage(*file_name);
+        mem_use				+= tex_mem;
+        AnsiString pref		= PrepareKey(AnsiString(main_pref).c_str(),*file_name).c_str();
+        PropValue* V=0;
+        V=PHelper().CreateChoose(items,PrepareKey(pref.c_str(),"Texture"), 		&file_name, smTexture); V->Owner()->Enable(FALSE);
+        PHelper().CreateCaption(items,PrepareKey(pref.c_str(),"Format"),		info.FormatString());
+        PHelper().CreateCaption(items,PrepareKey(pref.c_str(),"Size"), 			shared_str().sprintf("%d x %d x %s",info.width,info.height,info.HasAlpha()?"32b":"24b"));
+        PHelper().CreateCaption(items,PrepareKey(pref.c_str(),"Memory Usage"),	shared_str().sprintf("%d Kb",iFloor(tex_mem/1024)));
+        PHelper().CreateCaption(items,PrepareKey(pref.c_str(),"Effective Area"),shared_str().sprintf("%3.2f m^2",effective_area));
+        if (info.flags.is_any(STextureParams::flDiffuseDetail|STextureParams::flBumpDetail)){
+            if (0!=info.detail_name.size()){
+                V=PHelper().CreateChoose(items,PrepareKey(pref.c_str(),"Detail Texture"),	&info.detail_name,smTexture); 	V->Owner()->Enable(FALSE);
+                PHelper().CreateCaption(items,PrepareKey(pref.c_str(), "Detail Scale"),		shared_str().sprintf("%3.2f",info.detail_scale));
+            }else{
+                ELog.Msg(mtError,"Empty details on texture: '%s'",*file_name);
+            }
         }
     }
 }

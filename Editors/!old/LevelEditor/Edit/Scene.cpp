@@ -34,8 +34,8 @@ void st_LevelOptions::InitDefaultText()
 
 void st_LevelOptions::Reset()
 {
-	m_FNLevelPath	= "LEVEL";
-    m_LevelPrefix	= "LEVEL_PREFIX";
+	m_FNLevelPath	= "level";
+    m_LevelPrefix	= "level_prefix";
 
     InitDefaultText	();
 
