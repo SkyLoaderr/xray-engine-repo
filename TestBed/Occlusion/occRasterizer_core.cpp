@@ -83,11 +83,10 @@ void i_scan		(int curY, float leftX, float lhx, float rightX, float rhx, float s
 	float	startR	= leftX-lhx;
 	float	endR	= rightX-rhx;
 	
-	float	startT	= minp(start_c,startR);
-	float	endT	= maxp(end_c,endR);
-
-	float	startX	= maxp(start_c,startR);
-	float	endX	= minp(end_c,endR);
+	float	startT=startR,endT=end_c;
+	float	startX=start_c,endX=endR;
+	if (start_c<startR)		{startT	= start_c;	startX	= startR;	}
+	if (end_c<endR)			{endT	= endR;		endX	= end_c;	}
 	
 	// guard-banding and clipping
 	int minX		= minPixel(startX), maxX = maxPixel(endX);
