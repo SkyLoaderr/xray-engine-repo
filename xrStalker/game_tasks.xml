@@ -21,4 +21,11 @@
 			<script_condition>info_test1.test_task2</script_condition>
 		</objective>
 	</game_task>
+	<game_task id="blockpost_case">
+		<objective>
+			<text>Steal the case from blockpost</text>
+		</objective>
+	</game_task>
+
+	
 </game_tasks_data>
