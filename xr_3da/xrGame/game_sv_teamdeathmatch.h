@@ -11,6 +11,7 @@ protected:
 	bool		m_bAutoTeamBalance;
 
 	virtual		bool				checkForFragLimit		();
+	virtual		bool				HasChampion				();
 public:	
 									game_sv_TeamDeathmatch	(){type = GAME_TEAMDEATHMATCH;}
 	virtual		void				Create					(shared_str& options);
@@ -38,4 +39,7 @@ public:
 
 	virtual		char*				GetAnomalySetBaseName	() {return "teamdeathmatch_game_anomaly_sets";};
 	virtual		BOOL				CanHaveFriendlyFire		()	{return TRUE;}
+	virtual		void				OnFraglimitExceed		();
+	virtual		void				OnTimelimitExceed		();
+
 };

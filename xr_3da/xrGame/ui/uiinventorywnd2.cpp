@@ -164,7 +164,7 @@ void CUIInventoryWnd::DropItem()
 	if (m_pCurrentDragDropItem == UIOutfitSlot.GetDragDropItemsList().front())
 		SendMessage(NULL, UNDRESS_OUTFIT, NULL);
 
-	m_pCurrentItem->Drop();
+//	m_pCurrentItem->Drop();
 	m_pCurrentDragDropItem->Highlight(false);
 
 	(smart_cast<CUIDragDropList*>(m_pCurrentDragDropItem->GetParent()))->

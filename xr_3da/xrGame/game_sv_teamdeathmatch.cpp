@@ -324,3 +324,24 @@ void	game_sv_TeamDeathmatch::Update					()
 		} break;
 	};
 }
+bool	game_sv_TeamDeathmatch::HasChampion				()
+{
+	return GetTeamScore(0)!=GetTeamScore(1);
+}
+
+void	game_sv_TeamDeathmatch::OnTimelimitExceed		()
+{
+	u8 winning_team = (GetTeamScore(0) < GetTeamScore(1))? 1 : 0;
+	OnTeamScore(winning_team, false);
+	phase = u16((winning_team)?GAME_PHASE_TEAM2_SCORES:GAME_PHASE_TEAM1_SCORES);
+	switch_Phase		(phase);
+	OnDelayedRoundEnd	("TIME_limit");
+}
+void	game_sv_TeamDeathmatch::OnFraglimitExceed		()
+{
+	u8 winning_team = (GetTeamScore(0) < GetTeamScore(1))? 1 : 0;
+	OnTeamScore(winning_team, false);
+	phase = u16((winning_team)?GAME_PHASE_TEAM2_SCORES:GAME_PHASE_TEAM1_SCORES);
+	switch_Phase		(phase);
+	OnDelayedRoundEnd	("FRAG_limit");
+}
