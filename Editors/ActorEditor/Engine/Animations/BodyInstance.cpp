@@ -635,12 +635,14 @@ void CKinematics::Load(const char* N, IReader *data, u32 dwFlags)
 	IReader* IKD = data->open_chunk(OGF_IKDATA);
     if (IKD){
         for (u32 i=0; i<bones->size(); i++) {
-            CBoneData*	B = (*bones)[i];
-            IKD->r_stringZ(B->game_mtl);
-            IKD->r(&B->shape,sizeof(SBoneShape));
-            IKD->r(&B->IK_data,sizeof(SJointIKData));
-            IKD->r_fvector3(B->bind_hpb);
-            IKD->r_fvector3(B->bind_translate);
+            CBoneData*	B 	= (*bones)[i];
+            IKD->r_stringZ	(B->game_mtl);
+            IKD->r			(&B->shape,sizeof(SBoneShape));
+            IKD->r			(&B->IK_data,sizeof(SJointIKData));
+            IKD->r_fvector3	(B->bind_hpb);
+            IKD->r_fvector3	(B->bind_translate);
+	        B->mass			= IKD->r_float();
+    	    IKD->r_fvector3	(B->center_of_mass);
         }
     	IKD->close();
     }

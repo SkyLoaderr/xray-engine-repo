@@ -160,6 +160,8 @@ public:
     SBoneShape		shape;
     string64		game_mtl;
     SJointIKData	IK_data;
+    float			mass;
+    Fvector			center_of_mass;
     
 	// Motion control
 	void			Motion_Start	(CKinematics* K, CBlend* handle);	// with recursion
