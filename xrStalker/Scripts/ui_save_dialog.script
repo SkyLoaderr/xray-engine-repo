@@ -3,7 +3,7 @@
 -- Created:     27.9.2004
 -- Author:      Serhiy Vynnychenko (narrator@gsc-game.kiev.ua)
 -- Copyright:   2004 GSC Game World
--- Version:     0.6
+-- Version:     0.8
 
 function main()
 	local dlg = ui_save_dialog.save_dialog()
