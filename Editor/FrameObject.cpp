@@ -61,7 +61,7 @@ void TfraObject::SelByRefObject( bool flag ){
     LPCSTR sel_name=0;
     if (Scene.GetQueryObjects(objlist,OBJCLASS_SCENEOBJECT,1,1,-1))
         sel_name = ((CSceneObject*)objlist.front())->GetName();
-	LPCSTR N = TfrmChoseItem::SelectObject(false,true,0,sel_name);
+	LPCSTR N = TfrmChoseItem::SelectObject(false,0,sel_name);
     if (!N) return;
     ObjectIt _F = Scene.FirstObj(OBJCLASS_SCENEOBJECT);
     ObjectIt _E = Scene.LastObj(OBJCLASS_SCENEOBJECT);
@@ -81,7 +81,7 @@ void TfraObject::SelByRefObject( bool flag ){
 //---------------------------------------------------------------------------
 void __fastcall TfraObject::ebCurObjClick(TObject *Sender)
 {
-	LPCSTR N = TfrmChoseItem::SelectObject(false,true,0,0);
+	LPCSTR N = TfrmChoseItem::SelectObject(false,0,0);
     if (!N) return;
     Lib.SetCurrentObject(N);
     // set current object

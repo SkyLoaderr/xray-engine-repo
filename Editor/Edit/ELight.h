@@ -6,6 +6,41 @@
 #define _INCDEF_Light_H_
 
 #include "CustomObject.h"
+#include "xr_efflensflare.h"
+
+class CEditFlare{
+public:
+	enum {
+    	flFlare 	= (1<<0),
+    	flSource	= (1<<1),
+    	flGradient 	= (1<<2)
+    };
+	struct{
+        DWORD		bFlare			: 1;
+        DWORD		bSource			: 1;
+        DWORD		bGradient		: 1;
+	}				m_Flags;
+    // source
+    sh_name			m_cSourceTexture;
+    float			m_fSourceRadius;
+    // gradient
+    float			m_fGradientDensity;
+    // flares
+    struct SFlare{
+	    float		fOpacity;
+    	float		fRadius;
+	    float		fPosition;
+        sh_name		texture;
+    };
+    DEFINE_VECTOR	(SFlare,FlareVec,FlareIt);
+    FlareVec		m_Flares;
+//	CLensFlare		m_RTLFlares;
+public:
+					CEditFlare();
+  	void 			Load(CStream& F);
+	void 			Save(CFS_Base& F);
+    void			Update();
+};
 
 class CLight : public CCustomObject{
 	// d3d's light parameters (internal use)
@@ -22,13 +57,11 @@ public:
 	Flight			m_D3D;
 
 	// build options
-	int 			m_Flares;
     int 			m_UseInD3D;
     float 			m_Brightness;
 
     // flares
-	AnsiString m_FlaresText;
-    void InitDefaultFlaresText();
+    CEditFlare		m_LensFlare;
 
     const Fvector&	GetRotate	(){return vRotate;}
 public:

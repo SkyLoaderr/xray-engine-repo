@@ -165,6 +165,8 @@ public:
 public:
 	struct SBase{
         char 			name[128];
+        int 			w;
+        int 			h;
 		DWORDVec		data;
         				SBase(LPCSTR nm);
         bool			Valid(){return !data.empty();}

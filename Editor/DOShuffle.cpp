@@ -240,7 +240,7 @@ void __fastcall TfrmDOShuffle::tvMultiStartDrag(TObject *Sender,
 
 void __fastcall TfrmDOShuffle::ebAddObjectClick(TObject *Sender)
 {
-	LPCSTR S = TfrmChoseItem::SelectObject(true,true,0,0);
+	LPCSTR S = TfrmChoseItem::SelectObject(true,0,0);
     if (S){
 	    AStringVec lst;
 		SequenceToList(lst, S);

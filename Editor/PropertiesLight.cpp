@@ -6,8 +6,9 @@
 #include "ELight.h"
 #include "SceneClassList.h"
 #include "ui_main.h"
-#include "ColorPicker.h"
+//#include "ColorPicker.h"
 #include "Scene.h"
+#include "PropertiesList.h"
 //---------------------------------------------------------------------------
 #pragma package(smart_init)
 #pragma resource "*.dfm"
@@ -23,8 +24,15 @@ void frmPropertiesLightRun(ObjectList* pObjects, bool& bChange){
 __fastcall TfrmPropertiesLight::TfrmPropertiesLight(TComponent* Owner)
     : TForm(Owner)
 {
+    m_Props = TfrmProperties::CreateProperties(tsSun,alClient);
 }
 //----------------------------------------------------
+void __fastcall TfrmPropertiesLight::FormClose(TObject *Sender,
+      TCloseAction &Action)
+{
+	TfrmProperties::DestroyProperties(m_Props);
+}
+//---------------------------------------------------------------------------
 void __fastcall TfrmPropertiesLight::Run(ObjectList* pObjects, bool& bChange)
 {
     m_Objects = pObjects;
@@ -113,9 +121,6 @@ void TfrmPropertiesLight::GetObjectsInfo(){
     case D3DLIGHT_DIRECTIONAL: 	pcType->ActivePage = tsSun; break;
     default: THROW;
     }
-    cbFlares->Checked        		= _L->m_Flares;
-    mmFlares->Text           		= _L->m_FlaresText;
-    mmFlares->Enabled        		= cbFlares->Checked;
 
 	mcDiffuse->ObjFirstInit			( _L->m_D3D.diffuse.get_windows() );
     cbUseInD3D->ObjFirstInit	   	( TCheckBoxState(_L->m_UseInD3D) );
@@ -156,6 +161,35 @@ void TfrmPropertiesLight::GetObjectsInfo(){
     	cbTargetDynamic->ObjNextInit	( (_L->m_Flags.bAffectDynamic)?cbChecked:cbUnchecked );
 	    cbTargetAnimated->ObjNextInit	( (_L->m_Flags.bProcedural)?cbChecked:cbUnchecked );
 	}
+    // init flares
+    if (m_Objects->size()==1){
+		CEditFlare& F = ((CLight*)m_Objects->front())->m_LensFlare;
+    	m_Props->Enabled = true;
+		m_Props->BeginFillMode();
+        TElTreeItem* M=0;
+        TElTreeItem* N=0;
+		M = m_Props->AddItem(0,PROP_MARKER,	"Flares");
+			m_Props->AddItem(M,PROP_FLAG,	"Enabled",(LPDWORD)&F.m_Flags,(LPDWORD)CEditFlare::flFlare);
+		for (CEditFlare::FlareIt it=F.m_Flares.begin(); it!=F.m_Flares.end(); it++){
+            AnsiString nm; nm.sprintf("Flare %d",it-F.m_Flares.begin());
+		N = m_Props->AddItem(M,PROP_MARKER,	nm.c_str());          
+			m_Props->AddItem(N,PROP_TEXTURE,"Texture",(LPDWORD)&it->texture);
+			m_Props->AddItem(N,PROP_FLOAT,	"Radius", (LPDWORD)&it->fRadius,	(LPDWORD)TfrmProperties::MakeFParam(0.f,10.f));
+			m_Props->AddItem(N,PROP_FLOAT,	"Opacity", (LPDWORD)&it->fOpacity,	(LPDWORD)TfrmProperties::MakeFParam(0.f,1.f));
+			m_Props->AddItem(N,PROP_FLOAT,	"Position",(LPDWORD)&it->fPosition,	(LPDWORD)TfrmProperties::MakeFParam(-10.f,10.f));
+		}
+
+		M = m_Props->AddItem(0,PROP_MARKER,	"Source");
+			m_Props->AddItem(M,PROP_FLAG,	"Enabled",(LPDWORD)&F.m_Flags,(LPDWORD)CEditFlare::flSource);
+			m_Props->AddItem(M,PROP_FLOAT,	"Radius", (LPDWORD)&F.m_fSourceRadius,(LPDWORD)TfrmProperties::MakeFParam(0.f,10.f));
+			m_Props->AddItem(M,PROP_TEXTURE,"Texture",(LPDWORD)&F.m_cSourceTexture);
+		M = m_Props->AddItem(0,PROP_MARKER,	"Gradient");
+			m_Props->AddItem(M,PROP_FLAG,	"Enabled",(LPDWORD)&F.m_Flags,(LPDWORD)CEditFlare::flGradient);
+			m_Props->AddItem(M,PROP_FLOAT,	"Density",(LPDWORD)&F.m_fGradientDensity,(LPDWORD)TfrmProperties::MakeFParam(0.f,1.f));
+		m_Props->EndFillMode();
+    }else{
+    	m_Props->Enabled = false;
+    }
 }
 
 bool TfrmPropertiesLight::ApplyObjectsInfo(){
@@ -177,8 +211,6 @@ bool TfrmPropertiesLight::ApplyObjectsInfo(){
         }
         if  (pcType->ActivePage==tsSun){
             _L->m_D3D.type 		= D3DLIGHT_DIRECTIONAL;
-            _L->m_Flares       	= !!cbFlares->Checked;
-            _L->m_FlaresText   	= mmFlares->Text;
         }else if (pcType->ActivePage==tsPoint){
             _L->m_D3D.type 		= D3DLIGHT_POINT;
         }
@@ -322,11 +354,6 @@ void __fastcall TfrmPropertiesLight::ebQLautoClick(TObject *Sender){
 }
 //---------------------------------------------------------------------------
 
-void __fastcall TfrmPropertiesLight::cbFlaresClick(TObject *Sender){
-    mmFlares->Enabled  = cbFlares->Checked;
-}
-//---------------------------------------------------------------------------
-
 void __fastcall TfrmPropertiesLight::cbTargetLMClick(TObject *Sender)
 {
     if (cbTargetLM->Checked) cbTargetAnimated->Checked = false;
@@ -338,5 +365,6 @@ void __fastcall TfrmPropertiesLight::cbTargetAnimatedClick(TObject *Sender){
     if (cbTargetAnimated->Checked) cbTargetLM->Checked = false;
 }
 //---------------------------------------------------------------------------
+
 
 

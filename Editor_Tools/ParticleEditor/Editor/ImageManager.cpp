@@ -105,15 +105,15 @@ void CImageManager::MakeGameTexture(EImageThumbnail* THM, LPCSTR game_name, FIBI
 //------------------------------------------------------------------------------
 // загружает 32-bit данные
 //------------------------------------------------------------------------------
-bool CImageManager::LoadTextureData(const AnsiString& src_name, DWORDVec& data)
+bool CImageManager::LoadTextureData(const AnsiString& src_name, DWORDVec& data, int& w, int& h)
 {
 	AnsiString fn = src_name;
 	FS.m_Textures.Update(fn);
     FIBITMAP* bm = Surface_Load(fn.c_str());
     if (!bm) return false;
     // flip
-	int w = FreeImage_GetWidth (bm);
-	int h = FreeImage_GetHeight(bm);
+	w = FreeImage_GetWidth (bm);
+	h = FreeImage_GetHeight(bm);
     int w4= w*4;
     data.resize(w*h);
     for (int y=h-1; y>=0; y--) CopyMemory(data.begin()+(h-y-1)*w,FreeImage_GetScanLine(bm,y),w4);

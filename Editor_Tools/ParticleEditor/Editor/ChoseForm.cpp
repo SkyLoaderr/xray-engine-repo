@@ -32,7 +32,7 @@ AnsiString TfrmChoseItem::last_item="";
 //---------------------------------------------------------------------------
 // Constructors
 //---------------------------------------------------------------------------
-LPCSTR __fastcall TfrmChoseItem::SelectObject(bool bMulti, bool bExcludeSystem, LPCSTR start_folder, LPCSTR start_name){
+LPCSTR __fastcall TfrmChoseItem::SelectObject(bool bMulti, LPCSTR start_folder, LPCSTR start_name){
 	VERIFY(!form);
 	form 							= new TfrmChoseItem(0);
 	form->Mode 						= smObject;
@@ -47,11 +47,9 @@ LPCSTR __fastcall TfrmChoseItem::SelectObject(bool bMulti, bool bExcludeSystem, 
     // fill object list
 	AnsiString fld;
     AStringVec& lst = Lib.Objects();
-    for (AStringIt it=lst.begin(); it!=lst.end(); it++){
+    for (AStringIt it=lst.begin(); it!=lst.end(); it++)
 		if (!start_folder||(start_folder&&(stricmp(start_folder,FOLDER::GetFolderName(it->c_str(),fld))==0)))
-			if (!bExcludeSystem||(bExcludeSystem&&(it->c_str()[0]!='$')))
-            	FOLDER::AppendObject(form->tvItems,it->c_str());
-    }
+			FOLDER::AppendObject(form->tvItems,it->c_str());
     // redraw
 	form->tvItems->IsUpdating		= false;
 	// show
@@ -59,7 +57,7 @@ LPCSTR __fastcall TfrmChoseItem::SelectObject(bool bMulti, bool bExcludeSystem, 
     return select_item.c_str();
 }
 //---------------------------------------------------------------------------
-LPCSTR __fastcall TfrmChoseItem::SelectShader(bool bExcludeSystem, LPCSTR start_folder, LPCSTR init_name){
+LPCSTR __fastcall TfrmChoseItem::SelectShader(LPCSTR init_name){
 	VERIFY(!form);
 	form = new TfrmChoseItem(0);
 	form->Mode = smShader;
@@ -72,11 +70,8 @@ LPCSTR __fastcall TfrmChoseItem::SelectShader(bool bExcludeSystem, LPCSTR start_
     CShaderManager::BlenderMap& blenders = Device.Shader._GetBlenders();
 	CShaderManager::BlenderPairIt _F = blenders.begin();
 	CShaderManager::BlenderPairIt _E = blenders.end();
-	for (CShaderManager::BlenderPairIt _S = _F; _S!=_E; _S++){
-//		if (!start_folder||(start_folder&&(stricmp(start_folder,S->cFolder)==0)))
-		if (bExcludeSystem&&(_S->first[0]!='$')||(!bExcludeSystem))
-			FOLDER::AppendObject(form->tvItems,_S->first);
-    }
+	for (CShaderManager::BlenderPairIt _S = _F; _S!=_E; _S++)
+		FOLDER::AppendObject(form->tvItems,_S->first);
     // redraw
 	form->tvItems->IsUpdating		= false;
 	// show
@@ -84,7 +79,7 @@ LPCSTR __fastcall TfrmChoseItem::SelectShader(bool bExcludeSystem, LPCSTR start_
     return select_item.c_str();
 }
 //---------------------------------------------------------------------------
-LPCSTR __fastcall TfrmChoseItem::SelectShaderXRLC(LPCSTR start_folder, LPCSTR init_name){
+LPCSTR __fastcall TfrmChoseItem::SelectShaderXRLC(LPCSTR init_name){
 	VERIFY(!form);
 	form = new TfrmChoseItem(0);
 	form->Mode = smShaderXRLC;

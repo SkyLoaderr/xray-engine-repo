@@ -92,9 +92,9 @@ private:	// User declarations
 public:		// User declarations
     __fastcall TfrmChoseItem(TComponent* Owner);
 // static function
-    static LPCSTR __fastcall SelectObject	(bool bMulti=false, bool bExcludeSystem=true, LPCSTR start_folder=0, LPCSTR init_name=0);
-    static LPCSTR __fastcall SelectShader	(bool bExcludeSystem=true, LPCSTR start_folder=0, LPCSTR init_name=0);
-    static LPCSTR __fastcall SelectShaderXRLC(LPCSTR start_folder=0, LPCSTR init_name=0);
+    static LPCSTR __fastcall SelectObject	(bool bMulti=false, LPCSTR start_folder=0, LPCSTR init_name=0);
+    static LPCSTR __fastcall SelectShader	(LPCSTR init_name=0);
+    static LPCSTR __fastcall SelectShaderXRLC(LPCSTR init_name=0);
     static LPCSTR __fastcall SelectPS		(LPCSTR start_folder=0, LPCSTR init_name=0);
     static LPCSTR __fastcall SelectTexture	(bool bMulti=false, LPCSTR tex=0);
     static bool __fastcall Visible(){return !!form;}

@@ -153,7 +153,7 @@ public:
 	void RemoveObject               (CCustomObject* object, bool bManual=true);
     bool ContainsObject             (CCustomObject* object, EObjClass classfilter);
 
-	CCustomObject *RayPick           	(const Fvector& start, const Fvector& dir, EObjClass classfilter, SRayPickInfo* pinf, bool bDynamicTest, bool bUseSnapList);
+	CCustomObject *RayPick   		(const Fvector& start, const Fvector& dir, EObjClass classfilter, SRayPickInfo* pinf, bool bDynamicTest, bool bUseSnapList);
 	int BoxPick						(const Fbox& box, SBoxPickInfoVec& pinf, ObjectList* snap_list=0);
 
 	int FrustumSelect               (bool flag, EObjClass classfilter=OBJCLASS_DUMMY);

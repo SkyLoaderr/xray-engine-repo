@@ -80,6 +80,8 @@ __published:	// IDE-managed Components
 private:	// User declarations
     void __fastcall PMItemClick(TObject *Sender);
 	void __fastcall CustomClick(TElTreeItem* item);
+	void __fastcall TextureClick(TElTreeItem* item);
+	void __fastcall ShaderClick(TElTreeItem* item);
 	void __fastcall ColorClick(TElTreeItem* item);
 	Graphics::TBitmap* m_BMEllipsis;
     bool bModified;
@@ -99,8 +101,8 @@ public:		// User declarations
     void __fastcall BeginFillMode			(const AnsiString& title="Properties");
     void __fastcall EndFillMode				();
 	TElTreeItem* __fastcall AddItem			(TElTreeItem* parent, DWORD type, LPCSTR key, LPDWORD value=0, LPDWORD param=0);
-    static FParam*	GetFParam				(float mn, float mx){ return new FParam(mn,mx); }
-    static IParam*	GetIParam				(float mn, float mx){ return new IParam(mn,mx); }
+    static FParam*	MakeFParam				(float mn, float mx){ return new FParam(mn,mx); }
+    static IParam*	MakeIParam				(float mn, float mx){ return new IParam(mn,mx); }
 };
 //---------------------------------------------------------------------------
 
@@ -114,10 +116,7 @@ public:		// User declarations
 #define PROP_MARKER		0x1007
 #define PROP_COLOR		0x1008
 #define PROP_TEXT		0x1009
-#define PROP_EXEC		0x1010
-#define PROP_SHADER		0x1011
-#define PROP_TEXTURE	0x1012
-
-typedef void PROP_EXEC_CB(LPDWORD p1);
+#define PROP_SHADER		0x1010
+#define PROP_TEXTURE	0x1011
 //---------------------------------------------------------------------------
 #endif

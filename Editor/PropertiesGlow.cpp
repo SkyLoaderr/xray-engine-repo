@@ -177,7 +177,7 @@ void __fastcall TfrmPropertiesGlow::seRangeLWChange(TObject *Sender,
 void __fastcall TfrmPropertiesGlow::ebSelectShaderClick(TObject *Sender)
 {
     bool bValidShader 	= (lbShader->Caption!="...");
-	LPCSTR S = TfrmChoseItem::SelectShader(true,0,bValidShader?lbShader->Caption.c_str():0);
+	LPCSTR S = TfrmChoseItem::SelectShader(bValidShader?lbShader->Caption.c_str():0);
     if (S){lbShader->Caption=S; OnModified(Sender);}
 }
 //---------------------------------------------------------------------------

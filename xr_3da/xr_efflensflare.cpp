@@ -7,17 +7,19 @@
 #include "xr_ini.h"
 
 
-#ifndef _LEVEL_EDITOR
+#ifdef _LEVEL_EDITOR
+	#include "ui_main.h"
+	#include "scene.h"
+#else
 	#include "xr_creator.h"
 	#include "xr_object.h"
-#else
 #endif
 
 struct FlareVertex {
 	Fvector p;
 	DWORD	color;
 	float	tu,tv;
-	
+
 	IC void	set(float x, float y, float z, DWORD c, float u, float v)
 	{
 		p.set(x,y,z);
@@ -27,7 +29,11 @@ struct FlareVertex {
 };
 
 
-#define FAR_DIST pCreator->Environment.Current.Far
+#ifdef _LEVEL_EDITOR
+	#define FAR_DIST UI.ZFar()
+#else
+	#define FAR_DIST pCreator->Environment.Current.Far
+#endif
 
 
 #define FVF_FlareVertex		( D3DFVF_XYZ | D3DFVF_DIFFUSE | D3DFVF_TEX1 )
@@ -127,10 +133,10 @@ void CLensFlare::Load( CInifile* pIni, LPSTR section )
 		P = pIni->ReadSTRING ( section,"flare_position");
 		DWORD tcnt = _GetItemCount(T);
 		for (DWORD i=0; i<tcnt; i++){
-			_GetItem(R,i,name,""); r=(float)atof(name);
-			_GetItem(O,i,name,""); o=(float)atof(name);
-			_GetItem(P,i,name,""); p=(float)atof(name);
-			_GetItem(T,i,name,""); 
+			_GetItem(R,i,name); r=(float)atof(name);
+			_GetItem(O,i,name); o=(float)atof(name);
+			_GetItem(P,i,name); p=(float)atof(name);
+			_GetItem(T,i,name); 
 			AddFlare(r,o,p,name);
 		}
 	}
@@ -152,12 +158,19 @@ void CLensFlare::OnMove()
 	
 	Fmatrix	matEffCamPos;
 	matEffCamPos.identity();
+	// Calculate our position and direction
+
+#ifdef _LEVEL_EDITOR
+	matEffCamPos.i.set(Device.m_Camera.GetRight());
+	matEffCamPos.j.set(Device.m_Camera.GetNormal());
+	matEffCamPos.k.set(Device.m_Camera.GetDirection());
+	vecPos.set(Device.m_Camera.GetPosition());
+#else
 	matEffCamPos.i.set(Device.vCameraRight);
 	matEffCamPos.j.set(Device.vCameraTop);
 	matEffCamPos.k.set(Device.vCameraDirection);
-	
-	// Calculate our position and direction
 	vecPos.set(Device.vCameraPosition);
+#endif
 	vecDir.set(0.0f, 0.0f, 1.0f);
 	matEffCamPos.transform_dir(vecDir);
 	vecDir.normalize();
@@ -187,22 +200,19 @@ void CLensFlare::OnMove()
 	vecX.normalize();
 	vecY.crossproduct(vecX, vecDir);
 
-#ifndef _LEVEL_EDITOR
+#ifdef _LEVEL_EDITOR
+	if ( Scene.RayPick(Device.m_Camera.GetPosition(), vSunDir, OBJCLASS_SCENEOBJECT, 0, false, false))
+#else
 	pCreator->CurrentEntity()->CFORM()->Enable( pCreator->CurrentEntity()->bVisible );
 	if ( pCreator->ObjectSpace.RayTest( Device.vCameraPosition, vSunDir) )
+#endif
 	{
 		fBlend = fBlend - BLEND_SPEED * Device.fTimeDelta;
 	}else{
 		fBlend = fBlend + BLEND_SPEED * Device.fTimeDelta;
 	}
+#ifndef _LEVEL_EDITOR
 	pCreator->CurrentEntity()->CFORM()->EnableRollback( );
-#else
-	if ( Scene.RayTest( Device.vCameraPosition, vSunDir) )
-	{
-		fBlend = fBlend - BLEND_SPEED * Device.fTimeDelta;
-	}else{
-		fBlend = fBlend + BLEND_SPEED * Device.fTimeDelta;
-	}
 #endif
 	clamp( fBlend, 0.0f, 1.0f );
 	
@@ -224,10 +234,10 @@ void CLensFlare::OnMove()
 		float    cl			= kx * ky * fGradientDensity * 0.3f * fBlend;
 		
 		if (!((fabsf(scr_pos.x) > sun_max) || (fabsf(scr_pos.y) > sun_max)))
-#ifndef _LEVEL_EDITOR
-			pCreator->Environment.SetGradient(cl);
-#else
+#ifdef _LEVEL_EDITOR
 			UI.SetGradient(cl);
+#else
+			pCreator->Environment.SetGradient(cl);
 #endif
 	}
 }

@@ -123,6 +123,7 @@ bool SceneBuilder::BuildLTX(){
 
 	// -- add flares --
 	if (Scene.ObjCount(OBJCLASS_LIGHT)) {
+    	ELog.DlgMsg(mtInformation,"Test me!");
         AnsiString suns;
 		i = Scene.FirstObj(OBJCLASS_LIGHT);
         _E  = Scene.LastObj(OBJCLASS_LIGHT);
@@ -131,13 +132,27 @@ bool SceneBuilder::BuildLTX(){
             if (l->m_D3D.type==D3DLIGHT_DIRECTIONAL){
 	            if (suns.Length()) suns += ", ";
     	        suns += l->GetName();
-           	    pIni->WriteColor(l->GetName(), "sun_color", l->m_D3D.diffuse.get());
-               	pIni->WriteVector(l->GetName(), "sun_dir", l->m_D3D.direction);
-               	pIni->WriteString(l->GetName(), "gradient", "off");
-               	pIni->WriteString(l->GetName(), "source", "off");
-               	pIni->WriteString(l->GetName(), "flares", "off");
-        	    if (l->m_Flares)
-	                AppendDataToSection(pIni, AnsiString(l->GetName()), l->m_FlaresText.c_str());
+           	    pIni->WriteColor	(l->GetName(), "sun_color", 		l->m_D3D.diffuse.get());
+               	pIni->WriteVector	(l->GetName(), "sun_dir", 			l->m_D3D.direction);
+               	pIni->WriteString	(l->GetName(), "gradient", 			l->m_LensFlare.m_Flags.bGradient?"on":"off");
+               	pIni->WriteString	(l->GetName(), "source", 			l->m_LensFlare.m_Flags.bSource?"on":"off");
+               	pIni->WriteString	(l->GetName(), "flares", 			l->m_LensFlare.m_Flags.bFlare?"on":"off");
+                pIni->WriteFloat	(l->GetName(), "gradient_density", 	l->m_LensFlare.m_fGradientDensity);
+                pIni->WriteString	(l->GetName(), "source_texture", 	l->m_LensFlare.m_cSourceTexture);
+                pIni->WriteFloat	(l->GetName(), "source_radius", 	l->m_LensFlare.m_fSourceRadius);
+                AnsiString FT=""; AnsiString FR=""; AnsiString FO=""; AnsiString FP="";
+                int i=l->m_LensFlare.m_Flares.size();
+                for (CEditFlare::FlareIt it = l->m_LensFlare.m_Flares.begin(); it!=l->m_LensFlare.m_Flares.end(); it++,i--){
+                	FT += it->texture;
+                	FR += it->fRadius;
+                	FO += it->fOpacity;
+                	FP += it->fPosition;
+                    if (i>=1){FT+=","; FR+=","; FO+=","; FP+=",";}
+                }
+               	pIni->WriteString	(l->GetName(), "flare_textures",	FT.c_str());
+               	pIni->WriteString	(l->GetName(), "flare_radius",		FR.c_str());
+               	pIni->WriteString	(l->GetName(), "flare_opacity",		FO.c_str());
+               	pIni->WriteString	(l->GetName(), "flare_position",	FP.c_str());
             }
 		}
         if (suns.Length()) pIni->WriteString("environment", "suns", suns.c_str());

@@ -224,7 +224,7 @@ void __fastcall TfrmPropertiesObject::tsSurfacesShow(TObject *Sender)
 void __fastcall TfrmPropertiesObject::ebSelectShaderClick(TObject *Sender)
 {
 	if (!m_Surf) return;
-	LPCSTR S = TfrmChoseItem::SelectShader(true,0,m_Surf->_Shader()?m_Surf->_ShaderName():0);
+	LPCSTR S = TfrmChoseItem::SelectShader(m_Surf->_Shader()?m_Surf->_ShaderName():0);
     if (S){
         lbShader->Caption = S;
     	if (m_Surf->_Shader()){
@@ -244,7 +244,7 @@ void __fastcall TfrmPropertiesObject::ebSelectShaderXRLCClick(
       TObject *Sender)
 {
 	if (!m_Surf) return;
-	LPCSTR S = TfrmChoseItem::SelectShaderXRLC(0,m_Surf->_ShaderXRLCName()?m_Surf->_ShaderXRLCName():0);
+	LPCSTR S = TfrmChoseItem::SelectShaderXRLC(m_Surf->_ShaderXRLCName()?m_Surf->_ShaderXRLCName():0);
     if (S){
         lbShaderXRLC->Caption = S;
 		m_Surf->SetShaderXRLC(S);

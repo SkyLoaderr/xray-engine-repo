@@ -17,10 +17,15 @@
 #define LIGHT_CHUNK_VERSION				0xB411
 #define LIGHT_CHUNK_FLAG				0xB413
 #define LIGHT_CHUNK_BRIGHTNESS			0xB425
-#define LIGHT_CHUNK_FLARES		        0xB430
 #define LIGHT_CHUNK_D3D_PARAMS         	0xB435
 #define LIGHT_CHUNK_USE_IN_D3D			0xB436
 #define LIGHT_CHUNK_HPB_ROTATION		0xB437
+//----------------------------------------------------
+//----------------------------------------------------
+#define FLARE_CHUNK_FLAG				0x1002
+#define FLARE_CHUNK_SOURCE				0x1010
+#define FLARE_CHUNK_GRADIENT			0x1011
+#define FLARE_CHUNK_FLARES				0x1012
 //----------------------------------------------------
 
 #define VIS_RADIUS 		0.25f
@@ -30,6 +35,28 @@
 #define NORM_COLOR 		0x00FFFF00
 #define NORM_DYN_COLOR 	0x0000FF00
 #define LOCK_COLOR 		0x00FF0000
+
+CEditFlare::CEditFlare()
+{
+	ZeroMemory(this,sizeof(CEditFlare));
+    m_Flags.bFlare 		= true;
+    m_Flags.bSource 	= true;
+    m_Flags.bGradient 	= true;
+	// flares
+    m_Flares.resize		(6);
+    FlareIt it=m_Flares.begin();
+	it->fRadius=0.08f; it->fOpacity=0.06f; it->fPosition=1.3f; strcpy(it->texture,"flare1.tga"); it++;
+	it->fRadius=0.12f; it->fOpacity=0.04f; it->fPosition=1.0f; strcpy(it->texture,"flare2.tga"); it++;
+	it->fRadius=0.04f; it->fOpacity=0.10f; it->fPosition=0.5f; strcpy(it->texture,"flare2.tga"); it++;
+	it->fRadius=0.08f; it->fOpacity=0.08f; it->fPosition=-0.3f; strcpy(it->texture,"flare2.tga"); it++;
+	it->fRadius=0.12f; it->fOpacity=0.04f; it->fPosition=-0.6f; strcpy(it->texture,"flare3.tga"); it++;
+	it->fRadius=0.30f; it->fOpacity=0.04f; it->fPosition=-1.0f; strcpy(it->texture,"flare1.tga"); it++;
+	// source
+    strcpy(m_cSourceTexture,"sun.tga");
+    m_fSourceRadius = 0.15f;
+    // gradient
+    m_fGradientDensity = 0.6f;
+}
 
 CLight::CLight( char *name ):CCustomObject(){
 	Construct();
@@ -43,7 +70,6 @@ CLight::CLight():CCustomObject(){
 void CLight::Construct(){
 	m_ClassID 		= OBJCLASS_LIGHT;
 
-    m_Flares 		= true;
     m_UseInD3D		= true;
 
     ZeroMemory		(&m_D3D,sizeof(m_D3D));
@@ -64,8 +90,6 @@ void CLight::Construct(){
     m_Flags.bAffectStatic 	= TRUE;
     m_Flags.bAffectDynamic 	= FALSE;
     m_Flags.bProcedural 	= FALSE;
-
-    InitDefaultFlaresText();
 }
 
 CLight::~CLight(){
@@ -76,34 +100,12 @@ void CLight::UpdateTransform(){
 }
 
 void CLight::CopyFrom(CLight* src){
-    m_Enabled 		= src->m_Enabled;
-	m_D3D			= src->m_D3D;
-
-	m_Flares		= src->m_Flares;
-    m_UseInD3D		= src->m_UseInD3D;
-
-    m_Brightness	= src->m_Brightness;
-	m_FlaresText	= src->m_FlaresText;
-
-    m_Flags			= src->m_Flags;
+	*this			= *src;
 }
 
 void CLight::AffectD3D(BOOL flag){
 	m_UseInD3D = flag;
     UI.UpdateScene();
-}
-
-void CLight::InitDefaultFlaresText(){
-	char deffilename[MAX_PATH];
-	int handle,s;
-    m_FlaresText="";
-	strcpy(deffilename,"default.flarestext");
-	FS.m_Config.Update( deffilename );
-    char buf[4096];
-    if (FS.Exist(deffilename,true)){
-	    CFileStream F(deffilename);
-		F.RstringZ(buf); m_FlaresText = buf;
-	}
 }
 //----------------------------------------------------
 
@@ -267,9 +269,7 @@ bool CLight::Load(CStream& F){
 
 	CCustomObject::Load(F);
 
-    R_ASSERT(F.FindChunk(LIGHT_CHUNK_FLARES));
-    m_Flares 		= F.Rword();
-    F.RstringZ		(buf); m_FlaresText = buf;
+    m_LensFlare.Load(F);
 
     R_ASSERT(F.ReadChunk(LIGHT_CHUNK_BRIGHTNESS,&m_Brightness));
     R_ASSERT(F.FindChunk(LIGHT_CHUNK_D3D_PARAMS));
@@ -303,18 +303,56 @@ void CLight::Save(CFS_Base& F){
 	F.Wword			(LIGHT_VERSION);
 	F.close_chunk	();
 
-	F.open_chunk	(LIGHT_CHUNK_FLARES);
-	F.Wword			(m_Flares);
-	F.WstringZ		(m_FlaresText.c_str());
-	F.close_chunk	();
+    m_LensFlare.Save(F);
 
 	F.write_chunk	(LIGHT_CHUNK_BRIGHTNESS,&m_Brightness,sizeof(m_Brightness));
 	F.write_chunk	(LIGHT_CHUNK_D3D_PARAMS,&m_D3D,sizeof(m_D3D));
     F.write_chunk	(LIGHT_CHUNK_USE_IN_D3D,&m_UseInD3D,sizeof(m_UseInD3D));
-
 	F.write_chunk	(LIGHT_CHUNK_HPB_ROTATION,&vRotate,sizeof(vRotate));
-
     F.write_chunk	(LIGHT_CHUNK_FLAG,&m_Flags,sizeof(DWORD));
 }
 //----------------------------------------------------
+
+void CEditFlare::Load(CStream& F){
+	if (!F.FindChunk(FLARE_CHUNK_FLAG)) return;
+    
+    R_ASSERT(F.FindChunk(FLARE_CHUNK_FLAG));
+    F.Read			(&m_Flags,sizeof(DWORD));
+
+    R_ASSERT(F.FindChunk(FLARE_CHUNK_SOURCE));
+    F.RstringZ		(m_cSourceTexture);
+    m_fSourceRadius	= F.Rfloat();
+
+    R_ASSERT(F.FindChunk(FLARE_CHUNK_GRADIENT));
+    m_fGradientDensity = F.Rfloat();
+
+    R_ASSERT(F.FindChunk(FLARE_CHUNK_FLARES));
+    m_Flares.resize(F.Rdword());
+    F.Read		(m_Flares.begin(),m_Flares.size()*sizeof(SFlare));
+}
+
+void CEditFlare::Save(CFS_Base& F)
+{
+	F.open_chunk	(FLARE_CHUNK_FLAG);
+    F.write			(&m_Flags,sizeof(DWORD));
+	F.close_chunk	();
+
+	F.open_chunk	(FLARE_CHUNK_SOURCE);
+    F.WstringZ		(m_cSourceTexture);
+    F.Wfloat		(m_fSourceRadius);
+	F.close_chunk	();
+
+	F.open_chunk	(FLARE_CHUNK_GRADIENT);
+    F.Wfloat		(m_fGradientDensity);
+	F.close_chunk	();
+
+	F.open_chunk	(FLARE_CHUNK_FLARES);
+    F.Wdword		(m_Flares.size());
+    F.write			(m_Flares.begin(),m_Flares.size()*sizeof(SFlare));
+	F.close_chunk	();
+}
+
+void CEditFlare::Update()
+{
+};
 

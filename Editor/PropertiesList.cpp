@@ -10,9 +10,10 @@
 #include "ShaderFunction.h"
 #include "ColorPicker.h"
 #include "xr_func.h"
+#include "ChoseForm.h"
 //---------------------------------------------------------------------------
 #pragma package(smart_init)
-#pragma resource "*.dfm"
+#pragma resource "*.dfm"               
 
 const LPSTR BOOLString[2]={"False","True"};
 
@@ -121,17 +122,18 @@ TElTreeItem* __fastcall TfrmProperties::AddItem(TElTreeItem* parent, DWORD type,
     CS->OwnerProps 		= true;
 
     switch (type){
-    case PROP_TYPE:		CS->CellType = sftUndef;	TI->ColumnText->Add (AnsiString((LPSTR)value)); break;
-    case PROP_WAVE:		CS->CellType = sftUndef;	TI->ColumnText->Add ("[Wave]");	CS->Style = ElhsOwnerDraw; break;
-    case PROP_BOOL:		CS->CellType = sftUndef;	TI->ColumnText->Add (BOOLString[*value]);	CS->Style = ElhsOwnerDraw; break;
-    case PROP_FLAG:		CS->CellType = sftUndef;	TI->ColumnText->AddObject (BOOLString[!!((*value)&(DWORD)param)],(TObject*)param);	CS->Style = ElhsOwnerDraw; break;
-    case PROP_TOKEN:	CS->CellType = sftUndef;	TI->ColumnText->AddObject (GetToken2((xr_token*)param,*value),(TObject*)param);	CS->Style = ElhsOwnerDraw; break;
+    case PROP_TYPE:		CS->CellType = sftUndef;	TI->ColumnText->Add(AnsiString((LPSTR)value)); break;
+    case PROP_WAVE:		CS->CellType = sftUndef;	TI->ColumnText->Add("[Wave]");	CS->Style = ElhsOwnerDraw; break;
+    case PROP_BOOL:		CS->CellType = sftUndef;	TI->ColumnText->Add(BOOLString[*value]);	CS->Style = ElhsOwnerDraw; break;
+    case PROP_FLAG:		CS->CellType = sftUndef;	TI->ColumnText->AddObject(BOOLString[!!((*value)&(DWORD)param)],(TObject*)param);	CS->Style = ElhsOwnerDraw; break;
+    case PROP_TOKEN:	CS->CellType = sftUndef;	TI->ColumnText->AddObject(GetToken2((xr_token*)param,*value),(TObject*)param);	CS->Style = ElhsOwnerDraw; break;
     case PROP_MARKER:	CS->CellType = sftUndef;	break;
-    case PROP_FLOAT:	CS->CellType = sftFloating; TI->ColumnText->AddObject (AnsiString(double(iFloor(double(*(float*)value)*10000))/10000),(TObject*)param); break;
-    case PROP_INTEGER:	CS->CellType = sftNumber; 	TI->ColumnText->AddObject (AnsiString(*((int*)value)),(TObject*)param);  break;
-    case PROP_TEXT:		CS->CellType = sftText; 	TI->ColumnText->Add	((LPSTR)value);  break;
+    case PROP_FLOAT:	CS->CellType = sftFloating; TI->ColumnText->AddObject(AnsiString(double(iFloor(double(*(float*)value)*10000))/10000),(TObject*)param); break;
+    case PROP_INTEGER:	CS->CellType = sftNumber; 	TI->ColumnText->AddObject(AnsiString(*((int*)value)),(TObject*)param);  break;
+    case PROP_TEXT:		CS->CellType = sftText; 	TI->ColumnText->Add((LPSTR)value);  break;
     case PROP_COLOR:	CS->CellType = sftUndef; 	CS->Style = ElhsOwnerDraw; break;
-    case PROP_EXEC:		CS->CellType = sftUndef; 	TI->ColumnText->AddObject ("...",(TObject*)param); CS->Style = ElhsOwnerDraw; break;
+    case PROP_TEXTURE:	CS->CellType = sftUndef; 	TI->ColumnText->Add((LPSTR)value);  CS->Style = ElhsOwnerDraw; break;
+    case PROP_SHADER:	CS->CellType = sftUndef; 	TI->ColumnText->Add((LPSTR)value);  CS->Style = ElhsOwnerDraw; break;
     default: THROW2("BPID_????");
     }
     return TI;
@@ -218,12 +220,14 @@ void __fastcall TfrmProperties::tvPropertiesItemDraw(TObject *Sender,
   	if (SectionIndex == 1){
     	DWORD type = (DWORD)Item->Tag;
         switch(type){
-        case PROP_EXEC:
-        case PROP_WAVE:
+        case PROP_TEXTURE:
+        case PROP_SHADER:
+        case PROP_WAVE:{
             R.Right	-=	10;
             R.Left 	+= 	1;
-    		DrawText	(Surface->Handle, AnsiString(Item->ColumnText->Strings[0]).c_str(), -1, &R, DT_LEFT | DT_SINGLELINE | DT_VCENTER);
-        break;
+            AnsiString name = Item->ColumnText->Strings[0];
+    		DrawText	(Surface->Handle, name.IsEmpty()?"[none]":name.c_str(), -1, &R, DT_LEFT | DT_SINGLELINE | DT_VCENTER);
+        }break;
         case PROP_COLOR:{
             R.Right	-=	1;
             R.Left 	+= 	1;
@@ -285,12 +289,10 @@ void __fastcall TfrmProperties::tvPropertiesMouseDown(TObject *Sender,
                 pmEnum->Items->Add(mi);
             }
         }break;
-        case PROP_WAVE: CustomClick(item); break;
-        case PROP_COLOR: ColorClick(item); break;
-        case PROP_EXEC:{
-        	PROP_EXEC_CB* T = (PROP_EXEC_CB*)item->Data; VERIFY(T);
-            T((LPDWORD)item->ColumnText->Objects[0]);
-        }break;
+        case PROP_WAVE: 	CustomClick(item); 	break;
+        case PROP_COLOR: 	ColorClick(item); 	break;
+        case PROP_TEXTURE: 	TextureClick(item);	break;
+        case PROP_SHADER: 	ShaderClick(item); 	break;
         };
         switch(type){
         case PROP_TOKEN:
@@ -358,8 +360,34 @@ void __fastcall TfrmProperties::ColorClick(TElTreeItem* item)
 {
 	DWORD type = item->Tag;
     LPDWORD color = (LPDWORD)item->Data;
-    R_ASSERT(type==PROP_COLOR);
+    VERIFY(type==PROP_COLOR);
 	if (SelectColor(color)){
+		bModified = true;
+    }
+}
+//---------------------------------------------------------------------------
+
+void __fastcall TfrmProperties::TextureClick(TElTreeItem* item)
+{
+	VERIFY(PROP_TEXTURE==item->Tag);
+    LPSTR tex = (LPSTR)item->Data;
+    LPCSTR name = TfrmChoseItem::SelectTexture(false,tex);
+    if (name&&name[0]&&strcmp(tex,name)!=0){
+        strcpy(tex,name);
+        item->ColumnText->Strings[0]= name;
+		bModified = true;
+    }
+}
+//---------------------------------------------------------------------------
+
+void __fastcall TfrmProperties::ShaderClick(TElTreeItem* item)
+{
+	VERIFY(PROP_SHADER==item->Tag);
+    LPSTR sh = (LPSTR)item->Data;
+    LPCSTR name = TfrmChoseItem::SelectShader(sh);
+    if (name&&name[0]&&strcmp(sh,name)!=0){
+        strcpy(sh,name);
+        item->ColumnText->Strings[0]= name;
 		bModified = true;
     }
 }

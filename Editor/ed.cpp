@@ -196,6 +196,7 @@ USEUNIT("edit\EStats.cpp");
 USEUNIT("edit\UI_MainExtern.cpp");
 USEUNIT("PropertiesListExtern.cpp");
 USEFORM("edit\PropertiesSceneObject.cpp", frmPropertiesSceneObject);
+USEUNIT("Engine\xr_efflensflare.cpp");
 //---------------------------------------------------------------------------
 #include "main.h"
 #include "splash.h"

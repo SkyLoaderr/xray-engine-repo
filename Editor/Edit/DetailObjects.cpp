@@ -259,19 +259,25 @@ DetailSlot&	CDetailManager::GetSlot(DWORD sx, DWORD sz){
 }
 
 bool CDetailManager::GetColor(DWORD& color, int U, int V){
-//S	return m_pBaseTexture->GetPixel(color, U,V);
+	if (m_pBase&&m_pBase->Valid()&&(U<m_pBase->w)&&(V<m_pBase->h)){
+    	color = m_pBase->data[U*m_pBase->w+V];
+    	return true;
+    }
+    return false;
 }
 
 DWORD CDetailManager::GetUFromX(float x){
+	R_ASSERT(m_pBase&&m_pBase->Valid());
 	float u = (x-m_BBox.min.x)/(m_BBox.max.x-m_BBox.min.x);
-//S	int U = iFloor(u*(m_pBaseTexture->width()-1)+0.5f);// 	U %= m_pBaseTexture->width();
-//S    return U;
+	int U = iFloor(u*(m_pBase->w-1)+0.5f);// 	U %= m_pBaseTexture->width();
+    return U;
 }
 
 DWORD CDetailManager::GetVFromZ(float z){
+	R_ASSERT(m_pBase&&m_pBase->Valid());
 	float v = 1.f-(z-m_BBox.min.z)/(m_BBox.max.z-m_BBox.min.z);
-//S	int V = iFloor(v*(m_pBaseTexture->height()-1)+0.5f);//    V %= m_pBaseTexture->height();
-//S    return V;
+	int V = iFloor(v*(m_pBase->h-1)+0.5f);//    V %= m_pBaseTexture->height();
+    return V;
 }
 
 void CDetailManager::FindClosestIndex(const Fcolor& C, SIndexDistVec& best){
@@ -378,7 +384,7 @@ bool CDetailManager::Reinitialize(){
 
 CDetailManager::SBase::SBase(LPCSTR nm){
 	strcpy(name,nm);
-    ImageManager.LoadTextureData(nm,data);
+    ImageManager.LoadTextureData(nm,data,w,h);
 }
 
 bool CDetailManager::UpdateBaseTexture(LPCSTR tex_name){

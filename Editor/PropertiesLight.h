@@ -22,6 +22,7 @@
 //refs
 struct SAnimLightItem;
 class CLight;
+class TfrmProperties;
 
 //---------------------------------------------------------------------------
 class TfrmPropertiesLight : public TForm
@@ -54,8 +55,6 @@ __published:	// IDE-managed Components
     TMxLabel *RxLabel4;
     TTrackBar *tbBrightness;
     TMxLabel *RxLabel18;
-    TMultiObjCheck *cbFlares;
-    TMemo *mmFlares;
 	TGroupBox *gbLightType;
 	TMultiObjCheck *cbTargetLM;
 	TMultiObjCheck *cbTargetDynamic;
@@ -67,12 +66,13 @@ __published:	// IDE-managed Components
 	TMultiObjSpinEdit *seBrightness;
 	TTimer *tmAnimation;
 	TMultiObjCheck *cbUseInD3D;
-	TExtBtn *ebOk;
-	TExtBtn *ebCancel;
-	TExtBtn *ExtBtn1;
-	TExtBtn *ebAdjustScene;
 	TMxLabel *MxLabel1;
 	TEdit *edName;
+	TPanel *Panel1;
+	TExtBtn *ebAdjustScene;
+	TExtBtn *ExtBtn1;
+	TExtBtn *ebOk;
+	TExtBtn *ebCancel;
     void __fastcall mcColorMouseDown(TObject *Sender,
           TMouseButton Button, TShiftState Shift, int X, int Y);
     void __fastcall btApplyClick(TObject *Sender);
@@ -91,10 +91,10 @@ __published:	// IDE-managed Components
     void __fastcall sePointRangeChange(TObject *Sender);
     void __fastcall ebALautoClick(TObject *Sender);
     void __fastcall ebQLautoClick(TObject *Sender);
-    void __fastcall cbFlaresClick(TObject *Sender);
 	void __fastcall cbTargetAnimatedClick(TObject *Sender);
 	void __fastcall btCancelClick(TObject *Sender);
 	void __fastcall cbTargetLMClick(TObject *Sender);
+	void __fastcall FormClose(TObject *Sender, TCloseAction &Action);
 private:	// User declarations
     list<CCustomObject*>* m_Objects;
     void 			GetObjectsInfo();
@@ -103,6 +103,7 @@ private:	// User declarations
 
     CLight* 		m_SaveLight;
     CLight* 		m_CurLight;
+    TfrmProperties*	m_Props;
 public:		// User declarations
     __fastcall TfrmPropertiesLight(TComponent* Owner);
     void __fastcall Run(ObjectList* pObjects, bool& bChange);

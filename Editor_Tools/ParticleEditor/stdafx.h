@@ -191,6 +191,8 @@ DEFINE_VECTOR(FVF::LIT,FLITvertexVec,FLITvertexIt);
 #define RGBA_MAKE(r,g,b,a)		D3DCOLOR_ARGB(a,r,g,b)
 #endif
 
+typedef char		sh_name[64];
+
 extern ENGINE_API Fmatrix precalc_identity;;
 extern ENGINE_API Fbox box_identity;
 extern bool g_ErrorMode;

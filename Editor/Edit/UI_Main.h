@@ -184,6 +184,8 @@ public:
     void 	ApplyGlobalShortCut			(WORD Key, TShiftState Shift);
 
 	void 	ShowContextMenu				(int cls);
+
+    void	SetGradient					(DWORD color){;}
 };
 //---------------------------------------------------------------------------
 extern TUI UI;

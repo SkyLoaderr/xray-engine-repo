@@ -1,11 +1,11 @@
 object frmPropertiesLight: TfrmPropertiesLight
-  Left = 497
-  Top = 253
+  Left = 473
+  Top = 272
   BorderIcons = [biSystemMenu, biMinimize]
   BorderStyle = bsDialog
   Caption = 'Light properties'
-  ClientHeight = 290
-  ClientWidth = 406
+  ClientHeight = 439
+  ClientWidth = 341
   Color = clBtnFace
   Font.Charset = DEFAULT_CHARSET
   Font.Color = clWindowText
@@ -16,75 +16,25 @@ object frmPropertiesLight: TfrmPropertiesLight
   OldCreateOrder = False
   Position = poScreenCenter
   Scaled = False
+  OnClose = FormClose
   OnKeyDown = FormKeyDown
   OnPaint = FormPaint
   PixelsPerInch = 96
   TextHeight = 13
-  object ebOk: TExtBtn
-    Left = 241
-    Top = 270
-    Width = 82
-    Height = 18
-    Align = alNone
-    BevelShow = False
-    CloseButton = False
-    Caption = 'Ok'
-    Transparent = False
-    FlatAlwaysEdge = True
-    OnClick = btOkClick
-  end
-  object ebCancel: TExtBtn
-    Left = 323
-    Top = 270
-    Width = 82
-    Height = 18
-    Align = alNone
-    BevelShow = False
-    CloseButton = False
-    Caption = 'Cancel'
-    Transparent = False
-    FlatAlwaysEdge = True
-    OnClick = btCancelClick
-  end
-  object ExtBtn1: TExtBtn
-    Left = 159
-    Top = 270
-    Width = 82
-    Height = 18
-    Align = alNone
-    BevelShow = False
-    CloseButton = False
-    Caption = 'Apply'
-    Transparent = False
-    FlatAlwaysEdge = True
-    OnClick = btApplyClick
-  end
-  object ebAdjustScene: TExtBtn
-    Left = 1
-    Top = 270
-    Width = 82
-    Height = 18
-    Align = alNone
-    BevelShow = False
-    CloseButton = False
-    Caption = 'Adjust Scene'
-    Transparent = False
-    FlatAlwaysEdge = True
-    Visible = False
-  end
   object gbColor: TGroupBox
     Left = 0
-    Top = 152
-    Width = 406
-    Height = 38
+    Top = 261
+    Width = 341
+    Height = 56
     Align = alTop
     Caption = ' Color: '
     TabOrder = 1
     object mcDiffuse: TMultiObjColor
-      Left = 48
-      Top = 14
-      Width = 49
+      Left = 50
+      Top = 13
+      Width = 52
       Height = 16
+      Shape = stRoundRect
       OnMouseDown = mcColorMouseDown
     end
     object RxLabel6: TMxLabel
@@ -104,7 +54,7 @@ object frmPropertiesLight: TfrmPropertiesLight
     object tbBrightness: TTrackBar
       Left = 224
       Top = 13
-      Width = 177
+      Width = 115
       Height = 17
       Max = 150
       Min = -150
@@ -140,15 +90,15 @@ object frmPropertiesLight: TfrmPropertiesLight
   end
   object gbAddition: TGroupBox
     Left = 0
-    Top = 190
-    Width = 406
-    Height = 77
+    Top = 317
+    Width = 341
+    Height = 100
     Align = alTop
     Caption = ' Addition: '
     TabOrder = 2
     object MxLabel1: TMxLabel
       Left = 6
-      Top = 14
+      Top = 16
       Width = 33
       Height = 13
       Caption = 'Name:'
@@ -160,8 +110,8 @@ object frmPropertiesLight: TfrmPropertiesLight
       ParentFont = False
     end
     object gbLightType: TGroupBox
-      Left = 269
-      Top = 8
+      Left = 203
+      Top = 30
       Width = 133
       Height = 66
       Caption = ' Light Type '
@@ -204,7 +154,7 @@ object frmPropertiesLight: TfrmPropertiesLight
     end
     object cbUseInD3D: TMultiObjCheck
       Left = 8
-      Top = 58
+      Top = 78
       Width = 76
       Height = 17
       BiDiMode = bdLeftToRight
@@ -214,8 +164,8 @@ object frmPropertiesLight: TfrmPropertiesLight
     end
     object edName: TEdit
       Left = 56
-      Top = 11
-      Width = 209
+      Top = 13
+      Width = 280
       Height = 18
       AutoSize = False
       Color = 14671839
@@ -225,8 +175,8 @@ object frmPropertiesLight: TfrmPropertiesLight
   object gbType: TGroupBox
     Left = 0
     Top = 0
-    Width = 406
-    Height = 152
+    Width = 341
+    Height = 261
     Align = alTop
     Caption = 'Type:'
     Color = clBtnFace
@@ -242,90 +192,69 @@ object frmPropertiesLight: TfrmPropertiesLight
     object pcType: TPageControl
       Left = 2
       Top = 15
-      Width = 402
-      Height = 135
+      Width = 337
+      Height = 244
       ActivePage = tsPoint
       Align = alClient
       Style = tsFlatButtons
       TabOrder = 0
       object tsSun: TTabSheet
         Caption = 'Sun'
-        object cbFlares: TMultiObjCheck
-          Left = 0
-          Top = 0
-          Width = 57
-          Height = 17
-          Caption = 'Flares'
-          Checked = True
-          State = cbChecked
-          TabOrder = 0
-          OnClick = cbFlaresClick
-        end
-        object mmFlares: TMemo
-          Left = 0
-          Top = 16
-          Width = 394
-          Height = 88
-          ScrollBars = ssVertical
-          TabOrder = 1
-          WantTabs = True
-          WordWrap = False
-        end
       end
       object tsPoint: TTabSheet
         Tag = 1
         Caption = 'Point'
         ImageIndex = 1
         object Bevel2: TBevel
-          Left = 168
-          Top = 1
-          Width = 226
+          Left = 0
+          Top = 0
+          Width = 329
           Height = 82
         end
         object RxLabel13: TMxLabel
-          Left = 255
-          Top = 89
+          Left = -1
+          Top = 197
           Width = 37
           Height = 13
           Caption = 'Range:'
         end
         object RxLabel14: TMxLabel
           Left = 0
-          Top = -2
+          Top = 86
           Width = 47
           Height = 13
           Caption = 'Constant:'
         end
         object LG: TImage
-          Left = 169
-          Top = 2
-          Width = 224
+          Left = 1
+          Top = 1
+          Width = 327
           Height = 80
         end
         object RxLabel15: TMxLabel
-          Left = 381
-          Top = 90
+          Left = 218
+          Top = 199
           Width = 10
           Height = 13
           Caption = 'm'
         end
         object RxLabel16: TMxLabel
           Left = 1
-          Top = 26
+          Top = 114
           Width = 34
           Height = 13
           Caption = 'Linear:'
         end
         object RxLabel17: TMxLabel
           Left = 1
-          Top = 54
+          Top = 142
           Width = 51
           Height = 13
           Caption = 'Quadratic:'
         end
         object lbRange: TLabel
-          Left = 306
-          Top = 68
+          Left = 233
+          Top = 67
           Width = 89
           Height = 13
           AutoSize = False
@@ -342,7 +271,7 @@ object frmPropertiesLight: TfrmPropertiesLight
         end
         object ebALauto: TExtBtn
           Left = 1
-          Top = 39
+          Top = 127
           Width = 15
           Height = 15
           Align = alNone
@@ -362,7 +291,7 @@ object frmPropertiesLight: TfrmPropertiesLight
         end
         object ebQLauto: TExtBtn
           Left = 1
-          Top = 67
+          Top = 155
           Width = 15
           Height = 15
           Align = alNone
@@ -382,22 +311,22 @@ object frmPropertiesLight: TfrmPropertiesLight
         end
         object RxLabel3: TMxLabel
           Left = 1
-          Top = 89
+          Top = 177
           Width = 163
           Height = 13
           Caption = 'Auto brightness at maximum range'
         end
         object RxLabel4: TMxLabel
           Left = 217
-          Top = 90
+          Top = 178
           Width = 10
           Height = 13
           Caption = '%'
         end
         object tbA0: TTrackBar
           Left = -3
-          Top = 9
-          Width = 101
+          Top = 97
+          Width = 146
           Height = 17
           Max = 100
           Orientation = trHorizontal
@@ -413,8 +342,8 @@ object frmPropertiesLight: TfrmPropertiesLight
         end
         object tbA1: TTrackBar
           Left = 16
-          Top = 37
-          Width = 82
+          Top = 125
+          Width = 127
           Height = 17
           Max = 100
           Orientation = trHorizontal
@@ -430,8 +359,8 @@ object frmPropertiesLight: TfrmPropertiesLight
         end
         object tbA2: TTrackBar
           Left = 16
-          Top = 65
-          Width = 82
+          Top = 153
+          Width = 127
           Height = 16
           Max = 100
           Orientation = trHorizontal
@@ -447,8 +376,8 @@ object frmPropertiesLight: TfrmPropertiesLight
         end
         object seAutoBMax: TMultiObjSpinEdit
           Left = 168
-          Top = 86
-          Width = 49
+          Top = 174
+          Width = 48
           Height = 18
           LWSensitivity = 1
           ButtonKind = bkLightWave
@@ -458,9 +387,9 @@ object frmPropertiesLight: TfrmPropertiesLight
           TabOrder = 3
         end
         object sePointRange: TMultiObjSpinEdit
-          Left = 304
-          Top = 86
-          Width = 73
+          Left = 158
+          Top = 195
+          Width = 58
           Height = 18
           LWSensitivity = 1
           ButtonKind = bkLightWave
@@ -476,9 +405,9 @@ object frmPropertiesLight: TfrmPropertiesLight
           OnExit = sePointRangeChange
         end
         object seA0: TMultiObjSpinEdit
-          Left = 95
-          Top = 8
-          Width = 71
+          Left = 141
+          Top = 96
+          Width = 75
           Height = 18
           LWSensitivity = 1
           ButtonKind = bkLightWave
@@ -495,9 +424,9 @@ object frmPropertiesLight: TfrmPropertiesLight
           OnExit = seA0Change
         end
         object seA1: TMultiObjSpinEdit
-          Left = 95
-          Top = 36
-          Width = 71
+          Left = 141
+          Top = 124
+          Width = 75
           Height = 18
           LWSensitivity = 1
           ButtonKind = bkLightWave
@@ -514,9 +443,9 @@ object frmPropertiesLight: TfrmPropertiesLight
           OnExit = seA1Change
         end
         object seA2: TMultiObjSpinEdit
-          Left = 95
-          Top = 65
-          Width = 71
+          Left = 141
+          Top = 153
+          Width = 75
           Height = 18
           LWSensitivity = 1
           ButtonKind = bkLightWave
@@ -533,6 +462,67 @@ object frmPropertiesLight: TfrmPropertiesLight
           OnExit = seA2Change
         end
       end
+    end
+  end
+  object Panel1: TPanel
+    Left = 0
+    Top = 418
+    Width = 341
+    Height = 21
+    Align = alBottom
+    BevelOuter = bvNone
+    TabOrder = 3
+    object ebAdjustScene: TExtBtn
+      Left = 1
+      Top = 2
+      Width = 82
+      Height = 18
+      Align = alNone
+      BevelShow = False
+      CloseButton = False
+      Caption = 'Adjust Scene'
+      Transparent = False
+      FlatAlwaysEdge = True
+      Visible = False
+    end
+    object ExtBtn1: TExtBtn
+      Left = 139
+      Top = 2
+      Width = 66
+      Height = 18
+      Align = alNone
+      BevelShow = False
+      CloseButton = False
+      Caption = 'Apply'
+      Transparent = False
+      FlatAlwaysEdge = True
+      OnClick = btApplyClick
+    end
+    object ebOk: TExtBtn
+      Left = 206
+      Top = 2
+      Width = 66
+      Height = 18
+      Align = alNone
+      BevelShow = False
+      CloseButton = False
+      Caption = 'Ok'
+      Transparent = False
+      FlatAlwaysEdge = True
+      OnClick = btOkClick
+    end
+    object ebCancel: TExtBtn
+      Left = 273
+      Top = 2
+      Width = 66
+      Height = 18
+      Align = alNone
+      BevelShow = False
+      CloseButton = False
+      Caption = 'Cancel'
+      Transparent = False
+      FlatAlwaysEdge = True
+      OnClick = btCancelClick
     end
   end
   object tmAnimation: TTimer
