@@ -526,6 +526,7 @@ void CWeaponMagazined::Hide		()
 {
 	// add shot effector
 	//SwitchState(eHiding);
+	OnZoomOut();
 	SwitchState(eHidden);
 }
 void CWeaponMagazined::Show		()

@@ -602,7 +602,6 @@ void CWeapon::OnHiddenItem ()
 	inherited::OnHiddenItem();
 	if (m_pHUD)	m_pHUD->Hide ();
 	STATE						= NEXT_STATE = eHidden;
-	m_bZoomMode					= false;
 }
 
 
