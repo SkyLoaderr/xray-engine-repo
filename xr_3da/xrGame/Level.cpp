@@ -99,6 +99,8 @@ CLevel::CLevel():IPureClient(Device.GetTimerGlobal())
 	//---------------------------------------------------------
 	pObjects4CrPr.clear();
 	pActors4CrPr.clear();
+	//---------------------------------------------------------
+	pCurrentControlEntity = NULL;
 }
 
 extern CAI_Space *g_ai_space;
