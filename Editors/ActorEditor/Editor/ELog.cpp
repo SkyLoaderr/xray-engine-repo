@@ -12,7 +12,8 @@
 	#include "ui_main.h"
 	void ELogCallback(LPCSTR string)
 	{
-		TfrmLog::AddMessage(mtInformation,AnsiString(string));
+    	if (string[0]=='!') TfrmLog::AddMessage(mtError,AnsiString(string+1));
+		else				TfrmLog::AddMessage(mtInformation,AnsiString(string));
 	}
 #endif
 #ifdef _LW_PLUGIN
@@ -29,6 +30,12 @@
 	{
 //		MessageBox(0,buf,"Information",	MB_OK|MB_ICONINFORMATION);
 	}
+#endif
+#ifdef _MAYA_EXPORT
+confirmDialog -title "Confirm" -message "Are you sure?"
+	-button "OK" -button "Cancel" -defaultButton "OK"
+	-cancelButton "Cancel" -dismissString "Cancel";
+
 #endif
 //----------------------------------------------------
 
