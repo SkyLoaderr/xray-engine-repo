@@ -178,7 +178,7 @@ function stalker_novice_action:state_walk( param )
 	if( param ) then                        --Init state walk
         printf( "init state walk" )
 
-		self.objcet:clear_animations()        
+		self.object:clear_animations()        
 		self.object:set_desired_direction()
         self.object:set_detail_path_type ( move.line )
 	    self.object:set_movement_type    ( move.walk )
