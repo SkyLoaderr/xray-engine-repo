@@ -140,7 +140,7 @@ void CWallmarksEngine::AddWallmark	(RAPID::tri* pTri, const Fvector &contact_poi
 	sml_processed.clear();
 
 	// Calc sphere
-	if (W.verts.size()<3) marks.pop_back();
+	if (W.verts.size()<3) { marks.pop_back(); return; }
 	else {
 		Fbox bb; bb.invalidate();
 
@@ -157,7 +157,8 @@ void CWallmarksEngine::AddWallmark	(RAPID::tri* pTri, const Fvector &contact_poi
 		CWallmark& wm = *it;
 		if (wm.hShader != hShader)	continue;
 
-		if (wm.S.P.similar(W.S.P,0.01f))	{
+		if (wm.S.P.similar(W.S.P,0.01f))	
+		{
 			// replace
 			*it				= W;
 			marks.pop_back	();
