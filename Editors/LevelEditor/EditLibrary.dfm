@@ -1,6 +1,6 @@
 object frmEditLibrary: TfrmEditLibrary
-  Left = 364
-  Top = 156
+  Left = 329
+  Top = 233
   Width = 332
   Height = 468
   BorderIcons = [biSystemMenu, biMinimize]
@@ -180,7 +180,7 @@ object frmEditLibrary: TfrmEditLibrary
         FlatAlwaysEdge = True
         OnClick = ebImportClick
       end
-      object ebMakeLWO: TExtBtn
+      object ebExportLWO: TExtBtn
         Left = 2
         Top = 57
         Width = 129
@@ -192,7 +192,7 @@ object frmEditLibrary: TfrmEditLibrary
         Caption = 'Export LWO'
         Transparent = False
         FlatAlwaysEdge = True
-        OnClick = ebMakeLWOClick
+        OnClick = ebExportLWOClick
       end
       object ebSave: TExtBtn
         Left = 2
@@ -223,7 +223,7 @@ object frmEditLibrary: TfrmEditLibrary
         FlatAlwaysEdge = True
         OnClick = ebCancelClick
       end
-      object ExtBtn1: TExtBtn
+      object ebRenameObject: TExtBtn
         Left = 3
         Top = 0
         Width = 129
@@ -235,9 +235,9 @@ object frmEditLibrary: TfrmEditLibrary
         Caption = 'Rename Object'
         Transparent = False
         FlatAlwaysEdge = True
-        OnClick = ExtBtn1Click
+        OnClick = ebRenameObjectClick
       end
-      object ExtBtn2: TExtBtn
+      object ebRemoveObject: TExtBtn
         Left = 3
         Top = 17
         Width = 129
@@ -249,7 +249,7 @@ object frmEditLibrary: TfrmEditLibrary
         Caption = 'Remove Object'
         Transparent = False
         FlatAlwaysEdge = True
-        OnClick = ExtBtn2Click
+        OnClick = ebRemoveObjectClick
       end
     end
     object paImage: TMxPanel

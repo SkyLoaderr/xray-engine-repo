@@ -23,6 +23,7 @@
 #define SOUND_CHUNK_SOURCE_NAME			0x1003
 #define SOUND_CHUNK_SOURCE_PARAMS		0x1004
 #define SOUND_CHUNK_SOURCE_FLAGS		0x1005
+#define SOUND_CHUNK_SOURCE_PARAMS2		0x1006
 //----------------------------------------------------
 
 ESoundSource::ESoundSource(LPVOID data, LPCSTR name)
@@ -42,6 +43,7 @@ void ESoundSource::Construct(LPVOID data)
     m_Params.freq			= 1.f;
     m_Params.min_distance   = 1.f;
     m_Params.max_distance   = 300.f;
+    m_Params.max_ai_distance= 300.f;
     m_Params.position.set	(0,0,0);
 
     m_Flags.set				(flLooped,TRUE);
@@ -123,8 +125,18 @@ bool ESoundSource::Load(IReader& F)
     R_ASSERT(F.find_chunk(SOUND_CHUNK_SOURCE_NAME));
     F.r_stringZ		(m_WAVName);
 
-    R_ASSERT(F.find_chunk(SOUND_CHUNK_SOURCE_PARAMS));
-    F.r				(&m_Params,sizeof(m_Params));
+    
+    if (F.find_chunk(SOUND_CHUNK_SOURCE_PARAMS2)){
+	    F.r			(&m_Params,sizeof(m_Params));
+    }else{
+    	R_ASSERT(F.find_chunk(SOUND_CHUNK_SOURCE_PARAMS2));
+    	F.r_fvector3			(m_Params.position);
+       	m_Params.volume			= F.r_float();
+        m_Params.freq			= F.r_float();
+        m_Params.min_distance	= F.r_float();
+        m_Params.max_distance	= F.r_float();
+        m_Params.max_ai_distance= m_Params.max_distance;
+    }
 
     if(F.find_chunk(SOUND_CHUNK_SOURCE_FLAGS))
 		F.r			(&m_Flags,sizeof(m_Flags));
@@ -154,7 +166,7 @@ void ESoundSource::Save(IWriter& F)
 
     F.w_chunk		(SOUND_CHUNK_SOURCE_FLAGS,&m_Flags,sizeof(m_Flags));
     
-    F.w_chunk		(SOUND_CHUNK_SOURCE_PARAMS,&m_Params,sizeof(m_Params));
+    F.w_chunk		(SOUND_CHUNK_SOURCE_PARAMS2,&m_Params,sizeof(m_Params));
 }
 
 //----------------------------------------------------
@@ -189,15 +201,17 @@ void ESoundSource::FillProp(LPCSTR pref, PropItemVec& values)
     B=PHelper().CreateButton	(values, PrepareKey(pref,"Controls"), 	"Play,Stop",0);
     B->OnBtnClickEvent.bind		(this,&ESoundSource::OnControlClick);
     PropValue* V;
-    V=PHelper().CreateChoose	(values,PrepareKey(pref,"WAVE name"),	&m_WAVName,				smSoundSource);
+    V=PHelper().CreateChoose	(values,PrepareKey(pref,"WAVE name"),	&m_WAVName,					smSoundSource);
     V->OnChangeEvent.bind		(this,&ESoundSource::OnChangeWAV);
-	V=PHelper().CreateFloat		(values,PrepareKey(pref,"Frequency"),	&m_Params.freq,			0.0f,2.f);
+	V=PHelper().CreateFloat		(values,PrepareKey(pref,"Frequency"),	&m_Params.freq,				0.0f,2.f);
     V->OnChangeEvent.bind		(this,&ESoundSource::OnChangeSource);
-	V=PHelper().CreateFloat		(values,PrepareKey(pref,"Volume"),		&m_Params.volume,		0.0f,1.f);
+	V=PHelper().CreateFloat		(values,PrepareKey(pref,"Volume"),		&m_Params.volume,			0.0f,1.f);
     V->OnChangeEvent.bind		(this,&ESoundSource::OnChangeSource);
-	V=PHelper().CreateFloat		(values,PrepareKey(pref,"Min dist"),	&m_Params.min_distance,	0.1f,1000.f,0.1f,1);
+	V=PHelper().CreateFloat		(values,PrepareKey(pref,"Min dist"),	&m_Params.min_distance,		0.1f,1000.f,0.1f,1);
     V->Owner()->Enable			(FALSE);
-	V=PHelper().CreateFloat		(values,PrepareKey(pref,"Max dist"),	&m_Params.max_distance,	0.1f,1000.f,0.1f,1);
+	V=PHelper().CreateFloat		(values,PrepareKey(pref,"Max dist"),	&m_Params.max_distance,		0.1f,1000.f,0.1f,1);
+    V->Owner()->Enable			(FALSE);
+	V=PHelper().CreateFloat		(values,PrepareKey(pref,"Max ai dist"),	&m_Params.max_ai_distance,	0.1f,1000.f,0.1f,1);
     V->Owner()->Enable			(FALSE);
 //	V=PHelper().CreateFlag32		(values,PHelper().PrepareKey(pref,"Looped"),		&m_Flags,				flLooped);
 //    V->OnChangeEvent			= OnChangeSource;
@@ -239,6 +253,7 @@ void ESoundSource::ResetSource()
         CSoundRender_Source* src= (CSoundRender_Source*)m_Source.handle;
         m_Params.min_distance	= src->m_fMinDist;
         m_Params.max_distance	= src->m_fMaxDist;
+        m_Params.max_ai_distance= src->m_fMaxAIDist;
         ExecCommand			(COMMAND_UPDATE_PROPERTIES);
     }
 	m_Source.set_params(&m_Params);

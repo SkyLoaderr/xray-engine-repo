@@ -63,7 +63,7 @@ public:		// User declarations
     __fastcall 		TfrmPropertiesEObject	(TComponent* Owner);
 	static TfrmPropertiesEObject* CreateProperties	(TWinControl* parent=0, TAlign align=alNone, TOnModifiedEvent modif=0);
 	static void 	DestroyProperties		(TfrmPropertiesEObject*& props);
-	void 			UpdateProperties		(CSceneObject* S);
+	void 			UpdateProperties		(CSceneObject* S, bool bReadOnly);
     void			ShowProperties			(){Show();}
     void			HideProperties			(){Hide();}
     bool __fastcall IsModified				(){return (m_BasicProp->IsModified()||m_SurfProp->IsModified());}

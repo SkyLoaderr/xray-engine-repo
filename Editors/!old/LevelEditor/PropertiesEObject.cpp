@@ -84,11 +84,13 @@ void TfrmPropertiesEObject::FillSurfProps()
 }
 //---------------------------------------------------------------------------
 
-void TfrmPropertiesEObject::UpdateProperties(CSceneObject* S)
+void TfrmPropertiesEObject::UpdateProperties(CSceneObject* S, bool bReadOnly)
 {
-	m_pEditObject = S;
-	FillBasicProps();
-    FillSurfProps();
+	m_BasicProp->SetReadOnly(bReadOnly);
+	m_SurfProp->SetReadOnly	(bReadOnly);
+	m_pEditObject 			= S;
+	FillBasicProps			();
+    FillSurfProps			();
 }
 
 void __fastcall TfrmPropertiesEObject::FormDestroy(TObject *Sender)

@@ -55,6 +55,7 @@ __fastcall TfrmEditLibrary::TfrmEditLibrary(TComponent* Owner)
     m_Items->SetOnItemFocusedEvent	(TOnILItemFocused().bind(this,&TfrmEditLibrary::OnItemFocused));
     m_Items->SetOnItemRemoveEvent	(TOnItemRemove().bind(&Lib,&ELibrary::RemoveObject));
     m_Items->SetOnItemRenameEvent	(TOnItemRename().bind(&Lib,&ELibrary::RenameObject));
+    bReadOnly		= false;
 }
 //---------------------------------------------------------------------------
 void __fastcall TfrmEditLibrary::ShowEditor()
@@ -211,6 +212,13 @@ void __fastcall TfrmEditLibrary::OnItemFocused(TElTreeItem* item)
         xr_string 	obj_fn,thm_fn;
 
         FS.update_path			(obj_fn,_objects_,ChangeFileExt(nm,".object").c_str());
+        bReadOnly				= !FS.can_modify_file(obj_fn.c_str());
+        if (bReadOnly)
+        	ELog.Msg			(mtError,"You don't have permisions to modify object: '%s'",nm.c_str());
+        ebRenameObject->Enabled = !bReadOnly;
+        ebRemoveObject->Enabled = !bReadOnly;
+        ebExportLWO->Enabled 	= !bReadOnly;
+
         FS.update_path			(thm_fn,_objects_,ChangeFileExt(nm,".thm").c_str());
         if (FS.exist(thm_fn.c_str())){
         	// если версии совпадают
@@ -224,8 +232,8 @@ void __fastcall TfrmEditLibrary::OnItemFocused(TElTreeItem* item)
         }
 
         if (cbPreview->Checked||m_Props->Visible){
-        	if (m_Props->IsModified()&&m_pEditObject->GetReference())
-            	modif_map.insert(mk_pair(m_pEditObject->GetRefName(),FS_QueryItem(0,0,0)));
+//.        	if (m_Props->IsModified()&&m_pEditObject->GetReference())
+//.            	modif_map.insert(mk_pair(m_pEditObject->GetRefName(),FS_QueryItem(0,0,0)));
             ChangeReference(nm.c_str());
 		    if (cbPreview->Checked) mt = true;
         }
@@ -288,7 +296,7 @@ void __fastcall TfrmEditLibrary::ebPropertiesClick(TObject *Sender)
     if (node&&FHelper.IsObject(node)){
 	    AnsiString name;
     	FHelper.MakeName(node,0,name,false);
-        ChangeReference(name.c_str());
+        ChangeReference	(name.c_str());
         UpdateObjectProperties();
         m_Props->ShowProperties();
     }
@@ -296,10 +304,10 @@ void __fastcall TfrmEditLibrary::ebPropertiesClick(TObject *Sender)
 //---------------------------------------------------------------------------
 void __fastcall TfrmEditLibrary::ebSaveClick(TObject *Sender)
 {
-	ebSave->Enabled = false;
-    ChangeReference(0);
-    Lib.Save();
-    RefreshSelected();
+	ebSave->Enabled 	= false;
+    ChangeReference		(0);
+    Lib.Save			(&modif_map);
+    RefreshSelected		();
 }
 //---------------------------------------------------------------------------
 
@@ -443,8 +451,8 @@ void __fastcall TfrmEditLibrary::RefreshSelected()
             ChangeReference(name.c_str());
             mt = true;
         }
-        ebMakeThm->Enabled = mt;
-        ebMakeLOD->Enabled = cbPreview->Checked;
+        ebMakeThm->Enabled 		= !bReadOnly&&mt;
+        ebMakeLOD->Enabled 		= !bReadOnly&&cbPreview->Checked;
         UI->RedrawScene();
     }
 }
@@ -455,7 +463,7 @@ void __fastcall TfrmEditLibrary::paImagePaint(TObject *Sender)
 }
 //---------------------------------------------------------------------------
 
-void __fastcall TfrmEditLibrary::ebMakeLWOClick(TObject *Sender)
+void __fastcall TfrmEditLibrary::ebExportLWOClick(TObject *Sender)
 {
     TElTreeItem* node = m_Items->GetSelected();
     if (node&&FHelper.IsObject(node)){
@@ -541,7 +549,7 @@ void __fastcall TfrmEditLibrary::ebImportClick(TObject *Sender)
 
 void TfrmEditLibrary::UpdateObjectProperties()
 {
-	m_Props->UpdateProperties(m_pEditObject);
+	m_Props->UpdateProperties(m_pEditObject,bReadOnly);
 }
 //---------------------------------------------------------------------------
 
@@ -570,13 +578,13 @@ void __fastcall TfrmEditLibrary::fsStorageSavePlacement(TObject *Sender)
 //---------------------------------------------------------------------------
 
 
-void __fastcall TfrmEditLibrary::ExtBtn1Click(TObject *Sender)
+void __fastcall TfrmEditLibrary::ebRenameObjectClick(TObject *Sender)
 {
 	m_Items->RenameSelItem();	
 }
 //---------------------------------------------------------------------------
 
-void __fastcall TfrmEditLibrary::ExtBtn2Click(TObject *Sender)
+void __fastcall TfrmEditLibrary::ebRemoveObjectClick(TObject *Sender)
 {
 	m_Items->RemoveSelItems();	
 }

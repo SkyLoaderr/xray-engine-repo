@@ -47,11 +47,11 @@ __published:	// IDE-managed Components
 	TPanel *paItems;
 	TPanel *paControl;
 	TExtBtn *ebImport;
-	TExtBtn *ebMakeLWO;
+	TExtBtn *ebExportLWO;
 	TExtBtn *ebSave;
 	TExtBtn *ebCancel;
-	TExtBtn *ExtBtn1;
-	TExtBtn *ExtBtn2;
+	TExtBtn *ebRenameObject;
+	TExtBtn *ebRemoveObject;
 	TMxPanel *paImage;
     void __fastcall ebSaveClick(TObject *Sender);
     void __fastcall ebCancelClick(TObject *Sender);
@@ -68,12 +68,12 @@ __published:	// IDE-managed Components
 	void __fastcall FormCloseQuery(TObject *Sender, bool &CanClose);
 	void __fastcall ebMakeLODClick(TObject *Sender);
 	void __fastcall FormActivate(TObject *Sender);
-	void __fastcall ebMakeLWOClick(TObject *Sender);
+	void __fastcall ebExportLWOClick(TObject *Sender);
 	void __fastcall FormDestroy(TObject *Sender);
 	void __fastcall fsStorageRestorePlacement(TObject *Sender);
 	void __fastcall fsStorageSavePlacement(TObject *Sender);
-	void __fastcall ExtBtn1Click(TObject *Sender);
-	void __fastcall ExtBtn2Click(TObject *Sender);
+	void __fastcall ebRenameObjectClick(TObject *Sender);
+	void __fastcall ebRemoveObjectClick(TObject *Sender);
 private:	// User declarations
     void InitObjects();
     EObjectThumbnail* 		m_Thm;
@@ -88,6 +88,7 @@ private:	// User declarations
 
 	void __fastcall 		OnObjectRename	(LPCSTR p0, LPCSTR p1, EItemType type);
 
+    bool 					bReadOnly;
     TItemList*				m_Items;
 	void __stdcall  		OnItemFocused	(TElTreeItem* item);
 	bool 					GenerateLOD		(TElTreeItem* node);

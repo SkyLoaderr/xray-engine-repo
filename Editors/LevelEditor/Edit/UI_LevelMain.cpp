@@ -967,13 +967,14 @@ void CLevelMain::ProgressDraw()
 //---------------------------------------------------------------------------
 void CLevelMain::OutCameraPos()
 {
-	VERIFY(m_bReady);
-    AnsiString s;
-	const Fvector& c 	= Device.m_Camera.GetPosition();
-	s.sprintf("C: %3.1f, %3.1f, %3.1f",c.x,c.y,c.z);
-//	const Fvector& hpb 	= Device.m_Camera.GetHPB();
-//	s.sprintf(" Cam: %3.1f°, %3.1f°, %3.1f°",rad2deg(hpb.y),rad2deg(hpb.x),rad2deg(hpb.z));
-    fraBottomBar->paCamera->Caption=s; fraBottomBar->paCamera->Repaint();
+	if (m_bReady){
+        AnsiString s;
+        const Fvector& c 	= Device.m_Camera.GetPosition();
+        s.sprintf("C: %3.1f, %3.1f, %3.1f",c.x,c.y,c.z);
+    //	const Fvector& hpb 	= Device.m_Camera.GetHPB();
+    //	s.sprintf(" Cam: %3.1f°, %3.1f°, %3.1f°",rad2deg(hpb.y),rad2deg(hpb.x),rad2deg(hpb.z));
+        fraBottomBar->paCamera->Caption=s; fraBottomBar->paCamera->Repaint();
+    }
 }
 //---------------------------------------------------------------------------
 void CLevelMain::OutUICursorPos()
