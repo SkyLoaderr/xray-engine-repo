@@ -12,6 +12,15 @@
 
 #define	FIRE_SAFETY_ANGLE				PI/10
 
+void CAI_Stalker::g_fireParams(Fvector& P, Fvector& D)
+{
+	if (g_Alive()) {
+		P = eye_matrix.c;
+		D.setHP(-r_torso_current.yaw,-r_torso_current.pitch);
+		D.normalize_safe();
+	}
+}
+
 void CAI_Stalker::HitSignal(float amount, Fvector& vLocalDir, CObject* who, s16 element)
 {
 	// Save event

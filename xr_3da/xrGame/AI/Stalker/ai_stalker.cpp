@@ -55,6 +55,8 @@ CAI_Stalker::CAI_Stalker			()
 
 	AI_Path.TravelStart				= 0;
 	AI_Path.DestNode				= u32(-1);
+
+	m_bIfSearchFailed				= false;
 	
 //	m_fAccuracy						= 0.f;
 //	m_fIntelligence					= 0.f;
@@ -177,8 +179,8 @@ BOOL CAI_Stalker::net_Spawn			(LPVOID DC)
 	m_tNextGP						= m_tCurGP = getAI().m_tpaCrossTable[AI_NodeID].tGraphIndex;
 	// !!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!
 
-	m_tStateStack.push				(m_eCurrentState = eStalkerStateAccomplishingTask);
-	vfAddStateToList				(m_eCurrentState);
+//	m_tStateStack.push				(m_eCurrentState = eStalkerStateAccomplishingTask);
+//	vfAddStateToList				(m_eCurrentState);
 
 	CStalkerAnimations::Load		(PKinematics(pVisual));
 	vfAssignBones					(pSettings,cNameSect());

@@ -33,11 +33,11 @@ void CAI_Stalker::vfSetParameters(IBaseAI_NodeEvaluator &tNodeEvaluator, Fvector
 		switch (m_tBodyState) {
 			case eBodyStateCrouch : {
 				m_fCurSpeed *= m_fCrouchFactor;
-				Movement.ActivateBox(1);
+				//Movement.ActivateBox(1);
 				break;
 			}
 			case eBodyStateStand : {
-				Movement.ActivateBox(0);
+				//Movement.ActivateBox(0);
 				break;
 			}
 			default : NODEFAULT;
@@ -90,7 +90,8 @@ void CAI_Stalker::vfSetParameters(IBaseAI_NodeEvaluator &tNodeEvaluator, Fvector
 	}
 	
 	if (m_fCurSpeed < EPS_L)
-		r_torso_target.yaw		= r_target.yaw;
+		if (!getAI().bfTooSmallAngle(r_torso_target.yaw,r_target.yaw,2*PI_DIV_6))
+			r_torso_target.yaw = r_target.yaw;
 }
 
 void CAI_Stalker::vfCheckForItems()

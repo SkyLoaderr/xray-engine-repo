@@ -100,7 +100,10 @@ void CAI_Stalker::ForwardCover()
 				break;
 			}
 			case eActionStateStand : {
-				m_tActionState		= eActionStateRun;
+				if (AI_Path.TravelPath.size() > AI_Path.TravelStart + 1)
+					m_tActionState		= eActionStateRun;
+				else
+					m_tActionState		= eActionStateStand;
 				m_dwActionEndTime	= m_dwActionStartTime + ::Random.randI(4000,5000);
 				break;
 			}
@@ -108,12 +111,18 @@ void CAI_Stalker::ForwardCover()
 	}
 	switch (m_tActionState) {
 		case eActionStateRun : {
-			if (m_tSelectorCover.m_fOptEnemyDistance < fDistance)
-				m_tSelectorCover.m_fMaxEnemyDistance = fDistance;
-			else {
-				m_tSelectorCover.m_fMaxEnemyDistance = m_tSelectorCover.m_fOptEnemyDistance + 3.f;
-				m_tSelectorCover.m_fMinEnemyDistance = m_tSelectorCover.m_fOptEnemyDistance - 3.f;
-			}	
+			if (m_bIfSearchFailed && (AI_Path.fSpeed < EPS_L)) {
+				if (m_tSelectorCover.m_fOptEnemyDistance < fDistance) {
+					m_tSelectorCover.m_fMaxEnemyDistance = fDistance;
+					m_tSelectorCover.m_fMinEnemyDistance = m_tSelectorCover.m_fOptEnemyDistance - 3.f;
+				}
+				else {
+					m_tSelectorCover.m_fMaxEnemyDistance = m_tSelectorCover.m_fOptEnemyDistance + 3.f;
+					m_tSelectorCover.m_fMinEnemyDistance = m_tSelectorCover.m_fOptEnemyDistance - 3.f;
+				}	
+				m_dwLastRangeSearch = 0;
+				//m_tActionState		= eActionStateStand;
+			}
 			
 			Fvector						tPoint;
 			m_tEnemy.Enemy->svCenter	(tPoint);
@@ -137,12 +146,17 @@ void CAI_Stalker::ForwardCover()
 			break;
 		}
 		case eActionStateStand : {
-			if (m_tSelectorCover.m_fOptEnemyDistance < fDistance)
-				m_tSelectorCover.m_fMaxEnemyDistance = fDistance;
-			else {
-				m_tSelectorCover.m_fMaxEnemyDistance = m_tSelectorCover.m_fOptEnemyDistance + 3.f;
-				m_tSelectorCover.m_fMinEnemyDistance = m_tSelectorCover.m_fOptEnemyDistance - 3.f;
-			}	
+			if (m_bIfSearchFailed && (AI_Path.fSpeed < EPS_L)) {
+				if (m_tSelectorCover.m_fOptEnemyDistance < fDistance) {
+					m_tSelectorCover.m_fMaxEnemyDistance = fDistance;
+					m_tSelectorCover.m_fMinEnemyDistance = m_tSelectorCover.m_fOptEnemyDistance - 3.f;
+				}
+				else {
+					m_tSelectorCover.m_fMaxEnemyDistance = m_tSelectorCover.m_fOptEnemyDistance + 3.f;
+					m_tSelectorCover.m_fMinEnemyDistance = m_tSelectorCover.m_fOptEnemyDistance - 3.f;
+				}	
+				m_dwLastRangeSearch = 0;
+			}
 			
 			Fvector						tPoint;
 			m_tEnemy.Enemy->svCenter	(tPoint);
@@ -184,15 +198,6 @@ void CAI_Stalker::Think()
 	m_bStopThinking			= false;
 	do {
 		m_ePreviousState	= m_eCurrentState;
-//		Fvector				tPoint;
-//		//					 fire	  body state	 movement type		look type     point to view
-//		SetStates			(
-//							false,
-//							eDirectionTypeBack,
-//							eBodyStateStand, 
-//							eMovementTypeRun, 
-//							eLookTypePoint, 
-//							tPoint);
 		if (!g_Alive())
 			Death();
 		else

@@ -57,6 +57,7 @@ private:
 	EActionState			m_tActionState;
 	u32						m_dwActionStartTime;
 	u32						m_dwActionEndTime;
+	bool					m_bIfSearchFailed;
 
 	vector<Fvector>			m_tpaPoints;
 	vector<Fvector>			m_tpaDeviations;
@@ -357,7 +358,7 @@ public:
 	virtual void			g_WeaponBones					(int &L, int &R1, int &R2);
 	virtual void			Think							();
 	virtual void			Die								();
-//	virtual void			g_fireParams					(Fvector& P, Fvector& D);
+	virtual void			g_fireParams					(Fvector& P, Fvector& D);
 	virtual void			net_Export						(NET_Packet& P);
 	virtual void			net_Import						(NET_Packet& P);
 	virtual void			SelectAnimation					(const Fvector& _view, const Fvector& _move, float speed );

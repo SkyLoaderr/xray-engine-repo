@@ -56,21 +56,26 @@ void CAI_Stalker::vfSearchForBetterPosition(IBaseAI_NodeEvaluator &tNodeEvaluato
 		
 		float fOldCost = MAX_NODE_ESTIMATION_COST;
 		
-//		if (AI_Path.DestNode != u32(-1)) {
-//			tNodeEvaluator.m_tpCurrentNode	= getAI().Node(AI_Path.DestNode);
-//			tNodeEvaluator.m_fDistance		= getAI().u_SqrDistance2Node(vPosition,tNodeEvaluator.m_tpCurrentNode);
-//			fOldCost						= tNodeEvaluator.ffEvaluateNode();
-//		}
+		if (AI_Path.DestNode != u32(-1)) {
+			tNodeEvaluator.m_tpCurrentNode	= getAI().Node(AI_Path.DestNode);
+			tNodeEvaluator.m_fDistance		= vPosition.distance_to(getAI().tfGetNodeCenter(AI_Path.DestNode));
+			fOldCost						= tNodeEvaluator.ffEvaluateNode();
+			Msg								("Old  : [%d][%f]",AI_NodeID,fOldCost);
+		}
 
 		Squad.Groups[g_Group()].GetAliveMemberInfo(tNodeEvaluator.m_taMemberPositions, tNodeEvaluator.m_taMemberNodes, tNodeEvaluator.m_taDestMemberPositions, tNodeEvaluator.m_taDestMemberNodes, this);
 		
 		tNodeEvaluator.vfShallowGraphSearch(getAI().q_mark_bit);
 		
-		if ((AI_Path.DestNode != tNodeEvaluator.m_dwBestNode) && (tNodeEvaluator.m_fBestCost < (fOldCost - tNodeEvaluator.m_fLaziness))){
+		Msg									("Best : [%d][%f]",tNodeEvaluator.m_dwBestNode,tNodeEvaluator.m_fBestCost);
+		if ((AI_Path.DestNode != tNodeEvaluator.m_dwBestNode) && (tNodeEvaluator.m_fBestCost < fOldCost - 10.f)){
 			AI_Path.DestNode		= tNodeEvaluator.m_dwBestNode;
 			m_tPathState			= ePathStateBuildNodePath;
 			vfAddToSearchList		();
+			m_bIfSearchFailed		= false;
 		} 
+		else
+			m_bIfSearchFailed		= true;
 	}
 
 	Device.Statistic.AI_Range.End();
