@@ -309,7 +309,11 @@ void OGF::MakeProgressive	(float metric_limit)
 
 		// Convert
 		VIPM_Result* VR			= VIPM_Convert			(u32(30),1.f,1);
-		while (VR->swr_records.size()>0)	{
+		if (0==VR)				{
+			progressive_clear	()		;
+			clMsg				("* mesh simplification failed");
+		}
+		while (VR && VR->swr_records.size()>0)	{
 			// test metric
 			u32		_full	=	vertices.size	()		;
 			u32		_remove	=	VR->swr_records.size()	;
