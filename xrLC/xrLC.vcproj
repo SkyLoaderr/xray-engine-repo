@@ -500,6 +500,21 @@
 				</FileConfiguration>
 			</File>
 			<File
+				RelativePath=".\xrSoftenLights.cpp">
+				<FileConfiguration
+					Name="Release|Win32"
+					ExcludedFromBuild="TRUE">
+					<Tool
+						Name="VCCLCompilerTool"/>
+				</FileConfiguration>
+				<FileConfiguration
+					Name="Debug|Win32"
+					ExcludedFromBuild="TRUE">
+					<Tool
+						Name="VCCLCompilerTool"/>
+				</FileConfiguration>
+			</File>
+			<File
 				RelativePath=".\xrTesselate.cpp">
 				<FileConfiguration
 					Name="Release|Win32"
@@ -622,9 +637,6 @@
 			</File>
 			<File
 				RelativePath=".\xrSectors.cpp">
-			</File>
-			<File
-				RelativePath=".\xrSoftenLights.cpp">
 			</File>
 			<File
 				RelativePath=".\xrT_Junction.cpp">

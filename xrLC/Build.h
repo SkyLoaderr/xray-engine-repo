@@ -68,12 +68,13 @@ public:
 	vector<b_light_dynamic>	L_dynamic;
 
 	Shader_xrLC_LIB			shaders;
+	string					path;
 
 	DWORD	mem_Usage				();
 	void	mem_Compact				();
 	void	mem_CompactSubdivs		();
 public:
-	void	Run						(LPCSTR path);
+	void	Run						(string& path);
 
 	void	PreOptimize				();
 	void	CorrectTJunctions		();

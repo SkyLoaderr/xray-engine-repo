@@ -15,10 +15,6 @@ void OGF::Save(CFS_Base &fs)
 	ogf_header H;
 	H.format_version	= xrOGF_FormatVersion;
 	H.flags				= 0;
-	/*
-	if (faces.size()<=DWORD(g_params.m_SS_DedicateCached))	H.type = MT_CACHED;
-	else													H.type = (I_Current>=0)?MT_PROGRESSIVE_STRIPS:MT_NORMAL;
-	*/
 	H.type				= MT_NORMAL;
 
 	// Texture & shader
@@ -32,7 +28,7 @@ void OGF::Save(CFS_Base &fs)
 		Tname += fname;
 	}
 	fs.Wdword			(RegisterString(Tname));
-	fs.Wdword			(RegisterString(string(pBuild->shader_names[shader].name)));
+	fs.Wdword			(RegisterString(string(pBuild->shader_render[shader].name)));
 	fs.close_chunk		();
 
 	// BBox (already computed)

@@ -8,7 +8,6 @@
 
 // refs
 class CDeflector;
-struct b_light;
 
 // def
 class CLightmap  
@@ -19,7 +18,7 @@ public:
 	CLightmap					();
 	~CLightmap					();
 
-	void	Capture				(CDeflector *D, int b_u, int b_v, int s_u, int s_v, BOOL bRotate, b_light* layer);
+	void	Capture				(CDeflector *D, int b_u, int b_v, int s_u, int s_v, BOOL bRotate, int layer);
 	void	Save				();
 };
 

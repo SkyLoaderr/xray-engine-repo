@@ -27,7 +27,7 @@ CLightmap::~CLightmap()
 	
 }
 
-VOID CLightmap::Capture		(CDeflector *D, int b_u, int b_v, int s_u, int s_v, BOOL bRotated, b_light* layer)
+VOID CLightmap::Capture		(CDeflector *D, int b_u, int b_v, int s_u, int s_v, BOOL bRotated, int layer)
 {
 	// Allocate 512x512 texture if needed
 	if (0==lm.pSurface)	{

@@ -169,61 +169,6 @@ void OGF::MakeProgressive()
 	}
 }
 
-#pragma pack(push,4)
-struct DPatch {
-	Fvector P;
-	Fvector	N;
-	float	S;
-	DWORD	C;
-};
-#pragma pack(pop)
-
-extern int RegisterString(string &T);
-
-void OGF_Patch::Save(CFS_Base &fs)
-{
-	b_material&	M = pBuild->materials[data[0].dwMaterial];
-
-	// Header
-	fs.open_chunk		(OGF_HEADER);
-	ogf_header H;
-	H.format_version	= xrOGF_FormatVersion;
-	H.type				= MT_DETAIL_PATCH;
-	H.flags				= 0;
-	fs.write			(&H,sizeof(H));
-	fs.close_chunk		();
-
-	// Texture & shader
-	fs.open_chunk(OGF_TEXTURE_L);
-	fs.Wdword(RegisterString(string(pBuild->textures[M.surfidx].name)));
-	fs.Wdword(RegisterString(string("std_aop")));
-	fs.close_chunk();
-
-	// BBox (already computed)
-	fs.open_chunk(OGF_BBOX);
-	fs.write(&bbox,sizeof(Fvector)*2);
-	fs.close_chunk();
-
-	// Sphere (already computed)
-	fs.open_chunk(OGF_BSPHERE);
-	fs.write(&C,sizeof(Fvector));
-	fs.write(&R,sizeof(float));
-	fs.close_chunk();
-
-	// Data
-	fs.open_chunk(OGF_DPATCH);
-	for (DWORD i=0; i<data.size(); i++)
-	{
-		DPatch P;
-		P.P.set(data[i].P);
-		P.N.set(data[i].N);
-		P.S = data[i].size;
-		P.C = data[i].color;
-		fs.write(&P,sizeof(P));
-	}
-	fs.close_chunk();
-}
-
 // Represent a node as HierrarhyVisual
 void OGF_Node::Save(CFS_Base &fs)
 {
@@ -237,13 +182,13 @@ void OGF_Node::Save(CFS_Base &fs)
 	fs.close_chunk();
 
 	// BBox (already computed)
-	fs.open_chunk(OGF_BBOX);
-	fs.write(&bbox,sizeof(Fvector)*2);
-	fs.close_chunk();
+	fs.open_chunk		(OGF_BBOX);
+	fs.write			(&bbox,sizeof(Fvector)*2);
+	fs.close_chunk		();
 
 	// Chields
-	fs.open_chunk(OGF_CHIELDS_L);
-	fs.Wdword(chields.size());
-	fs.write(chields.begin(),chields.size()*sizeof(DWORD));
-	fs.close_chunk();
+	fs.open_chunk		(OGF_CHIELDS_L);
+	fs.Wdword			(chields.size());
+	fs.write			(chields.begin(),chields.size()*sizeof(DWORD));
+	fs.close_chunk		();
 }

@@ -219,9 +219,9 @@ void CDeflector::RemapUV(DWORD base_u, DWORD base_v, DWORD size_u, DWORD size_v,
 	UVpolys			= tris_new;
 }
 
-CDeflector::Layer* CDeflector::GetLayer(b_light* base)
+CDeflector::Layer* CDeflector::GetLayer(int base)
 {
 	for (DWORD I=0; I<layers.size(); I++)
-		if (layers[I].base == base)	return &layers[I];
+		if (layers[I].base_id == base)	return &layers[I];
 	return 0;
 }

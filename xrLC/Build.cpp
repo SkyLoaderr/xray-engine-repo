@@ -242,9 +242,12 @@ CBuild::~CBuild()
  
 extern int RegisterString(string &T);
 
-void CBuild::Run	(LPCSTR path)
+void CBuild::Run	(string& P)
 {
-	CFS_File fs		(path);
+	path			= P+"\\";
+
+	CFS_File fs		((path+"level.").c_str());
+
 	fs.open_chunk	(fsL_HEADER);
 	hdrLEVEL H;		ZeroMemory(&H,sizeof(H));
 	H.XRLC_version = XRCL_PRODUCTION_VERSION;
@@ -357,8 +360,8 @@ void CBuild::Run	(LPCSTR path)
 	{
 		b_glow&	G = glows[i];
 		fs.write(&G,4*sizeof(float));
-		string T = textures[materials[G.dwMaterial].surfidx].name;
-		string S = shader_names[materials[G.dwMaterial].shader].name;
+		string T = textures		[materials[G.dwMaterial].surfidx].name;
+		string S = shader_render[materials[G.dwMaterial].shader].name;
 		fs.Wdword(RegisterString(T));
 		fs.Wdword(RegisterString(S));
 	}
