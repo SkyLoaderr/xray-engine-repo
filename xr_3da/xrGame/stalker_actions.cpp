@@ -117,3 +117,80 @@ void CStalkerActionGatherItems::execute		()
 	m_object->CObjectHandlerGOAP::set_goal		(eObjectActionIdle);
 #endif
 }
+
+//////////////////////////////////////////////////////////////////////////
+// CStalkerActionKillEnemy
+//////////////////////////////////////////////////////////////////////////
+
+CStalkerActionKillEnemy::CStalkerActionKillEnemy	(CAI_Stalker *object, LPCSTR action_name) :
+	inherited				(object,action_name)
+{
+}
+
+void CStalkerActionKillEnemy::initialize	()
+{
+	inherited::initialize	();
+	m_object->set_sound_mask(u32(eStalkerSoundMaskHumming));
+}
+
+void CStalkerActionKillEnemy::finalize	()
+{
+	inherited::finalize		();
+	m_object->set_sound_mask(0);
+}
+
+void CStalkerActionKillEnemy::execute		()
+{
+	inherited::execute		();
+
+	if (!m_object->enemy())
+		return;
+
+	CMemoryInfo									mem_object = m_object->memory(m_object->enemy());
+
+	if (!mem_object.m_object)
+		return;
+
+	if (m_object->visible(m_object->enemy())) {
+#ifdef OLD_OBJECT_HANDLER
+		m_object->CObjectHandler::set_dest_state(eObjectActionFire1,m_object->best_weapon());
+#else
+		m_object->CObjectHandlerGOAP::set_goal	(eObjectActionFire1,m_object->best_weapon());
+#endif
+		Fvector									position;
+		m_object->enemy()->Center				(position);
+		m_object->CSightManager::update			(eLookTypeFirePoint,&position);
+	}
+	else {
+		if (!dynamic_cast<CMissile*>(m_object->best_weapon()))
+#ifdef OLD_OBJECT_HANDLER
+			m_object->CObjectHandler::set_dest_state(eObjectActionAim1,m_object->best_weapon());
+#else
+			m_object->CObjectHandlerGOAP::set_goal	(eObjectActionAim1,m_object->best_weapon());
+#endif
+		
+		Fvector			direction;
+		direction.sub	(mem_object.m_object_params.m_position,m_object->Position());
+		m_object->CSightManager::update				(eLookTypeDirection,&direction);
+	}
+
+	if (m_object->visible(m_object->enemy()) && (m_object->Position().distance_to(m_object->enemy()->Position()) < 10.f)) {
+		m_object->set_path_type			(CMovementManager::ePathTypeLevelPath);
+		m_object->set_detail_path_type	(CMovementManager::eDetailPathTypeSmooth);
+		m_object->set_body_state		(eBodyStateStand);
+		m_object->set_movement_type		(eMovementTypeStand);
+		m_object->set_mental_state		(eMentalStateDanger);
+		return;
+	}
+
+	m_object->set_level_dest_vertex	(mem_object.m_object_params.m_level_vertex_id);
+	m_object->set_desired_position	(&mem_object.m_object_params.m_position);
+	m_object->set_path_type			(CMovementManager::ePathTypeLevelPath);
+	m_object->set_detail_path_type	(CMovementManager::eDetailPathTypeSmooth);
+	m_object->set_body_state		(eBodyStateStand);
+	m_object->set_movement_type		(eMovementTypeWalk);
+	m_object->set_mental_state		(eMentalStateDanger);
+
+	if (m_object->CMovementManager::path_completed())
+		m_object->CMemoryManager::enable		(m_object->enemy(),false);
+}

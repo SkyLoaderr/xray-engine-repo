@@ -77,9 +77,10 @@ void CMotivationActionManagerStalker::add_motivations	()
 
 void CMotivationActionManagerStalker::add_evaluators		()
 {
-	add_evaluator			(eWorldPropertyALife		,xr_new<CStalkerPropertyEvaluatorALife>	());
-	add_evaluator			(eWorldPropertyAlive		,xr_new<CStalkerPropertyEvaluatorAlive>	());
-	add_evaluator			(eWorldPropertyItems		,xr_new<CStalkerPropertyEvaluatorItems>	());
+	add_evaluator			(eWorldPropertyALife		,xr_new<CStalkerPropertyEvaluatorALife>		());
+	add_evaluator			(eWorldPropertyAlive		,xr_new<CStalkerPropertyEvaluatorAlive>		());
+	add_evaluator			(eWorldPropertyItems		,xr_new<CStalkerPropertyEvaluatorItems>		());
+	add_evaluator			(eWorldPropertyEnemies		,xr_new<CStalkerPropertyEvaluatorEnemies>	());
 	
 	add_evaluator			(eWorldPropertyDead			,xr_new<CStalkerPropertyEvaluatorMember>(&m_storage,eWorldPropertyDead,true));
 	
@@ -113,6 +114,7 @@ void CMotivationActionManagerStalker::add_actions			()
 	add_condition			(action,eWorldPropertyAlive,		true);
 	add_condition			(action,eWorldPropertyALife,		false);
 	add_condition			(action,eWorldPropertyItems,		false);
+	add_condition			(action,eWorldPropertyEnemies,		false);
 	add_condition			(action,eWorldPropertyPuzzleSolved,	false);
 	add_effect				(action,eWorldPropertyPuzzleSolved,	true);
 	add_operator			(eWorldOperatorFreeNoALife,			action);
@@ -120,6 +122,13 @@ void CMotivationActionManagerStalker::add_actions			()
 	action					= xr_new<CStalkerActionGatherItems>	(m_object,"gather_items");
 	add_condition			(action,eWorldPropertyAlive,		true);
 	add_condition			(action,eWorldPropertyItems,		true);
+	add_condition			(action,eWorldPropertyEnemies,		false);
 	add_effect				(action,eWorldPropertyItems,		false);
 	add_operator			(eWorldOperatorGatherItems,			action);
+
+	action					= xr_new<CStalkerActionKillEnemy>	(m_object,"kill_enemy");
+	add_condition			(action,eWorldPropertyAlive,		true);
+	add_condition			(action,eWorldPropertyEnemies,		true);
+	add_effect				(action,eWorldPropertyEnemies,		false);
+	add_operator			(eWorldOperatorKillEnemy,			action);
 }

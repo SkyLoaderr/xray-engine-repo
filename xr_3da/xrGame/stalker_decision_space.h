@@ -26,6 +26,7 @@ namespace StalkerDecisionSpace {
 		eWorldPropertyPuzzleSolved,
 
 		eWorldPropertyItems,
+		eWorldPropertyEnemies,
 
 		eWorldPropertyScript,
 		eWorldPropertyDummy			= u32(-1),
@@ -39,6 +40,7 @@ namespace StalkerDecisionSpace {
 		eWorldOperatorFreeALife,
 		
 		eWorldOperatorGatherItems,
+		eWorldOperatorKillEnemy,
 
 		eWorldOperatorScript,
 		eWorldOperatorDummy			= u32(-1),

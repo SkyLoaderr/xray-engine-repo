@@ -36,3 +36,12 @@ CStalkerPropertyEvaluatorItems::_value_type CStalkerPropertyEvaluatorItems::eval
 {
 	return			(!!m_object->item());
 }
+
+//////////////////////////////////////////////////////////////////////////
+// CStalkerPropertyEvaluatorEnemies
+//////////////////////////////////////////////////////////////////////////
+
+CStalkerPropertyEvaluatorEnemies::_value_type CStalkerPropertyEvaluatorEnemies::evaluate	()
+{
+	return			(!!m_object->enemy());
+}
