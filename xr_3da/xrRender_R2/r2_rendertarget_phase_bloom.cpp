@@ -60,23 +60,19 @@ void CRenderTarget::phase_bloom	()
 	pv->p.set	(EPS,			float(_2h+EPS),	EPS,1.f);	
 	pv->uv0.set	(a_0.x,b_0.y);	pv->uv1.set	(a_1.x,b_1.y);	pv->uv2.set	(a_2.x,b_2.y);	pv->uv3.set	(a_3.x,b_3.y);
 	pv++;
-
 	pv->p.set	(EPS,			EPS,			EPS,1.f);	
 	pv->uv0.set	(a_0.x,a_0.y);	pv->uv1.set	(a_1.x,a_1.y);	pv->uv2.set	(a_2.x,a_2.y);	pv->uv3.set	(a_3.x,a_3.y);
 	pv++;
-
 	pv->p.set	(float(_2w+EPS),float(_2h+EPS),	EPS,1.f);	
 	pv->uv0.set	(b_0.x,b_0.y);	pv->uv1.set	(b_1.x,b_1.y);	pv->uv2.set	(b_2.x,b_2.y);	pv->uv3.set	(b_3.x,b_3.y);
 	pv++;
-
 	pv->p.set	(float(_2w+EPS),EPS,			EPS,1.f);	
 	pv->uv0.set	(b_0.x,a_0.y);	pv->uv1.set	(b_1.x,a_1.y);	pv->uv2.set	(b_2.x,a_2.y);	pv->uv3.set	(b_3.x,a_3.y);
 	pv++;
-
 	RCache.Vertex.Unlock		(4,g_bloom_build->vb_stride);
 
 	// Perform combine (all scalers must account for 4 samples + final diffuse multiply);
-	float lscale				= .3f;
+	float lscale				= .3f;	// must be .25 infact
 	float ldr					= .25f*ps_r2_ls_dynamic_range;	ldr *= lscale;
 	float lh					= .25f*.5f;						lh	*= lscale;
 	RCache.set_Element			(s_bloom->E[0]);
@@ -84,4 +80,6 @@ void CRenderTarget::phase_bloom	()
 	RCache.set_c				("light_hemi",			lh,lh,lh,0.f);
 	RCache.set_Geometry			(g_bloom_build);
 	RCache.Render				(D3DPT_TRIANGLELIST,Offset,0,4,0,2);
+
+	// 
 }
