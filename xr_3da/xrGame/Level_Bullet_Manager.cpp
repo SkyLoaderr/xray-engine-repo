@@ -156,7 +156,7 @@ bool CBulletManager::CalcBullet (SBullet* bullet, u32 delta_time)
 	Fvector cur_dir = bullet->dir;
 	
 	bullet->flags.set(SBullet::RICOCHET_FLAG,0);
-	Collide::ray_defs RD(bullet->pos, bullet->dir, range, 0 ,Collide::rqtAll);
+	Collide::ray_defs RD(bullet->pos, bullet->dir, range, 0 ,/*Collide::rqtAll*/Collide::rqtBoth);
 	BOOL result = FALSE;
 	result = Level().ObjectSpace.RayQuery( RD, firetrace_callback, bullet);
 
