@@ -18,11 +18,7 @@ void	CBlender_fat_flat::Compile(CBlender_Compile& C)
 {
 	CBlender::Compile		(C);
 
-	C.PassBegin				();
-	C.PassSET_ZB			(TRUE,TRUE);
-	C.PassSET_Blend_SET		();
-	C.PassSET_LightFog		(FALSE,FALSE);
-	C.StageBegin			();
-	C.StageEnd				();
-	C.PassEnd				();
+	C.r2_Pass				("fat_flat_base","fat_flat_base");
+	C.r2_Sampler			("s_base",C.L_textures[0]);
+	C.r2_End				();
 }

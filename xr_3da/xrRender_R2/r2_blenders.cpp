@@ -1,32 +1,12 @@
 #include "stdafx.h"
 
-#include "blenderdefault.h"
-#include "blender_default_aref.h"
-#include "blender_vertex.h"
-#include "blender_vertex_aref.h"
-#include "blender_screen_set.h"
-#include "blender_screen_gray.h"
-#include "blender_editor_wire.h"
-#include "blender_editor_selection.h"
-#include "blender_light.h"
-#include "blender_LaEmB.h"
-#include "blender_Lm(EbB).h"
-#include "blender_LmBmmD.h"
-#include "blender_BmmD.h"
-#include "blender_B.h"
-#include "blender_shadow_texture.h"
-#include "blender_shadow_world.h"
-#include "blender_blur.h"
-#include "blender_model.h"
-#include "blender_model_ebb.h"
-#include "blender_detail_still.h"
-#include "blender_tree.h"
+#include "blender_fat_flat.h"
 
 CBlender*	CRender::blender_create	(CLASS_ID cls)
 {	
 	switch (cls)
 	{
-	case B_DEFAULT:			return xr_new<CBlender_default>			();		
+	case B_DEFAULT:			return xr_new<CBlender_fat_flat>		();		
 	case B_DEFAULT_AREF:	return xr_new<CBlender_default_aref>	();	
 	case B_VERT:			return xr_new<CBlender_Vertex>			();		
 	case B_VERT_AREF:		return xr_new<CBlender_Vertex_aref>		();	
