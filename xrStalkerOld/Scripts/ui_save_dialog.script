@@ -201,16 +201,19 @@ function save_dialog:OnButton_ok_clicked()
 	local file_struct = f:exist("$game_saves$", self.new_save .. ".sav" )
 
 	if file_struct ~= nil then
-		message_box:SetStyle(CUIMessageBox.STYLE_YES_NO)
-		message_box:SetText("The file with this name already exist. Do you want to overwrite it?")
-		message_box:Show()
-		self.main_frame:Enable(false)
-		flist:Free()	
-		return
+--		message_box:SetStyle(CUIMessageBox.STYLE_YES_NO)
+--		message_box:SetText("The file with this name already exist. Do you want to overwrite it?")
+--		message_box:Show()
+--		self.main_frame:Enable(false)
+--		flist:Free()	
+--		return
 	end
 	flist:Free()	
 	
-	self:SaveFile(new_save)
+	local console = get_console()
+	console:execute("save " .. self.new_save)
+	
+	self:GetHolder():start_stop_menu(self, true)
 
 end
 

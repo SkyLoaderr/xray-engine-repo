@@ -53,7 +53,7 @@ function load_dialog:InitControls()
 	ui_base_dialog.base_dialog.InitControls(self, "Load Game")
 	
 	----- DATA ----	
-	local info_rect       = {x = 0, 
+	local info_rect       = {x = self.left_align_x/2, 
 						     y = self.top_align_y,
 						     width = 148, 
 						     height = 148}

@@ -122,6 +122,8 @@ function main_main_tab:InitControls(x, y, handler)
 	handler:Register(btn)
 	self:AttachChild(btn)
 	
+	btn:Enable(false)
+	
 	--------->> QUIT TO WINDOWS
 	btn = CUI3tButton()
 	btn:SetAutoDelete(true)
@@ -145,5 +147,7 @@ function main_main_tab:InitControls(x, y, handler)
 	btn:SetTextY(self.btn.indent)
 	handler:Register(btn)
 	self:AttachChild(btn)
+	
+	btn:Enable(false)
 
 end
