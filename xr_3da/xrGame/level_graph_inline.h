@@ -520,3 +520,8 @@ IC	void CLevelGraph::assign_y_values		(xr_vector<T> &path)
 		(*I).get_position().y	= v1.y;
 	}
 }
+
+IC	u32	CLevelGraph::row_length				() const
+{
+	return						(m_row_length);
+}

@@ -132,6 +132,7 @@ public:
 	IC		bool	inside						(const u32 vertex_id,	const CLevelGraph::CPosition &vertex_position, const float epsilon) const;
 	IC		bool	inside						(const u32 vertex_id,	const Fvector &position, const float epsilon) const;
 	IC		void	project_point				(const Fplane &plane,	Fvector &point) const;
+	IC		u32		row_length					() const;
 			float	distance					(const Fvector &position, const CVertex *vertex) const;
 			float	distance					(const Fvector &position, const u32 vertex_id) const;
 			float	distance					(const u32 vertex_id, const Fvector &position) const;
@@ -246,8 +247,6 @@ public:
 #endif
 #endif
 };
-
-extern void test_smooth_path(LPCSTR name);
 
 #include "level_graph_inline.h"
 #include "level_graph_vertex_inline.h"

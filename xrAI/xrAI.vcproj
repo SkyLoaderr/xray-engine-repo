@@ -544,7 +544,21 @@
 					Name="path_test"
 					Filter="">
 					<File
+						RelativePath=".\hierarchy_test.cpp">
+					</File>
+					<File
 						RelativePath=".\path_test.cpp">
+						<FileConfiguration
+							Name="Debug|Win32">
+							<Tool
+								Name="VCCLCompilerTool"/>
+						</FileConfiguration>
+						<FileConfiguration
+							Name="Release|Win32"
+							ExcludedFromBuild="TRUE">
+							<Tool
+								Name="VCCLCompilerTool"/>
+						</FileConfiguration>
 					</File>
 					<File
 						RelativePath=".\path_test.h">
@@ -759,6 +773,12 @@
 				</File>
 				<File
 					RelativePath="game_base.h">
+				</File>
+				<File
+					RelativePath=".\graph_abstract.h">
+				</File>
+				<File
+					RelativePath=".\graph_abstract_inline.h">
 				</File>
 				<File
 					RelativePath="NET_Compressor.h">

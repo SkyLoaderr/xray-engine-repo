@@ -25,6 +25,8 @@
 extern void	xrCompiler			(LPCSTR name);
 extern void __cdecl logThread	(void *dummy);
 extern volatile BOOL bClose;
+extern void test_smooth_path	(LPCSTR name);
+extern void test_hierarchy		(LPCSTR name);
 
 static const char* h_str = 
 	"The following keys are supported / required:\n"
@@ -105,8 +107,9 @@ void Startup(LPSTR     lpCmdLine)
 				}
 				else
 					if (strstr(cmd,"-t")) {
-						path_test			(prjName);
+						//path_test			(prjName);
 						//test_smooth_path	(prjName);
+						test_hierarchy		(prjName);
 					}
 		}
 	// Show statistic
@@ -134,6 +137,3 @@ int APIENTRY WinMain(HINSTANCE hInstance,
 	
 	return 0;
 }
-
-
-

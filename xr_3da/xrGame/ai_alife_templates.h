@@ -9,6 +9,8 @@
 #ifndef XRAY_AI_ALIFE_TEMPLATES
 #define XRAY_AI_ALIFE_TEMPLATES
 
+#include "ai_alife_interfaces.h"
+
 // delete data
 extern void delete_data(LPSTR &tpVector);
 extern void delete_data(LPCSTR &tpVector);
