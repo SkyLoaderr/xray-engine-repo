@@ -23,3 +23,44 @@ sRGB convert diffuse???
 reverse culling	for spot/point with initial clears - should avoid most biasing ?
 ----------------------------
 perspective shadow maps and all that stuff Gary talks about
+
+---
+I think I understand it. Maybe I can help myself (and others) understand it better if I try to explain it.
+I assume you know how the normal mapping works. The question is: how is the offset computed?
+
+1) for each vertex, transform the eye vector into tangent space so that 'z' represents the normal component
+
+now for each fragment:
+
+2) normalize the tangent-space eye vector. call it ~v
+
+3) fetch the height of the texture, which represents the displacement of the surface. Scale and bias is used to map the fetched values of 0-1 to some range, such as -.02 to .02. You wouldn't need to do this with float textures, but you probably don't need the precision. Call the final height h.
+
+4) to compute the offset, you have to find the intersection of a ray with direction ~v and height h to a a plane at height 0.(representing the texture surface). Because the x and y components of ~v represent the tangent plane coordinates, and 2D texture fetches ignore the z component, all you need to do is scale ~v by h.
+
+I think that's it? Any corrections/clarifications?
+---
+Nice demo, Humus. The shadows do a nice job of hiding some of the ugly artifacts from the offset mapping 
+I noticed a couple posts complaining about things looking wrong at a distance, which is a good observation. Keep in mind that the offset I calculate in the fragment program is a small-angle approximation. This code
+
+# calculate offset
+TEX height, fragment.texcoord[0], texture[2], 2D;
+MAD height, height, 0.04, -0.02; # scale and bias
+MAD newtexcoord, height, eyevects, fragment.texcoord[0];
+
+should really look like this:
+
+# calculate offset
+TEX height, fragment.texcoord[0], texture[2], 2D;
+MAD height, height, 0.04, -0.02; # scale and bias
+RCP temp, eyevects.z;
+MUL height, height, temp;
+MAD newtexcoord, height, eyevects, fragment.texcoord[0];
+
+All I did there was add a couple instructions to divide the offset by the eye vector's z component. This is more mathematically correct in one sense because it increases the steep angle offsets to their proper lengths.
+
+However, all these offsets assume that the texcoord their pointing to is the same height as the texcoord they're starting at, which is almost never true. So making the offsets the correct length causes extra swimming in the textures and actually makes things look worse in my opinion. In a nutshell, I'm using a small angle approximation to tone down artifacts that result from another completely different approximation.
+
+Anyway, I hope that explanation makes some sense. It's really hard to describe this stuff without drawing pictures :P
+
+[This message 
