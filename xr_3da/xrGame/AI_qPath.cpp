@@ -89,16 +89,10 @@ void CAI_Space::q_Path(DWORD StartNode, DWORD GoalNode,	AI::Path&	Result)
 
 	Device.Statistic.AI_Path.Begin	();
 
-//	Msg("%d - %d",StartNode,GoalNode);
-	
 	// Set Start and goal states
 	GraphSearchNode nodeStart	(StartNode);
 	GraphSearchNode nodeEnd		(GoalNode);
 	astar.SetStartAndGoalStates	( nodeStart, nodeEnd	);
-	/*
-	vLimiterStart.set			( nodeStart.Center		);
-	fLimiter					= 
-	*/
 
 	// Perform searching
 	unsigned int SearchState;
