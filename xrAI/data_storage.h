@@ -133,7 +133,6 @@ public:
 		CGraphNode				*node = indexes[node_index].node = nodes + node_count++;
 		indexes[node_index].epoch_id = epoch_count;
 #pragma todo("Dima to Dima : remove next line here")
-		node->back				= 0;
 		node->_index			= node_index;
 		return					(*node);
 	}

@@ -14,11 +14,12 @@ class CSearch {
 	SNode				*m_tpHeap;
 	SNode				**m_tppHeap;
 	SIndexNode			*m_tpIndexes;
-	xr_vector<u32>		tpaNodes;
 	CAStarSearch<CAIMapShortestPathNode,SAIMapData> m_tpMapPath;
 	SAIMapData			tData;
 
 public:
+	xr_vector<u32>		tpaNodes;
+
 						CSearch		(const CAI_Map *tAI_Map)
 	{
 		tData.m_tpAI_Map		= tAI_Map;
@@ -41,9 +42,10 @@ public:
 		xr_free(m_tppHeap);
 	}
 
-			void		Find		(u32 dwStart, u32 dwEnd)
+			void		Find		(u32 dwStart, u32 dwEnd, float &f, u32 &v1)
 	{
 		tData.dwFinishNode	= dwEnd;
+		f = 0.f;
 		m_tpMapPath.vfFindOptimalPath(
 			m_tppHeap,
 			m_tpHeap,
@@ -52,7 +54,9 @@ public:
 			tData,
 			dwStart,
 			dwEnd,
-			tpaNodes);
+			tpaNodes,
+			f,
+			v1);
 	}
 };
 
@@ -62,13 +66,30 @@ void path_test_old(LPCSTR caLevelName)
 	CSearch					*search			= xr_new<CSearch>				(graph);
 
 	u64						start, finish;
+	SetPriorityClass		(GetCurrentProcess(),REALTIME_PRIORITY_CLASS);
+	SetThreadPriority		(GetCurrentThread(),THREAD_PRIORITY_TIME_CRITICAL);
 	Sleep					(1);
 	start					= CPU::GetCycleCount();
+	float f;
+	u32 v;
 	for (int i=0; i<100; ++i)
-		search->Find		(1+i,graph->get_node_count() - 1 - i);
+		search->Find		(1+i,graph->get_node_count() - 1 - i,f,v);
 	finish					= CPU::GetCycleCount();
+	SetThreadPriority		(GetCurrentThread(),THREAD_PRIORITY_NORMAL);
+	SetPriorityClass		(GetCurrentProcess(),NORMAL_PRIORITY_CLASS);
 	Msg						("%f microseconds",float(s64(finish - start))*CPU::cycles2microsec);
-	
+
 	xr_delete				(graph);
+	xr_delete				(search);
+}
+
+void path_test_old(CAI_Map *graph, xr_vector<u32> &path, u32 start, u32 end, float &f, u32 &v1)
+{
+	CSearch					*search			= xr_new<CSearch>				(graph);
+
+	search->Find			(start,end,f,v1);
+
+	path					= search->tpaNodes;
+
 	xr_delete				(search);
 }

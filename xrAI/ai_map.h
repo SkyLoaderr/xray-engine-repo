@@ -654,4 +654,6 @@ public:
 	{
 		return					(m_header.count);
 	}
+
+	typedef NodeCompressed InternalNode;
 };

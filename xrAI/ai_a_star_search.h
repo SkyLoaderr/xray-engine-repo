@@ -69,7 +69,7 @@ public:
 							**tppHeapStart = m_tppHeap + 0,
 							**tppHeapEnd = m_tppHeap + 1;
 		
-		Memory.mem_fill(tpTemp,0,sizeof(SNode));
+		tpTemp->tpBack = 0;
 		
 		tpIndexes[dwStartNode].dwTime = dwAStarStaticCounter;
 
@@ -209,7 +209,9 @@ public:
 			SData		&tData,
 			u32			dwStartNode, 
 			u32			dwGoalNode, 
-			xr_vector<u32> &tpaNodes)
+			xr_vector<u32> &tpaNodes,
+			float &f,
+			u32 &v1)
 	{
 		// initialization
 		dwAStarStaticCounter++;
@@ -224,7 +226,8 @@ public:
 							**tppHeapStart = m_tppHeap + 0,
 							**tppHeapEnd = m_tppHeap + 1;
 		
-		Memory.mem_fill(tpTemp,0,sizeof(SNode));
+//		Memory.mem_fill(tpTemp,0,sizeof(SNode));
+		tpTemp->tpBack = 0;
 		
 		tpIndexes[dwStartNode].dwTime = dwAStarStaticCounter;
 
@@ -244,6 +247,8 @@ public:
 			// check if that node is our goal
 			int iBestIndex = tpBestNode->iIndex;
 			if (iBestIndex == (int)dwGoalNode) {
+				f = tpBestNode->f;
+				v1 = dwHeap;
 				tpTemp1 = tpBestNode;
 				tpTemp = tpTemp1->tpBack;
 				for (u32 i=1; tpTemp; tpTemp1 = tpTemp, tpTemp = tpTemp->tpBack, i++) ;
