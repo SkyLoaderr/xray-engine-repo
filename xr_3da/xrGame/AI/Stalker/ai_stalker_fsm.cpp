@@ -156,7 +156,6 @@ void CAI_Stalker::ForwardStraight()
 void CAI_Stalker::Camp(bool bWeapon)
 {
 	WRITE_TO_LOG			("Camping...");
-	m_dwInertion			= 20000;
 	int						iIndex = ifFindDynamicObject(m_tSavedEnemy);
 	if (iIndex == -1)
 		return;
@@ -336,7 +335,7 @@ void CAI_Stalker::Think()
 	vfUpdateDynamicObjects	();
 	vfUpdateParameters		(A,B,C,D,E,F,G,H,I,J,K,L,M);
 	int						iIndex;
-	if (!K && _K && (((iIndex = ifFindDynamicObject(m_tSavedEnemy)) != -1) && (Level().timeServer() - m_dwLostEnemyTime < m_dwInertion)) && m_tpaDynamicObjects[iIndex].tpEntity->g_Alive()) {
+	if (!K && _K && (((iIndex = ifFindDynamicObject(m_tSavedEnemy)) != -1) && (Level().timeServer() - m_tpaDynamicObjects[iIndex].dwTime < m_dwInertion)) && m_tpaDynamicObjects[iIndex].tpEntity->g_Alive()) {
 		K = true;
 		C = _C;
 		E = _E;
