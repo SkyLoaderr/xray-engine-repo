@@ -1722,6 +1722,10 @@ HRESULT CMyD3DApplication::RenderOverlay()
 // Name: UpdateTransform()
 // Desc: Re-computes all transform parameters for shadow mapping.
 //-----------------------------------------------------------------------------
+float rnd()
+{
+	return float(rand())/float(16384) - 1;
+}
 HRESULT CMyD3DApplication::UpdateTransform()
 {
 	// Light direction
@@ -1733,7 +1737,7 @@ HRESULT CMyD3DApplication::UpdateTransform()
 	if (t>tm_next) 
 	{
 		tm_base					= t;
-		tm_next					= t+10000;
+		tm_next					= t+1000;
 
 		vLightDir0				= vLightDir1;
 		vLightDir1				= D3DXVECTOR3(rnd(),rnd(),rnd());
@@ -1744,7 +1748,7 @@ HRESULT CMyD3DApplication::UpdateTransform()
 	float l_i				= 1.f - l_f;
 
 	D3DXVECTOR3 vLightDir	= l_i*vLightDir0 + l_f*vLightDir1;
-	D3DXVec3Normalize		( &vLightDir, &vLightDir );
+	D3DXVec3Normalize		( &dv_LightDir, &vLightDir );
 
 	// Model offset
 	D3DXVECTOR3 vModelOffs		= D3DXVECTOR3(0.0f, 2.0f, 0.0f);
@@ -1773,10 +1777,6 @@ HRESULT CMyD3DApplication::UpdateTransform()
 
 	D3DXMatrixMultiply			(&dm_model2world2view,				&dm_model2world, &dm_2view);
 	D3DXMatrixMultiply			(&dm_model2world2view2projection,	&dm_model2world, &dm_world2view2projection);
-
-	// Light direction
-	dv_LightDir					= D3DXVECTOR3(-1.0f, -1.0f, 1.0);
-	D3DXVec3Normalize			(&dv_LightDir, &dv_LightDir);
 
 	// Setup shadow map transform
 	vLookatPt					= vModelOffs;
