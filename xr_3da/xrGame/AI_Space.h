@@ -22,7 +22,7 @@ namespace AI {
 	typedef struct tagSGraphVertex {
 		Fvector	tPoint;
 		u32		dwNodeID:24;
-		u32		ucVertexType:8;
+		u32		tVertexType:8;
 		u32		dwNeighbourCount;
 		u32		dwEdgeOffset;
 	} SGraphVertex;
@@ -78,9 +78,14 @@ private:
 	// Debug
 	Shader*				sh_debug;
 
-	CStream*			m_tpGraphVFS;			// virtual file
-	AI::SGraphHeader	m_tGraphHeader;			// graph header
+#ifndef DEBUG
+	CStream*			m_tpGraphVFS;	// virtual file
+#endif
+	AI::SGraphHeader	m_tGraphHeader;	// graph header
 public:
+#ifdef DEBUG
+	CStream*			m_tpGraphVFS;	// virtual file
+#endif
 	// Query
 	vector<bool>		q_mark_bit;		// temporal usage mark for queries
 	vector<bool>		q_mark_bit_x;		// temporal usage mark for queries
