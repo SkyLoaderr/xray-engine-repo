@@ -29,7 +29,8 @@ bool CTelekineticObject::init(CTelekinesis* tele,CPhysicsShellHolder *obj, float
 {
 	if (!obj || !obj->m_pPhysicsShell) return false;
 
-	state				= TS_Raise;
+	//state				= TS_Raise;
+	switch_state(TS_Raise);
 	object				= obj;
 	
 	target_height		= obj->Position().y + h;
@@ -41,7 +42,7 @@ bool CTelekineticObject::init(CTelekinesis* tele,CPhysicsShellHolder *obj, float
 	strength			= s;
 
 	time_fire_started	= 0;
-	time_raise_started	= Level().timeServer();
+	//time_raise_started	= Level().timeServer();
 
 	object->m_pPhysicsShell->set_ApplyByGravity(FALSE);
 	
@@ -74,6 +75,19 @@ void CTelekineticObject::update_state()
 		case TS_None:					break; 
 	}
 }
+
+void CTelekineticObject::switch_state(ETelekineticState new_state)
+{
+	u32 time=Level().timeServer();
+	
+	switch (new_state) {
+		case TS_Raise:	time_raise_started	=	time;	break;
+		case TS_Keep:	time_keep_started	=	time;	break;
+		case TS_Fire:	time_fire_started	=	time;	break;
+		case TS_None:									break; 
+	}
+	state=new_state;
+}
 void CTelekineticObject::raise(float power) 
 {
 	if (!object || !object->m_pPhysicsShell || !object->m_pPhysicsShell->bActive) return;
@@ -91,9 +105,9 @@ void CTelekineticObject::raise(float power)
 
 void CTelekineticObject::prepare_keep()
 {
-	time_keep_started	= Level().timeServer();
-	state				= TS_Keep;
-
+	//time_keep_started	= Level().timeServer();
+	//state				= TS_Keep;
+	switch_state(TS_Keep);
 	time_keep_updated	= 0;
 }
 
@@ -153,13 +167,15 @@ void CTelekineticObject::release()
 		// приложить небольшую силу для того, чтобы объект начал падать
 		object->m_pPhysicsShell->applyImpulse(dir_inv, 0.5f * object->m_pPhysicsShell->getMass());
 	}
-	state = TS_None;
+	//state = TS_None;
+	switch_state(TS_None);
 }
 
 void CTelekineticObject::fire(const Fvector &target)
 {
-	state				= TS_Fire;
-	time_fire_started	= Level().timeServer();
+	//state				= TS_Fire;
+	switch_state(TS_Fire);
+	//time_fire_started	= Level().timeServer();
 
 	if (!object || !object->m_pPhysicsShell || !object->m_pPhysicsShell->bActive) return;
 
@@ -182,8 +198,9 @@ void CTelekineticObject::fire(const Fvector &target)
 
 void CTelekineticObject::fire(const Fvector &target, float power)
 {
-	state				= TS_Fire;
-	time_fire_started	= Level().timeServer();
+	//state				= TS_Fire;
+	switch_state(TS_Fire);
+	//time_fire_started	= Level().timeServer();
 
 	if (!object || !object->m_pPhysicsShell || !object->m_pPhysicsShell->bActive) return;
 

@@ -50,6 +50,7 @@ virtual		void				fire_update				();
 virtual		void				update_state			();
 			bool				is_released				(){return state==TS_None;}
 			ETelekineticState	get_state				() {return state;}
+virtual		void				switch_state			(ETelekineticState new_state);
 			CPhysicsShellHolder *get_object				() {return object;}
 
 			bool				check_height			();

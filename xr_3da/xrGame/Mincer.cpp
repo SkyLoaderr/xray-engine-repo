@@ -49,7 +49,9 @@ BOOL CMincer::net_Spawn(LPVOID DC)
 void CMincer::OnRender()
 {
 	Fmatrix M;M.identity();M.scale(0.2f,0.2f,0.2f);
-	Center(M.c);
+	//Center(M.c);
+	if(!m_telekinetics.is_active()) return;
+	M.c.set(m_telekinetics.Center());
 	RCache.dbg_DrawEllipse(M, 0xffffffff);
 }
 #endif
