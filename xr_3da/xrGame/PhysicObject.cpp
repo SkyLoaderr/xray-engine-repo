@@ -42,7 +42,7 @@ BOOL CPhysicObject::net_Spawn(LPVOID DC)
 			break;
 		default: NODEFAULT; 
 	}
-	CreateBody				(po->fixed_bone);
+	CreateBody				(po);
 
 	setVisible(true);
 	setEnabled(true);
@@ -99,7 +99,7 @@ void CPhysicObject::AddElement(CPhysicsElement* root_e, int id)
 }
 
 
-void CPhysicObject::CreateBody(LPCSTR fixed_bone) {
+void CPhysicObject::CreateBody(CSE_ALifeObjectPhysic* po) {
 	m_pPhysicsShell		= P_create_Shell();
 	switch(m_type) {
 		case epotBox : {
@@ -119,7 +119,7 @@ void CPhysicObject::CreateBody(LPCSTR fixed_bone) {
 			AddElement(0,PKinematics(Visual())->LL_BoneRoot());
 			m_pPhysicsShell->setMass1(m_mass);
 		} break;
-		case   epotSkeleton: CreateSkeleton(fixed_bone); break;
+		case   epotSkeleton: CreateSkeleton(po); break;
 
 		default : {
 		} break;
@@ -149,16 +149,16 @@ void CPhysicObject::Hit(float P, Fvector &dir,	CObject* who, s16 element,Fvector
 }
 
 static BONE_P_MAP bone_map=BONE_P_MAP();
-void CPhysicObject::CreateSkeleton(LPCSTR fixed_bone)
+void CPhysicObject::CreateSkeleton(CSE_ALifeObjectPhysic* po)
 {
 	if (!Visual()) return;
 
 	CKinematics* pKinematics=PKinematics(Visual());
 	m_pPhysicsShell		= P_create_Shell();
 	CPhysicsElement* fixed_element=NULL;
-	if(fixed_bone[0]!=0)
+	if(po->fixed_bone[0]!=0)
 	{
-		u32 fixed_bone_id=pKinematics->LL_BoneID(fixed_bone);
+		u32 fixed_bone_id=pKinematics->LL_BoneID(po->fixed_bone);
 		R_ASSERT2(fixed_bone_id!=BI_NONE,"wrong fixed bone");
 		bone_map.clear();
 		bone_map.insert(mk_pair(fixed_bone_id,physicsBone()));
@@ -173,7 +173,7 @@ void CPhysicObject::CreateSkeleton(LPCSTR fixed_bone)
 
 	m_pPhysicsShell->set_PhysicsRefObject(this);
 	m_pPhysicsShell->mXFORM.set(XFORM());
-	m_pPhysicsShell->Activate(true);
+	m_pPhysicsShell->Activate(true,po->activate);
 	//m_pPhysicsShell->SmoothElementsInertia(0.3f);
 	m_pPhysicsShell->SetAirResistance();//0.0014f,1.5f
 	if(fixed_element)

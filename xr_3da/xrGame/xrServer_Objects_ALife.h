@@ -219,6 +219,7 @@ SERVER_ENTITY_DECLARE_BEGIN(CSE_ALifeObjectPhysic,CSE_ALifeDynamicObjectVisual)
 	f32 							mass;
     string32 						fixed_bone;
 	string32						startup_animation;
+	bool							activate;
 									CSE_ALifeObjectPhysic	(LPCSTR caSection);
     virtual 						~CSE_ALifeObjectPhysic	();
 SERVER_ENTITY_DECLARE_END

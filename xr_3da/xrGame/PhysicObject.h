@@ -8,8 +8,8 @@ class CPhysicObject :
 	EPOType			m_type;
 	float			m_mass;
 
-	void			CreateSkeleton  (LPCSTR fixed_bone);
-	void			CreateBody		(LPCSTR fixed_bone);
+	void			CreateSkeleton  (CSE_ALifeObjectPhysic	*po);
+	void			CreateBody		(CSE_ALifeObjectPhysic	*po);
 	void			AddElement		(CPhysicsElement* root_e, int id);
 public:
 	CPhysicObject(void);

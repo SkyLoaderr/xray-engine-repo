@@ -54,6 +54,7 @@
 // 37 - бинокль имеет ServerEntity не CSE_ALifeItemWeapon, а CSE_ALifeItem
 // 38 - CSE_ALifeHumanAbstract			appended with the equipment and weapon preferences
 // 39 - CSE_ALifeAnomalousZone			appended with the start power property
+// 40 - CSE_ALifeObjectPhysic			appended with activate flag
 //------------------------------------------------------------------------------
 
 class CPureServerObject : public IPureServerObject {

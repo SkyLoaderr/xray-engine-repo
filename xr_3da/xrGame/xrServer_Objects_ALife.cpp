@@ -721,7 +721,7 @@ void CSE_ALifeObjectPhysic::FillProp		(LPCSTR pref, PropItemVec& values) {
 	PHelper.CreateToken			(values, FHelper.PrepareKey(pref,s_name,"Type"), &type,	po_types, 1);
 	PHelper.CreateFloat			(values, FHelper.PrepareKey(pref,s_name,"Mass"), &mass, 0.1f, 10000.f);
 	PHelper.CreateText			(values, FHelper.PrepareKey(pref,s_name,"Fixed bone"),	fixed_bone,	sizeof(fixed_bone));
-    
+    PHelper.CreateBool			(values, FHelper.PrepareKey(pref,s_name,"Activate"), activate, sizeof(activate));
 	if (visual && PKinematics(visual))
 	{
 		CKinematics::accel		*ll_motions	= PKinematics(visual)->LL_Motions();
