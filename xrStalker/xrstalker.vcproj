@@ -329,6 +329,9 @@
 					Name="Infoportions"
 					Filter="">
 					<File
+						RelativePath=".\Config\gameplay\info_known_objects.xml">
+					</File>
+					<File
 						RelativePath=".\Config\gameplay\info_l01escape.xml">
 					</File>
 					<File
