@@ -786,7 +786,8 @@ void CActor::net_Destroy	()
 {
 	inherited::net_Destroy	();
 
-//	CInventoryOwner::net_Destroy();
+#pragma todo("Dima to MadMax : do not comment inventory owner net_Destroy!!!")
+	CInventoryOwner::net_Destroy();
 	::Sound->destroy			(sndZoneHeart);
 	::Sound->destroy			(sndZoneDetector);
 
