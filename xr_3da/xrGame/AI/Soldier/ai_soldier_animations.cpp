@@ -223,7 +223,14 @@ void CAI_Soldier::SelectAnimation(const Fvector& _view, const Fvector& _move, fl
 				break;
 			}
 			case BODY_STATE_CROUCH : {
-				tpGlobalAnimation = tSoldierAnimations.tCrouch.tGlobal.tpDeath;
+				//tpGlobalAnimation = tSoldierAnimations.tCrouch.tGlobal.tpDeath;
+				for (int i=0 ;i<5; i++)
+					if (tSoldierAnimations.tNormal.tGlobal.tpaDeath[i] == m_tpCurrentGlobalAnimation) {
+						tpGlobalAnimation = m_tpCurrentGlobalAnimation;
+						break;
+					}
+				if (!tpGlobalAnimation)
+					tpGlobalAnimation = tSoldierAnimations.tNormal.tGlobal.tpaDeath[::Random.randI(0,5)];
 				break;
 			}
 			case BODY_STATE_LIE : {
