@@ -584,6 +584,10 @@ function loadStates(gname, type)
 		end
 	end
 
+	if type == "gar_maniac" then
+		return 0
+	end
+
 	if type == "blockpost" then
 		return function(gulag)
 			if gulag:getCasualities() >= 3 then
