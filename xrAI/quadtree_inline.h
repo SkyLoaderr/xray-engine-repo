@@ -14,6 +14,7 @@
 TEMPLATE_SPECIALIZATION
 IC	CSQuadTree::CQuadTree		(const Fbox &box, float min_cell_size, u32 max_node_count, u32 max_list_item_count)
 {
+	m_leaf_count		= 0;
 	m_radius			= _max(box.max.x - box.min.x, box.max.z - box.min.z)*.5f;
 	m_center.add		(box.min,box.max);
 	m_center.mul		(.5f);
@@ -40,6 +41,13 @@ IC	void CSQuadTree::clear	()
 	m_nodes->clear		();
 	m_list_items->clear	();
 	m_root				= 0;
+	m_leaf_count		= 0;
+}
+
+TEMPLATE_SPECIALIZATION
+IC	size_t CSQuadTree::size	() const
+{
+	return				(m_leaf_count);
 }
 
 TEMPLATE_SPECIALIZATION
@@ -82,6 +90,7 @@ IC	void CSQuadTree::insert		(_object_type *object)
 			list_item->m_object = object;
 			list_item->m_next	= (CListItem*)((void*)(*node));
 			*node		= (CQuadNode*)((void*)list_item);
+			++m_leaf_count;
 			return;
 		}
 
@@ -230,6 +239,7 @@ IC	_object_type *CSQuadTree::remove		(const _object_type *object, CQuadNode *&no
 					leaf_prev->m_next = leaf->m_next;
 				_object_type	*_object = leaf->m_object;
 				m_list_items->remove(leaf);
+				--m_leaf_count;
 				return	(_object);
 			}
 		NODEFAULT;

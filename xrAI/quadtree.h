@@ -91,6 +91,7 @@ protected:
 	CQuadNode			*m_root;
 	CQuadNodeStorage	*m_nodes;
 	CListItemStorage	*m_list_items;
+	size_t				m_leaf_count;
 
 protected:
 	IC		u32					neighbour_index	(const Fvector	&position,	Fvector &center, float distance) const;
@@ -105,6 +106,7 @@ public:
 	IC		_object_type		*remove			(const _object_type *object);
 	IC		_object_type		*find			(const Fvector	&position);
 	IC		void				nearest			(const Fvector	&position,	float radius, xr_vector<_object_type*> &objects, bool clear = true) const;
+	IC		size_t				size			() const;
 };
 
 #include "quadtree_inline.h"
