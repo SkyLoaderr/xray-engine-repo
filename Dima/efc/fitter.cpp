@@ -418,10 +418,11 @@ void vfShowTestData(char *caTestDataFileName, char *caPatternDataFileName, bool 
 				vfDualPrintF("%8.2f  -> %6.2f (%6.2f)\n",daTestResults[i],dEval,dEval - daTestResults[i]);
 			}
 		}
-		else {
-			vfDualPrintF("\nAll the valid examples evaluation:\n");
-			vfGenerateAllValidConfigurations(0,uiVariableCount,uiaTestParameters[0],uiaAtomicFeatureRange);
-		}
+		else
+			if (uiTestCount) {
+				vfDualPrintF("\nAll the valid examples evaluation:\n");
+				vfGenerateAllValidConfigurations(0,uiVariableCount,uiaTestParameters[0],uiaAtomicFeatureRange);
+			}
 	
 	if (bShowSortedStats) {
 		double *daDiffs = (double *)malloc(uiTestCount*sizeof(double));
