@@ -721,12 +721,6 @@
 						RelativePath=".\GameObject.h">
 					</File>
 					<File
-						RelativePath=".\MovementControl.cpp">
-					</File>
-					<File
-						RelativePath=".\MovementControl.h">
-					</File>
-					<File
 						RelativePath="PhysicObject.cpp">
 					</File>
 					<File
