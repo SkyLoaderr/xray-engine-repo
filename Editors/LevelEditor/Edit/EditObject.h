@@ -307,6 +307,7 @@ public:
 #ifdef _LW_EXPORT
 		// import routines
 	bool			Import_LWO				(st_ObjectDB *I);
+	bool			ExportBones				(LPCSTR fname);
 #endif
 #ifdef _LW_IMPORT
 	bool			Export_LW				(LWObjectImport *local);

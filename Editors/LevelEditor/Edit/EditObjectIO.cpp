@@ -275,6 +275,41 @@ void CEditableObject::Save(CFS_Base& F){
 	bOnModified		= false;
 }
 //------------------------------------------------------------------------------
+#ifdef _LW_EXPORT
+bool CEditableObject::ExportBones(LPCSTR fname)
+{
+	if (m_Bones.empty()) return false;
+
+	CFS_Memory F;
+	// fill default bone part
+	m_BoneParts.push_back(SBonePart());
+	SBonePart& BP = m_BoneParts.back();
+	BP.alias = "default";
+	for (int b_i=0; b_i<m_Bones.size(); b_i++)
+		BP.bones.push_back(b_i);
+	// bones
+	if (!m_Bones.empty()){
+		F.open_chunk	(EOBJ_CHUNK_BONES);
+		F.Wdword		(m_Bones.size());
+		for (BoneIt b_it=m_Bones.begin(); b_it!=m_Bones.end(); b_it++) (*b_it)->Save(F);
+		F.close_chunk	();
+	}
+    // bone parts
+    if (!m_BoneParts.empty()){
+        F.open_chunk	(EOBJ_CHUNK_BONEPARTS);
+        F.Wdword		(m_BoneParts.size());
+        for (BPIt bp_it=m_BoneParts.begin(); bp_it!=m_BoneParts.end(); bp_it++){
+            F.WstringZ	(bp_it->alias.c_str());
+            F.Wdword	(bp_it->bones.size());
+            F.write		(bp_it->bones.begin(),bp_it->bones.size()*sizeof(int));
+        }
+        F.close_chunk	();
+    }     
+	F.SaveTo(fname,0);
+	return true;
+}
+#endif
+//------------------------------------------------------------------------------
 CSMotion* CEditableObject::LoadSMotion(const char* fname){
 	if (Engine.FS.Exist(fname)){
     	CSMotion* M = new CSMotion();

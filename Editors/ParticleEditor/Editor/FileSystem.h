@@ -66,6 +66,7 @@ public:
 	FSPath 		m_SMotion;
 	FSPath 		m_OMotions;
 	FSPath 		m_SMotions;
+	FSPath		m_SBones;
 	FSPath 		m_Objects;
 	FSPath 		m_Textures;
 	FSPath 		m_Temp;

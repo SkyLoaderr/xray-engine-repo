@@ -117,6 +117,9 @@ typedef TMsgDlgBtn TMsgDlgButtons[mbHelp];
 #include "fixedvector.h"
 #include "math.h"
 
+
+DEFINE_VECTOR(LPSTR,LPSTRVec,LPSTRIt);
+
 #include "Log.h"
 #include "Engine.h"
 // TODO: reference additional headers your program requires here
