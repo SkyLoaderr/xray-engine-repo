@@ -72,8 +72,7 @@ void CBuild::xrPhase_MergeLM()
 
 	// **** calc material area
 	for (u32 it=0; it<materials.size(); it++) materials[it].internal_max_area	= 0;
-	for (u32 it=0; it<Layer.size(); it++)
-	{
+	for (u32 it=0; it<Layer.size(); it++)	{
 		CDeflector*	D		= Layer[it];
 		materials[D->GetBaseMaterial()]->internal_max_area	= _max(D->layer.Area(),materials[D->GetBaseMaterial()]->internal_max_area);
 	}
