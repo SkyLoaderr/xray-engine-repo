@@ -91,5 +91,6 @@ end
 function give_sniper_pda(first_speaker, second_speaker)
 	local sniper_pda = first_speaker:object("bar_sniper_pda")
 	first_speaker:transfer_item(sniper_pda, second_speaker)
+	level_tasks.set_task_state(task.completed, "bar_drunk_dolg_quest", 0)
 end
 
