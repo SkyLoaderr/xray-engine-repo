@@ -17,7 +17,7 @@
 u32		CBreakableObject		::	m_remove_time		=0		;
 float	CBreakableObject		::	m_damage_threshold	=5.f	;
 float	CBreakableObject		::	m_health_threshhold	=0.f	;
-float	CBreakableObject		::  m_immunity_factor	=0.1	;
+float	CBreakableObject		::  m_immunity_factor	=0.1f	;
 CBreakableObject::CBreakableObject	()
 {
 	Init();
