@@ -268,9 +268,8 @@ xr_motivator.storage[self.object:id()].robber = {
 -- Настройка встречи
 xr_motivator.storage[self.object:id()].meet = {
         enabled = false,
-            nearest = nil,
-        done = false,
-        distance = 15, -- расстояние, в пределах которого мы реагируем
+        actor = nil,
+        distance = 20, -- расстояние, в пределах которого мы реагируем
         shoot_distance = 5 -- расстояние, в пределах которого мы стреляем
     }
         if char_ini:section_exist ("meet") == true then
