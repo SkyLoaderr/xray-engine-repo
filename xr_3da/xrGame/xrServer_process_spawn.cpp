@@ -55,7 +55,7 @@ void xrServer::Process_spawn(NET_Packet& P, DPNID sender, BOOL bSpawnWithClients
 			// Simple spawn
 			if (bSpawnWithClientsMainEntityAsParent)
 			{
-				R_ASSERT				(CL && (CL!=0xffffffff));
+				R_ASSERT				(CL);
 				xrServerEntity* P		= CL->owner;
 				R_ASSERT				(P);
 				E->ID_Parent			= P->ID;
