@@ -112,7 +112,7 @@ function main()
 			)
 
 	while guard01:action() and guard02:action() do
-		if guard01:see(actor) or guard02:see(actor) and distance_between(guard01,actor) <= 30 or distance_between(guard02,actor) <= 30 then
+		if guard01:see(actor) or guard02:see(actor) and distance_between(guard01,actor) <= 30 then
 			prof_oba:play_at_pos						(guard01,guard01:position(),0);
 			wait(1000)			
 			prof_hmm_kto_eto:play_at_pos						(guard01,guard01:position(),0);
@@ -124,7 +124,7 @@ function main()
 	end
 
 	while guard01:action() and guard02:action() do
-		if guard01:see(actor) or guard02:see(actor) and distance_between(guard01,actor) <= 20 or distance_between(guard02,actor) <= 20 then
+		if guard01:see(actor) or guard02:see(actor) and distance_between(guard01,actor) <= 20 then
 			printf("see = true2!")
 			flush()
 			prof_eto_territoriya_svobodi:play_at_pos			(guard01,guard01:position(),0);
@@ -136,7 +136,7 @@ function main()
 	end
 
 	while guard01:action() and guard02:action() do
-		if guard01:see(actor) or guard02:see(actor) and distance_between(guard01,actor) <= 10 or distance_between(guard02,actor) <= 10 then
+		if guard01:see(actor) or guard02:see(actor) and distance_between(guard01,actor) <= 10 then
 			prof_stoyat_pristrelu:play_at_pos			(guard01,guard01:position(),0);
 			wait(3000)			
 		break
@@ -145,7 +145,7 @@ function main()
 	end
 
 	while guard01:action() and guard02:action() do
-		if guard01:see(actor) or guard02:see(actor) and distance_between(guard01,actor) <= 10 or distance_between(guard02,actor) <= 10 then
+		if guard01:see(actor) or guard02:see(actor) and distance_between(guard01,actor) <= 10 then
 			prof_sam_naprosilsya:play_at_pos			(guard01,guard01:position(),0);
 			wait(2000)			
 		break
@@ -154,7 +154,7 @@ function main()
 	end
 
 	while guard01:action() and guard02:action() do
-		if guard01:see(actor) or guard02:see(actor) and distance_between(guard01,actor) <= 20 or distance_between(guard02,actor) <= 20 and guard_see_actor == 2 then
+		if guard01:see(actor) or guard02:see(actor) and distance_between(guard01,actor) <= 20 and guard_see_actor == 2 then
 			rainbow_ti_chto_gluhoy:play_at_pos			(guard02,guard02:position(),0);
 			wait(2000)			
 			guard_see_actor = 3
@@ -164,7 +164,7 @@ function main()
 	end
 
 	while guard01:action() and guard02:action() do
-		if guard01:see(actor) or guard02:see(actor) and distance_between(guard01,actor) <= 20 or distance_between(guard02,actor) <= 20 and guard_see_actor == 3 then
+		if guard01:see(actor) or guard02:see(actor) and distance_between(guard01,actor) <= 20 and guard_see_actor == 3 then
 			prof_chert:play_at_pos			(guard01,guard01:position(),0);
 			wait(1000)			
 			rainbow_mochi_ego:play_at_pos			(guard01,guard01:position(),0);
