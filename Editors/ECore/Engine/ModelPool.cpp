@@ -367,7 +367,7 @@ void 	CModelPool::Render(IRender_Visual* m_pVisual, const Fmatrix& mTransform, i
     }break;
     case MT_PARTICLE_GROUP:{
         PS::CParticleGroup* pV			= dynamic_cast<PS::CParticleGroup*>(m_pVisual); R_ASSERT(pV);
-        xr_vector<IRender_Visual*>::iterator 		I,E;
+        xr_vector<PS::CParticleEffect*>::iterator 	I,E;
         I = pV->children.begin			();
         E = pV->children.end			();
         for (; I!=E; I++){

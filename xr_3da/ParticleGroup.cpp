@@ -115,7 +115,7 @@ CParticleGroup::CParticleGroup()
 CParticleGroup::~CParticleGroup()
 {
 	for (u32 i=0; i<children.size(); i++)	
-		::Render->model_Delete(children[i]);
+		::Render->model_Delete((IRender_Visual*)children[i]);
 	children.clear();
 }
 
@@ -125,8 +125,8 @@ void CParticleGroup::OnFrame(u32 u_dt)
         float ct	= m_CurrentTime;
         float f_dt	= float(u_dt)/1000.f;
         for (CPGDef::EffectVec::const_iterator e_it=m_Def->m_Effects.begin(); e_it!=m_Def->m_Effects.end(); e_it++){	
-            CParticleEffect* E = (CParticleEffect*)children[e_it-m_Def->m_Effects.begin()]; R_ASSERT(E);
-            if (e_it->m_Flags.is(CPGDef::SEffect::flEnabled)){
+            CParticleEffect* E = (CParticleEffect*)children[e_it-m_Def->m_Effects.begin()];  
+            if (E&&e_it->m_Flags.is(CPGDef::SEffect::flEnabled)){
                 switch (e_it->m_Type){
                 case CPGDef::SEffect::etStopEnd:{
                     if (E->IsPlaying()){
@@ -146,13 +146,14 @@ void CParticleGroup::OnFrame(u32 u_dt)
         bool bPlaying = false;
         Fbox box; box.invalidate();
         for (u32 i=0; i<children.size(); i++){
-			IRender_Visual*  V  = children[i];
-            CParticleEffect* E	= (CParticleEffect*)V;
-            E->OnFrame		(u_dt);
-            if (E->IsPlaying()){ 
-            	bPlaying	= true;
-                if (V->vis.box.is_valid())
-                	box.merge(V->vis.box);
+            CParticleEffect* E	= children[i];
+            if (E){
+                E->OnFrame		(u_dt);
+                if (E->IsPlaying()){ 
+                    bPlaying	= true;
+                    if (E->vis.box.is_valid())
+                        box.merge(E->vis.box);
+                }
             }
         }
         if (m_RT_Flags.is(flRT_DefferedStop)&&!bPlaying){
@@ -187,7 +188,7 @@ BOOL CParticleGroup::Compile(CPGDef* def)
     if (m_Def){
         children.resize(m_Def->m_Effects.size());
         for (CPGDef::EffectVec::const_iterator e_it=m_Def->m_Effects.begin(); e_it!=m_Def->m_Effects.end(); e_it++)
-			children[e_it-def->m_Effects.begin()]	= RImplementation.model_CreatePE(e_it->m_EffectName);
+			children[e_it-def->m_Effects.begin()]	= (CParticleEffect*)RImplementation.model_CreatePE(e_it->m_EffectName);
     }
     return TRUE;
 }

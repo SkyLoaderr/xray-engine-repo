@@ -66,7 +66,7 @@ namespace PS
 		float				m_CurrentTime;
 		Fvector				m_InitialPosition;
 	public:
-		xr_vector<IRender_Visual*>		children;
+		xr_vector<CParticleEffect*>		children;
 	public:
 		enum{
 			flRT_Playing		= (1<<0),

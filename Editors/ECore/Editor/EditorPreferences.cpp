@@ -116,15 +116,17 @@ void CEditorPreferences::Edit()
     PHelper.CreateBOOL	(props,"Scene\\Always Keep Object Copy",&scene_leave_eo_copy);
 
     PHelper.CreateFloat	(props,"Sounds\\Rolloff Factor",		&sound_rolloff, 	0.f,	10.f);
+    PHelper.CreateFlag<Flags32>	(props,"Sounds\\Use Hardware",					&psSoundFlags, 	ssHardware);
+    PHelper.CreateFlag<Flags32>	(props,"Sounds\\Use FX",						&psSoundFlags, 	ssFX);
 
-    PHelper.CreateFlag<Flags32>(props,"Objects\\Show Hint",					&object_flags, 	epoShowHint);
-    PHelper.CreateFlag<Flags32>(props,"Objects\\Draw Pivot",				&object_flags, 	epoDrawPivot);
-    PHelper.CreateFlag<Flags32>(props,"Objects\\Draw Animation Path",		&object_flags, 	epoDrawAnimPath);
-    PHelper.CreateFlag<Flags32>(props,"Objects\\Draw LOD",					&object_flags, 	epoDrawLOD);
-    PHelper.CreateFlag<Flags32>(props,"Objects\\Skeleton\\Draw Joints",		&object_flags, 	epoDrawJoints);
-    PHelper.CreateFlag<Flags32>(props,"Objects\\Skeleton\\Draw Bone Axis",	&object_flags, 	epoDrawBoneAxis);
-    PHelper.CreateFlag<Flags32>(props,"Objects\\Skeleton\\Draw Bone Names",	&object_flags, 	epoDrawBoneNames);
-    PHelper.CreateFlag<Flags32>(props,"Objects\\Skeleton\\Draw Bone Shapes",&object_flags, 	epoDrawBoneShapes);
+    PHelper.CreateFlag<Flags32>	(props,"Objects\\Show Hint",					&object_flags, 	epoShowHint);
+    PHelper.CreateFlag<Flags32>	(props,"Objects\\Draw Pivot",					&object_flags, 	epoDrawPivot);
+    PHelper.CreateFlag<Flags32>	(props,"Objects\\Draw Animation Path",			&object_flags, 	epoDrawAnimPath);
+    PHelper.CreateFlag<Flags32>	(props,"Objects\\Draw LOD",						&object_flags, 	epoDrawLOD);
+    PHelper.CreateFlag<Flags32>	(props,"Objects\\Skeleton\\Draw Joints",		&object_flags, 	epoDrawJoints);
+    PHelper.CreateFlag<Flags32>	(props,"Objects\\Skeleton\\Draw Bone Axis",		&object_flags, 	epoDrawBoneAxis);
+    PHelper.CreateFlag<Flags32>	(props,"Objects\\Skeleton\\Draw Bone Names",	&object_flags, 	epoDrawBoneNames);
+    PHelper.CreateFlag<Flags32>	(props,"Objects\\Skeleton\\Draw Bone Shapes",	&object_flags, 	epoDrawBoneShapes);
     
 	m_ItemProps->AssignItems		(props,true);
     m_ItemProps->ShowPropertiesModal();
