@@ -21,13 +21,13 @@
 #include "luabind\\discard_result_policy.hpp"
 #include "luabind\\iterator_policy.hpp"
 
-
 using namespace luabind;
 using namespace Script;
 
 void LuaLog(LPCSTR caMessage)
 {
 	Msg			("* [LUA] %s",caMessage);
+	g_ca_stdout	+= sprintf(g_ca_stdout,"%s",caMessage);
 }
 
 double get_time()

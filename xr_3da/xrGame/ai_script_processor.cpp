@@ -70,12 +70,18 @@ CScriptProcessor::~CScriptProcessor()
 
 void CScriptProcessor::Update()
 {
+	LPSTR	S = g_ca_stdout;
 	for (int i=0, n=(int)m_tpScripts.size(); i<n; i++) {
+		strcpy	(m_caOutput,"");
+		g_ca_stdout = m_caOutput;
 		if (!m_tpScripts[i]->Update()) {
 			xr_delete(m_tpScripts[i]);
 			m_tpScripts.erase(m_tpScripts.begin() + i);
 			i--;
 			n--;
 		}
+		if (strlen(m_caOutput))
+			Msg("! [Lua] %s",m_caOutput);
 	}
+	g_ca_stdout = S;
 }

@@ -18,6 +18,7 @@ DEFINE_VECTOR(CScript*,SCRIPT_VECTOR,SCRIPT_IT);
 class CScriptProcessor {
 	CLuaVirtualMachine	*m_tpLuaVirtualMachine;
 	SCRIPT_VECTOR		m_tpScripts;
+	string4096			m_caOutput;
 public:
 						CScriptProcessor			(LPCSTR					caCaption, LPCSTR caScriptString);
 	virtual				~CScriptProcessor			();
