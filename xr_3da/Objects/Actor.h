@@ -51,92 +51,92 @@ public:
 	};
 protected:
 	// weapons
-	CWeaponList*		Weapons;
+	CWeaponList*			Weapons;
 
 	// media
-	BOOL				bStep;
-	sound				sndStep[2];
-	sound				sndLanding;
-	sound				sndZoneHeart;
-	sound				sndZoneDetector;
-	sound				sndHit[SND_HIT_COUNT];
-	sound				sndDie[SND_DIE_COUNT];
+	BOOL					bStep;
+	sound					sndStep[2];
+	sound					sndLanding;
+	sound					sndZoneHeart;
+	sound					sndZoneDetector;
+	sound					sndHit[SND_HIT_COUNT];
+	sound					sndDie[SND_DIE_COUNT];
 
 	struct				SActorState
 	{
 		struct			SAnimState
 		{
-			CMotionDef*	legs_fwd;
-			CMotionDef*	legs_back;
-			CMotionDef*	legs_ls;
-			CMotionDef*	legs_rs;
+			CMotionDef*		legs_fwd;
+			CMotionDef*		legs_back;
+			CMotionDef*		legs_ls;
+			CMotionDef*		legs_rs;
 			
-			void		Create(CKinematics* K, LPCSTR base0, LPCSTR base1);
+			void			Create(CKinematics* K, LPCSTR base0, LPCSTR base1);
 		};
-		CMotionDef*		torso_aim;
-		CMotionDef*		idle;
-		CMotionDef*		jump_begin;
-		CMotionDef*		jump_idle;
-		CMotionDef*		legs_turn;
-		CMotionDef*		death;
-		SAnimState		m_walk;
-		SAnimState		m_run;
-		void			Create(CKinematics* K, LPCSTR base);
+		CMotionDef*			torso_aim;
+		CMotionDef*			idle;
+		CMotionDef*			jump_begin;
+		CMotionDef*			jump_idle;
+		CMotionDef*			legs_turn;
+		CMotionDef*			death;
+		SAnimState			m_walk;
+		SAnimState			m_run;
+		void				Create(CKinematics* K, LPCSTR base);
 	};
 public:
 	// animation
-	CBlend*				m_current_legs_blend;
-	CBlend*				m_current_jump_blend;
-	CMotionDef*			m_current_legs;
-	CMotionDef*			m_current_torso;
-	SActorState			m_normal;
-	SActorState			m_crouch;
+	CBlend*					m_current_legs_blend;
+	CBlend*					m_current_jump_blend;
+	CMotionDef*				m_current_legs;
+	CMotionDef*				m_current_torso;
+	SActorState				m_normal;
+	SActorState				m_crouch;
 
 protected:
 	// Rotation
-	SRotation			r_torso;
-	float				r_model_yaw_dest;
-	float				r_model_yaw;			// orientation of model
-	float				r_model_yaw_delta;		// effect on multiple "strafe"+"something"
+	SRotation				r_torso;
+	float					r_model_yaw_dest;
+	float					r_model_yaw;			// orientation of model
+	float					r_model_yaw_delta;		// effect on multiple "strafe"+"something"
 
 	static void	__stdcall SpinCallback(CBoneInstance*);
 private:
-	BOOL				bAlive;
+	BOOL					bAlive;
 
 	// Motions
-	DWORD				mstate_wishful;	
-	DWORD				mstate_real;	
+	DWORD					mstate_wishful;	
+	DWORD					mstate_real;	
 
-	BOOL				m_bJumpKeyPressed, m_bJumpInProgress;
+	BOOL					m_bJumpKeyPressed, m_bJumpInProgress;
 
-	float				m_fWalkAccel;
-	float				m_fJumpSpeed;
-	float				m_fRunFactor;
-	float				m_fCrouchFactor;
+	float					m_fWalkAccel;
+	float					m_fJumpSpeed;
+	float					m_fRunFactor;
+	float					m_fCrouchFactor;
 	
-	float				m_fTimeToStep;
+	float					m_fTimeToStep;
 
 	// Cameras
-	CCameraBase*		cameras[eacMaxCam];
-	EActorCameras		cam_active;
-	float				cam_gray;				// for zone-effects
-	float				cam_shift;				// for zone-effects
-	float				fPrevCamPos;
-	CEffectorBobbing*	pCamBobbing;
+	CCameraBase*			cameras[eacMaxCam];
+	EActorCameras			cam_active;
+	float					cam_gray;				// for zone-effects
+	float					cam_shift;				// for zone-effects
+	float					fPrevCamPos;
+	CEffectorBobbing*		pCamBobbing;
 
 //------------------------------
 	struct				net_update 		
 	{
-		u32				dwTimeStamp;			// server(game) timestamp
-		float			o_model;				// model yaw
-		SRotation		o_torso;				// torso in world coords
-		Fvector			p_pos;					// in world coords
-		Fvector			p_accel;				// in world coords
-		Fvector			p_velocity;				// in world coords
-		Fvector			f_pos;
-		Fvector			f_dir;
-		DWORD			mstate;
-		int				weapon;
+		u32					dwTimeStamp;			// server(game) timestamp
+		float				o_model;				// model yaw
+		SRotation			o_torso;				// torso in world coords
+		Fvector				p_pos;					// in world coords
+		Fvector				p_accel;				// in world coords
+		Fvector				p_velocity;				// in world coords
+		Fvector				f_pos;
+		Fvector				f_dir;
+		DWORD				mstate;
+		int					weapon;
 
 		net_update()	{
 			dwTimeStamp		= 0;
@@ -144,28 +144,28 @@ private:
 			p_accel.set		(0,0,0);
 			p_velocity.set	(0,0,0);
 		}
-		void	lerp	(net_update& A,net_update& B, float f);
+		void	lerp		(net_update& A,net_update& B, float f);
 	};
-	deque<net_update>	NET;
-	Fvector				NET_SavedAccel;
-	net_update			NET_Last;
-	BOOL				NET_WasInterpolating;	// previous update was by interpolation or by extrapolation
-	DWORD				NET_Time;				// server time of last update
+	deque<net_update>		NET;
+	Fvector					NET_SavedAccel;
+	net_update				NET_Last;
+	BOOL					NET_WasInterpolating;	// previous update was by interpolation or by extrapolation
+	DWORD					NET_Time;				// server time of last update
 //------------------------------
-	void				g_cl_CheckControls		(DWORD mstate_wf, Fvector &vControlAccel, float &Jump, float dt);
-	void				g_cl_ValidateMState		(DWORD mstate_wf);
-	void				g_cl_Orientate			(DWORD mstate_rl, float dt);
-	void				g_sv_Orientate			(DWORD mstate_rl, float dt);
-	void				g_Orientate				(DWORD mstate_rl, float dt);
-	void				g_Physics				(Fvector& accel, float jump, float dt);
-	void				g_SetAnimation			(DWORD mstate_rl);
+	void					g_cl_CheckControls		(DWORD mstate_wf, Fvector &vControlAccel, float &Jump, float dt);
+	void					g_cl_ValidateMState		(DWORD mstate_wf);
+	void					g_cl_Orientate			(DWORD mstate_rl, float dt);
+	void					g_sv_Orientate			(DWORD mstate_rl, float dt);
+	void					g_Orientate				(DWORD mstate_rl, float dt);
+	void					g_Physics				(Fvector& accel, float jump, float dt);
+	void					g_SetAnimation			(DWORD mstate_rl);
 
-	void				cam_Set					(EActorCameras style);
-	void				cam_Update				(float dt, BOOL bZoom);
+	void					cam_Set					(EActorCameras style);
+	void					cam_Update				(float dt, BOOL bZoom);
 
 public:
-						CActor					( );
-	virtual				~CActor					( );
+							CActor					( );
+	virtual					~CActor					( );
 
 
 	IC static BOOL			isAccelerated		(DWORD mstate)	
