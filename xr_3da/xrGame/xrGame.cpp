@@ -385,6 +385,30 @@ public:
 	}
 };
 
+class CCC_ALifeGraphInfo : public CConsoleCommand {
+public:
+	CCC_ALifeGraphInfo(LPCSTR N) : CConsoleCommand(N)  { };
+	virtual void Execute(LPCSTR args) {
+		if (Level().game.type == GAME_SINGLE) {
+			game_sv_Single *tpGame = dynamic_cast<game_sv_Single *>(Level().Server->game);
+			if (tpGame && tpGame->m_tALife.m_bLoaded) {
+				u32 id1 = u32(-1);
+				sscanf(args ,"%d",&id1);
+				if (id1 >= Level().AI.GraphHeader().dwVertexCount)
+					Msg("Invalid task ID! (%d)",id1);
+				else {
+					ALife::_GRAPH_ID id = ALife::_GRAPH_ID(id1);
+					tpGame->m_tALife.vfGraphVertexInfo(id);
+				}
+			}
+			else
+				Log("!ALife parameters are not loaded!");
+		}
+		else
+			Log("!Not a single player game!");
+	}
+};
+
 #endif
 //-----------------------------------------------------------------------
 class CCC_DemoRecord : public CConsoleCommand
@@ -442,6 +466,7 @@ BOOL APIENTRY DllMain( HANDLE hModule,
 		CMD1(CCC_ALifeEventInfo,	"al_ie"					);		// event info
 		CMD1(CCC_ALifeTaskInfo,		"al_it"					);		// task info
 		CMD1(CCC_ALifeSpawnInfo,	"al_is"					);		// spawn-point info
+		CMD1(CCC_ALifeGraphInfo,	"al_ig"					);		// spawn-point info
 #endif
 
 		// hud

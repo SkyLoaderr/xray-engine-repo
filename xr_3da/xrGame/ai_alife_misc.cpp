@@ -29,6 +29,11 @@ void CAI_ALife::vfChooseNextRoutePoint(CALifeMonsterAbstract	*tpALifeMonsterAbst
 		tpALifeMonsterAbstract->m_fDistanceFromPoint	= 0.0f;
 		CALifeHumanAbstract *tpALifeHumanAbstract = dynamic_cast<CALifeHumanAbstract *>(tpALifeMonsterAbstract);
 		if (tpALifeHumanAbstract) {
+			CALifeHuman *tpALifeHuman = dynamic_cast<CALifeHuman *>(tpALifeHumanAbstract);
+			if (tpALifeHuman && (tpALifeHuman->m_tTaskState == eTaskStateGoing) && bfCheckIfTaskCompleted(tpALifeHuman)) {
+				tpALifeHumanAbstract->m_tpaVertices.clear();
+				return;
+			}
 			if (tpALifeHumanAbstract->m_tpaVertices.size() > ++(tpALifeHumanAbstract->m_dwCurNode)) {
 				tpALifeHumanAbstract->m_tNextGraphID		= _GRAPH_ID(tpALifeHumanAbstract->m_tpaVertices[tpALifeHumanAbstract->m_dwCurNode]);
 				tpALifeHumanAbstract->m_fCurSpeed			= tpALifeHumanAbstract->m_fMinSpeed;
@@ -212,40 +217,22 @@ void CAI_ALife::vfCommunicateWithTrader(CALifeHuman *tpALifeHuman, CALifeHuman *
 	if (tpALifeHuman->m_tTaskState == eTaskStateReturningSuccess) {
 		TASK_PAIR_IT T = m_tTaskRegistry.m_tpMap.find(tpALifeHuman->m_tCurTask.tTaskID);
 		if (T != m_tTaskRegistry.m_tpMap.end()) {
-			STask &tCurTask = (*T).second;
-			OBJECT_IT	I = tpALifeHuman->m_tHumanParams.m_tpItemIDs.begin();
-			OBJECT_IT	E = tpALifeHuman->m_tHumanParams.m_tpItemIDs.end();
-			for ( ; I != E; I++) {
-				bool bOk = false;
-				switch (tCurTask.tTaskType) {
-					case eTaskTypeSearchForItemCL :
-					case eTaskTypeSearchForItemCG : {
-						bOk = m_tObjectRegistry.m_tppMap[*I]->m_tClassID == tCurTask.tClassID;
-						break;
-					}
-					case eTaskTypeSearchForItemOL :
-					case eTaskTypeSearchForItemOG : {
-						bOk = m_tObjectRegistry.m_tppMap[*I]->m_tObjectID == tCurTask.tObjectID;
-						break;
-					}
-				};
-				if (bOk) {
-					CALifeItem *tpALifeItem = dynamic_cast<CALifeItem *>(m_tObjectRegistry.m_tppMap[*I]);
-					if (tpTrader->m_tHumanParams.m_dwMoney >= tpALifeItem->m_dwCost) {
-						tpALifeHuman->m_tTaskState = eTaskStateNone;
-						tpTrader->m_tHumanParams.m_tpItemIDs.push_back(*I);
-						tpALifeHuman->m_tHumanParams.m_tpItemIDs.erase(I);
-						tpTrader->m_tHumanParams.m_fCumulativeItemMass += tpALifeItem->m_fMass;
-						tpALifeHuman->m_tHumanParams.m_fCumulativeItemMass -= tpALifeItem->m_fMass;
-						tpTrader->m_tHumanParams.m_dwMoney -= tpALifeItem->m_dwCost;
-						tpALifeHuman->m_tHumanParams.m_dwMoney += tpALifeItem->m_dwCost;
-						break;
-					}
+			OBJECT_IT	I;
+			if (bfCheckIfTaskCompleted(tpALifeHuman, I)) {
+				CALifeItem *tpALifeItem = dynamic_cast<CALifeItem *>(m_tObjectRegistry.m_tppMap[*I]);
+				if (tpTrader->m_tHumanParams.m_dwMoney >= tpALifeItem->m_dwCost) {
+					tpALifeHuman->m_tpaVertices.clear();
+					tpTrader->m_tHumanParams.m_tpItemIDs.push_back(*I);
+					tpALifeHuman->m_tHumanParams.m_tpItemIDs.erase(I);
+					tpTrader->m_tHumanParams.m_fCumulativeItemMass += tpALifeItem->m_fMass;
+					tpALifeHuman->m_tHumanParams.m_fCumulativeItemMass -= tpALifeItem->m_fMass;
+					tpTrader->m_tHumanParams.m_dwMoney -= tpALifeItem->m_dwCost;
+					tpALifeHuman->m_tHumanParams.m_dwMoney += tpALifeItem->m_dwCost;
+					m_tTaskRegistry.m_tpMap.erase(T);
+					tpTrader->m_tpTaskIDs.erase(lower_bound(tpTrader->m_tpTaskIDs.begin(),tpTrader->m_tpTaskIDs.end(),(*T).first));
+					tpALifeHuman->m_tpTaskIDs.erase(lower_bound(tpALifeHuman->m_tpTaskIDs.begin(),tpALifeHuman->m_tpTaskIDs.end(),(*T).first));
 				}
 			}
-			m_tTaskRegistry.m_tpMap.erase(T);
-			tpTrader->m_tpTaskIDs.erase(lower_bound(tpTrader->m_tpTaskIDs.begin(),tpTrader->m_tpTaskIDs.end(),(*T).first));
-			tpALifeHuman->m_tpTaskIDs.erase(lower_bound(tpALifeHuman->m_tpTaskIDs.begin(),tpALifeHuman->m_tpTaskIDs.end(),(*T).first));
 		}
 	}
 	// !!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!

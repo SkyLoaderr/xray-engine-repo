@@ -466,10 +466,8 @@ void CAI_ALife::Generate()
 //		vfCreateNewDynamicObject(k);
 //		I = m;	
 //	}
-	vfCreateNewDynamicObject	(m_tpSpawnPoints.begin() + ::Random.randI(m_tpSpawnPoints.size() - 2));
 	vfCreateNewDynamicObject	(m_tpSpawnPoints.end() - 2);
 	vfCreateNewDynamicObject	(m_tpSpawnPoints.end() - 1);
-	vfCreateNewTask				(dynamic_cast<CALifeHuman *>(m_tObjectRegistry.m_tppMap[2]));
 
 	m_tALifeHeader.dwVersion	= ALIFE_VERSION;
 	m_tALifeHeader.tTimeID		= 0;

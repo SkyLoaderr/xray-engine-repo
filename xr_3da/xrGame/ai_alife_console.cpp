@@ -342,10 +342,31 @@ void CAI_ALife::vfTaskInfo(_TASK_ID &tTaskID)
 	STask &tTask = (*it).second;
 	Msg("* Task information");
 	Msg("* Task  ID    : %d",tTask.tTaskID);
-	Msg("* Graph ID    : %d",tTask.tGraphID);
 	Msg("* Time  ID    : %d",tTask.tTimeID);
 	Msg("* Customer ID : %d",tTask.tCustomerID);
 	Msg("* Task type   : %d",tTask.tTaskType);
+	if (tTask.tTaskType == eTaskTypeSearchForItemOG) {
+		Msg("* Graph ID    : %d",tTask.tGraphID);
+		Msg("* Object ID   : %d",tTask.tObjectID);
+	}
+	else if (tTask.tTaskType == eTaskTypeSearchForItemOL) {
+		Msg("* Location ID : %d",tTask.tGraphID);
+		Msg("* Object ID   : %d",tTask.tLocationID);
+	}
+	else if (tTask.tTaskType == eTaskTypeSearchForItemCG) {
+		string64 tString;
+		memcpy(tString,&(tTask.tClassID),sizeof(tTask.tClassID));
+		tString[sizeof(tTask.tClassID)] = 0;
+		Msg("* Graph ID    : %d",tTask.tGraphID);
+		Msg("* Class ID    : %d (%s)",tTask.tClassID,tString);
+	}
+	else if (tTask.tTaskType == eTaskTypeSearchForItemCL) {
+		string64 tString;
+		memcpy(tString,&(tTask.tClassID),sizeof(tTask.tClassID));
+		tString[sizeof(tTask.tClassID)] = 0;
+		Msg("* Location ID : %d",tTask.tGraphID);
+		Msg("* Class ID    : %d (%s)",tTask.tClassID,tString);
+	}
 	string4096	S;
 	string16	S1;
 	S[0] = 0;
@@ -394,5 +415,31 @@ void CAI_ALife::vfSpawnPointInfo(_SPAWN_ID &tSpawnID)
 		strcat(S,itoa(*it,S1,10));
 	}
 	vfPrintLargeString(S,"RouteGraphPoints",tSpawnPoint.ucRoutePointCount,105);
+}
+
+void CAI_ALife::vfGraphVertexInfo(_GRAPH_ID &tGraphID)
+{
+	SGraphVertex &tGraphVertex = Level().AI.m_tpaGraph[tGraphID];
+	Msg("%s->Graph vertex information :",cName());
+	Msg("* Level point                : [%7.2f][%7.2f][%7.2f]",tGraphVertex.tPoint.x,tGraphVertex.tPoint.y,tGraphVertex.tPoint.z);
+	Msg("* Node ID                    : %d",tGraphVertex.dwNodeID);
+	Msg("* Location ID                : %d",tGraphVertex.tVertexType);
+	Msg("* Neighbours                 :");
+//	string4096		S;
+//	string16		S1;
+//	S[0] = 0;
+//	SGraphEdge	*tpaEdges = (SGraphEdge *)((BYTE *)Level().AI.m_tpaGraph + tGraphVertex.dwEdgeOffset);
+//	for (int i=0; i<(int)tGraphVertex.dwNeighbourCount; i++) {
+//		if (i)
+//			strcat(S,",");
+//		strcat(S,itoa(tpaEdges[i].dwVertexNumber,S1,10));
+//		strcat(S,"[");
+//		strcat(S,_gcvt(tpaEdges[i].fPathDistance,3,S1));
+//		strcat(S,"]");
+//	}
+//	vfPrintLargeString(S,"Neighbours",tGraphVertex.dwNeighbourCount,105);
+	SGraphEdge	*tpaEdges = (SGraphEdge *)((BYTE *)Level().AI.m_tpaGraph + tGraphVertex.dwEdgeOffset);
+	for (int i=0; i<(int)tGraphVertex.dwNeighbourCount; i++)
+		Msg("*   Vertex %d -> distance %7.2f",tpaEdges[i].dwVertexNumber, tpaEdges[i].fPathDistance);
 }
 #endif

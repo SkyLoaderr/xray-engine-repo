@@ -194,15 +194,44 @@ public:
 			if (tpALifeItem && !tpALifeItem->m_bAttached) {
 				STask						tTask;
 				tTask.tCustomerID			= tpTrader->m_tObjectID;
-				tTask.tGraphID				= tpALifeItem->m_tGraphID;
-				tTask.tClassID				= tpALifeItem->m_tClassID;
+				tTask.tLocationID			= Level().AI.m_tpaGraph[tpALifeItem->m_tGraphID].tVertexType;
+				tTask.tObjectID				= tpALifeItem->m_tObjectID;
 				tTask.tTimeID				= Level().timeServer();
-				tTask.tTaskType				= eTaskTypeSearchForItemCG;
+				tTask.tTaskType				= eTaskTypeSearchForItemOL;
 				m_tTaskRegistry.Add			(tTask);
 				tpTrader->m_tpTaskIDs.push_back(tTask.tTaskID);
 				break;
 			}
 		}
+	}
+
+	IC bool bfCheckIfTaskCompleted(CALifeHuman *tpALifeHuman, OBJECT_IT &I)
+	{
+		I = tpALifeHuman->m_tHumanParams.m_tpItemIDs.begin();
+		OBJECT_IT	E = tpALifeHuman->m_tHumanParams.m_tpItemIDs.end();
+		for ( ; I != E; I++) {
+			switch (tpALifeHuman->m_tCurTask.tTaskType) {
+				case eTaskTypeSearchForItemCL :
+				case eTaskTypeSearchForItemCG : {
+					if (m_tObjectRegistry.m_tppMap[*I]->m_tClassID == tpALifeHuman->m_tCurTask.tClassID)
+						return(true);
+					break;
+				}
+				case eTaskTypeSearchForItemOL :
+				case eTaskTypeSearchForItemOG : {
+					if (m_tObjectRegistry.m_tppMap[*I]->m_tObjectID == tpALifeHuman->m_tCurTask.tObjectID)
+						return(true);
+					break;
+				}
+			};
+		}
+		return(false);
+	}
+
+	IC bool bfCheckIfTaskCompleted(CALifeHuman *tpALifeHuman)
+	{
+		OBJECT_IT I;
+		return(bfCheckIfTaskCompleted(tpALifeHuman,I));
 	}
 
 	void							vfAttachItem			(CALifeHumanParams &tHumanParams, CALifeItem *tpALifeItem, _GRAPH_ID tGraphID);
@@ -247,5 +276,6 @@ public:
 			void					vfEventInfo				(_EVENT_ID &tEventID);
 			void					vfTaskInfo				(_TASK_ID &tTaskID);
 			void					vfSpawnPointInfo		(_SPAWN_ID &tSpawnID);
+			void					vfGraphVertexInfo		(_GRAPH_ID &tGraphID);
 #endif
 };
