@@ -27,7 +27,8 @@ enum
 };
 enum
 {
-	M_SPAWN_OBJECT_ACTIVE		= (1<<0),
+	M_SPAWN_OBJECT_LOCAL		= (1<<0),
+	M_SPAWN_OBJECT_ACTIVE		= (1<<1),
 
 	M_SPAWN_OBJECT_FORCEDWORD	= DWORD(-1)
 };
@@ -38,17 +39,13 @@ M_SPAWN
 	stringZ		Name_section;	// section in SYSTEM.LTX
 	stringZ		Name_replace;	// Name of EDITOR's object, user can change this
 
-	u8			g_team;			// user defined
-	u8			g_squad;		// user defined
-	u8			g_group;		// user defined
-
 	u8			o_Point;		// [0..0xFD] = NumberOfRespawnPoint 0xFF = AutoSelect, 0xFE = UseSupplied
 	vec3		o_Position;
 	vec3		o_Angle;
 
 	u16			server_id;
-	u8			local;
-
+	u16			flags;
+	
 	u16			data_size;
 	...
 
@@ -82,7 +79,10 @@ M_SPAWN
 	}
 	object
 	{
-		u16		flags;
+		u8			g_team;			// user defined
+		u8			g_squad;		// user defined
+		u8			g_group;		// user defined
+		
 	}
 
 	zone
