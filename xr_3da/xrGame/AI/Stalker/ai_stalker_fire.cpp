@@ -51,7 +51,18 @@ bool CAI_Stalker::bfCheckIfCanKillTarget(CEntity *tpEntity, Fvector target_pos, 
 	if (tpInventoryOwner) {
 		if (!tpInventoryOwner->m_inventory.ActiveItem() || !dynamic_cast<CWeapon*>(tpInventoryOwner->m_inventory.ActiveItem()) || !dynamic_cast<CWeapon*>(tpInventoryOwner->m_inventory.ActiveItem())->GetAmmoElapsed())
 			return(false);
-		return(getAI().bfTooSmallAngle(yaw1,yaw2,fSafetyAngle) && getAI().bfTooSmallAngle(pitch1,pitch2,fSafetyAngle));
+		if (!(getAI().bfTooSmallAngle(yaw1,yaw2,fSafetyAngle) && getAI().bfTooSmallAngle(pitch1,pitch2,fSafetyAngle)))
+			return(false);
+
+		setEnabled			(false);
+		Collide::ray_query	l_tRayQuery;
+		l_tRayQuery.O		=	NULL;
+		Fvector				l_tFireDirection;
+		l_tFireDirection.setHP(yaw1,pitch1);
+		l_tFireDirection.mul(-1.f);
+		g_pGameLevel->ObjectSpace.RayPick(target_pos, l_tFireDirection, fire_pos.distance_to(target_pos) + .5f, l_tRayQuery);
+		setEnabled			(true);
+		return				(dynamic_cast<CEntity*>(l_tRayQuery.O) == tpEntity);
 	}
 	else
 		return((tpEntity->Position().distance_to(target_pos) < 2.f) && getAI().bfTooSmallAngle(yaw1,yaw2,PI_DIV_2));

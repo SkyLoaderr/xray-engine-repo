@@ -45,6 +45,7 @@ private:
 	bool						A,B,C,D,E,F,G,H,I,J,K,L,M;
 	u32							m_dwLookChangedTime;
 	u32							m_dwBornTime;
+	bool						m_bCanFire;
 
 	// ALife members
 	CSE_ALifeSimulator			*m_tpALife;
@@ -62,14 +63,14 @@ private:
 	typedef svector<Fvector,MAX_SUSPICIOUS_NODE_COUNT>	SuspiciousForces;
 
 	// ref_sound
-	ref_sound					m_tpSoundStep[STALKER_SND_STEP_COUNT];
+	ref_sound				m_tpSoundStep[STALKER_SND_STEP_COUNT];
 	SOUND_VECTOR			m_tpSoundDie;
 	SOUND_VECTOR			m_tpSoundHit;
 	SOUND_VECTOR			m_tpSoundHumming;
 	SOUND_VECTOR			m_tpSoundAlarm;
 	SOUND_VECTOR			m_tpSoundSurrender;
 
-	ref_sound					*m_tpCurrentSound;
+	ref_sound				*m_tpCurrentSound;
 	bool					m_bPlayHumming;
 	
 	float					m_fTimeToStep;

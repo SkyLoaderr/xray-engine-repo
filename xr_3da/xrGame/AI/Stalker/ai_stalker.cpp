@@ -111,6 +111,7 @@ void CAI_Stalker::Init()
 	m_dwStartFireTime				= 0;
 
 	m_tTaskState					= eTaskStateChooseTask;
+	m_bCanFire						= true;
 }
 
 void CAI_Stalker::Die				()
