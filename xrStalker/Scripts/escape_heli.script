@@ -236,9 +236,7 @@ function update()
 
 	if ( state == state_after or
 	   actor:has_info( "tutorial_wounded_must_spawn" ) ) and
-	   actor:dont_has_info( "tutorial_wounded_start" ) and
-	   actor:dont_has_info( "tutorial_wounded_help" ) and
-	   actor:dont_has_info( "tutorial_wounded_die" )
+	   actor:dont_has_info( "tutorial_wounded_start" )
 	then
 --		local sim = alife()
 --		if sim then

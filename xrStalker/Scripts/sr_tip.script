@@ -22,20 +22,26 @@ function action_tip:update(delta)
 
 	local actor = db.actor
 
+	if self.object:inside(actor:position()) then
+		printf("inside!!!")
+		print_table(self.st.conditions)	
+		--printf("condlist %s", utils.to_str(xr_logic.pick_section_from_condlist(actor, nil, self.st.conditions.condlist)))
+		if self.st.conditions == nil or
+		   xr_logic.pick_section_from_condlist(actor, nil, self.st.conditions.condlist) ~= nil
+		then
+			printf("conds!!!")
+			if self.st.type == "tips" then
+				printf("send_tip!!! %s", self.st.info)
+				news_manager.send_tip( actor, self.st.info, nil, self.st.sender )
+			elseif self.st.type == "news" then
+				news_manager.send_news( actor, self.st.info )
+			end
+		end
+	end
+
 	if xr_logic.try_switch_to_another_section(self.object, self.st, actor) then
 		return
 	end	
-	
-	if self.object:inside( actor:position() ) and
-	   ( self.st.conditions == nil or
-	     xr_logic.pick_section_from_condlist( actor, nil, self.st.conditions.condlist ) ~= nil )
-	then
-		if self.st.type == "tips" then
-			news_manager.send_tip( actor, self.st.info, nil, self.st.sender )
-		elseif self.st.type == "news" then
-			news_manager.send_news( actor, self.st.info )
-		end
-	end
 end
 
 ---------------------------------------------------------------------------------------------------------------------

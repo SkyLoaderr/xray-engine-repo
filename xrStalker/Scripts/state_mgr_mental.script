@@ -73,6 +73,7 @@ function act_state_mgr_mental_free:initialize()
 end
 function act_state_mgr_mental_free:execute()
 	action_base.execute(self)
+	self.object:set_mental_state(anim.free)
 end
 function act_state_mgr_mental_free:finalize()
 	action_base.finalize(self)
@@ -88,6 +89,7 @@ function act_state_mgr_mental_danger:initialize()
 end
 function act_state_mgr_mental_danger:execute()
 	action_base.execute(self)
+	self.object:set_mental_state(anim.danger)
 end
 function act_state_mgr_mental_danger:finalize()
 	action_base.finalize(self)
@@ -103,6 +105,7 @@ function act_state_mgr_mental_panic:initialize()
 end
 function act_state_mgr_mental_panic:execute()
 	action_base.execute(self)
+	self.object:set_mental_state(anim.panic)
 end
 function act_state_mgr_mental_panic:finalize()
 	action_base.finalize(self)
