@@ -323,6 +323,66 @@ function transfer_medikit2 (player, wounded)
 end
 
 ------------------------------------------------------------------------------------
+-- Companion
+------------------------------------------------------------------------------------
+function companion_will_follow(npc, actor)
+	printf("_bp: dialogs: companion_will_follow: npc='%s', actor='%s'",
+		npc:name(), actor:name())
+	--if is_companion(npc, actor) then
+		-- Уже компаньен, больше не соглашаться
+	--	return false
+	--end
+	local st = db.storage[npc:id()]
+	if not st then
+		return false
+	end
+	if st.active_scheme then
+		return false
+	end
+	return true
+end
+
+function not_companion_will_follow(npc, actor)
+	printf("_bp: dialogs: not_companion_will_follow: npc='%s', actor='%s'",
+		npc:name(), actor:name())
+	return not companion_will_follow(npc, actor)
+end
+
+function companion_start_following(npc, actor)
+	printf("_bp: dialogs: companion_start_following: npc='%s', actor='%s'",
+		npc:name(), actor:name())
+	db.storage[npc:id()].companion = { enabled = true }
+end
+
+function companion_stop_following(npc, actor)
+	printf("_bp: dialogs: companion_stop_following: npc='%s', actor='%s'",
+		npc:name(), actor:name())
+	db.storage[npc:id()].companion = nil
+end
+
+function is_companion(actor, npc)
+	printf("_bp: dialogs: is_companion: npc='%s', actor='%s'",
+		npc:name(), actor:name())
+	local st = db.storage[npc:id()]
+	if not st then
+		return false
+	end
+	if not st.companion then
+		return false
+	end
+	if not st.companion.enabled then
+		return false
+	end
+	return true
+end
+
+function not_is_companion(actor, npc)
+	printf("_bp: dialogs: not_is_companion: npc='%s', actor='%s'",
+		npc:name(), actor:name())
+	return not is_companion(actor, npc)
+end
+
+------------------------------------------------------------------------------------
 -- escape factory combat
 ------------------------------------------------------------------------------------
 function dont_have_a_vodka (player, stalker)
