@@ -528,6 +528,21 @@ IC	float CLevelGraph::compute_square(float fAngle, float fAngleOfView, u32 dwNod
 	return(compute_square(fAngle, fAngleOfView,vertex(dwNodeID)));
 }
 
+IC	float CLevelGraph::vertex_cover(const CLevelGraph::CVertex *vertex) const
+{
+	float			cover = 0.f;
+	cover			+= square(NORMALIZE_NODE_COVER(vertex,0),NORMALIZE_NODE_COVER(vertex,1));
+	cover			+= square(NORMALIZE_NODE_COVER(vertex,1),NORMALIZE_NODE_COVER(vertex,2));
+	cover			+= square(NORMALIZE_NODE_COVER(vertex,2),NORMALIZE_NODE_COVER(vertex,3));
+	cover			+= square(NORMALIZE_NODE_COVER(vertex,3),NORMALIZE_NODE_COVER(vertex,0));
+	return			(cover);
+}
+
+IC	float CLevelGraph::vertex_cover(const u32 vertex_id) const
+{
+	return			(vertex_cover(vertex(vertex_id)));
+}
+
 IC	float CLevelGraph::cover_in_direction(float fAngle, float b0, float b1, float b2, float b3) const
 {
 	fAngle -= PI_DIV_2;

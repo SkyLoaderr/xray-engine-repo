@@ -162,6 +162,8 @@ public:
 	IC		float	compute_square				(float angle, float AOV, float b0, float b1, float b2, float b3) const;
 	IC		float	compute_square				(float angle, float AOV, const CVertex *vertex) const;
 	IC		float	compute_square				(float angle, float AOV, u32 dwNodeID) const;
+	IC		float	vertex_cover				(const CLevelGraph::CVertex *vertex) const;
+	IC		float	vertex_cover				(const u32 vertex_id) const;
 	IC		float	cover_in_direction			(float angle, float b0, float b1, float b2, float b3) const;
 	IC		float	cover_in_direction			(float angle, const CVertex *vertex) const;
 	IC		float	cover_in_direction			(float angle, u32 vertex_id) const;
