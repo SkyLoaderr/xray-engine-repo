@@ -39,14 +39,41 @@ void	game_sv_CS::OnRoundStart	()
 		Unlock	();
 	}
 
+	Lock	();
 	// Spawn "artifacts"
-	xrServerEntity*		E	=	spawn_begin	("artifact");												// create SE
-	xrSE_Actor*	A			=	(xrSE_Actor*) E;					
-	strcpy					(A->s_name_replace,get_option_s(options,"name","Player"));					// name
-	get_id(id_who)->team = A->s_team = u8(get_option_i(options,"team",AutoTeam()));						// team
-	A->s_flags				=	M_SPAWN_OBJECT_ACTIVE  | M_SPAWN_OBJECT_LOCAL | M_SPAWN_OBJECT_ASPLAYER;// flags
-	assign_RP				(A);
-	spawn_end				(A,id_who);
+	for(s32 i = 0; i < 3; i++) {
+		xrServerEntity*		E	=	spawn_begin	("m_mball");									// create SE
+		xrSE_MercuryBall*	A			=	(xrSE_MercuryBall*) E;					
+		A->s_flags				=	M_SPAWN_OBJECT_ACTIVE  | M_SPAWN_OBJECT_LOCAL;				// flags
+		vector<RPoint>&		rp	= rpoints[2];
+		RPoint&				r	= rp[::Random.randI(rp.size())];
+		A->o_Position.set	(r.P);
+		A->o_Angle.set		(r.A);
+		spawn_end			(A,0);
+	}
+	Unlock	();
+
+	// Respawn all players and some info
+	Lock	();
+	u32		cnt = get_count();
+	for		(u32 it=0; it<cnt; it++)	
+	{
+		// init
+		game_PlayerState*	ps	=	get_it	(it);
+		ps->kills				=	0;
+		ps->deaths				=	0;
+
+		// spawn
+		LPCSTR	options			=	get_name_it	(it);
+		xrServerEntity*		E	=	spawn_begin	("actor");													// create SE
+		xrSE_Actor*	A			=	(xrSE_Actor*) E;					
+		strcpy					(A->s_name_replace,get_option_s(options,"name","Player"));					// name
+		A->s_team				=	u8(ps->team);																// team
+		A->s_flags				=	M_SPAWN_OBJECT_ACTIVE  | M_SPAWN_OBJECT_LOCAL | M_SPAWN_OBJECT_ASPLAYER;// flags
+		assign_RP				(A);
+		spawn_end				(A,get_it_2_id(it));
+	}
+	Unlock	();
 }
 
 void	game_sv_CS::OnTeamScore		(u32 team)
