@@ -126,7 +126,7 @@ void CRender::Render	()
 			else
 			{
 				marker									++;
-				phase									= PHASE_SMAP_S;
+				phase									= PHASE_SMAP_D;
 
 				// calculate
 				LR.compute_xfs_1						(0, L);
@@ -134,7 +134,7 @@ void CRender::Render	()
 				LR.compute_xfs_2						(0, L);
 
 				// rendering
-				if (mapNormal.size())
+				if (mapNormal.size() || mapMatrix.size())
 				{
 					Target.phase_smap_spot				();
 					RCache.set_xform_world				(Fidentity);			// ???
