@@ -161,8 +161,10 @@ void CHOM::Render_DB			(CFrustum& base)
 	clip.CreateFromMatrix		(Device.mFullTransform,FRUSTUM_P_NEAR);
 	sPoly						src,dst;
 	u32		_frame				= Device.dwFrame	;
+#ifdef DEBUG
 	tris_in_frame				= xrc.r_count();
 	tris_in_frame_visible		= 0;
+#endif
 
 	// Perfrom selection, sorting, culling
 	for (; it!=end; it++)
@@ -187,7 +189,9 @@ void CHOM::Render_DB			(CFrustum& base)
 		if (0==P)		{ T.skip=next; continue; }
 
 		// XForm and Rasterize
+#ifdef DEBUG
 		tris_in_frame_visible	++;
+#endif
 		u32		pixels			= 0;
 		int		limit			= int(P->size())-1;
 		for (int v=1; v<limit; v++)	{
