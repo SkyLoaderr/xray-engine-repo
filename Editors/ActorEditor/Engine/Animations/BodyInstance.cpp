@@ -54,7 +54,7 @@ void CMotionDef::Load(CKinematics* P, CInifile* INI, LPCSTR  section, BOOL bCycl
 	power		= Quantize(INI->ReadFLOAT(section,"power"));
 	accrue		= Quantize(INI->ReadFLOAT(section,"accrue"));
 	falloff		= Quantize(INI->ReadFLOAT(section,"falloff"));
-	flags		|= INI->ReadBOOL(section,"stop@end")?esmStopAtEnd:0;
+	flags		= (INI->ReadBOOL(section,"stop@end")?esmStopAtEnd:0);
 
 	if (bCycle && (falloff>=accrue)) falloff = accrue-1;
 }

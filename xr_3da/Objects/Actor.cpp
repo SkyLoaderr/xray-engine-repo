@@ -451,6 +451,10 @@ void CActor::Update	(DWORD DT)
 
 	// 
 	clamp					(DT,0ul,100ul);
+	if (0==DT)				
+	{
+		Log("! !!!!!!!!!!!!!!!!!!!!!!!");
+	}
 	float	dt				= float(DT)/1000.f;
 	
 	// Check controls, create accel, prelimitary setup "mstate_real"

@@ -1,4 +1,5 @@
-	. 
+	+ TODO: Adaptive Texture Sorter
+	+ TODO: Weapons as 'native' objects
 	+ TODO: NET: Can't connect
 	+ TODO: Level-unload
 	+ TODO: ltx
