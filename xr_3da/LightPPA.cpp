@@ -111,8 +111,6 @@ void CLightPPA_Manager::Render()
 	D3D.attenuation0		= 1.f;
 	D3D.attenuation1		= 0;
 	D3D.attenuation2		= 0;
-	CHK_DX					(HW.pDevice->SetLight	(DE_LightID,DE.d3d()));
-	CHK_DX					(HW.pDevice->LightEnable(DE_LightID,TRUE));
 
 	Device.Shader.Set		(SH);
 	for (DWORD L=0; L<container.size(); L++)
@@ -127,6 +125,9 @@ void CLightPPA_Manager::Render()
 		// Setup D3D light
 		D3D.diffuse.mul_rgb	(PPL.color,1-alpha);
 		D3D.position.set	(PPL.sphere.P);
+		CHK_DX				(HW.pDevice->SetLight	(LID_HELPER,D3D.d3d()));
+		CHK_DX				(HW.pDevice->LightEnable(LID_HELPER,TRUE));
+
 
 		// Calculations and rendering
 		PPL.Render	(VS);
