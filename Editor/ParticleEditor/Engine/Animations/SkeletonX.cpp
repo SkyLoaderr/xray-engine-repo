@@ -22,6 +22,7 @@ void CSkeletonX::_Copy(CSkeletonX *B)
 	Parent			= NULL;
 	Stream			= B->Stream;
 	Vertices		= B->Vertices;
+	cache_DiscardID	= 0xffffffff;
 }
 void CSkeletonX_PM::Copy(CVisual *V) 
 {
@@ -51,22 +52,26 @@ void CSkeletonX_ST::Render	(float LOD)
 }
 void CSkeletonX::_Render	(DWORD vCount, DWORD pCount, IDirect3DIndexBuffer8* IB)
 {
-//	Parent->Calculate();
+	DWORD vOffset			= cache_vOffset;
 
-	DWORD vOffset;
+	if (!((cache_DiscardID==Stream->getDiscard()) && (vCount<=cache_vCount) ))
+	{
+		vertRender*	Dest	= (vertRender*)Stream->Lock(vCount,vOffset);
+		cache_DiscardID		= Stream->getDiscard();
+		cache_vCount		= vCount;
+		cache_vOffset		= vOffset;
+		
+		Device.Statistic.RenderDUMP_SKIN.Begin	();
+		PSGP.skin1W(
+			Dest,										// dest
+			Vertices,									// source
+			vCount,										// count
+			Parent->bone_instances						// bones
+			);
+		Device.Statistic.RenderDUMP_SKIN.End	();
+		Stream->Unlock			(vCount);
+	}
 
-	vertRender*	Dest = (vertRender*)Stream->Lock(vCount,vOffset);
-
-	Device.Statistic.RenderDUMP_SKIN.Begin	();
-	PSGP.skin1W(
-		Dest,										// dest
-		Vertices,									// source
-		vCount,										// count
-		Parent->bone_instances						// bones
-		);
-	Device.Statistic.RenderDUMP_SKIN.End	();
-
-	Stream->Unlock			(vCount);
 	Device.Primitive.Draw	(Stream,vCount,pCount,vOffset,IB);
 }
 //////////////////////////////////////////////////////////////////////

@@ -47,7 +47,10 @@ protected:
 	CKinematics*			Parent;			// setted up by parent
 	CVertexStream*			Stream;
 	vertBoned1W*			Vertices;		// shared
-
+	DWORD					cache_DiscardID;
+	DWORD					cache_vCount;
+	DWORD					cache_vOffset;
+	
 	void					_Copy			(CSkeletonX *V);
 	void					_Render			(DWORD vCount, DWORD pCount, IDirect3DIndexBuffer8* IB);
 	void					_Release		();
