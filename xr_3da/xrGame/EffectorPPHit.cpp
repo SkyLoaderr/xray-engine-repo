@@ -18,7 +18,7 @@ CEffectorPPHit::~CEffectorPPHit	()
 BOOL CEffectorPPHit::Process	(SPPInfo& pp)
 {
 	fTime			+= fSpeed*Device.fTimeDelta;
-	pp.duality.h	+= _sin(fTime);
-	pp.duality.v	+= _cos(fTime);
+	//pp.duality.h	+= _sin(fTime);
+	//pp.duality.v	+= _cos(fTime);
 	return TRUE;
 }
