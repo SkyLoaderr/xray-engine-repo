@@ -10,6 +10,8 @@ function evaluator_state_mgr_idle:__init(name, state_manager) super (nil, name)
 	self.st = state_manager
 end
 function evaluator_state_mgr_idle:evaluate()
+	if self.st.combat == true then return true end
+
 	return self.st.target_state == "idle" and 
 		   not self.st.planner:evaluator(self.st.properties["locked"]):evaluate() and
 		   self.st.planner:evaluator(self.st.properties["movement"]):evaluate()	and
@@ -41,6 +43,9 @@ function act_state_mgr_to_idle:execute()
 	action_base.execute(self)
 end
 function act_state_mgr_to_idle:finalize()
+	if self.object:best_enemy() ~= nil then
+		self.st.combat = true
+	end
 	action_base.finalize(self)
 end
 
@@ -50,9 +55,13 @@ end
 --'-------------------------------------------------------------------------------------
 --' Закончил ли менеджер свою работу
 class "eva_state_mgr_end" (property_evaluator)
-function eva_state_mgr_end:__init(name) super (nil, name)
+function eva_state_mgr_end:__init(name, st) super (nil, name)
+	self.st = st
 end
 function eva_state_mgr_end:evaluate()
+	if self.object:best_enemy() == nil then
+		self.st.combat = false
+	end
 	return false
 end
 
@@ -524,6 +533,7 @@ function state_manager:__init(npc)
 	self.target_state = "idle"
 	self.current_direction = nil
 	self.target_position = nil
+	self.combat = false
 end
 function state_manager:set_state(state_name, callback, timeout, target)
 	printf("Set Stated called: %s for %s", state_name, self.npc:name())
