@@ -20,7 +20,7 @@ u32 CAI_Space::q_Node(u32 PrevNode, const Fvector& BasePos, bool bShortSearch)
 		
 		// Perform neibourhood search
 		CAI_NodeEvaluatorTemplate<aiSearchRange | aiInsideNode> tSearch;
-		tSearch.m_fSearchRange = m_header.size*3;
+		tSearch.m_fSearchRange = m_header.size*12;
 		tSearch.m_dwStartNode = PrevNode;
 		tSearch.m_tStartPosition = BasePos;
 		tSearch.vfShallowGraphSearch(getAI().q_mark_bit);
