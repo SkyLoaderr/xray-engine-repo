@@ -14,7 +14,7 @@ function proceed(actor)
 	then
 		actor:give_info_portion("tutorial_end")
 		actor:set_task_state(task.completed, "tutorial_help_wounded", 0)
-		news_manager.send_news(actor, "escape_stalker_helped")
+		news_manager.send_news(actor, "escape_stalker_helped", 5)
 	end
 
 	if actor:has_info("tutorial_wounded_die") and
@@ -22,7 +22,7 @@ function proceed(actor)
 	then
 		actor:give_info_portion("tutorial_end")
 		actor:set_task_state(task.fail, "tutorial_help_wounded", 0)
-		news_manager.send_news(actor, "escape_stalker_killed")
+		news_manager.send_news(actor, "escape_stalker_killed", 5)
 	end
 
 

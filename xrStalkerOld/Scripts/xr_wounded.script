@@ -465,7 +465,7 @@ function action_stand:execute ()
           self.stage = 2
           local act = level.actor ()
           if act ~= nil and  act:alive () == true and self.object:relation (act) ~= game_object.enemy then
-             level.map_remove_object_icon (self.object)
+             this.hide_yourself(self.object)
           end 
        else
           return

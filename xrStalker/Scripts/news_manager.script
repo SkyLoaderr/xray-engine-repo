@@ -2,44 +2,49 @@
 news = {
 	tips_esc_trader_about_pda = [[characters_voice\human_01\scenario\trader\trader_tutorial_contacts_1]],
 	escape_stalker_killed	  = [[characters_voice\human_01\scenario\trader\trader_tutorial_end_2]],
-	tutorial_flash_anomaly_alarm = [[characters_voice\human_01\scenario\trader\trader_tutorial_anomalies_1]]
+	tutorial_flash_anomaly_alarm = [[characters_voice\human_01\scenario\trader\trader_tutorial_anomalies_1]],
+	escape_stalker_helped = [[characters_voice\human_01\scenario\trader\trader_tutorial_end_1]]
 }
 
 
-function send_news(actor, news_id)
+function send_news(actor, news_id, timeout)
 	if actor == nil or news_id == nil then return false end
-	
+
+	if timeout == nil then timeout = 0 end
+		
 	if news[news_id] ~= nil then
 		--' Играем звук забитый
 		local snd_obj = sound_object(news[news_id])
 		if snd_obj ~= nil then
-			snd_obj:play(actor, 0, sound_object.s2d)
+			snd_obj:play(actor, timeout, sound_object.s2d)
 		end		
 	end
 	--' Играем дефолтный звук
 	local snd_obj = sound_object([[device\pda\pda_news]])
 	if snd_obj ~= nil then
-		snd_obj:play(actor, 0, sound_object.s2d)
+		snd_obj:play(actor, timeout, sound_object.s2d)
 	end
-	actor:give_game_news(news_id, "ui\\ui_icons_task", 0,100,50,50 ,0)
+	actor:give_game_news(news_id, "ui\\ui_icons_task", 0,100,50,50 ,timeout*1000)
 	actor:set_news_show_time(news_id, 5000)
 end
-function send_tip(actor, news_id)
+function send_tip(actor, news_id, timeout)
 	if actor == nil or news_id == nil then return false end
 	
+	if timeout == nil then timeout = 0 end
+			
 	if news[news_id] ~= nil then
 		--' Играем звук забитый
 		local snd_obj = sound_object(news[news_id])
 		if snd_obj ~= nil then
-			snd_obj:play(actor, 0, sound_object.s2d)
+			snd_obj:play(actor, timeout, sound_object.s2d)
 		end
 	end
 	--' Играем дефолтный звук
 	local snd_obj = sound_object([[device\pda\pda_tip]])
 	if snd_obj ~= nil then
-		snd_obj:play(actor, 0, sound_object.s2d)
+		snd_obj:play(actor, timeout, sound_object.s2d)
 	end
-	actor:give_game_news(news_id, "ui\\ui_icons_task", 50,100,50,50, 0)
+	actor:give_game_news(news_id, "ui\\ui_icons_task", 50,100,50,50, timeout*1000)
 	actor:set_news_show_time(news_id, 5000)	
 end
 function send_help(actor)
