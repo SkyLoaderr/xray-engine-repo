@@ -77,6 +77,7 @@ void CGameObject::Sector_Detect	()
 
 void CGameObject::OnVisible	()
 {
+	CObject::OnVisible		();
 	float	l_f		= Device.fTimeDelta*fLightSmoothFactor;
 	float	l_i		= 1.f-l_f;
 	float&	LL		= AI_Lighting;
