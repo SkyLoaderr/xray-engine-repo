@@ -269,11 +269,11 @@ void CAI_Biting::SetPathParams(u32 dest_vertex_id, const Fvector &dest_pos)
 	set_dest_position(dest_pos);
 	set_path_type (CMovementManager::ePathTypeLevelPath);
 	
-	SetupVelocityMasks();
+	SetupVelocityMasks(false);
 }
 
 
-void CAI_Biting::SetupVelocityMasks()
+void CAI_Biting::SetupVelocityMasks(bool force_real_speed)
 {
 	bool bEnablePath = true;
 	u32 vel_mask = 0;
@@ -315,6 +315,8 @@ void CAI_Biting::SetupVelocityMasks()
 	case ACT_JUMP:
 		break;
 	}
+	
+	if (force_real_speed) vel_mask = des_mask;
 
 	if (bEnablePath) {
 		set_velocity_mask(vel_mask);	
@@ -363,6 +365,6 @@ void CAI_Biting::WalkNextGraphPoint()
 	set_path_type		(CMovementManager::ePathTypeGamePath);
 	set_selection_type	(CMovementManager::eSelectionTypeRandomBranching);
 
-	SetupVelocityMasks();
+	SetupVelocityMasks(false);
 }
 

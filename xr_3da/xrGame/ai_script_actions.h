@@ -133,6 +133,7 @@ public:
 	bool							m_bRandom;
 	EInputKeys						m_tInputKeys;
 	MonsterSpace::EActState			m_tActState;
+	MonsterSpace::EActTypeEx		m_tActTypeEx;
 
 							CMovementAction		()
 	{
@@ -195,23 +196,26 @@ public:
 		SetInputKeys		(tInputKeys);
 		SetSpeed			(fSpeed);
 	}
-							CMovementAction		(MonsterSpace::EActState tActState, const Fvector &tPosition)
+							CMovementAction		(MonsterSpace::EActState tActState, MonsterSpace::EActTypeEx type_ex, const Fvector &tPosition)
 	{
 		SetAct				(tActState);
 		SetPosition			(tPosition);
+		m_tActTypeEx		= type_ex;
 	}
-							CMovementAction		(MonsterSpace::EActState tActState, const CPatrolPathParams &tPatrolPathParams)
+							CMovementAction		(MonsterSpace::EActState tActState, MonsterSpace::EActTypeEx type_ex, const CPatrolPathParams &tPatrolPathParams)
 	{
 		SetAct				(tActState);
 		SetPatrolPath		(tPatrolPathParams.m_path,tPatrolPathParams.m_path_name);
 		SetPatrolStart		(tPatrolPathParams.m_tPatrolPathStart);
 		SetPatrolStop		(tPatrolPathParams.m_tPatrolPathStop);
 		SetPatrolRandom		(tPatrolPathParams.m_bRandom);
+		m_tActTypeEx		= type_ex;
 	}
-							CMovementAction		(MonsterSpace::EActState tActState, CLuaGameObject *tpObjectToGo)
+							CMovementAction		(MonsterSpace::EActState tActState, MonsterSpace::EActTypeEx type_ex, CLuaGameObject *tpObjectToGo)
 	{
 		SetAct				(tActState);
 		SetObjectToGo		(tpObjectToGo);
+		m_tActTypeEx		= type_ex;
 	}
 
 

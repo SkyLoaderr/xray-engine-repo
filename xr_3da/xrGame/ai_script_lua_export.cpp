@@ -426,6 +426,11 @@ void Script::vfExportActions(CLuaVirtualMachine *tpLuaVirtualMachine)
 				value("act_look_around",				int(MonsterSpace::eActLookAround)),
 				value("act_jump",						int(MonsterSpace::eActJump))
 			]
+			.enum_("act_type")
+			[
+				value("default",						int(MonsterSpace::eAT_Default)),
+				value("force_type",						int(MonsterSpace::eAT_ForceMovementType))
+			]
 
 			.def(								constructor<>())
 			.def(								constructor<const CMovementAction::EInputKeys>())
@@ -436,9 +441,9 @@ void Script::vfExportActions(CLuaVirtualMachine *tpLuaVirtualMachine)
 			.def(								constructor<MonsterSpace::EBodyState,MonsterSpace::EMovementType,CDetailPathManager::EDetailPathType,const CPatrolPathParams &,float>())
 			.def(								constructor<MonsterSpace::EBodyState,MonsterSpace::EMovementType,CDetailPathManager::EDetailPathType,const Fvector &>())
 			.def(								constructor<MonsterSpace::EBodyState,MonsterSpace::EMovementType,CDetailPathManager::EDetailPathType,const Fvector &,float>())
-			.def(								constructor<MonsterSpace::EActState,const Fvector &>())
-			.def(								constructor<MonsterSpace::EActState,const CPatrolPathParams &>())
-			.def(								constructor<MonsterSpace::EActState,CLuaGameObject*>())
+			.def(								constructor<MonsterSpace::EActState,MonsterSpace::EActTypeEx,const Fvector &>())
+			.def(								constructor<MonsterSpace::EActState,MonsterSpace::EActTypeEx,const CPatrolPathParams &>())
+			.def(								constructor<MonsterSpace::EActState,MonsterSpace::EActTypeEx,CLuaGameObject*>())
 			.def(								constructor<const Fvector &,float>())
 			.def("body",						&CMovementAction::SetBodyState)
 			.def("move",						&CMovementAction::SetMovementType)

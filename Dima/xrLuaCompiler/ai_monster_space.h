@@ -115,4 +115,10 @@ namespace MonsterSpace {
 		eActJump,
 		eActNone	 = u32(-1),
 	};
+	
+	enum EActTypeEx {
+		eAT_Default				= u32(0),
+		eAT_ForceMovementType,	
+		eAT_None				= u32(-1),
+	};
 };

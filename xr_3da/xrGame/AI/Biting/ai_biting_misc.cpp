@@ -178,12 +178,12 @@ bool CAI_Biting::bfAssignMovement (CEntityAction *tpEntityAction)
 	MotionMan.m_tAction = EAction(l_tMovementAction.m_tActState);
 
 	// pre-update path parameters
-	enable_movement(true);
-	CLevelLocationSelector::set_evaluator(0);
-	CDetailPathManager::set_path_type(eDetailPathTypeSmooth);
-	b_try_min_time = ((MotionMan.m_tAction == ACT_RUN) ? false : true);
-	CDetailPathManager::set_try_min_time(b_try_min_time);	
-	SetupVelocityMasks();
+	enable_movement							(true);
+	CLevelLocationSelector::set_evaluator	(0);
+	CDetailPathManager::set_path_type		(eDetailPathTypeSmooth);
+	CDetailPathManager::set_try_min_time	(true);	
+
+	SetupVelocityMasks(l_tMovementAction.m_tActTypeEx == eAT_ForceMovementType);
 	
 	update_path();
 	

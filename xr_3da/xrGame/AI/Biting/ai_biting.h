@@ -214,7 +214,7 @@ public:
 			void			PreprocessAction				();
 
 			bool			IsObstacle						(TTime time);
-			void			SetupVelocityMasks				();
+			void			SetupVelocityMasks				(bool force_real_speed);
 
 
 	// Other
