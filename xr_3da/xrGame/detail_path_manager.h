@@ -60,7 +60,6 @@ private:
 	xr_vector<u32>								m_tpaNodes;
 
 	friend class CScriptMonster;
-	friend class CMotionManager;
 
 			void	build_smooth_path		(const xr_vector<u32> &level_path, u32 intermediate_index);
 			void	build_dodge_path		(const xr_vector<u32> &level_path, u32 intermediate_index);
