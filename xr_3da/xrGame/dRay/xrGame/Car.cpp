@@ -176,7 +176,7 @@ void	CCar::UpdateCL				( )
 	//	Log("UpdateCL",Device.dwFrame);
 	//XFORM().set(m_pPhysicsShell->mXFORM);
 	m_pPhysicsShell->InterpolateGlobalTransform(&XFORM());
-
+	
 	Fvector lin_vel;
 	m_pPhysicsShell->get_LinearVel(lin_vel);
 	// Sound

@@ -15,7 +15,7 @@ public:
 	CPhysicsShellHolder							();
 
 
-	virtual CPhysicsShell	*&PPhysicsShell		()		
+	IC CPhysicsShell	*&PPhysicsShell				()		
 	{
 		return m_pPhysicsShell;
 	}

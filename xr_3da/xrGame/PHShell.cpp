@@ -59,8 +59,10 @@ void CPHShell::EnableObject()
 }
 void CPHShell::DisableObject()
 {
+	InterpolateGlobalTransform(&mXFORM);
 	CPHObject::deactivate();
 	if(m_spliter_holder)m_spliter_holder->Deactivate();
+	
 }
 void CPHShell::Disable()
 {
@@ -930,6 +932,8 @@ void CPHShell::UpdateRoot()
 
 void CPHShell::InterpolateGlobalTransform(Fmatrix* m)
 {
+	
+	if(!CPHObject::is_active()) return;
 	(*elements.begin())->InterpolateGlobalTransform(m);
 	m->mulB_43	(m_object_in_root);
 	

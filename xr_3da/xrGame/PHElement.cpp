@@ -781,7 +781,7 @@ void CPHElement::BonesCallBack(CBoneInstance* B)
 	if(push_untill)//temp_for_push_out||(!temp_for_push_out&&object_contact_callback)
 		if(push_untill<Device.dwTimeGlobal) unset_Pushout();
 
-
+	if( !m_shell->is_active() && !bUpdate) return;
 
 	if(!m_parent_element)
 	{
@@ -790,7 +790,7 @@ void CPHElement::BonesCallBack(CBoneInstance* B)
 		VERIFY(_valid(m_shell->mXFORM));
 	}
 	VERIFY2(!fis_zero(DET((B->mTransform))),"Bones callback returns 0 matrix");
-	if( !m_shell->is_active() && !bUpdate) return;
+
 	
 	{
 		InterpolateGlobalTransform(&mXFORM);
