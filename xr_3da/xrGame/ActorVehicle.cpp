@@ -29,8 +29,8 @@ void CActor::attach_Vehicle(CCar* vehicle)
 	V->LL_GetInstance(shoulder_bone).set_callback	(NULL,NULL);
 	V->LL_GetInstance(head_bone).set_callback		(NULL,NULL);
 	ph_Movement.DestroyCharacter();
-	PIItem iitem=m_inventory.ActiveItem();
-	if(iitem)iitem->m_showHUD=false;
+	//PIItem iitem=m_inventory.ActiveItem();
+	//if(iitem)iitem->m_showHUD=false;
 	setVisible(true);
 }
 

@@ -22,7 +22,7 @@ public:
 
 	virtual void feel_touch_new(CObject* O);
 
-	void Explode(const Fvector &normal);
+	void Explode(const Fvector &pos, const Fvector &normal);
 	virtual void FragWallmark(const Fvector& vDir, const Fvector &vEnd, Collide::ray_query& R);
 
 	Fvector m_pos, m_vel;

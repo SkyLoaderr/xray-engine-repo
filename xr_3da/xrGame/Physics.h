@@ -262,6 +262,7 @@ public:
 /////////////////////////////////////////////////////////////////////////////
 static Shader*			hWallmark;
 ContactCallbackFun*			contact_callback;
+ObjectContactCallbackFun*	object_contact_callback;
 ////////////////////////////
 private:
 	void			create_Sphere				(const Fsphere&		V);
@@ -297,6 +298,7 @@ public:
 
 	virtual void			set_ObjectContactCallback(ObjectContactCallbackFun* callback);
 	virtual void			set_PhysicsRefObject	 (CPhysicsRefObject* ref_object);
+	virtual void			get_LinearVel			 (Fvector& velocity);
 
 	void			SetShell						(CPHShell* p){m_shell=p;}
 	void			SetPhObjectInGeomData			(CPHObject* O);
@@ -314,8 +316,10 @@ public:
 	void			SetTransform					(const Fmatrix& m0);
 	//////////////////////////////////////////////////////////////////////////////////////////////////////////
 	/////////////////////////////////////////////////////////////////////////////////////////////////////////
-	virtual void			SetMaterial				(u32 m){ul_material=m;}
-	virtual void			SetMaterial				(LPCSTR m){ul_material=GMLib.GetMaterialIdx(m);}
+	virtual void			SetMaterial				(u32 m);
+
+	virtual void			SetMaterial				(LPCSTR m){SetMaterial(GMLib.GetMaterialIdx(m));}
+
 	virtual void			Activate				(const Fmatrix& m0, float dt01, const Fmatrix& m2,bool disable=false);
 	virtual void			Activate				(const Fmatrix &transform,const Fvector& lin_vel,const Fvector& ang_vel,bool disable=false);
 	virtual void			Activate				(bool place_current_forms=false,bool disable=false);
@@ -338,6 +342,7 @@ public:
 	CPHElement(dSpaceID a_space){ 
 	///	if(!hWallmark)hWallmark	= Device.Shader.Create("effects\\wallmark", "wallmarks\\wallmark_default");
 		contact_callback=ContactShotMark;
+		object_contact_callback=NULL;
 		m_space=a_space;
 		m_body=NULL;
 		bActive=false;
@@ -529,10 +534,12 @@ public:
 														for(i=joints.begin();i!=joints.end();i++) 
 															(*i)->SetForceAndVelocity(force);
 														}
-	virtual void			set_ContactCallback		(ContactCallbackFun* callback)				;
-	virtual void			set_ObjectContactCallback(ObjectContactCallbackFun* callback);
-	virtual void			set_PhysicsRefObject	 (CPhysicsRefObject* ref_object);
-
+	virtual void			set_ContactCallback		  (ContactCallbackFun* callback)				;
+	virtual void			set_ObjectContactCallback (ObjectContactCallbackFun* callback);
+	virtual void			set_PhysicsRefObject	  (CPhysicsRefObject* ref_object);
+	virtual void			get_LinearVel			  (Fvector& velocity);
+	virtual void			SetMaterial				  (u32 m);
+	virtual void			SetMaterial				  (LPCSTR m);
 	virtual void			Enable					();
 
 	virtual	void PhDataUpdate(dReal step);

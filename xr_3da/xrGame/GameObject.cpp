@@ -223,6 +223,39 @@ f32 CGameObject::ExplosionEffect(const Fvector &expl_centre, const f32 expl_radi
 	return 1.f;
 }
 
+void CGameObject::PHSetMaterial(u32 m)
+{
+	if(m_pPhysicsShell)
+		m_pPhysicsShell->SetMaterial(m);
+}
+
+void CGameObject::PHSetMaterial(LPCSTR m)
+{
+	if(m_pPhysicsShell)
+		m_pPhysicsShell->SetMaterial(m);
+}
+
+void CGameObject::PHGetLinearVell		(Fvector& velocity)
+{
+if(!m_pPhysicsShell)
+{
+	velocity.set(0,0,0);
+	return;
+}
+m_pPhysicsShell->get_LinearVel(velocity);
+
+}
+
+void __stdcall PushOutCallback(bool& do_colide,dContact& c);
+
+void CGameObject::OnH_B_Independent()
+{
+	if(m_pPhysicsShell)
+		m_pPhysicsShell->set_ObjectContactCallback(PushOutCallback);
+		//m_pPhysicsShell->SetMaterial("objects\\soft_object");
+
+	inherited::OnH_B_Independent();
+}
 #ifdef DEBUG
 void CGameObject::OnRender()
 {

@@ -1,9 +1,16 @@
+#pragma once
+
+typedef void __stdcall BoneCallbackFun(CBoneInstance* B);
+typedef  void __stdcall ContactCallbackFun(CDB::TRI* T,dContactGeom* c);
+typedef	 void __stdcall ObjectContactCallbackFun(bool& do_colide,dContact& c);
+struct Fcylinder;
 #include "StdAfx.h"
 #include "PHDynamicData.h"
 #include "Physics.h"
 #include "tri-colliderknoopc/dTriList.h"
-//#include "..\ode\src\collision_kernel.h"
-//#include <..\ode\src\joint.h>
+#include "..\ode\src\collision_kernel.h"
+#include <..\ode\src\joint.h>
+#include <..\ode\src\objects.h>
 //#include "dRay/include/dRay.h"
 #include "ExtendedGeom.h"
 union dInfBytes dInfinityValue = {{0,0,0x80,0x7f}};
@@ -756,8 +763,8 @@ dContact contacts[N];
 	
 		n = dCollide(o1, o2, N, &contacts[0].geom, sizeof(dContact));	
 		
-	if(n>N)
-		n=N;
+	if(n>N-1)
+		n=N-1;
 	ULONG i;
 
 
@@ -1011,6 +1018,7 @@ void CPHElement::			create_Box	(const Fobb&		V){
 														dGeomCreateUserData(geom);
 														dGeomGetUserData(geom)->material=ul_material;
 														if(contact_callback)dGeomUserDataSetContactCallback(geom,contact_callback);
+														if(object_contact_callback)dGeomUserDataSetObjectContactCallback(geom,object_contact_callback);
 															}
 														else{
 													  geom=dCreateBox(0,
@@ -1041,7 +1049,7 @@ void CPHElement::			create_Box	(const Fobb&		V){
 														dGeomGetUserData(geom)->material=ul_material;
 
 														if(contact_callback)dGeomUserDataSetContactCallback(geom,contact_callback);
-														
+														if(object_contact_callback)dGeomUserDataSetObjectContactCallback(geom,object_contact_callback);
 														}
 
 														
@@ -1074,6 +1082,7 @@ void CPHElement::			create_Sphere	(const Fsphere&	V){
 														//dGeomGetUserData(geom)->material=GMLib.GetMaterialIdx("box_default");
 														dGeomGetUserData(geom)->material=0;
 														if(contact_callback)dGeomUserDataSetContactCallback(geom,contact_callback);
+														if(object_contact_callback)dGeomUserDataSetObjectContactCallback(geom,object_contact_callback);
 														}
 														else
 														{
@@ -1088,6 +1097,7 @@ void CPHElement::			create_Sphere	(const Fsphere&	V){
 														//dGeomGetUserData(geom)->material=GMLib.GetMaterialIdx("box_default");
 														dGeomGetUserData(geom)->material=0;
 														if(contact_callback)dGeomUserDataSetContactCallback(geom,contact_callback);
+														if(object_contact_callback)dGeomUserDataSetObjectContactCallback(geom,object_contact_callback);
 														}
 														};
 void CPHElement::add_Cylinder(const Fcylinder& V)
@@ -1134,6 +1144,7 @@ void CPHElement::create_Cylinder(const Fcylinder& V)
 				dGeomCreateUserData(geom);
 				dGeomGetUserData(geom)->material=ul_material;
 				if(contact_callback)dGeomUserDataSetContactCallback(geom,contact_callback);
+				if(object_contact_callback)dGeomUserDataSetObjectContactCallback(geom,object_contact_callback);
 			}
 		else{
 				geom=dCreateCylinder
@@ -1166,6 +1177,7 @@ void CPHElement::create_Cylinder(const Fcylinder& V)
 			dGeomGetUserData(geom)->material=ul_material;
 
 			if(contact_callback)dGeomUserDataSetContactCallback(geom,contact_callback);
+			if(object_contact_callback)dGeomUserDataSetObjectContactCallback(geom,object_contact_callback);
 
 		}
 }
@@ -3117,9 +3129,9 @@ if(!bActive)
 
 void CPHElement::set_ContactCallback(ContactCallbackFun* callback)
 {
+contact_callback=callback;
 if(!bActive)
 	{
-	contact_callback=callback;
 	return;
 	}
 	vector<dGeomID>::iterator i;
@@ -3154,6 +3166,7 @@ void CPHShell::set_PhysicsRefObject	 (CPhysicsRefObject* ref_object)
 
 void CPHElement::set_ObjectContactCallback(ObjectContactCallbackFun* callback)
 {
+	object_contact_callback= callback;
 	if(!bActive)
 	{
 		return;
@@ -3254,4 +3267,47 @@ if(!bActive) return;
 vector<CPHElement*>::iterator i;
 for(i=elements.begin();i!=elements.end();i++ )
 		(*i)->SetPhObjectInGeomData((CPHObject*)this);
+}
+
+void CPHElement::SetMaterial(u32 m)
+{
+	ul_material=m;
+	if(!bActive) return;
+	vector<dGeomID>::iterator i;
+	for(i=m_geoms.begin();i!=m_geoms.end();i++)
+					dGeomGetUserData(*i)->material=m;
+}
+
+void CPHShell::SetMaterial(LPCSTR m)
+{
+	vector<CPHElement*>::iterator i;
+	for(i=elements.begin();i!=elements.end();i++)
+	{
+		(*i)->SetMaterial(m);
+	}
+}
+
+void CPHShell::SetMaterial(u32 m)
+{
+	vector<CPHElement*>::iterator i;
+	for(i=elements.begin();i!=elements.end();i++)
+	{
+		(*i)->SetMaterial(m);
+	}
+}
+
+void CPHElement::get_LinearVel(Fvector& velocity)
+{
+	if(!bActive)
+	{
+		velocity.set(0,0,0);
+		return;
+	}
+	Memory.mem_copy(&velocity,dBodyGetLinearVel(m_body),sizeof(Fvector));
+}
+
+void CPHShell::get_LinearVel(Fvector& velocity)
+{
+
+(*elements.begin())->get_LinearVel(velocity);
 }

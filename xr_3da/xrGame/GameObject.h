@@ -41,6 +41,11 @@ public:
 	virtual void			UpdateCL			();
 	
 	virtual	void			Hit					(float P, Fvector &dir,	CObject* who, s16 element,Fvector p_in_object_space, float impulse);
+	virtual void			OnH_B_Independent	();
+	virtual void			PHGetLinearVell		(Fvector& velocity);
+	virtual void			PHSetMaterial		(LPCSTR m);
+	virtual void			PHSetMaterial		(u32 m);
+
 
 	virtual bool			IsVisibleForZones() { return true; }
 

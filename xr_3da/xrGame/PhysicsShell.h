@@ -35,7 +35,10 @@ public:
 	virtual void			set_ContactCallback		(ContactCallbackFun* callback)				= 0;
 	virtual void			set_ObjectContactCallback(ObjectContactCallbackFun* callback)		= 0;
 	virtual void			set_PhysicsRefObject	 (CPhysicsRefObject* ref_object)			= 0;
+	virtual void			get_LinearVel			 (Fvector& velocity)						= 0;
 	
+	virtual void			SetMaterial				(u32 m)										= 0;
+	virtual void			SetMaterial				(LPCSTR m)									= 0;
 	virtual ~CPhysicsBase	()																	{};
 };
 
@@ -50,9 +53,9 @@ public:
 	virtual	void			add_Box					(const Fobb&		V)							= 0;
 	virtual	void			add_Cylinder			(const Fcylinder&	V)							= 0;
 	virtual	void			set_ParentElement		(CPhysicsElement* p)							= 0;
-	virtual void			SetMaterial				(u32 m)											= 0;
-	virtual void			SetMaterial				(LPCSTR m)										= 0;
+
 	virtual void			setInertia				(const Fmatrix& M)								= 0;
+
 	virtual ~CPhysicsElement	()																	{};
 };
 

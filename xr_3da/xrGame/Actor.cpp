@@ -920,7 +920,7 @@ void CActor::OnVisible	()
 
 	//CWeapon* W				= Weapons->ActiveWeapon();
 	//CWeapon *W = dynamic_cast<CWeapon*>(m_inventory.ActiveItem()); if(W) W->OnVisible();
-	if(m_inventory.ActiveItem()) m_inventory.ActiveItem()->OnVisible();
+	if(m_inventory.ActiveItem()&&!m_vehicle) m_inventory.ActiveItem()->OnVisible();
 }
 
 void CActor::g_cl_ValidateMState(float dt, u32 mstate_wf)
@@ -1231,7 +1231,8 @@ void CActor::OnHUDDraw	(CCustomHUD* hud)
 	//if (W)				W->OnVisible		();
 	//CWeapon *W = dynamic_cast<CWeapon*>(m_inventory.ActiveItem()); if(W) W->OnVisible();
 
-	if(m_inventory.ActiveItem()) m_inventory.ActiveItem()->OnVisible();
+	if(m_inventory.ActiveItem()&&!m_vehicle)
+								m_inventory.ActiveItem()->OnVisible();
 
 
 #ifdef _DEBUG

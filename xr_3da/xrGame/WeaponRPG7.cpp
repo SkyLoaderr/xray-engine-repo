@@ -64,7 +64,24 @@ void __stdcall CWeaponRPG7Grenade::ObjectContactCallback(bool& do_colide,dContac
 	CGameObject *l_pOwner = l_pUD1 ? dynamic_cast<CGameObject*>(l_pUD1->ph_ref_object) : NULL;
 	if(!l_pOwner || l_pOwner == (CGameObject*)l_this) l_pOwner = l_pUD2 ? dynamic_cast<CGameObject*>(l_pUD2->ph_ref_object) : NULL;
 	if(!l_pOwner || l_pOwner != l_this->m_pOwner) {
-		if(l_this->m_pOwner) l_this->Explode(*(Fvector*)&c.geom.normal);
+		if(l_this->m_pOwner) {
+			Fvector l_pos; l_pos.set(l_this->Position());
+			if(!l_pUD1||!l_pUD2) {
+				dxGeomUserData *&l_pUD = l_pUD1?l_pUD1:l_pUD2;
+				if(l_pUD->pushing_neg) 
+				{
+					Fvector velocity;
+					l_this->PHGetLinearVell(velocity);
+					velocity.normalize();
+					float cosinus=velocity.dotproduct(*((Fvector*)l_pUD->neg_tri.norm));
+					float dist=l_pUD->neg_tri.dist/cosinus;
+					velocity.mul(dist);
+					l_pos.sub(velocity);
+
+				}
+			}
+			l_this->Explode(l_pos, *(Fvector*)&c.geom.normal);
+		}
 	} else {
 	}
 }
@@ -121,7 +138,7 @@ void CWeaponRPG7Grenade::Load(LPCSTR section) {
 	SoundCreate(sndRicochet[4], "ric5", m_eSoundRicochet);
 }
 
-void CWeaponRPG7Grenade::Explode(const Fvector &normal) {
+void CWeaponRPG7Grenade::Explode(const Fvector &pos, const Fvector &normal) {
 	m_engineTime = 0xffffffff;
 	m_expoldeTime = 5000;
 	setVisible(false);
@@ -185,7 +202,7 @@ void CWeaponRPG7Grenade::Explode(const Fvector &normal) {
 		}
 	}
 	CPGObject* pStaticPG; s32 l_c = m_effects.size();
-	Fmatrix l_m; /**/l_m.set(svTransform);l_m.j.set(normal); GetBasis(normal, l_m.k, l_m.i);
+	Fmatrix l_m; l_m.identity(); l_m.c.set(pos);l_m.j.set(normal); GetBasis(normal, l_m.k, l_m.i);
 	for(s32 i = 0; i < l_c; i++) {
 		pStaticPG = xr_new<CPGObject>(m_effects[i],Sector());
 		pStaticPG->UpdateParent(l_m);
