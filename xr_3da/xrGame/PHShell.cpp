@@ -263,7 +263,7 @@ void CPHShell::Update(){
 	for(i=elements.begin();elements.end() != i;++i)
 		(*i)->Update();
 	mXFORM.set((*elements.begin())->mXFORM);
-	R_ASSERT2(_valid(mXFORM),"invalid position in update");
+	VERIFY2(_valid(mXFORM),"invalid position in update");
 }
 
 void	CPHShell::Freeze()
