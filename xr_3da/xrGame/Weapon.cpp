@@ -137,7 +137,7 @@ void CWeapon::Load		(CInifile* ini, const char* section)
 	fTimeToEmptyClick	= ini->ReadFLOAT	(section,"rpm_empty_click");
 	fTimeToEmptyClick	= 60 / fTimeToEmptyClick;
 
-	ShaderCreate		(hUIIcon,"font","");
+	ShaderCreate		(hUIIcon,"hud\\default","");
 	
 	LPCSTR	name		= ini->ReadSTRING	(section,"wm_name");
 	pstrWallmark		= strdup(name);
@@ -185,7 +185,7 @@ void CWeapon::OnDeviceCreate()
 {
 	CObject::OnDeviceCreate();
 
-	ShaderCreate		(hUIIcon,"font","");
+	ShaderCreate		(hUIIcon,"hud\\default","");
 
 	if (0==pstrWallmark)hWallmark	= 0; 
 	else				hWallmark	= Device.Shader.Create("effects\\wallmark",pstrWallmark);
