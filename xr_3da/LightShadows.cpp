@@ -258,7 +258,7 @@ void CLightShadows::calculate	()
 		pv->set						(0.f,	0.f,	C, a0.x, a0.y, b0.x, b0.y);	pv++;
 		pv->set						(dim,	dim,	C, a1.x, a1.y, b1.x, b1.y);	pv++;
 		pv->set						(dim,	0.f,	C, a1.x, a0.y, b1.x, b0.y);	pv++;
-
+		
 		pv->set						(0.f,	dim,	C, c0.x, c1.y, d0.x, d1.y);	pv++;
 		pv->set						(0.f,	0.f,	C, c0.x, c0.y, d0.x, d0.y);	pv++;
 		pv->set						(dim,	dim,	C, c1.x, c1.y, d1.x, d1.y);	pv++;
@@ -269,16 +269,19 @@ void CLightShadows::calculate	()
 		Device.Shader.set_RT		(RT->pRT,	0);
 		Device.Shader.set_Shader	(sh_BlurTR	);
 		Device.Primitive.Draw		(vs_Blur,	4, 2, Offset,	Device.Streams_QuadIB);
-	
-		// Actual rendering (pass1, real2temp)
-		Device.Shader.set_RT		(RT_temp->pRT,	0);
-		Device.Shader.set_Shader	(sh_BlurRT	);
-		Device.Primitive.Draw		(vs_Blur,	4, 2, Offset+4,	Device.Streams_QuadIB);
-
-		// Actual rendering (pass2, temp2real)
-		Device.Shader.set_RT		(RT->pRT,	0);
-		Device.Shader.set_Shader	(sh_BlurTR	);
-		Device.Primitive.Draw		(vs_Blur,	4, 2, Offset,	Device.Streams_QuadIB);
+		
+		for (int it=0; it<10; it++)	
+		{
+			// Actual rendering (pass1, real2temp)
+			Device.Shader.set_RT		(RT_temp->pRT,	0);
+			Device.Shader.set_Shader	(sh_BlurRT	);
+			Device.Primitive.Draw		(vs_Blur,	4, 2, Offset+4,	Device.Streams_QuadIB);
+			
+			// Actual rendering (pass2, temp2real)
+			Device.Shader.set_RT		(RT->pRT,	0);
+			Device.Shader.set_Shader	(sh_BlurTR	);
+			Device.Primitive.Draw		(vs_Blur,	4, 2, Offset,	Device.Streams_QuadIB);
+		}
 	}
 	
 	// Finita la comedia
