@@ -16,6 +16,11 @@ void	CRenderTarget::phase_combine	()
 		t_LUM_dest->surface_set		(rt_LUM_pool[gpu_id*2+1]->pSurface);
 	}
 
+	// low/hi RTs
+	u_setrt				( rt_Generic_0,rt_Generic_1,0,HW.pBaseZB );
+	RCache.set_CullMode	( CULL_NONE );
+	RCache.set_Stencil	( FALSE		);
+
 	// 
 	if (STENCIL_CULL)	{
 		RCache.set_Stencil					(TRUE,D3DCMP_LESSEQUAL,0x01,0xff,0x00);	// stencil should be >= 1
@@ -24,11 +29,6 @@ void	CRenderTarget::phase_combine	()
 			RCache.set_ColorWriteEnable		();
 		}
 	}
-
-	// low/hi RTs
-	u_setrt				( rt_Generic_0,rt_Generic_1,0,HW.pBaseZB );
-	RCache.set_CullMode	( CULL_NONE );
-	// RCache.set_Stencil	( FALSE		);
 
 	// Draw full-screen quad textured with our scene image
 	{
@@ -81,6 +81,7 @@ void	CRenderTarget::phase_combine	()
 			u_stencil_optimize				(FALSE);
 			RCache.set_ColorWriteEnable		();
 		}
+		g_pGamePersistent->Environment.RenderFirst	();
 	}
 
 	// Perform blooming filter and distortion if needed

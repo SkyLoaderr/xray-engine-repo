@@ -5,6 +5,9 @@ void CRenderTarget::accum_direct		(u32 sub_phase)
 	phase_accumulator					();
 	RImplementation.stats.l_visible		++;
 
+	// Switch to temporary surface
+	if (RImplementation.o.sunfilter)	{ u_setrt	(rt_Generic_0,NULL,NULL,HW.pBaseZB); }
+
 	// *** assume accumulator setted up ***
 	light*			fuckingsun			= RImplementation.Lights.sun_adapted	;
 
@@ -29,6 +32,10 @@ void CRenderTarget::accum_direct		(u32 sub_phase)
 	RCache.set_CullMode			(CULL_NONE	);
 	if (SE_SUN_NEAR==sub_phase)	//.
 	{
+		// for sun-filter - clear to zero
+		if (RImplementation.o.sunfilter)	{
+			CHK_DX	(HW.pDevice->Clear		( 0L, NULL, D3DCLEAR_TARGET, 0, 1.0f, 0L));
+		}
 		// Fill vertex buffer
 		FVF::TL* pv					= (FVF::TL*)	RCache.Vertex.Lock	(4,g_combine->vb_stride,Offset);
 		pv->set						(EPS,			float(_h+EPS),	d_Z,	d_W, C, p0.x, p1.y);	pv++;
@@ -62,6 +69,7 @@ void CRenderTarget::accum_direct		(u32 sub_phase)
 	// Perform lighting
 	{
 		phase_accumulator					();
+		if (RImplementation.o.sunfilter)	{ u_setrt	(rt_Generic_0,NULL,NULL,HW.pBaseZB); }
 		RCache.set_CullMode					(CULL_NONE	);
 		RCache.set_ColorWriteEnable			();
 
