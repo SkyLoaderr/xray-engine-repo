@@ -31,7 +31,7 @@ Comments:
 
 //////////////////////////////
 
-
+namespace xray_nvi{
 enum NVI_PIXEL_FORMAT
 {
 	IMAGE_NOT_INITIALIZED,
@@ -233,6 +233,7 @@ __forceinline  void	NVI_ImageBordered::GetPixel( DWORD * outColor, int i, int j 
 
 
 /////////////////////////////////////////////////////////////////
+};
 
 
 #endif			// __NVIMAGELIB_NVI_IMAGE_H

@@ -138,13 +138,13 @@ bool DXTCompressImage	(LPCSTR out_name, u8* raw_data, u32 w, u32 h, u32 pitch,
 // convert to Options
     CompressionOptions		nvOpt;
 	ZeroMemory				(&nvOpt,sizeof(nvOpt));
-    nvOpt.bMipMapsInImage	= false;
+//1	nvOpt.bMipMapsInImage	= false;
 
     if (fmt->flags.is(STextureParams::flGenerateMipMaps))	nvOpt.MipMapType=dGenerateMipMaps;
     else													nvOpt.MipMapType=dNoMipMaps;
     nvOpt.bBinaryAlpha	    = !!(fmt->flags.is(STextureParams::flBinaryAlpha));
-    nvOpt.bNormalMap		= 0;//fmt->type==STextureParams::ttNormalMap;
-	nvOpt.bDuDvMap			= 0;//fmt->type==STextureParams::ttDuDvMap;
+//1	nvOpt.bNormalMap		= 0;//fmt->type==STextureParams::ttNormalMap;
+//1	nvOpt.bDuDvMap			= 0;//fmt->type==STextureParams::ttDuDvMap;
     nvOpt.bAlphaBorder		= !!(fmt->flags.is(STextureParams::flAlphaBorder));
     nvOpt.bBorder			= !!(fmt->flags.is(STextureParams::flColorBorder));
     nvOpt.BorderColor.u		= fmt->border_color;
@@ -153,26 +153,26 @@ bool DXTCompressImage	(LPCSTR out_name, u8* raw_data, u32 w, u32 h, u32 pitch,
     nvOpt.FadeToColor.u		= 0;//fmt->fade_color;
     nvOpt.FadeAmount		= 0;//fmt->fade_amount;
     nvOpt.bDitherColor		= !!(fmt->flags.is(STextureParams::flDitherColor));
-    nvOpt.bDitherEachMIPLevel=!!(fmt->flags.is(STextureParams::flDitherEachMIPLevel));
+//1	nvOpt.bDitherEachMIPLevel=!!(fmt->flags.is(STextureParams::flDitherEachMIPLevel));
     nvOpt.bGreyScale		= !!(fmt->flags.is(STextureParams::flGreyScale));
-	nvOpt.TextureType		= (fmt->type==STextureParams::ttCubeMap)?dTextureTypeCube:dTextureType2D;
+	nvOpt.TextureType		= (fmt->type==STextureParams::ttCubeMap)?kTextureTypeCube:kTextureType2D;
     switch(fmt->fmt){
-    case STextureParams::tfDXT1: 	nvOpt.TextureFormat = dDXT1; 	break;
-    case STextureParams::tfADXT1: 	nvOpt.TextureFormat = dDXT1a; 	break;
-    case STextureParams::tfDXT3: 	nvOpt.TextureFormat = dDXT3; 	break;
-    case STextureParams::tfDXT5: 	nvOpt.TextureFormat = dDXT5; 	break;
-    case STextureParams::tf4444: 	nvOpt.TextureFormat = d4444; 	break;
-    case STextureParams::tf1555: 	nvOpt.TextureFormat = d1555; 	break;
-    case STextureParams::tf565: 	nvOpt.TextureFormat = d565; 	break;
-    case STextureParams::tfRGB: 	nvOpt.TextureFormat = d888; 	break;
-    case STextureParams::tfRGBA: 	nvOpt.TextureFormat = d8888; 	break;
+    case STextureParams::tfDXT1: 	nvOpt.TextureFormat = kDXT1; 	break;
+    case STextureParams::tfADXT1: 	nvOpt.TextureFormat = kDXT1a; 	break;
+    case STextureParams::tfDXT3: 	nvOpt.TextureFormat = kDXT3; 	break;
+    case STextureParams::tfDXT5: 	nvOpt.TextureFormat = kDXT5; 	break;
+    case STextureParams::tf4444: 	nvOpt.TextureFormat = k4444; 	break;
+    case STextureParams::tf1555: 	nvOpt.TextureFormat = k1555; 	break;
+    case STextureParams::tf565: 	nvOpt.TextureFormat = k565; 	break;
+    case STextureParams::tfRGB: 	nvOpt.TextureFormat = k888; 	break;
+    case STextureParams::tfRGBA: 	nvOpt.TextureFormat = k8888; 	break;
     }
     switch(fmt->mip_filter){
-    case STextureParams::dMIPFilterBox:		nvOpt.MIPFilterType = dMIPFilterBox;	break;
-    case STextureParams::dMIPFilterCubic:	nvOpt.MIPFilterType = dMIPFilterCubic;	break;
-    case STextureParams::dMIPFilterFullDFT:	nvOpt.MIPFilterType = dMIPFilterFullDFT;break;
-    case STextureParams::dMIPFilterKaiser:	nvOpt.MIPFilterType = dMIPFilterKaiser; break;
-    case STextureParams::dMIPFilterLinearLightKaiser:	nvOpt.MIPFilterType = dMIPFilterLinearLightKaiser; break;
+    case STextureParams::dMIPFilterBox:		nvOpt.MIPFilterType = kMIPFilterBox;	break;
+    case STextureParams::dMIPFilterCubic:	nvOpt.MIPFilterType = kMIPFilterCubic;	break;
+//1	case STextureParams::dMIPFilterFullDFT:	nvOpt.MIPFilterType = kMIPFilterFullDFT;break;
+    case STextureParams::dMIPFilterKaiser:	nvOpt.MIPFilterType = kMIPFilterKaiser; break;
+//1	case STextureParams::dMIPFilterLinearLightKaiser:	nvOpt.MIPFilterType = kMIPFilterLinearLightKaiser; break;
     case STextureParams::dMIPFilterAdvanced: break;
 	}
 //-------------------

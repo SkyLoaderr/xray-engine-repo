@@ -20,6 +20,7 @@ Comments:
 
 #include "NVI_Image.h"
 
+namespace xray_nvi{
 struct ConvolutionKernelElement
 {
 	int	x_offset;		// Coordinates of sample point
@@ -91,8 +92,7 @@ public:
 };
 
 
-
-
+};
 
 
 #endif			// __NVIMAGELIB_CONVOLUTION_H

@@ -48,6 +48,7 @@
 				OutputFile="x:\dxt.dll"
 				LinkIncremental="1"
 				SuppressStartupBanner="TRUE"
+				IgnoreDefaultLibraryNames="LIBCMT.lib"
 				GenerateDebugInformation="TRUE"
 				ProgramDatabaseFile="x:\$(ProjectName).pdb"
 				GenerateMapFile="TRUE"

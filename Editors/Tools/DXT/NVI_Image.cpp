@@ -16,13 +16,13 @@ class NVI_ImageBordered
 
 
 ******************************************************************************/
-
 #include "stdafx.h"
 
 #include "NVI_Image.h"
 
 #include <limits.h>			// for UINT_MAX
 
+using namespace xray_nvi;
 /////////////////////////////////////////////////////////////////
 /////////////////////////////////////////////////////////////////
 
@@ -471,5 +471,3 @@ void	NVI_ImageBordered::CopyDataFromSource()
 	//						(DWORD) m_nSizeX, (DWORD) m_nSizeY, 32, 32, 0 );
 
 }
-
-

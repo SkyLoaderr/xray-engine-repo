@@ -4,6 +4,7 @@
 #include "NVI_Convolution.h"
 #include "NVI_Image.h"
 
+using namespace xray_nvi;
 
 enum KernelType
 {

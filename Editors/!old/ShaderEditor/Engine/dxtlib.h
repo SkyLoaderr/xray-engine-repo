@@ -1,72 +1,44 @@
-#ifndef __DXTLIB_H__
-#define __DXTLIB_H__
+/****************************************************************************************
+	
+    Copyright (C) NVIDIA Corporation 2003
 
-#include "nvdxt_options.h"
-/*********************************************************************NVMH2****
-Path:  C:\Dev\devrel\Nv_sdk_4\Dx8_private\PhotoShop\dxtlib
-File:  dxtlib.h
+    TO THE MAXIMUM EXTENT PERMITTED BY APPLICABLE LAW, THIS SOFTWARE IS PROVIDED
+    *AS IS* AND NVIDIA AND ITS SUPPLIERS DISCLAIM ALL WARRANTIES, EITHER EXPRESS
+    OR IMPLIED, INCLUDING, BUT NOT LIMITED TO, IMPLIED WARRANTIES OF MERCHANTABILITY
+    AND FITNESS FOR A PARTICULAR PURPOSE.  IN NO EVENT SHALL NVIDIA OR ITS SUPPLIERS
+    BE LIABLE FOR ANY SPECIAL, INCIDENTAL, INDIRECT, OR CONSEQUENTIAL DAMAGES
+    WHATSOEVER (INCLUDING, WITHOUT LIMITATION, DAMAGES FOR LOSS OF BUSINESS PROFITS,
+    BUSINESS INTERRUPTION, LOSS OF BUSINESS INFORMATION, OR ANY OTHER PECUNIARY LOSS)
+    ARISING OUT OF THE USE OF OR INABILITY TO USE THIS SOFTWARE, EVEN IF NVIDIA HAS
+    BEEN ADVISED OF THE POSSIBILITY OF SUCH DAMAGES.
 
-Copyright (C) 1999, 2000 NVIDIA Corporation
-This file is provided without support, instruction, or implied warranty of any
-kind.  NVIDIA makes no guarantee of its fitness for a particular purpose and is
-not liable under any circumstances for any damages or loss whatsoever arising
-from the use or inability to use this file or items derived from it.
+*****************************************************************************************/
+#pragma once
 
-Comments:
+#include "nvdxt_options.h""
 
+typedef void (*MIPFiltercallback)(int miplevel, int TotalMIPs);
+typedef HRESULT (__cdecl *MIPcallback)(void * data, int miplevel, DWORD size, int width, int height, void * user_data);
+void set_mip_filter_callback(MIPFiltercallback callback);
 
-******************************************************************************/
-
-
-
-
-// #pragma comment(lib, "nvDXTlib.lib")
-
-
-
-
-
-
-
-
-typedef HRESULT (__cdecl *MIPcallback)(void * data, int miplevel, DWORD size);
 // call back
 // pointer to data
 // mip level
 // size of chunk
 
+ 
 
-
-
-
-
-#ifndef TRGBA
-#define TRGBA
-typedef	struct
-{
-	BYTE	rgba[4];
-} rgba_t;
-#endif
-
-#ifndef TPIXEL
-#define TPIXEL
-union tPixel
-{
-  unsigned long u;
-  rgba_t c;
-};
-#endif
 
 #ifndef ISPOWER2
 inline bool IsPower2(unsigned int x)
-{
+{              
     if ( x < 1 )
         return false;
 
     if (x == 1)
         return true;
 
-    if ( x & (x-1) )
+    if ( x & (x-1) )        
         return false;
 
     return true;
@@ -79,23 +51,126 @@ inline bool IsPower2(unsigned int x)
    Compresses an image with a user supplied callback with the data for each MIP level created
    Only supports input of RGB 24 or ARGB 32 bpp
 */
+
+#ifdef NVDXTC
+extern "C" {
+#endif
+
+
 HRESULT __cdecl nvDXTcompress(unsigned char * raw_data, // pointer to data (24 or 32 bit)
                 unsigned long w, // width in texels
                 unsigned long h, // height in texels
                 DWORD byte_pitch,
                 CompressionOptions * options,
                 DWORD planes, // 3 or 4
-                MIPcallback callback = 0);   // callback for generated levels
+                MIPcallback callback = NULL,  // callback for generated levels
+                RECT * rect = NULL);   // subrect to operate on, NULL is whole image
+
+/*
+HRESULT nvDXTcompress32F(fpPixel * raw_data, // pointer to data (24 or 32 bit)
+                unsigned long w, // width in texels
+                unsigned long h, // height in texels
+                DWORD pitch, // in fpPixels
+                CompressionOptions * options,
+                DWORD planes, // 3 or 4
+                MIPcallback callback = NULL,  // callback for generated levels
+                RECT * rect = NULL);   // subrect to operate on, NULL is whole image
+*/
+#ifdef  NVDXTC
+}
+#endif
+
 // if callback is == 0 (or not specified), then WriteDTXnFile is called with all file info
 //
 // You must write the routines (or provide stubs)
 // void WriteDTXnFile(count, buffer);
 // void ReadDTXnFile(count, buffer);
+// 
 //
-//
-void __cdecl WriteDTXnFile(DWORD count, void * buffer);
-void __cdecl ReadDTXnFile(DWORD count, void * buffer);
+#ifdef  NVDXTDLL
 
+typedef void (*DXTDataTransfer)(DWORD count, void *buffer, void *);
+
+#ifdef  NVDXTC
+extern "C" {
+#endif
+
+void SetReadDTXnFile(DXTDataTransfer UserReadDTXnFile);
+void SetWriteDTXnFile(DXTDataTransfer UserWriteDTXnFile);
+
+
+#ifdef  NVDXTC
+}
+#endif
+
+#else
+
+void WriteDTXnFile(DWORD count, void * buffer, void * userData);
+void ReadDTXnFile(DWORD count, void * buffer, void * userData);
+
+
+#ifndef EXCLUDE_LIBS
+
+
+//#if _DEBUG
+
+//#else // _DEBUG
+
+
+ #if _MSC_VER >=1300
+  #ifdef _MT
+   #ifdef _DLL
+    #ifdef _STATIC_CPPLIB
+     #pragma message("Note: including lib: nvDXTlibMTDLL_S.lib") 
+     #pragma comment(lib, "lib/nvDXTlibMTDLL_S.lib")
+    #else
+     #pragma message("Note: including lib: nvDXTlibMTDLL.lib") 
+     #pragma comment(lib, "lib/nvDXTlibMTDLL.lib")
+    #endif
+   #else // DLL
+    #ifdef _STATIC_CPPLIB
+     #pragma message("Note: including lib: nvDXTlibMT_S.lib") 
+     #pragma comment(lib, "lib/nvDXTlibMT_S.lib")
+    #else
+     #pragma message("Note: including lib: nvDXTlibMT.lib") 
+     #pragma comment(lib, "lib/nvDXTlibMT.lib")
+    #endif
+   #endif //_DLL
+  #else // MT
+    #ifdef _STATIC_CPPLIB
+     #pragma message("Note: including lib: nvDXTlib_S.lib") 
+     #pragma comment(lib, "lib/nvDXTlib_S.lib")
+    #else
+     #pragma message("Note: including lib: nvDXTlib.lib") 
+     #pragma comment(lib, "lib/nvDXTlib.lib")
+    #endif
+  #endif // _MT
+ #else // _MSC_VER
+
+  #ifdef _MT
+   #ifdef _DLL                         
+    #pragma message("Note: including lib: nvDXTlibMTDLL6.lib") 
+    #pragma comment(lib, "lib/nvDXTlibMTDLL6.lib")
+   #else // _DLL
+    #pragma message("Note: including lib: nvDXTlibMT6.lib") 
+    #pragma comment(lib, "lib/nvDXTlibMT6.lib")
+   #endif //_DLL
+  #else // _MT
+   #pragma message("Note: including lib: nvDXTlib6.lib") 
+   #pragma comment(lib, "lib/nvDXTlib6.lib")
+  #endif // _MT
+ 
+ #endif // _MSC_VER
+//#endif // _DEBUG
+
+
+
+
+
+#endif
+
+
+#endif // NVDXTC
 
 
 
@@ -107,7 +182,7 @@ void __cdecl ReadDTXnFile(DWORD count, void * buffer);
 
 /* example
 
-LPDIRECT3DTEXTURE8 pCurrentTexture = 0;
+LPDIRECT3DTEXTURE8 pCurrentTexture = 0; 
 
 HRESULT LoadAllMipSurfaces(void * data, int iLevel)
 {
@@ -115,37 +190,37 @@ HRESULT LoadAllMipSurfaces(void * data, int iLevel)
     LPDIRECT3DSURFACE8 psurf;
     D3DSURFACE_DESC sd;
     D3DLOCKED_RECT lr;
-
+       
     hr = pCurrentTexture->GetSurfaceLevel(iLevel, &psurf);
-
+    
     if (FAILED(hr))
         return hr;
     psurf->GetDesc(&sd);
-
-
+    
+    
     hr = pCurrentTexture->LockRect(iLevel, &lr, NULL, 0);
     if (FAILED(hr))
         return hr;
-
+    
     memcpy(lr.pBits, data, sd.Size);
-
+    
     hr = pCurrentTexture->UnlockRect(iLevel);
-
+    
     ReleasePpo(&psurf);
-
+    
     return 0;
 }
-
+       
 
     hr = D3DXCreateTexture(m_pd3dDevice, Width, Height, nMips,  0,   D3DFMT_DXT3,  D3DPOOL_MANAGED, &pCurrentTexture);
-    nvDXTcompress(raw_data, Width, Height, DXT3, true, 4, LoadAllMipSurfaces);
+    nvDXTcompress(raw_data, Width, Height, DXT3, true, 4, LoadAllMipSurfaces, NULL);
 
 */
 
 
 	/*
     src_format
-    dDXT1
+    dDXT1 
 	dDXT1a  // DXT1 with one bit alpha
 	dDXT3    // explicit alpha
 	dDXT5    // interpolated alpha
@@ -156,13 +231,34 @@ HRESULT LoadAllMipSurfaces(void * data, int iLevel)
 	d8888   // a8 r8 g8 b8
 	d888    // a0 r8 g8 b8
 	d555    // a0 r5 g5 b5
-    dNVHS   // signed HILO
-    dNVHU   // unsighed HILO
     d8      // paletted
+    dV8U8   // DuDv
+    dCxV8U8   // normal map
+    dA8       // A8
 
       */
-unsigned char * nvDXTdecompress(int & w, int & h, int & depth, int & total_width, int & rowBytes, int & src_format);
 
+#ifdef NVDXTC
+extern "C" {
+#endif
+
+/*
+  
+  SpecifiedMipMaps, number of MIP maps to load. 0 is all
+
+
+*/
+
+unsigned char * nvDXTdecompress(int & w, int & h, int & depth, int & total_width, int & rowBytes, int & src_format,
+                                int SpecifiedMipMaps = 0);
+
+
+#ifdef NVDXTC
+}
+#endif
+
+#ifndef COLOR_FORMAT_ENUM
+#define COLOR_FORMAT_ENUM
 
 enum ColorFormat
 {
@@ -175,3 +271,4 @@ enum ColorFormat
 };
 
 #endif
+

@@ -17,13 +17,10 @@ Comments:
 
 #include "NVI_Convolution.h"
 
-
-
-
-
 //////////////////////////////////////////////////////////////
 //////////////////////////////////////////////////////////////
 
+using namespace xray_nvi;
 
 ConvolutionKernel::ConvolutionKernel()
 {
@@ -267,7 +264,3 @@ void	Convolver::Convolve_Alpha_At( int i, int j, float * results, int num_result
 		results[nkern] = result;
 	}
 }
-
-
-
-
