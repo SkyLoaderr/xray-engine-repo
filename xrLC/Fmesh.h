@@ -23,29 +23,27 @@ enum MT {
 enum OGF_Chuncks {
 	OGF_HEADER				= 1,
 	OGF_TEXTURE				= 2,
-	OGF_BSPHERE				= 3,
-	OGF_BBOX				= 4,
-	OGF_VERTICES			= 5,
-	OGF_INDICES				= 6,
-	OGF_P_MAP				= 7,
-	OGF_P_LODS				= 8,
-	OGF_VCONTAINER			= 9,
-	OGF_ICONTAINER			= 10,
-    OGF_CHILDREN			= 11,	// * For skeletons only
-	OGF_CHILDREN_L			= 12,	// Link to child visuals
-	OGF_LODDEF2				= 13,	// + 5 channel data
-	OGF_TREEDEF2			= 14,	// + 5 channel data
-	OGF_S_BONE_NAMES		= 15,	// * For skeletons only
-	OGF_S_MOTIONS 			= 16,	// * For skeletons only
-	OGF_S_SMPARAMS  		= 17,	// * For skeletons only
-	OGF_S_IKDATA			= 18,	// * For skeletons only
-	OGF_S_USERDATA			= 19,	// * For skeletons only (Ini-file)
-	OGF_S_DESC				= 20,	// * For skeletons only
-	OGF_S_MOTION_REFS		= 21,	// * For skeletons only
+	OGF_VERTICES			= 3,
+	OGF_INDICES				= 4,
+	OGF_P_MAP				= 5,
+	OGF_P_LODS				= 6,
+	OGF_VCONTAINER			= 7,
+	OGF_ICONTAINER			= 8,
+    OGF_CHILDREN			= 9,	// * For skeletons only
+	OGF_CHILDREN_L			= 10,	// Link to child visuals
+	OGF_LODDEF2				= 11,	// + 5 channel data
+	OGF_TREEDEF2			= 12,	// + 5 channel data
+	OGF_S_BONE_NAMES		= 13,	// * For skeletons only
+	OGF_S_MOTIONS 			= 14,	// * For skeletons only
+	OGF_S_SMPARAMS  		= 15,	// * For skeletons only
+	OGF_S_IKDATA			= 16,	// * For skeletons only
+	OGF_S_USERDATA			= 17,	// * For skeletons only (Ini-file)
+	OGF_S_DESC				= 18,	// * For skeletons only
+	OGF_S_MOTION_REFS		= 19,	// * For skeletons only
     OGF_forcedword			= 0xFFFFFFFF         
 };							
 							
-enum OGF_VertType {
+enum OGF_SkeletonVertType	{
 	OGF_VERTEXFORMAT_FVF_1L	= 1*0x12071980,
 	OGF_VERTEXFORMAT_FVF_2L	= 2*0x12071980,
 };
@@ -53,7 +51,7 @@ enum OGF_VertType {
 const u16	xrOGF_SMParamsVersion	= 3;
 
 // OGF_DESC
-struct ECORE_API ogf_desc{
+struct ECORE_API ogf_desc	{
 	ref_str	source_file;
     ref_str	build_name;
     time_t	build_time;
@@ -64,14 +62,6 @@ struct ECORE_API ogf_desc{
     		ogf_desc():build_time(0),create_time(0),modif_time(0){}
     void 	Load	(IReader& F);
     void 	Save	(IWriter& F);
-};
-
-// OGF_HEADER
-const u8	xrOGF_FormatVersion		= 4;
-struct ogf_header {
-	u8		format_version;			// = xrOGF_FormatVersion
-	u8		type;					// MT
-	u16		shader_id;				// should not be ZERO
 };
 
 // OGF_BBOX
@@ -86,6 +76,16 @@ struct ogf_bsphere {
 	float	r;
 };
 
+// OGF_HEADER
+const u8	xrOGF_FormatVersion		= 4;
+struct ogf_header {
+	u8			format_version;			// = xrOGF_FormatVersion
+	u8			type;					// MT
+	u16			shader_id;				// should not be ZERO
+	ogf_bbox	bb;
+	ogf_bsphere	bs;
+};
+
 // OGF_TEXTURE1
 //  Z-String - name
 //  Z-String - shader
@@ -96,10 +96,6 @@ struct ogf_bsphere {
 
 // OGF_MATERIAL
 //  Fmaterial
-
-// OGF_CHIELDS
-//	u32 Count
-//  Z-String [Count] - names
 
 // OGF_CHIELDS_L
 //	u32	Count
@@ -123,9 +119,6 @@ struct ogf_bsphere {
 //		PMAP_FACES	= 0x3
 //			u32 dwCount
 //			u16[dwCount]
-
-// OGF_SF_LINK
-//  Z-String - name of visual
 
 // OGF_VCONTAINER
 // u32		CID;		// Container ID
