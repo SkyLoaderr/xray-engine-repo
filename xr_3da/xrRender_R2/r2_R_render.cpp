@@ -223,8 +223,8 @@ void CRender::Render	()
 			for (u32 cs_id=0; cs_id<lstCS.size(); cs_id++)
 			{
 				mapNormalCS::TNode*	Ncs			= lstCS[cs_id];
-				RCache.set_xform_world						(Fidentity);
-				RCache.set_Constants						(Ncs->key);
+				RCache.set_xform_world			(Fidentity);
+				RCache.set_Constants			(Ncs->key);
 
 				mapNormalStates&	states		= Ncs->val;		states.ssa	= 0;
 				states.getANY_P					(lstStates);
