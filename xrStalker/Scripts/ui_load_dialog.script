@@ -37,7 +37,7 @@ function load_dialog:InitControls()
 	local info_rect       = {x = 0, 
 						     y = caption_rect.y + caption_rect.height + indent,
 						     width = 150, 
-						     height = 28}
+						     height = 300}
 	info_rect.x = main_rect.width - info_rect.width - indent
 	local btn_ok_rect     = {x = indent,
 							 y = 0,
