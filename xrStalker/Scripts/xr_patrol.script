@@ -263,7 +263,7 @@ function action_single_patrol:process_radio ()
           self.object:add_animation ("raciya_2", true) 
        end
        if self.object:active_sound_count () == 0 then 
-          if self.current_phrase >= t_size then
+          if self.current_phrase > t_size then
              self.sub_stage = 2 
              self.object:clear_animations ()
              self.object:add_animation ("raciya_3", true)
@@ -282,9 +282,7 @@ function action_single_patrol:process_radio ()
        return false 
     end
     
-    while table.getn (self.phrases) ~= 0 do
-          table.remove (self.phrases, 1)
-    end      
+    self.phrases = {}
     
     self:set_animation ()
     self.stage = 1
