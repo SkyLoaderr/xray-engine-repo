@@ -45,7 +45,6 @@ class CSpawn : public CThread {
 public:
 	CGameGraph::SLevel			m_tLevel;
 	ALIFE_OBJECT_P_VECTOR		m_tpSpawnPoints;
-	xr_vector<CSE_LevelPoint*>	m_tpLevelSpawnPoints;
 	u32							m_dwLevelID;
 	CLevelGraph					*m_tpAI_Map;
 	CGameLevelCrossTable		*m_tpCrossTable;
@@ -116,13 +115,8 @@ public:
 						l_tpSpawnGroup->m_dwSpawnGroup = ++*dwGroupOffset;
 						l_tpSpawnGroupControlsMap.insert(mk_pair(l_tpSpawnGroup->s_name_replace,l_tpSpawnGroup));
 					}
-					else {
-						CSE_LevelPoint *l_tpLevelPoint = dynamic_cast<CSE_LevelPoint*>(E);
-						if (l_tpLevelPoint)
-							m_tpLevelSpawnPoints.push_back(l_tpLevelPoint);
-						else
-							xr_delete(E);
-					}
+					else
+						xr_delete(E);
 				}
 			}
 			else
@@ -182,8 +176,6 @@ public:
 	};
 	virtual 					~CSpawn()
 	{
-		delete_data				(m_tpLevelSpawnPoints);
-		//delete_data				(m_tpSpawnPoints);
 		delete_data				(m_tpAI_Map);
 		delete_data				(m_tpCrossTable);
 	};

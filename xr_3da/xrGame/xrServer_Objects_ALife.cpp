@@ -212,37 +212,6 @@ void CSE_ALifeTask::FillProp	(LPCSTR pref, PropItemVec& values)
 #endif
 
 ////////////////////////////////////////////////////////////////////////////
-// CSE_ALifeLevelPoint
-////////////////////////////////////////////////////////////////////////////
-CSE_LevelPoint::CSE_LevelPoint				(LPCSTR caSection) : CSE_Abstract(caSection)
-{
-}
-
-CSE_LevelPoint::~CSE_LevelPoint				()
-{
-}
-
-void CSE_LevelPoint::STATE_Read				(NET_Packet	&tNetPacket, u16 size)
-{
-};
-
-void CSE_LevelPoint::STATE_Write			(NET_Packet	&tNetPacket)
-{
-};
-void CSE_LevelPoint::UPDATE_Read			(NET_Packet	&tNetPacket)
-{
-}
-
-void CSE_LevelPoint::UPDATE_Write			(NET_Packet	&tNetPacket)
-{
-}
-
-#ifdef _EDITOR              
-void CSE_LevelPoint::FillProp				(LPCSTR pref, PropItemVec& items)
-{
-}
-#endif
-////////////////////////////////////////////////////////////////////////////
 // CSE_ALifeGraphPoint
 ////////////////////////////////////////////////////////////////////////////
 CSE_ALifeGraphPoint::CSE_ALifeGraphPoint	(LPCSTR caSection) : CSE_Abstract(caSection)
