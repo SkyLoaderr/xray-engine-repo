@@ -9,6 +9,7 @@
 #ifndef xrServer_ObjectsH
 #define xrServer_ObjectsH
 
+#include "xrMessages.h"
 #include "xrServer_Objects_Abstract.h"
 
 #ifdef _EDITOR
