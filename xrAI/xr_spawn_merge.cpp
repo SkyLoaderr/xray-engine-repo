@@ -99,12 +99,12 @@ public:
 					if (!xr_strlen(tpALifeObject->m_caGroupControl))
 						tpALifeObject->m_dwSpawnGroup = ++*dwGroupOffset;
 					else {
-						xr_map<LPCSTR,xr_vector<CSE_ALifeObject*>*,pred_str>::iterator I = l_tpSpawnGroupObjectsMap.find(tpALifeObject->m_caGroupControl);
+						xr_map<LPCSTR,xr_vector<CSE_ALifeObject*>*,pred_str>::iterator I = l_tpSpawnGroupObjectsMap.find(*tpALifeObject->m_caGroupControl);
 						if (I == l_tpSpawnGroupObjectsMap.end()) {
 							xr_vector<CSE_ALifeObject*> *tpTemp = xr_new<xr_vector<CSE_ALifeObject*> >();
 							tpTemp->clear();
 							tpTemp->push_back(tpALifeObject);
-							l_tpSpawnGroupObjectsMap.insert(mk_pair(tpALifeObject->m_caGroupControl,tpTemp));
+							l_tpSpawnGroupObjectsMap.insert(mk_pair(*tpALifeObject->m_caGroupControl,tpTemp));
 						}
 						else
 							(*I).second->push_back(tpALifeObject);
@@ -302,7 +302,7 @@ public:
 			CSE_ALifeObject		*l_tpALifeObject = dynamic_cast<CSE_ALifeObject*>(E);
 			R_ASSERT3			(l_tpALifeObject->m_tNodeID && (l_tpALifeObject->m_tNodeID < m_tpAI_Map->header().vertex_count()),"Invalid node for object ",l_tpALifeObject->s_name_replace);
 			R_ASSERT2			(l_tpALifeObject,"Non-ALife object!");
-			strcpy				(l_tpALifeObject->m_caGroupControl,"");
+			l_tpALifeObject->m_caGroupControl = "";
 			CSE_ALifeAnomalousZone *l_tpALifeAnomalousZone = dynamic_cast<CSE_ALifeAnomalousZone*>(E);
 			if (l_tpALifeAnomalousZone) {
 				u32									l_dwStartIndex = tpLevelPoints.size();
