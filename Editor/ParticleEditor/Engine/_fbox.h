@@ -44,6 +44,32 @@ public:
 		m.transform_tiny(min,B.min);
 		m.transform_tiny(max,B.max);
 	}
+	IC	void	xform		(const _fbox &B, const _matrix &m)
+	{
+			// The three edges transformed: you can efficiently transform an X-only vector
+			// by just getting the "X" column of the matrix
+			Fvector vx,vy,vz;
+			vx.mul				(m.i, B.max.x-B.min.x);	
+			vy.mul				(m.j, B.max.y-B.min.y);	
+			vz.mul				(m.k, B.max.z-B.min.z);	
+			
+			// Transform the min point
+			m.transform_tiny	(min,B.min);
+			max.set				(min);
+			
+			// Take the transformed min & axes and find new extents
+			// Using CPU code in the right place is faster...
+			if(negative(vx.x))	min.x += vx.x; else max.x += vx.x;
+			if(negative(vx.y))	min.y += vx.y; else max.y += vx.y;
+			if(negative(vx.z))	min.z += vx.z; else max.z += vx.z;
+			if(negative(vy.x))	min.x += vy.x; else max.x += vy.x;
+			if(negative(vy.y))	min.y += vy.y; else max.y += vy.y;
+			if(negative(vy.z))	min.z += vy.z; else max.z += vy.z;
+			if(negative(vz.x))	min.x += vz.x; else max.x += vz.x;
+			if(negative(vz.y))	min.y += vz.y; else max.y += vz.y;
+			if(negative(vz.z))	min.z += vz.z; else max.z += vz.z;
+		}
+	}
 	
 	IC	void	getsize		(Fvector& R )	const 	{ R.sub( max, min ); };
 	IC	void	getradius	(Fvector& R )	const 	{ getsize(R); R.mul(0.5f); };
@@ -71,17 +97,9 @@ public:
 		return TRUE;
 	};
 
-// incorrect!!!	
-// Make's this box valid AABB
-//    IC void sort(){
-//    	float tmp;
-//		if( min.x > max.x ) { tmp = min.x; min.x = max.x; max.x = tmp; }
-//		if( min.y > max.y ) { tmp = min.y; min.y = max.y; max.y = tmp; }
-//		if( min.z > max.z ) { tmp = min.z; min.z = max.z; max.z = tmp; }
-//	};
-
 	// Does the vector intersects box
-	IC BOOL Pick( const Fvector& start, const Fvector& dir ){
+	IC BOOL Pick( const Fvector& start, const Fvector& dir )
+	{
 		float	alpha,xt,yt,zt;
 		Fvector rvmin,rvmax;
 

@@ -9,14 +9,15 @@ void CObjectSpace::BoxQuery(const Fbox& B, const Fmatrix& M, DWORD flags)
 {
 	dwQueryID++;
 	q_result.Clear	();
-	XRC.BBoxMode	(
-		(flags&clCOARSE?0:BBOX_TRITEST)|
-		(flags&clQUERY_ONLYFIRST?BBOX_ONLYFIRST:0)
+	XRC.box_options	(
+		(flags&clCOARSE?0:CDB::OPT_FULL_TEST)|
+		(flags&clQUERY_ONLYFIRST?CDB::OPT_ONLYFIRST:0)
 		);
 
 	if ((flags&clStatic) == clStatic)
 	{
-		XRC.BBoxCollide	(precalc_identity, &Static, M, B );
+
+		XRC.bbox_query	(precalc_identity, &Static, M, B );
 		if (XRC.GetBBoxContactCount())
 		{
 			if (flags&clQUERY_ONLYFIRST) 

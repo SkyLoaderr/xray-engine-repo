@@ -2,9 +2,7 @@
 #include "xr_area.h"
 #include "xr_collide_form.h"
 #include "xr_object.h"
-#include "collide\cl_intersect.h"
-#include "physics\physicsobject.h"
-
+#include "cl_intersect.h"
 #include "xr_creator.h"
 
 using namespace	Collide;
@@ -228,7 +226,7 @@ void CObjectSpace::clCheckCollision(SCollisionData& cl)
 				// plane is embedded in ellipsoid / sphere
 				// find plane intersection point by shooting a ray from the 
 				// sphere intersection point along the planes normal.
-				bInsideTri = RAPID::TestRayTri2(sIPoint,T.N,T.p,distToPlaneIntersection);
+				bInsideTri = CDB::TestRayTri2(sIPoint,T.N,T.p,distToPlaneIntersection);
 				
 				// calculate plane intersection point
 				pIPoint.direct(sIPoint,T.N,distToPlaneIntersection);
@@ -236,7 +234,7 @@ void CObjectSpace::clCheckCollision(SCollisionData& cl)
 			else
 			{ 
 				// shoot ray along the velocity vector
-				bInsideTri = RAPID::TestRayTri2(sIPoint,normalizedVelocity,T.p,distToPlaneIntersection);
+				bInsideTri = CDB::TestRayTri2(sIPoint,normalizedVelocity,T.p,distToPlaneIntersection);
 				
 				// calculate plane intersection point
 				pIPoint.direct(sIPoint,normalizedVelocity,distToPlaneIntersection);
@@ -354,7 +352,7 @@ void CObjectSpace::clResolveStuck(SCollisionData& cl, Fvector& position)
 			
 			// find plane intersection point by shooting a ray from the 
 			// sphere intersection point along the planes normal.
-			if (RAPID::TestRayTri2(position,N_inv,T.p,dist)){
+			if (CDB::TestRayTri2(position,N_inv,T.p,dist)){
 				// calculate plane intersection point
 				polyIPoint.direct(position,N_inv,dist);
 			}else{
@@ -650,7 +648,7 @@ BOOL CObjectSpace::EllipsoidCollide( CCFModel *object, const Fmatrix& T, const F
 		p[2].mul(O.p[2],inv_radius);
 		e0.sub(p[1],p[0]);
 		e1.sub(p[2],p[0]);
-		if (RAPID::TestSphereTri(scaledPosition, 1.f-EPS_L, p[0], e0, e1)) return TRUE;
+		if (CDB::TestSphereTri(scaledPosition, 1.f-EPS_L, p[0], e0, e1)) return TRUE;
 	}
 	
 	return FALSE;

@@ -190,9 +190,9 @@ void CObjectSpace::Load	(CStream *F)
 	R_ASSERT			(CFORM_CURRENT_VERSION==H.version);
 
 	Fvector*	verts	= (Fvector*)F->Pointer();
-	RAPID::tri*	tris	= (RAPID::tri*)(verts+H.vertcount);
-	Static.BuildModel	( verts, H.vertcount, tris, H.facecount );
-	Msg("* Level CFORM memory usage: %dK",Static.MemoryUsage()/1024);
+	CDB::TRI*	tris	= (CDB::TRI*)(verts+H.vertcount);
+	Static.build		( verts, H.vertcount, tris, H.facecount );
+	Msg("* Level CFORM memory usage: %dK",Static.memory()/1024);
 	pSounds->SetGeometry( &Static );
 
 	// CForm
