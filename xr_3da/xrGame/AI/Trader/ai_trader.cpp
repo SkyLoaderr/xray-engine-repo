@@ -373,3 +373,9 @@ bool CAI_Trader::use_bolts				() const
 {
 	return				(false);
 }
+
+void CAI_Trader::spawn_supplies			()
+{
+	inherited::spawn_supplies		();
+	CInventoryOwner::spawn_supplies	();
+}

@@ -458,6 +458,7 @@ public:
 
 	virtual void			SpawnAmmoForWeapon		(CInventoryItem *pIItem);
 	virtual void			RemoveAmmoForWeapon		(CInventoryItem *pIItem);
+	virtual	void			spawn_supplies			();
 
 protected:
 	int						skel_ddelay;

@@ -218,6 +218,7 @@ public:
 			bool				kill_distance					();
 			void				update_best_item_info			();
 	virtual float				GetWeaponAccuracy				() const;
+	virtual	void				spawn_supplies					();
 
 public:
 	u32							m_last_best_item_frame;

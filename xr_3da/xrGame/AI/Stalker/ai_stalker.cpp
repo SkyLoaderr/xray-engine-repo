@@ -498,3 +498,13 @@ bool CAI_Stalker::use_model_pitch	() const
 {
 	return					(false);
 }
+
+void CAI_Stalker::spawn_supplies	()
+{
+	inherited::spawn_supplies		();
+#ifdef OLD_OBJECT_HANDLER
+	CObjectHandler::spawn_supplies	();
+#else
+	CObjectHandlerGOAP::spawn_supplies	();
+#endif
+}

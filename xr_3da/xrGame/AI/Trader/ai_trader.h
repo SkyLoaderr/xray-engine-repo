@@ -93,4 +93,5 @@ public:
 public:	
 	virtual	bool			can_attach				(const CInventoryItem *inventory_item) const;
 	virtual bool			use_bolts				() const;
+	virtual	void			spawn_supplies			();
 };

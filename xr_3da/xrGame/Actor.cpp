@@ -1214,3 +1214,8 @@ void CActor::SetMissileOffset		(const Fvector &vNewOffset)
 	m_vMissileOffset.set(vNewOffset);
 }
 
+void CActor::spawn_supplies			()
+{
+	inherited::spawn_supplies		();
+	CInventoryOwner::spawn_supplies	();
+}
