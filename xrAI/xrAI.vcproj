@@ -515,7 +515,7 @@
 					RelativePath="xr_spawn_merge.h">
 				</File>
 				<Filter
-					Name="aaaaaaaaa"
+					Name="Shared"
 					Filter="">
 					<File
 						RelativePath="NET_Compressor.h">
