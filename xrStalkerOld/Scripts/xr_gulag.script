@@ -249,8 +249,8 @@ function fract:add_restrictor(npc, r_out, r_in)
 		npc:add_restrictions(r_out, r_in)
 	end
 
---	printf		("RESTR AFTER (IN) : %s", npc:in_restrictions())
---	printf		("RESTR AFTER (OUT): %s", npc:out_restrictions())
+	printf		("RESTR AFTER (IN) : %s", npc:in_restrictions())
+	printf		("RESTR AFTER (OUT): %s", npc:out_restrictions())
 end
 
 function fract:getJob(npc)
