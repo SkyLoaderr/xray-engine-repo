@@ -43,7 +43,6 @@ public:
 	}
 };
 
-#define						SHADER_XRLC_HEADER "shXRLC  "
 DEFINE_VECTOR(Shader_xrLC,Shader_xrLCVec,Shader_xrLCIt);
 class Shader_xrLC_LIB
 {

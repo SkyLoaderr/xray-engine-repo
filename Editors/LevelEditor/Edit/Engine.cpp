@@ -72,9 +72,9 @@ void CEngine::Initialize(void)
 #endif
 
     // game configure
-    AnsiString si_name 		= "system.ltx";
+    string256 si_name		= "system.ltx";
     FS.m_GameRoot.Update	(si_name);
-	pSettings				= new CInifile(si_name.c_str(),TRUE);// FALSE,TRUE,TRUE);
+	pSettings				= new CInifile(si_name,TRUE);// FALSE,TRUE,TRUE);
 
 }
 
