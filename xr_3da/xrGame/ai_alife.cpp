@@ -25,7 +25,7 @@ CAI_ALife::~CAI_ALife()
 
 float CAI_ALife::shedule_Scale()
 {
-	return(.5f);
+	return(.5f); // (schedule_min + schedule_max)*0.5f
 }
 
 BOOL CAI_ALife::Ready()
