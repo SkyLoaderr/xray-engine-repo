@@ -254,12 +254,14 @@ void EScene::OnShowHint(AStringVec& dest)
 }
 //------------------------------------------------------------------------------
 
-void EScene::ExportGame(SExportStreams& F)
+bool EScene::ExportGame(SExportStreams& F)
 {
+	bool bres = true;
     SceneToolsMapPairIt t_it 	= m_SceneTools.begin();
     SceneToolsMapPairIt t_end 	= m_SceneTools.end();
     for (; t_it!=t_end; t_it++)
-        if (t_it->second)		t_it->second->ExportGame(F);
+        if (t_it->second)		if (!t_it->second->ExportGame(F)) bres=false;
+    return bres;
 }
 //------------------------------------------------------------------------------
 

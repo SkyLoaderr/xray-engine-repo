@@ -13,7 +13,7 @@
 BOOL SceneBuilder::BuildGame()
 {
 	SExportStreams 		F;
-    Scene->ExportGame	(F);
+    if (!Scene->ExportGame(F))				return FALSE;
 
     // save spawn
     {

@@ -656,7 +656,12 @@ bool CSpawnPoint::ExportGame(SExportStreams& F)
 {
 	// spawn
 	if (m_SpawnData.Valid()){
-    	m_SpawnData.ExportGame	(F,this);
+    	if (m_SpawnData.m_Data->validate()){
+	    	m_SpawnData.ExportGame		(F,this);
+        }else{
+        	Log	("!Invalid spawn data:",Name);
+            return false;
+        }
     }else{
         // game
         switch (m_Type){
@@ -703,7 +708,7 @@ void CSpawnPoint::FillProp(LPCSTR pref, PropItemVec& items)
         }break;
         case ptEnvMod:{
         	PHelper().CreateFloat	(items, PrepareKey(pref,"Environment Modificator\\Radius"),			&m_EM_Radius, 	EPS_L,10000.f);
-        	PHelper().CreateFloat	(items, PrepareKey(pref,"Environment Modificator\\Power"), 			&m_EM_Power, 	0,1.f);
+        	PHelper().CreateFloat	(items, PrepareKey(pref,"Environment Modificator\\Power"), 			&m_EM_Power, 	EPS,1000.f);
         	PHelper().CreateFloat	(items, PrepareKey(pref,"Environment Modificator\\View Distance"),	&m_EM_ViewDist, EPS_L,10000.f);
         	PHelper().CreateColor	(items, PrepareKey(pref,"Environment Modificator\\Fog Color"), 		&m_EM_FogColor);
         	PHelper().CreateFloat	(items, PrepareKey(pref,"Environment Modificator\\Fog Density"), 	&m_EM_FogDensity, 0.f,10000.f);

@@ -83,9 +83,4 @@ void CSceneObject::Save(IWriter& F){
 }
 //----------------------------------------------------
 
-bool CSceneObject::ExportGame(SExportStreams& F)
-{
-    return false;
-}
-//----------------------------------------------------
 

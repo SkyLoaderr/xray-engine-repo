@@ -97,9 +97,10 @@ bool ESceneCustomOTools::Export(LPCSTR path)
  
 bool ESceneCustomOTools::ExportGame(SExportStreams& F)
 {
+	bool bres=true;
     for(ObjectIt it = m_Objects.begin();it!=m_Objects.end();it++)
-        (*it)->ExportGame(F);
-	return true;
+        if (!(*it)->ExportGame(F)) bres=false;
+	return bres;
 }
 //----------------------------------------------------
  

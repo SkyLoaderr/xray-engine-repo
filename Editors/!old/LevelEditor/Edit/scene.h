@@ -144,7 +144,7 @@ public:
 	void 			SaveObject			(CCustomObject* O,IWriter& F);
 	void 			SaveObjects			(ObjectList& lst, u32 chunk_id, IWriter& F);
 public:
-	void			ExportGame			(SExportStreams& F);
+	bool			ExportGame			(SExportStreams& F);
 	bool 			Load				(LPCSTR initial, LPCSTR map_name, bool bUndo);
 	void 			Save				(LPCSTR initial, LPCSTR map_name, bool bUndo);
 	bool 			LoadSelection		(LPCSTR initial, LPCSTR fname);

@@ -98,7 +98,6 @@ public:
     // load/save methods
   	virtual bool 	Load					(IReader&);
 	virtual void 	Save					(IWriter&);
-    virtual bool	ExportGame				(SExportStreams& data);
 
     virtual void 	OnShowHint				(AStringVec& dest);
 

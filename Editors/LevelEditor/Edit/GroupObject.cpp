@@ -359,9 +359,10 @@ void CGroupObject::Save(IWriter& F)
 
 bool CGroupObject::ExportGame(SExportStreams& data)
 {
+	bool bres=true;
 	for (ObjectIt it=m_Objects.begin(); it!=m_Objects.end(); it++)
-    	(*it)->ExportGame(data);
-	return true;
+    	if (!(*it)->ExportGame(data)) bres = false;
+	return bres;
 }
 //----------------------------------------------------
 

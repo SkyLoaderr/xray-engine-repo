@@ -89,7 +89,7 @@ public:
     virtual void		SaveSelection      		(IWriter&)=0;
 
     virtual bool		Export          		(LPCSTR path){return true;}
-    virtual bool		ExportGame         		(SExportStreams& F){return FALSE;}
+    virtual bool		ExportGame         		(SExportStreams& F){return true;}
 
     // properties
     virtual void		FillProp          		(LPCSTR pref, PropItemVec& items)=0;
