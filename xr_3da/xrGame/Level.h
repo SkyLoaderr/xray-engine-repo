@@ -26,6 +26,7 @@ class	CSeniorityHierarchyHolder;
 class	CClientSpawnManager;
 class	CGameObject;
 class	CAutosaveManager;
+class	CPHCommander;
 
 DEFINE_VECTOR (SMapLocation*, LOCATIONS_PTR_VECTOR, LOCATIONS_PTR_VECTOR_IT);
 #define DEFAULT_FOV				90.f
@@ -55,6 +56,9 @@ protected:
 	CClientSpawnManager			*m_client_spawn_manager;
 	// autosave manager
 	CAutosaveManager			*m_autosave_manager;
+
+	CPHCommander				*m_ph_commander;
+
 	// level name
 	shared_str					m_name;
 	// Local events
@@ -136,6 +140,7 @@ public:
 	virtual BOOL				net_Start_client		( LPCSTR name );
 	virtual void				net_Update				( );
 
+
 	virtual BOOL				Load_GameSpecific_Before( );
 	virtual BOOL				Load_GameSpecific_After ( );
 	virtual void				Load_GameSpecific_CFORM	( CDB::TRI* T, u32 count );
@@ -178,6 +183,7 @@ public:
 	IC CClientSpawnManager			&client_spawn_manager		();
 	IC CAutosaveManager				&autosave_manager			();
 
+	IC CPHCommander					&ph_commander				();
 	// C/D
 	CLevel();
 	virtual ~CLevel();
@@ -282,6 +288,11 @@ IC	shared_str	CLevel::name	() const
 	return				(m_name);
 }
 
+IC CPHCommander	& CLevel::ph_commander()
+{
+	VERIFY(m_ph_commander);
+	return *m_ph_commander;
+}
 //by Mad Max 
 IC bool					OnServer()	{ return Level().IsServer();				}
 IC bool					OnClient()	{ return Level().IsClient();				}

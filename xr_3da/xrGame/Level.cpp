@@ -48,6 +48,7 @@
 
 #include "level_graph.h"
 
+#include "phcommander.h"
 
 CPHWorld*	ph_world = 0;
 float		g_cl_lvInterp = 0;
@@ -99,7 +100,8 @@ CLevel::CLevel():IPureClient(Device.GetTimerGlobal())
 	m_client_spawn_manager		= xr_new<CClientSpawnManager>();
 
 	m_autosave_manager			= xr_new<CAutosaveManager>();
-
+	
+	m_ph_commander				= xr_new<CPHCommander>();
 #ifdef DEBUG
 	m_bSynchronization			= false;
 #endif	
@@ -173,6 +175,9 @@ CLevel::~CLevel()
 	xr_delete					(m_pBulletManager);
 	//-----------------------------------------------------------
 	xr_delete					(pStatGraph);
+
+	//-----------------------------------------------------------
+	xr_delete					(m_ph_commander);
 	//-----------------------------------------------------------
 	pObjects4CrPr.clear();
 	pActors4CrPr.clear();
@@ -340,7 +345,7 @@ void CLevel::OnFrame	()
 	//Device.Statistic.Scripting.Begin	();
 	ai().script_engine().script_process	("level")->update();
 	//Device.Statistic.Scripting.End		();
-
+	m_ph_commander->update();
 //	autosave_manager().update			();
 
 	//просчитать полет пуль
