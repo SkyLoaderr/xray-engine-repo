@@ -59,7 +59,7 @@ void CDeflector::L_Direct	(CDB::COLLIDER* DB, base_lighting* LightsSelected, HAS
 	
 	// Jitter data
 	Fvector2	JS;
-	JS.set		(.499f/dim.x, .499f/dim.y);
+	JS.set		(.4999f/dim.x, .4999f/dim.y);
 	
 	u32			Jcount;
 	Fvector2*	Jitter;

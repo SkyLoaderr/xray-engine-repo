@@ -156,12 +156,15 @@ void CLightmap::Save()
 		xr_vector<u32>			packed;
 		lm.Pack_hemi			(packed);
 
-		xr_vector<u32>			packed_half(packed.size()/2); 
-
-		u32 w					= lm.width/2;
-		u32 h					= lm.height/2;
+		u32 w					= lm.width;
+		u32 h					= lm.height;
 		u32	pitch				= w*4;
 
+		/*
+		u32 w2					= lm.width/2;
+		u32 h2					= lm.height/2;
+		u32	pitch2				= w2*4;
+		xr_vector<u32>			packed_half(packed.size()/2); 
 		for (u32 y=0; y<lm.height-1; y++){
 			for (u32 x=0; x<lm.width-1; x++){
 				Fcolor p0;		p0.set(packed[y*lm.width+x]);
@@ -176,11 +179,12 @@ void CLightmap::Save()
 				packed_half[y/2*w+x/2] = dest.get();
 			}
 		}
+		*/
 
 		string_path				FN;
 		sprintf					(lm_texture.name,"lmap#%d",lmapNameID			); 
 		sprintf					(FN,"%s%s_2.dds",	pBuild->path,lm_texture.name);
-		BYTE*	raw_data		= LPBYTE(&*packed_half.begin());
+		BYTE*	raw_data		= LPBYTE(&*packed.begin());
 
 		STextureParams fmt;
 		fmt.fmt					= STextureParams::tfDXT1;

@@ -200,6 +200,7 @@ void LightPoint(CDB::COLLIDER* DB, CDB::MODEL* MDL, base_color_c &C, Fvector &P,
 
 	if (0==(flags&LP_dont_rgb))
 	{
+		DB->ray_options	(0);
 		R_Light	*L	= &*lights.rgb.begin(), *E = &*lights.rgb.end();
 		for (;L!=E; L++)
 		{
@@ -273,7 +274,8 @@ void LightPoint(CDB::COLLIDER* DB, CDB::MODEL* MDL, base_color_c &C, Fvector &P,
 	}
 	if (0==(flags&LP_dont_sun))
 	{
-		R_Light	*L	= &*(lights.sun.begin()), *E = &*(lights.sun.end());
+		DB->ray_options	(0);
+		R_Light	*L		= &*(lights.sun.begin()), *E = &*(lights.sun.end());
 		for (;L!=E; L++)
 		{
 			if (L->type==LT_DIRECT) {
@@ -366,11 +368,12 @@ BOOL	__stdcall rms_test	(lm_layer& lm, u32 w, u32 h, u32 rms)
 		imf_Process	(&*pRestored_base.begin(),	lm.width,	lm.height,	&*pScaled_base.begin(),		w,h,imf_filter					);
 		// hemi
 		//.
+		/*
 		if ((lm.width/2>1)&&(lm.height/2>1)){
 			imf_Process	(&*pRestored_hemi.begin(),	lm.width/2,	lm.height/2,&*pOriginal_hemi.begin(),	lm.width,lm.height,		imf_lanczos3	);
 			imf_Process	(&*pOriginal_hemi.begin(),	lm.width,	lm.height,	&*pRestored_hemi.begin(),	lm.width/2,	lm.height/2,imf_filter		);
 		}
-
+		*/
 		imf_Process	(&*pScaled_hemi.begin(),	w,			h,			&*pOriginal_hemi.begin(),	lm.width,lm.height,imf_lanczos3	);
 		imf_Process	(&*pRestored_hemi.begin(),	lm.width,	lm.height,	&*pScaled_hemi.begin(),		w,h,imf_filter					);
 	}catch (...){
