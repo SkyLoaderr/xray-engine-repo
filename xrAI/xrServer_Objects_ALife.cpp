@@ -853,13 +853,20 @@ bool CSE_ALifeObjectPhysic::used_ai_locations	() const
 ////////////////////////////////////////////////////////////////////////////
 CSE_ALifeObjectHangingLamp::CSE_ALifeObjectHangingLamp(LPCSTR caSection) : CSE_ALifeDynamicObjectVisual(caSection), CSE_Abstract(caSection)
 {
-	flags.set					(flPhysic,TRUE);
+	flags.set					(flPhysic,FALSE);
+	flags.set					(flCastShadow,FALSE);
+	flags.set					(flR1,FALSE);
+	flags.set					(flR2,FALSE);
+	flags.set					(flPoint,FALSE);
+
 	spot_range					= 10.f;
 	color						= 0xffffffff;
     brightness					= 1.f;
 	m_health					= 1.f;
 	m_flags.set					(flUseSwitches,false);
 	m_flags.set					(flSwitchOffline,false);
+
+	m_visible_size				= 0.1f;
 }
 
 CSE_ALifeObjectHangingLamp::~CSE_ALifeObjectHangingLamp()
@@ -923,6 +930,11 @@ void CSE_ALifeObjectHangingLamp::STATE_Read	(NET_Packet	&tNetPacket, u16 size)
 		tNetPacket.r_string			(fixed_bones);
 		tNetPacket.r_float			(m_health);
 	}
+
+	if (m_wVersion > 55)
+	{
+		tNetPacket.r_float		(m_visible_size);
+	}
 }
 
 void CSE_ALifeObjectHangingLamp::STATE_Write(NET_Packet	&tNetPacket)
@@ -937,6 +949,7 @@ void CSE_ALifeObjectHangingLamp::STATE_Write(NET_Packet	&tNetPacket)
 	tNetPacket.w_string			(startup_animation);
     tNetPacket.w_string			(fixed_bones);
 	tNetPacket.w_float			(m_health);
+	tNetPacket.w_float			(m_visible_size);
 }
 
 void CSE_ALifeObjectHangingLamp::UPDATE_Read(NET_Packet	&tNetPacket)
@@ -973,17 +986,26 @@ void __fastcall	CSE_ALifeObjectHangingLamp::OnChooseBone(PropValue* sender, AStr
     for (; _I!=_E; ++_I) 		lst.push_back(*_I->first);
 }
 
+
 void CSE_ALifeObjectHangingLamp::FillProp	(LPCSTR pref, PropItemVec& values)
 {
 	inherited::FillProp			(pref,values);
+
+	PHelper.CreateFlag<Flags16>	(values, FHelper.PrepareKey(pref,s_name,"Flags\\Physic"),		&flags,			flPhysic);
+	PHelper.CreateFlag<Flags16>	(values, FHelper.PrepareKey(pref,s_name,"Flags\\Cast shadow"),	&flags,			flCastShadow);
+	PHelper.CreateFlag<Flags16>	(values, FHelper.PrepareKey(pref,s_name,"Flags\\Allow R1"),		&flags,			flR1);
+	PHelper.CreateFlag<Flags16>	(values, FHelper.PrepareKey(pref,s_name,"Flags\\Allow R2"),		&flags,			flR2);
+	PHelper.CreateFlag<Flags16>	(values, FHelper.PrepareKey(pref,s_name,"Flags\\Allow R2"),		&flags,			flPoint);
+
 	PHelper.CreateColor			(values, FHelper.PrepareKey(pref,s_name,"Color"),			&color);
     PHelper.CreateFloat			(values, FHelper.PrepareKey(pref,s_name,"Brightness"),		&brightness,		0.1f, 5.f);
-	PHelper.CreateFlag<Flags16>	(values, FHelper.PrepareKey(pref,s_name,"Physic"),			&flags,				flPhysic);
 	PHelper.CreateChoose		(values, FHelper.PrepareKey(pref,s_name,"Color animator"),	&color_animator, 	smLAnim);
 	PHelper.CreateFloat			(values, FHelper.PrepareKey(pref,s_name,"Range"),			&spot_range,		0.1f, 1000.f);
 	PHelper.CreateFloat			(values, FHelper.PrepareKey(pref,s_name,"Health"),			&m_health,			0.f, 100.f);
+	PHelper.CreateFloat			(values, FHelper.PrepareKey(pref,s_name,"Visble size"),		&m_visible_size,	0.f, 100.f);
+	
 
-    // motions
+	// motions
     if (visual && PSkeletonAnimated(visual))
     {
         RChooseValue* V			= PHelper.CreateChoose	(values,	FHelper.PrepareKey(pref,s_name,"Startup animation"), &startup_animation, smCustom);

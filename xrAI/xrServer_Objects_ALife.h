@@ -257,7 +257,11 @@ SERVER_ENTITY_DECLARE_BEGIN(CSE_ALifeObjectHangingLamp,CSE_ALifeDynamicObjectVis
     void __fastcall					OnChooseBone	(PropValue* sender, AStringVec& lst);
 #endif
     enum{
-        flPhysic					= (1<<0)
+        flPhysic					= (1<<0),
+		flCastShadow				= (1<<1),
+		flR1						= (1<<2),
+		flR2						= (1<<3),
+		flPoint						= (1<<4)
     };
 
     Flags16							flags;
@@ -268,6 +272,7 @@ SERVER_ENTITY_DECLARE_BEGIN(CSE_ALifeObjectHangingLamp,CSE_ALifeDynamicObjectVis
     float							spot_range;
     ref_str							fixed_bones;
     float							m_health;
+	float							m_visible_size;
 
                                     CSE_ALifeObjectHangingLamp	(LPCSTR caSection);
     virtual							~CSE_ALifeObjectHangingLamp	();
