@@ -26,17 +26,17 @@ public:
 class CFS_PathNotificator : public CThread
 {
 private:
-    struct Path{
+    struct Path	{
     	ref_str						FDirectory;
-        HANDLE 						FWaitHandle;
+        void* 						FWaitHandle;
         fastdelegate::FastDelegate0	FChangeEvent;
 		BOOL 						bRecurse;
     };
-    DEFINE_VECTOR(HANDLE,HANDLEVec,HANDLEIt);
-    DEFINE_VECTOR(Path,PathVec,PathIt);
+    DEFINE_VECTOR			(HANDLE,HANDLEVec,HANDLEIt);
+    DEFINE_VECTOR			(Path,PathVec,PathIt);
     PathVec					events;
 public:
-	HANDLE 					FMutex;
+	void* 					FMutex;
 	unsigned 				FNotifyOptionFlags;
 protected:
 	virtual void  			Execute				();
