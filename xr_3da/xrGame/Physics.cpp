@@ -83,16 +83,17 @@ public:
 	}
 };
 /////////////////////////////////////////////////////////////////////////////
-IC void add_contact_body_effector(dBodyID body,dContact& c,float flotation)
+IC void add_contact_body_effector(dBodyID body,const dContact& c,SGameMtl* material)
 {
 	CPHContactBodyEffector* effector=(CPHContactBodyEffector*)dBodyGetData(body);
-
+	dContact _c=c;
+	_c.surface.mode=material->GetID();
 	if(effector)
-		effector->Merge(c,flotation);
+		effector->Merge(_c,material->fFlotationFactor);
 	else
 	{	
 		effector=ContactEffectors.add();
-		effector->Init(body,c,flotation);
+		effector->Init(body,_c,material->fFlotationFactor);
 		dBodySetData(body,(void*)effector);
 	}
 }
@@ -208,7 +209,7 @@ IC static bool CollideIntoGroup(dGeomID o1, dGeomID o2,dJointGroupID jointGroup,
 			{
 				dBodyID body=dGeomGetBody(g2);
 				R_ASSERT2(body,"static - static collision !!!");
-				add_contact_body_effector(body,c,material_1->fFlotationFactor);
+				add_contact_body_effector(body,c,material_1);
 			}
 			if(material_1->Flags.is(SGameMtl::flPassable)) 
 				do_collide=false;
@@ -223,7 +224,7 @@ IC static bool CollideIntoGroup(dGeomID o1, dGeomID o2,dJointGroupID jointGroup,
 
 				dBodyID body=dGeomGetBody(g1);
 				R_ASSERT2(body,"static - static collision !!!");
-				add_contact_body_effector(body,c,material_2->fFlotationFactor);
+				add_contact_body_effector(body,c,material_2);
 			}
 			if(material_2->Flags.is(SGameMtl::flPassable)) 
 				do_collide=false;
