@@ -169,9 +169,11 @@ BOOL IGame_Level::Load				(u32 dwNum)
 	return TRUE;
 }
 
-Shader*		IGame_Level::LL_CreateShader	(int S, int T, int M, int C)
+ref_shader	IGame_Level::LL_CreateShader	(int S, int T, int M, int C)
 {
-	return Device.Shader.Create				(getString(S),getString(T),getString(M),getString(C));
+	ref_shader	temp;
+	temp.create	(getString(S),getString(T),getString(M),getString(C));
+	return		temp;
 }
 
 LPCSTR		IGame_Level::getString			(int id)	

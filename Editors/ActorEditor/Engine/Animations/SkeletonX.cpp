@@ -33,9 +33,9 @@ void CSkeletonX_PM::Copy(IRender_Visual *V)
 	_Copy				((CSkeletonX*)X);
 	indices				= X->indices;
 
-	u32	dwCount			= dwPrimitives*3;
+	u32		dwCount		= dwPrimitives*3;
 	BOOL	bSoft		= HW.Caps.vertex.bSoftware;
-	u32	dwUsage			= D3DUSAGE_WRITEONLY | (bSoft?D3DUSAGE_SOFTWAREPROCESSING:0);
+	u32		dwUsage		= D3DUSAGE_WRITEONLY | (bSoft?D3DUSAGE_SOFTWAREPROCESSING:0);
 	D3DPOOL	dwPool		= bSoft?D3DPOOL_SYSTEMMEM:D3DPOOL_MANAGED;
 	BYTE*	bytes		= 0;
 
@@ -60,7 +60,7 @@ void CSkeletonX_ST::Render	(float LOD)
 {
 	_Render		(hGeom,vCount,dwPrimitives);
 }
-void CSkeletonX::_Render	(SGeometry* hGeom, u32 vCount, u32 pCount)
+void CSkeletonX::_Render	(ref_geom& hGeom, u32 vCount, u32 pCount)
 {
 	u32 vOffset				= cache_vOffset;
 

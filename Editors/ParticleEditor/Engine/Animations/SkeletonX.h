@@ -52,7 +52,7 @@ protected:
 	u32						cache_vOffset;
 	
 	void					_Copy			(CSkeletonX *V);
-	void					_Render			(SGeometry* hGeom, u32 vCount, u32 pCount);
+	void					_Render			(ref_geom& hGeom, u32 vCount, u32 pCount);
 	void					_Release		();
 	void					_Load			(const char* N, IReader *data, u32& dwVertCount);
 public:

@@ -312,7 +312,7 @@ BOOL CWeaponRPG7Grenade::net_Spawn(LPVOID DC)
 
 void CWeaponRPG7Grenade::FragWallmark	(const Fvector& vDir, const Fvector &vEnd, Collide::ray_query& R) 
 {
-	if (0==hWallmark())	return;
+	if (0==hWallmark)	return;
 	
 	if (R.O) {
 		if (R.O->CLS_ID==CLSID_ENTITY)
@@ -328,7 +328,7 @@ void CWeaponRPG7Grenade::FragWallmark	(const Fvector& vDir, const Fvector &vEnd,
 	} else {
 		R_ASSERT(R.element >= 0);
 		::Render->add_Wallmark	(
-			hWallmark(),
+			hWallmark,
 			vEnd,
 			fWallmarkSize,
 			g_pGameLevel->ObjectSpace.GetStaticTris()+R.element/**/);

@@ -23,7 +23,7 @@ CUIStaticItem::~CUIStaticItem()
 
 void CUIStaticItem::CreateShader(LPCSTR tex, LPCSTR sh)
 {
-	if (0==hShader())	hShader.create	(sh,tex);
+	if (!hShader)	hShader.create	(sh,tex);
 }
 
 void CUIStaticItem::Init(LPCSTR tex, LPCSTR sh, int left, int top, u32 align)
@@ -33,10 +33,10 @@ void CUIStaticItem::Init(LPCSTR tex, LPCSTR sh, int left, int top, u32 align)
 	SetAlign		(align);
 }
 
-void CUIStaticItem::Render(Shader* sh)
+void CUIStaticItem::Render		(ref_shader& sh)
 {
 	// установить обязательно перед вызовом CustomItem::Render() !!!
-	RCache.set_Shader			(sh?sh:hShader());
+	RCache.set_Shader			(sh?sh:hShader);
 	// convert&set pos
 	Ivector2		bp;
 	HUD().ClientToScreenScaled	(bp,iPos.x,iPos.y,uAlign);
@@ -83,10 +83,10 @@ void CUIStaticItem::Render(Shader* sh)
 	RCache.Render			(D3DPT_TRIANGLELIST,vOffset,0,v_cnt,0,v_cnt/2);
 }
 //--------------------------------------------------------------------
-void CUIStaticItem::Render(float angle, Shader* sh)
+void CUIStaticItem::Render(float angle, ref_shader& sh)
 {
 	// установить обязательно перед вызовом CustomItem::Render() !!!
-	RCache.set_Shader		(sh?sh:hShader());
+	RCache.set_Shader			(sh?sh:hShader);
 	// convert&set pos
 	Ivector2		bp;
 	HUD().ClientToScreenScaled	(bp,iPos.x,iPos.y,uAlign);

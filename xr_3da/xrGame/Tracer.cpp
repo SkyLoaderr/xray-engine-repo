@@ -49,7 +49,7 @@ void	CTracer::Render	()
 	if (bullets.empty())	return;
 	
 	u32	vOffset;
-	FVF::V	*verts		=	(FVF::V	*) RCache.Vertex.Lock((u32)bullets.size()*4,sh_Geom()->vb_stride,vOffset);
+	FVF::V	*verts		=	(FVF::V	*) RCache.Vertex.Lock((u32)bullets.size()*4,sh_Geom->vb_stride,vOffset);
 	FVF::V	*start		=	verts;
 	float	dt			=	Device.fTimeDelta;
 
@@ -93,7 +93,7 @@ void	CTracer::Render	()
 	}
 
 	u32 vCount					= (u32)(verts-start);
-	RCache.Vertex.Unlock	(vCount,sh_Geom()->vb_stride);
+	RCache.Vertex.Unlock		(vCount,sh_Geom->vb_stride);
 	
 	if (vCount)	{
 		HW.pDevice->SetRenderState	(D3DRS_CULLMODE,D3DCULL_NONE);

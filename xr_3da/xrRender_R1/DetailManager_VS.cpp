@@ -179,7 +179,7 @@ void	CDetailManager::hw_Render_dump	(R_constant* x_array, u32 var_id, u32 lod_id
 		if (!vis.empty())
 		{
 			// Setup matrices + colors (and flush it as nesessary)
-			RCache.set_Element			(Object.shader()->E[lod_id]);
+			RCache.set_Element			(Object.shader->E[lod_id]);
 
 			u32 dwBatch	= 0;
 			for (u32 item = 0; item<vis.size(); item++)

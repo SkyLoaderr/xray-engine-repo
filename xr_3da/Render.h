@@ -153,8 +153,8 @@ public:
 	virtual void					set_Object				(IRenderable*		O	)		= 0;
 	virtual void					add_Visual				(IRender_Visual*	V	)		= 0;	// add visual leaf	(no culling performed at all)
 	virtual void					add_Geometry			(IRender_Visual*	V	)		= 0;	// add visual(s)	(all culling performed)
-	virtual void					add_Patch				(Shader* S, const Fvector& P, float s, float a, BOOL bNearer)	= 0;
-	virtual void					add_Wallmark			(Shader* S, const Fvector& P, float s, CDB::TRI* T)				= 0;
+	virtual void					add_Patch				(ref_shader& S, const Fvector& P, float s, float a, BOOL bNearer)	= 0;
+	virtual void					add_Wallmark			(ref_shader& S, const Fvector& P, float s, CDB::TRI* T)				= 0;
 
 	virtual IBlender*				blender_create			(CLASS_ID cls)							= 0;
 	virtual void					blender_destroy			(IBlender* &)							= 0;

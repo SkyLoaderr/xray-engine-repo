@@ -33,8 +33,8 @@ CUIWeapon::~CUIWeapon()
 void CUIWeapon::Render()
 {
 	back.Render		();
-	if (cur_shader()) 
-		weapon.Render(cur_shader());
+	if (cur_shader) 
+		weapon.Render(cur_shader);
 }
 //--------------------------------------------------------------------
 void CUIWeapon::Out(CWeapon* W){

@@ -120,7 +120,7 @@ void CObjectSpace::dbgRender()
 {
 	R_ASSERT(bDebug);
 
-	RCache.set_Shader(sh_debug());
+	RCache.set_Shader(sh_debug);
 	for (u32 i=0; i<q_debug.boxes.size(); i++)
 	{
 		Fobb&		obb		= q_debug.boxes[i];

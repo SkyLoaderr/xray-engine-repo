@@ -64,7 +64,7 @@ void CGlowManager::Unload	()
 }
 
 IC bool glow_compare(CGlow* g1, CGlow *g2)
-{	return g1->hShader() < g2->hShader(); }
+{	return g1->hShader < g2->hShader; }
 
 void CGlowManager::add(xr_vector<WORD> &V)
 {
@@ -146,7 +146,7 @@ void CGlowManager::Render()
 		float		dlim2	= MAX_GlowsDist2;
 		for (;pos<Selected_Count;) 
 		{
-			T		= Selected[pos]->hShader();
+			T		= Selected[pos]->hShader;
 			count	= 0;
 			while	((pos+count<Selected_Count) && (Selected[pos+count]->hShader()==T)) count++;
 			

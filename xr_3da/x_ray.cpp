@@ -342,8 +342,8 @@ void CApplication::LoadTitle	(char *S, char *S2)
 
 void CApplication::LoadSwitch()
 {
-	if (ll_hLogo() == ll_hLogo1())	ll_hLogo = ll_hLogo2;
-	else							ll_hLogo = ll_hLogo1;
+	if (ll_hLogo == ll_hLogo1)	ll_hLogo = ll_hLogo2;
+	else						ll_hLogo = ll_hLogo1;
 }
 
 void CApplication::OnFrame	( )

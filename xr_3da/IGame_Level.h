@@ -71,7 +71,7 @@ public:
 	void						SetEntity				( CObject* O  )							{ pCurrentEntity=pCurrentViewEntity=O; }
 
 	// Loader interface
-	Shader*						LL_CreateShader			(int S, int T, int M, int C);
+	ref_shader					LL_CreateShader			(int S, int T, int M, int C);
 	void						LL_CheckTextures		();
 };
 

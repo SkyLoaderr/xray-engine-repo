@@ -22,8 +22,8 @@ public:
 	virtual			~CUIStaticItem	();
 	void			Init			(LPCSTR tex, LPCSTR sh, int left, int top, u32 align);
 	void			CreateShader	(LPCSTR tex, LPCSTR sh);
-	void			Render			(Shader* sh=0);
-	void			Render			(float angle, Shader* sh=0);
+	void			Render			(ref_shader& sh=ref_shader(0));
+	void			Render			(float angle, ref_shader& sh=ref_shader(0));
 	
 	IC void			SetTile			(int tile_x, int tile_y, int rem_x, int rem_y){iTileX=tile_x;iTileY=tile_y;iRemX=rem_x;iRemY=rem_y;}
 	IC void			SetPos			(int left, int top)			{iPos.set(left,top);}

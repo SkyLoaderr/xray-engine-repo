@@ -27,8 +27,8 @@
 
 #define GAMEMTL_SUBITEM_COUNT			4
 
-#define GAMEMTL_NONE		u32(-1)
-#define GAMEMTL_FILENAME	"gamemtl.xr"
+#define GAMEMTL_NONE					u32(-1)
+#define GAMEMTL_FILENAME				"gamemtl.xr"
 
 #ifdef _EDITOR
 #define GM_NON_GAME
@@ -51,10 +51,11 @@
 	class CPS;
 	DEFINE_SVECTOR(ref_sound,GAMEMTL_SUBITEM_COUNT,SoundSVec4,SoundS4It);
 	DEFINE_SVECTOR(CPS*,GAMEMTL_SUBITEM_COUNT,PSSVec4,PSS4It);
-	DEFINE_SVECTOR(Shader*,GAMEMTL_SUBITEM_COUNT,ShaderSVec4,ShaderS4It);
+	DEFINE_SVECTOR(ref_shader,GAMEMTL_SUBITEM_COUNT,ShaderSVec4,ShaderS4It);
 #endif
 
-struct SGameMtl{
+struct SGameMtl
+{
 	friend class CGameMtlLibrary;
 protected:
 	int 				ID; 	// auto number
