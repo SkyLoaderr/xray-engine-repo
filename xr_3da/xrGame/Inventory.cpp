@@ -359,6 +359,12 @@ bool CInventory::Action(s32 cmd, u32 flags)
 											return true;
 	switch(cmd) 
 	{
+	case kWPN_1:
+	case kWPN_2:
+	case kWPN_3:
+	case kWPN_4:
+	case kWPN_5:
+	case kWPN_6:
        {
 			if(flags&CMD_START)
 			{
