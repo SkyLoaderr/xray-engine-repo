@@ -454,9 +454,12 @@ void CCustomZone::feel_touch_new(CObject* O)
 	m_ObjectInfoMap[O] = object_info;
 	
 
-	PlayEntranceParticles(pGameObject);
-	PlayObjectIdleParticles(pGameObject);
-}
+	if (IsEnabled())
+	{
+		PlayEntranceParticles(pGameObject);
+		PlayObjectIdleParticles(pGameObject);
+	};
+};
 
 void CCustomZone::feel_touch_delete(CObject* O) 
 {
