@@ -132,7 +132,7 @@ BOOL CGameObject::net_Spawn		(LPVOID	DC)
 			Fvector				nPos	= Position();
 			int node					= getAI().q_LoadSearch(nPos);
 
-			if (node<0)			{
+			if (node<=0)			{
 				Msg					("! ERROR: AI node not found for object '%s'. (%f,%f,%f)",cName(),nPos.x,nPos.y,nPos.z);
 				AI_NodeID			= u32(-1);
 				AI_Node				= NULL;
