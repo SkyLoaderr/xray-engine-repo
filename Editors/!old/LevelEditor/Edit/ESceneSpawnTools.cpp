@@ -21,14 +21,20 @@ void __stdcall  FillSpawnItems	(ChooseItemVec& lst, void* param)
 	LPCSTR gcs					= (LPCSTR)param;
     ObjectList objects;
     Scene->GetQueryObjects		(objects,OBJCLASS_SPAWNPOINT,-1,-1,-1);
-    for (ObjectIt it=objects.begin(); it!=objects.end(); it++)
-        if ((*it)->OnChooseQuery(gcs))	lst.push_back(SChooseItem((*it)->Name,""));
+    
+    std::string itm;
+    int cnt 					= _GetItemCount(gcs);
+    for (int k=0; k<cnt; k++){
+        _GetItem				(gcs,k,itm);
+        for (ObjectIt it=objects.begin(); it!=objects.end(); it++)
+            if ((*it)->OnChooseQuery(itm.c_str()))	lst.push_back(SChooseItem((*it)->Name,""));
+    }
 }
 
 ESceneSpawnTools::ESceneSpawnTools	():ESceneCustomOTools(OBJCLASS_SPAWNPOINT)
 {
 	m_Flags.zero();
-    TfrmChoseItem::AppendEvents	(smSpawnItem,		"Select Spawn Item",		FillSpawnItems,		0,false);
+    TfrmChoseItem::AppendEvents	(smSpawnItem,		"Select Spawn Item",		FillSpawnItems,		0,0,0);
 
     hXRSE_FACTORY	= LoadLibrary(xrse_factory_library);									VERIFY3(hXRSE_FACTORY,"Can't load library:",xrse_factory_library);
     create_entity 	= (Tcreate_entity)	GetProcAddress(hXRSE_FACTORY,create_entity_func);  	VERIFY3(create_entity,"Can't find func:",create_entity_func);
