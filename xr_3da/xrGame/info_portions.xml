@@ -15,8 +15,20 @@
 		<dialog>trader_job</dialog>
 		<dialog>trader_talk_about</dialog>
 		<dialog>stalker_talk_about</dialog>
+	</info_portion>
+
+	<info_portion id="actor_start01">
+		<text>Спаси меня... меня тяжело ранил патруль... мне нужна аптечка...</text> 
+		<location >
+			<level>0</level>
+			<object>wounded_stalker_0_1</object>
+			<icon name="unknown" x="2" y="2" width="1" height="1"></icon>
+			<text>аптечку...</text>
+		</location>
+		<!-- список диалогов, который может инициировать InfoPortion -->
 		<dialog>job_medkit</dialog>
 	</info_portion>
+
 
 	<info_portion id="actor_start02">
 		<location >
