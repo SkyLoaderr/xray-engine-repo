@@ -16,6 +16,10 @@ private:
 		float	fSpeed;
 		float	fLifetime;
 	};
+	struct	Particle
+	{
+		F
+	};
 	enum	States
 	{
 		stIdle		= 0,

@@ -29,7 +29,9 @@ CPSVisual::~CPSVisual(){
 }
 //----------------------------------------------------
 
-void CPSVisual::Copy(FBasicVisual* pFrom){
+void CPSVisual::Copy(FBasicVisual* pFrom)
+{
+	Device.Fatal("Can't duplicate particle system - NOT IMPLEMENTED");
 }
 //----------------------------------------------------
 
@@ -38,8 +40,8 @@ void CPSVisual::Copy(FBasicVisual* pFrom){
 // 
 void CPSVisual::Update(DWORD dt)
 {
-	float fTime = Device.fTimeGlobal;
-	float dT = float(dt)/1000.f;
+	float fTime		= Device.fTimeGlobal;
+	float dT		= float(dt)/1000.f;
 	
 	// update visual params
 	bv_Position.set	(m_Emitter->m_Position);
