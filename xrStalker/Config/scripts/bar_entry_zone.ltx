@@ -1,16 +1,5 @@
 [logic]
-active = walker
+active = sr_idle
 
-
-[walker]
-path_walk = barman_walk
-path_look = barman_look
-def_state_standing = barman_wait
-def_state_moving1 = barman_walk
-def_state_moving2 = barman_walk
-def_state_moving3 = barman_walk
-
-[spawn]
-bread
-vodka
-kolbasa
+[sr_idle]
+on_actor_inside = nil %+bar_bar_square_1_state_1%
