@@ -18,8 +18,7 @@ CEditableMesh::~CEditableMesh(){
 void CEditableMesh::Construct()
 {
 	m_Box.set	(0,0,0,0,0,0);
-    m_Visible	= 1;
-    m_Locked	= 0;
+	m_Flags.set	(flVisible);
     m_Name[0]	= 0;
     m_LoadState.zero();
 #ifdef _EDITOR

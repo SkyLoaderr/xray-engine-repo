@@ -12,8 +12,8 @@
 //----------------------------------------------------
 #define EMESH_CHUNK_VERSION	        	0x1000
 #define EMESH_CHUNK_MESHNAME        	0x1001
-#define EMESH_CHUNK_VISIBLE	        	0x1002
-#define EMESH_CHUNK_LOCKED	        	0x1003
+#define EMESH_CHUNK_FLAGS	        	0x1002
+#define EMESH_CHUNK_NOT_USED_0        	0x1003
 #define EMESH_CHUNK_BBOX	        	0x1004
 #define EMESH_CHUNK_VERTS	        	0x1005
 #define EMESH_CHUNK_FACES	        	0x1006
@@ -35,8 +35,7 @@ void CEditableMesh::SaveMesh(IWriter& F){
 	F.close_chunk   ();
 
 	F.w_chunk		(EMESH_CHUNK_BBOX,&m_Box, sizeof(m_Box));
-	F.w_chunk		(EMESH_CHUNK_VISIBLE,&m_Visible,1);
-	F.w_chunk		(EMESH_CHUNK_LOCKED,&m_Locked,1);
+	F.w_chunk		(EMESH_CHUNK_FLAGS,&m_Flags,1);
 	F.w_chunk		(EMESH_CHUNK_BOP,&m_Ops, sizeof(m_Ops));
 
 	F.open_chunk	(EMESH_CHUNK_VERTS);
@@ -106,8 +105,7 @@ bool CEditableMesh::LoadMesh(IReader& F){
 	F.r_stringZ		(m_Name);
 
     R_ASSERT(F.r_chunk(EMESH_CHUNK_BBOX,&m_Box));
-    R_ASSERT(F.r_chunk(EMESH_CHUNK_VISIBLE,&m_Visible));
-    R_ASSERT(F.r_chunk(EMESH_CHUNK_LOCKED,&m_Locked));
+    R_ASSERT(F.r_chunk(EMESH_CHUNK_FLAGS,&m_Flags));
     F.r_chunk(EMESH_CHUNK_BOP,&m_Ops);
 
     R_ASSERT(F.find_chunk(EMESH_CHUNK_VERTS));

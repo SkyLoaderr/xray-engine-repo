@@ -188,8 +188,12 @@ class CEditableMesh {
     void			UnloadSVertices  	();
 
     // internal variables
-    u8			m_Visible;
-    u8			m_Locked;
+	enum{
+		flVisible	= (1<<0),
+		flLocked	= (1<<1),
+		flSGMask	= (1<<2),
+	};
+	Flags8			m_Flags;
 public:
 	st_MeshOptions	m_Ops;
 
@@ -240,8 +244,8 @@ public:
 	CSurface*		GetSurfaceByFaceID		(u32 fid);
 	void			GetFaceTC				(u32 fid, const Fvector2* tc[3]);
 	void			GetFacePT				(u32 fid, const Fvector* pt[3]);
-	IC BOOL 		Visible					(){return m_Visible; }
-	IC void 		Show					(bool bVisible){m_Visible=bVisible;}
+	IC BOOL 		Visible					(){return m_Flags.is(flVisible); }
+	IC void 		Show					(BOOL bVisible){m_Flags.set(flVisible,bVisible);}
 
     // mesh modify routine
 	void            CloneFrom				(CEditableMesh *source);
