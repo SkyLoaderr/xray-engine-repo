@@ -81,8 +81,8 @@ void Startup				()
 	xr_delete					( pSettings		);
 
 	Console.Destroy				( );
-	Engine.Destroy				( );
 	Device.Destroy				( );
+	Engine.Destroy				( );
 }
 
 WORD getFPUsw() 
