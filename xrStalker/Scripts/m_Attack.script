@@ -3,21 +3,21 @@
 class "stateAttack"
 function stateAttack:__init( script_name, mem )
     self.scr_name   = script_name
-	self.memory     = mem
+  self.memory     = mem
     self.enemy      = nil
 end
 
 --------------------------------------------------------------------------------
 
 function stateAttack:initialize()
-	self.memory.npc:script( true, self.scr_name )
+  self.memory.npc:script( true, self.scr_name )
     self.enemy = self.memory.enemy
 end
 
 --------------------------------------------------------------------------------
 
 function stateAttack:finalize()
-	self.memory.npc:script( false, self.scr_name )
+  self.memory.npc:script( false, self.scr_name )
 end
 
 --------------------------------------------------------------------------------
@@ -25,30 +25,30 @@ end
 function stateAttack:execute()
 --    printf( "stateAttack executed" )
 
-	self:testing()
+  self:testing()
 
-	if( self.memory.npc:action() == nil ) then
-    	action( self.memory.npc, act( act.attack, self.enemy ), cond( cond.time_end, 100000 ) )
+  if( self.memory.npc:action() == nil ) then
+      action( self.memory.npc, act( act.attack, self.enemy ), cond( cond.time_end, 100000 ) )
     end
 end
 
 --------------------------------------------------------------------------------
 
 function stateAttack:testing()
-	--Проверяем, не поменялся ли враг
-	if( self.enemy ) then
-    	if( self.memory.enemy == nil ) then
-        	self.enemy = nil
+  --Проверяем, не поменялся ли враг
+  if( self.enemy ) then
+      if( self.memory.enemy == nil ) then
+          self.enemy = nil
             return
         end
         if( self.enemy:id() ~= self.memory.enemy:id() ) then
-        	self.enemy = self.memory.enemy
+          self.enemy = self.memory.enemy
             printf( "New enemy  %d  Time  %d ", self.enemy:id(), device():time_global() )
             self:update()
         end
     else
-    	if( self.memory.enemy ) then
-        	self.enemy = self.memory.enemy
+      if( self.memory.enemy ) then
+          self.enemy = self.memory.enemy
             self:update()
         end
     end
@@ -70,7 +70,7 @@ end
 --------------------------------------------------------------------------------
 
 function stateAttack:update()
-	reset_action( self.memory.npc, self.scr_name )
+  reset_action( self.memory.npc, self.scr_name )
 end
 
 --------------------------------------------------------------------------------
@@ -109,30 +109,30 @@ function stateAttackThreaten:execute()
     self:testing()
 
     if( self.memory.npc:action() == nil ) then
-		if(self.memory.hit.time ~= 0) then
+    if(self.memory.hit.time ~= 0) then
         --If hit, attack enemy
-        	action(self.memory.npc, act(act.attack, self.memory.enemy), cond(cond.time_end, 20000))
-        	return
+          action(self.memory.npc, act(act.attack, self.memory.enemy), cond(cond.time_end, 20000))
+          return
         end
 
-		if(distance_between(self.memory.npc, self.memory.enemy) > 5) then
-		--If enemy near, retreat
-        	action(self.memory.npc, anim(anim.turn, 0), look(look.point, self.enemy:position()), cond(cond.look_end) )
-        	action(self.memory.npc, anim(anim.attack, 0), look(look.point, self.enemy:position()), sound(sound.growling), cond(cond.time_end, 1000))
-			escape_bobic.bobik_alarm()
+    if(distance_between(self.memory.npc, self.memory.enemy) > 5) then
+    --If enemy near, retreat
+          action(self.memory.npc, anim(anim.turn, 0), look(look.point, self.enemy:position()), cond(cond.look_end) )
+          action(self.memory.npc, anim(anim.attack, 0), look(look.point, self.enemy:position()), sound(sound.growling), cond(cond.time_end, 1000))
+      escape_bobic.bobik_alarm()
         else
---			local new_pos = self.memory.npc:position()
+--      local new_pos = self.memory.npc:position()
 --            new_pos:sub( self.memory.enemy:position():sub(self.memory.npc:position()):mul(10) )
-			local dir = self.memory.npc:position():sub(self.memory.enemy:position())
+      local dir = self.memory.npc:position():sub(self.memory.enemy:position())
 
-			local l_v = level.vertex_in_direction(self.memory.npc:level_vertex_id(), dir, 10)
+      local l_v = level.vertex_in_direction(self.memory.npc:level_vertex_id(), dir, 10)
             if(l_v == self.memory.npc:level_vertex_id()) then
-            	dir.x = - dir.x
+              dir.x = - dir.x
                 dir.z = - dir.z
                 l_v = level.vertex_in_direction(self.memory.npc:level_vertex_id(), dir, 30)
             end
 
-			action(self.memory.npc, move(move.run_fwd, level.vertex_position(l_v)), sound(sound.attack, 500), cond(cond.move_end, 3000))
+      action(self.memory.npc, move(move.run_fwd, level.vertex_position(l_v)), sound(sound.attack, 500), cond(cond.move_end, 3000))
         end
     end
 end
@@ -140,8 +140,9 @@ end
 
 class "stateAttackArtful" ( stateAttack )
 function stateAttackArtful:__init( script_name, mem, way_o ) super( script_name, mem, way_o )
-	self.way  		  = patrol(way_o)
-    self.time 		  = 0
+    printf( "111111111111111  name = %s", way_o )
+    self.way        = patrol(way_o)
+    self.time       = 0
     self.attack_actor = false
     self.angry        = false
 end
@@ -152,8 +153,8 @@ function stateAttackArtful:initialize()
     self.time         = 0
     self.memory.npc:script( true, self.scr_name )
     self.enemy        = self.memory.enemy
-	if(level.actor() and level.actor():id() == self.enemy:id()) then
-    	self.attack_actor = true
+  if(level.actor() and level.actor():id() == self.enemy:id()) then
+      self.attack_actor = true
     end
     self.angry        = false
 end
@@ -171,8 +172,8 @@ function stateAttackArtful:execute()
 
     self:testing()
 
-	if(self.attack_actor) then
-    	self:actor()
+  if(self.attack_actor) then
+      self:actor()
         return
     end
 
@@ -192,10 +193,10 @@ function stateAttackArtful:testing()
         end
         if( self.enemy:id() ~= self.memory.enemy:id() ) then
             self.enemy = self.memory.enemy
-			if(level.actor() and self.enemy:id() == level.actor():id())then
-    			self.attack_actor = true
+      if(level.actor() and self.enemy:id() == level.actor():id())then
+          self.attack_actor = true
             else
-           	    self.attack_actor = false
+                 self.attack_actor = false
             end
             printf( "New enemy  %d  Time  %d ", self.enemy:id(), device():time_global() )
             self:update()
@@ -217,67 +218,67 @@ end
 --------------------------------------------------------------------------------
 
 function stateAttackArtful:check_complited()
-	if(self.attack_actor)then
+  if(self.attack_actor)then
         --Если атакуем актера, то конец состояния если актер мертв, либо долго сидим на нычке
         if(level.actor():alive() == false) then
-       		return true
-       	end
+           return true
+         end
 
-		if(self.time ~= 0 and self.angry == false and device():time_global() > self.time + 40000)then
-			printf( "completed. Device time = %d  nedd time = %d", device():time_global(), self.time + 40000 )
-        	return true
+    if(self.time ~= 0 and self.angry == false and device():time_global() > self.time + 40000)then
+      printf( "completed. Device time = %d  nedd time = %d", device():time_global(), self.time + 40000 )
+          return true
         end
     else
-    	return ( self.memory.enemy == nil )
+      return ( self.memory.enemy == nil )
     end
 end
 
 --------------------------------------------------------------------------------
 
 function stateAttackArtful:actor()
-	if(self.angry)then
-	--Если злые, то атакуем актера
-    	if(self.memory.npc:action() == nil) then
-        	action(self.memory.npc, act(act.attack, level.actor()), cond(cond.time_end, 30000) )
+  if(self.angry)then
+  --Если злые, то атакуем актера
+      if(self.memory.npc:action() == nil) then
+          action(self.memory.npc, act(act.attack, level.actor()), cond(cond.time_end, 30000) )
         end
-    	return
+      return
     end
 
-	if(self.memory.npc:position():distance_to(self.way:point(0)) > 3) then
-	--Далеко от точки-нычки
+  if(self.memory.npc:position():distance_to(self.way:point(0)) > 3) then
+  --Далеко от точки-нычки
         if(self.memory.npc:action() == nil) then
-        	action(self.memory.npc, move(move.run_fwd, self.way), sound(sound.idle), cond(cond.move_end))
+          action(self.memory.npc, move(move.run_fwd, self.way), sound(sound.idle), cond(cond.move_end))
             printf( "Attack ____________________________________________________________" )
         end
     else
-	--Сидим, если видим актера, то атакуем, также атакуем если получили хит, или слышим рядом звук
---		printf("device_time = %d  hit_time = %d", device():time_global(), self.memory.hit.time + 3000)
+  --Сидим, если видим актера, то атакуем, также атакуем если получили хит, или слышим рядом звук
+--    printf("device_time = %d  hit_time = %d", device():time_global(), self.memory.hit.time + 3000)
 --        if( distance_between(self.memory.npc, level.actor() ) then
         if(device():time_global() < self.memory.hit.time + 2000) then
-			--Получили хит, атакуем
+      --Получили хит, атакуем
             self.angry = true
             self:update()
             return
-		end
+    end
 
         if(device():time_global() < (self.memory.hit.time + 2000) and self.memory.sound.who ~= nil and self.memory.sound.who:id() == level.actor():id()) then
-			--Услышали звук, атакуем.
+      --Услышали звук, атакуем.
             self.angry = true
             self:update()
             return
         end
 
         if(self.memory.npc:see(level.actor()) )then
-			self.angry = true
+      self.angry = true
             self:update()
         else
-        	if(self.memory.npc:action() == nil) then
-            	action(self.memory.npc, anim(anim.sit_idle, 0), cond(cond.time_end, 30000) )
+          if(self.memory.npc:action() == nil) then
+              action(self.memory.npc, anim(anim.sit_idle, 0), cond(cond.time_end, 30000) )
             end
         end
         --Запоминаем время. Как оно истечет, то возвращаемся назад, если актер не подошел
         if(self.time == 0) then
-        	self.time = device():time_global()
+          self.time = device():time_global()
         end
     end
 end
