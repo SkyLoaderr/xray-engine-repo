@@ -22,7 +22,7 @@
 //fog over the map
 #include "LevelFogOfWar.h"
 #include "ai_script_processor.h"
-#include "xrXMLParser.h"
+#include "ui\\xrXMLParser.h"
 
 CPHWorld*	ph_world = 0;
 
