@@ -1430,3 +1430,33 @@ LPCSTR CScriptGameObject::out_restrictions	()
 	}
 	return									(*restricted_object->out_restrictions());
 }
+
+bool CScriptGameObject::accessible_position	(const Fvector &position)
+{
+	CRestrictedObject	*restricted_object = dynamic_cast<CRestrictedObject*>(m_tpGameObject);
+	if (!restricted_object) {
+		ai().script_engine().script_log		(ScriptStorage::eLuaMessageTypeError,"CRestrictedObject : cannot access class member accessible!");
+		return								(false);
+	}
+	return									(restricted_object->accessible(position));
+}
+
+bool CScriptGameObject::accessible_vertex_id(u32 level_vertex_id)
+{
+	CRestrictedObject	*restricted_object = dynamic_cast<CRestrictedObject*>(m_tpGameObject);
+	if (!restricted_object) {
+		ai().script_engine().script_log		(ScriptStorage::eLuaMessageTypeError,"CRestrictedObject : cannot access class member accessible!");
+		return								(false);
+	}
+	return									(restricted_object->accessible(level_vertex_id));
+}
+
+u32	 CScriptGameObject::accessible_nearest	(const Fvector &position, Fvector &result)
+{
+	CRestrictedObject	*restricted_object = dynamic_cast<CRestrictedObject*>(m_tpGameObject);
+	if (!restricted_object) {
+		ai().script_engine().script_log		(ScriptStorage::eLuaMessageTypeError,"CRestrictedObject : cannot access class member accessible!");
+		return								(u32(-1));
+	}
+	return									(restricted_object->accessible_nearest(position,result));
+}

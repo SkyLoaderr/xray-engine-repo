@@ -27,6 +27,7 @@ protected:
 	CActionPlannerAction	*m_death_planner;
 	CActionPlannerAction	*m_alife_planner;
 	CActionPlannerAction	*m_combat_planner;
+	CActionPlannerAction	*m_anomaly_planner;
 
 protected:
 #ifdef DEBUG

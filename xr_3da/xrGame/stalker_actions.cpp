@@ -95,11 +95,13 @@ CStalkerActionFreeNoALife::CStalkerActionFreeNoALife	(CAI_Stalker *object, LPCST
 
 void CStalkerActionFreeNoALife::initialize	()
 {
+	inherited::initialize			();
 	m_stop_weapon_handling_time		= Level().timeServer() + ::Random.randI(120000,180000);
 }
 
 void CStalkerActionFreeNoALife::finalize	()
 {
+	inherited::finalize				();
 	m_object->set_sound_mask		(u32(eStalkerSoundMaskNoHumming));
 	m_object->set_sound_mask		(0);
 }
@@ -1696,6 +1698,7 @@ CStalkerActionSquad::CStalkerActionSquad	(CAI_Stalker *object, LPCSTR action_nam
 
 void CStalkerActionSquad::initialize		()
 {
+	inherited::initialize	();
 	VERIFY					(m_object->agent_manager().member(m_object).order_type() == AgentManager::eOrderTypeAction);
 	m_object->CSSetupManager::clear();
 	m_object->CSSetupManager::add_action(0,xr_new<CSetupAction>(m_object->agent_manager().member(m_object).action()));
@@ -1709,5 +1712,86 @@ void CStalkerActionSquad::execute			()
 
 void CStalkerActionSquad::finalize			()
 {
+	inherited::finalize		();
 	m_object->CSSetupManager::clear();
+}
+
+//////////////////////////////////////////////////////////////////////////
+// CStalkerActionGetOutOfAnomaly
+//////////////////////////////////////////////////////////////////////////
+
+CStalkerActionGetOutOfAnomaly::CStalkerActionGetOutOfAnomaly	(CAI_Stalker *object, LPCSTR action_name) :
+	inherited				(object,action_name)
+{
+}
+
+void CStalkerActionGetOutOfAnomaly::initialize	()
+{
+	inherited::initialize	();
+	m_object->set_sound_mask(u32(eStalkerSoundMaskNoHumming));
+}
+
+void CStalkerActionGetOutOfAnomaly::finalize	()
+{
+	inherited::finalize		();
+	m_object->set_sound_mask(0);
+}
+
+void CStalkerActionGetOutOfAnomaly::execute	()
+{
+	inherited::execute		();
+
+	m_object->set_level_dest_vertex	(m_object->level_vertex_id());
+	m_object->set_node_evaluator	(0);
+	m_object->set_path_evaluator	(0);
+	m_object->set_desired_position	(&m_object->Position());
+	m_object->set_desired_direction	(0);
+	m_object->set_path_type			(MovementManager::ePathTypeLevelPath);
+	m_object->set_detail_path_type	(DetailPathManager::eDetailPathTypeSmooth);
+	m_object->set_body_state		(eBodyStateStand);
+	m_object->set_movement_type		(eMovementTypeWalk);
+	m_object->set_mental_state		(eMentalStateDanger);
+
+	m_object->CSightManager::setup		(SightManager::eSightTypeCurrentDirection);
+	m_object->CObjectHandler::set_goal	(eObjectActionIdle);
+}
+
+//////////////////////////////////////////////////////////////////////////
+// CStalkerActionDetectAnomaly
+//////////////////////////////////////////////////////////////////////////
+
+CStalkerActionDetectAnomaly::CStalkerActionDetectAnomaly	(CAI_Stalker *object, LPCSTR action_name) :
+	inherited				(object,action_name)
+{
+}
+
+void CStalkerActionDetectAnomaly::initialize	()
+{
+	inherited::initialize	();
+	m_object->set_sound_mask(u32(eStalkerSoundMaskNoHumming));
+}
+
+void CStalkerActionDetectAnomaly::finalize	()
+{
+	inherited::finalize		();
+	m_object->set_sound_mask(0);
+}
+
+void CStalkerActionDetectAnomaly::execute	()
+{
+	inherited::execute		();
+
+	m_object->set_level_dest_vertex	(m_object->level_vertex_id());
+	m_object->set_node_evaluator	(0);
+	m_object->set_path_evaluator	(0);
+	m_object->set_desired_position	(&m_object->Position());
+	m_object->set_desired_direction	(0);
+	m_object->set_path_type			(MovementManager::ePathTypeLevelPath);
+	m_object->set_detail_path_type	(DetailPathManager::eDetailPathTypeSmooth);
+	m_object->set_body_state		(eBodyStateStand);
+	m_object->set_movement_type		(eMovementTypeWalk);
+	m_object->set_mental_state		(eMentalStateDanger);
+
+	m_object->CSightManager::setup		(SightManager::eSightTypeCurrentDirection);
+	m_object->CObjectHandler::set_goal	(eObjectActionIdle);
 }

@@ -46,6 +46,9 @@ namespace StalkerDecisionSpace {
 		eWorldPropertySquadAction,
 		eWorldPropertySquadGoal,
 
+		eWorldPropertyAnomaly,
+		eWorldPropertyInsideAnomaly,
+
 		eWorldPropertyScript,
 		eWorldPropertyDummy			= u32(-1),
 	};
@@ -84,11 +87,15 @@ namespace StalkerDecisionSpace {
 		eWorldOperatorGetEnemySeenModerate,
 		eWorldOperatorKillEnemyLostModerate,
 		eWorldOperatorTakeCover,
+		
+		eWorldOperatorGetOutOfAnomaly,
+		eWorldOperatorDetectAnomaly,
 
 		eWorldOperatorSquadAction,
 		eWorldOperatorDeathPlanner,
 		eWorldOperatorALifePlanner,
 		eWorldOperatorCombatPlanner,
+		eWorldOperatorAnomalyPlanner,
 
 		eWorldOperatorScript,
 		eWorldOperatorDummy			= u32(-1),

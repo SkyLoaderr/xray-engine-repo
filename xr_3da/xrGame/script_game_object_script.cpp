@@ -10,6 +10,7 @@
 #include "script_space.h"
 #include <luabind/adopt_policy.hpp>
 #include <luabind/iterator_policy.hpp>
+#include <luabind/out_value_policy.hpp>
 
 #include "script_game_object.h"
 #include "cover_point.h"
@@ -239,6 +240,9 @@ void CScriptGameObject::script_register(lua_State *L)
 			.def("remove_all_restrictions",		&CScriptGameObject::remove_all_restrictions)
 			.def("in_restrictions",				&CScriptGameObject::in_restrictions)
 			.def("out_restrictions",			&CScriptGameObject::out_restrictions)
+			.def("accessible",					&CScriptGameObject::accessible_position)
+			.def("accessible",					&CScriptGameObject::accessible_vertex_id)
+			.def("accessible_nearest",			&CScriptGameObject::accessible_nearest, out_value(_3))
 
 			//////////////////////////////////////////////////////////////////////////
 			//inventory owner

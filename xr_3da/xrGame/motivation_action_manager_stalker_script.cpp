@@ -52,6 +52,8 @@ void CMotivationActionManagerStalker::script_register(lua_State *L)
 				luabind::value("property_safe_to_kill",		StalkerDecisionSpace::eWorldPropertySafeToKill),
 				luabind::value("property_fire_enough",		StalkerDecisionSpace::eWorldPropertyFireEnough),
 				luabind::value("property_squad_action",		StalkerDecisionSpace::eWorldPropertySquadAction),
+				luabind::value("property_anomaly",			StalkerDecisionSpace::eWorldPropertyAnomaly),
+				luabind::value("property_inside_anomaly",	StalkerDecisionSpace::eWorldPropertyInsideAnomaly),
 				luabind::value("property_script",			StalkerDecisionSpace::eWorldPropertyScript)
 			]
 			
@@ -69,6 +71,8 @@ void CMotivationActionManagerStalker::script_register(lua_State *L)
 				luabind::value("action_find_item_to_kill",	StalkerDecisionSpace::eWorldOperatorFindItemToKill),
 				luabind::value("action_make_item_killing",	StalkerDecisionSpace::eWorldOperatorMakeItemKilling),
 				luabind::value("action_find_ammo",			StalkerDecisionSpace::eWorldOperatorFindAmmo),
+				luabind::value("get_out_of_anomaly",		StalkerDecisionSpace::eWorldOperatorGetOutOfAnomaly),
+				luabind::value("detect_anomaly",			StalkerDecisionSpace::eWorldOperatorDetectAnomaly),
 				luabind::value("action_script",				StalkerDecisionSpace::eWorldOperatorScript),
 				luabind::value("action_get_ready_to_kill_very_aggressive",	StalkerDecisionSpace::eWorldOperatorGetReadyToKillVeryAggressive),
 				luabind::value("action_kill_enemy_very_aggressive",			StalkerDecisionSpace::eWorldOperatorKillEnemyVeryAggressive),
@@ -85,7 +89,8 @@ void CMotivationActionManagerStalker::script_register(lua_State *L)
 				luabind::value("action_squad_action",						StalkerDecisionSpace::eWorldOperatorSquadAction),
 				luabind::value("action_death_planner",						StalkerDecisionSpace::eWorldOperatorDeathPlanner),
 				luabind::value("action_puzzle_solver",						StalkerDecisionSpace::eWorldOperatorALifePlanner),
-				luabind::value("action_combat_planner",						StalkerDecisionSpace::eWorldOperatorCombatPlanner)
+				luabind::value("action_combat_planner",						StalkerDecisionSpace::eWorldOperatorCombatPlanner),
+				luabind::value("action_anomaly_planner",					StalkerDecisionSpace::eWorldOperatorCombatPlanner)
 			]
 
 			.enum_("sounds")

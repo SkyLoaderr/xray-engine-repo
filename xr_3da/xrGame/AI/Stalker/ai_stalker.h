@@ -185,6 +185,8 @@ public:
 	{
 		return					(true);
 	}
+			bool				undetected_anomaly				();
+			bool				inside_anomaly					();
 
 	//игровое имя 
 	virtual LPCSTR	Name										() const {return CInventoryOwner::Name();}

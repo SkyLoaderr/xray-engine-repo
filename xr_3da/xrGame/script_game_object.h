@@ -332,6 +332,9 @@ public:
 			void				remove_all_restrictions	();
 			LPCSTR				in_restrictions			();
 			LPCSTR				out_restrictions		();
+			bool				accessible_position		(const Fvector &position);
+			bool				accessible_vertex_id	(u32 level_vertex_id);
+			u32					accessible_nearest		(const Fvector &position, Fvector &result);
 
 			const xr_vector<MemorySpace::CVisibleObject>		&memory_visible_objects	() const;
 			const xr_vector<MemorySpace::CSoundObject>			&memory_sound_objects	() const;

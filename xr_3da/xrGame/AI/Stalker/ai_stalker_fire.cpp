@@ -293,3 +293,13 @@ bool CAI_Stalker::can_kill_member		(const Fvector &position, const Fvector &dire
 
 	return					(false);
 }
+
+bool CAI_Stalker::undetected_anomaly	()
+{
+	return					(false);
+}
+
+bool CAI_Stalker::inside_anomaly		()
+{
+	return					(false);
+}

@@ -430,4 +430,34 @@ public:
 	virtual void		finalize					();
 };
 
+//////////////////////////////////////////////////////////////////////////
+// CStalkerActionGetOutOfAnomaly
+//////////////////////////////////////////////////////////////////////////
+
+class CStalkerActionGetOutOfAnomaly : public CStalkerActionBase {
+protected:
+	typedef CStalkerActionBase inherited;
+
+public:
+						CStalkerActionGetOutOfAnomaly	(CAI_Stalker *object, LPCSTR action_name = "");
+	virtual void		initialize						();
+	virtual void		execute							();
+	virtual void		finalize						();
+};
+
+//////////////////////////////////////////////////////////////////////////
+// CStalkerActionDetectAnomaly
+//////////////////////////////////////////////////////////////////////////
+
+class CStalkerActionDetectAnomaly : public CStalkerActionBase {
+protected:
+	typedef CStalkerActionBase inherited;
+
+public:
+						CStalkerActionDetectAnomaly	(CAI_Stalker *object, LPCSTR action_name = "");
+	virtual void		initialize					();
+	virtual void		execute						();
+	virtual void		finalize					();
+};
+
 #include "stalker_actions_inline.h"

@@ -35,6 +35,7 @@ void CMotivationActionManagerStalker::init				()
 	m_death_planner			= 0;
 	m_alife_planner			= 0;
 	m_combat_planner		= 0;
+	m_anomaly_planner		= 0;
 #ifdef DEBUG
 	m_stalker_behaviour		= g_stalker_behaviour;
 #endif
@@ -71,6 +72,7 @@ void CMotivationActionManagerStalker::reinit			(CAI_Stalker *object, bool clear_
 	m_death_planner->CScriptActionPlanner::m_storage.clear			();
 	m_alife_planner->CScriptActionPlanner::m_storage.clear			();
 	m_combat_planner->CScriptActionPlanner::m_storage.clear			();
+	m_anomaly_planner->CScriptActionPlanner::m_storage.clear		();
 
 	m_death_planner->CScriptActionPlanner::m_storage.set_property	(eWorldPropertyDead,false);
 	m_combat_planner->CScriptActionPlanner::m_storage.set_property	(eWorldPropertyEnemyAimed,false);
@@ -94,6 +96,7 @@ void CMotivationActionManagerStalker::reload			(LPCSTR section)
 	m_death_planner			= xr_new<CActionPlannerAction>(m_object,"death_planner");
 	m_alife_planner			= xr_new<CActionPlannerAction>(m_object,"alife_planner");
 	m_combat_planner		= xr_new<CActionPlannerAction>(m_object,"combat_planner");
+	m_anomaly_planner		= xr_new<CActionPlannerAction>(m_object,"anomaly_planner");
 
 	add_motivations			();
 	add_evaluators			();
@@ -209,6 +212,7 @@ void CMotivationActionManagerStalker::add_evaluators		()
 	add_evaluator			(eWorldPropertySquadAction		,xr_new<CStalkerPropertyEvaluatorConst>				(false));
 	add_evaluator			(eWorldPropertyAlive			,xr_new<CStalkerPropertyEvaluatorAlive>				());
 	add_evaluator			(eWorldPropertyEnemy			,xr_new<CStalkerPropertyEvaluatorEnemies>			());
+	add_evaluator			(eWorldPropertyAnomaly			,xr_new<CStalkerPropertyEvaluatorAnomaly>			());
 
 	m_death_planner->add_evaluator	(eWorldPropertyAlreadyDead		,xr_new<CStalkerPropertyEvaluatorConst>				(false));
 	m_death_planner->add_evaluator	(eWorldPropertyDead				,xr_new<CStalkerPropertyEvaluatorMember>			(&m_storage,eWorldPropertyDead,true));
@@ -228,6 +232,9 @@ void CMotivationActionManagerStalker::add_evaluators		()
 	m_combat_planner->add_evaluator	(eWorldPropertyFoundAmmo		,xr_new<CStalkerPropertyEvaluatorFoundAmmo>			());
 	m_combat_planner->add_evaluator	(eWorldPropertyReadyToKill		,xr_new<CStalkerPropertyEvaluatorReadyToKill>		());
 	m_combat_planner->add_evaluator	(eWorldPropertyKillDistance		,xr_new<CStalkerPropertyEvaluatorKillDistance>		());
+
+	m_anomaly_planner->add_evaluator(eWorldPropertyInsideAnomaly	,xr_new<CStalkerPropertyEvaluatorInsideAnomaly>		());
+	m_anomaly_planner->add_evaluator(eWorldPropertyAnomaly			,xr_new<CStalkerPropertyEvaluatorAnomaly>			());
 }
 
 void CMotivationActionManagerStalker::add_actions			()
@@ -244,6 +251,7 @@ void CMotivationActionManagerStalker::add_actions			()
 	planner					= m_alife_planner;
 	add_condition			(planner,eWorldPropertyAlive,		true);
 	add_condition			(planner,eWorldPropertyEnemy,		false);
+	add_condition			(planner,eWorldPropertyAnomaly,		false);
 	add_condition			(planner,eWorldPropertyPuzzleSolved,false);
 	add_effect				(planner,eWorldPropertyPuzzleSolved,true);
 	add_operator			(eWorldOperatorALifePlanner,planner);
@@ -253,6 +261,13 @@ void CMotivationActionManagerStalker::add_actions			()
 	add_condition			(planner,eWorldPropertyEnemy,		true);
 	add_effect				(planner,eWorldPropertyEnemy,		false);
 	add_operator			(eWorldOperatorCombatPlanner,planner);
+
+	planner					= m_anomaly_planner;
+	add_condition			(planner,eWorldPropertyAlive,		true);
+	add_condition			(planner,eWorldPropertyEnemy,		false);
+	add_condition			(planner,eWorldPropertyAnomaly,		true);
+	add_effect				(planner,eWorldPropertyAnomaly,		false);
+	add_operator			(eWorldOperatorAnomalyPlanner,planner);
 
 	action					= xr_new<CStalkerActionSquad>		(m_object,"squad_action");
 	add_condition			(action,eWorldPropertyAlive,		true);
@@ -446,4 +461,15 @@ void CMotivationActionManagerStalker::add_actions			()
 	add_condition			(action,eWorldPropertyFireEnough,	true);
 	add_effect				(action,eWorldPropertyFireEnough,	false);
 	m_combat_planner->add_operator			(eWorldOperatorTakeCover,			action);
+
+	action					= xr_new<CStalkerActionGetOutOfAnomaly>	(m_object,"get_out_of_anomaly");
+	add_condition			(action,eWorldPropertyInsideAnomaly,true);
+	add_effect				(action,eWorldPropertyInsideAnomaly,false);
+	m_anomaly_planner->add_operator			(eWorldOperatorGetOutOfAnomaly,		action);
+
+	action					= xr_new<CStalkerActionDetectAnomaly>	(m_object,"detect_anomaly");
+	add_condition			(action,eWorldPropertyInsideAnomaly,false);
+	add_condition			(action,eWorldPropertyAnomaly,true);
+	add_effect				(action,eWorldPropertyAnomaly,false);
+	m_anomaly_planner->add_operator			(eWorldOperatorDetectAnomaly,		action);
 }

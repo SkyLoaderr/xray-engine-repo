@@ -166,5 +166,28 @@ public:
 	virtual _value_type	evaluate							();
 };
 
+//////////////////////////////////////////////////////////////////////////
+// CStalkerPropertyEvaluatorAnomaly
+//////////////////////////////////////////////////////////////////////////
+
+class CStalkerPropertyEvaluatorAnomaly : public CStalkerPropertyEvaluator {
+protected:
+	typedef CStalkerPropertyEvaluator inherited;
+
+public:
+	virtual _value_type	evaluate							();
+};
+
+//////////////////////////////////////////////////////////////////////////
+// CStalkerPropertyEvaluatorInsideAnomaly
+//////////////////////////////////////////////////////////////////////////
+
+class CStalkerPropertyEvaluatorInsideAnomaly : public CStalkerPropertyEvaluator {
+protected:
+	typedef CStalkerPropertyEvaluator inherited;
+
+public:
+	virtual _value_type	evaluate							();
+};
 
 #include "stalker_property_evaluators_inline.h"
