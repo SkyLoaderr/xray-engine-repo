@@ -299,9 +299,14 @@ bool CSpaceRestriction::affect					(SpaceRestrictionHolder::CBaseRestrictionPtr 
 {
 	if (bridge->inside(start_position))
 		return						(false);
-	Fvector							position;
-	bridge->accessible_nearest		(start_position,position,false);
-	return							(start_position.distance_to(position) <= radius + dependent_distance);
+
+	return true;
+
+	//if (bridge->inside(start_position))
+	//	return						(false);
+	//Fvector							position;
+	//bridge->accessible_nearest		(start_position,position,false);
+	//return							(start_position.distance_to(position) <= radius + dependent_distance);
 }
 
 bool CSpaceRestriction::affect					(SpaceRestrictionHolder::CBaseRestrictionPtr bridge, u32 start_vertex_id, float radius) const
