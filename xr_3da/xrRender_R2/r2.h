@@ -1,6 +1,7 @@
 #pragma once
 
 #include "..\modelpool.h"
+#include "..\PSLibrary.h"
 
 #include "r2_types.h"
 #include "r2_scenegraph.h"
@@ -28,6 +29,7 @@ public:
 	vector<IDirect3DVertexBuffer9*>							VB;
 	vector<IDirect3DIndexBuffer9*>							IB;
 	vector<IVisual*>										Visuals;
+	CPSLibrary												PSystems;
 
 	CDetailManager											Details;
 	CModelPool												Models;
@@ -48,6 +50,10 @@ private:
 	void							add_leafs_Static		(IVisual	*pVisual);					// if detected node's full visibility
 	void							InsertSG_Dynamic		(IVisual	*pVisual, Fvector& Center);
 	void							InsertSG_Static			(IVisual	*pVisual);
+
+	void							flush_Models			();
+	void							flush_LODs				();
+
 public:
 	// Loading / Unloading
 	virtual	void					level_Load				();
