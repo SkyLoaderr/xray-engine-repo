@@ -2,6 +2,8 @@
 
 xrClientData* xrServer::SelectBestClientToMigrateTo	(CSE_Abstract* E, BOOL bForceAnother)
 {
+	return SV_Client;
+
 	if (bForceAnother)
 	{
 		// DUMB SELECTION - NOT THE CURRENT OWNER
