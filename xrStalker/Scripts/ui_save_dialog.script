@@ -40,7 +40,7 @@ function save_dialog:FillList()
 		
 		printf("file[%d]=%s",it,file)
 		
-		ext = string.sub(file, string.len(file) - 4)
+		local ext = string.sub(file, string.len(file) - 4)
 		if ext == ".sav" then
 			file = string.sub(file,0 , (string.len(file) - 4))
 			table.insert(self.FileTable,file)
