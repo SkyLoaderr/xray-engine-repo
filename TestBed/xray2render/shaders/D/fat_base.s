@@ -60,6 +60,6 @@ p2f 	p_main	( v2p_in IN )
   // No calculations here: just sample texture and out all that shit
   OUT.Pe	= IN.Pe;
   OUT.Ne 	= normalize	(IN.Ne);
-  OUT.C 	= tex2D		(s_texture, float2(IN.Tex0.x, IN.Tex0.y)); 
+  OUT.C 	= float4    (1,1,1,0);	// tex2D		(s_texture, float2(IN.Tex0.x, IN.Tex0.y)); 
   return OUT;
 }

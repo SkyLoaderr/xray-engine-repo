@@ -515,7 +515,7 @@ HRESULT CMyD3DApplication::FinalCleanup()
 HRESULT CMyD3DApplication::ConfirmDevice( D3DCAPS9* pCaps, DWORD dwBehavior,
                                           D3DFORMAT Format )
 {
-	BOOL	bDebug	= TRUE;
+	BOOL	bDebug	= FALSE;
 
 	if (bDebug)
 	{
@@ -721,6 +721,8 @@ HRESULT CMyD3DApplication::RenderFAT	()
 	// Cleanup
 	m_pd3dDevice->SetTexture				(0, NULL);
 	m_pd3dDevice->SetRenderTarget			(0, pBaseTarget	);
+	m_pd3dDevice->SetRenderTarget			(1, 0	);
+	m_pd3dDevice->SetRenderTarget			(2, 0	);
 
 	return S_OK;
 }
@@ -728,7 +730,7 @@ HRESULT CMyD3DApplication::RenderFAT	()
 
 HRESULT CMyD3DApplication::RenderCombine	(COMBINE_MODE M)
 {
-	m_pd3dDevice->Clear						(0L, NULL, D3DCLEAR_TARGET, 0x00, 1.0f, 0L);
+	m_pd3dDevice->Clear						(0L, NULL, D3DCLEAR_TARGET, 0x10101010, 1.0f, 0L);
 
 	if (M==CM_DBG_NORMALS)					return RenderCombineDBG_Normals();
 
@@ -750,7 +752,7 @@ HRESULT CMyD3DApplication::RenderCombineDBG_Normals	()
 	// Shader and params
 	m_pd3dDevice->SetPixelShader			(s_CombineDBG_Normals.ps);
 	m_pd3dDevice->SetVertexShader			(s_CombineDBG_Normals.vs);
-	m_pd3dDevice->SetVertexDeclaration		(m_pDeclVert2D);
+	m_pd3dDevice->SetFVF					(TVERTEX_FVF);
 	cc.flush								(m_pd3dDevice);
 
 	// Render Quad
