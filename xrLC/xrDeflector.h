@@ -1,5 +1,9 @@
 #pragma once
 
+#ifndef BORDER
+#define BORDER 1
+#endif
+
 #include "hash2D.h"
 #include "cl_defs.h"
 
