@@ -7,7 +7,7 @@ void Fquaternion::set(const Fmatrix& M){
 	
 	trace = M._11 + M._22 + M._33;
 	if (trace > 0.0f){
-		s = sqrtf(trace + 1.0f);
+		s = _sqrt(trace + 1.0f);
 		w = s * 0.5f;
 		s = 0.5f / s;
 		
@@ -32,7 +32,7 @@ void Fquaternion::set(const Fmatrix& M){
 		// in the unusual case the original trace fails to produce a good sqrt, try others...
 		switch (biggest){
 		case A:
-			s = sqrtf( M._11 - (M._22 + M._33) + 1.0f);
+			s = _sqrt( M._11 - (M._22 + M._33) + 1.0f);
 			if (s > TRACE_QZERO_TOLERANCE){
 				x = s * 0.5f;
 				s = 0.5f / s;
@@ -42,7 +42,7 @@ void Fquaternion::set(const Fmatrix& M){
 				break;
 			}
 			// I
-			s = sqrtf( M._33 - (M._11 + M._22) + 1.0f);
+			s = _sqrt( M._33 - (M._11 + M._22) + 1.0f);
 			if (s > TRACE_QZERO_TOLERANCE){
 				z = s * 0.5f;
 				s = 0.5f / s;
@@ -52,7 +52,7 @@ void Fquaternion::set(const Fmatrix& M){
 				break;
 			}
 			// E
-			s = sqrtf( M._22 - (M._33 + M._11) + 1.0f);
+			s = _sqrt( M._22 - (M._33 + M._11) + 1.0f);
 			if (s > TRACE_QZERO_TOLERANCE){
 				y = s * 0.5f;
 				s = 0.5f / s;
@@ -63,7 +63,7 @@ void Fquaternion::set(const Fmatrix& M){
 			}
 			break;
 		case E:
-			s = sqrtf( M._22 - (M._33 + M._11) + 1.0f);
+			s = _sqrt( M._22 - (M._33 + M._11) + 1.0f);
 			if (s > TRACE_QZERO_TOLERANCE){
 				y = s * 0.5f;
 				s = 0.5f / s;
@@ -73,7 +73,7 @@ void Fquaternion::set(const Fmatrix& M){
 				break;
 			}
 			// I
-			s = sqrtf( M._33 - (M._11 + M._22) + 1.0f);
+			s = _sqrt( M._33 - (M._11 + M._22) + 1.0f);
 			if (s > TRACE_QZERO_TOLERANCE){
 				z = s * 0.5f;
 				s = 0.5f / s;
@@ -83,7 +83,7 @@ void Fquaternion::set(const Fmatrix& M){
 				break;
 			}
 			// A
-			s = sqrtf( M._11 - (M._22 + M._33) + 1.0f);
+			s = _sqrt( M._11 - (M._22 + M._33) + 1.0f);
 			if (s > TRACE_QZERO_TOLERANCE){
 				x = s * 0.5f;
 				s = 0.5f / s;
@@ -94,7 +94,7 @@ void Fquaternion::set(const Fmatrix& M){
 			}
 			break;
 		case I:
-			s = sqrtf( M._33 - (M._11 + M._22) + 1.0f);
+			s = _sqrt( M._33 - (M._11 + M._22) + 1.0f);
 			if (s > TRACE_QZERO_TOLERANCE){
 				z = s * 0.5f;
 				s = 0.5f / s;
@@ -104,7 +104,7 @@ void Fquaternion::set(const Fmatrix& M){
 				break;
 			}
 			// A
-			s = sqrtf( M._11 - (M._22 + M._33) + 1.0f);
+			s = _sqrt( M._11 - (M._22 + M._33) + 1.0f);
 			if (s > TRACE_QZERO_TOLERANCE){
 				x = s * 0.5f;
 				s = 0.5f / s;
@@ -114,7 +114,7 @@ void Fquaternion::set(const Fmatrix& M){
 				break;
 			}
 			// E
-			s = sqrtf( M._22 - (M._33 + M._11) + 1.0f);
+			s = _sqrt( M._22 - (M._33 + M._11) + 1.0f);
 			if (s > TRACE_QZERO_TOLERANCE){
 				y = s * 0.5f;
 				s = 0.5f / s;
