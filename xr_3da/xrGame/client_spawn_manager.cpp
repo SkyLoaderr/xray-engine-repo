@@ -21,19 +21,26 @@ CClientSpawnManager::~CClientSpawnManager	()
 
 void CClientSpawnManager::add				(ALife::_OBJECT_ID requesting_id, ALife::_OBJECT_ID requested_id, const luabind::object &lua_object, LPCSTR method)
 {
-	CScriptCallback					callback;
-	callback.set					(lua_object,method);
+	CSpawnCallback					callback;
+	callback.m_callback.set			(lua_object,method);
 	add								(requesting_id,requested_id,callback);
 }
 
 void CClientSpawnManager::add				(ALife::_OBJECT_ID requesting_id, ALife::_OBJECT_ID requested_id, const luabind::functor<void> &lua_function)
 {
-	CScriptCallback					callback;
-	callback.set					(lua_function);
+	CSpawnCallback					callback;
+	callback.m_callback.set			(lua_function);
 	add								(requesting_id,requested_id,callback);
 }
 
-void CClientSpawnManager::add				(ALife::_OBJECT_ID requesting_id, ALife::_OBJECT_ID requested_id, CScriptCallback &script_callback)
+void CClientSpawnManager::add				(ALife::_OBJECT_ID requesting_id, ALife::_OBJECT_ID requested_id, CGameObject *object)
+{
+	CSpawnCallback					callback;
+	callback.m_object				= object;
+	add								(requesting_id,requested_id,callback);
+}
+
+void CClientSpawnManager::add				(ALife::_OBJECT_ID requesting_id, ALife::_OBJECT_ID requested_id, CSpawnCallback &script_callback)
 {
 	CObject							*object = Level().Objects.net_Find(requesting_id);
 	if (object) {
@@ -84,8 +91,10 @@ void CClientSpawnManager::clear				(ALife::_OBJECT_ID requested_id)
 		remove						((*I).second,(*I).first,requested_id,true);
 }
 
-void CClientSpawnManager::callback			(CScriptCallback &script_callback, CObject *object)
+void CClientSpawnManager::callback			(CSpawnCallback &script_callback, CObject *object)
 {
+	if (script_callback.m_object)
+		script_callback.m_object->on_reguested_spawn(object);
 	CGameObject						*game_object = smart_cast<CGameObject*>(object);
 	CScriptGameObject				*script_game_object = !game_object ? 0 : game_object->lua_game_object();
 	SCRIPT_CALLBACK_EXECUTE_2		(script_callback,object->ID(),script_game_object);

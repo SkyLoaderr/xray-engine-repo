@@ -13,8 +13,12 @@
 #include "script_export_space.h"
 
 class CClientSpawnManager {
+	struct CSpawnCallback {
+		CGameObject		*m_object;
+		CScriptCallback	m_callback;
+	};
 public:
-	typedef xr_map<ALife::_OBJECT_ID,CScriptCallback>		REQUESTED_REGISTRY;
+	typedef xr_map<ALife::_OBJECT_ID,CSpawnCallback>		REQUESTED_REGISTRY;
 	typedef xr_map<ALife::_OBJECT_ID,REQUESTED_REGISTRY>	REQUEST_REGISTRY;
 
 private:
@@ -28,11 +32,12 @@ public:
 	virtual				~CClientSpawnManager	();
 			void		add						(ALife::_OBJECT_ID requesting_id, ALife::_OBJECT_ID requested_id, const luabind::object &lua_object, LPCSTR method);
 			void		add						(ALife::_OBJECT_ID requesting_id, ALife::_OBJECT_ID requested_id, const luabind::functor<void> &lua_function);
-			void		add						(ALife::_OBJECT_ID requesting_id, ALife::_OBJECT_ID requested_id, CScriptCallback &callback);
+			void		add						(ALife::_OBJECT_ID requesting_id, ALife::_OBJECT_ID requested_id, CSpawnCallback &callback);
+			void		add						(ALife::_OBJECT_ID requesting_id, ALife::_OBJECT_ID requested_id, CGameObject *object);
 			void		remove					(ALife::_OBJECT_ID requesting_id, ALife::_OBJECT_ID requested_id);
 			void		clear					(ALife::_OBJECT_ID requested_id);
 			void		callback				(CObject *object);
-			void		callback				(CScriptCallback &script_callback, CObject *object);
+			void		callback				(CSpawnCallback &script_callback, CObject *object);
 	DECLARE_SCRIPT_REGISTER_FUNCTION
 };
 add_to_type_list(CClientSpawnManager)

@@ -200,6 +200,7 @@ protected:
 				return		(true);
 			}
 	virtual	void			spawn_supplies		();
+	virtual void			on_reguested_spawn	(CObject *object);
 };
 
 #endif // !defined(AFX_GAMEOBJECT_H__3DA72D03_C759_4688_AEBB_89FA812AA873__INCLUDED_)

@@ -557,3 +557,7 @@ LPCSTR CGameObject::Name () const
 {
 	return *cName();
 }
+
+void CGameObject::on_reguested_spawn	(CObject *object)
+{
+}
