@@ -35,8 +35,10 @@ private:
 	vector<bool>			ids_used;
 	BOOL					PerformRP			(xrServerEntity* E);
 	void					PerformMigration	(xrServerEntity* E, xrClientData* from, xrClientData* to);
+
 	void					Process_spawn		(NET_Packet& P, DPNID sender);
 	void					Process_update		(NET_Packet& P, DPNID sender);
+	void					Process_event		(NET_Packet& P, DPNID sender);
 	void					Process_ownership	(NET_Packet& P, DPNID sender);
 	void					Process_rejecting	(NET_Packet& P, DPNID sender);
 

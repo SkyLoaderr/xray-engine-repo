@@ -1,10 +1,19 @@
 #include "stdafx.h"
 #include "actor.h"
+#include "weapon.h"
+#include "xr_weapon_list.h"
+
+IC BOOL BE	(BOOL A, BOOL B)
+{
+	bool a = !!A;
+	bool b = !!B;
+	return a==b;
+}
 
 void CActor::g_ProcessEvents()
 {
-	NET_Packet&		P;
-	DWORD svT = Level().timeServer()-NET_Latency;
+	NET_Packet		P;
+	DWORD svT		= Level().timeServer()-NET_Latency;
 	while (net_Events.available(svT))
 	{
 		u16	type	= net_Events.get(P);
@@ -45,6 +54,7 @@ void CActor::g_ProcessEvents()
 				}
 			}
 			break;
+			/*
 		case GE_TRANSFER_AMMO:
 			{
 				u16			from,to;
@@ -66,6 +76,7 @@ void CActor::g_ProcessEvents()
 				}
 			}
 			break;
+			*/
 		}
 	}
 }

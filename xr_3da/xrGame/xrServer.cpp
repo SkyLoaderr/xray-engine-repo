@@ -144,9 +144,7 @@ DWORD xrServer::OnMessage(NET_Packet& P, DPNID sender)			// Non-Zero means broad
 	{
 	case M_UPDATE:				Process_update		(P,sender);	return 0;		// No broadcast
 	case M_SPAWN:				Process_spawn		(P,sender);	return 0;
-	case M_OWNERSHIP_TAKE:		Process_ownership	(P,sender); return 0;
-	case M_OWNERSHIP_REJECT:	Process_rejecting	(P,sender); return 0;
-	case M_HIT:					return net_flags	(TRUE);
+	case M_EVENT:				Process_event		(P,sender); return 0;
 	}
 
 	return 0;

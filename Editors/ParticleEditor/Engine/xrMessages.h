@@ -208,8 +208,7 @@ GE_OWNERSHIP_REJECT
 }
 GE_TRANSFER_AMMO
 {
-	u16			from;
-	u16			to;
+	u16			id_entity;				// from 
 }
 GE_HIT									// попадание (пулей)
 {

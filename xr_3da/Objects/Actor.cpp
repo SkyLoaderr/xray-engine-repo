@@ -294,10 +294,8 @@ void CActor::feel_touch_new				(CObject* O)
 			P.w_begin	(M_EVENT);
 			P.w_u32		(Level().timeServer());
 			P.w_u16		(GE_TRANSFER_AMMO);
-			P.w_u16		(ID());
-
-			P.w_u16		(W->ID());
-			P.w_u16		(T->ID());
+			P.w_u16		(T->ID());	
+			P.w_u16		(W->ID());	
 			Level().Send(P,net_flags(TRUE,TRUE));
 			return;
 		} else {
@@ -307,7 +305,6 @@ void CActor::feel_touch_new				(CObject* O)
 			P.w_u32		(Level().timeServer());
 			P.w_u16		(GE_OWNERSHIP_TAKE);
 			P.w_u16		(ID());
-
 			P.w_u16		(u16(W->ID()));
 			Level().Send(P,net_flags(TRUE,TRUE));
 			return;
@@ -319,13 +316,6 @@ void CActor::feel_touch_new				(CObject* O)
 
 void CActor::feel_touch_delete		(CObject* O)
 {
-}
-
-IC BOOL BE	(BOOL A, BOOL B)
-{
-	bool a = !!A;
-	bool b = !!B;
-	return a==b;
 }
 
 void CActor::g_Physics				(Fvector& accel, float jump, float dt)
@@ -731,8 +721,7 @@ void CActor::g_fireParams	(Fvector &fire_pos, Fvector &fire_dir)
 			fire_dir = Device.vCameraDirection;
 		} else Weapons->GetFireParams(fire_pos, fire_dir);
 	} else {
-		fire_pos	= NET_Last.f_pos;
-		fire_dir	= NET_Last.f_dir;
+		Weapons->GetFireParams(fire_pos, fire_dir);
 	}
 }
 
@@ -747,12 +736,12 @@ void CActor::g_fireEnd	( )
 
 void CActor::g_PerformDrop	( )
 {
-	VERIFY	(b_DropActivated);
+	VERIFY					(b_DropActivated);
 	b_DropActivated			= FALSE;
 
 	// We doesn't have similar weapon - pick up it
 	NET_Packet		P;
-	P.w_begin		(M_E_OWNERSHIP_REJECT);
+	P.w_begin		(M_EVENT);
 	P.w_u16			(u16(ID()));
 	P.w_u16			(u16(W->ID()));
 	Level().Send	(P,net_flags(TRUE,TRUE));
