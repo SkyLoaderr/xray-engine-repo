@@ -193,7 +193,7 @@ void	CBlender_Compile::StageTemplate_LMAP0	()
 	StageSET_TMC		("$base1","$null","$null",1);
 }
 
-void	CBlender_Compile::Stage_Texture	(LPCSTR name, u32 address=D3DTADDRESS_WRAP,	u32	 fmin=D3DTEXF_LINEAR, u32 fmip=D3DTEXF_LINEAR,	u32 fmag=D3DTEXF_LINEAR)
+void	CBlender_Compile::Stage_Texture	(LPCSTR name, u32 address,	u32	 fmin, u32 fmip, u32 fmag)
 {
 	sh_list& lst=	L_textures;
 	int id		=	ParseName(name);
@@ -203,7 +203,7 @@ void	CBlender_Compile::Stage_Texture	(LPCSTR name, u32 address=D3DTADDRESS_WRAP,
 		N = lst [id];
 	}
 	passTextures.push_back	(Device.Resources->_CreateTexture(N));
-	i_Address				(Stage(),address);
+//	i_Address				(Stage(),address);
 	i_Filter				(Stage(),fmin,fmip,fmag);
 //	if (passTextures.back()->isUser())	SH->userTex.push_back(passTextures.back());
 }
