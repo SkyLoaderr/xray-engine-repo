@@ -677,12 +677,17 @@ void CPHElement::Activate(const Fmatrix& start_from,bool disable){
 
 
 }
+# define DET(a) 	 (( a._11 * ( a._22 * a._33 - a._23 * a._32 ) -\
+a._12 * ( a._21 * a._33 - a._23 * a._31 ) +\
+a._13 * ( a._21 * a._32 - a._22 * a._31 ) ))
 
 void CPHElement::StataticRootBonesCallBack(CBoneInstance* B)
 {
 	Fmatrix parent;
 	if(! bActive)return;
 	VERIFY(_valid(m_shell->mXFORM));
+	VERIFY2(!fis_zero(DET((B->mTransform))),"Bones callback resive 0 matrix");
+
 	if(bActivating)
 	{
 		//if(!dBodyIsEnabled(m_body))
@@ -705,14 +710,14 @@ void CPHElement::StataticRootBonesCallBack(CBoneInstance* B)
 			m_shell->bActivating=false;
 		}
 		B->Callback_overwrite=TRUE;
-
+		VERIFY2(!fis_zero(DET((B->mTransform))),"Bones callback returns 0 matrix");
 		return;
 	}
 
 	if(push_untill)//temp_for_push_out||(!temp_for_push_out&&object_contact_callback)
 		if(push_untill<Device.dwTimeGlobal) unset_Pushout();
 
-
+	VERIFY2(!fis_zero(DET((B->mTransform))),"Bones callback returns 0 matrix");
 	if( !m_shell->is_active() && !bUpdate) return;
 
 	{
@@ -722,6 +727,7 @@ void CPHElement::StataticRootBonesCallBack(CBoneInstance* B)
 		mXFORM.mulA(parent);
 		B->mTransform.set(mXFORM);
 	}
+	VERIFY2(!fis_zero(DET((B->mTransform))),"Bones callback returns 0 matrix");
 	//else
 	//{
 
@@ -742,6 +748,7 @@ void CPHElement::BonesCallBack(CBoneInstance* B)
 	Fmatrix parent;
 	if(! bActive)return;
 	VERIFY(_valid(m_shell->mXFORM));
+	VERIFY2(!fis_zero(DET((B->mTransform))),"Bones callback resive 0 matrix");
 	if(bActivating)
 	{
 		//if(!dBodyIsEnabled(m_body))
@@ -764,7 +771,7 @@ void CPHElement::BonesCallBack(CBoneInstance* B)
 			m_shell->bActivating=false;
 		}
 		B->Callback_overwrite=TRUE;
-
+		VERIFY2(!fis_zero(DET((B->mTransform))),"Bones callback returns 0 matrix");
 		return;
 	}
 
@@ -779,7 +786,7 @@ void CPHElement::BonesCallBack(CBoneInstance* B)
 		m_shell->InterpolateGlobalTransform(&(m_shell->mXFORM));
 		VERIFY(_valid(m_shell->mXFORM));
 	}
-
+	VERIFY2(!fis_zero(DET((B->mTransform))),"Bones callback returns 0 matrix");
 	if( !m_shell->is_active() && !bUpdate) return;
 	
 	{
@@ -789,6 +796,7 @@ void CPHElement::BonesCallBack(CBoneInstance* B)
 		mXFORM.mulA(parent);
 		B->mTransform.set(mXFORM);
 	}
+	VERIFY2(!fis_zero(DET((B->mTransform))),"Bones callback returns 0 matrix");
 	//else
 	//{
 

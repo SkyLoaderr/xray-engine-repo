@@ -91,6 +91,7 @@ void CPHSimpleCharacter::Create(dVector3 sizes){
 	if(b_exist) return;
 	b_air_contact_state=false;
 	b_climb_getup=false;
+	b_near_leader=false;
 	////////////////////////////////////////////////////////
 	/*
 	m_control_force[0]=0.f;
@@ -643,6 +644,7 @@ bool CPHSimpleCharacter::ValidateWalkOn()
 	R_begin                         = XRC.r_begin();
 	R_end                           = XRC.r_end();
 	T_array                         = Level().ObjectSpace.GetStaticTris();
+	b_near_leader=false;
 	for (CDB::RESULT* Res=R_begin; Res!=R_end; ++Res)
 	{
 		//CDB::TRI* T = T_array + Res->id;
@@ -651,13 +653,18 @@ bool CPHSimpleCharacter::ValidateWalkOn()
 			side0[0]=Res->verts[1].x-Res->verts[0].x;
 			side0[1]=Res->verts[1].y-Res->verts[0].y;
 			side0[2]=Res->verts[1].z-Res->verts[0].z;
-
+			
 			side1[0]=Res->verts[2].x-Res->verts[1].x;
 			side1[1]=Res->verts[2].y-Res->verts[1].y;
 			side1[2]=Res->verts[2].z-Res->verts[1].z;
 
+			CDB::TRI* T = T_array + Res->id;
+			SGameMtl* material=GMLib.GetMaterialByIdx(T->material);
+
+			b_near_leader=b_near_leader||(!!material->Flags.is(SGameMtl::flClimbable));
 			dCROSS(norm,=,side0,side1);//optimize it !!!
 			dNormalize3(norm);
+			//if(b_leader)dVectorSet((dReal*)&leader_norm,norm);
 			if(dDOT(norm,(float*)&accel)<-CHWON_ANG_COS) 
 				return 
 				false;
@@ -716,7 +723,7 @@ void CPHSimpleCharacter::ApplyAcceleration()
 	m_control_force[1]=0.f;
 	m_control_force[2]=0.f;
 
-	if(m_max_velocity<EPS) return;
+	//if(m_max_velocity<EPS) return;
 	dMass m;
 	dBodyGetMass(m_body,&m);
 
@@ -809,12 +816,22 @@ void CPHSimpleCharacter::ApplyAcceleration()
 				b_climb_getup=true;
 				m_start_climb_getup_height=dBodyGetPosition(m_body)[1];
 			}
-			else
-			{
+
 				if(dFabs(dBodyGetPosition(m_body)[1]-m_start_climb_getup_height)<CLIMB_GETUP_HEIGHT)
 				{
 					//m_control_force[0]*=4.f;
-					m_control_force[1]+=m.mass*40.f;
+					if(b_side_contact)m_control_force[1]+=m.mass*40.f;
+					else 
+					{
+						if(b_valide_wall_contact)
+						{
+							dReal k=m.mass*20.f;
+							//dReal k2=m.mass*10.f;
+							m_control_force[0]+=m_wall_contact_normal[0]*k;
+							m_control_force[1]+=m_wall_contact_normal[1]*k;
+							m_control_force[2]+=m_wall_contact_normal[2]*k;
+						}
+					}
 					//m_control_force[2]*=4.f;
 				}
 				else
@@ -822,7 +839,7 @@ void CPHSimpleCharacter::ApplyAcceleration()
 					b_climb_getup=false;
 					b_block_climb_getup=true;
 				}
-			}
+			
 		}
 		else
 		{

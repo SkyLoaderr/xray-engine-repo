@@ -2,7 +2,7 @@
 #include "PHCharacter.h"
 #include "Physics.h"
 #include "MathUtils.h"
-///#define DRAW_BOXES
+#define DRAW_BOXES
 class CPHSimpleCharacter : public CPHCharacter
 
 {
@@ -89,9 +89,10 @@ protected:
 	bool b_death_pos;
 
 	bool b_climb_getup;
+	bool b_near_leader;
 	bool b_block_climb_getup;
 	dReal m_start_climb_getup_height;
-
+	//Fvector leader_norm;
 	u32  m_contact_count;
 
 	dReal m_friction_factor;
