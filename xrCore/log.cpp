@@ -9,7 +9,7 @@ extern BOOL					LogExecCB		= TRUE;
 static string64				logFName		= "engine.log";
 static BOOL 				no_log			= FALSE;
 static xrCriticalSection	logCS;
-xr_vector <LPCSTR>			LogFile;
+xr_vector <ref_str>			LogFile;
 static LogCallback			LogCB			= 0;
 
 void FlushLog			()
@@ -18,7 +18,7 @@ void FlushLog			()
         IWriter *f			= FS.w_open(logFName);
         if (f) {
             for (u32 it=0; it<LogFile.size(); it++)
-                f->w_string	(LogFile[it]);
+                f->w_string	(*LogFile[it]);
             FS.w_close		(f);
         }
     }
@@ -33,7 +33,7 @@ void AddOne				(const char *split)
 	OutputDebugString	("\n");
 #endif
 
-	LogFile.push_back	(split);
+	LogFile.push_back	(ref_str(split));
 
 	//exec CallBack
 	if (LogExecCB&&LogCB)LogCB(split);
@@ -51,14 +51,14 @@ void Log(const char *s)
 		if (s[i]=='\n') {
 			split[j]=0;	// end of line
 			if (split[0]==0) { split[0]=' '; split[1]=0; }
-			AddOne(xr_strdup(split));
+			AddOne(split);
 			j=0;
 		} else {
 			split[j++]=s[i];
 		}
 	}
 	split[j]=0;
-	AddOne(xr_strdup(split));
+	AddOne(split);
 }
 
 void __cdecl Msg( const char *format, ...)
@@ -134,6 +134,7 @@ void CreateLog(LogCallback cb, BOOL nl)
         if (f==NULL)	abort();
         FS.w_close		(f);
     }
+	LogFile.reserve		(128);
 
 	// Calculating build
 	time_t	Time;
@@ -154,7 +155,5 @@ void CreateLog(LogCallback cb, BOOL nl)
 void CloseLog(void)
 {
 	FlushLog		();
-    for (u32 it=0; it<LogFile.size(); it++)
-        xr_free		(LogFile[it]);
  	LogFile.clear	();
 }
