@@ -171,7 +171,7 @@ function m_MonsterBobik:__init( mnstr, script_name, point_o, radius_o ) super( m
     self.Rest           = m_rest.stateRestPoint                    ( self.scr_name, self.memory, point_o, radius_o )
     self.DangerSound    = m_dangersound.stateDangerSoundLookAround ( self.scr_name, self.memory )
     self.NotDangerSound = m_dangersound.stateDangerSoundLookAround ( self.scr_name, self.memory )
-    self.Attack         = m_attack.AttackError					   ( self.scr_name, self.memory )
+    self.Attack         = m_attack.stateAttackThreaten			   ( self.scr_name, self.memory )
 --    self.Hit			= m_hit.stateHitRunToHit				   ( self.scr_name, self.memory )
 end
 --==============================================================================
