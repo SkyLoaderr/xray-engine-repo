@@ -19,7 +19,7 @@
 #define MAX_DISTANCE_TO_CONNECT		512.f
 #define THREAD_COUNT				6
 
-#define GET_INDEX(N,K)				iFloor((2*N - 1 - sqrtf((2*N - 1)*(2*N - 1) - 4*float(N)*(N - 1)/float(K)))/2.f)
+#define GET_INDEX(N,K)				iFloor((2*N - 1 - _sqrt((2*N - 1)*(2*N - 1) - 4*float(N)*(N - 1)/float(K)))/2.f)
 
 #define START_THREADS(size,ThreadClass) {\
 	u32	stride	= size/THREAD_COUNT;\
@@ -132,7 +132,7 @@ void vfRemoveDuplicateAIPoints()
 		for ( i=1; i<(int)N; i++) {
 			Fvector &p1 = tpaGraph[dwpSortOrder[i - 1]].tPoint;
 			Fvector &p2 = tpaGraph[dwpSortOrder[i]].tPoint;
-			if ((p1.x > p2.x) || ((fabsf(p1.x - p2.x) < EPS_L) && ((p1.y > p2.y) || ((fabsf(p1.y - p2.y) < EPS_L) && (p1.z > p2.z))))) {
+			if ((p1.x > p2.x) || ((_abs(p1.x - p2.x) < EPS_L) && ((p1.y > p2.y) || ((_abs(p1.y - p2.y) < EPS_L) && (p1.z > p2.z))))) {
 				int k = dwpSortOrder[i - 1];
 				dwpSortOrder[i - 1] = dwpSortOrder[i];
 				dwpSortOrder[i] = k;
@@ -146,7 +146,7 @@ void vfRemoveDuplicateAIPoints()
 	for ( i=1; i<(int)N; i++) {
 		Fvector &p1 = tpaGraph[dwpSortOrder[i - 1]].tPoint;
 		Fvector &p2 = tpaGraph[dwpSortOrder[i]].tPoint;
-		if ((fabsf(p1.x - p2.x) < EPS_L) && (fabsf(p1.y - p2.y) < EPS_L) && (fabsf(p1.z - p2.z) < EPS_L))
+		if ((_abs(p1.x - p2.x) < EPS_L) && (_abs(p1.y - p2.y) < EPS_L) && (_abs(p1.z - p2.z) < EPS_L))
 			dwpGraphOrder[j++] = dwpSortOrder[i];
 	}
 	
