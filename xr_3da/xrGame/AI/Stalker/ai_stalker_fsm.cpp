@@ -599,7 +599,14 @@ void CAI_Stalker::SearchEnemy()
 		}
 		case eActionStateWatchGo : {
 			OUT_TEXT("The higher-level prediction");
-			if ((m_iCurrentSuspiciousNodeIndex == -1) || (((int)Group.m_tpaSuspiciousNodes.size() < (m_iCurrentSuspiciousNodeIndex + 1)) && getAI().bfCheckNodeInDirection(AI_NodeID,vPosition,Group.m_tpaSuspiciousNodes[m_iCurrentSuspiciousNodeIndex].dwNodeID))) {
+			if ((int)Group.m_tpaSuspiciousNodes.size() < (m_iCurrentSuspiciousNodeIndex + 1)) {
+				Group.m_tpaSuspiciousNodes.clear();
+				m_iCurrentSuspiciousNodeIndex = -1;
+				m_tActionState = eActionStateWatchLook;
+				break;
+			}
+
+			if ((m_iCurrentSuspiciousNodeIndex == -1) || getAI().bfCheckNodeInDirection(AI_NodeID,vPosition,Group.m_tpaSuspiciousNodes[m_iCurrentSuspiciousNodeIndex].dwNodeID)) {
 				if (m_iCurrentSuspiciousNodeIndex != -1)
 					Group.m_tpaSuspiciousNodes[m_iCurrentSuspiciousNodeIndex].dwSearched = 2;
 				m_iCurrentSuspiciousNodeIndex = ifGetSuspiciousAvailableNode(m_iCurrentSuspiciousNodeIndex,Group);
