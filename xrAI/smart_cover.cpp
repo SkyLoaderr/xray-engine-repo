@@ -7,7 +7,6 @@
 ////////////////////////////////////////////////////////////////////////////
 
 #include "stdafx.h"
-#include "smart_cover.h"
 #include "quadtree.h"
 #include "level_graph.h"
 
