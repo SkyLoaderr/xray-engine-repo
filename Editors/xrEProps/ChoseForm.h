@@ -93,11 +93,11 @@ private:	// User declarations
     ECustomThumbnail* 	m_Thm;
 	ref_sound			m_Snd;
 
-	TOnChooseSelect	item_select_event;
+	TOnChooseSelectItem	item_select_event;
     
     ChooseItemVec	m_Items;
-	void __fastcall FillItems		();
-    void __fastcall AppendItem		(SChooseItem* item);
+	void __fastcall FillItems	();
+    void __fastcall AppendItem	(SChooseItem* item);
 protected:
     static AnsiString 			m_LastSelection; 
 
@@ -109,9 +109,9 @@ public:
 	static TOnChooseFillEvents 	fill_events;
 public:		// User declarations
     __fastcall 					TfrmChoseItem	(TComponent* Owner);
-	static int	 	__fastcall 	SelectItem		(u32 choose_ID, LPCSTR& dest, int sel_cnt=1, LPCSTR init_name=0, TOnChooseFillProp item_fill=0, TOnChooseSelect item_select=0);
+	static int	 	__fastcall 	SelectItem		(u32 choose_ID, LPCSTR& dest, int sel_cnt=1, LPCSTR init_name=0, TOnChooseFillItems item_fill=0, u32 fill_param=0, TOnChooseSelectItem item_select=0, ChooseItemVec* items=0);
 
-    static void					AppendEvents	(u32 choose_ID, LPCSTR caption, TOnChooseFill on_fill, TOnChooseSelect on_sel, bool bTHM);
+    static void					AppendEvents	(u32 choose_ID, LPCSTR caption, TOnChooseFillItems on_fill, TOnChooseSelectItem on_sel, bool bTHM);
 };
 //---------------------------------------------------------------------------
 #endif

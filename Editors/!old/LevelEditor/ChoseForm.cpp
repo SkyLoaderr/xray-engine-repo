@@ -29,7 +29,7 @@ SChooseEvents* TfrmChoseItem::GetEvents	(u32 choose_ID)
     	return &it->second;
     }else return 0;
 }
-void TfrmChoseItem::AppendEvents(u32 choose_ID, LPCSTR caption, TOnChooseFill on_fill, TOnChooseSelect on_sel, bool bTHM)
+void TfrmChoseItem::AppendEvents(u32 choose_ID, LPCSTR caption, TOnChooseFillItems on_fill, TOnChooseSelectItem on_sel, bool bTHM)
 {
 	EventsMapIt it 	= m_Events.find(choose_ID); VERIFY(it==m_Events.end());
     m_Events.insert	(std::make_pair(choose_ID,SChooseEvents(caption,on_fill,on_sel,bTHM)));
@@ -49,7 +49,7 @@ void __fastcall TfrmChoseItem::FormDestroy(TObject *Sender)
 }
 //---------------------------------------------------------------------------
 
-int __fastcall TfrmChoseItem::SelectItem(u32 choose_ID, LPCSTR& dest, int sel_cnt, LPCSTR init_name, TOnChooseFillProp item_fill, TOnChooseSelect item_select)
+int __fastcall TfrmChoseItem::SelectItem(u32 choose_ID, LPCSTR& dest, int sel_cnt, LPCSTR init_name, TOnChooseFillItems item_fill, u32 fill_param, TOnChooseSelectItem item_select, ChooseItemVec* items)
 {
 	if (m_Events.empty()){
     	VERIFY						(fill_events);
@@ -66,14 +66,19 @@ int __fastcall TfrmChoseItem::SelectItem(u32 choose_ID, LPCSTR& dest, int sel_cn
     form->tvItems->Selected 		= 0;
 
     // fill items
-    if (!item_fill.empty()){
+    if (items){
+    	VERIFY2(item_fill.empty(),"ChooseForm: Duplicate source.");
+    	form->m_Items				= *items;
+	    form->Caption				= "Select Item";
+	    form->item_select_event		= item_select;
+    }else if (!item_fill.empty()){
     	// custom
-        item_fill					(form->m_Items);
+        item_fill					(form->m_Items,fill_param);
 	    form->Caption				= "Select Item";
 	    form->item_select_event		= item_select;
     }else{
     	SChooseEvents* E			= GetEvents(choose_ID); VERIFY(E);
-        E->on_fill					(form->m_Items);
+        E->on_fill					(form->m_Items,fill_param);
 	    form->Caption				= E->caption.c_str();
 	    form->item_select_event		= item_select.empty()?E->on_sel:item_select;
     }

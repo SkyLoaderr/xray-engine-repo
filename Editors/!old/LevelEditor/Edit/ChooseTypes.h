@@ -15,7 +15,7 @@ enum EChooseMode{
     smLAnim,
     smVisual,
     smSkeletonAnims,
-    smSkeletonBones,
+    smSkeletonBones,  
     smGameMaterial,
     smGameAnim,
     smGameSMotions,
@@ -32,17 +32,17 @@ DEFINE_VECTOR(SChooseItem,ChooseItemVec,ChooseItemVecIt);
 // refs
 class ECustomThumbnail;
 // typedef
-typedef fastdelegate::FastDelegate1<ChooseItemVec&> 											TOnChooseFill;
-typedef fastdelegate::FastDelegate4<SChooseItem*, ECustomThumbnail*&, ref_sound&, PropItemVec&>	TOnChooseSelect;
+typedef fastdelegate::FastDelegate2<ChooseItemVec&,u32>											TOnChooseFillItems;
+typedef fastdelegate::FastDelegate4<SChooseItem*, ECustomThumbnail*&, ref_sound&, PropItemVec&>	TOnChooseSelectItem;
 
 typedef void (*TOnChooseFillEvents)();
 
 struct SChooseEvents{
 	ref_str				caption;
-    TOnChooseFill 		on_fill;
-    TOnChooseSelect 	on_sel;
+    TOnChooseFillItems	on_fill;
+    TOnChooseSelectItem	on_sel;
     bool				thm;
-    SChooseEvents(LPCSTR capt, TOnChooseFill f, TOnChooseSelect s, bool _thm):caption(capt),on_fill(f),on_sel(s),thm(_thm)
+    SChooseEvents(LPCSTR capt, TOnChooseFillItems f, TOnChooseSelectItem s, bool _thm):caption(capt),on_fill(f),on_sel(s),thm(_thm)
     {
     	VERIFY(on_fill);
     }

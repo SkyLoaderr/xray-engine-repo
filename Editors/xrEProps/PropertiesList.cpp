@@ -1049,14 +1049,21 @@ void __fastcall TProperties::ChooseClick(TElTreeItem* item)
 
     ChooseValue* V			= dynamic_cast<ChooseValue*>(prop->GetFrontValue()); VERIFY(V);
     ref_str	edit_val		= V->GetValue();
-	if (!edit_val.size()) 	edit_val = V->start_path;
+	if (!edit_val.size()) 	edit_val = V->m_StartPath;
     prop->BeforeEdit<ChooseValue,ref_str>(edit_val);
+	//
+    ChooseItemVec			m_Items;
+    if (!V->OnChooseFillEvent.empty()){
+        V->m_Items			= &m_Items;
+        V->OnChooseFillEvent(V);
+    }    
+    //
     LPCSTR new_val			= 0;
-    if (TfrmChoseItem::SelectItem(V->choose_id,new_val,prop->subitem,edit_val.c_str(),V->OnChooseFillEvent)){
+    if (TfrmChoseItem::SelectItem(V->m_ChooseID,new_val,prop->subitem,edit_val.c_str(),0,V->m_FillParam,0,m_Items.size()?&m_Items:0)){
         edit_val			= new_val;
         if (prop->AfterEdit<ChooseValue,ref_str>(edit_val))
             if (prop->ApplyValue<ChooseValue,ref_str>(edit_val)){
-                Modified		();
+                Modified   	();
             }
         item->ColumnText->Strings[0]= prop->GetText().c_str();
     }

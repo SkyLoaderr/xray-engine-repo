@@ -22,8 +22,7 @@ typedef fastdelegate::FastDelegate3<LPCSTR, LPCSTR, EItemType>	TOnItemRename;
 typedef fastdelegate::FastDelegate3<LPCSTR, EItemType, bool&>	TOnItemRemove;
 typedef fastdelegate::FastDelegate0								TOnItemAfterRemove;
 typedef fastdelegate::FastDelegate0 							TOnCloseEvent;
-typedef fastdelegate::FastDelegate0 							TOnModifiedEvent;
-typedef fastdelegate::FastDelegate1<ChooseItemVec&>				TOnChooseFillProp;
+typedef fastdelegate::FastDelegate0 		  					TOnModifiedEvent;
 
 #ifdef __BORLANDC__
 #	include "mxPlacemnt.hpp"
@@ -79,7 +78,7 @@ public:
     virtual CaptionValue*  		__stdcall	CreateCaption	    (PropItemVec& items, ref_str key, ref_str val)=0;
     virtual CanvasValue*		__stdcall	CreateCanvas	    (PropItemVec& items, ref_str key, ref_str val, int height)=0;
     virtual ButtonValue*		__stdcall	CreateButton	    (PropItemVec& items, ref_str key, ref_str val, u32 flags)=0;
-    virtual ChooseValue*		__stdcall	CreateChoose	    (PropItemVec& items, ref_str key, ref_str* val, u32 mode, LPCSTR path=0)=0;
+    virtual ChooseValue*		__stdcall	CreateChoose	    (PropItemVec& items, ref_str key, ref_str* val, u32 mode, LPCSTR path=0, u32 fill_param=0)=0;
     virtual S8Value* 			__stdcall	CreateS8		    (PropItemVec& items, ref_str key, s8* val, s8 mn=0, s8 mx=100, s8 inc=1)=0;
     virtual S16Value* 			__stdcall	CreateS16		    (PropItemVec& items, ref_str key, s16* val, s16 mn=0, s16 mx=100, s16 inc=1)=0;
     virtual S32Value* 	 		__stdcall	CreateS32		    (PropItemVec& items, ref_str key, s32* val, s32 mn=0, s32 mx=100, s32 inc=1)=0;
