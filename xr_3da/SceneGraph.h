@@ -9,10 +9,10 @@ namespace SceneGraph
 {
 	// Low level
 	struct _MatrixItem	{
+		CObject*		pObject;
 		CVisual*		pVisual;
 		Fmatrix			Matrix;				// matrix (copy)
 		Fvector			vCenter;
-		int				iLighting;
 		BOOL			nearer;
 	};
 	struct _PatchItem	{

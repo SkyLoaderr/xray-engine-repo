@@ -21,8 +21,8 @@ class	ENGINE_API	CRender_interface	:
 {
 public:
 	// Data
+	CObject*						val_pObject;
 	Fmatrix*						val_pTransform;
-	int								val_iLightLevel;
 	BOOL							val_bNearer;
 	CFrustum						ViewBase;
 	CFrustum*						View;
@@ -44,7 +44,6 @@ public:
 	// Main 
 	IC		void					set_Frustum				(CFrustum*	O	)			{ VERIFY(O);	View = O;			}
 	IC		void					set_Transform			(Fmatrix*	M	)			{ VERIFY(M);	val_pTransform = M;	}
-	IC		void					set_LightLevel			(int		L	)			{ val_iLightLevel	= L;			}
 	IC		void					set_Nearer				(BOOL 		V	)			{ val_bNearer		= V;			}
 	virtual void					flush					()					= 0;	
 	virtual void					set_Object				(CObject*	O	)	= 0;

@@ -56,6 +56,7 @@ void		CRender::add_Patch			(Shader* S, Fvector& P1, float s, float a, BOOL bNear
 }
 void		CRender::set_Object			(CObject*		O )	
 { 
+	val_pObject			= O;
 	L_Shadows.set_object(O);
 	
 	if (O) {
