@@ -54,7 +54,9 @@ protected:
 			void				export_motivation_management();
 			void				export_monster_info			();
 			void				export_alife				();
+			void				export_task					();
 #endif
+
 
 public:
 								CScriptEngine				();

@@ -133,6 +133,7 @@ void CUIMapWnd::Init()
 
 void CUIMapWnd::InitMap()
 {
+
 	UIMapBackground.m_pActiveMapSpot = NULL;
 
 	if (Level().pLevel->section_exist("level_map"))	
@@ -191,6 +192,11 @@ void CUIMapWnd::InitMap()
 	CActor* pActor = dynamic_cast<CActor*>(Level().CurrentEntity());
 		
 	if (!pActor) return;
+
+	CInfoPortion info;
+	info.Load("test_info");
+	info.GetTask()->CalcState(pActor);
+
 
 //	CTeam& Team = Level().Teams[pActor->id_Team];
 

@@ -693,8 +693,6 @@ void CUIInventoryWnd::SendMessage(CUIWindow *pWnd, s16 msg, void *pData)
 		pActor->GoSleep(*reinterpret_cast<u32*>(pData));
 		StopSleepWnd();
 		pGameSP->StartStopMenu(this);
-
-		return;
 	}
 	else if(pWnd == &UISleepWnd && msg == CUISleepWnd::CLOSE_BUTTON_CLICKED)
 	{
