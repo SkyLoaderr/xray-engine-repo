@@ -24,11 +24,6 @@ CWeaponList::CWeaponList	(CEntity* p)
 
 CWeaponList::~CWeaponList	( )
 {
-	/*
-	for (WeaponIt w_it=m_Weapons.begin(); w_it!=m_Weapons.end(); w_it++)
-		_DELETE(*w_it);
-	m_Weapons.clear();
-	*/
 }
 
 #define HUD_BONE_NAME_R "bip01_r_hand"
@@ -66,35 +61,36 @@ BOOL CWeaponList::isWorking()
 	return W->IsWorking();
 }
 
-BOOL CWeaponList::WeaponChange(int idx)
+BOOL CWeaponList::WeaponChange		(int idx)
 {
 	// Analyze desired ID
-	if (idx==m_iActiveWeapon)											return false;
+	if (idx==m_iActiveWeapon)												return false;
 	if ((idx<0) || (idx>=(int)(m_Weapons.size())) || (0==m_Weapons[idx]))	return false;
 
 	// Zoom - off
 	Zoom				(FALSE);
 
 	// Stop current weapon
-	if (m_iActiveWeapon>=0)	m_Weapons[m_iActiveWeapon]->Hide	();
+	if (m_iActiveWeapon>=0)			m_Weapons[m_iActiveWeapon]->Hide	();
 
 	// Select new
-	m_iSelectedWeapon	= idx;
+	m_iSelectedWeapon				= idx;
 	return true;
 }
 
 int	CWeaponList::weapon_add			(CWeapon* W)		// add, return index
 {
-	m_Weapons.push_back				(W);
-	return m_Weapons.size()-1;
+	int slot						= W->GetSlot		();
+	R_ASSERT						(0==m_Weapons[slot]);
+	m_Weapons[slot]					= W;
 }
 int	CWeaponList::weapon_remove		(CWeapon* W)		// remove, return last
 {
+	int slot						= W->GetSlot		();
+	R_ASSERT						(W==m_Weapons[slot]);
+	m_Weapons[slot]					= 0;
 	m_iActiveWeapon					= -1;
 	m_iSelectedWeapon				= -1;
-	WeaponVec::iterator	it			= find(m_Weapons.begin(),m_Weapons.end(),W);
-	m_Weapons.erase					(it);
-	return it-m_Weapons.begin();
 }
 
 void CWeaponList::weapon_die		()

@@ -35,8 +35,8 @@ public:
 	BOOL					ActivateWeaponID		(int id);
 	BOOL					ActivateWeaponHistory	();
 
-	int						weapon_add				(CWeapon* W);		// add, return index
-	int						weapon_remove			(CWeapon* W);		// remove, return last
+	void					weapon_add				(CWeapon* W);		// add
+	void					weapon_remove			(CWeapon* W);		// remove
 	void					weapon_die				();
 							
 	void					Zoom					(BOOL bZoom);
