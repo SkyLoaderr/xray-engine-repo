@@ -90,9 +90,12 @@ void		CRender::add_Wallmark		(Shader* S, const Fvector& P, float s, CDB::TRI* T)
 void		CRender::set_Object			(CObject*		O )	
 { 
 	val_pObject				= O;
-	L_Shadows.set_object	(O);
-	L_Projector.set_object	(O);
-	L_DB.Track				(O);
+	if (O)
+	{
+		L_Shadows.set_object	(O);
+		L_Projector.set_object	(O);
+		L_DB.Track				(O);
+	}
 }
 
 // Misc
