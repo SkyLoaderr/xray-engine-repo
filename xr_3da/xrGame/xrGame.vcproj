@@ -9079,6 +9079,16 @@
 					RelativePath=".\DamagableItem.h">
 				</File>
 			</Filter>
+			<Filter
+				Name="PhysicsSoundPlayer"
+				Filter="">
+				<File
+					RelativePath=".\PHSoundPlayer.cpp">
+				</File>
+				<File
+					RelativePath=".\PHSoundPlayer.h">
+				</File>
+			</Filter>
 		</Filter>
 		<Filter
 			Name="UI"
