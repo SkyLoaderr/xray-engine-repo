@@ -10,14 +10,7 @@
 
 #include "..\\..\\CustomMonster.h"
 #include "..\\..\\inventory.h"
-
-struct SArtefactNeeded {
-	string64		m_caName;
-	u32				m_dwCount;
-	u32				m_dwPrice;
-};
-
-DEFINE_VECTOR (SArtefactNeeded, ARTEFACTS_NEEDED, ARTEFACTS_NEEDED_IT);
+#include "..\\..\\ai_space.h"
 
 class CAI_Trader : public CEntityAlive, public CInventoryOwner 
 {
@@ -25,7 +18,7 @@ public:
 	typedef CEntityAlive inherited;
 	CMotionDef*			m_tAnimation;
 	bool				m_bPlaying;
-	ARTEFACTS_NEEDED	m_tArtefactNeeded;
+	ARTEFACT_TRADER_ORDER_VECTOR	m_tpOrderedArtefacts;
 
 
 						CAI_Trader		();

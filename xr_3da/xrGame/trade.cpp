@@ -233,17 +233,19 @@ void CTrade::ShowMoney()
 void CTrade::ShowArtifactPrices()
 {
 	if (pThis.type == TT_TRADER) {
-		Msg("--TRADE:: [%s]: Here is my artefact prices: ",pThis.base->cName());
-		
-		CAI_Trader *pTrader = dynamic_cast<CAI_Trader *>(pThis.inv_owner);
-
-		ARTEFACTS_NEEDED_IT		B = pTrader->m_tArtefactNeeded.begin(), I = B;
-		ARTEFACTS_NEEDED_IT		E = pTrader->m_tArtefactNeeded.end();
-		
-		for(; I != E; I++)
-			Msg("--TRADE:: [%s]: I need %i artefacts %s (i'll pay $%i for each)",pThis.base->cName(),I->m_dwCount,I->m_caName,I->m_dwPrice);
-
-	} else 
+		CAI_Trader					*l_pTrader = dynamic_cast<CAI_Trader *>(pThis.inv_owner);
+		R_ASSERT					(l_pTrader);
+		Msg							("--TRADE:: [%s]: I need the following artefacts :");
+		ARTEFACT_TRADER_ORDER_IT	ii = l_pTrader->m_tpOrderedArtefacts.begin();
+		ARTEFACT_TRADER_ORDER_IT	ee = l_pTrader->m_tpOrderedArtefacts.end();
+		for ( ; ii != ee; ii++)
+			Msg						("		Artefact %s :\n",pSettings->r_string((*ii).m_caSection,"inv_name"));
+			ARTEFACT_ORDER_IT		iii = (*ii).m_tpOrders.begin();
+			ARTEFACT_ORDER_IT		eee = (*ii).m_tpOrders.end();
+			for ( ; iii != eee; iii++)
+				Msg					("			%d items for $%d for organization %s\n",(*iii).m_dwCount,(*iii).m_dwPrice,"");//(*iii).m_caSection));
+	}
+	else 
 		Msg("--TRADE:: [%s]: I don't buy artefacts! Go to trader",pThis.base->cName());
 }
 

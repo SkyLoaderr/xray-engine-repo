@@ -83,12 +83,11 @@ void CSE_ALifeTrader::STATE_Write			(NET_Packet &tNetPacket)
 	inherited2::STATE_Write		(tNetPacket);
 	{
 		tNetPacket.w_u32		(m_tpOrderedArtefacts.size());
-		ARTEFACT_ORDER_IT		I = m_tpOrderedArtefacts.begin();
-		ARTEFACT_ORDER_IT		E = m_tpOrderedArtefacts.end();
+		ARTEFACT_TRADER_ORDER_IT	I = m_tpOrderedArtefacts.begin();
+		ARTEFACT_TRADER_ORDER_IT	E = m_tpOrderedArtefacts.end();
 		for ( ; I != E; I++) {
 			tNetPacket.w_string	((*I).m_caSection);
-			tNetPacket.w_u32	((*I).m_dwCount);
-			tNetPacket.w_u32	((*I).m_dwPrice);
+			save_data			((*I).m_tpOrders,tNetPacket);
 		}
 	}
 	{
@@ -112,12 +111,18 @@ void CSE_ALifeTrader::STATE_Read			(NET_Packet &tNetPacket, u16 size)
 		u32						l_dwCount;
 		tNetPacket.r_u32		(l_dwCount);
 		m_tpOrderedArtefacts.resize(l_dwCount);
-		ARTEFACT_ORDER_IT		I = m_tpOrderedArtefacts.begin();
-		ARTEFACT_ORDER_IT		E = m_tpOrderedArtefacts.end();
+		ARTEFACT_TRADER_ORDER_IT	I = m_tpOrderedArtefacts.begin();
+		ARTEFACT_TRADER_ORDER_IT	E = m_tpOrderedArtefacts.end();
 		for ( ; I != E; I++) {
 			tNetPacket.r_string	((*I).m_caSection);
-			tNetPacket.r_u32	((*I).m_dwCount);
-			tNetPacket.r_u32	((*I).m_dwPrice);
+			if (m_wVersion < 35) {
+				SArtefactOrder		l_tArtefactOrder;
+				tNetPacket.r_u32	(l_tArtefactOrder.m_dwCount);
+				tNetPacket.r_u32	(l_tArtefactOrder.m_dwPrice);
+				(*I).m_tpOrders.push_back(l_tArtefactOrder);
+			}
+			else
+				load_data			((*I).m_tpOrders,tNetPacket);
 		}
 	}
 	if (m_wVersion > 30) {

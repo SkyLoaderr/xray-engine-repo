@@ -9,6 +9,7 @@
 #include "stdafx.h"
 #include "ai_alife.h"
 #include "ai_space.h"
+#include "ai_alife_predicates.h"
 
 void CSE_ALifeSimulator::vfCreateObjectFromSpawnPoint(CSE_ALifeDynamicObject *&i, CSE_ALifeDynamicObject *j, _SPAWN_ID tSpawnID)
 {
@@ -353,8 +354,8 @@ void CSE_ALifeSimulator::vfUpdateOrganizations()
 
 						// checking if artefacts being used during discovery invention are known
 						// and there are enough artefacts purchased for discovery
-						ARTEFACT_ORDER_IT			ii = (*j).second->m_tpArtefactNeed.begin();
-						ARTEFACT_ORDER_IT			ee = (*j).second->m_tpArtefactNeed.end();
+						ARTEFACT_ORG_ORDER_IT		ii = (*j).second->m_tpArtefactNeed.begin();
+						ARTEFACT_ORG_ORDER_IT		ee = (*j).second->m_tpArtefactNeed.end();
 						bool						l_bIsReadyForInvention = true;
 						for ( ; ii != ee; ii++) {
 							bool					l_bFound = false;
@@ -414,7 +415,7 @@ void CSE_ALifeSimulator::vfUpdateOrganizations()
 						DEMAND_P_IT			ii = (*i).second->m_tpArtefactDemand.begin();
 						DEMAND_P_IT			ee = (*i).second->m_tpArtefactDemand.end();
 						(*I).second->m_tpOrderedArtefacts.resize(ee - ii);
-						ARTEFACT_ORDER_IT	II = (*I).second->m_tpOrderedArtefacts.begin();
+						ARTEFACT_ORG_ORDER_IT	II = (*I).second->m_tpOrderedArtefacts.begin();
 						for ( ; ii != ee; ii++, II++) {
 							strcpy((*II).m_caSection,(*ii)->m_caSection);
 							(*II).m_dwCount	= randI((*ii)->m_dwMinArtefactCount,(*ii)->m_dwMaxArtefactCount);
@@ -487,8 +488,8 @@ void CSE_ALifeSimulator::vfSellArtefacts(CSE_ALifeTrader &tTrader)
 				// and the organization in the appropriate state
 				if (((*I).second->m_tTraderRank == tTrader.m_tRank) && ((*I).second->m_tResearchState == eResearchStateJoin)) {
 					// iterating on all the organization artefact orders
-					ARTEFACT_ORDER_IT	ii = (*I).second->m_tpOrderedArtefacts.begin();
-					ARTEFACT_ORDER_IT	ee = (*I).second->m_tpOrderedArtefacts.end();
+					ARTEFACT_ORG_ORDER_IT	ii = (*I).second->m_tpOrderedArtefacts.begin();
+					ARTEFACT_ORG_ORDER_IT	ee = (*I).second->m_tpOrderedArtefacts.end();
 					for ( ; ii != ee; ii++)
 						if (!strcmp((*ii).m_caSection,(*i).first)) {
 							SOrganizationOrder							l_tOrganizationOrder;
@@ -548,25 +549,42 @@ void CSE_ALifeSimulator::vfUpdateArtefactOrders(CSE_ALifeTrader &tTrader)
 		// checking if our rank is enough for the organization
 		// and the organization in the appropriate state
 		if (((*I).second->m_tTraderRank == tTrader.m_tRank) && ((*I).second->m_tResearchState == eResearchStateJoin)) {
-			ARTEFACT_ORDER_IT	i = (*I).second->m_tpOrderedArtefacts.begin();
-			ARTEFACT_ORDER_IT	e = (*I).second->m_tpOrderedArtefacts.end();
+			ARTEFACT_ORG_ORDER_IT	i = (*I).second->m_tpOrderedArtefacts.begin();
+			ARTEFACT_ORG_ORDER_IT	e = (*I).second->m_tpOrderedArtefacts.end();
 			for ( ; i != e; i++) {
 				bool				bOk = false;
-				ARTEFACT_ORDER_IT	ii = tTrader.m_tpOrderedArtefacts.begin();
-				ARTEFACT_ORDER_IT	ee = tTrader.m_tpOrderedArtefacts.end();
+				ARTEFACT_TRADER_ORDER_IT	ii = tTrader.m_tpOrderedArtefacts.begin();
+				ARTEFACT_TRADER_ORDER_IT	ee = tTrader.m_tpOrderedArtefacts.end();
 				for ( ; ii != ee; ii++)
 					if (!strcmp((*i).m_caSection,(*ii).m_caSection)) {
-						(*ii).m_dwCount += (*i).m_dwCount;
-						(*ii).m_dwPrice = _min((*ii).m_dwPrice,(*i).m_dwPrice);
+						(*ii).m_dwTotalCount += (*i).m_dwCount;
+						ARTEFACT_ORDER_IT	iii = (*ii).m_tpOrders.begin();
+						ARTEFACT_ORDER_IT	eee = (*ii).m_tpOrders.end();
+						for ( ; iii != eee; iii++)
+							if ((*iii).m_dwPrice == (*i).m_dwPrice) {
+								(*iii).m_dwCount += (*i).m_dwCount;
+								bOk = true;
+								break;
+							}
+						
+						if (!bOk) {
+							SArtefactOrder	l_tArtefactOrder;
+							l_tArtefactOrder.m_dwCount	= (*i).m_dwCount;
+							l_tArtefactOrder.m_dwPrice	= (*i).m_dwPrice;
+							(*ii).m_tpOrders.push_back(l_tArtefactOrder);
+						}
 						bOk			= true;
 						break;
 					}
 				if (!bOk) {
-					SArtefactOrder	l_tArtefactOrder;
-					strcpy			(l_tArtefactOrder.m_caSection,(*i).m_caSection);
+					SArtefactTraderOrder	l_tTraderArtefactOrder;
+					strcpy					(l_tTraderArtefactOrder.m_caSection,(*i).m_caSection);
+					l_tTraderArtefactOrder.m_dwTotalCount = (*i).m_dwCount;
+					SArtefactOrder			l_tArtefactOrder;
 					l_tArtefactOrder.m_dwCount = (*i).m_dwCount;
 					l_tArtefactOrder.m_dwPrice = (*i).m_dwPrice;
-					tTrader.m_tpOrderedArtefacts.push_back(l_tArtefactOrder);
+					l_tTraderArtefactOrder.m_tpOrders.push_back(l_tArtefactOrder);
+					tTrader.m_tpOrderedArtefacts.push_back(l_tTraderArtefactOrder);
 					// updating cross traders table
 					TRADER_SET_PAIR_IT	J = m_tpCrossTraders.find((*i).m_caSection);
 					if (J == m_tpCrossTraders.end()) {
@@ -580,6 +598,13 @@ void CSE_ALifeSimulator::vfUpdateArtefactOrders(CSE_ALifeTrader &tTrader)
 				}
 			}
 		}
+	}
+	{
+		ARTEFACT_TRADER_ORDER_IT	I = tTrader.m_tpOrderedArtefacts.begin();
+		ARTEFACT_TRADER_ORDER_IT	E = tTrader.m_tpOrderedArtefacts.end();
+		for ( ; I != E; I++)
+			std::sort				((*I).m_tpOrders.begin(),(*I).m_tpOrders.end(),CArtefactOrderPredicate());
+		std::sort					(tTrader.m_tpOrderedArtefacts.begin(),tTrader.m_tpOrderedArtefacts.end(),CArtefactPredicate());
 	}
 }
 

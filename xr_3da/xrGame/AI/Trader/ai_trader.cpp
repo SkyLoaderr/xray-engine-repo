@@ -39,19 +39,8 @@ BOOL CAI_Trader::net_Spawn			(LPVOID DC)
 {
 	CSE_Abstract					*e	= (CSE_Abstract*)(DC);
 	CSE_ALifeTrader					*l_tpTrader = dynamic_cast<CSE_ALifeTrader*>(e);
-
-
-	m_tArtefactNeeded.clear			();
-	SArtefactNeeded					tempArtefact;
-
-	ARTEFACT_ORDER_IT				B = l_tpTrader->m_tpOrderedArtefacts.begin(), I = B;
-	ARTEFACT_ORDER_IT				E = l_tpTrader->m_tpOrderedArtefacts.end();
-	for (; I != E; I++) {
-		strcpy(tempArtefact.m_caName,pSettings->r_string (I->m_caSection,"inv_name"));
-		tempArtefact.m_dwCount = I->m_dwCount;
-		tempArtefact.m_dwPrice = I->m_dwPrice;
-		m_tArtefactNeeded.push_back(tempArtefact);
-	}
+	
+	m_tpOrderedArtefacts			= l_tpTrader->m_tpOrderedArtefacts;
 	
 	R_ASSERT						(l_tpTrader);
 	cNameVisual_set					(l_tpTrader->get_visual());

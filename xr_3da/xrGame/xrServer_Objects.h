@@ -17,7 +17,7 @@
 	#include "PropertiesListHelper.h"
 #endif
 
-#define SPAWN_VERSION	u16(34)
+#define SPAWN_VERSION	u16(35)
 //------------------------------------------------------------------------------
 // Version history
 //------------------------------------------------------------------------------
@@ -46,6 +46,7 @@
 // 32 - CSE_ALifeDynamicObjectVisual	the only this class saves and loads visual object
 // 33 - CSE_ALifeGraphPoint and CSE_ALifeLevelChanger	level id changed to level name
 // 34 - CSE_ALifeLevelPoint and CSE_ALifeLevelChanger	appended several new properties
+// 35 - CSE_ALifeTrader					artefact order structures changed
 //------------------------------------------------------------------------------
 
 class CPureServerObject : public IPureServerObject {

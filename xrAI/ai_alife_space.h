@@ -111,13 +111,28 @@ namespace ALife {
 
 	DEFINE_VECTOR(STerrainPlace, TERRAIN_VECTOR, TERRAIN_IT);
 
-	struct SArtefactOrder {
+	struct SArtefactOrganizationOrder {
 		string64				m_caSection;
 		u32						m_dwCount;
 		u32						m_dwPrice;
 	};
 
+	DEFINE_VECTOR		(SArtefactOrganizationOrder,	ARTEFACT_ORG_ORDER_VECTOR,		ARTEFACT_ORG_ORDER_IT);
+
+	struct SArtefactOrder {
+		u32						m_dwCount;
+		u32						m_dwPrice;
+	};
+
 	DEFINE_VECTOR		(SArtefactOrder,				ARTEFACT_ORDER_VECTOR,			ARTEFACT_ORDER_IT);
+
+	struct SArtefactTraderOrder {
+		string64				m_caSection;
+		u32						m_dwTotalCount;
+		ARTEFACT_ORDER_VECTOR	m_tpOrders;
+	};
+
+	DEFINE_VECTOR		(SArtefactTraderOrder,			ARTEFACT_TRADER_ORDER_VECTOR,	ARTEFACT_TRADER_ORDER_IT);
 
 	struct SOrganizationOrder {
 		CSE_ALifeOrganization	*m_tpALifeOrganization;

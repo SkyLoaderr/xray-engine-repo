@@ -8,6 +8,22 @@
 
 #pragma once
 
+class CArtefactOrderPredicate {
+public:
+	bool							operator()							(const SArtefactOrder tArtefactOrder1, const SArtefactOrder tArtefactOrder2) const
+	{
+		return						(tArtefactOrder1.m_dwPrice > tArtefactOrder2.m_dwPrice);
+	};
+};
+
+class CArtefactPredicate {
+public:
+	bool							operator()							(const SArtefactTraderOrder tArtefactOrder1, const SArtefactTraderOrder tArtefactOrder2) const
+	{
+		return						(tArtefactOrder1.m_tpOrders[0].m_dwPrice > tArtefactOrder2.m_tpOrders[0].m_dwPrice);
+	};
+};
+
 IC const ALife::_EVENT_ID			tfChooseEventKeyPredicate			(const CSE_ALifeEvent *T)
 {
 	return							(T->m_tEventID);

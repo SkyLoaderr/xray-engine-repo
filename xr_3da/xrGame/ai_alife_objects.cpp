@@ -62,7 +62,7 @@ CSE_ALifeDiscovery::CSE_ALifeDiscovery(LPCSTR caSection)
 		R_ASSERT2				(!(_GetItemCount(S) % 3),"Invalid argument count in the discovery object section!");
 		u32						l_dwCount = _GetItemCount(S)/3;
 		for (u32 i=0; i<l_dwCount; i++) {
-			SArtefactOrder		l_tArtefactOrder;
+			SArtefactOrganizationOrder		l_tArtefactOrder;
 			_GetItem			(S,3*i + 0,l_tArtefactOrder.m_caSection);
 			l_tArtefactOrder.m_dwCount = atoi(_GetItem(S,3*i + 1,S1));
 			l_tArtefactOrder.m_dwPrice = atoi(_GetItem(S,3*i + 2,S1));
@@ -139,8 +139,8 @@ void CSE_ALifeOrganization::Save(IWriter &tMemoryStream)
 	tMemoryStream.w_string		(m_caDiscoveryToInvestigate);
 	{
 		tMemoryStream.w_u32		(m_tpOrderedArtefacts.size());
-		ARTEFACT_ORDER_IT		I = m_tpOrderedArtefacts.begin();
-		ARTEFACT_ORDER_IT		E = m_tpOrderedArtefacts.end();
+		ARTEFACT_ORG_ORDER_IT	I = m_tpOrderedArtefacts.begin();
+		ARTEFACT_ORG_ORDER_IT	E = m_tpOrderedArtefacts.end();
 		for ( ; I != E; I++) {
 			tMemoryStream.w_string((*I).m_caSection);
 			tMemoryStream.w_u32	((*I).m_dwCount);
@@ -165,8 +165,8 @@ void CSE_ALifeOrganization::Load(IReader &tFileStream)
 	tFileStream.r_string		(m_caDiscoveryToInvestigate);
 	{
 		m_tpOrderedArtefacts.resize	(tFileStream.r_u32());
-		ARTEFACT_ORDER_IT			I = m_tpOrderedArtefacts.begin();
-		ARTEFACT_ORDER_IT			E = m_tpOrderedArtefacts.end();
+		ARTEFACT_ORG_ORDER_IT	I = m_tpOrderedArtefacts.begin();
+		ARTEFACT_ORG_ORDER_IT	E = m_tpOrderedArtefacts.end();
 		for ( ; I != E; I++) {
 			tFileStream.r_string	((*I).m_caSection);
 			(*I).m_dwCount			= tFileStream.r_u32();
