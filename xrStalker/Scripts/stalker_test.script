@@ -1,5 +1,5 @@
-function movement_callback(action_type,index)
-	printf		("Patrol point %d",index)
+function movement_callback(obj,action_type,index)
+	printf		("Patrol point %d (object %s)",index,obj:name())
 end
 
 function main ()
