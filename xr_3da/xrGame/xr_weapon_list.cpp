@@ -44,13 +44,15 @@ CWeaponList::~CWeaponList	( )
 #define ACT_BONE_NAME_R "bip01_r_hand"
 #define ACT_BONE_NAME_L "bip01_l_finger1"
 
-void CWeaponList::Init()
+void CWeaponList::Init(LPSTR act_bone_r, LPSTR act_bone_l)
 {
 	m_iHUDboneL		= -1;
 	m_iHUDboneR		= -1;
 	PKinematics V	= PKinematics(m_pParent->Visual());
-	m_iACTboneL		= V->LL_BoneID(ACT_BONE_NAME_L);
-	m_iACTboneR		= V->LL_BoneID(ACT_BONE_NAME_R);
+//	m_iACTboneL		= V->LL_BoneID(ACT_BONE_NAME_L);
+//	m_iACTboneR		= V->LL_BoneID(ACT_BONE_NAME_R);
+	m_iACTboneL		= V->LL_BoneID(act_bone_l);
+	m_iACTboneR		= V->LL_BoneID(act_bone_r);
 }
 
 void CWeaponList::FireStart()

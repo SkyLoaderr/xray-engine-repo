@@ -32,7 +32,7 @@ public:
 					CWeaponList			(CEntity* p);
 					~CWeaponList		();
 
-	void			Init				();
+	void			Init				(LPSTR act_bone_r, LPSTR act_bone_l);
 
 	bool			ActivateWeaponPrev	(bool ignore_empty_weapon=true);
 	bool			ActivateWeaponNext	(bool ignore_empty_weapon=true);
