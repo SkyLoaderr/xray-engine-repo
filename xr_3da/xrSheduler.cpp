@@ -146,7 +146,7 @@ void CSheduler::ProcessStep			()
 		Push						(TNext);
 
 		// Real update call
-		Msg							("------- %d:",Device.dwFrame);
+		// Msg							("------- %d:",Device.dwFrame);
 		eTimer.Start				();
 #ifdef DEBUG
 		T.Object->dbg_startframe	= Device.dwFrame;
