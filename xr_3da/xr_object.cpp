@@ -69,7 +69,7 @@ void CObject::setVisible		(BOOL _visible)
 	}
 	else
 	{
-		FLAGS.bVisible							= 1;
+		FLAGS.bVisible							= 0;
 		spatial.type							&=	~STYPE_RENDERABLE;
 	}
 }
