@@ -22,27 +22,27 @@ function main()
 				siviy,
 			  	move	(move.standing, move.walk,move.line,patrol("way0000")),
 				anim	(anim.danger),
-				cond	(cond.move_end)
+				cond	(cond.time_end, 100000000)
 			)
 			action(
 				chert,
 			  	move	(move.standing, move.walk,move.line,patrol("way0001")),
 				anim	(anim.danger),
-				cond	(cond.move_end)
+				cond	(cond.time_end, 100000000)
 			)
 			action(
 				stalker,
 			  	move	(move.standing, move.stand,move.line,patrol("way0001")),
 				look	(look.fire_point, chert),
 				anim	(anim.free),
-				cond	(cond.move_end)
+				cond	(cond.time_end, 100000000)
 			)
 			action(
 				ecolog,
 			  	move	(move.standing, move.stand,move.line,patrol("way0001")),
 				look	(look.fire_point, siviy),
 				anim	(anim.free),
-				cond	(cond.move_end)
+				cond	(cond.time_end, 100000000)
 			)
 
 			siviy:script	(false,  angry_stalkers.script_name())
