@@ -342,8 +342,8 @@ void CCC_Register()
 	// Network
 	CMD4(CCC_Integer,	"net_cl_update_rate",	&psNET_ClientUpdate,1,		100	);
 	CMD4(CCC_Integer,	"net_cl_pending_lim",	&psNET_ClientPending,0,		10	);
-	CMD4(CCC_Integer,	"net_sv_update_rate",	&psNET_ClientUpdate,1,		100	);
-	CMD4(CCC_Integer,	"net_sv_pending_lim",	&psNET_ClientPending,0,		10	);
+	CMD4(CCC_Integer,	"net_sv_update_rate",	&psNET_ServerUpdate,1,		100	);
+	CMD4(CCC_Integer,	"net_sv_pending_lim",	&psNET_ServerPending,0,		10	);
 	CMD4(CCC_Integer,	"net_port",				&psNET_Port,		5400,	5500);
 	CMD3(CCC_String,	"net_name",				psNET_Name,			32			);
 
