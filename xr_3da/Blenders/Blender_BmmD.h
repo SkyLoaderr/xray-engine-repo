@@ -13,11 +13,6 @@ class ENGINE_API CBlender_BmmD : public CBlender
 public:
 	string64	oT2_Name;		// name of secondary texture
 	string64	oT2_xform;		// xform for secondary texture
-	
-	void		compile_2	(CBlender_Recorder& RS, sh_list& L_textures, sh_list& L_constants, sh_list& L_matrices, int param=0);
-	void		compile_2c	(CBlender_Recorder& RS, sh_list& L_textures, sh_list& L_constants, sh_list& L_matrices, int param=0);
-	void		compile_3	(CBlender_Recorder& RS, sh_list& L_textures, sh_list& L_constants, sh_list& L_matrices, int param=0);
-	void		compile_3c	(CBlender_Recorder& RS, sh_list& L_textures, sh_list& L_constants, sh_list& L_matrices, int param=0);
 public:
 	virtual		LPCSTR		getComment()	{ return "base**detail";	}
 
