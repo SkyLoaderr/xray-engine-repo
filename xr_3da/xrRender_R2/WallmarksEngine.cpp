@@ -235,13 +235,13 @@ void CWallmarksEngine::AddWallmark_internal	(CDB::TRI* pTri, const Fvector* pVer
 		// search if similar wallmark exists
 		wm_slot* slot			= FindSlot	(hShader);
 		if (slot){
-			StaticWMVecIt it	= slot->static_items.begin	();
-			StaticWMVecIt end	= slot->static_items.end	();
-			for (; it!=end; it++){
-				static_wallmark* wm	= *it;
+			StaticWMVecIt it	=	slot->static_items.begin	();
+			StaticWMVecIt end	=	slot->static_items.end	();
+			for (; it!=end; it++)	{
+				static_wallmark* wm		=	*it;
 				if (wm->bounds.P.similar(W->bounds.P,0.02f)){ // replace
 					static_wm_destroy	(wm);
-					*it					= W;
+					*it					=	W;
 					return;
 				}
 			}
