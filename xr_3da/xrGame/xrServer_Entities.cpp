@@ -5,6 +5,8 @@
 	#include "xrServer_Entities.h"
 	#include "xr_ini.h"
 	#include "clsid_game.h"
+	#include "xr_tokens.h"
+	#include "game_type.h"
 #else
 	#include "xrServer.h"
 #endif
@@ -54,8 +56,7 @@ void	xrServerEntity::Spawn_Read		(NET_Packet& P)
 }
 
 #ifdef _EDITOR
-xr_token game_types[]
-{
+xr_token game_types[]={
 	{ "Any game",	GAME_ANY		},
 	{ "Single",		GAME_SINGLE		},
 	{ "Deathmatch", GAME_DEATHMATCH },
@@ -65,7 +66,7 @@ xr_token game_types[]
 };
 void	xrServerEntity::FillProp(LPCSTR pref, PropValueVec& values)
 {
-	FILL_PROP_EX(values,	pref, "Game Type",	&s_gameid, 	PROP::CreateToken(game_types));
+	FILL_PROP_EX(values,	pref, "Game Type",	&s_gameid, 	PROP::CreateToken(game_types,1));
 	FILL_PROP_EX(values,	pref, "Active",		&s_flags, 	PROP::CreateFlag(M_SPAWN_OBJECT_ACTIVE));
 }
 #endif
@@ -142,7 +143,7 @@ public:
     {
     	inherited::FillProp(pref, values);
       	FILL_PROP_EX(values,PROP::PrepareKey(pref,s_name), "Ammo: total",		&a_current, PROP::CreateU16(0,1000,1));
-        FILL_PROP_EX(values,PROP::PrepareKey(pref,s_name), "Ammo: in magazine",&a_elapsed, PROP::CreateU16(0,30,1));
+        FILL_PROP_EX(values,PROP::PrepareKey(pref,s_name), "Ammo: in magazine",	&a_elapsed, PROP::CreateU16(0,30,1));
     }
 #endif
 };
@@ -181,7 +182,7 @@ public:
     virtual void			FillProp			(LPCSTR pref, PropValueVec& values)
     {
     	inherited::FillProp(pref,values);
-      	FILL_PROP_EX(values,PROP::PrepareKey(pref,s_name), "Team",		&s_team, 	PROP::CreateU8(0,64,1));
+      	FILL_PROP_EX(values,PROP::PrepareKey(pref,s_name), "Team",	&s_team, 	PROP::CreateU8(0,64,1));
         FILL_PROP_EX(values,PROP::PrepareKey(pref,s_name), "Squad",	&s_squad, 	PROP::CreateU8(0,64,1));
         FILL_PROP_EX(values,PROP::PrepareKey(pref,s_name), "Group",	&s_group, 	PROP::CreateU8(0,64,1));
     }
