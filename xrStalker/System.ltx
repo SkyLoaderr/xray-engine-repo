@@ -5433,7 +5433,7 @@ hit_type = wound
 
 ;entity condition
 
-satiety_v = 0.001			;0.01			;скорость уменьшения сытости со временем
+satiety_v = 0.01			;0.01			;скорость уменьшения сытости со временем
 radiation_v = 0.00001		;0.004			;скорость уменьшения радиации
 satiety_power_v = 0.001		;0.01			;увеличение силы при уменьшении сытости 
 satiety_health_v = 0.001	;0.03			;увеличение здоровья при уменьшении сытости 
@@ -5444,15 +5444,15 @@ wound_incarnation_v = 0.0001;0.001		    ;скорость заживания раны
 health_hit_part = 1.0		;0.8			;процент хита, уходящий на отнимание здоровья
 power_hit_part = 1.0		;0.9			;процент хита, уходящий на отнимание силы
 
-burn_immunity = 1.0							;коэффициенты иммунитета 
-strike_immunity = 1.0
+burn_immunity = 0.8				;коэффициенты иммунитета 
+strike_immunity = 0.7
 shock_immunity = 1.0
-wound_immunity = 1.0		
-radiation_immunity = 1.0
+wound_immunity = 0.50	;1.0		
+radiation_immunity = 0.2
 telepatic_immunity = 1.0
-chemical_burn_immunity = 1.0
-explosion_immunity = 1.0
-fire_wound_immunity  = 1.0
+chemical_burn_immunity = 0.9
+explosion_immunity = 0.7
+fire_wound_immunity  = 0.7
 
 sleep_health = 1.0		;1.5				;коэффициенты скоростей изменения параметров во время сна
 sleep_power = 1.0		;1.5
