@@ -145,10 +145,10 @@ function proceed(actor)
 	end 
 
 	if	actor:has_info("bar_kill_veteran_start") and 
- 		actor:dont_has_info("bar_kill_veteran_kill") and
+ 		actor:dont_has_info("bar_kill_veteran_killed") and
 		actor:object("bar_lucky_pda") ~= nil 
 	then		
-		actor:give_info_portion("bar_kill_veteran_kill")
+		actor:give_info_portion("bar_kill_veteran_killed")
 	end 
 
 	if	actor:has_info("bar_resque_research_start") and 
