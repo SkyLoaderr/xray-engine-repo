@@ -354,7 +354,7 @@ class CAI_Rat : public CCustomMonster
 		void	vfUpdateDynamicObjects() {};
 		void	CreateSkeleton();
 		void	vfUpdateSpawnPosition();
-		void	tfChooseNextGraphPoint();
+		void	vfChooseNextGraphPoint();
 		//////////////////////////
 		// FSM STATES
 		//////////////////////////

@@ -286,9 +286,7 @@ bool CAI_Rat::bfComputeNewPosition(bool bCanAdjustSpeed, bool bStraightForward)
 	return(m_bResult);
 }
 
-using namespace ALife;
-
-void CAI_Rat::tfChooseNextGraphPoint()
+void CAI_Rat::vfChooseNextGraphPoint()
 {
 	_GRAPH_ID			tGraphID		= m_tNextGP;
 	u16					wNeighbourCount = (u16)getAI().m_tpaGraph[tGraphID].tNeighbourCount;

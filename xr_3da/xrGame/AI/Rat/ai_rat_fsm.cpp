@@ -685,7 +685,7 @@ void CAI_Rat::vfUpdateSpawnPosition()
 	else {
 		if ((Level().timeServer() >= m_dwTimeToChange) && (getAI().m_tpaCrossTable[AI_NodeID].tGraphIndex == m_tNextGP)) {
 			m_tNextGP					= getAI().m_tpaCrossTable[AI_NodeID].tGraphIndex;
-			tfChooseNextGraphPoint		();
+			vfChooseNextGraphPoint		();
 			m_tSafeSpawnPosition.set	(getAI().m_tpaGraph[m_tNextGP].tLocalPoint);
 			Msg("Next graph point %d",m_tNextGP);
 		}
