@@ -11,7 +11,7 @@
 #include "level.h"
 #include "GameMtlLib.h"
 
-#define PICKUP_INFO_COLOR 0xFFCCCCCC
+#define PICKUP_INFO_COLOR 0xFFDDDDDD
 //AAAAAA
 
 void CActor::feel_touch_new				(CObject* O)
@@ -139,34 +139,26 @@ void CActor::PickupInfoDraw(CObject* object)
 
 	Fmatrix res;
 	res.mul(Device.mFullTransform,object->XFORM());
-
 	Fvector4 v_res;
-
 	Fvector shift;
-
-	if(item) 
-	{
+	if(item){
 		draw_str = item->NameComplex();
 		shift.set(0,0,0);
-	}
-	else if(inventory_owner)
-	{
+	}else if(inventory_owner){
 		draw_str = inventory_owner->CharacterInfo().Name();
 		shift.set(0,1.2f,0);
 	}
-
 
 	res.transform(v_res,shift);
 
 	if (v_res.z < 0 || v_res.w < 0)	return;
 	if (v_res.x < -1.f || v_res.x > 1.f || v_res.y<-1.f || v_res.y>1.f) return;
 
-	float x = (1.f + v_res.x)/2.f * (Device.dwWidth);
-	float y = (1.f - v_res.y)/2.f * (Device.dwHeight);
+	u32 x = iFloor((1.f + v_res.x)/2.f * (Device.dwWidth));
+	u32 y = iFloor((1.f - v_res.y)/2.f * (Device.dwHeight));
 
 
-	HUD().Font().pFontMedium->SetAligment(CGameFont::alCenter);
-	HUD().Font().pFontMedium->SetColor(PICKUP_INFO_COLOR);
-	HUD().Font().pFontMedium->OutSet(x,y);
-	HUD().Font().pFontMedium->OutNext(draw_str);
+	HUD().Font().pFontMedium->SetAligment	(CGameFont::alCenter);
+	HUD().Font().pFontMedium->SetColor		(PICKUP_INFO_COLOR);
+	HUD().Font().pFontMedium->Out			(x,y,draw_str);
 }
