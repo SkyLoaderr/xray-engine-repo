@@ -8,12 +8,12 @@ class CPSObject			: public CPS_Instance
 {
 	typedef CPS_Instance	inherited;
 public:
-	PS::SEmitter		m_Emitter;
+	// PS::SEmitter		m_Emitter;
 public:
 						CPSObject			(LPCSTR ps_name, IRender_Sector* S=0, BOOL bAutoRemove=true);
 	virtual				~CPSObject			();
 
-	virtual float		shedule_Scale		()	{ return Device.vCameraPosition.distance_to(m_Emitter.m_Position)/200.f; }
+	virtual float		shedule_Scale		()	{ return 1; }
 	virtual void		shedule_Update		(u32 dt);
 	virtual void		renderable_Render	();
 	void				play_at_pos			(const Fvector& pos);

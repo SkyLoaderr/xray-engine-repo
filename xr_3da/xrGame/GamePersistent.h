@@ -2,7 +2,7 @@
 #define GamePersistentH
 #pragma once
 
-#include "IGame_Persistent.h"
+#include "..\IGame_Persistent.h"
 
 class CGamePersistent				: 
 	public IGame_Persistent, 

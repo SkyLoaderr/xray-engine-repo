@@ -323,6 +323,8 @@ void CGrenade::FragWallmark	(const Fvector& vDir, const Fvector &vEnd, Collide::
 	{
 		if (R.O->CLS_ID==CLSID_ENTITY)
 		{
+#pragma todo("Oles to Yura: replace 'CPSObject' with 'CParticlesObject'")
+			/*
 			IRender_Sector* S	= R.O->Sector();
 			Fvector D;	D.invert(vDir);
 
@@ -330,6 +332,7 @@ void CGrenade::FragWallmark	(const Fvector& vDir, const Fvector &vEnd, Collide::
 			CPSObject* PS		= xr_new<CPSObject> (ps_gibs,S,true);
 			PS->m_Emitter.m_ConeDirection.set(D);
 			PS->play_at_pos		(vEnd);
+			*/
 		}
 	} else {
 		R_ASSERT(R.element >= 0);
@@ -350,6 +353,8 @@ void CGrenade::FragWallmark	(const Fvector& vDir, const Fvector &vEnd, Collide::
 		N.mknormal			(pTri->V(0),pTri->V(1),pTri->V(2));
 		D.reflect			(vDir,N);
 		
+#pragma todo("Oles to Yura: replace 'CPSObject' with 'CParticlesObject'")
+		/*
 		IRender_Sector* S	= ::Render->getSector(pTri->sector);
 		
 		// smoke
@@ -362,8 +367,8 @@ void CGrenade::FragWallmark	(const Fvector& vDir, const Fvector &vEnd, Collide::
 		PS					= xr_new<CPSObject> ("stones",S,true);
 		PS->m_Emitter.m_ConeDirection.set(D);
 		PS->play_at_pos		(vEnd);
+		*/
 	}
-
 }
 
 void CGrenade::feel_touch_new(CObject* O) 

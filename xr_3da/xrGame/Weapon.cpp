@@ -681,6 +681,8 @@ void CWeapon::FireShotmark	(const Fvector& vDir, const Fvector &vEnd, Collide::r
 	if (R.O) {
 		if (R.O->CLS_ID==CLSID_ENTITY)
 		{
+#pragma todo("Oles to Yura: replace 'CPSObject' with 'CParticlesObject'")
+			/*
 			IRender_Sector* S	= R.O->Sector();
 			Fvector D;	D.invert(vDir);
 
@@ -688,6 +690,7 @@ void CWeapon::FireShotmark	(const Fvector& vDir, const Fvector &vEnd, Collide::r
 			CPSObject* PS		= xr_new<CPSObject> (ps_gibs,S,true);
 			PS->m_Emitter.m_ConeDirection.set(D);
 			PS->play_at_pos		(vEnd);
+			*/
 		}
 	} else {
 		::Render->add_Wallmark	(

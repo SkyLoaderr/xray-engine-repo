@@ -6,7 +6,6 @@
 
 #include "ParticlesObject.h"
 #include "..\ParticleCustom.h"
-#include "..\ParticleEffect.h"
 #include "..\render.h"
 
 CParticlesObject::CParticlesObject	(LPCSTR p_name, IRender_Sector* S, BOOL bAutoRemove)

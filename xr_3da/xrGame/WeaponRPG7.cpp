@@ -430,10 +430,13 @@ void CWeaponRPG7Grenade::FragWallmark	(const Fvector& vDir, const Fvector &vEnd,
 			IRender_Sector* S	= R.O->Sector();
 			Fvector D;	D.invert(vDir);
 
+#pragma todo("Oles to Yura: replace 'CPSObject' with 'CParticlesObject'")
+			/*
 			LPCSTR ps_gibs		= "blood_1";//(Random.randI(5)==0)?"sparks_1":"stones";
 			CPSObject* PS		= xr_new<CPSObject> (ps_gibs,S,true);
 			PS->m_Emitter.m_ConeDirection.set(D);
 			PS->play_at_pos		(vEnd);
+			*/
 		}
 	} else {
 		R_ASSERT(R.element >= 0);
@@ -456,6 +459,8 @@ void CWeaponRPG7Grenade::FragWallmark	(const Fvector& vDir, const Fvector &vEnd,
 		
 		IRender_Sector* S	= ::Render->getSector(pTri->sector);
 		
+#pragma todo("Oles to Yura: replace 'CPSObject' with 'CParticlesObject'")
+		/*
 		// smoke
 		LPCSTR ps_gibs		= (Random.randI(5)==0)?"sparks_1":"stones";
 		CPSObject* PS		= xr_new<CPSObject> (ps_gibs,S,true);
@@ -466,6 +471,7 @@ void CWeaponRPG7Grenade::FragWallmark	(const Fvector& vDir, const Fvector &vEnd,
 		PS					= xr_new<CPSObject> ("stones",S,true);
 		PS->m_Emitter.m_ConeDirection.set(D);
 		PS->play_at_pos		(vEnd);
+		*/
 	}
 
 }

@@ -429,6 +429,8 @@ void CWeaponMagazined::OnShotmark	(const Fvector &vDir, const Fvector &vEnd, Col
 		N.mknormal			(pTri->V(0),pTri->V(1),pTri->V(2));
 		D.reflect			(vDir,N);
 		
+#pragma todo("Oles to Yura: replace 'CPSObject' with 'CParticlesObject'")
+		/*
 		IRender_Sector* S	= ::Render->getSector(pTri->sector);
 		
 		// smoke
@@ -441,6 +443,7 @@ void CWeaponMagazined::OnShotmark	(const Fvector &vDir, const Fvector &vEnd, Col
 		PS					= xr_new<CPSObject> ("stones",S,true);
 		PS->m_Emitter.m_ConeDirection.set(D);
 		PS->play_at_pos		(vEnd);
+		*/
 	}
 }
 
