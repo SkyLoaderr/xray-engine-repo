@@ -356,7 +356,7 @@ void CPHSimpleCharacter::PhDataUpdate(dReal /**step/**/){
 	Memory.mem_copy(m_safe_velocity,linear_velocity,sizeof(dVector3));
 
 	if( !dBodyIsEnabled(m_body)) {
-
+		if(!ph_world->IsFreezed())b_lose_control=false;
 		return;
 	}
 	if(is_contact&&!is_control)

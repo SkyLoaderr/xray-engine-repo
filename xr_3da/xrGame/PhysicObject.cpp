@@ -68,8 +68,13 @@ void CPhysicObject::UpdateCL	()
 	if(m_pPhysicsShell)
 	{
 		//PKinematics(Visual())->Calculate();
-		if(m_type==epotBox) m_pPhysicsShell->Update();
-		XFORM().set			(m_pPhysicsShell->mXFORM);
+		if(m_type==epotBox) 
+		{
+			m_pPhysicsShell->Update();
+			XFORM().set			(m_pPhysicsShell->mXFORM);
+		}
+		else
+			m_pPhysicsShell->InterpolateGlobalTransform(&XFORM());
 	}
 }
 
