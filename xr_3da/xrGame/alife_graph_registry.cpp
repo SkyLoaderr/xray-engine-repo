@@ -74,6 +74,14 @@ void CALifeGraphRegistry::setup_current_level	()
 				level().add		((*I).second);
 		}
 
+	{
+		xr_vector<CSE_ALifeDynamicObject*>::const_iterator	I = m_temp.begin();
+		xr_vector<CSE_ALifeDynamicObject*>::const_iterator	E = m_temp.end();
+		for ( ; I != E; ++I)
+			level().add			(*I);
+
+		m_temp.clear			();
+	}
 	string64					S;
 	strcpy						(S,*m_server_command_line);
 	LPSTR						temp = strchr(S,'/');

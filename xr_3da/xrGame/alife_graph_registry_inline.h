@@ -27,6 +27,11 @@ IC	void CALifeGraphRegistry::add	(CSE_ALifeDynamicObject *object, ALife::_GRAPH_
 		m_objects[game_vertex_id].objects().insert(mk_pair(object->ID,object));
 		object->m_tGraphID		= game_vertex_id;
 	}
+	else
+		if (!m_level && update) {
+			m_temp.push_back	(object);
+			object->m_tGraphID	= game_vertex_id;
+		}
 	
 	if (update && m_level)
 		level().add				(object);
