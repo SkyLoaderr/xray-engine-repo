@@ -46,7 +46,7 @@ function evaluator_wound:evaluate ()
        --end
     --end       
 
-    if self.object.health < 0.20 then --and self.object:object ("medkit") == nil then
+    if self.object.health < 0.20 and self.object:object ("medkit") == nil then
        --self.a.final = false
        return true
     end
@@ -275,7 +275,8 @@ function action_idle:__init (name, storage) super (nil, name)
 				  sumidle = 2,
 				  themes = { "help" } 
 				}
-    self.send_time = 0;				
+    self.send_time = 0;
+    self.actor = nil	
 end
 ------------
 function action_idle:initialize ()
@@ -297,7 +298,13 @@ function action_idle:execute ()
        --self.object:give_info_portion_via_pda (self.a.on_medikit.info, level.actor ())
     --end   
     if device ():time_global () - self.send_time > 15000 then    
-       self.object:send_pda_message (4, level.actor ())    --help_pda_msg
+    
+		if self.actor ~= nil then
+			news_manager.send_help(self.actor)
+		else
+			self.actor = level.actor()
+		end
+       
        self.send_time = device ():time_global ()
     end   
 end    

@@ -12,9 +12,7 @@ random_sounds = {	[[script_replics\radio\message\radio_voice_1]],
 				}
 
 
-
-
-function send_news(actor, news_id, nosound)
+function send_news(actor, news_id)
 	if actor == nil or news_id == nil then return false end
 	
 	if nosound ~= true then
@@ -32,5 +30,13 @@ function send_news(actor, news_id, nosound)
 			end
 		end
 	end
-	actor:give_game_news(news_id, "ui\\ui_icons_npc", 50,0,50,50)
+	actor:give_game_news(news_id, "ui\\ui_icons_task", 100,0,50,50)
+end
+function send_tip(actor, news_id)
+	if actor == nil or news_id == nil then return false end
+	actor:give_game_news(news_id, "ui\\ui_icons_task", 100,50,50,50)
+end
+function send_help(actor)
+	if actor == nil then return false end
+	actor:give_game_news("general_help", "ui\\ui_icons_task", 150,0,50,500)
 end
