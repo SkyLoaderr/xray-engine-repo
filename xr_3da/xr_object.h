@@ -91,10 +91,10 @@ public:
 	virtual void						spatial_move		();
 	void								spatial_update		(float eps_P, float eps_R);
 
-	IC Fvector&							Direction			() 					{ return renderable.xform.k;		}
-	IC const Fvector&					Direction			() 			const	{ return renderable.xform.k;		}
-	IC Fvector&							Position			() 					{ return renderable.xform.c;		}
-	IC const Fvector&					Position			() 			const	{ return renderable.xform.c;		}
+	ICF Fvector&						Direction			() 					{ return renderable.xform.k;		}
+	ICF const Fvector&					Direction			() 			const	{ return renderable.xform.k;		}
+	ICF Fvector&						Position			() 					{ return renderable.xform.c;		}
+	ICF const Fvector&					Position			() 			const	{ return renderable.xform.c;		}
 	virtual float						Radius				()			const;
 	virtual const Fbox&					BoundingBox			()			const;
 	
@@ -123,17 +123,17 @@ public:
 	bool								processing_enabled		()				{ return 0!=Props.bActiveCounter;	}
 
 	void								setVisible			(BOOL _visible);
-	IC BOOL								getVisible			()			const	{ return Props.bVisible;			}
+	ICF BOOL							getVisible			()			const	{ return Props.bVisible;			}
 	void								setEnabled			(BOOL _enabled);
-	IC BOOL								getEnabled			()			const	{ return Props.bEnabled;			}
-	IC void								setDestroy			(BOOL _destroy)		{ Props.bDestroy = _destroy?1:0; if(_destroy)	processing_activate(); }
-	IC BOOL								getDestroy			()			const	{ return Props.bDestroy;			}
-	IC void								setLocal			(BOOL _local)		{ Props.net_Local = _local?1:0;		}
-	IC BOOL								getLocal			()			const	{ return Props.net_Local;			}
-	IC void								setSVU				(BOOL _svu)			{ Props.net_SV_Update	= _svu?1:0;	}
-	IC BOOL								getSVU				()			const	{ return Props.net_SV_Update;		}
-	IC void								setReady			(BOOL _ready)		{ Props.net_Ready = _ready?1:0;		}
-	IC BOOL								getReady			()			const	{ return Props.net_Ready;			}
+	ICF BOOL							getEnabled			()			const	{ return Props.bEnabled;			}
+	ICF void							setDestroy			(BOOL _destroy)		{ Props.bDestroy = _destroy?1:0; if(_destroy)	processing_activate(); }
+	ICF BOOL							getDestroy			()			const	{ return Props.bDestroy;			}
+	ICF void							setLocal			(BOOL _local)		{ Props.net_Local = _local?1:0;		}
+	ICF BOOL							getLocal			()			const	{ return Props.net_Local;			}
+	ICF void							setSVU				(BOOL _svu)			{ Props.net_SV_Update	= _svu?1:0;	}
+	ICF BOOL							getSVU				()			const	{ return Props.net_SV_Update;		}
+	ICF void							setReady			(BOOL _ready)		{ Props.net_Ready = _ready?1:0;		}
+	ICF BOOL							getReady			()			const	{ return Props.net_Ready;			}
 
 	//---------------------------------------------------------------------
 										CObject				();
