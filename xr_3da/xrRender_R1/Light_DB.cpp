@@ -141,8 +141,9 @@ void			CLight_DB::Update			()
 	if (sun)
 	{
 		CEnvDescriptor&	E			= g_pGamePersistent->Environment.CurrentEnv;
-		Fvector						P;
+		Fvector						P,Pbase;
 		P.mad						(Device.vCameraPosition,E.sun_dir,-500.f);
+		Pbase.mad					(Device.vCameraPosition,sun_base->direction,-500.f);
 		sun->set_direction			(E.sun_dir);
 		sun->set_color				(E.sun_color.x,E.sun_color.y,E.sun_color.z);
 		sun_base->set_color			(E.sun_color.x,E.sun_color.y,E.sun_color.z);

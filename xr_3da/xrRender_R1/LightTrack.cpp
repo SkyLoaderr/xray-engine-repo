@@ -101,18 +101,26 @@ void	CLightTrack::ltrack	(IRenderable* O)
 		Fvector&	LP		= xrL->position;
 
 		// Random point inside range
-		Fvector				P;
+		Fvector				P,D;
 		P.random_dir		();
 		P.mad				(pos,P,traceR);
 		
 		// Direction/range	
-		Fvector	D;	
-		D.sub				(P,LP);
-		float	f			= D.magnitude();
-		D.div				(f);
-		if (g_pGameLevel->ObjectSpace.RayTest(LP,D,f,false,&I->cache))	amount -=	lt_dec;
-		else															amount +=	lt_inc;
-		
+		if (L->flags.type==IRender_Light::DIRECT)
+		{
+			// direct
+			D.invert			(xrL->direction);
+			if (g_pGameLevel->ObjectSpace.RayTest(P,D,500.f,false,&I->cache))	amount -=	lt_dec;
+			else																amount +=	lt_inc;
+		} else {
+			// point/spot
+			float	f			= D.sub(P,LP).magnitude();
+			D.div				(f);
+			if (g_pGameLevel->ObjectSpace.RayTest(LP,D,f,false,&I->cache))		amount -=	lt_dec;
+			else																amount +=	lt_inc;
+		}
+	
+		// 
 		I->test			+= amount * dt;
 		clamp			(I->test,-.5f,1.f);
 		I->energy		= .9f*I->energy + .1f*I->test;
