@@ -66,21 +66,21 @@ p2f 	p_main	( v2p_in IN )
   s1			= tex2D		(s_shadowmap,uv0+jitter[1]);
   s2			= tex2D		(s_shadowmap,uv0+jitter[2]);
   s3			= tex2D		(s_shadowmap,uv0+jitter[3]);
-  sC			= step		(float4(depth-s0.x,depth-s1.x,depth-s2.x,depth-s3.x),	0);
+  sC			= step		(-float4(depth-s0.x,depth-s1.x,depth-s2.x,depth-s3.x),	0);
   sA.x			= dot		(sC,one);
 
   s0			= tex2D		(s_shadowmap,uv0-jitter[0]);
   s1			= tex2D		(s_shadowmap,uv0-jitter[1]);
   s2			= tex2D		(s_shadowmap,uv0-jitter[2]);
   s3			= tex2D		(s_shadowmap,uv0-jitter[3]);
-  sC			= step		(float4(depth-s0.x,depth-s1.x,depth-s2.x,depth-s3.x),	0);
+  sC			= step		(-float4(depth-s0.x,depth-s1.x,depth-s2.x,depth-s3.x),	0);
   sA.y			= dot		(sC,one);
 
   s0			= tex2D		(s_shadowmap,uv0+jitter[4]);
   s1			= tex2D		(s_shadowmap,uv0+jitter[5]);
   s2			= tex2D		(s_shadowmap,uv0+jitter[6]);
   s3			= tex2D		(s_shadowmap,uv0+jitter[7]);
-  sC			= step		(float4(depth-s0.x,depth-s1.x,depth-s2.x,depth-s3.x),	0);
+  sC			= step		(-float4(depth-s0.x,depth-s1.x,depth-s2.x,depth-s3.x),	0);
   sA.z			= dot		(sC,one);
   
   float	 shadow	= (sA.x + sA.y + sA.z)/12;
