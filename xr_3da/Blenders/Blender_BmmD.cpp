@@ -23,7 +23,7 @@ CBlender_BmmD::~CBlender_BmmD	()
 	
 }
 
-void	CBlender_BmmD::Save(	CFS_Base& FS )
+void	CBlender_BmmD::Save		(CFS_Base& FS )
 {
 	CBlender::Save	(FS);
 	xrPWRITE_MARKER	(FS,"Detail map");
@@ -31,7 +31,7 @@ void	CBlender_BmmD::Save(	CFS_Base& FS )
 	xrPWRITE_PROP	(FS,"Transform",		xrPID_MATRIX,	oT2_xform);
 }
 
-void	CBlender_BmmD::Load(	CStream& FS, WORD version )
+void	CBlender_BmmD::Load		(CStream& FS, WORD version )
 {
 	CBlender::Load	(FS,version);
 	xrPREAD_MARKER	(FS);
@@ -39,72 +39,72 @@ void	CBlender_BmmD::Load(	CStream& FS, WORD version )
 	xrPREAD_PROP	(FS,xrPID_MATRIX,	oT2_xform);
 }
 
-void	CBlender_BmmD::Compile(CBlender_Recorder& RS, sh_list& L_textures, sh_list& L_constants, sh_list& L_matrices, int param, BOOL bEditor)
+void	CBlender_BmmD::Compile	(CBlender_Compile& C)
 {
-	CBlender::Compile		(RS,L_textures,L_constants,L_matrices,param,bEditor);
-	if (bEditor)	{
-		RS.PassBegin		();
+	CBlender::Compile		(C);
+	if (C.bEditor)	{
+		C.RS.PassBegin		();
 		{
-			RS.PassSET_ZB		(TRUE,TRUE);
-			RS.PassSET_Blend	(FALSE,D3DBLEND_ONE,D3DBLEND_ZERO,	FALSE,0);
-			RS.PassSET_LightFog	(TRUE,TRUE);
+			C.RS.PassSET_ZB		(TRUE,TRUE);
+			C.RS.PassSET_Blend	(FALSE,D3DBLEND_ONE,D3DBLEND_ZERO,	FALSE,0);
+			C.RS.PassSET_LightFog	(TRUE,TRUE);
 			
 			// Stage1 - Base texture
-			RS.StageBegin		();
+			C.RS.StageBegin		();
 			{
-				RS.StageSET_Address	(D3DTADDRESS_WRAP);
-				RS.StageSET_Color	(D3DTA_TEXTURE,	  D3DTOP_MODULATE,		D3DTA_DIFFUSE);
-				RS.StageSET_Alpha	(D3DTA_TEXTURE,	  D3DTOP_MODULATE,		D3DTA_DIFFUSE);
-				RS.Stage_Texture	(oT_Name,		L_textures		);
-				RS.Stage_Matrix		(oT_xform,		L_matrices,		0);
-				RS.Stage_Constant	("$null",		L_constants		);
+				C.RS.StageSET_Address	(D3DTADDRESS_WRAP);
+				C.RS.StageSET_Color		(D3DTA_TEXTURE,	  D3DTOP_MODULATE,		D3DTA_DIFFUSE);
+				C.RS.StageSET_Alpha		(D3DTA_TEXTURE,	  D3DTOP_MODULATE,		D3DTA_DIFFUSE);
+				C.RS.Stage_Texture		(oT_Name,		C.L_textures		);
+				C.RS.Stage_Matrix		(oT_xform,		C.L_matrices,		0);
+				C.RS.Stage_Constant		("$null",		C.L_constants		);
 			}
-			RS.StageEnd			();
+			C.RS.StageEnd			();
 			
 			// Stage2 - Second texture
-			RS.StageBegin		();
+			C.RS.StageBegin		();
 			{
-				RS.StageSET_Address	(D3DTADDRESS_WRAP);
-				RS.StageSET_Color	(D3DTA_TEXTURE,	  D3DTOP_MODULATE2X,	D3DTA_CURRENT);
-				RS.StageSET_Alpha	(D3DTA_TEXTURE,	  D3DTOP_SELECTARG2,	D3DTA_CURRENT);
-				RS.Stage_Texture	(oT2_Name,		L_textures		);
-				RS.Stage_Matrix		(oT2_xform,		L_matrices,		0);
-				RS.Stage_Constant	("$null",		L_constants		);
+				C.RS.StageSET_Address	(D3DTADDRESS_WRAP);
+				C.RS.StageSET_Color		(D3DTA_TEXTURE,	  D3DTOP_MODULATE2X,	D3DTA_CURRENT);
+				C.RS.StageSET_Alpha		(D3DTA_TEXTURE,	  D3DTOP_SELECTARG2,	D3DTA_CURRENT);
+				C.RS.Stage_Texture		(oT2_Name,		C.L_textures		);
+				C.RS.Stage_Matrix		(oT2_xform,		C.L_matrices,		0);
+				C.RS.Stage_Constant		("$null",		C.L_constants		);
 			}
-			RS.StageEnd			();
+			C.RS.StageEnd			();
 		}
-		RS.PassEnd			();
+		C.RS.PassEnd			();
 	} else {
-		RS.PassBegin		();
+		C.RS.PassBegin		();
 		{
-			RS.PassSET_ZB		(TRUE,TRUE);
-			RS.PassSET_Blend	(FALSE,D3DBLEND_ONE,D3DBLEND_ZERO,	FALSE,0);
-			RS.PassSET_LightFog	(FALSE,TRUE);
+			C.RS.PassSET_ZB		(TRUE,TRUE);
+			C.RS.PassSET_Blend	(FALSE,D3DBLEND_ONE,D3DBLEND_ZERO,	FALSE,0);
+			C.RS.PassSET_LightFog	(FALSE,TRUE);
 			
 			// Stage1 - Base texture
-			RS.StageBegin		();
+			C.RS.StageBegin		();
 			{
-				RS.StageSET_Address	(D3DTADDRESS_WRAP);
-				RS.StageSET_Color	(D3DTA_TEXTURE,	  D3DTOP_SELECTARG1,	D3DTA_DIFFUSE);
-				RS.StageSET_Alpha	(D3DTA_TEXTURE,	  D3DTOP_SELECTARG1,	D3DTA_DIFFUSE);
-				RS.Stage_Texture	(oT_Name,		L_textures		);
-				RS.Stage_Matrix		(oT_xform,		L_matrices,		0);
-				RS.Stage_Constant	("$null",		L_constants		);
+				C.RS.StageSET_Address	(D3DTADDRESS_WRAP);
+				C.RS.StageSET_Color		(D3DTA_TEXTURE,	  D3DTOP_SELECTARG1,	D3DTA_DIFFUSE);
+				C.RS.StageSET_Alpha		(D3DTA_TEXTURE,	  D3DTOP_SELECTARG1,	D3DTA_DIFFUSE);
+				C.RS.Stage_Texture		(oT_Name,		C.L_textures		);
+				C.RS.Stage_Matrix		(oT_xform,		C.L_matrices,		0);
+				C.RS.Stage_Constant		("$null",		C.L_constants		);
 			}
-			RS.StageEnd			();
+			C.RS.StageEnd			();
 			
 			// Stage2 - Second texture
-			RS.StageBegin		();
+			C.RS.StageBegin		();
 			{
-				RS.StageSET_Address	(D3DTADDRESS_WRAP);
-				RS.StageSET_Color	(D3DTA_TEXTURE,	  D3DTOP_MODULATE2X,	D3DTA_CURRENT);
-				RS.StageSET_Alpha	(D3DTA_TEXTURE,	  D3DTOP_SELECTARG2,	D3DTA_CURRENT);
-				RS.Stage_Texture	(oT2_Name,		L_textures		);
-				RS.Stage_Matrix		(oT2_xform,		L_matrices,		0);
-				RS.Stage_Constant	("$null",		L_constants		);
+				C.RS.StageSET_Address	(D3DTADDRESS_WRAP);
+				C.RS.StageSET_Color		(D3DTA_TEXTURE,	  D3DTOP_MODULATE2X,	D3DTA_CURRENT);
+				C.RS.StageSET_Alpha		(D3DTA_TEXTURE,	  D3DTOP_SELECTARG2,	D3DTA_CURRENT);
+				C.RS.Stage_Texture		(oT2_Name,		C.L_textures		);
+				C.RS.Stage_Matrix		(oT2_xform,		C.L_matrices,		0);
+				C.RS.Stage_Constant		("$null",		C.L_constants		);
 			}
-			RS.StageEnd			();
+			C.RS.StageEnd			();
 		}
-		RS.PassEnd			();
+		C.RS.PassEnd			();
 	}
 }

@@ -16,7 +16,7 @@ public:
 	virtual		void		Save			(CFS_Base&  FS);
 	virtual		void		Load			(CStream&	FS, WORD version);
 	
-	virtual		void		Compile			(CBlender_Recorder& RS, sh_list& L_textures, sh_list& L_constants, sh_list& L_matrices, int param=0, BOOL bEditor=FALSE);
+	virtual		void		Compile			(CBlender_Compile& C);
 	
 	CBlender_Screen_GRAY();
 	virtual ~CBlender_Screen_GRAY();

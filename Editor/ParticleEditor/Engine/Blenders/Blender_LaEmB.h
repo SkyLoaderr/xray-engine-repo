@@ -15,17 +15,17 @@ public:
 	string64	oT2_xform;		// xform for secondary texture
 	string64	oT2_const;
 	
-	void		compile_2	(CBlender_Recorder& RS, sh_list& L_textures, sh_list& L_constants, sh_list& L_matrices, int param=0);
-	void		compile_2c	(CBlender_Recorder& RS, sh_list& L_textures, sh_list& L_constants, sh_list& L_matrices, int param=0);
-	void		compile_3	(CBlender_Recorder& RS, sh_list& L_textures, sh_list& L_constants, sh_list& L_matrices, int param=0);
-	void		compile_3c	(CBlender_Recorder& RS, sh_list& L_textures, sh_list& L_constants, sh_list& L_matrices, int param=0);
+	void		compile_2	(CBlender_Compile& C);
+	void		compile_2c	(CBlender_Compile& C);
+	void		compile_3	(CBlender_Compile& C);
+	void		compile_3c	(CBlender_Compile& C);
 public:
 	virtual		LPCSTR		getComment()	{ return "(lmap+env*const)*base";	}
 
 	virtual		void		Save			(CFS_Base&  FS);
 	virtual		void		Load			(CStream&	FS, WORD version);
 
-	virtual		void		Compile			(CBlender_Recorder& RS, sh_list& L_textures, sh_list& L_constants, sh_list& L_matrices, int param=0, BOOL bEditor=FALSE);
+	virtual		void		Compile			(CBlender_Compile& C);
 
 	CBlender_LaEmB();
 	virtual ~CBlender_LaEmB();

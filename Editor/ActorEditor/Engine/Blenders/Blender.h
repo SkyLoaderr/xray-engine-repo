@@ -10,7 +10,7 @@
 #include "Blender_CLSID.h"
 
 #pragma pack(push,4)
-class ENGINE_API CBlender_DESC
+class ENGINE_API	CBlender_DESC
 {
 public:
 	CLASS_ID	CLS;
@@ -30,10 +30,22 @@ public:
 
 	void					Setup	(LPCSTR N);
 };
-#pragma pack(push,4)
 
 const	DWORD	bcf_editor		= (1<<0);	// Compile for editor (diffuse only)
 const	DWORD	bcf_lighting	= (1<<1);	// Compile only lighting
+
+class ENGINE_API	CBlender_Compile
+{
+public:
+	CBlender_Recorder	RS;
+	sh_list				L_textures;
+	sh_list				L_constants;
+	sh_list				L_matrices;
+	BOOL				bEditor;
+	BOOL				bLighting;
+	int					iLayers;
+};
+#pragma pack(push,4)
 
 class ENGINE_API CBlender	: public CPropertyBase
 {
@@ -57,7 +69,7 @@ public:
 	virtual		void		Save			(CFS_Base&  FS);
 	virtual		void		Load			(CStream&	FS, WORD version);
 	
-	virtual		void		Compile			(CBlender_Recorder& RS, sh_list& L_textures, sh_list& L_constants, sh_list& L_matrices, DWORD flags);
+	virtual		void		Compile			(CBlender_Compile& C);
 
 	CBlender();
 	virtual ~CBlender();

@@ -31,7 +31,7 @@ void	CBlender_LIGHT::Load	( CStream& FS, WORD version	)
 	CBlender::Load	(FS,version);
 }
 
-void CBlender_LIGHT::Compile	(CBlender_Recorder& RS, sh_list& L_textures, sh_list& L_constants, sh_list& L_matrices, int param, BOOL bEditor)
+void CBlender_LIGHT::Compile	(CBlender_Compile& C)
 {
 	CBlender::Compile		(RS,L_textures,L_constants,L_matrices,param,bEditor);
 	RS.PassBegin		();

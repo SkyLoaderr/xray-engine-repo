@@ -33,7 +33,7 @@ void	CBlender_complex2::Load(	CStream& FS )
 {
 	CBlender::Load	(FS);
 }
-void	CBlender_complex2::Compile(CBlender_Recorder& RS, sh_list& L_textures, sh_list& L_constants, sh_list& L_matrices, int param, BOOL bEditor)
+void	CBlender_complex2::Compile(CBlender_Compile& C)
 {
 	if (bEditor)	{
 		RS.PassBegin		();
