@@ -132,7 +132,7 @@ void CUIScrollBar::SetPosScrollFromView(int view_pos, int view_size, int view_of
 	int scroll_size	= m_iMaxPos-m_iMinPos;
 	int pos			= view_pos-view_offs;
 	int work_size	= m_ScrollWorkArea-view_size;
-	m_iScrollPos	= iFloor(((float(pos)/float(work_size))*(scroll_size) + m_iMinPos));
+	m_iScrollPos	= work_size?iFloor(((float(pos)/float(work_size))*(scroll_size) + m_iMinPos)):0;
 	clamp			(m_iScrollPos,m_iMinPos,m_iMaxPos);
 }
 
