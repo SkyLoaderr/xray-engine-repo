@@ -1,12 +1,9 @@
-// exxZERO Time Stamp AddIn. Document modified at : Thursday, March 07, 2002 11:44:58 , by user : Oles , from computer : OLES
 #include "stdafx.h"
 #include "..\fhierrarhyvisual.h"
 #include "..\bodyinstance.h"
 #include "..\fmesh.h"
 #include "..\fcached.h"
 #include "..\flod.h"
-
-extern	Shader*			shDEBUG;
 
 ////////////////////////////////////////////////////////////////////////////////////////////////////
 // Scene graph actual insertion and sorting ////////////////////////////////////////////////////////
@@ -29,7 +26,7 @@ void CRender::InsertSG_Dynamic	(IVisual *pVisual, Fvector& Center)
 	float distSQ;	if (CalcSSA(distSQ,Center,pVisual)<=r_ssaDISCARD)	return;
 
 	// Select List and add to it
-	ShaderElement*		sh		= L_Projector.shadowing()?pVisual->hShader->lod0:pVisual->hShader->lod1;
+	ShaderElement*		sh		= pVisual->hShader->lod0;
 	if (val_bHUD)	{
 		SceneGraph::mapHUD_Node* N			= mapHUD.insertInAnyWay(distSQ);
 		N->val.pObject			= val_pObject;
@@ -42,7 +39,6 @@ void CRender::InsertSG_Dynamic	(IVisual *pVisual, Fvector& Center)
 		N->val.pVisual			= pVisual;
 		N->val.Matrix			= *val_pTransform;
 		N->val.vCenter.set		(Center);
-		L_Shadows.add_element	(N);
 	} else {
 		SceneGraph::mapMatrix_Node* N		= mapMatrix.insert		(sh		);
 		SceneGraph::mapMatrixItem::TNode* C	= N->val.insertInAnyWay	(distSQ	);
@@ -50,11 +46,10 @@ void CRender::InsertSG_Dynamic	(IVisual *pVisual, Fvector& Center)
 		C->val.pVisual			= pVisual;
 		C->val.Matrix			= *val_pTransform;
 		C->val.vCenter.set		(Center);
-		L_Shadows.add_element	(C);
 	}
 }
 
-void CRender::InsertSG_Static(IVisual *pVisual)
+void CRender::InsertSG_Static	(IVisual *pVisual)
 {
 	if (pVisual->vis.frame != Device.dwFrame) 
 	{

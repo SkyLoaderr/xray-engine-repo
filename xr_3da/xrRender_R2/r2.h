@@ -17,6 +17,11 @@
 class CRender	:	public IRender_interface
 {
 public:
+	// Dynamic scene graph
+	SceneGraph::mapMatrix_T									mapMatrix;
+	SceneGraph::mapSorted_T									mapSorted;
+	SceneGraph::mapHUD_T									mapHUD;
+
 	// Sector detection and visibility
 	CSector*												pLastSector;
 	Fvector													vLastCameraPos;

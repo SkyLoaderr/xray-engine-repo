@@ -42,7 +42,7 @@ namespace SceneGraph
 	typedef mapSorted_T::TNode						mapSorted_Node;
 
 	typedef FixedMAP<float,_MatrixItem>				mapHUD_T;
-	typedef mapSorted_T::TNode						mapHUD_Node;
+	typedef mapHUD_T::TNode							mapHUD_Node;
 
 	typedef FixedMAP<float,_LodItem>				mapLOD_T;
 	typedef mapLOD_T::TNode							mapLOD_Node;
