@@ -1,3 +1,4 @@
+attack_guards = 0
 guard_see_actor = 0
 hrom_prishli_rebyat = 0
 
@@ -105,8 +106,23 @@ function main()
 			wait(7000)		
 			prof_sluhal_pro_zomby_stalkerov:play_at_pos			(guard01,guard01:position(),0);
 
+
+	while final_guard01:action() and final_guard02:action() do
+		if final_guard01:see("actor") or final_guard02:see("actor") then
+			wait(1000)			
+			prof_k_bou:play_at_pos			(final_guard01,final_guard01:position(),0);
+			wait(1000)			
+			final_guard01:script			(false,script_guards_pr02.script_name())
+			final_guard02:script			(false,script_guards_pr02.script_name())
+			final_guard03:script			(false,script_guards_pr02.script_name())
+			rainbow_monstri:play_at_pos		(final_guard02,final_guard02:position(),0);
+		break
+		end
+	    wait	()
+	end
+
 	while guard01:action() and guard02:action() do
-		if (guard01:see(actor) or guard02:see(actor)) and distance_between(guard01,actor) <= 30 then
+		if (guard01:see(actor) or guard02:see(actor)) and distance_between(guard01,actor) <= 30 and attack_guards == 0 then
 			prof_oba:play_at_pos						(guard01,guard01:position(),0);
 			wait(1000)			
 			prof_hmm_kto_eto:play_at_pos						(guard01,guard01:position(),0);
@@ -118,7 +134,7 @@ function main()
 	end
 
 	while guard01:action() and guard02:action() do
-		if (guard01:see(actor) or guard02:see(actor)) and distance_between(guard01,actor) <= 20 then
+		if (guard01:see(actor) or guard02:see(actor)) and distance_between(guard01,actor) <= 20 and attack_guards == 0 then
 			printf("see = true2!")
 			flush()
 			wait(2000)		
@@ -132,7 +148,7 @@ function main()
 
 
 	while guard01:action() and guard02:action() do
-		if (guard01:see(actor) or guard02:see(actor)) and distance_between(guard01,actor) <= 20 and guard_see_actor == 2 then
+		if (guard01:see(actor) or guard02:see(actor)) and distance_between(guard01,actor) <= 20 and guard_see_actor == 2 and attack_guards == 0 then
 			wait(1000)			
 			prof_stoyat_pristrelu:play_at_pos			(guard01,guard01:position(),0);
 			wait(3000)			
@@ -143,7 +159,7 @@ function main()
 	end
 
 	while guard01:action() and guard02:action() do
-		if (guard01:see(actor) or guard02:see(actor)) and distance_between(guard01,actor) <= 20 and guard_see_actor == 3 then
+		if (guard01:see(actor) or guard02:see(actor)) and distance_between(guard01,actor) <= 20 and guard_see_actor == 3 and attack_guards == 0 then
 			rainbow_ti_chto_gluhoy:play_at_pos			(guard02,guard02:position(),0);
 			wait(2000)			
 			guard_see_actor = 4
@@ -153,7 +169,7 @@ function main()
 	end
 
 	while guard01:action() and guard02:action() do
-		if (guard01:see(actor) or guard02:see(actor)) and distance_between(guard01,actor) <= 20 and guard_see_actor == 4 then
+		if (guard01:see(actor) or guard02:see(actor)) and distance_between(guard01,actor) <= 20 and guard_see_actor == 4 and attack_guards == 0 then
 			prof_sam_naprosilsya:play_at_pos			(guard01,guard01:position(),0);
 			wait(2000)			
 			guard_see_actor = 5
@@ -163,7 +179,7 @@ function main()
 	end
 
 	while guard01:action() and guard02:action() do
-		if (guard01:see(actor) or guard02:see(actor)) and distance_between(guard01,actor) <= 20 and guard_see_actor == 5 then
+		if (guard01:see(actor) or guard02:see(actor)) and distance_between(guard01,actor) <= 20 and guard_see_actor == 5 and attack_guards == 0 then
 			prof_chert:play_at_pos			(guard01,guard01:position(),0);
 			wait(1000)			
 			rainbow_mochi_ego:play_at_pos			(guard01,guard01:position(),0);
@@ -173,6 +189,14 @@ function main()
 		break
 		end
 	    wait	()
+	end
+
+	while true do
+		if guard01.health <= 0 or guard02.health <= 0 then
+		attack_guards = 1
+		break
+		end
+		wait()			
 	end
 
 	while true do
@@ -209,20 +233,6 @@ function main()
 		break
 		end
 		wait()			
-	end
-
-	while true do
-		if final_guard01:see("actor") or final_guard02:see("actor") then
-			wait(1000)			
-			prof_k_bou:play_at_pos			(final_guard01,final_guard01:position(),0);
-			wait(1000)			
-			final_guard01:script			(false,script_guards_pr02.script_name())
-			final_guard02:script			(false,script_guards_pr02.script_name())
-			final_guard03:script			(false,script_guards_pr02.script_name())
-			rainbow_monstri:play_at_pos		(final_guard02,final_guard02:position(),0);
-		break
-		end
-	    wait	()
 	end
 
 	while true do
