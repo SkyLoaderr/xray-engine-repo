@@ -49,14 +49,14 @@
 				MkTypLibCompatible="FALSE"/>
 			<Tool
 				Name="VCPostBuildEventTool"
-				CommandLine="echo copying $(TargetPath) to e:\exchange2\updater
-copy $(TargetPath) e:\exchange2\updater
-echo copying xrCore.dll to e:\exchange2\updater
-copy x:\xrCore.dll e:\exchange2\updater
-echo copying xrUpdate.exe to e:\exchange2\updater
-copy x:\xrUpdate.exe e:\exchange2\updater
-echo copying xrCore.dll to x:\updater
+				CommandLine="echo copying xrCore.dll to x:\updater
 copy x:\xrCore.dll x:\updater
+
+echo copying xrUpdate.exe to u:\updater
+copy x:\updater\xrUpdate.exe u:\updater
+
+echo copying xrCore.dll to u:\updater
+copy x:\xrCore.dll u:\updater
 "/>
 			<Tool
 				Name="VCPreBuildEventTool"/>

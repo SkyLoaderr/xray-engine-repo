@@ -13,7 +13,6 @@ enum ETaskType{
 ETaskType strToType(LPCSTR str);
 shared_str typeToStr(ETaskType t);
 
-
 class CTask;
 
 typedef xr_vector<CTask*>			CTaskArray;
