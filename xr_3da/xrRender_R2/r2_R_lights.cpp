@@ -98,7 +98,7 @@ void	CRender::render_lights	(light_Package& LP)
 			phase									= PHASE_SMAP_S;
 			if (RImplementation.b_Tshadows)	r_pmask	(true,true	);
 			else							r_pmask	(true,false	);
-			L->svis[0].begin						();
+			L->svis.begin							();
 			r_dsgraph_render_subspace				(L->spatial.sector, L->X.S.combine, L->position, TRUE);
 			bool	bNormal							= mapNormal[0].size() || mapMatrix[0].size();
 			bool	bSpecial						= mapNormal[1].size() || mapMatrix[1].size() || mapSorted.size();
@@ -117,7 +117,7 @@ void	CRender::render_lights	(light_Package& LP)
 					r_dsgraph_render_sorted				( );			// strict-sorted geoms
 				}
 			}
-			L->svis[0].end							();
+			L->svis.end								();
 			r_pmask									(true,false);
 		}
 
