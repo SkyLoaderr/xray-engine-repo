@@ -174,7 +174,7 @@ public:
 class	SelectorPursuit	: public SelectorBase
 {
 public:
-	SelectorAttack	() { Name="sel_pursuit"; };
+	SelectorPursuit	() { Name="sel_pursuit"; };
 
 	virtual void	Load	(CInifile* ini, const char* section)
 	{

@@ -372,7 +372,7 @@ namespace AI {
 					} else {
 						// fill it with data
 						CSquad&	Squad		= Level().Teams[Me->g_Team()].Squads[Me->g_Squad()];
-						SelectorAttack&	S	= Me->fuzzyPursuit;
+						SelectorPursuit& S	= Me->fuzzyPursuit;
 						S.posMy				= Me->Position		();
 						S.posTarget			= savedPosition;
 						Squad.Groups		[Me->g_Group()].GetMemberDedication(S.Members,Me);
