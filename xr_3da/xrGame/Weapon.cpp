@@ -350,22 +350,17 @@ void CWeapon::net_Export	(NET_Packet& P)
 	P.w_u16					(iAmmoCurrent);
 	P.w_u16					(iAmmoElapsed);
 
-	if ((0==H_Parent()) || (flags&M_UPDATE_WEAPON_wfVisible) )
-	{
-		P.w_vec3			(svTransform.c);
+	P.w_vec3				(svTransform.c);
 
-		float				_x,_y,_z;
-		svTransform.getHPB	(_y,_x,_z);
-		P.w_angle8			(_x);
-		P.w_angle8			(_y);
-		P.w_angle8			(_z);
-	}
-	if (flags& (M_UPDATE_WEAPON_wfVisible+M_UPDATE_WEAPON_wfWorking))
-	{
-		UpdateFP			();
-		P.w_vec3			(vLastFP);
-		P.w_dir				(vLastFD);
-	}
+	float					_x,_y,_z;
+	svTransform.getHPB		(_y,_x,_z);
+	P.w_angle8				(_x);
+	P.w_angle8				(_y);
+	P.w_angle8				(_z);
+
+	UpdateFP				();
+	P.w_vec3				(vLastFP);
+	P.w_dir					(vLastFD);
 }
 
 void CWeapon::net_Import	(NET_Packet& P)

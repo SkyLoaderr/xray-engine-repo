@@ -97,18 +97,12 @@ public:
 		P.r_u16				(a_current);
 		P.r_u16				(a_elapsed);
 
-		if ((0xffff==ID_Parent) && (flags&M_UPDATE_WEAPON_wfVisible))
-		{
-			P.r_vec3		(o_Position	);
-			P.r_angle8		(o_Angle.x	);
-			P.r_angle8		(o_Angle.y	);
-			P.r_angle8		(o_Angle.z	);
-		}
-		if (flags & (M_UPDATE_WEAPON_wfVisible + M_UPDATE_WEAPON_wfWorking))
-		{
-			P.r_vec3		(f_pos);
-			P.r_dir			(f_dir);
-		}
+		P.r_vec3			(o_Position	);
+		P.r_angle8			(o_Angle.x	);
+		P.r_angle8			(o_Angle.y	);
+		P.r_angle8			(o_Angle.z	);
+		P.r_vec3			(f_pos		);
+		P.r_dir				(f_dir		);
 	}
 
 	virtual void			UPDATE_Write	(NET_Packet& P)
@@ -119,18 +113,12 @@ public:
 		P.w_u16				(a_current);
 		P.w_u16				(a_elapsed);
 
-		if ((0xffff==ID_Parent) && (flags&M_UPDATE_WEAPON_wfVisible))
-		{
-			P.w_vec3		(o_Position	);
-			P.w_angle8		(o_Angle.x	);
-			P.w_angle8		(o_Angle.y	);
-			P.w_angle8		(o_Angle.z	);
-		}
-		if (flags & (M_UPDATE_WEAPON_wfVisible + M_UPDATE_WEAPON_wfWorking))
-		{
-			P.w_vec3		(f_pos);
-			P.w_dir			(f_dir);
-		}
+		P.w_vec3			(o_Position	);
+		P.w_angle8			(o_Angle.x	);
+		P.w_angle8			(o_Angle.y	);
+		P.w_angle8			(o_Angle.z	);
+		P.w_vec3			(f_pos		);
+		P.w_dir				(f_dir		);
 	}
 
 	virtual void			STATE_Read		(NET_Packet& P, u16 size)

@@ -184,19 +184,13 @@ M_UPDATE
 		u16			a_current;
 		u16			a_elapsed;
 
-		if (0xffff==parent && wf_visible) 
-		{
-			vec3		pos;			// position
-			angle8		aX;				// X: orientation
-			angle8		aY;				// Y: 
-			angle8		aZ;				// Z: 
-		}
+		vec3		pos;				// position
+		angle8		aX;					// X: orientation
+		angle8		aY;					// Y: 
+		angle8		aZ;					// Z: 
 
-		if (flags&wf_working || wf_visible) 
-		{
-			vec3		f_pos;
-			direction	f_dir;
-		}
+		vec3		f_pos;
+		direction	f_dir;
 	}
 }
 
