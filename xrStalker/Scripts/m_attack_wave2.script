@@ -200,7 +200,7 @@ function Monster:process ()
     end	 
 
 	local enemy = nil
-	if self.target == nil or self.target:alive () == false then enemy = self:find_enemy () end
+	if self.target == nil or self.target.npc:alive () == false then enemy = self:find_enemy () end
 	if enemy == nil then return 
 	else
        if enemy ~= self.target then 
