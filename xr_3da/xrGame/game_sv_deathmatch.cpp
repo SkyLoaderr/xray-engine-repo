@@ -20,18 +20,24 @@ game_sv_Deathmatch::game_sv_Deathmatch()
 
 game_sv_Deathmatch::~game_sv_Deathmatch()
 {
-	for (u32 i=0; i<m_AnomalySetsList.size(); i++)
+	if (!m_AnomalySetsList.empty())
 	{
-		m_AnomalySetsList[i].clear();
+		for (u32 i=0; i<m_AnomalySetsList.size(); i++)
+		{
+			m_AnomalySetsList[i].clear();
+		};
+		m_AnomalySetsList.clear();
 	};
 
-	for (i=0; i<m_AnomalyIDSetsList.size(); i++)
+	if (!m_AnomalyIDSetsList.empty())
 	{
-		m_AnomalyIDSetsList[i].clear();
+		for (u32 i=0; i<m_AnomalyIDSetsList.size(); i++)
+		{
+			m_AnomalyIDSetsList[i].clear();
+		};
+		m_AnomalyIDSetsList.clear();
 	};
-
-	m_AnomalyIDSetsList.clear();
-	m_AnomalySetsList.clear();
+	
 	m_AnomalySetID.clear();
 };
 
@@ -1267,15 +1273,20 @@ void game_sv_Deathmatch::SetTeamScore(u32 idx, int val)
 
 
 void	game_sv_Deathmatch::LoadAnomalySets			()
-{
-	for (u32 i=0; i<m_AnomalyIDSetsList.size(); i++)
-	{
-		m_AnomalyIDSetsList[i].clear();
-	};
-	m_AnomalyIDSetsList.clear();
+{	
 	//-----------------------------------------------------------
 	if (!m_AnomalySetsList.empty()) return;
 	//-----------------------------------------------------------
+	if (!m_AnomalyIDSetsList.empty())
+	{
+		for (u32 i=0; i<m_AnomalyIDSetsList.size(); i++)
+		{
+			m_AnomalyIDSetsList[i].clear();
+		};
+		m_AnomalyIDSetsList.clear();
+	};
+	//-----------------------------------------------------------
+
 	char* ASetBaseName = GetAnomalySetBaseName();
 
 	string256 SetName, AnomaliesNames, AnomalyName;
