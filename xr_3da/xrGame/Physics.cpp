@@ -242,6 +242,8 @@ void CPHJeep::Create(dSpaceID space, dWorldID world){
 	//dGeomCreateUserData(Geoms[7]);
 	dGeomCreateUserData(Geoms[0]);
 	dGeomCreateUserData(Geoms[6]);
+	dGeomGetUserData(Geoms[0])->material=GMLib.GetMaterialIdx("mtl_car_cabine");
+	dGeomGetUserData(Geoms[6])->material=GMLib.GetMaterialIdx("mtl_car_cabine");
 	//dGeomGetUserData(Geoms[5])->friction=500.f;
 	//dGeomGetUserData(Geoms[7])->friction=500.f;
 
@@ -856,6 +858,8 @@ void CPHElement::			create_Box		(Fobb&		V){
 														dGeomSetRotation(geom,R);
 														dGeomCreateUserData(geom);
 														dGeomGetUserData(geom)->material=GMLib.GetMaterialIdx("mtl_box_default");
+
+														
 														}
 														//dGeomGetUserData(trans)->friction=dInfinity;
 														
