@@ -812,6 +812,9 @@
 					RelativePath="xrMU_Model.h">
 				</File>
 				<File
+					RelativePath="xrMU_Model_Calc_materials.cpp">
+				</File>
+				<File
 					RelativePath="xrMU_Model_Calc_normals.cpp">
 				</File>
 				<File

@@ -66,6 +66,7 @@ private:
 public:
 	void				Load				(CStream& FS);
 	void				calc_normals		();
+	void				calc_materials		();
 };
 
 class xrMU_Reference

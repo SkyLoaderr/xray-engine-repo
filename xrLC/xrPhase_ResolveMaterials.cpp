@@ -74,12 +74,17 @@ void	CBuild::xrPhase_ResolveMaterials()
 		g_XSplit.erase(remove(g_XSplit.begin(),g_XSplit.end(),(vecFace*) NULL),g_XSplit.end());
 	}
 	
-	Status		("Detaching subdivs...");
+	Status				("Detaching subdivs...");
 	{
 		for (DWORD it=0; it<g_XSplit.size(); it++)
 		{
 			Detach(g_XSplit[it]);
 		}
 	}
-	clMsg("%d subdivisions.",g_XSplit.size());
+	clMsg				("%d subdivisions.",g_XSplit.size());
+
+	// Models
+	Status				("Models...");
+	for	(u32 m=0; m<mu_models.size(); m++)
+		mu_models[m]->calc_materials();
 }
