@@ -47,10 +47,20 @@ ShaderElement*			CRender::rimp_select_sh_static	(IRender_Visual	*pVisual, float 
 //////////////////////////////////////////////////////////////////////////
 void					CRender::create					()
 {
+	// c-setup
 	::Device.Resources->RegisterConstantSetup("L_dynamic_pos",		&r1_dlight_binder_PR);
 	::Device.Resources->RegisterConstantSetup("L_dynamic_color",	&r1_dlight_binder_color);
 	::Device.Resources->RegisterConstantSetup("L_dynamic_xform",	&r1_dlight_binder_xform);
 
+	// distortion
+	u32		v_dev	= CAP_VERSION(HW.Caps.raster_major, HW.Caps.raster_minor);
+	u32		v_need	= CAP_VERSION(1,4);
+	if ( v_dev >= v_need )						b_distortion = TRUE;
+	else										b_distortion = FALSE;
+	if (strstr(Core.Params,"-nodistort"))		b_distortion = FALSE;
+	Msg				("* distortion: %s, dev(%d),need(%d)",b_distortion?"used":"unavailable",v_dev,v_need);
+
+	//
 	Models						= xr_new<CModelPool>		();
 	L_Dynamic					= xr_new<CLightR_Manager>	();
 
@@ -189,12 +199,6 @@ IC		void			gm_SetNearer		(BOOL bNearer)
 //////////////////////////////////////////////////////////////////////
 CRender::CRender	()
 {
-	u32		v_dev	= CAP_VERSION(HW.Caps.raster_major, HW.Caps.raster_minor);
-	u32		v_need	= CAP_VERSION(1,4);
-	if ( v_dev >= v_need )						b_distortion = TRUE;
-	else										b_distortion = FALSE;
-	if (strstr(Core.Params,"-nodistort"))		b_distortion = FALSE;
-	Msg				("* distortion: %s, dev(%d),need(%d)",b_distortion?"used":"unavailable",v_dev,v_need);
 }
 
 CRender::~CRender	()

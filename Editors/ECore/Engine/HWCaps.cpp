@@ -30,10 +30,10 @@ void CHWCaps::Update()
 	raster.op_MAD				= (caps.TextureOpCaps & D3DTEXOPCAPS_MULTIPLYADD)!=0;
 	raster.op_reg_TEMP			= (caps.PrimitiveMiscCaps & D3DPMISCCAPS_TSSARGTEMP)!=0;
 
-	// *******1********** Info
-	Msg							("* GPU shading: vs(%x/%d.%d), ps(%x/%d)",
-		caps.VertexShaderVersion,	geometry_major, geometry_minor,
-		caps.PixelShaderVersion,	raster_major,	raster_minor
+	// ***************** Info
+	Msg							("* GPU shading: vs(%x/%d.%d/%d), ps(%x/%d.%d/%d)",
+		caps.VertexShaderVersion,	geometry_major, geometry_minor, CAP_VERSION(geometry_major,	geometry_minor),
+		caps.PixelShaderVersion,	raster_major,	raster_minor,	CAP_VERSION(raster_major,	raster_minor)
 		);
 
 	// *******1********** Vertex cache
