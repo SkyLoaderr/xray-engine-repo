@@ -32,6 +32,7 @@ void				SetMaterial(u16 material);
 void				SetAirControlParam(float param){fAirControlParam=param;}
 void				SetActorRestrictorRadius(CPHCharacter::ERestrictionType rt, float r);
 void				SetRestrictionType(CPHCharacter::ERestrictionType rt){if(m_character)m_character->SetRestrictionType(rt);}
+void				SetActorMovable(bool v){if(m_character)m_character->SetActorMovable(v);}
 enum				JumpType 
 {
 					jtStrait, //end point before uppermost point

@@ -8,11 +8,6 @@
 #include "tri-colliderKNoOPC\__aabb_tri.h"
 
 
-
-
-
-
-
 CPHCharacter::CPHCharacter(void):
   CPHDisablingTranslational()
 {
@@ -26,6 +21,7 @@ m_safe_velocity[0]=0.f;
 m_safe_velocity[1]=0.f;
 m_safe_velocity[2]=0.f;
 m_restriction_type=rtNone;
+b_actor_movable=true;
 }
 
 CPHCharacter::~CPHCharacter(void)

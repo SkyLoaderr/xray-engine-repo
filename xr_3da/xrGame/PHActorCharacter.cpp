@@ -19,7 +19,6 @@ CPHActorCharacter::CPHActorCharacter()
 	m_restrictors_index[CPHCharacter::rtMonsterMedium]	=begin(m_restrictors)+1;
 	
 	m_restrictors[0]=(xr_new<stalker_restrictor>());
-	m_restrictors[0]->b_non_movable=true;
 	m_restrictors[1]=(xr_new<medium_monster_restrictor>());
 }
 
@@ -199,11 +198,13 @@ void CPHActorCharacter::InitContact(dContact* c,bool &do_collide,SGameMtl * mate
 		MulSprDmp(c->surface.soft_cfm,c->surface.soft_erp,def_spring_rate,def_dumping_rate);
 		c->surface.mu		=0.00f;
 	}
+	
 	inherited::InitContact(c,do_collide,material_1,material_2);
-	if(b_restrictor&&(*r)->b_non_movable&&do_collide)
+	if(b_restrictor&&
+		do_collide&&
+		!(b1 ? static_cast<CPHCharacter*>(retrieveGeomUserData(c->geom.g2)->ph_object)->ActorMovable():static_cast<CPHCharacter*>(retrieveGeomUserData(c->geom.g1)->ph_object)->ActorMovable())
+		)
 	{
-		
-
 		dJointID contact_joint	= dJointCreateContact(0, ContactGroup, c);
 		Enable();
 		CPHObject::Island().DActiveIsland()->ConnectJoint(contact_joint);

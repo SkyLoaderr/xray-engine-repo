@@ -59,7 +59,7 @@ enum ERestrictionType
 
 private:
 ERestrictionType m_restriction_type;
-
+bool			 b_actor_movable;
 public:
 	virtual ECastType	CastType							(){return CPHObject::tpCharacter;}
 	ERestrictionType	RestrictionType						(){return m_restriction_type;}
@@ -72,6 +72,8 @@ public:
 	virtual	void		ReEnable							()															{;}																				
 			void		Enable								()															;											//!!
 			bool		IsEnabled							()															{ if(!b_exist)return false; return !!dBodyIsEnabled(m_body);}
+			bool		ActorMovable						()															{return b_actor_movable;}
+			void		SetActorMovable						(bool v)													{b_actor_movable=v;}
 virtual		const ICollisionDamageInfo	*CollisionDamageInfo()const														=0;
 
 

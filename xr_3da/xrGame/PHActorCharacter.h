@@ -10,13 +10,12 @@ struct SPHCharacterRestrictor
 								m_character=NULL;
 								m_restrictor=NULL;
 								m_restrictor_transform=NULL;
-								b_non_movable=false;
 								m_restrictor_radius=0.1f;
 							}
 										~SPHCharacterRestrictor				();
 				CPHCharacter*			m_character;
 				CPHCharacter::ERestrictionType m_type;
-				bool					b_non_movable;
+
 				dGeomID					m_restrictor;
 				dGeomID					m_restrictor_transform;
 				float					m_restrictor_radius;
