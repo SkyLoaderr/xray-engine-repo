@@ -311,9 +311,9 @@ XML_NODE* CUIXml::SearchForAttribute(XML_NODE* start_node,
 }
 
 
-bool CUIXml::CheckUniqueAttrib (XML_NODE* start_node, 
-								LPCSTR tag_name,
-								LPCSTR attrib_name)
+LPCSTR CUIXml::CheckUniqueAttrib (XML_NODE* start_node, 
+									LPCSTR tag_name,
+									LPCSTR attrib_name)
 {
 	m_AttribValues.clear();
 
@@ -326,12 +326,12 @@ bool CUIXml::CheckUniqueAttrib (XML_NODE* start_node,
 												 m_AttribValues.end(), ref_str(attrib));
 
 		 if(m_AttribValues.end() != it) 
-			 return false;
+			 return attrib;
 		 
 		 m_AttribValues.push_back(attrib);
 	}
 
-	return true;
+	return NULL;
 }
 
 BOOL APIENTRY DllMain( HANDLE hModule, 

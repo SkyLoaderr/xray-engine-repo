@@ -87,9 +87,11 @@ public:
 	int GetNodesNum(XML_NODE* node, LPCSTR  tag_name);
 
 	//проверка того, что аттрибуты у тегов уникальны
-	bool CheckUniqueAttrib (XML_NODE* start_node, 
-							LPCSTR tag_name,
-							LPCSTR attrib_name);
+	//(если не NULL, то уникальность нарушена и возврашается имя 
+	//повторяющегося атрибута)
+	LPCSTR CheckUniqueAttrib (XML_NODE* start_node, 
+								LPCSTR tag_name,
+								LPCSTR attrib_name);
 		
 	//переместиться по XML дереву 
 	//путь задается в форме PARENT:CHILD:CHIDLS_CHILD
