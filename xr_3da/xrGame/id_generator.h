@@ -20,7 +20,7 @@ template<
 	VALUE_ID tInvalidValueID = tMaxValue,
 	TIME_ID	 tStartTime = 0> 
 class CID_Generator {
-	typedef std::multimap< TIME_ID , BLOCK_ID >	TIME_BLOCK_MAP;
+	typedef xr_multimap< TIME_ID , BLOCK_ID >	TIME_BLOCK_MAP;
 	typedef typename TIME_BLOCK_MAP::iterator	TIME_BLOCK_PAIR_IT;
 
 	struct SID_Block {
