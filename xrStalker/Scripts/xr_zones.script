@@ -289,7 +289,7 @@ end
 
 -- добавить сталкера во фракцию
 function zone_fractions:add_stalker( obj )
-	if not self.fraction:stalkerExsist( obj ) then
+	if not self.fraction:stalkerExist( obj ) then
 		local i = 0
 		for k, v in self.fraction.Object do
 			i = i + 1
