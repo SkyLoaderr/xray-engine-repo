@@ -71,6 +71,7 @@ public:
 				const _Parameters		&parameters
 			)
 	{
+		Device.Statistic.AI_Path.Begin();
 		typedef CPathManager<_Graph, CDataStorage, _Parameters, _dist_type,_index_type,u32>	CPathManagerGeneric;
 		typedef CAStar<CDataStorage,CPathManagerGeneric,_iteration_type,_dist_type> CAStarGeneric;
 
@@ -87,6 +88,7 @@ public:
 			dest_node,
 			parameters
 		);
+		Device.Statistic.AI_Path.End();
 		return						(a_star.find(*m_data_storage,path_manager));
 	}
 
@@ -102,6 +104,7 @@ public:
 				_Parameters				&parameters
 			)
 	{
+		Device.Statistic.AI_Path.Begin();
 		typedef CPathManager<_Graph, CDataStorage, _Parameters, _dist_type,_index_type,u32>	CPathManagerGeneric;
 		typedef CAStar<CDataStorage,CPathManagerGeneric,_iteration_type,_dist_type> CAStarGeneric;
 
@@ -118,6 +121,7 @@ public:
 			dest_node,
 			parameters
 		);
+		Device.Statistic.AI_Path.End();
 		return						(a_star.find(*m_data_storage,path_manager));
 	}
 };
