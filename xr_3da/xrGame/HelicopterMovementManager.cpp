@@ -189,21 +189,6 @@ void CHelicopterMovManager::shedule_Update(u32 timeDelta, CHelicopter* heli)
 	};
 
 
-	if (heli->state() == CHelicopter::eInitiateHunt) {
-
-//	Fmatrix f_before = heli->XFORM();
-//	getPathPosition (lt,Device.fTimeDelta, f_before );
-
-		addHuntPath(lt, heli->lastEnemyPos() );
-		heli->setState(CHelicopter::eMovingByAttackTraj);
-		m_endAttackTime = m_endTime;
-
-//	Fmatrix f_after = heli->XFORM();
-//	getPathPosition (lt,Device.fTimeDelta, f_after );
-//	float dist = f_before.c.distance_to(f_after.c);
-//	VERIFY(dist < 2.0f);
-	};
-
 	if ((heli->state() == CHelicopter::eMovingByPatrolZonePath) ||
 		(heli->state() == CHelicopter::eMovingByAttackTraj)		) {
 		updatePatrolPath(lt);	
@@ -211,6 +196,12 @@ void CHelicopterMovManager::shedule_Update(u32 timeDelta, CHelicopter* heli)
 		if( (heli->state()==CHelicopter::eMovingByPatrolZonePath) &&
 			(lt > m_time_last_patrol_start+m_time_patrol_period) )
 				heli->setState(CHelicopter::eInitiateWaitBetweenPatrol);
+	};
+
+	if (heli->state() == CHelicopter::eInitiateHunt) {
+		addHuntPath(lt, heli->lastEnemyPos() );
+		heli->setState(CHelicopter::eMovingByAttackTraj);
+		m_endAttackTime = m_endTime;
 	};
 
 
