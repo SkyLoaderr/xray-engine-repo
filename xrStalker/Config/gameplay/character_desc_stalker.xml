@@ -150,6 +150,7 @@
 			wpn_ak74 \n
 			ammo_5.45x39_fmj \n
 			device_torch \n
+			krot_flash \n
 		</supplies>
 
 		<start_dialog>agr_factory_krot_start</start_dialog>

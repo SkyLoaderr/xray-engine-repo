@@ -4,11 +4,11 @@
         <precondition>dialogs.level_agroprom</precondition>
         <phrase_list>
             <phrase id="11">
-                <text></text>
+                <text />
                 <next>111</next>
             </phrase>
             <phrase id="111">
-                <text></text>
+                <text />
                 <next>2</next>
                 <next>3</next>
                 <next>4</next>
@@ -50,7 +50,7 @@
         </phrase_list>
     </dialog>
     <dialog id="agr_factory_stalker_about">
-    	<precondition>dialogs.dialog_allowed</precondition>
+        <precondition>dialogs.dialog_allowed</precondition>
         <phrase_list>
             <phrase id="0">
                 <text>agr_factory_stalker_about_0</text>
@@ -77,19 +77,16 @@
             <phrase id="51">
                 <text>agr_factory_krot_about_51</text>
             </phrase>
-            <phrase id="1">
-                <text>agr_factory_krot_about_1</text>
-                <next>2</next>
-                <next>3</next>
-                <next>4</next>
-                <next>5</next>
-            </phrase>
-            <phrase id="31">
-                <text>agr_factory_krot_about_31</text>
-            </phrase>
             <phrase id="3">
                 <text>agr_factory_krot_about_3</text>
                 <next>31</next>
+            </phrase>
+            <phrase id="0">
+                <text>agr_factory_krot_about_0</text>
+                <next>1</next>
+            </phrase>
+            <phrase id="31">
+                <text>agr_factory_krot_about_31</text>
             </phrase>
             <phrase id="4">
                 <text>agr_factory_krot_about_4</text>
@@ -97,15 +94,14 @@
             </phrase>
             <phrase id="41">
                 <text>agr_factory_krot_about_41</text>
+                <action>dialogs.become_friend</action>
             </phrase>
-            <phrase id="21112">
-                <text>agr_factory_krot_about_21112</text>
-                <next>211121</next>
-            </phrase>
-            <phrase id="21111">
-                <text>agr_factory_krot_about_21111</text>
-                <next>211111</next>
-                <next>211112</next>
+            <phrase id="1">
+                <text>agr_factory_krot_about_1</text>
+                <next>2</next>
+                <next>3</next>
+                <next>4</next>
+                <next>5</next>
             </phrase>
             <phrase id="2">
                 <text>agr_factory_krot_about_2</text>
@@ -124,18 +120,28 @@
                 <next>21111</next>
                 <next>21112</next>
             </phrase>
-            <phrase id="211111">
-                <text>agr_factory_krot_about_211111</text>
-            </phrase>
-            <phrase id="211112">
-                <text>agr_factory_krot_about_211112</text>
-            </phrase>
             <phrase id="211121">
                 <text>agr_factory_krot_about_211121</text>
             </phrase>
-            <phrase id="0">
-                <text>agr_factory_krot_about_0</text>
-                <next>1</next>
+            <phrase id="21112">
+                <text>agr_factory_krot_about_21112</text>
+                <next>211121</next>
+            </phrase>
+            <phrase id="21111">
+                <text>agr_factory_krot_about_21111</text>
+                <precondition>dialogs.has_2000_money</precondition>
+                <next>211111</next>
+                <next>211112</next>
+            </phrase>
+            <phrase id="211111">
+                <text>agr_factory_krot_about_211111</text>
+                <precondition>dialogs.is_not_friend</precondition>
+                <action>dialogs.sell_krot_flash</action>
+            </phrase>
+            <phrase id="211112">
+                <text>agr_factory_krot_about_211112</text>
+                <precondition>dialogs.is_friend</precondition>
+                <action>dialogs.sell_krot_flash_to_friend</action>
             </phrase>
         </phrase_list>
     </dialog>
