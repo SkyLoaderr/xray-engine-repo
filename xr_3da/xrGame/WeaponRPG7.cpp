@@ -6,6 +6,29 @@
 #include "..\PSObject.h"
 #include "..\PGObject.h"
 
+#define INVSQRT2 .70710678118654752440084436210485f
+void GetBasis(const Fvector &n, Fvector &u, Fvector &v) {
+	if(_abs(n.z) > INVSQRT2) {
+		FLOAT a = n.y * n.y + n.z * n.z;
+		FLOAT k = 1.f / _sqrt(a);
+		u.x = 0;
+		u.y = -n.z * k;
+		u.z = n.y * k;
+		v.x = a * k;
+		v.y = -n.x * u.z;
+		v.z = n.x * u.y;
+	} else {
+		FLOAT a = n.x * n.x + n.y * n.y;
+		FLOAT k = 1.f / _sqrt(a);
+		u.x = -n.y * k;
+		u.y = n.x * k;
+		u.z = 0;
+		v.x = -n.z * u.y;
+		v.y = n.z * u.x;
+		v.z = a * k;
+	}
+}
+
 CWeaponRPG7Grenade::CWeaponRPG7Grenade() {
 	m_pos.set(0, 0, 0); m_vel.set(0, 0, 0);
 	m_pOwner = NULL;
@@ -39,7 +62,7 @@ void __stdcall CWeaponRPG7Grenade::ObjectContactCallback(bool& do_colide,dContac
 	CGameObject *l_pOwner = l_pUD1 ? dynamic_cast<CGameObject*>(l_pUD1->ph_ref_object) : NULL;
 	if(!l_pOwner || l_pOwner == (CGameObject*)l_this) l_pOwner = l_pUD2 ? dynamic_cast<CGameObject*>(l_pUD2->ph_ref_object) : NULL;
 	if(!l_pOwner || l_pOwner != l_this->m_pOwner) {
-		if(l_this->m_pOwner) l_this->Explode();
+		if(l_this->m_pOwner) l_this->Explode(*(Fvector*)&c.geom.normal);
 	} else {
 		do_colide = false;
 	}
@@ -81,7 +104,7 @@ void CWeaponRPG7Grenade::Load(LPCSTR section) {
 	SoundCreate(sndRicochet[4], "ric5", m_eSoundRicochet);
 }
 
-void CWeaponRPG7Grenade::Explode() {
+void CWeaponRPG7Grenade::Explode(const Fvector &normal) {
 	m_expoldeTime = 500;
 	setVisible(false);
 	Sound->play_at_pos(sndExplode, 0, vPosition, false);
@@ -141,8 +164,11 @@ void CWeaponRPG7Grenade::Explode() {
 		}
 	}
 	CPGObject* pStaticPG; s32 l_c = m_effects.size();
+	Fmatrix l_m; l_m.set(svTransform); GetBasis(normal, l_m.k, l_m.i);
 	for(s32 i = 0; i < l_c; i++) {
-		pStaticPG = xr_new<CPGObject>(m_effects[i],Sector()); pStaticPG->play_at_pos(vPosition);
+		pStaticPG = xr_new<CPGObject>(m_effects[i],Sector());
+		pStaticPG->UpdateParent(l_m);
+		pStaticPG->Play();
 	}
 	m_pLight->set_position(vPosition); m_pLight->set_active(true);
 	setEnabled(true);
@@ -159,6 +185,9 @@ void CWeaponRPG7Grenade::Explode() {
 
 BOOL CWeaponRPG7Grenade::net_Spawn(LPVOID DC) {
 	BOOL l_res = inherited::net_Spawn(DC);
+	m_pos.set(0, 0, 0); m_vel.set(0, 0, 0);
+	m_pOwner = NULL;
+	m_expoldeTime = m_engineTime = 0xffffffff;
 
 	if(0==pstrWallmark) hWallmark	= 0; 
 	else hWallmark	= Device.Shader.Create("effects\\wallmark",pstrWallmark);
@@ -289,7 +318,7 @@ void CWeaponRPG7Grenade::OnH_B_Independent() {
 		vPosition.set(m_pPhysicsShell->mXFORM.c);
 		m_pPhysicsShell->set_PhysicsRefObject(this);
 		m_pPhysicsShell->set_ObjectContactCallback(ObjectContactCallback);
-		m_engineTime = 500;
+		m_engineTime = 800;
 	}
 }
 
@@ -312,6 +341,8 @@ void CWeaponRPG7Grenade::UpdateCL() {
 			m_engineTime -= Device.dwTimeDelta;
 			Fvector l_pos; l_pos.set(0, 0, 3.f);
 			m_pPhysicsShell->applyImpulseTrace(l_pos, svTransform.k, 45.f);
+			Fvector l_dir; l_dir.set(0, 1.f, 0);
+			m_pPhysicsShell->applyForce(l_dir, 400.f);
 		}
 	} //else if(H_Parent()) svTransform.set(H_Parent()->clXFORM());
 }
@@ -409,7 +440,7 @@ void CWeaponRPG7::switch2_Fire	()
 		if (E) E->g_fireParams		(p1,d);
 
 		m_pGrenade->m_pos.set(p1);
-		m_pGrenade->m_vel.set(d); m_pGrenade->m_vel.y += .15f; m_pGrenade->m_vel.mul(50.f);
+		m_pGrenade->m_vel.set(d); m_pGrenade->m_vel.y += .0f; m_pGrenade->m_vel.mul(50.f);
 		m_pGrenade->m_pOwner = dynamic_cast<CGameObject*>(H_Parent());
 		NET_Packet P;
 		u_EventGen(P,GE_OWNERSHIP_REJECT,ID());
