@@ -4,11 +4,19 @@
  *		  by Dale Schumacher
  */
 
-#include <stdio.h>
-#include <string.h>
-#include <malloc.h>
-#include <math.h>
-#include "GGems.h"
+#include "stdafx.h"
+#include "xrImage_Resampler.h"
+
+#ifndef RGBA_GETALPHA
+#define RGBA_GETALPHA(rgb)      DWORD((rgb) >> 24)
+#define RGBA_GETRED(rgb)        DWORD(((rgb) >> 16) & 0xff)
+#define RGBA_GETGREEN(rgb)      DWORD(((rgb) >> 8) & 0xff)
+#define RGBA_GETBLUE(rgb)       DWORD((rgb) & 0xff)
+#define D3DCOLOR_ARGB(a,r,g,b) \
+    ((DWORD)((((a)&0xff)<<24)|(((r)&0xff)<<16)|(((g)&0xff)<<8)|((b)&0xff)))
+#define RGBA_MAKE(r,g,b,a)		D3DCOLOR_ARGB(a,r,g,b)
+#endif
+
 
 typedef	DWORD	Pixel;
 struct Image 
@@ -163,7 +171,7 @@ double	B_spline_filter		(double t)	/* box (*) box (*) box (*) box */
 #define	Lanczos3_support	(3.0)
 double	sinc				(double x)
 {
-	x *= M_PI;
+	x *= 3.1415926f;
 	if(x != 0) return(sin(x) / x);
 	return(1.0);
 }
@@ -255,30 +263,30 @@ void	imf_Process	(LPDWORD dstI, DWORD dstW, DWORD dstH, LPDWORD srcI, DWORD srcW
 	CLIST	*contrib;				/* array of contribution lists */
 
 	/* create intermediate image to hold horizontal zoom */
-	tmp		= new_image(dst->xsize, src->ysize);
-	xscale	= double (dst->xsize) / double(src->xsize);
-	yscale	= double (dst->ysize) / double(src->ysize);
+	tmp		= new_image	(dst.xsize, src.ysize);
+	xscale	= double	(dst.xsize) / double(src.xsize);
+	yscale	= double	(dst.ysize) / double(src.ysize);
 
 	/* pre-calculate filter contributions for a row */
-	contrib = (CLIST *)calloc	(dst->xsize, sizeof(CLIST));
+	contrib = (CLIST *)calloc	(dst.xsize, sizeof(CLIST));
 	if(xscale < 1.0) {
 		width	= fwidth / xscale;
 		fscale	= 1.0 / xscale;
-		for(i = 0; i < dst->xsize; ++i) 
+		for(i = 0; i < dst.xsize; ++i) 
 		{
 			contrib[i].n	= 0;
 			contrib[i].p	= (CONTRIB *)calloc((int) (width * 2 + 1),	sizeof(CONTRIB));
 			center			= double(i) / xscale;
 			left			= ceil	(center - width);
 			right			= floor	(center + width);
-			for(j = left; j <= right; ++j) 
+			for(j = int(left); j <= int(right); ++j) 
 			{
 				weight	= center - double(j);
 				weight	= filterf(weight / fscale) / fscale;
 				if(j < 0) {
 					n = -j;
-				} else if(j >= src->xsize) {
-					n = (src->xsize - j) + src->xsize - 1;
+				} else if(j >= src.xsize) {
+					n = (src.xsize - j) + src.xsize - 1;
 				} else {
 					n = j;
 				}
@@ -288,21 +296,21 @@ void	imf_Process	(LPDWORD dstI, DWORD dstW, DWORD dstH, LPDWORD srcI, DWORD srcW
 			}
 		}
 	} else {
-		for(i = 0; i < dst->xsize; ++i) 
+		for(i = 0; i < dst.xsize; ++i) 
 		{
 			contrib[i].n	= 0;
 			contrib[i].p	= (CONTRIB *)calloc((int) (fwidth * 2 + 1),	sizeof(CONTRIB));
 			center			= double(i) / xscale;
 			left			= ceil	(center - fwidth);
 			right			= floor	(center + fwidth);
-			for(j = left; j <= right; ++j) 
+			for(j = int(left); j <= int(right); ++j) 
 			{
 				weight	= center - (double) j;
 				weight	= (*filterf)(weight);
 				if(j < 0) {
 					n = -j;
-				} else if(j >= src->xsize) {
-					n = (src->xsize - j) + src->xsize - 1;
+				} else if(j >= src.xsize) {
+					n = (src.xsize - j) + src.xsize - 1;
 				} else {
 					n = j;
 				}
@@ -314,10 +322,10 @@ void	imf_Process	(LPDWORD dstI, DWORD dstW, DWORD dstH, LPDWORD srcI, DWORD srcW
 	}
 
 	/* apply filter to zoom horizontally from src to tmp */
-	raster	= (Pixel *)calloc(src->xsize, sizeof(Pixel));
+	raster	= (Pixel *)calloc(src.xsize, sizeof(Pixel));
 	for	(k = 0; k < tmp->ysize; ++k) 
 	{
-		get_row	(raster, src, k);
+		get_row	(raster, &src, k);
 		for(i = 0; i < tmp->xsize; ++i) 
 		{
 			double	w_r	= 0., w_g = 0., w_b	= 0., w_a = 0.;
@@ -341,18 +349,18 @@ void	imf_Process	(LPDWORD dstI, DWORD dstW, DWORD dstH, LPDWORD srcI, DWORD srcW
 	free(contrib);
 
 	/* pre-calculate filter contributions for a column */
-	contrib = (CLIST *)calloc(dst->ysize, sizeof(CLIST));
+	contrib = (CLIST *)calloc(dst.ysize, sizeof(CLIST));
 	if(yscale < 1.0) {
 		width	= fwidth / yscale;
 		fscale	= 1.0 / yscale;
-		for	(i = 0; i < dst->ysize; ++i) 
+		for	(i = 0; i < dst.ysize; ++i) 
 		{
 			contrib[i].n	= 0;
 			contrib[i].p	= (CONTRIB *)calloc((int) (width * 2 + 1),sizeof(CONTRIB));
 			center			= (double) i / yscale;
 			left			= ceil	(center - width);
 			right			= floor	(center + width);
-			for(j = left; j <= right; ++j) 
+			for(j = int(left); j <= int(right); ++j) 
 			{
 				weight	= center - (double) j;
 				weight	= filterf(weight / fscale) / fscale;
@@ -369,14 +377,14 @@ void	imf_Process	(LPDWORD dstI, DWORD dstW, DWORD dstH, LPDWORD srcI, DWORD srcW
 			}
 		}
 	} else {
-		for(i = 0; i < dst->ysize; ++i) 
+		for(i = 0; i < dst.ysize; ++i) 
 		{
 			contrib[i].n	= 0;
 			contrib[i].p	= (CONTRIB *)calloc((int) (fwidth * 2 + 1),sizeof(CONTRIB));
 			center			= (double) i / yscale;
 			left			= ceil	(center - fwidth);
 			right			= floor	(center + fwidth);
-			for(j = left; j <= right; ++j) {
+			for(j = int(left); j <= int(right); ++j) {
 				weight = center - (double) j;
 				weight = (*filterf)(weight);
 				if(j < 0) {
@@ -395,10 +403,10 @@ void	imf_Process	(LPDWORD dstI, DWORD dstW, DWORD dstH, LPDWORD srcI, DWORD srcW
 
 	/* apply filter to zoom vertically from tmp to dst */
 	raster = (Pixel *)calloc(tmp->ysize, sizeof(Pixel));
-	for(k = 0; k < dst->xsize; ++k) 
+	for(k = 0; k < dst.xsize; ++k) 
 	{
 		get_column	(raster, tmp, k);
-		for(i = 0; i < dst->ysize; ++i) 
+		for(i = 0; i < dst.ysize; ++i) 
 		{
 			double	w_r	= 0., w_g = 0., w_b	= 0., w_a = 0.;
 
@@ -411,7 +419,7 @@ void	imf_Process	(LPDWORD dstI, DWORD dstW, DWORD dstH, LPDWORD srcI, DWORD srcW
 				w_b			+=	W*double(RGBA_GETBLUE(P));
 				w_a			+=	W*double(RGBA_GETALPHA(P));
 			}
-			put_pixel(dst, k, i, RGBA_MAKE(CC(w_r),CC(w_g),CC(w_b),CC(w_a)));
+			put_pixel(&dst, k, i, RGBA_MAKE(CC(w_r),CC(w_g),CC(w_b),CC(w_a)));
 		}
 
 	}
@@ -422,88 +430,5 @@ void	imf_Process	(LPDWORD dstI, DWORD dstW, DWORD dstH, LPDWORD srcI, DWORD srcW
 	free(contrib);
 
 	free_image(tmp);
-}
-
-/*
- *	command line interface
- */
-
-void
-usage()
-{
-	fprintf(stderr, "usage: %s [-options] input.bm output.bm\n", _Program);
-	fprintf(stderr, "\
-options:\n\
-	-x xsize		output x size\n\
-	-y ysize		output y size\n\
-	-f filter		filter type\n\
-{b=box, t=triangle, q=bell, B=B-spline, h=hermite, l=Lanczos3, m=Mitchell}\n\
-");
-	exit(1);
-}
-
-void
-banner()
-{
-	printf("%s v%s -- %s\n", _Program, _Version, _Copyright);
-}
-
-main(argc, argv)
-int argc;
-char *argv[];
-{
-	register int c;
-	extern int optind;
-	extern char *optarg;
-	int xsize = 0, ysize = 0;
-	double (*f)() = filter;
-	double s = filter_support;
-	char *dstfile, *srcfile;
-	Image *dst, *src;
-	FILE *fp;
-
-	while((c = getopt(argc, argv, "x:y:f:V")) != EOF) {
-		switch(c) {
-		case 'x': xsize = atoi(optarg); break;
-		case 'y': ysize = atoi(optarg); break;
-		case 'f':
-			switch(*optarg) {
-			case 'b': f=box_filter; s=box_support; break;
-			case 't': f=triangle_filter; s=triangle_support; break;
-			case 'q': f=bell_filter; s=bell_support; break;
-			case 'B': f=B_spline_filter; s=B_spline_support; break;
-			case 'h': f=filter; s=filter_support; break;
-			case 'l': f=Lanczos3_filter; s=Lanczos3_support; break;
-			case 'm': f=Mitchell_filter; s=Mitchell_support; break;
-			default: usage();
-			}
-			break;
-		case 'V': banner(); exit(EXIT_SUCCESS);
-		case '?': usage();
-		default:  usage();
-		}
-	}
-	if((argc - optind) != 2) usage();
-	srcfile = argv[optind];
-	dstfile = argv[optind + 1];
-	if(((fp = fopen(srcfile, "r")) == NULL)
-	|| ((src = load_image(fp)) == NULL)) {
-		fprintf(stderr, "%s: can't load source image '%s'\n",
-			_Program, srcfile);
-		exit(EXIT_FAILURE);
-	}
-	fclose(fp);
-	if(xsize <= 0) xsize = src->xsize;
-	if(ysize <= 0) ysize = src->ysize;
-	dst = new_image(xsize, ysize);
-	zoom(dst, src, f, s);
-	if(((fp = fopen(dstfile, "w")) == NULL)
-	|| (save_image(fp, dst) != 0)) {
-		fprintf(stderr, "%s: can't save destination image '%s'\n",
-			_Program, dstfile);
-		exit(EXIT_FAILURE);
-	}
-	fclose(fp);
-	exit(EXIT_SUCCESS);
 }
 
