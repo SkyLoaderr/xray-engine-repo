@@ -222,8 +222,16 @@ BOOL	__stdcall rms_test	(b_texture& lm, DWORD w, DWORD h, DWORD rms)
 	// scale down(lanczos3) and up (bilinear, as video board)
 	LPDWORD	pScaled		= LPDWORD(malloc(w*h*4));
 	LPDWORD	pRestored	= LPDWORD(malloc(lm.dwWidth*lm.dwHeight*4));
-	imf_Process	(pScaled,	w,h,lm.pSurface,lm.dwWidth,lm.dwHeight,imf_lanczos3	);
-	imf_Process	(pRestored,	lm.dwWidth,lm.dwHeight,pScaled,w,h,imf_filter		);
+	try {
+		imf_Process	(pScaled,	w,h,lm.pSurface,lm.dwWidth,lm.dwHeight,imf_lanczos3	);
+		imf_Process	(pRestored,	lm.dwWidth,lm.dwHeight,pScaled,w,h,imf_filter		);
+	} catch (...)
+	{
+		Msg		("* ERROR: Access violation while stretching lightmap");
+		_FREE	(pScaled);
+		_FREE	(pRestored);
+		return	FALSE;
+	}
 	_FREE		(pScaled);
 
 	// compare them
