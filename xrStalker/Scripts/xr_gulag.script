@@ -77,14 +77,16 @@ function fract:calculate()
 		
 		if game.time() - self.stateBegin > timeout then
 			self.state = 0
-		        self.music:event(0)
+		    self.music:event(0)
 		end
 	end
 	
+	--' Апдейт матюгальника
 	if self.music ~= nil then
 		self.music:update()
 	end
 
+	--' Изменение потерь в лагере
 	for k,v in self.Object do
 		if v:alive() ~= true then
 			self:changeCasualities(1)
@@ -92,6 +94,7 @@ function fract:calculate()
 		end
 	end
 
+	--' Обнуление работ с несуществующими персонажами
 	for k,v in self.Job do
 		if v.object ~= nil and self.Object[v.object:id()] == nil then
 			v.object = nil				
@@ -741,7 +744,6 @@ function addMember(name, npc, char_ini)
 		xr_gulag.fraction[name] = xr_gulag.fract(name, char_ini)
 	end
 	xr_gulag.fraction[name]:addObject(npc)
-	xr_gulag.fraction[name]:calculate()
 
     xr_gulag.add_to_binder(npc)
 	local jj = xr_gulag.fraction[name]:getJobLabel()
