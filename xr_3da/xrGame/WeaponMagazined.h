@@ -88,6 +88,8 @@ public:
 	virtual	void	UpdateCL		();
 	virtual	void	OnVisible		();
 
+	virtual void	net_Destroy		();
+
 	virtual void	OnDeviceCreate	();
 	virtual void	OnDeviceDestroy	();
 };

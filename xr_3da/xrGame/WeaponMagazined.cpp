@@ -26,6 +26,13 @@ CWeaponMagazined::CWeaponMagazined(LPCSTR name, ESoundTypes eSoundType) : CWeapo
 
 CWeaponMagazined::~CWeaponMagazined()
 {
+	MediaUNLOAD		();
+}
+
+void CWeaponMagazined::net_Destroy()
+{
+	inherited::net_Destroy();
+
 	// sounds
 	SoundDestroy		(sndShow		);
 	SoundDestroy		(sndHide		);
@@ -37,9 +44,8 @@ CWeaponMagazined::~CWeaponMagazined()
 	SoundDestroy		(sndRicochet[2]	);
 	SoundDestroy		(sndRicochet[3]	);
 	SoundDestroy		(sndRicochet[4]	);
-	
-	MediaUNLOAD		();
 }
+
 
 void CWeaponMagazined::Load	(LPCSTR section)
 {
