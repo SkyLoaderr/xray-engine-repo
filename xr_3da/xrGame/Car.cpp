@@ -101,7 +101,7 @@ void	CCar::Load					( LPCSTR section )
 	M->LL_GetInstance				(M->LL_BoneID("phy_wheel_frontr")).set_callback	(cb_WheelFR,this);
 	M->LL_GetInstance				(M->LL_BoneID("phy_wheel_rearl")).set_callback	(cb_WheelBL,this);
 	M->LL_GetInstance				(M->LL_BoneID("phy_wheel_rearr")).set_callback	(cb_WheelBR,this);
-	clTransform.set( ph_world->Jeep.DynamicData.BoneTransform	);
+	clTransform.set					( ph_world->Jeep.DynamicData.BoneTransform	);
 
 	pSounds->Create					(snd_engine,TRUE,"car\\car1",TRUE);
 }
