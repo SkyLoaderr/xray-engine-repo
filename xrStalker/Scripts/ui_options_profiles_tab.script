@@ -38,8 +38,15 @@ function options_profiles_tab:InitControls(x_pos, y_pos)
 	frame_info:SetAutoDelete(true)
 	frame_info:SetWindowName("info_label")
 	frame_info:Init("ui\\ui_frame_very_small", info_rect.x, info_rect.y, info_rect.width, info_rect.height)
-	frame_info:SetText("Current Profile")
 	self.main_frame:AttachChild(frame_info)
+	
+	local caption = CUIStatic()
+	caption:SetAutoDelete(true)
+	caption:SetWindowName("caption")
+	caption:Init(info_rect.x, info_rect.y, info_rect.width, info_rect.height)
+	caption:SetTextAlign(CGameFont.alLeft)
+	caption:SetText("Current Profile: xxx")
+	self.main_frame:AttachChild(caption)
 	
 	-- CODE >>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>
 	
