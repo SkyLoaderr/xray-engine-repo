@@ -58,6 +58,13 @@ class CAI_Soldier : public CCustomMonster
 		aiSoldierRecharge,
 	};
 	
+	enum EGestureStates {
+		GESTURE_STATE_NONE=0,
+		GESTURE_STATE_POINT,
+		GESTURE_STATE_RAISE_HAND,
+		GESTURE_STATE_GO_AHEAD,
+	};
+
 	typedef	CCustomMonster inherited;
 
 	protected:
@@ -200,6 +207,8 @@ class CAI_Soldier : public CCustomMonster
 		CBlend*				m_tpCurrentGlobalBlend;
 		CBlend*				m_tpCurrentTorsoBlend;
 		CBlend*				m_tpCurrentLegsBlend;
+		char				m_cGestureState;
+
 		
 		// head turns
 		static void __stdcall HeadSpinCallback(CBoneInstance*);
