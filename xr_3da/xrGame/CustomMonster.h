@@ -76,7 +76,7 @@ public:
 	};
 
 	// Pathfinding cache
-	CPathNodes			AI_Path;
+	AI::CPathNodes		AI_Path;
 
 	// Eyes
 	Fmatrix				eye_matrix;

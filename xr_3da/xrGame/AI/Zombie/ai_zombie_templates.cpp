@@ -611,7 +611,7 @@ void CAI_Zombie::GoToPointViaSubnodes(Fvector &tLeaderPosition)
 					tFinishPosition.y = (tpSubNodes[iBestI].tLeftDown.y + tpSubNodes[iBestI].tRightUp.y)/2.f;
 					tFinishPosition.z = (tpSubNodes[iBestI].tLeftDown.z + tpSubNodes[iBestI].tRightUp.z)/2.f;
 					VERIFY(tFinishPosition.x < 1000000.f);
-					CTravelNode	tCurrentPoint,tFinishPoint;
+					CPathNodes::CTravelNode	tCurrentPoint,tFinishPoint;
 					tCurrentPoint.P.set(tCurrentPosition);
 					tCurrentPoint.floating = FALSE;
 					AI_Path.TravelPath.push_back(tCurrentPoint);
@@ -655,7 +655,7 @@ void CAI_Zombie::GoToPointViaSubnodes(Fvector &tLeaderPosition)
 			tFinishPosition.y = (tpSubNodes[iMySubNode].tLeftDown.y + tpSubNodes[iMySubNode].tRightUp.y)/2.f;
 			tFinishPosition.z = (tpSubNodes[iMySubNode].tLeftDown.z + tpSubNodes[iMySubNode].tRightUp.z)/2.f;
 			VERIFY(tFinishPosition.x < 1000000.f);
-			CTravelNode	tCurrentPoint,tFinishPoint;
+			CPathNodes::CTravelNode	tCurrentPoint,tFinishPoint;
 			tCurrentPoint.P.set(tCurrentPosition);
 			tCurrentPoint.floating = FALSE;
 			AI_Path.TravelPath.push_back(tCurrentPoint);

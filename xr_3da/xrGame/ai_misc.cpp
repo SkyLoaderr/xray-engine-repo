@@ -3,6 +3,8 @@
 #include "ai_space.h"
 #include "ai_pathnodes.h"
 
+using namespace AI;
+
 /*
 class fBASE
 {
@@ -53,8 +55,8 @@ fBASE*		array_of_functions[1000];
 
 */
 
-extern void	UnpackContour(PContour& C, DWORD ID);
-extern void	IntersectContours(PSegment& Dest, PContour& C1, PContour& C2);
+extern void	UnpackContour		(CPathNodes::PContour& C, DWORD ID);
+extern void	IntersectContours	(CPathNodes::PSegment& Dest, CPathNodes::PContour& C1, CPathNodes::PContour& C2);
 
 #define	LI_NONE				0
 #define LI_COLLINEAR        0
@@ -136,12 +138,12 @@ IC bool bfSimilar(Fvector &tPoint0, Fvector &tPoint1)
 	return((_abs(tPoint0.x - tPoint1.x) < EPS_L) && (_abs(tPoint0.z - tPoint1.z) < EPS_L));
 }
 
-IC bool bfInsideContour(Fvector &tPoint, PContour &tContour)
+IC bool bfInsideContour(Fvector &tPoint, CPathNodes::PContour &tContour)
 {
 	return((tContour.v1.x - EPS_L <= tPoint.x) && (tContour.v1.z - EPS_L <= tPoint.z) && (tContour.v3.x + EPS_L >= tPoint.x) && (tContour.v3.z + EPS_L >= tPoint.z));
 }
 
-IC void vfIntersectContours(PSegment &tSegment, PContour &tContour0, PContour &tContour1)
+IC void vfIntersectContours(CPathNodes::PSegment &tSegment, CPathNodes::PContour &tContour0, CPathNodes::PContour &tContour1)
 {
 	bool bFound = false;
 	
@@ -278,8 +280,8 @@ void CAI_Space::vfCreateFastRealisticPath(vector<Fvector> &tpaPoints, DWORD dwSt
 	Fvector tPrevPrevPoint,tTempPoint, tPrevPoint, tStartPoint, tFinishPoint, tCurrentPosition, tCircleCentre, tFinalPosition, t1, t2;
 	NodeCompressed *tpNode;
 	NodeLink *taLinks;
-	PContour tCurContour, tNextContour;
-	PSegment tSegment;
+	CPathNodes::PContour tCurContour, tNextContour;
+	CPathNodes::PSegment tSegment;
 	DWORD dwCurNode, dwPrevNode, dwPrevPrevNode;
 	int i, j, iCurrentPatrolPoint, iCount, iNodeIndex, iSavedIndex = -1, iStartI;
 	float fSuitAngleCosinus = cosf(fSuitableAngle), fHalfSubNodeSize = (GetHeader().size)*.5f, fSegmentSize, fDistance, fRadius, fAlpha0, fAlpha, fTemp, fRoundedDistance = ::Random.randF(fRoundedDistanceMin,fRoundedDistanceMax), fPreviousRoundedDistance = fRoundedDistance;
@@ -817,8 +819,8 @@ float CAI_Space::ffMarkNodesInDirection(DWORD dwStartNode, Fvector tStartPositio
 {
 	NodeCompressed *tpNode;
 	NodeLink *taLinks;
-	PContour tCurContour, tNextContour;
-	PSegment tSegment;
+	CPathNodes::PContour tCurContour, tNextContour;
+	CPathNodes::PSegment tSegment;
 	int i, iNodeIndex, iCount, iSavedIndex;
 	Fvector tPrevPoint, tTempPoint, tStartPoint, tFinishPoint, tTravelNode;
 	float fCurDistance = 0.f;
@@ -989,8 +991,8 @@ bool CAI_Space::bfCheckNodeInDirection(DWORD dwStartNode, Fvector tStartPosition
 {
 	NodeCompressed *tpNode;
 	NodeLink *taLinks;
-	PContour tCurContour, tNextContour;
-	PSegment tSegment;
+	CPathNodes::PContour tCurContour, tNextContour;
+	CPathNodes::PSegment tSegment;
 	int i, iNodeIndex, iCount, iSavedIndex;
 	Fvector tPrevPoint, tTempPoint, tStartPoint, tFinishPoint, tTravelNode;
 	float fCurDistance = 0.f, fDistance = ffGetDistanceBetweenNodeCenters(dwStartNode,dwFinishNode);
@@ -1149,8 +1151,8 @@ DWORD CAI_Space::dwfCheckPositionInDirection(DWORD dwStartNode, Fvector tStartPo
 {
 	NodeCompressed *tpNode;
 	NodeLink *taLinks;
-	PContour tCurContour, tNextContour;
-	PSegment tSegment;
+	CPathNodes::PContour tCurContour, tNextContour;
+	CPathNodes::PSegment tSegment;
 	int i, iNodeIndex, iCount, iSavedIndex;
 	Fvector tPrevPoint, tTempPoint, tStartPoint, tFinishPoint, tTravelNode;
 	float fCurDistance = 0.f, fDistance = tStartPosition.distance_to(tFinishPosition);

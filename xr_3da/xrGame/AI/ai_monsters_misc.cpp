@@ -12,8 +12,8 @@
 #include "..\\actor.h"
 #include "..\\ai_funcs.h"
 
-extern void	UnpackContour(PContour& C, DWORD ID);
-extern void	IntersectContours(PSegment& Dest, PContour& C1, PContour& C2);
+extern void	UnpackContour		(CPathNodes::PContour& C, DWORD ID);
+extern void	IntersectContours	(CPathNodes::PSegment& Dest, CPathNodes::PContour& C1, CPathNodes::PContour& C2);
 
 #define COMPUTE_DISTANCE_2D(t,p) (sqrtf(_sqr((t).x - (p).x) + _sqr((t).z - (p).z)))
 
