@@ -45,20 +45,23 @@ local siren_on1 = 1		--Опасность
 local siren_off = 0
 
 class "m_gramofon"
-function m_gramofon:__init( obj_name )
-  	self.npc_name     = obj_name
-    self.npc          = nil
-    self.snd          = nil
-  	self.param        = 0
-    self.melody       = nil
-    self.delay        = 0
-    self.time         = device():time_global() - 30000
-    self.need_stop    = false
-    self.curState     = siren_off
+function m_gramofon:__init(obj_name, _commander_name)
+  	self.npc_name     	= obj_name
+	self.commander_name	= _commander_name
+	self.npc          	= nil
+	self.commander		= nil
+    self.snd          	= nil
+  	self.param        	= 0
+    self.melody       	= nil
+    self.delay        	= 0
+    self.time         	= device():time_global() - 30000
+    self.need_stop    	= false
+    self.curState     	= siren_off
     printf("_______curState = %d", self.curState)
-    self.hours        = 0              --Время в часах прошлого update
-    self.queue        = {}
-    self.sounds       = {
+    self.hours        	= 0              --Время в часах прошлого update
+    self.work			= true
+	self.queue        	= {}
+    self.sounds       	= {
            		    		sound_object( music1 ),
                             sound_object( music2 ),
                             sound_object( music3 ),
@@ -126,9 +129,27 @@ function m_gramofon:event(new_event)
 end
 
 function m_gramofon:update()
+	
+	// Если убили коммандира, суки, то перестаем проигрывать звуки
+	if(self.work == false) then return end
+	
+	if(self.commander == nil and self.commander_name ~= nil) then
+		self.commander = level.object(self.commander_name)
+	else
+		if(self.commander:alive() == false) then
+			self.work	= false
+			
+			// Если сирена и убили коммандира, то останавливаем текущий звук
+			if(self.curState ~= siren_off) then
+				self:stop()
+			end
+		end
+	end
 
-  	self:is_on_line()
-    if( self.npc == nil ) then return end
+	
+	self:is_on_line()
+    
+	if( self.npc == nil ) then return end
 
    	self:select_sound()
     self:play()
