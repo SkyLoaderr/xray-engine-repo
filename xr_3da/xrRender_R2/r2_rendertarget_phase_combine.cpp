@@ -93,8 +93,8 @@ void	CRenderTarget::phase_combine	()
 		// Draw COLOR
 		float dr					= ps_r2_ls_dynamic_range;
 		RCache.set_Element			(s_combine->E[2]);
-		RCache.set_c				("e_barrier",	.8f, .1f,   0, 0);
-		RCache.set_c				("e_weights",	.25f, .25f, 0, 0);
+		RCache.set_c				("e_barrier",	ps_r2_aa_barier.x, ps_r2_aa_barier.y, ps_r2_aa_barier.z, 0);
+		RCache.set_c				("e_weights",	ps_r2_aa_weight.x, ps_r2_aa_weight.y, ps_r2_aa_weight.z, 0);
 		RCache.set_Geometry			(g_aa);
 		RCache.Render				(D3DPT_TRIANGLELIST,Offset,0,4,0,2);
 	}
