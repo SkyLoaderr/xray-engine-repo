@@ -75,6 +75,10 @@ void CAI_Zombie::Think()
 				ReturnHome();
 				break;
 			}
+			case aiZombieResurrect : {
+				Resurrect();
+				break;
+			}
 		}
 		m_bStateChanged = m_ePreviousState != eCurrentState;
 	}
@@ -118,6 +122,13 @@ void CAI_Zombie::Death()
 			NET_Packet			P;
 			u_EventGen			(P,GE_DESTROY,ID());
 			u_EventSend			(P);
+		}
+	}
+	else {
+		if (Level().timeServer() - m_dwDeathTime > m_dwTimeToLie) {
+			m_fFood = Movement.GetMass()*100;
+			fHealth = 200;
+			GO_TO_NEW_STATE(aiZombieResurrect);
 		}
 	}
 }
@@ -517,4 +528,20 @@ void CAI_Zombie::ReturnHome()
 
 	CGroup &Group = Level().Teams[g_Team()].Squads[g_Squad()].Groups[g_Group()];
 	vfSetFire(false,Group);
+}
+
+void CAI_Zombie::Resurrect()
+{
+	WRITE_TO_LOG("Resurrecting");
+
+	bStopThinking = true;
+	
+	m_fSafeSpeed = m_fSpeed = 0.f;
+
+	CGroup &Group = Level().Teams[g_Team()].Squads[g_Squad()].Groups[g_Group()];
+	vfSetFire(false,Group);
+
+	if ((m_tpCurrentGlobalAnimation == m_tZombieAnimations.tNormal.tGlobal.tStandUp) && (!m_tpCurrentGlobalBlend->playing)) {
+		GO_TO_NEW_STATE_THIS_UPDATE(aiZombieFreeHuntingActive);
+	}
 }

@@ -70,7 +70,8 @@ void CAI_Zombie::SelectAnimation(const Fvector& _view, const Fvector& _move, flo
 			if (m_tpCurrentGlobalAnimation == m_tZombieAnimations.tNormal.tGlobal.tpaIdle[1])
 				tpGlobalAnimation = m_tZombieAnimations.tNormal.tGlobal.tpaDeath[0];
 			else
-				tpGlobalAnimation = m_tZombieAnimations.tNormal.tGlobal.tpaDeath[::Random.randI(0,2)];
+				tpGlobalAnimation = m_tZombieAnimations.tNormal.tGlobal.tpaDeath[::Random.randI(0,3)];
+		//tpGlobalAnimation = m_tZombieAnimations.tNormal.tGlobal.tpaDeath[2];
 	}
 	else
 		if (m_bFiring) {
@@ -85,42 +86,49 @@ void CAI_Zombie::SelectAnimation(const Fvector& _view, const Fvector& _move, flo
 			tpGlobalAnimation = m_tZombieAnimations.tNormal.tGlobal.tpaAttack[2];
 		}
 		else
-			if (_abs(r_torso_target.yaw - r_torso_current.yaw) <= PI)
-				if (_abs(r_torso_target.yaw - r_torso_current.yaw) >= EPS_L)
-					if (r_torso_target.yaw - r_torso_current.yaw >= 0)
-						tpGlobalAnimation = m_tZombieAnimations.tNormal.tGlobal.tpTurnRight;
-					else
-						tpGlobalAnimation = m_tZombieAnimations.tNormal.tGlobal.tpTurnLeft;
+			if (eCurrentState == aiZombieResurrect) {
+				if ((m_tpCurrentGlobalAnimation == m_tZombieAnimations.tNormal.tGlobal.tpaDeath[2]) && (!m_tpCurrentGlobalBlend->playing))
+					tpGlobalAnimation = m_tZombieAnimations.tNormal.tGlobal.tStandUp;
 				else
-					if (m_fSpeed < 0.2f) {
-						tpGlobalAnimation = m_tZombieAnimations.tNormal.tGlobal.tpaIdle[0];
-					}
-					else
-						if (_abs(m_fSpeed - m_fAttackSpeed) < EPS_L)
-							tpGlobalAnimation = m_tZombieAnimations.tNormal.tGlobal.tRunForward;
-						else
-							if (_abs(m_fSpeed - m_fMaxSpeed) < EPS_L)
-								tpGlobalAnimation = m_tZombieAnimations.tNormal.tGlobal.tWalkForwardCSIP;
-							else
-								tpGlobalAnimation = m_tZombieAnimations.tNormal.tGlobal.tWalk.fwd;
+					tpGlobalAnimation = m_tZombieAnimations.tNormal.tGlobal.tpaDeath[2];
+			}
 			else
-				if (PI_MUL_2 - _abs(r_torso_target.yaw - r_torso_current.yaw) >= EPS_L)
-					if (r_torso_target.yaw > r_torso_current.yaw)
-						tpGlobalAnimation = m_tZombieAnimations.tNormal.tGlobal.tpTurnLeft;
-					else
-						tpGlobalAnimation = m_tZombieAnimations.tNormal.tGlobal.tpTurnRight;
-				else
-					if (m_fSpeed < 0.2f) {
-						tpGlobalAnimation = m_tZombieAnimations.tNormal.tGlobal.tpaIdle[0];
-					}
-					else
-						if (_abs(m_fSpeed - m_fAttackSpeed) < EPS_L)
-							tpGlobalAnimation = m_tZombieAnimations.tNormal.tGlobal.tRunForward;
+				if (_abs(r_torso_target.yaw - r_torso_current.yaw) <= PI)
+					if (_abs(r_torso_target.yaw - r_torso_current.yaw) >= EPS_L)
+						if (r_torso_target.yaw - r_torso_current.yaw >= 0)
+							tpGlobalAnimation = m_tZombieAnimations.tNormal.tGlobal.tpTurnRight;
 						else
-							if (_abs(m_fSpeed - m_fMaxSpeed) < EPS_L)
-								tpGlobalAnimation = m_tZombieAnimations.tNormal.tGlobal.tWalkForwardCSIP;
+							tpGlobalAnimation = m_tZombieAnimations.tNormal.tGlobal.tpTurnLeft;
+					else
+						if (m_fSpeed < 0.2f) {
+							tpGlobalAnimation = m_tZombieAnimations.tNormal.tGlobal.tpaIdle[0];
+						}
+						else
+							if (_abs(m_fSpeed - m_fAttackSpeed) < EPS_L)
+								tpGlobalAnimation = m_tZombieAnimations.tNormal.tGlobal.tRunForward;
 							else
-								tpGlobalAnimation = m_tZombieAnimations.tNormal.tGlobal.tWalk.fwd;
+								if (_abs(m_fSpeed - m_fMaxSpeed) < EPS_L)
+									tpGlobalAnimation = m_tZombieAnimations.tNormal.tGlobal.tWalkForwardCSIP;
+								else
+									tpGlobalAnimation = m_tZombieAnimations.tNormal.tGlobal.tWalk.fwd;
+				else
+					if (PI_MUL_2 - _abs(r_torso_target.yaw - r_torso_current.yaw) >= EPS_L)
+						if (r_torso_target.yaw > r_torso_current.yaw)
+							tpGlobalAnimation = m_tZombieAnimations.tNormal.tGlobal.tpTurnLeft;
+						else
+							tpGlobalAnimation = m_tZombieAnimations.tNormal.tGlobal.tpTurnRight;
+					else
+						if (m_fSpeed < 0.2f) {
+							tpGlobalAnimation = m_tZombieAnimations.tNormal.tGlobal.tpaIdle[0];
+						}
+						else
+							if (_abs(m_fSpeed - m_fAttackSpeed) < EPS_L)
+								tpGlobalAnimation = m_tZombieAnimations.tNormal.tGlobal.tRunForward;
+							else
+								if (_abs(m_fSpeed - m_fMaxSpeed) < EPS_L)
+									tpGlobalAnimation = m_tZombieAnimations.tNormal.tGlobal.tWalkForwardCSIP;
+								else
+									tpGlobalAnimation = m_tZombieAnimations.tNormal.tGlobal.tWalk.fwd;
 	
 	if (tpGlobalAnimation != m_tpCurrentGlobalAnimation) { 
 		m_tpCurrentGlobalAnimation = tpGlobalAnimation;

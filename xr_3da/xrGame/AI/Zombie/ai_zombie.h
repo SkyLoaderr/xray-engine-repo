@@ -34,6 +34,7 @@ class CAI_Zombie : public CCustomMonster
 			aiZombieAttackRun,
 			aiZombiePursuit,
 			aiZombieReturnHome,
+			aiZombieResurrect,
 		};
 
 	
@@ -172,6 +173,7 @@ class CAI_Zombie : public CCustomMonster
 		float				m_fWallMinTurnValue;
 		float				m_fWallMaxTurnValue;
 		float				m_fSoundThreshold;
+		u32					m_dwTimeToLie;
 
 		//////////////////////////
 		// INLINE FUNCTIONS
@@ -273,6 +275,7 @@ class CAI_Zombie : public CCustomMonster
 		void	Turn();
 		void	Pursuit();
 		void	ReturnHome();
+		void	Resurrect();
 	public:
 					   CAI_Zombie();
 		virtual		  ~CAI_Zombie();
