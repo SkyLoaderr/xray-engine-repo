@@ -148,6 +148,7 @@ void __fastcall CDevice::Resize(int w, int h)
 	
     m_RealWidth 	= w;
     m_RealHeight 	= h;
+    m_RenderArea	= w*h;
 
     m_RenderWidth  = m_RealWidth * m_ScreenQuality;
     m_RenderHeight = m_RealHeight * m_ScreenQuality;

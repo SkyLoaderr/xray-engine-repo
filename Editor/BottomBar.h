@@ -81,6 +81,10 @@ __published:	// IDE-managed Components
     TMenuItem *N1;
     TMenuItem *miShowHint;
 	TCGauge *cgProgress;
+	TMenuItem *DetailObjects1;
+	TMenuItem *miDrawDOSlotBoxes;
+	TMenuItem *miDrawDOBaseTexture;
+	TMenuItem *miDODrawObjects;
     void __fastcall ClickOptionsMenuItem(TObject *Sender);
     void __fastcall QualityClick(TObject *Sender);
     void __fastcall fsStorageRestorePlacement(TObject *Sender);

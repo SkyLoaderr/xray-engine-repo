@@ -103,7 +103,7 @@ void __fastcall TfrmPropertiesSector::mcSectorColorMouseDown(
       int Y)
 {
 	DWORD color = ((TMultiObjColor*)Sender)->Brush->Color;
-	if (SelectColorWin(&color,&color)){ 
+	if (SelectColorWin(&color,&color,true)){ 
     	((TMultiObjColor*)Sender)->_Set(color);
 	    OnModified(0);
     }

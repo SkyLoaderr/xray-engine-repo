@@ -1,7 +1,7 @@
 object fraDetailObject: TfraDetailObject
   Left = 0
   Top = 0
-  Width = 123
+  Width = 443
   Height = 277
   VertScrollBar.Visible = False
   Align = alClient
@@ -10,7 +10,7 @@ object fraDetailObject: TfraDetailObject
   TabOrder = 0
   object paSelect: TPanel
     Left = 0
-    Top = 79
+    Top = 94
     Width = 123
     Height = 99
     Align = alTop
@@ -150,8 +150,8 @@ object fraDetailObject: TfraDetailObject
   object paCommand: TPanel
     Left = 0
     Top = 0
-    Width = 123
-    Height = 79
+    Width = 443
+    Height = 94
     Align = alTop
     Constraints.MaxWidth = 123
     Constraints.MinWidth = 123
@@ -160,7 +160,7 @@ object fraDetailObject: TfraDetailObject
     object Label1: TLabel
       Left = 1
       Top = 1
-      Width = 121
+      Width = 441
       Height = 13
       Align = alTop
       Alignment = taCenter
@@ -270,6 +270,27 @@ object fraDetailObject: TfraDetailObject
       ParentFont = False
       Transparent = False
       OnClick = ExtBtn6Click
+    end
+    object ebExportDetails: TExtBtn
+      Left = 2
+      Top = 77
+      Width = 119
+      Height = 15
+      Align = alNone
+      AllowAllUp = True
+      BevelShow = False
+      HotTrack = True
+      CloseButton = False
+      Caption = 'Export Details'
+      Font.Charset = DEFAULT_CHARSET
+      Font.Color = clWindowText
+      Font.Height = -11
+      Font.Name = 'MS Sans Serif'
+      Font.Style = []
+      Margin = 13
+      ParentFont = False
+      Transparent = False
+      OnClick = ebExportDetailsClick
     end
   end
   object fsStorage: TFormStorage

@@ -166,6 +166,7 @@ USEOBJ("ed_debug\_math.obj");
 USEOBJ("ed_debug\cpuid.obj");
 USEFORM("DOShuffle.cpp", frmDOShuffle);
 USEFORM("DOOneColor.cpp", frmOneColor);
+USEUNIT("edit\DetailObjectsRender.cpp");
 //---------------------------------------------------------------------------
 #include "main.h"
 #include "splash.h"

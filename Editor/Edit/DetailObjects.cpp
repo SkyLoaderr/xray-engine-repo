@@ -21,6 +21,7 @@
 #include "XRShader.h"
 #include "Texture.h"
 #include "frustum.h"
+#include "bottombar.h"
 
 static Fvector down_vec	={0.f,-1.f,0.f};
 static Fvector left_vec	={-1.f,0.f,0.f};
@@ -101,9 +102,14 @@ bool CDetail::Update	(LPCSTR name){
     m_Indices.resize	(M->GetFaceCount(false)*3);
 
     // fill vertices
+    Fbox bbox;
+    bbox.invalidate();
     DOVertIt v_it		= m_Vertices.begin();
-    for (FvectorIt p_it=M->m_Points.begin(); p_it!=M->m_Points.end(); p_it++,v_it++)
+    for (FvectorIt p_it=M->m_Points.begin(); p_it!=M->m_Points.end(); p_it++,v_it++){
 		v_it->P.set		(*p_it);
+        bbox.modify		(*p_it);
+    }
+    m_fRadius			= bbox.getradius();
 
 
     WORDIt i_it			= m_Indices.begin();
@@ -196,12 +202,19 @@ void CDetail::Export(CFS_Base& F){
 //------------------------------------------------------------------------------
 CDetailManager::CDetailManager(){
 	m_pBaseTexture 		= 0;
+    m_pBaseShader		= 0;
     ZeroMemory			(&m_Header,sizeof(DetailHeader));
     m_Header.version	= DETAIL_VERSION;
 }
 
 CDetailManager::~CDetailManager(){
 	Clear();
+}
+
+DetailSlot&	CDetailManager::GetSlot(DWORD sx, DWORD sz){
+	VERIFY(sx<m_Header.size_x);
+	VERIFY(sz<m_Header.size_z);
+	return m_Slots[sz*m_Header.size_x+sx];
 }
 
 DWORD CDetailManager::GetColor(float x, float z){
@@ -219,9 +232,8 @@ DWORD CDetailManager::GetUFromX(float x){
 }
 
 DWORD CDetailManager::GetVFromZ(float z){
-	float v = (z-m_BBox.min.z)/(m_BBox.max.z-m_BBox.min.z);
-	int V = iFloor(v*(m_pBaseTexture->height()-1)+0.5f);
-    V %= m_pBaseTexture->height();
+	float v = 1.f-(z-m_BBox.min.z)/(m_BBox.max.z-m_BBox.min.z);
+	int V = iFloor(v*(m_pBaseTexture->height()-1)+0.5f);    V %= m_pBaseTexture->height();
     return V;
 }
 
@@ -354,18 +366,25 @@ bool CDetailManager::GenerateSlots(LPCSTR tex_name){
     }
 
     // create base texture
-    R_ASSERT(tex_name);
+	if (!UpdateBaseTexture(tex_name))	return false;
+    if (!UpdateBBox()) 					return false;
+    if (!UpdateObjects(false))			return false;
+	return true;
+}
+
+bool CDetailManager::UpdateBaseTexture(LPCSTR tex_name){
+    // create base texture
+    R_ASSERT(tex_name||m_pBaseTexture);
+    AnsiString fn = tex_name?tex_name:m_pBaseTexture->name();
     _DELETE(m_pBaseTexture);
-    m_pBaseTexture = new ETextureCore(tex_name);
+    m_pBaseTexture = new ETextureCore(fn.c_str());
     if (!m_pBaseTexture->Valid()){
-    	Log->DlgMsg(mtError,"Can't load base texture '%s'!",tex_name);
+    	Log->DlgMsg(mtError,"Can't load base texture '%s'!",fn.c_str());
     	return false;
     }
-
-    UpdateBBox();
-    UpdateObjects();
-
-	return true;
+    if (m_pBaseShader) UI->Device.Shader.Delete(m_pBaseShader);
+    m_pBaseShader = UI->Device.Shader.Create("def_trans",fn.c_str(),false);
+    UI->Command(COMMAND_REFRESH_TEXTURES);
 }
 
 void CDetailManager::UpdateSlotBBox(int sx, int sz, DetailSlot& slot){
@@ -457,8 +476,8 @@ void CDetailManager::GetSlotTCRect(Irect& rect, int sx, int sz){
 	GetSlotRect			(R,sx,sz);
 	rect.x1 			= GetUFromX(R.x1);
 	rect.x2 			= GetUFromX(R.x2);
-	rect.y1 			= GetVFromZ(R.y1);
-	rect.y2 			= GetVFromZ(R.y2);
+	rect.y2 			= GetVFromZ(R.y1); // v - координата флипнута
+	rect.y1 			= GetVFromZ(R.y2);
 }
 
 void CDetailManager::CalcClosestCount(int part, const Fcolor& C, SIndexDistVec& best){
@@ -478,7 +497,7 @@ void CDetailManager::CalcClosestCount(int part, const Fcolor& C, SIndexDistVec& 
     if (idx>=0) best[idx].density[part]++;
 }
 
-BYTE CDetailManager::GetRandomObject(DWORD color_index, const CRandom& R){
+BYTE CDetailManager::GetRandomObject(DWORD color_index, CRandom& R){
 	ColorIndexPairIt CI=m_ColorIndices.find(color_index);
 	R_ASSERT(CI!=m_ColorIndices.end());
 	int k = R.randI(0,CI->second.size());
@@ -489,7 +508,10 @@ bool CompareWeightFunc(SIndexDist& d0, SIndexDist& d1){
 	return d0.dist<d1.dist;
 };
 
-bool CDetailManager::UpdateObjects(){
+bool CDetailManager::UpdateObjects(bool bUpdateTex){
+    // reload base texture
+    if (bUpdateTex&&!UpdateBaseTexture(0)) 	return false;
+    // update objects
     CRandom SlotRandom(0x26111975);
     UI->ProgressStart	(m_Header.size_x*m_Header.size_z,"Updating slot objects...");
     for (DWORD z=0; z<m_Header.size_z; z++){
@@ -509,14 +531,14 @@ bool CDetailManager::UpdateObjects(){
                 }
             }
             sort(best.begin(),best.end(),CompareWeightFunc);
-            // пройдем по 4 частям слота и определим плотность заполнения
+            // пройдем по 4 частям слота и определим плотность заполнения (учесть переворот V)
             Irect P[4];
             float dx=(R.x2-R.x1)/2;
             float dy=(R.y2-R.y1)/2;
-            P[0].x1=R.x1; 					P[0].y1=R.y1; 					P[0].x2=R.x1+dx; 	P[0].y2=R.y1+dy;
-            P[1].x1=iFloor(R.x1+dx+0.5f); 	P[1].y1=R.y1;					P[1].x2=R.x2; 		P[1].y2=R.y1+dx;
-            P[2].x1=R.x1; 					P[2].y1=iFloor(R.y1+dy+0.5f); 	P[2].x2=R.x1+dx;	P[2].y2=R.y2;
-            P[3].x1=iFloor(R.x1+dx+0.5f);	P[3].y1=iFloor(R.y1+dy+0.5f);	P[3].x2=R.x2; 		P[3].y2=R.y2;
+            P[0].x1=R.x1; 					P[0].y1=iFloor(R.y1+dy+0.5f); 	P[0].x2=R.x1+dx;	P[0].y2=R.y2;
+            P[1].x1=iFloor(R.x1+dx+0.5f);	P[1].y1=iFloor(R.y1+dy+0.5f);	P[1].x2=R.x2; 		P[1].y2=R.y2;
+            P[2].x1=R.x1; 					P[2].y1=R.y1; 					P[2].x2=R.x1+dx; 	P[2].y2=R.y1+dy;
+            P[3].x1=iFloor(R.x1+dx+0.5f); 	P[3].y1=R.y1;					P[3].x2=R.x2; 		P[3].y2=R.y1+dx;
             for (int part=0; part<4; part++){
 		        float	alpha=0;
                 int 	cnt=0;
@@ -537,8 +559,8 @@ bool CDetailManager::UpdateObjects(){
             // fill empty slots
             R_ASSERT(best.size());
             int id=0;
-            int o_cnt=0;
-            for (int i=0; i<best.size(); i++)
+            DWORD o_cnt=0;
+            for (DWORD i=0; i<best.size(); i++)
 				o_cnt+=m_ColorIndices[best[i].index].size();
 			if (o_cnt>best.size()){
                 while (best.size()<4){
@@ -558,6 +580,7 @@ bool CDetailManager::UpdateObjects(){
 				slot->items[k].palette.a2 	= iFloor(best[k].density[2]*15);
 				slot->items[k].palette.a3 	= iFloor(best[k].density[3]*15);
                 slot->items[k].id           = GetRandomObject(best[k].index,SlotRandom);
+                slot->color					= 0xffffffff;
             }
 			slot->r_yaw 	= SlotRandom.randIs(int_max);
 			slot->r_scale 	= SlotRandom.randIs(int_max);
@@ -575,23 +598,32 @@ void CDetailManager::Render(ERenderPriority flag){
 	if (m_Slots.size()){
     	switch (flag){
 		case rpNormal:{
-            Fvector 		center;
-            Fbox			bbox;
-			UI->Device.SetTransform(D3DTRANSFORMSTATE_WORLD,precalc_identity);
-			UI->Device.Shader.Set(UI->Device.m_WireShader);
-		    for (DWORD z=0; z<m_Header.size_z; z++){
-            	center.z	= fromSlotZ(z);
-        		for (DWORD x=0; x<m_Header.size_x; x++){
-		        	DSIt slot	= m_Slots.begin()+z*m_Header.size_x+x;
-		            center.x	= fromSlotX(x);
-					center.y	= (slot->y_max+slot->y_min)/2;
-            		bbox.min.set(center.x-DETAIL_SLOT_SIZE_2, slot->y_min, center.z-DETAIL_SLOT_SIZE_2);
-		            bbox.max.set(center.x+DETAIL_SLOT_SIZE_2, slot->y_max, center.z+DETAIL_SLOT_SIZE_2);
-    	            DU::DrawSelectionBox(bbox);
+        	if (fraBottomBar->miDrawDOSlotBoxes->Checked){
+                Fvector 		center;
+                Fbox			bbox;
+                UI->Device.SetTransform(D3DTRANSFORMSTATE_WORLD,precalc_identity);
+                UI->Device.Shader.Set(UI->Device.m_WireShader);
+                for (DWORD z=0; z<m_Header.size_z; z++){
+                    center.z	= fromSlotZ(z);
+                    for (DWORD x=0; x<m_Header.size_x; x++){
+                        DSIt slot	= m_Slots.begin()+z*m_Header.size_x+x;
+                        center.x	= fromSlotX(x);
+                        center.y	= (slot->y_max+slot->y_min)/2;
+                        bbox.min.set(center.x-DETAIL_SLOT_SIZE_2, slot->y_min, center.z-DETAIL_SLOT_SIZE_2);
+                        bbox.max.set(center.x+DETAIL_SLOT_SIZE_2, slot->y_max, center.z+DETAIL_SLOT_SIZE_2);
+                        DU::DrawSelectionBox(bbox);
+                    }
                 }
             }
         }break;
-		case rpAlphaNormal: break;
+		case rpAlphaNormal:{
+        	if (fraBottomBar->miDODrawObjects->Checked)
+	        	RenderObjects(UI->Device.m_Camera.GetPosition());
+        }break;
+		case rpAlphaLast:{
+        	if (fraBottomBar->miDrawDOBaseTexture->Checked)
+	        	RenderTexture(1.0f);
+        }break;
         }
     }
 }
@@ -599,8 +631,11 @@ void CDetailManager::Render(ERenderPriority flag){
 void CDetailManager::Clear(){
 	RemoveObjects		();
 	m_ColorIndices.clear();
+    if (m_pBaseShader){ UI->Device.Shader.Delete(m_pBaseShader); m_pBaseShader = 0;}
     _DELETE				(m_pBaseTexture);
     m_Slots.clear		();
+	m_Cache.clear		();
+	m_Visible.clear		();
 }
 
 
@@ -742,6 +777,7 @@ bool CDetailManager::Load(CStream& F){
 	if(F.FindChunk(DETMGR_CHUNK_BASE_TEXTURE)){
 	    F.RstringZ			(buf);
     	m_pBaseTexture		= new ETextureCore(buf);
+	    m_pBaseShader 		= UI->Device.Shader.Create("def_trans",m_pBaseTexture->name(),false);
     }
     // color index map
     R_ASSERT			(F.FindChunk(DETMGR_CHUNK_COLOR_INDEX));
@@ -757,6 +793,9 @@ bool CDetailManager::Load(CStream& F){
             if (DO) 	m_ColorIndices[index].push_back(DO);
         }
     }
+
+    InitRender			();
+
     return true;
 }
 
@@ -806,7 +845,9 @@ void CDetailManager::Save(CFS_Base& F){
     F.close_chunk		();
 }
 
-void CDetailManager::Export(CFS_Base& F){
+void CDetailManager::Export(LPCSTR fn){
+	CFS_Memory F;
+    m_Header.object_count=m_Objects.size();
 	// header
 	F.write_chunk		(DETMGR_CHUNK_HEADER,&m_Header,sizeof(DetailHeader));
     // objects
@@ -821,5 +862,7 @@ void CDetailManager::Export(CFS_Base& F){
 	F.open_chunk		(DETMGR_CHUNK_SLOTS);
 	F.write				(m_Slots.begin(),m_Slots.size()*sizeof(DetailSlot));
     F.close_chunk		();
+
+    F.SaveTo			(fn,0);
 }
 

@@ -1,7 +1,7 @@
 object fraBottomBar: TfraBottomBar
   Left = 0
   Top = 0
-  Width = 948
+  Width = 443
   Height = 277
   VertScrollBar.Visible = False
   Align = alClient
@@ -9,7 +9,7 @@ object fraBottomBar: TfraBottomBar
   object paBottomBar: TPanel
     Left = 0
     Top = 0
-    Width = 948
+    Width = 443
     Height = 17
     Align = alTop
     BevelInner = bvLowered
@@ -18,7 +18,7 @@ object fraBottomBar: TfraBottomBar
     object paInfo: TPanel
       Left = 74
       Top = 1
-      Width = 873
+      Width = 368
       Height = 15
       Align = alClient
       Alignment = taLeftJustify
@@ -68,7 +68,7 @@ object fraBottomBar: TfraBottomBar
         TabOrder = 1
       end
       object paCameraPos: TPanel
-        Left = 649
+        Left = 144
         Top = 0
         Width = 130
         Height = 15
@@ -159,7 +159,7 @@ object fraBottomBar: TfraBottomBar
         end
       end
       object paSel: TPanel
-        Left = 591
+        Left = 86
         Top = 0
         Width = 58
         Height = 15
@@ -177,7 +177,7 @@ object fraBottomBar: TfraBottomBar
         TabOrder = 4
       end
       object paUICursor: TPanel
-        Left = 779
+        Left = 274
         Top = 0
         Width = 94
         Height = 15
@@ -263,7 +263,10 @@ object fraBottomBar: TfraBottomBar
       'miRenderShadeGouraud.Checked'
       'miRenderWithTextures.Checked'
       'miDrawSectorEdgedSFaces.Checked'
-      'miShowHint.Checked')
+      'miShowHint.Checked'
+      'miDrawDOSlotBoxes.Checked'
+      'miDrawDOBaseTexture.Checked'
+      'miDODrawObjects.Checked')
     StoredValues = <>
     Left = 185
     Top = 33
@@ -406,11 +409,11 @@ object fraBottomBar: TfraBottomBar
         OnClick = ClickOptionsMenuItem
       end
       object miObjectLoopedAnimation: TMenuItem
-        Caption = 'Looped animation'
+        Caption = 'Looped Animation'
         OnClick = ClickOptionsMenuItem
       end
       object miDrawObjectAnimPath: TMenuItem
-        Caption = 'Draw animation path'
+        Caption = 'Draw Animation Path'
         Checked = True
         OnClick = ClickOptionsMenuItem
       end
@@ -461,6 +464,23 @@ object fraBottomBar: TfraBottomBar
       GroupIndex = 4
       object miDrawAnimateLight: TMenuItem
         Caption = 'Animate'
+        OnClick = ClickOptionsMenuItem
+      end
+    end
+    object DetailObjects1: TMenuItem
+      Caption = 'Detail Objects'
+      GroupIndex = 4
+      object miDrawDOSlotBoxes: TMenuItem
+        Caption = 'Draw Slot Boxes'
+        OnClick = ClickOptionsMenuItem
+      end
+      object miDrawDOBaseTexture: TMenuItem
+        Caption = 'Draw Base Texture'
+        OnClick = ClickOptionsMenuItem
+      end
+      object miDODrawObjects: TMenuItem
+        Caption = 'Draw Objects'
+        Checked = True
         OnClick = ClickOptionsMenuItem
       end
     end

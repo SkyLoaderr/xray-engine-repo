@@ -473,6 +473,9 @@ void EScene::Render( Fmatrix *_Camera ){
     // draw detail objects (alpha)
     m_DetailObjects->Render(rpAlphaNormal);
 
+    // draw detail objects (alpha)
+    m_DetailObjects->Render(rpAlphaLast);
+
 	// draw PS
     UI->Device.SetTransform(D3DTRANSFORMSTATE_WORLD,precalc_identity);
     _F = FirstObj(OBJCLASS_PS);

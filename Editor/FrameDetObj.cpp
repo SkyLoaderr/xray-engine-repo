@@ -64,8 +64,16 @@ void __fastcall TfraDetailObject::ExtBtn4Click(TObject *Sender)
 
 void __fastcall TfraDetailObject::ExtBtn6Click(TObject *Sender)
 {
-	Scene->m_DetailObjects->UpdateObjects();
+	Scene->m_DetailObjects->UpdateObjects(true);
 	Scene->UndoSave();
+}
+//---------------------------------------------------------------------------
+
+void __fastcall TfraDetailObject::ebExportDetailsClick(TObject *Sender)
+{
+	AnsiString fn;
+	if (FS.GetSaveName(&FS.m_GameDO,fn))
+	 	Scene->m_DetailObjects->Export(fn.c_str());
 }
 //---------------------------------------------------------------------------
 

@@ -37,6 +37,7 @@ class CDevice{
 
     int 			m_RenderWidth, m_RenderHeight;
     int 			m_RealWidth, m_RealHeight;
+    float			m_RenderArea;
     float 			m_ScreenQuality;
 
     Shader*			m_NullShader;
@@ -58,7 +59,7 @@ public:
 	CUI_Camera 		m_Camera;
     CFrustum    	m_Frustum;
     CStatistic     	m_Statistic;
-    
+
     bool 			m_bReady;
 
 	CShaderManager	Shader;
@@ -78,15 +79,17 @@ public:
 	void 			Begin		();
 	void 			End			();
 
+    IC float		GetRenderArea(){return m_RenderArea;}
+
     IC void			SetTexture	(DWORD dwStage, LPDIRECTDRAWSURFACE7 lpTexture){
     								VERIFY(m_bReady);
                                     CDX(m_DX->pD3DDev->SetTexture( dwStage, lpTexture ));
 							    }
-    IC void			SetTSS		(DWORD dwStage, D3DTEXTURESTAGESTATETYPE dwState, DWORD dwValue){ 
+    IC void			SetTSS		(DWORD dwStage, D3DTEXTURESTAGESTATETYPE dwState, DWORD dwValue){
     								VERIFY(m_bReady);
                                     CDX(m_DX->pD3DDev->SetTextureStageState(dwStage,dwState,dwValue));
 								}
-    IC void			SetRS		(D3DRENDERSTATETYPE p1, DWORD p2){ 
+    IC void			SetRS		(D3DRENDERSTATETYPE p1, DWORD p2){
     								VERIFY(m_bReady);
                                     CDX(m_DX->pD3DDev->SetRenderState(p1,p2));
 								}

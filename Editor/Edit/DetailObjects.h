@@ -20,6 +20,13 @@ struct SIndexDist{
 };
 DEFINE_SVECTOR		(SIndexDist,4,SIndexDistVec,SIndexDistIt);
 
+const int		dm_max_objects	= 32;
+const int		dm_obj_in_slot	= 4;
+const int		dm_size			= 4;
+const int		dm_cache_line	= 1+dm_size+1+dm_size+1;
+const int		dm_cache_size	= dm_cache_line*dm_cache_line;
+
+const DWORD F_DOV = D3DFVF_XYZ | D3DFVF_TEX1;
 class CDetail{
 	friend class CDetailManager;
     friend class TfrmDOShuffle;
@@ -82,13 +89,11 @@ class CDetailManager{
 	IC float			fromSlotX		(int x)		{return (x-m_Header.offs_x)*DETAIL_SLOT_SIZE+DETAIL_SLOT_SIZE_2;}
 	IC float			fromSlotZ		(int z)		{return (z-m_Header.offs_z)*DETAIL_SLOT_SIZE+DETAIL_SLOT_SIZE_2;}
 
-	DWORD 				DetermineColor	(CEditMesh* mesh, int id, float u, float v);
-
     void				UpdateSlotBBox	(int x, int z, DetailSlot& slot);
 
     void				GetSlotRect		(Frect& rect, int sx, int sz);
     void				GetSlotTCRect	(Irect& rect, int sx, int sz);
-    BYTE				GetRandomObject	(DWORD color_index, const CRandom& R);
+    BYTE				GetRandomObject	(DWORD color_index, CRandom& R);
 
 	void 				CalcClosestCount(int part, const Fcolor& C, SIndexDistVec& best);
 	void 				FindClosestIndex(const Fcolor& C, SIndexDistVec& best);
@@ -100,9 +105,60 @@ class CDetailManager{
 
     DWORD				GetUFromX		(float x);
     DWORD				GetVFromZ		(float z);
+
+    DetailSlot&			GetSlot			(DWORD sx, DWORD sz);
+public:
+// render part -----------------------------------------------------------------
+	int					m_Dither		[16][16];
+
+	struct	SlotItem
+	{
+		Fvector			P;
+		float			scale;
+		float			phase_x;
+		float			phase_z;
+		DWORD			C;
+
+		float			scale_calculated;
+		Fmatrix			mRotY;
+	};
+	struct	SlotPart
+	{
+		DWORD		   	id;
+		CList<SlotItem>	items;
+	};
+	enum	SlotType
+	{
+		stReady			= 0,// Ready to use
+		stInvalid,			// Invalid cache entry
+		stPending,			// Pending for decompression
+
+		stFORCEDWORD 	= 0xffffffff
+	};
+	struct Slot
+	{
+		DWORD		  	type;
+		int			  	sx,sz;
+		DWORD		  	dwFrameUsed;	// LRU cache
+		Fbox		  	BB;
+		SlotPart	  	G[dm_obj_in_slot];
+	};
+
+	svector<Slot,dm_cache_size>					m_Cache;
+	svector<CList<SlotItem*>,dm_max_objects> 	m_Visible;
+
+    void 				InitRender		();
+	void				Decompress		(int sx, int sz, Slot& D);
+	Slot&				Query			(int sx, int sz);
+	DetailSlot&			QueryDB			(int sx, int sz);
+	void				UpdateCache		(int limit);
+	void				RenderObjects	(const Fvector& EYE);
+    void				RenderTexture	(float alpha);
+// render part -----------------------------------------------------------------
 public:
     ColorIndexMap		m_ColorIndices;
 //	DetailSlot*			m_SelSlot;
+	Shader*				m_pBaseShader;
 	ETextureCore*		m_pBaseTexture;
 public:
 						CDetailManager	();
@@ -110,10 +166,11 @@ public:
 
     bool				Load            (CStream&);
     void				Save            (CFS_Base&);
-    void				Export          (CFS_Base&);
+    void				Export          (LPCSTR fn);
 
     bool				UpdateBBox		();
-    bool				UpdateObjects	();
+    bool				UpdateBaseTexture(LPCSTR tex_name=0);
+    bool				UpdateObjects	(bool bUpdateTex);
     bool				GenerateSlots	(LPCSTR tex_name);
 
     CDetail*			AppendObject	(LPCSTR name, bool bTestUnique=true);
