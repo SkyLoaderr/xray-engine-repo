@@ -71,7 +71,8 @@ void CCar::SWheelSteer::Init()
 	switch(bone_data.IK_data.type)
 	{
 	case jtWheel:	
-		pos_right=bone_map.find(pwheel->bone_id)->second.element->mXFORM.i.dotproduct(pwheel->car->m_root_transform.j);
+		//pos_right=bone_map.find(pwheel->bone_id)->second.element->mXFORM.i.dotproduct(pwheel->car->m_root_transform.j);
+		pos_right=bone_map.find(pwheel->bone_id)->second.element->mXFORM.i.y;//.dotproduct(pwheel->car->m_root_transform.j);
 		break;
 /*
 	case jtWheelXZ:	
