@@ -10,7 +10,7 @@
 int		rsDVB_Size			= 512;
 int		rsDIB_Size			= 512;
 
-void CVertexStream::Create	()
+void _VertexStream::Create	()
 {
 	Device.Shader.Evict		();
 
@@ -24,12 +24,12 @@ void CVertexStream::Create	()
 	Msg("* DVB created: %dK", mSize/1024);
 }
 
-void CVertexStream::Destroy	()
+void _VertexStream::Destroy	()
 {
 	_RELEASE				(pVB);
 }
 
-void CIndexStream::Create	()
+void _IndexStream::Create	()
 {
 	Device.Shader.Evict		();
 	
@@ -43,7 +43,7 @@ void CIndexStream::Create	()
 	Msg("* DIB created: %dK", mSize/1024);
 }
 
-void CIndexStream::Destroy	()
+void _IndexStream::Destroy	()
 {
 	_RELEASE				(pIB);
 }

@@ -9,8 +9,9 @@ const DWORD	v_limit			= 2048;
 // Render of cached meshes
 void __fastcall render_Cached(std::vector<FCached*>& cache)
 {
-	CVertexStream*			vs	= cache[0]->VS;
-	CIndexStream*			is	= Device.Streams.Get_IB();
+/*
+	_VertexStream*			vs	= Device.Streams.Vertex;
+	_IndexStream*			is	= Device.Streams.Index;
 
 	Device.Primitive.Reset		();
 	for (DWORD Start=0; Start<cache.size(); )
@@ -72,4 +73,5 @@ void __fastcall render_Cached(std::vector<FCached*>& cache)
 
 		Start = End;
 	}
+*/
 }

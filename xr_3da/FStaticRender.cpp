@@ -368,16 +368,20 @@ void CRender::flush_Patches	()
 							cy - size * _cos1,	// sy
 							TL.p.z, TL.p.w, 0xffffffff, 1,0 );		V++;
 	}
-	groups.push_back	(cur_count);
-	vsPatches->Unlock	(vecPatches.size()*4);
+	groups.push_back				(cur_count);
+	Device.Streams.Vertex.Unlock	(vecPatches.size()*4,vsPatches->dwStride);
 	
 	// *** Render
 	int current=0;
 	for (DWORD g=0; g<groups.size(); g++)
 	{
-		int p_count					= groups[g];
-		Device.Shader.set_Element	(vecPatches[current].S);
-		Device.Primitive.Draw		(vsPatches,4*p_count,2*p_count,vOffset,Device.Streams_QuadIB);
+		int p_count						= groups[g];
+		Device.Shader.set_Element		(vecPatches[current].S);
+
+		Device.Primitive.setVertices	(vsPatches->dwHandle,vsPatches->dwStride,Device.Streams.Vertex.Buffer());
+		Device.Primitive.setIndices		(vOffset,Device.Streams_QuadIB);;
+		Device.Primitive.Render			(D3DPT_TRIANGLELIST,0,4*p_count,0,2*p_count);
+		UPDATEC							(4*p_count,2*p_count,1);
 		current	+=	p_count;
 		vOffset	+=	4*p_count;
 	}

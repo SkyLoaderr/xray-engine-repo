@@ -286,18 +286,21 @@ void CApplication::LoadTitle(char *S, char *S2)
 	DWORD	C	= 0xffffffff;
 	DWORD	_w	= Device.dwWidth;
 	DWORD	_h	= Device.dwHeight;
-	FVF::TL* pv = (FVF::TL*) ll_pStream->Lock(4,Offset);
+	FVF::TL* pv = (FVF::TL*) Device.Streams.Vertex.Lock(4,ll_hVS->dwStride,Offset);
 	pv->set(0, float(_h), 1, 1, C, 0, 1);			pv++;
 	pv->set(0, 0, 1, 1, C, 0, 0);					pv++;
 	pv->set(float(_w), float(_h), 1, 1, C, 1, 1);	pv++;
 	pv->set(float(_w), 0, 1, 1, C, 1, 0);			pv++;
-	ll_pStream->Unlock		(4);
-	Device.Shader.set_Shader(ll_hLogo);
-	Device.Primitive.Draw	(ll_pStream,4,2,Offset,Device.Streams_QuadIB);
+	Device.Streams.Vertex.Unlock	(4,ll_hVS->dwStride);
+	Device.Shader.set_Shader		(ll_hLogo);
+	Device.Primitive.setVertices	(ll_hVS->dwHandle,ll_hVS->dwStride,Device.Streams.Vertex.Buffer());
+	Device.Primitive.setIndices		(Offset,Device.Streams_QuadIB);;
+	Device.Primitive.Render			(D3DPT_TRIANGLELIST,0,4,0,2);
+	UPDATEC							(4,2,1);
 
 	// Draw title
-	Log(S,S2);
-	R_ASSERT(pFont);
+	Log			(S,S2);
+	R_ASSERT	(pFont);
 	pFont->Clear();
 	pFont->Color(D3DCOLOR_RGBA(192,192,192,255));
 	pFont->Size	(0.02f);
