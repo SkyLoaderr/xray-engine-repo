@@ -194,6 +194,8 @@
 		<col def="S255">ISFeatureCabName</col>
 		<col def="S255">ISProFeatureName</col>
 		<row><td>{04C8817B-B642-4D55-9F46-A886BBAC94BE}</td><td/><td>##IDS_SERVER_FEATURE_NAME##</td><td/><td>6</td><td>1</td><td>TARGETDIR</td><td>0</td><td/><td/><td/><td>ServerFeature</td></row>
+		<row><td>{55992BB1-033C-4B1A-ADAC-F423BABE2EB5}</td><td>{B7857EFB-765E-449F-A928-7ACA9C22FAFB}</td><td>New MDAC 2.8 (ODBC, OLEDB, ADO, RDS) 1</td><td/><td>8</td><td>1</td><td>TARGETDIR</td><td>0</td><td/><td/><td/><td>New MDAC 2.8 (ODBC, OLEDB, ADO, RDS) 1</td></row>
+		<row><td>{7E18998D-DC6F-411F-A96A-B953C50F3EBC}</td><td>{04C8817B-B642-4D55-9F46-A886BBAC94BE}</td><td>New MSDE 2000 Object 1</td><td/><td>8</td><td>1</td><td>TARGETDIR</td><td>0</td><td/><td/><td/><td>New MSDE 2000 Object 1</td></row>
 		<row><td>{9A67CF33-FC2A-494D-9F38-61A7180084F5}</td><td>{B7857EFB-765E-449F-A928-7ACA9C22FAFB}</td><td>New Merge Module Holder Object 1</td><td/><td>8</td><td>1</td><td>TARGETDIR</td><td>0</td><td/><td/><td/><td>New Merge Module Holder Object 1</td></row>
 		<row><td>{AA1539E9-95B9-4AF8-8084-FFDF23D57A6C}</td><td/><td>##IDS_VLIENT_FEATURE_NAME##</td><td/><td>4</td><td>1</td><td>TARGETDIR</td><td>0</td><td/><td/><td/><td>ClientFeature</td></row>
 		<row><td>{B7857EFB-765E-449F-A928-7ACA9C22FAFB}</td><td/><td>DefaultFeature</td><td/><td>2</td><td>1</td><td>TARGETDIR</td><td>0</td><td/><td/><td/><td>DefaultFeature</td></row>
@@ -292,6 +294,8 @@
 		<col def="S50">CDRomFolder</col>
 		<col def="S50">Moniker</col>
 		<row><td>{04C8817B-B642-4D55-9F46-A886BBAC94BE}</td><td/><td/><td/><td/><td/><td/><td/><td/><td>36</td><td/><td/><td/></row>
+		<row><td>{55992BB1-033C-4B1A-ADAC-F423BABE2EB5}</td><td/><td/><td/><td/><td/><td/><td/><td/><td>20</td><td/><td/><td>@ismk10:4055284D-E31E-4AA5-A687-9AAA8E17EE5F</td></row>
+		<row><td>{7E18998D-DC6F-411F-A96A-B953C50F3EBC}</td><td/><td/><td/><td/><td/><td/><td/><td/><td>20</td><td/><td/><td>@ismk10:1ADF3B18-18D7-4FB7-BDE9-D42DEDDF1A06</td></row>
 		<row><td>{9A67CF33-FC2A-494D-9F38-61A7180084F5}</td><td/><td/><td/><td/><td/><td/><td/><td/><td>20</td><td/><td/><td>@ismk10:ED4FF843-0DE2-4F5F-936C-29845A706E45</td></row>
 		<row><td>{AA1539E9-95B9-4AF8-8084-FFDF23D57A6C}</td><td/><td/><td/><td/><td/><td/><td/><td/><td>36</td><td/><td/><td/></row>
 		<row><td>{B7857EFB-765E-449F-A928-7ACA9C22FAFB}</td><td/><td/><td/><td/><td/><td/><td/><td/><td>36</td><td/><td/><td/></row>
@@ -429,6 +433,25 @@
 		<col key="yes" def="s72">Feature_</col>
 		<col key="yes" def="s72">Property</col>
 		<col def="L0">Value</col>
+		<row><td>{55992BB1-033C-4B1A-ADAC-F423BABE2EB5}</td><td>StatusText</td><td>""</td></row>
+		<row><td>{7E18998D-DC6F-411F-A96A-B953C50F3EBC}</td><td>AllowXDBChaining</td><td>0,Bool</td></row>
+		<row><td>{7E18998D-DC6F-411F-A96A-B953C50F3EBC}</td><td>AutomaticPackageSelection</td><td>-1,Bool</td></row>
+		<row><td>{7E18998D-DC6F-411F-A96A-B953C50F3EBC}</td><td>Collation</td><td>""</td></row>
+		<row><td>{7E18998D-DC6F-411F-A96A-B953C50F3EBC}</td><td>Datadir</td><td>""</td></row>
+		<row><td>{7E18998D-DC6F-411F-A96A-B953C50F3EBC}</td><td>DeleteMSDEFiles</td><td>-1,Bool</td></row>
+		<row><td>{7E18998D-DC6F-411F-A96A-B953C50F3EBC}</td><td>InstanceName</td><td>""</td></row>
+		<row><td>{7E18998D-DC6F-411F-A96A-B953C50F3EBC}</td><td>InstanceNameWizard</td><td>""</td></row>
+		<row><td>{7E18998D-DC6F-411F-A96A-B953C50F3EBC}</td><td>Logging</td><td>0,Bool</td></row>
+		<row><td>{7E18998D-DC6F-411F-A96A-B953C50F3EBC}</td><td>OverwriteExisting</td><td>-1,Bool</td></row>
+		<row><td>{7E18998D-DC6F-411F-A96A-B953C50F3EBC}</td><td>PackageNumber</td><td>1,Long</td></row>
+		<row><td>{7E18998D-DC6F-411F-A96A-B953C50F3EBC}</td><td>SecurityMode</td><td>0,Bool</td></row>
+		<row><td>{7E18998D-DC6F-411F-A96A-B953C50F3EBC}</td><td>Targetdir</td><td>""</td></row>
+		<row><td>{7E18998D-DC6F-411F-A96A-B953C50F3EBC}</td><td>Uninstall</td><td>-1,Bool</td></row>
+		<row><td>{7E18998D-DC6F-411F-A96A-B953C50F3EBC}</td><td>Upgrade10</td><td>0,Bool</td></row>
+		<row><td>{7E18998D-DC6F-411F-A96A-B953C50F3EBC}</td><td>UpgradePassword</td><td>""</td></row>
+		<row><td>{7E18998D-DC6F-411F-A96A-B953C50F3EBC}</td><td>UpgradeUser</td><td>""</td></row>
+		<row><td>{7E18998D-DC6F-411F-A96A-B953C50F3EBC}</td><td>UserName</td><td>""</td></row>
+		<row><td>{7E18998D-DC6F-411F-A96A-B953C50F3EBC}</td><td>saPassword</td><td>""</td></row>
 		<row><td>{9A67CF33-FC2A-494D-9F38-61A7180084F5}</td><td>Cache</td><td>0,Bool</td></row>
 		<row><td>{9A67CF33-FC2A-494D-9F38-61A7180084F5}</td><td>CommandLine</td><td>""</td></row>
 		<row><td>{9A67CF33-FC2A-494D-9F38-61A7180084F5}</td><td>InstallStatusText</td><td>""</td></row>
@@ -666,13 +689,19 @@
 	<table name="ISSetupTypeFeatures">
 		<col key="yes" def="s38">ISSetupType_</col>
 		<col key="yes" def="s38">Feature_</col>
+		<row><td>Client</td><td>{55992BB1-033C-4B1A-ADAC-F423BABE2EB5}</td></row>
+		<row><td>Client</td><td>{7E18998D-DC6F-411F-A96A-B953C50F3EBC}</td></row>
 		<row><td>Client</td><td>{9A67CF33-FC2A-494D-9F38-61A7180084F5}</td></row>
 		<row><td>Client</td><td>{AA1539E9-95B9-4AF8-8084-FFDF23D57A6C}</td></row>
 		<row><td>Client</td><td>{B7857EFB-765E-449F-A928-7ACA9C22FAFB}</td></row>
 		<row><td>ClientServer</td><td>{04C8817B-B642-4D55-9F46-A886BBAC94BE}</td></row>
+		<row><td>ClientServer</td><td>{55992BB1-033C-4B1A-ADAC-F423BABE2EB5}</td></row>
+		<row><td>ClientServer</td><td>{7E18998D-DC6F-411F-A96A-B953C50F3EBC}</td></row>
 		<row><td>ClientServer</td><td>{9A67CF33-FC2A-494D-9F38-61A7180084F5}</td></row>
 		<row><td>ClientServer</td><td>{B7857EFB-765E-449F-A928-7ACA9C22FAFB}</td></row>
 		<row><td>Server</td><td>{04C8817B-B642-4D55-9F46-A886BBAC94BE}</td></row>
+		<row><td>Server</td><td>{55992BB1-033C-4B1A-ADAC-F423BABE2EB5}</td></row>
+		<row><td>Server</td><td>{7E18998D-DC6F-411F-A96A-B953C50F3EBC}</td></row>
 		<row><td>Server</td><td>{9A67CF33-FC2A-494D-9F38-61A7180084F5}</td></row>
 		<row><td>Server</td><td>{B7857EFB-765E-449F-A928-7ACA9C22FAFB}</td></row>
 	</table>
