@@ -152,9 +152,6 @@ COLLIDER::COLLIDER()
 	ray_mode		= 0;
 	box_mode		= 0;
 	frustum_mode	= 0;
-	rd_ptr			= 0;
-	rd_count		= 0;
-	rd_size			= 0;
 }
 
 COLLIDER::~COLLIDER()
@@ -164,18 +161,11 @@ COLLIDER::~COLLIDER()
 
 RESULT& COLLIDER::r_add	()
 {
-	if (rd_count>=rd_size)	
-	{
-		if (rd_size)	rd_size	*=	2;
-		else			rd_size	=	32;
-		rd_ptr			= (RESULT*) xr_realloc(rd_ptr,rd_size*sizeof(RESULT));
-	}
-	return rd_ptr[rd_count++];
+	rd.push_back		(RESULT());
+	return rd.back		();
 }
 
 void COLLIDER::r_free	()
 {
-	xr_free			(rd_ptr);
-	rd_count		= 0;
-	rd_size			= 0;
+	rd.clear_and_free	();
 }
