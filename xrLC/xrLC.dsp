@@ -696,6 +696,14 @@ SOURCE=.\xrPhase_MergeLM.cpp
 # End Source File
 # Begin Source File
 
+SOURCE=.\xrPhase_MergeLM_Rect.h
+# End Source File
+# Begin Source File
+
+SOURCE=.\xrPhase_MergeLM_Surface.cpp
+# End Source File
+# Begin Source File
+
 SOURCE=.\xrPhase_ResolveMaterials.cpp
 # End Source File
 # Begin Source File
