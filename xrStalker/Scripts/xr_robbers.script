@@ -94,21 +94,10 @@ function action_robber_activity:initialize()
 	self:reset_scheme()
 end
 
-function action_robber_activity:reset_scheme()
-	--utils.trace(script_name(), "xr_robber:reset_scheme called: self.object:name()='%s'", self.object:name())
-
-	self.object:set_detail_path_type(move.line)
-	self.object:set_body_state(move.standing)
-        self.object:set_movement_type(move.stand)
-	--self.object:set_sight(look.danger, nil, 0)
-	self.object:set_sight(look.search, nil, 0)
-	self.object:set_mental_state(anim.danger)
-
-	--xr_reactions.add_rule(self.object, "ignore")
-
+function register_robber(obj, team)
 	-- Если впервые инициализируется команды, либо скрипт был прерван незапланированным событием, то инициализировать
 	-- все значениями по умолчанию:
-	if not this.teams[self.stor.team] or this.teams[self.stor.team].interrupted_and_blocked_until then
+	if not this.teams[team] or this.teams[team].interrupted_and_blocked_until then
 		local team_info = {
 			rob_state = false,
 			robbers = {},
@@ -121,15 +110,30 @@ function action_robber_activity:reset_scheme()
 			interrupted_and_blocked_until = nil -- если скрипт прерван незапланированным событием, заблокировать
 			-- его выполнение до данного времени у всей команды
 		}
-		this.teams[self.stor.team] = team_info
+		this.teams[team] = team_info
 	end
 
 	local robber_info = {
-		object = self.object,
+		object = obj,
 		dist_to_actor = nil,
 		role = role_none
 	}
-	this.teams[self.stor.team].robbers[self.object:id()] = robber_info
+	this.teams[team].robbers[obj:id()] = robber_info
+end
+
+function action_robber_activity:reset_scheme()
+	--utils.trace(script_name(), "xr_robber:reset_scheme called: self.object:name()='%s'", self.object:name())
+
+	self.object:set_detail_path_type(move.line)
+	self.object:set_body_state(move.standing)
+        self.object:set_movement_type(move.stand)
+	--self.object:set_sight(look.danger, nil, 0)
+	self.object:set_sight(look.search, nil, 0)
+	self.object:set_mental_state(anim.danger)
+
+	--xr_reactions.add_rule(self.object, "ignore")
+
+	this.register_robber(self.object, self.stor.team)
 
 	self.patrol_rob = patrol(self.stor.path_rob)
 	if not self.patrol_rob then

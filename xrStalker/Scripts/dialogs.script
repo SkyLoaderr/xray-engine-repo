@@ -15,6 +15,7 @@ function helper_init(first_speaker, second_speaker)
 end
 
 function get_money_then_leave(first_speaker, second_speaker)
-	printf("get_money_then_leave")
+	xr_motivator.storage[first_speaker:id()].meet.enabled = false
+	xr_motivator.storage[first_speaker:id()].robber.enabled = true
 end
 

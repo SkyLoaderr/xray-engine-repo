@@ -87,6 +87,14 @@ function action_guard_activity:reset_scheme()
 	self.path_camp = self.st.path_camp
 	self.projector_name = self.st.projector_name
 	self.path_active = self:pick_path()
+
+	self.team = nil
+	local robber_info = xr_motivator.storage[self.object:id()].robber
+	if robber_info and robber_info.team then
+		self.team = robber_info.team
+		-- Чтобы корректно работала простановка агрессии при нападении на бандитов-сотимников
+		xr_robbers.register_robber(self.object, self.team)
+	end
 	
 	-- Флажок, включить если прибыли в путь, состоящий из одной точки
 	self.arrived_to_single_point_path = false
@@ -248,6 +256,14 @@ function action_guard_activity:pick_path()
 end
 
 function action_guard_activity:execute()
+	if self.team then
+		local team = xr_robbers.teams[self.team]
+		if team and team.rob_state == true then
+			self.st.enabled = false
+			xr_motivator.storage[self.object:id()].robber.enabled = true
+		end
+	end
+
 	local actor = level.actor()
 	if actor then
 		if self.st.switch_to_guide_distance and

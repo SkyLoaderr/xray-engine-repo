@@ -39,6 +39,9 @@ end
 function action_guide_activity:reset_scheme()
 	--utils.trace(this.script_name(), "xr_guide:reset_scheme called: self.object:name()='%s'", self.object:name())
 
+	-- „тобы корректно работала простановка агрессии при нападении на бандитов-сотимников
+	xr_robbers.register_robber(self.object, self.stor.team)
+
 	self.object:set_detail_path_type(move.line)
 	self.object:set_body_state(move.standing)
 	--self.object:set_movement_type(move.stand)
