@@ -96,6 +96,7 @@ void CLightShadows::calculate	()
 
 	Device.Shader.set_RT		(RT->pRT,0);
 	Device.Statistic.TEST.Begin	();
+	HW.pDevice->Clear			(0,0,D3DCLEAR_TARGET,D3DCOLOR_XRGB(255,255,255),1,0);
 	
 	// set shader
 	Device.Shader.set_Shader	(sh_Texture);
@@ -161,7 +162,7 @@ void CLightShadows::calculate	()
 				NODE& N			=	C.nodes[n_it];
 				CVisual *V		=	N.val.pVisual;
 				Device.set_xform_world	(N.val.Matrix);
-				V->Render				(.7f);
+				//V->Render				(.7f);
 			}
 			
 			// register shadow and increment slot
