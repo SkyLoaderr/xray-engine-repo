@@ -121,7 +121,7 @@ void CWeaponM134::Load(CInifile* ini, const char* section)
 	dwServoMaxFreq	= ini->ReadINT(section,"servo_max_freq");
 	dwServoMinFreq	= ini->ReadINT(section,"servo_min_freq");
 	
-	PKinematics(pVisual)->PlayCycle("idle");
+	// PKinematics(pVisual)->PlayCycle("idle");
 	PKinematics(pVisual)->LL_GetInstance(iWpnRotBone).set_callback			(RotateCallback_norm,this);
 	PKinematics(m_pHUD->Visual())->LL_GetInstance(iHUDRotBone).set_callback	(RotateCallback_hud,this);
 

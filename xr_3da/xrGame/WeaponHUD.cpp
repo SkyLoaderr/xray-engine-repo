@@ -58,7 +58,7 @@ void CWeaponHUD::Load(CInifile* ini, const char* section)
 	vShellPoint					= ini->ReadVECTOR					(section,"shell_point");
 
 	// play default animation
-	PKinematics					(pVisual)->PlayCycle("idle");
+	// PKinematics				(pVisual)->PlayCycle("idle");
 }
 
 void CWeaponHUD::UpdatePosition(const Fmatrix& trans)
