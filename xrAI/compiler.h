@@ -95,7 +95,7 @@ struct R_Light
 DEF_VECTOR(Nodes,Node			);
 DEF_VECTOR(Merged,NodeMerged	);
 DEF_VECTOR(Vectors,Fvector		);
-DEF_VECTOR(Marks,bool			);
+DEF_VECTOR(Marks,BYTE			);
 DEF_VECTOR(Lights,R_Light		);
 
 // data

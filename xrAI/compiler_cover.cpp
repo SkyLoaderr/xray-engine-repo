@@ -144,12 +144,14 @@ class			Query
 {
 public:
 	Nearest		q_List;
+	Nearest		q_Clear;
 	Marks		q_Marks;
 	Fvector		q_Base;
 	
 	IC void		Begin	(int count)
 	{
 		q_List.reserve	(8192);
+		q_Clear.reserve	(8192);
 		q_Marks.assign	(count,false);
 	}
 
@@ -157,6 +159,7 @@ public:
 	{
 		q_Base.set		(P);
 		q_List.clear	();
+		q_Clear.clear	();
 	}
 
 	IC void		Perform	(DWORD ID)
@@ -165,8 +168,10 @@ public:
 		if (ID>=q_Marks.size())		return;
 		if (q_Marks[ID])			return;
 		
-		q_Marks[ID]	= true;
-		Node&	N	= g_nodes[ID];
+		q_Marks[ID]			= true;
+		q_Clear.push_back	(ID);
+
+		Node&	N			= g_nodes[ID];
 		if (q_Base.distance_to_sqr(N.Pos)>cover_sqr_dist)	return;
 		
 		// ok
@@ -176,6 +181,12 @@ public:
 		Perform	(N.n2);
 		Perform	(N.n3);
 		Perform	(N.n4);
+	}
+
+	IC void		Clear	()
+	{
+		for (Nearest_it it=q_Clear.begin(); it!=q_Clear.end();  it++)
+			q_Marks[*it]	= false;
 	}
 };
 struct	RC { RayCache	C; };
@@ -228,8 +239,7 @@ public:
 				// calc dir & range
 				DWORD		ID			= *it;
 				R_ASSERT	(ID<g_nodes.size());
-				Q.q_Marks	[ID]		= false;
-				if			(N==ID)	continue;
+				if			(N==ID)		continue;
 				Node&		N			= g_nodes[ID];
 				Fvector&	Pos			= N.Pos;
 				Fvector		Dir;
@@ -242,6 +252,7 @@ public:
 				c_total		[sector]	+=	1;
 				c_passed	[sector]	+=	(RayPick(&DB, TestPos, Dir, range, cache[ID].C)?0:1);
 			}
+			Q.Clear			();
 			
 			// analyze probabilities
 			float	value	[8];
