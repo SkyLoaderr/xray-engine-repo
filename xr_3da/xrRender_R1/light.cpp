@@ -186,7 +186,8 @@ void	light::xform_calc			()
 			// scale to account range and angle
 			float		s			= 2.f*range*tanf(cone/2.f);	
 			Fmatrix		mScale;		mScale.scale(s,s,range);	// make range and radius
-			mR.c					= position;	mR._44	= 1;
+			//mR.c					= position;	mR._44	= 1;
+
 			// final xform
 			m_xform.mul_43			(mR,mScale);
 		}
