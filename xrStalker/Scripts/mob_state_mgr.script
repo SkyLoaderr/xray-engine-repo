@@ -1,9 +1,11 @@
 function get_state(ini, section, obj)
-	local def_state = ""
+	local def_state
 	
 	local obj_clsid = get_clsid(obj)
 	if obj_clsid == clsid.bloodsucker_s then
 		def_state = "vis"
+	else
+		def_state = ""
 	end
 	
 	return utils.cfg_get_string(ini, section, "state", npc, false, "", def_state)
@@ -21,6 +23,11 @@ function set_state(obj, actor, state)
 			return
 		elseif state == "vis" then
 			obj:set_invisible(false)
+			return
+		end
+	else
+		-- У неопознанных монстров пустая строка ("") является допустимым (заодно и дефолтным) состоянием
+		if state == "" then
 			return
 		end
 	end
