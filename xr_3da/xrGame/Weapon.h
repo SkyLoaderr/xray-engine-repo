@@ -220,7 +220,7 @@ public:
 	CUIStaticItem*			ZoomTexture			();
 	IC float				GetZoomFactor		() const		{	return m_fZoomFactor;	}
 	//показывает, что оружие находится в соостоянии поворота для приближенного прицеливания
-	virtual bool			IsRotatingToZoom	() const		{	return (m_fZoomRotationFactor>0.f && m_fZoomRotationFactor<1.f);}
+	virtual bool			IsRotatingToZoom	() const		{	return (m_fZoomRotationFactor<1.f);}
 
 //////////////////////////////////////////////////////////////////////////
 //  Weapon generic logic
