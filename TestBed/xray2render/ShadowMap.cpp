@@ -801,7 +801,8 @@ void	CalcGauss	(
 	for (int i=-n; i<=0; i++)
 	{
 		//w.push_back		(1.f);
-		w.push_back		(expf(-float(i*i)/(2*r*r)));	// weight
+		float weight	=	expf(-float(i*i)/(2*r*r));
+		w.push_back		(weight);	// weight
 
 		float offset	= bs*float(-i); 
 		H.push_back		(D3DXVECTOR4(offset/tw,0,0,0));
@@ -819,7 +820,10 @@ void	CalcGauss	(
 	for (i=0; i<s32(w.size()); i++)
 	{
 		buf[buf_p++]	= w[i];
-		if (4==buf_p)	{ W.push_back	(buf); buf_p=0; }
+		if (4==buf_p)	{ 
+			W.push_back	(buf); 
+			buf_p		=0; 
+		}
 	}
 	if (buf_p)
 	{
