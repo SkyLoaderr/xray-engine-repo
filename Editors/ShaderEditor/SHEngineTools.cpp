@@ -216,7 +216,7 @@ void CSHEngineTools::RealResetShaders()
 	SetCurrentItem		(name.c_str());
 
 	Ext.m_ItemProps->UnlockUpdating();
-
+                
     m_bNeedResetShaders	= FALSE;
 }
 
@@ -234,7 +234,7 @@ void CSHEngineTools::ApplyChanges(bool bForced)
     if (m_CurrentBlender&&(Ext.m_ItemProps->IsModified()||bForced)){
     	UpdateObjectFromStream();
 		Ext.m_ItemProps->ResetModified();
-	    ResetShaders();
+	    ResetShaders(bForced);
     }
 }
 
