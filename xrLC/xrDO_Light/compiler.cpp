@@ -117,7 +117,7 @@ CVirtualFileRW*				dtFS=0;
 DetailHeader				dtH;
 DetailSlot*					dtS;
 
-Shader_xrLC_LIB				g_shaders_xrlc;
+Shader_xrLC_LIB*			g_shaders_xrlc;
 
 b_params					g_params;
 
@@ -150,7 +150,8 @@ void xrLoad(LPCSTR name)
 {
 	string256					N;
 	FS.update_path				(N,"$game_data$","shaders_xrlc.xr");
-	g_shaders_xrlc.Load			(N);
+	g_shaders_xrlc				= xr_new<Shader_xrLC_LIB> ();
+	g_shaders_xrlc->Load		(N);
 
 	// Load CFORM
 	{
@@ -365,7 +366,7 @@ float getLastRP_Scale(CDB::COLLIDER* DB, R_Light& L)//, Face* skip)
 
 			b_material& M	= g_materials				[F.dwMaterial];
 			b_texture&	T	= g_textures				[M.surfidx];
-			Shader_xrLC& SH	= *g_shaders_xrlc.Get		(M.shader_xrlc);
+			Shader_xrLC& SH	= *g_shaders_xrlc->Get		(M.shader_xrlc);
 			if (!SH.flags.bLIGHT_CastShadow)			continue;
 
 			if (0==T.pSurface)	T.bHasAlpha = FALSE;
