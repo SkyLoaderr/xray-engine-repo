@@ -1826,6 +1826,20 @@ struct CLuabindClassWrapper : public T, public luabind::wrap_base {
 	}
 };
 
+struct test_luabind : public CLuabindClass<0> {
+	virtual void foo2(CRedundant &p0)
+	{
+		CLuabindClass<0>::foo2(p0);
+		printf	("test_luabind::foo2 called!\n");
+	}
+
+	virtual void foo2(CRedundant &p0, CRedundant &p1)
+	{
+		CLuabindClass<0>::foo2(p0,p1);
+		printf	("test_luabind::foo2(2) called!\n");
+	}
+};
+
 int __cdecl main(int argc, char* argv[])
 {
 //	test1();
@@ -1892,16 +1906,21 @@ int __cdecl main(int argc, char* argv[])
 			.def("foo2",(void (CLuabindClass<0>::*)(CRedundant&))(&CLuabindClass<0>::foo2),(void (*)(CLuabindClass<0>*,CRedundant*))(&CLuabindClassWrapper<CLuabindClass<0> >::foo2_static))
 			.def("foo2",(void (CLuabindClass<0>::*)(CRedundant&,CRedundant&))(&CLuabindClass<0>::foo2),(void (*)(CLuabindClass<0>*,CRedundant*,CRedundant*))(&CLuabindClassWrapper<CLuabindClass<0> >::foo2_static)),
 
-		class_<CLuabindClass<1> >("CLuabindClass1")
+		class_<test_luabind,CLuabindClassWrapper<test_luabind> >("test_luabind")
 			.def(constructor<>())
-			.def(const_self == other<CLuabindClass<1> >())
-			.def("foo",&CLuabindClass<1>::foo)
-			.def("foo",&CLuabindClass<1>::foo1)
-			.enum_("something")
-			[
-				value("_1",1),
-				value("_2",2)
-			]
+			.def("foo2",(void (test_luabind::*)(CRedundant&))(&test_luabind::foo2),(void (*)(test_luabind*,CRedundant*))(&CLuabindClassWrapper<test_luabind>::foo2_static))
+			.def("foo2",(void (test_luabind::*)(CRedundant&,CRedundant&))(&test_luabind::foo2),(void (*)(test_luabind*,CRedundant*,CRedundant*))(&CLuabindClassWrapper<test_luabind>::foo2_static))
+
+//		class_<CLuabindClass<1> >("CLuabindClass1")
+//			.def(constructor<>())
+//			.def(const_self == other<CLuabindClass<1> >())
+//			.def("foo",&CLuabindClass<1>::foo)
+//			.def("foo",&CLuabindClass<1>::foo1)
+//			.enum_("something")
+//			[
+//				value("_1",1),
+//				value("_2",2)
+//			]
 	];
 
 	lua_dofile					(L,"x:\\bug7.script");
