@@ -270,15 +270,16 @@ void	CEffect_Rain::Render	()
 	}
 	
 	// Particles
-	Particle*	P = particle_active;
+	Particle*	P	= particle_active;
+	DWORD	dwTime	= Device.dwTimeGlobal;
 	while (P)	{
 		Particle*	next	= P->next;
 
 		// Update
-		if (Device.dwTimeGlobal>=P->dwNextUpdate)
+		if (dwTime>=P->dwNextUpdate)
 		{
-			P->visual->Update	(particles_update);
-			P->dwNextUpdate		+= particles_update;
+			P->visual->Update	(dwTime - P->dwNextUpdate + particles_update);
+			P->dwNextUpdate		= dwTime+particles_update;
 		}
 		
 		// Render
@@ -288,7 +289,7 @@ void	CEffect_Rain::Render	()
 		// Stop if needed
 		if (P->emitter.m_dwFlag&PS_EM_PLAY_ONCE)
 		{
-			if ((0==P->visual->ParticleCount())&&!P->emitter.IsPlaying()) 
+			if ((0==P->visual->ParticleCount()) && !P->emitter.IsPlaying()) 
 			{
 				P->visual->Stop	();
 				p_free			(P);
