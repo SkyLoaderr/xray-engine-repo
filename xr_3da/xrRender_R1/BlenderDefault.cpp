@@ -51,7 +51,6 @@ void	CBlender_default::Compile(CBlender_Compile& C)
 		switch (C.iElement)
 		{
 		case SE_R1_NORMAL_HQ:
-		case SE_R1_NORMAL_LQ:
 			// Level view
 			if (C.bDetail_Diffuse)
 			{
@@ -69,6 +68,13 @@ void	CBlender_default::Compile(CBlender_Compile& C)
 				C.r_Sampler_clf	("s_hemi",*C.L_textures[2]);
 				C.r_End		();
 			}
+			break;
+		case SE_R1_NORMAL_LQ:
+			C.r_Pass		("lmap","lmap",TRUE);
+			C.r_Sampler		("s_base",C.L_textures[0]);
+			C.r_Sampler		("s_lmap",C.L_textures[1]);
+			C.r_Sampler_clf	("s_hemi",*C.L_textures[2]);
+			C.r_End			();
 			break;
 		case SE_R1_LPOINT:
 			C.r_Pass		("lmap_point","add_point",FALSE,TRUE,FALSE,TRUE,D3DBLEND_ONE,D3DBLEND_ONE,TRUE);
