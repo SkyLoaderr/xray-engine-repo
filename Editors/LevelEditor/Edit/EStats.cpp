@@ -46,6 +46,10 @@ void CStats::Show(CFontBase* font)
 		RenderDUMP_DT_VIS.FrameEnd	();	
 		RenderDUMP_DT_Render.FrameEnd();	
 		RenderDUMP_DT_Cache.FrameEnd();
+        TEST0.FrameEnd				();
+        TEST1.FrameEnd				();
+        TEST2.FrameEnd				();
+        TEST3.FrameEnd				();
 	}
 
 	// calc FPS & TPS
@@ -70,26 +74,35 @@ void CStats::Show(CFontBase* font)
 		F.OutSet	(5,5);
 		F.OutNext	("FPS/RFPS:     %3.1f/%3.1f",	fFPS,fRFPS);
 		F.OutNext	("TPS:          %2.2f M",		fTPS);
-		F.OutNext	("VERT:         %d",				DPS.stat_verts);
-		F.OutNext	("POLY:         %d",				DPS.stat_polys);
-		F.OutNext	("DIP/DP:       %d",				DPS.stat_calls);
+		F.OutNext	("VERT:         %d",			DPS.stat_verts);
+		F.OutNext	("POLY:         %d",			DPS.stat_polys);
+		F.OutNext	("DIP/DP:       %d",			DPS.stat_calls);
 		F.OutNext	("SH/T/M/C:     %d/%d/%d/%d",	dwShader_Codes,dwShader_Textures,dwShader_Matrices,dwShader_Constants);
 		F.OutNext	("LIGHT S/T:    %d/%d",			dwLightInScene,dwTotalLight);
 		F.OutNext	("Skeletons:    %2.2fms, %d",	Animation.result,Animation.count);
 		F.OutNext	("Skinning:     %2.2fms",		RenderDUMP_SKIN.result);
 		F.OutSkip	();
-        F.OutNext	("Render:       %2.2fms",		RenderDUMP_RT.result);
 		F.OutNext	("Input:        %2.2fms",		Input.result);
 		F.OutNext	("clRAY:        %2.2fms, %d",	clRAY.result,clRAY.count);
 		F.OutNext	("clBOX:        %2.2fms, %d",	clBOX.result,clBOX.count);
         F.OutNext	("clFRUSTUM:    %2.2fms, %d",	clFRUSTUM.result,clFRUSTUM.count);
 		F.OutSkip	();
+//        F.OutNext	("Render:       %2.2fms",		RenderDUMP.result);
+		F.OutNext	(" RT:          %2.2fms, %d",	RenderDUMP_RT.result,RenderDUMP_RT.count);
+		F.OutNext	(" DT_Vis:      %2.2fms",		RenderDUMP_DT_VIS.result);	
+		F.OutNext	(" DT_Render:   %2.2fms",		RenderDUMP_DT_Render.result);	
+		F.OutNext	(" DT_Cache:    %2.2fms",		RenderDUMP_DT_Cache.result);	
+		F.OutSkip	();
+		F.OutNext	("TEST 0:       %2.2fms, %d",TEST0.result,TEST0.count);
+		F.OutNext	("TEST 1:       %2.2fms, %d",TEST1.result,TEST1.count);
+		F.OutNext	("TEST 2:       %2.2fms, %d",TEST2.result,TEST2.count);
+		F.OutNext	("TEST 3:       %2.2fms, %d",TEST3.result,TEST3.count);
 		F.OutSkip	();
         F.OutNext	("Level summary:");
-        F.OutNext	(" Total Faces: %d",				dwLevelFaceCount);
-        F.OutNext	(" Total Verts: %d",				dwLevelVertexCount);
-        F.OutNext	(" Sel Faces:   %d",				dwLevelSelFaceCount);
-        F.OutNext	(" Sel Verts:   %d",				dwLevelSelVertexCount);
+        F.OutNext	(" Total Faces: %d",			dwLevelFaceCount);
+        F.OutNext	(" Total Verts: %d",			dwLevelVertexCount);
+        F.OutNext	(" Sel Faces:   %d",			dwLevelSelFaceCount);
+        F.OutNext	(" Sel Verts:   %d",			dwLevelSelVertexCount);
 	}
 
 	{
@@ -107,6 +120,11 @@ void CStats::Show(CFontBase* font)
 		RenderDUMP_DT_VIS.FrameStart();	
 		RenderDUMP_DT_Render.FrameStart();	
 		RenderDUMP_DT_Cache.FrameStart();	
+
+		TEST0.FrameStart			();
+		TEST1.FrameStart			();
+		TEST2.FrameStart			();
+		TEST3.FrameStart			();
 	}
 	dwShader_Codes = dwShader_Textures = dwShader_Matrices = dwShader_Constants = 0;
 	dwSND_Played = dwSND_Allocated = 0;

@@ -73,6 +73,11 @@ public:
 	CStatTimer	clBOX;				// total: box query
     CStatTimer	clFRUSTUM;			// total: frustum query
 
+	CStatTimer	TEST0;				// debug counter
+	CStatTimer	TEST1;				// debug counter
+	CStatTimer	TEST2;				// debug counter
+	CStatTimer	TEST3;				// debug counter
+
 	void	Show		(CFontBase* font);
 
 	CStats	();

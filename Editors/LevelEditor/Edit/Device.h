@@ -117,7 +117,7 @@ public:
     IC void					SetRS			(D3DRENDERSTATETYPE p1, DWORD p2)
     { VERIFY(bReady); CHK_DX(HW.pDevice->SetRenderState(p1,p2)); }
     IC void					SetTransform	(D3DTRANSFORMSTATETYPE p1, const Fmatrix& m)
-    { VERIFY(bReady); CHK_DX(HW.pDevice->SetTransform(p1,m.d3d())); }
+    { VERIFY(bReady); CHK_DX(HW.pDevice->SetTransform(p1,(D3DMATRIX*)&m)); }
 
 	IC void					set_xform		(DWORD ID, const Fmatrix& m)
     { SetTransform((D3DTRANSFORMSTATETYPE)ID,m); }

@@ -35,7 +35,7 @@ void __fastcall TfraBottomBar::ClickOptionsMenuItem(TObject *Sender)
         else if (mi==miRenderFillWireframe)	Device.dwFillMode 	= D3DFILL_WIREFRAME;
         else if (mi==miRenderFillSolid)		Device.dwFillMode 	= D3DFILL_SOLID;
         else if (mi==miRenderShadeFlat)		Device.dwShadeMode	= D3DSHADE_FLAT;
-        else if (mi==miRenderShadeGouraud)	Device.dwShadeMode	=D3DSHADE_GOURAUD;
+        else if (mi==miRenderShadeGouraud)	Device.dwShadeMode	= D3DSHADE_GOURAUD;
         else if (mi==miRenderWithTextures)	SET_FLAG(rsRenderTextures,mi->Checked)
         else if (mi==miLightScene)  		SET_FLAG(rsLighting,mi->Checked)
         else if (mi==miRenderLinearFilter)	SET_FLAG(rsFilterLinear,mi->Checked)
@@ -43,6 +43,7 @@ void __fastcall TfraBottomBar::ClickOptionsMenuItem(TObject *Sender)
         else if (mi==miFog)					SET_FLAG(rsFog,mi->Checked)
         else if (mi==miRenderHWTransform){	SET_FLAG(rsForceHWTransform,mi->Checked); UI.Resize(); }
         else if (mi==miRealTime)			SET_FLAG(rsRenderRealTime,mi->Checked)
+        else if (mi==miDODrawObjects)		SET_FLAG(rsDetails,mi->Checked)
     }
     UI.RedrawScene();
     UI.Command(COMMAND_UPDATE_TOOLBAR);
@@ -74,6 +75,7 @@ void __fastcall TfraBottomBar::fsStorageRestorePlacement(TObject *Sender)
     SET_FLAG(rsRenderRealTime,	miRealTime->Checked);
     SET_FLAG(rsFog,				miFog->Checked);
     SET_FLAG(rsDrawGrid,		miDrawGrid->Checked);
+    SET_FLAG(rsDetails,			miDODrawObjects->Checked);
 
     // quality
     if 		(N200->Checked)	QualityClick(N200);

@@ -189,9 +189,9 @@ public:
 
 	IC char*		GetName					(){return m_Name;}
 	void            GetBox					(Fbox& box){box.set(m_Box);}
-	CSurface*		GetSurfaceByFaceID		(int fid);
-	CSurface*		GetFaceTC				(int fid, const Fvector2* tc[3]);
-	CSurface*		GetFacePT				(int fid, const Fvector* pt[3]);
+	CSurface*		GetSurfaceByFaceID		(DWORD fid);
+	void			GetFaceTC				(DWORD fid, const Fvector2* tc[3]);
+	void			GetFacePT				(DWORD fid, const Fvector* pt[3]);
 	IC BOOL 		Visible					(){return m_Visible; }
 	IC void 		Show					(bool bVisible){m_Visible=bVisible;}
 

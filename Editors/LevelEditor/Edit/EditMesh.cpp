@@ -207,7 +207,9 @@ void CEditableMesh::GenerateSVertices()
 }
 #endif
 
-CSurface*	CEditableMesh::GetSurfaceByFaceID(int fid){
+CSurface*	CEditableMesh::GetSurfaceByFaceID(DWORD fid)
+{
+	R_ASSERT(fid<m_Faces.size());
     for (SurfFacesPairIt sp_it=m_SurfFaces.begin(); sp_it!=m_SurfFaces.end(); sp_it++){
 		IntVec& face_lst = sp_it->second;
         if (std::find(face_lst.begin(),face_lst.end(),fid)!=face_lst.end()) return sp_it->first;
@@ -215,27 +217,22 @@ CSurface*	CEditableMesh::GetSurfaceByFaceID(int fid){
     return 0;
 }
 
-CSurface* CEditableMesh::GetFaceTC(int fid, const Fvector2* tc[3]){
-	R_ASSERT(fid<(int)m_Faces.size());
-    CSurface* surf = GetSurfaceByFaceID(fid);
-    VERIFY(surf);
-
+void CEditableMesh::GetFaceTC(DWORD fid, const Fvector2* tc[3])
+{
+	R_ASSERT(fid<m_Faces.size());
 	st_Face& F = m_Faces[fid];
     for (int k=0; k<3; k++){
 	    st_VMapPt& vmr = m_VMRefs[F.pv[k].vmref][0];
     	tc[k] = &(m_VMaps[vmr.vmap_index]->getUV(vmr.index));
     }
-    return surf;
 }
 
-CSurface* CEditableMesh::GetFacePT(int fid, const Fvector* pt[3]){
-    CSurface* surf = GetSurfaceByFaceID(fid);
-    VERIFY(surf);
-
+void CEditableMesh::GetFacePT(DWORD fid, const Fvector* pt[3])
+{
+	R_ASSERT(fid<m_Faces.size());
 	st_Face& F = m_Faces[fid];
     for (int k=0; k<3; k++)
     	pt[k] = &m_Points[F.pv[k].pindex];
-    return surf;
 }
 
 int CEditableMesh::GetFaceCount(bool bMatch2Sided){

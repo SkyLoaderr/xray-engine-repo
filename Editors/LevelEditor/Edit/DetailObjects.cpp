@@ -94,18 +94,19 @@ void EDetailManager::Clear()
 
 void EDetailManager::InvalidateCache()
 {
+	// resize visible
+	visible[0].resize	(objects.size());	// dump(visible[0]);
+	visible[1].resize	(objects.size());	// dump(visible[1]);
+	visible[2].resize	(objects.size());	// dump(visible[2]);
+	// Initialize 'vis' and 'cache'
 	cache_Initialize	();
 }
 
 extern void bwdithermap	(int levels, int magic[16][16] );
 void EDetailManager::InitRender()
 {
-	// Initialize 'vis' and 'cache'
-	visible[0].resize	(objects.size());	// dump(visible[0]);
-	visible[1].resize	(objects.size());	// dump(visible[1]);
-	visible[2].resize	(objects.size());	// dump(visible[2]);
-	cache_Initialize	();
-
+	// inavlidate cache
+	InvalidateCache		();
 	// Make dither matrix
 	bwdithermap		(2,dither);
 
