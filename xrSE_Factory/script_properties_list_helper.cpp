@@ -8,6 +8,7 @@
 
 #include "stdafx.h"
 #include "script_properties_list_helper.h"
+#include "script_token_list.h"
 
 void CScriptPropertiesListHelper::FvectorRDOnAfterEdit	(PropValue* sender,  Fvector& edit_val, bool& accepted)
 {
@@ -151,19 +152,19 @@ Flag32Value*	CScriptPropertiesListHelper::CreateFlag32	(PropItemVec& items, LPCS
 	return		(PHelper().CreateFlag32(items,key,val,mask,c0,c1,flags));
 }
 
-Token8Value*	CScriptPropertiesListHelper::CreateToken8	(PropItemVec& items, LPCSTR key, u8* val, xr_token* token)
+Token8Value*	CScriptPropertiesListHelper::CreateToken8	(PropItemVec& items, LPCSTR key, u8* val, CScriptTokenList* token)
 {
-	return		(PHelper().CreateToken8(items,key,val,token));
+	return		(PHelper().CreateToken8(items,key,val,&*token->tokens().begin()));
 }
 
-Token16Value*	CScriptPropertiesListHelper::CreateToken16	(PropItemVec& items, LPCSTR key, u16* val, xr_token* token)
+Token16Value*	CScriptPropertiesListHelper::CreateToken16	(PropItemVec& items, LPCSTR key, u16* val, CScriptTokenList* token)
 {
-	return		(PHelper().CreateToken16(items,key,val,token));
+	return		(PHelper().CreateToken16(items,key,val,&*token->tokens().begin()));
 }
 
-Token32Value*	CScriptPropertiesListHelper::CreateToken32	(PropItemVec& items, LPCSTR key, u32* val, xr_token* token)
+Token32Value*	CScriptPropertiesListHelper::CreateToken32	(PropItemVec& items, LPCSTR key, u32* val, CScriptTokenList* token)
 {
-	return		(PHelper().CreateToken32(items,key,val,token));
+	return		(PHelper().CreateToken32(items,key,val,&*token->tokens().begin()));
 }
 
 RToken8Value*	CScriptPropertiesListHelper::CreateRToken8	(PropItemVec& items, LPCSTR key, u8* val, RTokenVec* token)

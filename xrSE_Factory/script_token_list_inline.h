@@ -57,3 +57,8 @@ IC	const CScriptTokenList::TOKEN_LIST &CScriptTokenList::tokens() const
 {
 	return					(m_token_list);
 }
+
+IC	CScriptTokenList::TOKEN_LIST &CScriptTokenList::tokens()
+{
+	return					(m_token_list);
+}

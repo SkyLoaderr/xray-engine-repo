@@ -54,6 +54,7 @@ public:
 	IC		int					id		(LPCSTR name);
 	IC		LPCSTR				name	(int id);
 	IC		const TOKEN_LIST	&tokens	() const;
+	IC		TOKEN_LIST			&tokens	();
 	DECLARE_SCRIPT_REGISTER_FUNCTION
 };
 add_to_type_list(CScriptTokenList)

@@ -16,6 +16,8 @@
 #include "PropertiesListHelper.h"
 #include "script_export_space.h"
 
+class CScriptTokenList;
+
 struct CScriptPropertiesListHelper {
 public:
 			void 				FvectorRDOnAfterEdit(PropValue* sender,  Fvector& edit_val, bool& accepted);
@@ -45,9 +47,9 @@ public:
 			Flag8Value*			CreateFlag8		    (PropItemVec& items, LPCSTR key, Flags8* val, u8 mask, LPCSTR c0=0, LPCSTR c1=0, u32 flags=0);
 			Flag16Value*		CreateFlag16	    (PropItemVec& items, LPCSTR key, Flags16* val, u16 mask, LPCSTR c0=0, LPCSTR c1=0, u32 flags=0);
 			Flag32Value*		CreateFlag32	    (PropItemVec& items, LPCSTR key, Flags32* val, u32 mask, LPCSTR c0=0, LPCSTR c1=0, u32 flags=0);
-			Token8Value*		CreateToken8	    (PropItemVec& items, LPCSTR key, u8* val, xr_token* token);
-			Token16Value*		CreateToken16	    (PropItemVec& items, LPCSTR key, u16* val, xr_token* token);
-			Token32Value*		CreateToken32	    (PropItemVec& items, LPCSTR key, u32* val, xr_token* token);
+			Token8Value*		CreateToken8	    (PropItemVec& items, LPCSTR key, u8* val, CScriptTokenList* token);
+			Token16Value*		CreateToken16	    (PropItemVec& items, LPCSTR key, u16* val, CScriptTokenList* token);
+			Token32Value*		CreateToken32	    (PropItemVec& items, LPCSTR key, u32* val, CScriptTokenList* token);
 			RToken8Value* 		CreateRToken8	    (PropItemVec& items, LPCSTR key, u8* val, RTokenVec* token);
 			RToken16Value* 		CreateRToken16	    (PropItemVec& items, LPCSTR key, u16* val, RTokenVec* token);
 			RToken32Value* 		CreateRToken32	    (PropItemVec& items, LPCSTR key, u32* val, RTokenVec* token);
