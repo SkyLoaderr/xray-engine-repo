@@ -308,7 +308,7 @@ void CBitingEat::Run()
 
 	// ¬ыполнение состо€ни€
 	switch (m_tAction) {
-		case ACTION_RUN:
+		case ACTION_RUN:	// бежать к трупу
 //
 //			if (pMonster->m_tPathState != ePathStateBuilt) {
 //				pMonster->AI_Path.DestNode = pCorpse->AI_NodeID;
@@ -364,17 +364,11 @@ void CBitingHide::Init()
 	inherited::Init();
 
 	if (!pMonster->GetEnemyFromMem(m_tEnemy,pMonster->Position())) R_ASSERT(false);
-	pMonster->m_tSelectorCover.m_fMaxEnemyDistance = m_tEnemy.position.distance_to(pMonster->Position()) + pMonster->m_tSelectorCover.m_fSearchRange;
-	pMonster->m_tSelectorCover.m_fOptEnemyDistance = pMonster->m_tSelectorCover.m_fMaxEnemyDistance;
-	pMonster->m_tSelectorCover.m_fMinEnemyDistance = m_tEnemy.position.distance_to(pMonster->Position()) + 3.f;
-
-	pMonster->m_tPathType = ePathTypeStraight;
 
 	SetInertia(30000);
 
 	// Test
 	Msg("_ Hide Init _");
-
 }
 
 void CBitingHide::Reset()
@@ -386,6 +380,14 @@ void CBitingHide::Reset()
 
 void CBitingHide::Run()
 {
+	Fvector EnemyPos;
+	if (m_tEnemy.obj) EnemyPos = m_tEnemy.obj->Position();
+	else EnemyPos = m_tEnemy.position;
+	
+	pMonster->m_tSelectorCover.m_fMaxEnemyDistance = EnemyPos.distance_to(pMonster->Position()) + pMonster->m_tSelectorCover.m_fSearchRange;
+	pMonster->m_tSelectorCover.m_fOptEnemyDistance = pMonster->m_tSelectorCover.m_fMaxEnemyDistance;
+	pMonster->m_tSelectorCover.m_fMinEnemyDistance = EnemyPos.distance_to(pMonster->Position()) + 3.f;
+
 	pMonster->vfChoosePointAndBuildPath(&pMonster->m_tSelectorCover, 0, true, 0);
 
 	// ”становить параметры движени€
@@ -396,6 +398,7 @@ void CBitingHide::Run()
 bool CBitingHide::CheckCompletion()
 {	
 	// если больша€ дистанци€ || враг забыт
+	if (!m_tEnemy.obj) return true;
 	return false;
 }
 

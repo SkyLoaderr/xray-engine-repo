@@ -244,7 +244,8 @@ void CCustomMonster::shedule_Update	( u32 DT )
 {
 	if (!Remote()) {
 		if ((fHealth>0) || bfExecMovement())
-			Exec_Movement				(float(DT)/1000.f);
+			// функция должна выполняться до inherited::shedule_Update, для smooth movement
+			Exec_Movement	(float(DT)/1000.f);  
 	}
 
 	// *** general stuff
@@ -617,7 +618,7 @@ void CCustomMonster::OnRender()
 	{
 		Movement.dbg_Draw();
 	}
-	if (bDebug) PKinematics(Visual())->DebugRender(XFORM());
+//	if (bDebug) PKinematics(Visual())->DebugRender(XFORM());
 }
 #endif
 

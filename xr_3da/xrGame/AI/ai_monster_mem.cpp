@@ -118,10 +118,8 @@ void CVisionMemory::UpdateVision(TTime dt, xr_vector<CObject*> &Visible_Objects)
 	VisionElem ve;
 
 	xr_vector<CObject*>::iterator I, E;
-
 	I= Visible_Objects.begin();
 	E = Visible_Objects.end();
-	
 	
 	for (; I!=E; I++) {
 
