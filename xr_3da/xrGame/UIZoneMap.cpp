@@ -22,6 +22,7 @@
 #define COLOR_SELF		0xff00ff00
 #define COLOR_TARGET	0xFFFFA0FF
 #define COLOR_BASE		0xff00a000
+#define COLOR_ARTEFACT	0xffffff00
 
 #define BASE_LEFT		9
 #define BASE_TOP		6
@@ -219,6 +220,32 @@ void CUIZoneMap::UpdateRadar(CEntity* Actor, CTeam& Team)
 					ConvertToLocal(LM,pItem->Position(),P);
 					EntityOut(pItem->Position().y-Actor->Position().y,COLOR_TARGET,P);
 					continue;
+				};
+				if (GameID() == GAME_ARTEFACTHUNT)
+				{
+					if (pItem)
+					{
+						CArtifact* pArtefact = dynamic_cast<CArtifact*>(pObj);
+						if (pArtefact)
+						{
+							CObject* pParent = pArtefact->H_Parent();
+							if (pParent && pParent->ID() == Game().m_ArtefactBearerID)
+							{
+								if (pParent == pActor) continue;
+								ConvertToLocal(LM,pItem->Position(),P);
+
+								if (pActor->g_Team() == Game().m_TeamInPosession)
+								{
+									EntityOut(pItem->Position().y-Actor->Position().y,COLOR_ARTEFACT,P);
+								}
+								else
+								{
+									EntityOut(pItem->Position().y-Actor->Position().y,COLOR_ENEMY,P);
+								};								
+								continue;
+							}
+						};
+					};
 				};
 			};
 	};

@@ -101,6 +101,10 @@ public:
 	s32								fraglimit;
 	s32								timelimit;
 	xr_vector<game_TeamState>		teams;
+	// for Artefact Hunt
+	u8								m_ArtefactsNum;
+	u16								m_ArtefactBearerID;
+	u8								m_TeamInPosession;
 public:
 	game_GameState();
 

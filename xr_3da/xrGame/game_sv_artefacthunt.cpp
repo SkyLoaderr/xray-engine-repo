@@ -9,11 +9,8 @@ void	game_sv_ArtefactHunt::Create					(LPSTR &options)
 	inherited::Create					(options);
 
 	m_dwArtefactRespawnDelta = get_option_i		(options,"artefactrdelta",0);
-	m_dwArtefactsTotal	= get_option_i		(options,"numberartefacts",0);
-	fraglimit = 0;
-	
-	if (m_dwArtefactsTotal%2 == 0) m_dwArtefactsTotal++;
-	m_dwArtefactsHalf = m_dwArtefactsTotal/2;
+	m_ArtefactsNum	= u8(get_option_i		(options,"numberartefacts",1));
+	fraglimit = 0;	
 
 	m_delayedRoundEnd = false;
 	//---------------------------------------------------
@@ -57,14 +54,17 @@ void	game_sv_ArtefactHunt::Create					(LPSTR &options)
 	R_ASSERT2 (!Artefact_rpoints.empty(), "No points to spawn ARTEFACT");
 	//---------------------------------------------------------------
 	m_dwArtefactSpawnTime = 0;
+	m_ArtefactBearerID = 0;
+	m_TeamInPosession = 0;
 }
 
 void	game_sv_ArtefactHunt::OnRoundStart			()
 {
 	inherited::OnRoundStart	();
-
-	m_dwArtefactsSpawned = 0;
+	
 	m_delayedRoundEnd = false;
+	m_dwArtefactSpawnTime = 0;
+
 /*
 	// Respawn all players and some info
 	u32		cnt = get_count();
@@ -268,6 +268,10 @@ BOOL	game_sv_ArtefactHunt::OnTouch				(u16 eid_who, u16 eid_what)
 		CSE_ALifeItemArtefact* pIArtefact	=	dynamic_cast<CSE_ALifeItemArtefact*> (e_what);
 		if (pIArtefact)
 		{
+			m_ArtefactBearerID = eid_who;
+			m_TeamInPosession = A->g_team();
+			signal_Syncronize();
+
 			xrClientData* xrCData	= e_who->owner;
 			game_PlayerState*	ps_who	=	&xrCData->ps;
 			if (ps_who)
@@ -296,7 +300,11 @@ BOOL	game_sv_ArtefactHunt::OnDetach				(u16 eid_who, u16 eid_what)
 	{
 		CSE_ALifeItemArtefact* pIArtefact	=	dynamic_cast<CSE_ALifeItemArtefact*> (e_what);
 		if (pIArtefact)
-		{	
+		{
+			m_ArtefactBearerID = 0;
+			m_TeamInPosession = 0;
+			signal_Syncronize();
+
 			xrClientData* xrCData	= e_who->owner;
 			game_PlayerState*	ps_who	=	&xrCData->ps;
 			if (ps_who)
@@ -384,8 +392,12 @@ void		game_sv_ArtefactHunt::OnArtefactOnBase		(u32 id_who)
 	P.w_u16				(ps->team);
 	u_EventSend(P);
 	//-----------------------------------------------
+	m_ArtefactBearerID	= 0;
+	m_TeamInPosession	= 0;
+	signal_Syncronize();
+	//-----------------------------------------------
 	m_dwArtefactSpawnTime = 0;
-	if (m_dwArtefactsTotal>0 && (teams[ps->team-1].score > m_dwArtefactsHalf)) 
+	if (teams[ps->team-1].score >= m_ArtefactsNum) 
 	{
 		OnTeamScore(ps->team-1);
 		phase = u16((ps->team-1)?GAME_PHASE_TEAM2_SCORES:GAME_PHASE_TEAM1_SCORES);
@@ -403,6 +415,12 @@ void	game_sv_ArtefactHunt::SpawnArtefact			()
 	Assign_Artefact_RPoint	(E);
 
 	spawn_end				(E,Level().Server->GetServer_client()->ID);
+
+	//-----------------------------------------------
+	NET_Packet P;
+	P.w_begin			(M_GAMEMESSAGE);
+	P.w_u32				(GMSG_ARTEFACT_SPAWNED);
+	u_EventSend(P);
 };
 
 void	game_sv_ArtefactHunt::Update			()
@@ -483,7 +501,7 @@ void	game_sv_ArtefactHunt::Assign_Artefact_RPoint	(CSE_Abstract* E)
 			RPoint&				r	= rp[it];
 			pRPDist.push_back(RPointData(it, 1000000.0f));
 
-			for (u32 p=0; p<get_count(); p++)
+			for (u32 p=0; p<pEnemies.size(); p++)
 			{
 				xrClientData* xrCData	=	Level().Server->ID_to_client(get_it_2_id(pEnemies[p]));
 				if (!xrCData || !xrCData->owner) continue;
@@ -514,4 +532,12 @@ void				game_sv_ArtefactHunt::OnTimelimitExceed		()
 	phase = u16((winning_team)?GAME_PHASE_TEAM2_SCORES:GAME_PHASE_TEAM1_SCORES);
 	switch_Phase		(phase);
 	OnDelayedRoundEnd("Team Final Score");
+};
+
+void				game_sv_ArtefactHunt::net_Export_State		(NET_Packet& P, u32 id_to)
+{
+	inherited::net_Export_State(P, id_to);
+	P.w_u8			(m_ArtefactsNum);
+	P.w_u16			(m_ArtefactBearerID);
+	P.w_u8			(m_TeamInPosession);
 };

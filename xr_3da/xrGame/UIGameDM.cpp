@@ -5,6 +5,7 @@
 #include "UIDMFragList.h"
 #include "ui\UIBuyWeaponWnd.h"
 #include "ui\UISkinSelector.h"
+#include "HUDManager.h"
 
 #define MSGS_OFFS 510
 
@@ -100,15 +101,37 @@ void CUIGameDM::OnFrame()
 		};
 	break;
 	case GAME_PHASE_INPROGRESS:
-		if (uFlags&flShowFragList) 
 		{
-			for (u32 i=0; i<m_aFragsLists.size(); i++)
+			if (uFlags&flShowFragList) 
 			{
-				m_aFragsLists[i]->Update();
+				for (u32 i=0; i<m_aFragsLists.size(); i++)
+				{
+					m_aFragsLists[i]->Update();
+				};
+				//			pFragList->Update();
 			};
-//			pFragList->Update();
+			if (Game().timelimit)
+			{
+				if (Level().timeServer()<(Game().start_time + Game().timelimit))
+				{
+					u32 Rest = (Game().start_time + Game().timelimit) - Level().timeServer();
+
+					u32 RHour = Rest / 3600000;
+					Rest %= 3600000;
+					u32 RMinutes = Rest / 60000;
+					Rest %= 60000;
+					u32 RSecs = Rest / 1000;
+					
+					HUD().pFontDI->SetColor		(0xffffffff);
+					HUD().pFontDI->Out			(0.f,-0.95f,"%02d:%02d:%02d", RHour, RMinutes, RSecs);
+				}
+				else
+				{
+					HUD().pFontDI->SetColor		(0xffff0000);
+					HUD().pFontDI->Out			(0.f,-0.95f,"00:00:00");
+				}
+			};
 		}break;
-	break;
 	}
 
 	if (pCurBuyMenu && pCurBuyMenu->IsShown() && !CanCallBuyMenu())

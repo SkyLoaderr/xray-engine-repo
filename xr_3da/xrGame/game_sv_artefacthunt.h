@@ -8,10 +8,7 @@ private:
 	typedef game_sv_TeamDeathmatch inherited;
 protected:
 	u16			m_dwArtefactID;
-	s32			m_dwArtefactsSpawned;
-	s32			m_dwArtefactsTotal;
-	s32			m_dwArtefactsHalf;
-
+	
 	BOOL		m_delayedRoundEnd;
 	u32			m_roundEndDelay;
 
@@ -54,4 +51,5 @@ public:
 				void				SpawnArtefact			();
 				void				Assign_Artefact_RPoint	(CSE_Abstract* E);
 
+	virtual		void				net_Export_State		(NET_Packet& P, u32 id_to);				// full state
 };

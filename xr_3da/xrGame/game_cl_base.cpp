@@ -54,6 +54,16 @@ void	game_cl_GameState::net_import_state	(NET_Packet& P)
 		if (IP.flags&GAME_PLAYER_FLAG_LOCAL) local_player = &I.first->second;
 	}
 	R_ASSERT(local_player);
+
+	switch (type)
+	{
+	case GAME_ARTEFACTHUNT:
+		{
+			P.r_u8	(m_ArtefactsNum);
+			P.r_u16	(m_ArtefactBearerID);
+			P.r_u8	(m_TeamInPosession);
+		}break;
+	};
 }
 
 void	game_cl_GameState::net_import_update(NET_Packet& P)
@@ -230,6 +240,12 @@ void	game_cl_GameState::OnGameMessage	(NET_Packet& P)
 			sprintf(Text, "%s%s %sscores", 
 				Color_Teams[Team], 
 				TeamsNames[Team], 
+				Color_Main);
+			HUD().GetUI()->UIMainIngameWnd.AddGameMessage(NULL, Text);
+		}break;
+	case GMSG_ARTEFACT_SPAWNED:
+		{
+			sprintf(Text, "%sArtefact has been spawned. Bring it to your base to score.", 
 				Color_Main);
 			HUD().GetUI()->UIMainIngameWnd.AddGameMessage(NULL, Text);
 		}break;

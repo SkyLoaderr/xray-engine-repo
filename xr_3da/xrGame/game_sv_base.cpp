@@ -125,7 +125,7 @@ void				game_sv_GameState::signal_Syncronize		()
 void				game_sv_GameState::switch_Phase				(u32 new_phase)
 {
 	phase				= u16(new_phase);
-	start_time			= Device.TimerAsync();
+	start_time			= Level().timeServer();//Device.TimerAsync();
 	signal_Syncronize	();
 }
 

@@ -79,14 +79,14 @@ void	game_sv_Deathmatch::Update					()
 		{
 			if (timelimit)
 			{
-				if ((Device.TimerAsync()-start_time)>u32(timelimit))
+				if ((Level().timeServer()-start_time)>u32(timelimit))
 					OnTimelimitExceed	();
 			}
 		}
 		break;
 	case GAME_PHASE_PENDING:
 		{
-			if ((Device.TimerAsync()-start_time)>u32(10*1000) && AllPlayers_Ready())
+			if ((Level().timeServer()-start_time)>u32(10*1000) && AllPlayers_Ready())
 				OnRoundStart();
 		}
 		break;

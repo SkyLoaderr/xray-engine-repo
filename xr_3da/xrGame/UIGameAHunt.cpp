@@ -122,6 +122,42 @@ void			CUIGameAHunt::OnFrame()
 					HUD().pFontDI->Out			(0.f,0.9f,"Press B to access Buy Menu");
 				};
 			};
+
+			if (pCurActor)
+			{
+				game_TeamState team0 = Game().teams[0];
+				game_TeamState team1 = Game().teams[1];
+
+				HUD().pFontDI->SetColor		(0xffffffff);
+				HUD().pFontDI->Out			(0.f,-0.9f,"Your Team has : %3d Artefacts from %3d", 
+					Game().teams[pCurActor->g_Team()-1].score, Game().m_ArtefactsNum);
+				
+				if (Game().m_ArtefactBearerID == 0)
+				{
+					HUD().pFontDI->SetColor		(0xffffffff);
+					HUD().pFontDI->Out			(0.f,-0.85f,"Grab the Artefact");
+				}
+				else
+				{
+					if (Game().m_TeamInPosession != pCurActor->g_Team())
+					{
+						HUD().pFontDI->SetColor		(0xffff0000);
+						HUD().pFontDI->Out			(0.f,-0.85f,"Stop ArtefactBearer.");
+					}
+					else
+					{
+						HUD().pFontDI->SetColor		(0xff00ff00);
+						if (pCurActor->ID() == Game().m_ArtefactBearerID)
+						{
+							HUD().pFontDI->Out			(0.f,-0.85f,"You got the Artefact. Bring it to your base.");
+						}
+						else
+						{
+							HUD().pFontDI->Out			(0.f,-0.85f,"Protect your ArtefactBearer.");
+						};
+					};
+				};
+			};
 		}break;
 	case GAME_PHASE_TEAM1_SCORES:
 		{
