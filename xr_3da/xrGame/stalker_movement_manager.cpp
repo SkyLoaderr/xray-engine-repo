@@ -156,10 +156,10 @@ void CStalkerMovementManager::init_velocity_masks	()
 
 	add_velocity	(eVelocityWalkFreePositive						,walk_free_factor()				,PI_DIV_8/1	,cf*PI_DIV_8/1	);
 	add_velocity	(eVelocityRunFreePositive						,run_free_factor()				,PI_DIV_8/2	,cf*PI_DIV_8/2	);
-	add_velocity	(eVelocityWalkDangerStandPositive				,walk_factor()					,2*PI		,cf*PI			);
-	add_velocity	(eVelocityWalkDangerCrouchPositive				,walk_factor()*crouch_factor()	,2*PI		,cf*2*PI_DIV_2);
-	add_velocity	(eVelocityRunDangerStandPositive				,run_factor()					,2*PI		,2*cf*PI_DIV_2	);
-	add_velocity	(eVelocityRunDangerCrouchPositive				,run_factor()*crouch_factor()	,2*PI		,cf*2*PI		);
+	add_velocity	(eVelocityWalkDangerStandPositive				,walk_factor()					,100*PI		,cf*PI			);
+	add_velocity	(eVelocityWalkDangerCrouchPositive				,walk_factor()*crouch_factor()	,100*PI_DIV_2,cf*PI_DIV_2	);
+	add_velocity	(eVelocityRunDangerStandPositive				,run_factor()					,100*PI		,2*cf*PI_DIV_2	);
+	add_velocity	(eVelocityRunDangerCrouchPositive				,run_factor()*crouch_factor()	,100*PI		,cf*PI			);
 	add_velocity	(eVelocityRunPanicStandPositive					,panic_factor()					,PI_DIV_8/2	,cf*PI_DIV_8/2	);
 																																							
 	add_velocity	(eVelocityWalkFreeDamagedPositive				,damaged_walk_free_factor()		,PI_DIV_8	,cf*PI_DIV_8	);
