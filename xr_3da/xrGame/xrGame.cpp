@@ -21,6 +21,7 @@
 #include "..\fdemorecord.h"
 #include "..\fdemoplay.h"
 #include "a_star.h"
+#include "game_sv_single.h"
     
 ENGINE_API extern u32		psAlwaysRun;
 ENGINE_API extern float		psHUD_FOV;
@@ -121,6 +122,7 @@ public:
 		strcpy(I,"give money"); 
 	}
 };
+
 class CCC_Path : public CConsoleCommand {
 public:
 	CCC_Path(LPCSTR N) : CConsoleCommand(N)  { };
@@ -150,6 +152,24 @@ public:
 					}
 			else
 				Msg("! not enough parameters!");
+	}
+};
+
+class CCC_SaveALife : public CConsoleCommand {
+public:
+	CCC_SaveALife(LPCSTR N) : CConsoleCommand(N)  { };
+	virtual void Execute(LPCSTR args) {
+		if (Level().game.type == GAME_SINGLE) {
+			game_sv_Single *tpGame = dynamic_cast<game_sv_Single *>(Level().Server->game);
+			if (tpGame && tpGame->m_tALife.m_bLoaded) {
+				tpGame->m_tALife.Save();
+				Log("* ALife simulation is successfully saved!");
+			}
+			else
+				Log("!ALife simulation cannot be saved!");
+		}
+		else
+			Log("!Not a single player game!");
 	}
 };
 //-----------------------------------------------------------------------
@@ -193,6 +213,7 @@ BOOL APIENTRY DllMain( HANDLE hModule,
 		CMD1(CCC_Money,		"g_money"				);
 		CMD1(CCC_Team,		"g_change_team"			);
 		CMD1(CCC_Path,		"path"					);
+		CMD1(CCC_SaveALife,	"asave"					);
 
 		// hud
 		CMD3(CCC_Mask,		"hud_crosshair",		&psHUD_Flags,	HUD_CROSSHAIR);
