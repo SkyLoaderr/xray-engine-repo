@@ -180,6 +180,6 @@ void CWeaponList::GetFireParams(Fvector &fire_pos, Fvector &fire_dir)
 {
 	if (m_iActiveWeapon==-1) return;
 	CWeapon* W		= m_Weapons[m_iActiveWeapon];
-	fire_pos.set	(W->Position());
+	fire_pos.set	(W->vLastFP);
 	fire_dir.set	(W->vLastFD);
 }
