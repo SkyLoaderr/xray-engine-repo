@@ -330,10 +330,14 @@ void CLocatorAPI::_initialize	(u32 flags, LPCSTR target_folder)
 	    SetEventNotification();
     }
 	m_Flags.set		(flReady,TRUE);
+
+	CreateLog		(0!=strstr(Core.Params,"-nolog"));
 }
 
 void CLocatorAPI::_destroy		()
 {
+	CloseLog		();
+
 	if (m_Flags.is(flEventNotificator)){
         // clear event handlers
         ClearEventNotification		();

@@ -15,7 +15,8 @@ void 	XRCORE_API	__stdcall	Log			(LPCSTR msg, const Fmatrix& dop);
 void 	XRCORE_API	__stdcall	LogWinErr	(LPCSTR msg, long 			err_code);
 
 typedef void	(__stdcall * LogCallback)	(LPCSTR string);
-void 							CreateLog	(LogCallback cb=0, BOOL no_log=FALSE);
+void							SetLogCB	(LogCallback cb);
+void 							CreateLog	(BOOL no_log=FALSE);
 void 							CloseLog	();
 void	XRCORE_API	__stdcall	FlushLog	();
 

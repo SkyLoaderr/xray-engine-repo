@@ -7,7 +7,7 @@
 
 extern BOOL					LogExecCB		= TRUE;
 static string64				logFName		= "engine.log";
-static BOOL 				no_log			= FALSE;
+static BOOL 				no_log			= TRUE;
 static xrCriticalSection	logCS;
 xr_vector <ref_str>			LogFile;
 static LogCallback			LogCB			= 0;
@@ -131,9 +131,13 @@ static char *month[12] = {
 };
 static int day_in_month[12] = { 31, 28, 31, 30, 31, 30, 31, 31, 30, 31, 30, 31 };
 
-void CreateLog			(LogCallback cb, BOOL nl)
+void SetLogCB			(LogCallback cb)
 {
 	LogCB				= cb;
+}
+
+void CreateLog			(BOOL nl)
+{
     no_log				= nl;
 	strconcat			(logFName,Core.ApplicationName,"_",Core.UserName,".log");
 	FS.update_path		(logFName,"$logs$",logFName);
