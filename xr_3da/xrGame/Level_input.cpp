@@ -303,6 +303,8 @@ void CLevel::IR_OnKeyboardHold(int key)
 {
 	if( Device.Pause() ) return;
 	if(g_bDisableAllInput) return;
+
+	if( HUD().GetUI()->MainInputReceiver() )return;
 	if (CurrentEntity())		{
 		IInputReceiver*		IR	= smart_cast<IInputReceiver*>	(smart_cast<CGameObject*>(CurrentEntity()));
 		if (IR)				IR->IR_OnKeyboardHold				(key_binding[key]);
