@@ -278,7 +278,7 @@ void CActorTools::OnFrame()
         m_AVTransform.mul		(mTranslate,mRotate);
 
     	if (m_RenderObject.IsRenderable()&&m_pEditObject->IsSkeleton())
-        	PKinematics(m_RenderObject.m_pVisual)->Calculate(1.f);
+        	PKinematics(m_RenderObject.m_pVisual)->CalculateBones(1.f);
     	m_pEditObject->OnFrame();
     }
     if (m_Flags.is(flRefreshShaders)){
