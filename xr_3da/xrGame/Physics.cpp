@@ -22,12 +22,10 @@ const dReal fixed_step=0.02f;
 const u32	dis_frames=11;
 const dReal default_w_limit = M_PI/16.f/fixed_step;
 const dReal default_l_limit = 3.f/fixed_step;
-const dReal default_l_scale	=1.01f;
-const dReal default_w_scale	=1.01f;
-const dReal	default_k_l		=0.0002f;//square resistance !!
-const dReal	default_k_w		=0.05f;
-const dReal default_disw	=0.00005f;
-const dReal default_disl	=0.005f;
+const dReal default_l_scale=1.01f;
+const dReal default_w_scale=1.01f;
+const dReal default_disw=0.00005f;
+const dReal default_disl=0.005f;
 
 const dReal	world_gravity=2.f*9.81f;
 
@@ -502,9 +500,8 @@ void __stdcall ContactShotMark(CDB::TRI* T,dContactGeom* c)
 			//	R_ASSERT3(mtl_pair,strconcat(buf,"Undefined material pair:  # ", GMLib.GetMaterial(T->material)->name),GMLib.GetMaterial(data->material)->name);
 			if(mtl_pair)
 			{
-				if(vel_cret>30.f && !mtl_pair->HitMarks.empty())
+				if(vel_cret>30.f && !mtl_pair->HitMarks.empty()) {
 #pragma TODO("Oles to Slipch: NO WALLMARKS FROM PHYSICAL HITS. Need vertices here")
-					;
 					/*
 					::Render->add_Wallmark	(
 					SELECT_RANDOM(mtl_pair->HitMarks),
@@ -512,6 +509,7 @@ void __stdcall ContactShotMark(CDB::TRI* T,dContactGeom* c)
 					0.09f,
 					T);
 					*/
+				}
 				if(vel_cret>15.f && !mtl_pair->HitSounds.empty())
 				{
 					::Sound->play_at_pos(
