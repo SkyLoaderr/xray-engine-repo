@@ -156,7 +156,7 @@ BOOL CLevel::Load_GameSpecific_After()
 		FS.r_close				(F);
 	}
 	// loading static sounds
-	if (FS.exist(fn_game, "$level$", "level.sound_env")) {
+	if (FS.exist(fn_game, "$level$", "level.sound_environment")) {
 		IReader *F				= FS.r_open	(fn_game);
 		::Sound->set_geometry_env(F);
 		FS.r_close				(F);
