@@ -81,6 +81,8 @@ BOOL  CAI_Biting::feel_vision_isRelevant(CObject* O)
 
 void CAI_Biting::HitSignal(float amount, Fvector& vLocalDir, CObject* who, s16 element)
 {
+	if (!g_Alive()) return;
+	
 	feel_sound_new(who,SOUND_TYPE_WEAPON_SHOOTING,who->Position(),1.f);
 	if (g_Alive()) CSoundPlayer::play(MonsterSpace::eMonsterSoundTakeDamage);
 

@@ -40,4 +40,7 @@ public:
 	u32				last_hit_frame;
 	u32				time_resurrect;
 
+	u8				fake_death_count;
+	float			health_death_threshold;
+	float			last_health_fake_death;
 };
