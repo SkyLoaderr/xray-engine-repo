@@ -4,8 +4,23 @@
 #include "script_export_space.h"
 
 #pragma pack(push,1)
-struct	game_PlayerState
+
+struct	game_PlayerState;//fw
+
+struct		RPoint
 {
+	Fvector	P;
+	Fvector A;
+	RPoint(){P.set(.0f,0.f,.0f);A.set(.0f,0.f,.0f);}
+	DECLARE_SCRIPT_REGISTER_FUNCTION_STRUCT
+};
+add_to_type_list(RPoint)
+#undef script_type_list
+#define script_type_list save_type_list(RPoint)
+
+struct	game_PlayerState 
+{
+	string64	name;
 	s16			team;
 	s16			kills;
 	s16			deaths;
@@ -27,20 +42,27 @@ struct	game_PlayerState
 	u32			RespawnTime;
 	//---------------------------
 	s16			money_delta;
-
-	game_PlayerState();
-	~game_PlayerState();
+/*
+private:
+	game_PlayerState(const game_PlayerState&);
+	void operator = (const game_PlayerState&);
+*/
+public:
+					game_PlayerState		();
+					~game_PlayerState		();
+	virtual void	clear					();
+			bool	testFlag				(u16 f);
+			void	setFlag					(u16 f);
+			void	resetFlag				(u16 f);
+			LPCSTR	getName					(){return name;}
+			void	setName					(LPCSTR s){strcpy(name,s);}
 
 #ifndef AI_COMPILER
-	void	net_Export		(NET_Packet& P);
-	void	net_Import		(NET_Packet& P);
+	virtual void	net_Export				(NET_Packet& P);
+	virtual void	net_Import				(NET_Packet& P);
 #endif
 	//---------------------------------------
-//	struct PlayersItem
-//	{
-//		u16			ItemID;
-//		s16			ItemCost;
-//	};
+
 	DEF_VECTOR(PLAYER_ITEMS_LIST, u16);
 
 	PLAYER_ITEMS_LIST	pItemList;
@@ -48,6 +70,7 @@ struct	game_PlayerState
 	s16					LastBuyAcount;
 	DECLARE_SCRIPT_REGISTER_FUNCTION_STRUCT
 };
+
 add_to_type_list(game_PlayerState)
 #undef script_type_list
 #define script_type_list save_type_list(game_PlayerState)
@@ -59,18 +82,14 @@ struct	game_TeamState
 	u16			num_targets;
 
 	game_TeamState();
-	DECLARE_SCRIPT_REGISTER_FUNCTION_STRUCT
 };
-add_to_type_list(game_TeamState)
-#undef script_type_list
-#define script_type_list save_type_list(game_TeamState)
 
 
 #pragma pack(pop)
 
 class	game_GameState : public DLL_Pure
 {
-public:
+protected:
 	s32								type;
 	u16								phase;
 	s32								round;
@@ -84,15 +103,21 @@ public:
 //	u8								artefactsNum;//ah
 //	u16								artefactBearerID;//ah,ZoneMap
 //	u8								teamInPossession;//ah,ZoneMap
+protected:
+	virtual		void				switch_Phase			(u32 new_phase);
+	virtual		void				OnSwitchPhase			(u32 old_phase, u32 new_phase)	{};	
 
 public:
 	game_GameState();
-
-	virtual		void				Create					(ref_str& options){};
-	virtual		LPCSTR				type_name				() const {return "base game";};
+				u32					Type					() const						{return type;};
+				u32					Phase					() const						{return phase;};
+				s32					Round					() const						{return round;};
+				s32					StartTime				() const						{return start_time;};
+	virtual		void				Create					(ref_str& options)				{};
+	virtual		LPCSTR				type_name				() const						{return "base game";};
 //for scripting enhancement
-	static		CLASS_ID			getCLASS_ID(LPCSTR game_type_name, bool bServer);
-
+	static		CLASS_ID			getCLASS_ID				(LPCSTR game_type_name, bool bServer);
+	virtual		game_PlayerState*	createPlayerState()		{return xr_new<game_PlayerState>(); };
 	DECLARE_SCRIPT_REGISTER_FUNCTION
 };
 add_to_type_list(game_GameState)

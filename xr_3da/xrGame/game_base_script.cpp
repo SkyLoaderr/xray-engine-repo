@@ -1,48 +1,60 @@
 #include "stdafx.h"
 #include "game_base.h"
 #include "script_space.h"
+#include "xrServer_script_macroses.h"
 
 using namespace luabind;
 
+
+template <typename T>
+struct CWrapperBase : public T, public luabind::wrap_base {
+	typedef T inherited;
+	typedef CWrapperBase<T>	self_type;
+
+	DEFINE_LUA_WRAPPER_METHOD_R2P1_V1(net_Export, NET_Packet)
+	DEFINE_LUA_WRAPPER_METHOD_R2P1_V1(net_Import, NET_Packet)
+	DEFINE_LUA_WRAPPER_METHOD_V0(clear)
+};
+
 void game_PlayerState::script_register(lua_State *L)
 {
+	typedef CWrapperBase<game_PlayerState> WrapType;
+	typedef game_PlayerState BaseType;
 
 	module(L)
 		[
-			luabind::class_<game_PlayerState>("game_PlayerState")
+			luabind::class_<game_PlayerState, WrapType>("game_PlayerState")
 			.def(	constructor<>())
-			.def_readwrite("team",				&game_PlayerState::team)
-			.def_readwrite("kills",				&game_PlayerState::kills)
-			.def_readwrite("deaths",			&game_PlayerState::deaths)
-			.def_readwrite("money_total",		&game_PlayerState::money_total)
-			.def_readwrite("money_for_round",	&game_PlayerState::money_for_round)
-			.def_readwrite("flags",				&game_PlayerState::flags)
-			.def_readwrite("ping",				&game_PlayerState::ping)
-			.def_readwrite("GameID",			&game_PlayerState::GameID)
-			.def_readwrite("Skip",				&game_PlayerState::Skip)
-			.def_readwrite("lasthitter",		&game_PlayerState::lasthitter)
-			.def_readwrite("lasthitweapon",		&game_PlayerState::lasthitweapon)
-			.def_readwrite("skin",				&game_PlayerState::skin)
-			.def_readwrite("RespawnTime",		&game_PlayerState::RespawnTime)
-			.def_readwrite("money_delta",		&game_PlayerState::money_delta)
+			.def_readwrite("team",				&BaseType::team)
+			.def_readwrite("kills",				&BaseType::kills)
+			.def_readwrite("deaths",			&BaseType::deaths)
+			.def_readwrite("money_total",		&BaseType::money_total)
+			.def_readwrite("money_for_round",	&BaseType::money_for_round)
+			.def_readwrite("flags",				&BaseType::flags)
+			.def_readwrite("ping",				&BaseType::ping)
+			.def_readwrite("GameID",			&BaseType::GameID)
+			.def_readwrite("Skip",				&BaseType::Skip)
+			.def_readwrite("lasthitter",		&BaseType::lasthitter)
+			.def_readwrite("lasthitweapon",		&BaseType::lasthitweapon)
+			.def_readwrite("skin",				&BaseType::skin)
+			.def_readwrite("RespawnTime",		&BaseType::RespawnTime)
+			.def_readwrite("money_delta",		&BaseType::money_delta)
 
-			.def_readwrite("pItemList",			&game_PlayerState::pItemList)
-			.def_readwrite("LastBuyAcount",		&game_PlayerState::LastBuyAcount)
+			.def_readwrite("pItemList",			&BaseType::pItemList)
+			.def_readwrite("LastBuyAcount",		&BaseType::LastBuyAcount)
+			.def("testFlag",					&BaseType::testFlag)
+			.def("setFlag",						&BaseType::setFlag)
+			.def("resetFlag",					&BaseType::resetFlag)
+			.def("getName",						&BaseType::getName)
+			.def("setName",						&BaseType::setName)
+			.def("clear",						&BaseType::clear, &WrapType::clear_static)
+			.def("net_Export",					&BaseType::net_Export, &WrapType::net_Export_static)
+			.def("net_Import",					&BaseType::net_Import, &WrapType::net_Import_static)
 			
 		];
 }
 
-void game_TeamState::script_register(lua_State *L)
-{
 
-	module(L)
-		[
-			luabind::class_<game_TeamState>("game_TeamState")
-			.def(	constructor<>())
-			.def_readwrite("score",				&game_TeamState::score)
-			.def_readwrite("num_targets",		&game_TeamState::num_targets)
-		];
-}
 
 void game_GameState::script_register(lua_State *L)
 {
@@ -55,18 +67,13 @@ void game_GameState::script_register(lua_State *L)
 			.def(	constructor<>())
 
 			.def_readwrite("type",				&game_GameState::type)
-			.def_readwrite("phase",				&game_GameState::phase)
-			.def_readwrite("round",				&game_GameState::round)
-			.def_readwrite("start_time",		&game_GameState::start_time)
-//			.def_readwrite("buy_time",			&game_GameState::buy_time)
-//			.def_readwrite("fraglimit",			&game_GameState::fraglimit)
-//			.def_readwrite("timelimit",			&game_GameState::timelimit)
-//			.def_readwrite("damageblocklimit",	&game_GameState::damageblocklimit)
-//			.def_readwrite("teams",				&game_GameState::teams)
-//			.def_readwrite("artefactsNum",		&game_GameState::artefactsNum)
-//			.def_readwrite("artefactBearerID",	&game_GameState::artefactBearerID)
-//			.def_readwrite("teamInPosession",	&game_GameState::teamInPossession)
+			.def_readonly("round",				&game_GameState::round)
+			.def_readonly("start_time",			&game_GameState::start_time)
 
+			.def("Type",						&game_GameState::Type)
+			.def("Phase",						&game_GameState::Phase)
+			.def("Round",						&game_GameState::Round)
+			.def("StartTime",					&game_GameState::StartTime)
 		];
 
 }

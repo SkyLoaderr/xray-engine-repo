@@ -229,7 +229,7 @@ BOOL CCustomZone::net_Spawn(LPVOID DC)
 	m_dwLastTimeMoved			= Device.dwTimeGlobal;
 	m_vPrevPos.set				(Position());
 
-	if (Game().type != GAME_SINGLE)
+	if (Game().Type() != GAME_SINGLE)
 		OnStateSwitch			(eZoneStateDisabled);
 
 	return						(TRUE);
