@@ -166,6 +166,9 @@
 			Name="Core"
 			Filter="">
 			<File
+				RelativePath="common_binders.h">
+			</File>
+			<File
 				RelativePath="r2.cpp">
 			</File>
 			<File
@@ -360,12 +363,6 @@
 			</File>
 			<File
 				RelativePath="blender_light_point.h">
-			</File>
-			<File
-				RelativePath="common_binders.cpp">
-			</File>
-			<File
-				RelativePath="common_binders.h">
 			</File>
 			<Filter
 				Name="R1"

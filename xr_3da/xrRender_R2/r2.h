@@ -14,6 +14,8 @@
 #include "light_db.h"
 #include "light_render_direct.h"
 
+#include "common_binders.h"
+
 // definition
 class CRender	:	public IRender_interface
 {
@@ -70,6 +72,7 @@ public:
 	CRenderTarget											Target;			// Render-target
 	CLight_DB												Lights;
 	CLight_Render_Direct									LR_Direct;
+	cl_binders												Binders;
 private:
 	// Loading / Unloading
 	void							LoadBuffers				(IReader	*fs);
