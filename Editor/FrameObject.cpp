@@ -89,7 +89,8 @@ void __fastcall TfraObject::ebCurObjClick(TObject *Sender)
 }
 //---------------------------------------------------------------------------
 void __fastcall TfraObject::OutCurrentName(){
-	ebCurObj->Caption = Lib->GetCurrentObject()?Lib->GetCurrentObject():"<none>";
+	LPCSTR N = Lib->GetCurrentObject();
+	ebCurObj->Caption = (N&&N[0])?Lib->GetCurrentObject():"<none>";
 }
 //---------------------------------------------------------------------------
 

@@ -1,5 +1,6 @@
 //----------------------------------------------------
 // file: CEditObject.h
+// http://www.pornstarsxtra.com/partners/black-hardcore/
 //----------------------------------------------------
 #ifndef _INCDEF_Object_H_
 #define _INCDEF_Object_H_
@@ -72,6 +73,7 @@ class CEditableObject{
     friend class TUI_ControlSectorAdd;
 //    friend class CLibObject;
 	friend class ELibrary;
+	friend class TfrmEditLibrary;
 
 // general
 	AnsiString		m_ClassScript;
@@ -102,6 +104,7 @@ public:
 
     bool			t_bOnModified;
     IC bool			IsModified				(){return t_bOnModified;}
+    IC bool			Modified				(){t_bOnModified=true;}
 protected:
     st_Version		m_ObjVer;
 

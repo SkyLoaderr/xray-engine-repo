@@ -68,13 +68,37 @@ void CImageManager::CreateThumbnail(EImageThumbnail* THM, const AnsiString& src_
 }
 
 //------------------------------------------------------------------------------
+// создает новую текстуру
+//------------------------------------------------------------------------------
+void CImageManager::CreateGameTexture(const AnsiString& src_name, EImageThumbnail* thumb){
+	R_ASSERT(src_name.Length());
+    EImageThumbnail* THM 	= thumb?thumb:new EImageThumbnail(src_name.c_str(),EImageThumbnail::EITTexture);
+	AnsiString base_name 	= src_name;
+	AnsiString game_name 	= ChangeFileExt(src_name,".dds");
+	FS.m_Textures.Update(base_name);
+	FS.m_GameTextures.Update(game_name);
+    int base_age 	= FS.GetFileAge(base_name);
+    FIBITMAP* bm=Surface_Load(base_name.c_str()); R_ASSERT(bm);
+    MakeGameTexture(THM,game_name.c_str(),bm);
+    if (bm) FreeImage_Free(bm);
+    FS.SetFileAge(game_name, base_age);
+    if (!thumb) delete THM;
+}
+
+//------------------------------------------------------------------------------
 // создает игровую текстуру
 //------------------------------------------------------------------------------
 void CImageManager::MakeGameTexture(EImageThumbnail* THM, LPCSTR game_name, FIBITMAP* bm)
 {
 	FS.VerifyPath(game_name);
     // time check
-    bool bRes 	= DXTCompress(game_name, FreeImage_GetScanLine(bm,0), THM->_Width(), THM->_Height(), THM->_Width()*4, &THM->m_TexParams, 4);
+    DWORDVec data;
+    int w = THM->_Width();
+    int h = THM->_Height();
+    int w4= w*4;
+    data.resize(w*h);
+    for (int y=h-1; y>=0; y--) CopyMemory(data.begin()+(h-y-1)*w,FreeImage_GetScanLine(bm,y),w4);
+    bool bRes 	= DXTCompress(game_name, (LPBYTE)data.begin(), w, h, w4, &THM->m_TexParams, 4);
     R_ASSERT(bRes&&FS.FileLength(game_name));
 }
 
@@ -162,7 +186,7 @@ int CImageManager::GetFiles(AStringVec& files)
     AStringVec& lst = FS.GetFiles(FS.m_Textures.m_Path);
     for (AStringIt it=lst.begin(); it!=lst.end(); it++){
 	    AnsiString ext = ExtractFileExt(*it).LowerCase();
-//        ext = ext.SubString(2,ext.Length());
+        ext = ext.SubString(2,ext.Length());
         if (ext=="thm") continue;
         if (!IsFormatRegister(ext.c_str())) continue;
      	files.push_back(it->Delete(1,count));

@@ -19,6 +19,8 @@ friend class CImageManager;
 	DWORDVec 		m_Pixels;
     STextureParams	m_TexParams;
     THMType			m_Type;
+	void 			DrawNormal		(HANDLE handle, RECT *rect);
+	void 			DrawStretch		(HANDLE handle, RECT *rect);
 public:
 					EImageThumbnail	(LPCSTR src_name, THMType type, bool bLoad=true);
 					~EImageThumbnail();
@@ -30,8 +32,7 @@ public:
     IC STextureParams& _Format		(){R_ASSERT(Valid());return m_TexParams;}
 	bool 			Load			();
 	void 			Save			(int age=0);
-	void 			DrawNormal		(HANDLE handle, RECT *rect);
-	void 			DrawStretch		(HANDLE handle, RECT *rect);
+	void 			Draw			(TPanel* panel, TPaintBox* pbox, bool bStretch);
 	void 			CreateFromData	(LPDWORD p, int w, int h);
     IC bool			IsObject		(){return m_Type==EITObject;}
     IC bool			IsTexture		(){return m_Type==EITTexture;}

@@ -59,12 +59,14 @@ private:
 private:	// User declarations
 	static TfrmImageLib* form;
 
-	EImageThumbnail* m_Thm;
+	EImageThumbnail* 	m_Thm;
+    AnsiString          m_SelectedName;
 
     Fvector init_cam_hpb;
     Fvector init_cam_pos;
     void OnModified();
     static AStringVec check_tex_list;
+    static AStringVec modif_tex_list;
 	void __fastcall SaveTextureParams();
     bool bCheckMode;
     TfrmProperties* ImageProps;

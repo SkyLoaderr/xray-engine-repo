@@ -19,6 +19,7 @@
 #include "FolderLib.h"
 #include "ImageManager.h"
 #include "ImageThumbnail.h"
+#include "DetailObjects.h"
 //---------------------------------------------------------------------------
 #pragma package(smart_init)
 #pragma link "ElTree"
@@ -57,10 +58,10 @@ void __fastcall TfrmEditLibrary::HideEditor()
 //---------------------------------------------------------------------------
 CEditableObject* __fastcall TfrmEditLibrary::RayPick(const Fvector& start, const Fvector& direction, SRayPickInfo* pinf){
 	if (!form) return 0;
-	if (form->m_SelectedObject){
+	if (form->m_SelectedObject&&form->cbPreview->Checked){
     	float dist=flt_max;
     	form->m_SelectedObject->RayPick(dist,start,direction,precalc_identity,pinf);
-        if (pinf) TfrmPropertiesObject::Pick(*pinf);
+        if (pinf&&pinf->e_mesh&&pinf->e_obj) TfrmPropertiesObject::OnPick(*pinf);
         return form->m_SelectedObject;
     }
     return 0;
@@ -92,7 +93,7 @@ void __fastcall TfrmEditLibrary::ZoomObject(){
 //---------------------------------------------------------------------------
 void __fastcall TfrmEditLibrary::FormShow(TObject *Sender)
 {
-    InitObjectFolder();
+    InitObjects();
     ebSave->Enabled = false;
     UI.BeginEState(esEditLibrary);
     m_SelectedObject = 0;
@@ -159,7 +160,7 @@ void __fastcall TfrmEditLibrary::tvObjectsItemFocused(TObject *Sender)
 
 	_DELETE(m_Thm);
     ebMakeThm->Enabled = false;
-    if (FOLDER::IsObject(node)&&UI.ContainEState(esEditLibrary)){
+    if (node&&FOLDER::IsObject(node)&&UI.ContainEState(esEditLibrary)){
         // change thm
         AnsiString nm,fn;
         FOLDER::MakeName		(node,0,nm,false);
@@ -168,11 +169,17 @@ void __fastcall TfrmEditLibrary::tvObjectsItemFocused(TObject *Sender)
         if (FS.Exist(fn.c_str())){
             m_Thm 				= new EImageThumbnail(nm.c_str(),EImageThumbnail::EITObject);
         }
+
+        if (cbPreview->Checked||TfrmPropertiesObject::Visible()){
+            m_SelectedObject = Lib->GetEditObject(nm.c_str());
+            R_ASSERT(m_SelectedObject);
+            ZoomObject();
+		    ebMakeThm->Enabled = true;
+        }
     }
     if (m_Thm&&m_Thm->Valid())	pbImagePaint(Sender);
     else                        pbImage->Repaint();
 	TfrmPropertiesObject::SetCurrent(m_SelectedObject);
-	ZoomObject();
 
     UI.RedrawScene();
 }
@@ -180,24 +187,31 @@ void __fastcall TfrmEditLibrary::tvObjectsItemFocused(TObject *Sender)
 //---------------------------------------------------------------------------
 void __fastcall TfrmEditLibrary::cbPreviewClick(TObject *Sender)
 {
-    TElTreeItem *itm = tvObjects->Selected;
+    TElTreeItem *node = tvObjects->Selected;
     ebMakeThm->Enabled = false;
-    if (cbPreview->Checked&&itm&&FOLDER::IsObject(itm)){
+    if (cbPreview->Checked&&node&&FOLDER::IsObject(node)){
+	    AnsiString name;
+    	FOLDER::MakeName(node,0,name,false);
+	    m_SelectedObject = Lib->GetEditObject(name.c_str());
+    	R_ASSERT(m_SelectedObject);
 	    ebMakeThm->Enabled = true;
         ZoomObject();
     }
     UI.RedrawScene();
 }
 //---------------------------------------------------------------------------
-void TfrmEditLibrary::InitObjectFolder()
+void TfrmEditLibrary::InitObjects()
 {
 	tvObjects->IsUpdating		= true;
     tvObjects->Items->Clear();
-    FOLDER::AppendFolder(tvObjects,SKYDOME_FOLDER);
-    FOLDER::AppendFolder(tvObjects,DETAILOBJECT_FOLDER);
+//    FOLDER::AppendFolder(tvObjects,SKYDOME_FOLDER);
+//    FOLDER::AppendFolder(tvObjects,DETAILOBJECT_FOLDER);
     AStringVec& lst = Lib->Objects();
-    for(AStringIt it=lst.begin(); it!=lst.end(); it++)
-        FOLDER::AppendObject(tvObjects,it->c_str());
+    AnsiString nm;
+    for(AStringIt it=lst.begin(); it!=lst.end(); it++){
+        nm = ChangeFileExt(*it,"");
+        FOLDER::AppendObject(tvObjects,nm.c_str());
+    }
 	tvObjects->IsUpdating		= false;
 }
 //---------------------------------------------------------------------------
@@ -364,7 +378,7 @@ void __fastcall TfrmEditLibrary::ebMakeThmClick(TObject *Sender)
    	    CEditableObject* obj = Lib->GetEditObject(name.c_str());
     	if (obj&&cbPreview->Checked){
             AnsiString obj_name, tex_name;
-            obj_name = AnsiString(obj->GetName())+AnsiString(".object");
+            obj_name = ChangeFileExt(obj->GetName(),".object");
             tex_name = ChangeFileExt(obj_name,".thm");
             FS.m_Objects.Update(obj_name);
             src_age = FS.GetFileAge(obj_name);
@@ -372,6 +386,7 @@ void __fastcall TfrmEditLibrary::ebMakeThmClick(TObject *Sender)
 	            EImageThumbnail tex(tex_name.c_str(),EImageThumbnail::EITObject,false);
     	        tex.CreateFromData(pixels.begin(),w,h);
         	    tex.Save(src_age);
+                tvObjectsItemFocused(Sender);
             	ELog.DlgMsg(mtInformation,"Thumbnail created.");
             }else{
 	            ELog.DlgMsg(mtError,"Can't make screenshot.");
@@ -387,17 +402,19 @@ void __fastcall TfrmEditLibrary::ebUnloadClick(TObject *Sender)
 {
 	if (ebSave->Enabled) ebSaveClick(Sender);
 	UI.Command(COMMAND_UNLOAD_LIBMESHES);
+    RefreshSelected();
 }
 //---------------------------------------------------------------------------
 
-void __fastcall TfrmEditLibrary::pcItemTypeClick(TObject *Sender)
+void __fastcall TfrmEditLibrary::RefreshSelected()
 {
-	InitObjectFolder();
+	if (form){
+	    form->m_SelectedObject = 0;
+		form->tvObjectsItemFocused(0);
+    }
 }
 //---------------------------------------------------------------------------
-
 extern bool __fastcall LookupFunc(TElTreeItem* Item, void* SearchDetails);
-
 void __fastcall TfrmEditLibrary::tvObjectsKeyPress(TObject *Sender, char &Key){
 	TElTreeItem* node = tvObjects->Items->LookForItemEx(tvObjects->Selected,-1,false,false,false,&Key,LookupFunc);
     if (!node) node = tvObjects->Items->LookForItemEx(0,-1,false,false,false,&Key,LookupFunc);
@@ -410,16 +427,49 @@ void __fastcall TfrmEditLibrary::tvObjectsKeyPress(TObject *Sender, char &Key){
 
 void __fastcall TfrmEditLibrary::pbImagePaint(TObject *Sender)
 {
-    if (m_Thm){
-        RECT r;
-        r.left = 2; r.top = 2;
-        float w, h;
-        w = m_Thm->_Width();
-        h = m_Thm->_Height();
-        if (w!=h)	pbImage->Canvas->FillRect(pbImage->BoundsRect);
-        if (w>h){   r.right = pbImage->Width-1; r.bottom = h/w*pbImage->Height-1;
-        }else{      r.right = w/h*pbImage->Width-1; r.bottom = pbImage->Height-1;}
-        m_Thm->DrawStretch(paImage->Handle, &r);
+    if (m_Thm) m_Thm->Draw(paImage,pbImage,true);
+}
+//---------------------------------------------------------------------------
+
+void __fastcall TfrmEditLibrary::ebExportDOClick(TObject *Sender)
+{
+    TElTreeItem* node = tvObjects->Selected;
+    if (node&&FOLDER::IsObject(node)){
+    	AnsiString fn;
+		if (FS.GetSaveName(&FS.m_GameDO,fn)){
+		    AnsiString name;
+    		FOLDER::MakeName(node,0,name,false);
+			// make detail
+    	    CDetail DO;
+        	if (DO.Update(name.c_str())){
+		        CFS_Memory F;
+    		    DO.Export(F);
+        		F.SaveTo(fn.c_str(),0);
+            }
+        }
+    }else{
+        ELog.DlgMsg(mtInformation,"Select object to export.");
+    }
+}
+//---------------------------------------------------------------------------
+
+void __fastcall TfrmEditLibrary::ebImportClick(TObject *Sender)
+{
+    AnsiString fn, nm;
+    if (FS.GetOpenName(&FS.m_Import,fn)){
+    	nm = fn;
+        nm = nm.Delete(1,strlen(FS.m_Import.m_Path));
+	    CEditableObject* O = new CEditableObject(nm.c_str());
+        if (O->Load(fn.c_str())){
+            O->m_ObjVer.f_age = FS.GetFileAge(AnsiString(fn));
+			fn = ChangeFileExt(nm,".object");
+		    if (FS.GetSaveName(&FS.m_Objects,fn)){
+            	O->SaveObject(fn.c_str());
+                Lib->ReloadLibrary();
+                InitObjects();
+            }
+        }
+		_DELETE(O);
     }
 }
 //---------------------------------------------------------------------------

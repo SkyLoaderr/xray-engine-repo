@@ -40,6 +40,8 @@ __published:	// IDE-managed Components
 	TPanel *paImage;
 	TPaintBox *pbImage;
 	TExtBtn *ebSave;
+	TExtBtn *ebExportDO;
+	TExtBtn *ebImport;
     void __fastcall ebSaveClick(TObject *Sender);
     void __fastcall ebCancelClick(TObject *Sender);
     void __fastcall FormShow(TObject *Sender);
@@ -56,13 +58,14 @@ __published:	// IDE-managed Components
     void __fastcall cbPreviewClick(TObject *Sender);
 	void __fastcall ebMakeThmClick(TObject *Sender);
 	void __fastcall ebUnloadClick(TObject *Sender);
-	void __fastcall pcItemTypeClick(TObject *Sender);
 	void __fastcall ebReloadObjectClick(TObject *Sender);
 	void __fastcall tvObjectsKeyPress(TObject *Sender, char &Key);
 	void __fastcall tvObjectsItemFocused(TObject *Sender);
 	void __fastcall pbImagePaint(TObject *Sender);
+	void __fastcall ebExportDOClick(TObject *Sender);
+	void __fastcall ebImportClick(TObject *Sender);
 private:	// User declarations
-    void InitObjectFolder();
+    void InitObjects();
     EImageThumbnail* m_Thm;
     bool CloseEditLibrary(bool bReload);
 	static TfrmEditLibrary *form;
@@ -76,6 +79,7 @@ public:		// User declarations
 	static CEditableObject* __fastcall RayPick(const Fvector& start, const Fvector& direction, SRayPickInfo* pinf);
     static void __fastcall ShowEditor();
     static void __fastcall HideEditor();
+    static void __fastcall RefreshSelected();
 };
 //---------------------------------------------------------------------------
 #endif

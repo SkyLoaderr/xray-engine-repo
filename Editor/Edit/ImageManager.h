@@ -17,6 +17,7 @@ public:
     BOOL		IfChanged			(const AnsiString& name);
 	void		Synchronize			(const AnsiString& name);  // return some as IfUpdated
     void		CreateThumbnail		(EImageThumbnail* THM, const AnsiString& src_name);
+    void		CreateGameTexture	(const AnsiString& src_name, EImageThumbnail* thumb=0);
 //	void		SynchronizePath		();
     int			GetModifiedFiles	(AStringVec& files);
     int			GetFiles			(AStringVec& files);

@@ -57,7 +57,7 @@ void __fastcall TfrmPropertiesObject::FormShow(TObject *Sender)
     ebOk->Enabled       = false;
     ebApply->Enabled    = false;
     tvMeshes->Enabled   = true;
-    edName->Hint 		= "Warning!!! Be careful before edit item library name.";
+//    edName->Hint 		= "Warning!!! Be careful before edit item library name.";
     tsMainOptionsShow   (Sender);
     ebDropper->Enabled	= false;
     ebDropper->Down		= false;
@@ -67,6 +67,7 @@ void __fastcall TfrmPropertiesObject::FormShow(TObject *Sender)
 void __fastcall TfrmPropertiesObject::FormClose(TObject *Sender,
       TCloseAction &Action)
 {
+    _DELETE(m_Thm);
 	Action = caFree;
     form = 0;
 }
@@ -98,9 +99,10 @@ void __fastcall TfrmPropertiesObject::ebApplyClick(TObject *Sender)
 void __fastcall TfrmPropertiesObject::ebCancelClick(TObject *Sender)
 {
     Close();
-    if (m_EditObject){
+    if (m_EditObject&&IsModified()){
     	Lib->UnloadObject(m_EditObject->GetName());
         m_EditObject = 0;
+		TfrmEditLibrary::RefreshSelected();
     }
 }
 //--------------------------------------------------------------------------------------------------
@@ -111,10 +113,9 @@ void TfrmPropertiesObject::GetObjectsInfo(){
     	pcObjects->Enabled = true;
 
         mmScript->Text = m_EditObject->GetClassScript();
-        edName->Text   = m_EditObject->GetName();
         cbMakeDynamic->ObjFirstInit( TCheckBoxState(m_EditObject->IsDynamic()) );
 
-        Caption = AnsiString("Object properties - [")+edName->Text+AnsiString("]");
+        Caption = AnsiString("Object properties - [")+AnsiString(m_EditObject->GetName())+AnsiString("]");
     }else{
     	pcObjects->Enabled = false;
         Caption = "Object properties: []";
@@ -126,10 +127,6 @@ void TfrmPropertiesObject::GetObjectsInfo(){
 
 void TfrmPropertiesObject::ApplyObjectsInfo(){
 	if (m_EditObject&&IsModified()){
-        if (!edName->Text.Length()){
-            ELog.DlgMsg(mtError,"Enter Object Name!");
-            return;
-        }
         // dynamic flag
         cbMakeDynamic->ObjApply( m_EditObject->m_DynamicObject );
 		// class script
@@ -138,6 +135,7 @@ void TfrmPropertiesObject::ApplyObjectsInfo(){
 	    m_EditObject->t_vPosition.set	(sePositionX->Value,sePositionY->Value,	sePositionZ->Value);
 		m_EditObject->t_vRotate.set		(seRotateX->Value,	seRotateY->Value,	seRotateZ->Value);
 	    m_EditObject->t_vScale.set		(seScaleX->Value,	seScaleY->Value,	seScaleZ->Value);
+        m_EditObject->Modified();
         // set "Modify" library flag
 	    TfrmEditLibrary::OnModified();
 	}
@@ -165,7 +163,6 @@ void __fastcall TfrmPropertiesObject::cbMakeDynamicClick(TObject *Sender)
 void __fastcall TfrmPropertiesObject::tsMainOptionsShow(TObject *Sender)
 {
 	if (!m_EditObject) return;
-    edName->Enabled 		= true;
     mmScript->Enabled 		= true;
     gbTemplates->Enabled 	= true;
 
@@ -173,8 +170,6 @@ void __fastcall TfrmPropertiesObject::tsMainOptionsShow(TObject *Sender)
     tsOAnimation->TabVisible= cbMakeDynamic->Checked;
     tsSAnimation->TabVisible= cbMakeDynamic->Checked&&m_EditObject->IsSkeleton();
 }
-//---------------------------------------------------------------------------
-
 //---------------------------------------------------------------------------
 
 void __fastcall TfrmPropertiesObject::pcObjectsChange(TObject *Sender)
@@ -187,22 +182,26 @@ void __fastcall TfrmPropertiesObject::pcObjectsChange(TObject *Sender)
 }
 //---------------------------------------------------------------------------
 
-void __fastcall TfrmPropertiesObject::Pick(const SRayPickInfo& pinf){
+void __fastcall TfrmPropertiesObject::OnPick(const SRayPickInfo& pinf){
+	R_ASSERT(pinf.e_mesh);
 	if (form&&form->ebDropper->Down&&m_EditObject){
 		if ((form->pcObjects->ActivePage==form->tsMeshes)||(form->pcObjects->ActivePage==form->tsSurfaces)){
             if (form->pcObjects->ActivePage==form->tsMeshes){
                 form->tvMeshes->Selected = form->tvMeshes->Items->LookForItem(0,pinf.e_mesh->GetName(),0,0,false,true,false,false,true);
-                form->tvMeshes->EnsureVisible(form->tvMeshes->Selected);
+				form->tvMeshes->EnsureVisible(form->tvMeshes->Selected);
             }else if (form->pcObjects->ActivePage==form->tsSurfaces){
                 UI.RedrawScene();
-                CSurface* surf=pinf.e_mesh->GetSurfaceByFaceID(pinf.rp_inf.id);
-                form->tvSurfaces->Selected = form->tvSurfaces->Items->LookForItem(0,surf->_Name(),0,0,false,true,false,false,true);
-                form->tvSurfaces->EnsureVisible(form->tvSurfaces->Selected);
+				CSurface* surf=pinf.e_mesh->GetSurfaceByFaceID(pinf.rp_inf.id);
+    	        form->tvSurfaces->Selected = form->tvSurfaces->Items->LookForItem(0,surf->_Name(),0,0,false,true,false,false,true);
+				form->tvSurfaces->EnsureVisible(form->tvSurfaces->Selected);
             }
         }
     }
 }
 //---------------------------------------------------------------------------
+
+
+
 
 
 

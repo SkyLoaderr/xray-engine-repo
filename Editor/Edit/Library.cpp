@@ -33,7 +33,7 @@ static bool sort_pred(AnsiString& A, AnsiString& B)
 //----------------------------------------------------
 
 ELibrary::ELibrary(){
-	m_Current = 0;
+	m_Current = "";
 	Device.seqDevCreate.Add	(this,REG_PRIORITY_NORMAL);
 	Device.seqDevDestroy.Add(this,REG_PRIORITY_NORMAL);
 }
@@ -47,7 +47,7 @@ ELibrary::~ELibrary(){
 //----------------------------------------------------
 
 void ELibrary::Init(){
-	m_Current = 0;
+	m_Current = "";
     int count = strlen(FS.m_Objects.m_Path);
     AStringVec& lst = FS.GetFiles(FS.m_Objects.m_Path);
     for (AStringIt it=lst.begin(); it!=lst.end(); it++){
@@ -137,7 +137,8 @@ CEditableObject* ELibrary::GetEditObject(LPCSTR name)
 	AStringIt P = lower_bound(m_Objects.begin(),m_Objects.end(),AnsiString(name),sort_pred);
     if (P==m_Objects.end()) return 0;
 	EditObjPairIt it = m_EditObjects.find(AnsiString(name));
-    if ((it==m_EditObjects.end())&&(m_EditObject=LoadEditObject(name)))
+    if (it!=m_EditObjects.end())	m_EditObject = it->second;
+    else if (m_EditObject=LoadEditObject(name))
 		m_EditObjects[name] = m_EditObject;
 	return m_EditObject;
 }

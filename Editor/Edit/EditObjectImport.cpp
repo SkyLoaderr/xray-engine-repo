@@ -61,6 +61,7 @@ bool CEditableObject::Import_LWO(const char* fn, bool bNeedOptimize){
                     if (!Device.Shader._FindBlender(shader_name.c_str())){
 						ELog.Msg(mtError,"CEditableObject: Shader '%s' - can't find in library. Using 'default' shader.", shader_name.c_str());
 	                    shader_name = "default";
+//	                    shader_name = "particles\\blend";
                     }
                     // fill texture layers
                     int cidx;
@@ -93,10 +94,11 @@ bool CEditableObject::Import_LWO(const char* fn, bool bNeedOptimize){
                             Osf->SetTexture(tex_name);
                             // get vmap refs
                             Osf->SetVMap(Itx->param.imap.vmap_name);
+				            Osf->SetShaderXRLC("default");
                         }
                     }
                     if (!bResult) break;
-                    if (Osf->_Texture()){
+                    if (!Osf->_Texture()||!Osf->_Texture()[0]){
 						ELog.DlgMsg(mtError, "Can't create shader. Invalid surface '%s'. Textures empty.",Osf->_Name());
                         bResult = false;
                         break;

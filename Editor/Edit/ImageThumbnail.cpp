@@ -153,7 +153,8 @@ void EImageThumbnail::DrawNormal( HANDLE handle, RECT *r ){
     DeleteObject(th);
 }
 
-void EImageThumbnail::DrawStretch( HANDLE handle, RECT *r ){
+void EImageThumbnail::DrawStretch( HANDLE handle, RECT *r )
+{
     if (!Valid()) return;
 
 	HBITMAP th;
@@ -172,4 +173,17 @@ void EImageThumbnail::DrawStretch( HANDLE handle, RECT *r ){
     DeleteObject(th);
 }
 
+void EImageThumbnail::Draw(TPanel* panel, TPaintBox* pbox, bool bStretch)
+{
+    RECT r;
+    r.left = 2; r.top = 2;
+    float w, h;
+    w = _Width();
+    h = _Height();
+    if (w!=h)	pbox->Canvas->FillRect(pbox->BoundsRect);
+    if (w>h){   r.right = pbox->Width-1; r.bottom = h/w*pbox->Height-1;
+    }else{      r.right = w/h*pbox->Width-1; r.bottom = pbox->Height-1;}
+    if (bStretch)	DrawStretch(panel->Handle, &r);
+    else			DrawNormal(panel->Handle, &r);
+}
 

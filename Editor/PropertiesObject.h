@@ -36,7 +36,6 @@ class TfrmPropertiesObject : public TForm
 __published:	// IDE-managed Components
     TPanel *Panel1;
     TExtBtn *ebOk;
-    TOpenDialog *odMesh;
     TPageControl *pcObjects;
     TTabSheet *tsScript;
     TMemo *mmScript;
@@ -45,18 +44,13 @@ __published:	// IDE-managed Components
     TMxLabel *RxLabel5;
 	TTabSheet *tsSurfaces;
     TTabSheet *tsMeshes;
-	TElTree *tvSurfaces;
     TPanel *paBB;
     TStringGrid *sgBB;
     TElHeader *ElHeader1;
     TTabSheet *tsMainOptions;
-    TEdit *edName;
     TMultiObjCheck *cbMakeDynamic;
-    TMxLabel *RxLabel2;
-    TBevel *Bevel2;
     TMxLabel *RxLabel11;
     TPanel *paBottom;
-    TElTree *tvMeshes;
 	TMxPopupMenu *pmNumericSet;
 	TMenuItem *Position1;
 	TMenuItem *Rotation1;
@@ -111,7 +105,7 @@ __published:	// IDE-managed Components
 	TMxLabel *lbHeight;
 	TMxLabel *lbAlpha;
 	TPanel *paImage;
-	TPaintBox *im;
+	TPaintBox *pbImage;
 	TPanel *paSurface;
 	TGroupBox *GroupBox1;
 	TMxLabel *RxLabel18;
@@ -194,26 +188,20 @@ __published:	// IDE-managed Components
 	TExtBtn *ebApply;
 	TExtBtn *ebSelectShaderXRLC;
 	TMxLabel *lbShaderXRLC;
-    void __fastcall ebEditMeshClick(TObject *Sender);
+	TElTree *tvMeshes;
+	TElTree *tvSurfaces;
     void __fastcall FormKeyDown(TObject *Sender, WORD &Key,
           TShiftState Shift);
     void __fastcall ebCancelClick(TObject *Sender);
     void __fastcall ebOkClick(TObject *Sender);
-    void __fastcall ebAddMeshClick(TObject *Sender);
-    void __fastcall ebDeleteMeshClick(TObject *Sender);
     void __fastcall cbMakeDynamicClick(TObject *Sender);
     void __fastcall FormShow(TObject *Sender);
     void __fastcall tsInfoShow(TObject *Sender);
     void __fastcall tsSurfacesShow(TObject *Sender);
     void __fastcall tsMeshesShow(TObject *Sender);
-    void __fastcall tvSurfacesItemSelectedChange(TObject *Sender,
-          TElTreeItem *Item);
-    void __fastcall imPaint(TObject *Sender);
+    void __fastcall pbImagePaint(TObject *Sender);
     void __fastcall tsMainOptionsShow(TObject *Sender);
     void __fastcall OnModified(TObject *Sender);
-    void __fastcall ebMergeMeshClick(TObject *Sender);
-	void __fastcall tvMeshesItemSelectedChange(TObject *Sender,
-          TElTreeItem *Item);
 	void __fastcall cbSurfSideFlagClick(TObject *Sender);
 	void __fastcall ExtBtn1Click(TObject *Sender);
 	void __fastcall ExtBtn2Click(TObject *Sender);
@@ -251,9 +239,11 @@ __published:	// IDE-managed Components
 	void __fastcall ebApplyClick(TObject *Sender);
 	void __fastcall seTransformChange(TObject *Sender);
 	void __fastcall ebSelectShaderXRLCClick(TObject *Sender);
+	void __fastcall tvMeshesItemFocused(TObject *Sender);
+	void __fastcall tvSurfacesItemFocused(TObject *Sender);
 private:	// User declarations
-    EImageThumbnail*		tx_selected;
-    CSurface* 				surf_selected;
+    EImageThumbnail*		m_Thm;
+    CSurface* 				m_Surf;
 
     CSMotion* 				selected_smotion;
     COMotion* 				selected_omotion;
@@ -284,7 +274,7 @@ public:		// User declarations
     static void	SetCurrent	(CEditableObject* object);
     static void	Reset		(){m_EditObject=0;}
     static bool	IsModified	(){return form?form->ebOk->Enabled:false;}
-    static void	Pick		(const SRayPickInfo& pinf);
+    static void	OnPick		(const SRayPickInfo& pinf);
 };
 //---------------------------------------------------------------------------
 #endif

@@ -88,7 +88,6 @@ USEFORM("ImageEditor.cpp", frmTextureLib);
 USEFORM("FramePS.cpp", fraPS); /* TFrame: File Type */
 USEFORM("previewimage.cpp", frmPreviewImage);
 USELIB("lib\DXT.lib");
-USE("engine\nvdxt_options.h", File);
 USEFORM("FrameEmitter.cpp", fraEmitter); /* TFrame: File Type */
 USEUNIT("edit\xr_trims.cpp");
 USEFORM("PropertiesRPoint.cpp", frmPropertiesRPoint);

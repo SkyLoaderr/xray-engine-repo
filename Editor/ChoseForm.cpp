@@ -49,7 +49,7 @@ LPCSTR __fastcall TfrmChoseItem::SelectObject(bool bMulti, bool bExcludeSystem, 
     AStringVec& lst = Lib->Objects();
     for (AStringIt it=lst.begin(); it!=lst.end(); it++){
 		if (!start_folder||(start_folder&&(stricmp(start_folder,FOLDER::GetFolderName(it->c_str(),fld))==0)))
-			if (!bExcludeSystem||(bExcludeSystem&&((*it)[0]!='$')))
+			if (!bExcludeSystem||(bExcludeSystem&&(it->c_str()[0]!='$')))
             	FOLDER::AppendObject(form->tvItems,it->c_str());
     }
     // redraw

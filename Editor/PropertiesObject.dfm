@@ -1,6 +1,6 @@
 object frmPropertiesObject: TfrmPropertiesObject
-  Left = 369
-  Top = 357
+  Left = 551
+  Top = 360
   BorderIcons = [biSystemMenu, biMinimize]
   BorderStyle = bsSingle
   Caption = 'Object properties'
@@ -44,43 +44,15 @@ object frmPropertiesObject: TfrmPropertiesObject
         Caption = 'Main options'
         ImageIndex = 4
         OnShow = tsMainOptionsShow
-        object RxLabel2: TMxLabel
-          Left = 3
-          Top = 16
-          Width = 67
-          Height = 13
-          Caption = 'Object Name:'
-          ShadowColor = 15263976
-        end
-        object Bevel2: TBevel
-          Left = 72
-          Top = 14
-          Width = 328
-          Height = 17
-        end
-        object edName: TEdit
-          Left = 73
-          Top = 15
-          Width = 327
-          Height = 15
-          AutoSize = False
-          BorderStyle = bsNone
-          Color = 15263976
-          MaxLength = 32
-          ParentShowHint = False
-          ShowHint = True
-          TabOrder = 0
-          OnChange = OnModified
-        end
         object cbMakeDynamic: TMultiObjCheck
           Left = 4
-          Top = 36
+          Top = 12
           Width = 209
           Height = 17
           Caption = 'Dynamic behaviour ("dynamic object")'
           Checked = True
           State = cbChecked
-          TabOrder = 1
+          TabOrder = 0
           OnClick = cbMakeDynamicClick
         end
       end
@@ -190,31 +162,31 @@ object frmPropertiesObject: TfrmPropertiesObject
             RightAlignedText = False
             RightAlignedOrder = False
             Sections.Data = {
-              F5FFFFFF050000005000000000000000FFFFFFFF000001000000486F14000000
-              000000001027000000000000EC43B90504000000000065530000000000000100
-              000000000000000000010000000000007753656C6563740051FF034076FF0340
-              9BFF0340C0FF0340E4FF0340080004402A0004404B0004406F00044094000440
-              B6000440DC00044002010440260104404C010440010000000001000000000000
-              0000000000005000000000000000FFFFFFFF000001000000486F3C0000000000
-              000010270000000001008048B905000000000000655300000000000001000000
-              00000000000000010000000000007753656C6563740051FF034076FF03409BFF
-              0340C0FF0340E4FF0340080004402A0004404B0004406F00044094000440B600
-              0440DC00044002010440260104404C010440080000004D696E696D756D000100
-              00000000000000000000005000000000000000FFFFFFFF000001000000486F3C
-              0000000000000010270000000001004449B90501000000000065530000000000
-              000100000000000000000000010000000000007753656C6563740051FF034076
-              FF03409BFF0340C0FF0340E4FF0340080004402A0004404B0004406F00044094
-              000440B6000440DC00044002010440260104404C010440080000004D6178696D
-              756D00010000000000000000000000005000000000000000FFFFFFFF00000100
-              0000486F3C000000000000001027000000000100084AB9050200000000006553
-              0000000000000100000000000000000000010000000000007753656C65637400
-              51FF034076FF03409BFF0340C0FF0340E4FF0340080004402A0004404B000440
-              6F00044094000440B6000440DC00044002010440260104404C01044005000000
-              53697A6500010000000000000000000000005000000000000000FFFFFFFF0000
-              01000000486F3C000000000000001027000000000100CC4AB905030000000000
-              65530000000000000100000000000000000000010000000000007753656C6563
-              740051FF034076FF03409BFF0340C0FF0340E4FF0340080004402A0004404B00
-              04406F00044094000440B6000440DC00044002010440260104404C0104400700
+              F5FFFFFF050000006CF25E0900000000FFFFFFFF000001000000006414000000
+              000000001027000000000045EC43B9050400000000006E75000000000000016C
+              000000000000000000010000000000006F726C616E645C636F6D706F6E656E74
+              240000001B000000000000000A000000636F6D706F6E656E3C0000001B000000
+              000000000B0000004D784D656E75732E90000000010000000001000000000000
+              0000000000006CF25E0900000000FFFFFFFF00000100000000643C0000000000
+              000010270000000001458048B9050000000000006E75000000000000016C0000
+              00000000000000010000000000006F726C616E645C636F6D706F6E656E742400
+              00001B000000000000000A000000636F6D706F6E656E3C0000001B0000000000
+              00000B0000004D784D656E75732E90000000080000004D696E696D756D000100
+              00000000000000000000006CF25E0900000000FFFFFFFF00000100000000643C
+              0000000000000010270000000001454449B9050100000000006E750000000000
+              00016C000000000000000000010000000000006F726C616E645C636F6D706F6E
+              656E74240000001B000000000000000A000000636F6D706F6E656E3C0000001B
+              000000000000000B0000004D784D656E75732E90000000080000004D6178696D
+              756D00010000000000000000000000006CF25E0900000000FFFFFFFF00000100
+              000000643C000000000000001027000000000145084AB9050200000000006E75
+              000000000000016C000000000000000000010000000000006F726C616E645C63
+              6F6D706F6E656E74240000001B000000000000000A000000636F6D706F6E656E
+              3C0000001B000000000000000B0000004D784D656E75732E9000000005000000
+              53697A6500010000000000000000000000006CF25E0900000000FFFFFFFF0000
+              0100000000643C000000000000001027000000000145CC4AB905030000000000
+              6E75000000000000016C000000000000000000010000000000006F726C616E64
+              5C636F6D706F6E656E74240000001B000000000000000A000000636F6D706F6E
+              656E3C0000001B000000000000000B0000004D784D656E75732E900000000700
               000043656E7465720001000000000000000000000000}
             StickySections = False
             Tracking = True
@@ -352,65 +324,6 @@ object frmPropertiesObject: TfrmPropertiesObject
         Caption = 'Meshes'
         ImageIndex = 3
         OnShow = tsMeshesShow
-        object tvMeshes: TElTree
-          Left = 0
-          Top = 0
-          Width = 227
-          Height = 296
-          Cursor = crDefault
-          LeftPosition = 0
-          DoubleBuffered = False
-          DragCursor = crDrag
-          Align = alLeft
-          AutoCollapse = False
-          DockOrientation = doNoOrient
-          DefaultSectionWidth = 120
-          BorderSides = [ebsLeft, ebsRight, ebsTop, ebsBottom]
-          DoInplaceEdit = False
-          ExplorerEditMode = False
-          Font.Charset = DEFAULT_CHARSET
-          Font.Color = clBlack
-          Font.Height = -11
-          Font.Name = 'MS Sans Serif'
-          Font.Style = []
-          GradientSteps = 64
-          HeaderHeight = 19
-          HeaderHotTrack = False
-          HeaderSections.Data = {F5FFFFFF00000000}
-          HeaderFont.Charset = DEFAULT_CHARSET
-          HeaderFont.Color = clWindowText
-          HeaderFont.Height = -11
-          HeaderFont.Name = 'MS Sans Serif'
-          HeaderFont.Style = []
-          HorzScrollBarStyles.ShowTrackHint = False
-          HorzScrollBarStyles.Width = 16
-          HorzScrollBarStyles.ButtonSize = 16
-          HorzScrollBarStyles.UseSystemMetrics = False
-          IgnoreEnabled = False
-          IncrementalSearch = False
-          KeepSelectionWithinLevel = False
-          LineBorderActiveColor = clBlack
-          LineBorderInactiveColor = clBlack
-          LineHeight = 17
-          MouseFrameSelect = True
-          MultiSelect = False
-          OwnerDrawMask = '~~@~~'
-          ScrollbarOpposite = False
-          ShowButtons = False
-          ShowImages = False
-          ShowLeafButton = False
-          ShowRootButtons = False
-          StoragePath = '\Tree'
-          TabOrder = 0
-          TabStop = True
-          VertScrollBarStyles.ShowTrackHint = True
-          VertScrollBarStyles.Width = 16
-          VertScrollBarStyles.ButtonSize = 16
-          VertScrollBarStyles.UseSystemMetrics = False
-          VirtualityLevel = vlNone
-          BkColor = clBtnShadow
-          OnItemSelectedChange = tvMeshesItemSelectedChange
-        end
         object Panel2: TPanel
           Left = 227
           Top = 0
@@ -418,11 +331,11 @@ object frmPropertiesObject: TfrmPropertiesObject
           Height = 296
           Align = alClient
           BevelOuter = bvNone
-          TabOrder = 1
+          TabOrder = 0
           object GroupBox4: TGroupBox
             Left = 0
             Top = 0
-            Width = 136
+            Width = 137
             Height = 53
             Align = alTop
             Caption = ' Summary Info '
@@ -473,27 +386,25 @@ object frmPropertiesObject: TfrmPropertiesObject
             end
           end
         end
-      end
-      object tsSurfaces: TTabSheet
-        Caption = 'Surfaces'
-        ImageIndex = 2
-        OnShow = tsSurfacesShow
-        object tvSurfaces: TElTree
+        object tvMeshes: TElTree
           Left = 0
           Top = 0
-          Width = 210
+          Width = 227
           Height = 296
           Cursor = crDefault
           LeftPosition = 0
-          DoubleBuffered = False
           DragCursor = crDrag
-          Align = alClient
+          Align = alLeft
           AutoCollapse = False
           DockOrientation = doNoOrient
           DefaultSectionWidth = 120
           BorderSides = [ebsLeft, ebsRight, ebsTop, ebsBottom]
+          CustomPlusMinus = True
           DoInplaceEdit = False
+          DrawFocusRect = False
           ExplorerEditMode = False
+          FocusedSelectColor = 10526880
+          FocusedSelectTextColor = clBlack
           Font.Charset = DEFAULT_CHARSET
           Font.Color = clBlack
           Font.Height = -11
@@ -508,36 +419,69 @@ object frmPropertiesObject: TfrmPropertiesObject
           HeaderFont.Height = -11
           HeaderFont.Name = 'MS Sans Serif'
           HeaderFont.Style = []
+          HorizontalLines = True
+          HorzDivLinesColor = 7368816
           HorzScrollBarStyles.ShowTrackHint = False
           HorzScrollBarStyles.Width = 16
           HorzScrollBarStyles.ButtonSize = 16
           HorzScrollBarStyles.UseSystemMetrics = False
+          HorzScrollBarStyles.UseXPThemes = False
           IgnoreEnabled = False
           IncrementalSearch = False
+          ItemIndent = 14
           KeepSelectionWithinLevel = False
           LineBorderActiveColor = clBlack
           LineBorderInactiveColor = clBlack
-          LineHeight = 17
+          LineHeight = 16
+          MinusPicture.Data = {
+            F6000000424DF600000000000000360000002800000008000000080000000100
+            180000000000C0000000120B0000120B00000000000000000000808080808080
+            808080808080808080808080808080808080808080808080808080E0E0E08080
+            80808080808080808080808080808080808080E0E0E080808080808080808080
+            8080808080808080E0E0E0E0E0E0E0E0E0808080808080808080808080808080
+            E0E0E0E0E0E0E0E0E0808080808080808080808080E0E0E0E0E0E0E0E0E0E0E0
+            E0E0E0E0808080808080808080E0E0E0E0E0E0E0E0E0E0E0E0E0E0E080808080
+            8080808080808080808080808080808080808080808080808080}
           MouseFrameSelect = True
           MultiSelect = False
           OwnerDrawMask = '~~@~~'
-          ParentFont = False
+          PlusMinusTransparent = True
+          PlusPicture.Data = {
+            F6000000424DF600000000000000360000002800000008000000080000000100
+            180000000000C0000000120B0000120B00000000000000000000808080808080
+            8080808080808080808080808080808080808080808080808080808080808080
+            80808080808080808080808080E0E0E0E0E0E080808080808080808080808080
+            8080808080E0E0E0E0E0E0E0E0E0E0E0E0808080808080808080808080E0E0E0
+            E0E0E0E0E0E0E0E0E0E0E0E0E0E0E0808080808080E0E0E0E0E0E0E0E0E0E0E0
+            E0808080808080808080808080E0E0E0E0E0E080808080808080808080808080
+            8080808080808080808080808080808080808080808080808080}
           ScrollbarOpposite = False
-          ShowButtons = False
+          ScrollTracking = True
           ShowImages = False
           ShowLeafButton = False
-          ShowRootButtons = False
+          ShowLines = False
           StoragePath = '\Tree'
-          TabOrder = 0
+          TabOrder = 1
           TabStop = True
+          Tracking = False
+          TrackColor = clBlack
+          VertDivLinesColor = 7368816
+          VerticalLines = True
           VertScrollBarStyles.ShowTrackHint = True
           VertScrollBarStyles.Width = 16
           VertScrollBarStyles.ButtonSize = 16
           VertScrollBarStyles.UseSystemMetrics = False
+          VertScrollBarStyles.UseXPThemes = False
           VirtualityLevel = vlNone
-          BkColor = clBtnShadow
-          OnItemSelectedChange = tvSurfacesItemSelectedChange
+          UseXPThemes = False
+          BkColor = clGray
+          OnItemFocused = tvMeshesItemFocused
         end
+      end
+      object tsSurfaces: TTabSheet
+        Caption = 'Surfaces'
+        ImageIndex = 2
+        OnShow = tsSurfacesShow
         object paTex_Surf: TPanel
           Left = 210
           Top = 0
@@ -545,7 +489,7 @@ object frmPropertiesObject: TfrmPropertiesObject
           Height = 296
           Align = alRight
           BevelOuter = bvNone
-          TabOrder = 1
+          TabOrder = 0
           object paTexture: TPanel
             Left = 0
             Top = 0
@@ -636,13 +580,13 @@ object frmPropertiesObject: TfrmPropertiesObject
                 BevelOuter = bvLowered
                 Caption = '<image>'
                 TabOrder = 0
-                object im: TPaintBox
+                object pbImage: TPaintBox
                   Left = 1
                   Top = 1
                   Width = 145
                   Height = 145
                   Align = alClient
-                  OnPaint = imPaint
+                  OnPaint = pbImagePaint
                 end
               end
             end
@@ -1008,6 +952,100 @@ object frmPropertiesObject: TfrmPropertiesObject
               OnClick = ExtBtn2Click
             end
           end
+        end
+        object tvSurfaces: TElTree
+          Left = 0
+          Top = 0
+          Width = 209
+          Height = 296
+          Cursor = crDefault
+          LeftPosition = 0
+          DragCursor = crDrag
+          Align = alLeft
+          AutoCollapse = False
+          DockOrientation = doNoOrient
+          DefaultSectionWidth = 120
+          BorderSides = [ebsLeft, ebsRight, ebsTop, ebsBottom]
+          CustomPlusMinus = True
+          DoInplaceEdit = False
+          DrawFocusRect = False
+          ExplorerEditMode = False
+          FocusedSelectColor = 10526880
+          FocusedSelectTextColor = clBlack
+          Font.Charset = DEFAULT_CHARSET
+          Font.Color = clBlack
+          Font.Height = -11
+          Font.Name = 'MS Sans Serif'
+          Font.Style = []
+          GradientSteps = 64
+          HeaderHeight = 19
+          HeaderHotTrack = False
+          HeaderSections.Data = {F5FFFFFF00000000}
+          HeaderFont.Charset = DEFAULT_CHARSET
+          HeaderFont.Color = clWindowText
+          HeaderFont.Height = -11
+          HeaderFont.Name = 'MS Sans Serif'
+          HeaderFont.Style = []
+          HorizontalLines = True
+          HorzDivLinesColor = 7368816
+          HorzScrollBarStyles.ShowTrackHint = False
+          HorzScrollBarStyles.Width = 16
+          HorzScrollBarStyles.ButtonSize = 16
+          HorzScrollBarStyles.UseSystemMetrics = False
+          HorzScrollBarStyles.UseXPThemes = False
+          IgnoreEnabled = False
+          IncrementalSearch = False
+          ItemIndent = 14
+          KeepSelectionWithinLevel = False
+          LineBorderActiveColor = clBlack
+          LineBorderInactiveColor = clBlack
+          LineHeight = 16
+          MinusPicture.Data = {
+            F6000000424DF600000000000000360000002800000008000000080000000100
+            180000000000C0000000120B0000120B00000000000000000000808080808080
+            808080808080808080808080808080808080808080808080808080E0E0E08080
+            80808080808080808080808080808080808080E0E0E080808080808080808080
+            8080808080808080E0E0E0E0E0E0E0E0E0808080808080808080808080808080
+            E0E0E0E0E0E0E0E0E0808080808080808080808080E0E0E0E0E0E0E0E0E0E0E0
+            E0E0E0E0808080808080808080E0E0E0E0E0E0E0E0E0E0E0E0E0E0E080808080
+            8080808080808080808080808080808080808080808080808080}
+          MouseFrameSelect = True
+          MultiSelect = False
+          OwnerDrawMask = '~~@~~'
+          PlusMinusTransparent = True
+          PlusPicture.Data = {
+            F6000000424DF600000000000000360000002800000008000000080000000100
+            180000000000C0000000120B0000120B00000000000000000000808080808080
+            8080808080808080808080808080808080808080808080808080808080808080
+            80808080808080808080808080E0E0E0E0E0E080808080808080808080808080
+            8080808080E0E0E0E0E0E0E0E0E0E0E0E0808080808080808080808080E0E0E0
+            E0E0E0E0E0E0E0E0E0E0E0E0E0E0E0808080808080E0E0E0E0E0E0E0E0E0E0E0
+            E0808080808080808080808080E0E0E0E0E0E080808080808080808080808080
+            8080808080808080808080808080808080808080808080808080}
+          ScrollbarOpposite = False
+          ScrollTracking = True
+          ShowButtons = False
+          ShowImages = False
+          ShowLeafButton = False
+          ShowLines = False
+          ShowRoot = True
+          ShowRootButtons = False
+          StoragePath = '\Tree'
+          TabOrder = 1
+          TabStop = True
+          Tracking = False
+          TrackColor = clBlack
+          VertDivLinesColor = 7368816
+          VerticalLines = True
+          VertScrollBarStyles.ShowTrackHint = True
+          VertScrollBarStyles.Width = 16
+          VertScrollBarStyles.ButtonSize = 16
+          VertScrollBarStyles.UseSystemMetrics = False
+          VertScrollBarStyles.UseXPThemes = False
+          VirtualityLevel = vlNone
+          UseXPThemes = False
+          BkColor = clGray
+          OnItemFocused = tvSurfacesItemFocused
         end
       end
       object tsOAnimation: TTabSheet
@@ -1889,7 +1927,7 @@ object frmPropertiesObject: TfrmPropertiesObject
         object mmScript: TMemo
           Left = 0
           Top = 0
-          Width = 262
+          Width = 263
           Height = 296
           Hint = 'Sample LTX-script:'#13#10'[object_name]'#13#10'prop1=...'#13#10'prop2=...'
           Align = alClient
@@ -1903,7 +1941,7 @@ object frmPropertiesObject: TfrmPropertiesObject
           OnChange = OnModified
         end
         object gbTemplates: TGroupBox
-          Left = 262
+          Left = 263
           Top = 0
           Width = 101
           Height = 296
@@ -1919,6 +1957,12 @@ object frmPropertiesObject: TfrmPropertiesObject
             BevelShow = False
             CloseButton = False
             Caption = 'Monster'
+            Font.Charset = DEFAULT_CHARSET
+            Font.Color = clWindowText
+            Font.Height = -11
+            Font.Name = 'MS Sans Serif'
+            Font.Style = []
+            ParentFont = False
             Transparent = False
             FlatAlwaysEdge = True
           end
@@ -1931,6 +1975,12 @@ object frmPropertiesObject: TfrmPropertiesObject
             BevelShow = False
             CloseButton = False
             Caption = 'Helicopter'
+            Font.Charset = DEFAULT_CHARSET
+            Font.Color = clWindowText
+            Font.Height = -11
+            Font.Name = 'MS Sans Serif'
+            Font.Style = []
+            ParentFont = False
             Transparent = False
             FlatAlwaysEdge = True
           end
@@ -1943,6 +1993,12 @@ object frmPropertiesObject: TfrmPropertiesObject
             BevelShow = False
             CloseButton = False
             Caption = 'Doors'
+            Font.Charset = DEFAULT_CHARSET
+            Font.Color = clWindowText
+            Font.Height = -11
+            Font.Name = 'MS Sans Serif'
+            Font.Style = []
+            ParentFont = False
             Transparent = False
             FlatAlwaysEdge = True
           end
@@ -1955,6 +2011,12 @@ object frmPropertiesObject: TfrmPropertiesObject
             BevelShow = False
             CloseButton = False
             Caption = 'Boat'
+            Font.Charset = DEFAULT_CHARSET
+            Font.Color = clWindowText
+            Font.Height = -11
+            Font.Name = 'MS Sans Serif'
+            Font.Style = []
+            ParentFont = False
             Transparent = False
             FlatAlwaysEdge = True
           end
@@ -1967,6 +2029,12 @@ object frmPropertiesObject: TfrmPropertiesObject
             BevelShow = False
             CloseButton = False
             Caption = 'Lift'
+            Font.Charset = DEFAULT_CHARSET
+            Font.Color = clWindowText
+            Font.Height = -11
+            Font.Name = 'MS Sans Serif'
+            Font.Style = []
+            ParentFont = False
             Transparent = False
             FlatAlwaysEdge = True
           end
@@ -1979,6 +2047,12 @@ object frmPropertiesObject: TfrmPropertiesObject
             BevelShow = False
             CloseButton = False
             Caption = 'Weapon'
+            Font.Charset = DEFAULT_CHARSET
+            Font.Color = clWindowText
+            Font.Height = -11
+            Font.Name = 'MS Sans Serif'
+            Font.Style = []
+            ParentFont = False
             Transparent = False
             FlatAlwaysEdge = True
           end
@@ -1991,6 +2065,12 @@ object frmPropertiesObject: TfrmPropertiesObject
             BevelShow = False
             CloseButton = False
             Caption = 'Item'
+            Font.Charset = DEFAULT_CHARSET
+            Font.Color = clWindowText
+            Font.Height = -11
+            Font.Name = 'MS Sans Serif'
+            Font.Style = []
+            ParentFont = False
             Transparent = False
             FlatAlwaysEdge = True
           end
@@ -2094,21 +2174,14 @@ object frmPropertiesObject: TfrmPropertiesObject
       OnClick = ebApplyClick
     end
   end
-  object odMesh: TOpenDialog
-    Filter = 'Mesh file (*.mesh)|*.mesh'
-    Options = [ofHideReadOnly, ofNoChangeDir, ofPathMustExist, ofFileMustExist, ofEnableSizing]
-    Title = 'Open Mesh file'
-    Left = 10
-    Top = 3
-  end
   object pmNumericSet: TMxPopupMenu
     AutoPopup = False
     MenuAnimation = [maTopToBottom]
     MarginEndColor = clBlack
     LeftMargin = 15
     Style = msBtnLowered
-    Left = 38
-    Top = 3
+    Left = 6
+    Top = 307
     object Position1: TMenuItem
       Caption = 'Position'
     end
@@ -2133,7 +2206,7 @@ object frmPropertiesObject: TfrmPropertiesObject
         Name = 'EmitterDirZ'
         Value = 0s
       end>
-    Left = 66
-    Top = 3
+    Left = 34
+    Top = 307
   end
 end

@@ -39,8 +39,8 @@ bool SceneBuilder::WriteTextures(){
         AnsiString src_nm = m_TexNames[i];
         AnsiString dst_nm = src_nm;
         m_LevelPath.Update(dst_nm);
-        EImageThumbnail* m_Thm = new EImageThumbnail(src_nm.c_str(),EImageThumbnail::EITTexture);
-        STextureParams& F=m_Thm->_Format();
+        EImageThumbnail m_Thm(src_nm.c_str(),EImageThumbnail::EITTexture);
+        STextureParams& F=m_Thm._Format();
 		if (F.flag.bImplicitLighted)
 	        FS.CopyFileTo(src_nm.c_str(),dst_nm.c_str(),true);
 	    UI.ProgressInc();

@@ -18,6 +18,7 @@
 #pragma resource "*.dfm"
 TfrmImageLib* TfrmImageLib::form = 0;
 AStringVec TfrmImageLib::check_tex_list;
+AStringVec TfrmImageLib::modif_tex_list;
 //---------------------------------------------------------------------------
 __fastcall TfrmImageLib::TfrmImageLib(TComponent* Owner)
     : TForm(Owner)
@@ -34,6 +35,9 @@ void __fastcall TfrmImageLib::EditImageLib(AnsiString& title, bool bCheck){
 	    form->bCheckMode = bCheck;
 
         if (form->bCheckMode) form->ebClose->Caption = "Update&&Close";
+		form->modif_tex_list.clear();
+        form->m_Thm = 0;
+        form->m_SelectedName = "";
 
         // scene locking
         Scene->lock();
@@ -54,6 +58,7 @@ bool __fastcall TfrmImageLib::HideImageLib(){
 	if (form){
     	form->Close();
     	check_tex_list.clear();
+		modif_tex_list.clear();
     }
     return true;
 }
@@ -98,10 +103,20 @@ void __fastcall TfrmImageLib::FormClose(TObject *Sender, TCloseAction &Action)
             UI.ProgressInc();
         }
         UI.ProgressEnd();
-    }
+    }else{
+	    // save game textures
+        UI.ProgressStart(modif_tex_list.size(),"Save modified textures...");
+    	for (AStringIt it=modif_tex_list.begin(); it!=modif_tex_list.end(); it++){
+			ImageManager.CreateGameTexture(it->c_str());
+            UI.ProgressInc();
+        }
+        UI.ProgressEnd();
+	}
+
     UI.Command(COMMAND_REFRESH_TEXTURES,false);
 
 	_DELETE(m_Thm);
+    m_SelectedName = "";
 
 	form = 0;
 	Action = caFree;
@@ -151,24 +166,27 @@ void __fastcall TfrmImageLib::ebCloseClick(TObject *Sender)
 //---------------------------------------------------------------------------
 
 void __fastcall TfrmImageLib::SaveTextureParams(){
-	if (m_Thm&&ImageProps->IsModified())
+	if (m_Thm&&ImageProps->IsModified()){
         m_Thm->Save();
+        if (find(modif_tex_list.begin(),modif_tex_list.end(),m_SelectedName)==modif_tex_list.end())
+        	modif_tex_list.push_back(m_SelectedName);
+    }
 }
 
 void __fastcall TfrmImageLib::tvItemsItemFocused(TObject *Sender)
 {
 	TElTreeItem* Item = tvItems->Selected;
 	if (Item&&Item->Data){
-        AnsiString nm;
-    	FOLDER::MakeName(Item,0,nm,false);
 		// save previous data
         SaveTextureParams();
+        // make new name
+    	FOLDER::MakeName(Item,0,m_SelectedName,false);
 		_DELETE(m_Thm);
         // get new texture
-        m_Thm = new EImageThumbnail(nm.c_str(),EImageThumbnail::EITTexture);
+        m_Thm = new EImageThumbnail(m_SelectedName.c_str(),EImageThumbnail::EITTexture);
         if (!m_Thm->Valid())	pbImage->Repaint();
         else	 				pbImagePaint(Sender);
-        lbFileName->Caption 	= "\""+ChangeFileExt(nm,"")+"\"";
+        lbFileName->Caption 	= "\""+ChangeFileExt(m_SelectedName,"")+"\"";
 		AnsiString temp; 		temp.sprintf("%d x %d x %s",m_Thm->_Width(),m_Thm->_Height(),m_Thm->_Format().HasAlphaChannel()?"32b":"24b");
         lbInfo->Caption			= temp;
         // set UI
@@ -189,6 +207,8 @@ void __fastcall TfrmImageLib::tvItemsItemFocused(TObject *Sender)
         ImageProps->AddItem(marker_node,PROP_FLAG,"Fade To Color",		(LPDWORD)&fmt.flag,(LPDWORD)STextureParams::flFadeToColor);
         ImageProps->AddItem(marker_node,PROP_FLAG,"Fade To Alpha",		(LPDWORD)&fmt.flag,(LPDWORD)STextureParams::flFadeToAlpha);
         ImageProps->AddItem(marker_node,PROP_FLAG,"Dither",				(LPDWORD)&fmt.flag,(LPDWORD)STextureParams::flDitherColor);
+        ImageProps->AddItem(marker_node,PROP_FLAG,"Dither Each MIP",	(LPDWORD)&fmt.flag,(LPDWORD)STextureParams::flDitherEachMIPLevel);
+        ImageProps->AddItem(marker_node,PROP_FLAG,"Grayscale",			(LPDWORD)&fmt.flag,(LPDWORD)STextureParams::flGreyScale);
         ImageProps->AddItem(marker_node,PROP_FLAG,"Implicit Lighted",	(LPDWORD)&fmt.flag,(LPDWORD)STextureParams::flImplicitLighted);
         ImageProps->AddItem(0,PROP_TOKEN,"Mip Filter",		(LPDWORD)&fmt.mip_filter,(LPDWORD)tparam_token);
         ImageProps->AddItem(0,PROP_COLOR,"Border Color",	(LPDWORD)&fmt.border_color);
@@ -198,6 +218,7 @@ void __fastcall TfrmImageLib::tvItemsItemFocused(TObject *Sender)
     }else{
 		ImageProps->Clear();
 		_DELETE(m_Thm);
+        m_SelectedName = "";
 		lbFileName->Caption	= "...";
 		lbInfo->Caption		= "...";
     }
