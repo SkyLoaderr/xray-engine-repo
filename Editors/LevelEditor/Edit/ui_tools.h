@@ -9,9 +9,11 @@ class TUI_Control;
 
 //---------------------------------------------------------------------------
 enum ETarget{
+	etFirstTool=0,
 	etGroup=0,
     etObject,
     etLight,
+    etShape,
     etSound,
     etGlow,
     etSpawnPoint,
@@ -56,7 +58,6 @@ class TUI_Tools{
     TUI_CustomTools*pCurTools;
 
     void __fastcall SetTargetAction	();
-    void __fastcall AddTool     	(ETarget tgt, TUI_CustomTools* t);
 
     void __fastcall SetAction   	(int act);
     void __fastcall SetTarget   	(int tgt,bool bForced=false);

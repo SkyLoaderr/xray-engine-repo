@@ -94,6 +94,7 @@ void TUI_CustomTools::ShowProperties(){
     	case OBJCLASS_GROUP:		TfrmPropertiesGroup::Run(&objset,bChange); 		break;
     	case OBJCLASS_SCENEOBJECT:	TfrmPropertiesSceneObject::Run(&objset,bChange);break;
 	    case OBJCLASS_LIGHT:    	frmPropertiesLightRun(&objset,bChange);			break;
+        case OBJCLASS_SHAPE:		break;
 	    case OBJCLASS_SOUND:    	frmPropertiesSoundRun(&objset,bChange); 		break;
 	    case OBJCLASS_GLOW:     	frmPropertiesGlowRun(&objset,bChange);			break;
 	    case OBJCLASS_SECTOR:   	frmPropertiesSectorRun(&objset,bChange); 		break;

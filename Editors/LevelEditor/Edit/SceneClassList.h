@@ -9,6 +9,7 @@
 class CEditableObject;
 class CEditableMesh;
 class CSceneObject;
+class TUI_CustomTools;
 
 #ifdef _EDITOR
 	struct SRayPickInfo{
@@ -43,7 +44,7 @@ enum EObjClass{
     OBJCLASS_GLOW	   	= 1,
     OBJCLASS_SCENEOBJECT= 2,
     OBJCLASS_LIGHT	   	= 3,
-    OBJCLASS_F_R_E_E  	= 4,
+    OBJCLASS_SHAPE  	= 4,
     OBJCLASS_SOUND	   	= 5,
     OBJCLASS_SPAWNPOINT	= 6,
     OBJCLASS_WAY	  	= 7,
@@ -57,6 +58,7 @@ enum EObjClass{
 };
 
 //----------------------------------------------------
+TUI_CustomTools*NewToolFromTarget		(int tgt);
 CCustomObject*	NewObjectFromClassID	(int _ClassID, LPVOID data, LPCSTR name);
 LPSTR 			GetNameByClassID		(EObjClass cls_id);
 LPSTR 			GetClassNameByClassID	(EObjClass cls_id);

@@ -59,23 +59,28 @@ bool TUI_CustomControl::HiddenMode(){
 //------------------------------------------------------------------------------
 // add
 //------------------------------------------------------------------------------
-CCustomObject* __fastcall TUI_CustomControl::DefaultAddObject(TShiftState Shift, TAppendCallback cb)
+CCustomObject* __fastcall TUI_CustomControl::DefaultAddObject(TShiftState Shift, TBeforeAppendCallback before, TAfterAppendCallback after)
 {
     if (Shift==ssRBOnly){ UI.Command(COMMAND_SHOWCONTEXTMENU,parent_tool->objclass); return 0;}
     Fvector p,n;
     CCustomObject* obj=0;
     if (UI.PickGround(p,UI.m_CurrentRStart,UI.m_CurrentRNorm,1,&n)){
-    	SAppendCallbackParams P;
-    	if (cb){
-        	if (!cb(&P)) return 0;
-        }
+		// before callback
+    	SBeforeAppendCallbackParams P;
+    	if (before&&!before(&P)) return 0;
+
 		char namebuffer[MAX_OBJ_NAME];
-		Scene.GenObjectName(parent_tool->objclass, namebuffer, P.prefix.c_str());
+		Scene.GenObjectName(parent_tool->objclass, namebuffer, P.name_prefix.c_str());
 		obj = NewObjectFromClassID(parent_tool->objclass, P.data, namebuffer);
         if (!obj->Valid()){
         	_DELETE(obj);
             return 0;
         }
+        // after callback
+    	if (after&&!after(obj)){
+        	_DELETE(obj);
+            return 0;
+        } 
 		obj->MoveTo(p,n);
         Scene.SelectObjects(false,parent_tool->objclass);
 		Scene.AddObject(obj);

@@ -159,6 +159,7 @@ __published:	// IDE-managed Components
 	TMenuItem *N21;
 	TMenuItem *ImportCompilerErrors;
 	TMenuItem *NextError1;
+	TExtBtn *ebTargetShape;
     void __fastcall ebClearClick(TObject *Sender);
     void __fastcall ebLoadClick(TObject *Sender);
     void __fastcall ebSaveClick(TObject *Sender);

@@ -72,7 +72,7 @@ void CEvent::SForm::RenderBox(const Fmatrix& parent, bool bAlpha){
 		Device.SetRS(D3DRS_CULLMODE,D3DCULL_NONE);
         Device.SetTransform(D3DTS_WORLD,T);
 	    Device.SetShader(Device.m_SelectionShader);
-        DU::DrawIdentBox(true,false,&C);
+        DU::DrawIdentBox(true,false,C);
 		Device.SetRS(D3DRS_CULLMODE,D3DCULL_CCW);
     }else{
         C=D3DCOLOR_RGBA( m_Selected?255:32,m_Selected?255:32,m_Selected?255:32, 255 );
@@ -80,7 +80,7 @@ void CEvent::SForm::RenderBox(const Fmatrix& parent, bool bAlpha){
         Device.SetTransform(D3DTS_WORLD,T);
 	    Device.SetShader(Device.m_WireShader);
         Device.ResetNearer();
-        DU::DrawIdentBox(false,true,&C);
+        DU::DrawIdentBox(false,true,C);
 		if (fraBottomBar->miDrawObjectsPivot->Checked&&m_Selected){
     		Device.SetShader(Device.m_WireShader);
     		DU::DrawObjectAxis(Trp);

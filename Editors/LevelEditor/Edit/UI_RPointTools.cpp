@@ -26,11 +26,11 @@ void TUI_SpawnPointTools::OnDeactivate(){
 __fastcall TUI_ControlSpawnPointAdd::TUI_ControlSpawnPointAdd(int st, int act, TUI_CustomTools* parent):TUI_CustomControl(st,act,parent){
 }
 
-bool __fastcall TUI_ControlSpawnPointAdd::AppendCallback(SAppendCallbackParams* p)
+bool __fastcall TUI_ControlSpawnPointAdd::AppendCallback(SBeforeAppendCallbackParams* p)
 {
-	p->prefix 	= ((TfraSpawnPoint*)parent_tool->pFrame)->GetCurrentEntity();
-	p->data 	= p->prefix.c_str();
-    return !p->prefix.IsEmpty();
+	p->name_prefix 	= ((TfraSpawnPoint*)parent_tool->pFrame)->GetCurrentEntity();
+	p->data 		= p->name_prefix.c_str();
+    return !p->name_prefix.IsEmpty();
 }
 
 bool __fastcall TUI_ControlSpawnPointAdd::Start(TShiftState Shift)

@@ -9,19 +9,6 @@
 #include "Scene.h"
 #include "ui_main.h"
 
-#include "UI_LightTools.h"
-#include "UI_ObjectTools.h"
-#include "UI_SoundTools.h"
-#include "UI_GlowTools.h"
-#include "UI_RPointTools.h"
-#include "UI_WayPointTools.h"
-#include "UI_SectorTools.h"
-#include "UI_PortalTools.h"
-#include "UI_EventTools.h"
-#include "UI_PSTools.h"
-#include "UI_DOTools.h"
-#include "UI_GroupTools.h"
-
 #include "editlibrary.h"
 
 #define DETACH_FRAME(a) if (a){ (a)->Parent = NULL;}
@@ -57,20 +44,8 @@ void TUI_Tools::OnCreate(){
     bNeedChangeAction=false;
     bNeedChangeTarget=false;
 // create tools
-	AddTool			(etGroup,		new TUI_GroupTools		());
-    AddTool			(etLight, 		new TUI_LightTools		());
-    AddTool			(etObject,		new TUI_ObjectTools		());
-    AddTool			(etSound, 		new TUI_SoundTools		());
-    AddTool			(etGlow,   		new TUI_GlowTools		());
-    AddTool			(etSpawnPoint, 	new TUI_SpawnPointTools	());
-    AddTool			(etSector, 		new TUI_SectorTools		());
-    AddTool			(etPortal, 		new TUI_PortalTools		());
-    AddTool			(etEvent, 		new TUI_EventTools		());
-    AddTool			(etWay,			new TUI_WayPointTools	());
-    AddTool			(etPS, 			new TUI_PSTools			());
-    AddTool			(etDO,			new TUI_DOTools			());
-// check tools
-    for (DWORD i=0; i<etMaxTarget; i++) VERIFY2(m_pTools[i], "Can't find specify tools.");
+    for (int tgt=etFirstTool; tgt<etMaxTarget; tgt++)
+		m_pTools[tgt]=NewToolFromTarget(tgt);
 }
 //---------------------------------------------------------------------------
 
@@ -80,12 +55,6 @@ void TUI_Tools::OnDestroy(){
 //---------------------------------------------------------------------------
 void TUI_Tools::Reset(){
 	SetTarget(GetTarget(),true);
-}
-//---------------------------------------------------------------------------
-
-void __fastcall TUI_Tools::AddTool(ETarget tgt, TUI_CustomTools* t){
-    VERIFY(t);
-    m_pTools[tgt]=t;
 }
 //---------------------------------------------------------------------------
 

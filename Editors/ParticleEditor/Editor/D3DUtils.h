@@ -26,6 +26,7 @@ namespace DU{
 
     void DrawSound(const Fvector& p, float radius, DWORD clr);
     void DrawLineSphere(const Fvector& p, float radius, DWORD clr, bool bCross);
+    void DrawSphere(const Fvector& p, float radius, DWORD clr);
 
 	void dbgDrawPlacement(const Fvector& p, int sz, DWORD clr, LPCSTR caption=0, DWORD clr_font=0xffffffff);
     void dbgDrawVert(const Fvector& p0, DWORD clr, LPCSTR caption=0);
@@ -49,7 +50,7 @@ namespace DU{
         box.getcenter(C);
         DrawSelectionBox(C,S,c);
     }
-    void DrawIdentBox(bool bSolid, bool bWire, DWORD* c=0);
+    void DrawIdentBox(bool bSolid, bool bWire, u32 clr);
     void DrawBox    (const Fvector& offs, const Fvector& Size, bool bWire, DWORD c);
     void DrawPlane  (const Fvector& center, const Fvector2& scale, const Fvector& rotate, DWORD c, bool bCull, bool bBorder, DWORD cb);
 

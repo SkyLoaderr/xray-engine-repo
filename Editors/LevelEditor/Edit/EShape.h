@@ -24,17 +24,18 @@ private:
     DEFINE_VECTOR	(shape_def,ShapeVec,ShapeIt);
     ShapeVec		m_Shapes;
     
-	void			add_sphere		( Fsphere& S );
-	void			add_box			( Fmatrix& B );
-	void			ComputeBounds	( );
-// common props
+// bounds
 	Fbox			m_Box;
 	Fsphere			m_Sphere;
+	void			ComputeBounds	( );
 
-    void			ScaleShapes		(Fvector& val);
+    void			ScaleShapes		(const Fvector& val);
+public:
+	void			add_sphere		(const Fsphere& S);
+	void			add_box			(const Fmatrix& B);
 protected:                 
     virtual void 	SetScale		(Fvector& val)	{ ScaleShapes(val); UpdateTransform();}
-//    virtual void	OnUpdateTransform();
+    virtual void	OnUpdateTransform();
 public:
 					CEditShape 	(LPVOID data, LPCSTR name);
 	void 			Construct	(LPVOID data);

@@ -48,7 +48,7 @@ public:
     // spot light
     AnsiString		m_SpotAttTex;
 
-    void			OnUpdateTransform();
+    virtual void	OnUpdateTransform();
 protected:                 
     virtual Fvector& GetPosition	()	{ return m_D3D.position; 	}
     virtual void 	SetPosition		(Fvector& pos)	{ m_D3D.position.set(pos);	UpdateTransform();}

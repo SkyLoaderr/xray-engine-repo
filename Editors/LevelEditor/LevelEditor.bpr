@@ -108,7 +108,9 @@
       intermediate\DetailManager_CACHE.obj intermediate\HW.obj 
       intermediate\defines.obj intermediate\GameFont.obj 
       intermediate\Blender_Model_EbB.obj intermediate\GameMtlLib.obj 
-      intermediate\Blender_B.obj"/>
+      intermediate\Blender_B.obj intermediate\du_sphere.obj 
+      intermediate\EShape.obj intermediate\UI_ShapeTools.obj 
+      intermediate\FrameShape.obj intermediate\du_box.obj"/>
     <RESFILES value="LevelEditor.res resource.res"/>
     <IDLFILES value=""/>
     <IDLGENFILES value=""/>
@@ -124,7 +126,7 @@
       FrameDetObj.dfm DOShuffle.dfm DOOneColor.dfm PropertiesDetailObject.dfm 
       PropertiesList.dfm PropertiesSceneObject.dfm EventOneAction.dfm 
       EditLightAnim.dfm PropertiesEObject.dfm FrameGroup.dfm PropertiesGroup.dfm 
-      FrameEvent.dfm TextForm.dfm PropertiesWayPoint.dfm"/>
+      FrameEvent.dfm TextForm.dfm PropertiesWayPoint.dfm FrameShape.dfm"/>
     <LIBFILES value="lib\LWO.lib lib\cg32.lib lib\xrProgressive.lib lib\MagicFMd.lib 
       lib\DXT.lib lib\gauss.lib lib\DX\d3d8.lib lib\DX\d3dx8d.lib 
       lib\DX\dinput.lib lib\ETools.lib lib\FreeImage.lib lib\xrCDB.lib 
@@ -405,6 +407,11 @@
       <FILE FILENAME="Engine\GameMtlLib.cpp" FORMNAME="" UNITNAME="GameMtlLib" CONTAINERID="CCompiler" DESIGNCLASS="" LOCALCOMMAND=""/>
       <FILE FILENAME="edit\LevelGameDef.h" FORMNAME="" UNITNAME="LevelGameDef.h" CONTAINERID="" DESIGNCLASS="" LOCALCOMMAND=""/>
       <FILE FILENAME="Engine\Blenders\Blender_B.cpp" FORMNAME="" UNITNAME="Blender_B" CONTAINERID="CCompiler" DESIGNCLASS="" LOCALCOMMAND=""/>
+      <FILE FILENAME="edit\du_sphere.cpp" FORMNAME="" UNITNAME="du_sphere" CONTAINERID="CCompiler" DESIGNCLASS="" LOCALCOMMAND=""/>
+      <FILE FILENAME="edit\EShape.cpp" FORMNAME="" UNITNAME="EShape" CONTAINERID="CCompiler" DESIGNCLASS="" LOCALCOMMAND=""/>
+      <FILE FILENAME="edit\UI_ShapeTools.cpp" FORMNAME="" UNITNAME="UI_ShapeTools" CONTAINERID="CCompiler" DESIGNCLASS="" LOCALCOMMAND=""/>
+      <FILE FILENAME="FrameShape.cpp" FORMNAME="fraShape" UNITNAME="FrameShape" CONTAINERID="CCompiler" DESIGNCLASS="TFrame" LOCALCOMMAND=""/>
+      <FILE FILENAME="edit\du_box.cpp" FORMNAME="" UNITNAME="du_box" CONTAINERID="CCompiler" DESIGNCLASS="" LOCALCOMMAND=""/>
   </FILELIST>
   <BUILDTOOLS>
   </BUILDTOOLS>

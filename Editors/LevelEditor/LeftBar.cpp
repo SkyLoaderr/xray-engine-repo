@@ -26,6 +26,7 @@ __fastcall TfraLeftBar::TfraLeftBar(TComponent* Owner)
 	ebTargetGroup->Tag		= etGroup;
     ebTargetObject->Tag     = etObject;
     ebTargetLight->Tag      = etLight;
+    ebTargetShape->Tag		= etShape;
     ebTargetSound->Tag      = etSound;
     ebTargetGlow->Tag       = etGlow;
     ebTargetSpawnPoint->Tag = etSpawnPoint;
@@ -95,6 +96,7 @@ void TfraLeftBar::ChangeTarget(int tgt){
     	case etGroup:		btn=ebTargetGroup;		break;
 	    case etObject:		btn=ebTargetObject; 	break;
 	    case etLight:		btn=ebTargetLight; 		break;
+        case etShape:		btn=ebTargetShape;		break;
 	    case etSound:		btn=ebTargetSound; 		break;
 	    case etGlow:		btn=ebTargetGlow; 		break;
 	    case etSpawnPoint:	btn=ebTargetSpawnPoint; break;

@@ -5,6 +5,8 @@
 
 #include "gamefont.h"
 #include "d3dutils.h"
+#include "du_box.h"
+#include "du_sphere.h"
 
 #define LINE_DIVISION  32  // не меньше 6!!!!!
 namespace DU{
@@ -19,31 +21,6 @@ static Fvector boxvert[boxvertcount];
 
 // identity box
 const DWORD identboxcolor = D3DCOLOR_RGBA(255,255,255,0);
-static const int identboxtricount = 36;
-static Fvector identboxtri[identboxtricount] = {
-	-0.5f, -0.5f, -0.5f,	-0.5f, +0.5f, -0.5f,	+0.5f, +0.5f, -0.5f,
-    +0.5f, +0.5f, -0.5f,	+0.5f, -0.5f, -0.5f,	-0.5f, -0.5f, -0.5f,
-    +0.5f, -0.5f, -0.5f,	+0.5f, +0.5f, -0.5f,	+0.5f, +0.5f, +0.5f,
-    +0.5f, +0.5f, +0.5f,	+0.5f, -0.5f, +0.5f,	+0.5f, -0.5f, -0.5f,
-    +0.5f, +0.5f, +0.5f,	-0.5f, +0.5f, +0.5f,	-0.5f, -0.5f, +0.5f,
-    +0.5f, +0.5f, +0.5f,	-0.5f, -0.5f, +0.5f,	+0.5f, -0.5f, +0.5f,
-    -0.5f, +0.5f, +0.5f,	-0.5f, +0.5f, -0.5f,	-0.5f, -0.5f, +0.5f,
-    -0.5f, +0.5f, -0.5f,	-0.5f, -0.5f, -0.5f,	-0.5f, -0.5f, +0.5f,
-    +0.5f, -0.5f, -0.5f,	-0.5f, -0.5f, +0.5f,	-0.5f, -0.5f, -0.5f,
-    +0.5f, -0.5f, -0.5f,	+0.5f, -0.5f, +0.5f,	-0.5f, -0.5f, +0.5f,
-    -0.5f, +0.5f, -0.5f,	-0.5f, +0.5f, +0.5f,	+0.5f, +0.5f, +0.5f,
-    -0.5f, +0.5f, -0.5f,	+0.5f, +0.5f, +0.5f,	+0.5f, +0.5f, -0.5f
-/*
-0	-0.5f, -0.5f, -0.5f,
-1   -0.5f, +0.5f, -0.5f,
-2	+0.5f, +0.5f, -0.5f,
-3	+0.5f, -0.5f, -0.5f,
-4	-0.5f, +0.5f, +0.5f,
-5	-0.5f, -0.5f, +0.5f,
-6	+0.5f, +0.5f, +0.5f,
-7	+0.5f, -0.5f, +0.5f,
-*/
-};
 static const int identboxwirecount = 24;
 static Fvector identboxwire[identboxwirecount] = {
 	-0.5f, -0.5f, -0.5f,	-0.5f, +0.5f, -0.5f,    	-0.5f, +0.5f, -0.5f,	+0.5f, +0.5f, -0.5f,
@@ -358,7 +335,28 @@ void DrawSound(const Fvector& p, float r, DWORD c){
 	DrawCross(p, r,r,r, r,r,r, c, true);
 }
 //------------------------------------------------------------------------------
-void DrawLineSphere(const Fvector& p, float radius, DWORD c, bool bCross){
+void DrawSphere(const Fvector& p, float radius, DWORD clr)
+{
+	DWORD			vBase,iBase;
+
+	// fill VB
+	FVF::L*	pv	 	= (FVF::L*)Device.Streams.Vertex.Lock(DU_SPHERE_NUMVERTEX,vs_L->dwStride,vBase);
+    for (int k=0; k<DU_SPHERE_NUMVERTEX; k++,pv++){
+    	Fvector& v	= du_sphere_vertices[k];
+	    pv->set		(v.x*radius+p.x,	v.y*radius+p.y,	v.z*radius+p.z,	clr); 
+    }
+	Device.Streams.Vertex.Unlock	(DU_SPHERE_NUMVERTEX,vs_L->dwStride);
+
+    WORD* i 		= Device.Streams.Index.Lock(DU_SPHERE_NUMFACES*3,iBase);
+    for (k=0; k<DU_SPHERE_NUMFACES*3; k++,i++) *i=du_sphere_faces[k];
+    Device.Streams.Index.Unlock(DU_SPHERE_NUMFACES*3);
+
+	// and Render it as triangle list
+	Device.DIP		(D3DPT_TRIANGLELIST,vs_L,vBase,DU_SPHERE_NUMVERTEX, iBase,DU_SPHERE_NUMFACES);
+}
+
+void DrawLineSphere(const Fvector& p, float radius, DWORD c, bool bCross)
+{
 	// fill VB
 	DWORD			vBase, iBase;
     int i;
@@ -471,9 +469,8 @@ void DrawSelectionBox(const Fvector& C, const Fvector& S, DWORD* c){
     Device.SetRS	(D3DRS_FILLMODE,Device.dwFillMode);
 }
 
-void DrawIdentBox(bool bSolid, bool bWire, DWORD* c){
-    DWORD cc=(c)?*c:identboxcolor;
-
+void DrawIdentBox(bool bSolid, bool bWire, u32 cc)
+{
 	// fill VB
     if (bWire){
         DWORD			vBase;
@@ -485,11 +482,11 @@ void DrawIdentBox(bool bSolid, bool bWire, DWORD* c){
     }
     if (bSolid){
         DWORD			vBase;
-		FVF::L*	pv	 	= (FVF::L*)Device.Streams.Vertex.Lock(identboxtricount,vs_L->dwStride,vBase);
-        for (int i=0; i<identboxtricount; i++,pv++)
-            pv->set		(identboxtri[i],cc);
-		Device.Streams.Vertex.Unlock(identboxtricount,vs_L->dwStride);
-	    Device.DP		(D3DPT_TRIANGLELIST,vs_L,vBase,identboxtricount/3);
+		FVF::L*	pv	 	= (FVF::L*)Device.Streams.Vertex.Lock(DU_BOX_NUMVERTEX2,vs_L->dwStride,vBase);
+        for (int i=0; i<DU_BOX_NUMVERTEX2; i++,pv++)
+            pv->set		(du_box_vertices2[i],cc);
+		Device.Streams.Vertex.Unlock(DU_BOX_NUMVERTEX2,vs_L->dwStride);
+	    Device.DP		(D3DPT_TRIANGLELIST,vs_L,vBase,DU_BOX_NUMFACES);
     }
 }
 
@@ -508,16 +505,16 @@ void DrawBox(const Fvector& offs, const Fvector& Size, bool bWire, DWORD c){
 	    Device.DP		(D3DPT_LINELIST,vs_L,vBase,identboxwirecount/2);
     }else{
         DWORD			vBase;
-		FVF::L*	pv	 	= (FVF::L*)Device.Streams.Vertex.Lock(identboxtricount,vs_L->dwStride,vBase);
-        for (int i=0; i<identboxtricount; i++, pv++){
-            pv->p.mul	(identboxtri[i],Size);
+		FVF::L*	pv	 	= (FVF::L*)Device.Streams.Vertex.Lock(DU_BOX_NUMVERTEX2,vs_L->dwStride,vBase);
+        for (int i=0; i<DU_BOX_NUMVERTEX2; i++, pv++){
+            pv->p.mul	(du_box_vertices2[i],Size);
             pv->p.mul	(2);
             pv->p.add	(offs);
             pv->color	= c;
         }
-		Device.Streams.Vertex.Unlock(identboxtricount,vs_L->dwStride);
+		Device.Streams.Vertex.Unlock(DU_BOX_NUMVERTEX2,vs_L->dwStride);
 
-	    Device.DP		(D3DPT_TRIANGLELIST,vs_L,vBase,identboxtricount/3);
+	    Device.DP		(D3DPT_TRIANGLELIST,vs_L,vBase,DU_BOX_NUMFACES);
     }
 }
 //----------------------------------------------------
