@@ -68,11 +68,11 @@ void SimplifyCFORM		(CDB::CollectorPacked& CL)
 		fhandles.push_back	(vhandles[f.IDvert(2)]);
 		mesh.face			(mesh.add_face(fhandles)).set_props	(f.dummy);
 	}
-	vhandles.clear_and_free		();
 	Status		("Building base mesh : normals...");
 	mesh.request_vertex_normals	();
 	mesh.update_vertex_normals	();
-	CL.
+	vhandles.clear_and_free		();
+	CL.clear					();
 
 	// Decimate
 	Status		("Reconstructing mesh-topology...");
@@ -86,4 +86,14 @@ void SimplifyCFORM		(CDB::CollectorPacked& CL)
 
 	// Decimate
 	Status		("Refactoring CFORM...");
+	_mesh::FaceIter		fit=mesh.faces_begin(),fend=mesh.faces_end();
+	for (; fit!=fend; fit++)
+	{
+		CL.add_face_D	(
+			fit->vertex_handle()
+			T->v[0]->P, T->v[1]->P, T->v[2]->P,
+			T->dwMaterialGame, materials[T->dwMaterial].sector
+			);
+		Progress(p_total+=p_cost);		// progress
+	}
 }
