@@ -6,6 +6,7 @@
 class	game_sv_Single				: public game_sv_GameState
 {
 private:
+	typedef game_sv_GameState inherited;
 public:
 	CAI_ALife						*m_tpALife;
 	xrServer						*m_tpServer;
