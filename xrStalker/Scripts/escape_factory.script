@@ -6,6 +6,7 @@ function add_member (obj)
     if ini == nil or ini:section_exist ("factory") == false then
        return 
     end
+    printf ("Object %s is added to zone", obj:name ())
     local size = table.getn (members) + 1
     members[size] = obj:id ()
     switch_offline (obj)
@@ -20,6 +21,7 @@ class "factory_combat"
 -----------------------
 function factory_combat:__init (zone, ini)
     self.ini_ok = true
+    printf ("Zone %s is added to binder", zone:name ())
 end
 -----------------------
 function factory_combat:on_enter (obj)
