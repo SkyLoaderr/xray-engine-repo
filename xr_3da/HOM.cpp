@@ -321,7 +321,7 @@ BOOL CHOM::visible		(Fbox& B)
 
 BOOL CHOM::visible		(vis_data& vis)
 {
-	if (Device.dwFrame<vis.frame_hom)	return TRUE;	// not at this time :)
+	if (Device.dwFrame<vis.hom_frame)	return TRUE;	// not at this time :)
 	if (0==m_pModel) {
 		vis.hom_frame	= u32	(-1);					// delay testing as much as possible
 		return TRUE;									// return - everything visible
