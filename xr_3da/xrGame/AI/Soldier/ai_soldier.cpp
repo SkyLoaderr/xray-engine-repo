@@ -8,15 +8,14 @@
 
 #include "stdafx.h"
 #include "ai_soldier.h"
-#include "ai_soldier_selectors.h"
 #include "..\\ai_monsters_misc.h"
 #include "..\\..\\xr_weapon_list.h"
 #include "..\\..\\hudmanager.h"
 
 CAI_Soldier::CAI_Soldier()
 {
-	dwHitTime = u32(-1);
-	tHitDir.set(0,0,1);
+	m_dwHitTime = u32(-1);
+	m_tHitDir.set(0,0,1);
 	tSavedEnemy = 0;
 	tSavedEnemyPosition.set(0,0,0);
 	tpSavedEnemyNode = 0;
@@ -93,25 +92,25 @@ void CAI_Soldier::Death()
 	SelectAnimation(clTransform.k,dir,AI_Path.fSpeed);
 	
 	// Play sound
-	::Sound->play_at_pos(sndDie[Random.randI(SND_DIE_COUNT)],this,vPosition);
+	::Sound->PlayAtPos(sndDie[Random.randI(SND_DIE_COUNT)],this,vPosition);
 }
 
 void CAI_Soldier::vfLoadSelectors(LPCSTR section)
 {
-	SelectorAttack.Load(section);
-	SelectorDefend.Load(section);
-	SelectorFindEnemy.Load(section);
-	SelectorFollowLeader.Load(section);
-	SelectorFreeHunting.Load(section);
-	SelectorMoreDeadThanAlive.Load(section);
-	SelectorNoWeapon.Load(section);
-	SelectorPatrol.Load(section);
-	SelectorPursuit.Load(section);
-	SelectorReload.Load(section);
-	SelectorRetreat.Load(section);
-	SelectorSenseSomething.Load(section);
-	SelectorUnderFireCover.Load(section);
-	SelectorUnderFireLine.Load(section);
+	SelectorAttack.Load				(section,"selector_attack");
+	SelectorDefend.Load				(section,"selector_defend");
+	SelectorFindEnemy.Load			(section,"selector_find_enemy");
+	SelectorFollowLeader.Load		(section,"selector_follow_leader");
+	SelectorFreeHunting.Load		(section,"selector_free_hutning");
+	SelectorMoreDeadThanAlive.Load	(section,"selector_mtda");
+	SelectorNoWeapon.Load			(section,"selector_no_weapon");
+	SelectorPatrol.Load				(section,"selector_patrol");
+	SelectorPursuit.Load			(section,"selector_pursuit");
+	SelectorReload.Load				(section,"selector_reload");
+	SelectorRetreat.Load			(section,"selector_retreat");
+	SelectorSenseSomething.Load		(section,"selector_sense_something");
+	SelectorUnderFireCover.Load		(section,"selector_under_fire_cover");
+	SelectorUnderFireLine.Load		(section,"selector_under_fire_line");
 }
 
 void CAI_Soldier::Load	(LPCSTR section)
@@ -128,34 +127,34 @@ void CAI_Soldier::Load	(LPCSTR section)
 	vfLoadSelectors(section);
 	
 	// visibility
-	m_dwMovementIdleTime = pSettings->r_s32(section,"MovementIdleTime");
-	m_fMaxInvisibleSpeed = pSettings->r_float(section,"MaxInvisibleSpeed");
-	m_fMaxViewableSpeed = pSettings->r_float(section,"MaxViewableSpeed");
-	m_fMovementSpeedWeight = pSettings->r_float(section,"MovementSpeedWeight");
-	m_fDistanceWeight = pSettings->r_float(section,"DistanceWeight");
-	m_fSpeedWeight = pSettings->r_float(section,"SpeedWeight");
-	m_fCrouchVisibilityMultiplier = pSettings->r_float(section,"CrouchVisibilityMultiplier");
-	m_fLieVisibilityMultiplier = pSettings->r_float(section,"LieVisibilityMultiplier");
-	m_fVisibilityThreshold = pSettings->r_float(section,"VisibilityThreshold");
-	m_fLateralMultiplier = pSettings->r_float(section,"LateralMultiplier");
-	m_fShadowWeight = pSettings->r_float(section,"ShadowWeight");
+	m_dwMovementIdleTime = pSettings->ReadINT(section,"MovementIdleTime");
+	m_fMaxInvisibleSpeed = pSettings->ReadFLOAT(section,"MaxInvisibleSpeed");
+	m_fMaxViewableSpeed = pSettings->ReadFLOAT(section,"MaxViewableSpeed");
+	m_fMovementSpeedWeight = pSettings->ReadFLOAT(section,"MovementSpeedWeight");
+	m_fDistanceWeight = pSettings->ReadFLOAT(section,"DistanceWeight");
+	m_fSpeedWeight = pSettings->ReadFLOAT(section,"SpeedWeight");
+	m_fCrouchVisibilityMultiplier = pSettings->ReadFLOAT(section,"CrouchVisibilityMultiplier");
+	m_fLieVisibilityMultiplier = pSettings->ReadFLOAT(section,"LieVisibilityMultiplier");
+	m_fVisibilityThreshold = pSettings->ReadFLOAT(section,"VisibilityThreshold");
+	m_fLateralMultiplier = pSettings->ReadFLOAT(section,"LateralMultiplier");
+	m_fShadowWeight = pSettings->ReadFLOAT(section,"ShadowWeight");
 	
 	//fire
-	m_dwFireRandomMin  = pSettings->r_s32(section,"FireRandomMin");
-	m_dwFireRandomMax  = pSettings->r_s32(section,"FireRandomMax");
-	m_dwNoFireTimeMin  = pSettings->r_s32(section,"NoFireTimeMin");
-	m_dwNoFireTimeMax  = pSettings->r_s32(section,"NoFireTimeMax");
-	m_fMinMissDistance = pSettings->r_float(section,"MinMissDistance");
-	m_fMinMissFactor   = pSettings->r_float(section,"MinMissFactor");
-	m_fMaxMissDistance = pSettings->r_float(section,"MaxMissDistance");
-	m_fMaxMissFactor   = pSettings->r_float(section,"MaxMissFactor");
+	m_dwFireRandomMin  = pSettings->ReadINT(section,"FireRandomMin");
+	m_dwFireRandomMax  = pSettings->ReadINT(section,"FireRandomMax");
+	m_dwNoFireTimeMin  = pSettings->ReadINT(section,"NoFireTimeMin");
+	m_dwNoFireTimeMax  = pSettings->ReadINT(section,"NoFireTimeMax");
+	m_fMinMissDistance = pSettings->ReadFLOAT(section,"MinMissDistance");
+	m_fMinMissFactor   = pSettings->ReadFLOAT(section,"MinMissFactor");
+	m_fMaxMissDistance = pSettings->ReadFLOAT(section,"MaxMissDistance");
+	m_fMaxMissFactor   = pSettings->ReadFLOAT(section,"MaxMissFactor");
 
-	m_fMinRadioIinterval = pSettings->r_float(section,"MinRadioIinterval");
-	m_fMaxRadioIinterval = pSettings->r_float(section,"MaxRadioIinterval");
-	m_fRadioRefreshRate	 = pSettings->r_float(section,"RadioRefreshRate");
+	m_fMinRadioIinterval = pSettings->ReadFLOAT(section,"MinRadioIinterval");
+	m_fMaxRadioIinterval = pSettings->ReadFLOAT(section,"MaxRadioIinterval");
+	m_fRadioRefreshRate	 = pSettings->ReadFLOAT(section,"RadioRefreshRate");
 	
-	m_dwMaxDynamicObjectsCount = _min(pSettings->r_s32(section,"DynamicObjectsCount"),MAX_DYNAMIC_OBJECTS);
-	m_dwMaxDynamicSoundsCount = _min(pSettings->r_s32(section,"DynamicSoundsCount"),MAX_DYNAMIC_SOUNDS);
+	m_dwMaxDynamicObjectsCount = _min(pSettings->ReadINT(section,"DynamicObjectsCount"),MAX_DYNAMIC_OBJECTS);
+	m_dwMaxDynamicSoundsCount = _min(pSettings->ReadINT(section,"DynamicSoundsCount"),MAX_DYNAMIC_SOUNDS);
 }
 
 BOOL CAI_Soldier::net_Spawn	(LPVOID DC)

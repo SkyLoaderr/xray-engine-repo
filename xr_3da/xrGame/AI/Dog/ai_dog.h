@@ -9,7 +9,7 @@
 #ifndef __XRAY_AI_DOG__
 #define __XRAY_AI_DOG__
 
-#include "..\\ai_monsters.h"
+#include "..\\ai_selector_template.h"
 #include "..\\..\\CustomMonster.h"
 
 class CAI_Dog : public CCustomMonster  

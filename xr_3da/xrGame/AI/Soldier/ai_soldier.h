@@ -9,12 +9,14 @@
 #ifndef __XRAY_AI_SOLDIER__
 #define __XRAY_AI_SOLDIER__
 
-#include "ai_soldier_selectors.h"
+#include "..\\ai_selector_template.h"
 #include "..\\ai_monsters_misc.h"
 #include "..\\..\\CustomMonster.h"
 #include "..\\..\\group.h"
 #include "..\\..\\xr_weapon_list.h"
 #include "..\\..\\actor.h"
+
+using namespace AI;
 
 class CAI_Soldier : public CCustomMonster
 {
@@ -309,7 +311,7 @@ class CAI_Soldier : public CCustomMonster
 		// lie animations
 		typedef struct tagSLieAnimations{
 			SLieGlobalAnimations	tGlobal;
-		}SLieAnimations;
+		} SLieAnimations;
 
 		////////////////////////////////////////////////////////////////////////////
 		// soldier animations
@@ -370,9 +372,9 @@ class CAI_Soldier : public CCustomMonster
 		bool					m_bJumping;
 		
 		// hit data
-		u32						dwHitTime;
-		Fvector					tHitDir;
-		Fvector					tHitPosition;
+		u32						m_dwHitTime;
+		Fvector					m_tHitDir;
+		Fvector					m_tHitPosition;
 		
 		// visual data
 		objSET					tpaVisibleObjects;
@@ -438,20 +440,31 @@ class CAI_Soldier : public CCustomMonster
 		svector<SSoldierStates,MAX_STATE_LIST_SIZE>	m_tStateList;
 		bool					m_bStateChanged;
 		
-		CSoldierSelectorAttack				SelectorAttack;
-		CSoldierSelectorDefend				SelectorDefend;
-		CSoldierSelectorFindEnemy			SelectorFindEnemy;
-		CSoldierSelectorFollowLeader		SelectorFollowLeader;
-		CSoldierSelectorFreeHunting			SelectorFreeHunting;
-		CSoldierSelectorMoreDeadThanAlive	SelectorMoreDeadThanAlive;
-		CSoldierSelectorNoWeapon			SelectorNoWeapon;
-		CSoldierSelectorPatrol				SelectorPatrol;
-		CSoldierSelectorPursuit				SelectorPursuit;
-		CSoldierSelectorReload				SelectorReload;
-		CSoldierSelectorRetreat				SelectorRetreat;
-		CSoldierSelectorSenseSomething		SelectorSenseSomething;
-		CSoldierSelectorUnderFireCover		SelectorUnderFireCover;
-		CSoldierSelectorUnderFireLine		SelectorUnderFireLine;
+		
+//		CAISelectorTemplate<
+//			aiSearchRange | 
+//			aiLightWeight | 
+//			aiTotalCover | 
+//			aiEnemyDistance | 
+//			aiCoverFromEnemyWeight | 
+//			aiEnemyViewDeviationWeight | 
+//			aiMemberDanger | 
+//			aiMemberDistance | 
+//			aiEnemySurround>		
+		CAI_NodeEvaluatorFull				SelectorAttack;
+		CAI_NodeEvaluatorFull				SelectorDefend;
+		CAI_NodeEvaluatorFull				SelectorFindEnemy;
+		CAI_NodeEvaluatorFull				SelectorFollowLeader;
+		CAI_NodeEvaluatorFull				SelectorFreeHunting;
+		CAI_NodeEvaluatorFull				SelectorMoreDeadThanAlive;
+		CAI_NodeEvaluatorFull				SelectorNoWeapon;
+		CAI_NodeEvaluatorFull				SelectorPatrol;
+		CAI_NodeEvaluatorFull				SelectorPursuit;
+		CAI_NodeEvaluatorFull				SelectorReload;
+		CAI_NodeEvaluatorFull				SelectorRetreat;
+		CAI_NodeEvaluatorFull				SelectorSenseSomething;
+		CAI_NodeEvaluatorFull				SelectorUnderFireCover;
+		CAI_NodeEvaluatorFull				SelectorUnderFireLine;
 
 		void Die();
 		void OnTurnOver();
@@ -567,10 +580,10 @@ class CAI_Soldier : public CCustomMonster
 		void SetLessCoverLook();
 		void SetDirectionLook();
 		void SetSmartLook(NodeCompressed *tNode, Fvector &tEnemyDirection);
-		void vfInitSelector(CAISelectorBase &S, CSquad &Squad, CEntity* &Leader);
-		void vfBuildPathToDestinationPoint(CAISelectorBase *S);
-		void vfSearchForBetterPosition(CAISelectorBase &S, CSquad &Squad, CEntity* &Leader);
-		void vfSearchForBetterPositionWTime(CAISelectorBase &S, CSquad &Squad, CEntity* &Leader);
+		void vfInitSelector(IBaseAI_NodeEvaluator &S, CSquad &Squad, CEntity* &Leader);
+		void vfBuildPathToDestinationPoint(IBaseAI_NodeEvaluator *S);
+		void vfSearchForBetterPosition(IBaseAI_NodeEvaluator &S, CSquad &Squad, CEntity* &Leader);
+		void vfSearchForBetterPositionWTime(IBaseAI_NodeEvaluator &S, CSquad &Squad, CEntity* &Leader);
 		void vfAimAtEnemy(bool bInaccuracy = false);
 		void vfSaveEnemy();
 		
@@ -603,7 +616,7 @@ class CAI_Soldier : public CCustomMonster
 			vfSetMovementType(c,d);
 		}
 	IC	bool bfAmIDead()		{return(g_Health() <= 0);}
-	IC	bool bfAmIHurt()		{return(m_dwCurrentUpdate >= dwHitTime);}
+	IC	bool bfAmIHurt()		{return(m_dwCurrentUpdate >= m_dwHitTime);}
 	IC	bool bfIsMemberHurt()	{return(m_dwCurrentUpdate >= getGroup()->m_dwLastHitTime);}
 	IC  bool bfDoesEnemyExist()	{return(Enemy.Enemy != 0);}
 	IC  bool bfIsEnemyVisible()	{return(Enemy.bVisible);}

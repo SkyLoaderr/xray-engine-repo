@@ -8,7 +8,6 @@
 
 #include "stdafx.h"
 #include "ai_soldier.h"
-#include "ai_soldier_selectors.h"
 #include "..\\ai_monsters_misc.h"
 #include "..\\..\\hudmanager.h"
 #include "..\\..\\a_star.h"
@@ -151,7 +150,7 @@ void CAI_Soldier::OnHurtAlone()
 
 	CHECK_IF_GO_TO_PREV_STATE_THIS_UPDATE(bfAmIDead());
 
-	m_dwLastRangeSearch = dwHitTime;
+	m_dwLastRangeSearch = m_dwHitTime;
 
 	u32 dwCurTime = m_dwCurrentUpdate;
 
@@ -159,7 +158,7 @@ void CAI_Soldier::OnHurtAlone()
 
 	m_dwLastRangeSearch = dwCurTime;
 	
-	tWatchDirection.sub(tHitPosition,vPosition);
+	tWatchDirection.sub(m_tHitPosition,vPosition);
 //	float fDistance = tWatchDirection.magnitude();
 	mk_rotation(tWatchDirection,r_torso_target);
 		
@@ -184,7 +183,7 @@ void CAI_Soldier::OnHurtAlone()
 		vfSetMovementType(WALK_NO);
 	}
 
-	dwHitTime = u32(-1);
+	m_dwHitTime = u32(-1);
 	GO_TO_PREV_STATE
 }
 
@@ -320,7 +319,7 @@ void CAI_Soldier::OnFindAloneFire()
 						//if (AI_Path.DestNode != Group.m_tpaSuspiciousNodes[m_iCurrentSuspiciousNodeIndex].dwNodeID) 
 						{
 							vfSearchForBetterPosition(SelectorPatrol,Squad,Leader);
-							if ((SelectorPatrol.BestNode == AI_NodeID) && (AI_NodeID != Group.m_tpaSuspiciousNodes[m_iCurrentSuspiciousNodeIndex].dwNodeID)) {
+							if ((SelectorPatrol.m_dwBestNode == AI_NodeID) && (AI_NodeID != Group.m_tpaSuspiciousNodes[m_iCurrentSuspiciousNodeIndex].dwNodeID)) {
 								AI_Path.bNeedRebuild = TRUE;
 								AI_Path.DestNode = Group.m_tpaSuspiciousNodes[m_iCurrentSuspiciousNodeIndex].dwNodeID;
 							}
@@ -1558,7 +1557,7 @@ void CAI_Soldier::OnPatrolRoute()
 				if (m_tpSoundBeingPlayed->feedback)			
 					return;
 
-				::Sound->play_at_pos(*m_tpSoundBeingPlayed,this,eye_matrix.c);
+				::Sound->PlayAtPos(*m_tpSoundBeingPlayed,this,eye_matrix.c);
 			}
 		}
 		else

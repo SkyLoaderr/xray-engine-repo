@@ -112,17 +112,17 @@ void CAI_Soldier::HitSignal	(float amount, Fvector& vLocalDir, CObject* who, s16
 	// Save event
 	Fvector D;
 	svTransform.transform_dir(D,vLocalDir);
-	dwHitTime = Level().timeServer();
-	tHitDir.set(D);
-	tHitDir.normalize();
-	tHitPosition = who->Position();
+	m_dwHitTime = Level().timeServer();
+	m_tHitDir.set(D);
+	m_tHitDir.normalize();
+	m_tHitPosition = who->Position();
 	
 	INIT_SQUAD_AND_LEADER;
 	CGroup &Group = Squad.Groups[g_Group()];
 	
-	Group.m_dwLastHitTime = dwHitTime;
-	Group.m_tLastHitDirection = tHitDir;
-	Group.m_tHitPosition = tHitPosition;
+	Group.m_dwLastHitTime = m_dwHitTime;
+	Group.m_tLastHitDirection = m_tHitDir;
+	Group.m_tHitPosition = m_tHitPosition;
 	if (!Enemy.Enemy) {
 		CEntity *tpEntity = dynamic_cast<CEntity *>(who);
 		if (tpEntity) {
@@ -145,7 +145,7 @@ void CAI_Soldier::HitSignal	(float amount, Fvector& vLocalDir, CObject* who, s16
 		
 		if (S.feedback)			
 			return;
-		S.play_at_pos	(this,vPosition);
+		::Sound->PlayAtPos	(S,this,vPosition);
 	}
 }
 
