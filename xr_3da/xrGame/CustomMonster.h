@@ -177,9 +177,9 @@ public:
 
 namespace AI{
 	#define LOST_ENEMY_REACTION_TIME	30000
-	#define HIT_REACTION_TIME			3000
+	#define HIT_REACTION_TIME			30000
 	#define SENSE_REACTION_TIME			30000
-	#define HIT_JUMP_TIME				3000
+	#define HIT_JUMP_TIME				30000
 	#define SENSE_JUMP_TIME				00000
 }
 

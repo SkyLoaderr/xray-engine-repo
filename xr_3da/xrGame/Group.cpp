@@ -16,7 +16,7 @@ CGroup::CGroup()
 	m_dwLeaderChangeCount = 0;
 	m_tLastHitDirection.set(1,0,0);
 	m_dwLastHitTime = 0;
-	m_bFiring = false;
+	m_dwFiring = 0;
 }
 
 const Fvector& CGroup::GetCentroid()
