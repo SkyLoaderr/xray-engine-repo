@@ -87,15 +87,6 @@ void CPlanner::update				(u32 time_delta)
 }
 
 TEMPLATE_SPECIALIZATION
-void CPlanner::follow_solution	()
-{
-	VERIFY					(!solution().empty());
-	m_path.erase			(m_solution.begin());
-	if (!m_solution.empty())
-		m_current_operator	= m_solution.front();
-}
-
-TEMPLATE_SPECIALIZATION
 IC	CPlanner::COperator &CPlanner::action	(u32 action_id)
 {
 	return				(*get_operator(action_id));

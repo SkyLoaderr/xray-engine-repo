@@ -70,8 +70,20 @@ TEMPLATE_SPECIALIZATION
 void CPlanner::update					(u32 time_delta)
 {
 	execute						();
+	
 	inherited_planner::update	(time_delta);
-	inherited_planner			*action_planner = dynamic_cast<inherited_planner*>(&current_action());
+
+	VERIFY						(!solution().empty());
+
+	if (current_operator() != solution().front()) {
+		action(current_operator()).finalize();
+		set_current_operator	(solution().front());
+	}
+
+	action(current_operator()).initialize();
+	action(current_operator()).execute();
+
+	inherited_planner			*action_planner = dynamic_cast<inherited_planner*>(&action(current_operator()));
 	if (action_planner)
 		action_planner->update	(time_delta);
 }
@@ -80,45 +92,6 @@ TEMPLATE_SPECIALIZATION
 void CPlanner::execute				()
 {
 	inherited_action::execute	();
-
-//	if (!solution().empty()) {
-//		// therefore execute current operator
-//		action(current_operator()).execute();
-//		return;
-//	}
-//
-//	if (current_operator() != solution().front()) {
-//		if	(
-//				!action(current_operator()).completed()
-//				&&
-//				(action(current_operator()).priority() < action(solution().front()).priority())
-//			)
-//		{
-//			action(current_operator()).execute();
-//			return;
-//		}
-//	}
-//	VERIFY						(!solution().empty());
-//
-//	if (1 == solution().size()) {
-//		inherited_planner		*action_planner = dynamic_cast<inherited_planner*>(&current_state());
-//		if (!action_planner)
-//			current_action().execute	();
-//		return;
-//	}
-//
-//	for (;;) {
-//		if (!action(solution().front()).completed()) {
-//			action(solution().front()).execute();
-//			return;
-//		}
-//		action(solution().front()).finalize();
-//
-//		follow_solution			();
-//
-//		action(solution().front()).initialize();
-//		action(solution().front()).execute();
-//	}
 }
 
 #undef TEMPLATE_SPECIALIZATION
