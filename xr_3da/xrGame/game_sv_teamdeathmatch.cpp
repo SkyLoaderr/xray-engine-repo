@@ -8,7 +8,9 @@ void	game_sv_TeamDeathmatch::Create					(LPSTR &options)
 	__super::Create					(options);
 	fraglimit	= get_option_i		(options,"fraglimit",0);
 	timelimit	= get_option_i		(options,"timelimit",0)*60000;	// in (ms)
-	m_fFriendlyFireModifier	= float(get_option_i(options,"friendlyfire",0)) / 100.0f;
+	int iFF = get_option_i(options,"friendlyfire",0);
+	if (iFF != 0) m_fFriendlyFireModifier	= float(iFF) / 100.0f;
+	else m_fFriendlyFireModifier = 0.000001f;
 
 	switch_Phase(GAME_PHASE_PENDING);
 ///	switch_Phase(GAME_PHASE_INPROGRESS);
