@@ -39,6 +39,7 @@ void CSoundRender_Core::_initialize	(u32 window)
 	bPresent		= FALSE;
 
 	if (strstr			( Core.Params,"-nosound"))		return;
+	Timer.Start			( );
 
 	// Device
 	if( FAILED			( DirectSoundCreate8( NULL, &pDevice, NULL ) ) )					return;

@@ -25,6 +25,7 @@ public:
 	IDirectSound3DListener8*			pListener;
 	LPKSPROPERTYSET						pExtensions;
 	SListener							Listener;
+	CTimer								Timer;
 private:
 	// Collider
 	CDB::COLLIDER						geom_DB;

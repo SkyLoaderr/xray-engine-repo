@@ -5,7 +5,7 @@
 
 void CSoundRender_Emitter::update	()
 {
-	u32	dwTime			= Device.TimerAsync	();
+	u32	dwTime			= SoundRender.Timer.GetElapsed_ms();
 
 	switch (state)	
 	{

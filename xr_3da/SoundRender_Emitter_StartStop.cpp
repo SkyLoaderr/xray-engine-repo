@@ -27,7 +27,7 @@ void CSoundRender_Emitter::stop	()
 
 void CSoundRender_Emitter::rewind()
 {
-	u32 dwTime					=	Device.TimerAsync();
+	u32 dwTime					=	SoundRender.Timer.GetElapsed_ms();
 	u32 dwDiff					=	dwTime-dwTimeStarted;
 	dwTimeStarted				+=	dwDiff;
 	dwTimeToStop				+=	dwDiff;
