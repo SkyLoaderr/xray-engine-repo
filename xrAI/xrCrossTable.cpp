@@ -68,7 +68,14 @@ void					xrBuildCrossTable(LPCSTR caProjectName)
 	{
 		for (int i=0; i<iVertexCount; i++)
 			vfRecurseMark(tMap,tMarks,tGraph.m_tpaGraph[i].tNodeID);
-		tMarks.flip();
+		
+		// tMarks.flip();
+		{
+			xr_vector<bool>::iterator I = tMarks.begin();
+			xr_vector<bool>::iterator E = tMarks.end();
+			for ( ; I != E; I++)
+				*I = !*I;
+		}
 	}
 
 	tDistances.resize	(iVertexCount);
