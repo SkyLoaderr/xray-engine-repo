@@ -1047,8 +1047,8 @@ end
 -------------------------------------------------------------------------------------------
 function IsStalker (object)
     local id = get_clsid (object)
-    if id == clsid.actor or 
-       id == clsid.soldier or 
-       id == clsid.script_stalker then return true end
+    if id == clsid.actor or id == clsid.soldier or id == clsid.script_stalker then 
+       return true 
+    end
     return false
 end    
