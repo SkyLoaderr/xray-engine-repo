@@ -23,35 +23,77 @@ IC	float	CalcSSA				(float& distSQ, Fvector& C, IVisual* V)
 
 void CRender::InsertSG_Dynamic	(IVisual *pVisual, Fvector& Center)
 {
-	float distSQ;	if (CalcSSA(distSQ,Center,pVisual)<=r_ssaDISCARD)	return;
+	if (pVisual->vis.frame == RImplementation.marker)	return;
+	pVisual->vis.frame = RImplementation.marker;
+
+	float distSQ;
+	float SSA    = CalcSSA		(distSQ,pVisual->vis.sphere.P,pVisual);
+	if (SSA<=r_ssaDISCARD)		return;
 
 	// Select List and add to it
 	ShaderElement*		sh		= pVisual->hShader->lod0;
 	if (val_bHUD)	{
+		// HUD
 		SceneGraph::mapHUD_Node* N			= mapHUD.insertInAnyWay(distSQ);
 		N->val.pVisual			= pVisual;
 		N->val.Matrix			= *val_pTransform;
 		N->val.vCenter.set		(Center);
 	} else if (sh->Flags.bStrictB2F) {
+		// Strict
 		SceneGraph::mapSorted_Node* N		= mapSorted.insertInAnyWay(distSQ);
 		N->val.pVisual			= pVisual;
 		N->val.Matrix			= *val_pTransform;
 		N->val.vCenter.set		(Center);
 	} else {
-		/*
-		SceneGraph::mapMatrix_Node* N		= mapMatrix.insert		(sh		);
-		SceneGraph::mapMatrixItem::TNode* C	= N->val.insertInAnyWay	(distSQ	);
-		C->val.pVisual			= pVisual;
-		C->val.Matrix			= *val_pTransform;
-		C->val.vCenter.set		(Center);
-		*/
+		// Normal
+		SPass&									pass	= *sh->Passes.front();
+		SceneGraph::mapMatrix_T&				map		= mapMatrix;
+		SceneGraph::mapMatrixVS::TNode*			Nvs		= map.insert		(pass.vs);
+		SceneGraph::mapMatrixPS::TNode*			Nps		= Nvs->val.insert	(pass.ps);
+		SceneGraph::mapMatrixCS::TNode*			Ncs		= Nps->val.insert	(pass.constants);
+		SceneGraph::mapMatrixStates::TNode*		Nstate	= Ncs->val.insert	(pass.state);
+		SceneGraph::mapMatrixTextures::TNode*	Ntex	= Nstate->val.insert(pass.T);
+		SceneGraph::mapMatrixVB::TNode*			Nvb		= Ntex->val.insert	(pVisual->hGeom->vb);
+		SceneGraph::mapMatrixItems&				item	= Nvb->val;
+
+		// Need to sort for HZB efficient use
+		if (SSA>Nvb->val.ssa) {
+			Nvb->val.ssa = SSA;
+			if (SSA>Ntex->val.ssa) {
+				Ntex->val.ssa = SSA;
+				if (SSA>Nstate->val.ssa) {
+					Nstate->val.ssa = SSA;
+					if (SSA>Ncs->val.ssa)	{
+						Ncs->val.ssa = SSA;
+						if (SSA>Nps->val.ssa) {
+							Nps->val.ssa = SSA;
+							if (SSA>Nvs->val.ssa)	Nvs->val.ssa = SSA; 
+						}
+					}
+				}
+			}
+		}
+
+		if (SSA<r_ssaDONTSORT)	
+		{
+			item.unsorted.push_back	(_MatrixItem());
+			item.unsorted.back().pVisual	= pVisual;
+			item.unsorted.back().Matrix		= *val_pTransform;
+			item.unsorted.back().vCenter.set(Center);
+		}
+		else					
+		{
+			FixedMAP<float,_MatrixItem>::TNode*	N		= item.sorted.insertInAnyWay	(distSQ);
+			N->val.pVisual					= pVisual;
+			N->val.Matrix					= *val_pTransform;
+			N->val.vCenter.set				(Center);
+		}
 	}
 }
 
 void CRender::InsertSG_Static	(IVisual *pVisual)
 {
 	if (pVisual->vis.frame == RImplementation.marker)	return;
-
 	pVisual->vis.frame = RImplementation.marker;
 
 	float distSQ;

@@ -9,7 +9,6 @@ namespace SceneGraph
 		IVisual*		pVisual;
 		Fmatrix			Matrix;				// matrix (copy)
 		Fvector3		vCenter;
-		float			lod;
 	};
 	struct _LodItem		{
 		float			ssa;
