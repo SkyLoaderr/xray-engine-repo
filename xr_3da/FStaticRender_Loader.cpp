@@ -250,8 +250,8 @@ void CRender::LoadSectors(CStream* fs)
 	rmPortals->build	(CL.getV(),CL.getVS(),CL.getT(),CL.getTS());
 
 	// debug
-	for (int d=0; d<Sectors.size(); d++)
-		Sectors[d]->DebugDump	();
+	//	for (int d=0; d<Sectors.size(); d++)
+	//		Sectors[d]->DebugDump	();
 
 	pLastSector = 0;
 }
