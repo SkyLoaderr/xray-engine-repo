@@ -29,13 +29,14 @@ public:
 									CSE_Shape		();
 	virtual							~CSE_Shape		();
 	virtual CSE_Shape*  __stdcall	shape			() = 0;
+	void __stdcall					assign_shapes	(CShapeData::shape_def* shapes, u32 cnt);
 };
 add_to_type_list(CSE_Shape)
 #define script_type_list save_type_list(CSE_Shape)
 
 SERVER_ENTITY_DECLARE_BEGIN0(CSE_Visual)
-    void __stdcall	OnChangeVisual	(PropValue* sender);  
-    void __stdcall	OnChangeAnim	(PropValue* sender);  
+    void __stdcall					OnChangeVisual	(PropValue* sender);  
+    void __stdcall					OnChangeAnim	(PropValue* sender);  
 public:
 	ref_str							visual_name;
 	ref_str							startup_animation;
