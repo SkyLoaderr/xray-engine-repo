@@ -133,21 +133,7 @@ function action_sleeper_activity:look_at_waypoint(pt)
     self.object:set_sight(look.direction, look_pt, 0)
     self.last_look_index = pt
 
-  if self.projector_name then
-    if not self.projector then
-      self.projector = level.object(self.projector_name)
-      if not self.projector then
-        --printf("xr_sleeper: WARNING: unable to initialize projector")
-      end
-    end
-    if self.projector then
-      reset_action(self.projector, "xr_sleeper")
---      action(self.projector, look(self.object:position(), self.speedh, self.speedv), cond(cond.time_end, time_infinite))
---      action(self.projector, look(way:point(pt), self.speedh, self.speedv), cond(cond.time_end, time_infinite))
---        action(self.projector, look(way:point(pt), self.speedh, self.speedv), cond(cond.time_end, time_infinite))
-        this.action2(self.projector, look(way:point(pt), self.speedh, self.speedv), cond(cond.time_end, time_infinite))
-    end
-  end
+	self.object:set_item(object.deactivate, self.object:best_weapon())
 end
 function action_sleeper_activity:execute()
   --[[printf("_debug_sleeper [%s]: state [%d], animation_count [%d]",
@@ -155,6 +141,7 @@ function action_sleeper_activity:execute()
 
     if self.state == self.state_standing_before_anim and self.expiration_time and device():time_global() >= self.expiration_time then
     --printf("_debug_sleeper [%s]: adding animations", self.object:name())
+--[[
         while self.object:animation_count() <= 1 do
             local animate = math.random(1, 10)
             if animate == 1 then
@@ -179,16 +166,21 @@ function action_sleeper_activity:execute()
                             self.object:add_animation("chasovoy_4", true)
                         end
         end
+]]
+	xr_state.change_state(self.object, 4)
+
     self.state = self.state_anim_playing
     end
 
   --printf("_debug_sleeper [%s]: animation_count=%d", self.object:name(), self.object:animation_count())
 
+  --[[
   if self.state == self.state_anim_playing and self.object:animation_count() <= 1 then
         self.state = self.state_moving
 
         self:waypoint_callback(self.object, self.last_action_type, self.last_index)
     end
+    ]]
 end
 function action_sleeper_activity:finalize()
   --printf("_bp: FINALIZE")
@@ -208,6 +200,7 @@ function add_to_binder(npc)
   local operators    = {}
   local properties  = {}
 
+
   sounds["commander_snd"]     = xr_sounds_id.zmey_sleeper_base + 1
   sounds["soldiers_idle_snd"]     = xr_sounds_id.zmey_sleeper_base + 2
   sounds["soldiers_idle2_snd"]     = xr_sounds_id.zmey_sleeper_base + 3
@@ -225,6 +218,7 @@ function add_to_binder(npc)
    local manager = npc:motivation_action_manager()
 
   properties["need_sleeper"]   = xr_evaluators_id.zmey_sleeper_base + 1
+  properties["state_end"]      = xr_evaluators_id.state_change
 
   operators["action_sleeper"]   = xr_actions_id.zmey_sleeper_base + 1
 
@@ -234,15 +228,18 @@ function add_to_binder(npc)
    local new_action = this.action_sleeper_activity(npc, "action_sleeper_activity", xr_motivator.storage[npc:id()].sleeper)
     new_action:add_precondition    (world_property(stalker_ids.property_alive,   true))
     new_action:add_precondition    (world_property(stalker_ids.property_enemy,   false))
-      new_action:add_precondition    (world_property(properties["need_sleeper"],   true))
-   new_action:add_effect(world_property(properties["need_sleeper"], false))
+    new_action:add_precondition    (world_property(properties["need_sleeper"],   true))
+    --new_action:add_precondition        (world_property(properties["state_end"], 	true))
+    new_action:add_effect(world_property(properties["need_sleeper"], false))
     manager:add_action(operators["action_sleeper"], new_action)
 
-  new_action = manager:action(stalker_ids.action_free_no_alife)
+    new_action = manager:action(stalker_ids.action_free_no_alife)
     new_action:add_precondition(world_property(properties["need_sleeper"], false))
+    --new_action:add_precondition		(world_property(properties["state_end"], 	true))
 
     new_action = manager:action(stalker_ids.action_gather_items)
     new_action:add_precondition(world_property(properties["need_sleeper"], false))
+    --new_action:add_precondition		(world_property(properties["state_end"], 	true))
 end
 
 -- функции
