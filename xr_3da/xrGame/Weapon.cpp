@@ -632,9 +632,9 @@ BOOL CWeapon::FireTrace		(const Fvector& P, const Fvector& Peff, Fvector& D)
 			// 
 			NET_Packet		P;
 			u_EventGen		(P,GE_HIT,RQ.O->ID());
-			P.w_u16			(H_Parent()->ID());
+			P.w_u16			(u16(H_Parent()->ID()));
 			P.w_dir			(D);
-			P.w_float		(iHitPower);
+			P.w_float		(float(iHitPower));
 			u_EventSend		(P);
 		}
 		FireShotmark		(D,end_point,RQ);

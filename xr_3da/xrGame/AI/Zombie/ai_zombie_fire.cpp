@@ -30,7 +30,7 @@ void CAI_Zombie::Exec_Action(float dt)
 				
 				if ((this->Local()) && (tSavedEnemy) && (tSavedEnemy->CLS_ID == CLSID_ENTITY))
 					if (tSavedEnemy->g_Health() > 0)
-						tSavedEnemy->Hit((int)m_fHitPower,tDirection,this);
+						tSavedEnemy->Hit(m_fHitPower,tDirection,this);
 					else
 						m_bActionStarted = false;
 			}
@@ -55,7 +55,7 @@ float CAI_Zombie::EnemyHeuristics(CEntity* E)
 	if (E->g_Team()  == g_Team())	
 		return flt_max;		// don't attack our team
 	
-	int	g_strench = E->g_Armor()+E->g_Health();
+	float	g_strench = E->g_Armor()+E->g_Health();
 	
 	if (g_strench <= 0)					
 		return flt_max;		// don't attack dead enemiyes

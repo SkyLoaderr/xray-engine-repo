@@ -122,13 +122,13 @@ float CAI_Hen::EnemyHeuristics(CEntity* E)
 	if (E->g_Team()  == g_Team())	
 		return flt_max;		// don't attack our team
 	
-	int	g_strench = E->g_Armor()+E->g_Health();
+	float	g_strench = E->g_Armor()+E->g_Health();
 	
 	if (g_strench <= 0)					
 		return flt_max;		// don't attack dead enemiyes
 	
 	float	f1	= Position().distance_to_sqr(E->Position());
-	float	f2	= float(g_strench);
+	float	f2	= g_strench;
 	return  f1*f2;
 }
 
