@@ -1075,16 +1075,25 @@ void CLevelGraph::build_detail_path(
 	if (!ai().graph_engine().search(level_graph,start.vertex_id,dest.vertex_id,&m_tpaNodes,CGraphEngine::CBaseParameters()))
 		return;
 
+#ifndef AI_COMPILER
+	Device.Statistic.TEST0.Begin();
+#endif
 	VERIFY									(!m_tpaNodes.empty());
 	if (m_tpaNodes.size() == 1) {
 		if (!compute_path(level_graph,start,dest,start_set,dest_set,&m_tpTravelLine)) {
 			m_tpTravelLine.clear			();
+#ifndef AI_COMPILER
+			Device.Statistic.TEST0.End();
+#endif
 			return;
 		}
 	}
 	else {
 		if (compute_path(level_graph,start,dest,start_set,dest_set,&m_tpTravelLine)) {
 			Msg	("%d : ok, %d points",Level().timeServer(),m_tpTravelLine.size());
+#ifndef AI_COMPILER
+			Device.Statistic.TEST0.End();
+#endif
 			return;
 		}
 		
@@ -1104,8 +1113,12 @@ void CLevelGraph::build_detail_path(
 				j							= (i + m)/2;
 			}
 			if (i >= m - 1) {
-				if (i <= _i)
+				if (i <= _i) {
+#ifndef AI_COMPILER
+					Device.Statistic.TEST0.End();
+#endif
 					return;
+				}
 				_i							= i;
 				key_points.push_back		(start_point);
 				if (i == n) {
@@ -1113,8 +1126,12 @@ void CLevelGraph::build_detail_path(
 						key_points.push_back(dest);
 						break;
 					}
-					else
+					else {
+#ifndef AI_COMPILER
+						Device.Statistic.TEST0.End();
+#endif
 						return;
+					}
 				}
 				start_point.vertex_id		= m_tpaNodes[_i];
 				start_point.position		= v2d(level_graph.vertex_position(start_point.vertex_id));
@@ -1139,6 +1156,9 @@ void CLevelGraph::build_detail_path(
 			if (!compute_path(level_graph,s,d,start_set,dest_set,0)) {
 				if (I == P) {
 					m_tpTravelLine.clear	();
+#ifndef AI_COMPILER
+					Device.Statistic.TEST0.End();
+#endif
 					return;
 				}
 				
@@ -1156,19 +1176,25 @@ void CLevelGraph::build_detail_path(
 				VERIFY						(!fis_zero(s.direction.magnitude()));
 				if (!compute_path(level_graph,s,d,start_set,dest_set,0)) {
 					m_tpTravelLine.clear	();
+#ifndef AI_COMPILER
+					Device.Statistic.TEST0.End();
+#endif
 					return;
 				}
 			}
 			t								= d;
 		}
-		if (!compute_path(level_graph,s,d,start_set,dest_set,&m_tpTravelLine)) {
-			if (compute_path(level_graph,s,d,start_set,dest_set,0)) {
-				compute_path(level_graph,s,d,start_set,dest_set,&m_tpTravelLine);
-				t=t;
-			}
-			VERIFY							(false);
-		}
+//		if (!compute_path(level_graph,s,d,start_set,dest_set,&m_tpTravelLine)) {
+//			if (compute_path(level_graph,s,d,start_set,dest_set,0)) {
+//				compute_path(level_graph,s,d,start_set,dest_set,&m_tpTravelLine);
+//				t=t;
+//			}
+//			VERIFY							(false);
+//		}
 	}
+#ifndef AI_COMPILER
+	Device.Statistic.TEST0.End();
+#endif
 }
 
 #endif // AI_COMPILER
