@@ -70,7 +70,7 @@ struct NodeCompressed
 };									// 2+6+6+1+4+1 = 20b + links
 #pragma pack	(pop)
 
-const u32 XRCL_CURRENT_VERSION		=	14;	// input
+const u32 XRCL_CURRENT_VERSION		=	15;	// input
 const u32 XRCL_PRODUCTION_VERSION	=	11;	// output
 const u32 CFORM_CURRENT_VERSION		=	4;
 const u32 XRAI_CURRENT_VERSION		=	3;

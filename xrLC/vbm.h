@@ -1,7 +1,10 @@
 #pragma once
 
-#include "fmesh.h"
-#include "fs.h"
+#include	"fmesh.h"
+#include	"fs.h"
+
+#define		m_VB_maxSize		(4096*1024)
+#define		m_VB_maxVertices	(65535)
 
 // Vertex containers
 class VBContainer 
@@ -10,8 +13,8 @@ class VBContainer
 	xr_vector<xr_vector<BYTE> >	vContainers;
 
 	// Recording
-	VDeclarator				R_DCL;
-	xr_vector<BYTE>			R_DATA;
+	VDeclarator					R_DCL;
+	xr_vector<BYTE>				R_DATA;
 
 public:
 	// Constructor & destructor
