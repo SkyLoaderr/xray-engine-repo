@@ -142,7 +142,7 @@ void CAI_Rat::FreeHunting()
 
 	vfSetFire(false,Group);
 
-	vfSetMovementType(BODY_STATE_STAND,0*m_fMinSpeed);
+	vfSetMovementType(BODY_STATE_STAND,m_fMinSpeed);
 }
 
 void CAI_Rat::FollowLeader()

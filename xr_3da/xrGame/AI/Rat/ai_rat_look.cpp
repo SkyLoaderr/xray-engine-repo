@@ -15,56 +15,57 @@
 
 bool CAI_Rat::bfCheckForVisibility(CEntity* tpEntity)
 {
-	float fResult = 0.f;
-	
-	// computing maximum viewable distance in the specified direction
-	Fvector tCurrentWatchDirection, tTemp;
-	tCurrentWatchDirection.setHP	(r_torso_current.yaw - m_fBananPadlaCorrection,r_torso_current.pitch);
-	tCurrentWatchDirection.normalize();
-	tTemp.sub(tpEntity->Position(),vPosition);
-	tTemp.normalize();
-	float fAlpha = tCurrentWatchDirection.dotproduct(tTemp), fEyeFov = eye_fov*PI/180.f;
-	//float fAlpha = tWatchDirection.dotproduct(tTemp), fEyeFov = eye_fov*PI/180.f;
-	clamp(fAlpha,-.99999f,+.99999f);
-	fAlpha = acosf(fAlpha);
-	float fMaxViewableDistanceInDirection = eye_range*(1 - fAlpha/(fEyeFov/m_fLateralMultiplier));
-	
-	// computing distance weight
-	tTemp.sub(vPosition,tpEntity->Position());
-	fResult += tTemp.magnitude() >= fMaxViewableDistanceInDirection ? 0.f : m_fDistanceWeight*(1.f - tTemp.magnitude()/fMaxViewableDistanceInDirection);
-	
-	// computing movement speed weight
-	if (tpEntity->ps_Size() > 1) {
-		DWORD dwTime = tpEntity->ps_Element(tpEntity->ps_Size() - 1).dwTime;
-		if (dwTime < m_dwMovementIdleTime) {
-			tTemp.sub(tpEntity->ps_Element(tpEntity->ps_Size() - 2).vPosition,tpEntity->ps_Size() - 1);
-			float fSpeed = tTemp.magnitude()/dwTime;
-			fResult += fSpeed < m_fMaxInvisibleSpeed ? m_fMovementSpeedWeight*fSpeed/m_fMaxInvisibleSpeed : m_fMovementSpeedWeight;
-		}
-	}
-	
-	// computing lightness weight
-	fResult *= m_fShadowWeight*float(tpEntity->AI_Node->light)/255.f;
-	
-	// computing enemy state
-	switch (m_cBodyState) {
-		case BODY_STATE_STAND : {
-			break;
-		}
-		case BODY_STATE_CROUCH : {
-			fResult *= m_fCrouchVisibilityMultiplier;
-			break;
-		}
-		case BODY_STATE_LIE : {
-			fResult *= m_fLieVisibilityMultiplier;
-			break;
-		}
-	}
-	
-	// computing my ability to view the enemy
-	fResult += m_fCurSpeed < m_fMaxViewableSpeed ? m_fSpeedWeight*(1.f - m_fCurSpeed/m_fMaxViewableSpeed) : m_fSpeedWeight;
-	
-	return(fResult >= m_fVisibilityThreshold);
+	return(true);
+//	float fResult = 0.f;
+//	
+//	// computing maximum viewable distance in the specified direction
+//	Fvector tCurrentWatchDirection, tTemp;
+//	tCurrentWatchDirection.setHP	(r_torso_current.yaw - m_fBananPadlaCorrection,r_torso_current.pitch);
+//	tCurrentWatchDirection.normalize();
+//	tTemp.sub(tpEntity->Position(),vPosition);
+//	tTemp.normalize();
+//	float fAlpha = tCurrentWatchDirection.dotproduct(tTemp), fEyeFov = eye_fov*PI/180.f;
+//	//float fAlpha = tWatchDirection.dotproduct(tTemp), fEyeFov = eye_fov*PI/180.f;
+//	clamp(fAlpha,-.99999f,+.99999f);
+//	fAlpha = acosf(fAlpha);
+//	float fMaxViewableDistanceInDirection = eye_range*(1 - fAlpha/(fEyeFov/m_fLateralMultiplier));
+//	
+//	// computing distance weight
+//	tTemp.sub(vPosition,tpEntity->Position());
+//	fResult += tTemp.magnitude() >= fMaxViewableDistanceInDirection ? 0.f : m_fDistanceWeight*(1.f - tTemp.magnitude()/fMaxViewableDistanceInDirection);
+//	
+//	// computing movement speed weight
+//	if (tpEntity->ps_Size() > 1) {
+//		DWORD dwTime = tpEntity->ps_Element(tpEntity->ps_Size() - 1).dwTime;
+//		if (dwTime < m_dwMovementIdleTime) {
+//			tTemp.sub(tpEntity->ps_Element(tpEntity->ps_Size() - 2).vPosition,tpEntity->ps_Size() - 1);
+//			float fSpeed = tTemp.magnitude()/dwTime;
+//			fResult += fSpeed < m_fMaxInvisibleSpeed ? m_fMovementSpeedWeight*fSpeed/m_fMaxInvisibleSpeed : m_fMovementSpeedWeight;
+//		}
+//	}
+//	
+//	// computing lightness weight
+//	fResult *= m_fShadowWeight*float(tpEntity->AI_Node->light)/255.f;
+//	
+//	// computing enemy state
+//	switch (m_cBodyState) {
+//		case BODY_STATE_STAND : {
+//			break;
+//		}
+//		case BODY_STATE_CROUCH : {
+//			fResult *= m_fCrouchVisibilityMultiplier;
+//			break;
+//		}
+//		case BODY_STATE_LIE : {
+//			fResult *= m_fLieVisibilityMultiplier;
+//			break;
+//		}
+//	}
+//	
+//	// computing my ability to view the enemy
+//	fResult += m_fCurSpeed < m_fMaxViewableSpeed ? m_fSpeedWeight*(1.f - m_fCurSpeed/m_fMaxViewableSpeed) : m_fSpeedWeight;
+//	
+//	return(fResult >= m_fVisibilityThreshold);
 }
 
 void CAI_Rat::SetDirectionLook()
