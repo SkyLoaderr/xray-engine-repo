@@ -45,6 +45,9 @@ private:
 	void			UpdateXForm		(BOOL bHUD);
 
 protected:
+	void			FlameLOAD		();
+	void			FlameUNLOAD		();
+	
 	virtual void	FireShotmark	(const Fvector &vDir, const Fvector &vEnd, Collide::ray_query& R);
 public:
 					CWeaponGroza	();
@@ -63,6 +66,9 @@ public:
 
 	virtual	void	Update			(float dt, BOOL bHUDView);
 	virtual	void	Render			(BOOL bHUDView);
+
+	virtual void	OnDeviceCreate	();
+	virtual void	OnDeviceDestroy	();
 };
 
 #endif //__XR_WEAPON_GROZA_H__

@@ -24,11 +24,11 @@ CWeaponGroza::CWeaponGroza() : CWeapon("GROZA")
 	pSounds->Create3D(sndRicochet[2],"weapons\\ric3");
 	pSounds->Create3D(sndRicochet[3],"weapons\\ric4");
 	pSounds->Create3D(sndRicochet[4],"weapons\\ric5");
-
+	
 	iFlameDiv		= 0;
 	fFlameLength	= 0;
 	fFlameSize		= 0;
-
+	
 	vLastFP.set		(0,0,0);
 	vLastFD.set		(0,0,0);
 	
@@ -37,12 +37,11 @@ CWeaponGroza::CWeaponGroza() : CWeapon("GROZA")
 
 CWeaponGroza::~CWeaponGroza()
 {
-	for (DWORD i=0; i<hFlames.size(); i++)
-		Device.Shader.Delete(hFlames[i]);
-
+	FlameUNLOAD		();
+	
 	// sounds
 	pSounds->Delete3D(sndFireLoop);
-	for (i=0; i<SND_RIC_COUNT; i++) pSounds->Delete3D(sndRicochet[i]);
+	for (int i=0; i<SND_RIC_COUNT; i++) pSounds->Delete3D(sndRicochet[i]);
 }
 
 void CWeaponGroza::Load(CInifile* ini, const char* section){
@@ -54,14 +53,36 @@ void CWeaponGroza::Load(CInifile* ini, const char* section){
 	iFlameDiv		= ini->ReadINT	(section,"flame_div");
 	fFlameLength	= ini->ReadFLOAT(section,"flame_length");
 	fFlameSize		= ini->ReadFLOAT(section,"flame_size");
+	bFlame			= FALSE;
 
+	FlameLOAD		();
+}
+
+void CWeaponGroza::FlameLOAD()
+{
 	// flame textures
-	LPCSTR S		= ini->ReadSTRING(section,"flame");
+	LPCSTR S		= pSettings->ReadSTRING	(cName(),"flame");
 	DWORD scnt		= _GetItemCount(S);
 	char name[255];
 	for (DWORD i=0; i<scnt; i++)
 		hFlames.push_back(Device.Shader.Create("particles\\add",_GetItem(S,i,name),false));
-	bFlame			= FALSE;
+}
+void CWeaponGroza::FlameUNLOAD()
+{
+	for (DWORD i=0; i<hFlames.size(); i++)
+		Device.Shader.Delete(hFlames[i]);
+	hFlames.clear();
+}
+void CWeaponGroza::OnDeviceCreate()
+{
+	REQ_CREATE	();
+	inherited::OnDeviceCreate	();
+	FlameLOAD	();
+}
+void CWeaponGroza::OnDeviceDestroy()
+{
+	inherited::OnDeviceDestroy	();
+	FlameUNLOAD	();
 }
 
 void CWeaponGroza::FireStart()
