@@ -849,6 +849,7 @@ function action_security_stand:initialize ()
     self.object:set_body_state      (move.standing)
     self.object:set_sight           (look.point, self.a.path:point(1), 0)
     self.object:set_item          	(object.activate, self.object:best_weapon () )
+    self.object:mental_state		(anim.free)
 
 	self.object:enable_talk			()
 
@@ -899,11 +900,14 @@ function action_security_stand:on_position()
 			self.animations:update("idle")
 			self.object:set_sight               (look.point, self.a.path:point(1), 0)
         else
-            if(self.object:animation_count() ~= 0) then
+            if(self.object:animation_count() <= 1) then
+				--Доигруем анимацию до конца
                 self.animations:update(nil)
+			else
+            	return
             end
 
-            printf("%f", yaw(level.actor():position():sub(self.object:position()), self.a.path:point(1):sub(self.object:position()) ) )
+--            printf("%f", yaw(level.actor():position():sub(self.object:position()), self.a.path:point(1):sub(self.object:position()) ) )
             --Проверяем угол
             if(yaw(level.actor():position():sub(self.object:position()), self.a.path:point(1):sub(self.object:position()) ) < 1)then
             	--Угол не большой, смотрим на актера
