@@ -75,7 +75,10 @@ void CAI_Stalker::BackCover(bool bFire)
 	switch (m_tActionState) {
 		case eActionStateWatchGo : {
 			WRITE_TO_LOG			("WatchGo : BackCover");
-			vfSetParameters			(&m_tSelectorCover,0,true,eWeaponStateIdle,ePathTypeDodgeCriteria,eBodyStateStand, (m_tSavedEnemyPosition.distance_to(vPosition) > 3.f) && m_tEnemy.Enemy ? eMovementTypeRun : eMovementTypeWalk,eStateTypeDanger,eLookTypeDirection);
+			if (Level().timeServer() - m_dwActionStartTime < 8500)
+				vfSetParameters			(&m_tSelectorCover,0,true,eWeaponStateIdle,ePathTypeDodgeCriteria,eBodyStateStand, /**(m_tSavedEnemyPosition.distance_to(vPosition) > 3.f) && m_tEnemy.Enemy ? eMovementTypeRun : eMovementTypeWalk/**/eMovementTypeRun,eStateTypeDanger,eLookTypeDirection);
+			else
+				vfSetParameters			(0,0,true,eWeaponStateIdle,ePathTypeDodgeCriteria,eBodyStateStand, eMovementTypeStand,eStateTypeDanger,eLookTypeFirePoint,tPoint);
 			if ((Level().timeServer() - m_dwActionStartTime > 10000) && ((getAI().dwfCheckPositionInDirection(AI_NodeID,vPosition,tPoint) != u32(-1)) || (Level().timeServer() - m_dwActionStartTime > 8000))) {
 				m_tActionState		= eActionStateWatchLook;
 				m_dwActionStartTime = Level().timeServer();
@@ -923,6 +926,7 @@ void CAI_Stalker::AccomplishTask(IBaseAI_NodeEvaluator *tpNodeEvaluator)
 	}
 
 	AI_Path.DestNode		= getAI().m_tpaGraph[m_tNextGP].tNodeID;
+	VERIFY(getAI().m_tpaCrossTable[getAI().m_tpaGraph[m_tNextGP].tNodeID].tGraphIndex == m_tNextGP);
 	if (!AI_Path.DestNode) {
 		Msg("! Invalid graph point node (graph index %d)",m_tNextGP);
 		for (int i=0; i<getAI().GraphHeader().dwVertexCount; i++)
