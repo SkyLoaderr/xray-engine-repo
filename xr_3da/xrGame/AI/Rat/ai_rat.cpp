@@ -483,7 +483,16 @@ typedef unsigned char uchar;
 
 IC bool CAI_Rat::bfInsideSubNode(const Fvector &tCenter, const SSubNode &tpSubNode)
 {
-	return(((tCenter.x >= tpSubNode.tLeftDown.x) && (tCenter.z >= tpSubNode.tLeftDown.z)) || ((tCenter.x >= tpSubNode.tRightUp.x) && (tCenter.z >= tpSubNode.tRightUp.z)));
+	return(((tCenter.x >= tpSubNode.tLeftDown.x) && (tCenter.z >= tpSubNode.tLeftDown.z)) && ((tCenter.x <= tpSubNode.tRightUp.x) && (tCenter.z <= tpSubNode.tRightUp.z)));
+}
+
+IC bool CAI_Rat::bfInsideNode(const Fvector &tCenter, const NodeCompressed *tpNode)
+{
+	Fvector tLeftDown;
+	Fvector tRightUp;
+	Level().AI.UnpackPosition(tLeftDown,tpNode->p0);
+	Level().AI.UnpackPosition(tRightUp,tpNode->p1);
+	return(((tCenter.x >= tLeftDown.x) && (tCenter.z >= tLeftDown.z)) && ((tCenter.x <= tRightUp.x) && (tCenter.z <= tRightUp.z)));
 }
 
 IC bool CAI_Rat::bfNeighbourNode(const SSubNode &tCurrentSubNode, const SSubNode &tMySubNode)
@@ -517,17 +526,25 @@ IC float CAI_Rat::ffComputeCost(Fvector tLeaderPosition,SSubNode &tCurrentNeighb
 	return(SQR(tLeaderPosition.x - tCurrentSubNode.x) + SQR(tLeaderPosition.y - tCurrentSubNode.y) + SQR(tLeaderPosition.z - tCurrentSubNode.z));
 }
 
-int CAI_Rat::ifDivideNode(NodeCompressed* tpCurrentNode, Fvector tCurrentPosition, vector<SSubNode> &tpSubNodes)
+int CAI_Rat::ifDivideNode(NodeCompressed tCurrentNode, Fvector tCurrentPosition, vector<SSubNode> &tpSubNodes)
 {
-	float fSubNodeSize = Level().AI.GetHeader().size;
+	CAI_Space &AI = Level().AI;
+	float fSubNodeSize = AI.GetHeader().size;
 	SSubNode tNode;
 	tpSubNodes.clear();
 	int iCount = 0, iResult = -1;
-	for (float i=float(tpCurrentNode->p0.x) - fSubNodeSize/2.f; i < float(tpCurrentNode->p1.x); i+=fSubNodeSize) {
-		for (float j=float(tpCurrentNode->p0.z) - fSubNodeSize/2.f; j < float(tpCurrentNode->p1.z); j+=fSubNodeSize) {
+	Fvector tLeftDown;
+	Fvector tRightUp;
+	NodeCompressed *tpCurrentNode = &tCurrentNode;
+	AI.UnpackPosition(tLeftDown,tpCurrentNode->p0);
+	AI.UnpackPosition(tRightUp,tpCurrentNode->p1);
+	for (float i=tLeftDown.x - fSubNodeSize/2.f; i < tRightUp.x; i+=fSubNodeSize) {
+		for (float j=tLeftDown.z - fSubNodeSize/2.f; j < tRightUp.z; j+=fSubNodeSize) {
 			tNode.tLeftDown.x = i;
+			tNode.tLeftDown.y = tLeftDown.y;
 			tNode.tLeftDown.z = j;
 			tNode.tRightUp.x = i + fSubNodeSize;
+			tNode.tRightUp.y = tLeftDown.y;
 			tNode.tRightUp.z = j + fSubNodeSize;
 			tNode.bEmpty = true;
 			tpSubNodes.push_back(tNode);
@@ -539,12 +556,16 @@ int CAI_Rat::ifDivideNode(NodeCompressed* tpCurrentNode, Fvector tCurrentPositio
 	NodeLink *taLinks = (NodeLink *)((uchar *)tpCurrentNode + sizeof(NodeCompressed));
 	iCount = tpCurrentNode->link_count;
 	for (int k=0; k<iCount; k++) {
-		tpCurrentNode = Level().AI.Node(Level().AI.UnpackLink(taLinks[k]));
-		for (float i=float(tpCurrentNode->p0.x) - fSubNodeSize/2.f; i < float(tpCurrentNode->p1.x); i+=fSubNodeSize)
-			for (float j=float(tpCurrentNode->p0.z) - fSubNodeSize/2.f; j < float(tpCurrentNode->p1.z); j+=fSubNodeSize) {
+		tpCurrentNode = AI.Node(AI.UnpackLink(taLinks[k]));
+		AI.UnpackPosition(tLeftDown,tpCurrentNode->p0);
+		AI.UnpackPosition(tRightUp,tpCurrentNode->p1);
+		for (float i=tLeftDown.x - fSubNodeSize/2.f; i < tRightUp.x; i+=fSubNodeSize)
+			for (float j=tLeftDown.z - fSubNodeSize/2.f; j < tRightUp.z; j+=fSubNodeSize) {
 				tNode.tLeftDown.x = i;
+				tNode.tLeftDown.y = tLeftDown.y;
 				tNode.tLeftDown.z = j;
 				tNode.tRightUp.x = i + fSubNodeSize;
+				tNode.tRightUp.y = tLeftDown.y;
 				tNode.tRightUp.z = j + fSubNodeSize;
 				tNode.bEmpty = true;
 				tpSubNodes.push_back(tNode);
@@ -564,11 +585,12 @@ void CAI_Rat::FollowMe()
 		return;
 	}
 	else {
+		/**
 		// selecting enemy if any
 		SEnemySelected	Enemy;
 		SelectEnemy(Enemy);
 		// do I see the enemies?
-		if (Enemy.Enemy)		{
+		if (Enemy.Enemy) {
 			tStateStack.push(eCurrentState);
 			eCurrentState = aiRatAttack;
 			return;
@@ -588,6 +610,7 @@ void CAI_Rat::FollowMe()
 					return;
 				}
 				else {
+		/**/
 					// determining the team
 					CSquad&	Squad = Level().Teams[g_Team()].Squads[g_Squad()];
 					// determining who is leader
@@ -606,54 +629,119 @@ void CAI_Rat::FollowMe()
 						// divide the nearest nodes into the subnodes 0.7x0.7 m^2
 						DWORD dwNodeID = AI_NodeID;
 						Fvector tCurrentPosition = Position();
-						NodeCompressed* tpCurrentNode = AI_Node;
-						vector<SSubNode> tpSubNodes;
-						int iMySubNode = ifDivideNode(tpCurrentNode,tCurrentPosition,tpSubNodes);
-						// filling the subnodes with the moving objects
-						Level().ObjectSpace.GetNearest(tCurrentPosition,2*Level().AI.GetHeader().size);
-						CObjectSpace::NL_TYPE tpNearestList = Level().ObjectSpace.nearest_list;
-						if (!tpNearestList.empty()) {
-							for (CObjectSpace::NL_IT tppObjectIterator=tpNearestList.begin(); tppObjectIterator!=tpNearestList.end(); tppObjectIterator++) {
-								CObject* tpCurrentObject = (*tppObjectIterator)->Owner();
-								float fRadius = tpCurrentObject->Radius();
-								Fvector tCenter;
-								tpCurrentObject->clCenter(tCenter);
-								for (int i=0; i<tpSubNodes.size(); i++)
-									if (bfInsideSubNode(tCenter,tpSubNodes[i]))
-										tpSubNodes[i].bEmpty = false;
-							}
-						}
-						// checking the nearest nodes
-						vector<SSubNode> tpFreeNeighbourNodes;
-						tpFreeNeighbourNodes.clear();
-						for (int i=0; i<tpSubNodes.size(); i++)
-							if ((i != iMySubNode) && (tpSubNodes[i].bEmpty) && (bfNeighbourNode(tpSubNodes[i],tpSubNodes[iMySubNode])))
-								tpFreeNeighbourNodes.push_back(tpSubNodes[i]);
-						tpSubNodes.clear();
-						AI_Path.TravelPath.clear();
-						if (!tpFreeNeighbourNodes.empty()) {
-							float fBestCost = 100.f;
-							Fvector tLeaderPosition = Leader->Position();
-							for (int i=0, iBestI=-1; i<tpFreeNeighbourNodes.size(); i++) {
-								float fCurCost = ffComputeCost(tLeaderPosition,tpFreeNeighbourNodes[i]);
-								if (fCurCost < fBestCost) {
-									iBestI = i;
-									fBestCost = fCurCost;
+						NodeCompressed* tpCurrentNode = Level().AI.Node(AI_NodeID);
+						if (bfInsideNode(tCurrentPosition,tpCurrentNode)) {
+							vector<SSubNode> tpSubNodes;
+							int iMySubNode = ifDivideNode(*tpCurrentNode,tCurrentPosition,tpSubNodes);
+							// filling the subnodes with the moving objects
+							Level().ObjectSpace.GetNearest(tCurrentPosition,2*Level().AI.GetHeader().size);
+							CObjectSpace::NL_TYPE &tpNearestList = Level().ObjectSpace.nearest_list;
+							if (!tpNearestList.empty()) {
+								for (CObjectSpace::NL_IT tppObjectIterator=tpNearestList.begin(); tppObjectIterator!=tpNearestList.end(); tppObjectIterator++) {
+									CObject* tpCurrentObject = (*tppObjectIterator)->Owner();
+									float fRadius = tpCurrentObject->Radius();
+									Fvector tCenter;
+									tpCurrentObject->clCenter(tCenter);
+									for (int i=0; i<tpSubNodes.size(); i++)
+										if (bfInsideSubNode(tCenter,tpSubNodes[i]))
+											tpSubNodes[i].bEmpty = false;
 								}
 							}
-							Fvector tFinishPosition;
-							tFinishPosition.x = (tpFreeNeighbourNodes[iBestI].tLeftDown.x + tpFreeNeighbourNodes[iBestI].tRightUp.x)/2.f;
-							tFinishPosition.y = (tpFreeNeighbourNodes[iBestI].tLeftDown.y + tpFreeNeighbourNodes[iBestI].tRightUp.y)/2.f;
-							tFinishPosition.z = (tpFreeNeighbourNodes[iBestI].tLeftDown.z + tpFreeNeighbourNodes[iBestI].tRightUp.z)/2.f;
-							CTravelNode	tCurrentPoint,tFinishPoint;
-							tCurrentPoint.P.set(tCurrentPosition);
-							tCurrentPoint.floating = FALSE;
-							AI_Path.TravelPath.push_back(tCurrentPoint);
-							tFinishPoint.P.set(tFinishPosition);
-							tFinishPoint.floating = FALSE;
-							AI_Path.TravelPath.push_back(tFinishPoint);
+							// checking the nearest nodes
+							vector<SSubNode> tpFreeNeighbourNodes;
+							tpFreeNeighbourNodes.clear();
+							for (int i=0; i<tpSubNodes.size(); i++)
+								if ((i != iMySubNode) && (tpSubNodes[i].bEmpty) && (bfNeighbourNode(tpSubNodes[i],tpSubNodes[iMySubNode])))
+									tpFreeNeighbourNodes.push_back(tpSubNodes[i]);
+							tpSubNodes.clear();
+							AI_Path.TravelPath.clear();
+							if (!tpFreeNeighbourNodes.empty()) {
+								float fBestCost = 100.f;
+								Fvector tLeaderPosition = Leader->Position();
+								for (int i=0, iBestI=-1; i<tpFreeNeighbourNodes.size(); i++) {
+									float fCurCost = ffComputeCost(tLeaderPosition,tpFreeNeighbourNodes[i]);
+									if (fCurCost < fBestCost) {
+										iBestI = i;
+										fBestCost = fCurCost;
+									}
+								}
+								Fvector tFinishPosition;
+								tFinishPosition.x = (tpFreeNeighbourNodes[iBestI].tLeftDown.x + tpFreeNeighbourNodes[iBestI].tRightUp.x)/2.f;
+								tFinishPosition.y = (tpFreeNeighbourNodes[iBestI].tLeftDown.y + tpFreeNeighbourNodes[iBestI].tRightUp.y)/2.f;
+								tFinishPosition.z = (tpFreeNeighbourNodes[iBestI].tLeftDown.z + tpFreeNeighbourNodes[iBestI].tRightUp.z)/2.f;
+								CTravelNode	tCurrentPoint,tFinishPoint;
+								tCurrentPoint.P.set(tCurrentPosition);
+								tCurrentPoint.floating = FALSE;
+								AI_Path.TravelPath.push_back(tCurrentPoint);
+								tFinishPoint.P.set(tFinishPosition);
+								tFinishPoint.floating = FALSE;
+								AI_Path.TravelPath.push_back(tFinishPoint);
+								tpFreeNeighbourNodes.clear();
+								AI_Path.TravelStart = 0;
+							}
+							else {
+							}
 						}
 						else {
+							vector<SSubNode> tpSubNodes;
+							CAI_Space &AI = Level().AI;
+							float fSubNodeSize = AI.GetHeader().size;
+							SSubNode tNode;
+							tpSubNodes.clear();
+							int iCount = 0, iMySubNode = -1;
+							float fBestCost = 100.f;
+							Fvector tLeftDown;
+							Fvector tRightUp;
+							AI.UnpackPosition(tLeftDown,tpCurrentNode->p0);
+							AI.UnpackPosition(tRightUp,tpCurrentNode->p1);
+							for (float i=tLeftDown.x - fSubNodeSize/2.f; i < tRightUp.x; i+=fSubNodeSize) {
+								for (float j=tLeftDown.z - fSubNodeSize/2.f; j < tRightUp.z; j+=fSubNodeSize) {
+									tNode.tLeftDown.x = i;
+									tNode.tLeftDown.y = tLeftDown.y;
+									tNode.tLeftDown.z = j;
+									tNode.tRightUp.x = i + fSubNodeSize;
+									tNode.tRightUp.y = tLeftDown.y;
+									tNode.tRightUp.z = j + fSubNodeSize;
+									tNode.bEmpty = true;
+									tpSubNodes.push_back(tNode);
+									float fCurrentCost = ffComputeCost(tCurrentPosition,tNode);
+									if (fCurrentCost < fBestCost) {
+										fBestCost = fCurrentCost;
+										iMySubNode = iCount;
+									}
+									iCount++;
+								}
+							}
+							Level().ObjectSpace.GetNearest(tCurrentPosition,2*Level().AI.GetHeader().size);
+							CObjectSpace::NL_TYPE &tpNearestList = Level().ObjectSpace.nearest_list;
+							if (!tpNearestList.empty()) {
+								for (CObjectSpace::NL_IT tppObjectIterator=tpNearestList.begin(); tppObjectIterator!=tpNearestList.end(); tppObjectIterator++) {
+									CObject* tpCurrentObject = (*tppObjectIterator)->Owner();
+									float fRadius = tpCurrentObject->Radius();
+									Fvector tCenter;
+									tpCurrentObject->clCenter(tCenter);
+									if (bfInsideSubNode(tCenter,tpSubNodes[iMySubNode])) {
+										tpSubNodes[i].bEmpty = false;
+										break;
+									}
+								}
+							}
+							AI_Path.TravelPath.clear();
+							if (tpSubNodes[iMySubNode].bEmpty) {
+								Fvector tFinishPosition;
+								tFinishPosition.x = (tpSubNodes[iMySubNode].tLeftDown.x + tpSubNodes[iMySubNode].tRightUp.x)/2.f;
+								tFinishPosition.y = (tpSubNodes[iMySubNode].tLeftDown.y + tpSubNodes[iMySubNode].tRightUp.y)/2.f;
+								tFinishPosition.z = (tpSubNodes[iMySubNode].tLeftDown.z + tpSubNodes[iMySubNode].tRightUp.z)/2.f;
+								CTravelNode	tCurrentPoint,tFinishPoint;
+								tCurrentPoint.P.set(tCurrentPosition);
+								tCurrentPoint.floating = FALSE;
+								AI_Path.TravelPath.push_back(tCurrentPoint);
+								tFinishPoint.P.set(tFinishPosition);
+								tFinishPoint.floating = FALSE;
+								AI_Path.TravelPath.push_back(tFinishPoint);
+								AI_Path.TravelStart = 0;
+							}
+							tpSubNodes.clear();
 						}
 						// setting up a look
 						// getting my current node
@@ -667,9 +755,11 @@ void CAI_Rat::FollowMe()
 						bStopThinking = true;
 						return;
 					}
+		/**
 				}
 			}
 		}
+		/**/
 	}
 }
 
