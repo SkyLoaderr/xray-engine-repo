@@ -87,8 +87,6 @@ function main()
 			)
 			wait		(1500)			
                 	break		
-			stalker1:script	(false, script_01.script_name())
-			stalker2:script	(false, script_01.script_name())
 		end
 		wait()			
 	end
