@@ -68,7 +68,7 @@ BOOL CWeaponAmmo::net_Spawn(LPVOID DC) {
 		// Physics (Shell)
 		m_pPhysicsShell = P_create_Shell(); R_ASSERT(m_pPhysicsShell);
 		m_pPhysicsShell->add_Element(E);
-		m_pPhysicsShell->setMass(2000.f);
+		m_pPhysicsShell->setDensity(2000.f);
 		if(!H_Parent())m_pPhysicsShell->Activate(svXFORM(),0,svXFORM());
 		m_pPhysicsShell->mDesired.identity();
 		m_pPhysicsShell->fDesiredStrength = 0.f;

@@ -25,6 +25,7 @@ public:
 	virtual void			Enable					()											= 0;
 	
 	virtual void			setMass					(float M)									= 0;
+	virtual void			setDensity				(float M)									= 0;
 	
 	virtual void			applyForce				(const Fvector& dir, float val)				= 0;
 	virtual void			applyImpulse			(const Fvector& dir, float val)				= 0;
@@ -49,6 +50,7 @@ public:
 	virtual	void			set_ParentElement		(CPhysicsElement* p)							= 0;
 	virtual void			SetMaterial				(u32 m)											= 0;
 	virtual void			SetMaterial				(LPCSTR m)										= 0;
+	virtual void			setInertia				(const Fmatrix& M)								= 0;
 	virtual ~CPhysicsElement	()																	{};
 };
 

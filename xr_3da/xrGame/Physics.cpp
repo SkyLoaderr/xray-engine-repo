@@ -1415,10 +1415,19 @@ void CPHElement::calculate_it_data_use_density(const Fvector& mc,float density){
 
 
 
-void		CPHElement::	setMass		(float M){
+void		CPHElement::	setDensity		(float M){
+
 //calculate_it_data(get_mc_data(),M);
 
 calculate_it_data_use_density(get_mc_data(),M);
+
+}
+
+void		CPHElement::	setMass		(float M){
+
+	calculate_it_data(get_mc_data(),M);
+
+//calculate_it_data_use_density(get_mc_data(),M);
 
 }
 
@@ -1461,17 +1470,26 @@ CPHElement::~CPHElement	(){
 
 /////////////////////////////////////////////////////////////////////////////////////////////////////
 ////////////////////////////////////////////////////////////////////////////////////////////////////
+void CPHShell::setDensity(float M){
+	vector<CPHElement*>::iterator i;
+	//float volume=0.f;
+	//for(i=elements.begin();i!=elements.end();i++)	volume+=(*i)->get_volume();
+
+	for(i=elements.begin();i!=elements.end();i++)
+	(*i)->setDensity(M);
+}
+
+
 void CPHShell::setMass(float M){
 	vector<CPHElement*>::iterator i;
 	float volume=0.f;
 	for(i=elements.begin();i!=elements.end();i++)	volume+=(*i)->get_volume();
 
 	for(i=elements.begin();i!=elements.end();i++)
-	(*i)->setMass(
-				(*i)->get_volume()/volume*M
-				);
+		(*i)->setMass(
+						(*i)->get_volume()/volume*M
+					);
 }
-
 
 void CPHShell::Activate(const Fmatrix &m0,float dt01,const Fmatrix &m2,bool disable){
 	if(bActive)

@@ -245,7 +245,7 @@ BOOL CWeaponRPG7Grenade::net_Spawn(LPVOID DC) {
 		m_pPhysicsShell						= P_create_Shell	();
 		R_ASSERT							(m_pPhysicsShell);
 		m_pPhysicsShell->add_Element		(E);
-		m_pPhysicsShell->setMass			(8000.f);
+		m_pPhysicsShell->setDensity			(8000.f);
 		//m_pPhysicsShell->Activate			(svXFORM(),0,svXFORM());
 		m_pPhysicsShell->Activate			();
 		m_pPhysicsShell->mDesired.identity	();

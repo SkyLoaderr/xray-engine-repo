@@ -285,7 +285,7 @@ void CAI_Rat::CreateSkeleton(){
 	//sphere.P.set(0,0,0);
 	//sphere.R=0.25;
 	//element->add_Sphere(sphere);
-	element->setMass(m_phMass);
+	element->setDensity(m_phMass);
 	element->SetMaterial("creatures\\rat");
 	m_pPhysicsShell=P_create_Shell();
 	m_pPhysicsShell->add_Element(element);
@@ -312,7 +312,7 @@ void CAI_Rat::CreateSkeleton(){
 	box.m_halfsize.set(0.10f,0.085f,0.25f);
 	element->add_Box(box);
 
-	element->setMass(200.f);
+	element->setDensity(200.f);
 	m_pPhysicsShell->add_Element(element);
 	element->SetMaterial("materials\\skel1");
 

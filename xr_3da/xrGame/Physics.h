@@ -322,6 +322,9 @@ public:
 			void			Activate				(const Fmatrix& start_from, bool disable=false);
 	virtual void			Deactivate				();
 	virtual void			setMass					(float M);
+	virtual void			setDensity				(float M);
+	virtual void			setInertia				(const Fmatrix& M)																					{}
+
 	virtual void			applyForce				(const Fvector& dir, float val){
 		if( !dBodyIsEnabled(m_body)) dBodyEnable(m_body);
 																					dBodyAddForce(m_body,dir.x*val,dir.y*val,dir.z*val);
@@ -508,6 +511,7 @@ public:
 	virtual void			Deactivate				()		;
 
 	virtual void			setMass					(float M)									;
+	virtual void			setDensity				(float M)									;
 
 	virtual void			applyForce				(const Fvector& dir, float val)				{
 																								if(!bActive) return;
