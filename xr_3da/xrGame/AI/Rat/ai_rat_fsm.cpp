@@ -83,10 +83,6 @@ void CAI_Rat::Think()
 				ReturnHome();
 				break;
 			}
-			case aiRatReturnRecoil : {
-				ReturnRecoil();
-				break;
-			}
 		}
 		m_bStateChanged = m_ePreviousState != eCurrentState;
 	}
@@ -175,13 +171,13 @@ void CAI_Rat::FreeHuntingActive()
 	
 	if (m_Enemy.Enemy) {
 		m_fGoalChangeTime = 0;
-		if ((m_Enemy.Enemy->Position().distance_to(m_tSafeSpawnPosition) < 3*m_fMoraleNullRadius) || (vPosition.distance_to(m_tSafeSpawnPosition) > m_fMoraleNullRadius))
+		if ((m_Enemy.Enemy->Position().distance_to(m_tSafeSpawnPosition) < m_fMaxPursuitRadius) || (vPosition.distance_to(m_tSafeSpawnPosition) > m_fMaxHomeRadius))
 			SWITCH_TO_NEW_STATE_THIS_UPDATE(aiRatAttackRun)
 	}
 
 	CHECK_IF_SWITCH_TO_NEW_STATE_THIS_UPDATE(m_fMorale < m_fMoraleNormalValue,aiRatUnderFire);
 	
-	if ((m_tLastSound.dwTime >= m_dwLastUpdateTime) && ((!m_tLastSound.tpEntity) || (m_tLastSound.tpEntity->g_Team() != g_Team()))) {
+	if ((m_tLastSound.dwTime >= m_dwLastUpdateTime) && ((!m_tLastSound.tpEntity) || (m_tLastSound.tpEntity->g_Team() != g_Team())) && (!m_Enemy.Enemy)) {
 		if (m_tLastSound.tpEntity)
 			m_tSavedEnemy = m_tLastSound.tpEntity;
 		m_tSavedEnemyPosition = m_tLastSound.tSavedPosition;
@@ -195,7 +191,7 @@ void CAI_Rat::FreeHuntingActive()
 	
 	if (bfCheckIfGoalChanged()) {
 		if (m_bStateChanged || (vPosition.distance_to(m_tSpawnPosition) > MAX_STABLE_DISTANCE) || (::Random.randF(0,1) > m_fChangeActiveStateProbability))
-			if (vPosition.distance_to(m_tSafeSpawnPosition) > m_fMoraleNullRadius)
+			if (vPosition.distance_to(m_tSafeSpawnPosition) > m_fMaxHomeRadius)
 				m_fSpeed = m_fSafeSpeed = m_fMaxSpeed;
 			else
 				vfChooseNewSpeed();
@@ -416,11 +412,11 @@ void CAI_Rat::AttackRun()
 	if (!(m_Enemy.Enemy) && m_tSavedEnemy && (Level().timeServer() - m_dwLostEnemyTime < LOST_MEMORY_TIME))
 		m_Enemy.Enemy = m_tSavedEnemy;
 
-	CHECK_IF_GO_TO_NEW_STATE_THIS_UPDATE(m_Enemy.Enemy && (m_tSafeSpawnPosition.distance_to(m_Enemy.Enemy->Position()) > 3*m_fMoraleNullRadius),aiRatReturnHome);
+	CHECK_IF_GO_TO_NEW_STATE_THIS_UPDATE(m_Enemy.Enemy && (m_tSafeSpawnPosition.distance_to(m_Enemy.Enemy->Position()) > m_fMaxPursuitRadius),aiRatReturnHome);
 
 	CHECK_IF_GO_TO_PREV_STATE_THIS_UPDATE(!m_Enemy.Enemy);// || !m_Enemy.Enemy->g_Alive())
 
-//	CHECK_IF_GO_TO_NEW_STATE_THIS_UPDATE(vPosition.distance_to(m_tSafeSpawnPosition) > 3*m_fMoraleNullRadius, aiRatReturnHome);
+//	CHECK_IF_GO_TO_NEW_STATE_THIS_UPDATE(vPosition.distance_to(m_tSafeSpawnPosition) > m_fMaxPursuitRadius, aiRatReturnHome);
 		
 	CGroup &Group = Level().Teams[g_Team()].Squads[g_Squad()].Groups[g_Group()];
 
@@ -643,52 +639,6 @@ void CAI_Rat::FreeRecoil()
 	vfSetFire(false,Level().get_group(g_Team(),g_Squad(),g_Group()));
 }
 
-void CAI_Rat::ReturnRecoil()
-{
-	WRITE_TO_LOG("Return home : Recoil from something");
-
-	CHECK_IF_SWITCH_TO_NEW_STATE(!g_Alive(),aiRatDie)
-	
-	SelectEnemy(m_Enemy);
-		
-	if (m_Enemy.Enemy)
-		m_dwLostEnemyTime = Level().timeServer();
-
-	CHECK_IF_GO_TO_PREV_STATE_THIS_UPDATE((m_Enemy.Enemy && (m_tSafeSpawnPosition.distance_to(m_Enemy.Enemy->Position()) < 2*m_fMoraleNullRadius)));
-
-	CHECK_IF_GO_TO_PREV_STATE_THIS_UPDATE(m_fMorale >= m_fMoraleNormalValue);
-
-	if (m_tLastSound.dwTime >= m_dwLastUpdateTime) {
-		m_dwLostEnemyTime = Level().timeServer();
-		Fvector tTemp;
-		tTemp.setHP(r_torso_current.yaw,r_torso_current.pitch);
-		tTemp.normalize_safe();
-		tTemp.mul(UNDER_FIRE_DISTANCE);
-		m_tSavedEnemyPosition = m_tLastSound.tSavedPosition;
-		m_tSpawnPosition.add(vPosition,tTemp);
-	}
-	
-	m_tGoalDir.set(m_tSpawnPosition);
-	
-	m_fSafeSpeed = m_fSpeed = m_fMaxSpeed;
-	
-	vfUpdateTime(m_fTimeUpdateDelta);
-
-	if (m_fSpeed > EPS_L)
-		vfComputeNewPosition();
-	else
-		UpdateTransform();
-
-	if (!Level().AI.bfTooSmallAngle(r_torso_target.yaw, r_torso_current.yaw,PI_DIV_8) || m_bNoWay)
-		m_fSpeed = EPS_S;
-	else 
-		m_fSafeSpeed = m_fSpeed = m_fMaxSpeed;
-
-	SetDirectionLook();
-
-	vfSetFire(false,Level().get_group(g_Team(),g_Squad(),g_Group()));
-}
-
 void CAI_Rat::ReturnHome()
 {
 	WRITE_TO_LOG("Returning home");
@@ -699,7 +649,7 @@ void CAI_Rat::ReturnHome()
 
 	SelectEnemy(m_Enemy);
 	
-	if (m_Enemy.Enemy && (m_tSafeSpawnPosition.distance_to(m_Enemy.Enemy->Position()) < 2*m_fMoraleNullRadius)) {
+	if (m_Enemy.Enemy && (m_tSafeSpawnPosition.distance_to(m_Enemy.Enemy->Position()) < m_fMaxPursuitRadius)) {
 		SelectEnemy(m_Enemy);
 		m_fGoalChangeTime = 0;
 		SWITCH_TO_NEW_STATE_THIS_UPDATE(aiRatAttackRun)
@@ -715,7 +665,7 @@ void CAI_Rat::ReturnHome()
 //		SWITCH_TO_NEW_STATE_THIS_UPDATE(aiRatReturnRecoil);
 //	}
  
-	CHECK_IF_GO_TO_PREV_STATE_THIS_UPDATE(vPosition.distance_to(m_tSafeSpawnPosition) < m_fMoraleNullRadius);
+	CHECK_IF_GO_TO_PREV_STATE_THIS_UPDATE(vPosition.distance_to(m_tSafeSpawnPosition) < m_fMaxHomeRadius);
 
 	m_tSpawnPosition.set	(m_tSafeSpawnPosition);
 	m_fGoalChangeDelta		= 10.f;

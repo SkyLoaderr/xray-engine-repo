@@ -117,7 +117,6 @@ void CAI_Rat::Load(LPCSTR section)
 	m_fMoraleMinValue				= pSettings->ReadFLOAT	(section, "MoraleMinValue");
 	m_fMoraleMaxValue				= pSettings->ReadFLOAT	(section, "MoraleMaxValue");
 	m_fMoraleNormalValue			= pSettings->ReadFLOAT	(section, "MoraleNormalValue");
-	m_fMoraleNullRadius				= pSettings->ReadFLOAT	(section, "MoraleNullRadius");
 
 	m_fChangeActiveStateProbability = pSettings->ReadFLOAT(section,"ChangeActiveStateProbability");
 	m_dwPassiveScheduleMin			= pSettings->ReadINT(section,"PassiveScheduleMin");
@@ -127,6 +126,8 @@ void CAI_Rat::Load(LPCSTR section)
 
 	m_fAttackDistance				= pSettings->ReadFLOAT(section,"AttackDistance");
 	m_fAttackAngle					= pSettings->ReadFLOAT(section,"AttackAngle")/180.f*PI;
+	m_fMaxPursuitRadius				= pSettings->ReadFLOAT(section,"MaxPursuitRadius");
+	m_fMaxHomeRadius				= pSettings->ReadFLOAT(section,"MaxHomeRadius");
 
 	m_dwActiveScheduleMin = shedule_Min;
 	m_dwActiveScheduleMax = shedule_Max;

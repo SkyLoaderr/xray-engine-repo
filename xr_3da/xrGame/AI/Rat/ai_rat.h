@@ -51,7 +51,6 @@ class CAI_Rat : public CCustomMonster
 			aiRatPursuit,
 			aiRatFreeRecoil,
 			aiRatReturnHome,
-			aiRatReturnRecoil,
 		};
 
 	
@@ -160,7 +159,7 @@ class CAI_Rat : public CCustomMonster
 		float				m_fMoraleMinValue;
 		float				m_fMoraleMaxValue;
 		float				m_fMoraleNormalValue;
-		float				m_fMoraleNullRadius;
+
 		// FSM
 		stack<ERatStates>	tStateStack;
 		ERatStates			eCurrentState;
@@ -182,6 +181,8 @@ class CAI_Rat : public CCustomMonster
 		// attack parameters
 		float				m_fAttackDistance;
 		float				m_fAttackAngle;
+		float				m_fMaxPursuitRadius;
+		float				m_fMaxHomeRadius;
 
 		//////////////////////////
 		// INLINE FUNCTIONS
@@ -307,7 +308,6 @@ class CAI_Rat : public CCustomMonster
 		void	Pursuit();
 		void	FreeRecoil();
 		void	ReturnHome();
-		void	ReturnRecoil();
 	public:
 					   CAI_Rat();
 		virtual		  ~CAI_Rat();
