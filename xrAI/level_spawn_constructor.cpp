@@ -156,6 +156,7 @@ void CLevelSpawnConstructor::load_objects						()
 
 		if (abstract->m_tClassID == CLSID_AI_SPAWN_GROUP) {
 			add_spawn_group		(abstract);
+			add_free_object		(abstract);
 			continue;
 		}
 
