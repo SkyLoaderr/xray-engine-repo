@@ -1,6 +1,6 @@
 //---------------------------------------------------------------------------
-#ifndef UIToolsH
-#define UIToolsH
+#ifndef UI_ToolsH
+#define UI_ToolsH
 
 #include "SHEngineTools.h"
 #include "SHCompilerTools.h"
@@ -59,13 +59,16 @@ public:
     bool				IsModified			(){return SEngine.IsModified()||SCompiler.IsModified()||SMaterial.IsModified();}
     void				Modified			();
 
-    void				ZoomObject			();
+    void				ZoomObject			(bool bOnlySel=false);
 
     virtual void		OnDeviceCreate		();
     virtual void		OnDeviceDestroy		();
 
     void				SelectPreviewObject	(int p);
     void				ResetPreviewObject	();
+
+    void				GetCurrentFog		(u32& fog_color, float& s_fog, float& e_fog);
+    LPCSTR				GetInfo				();
 
     EActiveEditor		ActiveEditor		();
     void				OnChangeEditor		();
@@ -86,7 +89,13 @@ public:
     bool __fastcall 	KeyPress    		(WORD Key, TShiftState Shift){return false;}
 
     bool				Pick				(){return false;}
+
     void				ShowProperties		();
+    void				UpdateProperties	(){;}
+
+	void				SetNumPosition		(CCustomObject* p1){;}
+	void				SetNumRotation		(CCustomObject* p1){;}
+	void				SetNumScale			(CCustomObject* p1){;}
 };
 extern CShaderTools	Tools;
 //---------------------------------------------------------------------------

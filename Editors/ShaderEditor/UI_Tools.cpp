@@ -122,7 +122,7 @@ void CShaderTools::OnFrame(){
     };
 }
 
-void CShaderTools::ZoomObject(){
+void CShaderTools::ZoomObject(bool bOnlySel){
 	if (m_EditObject){
         Device.m_Camera.ZoomExtents(m_EditObject->GetBox());
     }else{
@@ -235,5 +235,17 @@ void CShaderTools::ApplyChanges()
 void CShaderTools::ShowProperties()
 {
 	m_Props->ShowProperties();
+}
+
+void CShaderTools::GetCurrentFog(u32& fog_color, float& s_fog, float& e_fog)
+{
+	s_fog		= UI.ZFar();
+	e_fog		= UI.ZFar();
+	fog_color	= DEFAULT_CLEARCOLOR;
+}
+
+LPCSTR CShaderTools::GetInfo()
+{
+	return 0;
 }
 
