@@ -22,6 +22,7 @@ CGroup::CGroup()
 	m_dwLastAction = 0;
 	m_dwActiveCount = 0;
 	m_dwAliveCount = 0;
+	m_dwStandingCount = 0;
 }
 
 const Fvector& CGroup::GetCentroid()

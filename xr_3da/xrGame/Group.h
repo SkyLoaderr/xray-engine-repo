@@ -55,6 +55,7 @@ public:
 	// active
 	DWORD						m_dwActiveCount;
 	DWORD						m_dwAliveCount;
+	DWORD						m_dwStandingCount;
 
 	// Constructor
 								CGroup				();

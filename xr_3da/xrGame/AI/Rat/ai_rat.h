@@ -172,6 +172,8 @@ class CAI_Rat : public CCustomMonster
 		DWORD				m_dwActiveScheduleMax;
 		DWORD				m_dwPassiveScheduleMin;
 		DWORD				m_dwPassiveScheduleMax;
+		DWORD				m_dwStandingCountPercent;
+		bool				m_bStanding;
 
 		//////////////////////////
 		// INLINE FUNCTIONS
@@ -224,6 +226,7 @@ class CAI_Rat : public CCustomMonster
 				Group.m_dwActiveCount++;
 				shedule_Min	= m_dwActiveScheduleMin;
 				shedule_Max	= m_dwActiveScheduleMax;
+				vfRemoveStandingMember();
 			}
 		};
 		
@@ -236,6 +239,25 @@ class CAI_Rat : public CCustomMonster
 			shedule_Min	= m_dwPassiveScheduleMin;
 			shedule_Max	= m_dwPassiveScheduleMax;
 		};
+		
+		IC void vfAddStandingMember()
+		{
+			CGroup &Group = Level().Teams[g_Team()].Squads[g_Squad()].Groups[g_Group()];
+			if (Group.m_dwAliveCount*m_dwStandingCountPercent/100 >= Group.m_dwStandingCount) {
+				Group.m_dwStandingCount++;
+				m_bStanding = true;
+			}
+		};
+		
+		IC void vfRemoveStandingMember()
+		{
+			CGroup &Group = Level().Teams[g_Team()].Squads[g_Squad()].Groups[g_Group()];
+			if (m_bStanding) {
+				R_ASSERT(Group.m_dwStandingCount > 0);
+				Group.m_dwStandingCount--;
+			}
+		};
+		
 		//////////////////////////
 		// MISCELLANIOUS FUNCTIONS
 		//////////////////////////

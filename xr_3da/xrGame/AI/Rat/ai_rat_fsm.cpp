@@ -219,13 +219,17 @@ void CAI_Rat::FreeHuntingPassive()
 
 	bStopThinking = true;
 	
-	CHECK_IF_SWITCH_TO_NEW_STATE(g_Health() <= 0,aiRatDie)
+	if (!g_Alive()) {
+		vfAddActiveMember(true);
+		SWITCH_TO_NEW_STATE(aiRatDie);
+	}
 
 	SelectEnemy(m_Enemy);
 	
 	if (m_Enemy.Enemy) {
 		SelectEnemy(m_Enemy);
 		m_fGoalChangeTime = 0;
+		vfAddActiveMember(true);
 		SWITCH_TO_NEW_STATE_THIS_UPDATE(aiRatAttackRun)
 	}
 
@@ -233,13 +237,20 @@ void CAI_Rat::FreeHuntingPassive()
 		if (((m_tLastSound.eSoundType & SOUND_TYPE_WEAPON_SHOOTING) != SOUND_TYPE_WEAPON_SHOOTING) && (m_tLastSound.tpEntity->g_Team() != g_Team())) {
 			m_tSavedEnemy = m_tLastSound.tpEntity;
 			m_dwLostEnemyTime = Level().timeServer();
+			vfAddActiveMember(true);
 			SWITCH_TO_NEW_STATE_THIS_UPDATE(aiRatAttackRun);
 		}
-		CHECK_IF_SWITCH_TO_NEW_STATE_THIS_UPDATE(((m_tLastSound.eSoundType != SOUND_TYPE_NO_SOUND) && ((m_tLastSound.tpEntity->g_Team() != g_Team()) || ((m_tLastSound.eSoundType & SOUND_TYPE_WEAPON_SHOOTING) == SOUND_TYPE_WEAPON_SHOOTING))),aiRatUnderFire);
+		if ((m_tLastSound.eSoundType != SOUND_TYPE_NO_SOUND) && ((m_tLastSound.tpEntity->g_Team() != g_Team()) || ((m_tLastSound.eSoundType & SOUND_TYPE_WEAPON_SHOOTING) == SOUND_TYPE_WEAPON_SHOOTING))) {
+			vfAddActiveMember(true);
+			SWITCH_TO_NEW_STATE_THIS_UPDATE(aiRatUnderFire);
+		}
 	}
 	
 	m_fSpeed = 0.f;
 
+	UpdateTransform();
+
+	vfAddStandingMember();
 	vfAddActiveMember();
 }
 

@@ -11,21 +11,21 @@
 
 CAI_Rat::CAI_Rat()
 {
-	m_dwHitTime = 0;
-	m_tHitDir.set(0,0,1);
-	m_tSavedEnemy = 0;
+	m_tHitDir.set			(0,0,1);
 	m_tSavedEnemyPosition.set(0,0,0);
-	m_tpSavedEnemyNode = 0;
-	m_dwSavedEnemyNodeID = DWORD(-1);
-	m_dwLostEnemyTime = 0;
+	m_dwHitTime				= 0;
+	m_tSavedEnemy			= 0;
+	m_tpSavedEnemyNode		= 0;
+	m_dwSavedEnemyNodeID	= DWORD(-1);
+	m_dwLostEnemyTime		= 0;
 	m_tpCurrentGlobalAnimation = 0;
-	m_tpCurrentGlobalBlend = 0;
-	m_bActionStarted = false;
-	m_bFiring = false;
-	m_dwLastVoiceTalk = 0;
-	m_tpSoundBeingPlayed = 0;
-	m_dwLastSoundRefresh = 0;
-	m_dwLastRangeSearch  = 0;
+	m_tpCurrentGlobalBlend	= 0;
+	m_bActionStarted		= false;
+	m_bFiring				= false;
+	m_dwLastVoiceTalk		= 0;
+	m_tpSoundBeingPlayed	= 0;
+	m_dwLastSoundRefresh	= 0;
+	m_dwLastRangeSearch		= 0;
 	m_tGoalDir.set			(10.0f*(Random.randF()-Random.randF()),10.0f*(Random.randF()-Random.randF()),10.0f*(Random.randF()-Random.randF()));
 	m_tCurrentDir.set		(0,0,1);
 	m_tHPB.set				(0,0,0);
@@ -41,7 +41,8 @@ CAI_Rat::CAI_Rat()
 	m_tLastSound.eSoundType	= SOUND_TYPE_NO_SOUND;
 	m_bNoWay				= false;
 	m_dwMoraleLastUpdateTime = 0;
-	q_look.o_look_speed = PI;
+	m_bStanding				= false;
+	q_look.o_look_speed		= PI;
 }
 
 CAI_Rat::~CAI_Rat()
@@ -115,6 +116,7 @@ void CAI_Rat::Load(LPCSTR section)
 	m_dwPassiveScheduleMin			= pSettings->ReadINT(section,"PassiveScheduleMin");
 	m_dwPassiveScheduleMax			= pSettings->ReadINT(section,"PassiveScheduleMax");
 	m_dwActiveCountPercent			= pSettings->ReadINT(section,"ActiveCountPercent");
+	m_dwStandingCountPercent		= pSettings->ReadINT(section,"StandingCountPercent");
 
 	m_dwActiveScheduleMin = shedule_Min;
 	m_dwActiveScheduleMax = shedule_Max;
