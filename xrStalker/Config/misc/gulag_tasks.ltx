@@ -1034,3 +1034,94 @@ active = walker6@agr_factory
 [walker6@agr_factory]
 path_walk = walk6
 path_look = look6
+
+
+
+
+;-------------------------------------------------------------------------------------------------
+;-- Military Freedom base
+;-------------------------------------------------------------------------------------------------
+
+;-------------------------------------------------------------------------------------------------
+;normal state
+;-------------------------------------------------------------------------------------------------
+;------------------------------------- base patrol -----------------------------
+[logic@mil_freedom_patrol1]
+active = patrol1@mil_freedom		
+								
+[patrol1@mil_freedom]			
+patrol_path = patrol_path1		
+patrol_look = patrol_look1		
+
+[logic@mil_freedom_follower11]	
+active = follower11@mil_freedom	
+								
+[follower11@mil_freedom]		
+
+[logic@mil_freedom_follower12]	
+active = follower12@mil_freedom	
+								
+[follower12@mil_freedom]		
+
+;------------------------------------- level patrol -----------------------------
+[logic@mil_freedom_patrol2]		
+active = patrol2@mil_freedom		
+								
+[patrol2@mil_freedom]			
+patrol_path = patrol_path2		
+patrol_look = patrol_look2		
+
+[logic@mil_freedom_follower21]	
+active = follower21@mil_freedom	
+								
+[follower21@mil_freedom]		
+
+[logic@mil_freedom_follower22]	
+active = follower22@mil_freedom	
+								
+[follower22@mil_freedom]		
+
+;------------------------------------- sniper 1 -----------------------------
+[logic@mil_freedom_walker1]
+active = walker1@mil_freedom
+
+[walker1@mil_freedom]
+path_walk = path_walk4
+path_look = path_look4
+
+;------------------------------------- sniper 2 -----------------------------
+[logic@mil_freedom_walker2]
+active = walker2@mil_freedom
+
+[walker2@mil_freedom]
+path_walk = path_walk5
+path_look = path_look5
+
+;------------------------------------- zoneguard 1 -----------------------------
+[logic@mil_freedom_zoneguard1]
+active = zoneguard1@mil_freedom
+
+[zoneguard1@mil_freedom]
+path_walk = path_walk6
+path_look = path_look6
+zone_warn  = zone6
+team       = freedom_guards
+;snd_greet  = seq_novice_camp_guards, novice_camp_guards
+;anim       = backoff
+;on_info    = {+tutorial_wounded_help} zoneguard1@esc_lager_friend, {+tutorial_wounded_die} zoneguard1@esc_lager_enemy
+;meet_dialog = escape_lager_guard_start_dialog
+
+;------------------------------------- kamp 1 -----------------------------
+[logic@mil_freedom_kamp1]
+active = kamp1@mil_freedom
+
+[kamp1@mil_freedom]
+center_point = camp_center1
+
+;------------------------------------- kamp 2 -----------------------------
+[logic@mil_freedom_kamp2]
+active = kamp2@mil_freedom
+
+[kamp2@mil_freedom]
+center_point = camp_center2
+
