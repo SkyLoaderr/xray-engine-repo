@@ -7,7 +7,7 @@
 function main()
 	local dlg = ui_options_base_tab.options_base_tab()
 	level.start_stop_menu(dlg,true)
-	dlg:InitControls("Test base tab", 300, 300)
+	dlg:InitControls("Test base tab", 200, 200)
 	while true do
 		wait(3000)
 	end
