@@ -115,13 +115,13 @@ public:
 		m_fCriteriaCoverWeight = 10.f;
 		m_fCriteriaDistanceWeight = 40.f;
 		m_fCriteriaEnemyViewWeight = 100.f;
-		m_fOptimalEnemyDistance = 30.f;
+		m_fOptimalEnemyDistance = 40.f;
 	}
 	typedef NodeLink* iterator;
 	IC float	ffEvaluate			(u32 dwStartNode, u32 dwFinishNode);
 	IC float	ffAnticipate		(u32 dwStartNode, u32 dwFinishNode) {return(ffEvaluate(dwStartNode,dwFinishNode));};
 	IC void		begin				(u32 dwNode, iterator &tStart, iterator &tEnd);
-	IC u32 get_value(iterator &tIterator) 
+	IC u32		get_value			(iterator &tIterator)
 	{
 		return((*LPDWORD(tIterator))&0x00ffffff);
 	}
@@ -135,11 +135,11 @@ class CAIGraphShortestPathNode {//: public CAIGraphTemplateNode {
 public:
 	typedef AI::SGraphEdge* iterator;
 	IC float	ffEvaluate			(u32 dwStartNode, u32 dwFinishNode);
-	IC float	ffAnticipate		(u32 dwStartNode, u32 dwFinishNode) {return(ffEvaluate(dwStartNode,dwFinishNode));};
+	IC float	ffAnticipate		(u32 dwStartNode, u32 dwFinishNode);
 	IC void		begin				(u32 dwNode, iterator &tStart, iterator &tEnd);
-	IC u32 get_value(iterator &tIterator) 
+	IC u32		get_value			(iterator &tIterator)
 	{
-		return(0);//(*LPDWORD(tIterator))&0x00ffffff);
+		return(tIterator->fPathDistance);
 	}
 	IC bool bfCheckIfAccessible(u32 dwNode)
 	{
@@ -174,7 +174,6 @@ public:
 	void			Load			(LPCSTR name);
 	void			Render			();
 
-	const hdrNODES	GetHeader		(){return m_header;};
 	void			q_Range(u32 StartNode, const Fvector& BasePos, float Range, AI::NodeEstimator& Estimator, float &fOldCost, u32 dwTimeDifference);
 	void			q_Range			(u32 StartNode, const Fvector& Pos,	float Range,	AI::NodeEstimator& Estimator, float &fOldCost);
 	void			q_Range_Bit		(u32 StartNode, const Fvector& Pos,	float Range,	AI::NodeEstimator& Estimator, float &fOldCost);
@@ -203,12 +202,6 @@ public:
 	float			vfFindTheXestPath(u32 dwStartNode, u32 dwGoalNode, vector<u32> &tpResult);
 	void			vfLoadSearch();
 	void			vfUnloadSearch();
-	// 
-
-	// yet another best node search
-	//void			vfFindTheBestNode(u32 StartNode, const Fvector& Pos,	float Range,	AI::NodeEstimator& Estimator);
-	// 
-
 	int				q_LoadSearch	(const Fvector& Pos);	// <0 - failure
 
 	// Helper functions

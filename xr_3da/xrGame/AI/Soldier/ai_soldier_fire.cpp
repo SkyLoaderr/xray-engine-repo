@@ -1088,7 +1088,7 @@ void CAI_Soldier::vfFindAllSuspiciousNodes(u32 StartNode, Fvector tPointPosition
 		for ( ; it!=end; it++)	
 			AI.q_mark_bit[*it] = false;
 	}
-	//AI.q_mark_bit.assign(AI.GetHeader().count,false);
+	//AI.q_mark_bit.assign(AI.Header().count,false);
 	
 	Msg("Suspicious nodes :");
 	for (int k=0; k<(int)Group.m_tpaSuspiciousNodes.size(); k++)

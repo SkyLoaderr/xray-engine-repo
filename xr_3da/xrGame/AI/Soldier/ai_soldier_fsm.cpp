@@ -1214,7 +1214,7 @@ void CAI_Soldier::OnPatrolReturn()
 	int iMemberIndex = ifGetMemberIndex();
 	int iPatrolPathIndex = (iMemberIndex + 1) % 3;
 
-//	if (Level().AI.bfInsideNode(AI_Node,m_tpPath->tpaVectors[iPatrolPathIndex][m_iCurrentPatrolIndex],Level().AI.GetHeader().size*.5f) || ((m_tpPath->tpaVectors[iPatrolPathIndex][m_iCurrentPatrolIndex].distance_to(vPosition) < 5.f) && (AI_Path.fSpeed < EPS_L))) {
+//	if (Level().AI.bfInsideNode(AI_Node,m_tpPath->tpaVectors[iPatrolPathIndex][m_iCurrentPatrolIndex],Level().AI.Header().size*.5f) || ((m_tpPath->tpaVectors[iPatrolPathIndex][m_iCurrentPatrolIndex].distance_to(vPosition) < 5.f) && (AI_Path.fSpeed < EPS_L))) {
 //		if (m_tpPath->tpaVectors[iPatrolPathIndex][m_iCurrentPatrolIndex].distance_to(vPosition) < EPS_L) {
 //			ESoldierStates eDummy = tStateStack.top();
 //			tStateStack.pop();
@@ -1243,7 +1243,7 @@ void CAI_Soldier::OnPatrolReturn()
 				AI_Path.BuildTravelLine(Position());
 				AI_Path.TravelPath[AI_Path.TravelPath.size() - 1].P = m_tpPath->tpaVectors[iPatrolPathIndex][m_iCurrentPatrolIndex];
 //				for (int i=0; i<(int)AI_Path.TravelPath.size(); i++)
-//					if (Level().AI.bfInsideNode(Level().AI.Node(dwTemp),AI_Path.TravelPath[i].P,Level().AI.GetHeader().size*.5f)) {
+//					if (Level().AI.bfInsideNode(Level().AI.Node(dwTemp),AI_Path.TravelPath[i].P,Level().AI.Header().size*.5f)) {
 //						AI_Path.TravelPath[i].P = m_tpPath->tpaVectors[iPatrolPathIndex][m_iCurrentPatrolIndex];
 //						AI_Path.TravelPath.resize(i);
 //						break;

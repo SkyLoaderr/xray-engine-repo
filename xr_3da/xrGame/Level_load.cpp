@@ -124,7 +124,7 @@ void CLevel::vfCreateAllPossiblePaths(string64 sName, SPath &tpPatrolPath)
 	tpPatrolPath.tpaVectors[1].resize(tpPatrolPath.tpaVectors[0].size());
 	tpPatrolPath.tpaVectors[2].resize(tpPatrolPath.tpaVectors[0].size());
 			
-	float fHalfSubnodeSize = AI.GetHeader().size*.5f;
+	float fHalfSubnodeSize = AI.Header().size*.5f;
 
 	vector<Fvector> &tpaVector0 = tpPatrolPath.tpaVectors[0];
 	u32 M = tpaVector0.size();

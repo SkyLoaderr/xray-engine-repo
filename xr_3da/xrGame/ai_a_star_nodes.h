@@ -43,7 +43,7 @@ IC u32 CAIMapShortestPathNode::get_value(CAIMapShortestPathNode::iterator &tIter
 
 IC float CAIMapLCDPathNode::ffEvaluate(u32 dwStartNode, u32 dwFinishNode)
 {
-	NodeCompressed tNode0 = *Level().AI.Node(dwStartNode), tNode1 = *Level().AI.Node(dwFinishNode);
+	NodeCompressed &tNode0 = *Level().AI.Node(dwStartNode), &tNode1 = *Level().AI.Node(dwFinishNode);
 	float x1 = (float)(tNode0.p1.x) + (float)(tNode0.p0.x);
 	float y1 = (float)(tNode0.p1.y) + (float)(tNode0.p0.y);
 	float z1 = (float)(tNode0.p1.z) + (float)(tNode0.p0.z);
@@ -77,7 +77,7 @@ IC u32 CAIMapLCDPathNode::get_value(CAIMapLCDPathNode::iterator &tIterator)
 
 IC float CAIMapEnemyPathNode::ffEvaluate(u32 dwStartNode, u32 dwFinishNode)
 {
-	NodeCompressed tNode0 = *Level().AI.Node(dwStartNode), tNode1 = *Level().AI.Node(dwFinishNode);
+	NodeCompressed &tNode0 = *Level().AI.Node(dwStartNode), &tNode1 = *Level().AI.Node(dwFinishNode);
 	float x1 = (float)(tNode0.p1.x) + (float)(tNode0.p0.x);
 	float y1 = (float)(tNode0.p1.y) + (float)(tNode0.p0.y);
 	float z1 = (float)(tNode0.p1.z) + (float)(tNode0.p0.z);
@@ -113,9 +113,13 @@ IC float CAIGraphShortestPathNode::ffEvaluate(u32 dwStartNode, u32 dwFinishNode)
 	return(((AI::SGraphEdge *)((BYTE *)Level().AI.m_tpaGraph + Level().AI.m_tpaGraph[dwStartNode].dwEdgeOffset) + dwFinishNode)->fPathDistance);
 }
 
+IC float CAIGraphShortestPathNode::ffAnticipate(u32 dwStartNode, u32 dwFinishNode)
+{
+	return(Level().AI.m_tpaGraph[dwStartNode].tPoint.distance_to(Level().AI.m_tpaGraph[dwFinishNode].tPoint));
+}
+
 IC void CAIGraphShortestPathNode::begin(u32 dwNode, CAIGraphShortestPathNode::iterator &tIterator, CAIGraphShortestPathNode::iterator &tEnd)
 {
-	NodeCompressed *tpNode = Level().AI.Node(dwNode);
-	//tIterator = CAIGraphShortestPathNode::iterator((BYTE *)tpNode + sizeof(NodeCompressed));
-	tEnd = tIterator + tpNode->links;
+	tIterator = (AI::SGraphEdge *)((BYTE *)Level().AI.m_tpaGraph + Level().AI.m_tpaGraph[dwNode].dwEdgeOffset);
+	tEnd = tIterator + Level().AI.m_tpaGraph[dwNode].dwNeighbourCount;
 }
