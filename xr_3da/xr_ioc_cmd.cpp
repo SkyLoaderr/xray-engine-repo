@@ -301,7 +301,8 @@ void CCC_Register()
 	CMD3(CCC_Token,		"snd_freq",				&psSoundFreq,	snd_freq_token);
 	CMD3(CCC_Token,		"snd_model",			&psSoundModel,	snd_model_token);
 	CMD1(CCC_SND_Restart,"snd_restart"			);
-
+	CMD3(CCC_Mask,		"snd_wavetracing",		&psSoundFlags,	ssWaveTrace);
+	
 	// Mouse
 	CMD3(CCC_Mask,		"mouse_invert",			&psMouseInvert,1);
 	CMD2(CCC_Float,		"mouse_sens",			&psMouseSens);
