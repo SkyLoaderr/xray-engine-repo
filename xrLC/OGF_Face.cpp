@@ -139,7 +139,7 @@ void OGF::MakeProgressive()
 		VIPM_AppendFace(faces[f_idx].v[0],faces[f_idx].v[1],faces[f_idx].v[2]);
 	// Convert
 	VIPM_Result* VR		= VIPM_Convert(u32(-1),1.f,1);
-	if (VR->swr_records.size()>1){
+	if (VR->swr_records.size()>0){
 		// Permute vertices
 		vertices_saved			= vertices;
 		for(u32 i=0; i<vertices.size(); i++)
