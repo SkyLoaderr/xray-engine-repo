@@ -139,7 +139,6 @@
 				Name="VCCustomBuildTool"/>
 			<Tool
 				Name="VCLinkerTool"
-				AdditionalOptions="/MACHINE:I386"
 				OutputFile="x:\xrCDB.dll"
 				LinkIncremental="1"
 				SuppressStartupBanner="TRUE"
