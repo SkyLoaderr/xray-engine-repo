@@ -399,7 +399,7 @@ SOURCE=.\CustomLift.cpp
 SOURCE=.\CustomLift.h
 # End Source File
 # End Group
-# Begin Group "_event"
+# Begin Group "Events"
 
 # PROP Default_Filter ""
 # Begin Source File
