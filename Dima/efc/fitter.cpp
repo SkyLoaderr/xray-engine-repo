@@ -11,18 +11,25 @@
 #include "misc.h"
 
 // common parameters
-const uint g31							= 0x49249249ul;			// = 0100_1001_0010_0100_1001_0010_0100_1001
-const uint g32							= 0x381c0e07ul;			// = 0011_1000_0001_1100_0000_1110_0000_0111
-
 #define MEGABYTE						((double)1048576.0)
 #define MIN_LINE_LENGTH					256
 #define DOUBLE_DATA_FORMAT				0
 #define FLOAT_DATA_FORMAT				1
 #define EFC_VERSION						1
-#define COUNT_BITS(uiTemp) {\
-	uiTemp = (uiTemp & g31) + ((uiTemp >> 1) & g31) + ((uiTemp >> 2) & g31);\
-	uiTemp = ((uiTemp + (uiTemp >> 3)) & g32) + ((uiTemp >> 6) & g32);\
-	uiMatchCount += (uiTemp + (uiTemp >> 9) + (uiTemp >> 18) + (uiTemp >> 27)) & 0x3f;\
+
+const unsigned __int32 __c0				= 0x55555555;
+const unsigned __int32 __c1				= 0x33333333;
+const unsigned __int32 __c2				= 0x0f0f0f0f;
+const unsigned __int32 __c3				= 0x00ff00ff;
+const unsigned __int32 __c4				= 0x0000003f;
+
+#define ADD_BIT_COUNT(b,x) {\
+	uint a = b;\
+	a = (a & __c0) + ((a >> 1) & __c0);\
+	a = (a & __c1) + ((a >> 2) & __c1);\
+	a = (a + (a >> 4)) & __c2;\
+	a = (a + (a >> 8)) & __c3;\
+	x += (a + (a >> 16)) & __c4;\
 }
 
 double dEpsilon							= EPSILON;
@@ -733,8 +740,7 @@ bool bfMatchCount(uchar ucCardinality, uint *uiaPreviousConfiguration, uint uiAt
 			for (uint j=0; (j<ucCardinality) && (uiTemp); j++)
 				uiTemp &= uiaAtomicFeatureMasks[uiaPreviousConfiguration[j]][i];
 			
-			if (uiTemp)
-				COUNT_BITS(uiTemp)
+			ADD_BIT_COUNT(uiTemp,uiMatchCount);
 		}
 	}
 	return(uiMatchCount >= uiMatchThreshold);
@@ -780,15 +786,13 @@ void vfGenerateComplexConfigurations(char *caTestFileName, char *caConfigDataFil
 	for ( i=0; i<uiParameterCount; i++) {
 		uint uiMatchCount = 0;
 		for (uint j=0, uiCount = ((uiTestCount - 1) >> 5) + 1; (j < uiCount) && (uiMatchCount < uiMatchThreshold); j++) {
-			uint uiTemp = uiaAtomicFeatureMasks[i][j];
-			if (uiTemp)
-				COUNT_BITS(uiTemp)
-		}
-		if (uiMatchCount >= uiMatchThreshold) {
-			uiaAtomicFeatureSet[uiAtomicFeatureCount++] = i;
-			uiaPreviousIterationConfigurationSet = (uint **)realloc(uiaPreviousIterationConfigurationSet,uiAtomicFeatureCount*sizeof(uint *));
-			uiaPreviousIterationConfigurationSet[uiAtomicFeatureCount - 1] = (uint *)malloc(1*sizeof(uint));
-			uiaPreviousIterationConfigurationSet[uiAtomicFeatureCount - 1][0] = i;
+			ADD_BIT_COUNT(uiaAtomicFeatureMasks[i][j],uiMatchCount);
+			if (uiMatchCount >= uiMatchThreshold) {
+				uiaAtomicFeatureSet[uiAtomicFeatureCount++] = i;
+				uiaPreviousIterationConfigurationSet = (uint **)realloc(uiaPreviousIterationConfigurationSet,uiAtomicFeatureCount*sizeof(uint *));
+				uiaPreviousIterationConfigurationSet[uiAtomicFeatureCount - 1] = (uint *)malloc(1*sizeof(uint));
+				uiaPreviousIterationConfigurationSet[uiAtomicFeatureCount - 1][0] = i;
+			}
 		}
 	}
 	uiPreviousIterationConfigurationCount = uiAtomicFeatureCount;
