@@ -283,6 +283,8 @@ function body_state:anim_update(type)
 		end
 		self.states.current_state = type
 		self.states.last_id = nil
+		self.states.begin = nil
+		self.states.idle = nil
 	end
 
 	--' ќпредел€ем нужно ли добавл€ть анимацию или ждать
