@@ -27,7 +27,11 @@ end
 function actor_binder:reinit()
     object_binder.reinit(self)
 
-
+	self.object:set_info_callback(self, "info_callback")
+end
+----------------------------------------------------------------------------------------------------------------------
+function actor_binder:info_callback(npc, info_id)
+	printf("*INFO*: npc='%s' id='%s'", npc:name(), info_id)
 
 end
 ----------------------------------------------------------------------------------------------------------------------
@@ -68,6 +72,9 @@ end
 function actor_init    (npc)
 	npc:bind_object(actor_binder(npc))
 end
+
+
+
 
 function object_init    (obj)
 	local obj_ini = obj:spawn_ini()
