@@ -7,17 +7,6 @@ flags={
 	GAME_PLAYER_FLAG_CS_HAS_ARTEFACT	   = 32,
 	GAME_PLAYER_FLAG_CS_SPECTATOR		      = 64,
 
-	GAME_PLAYER_FLAG_FORCEDWORD			= u32(-1)
+	GAME_PLAYER_FLAG_FORCEDWORD			= 32768
 }
 
-function game_sv_LastStanding:OnEvent (P, type, time, cl_id )
-      game_sv_mp_script.OnEvent (self, P, type, time, cl_id )
-   
---   if type == game_messages.game_messages.GAME_EVENT_PLAYER_READY then
-      --self:player_ready(cl_id)
-
---   else
---      game_sv_mp_script.OnEvent (self, P, type, time, cl_id )
---   end
-
-end
