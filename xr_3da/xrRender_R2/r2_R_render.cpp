@@ -155,7 +155,7 @@ void CRender::Render	()
 	}
 
 	// Postprocess
-	// Target.phase_bloom						();
+	Target.phase_bloom						();
 	Target.phase_combine					();
 	
 	// HUD

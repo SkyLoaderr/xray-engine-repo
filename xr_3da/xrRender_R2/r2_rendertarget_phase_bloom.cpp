@@ -51,6 +51,8 @@ void CRenderTarget::phase_bloom	()
 
 	// Targets
 	u_setrt								(rt_Bloom_1,NULL,NULL,rt_Bloom_ZB);		// No need for ZBuffer at all
+	dwWidth								= Device.dwWidth/2;
+	dwHeight							= Device.dwHeight/2;
 	
 	// XForms
 	RCache.set_xform_world				(Fidentity);
@@ -60,7 +62,8 @@ void CRenderTarget::phase_bloom	()
 	// Clear	- don't clear - it's stupid here :)
 	// Stencil	- disable
 	// Misc		- draw everything (no culling)
-	CHK_DX		(HW.pDevice->SetRenderState	( D3DRS_CULLMODE,		D3DCULL_NONE		)); 	
+	CHK_DX		(HW.pDevice->SetRenderState	( D3DRS_ZENABLE,		FALSE				));
+	CHK_DX		(HW.pDevice->SetRenderState	( D3DRS_CULLMODE,		D3DCULL_CCW			)); 	
 
 	// Render skybox/skydome into Bloom1
 	RCache.set_Stencil					(FALSE);
@@ -68,7 +71,7 @@ void CRenderTarget::phase_bloom	()
 	pCreator->Environment.RenderFirst	();		// sky
 	RImplementation.rmNormal			();
 
-	// Transfer into Bloom1
+	// Transfer into Bloom1, use black/white mask stored in Bloom2
 	{
 		float		_w				= float(Device.dwWidth);
 		float		_h				= float(Device.dwHeight);
@@ -278,4 +281,6 @@ void CRenderTarget::phase_bloom	()
 		pCreator->Environment.RenderFirst	();
 		RImplementation.rmNormal			();
 	}
+
+	CHK_DX		(HW.pDevice->SetRenderState	( D3DRS_ZENABLE,		TRUE				));
 }

@@ -36,7 +36,7 @@ void CRenderTarget::phase_accumulator_init()
 
 	//  *****  Prepare mask for skybox  *****
 	// ***** Downsample into bloom2.rgba *****
-	if (0)
+	if (1)
 	{
 		// 1. nv3x - ZB doesn't help
 		// 2. nv3x - Viewport doesn't help
