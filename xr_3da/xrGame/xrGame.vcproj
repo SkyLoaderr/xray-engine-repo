@@ -5213,6 +5213,16 @@
 						RelativePath=".\ui\UIString.h">
 					</File>
 				</Filter>
+				<Filter
+					Name="TabControl"
+					Filter="">
+					<File
+						RelativePath=".\ui\UITabControl.cpp">
+					</File>
+					<File
+						RelativePath=".\ui\UITabControl.h">
+					</File>
+				</Filter>
 			</Filter>
 			<Filter
 				Name="HUD"
