@@ -84,7 +84,8 @@ void CEditShape::SetScale(const Fvector& val)
     }else{
 		FScale.set(val.x,val.x,val.x);
     }
-    UpdateTransform();
+	ComputeBounds	();
+    UpdateTransform	();
 }
 
 void CEditShape::ApplyScale()
@@ -239,15 +240,13 @@ bool CEditShape::RayPick(float& distance, const Fvector& start, const Fvector& d
 bool CEditShape::FrustumPick(const CFrustum& frustum)
 {
 	const Fmatrix& M	= _Transform();
-    Fvector 			C;
-	M.transform_tiny	(C,m_Sphere.P);
-	if (!frustum.testSphere_dirty(C,m_Sphere.R)) return false;
 	for (ShapeIt it=shapes.begin(); it!=shapes.end(); it++){
 		switch (it->type){
 		case cfSphere:{
+		    Fvector 	C;
             Fsphere&	T	= it->data.sphere;
 		    M.transform_tiny(C,T.P);
-        	if (frustum.testSphere_dirty(C,T.R)) return true;
+        	if (frustum.testSphere_dirty(C,T.R*FScale.x)) return true;
 		}break;
 		case cfBox:{
         	Fbox 			box;
