@@ -1094,9 +1094,10 @@ HRESULT CMyD3DApplication::RenderFAT	()
 	m_pd3dDevice->SetTexture				(0, t_Base);
 	m_pd3dDevice->SetSamplerState			(0, D3DSAMP_ADDRESSU,	D3DTADDRESS_WRAP);
 	m_pd3dDevice->SetSamplerState			(0, D3DSAMP_ADDRESSV,	D3DTADDRESS_WRAP);
-	m_pd3dDevice->SetSamplerState			(0, D3DSAMP_MINFILTER,	D3DTEXF_LINEAR);
+	m_pd3dDevice->SetSamplerState			(0, D3DSAMP_MINFILTER,	D3DTEXF_ANISOTROPIC);
 	m_pd3dDevice->SetSamplerState			(0, D3DSAMP_MIPFILTER,	D3DTEXF_LINEAR);
-	m_pd3dDevice->SetSamplerState			(0, D3DSAMP_MAGFILTER,	D3DTEXF_LINEAR);
+	m_pd3dDevice->SetSamplerState			(0, D3DSAMP_MAGFILTER,	D3DTEXF_ANISOTROPIC);
+	m_pd3dDevice->SetSamplerState			(0, D3DSAMP_MAXANISOTROPY, 4);
 
 	// normal-map
 	m_pd3dDevice->SetTexture				(1, t_Normals);
