@@ -91,7 +91,10 @@ void CUIJobsWnd::AddTask(CGameTask * const task)
 	pHeader2->SetIcon(iconsTexturesArr[task->ObjectiveState(0)], uTaskIconSize);
 	pHeader2->SetFont(pHeaderFnt);
 	pHeader2->SetTextColor(clTaskHeaderColor);
-	pHeader2->SetText(*task->ObjectiveTitle());
+	pHeader2->SetNewRenderMethod(true);
+
+	CStringTable stbl;
+	pHeader2->SetText(*stbl(task->ObjectiveTitle()));
 	pHeader2->SetTextX(15);
 
 	// Теперь добавляем инфу о таске
@@ -103,7 +106,6 @@ void CUIJobsWnd::AddTask(CGameTask * const task)
 	R_ASSERT(xml_result);
 
 	pNewItem->XmlInit("job_info", uiXml);
-	CStringTable stbl;
 
 	pNewItem->FieldsVector[0]->SetText(*stbl("Received:"));
 	string64 buf;
@@ -135,7 +137,7 @@ void CUIJobsWnd::AddTask(CGameTask * const task)
 	for (u32 i = 1; i < task->ObjectivesNum(); ++i)
 	{
 		iconedItemIdx = UIList.GetSize();
-		UIList.AddParsedItem<CUIIconedListItem>(*task->ObjectiveDesc(i), subitemsOffset, clTaskSubItemColor, pSubTasksFnt);
+		UIList.AddParsedItem<CUIIconedListItem>(*stbl(task->ObjectiveDesc(i)), subitemsOffset, clTaskSubItemColor, pSubTasksFnt);
 
 		R_ASSERT(iconedItemIdx < UIList.GetSize());
 		CUIIconedListItem * pTask = dynamic_cast<CUIIconedListItem*>(UIList.GetItem(iconedItemIdx));
@@ -145,6 +147,7 @@ void CUIJobsWnd::AddTask(CGameTask * const task)
 		{
 			pTask->SetIcon(iconsTexturesArr[task->ObjectiveState(i)], uTaskIconSize);
 			pTask->SetTextX(15);
+			pTask->SetNewRenderMethod(true);
 		}
 	}
 
@@ -182,29 +185,22 @@ void CUIJobsWnd::Show(bool status)
 
 //////////////////////////////////////////////////////////////////////////
 
-ref_str CUIJobsWnd::WindowName()
+void CUIJobsWnd::SetFilter(ETaskState newFilter)
 {
+	filter = newFilter;
+
 	switch (filter)
 	{
 	case eTaskStateCompleted:
-		return "Completed Jobs";
+		SetWindowName("Completed Jobs");
 		break;
 	case eTaskStateInProgress:
-		return "Active Jobs";
+		SetWindowName("Active Jobs");
 		break;
 	case eTaskStateFail:
-		return "Failed Jobs";
+		SetWindowName("Failed Jobs");
 		break;
 	default:
 		R_ASSERT(!"Unknown type of task state");
 	}
-
-	return "";
-}
-
-//////////////////////////////////////////////////////////////////////////
-
-void CUIJobsWnd::SetFilter(ETaskState newFilter)
-{
-	filter = newFilter;
 }

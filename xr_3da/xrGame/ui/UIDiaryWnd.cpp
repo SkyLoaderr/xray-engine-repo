@@ -26,6 +26,7 @@
 
 #include "../string_table.h"
 #include "../hudmanager.h"
+#include "../string_table.h"
 
 //////////////////////////////////////////////////////////////////////////
 
@@ -57,7 +58,9 @@ CUIDiaryWnd::CUIDiaryWnd()
 		m_uTreeRootColor		(0xffffffff),
 		m_uTreeItemColor		(0xffffffff),
 		m_pLeftHorisontalLine	(NULL),
-		m_pActorDiaryRoot		(NULL)
+		m_pActorDiaryRoot		(NULL),
+		m_pActiveJobs			(NULL),
+		m_pJobsRoot				(NULL)
 {
 	Show(false);
 }
@@ -131,14 +134,18 @@ void CUIDiaryWnd::Init()
 
 void CUIDiaryWnd::SendMessage(CUIWindow* pWnd, s16 msg, void* pData)
 {
+	static CUITreeViewItem *pPrtevTVItem = NULL;
+
 	if (&UITreeView == pWnd && LIST_ITEM_CLICKED == msg)
 	{
 		// для начала проверим, что нажатый элемент не рутовый
 		CUITreeViewItem *pTVItem = static_cast<CUITreeViewItem*>(pData);
 		R_ASSERT(pTVItem);
 
-		if (!pTVItem->IsRoot())
+		if (!pTVItem->IsRoot() && pPrtevTVItem != pTVItem)
 		{
+			pPrtevTVItem = pTVItem;
+
 			std::string caption = static_cast<std::string>(ALL_PDA_HEADER_PREFIX) + pTVItem->GetHierarchyAsText();
 			UIFrameWndHeader.UITitleText.SetText(caption.c_str());
 
@@ -168,18 +175,20 @@ void CUIDiaryWnd::SendMessage(CUIWindow* pWnd, s16 msg, void* pData)
 				id = static_cast<EDiaryIDs>(pTVItem->GetValue());
 			}
 
+			CStringTable stbl;
+
 			switch (id)
 			{
 
 			case idJobsFailed:
 				UIJobsWnd.SetFilter(eTaskStateFail);
 				m_pActiveSubdialog = &UIJobsWnd;
-				ArticleCaption(*(m_pActiveSubdialog->WindowName()));
+				ArticleCaption(*stbl(m_pActiveSubdialog->WindowName()));
 				break;
 			case idJobsAccomplished:
 				UIJobsWnd.SetFilter(eTaskStateCompleted);
 				m_pActiveSubdialog = &UIJobsWnd;
-				ArticleCaption(*(m_pActiveSubdialog->WindowName()));
+				ArticleCaption(*stbl(m_pActiveSubdialog->WindowName()));
 				break;
 			case idJobsCurrent:
 
@@ -188,7 +197,7 @@ void CUIDiaryWnd::SendMessage(CUIWindow* pWnd, s16 msg, void* pData)
 
 				UIJobsWnd.SetFilter(eTaskStateInProgress);
 				m_pActiveSubdialog = &UIJobsWnd;
-				ArticleCaption(*(m_pActiveSubdialog->WindowName()));
+				ArticleCaption(*stbl(m_pActiveSubdialog->WindowName()));
 				break;
 
 			case idContracts:
@@ -197,12 +206,12 @@ void CUIDiaryWnd::SendMessage(CUIWindow* pWnd, s16 msg, void* pData)
 				m_pLeftHorisontalLine->MoveWindow(r.left, r.top + contractsOffset);
 				m_pActiveSubdialog = &UIContractsWnd;
 				SetContractTrader();
-				ArticleCaption(*(m_pActiveSubdialog->WindowName()));
+				ArticleCaption(*stbl(m_pActiveSubdialog->WindowName()));
 				break;
 
 			case idNews:
 				m_pActiveSubdialog = &UINewsWnd;
-				ArticleCaption(*(m_pActiveSubdialog->WindowName()));
+				ArticleCaption(*stbl(m_pActiveSubdialog->WindowName()));
 				break;
 
 			case idActorDiary:
@@ -228,6 +237,10 @@ void CUIDiaryWnd::SendMessage(CUIWindow* pWnd, s16 msg, void* pData)
 				}
 			}
 		}
+	}
+	else if (pWnd == this && DIARY_RESET_PREV_ACTIVE_ITEM == msg)
+	{
+		pPrtevTVItem = NULL;
 	}
 
 	inherited::SendMessage(pWnd, msg, pData);
@@ -281,21 +294,6 @@ void CUIDiaryWnd::InitTreeView()
 	CUITreeViewItem *pTVItem = NULL, *pTVItemSub = NULL;
 	CStringTable stbl;
 
-	// News section
-	pTVItem = xr_new<CUITreeViewItem>();
-	pTVItem->SetText(*stbl("News & Events"));
-	pTVItem->SetRoot(true);
-	pTVItem->SetFont(m_pTreeRootFont);
-	pTVItem->SetTextColor(m_uTreeRootColor);
-	UITreeView.AddItem(pTVItem);
-
-	pTVItemSub = xr_new<CUITreeViewItem>();
-	pTVItemSub->SetFont(m_pTreeItemFont);
-	pTVItemSub->SetTextColor(m_uTreeItemColor);
-	pTVItemSub->SetText(*stbl("News"));
-	pTVItemSub->SetValue(idNews);
-	pTVItem->AddItem(pTVItemSub);
-
 	// Jobs section
 	pTVItem = xr_new<CUITreeViewItem>();
 	pTVItem->SetText(*stbl("Jobs"));
@@ -303,6 +301,7 @@ void CUIDiaryWnd::InitTreeView()
 	pTVItem->SetFont(m_pTreeRootFont);
 	pTVItem->SetTextColor(m_uTreeRootColor);
 	UITreeView.AddItem(pTVItem);
+	m_pJobsRoot = pTVItem;
 
 	pTVItemSub = xr_new<CUITreeViewItem>();
 	pTVItemSub->SetText(*stbl("Current"));
@@ -310,6 +309,7 @@ void CUIDiaryWnd::InitTreeView()
 	pTVItemSub->SetFont(m_pTreeItemFont);
 	pTVItemSub->SetTextColor(m_uTreeItemColor);
 	pTVItem->AddItem(pTVItemSub);
+	m_pActiveJobs = pTVItemSub;
 
 	pTVItemSub = xr_new<CUITreeViewItem>();
 	pTVItemSub->SetText(*stbl("Accomplished"));
@@ -342,6 +342,21 @@ void CUIDiaryWnd::InitTreeView()
 	pTVItem->SetTextColor(m_uTreeRootColor);
 	UITreeView.AddItem(pTVItem);
 	m_pActorDiaryRoot = pTVItem;
+
+	// News section
+	pTVItem = xr_new<CUITreeViewItem>();
+	pTVItem->SetText(*stbl("News & Events"));
+	pTVItem->SetRoot(true);
+	pTVItem->SetFont(m_pTreeRootFont);
+	pTVItem->SetTextColor(m_uTreeRootColor);
+	UITreeView.AddItem(pTVItem);
+
+	pTVItemSub = xr_new<CUITreeViewItem>();
+	pTVItemSub->SetFont(m_pTreeItemFont);
+	pTVItemSub->SetTextColor(m_uTreeItemColor);
+	pTVItemSub->SetText(*stbl("News"));
+	pTVItemSub->SetValue(idNews);
+	pTVItem->AddItem(pTVItemSub);
 }
 
 //////////////////////////////////////////////////////////////////////////
@@ -419,4 +434,20 @@ void CUIDiaryWnd::InitDiary()
 void CUIDiaryWnd::ArticleCaption(LPCSTR caption)
 {
 	UIArticleCaption.SetText(caption);
+}
+
+//////////////////////////////////////////////////////////////////////////
+
+void CUIDiaryWnd::SetActiveSubdialog(EPdaSections section)
+{
+	switch (section)
+	{
+	case epsActiveJobs:
+		UITreeView.SendMessage(m_pJobsRoot, BUTTON_CLICKED, NULL);
+		SendMessage(this, DIARY_RESET_PREV_ACTIVE_ITEM, NULL);
+		UITreeView.SendMessage(m_pActiveJobs, BUTTON_CLICKED, NULL);
+		break;
+	default:
+		NODEFAULT;
+	}
 }

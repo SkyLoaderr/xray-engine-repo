@@ -35,8 +35,6 @@ public:
 
 	// Установить фильтр
 	void SetFilter(ETaskState newFilter);
-	// Получить заголовок раздела
-	virtual ref_str		WindowName();
 protected:
 	// Добавляем заголовок крупным шрифтом
 	void AddHeader(ref_str strHeader);

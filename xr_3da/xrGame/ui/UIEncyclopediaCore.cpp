@@ -82,24 +82,9 @@ ref_str CUIEncyclopediaCore::SetCurrentArtice(CUITreeViewItem *pTVItem)
 
 		img.SetClipRect(r);
 		UIImgMask.SetClipper(true, r);
-		img.SetMask(&UIImgMask);
 		AdjustImagePos(img);
-
-//		pItemImage = xr_new<CUIStatic>();
-//		pItemImage->Init("ui\\ui_inv_box_heavy_weapons", 0, 0, 1000, 1000);
-//		pItemImage->Enable(false);
-//		pItemImage->ClipperOn();
-
-//		RECT r;
-//		r.left		= 0;
-//		r.top		= 0;
-//		r.right		= pInfoList->GetWndRect().right;
-//		r.bottom	= pInfoList->GetWndRect().bottom;
-
-//		pItemImage->SetClipRect(r);
-//		pInfoList->AttachChild(&m_ArticlesDB[pTVItem->GetValue()]->data()->image);
-
 		pInfoList->AttachChild(&img);
+		img.SetMask(&UIImgMask);
 
 		// Добавляем текст
 		CUIString str;

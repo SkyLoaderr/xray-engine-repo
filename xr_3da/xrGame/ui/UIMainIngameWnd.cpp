@@ -29,6 +29,7 @@
 #include "../game_cl_base.h"
 #include "../level.h"
 #include "../seniority_hierarchy_holder.h"
+//#include "UIAnimationFade.h"
 
 using namespace InventoryUtilities;
 
@@ -67,6 +68,8 @@ const char * const PDA_INGAME_SINGLEPLAYER_CFG	= "ingame_msglog_sp.xml";
 const char * const PDA_INGAME_MULTIPLAYER_CFG	= "ingame_msglog_mp.xml";
 const char * const NEWS_TEMPLATES_CFG			= "news_templates.xml";
 const char * const MAININGAME_XML				= "maingame.xml";
+
+//CUIAnimationFade tmp;
 
 //////////////////////////////////////////////////////////////////////
 // Construction/Destruction//////////////////////////////////////////////////////////////////////
@@ -247,6 +250,11 @@ void CUIMainIngameWnd::Init()
 	// Flashing icons initialize
 	uiXml.SetLocalRoot(uiXml.NavigateToNode("flashing_icons"));
 	InitFlashingIcons(uiXml);
+
+	//!!! TEST !!!
+//	tmp.SetAnimationPeriod(10000);
+//	tmp.SetFadeBounds(std::make_pair(0, 10));
+//	tmp.Play();
 }
 
 void CUIMainIngameWnd::Draw()
@@ -514,6 +522,8 @@ void CUIMainIngameWnd::Update()
 	UpdateFlashingIcons();
 
 	CUIWindow::Update();
+
+//	tmp.Update();
 }
 
 bool CUIMainIngameWnd::OnKeyboardPress(int dik)
@@ -1112,10 +1122,13 @@ void CUIMainIngameWnd::SetFlashIconState(EFlashingIcons type, bool enable)
 {
 	// Включаем анимацию требуемой иконки
 	FlashingIcons_it icon = m_FlashingIcons.find(type);
-	R_ASSERT2(icon != m_FlashingIcons.end(), "Flashin icon with this type not existed");
+	R_ASSERT2(icon != m_FlashingIcons.end(), "Flashing icon with this type not existed");
 
-	icon->second.second = enable ? 0 : -1;
-	if(!enable) icon->second.first->Show(false);
+	enable ? icon->second.second.Play() : icon->second.second.Stop();
+	if(!enable)
+		icon->second.first->TextureOff();
+	else
+		icon->second.first->TextureOn();
 }
 
 //////////////////////////////////////////////////////////////////////////
@@ -1142,9 +1155,23 @@ void CUIMainIngameWnd::InitFlashingIcons(CUIXml &node)
 		else	R_ASSERT(!"Unknown type of mainingame flashing icon");
 
 		R_ASSERT2(m_FlashingIcons.find(type) == m_FlashingIcons.end(), "Flashing icon with this type already exists");
-		m_FlashingIcons[type] = std::make_pair(pIcon, -1);
+
+		IconInfo &val	= m_FlashingIcons[type];
+		val.first		= pIcon;
+
+		val.second.SetAnimationPeriod(node.ReadAttribInt(flashingIconNodeName, i, "period", 1000));
 		AttachChild(pIcon);
 		pIcon->Show(false);
+
+		// Some type related hacks
+		switch (type)
+		{
+		case efiPdaTask:
+			pIcon->GetUIStaticItem().SetScale(0.5f);
+			break;
+		default:
+			NODEFAULT;
+		}
 	}
 }
 
@@ -1165,34 +1192,11 @@ void CUIMainIngameWnd::DestroyFlashingIcons()
 
 void CUIMainIngameWnd::UpdateFlashingIcons()
 {
-	static u32			prevTimeGlobal	= 0;
-	static const int	flipPeriod		= 1000; // In ms
-
-	if (0 == prevTimeGlobal) prevTimeGlobal = Device.dwTimeGlobal;
-
-	int tmpTime = 0;
 	for (FlashingIcons_it it = m_FlashingIcons.begin(); it != m_FlashingIcons.end(); ++it)
 	{
-		// Если анимация включена (second в паре value у мапы больше -1), то вычисляем стадию анимации
-		// данной иконки
-		int &flipTime = it->second.second;
-		tmpTime += flipTime;
-
-		if (flipTime >= 0)
-		{
-			tmpTime += static_cast<int>(Device.dwTimeGlobal - prevTimeGlobal);
-
-			if (tmpTime >= flipPeriod && flipTime < flipPeriod)
-			{
-				it->second.first->Show(true);
-			}
-			else if (tmpTime >= (flipPeriod * 2) && flipTime < (flipPeriod * 2))
-			{
-				it->second.first->Show(false);
-			}
-
-			prevTimeGlobal = Device.dwTimeGlobal;
-			flipTime = tmpTime % (flipPeriod * 2);
-		}
+		CUIAnimationFlicker &f = it->second.second;
+		f.Update();
+		if (1 == f.GetCurrentPhase()) it->second.first->Show(true);
+		else it->second.first->Show(false);
 	}
 }

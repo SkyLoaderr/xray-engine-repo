@@ -19,6 +19,7 @@ CUINewsWnd::CUINewsWnd()
 {
 	// Remove this for enable interactive behaviour of list
 	UIListWnd.ActivateList(false);
+	SetWindowName("News");
 }
 
 //////////////////////////////////////////////////////////////////////////
@@ -59,11 +60,4 @@ void CUINewsWnd::SendMessage(CUIWindow *pWnd, s16 msg, void* pData)
 //	}
 //
 //	inherited::SendMessage(pWnd, msg, pData);
-}
-
-//////////////////////////////////////////////////////////////////////////
-
-ref_str CUINewsWnd::WindowName()
-{
-	return "News";
 }

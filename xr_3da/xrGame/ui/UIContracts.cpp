@@ -21,6 +21,13 @@ const char * const	CONTRACTS_CHAR_XML		= "contracts_character.xml";
 
 //////////////////////////////////////////////////////////////////////////
 
+CUIContractsWnd::CUIContractsWnd()
+{
+	SetWindowName("Contracts");
+}
+
+//////////////////////////////////////////////////////////////////////////
+
 void CUIContractsWnd::Init()
 {
 	CUIXml uiXml;
@@ -39,13 +46,6 @@ void CUIContractsWnd::Init()
 
 //////////////////////////////////////////////////////////////////////////
 
-ref_str CUIContractsWnd::WindowName()
-{
-	return "";
-}
-
-//////////////////////////////////////////////////////////////////////////
-
 void CUIContractsWnd::Show(bool status)
 {
 	inherited::Show(status);
@@ -55,6 +55,6 @@ void CUIContractsWnd::Show(bool status)
 		CInventoryOwner * pInvOwner  = dynamic_cast<CInventoryOwner*>(Level().CurrentEntity());;
 
 		//инициализировать окошко с информацие о собеседнике
-		UICharInfo.InitCharacter(pInvOwner, false);
+		UICharInfo.InitCharacter(pInvOwner);
 	}
 }

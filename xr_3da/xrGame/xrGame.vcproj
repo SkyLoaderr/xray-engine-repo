@@ -8070,6 +8070,9 @@
 					Name="PdaWnd"
 					Filter="">
 					<File
+						RelativePath=".\ui\UIPdaAux.h">
+					</File>
+					<File
 						RelativePath=".\ui\UIPdaCommunication.cpp">
 					</File>
 					<File
@@ -8232,6 +8235,28 @@
 					</File>
 					<File
 						RelativePath=".\UIZoneMap.h">
+					</File>
+				</Filter>
+				<Filter
+					Name="Animations"
+					Filter="">
+					<File
+						RelativePath=".\ui\UIAnimationBase.cpp">
+					</File>
+					<File
+						RelativePath=".\ui\UIAnimationBase.h">
+					</File>
+					<File
+						RelativePath=".\ui\UIAnimationFade.cpp">
+					</File>
+					<File
+						RelativePath=".\ui\UIAnimationFade.h">
+					</File>
+					<File
+						RelativePath=".\ui\UIAnimationFlicker.cpp">
+					</File>
+					<File
+						RelativePath=".\ui\UIAnimationFlicker.h">
 					</File>
 				</Filter>
 			</Filter>

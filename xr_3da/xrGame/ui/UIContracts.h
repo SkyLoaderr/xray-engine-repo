@@ -22,7 +22,7 @@ class CUIContractsWnd: public CUIWindow
 {
 	typedef CUIWindow inherited;
 public:
-	CUIContractsWnd() {}
+	CUIContractsWnd();
 	virtual ~CUIContractsWnd() {}
 	virtual void Init();
 	virtual void Show(bool status);
@@ -30,9 +30,6 @@ public:
 	CUIListWnd			UIListWnd;
 	// Информация о торговце
 	CUICharacterInfo	UICharInfo;
-
-	// Получить заголовок раздела
-	virtual ref_str	WindowName();
 protected:
 	// Название окна
 	CUIStatic		UIStaticCaption;

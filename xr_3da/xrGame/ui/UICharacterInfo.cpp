@@ -19,6 +19,7 @@ using namespace InventoryUtilities;
 //////////////////////////////////////////////////////////////////////////
 
 CUICharacterInfo::CUICharacterInfo()
+	:	m_bInfoAutoAdjust		(true)
 {
 }
 
@@ -134,11 +135,22 @@ void CUICharacterInfo::Init(int x, int y, int width, int height, const char* xml
 		UIRelationCaption.Enable(false);
 		UIRelationCaption.Show(false);
 	}
+
+	AttachChild(&UIBio);
+	if (uiXml.NavigateToNode("biography_list", 0))
+	{
+		xml_init.InitListWnd(uiXml, "biography_list", 0, &UIBio);
+	}
+	else
+	{
+		UIBio.Enable(false);
+		UIBio.Show(false);
+	}
 }
 
 //////////////////////////////////////////////////////////////////////////
 
-void  CUICharacterInfo::InitCharacter(CCharacterInfo* pCharInfo, bool withPrefixes)
+void  CUICharacterInfo::InitCharacter(CCharacterInfo* pCharInfo)
 {
 	VERIFY(pCharInfo);
 
@@ -149,13 +161,19 @@ void  CUICharacterInfo::InitCharacter(CCharacterInfo* pCharInfo, bool withPrefix
 	int offset;
 
 	sprintf(str, "%d", pCharInfo->Rank());
-	offset = static_cast<int>(UIRankCaption.GetFont()->SizeOf(UIRankCaption.GetText()) + UIRankCaption.GetWndRect().left + 5);
-	UIRank.SetWndRect(offset, UIRank.GetWndRect().top, GetWndRect().right - offset - 10, UIRank.GetWndRect().bottom);
+	if (m_bInfoAutoAdjust)
+	{
+		offset = static_cast<int>(UIRankCaption.GetFont()->SizeOf(UIRankCaption.GetText()) + UIRankCaption.GetWndRect().left + 5);
+		UIRank.SetWndRect(offset, UIRank.GetWndRect().top, GetWndRect().right - offset - 10, UIRank.GetWndRect().bottom);
+	}
 	UIRank.SetText(str);
 
 	sprintf(str, "%s", *pCharInfo->Community());
-	offset = static_cast<int>(UICommunityCaption.GetFont()->SizeOf(UICommunityCaption.GetText()) + UICommunityCaption.GetWndRect().left + 5);
-	UICommunity.SetWndRect(offset, UICommunity.GetWndRect().top, GetWndRect().right - offset - 10, UICommunity.GetWndRect().bottom - UICommunity.GetWndRect().top);
+	if (m_bInfoAutoAdjust)
+	{
+		offset = static_cast<int>(UICommunityCaption.GetFont()->SizeOf(UICommunityCaption.GetText()) + UICommunityCaption.GetWndRect().left + 5);
+		UICommunity.SetWndRect(offset, UICommunity.GetWndRect().top, GetWndRect().right - offset - 10, UICommunity.GetWndRect().bottom - UICommunity.GetWndRect().top);
+	}
 	UICommunity.SetText(str);
 
 	UIIcon.SetShader(GetCharIconsShader());
@@ -164,14 +182,24 @@ void  CUICharacterInfo::InitCharacter(CCharacterInfo* pCharInfo, bool withPrefix
 		pCharInfo->TradeIconY()*ICON_GRID_HEIGHT,
 		pCharInfo->TradeIconX()+CHAR_ICON_WIDTH*ICON_GRID_WIDTH,
 		pCharInfo->TradeIconY()+CHAR_ICON_HEIGHT*ICON_GRID_HEIGHT);
+
+	// Bio
+	if (UIBio.IsEnabled())
+	{
+		UIBio.RemoveAll();
+		static CUIString str;
+		str.SetText(pCharInfo->Bio());
+		CUIStatic::PreprocessText(str.m_str, UIBio.GetItemWidth(), UIBio.GetFont());
+		UIBio.AddParsedItem<CUIListItem>(str, 0, UIBio.GetTextColor(), UIBio.GetFont());
+	}
 }
 
 //////////////////////////////////////////////////////////////////////////
 
-void CUICharacterInfo::InitCharacter(CInventoryOwner* pInvOwner, bool withPrefixes)
+void CUICharacterInfo::InitCharacter(CInventoryOwner* pInvOwner)
 {
 	VERIFY(pInvOwner);
-	InitCharacter(&pInvOwner->CharacterInfo(), withPrefixes);
+	InitCharacter(&pInvOwner->CharacterInfo());
 
 	CActor *m_pActor = dynamic_cast<CActor *>(pInvOwner);
 	if (m_pActor)
@@ -189,7 +217,7 @@ void CUICharacterInfo::InitCharacter(CInventoryOwner* pInvOwner, bool withPrefix
 
 //////////////////////////////////////////////////////////////////////////
 
-void  CUICharacterInfo::SetRelation(ALife::ERelationType relation, bool withPrefix)
+void  CUICharacterInfo::SetRelation(ALife::ERelationType relation)
 {
 	ref_str relation_str;
 
@@ -213,8 +241,11 @@ void  CUICharacterInfo::SetRelation(ALife::ERelationType relation, bool withPref
 	}
 
 	UIRelation.SetText(*relation_str);
-	int offset = static_cast<int>(UIRelationCaption.GetFont()->SizeOf(UIRelationCaption.GetText()) + UIRelationCaption.GetWndRect().left + 5);
-	UIRelation.SetWndRect(offset, UIRelation.GetWndRect().top, GetWndRect().right - offset - 10, UICommunity.GetWndRect().bottom - UIRelation.GetWndRect().top);
+	if (m_bInfoAutoAdjust)
+	{
+		int offset = static_cast<int>(UIRelationCaption.GetFont()->SizeOf(UIRelationCaption.GetText()) + UIRelationCaption.GetWndRect().left + 5);
+		UIRelation.SetWndRect(offset, UIRelation.GetWndRect().top, GetWndRect().right - offset - 10, UICommunity.GetWndRect().bottom - UIRelation.GetWndRect().top);
+	}
 }
 
 //////////////////////////////////////////////////////////////////////////

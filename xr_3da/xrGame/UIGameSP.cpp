@@ -4,6 +4,8 @@
 #include "level.h"
 
 #include "game_cl_Single.h"
+#include "ui/UIPdaAux.h"
+#include "xr_level_controller.h"
 
 CUIGameSP::CUIGameSP()
 {
@@ -28,22 +30,21 @@ void CUIGameSP::SetClGame (game_cl_GameState* g)
 bool CUIGameSP::IR_OnKeyboardPress(int dik) 
 {
 	if(inherited::IR_OnKeyboardPress(dik)) return true;
-
-
-	switch (dik)
+	
+	switch (key_binding[dik])
 	{
-	case DIK_I: 
+	case kINVENTORY: 
 		m_game->StartStopMenu(&InventoryMenu);
 		return true;
 		break;
-	case DIK_P:
+	case kACTIVE_JOBS:
 		m_game->StartStopMenu(&PdaMenu);
-		PdaMenu.ChangeActiveTab(CUIPdaWnd::TAB_COMM);
+		PdaMenu.SetActiveSubdialog(epsActiveJobs);
 		return true;
 		break;
-	case DIK_M:
+	case kMAP:
 		m_game->StartStopMenu(&PdaMenu);
-		PdaMenu.ChangeActiveTab(CUIPdaWnd::TAB_MAP);
+		PdaMenu.SetActiveSubdialog(epsMap);
 		return true;
 		break;
 /*
@@ -53,7 +54,7 @@ bool CUIGameSP::IR_OnKeyboardPress(int dik)
 		return true;
 		break;
 */
-	case DIK_ESCAPE:
+	case kQUIT:
 		if(m_pMainInputReceiver)//m_pUserMenu)
 		{
 			m_game->StartStopMenu(m_pMainInputReceiver);//m_pUserMenu);

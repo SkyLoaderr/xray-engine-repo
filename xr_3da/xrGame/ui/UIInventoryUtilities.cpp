@@ -260,10 +260,10 @@ const ref_str InventoryUtilities::GetTimeAsString(ALife::_TIME_ID time, ETimePre
 		sprintf(bufTime, "%02i%c%02i", hours, timeSeparator, mins);
 		break;
 	case etpTimeToSeconds:
-		sprintf(bufTime, "%02i%c%02i%c%02i", hours, timeSeparator, month, timeSeparator, day);
+		sprintf(bufTime, "%02i%c%02i%c%02i", hours, timeSeparator, mins, timeSeparator, secs);
 		break;
 	case etpTimeToMilisecs:
-		sprintf(bufTime, "%02i%c%02i%c%02i%c%02i", hours, timeSeparator, month, timeSeparator, day, timeSeparator, milisecs);
+		sprintf(bufTime, "%02i%c%02i%c%02i%c%02i", hours, timeSeparator, mins, timeSeparator, secs, timeSeparator, milisecs);
 		break;
 	default:
 		R_ASSERT(!"Unknown type of date precision");

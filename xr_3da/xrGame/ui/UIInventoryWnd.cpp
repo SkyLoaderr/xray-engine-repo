@@ -216,7 +216,7 @@ void CUIInventoryWnd::Init()
 	xml_init.InitStatic(uiXml, "time_static", 0, &UIStaticTime);
 
 	// Weight indicator
-	UIPersonalWnd.AttachChild(&UIStaticWeight);
+	AttachChild(&UIStaticWeight);
 	xml_init.InitStatic(uiXml, "weight_static", 0, &UIStaticWeight);
 
 	// Exit button
@@ -1404,7 +1404,7 @@ void CUIInventoryWnd::UpdateWeight()
 	string16 cl;
 	ZeroMemory(cl, 16);
 
-	const char * weightColor = "%c240,217,182";
+	const char * weightColor = "%c238,153,26";
 
 	if (total > max)
 	{
@@ -1415,6 +1415,6 @@ void CUIInventoryWnd::UpdateWeight()
 		strcpy(cl, weightColor);
 	}
 
-	sprintf(buf, "%%cdefaultcarry weight %s%4.1f %s/%4.1f", cl, total, weightColor, max);
+	sprintf(buf, "%%cdefaultWeight %s %3.1f %s/%5.1f", cl, total, weightColor, max);
 	UIStaticWeight.SetText(buf);
 }

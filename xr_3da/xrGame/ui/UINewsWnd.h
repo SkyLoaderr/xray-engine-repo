@@ -29,9 +29,6 @@ public:
 
 	// Окно вывода информации
 	CUIListWnd	UIListWnd;
-
-	// Получить заголовок раздела
-	virtual ref_str		WindowName();
 };
 
 #endif

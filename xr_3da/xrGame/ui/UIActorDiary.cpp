@@ -21,6 +21,7 @@ const char * const		ACTOR_DIARY_XML		= "actor_diary.xml";
 CUIActorDiaryWnd::CUIActorDiaryWnd()
 	:	m_pCore		(NULL)
 {
+	SetWindowName("Actor Diary");
 }
 
 //////////////////////////////////////////////////////////////////////////

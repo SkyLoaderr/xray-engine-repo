@@ -256,13 +256,13 @@ void CUIPdaCommunication::InitPdaDialog()
 	R_ASSERT2(m_pInvOwner, "wrong inventory owner");
 
 	//инициализировать окошко с информацией о собеседнике
-	UIPdaDialogWnd.UICharacterInfo.InitCharacter(m_pContactInvOwner, false);
+	UIPdaDialogWnd.UICharacterInfo.InitCharacter(m_pContactInvOwner);
 
 	m_pActor  = dynamic_cast<CActor*>(Level().CurrentEntity());;
 	if(m_pActor)
 	{
 		CEntityAlive* ContactEA = dynamic_cast<CEntityAlive*>(m_pContactInvOwner);
-		UIPdaDialogWnd.UICharacterInfo.SetRelation(ContactEA->tfGetRelationType(dynamic_cast<CEntityAlive*>(m_pActor)), false);
+		UIPdaDialogWnd.UICharacterInfo.SetRelation(ContactEA->tfGetRelationType(dynamic_cast<CEntityAlive*>(m_pActor)));
 	}
 
 	m_pOurDialogManager = dynamic_cast<CPhraseDialogManager*>(m_pOurInvOwner);

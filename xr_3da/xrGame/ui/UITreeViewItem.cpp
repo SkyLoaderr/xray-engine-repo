@@ -241,6 +241,8 @@ void CUITreeViewItem::SetText(LPCSTR str)
 
 void CUITreeViewItem::SendMessage(CUIWindow* pWnd, s16 msg, void* pData)
 {
+	static CUITreeViewItem *pPrevFocusedItem = NULL;
+
 	if (pWnd == this && BUTTON_CLICKED == msg)
 	{
 		if (IsRoot())
@@ -250,7 +252,6 @@ void CUITreeViewItem::SendMessage(CUIWindow* pWnd, s16 msg, void* pData)
 	}
 	else if (pWnd == this && BUTTON_FOCUS_RECEIVED == msg)
 	{
-		static CUITreeViewItem *pPrevFocusedItem = NULL;
 		UIBkg.TextureOn();
 
 		if (pPrevFocusedItem)
@@ -258,6 +259,11 @@ void CUITreeViewItem::SendMessage(CUIWindow* pWnd, s16 msg, void* pData)
 			pPrevFocusedItem->UIBkg.TextureOff();
 		}
 		pPrevFocusedItem = this;
+	}
+	else if (pWnd == this && BUTTON_FOCUS_LOST == msg)
+	{
+		UIBkg.TextureOff();
+		pPrevFocusedItem = NULL;
 	}
 	else
 		inherited::SendMessage(pWnd, msg, pData);

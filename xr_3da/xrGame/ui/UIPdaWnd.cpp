@@ -163,19 +163,12 @@ void CUIPdaWnd::Show()
 
 //////////////////////////////////////////////////////////////////////////
 
-void CUIPdaWnd::ChangeActiveTab(E_PDA_TABS tabNewTab)
-{
-	UITabControl.SetNewActiveTab(tabNewTab);
-}
-
-//////////////////////////////////////////////////////////////////////////
-
 void CUIPdaWnd::FocusOnMap(const int x, const int y, const int z)
 {
 	Fvector a;
 	a.set(static_cast<float>(x), static_cast<float>(y), static_cast<float>(z));
 	SendMessage(this, PDA_MAP_SET_ACTIVE_POINT, &a);
-	ChangeActiveTab(CUIPdaWnd::TAB_MAP);
+	SetActiveSubdialog(epsMap);
 }
 
 //////////////////////////////////////////////////////////////////////////
@@ -207,4 +200,30 @@ void CUIPdaWnd::Update()
 {
 	inherited::Update();
 	UpdateDateTime();
+}
+
+//////////////////////////////////////////////////////////////////////////
+
+void CUIPdaWnd::SetActiveSubdialog(EPdaSections section)
+{
+	enum EPdaTabs
+	{
+		eptEvents = 0,
+		eptComm,
+		eptMap,
+		eptNews
+	};
+
+	switch (section)
+	{
+	case epsActiveJobs:
+		UITabControl.SetNewActiveTab(eptEvents);
+		UIDiaryWnd.SetActiveSubdialog(section);
+		break;
+	case epsMap:
+		UITabControl.SetNewActiveTab(eptMap);
+		break;
+	default:
+		NODEFAULT;
+	}
 }

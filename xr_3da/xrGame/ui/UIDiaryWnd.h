@@ -13,6 +13,7 @@
 #include "UIJobsWnd.h"
 #include "UIContracts.h"
 #include "UIActorDiary.h"
+#include "UIPdaAux.h"
 
 ///////////////////////////////////////
 // Дневник
@@ -26,14 +27,17 @@ public:
 	CUIDiaryWnd();
 	virtual ~CUIDiaryWnd();
 
-	virtual void Init();
-	virtual void SendMessage(CUIWindow *pWnd, s16 msg, void* pData = NULL);
-	virtual void Show(bool status);
+	virtual void		Init();
+	virtual void		SendMessage(CUIWindow *pWnd, s16 msg, void* pData = NULL);
+	virtual void		Show(bool status);
 
 	// Добавить новую новость
-	void AddNewsItem(const char *sData);
+	void				AddNewsItem(const char *sData);
 	// Вывести заголовок текущего раздела
-	void ArticleCaption(LPCSTR caption);
+	void				ArticleCaption(LPCSTR caption);
+
+	// Открыть соответсвующий раздел ПДА
+	void				SetActiveSubdialog(EPdaSections section);
 
 protected:
 	// Дочерние окна входящие в окно информации
@@ -70,8 +74,11 @@ protected:
 
 	//список торговцев, которые дают заказы на артефакты
 	CUITreeViewItem*	m_pContractsTreeItem;
-	// Список сттаей дневника
+	// Список стаей дневника
 	CUITreeViewItem		*m_pActorDiaryRoot;
+	// Указатели на разделы с заданиями
+	CUITreeViewItem		*m_pJobsRoot;
+	CUITreeViewItem		*m_pActiveJobs;
 
 	// Инициализируем TreeView
 	void				InitTreeView();

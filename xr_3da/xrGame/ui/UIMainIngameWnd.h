@@ -13,6 +13,7 @@
 #include "UIWpnDragDropItem.h"
 #include "UIListWnd.h"
 #include "UIMultiTextStatic.h"
+#include "UIAnimationFlicker.h"
 
 #include "../UIZoneMap.h"
 
@@ -178,7 +179,7 @@ protected:
 
 	// first - иконка, second - время прошедшее с начала периода мигания иконки.
 	// Если -1, то иконка выключена (не мигает)
-	typedef				std::pair<CUIStatic*, int> IconInfo;
+	typedef				std::pair<CUIStatic*, CUIAnimationFlicker> IconInfo;
 	DEF_MAP				(FlashingIcons, EFlashingIcons, IconInfo);
 	FlashingIcons		m_FlashingIcons;
 

@@ -12,13 +12,15 @@
 #include "UIXmlInit.h"
 #include "../Level.h"
 
-#define CONTACT_LOST	"The contact has been lost."
-#define WAIT_FOR_REPLY	"Waiting for reply."
+//////////////////////////////////////////////////////////////////////////
 
-#define TECH_INFO -1
-
-#define PDA_DIALOG_XML "pda_dialog.xml"
+#define CONTACT_LOST		"The contact has been lost."
+#define WAIT_FOR_REPLY		"Waiting for reply."
+#define TECH_INFO			-1
+#define PDA_DIALOG_XML		"pda_dialog.xml"
 #define PDA_DIALOG_CHAR_XML	"pda_dialog_character.xml"
+
+//////////////////////////////////////////////////////////////////////////
 
 CUIPdaDialogWnd::CUIPdaDialogWnd()
 {
@@ -26,9 +28,14 @@ CUIPdaDialogWnd::CUIPdaDialogWnd()
 	m_bContactActive = false;
 	m_bContactWait = false;
 }
+
+//////////////////////////////////////////////////////////////////////////
+
 CUIPdaDialogWnd::~CUIPdaDialogWnd()
 {
 }
+
+//////////////////////////////////////////////////////////////////////////
 
 void CUIPdaDialogWnd::Init(int x, int y, int width, int height)
 {
@@ -77,12 +84,13 @@ void CUIPdaDialogWnd::Init(int x, int y, int width, int height)
 							 UICharacterWindow.GetHeight(), 
 							 PDA_DIALOG_CHAR_XML);
 	UICharacterInfo.UIName.Show(false);
+	UICharacterInfo.m_bInfoAutoAdjust = false;
 	
 	xml_init.InitFrameWindow(uiXml, "mask_frame_window", 0, &UIMask);
 	UICharacterInfo.UIIcon.SetMask(&UIMask);
 
 	//Элементы автоматического добавления
-//	xml_init.InitAutoStatic(uiXml, "auto_static", this);
+	xml_init.InitAutoStatic(uiXml, "right_auto_static", &UICharIconFrame);
 
 	// шрифт для индикации имени персонажа в окне разговора
 	xml_init.InitFont(uiXml, "font", 0, m_iNameTextColor, m_pNameTextFont);
@@ -91,6 +99,8 @@ void CUIPdaDialogWnd::Init(int x, int y, int width, int height)
 
 	inherited::Init(x, y, width, height);
 }
+
+//////////////////////////////////////////////////////////////////////////
 
 void CUIPdaDialogWnd::SendMessage(CUIWindow *pWnd, s16 msg, void *pData)
 {
@@ -111,6 +121,8 @@ void CUIPdaDialogWnd::SendMessage(CUIWindow *pWnd, s16 msg, void *pData)
 	inherited::SendMessage(pWnd, msg, pData);
 }
 
+//////////////////////////////////////////////////////////////////////////
+
 void CUIPdaDialogWnd::Show(bool status)
 {
 	inherited::Show(status);
@@ -119,6 +131,8 @@ void CUIPdaDialogWnd::Show(bool status)
 	if (status)
 		ResetAll();
 }
+
+//////////////////////////////////////////////////////////////////////////
 
 void CUIPdaDialogWnd::ContactLoss()
 {
@@ -130,6 +144,8 @@ void CUIPdaDialogWnd::ContactLoss()
 	UIPhrasesListWnd.Enable(false);
 }
 
+//////////////////////////////////////////////////////////////////////////
+
 void CUIPdaDialogWnd::ContactWaitForReply()
 {
 	UILogListWnd.AddItem<CUIListItem>(WAIT_FOR_REPLY, 0, NULL, TECH_INFO);
@@ -139,6 +155,8 @@ void CUIPdaDialogWnd::ContactWaitForReply()
 	UIPhrasesListWnd.Show(false);
 	UIPhrasesListWnd.Enable(false);
 }
+
+//////////////////////////////////////////////////////////////////////////
 
 void CUIPdaDialogWnd::ContactRestore()
 {
@@ -154,8 +172,9 @@ void CUIPdaDialogWnd::ContactRestore()
 	UIPhrasesListWnd.Enable(true);
 }
 
+//////////////////////////////////////////////////////////////////////////
+
 void CUIPdaDialogWnd::Update()
 {
 	inherited::Update();
 }
-

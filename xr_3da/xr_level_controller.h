@@ -55,6 +55,8 @@ enum	EKeyBinding
 	kSKIN			,
 	kTEAM			,
 	kPDA			,
+	kACTIVE_JOBS	,
+	kMAP			,
 	kEXT_1			,
 	kEXT_2			,
 	kEXT_3			,

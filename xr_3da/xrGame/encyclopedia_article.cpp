@@ -74,6 +74,24 @@ void CEncyclopediaArticle::load_shared	(LPCSTR)
 	}
 
 	Irect r = data()->image.GetUIStaticItem().GetOriginalRect();
+
+	const int minSize = 65;
+
+	// Сначала устанавливаем если надо минимально допустимые размеры иконки
+	if (r.width() < minSize)
+	{
+		int dx = minSize - r.width();
+		r.x2 += dx;
+		data()->image.SetTextureOffset(dx / 2, data()->image.GetTextureOffeset()[1]);
+	}
+
+	if (r.height() < minSize)
+	{
+		int dy = minSize - r.height();
+		r.y2 += dy;
+		data()->image.SetTextureOffset(data()->image.GetTextureOffeset()[0], dy / 2);
+	}
+
 	data()->image.SetWndRect(0, 0, r.width(), r.height());
 
 	// Тип статьи
