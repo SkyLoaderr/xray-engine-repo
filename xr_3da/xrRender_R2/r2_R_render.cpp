@@ -190,12 +190,13 @@ void CRender::Render		()
 	{
 		// level
 		marker									++;
-		phase									= PHASE_NORMAL;
+		phase									= PHASE_EMAP;
 		Target.phase_scene						();
 
 		for (emapslice=0; emapslice<ps_r2_emap_slices; emapslice++)
 		{
-			r_dsgraph_render_graph				(0);
+			bool	b_last						= (emapslice==(ps_r2_emap_slices-1));
+			r_dsgraph_render_graph				(0,b_last ? true : false);
 		}
 	}
 
