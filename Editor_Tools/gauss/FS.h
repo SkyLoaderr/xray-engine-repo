@@ -351,7 +351,7 @@ class ENGINE_API CVirtualFileStreamRW : public CStream
 private:
    HANDLE	hSrcFile,hSrcMap;
 public:
-	CVirtualFileStream(const char *cFileName) {
+	CVirtualFileStreamRW(const char *cFileName) {
 		// Open the file
 		hSrcFile = CreateFile(cFileName, GENERIC_READ|GENERIC_WRITE, FILE_SHARE_READ, 0, OPEN_EXISTING, 0, 0);
 		R_ASSERT(hSrcFile!=INVALID_HANDLE_VALUE);
@@ -364,7 +364,7 @@ public:
 		data = (char*)MapViewOfFile (hSrcMap, FILE_MAP_ALL_ACCESS, 0, 0, 0);
 		R_ASSERT(data);
 	}
-	virtual ~CVirtualFileStream() 
+	virtual ~CVirtualFileStreamRW() 
 	{
         UnmapViewOfFile ((void*)data);
 		CloseHandle		(hSrcMap);

@@ -153,6 +153,7 @@ void xrLoad(LPCSTR name)
 	}
 }
 
+//-----------------------------------------------------------------------------------------------------------------
 const int	LIGHT_Count			=2;
 const int	LIGHT_Total			=(2*LIGHT_Count+1)*(2*LIGHT_Count+1);
 
