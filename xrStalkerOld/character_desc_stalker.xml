@@ -25,7 +25,7 @@
 					
 		<start_dialog>escape_lager_volk_hello</start_dialog>
 		<actor_dialog>escape_lager_volk_job</actor_dialog>
-		<actor_dialog>escape_lager_volk_info</actor_dialog>
+		<actor_dialog>escape_lager_volk_info</actor_dialog>		
 		<actor_dialog>escape_lager_volk_dynamite_done</actor_dialog>
 	</specific_character>
 
@@ -130,6 +130,7 @@
 		<start_dialog>hello_dialog</start_dialog>
 		<actor_dialog>general_pda_talk</actor_dialog>
 		<actor_dialog>escape_lager_access</actor_dialog>
+		<actor_dialog>escape_factory_assault_talk</actor_dialog>
 		<actor_dialog>escape_talk_about_escape</actor_dialog>
 	</specific_character>
 
@@ -156,6 +157,7 @@
 		<start_dialog>hello_dialog</start_dialog>
 		<actor_dialog>general_pda_talk</actor_dialog>
 		<actor_dialog>escape_lager_access</actor_dialog>
+		<actor_dialog>escape_factory_assault_talk</actor_dialog>
 		<actor_dialog>escape_talk_about_escape</actor_dialog>
 	</specific_character>
 
@@ -181,7 +183,8 @@
 					
 		<start_dialog>hello_dialog</start_dialog>
 		<actor_dialog>general_pda_talk</actor_dialog>
-		<actor_dialog>escape_lager_access</actor_dialog>		
+		<actor_dialog>escape_lager_access</actor_dialog>	
+		<actor_dialog>escape_factory_assault_talk</actor_dialog>	
 		<actor_dialog>escape_talk_about_escape</actor_dialog>
 	</specific_character>
 
@@ -207,7 +210,8 @@
 
 		<start_dialog>hello_dialog</start_dialog>
 		<actor_dialog>general_pda_talk</actor_dialog>
-		<actor_dialog>escape_lager_access</actor_dialog>		
+		<actor_dialog>escape_lager_access</actor_dialog>
+		<actor_dialog>escape_factory_assault_talk</actor_dialog>	
 		<actor_dialog>escape_talk_about_escape</actor_dialog>
 	</specific_character>
 
@@ -233,7 +237,8 @@
 			
 		<start_dialog>hello_dialog</start_dialog>
 		<actor_dialog>general_pda_talk</actor_dialog>
-		<actor_dialog>escape_lager_access</actor_dialog>		
+		<actor_dialog>escape_lager_access</actor_dialog>
+		<actor_dialog>escape_factory_assault_talk</actor_dialog>	
 		<actor_dialog>escape_talk_about_escape</actor_dialog>
 	</specific_character>
 
@@ -259,7 +264,8 @@
 			
 		<start_dialog>hello_dialog</start_dialog>
 		<actor_dialog>general_pda_talk</actor_dialog>
-		<actor_dialog>escape_lager_access</actor_dialog>		
+		<actor_dialog>escape_lager_access</actor_dialog>
+		<actor_dialog>escape_factory_assault_talk</actor_dialog>		
 		<actor_dialog>escape_talk_about_escape</actor_dialog>
 	</specific_character>
 
@@ -285,7 +291,8 @@
 			
 		<start_dialog>hello_dialog</start_dialog>
 		<actor_dialog>general_pda_talk</actor_dialog>
-		<actor_dialog>escape_lager_access</actor_dialog>		
+		<actor_dialog>escape_lager_access</actor_dialog>
+		<actor_dialog>escape_factory_assault_talk</actor_dialog>	
 		<actor_dialog>escape_talk_about_escape</actor_dialog>
 	</specific_character>
 
@@ -311,7 +318,8 @@
 			
 		<start_dialog>hello_dialog</start_dialog>
 		<actor_dialog>general_pda_talk</actor_dialog>
-		<actor_dialog>escape_lager_access</actor_dialog>		
+		<actor_dialog>escape_lager_access</actor_dialog>
+		<actor_dialog>escape_factory_assault_talk</actor_dialog>	
 		<actor_dialog>escape_talk_about_escape</actor_dialog>
 	</specific_character>
 
