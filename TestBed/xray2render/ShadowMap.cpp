@@ -117,6 +117,7 @@ class CMyD3DApplication : public CD3DApplication
 
 	// Special textures
 	LPDIRECT3DTEXTURE9				t_SpecularPower_32;
+	LPDIRECT3DCUBETEXTURE9			t_NCM;
 	LPDIRECT3DTEXTURE9				t_Base;
 	LPDIRECT3DTEXTURE9				t_Normals;
 
@@ -559,7 +560,7 @@ HRESULT CreateNCM(IDirect3DDevice9* D, DWORD w, LPDIRECT3DCUBETEXTURE9* pT)
 	{
 		return hr;
 	}
-	LPDIRECT3DTEXTURE9 m_pCubeTexture	= *pT;
+	LPDIRECT3DCUBETEXTURE9 m_pCubeTexture	= *pT;
 
 	for (int i = 0; i < 6; i++)
 	{
@@ -570,21 +571,21 @@ HRESULT CreateNCM(IDirect3DDevice9* D, DWORD w, LPDIRECT3DCUBETEXTURE9* pT)
 
 		m_pCubeTexture->GetLevelDesc(0, &ddsdDesc);
 
-		m_pCubeTexture->LockRect	((D3DCUBEMAP_FACES)i, &Locked, 0, 0);
+		m_pCubeTexture->LockRect	((D3DCUBEMAP_FACES)i, 0, &Locked, 0, 0);
 
-		for (int y = 0; y < ddsdDesc.Height; y++)
+		for (u32 y = 0; y < ddsdDesc.Height; y++)
 		{
 			h = (float)y / ((float)(ddsdDesc.Height - 1));
 			h *= 2.0f;
 			h -= 1.0f;
 
-			for (int x = 0; x < ddsdDesc.Width; x++)
+			for (u32 x = 0; x < ddsdDesc.Width; x++)
 			{
 				w = (float)x / ((float)(ddsdDesc.Width - 1));
 				w *= 2.0f;
 				w -= 1.0f;
 
-				D3DXFLOAT16* pBits = (DWORD*)((BYTE*)Locked.pBits + (y * Locked.Pitch));
+				D3DXFLOAT16* pBits = (D3DXFLOAT16*)((BYTE*)Locked.pBits + (y * Locked.Pitch));
 				pBits		+= 4*x;
 
 				switch((D3DCUBEMAP_FACES)i)
@@ -608,7 +609,6 @@ HRESULT CreateNCM(IDirect3DDevice9* D, DWORD w, LPDIRECT3DCUBETEXTURE9* pT)
 					Normal = D3DXVECTOR3(-w, -h, -1.0f);
 					break;
 				default:
-					assert(0);
 					break;
 				}
 
@@ -626,7 +626,7 @@ HRESULT CreateNCM(IDirect3DDevice9* D, DWORD w, LPDIRECT3DCUBETEXTURE9* pT)
 
 HRESULT CreatePower(IDirect3DDevice9* D, DWORD size, float P, LPDIRECT3DTEXTURE9* pT)
 {
-	std::vector				array;
+	std::vector<float>		array;
 	array.resize			(size);
 	for (DWORD it=0; it<size; it++)
 	{
