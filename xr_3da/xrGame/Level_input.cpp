@@ -178,9 +178,11 @@ void CLevel::IR_OnKeyboardPress(int key)
 	case kCONSOLE:
 		Console->Show				();
 		break;
+#ifdef DEBUG
 	case kQUIT:	
 		Console->Execute			("quit");
 		break;
+#endif
 	default:
 		if (CurrentEntity())		CurrentEntity()->IR_OnKeyboardPress(key_binding[key]);
 		break;
