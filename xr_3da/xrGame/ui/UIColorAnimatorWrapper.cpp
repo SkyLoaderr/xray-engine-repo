@@ -25,23 +25,21 @@ CUIColorAnimatorWrapper::CUIColorAnimatorWrapper()
 		kRev				(0.0f)
 {
 	prevGlobalTime	= Device.fTimeGlobal;
+	currColor		= 0xffff0000;
 }
 
-//////////////////////////////////////////////////////////////////////////
-
-CUIColorAnimatorWrapper::CUIColorAnimatorWrapper(const shared_str &animationName, u32 *colorToModify)
-	:	colorAnimation		(LALib.FindItem(*animationName)),
-		animationTime		(0.0f),
-		color				(colorToModify),
-		isDone				(false),
-		reverse				(false),
-		kRev				(0.0f)
+CUIColorAnimatorWrapper::CUIColorAnimatorWrapper(u32 *colorToModify)
+	:	colorAnimation		(NULL),
+	animationTime		(0.0f),
+	color				(NULL),
+	isDone				(false),
+	reverse				(false),
+	kRev				(0.0f)
 {
-	VERIFY(colorAnimation);
-	VERIFY(color);
 	prevGlobalTime	= Device.fTimeGlobal;
+	color			= colorToModify;
+	currColor		= 0xffff0000;
 }
-
 //////////////////////////////////////////////////////////////////////////
 
 CUIColorAnimatorWrapper::CUIColorAnimatorWrapper(const shared_str &animationName)
@@ -54,6 +52,7 @@ CUIColorAnimatorWrapper::CUIColorAnimatorWrapper(const shared_str &animationName
 {
 	VERIFY(colorAnimation);
 	prevGlobalTime	= Device.fTimeGlobal;
+	currColor		= 0xffff0000;
 }
 
 //////////////////////////////////////////////////////////////////////////

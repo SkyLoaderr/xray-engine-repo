@@ -10,7 +10,7 @@
 
 //////////////////////////////////////////////////////////////////////////
 
-SMapLocation::SMapLocation()
+SMapLocation::SMapLocation():animation(&icon_color)
 {
 	info_portion_id				= NO_INFO_INDEX;
 	level_name					= NULL;
@@ -53,7 +53,6 @@ shared_str SMapLocation::LevelName()
 void SMapLocation::UpdateAnimation()
 {
 	animation.Update();
-	icon_color = animation.GetColor();
 }
 
 //////////////////////////////////////////////////////////////////////////

@@ -185,7 +185,6 @@ void CInfoPortion::load_shared	(LPCSTR)
 			else
 				map_location.icon_color = 0xffffffff;
 
-
 			//присоединить к объекту на уровне, если тот задан
 			XML_NODE* object_node = uiXml.NavigateToNode(pMapNode, "object", 0);
 			if(object_node)

@@ -18,8 +18,7 @@ void CLevel::AddMapLocation(const SMapLocation& map_location, EMapLocationFlags 
 
 	if(!pMapLocation)
 	{
-		pMapLocation = xr_new<SMapLocation>();
-		*pMapLocation = map_location;
+		pMapLocation = xr_new<SMapLocation>(map_location);
 	}
 
 	pMapLocation->type_flags.set(location_type, TRUE);
@@ -136,11 +135,8 @@ public:
 
 void   CLevel::UpdateMapLocation			()
 {
-	RemoveLocationByFlags pred;
-	LOCATIONS_PTR_VECTOR_IT last_it =  std::remove_if(m_MapLocationVector.begin(), m_MapLocationVector.end(), pred);
-
-	if(m_MapLocationVector.end()!=last_it)
-		m_MapLocationVector.erase(last_it, m_MapLocationVector.end());
+	LOCATIONS_PTR_VECTOR_IT new_end =  std::remove_if(m_MapLocationVector.begin(), m_MapLocationVector.end(), RemoveLocationByFlags());
+	m_MapLocationVector.erase(new_end, m_MapLocationVector.end());
 
 	// Проапдейтить анимацию у оставшихся
 	std::for_each(m_MapLocationVector.begin(), m_MapLocationVector.end(), std::mem_fun(&SMapLocation::UpdateAnimation));

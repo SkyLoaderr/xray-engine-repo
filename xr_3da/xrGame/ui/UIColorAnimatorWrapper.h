@@ -28,7 +28,8 @@ public:
 	// colorToModify - указатель на цвет который меняем
 	// animationName - имя цветовой анимации
 	explicit			CUIColorAnimatorWrapper	(const shared_str &animationName);
-						CUIColorAnimatorWrapper	(const shared_str &animationName, u32 *colorToModify);
+//						CUIColorAnimatorWrapper	(const shared_str &animationName, u32 *colorToModify);
+						CUIColorAnimatorWrapper	(u32 *colorToModify);
 
 	// Установить новую цветовую анимацию
 	void				SetColorAnimation		(const shared_str &animationName);

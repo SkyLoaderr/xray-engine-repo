@@ -272,15 +272,15 @@ void CUIZoneMap::UpdateRadar(CActor* pActor)
 		Level().MapLocations().end() != it;
 		it++)
 	{
-		SMapLocation& map_location = *(*it);
+		SMapLocation* map_location = (*it);
 
-		if (!(Level().name() == map_location.LevelName())) 
+		if (!(Level().name() == map_location->LevelName())) 
 			continue;
 
-		entity_color = map_location.icon_color;
-		if(map_location.attached_to_object)
+		entity_color = map_location->icon_color;
+		if(map_location->attached_to_object)
 		{
-			pObject = Level().Objects.net_Find	(map_location.object_id);
+			pObject = Level().Objects.net_Find	(map_location->object_id);
 			//если объект и мы его не взяли себе в инвентарь
 			if(pObject && !(pObject->H_Parent() && pObject->H_Parent()->ID() == pActor->ID()))
 			{
@@ -293,12 +293,12 @@ void CUIZoneMap::UpdateRadar(CActor* pActor)
 		}
 		else
 		{
-			src.x = map_location.x;
+			src.x = map_location->x;
 			src.y = 0;
-			src.z = map_location.y;
+			src.z = map_location->y;
 
 			pObject = NULL;
-			world_pos.set(map_location.x,0.f,map_location.y);
+			world_pos.set(map_location->x,0.f,map_location->y);
 		}
 
 		bool on_border;
@@ -307,7 +307,7 @@ void CUIZoneMap::UpdateRadar(CActor* pActor)
 		{
 			if(!on_border)
 				entity.Out(P.x,P.y,entity_color);
-			else if(map_location.marker_show)
+			else if(map_location->marker_show)
 			{
 				float arrowHeading = 0;
 				int x_shift = 0;
