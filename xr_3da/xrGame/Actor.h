@@ -187,8 +187,15 @@ public:
 		return IsFocused()&&(cam_active==eacFirstEye); 
 	}
 
-	virtual void			Load				( LPCSTR section );
-	virtual BOOL			net_Spawn			( BOOL bLocal, int server_id, Fvector& o_pos, Fvector& o_angle, NET_Packet& P, u16 flags );
+	// Network
+	virtual void						Load				( LPCSTR section );
+	virtual BOOL						net_Spawn			( BOOL bLocal, int server_id, Fvector& o_pos, Fvector& o_angle, NET_Packet& P, u16 flags );
+	virtual void						net_OwnershipTake	(CObject* O);
+	virtual void						net_OwnershipReject	(CObject* O);
+	virtual void						net_Export			(NET_Packet& P);				// export to server
+	virtual void						net_Import			(NET_Packet& P);				// import from server
+	virtual BOOL						net_Relevant		()	{ return net_Local; };		// relevant for export to server
+
 	
 	virtual void			Die					( );
 	virtual	BOOL			Hit					(int iLost, Fvector &dir, CEntity* who);
@@ -213,11 +220,6 @@ public:
 	
 	SRotation				Orientation()		{return r_torso;};
 
-	// Network
-	virtual void			net_Export			(NET_Packet& P);				// export to server
-	virtual void			net_Import			(NET_Packet& P);				// import from server
-	virtual BOOL			net_Relevant		()	{ return net_Local; };		// relevant for export to server
-	
 	virtual void			OnMouseMove			(int x, int y);
 	virtual void			OnKeyboardPress		(int dik);
 	virtual void			OnKeyboardRelease	(int dik);

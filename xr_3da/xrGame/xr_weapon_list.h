@@ -37,6 +37,10 @@ public:
 	BOOL			ActivateWeaponPrev	(BOOL ignore_empty_weapon=true);
 	BOOL			ActivateWeaponNext	(BOOL ignore_empty_weapon=true);
 	BOOL			ActivateWeaponID	(int id);
+
+	int				weapon_add			(CWeapon* W);		// add, return index
+	int				weapon_remove		(CWeapon* W);		// remove, return last
+
 	void			Zoom				(BOOL bZoom);
 	void			Reload				();
 	IC BOOL			isZoomed			()	{ return m_bZoomed; }
@@ -47,10 +51,6 @@ public:
 	int				getAmmoMagazineSize	()	{ CWeapon* W = ActiveWeapon(); if (W) return W->GetAmmoMagSize(); else return 0; }
 	CWeapon*		getWeaponByWeapon	(CWeapon* W);
 	CWeapon*		getWeaponByIndex	(int iIndex)	{ return ((iIndex > -1) && (iIndex < m_Weapons.size())) ? m_Weapons[iIndex] : 0; }
-
-
-	// BOOL			TakeItem			(CLASS_ID cls, int iAmmoCount);
-	// void			LeaveWeapon			(CLASS_ID cls);
 
 	void			FireStart			();
 	void			FireEnd				();

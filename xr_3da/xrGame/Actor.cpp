@@ -330,11 +330,41 @@ void CActor::g_sv_AnalyzeNeighbours	()
 				continue;
 			} else {
 				// We doesn't have similar weapon - pick up it
-				
+				NET_Packet	P;
+				P.w_begin	(M_OWNERSHIP_TAKE);
+				P.w_u16		(ID());
+				P.w_u16		(W->ID());
+				Level().Send(P,net_flags(TRUE,TRUE,TRUE));
 			}
 		}
 
 		// 
+	}
+}
+
+void CActor::net_OwnershipTake		(CObject* O)
+{
+	// Test for weapon
+	CWeapon* W	= dynamic_cast<CWeapon*>	(O);
+	if (W) 
+	{
+		W->Parent							= this;
+		int id	= Weapons->weapon_add		(W);
+		Weapons->ActivateWeaponID			(id);
+		return;
+	}
+}
+
+void CActor::net_OwnershipReject	(CObject* O)
+{
+	// Test for weapon
+	CWeapon* W	= dynamic_cast<CWeapon*>	(O);
+	if (W) 
+	{
+		W->Parent							= 0;
+		int id	= Weapons->weapon_remove	(W);
+		Weapons->ActivateWeaponID			(id-1);
+		return;
 	}
 }
 

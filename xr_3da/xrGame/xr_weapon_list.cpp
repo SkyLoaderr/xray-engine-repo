@@ -36,7 +36,7 @@ CWeaponList::~CWeaponList	( )
 #define ACT_BONE_NAME_R "bip01_r_hand"
 #define ACT_BONE_NAME_L "bip01_l_finger1"
 
-void CWeaponList::Init(LPCSTR act_bone_r, LPCSTR act_bone_l)
+void CWeaponList::Init	(LPCSTR act_bone_r, LPCSTR act_bone_l)
 {
 	m_iHUDboneL		= -1;
 	m_iHUDboneR		= -1;
