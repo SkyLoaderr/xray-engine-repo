@@ -35,7 +35,7 @@ bool __fastcall TUI_ControlWayPointAdd::Start(TShiftState Shift){
 
 	if (obj&&Shift.Contains(ssAlt))
 		if (((TfraWayPoint*)parent_tool->pFrame)->ebAutoLink->Down){
-        	if (last_obj) obj->AddLink(last_obj);
+        	if (last_obj) obj->AddSingleLink(last_obj);
 		}
     return false;
 }

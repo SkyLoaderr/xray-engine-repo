@@ -1,7 +1,7 @@
 object fraWayPoint: TfraWayPoint
   Left = 0
   Top = 0
-  Width = 443
+  Width = 123
   Height = 277
   VertScrollBar.Visible = False
   Align = alClient
@@ -13,8 +13,8 @@ object fraWayPoint: TfraWayPoint
   object paCommands: TPanel
     Left = 0
     Top = 0
-    Width = 443
-    Height = 72
+    Width = 123
+    Height = 121
     Align = alTop
     Constraints.MaxWidth = 123
     Constraints.MinWidth = 123
@@ -23,7 +23,7 @@ object fraWayPoint: TfraWayPoint
     object APHeadLabel1: TLabel
       Left = 1
       Top = 1
-      Width = 441
+      Width = 121
       Height = 13
       Align = alTop
       Alignment = taCenter
@@ -71,7 +71,7 @@ object fraWayPoint: TfraWayPoint
       Font.Style = []
       ParentFont = False
     end
-    object ebAddLinks: TExtBtn
+    object ebAdd1Link: TExtBtn
       Left = 2
       Top = 40
       Width = 120
@@ -81,14 +81,15 @@ object fraWayPoint: TfraWayPoint
       HotTrack = True
       HotColor = 15790320
       CloseButton = False
-      Caption = 'Make Link'
+      Caption = 'Make 1-Link'
       Font.Charset = DEFAULT_CHARSET
       Font.Color = clWindowText
       Font.Height = -11
       Font.Name = 'MS Sans Serif'
       Font.Style = []
       ParentFont = False
-      OnClick = ebAddLinksClick
+      FlatAlwaysEdge = True
+      OnClick = ebAdd1LinksClick
     end
     object Bevel1: TBevel
       Left = 2
@@ -98,7 +99,7 @@ object fraWayPoint: TfraWayPoint
     end
     object ebRemoveLinks: TExtBtn
       Left = 2
-      Top = 55
+      Top = 71
       Width = 120
       Height = 15
       Align = alNone
@@ -113,7 +114,28 @@ object fraWayPoint: TfraWayPoint
       Font.Name = 'MS Sans Serif'
       Font.Style = []
       ParentFont = False
+      FlatAlwaysEdge = True
       OnClick = ebRemoveLinksClick
+    end
+    object ebAdd2Link: TExtBtn
+      Left = 2
+      Top = 55
+      Width = 120
+      Height = 15
+      Align = alNone
+      BevelShow = False
+      HotTrack = True
+      HotColor = 15790320
+      CloseButton = False
+      Caption = 'Make 2-Link'
+      Font.Charset = DEFAULT_CHARSET
+      Font.Color = clWindowText
+      Font.Height = -11
+      Font.Name = 'MS Sans Serif'
+      Font.Style = []
+      ParentFont = False
+      FlatAlwaysEdge = True
+      OnClick = ebAdd2LinkClick
     end
   end
   object fsStorage: TFormStorage

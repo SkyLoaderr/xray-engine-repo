@@ -82,7 +82,7 @@ void CWayPoint::DrawLinks(Fcolor& c)
     for (ObjectIt o_it=m_Links.begin(); o_it!=m_Links.end(); o_it++){
     	CWayPoint* O = (CWayPoint*)(*o_it);
 	    p2.set	(O->PPosition.x,O->PPosition.y+WAYPOINT_SIZE*0.85f,O->PPosition.z);
-    	DU::DrawLine(p1,p2,c.get());
+    	DU::DrawLink(p1,p2,0.25f,c.get());
     }
 }
 //----------------------------------------------------
@@ -203,7 +203,19 @@ void CWayPoint::AppendLink(CWayPoint* P)
 }
 //----------------------------------------------------
 
-bool CWayPoint::AddLink(CWayPoint* P)
+bool CWayPoint::AddSingleLink(CWayPoint* P)
+{
+	if (find(m_Links.begin(),m_Links.end(),P)==m_Links.end()){
+    	AppendLink(P);
+        SetPathName(P->GetPathName(),true);
+        UI.RedrawScene();
+    	return true;
+    }
+	return false;
+}
+//----------------------------------------------------
+
+bool CWayPoint::AddDoubleLink(CWayPoint* P)
 {
 	if (find(m_Links.begin(),m_Links.end(),P)==m_Links.end()){
     	AppendLink(P);

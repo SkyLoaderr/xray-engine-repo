@@ -98,7 +98,8 @@
       intermediate\UI_GroupTools.obj intermediate\FrameGroup.obj 
       intermediate\Blender_Shadow_Texture.obj intermediate\PropertiesGroup.obj 
       intermediate\FrameEvent.obj intermediate\Blender_Shadow_World.obj 
-      intermediate\TextForm.obj intermediate\PropertiesWayPoint.obj"/>
+      intermediate\TextForm.obj intermediate\PropertiesWayPoint.obj 
+      intermediate\CustomObjectLE.obj"/>
     <RESFILES value="LevelEditor.res resource.res"/>
     <IDLFILES value=""/>
     <IDLGENFILES value=""/>

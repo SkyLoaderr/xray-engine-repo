@@ -41,7 +41,8 @@ public:
 	virtual void 	OnDestroy		();
 	virtual void 	OnSynchronize	();
 
-    bool			AddLink			(CWayPoint* P);
+    bool			AddSingleLink	(CWayPoint* P);
+    bool			AddDoubleLink	(CWayPoint* P);
     bool			RemoveLink		(CWayPoint* P);
     LPCSTR			GetPathName		(){return m_PathName.c_str();}
     void			SetPathName     (LPCSTR name, bool bOnlyThis=false);

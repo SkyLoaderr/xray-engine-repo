@@ -3,6 +3,9 @@
 #include "scene.h"
 #include "sceneobject.h"
 #include "GroupObject.h"
+#include "UI_Main.h"
+#include "topbar.h"
+#include "editorpref.h"
 
 void CCustomObject::RemoveFromGroup()
 {

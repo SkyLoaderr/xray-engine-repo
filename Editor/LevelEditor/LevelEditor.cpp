@@ -213,6 +213,7 @@ USEFORM("FrameEvent.cpp", fraEvent); /* TFrame: File Type */
 USEUNIT("Engine\Blenders\Blender_Shadow_World.cpp");
 USEFORM("TextForm.cpp", frmText);
 USEFORM("PropertiesWayPoint.cpp", frmPropertiesWayPoint);
+USEUNIT("edit\CustomObjectLE.cpp");
 //---------------------------------------------------------------------------
 #include "main.h"
 #include "splash.h"

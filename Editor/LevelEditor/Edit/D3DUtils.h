@@ -22,6 +22,7 @@ namespace DU{
     void DrawLineSphere(const Fvector& p, float radius, DWORD clr, bool bCross);
     void DrawLine(const Fvector& p1,	const Fvector& p2, DWORD clr);
     IC void DrawLine(const Fvector* p, DWORD clr){DrawLine(p[0],p[1],clr);}
+    void DrawLink(const Fvector& p1, const Fvector& p2, float sz, DWORD clr);
     IC void DrawFaceNormal(const Fvector& p1, const Fvector& p2, const Fvector& p3, float size, DWORD clr){
         Fvector N,C,P; N.mknormal(p1,p2,p3); C.set(p1);C.add(p2);C.add(p3);C.div(3);
         P.mad(C,N,size);

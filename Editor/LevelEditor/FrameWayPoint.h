@@ -23,14 +23,16 @@ __published:	// IDE-managed Components
 	TLabel *APHeadLabel1;
 	TExtBtn *ExtBtn2;
 	TExtBtn *ebAutoLink;
-	TExtBtn *ebAddLinks;
+	TExtBtn *ebAdd1Link;
 	TBevel *Bevel1;
 	TExtBtn *ebRemoveLinks;
 	TFormStorage *fsStorage;
+	TExtBtn *ebAdd2Link;
     void __fastcall PanelMinClick(TObject *Sender);
     void __fastcall ExpandClick(TObject *Sender);
-	void __fastcall ebAddLinksClick(TObject *Sender);
+	void __fastcall ebAdd1LinksClick(TObject *Sender);
 	void __fastcall ebRemoveLinksClick(TObject *Sender);
+	void __fastcall ebAdd2LinkClick(TObject *Sender);
 private:	// User declarations
 public:		// User declarations
 	__fastcall TfraWayPoint(TComponent* Owner);

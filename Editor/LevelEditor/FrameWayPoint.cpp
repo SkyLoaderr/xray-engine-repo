@@ -29,7 +29,7 @@ void __fastcall TfraWayPoint::ExpandClick(TObject *Sender)
 }
 //---------------------------------------------------------------------------
 
-void __fastcall TfraWayPoint::ebAddLinksClick(TObject *Sender)
+void __fastcall TfraWayPoint::ebAdd1LinksClick(TObject *Sender)
 {
 	int cnt=0;
 	ObjectList objset;
@@ -42,7 +42,28 @@ void __fastcall TfraWayPoint::ebAddLinksClick(TObject *Sender)
             ObjectIt _B=_A; _B++;
             for (; _B!=_B1; _B++){
 	        	CWayPoint* B = (CWayPoint*)(*_B);
-        		if (A->AddLink(B)) cnt++;
+        		if (A->AddSingleLink(B)) cnt++;
+            }
+        }
+    }
+    if (cnt) Scene.UndoSave();
+}
+//---------------------------------------------------------------------------
+
+void __fastcall TfraWayPoint::ebAdd2LinkClick(TObject *Sender)
+{
+	int cnt=0;
+	ObjectList objset;
+	if (Scene.GetQueryObjects(objset, OBJCLASS_WAYPOINT, 1, 1, 0)){
+    	ObjectIt _A0=objset.begin();
+    	ObjectIt _A1=objset.end(); _A1--;
+    	ObjectIt _B1=objset.end();
+		for (ObjectIt _A=_A0; _A!=_A1; _A++){
+        	CWayPoint* A = (CWayPoint*)(*_A);
+            ObjectIt _B=_A; _B++;
+            for (; _B!=_B1; _B++){
+	        	CWayPoint* B = (CWayPoint*)(*_B);
+        		if (A->AddDoubleLink(B)) cnt++;
             }
         }
     }
@@ -70,4 +91,5 @@ void __fastcall TfraWayPoint::ebRemoveLinksClick(TObject *Sender)
     if (cnt) Scene.UndoSave();
 }
 //---------------------------------------------------------------------------
+
 
