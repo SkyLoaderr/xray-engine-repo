@@ -561,7 +561,7 @@ bool CUIMainIngameWnd::OnKeyboardPress(int dik)
 		CWeaponHUD *pWpnHud = NULL;
 		if (m_pWeapon)
 		{
-			CWeaponHUD *pWpnHud = m_pWeapon->GetHUD();
+			pWpnHud = m_pWeapon->GetHUD();
 			if (!pWpnHud) return false;
 		}
 
