@@ -314,10 +314,8 @@ void CWeaponManager::update(const MonsterSpace::EObjectAction &weapon_state)
 	if (tpWeaponMagazined) {
 		dwStartFireAmmo = tpWeaponMagazined->GetAmmoElapsed();
 		if ((!dwStartFireAmmo) && (CWeapon::eReload != tpWeapon->STATE))
-			if (tpWeaponMagazined->IsAmmoAvailable()) {
-				stalker->m_inventory.Action(kWPN_FIRE,	CMD_START);
-				stalker->m_inventory.Action(kWPN_FIRE,	CMD_STOP);
-			}
+			if (tpWeaponMagazined->IsAmmoAvailable())
+				stalker->m_inventory.Action(kWPN_RELOAD,	CMD_START);
 			else
 				if ((CWeapon::eHidden != tpWeapon->STATE) && (CWeapon::eHiding != tpWeapon->STATE)) {
 					if (tpWeaponMagazined->STATE == CWeapon::eFire)
@@ -338,6 +336,13 @@ void CWeaponManager::update(const MonsterSpace::EObjectAction &weapon_state)
 	}
 
 	bool bFiring = (tpWeapon->STATE == CWeapon::eFire) || (tpWeapon->STATE == CWeapon::eFire2);
+
+	if (tpWeapon && (tpWeapon->STATE != CWeapon::eIdle)) {
+		CStalkerMovementManager	*stalker_movement_manager = dynamic_cast<CStalkerMovementManager*>(this);
+		if (stalker_movement_manager && (stalker_movement_manager->mental_state() == eMentalStateFree))
+			stalker_movement_manager->set_mental_state(eMentalStateDanger);
+	}
+
 
 	CGroup &Group = *stalker->getGroup();
 	if ((bSafeFire) && (!bFiring))

@@ -199,7 +199,7 @@ protected:
 	void					ShaderDestroy		(ref_shader&	dest);
 
 public:
-	enum EState
+	enum	
 	{
 		eIdle		= 0,
 		eFire,

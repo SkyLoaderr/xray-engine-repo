@@ -151,6 +151,7 @@ public:
 	IC		const CMovementManager::SBoneRotation	&head_orientation	() const;
 	IC		const MonsterSpace::EMovementType		movement_type		() const;
 	IC		const MonsterSpace::EMentalState		mental_state		() const;
+	IC		void									set_mental_state	(const MonsterSpace::EMentalState mental_state);
 	IC		const MonsterSpace::EBodyState			body_state			() const;
 };
 

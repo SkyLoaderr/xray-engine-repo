@@ -32,3 +32,9 @@ IC	const MonsterSpace::EBodyState CStalkerMovementManager::body_state() const
 {
 	return				(m_tBodyState);
 }
+
+IC	void CStalkerMovementManager::set_mental_state	(const MonsterSpace::EMentalState mental_state)
+{
+	m_tMentalState		= mental_state;
+}
+
