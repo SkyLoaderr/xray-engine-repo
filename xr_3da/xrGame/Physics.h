@@ -300,6 +300,7 @@ vs_global
 struct SPHAxis {
 float high;
 float low;
+float zero;
 float erp;
 float cfm;
 eVs   vs;
@@ -311,6 +312,7 @@ IC void set_param(const float e,const float c){erp=e;cfm=c;}
 SPHAxis(){
 	high=M_PI/15.f;
 	low=-M_PI/15.f;;
+	zero=0.f;
 	//erp=ERP(world_spring/5.f,world_damping*5.f);
 	//cfm=CFM(world_spring/5.f,world_damping*5.f);
 	erp=0.8f;
