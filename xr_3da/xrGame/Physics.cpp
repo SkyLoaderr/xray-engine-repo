@@ -295,7 +295,7 @@ void __stdcall ContactShotMark(CDB::TRI* T,dContactGeom* c)
 				if(vel_cret>30.f && !mtl_pair->CollideMarks.empty())
 				{
 
-					ref_shader pWallmarkShader = mtl_pair->CollideMarks[::Random.randI(0,mtl_pair->CollideMarks.size())];;
+					ref_shader pWallmarkShader = mtl_pair->CollideMarks[::Random.randI(0,mtl_pair->CollideMarks.size())];
 
 					//добавить отметку на материале
 					::Render->add_Wallmark(pWallmarkShader, *((Fvector*)c->pos), 
@@ -317,17 +317,13 @@ void __stdcall ContactShotMark(CDB::TRI* T,dContactGeom* c)
 					mtl  = GMLib.GetMaterialByID(mtl_pair->GetMtl0());
 					mtl1 = GMLib.GetMaterialByID(mtl_pair->GetMtl1());
 
-					int a = 0;
-					a++;
+					if(!mtl_pair->CollideSounds.empty())
+					{
+						::Sound->play_at_pos(
+							SELECT_RANDOM1(mtl_pair->CollideSounds) ,0,*((Fvector*)c->pos)
+							);
+					}
 				}
-
-				if(vel_cret>10.0f && !mtl_pair->CollideSounds.empty())
-				{
-					::Sound->play_at_pos(
-						SELECT_RANDOM1(mtl_pair->CollideSounds) ,0,*((Fvector*)c->pos)
-						);
-				}
-
 
 
 				if(vel_cret>15.f && !mtl_pair->CollideParticles.empty())
