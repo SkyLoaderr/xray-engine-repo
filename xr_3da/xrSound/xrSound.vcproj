@@ -120,9 +120,6 @@
 			Name="Kernel"
 			Filter="">
 			<File
-				RelativePath="FTimer.h">
-			</File>
-			<File
 				RelativePath="Sound.h">
 			</File>
 			<File
