@@ -3,23 +3,18 @@
 
 vec2Face		g_XSplit;
 
-IC		BOOL	FaceEqual	(Face* F1, Face* F2)
-{
-	if (F1->dwMaterial != F2->dwMaterial)	return FALSE;
-	return TRUE;
-}
-
 extern void		Detach		(vecFace* S);
+
+struct _counter
+{
+	WORD	dwMaterial;
+	DWORD	dwCount;
+};
 
 void	CBuild::xrPhase_ResolveMaterials()
 {
 	// Count number of materials
 	Status		("Calculating materials/subdivs...");
-	struct _counter
-	{
-		WORD	dwMaterial;
-		DWORD	dwCount;
-	};
 	vector<_counter>	counts;
 	{
 		counts.reserve		(256);
