@@ -1348,7 +1348,7 @@ HRESULT CMyD3DApplication::RenderLight_Direct_smap	()
 
 	if (1)
 	{
-		cc.set									(s_Light_Direct_smap.constants.get("light_color"),		1.8f,		1.8f,		2.,			1.7);
+		cc.set									(s_Light_Direct_smap.constants.get("light_color"),		.8f,		.8f,		1.,			.7);
 
 		Fvector4 J; float scale					= (3.f / SHADOW_MAP_SIZE)/11.f;
 		J.set(11, 0,  0);		J.sub(11); J.mul(scale);	cc.seta	(C,0,J.x,J.y,-J.y,-J.x);
