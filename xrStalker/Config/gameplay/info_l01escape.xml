@@ -136,6 +136,7 @@
 	</info_portion>
 	<info_portion id="escape_artefact_done">
 		<disable>escape_artefact_start</disable>
+		<disable>escape_artefact_gain</disable>
 	</info_portion>
 
 	
