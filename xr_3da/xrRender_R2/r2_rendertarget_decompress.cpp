@@ -75,17 +75,17 @@ void	CRenderTarget::phase_decompress		()
 		RCache.set_Geometry			(g_decompress);
 		
 		// Decompress
-		if (RImplementation.b_decompress_2pass)
+		if (RImplementation.b_mrt)
 		{
+			u_setrt						(rt_Position,rt_Normal,NULL,HW.pBaseZB);
+			RCache.set_Shader			(s_decompress);
+			RCache.Render				(D3DPT_TRIANGLELIST,Offset,0,4,0,2);
+		} else {
 			u_setrt						(rt_Position,	NULL,NULL,HW.pBaseZB);
 			RCache.set_Element			(s_decompress->E[1]);
 			RCache.Render				(D3DPT_TRIANGLELIST,Offset,0,4,0,2);
 			u_setrt						(rt_Normal,		NULL,NULL,HW.pBaseZB);
 			RCache.set_Element			(s_decompress->E[2]);
-			RCache.Render				(D3DPT_TRIANGLELIST,Offset,0,4,0,2);
-		} else {
-			u_setrt						(rt_Position,rt_Normal,NULL,HW.pBaseZB);
-			RCache.set_Shader			(s_decompress);
 			RCache.Render				(D3DPT_TRIANGLELIST,Offset,0,4,0,2);
 		}
 	}
