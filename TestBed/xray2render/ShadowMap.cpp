@@ -364,20 +364,6 @@ HRESULT CMyD3DApplication::InitDeviceObjects()
 		inputAtts.push_back(texCoordAtt);
 
 		// Specify the requested output
-		NVMeshMender::VAVector			output;
-		NVMeshMender::VertexAttribute	att;
-		att.Name_ = “position”;
-		output.push_back(att);
-		att.Name_ = “tex0”;
-		output.push_back(att);
-		att.Name_ = “normal”;
-		output.push_back(att);
-		att.Name_ = “tangent”;
-		output.push_back(att);
-		att.Name_ = “binormal”;
-		output.push_back(att);
-
-		// Fill in output list
 		std::vector<NVMeshMender::VertexAttribute> outputAtts;
 		unsigned int n = 0;
 		outputAtts.push_back(positionAtt); ++n;
