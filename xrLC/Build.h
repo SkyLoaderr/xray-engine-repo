@@ -85,6 +85,7 @@ public:
 	void	mem_Compact				();
 	void	mem_CompactSubdivs		();
 public:
+	void	Load					(const b_params& P, const CStream&  FS);
 	void	Run						(string& path);
 
 	void	PreOptimize				();
@@ -113,7 +114,7 @@ public:
 	void	SaveTREE				(CFS_Base &fs);
 	void	SaveSectors				(CFS_Base &fs);
 
-	CBuild	(const b_params& P, const CStream&  FS);
+	CBuild	();
 	~CBuild	();
 };
 

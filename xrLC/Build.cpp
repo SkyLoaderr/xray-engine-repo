@@ -30,7 +30,11 @@ void transfer(const char *name, vector<T> &dest, CStream& F, u32 chunk)
 extern u32*		Surface_Load	(char* name, u32& w, u32& h);
 extern void		Surface_Init	();
 
-CBuild::CBuild	(const b_params& Params, const CStream& _in_FS)
+CBuild::CBuild()
+{
+}
+
+void CBuild::Load	(const b_params& Params, const CStream& _in_FS)
 {
 	CStream&	FS	= const_cast<CStream&>(_in_FS);
 	// HANDLE		hLargeHeap	= HeapCreate(0,64*1024*1024,0);

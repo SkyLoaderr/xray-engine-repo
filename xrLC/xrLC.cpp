@@ -108,7 +108,8 @@ void Startup(LPSTR     lpCmdLine)
 	
 	// Conversion
 	Phase					("Converting data structures...");
-	pBuild					= xr_new<CBuild> (Params,FS);
+	pBuild					= xr_new<CBuild>();
+	pBuild->Load			(Params,FS);
 	xr_delete				(F);
 	
 	// Call for builder
