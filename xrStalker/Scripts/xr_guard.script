@@ -403,12 +403,12 @@ function set_guard(object, enable, path_main, path_hideout, running, search_ligh
 		if running == nil then
 		    	if char_ini:section_exist ("guard") == true then
 	        		if char_ini:line_exist("guard", "running") == true then
-		        	        st.running = char_ini:r_string("guard", "running")
+		        	        st.running = char_ini:r_bool("guard", "running")
 	        		else
-		        	    	st.running = st.path_main
+		        	    	st.running = false
 			        end
 			else
-				st.running = st.path_main
+				st.running = false
 			end
 		else
 			st.running = running
