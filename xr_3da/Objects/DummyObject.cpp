@@ -114,7 +114,10 @@ void CDummyObject::UpdateCL		()
 		mRotate.set				(s_animator->GetRotate());
 		vPosition.set			(s_animator->GetPosition());
 		UpdateTransform			();
-		if (style&esAnimated)	svTransform.mulB_43	(relation);
+		if (style&esRelativePosition){
+			R_ASSERT2(0,"CDummyObject: Relative position error.");
+			svTransform.mulB_43	(relation);
+		}
 	}
 	clTransform.set				(svTransform);
 
