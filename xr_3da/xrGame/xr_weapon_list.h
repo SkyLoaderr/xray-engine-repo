@@ -19,10 +19,11 @@ private:
 	WeaponVec		m_Weapons;
 	int				m_iActiveWeapon;	// Current active weapon
 	int				m_iSelectedWeapon;	// Candidate for change to
+	BOOL			m_bZoomed;
 	
 	CWeapon*		LoadOne				(CLASS_ID cls);
 	int				FindWeapon			(CLASS_ID cls);
-	bool 			WeaponChange		(int idx);
+	BOOL 			WeaponChange		(int idx);
 
 public:
 	int				m_iHUDboneL, m_iHUDboneR;
@@ -34,12 +35,14 @@ public:
 
 	void			Init				(LPSTR act_bone_r, LPSTR act_bone_l);
 
-	bool			ActivateWeaponPrev	(bool ignore_empty_weapon=true);
-	bool			ActivateWeaponNext	(bool ignore_empty_weapon=true);
-	bool			ActivateWeapon		(CLASS_ID cls);
-	bool			ActivateWeaponID	(int id);
+	BOOL			ActivateWeaponPrev	(BOOL ignore_empty_weapon=true);
+	BOOL			ActivateWeaponNext	(BOOL ignore_empty_weapon=true);
+	BOOL			ActivateWeapon		(CLASS_ID cls);
+	BOOL			ActivateWeaponID	(int id);
+	void			Zoom				(BOOL bZoom);
+	IC BOOL			isZoomed			()	{ return m_bZoomed; }
 
-	bool			TakeItem			(CLASS_ID cls, int iAmmoCount);
+	BOOL			TakeItem			(CLASS_ID cls, int iAmmoCount);
 	void			LeaveWeapon			(CLASS_ID cls);
 
 	void			FireStart			();
@@ -49,8 +52,8 @@ public:
 
 	void			Reset				(){;}
 
-	void			Update				(float dt, bool bHUDView);
-	void			OnRender			(bool bHUDView);
+	void			Update				(float dt, BOOL bHUDView);
+	void			OnRender			(BOOL bHUDView);
 
 	IC CWeapon*		ActiveWeapon		()	{ return (m_iActiveWeapon==-1)?0:m_Weapons[m_iActiveWeapon]; }
 	IC	int			ActiveWeaponID		()	{ return m_iActiveWeapon;	}

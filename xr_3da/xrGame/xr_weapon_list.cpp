@@ -15,13 +15,13 @@ class fClassEQ {
 	CLASS_ID cls;
 public:
 	fClassEQ(CLASS_ID C) : cls(C) {};
-	IC bool operator() (CWeapon* W) { return cls==W->SUB_CLS_ID; }
+	IC BOOL operator() (CWeapon* W) { return cls==W->SUB_CLS_ID; }
 };
 
 //--------------------------------------------------------------------------
 CWeaponList::CWeaponList	(CEntity* p)
 {
-	m_pParent		= p;
+	m_pParent			= p;
 	R_ASSERT(m_pParent->Visual()->Type==MT_SKELETON);
 
 	m_iActiveWeapon		= -1;
@@ -30,6 +30,7 @@ CWeaponList::CWeaponList	(CEntity* p)
 	m_iHUDboneR			= -1;
 	m_iACTboneL			= -1;
 	m_iACTboneR			= -1;
+	m_bZoomed			= FALSE;
 }
 
 CWeaponList::~CWeaponList	( )
@@ -49,8 +50,6 @@ void CWeaponList::Init(LPSTR act_bone_r, LPSTR act_bone_l)
 	m_iHUDboneL		= -1;
 	m_iHUDboneR		= -1;
 	PKinematics V	= PKinematics(m_pParent->Visual());
-//	m_iACTboneL		= V->LL_BoneID(ACT_BONE_NAME_L);
-//	m_iACTboneR		= V->LL_BoneID(ACT_BONE_NAME_R);
 	m_iACTboneL		= V->LL_BoneID(act_bone_l);
 	m_iACTboneR		= V->LL_BoneID(act_bone_r);
 }
@@ -74,7 +73,7 @@ BOOL CWeaponList::isWorking()
 	return W->IsWorking();
 }
 
-bool CWeaponList::WeaponChange(int idx)
+BOOL CWeaponList::WeaponChange(int idx)
 {
 	// Analyze desired ID
 	if (idx==m_iActiveWeapon)											return false;
@@ -85,10 +84,11 @@ bool CWeaponList::WeaponChange(int idx)
 
 	// Select new
 	m_iSelectedWeapon	= idx;
+	Zoom				(FALSE);
 	return true;
 }
 
-bool CWeaponList::ActivateWeaponNext(bool ignore)
+BOOL CWeaponList::ActivateWeaponNext(BOOL ignore)
 {
 	if (m_Weapons.size()>1){
 		int wpn_count=m_Weapons.size();
@@ -109,7 +109,7 @@ int	CWeaponList::FindWeapon(CLASS_ID cls)
 	return -1;
 }
 
-bool CWeaponList::ActivateWeapon(CLASS_ID cls)
+BOOL CWeaponList::ActivateWeapon(CLASS_ID cls)
 {
 	if (!m_Weapons.empty()){
 		int idx = FindWeapon(cls);
@@ -119,9 +119,19 @@ bool CWeaponList::ActivateWeapon(CLASS_ID cls)
 	}
 	return false;
 }
-bool CWeaponList::ActivateWeaponID(int id)
+BOOL CWeaponList::ActivateWeaponID(int id)
 {
 	return WeaponChange(id);
+}
+
+void CWeaponList::Zoom(BOOL bZoom)
+{
+	if (bZoom)	{
+		CWeapon*	W = ActiveWeapon();
+		if (W && W->HasOpticalAim())	m_bZoomed = TRUE;
+	} else {
+		m_bZoomed	= FALSE;
+	}
 }
 
 CWeapon* CWeaponList::LoadOne( CLASS_ID cls )
@@ -156,9 +166,9 @@ CWeapon* CWeaponList::LoadOne( CLASS_ID cls )
 	return pWeapon;
 }
 
-bool CWeaponList::TakeItem(CLASS_ID cls, int iAmmoCount){
+BOOL CWeaponList::TakeItem(CLASS_ID cls, int iAmmoCount){
 	int idx = -1;
-	bool bTakeWeapon = false;
+	BOOL bTakeWeapon = false;
 	switch (cls){
 	case CLSID_OBJECT_A_M134:		idx = FindWeapon(CLSID_OBJECT_W_M134);		break;
 	case CLSID_OBJECT_A_GROZA:		idx = FindWeapon(CLSID_OBJECT_W_GROZA);		break;
@@ -198,7 +208,7 @@ void CWeaponList::LeaveWeapon(CLASS_ID cls)
 */
 }
 
-void CWeaponList::Update(float dt, bool bHUDView)
+void CWeaponList::Update(float dt, BOOL bHUDView)
 {
 	// Update all needed weapons
 	for (DWORD it=0; it<m_Weapons.size(); it++)
@@ -215,7 +225,7 @@ void CWeaponList::Update(float dt, bool bHUDView)
 	}
 }
 
-void CWeaponList::OnRender(bool bHUDView)
+void CWeaponList::OnRender(BOOL bHUDView)
 {
 	if (m_iActiveWeapon==-1) return;
 	m_Weapons[m_iActiveWeapon]->Render(bHUDView);
