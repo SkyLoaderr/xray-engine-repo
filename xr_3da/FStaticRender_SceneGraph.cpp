@@ -52,10 +52,12 @@ void CRender::InsertSG_Static(FBasicVisual *pVisual)
 
 		if (SSA<=ssaLIMIT)	return;
 
-		// 
+		/*
 		Fvector		__c,__r;
 		pVisual->bv_BBox.get_CD			(__c,__r);
+		Device.Shader.OnFrameEnd		();
 		Device.Primitive.dbg_DrawAABB	(__c,__r.x,__r.y,__r.z,0xffffffff);
+		*/
 
 		// Select List and add to it
 		Shader*		sh	= pVisual->hShader;
