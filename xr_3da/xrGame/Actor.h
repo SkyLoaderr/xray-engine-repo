@@ -251,7 +251,7 @@ public:
 	// Cameras and effectors
 	//////////////////////////////////////////////////////////////////////////
 public:
-	CActorEffector&			EffectorManager		() 	{return *m_pActorEffector;}
+	CActorEffector&			EffectorManager		() 	{VERIFY(m_pActorEffector); return *m_pActorEffector;}
 	IC CCameraBase*			cam_Active			()	{return cameras[cam_active];}
 protected:
 	void					cam_Set					(EActorCameras style);
