@@ -5,8 +5,8 @@
 class CLAItem;
 
 class CTorch :
-	public CInventoryItem,
-	public CPHShellSimpleCreator
+	public CInventoryItem
+	///public CPHShellSimpleCreator
 {
 typedef	CInventoryItem	inherited;
 	float			fBrightness;
