@@ -9,8 +9,8 @@
 #include "EditorPref.h"
 #include "main.h"
 #include "UI_Tools.h"
-#include "PropertiesShader.h"
 #include "Library.h"
+#include "PSLibrary.h"
 #include "D3DUtils.h"
 
 #include "UI_Main.h"
@@ -25,6 +25,7 @@ bool TUI::Command( int _Command, int p1, int p2 ){
 		FS.OnCreate			();
 		InitMath			();
         if (UI.OnCreate()){
+            PSLib.OnCreate	();
             Tools.OnCreate	();
             Lib.OnCreate	();
 
@@ -36,6 +37,7 @@ bool TUI::Command( int _Command, int p1, int p2 ){
         }
     	}break;
 	case COMMAND_DESTROY:
+		PSLib.OnDestroy	();
 		Lib.OnDestroy	();
 		Tools.OnDestroy	();
         UI.OnDestroy	();
@@ -47,20 +49,13 @@ bool TUI::Command( int _Command, int p1, int p2 ){
 	    frmEditorPreferences->ShowModal();
         break;
 	case COMMAND_SAVE:
-    	Tools.Engine.Save();
-    	Tools.Compiler.Save();
+    	Tools.Save();
 		Command(COMMAND_UPDATE_CAPTION);
     	break;
     case COMMAND_RELOAD:
-    	if (Tools.ActiveEditor()==aeEngine){
-	    	if (!Tools.Engine.IfModified()) return false;
-            if (ELog.DlgMsg(mtConfirmation,"Reload shaders?")==mrYes)
-                Tools.Engine.Reload();
-    	}else if (Tools.ActiveEditor()==aeCompiler){
-	    	if (!Tools.Compiler.IfModified()) return false;
-            if (ELog.DlgMsg(mtConfirmation,"Reload shaders?")==mrYes)
-                Tools.Compiler.Reload();
-        }
+		if (!Tools.IfModified()) return false;
+        if (ELog.DlgMsg(mtConfirmation,"Reload library?")==mrYes)
+        	Tools.Reload();
 		Command(COMMAND_UPDATE_CAPTION);
     	break;
 	case COMMAND_CLEAR:
@@ -90,15 +85,11 @@ bool TUI::Command( int _Command, int p1, int p2 ){
     	break;
 	case COMMAND_RESET_ANIMATION:
    		break;
-    case COMMAND_SHADER_PROPERTIES:
-    	TfrmShaderProperties::ShowProperties();
-    	break;
     case COMMAND_SELECT_PREVIEW_OBJ:
 		Tools.SelectPreviewObject(p1);
     	break;
     case COMMAND_APPLY_CHANGES:
-    	if (Tools.ActiveEditor()==aeEngine)		Tools.Engine.ApplyChanges();
-    	else if (Tools.ActiveEditor()==aeCompiler)Tools.Compiler.ApplyChanges();
+    	Tools.ApplyChanges();
     	break;
 	case COMMAND_UPDATE_GRID:
     	DU::UpdateGrid(frmEditorPreferences->seGridNumberOfCells->Value,frmEditorPreferences->seGridSquareSize->Value);
@@ -156,4 +147,13 @@ void __fastcall TUI::ApplyGlobalShortCut(WORD Key, TShiftState Shift)
     if (Key==VK_OEM_3)		  		Command(COMMAND_RENDER_FOCUS);
 }
 //---------------------------------------------------------------------------
+char* TUI::GetCaption()
+{
+ 	return "particles.xr";
+}
+char* TUI::GetTitle()
+{
+	return "Particle Editor";
+}
+
 

@@ -156,4 +156,13 @@ void __fastcall TUI::ApplyGlobalShortCut(WORD Key, TShiftState Shift)
     if (Key==VK_OEM_3)		  		Command(COMMAND_RENDER_FOCUS);
 }
 //---------------------------------------------------------------------------
+char* TUI::GetCaption()
+{
+ 	return "shaders";
+}
+char* TUI::GetTitle()
+{
+	return "Shader Editor";
+}
+
 

@@ -8,73 +8,82 @@
 #include "ChoseForm.h"
 #include "ui_main.h"
 #include "leftbar.h"
-#include "PropertiesShader.h"
+#include "PSObject.h"
+#include "PSLibrary.h"
+#include "PropertiesPSDef.h"
+#include "xr_trims.h"
 
 //------------------------------------------------------------------------------
-CShaderTools Tools;
+CParticleTools Tools;
 //------------------------------------------------------------------------------
 
-CShaderTools::CShaderTools()
+CParticleTools::CParticleTools()
 {
-	m_EditObject 		= 0;
+	m_TestObject 		= 0;
+    m_LibPS				= 0;
+    m_PSProps			= 0;
+    m_bModified			= false;
 }
 //---------------------------------------------------------------------------
 
-CShaderTools::~CShaderTools()
+CParticleTools::~CParticleTools()
 {
 }
 //---------------------------------------------------------------------------
 
-void CShaderTools::OnChangeEditor()
-{
-    TfrmShaderProperties::InitProperties();
-}
-//---------------------------------------------------------------------------
-
-EActiveEditor CShaderTools::ActiveEditor()
-{
-	if (fraLeftBar->pcShaders->ActivePage==fraLeftBar->tsEngine) return aeEngine;
-	else if (fraLeftBar->pcShaders->ActivePage==fraLeftBar->tsCompiler)	return aeCompiler;
-    return -1;
-}
-//---------------------------------------------------------------------------
-
-void CShaderTools::Modified(){
-    switch (ActiveEditor()){
-    case aeEngine: 		Engine.Modified(); 		break;
-    case aeCompiler: 	Compiler.Modified(); 	break;
-    }
-}
-//---------------------------------------------------------------------------
-
-void CShaderTools::OnCreate(){
+void CParticleTools::OnCreate(){
     Device.seqDevCreate.Add(this);
     Device.seqDevDestroy.Add(this);
-	Engine.OnCreate();
-    Compiler.OnCreate();
+    m_PSProps = new TfrmPropertiesPSDef(fraLeftBar->paPSProps);
+	m_PSProps->Parent = fraLeftBar->paPSProps;
+    m_PSProps->Align = alClient;
+    m_PSProps->BorderStyle = bsNone;
+    m_PSProps->ShowProperties();
+    Load();
+	m_PSProps->SetCurrent(0);
 }
 
-void CShaderTools::OnDestroy(){
-	m_EditObject = 0;
+void CParticleTools::OnDestroy(){
+	m_TestObject 		= 0;
+    m_LibPS				= 0;
+    m_PSProps->HideProperties();
     Device.seqDevCreate.Remove(this);
     Device.seqDevDestroy.Remove(this);
-	Engine.OnDestroy();
-    Compiler.OnDestroy();
+}
+//---------------------------------------------------------------------------
+
+bool CParticleTools::IfModified(){
+    if (m_bModified){
+        int mr = ELog.DlgMsg(mtConfirmation, "The particles has been modified.\nDo you want to save your changes?");
+        switch(mr){
+        case mrYes: if (!UI.Command(COMMAND_SAVE)) return false; else m_bModified = FALSE; break;
+        case mrNo: m_bModified = FALSE; break;
+        case mrCancel: return false;
+        }
+    }
+    return true;
 }
 
-void CShaderTools::Render(){
-	if (m_EditObject)
-    	m_EditObject->RenderSingle(precalc_identity);
+void CParticleTools::Modified(){
+	m_bModified = true;
+}
+//---------------------------------------------------------------------------
+
+void CParticleTools::Render(){
+	if (m_TestObject)
+    	m_TestObject->RenderSingle();
 }
 
-void CShaderTools::Update(){
-	if (m_EditObject)
-    	m_EditObject->RTL_Update(Device.fTimeDelta);
+void CParticleTools::Update(){
+	if (m_TestObject)
+    	m_TestObject->RTL_Update(Device.fTimeDelta);
 }
 
-void CShaderTools::ZoomObject(){
-	if (m_EditObject){
-        Device.m_Camera.ZoomExtents(m_EditObject->GetBox());
+void CParticleTools::ZoomObject(){
+	if (m_TestObject){
+		Fbox BB;
+        m_TestObject->GetBox(BB);
+        Device.m_Camera.ZoomExtents(BB);
     }else{
 		Fbox BB;
         BB.set(-5,-5,-5,5,5,5);
@@ -82,7 +91,7 @@ void CShaderTools::ZoomObject(){
     }
 }
 
-void CShaderTools::OnDeviceCreate(){
+void CParticleTools::OnDeviceCreate(){
     // add directional light
     Flight L;
     ZeroMemory(&L,sizeof(Flight));
@@ -113,11 +122,11 @@ void CShaderTools::OnDeviceCreate(){
 	Device.LightEnable(4,true);
 }
 
-void CShaderTools::OnDeviceDestroy(){
+void CParticleTools::OnDeviceDestroy(){
 }
 
-void CShaderTools::SelectPreviewObject(int p){
-    LPCSTR fn;
+void CParticleTools::SelectPreviewObject(int p){
+/*    LPCSTR fn;
     switch(p){
         case 0: fn="editor\\ShaderTest_Plane"; 	break;
         case 1: fn="editor\\ShaderTest_Box"; 	break;
@@ -131,11 +140,98 @@ void CShaderTools::SelectPreviewObject(int p){
         ELog.DlgMsg(mtError,"Object '%s.object' can't find in object library. Preview disabled.",fn);
 	ZoomObject();
     UI.RedrawScene();
+*/
 }
 
-void CShaderTools::ResetPreviewObject(){
-    m_EditObject 	= 0;
+void CParticleTools::ResetPreviewObject(){
+    m_LibPS 	= 0;
     UI.RedrawScene();
 }
 
+void CParticleTools::Load()
+{
+    PSIt P = PSLib.FirstPS();
+    PSIt E = PSLib.LastPS();
+    for (; P!=E; P++)
+		fraLeftBar->AddPS(P->m_Name,true);
+}
+
+void CParticleTools::Save()
+{
+	PSLib.Save();
+}
+
+void CParticleTools::Reload()
+{
+	PSLib.Reload();
+}
+
+
+void CParticleTools::RenamePS(LPCSTR old_full_name, LPCSTR ren_part, int level){
+    VERIFY(level<_GetItemCount(old_full_name,'\\'));
+    char new_full_name[255];
+    _ReplaceItem(old_full_name,level,ren_part,new_full_name,'\\');
+    RenamePS(old_full_name, new_full_name);
+}
+
+void CParticleTools::RenamePS(LPCSTR old_full_name, LPCSTR new_full_name){
+    ApplyChanges();
+	PS::SDef* S = PSLib.FindPS(old_full_name); R_ASSERT(S);
+    PSLib.RenamePS(S,new_full_name);
+	if (S==m_LibPS){
+    	m_EditPS = *S;
+    }
+}
+
+PS::SDef* CParticleTools::AppendPS(LPCSTR folder_name, PS::SDef* src)
+{
+    PS::SDef* S = PSLib.AppendPS(src);
+    char new_name[128]; new_name[0]=0;
+    if (folder_name) strcpy(new_name,folder_name);
+    PSLib.GenerateName(new_name,src?src->m_Name:0);
+    PSLib.RenamePS(S,new_name);
+	fraLeftBar->AddPS(S->m_Name,false);
+    return S;
+}
+
+void CParticleTools::RemovePS(LPCSTR name)
+{
+	PSLib.RemovePS(name);
+}
+
+void CParticleTools::ResetCurrentPS()
+{
+	m_LibPS = 0;
+}
+
+void CParticleTools::SetCurrentPS(PS::SDef* P)
+{
+    // save changes
+    if (m_LibPS)
+    	*m_LibPS = m_EditPS;
+    // load shader
+	if (m_LibPS!=P){
+        m_LibPS = P;
+        if (m_LibPS) m_EditPS = *m_LibPS;
+        m_PSProps->SetCurrent(m_LibPS?&m_EditPS:0);
+    }
+}
+
+void CParticleTools::SetCurrentPS(LPCSTR name)
+{
+    SetCurrentPS(PSLib.FindPS(name));
+}
+
+PS::SDef* CParticleTools::ClonePS(LPCSTR name)
+{
+	PS::SDef* S = PSLib.FindPS(name); R_ASSERT(S);
+	return AppendPS(0,S);
+}
+
+void CParticleTools::ApplyChanges(){
+    if (m_LibPS){
+		*m_LibPS = m_EditPS;
+		Modified();
+    }
+}
 

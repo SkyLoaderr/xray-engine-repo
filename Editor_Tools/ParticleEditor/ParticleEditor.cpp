@@ -1,6 +1,6 @@
 #include "stdafx.h"
 #pragma hdrstop
-USERES("ShaderEditor.res");
+USERES("ParticleEditor.res");
 USERES("resource.res");
 USE("!.txt", File);
 USEUNIT("stdafx.cpp");
@@ -71,7 +71,6 @@ USEUNIT("engine\xrImage_Resampler.cpp");
 USEOBJ("Intermediate\cpuid.obj");
 USEOBJ("Intermediate\_math.obj");
 USEFORM("LeftBar.cpp", fraLeftBar); /* TFrame: File Type */
-USEFORM("PropertiesShader.cpp", frmShaderProperties);
 USEFORM("LogForm.cpp", frmLog);
 USEUNIT("Editor\Library.cpp");
 USEFORM("Editor\ChoseForm.cpp", frmChoseItem);
@@ -86,7 +85,6 @@ USEUNIT("Engine\TextureManager_Loader.cpp");
 USEUNIT("Engine\tss_def.cpp");
 USEUNIT("Engine\Image.cpp");
 USEUNIT("Engine\tga.cpp");
-USEFORM("Editor\ShaderFunction.cpp", frmShaderFunction);
 USEUNIT("Engine\BLENDERS\BlenderDefault.cpp");
 USEUNIT("Engine\BLENDERS\Blender_default_aref.cpp");
 USEUNIT("Engine\BLENDERS\Blender_Editor_Selection.cpp");
@@ -97,8 +95,6 @@ USEUNIT("Engine\BLENDERS\Blender_Screen_SET.cpp");
 USEUNIT("Engine\BLENDERS\Blender_Vertex.cpp");
 USEUNIT("Engine\BLENDERS\Blender_Vertex_aref.cpp");
 USEUNIT("Engine\BLENDERS\Blender.cpp");
-USEUNIT("SHEngineTools.cpp");
-USEUNIT("SHCompilerTools.cpp");
 USEUNIT("Engine\BLENDERS\blender_light.cpp");
 USEUNIT("Editor\FolderLib.cpp");
 USEUNIT("Editor\EStats.cpp");
@@ -109,6 +105,12 @@ USEUNIT("UI_Tools.cpp");
 USEUNIT("UI_MainExtern.cpp");
 USEUNIT("Editor\ImageThumbnail.cpp");
 USEUNIT("Editor\ImageManager.cpp");
+USEFORM("Editor\ShaderFunction.cpp", frmShaderFunction);
+USEUNIT("Editor\PSLibrary.cpp");
+USEUNIT("Engine\xrParticlesLib.cpp");
+USEUNIT("Editor\PSObject.cpp");
+USEUNIT("PropertiesPSDef.cpp");
+USEFORM("Editor\FrameEmitter.cpp", fraEmitter); /* TFrame: File Type */
 //---------------------------------------------------------------------------
 #include "main.h"
 #include "splash.h"

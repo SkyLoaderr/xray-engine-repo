@@ -4,32 +4,43 @@
 #include "PropertiesPSDef.h"
 #include "SceneClassList.h"
 #include "CustomObject.h"
-#include "EditParticles.h"
 #include "ParticleSystem.h"
 #include "ChoseForm.h"
 #include "ShaderFunction.h"
 #include "ui_main.h"
+#include "ui_tools.h"
 //---------------------------------------------------------------------------
 #pragma package(smart_init)
 #pragma resource "*.dfm"
 
-TfrmPropertiesPSDef* TfrmPropertiesPSDef::form = 0;
 //---------------------------------------------------------------------------
 __fastcall TfrmPropertiesPSDef::TfrmPropertiesPSDef(TComponent* Owner)
     : TForm(Owner)
 {
-    char buf[MAX_PATH] = {"ed.ini"};  FS.m_ExeRoot.Update(buf);
-    fsStorage->IniFileName = buf;
     bSetMode = false;
 }
 //---------------------------------------------------------------------------
 
+void __fastcall TfrmPropertiesPSDef::ShowProperties(){
+    Show();
+}
+//---------------------------------------------------------------------------
+
+void __fastcall TfrmPropertiesPSDef::HideProperties(){
+	Close();
+}
+//---------------------------------------------------------------------------
+
+void __fastcall TfrmPropertiesPSDef::SetCurrent(PS::SDef* ps){
+	m_PS=ps;
+	GetObjectsInfo();
+}
+//---------------------------------------------------------------------------
 
 void TfrmPropertiesPSDef::GetObjectsInfo(){
 	bSetMode							= true;
 	if (m_PS){
     	// base
-        edName->Text					= m_PS->m_Name;
         lbCreator->Caption				= m_PS->m_Computer;
         lbShader->Caption				= m_PS->m_ShaderName[0]?m_PS->m_ShaderName:"...";
         lbTexture->Caption				= m_PS->m_TextureName[0]?m_PS->m_TextureName:"...";
@@ -117,16 +128,6 @@ void TfrmPropertiesPSDef::GetObjectsInfo(){
 bool TfrmPropertiesPSDef::ApplyObjectsInfo(){
 	if (bSetMode) return false;
 	if (m_PS){
-    	// base
-        {
-        	AnsiString name 			= m_PS->m_Name;
-            PS::SDef* F 				= TfrmEditParticles::FindPS(edName->Text.c_str());
-            if (F&&(m_PS!=F)){
-            	ELog.DlgMsg				(mtError,"Specify name already present in library. Change name and try again.");
-            }else
-		        if (m_PS->SetName		(edName->Text.c_str()))
-				    TfrmEditParticles::OnNameUpdate();
-        }
         m_PS->SetShader					(lbShader->Caption=="..."?"":lbShader->Caption.c_str());
         m_PS->SetTexture				(lbTexture->Caption=="..."?"":lbTexture->Caption.c_str());
         // params
@@ -179,7 +180,7 @@ bool TfrmPropertiesPSDef::ApplyObjectsInfo(){
         m_PS->m_dwFlag					|= (cbAnimRandomInitialFrame->Checked?PS_FRAME_RND_INIT:0);
         m_PS->m_dwFlag					|= (cbAnimRandomPlaybackDir->Checked?PS_FRAME_RND_PLAYBACK_DIR:0);
 
-		TfrmEditParticles::Modified();
+		Tools.Modified();
 
         GetObjectsInfo();
     }
@@ -197,7 +198,6 @@ void __fastcall TfrmPropertiesPSDef::FormKeyDown(TObject *Sender,
 void __fastcall TfrmPropertiesPSDef::FormShow(TObject *Sender)
 {
 	m_PS 				= 0;
-    tmUpdate->Enabled	= true;
     bSetMode			= false;
 }
 //---------------------------------------------------------------------------
@@ -205,40 +205,19 @@ void __fastcall TfrmPropertiesPSDef::FormShow(TObject *Sender)
 void __fastcall TfrmPropertiesPSDef::FormClose(TObject *Sender,
       TCloseAction &Action)
 {
-    tmUpdate->Enabled	= false;
 	Action 				= caFree;
-    form 				= 0;
 }
 //---------------------------------------------------------------------------
-
-void __fastcall TfrmPropertiesPSDef::ShowProperties(){
-    if (!form) form = new TfrmPropertiesPSDef(0);
-    form->Show();
-	form->m_PS = TfrmEditParticles::GetSelectedPS();
-	form->GetObjectsInfo();
-}
-//---------------------------------------------------------------------------
-
-void __fastcall TfrmPropertiesPSDef::HideProperties(){
-	if (form) form->Close();
-}
-//---------------------------------------------------------------------------
-
-void __fastcall TfrmPropertiesPSDef::tmUpdateTimer(TObject *Sender)
-{
-	if (form->m_PS!=TfrmEditParticles::GetSelectedPS()){
-    	form->m_PS=TfrmEditParticles::GetSelectedPS();
-		form->GetObjectsInfo();
-    }
-}
-//---------------------------------------------------------------------------
-
 
 void __fastcall TfrmPropertiesPSDef::ebSelectShaderClick(TObject *Sender)
 {
 	if (!m_PS) return;
 	LPCSTR S = TfrmChoseItem::SelectShader(true,0,m_PS->m_ShaderName[0]?m_PS->m_ShaderName:0);
-    if (S){lbShader->Caption=S; ApplyObjectsInfo(); TfrmEditParticles::UpdateCurrent();}
+    if (S){
+    	lbShader->Caption=S;
+        ApplyObjectsInfo();
+//S		Tools.UpdateCurrent();
+    }
 }
 //---------------------------------------------------------------------------
 
@@ -246,7 +225,11 @@ void __fastcall TfrmPropertiesPSDef::ebSelectTextureClick(TObject *Sender)
 {
 	if (!m_PS) return;
 	LPCSTR S = TfrmChoseItem::SelectTexture(false,m_PS->m_TextureName[0]?m_PS->m_TextureName:0);
-    if (S){lbTexture->Caption=S; ApplyObjectsInfo(); TfrmEditParticles::UpdateCurrent();}
+    if (S){
+    	lbTexture->Caption=S;
+        ApplyObjectsInfo();
+//S		Tools.UpdateCurrent();
+    }
 }
 //---------------------------------------------------------------------------
 
@@ -355,7 +338,7 @@ void __fastcall TfrmPropertiesPSDef::ExtBtn1Click(TObject *Sender){
 void __fastcall TfrmPropertiesPSDef::seEmitterExit(TObject *Sender)
 {
 	ApplyObjectsInfo();
-    TfrmEditParticles::UpdateEmitter();
+//S	Tools.UpdateEmitter();
 }
 //---------------------------------------------------------------------------
 
@@ -364,7 +347,7 @@ void __fastcall TfrmPropertiesPSDef::seEmitterKeyDown(TObject *Sender,
 {
 	if (Key==VK_RETURN){
     	ApplyObjectsInfo();
-		TfrmEditParticles::UpdateEmitter();
+//S		Tools.UpdateEmitter();
     }
 }
 //---------------------------------------------------------------------------
@@ -373,7 +356,7 @@ void __fastcall TfrmPropertiesPSDef::seEmitterLWChange(TObject *Sender,
       int Val)
 {
     ApplyObjectsInfo();
-    TfrmEditParticles::UpdateEmitter();
+//S	Tools.UpdateEmitter();
 }
 //---------------------------------------------------------------------------
 void __fastcall TfrmPropertiesPSDef::ebBirthFuncMouseUp(TObject *Sender,
@@ -387,14 +370,14 @@ void __fastcall TfrmPropertiesPSDef::ebBirthFuncMouseUp(TObject *Sender,
     	fraEmitter->ebBirthFunc->Down = false;
     }
     ApplyObjectsInfo();
-    TfrmEditParticles::UpdateEmitter();
+//S	Tools.UpdateEmitter();
 }
 //---------------------------------------------------------------------------
 
 void __fastcall TfrmPropertiesPSDef::ebBirthFuncClick(TObject *Sender)
 {
     ApplyObjectsInfo();
-    TfrmEditParticles::UpdateEmitter();
+//S	Tools.UpdateEmitter();
 }
 //---------------------------------------------------------------------------
 

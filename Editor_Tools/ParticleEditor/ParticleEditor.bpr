@@ -30,33 +30,33 @@
       Intermediate\XR_CustomFont.obj Intermediate\XR_HUDFont.obj 
       Intermediate\c_dinput.obj Intermediate\pure.obj 
       Intermediate\xrImage_Resampler.obj Intermediate\cpuid.obj 
-      Intermediate\_math.obj Intermediate\LeftBar.obj 
-      Intermediate\LogForm.obj 
+      Intermediate\_math.obj Intermediate\LeftBar.obj Intermediate\LogForm.obj 
       Intermediate\Library.obj Intermediate\ChoseForm.obj 
       Intermediate\xr_avi.obj Intermediate\SH_Constant.obj 
       Intermediate\SH_Matrix.obj Intermediate\SH_Texture.obj 
       Intermediate\Shader.obj Intermediate\Texture.obj 
       Intermediate\TextureManager.obj Intermediate\TextureManager_Loader.obj 
       Intermediate\tss_def.obj Intermediate\Image.obj Intermediate\tga.obj 
-      Intermediate\ShaderFunction.obj Intermediate\BlenderDefault.obj 
-      Intermediate\Blender_default_aref.obj 
+      Intermediate\BlenderDefault.obj Intermediate\Blender_default_aref.obj 
       Intermediate\Blender_Editor_Selection.obj 
       Intermediate\Blender_Editor_Wire.obj Intermediate\Blender_Recorder.obj 
       Intermediate\Blender_Screen_GRAY.obj Intermediate\Blender_Screen_SET.obj 
       Intermediate\Blender_Vertex.obj Intermediate\Blender_Vertex_aref.obj 
-      Intermediate\Blender.obj Intermediate\SHEngineTools.obj 
-      Intermediate\SHCompilerTools.obj Intermediate\blender_light.obj 
+      Intermediate\Blender.obj Intermediate\blender_light.obj 
       Intermediate\FolderLib.obj Intermediate\EStats.obj 
       Intermediate\xrLoadSurface.obj Intermediate\UI_Main.obj 
       Intermediate\UI_Tools.obj Intermediate\UI_MainExtern.obj 
-      Intermediate\ImageThumbnail.obj Intermediate\ImageManager.obj"/>
+      Intermediate\ImageThumbnail.obj Intermediate\ImageManager.obj 
+      Intermediate\ShaderFunction.obj Intermediate\PSLibrary.obj 
+      Intermediate\xrParticlesLib.obj Intermediate\PSObject.obj 
+      Intermediate\PropertiesPSDef.obj Intermediate\FrameEmitter.obj"/>
     <RESFILES value="ParticleEditor.res resource.res"/>
     <IDLFILES value=""/>
     <IDLGENFILES value=""/>
     <DEFFILE value=""/>
     <RESDEPEN value="$(RESFILES) TopBar.dfm BottomBar.dfm EditorPref.dfm Splash.dfm main.dfm 
-      LeftBar.dfm LogForm.dfm Editor\ChoseForm.dfm 
-      Editor\ShaderFunction.dfm"/>
+      LeftBar.dfm LogForm.dfm Editor\ChoseForm.dfm Editor\ShaderFunction.dfm 
+      Editor\FrameEmitter.dfm"/>
     <LIBFILES value="lib\LWO.lib lib\cg32.lib lib\xrProgressive.lib lib\MagicFMd.lib 
       lib\DXT.lib lib\CreateDX.lib lib\d3d8.lib lib\d3dx8d.lib lib\dinput.lib 
       Lib\FreeImage.lib"/>

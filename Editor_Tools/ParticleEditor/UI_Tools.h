@@ -2,28 +2,23 @@
 #ifndef UIToolsH
 #define UIToolsH
 
-#include "SHEngineTools.h"
-#include "SHCompilerTools.h"
+#include "ParticleSystem.h"
 
 // refs
-class CEditableObject;
-class CLibObject;
-class CBlender;
+class CPSObject;
+class SDef;
+class TfrmPropertiesPSDef;
 
-enum EActiveEditor{
-	aeEngine = 0,
-    aeCompiler
-};
-
-class CShaderTools: public pureDeviceCreate, public pureDeviceDestroy
+class CParticleTools: public pureDeviceCreate, public pureDeviceDestroy
 {
-	CEditableObject*	m_EditObject;
+    CPSObject*  		m_TestObject;
+    PS::SDef* 			m_LibPS;
+    PS::SDef			m_EditPS;
+    bool				m_bModified;
+	TfrmPropertiesPSDef*m_PSProps;
 public:
-    CSHEngineTools		Engine;
-    CSHCompilerTools	Compiler;
-public:
-						CShaderTools		();
-    virtual 			~CShaderTools		();
+						CParticleTools		();
+    virtual 			~CParticleTools		();
 
     void				Render				();
     void				Update				();
@@ -31,20 +26,32 @@ public:
     void				OnCreate			();
     void				OnDestroy			();
 
-    bool				IfModified			(){return Engine.IfModified()&&Compiler.IfModified();}
-    bool				IsModified			(){return Engine.IsModified()||Compiler.IsModified();}
+    bool				IfModified			();
+    bool				IsModified			(){return m_bModified;}
     void				Modified			();
 
     void				ZoomObject			();
+
+    PS::SDef*			AppendPS			(LPCSTR folder_name, PS::SDef* src);
+    void				RemovePS			(LPCSTR name);
+    void				ResetCurrentPS		();
+    void				SetCurrentPS		(LPCSTR name);
+    void 				SetCurrentPS		(PS::SDef* P);
+    PS::SDef*			ClonePS				(LPCSTR name);
+    void				RenamePS			(LPCSTR src_name, LPCSTR part_name, int part_idx);
+    void				RenamePS			(LPCSTR src_name, LPCSTR dest_name);
+    PS::SDef*			GetCurrentPS		(){return m_LibPS?&m_EditPS:0;}
+
+    void				Load				();
+    void				Save				();
+    void				Reload				();
+    void				ApplyChanges		();
 
     virtual void		OnDeviceCreate		();
     virtual void		OnDeviceDestroy		();
 
     void				SelectPreviewObject	(int p);
     void				ResetPreviewObject	();
-
-    EActiveEditor		ActiveEditor		();
-    void				OnChangeEditor		();
 
     bool __fastcall 	MouseStart  		(TShiftState Shift){return false;}
     bool __fastcall 	MouseEnd    		(TShiftState Shift){return false;}
@@ -54,6 +61,6 @@ public:
     bool __fastcall 	KeyUp       		(WORD Key, TShiftState Shift){return false;}
     bool __fastcall 	KeyPress    		(WORD Key, TShiftState Shift){return false;}
 };
-extern CShaderTools	Tools;
+extern CParticleTools	Tools;
 //---------------------------------------------------------------------------
 #endif

@@ -21,21 +21,18 @@
 class TfrmPropertiesPSDef : public TForm
 {
 __published:	// IDE-managed Components
-	TTimer *tmUpdate;
 	TPageControl *pcPS;
 	TTabSheet *tsBase;
 	TTabSheet *tsParams;
 	TTabSheet *tsVary;
 	TTabSheet *tsBlur;
 	TGroupBox *gbBase;
-	TMxLabel *RxLabel17;
 	TMxLabel *RxLabel19;
 	TMxLabel *lbCreator;
 	TExtBtn *ebSelectShader;
 	TMxLabel *lbShader;
 	TMxLabel *lbTexture;
 	TExtBtn *ebSelectTexture;
-	TEdit *edName;
 	TGroupBox *gbParams;
 	TMxLabel *RxLabel31;
 	TMxLabel *RxLabel1;
@@ -138,7 +135,6 @@ __published:	// IDE-managed Components
 	TMxLabel *RxLabel39;
 	TMultiObjSpinEdit *seAnimTexWidth;
 	TMultiObjSpinEdit *seAnimTexHeight;
-	TFormStorage *fsStorage;
 	TMxLabel *RxLabel40;
 	TMultiObjCheck *cbAlignToPath;
 	TMxLabel *RxLabel41;
@@ -153,7 +149,6 @@ __published:	// IDE-managed Components
           TShiftState Shift);
     void __fastcall FormShow(TObject *Sender);
 	void __fastcall FormClose(TObject *Sender, TCloseAction &Action);
-	void __fastcall tmUpdateTimer(TObject *Sender);
 	void __fastcall ebSelectShaderClick(TObject *Sender);
 	void __fastcall ebSelectTextureClick(TObject *Sender);
 	void __fastcall clColorMouseDown(TObject *Sender, TMouseButton Button,
@@ -182,7 +177,6 @@ __published:	// IDE-managed Components
 	void __fastcall ExtBtn12Click(TObject *Sender);
 	void __fastcall ExtBtn11Click(TObject *Sender);
 private:	// User declarations
-	static TfrmPropertiesPSDef* form;
     PS::SDef* m_PS;
 
     bool bSetMode;
@@ -190,11 +184,11 @@ private:	// User declarations
     void GetObjectsInfo     ();
     bool ApplyObjectsInfo   ();
 public:		// User declarations
-    __fastcall TfrmPropertiesPSDef(TComponent* Owner);
-    static void __fastcall ShowProperties();
-    static void __fastcall HideProperties();
-    static bool __fastcall Visible(){return !!form;}
-    static TfrmPropertiesPSDef* GetForm(){VERIFY(form); return form;}
+    __fastcall TfrmPropertiesPSDef	(TComponent* Owner);
+    void __fastcall SetCurrent		(PS::SDef* m_PS);
+    void __fastcall ShowProperties	();
+    void __fastcall HideProperties	();
+    void __fastcall Clear			();
 };
 //---------------------------------------------------------------------------
 #endif
