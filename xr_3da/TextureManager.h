@@ -8,6 +8,9 @@
 
 #include "shader.h"
 #include "tss_def.h"
+#include "sh_texture.h"
+#include "sh_matrix.h"
+#include "sh_constant.h"
 
 class ENGINE_API CShaderManager
 {
@@ -128,7 +131,7 @@ public:
 					CMatrix*	mat = (*M)[it];
 					if (mat && cache.matrices[it]!=mat)	{
 						cache.matrices[it]=mat;
-						CHK_DX(HW.pDevice->SetTransform(D3DTRANSFORMSTATETYPE(D3DTS_TEXTURE0+it),mat->xform.d3d()));
+						HW.pDevice->SetTransform(D3DTRANSFORMSTATETYPE(D3DTS_TEXTURE0+it),mat->xform.d3d());
 					}
 				}
 			}

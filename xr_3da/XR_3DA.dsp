@@ -570,14 +570,6 @@ SOURCE=.\SH_Matrix.h
 # End Source File
 # Begin Source File
 
-SOURCE=.\SH_Shader.cpp
-# End Source File
-# Begin Source File
-
-SOURCE=.\SH_Shader.h
-# End Source File
-# Begin Source File
-
 SOURCE=.\SH_Texture.cpp
 # End Source File
 # Begin Source File

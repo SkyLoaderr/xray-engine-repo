@@ -1,5 +1,7 @@
 #pragma once
 
+#include "WaveForm.h"
+
 class	ENGINE_API	CMatrix
 {
 public:
@@ -21,9 +23,6 @@ public:
 	WaveForm		scaleU, scaleV;
 	WaveForm		rotate;
 	WaveForm		scrollU,scrollV;
-
-	
-
 
 	IC void			tc_trans	(Fmatrix& T, float u, float v)
 	{
