@@ -57,4 +57,55 @@ void xrServer::OnCL_Connected		(IClient* _CL)
 	// 
 	game->OnPlayerConnect			(CL->ID);
 	csPlayers.Leave					();
+
+	IDirectPlay8Address* pAddr = NULL;
+	CHK_DX(NET->GetClientAddress(_CL->ID, &pAddr, 0));
+
+	if (pAddr)
+	{
+		string256	aaaa;
+		DWORD		aaaa_s			= sizeof(aaaa);
+		R_CHK		(pAddr->GetURLA(aaaa,&aaaa_s));
+		aaaa_s = strlen(aaaa);
+
+		LPSTR ClientIP = NULL;
+		if (strstr(aaaa, "hostname="))
+		{
+			ClientIP = strstr(aaaa, "hostname=")+ strlen("hostname=");
+			if (strstr(ClientIP, ";")) strstr(ClientIP, ";")[0] = 0;
+		};
+		if (!ClientIP || !ClientIP[0]) return;
+
+		DWORD	NumAdresses = 0;
+		NET->GetLocalHostAddresses(NULL, &NumAdresses, 0);
+		
+		IDirectPlay8Address* p_pAddr[256];
+		memset(p_pAddr, 0, sizeof(p_pAddr));
+
+		NumAdresses = 256;
+		R_CHK(NET->GetLocalHostAddresses(p_pAddr, &NumAdresses, 0));
+
+		for (DWORD i=0; i<NumAdresses; i++)
+		{
+			if (!p_pAddr[i]) continue;
+			
+			string256	bbbb;
+			DWORD		bbbb_s			= sizeof(bbbb);
+			R_CHK		(p_pAddr[i]->GetURLA(bbbb,&bbbb_s));
+			bbbb_s = strlen(bbbb);
+
+			LPSTR ServerIP = NULL;
+			if (strstr(aaaa, "hostname="))
+			{
+				ServerIP = strstr(bbbb, "hostname=")+ strlen("hostname=");
+				if (strstr(ServerIP, ";")) strstr(ServerIP, ";")[0] = 0;
+			};
+			if (!ServerIP || !ServerIP[0]) continue;
+			if (!stricmp(ServerIP, ClientIP))
+			{
+				CL->flags.bLocal = 1;
+				break;
+			};
+		};
+	};
 }
