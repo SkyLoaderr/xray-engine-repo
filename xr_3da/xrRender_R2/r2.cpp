@@ -76,6 +76,7 @@ void					CRender::create					()
 
 	// options
 	o.ldr				= (strstr(Core.Params,"-ldr"))?			TRUE	:FALSE	;
+	o.sunfilter			= (strstr(Core.Params,"-sunfilter"))?	TRUE	:FALSE	;
 	o.sjitter			= (strstr(Core.Params,"-sjitter"))?		TRUE	:FALSE	;
 	o.depth16			= (strstr(Core.Params,"-depth16"))?		TRUE	:FALSE	;
 	o.noshadows			= (strstr(Core.Params,"-noshadows"))?	TRUE	:FALSE	;

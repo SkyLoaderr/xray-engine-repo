@@ -46,6 +46,7 @@ public:
 		u32		nvstencil	: 1;
 		u32		ldr			: 1;
 
+		u32		sunfilter	: 1;
 		u32		sjitter		: 1;
 		u32		noshadows	: 1;
 		u32		Tshadows	: 1;						// transluent shadows
