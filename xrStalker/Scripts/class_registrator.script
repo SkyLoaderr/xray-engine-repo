@@ -1,16 +1,3 @@
-local s_module = module
-
-function c_module(client_object_class)
-	if (editor() == false) then
-		module	(client_object_class)
-	end
-end
-
-function cs_module(client_object_class, server_object_class)
-	c_module(client_object_class)
-	s_module(server_object_class)
-end
-
 function cs_register(factory,client_object_class,server_object_class,clsid,script_clsid)
 	factory:register	(client_object_class,server_object_class,clsid,script_clsid)
 end
@@ -20,12 +7,6 @@ function c_register(factory,client_object_class,clsid,script_clsid)
 		factory:register(client_object_class,clsid,script_clsid)
 	end
 end
-
-cs_module	("ce_switcher","se_switcher")
-c_module	("ui_main_menu")
-s_module	("smart_terrain")
-s_module	("se_stalker")
-s_module    ("se_monster")
 
 function register(object_factory)
 	cs_register	(
