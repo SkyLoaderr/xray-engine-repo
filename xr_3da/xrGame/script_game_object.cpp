@@ -1146,7 +1146,7 @@ void CScriptGameObject::enable_memory_object	(CScriptGameObject *object, bool en
 		memory_manager->enable				(object->m_tpGameObject,enable);
 }
 
-int  CScriptGameObject::active_sound_count		()
+int  CScriptGameObject::active_sound_count		(bool only_playing)
 {
 	CSoundPlayer	*sound_player = dynamic_cast<CSoundPlayer*>(m_tpGameObject);
 	if (!sound_player) {
@@ -1154,7 +1154,7 @@ int  CScriptGameObject::active_sound_count		()
 		return								(-1);
 	}
 	else
-		return								(sound_player->active_sound_count());
+		return								(sound_player->active_sound_count(only_playing));
 }
 
 const CCoverPoint *CScriptGameObject::best_cover	(const Fvector &position, const Fvector &enemy_position, float radius, float min_enemy_distance, float max_enemy_distance)
