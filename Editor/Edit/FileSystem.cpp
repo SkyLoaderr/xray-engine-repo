@@ -7,7 +7,6 @@
 
 #include "xr_trims.h"
 #include <io.h>
-#include <utime.h>
 
 CFileSystem FS;
 //----------------------------------------------------
@@ -90,6 +89,7 @@ void CFileSystem::OnCreate(){
 
 //----------------------------------------------------
 
+#ifdef M_BORLAND
 bool CFileSystem::GetOpenName( FSPath *initial, char *buffer, bool bMulti ){
 	VERIFY( initial && buffer );
 
