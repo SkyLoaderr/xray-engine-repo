@@ -8,6 +8,8 @@
 #include "../hudmanager.h"
 #include "../xr_level_controller.h"
 #include "../../xr_ioconsole.h"
+#include "../level.h"
+#include "../GameObject.h"
 
 CUIDialogWnd:: CUIDialogWnd()
 {
@@ -110,3 +112,23 @@ bool CUIDialogWnd::IR_OnMouseMove(int dx, int dy)
 	return true;
 }
 
+bool CUIDialogWnd::OnKeyboard(int dik, EUIMessages keyboard_action)
+{
+	if (inherited::OnKeyboard(dik, keyboard_action) )
+		return true;
+
+	if( !StopAnyMove() && g_pGameLevel ){
+		CObject* O = Level().CurrentEntity();
+		if( O ){
+			IInputReceiver*		IR	= smart_cast<IInputReceiver*>( smart_cast<CGameObject*>(O) );
+
+			if(keyboard_action==WINDOW_KEY_PRESSED)
+					IR->IR_OnKeyboardPress(key_binding[dik]);
+			else	
+					IR->IR_OnKeyboardRelease(key_binding[dik]);
+		
+		//	return true;
+		}
+	};
+	return false;
+}

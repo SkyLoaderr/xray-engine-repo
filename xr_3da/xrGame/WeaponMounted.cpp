@@ -23,7 +23,7 @@ void __stdcall CWeaponMounted::BoneCallbackX(CBoneInstance *B)
 	CWeaponMounted	*P = static_cast<CWeaponMounted*>(B->Callback_Param);
 
 	if (P->Owner()){
-		Fmatrix rX;		rX.rotateX		(P->camera->pitch);
+		Fmatrix rX;		rX.rotateX		(P->camera->pitch+P->m_dAngle.y);
 		B->mTransform.mulB(rX);
 	}
 }
@@ -33,7 +33,7 @@ void __stdcall CWeaponMounted::BoneCallbackY(CBoneInstance *B)
 	CWeaponMounted	*P = static_cast<CWeaponMounted*>(B->Callback_Param);
 
 	if (P->Owner()){
-		Fmatrix rY;		rY.rotateY		(P->camera->yaw);
+		Fmatrix rY;		rY.rotateY		(P->camera->yaw+P->m_dAngle.x);
 		B->mTransform.mulB(rY);
 	}
 }
@@ -42,6 +42,7 @@ void __stdcall CWeaponMounted::BoneCallbackY(CBoneInstance *B)
 CWeaponMounted::CWeaponMounted()
 {
 	camera		= xr_new<CCameraFirstEye>	(this, pSettings, "mounted_weapon_cam",	CCameraBase::flRelativeLink|CCameraBase::flPositionRigid|CCameraBase::flDirectionRigid); 
+	
 }
 
 CWeaponMounted::~CWeaponMounted()
@@ -232,6 +233,7 @@ bool	CWeaponMounted::Use					(const Fvector& pos,const Fvector& dir,const Fvecto
 }
 bool	CWeaponMounted::attach_Actor		(CActor* actor)
 {
+	m_dAngle.set(0.0f,0.0f);
 	CHolderCustom::attach_Actor(actor);
 	CKinematics* K		= smart_cast<CKinematics*>(Visual());
 	// убрать оружие из рук	
@@ -281,10 +283,12 @@ CCameraBase*	CWeaponMounted::Camera				()
 
 void CWeaponMounted::FireStart()
 {
+	m_dAngle.set(0.0f,0.0f);
 	CShootingObject::FireStart();
 }
 void CWeaponMounted::FireEnd()
 {
+	m_dAngle.set(0.0f,0.0f);
 	CShootingObject::FireEnd();
 	StopFlameParticles	();
 	RemoveShotEffector ();
@@ -311,6 +315,8 @@ void CWeaponMounted::OnShot		()
 
 	//добавить эффектор стрельбы
 	AddShotEffector		();
+	m_dAngle.set(	::Random.randF(-fireDispersionBase,fireDispersionBase),
+					::Random.randF(-fireDispersionBase,fireDispersionBase));
 }
 
 void CWeaponMounted::UpdateFire()
@@ -321,18 +327,18 @@ void CWeaponMounted::UpdateFire()
 	CShootingObject::UpdateFlameParticles();
 	CShootingObject::UpdateLight();
 
-	if(!IsWorking()) 
-	{
+	if(!IsWorking()){
 		if(fTime<0) fTime = 0.f;
 		return;
 	}
 
-	if(fTime<=0)
-	{
+	if(fTime<=0){
 		OnShot();
 		fTime += fTimeToFire;
+	}else{
+		angle_lerp		(m_dAngle.x,0.f,5.f,Device.fTimeDelta);
+		angle_lerp		(m_dAngle.y,0.f,5.f,Device.fTimeDelta);
 	}
-
 }
 
 const Fmatrix&	 CWeaponMounted::get_ParticlesXFORM	()
@@ -347,8 +353,7 @@ void CWeaponMounted::AddShotEffector				()
 		CEffectorShot* S		= smart_cast<CEffectorShot*>	(Owner()->EffectorManager().GetEffector(eCEShot)); 
 		if (!S)	S				= (CEffectorShot*)Owner()->EffectorManager().AddEffector(xr_new<CEffectorShot> (camMaxAngle,camRelaxSpeed, 0.25f, 0.01f));
 		R_ASSERT				(S);
-		S->Shot					(0.5f);
-//		S->MountedWeaponShot	();
+		S->Shot					(0.01f);
 	}
 }
 
