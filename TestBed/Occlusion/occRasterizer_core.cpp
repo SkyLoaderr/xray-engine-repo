@@ -66,11 +66,11 @@ BOOL shared(occTri* T1, occTri* T2)
 	if (T1->adjacent[1]==T2)	return TRUE;
 	return FALSE;
 }
+
 /* Rasterize a scan line between given X point values, corresponding Z values and current color
 */
-void i_scan		(occTri* T, int curY, float startT, float endT, float startX, float endX, float startR, float endR, float startZ, float endZ)
+IC void i_scan		(occTri* T, int curY, float startT, float endT, float startX, float endX, float startR, float endR, float startZ, float endZ)
 {
-//	if (13==curY)	__asm int 3;
 	occTri**	pFrame	= Raster.get_frame();
 	float*		pDepth	= Raster.get_depth();
 
