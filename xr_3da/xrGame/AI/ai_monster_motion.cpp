@@ -3,7 +3,7 @@
 #include "ai_monster_jump.h"
 #include "biting\\ai_biting.h"
 
-#define CHECK_SHARED_LOADED() {if (_sd->IsLoaded()) return; }
+#define CHECK_SHARED_LOADED() {if (CSharedClass<_motion_shared>::IsLoaded()) return; }
 
 CMotionManager::CMotionManager() 
 {
@@ -62,7 +62,7 @@ void CMotionManager::LoadVisualData()
 	}
 }
 
-void CMotionManager::AddTransition_A2A(EMotionAnim from, EMotionAnim to, EMotionAnim trans, bool chain)
+void CMotionManager::AddTransition(EMotionAnim from, EMotionAnim to, EMotionAnim trans, bool chain)
 {
 	CHECK_SHARED_LOADED();
 
@@ -81,7 +81,7 @@ void CMotionManager::AddTransition_A2A(EMotionAnim from, EMotionAnim to, EMotion
 }
 
 
-void CMotionManager::AddTransition_A2S(EMotionAnim from, EPState to, EMotionAnim trans, bool chain)
+void CMotionManager::AddTransition(EMotionAnim from, EPState to, EMotionAnim trans, bool chain)
 {
 	CHECK_SHARED_LOADED();
 
@@ -99,7 +99,7 @@ void CMotionManager::AddTransition_A2S(EMotionAnim from, EPState to, EMotionAnim
 	_sd->m_tTransitions.push_back(new_item);
 }
 
-void CMotionManager::AddTransition_S2A(EPState from, EMotionAnim to, EMotionAnim trans, bool chain)
+void CMotionManager::AddTransition(EPState from, EMotionAnim to, EMotionAnim trans, bool chain)
 {
 	CHECK_SHARED_LOADED();
 
@@ -118,7 +118,7 @@ void CMotionManager::AddTransition_S2A(EPState from, EMotionAnim to, EMotionAnim
 	_sd->m_tTransitions.push_back(new_item);
 }
 
-void CMotionManager::AddTransition_S2S(EPState from, EPState to, EMotionAnim trans, bool chain)
+void CMotionManager::AddTransition(EPState from, EPState to, EMotionAnim trans, bool chain)
 {
 	CHECK_SHARED_LOADED();
 	

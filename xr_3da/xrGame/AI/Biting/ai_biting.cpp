@@ -136,11 +136,13 @@ void CAI_Biting::LoadShared(LPCSTR section)
 
 	_sd->m_fsTurnNormalAngular			= pSettings->r_float(section,"TurnNormalAngular");
 	_sd->m_fsWalkFwdNormal				= pSettings->r_float(section,"WalkFwdNormal");
+	_sd->m_fsWalkFwdDamaged				= pSettings->r_float(section,"WalkFwdDamaged");
 	_sd->m_fsWalkBkwdNormal				= pSettings->r_float(section,"WalkBkwdNormal");
 	_sd->m_fsWalkTurn					= pSettings->r_float(section,"WalkTurn");
 	_sd->m_fsWalkAngular				= pSettings->r_float(section,"WalkAngular");
 	_sd->m_fsWalkTurnAngular			= pSettings->r_float(section,"WalkTurnAngular");
 	_sd->m_fsRunFwdNormal				= pSettings->r_float(section,"RunFwdNormal");
+	_sd->m_fsRunFwdDamaged				= pSettings->r_float(section,"RunFwdDamaged");
 	_sd->m_fsRunTurn					= pSettings->r_float(section,"RunTurn");
 	_sd->m_fsRunTurnAngular				= pSettings->r_float(section,"RunTurnAngular");
 	_sd->m_fsRunAngular					= pSettings->r_float(section,"RunAngular");

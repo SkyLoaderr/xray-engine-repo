@@ -25,7 +25,7 @@ bool bonesBone::NeedTurn()
 
 void bonesBone::Turn(u32 dt)
 {
-	float PI_DIV_2m		= 8 * PI_DIV_6 / 3;
+	float PI_DIV_2m		= 8 * PI_DIV_6 / 3;		
 	float PIm			= PI_DIV_2m * 2;
 
 	float cur_speed = params.r_speed * _cos(PI_DIV_2m - PIm * _abs(params.target_yaw - params.cur_yaw) / params.dist_yaw);
@@ -94,13 +94,13 @@ void bonesManipulation::SetMotion(CBoneInstance *bone, u8 axis, float target_yaw
 
 	bActive				= true;
 	in_return_state		= false;
+	time_started	= 0;
 }
 
 
 
 void bonesManipulation::Update(CBoneInstance *bone, u32 cur_time)
 {
-
 	// провести обработку всех костей
 	bool bones_were_turned = false;
 

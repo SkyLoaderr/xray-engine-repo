@@ -29,6 +29,7 @@ enum EMotionAnim {
 	eAnimStandLieDownEat,
 	eAnimSitLieDown,
 	eAnimLieSitUp,
+	eAnimSleepStandUp,
 
 	eAnimWalkFwd,
 	eAnimWalkBkwd,
@@ -58,7 +59,7 @@ enum EMotionAnim {
 	eAnimSteal,
 
 	eAnimJumpStart,
-	eAnimJumpFly,		
+	eAnimJumpGlide,		
 	eAnimJumpFinish,
 
 	eAnimJumpLeft,
@@ -67,7 +68,9 @@ enum EMotionAnim {
 	eAnimStandDamaged,
 	eAnimWalkDamaged,
 	eAnimRunDamaged,
-
+	
+	eAnimSniff,
+	eAnimHowling,
 };
 
 // Generic actions
@@ -243,10 +246,10 @@ public:
 	// -------------------------------------
 
 	// добавить анимацию перехода (A - Animation, S - Position)
-	void		AddTransition_A2A		(EMotionAnim from,	EMotionAnim to, EMotionAnim trans, bool chain);
-	void		AddTransition_A2S		(EMotionAnim from,	EPState to,		EMotionAnim trans, bool chain);
-	void		AddTransition_S2A		(EPState from,		EMotionAnim to, EMotionAnim trans, bool chain);
-	void		AddTransition_S2S		(EPState from,		EPState to,		EMotionAnim trans, bool chain);
+	void		AddTransition			(EMotionAnim from,	EMotionAnim to, EMotionAnim trans, bool chain);
+	void		AddTransition			(EMotionAnim from,	EPState to,		EMotionAnim trans, bool chain);
+	void		AddTransition			(EPState from,		EMotionAnim to, EMotionAnim trans, bool chain);
+	void		AddTransition			(EPState from,		EPState to,		EMotionAnim trans, bool chain);
 
 	// -------------------------------------
 

@@ -84,9 +84,9 @@ void CAI_Flesh::Load(LPCSTR section)
 
 	// define transitions
 	// order : 1. [anim -> anim]	2. [anim->state]	3. [state -> anim]		4. [state -> state]
-	MotionMan.AddTransition_S2A(PS_STAND,	eAnimEat,	eAnimStandLieDownEat,	false);
-	MotionMan.AddTransition_S2S(PS_STAND,	PS_LIE,		eAnimStandLieDown,		false);
-	MotionMan.AddTransition_S2S(PS_LIE,		PS_STAND,	eAnimLieStandUp,		false);
+	MotionMan.AddTransition(PS_STAND,	eAnimEat,	eAnimStandLieDownEat,	false);
+	MotionMan.AddTransition(PS_STAND,	PS_LIE,		eAnimStandLieDown,		false);
+	MotionMan.AddTransition(PS_LIE,		PS_STAND,	eAnimLieStandUp,		false);
 
 	// define links from Action to animations
 	MotionMan.LinkAction(ACT_STAND_IDLE,	eAnimStandIdle,	eAnimStandTurnLeft, eAnimStandTurnRight, PI_DIV_6);

@@ -13,6 +13,8 @@ CAI_Boar::CAI_Boar()
 	stateExploreNDE		= xr_new<CBitingExploreNDE>	(this);
 	stateExploreDNE		= xr_new<CBitingExploreDNE>	(this, false);
 
+	stateTest			= xr_new<CBitingNull>		(this);
+
 	CurrentState		= stateRest;
 
 	Init();
@@ -27,6 +29,8 @@ CAI_Boar::~CAI_Boar()
 	xr_delete(stateDetour);
 	xr_delete(statePanic);
 	xr_delete(stateExploreNDE);
+
+	xr_delete(stateTest);
 }
 
 
@@ -61,13 +65,13 @@ void CAI_Boar::Load(LPCSTR section)
 
 	// define transitions
 	// order : 1. [anim -> anim]	2. [anim->state]	3. [state -> anim]		4. [state -> state]
-	MotionMan.AddTransition_A2A(eAnimStandLieDown,	eAnimSleep,		eAnimLieToSleep,		false);
-	MotionMan.AddTransition_S2A(PS_STAND,			eAnimSleep,		eAnimStandLieDown,		true);
-	MotionMan.AddTransition_S2S(PS_STAND,			PS_LIE,			eAnimStandLieDown,		false);
-	MotionMan.AddTransition_S2S(PS_LIE,				PS_STAND,		eAnimLieStandUp,		false);
+	MotionMan.AddTransition(eAnimStandLieDown,	eAnimSleep,		eAnimLieToSleep,		false);
+	MotionMan.AddTransition(PS_STAND,			eAnimSleep,		eAnimStandLieDown,		true);
+	MotionMan.AddTransition(PS_STAND,			PS_LIE,			eAnimStandLieDown,		false);
+	MotionMan.AddTransition(PS_LIE,				PS_STAND,		eAnimLieStandUp,		false);
 
 	// define links from Action to animations
-	MotionMan.LinkAction(ACT_STAND_IDLE,	eAnimStandIdle);
+	MotionMan.LinkAction(ACT_STAND_IDLE,	eAnimStandIdle, eAnimWalkFwd, eAnimWalkFwd, PI_DIV_6);
 	MotionMan.LinkAction(ACT_SIT_IDLE,		eAnimLieIdle);
 	MotionMan.LinkAction(ACT_LIE_IDLE,		eAnimLieIdle);
 	MotionMan.LinkAction(ACT_WALK_FWD,		eAnimWalkFwd);
@@ -94,31 +98,36 @@ void CAI_Boar::Load(LPCSTR section)
 
 void CAI_Boar::StateSelector()
 {	
-	VisionElem ve;
 
-	if (C && H && I)			SetState(statePanic);
-	else if (C && H && !I)		SetState(statePanic);
-	else if (C && !H && I)		SetState(statePanic);
-	else if (C && !H && !I) 	SetState(statePanic);
-	else if (D && H && I)		SetState(stateAttack);
-	else if (D && H && !I)		SetState(stateAttack);  //тихо подобраться и начать аттаку
-	else if (D && !H && I)		SetState(stateAttack);
-	else if (D && !H && !I) 	SetState(stateHide);	// отход перебежками через укрытия
-	else if (E && H && I)		SetState(stateAttack); 
-	else if (E && H && !I)  	SetState(stateAttack);  //тихо подобраться и начать аттаку
-	else if (E && !H && I) 		SetState(stateDetour); 
-	else if (E && !H && !I)		SetState(stateDetour); 
-	else if (F && H && I) 		SetState(stateAttack); 		
-	else if (F && H && !I)  	SetState(stateAttack); 
-	else if (F && !H && I)  	SetState(stateDetour); 
-	else if (F && !H && !I) 	SetState(stateHide);
-	else if (A && !K && !H)		SetState(stateExploreNDE);  //SetState(stateExploreDNE);  // слышу опасный звук, но не вижу, враг не выгодный		(ExploreDNE)
-	else if (A && !K && H)		SetState(stateExploreNDE);  //SetState(stateExploreDNE);	//SetState(stateExploreDE);	// слышу опасный звук, но не вижу, враг выгодный			(ExploreDE)		
-	else if (B && !K && !H)		SetState(stateExploreNDE);	// слышу не опасный звук, но не вижу, враг не выгодный	(ExploreNDNE)
-	else if (B && !K && H)		SetState(stateExploreNDE);	// слышу не опасный звук, но не вижу, враг выгодный		(ExploreNDE)
-	else if (GetCorpse(ve) && (ve.obj->m_fFood > 1) && ((GetSatiety() < 0.85f) || flagEatNow))	
-								SetState(stateEat);
-	else						SetState(stateRest); 
+	SetState(stateTest);
+	
+	LookPosition(Level().CurrentEntity()->Position());
+
+//	VisionElem ve;
+//
+//	if (C && H && I)			SetState(statePanic);
+//	else if (C && H && !I)		SetState(statePanic);
+//	else if (C && !H && I)		SetState(statePanic);
+//	else if (C && !H && !I) 	SetState(statePanic);
+//	else if (D && H && I)		SetState(stateAttack);
+//	else if (D && H && !I)		SetState(stateAttack);  //тихо подобраться и начать аттаку
+//	else if (D && !H && I)		SetState(stateAttack);
+//	else if (D && !H && !I) 	SetState(stateHide);	// отход перебежками через укрытия
+//	else if (E && H && I)		SetState(stateAttack); 
+//	else if (E && H && !I)  	SetState(stateAttack);  //тихо подобраться и начать аттаку
+//	else if (E && !H && I) 		SetState(stateDetour); 
+//	else if (E && !H && !I)		SetState(stateDetour); 
+//	else if (F && H && I) 		SetState(stateAttack); 		
+//	else if (F && H && !I)  	SetState(stateAttack); 
+//	else if (F && !H && I)  	SetState(stateDetour); 
+//	else if (F && !H && !I) 	SetState(stateHide);
+//	else if (A && !K && !H)		SetState(stateExploreNDE);  //SetState(stateExploreDNE);  // слышу опасный звук, но не вижу, враг не выгодный		(ExploreDNE)
+//	else if (A && !K && H)		SetState(stateExploreNDE);  //SetState(stateExploreDNE);	//SetState(stateExploreDE);	// слышу опасный звук, но не вижу, враг выгодный			(ExploreDE)		
+//	else if (B && !K && !H)		SetState(stateExploreNDE);	// слышу не опасный звук, но не вижу, враг не выгодный	(ExploreNDNE)
+//	else if (B && !K && H)		SetState(stateExploreNDE);	// слышу не опасный звук, но не вижу, враг выгодный		(ExploreNDE)
+//	else if (GetCorpse(ve) && (ve.obj->m_fFood > 1) && ((GetSatiety() < 0.85f) || flagEatNow))	
+//								SetState(stateEat);
+//	else						SetState(stateRest); 
 }
 
 void CAI_Boar::CheckSpecParams(u32 spec_params)
@@ -126,8 +135,20 @@ void CAI_Boar::CheckSpecParams(u32 spec_params)
 
 }
 
+void CAI_Boar::LookPosition(Fvector to_point)
+{
+	Fvector dir;
+	dir.sub(to_point, Position());
+	float yaw,pitch;
+	dir.getHP(yaw,pitch);
+
+	r_torso_target.yaw = angle_normalize(-yaw);
+}
+
 // проверка включения поворота костей
 void CAI_Boar::ProcessTurn()
 {
 }
+
+
 

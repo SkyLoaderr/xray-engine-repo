@@ -70,12 +70,12 @@ void CAI_Bloodsucker::Load(LPCSTR section)
 
 	// define transitions
 	// order : 1. [anim -> anim]	2. [anim->state]	3. [state -> anim]		4. [state -> state]
-	MotionMan.AddTransition_A2A(eAnimStandSitDown,	eAnimSleep,	eAnimSitToSleep,	false);
-	MotionMan.AddTransition_S2A(PS_STAND,			eAnimSleep,	eAnimStandSitDown,	true);
-	MotionMan.AddTransition_S2S(PS_STAND,			PS_SIT,		eAnimStandSitDown,		false);
-	MotionMan.AddTransition_S2S(PS_STAND,			PS_LIE,		eAnimStandSitDown,		false);
-	MotionMan.AddTransition_S2S(PS_SIT,				PS_STAND,	eAnimSitStandUp,		false);
-	MotionMan.AddTransition_S2S(PS_LIE,				PS_STAND,	eAnimSitStandUp,		false);
+	MotionMan.AddTransition(eAnimStandSitDown,	eAnimSleep,	eAnimSitToSleep,	false);
+	MotionMan.AddTransition(PS_STAND,			eAnimSleep,	eAnimStandSitDown,	true);
+	MotionMan.AddTransition(PS_STAND,			PS_SIT,		eAnimStandSitDown,		false);
+	MotionMan.AddTransition(PS_STAND,			PS_LIE,		eAnimStandSitDown,		false);
+	MotionMan.AddTransition(PS_SIT,				PS_STAND,	eAnimSitStandUp,		false);
+	MotionMan.AddTransition(PS_LIE,				PS_STAND,	eAnimSitStandUp,		false);
 
 	// define links from Action to animations
 	MotionMan.LinkAction(ACT_STAND_IDLE,	eAnimStandIdle,	eAnimStandTurnLeft, eAnimStandTurnRight, PI_DIV_6);
@@ -107,8 +107,6 @@ void CAI_Bloodsucker::Load(LPCSTR section)
 
 	END_LOAD_SHARED_MOTION_DATA();
 }
-
-
 
 
 BOOL CAI_Bloodsucker::net_Spawn (LPVOID DC) 
@@ -158,6 +156,7 @@ void CAI_Bloodsucker::StateSelector()
 	else if ((GetCorpse(ve) && (ve.obj->m_fFood > 1)) && ((GetSatiety() < 0.85f) || flagEatNow))
 		SetState(stateEat);	
 	else						SetState(stateRest);
+
 }
 
 void __stdcall CAI_Bloodsucker::BoneCallback(CBoneInstance *B)
@@ -167,48 +166,56 @@ void __stdcall CAI_Bloodsucker::BoneCallback(CBoneInstance *B)
 	this_class->Bones.Update(B, Level().timeServer());
 }
 
+
 void CAI_Bloodsucker::vfAssignBones()
 {
 	// Установка callback на кости
-
-	int bone1	= PKinematics(Visual())->LL_BoneID("bip01_spine");
-	PKinematics(Visual())->LL_GetBoneInstance(u16(bone1)).set_callback(BoneCallback,this);
-	int bone2	= PKinematics(Visual())->LL_BoneID("bip01_head");
-	PKinematics(Visual())->LL_GetBoneInstance(u16(bone2)).set_callback(BoneCallback,this);
+	bone_spine =	&PKinematics(Visual())->LL_GetBoneInstance(PKinematics(Visual())->LL_BoneID("bip01_spine"));
+	bone_head =		&PKinematics(Visual())->LL_GetBoneInstance(PKinematics(Visual())->LL_BoneID("bip01_head"));
+	bone_spine->set_callback(BoneCallback,this);
+	bone_head->set_callback(BoneCallback,this);
 
 	// Bones settings
 	Bones.Reset();
-	Bones.AddBone(GetBoneInstance(bone1), AXIS_X); Bones.AddBone(GetBoneInstance(bone1), AXIS_Y); Bones.AddBone(GetBoneInstance(bone1), AXIS_Z);
-	Bones.AddBone(GetBoneInstance(bone2), AXIS_X); Bones.AddBone(GetBoneInstance(bone2), AXIS_Y); Bones.AddBone(GetBoneInstance(bone2), AXIS_Z);
+	Bones.AddBone(bone_spine, AXIS_X);	Bones.AddBone(bone_spine, AXIS_Y);
+	Bones.AddBone(bone_head, AXIS_X);	Bones.AddBone(bone_head, AXIS_Y);
 }
 
 
+#define MAX_BONE_ANGLE PI_DIV_2
 
 void CAI_Bloodsucker::LookDirection(Fvector to_dir, float bone_turn_speed)
 {
 	// получаем вектор направления к источнику звука и его мировые углы
-	float		yaw,p;
-	to_dir.getHP(yaw,p);
+	float		yaw,pitch;
+	to_dir.getHP(yaw,pitch);
 
+	// установить параметры вращения по yaw
 	float cur_yaw = -r_torso_current.yaw;						// текущий мировой угол монстра
 	float bone_angle;											// угол для боны	
-	float k;													// знаковый коэф. для боны (лево/право)
 
-	float max_bone_angle = PI_DIV_4;									
 	float dy = _abs(angle_normalize_signed(yaw - cur_yaw));		// дельта, на которую нужно поворачиваться
 
-	if (getAI().bfTooSmallAngle(cur_yaw,yaw, max_bone_angle)) {	// bone turn only
+	if (getAI().bfTooSmallAngle(cur_yaw,yaw, MAX_BONE_ANGLE)) {	// bone turn only
 		bone_angle = dy;
 	} else {													// torso & bone turn 
-		r_torso_target.yaw = angle_normalize(-yaw);
-		if (dy / 2 < max_bone_angle) bone_angle = dy / 2;
-		else bone_angle = max_bone_angle;
+		if (AI_Path.TravelPath.empty()) r_torso_target.yaw = angle_normalize(-yaw);
+		if (dy / 2 < MAX_BONE_ANGLE) bone_angle = dy / 2;
+		else bone_angle = MAX_BONE_ANGLE;
 	}
 
-	if (angle_normalize_signed(yaw - cur_yaw) > 0) k = -1.f; // right side
-	else k = 1.f;	 // left side
+	bone_angle /= 2;
+	if (IsRightSide(yaw,cur_yaw)) bone_angle *= -1.f;
 
-	Bones.SetMotion(GetBoneInstance("bip01_spine"), AXIS_X, bone_angle * k, bone_turn_speed, 1);
+	Bones.SetMotion(bone_spine, AXIS_X, bone_angle, bone_turn_speed, 100);
+	Bones.SetMotion(bone_head,	AXIS_X, bone_angle, bone_turn_speed, 100);
+
+	// установить параметры вращения по pitch
+	clamp(pitch, -MAX_BONE_ANGLE, MAX_BONE_ANGLE);
+	pitch /= 2; 
+
+	Bones.SetMotion(bone_spine, AXIS_Y, pitch, bone_turn_speed, 100);
+	Bones.SetMotion(bone_head,	AXIS_Y, pitch, bone_turn_speed, 100);	
 }
 
 void CAI_Bloodsucker::LookPosition(Fvector to_point)

@@ -16,5 +16,8 @@ public:
 	virtual void	CheckSpecParams		(u32 spec_params);
 
 	virtual void	ProcessTurn			();
-	
+
+	virtual	void	LookPosition		(Fvector to_point);
+
+	CBitingNull		*stateTest;
 };

@@ -52,11 +52,13 @@ public:
 	// float speed factors
 	float					m_fsTurnNormalAngular;
 	float					m_fsWalkFwdNormal;
+	float					m_fsWalkFwdDamaged;
 	float					m_fsWalkBkwdNormal;
 	float					m_fsWalkTurn;
 	float 					m_fsWalkAngular;
 	float 					m_fsWalkTurnAngular;
 	float 					m_fsRunFwdNormal;
+	float 					m_fsRunFwdDamaged;
 	float 					m_fsRunTurn;
 	float 					m_fsRunTurnAngular;
 	float 					m_fsRunAngular;
@@ -217,6 +219,11 @@ public:
 			void			MoraleBroadcast					(float fValue);
 
 			void			LoadShared						(LPCSTR section);
+
+	// Common stuff
+			
+			bool			IsRightSide						(float ty, float cy) {return ((angle_normalize_signed(ty - cy) > 0));}
+
 // members
 public:
 

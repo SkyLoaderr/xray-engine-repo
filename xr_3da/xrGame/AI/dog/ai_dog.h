@@ -3,7 +3,6 @@
 #include "..\\biting\\ai_biting.h"
 #include "..\\ai_monster_bones.h"
 #include "..\\ai_monster_jump.h"
-#include "..\\ai_monster_share.h"
 
 
 class CAI_Dog : public CAI_Biting, public CJumping{

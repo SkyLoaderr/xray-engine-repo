@@ -90,7 +90,7 @@ void CAI_Dog::Load(LPCSTR section)
 	//	MotionMan.AddAnim(eAnimJumpFinish,		"jump1_",				 2, 0,						m_fsWalkAngular,			PS_STAND);
 
 	MotionMan.AddAnim(eAnimJumpStart,		"run_jump_",			 0, inherited::_sd->m_fsRunFwdNormal,		inherited::_sd->m_fsWalkAngular,	PS_STAND);
-	MotionMan.AddAnim(eAnimJumpFly,			"run_jump_",			 1, inherited::_sd->m_fsRunFwdNormal,		inherited::_sd->m_fsWalkAngular,	PS_STAND);
+	MotionMan.AddAnim(eAnimJumpGlide,		"run_jump_",			 1, inherited::_sd->m_fsRunFwdNormal,		inherited::_sd->m_fsWalkAngular,	PS_STAND);
 
 	MotionMan.AddAnim(eAnimJumpLeft,		"jump_left_",			-1,	inherited::_sd->m_fsWalkFwdNormal,		inherited::_sd->m_fsRunAngular,		PS_STAND);
 	MotionMan.AddAnim(eAnimJumpRight,		"jump_right_",			-1,	inherited::_sd->m_fsWalkFwdNormal,		inherited::_sd->m_fsRunAngular,		PS_STAND);
@@ -99,12 +99,12 @@ void CAI_Dog::Load(LPCSTR section)
 
 	// define transitions
 	// order : 1. [anim -> anim]	2. [anim->state]	3. [state -> anim]		4. [state -> state]
-	MotionMan.AddTransition_S2S(PS_STAND,	PS_LIE,		eAnimStandLieDown,		false);
-	MotionMan.AddTransition_S2S(PS_LIE,		PS_STAND,	eAnimLieStandUp,		false);
+	MotionMan.AddTransition(PS_STAND,	PS_LIE,		eAnimStandLieDown,		false);
+	MotionMan.AddTransition(PS_LIE,		PS_STAND,	eAnimLieStandUp,		false);
 	//MotionMan.AddTransition_S2S(PS_SIT,		PS_STAND,	eAnimSitStandUp,		false);
 	//MotionMan.AddTransition_S2S(PS_SIT,		PS_LIE,		eAnimSitLieDown,		false);
-	MotionMan.AddTransition_S2S(PS_LIE,		PS_SIT,		eAnimLieSitUp,			false);
-	MotionMan.AddTransition_S2S(PS_STAND,	PS_SIT,		eAnimStandSitDown,		false);
+	MotionMan.AddTransition(PS_LIE,		PS_SIT,		eAnimLieSitUp,			false);
+	MotionMan.AddTransition(PS_STAND,	PS_SIT,		eAnimStandSitDown,		false);
 
 	
 
