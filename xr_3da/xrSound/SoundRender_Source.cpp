@@ -12,7 +12,7 @@ CSoundRender_Source::CSoundRender_Source	()
 
 CSoundRender_Source::~CSoundRender_Source	()
 {
-	xr_free	(wave);
+	FS.r_close(wave);
 
 	SoundRender.cache.cat_destroy			(CAT);
 }

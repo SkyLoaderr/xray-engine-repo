@@ -9,6 +9,8 @@
 #include <xrCore.h>
 
 #include <dsound.h>
+#include <vorbis/codec.h>
+#include <vorbis/vorbisfile.h>
 
 #define _RELEASE(x)			{ if(x) { (x)->Release();       (x)=NULL; } }
 

@@ -8,16 +8,17 @@
 class XRSOUND_EDITOR_API 	CSoundRender_Source	: public CSound_source
 {
 public:
+	OggVorbis_File			ovf;
 	ref_str					fname;
+	IReader*				wave;					// real source
 	cache_cat				CAT;
-	void*					wave;					// real source
 	BOOL					_3D;
 	u32						dwTimeTotal;			// всего
 	u32						dwBytesTotal;
+//	u32						dwBytesPerSec;
 	u32						dwBytesPerMS;
 private:
-	void					LoadWaveAs3D			(LPCSTR name);
-	void					LoadWaveAs2D			(LPCSTR name);
+	void					LoadWave 				(LPCSTR name, BOOL b3D);
 public:
 	CSoundRender_Source		();
 	~CSoundRender_Source	();

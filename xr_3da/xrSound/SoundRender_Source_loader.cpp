@@ -6,198 +6,70 @@
 #include "soundrender_core.h"
 #include "soundrender_source.h"
 
-void* ParseWave		(IReader *data, LPWAVEFORMATEX &wfx, u32 &len)
+//	SEEK_SET	0	File beginning
+//	SEEK_CUR	1	Current file pointer position
+//	SEEK_END	2	End-of-file
+int ov_seek_func(void *datasource, s64 offset, int whence)	
 {
-	u32	dwRiff		= data->r_u32();
-	u32	dwLength	= data->r_u32();
-	u32	dwType		= data->r_u32();
-	u32	dwPos;
-	void	*ptr		= NULL;
-	wfx					= NULL;
-
-	if (dwRiff != mmioFOURCC('R', 'I', 'F', 'F')) return NULL;
-	if (dwType != mmioFOURCC('W', 'A', 'V', 'E')) return NULL;
-
-	while (!data->eof()) {
-		dwType		= data->r_u32();
-		dwLength	= data->r_u32();
-		dwPos		= data->tell();
-
-		switch (dwType){
-		case mmioFOURCC('f', 'm', 't', ' '):
-			if (!wfx) {
-				wfx = LPWAVEFORMATEX (xr_malloc(dwLength));
-				data->r(wfx,dwLength);
-			}
-			break;
-		case mmioFOURCC('d', 'a', 't', 'a'):
-			if (!ptr) {
-				ptr = data->pointer();
-				len = dwLength;
-			}
-			break;
-		}
-		if (wfx && ptr) return ptr;
-		data->seek(dwPos+dwLength);
+	switch (whence){
+	case SEEK_SET: ((IReader*)datasource)->seek((int)offset);	 break;
+	case SEEK_CUR: ((IReader*)datasource)->advance((int)offset); break;
+	case SEEK_END: ((IReader*)datasource)->seek(((IReader*)datasource)->length()+offset); break;
 	}
-	return NULL;
+	return 0; 
+}
+size_t ov_read_func(void *ptr, size_t size, size_t nmemb, void *datasource)
+{ 
+	IReader* F = (IReader*)datasource; 
+	size_t exist_block	= _max(0,iFloor(F->elapsed()/size));
+	size_t read_block	= _min(exist_block,nmemb);
+	F->r				(ptr,read_block*size);	
+	return read_block;
+}
+int ov_close_func(void *datasource)									
+{	
+	return 0; 
+}
+long ov_tell_func(void *datasource)									
+{	
+	return ((IReader*)datasource)->tell(); 
 }
 
-u32 Freq2Size(u32 freq) {
-	switch (freq) {
-	case 11025:	return 1;
-	case 22050: return 2;
-	case 44100: return 4;
-	default:	return 0;
-	}
-}
+int ov_seek_func1(void *datasource, s64 offset, int whence){ return fseek((FILE*)datasource, offset, whence); }
+size_t ov_read_func1(void *ptr, size_t size, size_t nmemb, void *datasource){ return fread(ptr, size, nmemb, (FILE*)datasource);}
+int ov_close_func1(void *datasource){return fclose((FILE*)datasource);}
+long ov_tell_func1(void *datasource){return ftell((FILE*)datasource);}
 
-// Convert data to SRC bits -MONO- PB Hz
-// MONO - because ref_sound must be 3D source - elsewhere performance penalty occurs
-void *ConvertWave(WAVEFORMATEX &wfx_dest, LPWAVEFORMATEX &wfx, void *data, u32 &dwLen)
+void CSoundRender_Source::LoadWave	(LPCSTR pName, BOOL b3D)
 {
-	HACMSTREAM	hc;
-	DWORD		dwNewLen;
-	if (FAILED(acmStreamOpen(&hc, NULL, wfx, &wfx_dest, NULL, NULL, 0, ACM_STREAMOPENF_NONREALTIME))) return NULL;
-	if (!hc) return NULL;
-	if (FAILED(acmStreamSize(hc,dwLen,&dwNewLen,ACM_STREAMSIZEF_SOURCE))) return NULL;
-	if (!dwNewLen) return NULL;
-
-	ACMSTREAMHEADER		acmhdr;
-	void *dest			= xr_malloc(dwNewLen);
-	acmhdr.cbStruct		=sizeof(acmhdr);
-	acmhdr.fdwStatus	=0;
-	acmhdr.pbSrc		=(BYTE *)data;
-	acmhdr.cbSrcLength	=dwLen;
-	acmhdr.pbDst		=(BYTE *)dest;
-	acmhdr.cbDstLength	=dwNewLen;
-
-	if (FAILED(acmStreamPrepareHeader(hc,&acmhdr,0))) {
-		acmStreamClose			(hc,0);
-		xr_free					(dest);
-		return			NULL;
-	}
-	if (FAILED(acmStreamConvert(hc,&acmhdr,ACM_STREAMCONVERTF_START|ACM_STREAMCONVERTF_END))) {
-		acmStreamUnprepareHeader(hc,&acmhdr,0);
-		acmStreamClose			(hc,0);
-		xr_free					(dest);
-		return			NULL;
-	}
-	dwLen = acmhdr.cbDstLengthUsed;
-	acmStreamUnprepareHeader	(hc,&acmhdr,0);
-	acmStreamClose				(hc,0);
-	return dest;
-}
-
-void CSoundRender_Source::LoadWaveAs2D	(LPCSTR pName)
-{
+	fname					= pName;
 	// Load file into memory and parse WAV-format
-	destructor<IReader>		data	(FS.r_open(pName));
-	WAVEFORMATEX*			pFormat;
-	u32						dwLen;
-	void *					wavedata = ParseWave(&data(),pFormat,dwLen);
-	if (!wavedata)			return;
+	wave					= FS.r_open(pName); VERIFY(wave);
+//	ov_callbacks ovc		= {ov_read_func,ov_seek_func,ov_close_func,ov_tell_func};
+//	ov_open_callbacks		(wave,&ovf,NULL,0,ovc);
 
-	// Parsing OK, converting to best format
+	ov_callbacks ovc		= {ov_read_func1,ov_seek_func1,ov_close_func1,ov_tell_func1};
+	FILE* F = fopen(pName,"rb");
+	ov_open_callbacks		(F,&ovf,NULL,0,ovc);
+
+	vorbis_info* ovi		= ov_info(&ovf,-1);
+	// verify
+	R_ASSERT3				(b3D?ovi->channels==1:ovi->channels==2,"Invalid source num channels:",pName);
+	R_ASSERT3				(ovi->rate==44100,"Invalid source rate:",pName);
+	ov_halfrate				(&ovf,psSoundFreq==sf_22K);
+
 	WAVEFORMATEX			wfxdest;
-	void*					converted;
-
-	//	2411252 - Andy
 	SoundRender.pBuffer->GetFormat(&wfxdest,sizeof(wfxdest),0);
-	if ((pFormat->wFormatTag!=1)||(pFormat->nChannels!=2)||(pFormat->nSamplesPerSec!=44100)||(pFormat->wBitsPerSample!=16))
-	{
-		if (0==strstr(Core.Params,"-sound_any_fmt"))	Debug.fatal	("! Invalid wave format (must be 44KHz,16bit,stereo), file: %s",pName);
-		else											Msg			("! Invalid wave format (must be 44KHz,16bit,stereo), file: %s",pName);
-	}
-	if ((pFormat->wFormatTag!=1)&&(pFormat->nSamplesPerSec!=wfxdest.nSamplesPerSec)) {
-		// Firstly convert to PCM with SRC freq and Channels; BPS = as Dest
-		wfxdest.nChannels		= pFormat->nChannels;
-		wfxdest.nSamplesPerSec	= pFormat->nSamplesPerSec;
-		wfxdest.nBlockAlign		= wfxdest.nChannels * wfxdest.wBitsPerSample / 8;
-		wfxdest.nAvgBytesPerSec = wfxdest.nSamplesPerSec * wfxdest.nBlockAlign;
-		void *conv				= ConvertWave(wfxdest, pFormat, wavedata, dwLen);
-		if (!conv)				{xr_free(pFormat); return; }
+	wfxdest.nChannels		= u16(ovi->channels); 
+	wfxdest.nBlockAlign		= wfxdest.nChannels * wfxdest.wBitsPerSample / 8;
+	wfxdest.nAvgBytesPerSec = wfxdest.nSamplesPerSec * wfxdest.nBlockAlign;
 
-		// Secondly convert to best format for 2D
-		Memory.mem_copy			(pFormat,&wfxdest,sizeof(wfxdest));
-		SoundRender.pBuffer->GetFormat(&wfxdest,sizeof(wfxdest),0);
-		wfxdest.nChannels		= pFormat->nChannels;
-		wfxdest.wBitsPerSample	= pFormat->wBitsPerSample;
-		wfxdest.nBlockAlign		= wfxdest.nChannels * wfxdest.wBitsPerSample / 8;
-		wfxdest.nAvgBytesPerSec = wfxdest.nSamplesPerSec * wfxdest.nBlockAlign;
-		converted				= ConvertWave(wfxdest, pFormat, conv, dwLen);
-		xr_free					(conv);
-	} else {
-		// Wave has PCM format - so only one conversion
-		// Freq as in PrimaryBuf, Channels = ???, Bits as in source data if possible
-		if (pFormat->wFormatTag==1)	wfxdest.wBitsPerSample	= pFormat->wBitsPerSample;
-		wfxdest.nBlockAlign		= wfxdest.nChannels			* wfxdest.wBitsPerSample / 8;
-		wfxdest.nAvgBytesPerSec = wfxdest.nSamplesPerSec	* wfxdest.nBlockAlign;
-		converted				= ConvertWave(wfxdest, pFormat, wavedata, dwLen);
-	}
-	if (!converted)				{ xr_free(pFormat); return; }
-
-	dwTimeTotal					= sdef_source_footer + 1000 * dwLen / wfxdest.nAvgBytesPerSec;
-	dwBytesPerMS				= wfxdest.nAvgBytesPerSec / 1000;
-	dwBytesTotal				= dwLen;
-	wave						= converted;
-	xr_free						(pFormat);
-}
-
-void	CSoundRender_Source::LoadWaveAs3D(LPCSTR pName)
-{
-	// Load file into memory and parse WAV-format
-	R_ASSERT2				(FS.exist(pName),pName);
-	destructor<IReader>		data(FS.r_open(pName));
-	WAVEFORMATEX*			pFormat;
-	u32						dwLen;
-	void *					wavedata = ParseWave	(&data(),pFormat,dwLen);
-	if (!wavedata)			return;
-
-	// Parsing OK, converting to best format
-	WAVEFORMATEX			wfxdest;
-	void*					converted;
-
-	SoundRender.pBuffer->GetFormat	(&wfxdest,sizeof(wfxdest),0);
-	if ((pFormat->wFormatTag!=1)||(pFormat->nChannels!=1)||(pFormat->nSamplesPerSec!=44100)||(pFormat->wBitsPerSample!=16))
-	{
-		if (0==strstr(Core.Params,"-sound_any_fmt"))	Debug.fatal	("! Invalid wave format (must be 44KHz,16bit,mono), file: %s",pName);
-		else											Msg			("! Invalid wave format (must be 44KHz,16bit,mono), file: %s",pName);
-	}
-	if ((pFormat->wFormatTag!=1)&&(pFormat->nSamplesPerSec!=wfxdest.nSamplesPerSec)) {
-		// Firstly convert to PCM with SRC freq and Channels; BPS = as Dest
-		wfxdest.nChannels		= pFormat->nChannels;
-		wfxdest.nSamplesPerSec	= pFormat->nSamplesPerSec;
-		wfxdest.nBlockAlign		= wfxdest.nChannels * wfxdest.wBitsPerSample / 8;
-		wfxdest.nAvgBytesPerSec = wfxdest.nSamplesPerSec * wfxdest.nBlockAlign;
-		void *conv				= ConvertWave(wfxdest, pFormat, wavedata, dwLen);
-		if (!conv)				{ xr_free(pFormat); return; }
-
-		// Secondly convert to best format for 3D
-		Memory.mem_copy			(pFormat,&wfxdest,sizeof(wfxdest));
-		SoundRender.pBuffer->GetFormat(&wfxdest,sizeof(wfxdest),0);
-		wfxdest.nChannels		= 1;
-		wfxdest.wBitsPerSample	= pFormat->wBitsPerSample;
-		wfxdest.nBlockAlign		= wfxdest.nChannels * wfxdest.wBitsPerSample / 8;
-		wfxdest.nAvgBytesPerSec = wfxdest.nSamplesPerSec * wfxdest.nBlockAlign;
-		converted				= ConvertWave(wfxdest, pFormat, conv, dwLen);
-		xr_free					(conv);
-	} else {
-		// Wave has PCM format - so only one conversion
-		// Freq as in PrimaryBuf, Channels = 1, Bits as in source data if possible
-		wfxdest.nChannels		= 1;
-		if (pFormat->wFormatTag==1)	wfxdest.wBitsPerSample	= pFormat->wBitsPerSample;
-		wfxdest.nBlockAlign		= wfxdest.nChannels * wfxdest.wBitsPerSample / 8;
-		wfxdest.nAvgBytesPerSec = wfxdest.nSamplesPerSec * wfxdest.nBlockAlign;
-		converted				= ConvertWave(wfxdest, pFormat, wavedata, dwLen);
-	}
-	if (!converted)				{ xr_free(pFormat); }
-
-	dwTimeTotal					= sdef_source_footer + 1000 * dwLen / wfxdest.nAvgBytesPerSec;
-	dwBytesPerMS				= wfxdest.nAvgBytesPerSec / 1000;
-	dwBytesTotal				= dwLen;
-	wave						= converted;
-	xr_free						(pFormat);
+	s64 pcm_total			= ov_pcm_total(&ovf,-1)-1; 
+	if (psSoundFreq==sf_22K) pcm_total/=2;
+	dwBytesTotal			= u32(pcm_total*wfxdest.nBlockAlign); 
+	dwBytesPerMS			= wfxdest.nAvgBytesPerSec/1000;
+//	dwBytesPerSec			= wfxdest.nAvgBytesPerSec;
+	dwTimeTotal				= sdef_source_footer + (dwBytesTotal*1000)/wfxdest.nAvgBytesPerSec;
 }
 
 void CSoundRender_Source::Load		(LPCSTR name,	BOOL b3D)
@@ -210,11 +82,10 @@ void CSoundRender_Source::Load		(LPCSTR name,	BOOL b3D)
 	fname				= N;
 	_3D					= b3D;
 
-	strconcat			(fn,N,".wav");
+	strconcat			(fn,N,".ogg");
 	if (!FS.exist("$level$",fn))	FS.update_path	(fn,"$game_sounds$",fn);
 
-	if (_3D)			LoadWaveAs3D		( fn );
-	else				LoadWaveAs2D		( fn );
+	LoadWave			(fn,_3D);
 	R_ASSERT			(wave);
 	SoundRender.cache.cat_create			( CAT, dwBytesTotal );
 
