@@ -103,6 +103,14 @@ public:
 class	ENGINE_API	IRender_interface
 {
 public:
+	enum GenerationLevel
+	{
+		GENERATION_R1				= 81,
+		GENERATION_DX81				= 81,
+		GENERATION_R2				= 90,
+		GENERATION_DX90				= 90,
+		GENERATION_forcedword		= u32(-1)
+	};
 	enum ScreenshotMode
 	{
 		SM_NORMAL					= 0,		// jpeg,	name ignored
@@ -118,6 +126,8 @@ public:
 	CFrustum						ViewBase;
 	CFrustum*						View;
 public:
+	GenerationLevel					get_generation			()											= 0;
+
 	// Loading / Unloading
 	virtual	void					create					()											= 0;
 	virtual	void					destroy					()											= 0;
