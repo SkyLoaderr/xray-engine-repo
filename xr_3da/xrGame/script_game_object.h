@@ -245,7 +245,7 @@ public:
 			CScriptMonsterHitInfo	GetMonsterHitInfo();
 			void					bind_object		(CScriptBinderObject *object);
 	template <typename T>
-	IC		T	*CScriptGameObject::motivation_action_manager()
+	IC		T	*motivation_action_manager()
 	{
 		T	*manager = dynamic_cast<T*>(m_tpGameObject);
 		if (!manager)
