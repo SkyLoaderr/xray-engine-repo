@@ -300,8 +300,7 @@ void CRender::Render		()
 
 		//		if (has_point_unshadowed)	-> 	accum point unshadowed
 		if		(!Lights.v_point.empty())	{
-			light*	L	= Lights.v_point.back	();
-			Lights.v_point.pop_back		();
+			light*	L	= Lights.v_point.back	();		Lights.v_point.pop_back		();
 			L->vis_update				();
 			if (L->vis.visible)			{ 
 				Target.accum_point		(L);
@@ -311,8 +310,7 @@ void CRender::Render		()
 
 		//		if (has_spot_unshadowed)	-> 	accum spot unshadowed
 		if		(!Lights.v_spot.empty())	{
-			light*	L	= Lights.v_spot.back	();
-			Lights.v_spot.pop_back			();
+			light*	L	= Lights.v_spot.back	();		Lights.v_spot.pop_back			();
 			L->vis_update				();
 			if (L->vis.visible)			{ 
 				Target.accum_spot		(L);
