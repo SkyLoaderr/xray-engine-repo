@@ -306,7 +306,8 @@ Shader*	CShaderManager::Create(LPCSTR s_shader, LPCSTR s_textures, LPCSTR s_cons
 
 void CShaderManager::Delete(Shader* &S) 
 {
-	R_ASSERT		(S);
+	if (0==S)	return;
+
 	for (DWORD p=0; p<S->Passes.size(); p++)
 	{
 		CPass& P = S->Passes[p];

@@ -27,6 +27,7 @@ void CFontBase::OnDeviceCreate()
 }
 void CFontBase::OnDeviceDestroy()
 {
+	REQ_DESTROY();
 	Device.Shader.Delete	(pShader);
 }
 
