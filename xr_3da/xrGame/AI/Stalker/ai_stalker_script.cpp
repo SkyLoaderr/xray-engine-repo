@@ -11,6 +11,7 @@
 #include "../../ai_script_actions.h"
 #include "../../weapon.h"
 #include "../../WeaponMagazined.h"
+#include "../../torch.h"
 
 void CAI_Stalker::UseObject(const CObject *tpObject)
 {
@@ -232,6 +233,11 @@ bool CAI_Stalker::bfAssignObject(CEntityAction *tpEntityAction)
 		case eObjectActionActivate : {
 			CInventoryItem	*l_tpInventoryItem = dynamic_cast<CInventoryItem*>(l_tObjectAction.m_tpObject);
 			if (l_tpInventoryItem) {
+				CTorch			*torch = dynamic_cast<CTorch*>(l_tObjectAction.m_tpObject);
+				if (torch) {
+					torch->Switch(true);
+					break;
+				}
 				m_inventory.Slot(l_tpInventoryItem);
 				m_inventory.Activate(l_tpInventoryItem->GetSlot());
 				if (l_tpWeapon && (CWeapon::eShowing != l_tpWeapon->STATE))
@@ -244,6 +250,11 @@ bool CAI_Stalker::bfAssignObject(CEntityAction *tpEntityAction)
 		case eObjectActionDeactivate : {
 			CInventoryItem	*l_tpInventoryItem = dynamic_cast<CInventoryItem*>(l_tObjectAction.m_tpObject);
 			if (l_tpInventoryItem) {
+				CTorch			*torch = dynamic_cast<CTorch*>(l_tObjectAction.m_tpObject);
+				if (torch) {
+					torch->Switch(false);
+					break;
+				}
 				m_inventory.Activate(u32(-1));
 				l_tObjectAction.m_bCompleted = true;
 			}
