@@ -107,16 +107,16 @@ CEnvironment::~CEnvironment	()
 void CEnvDescriptor::load	(LPCSTR S)
 {
 	sky_texture				= Device.Resources->_CreateTexture(pSettings->r_string(S,"sky_texture"));
-	sky_color				= pSettings->r_fvector3	(S,"sky_color");
+	sky_color				= pSettings->r_fvector3	(S,"sky_color");		sky_color.mul(.5f);
 	far_plane				= pSettings->r_float	(S,"far_plane");
 	fog_color				= pSettings->r_fvector3	(S,"fog_color");
 	fog_density				= pSettings->r_float	(S,"fog_density");
 	rain_density			= pSettings->r_float	(S,"rain_density");
 	rain_color				= pSettings->r_fvector3	(S,"rain_color");
-	ambient					= pSettings->r_fvector3	(S,"ambient");
-	lmap_color				= pSettings->r_fvector3	(S,"lmap_color");
-	hemi_color				= pSettings->r_fvector3	(S,"hemi_color");
-	sun_color				= pSettings->r_fvector3	(S,"sun_color");
+	ambient					= pSettings->r_fvector3	(S,"ambient");			ambient.mul		(.5f);
+	lmap_color				= pSettings->r_fvector3	(S,"lmap_color");		
+	hemi_color				= pSettings->r_fvector3	(S,"hemi_color");		hemi_color.mul	(.5f);
+	sun_color				= pSettings->r_fvector3	(S,"sun_color");		sun_color.mul	(.5f);
 	Fvector2 sund			= pSettings->r_fvector2	(S,"sun_dir");	sun_dir.setHP	(deg2rad(sund.y),deg2rad(sund.x));
 }
 void CEnvDescriptor::unload	()
