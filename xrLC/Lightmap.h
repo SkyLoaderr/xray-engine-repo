@@ -13,7 +13,7 @@ class CDeflector;
 class CLightmap  
 {
 public:
-	b_texture					lm;
+	lm_layer					lm;
 public:
 	CLightmap					();
 	~CLightmap					();

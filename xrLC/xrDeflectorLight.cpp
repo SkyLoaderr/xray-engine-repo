@@ -471,11 +471,9 @@ VOID CDeflector::L_Calculate(CDB::COLLIDER* DB, base_lighting* LightsSelected, H
 
 		// Calculate
 		{
-			R_ASSERT			(lm.width		<=(lmap_size-2*BORDER));
+			R_ASSERT			(lm.width	<=(lmap_size-2*BORDER));
 			R_ASSERT			(lm.height	<=(lmap_size-2*BORDER));
-			u32 size			= lm.width*lm.height;
-			lm.surface.resize	(size);
-			lm.marker.resize	(size);
+			lm.create			(lm.width,lm.height);
 		}
 		L_Direct		(DB,LightsSelected,H);
 	} catch (...)
@@ -534,11 +532,7 @@ VOID CDeflector::Light(CDB::COLLIDER* DB, base_lighting* LightsSelected, HASH& H
 		{
 			// Horizontal ZERO - vertical line
 			lm_layer		T;
-			T.width			= 2*BORDER;
-			T.height		= lm.height+2*BORDER;
-			u32 size		= T.width*T.height;
-			T.surface.resize(size);
-			T.marker.resize	(size);
+			T.create		(2*BORDER,lm.height+2*BORDER);
 
 			// Transfer
 			for (u32 y=0; y<T.height; y++)
@@ -560,11 +554,7 @@ VOID CDeflector::Light(CDB::COLLIDER* DB, base_lighting* LightsSelected, HASH& H
 		{
 			// Vertical ZERO - horizontal line
 			lm_layer		T;
-			T.width			= lm.width+2*BORDER;
-			T.height		= 2*BORDER;
-			u32 size		= T.width*T.height;
-			T.surface.resize(size);
-			T.marker.resize	(size);
+			T.create		(lm.width+2*BORDER, 2*BORDER);
 
 			// Transfer
 			for (u32 x=0; x<T.width; x++)
@@ -586,12 +576,8 @@ VOID CDeflector::Light(CDB::COLLIDER* DB, base_lighting* LightsSelected, HASH& H
 			// Generic blit
 			lm_layer		lm_old	= lm;
 			lm_layer		lm_new;
-			lm_new.width			= (lm_old.width+2*BORDER);
-			lm_new.height			= (lm_old.height+2*BORDER);
-			u32 size				= lm_new.width*lm_new.height;
-			lm_new.surface.resize	(size);
-			lm_new.marker.resize	(size);
-			blit					(lm_new,lm_old,BORDER,BORDER,255-BORDER);
+			lm_new.create			(lm_old.width+2*BORDER,lm_old.height+2*BORDER);
+			lblit					(lm_new,lm_old,BORDER,BORDER,255-BORDER);
 			lm						= lm_new;
 			ApplyBorders			(lm,254);
 			ApplyBorders			(lm,253);

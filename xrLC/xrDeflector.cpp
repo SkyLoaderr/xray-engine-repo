@@ -4,7 +4,7 @@
 #include "xrIsect.h"
 #include "math.h"
 
-void lm_layer::Pack (xr_vector<u32>& dest)	
+void lm_layer::Pack		(xr_vector<u32>& dest)	
 {
 	dest.resize			(width*height);
 	xr_vector<base_color>::iterator I=surface.begin();
@@ -43,12 +43,30 @@ void blit			(u32* dest, u32 ds_x, u32 ds_y, u32* src, u32 ss_x, u32 ss_y, u32 px
 		}
 }
 
-void blit			(lm_layer& dst, lm_layer& src, u32 px, u32 py, u32 aREF)
+void lblit			(lm_layer& dst, lm_layer& src, u32 px, u32 py, u32 aREF)
 {
 	u32		ds_x	= dst.width;
 	u32		ds_y	= dst.height;
 	u32		ss_x	= src.width;
 	u32		ss_y	= src.height;
+	R_ASSERT(ds_x>=(ss_x+px));
+	R_ASSERT(ds_y>=(ss_y+py));
+	for (u32 y=0; y<ss_y; y++)
+		for (u32 x=0; x<ss_x; x++)
+		{
+			u32 dx = px+x;
+			u32 dy = py+y;
+			base_color	sc = src.surface[y*ss_x+x];
+			u8			sm = src.marker [y*ss_x+x];
+			if (sm>=aREF) {
+				dst.surface	[dy*ds_x+dx] = sc;
+				dst.marker	[dy*ds_x+dx] = sm;
+			}
+		}
+}
+
+void blit			(lm_layer& dst, u32 ds_x, u32 ds_y, lm_layer& src,	u32 ss_x, u32 ss_y, u32 px, u32 py, u32 aREF)
+{
 	R_ASSERT(ds_x>=(ss_x+px));
 	R_ASSERT(ds_y>=(ss_y+py));
 	for (u32 y=0; y<ss_y; y++)
@@ -76,6 +94,25 @@ void blit_r	(u32* dest, u32 ds_x, u32 ds_y, u32* src, u32 ss_x, u32 ss_y, u32 px
 			u32 dy = py+x;
 			u32 sc = src[y*ss_x+x];
 			if (color_get_A(sc)>=aREF) dest[dy*ds_x+dx] = sc;
+		}
+}
+
+
+void blit_r	(lm_layer& dst, u32 ds_x, u32 ds_y, lm_layer& src, u32 ss_x, u32 ss_y, u32 px, u32 py, u32 aREF)
+{
+	R_ASSERT(ds_x>=(ss_y+px));
+	R_ASSERT(ds_y>=(ss_x+py));
+	for (u32 y=0; y<ss_y; y++)
+		for (u32 x=0; x<ss_x; x++)
+		{
+			u32 dx = px+y;
+			u32 dy = py+x;
+			base_color	sc = src.surface[y*ss_x+x];
+			u8			sm = src.marker [y*ss_x+x];
+			if (sm>=aREF) {
+				dst.surface	[dy*ds_x+dx] = sc;
+				dst.marker	[dy*ds_x+dx] = sm;
+			}
 		}
 }
 
