@@ -15,7 +15,7 @@ private:
 
 //    void			ScaleShapes		(const Fvector& val);
 public:
-	void			ResetScale		();
+	void			ApplyScale		();
 	void			add_sphere		(const Fsphere& S);
 	void			add_box			(const Fmatrix& B);
 protected:                 

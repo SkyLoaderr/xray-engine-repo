@@ -25,10 +25,12 @@
 #define SPAWNPOINT_CHUNK_GROUPID		0xE416
 #define SPAWNPOINT_CHUNK_TYPE			0xE417
 #define SPAWNPOINT_CHUNK_FLAGS			0xE418
-#define SPAWNPOINT_CHUNK_ATTACHED_OBJ	0xE419
 
-#define SPAWNPOINT_CHUNK_ENTITYREF		0xE500
-#define SPAWNPOINT_CHUNK_SPAWNDATA		0xE501
+#define SPAWNPOINT_CHUNK_ENTITYREF		0xE419
+#define SPAWNPOINT_CHUNK_SPAWNDATA		0xE420
+
+#define SPAWNPOINT_CHUNK_ATTACHED_OBJ	0xE421
+
 //----------------------------------------------------
 #define MAX_TEAM 6
 const DWORD RP_COLORS[MAX_TEAM]={0xff0000,0x00ff00,0x0000ff,0xffff00,0x00ffff,0xff00ff};
@@ -39,6 +41,16 @@ ShaderMap CSpawnPoint::m_Icons;
 void CSpawnPoint::SSpawnData::Create(LPCSTR entity_ref)
 {
     m_Data 	= F_entity_Create(entity_ref);
+
+    xrSE_CFormed* cform = dynamic_cast<xrSE_CFormed*>(m_Data);
+//    if (cform) cform->shapes.push_back(xrSE_CFormed::shape_def());
+    if (cform){
+    	cform->shapes.reserve		(128);
+//	   	cform->shapes.push_back		(xrSE_CFormed::shape_def());
+//	   	cform->shapes.push_back		(xrSE_CFormed::shape_def());
+//	   	cform->shapes.push_back		(xrSE_CFormed::shape_def());
+    }
+
     if (m_Data){ 
         if (pSettings->LineExists(entity_ref,"$player")){
             if (pSettings->ReadBOOL(entity_ref,"$player"))
@@ -88,12 +100,17 @@ bool CSpawnPoint::SSpawnData::ExportGame(SExportStreams& F, CSpawnPoint* owner)
 
     // export cform (if needed)
     xrSE_CFormed* cform 		= dynamic_cast<xrSE_CFormed*>(m_Data);
+//   	if (cform) cform->shapes.push_back		(xrSE_CFormed::shape_def());
+    
     if (cform&&!(owner->m_AttachedObject&&(owner->m_AttachedObject->ClassID==OBJCLASS_SHAPE))){
-		ELog.DlgMsg				(mtError,"Spawn Point: '%s' must contain attaced shape.",owner->Name);
+		ELog.DlgMsg				(mtError,"Spawn Point: '%s' must contain attached shape.",owner->Name);
     	return false;
     }
-    CEditShape* shape			= dynamic_cast<CEditShape*>(owner->m_AttachedObject);
-    cform->shapes 				= shape->GetShapes();
+    if (cform){
+	    CEditShape* shape		= dynamic_cast<CEditShape*>(owner->m_AttachedObject); R_ASSERT(shape);
+		shape->ApplyScale		();
+    	cform->shapes 			= shape->GetShapes();
+    }
     // end
     
     NET_Packet					Packet;
@@ -102,6 +119,10 @@ bool CSpawnPoint::SSpawnData::ExportGame(SExportStreams& F, CSpawnPoint* owner)
     F.spawn.stream.open_chunk	(F.spawn.chunk++);
     F.spawn.stream.write		(Packet.B.data,Packet.B.count);
     F.spawn.stream.close_chunk	();
+
+//    if (cform){
+//    	cform->shapes 			= shape->GetShapes();
+//	}    
     return true;
 }
 void CSpawnPoint::SSpawnData::FillProp(LPCSTR pref, PropItemVec& items)
@@ -318,9 +339,6 @@ bool CSpawnPoint::Load(CStream& F){
 
 	CCustomObject::Load(F);
 
-	// objects
-    Scene.ReadObjects(F,SPAWNPOINT_CHUNK_ATTACHED_OBJ,OnAppendObject);
-
     // new generation
     if (F.FindChunk(SPAWNPOINT_CHUNK_ENTITYREF)){
         if (!m_SpawnData.Load(F)){
@@ -343,6 +361,9 @@ bool CSpawnPoint::Load(CStream& F){
         default: THROW;
         }
     }
+
+	// objects
+    Scene.ReadObjects(F,SPAWNPOINT_CHUNK_ATTACHED_OBJ,OnAppendObject);
 
 	UpdateTransform	();
 

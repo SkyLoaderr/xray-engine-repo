@@ -471,7 +471,7 @@ BOOL SceneBuilder::BuildPointLight(b_light* b, const Flags32& usage, svector<WOR
 
 BOOL SceneBuilder::BuildLight(CLight* e)
 {
-    if (!(e->m_Flags.is(CLight::flAffectStatic)&&!(e->m_Flags.is(CLight::flAffectDynamic))))
+    if (!e->m_Flags.is(CLight::flAffectStatic|CLight::flAffectDynamic))
     	return FALSE;
 
     b_light	L;

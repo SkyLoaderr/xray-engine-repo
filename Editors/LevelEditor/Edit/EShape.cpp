@@ -87,7 +87,7 @@ void CEditShape::SetScale(Fvector& val)
     UpdateTransform();
 }
 
-void CEditShape::ResetScale()
+void CEditShape::ApplyScale()
 {
 	for (ShapeIt it=shapes.begin(); it!=shapes.end(); it++){
 		switch (it->type){
@@ -128,9 +128,9 @@ void CEditShape::add_box(const Fmatrix& B)
 
 void CEditShape::Attach(CEditShape* from)
 {
-	ResetScale				();
+	ApplyScale				();
 	// transfer data
-    from->ResetScale		();
+    from->ApplyScale		();
 	Fmatrix M 				= from->_Transform();
     M.mulA					(_ITransform());
 	for (ShapeIt it=from->shapes.begin(); it!=from->shapes.end(); it++){
@@ -159,7 +159,7 @@ void CEditShape::Detach()
 {
 	if (shapes.size()>1){
     	Select			(true);
-        ResetScale		();
+        ApplyScale		();
         // create scene shapes
         const Fmatrix& M = _Transform();
         ShapeIt it=shapes.begin(); it++;
