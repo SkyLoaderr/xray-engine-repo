@@ -1,0 +1,18 @@
+<?xml version='1.0' encoding="UTF-8"?>
+<window>
+    <!-- PREFIX -->
+	<prefix_static x="20" y="400" width="200" height="40">
+		<text font="letterica25" r="225" g="225" b="250"></text>
+	</prefix_static>
+
+	<!-- EDIT BOX -->
+	<edit_box x="130" y="400" width="500" height="40">
+		<text font="letterica25" r="225" g="225" b="250"></text>
+	</edit_box>
+
+	<!-- CHAT LOG -->
+	<chat_log_list x="20" y="280" width="500" height="320" item_height = "18" fade="1000">
+		<font font="letterica18" r="255" g="255" b="255"/>
+	</chat_log_list>
+
+</window>
