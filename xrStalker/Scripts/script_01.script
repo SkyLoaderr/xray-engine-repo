@@ -69,7 +69,7 @@ function main()
 
 	wait		(1000)
 
-	script_01.play_sound_object("stalker2","scripts\\kto-to_idet",0)
+	script_01.play_sound_object("actor","scripts\\kto-to_idet",1)
 
 	stalker1:script	(true,script_01.script_name())
 	stalker2:script	(true,script_01.script_name())
