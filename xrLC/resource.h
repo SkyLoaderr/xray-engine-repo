@@ -31,29 +31,6 @@
 #define IDC_P_TEXT                      1013
 #define IDC_PHASE_TIME                  1014
 #define IDC_PROGRESS1                   1015
-#define IDC_PROGRESS2                   1047
-#define IDC_PROGRESS3                   1048
-#define IDC_PROGRESS4                   1049
-#define IDC_PROGRESS5                   1050
-#define IDC_PROGRESS6                   1051
-#define IDC_PROGRESS7                   1052
-#define IDC_PROGRESS8                   1053
-#define IDC_PROGRESS9                   1054
-#define IDC_PROGRESS10                  1055
-#define IDC_PROGRESS11                  1056
-#define IDC_PROGRESS12                  1057
-#define IDC_PROGRESS13                  1058
-#define IDC_PROGRESS14                  1059
-#define IDC_PROGRESS15                  1060
-#define IDC_PROGRESS16                  1061
-#define IDC_PROGRESS17                  1062
-#define IDC_PROGRESS18                  1063
-#define IDC_PROGRESS19                  1064
-#define IDC_PROGRESS20                  1065
-#define IDC_PROGRESS21                  1066
-#define IDC_PROGRESS22                  1067
-#define IDC_PROGRESS23                  1068
-#define IDC_PROGRESS24                  1069
 
 // Next default values for new objects
 // 

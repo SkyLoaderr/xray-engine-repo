@@ -46,7 +46,7 @@ BEGIN
                     WS_TABSTOP
 END
 
-IDD_LOG DIALOG DISCARDABLE  0, 0, 455, 379
+IDD_LOG DIALOG DISCARDABLE  0, 0, 335, 380
 STYLE DS_ABSALIGN | DS_MODALFRAME | DS_NOFAILCREATE | DS_CENTER | 
     WS_MINIMIZEBOX | WS_CAPTION | WS_SYSMENU
 CAPTION "XRay Engine Level Builder/Optimizer"
@@ -65,54 +65,6 @@ BEGIN
     CTEXT           "",IDC_P_TEXT,305,225,30,14,SS_CENTERIMAGE | SS_SUNKEN
     LISTBOX         IDC_PHASE_TIME,0,240,335,139,NOT LBS_NOTIFY | 
                     LBS_NOINTEGRALHEIGHT | WS_VSCROLL
-    CONTROL         "Progress1",IDC_PROGRESS1,"msctls_progress32",PBS_SMOOTH | 
-                    WS_DISABLED | WS_BORDER,335,5,120,10
-    CONTROL         "Progress1",IDC_PROGRESS2,"msctls_progress32",PBS_SMOOTH | 
-                    WS_DISABLED | WS_BORDER,335,15,120,10
-    CONTROL         "Progress1",IDC_PROGRESS3,"msctls_progress32",PBS_SMOOTH | 
-                    WS_DISABLED | WS_BORDER,335,25,120,10
-    CONTROL         "Progress1",IDC_PROGRESS4,"msctls_progress32",PBS_SMOOTH | 
-                    WS_DISABLED | WS_BORDER,335,35,120,10
-    CONTROL         "Progress1",IDC_PROGRESS5,"msctls_progress32",PBS_SMOOTH | 
-                    WS_DISABLED | WS_BORDER,335,45,120,10
-    CONTROL         "Progress1",IDC_PROGRESS6,"msctls_progress32",PBS_SMOOTH | 
-                    WS_DISABLED | WS_BORDER,335,55,120,10
-    CONTROL         "Progress1",IDC_PROGRESS7,"msctls_progress32",PBS_SMOOTH | 
-                    WS_DISABLED | WS_BORDER,335,65,120,10
-    CONTROL         "Progress1",IDC_PROGRESS8,"msctls_progress32",PBS_SMOOTH | 
-                    WS_DISABLED | WS_BORDER,335,75,120,10
-    CONTROL         "Progress1",IDC_PROGRESS9,"msctls_progress32",PBS_SMOOTH | 
-                    WS_DISABLED | WS_BORDER,335,85,120,10
-    CONTROL         "Progress1",IDC_PROGRESS10,"msctls_progress32",
-                    PBS_SMOOTH | WS_DISABLED | WS_BORDER,335,95,120,10
-    CONTROL         "Progress1",IDC_PROGRESS11,"msctls_progress32",
-                    PBS_SMOOTH | WS_DISABLED | WS_BORDER,335,105,120,10
-    CONTROL         "Progress1",IDC_PROGRESS12,"msctls_progress32",
-                    PBS_SMOOTH | WS_DISABLED | WS_BORDER,335,115,120,10
-    CONTROL         "Progress1",IDC_PROGRESS13,"msctls_progress32",
-                    PBS_SMOOTH | WS_DISABLED | WS_BORDER,335,125,120,10
-    CONTROL         "Progress1",IDC_PROGRESS14,"msctls_progress32",
-                    PBS_SMOOTH | WS_DISABLED | WS_BORDER,335,135,120,10
-    CONTROL         "Progress1",IDC_PROGRESS15,"msctls_progress32",
-                    PBS_SMOOTH | WS_DISABLED | WS_BORDER,335,145,120,10
-    CONTROL         "Progress1",IDC_PROGRESS16,"msctls_progress32",
-                    PBS_SMOOTH | WS_DISABLED | WS_BORDER,335,155,120,10
-    CONTROL         "Progress1",IDC_PROGRESS17,"msctls_progress32",
-                    PBS_SMOOTH | WS_DISABLED | WS_BORDER,335,165,120,10
-    CONTROL         "Progress1",IDC_PROGRESS18,"msctls_progress32",
-                    PBS_SMOOTH | WS_DISABLED | WS_BORDER,335,175,120,10
-    CONTROL         "Progress1",IDC_PROGRESS19,"msctls_progress32",
-                    PBS_SMOOTH | WS_DISABLED | WS_BORDER,335,185,120,10
-    CONTROL         "Progress1",IDC_PROGRESS20,"msctls_progress32",
-                    PBS_SMOOTH | WS_DISABLED | WS_BORDER,335,195,120,10
-    CONTROL         "Progress1",IDC_PROGRESS21,"msctls_progress32",
-                    PBS_SMOOTH | WS_DISABLED | WS_BORDER,335,205,120,10
-    CONTROL         "Progress1",IDC_PROGRESS22,"msctls_progress32",
-                    PBS_SMOOTH | WS_DISABLED | WS_BORDER,335,215,120,10
-    CONTROL         "Progress1",IDC_PROGRESS23,"msctls_progress32",
-                    PBS_SMOOTH | WS_DISABLED | WS_BORDER,335,225,120,10
-    CONTROL         "Progress1",IDC_PROGRESS24,"msctls_progress32",
-                    PBS_SMOOTH | WS_DISABLED | WS_BORDER,335,235,120,10
 END
 
 IDD_STEP DIALOGEX 0, 0, 100, 15
@@ -145,9 +97,9 @@ BEGIN
     IDD_LOG, DIALOG
     BEGIN
         LEFTMARGIN, 7
-        RIGHTMARGIN, 448
+        RIGHTMARGIN, 328
         TOPMARGIN, 7
-        BOTTOMMARGIN, 372
+        BOTTOMMARGIN, 373
     END
 
     IDD_STEP, DIALOG
