@@ -54,7 +54,7 @@ function main()
 	event:set_callback(script_01.on_exit,false)
 
 	while stalker1:action() and stalker2:action() do
-		if is_actor_entered == true and stalker1:see(actor) == false or stalker2:see(actor) == false then 
+		if stalker1:see(actor) == false or stalker2:see(actor) == false and is_actor_entered == true then 
 			printf("alarm!")
 			flush()
 			stalker1:script	(false, script_01.script_name())
