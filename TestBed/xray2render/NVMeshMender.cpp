@@ -340,9 +340,9 @@ bool NVMeshMender::Munge(  const NVMeshMender::VAVector& input,
 
 			vec3 delta = maxPosition - minPosition;
 
-			delta.x = (float)fabs( delta.x );
-			delta.y = (float)fabs( delta.y );
-			delta.z = (float)fabs( delta.z );
+			delta.x = (float)_abs( delta.x );
+			delta.y = (float)_abs( delta.y );
+			delta.z = (float)_abs( delta.z );
 
 			bool maxx,maxy,maxz;
 			maxx = maxy = maxz = false;
@@ -443,7 +443,7 @@ bool NVMeshMender::Munge(  const NVMeshMender::VAVector& input,
 				float longitude = nv_zero;
 
 				// Prevent zero or near-zero from being passed into atan2
-				if ( fabs( Other ) < 0.0001f )
+				if ( _abs( Other ) < 0.0001f )
 				{
 					if ( Other >= nv_zero )
 					{
@@ -501,7 +501,7 @@ bool NVMeshMender::Munge(  const NVMeshMender::VAVector& input,
 
 					unsigned int theOneToChange = start;
 
-					if ( fabs( dS ) >= 0.5f )
+					if ( _abs( dS ) >= 0.5f )
 					{
 						bDoS = true;
 						if ( texcoords[ indices[ start ] * 3 + 0 ] < texcoords[ indices[ end ] * 3 + 0 ] )
@@ -571,7 +571,7 @@ bool NVMeshMender::Munge(  const NVMeshMender::VAVector& input,
 
 					unsigned int theOneToChange = start;
 
-					if ( fabs( dT ) >= 0.5f )
+					if ( _abs( dT ) >= 0.5f )
 					{
 						bDoT = true;
 						if ( texcoords[ indices[ start ] * 3 + 1 ] < texcoords[ indices[ end ] * 3 + 1 ] )
@@ -711,13 +711,13 @@ bool NVMeshMender::Munge(  const NVMeshMender::VAVector& input,
             float c = sxt.z;
 
             float ds_dx = nv_zero;
-            if ( fabs( a ) > nv_eps )
+            if ( _abs( a ) > nv_eps )
             {
                 ds_dx = - b / a;
             }
 
             float dt_dx = nv_zero;
-            if ( fabs( a ) > nv_eps )
+            if ( _abs( a ) > nv_eps )
             {
                 dt_dx = - c / a;
             }
@@ -734,13 +734,13 @@ bool NVMeshMender::Munge(  const NVMeshMender::VAVector& input,
             c = sxt.z;
 
             float ds_dy = nv_zero;
-            if ( fabs( a ) > nv_eps )
+            if ( _abs( a ) > nv_eps )
             {
                 ds_dy = -b / a;
             }
 
             float dt_dy = nv_zero;
-            if ( fabs( a ) > nv_eps )
+            if ( _abs( a ) > nv_eps )
             {
                 dt_dy = -c / a;
             }
@@ -757,13 +757,13 @@ bool NVMeshMender::Munge(  const NVMeshMender::VAVector& input,
             c = sxt.z;
 
             float ds_dz = nv_zero;
-            if ( fabs( a ) > nv_eps )
+            if ( _abs( a ) > nv_eps )
             {
                 ds_dz = -b / a;
             }
 
             float dt_dz = nv_zero;
-            if ( fabs( a ) > nv_eps )
+            if ( _abs( a ) > nv_eps )
             {
                 dt_dz = -c / a;
             }
@@ -826,9 +826,9 @@ bool NVMeshMender::Munge(  const NVMeshMender::VAVector& input,
 						//  if the discontinuity in s, t, or sxt is greater than some epsilon,
 						//   duplicate the vertex so it won't smooth with its neighbor anymore
 
-						if ( ( fabs(   sAgreement ) < epsilon ) ||
-							 ( fabs(   tAgreement ) < epsilon ) ||
-							 ( fabs( sxtAgreement ) < epsilon ) )
+						if ( ( _abs(   sAgreement ) < epsilon ) ||
+							 ( _abs(   tAgreement ) < epsilon ) ||
+							 ( _abs( sxtAgreement ) < epsilon ) )
 						{
 							// Duplicate two vertices of this edge for this triangle only.
 							//  This way the faces won't smooth with each other, thus
