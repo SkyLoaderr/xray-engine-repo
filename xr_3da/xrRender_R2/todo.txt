@@ -38,6 +38,7 @@ OPT:	occlusion culling of light volumes
 OPT:	precompute invisible list (visuals) for static lights at load time
 
 FEAT:	shadows from transparent particles
+FEAT:	
 
 +FEATURE:	stats:
 +FEATURE:	materials:
