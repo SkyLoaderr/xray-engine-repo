@@ -131,9 +131,9 @@ class CBaseFunction;
 	
 	/************************************************************************/
 	/* 		
-	tHitDir = Group.m_tLastHitDirection;\
-	dwHitTime = Group.m_dwLastHitTime;\
-	tHitPosition = Group.m_tHitPosition;\
+	m_tHitDir = Group.m_tLastHitDirection;\
+	m_dwHitTime = Group.m_dwLastHitTime;\
+	m_tHitPosition = Group.m_tHitPosition;\
 	*/
 	/************************************************************************/
 
@@ -212,7 +212,7 @@ class CBaseFunction;
 
 	#define DELETE_SOUNDS(a,b) {\
 		for (int i=0; i<(a); i++)\
-			::Sound->destroy((b)[i]);\
+			::Sound->Delete((b)[i]);\
 	}
 
 	IC float ffGetY(NodeCompressed &tNode, float X, float Z)

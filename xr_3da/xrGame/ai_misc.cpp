@@ -397,15 +397,16 @@ void CAI_Space::vfCreateFastRealisticPath(vector<Fvector> &tpaPoints, u32 dwStar
 							}
 						}
 						if (i >= iCount) {
-							u32 dwBestNode;
-							float fBestCost;
-							NodePosition tNodePosition;
-							PackPosition(tNodePosition,tpaPath[j]);
-							q_Range_Bit_X(dwCurNode,tPrevPoint,16*fHalfSubNodeSize,&tNodePosition,dwBestNode,fBestCost);
-							if (bfInsideNode(Node(dwBestNode),tpaPath[j])) {
-								dwCurNode = dwBestNode;
-								tpaPath[j].y = ffGetY(*(Node(dwBestNode)),tpaPath[j].x,tpaPath[j].z);
-								dwaNodes.push_back(dwBestNode);
+							CAI_NodeEvaluatorTemplate<aiSearchRange | aiInsideNode> tSearch;
+							tSearch.m_fSearchRange		= 16*fHalfSubNodeSize;
+							tSearch.m_dwStartNode		= dwCurNode;
+							tSearch.m_tStartPosition	= tPrevPoint;
+							tSearch.vfShallowGraphSearch(getAI().q_mark_bit_x);
+							//q_Range_Bit_X(dwCurNode,tPrevPoint,16*fHalfSubNodeSize,&tNodePosition,dwBestNode,fBestCost);
+							if (bfInsideNode(Node(tSearch.m_dwBestNode),tpaPath[j])) {
+								dwCurNode = tSearch.m_dwBestNode;
+								tpaPath[j].y = ffGetY(*(Node(dwCurNode)),tpaPath[j].x,tpaPath[j].z);
+								dwaNodes.push_back(dwCurNode);
 								tPrevPoint = tFinishPoint;
 								j++;
 								break;

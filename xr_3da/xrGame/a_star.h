@@ -11,6 +11,11 @@
 #include "a_star_template.h"
 #include "a_star_interfaces.h"
 
+#define	DEFAULT_LIGHT_WEIGHT								  5.f 
+#define	DEFAULT_COVER_WEIGHT								 10.f 
+#define	DEFAULT_DISTANCE_WEIGHT								 40.f
+#define	DEFAULT_ENEMY_VIEW_WEIGHT							100.f
+
 class CAStar {
 private:
 	SAIMapData												m_tAIMapData;

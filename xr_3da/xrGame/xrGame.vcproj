@@ -480,16 +480,13 @@
 						Name="ai_misc"
 						Filter="">
 						<File
-							RelativePath=".\AI\ai_monsters.cpp">
-						</File>
-						<File
-							RelativePath=".\AI\ai_monsters.h">
-						</File>
-						<File
 							RelativePath=".\AI\ai_monsters_misc.cpp">
 						</File>
 						<File
 							RelativePath=".\AI\ai_monsters_misc.h">
+						</File>
+						<File
+							RelativePath="AI\ai_selector_template.h">
 						</File>
 					</Filter>
 					<Filter
@@ -590,12 +587,6 @@
 							RelativePath=".\AI\Soldier\ai_soldier_look.cpp">
 						</File>
 						<File
-							RelativePath=".\AI\Soldier\ai_soldier_selectors.cpp">
-						</File>
-						<File
-							RelativePath=".\AI\Soldier\ai_soldier_selectors.h">
-						</File>
-						<File
 							RelativePath=".\AI\Soldier\ai_soldier_templates.cpp">
 						</File>
 					</Filter>
@@ -618,22 +609,16 @@
 							RelativePath="AI\Stalker\ai_stalker_events.cpp">
 						</File>
 						<File
+							RelativePath="AI\Stalker\ai_stalker_feel.cpp">
+						</File>
+						<File
 							RelativePath="AI\Stalker\ai_stalker_fire.cpp">
 						</File>
 						<File
 							RelativePath="AI\Stalker\ai_stalker_fsm.cpp">
 						</File>
 						<File
-							RelativePath="AI\Stalker\ai_stalker_look.cpp">
-						</File>
-						<File
 							RelativePath="AI\Stalker\ai_stalker_misc.cpp">
-						</File>
-						<File
-							RelativePath="AI\Stalker\ai_stalker_selectors.cpp">
-						</File>
-						<File
-							RelativePath="AI\Stalker\ai_stalker_selectors.h">
 						</File>
 					</Filter>
 					<Filter

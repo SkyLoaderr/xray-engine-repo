@@ -11,29 +11,12 @@
 #include "ai_funcs.h"
 #include "ai_alife_graph.h"
 #include "ai_alife_cross_table.h"
+#include "ai\ai_selector_template.h"
 
 namespace AI {
 	DEFINE_VECTOR	(u32,						DWORD_VECTOR,			DWORD_IT);
 	DEFINE_VECTOR	(float,						FLOAT_VECTOR,			FLOAT_IT);
 	DEFINE_VECTOR	(bool,						BOOL_VECTOR,			BOOL_IT);
-
-	class	NodeEstimator
-	{
-	public:
-		u32		BestNode;
-		float	BestCost;
-	public:
-		MemberPlacement taMemberPositions;
-		MemberNodes		taMemberNodes;
-		MemberPlacement taDestMemberPositions;
-		MemberNodes		taDestMemberNodes;
-		EntityVec		*taMembers;
-		#define MAX_NODE_ESTIMATION_COST 10000000.f
-		// Estimator itself: 
-		// Node, SqrDistance2node, stop/continue
-		// Return: min - best, max - worse
-		virtual	float	Estimate	(NodeCompressed* Node, float SqrDist, BOOL& bStop)=0;
-	};
 
 	const int	hashSize	= 32;
 
@@ -42,10 +25,6 @@ namespace AI {
 	public:
 		DWORD_VECTOR	Nodes;
 	};
-	#define	DEFAULT_LIGHT_WEIGHT		  5.f 
-	#define	DEFAULT_COVER_WEIGHT		 10.f 
-	#define	DEFAULT_DISTANCE_WEIGHT		 40.f
-	#define	DEFAULT_ENEMY_VIEW_WEIGHT	100.f
 };
 
 class CAStar;
@@ -76,12 +55,7 @@ public:
 	void				Unload			();
 	void				Render			();
 
-	u32					q_Node			(u32 PrevNode,  const Fvector& Pos, bool bShortSearch = false);
-	void				q_Range			(u32 StartNode, const Fvector& BasePos, float Range, AI::NodeEstimator& Estimator, float &fOldCost, u32 dwTimeDifference);
-	void				q_Range			(u32 StartNode, const Fvector& Pos,	float Range,	AI::NodeEstimator& Estimator, float &fOldCost);
-	void				q_Range_Bit		(u32 StartNode, const Fvector& Pos,	float Range,	AI::NodeEstimator& Estimator, float &fOldCost);
-	void				q_Range_Bit		(u32 StartNode, const Fvector& BasePos, float Range, NodePosition* QueryPosition, u32 &BestNode, float &BestCost);
-	void				q_Range_Bit_X	(u32 StartNode, const Fvector& BasePos, float Range, NodePosition* QueryPosition, u32 &BestNode, float &BestCost);
+	u32					q_Node			(u32 PrevNode,  const Fvector& Pos,		bool bShortSearch = false);
 	int					q_LoadSearch	(const Fvector& Pos);	// <0 - failure
 
 	IC	bool			bfCheckIfMapLoaded()		{return(vfs != 0);}

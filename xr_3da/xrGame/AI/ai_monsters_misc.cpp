@@ -558,7 +558,7 @@ u32 dwfChooseAction(u32 dwActionRefreshRate, float fMinProbability, u32 dwTeam, 
 	
 	if (Level().timeServer() - Group.m_dwLastActionTime < dwActionRefreshRate) {
 		switch (Group.m_dwLastAction) {
-			case 0: return(a1);
+			case 0: return(a2);
 			case 1: return(a2);
 			default: return(a3);
 		}
@@ -568,7 +568,7 @@ u32 dwfChooseAction(u32 dwActionRefreshRate, float fMinProbability, u32 dwTeam, 
 	
 	if (!VisibleEnemies.size())
 		switch (Group.m_dwLastAction) {
-			case 0: return(a1);
+			case 0: return(a2);
 			case 1: return(a2);
 			default: return(a3);
 		}
@@ -584,7 +584,7 @@ u32 dwfChooseAction(u32 dwActionRefreshRate, float fMinProbability, u32 dwTeam, 
 		Group.m_dwLastActionTime = Level().timeServer();
 		Group.m_dwLastAction = 0;
 		WRITE_QUERY_TO_LOG("Attack");
-		return(a1);
+		return(a2);
 	}
 	else
 		if (bfGetActionSuccessProbability(Members,VisibleEnemies,fMinProbability,getAI().pfDefendSuccessProbability)) {

@@ -70,23 +70,10 @@ public:
 	bool						Empty				(){return Members.empty();}
 	int							Size				(){return Members.size();}
 
-	// Internal communication
-	void						GetMemberPlacement	(MemberPlacement& P, CEntity* Me);
-	void						GetMemberDedication	(MemberPlacement& P, CEntity* Me);
-	void						GetMemberPlacementN	(MemberNodes& P, CEntity* Me);
-	void						GetMemberDedicationN(MemberNodes& P, CEntity* Me);
-	void						GetMemberInfo		(MemberPlacement& P0, MemberNodes& P1, MemberPlacement& P2, MemberNodes& P3, CEntity* Me);
-	
-	void						GetAliveMemberPlacement	(MemberPlacement& P, CEntity* Me);
+	void						GetAliveMemberPlacement		(MemberPlacement& P, CEntity* Me);
 	void						GetAliveMemberDedication	(MemberPlacement& P, CEntity* Me);
 	void						GetAliveMemberPlacementN	(MemberNodes& P, CEntity* Me);
-	void						GetAliveMemberDedicationN(MemberNodes& P, CEntity* Me);
-	void						GetAliveMemberInfo		(MemberPlacement& P0, MemberNodes& P1, MemberPlacement& P2, MemberNodes& P3, CEntity* Me);
-
-	void						GetAliveMemberPlacementWithLeader(MemberPlacement& P, CEntity* Me, CEntity* Leader);
-	void						GetAliveMemberDedicationWithLeader(MemberPlacement& P, CEntity* Me, CEntity* Leader);
-	void						GetAliveMemberPlacementNWithLeader(MemberNodes& P, CEntity* Me, CEntity* Leader);
-	void						GetAliveMemberDedicationNWithLeader(MemberNodes& P, CEntity* Me, CEntity* Leader);
-	void						GetAliveMemberInfoWithLeader(MemberPlacement& P0, MemberNodes& P1, MemberPlacement& P2, MemberNodes& P3, CEntity* Me, CEntity* Leader);
+	void						GetAliveMemberDedicationN	(MemberNodes& P, CEntity* Me);
+	void						GetAliveMemberInfo			(MemberPlacement& P0, MemberNodes& P1, MemberPlacement& P2, MemberNodes& P3, CEntity* Me);
 	const Fvector&				GetCentroid();
 };

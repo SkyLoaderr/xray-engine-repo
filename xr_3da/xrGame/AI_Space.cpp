@@ -30,7 +30,8 @@ CAI_Space::CAI_Space	()
 	m_tpAStar					= 0;
 	
 	string256					caFileName;
-	if (FS.exist(caFileName,"$game_data$",GRAPH_NAME))
+	strconcat					(caFileName,::Path.GameData,GRAPH_NAME);
+	if (Engine.FS.Exist(caFileName))
 		CALifeGraph::Load		(caFileName);
 }
 
@@ -62,18 +63,19 @@ void CAI_Space::Unload()
 	xr_delete	(m_tpAStar);
 }
 
-void CAI_Space::Load()
+void CAI_Space::Load(LPCSTR name)
 {
 	CALifeCrossTable::Unload();
 	Unload		();
 
 	string256	fName;
-	if (!FS.exist(fName,"$level$","level.ai"))	return;
+	strconcat	(fName,name,"level.ai");
+	if (!Engine.FS.Exist(fName))	return;
 
-	vfs			= FS.r_open	(fName);
+	vfs			= Engine.FS.Open	(fName);
 
 	// m_header & data
-	vfs->r		(&m_header,sizeof(m_header));
+	vfs->r	(&m_header,sizeof(m_header));
 	R_ASSERT	(m_header.version == XRAI_CURRENT_VERSION);
 	m_nodes		= (BYTE*) vfs->pointer();
 
@@ -92,17 +94,20 @@ void CAI_Space::Load()
 
 	
 	// special query tables
+	q_stack.reserve			(m_header.count);
 	q_mark.assign			(m_header.count,0);
 	q_mark_bit.assign		(m_header.count,false);
 	q_mark_bit_x.assign		(m_header.count,false);
 
 	// a*
-	m_fSize2	= _sqr(m_header.size)/4;
-	m_fYSize2	= _sqr((float)(m_header.size_y/32767.0))/4;
-	m_tpAStar	= xr_new<CAStar>(65535);
+	m_fSize2				= _sqr(m_header.size)/4;
+	m_fYSize2				= _sqr((float)(m_header.size_y/32767.0))/4;
+	m_tpAStar				= xr_new<CAStar>(65535);
 
-	if (!FS.exist(fName,"$level$",CROSS_TABLE_NAME))	return;
-	CALifeCrossTable::Load(fName);
+	strconcat				(fName,name,CROSS_TABLE_NAME);
+	if (!Engine.FS.Exist(fName))
+		return;
+	CALifeCrossTable::Load	(fName);
 }
 
 #define NORMALIZE_VECTOR(t) t.x /= 10.f, t.x += tCameraPosition.x, t.y /= 10.f, t.y += 20.f, t.z /= 10.f, t.z += tCameraPosition.z;

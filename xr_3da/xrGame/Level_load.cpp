@@ -2,6 +2,7 @@
 #include "HUDmanager.h"
 #include "LevelGameDef.h"
 #include "ai_space.h"
+#include "ai\ai_selector_template.h"
 
 void CLevel::vfCreateAllPossiblePaths(string64 sName, SPath &tpPatrolPath)
 {
@@ -32,14 +33,17 @@ void CLevel::vfCreateAllPossiblePaths(string64 sName, SPath &tpPatrolPath)
 	// counting types of points
 	for ( i=0; i<(int)N; i++) {
 		if (tpaTo[i] > 2) {
-			Debug.fatal("Patrol path %s : invalid count of incoming links (%d) for point %d [%.2f,%.2f,%.2f]",sName,tpaTo[i],i,tpPatrolPath.tpaWayPoints[i].tWayPoint.x,tpPatrolPath.tpaWayPoints[i].tWayPoint.y,tpPatrolPath.tpaWayPoints[i].tWayPoint.z);
+			Msg("Patrol path %s : invalid count of incoming links (%d) for point %d [%.2f,%.2f,%.2f]",sName,tpaTo[i],i,tpPatrolPath.tpaWayPoints[i].tWayPoint.x,tpPatrolPath.tpaWayPoints[i].tWayPoint.y,tpPatrolPath.tpaWayPoints[i].tWayPoint.z);
+			THROW;
 		}
 		if (tpaFrom[i] > 2) {
-			Debug.fatal("Patrol path %s : invalid count of outcoming links (%d) for point %d [%.2f,%.2f,%.2f]",sName,tpaFrom[i],i,tpPatrolPath.tpaWayPoints[i].tWayPoint.x,tpPatrolPath.tpaWayPoints[i].tWayPoint.y,tpPatrolPath.tpaWayPoints[i].tWayPoint.z);
+			Msg("Patrol path %s : invalid count of outcoming links (%d) for point %d [%.2f,%.2f,%.2f]",sName,tpaFrom[i],i,tpPatrolPath.tpaWayPoints[i].tWayPoint.x,tpPatrolPath.tpaWayPoints[i].tWayPoint.y,tpPatrolPath.tpaWayPoints[i].tWayPoint.z);
+			THROW;
 		}
 		if ((tpaTo[i] == 1) && (tpaFrom[i] == 0)) {
 			if (dwOneZero) {
-				Debug.fatal("Patrol path %s : invalid count of start points [%.2f,%.2f,%.2f]",sName,tpPatrolPath.tpaWayPoints[i].tWayPoint.x,tpPatrolPath.tpaWayPoints[i].tWayPoint.y,tpPatrolPath.tpaWayPoints[i].tWayPoint.z);
+				Msg("Patrol path %s : invalid count of start points [%.2f,%.2f,%.2f]",sName,tpPatrolPath.tpaWayPoints[i].tWayPoint.x,tpPatrolPath.tpaWayPoints[i].tWayPoint.y,tpPatrolPath.tpaWayPoints[i].tWayPoint.z);
+				THROW;
 			}
 			dwOneZero++;
 			iFinishPoint = i;
@@ -47,7 +51,8 @@ void CLevel::vfCreateAllPossiblePaths(string64 sName, SPath &tpPatrolPath)
 		
 		if ((tpaTo[i] == 0) && (tpaFrom[i] == 1)) {
 			if (dwZeroOne) {
-				Debug.fatal("Patrol path %s : invalid count of finish points [%.2f,%.2f,%.2f]",sName,tpPatrolPath.tpaWayPoints[i].tWayPoint.x,tpPatrolPath.tpaWayPoints[i].tWayPoint.y,tpPatrolPath.tpaWayPoints[i].tWayPoint.z);
+				Msg("Patrol path %s : invalid count of finish points [%.2f,%.2f,%.2f]",sName,tpPatrolPath.tpaWayPoints[i].tWayPoint.x,tpPatrolPath.tpaWayPoints[i].tWayPoint.y,tpPatrolPath.tpaWayPoints[i].tWayPoint.z);
+				THROW;
 			}
 			dwZeroOne++;
 			iStartPoint = i;
@@ -77,12 +82,14 @@ void CLevel::vfCreateAllPossiblePaths(string64 sName, SPath &tpPatrolPath)
 				tpPatrolPath.dwType ^= PATH_BIDIRECTIONAL;
 			else
 				if (dwTwoCount != N) {
-					Debug.fatal("Patrol path %s : invalid count of outcoming links (%d) for point %d [%.2f,%.2f,%.2f]",sName,tpaFrom[i],i,tpPatrolPath.tpaWayPoints[i].tWayPoint.x,tpPatrolPath.tpaWayPoints[i].tWayPoint.y,tpPatrolPath.tpaWayPoints[i].tWayPoint.z);
+					Msg("Patrol path %s : invalid count of outcoming links (%d) for point %d [%.2f,%.2f,%.2f]",sName,tpaFrom[i],i,tpPatrolPath.tpaWayPoints[i].tWayPoint.x,tpPatrolPath.tpaWayPoints[i].tWayPoint.y,tpPatrolPath.tpaWayPoints[i].tWayPoint.z);
+					THROW;
 				}
 	}
 	else
 		if ((dwOneCount != N - 2) || (dwOneZero != 1) || (dwZeroOne != 1)) {
-			Debug.fatal("Patrol path %s : invalid count of outcoming links (%d) for point %d [%.2f,%.2f,%.2f] in non-looped one-directional path",sName,tpaFrom[i],i,tpPatrolPath.tpaWayPoints[i].tWayPoint.x,tpPatrolPath.tpaWayPoints[i].tWayPoint.y,tpPatrolPath.tpaWayPoints[i].tWayPoint.z);
+			Msg("Patrol path %s : invalid count of outcoming links (%d) for point %d [%.2f,%.2f,%.2f] in non-looped one-directional path",sName,tpaFrom[i],i,tpPatrolPath.tpaWayPoints[i].tWayPoint.x,tpPatrolPath.tpaWayPoints[i].tWayPoint.y,tpPatrolPath.tpaWayPoints[i].tWayPoint.z);
+			THROW;
 		}
 		else {
 			iCurPoint = iStartPoint;
@@ -111,7 +118,8 @@ void CLevel::vfCreateAllPossiblePaths(string64 sName, SPath &tpPatrolPath)
 
 	// creating variations
 	if (!tpPatrolPath.tpaVectors[0].size()) {
-		Debug.fatal("Patrol path %s was not built - there are not enough nodes to build all the straight lines",sName);
+		Msg("Patrol path %s was not built - there are not enough nodes to build all the straight lines",sName);
+		THROW;
 	}
 	tpPatrolPath.tpaVectors[1].resize(tpPatrolPath.tpaVectors[0].size());
 	tpPatrolPath.tpaVectors[2].resize(tpPatrolPath.tpaVectors[0].size());
@@ -162,12 +170,13 @@ void CLevel::vfCreateAllPossiblePaths(string64 sName, SPath &tpPatrolPath)
 				continue;
 			}
 
-			u32 dwBestNode;
-			float fBestCost;
-			NodePosition tNodePosition;
-			getAI().PackPosition(tNodePosition,tpaVector1[j]);
-			getAI().q_Range_Bit_X(tpaNodes[k],tpaVector0[i],4*fHalfSubnodeSize,&tNodePosition,dwBestNode,fBestCost);
-			tpaVector1[j].y = getAI().ffGetY(*(getAI().Node(dwBestNode)),tpaVector1[j].x,tpaVector1[j].z);
+			CAI_NodeEvaluatorTemplate<aiSearchRange | aiInsideNode> tSearch;
+			tSearch.m_fSearchRange = 4*fHalfSubnodeSize;
+			tSearch.m_dwStartNode = tpaNodes[k];
+			tSearch.m_tStartPosition = tpaVector0[i];
+			tSearch.vfShallowGraphSearch(getAI().q_mark_bit_x);
+//			getAI().q_Range_Bit_X(tpaNodes[k],tpaVector0[i],4*fHalfSubnodeSize,&tNodePosition,dwBestNode,fBestCost);
+			tpaVector1[j].y = getAI().ffGetY(*(getAI().Node(tSearch.m_dwBestNode)),tpaVector1[j].x,tpaVector1[j].z);
 		}
 		if (tpaVector1[0].distance_to(tpaVector1[j - 1]) > EPS_L) {
 			tpaVector1.push_back(tpaVector1[0]);
@@ -183,11 +192,11 @@ BOOL CLevel::Load_GameSpecific_Before()
 {
 	// AI space
 	pApp->LoadTitle	("Loading AI objects...");
-	getAI().Load	();
+	getAI().Load(Path.Current);
 
 	string256		fn_game;
-	if (FS.exist(fn_game, "$level$", "level.game")) {
-		IReader *F = FS.r_open	(fn_game);
+	if (Engine.FS.Exist(fn_game, Path.Current, "level.game")) {
+		IReader *F = Engine.FS.Open	(fn_game);
 		IReader *O = 0;
 
 		// Load WayPoints
@@ -246,7 +255,7 @@ BOOL CLevel::Load_GameSpecific_Before()
 			}
 			O->close();
 		}
-		FS.r_close(F);
+		Engine.FS.Close(F);
 	}
 
 	return TRUE;
