@@ -16,6 +16,7 @@ public:
 	virtual		BOOL				OnTargetTouched			(u32 id_who, u32 eid_target);
 	virtual		BOOL				OnTargetDetouched		(u32 id_who, u32 eid_target);			// TRUE=allow ownership, FALSE=denied
 
+	virtual		void				OnPlayerConnect			(u32 id_who);
 	virtual		void				OnPlayerReady			(u32 id_who);
 	virtual		void				OnPlayerKillPlayer		(u32 id_killer, u32 id_killed);
 
@@ -24,4 +25,6 @@ public:
 
 	// Main
 	virtual		void				Update					();
+
+	u8 AutoTeam();
 };

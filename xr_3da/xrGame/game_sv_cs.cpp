@@ -2,13 +2,6 @@
 #include "game_sv_cs.h"
 #include "HUDManager.h"
 
-#define DBG_PRINT(X, Y, S) {							\
-	CHUDManager* HUD	= (CHUDManager*)Level().HUD();	\
-	HUD->pHUDFont->Color(0xffffffff);					\
-	HUD->pHUDFont->OutSet(X,Y);							\
-	HUD->pHUDFont->OutNext(S);							\
-}
-
 void	game_sv_CS::Create			(LPCSTR options)
 {
 	__super::Create					(options);
@@ -188,8 +181,8 @@ void	game_sv_CS::Update			()
 
 	CHUDManager* HUD	= (CHUDManager*)Level().HUD();
 	HUD->pFontSmall->Color(0xffffffff);
-	HUD->pFontSmall->OutSet(700,100); HUD->pFontSmall->OutNext("Team 0 %d", teams[0].num_targets);
-	HUD->pFontSmall->OutSet(700,120); HUD->pFontSmall->OutNext("Team 1 %d", teams[1].num_targets);
+	HUD->pFontSmall->OutSet(700,100); HUD->pFontSmall->OutNext("Team 0 %d:", teams[0].num_targets);
+	HUD->pFontSmall->OutSet(700,120); HUD->pFontSmall->OutNext("Team 1 %d:", teams[1].num_targets);
 }
 
 void	game_sv_CS::OnPlayerReady			(u32 id)
@@ -222,4 +215,29 @@ void	game_sv_CS::OnPlayerReady			(u32 id)
 		}
 	}
 	Unlock	();
+}
+
+void game_sv_CS::OnPlayerConnect	(u32 id_who)
+{
+	__super::OnPlayerConnect	(id_who);
+
+	LPCSTR	options			=	get_name_id	(id_who);
+
+	// Spawn "actor"
+	xrServerEntity*		E	=	spawn_begin	("actor");													// create SE
+	xrSE_Actor*	A			=	(xrSE_Actor*) E;					
+	strcpy					(A->s_name_replace,get_option_s(options,"name","Player"));					// name
+	get_id(id_who)->team = A->s_team = u8(get_option_i(options,"team",AutoTeam()));							// team
+	A->s_flags				=	M_SPAWN_OBJECT_ACTIVE  | M_SPAWN_OBJECT_LOCAL | M_SPAWN_OBJECT_ASPLAYER;// flags
+	assign_RP				(A);
+	spawn_end				(A,id_who);
+}
+
+u8 game_sv_CS::AutoTeam() {
+	u32	cnt = get_count(), l_teams[2] = {0,0};
+	for(u32 it=0; it<cnt; it++)	{
+		game_PlayerState* ps = get_it(it);
+		if(ps->team>=0) l_teams[ps->team]++;
+	}
+	return (l_teams[0]>l_teams[1])?1:0;
 }
