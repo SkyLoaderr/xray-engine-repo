@@ -206,7 +206,6 @@ T	simple_optimize				(xr_vector<T>& A, xr_vector<T>& B, T2& _scale, T2& _bias)
 	u32		count	= 0;
 	for (;;)
 	{
-		clMsg		("%d - %f",count,error);
 		count++;
 		if (count>128)	{
 			_scale		= (T2)scale;
@@ -237,7 +236,6 @@ T	simple_optimize				(xr_vector<T>& A, xr_vector<T>& B, T2& _scale, T2& _bias)
 		}
 
 		// mix
-		clMsg			("s:%f, b:%f",s,b);
 		T		conv	= 7;
 		scale			= ((conv-1)*scale+s)/conv;
 		bias			= ((conv-1)*bias +b)/conv;
@@ -312,86 +310,11 @@ void xrMU_Reference::calc_lighting	()
 		for (u32 index=0; index<5; index++)
 			o_test	(4,index,color.size(),&model->color.front(),&color.front(),_s[index],_b[index]);
 
-		/**/
-		/**
-		static int iii = 0;
-		xr_vector<xr_vector<REAL> >	A;	A.resize(color.size());
-		xr_vector<xr_vector<REAL> >	B;	B.resize(color.size());
-		xr_vector<REAL>					C;
-		xr_vector<REAL>					D;
-		for (u32 i=0; i<5; i++) {
-			string256 S;
-			sprintf(S,"x:\\dima\\test%d.txt",iii++);
-			FILE *f = fopen(S,"wt");
-			for (u32 it=0; it<color.size(); it++) {
-				base_color&		__A		= model->color	[it];
-				base_color&		__B		= color			[it];
-				A[it].clear();
-				B[it].clear();
-				
-				A[it].push_back		(__A.hemi);
-
-				switch (i) {
-					case 0 : {
-						B[it].push_back		(__B.rgb.x);
-						break;
-					}
-					case 1 : {
-						B[it].push_back		(__B.rgb.y);
-						break;
-					}
-					case 2 : {
-						B[it].push_back		(__B.rgb.z);
-						break;
-					}
-					case 3 : {
-						B[it].push_back		(__B.hemi);
-						break;
-					}
-					case 4 : {
-						B[it].push_back		(__B.sun);
-						break;
-					}
-				}
-				fprintf(f,"%f %f\n",A[it][0],B[it][0]);
-			}
-			fclose(f);
-			
-			vfOptimizeParameters	(A,B,C,D,REAL(0.000001));
-
-			switch (i) {
-				case 0 : {
-					c_scale.rgb.x		= C[0];
-					c_bias.rgb.x		= D[0];
-					break;
-				}
-				case 1 : {
-					c_scale.rgb.y		= C[0];
-					c_bias.rgb.y		= D[0];
-					break;
-				}
-				case 2 : {
-					c_scale.rgb.z		= C[0];
-					c_bias.rgb.z		= D[0];
-					break;
-				}
-				case 3 : {
-					c_scale.hemi		= C[0];
-					c_bias.hemi			= D[0];
-					break;
-				}
-				case 4 : {
-					c_scale.sun			= C[0];
-					c_bias.sun			= D[0];
-					break;
-				}
-			}
-		}
-		/**/
-
+		/*
 		clMsg				("\tscale[%2.2f, %2.2f, %2.2f, %2.2f, %2.2f], bias[%2.2f, %2.2f, %2.2f, %2.2f, %2.2f]",
 								c_scale.rgb.x,c_scale.rgb.y,c_scale.rgb.z,c_scale.hemi,c_scale.sun,
 								c_bias.rgb.x,c_bias.rgb.y,c_bias.rgb.z,c_bias.hemi,c_bias.sun
 							);
+		*/
 	}
 }
