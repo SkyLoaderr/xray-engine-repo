@@ -336,40 +336,47 @@ public:
 				node.prev		= i;
 				i->next->prev	= &node;
 				i->next			= &node;
+//				for (CGraphNode *i=list_head->next; i!=list_tail; i = i->next) {
+//					VERIFY(i->prev->f() <= i->f());
+//				}
+//				for (CGraphNode *i=list_tail->prev; i!=list_head; i = i->prev) {
+//					VERIFY(i->prev->f() <= i->f());
+//				}
 				return;
 			}
 		VERIFY					(false);
-		for (CGraphNode *i=list_head->next; i!=list_tail; i = i->next) {
-			VERIFY(i->prev->f() <= i->f());
-		}
-		for (CGraphNode *i=list_tail->prev; i!=list_head; i = i->prev) {
-			VERIFY(i->prev->f() <= i->f());
-		}
 	}
 
 	IC		void		push_back		(CGraphNode &node)
 	{
+//		for (CGraphNode *i=list_head->next; i!=list_tail; i = i->next) {
+//			VERIFY(i->prev->f() <= i->f());
+//		}
+//		for (CGraphNode *i=list_tail->prev; i!=list_head; i = i->prev) {
+//			VERIFY(i->prev->f() <= i->f());
+//		}
 		for (CGraphNode *i = node.next; ;i = i->next)
 			if (i->f() >= node.f()) {
 				node.next		= i;
 				node.prev		= i->prev;
 				i->prev->next	= &node;
 				i->prev			= &node;
+//				for (CGraphNode *i=list_head->next; i!=list_tail; i = i->next) {
+//					VERIFY(i->prev->f() <= i->f());
+//				}
+//				for (CGraphNode *i=list_tail->prev; i!=list_head; i = i->prev) {
+//					VERIFY(i->prev->f() <= i->f());
+//				}
 				return;
 			}
 		VERIFY					(false);
-		for (CGraphNode *i=list_head->next; i!=list_tail; i = i->next) {
-			VERIFY(i->prev->f() <= i->f());
-		}
-		for (CGraphNode *i=list_tail->prev; i!=list_head; i = i->prev) {
-			VERIFY(i->prev->f() <= i->f());
-		}
 	}
 
 	IC		void		push_front(CGraphNode *old_head, CGraphNode *new_head)
 	{
 		old_head->prev->next = old_head->next;
 		new_head->prev = old_head->next->prev = old_head->prev;
+//		new_head->prev = list_tail->prev;
 		push_front			(*new_head);
 	}
 
@@ -377,6 +384,7 @@ public:
 	{
 		new_head->next = old_head->prev->next = old_head->next;
 		old_head->next->prev = old_head->prev;
+//		new_head->next = list_head->next;
 		push_back			(*new_head);
 	}
 
@@ -388,12 +396,19 @@ public:
 
 	IC		void		add_opened		(CGraphNode &node)
 	{
+//		for (CGraphNode *i=list_head->next; i!=list_tail; i = i->next) {
+//			VERIFY(i->prev->f() <= i->f());
+//		}
+//		for (CGraphNode *i=list_tail->prev; i!=list_head; i = i->prev) {
+//			VERIFY(i->prev->f() <= i->f());
+//		}
 		node.open_close_mask	= 1;
 		SBinaryHeap				&heap = heaps[compute_heap_index(node.index())];
 		VERIFY					(heap.heap_head <= heap.heap_tail);
 		if (heap.heap_head == heap.heap_tail) {
 			*heap.heap_tail		= &node;
-			std::push_heap		(heap.heap_head,++heap.heap_tail,CGraphNodePredicate());
+			++heap.heap_tail;
+			//std::push_heap		(heap.heap_head,++heap.heap_tail,CGraphNodePredicate());
 			(*heap.heap_head)->next = list_head->next;
 			push_back			(**heap.heap_head);
 			return;
@@ -411,26 +426,45 @@ public:
 		CGraphNode				*heap_head = *heap.heap_head;
 		for (CGraphNode **i = heap.heap_head; *i != &node; ++i);
 		std::push_heap			(heap.heap_head,i + 1,CGraphNodePredicate());
-		push_front_if_needed	(heap_head, *heap.heap_head);
+		if (&node != heap_head)
+			push_front_if_needed(heap_head, *heap.heap_head);
+		else
+			if (heap_head->prev->f() > node.f()) {
+				heap_head->next->prev = heap_head->prev;
+				heap_head->prev->next = heap_head->next;
+				push_front			(node);
+			}
 	}
 
 	IC		void		remove_best_opened	()
 	{
 		VERIFY					(!is_opened_empty());
+//		for (CGraphNode *i=list_head->next; i!=list_tail; i = i->next) {
+//			VERIFY(i->prev->f() <= i->f());
+//		}
+//		for (CGraphNode *i=list_tail->prev; i!=list_head; i = i->prev) {
+//			VERIFY(i->prev->f() <= i->f());
+//		}
 		SBinaryHeap				*best_heap = heaps + compute_heap_index(list_head->next->index());
 		CGraphNode				*heap_head = *best_heap->heap_head;
 		std::pop_heap			(best_heap->heap_head,best_heap->heap_tail--,CGraphNodePredicate());
-		if (best_heap->heap_head != best_heap->heap_tail)
-			push_back			(heap_head,*best_heap->heap_head);
-		else {
-			list_head->next = list_head->next->next;
-			list_head->next->prev = list_head;
+		heap_head->next->prev = heap_head->prev;
+		heap_head->prev->next = heap_head->next;
+		if (best_heap->heap_head != best_heap->heap_tail) {
+			(*best_heap->heap_head)->next = list_head->next;
+			push_back			(**best_heap->heap_head);
 		}
 	}
 
 	IC		CGraphNode	&get_best		()
 	{
 		VERIFY					(!is_opened_empty());
+//		for (CGraphNode *i=list_head->next; i!=list_tail; i = i->next) {
+//			VERIFY(i->prev->f() <= i->f());
+//		}
+//		for (CGraphNode *i=list_tail->prev; i!=list_head; i = i->prev) {
+//			VERIFY(i->prev->f() <= i->f());
+//		}
 		return					(*list_head->next);
 	}
 };
