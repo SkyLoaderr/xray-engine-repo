@@ -550,6 +550,7 @@ bool bfGetActionSuccessProbability(EntityVec &Members, objVisible &VisibleEnemie
 
 DWORD dwfChooseAction(DWORD dwActionRefreshRate, float fMinProbability, DWORD dwTeam, DWORD dwSquad, DWORD dwGroup, DWORD a1, DWORD a2, DWORD a3)
 {
+	//return(a3);
 	CGroup &Group = Level().Teams[dwTeam].Squads[dwSquad].Groups[dwGroup];
 	
 	if (Level().timeServer() - Group.m_dwLastActionTime < dwActionRefreshRate) {
@@ -592,4 +593,27 @@ DWORD dwfChooseAction(DWORD dwActionRefreshRate, float fMinProbability, DWORD dw
 			Group.m_dwLastAction = 2;
 			return(Group.m_dwLastAction = a3);
 		}
+}
+
+Fvector	tfComputeSpringPull(Fvector &tCurrentPosition, Fvector &tSpringPosition, float fInflexibilityCoefficient)
+{
+	Fvector tResult;
+	tResult.sub(tCurrentPosition,tSpringPosition);
+	tResult.y = 0.f;
+	float m = tResult.magnitude();
+	float F = 1/(fInflexibilityCoefficient*m*m/2);
+	tResult.mul(fabsf(fInflexibilityCoefficient*m) > EPS_L ? F*m : 0.f);
+	return(tResult);
+}
+
+Fvector tfGetNextCollisionPosition(CCustomMonster *tpCustomMonster, Fvector &tFuturePosition)
+{
+	Fvector	tForcePosition = tfComputeSpringPull(tpCustomMonster->Position(),tFuturePosition,-10.f*tpCustomMonster->m_fCurSpeed);
+	
+	for (int i=0; i<(int)tpCustomMonster->feel_touch.size(); i++)
+		tForcePosition.add(tfComputeSpringPull(tpCustomMonster->Position(),tpCustomMonster->feel_touch[i]->Position(),100.f));
+
+	Fvector tResult;
+	tResult.add(tpCustomMonster->Position(),tForcePosition);
+	return(tResult);
 }

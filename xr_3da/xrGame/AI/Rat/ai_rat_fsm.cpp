@@ -287,7 +287,7 @@ void CAI_Rat::AttackFire()
 	if (eState != eCurrentState)
 		GO_TO_NEW_STATE_THIS_UPDATE(eState);
 
-	CHECK_IF_GO_TO_PREV_STATE(!(m_Enemy.Enemy) || !m_Enemy.Enemy->g_Alive())
+	CHECK_IF_GO_TO_PREV_STATE(!(m_Enemy.Enemy));// || !m_Enemy.Enemy->g_Alive())
 		
 	CHECK_IF_GO_TO_NEW_STATE((m_Enemy.Enemy->Position().distance_to(vPosition) > ATTACK_DISTANCE),aiRatAttackRun)
 
@@ -335,7 +335,7 @@ void CAI_Rat::AttackRun()
 	if (!(m_Enemy.Enemy) && m_tSavedEnemy && ((m_tSavedEnemy->Position().distance_to(vPosition) < ffGetRange()) || (Level().timeServer() - m_dwLostEnemyTime < LOST_MEMORY_TIME)))
 		m_Enemy.Enemy = m_tSavedEnemy;
 
-	CHECK_IF_GO_TO_PREV_STATE(!m_Enemy.Enemy || !m_Enemy.Enemy->g_Alive())
+	CHECK_IF_GO_TO_PREV_STATE(!m_Enemy.Enemy);// || !m_Enemy.Enemy->g_Alive())
 		
 	CGroup &Group = Level().Teams[g_Team()].Squads[g_Squad()].Groups[g_Group()];
 
@@ -431,12 +431,17 @@ void CAI_Rat::Retreat()
 	bfCheckIfGoalChanged();
 	
 	if ((!Level().AI.bfTooSmallAngle(r_torso_target.yaw, r_torso_current.yaw,PI_DIV_8)) || m_bNoWay) {
-		m_fSpeed = EPS_S;
+		m_fSpeed = 0.f;
+		m_fASpeed = .1f;
+		m_fGoalChangeDelta		= 10.f;
 		vfUpdateTime(m_fTimeUpdateDelta);
 		vfComputeNewPosition();
 	}
 	else {
-		m_fSafeSpeed = m_fSpeed = m_fMaxSpeed;
+		if (m_fSpeed < EPS_L)
+			m_fSafeSpeed = m_fSpeed = m_fMinSpeed;
+		else
+			m_fSafeSpeed = m_fSpeed = m_fMaxSpeed;
 		vfUpdateTime(m_fTimeUpdateDelta);
 		vfComputeNewPosition();
 		SetDirectionLook();

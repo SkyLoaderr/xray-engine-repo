@@ -249,4 +249,5 @@ class CBaseFunction;
 	extern int   ifFindNearestPatrolPoint(vector<Fvector> &tpaVector, const Fvector &tPosition);
 	extern bool	 bfGetActionSuccessProbability(EntityVec &Members, objVisible &VisibleEnemies, float fMinProbability, CBaseFunction &fSuccessProbabilityFunction);
 	extern DWORD dwfChooseAction(DWORD dwActionRefreshRate, float fMinProbability, DWORD dwTeam, DWORD dwSquad, DWORD dwGroup, DWORD a1, DWORD a2, DWORD a3);
+	extern Fvector tfGetNextCollisionPosition(CCustomMonster *tpCustomMonster, Fvector &tFuturePosition);
 #endif

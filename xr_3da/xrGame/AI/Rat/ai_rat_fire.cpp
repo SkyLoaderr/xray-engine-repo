@@ -81,8 +81,8 @@ float CAI_Rat::EnemyHeuristics(CEntity* E)
 	if (E->g_Team()  == g_Team())	
 		return flt_max;		// don't attack our team
 	
-	if (E->g_Health() <= 0)					
-		return flt_max;		// don't attack dead enemiyes
+	if (!E->g_Alive())					
+		return flt_max - 2;		// don't attack dead enemiyes
 	
 	float	g_strength = E->g_Armor()+E->g_Health();
 	

@@ -8,6 +8,7 @@
 
 #include "stdafx.h"
 #include "ai_rat.h"
+#include "..\\ai_monsters_misc.h"
 
 void CAI_Rat::vfSaveEnemy()
 {
@@ -91,12 +92,19 @@ void CAI_Rat::vfComputeNewPosition()
 	// Update position
 	Fvector tTemp;
 	tTemp.set(vPosition);
-	vPosition.mad(tDirection,m_fSpeed*m_fTimeUpdateDelta);
+//	if (feel_touch.size() || true) {
+//		Fvector tTemp1;
+//		tTemp1.set(vPosition);
+//		tTemp1.mad(tDirection,m_fSpeed*m_fTimeUpdateDelta);
+//		vPosition.set(tfGetNextCollisionPosition(this,tTemp1));
+//	}
+//	else
+		vPosition.mad(tDirection,m_fSpeed*m_fTimeUpdateDelta);
+	
 	DWORD dwNewNode = AI_NodeID;
 	NodeCompressed *tpNewNode = AI_Node;
 	NodePosition	QueryPos;
 	Level().AI.PackPosition	(QueryPos,vPosition);
-
 	if (!AI_NodeID || !Level().AI.u_InsideNode(*AI_Node,QueryPos)) {
 		dwNewNode = Level().AI.q_Node(AI_NodeID,vPosition);
 		tpNewNode = Level().AI.Node(dwNewNode);
