@@ -18,8 +18,7 @@ class ENGINE_API CBlend;
 class CWeaponList;
 class CEffectorBobbing;
 
-class CActor: 
-	public CEntityAlive
+class CActor: public CEntityAlive, public CEHelper_FeelNearest
 #ifdef DEBUG
 	,public pureRender
 #endif
@@ -159,6 +158,7 @@ private:
 	net_update				NET_Last;
 	BOOL					NET_WasInterpolating;	// previous update was by interpolation or by extrapolation
 	DWORD					NET_Time;				// server time of last update
+
 	//------------------------------
 	void					g_cl_CheckControls		(DWORD mstate_wf, Fvector &vControlAccel, float &Jump, float dt);
 	void					g_cl_ValidateMState		(DWORD mstate_wf);
@@ -168,8 +168,8 @@ private:
 	void					g_Physics				(Fvector& accel, float jump, float dt);
 	void					g_SetAnimation			(DWORD mstate_rl);
 
-	virtual void			g_near_new				(CObject* O);
-	virtual void			g_near_delete			(CObject* O);
+	virtual void			g_sv_Feel_near_new		(CObject* O);
+	virtual void			g_sv_Feel_near_delete	(CObject* O);
 
 	void					cam_Set					(EActorCameras style);
 	void					cam_Update				(float dt, float fFOV);

@@ -14,6 +14,18 @@
 class ENGINE_API CCameraBase;
 class ENGINE_API C3DSound;
 
+class CEHelper_FeelNearest
+{
+protected:
+	vector<CObject*>		Nearest;
+
+	virtual void			g_sv_Feel_Neighbours		(Fvector& P, float R);
+	virtual void			g_sv_Feel_near_new			(CObject* O)		{};
+	virtual void			g_sv_Feel_near_delete		(CObject* O)		{};
+public:
+};
+
+//
 class CEntity : public CGameObject
 {
 private:
@@ -134,7 +146,6 @@ private:
 public:
 	// movement
 	CMovementControl		Movement;
-	vector<CObject*>		Nearest;
 	EVENT					m_tpEventSay;
 	bool					m_bMobility;
 public:
@@ -148,9 +159,6 @@ public:
 	virtual void			HitImpulse				(Fvector& vWorldDir, Fvector& vLocalDir, float amount);
 
 	virtual void			g_WeaponBones			(int& L, int& R)										= 0;
-	virtual void			g_sv_AnalyzeNeighbours	();
-	virtual void			g_near_new				(CObject* O) {};
-	virtual void			g_near_delete			(CObject* O) {};
 
 	// Visibility related
 	virtual void			GetVisible				(objVisible& R)	{};

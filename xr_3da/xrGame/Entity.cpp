@@ -254,10 +254,9 @@ void CEntityAlive::HitImpulse	(Fvector& vWorldDir, Fvector& vLocalDir, float amo
 	Movement.vExternalImpulse.mad	(vWorldDir,Q);
 }
 
-void CEntityAlive::g_sv_AnalyzeNeighbours	()
+void CEHelper_FeelNearest::g_sv_Feel_Neighbours	(Fvector& C, float R)
 {
 	// Find nearest objects
-	Fvector C; float R;		Movement.GetBoundingSphere	(C,R);
 	Level().ObjectSpace.GetNearest						(C,R);
 	CObjectSpace::NL_IT		n_begin						= Level().ObjectSpace.q_nearest.begin	();
 	CObjectSpace::NL_IT		n_end						= Level().ObjectSpace.q_nearest.end		();
@@ -270,8 +269,8 @@ void CEntityAlive::g_sv_AnalyzeNeighbours	()
 		if (find(Nearest.begin(),Nearest.end(),O) == Nearest.end())
 		{
 			// new 
-			g_near_new			(O);
-			Nearest.push_back	(O);
+			g_sv_Feel_near_new		(O);
+			Nearest.push_back		(O);
 		}
 	}
 
@@ -282,8 +281,8 @@ void CEntityAlive::g_sv_AnalyzeNeighbours	()
 		if (find(n_begin,n_end,O) == n_end)
 		{
 			// delete
-			g_near_delete		(O);
-			Nearest.erase		(Nearest.begin()+d);
+			g_sv_Feel_near_delete	(O);
+			Nearest.erase			(Nearest.begin()+d);
 			d--;
 		}
 	}

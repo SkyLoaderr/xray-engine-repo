@@ -507,13 +507,13 @@ void CAI_Hen::FollowMe()
 		else {
 			// checking if I am under fire
 			DWORD dwCurTime = Level().timeServer();
-			if (dwCurTime - dwHitTime < HIT_JUMP_TIME) {
+			if (dwCurTime - dwHitTime < AI::HIT_JUMP_TIME) {
 				tStateStack.push(eCurrentState);
 				eCurrentState = aiHenUnderFire;
 				return;
 			}
 			else {
-				if (dwCurTime - dwSenseTime < SENSE_JUMP_TIME) {
+				if (dwCurTime - dwSenseTime < AI::SENSE_JUMP_TIME) {
 					tStateStack.push(eCurrentState);
 					eCurrentState = aiHenSenseSomething;
 					return;
@@ -641,13 +641,13 @@ void CAI_Hen::FreeHunting()
 		}
 		else {
 			// checking if I am under fire
-			if (Level().timeServer() - dwHitTime < HIT_JUMP_TIME) {
+			if (Level().timeServer() - dwHitTime < AI::HIT_JUMP_TIME) {
 				tStateStack.push(eCurrentState);
 				eCurrentState = aiHenUnderFire;
 				return;
 			}
 			else {
-				if (Level().timeServer() - dwSenseTime < SENSE_JUMP_TIME) {
+				if (Level().timeServer() - dwSenseTime < AI::SENSE_JUMP_TIME) {
 					tStateStack.push(eCurrentState);
 					eCurrentState = aiHenSenseSomething;
 					return;
@@ -780,15 +780,15 @@ void CAI_Hen::Pursuit()
 		}
 		else {
 			DWORD dwCurrentTime = Level().timeServer();
-			if (dwCurrentTime - dwLostEnemyTime < LOST_ENEMY_REACTION_TIME) {
+			if (dwCurrentTime - dwLostEnemyTime < AI::LOST_ENEMY_REACTION_TIME) {
 				// checking if I am under fire
-				if (dwCurrentTime - dwHitTime < HIT_JUMP_TIME) {
+				if (dwCurrentTime - dwHitTime < AI::HIT_JUMP_TIME) {
 					tStateStack.push(eCurrentState);
 					eCurrentState = aiHenUnderFire;
 					return;
 				}
 				else {
-					if (dwCurrentTime - dwSenseTime < SENSE_JUMP_TIME) {
+					if (dwCurrentTime - dwSenseTime < AI::SENSE_JUMP_TIME) {
 						tStateStack.push(eCurrentState);
 						eCurrentState = aiHenSenseSomething;
 						return;
@@ -951,13 +951,13 @@ void CAI_Hen::UnderFire()
 		else {
 			// checking if I am under fire
 			DWORD dwCurTime = Level().timeServer();
-			if (dwCurTime - dwHitTime > HIT_REACTION_TIME) {
+			if (dwCurTime - dwHitTime > AI::HIT_REACTION_TIME) {
 				eCurrentState = tStateStack.top();
 				tStateStack.pop();
 				return;
 			}
 			else {
-				if (dwCurTime - dwSenseTime < SENSE_JUMP_TIME) {
+				if (dwCurTime - dwSenseTime < AI::SENSE_JUMP_TIME) {
 					tStateStack.push(eCurrentState);
 					eCurrentState = aiHenSenseSomething;
 					return;
@@ -1041,7 +1041,7 @@ void CAI_Hen::UnderFire()
 					// getting my current node
 					NodeCompressed* tNode = Level().AI.Node(AI_NodeID);
 					// if we are going somewhere
-					if (dwCurTime - dwHitTime < HIT_JUMP_TIME) {
+					if (dwCurTime - dwHitTime < AI::HIT_JUMP_TIME) {
 						q_look.setup(AI::AIC_Look::Look,AI::t_Direction,&tHitDir,1000);
 						
 						bool bCanKillMember = false;

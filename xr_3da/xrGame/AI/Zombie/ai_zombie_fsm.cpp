@@ -73,7 +73,7 @@ void CAI_Zombie::FreeHunting()
 	
 	DWORD dwCurTime = Level().timeServer();
 	
-	CHECK_IF_SWITCH_TO_NEW_STATE((dwCurTime - dwHitTime < HIT_JUMP_TIME) && (dwHitTime),aiZombieUnderFire)
+	CHECK_IF_SWITCH_TO_NEW_STATE((dwCurTime - dwHitTime < AI::HIT_JUMP_TIME) && (dwHitTime),aiZombieUnderFire)
 
 //	SelectSound(m_iSoundIndex);
 //
@@ -300,7 +300,7 @@ void CAI_Zombie::Pursuit()
 	
 	DWORD dwCurTime = Level().timeServer();
 	
-	CHECK_IF_SWITCH_TO_NEW_STATE((dwCurTime - dwHitTime < HIT_JUMP_TIME) && (dwHitTime),aiZombieUnderFire)
+	CHECK_IF_SWITCH_TO_NEW_STATE((dwCurTime - dwHitTime < AI::HIT_JUMP_TIME) && (dwHitTime),aiZombieUnderFire)
 	
 	SelectSound(m_iSoundIndex);
 

@@ -19,7 +19,8 @@ class ENGINE_API CBoneInstance;
 class CWeaponList;
 
 class CCustomMonster : 
-	public CEntityAlive, 
+	public CEntityAlive,
+	public CEHelper_FeelNearest,
 	public soundListener
 #ifdef DEBUG
 	, public pureRender
@@ -193,8 +194,6 @@ public:
 	virtual void		Update					( DWORD DT );
 	virtual void		UpdateCL				( );
 
-//	virtual BOOL		TakeItem				( DWORD CID );
-
 	// Team visibility
 	virtual void		GetVisible				(objVisible& R);
 
@@ -215,9 +214,9 @@ public:
 	// HUD
 	virtual void		OnHUDDraw				(CCustomHUD* hud);
 	virtual bool		bfExecMovement			(){return(false);};
-	IC		void		StandUp()	{ m_cBodyState = BODY_STATE_STAND;  };
-	IC		void		Squat()		{ m_cBodyState = BODY_STATE_CROUCH; };
-	IC		void		Lie()		{ m_cBodyState = BODY_STATE_LIE;    };
+	IC		void		StandUp()				{ m_cBodyState = BODY_STATE_STAND;  };
+	IC		void		Squat()					{ m_cBodyState = BODY_STATE_CROUCH; };
+	IC		void		Lie()					{ m_cBodyState = BODY_STATE_LIE;    };
 
 	// miscellaneous
 	IC		int			ifGetMemberIndex() 
@@ -239,19 +238,19 @@ public:
 	
 public:
 	//typedef BOOL (*QualifierFunction)(CObject*, void*);
-	virtual objQualifier* GetQualifier	();
-	virtual	void		soundEvent	(CObject* who, int type, Fvector& Position, float power) {};
+	virtual objQualifier*	GetQualifier		();
+	virtual	void			soundEvent			(CObject* who, int type, Fvector& Position, float power) {};
 	virtual	float			ffGetFov			(){return eye_fov;}	
 	virtual	float			ffGetRange			(){return eye_range;}
-	CWeaponList			*tpfGetWeapons			(){return Weapons;}
+	CWeaponList			*	tpfGetWeapons		(){return Weapons;}
 };
 
 namespace AI{
-	#define LOST_ENEMY_REACTION_TIME	30000
-	#define HIT_REACTION_TIME			30000
-	#define SENSE_REACTION_TIME			30000
-	#define HIT_JUMP_TIME				  300
-	#define SENSE_JUMP_TIME				00000
+	const int LOST_ENEMY_REACTION_TIME	= 30000;
+	const int HIT_REACTION_TIME			= 30000;
+	const int SENSE_REACTION_TIME		= 30000;
+	const int HIT_JUMP_TIME				= 300;
+	const int SENSE_JUMP_TIME			= 00000;
 }
 
 #endif // !defined(AFX_CUSTOMMONSTER_H__D44439C3_D752_41AE_AD49_C68E5DE3045F__INCLUDED_)

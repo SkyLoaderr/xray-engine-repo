@@ -310,7 +310,8 @@ void CCustomMonster::Update	( DWORD DT )
 			Exec_Look				(dt);
 			Exec_Movement			(dt);
 			Exec_Visibility			();
-			g_sv_AnalyzeNeighbours	();
+			Fvector C; float R;		Movement.GetBoundingSphere	(C,R);
+			g_sv_Feel_Neighbours	(C,R);
 
 			net_update				uNext;
 			uNext.dwTimeStamp		= Level().timeServer();

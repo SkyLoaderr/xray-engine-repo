@@ -276,7 +276,7 @@ void CActor::Die	( )
 	mstate_real		&=~ mcAnyMove;
 }
 
-void CActor::g_near_new				(CObject* O)
+void CActor::g_sv_Feel_near_new				(CObject* O)
 {
 	// Test for weapon
 	CWeapon* W	= dynamic_cast<CWeapon*>	(O);
@@ -306,7 +306,7 @@ void CActor::g_near_new				(CObject* O)
 	// 
 }
 
-void CActor::g_near_delete			(CObject* O)
+void CActor::g_sv_Feel_near_delete		(CObject* O)
 {
 }
 
@@ -450,7 +450,8 @@ void CActor::Update	(DWORD DT)
 		g_cl_Orientate			(mstate_real,dt);
 		g_Orientate				(mstate_real,dt);
 		g_Physics				(NET_SavedAccel,Jump,dt);
-		g_sv_AnalyzeNeighbours	();
+		Fvector C; float R;		Movement.GetBoundingSphere	(C,R);
+		g_sv_Feel_Neighbours	(C,R);
 		g_cl_ValidateMState		(mstate_wishful);
 		g_SetAnimation			(mstate_real);
 		// Level().HUD()->outMessage(0xffffffff,cName(),"%d",AI_NodeID);
