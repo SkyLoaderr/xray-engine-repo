@@ -155,10 +155,10 @@ void CAI_Rat::Load(LPCSTR section)
 	}
 	m_fGoingSpeed					= pSettings->r_float	(section, "going_speed");
 
+	// prefetching
 	cNameVisual_set					("monsters\\rat\\rat_1");
 	cNameVisual_set					("monsters\\rat\\rat_2");
 	cNameVisual_set					("monsters\\rat\\rat_3");
-	cNameVisual_set					("monsters\\rat\\rat_3_");
 }
 
 BOOL CAI_Rat::net_Spawn	(LPVOID DC)
