@@ -18,7 +18,7 @@ protected:
     };
     Flags32				m_Flags;
 public:
-						ESceneSpawnTools		():ESceneCustomOTools(OBJCLASS_SPAWNPOINT){m_Flags.zero();}
+						ESceneSpawnTools		();
 	// definition
     IC LPCSTR			ClassName				(){return "spawn";}
     IC LPCSTR			ClassDesc				(){return "Spawn";}

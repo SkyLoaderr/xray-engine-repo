@@ -192,7 +192,7 @@ void FillChooseEvents()
 	TfrmChoseItem::AppendEvents	(smPE,				"Select Particle Effect",	FillPE,				0,false);
 	TfrmChoseItem::AppendEvents	(smParticles,		"Select Particle System", 	FillParticles,		0,false);
 	TfrmChoseItem::AppendEvents	(smTexture,			"Select Texture",			FillTexture,		SelectTexture,		false);
-	TfrmChoseItem::AppendEvents	(smEntity,			"Select Entity",			FillEntity,			0,false);
+	TfrmChoseItem::AppendEvents	(smEntityType,		"Select Entity",			FillEntity,			0,false);
 	TfrmChoseItem::AppendEvents	(smLAnim,			"Select Light Animation",	FillLAnim,			0,false);
 	TfrmChoseItem::AppendEvents	(smVisual,			"Select Visual",			FillVisual,			SelectVisual,		false);
 	TfrmChoseItem::AppendEvents	(smSkeletonAnims,	"Select Skeleton Animation",FillSkeletonAnims,	0,false);

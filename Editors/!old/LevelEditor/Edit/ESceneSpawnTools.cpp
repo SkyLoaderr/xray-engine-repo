@@ -6,6 +6,25 @@
 #include "ESceneSpawnControls.h"
 #include "FrameSpawn.h"
 #include "PropertiesListHelper.h"
+#include "Scene.h"
+#include "ChoseForm.h"
+
+void __stdcall  FillSpawnItems	(ChooseItemVec& lst, void* param)
+{
+	LPCSTR type					= (LPCSTR)param;
+	LPCSTR gcs					= pSettings->r_string(type,"GroupControlSection");
+    ObjectList objects;
+    Scene->GetQueryObjects		(objects,OBJCLASS_SPAWNPOINT,-1,-1,-1);
+    
+    for (ObjectIt it=objects.begin(); it!=objects.end(); it++)
+        if ((*it)->OnChooseQuery(gcs))	lst.push_back(SChooseItem((*it)->Name,""));
+}
+
+ESceneSpawnTools::ESceneSpawnTools	():ESceneCustomOTools(OBJCLASS_SPAWNPOINT)
+{
+	m_Flags.zero();
+    TfrmChoseItem::AppendEvents	(smSpawnItem,		"Select Spawn Item",		FillSpawnItems,		0,false);
+}
 
 void ESceneSpawnTools::CreateControls()
 {

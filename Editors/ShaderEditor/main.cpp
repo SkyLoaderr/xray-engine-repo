@@ -35,6 +35,7 @@ TfrmMain *frmMain;
 #include "ResourceManager.h"
 #include "EditorChooseEvents.h"
 
+
 __fastcall TfrmMain::TfrmMain(TComponent* Owner)
         : TForm(Owner)
 {
