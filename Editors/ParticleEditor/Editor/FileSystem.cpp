@@ -508,7 +508,7 @@ BOOL CFileSystem::LockFile(FSPath *initial, LPSTR fname, bool bLog)
         	LPSTR lp_fn=fn;
 			std::pair<HANDLEPairIt, bool> I=m_LockFiles.insert(std::make_pair(lp_fn,handle));
             R_ASSERT(I.second);
-            if (bLog) RegisterAccess("Lock",fname);
+            if (bLog) RegisterAccess(fname,"Lock");
             bRes=true;
         }
     }

@@ -179,7 +179,7 @@ void CSHEngineTools::UpdateProperties()
         TElTreeItem* node;
 
         P->AddItem(0,PROP_MARKER2,"Type",(LPVOID)m_CurrentBlender->getComment());
-        P->AddItem(0,PROP_TEXT,"Name",P->MakeTextValue(&desc->cName,NameOnAfterEdit,NameOnBeforeEdit,NameOnDraw));
+        P->AddItem(0,PROP_TEXT,"Name",P->MakeTextValue(&desc->cName,sizeof(desc->cName),NameOnAfterEdit,NameOnBeforeEdit,NameOnDraw));
 
         while (!data.Eof()){
             int sz=0;
@@ -208,7 +208,7 @@ void CSHEngineTools::UpdateProperties()
             }break;
             case xrPID_TEXTURE:
             	sz=sizeof(string64);
-                P->AddItem(marker_node,PROP_TEXTURE2,key,P->MakeTextValue	(data.Pointer()));
+                P->AddItem(marker_node,PROP_TEXTURE2,key,P->MakeTextValue	(data.Pointer(),sz));
             break;
             case xrPID_INTEGER:{
             	sz=sizeof(xrP_Integer);
