@@ -41,6 +41,8 @@ using namespace InventoryUtilities;
 
 const u32	cDetached			= 0xffffffff;
 const u32	cAttached			= 0xff00ff00;
+const u32	cRed				= 0xffff0000;
+const u32	cWhite				= cDetached;
 const u8	uIndicatorWidth		= 17;
 const u8	uIndicatorHeight	= 27;
 
@@ -62,11 +64,12 @@ CUIBuyWeaponWnd::CUIBuyWeaponWnd(char *strSectionName)
 
 	m_iUsedItems	= 0;
 
-	Init(strSectionName);
-
 	SetFont(HUD().pFontMedium);
 
-	m_mlCurrLevel = mlRoot;
+	m_mlCurrLevel	= mlRoot;
+	SetMoneyAmount(2000);
+
+	Init(strSectionName);
 
 	Hide();
 }
@@ -85,13 +88,10 @@ void CUIBuyWeaponWnd::Init(char *strSectionName)
 
 	CUIXmlInit xml_init;
 
-	CUIWindow::Init(0,0, Device.dwWidth, Device.dwHeight);
+	CUIWindow::Init(0,0, UI_BASE_WIDTH, UI_BASE_WIDTH);
 
 	AttachChild(&UIStaticTop);
-	UIStaticTop.Init("ui\\ui_inv_quick_slots", 0,0,1024,128);
-//	AttachChild(&UIStaticBottom);
-//	UIStaticBottom.Init("ui\\ui_bottom_background", 0,Device.dwHeight-32,1024,32);
-
+	UIStaticTop.Init("ui\\ui_inv_quick_slots", 0,0,UI_BASE_WIDTH,128);
 
 	AttachChild(&UIStaticBelt);
 	xml_init.InitStatic(uiXml, "static", 0, &UIStaticBelt);
@@ -105,7 +105,6 @@ void CUIBuyWeaponWnd::Init(char *strSectionName)
 	//для работы с артефактами
 //	AttachChild(&UIArtifactMergerWnd);
 //	xml_init.InitWindow(uiXml, "frame_window", 1, &UIArtifactMergerWnd);
-//	UIArtifactMergerWnd.Hide();
 
 	AttachChild(&UIDescWnd);
 	xml_init.InitStatic(uiXml, "desc_static", 0, &UIDescWnd);
@@ -248,7 +247,6 @@ void CUIBuyWeaponWnd::Init(char *strSectionName)
 	// 1 дополнительный лист для аддонов к оружию
 	CUIDragDropList *pNewDDList = xr_new<CUIDragDropList>();
 	R_ASSERT(pNewDDList);
-
 	xml_init.InitDragDropList(uiXml, "dragdrop_list", 1, pNewDDList);
 	m_WeaponSubBags.push_back(pNewDDList);
 	pNewDDList->SetCheckProc(BagProc);
@@ -259,6 +257,9 @@ void CUIBuyWeaponWnd::Init(char *strSectionName)
 	//Списки Drag&Drop
 	AttachChild(&UITopList[BELT_SLOT]);
 	xml_init.InitDragDropList(uiXml, "dragdrop_list", 0, &UITopList[BELT_SLOT]);
+
+	AttachChild(&UITopList[OUTFIT_SLOT]);
+	xml_init.InitDragDropList(uiXml, "dragdrop_list", 7, &UITopList[OUTFIT_SLOT]);
 
 	AttachChild(&UITopList[0]);
 	xml_init.InitDragDropList(uiXml, "dragdrop_list", 2, &UITopList[0]);
@@ -280,26 +281,32 @@ void CUIBuyWeaponWnd::Init(char *strSectionName)
 	xml_init.InitDragDropList(uiXml, "dragdrop_list", 6, &UITopList[4]);
 	UITopList[4].BlockCustomPlacement();
 
-//	AttachChild(&UIOutfitSlot);
-//	xml_init.InitDragDropList(uiXml, "dragdrop_list", 7, &UIOutfitSlot);
-//	UIOutfitSlot.BlockCustomPlacement();
+	UITopList[KNIFE_SLOT].SetCheckProc(SlotProc0);
+	UITopList[PISTOL_SLOT].SetCheckProc(SlotProc1);
+	UITopList[RIFLE_SLOT].SetCheckProc(SlotProc2);
+	UITopList[GRENADE_SLOT].SetCheckProc(SlotProc3);
+	UITopList[APPARATUS_SLOT].SetCheckProc(SlotProc4);
+	UITopList[OUTFIT_SLOT].SetCheckProc(OutfitSlotProc);
 
-
-	UITopList[0].SetCheckProc(SlotProc0);
-	UITopList[1].SetCheckProc(SlotProc1);
-	UITopList[2].SetCheckProc(SlotProc2);
-	UITopList[3].SetCheckProc(SlotProc3);
-	UITopList[4].SetCheckProc(SlotProc4);
-	UIOutfitSlot.SetCheckProc(OutfitSlotProc);
-
-	UITopList[BELT_SLOT].SetCheckProc(BeltProc);
+//	UITopList[BELT_SLOT].SetCheckProc(BeltProc);
 
 	//pop-up menu
 	AttachChild(&UIPropertiesBox);
 	UIPropertiesBox.Init("ui\\ui_pop_up",0,0,300,300);
 	UIPropertiesBox.Hide();
 
-//	for (int i = 0; i < UIWeaponsTabControl.GetTabsCount(); ++i)
+	// Статики для вывода текста
+	AttachChild(&UITotalMoneyHeader);
+	xml_init.InitStatic(uiXml, "total_money_header_static", 0, &UITotalMoneyHeader);
+
+	AttachChild(&UITotalMoney);
+	xml_init.InitStatic(uiXml, "total_money_static", 0, &UITotalMoney);
+
+	AttachChild(&UIItemCostHeader);
+	xml_init.InitStatic(uiXml, "item_cost_header_static", 0, &UIItemCostHeader);
+
+	AttachChild(&UIItemCost);
+	xml_init.InitStatic(uiXml, "item_cost_static", 0, &UIItemCost);
 }
 
 void CUIBuyWeaponWnd::ReInitItems	(char *strSectionName)
@@ -338,6 +345,9 @@ void CUIBuyWeaponWnd::ReInitItems	(char *strSectionName)
 	FillWpnSubBags();
 
 	UIBagWnd.AttachChild(m_WeaponSubBags[UIWeaponsTabControl.GetActiveIndex() + 1]);
+
+	// Проверяем возможность покупки для каждой вещи
+	CheckBuyAvailability();
 };
 
 void CUIBuyWeaponWnd::InitInventory() 
@@ -443,16 +453,18 @@ bool CUIBuyWeaponWnd::SlotProc4(CUIDragDropItem* pItem, CUIDragDropList* pList)
 //одеть костюм
 bool CUIBuyWeaponWnd::OutfitSlotProc(CUIDragDropItem* pItem, CUIDragDropList* pList)
 {
-//	CUIBuyWeaponWnd* this_inventory = dynamic_cast<CUIBuyWeaponWnd*>(pList->GetParent());
-//	R_ASSERT2(this_inventory, "wrong parent addressed as inventory wnd");
-//
-//	PIItem pInvItem = (PIItem)pItem->GetData();
-//
-//	if(!this_inventory->GetInventory()->CanPutInSlot(pInvItem)) return false;
-//
-//	if(pInvItem->GetSlot() == OUTFIT_SLOT)
-//		return this_inventory->GetInventory()->Slot(pInvItem);
-//	else
+	CUIBuyWeaponWnd* this_inventory = dynamic_cast<CUIBuyWeaponWnd*>(pList->GetParent());
+	R_ASSERT2(this_inventory, "wrong parent addressed as inventory wnd");
+
+	CUIDragDropItemMP *pDDItemMP = dynamic_cast<CUIDragDropItemMP*>(pItem);
+	R_ASSERT(pDDItemMP);
+	
+	if (OUTFIT_SLOT == pDDItemMP->GetSlot())
+	{
+		this_inventory->SlotToSection(OUTFIT_SLOT);
+		return true;
+	}
+	
 	return false;
 }
 
@@ -538,31 +550,35 @@ void CUIBuyWeaponWnd::SendMessage(CUIWindow *pWnd, s16 msg, void *pData)
 		m_pCurrentDragDropItem = dynamic_cast<CUIDragDropItemMP*>(pWnd);
 		R_ASSERT(m_pCurrentDragDropItem);
 
-		// проверяем, а не является ли эта вещь чьим-то аддоном?
-		CUIDragDropItemMP::AddonIDs addonID;	
-		pAddonOwner = IsItemAnAddon(m_pCurrentDragDropItem, addonID);
-
-		if (pAddonOwner)
+		// Проверяем на возможность покупки этой вещи
+		if (m_pCurrentDragDropItem->IsDragDropEnabled())
 		{
-			pAddonOwner->AttachDetachAddon(addonID, !pAddonOwner->IsAddonAttached(addonID));
-		}
-		// Если мы нашли уже аддон, то ничего дальше  деалать не надо
-		else
-		{
-			// "Поднять" вещь для освобождения занимаемого места
-			SendMessage(m_pCurrentDragDropItem, CUIDragDropItem::ITEM_DRAG, NULL);
+			CUIDragDropItemMP::AddonIDs addonID;	
+			pAddonOwner = IsItemAnAddon(m_pCurrentDragDropItem, addonID);
 
-			//попытаться закинуть элемент в слот, рюкзак или на пояс
-			if(!ToSlot())
-				if(!ToBelt())
-					if(!ToBag())
+			// проверяем, а не является ли эта вещь чьим-то аддоном?
+			if (pAddonOwner)
+			{
+				pAddonOwner->AttachDetachAddon(addonID, !pAddonOwner->IsAddonAttached(addonID));
+			}
+			// Если мы нашли уже аддон, то ничего дальше  деалать не надо
+			else
+			{
+				// "Поднять" вещь для освобождения занимаемого места
+				SendMessage(m_pCurrentDragDropItem, CUIDragDropItem::ITEM_DRAG, NULL);
+	
+				//попытаться закинуть элемент в слот, рюкзак или на пояс
+				if(!ToSlot())
+					if(!ToBelt())
+						if(!ToBag())
 						//если нельзя, то просто упорядочить элемент в своем списке
-					{
-						((CUIDragDropList*)m_pCurrentDragDropItem->GetParent())->
-							DetachChild(m_pCurrentDragDropItem);
-						((CUIDragDropList*)m_pCurrentDragDropItem->GetParent())->
-							AttachChild(m_pCurrentDragDropItem);
-					}
+						{
+							((CUIDragDropList*)m_pCurrentDragDropItem->GetParent())->
+								DetachChild(m_pCurrentDragDropItem);
+							((CUIDragDropList*)m_pCurrentDragDropItem->GetParent())->
+								AttachChild(m_pCurrentDragDropItem);
+						}
+			}
 		}
 	}
 	//по нажатию правой кнопки
@@ -802,7 +818,7 @@ void CUIBuyWeaponWnd::ActivatePropertiesBox()
 bool CUIBuyWeaponWnd::ToSlot()
 {
 	bool flag = false;
-	// Проверить, что вещь лежит в сумке, а нев слоте
+	// Проверить, что вещь лежит в сумке, а не в слоте
 	for (WEAPON_TYPES_it it = m_WeaponSubBags.begin(); it != m_WeaponSubBags.end(); ++it)
 	{
 		if ((*it) == m_pCurrentDragDropItem->GetParent())
@@ -992,6 +1008,10 @@ void CUIBuyWeaponWnd::FillWpnSubBag(const u32 slotNum)
 		UIDragDropItem.SetSlot(m_slot);
 		UIDragDropItem.SetSectionGroupID(slotNum);
 		UIDragDropItem.SetPosInSectionsGroup(static_cast<u32>(j));
+
+		// Читаем стоимость оружия
+		if(pSettings->line_exist(wpnSectStorage[slotNum][j].c_str(), "cost"))
+			UIDragDropItem.SetCost(pSettings->r_u32(wpnSectStorage[slotNum][j].c_str(), "cost"));
 
 		InitAddonsInfo(UIDragDropItem, wpnSectStorage[slotNum][j]);
 
@@ -1552,6 +1572,40 @@ void CUIBuyWeaponWnd::SwitchIndicator(bool bOn, const int activeTabIndex)
 	{
 		DetachChild(&UIGreenIndicator);
 	}
+}
+
+//////////////////////////////////////////////////////////////////////////
+
+void CUIBuyWeaponWnd::CheckBuyAvailability()
+{
+	// Прбоегаемся по всем вещам и проверяем иx на возможность покупки
+	for (WEAPON_TYPES_it it = m_WeaponSubBags.begin(); it != m_WeaponSubBags.end(); ++it)	
+	{
+		for (DRAG_DROP_LIST_it it2 = (*it)->GetDragDropItemsList().begin(); it2 != (*it)->GetDragDropItemsList().end(); ++it2)
+		{
+			// В данном диалоге вещь не UIDragDropItemMP быть не может
+			CUIDragDropItemMP *pDDItemMP = dynamic_cast<CUIDragDropItemMP*>(*it2);
+			R_ASSERT(pDDItemMP);
+			if (pDDItemMP->GetCost() < GetMoneyAmount())
+			{
+				pDDItemMP->SetColor(cWhite);
+				pDDItemMP->EnableDragDrop(true);
+			}
+			else
+			{
+				pDDItemMP->SetColor(cRed);
+				pDDItemMP->EnableDragDrop(false);
+			}
+		}
+	}
+}
+
+void CUIBuyWeaponWnd::SetMoneyAmount(int moneyAmount)
+{
+	string16		str;
+	sprintf(str, "%i", m_iMoneyAmount);
+	UITotalMoney.SetText(str);
+	m_iMoneyAmount = moneyAmount;
 }
 
 ////////////////////////////////////////////////////////////////////////////////

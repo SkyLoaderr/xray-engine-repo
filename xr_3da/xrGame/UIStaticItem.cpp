@@ -62,35 +62,36 @@ void CUIStaticItem::Render		(const ref_shader& sh)
 	FVF::TL*		pv				= (FVF::TL*)RCache.Vertex.Lock	(4*(iTileX+1)*(iTileY+1),hGeom.stride(),vOffset);
 
 	Ivector2		pos;
-	int fw			= iVisRect.width();
-	int fh			= iVisRect.height();
-	
-	
-	
+	float fw			= iVisRect.width()*HUD().GetScale();
+	float fh			= iVisRect.height()*HUD().GetScale();
+
 	int				x,y;
 	for (x=0; x<iTileX; ++x){
 		for (y=0; y<iTileY; ++y){
-			pos.set					(bp.x+x*fw,bp.y+y*fh);
+			pos.set					(iCeil(bp.x+x*fw),iCeil(bp.y+y*fh));
 			inherited::Render		(pv,pos,dwColor);
 			v_cnt	+=4;
 		}
 	}
 	if (iRemX){
 		for (y=0; y<iTileY; ++y){
-			pos.set					(bp.x+iTileX*fw,bp.y+y*fh);
+			pos.set					(iCeil(bp.x+iTileX*fw),iCeil(bp.y+y*fh));
+//			pos.set					(static_cast<int>(bp.x+iTileX*fw),static_cast<int>(bp.y+y*fh));
 			inherited::Render		(pv,pos,dwColor,iVisRect.x1,iVisRect.y1,iRemX,iVisRect.y2);	
 			v_cnt	+=4;
 		}
 	}
 	if (iRemY){
 		for (x=0; x<iTileX; ++x){
-			pos.set					(bp.x+x*fw,bp.y+iTileY*fh);
+			pos.set					(iCeil(bp.x+x*fw),iCeil(bp.y+iTileY*fh));
+//			pos.set					(static_cast<int>(bp.x+x*fw),static_cast<int>(bp.y+iTileY*fh));
 			inherited::Render		(pv,pos,dwColor,iVisRect.x1,iVisRect.y1,iVisRect.x2,iRemY);	
 			v_cnt	+=4;
 		}
 	}
 	if (iRemX&&iRemY){
-		pos.set						(bp.x+iTileX*fw,bp.y+iTileY*fh);
+		pos.set						(iCeil(bp.x+iTileX*fw),iCeil(bp.y+iTileY*fh));
+//		pos.set						(static_cast<int>(bp.x+iTileX*fw),static_cast<int>(bp.y+iTileY*fh));
 		inherited::Render			(pv,pos,dwColor,iVisRect.x1,iVisRect.y1,iRemX,iRemY);	
 		v_cnt		+=4;
 	}

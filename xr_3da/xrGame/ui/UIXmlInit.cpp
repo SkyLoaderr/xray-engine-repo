@@ -3,11 +3,12 @@
 //////////////////////////////////////////////////////////////////////
 
 
-#include"stdafx.h"
+#include "stdafx.h"
 
-#include"UIXmlInit.h"
+#include "UIXmlInit.h"
 
-#include"../hudmanager.h"
+#include "../hudmanager.h"
+#include "../UI.h"
 
 
 #define HEADER_FONT_NAME		"header"
@@ -131,8 +132,8 @@ bool CUIXmlInit::InitStatic(CUIXml& xml_doc, LPCSTR path,
 	pWnd->SetTextColor(color);
 	pWnd->SetFont(pTmpFont);
 
-	int text_x = xml_doc.ReadAttribInt(*text_path, index, "x");
-	int text_y = xml_doc.ReadAttribInt(*text_path, index, "y");
+	int text_x = RecalcXForResolution(xml_doc.ReadAttribInt(*text_path, index, "x"));
+	int text_y = RecalcYForResolution(xml_doc.ReadAttribInt(*text_path, index, "y"));
 	ref_str text = xml_doc.Read(*text_path, index, NULL);
 
 	pWnd->SetTextX(text_x);
@@ -395,4 +396,18 @@ bool CUIXmlInit::InitTabControl(CUIXml &xml_doc, LPCSTR path, int index, CUITabC
 	xml_doc.SetLocalRoot(xml_doc.GetRoot());
 
 	return status;
+}
+
+//////////////////////////////////////////////////////////////////////////
+
+int CUIXmlInit::RecalcXForResolution(int origninalCoordinate)
+{
+	return static_cast<int>(origninalCoordinate * (static_cast<float>(Device.dwWidth) / UI_BASE_WIDTH));
+}
+
+//////////////////////////////////////////////////////////////////////////
+
+int CUIXmlInit::RecalcYForResolution(int origninalCoordinate)
+{
+	return static_cast<int>(origninalCoordinate * (static_cast<float>(Device.dwHeight) / UI_BASE_HEIGHT));
 }

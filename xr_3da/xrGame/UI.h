@@ -29,8 +29,8 @@
 #endif
 
 
-#define UI_BASE_WIDTH	800
-#define UI_BASE_HEIGHT	600
+#define UI_BASE_WIDTH	1024
+#define UI_BASE_HEIGHT	768
 
 // refs
 class CHUDManager;

@@ -64,19 +64,33 @@ protected:
 		typedef CUIDragDropItem inherited;
 		// возможность хранения номера слота
 		// в который можно переместить данную вещь
-		u32 slotNum;
+		u32				slotNum;
 		// хранение номера секции оружия
-		u32 sectionNum;
+		u32				sectionNum;
 		// xранение порядкового номера оружия в секции
-		u32 posInSection;
+		u32				posInSection;
 		// Имя секции оружия
-		string128 strName;
+		string128		strName;
 		// Запоминаем адрес "хозяина"
 		CUIDragDropList *m_pOwner;
+		// Игровая стоимость вещи
+		int				cost;
 	public:
+		//	#define NO_ACTIVE_SLOT		0xffffffff
+		//	#define KNIFE_SLOT			0
+		//	#define PISTOL_SLOT			1
+		//	#define RIFLE_SLOT			2
+		//	#define GRENADE_SLOT		3
+		//	#define APPARATUS_SLOT		4
+		#define BELT_SLOT				5
+		//	#define OUTFIT_SLOT			6
+		//	#define PDA_SLOT			7 
+		#define MP_SLOTS_NUM			8
+
 		CUIDragDropItemMP(): slotNum			(0),
 							 sectionNum			(0),
-							 bAddonsAvailable	(false)
+							 bAddonsAvailable	(false),
+							 cost				(0)
 		{
 			std::strcpy(m_strAddonTypeNames[0], "Silencer");
 			std::strcpy(m_strAddonTypeNames[1], "Grenade Launcher");
@@ -86,7 +100,7 @@ protected:
 				m_pAddon[i] = NULL;
 		}
 		// Для слота
-		void SetSlot(u32 slot)						{ R_ASSERT(slot < 6 || slot == static_cast<u32>(-1)); slotNum = slot; }
+		void SetSlot(u32 slot)						{ R_ASSERT(slot < MP_SLOTS_NUM || slot == static_cast<u32>(-1)); slotNum = slot; }
 		u32	 GetSlot()								{ return slotNum; }
 		// Получаем номер группы секций (нож - 0, пистолы - 1, et cetera)
 		void SetSectionGroupID(u32 section)			{ sectionNum = section; }
@@ -140,8 +154,10 @@ protected:
 		virtual void		Draw();
 		// реальные драг-дроп вещи для тех аддонов, которые существуют для оружия
 		CUIDragDropItemMP	*m_pAddon[NUM_OF_ADDONS];
-//		CUIDragDropItemMP	*m_pSilencerAddon;
-//		CUIDragDropItemMP	*m_pGLAddon;
+
+		// Работа с деньгами
+		void				SetCost(const int c)	{ cost = c; }
+		int					GetCost()	const		{ return cost; }
 	};
 
 	CUIFrameWindow		UIBagWnd;
@@ -172,17 +188,12 @@ protected:
 	CUIStatic			UIStaticDesc;
 	CUIStatic			UIStaticPersonal;
 
+	// Индикаторы денег
+	CUIStatic			UITotalMoneyHeader;
+	CUIStatic			UITotalMoney;
+	CUIStatic			UIItemCostHeader;
+	CUIStatic			UIItemCost;
 
-//	#define NO_ACTIVE_SLOT		0xffffffff
-//	#define KNIFE_SLOT			0
-//	#define PISTOL_SLOT			1
-//	#define RIFLE_SLOT			2
-//	#define GRENADE_SLOT		3
-//	#define APPARATUS_SLOT		4
-	#define BELT_SLOT			5
-//	#define OUTFIT_SLOT			6
-//	#define PDA_SLOT			7 
-	#define MP_SLOTS_NUM		8
 	//слоты для оружия
 	CUIDragDropList		UITopList[MP_SLOTS_NUM]; 
 	//отдельный слот для костюмов
@@ -354,6 +365,19 @@ protected:
 	void DrawBuyButtonCaptions();
 	// Включаем, выключаем индикатор активной кнопки табконтрола
 	void SwitchIndicator(bool bOn, const int activeTabIndex);
+	// Запрос количества денег у игрока
+
+	// Работа с деньгами
+	// Количество
+	int			m_iMoneyAmount;
+	// Получаем количество денег
+	int			GetMoneyAmount() const			{ return m_iMoneyAmount; }
+	// Устанавливам количество денег
+	void		SetMoneyAmount(int moneyAmount);
+	// Проверка всех вещей на возможность покупки (достаточно ли денег?)
+	// Если вещь невозможно купить, то помечаем ее красным и запрещаем ее перетаскивание
+	void		CheckBuyAvailability();
+
 public:
 	// А не является ли данная вещь чьим-то аддоном?
 	// Возвращаем адрес хозяина аддона, если нашли и тип аддона
@@ -394,5 +418,4 @@ public:
 	void		MoveWeapon(const u8 grpNum, const u8 uIndexInSlot);
 	// Params:	sectionName		- имя конфигурационной секции оружия
 	void		MoveWeapon(const char *sectionName);
-
 };

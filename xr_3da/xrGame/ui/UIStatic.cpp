@@ -5,6 +5,7 @@
 
 #include "stdafx.h"
 #include "uistatic.h"
+#include "../HUDManager.h"
 
 #include <string.h>
 
@@ -213,8 +214,8 @@ void CUIStatic::WordOut()
 			outY = curretY;
 		}
 		
-		GetFont()->Out((float)rect.left+outX + m_iTextOffsetX, 
-						(float)rect.top+outY + m_iTextOffsetY,  &buf_str.front());
+		GetFont()->Out(static_cast<float>(HUD().GetScale() * (rect.left+outX + m_iTextOffsetX)), 
+						 static_cast<float>(HUD().GetScale() * (rect.top+outY + m_iTextOffsetY)),  &buf_str.front());
 
 		word_length = 0;
 		new_word = false;

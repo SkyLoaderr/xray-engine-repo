@@ -55,15 +55,15 @@ bool CUIDialogWnd::IR_OnKeyboardPress(int dik)
 	//mouse click
 	if(dik==MOUSE_1)
 	{
-		OnMouse(HUD().GetUI()->GetCursor()->GetPos().x,
-				HUD().GetUI()->GetCursor()->GetPos().y,
+		OnMouse(static_cast<int>(HUD().GetUI()->GetCursor()->GetPos().x / HUD().GetScale()),
+				static_cast<int>(HUD().GetUI()->GetCursor()->GetPos().y / HUD().GetScale()),
                 CUIWindow::LBUTTON_DOWN);
 		return true;
 	}
 	else if(dik==MOUSE_2)
 	{
-		OnMouse(HUD().GetUI()->GetCursor()->GetPos().x,
-				HUD().GetUI()->GetCursor()->GetPos().y,
+		OnMouse(static_cast<int>(HUD().GetUI()->GetCursor()->GetPos().x / HUD().GetScale()),
+				static_cast<int>(HUD().GetUI()->GetCursor()->GetPos().y / HUD().GetScale()),
                 CUIWindow::RBUTTON_DOWN);
 		return true;
 	}
@@ -78,15 +78,15 @@ bool CUIDialogWnd::IR_OnKeyboardRelease(int dik)
 	//mouse click
 	if(dik==MOUSE_1)
 	{
-			OnMouse(HUD().GetUI()->GetCursor()->GetPos().x,
-			 	    HUD().GetUI()->GetCursor()->GetPos().y,	
+			OnMouse(static_cast<int>(HUD().GetUI()->GetCursor()->GetPos().x / HUD().GetScale()),
+			 	    static_cast<int>(HUD().GetUI()->GetCursor()->GetPos().y / HUD().GetScale()),	
 					CUIWindow::LBUTTON_UP);
 		return true;
 	}
 	else if(dik==MOUSE_2)
 	{
-			OnMouse(HUD().GetUI()->GetCursor()->GetPos().x,
-			 	    HUD().GetUI()->GetCursor()->GetPos().y,	
+			OnMouse(static_cast<int>(HUD().GetUI()->GetCursor()->GetPos().x / HUD().GetScale()),
+			 	    static_cast<int>(HUD().GetUI()->GetCursor()->GetPos().y / HUD().GetScale()),	
 					CUIWindow::RBUTTON_UP);
 		return true;
 	}
@@ -100,8 +100,8 @@ bool CUIDialogWnd::IR_OnMouseMove(int dx, int dy)
 	if (HUD().GetUI()->GetCursor()->IsVisible())
 	{ 
 		HUD().GetUI()->GetCursor()->MoveBy(dx, dy);
-		OnMouse(HUD().GetUI()->GetCursor()->GetPos().x, 
-				HUD().GetUI()->GetCursor()->GetPos().y, 
+		OnMouse(static_cast<int>(HUD().GetUI()->GetCursor()->GetPos().x / HUD().GetScale()), 
+				static_cast<int>(HUD().GetUI()->GetCursor()->GetPos().y / HUD().GetScale()), 
 				CUIWindow::MOUSE_MOVE);
 	}
 

@@ -60,7 +60,11 @@ public:
 
 protected:
 	
-	
+	// Вводим пересчет координат для соответствия нужному разрешению
+	// Params:	originalCoordinate - оригинальная базовая координата для разрешения 1024ч768
+	// Return:	Пересчитанная координата для текущего разоешения	
+	int RecalcXForResolution(int origninalCoordinate);
+	int RecalcYForResolution(int origninalCoordinate);
 };
 
 #endif // _UI_XML_INIT_H_

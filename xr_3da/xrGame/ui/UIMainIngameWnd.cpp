@@ -93,7 +93,7 @@ void CUIMainIngameWnd::Init()
 	uiXml.Init("$game_data$","maingame_new.xml");
 	
 	CUIXmlInit xml_init;
-	CUIWindow::Init(0,0, Device.dwWidth, Device.dwHeight);
+	CUIWindow::Init(0,0, UI_BASE_WIDTH, UI_BASE_HEIGHT);
 
 	//в это окно пользовательского ввода осуществляться не будет
 	Enable(false);

@@ -44,9 +44,9 @@ void CUIPdaWnd::Init()
 	inherited::Init(0,0, Device.dwWidth, Device.dwHeight);
 
 	AttachChild(&UIStaticTop);
-	UIStaticTop.Init("ui\\ui_top_background", 0,0,1024,128);
+	UIStaticTop.Init("ui\\ui_top_background", 0,0,UI_BASE_WIDTH,128);
 	AttachChild(&UIStaticBottom);
-	UIStaticBottom.Init("ui\\ui_bottom_background", 0,Device.dwHeight-32,1024,32);
+	UIStaticBottom.Init("ui\\ui_bottom_background", 0,UI_BASE_HEIGHT-32,UI_BASE_HEIGHT,32);
 	
 	AttachChild(&UIMainPdaFrame);
 	xml_init.InitFrameWindow(uiXml, "frame_window", 0, &UIMainPdaFrame);

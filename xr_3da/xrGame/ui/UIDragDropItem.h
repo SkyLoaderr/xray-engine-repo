@@ -44,7 +44,8 @@ public:
 	virtual void Draw();
 	virtual void Update();
 
-	void EnableDragDrop(bool bEnable) {m_bDDEnabled = bEnable;}
+	void EnableDragDrop(bool bEnable)	{m_bDDEnabled = bEnable;}
+	bool IsDragDropEnabled() const		{ return m_bDDEnabled; }
 
 	POINT GetPreviousPos() {return m_previousPos;}
 
