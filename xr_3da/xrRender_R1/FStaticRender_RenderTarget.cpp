@@ -180,8 +180,8 @@ void CRenderTarget::End		()
 	if (!Perform())		return;
 	RCache.set_Shader	(s_postprocess);
 
-	int		gblend		= clamp			(iFloor((1-param_gray)*255.f),0,255);
-	int		nblend		= clamp			(iFloor((1-param_noise)*255.f),0,255);
+	int		gblend		= clampr		(iFloor((1-param_gray)*255.f),0,255);
+	int		nblend		= clampr		(iFloor((1-param_noise)*255.f),0,255);
 	u32					p_color			= subst_alpha		(param_color_base,nblend);
 	u32					p_gray			= subst_alpha		(param_color_gray,gblend);
 	u32					p_brightness	= param_color_add	;

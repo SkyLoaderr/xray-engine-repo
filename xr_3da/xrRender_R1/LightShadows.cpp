@@ -361,20 +361,6 @@ void CLightShadows::render	()
 		xrc.frustum_query		(DB,F);
 		if (0==xrc.r_count())	continue;
 		
-		/*
-		Log							("-----: ",		xrc.r_count());
-		Msg							("light: %x,A(%s),R(%f)",	u32(S.L),S.L->get_active()?"true":"false",S.L->range);
-		if (xrc.r_count() > 5000)	{
-			CObject*	O	= dynamic_cast<CObject*>(S.dbg_O);
-			if (O)	{
-				Log		("object:",O->cName());
-				Log		("radius:",O->Radius());
-			};
-			Log("slot:  ",	S.slot		);
-			Log("HAT:   ",	S.dbg_HAT	);
-		}
-		*/
-
 		// Clip polys by frustum
 		tess.clear				();
 		for (CDB::RESULT* p = xrc.r_begin(); p!=xrc.r_end(); p++)
@@ -408,10 +394,8 @@ void CLightShadows::render	()
 				T.N				= P.n;
 			}
 		}
-		// if (xrc.r_count() > 1000)	Log("--res:",tess.size());
 
 		// Tesselate
-		
 		
 		// Fill VB
 		for (u32 tid=0; tid<tess.size(); tid++)
