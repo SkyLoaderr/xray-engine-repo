@@ -1871,6 +1871,8 @@ void CAI_Soldier::OnPursuitAlone()
 	SelectorPatrol.m_tEnemy = tSavedEnemy;
 	SelectorPatrol.m_tEnemyPosition = tSavedEnemyPosition;
 
+	CHECK_IF_GO_TO_PREV_STATE((ps_Size() > 0) && (ps_Element(ps_Size() - 1).dwTime > 5000));
+
 	if (AI_Path.bNeedRebuild)
 		vfBuildPathToDestinationPoint(0);
 	else
