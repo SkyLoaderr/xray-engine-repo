@@ -86,7 +86,7 @@ void CAI_Rat::Think()
 			}
 			case aiRatReturnHome : {
 				ReturnHome();
-				break;
+				break;   
 			}
 			case aiRatEatCorpse : {
 				EatCorpse();
