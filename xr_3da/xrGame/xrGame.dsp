@@ -26,7 +26,7 @@ CFG=xrGame - Win32 Debug
 # PROP AllowPerConfigDependencies 0
 # PROP Scc_ProjName ""$/xr_3da/xrGame", LSDAAAAA"
 # PROP Scc_LocalPath "."
-CPP=cl.exe
+CPP="D:\Program Files\Codeplay\vectorcl.exe"
 MTL=midl.exe
 RSC=rc.exe
 
@@ -519,6 +519,18 @@ SOURCE=.\AI_Human.cpp
 # Begin Source File
 
 SOURCE=.\AI_Human.h
+# End Source File
+# End Group
+# Begin Group "ai_hen"
+
+# PROP Default_Filter ""
+# Begin Source File
+
+SOURCE=.\ai_hen.cpp
+# End Source File
+# Begin Source File
+
+SOURCE=.\ai_hen.h
 # End Source File
 # End Group
 # End Group
