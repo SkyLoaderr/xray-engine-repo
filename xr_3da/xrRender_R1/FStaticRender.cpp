@@ -444,10 +444,6 @@ void	CRender::Render		()
 	L_Projector->finalize			();
 
 	// HUD
-	Device.Statistic.RenderDUMP_HUD.Begin		();
-	g_pGameLevel->pHUD->Render_Direct			();
-	Device.Statistic.RenderDUMP_HUD.End			();
-
 	Device.Statistic.RenderDUMP.End();
 }
 

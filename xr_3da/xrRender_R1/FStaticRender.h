@@ -26,8 +26,8 @@ public:
 		PHASE_SPOT
 	};
 	struct		_options	{
-		u32		distortion	: 1;
-		u32		disasm		: 1;
+		u32		distortion			: 1;	// run-time modified
+		u32		disasm				: 1;	// config
 	}			o;
 public:
 	// Sector detection and visibility
