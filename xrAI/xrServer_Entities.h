@@ -140,7 +140,7 @@ xrSE_DECLARE_END
 /////////////////////////////////////////////////////////////////////
 
 //***** Weapon
-xrSE_DECLARE_BEGIN(xrSE_Weapon,CALifeItem)
+xrSE_DECLARE_BEGIN2(xrSE_Weapon,CALifeItem,xrSE_Visualed)
 	u32								timestamp;
 	u8								flags;
 	u8								state;
@@ -160,7 +160,7 @@ xrSE_DECLARE_BEGIN(xrSE_Weapon,CALifeItem)
 xrSE_DECLARE_END
 
 //***** WeaponAmmo
-xrSE_DECLARE_BEGIN(xrSE_WeaponAmmo,CALifeItem)
+xrSE_DECLARE_BEGIN2(xrSE_WeaponAmmo,CALifeItem,xrSE_Visualed)
 	u16								a_elapsed;
 	u16								m_boxSize;
 							
@@ -199,30 +199,42 @@ xrSE_DECLARE_BEGIN(xrSE_Dummy,xrServerEntity)
 xrSE_DECLARE_END
 
 //***** MercuryBall
-xrSE_DECLARE_BEGIN(xrSE_MercuryBall,CALifeItem)
+xrSE_DECLARE_BEGIN2(xrSE_MercuryBall,CALifeItem,xrSE_Visualed)
 	string64						s_Model;
 									xrSE_MercuryBall(LPCSTR caSection);
 xrSE_DECLARE_END
 
 //***** Car
-xrSE_DECLARE_BEGIN(xrSE_Car,xrServerEntity)
+xrSE_DECLARE_BEGIN2(xrSE_Car,xrServerEntity,xrSE_Visualed)
 									xrSE_Car		(LPCSTR caSection) : xrServerEntity(caSection)
 	{
+		if (pSettings->section_exist(caSection) && pSettings->line_exist(caSection,"visual")) {
+			LPCSTR	S			= pSettings->r_string(caSection,"visual");
+			Memory.mem_copy		(visual_name,S,(strlen(S) + 1)*sizeof(char));
+		}
 	};
 xrSE_DECLARE_END
 
 //***** Crow
-xrSE_DECLARE_BEGIN(xrSE_Crow,xrServerEntity)
+xrSE_DECLARE_BEGIN2(xrSE_Crow,xrServerEntity,xrSE_Visualed)
 									xrSE_Crow		(LPCSTR caSection) : xrServerEntity(caSection)
 	{
+		if (pSettings->section_exist(caSection) && pSettings->line_exist(caSection,"visual")) {
+			LPCSTR	S			= pSettings->r_string(caSection,"visual");
+			Memory.mem_copy		(visual_name,S,(strlen(S) + 1)*sizeof(char));
+		}
 	};
 xrSE_DECLARE_END
 
 //***** Health
-xrSE_DECLARE_BEGIN(xrSE_Health,CALifeItem)
+xrSE_DECLARE_BEGIN2(xrSE_Health,CALifeItem,xrSE_Visualed)
 	u8								amount;
 									xrSE_Health		(LPCSTR caSection) : CALifeItem(caSection)
 	{
+		if (pSettings->section_exist(caSection) && pSettings->line_exist(caSection,"visual")) {
+			LPCSTR	S			= pSettings->r_string(caSection,"visual");
+			Memory.mem_copy		(visual_name,S,(strlen(S) + 1)*sizeof(char));
+		}
 	};
 xrSE_DECLARE_END
 

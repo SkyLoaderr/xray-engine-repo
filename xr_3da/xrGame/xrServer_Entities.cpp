@@ -10,6 +10,10 @@ xrSE_Weapon::xrSE_Weapon(LPCSTR caSection) : CALifeItem(caSection)
 	a_current			= 90;
 	a_elapsed			= 0;
 	state				= 0;
+	if (pSettings->section_exist(caSection) && pSettings->line_exist(caSection,"visual")) {
+		LPCSTR	S			= pSettings->r_string(caSection,"visual");
+		Memory.mem_copy		(visual_name,S,(strlen(S) + 1)*sizeof(char));
+	}
 }
 
 void xrSE_Weapon::UPDATE_Read		(NET_Packet& P)
@@ -100,6 +104,10 @@ void	xrSE_Weapon::FillProp		(LPCSTR pref, PropItemVec& items)
 xrSE_WeaponAmmo::xrSE_WeaponAmmo(LPCSTR caSection) : CALifeItem(caSection)
 {
 	a_elapsed = m_boxSize = pSettings->r_s32(caSection, "box_size");
+	if (pSettings->section_exist(caSection) && pSettings->line_exist(caSection,"visual")) {
+		LPCSTR	S			= pSettings->r_string(caSection,"visual");
+		Memory.mem_copy		(visual_name,S,(strlen(S) + 1)*sizeof(char));
+	}
 }
 
 void xrSE_WeaponAmmo::STATE_Read(NET_Packet& P, u16 size)
@@ -244,6 +252,10 @@ void	xrSE_Dummy::FillProp			(LPCSTR pref, PropItemVec& values)
 xrSE_MercuryBall::xrSE_MercuryBall(LPCSTR caSection) : CALifeItem(caSection)
 {
 	s_Model[0]	=	0;
+	if (pSettings->section_exist(caSection) && pSettings->line_exist(caSection,"visual")) {
+		LPCSTR	S			= pSettings->r_string(caSection,"visual");
+		Memory.mem_copy		(visual_name,S,(strlen(S) + 1)*sizeof(char));
+	}
 }
 void	xrSE_MercuryBall::UPDATE_Read	(NET_Packet& P)				{inherited::UPDATE_Read(P);}
 void	xrSE_MercuryBall::UPDATE_Write	(NET_Packet& P)				{inherited::UPDATE_Write(P);}
@@ -1571,6 +1583,10 @@ xrSE_PhysicObject::xrSE_PhysicObject(LPCSTR caSection) : CALifeDynamicObject(caS
 	type 		= epotBox;
 	mass 		= 10.f;
     fixed_bone[0]=0;
+	if (pSettings->section_exist(caSection) && pSettings->line_exist(caSection,"visual")) {
+		LPCSTR	S			= pSettings->r_string(caSection,"visual");
+		Memory.mem_copy		(visual_name,S,(strlen(S) + 1)*sizeof(char));
+	}
 }
 xrSE_PhysicObject::~xrSE_PhysicObject() 
 {
