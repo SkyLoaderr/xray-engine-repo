@@ -620,7 +620,7 @@ void CCustomMonster::OnRender()
 	
 	if (psAI_Flags.test(aiMotion)) 
 	{
-		m_PhysicMovementControl.dbg_Draw();
+		//m_PhysicMovementControl.dbg_Draw();
 	}
 //	if (bDebug) PKinematics(Visual())->DebugRender(XFORM());
 

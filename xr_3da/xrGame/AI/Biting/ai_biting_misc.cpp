@@ -194,11 +194,15 @@ bool CAI_Biting::bfAssignMovement (CEntityAction *tpEntityAction)
 	if (!inherited::bfAssignMovement(tpEntityAction))
 		return		(false);
 
-	LOG_EX("Scripting now!!!");
+	///LOG_EX("Scripting now!!!");
 	
 	CMovementAction	&l_tMovementAction	= tpEntityAction->m_tMovementAction;
-	
 	MotionMan.m_tAction = EAction(l_tMovementAction.m_tActState);
+
+
+	// pre-update path parameters
+	enable_movement(true);
+	CLevelLocationSelector::set_evaluator(0);
 
 	bool bEnablePath = true;
 	u32 vel_mask = 0;
