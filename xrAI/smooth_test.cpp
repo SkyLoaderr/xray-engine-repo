@@ -216,6 +216,48 @@ IC	bool build_circle_trajectory(
 	bool								start_point
 )
 {
+//	TIMER_START(BuildCircleTrajectory)
+//	Fvector				direction, curr_pos;
+//	u32					curr_vertex_id;
+//	direction.sub		(position.position,position.center);
+//	curr_pos			= position.position;
+//	curr_vertex_id		= position.vertex_id;
+//	float				angle = position.angle;
+//	u32					size = path ? path->size() : u32(-1);
+//	if (!start_point)
+//		angle			*= -1;
+//
+//	float				yaw,pitch;
+//	direction.getHP		(yaw,pitch);
+//	yaw					= angle_normalize(yaw);
+//	u32					m = iFloor(_abs(angle)/position.angular_velocity*10.f +.5f);
+//	for (u32 i=start_point ? 0 : 1, n=fis_zero(position.angular_velocity) ? 1 : m; i<=n; ++i) {
+//		Fvector			t;
+//		TIMER_START(BCT_AP)
+//		adjust_point	(position.center,yaw + float(i)*angle/float(n),position.radius,t);
+//		TIMER_STOP(BCT_AP)
+//		TIMER_START(BCT_CPID)
+//		curr_vertex_id	= level_graph.check_position_in_direction(curr_vertex_id,curr_pos,t);
+//		TIMER_STOP(BCT_CPID)
+//		if (!level_graph.valid_vertex_id(curr_vertex_id))
+//			return		(false);
+//		if (path) {
+//			t.y			= level_graph.vertex_plane_y(curr_vertex_id,t.x,t.z);
+//			path->push_back(t);
+//		}
+//		curr_pos		= t;
+//	}
+//	
+//	if (path && !start_point)
+//		reverse			(path->begin() + size,path->end());
+//
+//	TIMER_STOP(BuildCircleTrajectory)
+//	return				(true);
+	static a=0;
+	a++;
+	if (a==40) {
+		a=a;
+	}
 	TIMER_START(BuildCircleTrajectory)
 	Fvector				direction, curr_pos;
 	u32					curr_vertex_id;
@@ -227,13 +269,47 @@ IC	bool build_circle_trajectory(
 	if (!start_point)
 		angle			*= -1;
 
+	if (!fis_zero(direction.square_magnitude()))
+		direction.normalize	();
+	else
+		direction.set	(1,0,0);
+
+	//////////////////////////////////////////////////////////////////////////
 	float				yaw,pitch;
 	direction.getHP		(yaw,pitch);
 	yaw					= angle_normalize(yaw);
-	u32					m = iFloor(_abs(angle)/position.angular_velocity*10.f +.5f);
-	for (u32 i=start_point ? 0 : 1, n=fis_zero(position.angular_velocity) ? 1 : m; i<=n; ++i) {
+	//////////////////////////////////////////////////////////////////////////
+
+//	float				sina, cosa, sinb, cosb, sini, cosi, temp;
+	u32					m = fis_zero(position.angular_velocity) ? 1 : iFloor(_abs(angle)/position.angular_velocity*10.f +1.5f);
+	u32					n = fis_zero(position.angular_velocity) || !m ? 1 : m;
+	if (path)
+		path->reserve	(size + n);
+
+//	sina				= -direction.x;
+//	cosa				= direction.z;
+//	sinb				= _sin(angle/float(n));
+//	cosb				= _cos(angle/float(n));
+//	sini				= start_point ? 0.f : sinb;
+//	cosi				= start_point ? 1.f : cosb;
+
+	for (u32 i=start_point ? 0 : 1; i<=n; ++i) {
+		TIMER_START(BCT_AP)
 		Fvector			t;
+//		t.x				= -(sina*cosi + cosa*sini)*position.radius + position.center.x;
+//		t.z				= (cosa*cosi - sina*sini)*position.radius + position.center.z;
 		adjust_point	(position.center,yaw + float(i)*angle/float(n),position.radius,t);
+//		t.y				= position.center.y;
+//		if (!t.similar(t1)) {
+//			t.x			= -(sina*cosi + cosa*sini)*position.radius + position.center.x;
+//			t.z			= (cosa*cosi - sina*sini)*position.radius + position.center.z;
+//			adjust_point(position.center,yaw + float(i)*angle/float(n),position.radius,t1);
+//		}
+//		temp			= sinb*cosi + cosb*sini;
+//		cosi			= cosb*cosi - sinb*sini;
+//		sini			= temp;
+
+		TIMER_STOP(BCT_AP)
 		TIMER_START(BCT_CPID)
 		curr_vertex_id	= level_graph.check_position_in_direction(curr_vertex_id,curr_pos,t);
 		TIMER_STOP(BCT_CPID)
@@ -565,9 +641,9 @@ void fill_params(
 	xr_vector<STravelParams>	&dest_set
 )
 {
-	start.angular_velocity	= PI_DIV_2;
-	start.linear_velocity	= 0.f;//0.0001f;
-	start_set.push_back		(start);
+//	start.angular_velocity	= PI_DIV_2;
+//	start.linear_velocity	= 0.f;//0.0001f;
+//	start_set.push_back		(start);
 
 	start.angular_velocity	= PI;
 	start.linear_velocity	= 2.15f;
@@ -581,9 +657,9 @@ void fill_params(
 	start.linear_velocity	= 6.f;
 	start_set.push_back		(start);
 
-	dest.angular_velocity	= PI_DIV_2;
-	dest.linear_velocity	= 0.f;
-	dest_set.push_back		(dest);
+//	dest.angular_velocity	= PI_DIV_2;
+//	dest.linear_velocity	= 0.f;
+//	dest_set.push_back		(dest);
 
 	dest.angular_velocity	= PI;
 	dest.linear_velocity	= 2.15f;
