@@ -73,16 +73,16 @@ function main()
 				sound	("scripts\\alarm\\say_ti_slishal","bip01_spine2",vector():set(0,0,0),vector():set(0,0,0),false),
 				look	(look.fire_point, stalker1),
 				anim	(anim.danger),
-				cond	(cond.time_end, 15000)
+				cond	(cond.time_end, 5000)
 				)
-		wait(30000)
+		wait(3000)
 			action(
 				stalker2,
 			  	move	(move.standing, move.stand,move.line,patrol("way0000")),
 				sound	("scripts\\alarm\\say_chto_eto1","bip01_spine2",vector():set(0,0,0),vector():set(0,0,0),false),
 				look	(look.fire_point, stalker1),
 				anim	(anim.danger),
-				cond	(cond.time_end, 5000)
+				cond	(cond.time_end, 3000)
 				)
 		wait(3000)
 			action(
