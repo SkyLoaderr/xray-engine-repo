@@ -35,6 +35,9 @@ private:
 	TASK_VECTOR						m_tpBufferTaskIDs;
 	xrServer						*m_tpServer;
 
+	//temporary buffer
+	OBJECT_VECTOR					m_tpChildren;
+
 	// comnmon
 	void							vfUpdateDynamicData			(CALifeDynamicObject *tpALifeDynamicObject);
 	void							vfUpdateDynamicData			();

@@ -1,7 +1,6 @@
 #include "stdafx.h"
-#include "game_sv_single.h"
 
-void xrServer::Perform_destroy	(xrServerEntity* tpServerEntity, u32 mode, bool bNotifySimulation)
+void xrServer::Perform_destroy	(xrServerEntity* tpServerEntity, u32 mode)
 {
 	NET_Packet			P;
 	P.w_begin			(M_EVENT);
@@ -10,11 +9,6 @@ void xrServer::Perform_destroy	(xrServerEntity* tpServerEntity, u32 mode, bool b
 	P.w_u16				(tpServerEntity->ID);
 	Msg					("*** SERVER-destroy: %s, ID=%d",tpServerEntity->s_name, tpServerEntity->ID);
 
-	if (bNotifySimulation && tpServerEntity->m_bALifeControl) {
-		game_sv_Single *tpGame = dynamic_cast<game_sv_Single*>(game);
-		VERIFY(tpGame);
-		tpGame->m_tpALife->vfRemoveObject(tpServerEntity);
-	}
 	SendBroadcast		(0xffffffff,P,mode);
 	entities.erase		(tpServerEntity->ID);
 	entity_Destroy		(tpServerEntity);

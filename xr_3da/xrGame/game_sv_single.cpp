@@ -95,7 +95,6 @@ BOOL	game_sv_Single::OnTouch			(u16 eid_who, u16 eid_what)
 			return FALSE;
 		
 		m_tpALife->vfAttachItem(*e_who,tpALifeItem,tpALifeItem->m_tGraphID,false);
-
 	}
 
 	return TRUE;

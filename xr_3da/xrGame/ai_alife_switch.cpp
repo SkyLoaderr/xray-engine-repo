@@ -21,8 +21,10 @@ void CAI_ALife::vfCreateObject(CALifeDynamicObject *tpALifeDynamicObject)
 
 	CALifeTraderParams				*tpTraderParams = dynamic_cast<CALifeTraderParams*>(tpALifeDynamicObject);
 	if (tpTraderParams) {
-		OBJECT_IT					I = tpALifeDynamicObject->children.begin();
-		OBJECT_IT					E = tpALifeDynamicObject->children.end();
+		m_tpChildren				= tpALifeDynamicObject->children;
+		tpALifeDynamicObject->children.clear();
+		OBJECT_IT					I = m_tpChildren.begin();
+		OBJECT_IT					E = m_tpChildren.end();
 		for ( ; I != E; I++) {
 			xrServerEntity			*t = dynamic_cast<xrServerEntity*>(m_tObjectRegistry[*I]);
 			CALifeItem				*tpItem = dynamic_cast<CALifeItem*>(m_tObjectRegistry[*I]);
@@ -41,6 +43,7 @@ void CAI_ALife::vfReleaseObject(CALifeDynamicObject *tpALifeDynamicObject)
 {
 	CALifeTraderParams				*tpTraderParams = dynamic_cast<CALifeTraderParams*>(tpALifeDynamicObject);
 	if (tpTraderParams) {
+		m_tpChildren				= tpALifeDynamicObject->children;
 		OBJECT_IT					I = tpALifeDynamicObject->children.begin();
 		OBJECT_IT					E = tpALifeDynamicObject->children.end();
 		for ( ; I != E; I++) {
@@ -49,12 +52,13 @@ void CAI_ALife::vfReleaseObject(CALifeDynamicObject *tpALifeDynamicObject)
 			if (!tpItem)
 				continue;
 			Msg("ALife : Destroying item %s",tpItem->s_name_replace);
-			m_tpServer->Perform_destroy(tpItem,net_flags(TRUE,TRUE),false);
+			m_tpServer->Perform_destroy(tpItem,net_flags(TRUE,TRUE));
 			tpItem->m_bOnline		= false;
 		}
+		tpALifeDynamicObject->children = m_tpChildren;
 	}
 	Msg("ALife : Destroying monster %s",tpALifeDynamicObject->s_name_replace);
-	m_tpServer->Perform_destroy		(tpALifeDynamicObject,net_flags(TRUE,TRUE),false);
+	m_tpServer->Perform_destroy		(tpALifeDynamicObject,net_flags(TRUE,TRUE));
 }
 
 void CAI_ALife::vfSwitchObjectOnline(CALifeDynamicObject *tpALifeDynamicObject)
@@ -83,7 +87,7 @@ void CAI_ALife::vfSwitchObjectOnline(CALifeDynamicObject *tpALifeDynamicObject)
 		vfCreateObject					(tpALifeDynamicObject);
 	tpALifeDynamicObject->m_dwLastSwitchTime = 0;
 	tpALifeDynamicObject->m_bOnline	= true;
-	Msg								("- SERVER: Going online [%d] '%s'(%d,%d,%d) as #%d, on '%s'",Device.dwTimeGlobal,tpALifeDynamicObject->s_name_replace, tpALifeDynamicObject->g_team(), tpALifeDynamicObject->g_squad(), tpALifeDynamicObject->g_group(), tpALifeDynamicObject->ID, "*SERVER*");
+	Msg								("ALife : Going online [%d] '%s'(%d,%d,%d) as #%d, on '%s'",Device.dwTimeGlobal,tpALifeDynamicObject->s_name_replace, tpALifeDynamicObject->g_team(), tpALifeDynamicObject->g_squad(), tpALifeDynamicObject->g_group(), tpALifeDynamicObject->ID, "*SERVER*");
 }
 
 void CAI_ALife::vfSwitchObjectOffline(CALifeDynamicObject *tpALifeDynamicObject)
@@ -122,7 +126,7 @@ void CAI_ALife::vfSwitchObjectOffline(CALifeDynamicObject *tpALifeDynamicObject)
 		vfReleaseObject				(tpALifeDynamicObject);
 	tpALifeDynamicObject->m_dwLastSwitchTime = 0;
 	tpALifeDynamicObject->m_bOnline	= false;
-	Msg								("- SERVER: Going offline [%d] '%s'(%d,%d,%d) as #%d, on '%s'",Device.dwTimeGlobal,tpALifeDynamicObject->s_name_replace, tpALifeDynamicObject->g_team(), tpALifeDynamicObject->g_squad(), tpALifeDynamicObject->g_group(), tpALifeDynamicObject->ID, "*SERVER*");
+	Msg								("ALife : Going offline [%d] '%s'(%d,%d,%d) as #%d, on '%s'",Device.dwTimeGlobal,tpALifeDynamicObject->s_name_replace, tpALifeDynamicObject->g_team(), tpALifeDynamicObject->g_squad(), tpALifeDynamicObject->g_group(), tpALifeDynamicObject->ID, "*SERVER*");
 }
 
 void CAI_ALife::ProcessOnlineOfflineSwitches(CALifeDynamicObject *I)

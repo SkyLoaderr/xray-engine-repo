@@ -328,36 +328,16 @@ public:
 		vfAddEventToGraphPoint		(tpEvent,tNextGraphPointID);
 	};
 
-	IC void vfAttachItem(xrServerEntity &tServerEntity, CALifeItem *tpALifeItem, _GRAPH_ID tGraphID, bool bGenEvent = true)
+	IC void vfAttachItem(xrServerEntity &tServerEntity, CALifeItem *tpALifeItem, _GRAPH_ID tGraphID, bool bAddChild = true)
 	{
-		if (bGenEvent) {
-			NET_Packet		P;
-			m_tpGame->u_EventGen(P,GE_OWNERSHIP_TAKE,tServerEntity.ID);
-			P.w_u16			(u16(tpALifeItem->ID));
-			m_tpGame->u_EventSend(P);
-		}
+		if (bAddChild)
+			tServerEntity.children.push_back(tpALifeItem->ID);
+
+		vfRemoveObjectFromGraphPoint(tpALifeItem,tGraphID);
 		
 		CALifeTraderParams *tpALifeTraderParams = dynamic_cast<CALifeTraderParams*>(&tServerEntity);
 		VERIFY(tpALifeTraderParams);
-		ALIFE_ENTITY_P_IT		I = m_tpGraphObjects[tGraphID].tpObjects.begin();
-		ALIFE_ENTITY_P_IT		E = m_tpGraphObjects[tGraphID].tpObjects.end();
-		for ( ; I != E; I++)
-			if (*I == tpALifeItem) {
-				m_tpGraphObjects[tGraphID].tpObjects.erase(I);
-				break;
-			}
 		tpALifeTraderParams->m_fCumulativeItemMass += tpALifeItem->m_fMass;
-//		tServerEntity.children.push_back(tpALifeItem->ID);
-//		vector<u16>::iterator i = tServerEntity.children.begin();
-//		vector<u16>::iterator e = tServerEntity.children.end();
-//		bool bOk = true;
-//		for ( ; i != e; i++)
-//			if (*i == tpALifeItem->ID) {
-//				bOk = false;
-//				break;
-//			}
-//		VERIFY(bOk);
-//		tpALifeItem->ID_Parent = tServerEntity.ID;
 	}
 
 	IC void vfDetachItem(xrServerEntity &tServerEntity, CALifeItem *tpALifeItem, _GRAPH_ID tGraphID, bool bGenEvent = true)
@@ -368,22 +348,17 @@ public:
 			P.w_u16			(u16(tpALifeItem->ID));
 			m_tpGame->u_EventSend(P);
 		}
+		
+		vector<u16>				&tChildren = tServerEntity.children;
+		vector<u16>::iterator	I = find	(tChildren.begin(),tChildren.end(),tpALifeItem->ID);
+		VERIFY					(I != tChildren.end());
+		tChildren.erase			(I);
+
+		vfAddObjectToGraphPoint(tpALifeItem,tGraphID);
+		
 		CALifeTraderParams *tpTraderParams = dynamic_cast<CALifeTraderParams*>(&tServerEntity);
 		VERIFY(tpTraderParams);
-		m_tpGraphObjects[tGraphID].tpObjects.push_back(tpALifeItem);
 		tpTraderParams->m_fCumulativeItemMass -= tpALifeItem->m_fMass;
-//		tpALifeItem->ID_Parent = 0xffff;
-//		
-//		vector<u16>::iterator i = tServerEntity.children.begin();
-//		vector<u16>::iterator e = tServerEntity.children.end();
-//		bool bOk = false;
-//		for ( ; i != e; i++)
-//			if (*i == tpALifeItem->ID) {
-//				tServerEntity.children.erase(i);
-//				bOk = true;
-//				break;
-//			}
-//		VERIFY(bOk);
 	}
 };
 

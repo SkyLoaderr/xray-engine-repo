@@ -184,6 +184,7 @@ void CAI_ALife::Load()
 	CALifeTaskRegistry::Load	(*tpStream);
 	Log							("* Building dynamic objects...");
 	vfUpdateDynamicData			();
+	m_tpChildren.reserve(128);
 	m_bLoaded					= true;
 	Msg							("* Loading ALife Simulator is successfully completed (%7.3f Mb)",float(Memory.mem_usage() - dwMemUsage)/1048576.0);
 }

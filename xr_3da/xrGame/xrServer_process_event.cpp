@@ -1,5 +1,6 @@
 #include "stdafx.h"
 #include "xrServer.h"
+#include "game_sv_single.h"
 
 void xrServer::Process_event	(NET_Packet& P, DPNID sender)
 {
@@ -177,6 +178,12 @@ void xrServer::Process_event	(NET_Packet& P, DPNID sender)
 			}
 
 			// Everything OK, so perform entity-destroy
+			if (e_dest->m_bALifeControl) {
+				game_sv_Single *tpGame = dynamic_cast<game_sv_Single*>(game);
+				VERIFY(tpGame);
+				tpGame->m_tpALife->vfRemoveObject(e_dest);
+			}
+			
 			entity_Destroy		(e_dest);
 			entities.erase		(id_dest);
 			SendBroadcast		(0xffffffff,P,MODE);
