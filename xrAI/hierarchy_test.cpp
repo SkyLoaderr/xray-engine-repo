@@ -14,7 +14,7 @@ const _use_type up		= 1 << 3;
 const _use_type right	= 1 << 2;
 const _use_type down	= 1 << 1;
 
-typedef CGraphAbstractSerailize<CSector,u32,u32>	CSectorGraph;
+typedef CGraphAbstractSerialize<CSector,u32,u32>	CSectorGraph;
 typedef xr_vector<CCellVertex>						VERTEX_VECTOR;
 typedef xr_vector<VERTEX_VECTOR>					VERTEX_VECTOR1;
 typedef xr_vector<VERTEX_VECTOR1>					VERTEX_VECTOR2;
