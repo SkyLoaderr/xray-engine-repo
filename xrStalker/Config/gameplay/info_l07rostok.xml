@@ -125,6 +125,7 @@
 	</info_portion>
 	<info_portion id="val_kill_borov_killed"></info_portion>
 	<info_portion id="val_borov_info_gain"></info_portion>
+	<info_portion id="bar_kill_borov_voronin"></info_portion>
 	<info_portion id="bar_kill_borov_done"></info_portion>
 
 	<info_portion id="bar_kill_svoboda_ambush_start">
