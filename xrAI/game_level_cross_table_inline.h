@@ -30,7 +30,7 @@ IC CGameLevelCrossTable::CGameLevelCrossTable()
 
 	m_chunk								= m_tpCrossTableVFS->open_chunk(CROSS_TABLE_CHUNK_VERSION);
 	R_ASSERT2							(m_chunk,"Cross table is corrupted!");
-	m_tpaCrossTable						= (CCell*)m_chunk->pointer();
+	m_tpaCrossTable						= (CCell*)m_reader->pointer();
 };
 
 IC CGameLevelCrossTable::~CGameLevelCrossTable()
