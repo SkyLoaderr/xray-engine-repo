@@ -69,32 +69,18 @@ void	CBlender_BmmD::Compile	(CBlender_Compile& C)
 		switch (C.iElement)
 		{
 		case SE_R1_NORMAL_HQ:	
-			if (C.bDetail_Diffuse)	{
-				C.r_Pass	("impl_dt",	"impl_dt",TRUE);
-				C.r_Sampler	("s_base",	C.L_textures[0]);
-				C.r_Sampler	("s_lmap",	C.L_textures[1]);
-				C.r_Sampler	("s_detail",oT2_Name);
-				C.r_End		();
-			} else	{
-				C.r_Pass	("impl",	"impl",TRUE);
-				C.r_Sampler	("s_base",C.L_textures[0]);
-				C.r_Sampler	("s_lmap",C.L_textures[1]);
-				C.r_End		();
-			}
+			C.r_Pass		("impl_dt",	"impl_dt",TRUE);
+			C.r_Sampler		("s_base",	C.L_textures[0]);
+			C.r_Sampler		("s_lmap",	C.L_textures[1]);
+			C.r_Sampler		("s_detail",oT2_Name);
+			C.r_End			();
 			break;
 		case SE_R1_NORMAL_LQ:
-			if (C.bDetail_Diffuse)	{
-				C.r_Pass	("impl_dt",	"impl_dt",TRUE);
-				C.r_Sampler	("s_base",	C.L_textures[0]);
-				C.r_Sampler	("s_lmap",	C.L_textures[1]);
-				C.r_Sampler	("s_detail",oT2_Name);
-				C.r_End		();
-			} else	{
-				C.r_Pass	("impl",	"impl",TRUE);
-				C.r_Sampler	("s_base",C.L_textures[0]);
-				C.r_Sampler	("s_lmap",C.L_textures[1]);
-				C.r_End		();
-			}
+			C.r_Pass		("impl_dt",	"impl_dt",TRUE);
+			C.r_Sampler		("s_base",	C.L_textures[0]);
+			C.r_Sampler		("s_lmap",	C.L_textures[1]);
+			C.r_Sampler		("s_detail",oT2_Name);
+			C.r_End			();
 			break;
 		case SE_R1_LPOINT:
 			C.r_Pass		("impl_point","add_point",FALSE,TRUE,FALSE,TRUE,D3DBLEND_ONE,D3DBLEND_ONE,TRUE);
