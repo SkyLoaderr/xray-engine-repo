@@ -812,13 +812,7 @@ void CAI_Stalker::CreateSkeleton()
 
 
 	//set shell start position
-	Fmatrix m;
-	m.set(mRotate);
-
-	m.c.set(Position());
-	//Movement.GetDeathPosition(m.c);
-	//m.c.y-=0.4f;
-	m_pPhysicsShell->mXFORM.set(m);
+	m_pPhysicsShell->mXFORM.set(XFORM());
 	m_pPhysicsShell->SetAirResistance(0.002f*skel_airr_lin_factor,
 		0.3f*skel_airr_ang_factor);
 	m_pPhysicsShell->SmoothElementsInertia(0.3f);
@@ -879,7 +873,7 @@ void CAI_Stalker::Hit(float P, Fvector &dir, CObject *who,s16 element,Fvector p_
 	}
 }
 
-void CAI_Stalker::Update	( u32 DT )
+void CAI_Stalker::shedule_Update		( u32 DT )
 {
 	// Queue shrink
 	u32	dwTimeCL	= Level().timeServer()-NET_Latency;
@@ -914,7 +908,7 @@ void CAI_Stalker::Update	( u32 DT )
 			// Ñ Îëåñÿ - ÏÈÂÎ!!!! (Äèìå :-))))
 			// Movement.GetBoundingSphere	(C,R);
 			//////////////////////////////////////
-			svCenter(C);
+			Center(C);
 			R = Radius();
 			//////////////////////////////////////
 			feel_touch_update		(C,R);
@@ -1009,7 +1003,7 @@ void CAI_Stalker::Update	( u32 DT )
 	m_inventory.Update(DT);
 
 	// *** general stuff
-	inherited::inherited::Update	(DT);
+	inherited::inherited::shedule_Update	(DT);
 
 	if(m_pPhysicsShell&&m_pPhysicsShell->bActive)
 	{

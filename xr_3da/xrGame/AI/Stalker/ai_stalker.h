@@ -413,14 +413,15 @@ public:
 	virtual void			SelectAnimation					(const Fvector& _view, const Fvector& _move, float speed );
 	virtual void			OnEvent							(NET_Packet& P, u16 type);
 	virtual void			feel_touch_new					(CObject* O);
-	virtual void			renderable_Render						();
+	virtual void			renderable_Render				();
 	virtual void			Exec_Movement					(float dt);
 	virtual void			Exec_Look						(float dt);
-	virtual void			Update							(u32 dt);
+	virtual void			shedule_Update					(u32 dt);
 	virtual void			UpdateCL						();
 	virtual void			Hit								(float P,Fvector &dir,CObject*who,s16 element,Fvector p_in_object_space,float impulse);
 	virtual float			EnemyHeuristics					(CEntity* E);
 	virtual void			SelectEnemy						(SEnemySelected& S);
 	virtual void			feel_sound_new					(CObject* who, int eType, const Fvector &Position, float power);
+	virtual BOOL			feel_vision_isRelevant			(CObject* who);
 	virtual float			Radius							() const;
 };

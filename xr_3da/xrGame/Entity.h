@@ -52,8 +52,8 @@ public:
 	virtual void			Load				(LPCSTR section);
 	virtual BOOL			net_Spawn			(LPVOID DC);
 	virtual void			net_Destroy			();
-	virtual void			Update				(u32 dt);	
-	virtual void			renderable_Render			();
+	virtual void			shedule_Update		(u32 dt);	
+	virtual void			renderable_Render	();
 
 	bool					IsFocused			()const	{ return ((const CEntity*)g_pGameLevel->CurrentEntity()==this);		}
 	bool					IsMyCamera			()const	{ return ((const CEntity*)g_pGameLevel->CurrentViewEntity()==this);	}

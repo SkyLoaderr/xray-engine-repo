@@ -18,7 +18,7 @@
 
 bool CAI_Soldier::bfCheckForVisibility(CEntity* tpEntity)
 {
-	if (Level().iGetKeyState(DIK_RCONTROL))
+	if (Level().IR_GetKeyState(DIK_RCONTROL))
 		return(false);
 
 	float fResult = 0.f;
@@ -46,7 +46,7 @@ bool CAI_Soldier::bfCheckForVisibility(CEntity* tpEntity)
 	if (tpEntity->ps_Size() > 1) {
 		u32 dwTime = tpEntity->ps_Element(tpEntity->ps_Size() - 1).dwTime;
 		if (dwTime < m_dwMovementIdleTime) {
-			tTemp.sub(tpEntity->ps_Element(tpEntity->ps_Size() - 2).Position(),tpEntity->ps_Element(tpEntity->ps_Size() - 1).Position());
+			tTemp.sub(tpEntity->ps_Element(tpEntity->ps_Size() - 2).vPosition,tpEntity->ps_Element(tpEntity->ps_Size() - 1).vPosition);
 			float fSpeed = tTemp.magnitude()/dwTime;
 			fResult += fSpeed < m_fMaxInvisibleSpeed ? m_fMovementSpeedWeight*fSpeed/m_fMaxInvisibleSpeed : m_fMovementSpeedWeight;
 		}
@@ -85,7 +85,7 @@ void CAI_Soldier::SetDirectionLook()
 	int i = ps_Size	();
 	if (i > 1) {
 		CObject::SavedPosition tPreviousPosition = ps_Element(i - 2), tCurrentPosition = ps_Element(i - 1);
-		tWatchDirection.sub(tCurrentPosition.Position(),tPreviousPosition.Position());
+		tWatchDirection.sub(tCurrentPosition.vPosition,tPreviousPosition.vPosition);
 		if (tWatchDirection.magnitude() > EPS_L) {
 			tWatchDirection.normalize();
 			mk_rotation(tWatchDirection,r_torso_target);
@@ -120,7 +120,7 @@ void CAI_Soldier::SetLessCoverLook(NodeCompressed *tNode, bool bSpine)
 	int i = ps_Size();
 	if (i > 1) {
 		CObject::SavedPosition tPreviousPosition = ps_Element(i - 2), tCurrentPosition = ps_Element(i - 1);
-		tWatchDirection.sub(tCurrentPosition.Position(),tPreviousPosition.Position());
+		tWatchDirection.sub(tCurrentPosition.vPosition,tPreviousPosition.vPosition);
 		if (tWatchDirection.square_magnitude() > 0.000001) {
 			tWatchDirection.normalize();
 			mk_rotation(tWatchDirection,r_torso_target);
@@ -194,9 +194,9 @@ void CAI_Soldier::SetLessCoverLook()
 	}
 }
 
-static BOOL __fastcall SoldierQualifier(CObject* O, void* P)
+BOOL  CAI_Soldier::feel_vision_isRelevant	(CObject* O)
 {
-	if (O->CLS_ID!=CLSID_ENTITY)			
+	if (O->CLS_ID!=CLSID_ENTITY)
 		return FALSE;
 	else {
 		CEntityAlive* E = dynamic_cast<CEntityAlive*> (O);
@@ -206,21 +206,16 @@ static BOOL __fastcall SoldierQualifier(CObject* O, void* P)
 	}
 }
 
-objQualifier* CAI_Soldier::GetQualifier	()
+void CAI_Soldier::renderable_Render	()
 {
-	return(&SoldierQualifier);
-}
-
-void CAI_Soldier::renderable_Render()
-{
-	inherited::renderable_Render();
+	inherited::renderable_Render	();
 }
 
 Fvector tfGetDirection(CEntity *tpEntity)
 {
 	Fvector tDirection;
 	if (tpEntity->ps_Size() > 1)
-		tDirection.sub(tpEntity->ps_Element(tpEntity->ps_Size() - 1).Position(),tpEntity->ps_Element(tpEntity->ps_Size() - 2).Position());
+		tDirection.sub(tpEntity->ps_Element(tpEntity->ps_Size() - 1).vPosition,tpEntity->ps_Element(tpEntity->ps_Size() - 2).vPosition);
 	else
 		tDirection.set(1,0,0);
 	return(tDirection);
@@ -341,7 +336,7 @@ void CAI_Soldier::feel_sound_new(CObject* who, int eType, Fvector& Position, flo
 						tpaDynamicSounds[j].dwUpdateCount++;
 						tpaDynamicSounds[j].tSavedPosition = Position;
 						tpaDynamicSounds[j].tOrientation = tfGetOrientation(tpEntity);
-						tpaDynamicSounds[j].tMySavedPosition = Position();
+						tpaDynamicSounds[j].tMySavedPosition = this->Position();
 						tpaDynamicSounds[j].tMyOrientation = r_torso_current;
 						tpaDynamicSounds[j].tpEntity = tpEntity;
 					}
@@ -360,7 +355,7 @@ void CAI_Soldier::feel_sound_new(CObject* who, int eType, Fvector& Position, flo
 							tpaDynamicSounds[dwIndex].dwUpdateCount = 1;
 							tpaDynamicSounds[dwIndex].tSavedPosition = Position;
 							tpaDynamicSounds[dwIndex].tOrientation = tfGetOrientation(tpEntity);
-							tpaDynamicSounds[dwIndex].tMySavedPosition = Position();
+							tpaDynamicSounds[dwIndex].tMySavedPosition = this->Position();
 							tpaDynamicSounds[dwIndex].tMyOrientation = r_torso_current;
 							tpaDynamicSounds[dwIndex].tpEntity = tpEntity;
 						}
@@ -373,7 +368,7 @@ void CAI_Soldier::feel_sound_new(CObject* who, int eType, Fvector& Position, flo
 						tDynamicSound.dwUpdateCount = 1;
 						tDynamicSound.tSavedPosition = Position;
 						tDynamicSound.tOrientation = tfGetOrientation(tpEntity);
-						tDynamicSound.tMySavedPosition = Position();
+						tDynamicSound.tMySavedPosition = this->Position();
 						tDynamicSound.tMyOrientation = r_torso_current;
 						tDynamicSound.tpEntity = tpEntity;
 						tpaDynamicSounds.push_back(tDynamicSound);
@@ -451,11 +446,11 @@ void CAI_Soldier::vfAimAtEnemy(bool bInaccuracy)
 	Fvector	pos1, pos2;
 	
 	if (Enemy.Enemy)
-		Enemy.Enemy->svCenter(pos1);
+		Enemy.Enemy->Center(pos1);
 	else
 		pos1 = tSavedEnemyPosition;
 
-	svCenter(pos2);
+	Center(pos2);
 	tWatchDirection.sub(pos1,pos2);
 	float fDistance = tWatchDirection.magnitude();
 	

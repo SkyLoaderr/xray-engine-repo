@@ -55,7 +55,7 @@ void CCustomMonster::Exec_Look		( float dt )
 					// ok, perform look
 					Fvector		dir;
 					Fvector		pos;
-					O->svCenter	(pos);
+					O->Center	(pos);
 					dir.sub		(pos,eye_matrix.c);
 					mk_rotation	(dir,r_target);
 				}

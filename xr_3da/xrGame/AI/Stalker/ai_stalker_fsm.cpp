@@ -944,7 +944,7 @@ void CAI_Stalker::TakeItems()
 	if (!tpItemToTake)
 		return;
 
-	tpItemToTake->svCenter(tPoint);
+	tpItemToTake->Center(tPoint);
 	AI_Path.DestNode		= tpItemToTake->AI_NodeID;
 	if (!AI_Path.DestNode) {
 		Msg("! Invalid item node %s",tpItemToTake->cName());

@@ -727,7 +727,6 @@ class CAI_Soldier : public CCustomMonster
 		bool		  m_bActionStarted;
 					   CAI_Soldier();
 		virtual		  ~CAI_Soldier();
-		virtual void  Update(u32 DT);
 		virtual void  HitSignal(float amount, Fvector& vLocalDir, CObject* who, s16 element);
 		virtual void  Load( LPCSTR section );
 		virtual void  Think();
@@ -736,9 +735,11 @@ class CAI_Soldier : public CCustomMonster
 		virtual void  SelectEnemy(SEnemySelected& S);
 		virtual void  SelectAnimation( const Fvector& _view, const Fvector& _move, float speed );
 //		virtual void  g_fireParams(Fvector &fire_pos, Fvector &fire_dir);
+		virtual void  shedule_Update(u32 DT);
 		virtual void  renderable_Render(); 
 		virtual void  Exec_Movement(float dt);
 		virtual void  OnEvent(EVENT E, u64 P1, u64 P2);
 		virtual BOOL  net_Spawn(LPVOID DC);
 		virtual	void  feel_sound_new(CObject* who, int eType, Fvector& Position, float power);
+		virtual BOOL  feel_vision_isRelevant(CObject* who);
 };

@@ -197,7 +197,7 @@ void CAI_Soldier::SelectEnemy(SEnemySelected& S)
 				// !!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!
 #endif
 			// Calculate local visibility
-			CObject**	ins	 = std::lower_bound(tpaVisibleObjects.begin(),tpaVisibleObjects.end(),(CObject*)E);
+			xr_vector<CObject*>::iterator	ins	 = std::lower_bound(tpaVisibleObjects.begin(),tpaVisibleObjects.end(),(CObject*)E);
 			bool	bVisible = ((ins==tpaVisibleObjects.end())?FALSE:((E==*ins)?TRUE:FALSE)) && (bfCheckForVisibility(E));
 			float	cost	 = H*(bVisible?1:_FB_invisible_hscale);
 			if (cost<S.fCost)	{

@@ -173,9 +173,9 @@ BOOL CAI_Soldier::net_Spawn	(LPVOID DC)
 }
 
 // soldier update
-void CAI_Soldier::Update(u32 DT)
+void CAI_Soldier::shedule_Update(u32 DT)
 {
-	inherited::Update(DT);
+	inherited::shedule_Update(DT);
 	vfUpdateSounds(DT);
 }
 
@@ -183,7 +183,7 @@ void CAI_Soldier::Exec_Movement	( float dt )
 {
 	if (_abs(Position().x) > 10000.f) {
 		if (ps_Size() > 1)
-			Position() = ps_Element(ps_Size() - 2).Position();
+			Position() = ps_Element(ps_Size() - 2).vPosition;
 		Msg("%s",cName());
 	}
 	AI_Path.Calculate(this,Position(),Position(),m_fCurSpeed,dt);

@@ -1091,7 +1091,6 @@ void CAI_Soldier::OnDeath()
 
 	vfAddStateToList(aiSoldierDie);
 	
-	setActive	(false);
 	setEnabled	(false);
 }
 

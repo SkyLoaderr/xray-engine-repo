@@ -14,9 +14,8 @@
 
 CGameObject::CGameObject		()
 {
-	AI_NodeID	= 0;
-	AI_Node		= 0;
-	setActive	(FALSE);
+	AI_NodeID		= 0;
+	AI_Node			= 0;
 	m_pPhysicsShell = NULL;
 	/******* Oles
 #ifdef DEBUG
@@ -36,11 +35,10 @@ CGameObject::~CGameObject		()
 
 void CGameObject::net_Destroy	()
 {
+	inherited::net_Destroy		();
 	setReady									(FALSE);
 	g_pGameLevel->Objects.net_Unregister		(this);
-	g_pGameLevel->ObjectSpace.Object_Unregister	(this);
 	shedule_Unregister							();
-	Sector_Move									(0);
 	if (this == Level().CurrentEntity())		Level().SetEntity(0);
 }
 
@@ -88,9 +86,8 @@ BOOL CGameObject::net_Spawn		(LPVOID	DC)
 	if (E->s_name_replace[0])		cName_set		(E->s_name_replace);
 
 	// XForm
+	XFORM().setXYZ					(E->o_Angle);
 	Position().set					(E->o_Position);
-	mRotate.setXYZ					(E->o_Angle);
-	UpdateTransform					();
 
 	// Net params
 	setLocal						(E->s_flags.is(M_SPAWN_OBJECT_LOCAL));
@@ -146,19 +143,18 @@ BOOL CGameObject::net_Spawn		(LPVOID	DC)
 	return	TRUE;
 }
 
-void CGameObject::Sector_Detect	()
+void CGameObject::spatial_move		()
 {
 	if (H_Parent())
 	{
 		// Use parent information
-		CGameObject* O	= dynamic_cast<CGameObject*>(H_Root());
+		CGameObject* O				= dynamic_cast<CGameObject*>(H_Root());
 		VERIFY						(O);
 		CAI_Space&	AI				= getAI();
 		AI.ref_dec					(AI_NodeID);
 		AI_NodeID					= O->AI_NodeID;
 		AI.ref_add					(AI_NodeID);
 		AI_Node						= O->AI_Node;
-		// Sector_Move	(O->Sector());
 	} else {
 		// We was moved - so find _new AI-Node
 		if ((AI_Node) && (Visual())) {
@@ -170,15 +166,15 @@ void CGameObject::Sector_Detect	()
 			AI_NodeID	= AI.q_Node	(AI_NodeID,Position());
 			
 			if (!AI_NodeID)
-				Msg("! GameObject::Sector_Detect : Corresponding node hasn't been found for monster %s",cName());
+				Msg("! GameObject::spatial_move : Corresponding node hasn't been found for monster %s",cName());
 
 			AI.ref_add  (AI_NodeID);
 			AI_Node		= AI.Node	(AI_NodeID);
 		}
 
 		// Perform sector detection
-		inherited::Sector_Detect	();
 	}
+	inherited::spatial_move();
 }
 
 void CGameObject::renderable_Render	()
@@ -282,11 +278,12 @@ void CGameObject::PHSetPushOut()
 #ifdef DEBUG
 void CGameObject::OnRender()
 {
-	if (bDebug && Visual()){
+	if (bDebug && Visual())
+	{
 		Fvector bc,bd; 
 		Visual()->vis.box.get_CD	(bc,bd);
-		Fmatrix	M = clXFORM();	M.c.add (bc);
-		RCache.dbg_DrawOBB (M,bd,D3DCOLOR_RGBA(0,0,255,255));
+		Fmatrix	M = XFORM();		M.c.add (bc);
+		RCache.dbg_DrawOBB			(M,bd,D3DCOLOR_RGBA(0,0,255,255));
 	}
 }
 #endif

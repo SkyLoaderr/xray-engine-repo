@@ -27,7 +27,6 @@ BOOL CPhysicObject::net_Spawn(LPVOID DC)
 		case epotSkeleton:		collidable.model = xr_new<CCF_Skeleton>(this);	break;
 		default: NODEFAULT; 
 	}
-	g_pGameLevel->ObjectSpace.Object_Register(this);
 	CFORM()->OnMove();
 
 	switch(m_type) {
@@ -55,15 +54,10 @@ BOOL CPhysicObject::net_Spawn(LPVOID DC)
 void CPhysicObject::UpdateCL	()
 {
 	inherited::UpdateCL		();
-	if(m_pPhysicsShell){
+	if(m_pPhysicsShell)
+	{
 		if(m_type==epotBox) m_pPhysicsShell->Update();
-		
-		
-		mRotate.i.set(m_pPhysicsShell->mXFORM.i);
-		mRotate.j.set(m_pPhysicsShell->mXFORM.j);
-		mRotate.k.set(m_pPhysicsShell->mXFORM.k);
-		Position().set(m_pPhysicsShell->mXFORM.c);
-		UpdateTransform();
+		XFORM().set			(m_pPhysicsShell->mXFORM);
 	}
 }
 
@@ -697,14 +691,15 @@ void CPhysicObject::CreateSkeleton(LPCSTR fixed_bone)
 	}
 */
 	//set shell start position
+	/*
 	Fmatrix m;
 	m.set(mRotate);
-
 	m.c.set(Position());
+	*/
 	//Movement.GetDeathPosition(m.c);
 	//m.c.y-=0.4f;
 	//m_pPhysicsShell->setMass1(1000.f);
-	m_pPhysicsShell->mXFORM.set(m);
+	m_pPhysicsShell->mXFORM.set(XFORM());
 //	m_pPhysicsShell->SetAirResistance(0.0014f,
 //	1.5f);
 

@@ -166,10 +166,10 @@ void CAI_Trader::DropItemSendMessage(CObject *O)
 	u_EventSend				(P);
 }
 
-void CAI_Trader::Update		(u32 dt)
+void CAI_Trader::shedule_Update	(u32 dt)
 {
-	inherited::Update		(dt);
-	m_inventory.Update		(dt);
+	inherited::shedule_Update	(dt);
+	m_inventory.Update			(dt);
 
 	Think();
 
@@ -203,5 +203,5 @@ void CAI_Trader::g_fireParams(Fvector& P, Fvector& D)
 
 void CAI_Trader::Think()
 {
-	SelectAnimation(XFORM().k,mRotate.k,0);
+	SelectAnimation(XFORM().k,XFORM().k,0);
 }

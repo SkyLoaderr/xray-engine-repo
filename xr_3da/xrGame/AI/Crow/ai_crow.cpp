@@ -142,13 +142,13 @@ void CAI_Crow::switch2_DeathDead()
 void CAI_Crow::switch2_DeathFall()
 {
 	Fvector V;
-	V.mul(mRotate.k,fSpeed);
+	V.mul(XFORM().k,fSpeed);
 //	Movement.SetVelocity(V);
 	PKinematics(Visual())->PlayCycle	(m_Anims.m_death.GetRandom(),TRUE,cb_OnHitEndPlaying,this);
 }
-void CAI_Crow::Update(u32 DT)
+void CAI_Crow::shedule_Update(u32 DT)
 {
-	inherited::Update(DT);
+	inherited::shedule_Update(DT);
 	UpdatePhysicsShell();
 	if (st_target!=st_current){
 		switch(st_target){
@@ -206,7 +206,7 @@ void CAI_Crow::state_Flying()
 	// Update position and orientation of the planes
 	float fAT = fASpeed * Device.fTimeDelta;
 
-	Fvector& vDirection = mRotate.k;
+	Fvector& vDirection = XFORM().k;
 
 	// Tweak orientation based on last position and goal
 	Fvector vOffset;
@@ -240,11 +240,10 @@ void CAI_Crow::state_Flying()
 	vHPB.x  +=  fDHeading;
 	vHPB.z  = -fDHeading * 9.0f;
 
-	// Build the local matrix for the pplane
-	mRotate.setHPB(vHPB.x,vHPB.y,vHPB.z);
 
 	// Update position
 	vOldPosition.set(Position());
+	XFORM().setHPB	(vHPB.x,vHPB.y,vHPB.z);
 	Position().mad	(vDirection,fSpeed*Device.fTimeDelta);
 }
 
@@ -268,7 +267,6 @@ void CAI_Crow::state_DeathFall()
 void CAI_Crow::UpdateCL()
 {
 	inherited::UpdateCL();
-	if (!getActive()) return;
 
 	switch (st_current){
 	case eFlyIdle:
@@ -298,7 +296,7 @@ void CAI_Crow::net_Export	(NET_Packet& P)					// export to server
 	P.w_u8				(flags);
 	
 	float				yaw, pitch, bank;
-	mRotate.getHPB		(yaw,pitch,bank);
+	XFORM().getHPB		(yaw,pitch,bank);
 	P.w_angle8			(yaw);
 	P.w_angle8			(yaw);
 	P.w_angle8			(pitch);
@@ -327,7 +325,7 @@ void CAI_Crow::net_Import	(NET_Packet& P)
 	P.r_angle8			(yaw);
 	P.r_angle8			(pitch);
 	
-	mRotate.setHPB		(yaw,pitch,bank);
+	XFORM().setHPB		(yaw,pitch,bank);
 }
 //---------------------------------------------------------------------
 void CAI_Crow::HitSignal	(float HitAmount, Fvector& local_dir, CObject* who, s16 element)

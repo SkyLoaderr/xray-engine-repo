@@ -338,19 +338,13 @@ void CAI_Rat::CreateSkeleton(){
 	*/
 }
 
-void CAI_Rat::Update(u32 dt){
-
-	inherited::Update( dt);
+void CAI_Rat::shedule_Update(u32 dt)
+{
+	inherited::shedule_Update	(dt);
 	if(m_pPhysicsShell)
 	{
 		m_pPhysicsShell->Update	();
 		XFORM().set				(m_pPhysicsShell->mXFORM);
-
-		//	CKinematics* M		= PKinematics(Visual());			VERIFY(M);
-		//	int id=M->LL_BoneID("bip01_pelvis");
-		//	CBoneInstance& instance=M->LL_GetInstance				(id);
-		//	instance.mTransform.set(m_pPhysicsShell->mXFORM);
-
 	}
 }
 

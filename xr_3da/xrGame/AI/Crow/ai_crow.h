@@ -88,7 +88,7 @@ protected:
 	void			state_Flying	();
 
 	void			CreateSkeleton();
-	void	UpdatePhysicsShell();
+	void			UpdatePhysicsShell();
 public:
 					CAI_Crow();
 	virtual			~CAI_Crow();
@@ -96,7 +96,7 @@ public:
 	virtual BOOL	net_Spawn		( LPVOID DC );
 	virtual BOOL	ShadowGenerate	()			{ return FALSE;	}
 	virtual BOOL	ShadowReceive	()			{ return FALSE;	}
-	virtual void	Update			(u32 DT);
+	virtual void	shedule_Update	(u32 DT);
 	virtual void	UpdateCL		();
 
 	virtual void	net_Export		(NET_Packet& P);

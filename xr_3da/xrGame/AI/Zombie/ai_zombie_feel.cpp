@@ -14,7 +14,7 @@ void CAI_Zombie::SetDirectionLook()
 	int i = ps_Size();
 	if (i > 1) {
 		CObject::SavedPosition tPreviousPosition = ps_Element(i - 2), tCurrentPosition = ps_Element(i - 1);
-		tWatchDirection.sub(tCurrentPosition.Position(),tPreviousPosition.Position());
+		tWatchDirection.sub(tCurrentPosition.vPosition,tPreviousPosition.vPosition);
 		if (tWatchDirection.magnitude() > EPS_L) {
 			tWatchDirection.normalize();
 			mk_rotation(tWatchDirection,r_torso_target);
@@ -28,29 +28,24 @@ void CAI_Zombie::SetDirectionLook()
 void CAI_Zombie::vfAimAtEnemy()
 {
 	Fvector	pos1, pos2;
-	m_Enemy.Enemy->svCenter(pos1);
-	svCenter(pos2);
+	m_Enemy.Enemy->Center(pos1);
+	Center(pos2);
 	tWatchDirection.sub(pos1,pos2);
 	mk_rotation(tWatchDirection,r_torso_target);
 	r_target.yaw = r_torso_target.yaw;
 }
 
-static BOOL __fastcall ZombieQualifier(CObject* O, void* P)
+BOOL CAI_Zombie::feel_vision_isRelevant(CObject* O)
 {
 	if (O->CLS_ID!=CLSID_ENTITY)			
 		return FALSE;
 	else  {
 		CEntityAlive* E = dynamic_cast<CEntityAlive*> (O);
 		if (!E) return FALSE;
-		if (!E->IsVisibleForAI()) return FALSE; 
-		if (E->g_Team() == *((int*)P)) return FALSE;
+		if (!E->IsVisibleForAI())		return FALSE; 
+		if (E->g_Team() == g_Team())	return FALSE;
 		return TRUE;
 	}
-}
-
-objQualifier* CAI_Zombie::GetQualifier	()
-{
-	return(&ZombieQualifier);
 }
 
 void CAI_Zombie::feel_sound_new(CObject* who, int eType, Fvector& Position, float power)

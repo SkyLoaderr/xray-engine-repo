@@ -36,13 +36,13 @@ public:
 		tpTrader->m_bPlaying = false;
 	}
 
-	virtual void		g_fireParams	(Fvector& P, Fvector& D);
-	virtual void		g_WeaponBones	(int &L, int &R1, int &R2);
-	virtual	float		ffGetFov		(){return 150.f;}
-	virtual	float		ffGetRange		(){return 30.f;}
-	virtual	void		OnEvent			(NET_Packet& P, u16 type);
-	virtual	void		feel_touch_new	(CObject* O);
-	virtual	void		DropItemSendMessage(CObject *O);
-	virtual void		Update			(u32 dt);
+	virtual void		g_fireParams			(Fvector& P, Fvector& D);
+	virtual void		g_WeaponBones			(int &L, int &R1, int &R2);
+	virtual	float		ffGetFov				()	{return 150.f;}
+	virtual	float		ffGetRange				()	{return 30.f;}
+	virtual	void		OnEvent					(NET_Packet& P, u16 type);
+	virtual	void		feel_touch_new			(CObject* O);
+	virtual	void		DropItemSendMessage		(CObject *O);
+	virtual void		shedule_Update			(u32 dt);
 	virtual void		renderable_Render		();
 };

@@ -197,9 +197,9 @@ void CEntity::renderable_Render()
 	inherited::renderable_Render		();
 }
 
-void CEntity::Update	(u32 dt)
+void CEntity::shedule_Update	(u32 dt)
 {
-	inherited::Update	(dt);
+	inherited::shedule_Update	(dt);
 }
 
 void CEntityAlive::Load		(LPCSTR section)

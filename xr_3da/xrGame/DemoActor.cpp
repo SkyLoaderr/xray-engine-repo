@@ -29,9 +29,9 @@ void CDemoActor::Load	(LPCSTR section)
 	inherited::Load		(section);
 }
 
-void CDemoActor::Update(u32 DT)
+void CDemoActor::shedule_Update(u32 DT)
 {
-	inherited::Update(DT);
+	inherited::shedule_Update	(DT);
 	if (time2start>0)
 	{
 		time2start-=float(DT)/1000.f;
@@ -39,10 +39,9 @@ void CDemoActor::Update(u32 DT)
 	} else {
 		animator->OnMove();
 		if (animator->IsMotionActive()) {
-			mRotate.set		(animator->GetRotate());
+			XFORM().set		(animator->GetRotate());
 			Position().set	(animator->GetPosition());
 			Position().add	(start_position);
-			UpdateTransform	();
 		} else {
 			// animation stops
 			time2start = time2start_ltx;
@@ -73,5 +72,5 @@ void CDemoActor::StopDemo(){
 
 void CDemoActor::g_fireParams(Fvector& P, Fvector& D){
 	P.set			(Position());
-	D.set			(mRotate.k);
+	D.set			(XFORM().k);
 }

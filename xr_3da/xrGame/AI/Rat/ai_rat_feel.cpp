@@ -14,7 +14,7 @@ void CAI_Rat::SetDirectionLook()
 	int i = ps_Size();
 	if (i > 1) {
 		CObject::SavedPosition tPreviousPosition = ps_Element(i - 2), tCurrentPosition = ps_Element(i - 1);
-		tWatchDirection.sub(tCurrentPosition.Position(),tPreviousPosition.Position());
+		tWatchDirection.sub(tCurrentPosition.vPosition,tPreviousPosition.vPosition);
 		if (tWatchDirection.magnitude() > EPS_L) {
 			tWatchDirection.normalize();
 			mk_rotation(tWatchDirection,r_torso_target);
@@ -28,15 +28,15 @@ void CAI_Rat::SetDirectionLook()
 void CAI_Rat::vfAimAtEnemy()
 {
 	Fvector	pos1, pos2;
-	//m_Enemy.Enemy->svCenter(pos1);
+	//m_Enemy.Enemy->Center(pos1);
 	pos1 = m_Enemy.Enemy->Position();
-	svCenter(pos2);
+	Center(pos2);
 	tWatchDirection.sub(pos1,pos2);
 	mk_rotation(tWatchDirection,r_torso_target);
 	r_target.yaw = r_torso_target.yaw;
 }
 
-static BOOL __fastcall RatQualifier(CObject* O, void* P)
+BOOL CAI_Rat::feel_vision_isRelevant(CObject* O)
 {
 	if (O->CLS_ID!=CLSID_ENTITY)			
 		return FALSE;
@@ -44,14 +44,9 @@ static BOOL __fastcall RatQualifier(CObject* O, void* P)
 		CEntityAlive* E = dynamic_cast<CEntityAlive*> (O);
 		if (!E) return FALSE;
 		if (!E->IsVisibleForAI()) return FALSE; 
-		if ((E->g_Team() == *((int*)P)) && (E->g_Alive())) return FALSE;
+		if ((E->g_Team() == g_Team()) && (E->g_Alive())) return FALSE;
 		return TRUE;
 	}
-}
-
-objQualifier* CAI_Rat::GetQualifier	()
-{
-	return(&RatQualifier);
 }
 
 void CAI_Rat::feel_sound_new(CObject* who, int eType, const Fvector &Position, float power)

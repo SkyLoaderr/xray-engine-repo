@@ -63,7 +63,6 @@ void CAI_Zombie::Die()
 	///Fvector	dir;
 	//AI_Path.Direction(dir);
 	//SelectAnimation(XFORM().k,dir,AI_Path.fSpeed);
-
 	
 	::Sound->play_at_pos(m_tpaSoundDeath[Random.randI(SND_DEATH_COUNT)],this,Position());
 

@@ -13,20 +13,12 @@
 #include "..\\..\\actor.h"
 
 #define MIN_SOUND_VOLUME				.05f
-static BOOL __fastcall StalkerQualifier(CObject* O, void* P)
+BOOL CAI_Stalker::feel_vision_isRelevant(CObject* O)
 {
 	CEntityAlive*	E = dynamic_cast<CEntityAlive*>		(O);
 	CInventoryItem*	I = dynamic_cast<CInventoryItem*>	(O);
-	if (!E && !I)
-		return(FALSE);
-	//if (!E->IsVisibleForAI())
-	//	return(FALSE); 
+	if (!E && !I)	return	(FALSE);
 	return(TRUE);
-}
-
-objQualifier* CAI_Stalker::GetQualifier	()
-{
-	return(&StalkerQualifier);
 }
 
 void CAI_Stalker::renderable_Render	()
@@ -209,7 +201,10 @@ void CAI_Stalker::Exec_Look(float dt)
 	r_current.pitch			= angle_normalize_signed	(r_current.pitch);
 	
 	// updating rotation matrix
-	mRotate.setHPB			(-NET_Last.o_model,0,0);
+	Fmatrix mXFORM;
+	mXFORM.setHPB			(-NET_Last.o_model,0,0);
+	mXFORM.c.set			(Position());
+	XFORM().set				(mXFORM);
 	
 	// checking if we have to switch onto another task
 	Device.Statistic.AI_Think.End	();
@@ -453,7 +448,7 @@ void CAI_Stalker::feel_sound_new(CObject* who, int eType, const Fvector &Positio
 						bFound	= true;
 					}
 				}
-				if (bFound && bfCheckIfCanKillTarget(tpEntity,Position(),yaw1,pitch1)) {//,5.f/180.f*PI)) {
+				if (bFound && bfCheckIfCanKillTarget(tpEntity, this->Position(), yaw1,pitch1)) {//,5.f/180.f*PI)) {
 					SHurt tHurt;
 					tHurt.tpEntity = tpEntity;
 					tHurt.dwTime = Level().timeServer();
@@ -485,7 +480,7 @@ void CAI_Stalker::feel_sound_new(CObject* who, int eType, const Fvector &Positio
 						m_tpaDynamicSounds[j].dwUpdateCount++;
 						m_tpaDynamicSounds[j].tSavedPosition	= Position;
 						m_tpaDynamicSounds[j].tOrientation		= tfGetOrientation(tpEntity);
-						m_tpaDynamicSounds[j].tMySavedPosition	= Position();
+						m_tpaDynamicSounds[j].tMySavedPosition	= this->Position();
 						m_tpaDynamicSounds[j].tMyOrientation	= r_torso_current;
 						m_tpaDynamicSounds[j].tpEntity			= tpEntity;
 						m_tpaDynamicSounds[j].dwNodeID			= tpEntity ? tpEntity->AI_NodeID : -1;
@@ -508,7 +503,7 @@ void CAI_Stalker::feel_sound_new(CObject* who, int eType, const Fvector &Positio
 							m_tpaDynamicSounds[dwIndex].dwUpdateCount		= 1;
 							m_tpaDynamicSounds[dwIndex].tSavedPosition		= Position;
 							m_tpaDynamicSounds[dwIndex].tOrientation		= tfGetOrientation(tpEntity);
-							m_tpaDynamicSounds[dwIndex].tMySavedPosition	= Position();
+							m_tpaDynamicSounds[dwIndex].tMySavedPosition	= this->Position();
 							m_tpaDynamicSounds[dwIndex].tMyOrientation		= r_torso_current;
 							m_tpaDynamicSounds[dwIndex].tpEntity			= tpEntity;
 							m_tpaDynamicSounds[dwIndex].dwNodeID			= tpEntity ? tpEntity->AI_NodeID : 0;
@@ -525,7 +520,7 @@ void CAI_Stalker::feel_sound_new(CObject* who, int eType, const Fvector &Positio
 						tDynamicSound.dwUpdateCount		= 1;
 						tDynamicSound.tSavedPosition	= Position;
 						tDynamicSound.tOrientation		= tfGetOrientation(tpEntity);
-						tDynamicSound.tMySavedPosition	= Position();
+						tDynamicSound.tMySavedPosition	= this->Position();
 						tDynamicSound.tMyOrientation	= r_torso_current;
 						tDynamicSound.tpEntity			= tpEntity;
 						tDynamicSound.dwNodeID			= tpEntity ? tpEntity->AI_NodeID : 0;

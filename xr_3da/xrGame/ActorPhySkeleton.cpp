@@ -420,12 +420,9 @@ void CActor::create_Skeleton(){
 
 
 	//set shell start position
-	Fmatrix m;
-	m.set(mRotate);
-	m.c.set(Position());
 	//ph_Movement.GetDeathPosition(m.c);
 	//m.c.y-=0.4f;
-	m_phSkeleton->mXFORM.set(m);
+	m_phSkeleton->mXFORM.set(XFORM());
 	m_phSkeleton->SetAirResistance(0.002f*skel_airr_lin_factor,
 		0.3f*skel_airr_ang_factor);
 
@@ -538,7 +535,7 @@ void CActor::create_Skeleton1(){
 
 	//set shell start position
 	Fmatrix m;
-	m.set(mRotate);
+	m.set(XFORM());
 	ph_Movement.GetDeathPosition(m.c);
 	m_phSkeleton->mXFORM.set(m);
 

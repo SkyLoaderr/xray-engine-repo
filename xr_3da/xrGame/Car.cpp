@@ -231,7 +231,7 @@ BOOL	CCar::net_Spawn				(LPVOID DC)
 
 void	CCar::Update				( u32 T )
 {
-	inherited::Update				(T);
+	inherited::shedule_Update		(T);
 
 	//Position().set	(m_jeep.DynamicData.BoneTransform.c);
 

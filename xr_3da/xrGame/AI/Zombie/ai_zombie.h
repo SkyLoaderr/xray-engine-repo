@@ -322,8 +322,9 @@ class CAI_Zombie : public CCustomMonster
 		virtual void  SelectEnemy(SEnemySelected& S);
 		virtual void  SelectAnimation( const Fvector& _view, const Fvector& _move, float speed );
 		virtual void  Exec_Movement(float dt);
-		virtual void  Exec_Action(float dt);
-		virtual	void  feel_sound_new(CObject* who, int type, Fvector& Position, float power);
+		virtual void  Exec_Action			(float dt);
+		virtual	void  feel_sound_new		(CObject* who, int type, Fvector& Position, float power);
+		virtual BOOL  feel_vision_isRelevant(CObject* who);
 };
 		
 #endif

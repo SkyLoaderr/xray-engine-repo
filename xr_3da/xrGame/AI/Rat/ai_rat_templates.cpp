@@ -42,7 +42,7 @@ void CAI_Rat::vfAdjustSpeed()
 	Fvector tTemp1, tTemp2;
 	tTemp1.sub(m_tGoalDir,Position());
 	tTemp1.normalize_safe();
-	tTemp2 = mRotate.k;
+	tTemp2 = XFORM().k;
 	tTemp2.normalize_safe();
 	float fAngle = tTemp1.dotproduct(tTemp2);
 	clamp(fAngle,0.f,.99999f);
@@ -107,7 +107,7 @@ void CAI_Rat::vfAdjustSpeed()
 				m_fASpeed = m_fNullASpeed;
 			}
 	
-	tTemp2 = mRotate.k;
+	tTemp2 = XFORM().k;
 	tTemp2.normalize_safe();
 	
 	tTemp1 = Position();
@@ -152,7 +152,7 @@ bool CAI_Rat::bfComputeNewPosition(bool bCanAdjustSpeed, bool bStraightForward)
 	// Update position and orientation of the planes
 	float fAT = m_fASpeed * m_fTimeUpdateDelta;
 
-	Fvector& tDirection = mRotate.k;
+	Fvector& tDirection = XFORM().k;
 
 	// Tweak orientation based on last position and goal
 	Fvector tOffset;

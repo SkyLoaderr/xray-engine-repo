@@ -269,7 +269,7 @@ void CCustomMonster::Update	( u32 DT )
 			// С Олеся - ПИВО!!!! (Диме :-))))
 			// Movement.GetBoundingSphere	(C,R);
 			//////////////////////////////////////
-			svCenter(C);
+			Center(C);
 			R = Radius();
 			//////////////////////////////////////
 			feel_touch_update		(C,R);
