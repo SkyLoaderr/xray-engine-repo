@@ -91,7 +91,7 @@ CWeaponM134::~CWeaponM134()
 	pSounds->Delete3D(sndFireLoop);
 	pSounds->Delete3D(sndFireEnd);
 	pSounds->Delete3D(sndServo);
-	for (i=0; i<SND_RIC_COUNT; i++) pSounds->Delete3D(sndRicochet[i]);
+	for (int i=0; i<SND_RIC_COUNT; i++) pSounds->Delete3D(sndRicochet[i]);
 }
 
 void CWeaponM134::Load(CInifile* ini, const char* section)
