@@ -10,6 +10,7 @@
 #include "WeaponM134.h"
 #include "WeaponGroza.h"
 #include "WeaponAK74.h"
+#include "WeaponLR300.h"
 
 class fClassEQ {
 	CLASS_ID cls;
@@ -159,6 +160,10 @@ CWeapon* CWeaponList::LoadOne( CLASS_ID cls )
 		pWeapon = new CWeaponAK74(); 
 		strcpy(sect_name,"wpn_ak74");
 		break;
+	case CLSID_OBJECT_W_LR300:
+		pWeapon = new CWeaponLR300(); 
+		strcpy(sect_name,"wpn_lr300");
+		break;
 	}
 
 	// load weapon
@@ -179,13 +184,13 @@ BOOL CWeaponList::TakeItem(CLASS_ID cls, int iAmmoCount)
 	case CLSID_OBJECT_A_M134:		idx = FindWeapon(CLSID_OBJECT_W_M134);		break;
 	case CLSID_OBJECT_A_GROZA:		idx = FindWeapon(CLSID_OBJECT_W_GROZA);		break;
 	case CLSID_OBJECT_A_AK74:		idx = FindWeapon(CLSID_OBJECT_W_AK74);		break;
-	case CLSID_OBJECT_A_RAIL:		idx = FindWeapon(CLSID_OBJECT_W_RAIL);		break;
+	case CLSID_OBJECT_A_LR300:		idx = FindWeapon(CLSID_OBJECT_W_LR300);		break;
 	case CLSID_OBJECT_A_ROCKET:		idx = FindWeapon(CLSID_OBJECT_W_ROCKET);	break;
 
 	case CLSID_OBJECT_W_M134:	
 	case CLSID_OBJECT_W_GROZA:	
 	case CLSID_OBJECT_W_AK74:
-	case CLSID_OBJECT_W_RAIL:	
+	case CLSID_OBJECT_W_LR300:	
 	case CLSID_OBJECT_W_M134_en:	
 	case CLSID_OBJECT_W_ROCKET:		idx = FindWeapon(cls); bTakeWeapon = true; break;
 	}
