@@ -1512,6 +1512,25 @@
 					RelativePath=".\motion.h">
 				</File>
 			</Filter>
+			<Filter
+				Name="Feelers"
+				Filter="">
+				<File
+					RelativePath="Feel_Sound.h">
+				</File>
+				<File
+					RelativePath="Feel_Touch.cpp">
+				</File>
+				<File
+					RelativePath="Feel_Touch.h">
+				</File>
+				<File
+					RelativePath="Feel_Vision.cpp">
+				</File>
+				<File
+					RelativePath="Feel_Vision.h">
+				</File>
+			</Filter>
 		</Filter>
 		<Filter
 			Name="Render"

@@ -341,12 +341,6 @@
 					RelativePath=".\CustomMonster_VCPU.cpp">
 				</File>
 				<File
-					RelativePath=".\CustomMonster_VisTrack.cpp">
-				</File>
-				<File
-					RelativePath=".\CustomMonster_VisTrack.h">
-				</File>
-				<File
 					RelativePath=".\ai_commands.h">
 				</File>
 				<File

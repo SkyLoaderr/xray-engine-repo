@@ -14,17 +14,6 @@
 class ENGINE_API CCameraBase;
 class ENGINE_API C3DSound;
 
-class CEHelper_FeelNearest
-{
-protected:
-	vector<CObject*>		Nearest;
-
-	virtual void			g_sv_Feel_Neighbours		(Fvector& P, float R);
-	virtual void			g_sv_Feel_near_new			(CObject* O)		{};
-	virtual void			g_sv_Feel_near_delete		(CObject* O)		{};
-public:
-};
-
 //
 class CEntity : public CGameObject
 {

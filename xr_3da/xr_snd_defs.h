@@ -20,10 +20,6 @@ struct	sound
 	CObject*	g_object;
 	sound()		{ handle = SND_UNDEFINED; feedback=0; g_type=0; g_object=0; }
 };
-struct	soundListener
-{
-	virtual		void	soundEvent	(CObject* who, int type, Fvector& Position, float power) {};
-};
 
 const DWORD soundEventPulse	= 500;	// ms
 
