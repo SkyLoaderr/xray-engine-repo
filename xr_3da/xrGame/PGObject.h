@@ -8,7 +8,7 @@ class CPGObject				:	public CPS_Instance
 {
 	typedef CPS_Instance	inherited;
 public:
-						CPGObject			(LPCSTR pg_name, IRender_Sector* S=0, BOOL bAutoRemove=true);
+						CPGObject			(LPCSTR p_name, IRender_Sector* S=0, BOOL bAutoRemove=true);
 	virtual				~CPGObject			();
 
 	virtual float		shedule_Scale		()	{ return Device.vCameraPosition.distance_to(Position())/200.f; }
