@@ -27,12 +27,14 @@ void CAI_Idol::Load					(LPCSTR section)
 {
 	setEnabled						(false);
 	inherited::Load					(section);
+	eye_fov							= pSettings->r_float(section,"eye_fov");
+	eye_range						= pSettings->r_float(section,"eye_range");
 }
 
 BOOL CAI_Idol::net_Spawn			(LPVOID DC)
 {
 	CSE_Abstract					*e	= (CSE_Abstract*)(DC);
-	CSE_ALifeObjectIdol						*tpIdol	= dynamic_cast<CSE_ALifeObjectIdol*>(e);
+	CSE_ALifeObjectIdol				*tpIdol	= dynamic_cast<CSE_ALifeObjectIdol*>(e);
 	
 	R_ASSERT						(tpIdol);
 	cNameVisual_set					(tpIdol->get_visual());
