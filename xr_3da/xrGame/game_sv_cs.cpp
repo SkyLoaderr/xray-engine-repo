@@ -156,9 +156,9 @@ BOOL	game_sv_CS::OnTargetTouched	(u32 id_who, u32 eid_target)
 	}
 	xrSE_Target_CS *l_pMBall =  dynamic_cast<xrSE_Target_CS*>(e_entity);
 	if(l_pMBall) {
-		if(ps_who->flags&GAME_PLAYER_FLAG_CS_HAS_ARTEFACT) return false;
-		if(ps_who->flags&GAME_PLAYER_FLAG_CS_ON_BASE) return false;
 		Lock();
+		if(ps_who->flags&GAME_PLAYER_FLAG_CS_HAS_ARTEFACT)	{ Unlock(); return false; }
+		if(ps_who->flags&GAME_PLAYER_FLAG_CS_ON_BASE)		{ Unlock(); return false; }
 		if(ps_who->flags&GAME_PLAYER_FLAG_CS_ON_BASE) teams[ps_who->team].num_targets--;
 		else if(ps_who->flags&GAME_PLAYER_FLAG_CS_ON_ENEMY_BASE) teams[(ps_who->team+1)%2].num_targets--;
 		ps_who->flags |= GAME_PLAYER_FLAG_CS_HAS_ARTEFACT;
