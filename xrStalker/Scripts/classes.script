@@ -661,15 +661,18 @@ function Projector:process ()
 	   return	
     end	
 
+
 	if self.projector:action () then return
 	else 
-       self.time_cycle = true 
-	   self.ctime = game.time () 
+	   if self.time_cycle == false then
+          self.time_cycle = true 
+	      self.ctime = game.time () 
+	   end	
 	end
 
 	if self.time_cycle == true and game.time () - self.ctime < self.wait_time then return end
 	self.time_cycle = false	
-	
+
 
 	local point
 	if self.rand == true and table.getn (self.points) > 1 then 
