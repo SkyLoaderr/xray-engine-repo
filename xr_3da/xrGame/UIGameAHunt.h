@@ -35,6 +35,9 @@ protected:
 public:
 	CUIGameAHunt		(CUI* parent);
 	virtual 			~CUIGameAHunt			();
+
+	virtual	void		Init				();
+
 /*
 	virtual void		Render				();
 	virtual void		OnFrame				();

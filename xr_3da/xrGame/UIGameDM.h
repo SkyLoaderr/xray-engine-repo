@@ -29,20 +29,24 @@ protected:
 	PLAYERS_LISTS		m_aPlayersLists;
 	TEAMS_LIST			m_aTeamSections;
 
-//	CUIDMFragList		pFragList;
-//	CUIDMPlayerList		pPlayerList;
-
-	CUIBuyWeaponWnd*		pBuyMenu;
+	CUIBuyWeaponWnd*		pBuyMenuTeam0;
+	CUIBuyWeaponWnd*		pCurBuyMenu;
 
 	virtual	void		ClearLists ();
-	virtual void		InitBuyMenu			(s16 Team = -1);
-	virtual void		FillDefItems		(const char* caSection);
+	
+	virtual CUIBuyWeaponWnd*		InitBuyMenu			(s16 Team = -1);
+	virtual void					FillDefItems		(const char* caSection, CUIBuyWeaponWnd* pMenu);
 
 	virtual s16			ModifyTeam			(s16 Team)	{return Team;};
 
 public:
 						CUIGameDM			(CUI* parent);
 	virtual 			~CUIGameDM			();
+
+	virtual	void		Init				();
+
+	virtual	void		SetCurrentBuyMenu	()	{pCurBuyMenu = pBuyMenuTeam0; };
+
 	virtual void		Render				();
 	virtual void		OnFrame				();
 
@@ -51,7 +55,7 @@ public:
 
 	virtual void		OnBuyMenu_Ok			();
 
-	virtual CUIDialogWnd*	GetBuyWnd			()	{ return (CUIDialogWnd*) pBuyMenu; };
+	virtual CUIDialogWnd*	GetBuyWnd			()	{ return (CUIDialogWnd*) pCurBuyMenu; };
 
 	virtual bool		CanBeReady				();
 

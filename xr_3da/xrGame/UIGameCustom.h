@@ -24,9 +24,13 @@ public:
 	void				SetFlag				(u32 mask, BOOL flag){if (flag) uFlags|=mask; else uFlags&=~mask; }
 	void				InvertFlag			(u32 mask){if (uFlags&mask) uFlags&=~mask; else uFlags|=mask; }
 	BOOL				GetFlag				(u32 mask){return uFlags&mask;}
+	
 public:
 						CUIGameCustom		(CUI* parent){uFlags=0;m_Parent=parent;m_pUserMenu=NULL;}
 	virtual				~CUIGameCustom		(){}
+
+	virtual	void		Init				()	{};
+
 	virtual void		Render				();
 	virtual void		OnFrame				();
 

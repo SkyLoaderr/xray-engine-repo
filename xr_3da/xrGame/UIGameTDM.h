@@ -23,38 +23,22 @@ class CUIGameTDM: public CUIGameDM
 private:
 	typedef CUIGameDM inherited;
 protected:
-	/*
-	CUITDMFragList*		pFragListT1;
-	CUITDMFragList*		pFragListT2;
-	CUITDMPlayerList*	pPlayerListT1;
-	CUITDMPlayerList*	pPlayerListT2;
-
-
-	CUIBuyWeaponWnd*	pBuyMenu;
-	*/
 	CUISpawnWnd*		pUITeamSelectWnd;
+
+	CUIBuyWeaponWnd*	pBuyMenuTeam1;
+	CUIBuyWeaponWnd*	pBuyMenuTeam2;
 
 	virtual s16			ModifyTeam			(s16 Team)	{return Team-1;};
 public:
 	CUIGameTDM			(CUI* parent);
 	virtual 			~CUIGameTDM			();
 
+	virtual	void		Init				();
+	virtual	void		SetCurrentBuyMenu	();
+
 	virtual bool		IR_OnKeyboardPress		(int dik);
 
 	virtual void		OnTeamSelect			(int Result);
-/*
-	virtual void		Render				();
-	virtual void		OnFrame				();
-
-	
-	virtual bool		IR_OnKeyboardRelease	(int dik);
-
-	
-
-	virtual void		OnBuyMenu_Ok			();
-
-	virtual bool		CanBeReady				();
-	*/
 protected:
 	/////////
 	CUIInventoryWnd		InventoryMenu;

@@ -55,6 +55,7 @@ void CUI::Load()
 	case GAME_TEAMDEATHMATCH:	pUIGame = xr_new<CUIGameTDM> (this);	break;
 	case GAME_ARTEFACTHUNT:		pUIGame = xr_new<CUIGameAHunt> (this);	break;
 	}
+	pUIGame->Init();
 }
 //--------------------------------------------------------------------
 

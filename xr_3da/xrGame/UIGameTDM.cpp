@@ -14,7 +14,14 @@
 //--------------------------------------------------------------------
 CUIGameTDM::CUIGameTDM(CUI* parent):CUIGameDM(parent)
 {
-	ClearLists();
+	pUITeamSelectWnd = xr_new<CUISpawnWnd>	();
+	pBuyMenuTeam1 = NULL;
+	pBuyMenuTeam2 = NULL;
+
+}
+//--------------------------------------------------------------------
+void		CUIGameTDM::Init				()
+{
 	//-----------------------------------------------------------
 	CUITDMFragList* pFragListT1	= xr_new<CUITDMFragList>	();
 	CUITDMFragList* pFragListT2	= xr_new<CUITDMFragList>	();
@@ -67,18 +74,20 @@ CUIGameTDM::CUIGameTDM(CUI* parent):CUIGameDM(parent)
 	m_aTeamSections.push_back(Team1);
 	m_aTeamSections.push_back(Team2);
 	//-----------------------------------------------------------
-	pUITeamSelectWnd = xr_new<CUISpawnWnd>	();
+	pBuyMenuTeam1 = InitBuyMenu(1);
+	pBuyMenuTeam2 = InitBuyMenu(2);
 }
 //--------------------------------------------------------------------
 CUIGameTDM::~CUIGameTDM()
 {
 	xr_delete(pUITeamSelectWnd);
+
+	xr_delete(pBuyMenuTeam1);
+	xr_delete(pBuyMenuTeam2);
 }
 //--------------------------------------------------------------------
 bool CUIGameTDM::IR_OnKeyboardPress(int dik)
 {
-	if(inherited::IR_OnKeyboardPress(dik)) return true;
-
 	if (Game().phase==GAME_PHASE_INPROGRESS){
 		// switch pressed keys
 		switch (dik){
@@ -89,6 +98,8 @@ bool CUIGameTDM::IR_OnKeyboardPress(int dik)
 			}break;
 		};
 	}
+	if(inherited::IR_OnKeyboardPress(dik)) return true;
+
 	return false;
 }
 //--------------------------------------------------------------------
@@ -107,108 +118,15 @@ void CUIGameTDM::OnTeamSelect(int Team)
 	//P.w_u32			(0);
 	l_pPlayer->u_EventSend		(P);
 	//-----------------------------------------------------------------
-	InitBuyMenu(s16(Team+1));
+	if (Team == 0) pCurBuyMenu = pBuyMenuTeam1;
+	else pCurBuyMenu = pBuyMenuTeam2;
 };
-//--------------------------------------------------------------------
-/*
-void CUIGameTDM::OnFrame()
+//-----------------------------------------------------------------
+void CUIGameTDM::SetCurrentBuyMenu	()
 {
-	inherited::OnFrame();	
-
-	switch (Game().phase){
-	case GAME_PHASE_PENDING: 
-		pPlayerListT1->Update();
-		pPlayerListT2->Update();
-		break;
-	case GAME_PHASE_INPROGRESS:
-		if (uFlags&flShowFragList) 
-		{
-			pFragListT1->Update();
-			pFragListT2->Update();
-		}break;
-	}
-}
-//--------------------------------------------------------------------
-
-void CUIGameTDM::Render()
-{
-	inherited::Render();
-
-	switch (Game().phase){
-	case GAME_PHASE_PENDING: 
-//		HUD().GetUI()->HideIndicators();
-		pPlayerListT1->Draw();
-		pPlayerListT2->Draw();
-		break;
-	case GAME_PHASE_INPROGRESS:
-//		HUD().GetUI()->ShowIndicators();
-		if (uFlags&flShowFragList) 
-		{
-			pFragListT1->Draw	();
-			pFragListT2->Draw	();
-		}break;
-	}
-}
-
-//--------------------------------------------------------------------
-
-bool CUIGameTDM::IR_OnKeyboardRelease(int dik)
-{
-	if(inherited::IR_OnKeyboardRelease(dik)) return true;
-
-	if (Game().phase==GAME_PHASE_INPROGRESS){
-		// switch pressed keys
-		switch (dik){
-		case DIK_TAB:	SetFlag		(flShowFragList,FALSE);	return true;
-		}
-	}
-	return false;
-}
-//--------------------------------------------------------------------
-
-void CUIGameTDM::OnBuyMenu_Ok	()
-{
-	CObject *l_pObj = Level().CurrentEntity();
-
-	CGameObject *l_pPlayer = dynamic_cast<CGameObject*>(l_pObj);
-	if(!l_pPlayer) return;
-
-	NET_Packet		P;
-	l_pPlayer->u_EventGen		(P,GEG_PLAYER_BUY_FINISHED,l_pPlayer->ID()	);
-
-	P.w_u8		(pBuyMenu->GetWeaponIndex(KNIFE_SLOT));
-	P.w_u8		(pBuyMenu->GetWeaponIndex(PISTOL_SLOT));
-	P.w_u8		(pBuyMenu->GetWeaponIndex(RIFLE_SLOT));
-	P.w_u8		(pBuyMenu->GetWeaponIndex(GRENADE_SLOT));
-
-	P.w_u8		(pBuyMenu->GetBeltSize());
-
-	for (u8 i=0; i<pBuyMenu->GetBeltSize(); i++)
+	if (!pCurBuyMenu || !pCurBuyMenu->IsShown())
 	{
-		u8 SectID, ItemID;
-		pBuyMenu->GetWeaponIndexInBelt(i, SectID, ItemID);
-		P.w_u8	(SectID);
-		P.w_u8	(ItemID);
-	};	
-
-	l_pPlayer->u_EventSend		(P);
-};
-
-bool		CUIGameTDM::CanBeReady				()
-{
-	if (pBuyMenu)
-	{
-		u8 res = 0xff;
-
-		res &=	pBuyMenu->GetWeaponIndex(KNIFE_SLOT);
-		res &=	pBuyMenu->GetWeaponIndex(PISTOL_SLOT);
-		res &=	pBuyMenu->GetWeaponIndex(RIFLE_SLOT);
-		res &=	pBuyMenu->GetWeaponIndex(GRENADE_SLOT);
-
-		if (res != 0xff) return true;
+		if (Game().local_player->team == 1) pCurBuyMenu = pBuyMenuTeam1;
+		else pCurBuyMenu = pBuyMenuTeam2;
 	};
-
-	IR_OnKeyboardPress(DIK_B);
-	return false;
 };
-*/

@@ -14,7 +14,10 @@
 //--------------------------------------------------------------------
 CUIGameAHunt::CUIGameAHunt(CUI* parent):CUIGameTDM(parent)
 {
-	ClearLists();
+}
+//--------------------------------------------------------------------
+void		CUIGameAHunt::Init				()
+{
 	//-----------------------------------------------------------
 	CUIAHuntFragList* pFragListT1	= xr_new<CUIAHuntFragList>	();
 	CUIAHuntFragList* pFragListT2	= xr_new<CUIAHuntFragList>	();
@@ -62,14 +65,17 @@ CUIGameAHunt::CUIGameAHunt(CUI* parent):CUIGameTDM(parent)
 	m_aPlayersLists.push_back(pPlayerListT1);
 	m_aPlayersLists.push_back(pPlayerListT2);
 	//-----------------------------------------------------------
-
 	string64	Team1, Team2;
 	std::strcpy(Team1, TEAM1_MENU);
 	std::strcpy(Team2, TEAM2_MENU);
 	m_aTeamSections.push_back(Team1);
 	m_aTeamSections.push_back(Team2);
-}
+	//--------------------------------------------------------------------
+	pBuyMenuTeam1 = InitBuyMenu(1);
+	pBuyMenuTeam2 = InitBuyMenu(2);
+};
 //--------------------------------------------------------------------
+
 CUIGameAHunt::~CUIGameAHunt()
 {
 }

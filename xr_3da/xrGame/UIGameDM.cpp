@@ -12,6 +12,14 @@
 //--------------------------------------------------------------------
 CUIGameDM::CUIGameDM(CUI* parent):CUIGameCustom(parent)
 {
+	ClearLists ();
+	
+	pBuyMenuTeam0	= NULL;
+	pCurBuyMenu		= NULL;
+}
+//--------------------------------------------------------------------
+void	CUIGameDM::Init				()
+{
 	CUIDMFragList* pFragList		= xr_new<CUIDMFragList>		();
 	CUIDMPlayerList* pPlayerList	= xr_new<CUIDMPlayerList>	();
 
@@ -37,9 +45,11 @@ CUIGameDM::CUIGameDM(CUI* parent):CUIGameCustom(parent)
 	std::strcpy(Team0, TEAM0_MENU);
 	m_aTeamSections.push_back(Team0);
 	//-----------------------------------------------------------
-	pBuyMenu = NULL;
-}
+	pBuyMenuTeam0 = InitBuyMenu(0);
+	pCurBuyMenu = pBuyMenuTeam0;
+};
 //--------------------------------------------------------------------
+
 void	CUIGameDM::ClearLists ()
 {
 	for (u32 i=0; i<m_aFragsLists.size(); i++)
@@ -61,7 +71,7 @@ CUIGameDM::~CUIGameDM()
 {
 	ClearLists();
 
-	xr_delete(pBuyMenu);
+	xr_delete(pBuyMenuTeam0);
 }
 //--------------------------------------------------------------------
 
@@ -141,8 +151,9 @@ bool CUIGameDM::IR_OnKeyboardPress(int dik)
 			}break;
 		case DIK_B:
 			{
-				if (!pBuyMenu) InitBuyMenu();
-				StartStopMenu(pBuyMenu);
+				SetCurrentBuyMenu	();
+
+				StartStopMenu(pCurBuyMenu);
 			}break;
 		}
 	}
@@ -179,17 +190,17 @@ void CUIGameDM::OnBuyMenu_Ok	()
 	NET_Packet		P;
 	l_pPlayer->u_EventGen		(P,GEG_PLAYER_BUY_FINISHED,l_pPlayer->ID()	);
 	
-	P.w_u8		(pBuyMenu->GetWeaponIndex(KNIFE_SLOT));
-	P.w_u8		(pBuyMenu->GetWeaponIndex(PISTOL_SLOT));
-	P.w_u8		(pBuyMenu->GetWeaponIndex(RIFLE_SLOT));
-	P.w_u8		(pBuyMenu->GetWeaponIndex(GRENADE_SLOT));
+	P.w_u8		(pCurBuyMenu->GetWeaponIndex(KNIFE_SLOT));
+	P.w_u8		(pCurBuyMenu->GetWeaponIndex(PISTOL_SLOT));
+	P.w_u8		(pCurBuyMenu->GetWeaponIndex(RIFLE_SLOT));
+	P.w_u8		(pCurBuyMenu->GetWeaponIndex(GRENADE_SLOT));
 
-	P.w_u8		(pBuyMenu->GetBeltSize());
+	P.w_u8		(pCurBuyMenu->GetBeltSize());
 	
-	for (u8 i=0; i<pBuyMenu->GetBeltSize(); i++)
+	for (u8 i=0; i<pCurBuyMenu->GetBeltSize(); i++)
 	{
 		u8 SectID, ItemID;
-		pBuyMenu->GetWeaponIndexInBelt(i, SectID, ItemID);
+		pCurBuyMenu->GetWeaponIndexInBelt(i, SectID, ItemID);
 		P.w_u8	(SectID);
 		P.w_u8	(ItemID);
 	};	
@@ -199,24 +210,28 @@ void CUIGameDM::OnBuyMenu_Ok	()
 
 bool		CUIGameDM::CanBeReady				()
 {
-	if (!pBuyMenu) InitBuyMenu();
-
 	u8 res = 0xff;
 
-	res &=	pBuyMenu->GetWeaponIndex(KNIFE_SLOT);
-	res &=	pBuyMenu->GetWeaponIndex(PISTOL_SLOT);
-	res &=	pBuyMenu->GetWeaponIndex(RIFLE_SLOT);
-	res &=	pBuyMenu->GetWeaponIndex(GRENADE_SLOT);
-	res &=	~(pBuyMenu->GetBeltSize());
+	SetCurrentBuyMenu();
 
-	if (res != 0xff) return true;
+	res &=	pCurBuyMenu->GetWeaponIndex(KNIFE_SLOT);
+	res &=	pCurBuyMenu->GetWeaponIndex(PISTOL_SLOT);
+	res &=	pCurBuyMenu->GetWeaponIndex(RIFLE_SLOT);
+	res &=	pCurBuyMenu->GetWeaponIndex(GRENADE_SLOT);
+	res &=	~(pCurBuyMenu->GetBeltSize());
 
-	StartStopMenu(pBuyMenu);
+	if (res != 0xff) 
+	{
+		OnBuyMenu_Ok();
+		return true;
+	};
+
+	StartStopMenu(pCurBuyMenu);
 	return false;
 };
 
 //--------------------------------------------------------------------
-void		CUIGameDM::FillDefItems		(const char* caSection)
+void		CUIGameDM::FillDefItems		(const char* caSection, CUIBuyWeaponWnd* pMenu)
 {
 	if (!pSettings->section_exist(caSection)) return;
 
@@ -231,13 +246,11 @@ void		CUIGameDM::FillDefItems		(const char* caSection)
 	for (u32 i = 0; i < count; ++i)
 	{
 		_GetItem(DefItems, i, SingleItem);
-		pBuyMenu->MoveWeapon(SingleItem);
+		pMenu->MoveWeapon(SingleItem);
 	};
-
-	OnBuyMenu_Ok();
 };
 //--------------------------------------------------------------------
-void		CUIGameDM::InitBuyMenu			(s16 Team)
+CUIBuyWeaponWnd*		CUIGameDM::InitBuyMenu			(s16 Team)
 {
 	if (Team == -1)
 	{
@@ -246,13 +259,15 @@ void		CUIGameDM::InitBuyMenu			(s16 Team)
 
 	std::string *pTeamSect = &m_aTeamSections[ModifyTeam(Team)];
 
-	if (!pBuyMenu)
-	{
-		pBuyMenu	= xr_new<CUIBuyWeaponWnd>	((char*)pTeamSect->c_str());
+	
+		CUIBuyWeaponWnd* pMenu	= xr_new<CUIBuyWeaponWnd>	((char*)pTeamSect->c_str());
+		/*
 	}
 	else
 	{
-		pBuyMenu->ReInitItems((char*)pTeamSect->c_str());
+		pMenu->ReInitItems((char*)pTeamSect->c_str());
 	};
-	FillDefItems(pTeamSect->c_str());
+	*/
+	FillDefItems(pTeamSect->c_str(), pMenu);
+	return pMenu;
 };
