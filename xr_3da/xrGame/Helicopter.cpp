@@ -500,7 +500,7 @@ void CHelicopter::UpdateCL()
 	m_particleXFORM.mulA(XFORM());
 	UpdateHeliParticles();
 
-	if( m_curState==CHelicopter::eMovingByAttackTraj ){
+	if( m_data.m_destEnemy || m_curState==CHelicopter::eMovingByAttackTraj ){
 
 		m_fire_bone_xform	= K->LL_GetTransform(m_fire_bone);
 
@@ -531,7 +531,7 @@ void CHelicopter::UpdateCL()
 	angle_lerp	(m_cur_y_rot, m_tgt_y_rot, PI, Device.fTimeDelta);
 
 
-	if( m_curState==CHelicopter::eMovingByAttackTraj ){
+	if( m_data.m_destEnemy || m_curState==CHelicopter::eMovingByAttackTraj ){
 		m_data.m_destEnemy->Center(m_data.m_destEnemyPos);
 		updateMGunDir();
 
@@ -840,6 +840,10 @@ void CHelicopter::SetCurrVelocity(float v)
 
 void CHelicopter::SetEnemy(CScriptGameObject* e)
 {
+	if(NULL==e){
+		m_data.m_destEnemy = NULL;
+		return;
+	};
 	m_data.m_destEnemy = e->object();
 }
 
