@@ -52,8 +52,13 @@ namespace CDB
 	// Model definition
 	class XRCDB_API MODEL
 	{
+		friend class COLLIDER;	
 		OPCODE_Model*	tree;
 	public:
+		MODEL();
+		~MODEL();
+
+		void		build	(Fvector* V, int Vcnt, TRI* T, int Tcnt);
 	};
 
 	// Collider result
