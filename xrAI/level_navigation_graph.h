@@ -14,17 +14,6 @@
 //#	define OPTIMAL_GRAPH
 #endif
 
-#ifdef OPTIMAL_GRAPH
-//#	define USE_HASH_SET
-#	ifdef USE_HASH_SET
-#		pragma warning(push)
-#		pragma warning(disable:4995)
-#		pragma warning(disable:4996)
-#		include <hash_set>
-#		pragma warning(pop)
-#	endif
-#endif
-
 namespace LevelNavigationGraph {
 	struct CCellVertex;
 #ifdef OPTIMAL_GRAPH
@@ -134,18 +123,7 @@ public:
 
 public:
 	typedef xr_vector<CCellVertex>						CROSS_TABLE;
-#ifdef USE_HASH_SET
-	typedef std::hash_set<
-				CCellVertex*,
-				std::hash_compare<
-					CCellVertex*,
-					sort_cells_predicate
-				>,
-				xr_allocator_t<CCellVertex*>
-			>	CROSS_PTABLE;
-#else
 	typedef xr_set<CCellVertex*,sort_cells_predicate>	CROSS_PTABLE;
-#endif
 
 private:
 	CSectorGraph				*m_sectors;
