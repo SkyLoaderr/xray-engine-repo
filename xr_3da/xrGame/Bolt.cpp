@@ -2,10 +2,13 @@
 #include "bolt.h"
 #include "ParticlesObject.h"
 #include "PhysicsShell.h"
+#include "inventory.h"
+
+
 CBolt::CBolt(void) {
 	//m_belt = true;
 	m_weight = .1f;
-	m_slot = 5;
+	m_slot = BOLT_SLOT;
 	m_ruck = false;
 }
 

@@ -1879,6 +1879,12 @@
 						<File
 							RelativePath=".\ui\UIInventoryWnd.h">
 						</File>
+						<File
+							RelativePath=".\ui\UIOutfitSlot.cpp">
+						</File>
+						<File
+							RelativePath=".\ui\UIOutfitSlot.h">
+						</File>
 					</Filter>
 					<Filter
 						Name="TradeWnd"

@@ -14,6 +14,7 @@
 #include "UIProgressBar.h"
 #include "UI3dStatic.h"
 #include "UIPropertiesBox.h"
+#include "UIOutfitSlot.h"
 
 
 
@@ -65,7 +66,10 @@ protected:
 
 		
 	#define SLOTS_NUM 5
+	//слоты для оружия
 	CUIDragDropList		UITopList[SLOTS_NUM]; 
+	//отдельный слот для костюмов
+	CUIOutfitSlot		UIOutfitSlot;
 	
 	CUIDragDropList		UIBagList;
 	CUIDragDropList		UIBeltList;
@@ -77,7 +81,7 @@ protected:
 	CUIProgressBar UIProgressBarRadiation;
 
 	//pop-up меню вызываемое по нажатию правой кнопки
-	CUIPropertiesBox UIPropertiesBox;	
+	CUIPropertiesBox UIPropertiesBox;
 
     
 	#define MAX_ITEMS 70
@@ -103,18 +107,32 @@ protected:
 	static bool SlotProc2(CUIDragDropItem* pItem, CUIDragDropList* pList);
 	static bool SlotProc3(CUIDragDropItem* pItem, CUIDragDropList* pList);
 	static bool SlotProc4(CUIDragDropItem* pItem, CUIDragDropList* pList);
-	
+
+	static bool OutfitSlotProc(CUIDragDropItem* pItem, CUIDragDropList* pList);
 	static bool BagProc(CUIDragDropItem* pItem, CUIDragDropList* pList);
 	static bool BeltProc(CUIDragDropItem* pItem, CUIDragDropList* pList);
 
 	//для надписей на иконках с оружием
 	static void AmmoUpdateProc(CUIDragDropItem* pItem);
+	//для надписей на иконках с едой
+	static void FoodUpdateProc(CUIDragDropItem* pItem);
 
+	
+	
+	//для запуска меню по правой клавиши
+	void ActivatePropertiesBox();
+
+	//описание возоможных дейстивий над предметами инвентаря
+	enum {DROP_ACTION, EAT_ACTION, TO_BELT_ACTION, TO_SLOT_ACTION, TO_BAG_ACTION};
 
 	//выбросить элемент
 	void DropItem();
 	//съесть элемент
 	void EatItem();
+	void ToSlot();
+	void ToBag();
+	void ToBelt();
+
 
 	//для сортировки вещей
 	TIItemList ruck_list;

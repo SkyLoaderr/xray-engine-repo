@@ -14,8 +14,9 @@ typedef TIItemSet::iterator		PSPIItem;
 typedef TIItemList::iterator	PPIItem;
 
 
+#define BOLT_SLOT 5
 #define OUTFIT_SLOT 6
-#define PDA_SLOT 7
+#define PDA_SLOT 7 
 
 
 ///////////////////////////////////////////////////////////////////////////////////////////////////
@@ -84,12 +85,17 @@ public:
 	virtual ~CEatableItem();
 
 	virtual void Load(LPCSTR section);
+	virtual bool Useful();
 
 	//влияние при поедании вещи на параметры игрока
-	float m_fHealthInfluence;
-	float m_fPowerInfluence;
-	float m_fSatietyInfluence;
-	float m_fRadiationInfluence;
+	float	m_fHealthInfluence;
+	float	m_fPowerInfluence;
+	float	m_fSatietyInfluence;
+	float	m_fRadiationInfluence;
+
+	//количество порций еды, 
+	//-1 - порция одна и больше не бывает (чтоб не выводить надпись в меню)
+	int		m_iPortionsNum;
 };
 
 ///////////////////////////////////////////////////////////////////////////////////////////////////
@@ -118,9 +124,23 @@ public:
 	bool Drop(CGameObject *pObj);							// Выбросить объект
 	bool DropAll();											// Выбросить все
 	void ClearAll();										// Очистить всё
+	
+	
 	bool Slot(PIItem pIItem);								// Вставить объект себе в слот. То что было - на пояс. Нельзя - в рюкзак
 	bool Belt(PIItem pIItem);								// Повесить объект на пояс
 	bool Ruck(PIItem pIItem);								// Полжить объект в рюкзак
+
+	//проверяет находится ли элемент в части инвенторя
+	bool InSlot(PIItem pIItem);
+	bool InBelt(PIItem pIItem);
+	bool InRuck(PIItem pIItem);
+
+	//можно ли положить элемент в слот, рюкзак или на пояс
+	bool CanPutInSlot(PIItem pIItem);
+	bool CanPutInBelt(PIItem pIItem);
+	bool CanPutInRuck(PIItem pIItem);
+
+		
 	bool Activate(u32 slot);								// Активировать объект в указанном слоте
 	PIItem ActiveItem() const;								// Возвращает указатель на объект в актовном слоте
 	bool Action(s32 cmd, u32 flags);						// true если известная команда, иначе false
@@ -128,7 +148,7 @@ public:
 	PIItem Same(const PIItem pIItem);						// Ищет на поясе аналогичный IItem
 	PIItem SameSlot(u32 slot);								// Ищет на поясе IItem для указанного слота
 	PIItem Get(const char *name, bool bSearchRuck);			// Ищет на поясе или в рюкзаке IItem с указанным именем (cName())
-	PIItem Get(const u16  id,	 bool bSearchRuck);			// Ищет на поясе или в рюкзаке IItem с указанным именем (id)
+	PIItem Get(const u32  id,	 bool bSearchRuck);			// Ищет на поясе или в рюкзаке IItem с указанным именем (id)
 	void   Clear();											// clearing Inventory
 	virtual u32		dwfGetSameItemCount(LPCSTR caSection);	// get all the items with the same section name
 
@@ -149,6 +169,8 @@ public:
 	//для проверки свободного места
 	static bool GreaterRoomInRuck(PIItem item1, PIItem item2);
 	bool FreeRuckRoom();
+	bool FreeBeltRoom();
+
 	//буферный список для сортировки
 	TIItemList ruck_list;
 

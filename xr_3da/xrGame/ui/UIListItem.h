@@ -26,10 +26,17 @@ public:
 	virtual int GetIndex() {return m_iIndex;}
 	virtual void SetIndex(int index) {m_iIndex = index;}
 
+	virtual int GetValue() {return m_iValue;}
+	virtual void SetValue(int value) {m_iValue = value;}
+
 protected:
 	//указатель на произвольные данные, которые могут
 	//присоедениены к элементу
 	void* m_pData;
+	
+	//произвольное число, приписанное объекту
+	int m_iValue;
+	
 	//индекс в списке
 	int m_iIndex;
 };

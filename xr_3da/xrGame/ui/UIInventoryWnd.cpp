@@ -12,6 +12,7 @@
 
 #include "..\\actor.h"
 #include "..\\WeaponAmmo.h"
+#include "..\\CustomOutfit.h"
 #include "..\\hudmanager.h"
 
 
@@ -155,6 +156,10 @@ void CUIInventoryWnd::Init()
 	xml_init.InitDragDropList(uiXml, "dragdrop_list", 6, &UITopList[4]);
 	UITopList[4].BlockCustomPlacement();
 	
+	AttachChild(&UIOutfitSlot);
+	xml_init.InitDragDropList(uiXml, "dragdrop_list", 7, &UIOutfitSlot);
+	UIOutfitSlot.BlockCustomPlacement();
+
 
 	UITopList[0].SetCheckProc(SlotProc0);
 	UITopList[1].SetCheckProc(SlotProc1);
@@ -168,9 +173,6 @@ void CUIInventoryWnd::Init()
 
 	AttachChild(&UIPropertiesBox);
 	UIPropertiesBox.Init("ui\\ui_frame",0,0,300,300);
-	UIPropertiesBox.AddItem("Drop");
-	UIPropertiesBox.AddItem("Eat");
-	UIPropertiesBox.AddItem("Activate");
 	UIPropertiesBox.Hide();
 
 
@@ -215,6 +217,7 @@ void CUIInventoryWnd::InitInventory()
 	UITopList[2].DropAll();
 	UITopList[3].DropAll();
 	UITopList[4].DropAll();
+	UIOutfitSlot.DropAll();
 		
 	UIBeltList.DropAll();
 	UIBagList.DropAll();
@@ -232,7 +235,7 @@ void CUIInventoryWnd::InitInventory()
 
 
 	//Slots
-	for( i = 0; i < /*pInv->m_slots.size()*/ SLOTS_NUM; i++) 
+	for( i = 0; i < SLOTS_NUM; i++) 
 	{
 			if(pInv->m_slots[i].m_pIItem) 
 			{
@@ -250,13 +253,26 @@ void CUIInventoryWnd::InitInventory()
 			}
 	}
 
+	//Слот с костюмом
+	if(pInv->m_slots[OUTFIT_SLOT].m_pIItem) 
+	{
+		CUIDragDropItem& UIDragDropItem = m_vDragDropItems[m_iUsedItems];		
+		
+		UIDragDropItem.Init(pInv->m_slots[OUTFIT_SLOT].m_pIItem->m_sIconTexture, 0,0, 50,50);
+		UIDragDropItem.SetGridHeight(pInv->m_slots[OUTFIT_SLOT].m_pIItem->m_iGridHeight);
+		UIDragDropItem.SetGridWidth(pInv->m_slots[OUTFIT_SLOT].m_pIItem->m_iGridWidth);
+
+		UIDragDropItem.SetData(pInv->m_slots[OUTFIT_SLOT].m_pIItem);
+				
+		UIOutfitSlot.AttachChild(&UIDragDropItem);
+		m_iUsedItems++;
+	}
 
 	//Пояс
 	for(PPIItem it =  pInv->m_belt.begin(); it !=  pInv->m_belt.end(); it++) 
 	{
 			if((*it)) 
 			{
-
 				CUIDragDropItem& UIDragDropItem = m_vDragDropItems[m_iUsedItems];		
 				
 				UIDragDropItem.Init((*it)->m_sIconTexture, 0,0, 50,50);
@@ -267,6 +283,9 @@ void CUIInventoryWnd::InitInventory()
 
 				CWeaponAmmo* pWeaponAmmo  = dynamic_cast<CWeaponAmmo*>((*it));
 				if(pWeaponAmmo)	UIDragDropItem.SetCustomUpdate(AmmoUpdateProc);
+
+				CEatableItem* pEatableItem = dynamic_cast<CEatableItem*>((*it));
+				if(pEatableItem) UIDragDropItem.SetCustomUpdate(FoodUpdateProc);
 		
 				UIBeltList.AttachChild(&UIDragDropItem);
 				m_iUsedItems++;
@@ -292,7 +311,10 @@ void CUIInventoryWnd::InitInventory()
 				CWeaponAmmo* pWeaponAmmo  = dynamic_cast<CWeaponAmmo*>((*it));
 				if(pWeaponAmmo)	UIDragDropItem.SetCustomUpdate(AmmoUpdateProc);
 
-		
+				CEatableItem* pEatableItem = dynamic_cast<CEatableItem*>((*it));
+				if(pEatableItem) UIDragDropItem.SetCustomUpdate(FoodUpdateProc);
+
+
 				UIBagList.AttachChild(&UIDragDropItem);
 				m_iUsedItems++;
 			}
@@ -353,6 +375,17 @@ bool CUIInventoryWnd::SlotProc4(CUIDragDropItem* pItem, CUIDragDropList* pList)
 		return false;
 }
 
+//одеть костюм
+bool OutfitSlotProc(CUIDragDropItem* pItem, CUIDragDropList* pList)
+{
+	PIItem pInvItem = (PIItem)pItem->GetData();
+
+	if(pInvItem->m_slot == OUTFIT_SLOT)
+		return ((CUIInventoryWnd*)(pList->GetParent()))->GetInventory()->Slot(pInvItem);
+	else
+		return false;
+
+}
 
 //в рюкзак
 bool CUIInventoryWnd::BagProc(CUIDragDropItem* pItem, CUIDragDropList* pList)
@@ -399,7 +432,11 @@ void CUIInventoryWnd::SendMessage(CUIWindow *pWnd, s16 msg, void *pData)
 		if(result)
 		{
 			((CUIDragDropList*)pDragDropItem->GetParent())->DetachChild(pDragDropItem);
-			UITopList[pInvItem->m_slot].AttachChild(pDragDropItem);
+		
+			if(pInvItem->m_slot == OUTFIT_SLOT)
+				UIOutfitSlot.AttachChild(pDragDropItem);
+			else
+				UITopList[pInvItem->m_slot].AttachChild(pDragDropItem);
 			
 			m_pMouseCapturer = NULL;
 		}
@@ -408,19 +445,21 @@ void CUIInventoryWnd::SendMessage(CUIWindow *pWnd, s16 msg, void *pData)
 			CUIDragDropList* pListToAttach = NULL;
 
 			//попытаться закинуть на пояс,если он в рюкзаке
-			if(((CUIDragDropList*)pDragDropItem->GetParent())== &UIBagList)
+			if(((CUIDragDropList*)pDragDropItem->GetParent())== &UIBagList/* ||
+					GetInventory()->m_slots[pInvItem->m_slot].m_pIItem == pInvItem*/)
 			{
 				result = GetInventory()->Belt(pInvItem);
 				pListToAttach = &UIBeltList;
 			}
-			//если на поясе, то в рюкзак
-			else if(((CUIDragDropList*)pDragDropItem->GetParent())== &UIBeltList)
+			//если на поясе или в слоте, то в рюкзак
+			else /*if(((CUIDragDropList*)pDragDropItem->GetParent())== &UIBeltList ||
+					GetInventory()->m_slots[pInvItem->m_slot].m_pIItem == pInvItem)*/
 			{
 				result = GetInventory()->Ruck(pInvItem);
 				pListToAttach = &UIBagList;
 			}
-			else
-				result = false;
+			//else
+			//	result = false;
 
 			if(result)
 			{
@@ -436,7 +475,7 @@ void CUIInventoryWnd::SendMessage(CUIWindow *pWnd, s16 msg, void *pData)
 			}
 		}
     }
-	//по нажатию правой кнопки 
+	//по нажатию правой кнопки
 	else if(msg == CUIDragDropItem::ITEM_RBUTTON_CLICK)
 	{
 		PIItem pInvItem = (PIItem)((CUIDragDropItem*)pWnd)->GetData();
@@ -444,26 +483,34 @@ void CUIInventoryWnd::SendMessage(CUIWindow *pWnd, s16 msg, void *pData)
 		
 		m_pCurrentItem = pInvItem;
 		m_pCurrentDragDropItem = (CUIDragDropItem*)pWnd;
-
-		int x,y;
-		RECT rect = GetAbsoluteRect();
-		HUD().GetUI()->GetCursor()->GetPos(x,y);
 		
-		UIPropertiesBox.BringAllToTop();
-		UIPropertiesBox.Show(x-rect.left, y-rect.top);
+		ActivatePropertiesBox();
 	}
 	//сообщение от меню вызываемого правой кнопкой
 	else if(pWnd == &UIPropertiesBox &&
 			msg == CUIPropertiesBox::PROPERTY_CLICKED)
 	{
-		switch(UIPropertiesBox.GetClickedIndex())
+		
+		if(UIPropertiesBox.GetClickedItem())
 		{
-		case 0:	//выкинуть объект
-			DropItem();
-			break;
-		case 1:
-			EatItem();
-			break;
+			switch(UIPropertiesBox.GetClickedItem()->GetValue())
+			{
+			case TO_SLOT_ACTION:	
+				ToSlot();
+				break;
+			case TO_BELT_ACTION:	
+				ToBelt();
+				break;
+			case TO_BAG_ACTION:	
+				ToBag();
+				break;
+			case DROP_ACTION:	//выкинуть объект
+				DropItem();
+				break;
+			case EAT_ACTION:	//съесть объект
+				EatItem();
+				break;
+			}
 		}
 	}
 	else if(pWnd == &UIButton1 && msg == CUIButton::BUTTON_CLICKED)
@@ -565,9 +612,21 @@ void CUIInventoryWnd::AmmoUpdateProc(CUIDragDropItem* pItem)
 	CWeaponAmmo* pAmmoItem = (CWeaponAmmo*)(pItem->GetData());
 	RECT rect = pItem->GetAbsoluteRect();
 	
+	pItem->GetFont()->Out(float(rect.left), 
+						float(rect.bottom - pItem->GetFont()->CurrentHeight()- 2),
+						"%d",	pAmmoItem->m_boxCurr);
+}
+
+//для надписей на иконках с едой
+void CUIInventoryWnd::FoodUpdateProc(CUIDragDropItem* pItem)
+{
+	CEatableItem* pEatableItem = (CEatableItem*)(pItem->GetData());
+	RECT rect = pItem->GetAbsoluteRect();
+	
+	if(pEatableItem->m_iPortionsNum>0)
 		pItem->GetFont()->Out(float(rect.left), 
 							float(rect.bottom - pItem->GetFont()->CurrentHeight()- 2),
-							"%d",	pAmmoItem->m_boxCurr);
+							"%d",	pEatableItem->m_iPortionsNum);
 }
 void CUIInventoryWnd::Update()
 {
@@ -618,10 +677,12 @@ void CUIInventoryWnd::DropItem()
 
 void CUIInventoryWnd::EatItem()
 {
-	CActor *l_pA = dynamic_cast<CActor*>(Level().CurrentEntity());
-	if(!l_pA) return;
+	CActor *pActor = dynamic_cast<CActor*>(Level().CurrentEntity());
+	if(!pActor) return;
 
-	if(l_pA->m_inventory.Eat(m_pCurrentItem))
+	pActor->m_inventory.Eat(m_pCurrentItem);
+	
+	if(!m_pCurrentItem->Useful())
 	{
 		m_pCurrentDragDropItem->GetParent()->DetachChild(m_pCurrentDragDropItem);
 		m_pCurrentItem = NULL;
@@ -641,4 +702,94 @@ void CUIInventoryWnd::Show()
 { 
 	InitInventory();
 	inherited::Show();
+}
+
+
+void CUIInventoryWnd::ActivatePropertiesBox()
+{
+	int x,y;
+	RECT rect = GetAbsoluteRect();
+	HUD().GetUI()->GetCursor()->GetPos(x,y);
+		
+	UIPropertiesBox.RemoveAll();
+	
+	CEatableItem* pEatableItem = dynamic_cast<CEatableItem*>(m_pCurrentItem);
+	CCustomOutfit* pOutfit = dynamic_cast<CCustomOutfit*>(m_pCurrentItem);
+	
+
+	if(m_pCurrentItem->m_slot<SLOTS_NUM && m_pInv->CanPutInSlot(m_pCurrentItem))
+	{
+		UIPropertiesBox.AddItem("Move to slot",  NULL, TO_SLOT_ACTION);
+	}
+	if(m_pCurrentItem->m_belt && m_pInv->CanPutInBelt(m_pCurrentItem))
+	{
+		UIPropertiesBox.AddItem("Move on belt",  NULL, TO_BELT_ACTION);
+	}
+	if(m_pCurrentItem->m_ruck && m_pInv->CanPutInRuck(m_pCurrentItem))
+	{
+		if(!pOutfit)
+			UIPropertiesBox.AddItem("Move to bag",  NULL, TO_BAG_ACTION);
+		else
+			UIPropertiesBox.AddItem("Undress outfit",  NULL, TO_BAG_ACTION);
+	}
+	if(pOutfit && m_pInv->CanPutInSlot(m_pCurrentItem))
+	{
+		UIPropertiesBox.AddItem("Dress in outfit",  NULL, TO_SLOT_ACTION);
+	}
+
+	
+	
+	if(pEatableItem)
+	{
+		UIPropertiesBox.AddItem("Eat",  NULL, EAT_ACTION);
+	}
+
+	UIPropertiesBox.AddItem("Drop", NULL, DROP_ACTION);
+
+	UIPropertiesBox.AutoUpdateHeight();
+	UIPropertiesBox.BringAllToTop();
+	UIPropertiesBox.Show(x-rect.left, y-rect.top);
+}
+
+
+void CUIInventoryWnd::ToSlot()
+{
+	//попытаться закинуть элемент в соответствующий слот
+	bool result = GetInventory()->Slot(m_pCurrentItem);
+
+	if(!result) return;
+
+	((CUIDragDropList*)m_pCurrentDragDropItem->GetParent())->DetachChild(m_pCurrentDragDropItem);
+
+	if(m_pCurrentItem->m_slot == OUTFIT_SLOT)
+		UIOutfitSlot.AttachChild(m_pCurrentDragDropItem);
+	else
+		UITopList[m_pCurrentItem->m_slot].AttachChild(m_pCurrentDragDropItem);
+			
+	m_pMouseCapturer = NULL;
+}
+
+void CUIInventoryWnd::ToBag()
+{
+	//попытаться закинуть элемент в соответствующий слот
+	bool result = GetInventory()->Ruck(m_pCurrentItem);
+
+	if(!result) return;
+
+	((CUIDragDropList*)m_pCurrentDragDropItem->GetParent())->DetachChild(m_pCurrentDragDropItem);
+	UIBagList.AttachChild(m_pCurrentDragDropItem);
+			
+	m_pMouseCapturer = NULL;
+}
+
+void CUIInventoryWnd::ToBelt()
+{
+	bool result = GetInventory()->Belt(m_pCurrentItem);
+
+	if(!result) return;
+
+	((CUIDragDropList*)m_pCurrentDragDropItem->GetParent())->DetachChild(m_pCurrentDragDropItem);
+	UIBeltList.AttachChild(m_pCurrentDragDropItem);
+			
+	m_pMouseCapturer = NULL;
 }

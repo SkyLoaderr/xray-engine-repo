@@ -16,6 +16,7 @@ CUIListItem::CUIListItem(void)
 	m_pData = NULL;
 
 	m_iIndex = -1;
+	m_iValue = 0;
 }
 
 CUIListItem::~CUIListItem(void)

@@ -47,7 +47,7 @@ void CUIListWnd::Init(int x, int y, int width, int height)
 
 
 
-bool CUIListWnd::AddItem(char*  str, void* pData)
+bool CUIListWnd::AddItem(char*  str, void* pData, int value)
 {
 	//создать новый элемент и добавить его в список
 	CUIListItem* pItem = NULL;
@@ -61,6 +61,7 @@ bool CUIListWnd::AddItem(char*  str, void* pData)
 	AttachChild(pItem);
 
 	pItem->SetData(pData);
+	pItem->SetValue(value);
 
 	m_ItemList.push_back(pItem);
 	pItem->SetIndex(m_ItemList.size()-1);
@@ -99,7 +100,21 @@ void CUIListWnd::RemoveItem(int index)
 	m_ScrollBar.SetRange(0,s16(m_ItemList.size()-1));
 	m_ScrollBar.SetPageSize(s16(m_iRowNum));
 	m_ScrollBar.SetScrollPos(s16(m_iFirstShownIndex));
+}
 
+CUIListItem* CUIListWnd::GetItem(int index)
+{
+	if(index<0 || index>=(int)m_ItemList.size()) return NULL;
+
+	LIST_ITEM_LIST_it it;
+
+	//выбрать нужный элемент
+	it = m_ItemList.begin();
+	for(int i=0; i<index;i++, it++);
+
+	R_ASSERT(it!=m_ItemList.end());
+
+	return (*it);
 }
 
 //убрать все элементы из списка

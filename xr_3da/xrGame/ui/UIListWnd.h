@@ -33,11 +33,12 @@ public:
 	virtual void SendMessage(CUIWindow *pWnd, s16 msg, void* pData);
 	virtual void Draw();
 	
-	bool AddItem(char*  str, void* pData = NULL);
+	bool AddItem(char*  str, void* pData = NULL, int value = 0);
 	void RemoveItem(int index);
 	void RemoveAll();
 	//находит первый элемент с заданной pData, иначе -1
 	int FindItem(void* pData);
+	CUIListItem* GetItem(int index);
 
 	int GetSize();
 

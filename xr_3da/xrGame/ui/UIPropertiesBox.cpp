@@ -49,13 +49,18 @@ void CUIPropertiesBox::SendMessage(CUIWindow *pWnd, s16 msg, void *pData)
 	CUIFrameWindow::SendMessage(pWnd, msg, pData);
 }
 
-bool CUIPropertiesBox::AddItem(char*  str, void* pData)
+bool CUIPropertiesBox::AddItem(char*  str, void* pData, int value)
 {
-	return m_UIListWnd.AddItem(str, pData);
+	return m_UIListWnd.AddItem(str, pData, value);
 }
 void CUIPropertiesBox::RemoveItem(int index)
 {
 	m_UIListWnd.RemoveItem(index);
+}
+
+void CUIPropertiesBox::RemoveAll()
+{
+	m_UIListWnd.RemoveAll();
 }
 
 void CUIPropertiesBox::Show(int x, int y)
@@ -117,4 +122,18 @@ void CUIPropertiesBox::OnMouse(int x, int y, E_MOUSEACTION mouse_action)
 	}
 
 	inherited::OnMouse(x, y, mouse_action);
+}
+
+void CUIPropertiesBox::AutoUpdateHeight()
+{
+	SetHeight(m_UIListWnd.GetItemHeight()*m_UIListWnd.GetSize());
+}
+
+int CUIPropertiesBox::GetClickedIndex() 
+{
+	return m_iClickedElement;
+}
+CUIListItem* CUIPropertiesBox::GetClickedItem()
+{
+	return m_UIListWnd.GetItem(GetClickedIndex());
 }
