@@ -72,12 +72,12 @@ void xrMU_Reference::export_cform_game(CDB::CollectorPacked& CL)
 		// verts
 		cfVertices->reserve	(model->m_vertices.size());
 		std::sort			(cfFaces->begin(),cfFaces->end());
-		for (DWORD V=0; V<model->m_vertices.size(); V++)
+		for (u32 V=0; V<model->m_vertices.size(); V++)
 			if (cfVertexMarks[V]) cfVertices->push_back(model->m_vertices[V]);
 	}
 
 	// Collect faces
-	DWORD	Offset			= CL.getTS();
+	u32	Offset			= CL.getTS();
 	for (xrMU_Model::v_faces_it F = cfFaces->begin(); F!=cfFaces->end(); F++)
 	{
 		xrMU_Model::_face*	T = *F;

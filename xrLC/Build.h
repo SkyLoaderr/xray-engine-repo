@@ -15,25 +15,25 @@
 #include "xrMU_Model.h"
 
 #pragma comment(lib,"x:\\dxt.lib")
-extern "C" __declspec(dllimport) bool __stdcall DXTCompress(LPCSTR out_name, BYTE* raw_data, DWORD w, DWORD h, DWORD pitch, STextureParams* fmt, DWORD depth);
+extern "C" __declspec(dllimport) bool __stdcall DXTCompress(LPCSTR out_name, BYTE* raw_data, u32 w, u32 h, u32 pitch, STextureParams* fmt, u32 depth);
 
 struct b_BuildTexture : public b_texture
 {
 	STextureParams	THM;
 	
-	u32&	Texel	(DWORD x, DWORD y)
+	u32&	Texel	(u32 x, u32 y)
 	{
 		return pSurface[y*dwWidth+x];
 	}
 	void	Vflip		()
 	{
 		R_ASSERT(pSurface);
-		for (DWORD y=0; y<dwHeight/2; y++)
+		for (u32 y=0; y<dwHeight/2; y++)
 		{
-			DWORD y2 = dwHeight-y-1;
-			for (DWORD x=0; x<dwWidth; x++) 
+			u32 y2 = dwHeight-y-1;
+			for (u32 x=0; x<dwWidth; x++) 
 			{
-				DWORD		t	= Texel(x,y);
+				u32		t	= Texel(x,y);
 				Texel	(x,y)	= Texel(x,y2);
 				Texel	(x,y2)	= t;
 			}
@@ -44,7 +44,7 @@ struct b_BuildTexture : public b_texture
 struct R_Control
 {
 	string64				name;
-	xr_vector<DWORD>			data;
+	xr_vector<u32>			data;
 };
 struct R_Layer
 {

@@ -3,7 +3,7 @@
 
 void CBuild::Tesselate	()
 {
-	DWORD	cnt_splits	= 0;
+	u32	cnt_splits	= 0;
 	g_bUnregister		= FALSE;
 	
 	const float	tess	= g_params.m_SS_maxsize/2.5f;
@@ -18,7 +18,7 @@ void CBuild::Tesselate	()
 		// Iterate on edges - select longest
 		float	max_len		= -1;
 		int		max_id		= -1;
-		for (DWORD e=0; e<3; e++)
+		for (u32 e=0; e<3; e++)
 		{
 			float len		= F->EdgeLen(e);
 			if (len>max_len)	

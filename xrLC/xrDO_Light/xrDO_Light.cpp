@@ -51,14 +51,14 @@ void Startup(LPSTR     lpCmdLine)
 	//FS.update_path	(name,"$game_levels$",name);
 	FS.get_path			("$level$")->_set	(name);
 
-	DWORD				dwStartupTime	= timeGetTime();
+	u32				dwStartupTime	= timeGetTime();
 	xrCompiler			(0);
 
 	// Show statistic
 	char	stats[256];
-	extern	std::string make_time(DWORD sec);
+	extern	std::string make_time(u32 sec);
 	extern  HWND logWindow;
-	DWORD				dwEndTime = timeGetTime();
+	u32				dwEndTime = timeGetTime();
 	sprintf				(stats,"Time elapsed: %s",make_time((dwEndTime-dwStartupTime)/1000).c_str());
 	MessageBox			(logWindow,stats,"Congratulation!",MB_OK|MB_ICONINFORMATION);
 

@@ -23,7 +23,7 @@ void xrMU_Model::export_cform_rcast	(CDB::CollectorPacked& CL, Fmatrix& xform)
 		std::sort		(adjacent.begin(),adjacent.end());
 		adjacent.erase	(std::unique(adjacent.begin(),adjacent.end()),adjacent.end());
 		BOOL			bAlready	= FALSE;
-		for (DWORD ait=0; ait<adjacent.size(); ait++)
+		for (u32 ait=0; ait<adjacent.size(); ait++)
 		{
 			_face*	Test				= adjacent[ait];
 			if (Test==F)				continue;
@@ -46,7 +46,7 @@ void xrMU_Model::export_cform_rcast	(CDB::CollectorPacked& CL, Fmatrix& xform)
 			CL.add_face(
 				P[0],P[1],P[2],
 				CDB::edge_open,CDB::edge_open,CDB::edge_open,
-				0,0,DWORD(F)
+				0,0,u32(F)
 				);
 		}
 	}

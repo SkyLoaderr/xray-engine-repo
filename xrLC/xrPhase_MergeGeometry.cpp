@@ -15,7 +15,7 @@ IC BOOL	FaceEqual(Face* F1, Face* F2)
 	if (F1->dwMaterial  != F2->dwMaterial)					return FALSE;
 	if (F1->tc.size()	!= F2->tc.size())					return FALSE;
 	if (F1->lmap_layers.size() != F2->lmap_layers.size())	return FALSE;
-	for (DWORD it=0; it<F1->lmap_layers.size(); it++)		
+	for (u32 it=0; it<F1->lmap_layers.size(); it++)		
 		if (F1->lmap_layers[it] != F2->lmap_layers[it])		return FALSE;
 		return TRUE;
 }
@@ -27,7 +27,7 @@ BOOL	NeedMerge		(vecFace& subdiv, Fbox& bb_base)
 	
 	// 2. Bounding box
 	bb_base.invalidate	();
-	for (DWORD it=0; it<subdiv.size(); it++)
+	for (u32 it=0; it<subdiv.size(); it++)
 	{
 		Face* F = subdiv[it];
 		bb_base.modify(F->v[0]->P);
@@ -67,7 +67,7 @@ IC void	MakeCube		(Fbox& BB_dest, Fbox& BB_src)
 	BB_dest.grow		(max);
 }
 
-IC BOOL	ValidateMerge	(DWORD f1, Fbox& bb_base, DWORD f2, Fbox& bb, float& volume)
+IC BOOL	ValidateMerge	(u32 f1, Fbox& bb_base, u32 f2, Fbox& bb, float& volume)
 {
 	// Polygons
 	if ((f1+f2) > u32(4*g_params.m_SS_High/3))		return FALSE;	// Don't exceed limits (4/3 max POLY)	
@@ -93,16 +93,16 @@ IC BOOL	ValidateMerge	(DWORD f1, Fbox& bb_base, DWORD f2, Fbox& bb, float& volum
 void CBuild::xrPhase_MergeGeometry	()
 {
 	Status("Processing...");
-	for (DWORD split=0; split<g_XSplit.size(); split++)
+	for (u32 split=0; split<g_XSplit.size(); split++)
 	{
 		vecFace&	subdiv	= *(g_XSplit[split]);
 		Fbox		bb_base;
 		while (NeedMerge(subdiv,bb_base))	
 		{
 			// **OK**. Let's find the best candidate for merge
-			DWORD	selected		= split;
+			u32	selected		= split;
 			float	selected_volume	= flt_max;
-			for (DWORD test=split+1; test<g_XSplit.size(); test++)
+			for (u32 test=split+1; test<g_XSplit.size(); test++)
 			{
 				Fbox		bb;
 				float		volume;

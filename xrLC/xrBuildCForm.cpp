@@ -74,7 +74,7 @@ void CBuild::BuildCForm(IWriter &fs)
 		Status("Collecting vertices...");
 		cfVertices->reserve	(g_vertices.size());
 		std::sort(cfFaces->begin(),cfFaces->end());
-		for (DWORD V=0; V<g_vertices.size(); V++)
+		for (u32 V=0; V<g_vertices.size(); V++)
 			if (cfVertexMarks[V]) cfVertices->push_back(g_vertices[V]);
 	}
 

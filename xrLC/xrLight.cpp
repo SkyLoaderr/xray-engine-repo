@@ -13,7 +13,7 @@ public:
 	CDB::COLLIDER					DB;
 	xr_vector<R_Light>					LightsSelected;
 public:
-	CLMThread	(DWORD ID) : CThread(ID)
+	CLMThread	(u32 ID) : CThread(ID)
 	{
 		// thMonitor= TRUE;
 		thMessages	= FALSE;
@@ -74,7 +74,7 @@ void CBuild::Light()
 		// Main process (4 threads)
 		Status			("Lighting...");
 		CThreadManager	threads;
-		const	DWORD	thNUM	= 4;
+		const	u32	thNUM	= 4;
 		u32	dwTimeStart	= timeGetTime();
 		for				(int L=0; L<thNUM; L++)	threads.start(xr_new<CLMThread> (L));
 		threads.wait	(500);
@@ -155,9 +155,9 @@ vecFace*	VL_faces;
 class CVertexLightThread : public CThread
 {
 public:
-	DWORD	faceStart, faceEnd;
+	u32	faceStart, faceEnd;
 	
-	CVertexLightThread(DWORD ID, DWORD _start, DWORD _end) : CThread(ID)
+	CVertexLightThread(u32 ID, u32 _start, u32 _end) : CThread(ID)
 	{
 		thMessages	= FALSE;
 		faceStart	= _start;
@@ -171,7 +171,7 @@ public:
 		xr_vector<R_Light>	Lights = pBuild->L_layers.front().lights;
 		if (Lights.empty())		return;
 		
-		for (DWORD I = faceStart; I<faceEnd; I++)
+		for (u32 I = faceStart; I<faceEnd; I++)
 		{
 			Face* F		= (*VL_faces)[I];
 			R_ASSERT	(F);
@@ -209,7 +209,7 @@ void CBuild::LightVertex()
 	// Select faces
 	Status					("Selecting...");
 	VL_faces->reserve		(g_faces.size()/2);
-	for (DWORD I = 0; I<g_faces.size(); I++)
+	for (u32 I = 0; I<g_faces.size(); I++)
 	{
 		Face* F = g_faces[I];
 		if (F->pDeflector)					continue;
@@ -222,11 +222,11 @@ void CBuild::LightVertex()
 
 	// Start threads, wait, continue --- perform all the work
 	Status					("Calculating...");
-	DWORD	start_time		= timeGetTime();
+	u32	start_time		= timeGetTime();
 	CThreadManager			Threads;
-	DWORD	stride			= VL_faces->size()/NUM_THREADS;
-	DWORD	last			= VL_faces->size()-stride*(NUM_THREADS-1);
-	for (DWORD thID=0; thID<NUM_THREADS; thID++)
+	u32	stride			= VL_faces->size()/NUM_THREADS;
+	u32	last			= VL_faces->size()-stride*(NUM_THREADS-1);
+	for (u32 thID=0; thID<NUM_THREADS; thID++)
 		Threads.start(xr_new<CVertexLightThread>(thID,thID*stride,thID*stride+((thID==(NUM_THREADS-1))?last:stride)));
 
 	// Wait other threads

@@ -88,7 +88,7 @@ void CBuild::xrPhase_Subdivide()
 			if (defl_base)	
 			{
 				// _delete old deflector
-				for (DWORD it=0; it<g_deflectors.size(); it++)
+				for (u32 it=0; it<g_deflectors.size(); it++)
 				{
 					if (g_deflectors[it]==defl_base)	{
 						g_deflectors.erase	(g_deflectors.begin()+it);

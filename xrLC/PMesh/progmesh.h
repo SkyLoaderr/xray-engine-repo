@@ -43,13 +43,13 @@ struct PM_API Vsplit
 struct PM_API PM_Result
 {
 	WORD*	permutePTR;		// You need to permute vertices according to this
-	DWORD	permuteSIZE;
+	u32	permuteSIZE;
 	Vsplit*	splitPTR;		// Ready to use Vsplit records
-	DWORD	splitSIZE;
+	u32	splitSIZE;
 	WORD*	facefixPTR;		// Ready to use FaceFix records
-	DWORD	facefixSIZE;
+	u32	facefixSIZE;
 
-	DWORD	minVertices;
+	u32	minVertices;
 };
 #pragma pack(pop)
 
@@ -59,8 +59,8 @@ extern "C" {
 //			Call following function and...
 //			...then create all of your vertices preserving their order
 PM_API void	__cdecl PM_Init	(
-	DWORD	dwRelevantUV, DWORD dwRelevantUVMASK,
-	DWORD	dwMinVertCount,
+	u32	dwRelevantUV, u32 dwRelevantUVMASK,
+	u32	dwMinVertCount,
 	float	w_UV=0.5f,
 	float	w_Pos=1.f,
 	float	w_Norm=1.f,
@@ -76,7 +76,7 @@ PM_API void __cdecl PM_CreateVertex(float x, float y, float z,int _id, P_UV *uv)
 //			...and collaped, so initial model state has minimal number of vertices
 PM_API int __cdecl PM_Convert(
 	WORD*			pIndices,
-	DWORD			idxCount,
+	u32			idxCount,
 	PM_Result*		RESULT
 	);
 

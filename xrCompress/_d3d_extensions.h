@@ -84,7 +84,7 @@ public:
 #ifndef NO_XR_VDECLARATOR
 struct	VDeclarator	: public svector<D3DVERTEXELEMENT9, MAXD3DDECLLENGTH+1>
 {
-	void	set		(DWORD FVF)
+	void	set		(u32 FVF)
 	{
 		D3DXDeclaratorFromFVF	(FVF,begin());
 		resize					(D3DXGetDeclLength(begin())+1);

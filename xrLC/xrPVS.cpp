@@ -11,7 +11,7 @@ typedef vecW::iterator	vecW_IT;
 typedef xr_vector<BOOL>	vecB;
 typedef vecB::iterator	vecB_IT;
 
-typedef xr_multimap<DWORD,DWORD>					treeCompress;
+typedef xr_multimap<u32,u32>					treeCompress;
 typedef treeCompress::iterator						treeCompressIt;
 typedef treeCompress::value_type					treeCompressType;
 typedef std::pair<treeCompressIt,treeCompressIt>	treeCompressPair;
@@ -23,7 +23,7 @@ treeCompress	g_compress_tree;
 vecW			g_selected;
 vecB			g_result;
 
-DWORD			g_pvs_X,g_pvs_Y,g_pvs_Z;
+u32			g_pvs_X,g_pvs_Y,g_pvs_Z;
 
 int	CompressSelected()
 {
@@ -35,14 +35,14 @@ int	CompressSelected()
 	}
 
 	// Search placeholder
-	DWORD sz					= g_selected.size();
-	DWORD sz_bytes				= sz*sizeof(WORD);
+	u32 sz					= g_selected.size();
+	u32 sz_bytes				= sz*sizeof(WORD);
 	treeCompressPair	Range	= g_compress_tree.equal_range(sz);
 
 	for (treeCompressIt it=Range.first; it!=Range.second; it++)
 	{
 		treeCompressType	&V	= *it;
-		DWORD	entry			= V.second;
+		u32	entry			= V.second;
 		vecW	&entry_data		= g_pvs[entry];
 		if (0!=memcmp(entry_data.begin(),g_selected.begin(),sz_bytes)) continue;
 
@@ -51,7 +51,7 @@ int	CompressSelected()
 	}
 
 	// If we get here - need to register _new set of data
-	DWORD entry = g_pvs.size();
+	u32 entry = g_pvs.size();
 	g_pvs.push_back(g_selected);
 	g_compress_tree.insert(mk_pair(sz,entry));
 	return entry;
@@ -77,15 +77,15 @@ void CBuild::BuildPVS()
 
 	// reserve memory
 	CFS_File			pvs_map		("pvs.temp");
-	DWORD				dwSlot		= 0;
-	DWORD				dwSlotsTotal= g_pvs_X*g_pvs_Y*g_pvs_Z;
-	DWORD	pvs_reserve	= dwSlotsTotal/1024 + 512;
+	u32				dwSlot		= 0;
+	u32				dwSlotsTotal= g_pvs_X*g_pvs_Y*g_pvs_Z;
+	u32	pvs_reserve	= dwSlotsTotal/1024 + 512;
 	clMsg("PVS: %d M",	(pvs_reserve*sizeof(vecW))/(1024*1024));
 	g_pvs.reserve		(pvs_reserve);
 
 	// begin!
 	Status("Processing...");
-	DWORD				dwStartTime	= timeGetTime();
+	u32				dwStartTime	= timeGetTime();
 	for (int z=0; z<g_pvs_Z; z++) {
 		for (int x=0; x<g_pvs_X; x++) {
 			for (int y=0; y<g_pvs_Y; y++)
@@ -132,7 +132,7 @@ void CBuild::BuildPVS()
 				if (dwSlot%64 == 63)
 				{
 					Progress(float(dwSlot)/float(dwSlotsTotal));
-					DWORD dwCurrentTime = timeGetTime();
+					u32 dwCurrentTime = timeGetTime();
 					Status("Sample #%d\nSpeed %3.1f samples per second\nPVS entrys: %d",
 						dwSlot,1000.f*float(dwSlot)/float(dwCurrentTime-dwStartTime),
 						g_pvs.size()

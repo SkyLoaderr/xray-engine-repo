@@ -10,7 +10,7 @@
 // Construction/Destruction
 //////////////////////////////////////////////////////////////////////
 
-CSector::CSector(DWORD ID)
+CSector::CSector(u32 ID)
 {
 	SelfID = ID;
 	TreeRoot=0;
@@ -106,7 +106,7 @@ void CSector::BuildHierrarhy()
 	TreeRoot = 0;
 	if (bAnyNode) TreeRoot = g_tree.back();
 	else {
-		for (DWORD I=0; I<g_tree.size(); I++)
+		for (u32 I=0; I<g_tree.size(); I++)
 		{
 			if (g_tree[I]->bConnected)		 continue;
 			if (g_tree[I]->Sector != SelfID) continue;
@@ -132,8 +132,8 @@ void CSector::Save(IWriter &fs)
 	// Root
 	xr_vector<OGF_Base *>::iterator F = std::find(g_tree.begin(),g_tree.end(),TreeRoot);
 	R_ASSERT(F!=g_tree.end());
-	DWORD ID = F-g_tree.begin();
-	fs.w_chunk(fsP_Root,&ID,sizeof(DWORD));
+	u32 ID = F-g_tree.begin();
+	fs.w_chunk(fsP_Root,&ID,sizeof(u32));
 
 	// Portals
 	fs.w_chunk(fsP_Portals,&*Portals.begin(),Portals.size()*sizeof(WORD));

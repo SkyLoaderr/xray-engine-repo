@@ -41,7 +41,7 @@ void check(Vertex* vE1, Vertex* vE2, Vertex* vTEST)
 		
 		// check for duplicated errors
 		if (vE1>vE2)	std::swap(vE1,vE2);
-		for (DWORD i=0; i<vecJunctions->size(); i++)
+		for (u32 i=0; i<vecJunctions->size(); i++)
 		{
 			record&	rec = (*vecJunctions)[i];
 			if (rec.T==vTEST)						return;
@@ -69,7 +69,7 @@ void edge(Vertex* vE1, Vertex* vE2)
 
 	// check for duplicated errors
 	if (vE1>vE2)	std::swap(vE1,vE2);
-	for (DWORD i=0; i<vecEdges->size(); i++)
+	for (u32 i=0; i<vecEdges->size(); i++)
 	{
 		record&	rec = (*vecEdges)[i];
 		if ((rec.E1==vE1)&&(rec.E2==vE2))		return;
@@ -91,23 +91,23 @@ void CBuild::CorrectTJunctions()
 	vecJunctions			= xr_new<xr_vector<record> > (); vecJunctions->reserve	(1024);
 	vecEdges				= xr_new<xr_vector<record> > (); vecEdges->reserve		(1024);
 
-	for (DWORD I=0; I<g_faces.size(); I++)
+	for (u32 I=0; I<g_faces.size(); I++)
 	{
 		Face* F = g_faces[I];
 
 		// Iterate on edges
-		for (DWORD e=0; e<3; e++)
+		for (u32 e=0; e<3; e++)
 		{
 			Vertex			*vA,*vB;
 			F->EdgeVerts	(e,&vA,&vB);
 
 			// Iterate on 'vA'-adjacent faces
-			for (DWORD f1=0; f1!=vA->adjacent.size(); f1++)
+			for (u32 f1=0; f1!=vA->adjacent.size(); f1++)
 			{
 				Face*	F1	= vA->adjacent[f1];
 
 				// Iterate on it's edges
-				for (DWORD e1=0; e1<3; e1++)
+				for (u32 e1=0; e1<3; e1++)
 				{
 					Vertex			*v1,*v2;
 					F1->EdgeVerts	(e1,&v1,&v2);
@@ -117,12 +117,12 @@ void CBuild::CorrectTJunctions()
 				}
 			}
 			// Iterate on 'vB'-adjacent faces
-			for (DWORD f2=0; f2!=vB->adjacent.size(); f2++)
+			for (u32 f2=0; f2!=vB->adjacent.size(); f2++)
 			{
 				Face*	F2	= vB->adjacent[f2];
 
 				// Iterate on it's edges
-				for (DWORD e1=0; e1<3; e1++)
+				for (u32 e1=0; e1<3; e1++)
 				{
 					Vertex			*v1,*v2;
 					F2->EdgeVerts	(e1,&v1,&v2);

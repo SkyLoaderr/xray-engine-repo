@@ -3,7 +3,7 @@
 
 void xrMU_Model::calc_normals()
 {
-	DWORD	Vcount	= m_vertices.size();
+	u32	Vcount	= m_vertices.size();
 	float	p_total = 0;
 	float	p_cost  = 1.f/(Vcount);
 
@@ -19,7 +19,7 @@ void xrMU_Model::calc_normals()
 	// remark:
 	//	we use Face's bSplitted value to indicate that face is processed
 	//  so bSplitted means bUsed
-	for (DWORD I=0; I<Vcount; I++)
+	for (u32 I=0; I<Vcount; I++)
 	{
 		_vertex* V	= m_vertices[I];
 
@@ -30,7 +30,7 @@ void xrMU_Model::calc_normals()
 		}
 		std::sort	(V->adjacent.begin(), V->adjacent.end());
 
-		for (DWORD AF = 0; AF < V->adjacent.size(); AF++)
+		for (u32 AF = 0; AF < V->adjacent.size(); AF++)
 		{
 			_face*	F			= V->adjacent[AF];
 			if (F->bSplitted)	continue;	// Face already used in calculation
@@ -41,7 +41,7 @@ void xrMU_Model::calc_normals()
 
 			// Calculate it's normal
 			NV->N.set	(0,0,0);
-			for (DWORD NF = 0; NF < V->adjacent.size(); NF++)
+			for (u32 NF = 0; NF < V->adjacent.size(); NF++)
 			{
 				_face*	Fn		= V->adjacent[NF];
 

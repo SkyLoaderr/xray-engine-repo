@@ -4,7 +4,7 @@ class ENGINE_API CThread
 {
 	static void __cdecl startup(void* P);
 public:
-	volatile DWORD		thID;
+	volatile u32		thID;
 	volatile float		thProgress;
 	volatile BOOL		thCompleted;
 	volatile BOOL		thMessages;
@@ -12,7 +12,7 @@ public:
 	volatile float		thPerformance;
 	volatile BOOL		thDestroyOnComplete;
 
-	CThread				(DWORD _ID)	
+	CThread				(u32 _ID)	
 	{
 		thID				= _ID;
 		thProgress			= 0;
@@ -33,5 +33,5 @@ class ENGINE_API CThreadManager
 	xr_vector<CThread*>	threads;
 public:
 	void				start	(CThread*	T);
-	void				wait	(DWORD		sleep_time=1000);
+	void				wait	(u32		sleep_time=1000);
 };

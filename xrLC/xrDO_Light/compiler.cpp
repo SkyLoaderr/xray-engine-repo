@@ -33,7 +33,7 @@ __declspec(thread)		u64			t_count	= 0;
 
 struct R_Light
 {
-    DWORD           type;				// Type of light source		
+    u32           type;				// Type of light source		
     Fcolor          diffuse;			// Diffuse color of light	
     Fvector         position;			// Position in world space	
     Fvector         direction;			// Direction in world space	
@@ -61,19 +61,19 @@ struct b_BuildTexture : public b_texture
 {
 	STextureParams	THM;
 
-	u32&	Texel	(DWORD x, DWORD y)
+	u32&	Texel	(u32 x, u32 y)
 	{
 		return pSurface[y*dwWidth+x];
 	}
 	void	Vflip		()
 	{
 		R_ASSERT(pSurface);
-		for (DWORD y=0; y<dwHeight/2; y++)
+		for (u32 y=0; y<dwHeight/2; y++)
 		{
-			DWORD y2 = dwHeight-y-1;
-			for (DWORD x=0; x<dwWidth; x++) 
+			u32 y2 = dwHeight-y-1;
+			for (u32 x=0; x<dwWidth; x++) 
 			{
-				DWORD		t	= Texel(x,y);
+				u32		t	= Texel(x,y);
 				Texel	(x,y)	= Texel(x,y2);
 				Texel	(x,y2)	= t;
 			}
@@ -163,7 +163,7 @@ void xrLoad(LPCSTR name)
 		IReader*	F;
 
 		// Version
-		DWORD version;
+		u32 version;
 		fs->r_chunk			(EB_Version,&version);
 		R_ASSERT(XRCL_CURRENT_VERSION==version);
 
@@ -178,8 +178,8 @@ void xrLoad(LPCSTR name)
 			{
 				F = fs->open_chunk(EB_Light_static);
 				b_light_static	temp;
-				DWORD cnt		= F->length()/sizeof(temp);
-				for				(DWORD i=0; i<cnt; i++)
+				u32 cnt		= F->length()/sizeof(temp);
+				for				(u32 i=0; i<cnt; i++)
 				{
 					R_Light		RL;
 					F->r		(&temp,sizeof(temp));
@@ -437,13 +437,13 @@ float LightPoint(CDB::COLLIDER* DB, Fvector &Pold, Fvector &N, LSelection& SEL)
 	return amount;
 }
 
-DEFINE_VECTOR(DWORD,DWORDVec,DWORDIt);
+DEFINE_VECTOR(u32,DWORDVec,DWORDIt);
 class	LightThread : public CThread
 {
-	DWORD		Nstart, Nend;
+	u32		Nstart, Nend;
 	DWORDVec	box_result;
 public:
-	LightThread			(DWORD ID, DWORD _start, DWORD _end) : CThread(ID)
+	LightThread			(u32 ID, u32 _start, u32 _end) : CThread(ID)
 	{
 		Nstart	= _start;
 		Nend	= _end;
@@ -474,9 +474,9 @@ public:
 		xr_vector<R_Light>	Lights = g_lights;
 
 		LSelection		Selected;
-		for (DWORD _z=Nstart; _z<Nend; _z++)
+		for (u32 _z=Nstart; _z<Nend; _z++)
 		{
-			for (DWORD _x=0; _x<dtH.size_x; _x++)
+			for (u32 _x=0; _x<dtH.size_x; _x++)
 			{
 				DetailSlot&	DS = dtS[_z*dtH.size_x+_x];
 
@@ -508,7 +508,7 @@ public:
 				
 				// select lights
 				Selected.clear();
-				for (DWORD L=0; L<Lights.size(); L++)
+				for (u32 L=0; L<Lights.size(); L++)
 				{
 					R_Light&	R = g_lights[L];
 					if (R.type==LT_DIRECT)	Selected.push_back(&R);
@@ -520,7 +520,7 @@ public:
 				
 				// lighting itself
 				float amount[4]	= {0,0,0,0};
-				DWORD count[4]	= {0,0,0,0};
+				u32 count[4]	= {0,0,0,0};
 				float coeff		= DETAIL_SLOT_SIZE_2/float(LIGHT_Count);
 				FPU::m64r		();
 				for (int x=-LIGHT_Count; x<=LIGHT_Count; x++) 
@@ -594,14 +594,14 @@ public:
 
 void	xrLight			()
 {
-	DWORD	range			= dtH.size_z;
+	u32	range			= dtH.size_z;
 
 	// Start threads, wait, continue --- perform all the work
 	CThreadManager			Threads;
-	DWORD	start_time		= timeGetTime();
-	DWORD	stride			= range/NUM_THREADS;
-	DWORD	last			= range-stride*(NUM_THREADS-1);
-	for (DWORD thID=0; thID<NUM_THREADS; thID++)
+	u32	start_time		= timeGetTime();
+	u32	stride			= range/NUM_THREADS;
+	u32	last			= range-stride*(NUM_THREADS-1);
+	for (u32 thID=0; thID<NUM_THREADS; thID++)
 	{
 		CThread*	T		= xr_new<LightThread> (thID,thID*stride,thID*stride+((thID==(NUM_THREADS-1))?last:stride));
 		T->thMessages		= FALSE;

@@ -8,7 +8,7 @@
 
 class CSector  
 {
-	DWORD				SelfID;
+	u32				SelfID;
 	OGF_Base *			TreeRoot;
 	xr_vector<WORD>		Portals;
 	xr_vector<WORD>		Glows;
@@ -22,7 +22,7 @@ public:
 	void Validate		();
 	void Save			(IWriter& fs);
 
-	CSector				(DWORD ID);
+	CSector				(u32 ID);
 	~CSector			();
 };
 

@@ -5,23 +5,23 @@
 #include "AIMapExport.h"
 
 // base patch used all the time up to merging
-const DWORD InvalidNode		= (1<<24)-1;
-const DWORD UnkonnectedNode	= 0xfffffff0;
+const u32 InvalidNode		= (1<<24)-1;
+const u32 UnkonnectedNode	= 0xfffffff0;
 const WORD	InvalidSector	= 0xff;
 
 struct Node					// definition of "patch" or "node"
 {
 	union	{
 		struct {
-			DWORD n1,n2,n3,n4;	// neighbourh patches (Left,Forward,Right,Backward)
+			u32 n1,n2,n3,n4;	// neighbourh patches (Left,Forward,Right,Backward)
 		};
-		DWORD	n[4];
+		u32	n[4];
 	};
 	Fplane	Plane;			// plane of patch										
 	Fvector	Pos;			// position of patch center								
 	WORD	Sector;			//														
 	
-	DWORD	Group;			
+	u32	Group;			
 	
 	float	LightLevel;
 	
@@ -32,10 +32,10 @@ struct Node					// definition of "patch" or "node"
 		Sector		= InvalidSector;
 		Group		= 0;
 	}
-	DWORD	nLeft()			{return n1;}
-	DWORD	nForward()		{return n2;}
-	DWORD	nRight()		{return n3;}
-	DWORD	nBack()			{return n4;}
+	u32	nLeft()			{return n1;}
+	u32	nForward()		{return n2;}
+	u32	nRight()		{return n3;}
+	u32	nBack()			{return n4;}
 	
 	void	PointLF(Fvector& D);
 	void	PointFR(Fvector& D);
@@ -43,7 +43,7 @@ struct Node					// definition of "patch" or "node"
 	void	PointBL(Fvector& D);
 };
 
-DEF_VECTOR(DWORDs,DWORD);
+DEF_VECTOR(DWORDs,u32);
 struct NodeMerged
 {
 	DWORDs		neighbours;	// list of neighbours
@@ -63,7 +63,7 @@ void	Compress	(NodeCompressed& Dest, Node& Src);
 
 struct R_Light
 {
-    DWORD           type;				// Type of light source		
+    u32           type;				// Type of light source		
     float			amount;				// Diffuse color of light	
     Fvector         position;			// Position in world space	
     Fvector         direction;			// Direction in world space	

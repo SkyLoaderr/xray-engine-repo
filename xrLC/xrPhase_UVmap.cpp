@@ -126,7 +126,7 @@ void	CBuild::xrPhase_UVmap()
 void CBuild::mem_CompactSubdivs()
 {
 	// Memory compact
-	DWORD dwT = timeGetTime	();
+	u32 dwT = timeGetTime	();
 	vecFace		temp;
 	for (int SP = 0; SP<int(g_XSplit.size()); SP++) 
 	{

@@ -24,7 +24,7 @@ BOOL OGF_Vertex::similar(OGF* ogf, OGF_Vertex& V)
 	if (!B.similar(V.B)) return FALSE;
 	
 	R_ASSERT(UV.size()==V.UV.size());
-	for (DWORD i=0; i<V.UV.size(); i++) {
+	for (u32 i=0; i<V.UV.size(); i++) {
 		OGF_Texture *T = &*ogf->textures.begin()+i;
 		b_texture	*B = T->pSurface;
 		float		eu = 1.f/float(B->dwWidth );
@@ -50,7 +50,7 @@ WORD OGF::_BuildVertex	(OGF_Vertex& V1)
 void OGF::_BuildFace	(OGF_Vertex& V1, OGF_Vertex& V2, OGF_Vertex& V3)
 {
 	OGF_Face F;
-	DWORD	VertCount = vertices.size();
+	u32	VertCount = vertices.size();
 	F.v[0]	= _BuildVertex(V1);
 	F.v[1]	= _BuildVertex(V2);
 	F.v[2]	= _BuildVertex(V3);
@@ -72,7 +72,7 @@ void OGF::Optimize()
 	R_ASSERT			(vertices.size());
 	dwRelevantUV		= vertices.front().UV.size();
 	dwRelevantUVMASK	= 0;
-	for (DWORD t=0; t<dwRelevantUV; t++) dwRelevantUVMASK |= 1<<t;
+	for (u32 t=0; t<dwRelevantUV; t++) dwRelevantUVMASK |= 1<<t;
 
 	Shader_xrLC*	SH	= pBuild->shaders.Get(pBuild->materials[material].reserved);
 	if (!SH->flags.bOptimizeUV)		return;
@@ -80,13 +80,13 @@ void OGF::Optimize()
 	// Optimize texture coordinates
 	// 1. Calc bounds
 	Fvector2 Tdelta[8];
-	for (DWORD i=0; i<8; i++)
+	for (u32 i=0; i<8; i++)
 	{
 		if (0==(dwRelevantUVMASK&(1<<i))) continue;	// skip unneeded UV
 		Fvector2 Tmin,Tmax;
 		Tmin.set(flt_max,flt_max);
 		Tmax.set(flt_min,flt_min);
-		for (DWORD j=0; j<vertices.size(); j++)
+		for (u32 j=0; j<vertices.size(); j++)
 		{
 			OGF_Vertex& V = vertices[j];
 			Tmin.min(V.UV[i]);
@@ -112,7 +112,7 @@ void OGF::Optimize()
 void OGF::CreateOccluder()
 {
 	ORM_Vertex* pV = ORM_Begin(vertices.size(),faces.size()*3,(WORD*)faces.begin());
-	for (DWORD i=0; i<vertices.size(); i++)
+	for (u32 i=0; i<vertices.size(); i++)
 	{
 		OGF_Vertex& V = vertices[i];
 		pV->x = V.P.x;
@@ -127,7 +127,7 @@ void OGF::CreateOccluder()
 
 void OGF::MakeProgressive()
 {
-	if (faces.size()>DWORD(g_params.m_SS_DedicateCached)) 
+	if (faces.size()>u32(g_params.m_SS_DedicateCached)) 
 	{
 //		set_status("CLODing",treeID,faces.size(),vertices.size());
 		vertices_saved	= vertices;
@@ -158,7 +158,7 @@ void OGF::MakeProgressive()
 			vecOGF_V temp_list = vertices;
 			
 			// Perform permutation
-			for(DWORD i=0; i<temp_list.size(); i++)
+			for(u32 i=0; i<temp_list.size(); i++)
 				vertices[R.permutePTR[i]]=temp_list[i];
 			
 			// Copy results
@@ -204,7 +204,7 @@ void OGF_Node::Save	(IWriter &fs)
 	// Chields
 	fs.open_chunk		(OGF_CHIELDS_L);
 	fs.w_u32			(chields.size());
-	fs.w				(&*chields.begin(),chields.size()*sizeof(DWORD));
+	fs.w				(&*chields.begin(),chields.size()*sizeof(u32));
 	fs.close_chunk		();
 }
 
@@ -226,7 +226,7 @@ void OGF_LOD::Save		(IWriter &fs)
 	// Chields
 	fs.open_chunk		(OGF_CHIELDS_L);
 	fs.w_u32			(chields.size());
-	fs.w				(&*chields.begin(),chields.size()*sizeof(DWORD));
+	fs.w				(&*chields.begin(),chields.size()*sizeof(u32));
 	fs.close_chunk		();
 
 	// Lod-def

@@ -1,6 +1,6 @@
 #pragma once
 
-template <class T, DWORD s_X, DWORD s_Y>
+template <class T, u32 s_X, u32 s_Y>
 class hash2D 
 {
 	xr_vector<T>*	table[s_Y][s_X];
@@ -12,27 +12,27 @@ public:
 		bounds.invalidate	();
 		size.set			(0.f,0.f);
 
-		for (DWORD y=0; y<s_Y; y++)
-			for (DWORD x=0; x<s_Y; x++)
+		for (u32 y=0; y<s_Y; y++)
+			for (u32 x=0; x<s_Y; x++)
 				table[y][x]	= xr_new<xr_vector<T> > ();
 	}
 	~hash2D()
 	{
-		for (DWORD y=0; y<s_Y; y++)
-			for (DWORD x=0; x<s_X; x++)
+		for (u32 y=0; y<s_Y; y++)
+			for (u32 x=0; x<s_X; x++)
 				xr_delete	(table[y][x]);
 	}
 
-	void		initialize	(Fbox2& R, DWORD faces)
+	void		initialize	(Fbox2& R, u32 faces)
 	{
 		bounds.set	(R);
 		size.set	(R.max.x-R.min.x,R.max.y-R.min.y);
 
-		DWORD		size	= s_Y*s_X;
-		DWORD		apx		= faces/size;
+		u32		size	= s_Y*s_X;
+		u32		apx		= faces/size;
 
-		for (DWORD y=0; y<s_Y; y++)
-			for (DWORD x=0; x<s_X; x++)
+		for (u32 y=0; y<s_Y; y++)
+			for (u32 x=0; x<s_X; x++)
 			{
 				table[y][x]->clear		();
 				table[y][x]->reserve	(apx);

@@ -27,12 +27,12 @@ BOOL	NodeSimilar(Node&	N1, Node&	N2)
 	return TRUE;
 }
 
-DEF_VECTOR(vecDW,DWORD);
+DEF_VECTOR(vecDW,u32);
 
 xr_vector<vecDW>	BestQuad;
-DWORD			BestQuad_Count;
+u32			BestQuad_Count;
 
-void ProcessOne		(DWORD Base, DWORD limit=8)
+void ProcessOne		(u32 Base, u32 limit=8)
 {
 	BestQuad.clear	();
 	BestQuad_Count	= 0;
@@ -40,7 +40,7 @@ void ProcessOne		(DWORD Base, DWORD limit=8)
 	// ***** build horizontal line
 	vecDW			BaseLine;
 	BaseLine.reserve(limit*2);
-	DWORD			BL_Left=0,BL_Right=0;
+	u32			BL_Left=0,BL_Right=0;
 	
 	// middle
 	Node&			BaseNode = g_nodes[Base];
@@ -49,7 +49,7 @@ void ProcessOne		(DWORD Base, DWORD limit=8)
 	// left expansion
 	for (;;) {
 		Node&	B	= g_nodes[BaseLine.front()];
-		DWORD	LP	= B.nLeft();
+		u32	LP	= B.nLeft();
 		
 		if (BL_Left>limit)						break;
 		if (LP==InvalidNode)					break;
@@ -63,7 +63,7 @@ void ProcessOne		(DWORD Base, DWORD limit=8)
 	// right expansion
 	for (;;) {
 		Node&	B	= g_nodes[BaseLine.back()];
-		DWORD	RP	= B.nRight();
+		u32	RP	= B.nRight();
 		
 		if (BL_Right>limit)						break;
 		if (RP==InvalidNode)					break;
@@ -76,12 +76,12 @@ void ProcessOne		(DWORD Base, DWORD limit=8)
 	
 	// main cycle
 	//	Msg("-----");
-	DWORD	BasePos	= BaseLine[BL_Left];
-	for (DWORD left=0; left<=BL_Left; left++)
+	u32	BasePos	= BaseLine[BL_Left];
+	for (u32 left=0; left<=BL_Left; left++)
 	{
-		DWORD	limit_right	= left+limit-1;
+		u32	limit_right	= left+limit-1;
 		if (limit_right>=BaseLine.size())	limit_right=BaseLine.size()-1;
-		DWORD	limit_left	= left;
+		u32	limit_left	= left;
 		if (limit_left<BL_Left)				limit_left = BL_Left;
 		if (limit_left>limit_right)			limit_left = limit_right;
 		for (int right=int(limit_right); right>=int(limit_left); right--)
@@ -114,7 +114,7 @@ void ProcessOne		(DWORD Base, DWORD limit=8)
 				vecDW_it E			= src.end	();
 				for (; I!=E; I++)
 				{
-					DWORD	id	= g_nodes[*I].nForward();
+					u32	id	= g_nodes[*I].nForward();
 					if	(id==InvalidNode)					{ bFailed=TRUE; break; }
 					if	(used[id])							{ bFailed=TRUE; break; }
 					if	(!NodeSimilar(g_nodes[id],BaseNode)){ bFailed=TRUE; break; }
@@ -139,7 +139,7 @@ void ProcessOne		(DWORD Base, DWORD limit=8)
 				vecDW_it E			= src.end	();
 				for (; I!=E; I++)
 				{
-					DWORD	id	= g_nodes[*I].nBack();
+					u32	id	= g_nodes[*I].nBack();
 					if	(id==InvalidNode)					{ bFailed=TRUE; break; }
 					if	(used[id])							{ bFailed=TRUE; break; }
 					if	(!NodeSimilar(g_nodes[id],BaseNode)){ bFailed=TRUE; break; }
@@ -152,9 +152,9 @@ void ProcessOne		(DWORD Base, DWORD limit=8)
 			}
 			
 			// calculate size
-			DWORD size_z	= stack_up.size()+stack_down.size()-1;
-			DWORD size_x	= stack_up.back().size();
-			DWORD size_mix	= size_z*size_x;
+			u32 size_z	= stack_up.size()+stack_down.size()-1;
+			u32 size_x	= stack_up.back().size();
+			u32 size_mix	= size_z*size_x;
 			if (size_mix>BestQuad_Count)	
 			{
 				BestQuad_Count		= size_mix;
@@ -162,7 +162,7 @@ void ProcessOne		(DWORD Base, DWORD limit=8)
 				BestQuad.reserve	(size_z);
 				
 				// transfer quad
-				for (DWORD it=stack_up.size()-1; it>0; it--)
+				for (u32 it=stack_up.size()-1; it>0; it--)
 					BestQuad.push_back(stack_up[it]);
 				BestQuad.insert(BestQuad.begin(),stack_down.begin(),stack_down.end());
 			}
@@ -171,7 +171,7 @@ void ProcessOne		(DWORD Base, DWORD limit=8)
 }
 
 
-BOOL QuadFit(DWORD Base, DWORD Size)
+BOOL QuadFit(u32 Base, u32 Size)
 {
 	// ***** build horizontal line
 	vecDW			BaseLine;
@@ -185,7 +185,7 @@ BOOL QuadFit(DWORD Base, DWORD Size)
 	for (; BaseLine.size()<Size; ) 
 	{
 		Node&	B	= g_nodes[BaseLine.back()];
-		DWORD	RP	= B.nRight();
+		u32	RP	= B.nRight();
 		
 		if (RP==InvalidNode)					break;
 		if (used[RP])							break;
@@ -213,7 +213,7 @@ BOOL QuadFit(DWORD Base, DWORD Size)
 		vecDW_it E			= src.end	();
 		for (; I!=E; I++)
 		{
-			DWORD	id	= g_nodes[*I].nBack();
+			u32	id	= g_nodes[*I].nBack();
 			if	(id==InvalidNode)						return FALSE;
 			if	(used[id])								return FALSE;
 			if	(!NodeSimilar(g_nodes[id],BaseNode))	return FALSE;
@@ -223,7 +223,7 @@ BOOL QuadFit(DWORD Base, DWORD Size)
 	return TRUE;
 }
 
-void CreatePN(DWORD& group_id)
+void CreatePN(u32& group_id)
 {
 	// grab results
 	Fvector	min,max;
@@ -231,13 +231,13 @@ void CreatePN(DWORD& group_id)
 	max.set(flt_min,flt_min,flt_min);
 
 	NodeMerged		NM;
-	for (DWORD L=0; L<BestQuad.size(); L++)
+	for (u32 L=0; L<BestQuad.size(); L++)
 	{
 		vecDW&	vec = BestQuad[L];
 		
-		for (DWORD N=0; N<vec.size(); N++)
+		for (u32 N=0; N<vec.size(); N++)
 		{
-			DWORD ID			= vec[N];
+			u32 ID			= vec[N];
 			used[ID]			= true;
 			g_nodes[ID].Group	= group_id;
 
@@ -256,12 +256,12 @@ void xrMerge()
 	//	rmark.assign(g_nodes.size(),false);
 	
 	// iterate on nodes
-	DWORD group_id		= 0;
-	DWORD start_time	= timeGetTime();
-	for (DWORD Size=16; Size>2; Size/=2)
+	u32 group_id		= 0;
+	u32 start_time	= timeGetTime();
+	for (u32 Size=16; Size>2; Size/=2)
 	{
 		Msg("Pass size: %d",Size);
-		for (DWORD i=0; i<g_nodes.size(); i++)
+		for (u32 i=0; i<g_nodes.size(); i++)
 		{
 			if (!used[i]) {
 				// analyze
@@ -278,7 +278,7 @@ void xrMerge()
 			Progress(float(i)/float(g_nodes.size()));
 		}
 	}
-	for (DWORD i=0; i<g_nodes.size(); i++)
+	for (u32 i=0; i<g_nodes.size(); i++)
 	{
 		if (!used[i]) {
 			// analyze

@@ -35,7 +35,7 @@ void Help()
 	MessageBox(0,h_str,"Command line options",MB_OK|MB_ICONINFORMATION);
 }
 
-typedef int __cdecl xrOptions(b_params* params, DWORD version, bool bRunBuild);
+typedef int __cdecl xrOptions(b_params* params, u32 version, bool bRunBuild);
 
 void Startup(LPSTR     lpCmdLine)
 {
@@ -56,12 +56,12 @@ void Startup(LPSTR     lpCmdLine)
 	Sleep				(150);
 	
 	// Faster FPU 
-	DWORD					dwStartupTime	= timeGetTime();
+	u32					dwStartupTime	= timeGetTime();
 	SetPriorityClass		(GetCurrentProcess(),IDLE_PRIORITY_CLASS);
 
 	/*
-	DWORD	dwMin			= 1800*(1024*1024);
-	DWORD	dwMax			= 1900*(1024*1024);
+	u32	dwMin			= 1800*(1024*1024);
+	u32	dwMax			= 1900*(1024*1024);
 	if (0==SetProcessWorkingSetSize(GetCurrentProcess(),dwMin,dwMax))
 	{
 		clMsg("*** Failed to expand working set");
@@ -78,7 +78,7 @@ void Startup(LPSTR     lpCmdLine)
 	IReader*	F			= FS.r_open(prjName);
 
 	// Version
-	DWORD version;
+	u32 version;
 	F->r_chunk			(EB_Version,&version);
 	R_ASSERT(XRCL_CURRENT_VERSION==version);
 
@@ -114,10 +114,10 @@ void Startup(LPSTR     lpCmdLine)
 
 	// Show statistic
 	char	stats[256];
-	extern	std::string make_time(DWORD sec);
+	extern	std::string make_time(u32 sec);
 	extern  HWND logWindow;
 
-	DWORD	dwEndTime		= timeGetTime();
+	u32	dwEndTime		= timeGetTime();
 	sprintf					(stats,"Time elapsed: %s",make_time((dwEndTime-dwStartupTime)/1000).c_str());
 	clMsg					("Build succesful!\n%s",stats);
 	MessageBox				(logWindow,stats,"Congratulation!",MB_OK|MB_ICONINFORMATION);

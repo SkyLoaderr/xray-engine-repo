@@ -68,13 +68,13 @@ IC int	calcSphereSector(Fvector& dir)
 /*
 class Marker {
 private:
-	DWORD	size;	// in dwords
-	DWORD*	data;	// dword*
+	u32	size;	// in dwords
+	u32*	data;	// dword*
 public:
-	void	m_Create	(DWORD dim)
+	void	m_Create	(u32 dim)
 	{
 		size	= dim/32+1;
-		data	= (DWORD*) _aligned_malloc(size*4,64);
+		data	= (u32*) _aligned_malloc(size*4,64);
 	}
 	void	m_Destroy	()
 	{
@@ -84,8 +84,8 @@ public:
 	}
 	void	clear	()
 	{
-		DWORD	cache	= size/16;				// in 64b cache lines
-		DWORD	leaf	= (size-cache*16)*4;	// in bytes
+		u32	cache	= size/16;				// in 64b cache lines
+		u32	leaf	= (size-cache*16)*4;	// in bytes
 		void	*dest	= LPVOID(data);
 		__asm {
 			femms
@@ -113,32 +113,32 @@ c_line:
 	{
 		ZeroMemory(data,size*4);
 	}
-	IC	void	set1	(DWORD id)
+	IC	void	set1	(u32 id)
 	{
-		DWORD	word	= id/32;
-		DWORD	bit		= id%32;
-		DWORD	mask	= 1ul<<bit;
+		u32	word	= id/32;
+		u32	bit		= id%32;
+		u32	mask	= 1ul<<bit;
 		data	[word]	|= mask;
 	}
-	IC	void	set0	(DWORD id)
+	IC	void	set0	(u32 id)
 	{
-		DWORD	word	= id/32;
-		DWORD	bit		= id%32;
-		DWORD	mask	= 1ul<<bit;
+		u32	word	= id/32;
+		u32	bit		= id%32;
+		u32	mask	= 1ul<<bit;
 		data	[word]	&= ~mask;
 	}
-	IC	BOOL	get	(DWORD id)
+	IC	BOOL	get	(u32 id)
 	{
-		DWORD	word	= id/32;
-		DWORD	bit		= id%32;
-		DWORD	mask	= 1ul<<bit;
+		u32	word	= id/32;
+		u32	bit		= id%32;
+		u32	mask	= 1ul<<bit;
 		return	data[word]&mask;
 	}
 };
 */
 
 // volumetric query
-DEF_VECTOR		(Nearest,DWORD);
+DEF_VECTOR		(Nearest,u32);
 
 class			Query
 {
@@ -162,7 +162,7 @@ public:
 		q_Clear.clear	();
 	}
 
-	IC void		Perform	(DWORD ID)
+	IC void		Perform	(u32 ID)
 	{
 		if (ID==InvalidNode)		return;
 		if (ID>=q_Marks.size())		return;
@@ -193,9 +193,9 @@ struct	RC { RayCache	C; };
 
 class	CoverThread : public CThread
 {
-	DWORD	Nstart, Nend;
+	u32	Nstart, Nend;
 public:
-	CoverThread			(DWORD ID, DWORD _start, DWORD _end) : CThread(ID)
+	CoverThread			(u32 ID, u32 _start, u32 _end) : CThread(ID)
 	{
 		Nstart	= _start;
 		Nend	= _end;
@@ -218,7 +218,7 @@ public:
 		FPU::m24r		();
 		Query			Q;
 		Q.Begin			(g_nodes.size());
-		for (DWORD N=Nstart; N<Nend; N++)
+		for (u32 N=Nstart; N<Nend; N++)
 		{
 			// initialize process
 			thProgress	= float(N-Nstart)/float(Nend-Nstart);
@@ -226,8 +226,8 @@ public:
 			Fvector&	BasePos	= BaseNode.Pos;
 			Fvector		TestPos = BasePos; TestPos.y+=cover_height;
 			
-			DWORD	c_total	[8]	= {0,0,0,0,0,0,0,0};
-			DWORD	c_passed[8]	= {0,0,0,0,0,0,0,0};
+			u32	c_total	[8]	= {0,0,0,0,0,0,0,0};
+			u32	c_passed[8]	= {0,0,0,0,0,0,0,0};
 			
 			// perform volumetric query
 			Q.Init			(BasePos);
@@ -237,7 +237,7 @@ public:
 			for (Nearest_it it=Q.q_List.begin(); it!=Q.q_List.end();  it++)
 			{
 				// calc dir & range
-				DWORD		ID			= *it;
+				u32		ID			= *it;
 				R_ASSERT	(ID<g_nodes.size());
 				if			(N==ID)		continue;
 				Node&		N			= g_nodes[ID];
@@ -279,11 +279,11 @@ void	xrCover	()
 	Status("Calculating...");
 
 	// Start threads, wait, continue --- perform all the work
-	DWORD	start_time		= timeGetTime();
+	u32	start_time		= timeGetTime();
 	CThreadManager			Threads;
-	DWORD	stride			= g_nodes.size()/NUM_THREADS;
-	DWORD	last			= g_nodes.size()-stride*(NUM_THREADS-1);
-	for (DWORD thID=0; thID<NUM_THREADS; thID++)
+	u32	stride			= g_nodes.size()/NUM_THREADS;
+	u32	last			= g_nodes.size()-stride*(NUM_THREADS-1);
+	for (u32 thID=0; thID<NUM_THREADS; thID++)
 		Threads.start(xr_new<CoverThread>(thID,thID*stride,thID*stride+((thID==(NUM_THREADS-1))?last:stride)));
 	Threads.wait			();
 	Msg("%d seconds elapsed.",(timeGetTime()-start_time)/1000);
@@ -292,7 +292,7 @@ void	xrCover	()
 	Status			("Smoothing coverage mask...");
 	mem_Optimize	();
 	Nodes	Old		= g_nodes;
-	for (DWORD N=0; N<g_nodes.size(); N++)
+	for (u32 N=0; N<g_nodes.size(); N++)
 	{
 		Node&	Base		= Old[N];
 		Node&	Dest		= g_nodes[N];

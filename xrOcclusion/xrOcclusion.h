@@ -16,7 +16,7 @@
 struct ORM_API	ORM_Vertex
 {
 	float	x,y,z;
-	DWORD	dummycolor;
+	u32	dummycolor;
 };
 #pragma pack(pop)
 
@@ -27,7 +27,7 @@ ORM_API ORM_Vertex*	__cdecl	ORM_Begin	(int vCount, int iCount, WORD* idx);
 ORM_API void		__cdecl	ORM_End		(Fvector &C, float R);
 
 ORM_API void		__cdecl	ORM_Process	(
-		DWORD		Count,
+		u32		Count,
 		Fvector&	Pos,		// position of test point
 		WORD*		ID,			// id's of tested models
 		BOOL*		R			// boolean result, TRUE-visible

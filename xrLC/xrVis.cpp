@@ -8,15 +8,15 @@ typedef xr_vector<WORD>	vecW;
 typedef vecW::iterator	vecW_IT;
 
 extern xr_vector<vecW>		g_pvs;
-extern DWORD			g_pvs_X,g_pvs_Y,g_pvs_Z;
+extern u32			g_pvs_X,g_pvs_Y,g_pvs_Z;
 
 struct V_Header {
-	DWORD	nX,nY,nZ;
+	u32	nX,nY,nZ;
 	float	relevance;
 	Fvector	min;
 };
 
-DWORD PlaceData(xr_vector<vecW> &C, vecW &P)
+u32 PlaceData(xr_vector<vecW> &C, vecW &P)
 {
 	if (P.size()>1) {
 		std::sort	(P.begin(),P.end());
@@ -25,11 +25,11 @@ DWORD PlaceData(xr_vector<vecW> &C, vecW &P)
 	}
 
 	// Search placeholder
-	DWORD sz	= P.size();
-	DWORD pos	= 0;
+	u32 sz	= P.size();
+	u32 pos	= 0;
 	for (xr_vector<vecW>::iterator it=C.begin(); it!=C.end(); it++)
 	{
-		DWORD S = it->size();
+		u32 S = it->size();
 		if (S!=sz) { pos+=S+1; continue; }
 		if (0!=memcmp(it->begin(),P.begin(),S*sizeof(WORD))) { pos+=S+1; continue; }
 
@@ -94,7 +94,7 @@ void CalculateRelSet(Fvector &pos, vecW &rel_set)
 		for (int x=minX; x<=maxX; x++) {
 			for (int y=minY; y<=maxY; y++)
 			{
-				DWORD	cell	= z*g_pvs_X*g_pvs_Y + x*g_pvs_Y + y;
+				u32	cell	= z*g_pvs_X*g_pvs_Y + x*g_pvs_Y + y;
 //				clMsg("* Sample #%d",cell);
 				int		ptr		= g_pvs_map_vm[cell];
 				if (ptr>=0)
@@ -115,7 +115,7 @@ void CalculateRelSet(Fvector &pos, vecW &rel_set)
 void CBuild::BuildRelevance(IWriter &fs)
 {
 	static Fvector size;
-	static DWORD	nx,ny,nz;
+	static u32	nx,ny,nz;
 
 	Status("Preparing...");
 	R_ASSERT(g_TREE_ROOT);
@@ -139,7 +139,7 @@ void CBuild::BuildRelevance(IWriter &fs)
 	fs.close_chunk	();
 
 	// Build Visibility
-	static xr_vector< DWORD >		slots;
+	static xr_vector< u32 >		slots;
 	static xr_vector< vecW >		vis_nodes;
 	static xr_vector< vecW >		vis_lights;
 	static xr_vector< vecW >		vis_glows;
@@ -154,7 +154,7 @@ void CBuild::BuildRelevance(IWriter &fs)
 		g_pvs_map_vm	= (int *)pvs_map_stream->Pointer();
 	}
  
-	static DWORD				dwSlot = 0;
+	static u32				dwSlot = 0;
 	for (int z=0; z<nz; z++) {
 		for (int x=0; x<nx; x++) {
 			for (int y=0; y<ny; y++)
@@ -247,7 +247,7 @@ void CBuild::BuildRelevance(IWriter &fs)
 	fs.close_chunk();
 
 	fs.open_chunk(fsV_MAP);
-	fs.write(slots.begin(),slots.size()*sizeof(DWORD));
+	fs.write(slots.begin(),slots.size()*sizeof(u32));
 	fs.close_chunk();
 
 	fs.close_chunk();

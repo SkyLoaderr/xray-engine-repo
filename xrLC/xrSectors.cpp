@@ -8,12 +8,12 @@ void CBuild::BuildSectors()
 {
 	Status("Determining sectors...");
 	Progress(0);
-	DWORD SectorMax=0;
-	for (DWORD I=0; I<g_tree.size(); I++)
+	u32 SectorMax=0;
+	for (u32 I=0; I<g_tree.size(); I++)
 		if (g_tree[I]->Sector>SectorMax) SectorMax=g_tree[I]->Sector;
 	R_ASSERT(SectorMax<0xffff);
 
-	DWORD SectorCount = SectorMax+1; 
+	u32 SectorCount = SectorMax+1; 
 	g_sectors.resize(SectorCount);
 	ZeroMemory(&*g_sectors.begin(),g_sectors.size()*sizeof(void*));
 	clMsg("%d sectors accepted.",SectorCount);
@@ -21,7 +21,7 @@ void CBuild::BuildSectors()
 	Status("Spatializing geometry...");
 	for (I=0; I<g_tree.size(); I++)
 	{
-		DWORD Sector = g_tree[I]->Sector;
+		u32 Sector = g_tree[I]->Sector;
 		if (0==g_sectors[Sector]) g_sectors[Sector] = xr_new<CSector> (Sector);
 	}
 
@@ -38,10 +38,10 @@ void CBuild::BuildSectors()
 	for (I=0; I<portals.size(); I++)
 	{
 		b_portal &P = portals[I];
-		R_ASSERT(DWORD(P.sector_front)<g_sectors.size());
-		R_ASSERT(DWORD(P.sector_back) <g_sectors.size());
-		g_sectors[DWORD(P.sector_front)]->add_portal	(WORD(I));
-		g_sectors[DWORD(P.sector_back)]->add_portal		(WORD(I));
+		R_ASSERT(u32(P.sector_front)<g_sectors.size());
+		R_ASSERT(u32(P.sector_back) <g_sectors.size());
+		g_sectors[u32(P.sector_front)]->add_portal	(WORD(I));
+		g_sectors[u32(P.sector_back)]->add_portal		(WORD(I));
 	}
 	// glows
 	for (I=0; I<glows.size(); I++)
@@ -57,14 +57,14 @@ void CBuild::BuildSectors()
 		b_light_dynamic	&L = L_dynamic[I];
 		if (L.data.type == D3DLIGHT_DIRECTIONAL)
 		{
-			for (DWORD j=0; j<g_sectors.size(); j++)
+			for (u32 j=0; j<g_sectors.size(); j++)
 			{
 				R_ASSERT(g_sectors[j]);
 				g_sectors[j]->add_light(WORD(I));
 			}
 		} else {
 			if	(L.sectors.size()) {
-				for (DWORD j=0; j<L.sectors.size(); j++)
+				for (u32 j=0; j<L.sectors.size(); j++)
 				{
 					R_ASSERT	(L.sectors[j]<g_sectors.size());
 					g_sectors	[L.sectors[j]]->add_light(WORD(I));
@@ -84,7 +84,7 @@ void CBuild::SaveSectors(IWriter& fs)
 	Status("Processing...");
 
 	// validate & save
-	for (DWORD I=0; I<g_sectors.size(); I++)
+	for (u32 I=0; I<g_sectors.size(); I++)
 	{
 		MFS.open_chunk(I);
 		g_sectors[I]->Validate();

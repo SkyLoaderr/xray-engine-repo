@@ -75,7 +75,7 @@ void Startup(LPSTR     lpCmdLine)
 	prjName				[0] = 0;
 	FS.update_path		(prjName,"$game_levels$",name);
 
-	DWORD				dwStartupTime	= timeGetTime();
+	u32				dwStartupTime	= timeGetTime();
 	
 	FS.update_path		(SYSTEM_LTX,"$game_data$","system.ltx");
 	FS.update_path		(INI_FILE,"$game_data$","game.ltx");
@@ -103,9 +103,9 @@ void Startup(LPSTR     lpCmdLine)
 		}
 	// Show statistic
 	char	stats[256];
-	extern	std::string make_time(DWORD sec);
+	extern	std::string make_time(u32 sec);
 	extern  HWND logWindow;
-	DWORD				dwEndTime = timeGetTime();
+	u32				dwEndTime = timeGetTime();
 	sprintf				(stats,"Time elapsed: %s",make_time((dwEndTime-dwStartupTime)/1000).c_str());
 	MessageBox			(logWindow,stats,"Congratulation!",MB_OK|MB_ICONINFORMATION);
 

@@ -23,7 +23,7 @@ void CBuild::BuildRapid()
 	float	p_cost			= 1.f/(g_faces.size());
 
 	Status			("Converting faces...");
-	for				(DWORD fit=0; fit<g_faces.size(); fit++)	g_faces[fit]->bProcessed = FALSE;
+	for				(u32 fit=0; fit<g_faces.size(); fit++)	g_faces[fit]->bProcessed = FALSE;
 
 	xr_vector<Face*>	adjacent;	adjacent.reserve(6*2*3);
 	CDB::CollectorPacked	CL	(scene_bb,g_vertices.size(),g_faces.size());
@@ -37,7 +37,7 @@ void CBuild::BuildRapid()
 		for (int vit=0; vit<3; vit++)
 		{
 			Vertex* V = F->v[vit];
-			for (DWORD adj=0; adj<V->adjacent.size(); adj++)
+			for (u32 adj=0; adj<V->adjacent.size(); adj++)
 			{
 				adjacent.push_back(V->adjacent[adj]);
 			}
@@ -47,7 +47,7 @@ void CBuild::BuildRapid()
 		std::sort		(adjacent.begin(),adjacent.end());
 		adjacent.erase	(std::unique(adjacent.begin(),adjacent.end()),adjacent.end());
 		BOOL			bAlready	= FALSE;
-		for (DWORD ait=0; ait<adjacent.size(); ait++)
+		for (u32 ait=0; ait<adjacent.size(); ait++)
 		{
 			Face*	Test			= adjacent[ait];
 			if (Test==F)			continue;
@@ -65,7 +65,7 @@ void CBuild::BuildRapid()
 			CL.add_face(
 				F->v[0]->P,F->v[1]->P,F->v[2]->P,
 				CDB::edge_open,CDB::edge_open,CDB::edge_open,
-				0,0,DWORD(F)
+				0,0,u32(F)
 				);
 		}
 	}

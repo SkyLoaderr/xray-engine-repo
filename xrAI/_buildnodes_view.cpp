@@ -41,7 +41,7 @@ VOID disp_point(int x, int y)
 	
 	hdc = GetDC		(hw);
 	
-	DWORD			C = RGB(0,0,0);
+	u32			C = RGB(0,0,0);
 	int				_x=x*2,_y=y*2;
 	SetPixel		(hdc,_x,	_y,		C);
 	SetPixel		(hdc,_x+1,	_y,		C);

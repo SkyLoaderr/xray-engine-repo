@@ -4,7 +4,7 @@
 // Performs simple cross-smooth
 void CBuild::CalcNormals()
 {
-	DWORD	Vcount	= g_vertices.size();
+	u32	Vcount	= g_vertices.size();
 	float	p_total = 0;
 	float	p_cost  = 1.f/(Vcount);
 
@@ -21,7 +21,7 @@ void CBuild::CalcNormals()
 	// remark:
 	//	we use Face's bSplitted value to indicate that face is processed
 	//  so bSplitted means bUsed
-	for (DWORD I=0; I<Vcount; I++)
+	for (u32 I=0; I<Vcount; I++)
 	{
 		Vertex* V = g_vertices[I];
 
@@ -32,7 +32,7 @@ void CBuild::CalcNormals()
 		}
 		std::sort(V->adjacent.begin(), V->adjacent.end());
 
-		for (DWORD AF = 0; AF < V->adjacent.size(); AF++)
+		for (u32 AF = 0; AF < V->adjacent.size(); AF++)
 		{
 			Face*	F			= V->adjacent[AF];
 			if (F->bSplitted)	continue;	// Face already used in calculation
@@ -41,7 +41,7 @@ void CBuild::CalcNormals()
 			
 			// Calculate it's normal
 			NV->N.set(0,0,0);
-			for (DWORD NF = 0; NF < V->adjacent.size(); NF++)
+			for (u32 NF = 0; NF < V->adjacent.size(); NF++)
 			{
 				Face*	Fn		= V->adjacent[NF];
 

@@ -42,7 +42,7 @@ IC bool cmp_rect(int r1, int r2)
 
 static	BYTE	surface[lmap_size*lmap_size];
 static	int		current_rect	= 0;
-const	DWORD	alpha_ref		= 254-BORDER;
+const	u32	alpha_ref		= 254-BORDER;
 
 // Initialization
 void InitSurface()
@@ -56,31 +56,31 @@ void _rect_register(_rect &R, CDeflector* D, BOOL bRotate)
 	collected.push_back(R);
 	
 	LPDWORD lm	= D->lm.pSurface;
-	DWORD	s_x	= D->lm.dwWidth+2*BORDER;
-	DWORD	s_y = D->lm.dwHeight+2*BORDER;
+	u32	s_x	= D->lm.dwWidth+2*BORDER;
+	u32	s_y = D->lm.dwHeight+2*BORDER;
 	
 	if (!bRotate) {
 		// Normal (and fastest way)
-		for (DWORD y=0; y<s_y; y++)
+		for (u32 y=0; y<s_y; y++)
 		{
 			BYTE*	P = surface+(y+R.a.y)*lmap_size+R.a.x;	// destination scan-line
-			DWORD*	S = lm + y*s_x;
-			for (DWORD x=0; x<s_x; x++,P++) 
+			u32*	S = lm + y*s_x;
+			for (u32 x=0; x<s_x; x++,P++) 
 			{
-				DWORD C = *S++;
-				DWORD A = RGBA_GETALPHA	(C);
+				u32 C = *S++;
+				u32 A = RGBA_GETALPHA	(C);
 				if (A>=alpha_ref)	*P	= 255;
 			}
 		}
 	} else {
 		// Rotated :(
-		for (DWORD y=0; y<s_x; y++)
+		for (u32 y=0; y<s_x; y++)
 		{
 			BYTE*	P = surface+(y+R.a.y)*lmap_size+R.a.x;	// destination scan-line
-			for (DWORD x=0; x<s_y; x++,P++)
+			for (u32 x=0; x<s_y; x++,P++)
 			{
-				DWORD C = lm[x*s_x+y];
-				DWORD A = RGBA_GETALPHA(C);
+				u32 C = lm[x*s_x+y];
+				u32 A = RGBA_GETALPHA(C);
 				if (A>=alpha_ref)	*P	= 255;
 			}
 		}
@@ -91,31 +91,31 @@ void _rect_register(_rect &R, CDeflector* D, BOOL bRotate)
 bool Place_Perpixel(_rect& R, CDeflector* D, BOOL bRotate)
 {
 	LPDWORD lm			= D->lm.pSurface;
-	DWORD	s_x			= D->lm.dwWidth	+2*BORDER;
-	DWORD	s_y			= D->lm.dwHeight+2*BORDER;
+	u32	s_x			= D->lm.dwWidth	+2*BORDER;
+	u32	s_y			= D->lm.dwHeight+2*BORDER;
 	
 	if (!bRotate) {
 		// Normal (and fastest way)
-		for (DWORD y=0; y<s_y; y++)
+		for (u32 y=0; y<s_y; y++)
 		{
 			BYTE*	P = surface+(y+R.a.y)*lmap_size+R.a.x;	// destination scan-line
-			DWORD*	S = lm + y*s_x;
-			for (DWORD x=0; x<s_x; x++,P++) 
+			u32*	S = lm + y*s_x;
+			for (u32 x=0; x<s_x; x++,P++) 
 			{
-				DWORD C = *S++;
-				DWORD A = RGBA_GETALPHA(C);
+				u32 C = *S++;
+				u32 A = RGBA_GETALPHA(C);
 				if ((*P)&&(A>=alpha_ref))	return false;
 			}
 		}
 	} else {
 		// Rotated :(
-		for (DWORD y=0; y<s_x; y++)
+		for (u32 y=0; y<s_x; y++)
 		{
 			BYTE*	P = surface+(y+R.a.y)*lmap_size+R.a.x;	// destination scan-line
-			for (DWORD x=0; x<s_y; x++,P++)
+			for (u32 x=0; x<s_y; x++,P++)
 			{
-				DWORD C = lm[x*s_x+y];
-				DWORD A = RGBA_GETALPHA(C);
+				u32 C = lm[x*s_x+y];
+				u32 A = RGBA_GETALPHA(C);
 				if ((*P)&&(A>=alpha_ref))	return false;
 			}
 		}
@@ -131,11 +131,11 @@ BOOL _rect_place(_rect &r, CDeflector* D)
 	// Normal
 	{
 		_rect R;
-		DWORD x_max = lmap_size-r.b.x; 
-		DWORD y_max = lmap_size-r.b.y; 
-		for (DWORD _Y=0; _Y<y_max; _Y++)
+		u32 x_max = lmap_size-r.b.x; 
+		u32 y_max = lmap_size-r.b.y; 
+		for (u32 _Y=0; _Y<y_max; _Y++)
 		{
-			for (DWORD _X=0; _X<x_max; _X++)
+			for (u32 _X=0; _X<x_max; _X++)
 			{
 				if (surface[_Y*lmap_size+_X]) continue;
 				R.init(_X,_Y,_X+r.b.x,_Y+r.b.y);
@@ -150,11 +150,11 @@ BOOL _rect_place(_rect &r, CDeflector* D)
 	// Rotated
 	{
 		_rect R;
-		DWORD x_max = lmap_size-r.b.y; 
-		DWORD y_max = lmap_size-r.b.x; 
-		for (DWORD _Y=0; _Y<y_max; _Y++)
+		u32 x_max = lmap_size-r.b.y; 
+		u32 y_max = lmap_size-r.b.x; 
+		for (u32 _Y=0; _Y<y_max; _Y++)
 		{
-			for (DWORD _X=0; _X<x_max; _X++)
+			for (u32 _X=0; _X<x_max; _X++)
 			{
 				if (surface[_Y*lmap_size+_X]) continue;
 
@@ -178,7 +178,7 @@ void CBuild::MergeLM()
 	vecDefl		SEL;
 
 	Status("Processing...");
-	for (DWORD light_layer=0; light_layer<pBuild->lights.size(); light_layer++)
+	for (u32 light_layer=0; light_layer<pBuild->lights.size(); light_layer++)
 	{
 		// Select all deflectors, which contain this light-layer
 		Layer.clear	();

@@ -17,11 +17,11 @@ extern "C" {
 	// Returns TRUE only if everything OK.
 	DXTC_API BOOL	__cdecl xrDXTC_Compress(
 		const char *dest_file,
-		DWORD		dest_format,
+		u32		dest_format,
 		BOOL		dest_mipmaps,
-		DWORD*		src_data,
-		DWORD		dwWidth,
-		DWORD		dwHeight,
-		DWORD		dxt1_alpharef = 0xff
+		u32*		src_data,
+		u32		dwWidth,
+		u32		dwHeight,
+		u32		dxt1_alpharef = 0xff
 		);
 };

@@ -10,7 +10,7 @@ int xrSimulate (xr_vector<WORD> &indices, int iCacheSize )
 	VertexCache C(iCacheSize);
 
 	int count=0;
-	for (DWORD i=0; i<indices.size(); i++)
+	for (u32 i=0; i<indices.size(); i++)
 	{
 		int id = indices[i];
 		if (C.InCache(id)) continue;
@@ -77,7 +77,7 @@ void OGF::Stripify()
 		
 		// Permute vertices
 		vecOGF_V temp_list = vertices;
-		for(DWORD i=0; i<temp_list.size(); i++)
+		for(u32 i=0; i<temp_list.size(); i++)
 			vertices[i]=temp_list[permute[i]];
 	} catch (...) {
 		clMsg("ERROR: Stripifying failed. Dump below.");
@@ -87,6 +87,6 @@ void OGF::Stripify()
 
 void OGF::DumpFaces()
 {
-	for (DWORD i=0; i<faces.size(); i++)
+	for (u32 i=0; i<faces.size(); i++)
 		clMsg("Face #%4d: %4d %4d %4d",i,int(faces[i].v[0]),int(faces[i].v[1]),int(faces[i].v[2]));
 }

@@ -86,7 +86,7 @@ FI_STRUCT (FIMULTIBITMAP) { void *data; };
 typedef long BOOL;
 typedef unsigned char BYTE;
 typedef unsigned short WORD;
-typedef unsigned long DWORD;
+typedef unsigned long u32;
 typedef long LONG;
 #endif
 
@@ -104,17 +104,17 @@ typedef struct tagRGBQUAD {
 } RGBQUAD;
 
 typedef struct tagBITMAPINFOHEADER{
-  DWORD biSize;
+  u32 biSize;
   LONG  biWidth;
   LONG  biHeight;
   WORD  biPlanes;
   WORD  biBitCount;
-  DWORD biCompression;
-  DWORD biSizeImage;
+  u32 biCompression;
+  u32 biSizeImage;
   LONG  biXPelsPerMeter;
   LONG  biYPelsPerMeter;
-  DWORD biClrUsed;
-  DWORD biClrImportant;
+  u32 biClrUsed;
+  u32 biClrImportant;
 } BITMAPINFOHEADER, *PBITMAPINFOHEADER;
 
 typedef struct tagBITMAPINFO {

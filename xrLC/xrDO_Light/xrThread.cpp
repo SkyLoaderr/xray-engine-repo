@@ -19,7 +19,7 @@ void	CThreadManager::start	(CThread*	T)
 	T->Start			();
 }
 
-void	CThreadManager::wait	(DWORD	sleep_time)
+void	CThreadManager::wait	(u32	sleep_time)
 {
 	// Wait for completition
 	char		perf			[1024];
@@ -30,8 +30,8 @@ void	CThreadManager::wait	(DWORD	sleep_time)
 		perf[0]					=0;
 		float	sumProgress		=0;
 		float	sumPerformance	=0;
-		DWORD	sumComplete		=0;
-		for (DWORD ID=0; ID<threads.size(); ID++)
+		u32	sumComplete		=0;
+		for (u32 ID=0; ID<threads.size(); ID++)
 		{
 			sumProgress			+= threads[ID]->thProgress;
 			sumComplete			+= threads[ID]->thCompleted?1:0;
@@ -51,7 +51,7 @@ void	CThreadManager::wait	(DWORD	sleep_time)
 	}
 	
 	// Delete threads
-	for (DWORD thID=0; thID<threads.size(); thID++)
+	for (u32 thID=0; thID<threads.size(); thID++)
 		if (threads[thID]->thDestroyOnComplete)	xr_delete(threads[thID]);
 	threads.clear	();
 }

@@ -10,10 +10,10 @@ volatile BOOL				bClose = FALSE;
 static char					status	[1024	]="";
 static char					phase	[1024	]="";
 static float				progress		= 0.0f;
-static DWORD				phase_start_time= 0;
+static u32				phase_start_time= 0;
 static BOOL					bStatusChange	= FALSE;
 static BOOL					bPhaseChange	= FALSE;
-static DWORD				phase_total_time= 0;
+static u32				phase_total_time= 0;
 
 static HWND hwLog		= 0;
 static HWND hwProgress	= 0;
@@ -55,7 +55,7 @@ static VOID _process_messages(VOID)
 	}
 }
 
-std::string make_time	(DWORD sec)
+std::string make_time	(u32 sec)
 {
 	char		buf[64];
 	sprintf		(buf,"%2.0d:%2.0d:%2.0d",sec/3600,(sec%3600)/60,sec%60);
@@ -123,7 +123,7 @@ void __cdecl logThread(void *dummy)
 		MAKEINTRESOURCE(IDD_LOG),
 		0, logDlgProc );
 	if (!logWindow) {
-		DWORD e=GetLastError();
+		u32 e=GetLastError();
 		char errmsg[1024];
 		FormatMessage(FORMAT_MESSAGE_FROM_SYSTEM,0,e,0,errmsg,1024,0);
 		__asm int 3;
@@ -149,13 +149,13 @@ void __cdecl logThread(void *dummy)
 
 	BOOL		bHighPriority	= FALSE;
 	string256	u_name;
-	DWORD		u_size	= sizeof(u_name)-1;
+	u32		u_size	= sizeof(u_name)-1;
 	GetUserName	(u_name,&u_size);
 	_strlwr		(u_name);
 	if ((0==strcmp(u_name,"oles"))||(0==strcmp(u_name,"alexmx")))	bHighPriority	= TRUE;
 
 	// Main cycle
-	DWORD	LogSize = 0;
+	u32	LogSize = 0;
 	float	PrSave	= 0;
 	while (TRUE)
 	{
@@ -184,14 +184,14 @@ void __cdecl logThread(void *dummy)
 		if (_abs(PrSave-progress)>EPS_L) {
 			bWasChanges = TRUE;
 			PrSave = progress;
-			SendMessage		( hwProgress, PBM_SETPOS, DWORD(progress*1000.f), 0);
+			SendMessage		( hwProgress, PBM_SETPOS, u32(progress*1000.f), 0);
 
 			// timing
 			if (progress>0.005f) {
-				DWORD dwCurrentTime = timeGetTime();
-				DWORD dwTimeDiff	= dwCurrentTime-phase_start_time;
-				DWORD secElapsed	= dwTimeDiff/1000;
-				DWORD secRemain		= DWORD(float(secElapsed)/progress)-secElapsed;
+				u32 dwCurrentTime = timeGetTime();
+				u32 dwTimeDiff	= dwCurrentTime-phase_start_time;
+				u32 secElapsed	= dwTimeDiff/1000;
+				u32 secRemain		= u32(float(secElapsed)/progress)-secElapsed;
 				sprintf(tbuf,
 					"Elapsed: %s\n"
 					"Remain:  %s",

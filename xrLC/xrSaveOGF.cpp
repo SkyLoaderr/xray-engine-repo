@@ -46,7 +46,7 @@ void CBuild::SaveTREE(IWriter &fs)
 	fs.open_chunk		(fsL_VISUALS | CFS_CompressMark);
 	for (xr_vector<OGF_Base*>::iterator it = g_tree.begin(); it!=g_tree.end(); it++)
 	{
-		DWORD			idx = it-g_tree.begin();
+		u32			idx = it-g_tree.begin();
 		MFS.open_chunk	(idx);
 		(*it)->Save		(MFS);
 		MFS.close_chunk	();

@@ -51,7 +51,7 @@ float	CalculateHeight(Fbox& BB)
 	// All nodes
 	BB.invalidate();
 
-	for (DWORD i=0; i<g_merged.size(); i++)
+	for (u32 i=0; i<g_merged.size(); i++)
 	{
 		NodeMerged&	N	= g_merged[i];
 		BB.modify	(N.P0);
@@ -85,13 +85,13 @@ void xrSaveNodes(LPCSTR N)
 
 	// All nodes
 	Status			("Saving nodes...");
-	for (DWORD i=0; i<g_merged.size(); i++)
+	for (u32 i=0; i<g_merged.size(); i++)
 	{
 		NodeMerged&		N	= g_merged[i];
 
 		// Calculate non-zero members
 		int		cnt		= 0;
-		for		(DWORD L=0; L<N.neighbours.size(); L++)	if (N.neighbours[L]) cnt++;
+		for		(u32 L=0; L<N.neighbours.size(); L++)	if (N.neighbours[L]) cnt++;
 
 		// write node itself
 		Compress		(NC,N,H);
@@ -101,15 +101,15 @@ void xrSaveNodes(LPCSTR N)
 		// write links
 		for (L=0; L<N.neighbours.size(); L++)
 		{
-			DWORD		L_id		= N.neighbours[L];
+			u32		L_id		= N.neighbours[L];
 			if (L_id)	{ L_id++; fs->w		(&L_id,3); }
 		}
 		Progress(float(i)/float(g_merged.size()));
 	}
 
 	// Stats
-	DWORD	SizeTotal	= fs->tell();
-	DWORD	SizeData	= g_merged.size()*sizeof(NodeCompressed);
-	DWORD	SizeLinks	= SizeTotal-SizeData;
+	u32	SizeTotal	= fs->tell();
+	u32	SizeData	= g_merged.size()*sizeof(NodeCompressed);
+	u32	SizeLinks	= SizeTotal-SizeData;
 	Msg		("%dK saved (D:%d / L:%d)",SizeTotal/1024,SizeData/1024,SizeLinks/1024);
 }

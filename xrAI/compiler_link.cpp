@@ -1,10 +1,10 @@
 #include "stdafx.h"
 #include "compiler.h"
 
-IC void ProcessID(DWORD ID, NodeMerged& N, DWORD OurID, Marks& m_used)
+IC void ProcessID(u32 ID, NodeMerged& N, u32 OurID, Marks& m_used)
 {
 	if (ID == InvalidNode)	return;
-	DWORD group = g_nodes[ID].Group;
+	u32 group = g_nodes[ID].Group;
 	if (group==OurID)		return;
 	if (m_used[group])		return;
 
@@ -16,7 +16,7 @@ void xrConvertAndLink()
 {
 	Status("Convertion and Linking...");
 
-	for (DWORD it=0; it<g_merged.size(); it++)
+	for (u32 it=0; it<g_merged.size(); it++)
 	{
 		NodeMerged& N = g_merged[it];
 		
@@ -28,7 +28,7 @@ void xrConvertAndLink()
 		N.cover[1]		=0;
 		N.cover[2]		=0;
 		N.cover[3]		=0;
-		for (DWORD L=0; L<N.contains.size(); L++) {
+		for (u32 L=0; L<N.contains.size(); L++) {
 			Node&	element		= g_nodes[N.contains[L]];
 			points.push_back	(element.Pos);
 			N.plane.n.add		(element.Plane.n);
@@ -54,7 +54,7 @@ void xrConvertAndLink()
 		vNorm.normalize	(N.plane.n);
 		vOffs.set		(0,-1000,0);
 		N.plane.build	(vOffs,vNorm);
-		for (DWORD p=0; p<points.size(); p++)
+		for (u32 p=0; p<points.size(); p++)
 		{
 			Fvector&	V = points[p];
 			BB.modify	(V);
@@ -77,7 +77,7 @@ void xrConvertAndLink()
 		Marks		m_used;
 		m_used.assign(g_merged.size(),false);
 		for (L=0; L<N.contains.size(); L++) {
-			DWORD	ID	= N.contains[L];
+			u32	ID	= N.contains[L];
 			Node&	E	= g_nodes[ID];
 
 			ProcessID	(E.n1,N,it,m_used);

@@ -225,7 +225,7 @@ void msimulator_CheckCollision(SCollisionData& cl)
 	float			distToPlaneIntersection;
 	float			distToEllipsoidIntersection;
 	
-	for (DWORD i_t=0; i_t!=clContactedT.size(); i_t++){
+	for (u32 i_t=0; i_t!=clContactedT.size(); i_t++){
 		cl_tri& T=clContactedT[i_t];
 		
 		//ignore backfaces. What we cannot see we cannot collide with ;)
@@ -318,7 +318,7 @@ void msimulator_ResolveStuck(SCollisionData& cl, Fvector& position)
 		stuckCount		= 0;
 		
 		// for all faces
-		for (DWORD i_t=0; i_t!=clContactedT.size(); i_t++)
+		for (u32 i_t=0; i_t!=clContactedT.size(); i_t++)
 		{
 			cl_tri& T=clContactedT[i_t];
 			Fvector N_inv;

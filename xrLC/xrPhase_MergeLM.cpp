@@ -18,13 +18,13 @@ IC int	compare_defl		(CDeflector* D1, CDeflector* D2)
 	if (M1>M2)	return 0;
 	
 	// Second - by number of layers
-	DWORD L1	= D1->layers.size();
-	DWORD L2	= D2->layers.size();
+	u32 L1	= D1->layers.size();
+	u32 L2	= D2->layers.size();
 	if (L1<L2)	return 1;
 	if (L1>L2)	return 0;
 	
 	// Third  - lexicographical compare
-	for (DWORD I=0; I<L1; I++)
+	for (u32 I=0; I<L1; I++)
 	{
 		CDeflector::Layer&	lay1	= D1->layers[I];
 		CDeflector::Layer&	lay2	= D2->layers[I];
@@ -87,7 +87,7 @@ void CBuild::xrPhase_MergeLM()
 {
 	vecDefl			Layer;
 
-	for (DWORD light_layer=0; light_layer<pBuild->L_layers.size(); light_layer++)
+	for (u32 light_layer=0; light_layer<pBuild->L_layers.size(); light_layer++)
 	{
 		Status		("-= LM-Layer #%d =-",light_layer);
 		
@@ -190,7 +190,7 @@ void CBuild::xrPhase_MergeLM()
 	// Cleanup deflectors
 	Progress	(1.f);
 	Status		("Destroying deflectors...");
-	for (DWORD it=0; it<g_deflectors.size(); it++)
+	for (u32 it=0; it<g_deflectors.size(); it++)
 		xr_delete(g_deflectors[it]);
 	g_deflectors.clear	();
 }

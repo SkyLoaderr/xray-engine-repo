@@ -45,7 +45,7 @@ void OGF::Save			(IWriter &fs)
 	// Texture & shader
 	fs.open_chunk		(OGF_TEXTURE_L);
 	std::string Tname;
-	for (DWORD i=0; i<textures.size(); i++)
+	for (u32 i=0; i<textures.size(); i++)
 	{
 		if (!Tname.empty()) Tname += ',';
 		char *fname = textures[i].name;
@@ -60,7 +60,7 @@ void OGF::Save			(IWriter &fs)
 	Shader_xrLC*	SH	=	pBuild->shaders.Get		(pBuild->materials[material].reserved);
 	bool bVertexColors	=	(SH->flags.bLIGHT_Vertex);
 	bool bNeedNormals	=	(SH->flags.bSaveNormals);
-	DWORD	FVF			=	D3DFVF_XYZ|(dwRelevantUV<<D3DFVF_TEXCOUNT_SHIFT) |
+	u32	FVF			=	D3DFVF_XYZ|(dwRelevantUV<<D3DFVF_TEXCOUNT_SHIFT) |
 							(bVertexColors?D3DFVF_DIFFUSE:0) |
 							(bNeedNormals?D3DFVF_NORMAL:0);
 	
@@ -100,7 +100,7 @@ void OGF_Reference::Save	(IWriter &fs)
 	// Texture & shader
 	fs.open_chunk		(OGF_TEXTURE_L);
 	std::string			Tname;
-	for (DWORD i=0; i<textures.size(); i++)
+	for (u32 i=0; i<textures.size(); i++)
 	{
 		if (!Tname.empty()) Tname += ',';
 		char *fname = textures[i].name;
@@ -138,7 +138,7 @@ void OGF_Reference::Save	(IWriter &fs)
 	fs.close_chunk		();
 }
 
-void	OGF::Save_Cached		(IWriter &fs, ogf_header& H, DWORD FVF, BOOL bColors, BOOL bNeedNormals)
+void	OGF::Save_Cached		(IWriter &fs, ogf_header& H, u32 FVF, BOOL bColors, BOOL bNeedNormals)
 {
 //	clMsg			("- saving: cached");
 	R_ASSERT		(0);
@@ -150,7 +150,7 @@ void	OGF::Save_Cached		(IWriter &fs, ogf_header& H, DWORD FVF, BOOL bColors, BOO
 		if (bNeedNormals)	fs.w(&*V,6*sizeof(float));	// Position & normal
 		else				fs.w(&*V,3*sizeof(float));	// Position only
 		if (bColors)		fs.w(&(V->Color),4);
-		for (DWORD uv=0; uv<dwRelevantUV; uv++)
+		for (u32 uv=0; uv<dwRelevantUV; uv++)
 			fs.w(&*V->UV.begin()+uv,2*sizeof(float));
 	}
 	fs.close_chunk	();
@@ -162,7 +162,7 @@ void	OGF::Save_Cached		(IWriter &fs, ogf_header& H, DWORD FVF, BOOL bColors, BOO
 	fs.close_chunk();
 }
 
-void	OGF::Save_Normal_PM		(IWriter &fs, ogf_header& H, DWORD FVF, BOOL bColors, BOOL bNeedNormals)
+void	OGF::Save_Normal_PM		(IWriter &fs, ogf_header& H, u32 FVF, BOOL bColors, BOOL bNeedNormals)
 {
 //	clMsg			("- saving: normal or clod");
 
@@ -192,7 +192,7 @@ void	OGF::Save_Normal_PM		(IWriter &fs, ogf_header& H, DWORD FVF, BOOL bColors, 
 			if (bNeedNormals)	g_VB.Add(&*V,6*sizeof(float));	// Position & normal
 			else				g_VB.Add(&*V,3*sizeof(float));	// Position only
 			if (bColors)		g_VB.Add(&(V->Color),4);
-			for (DWORD uv=0; uv<dwRelevantUV; uv++)
+			for (u32 uv=0; uv<dwRelevantUV; uv++)
 				g_VB.Add(V->UV.begin()+uv,2*sizeof(float));
 		}
 		g_VB.End		(&ID,&Start);
@@ -239,7 +239,7 @@ void	OGF::Save_Normal_PM		(IWriter &fs, ogf_header& H, DWORD FVF, BOOL bColors, 
 
 extern	void xrStripify(xr_vector<WORD> &indices, xr_vector<WORD> &perturb, int iCacheSize, int iMinStripLength);
 
-void	OGF::Save_Progressive	(IWriter &fs, ogf_header& H, DWORD FVF, BOOL bColors, BOOL bNeedNormals)
+void	OGF::Save_Progressive	(IWriter &fs, ogf_header& H, u32 FVF, BOOL bColors, BOOL bNeedNormals)
 {
 //	clMsg				("- saving: progressive");
 
@@ -271,18 +271,18 @@ void	OGF::Save_Progressive	(IWriter &fs, ogf_header& H, DWORD FVF, BOOL bColors,
 	fs.open_chunk(OGF_P_LODS);
 	{
 		// Init
-		DWORD					V_Current,V_Minimal,FIX_Current;
+		u32					V_Current,V_Minimal,FIX_Current;
 		WORD*					faces_affected	= (WORD*)&*pmap_faces.begin();
 		Vsplit*					vsplit			= (Vsplit*)&*pmap_vsplit.begin();
 		V_Current				= V_Minimal		= dwMinVerts;
 		FIX_Current				= 0;
 		
 		// Cycle on sampes
-		for (DWORD dwSample=0; dwSample<DWORD(samples); dwSample++)
+		for (u32 dwSample=0; dwSample<u32(samples); dwSample++)
 		{
 			// ***** Perform COLLAPSE or VSPLIT
-			DWORD dwCount		= dwMinVerts + verts_per_sample*dwSample;
-			if (dwSample==DWORD(samples-1))	dwCount = vertices.size	();
+			u32 dwCount		= dwMinVerts + verts_per_sample*dwSample;
+			if (dwSample==u32(samples-1))	dwCount = vertices.size	();
 			
 			if (V_Current!=dwCount) {
 				WORD* Indices	= (WORD*)&*faces.begin();
@@ -292,15 +292,15 @@ void	OGF::Save_Progressive	(IWriter &fs, ogf_header& H, DWORD FVF, BOOL bColors,
 					Vsplit&	S	=	vsplit[V_Current-V_Minimal];
 					
 					// fixup faces
-					DWORD	dwEnd = DWORD(S.numFixFaces)+FIX_Current;
+					u32	dwEnd = u32(S.numFixFaces)+FIX_Current;
 					WORD	V_Cur = WORD(V_Current);
-					for (DWORD I=FIX_Current; I<dwEnd; I++) {
+					for (u32 I=FIX_Current; I<dwEnd; I++) {
 						R_ASSERT(Indices[faces_affected[I]]==S.vsplitVert);
 						Indices[faces_affected[I]]=V_Cur;
 					};
 					
 					// correct numbers
-					I_Current	+=	3*DWORD(S.numNewTriangles);
+					I_Current	+=	3*u32(S.numNewTriangles);
 					V_Current	+=	1;
 					FIX_Current	+=	S.numFixFaces;
 				};
@@ -313,15 +313,15 @@ void	OGF::Save_Progressive	(IWriter &fs, ogf_header& H, DWORD FVF, BOOL bColors,
 					
 					// fixup faces
 					WORD V_New		= WORD(S.vsplitVert);
-					DWORD dwEnd		= FIX_Current;
-					DWORD dwStart	= dwEnd-S.numFixFaces;
-					for (DWORD I=dwStart; I<dwEnd; I++) {
+					u32 dwEnd		= FIX_Current;
+					u32 dwStart	= dwEnd-S.numFixFaces;
+					for (u32 I=dwStart; I<dwEnd; I++) {
 						R_ASSERT(Indices[faces_affected[I]]==V_Current);
 						Indices[faces_affected[I]]=V_New;
 					};
 					
 					// correct numbers
-					I_Current	-=	3*DWORD(S.numNewTriangles);
+					I_Current	-=	3*u32(S.numNewTriangles);
 					FIX_Current	-=	S.numFixFaces;
 				};
 			}
@@ -338,7 +338,7 @@ void	OGF::Save_Progressive	(IWriter &fs, ogf_header& H, DWORD FVF, BOOL bColors,
 				
 				// Permute vertices
 				strip_verts.resize		(V_Current);
-				for(DWORD i=0; i<strip_verts.size(); i++)
+				for(u32 i=0; i<strip_verts.size(); i++)
 					strip_verts[i]=vertices[strip_permute[i]];
 			} catch (...) {
 				clMsg			("ERROR: Stripifying failed.");
@@ -354,7 +354,7 @@ void	OGF::Save_Progressive	(IWriter &fs, ogf_header& H, DWORD FVF, BOOL bColors,
 					if (bNeedNormals)	g_VB.Add(&*V,6*sizeof(float));	// Position & normal
 					else				g_VB.Add(&*V,3*sizeof(float));	// Position only
 					if (bColors)		g_VB.Add(&(V->Color),4);
-					for (DWORD uv=0; uv<dwRelevantUV; uv++)
+					for (u32 uv=0; uv<dwRelevantUV; uv++)
 						g_VB.Add(V->UV.begin()+uv,2*sizeof(float));
 				}
 				g_VB.End(&ID,&Start);

@@ -9,7 +9,7 @@ extern HWND logWindow;
 int	dimX,dimZ;
 struct	Texel {
 	Node*	N;
-	DWORD	depth;
+	u32	depth;
 };
 
 
@@ -29,7 +29,7 @@ void InternalRender()
 	ZeroMemory(texels,msize);
 
 	// rasterization
-	for (DWORD i=0; i<g_nodes.size(); i++)
+	for (u32 i=0; i<g_nodes.size(); i++)
 	{
 		Node&	N	= g_nodes[i];
 		P.sub	(N.Pos, LevelBB.min);
@@ -52,7 +52,7 @@ void InternalRender()
 		}
 	}
 }
-void pixel(HDC dc, int x, int y, DWORD C)
+void pixel(HDC dc, int x, int y, u32 C)
 {
 	int				_x=x*3,_y=y*3;
 	for (int i=0; i<3; i++)
@@ -74,7 +74,7 @@ void ShowDepth(HWND hw)
 		{
 			Texel&	T	= texels[z*dimX+x];
 			int		d	= T.depth;
-			DWORD	C	= RGB(d*32,d*32,d*32);
+			u32	C	= RGB(d*32,d*32,d*32);
 			if (0==d)	C = RGB(0,127,0);
 			pixel	(dc,x,z,C);
 		}
@@ -91,10 +91,10 @@ void ShowHeight(HWND hw)
 		for (int x=0; x<dimX; x++)
 		{
 			Texel&	T	= texels[z*dimX+x];
-			DWORD	C	= RGB(0,127,0);
+			u32	C	= RGB(0,127,0);
 			if (T.N)	{
 				float	h	= ((T.N->Pos.y)-minH)/(maxH-minH);
-				DWORD	c	= iFloor(h*255.f);
+				u32	c	= iFloor(h*255.f);
 				C			= RGB(c,c,c);
 			}
 			pixel	(dc,x,z,C);
@@ -112,11 +112,11 @@ void ShowLight(HWND hw)
 		for (int x=0; x<dimX; x++)
 		{
 			Texel&	T	= texels[z*dimX+x];
-			DWORD	C	= RGB(0,127,0);
+			u32	C	= RGB(0,127,0);
 			if (T.N)	{
 				int		l	= iFloor(T.N->LightLevel*255.f);
 				clamp		(l,0,255);
-				DWORD	c	= DWORD(l);
+				u32	c	= u32(l);
 				C			= RGB(c,c,c);
 			}
 			pixel	(dc,x,z,C);
@@ -134,7 +134,7 @@ void ShowNormals(HWND hw)
 		for (int x=0; x<dimX; x++)
 		{
 			Texel&	T	= texels[z*dimX+x];
-			DWORD	C	= RGB(0,127,0);
+			u32	C	= RGB(0,127,0);
 			if (T.N)	{
 				Fvector	N	= T.N->Plane.n;
 				C			= RGB(iFloor(_abs(N.x)*255),iFloor(_abs(N.y)*255),iFloor(_abs(N.z)*255));
@@ -154,7 +154,7 @@ void ShowSectors(HWND hw)
 		for (int x=0; x<dimX; x++)
 		{
 			Texel&	T	= texels[z*dimX+x];
-			DWORD	C	= RGB(0,127,0);
+			u32	C	= RGB(0,127,0);
 			if (T.N)	{
 				int		s	= T.N->Sector;
 				if (s==InvalidSector)	C = RGB(255,0,0);
@@ -175,7 +175,7 @@ void ShowCover(HWND hw, int direction)
 		for (int x=0; x<dimX; x++)
 		{
 			Texel&	T	= texels[z*dimX+x];
-			DWORD	C	= RGB(0,127,0);
+			u32	C	= RGB(0,127,0);
 			if (T.N)	{
 				int		v	=	iFloor(T.N->cover[direction]*255.f);
 				clamp	(v,0,255);
@@ -200,7 +200,7 @@ void ShowSubdiv(HWND hw)
 {
 	HDC	dc = GetDC	(hw);
 
-	DWORD CB = RGB(255,0,0);
+	u32 CB = RGB(255,0,0);
 	for (int z=0; z<dimZ; z++)
 	{
 		for (int x=0; x<dimX; x++)

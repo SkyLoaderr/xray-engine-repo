@@ -60,7 +60,7 @@ IC bool sort_pred(const DetailPatch& P1, const DetailPatch& P2)
 void CBuild::LightPatches()
 {
 	Status("Raytracing...");
-	for (DWORD i=0; i<g_pathes.size(); i++)
+	for (u32 i=0; i<g_pathes.size(); i++)
 	{
 		Fcolor C,Lumel;
 		LightPatch(C,g_pathes[i].P,.7f);

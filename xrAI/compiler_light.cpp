@@ -76,9 +76,9 @@ float LightPoint(CDB::COLLIDER& DB, Fvector &P, Fvector &N, LSelection& SEL)
 
 class	LightThread : public CThread
 {
-	DWORD	Nstart, Nend;
+	u32	Nstart, Nend;
 public:
-	LightThread			(DWORD ID, DWORD _start, DWORD _end) : CThread(ID)
+	LightThread			(u32 ID, u32 _start, u32 _end) : CThread(ID)
 	{
 		Nstart	= _start;
 		Nend	= _end;
@@ -96,13 +96,13 @@ public:
 		
 		LSelection		Selected;
 		float			LperN	= float(g_lights.size());
-		for (DWORD i=Nstart; i<Nend; i++)
+		for (u32 i=Nstart; i<Nend; i++)
 		{
 			Node& N = g_nodes[i];
 			
 			// select lights
 			Selected.clear();
-			for (DWORD L=0; L<Lights.size(); L++)
+			for (u32 L=0; L<Lights.size(); L++)
 			{
 				R_Light&	R = g_lights[L];
 				if (R.type==LT_DIRECT)	Selected.push_back(&R);
@@ -144,11 +144,11 @@ public:
 void	xrLight			()
 {
 	// Start threads, wait, continue --- perform all the work
-	DWORD	start_time		= timeGetTime();
+	u32	start_time		= timeGetTime();
 	CThreadManager			Threads;
-	DWORD	stride			= g_nodes.size()/NUM_THREADS;
-	DWORD	last			= g_nodes.size()-stride*(NUM_THREADS-1);
-	for (DWORD thID=0; thID<NUM_THREADS; thID++)
+	u32	stride			= g_nodes.size()/NUM_THREADS;
+	u32	last			= g_nodes.size()-stride*(NUM_THREADS-1);
+	for (u32 thID=0; thID<NUM_THREADS; thID++)
 		Threads.start(xr_new<LightThread>(thID,thID*stride,thID*stride+((thID==(NUM_THREADS-1))?last:stride)));
 	Threads.wait			();
 	Msg("%d seconds elapsed.",(timeGetTime()-start_time)/1000);
@@ -157,7 +157,7 @@ void	xrLight			()
 	Status("Smoothing lighting...");
 	for (int pass=0; pass<3; pass++) {
 		Nodes	Old = g_nodes;
-		for (DWORD N=0; N<g_nodes.size(); N++)
+		for (u32 N=0; N<g_nodes.size(); N++)
 		{
 			Node&	Base		= Old[N];
 			Node&	Dest		= g_nodes[N];

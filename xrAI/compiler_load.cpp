@@ -69,7 +69,7 @@ void xrLoad(LPCSTR name)
 		IReader					&fs= *F;
 
 		// Version
-		DWORD version;
+		u32 version;
 		fs.r_chunk				(EB_Version,&version);
 		R_ASSERT				(XRCL_CURRENT_VERSION==version);
 
@@ -81,8 +81,8 @@ void xrLoad(LPCSTR name)
 		{
 			F = fs.open_chunk(EB_Light_static);
 			b_light_static	temp;
-			DWORD cnt		= F->length()/sizeof(temp);
-			for				(DWORD i=0; i<cnt; i++)
+			u32 cnt		= F->length()/sizeof(temp);
+			for				(u32 i=0; i<cnt; i++)
 			{
 				R_Light		RL;
 				F->r		(&temp,sizeof(temp));

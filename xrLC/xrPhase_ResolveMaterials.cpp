@@ -8,7 +8,7 @@ extern void		Detach		(vecFace* S);
 struct _counter
 {
 	WORD	dwMaterial;
-	DWORD	dwCount;
+	u32	dwCount;
 };
 
 void	CBuild::xrPhase_ResolveMaterials()
@@ -22,7 +22,7 @@ void	CBuild::xrPhase_ResolveMaterials()
 		{
 			Face*	F			= *F_it;
 			BOOL	bCreate		= TRUE;
-			for (DWORD I=0; I<counts.size(); I++)
+			for (u32 I=0; I<counts.size(); I++)
 			{
 				if (F->dwMaterial == counts[I].dwMaterial)
 				{
@@ -45,7 +45,7 @@ void	CBuild::xrPhase_ResolveMaterials()
 	{
 		g_XSplit.reserve(64*1024);
 		g_XSplit.resize	(counts.size());
-		for (DWORD I=0; I<counts.size(); I++) 
+		for (u32 I=0; I<counts.size(); I++) 
 		{
 			g_XSplit[I] = xr_new<vecFace> ();
 			g_XSplit[I]->reserve	(counts[I].dwCount);
@@ -56,7 +56,7 @@ void	CBuild::xrPhase_ResolveMaterials()
 			Face*	F							= *F_it;
 			if (!F->Shader().flags.bRendering)	continue;
 
-			for (DWORD I=0; I<counts.size(); I++)
+			for (u32 I=0; I<counts.size(); I++)
 			{
 				if (F->dwMaterial == counts[I].dwMaterial)
 				{
@@ -76,7 +76,7 @@ void	CBuild::xrPhase_ResolveMaterials()
 	
 	Status				("Detaching subdivs...");
 	{
-		for (DWORD it=0; it<g_XSplit.size(); it++)
+		for (u32 it=0; it<g_XSplit.size(); it++)
 		{
 			Detach(g_XSplit[it]);
 		}

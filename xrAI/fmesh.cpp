@@ -1,6 +1,6 @@
 #include "stdafx.h"
 
-static DWORD dwPositionPart[8] =
+static u32 dwPositionPart[8] =
 {
 	0,	// no position
 	3,	// x,y,z
@@ -15,16 +15,16 @@ static DWORD dwPositionPart[8] =
 #define FAKES 0xffffffff
 #define FAKEZ 0xfffffffe
 
-void ConvertVertices(DWORD dwTypeDest, void *pDest, DWORD dwTypeSrc, void *pSource, DWORD dwCount)
+void ConvertVertices(u32 dwTypeDest, void *pDest, u32 dwTypeSrc, void *pSource, u32 dwCount)
 // assuming that pDest is large enought to maintain all the data
 {
-	DWORD	TransferMask[64];
-	DWORD	tmPos		= 0;
-	DWORD	tmPosSrc	= 0;
-	DWORD	dwSizeSrc	= D3DXGetFVFVertexSize(dwTypeSrc)/4;
-	DWORD	dwSizeDest	= D3DXGetFVFVertexSize(dwTypeDest)/4;
-	DWORD*	dest		= (DWORD*)pDest;
-	DWORD*	src			= (DWORD*)pSource;
+	u32	TransferMask[64];
+	u32	tmPos		= 0;
+	u32	tmPosSrc	= 0;
+	u32	dwSizeSrc	= D3DXGetFVFVertexSize(dwTypeSrc)/4;
+	u32	dwSizeDest	= D3DXGetFVFVertexSize(dwTypeDest)/4;
+	u32*	dest		= (u32*)pDest;
+	u32*	src			= (u32*)pSource;
 
 	// avoid redundant processing
 	if (dwTypeDest==dwTypeSrc) {
@@ -33,11 +33,11 @@ void ConvertVertices(DWORD dwTypeDest, void *pDest, DWORD dwTypeSrc, void *pSour
 	}
 
 	// how many bytes to 'simple copy'
-	DWORD dwPosDest	= (dwTypeDest&D3DFVF_POSITION_MASK)>>1;
-	DWORD dwPosSrc	= (dwTypeSrc&D3DFVF_POSITION_MASK)>>1;
+	u32 dwPosDest	= (dwTypeDest&D3DFVF_POSITION_MASK)>>1;
+	u32 dwPosSrc	= (dwTypeSrc&D3DFVF_POSITION_MASK)>>1;
 	if (dwPosDest==dwPosSrc) {
-		DWORD cnt = dwPositionPart[dwPosSrc];
-		for (DWORD i=0; i<cnt; i++) TransferMask[tmPos++]=i;
+		u32 cnt = dwPositionPart[dwPosSrc];
+		for (u32 i=0; i<cnt; i++) TransferMask[tmPos++]=i;
 		tmPosSrc = tmPos;
 	} else {
 		VERIFY2(0,"Can't convert between different vertex positions");
@@ -104,10 +104,10 @@ void ConvertVertices(DWORD dwTypeDest, void *pDest, DWORD dwTypeSrc, void *pSour
 	}
 
 	// ---------------------- "Texture coords" property
-	DWORD dwTDest = ((dwTypeDest&D3DFVF_TEXCOUNT_MASK)>>D3DFVF_TEXCOUNT_SHIFT);
-	DWORD dwTSrc  = ((dwTypeSrc &D3DFVF_TEXCOUNT_MASK)>>D3DFVF_TEXCOUNT_SHIFT);
+	u32 dwTDest = ((dwTypeDest&D3DFVF_TEXCOUNT_MASK)>>D3DFVF_TEXCOUNT_SHIFT);
+	u32 dwTSrc  = ((dwTypeSrc &D3DFVF_TEXCOUNT_MASK)>>D3DFVF_TEXCOUNT_SHIFT);
 	if (dwTDest<=dwTSrc) {
-		for (DWORD i=0; i<dwTDest; i++) {
+		for (u32 i=0; i<dwTDest; i++) {
 			TransferMask[tmPos++]=tmPosSrc++;
 			TransferMask[tmPos++]=tmPosSrc++;
 		}
@@ -116,8 +116,8 @@ void ConvertVertices(DWORD dwTypeDest, void *pDest, DWORD dwTypeSrc, void *pSour
 			R_ASSERT(0=="Source vertex format doesn't has texture coords at all");
 		}
 		// Copy real TC
-		DWORD dwStage0TC = tmPosSrc;
-		for (DWORD i=0; i<dwTSrc; i++) {
+		u32 dwStage0TC = tmPosSrc;
+		for (u32 i=0; i<dwTSrc; i++) {
 			TransferMask[tmPos++]=tmPosSrc++;
 			TransferMask[tmPos++]=tmPosSrc++;
 		}
@@ -129,10 +129,10 @@ void ConvertVertices(DWORD dwTypeDest, void *pDest, DWORD dwTypeSrc, void *pSour
 	}
 
 	// ---------------------- REAL CONVERTION USING BUILDED MASK
-	for (DWORD i=0; i<dwCount; i++) {
+	for (u32 i=0; i<dwCount; i++) {
 		// one vertex
-		for (DWORD j=0; j<dwSizeDest; j++) {
-			DWORD m = TransferMask[j];
+		for (u32 j=0; j<dwSizeDest; j++) {
+			u32 m = TransferMask[j];
 			if (m == FAKES) dest[j]=0xffffffff;
 			else if (m == FAKEZ) dest[j]=0;
 			else dest[j]=src[m];

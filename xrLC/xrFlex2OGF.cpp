@@ -18,7 +18,7 @@ void CBuild::Flex2OGF()
 	{
 		R_ASSERT( ! (*it)->empty() );
 		
-		DWORD MODEL_ID		= it-g_XSplit.begin();
+		u32 MODEL_ID		= it-g_XSplit.begin();
 		
 		OGF*		pOGF	= xr_new<OGF> ();
 		Face*		F		= *((*it)->begin());			// first face
@@ -40,7 +40,7 @@ void CBuild::Flex2OGF()
 			TRY(pOGF->textures.push_back(T));
 			
 			try {
-				for (DWORD lmit=0; lmit<F->lmap_layers.size(); lmit++)
+				for (u32 lmit=0; lmit<F->lmap_layers.size(); lmit++)
 				{
 					// If lightmaps persist
 					CLightmap* LM	= F->lmap_layers[lmit];

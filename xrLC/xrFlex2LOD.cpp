@@ -45,7 +45,7 @@ void	CBuild::Flex2LOD()
 			for (int lv=0; lv<4; lv++)
 			{
 				Fvector	ptPos	= F.v[lv].v;
-				DWORD&	ptColor	= F.v[lv].c;
+				u32&	ptColor	= F.v[lv].c;
 
 				Fcolor	_C;		_C.set(0,0,0,0);
 				float 	_N		= 0;

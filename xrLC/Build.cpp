@@ -25,7 +25,7 @@ extern int RegisterString(LPCSTR T);
 class CMUThread : public CThread
 {
 public:
-	CMUThread	(DWORD ID) : CThread(ID)
+	CMUThread	(u32 ID) : CThread(ID)
 	{
 		thMessages	= FALSE;
 	}

@@ -52,8 +52,8 @@ void Face::TessMark(int E)
 
 void CBuild::Tesselate()
 {
-	DWORD	Fcount	= g_faces.size();
-	DWORD	Tcount  = 0;
+	u32	Fcount	= g_faces.size();
+	u32	Tcount  = 0;
 
 	Status("Calculating candidates...");
 	for (int fi=0; fi<Fcount; fi++)

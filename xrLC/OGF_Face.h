@@ -25,7 +25,7 @@ struct OGF_Vertex
 	Fvector				N;	// normal
 	Fvector				T;	// tangent
 	Fvector				B;	// binormal
-	DWORD				Color;
+	u32				Color;
 	svector<Fvector2,4>	UV;
 
 	BOOL		similar	(OGF* p, OGF_Vertex&	other);
@@ -91,7 +91,7 @@ extern xr_vector<OGF_Base *>		g_tree;
 
 struct OGF : public OGF_Base
 {
-	DWORD				material;
+	u32				material;
 	vecOGF_T			textures;
 	vecOGF_V			vertices, vertices_saved;
 	vecOGF_F			faces,    faces_saved;
@@ -99,12 +99,12 @@ struct OGF : public OGF_Base
 	// Progressive
 	xr_vector<Vsplit>		pmap_vsplit;
 	xr_vector<WORD>		pmap_faces;
-	DWORD				dwMinVerts;
+	u32				dwMinVerts;
 	int					I_Current;
 
 	// for build only
-	DWORD				dwRelevantUV;
-	DWORD				dwRelevantUVMASK;
+	u32				dwRelevantUV;
+	u32				dwRelevantUVMASK;
 
 	OGF() : OGF_Base(0) {
 		dwRelevantUV		= 0;
@@ -124,9 +124,9 @@ struct OGF : public OGF_Base
 
 	virtual void		Save			(IWriter &fs);
 
-	void				Save_Cached		(IWriter &fs, ogf_header& H, DWORD FVF, BOOL bColors, BOOL bLighting);
-	void				Save_Normal_PM	(IWriter &fs, ogf_header& H, DWORD FVF, BOOL bColors, BOOL bLighting);
-	void				Save_Progressive(IWriter &fs, ogf_header& H, DWORD FVF, BOOL bColors, BOOL bLighting);
+	void				Save_Cached		(IWriter &fs, ogf_header& H, u32 FVF, BOOL bColors, BOOL bLighting);
+	void				Save_Normal_PM	(IWriter &fs, ogf_header& H, u32 FVF, BOOL bColors, BOOL bLighting);
+	void				Save_Progressive(IWriter &fs, ogf_header& H, u32 FVF, BOOL bColors, BOOL bLighting);
 
 	virtual void		GetGeometry		(xr_vector<Fvector> &R)
 	{
@@ -139,7 +139,7 @@ struct OGF_Reference : public OGF_Base
 {
 	OGF*				model;
 
-	DWORD				material;
+	u32				material;
 	vecOGF_T			textures;
 
 	u32					vb_id;
@@ -170,11 +170,11 @@ struct OGF_Reference : public OGF_Base
 
 struct OGF_Node : public OGF_Base
 {
-	xr_vector<DWORD>		chields;
+	xr_vector<u32>		chields;
 
 	OGF_Node(int _L, WORD _Sector) : OGF_Base(_L) { Sector=_Sector; }
 
-	void				AddChield	(DWORD ID)
+	void				AddChield	(u32 ID)
 	{
 		chields.push_back	(ID);
 		OGF_Base*			P = g_tree[ID];
@@ -185,7 +185,7 @@ struct OGF_Node : public OGF_Base
 	virtual void		Save		(IWriter &fs);
 	virtual void		GetGeometry	(xr_vector<Fvector> &R)
 	{
-		for (xr_vector<DWORD>::iterator I=chields.begin(); I!=chields.end(); I++)
+		for (xr_vector<u32>::iterator I=chields.begin(); I!=chields.end(); I++)
 			g_tree[*I]->GetGeometry(R);
 	}
 };
@@ -198,7 +198,7 @@ struct	OGF_LOD		: public OGF_Node
 	{
 		Fvector		v;
 		Fvector2	t;
-		DWORD		c;
+		u32		c;
 	};
 	struct _face
 	{
@@ -206,7 +206,7 @@ struct	OGF_LOD		: public OGF_Node
 	};
 
 	_face			lod_faces	[8];
-	DWORD			lod_Material;
+	u32			lod_Material;
 
 	virtual void		Save		(IWriter &fs);
 };

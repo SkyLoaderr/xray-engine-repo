@@ -32,7 +32,7 @@ BOOL	ValidNode(Node& N)
 	Fbox	B2;				B2.set	(PointDown,PointDown);	B2.grow(g_params.fPatchSize/2);	// box 2
 	BB.merge(B2			);
 	BoxQuery(BB,false	);
-	DWORD	dwCount = XRC.r_count();
+	u32	dwCount = XRC.r_count();
 	if (dwCount==0)	{
 		Log("chasm1");
 		return FALSE;			// chasm?
@@ -41,7 +41,7 @@ BOOL	ValidNode(Node& N)
 	// *** Transfer triangles and compute sector
 	R_ASSERT(dwCount<RCAST_MaxTris);
 	static svector<tri,RCAST_MaxTris> tris;		tris.clear();
-	for (DWORD i=0; i<dwCount; i++)
+	for (u32 i=0; i<dwCount; i++)
 	{
 		tri&		D = tris.last();
 		CDB::TRI&	T = *(Level.get_tris()+XRC.r_begin()[i].id);
@@ -79,7 +79,7 @@ BOOL	ValidNode(Node& N)
 			float	tri_min_range	= flt_max;
 			int		tri_selected	= -1;
 			float	range,u,v;
-			for (i=0; i<DWORD(tris.size()); i++) 
+			for (i=0; i<u32(tris.size()); i++) 
 			{
 				if (CDB::TestRayTri(P,D,tris[i].v,u,v,range,false)) 
 				{
@@ -110,7 +110,7 @@ void	xrSmoothNodes()
 	Marks	mark;		mark.assign(g_nodes.size(),false);
 
 	int inv_count = 0;
-	for (DWORD i=0; i<g_nodes.size(); i++)
+	for (u32 i=0; i<g_nodes.size(); i++)
 	{
 		Node& N = g_nodes[i];
 

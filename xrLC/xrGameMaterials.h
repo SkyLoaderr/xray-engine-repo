@@ -16,7 +16,7 @@ class	Material
 	float		transparency_for_sound;
 	float		transparency_for_hit;
 public:
-	virtual		DWORD	getID			()					= 0;
+	virtual		u32	getID			()					= 0;
 	virtual		LPCSTR	getName			()					= 0;
 	virtual		LPCSTR	getWallmark		(Material* other)	= 0;
 	virtual		LPCSTR	getParticles	(Material* other)	= 0;

@@ -18,7 +18,7 @@ public:
 	VBContainer()			{	R_DCL.clear();	}
 
 	// Methods
-	void	Begin			(DWORD	dwFVF)
+	void	Begin			(u32	dwFVF)
 	{
 		R_ASSERT		(R_DCL.empty());
 		R_ASSERT		(R_DATA.empty());
@@ -30,7 +30,7 @@ public:
 		R_ASSERT		(R_DATA.empty());
 		R_DCL.set		(D);
 	}
-	void	Add				(VOID* PTR, DWORD cnt)
+	void	Add				(VOID* PTR, u32 cnt)
 	{
 		R_ASSERT		(R_DCL.size());
 		BYTE*	P		= (BYTE*) PTR;
@@ -41,19 +41,19 @@ public:
 		R_ASSERT		(! R_DCL.empty()	);
 		R_ASSERT		(! R_DATA.empty()	);
 		
-		DWORD		dwSize  = R_DCL.vertex	();
+		u32		dwSize  = R_DCL.vertex	();
 		R_ASSERT		(R_DATA.size()%dwSize == 0);
 		
 		// Search for container capable of handling data
-		DWORD bytes_collected	= R_DATA.size();
-		DWORD vertices_collected= bytes_collected/dwSize;
-		for (DWORD CID = 0; CID<vDcl.size(); CID++)
+		u32 bytes_collected	= R_DATA.size();
+		u32 vertices_collected= bytes_collected/dwSize;
+		for (u32 CID = 0; CID<vDcl.size(); CID++)
 		{
 			if (!vDcl[CID].equal(R_DCL))	continue;
 			
-			DWORD bytes_already	= vContainers[CID].size();
+			u32 bytes_already	= vContainers[CID].size();
 			if ((bytes_already+bytes_collected)>g_params.m_VB_maxSize) continue;
-			DWORD vertices_already = bytes_already/dwSize;
+			u32 vertices_already = bytes_already/dwSize;
 			if ((vertices_already+vertices_collected)>g_params.m_VB_maxVertices) continue;
 			
 			// If we get here - container CID can take the data
@@ -77,11 +77,11 @@ public:
 		R_ASSERT		(R_DCL.empty());
 		R_ASSERT		(R_DATA.empty());
 		fs.w_u32		(vDcl.size());
-		for (DWORD i=0; i<vDcl.size(); i++)
+		for (u32 i=0; i<vDcl.size(); i++)
 		{
-			DWORD dwOneSize		= vDcl[i].vertex();
-			DWORD dwTotalSize	= vContainers[i].size();
-			DWORD dwVertCount	= dwTotalSize/dwOneSize;
+			u32 dwOneSize		= vDcl[i].vertex();
+			u32 dwTotalSize	= vContainers[i].size();
+			u32 dwVertCount	= dwTotalSize/dwOneSize;
 
 			R_ASSERT	(dwVertCount*dwOneSize == dwTotalSize);
 			
@@ -103,10 +103,10 @@ class IBContainer
 public:
 	void	Register		(u16* begin, u16* end, u32* dwContainerID, u32 *dwStart)
 	{
-		DWORD size				= end-begin;
+		u32 size				= end-begin;
 
 		// 
-		for	(DWORD ID=0; ID<data.size(); ID++)
+		for	(u32 ID=0; ID<data.size(); ID++)
 		{
 			if ((data[ID].size()+size) < LIMIT)	
 			{
@@ -126,7 +126,7 @@ public:
 	void	Save	(IWriter &fs)
 	{
 		fs.w_u32	(data.size());
-		for (DWORD i=0; i<data.size(); i++)
+		for (u32 i=0; i<data.size(); i++)
 		{
 			fs.w_u32	(data[i].size());
 			fs.w		(&*data[i].begin(),data[i].size()*2);

@@ -26,7 +26,7 @@ IC void BoxQuery(Fbox& BB, bool exact)
 
 struct tri	{
 	Fvector v[3];
-	DWORD	sector;
+	u32	sector;
 	Fvector	N;
 };
 
@@ -41,7 +41,7 @@ BOOL	CreateNode(Fvector& vAt, Node& N)
 	Fbox	B2;				B2.set	(PointDown,PointDown);	B2.grow(g_params.fPatchSize/2);	// box 2
 	BB.merge(B2			);
 	BoxQuery(BB,false	);
-	DWORD	dwCount = XRC.r_count();
+	u32	dwCount = XRC.r_count();
 	if (dwCount==0)	{
 //		Log("chasm1");
 		return FALSE;			// chasm?
@@ -50,7 +50,7 @@ BOOL	CreateNode(Fvector& vAt, Node& N)
 	// *** Transfer triangles and compute sector
 	R_ASSERT(dwCount<RCAST_MaxTris);
 	static svector<tri,RCAST_MaxTris> tris;		tris.clear();
-	for (DWORD i=0; i<dwCount; i++)
+	for (u32 i=0; i<dwCount; i++)
 	{
 		tri&		D = tris.last();
 		CDB::TRI&	T = *(Level.get_tris()+XRC.r_begin()[i].id);
@@ -88,7 +88,7 @@ BOOL	CreateNode(Fvector& vAt, Node& N)
 			float	tri_min_range	= flt_max;
 			int		tri_selected	= -1;
 			float	range,u,v;
-			for (i=0; i<DWORD(tris.size()); i++) 
+			for (i=0; i<u32(tris.size()); i++) 
 			{
 				if (CDB::TestRayTri(P,D,tris[i].v,u,v,range,false)) 
 				{
@@ -120,7 +120,7 @@ BOOL	CreateNode(Fvector& vAt, Node& N)
 	// *** Calc normal
 	Fvector vNorm;
 	vNorm.set(0,0,0);
-	for (DWORD n=0; n<normals.size(); n++)
+	for (u32 n=0; n<normals.size(); n++)
 		vNorm.add(normals[n]);
 	vNorm.div(float(normals.size()));
 	vNorm.normalize();
@@ -147,7 +147,7 @@ BOOL	CreateNode(Fvector& vAt, Node& N)
 	Fvector vOffs;
 	vOffs.set(0,-1000,0);
 	Fplane PL; 	PL.build(vOffs,vNorm);
-	for (DWORD p=0; p<points.size(); p++)
+	for (u32 p=0; p<points.size(); p++)
 	{
 		float dist = PL.classify(points[p]);
 		if (dist>0) {
@@ -223,7 +223,7 @@ BOOL	CreateNode(Fvector& vAt, Node& N)
 const int		HDIM_X = 128;
 const int		HDIM_Z = 128;
 
-DEF_VECTOR		(vecDW,DWORD);
+DEF_VECTOR		(vecDW,u32);
 
 static vecDW*	HASH[HDIM_X+1][HDIM_Z+1];
 
@@ -265,7 +265,7 @@ vecDW&	HashMap	(Fvector& V)
 	scale.div			(VMscale);
 
 	// Hash
-	DWORD ix,iz;
+	u32 ix,iz;
 	ix = iFloor((V.x-VMmin.x)*scale.x);
 	iz = iFloor((V.z-VMmin.z)*scale.z);
 	R_ASSERT(ix<=HDIM_X && iz<=HDIM_Z);
@@ -274,13 +274,13 @@ vecDW&	HashMap	(Fvector& V)
 
 void	RegisterNode(Node& N)
 {
-	DWORD ID = g_nodes.size();
+	u32 ID = g_nodes.size();
 	g_nodes.push_back(N);
 
 	HashMap(N.Pos).push_back(ID);
 }
 
-DWORD	FindNode(Fvector& vAt)
+u32	FindNode(Fvector& vAt)
 {
 	float eps	= 0.05f;
 	vecDW& V	= HashMap(vAt);
@@ -312,7 +312,7 @@ BOOL	CanTravel(Fvector& _from, Fvector& _at)
 	return FALSE;
 }
 
-DWORD BuildNode(Fvector& vFrom, Fvector& vAt)	// return node's index
+u32 BuildNode(Fvector& vFrom, Fvector& vAt)	// return node's index
 {
 	// *** Test if we can travel this path
 	SnapXZ			(vAt);
@@ -323,7 +323,7 @@ DWORD BuildNode(Fvector& vFrom, Fvector& vAt)	// return node's index
 	Node N;
 	if (CreateNode(vAt,N)) {
 		//*** check if similar node exists
-		DWORD	old		= FindNode(N.Pos);
+		u32	old		= FindNode(N.Pos);
 		if (old==InvalidNode)	
 		{
 			// register xr_new<node
@@ -347,7 +347,7 @@ void xrBuildNodes()
 	// Initialize hash
 	hash_Initialize ();
 
-	for (DWORD em=0; em<Emitters.size(); em++) 
+	for (u32 em=0; em<Emitters.size(); em++) 
 	{
 		// Align emitter
 		Fvector			Pos = Emitters[em];
@@ -373,10 +373,10 @@ void xrBuildNodes()
 		// Estimate nodes
 		Fvector	LevelSize;
 		LevelBB.getsize				(LevelSize);
-		DWORD	estimated_nodes		= iFloor(LevelSize.x/g_params.fPatchSize)*iFloor(LevelSize.z/g_params.fPatchSize);
+		u32	estimated_nodes		= iFloor(LevelSize.x/g_params.fPatchSize)*iFloor(LevelSize.z/g_params.fPatchSize);
 		
 		// General cycle
-		for (DWORD i=0; i<g_nodes.size(); i++)
+		for (u32 i=0; i<g_nodes.size(); i++)
 		{
 			// left 
 			if (g_nodes[i].n1==UnkonnectedNode)

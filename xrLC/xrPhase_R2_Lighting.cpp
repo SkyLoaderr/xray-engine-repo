@@ -27,9 +27,9 @@ void CBuild::xrPhase_R2_Lights	()
 class CR2Light : public CThread
 {
 public:
-	DWORD	vertStart, vertEnd;
+	u32	vertStart, vertEnd;
 
-	CR2Light			(DWORD ID, DWORD _start, DWORD _end) : CThread(ID)
+	CR2Light			(u32 ID, u32 _start, u32 _end) : CThread(ID)
 	{
 		thMessages	= FALSE;
 		vertStart	= _start;
@@ -43,7 +43,7 @@ public:
 		xr_vector<R_Light>	Lights = pBuild->L_hemi;
 		if (Lights.empty())		return;
 
-		for (DWORD I = vertStart; I<vertEnd; I++)
+		for (u32 I = vertStart; I<vertEnd; I++)
 		{
 			Vertex* V		= g_vertices[I];
 			R_ASSERT		(V);
@@ -66,11 +66,11 @@ void CBuild::Light_R2			()
 
 	// Start threads, wait, continue --- perform all the work
 	Status					("Calculating... (%d lights)",L_hemi.size());
-	DWORD	start_time		= timeGetTime();
+	u32	start_time		= timeGetTime();
 	CThreadManager			Threads;
-	DWORD	stride			= g_vertices.size()/NUM_THREADS;
-	DWORD	last			= g_vertices.size()-stride*(NUM_THREADS-1);
-	for (DWORD thID=0; thID<NUM_THREADS; thID++)
+	u32	stride			= g_vertices.size()/NUM_THREADS;
+	u32	last			= g_vertices.size()-stride*(NUM_THREADS-1);
+	for (u32 thID=0; thID<NUM_THREADS; thID++)
 		Threads.start(xr_new<CR2Light>(thID,thID*stride,thID*stride+((thID==(NUM_THREADS-1))?last:stride)));
 	Threads.wait			();
 	clMsg					("%d seconds elapsed.",(timeGetTime()-start_time)/1000);

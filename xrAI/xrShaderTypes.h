@@ -2,8 +2,8 @@
 
 #include "fixedvector.h"
 
-const DWORD			sh_STAGE_MAX	= 4;
-const DWORD			sh_PASS_MAX		= 8;
+const u32			sh_STAGE_MAX	= 4;
+const u32			sh_PASS_MAX		= 8;
 
 typedef char		sh_name			[64];
 
