@@ -6,12 +6,9 @@
 	<specific_character id="default">
 		<name>Undefined Character</name>
 		<bio></bio>
-
-		<rank>none</rank>
-		<team>none</team>
-
-		<reputation>50</reputation>
-
+		<rank></rank>
+		<team></team>
+		<reputation></reputation>
 		<start_dialog></start_dialog>
 		<actor_dialog></actor_dialog>
 
