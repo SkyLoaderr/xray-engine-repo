@@ -608,20 +608,16 @@ void CDetailPathManager::build_path_via_key_points(
 			s							= d;
 
 			VERIFY						(m_path.size() > 1);
-			u32							add = 0;
-			if (m_path[m_path.size()-1].position.similar(m_path[m_path.size()-2].position))
-				add						= 1;
-			VERIFY						(m_path.size() > 1 + add);
+//			u32							add = 0;
+//			if (m_path[m_path.size()-1].position.similar(m_path[m_path.size()-2].position))
+//				add						= 1;
+//			VERIFY						(m_path.size() > 1 + add);
 			s.direction.sub				(
-				ai().level_graph().v2d(
-					m_path[m_path.size() - 1 - add].position
-				),
-				ai().level_graph().v2d(
-					m_path[m_path.size() - 2 - add].position
-				)
+				ai().level_graph().v2d(m_path[m_path.size() - 1].position),
+				ai().level_graph().v2d(m_path[m_path.size() - 2].position)
 			);
 			
-			VERIFY						(s.direction.square_magnitude() > EPS_L);
+			VERIFY						(!fiz_sero(s.direction.square_magnitude()));
 			s.direction.normalize		();
 			m_path.pop_back				();
 
