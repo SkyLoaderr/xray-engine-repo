@@ -21,6 +21,8 @@ public:
 
 	BOOL				bEditor;
 	BOOL				bDetail;
+	BOOL				bDetail_Diffuse;
+	BOOL				bDetail_Bump;
 	int					iElement;
 
 public:

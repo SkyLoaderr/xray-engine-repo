@@ -41,19 +41,30 @@ void	CBlender_Compile::_cpp_Compile	(ShaderElement* _SH)
 	// Analyze possibility to detail this shader
 	detail_texture	= NULL;
 	detail_scaler	= NULL;
+	LPCSTR	base	= NULL;
 	if (bDetail && BT->canBeDetailed())
 	{
 		// 
 		sh_list& lst=	L_textures;
 		int id		=	ParseName(BT->oT_Name);
-		LPCSTR N	=	BT->oT_Name;
+		base		=	BT->oT_Name;
 		if (id>=0)	{
 			if (id>=int(lst.size()))	Debug.fatal("Not enought textures for shader. Base texture: '%s'.",lst[0]);
-			N = lst [id];
+			base	=	lst [id];
 		}
-		if (!Device.Resources->_GetDetailTexture(N,detail_texture,detail_scaler))	bDetail	= FALSE;
+		if (!Device.Resources->_GetDetailTexture(base,detail_texture,detail_scaler))	bDetail	= FALSE;
 	} else {
 		bDetail	= FALSE;
+	}
+
+	// Validate for R1 or R2
+	bDetail_Diffuse	= FALSE;
+	bDetail_Bump	= FALSE;
+	if (bDetail && Device.Resources->m_description->line_exist("association",base))	{
+		LPCSTR		descr			=	Device.Resources->m_description->r_string("association",base);
+		if (strstr(descr,"usage[diffuse_or_bump]"))	{ bDetail_Diffuse	= TRUE; bDetail_Bump = TRUE; }
+		if (strstr(descr,"usage[diffuse]"))			{ bDetail_Diffuse	= TRUE; }
+		if (strstr(descr,"usage[bump]"))			{ bDetail_Bump		= TRUE; }
 	}
 
 	// Compile
