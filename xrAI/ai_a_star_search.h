@@ -122,7 +122,11 @@ public:
 				xr_vector<u32>::iterator	I = tpaNodes.begin();
 				xr_vector<u32>::iterator	E = tpaNodes.end();
 				u32 dwNode = *I;
-				for (I++; I != E; I++) {
+				i=0;
+				for (I++; I != E; I++, i++) {
+					if (i == 95) {
+						i=i;
+					}
 					fDirectDistance = tTemplateNode.tData.m_tpAI_Map->ffCheckPositionInDirection(dwNode,tPosition,tTemplateNode.tData.m_tpAI_Map->tfGetNodeCenter(*I),fMaxValue);
 					if (fDirectDistance == MAX_VALUE) {
 						if (fLastDirectDistance == 0) {

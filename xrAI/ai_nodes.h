@@ -198,6 +198,9 @@ public:
 							SAIMapData			tData;
 							tData.dwFinishNode	= tNeighbourGraphVertex.tNodeID;
 							tData.m_tpAI_Map	= m_tpAI_Map;
+							if ((i == 37) && (j == 44)) {
+								i=i;
+							}
 							m_tpMapPath.vfFindOptimalPath(
 								m_tppHeap,
 								m_tpHeap,

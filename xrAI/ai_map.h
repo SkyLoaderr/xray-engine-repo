@@ -180,7 +180,7 @@ public:
 		num = a2 * c1 - a1 * c2;
 		*y = num / denom;
 		
-		if ((*x < x3) || (*x > x4) || (*y < y3) || (*y > y4))
+		if ((*x < _min(x3,x4) - EPS_L) || (*x > _max(x3,x4) + EPS_L) || (*y < _min(y3,y4) - EPS_L) || (*y > _max(y3,y4) + EPS_L) || (*x < _min(x1,x2) - EPS_L) || (*x > _max(x1,x2) + EPS_L) || (*y < _min(y1,y2) - EPS_L) || (*y > _max(y1,y2) + EPS_L))
 			return(LI_NONE);
 		else
 			return(LI_INTERSECT);
