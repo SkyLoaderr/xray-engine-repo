@@ -11,6 +11,8 @@ public:
 
 	virtual BOOL	net_Spawn		( LPVOID DC);
 
+	virtual void	UpdateCL		( );									// Called each frame, so no need for dt
+
 	void			AddElement		(CPhysicsElement* root_e, int id);
 	void			CreateBody		();
 

@@ -17,12 +17,27 @@ BOOL CPhysicObject::net_Spawn(LPVOID DC)
 
 	m_type = EPOType(po->type);
 
+	R_ASSERT				(pVisual&&PKinematics(pVisual));
+	PKinematics(pVisual)->PlayCycle("idle");
+	PKinematics(pVisual)->Calculate();
 	CreateBody				();
 
 	setVisible(true);
 	setEnabled(true);
 
 	return TRUE;
+}
+
+void CPhysicObject::UpdateCL	()
+{
+	inherited::UpdateCL		();
+	if(m_pPhysicsShell){
+		mRotate.i.set(m_pPhysicsShell->mXFORM.i);
+		mRotate.j.set(m_pPhysicsShell->mXFORM.j);
+		mRotate.k.set(m_pPhysicsShell->mXFORM.k);
+		vPosition.set(m_pPhysicsShell->mXFORM.c);
+		UpdateTransform();
+	}
 }
 
 void CPhysicObject::AddElement(CPhysicsElement* root_e, int id)
@@ -35,7 +50,7 @@ void CPhysicObject::AddElement(CPhysicsElement* root_e, int id)
 	Fobb& bb			= K->LL_GetBox(id);
 	bb.m_halfsize.add	(0.05f);
 	E->add_Box			(bb);
-	E->setMass			(10.f);
+	E->setMass			(1.f);
 	E->set_ParentElement(root_e);
 	B.set_callback		(m_pPhysicsShell->GetBonesCallback(),E);
 	m_pPhysicsShell->add_Element	(E);
@@ -74,5 +89,5 @@ void CPhysicObject::CreateBody() {
 		} break;
 	}
 	m_pPhysicsShell->mXFORM.set(svTransform);
-	m_pPhysicsShell->SetAirResistance(0.002f, 0.3f);
+	//m_pPhysicsShell->SetAirResistance(0.002f, 0.3f);
 }
