@@ -60,6 +60,7 @@ public:
 	};
 	void Process(RP_FUNC *f)
 	{
+    	if (R.empty()) return;
 		if (R[0].Prio==REG_PRIORITY_CAPTURE)	f(R[0].Object);
 		else {
 			for (int i=0; i<R.size(); i++)	{
