@@ -575,6 +575,9 @@
 			Name="shared memory/string library"
 			Filter="">
 			<File
+				RelativePath=".\crc32.cpp">
+			</File>
+			<File
 				RelativePath=".\xrsharedmem.cpp">
 			</File>
 			<File

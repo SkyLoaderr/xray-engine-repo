@@ -497,8 +497,6 @@ CBlend*	CSkeletonAnimated::IBlend_Create	()
 	return 0;
 }
 
-extern u32		crc32_calc	(void* P, u32 len);
-
 void CSkeletonAnimated::Load(const char* N, IReader *data, u32 dwFlags)
 {
 	inherited::Load	(N, data, dwFlags);

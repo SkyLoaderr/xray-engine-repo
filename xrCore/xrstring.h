@@ -12,11 +12,11 @@ struct		XRCORE_API	str_value
 {
 	u32					dwReference		;
 	u32					dwLength		;
+	u32					dwCRC			;
 	char				value		[]	;
 };
-struct		XRCORE_API	str_value_cmp	// less
-{
-	IC bool		operator ()	(const str_value* A, const str_value* B) const	{ return xr_strcmp(A->value,B->value)<0;	};
+struct		XRCORE_API	str_value_cmp	{ // less
+	IC bool		operator ()	(const str_value* A, const str_value* B) const	{ return A->dwCRC<B->dwCRC;	};
 };
 #pragma warning(default : 4200)
 
@@ -24,9 +24,9 @@ struct		XRCORE_API	str_value_cmp	// less
 class		XRCORE_API	str_container
 {
 private:
-	typedef xr_set<str_value*,str_value_cmp>	cdb;
-	xrCriticalSection							cs;
-	cdb											container;
+	typedef xr_multiset<str_value*,str_value_cmp>	cdb;
+	xrCriticalSection								cs;
+	cdb												container;
 public:
 	str_value*			dock			(str_c value);
 	void				clean			();

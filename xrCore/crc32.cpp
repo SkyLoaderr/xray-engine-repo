@@ -42,7 +42,7 @@ void			crc32_init	()
 	} 
 } 
 
-u32				crc32_calc	(void* P, u32 len) 
+u32				crc32		(void* P, u32 len) 
 {
 	if (!crc32_ready)	
 	{

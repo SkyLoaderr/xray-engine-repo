@@ -5,7 +5,7 @@
 
 XRCORE_API	extern		str_container*	g_pStringContainer	= NULL;
 
-#define		HEADER		8
+#define		HEADER		12			// ref + len + crc
 
 str_value*	str_container::dock		(str_c value)
 {
@@ -21,19 +21,34 @@ str_value*	str_container::dock		(str_c value)
 	VERIFY	(HEADER+s_len_with_zero < 4096);
 
 	// setup find structure
-	string4096	tempstorage;
-	str_value*	sv				= (str_value*)tempstorage;
+	string16	header;
+	str_value*	sv				= (str_value*)header;
 	sv->dwReference				= 0;
 	sv->dwLength				= s_len;
-	Memory.mem_copy				(sv->value,value,s_len_with_zero);
+	sv->dwCRC					= crc32	(value,s_len);
 	
 	// search
-	cdb::iterator	I			= container.find	(sv);
-	if (I!=container.end())		result	= *I;
-	else {
+	cdb::iterator	I			= container.find	(sv);	// only integer compares :)
+	if (I!=container.end())		{
+		// something found - verify, it is exactly our string
+		cdb::iterator	save	= I;
+		for (; I!=container.end() && (*I)->dwCRC == sv->dwCRC; ++I)	{
+			str_value*	V		= (*I);
+			if	(V->dwLength!=sv->dwLength)			continue;
+			if	(0!=memcmp(V->value,value,s_len))	continue;
+			result				= V;				// found
+			break;
+		}
+	}
+
+	// it may be the case, string is not fount or has "non-exact" match
+	if (0==result)				{
 		// Insert string
 		result					= (str_value*)xr_malloc(HEADER+s_len_with_zero);
-		Memory.mem_copy			(result,sv,HEADER+s_len_with_zero);
+		result->dwReference		= 0;
+		result->dwLength		= sv->dwLength;
+		result->dwCRC			= sv->dwCRC;
+		Memory.mem_copy			(result->value,value,s_len_with_zero);
 		container.insert		(result);
 	}
 	cs.Leave					();
@@ -46,8 +61,7 @@ void		str_container::clean	()
 	cs.Enter	();
 	cdb::iterator	it	= container.begin	();
 	cdb::iterator	end	= container.end		();
-	for (; it!=end; )
-	{
+	for (; it!=end; )	{
 		str_value*	sv = *it;
 		if (0==sv->dwReference)	
 		{
@@ -68,7 +82,7 @@ void		str_container::dump	()
 	cdb::iterator	it	= container.begin	();
 	cdb::iterator	end	= container.end		();
 	for (; it!=end; it++)
-		Msg	("%4d : %s",(*it)->dwReference,(*it)->value);
+		Msg	("ref[%4d]-len[%3d]-crc[%8X] : %s",(*it)->dwReference,(*it)->dwLength,(*it)->dwCRC,(*it)->value);
 	cs.Leave	();
 }
 u32			str_container::stat_economy		()
@@ -80,6 +94,7 @@ u32			str_container::stat_economy		()
 	for (; it!=end; it++)	{
 		counter		+=		(*it)->dwReference * (*it)->dwLength;
 		counter		-=		(*it)->dwLength;
+		counter		-=		HEADER;
 	}
 	cs.Leave	();
 
