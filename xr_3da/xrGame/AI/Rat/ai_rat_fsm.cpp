@@ -114,8 +114,10 @@ void CAI_Rat::AttackRun()
 	
 	GoToPointViaSubnodes(Enemy.Enemy->Position());
 	
-	//vfAimAtEnemy();
-	SetDirectionLook();
+	if (Enemy.Enemy->Position().distance_to(vPosition) <= ATTACK_DISTANCE)
+		vfAimAtEnemy();
+	else
+		SetDirectionLook();
 	
 	vfSetFire(false,Group);
 
@@ -153,7 +155,12 @@ void CAI_Rat::FreeHunting()
 	
 	CHECK_IF_SWITCH_TO_NEW_STATE(Enemy.Enemy,aiRatAttackFire)
 
-	if(m_fGoalChangeTime<=0){
+	if (m_bStateChanged) {
+		m_tHPB.x = r_torso_current.yaw;
+		m_tHPB.y = r_torso_current.pitch;
+	}
+
+	if (m_fGoalChangeTime<=0){
 		m_fGoalChangeTime += m_fGoalChangeDelta+m_fGoalChangeDelta*::Random.randF(-0.5f,0.5f);
 		Fvector vP;
 		vP.set(m_tSpawnPosition.x,m_tSpawnPosition.y+m_fMinHeight,m_tSpawnPosition.z);

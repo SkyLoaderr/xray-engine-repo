@@ -160,7 +160,7 @@ void CAI_Rat::SelectEnemy(SEnemySelected& S)
 					if (tpActor) {
 						Level().HUD()->outMessage(0xffffffff,cName(),bB ? "I see you" : "I don't see you");
 						bActorInCamera = true;
-						continue;
+						//continue;
 					}
 					else
 						if (!bB)
@@ -197,8 +197,8 @@ void CAI_Rat::SelectEnemy(SEnemySelected& S)
 	if (!bActorInCamera && (g_Squad() == SPECIAL_SQUAD))
 		Level().HUD()->outMessage(0xffffffff,cName(),"I don't see you");
 
-	if (g_Squad() == SPECIAL_SQUAD)
-		Enemy.Enemy = 0;
+	//if (g_Squad() == SPECIAL_SQUAD)
+	//	Enemy.Enemy = 0;
 	// !!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!
 #endif
 }
