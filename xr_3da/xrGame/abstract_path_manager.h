@@ -44,3 +44,19 @@ public:
 };
 
 #include "abstract_path_manager_inline.h"
+
+template <
+	typename _Graph,
+	typename _VertexEvaluator,
+	typename _vertex_id_type,
+	typename _index_type
+>
+class CBasePathManager :
+	public CAbstractPathManager<
+		_Graph,
+		_VertexEvaluator,
+		_vertex_id_type,
+		_index_type
+	> 
+{
+};
