@@ -71,7 +71,10 @@ void xrServer::Update	()
 {
 	NET_Packet		Packet;
 	u32				position;
+
 	csPlayers.Enter	();
+
+	VERIFY						(verify_entities());
 
 	// game update
 	game->Update	();
@@ -144,6 +147,8 @@ void xrServer::Update	()
 
 	if (game->sv_force_sync)	Perform_game_export();
 
+	VERIFY						(verify_entities());
+
 	csPlayers.Leave	();
 }
 
@@ -153,6 +158,9 @@ u32 xrServer::OnMessage(NET_Packet& P, DPNID sender)			// Non-Zero means broadca
 	P.r_begin	(type);
 
 	csPlayers.Enter			();
+
+	VERIFY						(verify_entities());
+
 	xrClientData* CL		= ID_to_client(sender);
 
 	switch (type)
@@ -213,6 +221,9 @@ u32 xrServer::OnMessage(NET_Packet& P, DPNID sender)			// Non-Zero means broadca
 
 
 	}
+
+	VERIFY						(verify_entities());
+
 	csPlayers.Leave				();
 
 	return 0;
@@ -345,3 +356,41 @@ CSE_Abstract*	xrServer::GetEntity			(u32 Num)
 	};
 	return NULL;
 };
+
+#ifdef DEBUG
+
+bool xrServer::verify_entities				() const
+{
+	xrS_entities::const_iterator		I = entities.begin();
+	xrS_entities::const_iterator		E = entities.end();
+	for ( ; I != E; ++I) {
+		VERIFY2							((*I).first != 0xffff,"SERVER : Invalid entity id as a map key - 0xffff");
+		VERIFY2							((*I).second,"SERVER : Null entity object in the map");
+		VERIFY3							((*I).first == (*I).second->ID,"SERVER : ID mismatch - map keysss
+	}
+	return								(true);
+}
+
+void xrServer::verify_entity				(const CSE_Abstract *entity) const
+{
+	if (entity->ID_Parent != 0xffff) {
+		xrS_entities::const_iterator	J = entities.find(entity->ID_Parent);
+		VERIFY2							(J != entities.end(),"SERVER : Cannot find parent in the map");
+		VERIFY2							((*J).second,"SERVER : Null entity object in the map");
+		VERIFY3							((*J).first == (*J).second->ID,"SERVER : ID mismatch - map key doesn't correspond to the real entity ID",(*J).second->s_name_replace);
+		VERIFY3							(std::find((*J).second->children.begin(),(*J).second->children.end(),entity->ID) != (*J).second->children.end(),"SERVER : Parent/Children relationship mismatch - Object has parent, but corresponding parent doesn't have children",(*J).second->s_name_replace);
+	}
+
+	xr_vector<u16>::const_iterator		I = entity->children.begin();
+	xr_vector<u16>::const_iterator		E = entity->children.end();
+	for ( ; I != E; ++I) {
+		VERIFY2							(*I != 0xffff,"SERVER : Invalid entity children id - 0xffff");
+		xrS_entities::const_iterator	J = entities.find(*I);
+		VERIFY2							(J != entities.end(),"SERVER : Cannot find children in the map");
+		VERIFY2							((*J).second,"SERVER : Null entity object in the map");
+		VERIFY3							((*J).first == (*J).second->ID,"SERVER : ID mismatch - map key doesn't correspond to the real entity ID",(*J).second->s_name_replace);
+		VERIFY3							((*J).second->ID_Parent == entity->ID,"SERVER : Parent/Children relationship mismatch - Object has children, but children doesn't have parent",(*J).second->s_name_replace);
+	}
+}
+
+#endif // DEBUG

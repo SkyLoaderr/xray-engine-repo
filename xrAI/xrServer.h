@@ -46,9 +46,20 @@ private:
 	xrS_entities				entities;
 	xr_multiset<svs_respawn>	q_respawn;
 
-	CID_Generator<u32,u8,u16,u8,u16,0,u16(-2),256,u16(-1)> m_tID_Generator;
+	CID_Generator<
+		u32,		// time identifier type
+		u8,			// compressed id type 
+		u16,		// id type
+		u8,			// block id type
+		u16,		// chunk id type
+		0,			// min value
+		u16(-2),	// max value
+		256,		// block size
+		u16(-1)		// invalid id
+	>							m_tID_Generator;
 
 	void						Server_Client_Check (IClient* CL);
+
 public:
 	game_sv_GameState*			game;
 
@@ -115,6 +126,12 @@ public:
 	void					SLS_Load			(IReader&	fs);
 
 	xrClientData*			GetServer_client	()			{ return (xrClientData*)	SV_Client; };
+
+public:
+#ifdef DEBUG
+			bool			verify_entities		() const;
+			void			verify_entity		(const CSE_Abstract *entity) const;
+#endif
 };
 
 #endif // !defined(AFX_XRSERVER_H__65728A25_16FC_4A7B_8CCE_D798CA5EC64E__INCLUDED_)
