@@ -5,6 +5,13 @@
 -- Author:      Serhiy Vynnychenko (narrator@gsc-game.kiev.ua)
 -- Version:     0.1
 
+
+function main()
+	local dlg = ui_main_menu.main_menu()
+	level.start_stop_menu(dlg,true)
+end
+
+
 class "main_menu" (CUIScriptWnd)
 
 function main_menu:__init() super()
