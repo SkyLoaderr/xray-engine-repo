@@ -36,6 +36,12 @@ CGroup::CGroup()
 	m_agent_manager			= 0;
 }
 
+CGroup::CGroup	(const CGroup &group)
+{
+	*this = group;
+	m_agent_manager = xr_new<CAgentManager>(*m_agent_manager);
+}
+
 CGroup::~CGroup()
 {
 	xr_delete				(m_agent_manager);

@@ -60,6 +60,7 @@ public:
 
 public:
 							CGroup						();
+							CGroup						(const CGroup &group);
 							~CGroup						();
 			void			Member_Add					(CEntity* E);
 			void			Member_Remove				(CEntity* E);
