@@ -81,9 +81,9 @@ public:
 
 	// Clamp vector
 	IC	void	clamp(const Self &min, const Self max) {
-		::clamp(x,min.x,min.x);
-		::clamp(y,min.y,min.y);
-		::clamp(z,min.z,min.z);
+		::clamp(x,min.x,max.x);
+		::clamp(y,min.y,max.y);
+		::clamp(z,min.z,max.z);
 	}
 
 	IC	void	clamp(const Self &_v) {
