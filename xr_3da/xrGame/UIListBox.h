@@ -10,6 +10,8 @@ class CUIListBox
 protected:
 	Irect			list_rect;
 	CUIFrameRect	frame;
+	DEFINE_VECTOR	(LPVOID,ItemVec,ItemIt);
+	ItemVec			items;
 public:
 					CUIListBox		();
 	void			Init			(LPCSTR tex, int x1, int y1, int w, int h, DWORD align);
