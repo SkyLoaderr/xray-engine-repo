@@ -256,7 +256,8 @@ function anims:__init(npc)
 		     	sumidle = 4,
    		     	rnd = 30,
 			lastanim = nil,
-		     	base_state = nil,  -- базовая анимация ( nil - никаких базовых анимаций нет)
+			lastanimslot = nil, 	-- проверка изменился ли анимслот
+		     	base_state = nil,  	-- базовая анимация ( nil - никаких базовых анимаций нет)
 			current_state = nil	-- оверрайдинг базового состояния. Если он nil - то играем базовую
 			}
 	self.idle = {}
@@ -312,6 +313,18 @@ function anims:__init(npc)
 end
 -- основная функция	
 function anims:update(type)
+	if type == nil then
+		if type ~= self.anim.base_state then
+			-- финалим предидущий
+			if self.anim.base_state == "idle" then
+				self:remove_idle()
+			end
+			if self.anim.base_state == "prisluh" then
+				self:remove_prisluh()
+			end
+		end
+	end
+
 	--Определяем, относится ли запрашиваемых тип ко временным
 	if type == "hello"
 	then
@@ -424,8 +437,7 @@ function anims:set_idle()
 	-- выбирает нужную анимацию для данного положения тела
 	-- если для данного положения тела нет пачки анимаций - ругается
 	local animslot = self:weapon_slot()
-
-	self.npc:clear_animations()
+	self.anim.lastanimslot = animslot
 
 	-- Добавление зацикленного айдла для данного анимслота
 	self:cycled_idle(animslot)
@@ -445,16 +457,25 @@ function anims:cycled_idle(animslot)
 	end
 end
 function anims:update_idle()
+	-- изменился ли анимслот
+	local animslot = self:weapon_slot()
+
+	if animslot ~= self.anim.lastanimslot then
+		self.anim.begin = nil
+		self.anim.lastanimslot = animslot
+		self.npc:clear_animations()
+		self:cycled_idle(animslot)
+	end
+
 	-- Определяем нужно ли добавлять анимацию или ждать
 	if (self.anim.begin == nil or
 	   device():time_global() - self.anim.begin > self.anim.idle) and
-	   self.npc:animation_count() == nil	   
+	   self.npc:animation_count() <= 1
 	then
 		-- Определение промежутков времени между анимациями
 		self.anim.begin = device():time_global()
 		self.anim.idle = (math.random(self.anim.maxidle) + self.anim.sumidle) * 1000
 		if math.random(100) < self.anim.rnd then
-			local animslot = self:weapon_slot()
 			local r
 			if self.anim.lastanim == nil then
 				r = math.random(table.getn(self.idle[animslot]))
@@ -473,7 +494,9 @@ function anims:update_idle()
 	end	
 end                            
 function anims:remove_idle()
+	self.anim.base_state = nil
 	self.anim.lastanim = nil
+	self.anim.lastanimslot = nil 
 	self.npc:clear_animations()
 end
 ----------------------------------------------------------------------------------------------------------------------
@@ -498,8 +521,7 @@ function anims:set_prisluh()
 	-- выбирает нужную анимацию для данного положения тела
 	-- если для данного положения тела нет пачки анимаций - ругается
 	local animslot = self:weapon_slot()
-
-	self.npc:clear_animations()
+	self.anim.lastanimslot = animslot
 
 	if animslot == 0 then
 		self.npc:add_animation("prisluh_0_idle_0", true)
@@ -530,16 +552,25 @@ function anims:cycled_prisluh(animslot)
 	end
 end
 function anims:update_prisluh()
+	-- изменился ли анимслот
+	local animslot = self:weapon_slot()
+
+	if animslot ~= self.anim.lastanimslot then
+		self.anim.begin = nil
+		self.anim.lastanimslot = animslot
+		self.npc:clear_animations()
+		self:cycled_prisluh(animslot)
+	end
+
 	-- Определяем нужно ли добавлять анимацию или ждать
 	if (self.anim.begin == nil or
 	   device():time_global() - self.anim.begin > self.anim.idle) and
-	   self.npc:animation_count() == nil	   
+	   self.npc:animation_count() <= 1
 	then
 		-- Определение промежутков времени между анимациями
 		self.anim.begin = device():time_global()
 		self.anim.idle = (math.random(self.anim.maxidle) + self.anim.sumidle) * 1000
 		if math.random(100) < self.anim.rnd then
-			local animslot = self:weapon_slot()
 			local r
 			if self.anim.lastanim == nil then
 				r = math.random(table.getn(self.prisluh[animslot]))
@@ -553,13 +584,15 @@ function anims:update_prisluh()
 			self.npc:clear_animations()
 			self.npc:add_animation (self.prisluh[animslot][r].name, self.prisluh[animslot][r].flag)
 			-- Добавление зацикленного айдла для данного анимслота
-			self:cycled_idle(animslot)
+			self:cycled_prisluh(animslot)
 		end
 	end	
 end                            
 function anims:remove_prisluh()
 	local animslot = self:weapon_slot()
+	self.anim.base_state = nil
 	self.anim.lastanim = nil
+	self.anim.lastanimslot = nil
 	self.npc:clear_animations()
 	if animslot == 0 then
 		self.npc:add_animation("prisluh_0_idle_5", true)

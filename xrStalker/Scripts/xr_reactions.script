@@ -86,7 +86,6 @@ function action_wait:initialize()
 				  "prisluh_2_idle_6" }}
 
 	xr_state.change_state(self.object, 0)
-
 end
 function action_wait:execute()
 	self.a.evn:get_event(self.a.obj)
