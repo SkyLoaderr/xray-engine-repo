@@ -597,8 +597,8 @@ void CHelicopter::shedule_Update(u32 time_delta)
 	CPHSkeleton::Update(time_delta);
 	if(state() != CHelicopter::eDead){
 
-	float dist = m_heli->GetDistanceToDestPosition();
-	if( m_heli->m_last_point_range_dist < m_heli->m_on_point_range_dist)
+	float dist = GetDistanceToDestPosition();
+	if( m_last_point_range_dist < m_on_point_range_dist)
 	{//GENARATE EVENT	
 		NET_Packet P;
 		P.write_start();
@@ -608,7 +608,7 @@ void CHelicopter::shedule_Update(u32 time_delta)
 		if(m_movMngr->m_currPatrolVertex)
 			curr_idx = (s16)m_movMngr->m_currPatrolVertex->vertex_id();
 		P.w_s16(curr_idx);
-		m_heli->lua_game_object()->OnEventRaised(CHelicopter::EV_ON_POINT,P);
+		lua_game_object()->OnEventRaised(CHelicopter::EV_ON_POINT,P);
 	}
 	m_movMngr->shedule_Update (time_delta);
 
