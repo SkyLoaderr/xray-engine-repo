@@ -147,7 +147,7 @@ bool	pred_sort_P(const std::pair<ref_str,u32>& A, const std::pair<ref_str,u32>& 
 void CBoneData::CalculateM2B(const Fmatrix& parent)
 {
     // Build matrix
-    m2b_transform.mul		(parent,bind_transform);
+    m2b_transform.mul_43	(parent,bind_transform);
 
     // Calculate children
     for (xr_vector<CBoneData*>::iterator C=children.begin(); C!=children.end(); C++)

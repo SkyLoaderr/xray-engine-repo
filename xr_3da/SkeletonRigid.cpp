@@ -52,7 +52,7 @@ void CSkeletonRigid::CalculateBones			(BOOL bForceExact)
 			Fobb&		obb		= (*bones)[b]->obb;
 			Fmatrix&	Mbone	= bone_instances[b].mATransform;
 			Fmatrix		Mbox;	obb.xform_get(Mbox);
-			Fmatrix		X;		X.mul(Mbone,Mbox);
+			Fmatrix		X;		X.mul_43(Mbone,Mbox);
 			Fvector&	S		= obb.m_halfsize;
 
 			Fvector			P,A;
