@@ -578,9 +578,6 @@
 				Name="Internal"
 				Filter="">
 				<File
-					RelativePath=".\FixedVector.h">
-				</File>
-				<File
 					RelativePath=".\vbm.h">
 				</File>
 				<File
