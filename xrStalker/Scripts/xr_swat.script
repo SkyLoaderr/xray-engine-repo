@@ -1,0 +1,354 @@
+module ("xr_evaluators_id")
+module ("xr_actions_id")
+module ("xr_sounds_id")
+
+local animations = {
+                   {anim = "stoya_ruje_ 0",       flag = true},
+                   {anim = "vishka_3",            flag = false},
+                   {anim = "norm_torso_2_idle_1", flag = false},
+                   {anim = "norm_torso_2_idle_2", flag = true},
+                   {anim = "norm_torso_2_idle_3", flag = false},
+                   {anim = "norm_torso_2_idle_4", flag = true},
+                   {anim = "norm_torso_2_idle_5", flag = false},
+                   {anim = "norm_torso_2_idle_6", flag = false}
+                   }
+
+
+local anim_pris = {
+                  {anim = "prisluh_0", flag = false},
+                  {anim = "prisluh_1", flag = false},
+                  {anim = "prisluh_2", flag = false}
+                  }
+
+local Zones = {}
+
+----------------------------------------------------------------------------------------------------------------------
+-- Evaluators id
+----------------------------------------------------------------------------------------------------------------------
+local   wait_for_enter_property             =   xr_evaluators_id.sidor_swat_base
+local   move_attack_property                =   wait_for_enter_property + 1
+local   return_property                     =   wait_for_enter_property + 2
+
+----------------------------------------------------------------------------------------------------------------------
+-- Actions id
+----------------------------------------------------------------------------------------------------------------------
+local   act_enter_wait                      =   xr_actions_id.sidor_act_swat_base
+local   act_attack                          =   act_enter_wait + 1
+local   act_return                          =   act_enter_wait + 2
+
+function on_enter (zone, obj)
+    local act = level.actor ()
+    if act == nil or obj:id () ~= act:id () then return end
+    if Zones[zone:id ()].zone == nil then return end
+    Zones[zone:id ()].entered = true
+end
+
+
+----------------------------------------------------------------------------------------------------------------------
+-- Evaluators
+----------------------------------------------------------------------------------------------------------------------
+class "evaluator_wait" (property_evaluator)
+---------------------
+function evaluator_wait:__init (zone_name, name) super ()
+    self.zone_name = zone_name
+    self.id = -1
+    self.zone_set = false
+    self.ret_value = false
+end
+---------------------
+function evaluator_wait:evaluate ()
+
+    if self.ret_value == true then return true end
+
+    if self.zone_set == false then
+       local z = level.object (self.zone_name)
+       if z == nil then return false end
+       self.id = z:id ()
+       if Zones[self.id] == nil then
+          Zones[self.id] = {zone = z, entered = false}
+          self.zone_set = true
+          z:set_callback (this.on_enter, true)
+          return false
+       end
+    end   
+    if Zones[self.id].entered == true then
+       self.ret_value = true 
+    end   
+    return self.ret_value
+end
+
+
+
+
+----------------------------------------------------------------------------------------------------------------------
+class "evaluator_attack" (property_evaluator)
+---------------------
+function evaluator_attack:__init (name) super ()
+    self.value = false
+end
+---------------------
+function evaluator_attack:evaluate ()
+    return self.value
+end
+---------------------
+
+
+
+
+----------------------------------------------------------------------------------------------------------------------
+class "evaluator_return" (property_evaluator)
+---------------------
+function evaluator_return:__init (name) super ()
+    self.value = false
+end
+---------------------
+function evaluator_return:evaluate ()
+    return self.value
+end
+
+
+----------------------------------------------------------------------------------------------------------------------
+-- Actions
+----------------------------------------------------------------------------------------------------------------------
+class "action_wait" (action_base)
+---------------------
+function action_wait:__init (name) super (nil, name)
+    self.current_animation = 0
+end
+---------------------
+function action_wait:initialize ()
+    action_base.initialize (self)
+    self.object:set_node_evaluator        ()
+    self.object:set_path_evaluator        ()
+    self.object:set_desired_position      ()
+    self.object:set_item                  (object.idle, self.object:best_weapon ())
+    self.object:set_detail_path_type      (move.line)
+    self.object:set_body_state            (move.standing)
+    self.object:set_movement_type         (move.stand)
+    self.object:set_path_type             (game_object.level_path)
+    self.object:set_mental_state          (anim.free)
+    self.object:set_sight                 (look.path_dir, nil, 0)
+end
+---------------------
+function action_wait:execute ()
+    action_base.execute                 (self)
+    self.object:set_item                (object.idle, self.object:best_weapon ())
+    if self.object:animation_count () < 2 then
+       self:set_animation ()
+    end
+end
+---------------------
+function action_wait:finalize ()
+    action_base.finalize (self)
+    self.object:clear_animations ()
+end
+---------------------
+function action_wait:set_animation ()
+
+    self.current_animation = self.current_animation + 1
+    if self.current_animation > table.getn (anim_pris) then
+       self.current_animation = 1
+    end
+
+    self.object:add_animation (anim_pris[self.current_animation].anim, anim_pris[self.current_animation].flag)
+end
+
+
+
+----------------------------------------------------------------------------------------------------------------------
+class "action_return" (action_base)
+---------------------
+function action_return:__init (return_path, name) super (nil, name)
+    self.path = return_path
+end
+---------------------
+function action_return:initialize ()
+    action_base.initialize (self)
+    self.object:set_node_evaluator        ()
+    self.object:set_path_evaluator        ()
+    self.object:set_desired_position      ()
+    self.object:set_item                  (object.idle, self.object:best_weapon ())
+    self.object:set_detail_path_type      (move.line)
+    self.object:set_patrol_path           (self.path, patrol.nearest, patrol.continue, true)
+    self.object:set_body_state            (move.standing)
+    self.object:set_movement_type         (move.walk)
+    self.object:set_path_type             (game_object.patrol_path)
+    self.object:set_sight                 (look.path_dir, nil, 0)
+    self.object:set_movement_type         (move.walk)
+    self.object:set_mental_state          (anim.free)
+    self.object:set_callback              (self, "on_move", game_object.movement)
+end
+---------------------
+function action_return:execute ()
+    action_base.execute                 (self)
+end
+---------------------
+function action_return:finalize ()
+    action_base.finalize (self)
+    self.object:clear_callback              (game_object.movement)
+end
+---------------------
+function action_return:on_move (obj, action_type, index)
+    if index == -1 then return end
+    if patrol (self.object:patrol ()):flag (index, 1) == true then
+       self.object:motivation_action_manager ():evaluator (return_property).value = true
+    end
+end
+
+
+----------------------------------------------------------------------------------------------------------------------
+class "action_attack" (action_base)
+---------------------
+function action_attack:__init (attack_path, name) super (nil, name)
+    self.path = attack_path
+end
+---------------------
+function action_attack:initialize ()
+    action_base.initialize (self)
+    self.object:set_node_evaluator        ()
+    self.object:set_path_evaluator        ()
+    self.object:set_desired_position      ()
+    self.object:set_item                  (object.idle, self.object:best_weapon ())
+    self.object:set_detail_path_type      (move.line)
+    self.object:set_patrol_path           (self.path, patrol.nearest, patrol.continue, true)
+    self.object:set_body_state            (move.standing)
+    self.object:set_movement_type         (move.walk)
+    self.object:set_path_type             (game_object.patrol_path)
+    self.object:set_mental_state          (anim.danger)
+    self.object:set_sight                 (look.path_dir, nil, 0)
+    self.object:set_movement_type         (move.run)
+    self.object:set_callback              (self, "on_move", game_object.movement)
+    self.object:set_sight                 (look.path_dir, nil, 0)
+end
+---------------------
+function action_attack:execute ()
+    action_base.execute                 (self)
+end
+---------------------
+function action_attack:finalize ()
+    action_base.finalize (self)
+    self.object:clear_callback              (game_object.movement)
+    self.object:motivation_action_manager ():evaluator (move_attack_property).value = true
+end
+---------------------
+function action_attack:on_move (obj, action_type, index)
+    if index == -1 then return end
+
+    local ptr = patrol (self.object:patrol ())
+
+    if ptr:flag (index, 1) == true then
+       self.object:motivation_action_manager ():evaluator (move_attack_property).value = true
+    end
+
+    if ptr:flag (index, 2) == true then
+       self.object:set_body_state            (move.crouch)
+       self.object:set_movement_type         (move.walk)
+       return
+    end
+
+    if ptr:flag (index, 3) == true then
+       self.object:set_body_state            (move.standing)
+       self.object:set_movement_type         (move.run)
+       return
+    end
+end
+
+
+----------------------------------------------------------------------------------------------------------------------
+function SetScheme (obj)
+
+    local ini = obj:spawn_ini ()
+    if ini == nil then return end
+
+    local zone_name
+    local attack_path
+    local return_path
+
+    --read the special data
+    if ini:line_exist ("settings", "zone") == true then
+       zone_name = ini:r_string ("settings", "zone")
+       if zone_name == nil then return end
+    end
+
+    if ini:line_exist ("settings", "attack_path") == true then
+       attack_path = ini:r_string ("settings", "attack_path")
+    end
+
+    if ini:line_exist ("settings", "return_path") == true then
+       return_path = ini:r_string ("settings", "return_path")
+    end
+
+
+    local manager = obj:motivation_action_manager ()
+
+    manager:add_evaluator (wait_for_enter_property, this.evaluator_wait (zone_name, "evaluator_wait"))
+    manager:add_evaluator (move_attack_property, this.evaluator_attack ("evaluator_attack"))
+    manager:add_evaluator (return_property, this.evaluator_return ("evaluator_return"))
+
+
+    local action = this.action_wait ("action_wait") 
+    action:add_precondition     (world_property (stalker_ids.property_alive,    true))
+    action:add_precondition     (world_property (stalker_ids.property_enemy,    false))
+    action:add_precondition     (world_property (wait_for_enter_property,       false))
+    action:add_effect           (world_property (wait_for_enter_property,       true))
+    manager:add_action          (act_enter_wait, action)
+
+    action = this.action_attack (attack_path, "action_attack")
+    action:add_precondition     (world_property (stalker_ids.property_alive,    true))
+    action:add_precondition     (world_property (stalker_ids.property_enemy,    false))
+    action:add_precondition     (world_property (wait_for_enter_property,       true))
+    action:add_precondition     (world_property (move_attack_property,          false))
+    action:add_effect           (world_property (move_attack_property,          true))
+    manager:add_action          (act_attack, action)
+
+    action = this.action_return (return_path, "action_return")
+    action:add_precondition     (world_property (stalker_ids.property_alive,    true))
+    action:add_precondition     (world_property (stalker_ids.property_enemy,    false))
+    --action:add_precondition     (world_property (wait_for_enter_property,       true))
+    action:add_precondition     (world_property (move_attack_property,          true))
+    action:add_precondition     (world_property (return_property,               false))
+    action:add_effect           (world_property (return_property,               true))
+    manager:add_action          (act_return, action)
+
+    action = manager:action     (xr_actions_id.alife)
+    action:add_precondition     (world_property (return_property,  true))
+end
+
+
+
+
+----------------------------------------------------------------------------------------------------------------------
+class "swat_binder" (object_binder)
+----------------------------------------------------------------------------------------------------------------------
+function swat_binder:__init (obj) super(obj)
+end
+----------------------------------------------------------------------------------------------------------------------
+function swat_binder:reinit ()
+    object_binder.reinit (self)
+end
+----------------------------------------------------------------------------------------------------------------------
+function swat_binder:reload (section)
+    object_binder.reload  (self, section)
+    this.SetScheme (self.object)
+end
+----------------------------------------------------------------------------------------------------------------------
+function swat_binder:net_spawn  (server_object)
+  if (object_binder.net_spawn (self, server_object) == false) then
+     return false
+  end
+  return true
+end
+----------------------------------------------------------------------------------------------------------------------
+function swat_binder:net_destroy  ()
+  object_binder.net_destroy  (self)
+end
+----------------------------------------------------------------------------------------------------------------------
+
+
+function AddSwat (npc)
+    --printf ("stohe_evaluators base = %d", xr_evaluators_id.stohe_evaluators)
+    npc:bind_object  (this.swat_binder (npc))
+    return true
+end
+
+

@@ -1,0 +1,817 @@
+bandits = {}
+
+class "bandit"
+function bandit:__init(name, char_ini)
+	self.name = name 	-- Имя бандитской группировки
+
+	self.state = 0 		-- состояние схемы. 0 - в лагере. 1 - идем к засаде, 2 - засада, 3 - идем в лагерь, 4 - отступаем в лагерь
+	self.begin = 0
+	self.idle  = 0
+
+	self.leader 	= nil   -- главарь
+	self.bandits 	= {}	-- бандиты
+	self.Job 	= {}
+
+	self:loadJob(name)
+	table.sort(self.Job, function(a,b) return a.prior > b.prior end)
+end
+function bandit:addObject(npc, leader)
+	if leader == true then
+		self.leader = npc
+	else
+		if self.bandits[npc:id()] == nil then
+			self.bandits[npc:id()] = npc
+		end             	
+	end
+end
+function bandit:update()
+	-- убирание мертвецов
+	if self.leader ~= nil and self.leader:alive() ~= true then 
+		self.leader = nil 
+	end
+	for k,v in self.bandits do
+		if v:alive() ~= true then
+			self.bandits[k] = nil
+		end
+	end
+
+	-- обнуление несуществующих акторов у заданий
+	for k,v in self.Job do
+		-- проверить что этот актор есть в обжектах
+		if v.object ~= nil and self.bandits[v.object:id()] == nil and
+		   (self.leader == nil or v.object:id() ~= self.leader:id())
+		then
+			v.object = nil				
+		end
+	end
+
+	-- роллинг стейтов
+	if self.leader == nil then
+		self.state = 5
+	end
+	if self.state == 0 then
+		self.state = 1
+		self.begin = game.time()
+		self.idle = math.random(2*60*60*1000) + 60*60*1000
+	end
+	if self.state == 1 then
+		if game.time() - self.begin >= self.idle then
+			self.state = 2
+		end
+	end
+	if self.state == 2 then
+		if self.leader ~= nil and xr_patrol.is_patrol_end(self.leader) == true then
+			self.state = 3
+			self.begin = game.time()
+			self.idle = math.random(3*60*60*1000) + 2*60*60*1000
+		end
+	end
+	if self.state == 4 then
+		if self.leader ~= nil and xr_patrol.is_patrol_end(self.leader) == true then
+			self.state = 1
+			self.begin = game.time()
+			self.idle = math.random(2*60*60*1000) + 60*60*1000
+		end
+	end	
+	if self.state == 3 then
+		if game.time() - self.begin >= self.idle then
+			self.state = 4
+		end
+	end
+
+	self:updateJob()
+end
+function bandit:print()
+	printf("***** %s -- State: %d -- Time: %d of %d", self.name, self.state, game.time()-self.begin, self.idle)
+	if self.leader ~= nil then
+		printf("Leader: %s", self.leader:name())
+	else
+		printf("Leader: NIL")
+	end
+	for k,v in self.bandits do
+		printf("Bandit: %s", v:name())
+	end
+	printf("Jobs:")
+	for k,v in self.Job do
+		printf("name: %s, prior %d", v.name, v.prior)
+		if v.object ~= nil then
+			printf("    Actor: %s", v.object:name())
+		end
+	end
+end
+function bandit:stalkerExsist(npc)
+	-- существует ли сталкер
+	if self.bandits[npc:id()] ~= nil or 
+	   self.leader ~= nil and self.leader:id() == npc:id()		
+	then	
+		return true
+	end
+	return false
+end
+function bandit:updateJob()
+	for k,v in self.Job do
+		local npc = nil
+
+		-- проверяем что данная работа доступна при текущем состоянии лагеря
+		local avail = false
+		for key,stat in v.state do
+			if stat == self.state then
+				avail = true
+				break
+			end
+		end
+
+		if avail == false then
+			v.object = nil
+		else
+			-- Если данная должность занята - продолжаем
+			if v.object == nil and
+        	           (v.begin == nil or
+			   game.time() - v.begin > v.idle)	
+			then
+				-- при переходе с места на место задаем более жестко
+				if v.name == "patrol" then
+					npc = self.leader
+				else
+
+					-- Находим одного из свободных 
+					if self.leader ~= nil and self:getJob(self.leader) == nil then
+						npc = self.leader
+					else
+						for k,v in self.bandits do
+							if self:getJob(v) == nil then
+								npc = v
+								break
+							end
+						end
+					end
+					-- Находим одного из занятых, кого заставим выполнять эту работу
+					if npc == nil then
+						for i = table.getn(self.Job), k, -1 do
+							if self.Job[i].object ~= nil then 
+								npc = self.Job[i].object
+								break
+							end			
+						end
+					end
+				end
+	        		if npc ~= nil then 
+					self:setJob(npc, v) 
+				end
+			else
+				-- Проверяем не истекло ли время
+				if v.time ~= nil and
+				   game.time() - v.begin > v.time
+				then
+					v.object = nil
+				end
+			end
+        	end
+	end
+--	self:print()
+end
+function bandit:setJob(npc, job) 
+	-- удаляем у этого npc все работы (в сторадже)
+	self:clearAllJob(npc)
+	--устанавливаем данные для текущей работы	
+	if job.name == "kamp" then
+		job.object = npc
+		job.begin = game.time()
+	        xr_kamp.set_kamp(npc, true, job.center_point, nil)
+	end
+	if job.name == "sleeper" then
+		job.object = npc
+		job.begin = game.time()
+	        xr_sleeper.set_sleeper(npc, true, job.point)
+	end
+	if job.name == "ambush" then
+		job.object = npc
+		job.begin = game.time()
+	        xr_ambush.set_ambush(npc, true, job.point, nil)
+	end
+	if job.name == "patrol" then
+		job.object = npc
+		job.begin = game.time()
+	        xr_patrol.set_patrol(npc, true, job.patrol_path, nil)			
+	end
+	if job.name == "follower" then
+		if self.leader ~= nil then
+			job.object = npc
+			job.begin = game.time()
+		        xr_follower.set_follower(npc, true, self.leader:name(), nil)
+		end
+	end
+
+end
+function bandit:getJob(npc)
+	if npc == nil then return false end
+	for k,v in self.Job do
+		if v.object ~= nil and v.object:id() == npc:id() then	
+			return v.name
+		end
+	end
+	return nil
+end
+function bandit:clearAllJob(npc)
+	-- изменения в списке заданий
+	for k,v in self.Job do
+		if v.object ~= nil and v.object:id() == npc:id() then	
+			v.object = nil
+		end
+	end
+
+	-- изменения в сторадже
+	for k,v in xr_motivator.storage[npc:id()] do
+		if k == "sleeper" or
+		   k == "camper" or
+		   k == "scout" or
+		   k == "follower" or
+		   k == "patrol" or
+		   k == "guard" or
+		   k == "walker" or
+		   k == "kamp" or
+		   k == "ambush"
+		then
+			v.enabled = false
+		end
+	end
+end
+function bandit:loadJob(name) -- загружает список заданий
+	if name == "black_snail" then
+		-- общие для всех состояний
+		local t = { name = "kamp",
+			object = nil,
+			begin = nil, 
+			idle = 0,	-- раз в какое время запускается работа
+			prior = 1,
+			state = {1,5}, -- в каких состояниях это задание существует
+			center_point = "black_kamp_center"}
+		table.insert(self.Job, t)
+		t = { 	name = "kamp",
+			object = nil,
+			begin = nil, 
+			idle = 0,	-- раз в какое время запускается работа
+			prior = 1,
+			state = {1,5}, -- в каких состояниях это задание существует
+			center_point = "black_kamp_center"}
+		table.insert(self.Job, t)			
+		t = { 	name = "kamp",
+			object = nil,
+			begin = nil, 
+			idle = 0,	-- раз в какое время запускается работа
+			prior = 1,
+			state = {1,5}, -- в каких состояниях это задание существует
+			center_point = "black_kamp_center"}
+		table.insert(self.Job, t)			
+		t = { name = "sleeper",
+			object = nil,
+			begin = nil, 
+			idle = 60*60*1000,	-- раз в какое время запускается работа
+			time = 30*60*1000,	-- продложительность работы.
+			prior = 2,
+			state = {1}, -- в каких состояниях это задание существует
+			point = "black_kamp_sleep"}
+		table.insert(self.Job, t)
+
+		t = { name = "patrol",
+			object = nil,
+			begin = nil, 
+			idle = 0,	-- раз в какое время запускается работа
+			prior = 2,
+			state = {2}, -- в каких состояниях это задание существует
+			patrol_path = "black_kamp_to_robe" }
+		table.insert(self.Job, t)			
+		t = { name = "follower",
+			object = nil,
+			begin = nil, 
+			idle = 0,	-- раз в какое время запускается работа
+			prior = 1,
+			state = {2}, -- в каких состояниях это задание существует
+			leader_name = nil }
+		table.insert(self.Job, t)			
+		t = { name = "follower",
+			object = nil,
+			begin = nil, 
+			idle = 0,	-- раз в какое время запускается работа
+			prior = 1,
+			state = {2}, -- в каких состояниях это задание существует
+			leader_name = nil }
+		table.insert(self.Job, t)			
+
+		t = { 	name = "ambush",
+			object = nil,
+			begin = nil, 
+			idle = 0,	-- раз в какое время запускается работа
+			prior = 1,
+			state = {3}, -- в каких состояниях это задание существует
+			point = "black_ambush_1"}
+		table.insert(self.Job, t)			
+		t = { 	name = "ambush",
+			object = nil,
+			begin = nil, 
+			idle = 0,	-- раз в какое время запускается работа
+			prior = 1,
+			state = {3}, -- в каких состояниях это задание существует
+			point = "black_ambush_2"}
+		table.insert(self.Job, t)			
+		t = { 	name = "ambush",
+			object = nil,
+			begin = nil, 
+			idle = 0,	-- раз в какое время запускается работа
+			prior = 1,
+			state = {3}, -- в каких состояниях это задание существует
+			point = "black_ambush_3"}
+		table.insert(self.Job, t)
+
+		t = { name = "patrol",
+			object = nil,
+			begin = nil, 
+			idle = 0,	-- раз в какое время запускается работа
+			prior = 2,
+			state = {4}, -- в каких состояниях это задание существует
+			patrol_path = "black_robe_to_kamp" }
+		table.insert(self.Job, t)			
+		t = { name = "follower",
+			object = nil,
+			begin = nil, 
+			idle = 0,	-- раз в какое время запускается работа
+			prior = 1,
+			state = {4}, -- в каких состояниях это задание существует
+			leader_name = nil }
+		table.insert(self.Job, t)			
+		t = { name = "follower",
+			object = nil,
+			begin = nil, 
+			idle = 0,	-- раз в какое время запускается работа
+			prior = 1,
+			state = {4}, -- в каких состояниях это задание существует
+			leader_name = nil }
+		table.insert(self.Job, t)
+	end
+	if name == "dark_preacher" then
+		-- общие для всех состояний
+		local t = { name = "kamp",
+			object = nil,
+			begin = nil, 
+			idle = 0,	-- раз в какое время запускается работа
+			prior = 1,
+			state = {1,5}, -- в каких состояниях это задание существует
+			center_point = "preacher_kamp_1"}
+		table.insert(self.Job, t)			
+		t = { 	name = "kamp",
+			object = nil,
+			begin = nil, 
+			idle = 0,	-- раз в какое время запускается работа
+			prior = 1,
+			state = {1,5}, -- в каких состояниях это задание существует
+			center_point = "preacher_kamp_1"}
+		table.insert(self.Job, t)			
+		t = { 	name = "kamp",
+			object = nil,
+			begin = nil, 
+			idle = 0,	-- раз в какое время запускается работа
+			prior = 1,
+			state = {1,5}, -- в каких состояниях это задание существует
+			center_point = "preacher_kamp_1"}
+		table.insert(self.Job, t)			
+
+		t = { name = "patrol",
+			object = nil,
+			begin = nil, 
+			idle = 0,	-- раз в какое время запускается работа
+			prior = 2,
+			state = {2}, -- в каких состояниях это задание существует
+			patrol_path = "preacher_path_0_1" }
+		table.insert(self.Job, t)			
+		t = { name = "follower",
+			object = nil,
+			begin = nil, 
+			idle = 0,	-- раз в какое время запускается работа
+			prior = 1,
+			state = {2}, -- в каких состояниях это задание существует
+			leader_name = nil }
+		table.insert(self.Job, t)			
+		t = { name = "follower",
+			object = nil,
+			begin = nil, 
+			idle = 0,	-- раз в какое время запускается работа
+			prior = 1,
+			state = {2}, -- в каких состояниях это задание существует
+			leader_name = nil }
+		table.insert(self.Job, t)			
+
+		t = { 	name = "ambush",
+			object = nil,
+			begin = nil, 
+			idle = 0,	-- раз в какое время запускается работа
+			prior = 1,
+			state = {3}, -- в каких состояниях это задание существует
+			point = "preacher_ambush_1"}
+		table.insert(self.Job, t)			
+		t = { 	name = "ambush",
+			object = nil,
+			begin = nil, 
+			idle = 0,	-- раз в какое время запускается работа
+			prior = 1,
+			state = {3}, -- в каких состояниях это задание существует
+			point = "preacher_ambush_2"}
+		table.insert(self.Job, t)			
+		t = { 	name = "ambush",
+			object = nil,
+			begin = nil, 
+			idle = 0,	-- раз в какое время запускается работа
+			prior = 1,
+			state = {3}, -- в каких состояниях это задание существует
+			point = "preacher_ambush_3"}
+		table.insert(self.Job, t)
+
+		t = { name = "patrol",
+			object = nil,
+			begin = nil, 
+			idle = 0,	-- раз в какое время запускается работа
+			prior = 2,
+			state = {4}, -- в каких состояниях это задание существует
+			patrol_path = "preacher_return_0_1" }
+		table.insert(self.Job, t)			
+		t = { name = "follower",
+			object = nil,
+			begin = nil, 
+			idle = 0,	-- раз в какое время запускается работа
+			prior = 1,
+			state = {4}, -- в каких состояниях это задание существует
+			leader_name = nil }
+		table.insert(self.Job, t)			
+		t = { name = "follower",
+			object = nil,
+			begin = nil, 
+			idle = 0,	-- раз в какое время запускается работа
+			prior = 1,
+			state = {4}, -- в каких состояниях это задание существует
+			leader_name = nil }
+		table.insert(self.Job, t)
+	end
+	if name == "the_rippers" then
+		-- общие для всех состояний
+		local t = { name = "kamp",
+			object = nil,
+			begin = nil, 
+			idle = 0,	-- раз в какое время запускается работа
+			prior = 1,
+			state = {1,5}, -- в каких состояниях это задание существует
+			center_point = "the_rippers_camp"}
+		table.insert(self.Job, t)			
+		t = { 	name = "kamp",
+			object = nil,
+			begin = nil, 
+			idle = 0,	-- раз в какое время запускается работа
+			prior = 1,
+			state = {1,5}, -- в каких состояниях это задание существует
+			center_point = "the_rippers_camp"}
+		table.insert(self.Job, t)			
+		t = { 	name = "kamp",
+			object = nil,
+			begin = nil, 
+			idle = 0,	-- раз в какое время запускается работа
+			prior = 1,
+			state = {1,5}, -- в каких состояниях это задание существует
+			center_point = "the_rippers_camp"}
+		table.insert(self.Job, t)			
+
+		t = { name = "patrol",
+			object = nil,
+			begin = nil, 
+			idle = 0,	-- раз в какое время запускается работа
+			prior = 2,
+			state = {2}, -- в каких состояниях это задание существует
+			patrol_path = "the_rippers_to_post" }
+		table.insert(self.Job, t)			
+		t = { name = "follower",
+			object = nil,
+			begin = nil, 
+			idle = 0,	-- раз в какое время запускается работа
+			prior = 1,
+			state = {2}, -- в каких состояниях это задание существует
+			leader_name = nil }
+		table.insert(self.Job, t)			
+		t = { name = "follower",
+			object = nil,
+			begin = nil, 
+			idle = 0,	-- раз в какое время запускается работа
+			prior = 1,
+			state = {2}, -- в каких состояниях это задание существует
+			leader_name = nil }
+		table.insert(self.Job, t)			
+
+		t = { 	name = "ambush",
+			object = nil,
+			begin = nil, 
+			idle = 0,	-- раз в какое время запускается работа
+			prior = 1,
+			state = {3}, -- в каких состояниях это задание существует
+			point = "the_rippers_post_1"}
+		table.insert(self.Job, t)			
+		t = { 	name = "ambush",
+			object = nil,
+			begin = nil, 
+			idle = 0,	-- раз в какое время запускается работа
+			prior = 1,
+			state = {3}, -- в каких состояниях это задание существует
+			point = "the_rippers_post_2"}
+		table.insert(self.Job, t)			
+		t = { 	name = "ambush",
+			object = nil,
+			begin = nil, 
+			idle = 0,	-- раз в какое время запускается работа
+			prior = 1,
+			state = {3}, -- в каких состояниях это задание существует
+			point = "the_rippers_post_3"}
+		table.insert(self.Job, t)
+
+		t = { name = "patrol",
+			object = nil,
+			begin = nil, 
+			idle = 0,	-- раз в какое время запускается работа
+			prior = 2,
+			state = {4}, -- в каких состояниях это задание существует
+			patrol_path = "the_rippers_from_post" }
+		table.insert(self.Job, t)			
+		t = { name = "follower",
+			object = nil,
+			begin = nil, 
+			idle = 0,	-- раз в какое время запускается работа
+			prior = 1,
+			state = {4}, -- в каких состояниях это задание существует
+			leader_name = nil }
+		table.insert(self.Job, t)			
+		t = { name = "follower",
+			object = nil,
+			begin = nil, 
+			idle = 0,	-- раз в какое время запускается работа
+			prior = 1,
+			state = {4}, -- в каких состояниях это задание существует
+			leader_name = nil }
+		table.insert(self.Job, t)
+	end
+	if name == "marlboro_men" then
+		-- общие для всех состояний
+		local t = { name = "kamp",
+			object = nil,
+			begin = nil, 
+			idle = 0,	-- раз в какое время запускается работа
+			prior = 1,
+			state = {1,5}, -- в каких состояниях это задание существует
+			center_point = "marlboro_men_camp"}
+		table.insert(self.Job, t)			
+		t = { 	name = "kamp",
+			object = nil,
+			begin = nil, 
+			idle = 0,	-- раз в какое время запускается работа
+			prior = 1,
+			state = {1,5}, -- в каких состояниях это задание существует
+			center_point = "marlboro_men_camp"}
+		table.insert(self.Job, t)			
+		t = { 	name = "kamp",
+			object = nil,
+			begin = nil, 
+			idle = 0,	-- раз в какое время запускается работа
+			prior = 1,
+			state = {1,5}, -- в каких состояниях это задание существует
+			center_point = "marlboro_men_camp"}
+		table.insert(self.Job, t)			
+
+		t = { name = "patrol",
+			object = nil,
+			begin = nil, 
+			idle = 0,	-- раз в какое время запускается работа
+			prior = 2,
+			state = {2}, -- в каких состояниях это задание существует
+			patrol_path = "marlboro_men_to_post" }
+		table.insert(self.Job, t)			
+		t = { name = "follower",
+			object = nil,
+			begin = nil, 
+			idle = 0,	-- раз в какое время запускается работа
+			prior = 1,
+			state = {2}, -- в каких состояниях это задание существует
+			leader_name = nil }
+		table.insert(self.Job, t)			
+		t = { name = "follower",
+			object = nil,
+			begin = nil, 
+			idle = 0,	-- раз в какое время запускается работа
+			prior = 1,
+			state = {2}, -- в каких состояниях это задание существует
+			leader_name = nil }
+		table.insert(self.Job, t)			
+
+		t = { 	name = "ambush",
+			object = nil,
+			begin = nil, 
+			idle = 0,	-- раз в какое время запускается работа
+			prior = 1,
+			state = {3}, -- в каких состояниях это задание существует
+			point = "marlboro_men_post_1"}
+		table.insert(self.Job, t)			
+		t = { 	name = "ambush",
+			object = nil,
+			begin = nil, 
+			idle = 0,	-- раз в какое время запускается работа
+			prior = 1,
+			state = {3}, -- в каких состояниях это задание существует
+			point = "marlboro_men_post_2"}
+		table.insert(self.Job, t)			
+		t = { 	name = "ambush",
+			object = nil,
+			begin = nil, 
+			idle = 0,	-- раз в какое время запускается работа
+			prior = 1,
+			state = {3}, -- в каких состояниях это задание существует
+			point = "marlboro_men_post_3"}
+		table.insert(self.Job, t)
+
+		t = { name = "patrol",
+			object = nil,
+			begin = nil, 
+			idle = 0,	-- раз в какое время запускается работа
+			prior = 2,
+			state = {4}, -- в каких состояниях это задание существует
+			patrol_path = "marlboro_men_from_post" }
+		table.insert(self.Job, t)			
+		t = { name = "follower",
+			object = nil,
+			begin = nil, 
+			idle = 0,	-- раз в какое время запускается работа
+			prior = 1,
+			state = {4}, -- в каких состояниях это задание существует
+			leader_name = nil }
+		table.insert(self.Job, t)			
+		t = { name = "follower",
+			object = nil,
+			begin = nil, 
+			idle = 0,	-- раз в какое время запускается работа
+			prior = 1,
+			state = {4}, -- в каких состояниях это задание существует
+			leader_name = nil }
+		table.insert(self.Job, t)
+	end
+	if name == "happy_campers" then
+		-- общие для всех состояний
+		local t = { name = "kamp",
+			object = nil,
+			begin = nil, 
+			idle = 0,	-- раз в какое время запускается работа
+			prior = 1,
+			state = {1,5}, -- в каких состояниях это задание существует
+			center_point = "hp_kamp_1"}
+		table.insert(self.Job, t)			
+		t = { 	name = "kamp",
+			object = nil,
+			begin = nil, 
+			idle = 0,	-- раз в какое время запускается работа
+			prior = 1,
+			state = {1,5}, -- в каких состояниях это задание существует
+			center_point = "hp_kamp_1"}
+		table.insert(self.Job, t)			
+		t = { 	name = "kamp",
+			object = nil,
+			begin = nil, 
+			idle = 0,	-- раз в какое время запускается работа
+			prior = 1,
+			state = {1,5}, -- в каких состояниях это задание существует
+			center_point = "hp_kamp_1"}
+		table.insert(self.Job, t)			
+
+		t = { name = "patrol",
+			object = nil,
+			begin = nil, 
+			idle = 0,	-- раз в какое время запускается работа
+			prior = 2,
+			state = {2}, -- в каких состояниях это задание существует
+			patrol_path = "hp_path_0_1" }
+		table.insert(self.Job, t)			
+		t = { name = "follower",
+			object = nil,
+			begin = nil, 
+			idle = 0,	-- раз в какое время запускается работа
+			prior = 1,
+			state = {2}, -- в каких состояниях это задание существует
+			leader_name = nil }
+		table.insert(self.Job, t)			
+		t = { name = "follower",
+			object = nil,
+			begin = nil, 
+			idle = 0,	-- раз в какое время запускается работа
+			prior = 1,
+			state = {2}, -- в каких состояниях это задание существует
+			leader_name = nil }
+		table.insert(self.Job, t)			
+
+		t = { 	name = "ambush",
+			object = nil,
+			begin = nil, 
+			idle = 0,	-- раз в какое время запускается работа
+			prior = 1,
+			state = {3}, -- в каких состояниях это задание существует
+			point = "hp_ambush_1"}
+		table.insert(self.Job, t)			
+		t = { 	name = "ambush",
+			object = nil,
+			begin = nil, 
+			idle = 0,	-- раз в какое время запускается работа
+			prior = 1,
+			state = {3}, -- в каких состояниях это задание существует
+			point = "hp_ambush_2"}
+		table.insert(self.Job, t)			
+		t = { 	name = "ambush",
+			object = nil,
+			begin = nil, 
+			idle = 0,	-- раз в какое время запускается работа
+			prior = 1,
+			state = {3}, -- в каких состояниях это задание существует
+			point = "hp_ambush_3"}
+		table.insert(self.Job, t)
+
+		t = { name = "patrol",
+			object = nil,
+			begin = nil, 
+			idle = 0,	-- раз в какое время запускается работа
+			prior = 2,
+			state = {4}, -- в каких состояниях это задание существует
+			patrol_path = "hp_return_0_1" }
+		table.insert(self.Job, t)			
+		t = { name = "follower",
+			object = nil,
+			begin = nil, 
+			idle = 0,	-- раз в какое время запускается работа
+			prior = 1,
+			state = {4}, -- в каких состояниях это задание существует
+			leader_name = nil }
+		table.insert(self.Job, t)			
+		t = { name = "follower",
+			object = nil,
+			begin = nil, 
+			idle = 0,	-- раз в какое время запускается работа
+			prior = 1,
+			state = {4}, -- в каких состояниях это задание существует
+			leader_name = nil }
+		table.insert(self.Job, t)
+	end
+end
+function bandit:getJobLabel()
+	local jj = {}
+	for k,v in self.Job do
+		exist = false
+		for kk,vv in jj do
+			if v.name == vv then
+				exist = true
+			end
+		end
+		if exist == false then
+			table.insert(jj, v.name)
+		end
+	end
+	return jj
+end
+
+----------------------------------------------------------------------------------------------------------------------
+-- Function
+----------------------------------------------------------------------------------------------------------------------
+function addMember(name, npc, char_ini)
+	if xr_bandit.bandits[name] == nil then
+		xr_bandit.bandits[name] = xr_bandit.bandit(name, char_ini)
+	end
+
+        if char_ini:line_exist("bandit", "leader") == true then
+            	if char_ini:r_bool("bandit", "leader") == true then
+			xr_bandit.bandits[name]:addObject(npc, true)
+		else
+			xr_bandit.bandits[name]:addObject(npc, false)
+		end
+	else
+		xr_bandit.bandits[name]:addObject(npc, false)
+	end
+
+	-- надо биндить все, чего нужно
+	local jj = xr_bandit.bandits[name]:getJobLabel()
+	for k,v in jj do
+		if v == "kamp" then
+		        xr_kamp.add_to_binder (npc, nil)
+		elseif v == "patrol" then
+		        xr_patrol.add_to_binder (npc, nil)
+		elseif v == "follower" then
+		        xr_follower.add_to_binder (npc, nil)
+		elseif v == "ambush" then
+		        xr_ambush.add_to_binder (npc, nil)
+		elseif v == "sleeper" then
+		        xr_sleeper.add_to_binder (npc, nil)
+		end
+	end
+end
+function isBandit(npc)
+	for k,v in xr_bandit.bandits do
+		if v:stalkerExsist(npc) == true then
+			return k
+		end
+	end
+	return nil
+end             

@@ -1,0 +1,67 @@
+local patrol_path_name = "scared_path_roof"
+
+local attacking_actor = false
+
+function main()
+	printf("_bp: script_found")
+	local ptr = patrol(patrol_path_name)
+	
+	local boar
+	while true do
+		boar = level.object("boar_agro")
+
+		if boar then
+			printf("_bp: boar found")
+			if not boar:alive() or boar.health < 1 then
+				break
+			end
+			if not boar:get_script() then
+				printf("_bp: boar pod skriptom")
+				boar:script(true, this.script_name())
+			end
+			
+			local actor = level.actor()
+			if actor then
+				if not boar:action() and not actor:alive() then
+					break
+				end
+	
+				printf("_bp: boar waiting: %d", actor:position():distance_to(ptr:point(0)))
+				if actor:position():distance_to(ptr:point(0)) < 2 then
+					if not boar:action() then
+						attacking_actor = true
+						action(boar, act(act.attack, actor), cond(cond.time_end, time_infinite))
+					end
+					if actor:position():distance_to(boar:position()) < 2 then
+						-- hit
+						local h = hit()
+						h.power = 1000
+						h.direction = boar:direction()
+						h.bone = "bip01_legs"
+						h.draftsman = boar
+						h.impulse = 1000
+						h.type = hit.wound
+						actor:hit(h)
+						reset_action(boar, this.script_name())
+						action(boar, anim(anim.attack, 0), sound(sound.attack),
+							cond(cond.time_end, 3000))
+						while boar:action() do
+							wait()
+						end
+					end
+				else
+					if attacking_actor or actor:position():distance_to(boar:position()) < 2 then
+						break -- игрок отскочил или близко подошел к кабану, скрипт завершается
+					end
+				end
+			end
+		end
+		wait()
+	end
+
+	if boar ~= nil then
+		if boar:get_script() then
+			boar:script(false, this.script_name())
+		end
+	end
+end
