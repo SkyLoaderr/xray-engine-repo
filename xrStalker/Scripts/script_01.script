@@ -28,7 +28,7 @@ function main()
 	local actor   	= get_actor()
 --  создаем глоб. переменную содержащую id актера который доступен по переменной actor 
 	actor_id = actor:id()
-	local sound_01 = sound_object("scripts\\ne_naydem")
+	local sound_01 = sound_object("scripts\\Debris5-m")
 
 	local h			= hit()
 		h.power		= 200
@@ -90,7 +90,7 @@ function main()
 			stalker2:script	(false, script_01.script_name())
 			stalker2:script	(true,  script_01.script_name())
 			sound_01:play_at_pos		(actor,actor:position(),0);
-		wait(1000)
+		wait(2000)
 			action(
 				stalker1,
 			  	move	(move.standing, move.stand,move.line,patrol("way0000")),
