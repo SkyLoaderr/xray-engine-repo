@@ -2,6 +2,9 @@
 #include "physicsshellholder.h"
 class CPHStaticGeomShell;
 class CClimableObject: public CPhysicsShellHolder 
+#ifdef DEBUG
+,public pureRender
+#endif
 {
 	typedef	CPhysicsShellHolder		inherited;
 	CPHStaticGeomShell* m_pStaticShell;
@@ -17,4 +20,7 @@ public:
 	virtual void	UpdateCL			( );								// Called each frame, so no need for dt
 	virtual void	Center				(Fvector &C) const;
 	virtual float	Radius				() const;
+#ifdef DEBUG
+	virtual void	OnRender			();
+#endif
 };

@@ -48,3 +48,11 @@ float	CClimableObject::Radius				() const
 {
 		return							m_radius;
 }
+
+#ifdef DEBUG
+void CClimableObject ::OnRender()
+{
+	Fmatrix form;m_box.xform_get(form);
+	RCache.dbg_DrawOBB(form,m_box.m_halfsize,D3DCOLOR_XRGB(0,0,255));
+}
+#endif

@@ -40,7 +40,7 @@
 #include "space_restriction_manager.h"
 #include "seniority_hierarchy_holder.h"
 #include "space_restrictor.h"
-
+#include "ClimableObject.h"
 CPHWorld*	ph_world = 0;
 float		g_cl_lvInterp = 0;
 u32			lvInterpSteps = 0;
@@ -353,6 +353,9 @@ void CLevel::OnRender()
 			CSpaceRestrictor	*space_restrictor = smart_cast<CSpaceRestrictor*>(*I);
 			if (space_restrictor)
 				space_restrictor->OnRender();
+			CClimableObject		*climable		  = smart_cast<CClimableObject*>(*I);
+			if(climable)
+				climable->OnRender();
 		}
 		if (GameID() != GAME_SINGLE)
 		{
