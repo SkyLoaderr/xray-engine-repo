@@ -572,7 +572,7 @@ void	game_sv_Deathmatch::assign_RP				(CSE_Abstract* E, game_PlayerState* ps_who
 			PointID = ::Random.randI((int)ps_who->pSpawnPointsList.size());
 		};
 		ps_who->m_s16LastSRoint = ps_who->pSpawnPointsList[PointID];
-		Msg("used %d", ps_who->m_s16LastSRoint);
+//		Msg("used %d", ps_who->m_s16LastSRoint);
 		ps_who->pSpawnPointsList.erase(ps_who->pSpawnPointsList.begin()+PointID);
 
 		RPoint&				r	= rp[ps_who->m_s16LastSRoint];

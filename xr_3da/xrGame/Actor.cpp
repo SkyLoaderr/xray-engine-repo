@@ -429,7 +429,15 @@ void CActor::Hit		(float iLost, Fvector &dir, CObject* who, s16 element,Fvector 
 		}
 		break;
 	default:
-		inherited::Hit	(iLost,dir,who,element,position_in_bone_space, impulse, hit_type);
+		{
+			BOOL WasAlive = g_Alive();
+			float hit_power	= HitArtefactsOnBelt(iLost, hit_type);
+			inherited::Hit	(hit_power,dir,who,element,position_in_bone_space, impulse, hit_type);
+			if (WasAlive && !g_Alive())
+			{
+				OnHitKill();
+			};
+		}		
 		break;
 	}
 

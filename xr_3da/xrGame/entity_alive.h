@@ -170,6 +170,10 @@ public:
 	virtual u32					ef_creature_type			() const;
 	virtual u32					ef_weapon_type				() const;
 	virtual u32					ef_detector_type			() const;
+
+public:
+	virtual	void				OnCriticalWoundHealthLoss		() {};
+	virtual void				OnCriticalRadiationHealthLoss	() {};
 };
 
 #include "entity_alive_inline.h"

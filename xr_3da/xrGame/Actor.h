@@ -635,6 +635,16 @@ public:
 	virtual bool				natural_weapon				() const {return false;}
 	virtual bool				natural_detector			() const {return false;}
 	virtual bool				use_center_to_aim			() const {return true;}
+
+protected:
+	CObject*					m_pLastHitter;
+	CObject*					m_pLastHittingWeapon;
+public:
+	virtual void				SetHitInfo				(CObject* who, CObject* weapon);
+
+	virtual void				OnHitKill						();
+	virtual	void				OnCriticalWoundHealthLoss		();
+	virtual void				OnCriticalRadiationHealthLoss	();
 };
 
 IC	CActorCondition	&CActor::conditions	() const

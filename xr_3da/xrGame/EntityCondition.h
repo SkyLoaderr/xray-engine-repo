@@ -60,6 +60,7 @@ public:
 	virtual void UpdateCondition	();
 	virtual void UpdateWounds		();
 	virtual void UpdateConditionTime();
+	virtual void SetConditionDeltaTime	(u64 DeltaTime) { m_iDeltaTime = DeltaTime; };
 
 	//временно! сон часов
 	virtual void Sleep(float hours);
@@ -72,7 +73,6 @@ public:
 	virtual float BleedingSpeed();
 
 	virtual CObject* GetWhoHitLastTime() {return m_pWho;}
-
 protected:
 	virtual void UpdateHealth	();
 	virtual void UpdatePower	();

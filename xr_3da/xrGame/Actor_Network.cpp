@@ -1706,3 +1706,27 @@ void	CActor::Check_for_AutoPickUp()
 
 	setEnabled(Enabled);
 }
+
+void				CActor::SetHitInfo				(CObject* who, CObject* weapon)
+{
+	m_pLastHitter = who;
+	m_pLastHittingWeapon = weapon;
+};
+
+void				CActor::OnHitKill						()
+{
+	Msg("%s killed by hit from %s %s", 
+		*cName(),
+		(m_pLastHitter ? *(m_pLastHitter->cName()) : ""), 
+		((m_pLastHittingWeapon && m_pLastHittingWeapon != m_pLastHitter) ? *(m_pLastHittingWeapon->cName()) : ""));
+};
+
+void				CActor::OnCriticalWoundHealthLoss		() 
+{
+	Msg("%s is bleed out, thanks to %s", *cName(), (m_pLastHitter ? *(m_pLastHitter->cName()) : ""));
+};
+
+void				CActor::OnCriticalRadiationHealthLoss	() 
+{
+	Msg("%s killed by radiation", *cName());
+};
