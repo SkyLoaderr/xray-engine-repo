@@ -563,6 +563,16 @@
 						RelativePath=".\script_flags_script.cpp">
 					</File>
 				</Filter>
+				<Filter
+					Name="ScriptReader"
+					Filter="">
+					<File
+						RelativePath=".\script_reader.h">
+					</File>
+					<File
+						RelativePath=".\script_reader_script.cpp">
+					</File>
+				</Filter>
 			</Filter>
 			<Filter
 				Name="ScriptEngine"
