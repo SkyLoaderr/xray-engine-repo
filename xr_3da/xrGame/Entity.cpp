@@ -150,14 +150,21 @@ BOOL CEntity::Spawn		(BOOL bLocal, int server_id, Fvector& o_pos, Fvector& o_ang
 {
 	CGameObject::Spawn	(bLocal,server_id,o_pos,o_angle,P,flags);
 
+	// Read team & squad & group
+	u8					s_team,s_squad,s_group;
+	P.r_u8				(s_team);
+	P.r_u8				(s_squad);
+	P.r_u8				(s_group);
+	
 	// Initialize variables
-	id_Team				= team;
-	id_Squad			= squad;
-	id_Group			= group;
+	id_Team				= s_team;
+	id_Squad			= s_squad;
+	id_Group			= s_group;
 	iHealth				= 100;
 	iArmor				= 0;
 	Movement.SetPosition(o_pos.x,o_pos.y,o_pos.z);
 	Movement.SetVelocity(0,0,0);
+	
 	pCreator->Objects.sheduled.Unregister	(this);
 	pCreator->Objects.sheduled.Register		(this);
 
