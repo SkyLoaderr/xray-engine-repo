@@ -3,46 +3,30 @@ class "const_evaluator"		(property_evaluator)
 
 function const_evaluator:__init(value) super()
 	self.value				= value
-	printf					("evaluator is constructed!")
 end
 
 function const_evaluator:evaluate()
-	printf					("evaluator is asked for the value!")
 	return					self.value
 end
 
 class "evaluator_first_meet"	(property_evaluator)
 
-function evaluator_first_meet:__init(obj_name0,obj_name1,func) super()
+function evaluator_first_meet:__init(obj_name0,obj_name1,tbl,index) super()
 	self.object0			= get_level_object(obj_name0)
 	self.object1			= get_level_object(obj_name1)
-	self.func				= func
-	printf					("evaluator is constructed!")
+	self.tbl				= tbl
+	self.index				= index
 end
 
 function evaluator_first_meet:evaluate()
-	printf					("evaluator is asked for the value!")
-	
-	local					meet = 0
-	local					see = 0
-	if self:func() == true then
-		meet				= 1
-	end
-	if self.object0:see(self.object1) == true then
-		see					= 1
-	end
-	printf					("See[%d],Dist[%f],First[%s]",see,self.object0:position():distance_to(self.object1:position()),meet)
-	
 	if 
 		self.object0:see(self.object1)
-		and 
+			and 
 		self.object0:position():distance_to(self.object1:position()) < 5.0
-		then
-		if self:func() == true then
-			return			true
-		else
-			return			false
-		end
+			and
+        self.tbl[self.index] == true
+			then
+		return			true
 	else
 		return				false
 	end
@@ -55,7 +39,6 @@ function action_patrol:__init(obj_name,patrol_path,name) super(get_level_object(
 	self.object				= get_level_object(obj_name)
 	self.name				= name
 	self.patrol_path		= patrol_path
-	printf					("action %s is constructed!",self.name)
 end
 
 function action_patrol:initialize()
@@ -68,28 +51,26 @@ function action_patrol:initialize()
 		anim				(anim.free),
 		cond				(cond.move_end)
 	)
-	printf					("action %s is initialized!",self.name)
 end
 
 function action_patrol:finalize()
 	action_base.finalize	(self)
 	self.object:script		(false,s_test.script_name())
-	printf					("action %s is finalized!",self.name)
 end
 
 function action_patrol:execute()
 	action_base.execute		(self)
-	printf					("action %s is executed!",self.name)
 end
 
 -- define class action patrol hi
 class "action_patrol_hi"	(action_base)
 
-function action_patrol_hi:__init(obj_name,name,func) super(get_level_object(obj_name),name)
+function action_patrol_hi:__init(obj_name,name,tbl,index) super(get_level_object(obj_name),name)
 	self.object				= get_level_object(obj_name)
 	self.func				= func
 	self.name				= name
-	printf					("action %s is constructed!",self.name)
+	self.tbl				= tbl
+	self.index				= index
 end
 
 function action_patrol_hi:initialize()
@@ -101,62 +82,36 @@ function action_patrol_hi:initialize()
 		sound				("scripts\\idle\\say_holodno","bip01_head"),
 		cond				(cond.sound_end)
 	)
-	printf					("action %s is initialized!",self.name)
 end
 
 function action_patrol_hi:finalize()
 	action_base.finalize	(self)
 	self.object:script		(false,s_test.script_name())
-	printf					("action %s is finalized!",self.name)
 end
 
 function action_patrol_hi:execute()
 	action_base.execute		(self)
 	if self.object:action() == nil then
-		self:func			(false)
+		self.tbl[self.index] = false
 	end
-	printf					("action %s is executed!",self.name)
 end
 
 -- define class custom planner
 class "custom_planner" 		(action_planner)
 
 function custom_planner:__init	() super()
-	printf					("planner is constructed!")
-	self.meet				= true
-	if self.meet == true then
-		printf				("init first_meet = true")
-	else
-		printf				("init first_meet = false")
-	end
-end
-
-function custom_planner:set_first_meet	(meet)
-	if meet == true then
-		printf					("setting first_meet to true")
-	else
-		printf					("setting first_meet to false")
-	end
-	self.meet				= meet
-end
-
-function custom_planner:first_meet		()
-	if self.meet == true then
-		printf				("first_meet = true")
-	else
-		printf				("first_meet = false")
-	end
-	return					self.meet
+	self.tbl				= {}
+	self.tbl[1]				= true
 end
 
 function custom_planner:reinit	(obj, clear_all)
 	action_planner.reinit	(self, obj, clear_all)
-	printf					("planner is reinitialized!")
 end
 
+-- setup stalkers
 function setup(obj_name0,obj_name1,patrol_path)
 	-- define planner
-    planner						= s_test.custom_planner()
+    local planner				= s_test.custom_planner()
     planner:reinit				(get_actor(),false)
     
 	-- define world properties
@@ -169,11 +124,11 @@ function setup(obj_name0,obj_name1,patrol_path)
 	
 	-- define evaluators
 	local eval_patrol_over		= s_test.const_evaluator		(false)
-	local eval_first_meet		= s_test.evaluator_first_meet	(obj_name0,obj_name1,planner.first_meet)
+	local eval_first_meet		= s_test.evaluator_first_meet	(obj_name0,obj_name1,planner.tbl,1)
 	
 	-- define actions
 	local _action_patrol		= s_test.action_patrol			(obj_name0,patrol_path,"action_patrol")
-	local _action_patrol_hi		= s_test.action_patrol_hi		(obj_name0,"action_patrol_hi",planner.set_first_meet)
+	local _action_patrol_hi		= s_test.action_patrol_hi		(obj_name0,"action_patrol_hi",planner.tbl,1)
     
 	-- define action conditions and effects
 	
@@ -204,23 +159,13 @@ end
 
 function main ()
 	planner0				= s_test.setup	("m_stalker_e0000","m_stalker_e0001","way0000")
-	if (planner0.meet == true) then
-		printf				("0 : true")
-	else
-		printf				("0 : false")
-	end
 	planner1				= s_test.setup	("m_stalker_e0001","m_stalker_e0000","way0001")
-	if (planner1.meet == true) then
-		printf				("1 : true")
-	else
-		printf				("1 : false")
-	end
 
 	-- update cycle
 	while true do
 		planner0:update		(1000)
 		planner1:update		(1000)
-		wait				(1000)
+		wait				(10)
 	end
 	
 	-- the end
