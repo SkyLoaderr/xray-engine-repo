@@ -441,6 +441,11 @@
 		</File>
 		<File
 			RelativePath=".\xr_wounded.script">
+			<FileConfiguration
+				Name="Debug|Win32">
+				<Tool
+					Name="VCCustomBuildTool"/>
+			</FileConfiguration>
 		</File>
 	</Files>
 	<Globals>
