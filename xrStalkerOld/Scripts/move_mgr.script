@@ -312,14 +312,14 @@ function move_mgr:sync_ok()
 end
 
 function move_mgr:no_need_to_rotate()
+	-- ≈сли нет patrol_look, то на patrol_walk не должно быть флажков, соответственно, персонаж никуда поворачиватьс€
+	-- не должен, соответственно, вызывать no_need_to_rotate() дл€ проверки окончани€ поворота тоже не должен.
+	-- ѕоэтому эта проверка необ€зательна.
 	if not self.patrol_look then
-		return false
+		return true
 	end
 
-	local wayp_pos = self.patrol_look:point(self.last_look_index)
-	local y = yaw(self.object:direction(), utils.vector_copy_by_val(wayp_pos):sub(self.object:position()))
-
-	return y < 0.3
+	return utils.no_need_to_rotate(self.object, self.patrol_look:point(self.last_look_index))
 end
 
 function move_mgr:reset_path_info()

@@ -391,3 +391,9 @@ end
 function is_day()
 	return level.get_time_hours() >= 9 and level.get_time_hours() < 21
 end
+
+function no_need_to_rotate(npc, target_pos)
+	local y = yaw(npc:direction(), utils.vector_copy_by_val(target_pos):sub(npc:position()))
+
+	return y < 0.3
+end

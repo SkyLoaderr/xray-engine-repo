@@ -159,7 +159,7 @@ end
 -- Выполняет переключение на указанную секцию, если задана.
 -- Если section == nil, остается работать старая секция.
 function switch_to_section(npc, st, section)
-	if section == nil then
+	if section == nil or section == "" then
 		return
 	end
 	xr_motivator.storage[npc:id()]["active_section"] = nil
