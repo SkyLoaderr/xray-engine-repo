@@ -25,7 +25,7 @@ void	game_sv_CS::OnRoundStart	()
 		for		(u32 it=0; it<cnt; it++)	
 		{
 			game_PlayerState*	ps	=	get_it	(it);
-			ps->money_total			=	10000;
+			ps->money_total			=	1000;
 			ps->money_for_round		=	0;
 			ps->flags = 0;
 			ps->deaths = 0;
