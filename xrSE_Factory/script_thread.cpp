@@ -32,6 +32,7 @@ CScriptThread::CScriptThread(LPCSTR caNamespaceName)
 	VERIFY2				(lua(),"Cannot create new Lua thread");
 	m_thread_reference	= luaL_ref(ai().script_engine().lua(),LUA_REGISTRYINDEX);
 	
+#ifdef DEBUG
 #ifdef USE_DEBUGGER
 	if( !ai().script_engine().debugger() || !ai().script_engine().debugger()->Active() )
 #endif
@@ -39,6 +40,7 @@ CScriptThread::CScriptThread(LPCSTR caNamespaceName)
 #ifdef USE_DEBUGGER
 	else
 		lua_sethook		(lua(), CDbgLuaHelper::hookLua,			LUA_MASKLINE|LUA_MASKCALL|LUA_MASKRET, 0);
+#endif
 #endif
 
 	sprintf				(S,"%s.main()",caNamespaceName);
