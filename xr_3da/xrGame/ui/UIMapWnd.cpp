@@ -236,7 +236,7 @@ void CUIMapWnd::InitLocalMapObjectives()
 
 		map_spot->arrow_color		= map_location.icon_color;
 		map_spot->m_bArrowEnabled	= map_location.marker_show;
-		map_spot->m_LevelName		= Level().name();
+		map_spot->m_LevelName		= map_location.level_name;
 
 		UILocalMapBackground.ConvertToLocal(src,P);
 
