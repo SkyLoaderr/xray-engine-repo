@@ -18,7 +18,8 @@ public:
 	CUITabButtonMP();
 	virtual ~CUITabButtonMP();
 
-	virtual void Init(int x, int y, int width, int height);
+//	virtual void Init(int x, int y, int width, int height);
+	virtual void Draw();
 	virtual void Update();
 	virtual void UpdateTextAlign();	
 	virtual void DrawHighlightedText() {}
