@@ -12,7 +12,7 @@
 template <COthelloClassicBoard::cell_type _color_to_move>
 void COthelloClassicBoard::fill_moves		()
 {
-#if 1
+#if 0
 	for (cell_index i=0; i<8; ++i)
 		for (cell_index j=0; j<8; ++j) {
 			if (((const COthelloClassicBoard*)(this))->cell(i,j) != EMPTY)

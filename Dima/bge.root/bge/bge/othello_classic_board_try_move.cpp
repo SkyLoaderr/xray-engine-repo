@@ -118,7 +118,7 @@ bool COthelloClassicBoard::try_move			(const cell_index &index)
 		return			(true);
 	}
 	
-	if (moves().size() > 1)
+	if (can_move())
 		return			(false);
 	
 	m_move_processor.on_do_move		(index);

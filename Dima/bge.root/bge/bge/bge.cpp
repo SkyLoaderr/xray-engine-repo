@@ -10,7 +10,7 @@
 #include "hardware.h"
 #include "script.h"
 
-#define TEST
+//#define TEST
 
 #ifdef TEST
 #include "othello_board.h"
@@ -43,6 +43,8 @@ typedef CPrimitiveEvaluator<COthelloBoard>				CSPrimitiveEvaluator;
 typedef mini_max<COthelloBoard,CSPrimitiveEvaluator>	_mini_max;
 #endif
 
+extern void string_test();
+
 void __cdecl main(char argc, char *argv[])
 {
 	Hardware::detect	();
@@ -71,6 +73,7 @@ void __cdecl main(char argc, char *argv[])
 	ui().log				("Nodes searched : %d\n",search.m_counter);
 	ui().log				("Search speed   : %f (nodes per second)\n",float(search.m_counter)/((finish - start)*CPU::cycles2seconds));
 #endif
+	string_test			();
 
 	ui().execute		(argc,argv);
 }

@@ -1908,6 +1908,10 @@
 			RelativePath=".\bge.cpp"
 			>
 		</File>
+		<File
+			RelativePath=".\string_search.cpp"
+			>
+		</File>
 	</Files>
 	<Globals>
 	</Globals>
