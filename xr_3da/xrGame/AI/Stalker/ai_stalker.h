@@ -15,6 +15,8 @@
 #include "../../inventory.h"
 #include "../../weapon_manager.h"
 #include "../../sight_manager.h"
+#include "../../state_manager.h"
+#include "../../state_interface.h"
 
 using namespace StalkerSpace;
 
@@ -35,10 +37,12 @@ class CAI_Stalker :
 	public CWeaponManager,
 	public CSightManager,
 	public CStalkerAnimations, 
-	public CStalkerMovementManager
+	public CStalkerMovementManager,
+	public CStateManager<IStateAbstract>
 {
 private:
 	typedef CCustomMonster inherited;
+	typedef CStateManager<IStateAbstract> CSStateManager;
 	
 	EActionState				m_tActionState;
 	u32							m_dwActionStartTime;

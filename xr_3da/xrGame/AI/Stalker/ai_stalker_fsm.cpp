@@ -916,6 +916,8 @@ void CAI_Stalker::TakeItems()
 
 void CAI_Stalker::Think()
 {
+	CSStateManager::update	(Level().timeServer() - m_dwLastUpdateTime);
+
 	play					(eStalkerSoundHumming,60000,10000);
 	set_selection_type		(eSelectionTypeRandomBranching);
 	vfSetParameters			(0,0,0,MonsterSpace::eObjectActionIdle,ePathTypeGamePath,eDetailPathTypeSmooth,eBodyStateStand,eMovementTypeWalk,eMentalStateFree,eLookTypePathDirection);
