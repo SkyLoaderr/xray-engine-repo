@@ -20,7 +20,7 @@ function main ()
 		i			= i + 1
 	end
 
-	c				= a:point(a:index(get_level_object("localhost/dima"):position()));
+	c				= a:point(a:nearest(get_level_object("localhost/dima"):position()));
 	printf			("nearest : [%f][%f][%f]",c.x,c.y,c.z)
 	
 	action(
