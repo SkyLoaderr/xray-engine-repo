@@ -815,7 +815,7 @@ void CPHElement::BonesCallBack(CBoneInstance* B)
 
 }
 
-void CPHElement::set_PhysicsRefObject(CGameObject* ref_object)
+void CPHElement::set_PhysicsRefObject(CPhysicsShellHolder* ref_object)
 {
 	CPHGeometryOwner::set_PhysicsRefObject(ref_object);
 }

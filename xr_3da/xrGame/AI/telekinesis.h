@@ -16,27 +16,27 @@ public:
 
 			
 			// активировать объект
-			void	activate			(CGameObject *obj, float strength, float height, u32 max_time_keep);
+			void	activate			(CPhysicsShellHolder *obj, float strength, float height, u32 max_time_keep);
 
 			// деактивировать все объекты
 			void	deactivate			();
 			// деактивировать объект
-			void	deactivate			(CGameObject *obj);
+			void	deactivate			(CPhysicsShellHolder *obj);
 
 			// бросить объект 'obj' в позицию 'target'
-			void	fire				(CGameObject *obj, const Fvector &target);
+			void	fire				(CPhysicsShellHolder *obj, const Fvector &target);
 	
 			// бросить все объекты в позицию 'target'
 			void	fire				(const Fvector &target);
 			
 			// бросить объект 'obj' в позицию 'target' с учетом коэф силы 
-			void	fire				(CGameObject *obj, const Fvector &target, float power);
+			void	fire				(CPhysicsShellHolder *obj, const Fvector &target, float power);
 
 			// вернуть активность телекинеза
 			bool	is_active			() {return active;}
 
 			// вернуть активность объекта		
-			bool	is_active_object	(CGameObject *obj);
+			bool	is_active_object	(CPhysicsShellHolder *obj);
 
 			// вернуть количество кониролируемых объектов
 			u32		get_objects_count	();

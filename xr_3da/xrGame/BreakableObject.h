@@ -6,10 +6,10 @@
 #define BreakableObjectH
 #pragma once
 
-#include "gameobject.h"
+#include "physicsshellholder.h"
 class CPHStaticGeomShell;
 
-class CBreakableObject: public CGameObject {
+class CBreakableObject: public CPhysicsShellHolder {//need m_pPhysicShell
 	typedef	CGameObject		inherited;
 private:
 		bool				b_resived_damage;

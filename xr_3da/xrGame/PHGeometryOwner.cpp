@@ -253,7 +253,7 @@ void CPHGeometryOwner::set_ObjectContactCallback(ObjectContactCallbackFun* callb
 	for(;i!=e;++i) (*i)->set_obj_contact_cb(callback);
 }
 
-void CPHGeometryOwner::set_PhysicsRefObject(CGameObject* ref_object)
+void CPHGeometryOwner::set_PhysicsRefObject(CPhysicsShellHolder* ref_object)
 {
 	m_phys_ref_object=ref_object;
 	if(!b_builded) return;

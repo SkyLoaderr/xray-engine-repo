@@ -61,7 +61,7 @@ void CActor::detach_Vehicle()
 	//mstate_wishful &=~mcAnyMove;
 }
 
-bool CActor::use_Vehicle(CGameObject* object)
+bool CActor::use_Vehicle(CPhysicsShellHolder* object)
 {
 	
 	CHolderCustom* vehicle=dynamic_cast<CHolderCustom*>(object);

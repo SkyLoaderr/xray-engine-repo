@@ -26,7 +26,7 @@
 #include "object_handler.h"
 #include "ai_script_snd_info.h"
 #include "ai_script_monster_hit_info.h"
-
+#include "physicsshellholder.h"
 
 class CInventoryItem;
 class CLuaHit;
@@ -87,7 +87,7 @@ public:
 	
 	BIND_FUNCTION10	(m_tpGameObject,	Position,			CGameObject,	Position,			Fvector,						Fvector());
 	BIND_FUNCTION10	(m_tpGameObject,	Direction,			CGameObject,	Direction,			Fvector,						Fvector());
-	BIND_FUNCTION10	(m_tpGameObject,	Mass,				CGameObject,	GetMass,			float,							float(-1));
+	BIND_FUNCTION10	(m_tpGameObject,	Mass,		CPhysicsShellHolder,	GetMass,			float,							float(-1));
 	BIND_FUNCTION10	(m_tpGameObject,	ID,					CGameObject,	ID,					u32,							u32(-1));
 	BIND_FUNCTION10	(m_tpGameObject,	getVisible,			CGameObject,	getVisible,			BOOL,							FALSE);
 	BIND_FUNCTION01	(m_tpGameObject,	setVisible,			CGameObject,	setVisible,			BOOL,							BOOL);

@@ -14,7 +14,7 @@ CTelekinesis::~CTelekinesis()
 
 }
 
-void CTelekinesis::activate(CGameObject *obj, float strength, float height, u32 max_time_keep)
+void CTelekinesis::activate(CPhysicsShellHolder *obj, float strength, float height, u32 max_time_keep)
 {
 	active = true;
 
@@ -39,7 +39,7 @@ void CTelekinesis::deactivate()
 }
 
 
-void CTelekinesis::deactivate(CGameObject *obj)
+void CTelekinesis::deactivate(CPhysicsShellHolder *obj)
 {
 	// найти объект
 	TELE_OBJECTS_IT it = find(objects.begin(), objects.end(), obj);
@@ -68,7 +68,7 @@ void CTelekinesis::fire(const Fvector &target)
 	deactivate();
 }
 
-void CTelekinesis::fire(CGameObject *obj, const Fvector &target)
+void CTelekinesis::fire(CPhysicsShellHolder *obj, const Fvector &target)
 {
 	// найти объект
 	TELE_OBJECTS_IT it = find(objects.begin(), objects.end(), obj);
@@ -79,7 +79,7 @@ void CTelekinesis::fire(CGameObject *obj, const Fvector &target)
 }
 
 // бросить объект 'obj' в позицию 'target' с учетом коэф силы 
-void CTelekinesis::fire(CGameObject *obj, const Fvector &target, float power)
+void CTelekinesis::fire(CPhysicsShellHolder *obj, const Fvector &target, float power)
 {
 	// найти объект
 	TELE_OBJECTS_IT it = find(objects.begin(), objects.end(), obj);
@@ -90,7 +90,7 @@ void CTelekinesis::fire(CGameObject *obj, const Fvector &target, float power)
 }
 
 
-bool CTelekinesis::is_active_object(CGameObject *obj)
+bool CTelekinesis::is_active_object(CPhysicsShellHolder *obj)
 {
 	// найти объект
 	TELE_OBJECTS_IT it = find(objects.begin(), objects.end(), obj);
@@ -149,8 +149,8 @@ bool RemovePred(CTelekineticObject &tele_object)
 {
 	return (!tele_object.get_object() || 
 		tele_object.get_object()->getDestroy() ||
-		!tele_object.get_object()->m_pPhysicsShell ||
-		!tele_object.get_object()->m_pPhysicsShell->bActive);
+		!tele_object.get_object()->PPhysicsShell() ||
+		!tele_object.get_object()->PPhysicsShell()->bActive);
 }
 
 void  CTelekinesis::PhTune(dReal step)

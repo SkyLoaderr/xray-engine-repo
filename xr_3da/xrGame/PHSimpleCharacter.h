@@ -147,7 +147,7 @@ public:
 																					};
 	virtual		void		SetMas								(dReal mass)		;
 
-	virtual		void		SetPhysicsRefObject					(CGameObject* ref_object);
+	virtual		void		SetPhysicsRefObject					(CPhysicsShellHolder* ref_object);
 
 	virtual		void		CaptureObject						(dBodyID body,const dReal* anchor);
 	virtual		void		CapturedSetPosition					(const dReal* position);

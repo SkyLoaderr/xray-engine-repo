@@ -285,7 +285,7 @@ void CPHShell::Enable()
 	EnableObject();
 }
 
-void CPHShell::set_PhysicsRefObject	 (CGameObject* ref_object)
+void CPHShell::set_PhysicsRefObject	 (CPhysicsShellHolder* ref_object)
 {
 	ELEMENT_I i;
 	for(i=elements.begin();elements.end() != i;++i)

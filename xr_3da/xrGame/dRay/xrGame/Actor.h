@@ -186,8 +186,8 @@ public:
 protected:
 	CHolderCustom*			m_holder;
 	void					attach_Vehicle			(CHolderCustom* vehicle);
-	bool					use_Vehicle				(CGameObject* object);
-	bool					use_MountedWeapon		(CGameObject* object);
+	bool					use_Vehicle				(CPhysicsShellHolder* object);
+	bool					use_MountedWeapon		(CPhysicsShellHolder* object);
 	void					ActorUse				();
 
 

@@ -11,7 +11,7 @@
 #include "ParticlesObject.h"
 #include "phmovementcontrol.h"
 #include "xrmessages.h"
-
+#include "physicsshellholder.h"
 CBlackGraviArtifact::CBlackGraviArtifact(void) 
 {
 	m_fImpulseThreshold = 10.f;
@@ -108,7 +108,7 @@ void CBlackGraviArtifact::Hit(float P, Fvector &dir,
 
 void CBlackGraviArtifact::feel_touch_new(CObject* O) 
 {
-	CGameObject* pGameObject = dynamic_cast<CGameObject*>(O);
+	CPhysicsShellHolder* pGameObject = dynamic_cast<CPhysicsShellHolder*>(O);
 	CArtifact* pArtifact = dynamic_cast<CArtifact*>(O);
 
 	if(pGameObject && !pArtifact) 
@@ -152,7 +152,7 @@ void CBlackGraviArtifact::GraviStrike()
 						    m_GameObjectList.end() != it;
 							++it)
 	{
-		CGameObject* pGameObject = *it;
+		CPhysicsShellHolder* pGameObject = *it;
 
 		if(pGameObject->Visual()) 
 			pGameObject->Center(object_pos); 

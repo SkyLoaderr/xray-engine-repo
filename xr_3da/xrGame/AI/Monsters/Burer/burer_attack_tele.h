@@ -3,15 +3,15 @@
 class CBurer;
 class CGameObject;
 class CEntityAlive;
-
+class CPhysicsShellHolder;
 class CBurerAttackTele : public IState {
 	typedef	IState inherited;
 	CBurer	*pMonster;
 
 	const CEntityAlive			*enemy;
-	xr_vector<CGameObject *>	tele_objects;
+	xr_vector<CPhysicsShellHolder *>	tele_objects;
 	
-	CGameObject					*selected_object;
+	CPhysicsShellHolder					*selected_object;
 
 	enum {
 		ACTION_TELE_STARTED,

@@ -113,7 +113,7 @@ public:
 	virtual void				set_DynamicScales		(float l_scale=default_l_scale,float w_scale=default_w_scale);
 	virtual void				set_ContactCallback		  (ContactCallbackFun* callback);
 	virtual void				set_ObjectContactCallback (ObjectContactCallbackFun* callback);
-	virtual void				set_PhysicsRefObject	  (CGameObject* ref_object);
+	virtual void				set_PhysicsRefObject	  (CPhysicsShellHolder* ref_object);
 	virtual void				set_PushOut				  (u32 time,PushOutCallbackFun* push_out=PushOutCallback);
 
 	//breabable interface

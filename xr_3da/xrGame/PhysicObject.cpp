@@ -5,6 +5,7 @@
 #include "xrserver_objects_alife.h"
 #include "level.h"
 #include "phsynchronize.h"
+
 #define F_MAX         3.402823466e+38F
 u32 CPhysicObject::remove_time=5000;
 
@@ -353,22 +354,7 @@ void CPhysicObject::CreateSkeleton(CSE_ALifeObjectPhysic* po)
 	m_pPhysicsShell=P_build_Shell(this,!po->flags.test(CSE_ALifeObjectPhysic::flActive),fixed_bones);
 }
 
-void CPhysicObject::net_Export(NET_Packet& P)
-{
-	inherited::net_Export			(P);
-	R_ASSERT						(Local());
 
-	//	
-	//m_pPhysicsShell->net_Export(P);
-}
-
-void CPhysicObject::net_Import(NET_Packet& P)
-{
-	inherited::net_Import(P);
-	//m_pPhysicsShell->net_Import(P);
-	R_ASSERT						(Remote());
-	//	m_flags.set						(P.r_u8());
-}
 
 
 void CPhysicObject::shedule_Update(u32 dt)
@@ -459,10 +445,7 @@ void CPhysicObject::PHSplit()
 
 }
 
-void CPhysicObject::OnEvent		(NET_Packet& P, u16 type)
-{
-	inherited::OnEvent		(P,type);
-}
+
 void __stdcall PushOutCallback2(bool& do_colide,dContact& c);
 
 void CPhysicObject::UnsplitSingle(CPhysicObject* O)
@@ -515,12 +498,7 @@ BOOL CPhysicObject::UsedAI_Locations()
 	return					(FALSE);
 }
 
-void CPhysicObject::OnH_A_Independent()
-{
-	inherited::OnH_A_Independent();
-	//PKinematics(Visual())->Calculate();
-	//CopySpawnInit();
-}
+
 
 void CPhysicObject::CopySpawnInit()
 {

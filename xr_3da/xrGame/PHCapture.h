@@ -4,12 +4,13 @@
 
 #include "phobject.h"
 #include "gameobject.h"
-
+#include "physicsshellholder.h"
+class CPhysicShellHolder;
 class CPHCapture : public CPHUpdateObject
 {
 public:
-					CPHCapture	(CPHCharacter     *a_character,CGameObject	  *a_taget_object);
-					CPHCapture	(CPHCharacter     *a_character,CGameObject	  *a_taget_object,u16 a_taget_elemrnt);
+					CPHCapture	(CPHCharacter     *a_character,CPhysicsShellHolder	  *a_taget_object);
+					CPHCapture	(CPHCharacter     *a_character,CPhysicsShellHolder	  *a_taget_object,u16 a_taget_elemrnt);
 virtual				~CPHCapture							();
 
 
@@ -19,7 +20,7 @@ void				Release								();
 protected:
 CPHCharacter		*m_character;
 CPhysicsElement*	m_taget_element;
-CGameObject*		m_taget_object;
+CPhysicsShellHolder*	m_taget_object;
 dJointID			m_joint;
 dJointID			m_ajoint;
 dJointFeedback		m_joint_feedback;
@@ -56,8 +57,8 @@ private:
 			void Deactivate();
 			void CreateBody();
 			bool Invalid(){return 
-							!m_taget_object->m_pPhysicsShell||
-							!m_taget_object->m_pPhysicsShell->bActive||
+							!m_taget_object->PPhysicsShell()||
+							!m_taget_object->PPhysicsShell()->bActive||
 							!m_character->b_exist;
 							};
 

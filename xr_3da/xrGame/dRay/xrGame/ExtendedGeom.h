@@ -2,7 +2,7 @@
 #define EXTENDED_GEOM
 #include "PHObject.h"
 #include "ode_include.h"
-
+class CPhysicsShellHolder;
 
 struct Triangle 
 {
@@ -28,7 +28,7 @@ struct dxGeomUserData
 	bool		pushing_neg,pushing_b_neg;
 	Triangle	neg_tri,b_neg_tri;
 	CPHObject*	ph_object;
-	CGameObject* ph_ref_object;
+	CPhysicsShellHolder* ph_ref_object;
 	u16			material;
 	u16			tri_material;
 	ContactCallbackFun* callback;
@@ -104,7 +104,7 @@ IC void dGeomUserDataSetPhObject(dxGeom* geom,CPHObject* phObject)
 	(dGeomGetUserData(geom))->ph_object=phObject;
 }
 
-IC void dGeomUserDataSetPhysicsRefObject(dxGeom* geom,CGameObject* phRefObject)
+IC void dGeomUserDataSetPhysicsRefObject(dxGeom* geom,CPhysicsShellHolder* phRefObject)
 {
 	(dGeomGetUserData(geom))->ph_ref_object=phRefObject;
 }

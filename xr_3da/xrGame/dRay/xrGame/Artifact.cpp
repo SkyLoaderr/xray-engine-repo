@@ -1,6 +1,7 @@
 #include "stdafx.h"
 #include "artifact.h"
 #include "PhysicsShell.h"
+#include "PhysicsShellHolder.h"
 #include "game_cl_base.h"
 #include "level.h"
 
@@ -135,7 +136,7 @@ void CArtifact::OnH_B_Independent()
 void CArtifact::UpdateCL() 
 {
 	Fvector vel = {0, 0, 0};
-	if (H_Parent()) dynamic_cast<CGameObject*>(H_Parent())->PHGetLinearVell(vel);
+	if (H_Parent()) dynamic_cast<CPhysicsShellHolder*>(H_Parent())->PHGetLinearVell(vel);
 
 	CParticlesPlayer::SetParentVel(vel);
 	inherited::UpdateCL();

@@ -8,12 +8,12 @@ enum ETelekineticState {
 };
 
 class CGameObject;
-
+class CPhysicsShellHolder;
 class CTelekineticObject {
 
 public:
 	ETelekineticState	state;
-	CGameObject			*object;
+	CPhysicsShellHolder *object;
 	
 	float				target_height;
 
@@ -31,7 +31,7 @@ public:
 						CTelekineticObject		();
 						~CTelekineticObject		();
 	
-	bool				init					(CGameObject *obj, float s, float h, u32 ttk); 
+	bool				init					(CPhysicsShellHolder *obj, float s, float h, u32 ttk); 
 	
 	void				raise					(float power);
 	
@@ -43,7 +43,7 @@ public:
 
 
 	ETelekineticState	get_state				() {return state;}
-	CGameObject			*get_object				() {return object;}
+	CPhysicsShellHolder *get_object				() {return object;}
 
 	bool				check_height			();
 	bool				check_raise_time_out	();
@@ -55,7 +55,7 @@ public:
 
 	void				enable					();
 
-	bool				operator==				(const CGameObject *obj) {
+	bool				operator==				(const CPhysicsShellHolder *obj) {
 		return (object == obj);
 	}
 

@@ -384,7 +384,7 @@ void CCustomZone::shedule_Update(u32 dt)
 		if(m_iDisableIdleTime != -1 && (int)info.time_in_zone > m_iDisableIdleTime)
 		{
 			if(!pEntityAlive || !pEntityAlive->g_Alive())
-				StopObjectIdleParticles(dynamic_cast<CGameObject*>(pObject));
+				StopObjectIdleParticles(dynamic_cast<CPhysicsShellHolder*>(pObject));
 		}
 
 		//если есть хотя бы один не дисабленый объект, то
@@ -410,7 +410,7 @@ void CCustomZone::feel_touch_new(CObject* O)
 	if(dynamic_cast<CActor*>(O) && O == Level().CurrentEntity())
 					m_pLocalActor = dynamic_cast<CActor*>(O);
 
-	CGameObject* pGameObject =dynamic_cast<CGameObject*>(O);
+	CPhysicsShellHolder* pGameObject =dynamic_cast<CPhysicsShellHolder*>(O);
 	CEntityAlive* pEntityAlive =dynamic_cast<CEntityAlive*>(pGameObject);
 	
 	SZoneObjectInfo object_info;
@@ -444,7 +444,7 @@ void CCustomZone::feel_touch_delete(CObject* O)
 	
 	m_inZone.erase(O);
 	if(dynamic_cast<CActor*>(O)) m_pLocalActor = NULL;
-	CGameObject* pGameObject =dynamic_cast<CGameObject*>(O);
+	CPhysicsShellHolder* pGameObject =dynamic_cast<CPhysicsShellHolder*>(O);
 	StopObjectIdleParticles(pGameObject);
 
 	m_ObjectInfoMap.erase(O);
@@ -595,7 +595,7 @@ void CCustomZone::PlayBlowoutParticles()
 	pParticles->Play();
 }
 
-void CCustomZone::PlayHitParticles(CGameObject* pObject)
+void CCustomZone::PlayHitParticles(CPhysicsShellHolder* pObject)
 {
 	m_hit_sound.play_at_pos(this, pObject->Position());
 
@@ -624,7 +624,7 @@ void CCustomZone::PlayHitParticles(CGameObject* pObject)
 	}
 }
 
-void CCustomZone::PlayEntranceParticles(CGameObject* pObject)
+void CCustomZone::PlayEntranceParticles(CPhysicsShellHolder* pObject)
 {
 	m_entrance_sound.play_at_pos(this, pObject->Position());
 
@@ -687,7 +687,7 @@ void CCustomZone::PlayBulletParticles(Fvector& pos)
 	pParticles->Play();
 }
 
-void CCustomZone::PlayObjectIdleParticles(CGameObject* pObject)
+void CCustomZone::PlayObjectIdleParticles(CPhysicsShellHolder* pObject)
 {
 	ref_str particle_str = NULL;
 
@@ -707,7 +707,7 @@ void CCustomZone::PlayObjectIdleParticles(CGameObject* pObject)
 	//запустить партиклы на объекте
 	pObject->StartParticles(*particle_str, Fvector().set(0,1,0), ID());
 }
-void CCustomZone::StopObjectIdleParticles(CGameObject* pObject)
+void CCustomZone::StopObjectIdleParticles(CPhysicsShellHolder* pObject)
 {
 	OBJECT_INFO_MAP_IT it	= m_ObjectInfoMap.find(pObject);
 	if(m_ObjectInfoMap.end() == it) return;
@@ -744,7 +744,7 @@ void  CCustomZone::Hit(float P, Fvector &dir,
 	PlayBulletParticles(M.c);
 
 
-	inherited::Hit(P, dir, who, element, position_in_object_space, impulse, hit_type);
+	
 }
 
 

@@ -211,7 +211,7 @@ void CActor::ActorUse()
 	if(Level().IR_GetKeyState(DIK_LSHIFT)) return;
 
 	Collide::rq_result& RQ = HUD().GetCurrentRayQuery();
-	CGameObject* object = dynamic_cast<CGameObject*>(RQ.O);
+	CPhysicsShellHolder* object = dynamic_cast<CPhysicsShellHolder*>(RQ.O);
 	u16 element = BI_NONE;
 	if(object) 
 		element = (u16)RQ.element;

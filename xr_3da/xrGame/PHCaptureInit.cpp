@@ -9,7 +9,7 @@
 
 ///////////////////////////////////////////////////////////////////////////////////
 ///////////////////////////////////////////////////////////////////////////////////
-CPHCapture::CPHCapture	(CPHCharacter   *a_character, CGameObject	*a_taget_object)
+CPHCapture::CPHCapture	(CPHCharacter   *a_character, CPhysicsShellHolder	*a_taget_object)
 {
 	CPHUpdateObject::Activate();
 
@@ -86,7 +86,7 @@ CPHCapture::CPHCapture	(CPHCharacter   *a_character, CGameObject	*a_taget_object
 }
 
 /////////////////////////////////////////////////////////////////////////////////////////////////////////
-CPHCapture::CPHCapture(CPHCharacter   *a_character,CGameObject	*a_taget_object,u16 a_taget_element)
+CPHCapture::CPHCapture(CPHCharacter   *a_character,CPhysicsShellHolder	*a_taget_object,u16 a_taget_element)
 {
 
 	CPHUpdateObject::Activate();

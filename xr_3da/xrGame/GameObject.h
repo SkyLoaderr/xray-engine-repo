@@ -43,11 +43,6 @@ protected:
 public:
 	CInifile				*m_ini_file;
 
-	CPhysicsShell			*m_pPhysicsShell;
-	IC CPhysicsShell		*&PPhysicsShell()		
-	{
-		return m_pPhysicsShell;
-	}
 	// Utilities
 	static void				u_EventGen			(NET_Packet& P, u32 type, u32 dest	);
 	static void				u_EventSend			(NET_Packet& P, BOOL sync=TRUE		);
@@ -62,38 +57,24 @@ public:
 	virtual void			spatial_move		();
 	virtual BOOL			Ready				()	{ return getReady();	}	// update only if active and fully initialized by/for network
 	virtual float			renderable_Ambient	();
-
+	//virtual f32				GetMass				(){return 0.f;};
 	virtual void			shedule_Update		(u32 dt);	
 	virtual void			renderable_Render	();
 	virtual void			OnEvent				(NET_Packet& P, u16 type);
 	virtual void			UpdateCL			();
-	
-	virtual	void			Hit					(float P, Fvector &dir,	CObject* who, 
-												 s16 element,Fvector p_in_object_space, 
-												 float impulse, ALife::EHitType hit_type = ALife::eHitTypeWound);
-	virtual	void			PHHit				(Fvector &dir,s16 element,Fvector p_in_object_space, float impulse, ALife::EHitType hit_type = ALife::eHitTypeWound);
+	//virtual CPhysicsShell	*&PPhysicsShell		()																										
+	/*											{
+												R_ASSERT2(false,"Must never be colled. This object does not support physics shell!");
+												static CPhysicsShell* no_shell=0; 
+												return no_shell;
+												}*/
 	//для наследования CParticlesPlayer
 	virtual IRender_Sector*	Sector				()		{return inherited::Sector();}
 	
 	//virtual void			OnH_A_Independent	();
 	virtual void			OnH_B_Chield		();
 	virtual void			OnH_B_Independent	();
-	virtual void			PHGetLinearVell		(Fvector& velocity);
-	virtual void			PHSetLinearVell		(Fvector& velocity);
-	virtual void			PHSetMaterial		(LPCSTR m);
-	virtual void			PHSetMaterial		(u16 m);
-	virtual void			PHSetPushOut		(u32 time = 5000);
-///////////////////////////////////////////////////////////////////////
-	virtual u16				PHGetSyncItemsNumber();
-	virtual CPHSynchronize*	PHGetSyncItem		(u16 item);
-	virtual void			PHUnFreeze			();
-	virtual void			PHFreeze			();
-///////////////////// network /////////////////////////////////////////
-	virtual void			make_Interpolation	() {}; //interpolation from last visible to corrected position/rotation
-	virtual void			PH_B_CrPr			() {}; // actions & operations before physic correction-prediction steps
-	virtual void			PH_I_CrPr			() {}; // actions & operations after correction before prediction steps
-	virtual void			PH_A_CrPr			() {}; // actions & operations after phisic correction-prediction steps
-///////////////////////////////////////////////////////////////////////
+
 	virtual bool			IsVisibleForZones	() { return true; }
 ///////////////////////////////////////////////////////////////////////
 	virtual bool			NeedToDestroyObject	() const;
@@ -111,7 +92,7 @@ public:
 	virtual ~CGameObject();
 
 	virtual f32 ExplosionEffect(const Fvector &expl_centre, const f32 expl_radius, xr_list<s16> &elements, xr_list<Fvector> &bs_positions);
-	virtual f32 GetMass();
+
 	virtual BOOL			UsedAI_Locations	();
 
 #ifdef DEBUG
@@ -121,7 +102,12 @@ public:
 			void			Init				();
 	virtual	void			reinit				();
 	virtual	void			reload				(LPCSTR section);
-
+	///////////////////// network /////////////////////////////////////////
+	virtual void			make_Interpolation	() {}; //interpolation from last visible to corrected position/rotation
+	virtual void			PH_B_CrPr			() {}; // actions & operations before physic correction-prediction steps
+	virtual void			PH_I_CrPr			() {}; // actions & operations after correction before prediction steps
+	virtual void			PH_A_CrPr			() {}; // actions & operations after phisic correction-prediction steps
+	///////////////////////////////////////////////////////////////////////
 	virtual const SRotation	Orientation			() const
 	{
 		SRotation			rotation;
@@ -153,9 +139,7 @@ public:
 	{
 		return				(m_visual_callback);
 	}
-	virtual void			create_physic_shell		();
-	virtual void			activate_physic_shell	();
-	virtual void			setup_physic_shell		();
+
 
 private:
 	mutable CLuaGameObject	*m_lua_game_object;

@@ -15,6 +15,7 @@
 #include "entity_alive.h"
 #include "phmovementcontrol.h"
 #include "xrmessages.h"
+#include "PhysicsShellHolder.h"
 
 CGraviZone::CGraviZone(void)
 {
@@ -92,9 +93,9 @@ bool CGraviZone::IdleState()
 			xr_set<CObject*>::iterator it;
 			for(it = m_inZone.begin(); m_inZone.end() != it; ++it) 
 			{
-				CGameObject* GO = dynamic_cast<CGameObject*>(*it);
+				CPhysicsShellHolder * GO = dynamic_cast<CPhysicsShellHolder *>(*it);
 
-				if(GO && GO->m_pPhysicsShell && TTelekinesis::is_active_object(GO))
+				if(GO && GO->PPhysicsShell() && TTelekinesis::is_active_object(GO))
 				{
 					TTelekinesis::deactivate(GO);
 					StopTeleParticles(GO);
@@ -105,12 +106,12 @@ bool CGraviZone::IdleState()
 		{
 			m_dwTeleTime = 0;
 
-			xr_set<CObject*>::iterator it;
+			xr_set<CObject *>::iterator it;
 			for(it = m_inZone.begin(); m_inZone.end() != it; ++it) 
 			{
-				CGameObject* GO = dynamic_cast<CGameObject*>(*it);
+				CPhysicsShellHolder * GO = dynamic_cast<CPhysicsShellHolder *>(*it);
 
-				if(GO && GO->m_pPhysicsShell && !TTelekinesis::is_active_object(GO))
+				if(GO && GO->PPhysicsShell() && !TTelekinesis::is_active_object(GO))
 				{
 					TTelekinesis::activate(GO, 0.1f, m_fTeleHeight, m_dwTimeToTele);
 					PlayTeleParticles(GO);
@@ -127,7 +128,7 @@ bool CGraviZone::IdleState()
 
 void CGraviZone::Affect(CObject* O) 
 {
-	CGameObject* GO = dynamic_cast<CGameObject*>(O);
+	CPhysicsShellHolder* GO = dynamic_cast<CPhysicsShellHolder*>(O);
 	if(!GO) return;
 	CEntityAlive* EA = dynamic_cast<CEntityAlive*>(GO);
 
@@ -155,9 +156,9 @@ void CGraviZone::Affect(CObject* O)
 			vel.mul(throw_power);
 			EA->m_PhysicMovementControl->AddControlVel(vel);
 		}
-		else if(GO && GO->m_pPhysicsShell)
+		else if(GO && GO->PPhysicsShell())
 		{
-			GO->m_pPhysicsShell->applyImpulse(throw_in_dir, m_fThrowInImpulse*GO->GetMass()/500.f);
+			GO->PPhysicsShell()->applyImpulse(throw_in_dir, m_fThrowInImpulse*GO->GetMass()/500.f);
 		}
 	}
 	else

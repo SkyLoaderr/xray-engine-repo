@@ -1,7 +1,7 @@
 #pragma once
 #include "gameobject.h"
 
-class CCustomTarget : virtual public CGameObject
+class CCustomTarget : virtual public CGameObject//need m_pPhysicShell?
 {
 	typedef CGameObject inherited;
 public:

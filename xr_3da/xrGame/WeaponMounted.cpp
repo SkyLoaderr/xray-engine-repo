@@ -94,7 +94,7 @@ BOOL	CWeaponMounted::net_Spawn(LPVOID DC)
 
 	U16Vec fixed_bones;
 	fixed_bones.push_back	(K->LL_GetBoneRoot());
-	m_pPhysicsShell			= P_build_Shell(this,false,fixed_bones);
+	PPhysicsShell()			= P_build_Shell(this,false,fixed_bones);
 
 
 	CShootingObject::Light_Create();

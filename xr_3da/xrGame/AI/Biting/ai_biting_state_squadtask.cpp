@@ -114,7 +114,7 @@ void CBitingSquadTask::Run()
 		// Get cur dist
 		if (task.target.entity) {
 
-			CGameObject *pO = dynamic_cast<CGameObject *>(task.target.entity);
+			CPhysicsShellHolder *pO = dynamic_cast<CPhysicsShellHolder *>(task.target.entity);
 			R_ASSERT(pO);
 			Fvector nearest_bone_pos = pMonster->m_PhysicMovementControl->PHCaptureGetNearestElemPos(pO);
 			cur_dist = nearest_bone_pos.distance_to(pMonster->Position());

@@ -73,8 +73,8 @@ public:
 	virtual bool			has_geoms								(){return CPHGeometryOwner::has_geoms();}
 	virtual void			set_ContactCallback						(ContactCallbackFun* callback);													//aux (may not be)
 	virtual void			set_ObjectContactCallback				(ObjectContactCallbackFun* callback);											//called anywhere ph state influent
-	virtual void			set_PhysicsRefObject					(CGameObject* ref_object);												//aux
-	virtual CGameObject*	PhysicsRefObject					(){return m_phys_ref_object;}													//aux
+	virtual void			set_PhysicsRefObject					(CPhysicsShellHolder* ref_object);												//aux
+	virtual CPhysicsShellHolder*	PhysicsRefObject					(){return m_phys_ref_object;}													//aux
 	virtual void			SetMaterial								(u16 m);																		//aux
 	virtual void			SetMaterial								(LPCSTR m){CPHGeometryOwner::SetMaterial(m);}									//aux
 	virtual u16				numberOfGeoms							();																				//aux

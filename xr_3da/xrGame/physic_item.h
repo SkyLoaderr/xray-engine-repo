@@ -10,12 +10,12 @@
 
 #include "gameobject.h"
 #include "PHShellCreator.h"
-
+#include "PhysicsShellHolder.h"
 class CPhysicItem : 
-	virtual public CGameObject,
+	virtual public CPhysicsShellHolder,
 			public CPHShellSimpleCreator
 {
-	typedef CGameObject inherited;
+	typedef CPhysicsShellHolder inherited;
 protected:
 	bool			m_ready_to_destroy;
 public:

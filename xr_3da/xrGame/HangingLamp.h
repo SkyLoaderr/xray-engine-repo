@@ -7,14 +7,14 @@
 #pragma once
 
 #include "gameobject.h"
-
+#include "physicsshellholder.h"
 // refs
 class CLAItem;
 class CPhysicsElement;
 class CSE_ALifeObjectHangingLamp;
 class CPHElement;
-class CHangingLamp: public CGameObject {
-	typedef	CGameObject		inherited;
+class CHangingLamp: public CPhysicsShellHolder {//need m_pPhysicShell
+	typedef	CPhysicsShellHolder		inherited;
 private:
 	u16				guid_bone;
 	IRender_Light*	light_render;

@@ -1,12 +1,12 @@
 #pragma once
 #include "gameobject.h"
 #include "PHDefs.h"
-
+#include "physicsshellholder.h"
 class CSE_ALifeObjectPhysic;
 
 class CPhysicsElement;
-class CPhysicObject : public CGameObject {
-	typedef CGameObject inherited;
+class CPhysicObject : public CPhysicsShellHolder {//need m_pPhysicShell
+	typedef CPhysicsShellHolder inherited;
 	EPOType				m_type;
 	float				m_mass;
 	bool				b_removing;
@@ -46,13 +46,9 @@ public:
 	virtual void	Load				(LPCSTR section)																;
 	virtual void	UpdateCL			( )																				;// Called each frame, so no need for dt
 	virtual void	shedule_Update		(u32 dt)																		;	//
-	virtual void	OnEvent				(NET_Packet& P, u16 type)														;
-	virtual void	net_Export			(NET_Packet& P)																	;
-	virtual void	net_Import			(NET_Packet& P)																	;
 	virtual void	net_Save			(NET_Packet& P)																	;
 	virtual	BOOL	net_SaveRelevant	()																				;
 	virtual BOOL	UsedAI_Locations	()																				;
-	virtual void	OnH_A_Independent	()																				;
 
 
 };

@@ -205,8 +205,8 @@ void CBurerAttackTele::FindObjects()
 	xr_vector<CObject*> &tpObjects	= Level().ObjectSpace.q_nearest;
 
 	for (u32 i=0;i<tpObjects.size();i++) {
-		CGameObject *obj = dynamic_cast<CGameObject *>(tpObjects[i]);
-		if (!obj || !obj->m_pPhysicsShell || !obj->m_pPhysicsShell->bActive || (obj->m_pPhysicsShell->getMass() < pMonster->m_tele_object_min_mass) || (obj->m_pPhysicsShell->getMass() > pMonster->m_tele_object_max_mass) || (obj == pMonster) || pMonster->CTelekinesis::is_active_object(obj)) continue;
+		CPhysicsShellHolder *obj = dynamic_cast<CPhysicsShellHolder *>(tpObjects[i]);
+		if (!obj || !obj->PPhysicsShell() || !obj->PPhysicsShell()->bActive || (obj->m_pPhysicsShell->getMass() < pMonster->m_tele_object_min_mass) || (obj->m_pPhysicsShell->getMass() > pMonster->m_tele_object_max_mass) || (obj == pMonster) || pMonster->CTelekinesis::is_active_object(obj)) continue;
 
 		tele_objects.push_back(obj);
 	}
@@ -224,7 +224,7 @@ void CBurerAttackTele::FindObjects()
 	tpObjects = Level().ObjectSpace.q_nearest;
 
 	for (u32 i=0;i<tpObjects.size();i++) {
-		CGameObject *obj = dynamic_cast<CGameObject *>(tpObjects[i]);
+		CPhysicsShellHolder *obj = dynamic_cast<CPhysicsShellHolder *>(tpObjects[i]);
 		if (!obj || !obj->m_pPhysicsShell || !obj->m_pPhysicsShell->bActive || (obj->m_pPhysicsShell->getMass() < pMonster->m_tele_object_min_mass) || (obj->m_pPhysicsShell->getMass() > pMonster->m_tele_object_max_mass) || (obj == pMonster) || pMonster->CTelekinesis::is_active_object(obj)) continue;
 
 		tele_objects.push_back(obj);
@@ -260,7 +260,7 @@ void CBurerAttackTele::SelectObjects()
 
 	// выбрать объект
 	for (u32 i=0; i<tele_objects.size(); i++) {
-		CGameObject *obj = tele_objects[i];
+		CPhysicsShellHolder *obj = tele_objects[i];
 
 		// применить телекинез на объект
 		pMonster->CTelekinesis::activate(obj, 3.f, 2.f, 10000);

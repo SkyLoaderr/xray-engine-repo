@@ -709,7 +709,7 @@ void CInventoryItem::activate_physic_shell()
 	};
 	UpdateXForm();
 
-	CGameObject::activate_physic_shell();
+	CPhysicsShellHolder::activate_physic_shell();
 }
 
 void CInventoryItem::UpdateXForm	()

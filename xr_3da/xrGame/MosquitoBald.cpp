@@ -3,7 +3,7 @@
 #include "hudmanager.h"
 #include "ParticlesObject.h"
 #include "level.h"
-
+#include "physicsshellholder.h"
 CMosquitoBald::CMosquitoBald(void) 
 {
 	m_dwDeltaTime = 0;
@@ -36,7 +36,7 @@ bool CMosquitoBald::BlowoutState()
 
 void CMosquitoBald::Affect(CObject* O) 
 {
-	CGameObject *pGameObject = dynamic_cast<CGameObject*>(O);
+	CPhysicsShellHolder *pGameObject = dynamic_cast<CPhysicsShellHolder*>(O);
 	if(!pGameObject) return;
 
 	if(m_ObjectInfoMap[O].zone_ignore) return;

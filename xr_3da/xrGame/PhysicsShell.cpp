@@ -9,7 +9,7 @@
 #include "PHJointDestroyInfo.h"
 #include "PHSplitedShell.h"
 #include "gameobject.h"
-
+#include "physicsshellholder.h"
 CPhysicsElement*			P_create_Element		()
 {
 	CPHElement* element=xr_new<CPHElement>	();
@@ -43,7 +43,7 @@ CPhysicsShell*				P_build_Shell			(CGameObject* obj,bool not_active_state,BONE_P
 
 	pPhysicsShell->build_FromKinematics(pKinematics,bone_map);
 
-	pPhysicsShell->set_PhysicsRefObject(obj);
+	pPhysicsShell->set_PhysicsRefObject(dynamic_cast<CPhysicsShellHolder*>(obj));
 	pPhysicsShell->mXFORM.set(obj->XFORM());
 	pPhysicsShell->Activate(true,not_active_state);//,
 	//m_pPhysicsShell->SmoothElementsInertia(0.3f);

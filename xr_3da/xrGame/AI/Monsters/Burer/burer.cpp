@@ -315,7 +315,7 @@ void CBurer::UpdateGraviObject()
 	xr_vector<CObject*> &tpObjects = Level().ObjectSpace.q_nearest;
 
 	for (u32 i=0;i<tpObjects.size();i++) {
-		CGameObject *obj = dynamic_cast<CGameObject *>(tpObjects[i]);
+		CPhysicsShellHolder  *obj = dynamic_cast<CPhysicsShellHolder *>(tpObjects[i]);
 		if (!obj || !obj->m_pPhysicsShell) continue;
 		
 		Fvector dir;

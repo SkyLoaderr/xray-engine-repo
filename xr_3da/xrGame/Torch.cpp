@@ -188,17 +188,17 @@ void CTorch::reload				(LPCSTR section)
 
 void CTorch::create_physic_shell()
 {
-	CGameObject::create_physic_shell();
+	CPhysicsShellHolder::create_physic_shell();
 }
 
 void CTorch::activate_physic_shell()
 {
-	CGameObject::activate_physic_shell();
+	CPhysicsShellHolder::activate_physic_shell();
 }
 
 void CTorch::setup_physic_shell	()
 {
-	CGameObject::setup_physic_shell();
+	CPhysicsShellHolder::setup_physic_shell();
 }
 
 void CTorch::net_Export			(NET_Packet& P)

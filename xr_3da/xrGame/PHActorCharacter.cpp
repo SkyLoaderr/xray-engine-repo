@@ -43,7 +43,7 @@ void CPHActorCharacter::Destroy()
 	inherited::Destroy();
 }
 
-void CPHActorCharacter::SetPhysicsRefObject(CGameObject* ref_object)
+void CPHActorCharacter::SetPhysicsRefObject(CPhysicsShellHolder* ref_object)
 {
 	inherited::SetPhysicsRefObject(ref_object);
 

@@ -8,7 +8,7 @@
 #include "gamemtllib.h"
 #include "level.h"
 #include "gameobject.h"
- 
+#include "PhysicsShellHolder.h"
 
 ///////////////////////////////////////////////////////////////
 #pragma warning(disable:4995)
@@ -613,10 +613,10 @@ void __stdcall PushOutCallback1(bool& do_colide,dContact& c)
 	usr_data_1 = retrieveGeomUserData(c.geom.g1);
 	usr_data_2 = retrieveGeomUserData(c.geom.g2);
 
-	CGameObject* obj1=dynamic_cast<CGameObject*>(usr_data_1->ph_ref_object);
-	CGameObject* obj2=dynamic_cast<CGameObject*>(usr_data_2->ph_ref_object);
+	CPhysicsShellHolder* obj1=usr_data_1->ph_ref_object;
+	CPhysicsShellHolder* obj2=usr_data_2->ph_ref_object;
 
-	if(obj1 && obj2 && obj1->m_pPhysicsShell && obj2->m_pPhysicsShell )
+	if(obj1 && obj2 && obj1->PPhysicsShell() && obj2->PPhysicsShell() )
 	{	
 
 		do_colide=false;

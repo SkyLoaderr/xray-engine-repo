@@ -7,9 +7,9 @@
 
 #include "hudsound.h"
 #include "weaponammo.h"
+#include "physicsshellholder.h"
 
-
-class CWeaponMounted :	public CGameObject, 
+class CWeaponMounted :	public CPhysicsShellHolder, 
 						public CHolderCustom,
 						public CShootingObject
 {

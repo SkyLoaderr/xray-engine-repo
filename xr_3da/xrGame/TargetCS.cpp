@@ -91,11 +91,15 @@ void CTargetCS::OnH_B_Chield		()
 	inherited::OnH_B_Chield		();
 }
 
+void CTargetCS::OnEvent(NET_Packet& P, u16 type)
+{
+	inherited::OnEvent(P,type);
+}
 void CTargetCS::create_physic_shell	()
 {
 	CPhysicItem::create_physic_shell();
 }
-
+ 
 void CTargetCS::activate_physic_shell	()
 {
 	inherited::activate_physic_shell();

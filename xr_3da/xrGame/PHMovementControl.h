@@ -14,12 +14,12 @@ class CPHMovementControl
 {
 static const path_few_point=10;
 public:
-void				PHCaptureObject(CGameObject* object);
-void				PHCaptureObject(CGameObject* object,u16 element);
+void				PHCaptureObject(CPhysicsShellHolder* object);
+void				PHCaptureObject(CPhysicsShellHolder* object,u16 element);
 CPHCapture*			PHCapture      (){return m_capture;}
 void				PHReleaseObject();
-Fvector				PHCaptureGetNearestElemPos(CGameObject* object);
-Fmatrix				PHCaptureGetNearestElemTransform(CGameObject* object);
+Fvector				PHCaptureGetNearestElemPos(CPhysicsShellHolder* object);
+Fmatrix				PHCaptureGetNearestElemTransform(CPhysicsShellHolder* object);
 void				SetMaterial(u16 material);
 void				SetAirControlParam(float param){fAirControlParam=param;}
 enum				JumpType 
@@ -143,7 +143,7 @@ public:
 	void				UnFreeze			()								;
 	void				SetVelocity		(float x, float y, float z)	{vVelocity.set(x,y,z);m_character->SetVelocity(vVelocity);}
 	void				SetVelocity		(const Fvector& v)	{vVelocity.set(v);m_character->SetVelocity(vVelocity);}
-	void				SetPhysicsRefObject(CGameObject* ref_object){m_character->SetPhysicsRefObject(ref_object);};
+	void				SetPhysicsRefObject(CPhysicsShellHolder* ref_object){m_character->SetPhysicsRefObject(ref_object);};
 
 	void				CalcMaximumVelocity	(Fvector& /**dest/**/, Fvector& /**accel/**/, float /**friction/**/){};
 	void				CalcMaximumVelocity	(float& /**dest/**/, float /**accel/**/, float /**friction/**/){};

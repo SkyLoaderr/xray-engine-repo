@@ -6,7 +6,7 @@
 #include "../CameraBase.h"
 #include "ActorEffector.h"
 
-bool CActor::use_MountedWeapon(CGameObject* object)
+bool CActor::use_MountedWeapon(CPhysicsShellHolder* object)
 {
 	CWeaponMounted* wpn	=dynamic_cast<CWeaponMounted*>(object);
 	if(m_holder){

@@ -37,7 +37,7 @@ CGameObject::~CGameObject		()
 
 void CGameObject::Init			()
 {
-	m_pPhysicsShell				= NULL;
+
 	m_lua_game_object			= 0;
 	m_dwFrameLoad				= u32(-1);
 	m_dwFrameReload				= u32(-1);
@@ -111,7 +111,6 @@ void CGameObject::net_Destroy	()
 
 	Parent = 0;
 
-	xr_delete									(m_pPhysicsShell);
 
 
 	//удалить партиклы из ParticlePlayer
@@ -123,27 +122,7 @@ void CGameObject::OnEvent		(NET_Packet& P, u16 type)
 {
 	switch (type)
 	{
-	case GE_HIT:
-		{
-			u16				id,weapon_id;
-			Fvector			dir;
-			float			power, impulse;
-			s16				element;
-			Fvector			position_in_bone_space;
-			u16				hit_type;
 
-			P.r_u16			(id);
-			P.r_u16			(weapon_id);
-			P.r_dir			(dir);
-			P.r_float		(power);
-			P.r_s16			(element);
-			P.r_vec3		(position_in_bone_space);
-			P.r_float		(impulse);
-			P.r_u16			(hit_type);	//hit type
-			Hit				(power,dir,Level().Objects.net_Find(id),element,
-							 position_in_bone_space, impulse, (ALife::EHitType)hit_type);
-		}
-		break;
 	case GE_DESTROY:
 		{
 			//Log			("-CL_destroy",*cName());
@@ -240,7 +219,7 @@ BOOL CGameObject::net_Spawn		(LPVOID	DC)
 
 	m_bObjectRemoved = false;
 
-	create_physic_shell			();
+
 
 	spawn_supplies				();
 
@@ -386,16 +365,8 @@ void CGameObject::u_EventSend(NET_Packet& P, BOOL /**sync/**/)
 	Level().Send(P,net_flags(TRUE,TRUE));
 }
 
-void	CGameObject::Hit(float /**P/**/, Fvector &dir, CObject* /**who/**/, s16 element,
-					  Fvector p_in_object_space, float impulse, ALife::EHitType hit_type)
-{
-	PHHit(dir,element,p_in_object_space,impulse,hit_type);
-}
-void	CGameObject::PHHit(Fvector &dir,s16 element,Fvector p_in_object_space, float impulse, ALife::EHitType hit_type /* ALife::eHitTypeWound*/)
-{
-	if(impulse>0)
-		if(m_pPhysicsShell) m_pPhysicsShell->applyHit(p_in_object_space,dir,impulse,element,hit_type);
-}
+
+
 //проверка на попадание "осколком" по объекту
 f32 CGameObject::ExplosionEffect(const Fvector &expl_centre, const f32 expl_radius, xr_list<s16> &elements, xr_list<Fvector> &bs_positions) 
 {
@@ -425,36 +396,6 @@ f32 CGameObject::ExplosionEffect(const Fvector &expl_centre, const f32 expl_radi
 	return 1.f;
 }
 
-void CGameObject::PHSetMaterial(u16 m)
-{
-	if(m_pPhysicsShell)
-		m_pPhysicsShell->SetMaterial(m);
-}
-
-void CGameObject::PHSetMaterial(LPCSTR m)
-{
-	if(m_pPhysicsShell)
-		m_pPhysicsShell->SetMaterial(m);
-}
-
-void CGameObject::PHGetLinearVell		(Fvector& velocity)
-{
-	if(!m_pPhysicsShell)
-	{
-		velocity.set(0,0,0);
-		return;
-	}
-	m_pPhysicsShell->get_LinearVel(velocity);
-}
-
-void CGameObject::PHSetLinearVell(Fvector& velocity)
-{
-	if(!m_pPhysicsShell)
-	{
-		return;
-	}
-	m_pPhysicsShell->set_LinearVel(velocity);
-}
 
 #include "bolt.h"
 void CGameObject::OnH_B_Chield()
@@ -478,35 +419,6 @@ void CGameObject::OnH_B_Independent()
 	validate_ai_locations		(false);
 }
 
-void CGameObject::PHSetPushOut(u32 time /* = 5000 */)
-{
-	if(m_pPhysicsShell)
-		m_pPhysicsShell->set_PushOut(time,PushOutCallback1);
-}
-
-f32 CGameObject::GetMass()
-{
-	return m_pPhysicsShell ? m_pPhysicsShell->getMass() : 0;
-}
-
-u16	CGameObject::PHGetSyncItemsNumber()
-{
-	if(m_pPhysicsShell)	return m_pPhysicsShell->get_ElementsNumber();
-	else				return 0;
-}
-CPHSynchronize*	CGameObject::PHGetSyncItem	(u16 item)
-{
-	if(m_pPhysicsShell) return m_pPhysicsShell->get_ElementSync(item);
-	else				return 0;
-}
-void	CGameObject::PHUnFreeze	()
-{
-	if(m_pPhysicsShell) m_pPhysicsShell->UnFreeze();
-}
-void	CGameObject::PHFreeze()
-{
-	if(m_pPhysicsShell) m_pPhysicsShell->Freeze();
-}
 
 #ifdef DEBUG
 void CGameObject::OnRender()
@@ -565,12 +477,7 @@ void __stdcall VisualCallback(CKinematics *tpKinematics)
 		(*I)						(tpKinematics);
 }
 
-void CGameObject::create_physic_shell	()
-{
-	IPhysicShellCreator *shell_creator = dynamic_cast<IPhysicShellCreator*>(this);
-	if (shell_creator)
-		shell_creator->CreatePhysicsShell();
-}
+
 
 CLuaGameObject *CGameObject::lua_game_object		() const
 {
@@ -588,28 +495,7 @@ bool CGameObject::frame_check(u32 &frame)
 	return			(true);
 }
 
-void CGameObject::activate_physic_shell()
-{
-	Fvector						l_fw, l_up;
-	l_fw.set					(XFORM().k);
-	l_up.set					(XFORM().j);
-	l_fw.mul					(2.f);
-	l_up.mul					(2.f);
-	
-	Fmatrix						l_p1, l_p2;
-	l_p1.set					(XFORM());
-	l_p2.set					(XFORM());
-	l_fw.mul					(2.f);
-	l_p2.c.add					(l_fw);
-	
-	m_pPhysicsShell->Activate	(l_p1, 0, l_p2);
-	///XFORM().set					(l_p1);
-}
 
-void CGameObject::setup_physic_shell	()
-{
-	m_pPhysicsShell->Activate	(XFORM(),0,XFORM());
-}
 
 bool CGameObject::NeedToDestroyObject()	const
 {

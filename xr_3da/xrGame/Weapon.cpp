@@ -980,17 +980,17 @@ void CWeapon::reload			(LPCSTR section)
 
 void CWeapon::create_physic_shell()
 {
-	CGameObject::create_physic_shell();
+	CPhysicsShellHolder::create_physic_shell();
 }
 
 void CWeapon::activate_physic_shell()
 {
-	CGameObject::activate_physic_shell();
+	CPhysicsShellHolder::activate_physic_shell();
 }
 
 void CWeapon::setup_physic_shell()
 {
-	CGameObject::setup_physic_shell();
+	CPhysicsShellHolder::setup_physic_shell();
 }
 
 bool CWeapon::NeedToDestroyObject()	const

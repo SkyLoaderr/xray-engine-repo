@@ -2,7 +2,7 @@
 #include "gameobject.h"
 #include "../feel_touch.h"
 #include "zone_effector.h"
-
+#include "PhysicsShellHolder.h"
 class CActor;
 class CLAItem;
 
@@ -252,13 +252,13 @@ protected:
 
 	virtual void PlayBlowoutParticles();
 	
-	virtual void PlayEntranceParticles(CGameObject* pObject);
+	virtual void PlayEntranceParticles(CPhysicsShellHolder* pObject);
 	virtual void PlayBulletParticles(Fvector& pos );
 
-	virtual void PlayHitParticles(CGameObject* pObject);
+	virtual void PlayHitParticles(CPhysicsShellHolder* pObject);
 
-	virtual void PlayObjectIdleParticles(CGameObject* pObject);
-	virtual void StopObjectIdleParticles(CGameObject* pObject);
+	virtual void PlayObjectIdleParticles(CPhysicsShellHolder* pObject);
+	virtual void StopObjectIdleParticles(CPhysicsShellHolder* pObject);
 
 	virtual bool EnableEffector() {return false;}
 

@@ -15,7 +15,7 @@
 #include "level.h"
 #include "gamemtllib.h"
 #include "gameobject.h"
-
+#include "physicsshellholder.h"
 const float LOSE_CONTROL_DISTANCE=0.5f; //fly distance to lose control
 const float CLAMB_DISTANCE=0.5f;
 const float CLIMB_GETUP_HEIGHT=0.3f;
@@ -991,7 +991,7 @@ EEnvironment	 CPHSimpleCharacter::CheckInvironment(){
 
 
 
-void CPHSimpleCharacter::SetPhysicsRefObject					(CGameObject* ref_object)
+void CPHSimpleCharacter::SetPhysicsRefObject					(CPhysicsShellHolder* ref_object)
 {
 	m_phys_ref_object=ref_object;
 	if(b_exist)

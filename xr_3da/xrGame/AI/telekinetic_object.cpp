@@ -5,7 +5,7 @@
 #include "../PHElement.h"
 #include "../level.h"
 #include "../gameobject.h"
-
+#include "../physicsshellholder.h"
 #define KEEP_IMPULSE_UPDATE 200
 #define FIRE_TIME			3000
 #define RAISE_MAX_TIME		5000
@@ -23,7 +23,7 @@ CTelekineticObject::~CTelekineticObject()
 
 
 
-bool CTelekineticObject::init(CGameObject *obj, float s, float h, u32 ttk) 
+bool CTelekineticObject::init(CPhysicsShellHolder *obj, float s, float h, u32 ttk) 
 {
 	if (!obj || !obj->m_pPhysicsShell) return false;
 	

@@ -9,7 +9,7 @@
 
 #define PropertyGP(a,b) __declspec( property( get=a, put=b ) )
 
-#include "gameobject.h"
+#include "physicsshellholder.h"
 #include "entitycondition.h"
 
 // refs
@@ -22,10 +22,10 @@ class	CWeaponList;
 class   CPHMovementControl;
 class	CHudItem;
  
-class CEntity : virtual public CGameObject
+class CEntity : virtual public CPhysicsShellHolder
 {
 private:
-	typedef	CGameObject	inherited;			
+	typedef	CPhysicsShellHolder	inherited;			
 
 	float				fHealth;
 protected:

@@ -3,6 +3,7 @@
 #include "PHInterpolation.h"
 #include "PHSynchronize.h"
 #include "PHDisabling.h"
+class CPhysicsShellHolder;
 typedef	 void __stdcall ObjectContactCallbackFun(bool& do_colide,	dContact& c);
 class CGameObject;
  static enum EEnvironment
@@ -32,7 +33,7 @@ float					m_contact_velocity;
 
 CPHInterpolation m_body_interpolation;
 dBodyID				m_body;
-CGameObject* m_phys_ref_object;
+CPhysicsShellHolder* m_phys_ref_object;
 
 
 dReal m_mass;
@@ -91,8 +92,8 @@ virtual		void		SetVelocity							(Fvector vel)												=0 ;
 virtual		void		SetAirControlFactor				(float factor)												=0 ;
 virtual		void		GetPosition							(Fvector& vpos)												=0 ;
 virtual		void		SetMas								(dReal mass)												=0 ;
-virtual		void		SetPhysicsRefObject					(CGameObject* ref_object)									=0 ;
-virtual		CGameObject* PhysicsRefObject					()									{return m_phys_ref_object;}
+virtual		void		SetPhysicsRefObject					(CPhysicsShellHolder* ref_object)									=0 ;
+virtual		CPhysicsShellHolder* PhysicsRefObject					()									{return m_phys_ref_object;}
 
 //AICharacter
 virtual		void		GetDesiredPosition					(Fvector& /**dpos/**/)										{}

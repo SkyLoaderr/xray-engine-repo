@@ -17,7 +17,7 @@
 #include "enemy_location_predictor.h"
 #include "patrol_path_manager.h"
 #include "ai_monster_space.h"
-
+#include "physicsshellholder.h"
 class CPHMovementControl;
 
 class CMovementManager : 
@@ -28,7 +28,7 @@ class CMovementManager :
 	public CDetailPathManager,
 	public CEnemyLocationPredictor,
 	public CPatrolPathManager,
-	virtual public CGameObject
+	virtual public CPhysicsShellHolder
 {
 protected:
 	typedef CBaseLocationSelector	<CGameGraph,SVertexType<float,u32,u32>,u32>			CGameLocationSelector;

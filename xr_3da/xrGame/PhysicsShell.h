@@ -13,8 +13,8 @@ class CPHFracture;
 class CPHJointDestroyInfo;
 class CODEGeom;
 class CPHSynchronize;
+class CPhysicsShellHolder;
 class CGameObject;
-
 struct physicsBone
 {
 	CPhysicsJoint* joint;
@@ -70,7 +70,7 @@ public:
 	virtual void			set_DynamicScales		(float l_scale=default_l_scale,float w_scale=default_w_scale)= 0;
 	virtual void			set_ContactCallback		(ContactCallbackFun* callback)							= 0;
 	virtual void			set_ObjectContactCallback(ObjectContactCallbackFun* callback)					= 0;
-	virtual void			set_PhysicsRefObject	(CGameObject* ref_object)							= 0;
+	virtual void			set_PhysicsRefObject	(CPhysicsShellHolder* ref_object)							= 0;
 	virtual void			get_LinearVel			(Fvector& velocity)										= 0;
 	virtual void			get_AngularVel			(Fvector& velocity)										= 0;
 	virtual void			set_LinearVel			(const Fvector& velocity)								= 0;
@@ -93,7 +93,7 @@ public:
 	u16						m_SelfID;
 	virtual CPhysicsShell*	PhysicsShell			()												= 0;		
 	virtual void			set_ContactCallback		(ContactCallbackFun* callback)					= 0;
-	virtual CGameObject*	PhysicsRefObject		()												= 0;
+	virtual CPhysicsShellHolder*PhysicsRefObject	()												= 0;
 	virtual	void			add_Sphere				(const Fsphere&		V)							= 0;
 	virtual	void			add_Box					(const Fobb&		V)							= 0;
 	virtual	void			add_Cylinder			(const Fcylinder&	V)							= 0;

@@ -254,7 +254,7 @@ void CPHCapture::Release()
 	}
 	m_body=NULL;
 
-	if(m_taget_element&&m_taget_object->m_pPhysicsShell)
+	if(m_taget_element&&m_taget_object->PPhysicsShell())
 	{
 		m_taget_element->set_DynamicLimits();
 	}
