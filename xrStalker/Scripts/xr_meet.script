@@ -433,8 +433,8 @@ function set_meet(object, ini, scheme, section)
     st.begin_wait_to_see = { time = 300, begin = nil }
     st.over = false
     st.noweap = utils.cfg_get_bool(ini, section, "meet_notreat", object, false)
-	st.distance = 15   
-	st.shoot_distance = 5
+	st.distance = utils.cfg_get_number(ini, section, "distance", object, false, 15)
+	st.shoot_distance = utils.cfg_get_number(ini, section, "shoot_distance", object, false, 5)
 	st.state_talkable = true
     st.enabled = true -- added by Zmey
 end
@@ -449,4 +449,23 @@ end
 
 function disable_talk(npc)
 	npc:disable_talk()
+end
+
+
+
+
+--- Ќаходитс€ ли чувак в данный момент в состо€нии мита
+function is_meet(npc)
+	local manager = npc:motivation_action_manager()
+	if manager and manager:initialized() then
+		local id = manager:current_action_id()
+		if id == xr_actions_id.stohe_meet_base + 1 or
+		   id == xr_actions_id.stohe_meet_base + 2 or
+		   id == xr_actions_id.stohe_meet_base + 3 or
+		   id == xr_actions_id.stohe_meet_base + 4
+		then
+			return true
+		end
+	end
+	return false
 end
