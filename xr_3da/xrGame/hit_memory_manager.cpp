@@ -53,6 +53,8 @@ void CHitMemoryManager::add_hit_object		(float amount, const Fvector &vLocalDir,
 	object->XFORM().transform_dir(direction,vLocalDir);
 
 	CEntityAlive				*entity_alive = dynamic_cast<CEntityAlive*>(who);
+	if (!entity_alive)
+		return;
 	xr_vector<CHitObject>::iterator	J = std::find(m_hits->begin(),m_hits->end(),object_id(who));
 	if (m_hits->end() == J) {
 		CHitObject				hit_object;
