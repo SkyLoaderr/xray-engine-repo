@@ -233,13 +233,13 @@ void CRender::Calculate				()
 		g_SpatialSpace->q_frustum
 			(
 			ISpatial_DB::O_ORDERED,
-			STYPE_RENDERABLE,
+			STYPE_RENDERABLE + STYPE_LIGHTSOURCE,
 			ViewBase
 			);
 
 		// Exact sorting order (front-to-back)
-		lstRenderables.swap	(g_SpatialSpace->q_result);
-		std::sort			(lstRenderables.begin(),lstRenderables.end(),pred_sp_sort);
+		lstRenderables.swap					(g_SpatialSpace->q_result);
+		std::sort							(lstRenderables.begin(),lstRenderables.end(),pred_sp_sort);
 
 		// Determine visibility for dynamic part of scene
 		set_Object							(0);
@@ -255,29 +255,39 @@ void CRender::Calculate				()
 				CFrustum&	view	= sector->r_frustums[v_it];
 				if (!view.testSphere_dirty(spatial->spatial.center,spatial->spatial.radius))	continue;
 
-				// renderable
-				IRenderable*	renderable		= dynamic_cast<IRenderable*>(spatial);
-				if (0==renderable)	
-				{
-					// It may be an glow
-					CGlow*		glow				= dynamic_cast<CGlow*>(spatial);
-					VERIFY							(glow);
-					L_Glows->add					(glow);
-				} else {
-					// Occlusion
-					vis_data&		v_orig			= renderable->renderable.visual->vis;
-					vis_data		v_copy			= v_orig;
-					v_copy.box.xform				(renderable->renderable.xform);
-					BOOL			bVisible		= HOM.visible(v_copy);
-					v_orig.frame					= v_copy.frame;
-					v_orig.hom_frame				= v_copy.hom_frame;
-					v_orig.hom_tested				= v_copy.hom_tested;
-					if (!bVisible)					continue;
 
-					// Rendering
-					set_Object						(renderable);
-					renderable->renderable_Render	();
-					set_Object						(0);	//? is it needed at all
+				if (spatial->spatial.type & STYPE_RENDERABLE)
+				{
+					// renderable
+					IRenderable*	renderable		= dynamic_cast<IRenderable*>(spatial);
+					if (0==renderable)	
+					{
+						// It may be an glow
+						CGlow*		glow				= dynamic_cast<CGlow*>(spatial);
+						VERIFY							(glow);
+						L_Glows->add					(glow);
+					} else {
+						// Occlusion
+						vis_data&		v_orig			= renderable->renderable.visual->vis;
+						vis_data		v_copy			= v_orig;
+						v_copy.box.xform				(renderable->renderable.xform);
+						BOOL			bVisible		= HOM.visible(v_copy);
+						v_orig.frame					= v_copy.frame;
+						v_orig.hom_frame				= v_copy.hom_frame;
+						v_orig.hom_tested				= v_copy.hom_tested;
+						if (!bVisible)					break;	// exit loop on frustums
+
+						// Rendering
+						set_Object						(renderable);
+						renderable->renderable_Render	();
+						set_Object						(0);	//? is it needed at all
+					}
+				} else {
+					VERIFY							(spatial->spatial.type & STYPE_LIGHTSOURCE);
+					// lightsource
+					light*			L				= dynamic_cast<light*>		(spatial);
+					VERIFY							(L);
+					Lights.add_light				(L);
 				}
 				break;	// exit loop on frustums
 			}

@@ -292,9 +292,6 @@
 				RelativePath="FStaticRender_Screenshot.cpp">
 			</File>
 			<File
-				RelativePath="FStaticRender_Types.h">
-			</File>
-			<File
 				RelativePath="FStaticRender_Volume.cpp">
 			</File>
 			<File

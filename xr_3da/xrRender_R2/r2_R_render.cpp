@@ -58,8 +58,8 @@ void CRender::Render		()
 				);
 
 			// (almost)Exact sorting order (front-to-back)
-			xr_vector<ISpatial*>& lstRenderables	= g_SpatialSpace->q_result;
-			std::sort								(lstRenderables.begin(),lstRenderables.end(),pred_sp_sort);
+			lstRenderables.swap	(g_SpatialSpace->q_result);
+			std::sort			(lstRenderables.begin(),lstRenderables.end(),pred_sp_sort);
 
 			// Determine visibility for dynamic part of scene
 			set_Object							(0);
@@ -73,26 +73,39 @@ void CRender::Render		()
 				for (u32 v_it=0; v_it<sector->r_frustums.size(); v_it++)
 				{
 					CFrustum&	view	= sector->r_frustums[v_it];
-					if (view.testSphere_dirty(spatial->spatial.center,spatial->spatial.radius))
+					if (!view.testSphere_dirty(spatial->spatial.center,spatial->spatial.radius))	continue;
+
+					if (spatial->spatial.type & STYPE_RENDERABLE)
 					{
-						if (spatial->spatial.type & STYPE_RENDERABLE)
-						{
-							// renderable
-							IRenderable*	renderable		= dynamic_cast<IRenderable*>(spatial);
-							VERIFY							(renderable);
-							set_Object						(renderable);
-							renderable->renderable_Render	();
-							set_Object						(0);
-						}
-						else 
-						{
-							VERIFY							(spatial->spatial.type & STYPE_LIGHTSOURCE);
-							// lightsource
-							light*			L				= dynamic_cast<light*>		(spatial);
-							VERIFY							(L);
-							Lights.add_light				(L);
-						}
+						// renderable
+						IRenderable*	renderable		= dynamic_cast<IRenderable*>(spatial);
+						VERIFY							(renderable);
+
+						// Occlusion
+						vis_data&		v_orig			= renderable->renderable.visual->vis;
+						vis_data		v_copy			= v_orig;
+						v_copy.box.xform				(renderable->renderable.xform);
+						BOOL			bVisible		= HOM.visible(v_copy);
+						v_orig.frame					= v_copy.frame;
+						v_orig.hom_frame				= v_copy.hom_frame;
+						v_orig.hom_tested				= v_copy.hom_tested;
+						if (!bVisible)					break;	// exit loop on frustums
+
+						// Rendering
+						set_Object						(renderable);
+						renderable->renderable_Render	();
+						set_Object						(0);
 					}
+					else 
+					{
+						VERIFY							(spatial->spatial.type & STYPE_LIGHTSOURCE);
+						// lightsource
+						light*			L				= dynamic_cast<light*>		(spatial);
+						VERIFY							(L);
+						Lights.add_light				(L);
+					}
+					
+					break;	// exit loop on frustums
 				}
 			}
 			g_pGameLevel->pHUD->Render_Last						();	

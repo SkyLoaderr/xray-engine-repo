@@ -52,6 +52,8 @@ public:
 	xr_vector<SceneGraph::mapMatrixTextures::TNode*>			matTexturesTemp;
 	xr_vector<SceneGraph::mapMatrixVB::TNode*>					matVB;
 
+	xr_vector<ISpatial*>										lstRenderables;
+
 	// Sector detection and visibility
 	CSector*													pLastSector;
 	Fvector														vLastCameraPos;

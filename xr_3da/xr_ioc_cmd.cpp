@@ -328,12 +328,6 @@ void CCC_Register()
 	CMD3(CCC_Mask,		"rs_postprocess",		&psDeviceFlags,rsPostprocess);
 	CMD3(CCC_Mask,		"rs_refresh_60hz",		&psDeviceFlags,rsRefresh60hz);
 	
-	/*
-	CMD4(CCC_Float,		"rs_geometry_lod",		&QualityControl.fGeometryLOD, 0,2);
-	CMD4(CCC_Float,		"rs_min_fps",			&QualityControl.fMinFPS, 0, 512	);
-	CMD4(CCC_Float,		"rs_max_fps",			&QualityControl.fMaxFPS, 0, 512	);
-	*/
-
 	CMD3(CCC_Mask,		"rs_detail",			&psDeviceFlags,		rsDetails	);
 
 	CMD1(CCC_Gamma,		"rs_c_gamma"			);
