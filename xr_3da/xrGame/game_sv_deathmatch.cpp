@@ -117,7 +117,9 @@ void game_sv_Deathmatch::OnPlayerConnect	(u32 id_who)
 
 	// Send
 	NET_Packet						P;
-	A->Spawn_Write					(P,FALSE);
+	u16								skip_header;
+	A->Spawn_Write					(P,TRUE);
+	P.r_begin						(skip_header);
 	Level().Server->Process_spawn	(P,id_who);
 
 	// Destroy
