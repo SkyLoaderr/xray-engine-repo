@@ -58,13 +58,22 @@ private:
 		vector<SUsefulObject>	tpUsefulObject;
 	} SALifeNPC;
 
-	SSpawnHeader				m_tSpawnHeader;
-	vector<SSpawnPoint>			m_tpSpawnPoint;
-	SNPCHeader					m_tNPCHeader;
-	vector<SALifeNPC>			m_tpNPC;
 	u32							m_dwNPCBeingProcessed;
 	u64							m_qwMaxProcessTime;
 	bool						m_bLoaded;
+	SSpawnHeader				m_tSpawnHeader;
+	SNPCHeader					m_tNPCHeader;
+
+	// static
+	vector<SSpawnPoint>			m_tpSpawnPoint;			// массив spawn-point-ов
+	svector<vector<u16>,256>	m_tpTerrain;			// массив списков : по идетнификатору 
+														// местности получить список точек графа
+	vector<vector<u16> >		m_tpLocationOwner;		// массив списков : по точке графа получить 
+														// список её владельцев
+	// dynamic
+	vector<SALifeNPC>			m_tpNPC;				// массив NPC-й
+	vector<vector<u16> >		m_tpGraphObject;		// по точке графа получить все динамические
+
 	void						vfProcessNPC		(u32 dwNPCIndex);
 
 public:
