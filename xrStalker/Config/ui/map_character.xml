@@ -8,7 +8,7 @@
 
 	<!-- RANK -->
 	<rank_static x="0" y="25" width="240" height="60">
-		<text x="0" y="0" font="letterica16" r="255" g="255" b="255">Rank</text>
+		<text x="0" y="0" font="letterica16" r="255" g="255" b="255"></text>
 	</rank_static>
 </window>
 
