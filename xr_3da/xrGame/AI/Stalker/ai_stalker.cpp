@@ -291,6 +291,8 @@ void CAI_Stalker::net_Destroy()
 	inherited::net_Destroy	();
 	xr_delete				(m_pPhysicsShell);
 	Init					();
+	Movement.DestroyCharacter();
+	if(m_pPhysicsShell)		m_pPhysicsShell->Deactivate();
 	m_inventory.Clear		();
 }
 
@@ -381,6 +383,7 @@ void CAI_Stalker::Exec_Movement		(float dt)
 
 void CAI_Stalker::CreateSkeleton()
 {
+if(m_pPhysicsShell) return;
 #ifndef NO_PHYSICS_IN_AI_MOVE
 	Movement.GetDeathPosition	(Position());
 	//Position().y+=.1f;
@@ -390,6 +393,8 @@ void CAI_Stalker::CreateSkeleton()
 
 	if (!Visual())
 		return;
+
+	/*
 	Fmatrix ident;
 	float density=100.f*skel_density_factor;
 	float hinge_force=5.f*hinge_force_factor;
@@ -431,8 +436,12 @@ void CAI_Stalker::CreateSkeleton()
 	m6._21=1.f;
 
 	//create shell
-	CKinematics* M		= PKinematics(Visual());			VERIFY(M);
+	CKinematics* M		= PKinematics(pVisual);			VERIFY(M);
+	*/
 	m_pPhysicsShell		= P_create_Shell();
+
+	m_pPhysicsShell->build_FromKinematics(PKinematics(pVisual));
+	/*
 	m_pPhysicsShell->set_Kinematics(M);
 	CPhysicsJoint*		joint;
 	//get bone instance
@@ -510,12 +519,12 @@ void CAI_Stalker::CreateSkeleton()
 	element->setDensity(density);
 	element->set_ParentElement(parent);
 	m_pPhysicsShell->add_Element(element);
-	/*
-	joint=P_create_Joint(CPhysicsJoint::hinge,parent,element);
-	joint->SetAnchorVsSecondElement(0,0,0);
-	joint->SetAxisDirVsSecondElement(0,1,0,0);
-	joint->SetLimits(-M_PI/4.f,M_PI/3.f,0);
-	*/
+	
+	//joint=P_create_Joint(CPhysicsJoint::hinge,parent,element);
+	//joint->SetAnchorVsSecondElement(0,0,0);
+	//joint->SetAxisDirVsSecondElement(0,1,0,0);
+	//joint->SetLimits(-M_PI/4.f,M_PI/3.f,0);
+	
 
 	joint=P_create_Joint(CPhysicsJoint::full_control,parent,element);
 	joint->SetAnchorVsSecondElement(0,0,0);
@@ -809,7 +818,7 @@ void CAI_Stalker::CreateSkeleton()
 	m_pPhysicsShell->add_Joint(joint);
 	element->SetMaterial("materials\\skel1");
 
-
+*/
 	//set shell start position
 	m_pPhysicsShell->mXFORM.set(XFORM());
 	m_pPhysicsShell->SetAirResistance(0.002f*skel_airr_lin_factor,
@@ -817,6 +826,7 @@ void CAI_Stalker::CreateSkeleton()
 	m_pPhysicsShell->SmoothElementsInertia(0.3f);
 
 	m_pPhysicsShell->set_PhysicsRefObject(this);
+	m_pPhysicsShell->Activate(true);
 }
 
 void CAI_Stalker::UpdateCL(){
