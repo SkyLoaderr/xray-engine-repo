@@ -125,7 +125,7 @@ const int	RCAST_Count		= 6;
 const int	RCAST_Total		= (2*RCAST_Count+1)*(2*RCAST_Count+1);
 const float	RCAST_Depth		= 1.f;
 
-const float	cover_distance	= 30.f;
+const float	cover_distance	= 25.f;
 const float cover_height	= 1.f;
 const float cover_sqr_dist	= cover_distance*cover_distance;
 
