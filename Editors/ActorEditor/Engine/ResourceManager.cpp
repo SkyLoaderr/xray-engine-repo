@@ -293,5 +293,5 @@ BOOL	CResourceManager::_GetDetailTexture(LPCSTR Name,LPCSTR& T, R_constant_setup
 
 void	CResourceManager::SetHLSL_path(LPCSTR path)
 {
-	strcpy	(HLSL_Path,path);
+	HLSL_Path	= path;
 }
