@@ -237,7 +237,7 @@ void CRender::render_sun				()
 	// Begin SMAP-render
 	{
 		HOM.Disable								();
-		phase									= PHASE_SMAP_S;
+		phase									= PHASE_SMAP_D;
 		if (RImplementation.o.Tshadows)	r_pmask	(true,true	);
 		else							r_pmask	(true,false	);
 		fuckingsun->svis.begin					();
@@ -479,4 +479,7 @@ void CRender::render_sun				()
 		fuckingsun->svis.end					();
 		r_pmask									(true,false);
 	}
+
+	// Accumulate
+	Target.accum_direct		();
 }
