@@ -102,15 +102,11 @@ void	CShaderManager::OnDeviceCreate	(LPCSTR shName)
 	cache.Invalidate	();
 
 #ifdef _EDITOR
-	AnsiString sh			= shName;
-    FS.m_GameRoot.Update    (sh);
-	if (!FS.Exist(sh.c_str())) return;
-	CCompressedStream		FS(sh.c_str(),	"shENGINE");
-#else
-	CCompressedStream		FS(shName,		"shENGINE");
+	if (!FS.Exist(shName)) return;
 #endif
+	CCompressedStream		FS(shName,		"shENGINE");
 	char					name	[256];
-	
+
 	// Load constants
 	{
 		CStream*	fs		= FS.OpenChunk(0);
