@@ -769,6 +769,12 @@
 				</File>
 				<File
 					RelativePath="ISpatial_q_ray.cpp">
+					<FileConfiguration
+						Name="Mixed|Win32">
+						<Tool
+							Name="VCCLCompilerTool"
+							AssemblerOutput="4"/>
+					</FileConfiguration>
 				</File>
 			</Filter>
 		</Filter>

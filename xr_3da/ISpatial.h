@@ -79,12 +79,12 @@ class ENGINE_API ISpatial_DB
 private:
 	poolSS<ISpatial_NODE,128>		allocator;
 	xr_vector<ISpatial_NODE*>		allocator_pool;
-	Fvector							v_center;
-	float							f_bounds;
 	ISpatial*						rt_insert_object;
 
 public:
 	ISpatial_NODE*					m_root;
+	Fvector							m_center;
+	float							m_bounds;
 	xr_vector<ISpatial*>			q_result;
 	u32								stat_nodes;
 	CStatTimer						stat_insert;
