@@ -26,7 +26,7 @@ IC CGameGraph::CGameGraph		(LPCSTR file_name)
 	m_header.dwDeathPointCount	= m_reader->r_u32();
 	m_header.tpLevels.clear		();
 	for (u32 i=0; i<header().level_count(); ++i) {
-		ALife::SLevel			l_tLevel;
+		SLevel					l_tLevel;
 		m_reader->r_stringZ		(l_tLevel.caLevelName);
 		m_reader->r_fvector3	(l_tLevel.tOffset);
 		m_reader->r				(&l_tLevel.tLevelID,sizeof(l_tLevel.tLevelID));
@@ -128,7 +128,7 @@ IC	u32 CGameGraph::CHeader::death_point_count() const
 	return		(dwDeathPointCount);
 }
 
-IC	const ALife::LEVEL_MAP &CGameGraph::CHeader::levels() const
+IC	const CGameGraph::LEVEL_MAP &CGameGraph::CHeader::levels() const
 {
 	return		(tpLevels);
 }

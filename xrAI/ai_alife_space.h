@@ -95,58 +95,10 @@ namespace ALife {
 #endif
 	};
 
-	class SLevel {
-		string256				caLevelName;
-		Fvector					tOffset;
-		_LEVEL_ID				tLevelID;
-	public:
-		IC LPCSTR name() const {
-			return				(caLevelName);
-		}
-
-		IC const Fvector &offset() const {
-			return				(tOffset);
-		}
-
-		IC _LEVEL_ID id() const {
-			return				(tLevelID);
-		}
-
-		friend class CGameGraph;
-#ifdef AI_COMPILER
-		friend class CGraphSaver;
-#endif
-	};
-
 	struct SSumStackCell {
 		int						i1;
 		int						i2;
 		int						iCurrentSum;
-	};
-
-	class CLevelPoint  {
-		Fvector		tPoint;
-		u32			tNodeID;
-		float		fDistance;	
-	public:
-		IC const Fvector			&level_point		() const
-		{
-			return				(tPoint);
-		}
-
-		IC u32						level_vertex_id		() const
-		{
-			return				(tNodeID);
-		}
-
-		IC float					distance			() const
-		{
-			return				(fDistance);
-		}
-
-#ifdef AI_COMPILER
-		friend class CLevelGameGraph;
-#endif
 	};
 
 	enum EInjureType {
@@ -384,7 +336,6 @@ namespace ALife {
 	DEFINE_VECTOR	(CSE_ALifeKnownAnomaly*,	ANOMALY_P_VECTOR,				ANOMALY_P_IT);
 	DEFINE_VECTOR	(ANOMALY_P_VECTOR,			ANOMALY_P_VECTOR_VECTOR,		ANOMALY_P_VECTOR_IT);
 	DEFINE_VECTOR	(CSE_ALifeArtefactDemand*,	DEMAND_P_VECTOR,				DEMAND_P_IT);
-	DEFINE_VECTOR	(CLevelPoint,				LEVEL_POINT_VECTOR,				LEVEL_POINT_IT);
 	DEFINE_VECTOR	(STerrainPlace,				TERRAIN_VECTOR,					TERRAIN_IT);
 	DEFINE_VECTOR	(STraderSupply,				TRADER_SUPPLY_VECTOR,			TRADER_SUPPLY_IT);
 	DEFINE_VECTOR	(SGraphPoint,				GRAPH_POINT_VECTOR,				GRAPH_POINT_IT);
@@ -404,7 +355,6 @@ namespace ALife {
 	DEFINE_MAP		(_TASK_ID,					CSE_ALifeTask*,					TASK_MAP,					TASK_PAIR_IT);
 	DEFINE_MAP		(_OBJECT_ID,				CSE_ALifeDynamicObject*,		D_OBJECT_P_MAP,				D_OBJECT_P_PAIR_IT);
 	DEFINE_MAP		(_OBJECT_ID,				CSE_ALifeSchedulable*,			SCHEDULE_P_MAP,				SCHEDULE_P_PAIR_IT);
-	DEFINE_MAP		(_LEVEL_ID,					SLevel,							LEVEL_MAP,					LEVEL_PAIR_IT);
 
 	DEFINE_MAP_PRED	(LPCSTR,					CSE_ALifeDiscovery*,			DISCOVERY_P_MAP,			DISCOVERY_P_PAIR_IT,			pred_str);
 	DEFINE_MAP_PRED	(LPCSTR,					CSE_ALifeOrganization*,			ORGANIZATION_P_MAP,			ORGANIZATION_P_PAIR_IT,			pred_str);

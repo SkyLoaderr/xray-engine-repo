@@ -44,19 +44,19 @@ u32 dwfGetIDByLevelName(CInifile *Ini, LPCSTR caLevelName)
 	return(-1);
 }
 
-DEFINE_MAP		(u32,	ALife::CLevelGameGraph*,	GRAPH_P_MAP,	GRAPH_P_PAIR_IT);
+DEFINE_MAP		(u32,	::CLevelGameGraph*,	GRAPH_P_MAP,	GRAPH_P_PAIR_IT);
 DEFINE_MAP_PRED	(LPSTR,	SConnectionVertex,	VERTEX_MAP,		VERTEX_PAIR_IT,	CCompareVertexPredicate);
 
 class CLevelGameGraph {
 public:
 	GRAPH_VERTEX_VECTOR			m_tpVertices;
-	SLevel						m_tLevel;
+	CGameGraph::SLevel			m_tLevel;
 	VERTEX_MAP					m_tVertexMap;
 	u32							m_dwOffset;
-	xr_vector<CLevelPoint>		m_tpLevelPoints;
+	xr_vector<CGameGraph::CLevelPoint>	m_tpLevelPoints;
 	CGameGraph					*m_tpGraph;
 
-								CLevelGameGraph(const SLevel &tLevel, LPCSTR S, u32 dwOffset, u32 dwLevelID, CInifile *Ini)
+								CLevelGameGraph(const CGameGraph::SLevel &tLevel, LPCSTR S, u32 dwOffset, u32 dwLevelID, CInifile *Ini)
 	{
 		m_tLevel				= tLevel;
 		m_dwOffset				= dwOffset;
@@ -207,7 +207,7 @@ public:
 		m_tpVertices[dwVertexNumber].tpaEdges[m_tpVertices[dwVertexNumber].tNeighbourCount - 1] = tGraphEdge;
 	}
 
-	void						vfSaveVertices(CMemoryWriter &tMemoryStream, u32 &dwOffset, u32 &dwPointOffset, xr_vector<CLevelPoint> *tpLevelPoints)
+	void						vfSaveVertices(CMemoryWriter &tMemoryStream, u32 &dwOffset, u32 &dwPointOffset, xr_vector<CGameGraph::CLevelPoint> *tpLevelPoints)
 	{
 		GRAPH_VERTEX_IT			I = m_tpVertices.begin();
 		GRAPH_VERTEX_IT			E = m_tpVertices.end();
@@ -224,7 +224,7 @@ public:
 			tVertex.tDeathPointCount = (*I).tDeathPointCount;
 			tMemoryStream.w			(&tVertex,sizeof(tVertex));
 			dwOffset				+= (*I).tNeighbourCount*sizeof(CGameGraph::CEdge);
-			dwPointOffset			+= (*I).tDeathPointCount*sizeof(ALife::CLevelPoint);
+			dwPointOffset			+= (*I).tDeathPointCount*sizeof(CGameGraph::CLevelPoint);
 		}
 	};
 	
@@ -273,8 +273,8 @@ public:
 
 		u32						m = l_dwaNodes.size() > 10 ? _min(iFloor(.1f*l_dwaNodes.size()),255) : l_dwaNodes.size(), l_dwStartIndex = m_tpLevelPoints.size();
 		m_tpLevelPoints.resize	(l_dwStartIndex + m);
-		xr_vector<CLevelPoint>::iterator I = m_tpLevelPoints.begin() + l_dwStartIndex;
-		xr_vector<CLevelPoint>::iterator E = m_tpLevelPoints.end();
+		xr_vector<CGameGraph::CLevelPoint>::iterator I = m_tpLevelPoints.begin() + l_dwStartIndex;
+		xr_vector<CGameGraph::CLevelPoint>::iterator E = m_tpLevelPoints.end();
 		xr_vector<u32>::iterator		 i = l_dwaNodes.begin();
 
 		dwDeathPointCount		= m;
@@ -305,10 +305,10 @@ CGraphMerger::CGraphMerger(LPCSTR name)
 
 	GRAPH_P_MAP						tpGraphs;
 	string256						S1, S2;
-	SLevel							tLevel;
+	CGameGraph::SLevel				tLevel;
 	u32								dwOffset = 0;
 	u32								l_dwPointOffset = 0;
-	xr_vector<CLevelPoint>			l_tpLevelPoints;
+	xr_vector<CGameGraph::CLevelPoint>			l_tpLevelPoints;
 	l_tpLevelPoints.clear			();
     LPCSTR							N,V;
 
@@ -321,10 +321,10 @@ CGraphMerger::CGraphMerger(LPCSTR name)
 		strconcat					(S2,name,S1);
 		strconcat					(S1,S2,"/");//level.graph");
 		tLevel.tLevelID				= Ini->r_s32(N,"id");
-		CLevelGameGraph				*tpLevelGraph = xr_new<CLevelGameGraph>(tLevel,S1,dwOffset,tLevel.tLevelID, Ini);
+		::CLevelGameGraph			*tpLevelGraph = xr_new<::CLevelGameGraph>(tLevel,S1,dwOffset,tLevel.id(), Ini);
 		dwOffset					+= tpLevelGraph->m_tpGraph->header().vertex_count();
-		tpGraphs.insert				(mk_pair(tLevel.tLevelID,tpLevelGraph));
-		tGraphHeader.tpLevels.insert(std::make_pair(tLevel.tLevelID,tLevel));
+		tpGraphs.insert				(mk_pair(tLevel.id(),tpLevelGraph));
+		tGraphHeader.tpLevels.insert(std::make_pair(tLevel.id(),tLevel));
     }
 	R_ASSERT(tpGraphs.size());
 	
@@ -377,12 +377,12 @@ CGraphMerger::CGraphMerger(LPCSTR name)
 	F.w_u32						(tGraphHeader.dwEdgeCount);
 	F.w_u32						(tGraphHeader.dwDeathPointCount);
 	{
-		LEVEL_PAIR_IT			I = tGraphHeader.tpLevels.begin();
-		LEVEL_PAIR_IT			E = tGraphHeader.tpLevels.end();
+		CGameGraph::LEVEL_PAIR_IT	I = tGraphHeader.tpLevels.begin();
+		CGameGraph::LEVEL_PAIR_IT	E = tGraphHeader.tpLevels.end();
 		for ( ; I != E; I++) {
-			F.w_stringZ	((*I).second.caLevelName);
-			F.w_fvector3((*I).second.tOffset);
-			F.w_u32		((*I).second.tLevelID);
+			F.w_stringZ	((*I).second.name());
+			F.w_fvector3((*I).second.offset());
+			F.w_u32		((*I).second.id());
 		}
 	}
 

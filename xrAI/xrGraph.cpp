@@ -253,7 +253,7 @@ public:
 		//
 		tGraphHeader.dwDeathPointCount = 0;
 
-		ALife::SLevel				tLevel;
+		CGameGraph::SLevel			tLevel;
 		tLevel.tOffset.set			(0,0,0);
 		tLevel.tLevelID				= 0;
 		Memory.mem_copy				(tLevel.caLevelName,name,(u32)xr_strlen(name) + 1);
@@ -263,8 +263,8 @@ public:
 		tGraph.w_u32				(tGraphHeader.dwVertexCount);
 		tGraph.w_u32				(tGraphHeader.dwEdgeCount);
 		tGraph.w_u32				(tGraphHeader.dwDeathPointCount);
-		LEVEL_PAIR_IT				I = tGraphHeader.tpLevels.begin();
-		LEVEL_PAIR_IT				E = tGraphHeader.tpLevels.end();
+		CGameGraph::LEVEL_PAIR_IT	I = tGraphHeader.tpLevels.begin();
+		CGameGraph::LEVEL_PAIR_IT	E = tGraphHeader.tpLevels.end();
 		for ( ; I != E; I++) {
 			tGraph.w_stringZ		((*I).second.caLevelName);
 			tGraph.w_fvector3		((*I).second.tOffset);
@@ -414,7 +414,7 @@ void xrBuildGraph(LPCSTR name)
 	vfOptimizeGraph(dwEdgeCount,tpAI_Map);
 
 	Phase("Saving graph");
-	ALife::CGraphSaver	tGraphSaver(name,tpAI_Map);
+	::CGraphSaver	tGraphSaver(name,tpAI_Map);
 	for (int i=0, dwNewEdgeCount=0; i<(int)tpaGraph.size(); i++)
 		dwNewEdgeCount += tpaGraph[i].tNeighbourCount;
 	Msg("%d edges are removed",dwEdgeCount - dwNewEdgeCount);

@@ -20,6 +20,34 @@
 
 class CGameGraph {
 public:
+
+	class SLevel {
+		string256				caLevelName;
+		Fvector					tOffset;
+		ALife::_LEVEL_ID		tLevelID;
+	public:
+		IC LPCSTR name() const {
+			return				(caLevelName);
+		}
+
+		IC const Fvector &offset() const {
+			return				(tOffset);
+		}
+
+		IC ALife::_LEVEL_ID id() const {
+			return				(tLevelID);
+		}
+
+		friend class CGameGraph;
+#ifdef AI_COMPILER
+		friend class CGraphSaver;
+		friend class CGraphMerger;
+		friend class CSpawn;
+#endif
+	};
+
+	DEFINE_MAP		(ALife::_LEVEL_ID,SLevel,LEVEL_MAP,LEVEL_PAIR_IT);
+
 #pragma pack(push,4)
 	class CEdge {
 		u32							dwVertexNumber;
@@ -67,7 +95,7 @@ public:
 		u32							dwVertexCount;
 		u32							dwEdgeCount;
 		u32							dwDeathPointCount;
-		ALife::LEVEL_MAP			tpLevels;
+		LEVEL_MAP					tpLevels;
 
 	public:
 		IC	u32						version				() const;
@@ -75,7 +103,7 @@ public:
 		IC	ALife::_GRAPH_ID		vertex_count		() const;
 		IC	ALife::_GRAPH_ID		edge_count			() const;
 		IC	u32						death_point_count	() const;
-		IC	const ALife::LEVEL_MAP	&levels				() const;
+		IC	const LEVEL_MAP			&levels				() const;
 		friend class CGameGraph;
 #ifdef AI_COMPILER
 		friend class CGraphSaver;
@@ -84,8 +112,36 @@ public:
 	};
 #pragma pack(pop)
 
+	class CLevelPoint  {
+		Fvector		tPoint;
+		u32			tNodeID;
+		float		fDistance;	
+	public:
+		IC const Fvector			&level_point		() const
+		{
+			return				(tPoint);
+		}
+
+		IC u32						level_vertex_id		() const
+		{
+			return				(tNodeID);
+		}
+
+		IC float					distance			() const
+		{
+			return				(fDistance);
+		}
+
+#ifdef AI_COMPILER
+		friend class CLevelGameGraph;
+		friend class CSpawn;
+#endif
+	};
+
+	DEFINE_VECTOR	(CLevelPoint,				LEVEL_POINT_VECTOR,				LEVEL_POINT_IT);
+	
 	typedef const CEdge				*const_iterator;
-	typedef const ALife::CLevelPoint*const_spawn_iterator;
+	typedef const CLevelPoint		*const_spawn_iterator;
 
 protected:
 	CHeader							m_header;	// graph header

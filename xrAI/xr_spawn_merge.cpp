@@ -43,15 +43,15 @@ public:
 
 class CSpawn : public CThread {
 public:
-	SLevel						m_tLevel;
+	CGameGraph::SLevel			m_tLevel;
 	ALIFE_OBJECT_P_VECTOR		m_tpSpawnPoints;
 	xr_vector<CSE_LevelPoint*>	m_tpLevelSpawnPoints;
 	u32							m_dwLevelID;
 	CLevelGraph					*m_tpAI_Map;
 	CGameLevelCrossTable		*m_tpCrossTable;
-	xr_vector<CLevelPoint>		m_tpLevelPoints;
+	xr_vector<CGameGraph::CLevelPoint>	m_tpLevelPoints;
 
-								CSpawn(LPCSTR name, const SLevel &tLevel, u32 dwLevelID, u32 *dwGroupOffset) : CThread(dwLevelID)
+								CSpawn(LPCSTR name, const CGameGraph::SLevel &tLevel, u32 dwLevelID, u32 *dwGroupOffset) : CThread(dwLevelID)
 	{
 		thDestroyOnComplete		= FALSE;
 		// loading AI map
@@ -193,11 +193,11 @@ public:
 		thProgress				= 0.0f;
 		u32						dwStart = tpGraph->header().vertex_count(), dwFinish = tpGraph->header().vertex_count(), dwCount = 0;
 		for (int i=0; i<(int)tpGraph->header().vertex_count(); i++)
-			if (tpGraph->vertex(i).level_id() == m_dwLevelID)
+			if (tpGraph->vertex(i)->level_id() == m_dwLevelID)
 				dwCount++;
 		float fRelation = float(dwCount)/(float(dwCount) + 2*m_tpSpawnPoints.size());
 		for (int i=0; i<(int)tpGraph->header().vertex_count(); i++)
-			if (tpGraph->vertex(i).level_id() == m_dwLevelID) {
+			if (tpGraph->vertex(i)->level_id() == m_dwLevelID) {
 				if (dwStart > (u32)i)
 					dwStart = (u32)i;
 				thProgress = float(i - dwStart + 1)/float(dwCount)*float(fRelation);
@@ -269,8 +269,8 @@ public:
 				l_tpALifeAnomalousZone->m_wArtefactSpawnCount	= l_tpaStack.size();
 				l_tpALifeAnomalousZone->m_dwStartIndex			= m_tpLevelPoints.size();
 				m_tpLevelPoints.resize							(l_tpALifeAnomalousZone->m_dwStartIndex + l_tpALifeAnomalousZone->m_wArtefactSpawnCount);
-				xr_vector<CLevelPoint>::iterator				I = m_tpLevelPoints.begin() + l_tpALifeAnomalousZone->m_dwStartIndex;
-				xr_vector<CLevelPoint>::iterator				E = m_tpLevelPoints.end();
+				xr_vector<CGameGraph::CLevelPoint>::iterator				I = m_tpLevelPoints.begin() + l_tpALifeAnomalousZone->m_dwStartIndex;
+				xr_vector<CGameGraph::CLevelPoint>::iterator				E = m_tpLevelPoints.end();
 				xr_vector<u32>::iterator						i = l_tpaStack.begin();
 				for ( ; I != E; I++, i++) {
 					(*I).tNodeID	= *i;
@@ -282,8 +282,8 @@ public:
 				//random_shuffle									(l_tpaStack.begin(),l_tpaStack.end());
 				l_tpALifeAnomalousZone->m_dwStartIndex			= m_tpLevelPoints.size();
 				m_tpLevelPoints.resize							(l_tpALifeAnomalousZone->m_dwStartIndex + l_tpALifeAnomalousZone->m_wArtefactSpawnCount);
-				xr_vector<CLevelPoint>::iterator				I = m_tpLevelPoints.begin() + l_tpALifeAnomalousZone->m_dwStartIndex;
-				xr_vector<CLevelPoint>::iterator				E = m_tpLevelPoints.end();
+				xr_vector<CGameGraph::CLevelPoint>::iterator				I = m_tpLevelPoints.begin() + l_tpALifeAnomalousZone->m_dwStartIndex;
+				xr_vector<CGameGraph::CLevelPoint>::iterator				E = m_tpLevelPoints.end();
 				xr_vector<u32>::iterator						i = l_tpaStack.begin();
 				for ( ; I != E; I++, i++) {
 					(*I).tNodeID	= *i;
@@ -294,7 +294,7 @@ public:
 		}
 	}
 
-	void						Save(CMemoryWriter &fs, u32 &dwID, xr_vector<CLevelPoint> &tpLevelPoints)
+	void						Save(CMemoryWriter &fs, u32 &dwID, xr_vector<CGameGraph::CLevelPoint> &tpLevelPoints)
 	{
 		NET_Packet		P;
 		for (u32 i=0 ; i<m_tpSpawnPoints.size(); i++, dwID++) {
@@ -307,9 +307,9 @@ public:
 			if (l_tpALifeAnomalousZone) {
 				u32									l_dwStartIndex = tpLevelPoints.size();
 				tpLevelPoints.resize				(l_dwStartIndex + l_tpALifeAnomalousZone->m_wArtefactSpawnCount);
-				xr_vector<CLevelPoint>::iterator	I = m_tpLevelPoints.begin() + l_tpALifeAnomalousZone->m_dwStartIndex;
-				xr_vector<CLevelPoint>::iterator	E = I + l_tpALifeAnomalousZone->m_wArtefactSpawnCount;
-				xr_vector<CLevelPoint>::iterator	i = tpLevelPoints.begin() + l_dwStartIndex;
+				xr_vector<CGameGraph::CLevelPoint>::iterator	I = m_tpLevelPoints.begin() + l_tpALifeAnomalousZone->m_dwStartIndex;
+				xr_vector<CGameGraph::CLevelPoint>::iterator	E = I + l_tpALifeAnomalousZone->m_wArtefactSpawnCount;
+				xr_vector<CGameGraph::CLevelPoint>::iterator	i = tpLevelPoints.begin() + l_dwStartIndex;
 				for ( ; I != E; I++,i++)
 					*i = *I;
 				l_tpALifeAnomalousZone->m_dwStartIndex = l_dwStartIndex;
@@ -344,7 +344,7 @@ LPCSTR cafGetActorLevelName(xr_vector<CSpawn *> &tpLevels, string256 &S)
 			if (!!(l_tpActor = dynamic_cast<CSE_ALifeCreatureActor*>(*I)))
 				break;
 		if (l_tpActor)
-			return			(strconcat(S,tpLevels[i]->m_tLevel.caLevelName,".spawn"));
+			return			(strconcat(S,tpLevels[i]->m_tLevel.name(),".spawn"));
 	}
 	R_ASSERT2				(false,"There is no actor!");
 	return					("game.spawn");
@@ -352,7 +352,7 @@ LPCSTR cafGetActorLevelName(xr_vector<CSpawn *> &tpLevels, string256 &S)
 
 void xrMergeSpawns(LPCSTR name)
 {
-	xr_vector<CLevelPoint>		l_tpLevelPoints;
+	xr_vector<CGameGraph::CLevelPoint>		l_tpLevelPoints;
 	l_tpLevelPoints.clear		();
 
 	// load all the graphs
@@ -369,7 +369,7 @@ void xrMergeSpawns(LPCSTR name)
 	tSpawnHeader.dwSpawnCount	= 0;
 	u32							dwGroupOffset = 0;
 	xr_vector<CSpawn *>			tpLevels;
-	SLevel						tLevel;
+	CGameGraph::SLevel			tLevel;
     LPCSTR						N,V;
 	R_ASSERT2					(Ini->section_exist("levels"),"Can't find section 'levels' in the 'game.ltx'!");
     for (u32 k = 0; Ini->r_line("levels",k,&N,&V); k++) {
@@ -382,7 +382,7 @@ void xrMergeSpawns(LPCSTR name)
 		if (xr_strlen(name) && stricmp(name,V))
 			continue;
 		Memory.mem_copy			(tLevel.caLevelName,V,(u32)xr_strlen(V) + 1);
-		Msg						("Reading level %s...",tLevel.caLevelName);
+		Msg						("Reading level %s...",tLevel.name());
 		u32						id = Ini->r_s32(N,"id");
 		tpLevels.push_back		(xr_new<CSpawn>("$game_levels$",tLevel,id,&dwGroupOffset));
     }
@@ -414,7 +414,7 @@ void xrMergeSpawns(LPCSTR name)
 	FS.update_path				(l_caFileName,"$game_spawn$",cafGetActorLevelName(tpLevels,S));
 	tMemoryStream.save_to		(l_caFileName);
 
-	/Phase						("Freeing resources being allocated");
+	Phase						("Freeing resources being allocated");
 	xr_delete					(tpGraph);
 	for (u32 i=0, N = tpLevels.size(); i<N; i++)
 		xr_delete				(tpLevels[i]);
