@@ -75,7 +75,7 @@ const float p_c		= 32.7f;
 const float p_r		= 25.4f;
 const float p_r2	= 30.4f;
 const float p_a		= 1.f;
-const int	offset	= 160;
+const int	offset	= 3600;
 #define ADJ_NONE	((occTri*)0xffffffff)
 
 void edges(occTri& T)
@@ -97,7 +97,7 @@ int __cdecl main	(int argc, char* argv[])
 	printf			("\n");
 	Raster.clear	();
 	SetPriorityClass(GetCurrentProcess(),REALTIME_PRIORITY_CLASS);
-	for (int test=-offset; test<=-offset; test	+= 1)
+	for (int test=-offset; test<=-20; test	+= 1)
 	{
 		float		a0	= rad(p_a);
 		float		a1	= rad(p_a + 60.f);
