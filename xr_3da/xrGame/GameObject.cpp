@@ -307,8 +307,13 @@ void CGameObject::setup_parent_ai_locations(bool assign_position)
 
 	if (ai().level_graph().valid_vertex_id(l_tpGameObject->level_vertex_id()))
 		set_level_vertex		(l_tpGameObject->level_vertex_id());
+	else
+		validate_ai_locations	(false);
+
 	if (ai().game_graph().valid_vertex_id(l_tpGameObject->game_vertex_id()))
 		set_game_vertex			(l_tpGameObject->game_vertex_id());
+	else
+		set_game_vertex			(ai().cross_table().vertex(level_vertex_id()).game_vertex_id());
 }
 
 void CGameObject::validate_ai_locations			(bool decrement_reference)
