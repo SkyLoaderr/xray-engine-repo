@@ -186,7 +186,7 @@
 				BrowseInformation="0"
 				WarningLevel="3"
 				SuppressStartupBanner="TRUE"
-				DebugInformationFormat="0"
+				DebugInformationFormat="3"
 				CallingConvention="2"
 				CompileAs="0"/>
 			<Tool
@@ -198,8 +198,8 @@
 				OutputFile="x:\game/XR_3DA.exe"
 				LinkIncremental="1"
 				SuppressStartupBanner="TRUE"
-				GenerateDebugInformation="FALSE"
-				GenerateMapFile="FALSE"
+				GenerateDebugInformation="TRUE"
+				GenerateMapFile="TRUE"
 				MapFileName="x:\game\XR_3DA.map"
 				SubSystem="2"/>
 			<Tool

@@ -21,7 +21,8 @@
 			UseOfMFC="0"
 			ATLMinimizesCRunTimeLibraryUsage="FALSE"
 			CharacterSet="2"
-			WholeProgramOptimization="TRUE">
+			WholeProgramOptimization="TRUE"
+			CompilerName="Microsoft">
 			<Tool
 				Name="VCCLCompilerTool"
 				Optimization="3"
@@ -48,13 +49,13 @@
 				BrowseInformation="0"
 				WarningLevel="3"
 				SuppressStartupBanner="TRUE"
-				DebugInformationFormat="0"
+				DebugInformationFormat="3"
 				CallingConvention="2"/>
 			<Tool
 				Name="VCCustomBuildTool"/>
 			<Tool
 				Name="VCLinkerTool"
-				AdditionalOptions="/MACHINE:I386"
+				AdditionalOptions="/MACHINE:I386 "
 				AdditionalDependencies="x:\game\xr_3da.lib odbc32.lib odbccp32.lib"
 				OutputFile="x:\game/xrCPU_Pipe.dll"
 				LinkIncremental="1"
@@ -92,7 +93,8 @@
 			ConfigurationType="2"
 			UseOfMFC="0"
 			ATLMinimizesCRunTimeLibraryUsage="FALSE"
-			CharacterSet="2">
+			CharacterSet="2"
+			CompilerName="Microsoft">
 			<Tool
 				Name="VCCLCompilerTool"
 				Optimization="0"
@@ -115,7 +117,7 @@
 			<Tool
 				Name="VCLinkerTool"
 				IgnoreImportLibrary="TRUE"
-				AdditionalOptions="/MACHINE:I386"
+				AdditionalOptions="/MACHINE:I386 "
 				AdditionalDependencies="odbc32.lib odbccp32.lib x:\game\xr_3da.lib"
 				OutputFile="x:\game/xrCPU_Pipe.dll"
 				LinkIncremental="2"
@@ -166,50 +168,39 @@
 				</FileConfiguration>
 			</File>
 			<File
-				RelativePath=".\StdAfx.h">
-			</File>
+				RelativePath=".\StdAfx.h"/>
 			<File
-				RelativePath=".\xrCPU_Pipe.cpp">
-			</File>
+				RelativePath=".\xrCPU_Pipe.cpp"/>
 			<File
-				RelativePath=".\xrCPU_Pipe.h">
-			</File>
+				RelativePath=".\xrCPU_Pipe.h"/>
 		</Filter>
 		<Filter
 			Name="3DNow!"
 			Filter="">
 			<File
-				RelativePath=".\3DNow!Lib.cpp">
-			</File>
+				RelativePath=".\3DNow!Lib.cpp"/>
 			<File
-				RelativePath=".\xrBoneLerp_3DNow!.cpp">
-			</File>
+				RelativePath=".\xrBoneLerp_3DNow!.cpp"/>
 			<File
-				RelativePath=".\xrM44mul_3DNow!.cpp">
-			</File>
+				RelativePath=".\xrM44mul_3DNow!.cpp"/>
 			<File
-				RelativePath=".\xrMemCopy8_3DNow!.cpp">
-			</File>
+				RelativePath=".\xrMemCopy8_3DNow!.cpp"/>
 			<File
-				RelativePath=".\xrMemFill32_3DNow!.cpp">
-			</File>
+				RelativePath=".\xrMemFill32_3DNow!.cpp"/>
 			<File
-				RelativePath=".\xrSkin1W_3DNow!.cpp">
-			</File>
+				RelativePath=".\xrSkin1W_3DNow!.cpp"/>
 		</Filter>
 		<Filter
 			Name="SSE"
 			Filter="">
 			<File
-				RelativePath=".\xrSkin1W_SSE.cpp">
-			</File>
+				RelativePath=".\xrSkin1W_SSE.cpp"/>
 		</Filter>
 		<Filter
 			Name="Generic x86"
 			Filter="">
 			<File
-				RelativePath=".\xrBoneLerp.cpp">
-			</File>
+				RelativePath=".\xrBoneLerp.cpp"/>
 			<File
 				RelativePath=".\xrM44mul.cpp">
 				<FileConfiguration
@@ -220,16 +211,12 @@
 				</FileConfiguration>
 			</File>
 			<File
-				RelativePath=".\xrQuatSlerp.cpp">
-			</File>
+				RelativePath=".\xrQuatSlerp.cpp"/>
 			<File
-				RelativePath=".\xrSkin1W.cpp">
-			</File>
+				RelativePath=".\xrSkin1W.cpp"/>
 			<File
-				RelativePath=".\xrTransfer.cpp">
-			</File>
+				RelativePath=".\xrTransfer.cpp"/>
 		</Filter>
 	</Files>
-	<Globals>
-	</Globals>
+	<Globals/>
 </VisualStudioProject>
