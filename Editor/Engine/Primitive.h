@@ -1,3 +1,5 @@
+#ifndef _PRIMITIVE_H_
+#define _PRIMITIVE_H_
 #pragma once
 
 class ENGINE_API CPrimitive
@@ -43,3 +45,4 @@ public:
 		IB_Destroy();
 	}
 };
+#endif
