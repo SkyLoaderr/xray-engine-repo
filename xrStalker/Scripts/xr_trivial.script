@@ -1,5 +1,5 @@
 local time_walk 	= 20000
-local time_rest 	= 3         --Сколько анимаций сидения сидим
+local time_rest 	= 15000         --Сколько анимаций сидения сидим
 
 local time_to_speak = 20000     --Через какое время примерно зомби произносит фразы
 
@@ -170,7 +170,8 @@ function stalker_novice_action:execute ()
         end
     else
         self:state_sit_down()
-        if( self.count > time_rest ) then
+        if( xr_motivator.storage[self.object:id()].state.body_state == 1 and
+		   device():time_global() > self.a.time + time_rest ) then
         	self.a.index = math.random( 1, self.a.rest_w:count() - 1 )              --Выбераем точку, в которой потом будем сидеть.
             self:state_walk( "init" )                   --Init state sit down
         end
@@ -223,9 +224,9 @@ function stalker_novice_action:state_sit_down( param )
 
     if( xr_motivator.storage[self.object:id()].state.body_state == 1 ) then           --Уже сидим
         if( self.object:animation_count() <= 1 ) then
-            printf( "Sidimmmmm" )
             self.object:add_animation( "stalker_1_2",   true )
-            self.count = self.count + 1
+            self.count 	= self.count + 1
+			self.a.time = device():time_global()
         end
     else
     	if( self.object:level_vertex_id() == self.a.rest_w:level_vertex_id( self.a.index ) ) then -- Находимся на той ноде, на которой собрались посидеть
