@@ -85,11 +85,13 @@ void	CBlender_Screen_SET::Compile	(CBlender_Recorder& RS, sh_list& L_textures, s
 			RS.PassSET_Blend	(TRUE,	D3DBLEND_DESTCOLOR,D3DBLEND_ZERO,		FALSE,oAREF.value);
 			break;
 		case 4:	// MUL_2X
-		case 6:
 			RS.PassSET_Blend	(TRUE,	D3DBLEND_DESTCOLOR,D3DBLEND_SRCCOLOR,	FALSE,oAREF.value);
 			break;
 		case 5:	// ALPHA-ADD
 			RS.PassSET_Blend	(TRUE,	D3DBLEND_SRCALPHA,D3DBLEND_ONE,			FALSE,oAREF.value);
+			break;
+		case 6:	// MUL_2X + A-test
+			RS.PassSET_Blend	(TRUE,	D3DBLEND_DESTCOLOR,D3DBLEND_SRCCOLOR,	TRUE,oAREF.value);
 			break;
 		}
 		RS.R().SetRS		(D3DRS_LIGHTING,					BC(oLighting.value));
