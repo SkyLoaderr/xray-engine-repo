@@ -84,7 +84,7 @@ void CAI_Flesh::Load(LPCSTR section)
 	MotionMan.AddAnim(eAnimCheckCorpse,		"stand_eat_",			 1,	0,									0,											PS_STAND);
 
 	MotionMan.AddAnim(eAnimEat,				"stand_eat_",			-1, 0,									0,											PS_STAND);
-	MotionMan.AddAnim(eAnimDie,				"stand_idle_",			-1, 0,									0,											PS_STAND);
+	MotionMan.AddAnim(eAnimDie,				"stand_die_",			-1, 0,									0,											PS_STAND);
 	
 	MotionMan.AddAnim(eAnimStandLieDown,	"stand_lie_down_",		-1, 0,									0,											PS_STAND);
 	MotionMan.AddAnim(eAnimLieStandUp,		"lie_stand_up_",		-1, 0,									0,											PS_LIE);

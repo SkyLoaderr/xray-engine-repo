@@ -31,7 +31,6 @@ class CBitingRest : public IState {
 			ACTION_WALK_PATH_END
 	} m_tAction;
 	
-	TTime			m_dwReplanTime;						//!< время через, которое делать планирование
 	TTime			m_dwLastPlanTime;					//!< последнее время планирования
 
 	bool			m_bFollowPath;

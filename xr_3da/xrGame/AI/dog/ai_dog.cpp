@@ -136,19 +136,6 @@ void CAI_Dog::StateSelector()
 	else if (GetCorpse(ve) && (ve.obj->m_fFood > 1) && ((GetSatiety() < 0.85f) || flagEatNow))	
 		SetState(stateEat);
 	else						SetState(stateRest); 
-
-	
-//	string128 s1;
-//	strcpy(s1,"NO STATE");
-//
-//	if (CurrentState == statePanic) strcpy(s1,"PANIC");
-//	else if (CurrentState == stateAttack) strcpy(s1,"ATTACK");
-//	else if (CurrentState == stateEat) strcpy(s1,"EAT");
-//	else if (CurrentState == stateRest) strcpy(s1,"REST");
-//	else if (CurrentState == stateExploreNDE) strcpy(s1,"EXPLORE_SOUND");
-
-	HDebug->SetActive(true);
-	UpdateLocation();
 }
 
 
@@ -276,26 +263,65 @@ void CAI_Dog::OnJumpStop()
 	MotionMan.ProcessAction();
 }
 
-///////////////////////////////////////////////////////
-
-void CAI_Dog::UpdateLocation()
-{
-
-	u32 level_vertex_id = dynamic_cast<CAI_ObjectLocation*>(Level().CurrentEntity())->level_vertex_id();
-
-	Fvector center_V;
-	center_V = ai().level_graph().vertex_position(level_vertex_id);
-
-	CLevelGraph::SContour contour;
-	ai().level_graph().contour(contour, level_vertex_id);
-
-	HDebug->L_AddLine(contour.v1,contour.v2,D3DCOLOR_XRGB(0,255,255));
-	HDebug->L_AddLine(contour.v2,contour.v3,D3DCOLOR_XRGB(0,255,255));
-	HDebug->L_AddLine(contour.v3,contour.v4,D3DCOLOR_XRGB(0,255,255));
-	HDebug->L_AddLine(contour.v4,contour.v1,D3DCOLOR_XRGB(0,255,255));
-
-	//void	nearest(Fvector &destination, const Fvector &position, const SContour &contour);
-}
+/////////////////////////////////////////////////////////
+////
+//void CAI_Dog::UpdateLocation()
+//{
+//	HDebug->L_Clear();
+//
+//	u32 level_vertex_id = dynamic_cast<CAI_ObjectLocation*>(Level().CurrentEntity())->level_vertex_id();
+//
+//	Fvector center_V;
+//	center_V = ai().level_graph().vertex_position(level_vertex_id);
+//
+//	CLevelGraph::SContour contour;
+//	ai().level_graph().contour(contour, level_vertex_id);
+//
+////	HDebug->L_AddLine(contour.v1,contour.v2,D3DCOLOR_XRGB(0,255,255));
+////	HDebug->L_AddLine(contour.v2,contour.v3,D3DCOLOR_XRGB(0,255,255));
+////	HDebug->L_AddLine(contour.v3,contour.v4,D3DCOLOR_XRGB(0,255,255));
+////	HDebug->L_AddLine(contour.v4,contour.v1,D3DCOLOR_XRGB(0,255,255));
+////	HDebug->L_AddPoint(center_V, 0.15f, D3DCOLOR_XRGB(0,255,255));
+//
+//	Fvector new_pos;
+//	new_pos.mad(center_V,Level().CurrentEntity()->Direction(),5.f);
+//	HDebug->L_AddLine(center_V,new_pos, D3DCOLOR_XRGB(0,255,0));	
+//
+//	Fvector nearest;
+//	ai().level_graph().nearest(nearest, new_pos, contour);
+//	HDebug->L_AddPoint(nearest, 0.05f, D3DCOLOR_XRGB(255,0,0));
+//
+//	Fvector sub_dir;
+//
+//	sub_dir.sub(nearest, center_V);
+//	float h,p;
+//	sub_dir.getHP(h,p);
+//
+//	m_body.target.pitch = p;
+//	
+//	// 1. Build plane (use contour.p1,p2,p3)
+////	Fvector pA,pB,pD;
+////	pA = contour.v1; 
+////	pB = contour.v2;
+////	pD = contour.v3;
+////	
+////	float A,B,C,D;
+////
+////	A = (pB.y - pA.y)*(pD.z - pA.z) - (pD.y - pA.y)*(pB.z - pA.z);
+////	B = (pD.x - pA.x)*(pB.z - pA.z) - (pB.x - pA.x)*(pD.z - pA.z);
+////	C = (pB.x - pA.x)*(pD.y - pA.y) - (pD.x - pA.x)*(pB.y - pA.y);
+////	D = -(A*pA.x + B*pA.y + C*pA.z);
+////
+////
+////	Fvector P = new_pos;
+////	float ro = (A * P.x + B * P.y + C * P.z) / (A*A + B*B + C*C);
+////
+////	Fvector Q;
+////	Q.set(P.x - A*ro, P.y - B*ro, P.z - C*ro);
+////
+////	HDebug->L_AddLine(Q,center_V, D3DCOLOR_XRGB(255,255,255));		
+//
+//}
 
 
 

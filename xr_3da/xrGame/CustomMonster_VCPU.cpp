@@ -29,7 +29,7 @@ void CCustomMonster::mk_rotation	(Fvector &dir, SRotation &R)
 void CCustomMonster::Exec_Look		( float dt )
 {
 	angle_lerp_bounds				(m_body.current.yaw,m_body.target.yaw,m_body.speed,dt);
-	angle_lerp_bounds				(m_body.current.pitch,m_body.target.pitch,m_body.speed,dt);
+	angle_lerp_bounds				(m_body.current.pitch,m_body.target.pitch,PI_DIV_6,dt);
 
 //	angle_lerp_bounds				(m_head.current.yaw,m_head.target.yaw,m_head.speed,dt);
 //	angle_lerp_bounds				(m_head.current.pitch,m_head.target.pitch,m_head.speed,dt);

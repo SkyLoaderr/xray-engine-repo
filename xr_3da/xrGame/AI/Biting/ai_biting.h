@@ -76,15 +76,6 @@ public:
 	float					m_fsDrag;
 	float					m_fsSteal;
 
-	TTime					m_timeLieIdleMin;
-	TTime					m_timeLieIdleMax;
-	TTime					m_timeStandIdleMin;
-	TTime					m_timeStandIdleMax;
-	TTime					m_timeFreeWalkMin;
-	TTime					m_timeFreeWalkMax;
-	TTime					m_timeSleepMin;
-	TTime					m_timeSleepMax;
-
 	u32						m_dwProbRestWalkFree;
 	u32						m_dwProbRestStandIdle;
 	u32						m_dwProbRestLieIdle;
@@ -124,6 +115,10 @@ public:
 
 	float					m_fSoundThreshold;
 	float					m_fHitPower;
+
+	float					m_fEatFreq;
+	float					m_fEatSlice;
+	float					m_fEatSliceWeight;
 
 };
 
@@ -407,7 +402,6 @@ public:
 
 	u16		fire_bone_id;
 	float	GetRealDistToEnemy();
-
 
 	void	WalkNextGraphPoint();
 };

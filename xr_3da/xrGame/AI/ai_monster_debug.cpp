@@ -3,7 +3,7 @@
 #include "../entity_alive.h"
 #include "../hudmanager.h"
 
-//#define DISABLE_MONSTER_DEBUG
+#define DISABLE_MONSTER_DEBUG
 
 
 

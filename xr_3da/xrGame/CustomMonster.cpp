@@ -410,6 +410,10 @@ void CCustomMonster::UpdateCL	()
 	if(g_Alive()) {
 		XFORM().rotateY				(NET_Last.o_model);
 		XFORM().translate_over		(NET_Last.p_pos);
+
+		Fmatrix M;
+		M.setXYZi (NET_Last.o_torso.pitch, 0.0f, 0.0f);
+		XFORM().mulB(M);
 	}
 }
 

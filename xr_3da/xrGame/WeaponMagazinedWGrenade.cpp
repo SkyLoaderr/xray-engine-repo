@@ -133,7 +133,7 @@ void CWeaponMagazinedWGrenade::switch2_Reload()
 {
 	if(m_bGrenadeMode) 
 	{
-		if (sndReloadG.feedback) sndReloadG.feedback->set_volume(.2f);
+		///if (sndReloadG.feedback) sndReloadG.feedback->set_volume(.2f);
 		Sound->play_at_pos		(sndReloadG,H_Root(),vLastFP2);
 		m_pHUD->animPlay(mhud_reload_g[Random.randI(mhud_reload_g.size())],FALSE,this);
 		bPending = true;

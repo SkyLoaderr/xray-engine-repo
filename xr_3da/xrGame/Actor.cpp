@@ -252,8 +252,8 @@ void CActor::Load	(LPCSTR section )
 	char buf[256];
 
 	sndLanding.g_type	= SOUND_TYPE_MONSTER_FALLING_HUMAN;
-	::Sound->create		(sndZoneHeart,		TRUE,	"heart\\4");
-	::Sound->create		(sndZoneDetector,	TRUE,	"detectors\\geiger");
+	::Sound->create		(sndZoneHeart,		TRUE,	"heart\\4",						SOUND_TYPE_MONSTER_WALKING);
+	::Sound->create		(sndZoneDetector,	TRUE,	"detectors\\geiger",			SOUND_TYPE_MONSTER_WALKING);
 	::Sound->create		(sndHit[0],			TRUE,	strconcat(buf,cName(),"\\hurt1"),SOUND_TYPE_MONSTER_INJURING_HUMAN);
 	::Sound->create		(sndHit[1],			TRUE,	strconcat(buf,cName(),"\\hurt2"),SOUND_TYPE_MONSTER_INJURING_HUMAN);
 	::Sound->create		(sndHit[2],			TRUE,	strconcat(buf,cName(),"\\hurt3"),SOUND_TYPE_MONSTER_INJURING_HUMAN);
@@ -905,7 +905,7 @@ void CActor::UpdateCL()
 				s_pos.y				+=	.15f;
 				sndLanding.clone	(mtl_pair->CollideSounds[0]);
 				::Sound->play_at_pos(sndLanding,this,s_pos);
-				sndLanding.feedback->set_volume(.2f);
+				///sndLanding.feedback->set_volume(.2f);
 			}
 		}
 	}

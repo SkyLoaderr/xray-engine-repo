@@ -94,6 +94,7 @@ void CBitingAttack::Init()
 }
 
 #define TIME_WALK_PATH 5000
+#define REAL_DIST_THROUGH_TRACE_THRESHOLD	6.0f
 
 void CBitingAttack::Run()
 {
@@ -110,14 +111,9 @@ void CBitingAttack::Run()
 	// Выбор состояния
 	bool bAttackMelee = (ACTION_ATTACK_MELEE == m_tAction);
 
-	
-	//dist = pMonster->GetDistToEnemy();
+	// определить расстояние до противника
 	dist = m_tEnemy.obj->Position().distance_to(pMonster->Position());
-	float real_dist;
-
-	real_dist = pMonster->GetRealDistToEnemy();
-	
-	LOG_EX2("dist = [%f] real_dist = [%f]", *"*/ dist, real_dist /*"*);
+	if (dist < REAL_DIST_THROUGH_TRACE_THRESHOLD) dist = pMonster->GetRealDistToEnemy();
 
 	if (bAttackMelee && (dist < m_fDistMax)) m_tAction = ACTION_ATTACK_MELEE;
 	else m_tAction = ((dist > m_fDistMin) ? ACTION_RUN : ACTION_ATTACK_MELEE);

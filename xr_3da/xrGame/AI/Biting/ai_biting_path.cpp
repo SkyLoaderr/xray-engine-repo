@@ -120,7 +120,7 @@ void CAI_Biting::SetDirectionLook(bool bReversed)
 	CDetailPathManager::direction().getHP(yaw,pitch);
 
 	m_body.target.yaw = -yaw;
-	m_body.target.pitch = 0;
+	m_body.target.pitch = -pitch;
 
 	if (bReversed) m_body.target.yaw = angle_normalize(m_body.target.yaw + PI);
 	else m_body.target.yaw = angle_normalize(m_body.target.yaw);
@@ -375,4 +375,3 @@ void CAI_Biting::WalkNextGraphPoint()
 
 	SetupVelocityMasks();
 }
-

@@ -142,9 +142,9 @@ void CBitingEat::Run()
 		if (pMonster->GetSatiety() >= 0.9f) bHideAfterLunch = true;
 
 		// סתוסעü קאסעü
-		DO_IN_TIME_INTERVAL_BEGIN(m_dwLastTimeEat, m_dwEatInterval);
-			pMonster->ChangeSatiety(0.02f);
-			pCorpse->m_fFood -= pMonster->_sd->m_fHitPower/5.f;
+		DO_IN_TIME_INTERVAL_BEGIN(m_dwLastTimeEat, u32(1000/pMonster->_sd->m_fEatFreq));
+			pMonster->ChangeSatiety(pMonster->_sd->m_fEatSlice);
+			pCorpse->m_fFood -= pMonster->_sd->m_fEatSliceWeight;
 		DO_IN_TIME_INTERVAL_END();
 	
 

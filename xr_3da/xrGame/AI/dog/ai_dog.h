@@ -34,5 +34,4 @@ private:
 	
 	CBitingNull		*stateTest;
 
-			void	UpdateLocation 		();
 };

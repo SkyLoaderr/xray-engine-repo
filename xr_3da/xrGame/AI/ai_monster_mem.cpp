@@ -41,8 +41,8 @@ TSoundDangerValue tagSoundElement::ConvertSoundType(ESoundTypes stype)
 void CSoundMemory::HearSound(const SoundElem &s)
 {
 	if (MONSTER_DYING			== s.type)				return;		// todo
-	if (NONE_DANGEROUS_SOUND	== s.type)			return;		// todo
-	if (WEAPON_BULLET_RICOCHET	== s.type)		return;		// todo
+	if (NONE_DANGEROUS_SOUND	== s.type)				return;		// todo
+	if (WEAPON_BULLET_RICOCHET	== s.type)				return;		// todo
 	if (MONSTER_INJURING		== s.type)				return;		// todo
 	
 	// не регистрировать звуки, у которых владелец не известен

@@ -163,15 +163,6 @@ void CAI_Biting::LoadShared(LPCSTR section)
 	_sd->m_fsDrag						= pSettings->r_float(section,"Drag");
 	_sd->m_fsSteal						= pSettings->r_float(section,"Steal");
 
-	_sd->m_timeLieIdleMin				= pSettings->r_u32   (section,"LieIdleTimeMin");
-	_sd->m_timeLieIdleMax				= pSettings->r_u32   (section,"LieIdleTimeMax");
-	_sd->m_timeStandIdleMin				= pSettings->r_u32   (section,"StandIdleTimeMin");
-	_sd->m_timeStandIdleMax				= pSettings->r_u32   (section,"StandIdleTimeMax");
-	_sd->m_timeFreeWalkMin				= pSettings->r_u32   (section,"FreeWalkTimeMin");
-	_sd->m_timeFreeWalkMax				= pSettings->r_u32   (section,"FreeWalkTimeMax");
-	_sd->m_timeSleepMin					= pSettings->r_u32   (section,"SleepTimeMin");
-	_sd->m_timeSleepMax					= pSettings->r_u32   (section,"SleepTimeMax");
-
 	_sd->m_dwProbRestWalkFree			= pSettings->r_u32   (section,"ProbRestWalkFree");
 	_sd->m_dwProbRestStandIdle			= pSettings->r_u32   (section,"ProbRestStandIdle");
 	_sd->m_dwProbRestLieIdle			= pSettings->r_u32   (section,"ProbRestLieIdle");
@@ -197,6 +188,10 @@ void CAI_Biting::LoadShared(LPCSTR section)
 	_sd->m_fMoraleFearQuant				= pSettings->r_float(section,"MoraleFearQuant");
 	_sd->m_fMoraleRestoreQuant			= pSettings->r_float(section,"MoraleRestoreQuant");
 	_sd->m_fMoraleBroadcastDistance		= pSettings->r_float(section,"MoraleBroadcastDistance");
+
+	_sd->m_fEatFreq						= pSettings->r_float(section,"eat_freq");
+	_sd->m_fEatSlice					= pSettings->r_float(section,"eat_slice");
+	_sd->m_fEatSliceWeight				= pSettings->r_float(section,"eat_slice_weight");
 
 	R_ASSERT2 (100 == (_sd->m_dwProbRestWalkFree + _sd->m_dwProbRestStandIdle + _sd->m_dwProbRestLieIdle + _sd->m_dwProbRestTurnLeft), "Probability sum isn't 1");
 }
@@ -317,8 +312,10 @@ void CAI_Biting::UpdateCL()
 	}
 
 	m_pPhysics_support->in_UpdateCL();
-
+	
 	HDebug->M_Update();
+
+	//UpdatePitch();
 }
 
 void CAI_Biting::shedule_Update(u32 dt)

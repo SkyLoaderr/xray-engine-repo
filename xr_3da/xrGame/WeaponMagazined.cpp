@@ -573,8 +573,8 @@ void CWeaponMagazined::OnShotmark	(const Fvector &vDir, const Fvector &vEnd, Col
 void CWeaponMagazined::OnEmptyClick	()
 {
 	Sound->play_at_pos	(sndEmptyClick,H_Root(),vLastFP);
-	if (sndEmptyClick.feedback)
-		sndEmptyClick.feedback->set_volume(.2f);
+	//if (sndEmptyClick.feedback)
+		//sndEmptyClick.feedback->set_volume(.2f);
 }
 void CWeaponMagazined::OnAnimationEnd() 
 {
@@ -601,7 +601,7 @@ void CWeaponMagazined::switch2_Reload()
 {
 	Sound->play_at_pos		(sndReload,H_Root(),vLastFP);
 	
-	if (sndReload.feedback)	sndReload.feedback->set_volume(.2f);
+	///if (sndReload.feedback)	sndReload.feedback->set_volume(.2f);
 	
 	PlayAnimReload();
 	bPending = true;
@@ -611,7 +611,7 @@ void CWeaponMagazined::switch2_Hiding()
 	CWeapon::FireEnd();
 	
 	Sound->play_at_pos(sndHide,H_Root(),vLastFP);
-	if (sndHide.feedback) sndHide.feedback->set_volume(.2f);
+	//if (sndHide.feedback) sndHide.feedback->set_volume(.2f);
 	
 
 	PlayAnimHide();
@@ -626,7 +626,7 @@ void CWeaponMagazined::switch2_Hidden()
 void CWeaponMagazined::switch2_Showing()
 {
 	Sound->play_at_pos		(sndShow,H_Root(),vLastFP);
-	if (sndShow.feedback)	sndShow.feedback->set_volume(.3f);
+	//if (sndShow.feedback)	sndShow.feedback->set_volume(.3f);
 
 	bPending = true;
 	PlayAnimShow();

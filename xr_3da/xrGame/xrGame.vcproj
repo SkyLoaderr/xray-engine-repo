@@ -4176,6 +4176,24 @@
 			<Filter
 				Name="Monsters"
 				Filter="">
+				<File
+					RelativePath=".\M_Bloodsucker.ltx">
+				</File>
+				<File
+					RelativePath=".\M_Boar.ltx">
+				</File>
+				<File
+					RelativePath=".\M_Chimera.ltx">
+				</File>
+				<File
+					RelativePath=".\M_Dog.ltx">
+				</File>
+				<File
+					RelativePath=".\M_Flesh.ltx">
+				</File>
+				<File
+					RelativePath=".\M_Pseudodog.ltx">
+				</File>
 			</Filter>
 		</Filter>
 	</Files>
