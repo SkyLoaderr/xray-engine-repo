@@ -59,7 +59,7 @@ p2f 	p_main	( v2p_in IN )
   // clip		(l_D);
 
   // Specular = (H • N)^m
-  float3 H		= normalize (L + V);
+  float3 H		= texCUBE	(s_NCM, L + V);
   float l_S 	= tex1D		(s_power,	saturate(dot(H, N)));
   
   // Final color

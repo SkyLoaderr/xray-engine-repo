@@ -946,6 +946,13 @@ HRESULT CMyD3DApplication::RenderLight_Direct	()
 	m_pd3dDevice->SetSamplerState			(2, D3DSAMP_MINFILTER,	D3DTEXF_LINEAR);
 	m_pd3dDevice->SetSamplerState			(2, D3DSAMP_MAGFILTER,	D3DTEXF_LINEAR);
 
+	// samplers and texture (NCM)
+	m_pd3dDevice->SetTexture				(3, t_NCM);
+	m_pd3dDevice->SetSamplerState			(3, D3DSAMP_ADDRESSU,	D3DTADDRESS_CLAMP);
+	m_pd3dDevice->SetSamplerState			(3, D3DSAMP_ADDRESSV,	D3DTADDRESS_CLAMP);
+	m_pd3dDevice->SetSamplerState			(3, D3DSAMP_MINFILTER,	D3DTEXF_LINEAR);
+	m_pd3dDevice->SetSamplerState			(3, D3DSAMP_MAGFILTER,	D3DTEXF_LINEAR);
+
 	// Set up the stencil states
 	m_pd3dDevice->SetRenderState			( D3DRS_STENCILENABLE,		TRUE				);
 	m_pd3dDevice->SetRenderState			( D3DRS_STENCILFUNC,		D3DCMP_LESSEQUAL	);
