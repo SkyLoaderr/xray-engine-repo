@@ -17,6 +17,7 @@ CDeflector::CDeflector()
 {
 	Deflector	= this;
 	lm.pSurface = 0;
+	lm_rad		= 0;
 }
 CDeflector::~CDeflector()
 {
@@ -136,11 +137,15 @@ VOID CDeflector::GetRect(UVpoint &min, UVpoint &max)
 
 VOID CDeflector::Capture		(CDeflector *D, int b_u, int b_v, int s_u, int s_v, BOOL bRotated)
 {
+	// Allocate 512x512 texture if needed
+	
+
+	// Calculate UV shift,scale,guardband
 	UVpoint half;	half.set	(.5f/512.f, .5f/512.f);
 	UVpoint guard;	guard.set	(BORDER/512.f, BORDER/512.f);
 	UVpoint scale;  scale.set	(float(s_u-2*BORDER)/512.f, float(s_v-2*BORDER)/512.f);	// take in mind border
 	UVpoint base;	base.set	(float(b_u+BORDER)/512.f, float(b_v+BORDER)/512.f);					// offset in UV space
-	
+
 	if (!bRotated) 
 	{
 		// Normal

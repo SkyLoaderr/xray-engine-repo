@@ -399,7 +399,7 @@ void CDeflector::Save()
 	p.maketga		(lm.name);
 	
 	// Borders correction
-	for (DWORD ref=254; ref>0; ref--)
+	for (DWORD ref=254-BORDER; ref>0; ref--)
 		if (!ApplyBorders(lm,ref)) break;
 
 	// Saving
