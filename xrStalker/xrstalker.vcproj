@@ -293,9 +293,6 @@
 				<File
 					RelativePath=".\Config\gameplay\storyline_info_to_diary.xml">
 				</File>
-				<File
-					RelativePath=".\Config\gameplay\tasks_escape.xml">
-				</File>
 				<Filter
 					Name="Dialogs"
 					Filter="">
@@ -319,6 +316,19 @@
 					</File>
 					<File
 						RelativePath=".\Config\gameplay\dialogs_yantar.xml">
+					</File>
+				</Filter>
+				<Filter
+					Name="tasks"
+					Filter="">
+					<File
+						RelativePath=".\Config\gameplay\tasks_agroprom.xml">
+					</File>
+					<File
+						RelativePath=".\Config\gameplay\tasks_escape.xml">
+					</File>
+					<File
+						RelativePath=".\Config\gameplay\tasks_garbage.xml">
 					</File>
 				</Filter>
 			</Filter>
