@@ -272,7 +272,7 @@ void CUIBag::InitBoxes(){
 		pNewDDItem->SetMessageTarget(this);
 		// «адаем специальную дополнительную функцию отрисовки, дл€
 		// отображени€ номера оружи€ в углу его иконки
-		pNewDDItem->SetCustomDraw(static_cast<CUSTOM_UPDATE_PROC>(WpnDrawIndex));
+		//pNewDDItem->SetCustomDraw(static_cast<CUSTOM_UPDATE_PROC>(WpnDrawIndex));
 	}
 }
 
@@ -461,7 +461,7 @@ void CUIBag::FillUpGroup(const u32 group)
 
 		// «адаем специальную дополнительную функцию отрисовки, дл€
 		// отображени€ номера оружи€ в углу его иконки
-		pNewDDItem->SetCustomDraw(static_cast<CUSTOM_UPDATE_PROC>(WpnDrawIndex));
+		//pNewDDItem->SetCustomDraw(static_cast<CUSTOM_UPDATE_PROC>(WpnDrawIndex));
 
 		m_allItems.push_back(pNewDDItem);
 	}
@@ -572,22 +572,22 @@ void CUIBag::InitAddonsInfo(CUIDragDropItemMP &DDItemMP, const xr_string &sectio
 	}
 }
 
-void WpnDrawIndex(CUIDragDropItem *pDDItem)
-{
-	CUIDragDropItemMP *pDDItemMP = smart_cast<CUIDragDropItemMP*>(pDDItem);
-	R_ASSERT(pDDItemMP);
-	if (!pDDItemMP) return;
-
-	int left	= pDDItemMP->GetUIStaticItem().GetPosX();
-	int bottom	= pDDItemMP->GetUIStaticItem().GetPosY() + pDDItemMP->GetUIStaticItem().GetRect().height();
-
-	pDDItemMP->GetFont()->SetColor(0xffffffff);
-	UI()->OutText(pDDItem->GetFont(), pDDItemMP->GetSelfClipRect(), float(left), 
-		float(bottom - pDDItemMP->GetFont()->CurrentHeight()),
-		"%d", pDDItemMP->GetPosInSectionsGroup() + 1);
-
-	pDDItemMP->GetFont()->OnRender();
-}
+//void WpnDrawIndex(CUIDragDropItem *pDDItem)
+//{
+//	CUIDragDropItemMP *pDDItemMP = smart_cast<CUIDragDropItemMP*>(pDDItem);
+//	R_ASSERT(pDDItemMP);
+//	if (!pDDItemMP) return;
+//
+//	int left	= pDDItemMP->GetUIStaticItem().GetPosX();
+//	int bottom	= pDDItemMP->GetUIStaticItem().GetPosY() + pDDItemMP->GetUIStaticItem().GetRect().height();
+//
+//	pDDItemMP->GetFont()->SetColor(0xffffffff);
+//	UI()->OutText(pDDItem->GetFont(), pDDItemMP->GetSelfClipRect(), float(left), 
+//		float(bottom - pDDItemMP->GetFont()->CurrentHeight()),
+//		"%d", pDDItemMP->GetPosInSectionsGroup() + 1);
+//
+//	pDDItemMP->GetFont()->OnRender();
+//}
 
 bool CUIBag::BagProc(CUIDragDropItem* pItem, CUIDragDropList* pList)
 {
