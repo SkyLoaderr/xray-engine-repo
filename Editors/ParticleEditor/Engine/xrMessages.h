@@ -247,6 +247,7 @@ GE_HIT									// попадание (пулей)
 	u16			id_entity;				// dest=кто повредился, entity=кто попал
 	direction	dir;
 	float		power;
+	s16			element;
 }
 GE_DIE
 {
