@@ -215,7 +215,6 @@ bool	CWeaponMounted::attach_Actor		(CActor* actor)
 	biX.set_callback		(BoneCallbackX,this);
 	CBoneInstance& biY		= PKinematics(Visual())->LL_GetBoneInstance(rotate_y_bone);	
 	biY.set_callback		(BoneCallbackY,this);
-	// destroy actor character
 	// set actor to mounted position
 	const Fmatrix& A	= K->LL_GetTransform(actor_bone);
 	Fvector ap;
