@@ -35,7 +35,7 @@ private:
 
 private:
 			void						load			(LPCSTR				level_name);
-			void						unload			();
+			void						unload			(bool reload = false);
 	IC		void						set_alife		(CALifeSimulator *alife_simulator);
 
 public:

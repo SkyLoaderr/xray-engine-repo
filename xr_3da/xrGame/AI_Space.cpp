@@ -41,11 +41,12 @@ CAI_Space::~CAI_Space				()
 	xr_delete				(m_game_graph);
 	xr_delete				(m_script_engine);
 	xr_delete				(m_cover_manager);
+	xr_delete				(m_graph_engine);
 }
 
 void CAI_Space::load				(LPCSTR level_name)
 {
-	unload					();
+	unload					(true);
 	u64						start = CPU::GetCycleCount();
 	Memory.mem_compact		();
 	u32						mem_usage = Memory.mem_usage();
@@ -72,12 +73,14 @@ void CAI_Space::load				(LPCSTR level_name)
 	Msg						("* Loading ai space is successfully completed (%.3fs, %7.3f Mb)",float(finish - start)*CPU::cycles2seconds,float(Memory.mem_usage() - mem_usage)/1048576.0);
 }
 
-void CAI_Space::unload				()
+void CAI_Space::unload				(bool reload)
 {
 	script_engine().unload	();
 	xr_delete				(m_graph_engine);
 	xr_delete				(m_level_graph);
 	xr_delete				(m_cross_table);
+	if (!reload)
+		m_graph_engine		= xr_new<CGraphEngine>(game_graph().header().vertex_count());
 }
 
 #ifdef DEBUG
