@@ -155,8 +155,6 @@ private:
 	void				cam_Set					(EActorCameras style);
 	void				cam_Update				(float dt);
 
-	void				wpn_Set					(DWORD id);
-
 	bool				HUDview					( ) { return IsFocused()&&(cam_active==eacFirstEye); }
 public:
 						CActor					( );
@@ -176,6 +174,7 @@ public:
 	virtual void		g_cl_fireStart			( );
 	virtual void		g_sv_fireStart			(NET_Packet* P);
 	virtual void		g_fireEnd				( );
+	virtual void		g_wpn_Set				(DWORD id);
 
 	// Network
 	virtual void		net_Export				(NET_Packet* P);				// export to server

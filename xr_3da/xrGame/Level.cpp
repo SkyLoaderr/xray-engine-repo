@@ -281,6 +281,17 @@ void CLevel::ClientReceive()
 				}
 			}
 			break;
+		case M_WPN_SET:
+			{
+				DWORD		ID	= P->r_u8			();
+				CObject*	O	= Objects.net_Find	(ID);
+				if (O) {
+					DWORD	wid = P->r_u8			();
+					CEntity*	E	= (CEntity*)O;
+					E->g_wpn_set	(wid);
+				}
+			}
+			break;
 		case M_CHAT:
 			{
 				char	buffer[256];

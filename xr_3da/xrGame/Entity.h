@@ -101,6 +101,7 @@ public:
 	virtual void		g_cl_fireStart		( )					{;}
 	virtual void		g_sv_fireStart		(NET_Packet* P)		{;}
 	virtual void		g_fireEnd			( )					{;}
+	virtual void		g_wpn_set			( DWORD ID )		{;}
 
 	virtual BOOL		TakeItem			( DWORD CID ) { return FALSE; }
 };
