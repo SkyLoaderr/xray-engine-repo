@@ -263,6 +263,9 @@ DWORD CAI_Soldier::tfGetActionType()
 		return(ACTION_TYPE_DIE);
 
 	SelectEnemy(Enemy);
+
+	if (!Enemy.Enemy && !tSavedEnemy)
+		return(ACTION_TYPE_NONE);
 	
 	INIT_SQUAD_AND_LEADER;
 
@@ -325,7 +328,7 @@ DWORD CAI_Soldier::tfGetAloneFightType()
 {
 	SelectEnemy(Enemy);
 	
-	if (Enemy.Enemy)
+	if (bfDoesEnemyExist())
 		vfSaveEnemy();
 
 	if (bfAmIHurt())
@@ -340,6 +343,15 @@ DWORD CAI_Soldier::tfGetAloneFightType()
 		if ((tpEntity) && (!bfCheckForEntityVisibility(tpEntity)) && !bfNeedRecharge())
 			return(FIGHT_TYPE_ATTACK);
 	}
+
+	if (!KnownEnemies.size())
+		if (tSavedEnemy)
+			if (bfCheckHistoryForState(aiSoldierRetreatAloneNonFire,10000) || bfCheckHistoryForState(aiSoldierRetreatAloneFire,10000))
+				return(FIGHT_TYPE_RETREAT);
+			else			
+				return(FIGHT_TYPE_FIND);
+		else
+			return(FIGHT_TYPE_NONE);
 
 	for (int i=0; i<KnownEnemies.size(); i++) {
 		tpCustomMonster = dynamic_cast<CCustomMonster *>(KnownEnemies[i].key);

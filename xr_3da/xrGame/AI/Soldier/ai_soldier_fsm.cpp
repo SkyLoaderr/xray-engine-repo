@@ -199,7 +199,7 @@ void CAI_Soldier::OnAttackAloneFire()
 
 	CHECK_IF_SWITCH_TO_NEW_STATE_THIS_UPDATE_AND_UPDATE(!bfCheckForEntityVisibility(Enemy.Enemy) && !bfTooFarToEnemy(Enemy.Enemy,5.f),aiSoldierAttackAloneFireSteal)
 
-	CHECK_IF_SWITCH_TO_NEW_STATE_THIS_UPDATE_AND_UPDATE(!bfTooFarToEnemy(Enemy.Enemy,ATTACK_FIRE_FIRE_DISTANCE),aiSoldierAttackAloneFireFire)
+	CHECK_IF_SWITCH_TO_NEW_STATE_THIS_UPDATE_AND_UPDATE(!bfTooFarToEnemy(Enemy.Enemy,ATTACK_FIRE_FIRE_DISTANCE) && !bfNeedRecharge(),aiSoldierAttackAloneFireFire)
 
 	SWITCH_TO_NEW_STATE_THIS_UPDATE_AND_UPDATE(aiSoldierAttackAloneFireRun)
 }
@@ -286,7 +286,7 @@ void CAI_Soldier::OnRetreatAloneFire()
 		if (AI_Path.TravelPath.empty() || (AI_Path.TravelPath.size()/2 < AI_Path.TravelStart))
 			vfSearchForBetterPosition(SelectorRetreat,Squad,Leader);
 
-	if (bfTooBigDistance(tSavedEnemyPosition,15.f) || !Enemy.Enemy || ((Enemy.Enemy) && !Enemy.bVisible) || bfCheckStateHistory(aiSoldierHurtAlone,10000))
+	if (bfTooBigDistance(tSavedEnemyPosition,15.f) || !Enemy.Enemy || ((Enemy.Enemy) && !Enemy.bVisible) || bfCheckHistoryForState(aiSoldierHurtAlone,10000))
 		if (AI_Path.fSpeed < EPS_L)
 			SetLessCoverLook(AI_Node);
 		else
@@ -415,6 +415,8 @@ void CAI_Soldier::OnAttackAloneFireRun()
 	WRITE_TO_LOG("attack alone fire run");
 
 	CHECK_IF_GO_TO_PREV_STATE_THIS_UPDATE(bfCheckIfActionOrFightTypeChanged())
+
+	CHECK_IF_SWITCH_TO_NEW_STATE_THIS_UPDATE_AND_UPDATE(bfNeedRecharge(),aiSoldierRecharge)
 }
 
 void CAI_Soldier::OnAttackAloneFireSteal()

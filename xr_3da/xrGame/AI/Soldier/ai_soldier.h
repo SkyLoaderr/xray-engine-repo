@@ -572,6 +572,7 @@ class CAI_Soldier : public CCustomMonster
 	IC  bool bfIsEnemyVisible()	{return(Enemy.bVisible);}
 	IC  bool bfFireEnemy(CEntity *tpEntity)		
 		{
+			VERIFY(tpEntity);
 			CCustomMonster *tpCustomMonster = dynamic_cast<CCustomMonster *>(tpEntity);
 			if (tpCustomMonster)
 				if (tpCustomMonster->tpfGetWeapons())
@@ -656,7 +657,7 @@ class CAI_Soldier : public CCustomMonster
 			tHurt.tpEntity = tpEntity;
 			tpaHurts.push_back(tHurt);
 		}
-	IC	bool bfCheckStateHistory(ESoldierStates eState, DWORD dwTimeInterval)
+	IC	bool bfCheckHistoryForState(ESoldierStates eState, DWORD dwTimeInterval)
 		{
 			for (int i=tStateList.size() - 1; i>=0; i--)
 				if (tStateList[i].eState == eState)
