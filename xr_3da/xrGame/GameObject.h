@@ -54,17 +54,11 @@ protected:
 public:
 	//functions used for avoiding most of the smart_cast
 	virtual CInventoryOwner*			cast_inventory_owner	()						{return NULL;}
-	virtual const CInventoryOwner*		cast_inventory_owner	() const				{return NULL;}
 	virtual CInventoryItem*				cast_inventory_item		()						{return NULL;}
-	virtual const CInventoryItem*		cast_inventory_item		() const				{return NULL;}
 	virtual CEntity*					cast_entity				()						{return NULL;}
-	virtual const CEntity*				cast_entity				() const				{return NULL;}
 	virtual CEntityAlive*				cast_entity_alive		()						{return NULL;}
-	virtual const CEntityAlive*			cast_entity_alive		() const				{return NULL;}
 	virtual CActor*						cast_actor				()						{return NULL;}
-	virtual const CActor*				cast_actor				() const				{return NULL;}
 	virtual CGameObject*				cast_game_object		()						{return this;}
-	virtual const CGameObject*			cast_game_object		() const				{return this;}
 
 public:
 	CInifile				*m_ini_file;

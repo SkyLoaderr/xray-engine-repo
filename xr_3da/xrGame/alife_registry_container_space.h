@@ -8,9 +8,6 @@
 
 #pragma once
 
-
-#undef	STATIC_CHECK
-#include <typelist.h>
 #include <hierarchygenerators.h>
 #define	registry_type_list				Loki::NullType
 #define	add_to_registry_type_list(a)	typedef Loki::Typelist<a,registry_type_list> registry_##a;

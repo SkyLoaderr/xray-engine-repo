@@ -28,8 +28,7 @@ public:
 	virtual			~CInventoryOwner			();
 
 public:
-	CInventoryOwner*			cast_inventory_owner	()						{return this;}
-	const CInventoryOwner*		cast_inventory_owner	() const				{return this;}
+	virtual CInventoryOwner*	cast_inventory_owner	()						{return this;}
 public:
 
 	//////////////////////////////////////////////////////////////////////////

@@ -21,7 +21,6 @@ public:
 	virtual ~CExplosiveRocket(void);
 public:
 	virtual CInventoryItem*				cast_inventory_item		()						{return this;}
-	virtual const CInventoryItem*		cast_inventory_item		() const				{return this;}
 public:
 
 	virtual void Load(LPCSTR section);

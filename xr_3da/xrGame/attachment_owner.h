@@ -20,8 +20,7 @@ public:
 	IC						CAttachmentOwner	();
 	virtual					~CAttachmentOwner	();
 public:
-	virtual CGameObject*			cast_game_object		()		 = 0;
-	virtual const CGameObject*		cast_game_object		() const = 0;
+	virtual CGameObject*	cast_game_object	() = 0;
 public:
 
 	virtual	void			reinit				();

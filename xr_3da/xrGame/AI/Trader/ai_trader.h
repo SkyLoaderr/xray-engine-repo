@@ -52,13 +52,9 @@ public:
 	virtual				~CAI_Trader		();
 public:
 	virtual CInventoryOwner*			cast_inventory_owner	()						{return this;}
-	virtual const CInventoryOwner*		cast_inventory_owner	() const				{return this;}
 	virtual CEntityAlive*				cast_entity_alive		()						{return this;}
-	virtual const CEntityAlive*			cast_entity_alive		() const				{return this;}
 	virtual CEntity*					cast_entity				()						{return this;}
-	virtual const CEntity*				cast_entity				() const				{return this;}
 	virtual CGameObject*				cast_game_object		()						{return this;}
-	virtual const CGameObject*			cast_game_object		() const				{return this;}
 public:
 
 	virtual	void		init			();

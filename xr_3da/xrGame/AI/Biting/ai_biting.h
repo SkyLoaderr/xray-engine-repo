@@ -87,9 +87,7 @@ public:
 
 public:
 	virtual CEntityAlive*				cast_entity_alive		()						{return this;}
-	virtual const CEntityAlive*			cast_entity_alive		() const				{return this;}
 	virtual CEntity*					cast_entity				()						{return this;}
-	virtual const CEntity*				cast_entity				() const				{return this;}
 
 public:
 	

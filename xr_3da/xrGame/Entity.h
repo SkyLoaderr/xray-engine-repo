@@ -76,7 +76,6 @@ public:
 	virtual ~CEntity		();
 public:
 	virtual CEntity*					cast_entity				()						{return this;}
-	virtual const CEntity*				cast_entity				() const				{return this;}
 public:
 
 	// Core events

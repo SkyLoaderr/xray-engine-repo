@@ -257,12 +257,9 @@ public:
 	virtual						~CAI_Rat				();
 
 public:
-	CInventoryItem*					cast_inventory_item		()						{return this;}
-	const CInventoryItem*			cast_inventory_item		() const				{return this;}
-	virtual CEntityAlive*			cast_entity_alive		()						{return this;}
-	virtual const CEntityAlive*		cast_entity_alive		() const				{return this;}
-	virtual CEntity*				cast_entity				()						{return this;}
-	virtual const CEntity*			cast_entity				() const				{return this;}
+	virtual CInventoryItem*		cast_inventory_item		()						{return this;}
+	virtual CEntityAlive*		cast_entity_alive		()						{return this;}
+	virtual CEntity*			cast_entity				()						{return this;}
 
 public:
 

@@ -13,7 +13,6 @@ private:
 	typedef	CEntity			inherited;			
 public:
 	virtual CEntityAlive*				cast_entity_alive		()						{return this;}
-	virtual const CEntityAlive*			cast_entity_alive		() const				{return this;}
 public:
 
 	EVENT					m_tpEventSay;

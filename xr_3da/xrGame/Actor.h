@@ -68,11 +68,8 @@ public:
 
 public:
 	virtual CInventoryOwner*			cast_inventory_owner	()						{return this;}
-	virtual const CInventoryOwner*		cast_inventory_owner	() const				{return this;}
 	virtual CActor*						cast_actor				()						{return this;}
-	virtual const CActor*				cast_actor				() const				{return this;}
 	virtual CGameObject*				cast_game_object		()						{return this;}
-	virtual const CGameObject*			cast_game_object		() const				{return this;}
 public:
 
 	virtual void						Load				( LPCSTR section );

@@ -14,8 +14,6 @@
 struct lua_State;
 
 #ifdef SCRIPT_REGISTRATOR
-#	undef	STATIC_CHECK
-#	include <typelist.h>
 #	define	script_type_list		Loki::NullType
 #	define	add_to_type_list(type)	typedef Loki::Typelist<type,script_type_list> TypeList_##type;
 #	define	save_type_list(type)	TypeList_##type
