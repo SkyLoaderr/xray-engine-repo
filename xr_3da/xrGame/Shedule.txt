@@ -19,7 +19,6 @@
 			. TODO: BumpMapping on models
 			. TODO: Shadows from static_light+dynamic_models
 				. TODO: Geometric occlusion
-
 	
 	/ MISC
 		. TODO: Console Aliases
