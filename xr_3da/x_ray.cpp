@@ -270,8 +270,10 @@ void CApplication::Level_Scan()
 			Engine.FS.Exist(F,N,"level.ltx")
 			)
 		{
+			/*
 			if (!Engine.FS.Exist(F,N,"level.ai"))
 				Msg("! Warning: partially compiled level: %s",folder[i]);
+			*/
 			sLevelInfo			LI;
 			LI.folder			= folder[i];
 			LI.name				= 0;

@@ -21,7 +21,7 @@ void CActor::OnEvent		(NET_Packet& P, u16 type)
 	{
 	case GE_OWNERSHIP_TAKE:
 		{
-			Log("CActor::OnEvent - TAKE - ", cName());
+			// Log("CActor::OnEvent - TAKE - ", cName());
 			P.r_u16		(id);
 			CObject* O	= Level().Objects.net_Find	(id);
 
@@ -64,7 +64,7 @@ void CActor::OnEvent		(NET_Packet& P, u16 type)
 		break;
 	case GE_OWNERSHIP_REJECT:
 		{
-			Log			("CActor::OnEvent - REJECT - : ", cName());
+			// Log			("CActor::OnEvent - REJECT - : ", cName());
 
 			P.r_u16		(id);
 			CObject* O	= Level().Objects.net_Find	(id);
@@ -99,7 +99,7 @@ void CActor::OnEvent		(NET_Packet& P, u16 type)
 				feel_touch_deny						(A,1000);
 				return;
 			}
-			Log			("CActor::OnEvent - REJECT - Processed.");
+			// Log			("CActor::OnEvent - REJECT - Processed.");
 		}
 		break;
 	case GE_TRANSFER_AMMO:

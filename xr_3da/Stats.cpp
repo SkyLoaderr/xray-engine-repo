@@ -29,6 +29,8 @@ void CStats::Show()
 		Sheduler.FrameEnd			();	
 		UpdateClient.FrameEnd		();	
 		Physics.FrameEnd			();	
+		ph_collision.FrameEnd		();
+		ph_core.FrameEnd			();
 		Animation.FrameEnd			();	
 		AI_Think.FrameEnd			();
 		AI_Range.FrameEnd			();
@@ -168,6 +170,8 @@ void CStats::Show()
 		Sheduler.FrameStart			();	
 		UpdateClient.FrameStart		();	
 		Physics.FrameStart			();	
+		ph_collision.FrameStart		();
+		ph_core.FrameStart			();
 		Animation.FrameStart		();	
 		AI_Think.FrameStart			();
 		AI_Range.FrameStart			();

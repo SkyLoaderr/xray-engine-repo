@@ -12,7 +12,7 @@ void xrServer::Perform_transfer(xrServerEntity* what, xrServerEntity* from, xrSe
 
 	// 1. Perform migration if need it
 	if (from->owner != to->owner)	PerformMigration(what,from->owner,to->owner);
-	Log						("B");
+	//Log						("B");
 
 	// 2. Detach "FROM"
 	vector<u16>& C			= from->children;
@@ -25,7 +25,7 @@ void xrServer::Perform_transfer(xrServerEntity* what, xrServerEntity* from, xrSe
 	P.w_u16					(from->ID);
 	P.w_u16					(what->ID);
 	SendBroadcast			(0xffffffff,P,MODE);
-	Log						("A");
+	//Log						("A");
 
 	// 3. Attach "TO"
 	what->ID_Parent			= to->ID;
@@ -36,7 +36,7 @@ void xrServer::Perform_transfer(xrServerEntity* what, xrServerEntity* from, xrSe
 	P.w_u16					(to->ID);
 	P.w_u16					(what->ID);
 	SendBroadcast			(0xffffffff,P,MODE);
-	Log						("C");
+	//Log						("C");
 }
 
 void xrServer::Perform_reject(xrServerEntity* what, xrServerEntity* from)

@@ -27,7 +27,7 @@ void CTargetCS::net_Destroy			()
 }
 
 void CTargetCS::OnH_A_Chield() {
-	Log("+++++++++++ void CTargetCS::OnH_A_Chield()");
+	//Log("+++++++++++ void CTargetCS::OnH_A_Chield()");
 	inherited::OnH_A_Chield		();
 	setVisible					(false);
 	setEnabled					(false);
@@ -35,7 +35,7 @@ void CTargetCS::OnH_A_Chield() {
 }
 
 void CTargetCS::OnH_B_Independent() {
-	Log("+++++++++++ void CTargetCS::OnH_B_Independent()");
+	//Log("+++++++++++ void CTargetCS::OnH_B_Independent()");
 	inherited::OnH_B_Independent();
 	setVisible					(true);
 	setEnabled					(true);
@@ -49,8 +49,8 @@ void CTargetCS::OnH_B_Independent() {
 		Fmatrix l_p1, l_p2;
 		l_p1.set(svTransform); l_p1.c.add(l_up); l_p1.c.add(l_fw);
 		l_p2.set(svTransform); l_p2.c.add(l_up); l_fw.mul(3.f); l_p2.c.add(l_fw);
-		Log("aaa",l_p1.c);
-		Log("bbb",l_p2.c);
+		//Log("aaa",l_p1.c);
+		//Log("bbb",l_p2.c);
 		m_pPhysicsShell->Activate(l_p1, 0, l_p2);
 		svTransform.set(l_p1);
 		vPosition.set(svTransform.c);
