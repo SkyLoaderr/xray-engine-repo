@@ -256,7 +256,8 @@ void CLocatorAPI::_initialize	(u32 flags, LPCSTR target_folder)
 	m_Flags.set		(flags,TRUE);
 
 	// append application path
-    {
+
+	if (m_Flags.is(flScanAppRoot)){
         string_path		app_root,fn,dr,di;
         GetModuleFileName(GetModuleHandle(MODULE_NAME),fn,sizeof(fn));
         _splitpath		(fn,dr,di,0,0);
@@ -281,7 +282,8 @@ void CLocatorAPI::_initialize	(u32 flags, LPCSTR target_folder)
 		IReader* F		= 0;
 		Recurse			("");
 		F				= r_open("fs.ltx"); 
-		if (!F) F		= r_open("$app_root$","fs.ltx"); 
+		if (!F&&m_Flags.is(flScanAppRoot))
+			F			= r_open("$app_root$","fs.ltx"); 
 		R_ASSERT2		(F,"Can't open file 'fs.ltx'");
 		// append all pathes    
 		string_path		id, temp, root, add, def, capt;

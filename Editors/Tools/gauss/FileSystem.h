@@ -9,13 +9,11 @@ class XRCORE_API EFS_Utils {
 	DEFINE_MAP	(std::string,void*,HANDLEMap,HANDLEPairIt);
 
     HANDLEMap 	m_LockFiles;
-    std::string	m_LastAccessFN;
-    std::string	m_AccessLog;
 public:
 				EFS_Utils		();
 	virtual 	~EFS_Utils		();
-    void 		_initialize		();
-    void 		_destroy		(){;}
+	void 		_initialize		(){}
+    void 		_destroy		(){}
 
 	LPCSTR		GenerateName	(LPCSTR base_path, LPCSTR base_name, LPCSTR def_ext, LPSTR out_name);
 

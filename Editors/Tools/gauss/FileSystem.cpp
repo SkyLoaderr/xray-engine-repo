@@ -37,11 +37,6 @@ std::string	EFS_Utils::ChangeFileExt(const std::string& src, LPCSTR ext)
 	return ChangeFileExt(src.c_str(),ext);
 }
 
-void EFS_Utils::_initialize()
-{
-	FS.update_path			(m_LastAccessFN,"$server_data_root$","access.ini");
-    FS.update_path			(m_AccessLog,	"$server_data_root$","access.log");
-}                                               
 //----------------------------------------------------
 LPCSTR MakeFilter(string1024& dest, LPCSTR info, LPCSTR ext)
 {

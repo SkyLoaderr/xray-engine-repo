@@ -90,10 +90,12 @@ std::string	EFS_Utils::AppendFolderToName(std::string& tex_name, int depth, BOOL
 
 void EFS_Utils::WriteAccessLog(LPCSTR fn, LPCSTR start_msg)
 {
-	string1024	buf;
-	string256	dt_buf, tm_buf;
-	sprintf(buf, "%s:   '%s' from computer: '%s' by user: '%s' at %s %s",start_msg,fn,Core.CompName,Core.UserName,_strdate(dt_buf),_strtime(tm_buf));
-	int hf 		= open( m_AccessLog.c_str(), _O_WRONLY|_O_APPEND|_O_BINARY );
+	string1024		buf;
+	string256		dt_buf, tm_buf;
+	sprintf			(buf, "%s:   '%s' from computer: '%s' by user: '%s' at %s %s",start_msg,fn,Core.CompName,Core.UserName,_strdate(dt_buf),_strtime(tm_buf));
+	std::string		m_AccessLog;
+	FS.update_path	(m_AccessLog,"$server_data_root$","access.log");
+	int hf 			= open( m_AccessLog.c_str(), _O_WRONLY|_O_APPEND|_O_BINARY );
 	if( hf<=0 )
 		hf = open( m_AccessLog.c_str(),
 		_O_WRONLY|_O_CREAT|_O_TRUNC| _O_BINARY,
@@ -107,8 +109,10 @@ void EFS_Utils::WriteAccessLog(LPCSTR fn, LPCSTR start_msg)
 
 void EFS_Utils::RegisterAccess(LPCSTR fn, LPCSTR start_msg, bool bLog)
 {
-	CInifile*	ini = CInifile::Create(m_LastAccessFN.c_str(),false);
-	ini->w_string("last_access",fn,Core.CompName);
+	std::string		m_LastAccessFN;
+	FS.update_path	(m_LastAccessFN,"$server_data_root$","access.ini");
+	CInifile*	ini	= CInifile::Create(m_LastAccessFN.c_str(),false);
+	ini->w_string	("last_access",fn,Core.CompName);
 	CInifile::Destroy(ini);
 	if (bLog) 	WriteAccessLog(fn,start_msg);
 }
@@ -169,6 +173,8 @@ LPCSTR EFS_Utils::GetLockOwner(LPCSTR initial, LPCSTR fname)
 	string256 fn; strcpy(fn,fname);
 	if (initial) FS.update_path(fn,initial,fn);
 
+	std::string		m_LastAccessFN;
+	FS.update_path	(m_LastAccessFN,"$server_data_root$","access.ini");
 	CInifile*	ini = CInifile::Create(m_LastAccessFN.c_str(),true);
 	static string256 comp;
 	strcpy(comp,ini->line_exist("last_access",fn)?ini->r_string("last_access",fn):"unknown");

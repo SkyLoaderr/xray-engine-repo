@@ -102,6 +102,7 @@ public:
         flEventNotificator      = (1<<5),
 		flTargetFolderOnly		= (1<<6),
 		flCacheFiles			= (1<<7),
+		flScanAppRoot			= (1<<8),
     };    
     Flags32						m_Flags;
     void						rescan_path		(LPCSTR full_path, BOOL bRecurse);
