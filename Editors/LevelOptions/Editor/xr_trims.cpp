@@ -283,20 +283,34 @@ void _SequenceToList(AStringVec& lst, LPCSTR in, char separator)
 	}
 }
 
-AnsiString FloatTimeToStrTime(float v)
+AnsiString FloatTimeToStrTime(float v, bool _h, bool _m, bool _s, bool _ms)
 {
-    int h,m,s;
-    h=iFloor(v/3600);
-    m=iFloor((v-h*3600)/60);
-    s=iFloor(v-h*3600-m*60);
-    return AnsiString().sprintf("%02d:%02d:%02d",h,m,s);
+	AnsiString buf="";
+    int h=0,m=0,s=0,ms=0;
+    AnsiString t;
+    if (_h){ h=iFloor(v/3600); 					t.sprintf("%02d",h); buf += t;}
+    if (_m){ m=iFloor((v-h*3600)/60);			t.sprintf("%02d",m); buf += buf.IsEmpty()?t:":"+t;}
+    if (_s){ s=iFloor(v-h*3600-m*60);			t.sprintf("%02d",s); buf += buf.IsEmpty()?t:":"+t;}
+    if (_ms){ms=iFloor((v-h*3600-m*60-s)*1000.f);t.sprintf("%03d",ms);buf += buf.IsEmpty()?t:"."+t;}
+    return buf;
 }
 
-float StrTimeToFloatTime(LPCSTR buf)
+float StrTimeToFloatTime(LPCSTR buf, bool _h, bool _m, bool _s, bool _ms)
 {
-    int h,m,s;
-	sscanf(buf,"%2d:%2d:%2d",&h,&m,&s);
-    return h*3600+m*60+s;
+    float t[4]	= {0.f,0.f,0.f,0.f};
+    int   rm[4];
+    int idx		= 0;
+    if (_h) rm[0]=idx++;
+    if (_m) rm[1]=idx++;
+    if (_s) rm[2]=idx++;
+    if (_ms)rm[3]=idx++;
+    int cnt = _GetItemCount(buf,':');
+    AnsiString tmp;
+    for (int k=0; k<cnt; k++){
+    	_GetItem(buf,k,tmp,':');
+        t[rm[k]]=atof(tmp.c_str());
+    }
+    return t[0]*3600+t[1]*60+t[2];
 }
 #endif
 

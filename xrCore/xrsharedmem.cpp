@@ -1,5 +1,7 @@
 #include "stdafx.h"
-#include "xrsharedmem.h"
+#pragma hdrstop
+
+using namespace std;
 
 XRCORE_API	smem_container*	g_pSharedMemoryContainer	= NULL;
 
@@ -55,8 +57,7 @@ void				smem_container::clean			()
 	cdb::iterator	it	= container.begin	();
 	cdb::iterator	end	= container.end		();
 	for (; it!=end; it++)	if (0==(*it)->dwReference)	xr_free	(*it);
-	container.erase	(std::remove(container.begin(),container.end(),(smem_value*)0),container.end());
-
+	container.erase	(remove(container.begin(),container.end(),(smem_value*)0),container.end());
 	cs.Leave		();
 }
 
