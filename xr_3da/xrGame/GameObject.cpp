@@ -7,6 +7,7 @@
 #include "..\fbasicvisual.h"
 #include "PhysicsShell.h"
 #include "ai_space.h"
+#include "CustomMonster.h"
 
 //////////////////////////////////////////////////////////////////////
 // Construction/Destruction
@@ -126,7 +127,8 @@ BOOL CGameObject::net_Spawn		(LPVOID	DC)
 				AI_NodeID			=	AI.q_LoadSearch(Position());
 
 			if (!AI_NodeID || (AI_NodeID == u32(-1))) {
-				Msg("! GameObject::NET_Spawn : Corresponding node hasn't been found for object %s",cName());
+				Msg					("! GameObject::NET_Spawn : Corresponding node hasn't been found for object %s",cName());
+				R_ASSERT			(dynamic_cast<CCustomMonster*>(this));
 				AI_NodeID			= u32(-1);
 				AI_Node				= NULL;
 			}
@@ -138,8 +140,8 @@ BOOL CGameObject::net_Spawn		(LPVOID	DC)
 			}
 		}
 		else {
-			Fvector				nPos	= Position();
-			int node					= getAI().q_LoadSearch(nPos);
+			Fvector					nPos = Position();
+			int node				= getAI().q_LoadSearch(nPos);
 
 			if (node<=0)			{
 				Msg					("! ERROR: AI node not found for object '%s'. (%f,%f,%f)",cName(),nPos.x,nPos.y,nPos.z);

@@ -45,7 +45,7 @@ u32 CAI_Space::q_Node(u32 PrevNode, const Fvector& BasePos, bool bShortSearch)
 	}
 	// degrade to linear search
 	int id = q_LoadSearch(BasePos);
-	if (id>=0) return u32(id);
+	if (id>0) return u32(id);
 	
 	// everything failed :(
 	// maintain old node
