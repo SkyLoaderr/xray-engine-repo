@@ -178,18 +178,18 @@ function action_commander:execute()
             repeat
                 if not self.drunk then
                     self.act = random_choice_weighted{
-                                   [walk_inside]  = 4000,
+                                   [walk_inside]  = 40,
                                    [walk_outside] = 20,
                                    [look_map]     = 10,
                                    [look_outside] = 10,
                                    [radio_talk]   = 20,
-                                   [drink_vodka]  = 10}
+                                   [drink_vodka]  = 10 }
                 else
                     self.act = random_choice_weighted{
-                                   [walk_inside]  = 6000,
+                                   [walk_inside]  = 60,
                                    [walk_outside] = 10,
                                    [look_outside] = 10,
-                                   [drink_vodka]  = 20}
+                                   [drink_vodka]  = 20 }
                 end
             until self.act == walk_inside or self.act ~= self.last_act
         else
@@ -236,7 +236,7 @@ end
 -- анимации для стояния в домике
 function action_commander:add_inside_animations( n )
     if self.drunk then
-        for i = 1, math.random( n * 10 ) do
+        for i = 1, math.random( n ) * 5 do
             self.object:add_animation( "drunk_idle_0", true )
         end
     else
