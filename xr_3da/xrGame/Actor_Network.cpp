@@ -350,6 +350,7 @@ void CActor::NetInput_Save()
 void	CActor::NetInput_Send()
 {
 	if (getSVU() || !g_Alive()) return; //don't need to store/send input on server
+
 	//Send Input
 	NET_Packet		NP;
 	net_input		NI = NET_InputStack.back();
@@ -366,14 +367,13 @@ void	CActor::NetInput_Send()
 
 	if (Level().net_HasBandwidth()) 
 	{ 
-		u_EventSend(NP);
+		Level().Send	(NP,net_flags(TRUE,TRUE));
 	};
 };
 
-
 void CActor::net_ImportInput	(NET_Packet &P)
 {
-	net_input NI;
+	net_input			NI;
 
 	P.r_u32				(NI.m_dwTimeStamp);
 	P.r_u32				(NI.mstate_wishful);

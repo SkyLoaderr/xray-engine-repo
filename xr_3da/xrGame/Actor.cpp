@@ -712,7 +712,7 @@ void CActor::shedule_Update	(u32 DT)
 
 	// 
 	clamp					(DT,0u,100u);
-	float	dt	 	=  float(DT)/1000.f;
+	float	dt	 			=  float(DT)/1000.f;
 
 	// Check controls, create accel, prelimitary setup "mstate_real"
 	float	Jump	= 0;
