@@ -13,6 +13,7 @@ class ENGINE_API CBlender_LaEmB : public CBlender
 public:
 	string64	oT2_Name;		// name of secondary texture
 	string64	oT2_xform;		// xform for secondary texture
+	string64	oT2_const;
 public:
 	virtual		LPCSTR		getComment()	{ return "(lmap+env)*base";	}
 
