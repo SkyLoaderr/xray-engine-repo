@@ -74,6 +74,7 @@ protected:
 	virtual		s16					GetBuyMenuItemIndex		(u8 SlotID, u8 ItemID);
 
 	virtual		void				ConvertTime2String		(string64* str, u32 Time);
+	virtual		int					GetPlayersPlace			(game_PlayerState* ps);
 
 public:
 	virtual		char*				getTeamSection			(int Team);

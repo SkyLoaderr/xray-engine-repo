@@ -22,6 +22,7 @@
 #define ROUND_RESULT_COLOR	0xfff0fff0
 #define VOTE0_MSG_COLOR	0xffff0000
 #define VOTE1_MSG_COLOR	0xff00ff00
+#define FRAGS_AND_PLACE_COLOR	0xff00ff00
 //--------------------------------------------------------------------
 CUIGameDM::CUIGameDM()
 {
@@ -43,6 +44,8 @@ CUIGameDM::CUIGameDM()
 	m_gameCaptions.addCustomMessage(m_round_result_caption, 0.0f, -0.1f, 0.03f, HUD().pFontDI, CGameFont::alCenter, ROUND_RESULT_COLOR, "");
 	m_force_respawn_time_caption =	"force_respawn_time";
 	m_gameCaptions.addCustomMessage(m_force_respawn_time_caption, 0.0f, -0.9f, 0.02f, HUD().pFontDI, CGameFont::alCenter, NORMAL_MSG_COLOR, "");
+	m_frags_and_place_caption =	"frags_and_place";
+	m_gameCaptions.addCustomMessage(m_frags_and_place_caption, 0.0f, -0.85f, 0.02f, HUD().pFontDI, CGameFont::alCenter, FRAGS_AND_PLACE_COLOR, "");
 	//-----------------------------------------------------------------------
 	m_vote_caption0 = "votecaption0";
 	m_vote_caption1 = "votecaption1";
@@ -150,10 +153,17 @@ void CUIGameDM::SetRoundResultCaption(LPCSTR str)
 {
 	m_gameCaptions.setCaption(m_round_result_caption, str, ROUND_RESULT_COLOR, true);
 }
+
 void CUIGameDM::SetForceRespawnTimeCaption(LPCSTR str)
 {
 	m_gameCaptions.setCaption(m_force_respawn_time_caption, str, NORMAL_MSG_COLOR, true);
 }
+
+void CUIGameDM::SetFragsAndPlaceCaption(LPCSTR str)
+{
+	m_gameCaptions.setCaption(m_frags_and_place_caption, str, FRAGS_AND_PLACE_COLOR, true);
+}
+
 void CUIGameDM::SetVoteMessage					(LPCSTR str)
 {
 	if (str[0])

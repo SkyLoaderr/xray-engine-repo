@@ -266,6 +266,39 @@ void game_cl_Deathmatch::ConvertTime2String		(string64* str, u32 Time)
 	sprintf(*str,"%02d:%02d:%02d", RHour, RMinutes, RSecs);
 };
 
+IC bool	pred_player		(LPVOID v1, LPVOID v2)
+{
+	return ((game_PlayerState*)v1)->kills>((game_PlayerState*)v2)->kills;
+};
+
+int game_cl_Deathmatch::GetPlayersPlace			(game_PlayerState* ps)
+{
+	if (!ps) return -1;
+	game_cl_GameState::PLAYERS_MAP_IT I=Game().players.begin();
+	game_cl_GameState::PLAYERS_MAP_IT E=Game().players.end();
+
+	// create temporary map (sort by kills)
+	xr_vector<LPVOID>	Players;
+	for (;I!=E;++I)		Players.push_back(I->second);
+	std::sort			(Players.begin(),Players.end(),pred_player);
+
+	int Place = 1;
+	for (u32 i=0; i<Players.size(); i++)
+	{
+		if (Players[i] == ps)
+			return Place;
+		Place++;
+	};
+	return -1;
+}
+
+string16 places[] = {
+	"1st", "2nd", "3rd", "4th", "5th", "6th", "7th", "8th",
+	"9th", "10th", "11th", "12th", "13th", "15th", "15th", "16th",
+	"17th", "18th", "19th", "20th", "21th", "22th", "23th", "24th",
+	"25th", "26th", "27th", "28th", "29th", "30th", "31th", "32th"
+};
+
 void game_cl_Deathmatch::shedule_Update			(u32 dt)
 {
 	//fake
@@ -278,6 +311,7 @@ void game_cl_Deathmatch::shedule_Update			(u32 dt)
 		m_game_ui->SetPressJumpMsgCaption("");
 		m_game_ui->SetPressBuyMsgCaption("");
 		m_game_ui->SetForceRespawnTimeCaption("");
+		m_game_ui->SetFragsAndPlaceCaption("");
 	};
 
 	switch (Phase())
@@ -364,7 +398,7 @@ void game_cl_Deathmatch::shedule_Update			(u32 dt)
 						m_game_ui->SetVoteTimeResultMsg(VoteTimeResStr);
 				};
 
-				if (local_player && local_player->testFlag(GAME_PLAYER_FLAG_VERY_VERY_DEAD) && m_u32ForceRespawn)
+				if (local_player->testFlag(GAME_PLAYER_FLAG_VERY_VERY_DEAD) && m_u32ForceRespawn)
 				{
 					if(m_game_ui)
 					{
@@ -379,6 +413,21 @@ void game_cl_Deathmatch::shedule_Update			(u32 dt)
 						m_game_ui->SetForceRespawnTimeCaption(FullS);
 					};
 				};
+
+				//-----------------------------------------------------
+				int Place = GetPlayersPlace(local_player);
+				if (m_game_ui && Place > 0)
+				{				
+					string128 FragsStr;
+					
+					if (Place < 33)
+						sprintf(FragsStr, "You are on %s place, with %d frags", places[Place-1], local_player->kills);
+					else
+						sprintf(FragsStr, "You have %d frags", local_player->kills);
+
+					m_game_ui->SetFragsAndPlaceCaption(FragsStr);
+				};
+				//-----------------------------------------------------
 			};
 		}break;
 	case GAME_PHASE_PENDING:
