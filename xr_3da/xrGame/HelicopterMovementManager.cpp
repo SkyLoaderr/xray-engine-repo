@@ -74,7 +74,7 @@ CHelicopterMovementManager::init(CHelicopter* heli)
 	Device.seqRender.Add(this,REG_PRIORITY_LOW-1);
 #endif
 //	m_velocity = 33.0f;//120km4
-	m_velocity = 20.0f;//120km4
+	m_velocity = 10.0f;//120km4
 	m_curState = eIdleState;
 }
 
@@ -95,20 +95,25 @@ CHelicopterMovementManager::onFrame(Fmatrix& xform, float fTimeDelta)
 		float h = 3.0f;
 		xr_vector<Fvector> t;
 		Fvector pos;
-		pos.set(-74.7f, h, -44.4f);
-		t.push_back(pos);
-		pos.set(-57.5f, h, 5.4f);
-		t.push_back(pos);
-		pos.set(-25.8f, h, 39.7f);
-		t.push_back(pos);
-		pos.set(2.4f, h, 27.2f);
-		t.push_back(pos);
-		pos.set(35.5f, h, -2.5f);
-		t.push_back(pos);
-		pos.set(26.7f, h, -35.8f);
-		t.push_back(pos);
-		pos.set(-32.6f, h, -57.4f);
-		t.push_back(pos);
+/*		pos.set(-74.7f, h, -44.4f);	t.push_back(pos);
+		pos.set(-57.5f, h, 5.4f);	t.push_back(pos);
+		pos.set(-25.8f, h, 39.7f);	t.push_back(pos);
+		pos.set(2.4f, h, 27.2f);	t.push_back(pos);
+		pos.set(35.5f, h, -2.5f);	t.push_back(pos);
+		pos.set(26.7f, h, -35.8f);	t.push_back(pos);
+		pos.set(-32.6f, h, -57.4f);	t.push_back(pos);
+*/
+		pos.set(57.6f,	h, -81.9f);	t.push_back(pos);
+		pos.set(5.1f,	h, -36.2f);	t.push_back(pos);
+		pos.set(-44.7f, h, -63.3f);	t.push_back(pos);
+		pos.set(-103.1f,h, -32.7f);	t.push_back(pos);
+		pos.set(-49.5f, h, -9.8f);	t.push_back(pos);
+		pos.set(-53.9f, h, 40.7f);	t.push_back(pos);
+		pos.set(10.9f,	h, 26.4f);	t.push_back(pos);
+		pos.set(22.7f,	h, -9.9f);	t.push_back(pos);
+		pos.set(53.1f,	h, -36.2f);	t.push_back(pos);
+
+
 	//	std::reverse( t.begin(), t.end() );
 		setTrajectory(t, true, true);
 		
@@ -210,7 +215,9 @@ CHelicopterMovementManager::getPosition(u32 timeCurr,
 	{
 		if(m_lastXYZ.z < xyz.z)
 		{
-			if( !is_negative(xyz.z) )
+			m_lastXYZ.z += ang_delta;
+
+/*			if( !is_negative(xyz.z) )
 			{
 				R_ASSERT( _abs(m_lastXYZ.z+ang_delta)< max_angle);
 				m_lastXYZ.z += ang_delta;
@@ -219,11 +226,12 @@ CHelicopterMovementManager::getPosition(u32 timeCurr,
 			{
 				R_ASSERT( _abs(m_lastXYZ.z+ang_delta)<max_angle );
 				m_lastXYZ.z += ang_delta;
-			}
+			}*/
 		}
 		else			
 		{
-			if( !is_negative(xyz.z) )
+			m_lastXYZ.z -= ang_delta;
+/*			if( !is_negative(xyz.z) )
 			{
 				R_ASSERT( _abs(m_lastXYZ.z-ang_delta)<max_angle );
 				m_lastXYZ.z -= ang_delta;
@@ -232,7 +240,7 @@ CHelicopterMovementManager::getPosition(u32 timeCurr,
 			{
 				R_ASSERT( _abs(m_lastXYZ.z-ang_delta)<max_angle );
 				m_lastXYZ.z -= ang_delta;
-			}
+			}*/
 		}
 
 		xyz.z = m_lastXYZ.z;

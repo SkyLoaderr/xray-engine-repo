@@ -123,8 +123,6 @@ protected:
 	Fvector							m_lastDir;
 	Fvector							m_lastXYZ;
 
-//	Fvector							m_lastPos;
-//	Fvector							m_destXYZ;
 
 	CHelicopter*					m_pHelicopter;
 	//smooth path
