@@ -21,4 +21,4 @@ To OLES :
 -WT				ни хера не работает (level - cs_test)
 
 To WT:
--D				зоны глючат постоянно из-за spatial-хрени! (game00/single/alife)
+-D				зоны глючат постоянно из-за партикловой-хрени! (game00/single/alife)
