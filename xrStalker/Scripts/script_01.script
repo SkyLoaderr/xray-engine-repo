@@ -60,6 +60,12 @@ function main()
 				cond	(cond.time_end, 500000)
 			)
 
+	event:clear_callback(true)
+	event:clear_callback(false)
+
+	event:set_callback(script_01.on_enter,true)
+	event:set_callback(script_01.on_exit,false)
+
 	while stalker1:action() and stalker2:action() do
 		if stalker1:see(actor) == false and stalker2:see(actor) == false and is_actor_entered == nil then 
 
@@ -112,12 +118,6 @@ function main()
 			break		
 		end
 	end
-
-	event:clear_callback(true)
-	event:clear_callback(false)
-
-	event:set_callback(script_01.on_enter,true)
-	event:set_callback(script_01.on_exit,false)
 
 	while stalker1:action() and stalker2:action() do
 		if is_actor_entered and stalker1:see(actor) == false and stalker2:see(actor) == false then 
