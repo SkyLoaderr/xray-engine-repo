@@ -2,7 +2,7 @@
 class "CRushMonster" (object_binder)
 
 function CRushMonster:__init(obj) super(obj)
-    self.first_call = true
+    self.first_call = false
 end 
 
 function CRushMonster:reload(section)
@@ -31,24 +31,18 @@ function CRushMonster:update(delta)
 	if self.first_call == false then
 	   self.first_call = true 
 	   self.object:set_death_callback (self, "death_callback")
-       self.npc:set_callback(self, "move_callback", game_object.movement)
+       self.object:set_callback(self, "move_callback", game_object.movement)
     end   
 	   
 	
     self:set_action()
     
-    if self.object:position ():distance_to (self.rest_way:point (self.rest_way:count () - 1)) < 4 then
-       self.end_work = true
-	   if self.object:get_script () then
-		  self.object:script (false, script_name ())
-	   end
-	   local sim = alife()
-	   if sim ~= nil then
-		  sim:set_switch_online (self.object:id (), true)
-		  sim:set_switch_offline (self.object:id (), true)
-		  sim:set_interactive (self.object:id (), true)
-	   end
-    end        
+//    if self.object:position ():distance_to (self.rest_way:point (self.rest_way:count () - 1)) < 4 then
+//       self.end_work = true
+//	   if self.object:get_script () then
+//		  self.object:script (false, script_name ())
+//	   end
+//    end        
 
 end
 
@@ -61,6 +55,12 @@ function CRushMonster:move_callback (obj, action_type, index)
 	   end
 	   self.end_work = true
 	   xr_spawner.remove_from_list (self.object:id ())
+	   local sim = alife()
+	   if sim ~= nil then
+		  sim:set_switch_online (self.object:id (), true)
+		  sim:set_switch_offline (self.object:id (), true)
+		  sim:set_interactive (self.object:id (), true)
+	   end
     end
 end
 
