@@ -97,5 +97,6 @@ public:
 	{
 		library.erase(library.begin()+id);
 	}
+	Shader_xrLCVec&			Library	(){return library;}
 };
 #endif
