@@ -44,6 +44,11 @@ protected:
 
 	TEAM_DATA_LIST		TeamList;
 
+	//список трупов для удаления
+	DEF_DEQUE(CORPSE_LIST, u16);
+
+	CORPSE_LIST		m_CorpseList;
+
 protected:
 	void							AllowDeadBodyRemove		(u32 id);
 	void							SpawnActor				(u32 id, LPCSTR N);
@@ -63,6 +68,7 @@ public:
 
 	virtual		BOOL				OnTouch					(u16 eid_who, u16 eid_what);
 	virtual		BOOL				OnDetach				(u16 eid_who, u16 eid_what);
+	virtual		void				OnDestroyObject			(u16 eid_who);			
 
 	virtual		void				OnPlayerConnect			(u32 id_who);
 	virtual		void				OnPlayerDisconnect		(u32 id_who);

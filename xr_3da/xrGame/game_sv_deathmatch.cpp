@@ -5,6 +5,7 @@
 #include "ui\UIBuyWeaponWnd.h"
 
 int		SkinID = -1;
+u32		g_dwMaxCorpses = 10;
 
 void	game_sv_Deathmatch::Create					(LPSTR &options)
 {
@@ -21,6 +22,8 @@ void	game_sv_Deathmatch::Create					(LPSTR &options)
 	switch_Phase(GAME_PHASE_INPROGRESS);
 
 	::Random.seed(GetTickCount());
+	/////////////////////////////////////////////////////////////////////////
+	m_CorpseList.clear();
 }
 
 void	game_sv_Deathmatch::OnRoundStart			()
@@ -39,6 +42,8 @@ void	game_sv_Deathmatch::OnRoundStart			()
 		if (ps->Skip) continue;
 		SpawnActor(get_it_2_id(it), "spectator");
 	}
+	///////////////////////////////////////////
+	m_CorpseList.clear();
 }
 
 void	game_sv_Deathmatch::OnPlayerKillPlayer		(u32 id_killer, u32 id_killed)
@@ -83,7 +88,18 @@ void	game_sv_Deathmatch::Update					()
 			{
 				if ((Level().timeServer()-start_time)>u32(timelimit))
 					OnTimelimitExceed	();
-			}
+			};
+
+			// remove corpses if their number exceed limit
+			while (m_CorpseList.size()>g_dwMaxCorpses)
+			{
+				u16 CorpseID = m_CorpseList.front();
+				m_CorpseList.pop_front();
+				//---------------------------------------------
+				NET_Packet			P;
+				u_EventGen			(P,GE_DESTROY,CorpseID);
+				Level().Send(P,net_flags(TRUE,TRUE));
+			};
 		}
 		break;
 	case GAME_PHASE_PENDING:
@@ -211,6 +227,8 @@ void	game_sv_Deathmatch::OnPlayerReady			(u32 id)
 			{
 				//------------------------------------------------------------			
 				AllowDeadBodyRemove(id);
+				//------------------------------------------------------------
+				m_CorpseList.push_back(pOwner->ID);
 				//------------------------------------------------------------
 				SpawnActor(id, "spectator");
 				//------------------------------------------------------------
@@ -904,3 +922,15 @@ void game_sv_Deathmatch::OnPlayerChangeSkin(u32 id_who, u8 skin)
 	};
 	signal_Syncronize();
 }
+
+void game_sv_Deathmatch::OnDestroyObject			(u16 eid_who)
+{
+	for (u32 i=0; i<m_CorpseList.size();)
+	{
+		if (m_CorpseList[i] == eid_who)
+		{
+			m_CorpseList.erase(m_CorpseList.begin()+i);
+		}
+		else i++;
+	};
+};

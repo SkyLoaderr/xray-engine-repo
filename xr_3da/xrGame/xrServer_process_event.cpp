@@ -275,6 +275,7 @@ void xrServer::Process_event	(NET_Packet& P, DPNID sender)
 					tpGame->m_tpALife->vfReleaseObject(e_dest,false);
 			}
 
+			if (game) game->OnDestroyObject	(e_dest->ID);
 			entity_Destroy			(e_dest);
 		}
 		break;

@@ -64,6 +64,8 @@ extern	float	g_fMaxReconDist		;
 extern	float	g_fMinReconSpeed	;
 extern	float	g_fMaxReconSpeed	;
 
+extern	u32		g_dwMaxCorpses		;
+
 BOOL	g_bCheckTime = TRUE;
 int		g_dwEventDelay = 0;
 
@@ -1051,6 +1053,8 @@ BOOL APIENTRY DllMain( HANDLE /**hModule/**/,
 
 		CMD4(CCC_Integer,	"g_checktime",			&g_bCheckTime,		0,	1);
 		CMD4(CCC_Integer,	"g_eventdelay",			&g_dwEventDelay,	0,	1000);
+
+		CMD4(CCC_Integer,	"g_corpsenum",			(int*)&g_dwMaxCorpses,		0,	100);
 
 //		CMD4(CCC_Integer,	"center_x",				&x_m_x,	-1000,	1000);
 //		CMD4(CCC_Integer,	"center_y",				&x_m_z,	-1000,	1000);
