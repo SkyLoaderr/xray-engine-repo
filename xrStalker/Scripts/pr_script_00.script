@@ -68,6 +68,11 @@ function main()
 
 	local rainbow_chto_za_chert = sound_object("scripts\\stalker_rainbow_replics\\rainbow_chto_za_chert")
 
+
+
+	stalker1:script	(true,  this.script_name())
+	stalker2:script	(true,  this.script_name())
+
 	while true do
 		if stalker1:see(actor) == false and stalker2:see(actor) == false then
 			printf("see = false!")
