@@ -11,7 +11,7 @@
 
 const	float	S_distance	= 32;
 const	float	S_level		= .1f;
-const	int		S_size		= 64;
+const	int		S_size		= 32;
 const	int		S_rt_size	= 512;
 const	int		batch_size	= 128;
 
@@ -145,24 +145,24 @@ void CLightShadows::calculate	()
 			
 			// calculate projection-matrix
 			Fmatrix		mProject;
-			float		p_dist	=	C.C.distance_to(L->position);
+			float		p_dist	=	C.C.distance_to(Lpos);
 			float		p_R		=	C.O->Radius();
 			float		p_hat	=	p_R/p_dist;
 			float		p_asp	=	1.f;
 			float		p_near	=	p_dist-p_R-eps;	if (p_near<eps)			p_near	= eps;
-			float		p_far	=	L->range;		if (p_far<(p_near+eps))	p_far	= p_near+eps;
+			float		p_far	=	Lrange;			if (p_far<(p_near+eps))	p_far	= p_near+eps;
 			mProject.build_projection_HAT	(p_hat,p_asp,p_near,p_far);
 			Device.set_xform_project		(mProject);
 			
 			// calculate view-matrix
 			Fmatrix		mView;
 			Fvector		v_D,v_N,v_R;
-			v_D.sub					(C.C,L->position);;
+			v_D.sub					(C.C,Lpos);;
 			if(1-fabsf(v_D.y)<EPS)	v_N.set(1,0,0);
 			else            		v_N.set(0,1,0);
 			v_R.crossproduct		(v_N,v_D);
 			v_N.crossproduct		(v_D,v_R);
-			mView.build_camera		(L->position,C.C,v_N);
+			mView.build_camera		(Lpos,C.C,v_N);
 			Device.set_xform_view	(mView);
 			
 			// combine and build frustum
