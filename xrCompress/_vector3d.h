@@ -278,6 +278,8 @@ public:
 	// Distance calculation
 	IC	T		distance_to_xz(const Self &v) const
 	{	return _sqrt( (x-v.x)*(x-v.x) + (z-v.z)*(z-v.z) );	}
+	IC	T		distance_to_xz_sqr(const Self &v) const
+	{	return (x-v.x)*(x-v.x) + (z-v.z)*(z-v.z);	}
 
 	// Distance calculation
 	IC	T		distance_to_sqr(const Self &v) const
