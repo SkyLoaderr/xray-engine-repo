@@ -1,6 +1,7 @@
 #include "stdafx.h"
 #pragma hdrstop
 
+#include "xr_creator.h"
 #include "ftreevisual.h"
 #include "fmesh.h"
 #include "render.h"
