@@ -637,6 +637,7 @@ function add_to_binder(obj)
     
 	properties["complete"]           = xr_evaluators_id.sidor_patrol_base_property + 0
 	properties["raid"]               = xr_evaluators_id.sidor_patrol_base_property + 1
+	properties["state_end"]		     = xr_evaluators_id.state_change
 
  	operators["single_patrol"]       = xr_actions_id.sidor_act_patrol + 0
 	operators["raid"]                = xr_actions_id.sidor_act_patrol + 1
@@ -651,12 +652,14 @@ function add_to_binder(obj)
    	action:add_precondition     	(world_property (stalker_ids.property_enemy,    false))
    	action:add_precondition     	(world_property (properties["complete"],        false))
     action:add_precondition         (world_property (properties["raid"],            true))
+	action:add_precondition		    (world_property (properties["state_end"], 	    true))
    	action:add_effect           	(world_property (properties["complete"],        true))
    	manager:add_action              (operators["single_patrol"], action)
 
     action = this.action_raid ("action_raid", xr_motivator.storage[obj:id()].patrol)
     action:add_precondition     (world_property (stalker_ids.property_alive,    true))
     action:add_precondition     (world_property (stalker_ids.property_enemy,    false))
+	action:add_precondition	    (world_property(properties["state_end"], 	    true))
     action:add_precondition     (world_property (properties["raid"],            false))
     action:add_effect           (world_property (properties["raid"],            true))
     manager:add_action          (operators["raid"], action)

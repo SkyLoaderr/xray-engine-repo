@@ -612,6 +612,7 @@ function  add_to_binder(obj)
 	properties["leader_present"]        = xr_evaluators_id.sidor_follower_base + 0
 	properties["follow"]                = xr_evaluators_id.sidor_follower_base + 1
 	properties["raid"]                  = xr_evaluators_id.sidor_follower_base + 2
+	properties["state_end"]		        = xr_evaluators_id.state_change
 
 	operators["leader_wait"]            = xr_actions_id.sidor_act_follower_base + 0
 	operators["follow"]                 = xr_actions_id.sidor_act_follower_base + 1
@@ -624,6 +625,7 @@ function  add_to_binder(obj)
     local action = this.action_leader_wait ("action_leader_wait",	xr_motivator.storage[obj:id()].follower)
     action:add_precondition     (world_property (stalker_ids.property_alive,    true))
     action:add_precondition     (world_property (stalker_ids.property_enemy,    false))
+	action:add_precondition	    (world_property (properties["state_end"], 	    true))
     action:add_precondition     (world_property (properties["leader_present"],  false))
     action:add_effect           (world_property (properties["leader_present"],  true))
     manager:add_action (operators["leader_wait"], action)
@@ -633,6 +635,7 @@ function  add_to_binder(obj)
     action:add_precondition     (world_property (stalker_ids.property_enemy,    false))
     action:add_precondition     (world_property (properties["leader_present"],  true))
     action:add_precondition     (world_property (properties["raid"],            true))
+	action:add_precondition		(world_property (properties["state_end"], 	    true))
     action:add_precondition     (world_property (properties["follow"],          false))
     action:add_effect           (world_property (properties["follow"],          true))
     manager:add_action (operators["follow"], action)
@@ -640,6 +643,7 @@ function  add_to_binder(obj)
     action = this.action_raid ("action_raid", xr_motivator.storage[obj:id()].follower)
     action:add_precondition     (world_property (stalker_ids.property_alive,    true))
     action:add_precondition     (world_property (stalker_ids.property_enemy,    false))
+	action:add_precondition	    (world_property (properties["state_end"], 	    true))
     action:add_precondition     (world_property (properties["raid"],            false))
     action:add_effect           (world_property (properties["raid"],            true))
     manager:add_action          (operators["raid"], action)
