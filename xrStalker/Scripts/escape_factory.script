@@ -26,7 +26,7 @@ end
 -----------------------
 function factory_combat:on_enter (obj)
     local actor = level.get_actor ()
-    if actor == nil or obj:id () != actor:id () then 
+    if actor == nil or obj:id () ~= actor:id () then 
        return 
     end
     
