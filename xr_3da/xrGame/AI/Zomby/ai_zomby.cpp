@@ -592,7 +592,6 @@ void CAI_Zomby::Attack()
 #ifdef WRITE_LOG
 	Msg("creature : %s, mode : %s",cName(),"Attack");
 #endif
-	Msg("%d",m_bMobility);
 	if (g_Health() <= 0) {
 		eCurrentState = aiZombyDie;
 		return;
