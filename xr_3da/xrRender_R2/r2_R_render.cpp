@@ -63,7 +63,6 @@ void __fastcall sorted_L1	(SceneGraph::mapSorted_Node *N)
 	IVisual *V = N->val.pVisual;
 	RCache.set_Shader		(V->hShader);
 	RCache.set_xform_world	(N->val.Matrix);
-	gm_SetLighting			(N->val.pObject);
 	V->Render				(calcLOD(N->key,V->vis.sphere.R));
 }
 
@@ -166,7 +165,6 @@ void CRender::Render	()
 	// Target.set_gray					(.5f+sinf(Device.fTimeGlobal)/2.f);
 	Target.Begin					();
 
-
 	// HUD render
 	{
 		ENGINE_API extern float		psHUD_FOV;
@@ -266,41 +264,19 @@ void CRender::Render	()
 	mapMatrix.traverseANY	(matrix_L1);
 	mapMatrix.clear			();
 
-	RCache.set_xform_world	(Fidentity);
-	Wallmarks->Render		();		// Wallmarks has priority as normal geometry
-
-	RCache.set_xform_world	(Fidentity);
-	L_Dynamic.Render		();		// L_DB has priority the same as normal geom
-
-	RCache.set_xform_world	(Fidentity);
-	L_Shadows.render		();
-
-	// LODs
-	flush_LODs				();
-	
 	// Sorted (back to front)
 	mapSorted.traverseRL	(sorted_L1);
 	mapSorted.clear			();
-
-	// Glows
-	Glows.Render			();
 
 	// HUD
 	Device.Statistic.RenderDUMP_HUD.Begin	();
 	pCreator->pHUD->Render_Affected			();
 	Device.Statistic.RenderDUMP_HUD.End		();
 
-	// Patches
-	if (vecPatches.size())  {
-		flush_Patches	();
-	}
-
 	pCreator->Environment.RenderLast		();
-	// L_Projector.render					();
 	
 	// Postprocess
 	Target.End				();
-	L_Projector.finalize	();
 	
 	// HUD
 	Device.Statistic.RenderDUMP_HUD.Begin	();
@@ -309,4 +285,3 @@ void CRender::Render	()
 
 	Device.Statistic.RenderDUMP.End();
 }
-
