@@ -923,7 +923,7 @@ void __fastcall TProperties::PMItemClick(TObject *Sender)
 			AnsiString edit_val	 	= T->GetValue();
 			prop->OnBeforeEdit		(&edit_val);
             LPCSTR new_val 		 	= 0;
-            bool bRes				= false;
+            bool bRes				= true;
         	if (mi->Tag==0){
             	bRes				= TfrmChoseItem::SelectItem(TfrmChoseItem::smTexture,new_val,prop->subitem,edit_val.c_str(),true);
             }else if (mi->Tag>=2){

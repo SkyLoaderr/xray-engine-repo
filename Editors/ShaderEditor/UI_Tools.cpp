@@ -63,27 +63,19 @@ bool CShaderTools::OnCreate()
     // create props
     m_ItemProps 	= TProperties::CreateForm(fraLeftBar->paShaderProps,alClient);
     m_PreviewProps  = TProperties::CreateForm(fraLeftBar->paPreviewProps,alClient);
+
 	// shader test locking
 	AnsiString sh_fn;
     FS.update_path		(sh_fn,_game_data_,"shaders.xr");
-	if (EFS.CheckLocking(0,sh_fn.c_str(),false,true)){
-    	ELog.DlgMsg(mtInformation,"Shader Editor locked.");
-    	return false;
-    }
+	if (EFS.CheckLocking(0,sh_fn.c_str(),false,true)) return false;
 	// shader test locking
 	AnsiString lc_fn;
     FS.update_path		(lc_fn,_game_data_,"shaders_xrlc.xr");
-	if (EFS.CheckLocking(0,lc_fn.c_str(),false,true)){
-    	ELog.DlgMsg(mtInformation,"Shader Editor locked.");
-    	return false;
-    }
+	if (EFS.CheckLocking(0,lc_fn.c_str(),false,true)) return false;
 	// material test locking
 	AnsiString gm_fn;
     FS.update_path		(gm_fn,_game_data_,"gamemtl.xr");
-	if (EFS.CheckLocking(0,gm_fn.c_str(),false,true)){
-    	ELog.DlgMsg(mtInformation,"Shader Editor locked.");
-    	return false;
-    }
+	if (EFS.CheckLocking(0,gm_fn.c_str(),false,true)) return false;
 	//
     Device.seqDevCreate.Add(this);
     Device.seqDevDestroy.Add(this);
@@ -259,5 +251,33 @@ void CShaderTools::UnregisterTools()
 {
 	for (ToolsPairIt it=m_Tools.begin(); it!=m_Tools.end(); it++)
     	xr_delete(it->second);
+}
+
+#include "EditMesh.h"
+bool CShaderTools::RayPick(const Fvector& start, const Fvector& dir, float& dist, Fvector* pt, Fvector* n)
+{
+/*
+    if (m_EditObject)
+    {
+		SRayPickInfo pinf;
+		if (m_EditObject->RayPick(dist,start,dir,Fidentity,&pinf)){
+        	if (pt) pt->set(pinf.pt); 
+            if (n){	
+                const Fvector* PT[3];
+                pinf.e_mesh->GetFacePT(pinf.inf.id, PT);
+            	n->mknormal(*PT[0],*PT[1],*PT[2]);
+            }
+            return true;
+        }else return false;
+    }else
+*/    
+    {
+    	Fvector np; np.mad(start,dir,dist);
+    	if ((start.y>0)&&(np.y<0.f)){
+            if (pt) pt->set(start); 
+            if (n)	n->set(0.f,1.f,0.f);
+            return true;
+        }else return false;
+    }
 }
 

@@ -47,6 +47,7 @@ public:
 	void					set_Transform	(Fmatrix* M);
 	void					add_Visual   	(IRender_Visual* visual);
 
+	virtual ref_shader		getShader		(int id);
 	IRender_Target*			getTarget		(){return &Target;}
 
 	virtual IRender_Visual*	model_Create			(LPCSTR name);

@@ -38,6 +38,8 @@ void					CRender::destroy				()
 	PSLibrary.OnDestroy			();
 }
 
+ref_shader	CRender::getShader	(int id){ return 0; }//VERIFY(id<int(Shaders.size()));	return Shaders[id];	}
+
 BOOL CRender::occ_visible(Fbox&	B)
 {
 	u32 mask		= 0xff;

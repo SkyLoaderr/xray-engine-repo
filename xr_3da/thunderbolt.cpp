@@ -6,9 +6,7 @@
 #include "igame_persistent.h"
 
 #ifdef _EDITOR
-	#ifdef _LEVEL_EDITOR
-		#include "ui_tools.h"
-    #endif
+    #include "ui_tools.h"
 #else
 	#include "igame_level.h"
 	#include "xr_area.h"

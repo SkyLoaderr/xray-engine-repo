@@ -84,6 +84,7 @@ public:
     bool __fastcall 	KeyPress    		(WORD Key, TShiftState Shift){return false;}
 
     bool				Pick				(TShiftState Shift){return false;}
+    bool				RayPick				(const Fvector& start, const Fvector& dir, float& dist, Fvector* pt=0, Fvector* n=0);
 
     void				ShowProperties		();
     void				UpdateProperties	(bool bForced=false){;}

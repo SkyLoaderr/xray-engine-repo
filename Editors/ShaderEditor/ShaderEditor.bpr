@@ -60,16 +60,16 @@
       Intermediate\ImageThumbnail.obj Intermediate\ItemList.obj 
       Intermediate\ItemListHelper.obj Intermediate\ItemListTypes.obj 
       Intermediate\Library.obj Intermediate\LightAnimLibrary.obj 
-      Intermediate\ModelPool.obj Intermediate\NumericVector.obj 
-      Intermediate\PropertiesList.obj Intermediate\PropertiesListHelper.obj 
-      Intermediate\PropertiesListTypes.obj Intermediate\PSLibrary.obj 
-      Intermediate\render.obj Intermediate\ShaderFunction.obj 
-      Intermediate\SoundManager.obj Intermediate\TextForm.obj 
-      Intermediate\TopBar.obj Intermediate\UI_Camera.obj 
-      Intermediate\UI_Main.obj Intermediate\UI_MainCommand.obj 
-      Intermediate\UI_Tools.obj Intermediate\BottomBar.obj 
-      Intermediate\EditorPref.obj Intermediate\GameMtlLib_Editor.obj 
-      Intermediate\LeftBar.obj Intermediate\LogForm.obj Intermediate\main.obj 
+      Intermediate\NumericVector.obj Intermediate\PropertiesList.obj 
+      Intermediate\PropertiesListHelper.obj Intermediate\PropertiesListTypes.obj 
+      Intermediate\PSLibrary.obj Intermediate\render.obj 
+      Intermediate\ShaderFunction.obj Intermediate\SoundManager.obj 
+      Intermediate\TextForm.obj Intermediate\TopBar.obj 
+      Intermediate\UI_Camera.obj Intermediate\UI_Main.obj 
+      Intermediate\UI_MainCommand.obj Intermediate\UI_Tools.obj 
+      Intermediate\BottomBar.obj Intermediate\EditorPref.obj 
+      Intermediate\GameMtlLib_Editor.obj Intermediate\LeftBar.obj 
+      Intermediate\LogForm.obj Intermediate\main.obj 
       Intermediate\SHCompilerTools.obj 
       Intermediate\SHCompilerToolsProperties.obj Intermediate\SHEngineTools.obj 
       Intermediate\SHEngineToolsProperties.obj 
@@ -82,7 +82,8 @@
       Intermediate\Blender_Recorder_StandartBinding.obj 
       Intermediate\IGame_Persistent.obj Intermediate\Environment.obj 
       Intermediate\Rain.obj Intermediate\xr_efflensflare.obj 
-      Intermediate\DetailModel.obj"/>
+      Intermediate\DetailModel.obj Intermediate\ModelPool.obj 
+      Intermediate\thunderbolt.obj"/>
     <RESFILES value="ShaderEditor.res resource.res"/>
     <IDLFILES value=""/>
     <IDLGENFILES value=""/>
@@ -248,7 +249,6 @@
       <FILE FILENAME="Editor\ItemListTypes.cpp" FORMNAME="" UNITNAME="ItemListTypes.cpp" CONTAINERID="CCompiler" DESIGNCLASS="" LOCALCOMMAND=""/>
       <FILE FILENAME="Editor\Library.cpp" FORMNAME="" UNITNAME="Library.cpp" CONTAINERID="CCompiler" DESIGNCLASS="" LOCALCOMMAND=""/>
       <FILE FILENAME="Editor\LightAnimLibrary.cpp" FORMNAME="" UNITNAME="LightAnimLibrary.cpp" CONTAINERID="CCompiler" DESIGNCLASS="" LOCALCOMMAND=""/>
-      <FILE FILENAME="Editor\ModelPool.cpp" FORMNAME="" UNITNAME="ModelPool.cpp" CONTAINERID="CCompiler" DESIGNCLASS="" LOCALCOMMAND=""/>
       <FILE FILENAME="Editor\NumericVector.cpp" FORMNAME="frmNumericVector" UNITNAME="NumericVector" CONTAINERID="CCompiler" DESIGNCLASS="" LOCALCOMMAND=""/>
       <FILE FILENAME="Editor\PropertiesList.cpp" FORMNAME="Properties" UNITNAME="PropertiesList" CONTAINERID="CCompiler" DESIGNCLASS="" LOCALCOMMAND=""/>
       <FILE FILENAME="Editor\PropertiesListHelper.cpp" FORMNAME="" UNITNAME="PropertiesListHelper.cpp" CONTAINERID="CCompiler" DESIGNCLASS="" LOCALCOMMAND=""/>
@@ -292,6 +292,9 @@
       <FILE FILENAME="Engine\Rain.cpp" FORMNAME="" UNITNAME="Rain" CONTAINERID="CCompiler" DESIGNCLASS="" LOCALCOMMAND=""/>
       <FILE FILENAME="Engine\xr_efflensflare.cpp" FORMNAME="" UNITNAME="xr_efflensflare" CONTAINERID="CCompiler" DESIGNCLASS="" LOCALCOMMAND=""/>
       <FILE FILENAME="Engine\DetailModel.cpp" FORMNAME="" UNITNAME="DetailModel" CONTAINERID="CCompiler" DESIGNCLASS="" LOCALCOMMAND=""/>
+      <FILE FILENAME="ShaderEditor.todo" FORMNAME="" UNITNAME="ShaderEditor.todo" CONTAINERID="ToDo" DESIGNCLASS="" LOCALCOMMAND=""/>
+      <FILE FILENAME="Engine\ModelPool.cpp" FORMNAME="" UNITNAME="ModelPool" CONTAINERID="CCompiler" DESIGNCLASS="" LOCALCOMMAND=""/>
+      <FILE FILENAME="Engine\thunderbolt.cpp" FORMNAME="" UNITNAME="thunderbolt" CONTAINERID="CCompiler" DESIGNCLASS="" LOCALCOMMAND=""/>
   </FILELIST>
   <BUILDTOOLS>
   </BUILDTOOLS>
