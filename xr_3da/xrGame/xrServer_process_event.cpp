@@ -142,7 +142,7 @@ void xrServer::Process_event	(NET_Packet& P, DPNID sender)
 			{
 				NET_Packet			P2;
 				P2.w_begin			(M_EVENT);
-				P2.w_u32			(timestamp);
+				P2.w_u32			(timestamp-1);
 				P2.w_u16			(GE_OWNERSHIP_REJECT);
 				P2.w_u16			(e_dest->ID_Parent);
 				P2.w_u16			(id_dest);
