@@ -129,6 +129,7 @@ void CAI_Stalker::OnItemTake			(CInventoryItem *inventory_item)
 	CObjectHandler::OnItemTake	(inventory_item);
 	m_last_best_item_frame		= 0;
 	m_item_actuality			= false;
+	m_sell_info_actuality		= false;
 }
 
 void CAI_Stalker::OnItemDrop			(CInventoryItem *inventory_item)
@@ -136,6 +137,7 @@ void CAI_Stalker::OnItemDrop			(CInventoryItem *inventory_item)
 	CObjectHandler::OnItemDrop	(inventory_item);
 	m_last_best_item_frame		= 0;
 	m_item_actuality			= false;
+	m_sell_info_actuality		= false;
 }
 
 void CAI_Stalker::update_best_item_info	()

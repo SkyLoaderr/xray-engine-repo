@@ -30,6 +30,11 @@ IC	bool CAI_Stalker::CTradeItem::operator<	(const CTradeItem &trade_item) const
 	return			(m_item->object().ID() < trade_item.m_item->object().ID());
 }
 
+IC	bool CAI_Stalker::CTradeItem::operator==(u16 id) const
+{
+	return			(m_item->object().ID() == id);
+}
+
 bool CAI_Stalker::task_completed			(const CALifeTask *_task)
 {
 	const CALifeTask	&task = *_task;
@@ -124,8 +129,8 @@ bool CAI_Stalker::alife_task_completed			()
 u32 CAI_Stalker::fill_items						(CInventory &inventory, CGameObject *old_owner, ALife::_OBJECT_ID new_owner_id)
 {
 	u32							result = 0;
-	TIItemContainer::iterator			I = inventory.m_all.begin();
-	TIItemContainer::iterator			E = inventory.m_all.end();
+	TIItemContainer::iterator	I = inventory.m_all.begin();
+	TIItemContainer::iterator	E = inventory.m_all.end();
 	for ( ; I != E; ++I) {
 		if (!(*I)->useful_for_NPC())
 			continue;
@@ -186,7 +191,8 @@ IC	void CAI_Stalker::buy_item_virtual				(CTradeItem &item)
 {
 	item.m_new_owner_id			= ID();
 	m_total_money				-= item.m_item->Cost();
-	m_current_trader->m_dwMoney += item.m_item->Cost();
+	if (m_current_trader)
+		m_current_trader->m_dwMoney += item.m_item->Cost();
 }
 
 void CAI_Stalker::choose_food						()
@@ -367,6 +373,7 @@ void CAI_Stalker::select_items						()
 
 void CAI_Stalker::communicate						(CInventoryOwner *trader)
 {
+	m_sell_info_actuality	= false;
 	VERIFY					(trader);
 	m_current_trader		= trader;
 	m_trader_game_object	= smart_cast<CGameObject*>(trader);
@@ -456,4 +463,33 @@ bool CAI_Stalker::can_buy_ammo						()
 {
 	compute_alife_conditions();
 	return					(m_can_buy_ammo);
+}
+
+void CAI_Stalker::update_sell_info					()
+{
+	if (m_sell_info_actuality)
+		return;
+
+	m_sell_info_actuality	= true;
+
+	m_temp_items.clear		();
+	m_current_trader		= 0;
+	m_total_money			= m_dwMoney;
+	u32						money_delta = fill_items(inventory(),this,ALife::_OBJECT_ID(-1));
+	m_total_money			+= money_delta;
+	std::sort				(m_temp_items.begin(),m_temp_items.end());
+	select_items			();
+}
+
+bool CAI_Stalker::can_sell							(CInventoryItem const * item)
+{
+	update_sell_info		();
+	xr_vector<CTradeItem>::const_iterator	I = std::find(m_temp_items.begin(),m_temp_items.end(),item->object().ID());
+	VERIFY					(I != m_temp_items.end());
+	return					((*I).m_new_owner_id != ID());
+}
+
+bool CAI_Stalker::AllowItemToTrade 					(CInventoryItem const * item, EItemPlace place) const
+{
+	return					(const_cast<CAI_Stalker*>(this)->can_sell(item));
 }

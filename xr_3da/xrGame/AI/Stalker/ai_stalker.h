@@ -291,6 +291,7 @@ private:
 		}
 
 		IC	bool			operator<	(const CTradeItem &trade_item) const;
+		IC	bool			operator==	(u16 id) const;
 	};
 
 private:
@@ -298,7 +299,7 @@ private:
 	CInventoryOwner						*m_current_trader;
 	xr_vector<CTradeItem>				m_temp_items;
 	u32									m_total_money;
-
+	bool								m_sell_info_actuality;
 
 private:
 	bool								m_not_enough_food;
@@ -335,6 +336,9 @@ protected:
 			void						compute_ammo_conditions			();
 			void						compute_alife_conditions		();
 
+			void						update_sell_info				();
+			bool						can_sell						(CInventoryItem const * item);
+	virtual bool						AllowItemToTrade 				(CInventoryItem const * item, EItemPlace place) const;
 public:
 			CALifeTask					&current_alife_task				();
 			void						failed_to_complete_alife_task	();
