@@ -230,8 +230,8 @@ function se_smart_terrain:STATE_Read( packet, size )
 	log( "se_smart_terrain::STATE_Read called!" )
 	cse_alife_smart_zone.STATE_Read( self, packet, size )
 
-	printf( "before read" )
-	self:print()
+--	printf( "before read" )
+--	self:print()
 
 	read_ini( self ) -- прочитать custom_data
 
@@ -273,8 +273,8 @@ function se_smart_terrain:STATE_Read( packet, size )
 		self.gulag   = nil
 	end
 
-	printf( "after read" )
-	self:print()
+--	printf( "after read" )
+--	self:print()
 end
 
 function se_smart_terrain:FillProps( pref, items )
@@ -361,7 +361,7 @@ function cl_smart_terrain:__init( se_obj, ini )
 end
 
 function cl_smart_terrain:destroy()
-	printf( "smart terrain client destroy" )
+--	printf( "smart terrain client destroy" )
 	self:destroyGulag()
 end
 
@@ -384,7 +384,7 @@ function cl_smart_terrain:save()
 	end
 
 	o:print()
-	printf( "//smart terrain client save" )
+--	printf( "//smart terrain client save" )
 end
 
 function cl_smart_terrain:name()
