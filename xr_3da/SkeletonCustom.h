@@ -6,7 +6,7 @@
 #include		"bone.h"
 
 // consts
-const	u32		MAX_BONE_PARAMS		=	4;
+const	u32		MAX_BONE_PARAMS		=	5;
 
 // refs
 class	ENGINE_API CKinematics;
