@@ -13,7 +13,7 @@ void HUD_SOUND::LoadSound(LPCSTR section, LPCSTR line,
 {
 	string128 sound_line;
 	strcpy(sound_line,line);
-	LPCSTR str;
+//	LPCSTR str;
 	int k=0;
 	while( pSettings->line_exist(section, sound_line) ){
 	hud_snd.sounds.push_back( SSnd() );
