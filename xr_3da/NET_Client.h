@@ -6,7 +6,7 @@ const DWORD NET_QueueSize	= 256;
 class ENGINE_API INetQueue
 {
 	CCriticalSection	cs;
-	NET_Packet			table[NET_QueueSize];
+	NET_Packet			table	[NET_QueueSize];
 	DWORD				id_read;
 	DWORD				id_write;
 public:
