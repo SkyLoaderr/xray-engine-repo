@@ -44,10 +44,10 @@ void CMotionDef::Load(CKinematics* P, CInifile* INI, LPCSTR  section, BOOL bCycl
 	if (bCycle && (falloff>=accrue)) falloff = accrue-1;
 }
 
-CBlend*	CMotionDef::PlayCycle(CKinematics* P)
+CBlend*	CMotionDef::PlayCycle(CKinematics* P, BOOL bMixIn)
 {
 	return P->LL_PlayCycle(
-		int(bone_or_part),int(motion),
+		int(bone_or_part),int(motion),bMixIn,
 		fAA*Dequantize(accrue),
 		fAA*Dequantize(falloff),
 		Dequantize(speed),
@@ -127,10 +127,10 @@ CMotionDef*	CKinematics::ID_Cycle_Safe(LPCSTR  N)
 	if(I==m_cycle->end()) return 0;
 	return &I->second;
 }
-CBlend*	CKinematics::PlayCycle		(LPCSTR  N)
+CBlend*	CKinematics::PlayCycle		(LPCSTR  N, BOOL bMixIn)
 {
 	mdef::iterator I = m_cycle->find(LPSTR(N));
-	if (I!=m_cycle->end())	return I->second.PlayCycle(this);
+	if (I!=m_cycle->end())	return I->second.PlayCycle(this,bMixIn);
 	else {
 		Msg("ANIM::Cycle '%s' not found.",N);
 		return NULL;
