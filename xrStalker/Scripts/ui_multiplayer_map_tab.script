@@ -24,7 +24,7 @@ function create_map_tab:__finalize()
 end
 
 function create_map_tab:InitControls(x_pos, y_pos)
-	ui_multiplayer_create_base_tab.multiplayer_create_base_tab.InitControls(self, "Map", x_pos, y_pos)
+	ui_multiplayer_base_tab.multiplayer_create_base_tab.InitControls(self, "Map", x_pos, y_pos)
 	
 	----- DATA ----
 	----- BUTTONS --->>>
