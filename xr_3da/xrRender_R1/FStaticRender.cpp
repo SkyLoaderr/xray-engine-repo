@@ -80,11 +80,13 @@ void					CRender::destroy				()
 }
 void					CRender::reset_begin			()
 {
-	xr_delete			(Target);
+	xr_delete					(Target);
+	HWOCC.occq_destroy			();
 }
 void					CRender::reset_end				()
 {
-	Target			=	xr_new<CRenderTarget>			();
+	HWOCC.occq_create			(occq_size);
+	Target						=	xr_new<CRenderTarget>	();
 }
 
 // Implementation

@@ -20,9 +20,6 @@ u16 find_bone_id(vecBones* bones, shared_str nm)
 //-----------------------------------------------------------------------
 BOOL motions_value::load		(LPCSTR N, IReader *data, vecBones* bones)
 {
-#ifdef DEBUG
-	Log				("Loading motions:",N);
-#endif
 	bool bRes		= true;
 	// Load definitions
 	U16Vec rm_bones	(bones->size(),BI_NONE);

@@ -6,6 +6,9 @@
 
 void	CResourceManager::reset_begin			()
 {
+	// destroy everything, renderer may use
+	::Render->reset_begin		();
+
 	// destroy state-blocks
 	for (u32 _it=0; _it<v_states.size(); _it++)
 		_RELEASE(v_states[_it]->state);
@@ -15,9 +18,6 @@ void	CResourceManager::reset_begin			()
 		rt_it->second->reset_begin();
 	for (map_RTCIt rtc_it=m_rtargets_c.begin(); rtc_it!=m_rtargets_c.end(); rtc_it++)
 		rtc_it->second->reset_begin();
-
-	// destroy everything, renderer may use
-	::Render->reset_begin		();
 
 	// destroy DStreams
 	RCache.old_QuadIB			= RCache.QuadIB;
@@ -47,9 +47,6 @@ void	CResourceManager::reset_end				()
 		}
 	}
 
-	// create everything, renderer may use
-	::Render->reset_end			();
-
 	// create RTs in the same order as them was first created
 	{
 		// RT
@@ -71,6 +68,9 @@ void	CResourceManager::reset_end				()
 		for (u32 _it=0; _it<v_states.size(); _it++)
 			v_states[_it]->state = v_states[_it]->state_code.record();
 	}
+
+	// create everything, renderer may use
+	::Render->reset_end					();
 }
 
 CResourceManager::~CResourceManager		()
