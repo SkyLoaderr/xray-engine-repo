@@ -89,8 +89,10 @@ void CDetailPathManager::build_path(const xr_vector<u32> &level_path, u32 interm
 			}
 			default : NODEFAULT;
 		}
-		if (failed()) 
+		if (failed()) {
 			Msg						("! DetailPathManager has failed! :: from [%f,%f,%f] to [%f,%f,%f]", VPUSH(ai().level_graph().vertex_position(level_path.front())), VPUSH(ai().level_graph().vertex_position(level_path.back())));
+			build_smooth_path		(level_path,intermediate_index);
+		}
 
 		if (valid()) {
 			m_actuality				= true;

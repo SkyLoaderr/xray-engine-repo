@@ -20,7 +20,6 @@
 CPoltergeist::CPoltergeist()
 {
 	m_particles_object	= 0;
-	state_invisible		= false;
 
 	StateMan = xr_new<CStateManagerPoltergeist>(this);
 
@@ -128,7 +127,17 @@ void CPoltergeist::reinit()
 	Energy::set_auto_deactivate();
 	Energy::enable();
 
-	m_disable_hide		= false;
+	// start hidden
+	state_invisible						= true;	
+	setVisible							(false);
+	
+	MotionMan.ForceAnimSelect			();
+	
+	m_current_position = Position		();
+	movement_control()->DestroyCharacter();
+	
+	m_height							= 0.3f;
+	time_height_updated					= 0;
 }
 
 void CPoltergeist::Hide()
@@ -191,6 +200,19 @@ void CPoltergeist::shedule_Update(u32 dt)
 	UpdateFlame();
 	UpdateTelekinesis();
 	UpdateHeight();
+}
+
+BOOL CPoltergeist::net_Spawn (CSE_Abstract* DC) 
+{
+	if (!inherited::net_Spawn(DC)) return(FALSE);
+
+	// спаунится нивидимым
+	setVisible		(false);
+
+	CParticlesPlayer::StartParticles(m_particles_hidden,Fvector().set(0.0f,0.1f,0.0f),ID());
+	CParticlesPlayer::StartParticles(m_particles_hide,Fvector().set(0.0f,0.1f,0.0f),ID());
+	
+	return			(TRUE);
 }
 
 void CPoltergeist::net_Destroy()

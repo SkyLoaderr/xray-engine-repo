@@ -113,17 +113,19 @@ void CMotionManager::SelectVelocities()
 	//	R_ASSERT(fsimilar(path_vel.angular,	anim_vel.angular));
 
 	// установка линейной скорости	
-	// - проверить на возможность торможения
-	if (!accel_check_braking(0.f)) {
-
-		pMonster->movement().m_velocity_linear.target	= _abs(anim_vel.linear);
-		if (fis_zero(pMonster->movement().m_velocity_linear.target)) pMonster->movement().stop_linear();
+	if (pMonster->state_invisible) {
+		// если невидимый, то установить скорость из пути
+		pMonster->movement().m_velocity_linear.target	= _abs(path_vel.linear);
 	} else {
-		pMonster->movement().stop_linear_accel();
+		
+		// - проверить на возможность торможения
+		if (!accel_check_braking(0.f)) {
+			pMonster->movement().m_velocity_linear.target	= _abs(anim_vel.linear);
+			if (fis_zero(pMonster->movement().m_velocity_linear.target)) pMonster->movement().stop_linear();
+		} else {
+			pMonster->movement().stop_linear_accel();
+		}
 	}
-
-	// если невидимый, то установить скорость из пути
-	if (pMonster->state_invisible) pMonster->movement().m_velocity_linear.target	= _abs(path_vel.linear);
 
 	// финальная корректировка скорости анимации по физической скорости
 	if (b_moving) {

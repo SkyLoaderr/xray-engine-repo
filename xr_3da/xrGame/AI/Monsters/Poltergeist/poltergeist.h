@@ -42,6 +42,7 @@ public:
 	virtual void	reload				(LPCSTR section);
 	virtual void	reinit				();
 
+	virtual BOOL	net_Spawn			(CSE_Abstract* DC);
 	virtual void	net_Destroy			();
 	virtual void	UpdateCL			();
 	virtual	void	shedule_Update		(u32 dt);
