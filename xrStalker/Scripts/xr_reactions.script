@@ -626,7 +626,7 @@ function events:print()
 	end
 end
 function events:type(obj)
-	pintf("clsid type")
+	printf("clsid type")
 	local otype = obj:clsid()
 
 	if 	otype == clsid.actor or
@@ -704,7 +704,7 @@ function events:type(obj)
 	end
 end
 function events:monstr_power(obj)
-	pintf("clsid monstr")
+	printf("clsid monstr")
 	local otype = obj:clsid()
 
 	if	otype == clsid.zombie or
@@ -726,7 +726,7 @@ function events:monstr_power(obj)
 	end
 end
 function events:item_power(obj)
-	pintf("clsid item")
+	printf("clsid item")
 	local otype = obj:clsid()
 
 	if	otype == clsid.wpn_fn2000 or
