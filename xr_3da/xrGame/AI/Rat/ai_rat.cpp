@@ -80,6 +80,7 @@ void CAI_Rat::Load(LPCSTR section)
 	
 	vfLoadSounds();
 	
+	m_fMaxHealthValue = fHealth = pSettings->ReadFLOAT(section,"health");
 	// sounds
 	m_fMinVoiceIinterval = pSettings->ReadFLOAT(section,"MinVoiceInterval");
 	m_fMaxVoiceIinterval = pSettings->ReadFLOAT(section,"MaxVoiceInterval");
