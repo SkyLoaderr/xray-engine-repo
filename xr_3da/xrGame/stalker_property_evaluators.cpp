@@ -154,7 +154,7 @@ _value_type CStalkerPropertyEvaluatorAnomaly::evaluate	()
 	if (!m_object->memory().enemy().selected())
 		return			(true);
 
-	u32					result = dwfChooseAction(2000,m_object->panic_threshold(),0.f,0.f,0.f,m_object->g_Team(),m_object->g_Squad(),m_object->g_Group(),0,1,2,3,4,m_object,30.f);
+	u32					result = dwfChooseAction(2000,m_object->panic_threshold(),0.f,0.f,0.f,m_object->g_Team(),m_object->g_Squad(),m_object->g_Group(),0,1,2,3,4,m_object,300.f);
 	return				(!result);
 }
 
@@ -170,7 +170,7 @@ _value_type CStalkerPropertyEvaluatorInsideAnomaly::evaluate	()
 	if (!m_object->memory().enemy().selected())
 		return			(true);
 
-	u32					result = dwfChooseAction(2000,m_object->panic_threshold(),0.f,0.f,0.f,m_object->g_Team(),m_object->g_Squad(),m_object->g_Group(),0,1,2,3,4,m_object,30.f);
+	u32					result = dwfChooseAction(2000,m_object->panic_threshold(),0.f,0.f,0.f,m_object->g_Team(),m_object->g_Squad(),m_object->g_Group(),0,1,2,3,4,m_object,300.f);
 	return				(!result);
 }
 
@@ -180,7 +180,7 @@ _value_type CStalkerPropertyEvaluatorInsideAnomaly::evaluate	()
 
 _value_type CStalkerPropertyEvaluatorPanic::evaluate	()
 {
-	u32					result = dwfChooseAction(2000,m_object->panic_threshold(),0.f,0.f,0.f,m_object->g_Team(),m_object->g_Squad(),m_object->g_Group(),0,1,2,3,4,m_object,30.f);
+	u32					result = dwfChooseAction(2000,m_object->panic_threshold(),0.f,0.f,0.f,m_object->g_Team(),m_object->g_Squad(),m_object->g_Group(),0,1,2,3,4,m_object,300.f);
 	return				(!!result);
 }
 

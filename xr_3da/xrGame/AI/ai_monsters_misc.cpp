@@ -22,6 +22,9 @@
 #include "../memory_manager.h"
 #include "../enemy_manager.h"
 #include "../level.h"
+#include "../agent_manager.h"
+#include "../agent_member_manager.h"
+#include "stalker/ai_stalker.h"
 
 bool bfGetActionSuccessProbability(GroupHierarchyHolder::MEMBER_REGISTRY &Members, const xr_vector<const CEntityAlive *> &VisibleEnemies, float fMinProbability, CBaseFunction &fSuccessProbabilityFunction)
 {
@@ -83,7 +86,7 @@ bool bfGetActionSuccessProbability(GroupHierarchyHolder::MEMBER_REGISTRY &Member
 u32 dwfChooseAction(u32 dwActionRefreshRate, float fMinProbability0, float fMinProbability1, float fMinProbability2, float fMinProbability3, u32 dwTeam, u32 dwSquad, u32 dwGroup, u32 a0, u32 a1, u32 a2, u32 a3, u32 a4, CEntity *tpEntity, float fGroupDistance)
 {
 //	return(a0);
-	CGroupHierarchyHolder &Group = Level().seniority_holder().team(dwTeam).squad(dwSquad).group(dwGroup);
+	CGroupHierarchyHolder					&Group = Level().seniority_holder().team(dwTeam).squad(dwSquad).group(dwGroup);
 	
 	if (Device.dwTimeGlobal - Group.m_dwLastActionTime < dwActionRefreshRate) {
 		switch (Group.m_dwLastAction) {
@@ -98,6 +101,7 @@ u32 dwfChooseAction(u32 dwActionRefreshRate, float fMinProbability0, float fMinP
 
 	const CCustomMonster					*monster = smart_cast<const CCustomMonster*>(tpEntity);
 	VERIFY									(monster);
+	const CAI_Stalker						*stalker = smart_cast<const CAI_Stalker*>(monster);
 	const xr_vector<const CEntityAlive*>	&VisibleEnemies = monster->memory().enemy().objects();
 
 	GroupHierarchyHolder::MEMBER_REGISTRY Members;
@@ -109,8 +113,22 @@ u32 dwfChooseAction(u32 dwActionRefreshRate, float fMinProbability0, float fMinP
 	else
 		for (int k=0; k<(int)Group.members().size(); ++k) {
 			if (Group.members()[k]->g_Alive() && ((Group.members()[k]->spatial.type & STYPE_VISIBLEFORAI) == STYPE_VISIBLEFORAI))
-				if (tpEntity->Position().distance_to(Group.members()[k]->Position()) < fGroupDistance)
-					Members.push_back(Group.members()[k]);
+				if (tpEntity->Position().distance_to(Group.members()[k]->Position()) < fGroupDistance) {
+					
+					if (!stalker) {
+						Members.push_back	(Group.members()[k]);
+						continue;
+					}
+
+					const CAI_Stalker		*member = smart_cast<CAI_Stalker*>(Group.members()[k]);
+					if (!member) {
+						Members.push_back	(Group.members()[k]);
+						continue;
+					}
+					
+					if (Group.agent_manager().member().registered_in_combat(member))
+						Members.push_back	(Group.members()[k]);
+				}
 		}
 
 	WRITE_QUERY_TO_LOG("\nNew query");

@@ -97,17 +97,6 @@ void CSpaceRestrictionComposition::test_correctness()
 	m_correct					= true;
 	m_test_storage.clear		();
 
-	//{
-	//	RESTRICTIONS::iterator		I = m_restrictions.begin();
-	//	RESTRICTIONS::iterator		E = m_restrictions.end();
-	//	for ( ; I != E; ++I)
-	//		if (!(*I)->object().m_correct)
-	//			m_correct			= false;
-	//}
-
-	//if (!m_correct)
-	//	return;
-
 	{
 		RESTRICTIONS::iterator		I = m_restrictions.begin();
 		RESTRICTIONS::iterator		E = m_restrictions.end();

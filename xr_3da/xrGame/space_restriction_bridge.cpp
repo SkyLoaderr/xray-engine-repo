@@ -98,15 +98,6 @@ bool CSpaceRestrictionBridge::on_border					(const Fvector &position) const
 {
 	START_PROFILE("AI/Restricted Object/Bridge/On Border");
 	
-//	CLevelGraph::CPosition	pos = ai().level_graph().vertex_position(position);
-//	xr_vector<u32>::const_iterator	I = object().border().begin();
-//	xr_vector<u32>::const_iterator	E = object().border().end();
-//	for ( ; I != E; ++I)
-//		if (ai().level_graph().inside(*I,pos)) {
-//			if (_abs(ai().level_graph().vertex_plane_y(*I) - position.y) < 2.f)
-//				return	(true);
-//		}
-
 	if (!ai().level_graph().valid_vertex_position(position))
 		return				(false);
 
