@@ -234,7 +234,7 @@ void CKinematics::Copy(IRender_Visual *P)
 		B->SetParent(this);
 	}
 
-	Update_ID		= ::Random.randI(psSkeletonUpdate);
+	Update_ID		= psSkeletonUpdate;
 }
 
 void CKinematics::Spawn	()
@@ -244,7 +244,8 @@ void CKinematics::Spawn	()
 	for (u32 i=0; i<bones->size(); i++)
 		bone_instances[i].construct();
 
-	Update_Callback			= NULL;
+	Update_Callback	= NULL;
+	Update_ID		= psSkeletonUpdate;
 }
 
 void CKinematics::Release()
