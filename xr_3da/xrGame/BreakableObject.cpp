@@ -318,7 +318,7 @@ void CBreakableObject::Init()
 	bRemoved				= false;
 	m_max_frame_damage		= 0.f;
 	b_resived_damage		= false;
-CLS_ID	//m_damage_threshold		=5.f;
+	//m_damage_threshold		=5.f;
 	//m_health_threshhold		=0.f
 }
 
