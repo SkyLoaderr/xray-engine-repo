@@ -18,11 +18,11 @@ Vertex*	tessEdge(Face *F, int id1, int id2)
 	t1.sub(pr2,V1->P); t1.mul(.5f); t1.add(V1->P);
 	t2.sub(pr1,V2->P); t2.mul(.5f); t2.add(V2->P);
 
-	Vertex*	V = new Vertex;
-	V->P.add(t1,t2);
-	V->P.mul(.5f);
-	V->N.set(0,0,0);
-	return V;
+	Vertex* V	= VertexPool.create();
+	V->P.add	(t1,t2);
+	V->P.mul	(.5f);
+	V->N.set	(0,0,0);
+	return	V;
 }
 
 void Face::TessMark(int E)
@@ -84,19 +84,19 @@ void CBuild::Tesselate()
 			Vertex*	V2	= tessEdge( F, 1, 2 );
 			Vertex*	V3	= tessEdge( F, 2, 0 );
 
-			Face*	F0		= new Face;	
+			Face*	F0		= FacePool.create();	
 			F0->dwRMode		= F->dwRMode; 
 			F0->dwMaterial	= F->dwMaterial;
 
-			Face*	F1		= new Face; 
+			Face*	F1		= FacePool.create();
 			F1->dwRMode		= F->dwRMode;
 			F1->dwMaterial	= F->dwMaterial;
 
-			Face*	F2		= new Face;
+			Face*	F2		= FacePool.create();
 			F2->dwRMode		= F->dwRMode;
 			F2->dwMaterial	= F->dwMaterial;
 
-			Face*	F3		= new Face;
+			Face*	F3		= FacePool.create();
 			F3->dwRMode		= F->dwRMode;
 			F3->dwMaterial	= F->dwMaterial;
 
@@ -120,7 +120,7 @@ void CBuild::Tesselate()
 				F3->AddChannel(it->uv[2], p3, p2);
 			}
 
-			delete F;
+			FacePool.destroy(F);
 			fi--;
 		} else {
 			if (F->TESS_MASK & TESS_EDGE_0) {

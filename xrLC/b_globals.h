@@ -2,6 +2,7 @@
 
 const	int						lmap_size	= 1024;
 
+#include "xrPool.h"
 #include "xrFace.h"
 #include "xrCDB.h"
 #include "xrDeflector.h"

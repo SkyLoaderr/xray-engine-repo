@@ -15,8 +15,10 @@ class CLightmap;
 // Typedefs
 typedef vector<Vertex*>			vecVertex;
 typedef vecVertex::iterator		vecVertexIt;
+
 typedef vector<Face*>			vecFace;
 typedef vecFace::iterator		vecFaceIt;
+
 typedef vecFace					vecAdj;
 typedef vecAdj::iterator		vecAdjIt;
 
@@ -37,14 +39,7 @@ public:
 	{
 		return P.similar(V.P,eps);
 	}
-	IC Vertex*	CreateCopy_NOADJ()
-	{
-		Vertex* V = new Vertex;
-		V->P.set(P);
-		V->N.set(N);
-		V->Color = Color;
-		return	V;
-	}
+	IC  Vertex*	CreateCopy_NOADJ();
 	IC	Vertex*	CreateCopy()
 	{
 		Vertex* V = CreateCopy_NOADJ();
@@ -250,4 +245,11 @@ public:
 	~Face();
 };
 
+//
+typedef poolSS<Vertex,16384>	poolVertices;
+extern poolVertices				VertexPool;
+typedef poolSS<Face,16384>		poolFaces;
+extern poolFaces				FacePool;
+
 extern bool					g_bUnregister;
+

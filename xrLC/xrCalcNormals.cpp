@@ -54,7 +54,7 @@ void CBuild::CalcNormals()
 					}
 				}
 			}
-			if (NV->adjacent.empty()) delete NV;
+			if (NV->adjacent.empty()) VertexPool.destroy(NV);
 			else NV->N.normalize_safe();
 		}
 
@@ -63,9 +63,9 @@ void CBuild::CalcNormals()
 
 	// Destroy unused vertices
 	g_bUnregister = false;
-	vecVertex vtmp(g_vertices.begin(),g_vertices.begin()+Vcount);
+	vecVertex vtmp	(g_vertices.begin(),g_vertices.begin()+Vcount);
 	g_vertices.erase(g_vertices.begin(),g_vertices.begin()+Vcount);
-	for (I=0; I<Vcount; I++) delete vtmp[I];
+	for (I=0; I<Vcount; I++) VertexPool.destroy	(vtmp[I]);
 	g_bUnregister = true;
 
 	// Clear temporary flag

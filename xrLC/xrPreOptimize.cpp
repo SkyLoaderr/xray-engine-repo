@@ -81,8 +81,8 @@ void CBuild::PreOptimize()
 			Vertex *pBase = *T;
 			if (pBase->similar(*pTest,g_params.m_weld_distance)) 
 			{
-				while			(pTest->adjacent.size())	pTest->adjacent.front()->VReplace(pTest, pBase);
-				_DELETE			(g_vertices[it]);
+				while				(pTest->adjacent.size())	pTest->adjacent.front()->VReplace(pTest, pBase);
+				VertexPool.destroy	(g_vertices[it]);
 				Vremoved		+=	1;
 				pTest			=	NULL;
 				break;
@@ -117,8 +117,8 @@ void CBuild::PreOptimize()
 		R_ASSERT		(it>=0 && it<(int)g_faces.size());
 		Face* F		= g_faces[it];
 		if ( F->isDegenerated()) {
-			_DELETE		(g_faces[it]);
-			Fremoved	++;
+			FacePool.destroy	(g_faces[it]);
+			Fremoved			++;
 		} else {
 			// Check for duplicate
 			
@@ -132,8 +132,8 @@ void CBuild::PreOptimize()
 	{
 		if (g_vertices[it] && (0==g_vertices[it]->adjacent.size()))
 		{
-			_DELETE		(g_vertices[it]);
-			Vremoved	++;
+			VertexPool.destroy	(g_vertices[it]);
+			Vremoved			++;
 		}
 	}
 	
@@ -167,7 +167,7 @@ void CBuild::IsolateVertices()
 		for (int it=0; it<int(g_vertices.size()); it++)
 		{
 			Progress(float(it)/float(g_vertices.size()));
-			if (g_vertices[it] && g_vertices[it]->adjacent.empty())	_DELETE	(g_vertices[it]);
+			if (g_vertices[it] && g_vertices[it]->adjacent.empty())	VertexPool.destroy(g_vertices[it]);
 		}
 		vecVertexIt	_end	= std::remove	(g_vertices.begin(),g_vertices.end(),(Vertex*)0);
 		g_vertices.erase	(_end,g_vertices.end());

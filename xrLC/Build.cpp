@@ -63,7 +63,7 @@ CBuild::CBuild	(b_params& Params, CStream& FS)
 		scene_bb.invalidate		();
 		for (i=0; i<v_count; i++)
 		{
-			Vertex*	pV			= new Vertex;
+			Vertex*	pV			= VertexPool.create();
 			F->Rvector			(pV->P);
 			pV->N.set			(0,0,0);
 			pV->Color.set		(0,0,0,0);
@@ -85,7 +85,7 @@ CBuild::CBuild	(b_params& Params, CStream& FS)
 		{
 			try 
 			{
-				Face*	_F			= new Face;
+				Face*	_F			= FacePool.create();
 				b_face	B;
 				F->Read				(&B,sizeof(B));
 

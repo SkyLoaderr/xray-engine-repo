@@ -16,6 +16,9 @@ bool			g_bUnregister = true;
 vecVertex		g_vertices;
 vecFace			g_faces;
 
+poolVertices	VertexPool;
+poolFaces		FacePool;
+
 Vertex::Vertex()
 {
 	g_vertices.push_back(this);
@@ -29,6 +32,15 @@ Vertex::~Vertex()
 		else Log("Unregistered VERTEX destroyed");
 	}
 }
+Vertex*	Vertex::CreateCopy_NOADJ()
+{
+	Vertex* V	= VertexPool.create();
+	V->P.set	(P);
+	V->N.set	(N);
+	V->Color	= Color;
+	return		V;
+}
+
 void	Vertex::normalFromAdj()
 {
 	N.set(0,0,0);
