@@ -125,8 +125,11 @@ void CSHEngineTools::ApplyChanges(){
     if (m_CurrentBlender){
         CStream data(m_BlenderStream.pointer(), m_BlenderStream.size());
         m_CurrentBlender->Load(data);
+
+        CBlender* B = CBlender::Create(m_CurrentBlender->getDescription().CLS);
+        data->Seek(0); B->Load(data);
         // update visual
-//		Device.Shader.ED_UpdateBlender(m_CurrentBlender->getName(),m_CurrentBlender);
+		Device.Shader.ED_UpdateBlender(m_CurrentBlender->getName(),B);
         // set modified flag
 		Modified();
     }
