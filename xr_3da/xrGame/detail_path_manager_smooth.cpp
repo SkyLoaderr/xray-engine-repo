@@ -605,7 +605,7 @@ void CDetailPathManager::add_patrol_point()
 				ok						= true;
 				break;
 			}
-		if (ok)
+		if (!ok)
 			return;
 		v.y								= 0.f;
 		if (v.square_magnitude() > EPS_L)
