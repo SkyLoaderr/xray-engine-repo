@@ -88,11 +88,12 @@ void i_scan	(occRasterizer* OCC, occTri* T, int curY, float startT, float endT, 
 	// left connector
 	for (; X<minX; X++, i++, Z+=dZ)
 	{
-		if (Z < pDepth[i]) 
+		float ZR = Z; if (ZR<0)	ZR=0; else if (ZR>1) ZR = 1;
+		if (ZR < pDepth[i]) 
 		{	
 			// update Z buffer + Frame buffer
 			pFrame[i]	= T;
-			pDepth[i]	= Z;
+			pDepth[i]	= ZR;
 		}
 	}
 
@@ -110,11 +111,12 @@ void i_scan	(occRasterizer* OCC, occTri* T, int curY, float startT, float endT, 
 	// right connector
 	for (; X<maxT; X++, i++, Z+=dZ)
 	{
-		if (Z < pDepth[i]) 
+		float ZR = Z; if (ZR<0)	ZR=0; else if (ZR>1) ZR = 1;
+		if (ZR < pDepth[i]) 
 		{	
 			// update Z buffer + Frame buffer
 			pFrame[i]	= T;
-			pDepth[i]	= Z;
+			pDepth[i]	= ZR;
 		}
 	}
 }

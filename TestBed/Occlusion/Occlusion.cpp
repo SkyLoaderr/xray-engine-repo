@@ -119,7 +119,7 @@ int __cdecl main	(int argc, char* argv[])
 		
 		// draw tri
 		occ.clear		();
-//		occ.rasterize	(&T1);
+		occ.rasterize	(&T1);
 		occ.rasterize	(&T2);
 		occ.propagade	();
 		
@@ -142,7 +142,7 @@ int __cdecl main	(int argc, char* argv[])
 					}
 			}
 		}
-//		edges(T1);
+		edges(T1);
 		edges(T2);
 		
 		// save
