@@ -175,7 +175,7 @@ void CSHEngineTools::Load(){
             while (fs&&!fs->Eof())	{
                 CBlender_DESC	desc;
                 fs->Read		(&desc,sizeof(desc));
-                CBlender*		B = CBlender::Create(desc.CLS);
+                CBlender*		B = CBlender::Create(desc.CLS); R_ASSERT(B);
                 fs->Seek		(fs->Tell()-sizeof(desc));
                 B->Load			(*fs);
                 m_Blenders.insert(make_pair(strdup(desc.cName),B));
@@ -341,6 +341,7 @@ CBlender* CSHEngineTools::AppendBlender(CLASS_ID cls_id, LPCSTR folder_name, CBl
         case BPID_INTEGER: 	sz=sizeof(BP_Integer);	break;
         case BPID_FLOAT: 	sz=sizeof(BP_Float); 	break;
         case BPID_BOOL: 	sz=sizeof(BP_BOOL); 	break;
+        case BPID_TOKEN: 	sz=sizeof(BP_TOKEN)+sizeof(BP_TOKEN::Item)*(((BP_TOKEN*)data.Pointer())->Count);	break;
         default: THROW2("BPID_????");
         }
         data.Advance(sz);
@@ -549,6 +550,7 @@ void CSHEngineTools::ParseBlender(CBlender* B, CParseBlender& P){
         case BPID_INTEGER: 	sz=sizeof(BP_Integer);	break;
         case BPID_FLOAT: 	sz=sizeof(BP_Float); 	break;
         case BPID_BOOL: 	sz=sizeof(BP_BOOL); 	break;
+		case BPID_TOKEN: 	sz=sizeof(BP_TOKEN)+sizeof(BP_TOKEN::Item)*(((BP_TOKEN*)data.Pointer())->Count); break;
         default: THROW2("BPID_????");
         }
         P.Parse(type, key, data.Pointer());

@@ -95,7 +95,6 @@ USEUNIT("Engine\BLENDERS\Blender_default_aref.cpp");
 USEUNIT("Engine\BLENDERS\Blender_Editor_Selection.cpp");
 USEUNIT("Engine\BLENDERS\Blender_Editor_Wire.cpp");
 USEUNIT("Engine\BLENDERS\Blender_Recorder.cpp");
-USEUNIT("Engine\BLENDERS\Blender_Screen_BLEND.cpp");
 USEUNIT("Engine\BLENDERS\Blender_Screen_GRAY.cpp");
 USEUNIT("Engine\BLENDERS\Blender_Screen_SET.cpp");
 USEUNIT("Engine\BLENDERS\Blender_Vertex.cpp");
