@@ -1,4 +1,5 @@
 #include "stdafx.h"
+/*
 #include "build.h"
 #include <MxStdModel.h>
 #include <MxPropSlim.h>
@@ -419,3 +420,4 @@ void CBuild::u_SmoothVertColors(int count)
 			g_vertices[it]->C	= colors[it];
 	}
 }
+*/
