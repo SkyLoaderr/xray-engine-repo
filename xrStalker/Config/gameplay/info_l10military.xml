@@ -18,7 +18,10 @@
 	<info_portion id="mil_dolg_mission_complete"></info_portion>
 	<info_portion id="mil_sniper_i_think"></info_portion>
 	<info_portion id="mil_sniper_dead"></info_portion>
-	<info_portion id="mil_sniper_get_job"><task>mil_kill_sniper</task></info_portion>
+	<info_portion id="mil_sniper_get_job">
+		<task>mil_kill_sniper</task>
+		<action>level_tasks.notify_new_task</action>
+    </info_portion>
 	<info_portion id="mil_sniper_job_failed"></info_portion>
 	<info_portion id="mil_sniper_job_complete"></info_portion>
 	<info_portion id="mil_dolg_dead"></info_portion>
@@ -31,7 +34,10 @@
 	<info_portion id="mil_max_first"></info_portion>
 	<info_portion id="mil_max_talk"></info_portion>
 	<info_portion id="mil_max_talk2"></info_portion>
-	<info_portion id="mil_max_job"><task>mil_mad_job</task></info_portion>
+	<info_portion id="mil_max_job">
+		<task>mil_mad_job</task>
+		<action>level_tasks.notify_new_task</action>
+	</info_portion>
 	<info_portion id="mil_max_lukash_call"></info_portion>
 	<info_portion id="mil_max_flash_get"><article>mil_crazy_flash_info</article></info_portion>
 	<info_portion id="mil_max_job_complete"></info_portion>
@@ -42,7 +48,10 @@
 	
 	<!-- Диалог с Лукашем-->
 	<info_portion id="mil_lukash_first_talk"></info_portion>
-	<info_portion id="mil_lukash_get_job"><task>mil_lukash_job</task></info_portion>
+	<info_portion id="mil_lukash_get_job">
+		<task>mil_lukash_job</task>
+		<action>level_tasks.notify_new_task</action>
+	</info_portion>
 	<info_portion id="mil_lukash_go_to_max"></info_portion>
 	<info_portion id="mil_lukash_job_failed"></info_portion>
 	<info_portion id="mil_lukash_job_complete"></info_portion>
@@ -72,11 +81,17 @@
 	
 	<info_portion id="mil_leader_quest1_start"></info_portion>
 	<info_portion id="mil_leader_quest1_complete"></info_portion>
-	<info_portion id="mil_leader_quest2_start"><task>mil_courier_job</task></info_portion>
+	<info_portion id="mil_leader_quest2_start">
+		<task>mil_courier_job</task>
+		<action>level_tasks.notify_new_task</action>
+	</info_portion>
 	<info_portion id="mil_leader_quest2_complete"><article>mil_courier_doc</article></info_portion>
 	<info_portion id="mil_leader_quest2_failed"></info_portion>
 	<info_portion id="mil_leader_attach_community"></info_portion>
-	<info_portion id="mil_leader_task_set"><task>mil_lukash_job</task></info_portion>
+	<info_portion id="mil_leader_task_set">
+		<task>mil_lukash_job</task>
+		<action>level_tasks.notify_new_task</action>
+	</info_portion>
 	
 	<info_portion id="mil_courier_start"></info_portion>
 	<info_portion id="mil_courier_death"></info_portion>
