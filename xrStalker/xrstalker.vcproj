@@ -1106,6 +1106,9 @@
 				RelativePath=".\scripts\mtest.script">
 			</File>
 			<File
+				RelativePath=".\scripts\news_manager.script">
+			</File>
+			<File
 				RelativePath=".\scripts\particle_flame.script">
 			</File>
 			<File
