@@ -6,11 +6,23 @@
 struct CCellVertex {
 	u32		m_vertex_id;
 	union {
+#if 1
+		typedef u16 _use_type;
+
 		struct {
-			u32	m_mark : 24;
-			u32	m_use  : 8;
+			u32	m_mark : 16;
+			u32	m_use  : 16;
 		};
 		u32		m_data;
+#else
+		typedef u32 _use_type;
+
+		struct {
+			u32	m_mark;
+			u32	m_use;
+		};
+		u64		m_data;
+#endif
 	};
 
 			CCellVertex		()
@@ -25,10 +37,12 @@ struct CCellVertex {
 	}
 };
 
-const u8 left	= 1 << 0;
-const u8 up		= 1 << 3;
-const u8 right	= 1 << 2;
-const u8 down	= 1 << 1;
+typedef CCellVertex::_use_type _use_type;
+
+const _use_type left	= 1 << 0;
+const _use_type up		= 1 << 3;
+const _use_type right	= 1 << 2;
+const _use_type down	= 1 << 1;
 
 struct CSector : public IPureSerializeObject<IReader,IWriter> {
 	u32				min_vertex_id;
@@ -78,7 +92,7 @@ IC	CCellVertex &get_vertex_by_group_id(VERTEX_VECTOR &vertices, u32 group_id)
 #endif
 }
 
-IC	bool connect(const CLevelGraph &level_graph, CCellVertex &vertex, VERTEX_VECTOR &vertices, u32 group_id, u32 link, CROSS_VECTOR &cross, u8 use)
+IC	bool connect(const CLevelGraph &level_graph, CCellVertex &vertex, VERTEX_VECTOR &vertices, u32 group_id, u32 link, CROSS_VECTOR &cross, u32 use)
 {
 	u32						_link = level_graph.vertex(vertex.m_vertex_id)->link(link);
 	VERTEX_VECTOR::iterator	I = vertices.begin();
@@ -94,7 +108,7 @@ IC	bool connect(const CLevelGraph &level_graph, CCellVertex &vertex, VERTEX_VECT
 	return					(false);
 }
 
-IC	bool connect(const CLevelGraph &level_graph, CCellVertex &vertex1, CCellVertex &vertex2, VERTEX_VECTOR &vertices, u32 group_id, CROSS_VECTOR &cross, u8 use)
+IC	bool connect(const CLevelGraph &level_graph, CCellVertex &vertex1, CCellVertex &vertex2, VERTEX_VECTOR &vertices, u32 group_id, CROSS_VECTOR &cross, u32 use)
 {
 	u32						link1 = level_graph.vertex(vertex1.m_vertex_id)->link(2);
 	u32						link2 = level_graph.vertex(vertex2.m_vertex_id)->link(1);
