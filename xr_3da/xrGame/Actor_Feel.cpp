@@ -92,12 +92,12 @@ BOOL CanPickItem(const CFrustum& frustum, const Fvector& from, CObject* item)
 	if (range>0.25f){
 		if (frustum.testSphere_dirty(to,item->Radius())){
 			dir.div	(range);
-			bool item_en		= !!item->getEnabled();
-			item->setEnabled	(false);
-			Level().CurrentEntity()->setEnabled(false);
+			BOOL item_en		= item->getEnabled();
+			item->setEnabled	(FALSE);
+			Level().CurrentEntity()->setEnabled(FALSE);
 			collide::ray_defs RD(from, dir, range, 0, collide::rqtBoth);
 			Level().ObjectSpace.RayQuery(RD, info_trace_callback, &bOverlaped);
-			Level().CurrentEntity()->setEnabled(true);
+			Level().CurrentEntity()->setEnabled(TRUE);
 			item->setEnabled	(item_en);
 		}
 	}
@@ -154,11 +154,10 @@ void CActor::PickupInfoDraw(CObject* object)
 	if (v_res.z < 0 || v_res.w < 0)	return;
 	if (v_res.x < -1.f || v_res.x > 1.f || v_res.y<-1.f || v_res.y>1.f) return;
 
-	u32 x = iFloor((1.f + v_res.x)/2.f * (Device.dwWidth));
-	u32 y = iFloor((1.f - v_res.y)/2.f * (Device.dwHeight));
-
+	float x = (1.f + v_res.x)/2.f * (Device.dwWidth);
+	float y = (1.f - v_res.y)/2.f * (Device.dwHeight);
 
 	HUD().Font().pFontMedium->SetAligment	(CGameFont::alCenter);
 	HUD().Font().pFontMedium->SetColor		(PICKUP_INFO_COLOR);
-	HUD().Font().pFontMedium->Out			((float)x,(float)y,draw_str);
+	HUD().Font().pFontMedium->Out			(x,y,draw_str);
 }
