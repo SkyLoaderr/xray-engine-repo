@@ -10,7 +10,7 @@ extern "C" __declspec(dllexport) bool FSColorPickerExecute(LPDWORD currentColor,
 }
 namespace D3DX
 {
-	UINT WINAPI D3DXGetDriverLevel(LPDIRECT3DDEVICE9 pDevice)
+	__declspec( dllexport ) UINT WINAPI D3DXGetDriverLevel(LPDIRECT3DDEVICE9 pDevice)
 	{
 		return ::D3DXGetDriverLevel(pDevice);
 	}
