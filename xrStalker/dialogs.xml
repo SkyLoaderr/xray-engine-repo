@@ -98,56 +98,73 @@
 				<next>1</next>
 			</phrase>
 			<phrase id="1">
-				<text>Есть два задания. Притащить ящик с блокпоста \n и выкрасть кое-что с Агропрома.</text>
+				<text>Есть несколько заданий: \nЯщик с блокпоста \nвыкрасть кое-что с Агропрома \nи лично для меня эээ... секретная работенка</text>
 				<next>2</next>
 				<next>3</next>
-				<next>11</next>
+				<next>4</next>
+				<next>14</next>
 			</phrase>
 			<phrase id="2">
 				<dont_has_info>trader_start2</dont_has_info>
 				<dont_has_info>job_box_finished</dont_has_info>
 				<text>Я возьмусь за ящик с блокпоста.</text>
-				<next>4</next>
+				<next>5</next>
 			</phrase>
 			<phrase id="3">
 				<dont_has_info>trader_start4</dont_has_info>
 				<dont_has_info>job_box02_finished</dont_has_info>
 				<text>Я возьмусь выкрасть кое-что с Агропрома.</text>
-				<next>5</next>
+				<next>6</next>
 			</phrase>
 			<phrase id="4">
-				<text>Надо проникнуть на блокпост и тихо украсть ящик, \n так чтоб никто не заметил.</text>
-				<next>6</next>
+				<dont_has_info>trader_start5</dont_has_info>
+				<text>Что за секретная работа?</text>
 				<next>7</next>
 			</phrase>
 			<phrase id="5">
-				<text>На Агропроме что-то раскопали военные сталкеры... \n Принеси мне это и я тебе хорошо заплачу.</text>
+				<text>Надо проникнуть на блокпост и тихо украсть ящик, \n так чтоб никто не заметил.</text>
 				<next>8</next>
-				<next>7</next>
+				<next>9</next>
 			</phrase>
 			<phrase id="6">
-				<text>Ок. Я принесу ящик.</text>
-				<give_info>trader_start2</give_info>
+				<text>На Агропроме что-то раскопали военные сталкеры... \n Принеси мне это и я тебе хорошо заплачу.</text>
+				<next>10</next>
 				<next>9</next>
 			</phrase>
 			<phrase id="7">
-				<text>Нет, не буду браться.</text>
-				<next>10</next>
-			</phrase>
-			<phrase id="8">
-				<text>Ок. Я принесу то, что раскопали военные сталкеры.</text>
-				<give_info>trader_start4</give_info>
+				<text>Со мной связался мой старый знакомый сталкер ветеран... \nОн раскопал кой-какую интресующую меня информацию... \nТак вот, встреться с ним и забери ее... Когда принесешь ее мне, \nя тебе отплачу... \n \nИ чуть не забыл, он может знать о группировке Стрелка, \n спроси его... он много чего знает.</text>
+				<next>11</next>
 				<next>9</next>
 			</phrase>
+
+			<phrase id="8">
+				<text>Ок. Я принесу ящик.</text>
+				<give_info>trader_start2</give_info>
+				<next>12</next>
+			</phrase>
 			<phrase id="9">
-				<text>Я заплачу, когда ты принесешь это мне.</text>
+				<text>Нет, не буду браться.</text>
+				<next>13</next>
 			</phrase>
 			<phrase id="10">
-				<text>Ну как знаешь.</text>
+				<text>Ок. Я принесу то, что раскопали военные сталкеры.</text>
+				<give_info>trader_start4</give_info>
+				<next>12</next>
 			</phrase>
 			<phrase id="11">
+				<text>Хорошо... Я берусь встретиться со сталкером.</text>
+				<give_info>trader_start5</give_info>
+				<next>12</next>
+			</phrase>
+			<phrase id="12">
+				<text>Я заплачу, когда ты выполнишь задание.</text>
+			</phrase>
+			<phrase id="13">
+				<text>Ну как знаешь.</text>
+			</phrase>
+			<phrase id="14">
 				<text>Что-то я передумал работать.</text>
-				<next>10</next>
+				<next>13</next>
 			</phrase>
 
 		</phrase_list>
