@@ -44,7 +44,7 @@ function load_dialog:FillList()
 		local ext = string.sub(file, string.len(file) - 3)
 		if ext == ".sav" then
 			file = string.sub(file,0 , (string.len(file) - 4))
-			table.insert(self.FileTable,file)
+
 			self:AddItemToList(file)
 		end
 	end
