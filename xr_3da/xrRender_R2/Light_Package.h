@@ -1,5 +1,7 @@
 #pragma once
 
+#include "light.h"
+
 class	light_Package
 {
 public:
@@ -8,11 +10,6 @@ public:
 	xr_vector<light*>		v_spot;
 	xr_vector<light*>		v_spot_s;
 public:
-	void					clear				()
-	{
-		v_point.clear		();
-		v_point_s.clear		();
-		v_spot.clear		();
-		v_spot_s.clear		();
-	}
+	void					clear				();
+	void					sort				();
 };

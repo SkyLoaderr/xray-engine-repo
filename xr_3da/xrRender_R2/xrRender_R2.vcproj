@@ -469,6 +469,9 @@
 				RelativePath="Light_DB.h">
 			</File>
 			<File
+				RelativePath=".\Light_Package.cpp">
+			</File>
+			<File
 				RelativePath=".\Light_Package.h">
 			</File>
 			<File
