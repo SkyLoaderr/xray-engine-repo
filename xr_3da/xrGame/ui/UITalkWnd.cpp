@@ -299,18 +299,24 @@ void CUITalkWnd::SayPhrase(PHRASE_ID phrase_id)
 
 //////////////////////////////////////////////////////////////////////////
 
-void CUITalkWnd::AddQuestion(const CUIString &str, void* pData , int value)
+void CUITalkWnd::AddQuestion(CUIString str, void* pData , int value)
 {
+	CUIStatic::PreprocessText(str.m_str, UITalkDialogWnd.UIQuestionsList.GetWidth() - MessageShift - 25,
+							  UITalkDialogWnd.UIQuestionsList.GetFont());
 	UITalkDialogWnd.UIQuestionsList.AddParsedItem<CUIListItem>(str, 0, UITalkDialogWnd.UIQuestionsList.GetTextColor(), 
 						UITalkDialogWnd.UIQuestionsList.GetFont(), pData, value);
 }
 
 //////////////////////////////////////////////////////////////////////////
 
-void CUITalkWnd::AddAnswer(const CUIString &str, const CUIString &SpeakerName)
+void CUITalkWnd::AddAnswer(CUIString str, const CUIString &SpeakerName)
 {
 	//для пустой фразы вообще ничего не выводим
 	if(xr_strlen((LPCSTR)str) == 0) return;
+
+	// Делаем препроцессинг строки
+	CUIStatic::PreprocessText(str.m_str, UITalkDialogWnd.UIAnswersList.GetWidth() - MessageShift - 25, // 20 means approximate scrollbar width value
+							  UITalkDialogWnd.UIAnswersList.GetFont());
 
 	u32 cl = UITalkDialogWnd.UIAnswersList.GetTextColor();
 	if (0 == xr_strcmp(SpeakerName.GetBuf(), m_pOurInvOwner->CharacterInfo().Name())) cl = UITalkDialogWnd.GetOurReplicsColor();

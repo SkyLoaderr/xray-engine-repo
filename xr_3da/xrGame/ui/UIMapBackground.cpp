@@ -422,6 +422,8 @@ void CUIMapBackground::OnMouse(int x, int y, E_MOUSEACTION mouse_action)
 			deltaX = x - m_iOldMouseX;
 			deltaY = y - m_iOldMouseY;
 			MoveMap(deltaX, deltaY);
+			if (m_pActiveMapSpot)
+				SendMessage(m_pActiveMapSpot, CUIButton::BUTTON_FOCUS_RECEIVED, NULL);
 			GetMessageTarget()->SendMessage(this, MAP_MOVED, NULL);
 		}
 	}

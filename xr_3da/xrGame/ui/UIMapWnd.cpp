@@ -30,17 +30,20 @@ using namespace InventoryUtilities;
 //x1 - лево, x2 - право, 
 //z1 - низ , z2 - верх
 
-const char * const	PDA_MAP_XML			= "map.xml";
-const				SCROLLBARS_SHIFT	= 5;
-const				VSCROLLBAR_STEP		= 20; // В пикселях
-const				HSCROLLBAR_STEP		= 20; // В пикселях
+const char * const	PDA_MAP_XML					= "map.xml";
+const				SCROLLBARS_SHIFT			= 5;
+const				VSCROLLBAR_STEP				= 20; // В пикселях
+const				HSCROLLBAR_STEP				= 20; // В пикселях
 
 // Global map stuff
-const char * const	GLOBAL_MAP_TEX		= "ui\\ui_global_map";
-const float			GLOBAL_MAP_X1		= -1500.0f;
-const float			GLOBAL_MAP_Z1		= -2024.0f;
-const float			GLOBAL_MAP_X2		= 1500.0f;
-const float			GLOBAL_MAP_Z2		= 2024.0f;
+const char * const	GLOBAL_MAP_LTX				= "global_map";
+const char * const	GLOBAL_MAP_TEX_LTX			= "texture";
+const char * const	GLOBAL_MAP_W_LTX			= "width";
+const char * const	GLOBAL_MAP_H_LTX			= "height";
+const char * const	GLOBAL_MAP_LOCATIONS_LTX	= "global_map_locations";
+
+const u32			activeLocalMapColor			= 0xff00ff00;
+const u32			inactiveLocalMapColor		= 0xff0000ff;
 
 //////////////////////////////////////////////////////////////////////
 // Construction/Destruction
@@ -117,8 +120,6 @@ void CUIMapWnd::Init()
 	xml_init.InitListWnd(uiXml, "map_goals_list", 0, &UIMapGoals);
 	UIMapGoals.Enable(false);
 	UIMapGoals.Show(false);
-	UIMapGoals.AddItem<CUIListItem>("Goal 1");
-	UIMapGoals.AddItem<CUIListItem>("Goal 2");
 
 	RECT r = UILocalMapBackground.GetWndRect();
 
@@ -277,20 +278,66 @@ void CUIMapWnd::InitLocalMap()
 
 void CUIMapWnd::InitGlobalMap()
 {
-	UIGlobalMapBackground.m_LevelBox.x1 = GLOBAL_MAP_X1;
-	UIGlobalMapBackground.m_LevelBox.z1 = GLOBAL_MAP_Z1;
-	UIGlobalMapBackground.m_LevelBox.x2 = GLOBAL_MAP_X2;
-	UIGlobalMapBackground.m_LevelBox.z2 = GLOBAL_MAP_Z2;
-	UIGlobalMapBackground.m_MapTextureName = GLOBAL_MAP_TEX;
+	// Инициализируем параметры карты из ltx файла
+	UIGlobalMapBackground.m_LevelBox.x1		= 0.0f;
+	UIGlobalMapBackground.m_LevelBox.z1		= 0.0f;
+	UIGlobalMapBackground.m_LevelBox.x2		= pSettings->r_float(GLOBAL_MAP_LTX, GLOBAL_MAP_W_LTX);
+	UIGlobalMapBackground.m_LevelBox.z2		= pSettings->r_float(GLOBAL_MAP_LTX, GLOBAL_MAP_H_LTX);
+	UIGlobalMapBackground.m_MapTextureName	= pSettings->r_string(GLOBAL_MAP_LTX, GLOBAL_MAP_TEX_LTX);
 
 	UIGlobalMapBackground.InitMapBackground();
 
-	UIGlobalMapBackground.RemoveAllSpots();
-	m_MapLocations.clear();
+	// Инициализируем параметры локальных карт
+	int globalMapLocations = pSettings->line_count(GLOBAL_MAP_LOCATIONS_LTX);
+	for (int i = 0; i < globalMapLocations; ++i)
+	{
+		LPCSTR name, value;
+		pSettings->r_line(GLOBAL_MAP_LOCATIONS_LTX, i, &name, &value);
+		if(m_MapLocations.find(name) == m_MapLocations.end())
+		{
+			Ivector4 v = pSettings->r_ivector4(GLOBAL_MAP_LOCATIONS_LTX, name);
+			AddGlobalMapLocation(name, v);
+		}
+	}
 
-	AddGlobalMapLocation(100.0f, 100.0f, 100, 200);
-	AddGlobalMapLocation(-300.0f, -400.0f, 100, 200);
+	InitGlobalMapLocationObjectives();
 }
+
+//////////////////////////////////////////////////////////////////////////
+
+void CUIMapWnd::InitGlobalMapLocationObjectives()
+{
+	CActor* pActor = dynamic_cast<CActor*>(Level().CurrentEntity());
+
+	if (!pActor) return;
+
+	for (MapLocations_it it = m_MapLocations.begin(); it != m_MapLocations.end(); ++it)
+	{
+		it->second.obj.clear();
+	}
+
+	//--------------------------------------------------------------
+	//добавить отметки на карте, которые актер помнит в info_portions
+	if(pActor->known_info_registry.objects_ptr())
+	{
+		const KNOWN_INFO_VECTOR& know_info = *pActor->known_info_registry.objects_ptr();
+		for(KNOWN_INFO_VECTOR::const_iterator it = know_info.begin();
+			know_info.end() != it; it++)
+		{
+			CInfoPortion info_portion;
+			info_portion.Load((*it).id);
+			//добавить отметки на карте
+			for(u32 i=0; i<info_portion.MapLocations().size(); i++)
+			{
+				const SMapLocation& map_location = info_portion.MapLocations()[i];
+				if(xr_strlen(*map_location.level_name) > 0)
+				{
+					m_MapLocations[map_location.level_name].obj.push_back(map_location.text);
+				}
+			}
+
+		}
+	}}
 
 //////////////////////////////////////////////////////////////////////////
 
@@ -385,14 +432,37 @@ void CUIMapWnd::SendMessage(CUIWindow* pWnd, s16 msg, void* pData)
 
 	if (&UIGlobalMapBackground == pWnd)
 	{
+		static CUIMapSpot *prevSpot = NULL;
 		if (CUIMapBackground::MAPSPOT_FOCUS_RECEIVED == msg)
 		{
+			if (UIGlobalMapBackground.m_pActiveMapSpot && prevSpot != UIGlobalMapBackground.m_pActiveMapSpot)
+			{
+				CUIGlobalMapLocation *pGML = dynamic_cast<CUIGlobalMapLocation*>(UIGlobalMapBackground.m_pActiveMapSpot);
+				R_ASSERT(pGML);
+				pGML->SetColor(activeLocalMapColor);
+				UIMapName.SetText(*pGML->m_strMapName);
+				// Show map goals
+				for (Objectives_it it = m_MapLocations[pGML->m_strMapName].obj.begin(); it != m_MapLocations[pGML->m_strMapName].obj.end(); ++it)
+				{
+					UIMapGoals.AddItem<CUIListItem>(static_cast<const char *>(*(*it)));
+				}
+				prevSpot = UIGlobalMapBackground.m_pActiveMapSpot;
+			}
 			UIMapGoals.Show(true);
 			UIMapName.Show(true);
 		}
-		else
+
+		if (CUIMapBackground::MAPSPOT_FOCUS_LOST == msg)
 		{
 			UIMapGoals.Show(false);
+			UIMapGoals.RemoveAll();
+			prevSpot = NULL;
+			if (UIGlobalMapBackground.m_pActiveMapSpot)
+			{
+				CUIGlobalMapLocation *pGML = dynamic_cast<CUIGlobalMapLocation*>(UIGlobalMapBackground.m_pActiveMapSpot);
+				R_ASSERT(pGML);
+				pGML->SetColor(inactiveLocalMapColor);
+			}
 			UIMapName.Show(false);
 		}
 	}
@@ -536,16 +606,18 @@ void CUIMapWnd::SwitchMapMode(const EMapModes mode)
 
 //////////////////////////////////////////////////////////////////////////
 
-void CUIMapWnd::AddGlobalMapLocation(float x, float y, int width, int height)
+void CUIMapWnd::AddGlobalMapLocation(const ref_str mapName, const Ivector4 &v)
 {
-	R_ASSERT(width > 0);
-	R_ASSERT(height > 0);
+	R_ASSERT(v[2] > 0);
+	R_ASSERT(v[3] > 0);
 
 	CUIGlobalMapLocation *pGML = xr_new<CUIGlobalMapLocation>();
-	pGML->Init(width, height, UIGlobalMapBackground.GetAbsoluteRect(), *m_sGlobalMapLocFrameName);
-	pGML->m_vWorldPos.x = x;
-	pGML->m_vWorldPos.z = y;
-	m_MapLocations.push_back(pGML);
+	pGML->Init(v[2], v[3], UIGlobalMapBackground.GetAbsoluteRect(), *m_sGlobalMapLocFrameName);
+	pGML->m_vWorldPos.x = static_cast<float>(v[0]);
+	pGML->m_vWorldPos.z = static_cast<float>(v[1]);
+	pGML->SetColor(inactiveLocalMapColor);
+	pGML->m_strMapName = mapName;
+	m_MapLocations[mapName].l = pGML;
 	UIGlobalMapBackground.m_vMapSpots.push_back(pGML);
 	UIGlobalMapBackground.AttachChild(pGML);
 }

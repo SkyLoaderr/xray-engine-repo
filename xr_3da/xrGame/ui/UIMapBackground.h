@@ -23,7 +23,7 @@ public:
 	virtual void Update();
 	virtual void SendMessage(CUIWindow* pWnd, s16 msg, void* pData = NULL);
 
-	typedef enum{MAPSPOT_FOCUS_RECEIVED, MAPSPOT_FOCUS_LOST, MAP_MOVED, MAPLOCATION_FOCUS_RECEIVED, MAPLOCATION_FOCUS_LOST } E_MESSAGE;
+	typedef enum{MAPSPOT_FOCUS_RECEIVED, MAPSPOT_FOCUS_LOST, MAP_MOVED } E_MESSAGE;
 
 
 	void ConvertToLocal(const Fvector& src, Ivector2& dest);

@@ -32,6 +32,7 @@ CUIStatic:: CUIStatic()
 	m_dwFontColor = 0xFFFFFFFF;
 
 	m_pMask = NULL;
+
 }
 
  CUIStatic::~ CUIStatic()
@@ -84,9 +85,6 @@ void  CUIStatic::Draw()
 			m_UIStaticItem.Render();
 	}
 
-	// draw mask rect
-//	if (m_pMask) m_pMask->Draw();
-
 	inherited::Draw();
 
 	// Вывод текста
@@ -112,7 +110,7 @@ void  CUIStatic::Draw()
 	new_word = false;
 	word_length = 0;
 
-	space_width = (int)GetFont()->SizeOf(" ");
+	space_width = (int)GetFont()->SizeOf(' ');
 
 	for(u32 i = 0; i<str_len+1; ++i)
 	{
@@ -130,7 +128,7 @@ void  CUIStatic::Draw()
 			WordOut();
 
 			//"нарисовать" пробел
-			if(curretX+space_width>=GetWidth())
+			if(curretX+space_width >= GetWidth())
 			{
 				curretY += (int)GetFont()->CurrentHeight();
 				curretX = space_width;
@@ -170,7 +168,6 @@ void  CUIStatic::Draw()
 
 					//++i;
 					i+= offset;
-
 
 					u32 color = RGB_ALPHA(0xFF,r,g,b);
 					GetFont()->SetColor(color);
@@ -482,26 +479,30 @@ void  CUIStatic::SetShader(const ref_shader& sh)
 }
 
 
-void CUIStatic::SetText(LPCSTR str) 
+void CUIStatic::SetText(LPCSTR str, STRING &arr) 
 {
-	m_sEdit.clear();
+	arr.clear();
 
+	for(u32 i=0, n=xr_strlen(str); i<n; ++i)
+		arr.push_back(str[i]);
+	arr.push_back(0);
+}
+
+void CUIStatic::SetText(LPCSTR str)
+{
 	if(str == NULL) 
 	{
 		m_str = NULL;
 		return;
 	}
 
-	for(u32 i=0, n=xr_strlen(str); i<n; ++i)
-		m_sEdit.push_back(str[i]);
-	m_sEdit.push_back(0);
+	CUIStatic::SetText(str, m_sEdit);
 
 	m_str = &m_sEdit.front();
-	
+
 	buf_str.clear();
 	str_len = m_sEdit.size();
 	buf_str.resize(str_len+1);
-	
 }
 
 //////////////////////////////////////////////////////////////////////////
@@ -541,16 +542,73 @@ void CUIStatic::SetMask(CUIFrameWindow *pMask)
 
 //////////////////////////////////////////////////////////////////////////
 
-void CUIStatic::PreprocessText(STRING &str, u32 width)
+void CUIStatic::PreprocessText(STRING &str, u32 width, CGameFont *pFont)
 {
-	STRING		processedStr, word;
+	// Codde guards
+	R_ASSERT(pFont);
+	if (str.empty()) return;
+
+	STRING		processedStr, word, tmp;
+	processedStr.reserve(str.size());
+
 	const char	delimSpace		= ' ';
 	const char	delimTab		= '\t';
-	STRING_IT	it				= str.begin();
-	u32			lineWidth		= 0;
+	STRING_IT	it				= str.begin(), wordBegin = str.begin();
+	float		lineWidth		= 0;
 
-	// Идем по словам и считаем их длинну
+	bool		delimiterBegin	= false;
+
+	// Идем по словам и считаем их длину
 	while (str.end() != it)
 	{
+		if (iFloor(lineWidth) < static_cast<int>(width))
+		{
+			if (delimSpace == *it || delimTab == *it)
+			{
+				if (!delimiterBegin)
+				{
+					delimiterBegin = true;
+					processedStr.insert(processedStr.end(), word.begin(), word.end());
+					word.clear();
+				}
+			}
+			else
+			{
+				if (delimiterBegin)
+				{
+					delimiterBegin = false;
+					wordBegin = it;
+				}
+			}
+
+			if ('\\' == *it && it != str.end() && 'n' == *(it + 1))
+			{
+				lineWidth = 0;
+			}
+
+			word.push_back(*it);
+			lineWidth += pFont->SizeOf(*it++);
+		}
+		else
+		{
+			lineWidth = 0;
+			processedStr.push_back('\\');
+			processedStr.push_back('n');
+
+			// Remove leading spaces
+			tmp.clear();
+			STRING_IT it = word.begin();
+			for (; it != word.end(); ++it)
+			{
+				if (delimSpace == *it || delimTab == *it)
+					break;
+			}
+
+			tmp.assign(++it, word.end());
+			word.swap(tmp);
+		}
 	}
+	processedStr.insert(processedStr.end(), word.begin(), word.end());
+	processedStr.push_back(0);
+    processedStr.swap(str);
 }

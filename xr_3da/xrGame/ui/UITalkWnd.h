@@ -54,8 +54,8 @@ protected:
 	void SayPhrase(PHRASE_ID phrase_id);
 
 	// Функции добавления строк в листы вопросов и ответов
-	void AddQuestion(const CUIString &str, void* pData, int value = 0);
-	void AddAnswer(const CUIString &str, const CUIString &SpeakerName);
+	void AddQuestion(CUIString str, void* pData, int value = 0);
+	void AddAnswer(CUIString str, const CUIString &SpeakerName);
 
 	//для режима торговли
 	CUITradeWnd			UITradeWnd;

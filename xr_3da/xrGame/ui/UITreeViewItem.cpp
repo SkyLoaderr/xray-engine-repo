@@ -84,7 +84,7 @@ void CUITreeViewItem::OnRootChanged()
 
 void CUITreeViewItem::OnOpenClose()
 {
-	// Если мы не являемся узлом дерева, значть ничего не делаем
+	// Если мы не являемся узлом дерева, значит ничего не делаем
 	if (!isRoot) return;
 
 	std::string str;
@@ -126,7 +126,7 @@ void CUITreeViewItem::Open()
 
 	for (SubItems_it it = vSubItems.begin(); it != vSubItems.end(); ++it)
 	{
-		pList->AddItem(*it, pos);
+		pList->AddItem(*it, ++pos);
 	}
 }
 

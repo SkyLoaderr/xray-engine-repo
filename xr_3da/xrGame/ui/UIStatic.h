@@ -35,6 +35,7 @@ public:
 	virtual void Update();
 
 
+	static void SetText(LPCSTR str, STRING &arr);
 	virtual void SetText(LPCSTR str);
 	LPCSTR GetText() {return m_str;}
 
@@ -89,7 +90,7 @@ public:
 	Ivector2	GetTextureOffeset() const { Ivector2 v; return v.set(m_iTexOffsetX, m_iTexOffsetY); }
 	// Анализируем текст на помещаемость его по длинне в заданную ширину, и если нет, то всталяем 
 	// "\n" реализуем таким образом wordwrap
-	static void PreprocessText(STRING &str, u32 width);
+	static void PreprocessText(STRING &str, u32 width, CGameFont *pFont);
 
 protected:
 	bool m_bClipper;

@@ -47,7 +47,7 @@ public:
 	// Переключить режим карты
 	enum EMapModes { emmGlobal, emmLocal };
 	void SwitchMapMode(const EMapModes mode);
-	void AddGlobalMapLocation(float x, float y, int width, int height);
+	void AddGlobalMapLocation(const ref_str mapName, const Ivector4 &v);
 
 protected:
 
@@ -102,9 +102,21 @@ protected:
 	float m_fWorldMapTop;
 
 	// Список локальных карт для глобальной
-	DEF_VECTOR(MapLocations, CUIGlobalMapLocation*);
+	DEF_VECTOR(Objectives, ref_str);
+
+	struct GlobalMapLocationDef
+	{
+		CUIGlobalMapLocation*	l;
+		Objectives				obj;
+
+		GlobalMapLocationDef() : l(NULL) {}
+	};
+
+	DEF_MAP(MapLocations, ref_str, GlobalMapLocationDef);
 	MapLocations	m_MapLocations;
 
 	// Global map locations frame name
 	ref_str m_sGlobalMapLocFrameName;
+
+	void InitGlobalMapLocationObjectives();
 };

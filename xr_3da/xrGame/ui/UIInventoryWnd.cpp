@@ -920,6 +920,7 @@ void CUIInventoryWnd::Show()
 */
 	InitInventory();
 	inherited::Show();
+	m_pCurrentDragDropItem = NULL;
 
 	if (Game().type != GAME_SINGLE)
 	{

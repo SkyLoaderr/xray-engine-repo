@@ -76,7 +76,7 @@ void CUIZoneMap::Init()
 	entity_down.SetAlign(alLeft|alTop);
 
 	HUD().ClientToScreen(map_center,MAP_LEFT+BASE_LEFT,MAP_TOP+BASE_TOP,align);
-	map_radius = iFloor(MAP_RADIUS*HUD().GetScale());
+	map_radius = MAP_RADIUS; //iFloor(MAP_RADIUS*HUD().GetScale());
 
 
 

@@ -40,7 +40,8 @@ public:
 	//////////////////////////////////////////////////////////////////////////
 	
 	template <class Element>
-	bool AddItem(const char*  str, const int shift = 0, void* pData = NULL, int value = 0, int pushAfter = -1)
+	bool AddItem(const char*  str, const int shift = 0, void* pData = NULL,
+				 int value = 0, int insertBeforeIdx = -1)
 	{
 		//создать новый элемент и добавить его в список
 		Element* pItem = NULL;
@@ -56,13 +57,15 @@ public:
 		pItem->SetValue(value);
 		pItem->SetTextColor(m_dwFontColor);
 
-		return AddItem<Element>(pItem, pushAfter);
+		return AddItem<Element>(pItem, insertBeforeIdx);
 	}
 
 	//////////////////////////////////////////////////////////////////////////
 	
 	template <class Element>
-	bool AddParsedItem(const CUIString &str, const int shift, const u32 &MsgColor, CGameFont* pFont = NULL, void* pData = NULL, int value = 0, int pushAfter = -1)
+	bool AddParsedItem(const CUIString &str, const int shift,
+					   const u32 &MsgColor, CGameFont* pFont = NULL,
+					   void* pData = NULL, int value = 0, int insertBeforeIdx = -1)
 	{
 		bool ReturnStatus = true;
 		const STRING& text = str.m_str;
@@ -80,7 +83,7 @@ public:
 				buf.clear();
 				buf.insert(buf.begin(), text.begin()+last_pos, text.begin()+i);
 				buf.push_back(0);
-				ReturnStatus &= AddItem<Element>(&buf.front(), shift, pData, value, pushAfter);
+				ReturnStatus &= AddItem<Element>(&buf.front(), shift, pData, value, insertBeforeIdx);
 				Element *pLocalItem = dynamic_cast<Element*>(GetItem(GetSize() - 1));
 				pLocalItem->SetGroupID(GroupID);
 				pLocalItem->SetTextColor(MsgColor);
@@ -95,7 +98,7 @@ public:
 			buf.clear();
 			buf.insert(buf.begin(), text.begin()+last_pos, text.end());
 			buf.push_back(0);
-			AddItem<Element>(&buf.front(), shift, pData, value, pushAfter);
+			AddItem<Element>(&buf.front(), shift, pData, value, insertBeforeIdx);
 			GetItem(GetSize() - 1)->SetGroupID(GroupID);
 			Element *pLocalItem = dynamic_cast<Element*>(GetItem(GetSize() - 1));
 			pLocalItem->SetGroupID(GroupID);
@@ -107,9 +110,15 @@ public:
 	}
 
 	//////////////////////////////////////////////////////////////////////////
+	// ƒобавить элемент в лист
+	// Params:
+	// 1.	pItem - указатель на элемент добавлени€
+	// 2.	insertBeforeIdx - индекс элемента перед которым вставл€ем.
+	//		-1 означает добавить в конец
+	//////////////////////////////////////////////////////////////////////////
 	
 	template <class Element>
-	bool AddItem(Element* pItem, int pushAfter = -1)
+	bool AddItem(Element* pItem, int insertBeforeIdx = -1)
 	{	
 		AttachChild(pItem);
 
@@ -117,7 +126,7 @@ public:
 			m_iItemWidth, m_iItemHeight);
 
 		//добавление в конец или начало списка
-		if(-1 == pushAfter)
+		if(-1 == insertBeforeIdx)
 		{
 			m_ItemList.push_back(pItem);
 			pItem->SetIndex(m_ItemList.size()-1);
@@ -125,16 +134,17 @@ public:
 		else
 		{
 			//изменить значени€ индексов уже добавленых элементов
-			R_ASSERT(static_cast<u32>(pushAfter) <= m_ItemList.size());
+			if (!m_ItemList.empty())
+				R_ASSERT(static_cast<u32>(insertBeforeIdx) <= m_ItemList.size());
 
 			LIST_ITEM_LIST_it it2 = m_ItemList.begin();
-			std::advance(it2, pushAfter + 1);
+			std::advance(it2, insertBeforeIdx);
 			for(LIST_ITEM_LIST_it it = it2; m_ItemList.end() != it; ++it)
 			{
 				(*it)->SetIndex((*it)->GetIndex()+1);
 			}
 			m_ItemList.insert(it2, pItem);
-			pItem->SetIndex(pushAfter + 1);
+			pItem->SetIndex(insertBeforeIdx);
 		}
 
 		UpdateList();

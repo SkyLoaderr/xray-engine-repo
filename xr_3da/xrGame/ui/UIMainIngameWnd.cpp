@@ -50,6 +50,7 @@ const u32	g_clWhite					= 0xffffffff;
 //-----------------------------------------------------------------------------/
 //  Fade and color parameters
 //-----------------------------------------------------------------------------/
+
 #define		C_SIZE						0.025f
 #define		NEAR_LIM					0.5f
 
@@ -61,6 +62,7 @@ const u32	g_clWhite					= 0xffffffff;
 //-----------------------------------------------------------------------------/
 //  Textual constants
 //-----------------------------------------------------------------------------/
+
 const char * const PDA_INGAME_SINGLEPLAYER_CFG	= "ingame_msglog_sp.xml";
 const char * const PDA_INGAME_MULTIPLAYER_CFG	= "ingame_msglog_mp.xml";
 const char * const NEWS_TEMPLATES_CFG			= "news_templates.xml";
@@ -274,7 +276,7 @@ void CUIMainIngameWnd::Draw()
 		if(m_pWeapon->ZoomTexture() && !m_pWeapon->IsRotatingToZoom())
 		{
 			m_pWeapon->ZoomTexture()->SetPos(0,0);
-			m_pWeapon->ZoomTexture()->Render(0,0, Device.dwWidth, Device.dwHeight);
+			m_pWeapon->ZoomTexture()->Render(0,0, UI_BASE_WIDTH, UI_BASE_HEIGHT);
 
 			scope_mode = true;
 		}
