@@ -316,7 +316,7 @@ function anims:update(type)
 
 	-- Определяем, закончился ли каррент стейт
 	if self.anim.current_state ~= nil and
-	   self.npc:animation_coun() <= 1 
+	   self.npc:animation_count() <= 1 
 	then
 		self.anim.current_state = nil 
 	end

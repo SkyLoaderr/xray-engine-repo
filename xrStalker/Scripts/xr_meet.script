@@ -125,7 +125,7 @@ function action_wait_for_buyer:initialize()
 			                                  
 	self.sound = {idle = 0,
 		     begin = nil,
-		     maxidle = 5, 
+		     maxidle = 7, 
 		     sumidle = 5,
    		     rnd = 100,
 		     lastsound = nil}
@@ -133,8 +133,8 @@ function action_wait_for_buyer:initialize()
 	self.anim_s = {idle = 0,
 		     begin = nil,
 		     maxidle = 5, 
-		     sumidle = 7,
-   		     rnd = 70,
+		     sumidle = 3,
+   		     rnd = 80,
 		     lastanim = nil}
 
 	self.sound_s = {idle = 0,
@@ -158,16 +158,18 @@ function action_wait_for_buyer:execute ()
       		self.object:set_sight(look.point, pos, 0)
 
 		-- секция анимации
-		if self.object:animation_count() == 0 then
-			if (self.anim_s.begin == nil or
-			   (device():time_global()/1000 - self.anim_s.begin) > self.anim_s.idle) then
-				if math.random(100) < self.anim_s.rnd then
-					self.object:add_animation("torg_6", true)
-				end
-				self.anim_s.begin = device():time_global()/1000
-				self.anim_s.idle = math.random(self.anim_s.maxidle) + self.anim_s.sumidle
+		xr_state.anim_update("idle", self.object)
+		-- надо изредка рукой махать
+		if (self.anim_s.begin == nil or
+		   (device():time_global()/1000 - self.anim_s.begin) > self.anim_s.idle) then
+			if math.random(100) < self.anim_s.rnd then
+				xr_state.anim_update("hello", self.object)
 			end
+			self.anim_s.begin = device():time_global()/1000
+			self.anim_s.idle = math.random(self.anim_s.maxidle) + self.anim_s.sumidle
 		end
+		
+		                            
 		-- секция озвучки
 		if self.object:active_sound_count() == 0 then
 			globals.set_sound(self.object, self.sound_s, false)
@@ -177,42 +179,17 @@ function action_wait_for_buyer:execute ()
 		-- 1: если не отыгрываем никаких анимаций - то поворачиваемся в случайную сторону
 		-- 2: выжидаем, иногда отыгрывая какую либо анимацию
 		if self.act.type == 1 then
-			if self.object:animation_count() == 0 then
-				self.act.begin = device():time_global()/1000
-				self.act.type = 2
+			self.act.begin = device():time_global()/1000
+			self.act.type = 2
 
-				local dir = vector():set(math.random(10)-5, 0, math.random(10)-5)
-				self.object:set_sight(look.direction, dir, 0)
-				self.object:set_body_state(move.standing)
-			end
+			local dir = vector():set(math.random(10)-5, 0, math.random(10)-5)
+			self.object:set_sight(look.direction, dir, 0)
+			self.object:set_body_state(move.standing)
 		else
+			xr_state.anim_update("idle", self.object)
+
 			if (device():time_global()/1000 - self.act.begin) > self.act.time then
 				self.act.type = 1
-			end
-
-			if self.object:animation_count() == 0 then
-				if (self.anim.begin == nil or
-				   (device():time_global()/1000 - self.anim.begin) > self.anim.idle) then
-					if math.random(100) < self.anim.rnd then
-						if self.anim.lastanim == nil then
-							r = math.random(2)
-						else
-							r = math.random(1)
-							if r >= self.anim.lastanim then
-								r = r + 1
-							end
-						end
-						self.anim.lastanim = r
-		
-						if r == 1 then
-							self.object:add_animation("stoya_ruje_ 0", true)
-						else
-							self.object:add_animation("plechi", false)
-						end
-					end
-					self.anim.begin = device():time_global()/1000
-					self.anim.idle = math.random(self.anim.maxidle) + self.anim.sumidle
-				end
 			end
 		end
 
@@ -302,16 +279,6 @@ function action_contact:initialize()
 					{pack = sounds["tradeseller_talk"], id = 16}, 
 					{pack = sounds["tradeseller_talk"], id = 17}, 
 					{pack = sounds["tradeseller_talk"], id = 18} 	}}
-	self.anim = {	idle = 0,
-			begin = nil,
-			maxidle = 1,
-			sumidle = 0,
-			rnd = 100,
-			anim_active = { {name = "torg_1", hand = true},
-					{name = "torg_2", hand = true},
-					{name = "torg_3", hand = true},
-					{name = "torg_4", hand = true}} }
-
 	self.talking = nil
 
 	self.object:set_body_state(move.standing)
@@ -355,7 +322,6 @@ function action_contact:execute ()
 		if isww == true then
 			self.object:set_mental_state(anim.free)
 			self.object:clear_animations()
---			self.object:add_animation("torg_0", true)
      			self.object:set_item(object.deactivate, self.object:best_weapon())
 		end
 		pos.y = pos.y + 1.4
@@ -380,10 +346,6 @@ function action_contact:execute ()
 		end
 
 	        -- Анимации
---		if self.object:animation_count() <= 1 then
---			xr_meet.set_anim(self.object, self.anim)
---		end
-
 		xr_state.anim_update("idle", self.object)
 	
 		-- Звуки
@@ -395,7 +357,7 @@ function action_contact:execute ()
 	action_base.execute (self)
 end
 function action_contact:finalize ()
-	self.object:clear_animations()
+	xr_state.anim_update(nil, self.object)
 	self.object:disable_talk()
 	action_base.finalize (self)
 end
