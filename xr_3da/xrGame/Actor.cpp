@@ -1034,14 +1034,8 @@ void CActor::shedule_Update	(u32 DT)
 void CActor::renderable_Render	()
 {
 	inherited::renderable_Render			();
-
-	if (!m_holder)	{
+	if (!HUDview())
 		CInventoryOwner::renderable_Render	();
-	}
-	//-------------------------------------------------------------
-	if (g_Alive())
-	{
-	}
 }
 
 BOOL CActor::renderable_ShadowGenerate	() 

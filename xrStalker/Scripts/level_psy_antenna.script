@@ -8,17 +8,6 @@ function PsyAntennaPP:process(pp)
     return          true;
 end
 
-class "Phantom"		(object_binder)
-function Phantom:__init(obj) super(obj)
-	g_PsyAntenna:add_phantom();
-end
-function Phantom:net_destroy()
-	g_PsyAntenna:remove_phantom();
-end
-function bind(obj)
-	obj:bind_object		(Phantom(obj))
-end
-
 class "PsyAntenna"
 pa_phase={
 	phIdle 								= 0,
@@ -28,8 +17,7 @@ pa_phase={
 }
 function PsyAntenna:__init				()
 	self.phase 							= pa_phase.phIdle;
-	self.phantom_max 					= 30;
-	self.phantom_count 					= 0;
+	self.phantom_max 					= 5;
 	self.power_factor					= fcolor();
 	self.eff_time						= 0;
 	self.starting_anim					= color_animator			("levels\\psy_antenna\\starting");
@@ -59,13 +47,10 @@ function PsyAntenna:save				(F)
 end
 
 function PsyAntenna:is_idle_time		(tm)
-	local is_idle 						= false;
-	if tm>=13 and tm<14 then 
-		is_idle 						= true;
-	elseif tm>=20 and tm<21 then 
-		is_idle 						= true; 
+	if tm>=13 and tm<14 then 			return true;
+	elseif tm>=20 and tm<21 then 		return true; 
 	end;
-	return is_idle;
+	return false;
 end
 
 function PsyAntenna:switch_to_phase		(ph)
@@ -102,11 +87,7 @@ function PsyAntenna:phase_idle			()
 	end;
 end
 function PsyAntenna:update_postprocess	()
-	local add       					= color();
-	add.r 								= self.power_factor.r;
-	add.g 								= self.power_factor.g;
-	add.b 								= self.power_factor.b;
-	self.pp.params.color_add 			= color():set(self.power_factor.r,self.power_factor.g,self.power_factor.b);
+//.	self.pp.params.color_add 			= color():set(self.power_factor.r,self.power_factor.g,self.power_factor.b);
 end
 function PsyAntenna:update_psy_hit		(dt)
 	if self.power_factor.a>0.001 then
@@ -119,20 +100,18 @@ function PsyAntenna:update_psy_hit		(dt)
 		db.actor:hit					(psy_hit);
 	end;
 end
-function PsyAntenna:spawn_phantom 		()
-	local pos 							= vector():set(0,0,0);
-	level.spawn_phantom					(pos);
-end
-function PsyAntenna:add_phantom 		()
-	self.phantom_count					= self.phantom_count + 1;
-end
-function PsyAntenna:remove_phantom 		()
-	self.phantom_count					= self.phantom_count - 1;
-end
 function PsyAntenna:update_phantoms 	()
 	if self.power_factor.a>0.1 then
-		if self.phantom_count<self.phantom_max then
-			self:spawn_phantom 			();
+		if math.random()<0.1 then
+			if phantom_manager:phantom_count()<self.phantom_max then
+				local yaw	 			= math.pi*2.0*math.random();
+				local radius 			= 20.0*(math.random()/2.0+0.5);
+				local height 			= 2.0*math.random();
+				local a_pos 			= db.actor:position();
+//				local pos 				= vector():set(math.sin(yaw)*radius+a_pos.x,a_pos.y+height,math.cos(yaw)*radius+a_pos.z);
+				local pos 				= vector():set(10,0,7);
+				phantom_manager.spawn_phantom(pos);
+			end;
 		end;
 	end;
 end

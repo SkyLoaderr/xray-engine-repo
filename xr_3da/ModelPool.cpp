@@ -287,6 +287,7 @@ void	CModelPool::DeleteInternal	(IRender_Visual* &V, BOOL bDiscard)
 		if (it!=Registry.end())
 		{
 			// Registry entry found - move it to pool
+			V->Depart			();
 			Pool.insert			(mk_pair(it->second,V));
 		} else {
 			// Registry entry not-found - just special type of visual / particles / etc.
