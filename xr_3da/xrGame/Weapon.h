@@ -204,7 +204,7 @@ public:
 
 	// @@@ WT: Subject to delete
 	IC int					GetAmmoLimit		()				{	return 0/*iAmmoLimit*/;						}
-	IC int					GetAmmoCurrent		()				{	return /*m_pAmmo?m_pAmmo->m_boxSize:*/0;	}
+	int					GetAmmoCurrent		();//				{	return /*m_pAmmo?m_pAmmo->m_boxSize:*/0;	}
 	//
 
 	IC Shader*				GetUIIcon			()				{	return hUIIcon;								}

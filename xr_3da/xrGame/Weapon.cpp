@@ -937,3 +937,27 @@ const char* CWeapon::Name() {
 	return m_tmpName;
 }
 
+int CWeapon::GetAmmoCurrent() {
+	int l_count = iAmmoElapsed;
+	if(!m_pInventory) return l_count;
+	for(int i = 0; i < m_ammoTypes.size(); i++) {
+		LPCSTR l_ammoType = m_ammoTypes[i];
+		if(dynamic_cast<CActor*>(H_Parent())) {
+			TIItemList &l_list = m_pInventory->m_belt;
+			for(PPIItem l_it = l_list.begin(); l_it != l_list.end(); l_it++) {
+				CWeaponAmmo *l_pAmmo = dynamic_cast<CWeaponAmmo*>(*l_it);
+				if(l_pAmmo && !strcmp(l_pAmmo->cNameSect(), l_ammoType)) {
+					l_count = l_count + l_pAmmo->m_boxCurr;
+				}
+			}
+		}
+		TIItemList &l_list = m_pInventory->m_ruck;
+		for(PPIItem l_it = l_list.begin(); l_it != l_list.end(); l_it++) {
+			CWeaponAmmo *l_pAmmo = dynamic_cast<CWeaponAmmo*>(*l_it);
+			if(l_pAmmo && !strcmp(l_pAmmo->cNameSect(), l_ammoType)) {
+				l_count = l_count + l_pAmmo->m_boxCurr;
+			}
+		}
+	}
+	return l_count;
+}
