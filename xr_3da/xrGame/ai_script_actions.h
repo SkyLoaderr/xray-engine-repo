@@ -460,6 +460,7 @@ public:
 	bool							m_bStartedToPlay;
 	Fvector							m_tSoundPosition;
 	Fvector							m_tSoundAngles;
+	ESoundTypes						m_sound_type;
 
 							CSoundAction		()
 	{
@@ -472,18 +473,6 @@ public:
 		m_tpSound			= 0;
 		m_tSoundPosition.set(0,0,0);
 		m_tSoundAngles.set	(0,0,0);
-	}
-
-							CSoundAction		(const CSoundAction &sound_action)
-	{
-		*this				= sound_action;
-		m_tpSound			= xr_new<ref_sound>(*sound_action.m_tpSound);
-	}
-
-							CSoundAction		(const CSoundAction *sound_action)
-	{
-		*this				= *sound_action;
-		m_tpSound			= xr_new<ref_sound>(*sound_action->m_tpSound);
 	}
 
 							CSoundAction		(LPCSTR caSoundToPlay, LPCSTR caBoneName, const Fvector &tPositionOffset = Fvector().set(0,0,0), const Fvector &tAngleOffset = Fvector().set(0,0,0), bool bLooped = false, ESoundTypes sound_type = SOUND_TYPE_NO_SOUND)
@@ -528,7 +517,9 @@ public:
 	{
 		if (m_tpSound) {
 			m_tpSound->destroy();
-			xr_delete		(m_tpSound);
+#pragma todo("Dima to Dima : memory leak is here!")
+//			xr_delete		(m_tpSound);
+			m_tpSound		= 0;
 		}
 	}
 
@@ -540,8 +531,6 @@ public:
 		m_bStartedToPlay	= false;
 		string256			l_caFileName;
 		if (FS.exist(l_caFileName,"$game_sounds$",*m_caSoundToPlay,".ogg")) {
-			m_tpSound		= xr_new<ref_sound>();
-			m_tpSound->create(TRUE,l_caFileName);
 			m_bStartedToPlay= false;
 			m_bCompleted	= false;
 		}
@@ -556,9 +545,7 @@ public:
 	{
 		m_caSoundToPlay		= sound.m_caSoundToPlay;
 		m_tGoalType			= eGoalTypeSoundAttached;
-		m_tpSound			= xr_new<ref_sound>(*sound.m_tpSound);
-		VERIFY				(sound.m_tpSound);
-		m_bStartedToPlay	= false;
+		m_tpSound			= 0;
 		m_bStartedToPlay	= false;
 		m_bCompleted		= false;
 	}
@@ -584,8 +571,7 @@ public:
 
 	void			SetSoundType		(const ESoundTypes sound_type)
 	{
-		VERIFY				(m_tpSound);
-		m_tpSound->g_type	= sound_type;
+		m_sound_type		= sound_type;
 		m_bStartedToPlay	= false;
 	}
 
