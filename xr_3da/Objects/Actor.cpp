@@ -80,6 +80,7 @@ CActor::CActor() : CEntityAlive()
 
 	self_gmtl_id			= GAMEMTL_NONE;
 	last_gmtl_id			= GAMEMTL_NONE;
+	m_phSkeleton			=NULL;
 }
 
 CActor::~CActor()
@@ -368,9 +369,11 @@ void CActor::Die	( )
 void CActor::g_Physics			(Fvector& _accel, float jump, float dt)
 {
 	if (!g_Alive())	{
-		mRotate.set(m_phSkeleton->mXFORM);
-		mRotate.c.set(0,0,0);
-		vPosition.set(m_phSkeleton->mXFORM.c);
+		if(m_phSkeleton){
+			mRotate.set(m_phSkeleton->mXFORM);
+			mRotate.c.set(0,0,0);
+			vPosition.set(m_phSkeleton->mXFORM.c);
+		}
 		return;
 	}
 	if (patch_frame<patch_frames)	return;
