@@ -35,6 +35,7 @@ public:
 	void			AddGlobalVariable	(const char* name, const char* type, const char* value);
 	void			ClearGlobalVariables();
 	void			StackLevelChanged	();
+	void			StackLevelChangedByIde();
 	void			Break				();
 	void			Stop				();
 	void			DebugBreak			(const char* szFile, int nLine);
@@ -60,8 +61,8 @@ public:
 	static CScriptDebugger* GetDebugger	() { return m_pDebugger; };
 	lua_State*		GetLuaState			();
 //	HWND GetMainWnd() { return m_hWndMainFrame; };
-protected:
 	static LRESULT	_SendMessage		(UINT message, WPARAM wParam, LPARAM lParam);
+protected:
 	LRESULT			DebugMessage		(UINT nMsg, WPARAM wParam, LPARAM lParam);
 
 

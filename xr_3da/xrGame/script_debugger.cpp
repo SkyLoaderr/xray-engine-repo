@@ -22,30 +22,40 @@ LRESULT CScriptDebugger::DebugMessage(UINT nMsg, WPARAM wParam, LPARAM lParam)
 //		GetOutputWnd()->GetOutput(COutputWnd::outputDebug)->Write((const char*)wParam);
 		VERIFY(m_ide_wrapper.OnMessageToIDE(DMSG_WRITE_DEBUG, wParam, lParam) == 1);
 		break;
+
 	case DMSG_HAS_BREAKPOINT:
 //		return GetProject()->HasBreakPoint((const char*)wParam, (int)lParam);
 		return m_ide_wrapper.OnMessageToIDE(DMSG_HAS_BREAKPOINT, wParam, lParam);
 		break;
+
 	case DMSG_GOTO_FILELINE:
 //		GotoFileLine((const char*)wParam, (int)lParam);
+		VERIFY(m_ide_wrapper.OnMessageToIDE(DMSG_GOTO_FILELINE, wParam, lParam) == 1);
 		break;
+
 	case DMSG_DEBUG_START:
 //		SetMode(modeDebug);
 		break;
+
 	case DMSG_DEBUG_BREAK:
 		m_ide_wrapper.OnMessageToIDE(DMSG_SHOW_IDE, wParam, lParam);
 //		SetMode(modeDebugBreak);
 		break;
+
 	case DMSG_DEBUG_END:
 //		SetMode(modeBuild);
 		break;
+
 	case DMSG_CLEAR_STACKTRACE:
 //		m_wndCallStack.Clear();
+		m_callStack.Clear();
+		return m_ide_wrapper.OnMessageToIDE(DMSG_CLEAR_STACKTRACE, wParam, lParam);
 		break;
 	case DMSG_ADD_STACKTRACE:
 		m_callStack.Add(((StackTrace*)wParam)->szDesc, 
 			((StackTrace*)wParam)->szFile, 
 			((StackTrace*)wParam)->nLine);
+		return m_ide_wrapper.OnMessageToIDE(DMSG_ADD_STACKTRACE, wParam, lParam);
 
 /*		m_wndCallStack.Add(((StackTrace*)wParam)->szDesc, 
 			((StackTrace*)wParam)->szFile, 
@@ -54,11 +64,19 @@ LRESULT CScriptDebugger::DebugMessage(UINT nMsg, WPARAM wParam, LPARAM lParam)
 	case DMSG_GOTO_STACKTRACE_LEVEL:
 //		m_wndCallStack.GotoStackTraceLevel(wParam);
 		m_callStack.GotoStackTraceLevel((int)wParam);
+		StackLevelChanged();
+
 		break;
 	case DMSG_GET_STACKTRACE_LEVEL:
 //		return m_wndCallStack.GetLevel();
 		return m_callStack.GetLevel();
 		break;
+	
+	case DMSG_GOTO_IDE_STACKTRACE_LEVEL:
+		m_callStack.GotoStackTraceLevel((int)wParam);
+		StackLevelChangedByIde();
+		break;
+
 	case DMSG_CLEAR_LOCALVARIABLES:
 //		m_wndLocals.RemoveAll();
 		VERIFY(m_ide_wrapper.OnMessageToIDE(DMSG_CLEAR_LOCALVARIABLES, wParam, lParam) == 1);
@@ -74,9 +92,25 @@ LRESULT CScriptDebugger::DebugMessage(UINT nMsg, WPARAM wParam, LPARAM lParam)
 //		m_wndWatches.Redraw();
 		break;
 
-	case DMSG_DEBUG_STEP_OUT:{
+	case DMSG_DEBUG_STEP_OUT:
 		StepOut ();
-	}break;
+		break;
+
+	case DMSG_DEBUG_STEP_OVER:
+		StepOver ();
+		break;
+
+	case DMSG_DEBUG_STEP_INTO:
+		StepInto ();
+		break;
+
+	case DMSG_SHOW_IDE:
+		m_ide_wrapper.OnMessageToIDE(DMSG_SHOW_IDE, wParam, lParam);
+		break;
+
+	case DMSG_STOP_DEBUGGING:
+		Stop ();
+		break;
 
 	}//case
 
@@ -220,7 +254,7 @@ void CScriptDebugger::DebugBreak(const char *szFile, int nLine)
 	m_nMode = DMOD_NONE;
 
 //	::SendMessage(m_hWndMainFrame, DMSG_GOTO_FILELINE, (WPARAM)szFile, (LPARAM)nLine);
-	_SendMessage(DMSG_GOTO_FILELINE, (WPARAM)szFile, (LPARAM)nLine);
+//	_SendMessage(DMSG_GOTO_FILELINE, (WPARAM)szFile, (LPARAM)nLine);//for editor to open file
 	m_lua.DrawStackTrace();
 	m_lua.DrawGlobalVariables();
 //	::SendMessage(m_hWndMainFrame, DMSG_REDRAW_WATCHES, 0, 0);
@@ -348,6 +382,13 @@ void CScriptDebugger::StackLevelChanged()
 	m_lua.DrawLocalVariables();
 }
 
+void CScriptDebugger::StackLevelChangedByIde()
+{
+	m_lua.DrawLocalVariables();
+//	_SendMessage(DMSG_GOTO_FILELINE, (WPARAM)szFile, (LPARAM)nLine);//for editor to open file
+}
+
+
 void CScriptDebugger::ClearLocalVariables()
 {
 //	::SendMessage(m_hWndMainFrame, DMSG_CLEAR_LOCALVARIABLES, 0, 0);
@@ -394,6 +435,7 @@ void CScriptDebugger::EndThread()
 //	::SendMessage(m_pDebugger->m_hWndMainFrame, DMSG_DEBUG_END, 0, 0);
 	_SendMessage(DMSG_DEBUG_END, 0, 0);
 	m_pDebugger->Write("The program has exited...\n");
+	_SendMessage(DMSG_SHOW_IDE, 0, 0);//last
 	m_pDebugger->m_lua.StopDebugger();
 	if( !xr_waitableThread::join(1000) )
 		xr_waitableThread::kill();

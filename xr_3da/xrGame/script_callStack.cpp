@@ -40,15 +40,12 @@ void CScriptCallStack::Clear()
 
 void CScriptCallStack::Add(const char *szDesc, const char *szFile, int nLine)
 {
-//	((CScintillaView*)GetView(0))->Write(CString(szDesc)+"\n");
+	m_lines.push_back(nLine);
 
-/*	string_path sp;
-	strcat (sp, szFile);
-*/
 	SPath	sp;
+	sp.path[0] = 0;
 	m_files.push_back(sp);
 	strcat(m_files.back().path, szFile );
-	m_lines.push_back(nLine);
 }
 
 void CScriptCallStack::GotoStackTraceLevel(int nLevel)
@@ -58,14 +55,11 @@ void CScriptCallStack::GotoStackTraceLevel(int nLevel)
 
 	m_nCurrentLevel = nLevel;
 
-//	CLuaEditor* pEditor = ((CScintillaView*)GetView(0))->GetEditor();
-//	pEditor->SetStackTraceLevel(nLevel);
+	char * ppath = m_files[nLevel].path;
+	CScriptDebugger::_SendMessage(	DMSG_GOTO_FILELINE,
+									(WPARAM)ppath,
+									(LPARAM)m_lines[nLevel]);
 
-	//open document in editor
-//	((CMainFrame*)AfxGetMainWnd())->GotoFileLine(m_files[nLevel], m_lines[nLevel]);	
-
-//	((CMainFrame*)AfxGetMainWnd())->GetDebugger()->StackLevelChanged();
-	CScriptDebugger::GetDebugger()->StackLevelChanged();
 }
 
 
