@@ -35,6 +35,7 @@ void CHangingLamp::RespawnInit()
 {
 	Init();
 	PKinematics(Visual())->LL_SetBonesVisible(u64(-1));
+	
 }
 void CHangingLamp::Center	(Fvector& C) const 
 { 
@@ -119,7 +120,11 @@ BOOL CHangingLamp::net_Spawn(LPVOID DC)
 
 	CPHSkeleton::Spawn(e);
 	if(PSkeletonAnimated(Visual()))	PSkeletonAnimated	(Visual())->PlayCycle("idle");
-	if(PKinematics(Visual()))		PKinematics			(Visual())->CalculateBones();
+	if(PKinematics(Visual()))	
+	{
+		PKinematics			(Visual())->CalculateBones_Invalidate	();
+		PKinematics			(Visual())->CalculateBones();
+	}
 	if (lamp->flags.is(CSE_ALifeObjectHangingLamp::flPhysic)&&
 		!guid_physic_bone)	fHealth=0.f;
 
