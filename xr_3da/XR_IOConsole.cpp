@@ -85,9 +85,9 @@ void CConsole::OnRender	()
 	// float dwMaxX=float(Device.dwWidth/2);
 	if (bGame) { fMaxY=0.f; dwMaxY/=2; } else fMaxY=1.f;
 
-	char buf[96];
-	strcpy(buf,ioc_prompt);
-	strcat(buf,editor);
+	char		buf	[MAX_LEN+5];
+	strcpy		(buf,ioc_prompt);
+	strcat		(buf,editor);
 	if (bCursor) strcat(buf,"|");
 
 	pFont->SetColor( color_rgba(128  ,128  ,255, 255) );
