@@ -5,6 +5,7 @@
 #include "stdafx.h"
 #include "occRasterizer.h"
 
+enum Sections {BOTTOM, TOP};
 
 void __stdcall fillDW_8x	(LPDWORD ptr, DWORD size, DWORD value)
 {
@@ -54,12 +55,12 @@ void propagade_depth			(LPVOID p_dest, LPVOID p_src)
 
 occRasterizer::occRasterizer	()
 {
-
+	
 }
 
 occRasterizer::~occRasterizer	()
 {
-
+	
 }
 
 void occRasterizer::clear		()
@@ -75,4 +76,19 @@ void occRasterizer::propagade	()
 	propagade_depth<occ_dim1>	(bufDepth1,bufDepth0);
 	propagade_depth<occ_dim2>	(bufDepth2,bufDepth1);
 	propagade_depth<occ_dim3>	(bufDepth3,bufDepth2);
+}
+
+
+void occRasterizer::rasterize	(occTri* T)
+{
+	// Create local copy of the vertices
+	// Since I am reordering the vertices, changing A,B,C screws up the model
+	float a[3],  b[3],  c[3];
+	a[0] = T->raster[0].x; a[1] = T->raster[0].y; a[2] = T->raster[0].z;
+	b[0] = T->raster[1].x; b[1] = T->raster[1].y; b[2] = T->raster[1].z;
+	c[0] = T->raster[2].x; c[1] = T->raster[2].y; c[2] = T->raster[2].z;
+	
+	i_order			(a, b, c);				// Order the vertices by Y
+	i_section		(a, b, c, T, BOTTOM);	// Rasterise First Section
+	i_section		(a, b, c, T, TOP);		// Rasterise Second Section
 }

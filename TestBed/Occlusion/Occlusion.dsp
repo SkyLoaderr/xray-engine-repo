@@ -104,6 +104,10 @@ SOURCE=.\occRasterizer.h
 # End Source File
 # Begin Source File
 
+SOURCE=.\occRasterizer_core.cpp
+# End Source File
+# Begin Source File
+
 SOURCE=.\StdAfx.cpp
 # ADD CPP /Yc"stdafx.h"
 # End Source File
