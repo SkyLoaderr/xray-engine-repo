@@ -92,14 +92,12 @@ Comments:
 
 ******************************************************************************/
 
+#include "stdafx.h"
 #pragma warning (disable : 4786)
 #include "NVMeshMender.h"
-#include "d3dx8.h"
 #include <map>
 #include <set>
 #include <assert.h>
-
-#pragma comment(lib, "d3dx8.lib")
 
 bool NVMeshMender::MungeD3DX(  const NVMeshMender::VAVector& input, 
 			               NVMeshMender::VAVector& output, 
@@ -340,8 +338,8 @@ bool NVMeshMender::MungeD3DX(  const NVMeshMender::VAVector& input,
 
 			// Find min and max positions for object bounding box
 
-			D3DXVECTOR3 maxPosition( -FLT_MAX, -FLT_MAX, -FLT_MAX  );
-			D3DXVECTOR3 minPosition(  FLT_MAX,   FLT_MAX,    FLT_MAX );
+			D3DXVECTOR3 maxPosition( -flt_max, -flt_max, -flt_max  );
+			D3DXVECTOR3 minPosition(  flt_max,   flt_max,  flt_max );
 
 			// there are 1/3 as many vectors as floats
 			const unsigned int theCount = static_cast<unsigned int>(positions.size() / 3.0f);
