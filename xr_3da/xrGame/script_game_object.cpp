@@ -530,7 +530,7 @@ void CScriptGameObject::Hit(CScriptHit &tLuaHit)
 	P.w_dir			(tLuaHit.m_tDirection);
 	P.w_float		(tLuaHit.m_fPower);
 	CKinematics		*V = PKinematics(m_tpGameObject->Visual());
-	R_ASSERT		(V);
+	VERIFY			(V);
 	if (xr_strlen	(tLuaHit.m_caBoneName))
 		P.w_s16		(V->LL_BoneID(tLuaHit.m_caBoneName));
 	else

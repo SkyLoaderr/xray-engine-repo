@@ -103,7 +103,7 @@ void CEntity::Hit			(float perc, Fvector &dir, CObject* who, s16 element,Fvector
 	// Calc impulse
 	Fvector					vLocalDir;
 	float					m = dir.magnitude();
-	R_ASSERT				(m>EPS);
+	VERIFY					(m>EPS);
 	
 	// convert impulse into local coordinate system
 	Fmatrix					mInvXForm;

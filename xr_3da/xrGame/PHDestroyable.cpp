@@ -25,12 +25,12 @@ void CPHDestroyable::Destroy()
 /////////spawn object representing destroyed item//////////////////////////////////////////////////////////////////////////////////
 	{
 		CSE_Abstract*				D	= F_entity_Create("ph_skeleton_object");//*cNameSect()
-		R_ASSERT					(D);
+		VERIFY						(D);
 
 		CSE_ALifeDynamicObject		*l_tpALifeDynamicObject = dynamic_cast<CSE_ALifeDynamicObject*>(D);
-		R_ASSERT					(l_tpALifeDynamicObject);
-		CSE_ALifePHSkeletonObject		*l_tpALifePhysicObject = dynamic_cast<CSE_ALifePHSkeletonObject*>(D);
-		R_ASSERT					(l_tpALifePhysicObject);
+		VERIFY						(l_tpALifeDynamicObject);
+		CSE_ALifePHSkeletonObject	*l_tpALifePhysicObject = dynamic_cast<CSE_ALifePHSkeletonObject*>(D);
+		VERIFY						(l_tpALifePhysicObject);
 
 		l_tpALifePhysicObject->m_tGraphID	=obj->game_vertex_id();
 		l_tpALifeDynamicObject->m_tNodeID	= obj->level_vertex_id();

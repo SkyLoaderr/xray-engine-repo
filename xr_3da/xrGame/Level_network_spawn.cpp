@@ -12,7 +12,7 @@ void CLevel::g_cl_Spawn		(LPCSTR name, u8 rp, u16 flags)
 {
 	// Create
 	CSE_Abstract*		E	= F_entity_Create(name);
-	R_ASSERT			(E);
+	VERIFY				(E);
 
 	// Fill
 	strcpy				(E->s_name,name);

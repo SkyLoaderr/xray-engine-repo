@@ -134,7 +134,7 @@ IRender_Visual*			CRender::model_CreateParticles	(LPCSTR name)
 	PS::CPEDef*	SE			= PSLibrary.FindPED	(name);
 	if (SE) return			Models.CreatePE	(SE);
 	else{
-		PS::CPGDef*	SG		= PSLibrary.FindPGD	(name);		R_ASSERT(SG);
+		PS::CPGDef*	SG		= PSLibrary.FindPGD	(name);		VERIFY	(SG);
 		return				Models.CreatePG	(SG);
 	}
 }

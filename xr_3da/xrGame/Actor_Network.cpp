@@ -774,7 +774,7 @@ void	CActor::OnChangeVisual()
 {
 	// take index spine bone
 	CSkeletonAnimated* V= PSkeletonAnimated(Visual());
-	R_ASSERT			(V);
+	VERIFY				(V);
 	int spine_bone		= V->LL_BoneID("bip01_spine1");
 	int shoulder_bone	= V->LL_BoneID("bip01_spine2");
 	int head_bone		= V->LL_BoneID("bip01_head");

@@ -19,7 +19,7 @@ CPS_Instance::CPS_Instance			()
 CPS_Instance::~CPS_Instance			()
 {
 	xr_set<CPS_Instance*>::iterator it		= g_pGameLevel->ps_active.find(this);
-	R_ASSERT								(it!=g_pGameLevel->ps_active.end());
+	VERIFY									(it!=g_pGameLevel->ps_active.end());
 	g_pGameLevel->ps_active.erase			(it);
 
 	spatial_unregister						();

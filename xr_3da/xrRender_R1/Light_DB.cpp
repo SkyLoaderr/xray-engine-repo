@@ -25,7 +25,7 @@ void CLight_DB::Load			(IReader *fs)
 		u32 size		= F->length();
 		u32 element		= sizeof(Flight)+4;
 		u32 count		= size/element;
-		R_ASSERT		(count*element == size);
+		VERIFY			(count*element == size);
 		v_static.reserve(count);
 		for (u32 i=0; i<count; i++) 
 		{

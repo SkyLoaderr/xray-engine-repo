@@ -202,8 +202,8 @@ void CMissile::UpdateCL()
 		if(m_dwDestroyTime <= Device.dwTimeDelta) 
 		{
 			m_dwDestroyTime = 0xffffffff;
-			R_ASSERT(!m_pInventory);
-			Destroy();
+			VERIFY	(!m_pInventory);
+			Destroy	();
 			return;
 		}
 		if (m_dwDestroyTime < 0xffffffff) m_dwDestroyTime -= Device.dwTimeDelta;
@@ -358,7 +358,7 @@ void CMissile::UpdateXForm()
         
 		if(!E)				return	;
 
-		R_ASSERT			(E);
+		VERIFY				(E);
 		CKinematics*		V		= PKinematics	(E->Visual());
 		VERIFY				(V);
 

@@ -450,7 +450,7 @@ void	R_dsgraph_structure::r_dsgraph_render_distort	()
 // sub-space rendering
 void	R_dsgraph_structure::r_dsgraph_render_subspace	(IRender_Sector* _sector, Fmatrix& mCombined, Fvector& _cop, BOOL _dynamic	)
 {
-	R_ASSERT						(_sector);
+	VERIFY							(_sector);
 	RImplementation.marker			++;			// !!! critical here
 
 	// Save and build _new frustum, disable HOM

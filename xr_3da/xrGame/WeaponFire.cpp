@@ -20,7 +20,7 @@
 
 void CWeapon::FireTrace		(const Fvector& P, const Fvector& D)
 {
-	R_ASSERT(m_magazine.size());
+	VERIFY		(m_magazine.size());
 
 	CCartridge &l_cartridge = m_magazine.top();
 

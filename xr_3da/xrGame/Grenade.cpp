@@ -169,7 +169,7 @@ void CGrenade::PutNextToSlot	()
 {
 //	R_ASSERT(m_pInventory);
 //	R_ASSERT(H_Parent());
-	R_ASSERT(!getDestroy());
+	VERIFY	(!getDestroy());
 	//выкинуть гранату из инвентаря
 	if (m_pInventory)
 	{

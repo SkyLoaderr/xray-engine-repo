@@ -69,7 +69,7 @@ NET_Packet*		INetQueue::Retreive	()
 void			INetQueue::Release	()
 {
 	cs.Enter		();
-	R_ASSERT		(!ready.empty());
+	VERIFY			(!ready.empty());
 	unused.push_back(ready.front());
 	ready.pop_front	();
 	cs.Leave		();
@@ -133,7 +133,7 @@ IPureClient::~IPureClient	()
 {
 }
 
-BOOL IPureClient::Connect(LPCSTR options)
+BOOL IPureClient::Connect	(LPCSTR options)
 {
 	R_ASSERT						(options);
 

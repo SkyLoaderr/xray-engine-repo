@@ -120,26 +120,26 @@ bool CInventory::Take(CGameObject *pObj, bool bNotActivate, bool strict_placemen
 	switch(pIItem->m_eItemPlace)
 	{
 	case eItemPlaceBelt:
-		result = Belt(pIItem); R_ASSERT(result);
+		result = Belt(pIItem); VERIFY(result);
 		break;
 	case eItemPlaceRuck:
-		result = Ruck(pIItem); R_ASSERT(result);
+		result = Ruck(pIItem); VERIFY(result);
 		break;
 	case eItemPlaceSlot:
-		result = Slot(pIItem, bNotActivate); R_ASSERT(result);
+		result = Slot(pIItem, bNotActivate); VERIFY(result);
 		break;
 	default:
 		if(CanPutInSlot(pIItem))
 		{
-			result = Slot(pIItem, bNotActivate); R_ASSERT(result);
+			result = Slot(pIItem, bNotActivate); VERIFY(result);
 		} 
 		else if (CanPutInBelt(pIItem))
 		{
-			result = Belt(pIItem); R_ASSERT(result);
+			result = Belt(pIItem); VERIFY(result);
 		}
 		else
 		{
-			result = Ruck(pIItem); R_ASSERT(result);
+			result = Ruck(pIItem); VERIFY(result);
 		}
 	}
 	
@@ -217,29 +217,28 @@ void CInventory::Replace(PIItem pIItem)
 	switch(pIItem->m_eItemPlace)
 	{
 	case eItemPlaceBelt:
-		result = Belt(pIItem); R_ASSERT(result);
+		result = Belt(pIItem); VERIFY(result);
 		break;
 	case eItemPlaceRuck:
-		result = Ruck(pIItem); R_ASSERT(result);
+		result = Ruck(pIItem); VERIFY(result);
 		break;
 	case eItemPlaceSlot:
-		result = Slot(pIItem, true); R_ASSERT(result);
+		result = Slot(pIItem, true); VERIFY(result);
 		break;
 	default:
 		if(CanPutInSlot(pIItem))
 		{
-			result = Slot(pIItem, true); R_ASSERT(result);
+			result = Slot(pIItem, true); VERIFY(result);
 		} 
 		else if (CanPutInBelt(pIItem))
 		{
-			result = Belt(pIItem); R_ASSERT(result);
+			result = Belt(pIItem); VERIFY(result);
 		}
 		else
 		{
-			result = Ruck(pIItem); R_ASSERT(result);
+			result = Ruck(pIItem); VERIFY(result);
 		}
 	}
-
 }
 
 void CInventory::ReplaceAll()
@@ -899,7 +898,7 @@ CInventoryItem	*CInventory::tpfGetObjectByIndex(int iIndex)
 		ai().script_engine().script_log	(ScriptStorage::eLuaMessageTypeError,"invalid inventory index!");
 		return	(0);
 	}
-	R_ASSERT(false);
+	R_ASSERT	(false);
 	return		(0);
 }
 

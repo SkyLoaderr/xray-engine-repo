@@ -126,7 +126,7 @@ public:
 	IC void w_chunk_close8		(u32 position)
 	{
 		u32 size			= u32		(w_tell()-position)-sizeof(u8);
-		R_ASSERT			(size<256	);
+		VERIFY				(size<256	);
 		w_seek				(position,&size,sizeof(u8));
 	}
 

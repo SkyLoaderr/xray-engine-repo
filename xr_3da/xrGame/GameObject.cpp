@@ -164,7 +164,7 @@ BOOL CGameObject::net_Spawn		(LPVOID	DC)
 		return						(TRUE);
 
 	CSE_Abstract*		E			= (CSE_Abstract*)DC;
-	R_ASSERT						(E);
+	VERIFY							(E);
 
 	const CSE_Visual				*l_tpVisual = dynamic_cast<const CSE_Visual*>(E);
 	if (l_tpVisual) 

@@ -98,9 +98,11 @@ void CDetail::Load		(IReader* S)
 	S->r			(indices,size_indices);
 	
 	// Validate indices
+#ifdef DEBUG
 	for (u32 idx = 0; idx<number_indices; idx++)
 		R_ASSERT	(indices[idx]<number_vertices);
-	
+#endif
+
 	// Calc BB & SphereRadius
 	bv_bb.invalidate	();
 	for (u32 i=0; i<number_vertices; i++)

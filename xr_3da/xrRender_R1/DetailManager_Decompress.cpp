@@ -131,7 +131,7 @@ void		CDetailManager::cache_Decompress(Slot* S)
 				Fvector verts[3];
 				SBoxPickInfo& I=pinf[tid];
 				for (int k=0; k<(int)I.inf.size(); k++){
-					R_ASSERT(I.s_obj);
+					VERIFY(I.s_obj);
 Device.Statistic.TEST0.Begin	();
 					I.e_obj->GetFaceWorld(I.s_obj->_Transform(),I.e_mesh,I.inf[k].id,verts);
 Device.Statistic.TEST0.End		();

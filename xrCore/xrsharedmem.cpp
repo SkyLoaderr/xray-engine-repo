@@ -7,7 +7,7 @@ XRCORE_API	smem_container*	g_pSharedMemoryContainer	= NULL;
 
 smem_value*			smem_container::dock			(u32 dwCRC, u32 dwLength, void* ptr)
 {
-	R_ASSERT					(dwCRC && dwLength && ptr);
+	VERIFY						(dwCRC && dwLength && ptr);
 
 	cs.Enter					();
 	smem_value*		result		= 0;
