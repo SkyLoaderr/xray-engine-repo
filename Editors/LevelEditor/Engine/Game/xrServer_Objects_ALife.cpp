@@ -995,8 +995,10 @@ void CSE_ALifeObjectSearchlight::STATE_Read	(NET_Packet	&tNetPacket, u16 size)
 	tNetPacket.r_float		(spot_brightness);
 	tNetPacket.r_string		(glow_texture);
 	tNetPacket.r_float		(glow_radius);
-	tNetPacket.r_u16		(guid_bone);
-	tNetPacket.r_u16		(rotation_bone);
+	if (m_wVersion > 45) {
+		tNetPacket.r_u16	(guid_bone);
+		tNetPacket.r_u16	(rotation_bone);
+	}
 }
 
 void CSE_ALifeObjectSearchlight::STATE_Write(NET_Packet	&tNetPacket)
