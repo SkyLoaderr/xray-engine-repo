@@ -437,10 +437,61 @@
 					Name="eng"
 					Filter="">
 					<File
+						RelativePath=".\Config\text\eng\stable_dialogs.xml">
+					</File>
+					<File
 						RelativePath=".\Config\text\eng\stable_dialogs_agroprom.xml">
 					</File>
 					<File
+						RelativePath=".\Config\text\eng\stable_dialogs_bar.xml">
+					</File>
+					<File
+						RelativePath=".\Config\text\eng\stable_dialogs_escape.xml">
+					</File>
+					<File
 						RelativePath=".\Config\text\eng\stable_dialogs_garbage.xml">
+					</File>
+					<File
+						RelativePath=".\Config\text\eng\string_table_artefacts.xml">
+					</File>
+					<File
+						RelativePath=".\Config\text\eng\string_table_enc_equipment.xml">
+					</File>
+					<File
+						RelativePath=".\Config\text\eng\string_table_enc_mutants.xml">
+					</File>
+					<File
+						RelativePath=".\Config\text\eng\string_table_enc_social.xml">
+					</File>
+					<File
+						RelativePath=".\Config\text\eng\string_table_enc_vehicles.xml">
+					</File>
+					<File
+						RelativePath=".\Config\text\eng\string_table_enc_zone.xml">
+					</File>
+					<File
+						RelativePath=".\Config\text\eng\string_table_general.xml">
+					</File>
+					<File
+						RelativePath=".\Config\text\eng\string_table_items.xml">
+					</File>
+					<File
+						RelativePath=".\Config\text\eng\string_table_level_tips.xml">
+					</File>
+					<File
+						RelativePath=".\Config\text\eng\string_table_news.xml">
+					</File>
+					<File
+						RelativePath=".\Config\text\eng\string_table_outfit.xml">
+					</File>
+					<File
+						RelativePath=".\Config\text\eng\string_table_tasks_escape.xml">
+					</File>
+					<File
+						RelativePath=".\Config\text\eng\string_table_tips.xml">
+					</File>
+					<File
+						RelativePath=".\Config\text\eng\string_table_ui.xml">
 					</File>
 				</Filter>
 			</Filter>
