@@ -112,10 +112,10 @@
 				RuntimeTypeInfo="FALSE"
 				UsePrecompiledHeader="3"
 				PrecompiledHeaderThrough="stdafx.h"
-				PrecompiledHeaderFile=".\Release/xrCDB.pch"
+				PrecompiledHeaderFile="$(IntDir)/$(TargetName).pch"
 				AssemblerListingLocation="Mixed\"
 				ObjectFile="Mixed\"
-				ProgramDataBaseFileName="$(OutDir)/"
+				ProgramDataBaseFileName="$(OutDir)/$(TargetName).pdb"
 				BrowseInformation="0"
 				WarningLevel="3"
 				SuppressStartupBanner="TRUE"
@@ -253,7 +253,7 @@
 					<Tool
 						Name="VCCLCompilerTool"
 						UsePrecompiledHeader="1"
-						PrecompiledHeaderFile=".\Mixed/xrCDB.pch"
+						PrecompiledHeaderFile="$(IntDir)/$(TargetName).pch"
 						AssemblerListingLocation=".\Mixed/"
 						ObjectFile=".\Mixed/"
 						ProgramDataBaseFileName=".\Mixed/"/>
