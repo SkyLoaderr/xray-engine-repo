@@ -426,7 +426,7 @@ void CAI_Zombie::Think()
 	bStopThinking = false;
 	do {
 		m_ePreviousState = eCurrentState;
-		/**
+		/**/
 		switch(eCurrentState) {
 			case aiZombieAttackFire : {
 				AttackFire();
@@ -463,7 +463,6 @@ void CAI_Zombie::Think()
 		}
 		m_bStateChanged = m_ePreviousState != eCurrentState;
 		/**/
-		break;
 	}
 	while (!bStopThinking);
 }

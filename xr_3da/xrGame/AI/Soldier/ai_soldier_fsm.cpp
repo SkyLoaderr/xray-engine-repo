@@ -25,6 +25,7 @@
 #define RECHARGE_MEDIAN					(1.f/3.f)
 #define RECHARGE_EPSILON				(0.f/6.f)
 
+#define SPECIAL_SQUAD					6
 /**/
 void CAI_Soldier::Test()
 {
@@ -919,13 +920,20 @@ void CAI_Soldier::OnLookingOver()
 	else
 		SWITCH_TO_NEW_STATE(aiSoldierFollowLeaderPatrol);
 
-	SelectSound(m_iSoundIndex);
-	if (m_iSoundIndex >= 0) {
-		AI_Path.TravelPath.clear();
-		SWITCH_TO_NEW_STATE(aiSoldierSenseSomethingAlone);
+	if (g_Squad() != SPECIAL_SQUAD) {
+		SelectSound(m_iSoundIndex);
+		if (m_iSoundIndex >= 0) {
+			AI_Path.TravelPath.clear();
+			SWITCH_TO_NEW_STATE(aiSoldierSenseSomethingAlone);
+		}
 	}
 
-	vfSetLookAndFireMovement(false, WALK_NO,1.0f,Group,dwCurTime);
+	StandUp();
+	
+	SetDirectionLook();
+	vfSetFire(false,Group);
+	vfSetMovementType(WALK_NO);
+//	vfSetLookAndFireMovement(false, WALK_NO,1.0f,Group,dwCurTime);
 
 	r_torso_target.pitch = 0;
 	r_torso_speed = PI_DIV_4;
