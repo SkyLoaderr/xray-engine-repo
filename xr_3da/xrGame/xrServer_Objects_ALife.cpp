@@ -455,7 +455,7 @@ CSE_ALifeAnomalousZone::CSE_ALifeAnomalousZone(LPCSTR caSection) : CSE_ALifeDyna
 	m_attn						= 1.f;
 	m_period					= 1000;
 	m_fRadius					= 30.f;
-	m_fGlobalProbability		= pSettings->r_float(caSection,"GlobalProbability");
+	m_fBirthProbability			= pSettings->r_float(caSection,"BirthProbability");
 	
 	LPCSTR						l_caParameters = pSettings->r_string(caSection,"artefacts");
 	m_wItemCount				= (u16)_GetItemCount(l_caParameters);
@@ -466,8 +466,8 @@ CSE_ALifeAnomalousZone::CSE_ALifeAnomalousZone(LPCSTR caSection) : CSE_ALifeDyna
 	m_cppArtefactSections		= (string64*)xr_malloc(m_wItemCount*sizeof(string64));
 	string512					l_caBuffer;
 	for (u16 i=0; i<m_wItemCount; i++) {
-		m_dwaWeights[i]			= atoi(_GetItem(l_caParameters,i << 1,l_caBuffer));
-		strcpy					(m_cppArtefactSections[i],_GetItem(l_caParameters,(i << 1) | 1,l_caBuffer));
+		strcpy					(m_cppArtefactSections[i],_GetItem(l_caParameters,i << 1,l_caBuffer));
+		m_dwaWeights[i]			= atoi(_GetItem(l_caParameters,(i << 1) | 1,l_caBuffer));
 	}
 }
 
@@ -488,10 +488,10 @@ void CSE_ALifeAnomalousZone::STATE_Read		(NET_Packet	&tNetPacket, u16 size)
 	tNetPacket.r_float			(m_maxPower);
 	tNetPacket.r_float			(m_attn);
 	tNetPacket.r_u32			(m_period);
-	tNetPacket.r_float			(m_fRadius);
-	tNetPacket.r_float			(m_fGlobalProbability);
 	
 	if (m_wVersion > 21) {
+		tNetPacket.r_float		(m_fRadius);
+		tNetPacket.r_float		(m_fBirthProbability);
 		u16						l_wItemCount;
 		tNetPacket.r_u16		(l_wItemCount);
 		u32						*l_dwaWeights			= (u32*)xr_malloc(l_wItemCount*sizeof(u32));
@@ -524,7 +524,7 @@ void CSE_ALifeAnomalousZone::STATE_Write	(NET_Packet	&tNetPacket)
 	tNetPacket.w_float			(m_attn);
 	tNetPacket.w_u32			(m_period);
 	tNetPacket.w_float			(m_fRadius);
-	tNetPacket.w_float			(m_fGlobalProbability);
+	tNetPacket.w_float			(m_fBirthProbability);
 	tNetPacket.w_u16			(m_wItemCount);
 	for (u16 i=0; i<m_wItemCount; i++) {
 		tNetPacket.w_string		(m_cppArtefactSections[i]);
@@ -550,13 +550,9 @@ void CSE_ALifeAnomalousZone::FillProp		(LPCSTR pref, PropItemVec& items)
     PHelper.CreateFloat			(items,PHelper.PrepareKey(pref,s_name,"Attenuation"),		&m_attn,0.f,100.f);
     PHelper.CreateU32			(items,PHelper.PrepareKey(pref,s_name,"Period"),			&m_period,20,10000);
     PHelper.CreateFloat			(items,PHelper.PrepareKey(pref,s_name,"Radius"),			&m_fRadius,0.f,100.f);
-	string512					S;
-	for (u16 i=0; i<m_wItemCount; i++) {
-		strcpy					(S,s_name);
-		strconcat				(S,"\\",m_cppArtefactSections[i]);
-		PHelper.CreateU32		(items,PHelper.PrepareKey(pref,S,	  "Weight"),					m_dwaWeights + i,20,10000);
-	}
-    PHelper.CreateFloat			(items,PHelper.PrepareKey(pref,s_name,"Global probability"),&m_fGlobalProbability,0.f,1.f);
+	for (u16 i=0; i<m_wItemCount; i++)
+		PHelper.CreateU32		(items,PHelper.PrepareKey(pref,s_name,"Artefact Weights",m_cppArtefactSections[i]), m_dwaWeights + i,20,10000);
+    PHelper.CreateFloat			(items,PHelper.PrepareKey(pref,s_name,"Birth probability"),&m_fBirthProbability,0.f,1.f);
 }
 #endif
 
