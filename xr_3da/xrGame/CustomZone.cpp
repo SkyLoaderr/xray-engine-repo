@@ -563,7 +563,7 @@ void CCustomZone::feel_touch_delete(CObject* O)
 	
 	m_inZone.erase(O);
 	if(smart_cast<CActor*>(O)) m_pLocalActor = NULL;
-	CPhysicsShellHolder* pGameObject =smart_cast<CPhysicsShellHolder*>(O);
+	CGameObject* pGameObject =smart_cast<CGameObject*>(O);
 	if(!pGameObject->getDestroy())
 	{
 		StopObjectIdleParticles(pGameObject);

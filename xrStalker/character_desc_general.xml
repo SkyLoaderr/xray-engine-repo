@@ -11,8 +11,10 @@
 		этом можно хорошо заработать. —лавитс€ тем, что способен наладить хорошие торговые
 		отношени€ с самыми разношерстными клиентами.</bio>
 
-		<class>Trader</class>
 		<team>Trader</team>
+		
+		<class>trader</class>
+		<community>stalker</community>
 				
 		<rank>50</rank>
 		<reputation>50</reputation>
@@ -30,8 +32,10 @@
 		<map_icon x="0" y="4"></map_icon>
 		<bio>ѕросто хороший алкаголик. —идел, выдвигалс€ в президенты ”краины.</bio>
 
-		<class>Trader</class>
 		<team>Barman</team>
+		
+		<class>trader</class>
+		<community>stalker</community>
 		
 		<rank>50</rank>
 		<reputation>50</reputation>
@@ -44,8 +48,10 @@
 		<map_icon x="0" y="4"></map_icon>
 
 		<team>Actor</team>
+
 		<class>actor</class>
-		
+		<community>stalker</community>
+	
 		<rank>50</rank>
 		<reputation>50</reputation>
 	</specific_character>
