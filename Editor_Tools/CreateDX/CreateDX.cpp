@@ -51,7 +51,7 @@ HRESULT CreateTexture(LPDIRECTDRAWSURFACE7& pTexture, LPSTR pSrcName, LPSTR pAlt
 	hr = D3DXCreateTexture(m_dx->pD3DDev,&dwFlag,LPDWORD(w),LPDWORD(h),&fmt,0,&pTexture,&mip_num);
 	hr = D3DXLoadTextureFromFile(m_dx->pD3DDev,pTexture,  D3DX_DEFAULT, pSrcName,0,0,D3DX_FT_LINEAR);
 	if (FAILED(hr)){
-		hr = D3DXLoadTextureFromFile(m_dx->pD3DDev,pTexture,D3DX_DEFAULT,pAlternateSrcName,0,0,D3DX_FT_LINEAR);
+		hr = D3DXLoadTextureFromFile(m_dx->pD3DDev,pTexture,HDR.dwMipMapCount?D3DX_DEFAULT:0,pAlternateSrcName,0,0,D3DX_FT_LINEAR);
 	}
 
 
