@@ -235,6 +235,7 @@ end
 function load_dialog:AddItemToList(item)
 	local new_item = CUIListItem()
 	new_item:SetText("text")
+	new_item:SetAutoDelete(true)
 	--new_item:SetTextDateTime("date-time")
 	local list_box = self:GetListWnd("list_window")
 	local shift = 0
