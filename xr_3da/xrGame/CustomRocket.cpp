@@ -12,7 +12,14 @@
 #include "xrMessages.h"
 #include "gamemtllib.h"
 #include "tri-colliderknoopc/dTriList.h"
-
+#include "../fbasicvisual.h"
+#define CHOOSE_MAX(x,inst_x,y,inst_y,z,inst_z)\
+	if(x>y)\
+	if(x>z){inst_x;}\
+		else{inst_z;}\
+	else\
+	if(y>z){inst_y;}\
+		else{inst_z;}
 CCustomRocket::CCustomRocket() 
 {
 	m_eState = eInactive;
@@ -95,7 +102,41 @@ void CCustomRocket::activate_physic_shell	()
 
 void CCustomRocket::create_physic_shell	()
 {
-	create_box2sphere_physic_shell();
+	Fobb								obb;
+	Visual()->vis.box.get_CD			(obb.m_translate,obb.m_halfsize);
+	obb.m_rotate.identity				();
+
+	// Physics (Elements)
+	CPhysicsElement						*E = P_create_Element	();
+	R_ASSERT							(E);
+
+	Fvector								ax;
+	float								radius;
+	CHOOSE_MAX(
+		obb.m_halfsize.x,ax.set(obb.m_rotate.i) ; ax.mul(obb.m_halfsize.x); radius=_min(obb.m_halfsize.y,obb.m_halfsize.z) ;obb.m_halfsize.y/=2.f;obb.m_halfsize.z/=2.f,
+		obb.m_halfsize.y,ax.set(obb.m_rotate.j) ; ax.mul(obb.m_halfsize.y); radius=_min(obb.m_halfsize.x,obb.m_halfsize.z) ;obb.m_halfsize.x/=2.f;obb.m_halfsize.z/=2.f,
+		obb.m_halfsize.z,ax.set(obb.m_rotate.k) ; ax.mul(obb.m_halfsize.z); radius=_min(obb.m_halfsize.y,obb.m_halfsize.x) ;obb.m_halfsize.y/=2.f;obb.m_halfsize.x/=2.f
+		)
+		//radius*=1.4142f;
+		Fsphere								sphere1,sphere2;
+	sphere1.P.add						(obb.m_translate,ax);
+	sphere1.R							=radius*1.4142f;
+
+	sphere2.P.sub						(obb.m_translate,ax);
+	sphere2.R							=radius/2.f;
+
+	E->add_Box							(obb);
+	E->add_Sphere						(sphere1);
+	E->add_Sphere						(sphere2);
+
+	// Physics (Shell)
+	m_pPhysicsShell						= P_create_Shell	();
+	R_ASSERT							(m_pPhysicsShell);
+	m_pPhysicsShell->add_Element		(E);
+	m_pPhysicsShell->setMass			(7.f);
+	m_pPhysicsShell->mDesired.identity	();
+	m_pPhysicsShell->fDesiredStrength	= 0.f;
+	m_pPhysicsShell->SetAirResistance();
 }
 
 //////////////////////////////////////////////////////////////////////////
