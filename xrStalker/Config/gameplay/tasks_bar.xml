@@ -35,19 +35,3 @@
 	
 
 </game_tasks_data>
-nter_rifle">
-		<title>bar_hunter_rifle</title>
-		<objective>
-			<text>bar_bring_hunter_rifle</text>
-			<icon x="150" y="50" width="50" height="50">ui\ui_icons_task</icon>
-		</objective>
-		<objective>
-			<text>bar_hunter_find_rifle</text>
-			<icon x="100" y="50" width="50" height="50">ui\ui_icons_task</icon>
-		</objective>
-		<objective>
-			<text>bar_hunter_return_rifle</text>
-			<icon x="150" y="50" width="50" height="50">ui\ui_icons_task</icon>
-		</objective>
-	</game_task>
-</game_tasks_data>
