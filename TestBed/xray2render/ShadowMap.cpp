@@ -557,10 +557,10 @@ HRESULT CMyD3DApplication::RenderShadowMap	()
 	m_pd3dDevice->SetRenderState			(D3DRS_CULLMODE, D3DCULL_CW);
 
 	// Shader and params
-	m_pd3dDevice->SetPixelShader			(s_Scene2fat.ps);
-	m_pd3dDevice->SetVertexShader			(s_Scene2fat.vs);
+	m_pd3dDevice->SetPixelShader			(s_Scene2smap_direct.ps);
+	m_pd3dDevice->SetVertexShader			(s_Scene2smap_direct.vs);
 	m_pd3dDevice->SetVertexDeclaration		(m_pDeclVert);
-	cc.set									(s_Scene2fat.constants.get("m_model2view2projection"),	*((Fmatrix*)&dm_model2world2view2projection_smap));
+	cc.set									(s_Scene2smap_direct.constants.get("m_model2view2projection"),	*((Fmatrix*)&dm_model2world2view2projection_smap));
 	cc.flush								(m_pd3dDevice);
 
 	// Render model
@@ -758,14 +758,14 @@ HRESULT CMyD3DApplication::RenderLight_Direct	()
 	m_pd3dDevice->DrawPrimitive				(D3DPT_TRIANGLESTRIP, 0, 2);
 
 	// Second light
-//	m_pd3dDevice->SetRenderState			(D3DRS_ALPHABLENDENABLE, TRUE);
-//	m_pd3dDevice->SetRenderState			(D3DRS_SRCBLEND,	D3DBLEND_ONE);
-//	m_pd3dDevice->SetRenderState			(D3DRS_DESTBLEND,	D3DBLEND_ONE);
-//	cc.set									(s_Light_Direct.constants.get("light_direction"),	-vLightDir.x,-vLightDir.y,-vLightDir.z,0	);
-//	cc.set									(s_Light_Direct.constants.get("light_color"),		.9f,		.3f,		.0,			.7		);
-//	cc.flush								(m_pd3dDevice);
-//	m_pd3dDevice->DrawPrimitive				(D3DPT_TRIANGLESTRIP, 0, 2);
-//	m_pd3dDevice->SetRenderState			(D3DRS_ALPHABLENDENABLE, FALSE);
+	m_pd3dDevice->SetRenderState			(D3DRS_ALPHABLENDENABLE, TRUE);
+	m_pd3dDevice->SetRenderState			(D3DRS_SRCBLEND,	D3DBLEND_ONE);
+	m_pd3dDevice->SetRenderState			(D3DRS_DESTBLEND,	D3DBLEND_ONE);
+	cc.set									(s_Light_Direct.constants.get("light_direction"),	-vLightDir.x,-vLightDir.y,-vLightDir.z,0	);
+	cc.set									(s_Light_Direct.constants.get("light_color"),		.9f,		.3f,		.0,			.7		);
+	cc.flush								(m_pd3dDevice);
+	m_pd3dDevice->DrawPrimitive				(D3DPT_TRIANGLESTRIP, 0, 2);
+	m_pd3dDevice->SetRenderState			(D3DRS_ALPHABLENDENABLE, FALSE);
 
 	// Cleanup
 	m_pd3dDevice->SetTexture				(0, NULL);
