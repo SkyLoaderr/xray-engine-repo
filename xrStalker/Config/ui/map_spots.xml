@@ -138,6 +138,16 @@
 		<mini_map spot="bar_bar_drunk_dolg_spot" pointer="quest_pointer"></mini_map>
 	</bar_bar_drunk_dolg_location>
 
+	<bar_darklab_documents_location hint="bar_darklab_documents">
+		<level_map spot="bar_darklab_documents_spot" pointer="quest_pointer"></level_map>
+		<mini_map spot="bar_darklab_documents_spot" pointer="quest_pointer"></mini_map>
+	</bar_darklab_documents_location>
+	
+	<bar_decoding_documents_location hint="bar_decoding_documents">
+		<level_map spot="bar_decoding_documents_spot" pointer="quest_pointer"></level_map>
+		<mini_map spot="bar_decoding_documents_spot" pointer="quest_pointer"></mini_map>
+	</bar_decoding_documents_location>
+
 
 	<!-- spots -->
 	<bar_barman_spot x="0" y="0" width="32" height="32" alignment="c">
@@ -180,7 +190,13 @@
 		<texture x="128" y="0" width="32" height="32">ui\ui_icons_map</texture>
 	</bar_bar_drunk_dolg_spot>
 
-
+	<bar_darklab_documents_spot x="0" y="0" width="32" height="32" alignment="c">
+		<texture x="160" y="32" width="32" height="32">ui\ui_icons_map</texture>
+	</bar_darklab_documents_spot>
+	
+	<bar_decoding_documents_spot x="0" y="0" width="32" height="32" alignment="c">
+		<texture x="160" y="32" width="32" height="32">ui\ui_icons_map</texture>
+	</bar_decoding_documents_spot>
 	
 <!-- military locations and spots-->
 	<mil_max_location hint="mil_max">
