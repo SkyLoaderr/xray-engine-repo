@@ -45,7 +45,8 @@ void CALifeSpawnRegistry::load	(IReader &file_stream, LPCSTR game_name)
 	chunk0						= file_stream.open_chunk(SPAWN_CHUNK_DATA);
 	
 	chunk						= chunk0->open_chunk(0);
-	chunk0->r_stringZ			(m_spawn_name);
+	VERIFY						(chunk);
+	chunk->r_stringZ			(m_spawn_name);
 	chunk->close				();
 
 	string256					file_name;
@@ -68,8 +69,10 @@ void CALifeSpawnRegistry::load	(IReader &file_stream, LPCSTR game_name)
 	FS.r_close					(stream);
 	
 	chunk						= chunk0->open_chunk(1);
-	load_updates				(*chunk);
-	chunk->close				();
+	if (chunk) {
+		chunk					= chunk0->open_chunk(1);
+		VERIFY					(chunk);
+	}
 }
 
 void CALifeSpawnRegistry::load	(LPCSTR spawn_name)
