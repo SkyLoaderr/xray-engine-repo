@@ -8,6 +8,8 @@
 #define ETOOLS_API __declspec( dllimport ) 
 #endif
 
+using namespace D3DX;
+
 namespace D3DX{
 	ETOOLS_API UINT WINAPI D3DXGetDriverLevel(LPDIRECT3DDEVICE9 pDevice);
 }
