@@ -616,6 +616,7 @@ void CCar::UpdatePower()
 
 	if(b_auto_switch_transmission) 
 	{
+		VERIFY2(m_current_transmission_num<m_gear_ratious.size(),"wrong transmission");
 		if(m_current_rpm<m_gear_ratious[m_current_transmission_num][1]) TransmisionDown();
 		if(m_current_rpm>m_gear_ratious[m_current_transmission_num][2]) TransmisionUp();
 	}
@@ -808,6 +809,9 @@ void CCar::Transmision(size_t num)
 		m_current_gear_ratio=m_gear_ratious[num][0];
 		//	m_current_rpm=m_torque_rpm;
 	}
+#ifdef DEBUG
+	Log("Transmission switch %d",(u32)num);
+#endif
 }
 void CCar::CircleSwitchTransmission()
 {
