@@ -171,6 +171,7 @@ void CEnvironment::load		()
             Palette.push_back	(D);
         }
     }
+	for (u32 v=0; v<12; v++)	hbox_verts[v*2+1].normalize();
 }
 
 void CEnvironment::unload	()
