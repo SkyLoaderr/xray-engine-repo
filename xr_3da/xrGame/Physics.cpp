@@ -978,7 +978,22 @@ void CPHShell::Activate(const Fmatrix &m0,float dt01,const Fmatrix &m2){
 	dBodySetLinearVel(m_body,m.c.x,m.c.y,m.c.z);
 	//dBodySetPosition(m_body,m0.c.x,m0.c.y+1.,m0.c.z);
 	bActive=true;
-	}
+
+//////////////////////////////////////////////////////////////
+//initializing values for disabling//////////////////////////
+//////////////////////////////////////////////////////////////
+	/*
+	mean_w[0]=0.f;
+	mean_w[1]=0.f;
+	mean_w[2]=0.f;
+	mean_v[0]=0.f;
+	mean_v[1]=0.f;
+	mean_v[2]=0.f;
+	*/
+	previous_p[0]=dInfinity;
+	previous_r[0]=0.f;
+	dis_count=0;
+}
 
 void CPHShell::Deactivate(){
 if(!bActive)
@@ -988,14 +1003,14 @@ if(!bActive)
 	(*i)->Deactivate();
 bActive=false;
 }
-static dVector3 mean_w={0.f,0.f,0.f,0.f};
-static dVector3 mean_v={0.f,0.f,0.f,0.f};
-static UINT dis_count=0;
+
 void CPHShell::Update(){
 	vector<CPHElement*>::iterator i;
 	for(i=elements.begin();i!=elements.end();i++)
 	(*i)->Update();
 		//////////////////////////////////////////////////////////////////////
+		/////limit velocity of the main body/////////////////////////////////
+		/////////////////////////////////////////////////////////////////////
 				static const dReal u = -0.1f;
 				static const dReal w_limit = M_PI/4.f/0.02f;
 				static const dReal l_limit = 3.f/0.02f;
@@ -1013,6 +1028,31 @@ void CPHShell::Update(){
 					dReal f=mag/w_limit;
 					dBodySetAngularVel(m_body,rot[0]/f,rot[1]/f,rot[2]/f);
 				}
+
+				PHDynamicData::DMXPStoFMX(dBodyGetRotation(m_body),
+							  dBodyGetPosition(m_body),
+							  mXFORM);
+				//return;
+				//////////////////////////////////////////////////////////////////////////////////////////
+				////////disabling main body///////////////////////////////////////////////////////////////
+				//////////////////////////////////////////////////////////////////////////////////////////
+				if(previous_p[0]==dInfinity){
+					const dReal* position=dBodyGetPosition(m_body);
+					previous_p[0]=position[0];
+					previous_p[1]=position[1];
+					previous_p[2]=position[2];
+					const dReal* rotation=dBodyGetRotation(m_body);
+					previous_r[0]=rotation[0];
+					previous_r[1]=rotation[1];
+					previous_r[2]=rotation[2];
+					previous_r[4]=rotation[4];
+					previous_r[5]=rotation[5];
+					previous_r[6]=rotation[6];
+					previous_r[8]=rotation[8];
+					previous_r[9]=rotation[9];
+					previous_r[10]=rotation[10];
+				}
+				/*
 				mean_v[0]+=pos[0];
 				mean_v[1]+=pos[1];
 				mean_v[2]+=pos[2];
@@ -1020,25 +1060,71 @@ void CPHShell::Update(){
 				mean_w[0]+=rot[0];
 				mean_w[1]+=rot[1];
 				mean_w[2]+=rot[2];
+				*/
 				dis_count++;
-				if(dis_count==50){	
+				const int dis_frames=50;
+				if(dis_count==dis_frames){	
 	
-					dReal mag_v=sqrtf(mean_v[0]*mean_v[0]+mean_v[1]*mean_v[1]+mean_v[2]*mean_v[2])/50.f;
-					dReal mag_w=sqrtf(mean_w[0]*mean_w[0]+mean_w[1]*mean_w[1]+mean_w[2]*mean_w[2])/50.f;
-					if(mag_v<0.01 && mag_w<M_PI/180.f)
+				//	dReal mag_v=sqrtf(mean_v[0]*mean_v[0]+mean_v[1]*mean_v[1]+mean_v[2]*mean_v[2])/dis_frames;
+				//	dReal mag_w=sqrtf(mean_w[0]*mean_w[0]+mean_w[1]*mean_w[1]+mean_w[2]*mean_w[2])/dis_frames;
+				//	if(mag_v<0.002 && mag_w<M_PI/180.f/10)
+			//			dBodyDisable(m_body);
+
+				//	mean_w[0]=0.f;
+				//	mean_w[1]=0.f;
+				//	mean_w[2]=0.f;
+				//	mean_v[0]=0.f;
+				//	mean_v[1]=0.f;
+				//	mean_v[2]=0.f;
+
+					if(previous_p[0]!=dInfinity){
+					const dReal* current_p=dBodyGetPosition(m_body);
+					dVector3 velocity={current_p[0]-previous_p[0],
+									   current_p[1]-previous_p[1],
+									   current_p[2]-previous_p[2]};
+					dReal mag_v=sqrtf(
+						  velocity[0]*velocity[0]+
+						  velocity[1]*velocity[1]+
+						  velocity[2]*velocity[2]);
+					mag_v/=dis_frames;
+
+					const dReal* current_r=dBodyGetRotation(m_body);
+					dMatrix3 rotation_m;
+					
+					dMULTIPLYOP1_333(rotation_m,=,previous_r,current_r);
+			
+					dVector3 deviation_v={rotation_m[0]-1.f,
+										  rotation_m[5]-1.f,
+										  rotation_m[10]-1.f
+					};
+
+					dReal deviation =sqrtf(deviation_v[0]*deviation_v[0]+
+										   deviation_v[1]*deviation_v[1]+
+										   deviation_v[2]*deviation_v[2]);
+
+					deviation/=dis_frames;
+					if(mag_v<0.002 && deviation<0.001)
 						dBodyDisable(m_body);
 
-					mean_w[0]=0.f;
-					mean_w[1]=0.f;
-					mean_w[2]=0.f;
-					mean_v[0]=0.f;
-					mean_v[1]=0.f;
-					mean_v[2]=0.f;
+					const dReal* position=dBodyGetPosition(m_body);
+					previous_p[0]=position[0];
+					previous_p[1]=position[1];
+					previous_p[2]=position[2];
+					const dReal* rotation=dBodyGetRotation(m_body);
+					previous_r[0]=rotation[0];
+					previous_r[1]=rotation[1];
+					previous_r[2]=rotation[2];
+					previous_r[4]=rotation[4];
+					previous_r[5]=rotation[5];
+					previous_r[6]=rotation[6];
+					previous_r[8]=rotation[8];
+					previous_r[9]=rotation[9];
+					previous_r[10]=rotation[10];
+
+					}
 					dis_count=0;
 				}
 				//dBodyAddTorque(m_body, u * rot[0]*mag, u * rot[1]*mag, u * rot[2]*mag);
 			/////////////////////////////////////////////////////////////////
-	PHDynamicData::DMXPStoFMX(dBodyGetRotation(m_body),
-							  dBodyGetPosition(m_body),
-							  mXFORM);
+
 }

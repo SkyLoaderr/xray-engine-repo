@@ -183,8 +183,16 @@ vector<CPHElement*> elements;
 Fmatrix m_m2;
 Fmatrix m_m0;
 dBodyID m_body;
+
+//dVector3 mean_w;
+//dVector3 mean_v;
+dVector3 previous_p;
+dMatrix3 previous_r;
+UINT dis_count;
+
+
 public:
-							CPHShell				()							{bActive=false;};
+	CPHShell				()							{bActive=false;};
 
 	virtual	void			add_Element				(CPhysicsElement* E)		  {
 		elements.push_back((CPHElement*)E);
