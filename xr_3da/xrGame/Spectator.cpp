@@ -171,12 +171,12 @@ void CSpectator::cam_Update	(CActor* A)
 			P.add					(M.c,1.6f);
 			cam->Set				(P,M.k,M.j);
 			}break;
-		case eacFreeLook:{
+		case eacLookAt:{
 			float y,p,r;
 			M.getHPB				(y,p,r);
 			cam->Set				(-y,-p,-r);
 			}
-		case eacLookAt:{
+		case eacFreeLook:{
 			cam->SetParent			(A);
 			Fvector point, dangle;
 			point.set				(0.f,1.6f,0.f);
