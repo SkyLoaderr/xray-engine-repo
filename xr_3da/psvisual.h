@@ -18,6 +18,7 @@ public:
 	virtual				~CPSVisual		();
 
 	// Visual
+	DWORD				RenderTO		(FVF::TL* V);
 	virtual void		Render			(float LOD);
 	virtual void		Copy			(FBasicVisual* pFrom);
 

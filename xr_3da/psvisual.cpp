@@ -165,7 +165,17 @@ IC void FillSprite(FVF::TL*& pv, const Fmatrix& M, const Fvector& pos, const Fve
 	pv->set			(Device._x2real(s2.p.x-l2*R.x),	Device._y2real(s2.p.y-l2*R.y),	s2.p.z, s2.p.w, clr, rb.x,lt.y);	pv++;
 }
 
-void CPSVisual::Render(float LOD)
+void CPSVisual::Render		(float LOD)
+{
+	DWORD			vOffset;
+	FVF::TL*		pv		= (FVF::TL*)m_Stream->Lock(m_Particles.size()*4,vOffset);
+	DWORD			dwCount	= RenderTO(pv);
+	m_Stream->Unlock(dwCount);
+	if (dwCount)
+		Device.Primitive.Draw	(m_Stream,dwCount,dwCount/2,vOffset,Device.Streams_QuadIB);
+}
+
+DWORD CPSVisual::RenderTO	(FVF::TL* dest)
 {
 	float fTime			= Device.fTimeGlobal;
 	
@@ -179,12 +189,12 @@ void CPSVisual::Render(float LOD)
 	Fvector2 lt,rb;
     lt.set	(0.f,0.f);
 	rb.set	(1.f,1.f);
-
+	
 	// actual rendering
 	bv_BBox.invalidate	();
 	float			p_size	= 0;
 	DWORD			vOffset;
-	FVF::TL*		pv_start= (FVF::TL*)m_Stream->Lock(m_Particles.size()*4,vOffset);
+	FVF::TL*		pv_start= dest;
 	FVF::TL*		pv		= pv_start;
 	for (PS::ParticleIt P=m_Particles.begin(); P!=m_Particles.end(); P++)
 	{
@@ -200,7 +210,7 @@ void CPSVisual::Render(float LOD)
             mb_step 	=	m_Definition->m_BlurTime.start*k_inv+m_Definition->m_BlurTime.end*k;
             mb_step		/=	mb_samples;
         }
-
+		
         // update
 		for (int sample=mb_samples-1; sample>=0; sample--)
 		{
@@ -254,11 +264,7 @@ void CPSVisual::Render(float LOD)
 		bv_BBox.getsphere	(bv_Position,bv_Radius);
 	}
 	
-	// unlock VB and Render it as triangle list
-	DWORD dwNumVerts = pv-pv_start;
-	m_Stream->Unlock(dwNumVerts);
-	if (dwNumVerts)
-		Device.Primitive.Draw	(m_Stream,dwNumVerts,dwNumVerts/2,vOffset,Device.Streams_QuadIB);
+	return pv-pv_start;
 }
 
 //----------------------------------------------------
