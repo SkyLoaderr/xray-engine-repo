@@ -3,20 +3,9 @@
 #pragma once
 #pragma pack(push,1)
 
-const	u32			NET_PacketSizeLimit	= 16384;//8192;
+#include "client_id.h"
 
-class ClientID{
-	u32 id;
-public:
-	ClientID():id(0){};
-	u32 value()const{return id;};
-	void  set(u32 v){id=v;};
-	void  setBroadcast(){set(0xffffffff);}
-	bool  compare(u32 v) const{return id == v;};
-	bool operator ==(const ClientID& other)const{return value() == other.value();};
-	bool operator !=(const ClientID& other)const{return value() != other.value();};
-	bool operator < (const ClientID& other)const{return value() < other.value();};
-};
+const	u32			NET_PacketSizeLimit	= 16384;//8192;
 
 struct	NET_Buffer
 {
@@ -117,6 +106,7 @@ public:
 		w_vec3	(M.k);
 		w_vec3	(M.c);
 	}
+	
 	IC void w_clientID			(ClientID& C)
 	{
 		w_u32(C.value());

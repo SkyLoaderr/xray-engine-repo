@@ -260,6 +260,9 @@
 	</References>
 	<Files>
 		<File
+			RelativePath=".\client_id.h">
+		</File>
+		<File
 			RelativePath=".\NET_Client.cpp">
 		</File>
 		<File
