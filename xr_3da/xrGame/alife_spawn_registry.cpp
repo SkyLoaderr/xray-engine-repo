@@ -104,7 +104,7 @@ void CALifeSpawnRegistry::load	(IReader &file_stream, GUID	*save_guid)
 	chunk						= file_stream.open_chunk(0);
 	m_header.load				(*chunk);
 	chunk->close				();
-	R_ASSERT2					(!save_guid || (*save_guid == header().guid()),"Saved game doesn't correspond to the spawn : REBUILD SPAWN FILE!");
+	R_ASSERT2					(!save_guid || (*save_guid == header().guid()),"Saved game doesn't correspond to the spawn : DELETE SAVED GAME!");
 
 	chunk						= file_stream.open_chunk(1);
 	m_spawns.load				(*chunk);
