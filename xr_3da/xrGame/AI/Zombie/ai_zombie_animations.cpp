@@ -60,7 +60,7 @@ void CAI_Zombie::vfLoadAnimations()
 	// loading normal animations
 	m_tZombieAnimations.tNormal.tGlobal.tpaDeath[0]  = tpVisualObject->ID_Cycle("norm_death_0");
 	m_tZombieAnimations.tNormal.tGlobal.tpaDeath[1]  = tpVisualObject->ID_Cycle("norm_death_1");
-	m_tZombieAnimations.tNormal.tGlobal.tpaDeath[2]  = tpVisualObject->ID_Cycle("norm_death_2")ds;
+	m_tZombieAnimations.tNormal.tGlobal.tpaDeath[2]  = tpVisualObject->ID_Cycle("norm_death_2");
 	
 	m_tZombieAnimations.tNormal.tGlobal.tpaDeathIdle[0] = tpVisualObject->ID_Cycle("norm_death_idle_0");
 	m_tZombieAnimations.tNormal.tGlobal.tpaDeathIdle[1] = tpVisualObject->ID_Cycle("norm_death_idle_1");
