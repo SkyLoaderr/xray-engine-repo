@@ -283,7 +283,7 @@ function action_follow:free ()
        xr_logic.try_switch_to_another_section (self.object, self.st, db.actor)
        printf ("!!!FOLLOWER %s!!! LEADER SECTION CHANGED - NEED NEW JOB FROM LOGIC", self.object:name ()) 
     end
-    self.st.leader_section = nil
+    self.st.leader_id = nil
 end
 -----------------------------------------------------------------------------------
 
