@@ -24,7 +24,7 @@ void CDetailManager::VS_Load()
 	LPD3DXBUFFER	code;
 	LPD3DXBUFFER	errors;
 	R_CHK			(D3DXAssembleShaderFromFile("data\\shaders\\detail.vs",0,NULL,&code,&errors));
-	R_CHK			(HW.pDevice->CreateVertexShader(dwDecl,code->GetBufferPointer(),&VS_Code,0));
+	R_CHK			(HW.pDevice->CreateVertexShader(dwDecl,LPDWORD(code->GetBufferPointer()),&VS_Code,0));
 	_RELEASE		(code);
 	_RELEASE		(errors);
 
@@ -44,7 +44,7 @@ void CDetailManager::VS_Load()
 
 	// Determine POOL & USAGE
 	DWORD dwUsage	=	D3DUSAGE_WRITEONLY;
-	DWORD dwPool	=	D3DPOOL_DEFAULT;
+	D3DPOOL dwPool	=	D3DPOOL_DEFAULT;
 	if (HW.Caps.vertex.bSoftware)	{
 		dwUsage	|=	D3DUSAGE_SOFTWAREPROCESSING;
 		dwPool	=	D3DPOOL_SYSTEMMEM;
@@ -53,13 +53,13 @@ void CDetailManager::VS_Load()
 	// Create VB/IB
 	CHK_DX			(HW.pDevice->ResourceManagerDiscardBytes(0));
 	R_CHK			(HW.pDevice->CreateVertexBuffer(dwVerts*vSize,dwUsage,0,dwPool,&VS_VB));
-	R_CHK			(HW.pDevice->CreateIndexBuffer(dwIndices*2,dwUsage,D3DFMT_INDEX16,&VS_IB));
+	R_CHK			(HW.pDevice->CreateIndexBuffer(dwIndices*2,dwUsage,D3DFMT_INDEX16,dwPool,&VS_IB));
 	Msg("* [DETAILS] Batch(%d), VB(%dK), IB(%dK)",batch_size,(dwVerts*vSize)/1024, (dwIndices*2)/1024);
 	
 	// Fill VB
 	{
 		vertHW*			pV;
-		R_CHK			(VS_VB->Lock(0,0,&pV,0));
+		R_CHK			(VS_VB->Lock(0,0,(BYTE**)&pV,0));
 		for (o=0; o<objects.size(); o++)
 		{
 			CDetail& D		=	objects[o];
@@ -82,7 +82,7 @@ void CDetailManager::VS_Load()
 	// Fill IB
 	{
 		u16*			pI;
-		R_CHK			(VS_IB->Lock(0,0,(u8**)(&pI),0));
+		R_CHK			(VS_IB->Lock(0,0,(BYTE**)(&pI),0));
 		for (o=0; o<objects.size(); o++)
 		{
 			CDetail& D		=	objects[o];
@@ -91,7 +91,7 @@ void CDetailManager::VS_Load()
 			{
 				for (u32 i=0; i<D.number_indices; i++)
 					*pI++	=	D.indices[i] + offset;
-				offset		+=	D.number_vertices;
+				offset		+=	u16(D.number_vertices);
 			}
 		}
 		R_CHK			(VS_IB->Unlock());
@@ -101,7 +101,7 @@ void CDetailManager::VS_Load()
 void CDetailManager::VS_Unload()
 {
 	// Destroy VS/VB/IB
-	R_CHK			(HW.pDevice->DeleteVertexShader(&VS_Code));	VS_Code = 0;
+	R_CHK			(HW.pDevice->DeleteVertexShader(VS_Code));	VS_Code = 0;
 	_RELEASE		(VS_IB);
 	_RELEASE		(VS_VB);
 }
