@@ -46,7 +46,8 @@ private:
 	CRT*					RT;
 	CRT*					RT_temp;
 	Shader*					sh_Texture;
-	Shader*					sh_Blur;
+	Shader*					sh_BlurTR;
+	Shader*					sh_BlurRT;
 	CVertexStream*			vs_Blur;
 	Shader*					sh_World;
 	CVertexStream*			vs_World;

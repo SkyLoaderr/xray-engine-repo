@@ -37,6 +37,7 @@ void CLightShadows::OnDeviceCreate	()
 {
 	LPCSTR	RTname		= "$user$shadow";
 	LPCSTR	RTtemp		= "$user$temp";
+	string128 RTname2;	strconcat(RTname2,RTname,",",RTname);
 	string128 RTtemp2;	strconcat(RTtemp2,RTtemp,",",RTtemp);
 	
 	// 
@@ -45,7 +46,8 @@ void CLightShadows::OnDeviceCreate	()
 	sh_Texture	= Device.Shader.Create		("effects\\shadow_texture");
 	sh_World	= Device.Shader.Create		("effects\\shadow_world",	RTname);
 	vs_World	= Device.Streams.Create		(FVF::F_LIT, 4*batch_size*3);
-	sh_Blur		= Device.Shader.Create		("effects\\blur",			RTtemp2);
+	sh_BlurTR	= Device.Shader.Create		("effects\\blur",			RTtemp2);
+	sh_BlurRT	= Device.Shader.Create		("effects\\blur",			RTname2);
 	vs_Blur		= Device.Streams.Create		(FVF::F_TL2uv, 4);
 
 	// Debug
@@ -59,7 +61,8 @@ void CLightShadows::OnDeviceDestroy	()
 	Device.Shader.Delete					(sh_Screen	);
 	
 	// 
-	Device.Shader.Delete					(sh_Blur	);
+	Device.Shader.Delete					(sh_BlurRT	);
+	Device.Shader.Delete					(sh_BlurTR	);
 	Device.Shader.Delete					(sh_World	);
 	Device.Shader.Delete					(sh_Texture	);
 	Device.Shader._DeleteRT					(RT_temp	);
@@ -261,9 +264,19 @@ void CLightShadows::calculate	()
 		pv->set						(dim,	0.f,	C, p1.x, p0.y, t1.x, t0.y);	pv++;
 		vs_Blur->Unlock				(4);
 		
-		// Actual rendering
+		// Actual rendering (pass0, temp2real)
 		Device.Shader.set_RT		(RT->pRT,	0);
-		Device.Shader.set_Shader	(sh_Blur	);
+		Device.Shader.set_Shader	(sh_BlurTR	);
+		Device.Primitive.Draw		(vs_Blur,	4, 2, Offset,Device.Streams_QuadIB);
+
+		// Actual rendering (pass1, real2temp)
+		Device.Shader.set_RT		(RT_temp->pRT,	0);
+		Device.Shader.set_Shader	(sh_BlurRT	);
+		Device.Primitive.Draw		(vs_Blur,	4, 2, Offset,Device.Streams_QuadIB);
+
+		// Actual rendering (pass2, temp2real)
+		Device.Shader.set_RT		(RT->pRT,	0);
+		Device.Shader.set_Shader	(sh_BlurTR	);
 		Device.Primitive.Draw		(vs_Blur,	4, 2, Offset,Device.Streams_QuadIB);
 	}
 	
