@@ -57,17 +57,16 @@ extern "C"{
 	};
 
 	// State setting calls
+	PARTICLEDLL_API void __stdcall pColor(float red, float green, float blue, float alpha = 1.0f);
 
-	PARTICLEDLL_API void __stdcall pRotate(float rot_x, float rot_y=0.f, float rot_z=0.f);
-
-	PARTICLEDLL_API void __stdcall pRotateD(PDomainEnum dtype,
+	PARTICLEDLL_API void __stdcall pColorD(float alpha, PDomainEnum dtype,
 		float a0 = 0.0f, float a1 = 0.0f, float a2 = 0.0f,
 		float a3 = 0.0f, float a4 = 0.0f, float a5 = 0.0f,
 		float a6 = 0.0f, float a7 = 0.0f, float a8 = 0.0f);
 
-	PARTICLEDLL_API void __stdcall pColor(float red, float green, float blue, float alpha = 1.0f);
+	PARTICLEDLL_API void __stdcall pRotate(float rot_x, float rot_y=0.f, float rot_z=0.f);
 
-	PARTICLEDLL_API void __stdcall pColorD(float alpha, PDomainEnum dtype,
+	PARTICLEDLL_API void __stdcall pRotateD(PDomainEnum dtype,
 		float a0 = 0.0f, float a1 = 0.0f, float a2 = 0.0f,
 		float a3 = 0.0f, float a4 = 0.0f, float a5 = 0.0f,
 		float a6 = 0.0f, float a7 = 0.0f, float a8 = 0.0f);
@@ -136,9 +135,7 @@ extern "C"{
 
 	PARTICLEDLL_API int __stdcall pSetMaxParticles(int max_count);
 
-
 	// Actions
-
 	PARTICLEDLL_API void __stdcall pAvoid(float magnitude, float epsilon, float look_ahead, 
 		PDomainEnum dtype,
 		float a0 = 0.0f, float a1 = 0.0f, float a2 = 0.0f,
@@ -160,9 +157,6 @@ extern "C"{
 		float magnitude, float stdev, float epsilon = P_EPS, float age = 0.0f);
 
 	PARTICLEDLL_API void __stdcall pFollow(float magnitude = 1.0f, float epsilon = P_EPS, float max_radius = P_MAXFLOAT);
-
-	PARTICLEDLL_API void __stdcall pAnimate(BOOL animated=FALSE, BOOL random_frame=FALSE, BOOL random_playback=FALSE,
-		WORD frame_count=16, float speed=24.f);
 
 	PARTICLEDLL_API void __stdcall pGravitate(float magnitude = 1.0f, float epsilon = P_EPS, float max_radius = P_MAXFLOAT);
 

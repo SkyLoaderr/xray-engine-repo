@@ -289,16 +289,16 @@ PARTICLEDLL_API void __stdcall pSource(float particle_rate, PDomainEnum dtype,
 	PASource S;
 	
 	S.particle_rate = particle_rate;
-	S.position = pDomain(dtype, a0, a1, a2, a3, a4, a5, a6, a7, a8);
-	S.positionB = _ps.VertexB;
-	S.size = _ps.Size;
-	S.rot = _ps.Rot;
-	S.velocity = _ps.Vel;
-	S.color = _ps.Color;
-	S.alpha = _ps.Alpha;
-	S.age = _ps.Age;
-	S.age_sigma = _ps.AgeSigma;
-	S.vertexB_tracks = _ps.vertexB_tracks;
+	S.position		= pDomain(dtype, a0, a1, a2, a3, a4, a5, a6, a7, a8);
+	S.positionB		= _ps.VertexB;
+	S.size			= _ps.Size;
+	S.rot			= _ps.Rot;
+	S.velocity		= _ps.Vel;
+	S.color			= _ps.Color;
+	S.alpha			= _ps.Alpha;
+	S.age			= _ps.Age;
+	S.age_sigma		= _ps.AgeSigma;
+	S.vertexB_tracks= _ps.vertexB_tracks;
 	
 	_pSendAction(&S, PASourceID, sizeof(PASource));
 }
@@ -444,18 +444,4 @@ PARTICLEDLL_API void __stdcall pVortex(float center_x, float center_y, float cen
 	S.max_radius = max_radius;
 	
 	_pSendAction(&S, PAVortexID, sizeof(PAVortex));
-}
-
-PARTICLEDLL_API void __stdcall pAnimate(BOOL animated, BOOL random_frame, BOOL random_playback,
-			WORD frame_count, float speed)
-{
-	PAAnimate S;
-	
-	S.animated			= animated;
-	S.random_frame		= random_frame;
-	S.random_playback	= random_playback;
-	S.frame_count		= frame_count;
-	S.speed				= speed;
-	
-	_pSendAction(&S, PAAnimateID, sizeof(PAAnimate));
 }

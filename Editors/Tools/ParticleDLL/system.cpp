@@ -174,26 +174,26 @@ inline void _PUnLock()
 
 _ParticleState::_ParticleState()
 {
-	in_call_list = FALSE;
-	in_new_list = FALSE;
-	vertexB_tracks = TRUE;
+	in_call_list	= FALSE;
+	in_new_list		= FALSE;
+	vertexB_tracks	= TRUE;
 	
-	dt = 1.0f;
+	dt			= 1.0f;
 	
-	group_id = -1;
-	list_id = -1;
-	pgrp = NULL;
-	pact = NULL;
-	tid = 0; // This will be filled in above if we're MP.
+	group_id	= -1;
+	list_id		= -1;
+	pgrp		= NULL;
+	pact		= NULL;
+	tid			= 0; // This will be filled in above if we're MP.
 	
-	Size = pDomain(PDPoint, 1.0f, 1.0f, 1.0f);
-	Vel = pDomain(PDPoint, 0.0f, 0.0f, 0.0f);
-	VertexB = pDomain(PDPoint, 0.0f, 0.0f, 0.0f);
-	Color = pDomain(PDPoint, 1.0f, 1.0f, 1.0f);
-	Rot = pDomain(PDPoint, 1.0f, 1.0f, 1.0f);
-	Alpha = 1.0f;
-	Age = 0.0f;
-	AgeSigma = 0.0f;
+	Size		= pDomain(PDPoint, 1.0f, 1.0f, 1.0f);
+	Vel			= pDomain(PDPoint, 0.0f, 0.0f, 0.0f);
+	VertexB		= pDomain(PDPoint, 0.0f, 0.0f, 0.0f);
+	Color		= pDomain(PDPoint, 1.0f, 1.0f, 1.0f);
+	Rot			= pDomain(PDPoint, 1.0f, 1.0f, 1.0f);
+	Alpha		= 1.0f;
+	Age			= 0.0f;
+	AgeSigma	= 0.0f;
 }
 
 ParticleGroup *_ParticleState::GetGroupPtr(int p_group_num)
@@ -328,9 +328,6 @@ void _pCallActionList(ParticleAction *apa, int num_actions,
 			break;
 		case PAFollowID:
 			((PAFollow *)pa)->Execute(pg);
-			break;
-		case PAAnimateID:
-			((PAAnimate *)pa)->Execute(pg);
 			break;
 		case PAGravitateID:
 			((PAGravitate *)pa)->Execute(pg);

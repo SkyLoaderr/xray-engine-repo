@@ -20,19 +20,21 @@
 struct Particle
 {
 	enum{
-		ANIMATE_CCW	= (1<<0),
+		BIRTH		= (1<<0),
+		DYING		= (1<<1),
+		ANIMATE_CCW	= (1<<1),
 	};
-	pVector pos;
-	pVector posB;
-	pVector size;
-	pVector rot;
-	pVector vel;
-	pVector velB;	// Used to compute binormal, normal, etc.
-	pVector color;	// Color must be next to alpha so glColor4fv works.
-	float alpha;	// This is both cunning and scary.
-	float age;
-	float frame;
-	DWORD flags;
+	pVector	pos;
+	pVector	posB;
+	pVector	size;
+	pVector	rot;
+	pVector	vel;
+	pVector	velB;	// Used to compute binormal, normal, etc.
+	pVector	color;	// Color must be next to alpha so glColor4fv works.
+	float	alpha;	// This is both cunning and scary.
+	float	age;
+	float	frame;
+	DWORD	flags;
 };
 
 // A group of particles - Info and an array of Particles
@@ -50,9 +52,8 @@ struct ParticleGroup
 	
 	inline BOOL Add(const pVector &pos, const pVector &posB,
 		const pVector &size, const pVector &rot, const pVector &vel, const pVector &color,
-
 		const float alpha = 1.0f,
-		const float age = 0.0f, float frame=P_MAXFLOAT, WORD flags=0)
+		const float age = 0.0f, float frame=0, WORD flags=Particle::BIRTH)
 	{
 		if(p_count >= max_particles)
 			return FALSE;
@@ -107,7 +108,6 @@ struct pDomain
 enum PActionEnum
 {
 	PAHeaderID,			// The first action in each list.
-	PAAnimateID,		// 
 	PAAvoidID,			// Avoid entering the domain of space.
 	PABounceID,			// Bounce particles off a domain of space.
 	PACallActionListID,	// 
@@ -411,24 +411,13 @@ struct PAVortex : public ParticleAction
 	ExecMethod
 };
 
-struct PAAnimate : public ParticleAction
-{
-	BOOL animated;
-	BOOL random_frame;
-	BOOL random_playback;
-	WORD frame_count;
-	float speed;
-
-	ExecMethod
-};
-
 // Global state vector
 struct _ParticleState
 {
-	float dt;
-	BOOL in_call_list;
-	BOOL in_new_list;
-	BOOL vertexB_tracks;
+	float	dt;
+	BOOL	in_call_list;
+	BOOL	in_new_list;
+	BOOL	vertexB_tracks;
 	
 	int group_id;
 	int list_id;
