@@ -23,7 +23,7 @@ light::light(void)
 light::~light(void)
 {
 	// by Dima
-	L->set_active	(false);
+	set_active	(false);
 	// end
 }
 
