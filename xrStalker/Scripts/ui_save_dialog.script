@@ -157,7 +157,7 @@ function save_dialog:OnKeyboard(dik, keyboard_action)  --virtual function
 end
 
 function save_dialog:AddItemToList(item)
-	local list_box = self:GetListWnd("list_wnd")
+	local list_box = self:GetListWnd("list_window")
 	local shift = 50
 	local color = GetARGB(255,0,255,0)
 	local parse = false
