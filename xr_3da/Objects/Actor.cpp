@@ -724,7 +724,7 @@ void CActor::OnHUDDraw(CCustomHUD* hud)
 	HUD->pHUDFont->Out(400,320,buf);
 }
 
-void CActor::wpn_Set(DWORD id)
+void CActor::g_wpn_Set(DWORD id)
 {
 	switch (id)
 	{

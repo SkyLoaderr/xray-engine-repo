@@ -33,7 +33,7 @@ void CActor::OnKeyboardPress(int cmd){
 	case kWPN_7:	
 	case kWPN_8:	
 	case kWPN_9:	
-		wpn_Set		(cmd-kWPN_1);			
+		g_wpn_Set	(cmd-kWPN_1);			
 		break;
 	}
 }
