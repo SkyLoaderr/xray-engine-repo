@@ -34,7 +34,7 @@
 		#endif
 
 		#if defined(_CPPRTTI)
-			#error Please disable RTTI...
+			// #error Please disable RTTI...
 		#endif
 
 		#if defined(_CPPUNWIND)
