@@ -125,9 +125,9 @@ IC void	Reduce				(int& w, int& h, int& l, int& skip)
 
 ENGINE_API IDirect3DBaseTexture9*	TW_LoadTextureFromTexture
 (
-	IDirect3DBaseTexture9*	t_from,
+	IDirect3DTexture9*		t_from,
 	D3DFORMAT&				t_dest_fmt,
-	u32						levels_2_skip,
+	int						levels_2_skip,
 	u32&					w,
 	u32&					h
 )
