@@ -1468,7 +1468,7 @@ void	CActor::OnRender_Network()
 
 void		CActor::HideCurrentWeapon		()
 {
-	if (inventory().ActiveItem()&&inventory().ActiveItem()->HandDependence()==hd2Hand)
+	if (inventory().ActiveItem()&& !inventory().ActiveItem()->IsSingleHanded())
 	{
 		NET_Packet	P;
 		u_EventGen(P, GEG_PLAYER_DEACTIVATE_CURRENT_SLOT, ID());

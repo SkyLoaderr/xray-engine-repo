@@ -262,9 +262,11 @@ public:
 
 
     virtual EHandDependence		HandDependence		()	const		{	return eHandDependence;}
+	virtual bool				IsSingleHanded		()	const		{	return m_bIsSingleHanded; }
 protected:
 	// 0-используется без участия рук, 1-одна рука, 2-две руки
 	EHandDependence			eHandDependence;
+	bool					m_bIsSingleHanded;
 	Fmatrix					m_Offset;
 	//направление для партиклов огня и дыма
 	Fmatrix					m_FireParticlesXForm;
