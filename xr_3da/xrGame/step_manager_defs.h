@@ -1,3 +1,4 @@
+#pragma once
 #define MIN_LEGS_COUNT	1
 #define MAX_LEGS_COUNT	4 
 
