@@ -339,7 +339,6 @@ function t_OnStart:set_anim()
         else
 	        self.mem.repeats    = 0
             if( self.mem.all_anim == false ) then						--Если не проигруем специфическую анимацию
-                printf( "11111111111111" )
                 self.mem.last_anim  = "idle_non_stop"
             end
             self.mem.need_reset = true
