@@ -414,6 +414,7 @@ void CAI_Stalker::SelectAnimation(const Fvector& _view, const Fvector& _move, fl
 			CMotionDef				*tpTorsoAnimation	=	0;
 			CMotionDef				*tpLegsAnimation	=	0;
 			m_tpCurrentGlobalBlend	= 0;
+			m_tpCurrentGlobalAnimation = 0;
 			vfAssignTorsoAnimation	(tpTorsoAnimation);
 			vfAssignLegsAnimation	(tpLegsAnimation);
 			
