@@ -179,7 +179,7 @@ function load_dialog:OnButton_load_clicked()
 	
 	console:execute("main_menu off")
 	console:execute("disconnect")	
-	console:execute("start server(" .. fname .. "/single/alife) client(localhost)")	
+	console:execute("start server(" .. fname .. "/single/alife/load) client(localhost)")	
 end
 
 function load_dialog:OnButton_back_clicked()

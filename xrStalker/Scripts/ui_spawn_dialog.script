@@ -165,7 +165,7 @@ function spawn_dialog:OnButton_load_clicked()
 
 	console:execute("disconnect")
 	console:execute("main_menu off")
-	console:execute("start server(" .. fname .. "/single/alife) client(localhost)")	
+	console:execute("start server(" .. fname .. "/single/alife/new) client(localhost)")	
 end
 
 function spawn_dialog:OnButton_back_clicked()
