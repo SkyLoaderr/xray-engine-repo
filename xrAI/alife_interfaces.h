@@ -11,20 +11,26 @@
 
 class NET_Packet;
 
-__interface IPureALifeLObject {
+#ifdef XRGAME_EXPORTS
+#	define xr_interface interface
+#else
+#	define xr_interface __interface
+#endif
+
+xr_interface IPureALifeLObject {
 public:
 	virtual void					load(IReader	&tFileStream)						= 0;
 };
 
-__interface IPureALifeSObject {
+xr_interface IPureALifeSObject {
 public:
 	virtual void					save(IWriter	&tMemoryStream)						= 0;
 };
 
-__interface IPureALifeLSObject : public IPureALifeLObject, public IPureALifeSObject {
+xr_interface IPureALifeLSObject : public IPureALifeLObject, public IPureALifeSObject {
 };
 
-__interface IPureServerObject : public IPureALifeLSObject {
+xr_interface IPureServerObject : public IPureALifeLSObject {
 public:
 	virtual void					STATE_Write	(NET_Packet &tNetPacket)				= 0;
 	virtual void					STATE_Read	(NET_Packet &tNetPacket, u16 size)		= 0;
@@ -32,8 +38,10 @@ public:
 	virtual void					UPDATE_Read	(NET_Packet &tNetPacket)				= 0;
 };
 
-__interface IPureSchedulableObject {
+xr_interface IPureSchedulableObject {
 	virtual void					update		()										= 0;
 };
+
+#undef xr_interface
 
 #endif
