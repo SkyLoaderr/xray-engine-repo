@@ -37,6 +37,8 @@ LPCSTR					r2v(LPCSTR name)
 //
 void					CRender::create					()
 {
+	if (b_nv3x)			::Device.Resources->SetHLSL_path("r2_nv3x\\");
+	else				::Device.Resources->SetHLSL_path("r2_r3xx\\");
 }
 void					CRender::destroy				()
 {
