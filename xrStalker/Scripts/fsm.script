@@ -22,7 +22,7 @@ end
 function FSM:add_transition(cond_func, from_state_num, to_state_num)
 	local transition_vector = self.transition_matrix[from_state_num] 
 	
-	if transition_vector == nil
+	if transition_vector == nil then
 		transition_vector = {[to_state_num] = cond_func}
 	else
 		transition_vector[to_state_num] = cond_func
@@ -32,7 +32,7 @@ end
 -- запускает на выполнение функцию проверки и перехода
 -- в  новое состояние 
 function FSM:check_condition(to_state_num, cond_func)
-	if cond_func() == true
+	if cond_func() == true then
 		self.current_state = to_state_num
 	end
 end
