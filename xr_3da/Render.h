@@ -28,7 +28,7 @@ public:
 	virtual void					set_active			(bool)								= 0;
 	virtual bool					get_active			()									= 0;
 	virtual void					set_shadow			(bool)								= 0;
-	virtual void					set_indirect		(bool)								= 0;
+	virtual void					set_indirect		(bool)								{};
 	virtual void					set_position		(const Fvector& P)					= 0;
 	virtual void					set_rotation		(const Fvector& D, const Fvector& R)= 0;
 	virtual void					set_cone			(float angle)						= 0;
