@@ -257,6 +257,7 @@ void CCustomMonster::Update	( u32 DT )
 
 		// Look and action streams
 		if (fHealth>0) {
+			Exec_Action				(dt);
 			Exec_Look				(dt);
 			Exec_Movement			(dt);
 			Exec_Visibility			();
@@ -737,4 +738,8 @@ void CCustomMonster::feel_touch_new				(CObject* O)
 	}
 
 	// 
+}
+
+void CCustomMonster::Exec_Action(float dt)
+{
 }

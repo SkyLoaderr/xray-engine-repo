@@ -201,6 +201,7 @@ public:
 	void				mk_rotation				( Fvector& dir, SRotation &R);
 
 	// stream executors
+	virtual void		Exec_Action				( float dt );
 	virtual void		Exec_Look				( float dt );
 	virtual void		Exec_Movement			( float dt );
 	void				Exec_Physics			( float dt );
