@@ -29,7 +29,7 @@ void CMovementManager::Init			()
 	m_time_work						= 300*CPU::cycles_per_microsec;
 	m_speed							= 0.f;
 	
-	set_enabled						(true);
+	enable_movement					(true);
 	CGameLocationSelector::Init		(&ai().game_graph());
 	CGamePathManager::Init			(&ai().game_graph());
 	CLevelLocationSelector::Init	(&ai().level_graph());
@@ -49,7 +49,7 @@ void CMovementManager::move_along_path	(CPHMovementControl *movement_control, Fv
 	float				precision = 1.f;
 #endif
 
-	if (!get_enabled() || CDetailPathManager::m_path.empty() || (CDetailPathManager::m_path.size() - 1 <= CDetailPathManager::m_current_travel_point))	{
+	if (!enabled() || CDetailPathManager::m_path.empty() || (CDetailPathManager::m_path.size() - 1 <= CDetailPathManager::m_current_travel_point))	{
 		m_speed			= 0.f;
 #ifndef NO_PHYSICS_IN_AI_MOVE
 		if(movement_control->IsCharacterEnabled()) {
@@ -218,7 +218,7 @@ void CMovementManager::process_game_path()
 			CLevelPathManager::build_path(
 				level_vertex_id(),
 				ai().game_graph().vertex(
-					CGamePathManager::get_intermediate_vertex_id()
+					CGamePathManager::intermediate_vertex_id()
 				)->level_vertex_id()
 			);
 			if (CLevelPathManager::failed()) {
@@ -241,13 +241,13 @@ void CMovementManager::process_game_path()
 			CDetailPathManager::m_start_position = Position();
 			m_detail_dest_position  = 
 				ai().level_graph().vertex_position(
-					CLevelPathManager::get_intermediate_vertex_id()
+					CLevelPathManager::intermediate_vertex_id()
 				);
 			CDetailPathManager::build_path(
 				CLevelPathManager::path(),
-				CLevelPathManager::get_intermediate_index(),
+				CLevelPathManager::intermediate_index(),
 				ai().level_graph().vertex_position(
-					CLevelPathManager::get_intermediate_vertex_id()
+					CLevelPathManager::intermediate_vertex_id()
 				)
 			);
 			if (CDetailPathManager::failed()) {
@@ -268,7 +268,7 @@ void CMovementManager::process_game_path()
 			else
 				if (!CLevelPathManager::actual(
 						level_vertex_id(),
-						CGamePathManager::get_intermediate_vertex_id()
+						CGamePathManager::intermediate_vertex_id()
 					))
 				m_path_state	= ePathStateBuildLevelPath;
 			else
@@ -324,15 +324,15 @@ void CMovementManager::process_level_path()
 			if (CLevelLocationSelector::used())
                 CDetailPathManager::build_path(
 					CLevelPathManager::path(),
-					CLevelPathManager::get_intermediate_index(),
+					CLevelPathManager::intermediate_index(),
 					ai().level_graph().vertex_position(
-						CLevelPathManager::get_intermediate_vertex_id()
+						CLevelPathManager::intermediate_vertex_id()
 					)
 				);
 			else
                 CDetailPathManager::build_path(
 					CLevelPathManager::path(),
-					CLevelPathManager::get_intermediate_index(),
+					CLevelPathManager::intermediate_index(),
 					m_detail_dest_position
 				);
 			if (CDetailPathManager::failed()) {
@@ -409,9 +409,9 @@ void CMovementManager::process_enemy_search()
 			Device.Statistic.TEST2.Begin();
 			CDetailPathManager::build_path	(
 				CLevelPathManager::path(),
-				CLevelPathManager::get_intermediate_index(),
+				CLevelPathManager::intermediate_index(),
 				ai().level_graph().vertex_position(
-					CLevelPathManager::get_intermediate_vertex_id()
+					CLevelPathManager::intermediate_vertex_id()
 				)
 			);
 			if (CDetailPathManager::failed()) {

@@ -33,7 +33,7 @@ IC	CPathManagerTemplate::~CAbstractPathManager	()
 }
 
 TEMPLATE_SPECIALIZATION
-IC	void CPathManagerTemplate::Init				(_Graph *graph)
+IC	void CPathManagerTemplate::Init				(const _Graph *graph)
 {
 	m_actuality				= false;
 	m_failed				= false;
@@ -68,14 +68,14 @@ IC	void CPathManagerTemplate::select_intermediate_vertex()
 }
 
 TEMPLATE_SPECIALIZATION
-IC	_vertex_id_type CPathManagerTemplate::get_intermediate_vertex_id() const
+IC	_vertex_id_type CPathManagerTemplate::intermediate_vertex_id() const
 {
 	VERIFY					(m_intermediate_index < m_path.size());
-	return					(m_path[m_intermediate_index]);
+	return					(m_path[intermediate_index()]);
 }
 
 TEMPLATE_SPECIALIZATION
-IC	u32 CPathManagerTemplate::get_intermediate_index() const
+IC	u32 CPathManagerTemplate::intermediate_index() const
 {
 	return					(m_intermediate_index);
 }
@@ -110,6 +110,19 @@ TEMPLATE_SPECIALIZATION
 IC	const xr_vector<_vertex_id_type> &CPathManagerTemplate::path	() const
 {
 	return					(m_path);
+}
+
+TEMPLATE_SPECIALIZATION
+IC	_vertex_id_type CPathManagerTemplate::dest_vertex_id() const
+{
+	return					(m_dest_vertex_id);
+}
+
+TEMPLATE_SPECIALIZATION
+IC	void CPathManagerTemplate::set_dest_vertex(const _vertex_id_type vertex_id)
+{
+	m_actuality				= m_actuality && (dest_vertex_id() == vertex_id);
+	m_dest_vertex_id		= vertex_id;
 }
 
 #undef TEMPLATE_SPECIALIZATION

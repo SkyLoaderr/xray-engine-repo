@@ -11,15 +11,6 @@
 #include "level_graph.h"
 
 class CDetailPathManager {
-			bool	valid					() const;
-			bool	valid					(const Fvector &position) const;
-			void	build_smooth_path		(const xr_vector<u32> &level_path, u32 intermediate_index, const Fvector &dest_position);
-			void	build_dodge_path		(const xr_vector<u32> &level_path, u32 intermediate_index, const Fvector &dest_position);
-			void	build_criteria_path		(const xr_vector<u32> &level_path, u32 intermediate_index, const Fvector &dest_position);
-protected:
-	u32											m_current_travel_point;
-	bool										m_actual;
-	bool										m_failed;
 public:
 	enum EMovementParameters {
 		eMovementParameterStand		= u32(1) << 1,
@@ -45,6 +36,10 @@ public:
 		Fvector									m_position;
 	};
 
+private:
+	u32											m_current_travel_point;
+	bool										m_actual;
+	bool										m_failed;
 	bool										m_collision;
 
 	xr_vector<STravelPoint>						m_path;
@@ -57,14 +52,23 @@ public:
 	friend class CScriptMonster;
 	friend class CMotionManager;
 
-					CDetailPathManager		();
-	virtual			~CDetailPathManager		();
-	virtual void	Init					();
+protected:
 			void	build_path				(const xr_vector<u32> &level_path, u32 intermediate_index, const Fvector &dest_position);
+			void	build_smooth_path		(const xr_vector<u32> &level_path, u32 intermediate_index, const Fvector &dest_position);
+			void	build_dodge_path		(const xr_vector<u32> &level_path, u32 intermediate_index, const Fvector &dest_position);
+			void	build_criteria_path		(const xr_vector<u32> &level_path, u32 intermediate_index, const Fvector &dest_position);
+	IC		void	set_dest_position		(const Fvector &dest_position);
 			const	Fvector &direction		();
 			bool	actual					() const;
 	IC		bool	failed					() const;
-			bool	completed				() const;
+	IC		bool	completed				() const;
+			bool	valid					() const;
+			bool	valid					(const Fvector &position) const;
+
+public:
+					CDetailPathManager		();
+	virtual			~CDetailPathManager		();
+	virtual void	Init					();
 };
 
 #include "detail_path_manager_inline.h"

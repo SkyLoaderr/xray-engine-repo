@@ -10,6 +10,7 @@
 
 #include "abstract_path_manager.h"
 #include "game_graph.h"
+#include "ai_object_location.h"
 
 template <
 	typename _VertexEvaluator,
@@ -28,7 +29,8 @@ class
 		_VertexEvaluator,
 		_vertex_id_type,
 		_index_type
-	> 
+	>,
+	virtual public CAI_ObjectLocation
 {
 	typedef CAbstractPathManager<
 		CGameGraph,
@@ -36,8 +38,8 @@ class
 		_vertex_id_type,
 		_index_type
 	> inherited;
-public:
-	IC			bool	actual						(const _vertex_id_type start_vertex_id, const _vertex_id_type dest_vertex_id) const;
+protected:
+	IC			bool	actual						() const;
 };
 
 #include "game_path_manager_inline.h"

@@ -29,12 +29,13 @@ class CMovementManager :
 	public CEnemyLocationPredictor,
 	virtual public CGameObject
 {
-private:
+protected:
 	typedef CBaseLocationSelector	<CGameGraph,PathManagers::SVertexType<float,u32,u32>,u32>			CGameLocationSelector;
 	typedef CBasePathManager		<CGameGraph,PathManagers::SBaseParameters<float,u32,u32>,u32,u32>	CGamePathManager;
 	typedef CBaseLocationSelector	<CLevelGraph,PathManagers::CAbstractVertexEvaluator,u32>			CLevelLocationSelector;
 	typedef CBasePathManager		<CLevelGraph,PathManagers::SBaseParameters<float,u32,u32>,u32,u32>	CLevelPathManager;
 
+private:
 	enum EPathState {
 		ePathStateSelectGameVertex = u32(0),
 		ePathStateBuildGamePath,
@@ -83,11 +84,6 @@ private:
 			void	process_level_path		();
 			void	process_enemy_search	();
 
-protected:
-	u32										m_game_dest_vertex_id;
-	u32										m_level_dest_vertex_id;
-	Fvector									m_detail_dest_position;
-
 	friend class CScriptMonster;
 	friend class CGroup;
 
@@ -96,15 +92,18 @@ public:
 	virtual			~CMovementManager		();
 	virtual void	Init					();
 	IC		void	set_path_type			(EPathType path_type);
-	IC		void	set_game_dest_node		(const ALife::_GRAPH_ID game_vertex_id);
-	IC		void	set_level_dest_node		(const u32 level_vertex_id);
-	IC		void	set_enabled				(bool enabled);
-	
-	IC		bool	get_enabled				() const;
+	IC		void	set_game_dest_vertex	(const ALife::_GRAPH_ID game_vertex_id);
+	IC		void	set_level_dest_vertex	(const u32 level_vertex_id);
+	IC		void	enable_movement			(bool enabled);
+	IC		EPathType path_type				() const;
+	IC		ALife::_GRAPH_ID game_dest_vertex_id	() const;
+	IC		u32		level_dest_vertex_id	() const;
+	IC		bool	enabled					() const;
 
 			void	build_path				();
 			void	move_along_path			(CPHMovementControl *movement_control, Fvector &dest_position, float time_delta);
 			float	speed					() const;
+	IC		bool	path_completed			() const;
 };
 
 #include "movement_manager_inline.h"

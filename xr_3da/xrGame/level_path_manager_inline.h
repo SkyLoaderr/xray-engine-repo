@@ -17,9 +17,9 @@
 #define CLevelManagerTemplate CBasePathManager<CLevelGraph,_VertexEvaluator,_vertex_id_type,_index_type>
 
 TEMPLATE_SPECIALIZATION
-IC	bool CLevelManagerTemplate::actual(const _vertex_id_type start_vertex_id, const _vertex_id_type dest_vertex_id) const
+IC	bool CLevelManagerTemplate::actual() const
 {
-	return		(inherited::actual(start_vertex_id,dest_vertex_id));
+	return		(inherited::actual(level_vertex_id(),dest_vertex_id()));
 }
 
 #undef TEMPLATE_SPECIALIZATION

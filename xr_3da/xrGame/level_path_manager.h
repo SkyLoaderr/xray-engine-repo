@@ -28,7 +28,8 @@ class
 		_VertexEvaluator,
 		_vertex_id_type,
 		_index_type
-	> 
+	>,
+	virtual public CAI_ObjectLocation
 {
 	typedef CAbstractPathManager<
 		CLevelGraph,
@@ -36,8 +37,8 @@ class
 		_vertex_id_type,
 		_index_type
 	> inherited;
-public:
-	IC			bool	actual						(const _vertex_id_type start_vertex_id, const _vertex_id_type dest_vertex_id) const;
+protected:
+	IC			bool	actual						() const;
 };
 
 #include "level_path_manager_inline.h"

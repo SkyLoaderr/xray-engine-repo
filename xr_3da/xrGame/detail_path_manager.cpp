@@ -77,16 +77,6 @@ void CDetailPathManager::build_path(const xr_vector<u32> &level_path, u32 interm
 	}
 }
 
-void CDetailPathManager::build_smooth_path		(const xr_vector<u32> &level_path, u32 intermediate_index, const Fvector &dest_position)
-{
-	build_criteria_path		(level_path,intermediate_index,dest_position);
-}
-
-void CDetailPathManager::build_dodge_path		(const xr_vector<u32> &level_path, u32 intermediate_index, const Fvector &dest_position)
-{
-	build_criteria_path		(level_path,intermediate_index,dest_position);
-}
-
 void CDetailPathManager::build_criteria_path	(const xr_vector<u32> &level_path, u32 intermediate_index, const Fvector &dest_position)
 {
 	R_ASSERT				(!level_path.empty());
@@ -156,7 +146,89 @@ bool CDetailPathManager::actual() const
 	return					(true);
 }
 
-bool CDetailPathManager::completed() const
+void CDetailPathManager::build_dodge_path		(const xr_vector<u32> &level_path, u32 intermediate_index, const Fvector &dest_position)
 {
-	return					(m_path.empty() || m_dest_position.similar(m_path.back().m_position));
+	build_criteria_path		(level_path,intermediate_index,dest_position);
 }
+
+void CDetailPathManager::build_smooth_path		(const xr_vector<u32> &level_path, u32 intermediate_index, const Fvector &dest_position)
+{
+	VERIFY(!level_path.empty());
+
+	if (ai().level_graph().inside(ai().level_graph().vertex(CLevelPathManager::dest_vertex_id()),dest_position))
+		dest_position.y = 
+			ai().level_graph().vertex_plane_y(
+				*ai().level_graph().vertex(level_path),
+				dest_position.x,
+				dest_position.z
+			);
+	m_tpaPoints.clear			();
+	m_tpaDeviations.clear		();
+	m_tpaTravelPath.clear		();
+	m_tpaPointNodes.clear		();
+
+	Fvector						tStartPosition = Position();
+	u32							dwCurNode = level_vertex_id();
+	m_tpaPoints.push_back		(Position());
+	m_tpaPointNodes.push_back	(dwCurNode);
+
+	for (u32 i=1; i<=N; ++i)
+		if (i<N) {
+			if (!ai().level_graph().check_vertex_in_direction(dwCurNode,tStartPosition,m_level_path[i])) {
+				if (dwCurNode != m_level_path[i - 1])
+					m_tpaPoints.push_back(tStartPosition = ai().level_graph().vertex_position(dwCurNode = m_level_path[--i]));
+				else
+					m_tpaPoints.push_back(tStartPosition = ai().level_graph().vertex_position(dwCurNode = m_level_path[i]));
+				m_tpaPointNodes.push_back(dwCurNode);
+			}
+		}
+		else
+			if (ai().level_graph().check_position_in_direction(dwCurNode,tStartPosition,dest_position) == u32(-1)) {
+				if (dwCurNode != CLevelPathManager::dest_vertex_id())
+					m_tpaPointNodes.push_back(CLevelPathManager::dest_vertex_id());
+				m_tpaPoints.push_back(dest_position);
+			}
+			else {
+				dwCurNode = CLevelPathManager::dest_vertex_id();
+				if (ai().level_graph().inside(ai().level_graph().vertex(dwCurNode),*tpDestinationPosition)) {
+					tpDestinationPosition->y = ai().level_graph().vertex_plane_y(*ai().level_graph().vertex(CLevelPathManager::dest_vertex_id()),tpDestinationPosition->x,tpDestinationPosition->z);
+					m_tpaPointNodes.push_back(CLevelPathManager::dest_vertex_id());
+					m_tpaPoints.push_back(dest_position);
+				}
+			}
+	
+	m_tpaDeviations.resize	(N = (int)m_tpaPoints.size());
+	
+	CDetailPathManager::m_path.clear();
+	
+	m_level_path.clear		();
+	
+	CTravelPoint			T;
+	T.m_position.set		(0,0,0);
+	for (i=1; i<N; ++i) {
+		m_tpaLine.clear();
+		m_tpaLine.push_back(m_tpaPoints[i-1]);
+		m_tpaLine.push_back(m_tpaPoints[i]);
+		ai().level_path().bfCreateStraightPTN_Path(m_tpaPointNodes[i-1],m_tpaPoints[i-1],m_tpaPoints[i],m_tpaTravelPath,m_tpaNodes, i == 1);
+		u32 n = (u32)m_tpaTravelPath.size();
+		for (u32 j= 0; j<n; ++j) {
+			T.P = m_tpaTravelPath[j];
+			m_path.push_back(T);
+			m_level_path.push_back(m_tpaNodes[j]);
+		}
+	}
+	if (N > 1) {
+		m_level_path[m_level_path.size() - 1] = CLevelPathManager::dest_vertex_id();
+		if (!m_path.empty() && !m_path[m_path.size() - 1].m_position.similar(dest_position)) {
+			if (ai().level_graph().inside(ai().level_graph().vertex(CLevelPathManager::dest_vertex_id()),dest_position) && ai().level_graph().valid_vertex_id(ai().level_graph().check_position_in_direction(CLevelPathManager::dest_vertex_id(),T.P,dest_position))) {
+				T.P = dest_position;
+				m_path.push_back(T);
+			}
+		}
+	}
+	else
+		if (!m_path.empty() && !m_path[m_path.size() - 1].P.similar(dest_position))
+			if (ai().level_graph().inside(ai().level_graph().vertex(CLevelPathManager::dest_vertex_id()),dest_position) && ai().level_graph().valid_vertex_id(ai().level_graph().check_position_in_direction(CLevelPathManager::dest_vertex_id(),T.P,dest_position)))
+				m_tpaTempPath.push_back(dest_position);
+}
+

@@ -16,24 +16,22 @@ template <
 >
 class CAbstractPathManager {
 private:
-	_Graph										*m_graph;
-	bool										m_actuality;
-	bool										m_failed;
+	const _Graph								*m_graph;
 	_VertexEvaluator							*m_evaluator;
+	xr_vector<_vertex_id_type>					m_path;
 	_index_type									m_current_index;
 	_index_type									m_intermediate_index;
-	xr_vector<_vertex_id_type>					m_path;
-public:
+	_vertex_id_type								m_dest_vertex_id;
+	bool										m_actuality;
+	bool										m_failed;
 
-
-	IC					CAbstractPathManager		();
-	IC	virtual			~CAbstractPathManager		();
-	IC	virtual void	Init						(_Graph *graph = 0);
-	
-	IC	_vertex_id_type	get_intermediate_vertex_id	() const;
-	IC			u32		get_intermediate_index		() const;
+protected:
+	IC	_vertex_id_type	dest_vertex_id				() const;
+	IC	_vertex_id_type	intermediate_vertex_id		() const;
+	IC			u32		intermediate_index			() const;
 	IC			void	set_evaluator				(_VertexEvaluator *evaluator);
-	
+	IC			void	set_dest_vertex				(const _vertex_id_type vertex_id);
+
 	IC			bool	actual						(const _vertex_id_type start_vertex_id, const _vertex_id_type dest_vertex_id) const;
 	IC			bool	completed					() const;
 	IC			bool	failed						() const;
@@ -41,6 +39,13 @@ public:
 
 	IC			void	build_path					(const _vertex_id_type start_vertex_id, const _vertex_id_type dest_vertex_id);
 	IC			void	select_intermediate_vertex	();
+
+public:
+
+
+	IC					CAbstractPathManager		();
+	IC	virtual			~CAbstractPathManager		();
+	IC	virtual void	Init						(const _Graph *graph = 0);
 };
 
 #include "abstract_path_manager_inline.h"
