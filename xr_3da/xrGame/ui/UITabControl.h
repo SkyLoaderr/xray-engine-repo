@@ -28,7 +28,7 @@ public:
 	virtual void Update();
 
 	// Сообщение отправляемое родительскому окну, когда произошла смена активной раскладки
-	typedef enum{TAB_CHANGED} E_MESSAGE;
+	typedef enum{TAB_CHANGED = 8500} E_MESSAGE;
 
 	// Добавление кнопки-закладки в список закладок контрола
 	bool AddItem(const char *pItemName, const char *pTexName, int x, int y, int width, int height);
@@ -63,6 +63,8 @@ public:
 	u32 GetActiveButtonColor() const 			{ return m_cActiveButtonColor; }
 	void SetGlobalButtonColor(u32 cl)			{ m_cGlobalButtonColor = cl; m_bChangeColors = true; }
 	u32 GetGlobalButtonColor() const 			{ return m_cGlobalButtonColor; }
+
+	TABS_VECTOR * GetButtonsVector()			{ return &m_TabsArr; }
 
 protected:
 	// Список кнопок - переключателей закладок

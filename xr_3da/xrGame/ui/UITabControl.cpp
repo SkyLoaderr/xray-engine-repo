@@ -83,23 +83,46 @@ void CUITabControl::RemoveAll()
 // переключение закладок.
 void CUITabControl::SendMessage(CUIWindow *pWnd, s16 msg, void *pData)
 {
-	// если нажали на активную кнопку, то ничего не делать.
-	TABS_VECTOR::value_type pushedItem = dynamic_cast<TABS_VECTOR::value_type>(pWnd);
-	if (!pushedItem) return;
-
-	if (msg != CUIButton::BUTTON_CLICKED || m_iPushedIndex > -1 && pushedItem == m_TabsArr[m_iPushedIndex]) return;
-
-	for (u32 i = 0; i < m_TabsArr.size(); ++i)
+	if (CUIButton::BUTTON_CLICKED == msg)
 	{
-		if (m_TabsArr[i] == pWnd)
+		// если нажали на активную кнопку, то ничего не делать.
+		TABS_VECTOR::value_type pushedItem = dynamic_cast<TABS_VECTOR::value_type>(pWnd);
+		if (!pushedItem) return;
+
+		if (msg != CUIButton::BUTTON_CLICKED		||
+			m_iPushedIndex > -1						&&
+			pushedItem == m_TabsArr[m_iPushedIndex])
+			return;
+
+		for (u32 i = 0; i < m_TabsArr.size(); ++i)
 		{
-			int iPrevPushedIndex = m_iPushedIndex;
-			m_iPushedIndex = i;
-			m_TabsArr[iPrevPushedIndex]->SetButtonMode(CUIButton::BUTTON_NORMAL);
-			m_TabsArr[iPrevPushedIndex]->OnMouse(-1, -1, CUIWindow::MOUSE_MOVE);
-			GetMessageTarget()->SendMessage(this, TAB_CHANGED, static_cast<void*>(&iPrevPushedIndex));
-			break;
+			if (m_TabsArr[i] == pWnd)
+			{
+				int iPrevPushedIndex = m_iPushedIndex;
+				m_iPushedIndex = i;
+				m_TabsArr[iPrevPushedIndex]->SetButtonMode(CUIButton::BUTTON_NORMAL);
+				m_TabsArr[iPrevPushedIndex]->OnMouse(-1, -1, CUIWindow::MOUSE_MOVE);
+				GetMessageTarget()->SendMessage(this, TAB_CHANGED, static_cast<void*>(&iPrevPushedIndex));
+				break;
+			}
 		}
+	}
+	else if (CUIButton::BUTTON_FOCUS_RECEIVED	== msg	||
+			 CUIButton::BUTTON_FOCUS_LOST		== msg)
+	{
+		for (u8 i = 0; i < m_TabsArr.size(); ++i)
+		{
+			if (pWnd == m_TabsArr[i])
+			{
+				static int idx;
+				idx = i;
+				GetMessageTarget()->SendMessage(this, msg, reinterpret_cast<void*>(&idx));
+			}
+		}
+	}
+	else
+	{
+		inherited::SendMessage(pWnd, msg, pData);
 	}
 }
 

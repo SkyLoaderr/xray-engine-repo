@@ -83,6 +83,9 @@ public:
 	void		SetAccelerator(u32 uAccel)	{ m_uAccelerator = uAccel; }
 	const u32	GetAccelerator() const		{ return m_uAccelerator; }
 
+	// Cмещение текстуры кнопки
+	void		SetTextureOffset(int x, int y) { m_iTexOffsetX = x; m_iTexOffsetY = y; }
+
 protected:
 	
 	E_BUTTON_STATE m_eButtonState;
@@ -107,6 +110,9 @@ protected:
 
 	// код акселератора
 	u32 m_uAccelerator;
+
+	// для смещения текстуры
+	int m_iTexOffsetX, m_iTexOffsetY;
 };
 
 #endif // _UI_BUTTON_H_

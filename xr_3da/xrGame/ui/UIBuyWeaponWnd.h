@@ -22,6 +22,7 @@
 #include "UICharacterInfo.h"
 #include "UIItemInfo.h"
 #include "UITabControl.h"
+#include "UIListItem.h"
 
 class CArtifact;
 
@@ -45,7 +46,7 @@ public:
 	virtual void OnMouse(int x, int y, E_MOUSEACTION mouse_action);
 
 
-	CInventory* GetInventory() {return m_pInv;}
+//	CInventory* GetInventory() {return m_pInv;}
 
 	virtual void Update();
 	virtual void Draw();
@@ -144,26 +145,29 @@ protected:
 	};
 
 	CUIFrameWindow		UIBagWnd;
-	CUIFrameWindow		UIDescWnd;
-	CUIFrameWindow		UIPersonalWnd;
+	CUIStatic			UIDescWnd;
+	CUIStatic			UIPersonalWnd;
 
 	//конпка активации окошка сна
-	CUIButton			UISleepButton;
+//	CUIButton			UISleepButton;
 
 	// Набор закладок для экранов с оружием
 	CUITabControl		UIWeaponsTabControl;
 
-	CUIButton			UIButton1;
-	CUIButton			UIButton2;
-	CUIButton			UIButton3;
-	CUIButton			UIButton4;
-	CUIButton			UIButton5;
-	CUIButton			UIButton6;
+//	CUIButton			UIButton1;
+//	CUIButton			UIButton2;
+//	CUIButton			UIButton3;
+//	CUIButton			UIButton4;
+//	CUIButton			UIButton5;
+//	CUIButton			UIButton6;
 
 	CUIStatic			UIStaticTop;
 	CUIStatic			UIStaticBelt;
 	CUIStatic			UIStaticBottom;
 
+	CUIStatic			UIStaticTabCtrl;
+	// Зелененькая лампочка, которой мы метим текущую выбранную закладку
+	CUIStatic			UIGreenIndicator;
 
 	CUIStatic			UIStaticDesc;
 	CUIStatic			UIStaticPersonal;
@@ -187,33 +191,33 @@ protected:
 //	CUIDragDropList		UIBagList;
 //	CUIDragDropList		UIBeltList;
 
-	CUIProgressBar		UIProgressBarHealth;
-	CUIProgressBar		UIProgressBarSatiety;
-	CUIProgressBar		UIProgressBarPower;
-	CUIProgressBar		UIProgressBarRadiation;
+//	CUIProgressBar		UIProgressBarHealth;
+//	CUIProgressBar		UIProgressBarSatiety;
+//	CUIProgressBar		UIProgressBarPower;
+//	CUIProgressBar		UIProgressBarRadiation;
 
 	//pop-up меню вызываемое по нажатию правой кнопки
 	CUIPropertiesBox	UIPropertiesBox;
 	//менюшка для работы с устройством производства артефактов
-	CUIArtifactMerger	UIArtifactMergerWnd;
+//	CUIArtifactMerger	UIArtifactMergerWnd;
 	//окошко для параметров сна
-	CUISleepWnd			UISleepWnd;
+//	CUISleepWnd			UISleepWnd;
 
 	// разбивка всего оружия на отдельные DragDrop листы по категориям: пистолеты, автоматы, etc.
 	DEF_VECTOR (WEAPON_TYPES, CUIDragDropList*)
 	WEAPON_TYPES		m_WeaponSubBags;
 
 	//информация о персонаже
-	CUICharacterInfo UICharacterInfo;
+//	CUICharacterInfo UICharacterInfo;
 	//информация о предмете
-	CUIItemInfo UIItemInfo;
+//	CUIItemInfo UIItemInfo;
 
 	static const int MAX_ITEMS = 70;
 	CUIDragDropItemMP m_vDragDropItems[MAX_ITEMS];
 	int m_iUsedItems;
 
 	//указатель на инвентарь, передается перед запуском меню
-	CInventory* m_pInv;
+//	CInventory* m_pInv;
 
 	//элемент с которым работают в текущий момент
 	PIItem m_pCurrentItem;
@@ -267,14 +271,14 @@ protected:
 //	void DetachAddon(const char* addon_name);
 
 	//устанавливает текущий предмет
-	void SetCurrentItem(CInventoryItem* pItem);
+//	void SetCurrentItem(CInventoryItem* pItem);
 
 
 	//дополнительные списки для сортировки вещей
-	TIItemList ruck_list;
+//	TIItemList ruck_list;
 
 	//вещь к которой мы присоединяем add-on
-	PIItem	m_pItemToUpgrade;
+//	PIItem	m_pItemToUpgrade;
 
 	//слот который был активным перед вызовом менюшки
 	u32	m_iCurrentActiveSlot;
@@ -311,7 +315,7 @@ protected:
 	// Запомнить имя секции из которой читать списки оружия
 	string64	m_SectionName;
 	// Кнопки OK и Cancel
-	CUIButton	UIBtnOK, UIBtnCancel;
+	CUIListItem UIBtnOK, UIBtnCancel;
 	// массив индексов пустых элементов
 	std::set<int> m_iEmptyIndexes;
 	// Получить первый свободный индекс в массиве m_vDragDropItems
@@ -346,6 +350,10 @@ protected:
 	bool MenuLevelDown()	{ return MenuLevelJump(static_cast<MENU_LEVELS>(m_mlCurrLevel - 1)); }
 	// callback функция для отрисовки цифровых подписей к оружию
 	friend void WpnDrawIndex(CUIDragDropItem *pDDItem);
+	// функция отрисовки подписей к главным кнопкам покупки оружия
+	void DrawBuyButtonCaptions();
+	// Включаем, выключаем индикатор активной кнопки табконтрола
+	void SwitchIndicator(bool bOn, const int activeTabIndex);
 public:
 	// А не является ли данная вещь чьим-то аддоном?
 	// Возвращаем адрес хозяина аддона, если нашли и тип аддона

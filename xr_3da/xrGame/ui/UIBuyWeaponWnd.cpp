@@ -39,8 +39,12 @@ using namespace InventoryUtilities;
 
 #define MAX_ITEMS	70
 
-const u32	cDetached = 0xffffffff;
-const u32	cAttached = 0xff00ff00;
+const u32	cDetached			= 0xffffffff;
+const u32	cAttached			= 0xff00ff00;
+const u8	uIndicatorWidth		= 17;
+const u8	uIndicatorHeight	= 27;
+
+int			g_iOkAccelerator, g_iCancelAccelerator;
 
 //////////////////////////////////////////////////////////////////////
 // Construction/Destruction
@@ -51,10 +55,10 @@ CUIBuyWeaponWnd::CUIBuyWeaponWnd(char *strSectionName)
 	m_iCurrentActiveSlot = NO_ACTIVE_SLOT;
 	Hide();
 
-	SetCurrentItem(NULL);
+//	SetCurrentItem(NULL);
 
 	m_pCurrentDragDropItem = NULL;
-	m_pItemToUpgrade = NULL;
+//	m_pItemToUpgrade = NULL;
 
 	m_iUsedItems	= 0;
 
@@ -72,7 +76,7 @@ CUIBuyWeaponWnd::~CUIBuyWeaponWnd()
 void CUIBuyWeaponWnd::Init(char *strSectionName)
 {
 	CUIXml uiXml;
-	bool xml_result = uiXml.Init("$game_data$","inventoryMP.xml");
+	bool xml_result = uiXml.Init("$game_data$","inventoryMP_new.xml");
 	R_ASSERT2(xml_result, "xml file not found");
 
 	inherited::DetachAll();
@@ -83,8 +87,8 @@ void CUIBuyWeaponWnd::Init(char *strSectionName)
 
 	AttachChild(&UIStaticTop);
 	UIStaticTop.Init("ui\\ui_inv_quick_slots", 0,0,1024,128);
-	AttachChild(&UIStaticBottom);
-	UIStaticBottom.Init("ui\\ui_bottom_background", 0,Device.dwHeight-32,1024,32);
+//	AttachChild(&UIStaticBottom);
+//	UIStaticBottom.Init("ui\\ui_bottom_background", 0,Device.dwHeight-32,1024,32);
 
 
 	AttachChild(&UIStaticBelt);
@@ -97,63 +101,95 @@ void CUIBuyWeaponWnd::Init(char *strSectionName)
 	//окно с описанием активной вещи
 
 	//для работы с артефактами
-	AttachChild(&UIArtifactMergerWnd);
-	xml_init.InitWindow(uiXml, "frame_window", 1, &UIArtifactMergerWnd);
-	UIArtifactMergerWnd.Hide();
+//	AttachChild(&UIArtifactMergerWnd);
+//	xml_init.InitWindow(uiXml, "frame_window", 1, &UIArtifactMergerWnd);
+//	UIArtifactMergerWnd.Hide();
 
 	AttachChild(&UIDescWnd);
-	xml_init.InitFrameWindow(uiXml, "frame_window", 2, &UIDescWnd);
-	UIDescWnd.AttachChild(&UIStaticDesc);
-	UIStaticDesc.Init("ui\\ui_inv_info_over_b", 5, UIDescWnd.GetHeight() - 310 ,260,310);
+	xml_init.InitStatic(uiXml, "desc_static", 0, &UIDescWnd);
+//	UIDescWnd.AttachChild(&UIStaticDesc);
+//	UIStaticDesc.Init("ui\\ui_inv_info_over_b", 5, UIDescWnd.GetHeight() - 310 ,260,310);
 
 	//информация о предмете
-	UIStaticDesc.AttachChild(&UIItemInfo);
-	UIItemInfo.Init(0,0, UIStaticDesc.GetWidth(), UIStaticDesc.GetHeight(), "inventory_item.xml");
+//	UIStaticDesc.AttachChild(&UIItemInfo);
+//	UIItemInfo.Init(0,0, UIStaticDesc.GetWidth(), UIStaticDesc.GetHeight(), "inventory_item.xml");
 
 	////////////////////////////////////
 	//Окно с информации о персонаже
 	AttachChild(&UIPersonalWnd);
-	xml_init.InitFrameWindow(uiXml, "frame_window", 3, &UIPersonalWnd);
+	xml_init.InitStatic(uiXml, "personal_static", 0, &UIPersonalWnd);
 
 	//Полосы прогресса
-	UIPersonalWnd.AttachChild(&UIProgressBarHealth);
-	xml_init.InitProgressBar(uiXml, "progress_bar", 0, &UIProgressBarHealth);
+//	UIPersonalWnd.AttachChild(&UIProgressBarHealth);
+//	xml_init.InitProgressBar(uiXml, "progress_bar", 0, &UIProgressBarHealth);
+//
+//	UIPersonalWnd.AttachChild(&UIProgressBarSatiety);
+//	xml_init.InitProgressBar(uiXml, "progress_bar", 1, &UIProgressBarSatiety);
+//
+//	UIPersonalWnd.AttachChild(&UIProgressBarPower);
+//	xml_init.InitProgressBar(uiXml, "progress_bar", 2, &UIProgressBarPower);
+//
+//	UIPersonalWnd.AttachChild(&UIProgressBarRadiation);
+//	xml_init.InitProgressBar(uiXml, "progress_bar", 3, &UIProgressBarRadiation);
 
-	UIPersonalWnd.AttachChild(&UIProgressBarSatiety);
-	xml_init.InitProgressBar(uiXml, "progress_bar", 1, &UIProgressBarSatiety);
 
-	UIPersonalWnd.AttachChild(&UIProgressBarPower);
-	xml_init.InitProgressBar(uiXml, "progress_bar", 2, &UIProgressBarPower);
-
-	UIPersonalWnd.AttachChild(&UIProgressBarRadiation);
-	xml_init.InitProgressBar(uiXml, "progress_bar", 3, &UIProgressBarRadiation);
-
-
-	UIPersonalWnd.AttachChild(&UIStaticPersonal);
-	UIStaticPersonal.Init("ui\\ui_inv_personal_over_b", 
-		-3,UIPersonalWnd.GetHeight() - 209 ,260,260);
+//	UIPersonalWnd.AttachChild(&UIStaticPersonal);
+//	UIStaticPersonal.Init("ui\\ui_inv_personal_over_b", 
+//		-3,UIPersonalWnd.GetHeight() - 209 ,260,260);
 
 	//информация о персонаже
-	UIStaticPersonal.AttachChild(&UICharacterInfo);
-	UICharacterInfo.Init(0,0, UIStaticPersonal.GetWidth(), UIStaticPersonal.GetHeight(), "inventory_character.xml");
+//	UIStaticPersonal.AttachChild(&UICharacterInfo);
+//	UICharacterInfo.Init(0,0, UIStaticPersonal.GetWidth(), UIStaticPersonal.GetHeight(), "inventory_character.xml");
+
+	// Статический бекграунд для кнопок табконтрола выбора оружия
+	AttachChild(&UIStaticTabCtrl);
+	xml_init.InitStatic(uiXml, "static", 1, &UIStaticTabCtrl);
 
 	// Tabcontrol для оружия
 	AttachChild(&UIWeaponsTabControl);
 	xml_init.InitTabControl(uiXml, "tab", 0, &UIWeaponsTabControl);
 
-	//Элементы автоматического добавления
-	xml_init.InitAutoStatic(uiXml, "auto_static", this);
+	TABS_VECTOR *pTabV = UIWeaponsTabControl.GetButtonsVector();
+	for (u8 i = 0; i != pTabV->size(); ++i)
+	{
+		switch (i)
+		{
+		case 0:
+			(*pTabV)[i]->SetTextureOffset(60, (*pTabV)[i]->GetHeight() / 2 - 10);
+			break;
+		case 1:
+			(*pTabV)[i]->SetTextureOffset(55, (*pTabV)[i]->GetHeight() / 2 - 5);
+			break;
+		case 2:
+			(*pTabV)[i]->SetTextureOffset(55, (*pTabV)[i]->GetHeight() / 2 - 5);
+			break;
+		case 3:
+			(*pTabV)[i]->SetTextureOffset(55, (*pTabV)[i]->GetHeight() / 2 - 10);
+			break;
+		case 4:
+			(*pTabV)[i]->SetTextureOffset(50, (*pTabV)[i]->GetHeight() / 2 - 5);
+			break;
+		}
+		(*pTabV)[i]->SetPushOffsetX(0);
+		(*pTabV)[i]->SetPushOffsetY(0);
+	}
+
+	// Indicator
+	UIGreenIndicator.Init("ui\\ui_bt_multiplayer_over", 0, 0, uIndicatorWidth, uIndicatorHeight);
+
+//	//Элементы автоматического добавления
+//	xml_init.InitAutoStatic(uiXml, "auto_static", this);
 
 
 	//кнопки внизу
-	AttachChild(&UISleepButton);
-	xml_init.InitButton(uiXml, "sleep_button", 0, &UISleepButton);
+//	AttachChild(&UISleepButton);
+//	xml_init.InitButton(uiXml, "sleep_button", 0, &UISleepButton);
 
 
 	//окошко для диалога параметров сна
-	AttachChild(&UISleepWnd);
-	xml_init.InitWindow(uiXml, "sleep_window", 0, &UISleepWnd);
-	UISleepWnd.Hide();
+//	AttachChild(&UISleepWnd);
+//	xml_init.InitWindow(uiXml, "sleep_window", 0, &UISleepWnd);
+//	UISleepWnd.Hide();
 
 	/*	AttachChild(&UIButton1);
 	xml_init.InitButton(uiXml, "button", 0, &UIButton1);
@@ -170,10 +206,60 @@ void CUIBuyWeaponWnd::Init(char *strSectionName)
 
 	// Кнопки OK и Cancel для выходи из диалога покупки оружия
 	AttachChild(&UIBtnOK);
-	xml_init.InitButton(uiXml, "ok_button", 0, &UIBtnOK);
+//	xml_init.InitButton(uiXml, "ok_button", 0, &UIBtnOK);
+	int x, y, w, h;
+	x = uiXml.ReadAttribInt("ok_button", 0, "x");
+	y = uiXml.ReadAttribInt("ok_button", 0, "y");
+	w = uiXml.ReadAttribInt("ok_button", 0, "width");
+	h = uiXml.ReadAttribInt("ok_button", 0, "height");
+	g_iOkAccelerator = uiXml.ReadAttribInt("ok_button", 0, "accel");
+
+	UIBtnOK.Init("Accept", x, y, w, h);
+	UIBtnOK.SetTextAlign(CGameFont::alCenter);
+	UIBtnOK.SetTextColor(0xFFF0D9B6);
 
 	AttachChild(&UIBtnCancel);
-	xml_init.InitButton(uiXml, "cancel_button", 0, &UIBtnCancel);
+//	xml_init.InitButton(uiXml, "cancel_button", 0, &UIBtnCancel);
+	x = uiXml.ReadAttribInt("cancel_button", 0, "x");
+	y = uiXml.ReadAttribInt("cancel_button", 0, "y");
+	w = uiXml.ReadAttribInt("cancel_button", 0, "width");
+	h = uiXml.ReadAttribInt("cancel_button", 0, "height");
+	g_iCancelAccelerator = uiXml.ReadAttribInt("cancel_button", 0, "accel");
+
+	UIBtnCancel.Init("Cancel", x, y, w, h);
+	UIBtnCancel.SetTextAlign(CGameFont::alCenter);
+	UIBtnCancel.SetTextColor(0xFFF0D9B6);
+
+	for (int i = 0; i < 20; ++i)
+	{
+		CUIDragDropList *pNewDDList = xr_new<CUIDragDropList>();
+		R_ASSERT(pNewDDList);
+
+		xml_init.InitDragDropList(uiXml, "dragdrop_list", 1, pNewDDList);
+		if (i == UIWeaponsTabControl.GetActiveIndex() + 1)
+		{
+			pNewDDList->Show(true);
+			UIBagWnd.AttachChild(pNewDDList);
+		}
+		else 
+			pNewDDList->Show(false);
+
+		pNewDDList->SetCheckProc(BagProc);
+		// Так только одно подокно всегда аттачено, а, бывает, у нас работа обычно ведется со 
+		// всеми подокнами, то запоминаем адрес this, как парента в MessageTarget'e
+		pNewDDList->SetMessageTarget(this);
+		m_WeaponSubBags.push_back(pNewDDList);
+	}
+	// 1 дополнительный лист для аддонов к оружию
+	CUIDragDropList *pNewDDList = xr_new<CUIDragDropList>();
+	R_ASSERT(pNewDDList);
+
+	xml_init.InitDragDropList(uiXml, "dragdrop_list", 1, pNewDDList);
+	m_WeaponSubBags.push_back(pNewDDList);
+	pNewDDList->SetCheckProc(BagProc);
+	pNewDDList->SetMessageTarget(this);
+	// Заполняем массив со списком оружия
+	ReInitItems(strSectionName);
 
 	//Списки Drag&Drop
 	AttachChild(&UITopList[BELT_SLOT]);
@@ -199,9 +285,9 @@ void CUIBuyWeaponWnd::Init(char *strSectionName)
 	xml_init.InitDragDropList(uiXml, "dragdrop_list", 6, &UITopList[4]);
 	UITopList[4].BlockCustomPlacement();
 
-	AttachChild(&UIOutfitSlot);
-	xml_init.InitDragDropList(uiXml, "dragdrop_list", 7, &UIOutfitSlot);
-	UIOutfitSlot.BlockCustomPlacement();
+//	AttachChild(&UIOutfitSlot);
+//	xml_init.InitDragDropList(uiXml, "dragdrop_list", 7, &UIOutfitSlot);
+//	UIOutfitSlot.BlockCustomPlacement();
 
 
 	UITopList[0].SetCheckProc(SlotProc0);
@@ -219,36 +305,6 @@ void CUIBuyWeaponWnd::Init(char *strSectionName)
 	UIPropertiesBox.Hide();
 
 //	for (int i = 0; i < UIWeaponsTabControl.GetTabsCount(); ++i)
-	for (int i = 0; i < 19; ++i)
-	{
-		CUIDragDropList *pNewDDList = xr_new<CUIDragDropList>();
-		R_ASSERT(pNewDDList);
-
-		xml_init.InitDragDropList(uiXml, "dragdrop_list", 1, pNewDDList);
-		if (i == UIWeaponsTabControl.GetActiveIndex())
-		{
-			pNewDDList->Show(true);
-			UIBagWnd.AttachChild(pNewDDList);
-		}
-		else 
-			pNewDDList->Show(false);
-
-		pNewDDList->SetCheckProc(BagProc);
-		// Так только одно подокно всегда аттачено, а, бывает, у нас работа обычно ведется со 
-		// всеми подокнами, то запоминаем адрес this, как парента в MessageTarget'e
-		pNewDDList->SetMessageTarget(this);
-		m_WeaponSubBags.push_back(pNewDDList);
-	}
-	// 1 дополнительный лист для аддонов к оружию
-	CUIDragDropList *pNewDDList = xr_new<CUIDragDropList>();
-	R_ASSERT(pNewDDList);
-
-	xml_init.InitDragDropList(uiXml, "dragdrop_list", 1, pNewDDList);
-	m_WeaponSubBags.push_back(pNewDDList);
-	pNewDDList->SetCheckProc(BagProc);
-	pNewDDList->SetMessageTarget(this);
-	// Заполняем массив со списком оружия
-	ReInitItems(strSectionName);
 }
 
 void CUIBuyWeaponWnd::ReInitItems	(char *strSectionName)
@@ -286,7 +342,7 @@ void CUIBuyWeaponWnd::ReInitItems	(char *strSectionName)
 	ClearWpnSubBags();
 	FillWpnSubBags();
 
-	UIBagWnd.AttachChild(m_WeaponSubBags[UIWeaponsTabControl.GetActiveIndex()]);
+	UIBagWnd.AttachChild(m_WeaponSubBags[UIWeaponsTabControl.GetActiveIndex() + 1]);
 };
 
 void CUIBuyWeaponWnd::InitInventory() 
@@ -458,11 +514,26 @@ bool CUIBuyWeaponWnd::BeltProc(CUIDragDropItem* pItem, CUIDragDropList* pList)
 //как только подняли элемент, сделать его текущим
 void CUIBuyWeaponWnd::SendMessage(CUIWindow *pWnd, s16 msg, void *pData)
 {
+	// Текстуры для иконок кнопок табконтрола
+	static const ref_str	inactiveItems[]	= { "ui\\ui_mp_icon_small_weapons", 
+												"ui\\ui_mp_icon_main_guns",
+												"ui\\ui_mp_icon_grenades",
+												"ui\\ui_mp_icon_suits",
+												"ui\\ui_mp_icon_equipment" };
+
+	static const ref_str	activeItems[]	= { "ui\\ui_mp_icon_small_weapons_over",
+												"ui\\ui_mp_icon_main_guns_over",
+												"ui\\ui_mp_icon_grenades_over",
+												"ui\\ui_mp_icon_suits_over",
+												"ui\\ui_mp_icon_equipment_over" };
+
+	TABS_VECTOR_it	it;
+
 	if(msg == CUIDragDropItem::ITEM_DRAG)
 	{
-		PIItem pInvItem = (PIItem)((CUIDragDropItemMP*)pWnd)->GetData();
+//		PIItem pInvItem = (PIItem)((CUIDragDropItemMP*)pWnd)->GetData();
 
-		SetCurrentItem(pInvItem);
+//		SetCurrentItem(pInvItem);
 		m_pCurrentDragDropItem = (CUIDragDropItemMP*)pWnd;
 	}
 	else if(msg == CUIDragDropItem::ITEM_DB_CLICK)
@@ -542,118 +613,12 @@ void CUIBuyWeaponWnd::SendMessage(CUIWindow *pWnd, s16 msg, void *pData)
 			}
 		}
 	}
-	//сообщения от ArtifactMerger
-	else if(pWnd == &UIArtifactMergerWnd && msg == CUIArtifactMerger::PERFORM_BUTTON_CLICKED)
-	{
-	}
-	else if(pWnd == &UIArtifactMergerWnd && msg == CUIArtifactMerger::CLOSE_BUTTON_CLICKED)
-	{
-		StopArtifactMerger();
-	}
-	else if(pWnd == &UISleepWnd && msg == CUISleepWnd::PERFORM_BUTTON_CLICKED)
-	{
-		CActor *pActor = dynamic_cast<CActor*>(Level().CurrentEntity());
-		if(!pActor) return;
-
-		CUIGameSP* pGameSP = dynamic_cast<CUIGameSP*>(HUD().GetUI()->UIGame());
-		if(!pGameSP) return;
-
-		pActor->GoSleep(1000*3600*5);
-		StopSleepWnd();
-		pGameSP->StartStopMenu(this);
-
-		return;
-	}
-	else if(pWnd == &UISleepWnd && msg == CUISleepWnd::CLOSE_BUTTON_CLICKED)
-	{
-		StopSleepWnd();
-	}
-
-	//кнопки cheats
-	else if(pWnd == &UISleepButton && msg == CUIButton::BUTTON_CLICKED)
-	{
-		if(UISleepWnd.IsShown())
-			StopSleepWnd();
-		else
-			StartSleepWnd();
-		/*
-
-		if(!pActor->IsSleeping())
-		{
-		CUIGameSP* pGameSP = dynamic_cast<CUIGameSP*>(HUD().GetUI()->UIGame());
-		if(!pGameSP) return;
-
-		pActor->GoSleep();
-
-		pGameSP->StartStopMenu(this);
-
-		return;
-		}
-		else
-		pActor->Awoke();
-		*/
-	}
-	else if(pWnd == &UIButton1 && msg == CUIButton::BUTTON_CLICKED)
-	{
-		CActor *pActor = dynamic_cast<CActor*>(Level().CurrentEntity());
-
-		if(pActor)
-		{
-			pActor->Sleep(1.f/6.f);
-		}
-	}
-	else if(pWnd == &UIButton2 && msg == CUIButton::BUTTON_CLICKED)
-	{
-		CActor *pActor = dynamic_cast<CActor*>(Level().CurrentEntity());
-
-		if(pActor)
-		{
-			pActor->Sleep(1.f);
-		}
-	}
-	else if(pWnd == &UIButton3 && msg == CUIButton::BUTTON_CLICKED)
-	{
-		CActor *pActor = dynamic_cast<CActor*>(Level().CurrentEntity());
-
-		if(pActor)
-		{
-			pActor->Sleep(1.f/60.f);
-		}
-	}
-	else if(pWnd == &UIButton4 && msg == CUIButton::BUTTON_CLICKED)
-	{
-		CActor *pActor = dynamic_cast<CActor*>(Level().CurrentEntity());
-
-		if(pActor)
-		{
-			pActor->ChangeHealth(pActor->m_fMedkit);
-			pActor->ChangeBleeding(pActor->m_fMedkitWound);
-		}
-	}
-	else if(pWnd == &UIButton5 && msg == CUIButton::BUTTON_CLICKED)
-	{
-		CActor *pActor = dynamic_cast<CActor*>(Level().CurrentEntity());
-
-		if(pActor)
-		{
-			pActor->ChangeRadiation(-pActor->m_fAntirad);
-		}
-	}
-	else if(pWnd == &UIButton6 && msg == CUIButton::BUTTON_CLICKED)
-	{
-		CActor *pActor = dynamic_cast<CActor*>(Level().CurrentEntity());
-
-		if(pActor)
-		{
-			pActor->ChangeSatiety(0.1f);
-		}
-	}
 	else if (&UIWeaponsTabControl == pWnd && CUITabControl::TAB_CHANGED == msg)
 	{
-		m_WeaponSubBags[*static_cast<int*>(pData)]->Show(false);
-		m_WeaponSubBags[UIWeaponsTabControl.GetActiveIndex()]->Show(true);
-		UIBagWnd.DetachChild(m_WeaponSubBags[*static_cast<int*>(pData)]);
-		UIBagWnd.AttachChild(m_WeaponSubBags[UIWeaponsTabControl.GetActiveIndex()]);
+		m_WeaponSubBags[*static_cast<int*>(pData) + 1]->Show(false);
+		m_WeaponSubBags[UIWeaponsTabControl.GetActiveIndex() + 1]->Show(true);
+		UIBagWnd.DetachChild(m_WeaponSubBags[*static_cast<int*>(pData) + 1]);
+		UIBagWnd.AttachChild(m_WeaponSubBags[UIWeaponsTabControl.GetActiveIndex() + 1]);
 	}
 	// Кнопки ОК и Отмена
 	else if (&UIBtnOK == pWnd && CUIButton::BUTTON_CLICKED == msg)
@@ -666,8 +631,45 @@ void CUIBuyWeaponWnd::SendMessage(CUIWindow *pWnd, s16 msg, void *pData)
 		HUD().GetUI()->UIGame()->StartStopMenu(this);
 		HUD().GetUI()->UIGame()->OnBuyMenu_Cancel();
 	}
-
-	CUIWindow::SendMessage(pWnd, msg, pData);
+	// Так как у нас при наведении меняется текстура, то обрабатываем эту ситуацию
+	else if (CUIButton::BUTTON_FOCUS_RECEIVED == msg && &UIWeaponsTabControl == pWnd)
+	{
+		if (pData)
+		{
+			int idx = *reinterpret_cast<int*>(pData);
+			(*UIWeaponsTabControl.GetButtonsVector())[idx]->GetUIStaticItem().
+				Init(*activeItems[idx], "hud\\default", 0, 0, alNone);
+		}
+	}
+	else if (CUIButton::BUTTON_FOCUS_LOST == msg && &UIWeaponsTabControl == pWnd)
+	{
+		if (pData)
+		{
+			int idx = *reinterpret_cast<int*>(pData);
+			(*UIWeaponsTabControl.GetButtonsVector())[idx]->GetUIStaticItem().
+				Init(*inactiveItems[idx], "hud\\default", 0, 0, alNone);
+		}
+	}
+	else if (CUIButton::BUTTON_FOCUS_RECEIVED == msg && &UIBtnOK == pWnd)
+	{
+		UIBtnOK.SetTextColor(0xFFF0D9B6);
+	}
+	else if (CUIButton::BUTTON_FOCUS_RECEIVED == msg && &UIBtnCancel == pWnd)
+	{
+		UIBtnCancel.SetTextColor(0xFFF0D9B6);
+	}
+	else if (CUIButton::BUTTON_FOCUS_LOST == msg && &UIBtnOK == pWnd)
+	{
+		UIBtnOK.SetTextColor(0xFFEE9B17);
+	}
+	else if (CUIButton::BUTTON_FOCUS_LOST == msg && &UIBtnCancel == pWnd)
+	{
+		UIBtnCancel.SetTextColor(0xFFEE9B17);
+	}
+	else
+	{
+		CUIWindow::SendMessage(pWnd, msg, pData);
+	}
 }
 
 
@@ -693,7 +695,7 @@ void CUIBuyWeaponWnd::OnMouse(int x, int y, E_MOUSEACTION mouse_action)
 
 void CUIBuyWeaponWnd::Draw()
 {
-	CUIWindow::Draw();
+	inherited::Draw();
 }
 
 
@@ -704,6 +706,7 @@ void CUIBuyWeaponWnd::Update()
 		ClearWpnSubBag(GRENADE_SLOT);
 		FillWpnSubBag(GRENADE_SLOT);
 	}
+	DrawBuyButtonCaptions();
 	CUIWindow::Update();
 }
 
@@ -717,7 +720,7 @@ void CUIBuyWeaponWnd::DropItem()
 	(dynamic_cast<CUIDragDropList*>(m_pCurrentDragDropItem->GetParent()))->
 		DetachChild(m_pCurrentDragDropItem);
 
-	SetCurrentItem(NULL);
+//	SetCurrentItem(NULL);
 	m_pCurrentDragDropItem = NULL;
 }
 
@@ -863,52 +866,52 @@ bool CUIBuyWeaponWnd::ToBelt()
 }
 
 //запуск и остановка меню работы с артефактами
-void CUIBuyWeaponWnd::StartArtifactMerger()
-{
-	UIArtifactMergerWnd.InitArtifactMerger(dynamic_cast<CArtifactMerger*>(m_pCurrentItem));
-	UIArtifactMergerWnd.Show();
-}
-void CUIBuyWeaponWnd::StopArtifactMerger()
-{
-	UIArtifactMergerWnd.Hide();
+//void CUIBuyWeaponWnd::StartArtifactMerger()
+//{
+//	UIArtifactMergerWnd.InitArtifactMerger(dynamic_cast<CArtifactMerger*>(m_pCurrentItem));
+//	UIArtifactMergerWnd.Show();
+//}
+//void CUIBuyWeaponWnd::StopArtifactMerger()
+//{
+//	UIArtifactMergerWnd.Hide();
+//
+//	//скинуть все элементы из усторйства артефактов в рюкзак
+//	for(DRAG_DROP_LIST_it it = UIArtifactMergerWnd.UIArtifactList.GetDragDropItemsList().begin(); 
+//		UIArtifactMergerWnd.UIArtifactList.GetDragDropItemsList().end() != it;
+//		++it)
+//	{
+//		CUIDragDropItem* pDragDropItem = *it;
+////		UIBagList.AttachChild(pDragDropItem);
+//		m_WeaponSubBags[UIWeaponsTabControl.GetActiveIndex()]->AttachChild(pDragDropItem);
+//	}
+//
+//	//((CUIDragDropList*)pDragDropItem->GetParent())->DetachChild(pDragDropItem);
+//	UIArtifactMergerWnd.UIArtifactList.DropAll();
+//}
 
-	//скинуть все элементы из усторйства артефактов в рюкзак
-	for(DRAG_DROP_LIST_it it = UIArtifactMergerWnd.UIArtifactList.GetDragDropItemsList().begin(); 
-		UIArtifactMergerWnd.UIArtifactList.GetDragDropItemsList().end() != it;
-		++it)
-	{
-		CUIDragDropItem* pDragDropItem = *it;
-//		UIBagList.AttachChild(pDragDropItem);
-		m_WeaponSubBags[UIWeaponsTabControl.GetActiveIndex()]->AttachChild(pDragDropItem);
-	}
-
-	//((CUIDragDropList*)pDragDropItem->GetParent())->DetachChild(pDragDropItem);
-	UIArtifactMergerWnd.UIArtifactList.DropAll();
-}
-
-void CUIBuyWeaponWnd::SetCurrentItem(CInventoryItem* pItem)
-{
-	m_pCurrentItem = pItem;
-	UIItemInfo.InitItem(m_pCurrentItem);
-}
+//void CUIBuyWeaponWnd::SetCurrentItem(CInventoryItem* pItem)
+//{
+//	m_pCurrentItem = pItem;
+//	UIItemInfo.InitItem(m_pCurrentItem);
+//}
 /////////////////////////////////////////////////
 //запуск и остановка диалога параметров сна
-void  CUIBuyWeaponWnd::StartSleepWnd()
-{
-	UISleepWnd.InitSleepWnd();
-	UISleepWnd.Show();
-	UISleepButton.Enable(false);
-	UISleepButton.Show(false);
-
-}
-void  CUIBuyWeaponWnd::StopSleepWnd()
-{
-	UISleepWnd.Hide();
-
-	UISleepButton.Reset();
-	UISleepButton.Enable(true);
-	UISleepButton.Show(true);
-}
+//void  CUIBuyWeaponWnd::StartSleepWnd()
+//{
+//	UISleepWnd.InitSleepWnd();
+//	UISleepWnd.Show();
+//	UISleepButton.Enable(false);
+//	UISleepButton.Show(false);
+//
+//}
+//void  CUIBuyWeaponWnd::StopSleepWnd()
+//{
+//	UISleepWnd.Hide();
+//
+//	UISleepButton.Reset();
+//	UISleepButton.Enable(true);
+//	UISleepButton.Show(true);
+//}
 
 //-----------------------------------------------------------------------------/
 //  Buy weapon stuff
@@ -1337,18 +1340,11 @@ bool CUIBuyWeaponWnd::MenuLevelJump(MENU_LEVELS lvl)
 		switch (lvl)
 		{
 		case mlRoot:
-//			UIWeaponsTabControl.Show(true);
-			UIWeaponsTabControl.SetActiveTextColor(0xffffffff);
-			UIWeaponsTabControl.SetActiveButtonColor(0xffffffff);
-			UIWeaponsTabControl.SetGlobalTextColor(0xffffffff);
-			UIWeaponsTabControl.SetGlobalButtonColor(0xffffffff);
+			SwitchIndicator(false, 0);
 			break;
 		case mlWpnSubType:
-			UIWeaponsTabControl.SetActiveTextColor(0xffff0000);
-			UIWeaponsTabControl.SetActiveButtonColor(0xffffffff);
-			UIWeaponsTabControl.SetGlobalTextColor(0x99ffffff);
-			UIWeaponsTabControl.SetGlobalButtonColor(0x55ffffff);
-//			UIWeaponsTabControl.Show(false);
+			// Зажигаем нашу зеленую лампочку
+			SwitchIndicator(true, UIWeaponsTabControl.GetActiveIndex());
 			// если пришли с mlAddons
 			if (m_mlCurrLevel == mlAddons)
 			{
@@ -1356,16 +1352,16 @@ bool CUIBuyWeaponWnd::MenuLevelJump(MENU_LEVELS lvl)
 				// Спрятали
 				m_WeaponSubBags.back()->DropAll();
 				m_WeaponSubBags.back()->Show(false);
-				m_WeaponSubBags[UIWeaponsTabControl.GetActiveIndex()]->Show(true);
+				m_WeaponSubBags[UIWeaponsTabControl.GetActiveIndex() + 1]->Show(true);
 				UIBagWnd.DetachChild(m_WeaponSubBags.back());
-				UIBagWnd.AttachChild(m_WeaponSubBags[UIWeaponsTabControl.GetActiveIndex()]);
+				UIBagWnd.AttachChild(m_WeaponSubBags[UIWeaponsTabControl.GetActiveIndex() + 1]);
 			}
 			break;
 		case mlAddons:
 			// Отображаем лист с аддонами
-			m_WeaponSubBags[UIWeaponsTabControl.GetActiveIndex()]->Show(false);
+			m_WeaponSubBags[UIWeaponsTabControl.GetActiveIndex() + 1]->Show(false);
 			m_WeaponSubBags.back()->Show(true);
-			UIBagWnd.DetachChild(m_WeaponSubBags[UIWeaponsTabControl.GetActiveIndex()]);
+			UIBagWnd.DetachChild(m_WeaponSubBags[UIWeaponsTabControl.GetActiveIndex() + 1]);
 			UIBagWnd.AttachChild(m_WeaponSubBags.back());
 			break;
 		}
@@ -1397,11 +1393,11 @@ bool CUIBuyWeaponWnd::OnKeyboard(int dik, E_KEYBOARDACTION keyboard_action)
 		if (dik < DIK_0)
 		{
 			// Глубокий (более медленный и точный) поиск
-			if (m_WeaponSubBags[UIWeaponsTabControl.GetActiveIndex()]->GetDragDropItemsList().size() >= static_cast<u32>(dik - 2))
+			if (m_WeaponSubBags[UIWeaponsTabControl.GetActiveIndex() + 1]->GetDragDropItemsList().size() >= static_cast<u32>(dik - 2))
 			{
-				DRAG_DROP_LIST_it it = m_WeaponSubBags[UIWeaponsTabControl.GetActiveIndex()]->GetDragDropItemsList().begin();
+				DRAG_DROP_LIST_it it = m_WeaponSubBags[UIWeaponsTabControl.GetActiveIndex() + 1]->GetDragDropItemsList().begin();
 				// Пробегаемся по всем вещам и ищем, нет ли вещи с нужным номером
-				for (; it != m_WeaponSubBags[UIWeaponsTabControl.GetActiveIndex()]->GetDragDropItemsList().end(); ++it)
+				for (; it != m_WeaponSubBags[UIWeaponsTabControl.GetActiveIndex() + 1]->GetDragDropItemsList().end(); ++it)
 				{
 					CUIDragDropItemMP *pDDItemMP = static_cast<CUIDragDropItemMP*>(*it);
 					// Опа! Нашли.
@@ -1409,6 +1405,7 @@ bool CUIBuyWeaponWnd::OnKeyboard(int dik, E_KEYBOARDACTION keyboard_action)
 					{
 						// Муваем ее в слот
 						SendMessage(pDDItemMP, CUIDragDropItem::ITEM_DB_CLICK, NULL);
+						return true;
 						break;
 					}
 				}
@@ -1446,13 +1443,13 @@ bool CUIBuyWeaponWnd::OnKeyboard(int dik, E_KEYBOARDACTION keyboard_action)
 		}
 	}
 
-	if (static_cast<u32>(dik) == UIBtnOK.GetAccelerator())
+	if (dik == g_iOkAccelerator)
 	{
 		SendMessage(&UIBtnOK, CUIButton::BUTTON_CLICKED, NULL);
 		return true;
 	}
 
-	if (static_cast<u32>(dik) == UIBtnCancel.GetAccelerator())
+	if (dik == g_iCancelAccelerator)
 	{
 		if (mlRoot == m_mlCurrLevel)
 		{
@@ -1535,6 +1532,46 @@ void CUIBuyWeaponWnd::MoveWeapon(const char *sectionName)
 		idx		!= static_cast<u8>(-1))
 	{
 		MoveWeapon(grpNum, idx);
+	}
+}
+
+////////////////////////////////////////////////////////////////////////////////
+
+void CUIBuyWeaponWnd::DrawBuyButtonCaptions()
+{
+	// Надписи
+	static const ref_str	captionsArr[]	= { "small weapons", "main weapons", "grenades", "suits", "equipment" };
+	TABS_VECTOR				*pTabsVector	= UIWeaponsTabControl.GetButtonsVector();
+	RECT					r;
+	CGameFont				*pNumberF		= HUD().pFontBigDigit, 
+							*pCaptionF		= HUD().pFontSmall;
+
+	pNumberF->SetColor(0xfff0d9b6);
+	pCaptionF->SetColor(0xfff0d9b6);
+
+	for (u8 i = 0; i < pTabsVector->size(); ++i)
+	{
+		r	= (*pTabsVector)[i]->GetAbsoluteRect();
+
+		pNumberF->Out(static_cast<float>(r.left + 30), static_cast<float>(r.top + 5), "%i.", i + 1);
+		pCaptionF->Out(static_cast<float>(r.left + 50), static_cast<float>(r.top + 10), "%s", *captionsArr[i]);
+	}
+}
+
+////////////////////////////////////////////////////////////////////////////////
+
+void CUIBuyWeaponWnd::SwitchIndicator(bool bOn, const int activeTabIndex)
+{
+	if (bOn)
+	{
+		R_ASSERT(activeTabIndex < UIWeaponsTabControl.GetTabsCount());
+		RECT r	= (*UIWeaponsTabControl.GetButtonsVector())[activeTabIndex]->GetAbsoluteRect();
+		UIGreenIndicator.SetWndRect(r.left + 5, r.top + 22, uIndicatorWidth, uIndicatorHeight);
+		AttachChild(&UIGreenIndicator);
+	}
+	else
+	{
+		DetachChild(&UIGreenIndicator);
 	}
 }
 

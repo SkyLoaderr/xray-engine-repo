@@ -15,25 +15,28 @@
 
 CUIButton:: CUIButton()
 {
-	m_eButtonState = BUTTON_NORMAL;
-	m_ePressMode = NORMAL_PRESS;
+	m_eButtonState		= BUTTON_NORMAL;
+	m_ePressMode		= NORMAL_PRESS;
 
-	m_str = "";
+	m_str				= "";
 
-	m_bButtonClicked = false;
-	m_bCursorOverButton = false;
+	m_bButtonClicked	= false;
+	m_bCursorOverButton	= false;
 
-	m_bAvailableTexture = false;
+	m_bAvailableTexture	= false;
 
-	m_bIsSwitch = false;
+	m_bIsSwitch			= false;
 
-	m_iPushOffsetX = PUSH_OFFSET_RIGHT;
-    m_iPushOffsetY = PUSH_OFFSET_DOWN;
+	m_iPushOffsetX		= PUSH_OFFSET_RIGHT;
+    m_iPushOffsetY		= PUSH_OFFSET_DOWN;
 
 	SetTextAlign(CGameFont::alCenter);
 
 	m_HighlightColor	= 0xFF999999;
 	m_uAccelerator		= static_cast<u32>(-1);
+
+	m_iTexOffsetX		= 0;
+	m_iTexOffsetY		= 0;
 }
 
  CUIButton::~ CUIButton()
@@ -223,12 +226,12 @@ void  CUIButton::Draw()
 
 	if(m_eButtonState == BUTTON_UP || m_eButtonState == BUTTON_NORMAL)
 	{
-		m_UIStaticItem.SetPos(rect.left, rect.top);
+		m_UIStaticItem.SetPos(rect.left + m_iTexOffsetX, rect.top + m_iTexOffsetY);
 	}
 	else
 	{
-		m_UIStaticItem.SetPos(rect.left+m_iPushOffsetX, 
-								rect.top+m_iPushOffsetY);
+		m_UIStaticItem.SetPos(rect.left + m_iPushOffsetX + m_iTexOffsetX, 
+								rect.top + m_iPushOffsetY + m_iTexOffsetY);
 	}
 
 	m_UIStaticItem.Render();
