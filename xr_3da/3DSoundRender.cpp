@@ -85,7 +85,7 @@ void CSoundRender::OnMove()
 	for (vector<sound_defer>::iterator it=defer.begin(); it!=defer.end(); it++)
 	{
 		IDirectSoundBuffer*		B = (IDirectSoundBuffer*) it->P;
-		B->Play					(0,0,it->F);
+		B->Play					(0,0,it->F|DSBPLAY_LOCSOFTWARE);
 	}
 }
 

@@ -70,7 +70,7 @@ BOOL CSoundManager::CreatePrimaryBuffer	()
 	// Create primary buffer.
 	ZeroMemory			( &dsbd, sizeof( DSBUFFERDESC ) );
 	dsbd.dwSize			= sizeof( DSBUFFERDESC );
-	dsbd.dwFlags		= DSBCAPS_CTRL3D | DSBCAPS_CTRLVOLUME | DSBCAPS_PRIMARYBUFFER;
+	dsbd.dwFlags		= DSBCAPS_CTRL3D | DSBCAPS_CTRLVOLUME | DSBCAPS_PRIMARYBUFFER | DSBCAPS_LOCSOFTWARE;
 	dsbd.dwBufferBytes	= 0;
 
 	// Actual creating
