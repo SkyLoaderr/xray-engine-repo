@@ -55,7 +55,10 @@ BOOL CDestroyablePhysicsObject::net_Spawn(LPVOID DC)
 		{
 			m_destroy_sound.create(TRUE,ini->r_string("sound","break_sound"));
 		}
-
+		if(ini->section_exist("particles"))
+		{
+			m_destroy_particles=ini->r_string("particles","destroy_particles");
+		}
 	}
 	CParticlesPlayer::LoadParticles(K);
 
@@ -81,7 +84,8 @@ void CDestroyablePhysicsObject::Destroy()
 	{
 		m_destroy_sound.play_at_pos(this,Position());
 	}
-	if(*m_destroy_particles)StartParticles(m_destroy_particles,Fvector().set(0,1,0),ID());
+	if(*m_destroy_particles)
+			StartParticles(m_destroy_particles,Fvector().set(0,1,0),ID());
 }
 void CDestroyablePhysicsObject::InitServerObject(CSE_Abstract* D)
 {
