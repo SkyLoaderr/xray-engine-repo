@@ -12,6 +12,9 @@
 	/ OPTIMIZATION
 		. TODO: Batch culling
 		. TODO: collision database simplification
+		+ TODO: HOM
+			+ TODO: Rasterizer
+			+ TODO: Tester
 
 	/ GAME
 		+ TODO: Universal spawn
@@ -24,7 +27,6 @@
 	/ EFFECTS
 		+ TODO: Blurred output, grayed output
 		+ TODO: Static HeightMap
-		. TODO: Dynamic HeightMap
 		+ TODO: Rain with collisions
 			+ TODO: Particles
 		. TODO: Ground Fog
