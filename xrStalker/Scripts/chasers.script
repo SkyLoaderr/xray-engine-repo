@@ -14,31 +14,36 @@ function main ()
                       
     local actor = get_actor ()                      
     local scr_monster = nil                      
-    local old_monster = nil
+    local old_monster = 0
     
     while true do
-          wait (10000)
           
-          if scr_monster ~= nil and scr_monster:action () == nil then
+          if scr_monster ~= nil and distance_between (scr_monster, actor) < 10 then
              scr_monster:script (false, chasers.script_name ())
              old_monster = scr_monster:id ()
              scr_monster = nil   
+             wait (10000)
           end
           
           if scr_monster == nil then
+             local distance = 1000000
              for a = 1, table.getn (monsters), 1 do
-                 if monsters[a] ~= nil and monsters[a] ~= scr_monster and monsters[a]:alive () == true then
+                 if monsters[a] ~= nil and monsters[a]:alive () == true then
                     local t = distance_between (actor, monsters[a])
-                    if t < 50 and monsters[a]:id () ~= old_monster then
+                    if t < distance and monsters[a]:id () ~= old_monster then
                        scr_monster = monsters[a]
-                       scr_monster:script (true, chasers.script_name ())
-                       action (scr_monster, move (move.act_run, move.force_type, actor), cond (cond.move_end))
-                       old_monster = 0
-                       break
+                       distance = t
                     end   
                  end   
-             end  
+             end
+             if scr_monster ~= nil then
+                scr_monster:script (true, chasers.script_name ())
+                action (scr_monster, move (move.act_run, move.force_type, actor), cond (cond.move_end))
+                old_monster = 0
+             end   
           end   
+          
+         wait () 
     end                       
 
 end
