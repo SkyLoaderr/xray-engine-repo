@@ -337,6 +337,27 @@ function loadJob(sj, gname, type, squad, groups)
 			in_rest = "", out_rest = ""
 		}
 		table.insert(sj, t)
+		t = { section = "walker4@esc_fabrika_bandit_day",
+			idle = 0,
+			prior = 2, state = {0},
+			squad = squad, group = groups[1],
+			in_rest = "", out_rest = ""
+		}
+		table.insert(sj, t)
+		t = { section = "walker5@esc_fabrika_bandit_day",
+			idle = 0,
+			prior = 2, state = {0},
+			squad = squad, group = groups[1],
+			in_rest = "", out_rest = ""
+		}
+		table.insert(sj, t)
+		t = { section = "walker6@esc_fabrika_bandit_day",
+			idle = 0,
+			prior = 2, state = {0},
+			squad = squad, group = groups[1],
+			in_rest = "", out_rest = ""
+		}
+		table.insert(sj, t)
 		-- сидящие у костра всегда
 		t = { section = "kamp@esc_fabrika_bandit",
 			idle = 0,
