@@ -135,8 +135,13 @@ public:
 					}
 				}
 			}
-			else
-				xr_delete(E);
+			else {
+				CSE_ALifeGraphPoint	*graph_point = dynamic_cast<CSE_ALifeGraphPoint*>(E);
+				if (!graph_point)
+					xr_delete(E);
+				else
+                    m_graph_points.push_back	(graph_point);
+			}
 			S_id++;
 		}
 		
@@ -260,6 +265,7 @@ public:
 				if (dwfGetIDByLevelName(m_ini,(*m_level_changers)[i]->m_caLevelToChange) != m_dwLevelID)
 					continue;
 
+				bool found = false;
 				xr_vector<CSE_ALifeGraphPoint*>::const_iterator I = m_graph_points.begin();
 				xr_vector<CSE_ALifeGraphPoint*>::const_iterator E = m_graph_points.end();
 				for ( ; I != E; ++I)
@@ -274,6 +280,7 @@ public:
 							(*m_level_changers)[i]->m_tAngles		= (*I)->o_Angle;
 							(*m_level_changers)[i]->m_dwNextNodeID	= tpGraph->vertex(ii)->level_vertex_id();
 							ok = true;
+							break;
 						}
 
 						VERIFY		(ok);
@@ -281,8 +288,13 @@ public:
 						m_level_changers->erase	(m_level_changers->begin() + i);
 						--i;
 						--n;
+						found		= true;
 						break;
 					}
+				if (!found) {
+					Msg				("Graph point %s not found (level changer %s)",(*m_level_changers)[i]->m_caLevelPointToChange,(*m_level_changers)[i]->s_name_replace);
+					VERIFY			(false);
+				}
 			}
 		}
 		thProgress				= .75f;
