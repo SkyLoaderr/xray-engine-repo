@@ -48,7 +48,21 @@ class CMotionManager : public CSharedClass<_motion_shared> {
 	bool					bad_motion_fixed;		// true, если монстр пытается двигаться, но стоит на месте
 	bool					b_forced_velocity;
 
-	VELOCITY_CHAIN_VEC		velocity_chain;
+	// -------------------------------------------------------------------------------------
+	// Acceleration
+	
+	struct {
+		bool					active;
+		EAccelType				type;	
+		
+		float					calm;
+		float					aggressive;
+
+		VELOCITY_CHAIN_VEC		chain;
+	} m_accel;
+
+	// ---------------------------------------------------------------------------------------
+
 
 public:
 	
@@ -91,14 +105,7 @@ public:
 	
 	void		ApplyParams				();
 
-	// выполнить текущий m_tAction
-	void		ProcessAction			();
-	void		FinalizeProcessing		();
-
 	// -------------------------------------- 	
-
-	void		ProcessActionEx			();
-
 
 	// подготовить текущую анимацию на запрос из SelectAnimation
 	bool		PrepareAnimation		();
@@ -128,9 +135,6 @@ public:
 	void		AA_PushAttackAnimTest	(EMotionAnim a, u32 i3, TTime from, TTime to, float y1, float y2, float p1, float p2, float dist, float damage, Fvector &dir, u32 flags = 0);
 	
 	// FX's
-	void		FX_LoadMap				(LPCSTR section);
-	void		FX_ConvertMap			();
-	void		FX_Play					(u16 bone, bool is_front, float amount);
 	void		FX_Play					(EHitSide side, float amount);
 	
 
@@ -172,9 +176,6 @@ public:
 	float		GetAnimTime				(EMotionAnim anim, u32 index);
 	float		GetAnimSpeed			(EMotionAnim anim);
 
-	void		VelocityChain_Add		(EMotionAnim anim1, EMotionAnim anim2);
-	bool		VelocityChain_GetAnim	(float cur_speed, EMotionAnim target_anim, EMotionAnim &new_anim, float &a_speed);
-
 	bool		IsStandCurAnim			();
 
 
@@ -189,8 +190,6 @@ private:
 	EAction		GetActionFromPath		();
 	EAction		VelocityIndex2Action	(u32 velocity_index);
 	
-	bool		CheckBraking			(float before_interval);
-
 //////////////////////////////////////////////////////////////////////////
 // DEBUG
 
@@ -200,6 +199,28 @@ private:
 
 // end DEBUG
 //////////////////////////////////////////////////////////////////////////
+
+public:
+	//-------------------------------------------------------------------------------
+	// Acceleration
+		
+		void	accel_init			();
+		void	accel_load			(LPCSTR section);
+
+		void	accel_activate		(EAccelType type);
+	IC	void	accel_deactivate	() {m_accel.active = false;}
+
+		float	accel_get			();
+
+	IC	bool	accel_active		() {return m_accel.active;}
+
+		void	accel_chain_add		(EMotionAnim anim1, EMotionAnim anim2);
+		bool	accel_chain_get		(float cur_speed, EMotionAnim target_anim, EMotionAnim &new_anim, float &a_speed);
+
+		bool	accel_check_braking	(float before_interval);
+
+	//-------------------------------------------------------------------------------
+
 
 };
 

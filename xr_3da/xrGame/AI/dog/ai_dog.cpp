@@ -256,7 +256,7 @@ void CAI_Dog::UpdateCL()
 
 void CAI_Dog::OnJumpStop()
 {
-	MotionMan.ProcessAction();
+	//MotionMan.ProcessAction();
 }
 
 

@@ -111,8 +111,8 @@ void CAI_Biting::vfUpdateParameters()
 	// Setup is own additional flags
 	m_bDamaged = ((GetHealth() < _sd->m_fDamagedThreshold) ? true : false);
 
-	if (K) mental_state	 = MS_Aggressive;
-	else mental_state	 = MS_Calm;
+//	if (K) mental_state	 = MS_Aggressive;
+//	else mental_state	 = MS_Calm;
 
 }
 

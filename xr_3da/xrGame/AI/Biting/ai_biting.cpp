@@ -64,9 +64,6 @@ void CAI_Biting::Init()
 	anim_speed						= -1.f;
 	cur_blend						= 0;
 
-	mental_state					= MS_Calm;
-	b_acceleration					= false;
-
 }
 
 void CAI_Biting::reinit()
@@ -219,12 +216,6 @@ void CAI_Biting::LoadShared(LPCSTR section)
 	_sd->m_attack_effector.ce_power			= pSettings->r_float(ppi_section,"ce_power");
 
 	// --------------------------------------------------------------------------------
-
-	_sd->m_accel.generic			= pSettings->r_float(section, "Accel_Generic");
-	_sd->m_accel.aggressive			= pSettings->r_float(section, "Accel_Aggressive");
-
-	// --------------------------------------------------------------------------------
-
 
 	R_ASSERT2 (100 == (_sd->m_dwProbRestWalkFree + _sd->m_dwProbRestStandIdle + _sd->m_dwProbRestLieIdle + _sd->m_dwProbRestTurnLeft), "Probability sum isn't 1");
 }
@@ -546,25 +537,5 @@ float CAI_Biting::get_custom_pitch_speed(float def_speed)
 	clamp(cur_speed, PI_DIV_6, 5 * PI_DIV_6);
 
 	return cur_speed;
-}
-
-bool CAI_Biting::GetAcceleration(float &acc)
-{
-	if (!b_acceleration) return false;
-
-	if (mental_state == MS_Aggressive) acc = _sd->m_accel.aggressive;
-	else acc = _sd->m_accel.generic;
-
-	return true;
-}
-
-float CAI_Biting::GetAcceleration()
-{
-	return (mental_state == MS_Aggressive) ?  _sd->m_accel.aggressive : _sd->m_accel.generic;
-}
-
-void CAI_Biting::SetAcceleration(bool pmt_accel)
-{
-	b_acceleration = pmt_accel;
 }
 

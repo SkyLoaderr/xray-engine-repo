@@ -365,10 +365,11 @@ struct SMotionVel {
 	void	set		(float l, float a) {linear = l; angular = a;}
 };
 
-enum EActivityState {
-	MS_Calm,
-	MS_Aggressive
+enum EAccelType {
+	eAT_Calm,
+	eAT_Aggressive
 };
 
-
 #define deg(x) (x * PI / 180)
+
+#define CHECK_SHARED_LOADED() {if (CSharedClass<_motion_shared>::IsLoaded()) return; }

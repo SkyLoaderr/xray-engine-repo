@@ -1637,18 +1637,6 @@
 					Name="ai_misc"
 					Filter="">
 					<File
-						RelativePath=".\ai\ai_monster_bones.cpp">
-					</File>
-					<File
-						RelativePath=".\ai\ai_monster_bones.h">
-					</File>
-					<File
-						RelativePath=".\ai\ai_monster_debug.cpp">
-					</File>
-					<File
-						RelativePath=".\ai\ai_monster_debug.h">
-					</File>
-					<File
 						RelativePath=".\ai\ai_monster_defs.h">
 					</File>
 					<File
@@ -1658,72 +1646,13 @@
 						RelativePath=".\ai\ai_monster_effector.h">
 					</File>
 					<File
-						RelativePath=".\Ai\ai_monster_group.cpp">
-					</File>
-					<File
-						RelativePath=".\Ai\ai_monster_group.h">
-					</File>
-					<File
-						RelativePath=".\ai\ai_monster_invisibility.cpp">
-					</File>
-					<File
-						RelativePath=".\ai\ai_monster_invisibility.h">
-					</File>
-					<File
-						RelativePath=".\ai\ai_monster_jump.cpp">
-					</File>
-					<File
-						RelativePath=".\ai\ai_monster_jump.h">
-					</File>
-					<File
-						RelativePath=".\Ai\ai_monster_mem.cpp">
-					</File>
-					<File
-						RelativePath=".\Ai\ai_monster_mem.h">
-					</File>
-					<File
-						RelativePath=".\ai\ai_monster_motion.cpp">
-					</File>
-					<File
-						RelativePath=".\ai\ai_monster_motion.h">
-					</File>
-					<File
-						RelativePath=".\ai\ai_monster_motion_stats.cpp">
-					</File>
-					<File
-						RelativePath=".\ai\ai_monster_motion_stats.h">
-					</File>
-					<File
-						RelativePath=".\ai\ai_monster_movement.cpp">
-					</File>
-					<File
-						RelativePath=".\ai\ai_monster_movement.h">
-						<FileConfiguration
-							Name="Debug|Win32">
-							<Tool
-								Name="VCCustomBuildTool"/>
-						</FileConfiguration>
-					</File>
-					<File
 						RelativePath=".\ai\ai_monster_share.h">
 					</File>
 					<File
 						RelativePath=".\ai\ai_monster_shared_data.h">
 					</File>
 					<File
-						RelativePath=".\ai\ai_monster_sound.cpp">
-					</File>
-					<File
-						RelativePath=".\ai\ai_monster_sound.h">
-					</File>
-					<File
 						RelativePath=".\ai_monster_space.h">
-					</File>
-					<File
-						RelativePath=".\Ai\ai_monster_state.cpp">
-					</File>
-					<File
-						RelativePath=".\Ai\ai_monster_state.h">
 					</File>
 					<File
 						RelativePath=".\ai\ai_monster_types.h">
@@ -1743,6 +1672,111 @@
 					<File
 						RelativePath=".\AI\ai_monsters_misc.h">
 					</File>
+					<Filter
+						Name="Components"
+						Filter="">
+						<Filter
+							Name="Bones"
+							Filter="">
+							<File
+								RelativePath=".\ai\ai_monster_bones.cpp">
+							</File>
+							<File
+								RelativePath=".\ai\ai_monster_bones.h">
+							</File>
+						</Filter>
+						<Filter
+							Name="Debug"
+							Filter="">
+							<File
+								RelativePath=".\ai\ai_monster_debug.cpp">
+							</File>
+							<File
+								RelativePath=".\ai\ai_monster_debug.h">
+							</File>
+						</Filter>
+						<Filter
+							Name="Memory"
+							Filter="">
+							<File
+								RelativePath=".\Ai\ai_monster_mem.cpp">
+							</File>
+							<File
+								RelativePath=".\Ai\ai_monster_mem.h">
+							</File>
+						</Filter>
+						<Filter
+							Name="Sound"
+							Filter="">
+							<File
+								RelativePath=".\ai\ai_monster_sound.cpp">
+							</File>
+							<File
+								RelativePath=".\ai\ai_monster_sound.h">
+							</File>
+						</Filter>
+						<Filter
+							Name="State"
+							Filter="">
+							<File
+								RelativePath=".\Ai\ai_monster_state.cpp">
+							</File>
+							<File
+								RelativePath=".\Ai\ai_monster_state.h">
+							</File>
+						</Filter>
+						<Filter
+							Name="Movement"
+							Filter="">
+							<File
+								RelativePath=".\ai\ai_monster_movement.cpp">
+							</File>
+							<File
+								RelativePath=".\ai\ai_monster_movement.h">
+								<FileConfiguration
+									Name="Debug|Win32">
+									<Tool
+										Name="VCCustomBuildTool"/>
+								</FileConfiguration>
+							</File>
+						</Filter>
+						<Filter
+							Name="Group"
+							Filter="">
+							<File
+								RelativePath=".\Ai\ai_monster_group.cpp">
+							</File>
+							<File
+								RelativePath=".\Ai\ai_monster_group.h">
+							</File>
+						</Filter>
+						<Filter
+							Name="Motion Stats"
+							Filter="">
+							<File
+								RelativePath=".\ai\ai_monster_motion_stats.cpp">
+							</File>
+							<File
+								RelativePath=".\ai\ai_monster_motion_stats.h">
+							</File>
+						</Filter>
+						<Filter
+							Name="Monster Motion"
+							Filter="">
+							<File
+								RelativePath=".\ai\ai_monster_motion.cpp">
+							</File>
+							<File
+								RelativePath=".\ai\ai_monster_motion.h">
+							</File>
+							<File
+								RelativePath=".\ai\ai_monster_motion_accel.cpp">
+							</File>
+							<File
+								RelativePath=".\ai\ai_monster_motion_load.cpp">
+							</File>
+						</Filter>
+					</Filter>
 				</Filter>
 				<Filter
 					Name="ai_rat"
@@ -1944,6 +1978,22 @@
 					<Filter
 						Name="Invisibility"
 						Filter="">
+						<File
+							RelativePath=".\ai\ai_monster_invisibility.cpp">
+						</File>
+						<File
+							RelativePath=".\ai\ai_monster_invisibility.h">
+						</File>
+					</Filter>
+					<Filter
+						Name="Jump"
+						Filter="">
+						<File
+							RelativePath=".\ai\ai_monster_jump.cpp">
+						</File>
+						<File
+							RelativePath=".\ai\ai_monster_jump.h">
+						</File>
 					</Filter>
 				</Filter>
 			</Filter>

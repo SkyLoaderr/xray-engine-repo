@@ -106,10 +106,12 @@ void CAI_Boar::Load(LPCSTR section)
 	MotionMan.AA_PushAttackAnimTest(eAnimAttack, 1, 500,	600,	STANDART_ATTACK, inherited::_sd->m_fHitPower,Fvector().set(0.f,0.f,3.f));
 	MotionMan.AA_PushAttackAnimTest(eAnimAttack, 2, 500,	600,	STANDART_ATTACK, inherited::_sd->m_fHitPower,Fvector().set(0.f,0.f,3.f));
 
-	MotionMan.VelocityChain_Add		(eAnimWalkFwd,		eAnimRun);
-	MotionMan.VelocityChain_Add		(eAnimWalkDamaged,	eAnimRunDamaged);
-
 	END_LOAD_SHARED_MOTION_DATA();
+
+	MotionMan.accel_load			(section);
+	MotionMan.accel_chain_add		(eAnimWalkFwd,		eAnimRun);
+	MotionMan.accel_chain_add		(eAnimWalkDamaged,	eAnimRunDamaged);
+
 }
 
 

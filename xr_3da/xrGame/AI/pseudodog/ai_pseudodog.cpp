@@ -107,7 +107,6 @@ void CAI_PseudoDog::Load(LPCSTR section)
 	MotionMan.LinkAction(ACT_LOOK_AROUND,	eAnimSniff);
 	MotionMan.LinkAction(ACT_TURN,			eAnimStandIdle,	eAnimStandTurnLeft, eAnimStandTurnRight, EPS_S); 
 
-
 	MotionMan.AA_PushAttackAnimTest(eAnimAttack, 0, 500, 800, STANDART_ATTACK, inherited::_sd->m_fHitPower,Fvector().set(0.f,0.f,3.f));
 
 	END_LOAD_SHARED_MOTION_DATA();
@@ -159,6 +158,6 @@ void CAI_PseudoDog::UpdateCL()
 }
 void CAI_PseudoDog::OnJumpStop()
 {
-	MotionMan.ProcessAction();
+	//MotionMan.ProcessAction();
 }
 

@@ -229,5 +229,5 @@ void CMonsterMovement::WalkNextGraphPoint()
 
 void CMonsterMovement::update_velocity()
 {
-	velocity_lerp	(m_velocity_linear.current, m_velocity_linear.target, pMonster->GetAcceleration(), Device.fTimeDelta);
+	velocity_lerp	(m_velocity_linear.current, m_velocity_linear.target, pMonster->MotionMan.accel_get(), Device.fTimeDelta);
 }

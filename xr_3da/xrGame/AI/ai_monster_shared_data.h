@@ -64,10 +64,7 @@ public:
 
 	SAttackEffector			m_attack_effector;
 
-	struct {
-		float generic;
-		float aggressive;
-	} m_accel;
+
 };
 
 class _motion_shared : public CSharedResource {
