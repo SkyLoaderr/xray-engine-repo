@@ -21,6 +21,7 @@ void	xrServerEntity::Spawn_Write		(NET_Packet& P, BOOL bLocal)
 	P.w_u8				(s_RP			);
 	P.w_vec3			(o_Position		);
 	P.w_vec3			(o_Angle		);
+//	P.w_u16				(m_tGraphID		);
 	P.w_u16				(RespawnTime	);
 	P.w_u16				(ID				);
 	P.w_u16				(ID_Parent		);
@@ -47,6 +48,7 @@ void	xrServerEntity::Spawn_Read		(NET_Packet& P)
 	P.r_u8				(s_RP			);
 	P.r_vec3			(o_Position		);
 	P.r_vec3			(o_Angle		);
+//	P.r_u16				(m_tGraphID		);
 	P.r_u16				(RespawnTime	);
 	P.r_u16				(ID				);
 	P.r_u16				(ID_Parent		);

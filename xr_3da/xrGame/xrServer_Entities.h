@@ -7,6 +7,7 @@
 #ifdef _EDITOR
 	#include "PropertiesListHelper.h"
 #endif
+//#include "ai_alife_space.h"
 
 // refs
 class xrServerEntity;
@@ -82,6 +83,7 @@ public:
 	// update data
 	Fvector					o_Position;
 	Fvector					o_Angle;
+//	ALife::_GRAPH_ID		m_tGraphID;
 
 	virtual void			UPDATE_Read		(NET_Packet& P)				= 0;
 	virtual void			UPDATE_Write	(NET_Packet& P)				= 0;
@@ -117,6 +119,7 @@ public:
 		ZeroMemory			(s_name_replace,sizeof(string64));
         o_Angle.set			(0.f,0.f,0.f);
         o_Position.set		(0.f,0.f,0.f);
+//		m_tGraphID			= ALife::_GRAPH_ID(-1);
 	}
 	virtual ~xrServerEntity	()
 	{
