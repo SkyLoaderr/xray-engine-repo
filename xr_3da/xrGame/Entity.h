@@ -46,20 +46,25 @@ public:
 	{
 		float diff	= t - c;
 		if (diff>0) {
-			if (diff>PI)	diff	-= PI_MUL_2;
+			if (diff>PI)	
+				diff	-= PI_MUL_2;
 		} else {
-			if (diff<-PI)	diff	+= PI_MUL_2;
+			if (diff<-PI)	
+				diff	+= PI_MUL_2;
 		}
 		float diff_a	= fabsf(diff);
 		
-		if (diff_a<EPS_S)	return true;
+		if (diff_a<EPS_S)	
+			return true;
 		
 		float mot		= s*dt;
 		if (mot>diff_a) mot=diff_a;
 		c				+= (diff/diff_a)*mot;
 	
-		if (c<0)				c+=PI_MUL_2;
-		else if (c>PI_MUL_2)	c-=PI_MUL_2;
+		if (c<0)				
+			c+=PI_MUL_2;
+		else if (c>PI_MUL_2)	
+			c-=PI_MUL_2;
 		
 		return false;
 	}

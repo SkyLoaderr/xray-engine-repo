@@ -884,7 +884,7 @@ void CAI_Zomby::FreeHunting()
 		SEnemySelected	Enemy;
 		SelectEnemy(Enemy);
 		// do I see the enemies?
-		if (Enemy.Enemy)		{
+		if ((Enemy.Enemy) && (Enemy.bVisible)) {
 			tStateStack.push(eCurrentState);
 			eCurrentState = aiZombyAttack;
 			return;

@@ -126,7 +126,7 @@ class CAI_Rat : public CCustomMonster
 		virtual void  Think();
 		virtual float EnemyHeuristics(CEntity* E);
 		virtual void  SelectEnemy(SEnemySelected& S);
-		void		  FollowLeader(CSquad &Squad, CEntity* Leader);
+		void		  FollowLeader(Fvector &tLeaderPosition);
 
 		virtual void  net_Export				(NET_Packet* P);				// export to server
 		virtual void  net_Import				(NET_Packet* P);				// import from server
