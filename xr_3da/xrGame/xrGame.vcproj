@@ -5942,6 +5942,9 @@
 							<File
 								RelativePath=".\PHCollideValidator.h">
 							</File>
+							<File
+								RelativePath=".\PHCollideValidatorInline.h">
+							</File>
 						</Filter>
 					</Filter>
 					<Filter

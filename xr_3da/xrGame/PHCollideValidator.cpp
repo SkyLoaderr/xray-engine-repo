@@ -3,7 +3,8 @@
 #include "phcollidevalidator.h"
 
 CGID CPHCollideValidator::freeGroupID=0;
-
+_flags<CLClassBits> CPHCollideValidator::onceFlags={CLClassBits(0)};	
+_flags<CLClassBits> CPHCollideValidator::typeFlags={CLClassBits(-1)};	
 void CPHCollideValidator::Init()
 {
 	freeGroupID=0;
@@ -25,6 +26,7 @@ void CPHCollideValidator::RegisterObjToGroup(CGID group,CPHObject& obj)
 	R_ASSERT(group<freeGroupID);
 	obj.collide_bits()=group;
 	obj.collide_class_bits().set(cbNCGroupObject,TRUE);
+	obj.collide_class_bits().set(cbNone,FALSE);
 }
 
 void CPHCollideValidator::RegisterObjToLastGroup(CPHObject& obj)
