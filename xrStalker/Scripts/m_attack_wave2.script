@@ -286,9 +286,9 @@ function main ()
     local enter_zone = get_level_object ("barricade_zone")
     enter_zone:set_callback (m_attack_wave2.on_zone_enter, true)
     
-    monsters[1]:set_target (stalkers[10], vector ():set (1, 1, 0))
-    monsters[2]:set_target (stalkers[7], vector ():set (0, 1, -1))
-    monsters[3]:set_target (stalkers[6], vector ():set (0, 1, -1))
+    monsters[1]:set_target (stalkers[10].npc, vector ():set (1, 1, 0))
+    monsters[2]:set_target (stalkers[7].npc, vector ():set (0, 1, -1))
+    monsters[3]:set_target (stalkers[6].npc, vector ():set (0, 1, -1))
 
 	for a = 1, table.getn (monsters), 1 do
 		monsters[a]:initialize ()
