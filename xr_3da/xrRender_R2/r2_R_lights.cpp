@@ -168,8 +168,7 @@ void	CRender::render_lights	(light_Package& LP)
 
 		//		if (was_spot_shadowed)		->	accum spot shadowed
 		if		(!L_spot_s.empty())		{ 
-			for (u32 it=0; it<L_spot_s.size(); it++)
-			{
+			for (u32 it=0; it<L_spot_s.size(); it++)	{
 				Target.accum_spot			(L_spot_s[it]);
 				render_indirect				(L_spot_s[it]);
 			}
