@@ -141,12 +141,11 @@ void CSector::Render			(CFrustum &F)
 	// Render everything
 	{
 		Fvector	Tpos;
-/*
 		RImplementation.set_Frustum		(&F);
 		RImplementation.add_Glows		(Glows);
 		RImplementation.add_Lights		(Lights);
 		RImplementation.add_Geometry	(pRoot);
-*/		
+
 		// 1 sorting-pass on objects
 		for (int s=0; s<int(Objects.size())-1; s++)
 		{
