@@ -37,6 +37,7 @@ void EParticlesObject::Construct(LPVOID data)
 
 EParticlesObject::~EParticlesObject()
 {
+	::Render->model_Delete	(m_Particles);
 }
 //----------------------------------------------------
 
@@ -207,7 +208,7 @@ bool EParticlesObject::ExportGame(SExportStreams& F)
 
 bool EParticlesObject::Compile(LPCSTR ref_name)
 {
-	xr_delete				(m_Particles);
+	::Render->model_Delete	(m_Particles);
     if (ref_name){
 		m_Particles 		= (IParticleCustom*)::Render->model_CreateParticles(ref_name);
         if (m_Particles){
