@@ -16,7 +16,7 @@ enum EType
 enum EState
 {
 	esDead,
-	esAlife
+	esAlive
 };
 
 private:
@@ -57,7 +57,14 @@ void	SetState(EState astate)
 	{
 		m_eState=astate;
 	}
-
+IC	bool isDead()
+	{
+		return m_eState==esDead;
+	}
+IC	bool isAlive()
+	{
+		return m_eState==esAlive;
+	}
 public:
 void Deactivate();
 void Activate();
@@ -67,7 +74,9 @@ void in_UpdateCL();
 void in_shedule_Update( u32 DT );
 void in_NetSpawn();
 void in_NetDestroy();
-void in_Load();
+void in_Init();
+void in_Load(LPCSTR section);
+void in_Hit(float P, Fvector &dir, CObject *who,s16 element,Fvector p_in_object_space, float impulse);
 CCharacterPhysicsSupport(EType atype,CEntityAlive* aentity);
 private:
 CCharacterPhysicsSupport& operator = (CCharacterPhysicsSupport& asup){};

@@ -301,7 +301,6 @@ BOOL CAI_Stalker::net_Spawn			(LPVOID DC)
 void CAI_Stalker::net_Destroy()
 {
 	inherited::net_Destroy	();
-	xr_delete				(m_pPhysicsShell);
 	Init					();
 	Movement.DestroyCharacter();
 	if(m_pPhysicsShell)	
