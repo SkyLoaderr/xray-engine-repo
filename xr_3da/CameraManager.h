@@ -16,6 +16,7 @@ class ENGINE_API CCameraManager
 	Fvector					vPosition;
 	Fvector					vDirection;
 	Fvector					vNormal;
+	Fvector					vRight;
 
 	EffectorVec				m_Effectors;
 
@@ -29,7 +30,7 @@ class ENGINE_API CCameraManager
 	Fvector					unaffected_vRight;
 public:
 	void					Dump				(void);
-	void					AddEffector			(CEffector* ef);
+	CEffector*				AddEffector			(CEffector* ef);
 	CEffector*				GetEffector			(EEffectorType type);
 	void					RemoveEffector		(EEffectorType type);
 
@@ -40,6 +41,14 @@ public:
 	IC Fvector&				unaffected_Right	()	{ return unaffected_vRight;		}
 	IC void					unaffected_Matrix	(Fmatrix& M)	
 	{	M.set(unaffected_vRight,unaffected_vNormal,unaffected_vDirection,unaffected_vPosition);	}
+
+	IC Fmatrix&				affected_View		()	{ return Device.mView; }
+	IC Fvector&				affected_Pos		()	{ return vPosition;	}
+	IC Fvector&				affected_Dir		()	{ return vDirection;}
+	IC Fvector&				affected_Up			()	{ return vNormal;	}
+	IC Fvector&				affected_Right		()	{ return vRight;	}
+	IC void					affected_Matrix		(Fmatrix& M)	
+	{	M.set(vRight,vNormal,vDirection,vPosition);	}
 
 	void					Update				(const Fvector& P, const Fvector& D, const Fvector& N, float fFOV_Dest, float fFAR_Dest);
 	void					Update				(const CCameraBase* C);

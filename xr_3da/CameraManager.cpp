@@ -43,10 +43,11 @@ CEffector* CCameraManager::GetEffector(EEffectorType type)
 	return 0;
 }
 
-void CCameraManager::AddEffector(CEffector* ef)
+CEffector* CCameraManager::AddEffector(CEffector* ef)
 {
 	RemoveEffector(ef->eType);
 	m_Effectors.push_back(ef);
+	return m_Effectors.back();
 }
 
 void CCameraManager::RemoveEffector(EEffectorType type){
@@ -69,11 +70,10 @@ void CCameraManager::Update(const Fvector& P, const Fvector& D, const Fvector& N
 	vNormal.inertion		(N,	psCamInert);
 	
 	// Normalize
-	Fvector					R;
 	vDirection.normalize	();
 	vNormal.normalize		();
-	R.crossproduct			(vNormal,vDirection);
-	vNormal.crossproduct	(vDirection,R);
+	vRight.crossproduct		(vNormal,vDirection);
+	vNormal.crossproduct	(vDirection,vRight);
 
 	// Save un-affected matrix and vectors
 	unaffected_mView.build_camera_dir	(vPosition,vDirection,vNormal);
@@ -97,8 +97,8 @@ void CCameraManager::Update(const Fvector& P, const Fvector& D, const Fvector& N
 		// Normalize
 		vDirection.normalize	();
 		vNormal.normalize		();
-		R.crossproduct			(vNormal,vDirection);
-		vNormal.crossproduct	(vDirection,R);
+		vRight.crossproduct		(vNormal,vDirection);
+		vNormal.crossproduct	(vDirection,vRight);
 	}
 	
 	// Device params
@@ -107,7 +107,7 @@ void CCameraManager::Update(const Fvector& P, const Fvector& D, const Fvector& N
 	Device.vCameraPosition.set	( vPosition		);
 	Device.vCameraDirection.set	( vDirection	);
 	Device.vCameraTop.set		( vNormal		);
-	Device.vCameraRight.set		( R );
+	Device.vCameraRight.set		( vRight		);
 	
 	// projection
 	float aspect				= Device.fHeight_2/Device.fWidth_2;
