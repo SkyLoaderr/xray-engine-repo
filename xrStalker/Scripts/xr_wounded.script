@@ -353,7 +353,7 @@ function action_stand:execute ()
        self.object:add_animation ("waunded_stand_uo_0", true)
     end
     
-    if self.object:animations_count () == 0 then
+    if self.object:animation_count () == 0 then
        self.a.final = true
     end    
     
