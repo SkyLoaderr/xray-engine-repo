@@ -156,7 +156,7 @@ function save_dialog:OnKeyboard(dik, keyboard_action)  --virtual function
       level.start_stop_menu(self,true)
    end
    
-   if dik == DIK_RETURN then
+   if dik == DIK_RIGHT then
 	self:OnButton_ok_clicked()
    end
    
