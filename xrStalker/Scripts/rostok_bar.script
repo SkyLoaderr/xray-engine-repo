@@ -66,16 +66,23 @@ end
 function rechange ()
     printf ("RECHANGE CALLED")
     flush ()
-    local num = table.getn (stalkers) / 2
+    local num = table.getn (stalkers) / 3
+    printf ("NUMBER OF STALKERS %d", num)
+    flush ()
     indices = {}
     local a = 0
     while a ~= num do
+          printf ("PASS %d", a)
+          flush ()
           local index = math.random (1, table.getn (stalkers))
           if this.present (index) == false then
+             printf ("INSERT %d", index)
+             flush ()
              a = a + 1
              table.insert (indices, index)
           end
     end          
+    printf ("RECHANGE EXIT")
 end
 -------------------------------------------------------------------------------------
 function present (index)
