@@ -335,16 +335,33 @@ void CGameObject::spawn_supplies()
 		return;
 
 	LPCSTR					N,V;
+	float					p;
 	for (u32 k = 0, j; spawn_ini()->r_line("spawn",k,&N,&V); k++) {
 		VERIFY				(xr_strlen(N));
 		j					= 1;
+		p					= 1.f;
+		
 		if (V && xr_strlen(V)) {
-			j				= atoi(V);
+			int				n = _GetItemCount(V);
+			string16		temp;
+			if (n > 0)
+				j			= atoi(_GetItem(V,0,temp));
+			
+#if 0
+			if (n > 1)
+				p			= (float)atof(_GetItem(V,1,temp));
+#endif
+			
 			if (!j)
 				j			= 1;
+
+			if (fis_zero(p))
+				p			= 1.f;
 		}
+		
 		for (u32 i=0; i<j; ++i)
-			Level().spawn_item	(N,Position(),ai_location().level_vertex_id(),ID());
+			if (::Random.randF(1.f) < p)
+				Level().spawn_item	(N,Position(),ai_location().level_vertex_id(),ID());
 	}
 }
 
