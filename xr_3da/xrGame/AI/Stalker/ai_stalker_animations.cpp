@@ -401,6 +401,7 @@ void CStalkerAnimations::vfAssignTorsoAnimation(CMotionDef *&tpTorsoAnimation)
 							tpTorsoAnimation = m_tAnims.A[l_tBodyState].m_tTorso.A[dwCurrentAniSlot].A[9].A[0];
 						else
 							tpTorsoAnimation = m_tAnims.A[l_tBodyState].m_tTorso.A[dwCurrentAniSlot].A[stalker->IsLimping() ? 9 : (7 + stalker->movement_type())].A[stalker->IsLimping() ? 0 : 1];
+//							tpTorsoAnimation = m_tAnims.A[l_tBodyState].m_tTorso.A[dwCurrentAniSlot].A[stalker->IsLimping() ? 9 : (7 + stalker->movement_type())].A[stalker->IsLimping() ? 0 : 1];
 						return;
 					}
 					else {
@@ -434,8 +435,18 @@ void CStalkerAnimations::vfAssignTorsoAnimation(CMotionDef *&tpTorsoAnimation)
 			}
 		}
 	}
-	else
-		tpTorsoAnimation = m_tAnims.A[stalker->body_state()].m_tTorso.A[0].A[6].A[0];
+	else {
+		if (eMentalStateFree == stalker->mental_state()) {
+			tpTorsoAnimation = 0;
+			R_ASSERT2(eBodyStateStand == stalker->body_state(),"Cannot run !free! animation when body state is not stand!");
+			if ((eMovementTypeStand == stalker->movement_type()) || fis_zero(stalker->speed()))
+				tpTorsoAnimation = m_tAnims.A[l_tBodyState].m_tTorso.A[dwCurrentAniSlot].A[9].A[0];
+			else
+				tpTorsoAnimation = m_tAnims.A[l_tBodyState].m_tTorso.A[dwCurrentAniSlot].A[stalker->IsLimping() ? 9 : (7 + stalker->movement_type())].A[stalker->IsLimping() ? 0 : 1];
+		}
+		else
+			tpTorsoAnimation = m_tAnims.A[stalker->body_state()].m_tTorso.A[0].A[6].A[0];
+	}
 }
 
 void CStalkerAnimations::vfAssignLegsAnimation(CMotionDef *&tpLegsAnimation)
