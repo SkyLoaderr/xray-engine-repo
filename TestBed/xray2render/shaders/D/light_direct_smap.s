@@ -29,7 +29,7 @@ uniform sampler2D 	s_shadowmap;
 uniform float4 		light_direction;
 uniform float4 		light_color;
 uniform float4x4	light_xform;
-uniform float2		jitter[8];
+uniform float4		jitter[6];
 
 //////////////////////////////////////////////////////////////////////////////////////////
 // Vertex
@@ -62,24 +62,24 @@ p2f 	p_main	( v2p_in IN )
   float3 sA;
   float4 one	= float4	(1,1,1,1);
  
-  s0			= tex2D		(s_shadowmap,uv0+jitter[0]);
-  s1			= tex2D		(s_shadowmap,uv0+jitter[1]);
-  s2			= tex2D		(s_shadowmap,uv0+jitter[2]);
-  s3			= tex2D		(s_shadowmap,uv0+jitter[3]);
+  s0			= tex2D		(s_shadowmap,uv0+float2(jitter[0].x,jitter[0].y));
+  s1			= tex2D		(s_shadowmap,uv0+float2(jitter[0].w,jitter[0].z));
+  s2			= tex2D		(s_shadowmap,uv0+float2(jitter[1].x,jitter[1].y));
+  s3			= tex2D		(s_shadowmap,uv0+float2(jitter[1].w,jitter[1].z));
   sC			= step		(float4(depth-s0.x,depth-s1.x,depth-s2.x,depth-s3.x),	0);
   sA.x			= dot		(sC,one);
 
-  s0			= tex2D		(s_shadowmap,uv0-jitter[0]);
-  s1			= tex2D		(s_shadowmap,uv0-jitter[1]);
-  s2			= tex2D		(s_shadowmap,uv0-jitter[2]);
-  s3			= tex2D		(s_shadowmap,uv0-jitter[3]);
+  s0			= tex2D		(s_shadowmap,uv0+float2(jitter[2].x,jitter[2].y));
+  s1			= tex2D		(s_shadowmap,uv0+float2(jitter[2].w,jitter[2].z));
+  s2			= tex2D		(s_shadowmap,uv0+float2(jitter[3].x,jitter[3].y));
+  s3			= tex2D		(s_shadowmap,uv0+float2(jitter[3].w,jitter[3].z));
   sC			= step		(float4(depth-s0.x,depth-s1.x,depth-s2.x,depth-s3.x),	0);
   sA.y			= dot		(sC,one);
 
-  s0			= tex2D		(s_shadowmap,uv0+jitter[4]);
-  s1			= tex2D		(s_shadowmap,uv0+jitter[5]);
-  s2			= tex2D		(s_shadowmap,uv0+jitter[6]);
-  s3			= tex2D		(s_shadowmap,uv0+jitter[7]);
+  s0			= tex2D		(s_shadowmap,uv0+float2(jitter[4].x,jitter[4].y));
+  s1			= tex2D		(s_shadowmap,uv0+float2(jitter[4].w,jitter[4].z));
+  s2			= tex2D		(s_shadowmap,uv0+float2(jitter[5].x,jitter[5].y));
+  s3			= tex2D		(s_shadowmap,uv0+float2(jitter[5].w,jitter[5].z));
   sC			= step		(float4(depth-s0.x,depth-s1.x,depth-s2.x,depth-s3.x),	0);
   sA.z			= dot		(sC,one);
   
