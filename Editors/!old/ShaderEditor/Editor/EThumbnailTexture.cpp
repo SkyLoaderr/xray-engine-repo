@@ -123,9 +123,11 @@ void ETextureThumbnail::Save(int age, LPCSTR path)
 	xr_string		fn;
     if (path) 		FS.update_path(fn,path,			m_Name.c_str());
     else			FS.update_path(fn,_textures_,	m_Name.c_str());
-    F.save_to		(fn.c_str());
-
-    FS.set_file_age	(fn.c_str(),age?age:m_Age);
+    if (F.save_to(fn.c_str())){
+	    FS.set_file_age	(fn.c_str(),age?age:m_Age);
+    }else{
+        Log			("!Can't save thumbnail:",fn.c_str());
+    }
 }
 //------------------------------------------------------------------------------
 

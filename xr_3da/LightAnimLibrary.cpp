@@ -245,7 +245,8 @@ void ELightAnimLibrary::Save()
 
 	string256 fn;
     FS.update_path(fn,_game_data_,"lanims.xr");
-    F.save_to(fn);
+    if (!F.save_to(fn))
+        Log			("!Can't save color animations:",fn);
 }
 
 void ELightAnimLibrary::Reload()
