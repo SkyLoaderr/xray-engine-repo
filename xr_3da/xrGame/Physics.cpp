@@ -190,7 +190,7 @@ void CPHJeep::Create(dSpaceID space, dWorldID world){
 	cabinBox[0]=scaleBox[0]*1.9f;cabinBox[1]=scaleBox[1]*0.6;cabinBox[2]=scaleBox[2]*2.08;
 
 	static const dReal wheelRadius = REAL(0.79/2.)* scaleParam;
-	VelocityRate=3;
+	VelocityRate=3.f;
 
 	startPosition[0]=10.0f;startPosition[1]=1.f;startPosition[2]=0.f;
 	static const dReal weelSepX=scaleBox[0]*2.74f/2.f,weelSepZ=scaleBox[2]*1.7f/2.f,weelSepY=scaleBox[1]*0.6f;
@@ -262,11 +262,11 @@ void CPHJeep::Create(dSpaceID space, dWorldID world){
 
 		dJointSetHinge2Param(Joints[i], dParamLoStop, 0);
 		dJointSetHinge2Param(Joints[i], dParamHiStop, 0);
-		dJointSetHinge2Param(Joints[i], dParamFMax, 500.f);
-		dJointSetHinge2Param(Joints[i], dParamFudgeFactor, 0.02f);
+		dJointSetHinge2Param(Joints[i], dParamFMax, 10000.f);
+		dJointSetHinge2Param(Joints[i], dParamFudgeFactor, 0.001f);
 
 		dJointSetHinge2Param(Joints[i], dParamVel2, 0);
-		dJointSetHinge2Param(Joints[i], dParamFMax2, 400);
+		dJointSetHinge2Param(Joints[i], dParamFMax2, 500);
 		dReal k_p=20000.f;
 		dReal k_d=1000.f;
 		dReal h=0.02222f;
@@ -441,7 +441,10 @@ void CPHJeep::Drive(const char& velocity)
 	}
 }
 //////////////////////////////////////////////////////////
-
+void CPHJeep::Revert(){
+dBodyAddForce(Bodies[0], 0, 800, 0);
+dBodyAddRelTorque(Bodies[0], 70, 0, 0);
+}
 ////////////////////////////////////////////////////////////////////////////
 ///////////CPHWorld/////////////////////////////////////////////////////////
 ///////////////////////////////////////////////////////////////////////////
