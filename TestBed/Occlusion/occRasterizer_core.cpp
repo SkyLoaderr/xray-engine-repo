@@ -69,11 +69,11 @@ inline float maxPixel(const float pt_val)
 
 float minPixel(float v)
 {
-	return ceilf(v);
+	return ceilf(v); //+1;
 }
 float maxPixel(float v)
 {
-	return floorf(v);
+	return floorf(v); //-1;
 }
 
 /* Rasterize a scan line between given X point values, corresponding Z values
@@ -98,7 +98,7 @@ void occRasterizer::i_scan(int curY, float startX, float endX, float startZ, flo
 	int initX	= int(minX), finalX = int(maxX), i = curY*occ_dim0+initX;		// trunc the 0.5 in pixel coords to int, setup starting conditons
 
 	// compute the scanline
-	for (; initX<=finalX; initX++, i++, Z+=dZ) 
+	for (; initX<finalX; initX++, i++, Z+=dZ) 
 	{
 		if (Z < pDepth[i]) 
 		{	
@@ -118,6 +118,11 @@ p2.y >= p1.y, p1, p2 are start/end vertices
 E1 E2 are the triangle edge differences of the 2 bounding edges for this 
 section
 */
+
+float maxp(float a, float b)
+{	return a>b ? a:b;		}
+float minp(float a, float b)
+{	return a<b ? a:b;		}
 
 void occRasterizer::i_section	(float *A, float *B, float *C, occTri* T, int Sect)
 {
@@ -178,9 +183,11 @@ void occRasterizer::i_section	(float *A, float *B, float *C, occTri* T, int Sect
 		rightZ	= startp1[2] + E1[2]*t; right_dZ = E1[2]/E1[1];
 	}	
 	// Now scan all lines in this section
+	float lhx = left_dX/2;
+	float rhx = right_dX/2;
 	for (; startY<=endY; startY++) 
 	{
-		i_scan	(int(startY), leftX, rightX, leftZ, rightZ, T);
+		i_scan	(int(startY), maxp(leftX-lhx,leftX+lhx), minp(rightX-rhx,rightX+rhx), leftZ, rightZ, T);
 		leftX	+= left_dX; rightX += right_dX;
 		leftZ	+= left_dZ; rightZ += right_dZ;
 	}

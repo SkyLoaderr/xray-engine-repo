@@ -76,11 +76,11 @@ int __cdecl main	(int argc, char* argv[])
 	// setup tri
 	occTri	T;
 	T.raster[0].x	= 0.1f;
-	T.raster[0].y	= 0.15f;
+	T.raster[0].y	= 1.5f;
 	T.raster[0].z	= 0.01f;
 	
 	T.raster[1].x	= 60.5f;
-	T.raster[1].y	= 10.9f;
+	T.raster[1].y	= 1.5f;
 	T.raster[1].z	= 0.1f;
 	
 	T.raster[2].x	= 60.5f;
@@ -104,7 +104,11 @@ int __cdecl main	(int argc, char* argv[])
 
 			for (int by=0; by<scale; by++)
 				for (int bx=0; bx<scale; bx++)
-					buf[(y*scale+by)*size + x*scale+bx]	= C;
+				{
+					DWORD _C = C;
+					if (by==0 && bx==0) _C = 255<<8;
+					buf[(y*scale+by)*size + x*scale+bx]	= _C;
+				}
 		}
 	}
 
