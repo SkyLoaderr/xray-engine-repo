@@ -25,7 +25,7 @@
 		<text x="30" y="8" font="graffiti22" r="255" g="255" b="255">Items List</text>
 	</our_bag_static>
 
-	<dragdrop_list x="28" y="35" width="240" height="450"
+	<dragdrop_list x="29" y="37" width="240" height="450"
 			cell_width = "41" cell_height="41"
 			rows_num="18" cols_num="6" rows_num_view="10" unlimited="1"></dragdrop_list>
 
@@ -36,7 +36,7 @@
 		<text x="30" y="8" font="graffiti22" r="255" g="255" b="255">Items List</text>
 	</others_bag_static>
 
-	<dragdrop_list x="28" y="35" width="240" height="400"
+	<dragdrop_list x="29" y="37" width="240" height="400"
 			cell_width = "41" cell_height="41"
 			rows_num="18" cols_num="6" rows_num_view="10" unlimited="1"></dragdrop_list>
 
@@ -46,7 +46,7 @@
 		<text font="letterica18" r="255" g="255" b="255" x="50" y="10"></text>
 	</static>
 
-	<dragdrop_list x="30" y="35" width="280" height="160"
+	<dragdrop_list x="31" y="37" width="280" height="160"
 			cell_width = "41" cell_height="41"
 			rows_num="18" cols_num="7" rows_num_view="4" unlimited="1"></dragdrop_list>
 
@@ -57,7 +57,7 @@
 		<text font="letterica18" r="255" g="255" b="255" x="50" y="10"></text>
 	</static>
 
-	<dragdrop_list x="30" y="35" width="280" height="160"
+	<dragdrop_list x="31" y="37" width="280" height="160"
 			cell_width = "41" cell_height="41"
 			rows_num="18" cols_num="7" rows_num_view="4" unlimited="1"></dragdrop_list>
 
