@@ -343,7 +343,7 @@ int CLocatorAPI::file_list		(vector<char*>& dest, const char* initial, u32 flags
 			if ((flags&FS_ListFiles) == 0)	continue;
 
 			const char* entry_begin = entry.name+base_len;
-			if ((flags&FS_RootOnly)&&strstr(entry_begin,"\\")!=end_symbol)	continue;	// folder in folder
+			if ((flags&FS_RootOnly)&&strstr(entry_begin,"\\"))	continue;	// folder in folder
 			dest.push_back			(xr_strdup(entry_begin));
             LPSTR fname 			= dest.back();
             if (flags&FS_ClampExt)	if (0!=strext(fname)) *strext(fname)=0;
@@ -352,7 +352,7 @@ int CLocatorAPI::file_list		(vector<char*>& dest, const char* initial, u32 flags
 			if ((flags&FS_ListFolders) == 0)continue;
 			const char* entry_begin = entry.name+base_len;
 			
-			if ((flags&FS_RootOnly)&&strstr(entry_begin,"\\")!=end_symbol)	continue;	// folder in folder
+			if ((flags&FS_RootOnly)&&(strstr(entry_begin,"\\")!=end_symbol))	continue;	// folder in folder
 			
 			dest.push_back	(xr_strdup(entry_begin));
 		}
