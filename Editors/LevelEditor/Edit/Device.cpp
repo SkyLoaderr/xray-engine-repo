@@ -269,7 +269,9 @@ void CRenderDevice::End(){
 	VERIFY(bReady);
 
 	Statistic.Show(pSystemFont);
+	Device.SetRS	(D3DRS_FILLMODE,D3DFILL_SOLID);
 	pSystemFont->OnRender();
+    Device.SetRS	(D3DRS_FILLMODE,Device.dwFillMode);
 
 	// end scene
 	RCache.OnFrameEnd();
