@@ -204,7 +204,17 @@ end
 
 function main ()
 	planner0				= s_test.setup	("m_stalker_e0000","m_stalker_e0001","way0000")
+	if (planner0.meet == true) then
+		printf				("0 : true")
+	else
+		printf				("0 : false")
+	end
 	planner1				= s_test.setup	("m_stalker_e0001","m_stalker_e0000","way0001")
+	if (planner1.meet == true) then
+		printf				("1 : true")
+	else
+		printf				("1 : false")
+	end
 
 	-- update cycle
 	while true do
