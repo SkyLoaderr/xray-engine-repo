@@ -15,7 +15,7 @@ end
 function mob_walker:reset_scheme()
 	printf("_bp: mob_walker:reset_scheme: %s", self.object:name())
 
-	reset_action(self.object, script_name())
+	xr_logic.mob_capture(self.object, not self.st.no_reset)
 
 	if self.st.path_walk_info == nil then
 		self.st.path_walk_info = utils.path_parse_waypoints(self.st.path_walk)
@@ -55,6 +55,7 @@ function set_scheme(npc, ini, scheme, section, gulag_name)
 
 	st.logic     = xr_logic.cfg_get_switch_conditions(ini, section, npc)
 
+	st.no_reset  = utils.cfg_get_bool(ini, section, "no_reset", npc, false)
 	st.path_walk = utils.cfg_get_string(ini, section, "path_walk", npc, true,  gulag_name)
 	st.path_look = utils.cfg_get_string(ini, section, "path_look", npc, false, gulag_name)
 
