@@ -363,6 +363,7 @@ bool CPHFracture::Update(CPHElement* element)
 		else
 		{
 			CPHJoint* J	= (CPHJoint*) dJointGetData(joint);
+			if(!J)continue;//hack..
 			J->PSecondElement()->InterpolateGlobalPosition(&joint_position);
 			CODEGeom* root_geom=J->RootGeom();
 			if(root_geom)
