@@ -21,11 +21,18 @@ struct CPrimitiveEvaluator {
 		infinity = 127,
 	};
 
+	board_type	*m_board;
+
+	IC			CPrimitiveEvaluator	(board_type *board)
+	{
+		m_board		= board;
+	}
+
 	IC	s8		evaluate			(const board_type &board)
 	{
-		if (board.color_to_move() == board_type::BLACK)
-			return	(board.difference());
-		return		(-board.difference());
+		if (m_board->color_to_move() == board_type::BLACK)
+			return	(m_board->difference());
+		return		(-m_board->difference());
 	}
 };
 
@@ -38,13 +45,13 @@ void __cdecl main(char argc, char *argv[])
 	script().init		();
 
 	COthelloBoard			b;
-	CSPrimitiveEvaluator	e;
+	CSPrimitiveEvaluator	e(&b);
 	_mini_max				search(&b,&e);
 	
 	u64						start, finish;
 
-	SetPriorityClass		(GetCurrentProcess(),REALTIME_PRIORITY_CLASS);
-	SetThreadPriority		(GetCurrentThread(),THREAD_PRIORITY_TIME_CRITICAL);
+//	SetPriorityClass		(GetCurrentProcess(),REALTIME_PRIORITY_CLASS);
+//	SetThreadPriority		(GetCurrentThread(),THREAD_PRIORITY_TIME_CRITICAL);
 	Sleep					(1);
 	
 	start					= CPU::cycles();
