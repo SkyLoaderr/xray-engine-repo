@@ -130,6 +130,7 @@ int CEditableObject::GetVertexCount(){
 void CEditableObject::UpdateBox(){
 	VERIFY(!m_Meshes.empty());
     EditMeshIt m = m_Meshes.begin();
+    m_Box.invalidate();
     for(;m!=m_Meshes.end();m++){
         Fbox meshbox;
         (*m)->GetBox(meshbox);

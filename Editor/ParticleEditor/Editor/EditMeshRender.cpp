@@ -225,6 +225,7 @@ void CEditableMesh::RenderSelection(Fmatrix& parent, DWORD color){
     bb.getsphere(C,r);
 	if (!Device.m_Frustum.testSphere(C,r)) return;
     // render
+	Device.SetTransform(D3DTS_WORLD,parent);
     Device.SetRS(D3DRS_TEXTUREFACTOR,	color);
     for (RBMapPairIt p_it=m_RenderBuffers.begin(); p_it!=m_RenderBuffers.end(); p_it++){
 		RBVector& rb_vec = p_it->second;
@@ -236,5 +237,6 @@ void CEditableMesh::RenderSelection(Fmatrix& parent, DWORD color){
 			Device.DP(D3DPT_TRIANGLELIST,rb_it->stream,vBase,rb_it->dwNumVertex/3);
 		}
     }
+    Device.SetRS(D3DRS_TEXTUREFACTOR,	0xffffffff);
 }
 

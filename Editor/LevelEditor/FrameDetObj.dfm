@@ -1,7 +1,7 @@
 object fraDetailObject: TfraDetailObject
   Left = 0
   Top = 0
-  Width = 443
+  Width = 123
   Height = 277
   VertScrollBar.Visible = False
   Align = alClient
@@ -12,8 +12,8 @@ object fraDetailObject: TfraDetailObject
   TabOrder = 0
   object paSelect: TPanel
     Left = 0
-    Top = 78
-    Width = 443
+    Top = 115
+    Width = 123
     Height = 34
     Align = alTop
     Constraints.MaxWidth = 123
@@ -23,7 +23,7 @@ object fraDetailObject: TfraDetailObject
     object APHeadLabel1: TLabel
       Left = 1
       Top = 1
-      Width = 441
+      Width = 121
       Height = 13
       Align = alTop
       Alignment = taCenter
@@ -75,8 +75,8 @@ object fraDetailObject: TfraDetailObject
   object paCommand: TPanel
     Left = 0
     Top = 0
-    Width = 443
-    Height = 78
+    Width = 123
+    Height = 115
     Align = alTop
     Constraints.MaxWidth = 123
     Constraints.MinWidth = 123
@@ -85,7 +85,7 @@ object fraDetailObject: TfraDetailObject
     object Label1: TLabel
       Left = 1
       Top = 1
-      Width = 441
+      Width = 121
       Height = 13
       Align = alTop
       Alignment = taCenter
@@ -177,7 +177,7 @@ object fraDetailObject: TfraDetailObject
     end
     object ExtBtn4: TExtBtn
       Left = 2
-      Top = 61
+      Top = 62
       Width = 119
       Height = 15
       Align = alNone
@@ -196,11 +196,64 @@ object fraDetailObject: TfraDetailObject
       ParentFont = False
       OnClick = ebUpdateObjectsClick
     end
+    object Label2: TLabel
+      Left = 16
+      Top = 97
+      Width = 38
+      Height = 13
+      Caption = 'Density:'
+    end
+    object Bevel2: TBevel
+      Left = 1
+      Top = 92
+      Width = 121
+      Height = 2
+    end
+    object ebInvalidateCache: TExtBtn
+      Left = 2
+      Top = 77
+      Width = 119
+      Height = 15
+      Align = alNone
+      AllowAllUp = True
+      BevelShow = False
+      HotTrack = True
+      HotColor = 15790320
+      CloseButton = False
+      Caption = 'Invalidate Cache'
+      Font.Charset = DEFAULT_CHARSET
+      Font.Color = clWindowText
+      Font.Height = -11
+      Font.Name = 'MS Sans Serif'
+      Font.Style = []
+      Margin = 13
+      ParentFont = False
+      OnClick = ebInvalidateCacheClick
+    end
+    object seDensity: TMultiObjSpinEdit
+      Left = 56
+      Top = 95
+      Width = 66
+      Height = 19
+      LWSensitivity = 0.01
+      ButtonKind = bkLightWave
+      Increment = 0.01
+      MaxValue = 0.5
+      MinValue = 0.01
+      ValueType = vtFloat
+      Value = 0.02
+      AutoSize = False
+      Color = 10526880
+      TabOrder = 0
+      OnLWChange = seDensityLWChange
+      OnExit = seDensityExit
+      OnKeyDown = seDensityKeyDown
+    end
   end
   object fsStorage: TFormStorage
     IniSection = 'FrameDO'
     Options = []
-    Version = 4
+    Version = 6
     StoredProps.Strings = (
       'paSelect.Height'
       'paSelect.Tag'

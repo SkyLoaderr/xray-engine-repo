@@ -1,7 +1,7 @@
 object fraSector: TfraSector
   Left = 0
   Top = 0
-  Width = 443
+  Width = 123
   Height = 277
   VertScrollBar.ButtonSize = 11
   VertScrollBar.Range = 257
@@ -23,8 +23,8 @@ object fraSector: TfraSector
   TabOrder = 0
   object paSectorActions: TPanel
     Left = 0
-    Top = 125
-    Width = 443
+    Top = 99
+    Width = 123
     Height = 98
     Align = alTop
     Color = 10528425
@@ -218,7 +218,7 @@ object fraSector: TfraSector
     object APHeadLabel2: TLabel
       Left = 1
       Top = 1
-      Width = 441
+      Width = 121
       Height = 13
       Align = alTop
       Alignment = taCenter
@@ -321,21 +321,21 @@ object fraSector: TfraSector
   object paCommands: TPanel
     Left = 0
     Top = 0
-    Width = 443
-    Height = 125
+    Width = 123
+    Height = 99
     Align = alTop
     Color = 10528425
     TabOrder = 0
     object RxLabel4: TLabel
       Left = 3
-      Top = 76
+      Top = 49
       Width = 37
       Height = 13
       Caption = 'Current:'
     end
     object RxLabel6: TLabel
       Left = 4
-      Top = 110
+      Top = 83
       Width = 44
       Height = 13
       Caption = 'Contains:'
@@ -348,7 +348,7 @@ object fraSector: TfraSector
     end
     object lbFacesCount: TLabel
       Left = 51
-      Top = 110
+      Top = 83
       Width = 70
       Height = 13
       AutoSize = False
@@ -383,7 +383,7 @@ object fraSector: TfraSector
     object APHeadLabel1: TLabel
       Left = 1
       Top = 1
-      Width = 441
+      Width = 121
       Height = 13
       Align = alTop
       Alignment = taCenter
@@ -416,7 +416,7 @@ object fraSector: TfraSector
       ParentFont = False
       OnClick = PanelMinClick
     end
-    object ExtBtn3: TExtBtn
+    object ebCaptureInside: TExtBtn
       Left = 2
       Top = 31
       Width = 120
@@ -426,86 +426,8 @@ object fraSector: TfraSector
       HotTrack = True
       HotColor = 15790320
       CloseButton = False
-      Caption = 'Update Sel Convex'
-      Font.Charset = DEFAULT_CHARSET
-      Font.Color = clWindowText
-      Font.Height = -11
-      Font.Name = 'MS Sans Serif'
-      Font.Style = []
-      Margin = 13
-      ParentFont = False
-      OnClick = ExtBtn3Click
-    end
-    object ebAutoUpdateConvex: TExtBtn
-      Left = 2
-      Top = 61
-      Width = 120
-      Height = 15
-      Align = alNone
-      AllowAllUp = True
-      BevelShow = False
-      HotTrack = True
-      HotColor = 15790320
-      CloseButton = False
-      GroupIndex = 3
-      Caption = 'Auto upd. Convex'
-      Font.Charset = DEFAULT_CHARSET
-      Font.Color = clWindowText
-      Font.Height = -11
-      Font.Name = 'MS Sans Serif'
-      Font.Style = []
-      Glyph.Data = {
-        6E040000424D6E04000000000000360000002800000028000000090000000100
-        18000000000038040000120B0000120B00000000000000000000FF00FF000000
-        C4C4C4C4C4C4C4C4C4C4C4C4C4C4C4C4C4C4C4C4C4FF00FFFF00FF000000C4C4
-        C4C4C4C4C4C4C4C4C4C4C4C4C4C4C4C4C4C4C4FF00FFFF00FF000000C4C4C4C4
-        C4C4C4C4C4C4C4C4C4C4C4C4C4C4C4C4C4FF00FFFF00FFFF00FFFF00FFFF00FF
-        FF00FFFF00FFFF00FFFF00FFFF00FFFF00FFFF00FF0000009999999999999999
-        99999999999999999999C4C4C4FF00FFFF00FF00000099999999999999999999
-        9999999999999999C4C4C4FF00FFFF00FF000000999999999999999999999999
-        999999999999C4C4C4FF00FFC4C4C40000000000000000000000000000000000
-        00000000FF00FFFF00FFFF00FF00000099999999999999999999999999999999
-        9999C4C4C4FF00FFFF00FF000000999999999999999999999999999999999999
-        C4C4C4FF00FFFF00FF000000999999999999999999999999999999999999C4C4
-        C4FF00FFC4C4C4999999999999999999999999999999999999000000FF00FFFF
-        00FFFF00FF000000999999999999999999999999999999999999C4C4C4FF00FF
-        FF00FF000000999999999999999999999999999999999999C4C4C4FF00FFFF00
-        FF000000999999999999999999999999999999999999C4C4C4FF00FFC4C4C499
-        9999999999999999999999999999999999000000FF00FFFF00FFFF00FF000000
-        999999999999999999999999999999999999C4C4C4FF00FFFF00FF0000009999
-        99999999999999999999999999999999C4C4C4FF00FFFF00FF00000099999999
-        9999999999999999999999999999C4C4C4FF00FFC4C4C4999999999999999999
-        999999999999999999000000FF00FFFF00FFFF00FF0000009999999999999999
-        99999999999999999999C4C4C4FF00FFFF00FF00000099999999999999999999
-        9999999999999999C4C4C4FF00FFFF00FF000000999999999999999999999999
-        999999999999C4C4C4FF00FFC4C4C49999999999999999999999999999999999
-        99000000FF00FFFF00FFFF00FF00000099999999999999999999999999999999
-        9999C4C4C4FF00FFFF00FF000000999999999999999999999999999999999999
-        C4C4C4FF00FFFF00FF000000999999999999999999999999999999999999C4C4
-        C4FF00FFC4C4C4999999999999999999999999999999999999000000FF00FFFF
-        00FFFF00FF000000000000000000000000000000000000000000000000FF00FF
-        FF00FF000000000000000000000000000000000000000000000000FF00FFFF00
-        FF000000000000000000000000000000000000000000000000FF00FFC4C4C499
-        9999999999999999999999999999999999000000FF00FFFF00FFFF00FFFF00FF
-        FF00FFFF00FFFF00FFFF00FFFF00FFFF00FFFF00FFFF00FFFF00FFFF00FFFF00
-        FFFF00FFFF00FFFF00FFFF00FFFF00FFFF00FFFF00FFFF00FFFF00FFFF00FFFF
-        00FFFF00FFFF00FFFF00FFFF00FFFF00FFFF00FFC4C4C4C4C4C4C4C4C4C4C4C4
-        C4C4C4C4C4C4C4C4C4C4C4C4FF00FFFF00FF}
-      Margin = 13
-      NumGlyphs = 4
-      ParentFont = False
-    end
-    object ebCaptureInside: TExtBtn
-      Left = 2
-      Top = 46
-      Width = 120
-      Height = 15
-      Align = alNone
-      BevelShow = False
-      HotTrack = True
-      HotColor = 15790320
-      CloseButton = False
       Caption = 'Capture Volume'
+      Enabled = False
       Font.Charset = DEFAULT_CHARSET
       Font.Color = clWindowText
       Font.Height = -11
@@ -517,7 +439,7 @@ object fraSector: TfraSector
     end
     object cbItems: TComboBox
       Left = 18
-      Top = 91
+      Top = 64
       Width = 103
       Height = 18
       Style = csOwnerDrawVariable

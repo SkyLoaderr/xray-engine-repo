@@ -231,6 +231,7 @@ bool TUI::Command( int _Command, int p1, int p2 ){
            	Scene.UndoClear();
             Scene.m_Modified = false;
 			Command(COMMAND_UPDATE_CAPTION);
+			Command(COMMAND_CHANGE_TARGET,etObject);
 			Command(COMMAND_CHANGE_ACTION,eaSelect);
 		    Scene.UndoSave();
 		} else {

@@ -196,6 +196,7 @@ void CImage::LoadTGA(LPCSTR name)
 
 	dwWidth		= hdr.width;
 	dwHeight	= hdr.height;
+	bAlpha 		= (hdr.pixsize==32);
 
 	// Alloc memory
 	pData		= (DWORD*)malloc(dwWidth*dwHeight*4);

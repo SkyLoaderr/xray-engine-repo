@@ -251,8 +251,6 @@ object fraBottomBar: TfraBottomBar
       'miDrawGrid.Checked'
       'miDrawPortalSimpleModel.Checked'
       'miDrawSectors.Checked'
-      'miDrawSectorEdgedCHull.Checked'
-      'miDrawSectorCHull.Checked'
       'N100.Checked'
       'N125.Checked'
       'N150.Checked'
@@ -442,15 +440,7 @@ object fraBottomBar: TfraBottomBar
       GroupIndex = 4
       object miDrawSectorFaces: TMenuItem
         Caption = 'Draw Sector Faces'
-        GroupIndex = 1
-        RadioItem = True
-        OnClick = ClickOptionsMenuItem
-      end
-      object miDrawSectorCHull: TMenuItem
-        Caption = 'Draw Convex Hull'
         Checked = True
-        GroupIndex = 1
-        RadioItem = True
         OnClick = ClickOptionsMenuItem
       end
       object N5: TMenuItem
@@ -459,12 +449,6 @@ object fraBottomBar: TfraBottomBar
       end
       object miDrawSectorEdgedSFaces: TMenuItem
         Caption = 'Draw Edged Sector Faces'
-        Checked = True
-        GroupIndex = 1
-        OnClick = ClickOptionsMenuItem
-      end
-      object miDrawSectorEdgedCHull: TMenuItem
-        Caption = 'Draw Edged Convex Hull'
         Checked = True
         GroupIndex = 1
         OnClick = ClickOptionsMenuItem

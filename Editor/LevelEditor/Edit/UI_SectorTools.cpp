@@ -128,7 +128,7 @@ bool __fastcall TUI_ControlSectorAdd::End(TShiftState _Shift)
         case saAddMesh:
         case saDelMesh:
         case saMeshBoxSelection:
-        	sector->SectorChanged(fraSector->ebAutoUpdateConvex->Down);
+        	sector->SectorChanged();
             fraSector->OnSectorUpdate();
 			Scene.UndoSave();
         break;

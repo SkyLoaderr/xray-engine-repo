@@ -25,6 +25,7 @@
 #include "mxPlacemnt.hpp"
 #include <Grids.hpp>
 #include <Menus.hpp>
+#include "ElTreeStdEditors.hpp"
 
 class CEditMesh;
 class CSMotion;
@@ -186,6 +187,7 @@ __published:	// IDE-managed Components
 	TLabel *lbShaderXRLC;
 	TElTree *tvMeshes;
 	TElTree *tvSurfaces;
+	TElTreeInplaceEdit *InplaceText;
     void __fastcall FormKeyDown(TObject *Sender, WORD &Key,
           TShiftState Shift);
     void __fastcall ebCancelClick(TObject *Sender);
@@ -236,6 +238,8 @@ __published:	// IDE-managed Components
 	void __fastcall tvMeshesItemFocused(TObject *Sender);
 	void __fastcall tvSurfacesItemFocused(TObject *Sender);
 	void __fastcall tvSMotionsItemFocused(TObject *Sender);
+	void __fastcall InplaceTextValidateResult(TObject *Sender,
+          bool &InputValid);
 private:	// User declarations
     CSMotion* 				selected_smotion;
     COMotion* 				selected_omotion;

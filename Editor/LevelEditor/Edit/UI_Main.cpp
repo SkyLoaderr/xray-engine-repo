@@ -145,7 +145,8 @@ bool __fastcall TUI::KeyPress(WORD Key, TShiftState Shift)
 //----------------------------------------------------
 void TUI::OnMousePress(int btn){
 	if (!m_bReady) return;
-    if(m_MouseCaptured) return;
+    if (!frmMain->IsFocused()) return;
+    if (m_MouseCaptured) return;
 
     // test owner
     Ipoint pt;

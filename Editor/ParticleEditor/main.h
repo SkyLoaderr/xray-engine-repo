@@ -60,9 +60,10 @@ private:	// User declarations
     HINSTANCE 	m_HInstance;
 
 public:		// User declarations
-    __fastcall TfrmMain(TComponent* Owner);
+    __fastcall 		TfrmMain(TComponent* Owner);
     void __fastcall UpdateCaption();
-    __inline void SetHInst(HINSTANCE inst){ m_HInstance=inst; }
+    __inline void 	SetHInst(HINSTANCE inst){ m_HInstance=inst; }
+    bool            IsFocused(){return D3DWindow->Focused();}
 };
 //---------------------------------------------------------------------------
 extern PACKAGE TfrmMain *frmMain;

@@ -115,6 +115,7 @@ class CDetailManager:
     void				GetSlotRect		(Frect& rect, int sx, int sz);
     void				GetSlotTCRect	(Irect& rect, int sx, int sz);
     BYTE				GetRandomObject	(DWORD color_index);
+    BYTE				GetObject		(ColorIndexPairIt& CI, BYTE id);
 
 	void 				CalcClosestCount(int part, const Fcolor& C, SIndexDistVec& best);
 	void 				FindClosestIndex(const Fcolor& C, SIndexDistVec& best);
@@ -190,6 +191,8 @@ public:
 	BOOLVec				m_Selected;
 	Shader*				m_pBaseShader;
     SBase*				m_pBase;
+
+    float				m_fDensity;
 public:
 						CDetailManager			();
     virtual 			~CDetailManager			();

@@ -32,18 +32,6 @@ public:
     IC bool IsItem	(CSceneObject* o, CEditableMesh* m){ return (o==object)&&(m==mesh); }
 };
 
-#pragma pack(push,1)
-struct CHFace {
-	union{
-		DWORD p[3];
-		struct { DWORD p0,p1,p2; };
-	};
-    CHFace(DWORD _p0, DWORD _p1, DWORD _p2) {p0=_p0;p1=_p1;p2=_p2;}
-    CHFace(){;}
-};
-#pragma pack(pop)
-
-DEFINE_VECTOR(CHFace,CHFaceVec,CHFaceIt);
 DEFINE_VECTOR(CSectorItem,SItemVec,SItemIt);
 
 class CSector : public CCustomObject {
@@ -53,24 +41,18 @@ class CSector : public CCustomObject {
     friend class CPortal;
 
     BYTE			m_bDefault;
-    BYTE			m_bNeedUpdateCHull;
     bool			m_bHasLoadError;
 
-	FvectorVec		m_CHSectorVertices;
-    CHFaceVec		m_CHSectorFaces;
-    PlaneVec		m_CHSectorPlanes;
+    Fbox			m_Box;
+
     Fvector 		m_SectorCenter;
     float 			m_SectorRadius;
-    void 			MakeCHull	();
-	bool 			RenderCHull	(DWORD color, bool bSolid, bool bEdge, bool bCull);
 
 	Fcolor			sector_color;
 	SItemVec 		sector_items;
 	bool 			FindSectorItem(CSceneObject* o, CEditableMesh* m, SItemIt& it);
 	bool 			FindSectorItem(const char* O, const char* M, SItemIt& it);
 	void 			LoadSectorDef( CStream* F );
-
-    void 			UpdatePlanes();
 
     // only for build
     int				sector_num;
@@ -91,8 +73,8 @@ public:
 	virtual void 	Move		( Fvector& amount ); // need for Shift Level
 	virtual void 	OnSceneUpdate();
 	virtual void 	OnDestroy	( );
-    void			Update		(bool bNeedCreateCHull);
-    void			SectorChanged(bool bNeedCreateCHull);
+    void			Update		();
+    void			SectorChanged();
 
 	void			AddMesh		(CSceneObject* O, CEditableMesh* M);
 	void			DelMesh		(CSceneObject* O, CEditableMesh* M);
@@ -103,7 +85,8 @@ public:
     void			CaptureInsideVolume();
     void			CaptureAllUnusedMeshes();
     int 			GetSectorFacesCount();
-	EVisible		TestCHullSphereIntersection(const Fvector&P, float R);
+
+    EVisible		Intersect	(const Fvector& center, float radius);
 };
 
 #endif /*_INCDEF_Sector_H_*/

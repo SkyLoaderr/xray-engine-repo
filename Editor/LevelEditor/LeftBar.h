@@ -144,6 +144,7 @@ __published:	// IDE-managed Components
 	TMenuItem *miRecentFiles;
 	TMenuItem *N7;
 	TMenuItem *Quit1;
+	TExtBtn *ebProperties;
     void __fastcall ebClearClick(TObject *Sender);
     void __fastcall ebLoadClick(TObject *Sender);
     void __fastcall ebSaveClick(TObject *Sender);
@@ -219,6 +220,7 @@ __published:	// IDE-managed Components
 	void __fastcall miRecentFilesClick(TObject *Sender);
 	void __fastcall fsStorageSavePlacement(TObject *Sender);
 	void __fastcall Quit1Click(TObject *Sender);
+	void __fastcall ebPropertiesClick(TObject *Sender);
 private:	// User declarations
 	void __fastcall ShowPPMenu(TMxPopupMenu* M, TObject* btn);
 public:		// User declarations

@@ -32,6 +32,10 @@ __published:	// IDE-managed Components
 	TExtBtn *ebReinitializeSlotObjects;
 	TExtBtn *ExtBtn6;
 	TExtBtn *ExtBtn4;
+	TLabel *Label2;
+	TMultiObjSpinEdit *seDensity;
+	TBevel *Bevel2;
+	TExtBtn *ebInvalidateCache;
     void __fastcall PaneMinClick(TObject *Sender);
     void __fastcall ExpandClick(TObject *Sender);
 	void __fastcall ExtBtn1Click(TObject *Sender);
@@ -39,9 +43,16 @@ __published:	// IDE-managed Components
 	void __fastcall ebUpdateObjectsClick(TObject *Sender);
 	void __fastcall ebReinitializeSlotObjectsClick(TObject *Sender);
 	void __fastcall ExtBtn6Click(TObject *Sender);
+	void __fastcall seDensityExit(TObject *Sender);
+	void __fastcall seDensityKeyDown(TObject *Sender, WORD &Key,
+          TShiftState Shift);
+	void __fastcall seDensityLWChange(TObject *Sender, int Val);
+	void __fastcall ebInvalidateCacheClick(TObject *Sender);
 private:	// User declarations
 public:		// User declarations
 	__fastcall TfraDetailObject(TComponent* Owner);
+    void __fastcall OnEnter();
+    void __fastcall OnExit();
 };
 //---------------------------------------------------------------------------
 #endif

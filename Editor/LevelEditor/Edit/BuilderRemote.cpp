@@ -112,7 +112,7 @@ int SceneBuilder::CalculateSector(const Fvector& P, float R){
     ObjectIt _E = Scene.LastObj(OBJCLASS_SECTOR);
     for(;_F!=_E;_F++){
     	CSector* _S=(CSector*)(*_F);
-        EVisible vis=_S->TestCHullSphereIntersection(P,R);
+        EVisible vis=_S->Intersect(P,R);
         if ((vis==fvPartialInside)||(vis==fvFully))
         	if (_S->sector_num!=m_iDefaultSectorNum) return _S->sector_num;
 	}
@@ -270,7 +270,7 @@ void SceneBuilder::BuildLight(b_light* b, CLight* e){
         for(;_F!=_E;_F++){
 			if (b->sectors.size()>=16) break;
             CSector* _S=(CSector*)(*_F);
-            EVisible vis=_S->TestCHullSphereIntersection(b->position,b->range);
+            EVisible vis=_S->Intersect(b->position,b->range);
             if ((vis==fvPartialInside)||(vis==fvFully))
             	b->sectors.push_back(_S->sector_num);
         }
@@ -279,7 +279,7 @@ void SceneBuilder::BuildLight(b_light* b, CLight* e){
         for(;_F!=_E;_F++){
 			if (b->sectors.size()>=16) break;
             CSector* _S=(CSector*)(*_F);
-            EVisible vis=_S->TestCHullSphereIntersection(b->position,b->range);
+            EVisible vis=_S->Intersect(b->position,b->range);
             if (vis==fvPartialOutside)
             	b->sectors.push_back(_S->sector_num);
         }

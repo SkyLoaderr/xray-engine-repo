@@ -571,3 +571,9 @@ void __fastcall TfraLeftBar::Quit1Click(TObject *Sender)
 }
 //---------------------------------------------------------------------------
 
+void __fastcall TfraLeftBar::ebPropertiesClick(TObject *Sender)
+{
+	UI.Command(COMMAND_SHOWPROPERTIES);
+}
+//---------------------------------------------------------------------------
+

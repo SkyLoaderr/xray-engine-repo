@@ -52,6 +52,7 @@ const DWORD	vs_size				= 3000;
 #define DETMGR_CHUNK_BASE_TEXTURE	0x1002
 #define DETMGR_CHUNK_COLOR_INDEX 	0x1003
 #define DETMGR_CHUNK_SNAP_OBJECTS 	0x1004
+#define DETMGR_CHUNK_DENSITY	 	0x1005
 
 #define DETMGR_VERSION 				0x0002
 //------------------------------------------------------------------------------
@@ -227,6 +228,7 @@ void CDetail::Export(CFS_Base& F){
 
 //------------------------------------------------------------------------------
 CDetailManager::CDetailManager(){
+	m_fDensity			= 0.1f;
 	m_pBase		 		= 0;
     m_pBaseShader		= 0;
     ZeroMemory			(&m_Header,sizeof(DetailHeader));
@@ -541,11 +543,27 @@ BYTE CDetailManager::GetRandomObject(DWORD color_index){
 	return (it-m_Objects.begin());
 }
 
+BYTE CDetailManager::GetObject(ColorIndexPairIt& CI, BYTE id){
+	VERIFY(CI!=m_ColorIndices.end());
+    DOIt it = find(m_Objects.begin(),m_Objects.end(),CI->second[id]);
+    VERIFY(it!=m_Objects.end());
+	return (it-m_Objects.begin());
+}
+
 bool CompareWeightFunc(SIndexDist& d0, SIndexDist& d1){
 	return d0.dist<d1.dist;
 }
 
+struct best_rand
+{
+	CRandom gen;
+	best_rand(CRandom& A) { gen=A; }
+	int operator()(int n) {return gen.randI(n);}
+};
+
 bool CDetailManager::UpdateSlotObjects(int x, int z){
+    srand(time(NULL));
+
     DSIt slot	= m_Slots.begin()+z*m_Header.size_x+x;
     Irect		R;
     GetSlotTCRect(R,x,z);
@@ -570,26 +588,13 @@ bool CDetailManager::UpdateSlotObjects(int x, int z){
     float dx=float(R.x2-R.x1)/2.f;
     float dy=float(R.y2-R.y1)/2.f;
 
-    // a0 <-> a2
-    // a3 <-> a1
-/*
-    2 3
-    0 1
-*/
+//	2 3
+//	0 1
     P[0].x1=R.x1; 		  			P[0].y1=iFloor(R.y1+dy+0.501f); P[0].x2=iFloor(R.x1+dx+.499f);	P[0].y2=R.y2;
     P[1].x1=iFloor(R.x1+dx+0.501f);	P[1].y1=iFloor(R.y1+dy+0.501f);	P[1].x2=R.x2; 					P[1].y2=R.y2;
     P[2].x1=R.x1; 		  			P[2].y1=R.y1; 		  			P[2].x2=iFloor(R.x1+dx+.499f); 	P[2].y2=iFloor(R.y1+dy+.499f);
     P[3].x1=iFloor(R.x1+dx+0.501f); P[3].y1=R.y1;		  			P[3].x2=R.x2; 					P[3].y2=iFloor(R.y1+dx+.499f);
-/*
-    0 1
-    2 3
-*/
-/*
-    P[0].x1=R.x1; 		  			P[0].y1=R.y1; 		  			P[0].x2=iFloor(R.x1+dx+.499f); 	P[0].y2=iFloor(R.y1+dy+.499f);
-    P[1].x1=iFloor(R.x1+dx+0.501f); P[1].y1=R.y1;		  			P[1].x2=R.x2; 					P[1].y2=iFloor(R.y1+dx+.499f);
-    P[2].x1=R.x1; 		  			P[2].y1=iFloor(R.y1+dy+0.501f); P[2].x2=iFloor(R.x1+dx+.499f);	P[2].y2=R.y2;
-    P[3].x1=iFloor(R.x1+dx+0.501f);	P[3].y1=iFloor(R.y1+dy+0.501f);	P[3].x2=R.x2; 					P[3].y2=R.y2;
-*/
+
     for (int part=0; part<4; part++){
         float	alpha=0;
         int 	cnt=0;
@@ -634,13 +639,20 @@ bool CDetailManager::UpdateSlotObjects(int x, int z){
 //	Msg("Slot: %d %d",x,z);
     for(DWORD k=0; k<best.size(); k++){
      	// objects
-        bool bReject;
-        do{
-            bReject					= false;
-            slot->items[k].id       = GetRandomObject(best[k].index);
+		ColorIndexPairIt CI=m_ColorIndices.find(best[k].index); R_ASSERT(CI!=m_ColorIndices.end());
+        BYTEVec elem; elem.resize(CI->second.size());
+        for (BYTEIt b_it=elem.begin(); b_it!=elem.end(); b_it++) *b_it=b_it-elem.begin();
+//        best_rand A(DetailRandom);
+        random_shuffle(elem.begin(),elem.end());//,A);
+		bool bNotFound=true;
+        for (b_it=elem.begin(); b_it!=elem.end(); b_it++){
+            slot->items[k].id       = GetObject(CI,*b_it);
             for (DWORD j=0; j<k; j++)
-                if (slot->items[j].id==slot->items[k].id){bReject=true; break;}
-        }while(bReject);
+                if (slot->items[j].id==slot->items[k].id)
+                	bNotFound=false;
+            if (bNotFound) break;
+        }
+
         slot->color					= 0xffffffff;
         // density
         float f = m_Objects[slot->items[k].id]->m_fDensityFactor;
@@ -649,17 +661,14 @@ bool CDetailManager::UpdateSlotObjects(int x, int z){
         slot->items[k].palette.a1 	= iFloor(best[k].dens[1]*f*15.f+.5f);
         slot->items[k].palette.a2 	= iFloor(best[k].dens[2]*f*15.f+.5f);
         slot->items[k].palette.a3 	= iFloor(best[k].dens[3]*f*15.f+.5f);
-/*		original
-        slot->items[k].palette.a0 	= iFloor(best[k].dens[0]*f*15.f+.5f);
-        slot->items[k].palette.a1 	= iFloor(best[k].dens[1]*f*15.f+.5f);
-        slot->items[k].palette.a2 	= iFloor(best[k].dens[2]*f*15.f+.5f);
-        slot->items[k].palette.a3 	= iFloor(best[k].dens[3]*f*15.f+.5f);
-*/
 /*
-        slot->items[k].palette.a0 	= 1;//iFloor(best[k].dens[3]*f*15.f+.5f);
+		static bool bFnd=false;
+
+        slot->items[k].palette.a0 	= bFnd?0:7;//iFloor(best[k].dens[3]*f*15.f+.5f);
         slot->items[k].palette.a1 	= 0;//iFloor(best[k].dens[2]*f*15.f+.5f);
         slot->items[k].palette.a2 	= 0;//iFloor(best[k].dens[1]*f*15.f+.5f);
         slot->items[k].palette.a3 	= 0;//iFloor(best[k].dens[0]*f*15.f+.5f);
+        bFnd=true;
 */
 //		Msg("Palette: %d %d %d %d",slot->items[k].palette.a0,slot->items[k].palette.a1,slot->items[k].palette.a2,slot->items[k].palette.a3);
     }
@@ -867,6 +876,9 @@ bool CDetailManager::Load(CStream& F){
     	m_SnapObjects	= Scene.m_SnapObjects;
     }
 
+    if (F.FindChunk(DETMGR_CHUNK_DENSITY))
+		m_fDensity 			= F.Rfloat();
+
     InvalidateCache		();
 
     return true;
@@ -921,6 +933,10 @@ void CDetailManager::Save(CFS_Base& F){
     F.Wdword			(m_SnapObjects.size());
     for (ObjectIt o_it=m_SnapObjects.begin(); o_it!=m_SnapObjects.end(); o_it++)
     	F.WstringZ		((*o_it)->GetName());
+    F.close_chunk		();
+
+    F.open_chunk		(DETMGR_CHUNK_DENSITY);
+    F.Wfloat			(m_fDensity);
     F.close_chunk		();
 }
 

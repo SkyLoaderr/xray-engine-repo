@@ -2,7 +2,7 @@ object fraLeftBar: TfraLeftBar
   Left = 0
   Top = 0
   Width = 443
-  Height = 625
+  Height = 745
   HorzScrollBar.Visible = False
   VertScrollBar.Increment = 34
   VertScrollBar.Size = 13
@@ -253,7 +253,7 @@ object fraLeftBar: TfraLeftBar
       Left = 1
       Top = 130
       Width = 123
-      Height = 144
+      Height = 161
       Align = alTop
       Color = 10528425
       TabOrder = 1
@@ -511,10 +511,30 @@ object fraLeftBar: TfraLeftBar
         Margin = 13
         ParentFont = False
       end
+      object ebProperties: TExtBtn
+        Left = 2
+        Top = 144
+        Width = 120
+        Height = 15
+        Align = alNone
+        BevelShow = False
+        HotTrack = True
+        HotColor = 15790320
+        CloseButton = False
+        Caption = 'Properties'
+        Font.Charset = DEFAULT_CHARSET
+        Font.Color = clWindowText
+        Font.Height = -11
+        Font.Name = 'MS Sans Serif'
+        Font.Style = []
+        Margin = 13
+        ParentFont = False
+        OnClick = ebPropertiesClick
+      end
     end
     object paTarget: TPanel
       Left = 1
-      Top = 274
+      Top = 291
       Width = 123
       Height = 199
       Align = alTop
@@ -1280,7 +1300,7 @@ object fraLeftBar: TfraLeftBar
     end
     object paSnapList: TPanel
       Left = 1
-      Top = 473
+      Top = 490
       Width = 123
       Height = 106
       Align = alTop
@@ -1416,7 +1436,7 @@ object fraLeftBar: TfraLeftBar
     IniSection = 'Left Bar'
     Options = []
     RegistryRoot = prLocalMachine
-    Version = 3
+    Version = 4
     OnSavePlacement = fsStorageSavePlacement
     StoredProps.Strings = (
       'paEdit.Tag'

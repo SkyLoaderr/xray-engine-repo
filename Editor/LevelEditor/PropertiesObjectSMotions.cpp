@@ -120,7 +120,6 @@ void __fastcall TfrmPropertiesObject::ebSDeleteMotionClick(TObject *Sender)
 }
 //---------------------------------------------------------------------------
 
-
 void __fastcall TfrmPropertiesObject::ebSRenameMotionClick(TObject *Sender)
 {
     if (tvSMotions->Selected&&tvSMotions->Selected->Data) tvSMotions->Selected->EditText();
@@ -291,6 +290,14 @@ void __fastcall TfrmPropertiesObject::ebSMotionLoadClick(TObject *Sender)
 		ELog.DlgMsg(mtInformation,"%d motion loaded.",m_LibObject->SMotionCount());
 		OnModified(Sender);
     }
+}
+//---------------------------------------------------------------------------
+
+void __fastcall TfrmPropertiesObject::InplaceTextValidateResult(
+      TObject *Sender, bool &InputValid)
+{
+	TElEdit* E = InplaceText->Editor;
+	last_name = E->Text;
 }
 //---------------------------------------------------------------------------
 

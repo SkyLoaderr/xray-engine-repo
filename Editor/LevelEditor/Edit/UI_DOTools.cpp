@@ -17,11 +17,11 @@ TUI_DOTools::TUI_DOTools():TUI_CustomTools(OBJCLASS_DO){
 
 void TUI_DOTools::OnActivate(){
     pFrame = new TfraDetailObject(0);
-    ((TfraDetailObject*)pFrame)->fsStorage->RestoreFormPlacement();
+    ((TfraDetailObject*)pFrame)->OnEnter();
 	TUI_CustomTools::OnActivate();
 }
 void TUI_DOTools::OnDeactivate(){
-    ((TfraDetailObject*)pFrame)->fsStorage->SaveFormPlacement();
+    ((TfraDetailObject*)pFrame)->OnExit();
 	TUI_CustomTools::OnDeactivate();
     _DELETE(pFrame);
 }

@@ -424,6 +424,7 @@ void EScene::RenderSky(const Fmatrix& camera)
         m_SkyDome->UpdateTransform();
 		Device.SetRS(D3DRS_TEXTUREFACTOR, E.m_SkyColor.get());
     	m_SkyDome->RenderSingle();
+	    Device.SetRS(D3DRS_TEXTUREFACTOR,	0xffffffff);
     }
 }
 

@@ -58,10 +58,6 @@ bool CPortal::GetBox( Fbox& box ){
 
 void CPortal::Render(int priority, bool strictB2F){
 	if ((1==priority)&&(true==strictB2F)){
-        Fcolor 				col;
-		col.set				(color.r,color.g,color.b,Selected()?0.6f:0.6f);
-		if (!Selected()) 	col.mul_rgb(0.75f);
-        DWORD C 			= col.get();
         FvectorVec& src 	= (fraBottomBar->miDrawPortalSimpleModel->Checked)?m_SimplifyVertices:m_Vertices;
         if (src.size()<2) 	return;
         DWORD 				i;
@@ -71,15 +67,18 @@ void CPortal::Render(int priority, bool strictB2F){
         for(i=0; i<src.size(); i++) V[i+1].set(src[i]);
         V[V.size()-1].set	(src[0]);
 		Device.RenderNearer(0.0002);
-        // render normal
-        Device.SetShader	(Device.m_WireShader);
-        DU::DrawFaceNormal	(m_Center,m_Normal,0.5f,0xff00ff00);
 		// render portal tris
+        Fcolor 				col;
         Device.SetShader	(Device.m_SelectionShader);
-        DU::DrawPrimitiveL	(D3DPT_TRIANGLEFAN, V.size()-2, V.begin(), V.size(), C, false, false);
+        // front
+		col.set				(color.r,color.g,color.b,Selected()?0.8f:0.5f);
+        DU::DrawPrimitiveL	(D3DPT_TRIANGLEFAN, V.size()-2, V.begin(), V.size(), col.get(), false, false);
+        // back
+//		col.set				(color.r,color.g,color.b,Selected()?0.8f:0.5f);
+//        DU::DrawPrimitiveL	(D3DPT_TRIANGLEFAN, V.size()-2, V.begin(), V.size(), col.get(), false, false);
 		// render portal edges
         Device.SetShader	(Device.m_WireShader);
-        DU::DrawPrimitiveL	(D3DPT_LINESTRIP, src.size(), src.begin(), src.size(), C, true, true);
+        DU::DrawPrimitiveL	(D3DPT_LINESTRIP, src.size(), src.begin(), src.size(), col.get(), true, true);
         Device.ResetNearer	();
    	}
 }
@@ -161,10 +160,10 @@ bool CPortal::Update(bool bLoadMode){
             front.clear();
             back.clear();
 
-            if (m_SectorFront->TestCHullSphereIntersection	(SF_point,0)==fvFully) front.push_back(m_SectorFront);
-            if (m_SectorBack->TestCHullSphereIntersection	(SF_point,0)==fvFully) front.push_back(m_SectorBack);
-            if (m_SectorFront->TestCHullSphereIntersection	(SB_point,0)==fvFully) back.push_back(m_SectorFront);
-            if (m_SectorBack->TestCHullSphereIntersection	(SB_point,0)==fvFully) back.push_back(m_SectorBack);
+            if (m_SectorFront->Intersect	(SF_point,0)==fvFully) front.push_back(m_SectorFront);
+            if (m_SectorBack->Intersect		(SF_point,0)==fvFully) front.push_back(m_SectorBack);
+            if (m_SectorFront->Intersect	(SB_point,0)==fvFully) back.push_back(m_SectorFront);
+            if (m_SectorBack->Intersect		(SB_point,0)==fvFully) back.push_back(m_SectorBack);
 
             if ((front.empty()||back.empty()) || ((front.size()==2)&&(back.size()==2)))
                 step+=delta_step;

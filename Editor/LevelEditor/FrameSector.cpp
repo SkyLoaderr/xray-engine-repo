@@ -123,7 +123,7 @@ void __fastcall TfraSector::ExtBtn3Click(TObject *Sender)
     ObjectIt _E = Scene.LastObj(OBJCLASS_SECTOR);
     for(;_F!=_E;_F++){
 		CSector* sector=(CSector*)(*_F);
-        if (sector->Selected()&&sector->Visible()) sector->Update(true);
+        if (sector->Selected()&&sector->Visible()) sector->Update();
     }
     OnSectorUpdate();
     Scene.UndoSave();

@@ -1,5 +1,6 @@
 //----------------------------------------------------
 // file: Sector.cpp
+// hjxsbhzabha
 //----------------------------------------------------
 #include "stdafx.h"
 #pragma hdrstop
@@ -58,9 +59,8 @@ CSector::CSector():CCustomObject(){
 void CSector::Construct(){
 	m_ClassID = OBJCLASS_SECTOR;
     sector_color.set(1,1,1,0);
-	m_bDefault=false;
-    m_bNeedUpdateCHull=false;
-	sector_num=-1;
+	m_bDefault		= false;
+	sector_num		= -1;
 	m_bHasLoadError = false;
 }
 
@@ -93,224 +93,8 @@ void CSector::DelMesh	(CSceneObject* O, CEditableMesh* M){
 }
 
 bool CSector::GetBox( Fbox& box ){
+	box.set(m_Box);
 	return false;
-}
-/*
-void CSector::PrepareVertices(){
-    Fmatrix parent;
-    DWORDList idx;
-    m_SectorVertices.clear();
-	for (SItemIt s_it=sector_items.begin();s_it!=sector_items.end();s_it++){
-    	s_it->GetTransform(parent);
-		FvectorList& m_vert=s_it->mesh->m_Points;
-        idx.clear();
-        for (DWORDIt f_it=s_it->Face_IDs.begin(); f_it!=s_it->Face_IDs.end(); f_it++){
-        	st_Face& P=s_it->mesh->m_Faces[*f_it];
-            idx.push_back(P.pv[0].pindex);
-            idx.push_back(P.pv[1].pindex);
-            idx.push_back(P.pv[2].pindex);
-        }
-        sort(idx.begin(),idx.end());
-        DWORDIt idx_end=unique(idx.begin(),idx.end());
-        idx.erase(idx_end,idx.end());
-        for (DWORDIt i_it=idx.begin(); i_it!=idx.end(); i_it++){
-			m_SectorVertices.push_back(m_vert[*i_it]);
-            parent.transform_tiny(m_SectorVertices.back());
-        }
-    }
-}
-*/
-void OptimizeVertices(CHFaceVec& Faces, FvectorVec& vert, FvectorVec& vert_new){
-	int iVertexCount = vert.size();
-
-	//caches oldIndex --> newIndex conversion
-	int *indexCache = new int[iVertexCount];
-	memset(indexCache, -1, sizeof(int)*iVertexCount);
-
-	for(DWORD i = 0; i < Faces.size(); i++){
-		int v0 = Faces[i].p0;
-		int v1 = Faces[i].p1;
-		int v2 = Faces[i].p2;
-
-		//v0
-		int index = indexCache[v0];
-		if(index == -1){
-        	vert_new.push_back(vert[v0]);
-			indexCache[v0] = Faces[i].p0 = vert_new.size() - 1;
-		}else{
-			Faces[i].p0 = index;
-		}
-
-		//v1
-		index = indexCache[v1];
-		if(index == -1){
-        	vert_new.push_back(vert[v1]);
-			indexCache[v1] = Faces[i].p1 = vert_new.size() - 1;
-		}else{
-			Faces[i].p1 = index;
-		}
-
-		//v2
-		index = indexCache[v2];
-		if(index == -1){
-        	vert_new.push_back(vert[v2]);
-			indexCache[v2] = Faces[i].p2 = vert_new.size() - 1;
-		}else{
-			Faces[i].p2 = index;
-		}
-	}
-
-	_DELETEARRAY(indexCache);
-}
-
-void CSector::UpdatePlanes(){
-	m_CHSectorPlanes.clear();
-    for (DWORD i=0; i<m_CHSectorFaces.size(); i++ ){
-        CHFace&		T	= m_CHSectorFaces[i];
-        Fvector& 	v0	= m_CHSectorVertices[T.p[0]];
-        Fvector& 	v1	= m_CHSectorVertices[T.p[1]];
-        Fvector&	v2	= m_CHSectorVertices[T.p[2]];
-
-        Fvector t1,t2,n;
-        t1.sub(v0,v1);
-        t2.sub(v0,v2);
-        n.crossproduct(t1,t2);
-        if(n.square_magnitude()<=EPS) continue;
-
-        Fplane	P; P.build(v0,v1,v2);
-        float R	= P.classify(m_SectorCenter);
-        if(R>0) {
-            P.build(v2,v1,v0);
-            swap(T.p[0],T.p[2]);
-        }
-
-        // search plane in list
-        bool bNeedAppend=true;
-        for(PlaneIt p_it=m_CHSectorPlanes.begin(); p_it!=m_CHSectorPlanes.end(); p_it++)
-            if (p_it->similar(P,EPS,EPS_L)) { bNeedAppend = false; break; }
-
-        if (bNeedAppend) m_CHSectorPlanes.push_back(P);
-    }
-}
-
-void CSector::MakeCHull	(){
-    m_CHSectorFaces.clear();
-
-    UI.ProgressStart(5,"Making convex hull...");
-    //1. (BB)
-    Fmatrix parent;
-    Fbox bbox; bbox.invalidate();
-    for (SItemIt s_it=sector_items.begin();s_it!=sector_items.end();s_it++){
-        Fbox bb;
-        s_it->GetTransform(parent);
-        s_it->mesh->GetBox(bb);
-        bb.transform(parent);
-        bbox.merge(bb);
-    }
-	UI.ProgressInc();
-
-    //2. XForm
-    FvectorVec Points;
-    for (s_it=sector_items.begin();s_it!=sector_items.end();s_it++){
-        s_it->GetTransform(parent);
-        FvectorVec& m_vert=s_it->mesh->m_Points;
-        for (FvectorIt p_it=m_vert.begin(); p_it!=m_vert.end(); p_it++){
-        	Points.push_back(Fvector());
-            parent.transform_tiny(Points.back(),*p_it);
-        }
-    }
-	UI.ProgressInc();
-    if (Points.size()<4){
-		UI.ProgressEnd();
-    	return;
-    }
-
-	Mgc::ConvexHull3D* chull=0;
-    try{
-	    Mgc::ConvexHull3D::Epsilon()		=0.001f;
-    	Mgc::ConvexHull3D::TSize()			=128;
-//		Mgc::ConvexHull3D::QuantityFactor()	=64;
-
-        //3. Hull
-        chull=new Mgc::ConvexHull3D(Points.size(), (const Mgc::Vector3*)Points.begin());
-        int err_code=chull->Compute();
-        if (err_code==CHULL3D_OK){
-	        m_CHSectorFaces.assign((CHFace*)chull->GetTriangles(),(CHFace*)(chull->GetTriangles()+chull->GetTriangleQuantity()));
-    	    bbox.set(chull->GetXMin(),chull->GetYMin(),chull->GetZMin(), chull->GetXMax(),chull->GetYMax(),chull->GetZMax());
-        	bbox.getcenter(m_SectorCenter);
-	        m_SectorRadius=bbox.getradius();
-        	_DELETE(chull);
-        	UI.ProgressInc();
-
-            //4. Vertices+Faces remapping
-            OptimizeVertices(m_CHSectorFaces,Points,m_CHSectorVertices);
-			UI.ProgressInc();
-
-            //5. Planes
-            UpdatePlanes();
-			UI.ProgressInc();
-
-            for(FvectorIt it=m_CHSectorVertices.begin(); it!=m_CHSectorVertices.end(); it++)
-                for(PlaneIt p_it=m_CHSectorPlanes.begin(); p_it!=m_CHSectorPlanes.end(); p_it++){
-                    float D= p_it->classify(*it);
-                    if (D>0) p_it->d-=D;
-                }
-            // CHull updated
-            m_bNeedUpdateCHull = false;
-        }else{
-        	switch(err_code){
-			case CHULL3D_INC_TSIZE: ELog.Msg(mtError,"Temporary storage exceeded.\n Increase ms_iTSize and call the constructor again."); break;
-			case CHULL3D_FTMP_ZERO: ELog.Msg(mtError,"'fTmp' is zero. May be flat convex."); break;
-			default: ELog.Msg(mtError,"Unknown error."); break;
-            }
-        	_DELETE(chull);
-        }
-    } catch (...) {
-        _DELETE(chull);
-    	UI.ProgressEnd();
-        return;
-    }
-	UI.ProgressEnd();
-}
-
-bool CSector::RenderCHull(DWORD color, bool bSolid, bool bEdge, bool bCull){
-/*	if (m_CHSectorFaces.size()==0) return true;
-    if (m_bNeedUpdateCHull) return false;
-	if (m_CHSectorVertices.size()>0xf000) return false;
-	if (!bCull) Device.SetRS(D3DRS_CULLMODE,D3DCULL_NONE);
-    if (bEdge||bSolid){
-        DWORDVec colors;
-        colors.resize(m_CHSectorVertices.size(),color);
-        D3DDRAWPRIMITIVESTRIDEDDATA dt;
-        dt.position.lpvData = m_CHSectorVertices.begin();
-        dt.position.dwStride = sizeof(Fvector);
-        dt.diffuse.lpvData = colors.begin();
-        dt.diffuse.dwStride = sizeof(DWORD);
-
-		Device.RenderNearer(-0.0003);
-        static WORDVec indices;
-        indices.resize(m_CHSectorFaces.size()*3);
-        for (DWORD i=0; i<m_CHSectorFaces.size(); i++){
-        	indices[i*3+0]=m_CHSectorFaces[i].p0;
-			indices[i*3+1]=m_CHSectorFaces[i].p1;
-			indices[i*3+2]=m_CHSectorFaces[i].p2;
-        }
-        if (bEdge){
-	        Device.SetRS(D3DRENDERSTATE_FILLMODE,D3DFILL_WIREFRAME);
-	        Device.DIPS(D3DPT_TRIANGLELIST, FVF::F_L,
-    				        &dt, m_CHSectorVertices.size(),
-                            indices.begin(),indices.size());
-	        Device.SetRS(D3DRENDERSTATE_FILLMODE,UI.dwRenderFillMode);
-        }else if (bSolid){
-	        Device.DIPS(D3DPT_TRIANGLELIST, FVF::F_L,
-    				        &dt, m_CHSectorVertices.size(),
-                            indices.begin(),indices.size());
-        }
-		Device.ResetNearer();
-    }
-*/
-	if (!bCull) Device.SetRS(D3DRS_CULLMODE,D3DCULL_CCW);
-	return true;
 }
 
 void CSector::Render(int priority, bool strictB2F){
@@ -327,14 +111,12 @@ void CSector::Render(int priority, bool strictB2F){
             }
 			Device.SetRS(D3DRS_CULLMODE,D3DCULL_CCW);
         }
-        if (fraBottomBar->miDrawSectorCHull->Checked)
-        	RenderCHull(color.get(),true,false,true);
     }else if ((1==priority)&&(false==strictB2F)){
         Fmatrix matrix;
         Fcolor color;
         float k = Selected()?0.4f:0.2f;
 		color.set(sector_color.r*k,sector_color.g*k,sector_color.b*k,1.f);
-        if (fraBottomBar->miDrawSectorCHull->Checked||fraBottomBar->miDrawSectorEdgedSFaces->Checked){
+        if (fraBottomBar->miDrawSectorEdgedSFaces->Checked){
 			Device.SetRS(D3DRS_CULLMODE,D3DCULL_NONE);
             for (SItemIt it=sector_items.begin();it!=sector_items.end();it++){
                 it->object->GetFullTransformToWorld(matrix);
@@ -342,61 +124,47 @@ void CSector::Render(int priority, bool strictB2F){
             }
 			Device.SetRS(D3DRS_CULLMODE,D3DCULL_CCW);
         }
-        if (fraBottomBar->miDrawSectorCHull->Checked&&fraBottomBar->miDrawSectorEdgedCHull->Checked)
-        	RenderCHull(color.get(),false,true,false);
     }
 }
 
 void CSector::Move( Fvector& amount ){
 // internal use only!!!
-	for(FvectorIt v_it=m_CHSectorVertices.begin(); v_it!=m_CHSectorVertices.end(); v_it++)
-    	v_it->add(amount);
     m_SectorCenter.add(amount);
-    UpdatePlanes();
 }
 
 bool CSector::FrustumPick(const CFrustum& frustum){
 	if (!frustum.testSphere(m_SectorCenter,m_SectorRadius)) return false;
-	Fvector p[3];
-    for(CHFaceIt it=m_CHSectorFaces.begin(); it!=m_CHSectorFaces.end(); it++){
-    	for(int k=0; k<3; k++) p[k].set(m_CHSectorVertices[it->p[k]]);
-	    sPoly s(p,3);
-		if (frustum.testPoly(s)) return true;
-    }
+	for (SItemIt s_it=sector_items.begin();s_it!=sector_items.end();s_it++)
+    	if (s_it->mesh->FrustumPick(frustum,s_it->object->GetTransform())) return true;
 	return false;
 }
 
 bool CSector::RayPick(float& distance, Fvector& start, Fvector& direction, SRayPickInfo* pinf){
-	Fvector p[3];
-    float u,v;
-    float range;
     bool bPick=false;
-    for(CHFaceIt it=m_CHSectorFaces.begin(); it!=m_CHSectorFaces.end(); it++){
-    	for(int k=0; k<3; k++) p[k].set(m_CHSectorVertices[it->p[k]]);
-        range=UI.ZFar();
-		if (RAPID::TestRayTri(start,direction,p,u,v,range,false)){
-        	if ((range>=0)&&(range<distance)){
-            	distance=range;
-	            bPick=true;
-            }
-        }
-    }
+	for (SItemIt s_it=sector_items.begin();s_it!=sector_items.end();s_it++)
+    	if (s_it->mesh->RayPick(distance,start,direction,s_it->object->GetTransform(),pinf)) bPick=true;
 	return bPick;
 }
 //----------------------------------------------------
 
-void CSector::SectorChanged(bool bNeedCreateCHull){
-	m_bNeedUpdateCHull = true;
-    Update(bNeedCreateCHull);
+void CSector::SectorChanged(){
+    Update();
 }
 //----------------------------------------------------
 
-void CSector::Update(bool bNeedCreateCHull){
-	if (bNeedCreateCHull){
-    	UI.SetStatus("Sector updating...");
-    	MakeCHull();
-    	UI.SetStatus("...");
+void CSector::Update(){
+    Fbox bb;
+    Fvector pt;
+    for (SItemIt s_it=sector_items.begin();s_it!=sector_items.end();s_it++){
+        s_it->mesh->GetBox(bb);
+        bb.transform(s_it->object->GetTransform());
+        for(int i=0; i<8; i++){
+            bb.getpoint(i, pt);
+            m_Box.modify(pt);
+        }
     }
+    m_Box.getsphere(m_SectorCenter,m_SectorRadius);
+
     UI.RedrawScene();
 }
 //----------------------------------------------------
@@ -425,15 +193,26 @@ void CSector::OnSceneUpdate(){
         }
     }
     if (bUpdate){
-    	Update(true);
+    	Update();
         PortalUtils.RemoveSectorPortal(this);
     }
+}
+//----------------------------------------------------
+
+EVisible CSector::Intersect(const Fvector& center, float radius)
+{
+	if (m_Box.contains(center)) return fvPartialInside;
+    else{
+    	if (m_SectorCenter.distance_to(center)<(radius+m_SectorRadius)) return fvPartialOutside;
+    }
+	return fvNone;
 }
 //----------------------------------------------------
 
 void CSector::CaptureInsideVolume(){
 	// test all mesh faces
 	// fill object list (test bounding sphere intersection)
+/*S
     ObjectList lst;
 	if (m_bNeedUpdateCHull) MakeCHull();
 	if (Scene.SpherePick(m_SectorCenter, m_SectorRadius, OBJCLASS_SCENEOBJECT, lst)){
@@ -454,6 +233,7 @@ void CSector::CaptureInsideVolume(){
         MakeCHull();
 		UI.RedrawScene();
     }
+*/
 }
 //----------------------------------------------------
 
@@ -472,7 +252,6 @@ void CSector::CaptureAllUnusedMeshes(){
         	AddMesh(obj,*m_def);
     }
     UI.ProgressEnd();
-    MakeCHull();
     UI.RedrawScene();
 }
 
@@ -482,23 +261,6 @@ bool CSector::SpherePick(const Fvector& center, float radius){
     float dist_sqr=center.distance_to_sqr(m_SectorCenter);
     if (dist_sqr<R*R) return true;
     return false;
-}
-//----------------------------------------------------
-
-EVisible CSector::TestCHullSphereIntersection(const Fvector&P, float R){
-	bool bPartialInside=false;
-	bool bPartialOutside=false;
-	if (SpherePick(P,R)){
-        for(PlaneIt pl_it=m_CHSectorPlanes.begin(); pl_it!=m_CHSectorPlanes.end(); pl_it++){
-        	float dist=pl_it->classify(P);
-            if (dist>R) return fvNone;
-            if (dist>EPS_L) bPartialOutside=true;
-            else if (-dist<R) bPartialInside=true;
-        }
-    }else return fvNone;
-    if (bPartialOutside) return fvPartialOutside;
-    if (bPartialInside)  return fvPartialInside;
-	return fvFully;
 }
 //----------------------------------------------------
 
@@ -557,22 +319,6 @@ bool CSector::Load(CStream& F){
 
 	R_ASSERT(F.FindChunk(SECTOR_CHUNK_PRIVATE));
     m_bDefault 		= F.Rbyte();
-	m_bNeedUpdateCHull= F.Rbyte();
-
-	if (F.FindChunk(SECTOR_CHUNK_CHULL_DATA)){
-        int cnt;
-        cnt		   		= F.Rdword();
-        m_CHSectorFaces.resize(cnt);
-        F.Read			(m_CHSectorFaces.begin(),cnt*sizeof(CHFace));
-        cnt		   		= F.Rdword();
-        m_CHSectorVertices.resize(cnt);
-        F.Read			(m_CHSectorVertices.begin(),cnt*sizeof(Fvector));
-        cnt		   		= F.Rdword();
-        m_CHSectorPlanes.resize(cnt);
-        F.Read			(m_CHSectorPlanes.begin(),cnt*sizeof(Fplane));
-        F.Rvector		(m_SectorCenter);
-        m_SectorRadius	= F.Rfloat();
-    }
 
     // Objects
     CStream* OBJ 	= F.OpenChunk(SECTOR_CHUNK_ITEMS);
@@ -588,7 +334,7 @@ bool CSector::Load(CStream& F){
 
     if (sector_items.empty()) return false;
 
-    Update((m_CHSectorFaces.size()==0)||(m_CHSectorPlanes.size()==0)||m_bNeedUpdateCHull||m_bHasLoadError);
+    Update();
     return true;
 }
 
@@ -603,18 +349,6 @@ void CSector::Save(CFS_Base& F){
 
 	F.open_chunk	(SECTOR_CHUNK_PRIVATE);
 	F.Wbyte			(m_bDefault);
-	F.Wbyte			(m_bNeedUpdateCHull);
-	F.close_chunk	();
-
-	F.open_chunk	(SECTOR_CHUNK_CHULL_DATA);
-    F.Wdword		(m_CHSectorFaces.size());
-    F.write			(m_CHSectorFaces.begin(),m_CHSectorFaces.size()*sizeof(CHFace));
-    F.Wdword		(m_CHSectorVertices.size());
-    F.write			(m_CHSectorVertices.begin(),m_CHSectorVertices.size()*sizeof(Fvector));
-	F.Wdword		(m_CHSectorPlanes.size() );
-    F.write			(m_CHSectorPlanes.begin(),m_CHSectorPlanes.size()*sizeof(Fplane));
-	F.Wvector		(m_SectorCenter);
-	F.Wfloat		(m_SectorRadius);
 	F.close_chunk	();
 
 	F.open_chunk	(SECTOR_CHUNK_ITEMS);

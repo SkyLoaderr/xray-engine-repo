@@ -60,6 +60,13 @@ void __fastcall TfraDetailObject::ebUpdateObjectsClick(TObject *Sender)
 }
 //---------------------------------------------------------------------------
 
+void __fastcall TfraDetailObject::ebInvalidateCacheClick(TObject *Sender)
+{
+	Scene.m_DetailObjects->InvalidateCache();
+	Scene.UndoSave();
+}
+//---------------------------------------------------------------------------
+
 void __fastcall TfraDetailObject::ebReinitializeSlotObjectsClick(
       TObject *Sender)
 {
@@ -74,4 +81,36 @@ void __fastcall TfraDetailObject::ExtBtn6Click(TObject *Sender)
 		Scene.UndoSave();
 }
 //---------------------------------------------------------------------------
+
+void __fastcall TfraDetailObject::OnEnter()
+{
+	seDensity->Value = Scene.m_DetailObjects->m_fDensity;
+	fsStorage->RestoreFormPlacement();
+}
+
+void __fastcall TfraDetailObject::OnExit()
+{
+	fsStorage->SaveFormPlacement();
+}
+
+void __fastcall TfraDetailObject::seDensityExit(TObject *Sender)
+{
+	Scene.m_DetailObjects->m_fDensity = seDensity->Value;
+}
+//---------------------------------------------------------------------------
+
+void __fastcall TfraDetailObject::seDensityKeyDown(TObject *Sender,
+      WORD &Key, TShiftState Shift)
+{
+	Scene.m_DetailObjects->m_fDensity = seDensity->Value;
+}
+//---------------------------------------------------------------------------
+
+void __fastcall TfraDetailObject::seDensityLWChange(TObject *Sender,
+      int Val)
+{
+	Scene.m_DetailObjects->m_fDensity = seDensity->Value;
+}
+//---------------------------------------------------------------------------
+
 

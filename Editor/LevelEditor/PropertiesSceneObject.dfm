@@ -98,6 +98,7 @@ object frmPropertiesSceneObject: TfrmPropertiesSceneObject
       HotTrack = True
       CloseButton = False
       Caption = '...'
+      Margin = 0
       Transparent = False
       OnClick = ebReferenceClick
     end

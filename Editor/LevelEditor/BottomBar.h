@@ -37,8 +37,6 @@ __published:	// IDE-managed Components
     TMenuItem *N4;
     TPanel *paStatus;
 	TMenuItem *miDrawSectors;
-	TMenuItem *miDrawSectorEdgedCHull;
-	TMenuItem *miDrawSectorCHull;
 	TMenuItem *Portals1;
 	TMenuItem *miDrawPortalSimpleModel;
 	TPanel *paStatusLabel;

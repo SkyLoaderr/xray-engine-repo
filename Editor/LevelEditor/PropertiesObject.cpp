@@ -15,6 +15,7 @@
 #include "ImageThumbnail.h"
 //---------------------------------------------------------------------------
 #pragma package(smart_init)
+#pragma link "ElTreeStdEditors"
 #pragma resource "*.dfm"
 
 TfrmPropertiesObject* 	TfrmPropertiesObject::form 				= 0;
