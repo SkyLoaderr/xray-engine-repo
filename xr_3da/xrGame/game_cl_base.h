@@ -12,4 +12,6 @@ public:
 	map<DWORD,Player>		players;
 public:
 	virtual		void				Create					(LPCSTR options);
+	virtual		void				net_import_state		(NET_Packet& P);
+	virtual		void				net_import_update		(NET_Packet& P);
 };
