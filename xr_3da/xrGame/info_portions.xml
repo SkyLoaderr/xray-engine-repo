@@ -45,8 +45,12 @@
    <info_portion id="ui_pda_ranking"></info_portion>
    <info_portion id="ui_pda_events"></info_portion>
    
-   <info_portion id="ui_inventory"></info_portion>
-   <info_portion id="ui_inventory_hide"></info_portion>
+   <info_portion id="ui_inventory">
+		<disable>ui_inventory_hide</disable>
+   </info_portion>
+   <info_portion id="ui_inventory_hide">
+		<disable>ui_inventory</disable>
+   </info_portion>
 
 
 </game_information_portions>
