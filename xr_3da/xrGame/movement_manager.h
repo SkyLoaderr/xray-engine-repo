@@ -33,6 +33,8 @@ private:
 	
 	float									m_cumulative_time_delta;
 	EPathState								m_tPathState;
+protected:
+	float									m_speed;
 
 public:
 					CMovementManager		();

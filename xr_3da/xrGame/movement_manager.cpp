@@ -8,9 +8,11 @@
 
 #include "stdafx.h"
 #include "movement_manager.h"
+#include "PHMovementControl.h"
 
 CMovementManager::CMovementManager	()
 {
+	init					();
 }
 
 CMovementManager::~CMovementManager	()
@@ -70,7 +72,7 @@ void CMovementManager::build_path	()
 //			if (tpNodeEvaluator && bSearchForNode)
 //				vfSearchForBetterPosition(*tpNodeEvaluator,Squad,Leader);
 //			else
-//				if (!bSearchForNode || !tpDestinationPosition || !m_detail_path.size() || (m_detail_path[m_detail_path.size() - 1].P.distance_to(*tpDestinationPosition) > EPS_L))
+//				if (!bSearchForNode || !tpDestinationPosition || !m_detail_path.size() || (m_detail_path[m_detail_path.size() - 1].m_position.distance_to(*tpDestinationPosition) > EPS_L))
 //					m_tPathState = ePathStateBuildNodePath;
 //			break;
 //									}
@@ -101,115 +103,103 @@ void CMovementManager::build_path	()
 //	m_tPathType = tPathType;
 }
 
+//#define NO_PHYSICS_IN_AI_MOVE
+
 void CMovementManager::move_along_path	(CPHMovementControl *movement_control, float time_delta)
 {
-//	Fvector				motion;
-//#ifndef NO_PHYSICS_IN_AI_MOVE
-//float precesition=1.f;
-//#endif
-//	if ((TravelPath.empty()) || (TravelPath.size() - 1 <= TravelStart))	{
-//		fSpeed = 0;
-//#ifndef NO_PHYSICS_IN_AI_MOVE
-//		if(Me->Movement.IsCharacterEnabled()) {
-//			motion.set(0,0,0);
-//
-//			Me->Movement.Calculate(TravelPath,0.f,TravelStart,precesition);
-//			Me->Movement.GetPosition(p_dest);
-//		}
-//
-//		if (Me->Movement.gcontact_HealthLost) {
-//			Fvector d;
-//			d.set(0,1,0);
-//			Me->Hit	(Me->Movement.gcontact_HealthLost,d,Me,Me->Movement.ContactBone(),p_dest,0);
-//		}
-//#endif
-//		return;
-//	}
-//
-//	if (dt<EPS)			
-//		return;
-//	float	dist		=	speed*dt;
-//	float	dist_save	=	dist;
-//
-//	p_dest				=	p_src;
-//
-//	// move full steps
-//	Fvector	mdir,target;
-//	target.set		(TravelPath[TravelStart+1].P);
-//	mdir.sub		(target, p_dest);
-//	float	mdist	=	mdir.magnitude();
-//	
-//	while (dist>mdist) {
-//		p_dest.set	(target);
-//
-//		if ((TravelStart+1) >= TravelPath.size())
-//			break;
-//		else {
-//			dist			-= mdist;
-//			TravelStart		++;
-//			if ((TravelStart+1) >= TravelPath.size())
-//				break;
-//			target.set		(TravelPath[TravelStart+1].P);
-//			mdir.sub		(target, p_dest);
-//			mdist			= mdir.magnitude();
-//		}
-//	}
-//
-//	if (mdist < EPS_L) {
-//		TravelStart = TravelPath.size() - 1;
-//		fSpeed = 0;
-//		return;
-//	}
-//
-//	// resolve stucking
-//	Device.Statistic.Physics.Begin	();
-//
-//#ifndef NO_PHYSICS_IN_AI_MOVE
-//	Me->setEnabled(false);
-//	Level().ObjectSpace.GetNearest		(p_dest,1.f); 
-//	xr_vector<CObject*> &tpNearestList	= Level().ObjectSpace.q_nearest; 
-//	Me->setEnabled(true);
-//#endif
-//
-//	motion.mul			(mdir,dist/mdist);
-//	p_dest.add			(motion);
-//
-//#ifndef NO_PHYSICS_IN_AI_MOVE
-//	if ((tpNearestList.empty())) 
-//	{
-//		if(!Me->Movement.TryPosition(p_dest))//!Me->Movement.TryPosition(p_dest)
-//		{
-//			//motion.mul			(mdir,speed*10.f/mdir.magnitude());
-//			//Me->Movement.Calculate(motion,0,0,0,0);
-//			Me->Movement.Calculate(TravelPath,speed,TravelStart,precesition);
-//			Me->Movement.GetPosition(p_dest);
-//
-//			if (Me->Movement.gcontact_HealthLost)	
-//			{
-//				Me->Hit	(Me->Movement.gcontact_HealthLost,mdir,Me,Me->Movement.ContactBone(),p_dest,0);
-//			}
-//		}
-//		else
-//		{
-//			Me->Movement.b_exect_position=true;
-//		}
-//
-//	}
-//	else
-//	{
-//		//motion.mul			(mdir,speed*10.f/mdir.magnitude());
-//		//Me->Movement.Calculate(motion,0,0,0,0);
-//
-//			Me->Movement.Calculate(TravelPath,speed,TravelStart,precesition);
-//			Me->Movement.GetPosition(p_dest);
-//		if (Me->Movement.gcontact_HealthLost)	
-//		{
-//			Me->Hit	(Me->Movement.gcontact_HealthLost,mdir,Me,Me->Movement.ContactBone(),p_dest,0);
-//		}
-//	}
-//#endif
-//	float	real_motion	= motion.magnitude() + dist_save-dist;
-//	float	real_speed	= real_motion/dt;
-//	fSpeed				= 0.5f*fSpeed + 0.5f*real_speed;
-//	Device.Statistic.Physics.End	();
+	Fvector				motion;
+
+#ifndef NO_PHYSICS_IN_AI_MOVE
+	float				precision = 1.f;
+#endif
+
+	if ((m_detail_path.empty()) || (m_detail_path.size() - 1 <= m_detail_cur_point_index))	{
+		m_speed			= 0;
+#ifndef NO_PHYSICS_IN_AI_MOVE
+		if(movement_control->IsCharacterEnabled()) {
+			motion.set	(0,0,0);
+			movement_control->Calculate(m_detail_path,0.f,m_detail_cur_point_index,precision);
+			movement_control->GetPosition(Position());
+		}
+
+		if (movement_control->gcontact_HealthLost) {
+			Fvector		d;
+			d.set		(0,1,0);
+			Hit			(movement_control->gcontact_HealthLost,d,this,movement_control->ContactBone(),Position(),0);
+		}
+#endif
+		return;
+	}
+
+	if (time_delta < EPS)			
+		return;
+#pragma todo("Dima to Kostia : Please change this piece of code to support paths with multiple desired velocities")
+	float				dist		=	m_detail_path[m_detail_cur_point_index].m_linear_speed*time_delta;
+	float				dist_save	=	dist;
+
+//	Position()			=	p_src;
+
+	// move full steps
+	Fvector				mdir,target;
+	target.set			(m_detail_path[m_detail_cur_point_index + 1].m_position);
+	mdir.sub			(target, Position());
+	float				mdist =	mdir.magnitude();
+	
+	while (dist>mdist) {
+		Position().set	(target);
+
+		if (m_detail_cur_point_index + 1 >= m_detail_path.size())
+			break;
+		else {
+			dist			-= mdist;
+			m_detail_cur_point_index++;
+			if ((m_detail_cur_point_index+1) >= m_detail_path.size())
+				break;
+			target.set	(m_detail_path[m_detail_cur_point_index+1].m_position);
+			mdir.sub	(target, Position());
+			mdist		= mdir.magnitude();
+		}
+	}
+
+	if (mdist < EPS_L) {
+		m_detail_cur_point_index = m_detail_path.size() - 1;
+		m_speed			= 0;
+		return;
+	}
+
+	// resolve stucking
+	Device.Statistic.Physics.Begin	();
+
+#ifndef NO_PHYSICS_IN_AI_MOVE
+	setEnabled(false);
+	Level().ObjectSpace.GetNearest		(Position(),1.f); 
+	xr_vector<CObject*> &tpNearestList	= Level().ObjectSpace.q_nearest; 
+	setEnabled(true);
+#endif
+
+	motion.mul			(mdir,dist/mdist);
+	Position().add		(motion);
+
+#ifndef NO_PHYSICS_IN_AI_MOVE
+	if ((tpNearestList.empty())) {
+		if(!movement_control->TryPosition(Position())) {
+			movement_control->Calculate(m_detail_path,m_detail_path[m_detail_cur_point_index].m_linear_speed,m_detail_cur_point_index,precision);
+			movement_control->GetPosition(Position());
+			if (movement_control->gcontact_HealthLost)
+				Hit	(movement_control->gcontact_HealthLost,mdir,this,movement_control->ContactBone(),Position(),0);
+		}
+		else
+			movement_control->b_exect_position=true;
+	}
+	else {
+		movement_control->Calculate(m_detail_path,m_detail_path[m_detail_cur_point_index].m_linear_speed,m_detail_cur_point_index,precision);
+		movement_control->GetPosition(Position());
+		if (movement_control->gcontact_HealthLost)
+			Hit	(movement_control->gcontact_HealthLost,mdir,this,movement_control->ContactBone(),Position(),0);
+	}
+#endif
+	float				real_motion	= motion.magnitude() + dist_save-dist;
+	float				real_speed	= real_motion/time_delta;
+	m_speed				= 0.5f*m_speed + 0.5f*real_speed;
+	Device.Statistic.Physics.End	();
 }

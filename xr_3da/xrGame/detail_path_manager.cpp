@@ -12,6 +12,7 @@
 
 CDetailPathManager::CDetailPathManager	()
 {
+	init						();
 }
 
 CDetailPathManager::~CDetailPathManager	()
