@@ -24,6 +24,9 @@ CEngine::~CEngine()
 
 void CEngine::Initialize	(void)
 {
+	strcpy								(Params,GetCommandLine());
+	strlwr								(Params);
+
 	// Mathematics & PSI detection
 	InitMath							( );
 	

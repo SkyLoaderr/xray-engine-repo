@@ -44,30 +44,31 @@ private:
 
 	CFontSmall		*pFont;
 public:
+	string64		ConfigFile;
 	BOOL			bVisible;
 	vecCMD			Commands;
 
-	void	AddCommand	(CConsoleCommand*);
+	void			AddCommand			(CConsoleCommand*);
 
-	void Show			();
-	void Hide			();
+	void			Show				();
+	void			Hide				();
 
-	void Save			();
-	void Execute		(char *cmd);
-	void ExecuteScript	(char *name);
-	void ExecuteCommand	();
+	void			Save				();
+	void			Execute				(char *cmd);
+	void			ExecuteScript		(char *name);
+	void			ExecuteCommand		();
 
 	// get
-	BOOL	GetBool		(char *cmd);
-	FLOAT	GetFloat	(char *cmd);
-	char *	GetValue	(char *cmd);
-	char *	GetNextValue(char *cmd);
-	char *	GetPrevValue(char *cmd);
+	BOOL			GetBool				(char *cmd);
+	FLOAT			GetFloat			(char *cmd);
+	char *			GetValue			(char *cmd);
+	char *			GetNextValue		(char *cmd);
+	char *			GetPrevValue		(char *cmd);
 
-	void SelectCommand	();
+	void			SelectCommand		();
 
 	// keyboard
-	void OnPressKey		(int dik, BOOL bHold=false);
+	void			OnPressKey			(int dik, BOOL bHold=false);
 	virtual void	OnKeyboardPress		(int dik);
 	virtual void	OnKeyboardHold		(int dik);
 	virtual void	OnKeyboardRelease	(int dik);

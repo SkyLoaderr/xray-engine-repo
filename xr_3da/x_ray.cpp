@@ -34,12 +34,16 @@ void Startup()
 	Device.Initialize			( );
 	Console.Initialize			( );
 	Engine.External.Initialize	( );
-	Console.Execute				("cfg_load startup.ltx");
+	
+	// Execute script
+	Console.Execute				("startup.ltx");
+	if (strstr(Engine.Params,"-ltx "))
+		Console.Execute			(strstr(Engine.Params,"-ltx ")+5);
 
 	// Creation
 	pSettings					= new CInifile		("system.ltx",TRUE);
 
-	BOOL bCaptureInput			= !(strstr(GetCommandLine(),"-I") || strstr(GetCommandLine(),"-i"));
+	BOOL bCaptureInput			= !strstr(Engine.Params,"-i");
 #ifdef DEBUG
 	bCaptureInput				= FALSE;
 #endif
@@ -50,15 +54,14 @@ void Startup()
 	pApp						= new CApplication	( );
 
 	// ...command line for auto level loading
-	char *	pCmdLine			= GetCommandLine();
-	char *	pLevelName			= strstr(pCmdLine,"-server ");
+	char *	pLevelName			= strstr(Engine.Params,"-server ");
 	char	cmd	[128];
 	if (pLevelName) 
 	{
 		strconcat		(cmd,"server ",pLevelName+8);
 		Console.Execute	(cmd);
 	} else {
-		pLevelName				= strstr(pCmdLine,"-client ");
+		pLevelName				= strstr(Engine.Params,"-client ");
 		if (pLevelName)	{
 			strconcat		(cmd,"client ",pLevelName+8);
 			Console.Execute	(cmd);

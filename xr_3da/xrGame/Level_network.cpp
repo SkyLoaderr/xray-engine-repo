@@ -53,7 +53,7 @@ BOOL CLevel::net_Client		( LPCSTR name_of_server )
 		while (!isCompleted_Connect()) Sleep(5);
 
 		// Signal main actor spawn
-		LPCSTR		s_cmd			= GetCommandLine();
+		LPCSTR		s_cmd			= Engine.Params;
 		string64	s_name			= "actor";
 		if (strstr(s_cmd,"-actor "))	{
 			sscanf(strstr(s_cmd,"-actor ")+strlen("-actor "),"%s",s_name);

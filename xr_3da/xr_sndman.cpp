@@ -131,7 +131,7 @@ void CSoundManager::Initialize	( )
 {
 	bPresent		= false;
 
-	if (strstr(GetCommandLine(),"-nosound"))	return;
+	if (strstr(Engine.Params,"-nosound"))	return;
 
     if( FAILED		( DirectSoundCreate( NULL, &pDevice, NULL ) ) )
         return;
