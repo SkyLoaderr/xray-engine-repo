@@ -233,6 +233,20 @@ xr_chaser.add_to_binder (self.object, char_ini)
     path = nil,
     dist_sqr = 0
   }
+    --С —найпер
+	xr_motivator.storage[self.object:id()].sniper =
+		{
+        enabled  	= false,
+        rest_path 	= nil,
+        point_path	= nil,
+        camper_path = nil,
+		enemy		= nil,
+        zone		= nil,
+        enter       = false,
+        monster		= nil
+		}
+	xr_sniper.add_to_binder(self.object, char_ini)
+  
 xr_ambush.add_to_binder(self.object, char_ini)
   -- построение солдат на плацу
     if char_ini:section_exist("formation") == true then

@@ -91,11 +91,7 @@ function action_sniper_idle:__init (name, storage) super (nil, name)
     self.animation	= nil
     self.time		= 0
     self.time_sight	= 0                --Используется при остановке
-    local path		= patrol(self.a.rest_path)
-    self.last_point	= path:level_vertex_id  (path:count() - 1)      --Последняя точка пути
-    self.rest_point	= point_with_bit_id(self.a.point_path, 0)  --Точка, в которой будем сидеть
-	printf("rest point __________%d", self.rest_point)
-    self.prev_point = -1
+
 end
 ---------------------------------------------------------------------------------------------------------------------
 function action_sniper_idle:initialize ()
@@ -110,7 +106,13 @@ function action_sniper_idle:initialize ()
     else
         self:init_state_walk()
     end
-
+    local path		= patrol(self.a.rest_path)
+    self.last_point	= path:level_vertex_id  (path:count() - 1)      --Последняя точка пути
+    self.rest_point	= point_with_bit_id(self.a.point_path, 0)  --Точка, в которой будем сидеть
+	printf("rest point __________%d", self.rest_point)
+    self.prev_point = -1
+    
+    
      self.object:set_callback (self, "move_callback", game_object.movement)
      printf("1")
 end
@@ -378,15 +380,15 @@ local LOOK    = 4        --Состояние, когда смотрим в даль, когда ползем по марш
 class "action_camper" (action_base)
 function action_camper:__init (name, storage) super (nil, name)
     self.a         = storage
+end
+---------------------------------------------------------------------------------------------------------------------
+function action_camper:initialize ()
     self.camper_point   = nil
     self.end_of_path    = patrol(self.a.camper_path):level_vertex_id(patrol(self.a.camper_path):count() - 1)
     self.state        = 0
     self.time          = 0
     self.look_point      = nil          --точка в которую будем смотреть, когда сидим и кемперим
     self.prev_point    = -1
-end
----------------------------------------------------------------------------------------------------------------------
-function action_camper:initialize ()
 
     action_base.initialize   (self)
 
@@ -488,7 +490,8 @@ end
 --sniper binder
 ----------------------------------------------------------------------------------------------------------------------
 function add_to_binder(obj, char_ini)
-
+    if char_ini == nil or char_ini:section_exist("sniper") == true then
+    
     local operators     = {}
     local properties    = {}
 
@@ -506,25 +509,6 @@ function add_to_binder(obj, char_ini)
     operators["kill_monster"]        = xr_actions_id.jon_sniper_see_monster
     operators["kill_enemy"]          = xr_actions_id.jon_sniper_see_enemy
     operators["camper"]              = xr_actions_id.jon_sniper_camper
-
-    --Loading information from custom data
-    if(char_ini:line_exist ("sniper", "rest_path") == true) then
-      xr_motivator.storage[obj:id()].sniper.rest_path = char_ini:r_string("sniper", "rest_path")
-    end
-    if(char_ini:line_exist ("sniper", "point_path") == true) then
-        xr_motivator.storage[obj:id()].sniper.point_path = patrol( char_ini:r_string("sniper", "point_path") )
-    end
-    if(char_ini:line_exist ("sniper", "camper_path") == true) then
-        xr_motivator.storage[obj:id()].sniper.camper_path = char_ini:r_string("sniper", "camper_path")
-    end
-	
-	if(char_ini:line_exist ("sniper", "chiter") == true) then
-		printf("REad zone name")
-		xr_motivator.storage[obj:id()].sniper.zone = char_ini:r_string("sniper", "zone")
-		printf("%s", xr_motivator.storage[obj:id()].sniper.zone)
-		chiter_binding(obj)
-		return
-	end
 
     local manager  = obj:motivation_action_manager ()
 
@@ -583,6 +567,47 @@ function add_to_binder(obj, char_ini)
     action:add_precondition         (world_property (properties["enabled"],  false))
 
     xr_reactions.add_rule      (obj,"no_visual")
+
+	if char_ini ~= nil then 
+		xr_sniper.set_sniper(obj)
+    end   
+    end
+end
+
+-- включение снайпера
+function set_sniper(object, enabled, rest_path, camper_path, point_path)
+	local char_ini = object:spawn_ini()
+	local st = xr_motivator.storage[object:id()].sniper
+--[[
+    if rest_path == nil then
+		if (char_ini:line_exist ("sniper", "rest_path") == true) then
+			st.rest_path = char_ini:r_string("sniper", "rest_path")
+		else
+			st.enabled = false
+		end
+	else
+		st.rest_path = rest_path
+    end
+    if point_path == nil then
+		if (char_ini:line_exist ("sniper", "point_path") == true) then
+			st.point_path = patrol( char_ini:r_string("sniper", "point_path") )
+		else		
+			st.enabled = false
+		end
+	else
+		st.point_path = patrol( point_path )
+    end
+    if camper_path == nil then
+		if (char_ini:line_exist ("sniper", "camper_path") == true) then
+			st.camper_path = char_ini:r_string("sniper", "camper_path")
+		else
+			st.enabled = false
+		end
+	else
+		st.camper_path = camper_path
+    end
+	]]
+	xr_motivator.checkStorage(object)
 end
 
 
