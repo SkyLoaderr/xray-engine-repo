@@ -76,7 +76,7 @@ function main()
 		wait(1000)
 			action(
 				stalker2,
-			  	move	(move.standing, move.stand,stand.line,patrol("way0000")),
+			  	move	(move.standing, move.stand,move.line,patrol("way0000")),
 				sound	("scripts\\alarm\\say_chto_eto1","bip01_spine2",vector():set(0,0,0),vector():set(0,0,0),false),
 				look	(look.fire_point, stalker1),
 				anim	(anim.danger),
@@ -85,7 +85,7 @@ function main()
 		wait(1000)
 			action(
 				stalker1,
-			  	move	(move.standing, move.stand,stand.line,patrol("way0000")),
+			  	move	(move.standing, move.stand,move.line,patrol("way0000")),
 				sound	("scripts\\alarm\\kto-to_idet","bip01_spine2",vector():set(0,0,0),vector():set(0,0,0),false),
 				look	(look.fire_point, stalker2),
 				anim	(anim.danger),
@@ -96,7 +96,7 @@ function main()
 		wait(1000)
 			action(
 				stalker1,
-			  	move	(move.standing, move.stand,stand.line,patrol("way0001")),
+			  	move	(move.standing, move.stand,move.line,patrol("way0001")),
 				sound	("scripts\\alarm\\prover","bip01_spine2",vector():set(0,0,0),vector():set(0,0,0),false),
 				look	(look.fire_point, actor),
 				anim	(anim.danger),
