@@ -122,6 +122,12 @@ void i_scan		(int curY, float leftX, float lhx, float rightX, float rhx, float s
 	for (; i<limit; i++, Z+=dZ) 
 	{
 		if (Z < pDepth[i])	{ pFrame[i]	= currentTri; pDepth[i] = Z; }
+		i++; if (i>=limit)	break; else Z+=dZ;
+		if (Z < pDepth[i])	{ pFrame[i]	= currentTri; pDepth[i] = Z; }
+		i++; if (i>=limit)	break; else Z+=dZ;
+		if (Z < pDepth[i])	{ pFrame[i]	= currentTri; pDepth[i] = Z; }
+		i++; if (i>=limit)	break; else Z+=dZ;
+		if (Z < pDepth[i])	{ pFrame[i]	= currentTri; pDepth[i] = Z; }
 	}
 	
 	// right connector
