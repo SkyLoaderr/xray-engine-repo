@@ -137,6 +137,7 @@ void CSE_ALifeMonsterAbstract::vfCheckForPopulationChanges()
 
 	_TIME_ID					l_tTimeID = m_tpALife->tfGetGameTime();
 	if (l_tTimeID >= l_tpALifeGroupAbstract->m_tNextBirthTime) {
+		getAI().m_tpCurrentALifeMember = this;
 		l_tpALifeGroupAbstract->m_tNextBirthTime = l_tTimeID + _TIME_ID(getAI().m_pfBirthSpeed->ffGetValue()*24*60*60*1000);
 		if (m_tpALife->randF(100) < getAI().m_pfBirthProbability->ffGetValue()) {
 			u32					l_dwBornCount = iFloor(float(l_tpALifeGroupAbstract->m_wCount)*getAI().m_pfBirthPercentage->ffGetValue() + .5f);
