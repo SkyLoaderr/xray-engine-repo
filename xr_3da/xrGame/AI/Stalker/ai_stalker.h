@@ -313,6 +313,7 @@ private:
 			bool			bfIf_I_SeePosition				(Fvector tPosition);
 			void			LoadSounds						(SOUND_VECTOR &tpSounds, LPCSTR	prefix, u32 dwMaxCount);
 			void			vfValidatePosition				(Fvector &tPosition, u32 dwNodeID);
+			bool			bfIfHuman						(CEntity *tpEntity = 0);
 
 			// physics
 			void			CreateSkeleton					();

@@ -124,16 +124,7 @@ void CAI_Stalker::ForwardStraight()
 	m_tEnemy.Enemy->clCenter	(tPoint);
 	float						fDistance = vPosition.distance_to(m_tEnemy.Enemy->Position());
 
-	CWeapon						*tpWeapon = dynamic_cast<CWeapon*>(m_inventory.ActiveItem());
-	if (tpWeapon) {
-		m_tSelectorFreeHunting.m_fMaxEnemyDistance = tpWeapon->m_fMaxRadius;
-		m_tSelectorFreeHunting.m_fMinEnemyDistance = 6.f;//tpWeapon->m_fMinRadius;
-		m_tSelectorFreeHunting.m_fOptEnemyDistance = 6.f;//tpWeapon->m_fMinRadius + 3.f;
-	}
-
-	vfSetParameters				(&m_tSelectorFreeHunting,0,true,eWeaponStatePrimaryFire,fDistance > 15.f ? ePathTypeStraightDodge : ePathTypeCriteria,eBodyStateStand,m_tEnemy.Enemy->Position().distance_to(vPosition) > 15.f ? eMovementTypeRun : eMovementTypeWalk,eStateTypeDanger,eLookTypeFirePoint,tPoint);
-
-	if (bPlayingHumming) {
+	if (bPlayingHumming && bfIfHuman()) {
 		m_tpCurrentSound = &m_tpSoundAlarm[::Random.randI(m_tpSoundAlarm.size())];
 		m_tpCurrentSound->play_at_pos(this,eye_matrix.c);
 		m_tpCurrentSound->feedback->set_volume(1.f);
@@ -141,6 +132,15 @@ void CAI_Stalker::ForwardStraight()
 	else
 		if (m_tpCurrentSound && m_tpCurrentSound->feedback)
 			m_tpCurrentSound->feedback->set_position(eye_matrix.c);
+
+	CWeapon						*tpWeapon = dynamic_cast<CWeapon*>(m_inventory.ActiveItem());
+	if (tpWeapon) {
+		m_tSelectorFreeHunting.m_fMaxEnemyDistance = tpWeapon->m_fMaxRadius;
+		m_tSelectorFreeHunting.m_fMinEnemyDistance = 6.f;//tpWeapon->m_fMinRadius;
+		m_tSelectorFreeHunting.m_fOptEnemyDistance = 6.f;//tpWeapon->m_fMinRadius + 3.f;
+	}
+
+	vfSetParameters				(&m_tSelectorFreeHunting,0,true,(m_tpCurrentSound && m_tpCurrentSound->feedback) ? eWeaponStateIdle : eWeaponStatePrimaryFire,fDistance > 15.f ? ePathTypeStraightDodge : ePathTypeCriteria,eBodyStateStand,m_tEnemy.Enemy->Position().distance_to(vPosition) > 15.f ? eMovementTypeRun : eMovementTypeWalk,eStateTypeDanger,eLookTypeFirePoint,tPoint);
 }
 
 void CAI_Stalker::Camp(bool bWeapon)
@@ -233,50 +233,41 @@ void CAI_Stalker::Panic()
 	else
         vfSetParameters				(&m_tSelectorFreeHunting,0,true,eWeaponStateIdle,ePathTypeStraightDodge,eBodyStateStand,eMovementTypeRun,eStateTypeDanger,eLookTypeDirection);
 
-	switch (m_tSavedEnemy->SUB_CLS_ID) {
-		case CLSID_OBJECT_ACTOR :
-		case CLSID_AI_SCIENTIST :
-		case CLSID_AI_SOLDIER :
-		case CLSID_AI_STALKER_MILITARY :
-		case CLSID_AI_STALKER : {
-			switch (m_tActionState) {
-				case eActionStateWatchGo : {
-					if (m_dwActionStartTime < Level().timeServer())
-						m_tActionState = eActionStateStand;
-					break;
-				}
-				case eActionStateStand : {
-					if (!m_tpCurrentSound) {
-						m_tpCurrentSound = &m_tpSoundSurrender[::Random.randI(m_tpSoundSurrender.size())];
-						m_tpCurrentSound->play_at_pos(this,eye_matrix.c);
-						m_tpCurrentSound->feedback->set_volume(1.f);
-					}
-					else
-						if (m_tpCurrentSound->feedback)
-							m_tpCurrentSound->feedback->set_position(eye_matrix.c);
-						else {
-							m_tpCurrentSound = 0;
-							m_tActionState = eActionStateWatchGo;
-							m_dwActionStartTime = Level().timeServer() + ::Random.randI(2000,5000);
-						}
-					break;
-				}
-				default : {
+	if (bfIfHuman()) {
+		switch (m_tActionState) {
+			case eActionStateWatchGo : {
+				if (m_dwActionStartTime < Level().timeServer())
 					m_tActionState = eActionStateStand;
-					break;
+				break;
+			}
+			case eActionStateStand : {
+				if (!m_tpCurrentSound) {
+					m_tpCurrentSound = &m_tpSoundSurrender[::Random.randI(m_tpSoundSurrender.size())];
+					m_tpCurrentSound->play_at_pos(this,eye_matrix.c);
+					m_tpCurrentSound->feedback->set_volume(1.f);
 				}
+				else
+					if (m_tpCurrentSound->feedback)
+						m_tpCurrentSound->feedback->set_position(eye_matrix.c);
+					else {
+						m_tpCurrentSound = 0;
+						m_tActionState = eActionStateWatchGo;
+						m_dwActionStartTime = Level().timeServer() + ::Random.randI(2000,5000);
+					}
+				break;
 			}
-			break;
-		}
-		default : {
-			if (m_tpCurrentSound) {
-				if (m_tpCurrentSound->feedback)
-					m_tpCurrentSound->stop();
-				m_tpCurrentSound = 0;
+			default : {
+				m_tActionState = eActionStateStand;
+				break;
 			}
-			break;
 		}
 	}
+	else
+		if (m_tpCurrentSound) {
+			if (m_tpCurrentSound->feedback)
+				m_tpCurrentSound->stop();
+			m_tpCurrentSound = 0;
+		}
 }
 
 void CAI_Stalker::Hide()
@@ -419,7 +410,7 @@ void CAI_Stalker::ForwardCover()
 		bBackMove = !getAI().bfTooSmallAngle(yaw1,yaw2,4*PI_DIV_6);
 	}
 
-	if (bPlayingHumming) {
+	if (bPlayingHumming && bfIfHuman()) {
 		m_tpCurrentSound = &m_tpSoundAlarm[::Random.randI(m_tpSoundAlarm.size())];
 		m_tpCurrentSound->play_at_pos(this,eye_matrix.c);
 		m_tpCurrentSound->feedback->set_volume(1.f);

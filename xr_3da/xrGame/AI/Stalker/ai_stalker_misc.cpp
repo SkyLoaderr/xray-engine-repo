@@ -368,3 +368,18 @@ void CAI_Stalker::vfValidatePosition(Fvector &tPosition, u32 dwNodeID)
 	if (getAI().dwfCheckPositionInDirection(dwNodeID,getAI().tfGetNodeCenter(dwNodeID),tPosition) == u32(-1))
 		m_tSavedEnemyPosition = getAI().tfGetNodeCenter(dwNodeID);
 }
+
+bool CAI_Stalker::bfIfHuman(CEntity *tpEntity)
+{
+	if (!tpEntity)
+		tpEntity = m_tEnemy.Enemy;
+	switch (tpEntity->SUB_CLS_ID) {
+		case CLSID_OBJECT_ACTOR :
+		case CLSID_AI_SCIENTIST :
+		case CLSID_AI_SOLDIER :
+		case CLSID_AI_STALKER_MILITARY :
+		case CLSID_AI_STALKER : 
+			return(true);
+		default : return(false);
+	}
+}
