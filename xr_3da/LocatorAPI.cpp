@@ -136,12 +136,10 @@ void CLocatorAPI::Initialize	()
 {
 	Log		("Initializing File System...");
 	DWORD	M1		= Memory.mem_usage();
-	bNoRecurse		= FALSE;
+	bNoRecurse		= TRUE;
 	Recurse			("");
-	/*
 	bNoRecurse		= FALSE;
 	Recurse			(Path.GameData);
-	*/
 	DWORD	M2		= Memory.mem_usage();
 	Msg		("FS: %d files cached, %dKb memory used.",files.size(),(M2-M1)/1024);
 }
