@@ -76,8 +76,8 @@ void CPGObject::shedule_Update	(u32 dt)
 
 #pragma todo("Dima to AlexMX : Verify why I parameters in PS::CParticleEffect.vis.sphere are incorrect and remove this hack out")
 // start of hack
-	V->vis.sphere.P = Position();
-	V->vis.sphere.R = 1.f;
+	V->vis.sphere.P		= Position();
+	V->vis.sphere.R		= 1.f;
 // end of hack
 
 	// spatial
