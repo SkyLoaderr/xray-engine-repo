@@ -19,7 +19,6 @@ public:
 	virtual void					set_texture			(LPCSTR name)				{ }
 	virtual void					set_color			(const Fcolor& C)			{ }
 	virtual void					set_color			(float r, float g, float b)	{ }
-	virtual void					spatial_move		();
 };
 
 //////////////////////////////////////////////////////////////////////////
@@ -107,14 +106,14 @@ IRender_Target*			CRender::getTarget				()					{ return &Target;										}
 
 IRender_Light*			CRender::light_create			()					{ return Lights.Create();								}
 void					CRender::light_destroy			(IRender_Light* &L)	{ if (L) { Lights.Destroy((light*)L); L=0; }			}
-IRender_Glow*			CRender::glow_create			()					{ return 0;												}
+IRender_Glow*			CRender::glow_create			()					{ return xr_new<CGlow>();								}
 void					CRender::glow_destroy			(IRender_Glow* &L)	{ xr_delete(L);											}		
 
 void					CRender::flush					()					{ r_dsgraph_render_graph	(0);						}
 
-BOOL					CRender::occ_visible			(vis_data& P)		{ return HOM.visible(P);							}
-BOOL					CRender::occ_visible			(sPoly& P)			{ return HOM.visible(P);							}
-BOOL					CRender::occ_visible			(Fbox& P)			{ return HOM.visible(P);							}
+BOOL					CRender::occ_visible			(vis_data& P)		{ return HOM.visible(P);								}
+BOOL					CRender::occ_visible			(sPoly& P)			{ return HOM.visible(P);								}
+BOOL					CRender::occ_visible			(Fbox& P)			{ return HOM.visible(P);								}
 
 void					CRender::add_Visual				(IRender_Visual*		V )	{ add_leafs_Dynamic(V);								}
 void					CRender::add_Geometry			(IRender_Visual*		V )	{ add_Static(V,View->getMask());					}
