@@ -170,28 +170,27 @@ public:
 			Vertex* V		= g_vertices[I];
 			R_ASSERT		(V);
 			
-			// Get ambient factor
-			float		v_amb		= 0.f;
+			// Get transluency factor
 			float		v_trans		= 0.f;
+			BOOL		bVertexLight= FALSE;
 			u32 		L_flags		= 0;
 			for (u32 f=0; f<V->adjacent.size(); f++)
 			{
-				Face*	F								=	V->adjacent[f];
-				v_amb									+=	F->Shader().vert_ambient;
+				Face*	F								=	V->adjacent		[f];
 				v_trans									+=	F->Shader().vert_translucency;
-				if (!F->Shader().flags.bLIGHT_Vertex)	L_flags=LP_dont_rgb+LP_dont_sun;
+				if	(F->Shader().flags.bLIGHT_Vertex)	bVertexLight		= TRUE;
 			}
-			v_amb				/=	float(V->adjacent.size());
 			v_trans				/=	float(V->adjacent.size());
-			float v_inv			=	1.f-v_amb;
 
+			// 
 			base_color			vC;
-			LightPoint			(&DB, RCAST_Model, vC, V->P, V->N, pBuild->L_static, L_flags, 0);
+			LightPoint			(&DB, RCAST_Model, vC, V->P, V->N, pBuild->L_static, bVertexLight?0:(LP_dont_rgb+LP_dont_sun), 0);
 			vC._tmp_			= v_trans;
 			V->C				= vC;
-			if (L_flags)		g_trans_register	(V);
+			V->C.mul			(.5f);
+			if (bVertexLight)	g_trans_register	(V);
 
-			thProgress	= float(I - vertStart) / float(vertEnd-vertStart);
+			thProgress			= float(I - vertStart) / float(vertEnd-vertStart);
 		}
 	}
 };
@@ -237,9 +236,8 @@ void CBuild::LightVertex	()
 			R.lerp				(VL[v]->C,C,level);
 			R.max				(VL[v]->C);
 			VL[v]->C			= R;
-			VL[v]->C.mul		(.5f);
 		}
 	}
 
-	xr_delete(g_trans);
+	xr_delete	(g_trans);
 }
