@@ -7,9 +7,17 @@
 
 #include ".\uilistwnd.h"
 
+#define ACTIVE_BACKGROUND "ui\\ui_pop_up_active_back"
+#define ACTIVE_BACKGROUND_WIDTH 16
+#define ACTIVE_BACKGROUND_HEIGHT 16
+
+
 CUIListWnd::CUIListWnd(void)
 {
 	m_bScrollBarEnabled = false;
+	m_bActiveBackgroundEnable = false;
+
+	m_iFocusedItem = -1;
 }
 
 CUIListWnd::~CUIListWnd(void)
@@ -49,9 +57,20 @@ void CUIListWnd::Init(int x, int y, int width, int height)
 
 	m_ScrollBar.Show(false);
 	m_ScrollBar.Enable(false);
+
+
+	m_StaticActiveBackground.Init(ACTIVE_BACKGROUND,"hud\\default", 0,0,alNone);
+	m_StaticActiveBackground.SetTile(GetWidth()/ACTIVE_BACKGROUND_WIDTH, 1,
+									 GetWidth()%ACTIVE_BACKGROUND_WIDTH, 0);
+
 }
 
-
+void CUIListWnd::SetWidth(int width)
+{
+	inherited::SetWidth(width);
+	m_StaticActiveBackground.SetTile(GetWidth()/ACTIVE_BACKGROUND_WIDTH, 1,
+									 GetWidth()%ACTIVE_BACKGROUND_WIDTH, 0);
+}
 
 bool CUIListWnd::AddItem(char*  str, void* pData, int value)
 {
@@ -214,9 +233,21 @@ void CUIListWnd::SendMessage(CUIWindow *pWnd, s16 msg, void *pData)
 									  m_ChildWndList.end(), 
 									  pWnd);
 	
-		if( m_ChildWndList.end() != it && CUIListItem::BUTTON_CLICKED == msg)
+		if( m_ChildWndList.end() != it)
 		{
-			GetParent()->SendMessage(this, LIST_ITEM_CLICKED, *it);
+			CUIListItem* pListItem = dynamic_cast<CUIListItem*>(*it);
+			R_ASSERT(pListItem);
+
+			if(CUIListItem::BUTTON_CLICKED == msg)
+				GetParent()->SendMessage(this, LIST_ITEM_CLICKED, *it);
+			else if(CUIListItem::BUTTON_FOCUS_RECEIVED == msg)
+			{
+				m_iFocusedItem = pListItem->GetIndex();
+			}
+			else if(CUIListItem::BUTTON_FOCUS_LOST == msg)
+			{
+				if(pListItem->GetIndex() == m_iFocusedItem) m_iFocusedItem = -1;
+			}
 		}
 	}
 	CUIWindow::SendMessage(pWnd, msg, pData);
@@ -225,6 +256,16 @@ void CUIListWnd::SendMessage(CUIWindow *pWnd, s16 msg, void *pData)
 void CUIListWnd::Draw()
 {
 	CUIWindow::Draw();
+
+	if(m_iFocusedItem != -1 /*&& m_bActiveBackgroundEnable*/)
+	{
+		int offset_y = GetItemHeight()>ACTIVE_BACKGROUND_HEIGHT?
+										(GetItemHeight()-ACTIVE_BACKGROUND_HEIGHT)/2:0;
+		RECT rect = GetAbsoluteRect();
+		m_StaticActiveBackground.SetPos(rect.left, rect.top + 
+									m_iFocusedItem*GetItemHeight()+ offset_y);
+		m_StaticActiveBackground.Render();
+	}
 }
 
 int CUIListWnd::GetSize()
@@ -291,4 +332,17 @@ void CUIListWnd::EnableScrollBar(bool enable)
 	}
 
 }
-//|| mouse_action == LBUTTON_DB_CLICK
+
+int CUIListWnd::GetLongestSignWidth()
+{
+	int max_width = m_ItemList.front()->GetSignWidht();
+	
+	LIST_ITEM_LIST_it it=m_ItemList.begin();
+	++it;
+	for(;  m_ItemList.end() != it; ++it)
+	{
+		if((*it)->GetSignWidht()>max_width) max_width = (*it)->GetSignWidht();
+	}
+
+	return max_width;
+}

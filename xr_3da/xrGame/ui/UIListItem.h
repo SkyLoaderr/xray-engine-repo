@@ -29,6 +29,9 @@ public:
 	virtual int GetValue() {return m_iValue;}
 	virtual void SetValue(int value) {m_iValue = value;}
 
+	//возвращает длину в пикселях надписи
+	virtual int GetSignWidht();
+
 protected:
 	//указатель на произвольные данные, которые могут
 	//присоедениены к элементу

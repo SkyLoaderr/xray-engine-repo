@@ -55,6 +55,14 @@ public:
 
 	void EnableScrollBar(bool enable);
 	bool IsScrollBarEnabled() {return m_bScrollBarEnabled;}
+	
+	bool IsActiveBackgroundEnabled() {return m_bActiveBackgroundEnable;}
+	void EnableActiveBackground(bool enable) {m_bActiveBackgroundEnable = enable;}
+
+	//возвращает ширину в пикселях самой длиной надписи на элементах
+	int GetLongestSignWidth();
+
+	virtual void SetWidth(int width);
 protected:
 
 	//полоса прокрутки
@@ -78,6 +86,13 @@ protected:
 	
 	//индекс первого показанного элемента
 	int m_iFirstShownIndex;
+
+	//элемент над которым курсор в данный момент или -1, если такого нет
+	int m_iFocusedItem;
+		
+	//подсветка активного элемента
+	CUIStaticItem m_StaticActiveBackground;
+	bool m_bActiveBackgroundEnable;
 };
 
 #endif //_UI_LIST_WND_H_

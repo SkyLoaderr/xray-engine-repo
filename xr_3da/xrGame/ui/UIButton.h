@@ -30,7 +30,7 @@ public:
 	virtual void OnMouse(int x, int y, E_MOUSEACTION mouse_action);
 
 	//сообщения, отправляемые родительскому окну
-	typedef enum{BUTTON_CLICKED} E_MESSAGE;
+	typedef enum{BUTTON_CLICKED, BUTTON_FOCUS_RECEIVED,BUTTON_FOCUS_LOST} E_MESSAGE;
 
 	//прорисовка окна
 	virtual void Draw();
@@ -48,12 +48,15 @@ public:
 	void SetPressMode(E_PRESS_MODE ePressMode) {m_ePressMode = ePressMode;}
 	E_PRESS_MODE GetPressMode() {return m_ePressMode;}
 
-
-	//void SetText(LPSTR str) {m_str = str;}
-	//LPSTR GetText() {return m_str;}
-
 	//заново подготовить состояние
     virtual void Reset();
+
+	void SetPushOffsetX(int offset_x) {m_iPushOffsetX = offset_x;}
+	void SetPushOffsetY(int offset_y) {m_iPushOffsetY = offset_y;}
+	int GetPushOffsetX() {return m_iPushOffsetX;}
+	int GetPushOffsetY() {return m_iPushOffsetY;}
+
+	virtual	void UpdateTextAlign();
 
 protected:
 	
@@ -74,17 +77,14 @@ protected:
 	//режим в котором нажимается кнопка
 	E_PRESS_MODE m_ePressMode;
 
-	//текст на кнопке
-	//LPSTR m_str;
+	//смещение кнопки при нажатии
+	int m_iPushOffsetX;
+	int m_iPushOffsetY;
 
-
-
-	///////////////////////////////////////	
-	//Графический интрефейс для рисования
-	///////////////////////////////////////
-    //CUIStaticItem m_UIStaticItem;
-	//bool m_bAvailableTexture;
-	
+	//смещение текста,  в зависимости от выбранного
+	//метода центровки
+	int m_iTextOffsetX;
+	int m_iTextOffsetY;
 };
 
 #endif // _UI_BUTTON_H_

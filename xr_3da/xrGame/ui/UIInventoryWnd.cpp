@@ -847,15 +847,15 @@ void CUIInventoryWnd::ActivatePropertiesBox()
 	//отсоединение аддонов от вещи
 	if(pWeapon)
 	{
-		if(pWeapon->IsGrenadeLauncherAttached())
+		if(pWeapon->GrenadeLauncherAttachable() && pWeapon->IsGrenadeLauncherAttached())
 		{
 			UIPropertiesBox.AddItem("Detach grenade launcher",  NULL, DETACH_GRENADE_LAUNCHER_ADDON);
 		}
-		if(pWeapon->IsScopeAttached())
+		if(pWeapon->ScopeAttachable() && pWeapon->IsScopeAttached())
 		{
 			UIPropertiesBox.AddItem("Detach scope",  NULL, DETACH_SCOPE_ADDON);
 		}
-		if(pWeapon->IsSilencerAttached())
+		if(pWeapon->SilencerAttachable() && pWeapon->IsSilencerAttached())
 		{
 			UIPropertiesBox.AddItem("Detach silencer",  NULL, DETACH_SILENCER_ADDON);
 		}
@@ -930,7 +930,7 @@ void CUIInventoryWnd::ActivatePropertiesBox()
 
 	
 
-	UIPropertiesBox.AutoUpdateHeight();
+	UIPropertiesBox.AutoUpdateSize();
 	UIPropertiesBox.BringAllToTop();
 	UIPropertiesBox.Show(x-rect.left, y-rect.top);
 }

@@ -45,7 +45,9 @@ void CUIFrameRect::UpdateSize()
 	int	rem_x		= iSize.x%ts.x;
 	int rem_y		= iSize.y%ts.y;
 	int tile_x		= iFloor(float(iSize.x)/ts.x); tile_x-=2; R_ASSERT(tile_x>=0);
+	//if(tile_x<0) tile_x=0;
 	int tile_y		= iFloor(float(iSize.y)/ts.y); tile_y-=2; R_ASSERT(tile_y>=0);
+	//if(tile_y<0) tile_y=0;
 
 	float fScale	= HUD().GetScale();
 	// center align

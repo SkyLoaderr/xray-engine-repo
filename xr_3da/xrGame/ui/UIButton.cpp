@@ -5,6 +5,9 @@
 #include "stdafx.h"
 #include "UIButton.h"
 
+#define PUSH_OFFSET_RIGHT 2
+#define PUSH_OFFSET_DOWN  3
+
 
 //////////////////////////////////////////////////////////////////////
 // Construction/Destruction
@@ -15,12 +18,16 @@ CUIButton:: CUIButton()
 	m_eButtonState = BUTTON_NORMAL;
 	m_ePressMode = NORMAL_PRESS;
 
-	m_str = " ";
+	m_str = "";
 
 	m_bButtonClicked = false;
 	m_bCursorOverButton = false;
 
 	m_bAvailableTexture = false;
+
+
+	m_iPushOffsetX = PUSH_OFFSET_RIGHT;
+    m_iPushOffsetY = PUSH_OFFSET_DOWN;
 
 	SetTextAlign(CGameFont::alCenter);
 }
@@ -50,13 +57,6 @@ void CUIButton::Init(LPCSTR tex_name, int x, int y, int width, int height)
 
 
 	inherited::Init(tex_name, x, y, width, height);
-	/*if(NULL != tex_name)
-	{
-        m_UIStaticItem.Init(tex_name,"hud\\default",x,y,alNone);
-		m_bAvailableTexture = true;
-	}
-	else
-		m_bAvailableTexture = false;*/
 }
 
 
@@ -76,15 +76,21 @@ void  CUIButton::OnMouse(int x, int y, E_MOUSEACTION mouse_action)
 	}
 
 	
+	if(m_bCursorOverButton != cursor_on_button)
+	{
+		if(cursor_on_button)
+			GetParent()->SendMessage(this,BUTTON_FOCUS_RECEIVED, NULL);
+		else
+			GetParent()->SendMessage(this,BUTTON_FOCUS_LOST, NULL);
+	}
 	m_bCursorOverButton = cursor_on_button;
 
-
+	
 	m_bButtonClicked = false;
 
 
 	if(mouse_action == MOUSE_MOVE && m_eButtonState == BUTTON_NORMAL)
 			GetParent()->SetCapture(this, cursor_on_button);
-
 
 
 	switch(m_ePressMode)
@@ -197,8 +203,6 @@ void  CUIButton::OnMouse(int x, int y, E_MOUSEACTION mouse_action)
 }
 
 
-#define PUSH_OFFSET_RIGHT 2
-#define PUSH_OFFSET_DOWN  3
 
 
 //прорисовка кнопки
@@ -215,24 +219,12 @@ void  CUIButton::Draw()
 	}
 	else
 	{
-		m_UIStaticItem.SetPos(rect.left+PUSH_OFFSET_RIGHT, 
-								rect.top+PUSH_OFFSET_DOWN);
+		m_UIStaticItem.SetPos(rect.left+m_iPushOffsetX, 
+								rect.top+m_iPushOffsetY);
 	}
 
 	m_UIStaticItem.Render();
 }
-
-
-
-
-
-
-//#define TEXT_OFFSET_RIGHT 15
-//#define TEXT_OFFSET_DOWN  10
-
-#define TEXT_OFFSET_RIGHT (GetWidth()/2)
-#define TEXT_OFFSET_DOWN  (GetHeight()/2 - GetFont()->CurrentHeight()/2)
-
 
 
 
@@ -251,40 +243,40 @@ void  CUIButton::Update()
 	}
 	else
 	{
-			right_offset = PUSH_OFFSET_RIGHT;
-			down_offset = PUSH_OFFSET_DOWN;
+			right_offset = m_iPushOffsetX;
+			down_offset = m_iPushOffsetY;
 	}
 
-
+	UpdateTextAlign();
 	GetFont()->SetAligment(GetTextAlign());
 	
 
 	if(m_bCursorOverButton)
 	{
 			GetFont()->SetColor(0xFF999999);
-			GetFont()->Out((float)rect.left + right_offset + 1 +TEXT_OFFSET_RIGHT, 
-					   (float)rect.top + down_offset + 1  +TEXT_OFFSET_DOWN,
+			GetFont()->Out((float)rect.left + right_offset + 1 +m_iTextOffsetX, 
+					   (float)rect.top + down_offset + 1  +m_iTextOffsetY,
 					    m_str);
-			GetFont()->Out((float)rect.left + right_offset - 1 +TEXT_OFFSET_RIGHT, 
-					   (float)rect.top + down_offset - 1 +TEXT_OFFSET_DOWN,
+			GetFont()->Out((float)rect.left + right_offset - 1 +m_iTextOffsetX, 
+					   (float)rect.top + down_offset - 1 +m_iTextOffsetY,
 					    m_str);
-			GetFont()->Out((float)rect.left + right_offset - 1 +TEXT_OFFSET_RIGHT, 
-					   (float)rect.top + down_offset + 1 +TEXT_OFFSET_DOWN,
+			GetFont()->Out((float)rect.left + right_offset - 1 +m_iTextOffsetX, 
+					   (float)rect.top + down_offset + 1 +m_iTextOffsetY,
 					    m_str);
-			GetFont()->Out((float)rect.left + right_offset + 1 +TEXT_OFFSET_RIGHT, 
-					   (float)rect.top + down_offset - 1 +TEXT_OFFSET_DOWN,
+			GetFont()->Out((float)rect.left + right_offset + 1 +m_iTextOffsetX, 
+					   (float)rect.top + down_offset - 1 +m_iTextOffsetY,
 					    m_str);
-			GetFont()->Out((float)rect.left + right_offset + 1 +TEXT_OFFSET_RIGHT, 
-					   (float)rect.top + down_offset + 0 +TEXT_OFFSET_DOWN,
+			GetFont()->Out((float)rect.left + right_offset + 1 +m_iTextOffsetX, 
+					   (float)rect.top + down_offset + 0 +m_iTextOffsetY,
 					    m_str);
-			GetFont()->Out((float)rect.left + right_offset - 1 +TEXT_OFFSET_RIGHT, 
-					   (float)rect.top + down_offset - 0 +TEXT_OFFSET_DOWN,
+			GetFont()->Out((float)rect.left + right_offset - 1 +m_iTextOffsetX, 
+					   (float)rect.top + down_offset - 0 +m_iTextOffsetY,
 					    m_str);
-			GetFont()->Out((float)rect.left + right_offset - 0 +TEXT_OFFSET_RIGHT, 
-					   (float)rect.top + down_offset + 1 +TEXT_OFFSET_DOWN,
+			GetFont()->Out((float)rect.left + right_offset - 0 +m_iTextOffsetX, 
+					   (float)rect.top + down_offset + 1 +m_iTextOffsetY,
 					    m_str);
-			GetFont()->Out((float)rect.left + right_offset + 0 +TEXT_OFFSET_RIGHT,  
-					   (float)rect.top + down_offset - 1 +TEXT_OFFSET_DOWN,
+			GetFont()->Out((float)rect.left + right_offset + 0 +m_iTextOffsetX,  
+					   (float)rect.top + down_offset - 1 +m_iTextOffsetY,
 					    m_str);
 
 	}
@@ -292,7 +284,25 @@ void  CUIButton::Update()
 	GetFont()->SetColor(0xFFEEEEEE);
 
 	
-	GetFont()->Out((float)rect.left + right_offset  +  TEXT_OFFSET_RIGHT, 
-				   (float)rect.top + down_offset  + TEXT_OFFSET_DOWN,
+	GetFont()->Out((float)rect.left + right_offset  +  m_iTextOffsetX, 
+				   (float)rect.top + down_offset  + m_iTextOffsetY,
 				    m_str);
+}
+
+void CUIButton::UpdateTextAlign()
+{
+	m_iTextOffsetY = (GetHeight() - (int)GetFont()->CurrentHeight())/2;
+
+	if(m_eTextAlign == CGameFont::alCenter)
+	{
+		m_iTextOffsetX = GetWidth()/2;
+	}
+	else if(m_eTextAlign == CGameFont::alRight)
+	{
+		m_iTextOffsetX = GetWidth();
+	}
+	else
+	{
+		m_iTextOffsetX = 0;
+	}
 }

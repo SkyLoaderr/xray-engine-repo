@@ -7,6 +7,16 @@
 #include "stdafx.h"
 #include "UIPropertiesBox.h"
 
+#include "..\\hudmanager.h"
+
+
+#define OFFSET_X 20
+#define OFFSET_Y 18
+#define FRAME_BORDER_WIDTH	20
+#define FRAME_BORDER_HEIGHT	22
+
+#define ITEM_HEIGHT ((int)GetFont()->CurrentHeight()+2)
+
 //////////////////////////////////////////////////////////////////////
 // Construction/Destruction
 //////////////////////////////////////////////////////////////////////
@@ -14,6 +24,7 @@
 CUIPropertiesBox::CUIPropertiesBox()
 {
 	m_iClickedElement = -1;
+	SetFont(HUD().pArialN21Russian);
 }
 
 CUIPropertiesBox::~CUIPropertiesBox()
@@ -26,7 +37,13 @@ void CUIPropertiesBox::Init(LPCSTR base_name, int x, int y, int width, int heigh
 	inherited::Init(base_name, x,y, width, height);
 
 	AttachChild(&m_UIListWnd);
-	m_UIListWnd.Init(0,0, width, height);
+	m_UIListWnd.Init(OFFSET_X, OFFSET_Y, 
+					 width - OFFSET_X*2, 
+					 height - OFFSET_Y*2);
+
+	
+	m_UIListWnd.SetItemHeight(ITEM_HEIGHT);
+
 
 	m_iClickedElement = -1;
 }
@@ -130,9 +147,12 @@ void CUIPropertiesBox::OnMouse(int x, int y, E_MOUSEACTION mouse_action)
 	inherited::OnMouse(x, y, mouse_action);
 }
 
-void CUIPropertiesBox::AutoUpdateHeight()
+void CUIPropertiesBox::AutoUpdateSize()
 {
-	//SetHeight(m_UIListWnd.GetItemHeight()*m_UIListWnd.GetSize());
+	SetHeight(m_UIListWnd.GetItemHeight()*m_UIListWnd.GetSize()+
+			  FRAME_BORDER_HEIGHT*2);
+	SetWidth(m_UIListWnd.GetLongestSignWidth()+FRAME_BORDER_WIDTH*2);
+	m_UIListWnd.SetWidth(m_UIListWnd.GetLongestSignWidth());
 }
 
 int CUIPropertiesBox::GetClickedIndex() 
@@ -142,4 +162,12 @@ int CUIPropertiesBox::GetClickedIndex()
 CUIListItem* CUIPropertiesBox::GetClickedItem()
 {
 	return m_UIListWnd.GetItem(GetClickedIndex());
+}
+void CUIPropertiesBox::Update()
+{
+	inherited::Update();
+}
+void CUIPropertiesBox::Draw()
+{
+	inherited::Draw();
 }

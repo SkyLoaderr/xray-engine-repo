@@ -46,6 +46,12 @@ CHUDManager::~CHUDManager()
 
 	xr_delete			(pFontHeaderEurope);
 	xr_delete			(pFontHeaderRussian);
+
+	xr_delete			(pArialN21Russian);
+	xr_delete			(pFontGraffiti19Russian);
+	xr_delete			(pFontGraffiti22Russian);
+	xr_delete			(pFontLetterica16Russian);
+	xr_delete			(pFontLetterica18Russian);
 }
 //--------------------------------------------------------------------
 void CHUDManager::ClientToScreenScaled(Irect& r, u32 align)
@@ -166,6 +172,13 @@ void CHUDManager::Render_Direct	()
 
 		pFontHeaderEurope->OnRender	();
 		pFontHeaderRussian->OnRender();
+
+		pArialN21Russian->OnRender();
+		pFontGraffiti19Russian->OnRender();
+		pFontGraffiti22Russian->OnRender(); 
+		pFontLetterica16Russian->OnRender();
+		pFontLetterica18Russian->OnRender();
+
 
 		//render UI cursor
 		if(pUI && pUI->GetCursor() && pUI->GetCursor()->IsVisible())

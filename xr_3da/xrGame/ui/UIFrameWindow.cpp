@@ -33,7 +33,7 @@ void CUIFrameWindow::Init(LPCSTR base_name, int x, int y, int width, int height)
 	m_UIWndFrame.Init(base_name,x,y,width, height - BOTTOM_OFFSET,alNone);
 	
 	
-	CUIWindow::Init(x,y, width, height);
+	inherited::Init(x,y, width, height);
 }
 
 void CUIFrameWindow::Init(LPCSTR base_name, RECT* pRect)
@@ -101,5 +101,17 @@ void CUIFrameWindow::Draw()
 		m_UIStaticOverLeftBottom.Render();
 	}
 
-	CUIWindow::Draw();
+	inherited::Draw();
+}
+
+
+void CUIFrameWindow::SetWidth(int width)
+{
+	inherited::SetWidth(width);
+	m_UIWndFrame.SetSize(GetWidth(), GetHeight());
+}
+void CUIFrameWindow::SetHeight(int height)
+{
+	inherited::SetHeight(height);
+	m_UIWndFrame.SetSize(GetWidth(), GetHeight());
 }

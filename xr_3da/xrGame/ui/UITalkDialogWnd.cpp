@@ -42,7 +42,7 @@ void CUITalkDialogWnd::SendMessage(CUIWindow* pWnd, s16 msg, void* pData)
 			GetParent()->SendMessage(this, QUESTION_CLICKED);
 		}
 	}
-	else if(pWnd == &UIToTradeButton)
+	else if(pWnd == &UIToTradeButton && msg == CUIButton::BUTTON_CLICKED)
 	{
 		GetTop()->SendMessage(this, TRADE_BUTTON_CLICKED);
 	}

@@ -64,9 +64,19 @@ void CUIPdaWnd::InitPDA()
 {
 	//CActor *pInvOwner = dynamic_cast<CActor*>(Level().CurrentEntity());
 	m_pInvOwner = dynamic_cast<CInventoryOwner*>(Level().CurrentEntity());
-	if(!m_pInvOwner) return;
+	if(!m_pInvOwner) 
+	{
+		Hide();
+		return;
+	}
 	
 	m_pPda = m_pInvOwner->GetPDA();
+
+	if(!m_pPda)
+	{
+		Hide();
+		return;
+	}
 
 	InitPdaContacts();
 
@@ -169,8 +179,8 @@ void CUIPdaWnd::Draw()
 
 void CUIPdaWnd::Show()
 {
-	InitPDA();
 	inherited::Show();
+	InitPDA();
 }
 
 

@@ -39,7 +39,7 @@ public:
 	void SetText(LPSTR str);
 	LPCSTR GetText() {return m_str;}
 
-	void SetTextAlign(CGameFont::EAligment align) {m_eTextAlign = align;}
+	virtual void SetTextAlign(CGameFont::EAligment align) {m_eTextAlign = align;}
 	CGameFont::EAligment GetTextAlign() {return m_eTextAlign;}
 
 	void SetColor(u32 color) {m_UIStaticItem.SetColor(color);}

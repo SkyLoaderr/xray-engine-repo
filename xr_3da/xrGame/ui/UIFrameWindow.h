@@ -15,6 +15,8 @@
 
 class CUIFrameWindow: public CUIWindow
 {
+private:
+	typedef CUIWindow inherited;
 public:
 	////////////////////////////////////
 	//конструктор/деструктор
@@ -30,6 +32,8 @@ public:
 	void InitLeftTop(LPCSTR tex_name, int left_offset, int up_offset);
 	void InitLeftBottom(LPCSTR tex_name, int left_offset, int up_offset);
 
+	virtual void SetWidth(int width);
+	virtual void SetHeight(int height);
 
 	////////////////////////////////////
 	//прорисовка окна

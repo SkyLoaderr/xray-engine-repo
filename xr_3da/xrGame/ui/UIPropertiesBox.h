@@ -37,8 +37,11 @@ public:
 	void RemoveItem(int index);
 	void RemoveAll();
 
-	void Show(int x, int y);
-	void Hide();
+	virtual void Show(int x, int y);
+	virtual void Hide();
+
+	virtual void Update();
+	virtual void Draw();
 
 	//возращает индекс нажатого элемента или -1 если
 	//такого элемента не было
@@ -46,9 +49,9 @@ public:
 	//возвращает нажатый элемент или NULL если нет такого
 	CUIListItem* GetClickedItem();
 
-	//автоматическое изменение высоты в зависимости от количества
+	//автоматическое изменение размеров в зависимости от количества
 	//элементов
-	void AutoUpdateHeight();
+	void AutoUpdateSize();
 
 protected:
 	CUIListWnd m_UIListWnd;
