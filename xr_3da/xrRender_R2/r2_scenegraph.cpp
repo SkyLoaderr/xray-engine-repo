@@ -1,4 +1,5 @@
 #include "stdafx.h"
+#include "..\particlegroup.h"
 #include "..\fhierrarhyvisual.h"
 #include "..\bodyinstance.h"
 #include "..\fmesh.h"
@@ -153,6 +154,15 @@ void CRender::add_leafs_Dynamic(IRender_Visual *pVisual)
 	xr_vector<IRender_Visual*>::iterator I,E;	// it may be useful for 'hierrarhy' visual
 
 	switch (pVisual->Type) {
+	case MT_PARTICLE_GROUP:
+		{
+			// Add all children, doesn't perform any tests
+			PS::CParticleGroup* pV = (PS::CParticleGroup*)pVisual;
+			I = pV->children.begin	();
+			E = pV->children.end	();
+			for (; I!=E; I++)	add_leafs_Dynamic	(*I);
+		}
+		return;
 	case MT_HIERRARHY:
 		{
 			// Add all children, doesn't perform any tests
@@ -192,6 +202,15 @@ void CRender::add_leafs_Static(IRender_Visual *pVisual)
 	xr_vector<IRender_Visual*>::iterator I,E;	// it may be usefull for 'hierrarhy' visuals
 
 	switch (pVisual->Type) {
+	case MT_PARTICLE_GROUP:
+		{
+			// Add all children, doesn't perform any tests
+			PS::CParticleGroup* pV = (PS::CParticleGroup*)pVisual;
+			I = pV->children.begin	();
+			E = pV->children.end	();
+			for (; I!=E; I++)	add_leafs_Static	(*I);
+		}
+		return;
 	case MT_HIERRARHY:
 		{
 			// Add all children, doesn't perform any tests
@@ -268,6 +287,19 @@ BOOL CRender::add_Dynamic(IRender_Visual *pVisual, u32 planes)
 	xr_vector<IRender_Visual*>::iterator I,E;	// it may be usefull for 'hierrarhy' visuals
 
 	switch (pVisual->Type) {
+	case MT_PARTICLE_GROUP:
+		{
+			// Add all children, doesn't perform any tests
+			PS::CParticleGroup* pV = (PS::CParticleGroup*)pVisual;
+			I = pV->children.begin	();
+			E = pV->children.end	();
+			if (fcvPartial==VIS) {
+				for (; I!=E; I++)	add_Dynamic			(*I,planes);
+			} else {
+				for (; I!=E; I++)	add_leafs_Dynamic	(*I);
+			}
+		}
+		break;
 	case MT_HIERRARHY:
 		{
 			// Add all children
@@ -323,6 +355,19 @@ void CRender::add_Static(IRender_Visual *pVisual, u32 planes)
 	xr_vector<IRender_Visual*>::iterator I,E;	// it may be usefull for 'hierrarhy' visuals
 
 	switch (pVisual->Type) {
+	case MT_PARTICLE_GROUP:
+		{
+			// Add all children, doesn't perform any tests
+			PS::CParticleGroup* pV = (PS::CParticleGroup*)pVisual;
+			I = pV->children.begin	();
+			E = pV->children.end		();
+			if (fcvPartial==VIS) {
+				for (; I!=E; I++)	add_Static			(*I,planes);
+			} else {
+				for (; I!=E; I++)	add_leafs_Static	(*I);
+			}
+		}
+		break;
 	case MT_HIERRARHY:
 		{
 			// Add all children
