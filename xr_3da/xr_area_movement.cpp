@@ -366,7 +366,7 @@ void CObjectSpace::clResolveStuck(SCollisionData& cl, Fvector& position)
 				Fvector dir;
 				dir.sub(position,polyIPoint);
 				float len = dir.magnitude();
-				dir.mul( 1.1f*(safe_R-len)/len );
+				dir.mul( 1.0f*(safe_R-len)/len );
 				stuckDir.add(dir);
 				stuckCount++;
 			}
