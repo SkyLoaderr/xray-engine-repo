@@ -11,8 +11,8 @@ function main ()
 	zone0			= get_level_object ("zone_mosquito_bald0000")
 	zone1			= get_level_object ("zone_mosquito_bald0001")
 	
-	zone0:script	(stalker_test::script_name(),true)
-	zone1:script	(stalker_test::script_name(),true)
+	zone0:script	(stalker_test:script_name(),true)
+	zone1:script	(stalker_test:script_name(),true)
 	
 	zone0:set_callback	(callback_enter,true);
 	zone0:set_callback	(callback_exit,false);
