@@ -144,9 +144,8 @@ void	CBlender_Compile::PassSET_Blend	(BOOL bABlend, u32 abSRC, u32 abDST, BOOL b
 }
 void	CBlender_Compile::PassSET_LightFog	(BOOL bLight, BOOL bFog)
 {
-#pragma todo("***R2-temp***")
 	RS.SetRS(D3DRS_LIGHTING,			BC(bLight));
-	RS.SetRS(D3DRS_FOGENABLE,			FALSE /*BC(bFog)*/);
+	RS.SetRS(D3DRS_FOGENABLE,			BC(bFog));
 	SH->Flags.bLighting					|= !!bLight;
 }
 

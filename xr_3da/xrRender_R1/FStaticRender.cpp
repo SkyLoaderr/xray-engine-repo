@@ -395,23 +395,20 @@ void CRender::flush_Patches	()
 
 void	CRender::rmNear		()
 {
-#pragma todo("***R2-temp***")
 	IRender_target* T	=	getTarget	();
-	D3DVIEWPORT9 VP		=	{0,0,600,600/*T->get_width(),T->get_height()*/,0,0.02f };
+	D3DVIEWPORT9 VP		=	{0,0,T->get_width(),T->get_height(),0,0.02f };
 	CHK_DX				(HW.pDevice->SetViewport(&VP));
 }
 void	CRender::rmFar		()
 {
-#pragma todo("***R2-temp***")
 	IRender_target* T	=	getTarget	();
-	D3DVIEWPORT9 VP		=	{0,0,600,600/*T->get_width(),T->get_height()*/,0.99999f,1.f };
+	D3DVIEWPORT9 VP		=	{0,0,T->get_width(),T->get_height(),0.99999f,1.f };
 	CHK_DX				(HW.pDevice->SetViewport(&VP));
 }
 void	CRender::rmNormal	()
 {
-#pragma todo("***R2-temp***")
 	IRender_target* T	=	getTarget	();
-	D3DVIEWPORT9 VP		= {0,0,600,600/*T->get_width(),T->get_height()*/,0,1.f };
+	D3DVIEWPORT9 VP		= {0,0,T->get_width(),T->get_height(),0,1.f };
 	CHK_DX				(HW.pDevice->SetViewport(&VP));
 }
 
