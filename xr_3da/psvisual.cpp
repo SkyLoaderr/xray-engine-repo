@@ -16,13 +16,10 @@ CPSVisual::CPSVisual():CVisual()
 	m_Definition= 0;
 	m_Emitter	= 0;
     m_Particles.clear();
-
-	dwPCNT++;
 }
 //----------------------------------------------------
 CPSVisual::~CPSVisual()
 {
-	dwPCNT--;
 	m_Particles.clear();
 	m_Stream	= 0;
 }

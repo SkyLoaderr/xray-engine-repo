@@ -14,17 +14,14 @@ using namespace	Collide;
 //----------------------------------------------------------------------
 BOOL CObjectSpace::nl_append(int x, int z, const Fvector2& O, const Fvector2& D)
 {
-	if(bDebug) nl_cnt++;
 	if ((x<0)||(z<0)||(x>=Dynamic.x_count)||(z>=Dynamic.z_count)) return false;
 
 	SLOT& S = Dynamic(x,z); 
 	if(dwQueryID!=S.dwQueryID){
 		S.dwQueryID = dwQueryID;
-		if(bDebug) test_cnt++;
 		if(TestRaySlot(x,z,O,D))
 		{
 			if(bDebug){
-				slot_cnt++;
 				pApp->pFont->OutNext("{%d,%d}",x,z);
 				dbg_Slot.push_back(Fvector2());
 				dbg_Slot.back().set(float(x),float(z));
@@ -59,9 +56,6 @@ void CObjectSpace::CaptureSlots(const Fvector& start, const Fvector& dir, float 
 	dbg_Slot.clear();
 
 	if (bDebug) pApp->pFont->OutSet(0.5f,-1.f);
-	slot_cnt=0;
-	test_cnt=0;
-	nl_cnt=0;
 
 	Fvector end; end.mad	(start,dir,range);
 	Fvector2 S,D;
@@ -113,8 +107,6 @@ void CObjectSpace::CaptureSlots(const Fvector& start, const Fvector& dir, float 
 			if (!nl_append(x,z,S,D)) break;
 		}
 	}
-	if(bDebug)
-		pApp->pFont->Out(-1.f,0.55f,"NL: %d, Test: %d, Slot: %d", nl_cnt, test_cnt, slot_cnt);
 }
 
 //--------------------------------------------------------------------------------

@@ -94,7 +94,7 @@ void AddTri(CDB::TRI* pTri, Fmatrix &mView, CWallmarksEngine::wallmark	&W)
 	}
 }
 
-void RecurseTri(CDB::TRI* T, Fmatrix &mView, CWallmarksEngine::wallmark	&W, CFrustum &F)
+void CWallmarksEngine::RecurseTri(CDB::TRI* T, Fmatrix &mView, CWallmarksEngine::wallmark	&W, CFrustum &F)
 {
 	// Check if triangle already processed
 	if (find(sml_processed.begin(),sml_processed.end(),T)!=sml_processed.end())
