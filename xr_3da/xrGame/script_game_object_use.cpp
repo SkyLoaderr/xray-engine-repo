@@ -159,7 +159,7 @@ LPCSTR CScriptGameObject::Name				() const
 shared_str CScriptGameObject::cName				() const
 {
 	VERIFY			(object());
-	return			(*object()->cName());
+	return			(object()->cName());
 }
 
 LPCSTR CScriptGameObject::Section				() const
