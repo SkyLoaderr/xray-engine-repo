@@ -6,6 +6,19 @@ class	ENGINE_API					CSound_source;
 class	ENGINE_API					CSound_interface;
 class	ENGINE_API					CSound_stream_interface;
 
+//
+ENGINE_API extern u32				psSoundFreq				;
+ENGINE_API extern u32				psSoundModel			;
+ENGINE_API extern float				psSoundVMaster			;
+ENGINE_API extern float				psSoundVEffects			;
+ENGINE_API extern float				psSoundVMusic			;
+ENGINE_API extern float				psSoundRolloff			;
+ENGINE_API extern float				psSoundDoppler			;
+ENGINE_API extern float				psSoundOcclusionScale	;
+ENGINE_API extern float				psSoundCull				;
+ENGINE_API extern Flags32			psSoundFlags			;
+ENGINE_API extern int				psSoundRelaxTime		;
+
 // definition (Sound Structure + control)
 struct	ENGINE_API	sound
 {

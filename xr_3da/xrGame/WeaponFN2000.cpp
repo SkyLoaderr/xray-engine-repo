@@ -17,7 +17,7 @@ CWeaponFN2000::~CWeaponFN2000()
 void CWeaponFN2000::Load	(LPCSTR section)
 {
 	inherited::Load			(section);
-	fMaxZoomFactor			= pSettings->ReadFLOAT	(section,"max_zoom_factor");
+	fMaxZoomFactor			= pSettings->r_float	(section,"max_zoom_factor");
 }
 
 void CWeaponFN2000::Fire2Start () {

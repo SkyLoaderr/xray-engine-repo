@@ -269,12 +269,12 @@ void CWeapon::Load		(LPCSTR section)
 	m_Offset.setHPB		(ypr.x,ypr.y,ypr.z);
 	m_Offset.translate_over(pos);
 
-	fTimeToFire			= pSettings->ReadFLOAT		(section,"rpm");
+	fTimeToFire			= pSettings->r_float		(section,"rpm");
 	fTimeToFire			= 60 / fTimeToFire;
 
 	LPCSTR	name		= pSettings->r_string		(section,"wm_name");
 	pstrWallmark		= xr_strdup(name);
-	fWallmarkSize		= pSettings->ReadFLOAT		(section,"wm_size");
+	fWallmarkSize		= pSettings->r_float		(section,"wm_size");
 
 	LPCSTR hud_sect		= pSettings->r_string		(section,"hud");
 	m_pHUD->Load		(hud_sect);
@@ -284,37 +284,37 @@ void CWeapon::Load		(LPCSTR section)
 	iAmmoElapsed		= pSettings->r_s32		(section,"ammo_elapsed"		);
 	iMagazineSize		= pSettings->r_s32		(section,"ammo_mag_size"	);
 	
-	fireDistance		= pSettings->ReadFLOAT		(section,"fire_distance"	);
-	fireDispersionBase	= pSettings->ReadFLOAT		(section,"fire_dispersion_base"	);	fireDispersionBase	= deg2rad(fireDispersionBase);
-	fireDispersion		= pSettings->ReadFLOAT		(section,"fire_dispersion"	);		fireDispersion		= deg2rad(fireDispersion);
-	fireDispersion_Inc	= pSettings->ReadFLOAT		(section,"fire_dispersion_add"); 
-	fireDispersion_Dec	= pSettings->ReadFLOAT		(section,"fire_dispersion_relax"); 
+	fireDistance		= pSettings->r_float		(section,"fire_distance"	);
+	fireDispersionBase	= pSettings->r_float		(section,"fire_dispersion_base"	);	fireDispersionBase	= deg2rad(fireDispersionBase);
+	fireDispersion		= pSettings->r_float		(section,"fire_dispersion"	);		fireDispersion		= deg2rad(fireDispersion);
+	fireDispersion_Inc	= pSettings->r_float		(section,"fire_dispersion_add"); 
+	fireDispersion_Dec	= pSettings->r_float		(section,"fire_dispersion_relax"); 
 	fireDispersion_Current	= 0;
 
-	camMaxAngle			= pSettings->ReadFLOAT		(section,"cam_max_angle"	); camMaxAngle = deg2rad(camMaxAngle);
-	camRelaxSpeed		= pSettings->ReadFLOAT		(section,"cam_relax_speed"	); camRelaxSpeed = deg2rad(camRelaxSpeed);
-	camDispersion		= pSettings->ReadFLOAT		(section,"cam_dispersion"	); camDispersion = deg2rad(camDispersion);
+	camMaxAngle			= pSettings->r_float		(section,"cam_max_angle"	); camMaxAngle = deg2rad(camMaxAngle);
+	camRelaxSpeed		= pSettings->r_float		(section,"cam_relax_speed"	); camRelaxSpeed = deg2rad(camRelaxSpeed);
+	camDispersion		= pSettings->r_float		(section,"cam_dispersion"	); camDispersion = deg2rad(camDispersion);
 
-	dispVelFactor		= pSettings->ReadFLOAT		(section,"disp_vel_factor"	);
-	dispJumpFactor		= pSettings->ReadFLOAT		(section,"disp_jump_factor"	);
-	dispCrouchFactor	= pSettings->ReadFLOAT		(section,"disp_crouch_factor");
+	dispVelFactor		= pSettings->r_float		(section,"disp_vel_factor"	);
+	dispJumpFactor		= pSettings->r_float		(section,"disp_jump_factor"	);
+	dispCrouchFactor	= pSettings->r_float		(section,"disp_crouch_factor");
 
 	// tracer
-	tracerHeadSpeed		= pSettings->ReadFLOAT		(section,"tracer_head_speed"	);
-	tracerTrailCoeff	= pSettings->ReadFLOAT		(section,"tracer_trail_scale"	);
-	tracerStartLength	= pSettings->ReadFLOAT		(section,"tracer_start_length"	);
-	tracerWidth			= pSettings->ReadFLOAT		(section,"tracer_width"			);
+	tracerHeadSpeed		= pSettings->r_float		(section,"tracer_head_speed"	);
+	tracerTrailCoeff	= pSettings->r_float		(section,"tracer_trail_scale"	);
+	tracerStartLength	= pSettings->r_float		(section,"tracer_start_length"	);
+	tracerWidth			= pSettings->r_float		(section,"tracer_width"			);
 
 	// light
 	Fvector clr			= pSettings->r_fvector3		(section,"light_color"		);
 	light_base.SetColor	(clr.x,clr.y,clr.z);
-	light_base.SetRange	(pSettings->ReadFLOAT		(section,"light_range"		));
-	light_var_color		= pSettings->ReadFLOAT		(section,"light_var_color"	);
-	light_var_range		= pSettings->ReadFLOAT		(section,"light_var_range"	);
-	light_lifetime		= pSettings->ReadFLOAT		(section,"light_time"		);
+	light_base.SetRange	(pSettings->r_float		(section,"light_range"		));
+	light_var_color		= pSettings->r_float		(section,"light_var_color"	);
+	light_var_range		= pSettings->r_float		(section,"light_var_range"	);
+	light_lifetime		= pSettings->r_float		(section,"light_time"		);
 	light_time			= -1.f;
 	iHitPower			= pSettings->r_s32		(section,"hit_power"		);
-	if(pSettings->line_exist(section,"hit_impulse_scale")) fHitImpulseScale = pSettings->ReadFLOAT(section,"hit_impulse_scale");
+	if(pSettings->line_exist(section,"hit_impulse_scale")) fHitImpulseScale = pSettings->r_float(section,"hit_impulse_scale");
 	else fHitImpulseScale = 1.f;
 
 	vFirePoint			= pSettings->r_fvector3		(section,"fire_point"		);
@@ -322,8 +322,8 @@ void CWeapon::Load		(LPCSTR section)
 
 	// flames
 	iFlameDiv			= pSettings->r_s32		(section,"flame_div"		);
-	fFlameLength		= pSettings->ReadFLOAT		(section,"flame_length"		);
-	fFlameSize			= pSettings->ReadFLOAT		(section,"flame_size"		);
+	fFlameLength		= pSettings->r_float		(section,"flame_length"		);
+	fFlameSize			= pSettings->r_float		(section,"flame_size"		);
 
 	// hands
 	eHandDependence		= EHandDependence(pSettings->r_s32(section,"hand_dependence"));

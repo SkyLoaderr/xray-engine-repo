@@ -25,8 +25,8 @@ void CCustomDetector::Load(LPCSTR section) {
 
 	inherited::Load(section);
 
-	m_radius = pSettings->ReadFLOAT(section,"radius");
-	m_buzzer_radius = pSettings->ReadFLOAT(section,"buzzer_radius");
+	m_radius = pSettings->r_float(section,"radius");
+	m_buzzer_radius = pSettings->r_float(section,"buzzer_radius");
 	CCF_Shape*	shape			= xr_new<CCF_Shape>	(this);
 	cfModel						= shape;
 	Fsphere S;	S.P.set			(0,1.f,0); S.R = m_buzzer_radius;

@@ -136,7 +136,7 @@ void CAI_ALife::Save()
 	CALifeTaskRegistry::Save	(tStream);
 	string256					S;
 	strconcat					(S,SAVE_PATH,SAVE_NAME);
-	tStream.save_to				(S,0);
+	tStream.save_to				(S);
 }
 
 void CAI_ALife::Load()
@@ -154,9 +154,9 @@ void CAI_ALife::Load()
 	shedule_Min					= pSettings->r_s32	("alife","schedule_min");
 	shedule_Max					= pSettings->r_s32	("alife","schedule_max");
 	m_qwMaxProcessTime			= pSettings->r_s32	("alife","procees_time")*CPU::cycles_per_microsec;
-	m_fOnlineDistance			= pSettings->ReadFLOAT	("alife","online_distance");
+	m_fOnlineDistance			= pSettings->r_float	("alife","online_distance");
 	m_dwSwitchDelay				= pSettings->r_s32	("alife","switch_delay");
-	m_fTimeFactor				= pSettings->ReadFLOAT	("alife","time_factor");
+	m_fTimeFactor				= pSettings->r_float	("alife","time_factor");
 
 	string256					caFileName;
 	IReader						*tpStream;

@@ -97,12 +97,12 @@ void CAI_Crow::Load( LPCSTR section )
 	m_Sounds.m_idle.Load		("monsters\\crow\\idle");
 	// play defaut
 	
-	fSpeed						= pSettings->ReadFLOAT	(section,"speed");
-	fASpeed						= pSettings->ReadFLOAT	(section,"angular_speed");
-	fGoalChangeDelta			= pSettings->ReadFLOAT	(section,"goal_change_delta");
-	fMinHeight					= pSettings->ReadFLOAT	(section,"min_height");
+	fSpeed						= pSettings->r_float	(section,"speed");
+	fASpeed						= pSettings->r_float	(section,"angular_speed");
+	fGoalChangeDelta			= pSettings->r_float	(section,"goal_change_delta");
+	fMinHeight					= pSettings->r_float	(section,"min_height");
 	vVarGoal					= pSettings->r_fvector3	(section,"goal_variability");
-	fIdleSoundDelta				= pSettings->ReadFLOAT	(section,"idle_sound_delta");
+	fIdleSoundDelta				= pSettings->r_float	(section,"idle_sound_delta");
 	fIdleSoundTime				= fIdleSoundDelta+fIdleSoundDelta*Random.randF(-.5f,.5f);
 
 	Movement.SetParent			(this);

@@ -86,9 +86,9 @@ void CCustomMonster::Load		(LPCSTR section)
 	Movement.SetFoots	(vFOOT_center,vFOOT_size);
 
 	// Movement: Crash speed and mass
-	float	cs_min		= pSettings->ReadFLOAT	(section,"ph_crash_speed_min"	);
-	float	cs_max		= pSettings->ReadFLOAT	(section,"ph_crash_speed_max"	);
-	float	mass		= pSettings->ReadFLOAT	(section,"ph_mass"				);
+	float	cs_min		= pSettings->r_float	(section,"ph_crash_speed_min"	);
+	float	cs_max		= pSettings->r_float	(section,"ph_crash_speed_max"	);
+	float	mass		= pSettings->r_float	(section,"ph_mass"				);
 	Movement.SetCrashSpeeds	(cs_min,cs_max);
 	Movement.SetMass		(mass);
 	
@@ -96,9 +96,9 @@ void CCustomMonster::Load		(LPCSTR section)
 	// Movement: Frictions
 	/*
 	float af, gf, wf;
-	af					= pSettings->ReadFLOAT	(section,"ph_friction_air"	);
-	gf					= pSettings->ReadFLOAT	(section,"ph_friction_ground");
-	wf					= pSettings->ReadFLOAT	(section,"ph_friction_wall"	);
+	af					= pSettings->r_float	(section,"ph_friction_air"	);
+	gf					= pSettings->r_float	(section,"ph_friction_ground");
+	wf					= pSettings->r_float	(section,"ph_friction_wall"	);
 	Movement.SetFriction	(af,wf,gf);
 
 	// BOX activate

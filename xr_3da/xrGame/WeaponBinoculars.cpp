@@ -37,7 +37,7 @@ void CWeaponBinoculars::Load	(LPCSTR section)
 	ypr					= pSettings->r_fvector3(section,"orientation");
 	ypr.mul				(PI/180.f);
 
-	fMaxZoomFactor		= pSettings->ReadFLOAT	(section,"max_zoom_factor");
+	fMaxZoomFactor		= pSettings->r_float	(section,"max_zoom_factor");
 
 	m_Offset.setHPB		(ypr.x,ypr.y,ypr.z);
 	m_Offset.translate_over(pos);
@@ -47,13 +47,13 @@ void CWeaponBinoculars::Load	(LPCSTR section)
 	LPCSTR hud_sect		= pSettings->r_string	(section,"hud");
 	m_pHUD->Load		(hud_sect);
 
-	camMaxAngle			= pSettings->ReadFLOAT	(section,"cam_max_angle"	); camMaxAngle = deg2rad(camMaxAngle);
-	camRelaxSpeed		= pSettings->ReadFLOAT	(section,"cam_relax_speed"	); camRelaxSpeed = deg2rad(camRelaxSpeed);
-	camDispersion		= pSettings->ReadFLOAT	(section,"cam_dispersion"	); camDispersion = deg2rad(camDispersion);
+	camMaxAngle			= pSettings->r_float	(section,"cam_max_angle"	); camMaxAngle = deg2rad(camMaxAngle);
+	camRelaxSpeed		= pSettings->r_float	(section,"cam_relax_speed"	); camRelaxSpeed = deg2rad(camRelaxSpeed);
+	camDispersion		= pSettings->r_float	(section,"cam_dispersion"	); camDispersion = deg2rad(camDispersion);
 
-	dispVelFactor		= pSettings->ReadFLOAT	(section,"disp_vel_factor"	);
-	dispJumpFactor		= pSettings->ReadFLOAT	(section,"disp_jump_factor"	);
-	dispCrouchFactor	= pSettings->ReadFLOAT	(section,"disp_crouch_factor");
+	dispVelFactor		= pSettings->r_float	(section,"disp_vel_factor"	);
+	dispJumpFactor		= pSettings->r_float	(section,"disp_jump_factor"	);
+	dispCrouchFactor	= pSettings->r_float	(section,"disp_crouch_factor");
 	eHandDependence		= CWeapon::EHandDependence(pSettings->r_s32(section,"hand_dependence"));
 
 	// slot

@@ -144,9 +144,9 @@ void CActor::Load		(LPCSTR section )
 	ph_Movement.SetFoots	(vFOOT_center,vFOOT_size);
 
 	// Movement: Crash speed and mass
-	float	cs_min		= pSettings->ReadFLOAT	(section,"ph_crash_speed_min"	);
-	float	cs_max		= pSettings->ReadFLOAT	(section,"ph_crash_speed_max"	);
-	float	mass		= pSettings->ReadFLOAT	(section,"ph_mass"				);
+	float	cs_min		= pSettings->r_float	(section,"ph_crash_speed_min"	);
+	float	cs_max		= pSettings->r_float	(section,"ph_crash_speed_max"	);
+	float	mass		= pSettings->r_float	(section,"ph_mass"				);
 	ph_Movement.SetCrashSpeeds	(cs_min,cs_max);
 	ph_Movement.SetMass		(mass);
 
@@ -154,9 +154,9 @@ void CActor::Load		(LPCSTR section )
 	// Movement: Frictions
 	
 	float af, gf, wf;
-	af					= pSettings->ReadFLOAT	(section,"ph_friction_air"	);
-	gf					= pSettings->ReadFLOAT	(section,"ph_friction_ground");
-	wf					= pSettings->ReadFLOAT	(section,"ph_friction_wall"	);
+	af					= pSettings->r_float	(section,"ph_friction_air"	);
+	gf					= pSettings->r_float	(section,"ph_friction_ground");
+	wf					= pSettings->r_float	(section,"ph_friction_wall"	);
 	ph_Movement.SetFriction	(af,wf,gf);
 
 	// BOX activate
@@ -168,19 +168,19 @@ void CActor::Load		(LPCSTR section )
 	ph_Movement.Load(section);
 	ph_Movement.SetParent(this);
 
-	m_fWalkAccel		= pSettings->ReadFLOAT(section,"walk_accel");	
-	m_fJumpSpeed		= pSettings->ReadFLOAT(section,"jump_speed");
-	m_fRunFactor		= pSettings->ReadFLOAT(section,"run_coef");
-	m_fCrouchFactor		= pSettings->ReadFLOAT(section,"crouch_coef");
-	skel_density_factor = pSettings->ReadFLOAT(section,"ph_skeleton_mass_factor");
-	skel_airr_lin_factor=pSettings->ReadFLOAT(section,"ph_skeleton_airr_lin_factor");
-	skel_airr_ang_factor=pSettings->ReadFLOAT(section,"ph_skeleton_airr_ang_factor");
-	hinge_force_factor  =pSettings->ReadFLOAT(section,"ph_skeleton_hinger_factor");
-	hinge_force_factor1 =pSettings->ReadFLOAT(section,"ph_skeleton_hinger_factor1");
+	m_fWalkAccel		= pSettings->r_float(section,"walk_accel");	
+	m_fJumpSpeed		= pSettings->r_float(section,"jump_speed");
+	m_fRunFactor		= pSettings->r_float(section,"run_coef");
+	m_fCrouchFactor		= pSettings->r_float(section,"crouch_coef");
+	skel_density_factor = pSettings->r_float(section,"ph_skeleton_mass_factor");
+	skel_airr_lin_factor=pSettings->r_float(section,"ph_skeleton_airr_lin_factor");
+	skel_airr_ang_factor=pSettings->r_float(section,"ph_skeleton_airr_ang_factor");
+	hinge_force_factor  =pSettings->r_float(section,"ph_skeleton_hinger_factor");
+	hinge_force_factor1 =pSettings->r_float(section,"ph_skeleton_hinger_factor1");
 	skel_ddelay			=pSettings->r_s32(section,"ph_skeleton_ddelay");
-	hinge_force_factor2 =pSettings->ReadFLOAT(section,"ph_skeleton_hinger_factor2");
-	hinge_vel			=pSettings->ReadFLOAT(section,"ph_skeleton_hinge_vel");
-	skel_fatal_impulse_factor=pSettings->ReadFLOAT(section,"ph_skel_fatal_impulse_factor");
+	hinge_force_factor2 =pSettings->r_float(section,"ph_skeleton_hinger_factor2");
+	hinge_vel			=pSettings->r_float(section,"ph_skeleton_hinge_vel");
+	skel_fatal_impulse_factor=pSettings->r_float(section,"ph_skel_fatal_impulse_factor");
 	ph_Movement.SetJumpUpVelocity(m_fJumpSpeed);
 
 	Weapons				= xr_new<CWeaponList> (this);

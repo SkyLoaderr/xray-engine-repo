@@ -97,46 +97,46 @@ void CAI_Rat::Load(LPCSTR section)
 	vfLoadSounds();
 	
 	// sounds
-	m_fMinVoiceIinterval			= pSettings->ReadFLOAT (section,"MinVoiceInterval");
-	m_fMaxVoiceIinterval			= pSettings->ReadFLOAT (section,"MaxVoiceInterval");
-	m_fVoiceRefreshRate				= pSettings->ReadFLOAT (section,"VoiceRefreshRate");
+	m_fMinVoiceIinterval			= pSettings->r_float (section,"MinVoiceInterval");
+	m_fMaxVoiceIinterval			= pSettings->r_float (section,"MaxVoiceInterval");
+	m_fVoiceRefreshRate				= pSettings->r_float (section,"VoiceRefreshRate");
 	
 	// active\passive
-	m_fChangeActiveStateProbability = pSettings->ReadFLOAT (section,"ChangeActiveStateProbability");
+	m_fChangeActiveStateProbability = pSettings->r_float (section,"ChangeActiveStateProbability");
 	m_dwPassiveScheduleMin			= pSettings->r_s32   (section,"PassiveScheduleMin");
 	m_dwPassiveScheduleMax			= pSettings->r_s32   (section,"PassiveScheduleMax");
 	m_dwActiveCountPercent			= pSettings->r_s32   (section,"ActiveCountPercent");
 	m_dwStandingCountPercent		= pSettings->r_s32   (section,"StandingCountPercent");
 
 	// eye shift
-	m_tEyeShift.y					= pSettings->ReadFLOAT (section,"EyeYShift");
+	m_tEyeShift.y					= pSettings->r_float (section,"EyeYShift");
 
 	// former constants
 	m_dwLostMemoryTime				= pSettings->r_s32   (section,"LostMemoryTime");
 	m_dwLostRecoilTime				= pSettings->r_s32   (section,"LostRecoilTime");
-	m_fUnderFireDistance			= pSettings->ReadFLOAT (section,"UnderFireDistance");
+	m_fUnderFireDistance			= pSettings->r_float (section,"UnderFireDistance");
 	m_dwRetreatTime					= pSettings->r_s32   (section,"RetreatTime");
-	m_fRetreatDistance				= pSettings->ReadFLOAT (section,"RetreatDistance");
-	m_fAttackStraightDistance		= pSettings->ReadFLOAT (section,"AttackStraightDistance");
-	m_fStableDistance				= pSettings->ReadFLOAT (section,"StableDistance");
-	m_fWallMinTurnValue				= pSettings->ReadFLOAT (section,"WallMinTurnValue")/180.f*PI;
-	m_fWallMaxTurnValue				= pSettings->ReadFLOAT (section,"WallMaxTurnValue")/180.f*PI;
+	m_fRetreatDistance				= pSettings->r_float (section,"RetreatDistance");
+	m_fAttackStraightDistance		= pSettings->r_float (section,"AttackStraightDistance");
+	m_fStableDistance				= pSettings->r_float (section,"StableDistance");
+	m_fWallMinTurnValue				= pSettings->r_float (section,"WallMinTurnValue")/180.f*PI;
+	m_fWallMaxTurnValue				= pSettings->r_float (section,"WallMaxTurnValue")/180.f*PI;
 
-	m_fAngleSpeed					= pSettings->ReadFLOAT (section,"AngleSpeed");
-	m_fSafeGoalChangeDelta	 		= pSettings->ReadFLOAT (section,"GoalChangeDelta");
+	m_fAngleSpeed					= pSettings->r_float (section,"AngleSpeed");
+	m_fSafeGoalChangeDelta	 		= pSettings->r_float (section,"GoalChangeDelta");
 	m_tGoalVariation	  			= pSettings->r_fvector3(section,"GoalVariation");
 
-	m_fMoraleDeathDistance	 		= pSettings->ReadFLOAT (section,"MoraleDeathDistance");
+	m_fMoraleDeathDistance	 		= pSettings->r_float (section,"MoraleDeathDistance");
 	m_dwActionRefreshRate	 		= pSettings->r_s32   (section,"ActionRefreshRate");
 
-	m_fMaxHealthValue	 			= pSettings->ReadFLOAT (section,"MaxHealthValue");
-	m_fSoundThreshold				= pSettings->ReadFLOAT (section,"SoundThreshold");
+	m_fMaxHealthValue	 			= pSettings->r_float (section,"MaxHealthValue");
+	m_fSoundThreshold				= pSettings->r_float (section,"SoundThreshold");
 
 	m_bEatMemberCorpses				= pSettings->r_bool  (section,"EatMemberCorpses");
 	m_bCannibalism					= pSettings->r_bool  (section,"Cannibalism");
 	m_dwEatCorpseInterval			= pSettings->r_s32   (section,"EatCorpseInterval");
 
-	m_phMass						= pSettings->ReadFLOAT (section,"corp_mass");
+	m_phMass						= pSettings->r_float (section,"corp_mass");
 	m_dwActiveScheduleMin			= shedule_Min;
 	m_dwActiveScheduleMax			= shedule_Max;
 
@@ -154,7 +154,7 @@ void CAI_Rat::Load(LPCSTR section)
 		tTerrainPlace.dwMaxTime		= atoi(_GetItem(S,i++,I))*1000;
 		m_tpaTerrain.push_back(tTerrainPlace);
 	}
-	m_fGoingSpeed					= pSettings->ReadFLOAT	(section, "going_speed");
+	m_fGoingSpeed					= pSettings->r_float	(section, "going_speed");
 }
 
 BOOL CAI_Rat::net_Spawn	(LPVOID DC)

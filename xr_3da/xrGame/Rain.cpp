@@ -27,7 +27,7 @@ CEffect_Rain::CEffect_Rain()
 	control_start		= Engine.Event.Handler_Attach	("level.weather.rain.start",this);
 	control_stop		= Engine.Event.Handler_Attach	("level.weather.rain.stop",this);
 	
-	Sound->Create		(snd_Ambient,TRUE,"amb_rain");
+	Sound->create		(snd_Ambient,TRUE,"amb_rain");
 	snd_Ambient_volume	= 0;
 
 	Device.seqDevCreate.Add	(this);
@@ -41,7 +41,7 @@ CEffect_Rain::~CEffect_Rain()
 	Engine.Event.Handler_Detach		(control_stop,this);
 	Engine.Event.Handler_Detach		(control_start,this);
 
-	Sound->Delete					(snd_Ambient);
+	Sound->destroy					(snd_Ambient);
 
 	Device.seqDevCreate.Remove	(this);
 	Device.seqDevDestroy.Remove	(this);
@@ -83,8 +83,8 @@ void	CEffect_Rain::OnEvent	(EVENT E, u32 P1, u32 P2)
 {
 	if ((E==control_start) && (state!=stWorking))	{
 		state				= stStarting;
-		Sound->Play			(snd_Ambient,0,TRUE);
-		snd_Ambient.feedback->SetVolume	(snd_Ambient_volume);
+		Sound->play			(snd_Ambient,0,TRUE);
+		snd_Ambient.feedback->set_volume	(snd_Ambient_volume);
 	} else if ((E==control_stop) && (state!=stIdle))	{
 		state				= stStopping;
 	}
@@ -227,7 +227,7 @@ void	CEffect_Rain::Render	()
 	case stIdle:		return;
 	case stStarting:	
 		snd_Ambient_volume	+= snd_fade*Device.fTimeDelta;
-		snd_Ambient.feedback->SetVolume		(snd_Ambient_volume);
+		snd_Ambient.feedback->set_volume		(snd_Ambient_volume);
 		sndP.mad							(Device.vCameraPosition,Device.vCameraDirection,.1f);
 		snd_Ambient.feedback->SetPosition	(sndP);
 		if (snd_Ambient_volume > 1)	state=stWorking;
@@ -238,7 +238,7 @@ void	CEffect_Rain::Render	()
 		break;
 	case stStopping:
 		snd_Ambient_volume	-= snd_fade*Device.fTimeDelta;
-		snd_Ambient.feedback->SetVolume	(snd_Ambient_volume);
+		snd_Ambient.feedback->set_volume	(snd_Ambient_volume);
 		if (snd_Ambient_volume < 0)	{
 			snd_Ambient.feedback->Stop	();
 			state=stIdle;
