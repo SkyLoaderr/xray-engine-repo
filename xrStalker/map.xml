@@ -1,4 +1,4 @@
-﻿<?xml version='1.0' encoding="UTF-8"?>
+<?xml version='1.0' encoding="UTF-8"?>
 <!-- Minimap  -->	
 <window x="0" y="0" w="700" h="480" r="227" g="121" b="222" texture="1">
 
@@ -7,9 +7,12 @@
 		<base_texture>ui\ui_pda_frame</base_texture>
 	</frame_window>
 	<!-- PDA STATIC HEADER -->
-	<static x="0" y="0" width="940" height="128">
-		<texture>ui\ui_pda_frame_top</texture>
-	</static>
+    <map_header_frame_line x="8" y="17" width="434" height="21">
+        <title x="10" y="1" width="435" height="18">
+            <text font="letterica16" r="255" g="255" b="255"></text>
+        </title>
+        <base_texture>ui\ui_string_03</base_texture>
+    </map_header_frame_line>
 
 
 	<!--        --> 
