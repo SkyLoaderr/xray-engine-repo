@@ -4,17 +4,17 @@
 #include "xrSyncronize.h"
 
 #define	GI_THREADS		4
-const	u32				gi_num_photons		= 256;
+const	u32				gi_num_photons		= 512;
 const	float			gi_optimal_range	= 15.f;
-const	float			gi_reflect			= .8f;
-const	float			gi_clip				= 0.1f;
+const	float			gi_reflect			= .9f;
+const	float			gi_clip				= 0.05f;
 //////////////////////////////////////////////////////////////////////////
 xr_vector<R_Light>*		task;
 xrCriticalSection		task_cs;
 u32						task_it;
 
 //////////////////////////////////////////////////////////////////////////
-Fvector		GetPixel_5x5		(CDB::RESULT& rpinf)
+Fvector		GetPixel_7x7		(CDB::RESULT& rpinf)
 {
 	Fvector B,P,R={0,0,0};
 
@@ -40,9 +40,9 @@ Fvector		GetPixel_5x5		(CDB::RESULT& rpinf)
 	uv.x = cuv[0].x*B.x + cuv[1].x*B.y + cuv[2].x*B.z;
 	uv.y = cuv[0].y*B.x + cuv[1].y*B.y + cuv[2].y*B.z;
 
-	for (int _y=-2; _y<=2; _y++)	
+	for (int _y=-3; _y<=3; _y++)	
 	{
-		for (int _x=-2; _x<=2; _x++)	
+		for (int _x=-3; _x<=3; _x++)	
 		{
 			int U = iFloor(uv.x*float(T.dwWidth) + .5f) + _x;
 			int V = iFloor(uv.y*float(T.dwHeight)+ .5f) + _y;
@@ -53,7 +53,7 @@ Fvector		GetPixel_5x5		(CDB::RESULT& rpinf)
 			R.mad(P,1/255.f);
 		}
 	}
-	R.div	(25.f);
+	R.div	(49.f);
 	//R.add	(1.f);	// make it appear more like white material
 	//R.div	(2.f);
 	return	R;
@@ -97,11 +97,11 @@ public:
 			// analyze
 			CRandom				random;
 			random.seed			(0x12071980);
-			float	factor		= _sqrt(src.range / gi_optimal_range);	// smaller lights get smaller amount of photons
-			if (LT_SECONDARY == src.type)	factor *= .5f;				// secondary lights get half the photons
-					factor		*= _sqrt(src.energy / 2.f);				// 3.f is optimal energy = baseline
+			float	factor		= _sqrt(src.range / gi_optimal_range);		// smaller lights get smaller amount of photons
+			if (LT_SECONDARY == src.type)	factor *= (1 / (dst.level+1));	// secondary lights get half the photons
+					factor		*= _sqrt(src.energy / 2.f);					// 2.f is optimal energy = baseline
 			int		count		= iCeil( factor * float(gi_num_photons) );
-			float	_clip		= (src.energy/10.f + gi_clip)/2.f;
+			float	_clip		= (_sqrt(src.energy)/10.f + gi_clip)/2.f;
 			for (int it=0; it<count; it++)	{
 				Fvector	dir,idir;		float	s=1.f;
 				switch	(src.type)		{
@@ -121,12 +121,13 @@ public:
 				float		dot		= TN.dotproduct	(idir.invert(dir));
 
 				dst.position.mad		(src.position,dir,R->range);
+				dst.position.mad		(TN,0.01f);		// 1cm away from surface
 				dst.direction.reflect	(dir,TN);
 				dst.energy				= src.energy * dot * gi_reflect * (1-R->range/src.range);
 				if (dst.energy < _clip)	continue;
 
 				// color bleeding
-				dst.diffuse.mul			(src.diffuse,GetPixel_5x5(*R));
+				dst.diffuse.mul			(src.diffuse,GetPixel_7x7(*R));
 				dst.diffuse.mul			(dst.energy);
 				{
 					float			_e		=	(dst.diffuse.x+dst.diffuse.y+dst.diffuse.z)/3.f;
@@ -142,7 +143,7 @@ public:
 				float	_r1			= src.range * _sqrt(dst.energy / src.energy);
 				float	_r2			= (dst.energy - _clip)/_clip;
 				float	_r3			= src.range;
-				dst.range			= (1.f*_r1 + 3.f*_r2 + 3.f*_r3)/7.f;
+				dst.range			= 1.5f * ( (1.f*_r1 + 3.f*_r2 + 3.f*_r3)/7.f );	// empirical
 				// clMsg			("submit: level[%d],type[%d], energy[%f]",dst.level,dst.type,dst.energy);
 
 				// submit answer
@@ -174,6 +175,7 @@ void	CBuild::xrPhase_Radiosity	()
 		gi.start(xr_new<CGI>(t));
 	}
 	gi.wait					();
+	u32 setup_new			= task->size	();
 
 	// renormalize
 	float	_energy_after	= 0;
@@ -181,9 +183,12 @@ void	CBuild::xrPhase_Radiosity	()
 	{
 		R_Light&	L = (*task)[l];
 		//clMsg		("type[%d], energy[%f]",L.type,L.energy);
-		if (LT_SECONDARY == L.type)	_energy_after	+= L.energy;
+		if (LT_SECONDARY == L.type)	{
+			if (L.energy > gi_clip/4)	_energy_after	+= L.energy;
+			else						{ task->erase	(task->begin()+l); l--; }
+		}
 	}
-	float	_scale			= 2.f*_energy_before / _energy_after;
+	float	_scale			= _energy_before / _energy_after;
 	for (int l=0; l<task->size(); l++)
 	{
 		R_Light&	L = (*task)[l];
@@ -191,7 +196,6 @@ void	CBuild::xrPhase_Radiosity	()
 	}
 
 	// info
-	u32 setup_new			= task->size	();
 	clMsg					("old setup [%d], new setup[%d]",setup_old,setup_new);
 	clMsg					("old energy [%f], new energy[%f]",_energy_before,_energy_after);
 }
