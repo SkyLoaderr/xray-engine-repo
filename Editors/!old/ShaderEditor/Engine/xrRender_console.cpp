@@ -116,7 +116,8 @@ void		xrRender_initconsole	()
 {
 	// Common
 //	CMD4(CCC_Integer,	"r__supersample",		&ps_r__Supersample,			1,		4		);
-	CMD2(CCC_Aniso,		"r__aniso_tf",			&ps_r__Anisotropic);
+	CMD2(CCC_tf_Aniso,	"r__tf_aniso",			&ps_r__tf_Anisotropic		);
+	CMD2(CCC_tf_MipBias,"r__tf_mipbias",		&ps_r__tf_Mipbias			);
 	CMD4(CCC_Integer,	"r__lsleep_frames",		&ps_r__LightSleepFrames,	4,		30		);
 
 	Fvector	tw_min,tw_max;
