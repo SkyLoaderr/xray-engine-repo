@@ -95,7 +95,7 @@ public:
 public:
 	u32						dwReference;
 	SFlags					Flags;
-	svector<SPass*,8>		Passes;
+	svector<SPass*,4>		Passes;
 
 	BOOL					equal	(ShaderElement& S);
 	BOOL					equal	(ShaderElement* S);
