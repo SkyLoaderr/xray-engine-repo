@@ -144,34 +144,36 @@ void CSE_ALifeSimulator::vfUpdateHuman(CSE_ALifeHumanAbstract *tpALifeHumanAbstr
 {
 	R_ASSERT3			(tpALifeHumanAbstract->fHealth > 0,"Can't update death object ",tpALifeHumanAbstract->s_name_replace);
 	R_ASSERT3			(!tpALifeHumanAbstract->m_bOnline,"Can't update online object ",tpALifeHumanAbstract->s_name_replace);
-	bool				bOk;
+	//bool				bOk;
 	do {
-		switch (tpALifeHumanAbstract->m_tTaskState) {
-			case eTaskStateChooseTask : {
-				vfChooseTask(tpALifeHumanAbstract);
-				break;
-			}
-			case eTaskStateAccomplishing : {
-				if ((tpALifeHumanAbstract->m_dwCurNode + 1 >= (tpALifeHumanAbstract->m_tpaVertices.size())) && (tpALifeHumanAbstract->m_tGraphID == tpALifeHumanAbstract->m_tNextGraphID))
-					vfAccomplishTask(tpALifeHumanAbstract);
-				break;
-			}
-			case eTaskStateGoToCustomer : {
-				if ((tpALifeHumanAbstract->m_dwCurNode >= (tpALifeHumanAbstract->m_tpaVertices.size() - 1)) && (tpALifeHumanAbstract->m_tGraphID == tpALifeHumanAbstract->m_tNextGraphID))
-					vfGoToCustomer(tpALifeHumanAbstract);
-				break;
-			}
-			case eTaskStateSearching : {
-				vfSearchObject(tpALifeHumanAbstract);
-				break;
-			}
-			default				: NODEFAULT;
-		}
+//		switch (tpALifeHumanAbstract->m_tTaskState) {
+//			case eTaskStateChooseTask : {
+//				vfChooseTask(tpALifeHumanAbstract);
+//				break;
+//			}
+//			case eTaskStateAccomplishing : {
+//				if ((tpALifeHumanAbstract->m_dwCurNode + 1 >= (tpALifeHumanAbstract->m_tpaVertices.size())) && (tpALifeHumanAbstract->m_tGraphID == tpALifeHumanAbstract->m_tNextGraphID))
+//					vfAccomplishTask(tpALifeHumanAbstract);
+//				break;
+//			}
+//			case eTaskStateGoToCustomer : {
+//				if ((tpALifeHumanAbstract->m_dwCurNode >= (tpALifeHumanAbstract->m_tpaVertices.size() - 1)) && (tpALifeHumanAbstract->m_tGraphID == tpALifeHumanAbstract->m_tNextGraphID))
+//					vfGoToCustomer(tpALifeHumanAbstract);
+//				break;
+//			}
+//			case eTaskStateSearching : {
+//				vfSearchObject(tpALifeHumanAbstract);
+//				break;
+//			}
+//			default				: NODEFAULT;
+//		}
 
-		bOk						= bfChooseNextRoutePoint(tpALifeHumanAbstract);
+//		bOk						= bfChooseNextRoutePoint(tpALifeHumanAbstract);
+		vfChooseNextRoutePoint	(tpALifeHumanAbstract);
 		vfCheckForTheBattle		(tpALifeHumanAbstract);
 		bfCheckForItems			(tpALifeHumanAbstract);
 //		vfCheckForDeletedEvents	(tpALifeHumanAbstract);
 	}
-	while (bOk);
+//	while (bOk);
+	while (false);
 }

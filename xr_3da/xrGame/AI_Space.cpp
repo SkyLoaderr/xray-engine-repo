@@ -429,27 +429,14 @@ int	CAI_Space::q_LoadSearch(const Fvector& pos)
 		}
 	}
 	if (selected == u32(-1)) {
-		min_dist	= 32767;
+		float		min_dist = 32767.f;
 		selected	= -1;
 		for (u32 I=0; I<m_header.count; I++) {
-			if (I == 35) {
-				I = I;
-			}
-			NodeCompressed& N = *m_nodes_ptr[I];
-			if (u_InsideNode(N,P)) {
-				Fvector	DUP, vNorm, v, v1, P0;
-				DUP.set(0,1,0);
-				pvDecompress(vNorm,N.plane);
-				Fplane PL; 
-				UnpackPosition(P0,N.p0);
-				PL.build(P0,vNorm);
-				v.set(pos.x,P0.y,pos.z);	
-				PL.intersectRayPoint(v,DUP,v1);
-				int dist = iFloor((v1.y - pos.y)*(v1.y - pos.y));
-				if (dist < min_dist) {
-					min_dist = (short)dist;
-					selected = I;
-				}
+			NodeCompressed	*N = m_nodes_ptr[I];
+			float			f = u_SqrDistance2Node(pos,N);d
+			if (f < min_dist) {
+				min_dist = f;
+				selected = I;
 			}
 		}
 	}

@@ -79,7 +79,7 @@ public:
 		TASK_PAIR_IT				I = m_tTaskRegistry.find(tTaskID);
 
 		if (!bNoAssert)
-			R_ASSERT2				(I != m_tTaskRegistry.end(),"Specified event hasn't been found in the Task registry!");
+			R_ASSERT2				(I != m_tTaskRegistry.end(),"Specified task hasn't been found in the Task registry!");
 		else
 			if (I == m_tTaskRegistry.end())
 				return				(0);
