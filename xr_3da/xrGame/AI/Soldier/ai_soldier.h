@@ -21,32 +21,46 @@ class CAI_Soldier : public CCustomMonster
 	};
 
 	enum ESoldierStates 	{
-		aiSoldierDie = 0,
-		aiSoldierUnderFire,
-		aiSoldierSenseSomething,
+		aiSoldierAttack = 0,
+		aiSoldierDie,
+		aiSoldierDefend,
 		aiSoldierFreeHunting,
-		aiSoldierFollowMe,
-		aiSoldierAttack,
+		aiSoldierHurt,
+		aiSoldierJumping,
+		aiSoldierMoreDeadThanAlive,
 		aiSoldierPursuit,
-		aiSoldierWeaponReload,
+		aiSoldierReload,
+		aiSoldierRetreat,
+		aiSoldierSenseSomething,
+		aiSoldierUnderFire,
 	};
 	
 	typedef	CCustomMonster inherited;
 
 	protected:
+		
 		// media
 		sound3D			sndHit[SND_HIT_COUNT];
 		sound3D			sndDie[SND_DIE_COUNT];
+		CMotionDef* 	m_tpaDeathAnimations[2];
+		
 		// ai
 		ESoldierStates	eCurrentState;
 		bool			bStopThinking;
+		
 		// hit data
 		DWORD			dwHitTime;
 		Fvector			tHitDir;
+		
 		// sense data
 		DWORD			dwSenseTime;
 		Fvector			tSenseDir;
+
+		// visual data
+		objSET			tpaVisibleObjects;
+		
 		// saved enemy
+		SEnemySelected	Enemy;
 		CEntity*		tSavedEnemy;
 		Fvector			tSavedEnemyPosition;
 		DWORD			dwLostEnemyTime;
@@ -54,27 +68,13 @@ class CAI_Soldier : public CCustomMonster
 		DWORD			dwSavedEnemyNodeID;
 		bool			bBuildPathToLostEnemy;
 		
-		CMotionDef* 	m_tpaDeathAnimations[2];
-		
+		// performance data
 		DWORD			m_dwLastRangeSearch;
 		DWORD			m_dwLastSuccessfullSearch;
 		
-		SEnemySelected	Enemy;
-		objSET			tpaVisibleObjects;
-
 		// finite state machine
 		stack<ESoldierStates>	tStateStack;
-		void Die();
-		void UnderFire();
-		void SenseSomething();
-		void FreeHunting();
-		void FollowMe();
-		void Attack();
-		void Pursuit();
-		void WeaponReload();
-		IC bool bfCheckForMember(Fvector &tFireVector, Fvector &tMyPoint, Fvector &tMemberPoint);
-		bool bfCheckPath(AI::Path &Path);
-	
+		
 		CSoldierSelectorAttack			SelectorAttack;
 		CSoldierSelectorFindEnemy		SelectorFindEnemy;
 		CSoldierSelectorFreeHunting		SelectorFreeHunting;
@@ -83,6 +83,18 @@ class CAI_Soldier : public CCustomMonster
 		CSoldierSelectorUnderFire		SelectorUnderFire;
 		CSoldierSelectorWeaponReload	SelectorWeaponReload;
 
+		void Die();
+		void UnderFire();
+		void SenseSomething();
+		void FreeHunting();
+		void FollowMe();
+		void Attack();
+		void Pursuit();
+		void WeaponReload();
+
+		// miscellanious funtions	
+	IC	bool bfCheckForMember(Fvector &tFireVector, Fvector &tMyPoint, Fvector &tMemberPoint);
+		bool bfCheckPath(AI::Path &Path);
 		void SetLessCoverLook(NodeCompressed *tNode);
 		void SetSmartLook(NodeCompressed *tNode, Fvector &tEnemyDirection);
 		void vfInitSelector(CAISelectorBase &S, CSquad &Squad, CEntity* &Leader);

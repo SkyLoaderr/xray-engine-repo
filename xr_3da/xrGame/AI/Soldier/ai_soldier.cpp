@@ -690,6 +690,13 @@ void CAI_Soldier::WeaponReload()
 		return;
 	}
 
+	if (Weapons->ActiveWeapon()->GetAmmoElapsed() == Weapons->ActiveWeapon()->GetAmmoMagSize()) {
+		eCurrentState = tStateStack.top();
+		tStateStack.pop();
+		m_dwLastRangeSearch = 0;
+		return;
+	}
+	
 	SelectEnemy(Enemy);
 
 	if (!Enemy.Enemy) {
@@ -721,7 +728,10 @@ void CAI_Soldier::WeaponReload()
 
 	vfSetFire(false,SelectorWeaponReload,Leader);
 
-	vfSetMovementType(true,m_fMinSpeed);
+	//if (AI_Path.TravelPath.size() <= AI_Path.TravelStart)
+		vfSetMovementType(false,m_fMaxSpeed);
+	//else
+	//	vfSetMovementType(true,m_fMinSpeed);
 	// stop processing more rules
 	bStopThinking = true;
 }
@@ -1030,36 +1040,52 @@ void CAI_Soldier::Think()
 	bStopThinking = false;
 	do {
 		switch(eCurrentState) {
-			case aiSoldierDie : {
-				Die();
-				break;
-			}
-			case aiSoldierUnderFire : {
-				UnderFire();
-				break;
-			}
-			case aiSoldierSenseSomething : {
-				SenseSomething();
-				break;
-			}
-			case aiSoldierFreeHunting : {
-				FreeHunting();
-				break;
-			}
-			case aiSoldierFollowMe : {
-				FollowMe();
-				break;
-			}
-			case aiSoldierAttack : {
+			case aiSoldierAttack {
 				Attack();
 				break;
 			}
-			case aiSoldierPursuit : {
+			case aiSoldierDie {
+				Die();
+				break;
+			}
+			case aiSoldierDefend {
+				Defend();
+				break;
+			}
+			case aiSoldierFreeHunting {
+				FreeHunting();
+				break;
+			}
+			case aiSoldierHurt {
+				Hurt();
+				break;
+			}
+			case aiSoldierJumping {
+				Jumping();
+				break;
+			}
+			case aiSoldierMoreDeadThanAlive {
+				MoreDeadThanAlive();
+				break;
+			}
+			case aiSoldierPursuit {
 				Pursuit();
 				break;
 			}
-			case aiSoldierWeaponReload : {
-				WeaponReload();
+			case aiSoldierReload {
+				Reload();
+				break;
+			}
+			case aiSoldierRetreat {
+				Retreat();
+				break;
+			}
+			case aiSoldierSenseSomething {
+				SenseSomething();
+				break;
+			}
+			case aiSoldierUnderFire {
+				UnderFire();
 				break;
 			}
 		}
