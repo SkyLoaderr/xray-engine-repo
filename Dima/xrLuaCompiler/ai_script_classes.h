@@ -282,6 +282,7 @@ public:
 	
 	//передача порции информации InventoryOwner
 	bool GiveInfoPortion(INFO_ID info_index);
+	bool DisableInfoPortion(INFO_ID info_index);
 	bool GiveInfoPortionViaPda(INFO_ID info_index, CLuaGameObject* pFromWho);
 	bool SendPdaMessage(EPdaMsg pda_msg, CLuaGameObject* pForWho);
 	

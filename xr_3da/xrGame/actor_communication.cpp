@@ -43,10 +43,14 @@ void CActor::OnReceiveInfo(INFO_ID info_index)
 }
 
 
-void CActor::DisableInfo(INFO_ID info_index)
+void CActor::OnDisableInfo(INFO_ID info_index)
 {
+	//только если находимся в режиме single
+	CUIGameSP* pGameSP = dynamic_cast<CUIGameSP*>(HUD().GetUI()->UIGame());
+	if(pGameSP && pGameSP->TalkMenu.IsShown()) pGameSP->TalkMenu.UpdateQuestions();
+
 	Level().RemoveMapLocationByInfo(info_index);
-	CInventoryOwner::DisableInfo(info_index);
+	CInventoryOwner::OnDisableInfo(info_index);
 }
 
 
@@ -74,16 +78,15 @@ void CActor::ReceivePdaMessage(u16 who, EPdaMsg msg, INFO_ID info_index)
 
 void  CActor::ReceivePhrase		(DIALOG_SHARED_PTR& phrase_dialog)
 {
-/*	//только если находимся в режиме single
+	//только если находимся в режиме single
 	CUIGameSP* pGameSP = dynamic_cast<CUIGameSP*>(HUD().GetUI()->UIGame());
 	if(!pGameSP) return;
 
 	if(pGameSP->TalkMenu.IsShown())
 	{
 		pGameSP->TalkMenu.UpdateQuestions();
-		pGameSP->TalkMenu.UpdateAnswers();
 	}
-*/
+
 	CPhraseDialogManager::ReceivePhrase(phrase_dialog);
 }
 

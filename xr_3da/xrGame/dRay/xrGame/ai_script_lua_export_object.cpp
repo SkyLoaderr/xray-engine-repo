@@ -122,8 +122,6 @@ void CScriptEngine::export_object()
 			.def("set_callback",				(void (CLuaGameObject::*)(const luabind::functor<void> &, const CScriptMonster::EActionType))(CLuaGameObject::SetCallback))
 			.def("clear_callback",				(void (CLuaGameObject::*)(bool))(CLuaGameObject::ClearCallback))
 			.def("clear_callback",				(void (CLuaGameObject::*)(const CScriptMonster::EActionType))(CLuaGameObject::ClearCallback))
-			.def("give_info_portion",			&CLuaGameObject::GiveInfoPortion)
-			.def("give_info_portion_via_pda",	&CLuaGameObject::GiveInfoPortionViaPda)
 			.def("patrol",						&CLuaGameObject::GetPatrolPathName)
 			.def("set_trade_callback",			(void (CLuaGameObject::*)(const luabind::functor<void> &))(CLuaGameObject::SetTradeCallback))
 			.def("set_trade_callback",			(void (CLuaGameObject::*)(const luabind::object &, LPCSTR))(CLuaGameObject::SetTradeCallback))			
@@ -235,6 +233,9 @@ void CScriptEngine::export_object()
 
 			.def("give_info_portion",			&CLuaGameObject::GiveInfoPortion)
 			.def("give_info_portion_via_pda",	&CLuaGameObject::GiveInfoPortionViaPda)
+			.def("disable_info_portion",		&CLuaGameObject::DisableInfoPortion)
+
+
 			.def("send_pda_message",			&CLuaGameObject::SendPdaMessage)
 
 			.def("is_talking",					&CLuaGameObject::IsTalking)

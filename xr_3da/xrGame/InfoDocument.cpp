@@ -70,6 +70,7 @@ void CInfoDocument::OnH_A_Chield()
 	u_EventGen		(P,GE_INFO_TRANSFER,pda_ID);
 	P.w_u16			(u16(ID()));				//отправитель
 	P.w_s32			(m_iInfoIndex);				//сообщение
+	P.w_u8			(1);						//добавление сообщения
 	u_EventSend		(P);
 }
 

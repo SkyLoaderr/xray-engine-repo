@@ -366,11 +366,16 @@ void CPda::OnEvent(NET_Packet& P, u16 type)
 		{
 			u16				id;
 			s32				info_index;
+			u8				add_info;
 	
 			P.r_u16			(id);				//отправитель
 			P.r_s32			(info_index);		//номер полученной информации
+			P.r_u8			(add_info);			//добавление или убирание информации
 
-			OnReceiveInfo	((INFO_ID)info_index);
+			if(add_info)
+				OnReceiveInfo	((INFO_ID)info_index);
+			else
+				OnRemoveInfo	((INFO_ID)info_index);
 		}
 		break;
 	}
@@ -429,6 +434,7 @@ bool CPda::TransferInfoToID(u32 pda_ID, INFO_ID info_index)
 	u_EventGen		(P,GE_INFO_TRANSFER,pda_ID);
 	P.w_u16			(u16(ID()));				//отправитель
 	P.w_s32			(info_index);				//сообщение
+	P.w_u8			(1);						//сообщение
 	u_EventSend		(P);
 
 	return true;
@@ -446,6 +452,16 @@ void CPda::OnReceiveInfo(INFO_ID info_index)
 
 	//оповестить владельца PDA
 	GetOriginalOwner()->OnReceiveInfo(info_index);
+}
+
+void CPda::OnRemoveInfo(INFO_ID info_index)
+{
+	KNOWN_INFO_VECTOR_IT it = std::find(m_KnownInfo.begin(), m_KnownInfo.end(),  info_index);
+	if(m_KnownInfo.end() == it) return;
+	m_KnownInfo.erase(it);
+
+	//оповестить владельца PDA
+	GetOriginalOwner()->OnDisableInfo(info_index);
 }
 
 void  CPda::RemoveInfo(INFO_ID info_index)

@@ -219,15 +219,29 @@ void CInventoryOwner::OnReceiveInfo(INFO_ID info_index)
 		lua_function (pThisGameObject->lua_game_object());
 	}
 
-
 	//выкинуть те info portions которые стали неактуальными
 	for(i=0; i<info_portion.DisableInfos().size(); i++)
-		DisableInfo(info_portion.DisableInfos()[i]);
+	{
+		TransferInfo(info_portion.DisableInfos()[i], false);
+	}
 }
 
-void CInventoryOwner::DisableInfo(INFO_ID info_index)
+void CInventoryOwner::OnDisableInfo(INFO_ID info_index)
 {
-	GetPDA()->RemoveInfo(info_index);
+	GetPDA()->OnRemoveInfo(info_index);
+}
+
+void CInventoryOwner::TransferInfo(INFO_ID info_index, bool add_info)
+{
+	VERIFY(GetPDA());
+
+	//отправляем от нашему PDA пакет информации с номером
+	NET_Packet		P;
+	CGameObject::u_EventGen(P, GE_INFO_TRANSFER, GetPDA()->ID());
+	P.w_u16			(GetPDA()->ID());						//отправитель
+	P.w_s32			(info_index);							//сообщение
+	P.w_u8			(add_info?1:0);							//добавить/удалить информацию
+	CGameObject::u_EventSend(P);
 }
 
 //who - id PDA которому отправляем сообщение

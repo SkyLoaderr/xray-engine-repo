@@ -20,6 +20,7 @@
 #include "../../xrserver_objects_alife_monsters.h"
 #include "../../cover_evaluators.h"
 #include "../../character_info.h"
+#include "../../actor.h"
 #include "../../xrserver.h"
 #include "../../xr_level_controller.h"
 
@@ -333,7 +334,7 @@ void CAI_Stalker::UpdateCL(){
 
 void CAI_Stalker::Hit(float P, Fvector &dir, CObject *who,s16 element,Fvector p_in_object_space, float impulse, ALife::EHitType hit_type)
 {
-	if(dynamic_cast<CInventoryOwner*>(who))
+	if(dynamic_cast<CActor*>(who))
 		CInventoryOwner::CharacterInfo().SetRelationType(who->ID(), ALife::eRelationTypeEnemy);
 
 	inherited::Hit(P,dir,who,element,p_in_object_space,impulse,hit_type);

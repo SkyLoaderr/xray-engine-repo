@@ -72,8 +72,9 @@ public:
 	//персонаж получил новую порцию информации
 	virtual void OnReceiveInfo(INFO_ID info_index);
 	//убрать информацию
-	virtual void DisableInfo(INFO_ID info_index);
-
+	virtual void OnDisableInfo(INFO_ID info_index);
+	//передать/удалить информацию через сервер
+	virtual void TransferInfo(INFO_ID info_index, bool add_info);
 	
 	const CInventory &inventory() const {return(*m_inventory);}
 	CInventory &inventory() {return(*m_inventory);}

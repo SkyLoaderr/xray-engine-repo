@@ -98,6 +98,8 @@ public:
 	bool TransferInfoToID(u32 pda_ID, INFO_ID info_index);
 	//событие получения новой порции информации
 	void OnReceiveInfo(INFO_ID info_index);
+	//событие удаления порции информации
+	void OnRemoveInfo(INFO_ID info_index);
 	//получить последнее сообщение из лога  (false - если лог пуст)
 	bool GetLastMessageFromLog(u32 pda_ID,  SPdaMessage& pda_message);
 

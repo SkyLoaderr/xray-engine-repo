@@ -84,7 +84,7 @@ public:
 
 	//information receive & dialogs
 	virtual void OnReceiveInfo		(INFO_ID info_index);
-	virtual void DisableInfo		(INFO_ID info_index);
+	virtual void OnDisableInfo		(INFO_ID info_index);
 	virtual void ReceivePdaMessage	(u16 who, EPdaMsg msg, INFO_ID info_index);
 	//PhraseDialogManager
 	virtual void ReceivePhrase			(DIALOG_SHARED_PTR& phrase_dialog);
