@@ -125,6 +125,4 @@ namespace CDB
 	};
 };
 
-extern XRCDB_API	CDB::COLLIDER	XRC;
-
 #pragma pack(pop)	

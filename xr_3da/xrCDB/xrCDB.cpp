@@ -4,8 +4,6 @@
 #include "stdafx.h"
 #include "xrCDB.h"
 
-XRCDB_API	CDB::COLLIDER	XRC;
-
 using namespace CDB;
 using namespace Opcode;
 
