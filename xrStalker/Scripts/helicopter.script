@@ -30,7 +30,7 @@ function main()
 
 --			helicopter:heli_goto_stay_point( vecVia, 6000 )
 
-			helicopter:heli_go_to_point(vecDst,vecVia,60)
+			helicopter:heli_go_to_point(vecDst,vecVia,63)
 
 			wait(40000)
     	
