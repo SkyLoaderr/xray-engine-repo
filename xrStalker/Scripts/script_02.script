@@ -1,21 +1,3 @@
-is_creature_entered = false
-is_actor_entered = false
-
--- функция вызывается из игры после того как объект object вошел в зону zone
-function on_enter(zone,object)
-	is_creature_entered = true
-	printf("Object %s entered zone %s",object:name(),zone:name())
-	if event_zone_id == zone:id() and actor_id == object:id() then 
-		printf("actor entering in our zone")
-		is_actor_entered = true
-	end
-end
-
-function on_exit(zone,object)
-	is_creature_entered = false
-	printf("Object %s exited zone %s",object:name(),zone:name())
-end
-
 function main()
 
 	local event	= get_level_object("script_zone0000")
@@ -40,62 +22,8 @@ function main()
 
 	sound_wind:play_at_pos		(event,event:position(),1);
 
-	wait		(1000)
-	stalker1:script	(true,script_01.script_name())
-	stalker2:script	(true,script_01.script_name())
-	action(                                                                                                       
-	    stalker1,
-		sound	("scripts\\idle\\cough1","bip01_spine2",vector():set(0,0,0),vector():set(0,0,0),false),
-		cond	(cond.sound_end, 1000)
-	)
-	wait(4000)
-	action(                                                                                                       
-	    stalker2,
-		sound	("scripts\\idle\\say_holodno","bip01_spine2",vector():set(0,0,0),vector():set(0,0,0),false),
-		cond	(cond.sound_end, 1000)
-	)
-	wait(3000)
-	action(                                                                                                       
-	    stalker1,
-		sound	("scripts\\idle\\say_chto_s_toboy","bip01_spine2",vector():set(0,0,0),vector():set(0,0,0),false),
-		cond	(cond.sound_end, 1000)
-	)
-	wait(3000)
-	action(                                                                                                       
-	    stalker2,
-		sound	("scripts\\idle\\say_dai_vipit","bip01_spine2",vector():set(0,0,0),vector():set(0,0,0),false),
-		cond	(cond.sound_end, 1000)
-	)
-	wait(2000)
-	action(                                                                                                       
-	    stalker1,
-		sound	("scripts\\idle\\say_ti_pyuaniy","bip01_spine2",vector():set(0,0,0),vector():set(0,0,0),false),
-		cond	(cond.sound_end, 1000)
-	)
-	wait(2000)
-	action(                                                                                                       
-	    stalker2,
-		sound	("scripts\\idle\\say_skuchno","bip01_spine2",vector():set(0,0,0),vector():set(0,0,0),false),
-		cond	(cond.sound_end, 1000)
-	)
-	wait(2000)
-	action(                                                                                                       
-	    stalker1,
-	  	move	(move.standing, move.walk,move.line,patrol("way0002")),
-		cond	(cond.time_end, 500000)
-	)
-	action(                                                                                                       
-	    stalker2,
-	  	move	(move.standing, move.walk,move.line,patrol("way0001")),
-		cond	(cond.time_end, 500000)
-	)
-	wait()
-
-	event:clear_callback(true)
-	event:clear_callback(false)
-
-	event:set_callback(script_01.on_enter,true)
-	event:set_callback(script_01.on_exit,false)
+	stalker1:script	(true,script_02.script_name())
+	stalker2:script	(true,script_02.script_name())
 
 	while stalker1:action() and stalker2:action() do
 		if is_actor_entered and stalker1:see(actor) == false and stalker2:see(actor) == false then 
