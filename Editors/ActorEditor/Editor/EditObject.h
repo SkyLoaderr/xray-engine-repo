@@ -239,6 +239,8 @@ public:
 
     LPCSTR			GetName					(){ return m_LibName.c_str();}
 
+	void			SetVersionToCurrent		(BOOL bCreate, BOOL bModif);
+
     IC EditMeshIt	FirstMesh				()	{return m_Meshes.begin();}
     IC EditMeshIt	LastMesh				()	{return m_Meshes.end();}
     IC EditMeshVec& Meshes					()	{return m_Meshes; }

@@ -203,7 +203,7 @@ bool CEditableObject::VerifyBoneParts()
 
 void CEditableObject::PrepareOGFDesc(ogf_desc& desc)
 {
-	string512		tmp;
+	string512			tmp;
 	desc.source_file	= m_LibName.c_str();
     desc.create_name	= m_CreateName.c_str();
     desc.create_time	= m_CreateTime;
@@ -213,3 +213,15 @@ void CEditableObject::PrepareOGFDesc(ogf_desc& desc)
     ctime				(&desc.build_time);
 }
 
+void CEditableObject::SetVersionToCurrent(BOOL bCreate, BOOL bModif)
+{
+	string512			tmp;
+	if (bCreate){
+		m_CreateName	= strconcat(tmp,"\\\\",Core.CompName,"\\",Core.UserName);
+		ctime			(&m_CreateTime);
+	}
+	if (bModif){
+		m_ModifName		= strconcat(tmp,"\\\\",Core.CompName,"\\",Core.UserName);
+		ctime			(&m_ModifTime);
+	}
+}
