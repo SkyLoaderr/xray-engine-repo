@@ -8,7 +8,7 @@
 
 #include "Blender.h"
 
-class ENGINE_API CBlender_BmmD : public CBlender  
+class ENGINE_API CBlender_B : public CBlender  
 {
 public:
 	virtual		LPCSTR		getComment()	{ return "LEVEL: Implicit";	}
@@ -19,8 +19,8 @@ public:
 
 	virtual		void		Compile			(CBlender_Compile& C);
 
-	CBlender_BmmD();
-	virtual ~CBlender_BmmD();
+	CBlender_B();
+	virtual ~CBlender_B();
 };
 
 #endif // !defined(AFX_BLENDERDEFAULT_H__C12F64EE_43E7_4483_9AC3_29272E0401E7__INCLUDED_BmmD2)

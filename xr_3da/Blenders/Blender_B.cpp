@@ -1,4 +1,4 @@
-// BlenderDefault.cpp: implementation of the CBlender_BmmD class.
+// BlenderDefault.cpp: implementation of the CBlender_B class.
 //
 //////////////////////////////////////////////////////////////////////
 
@@ -11,23 +11,23 @@
 // Construction/Destruction
 //////////////////////////////////////////////////////////////////////
 
-CBlender_BmmD::CBlender_BmmD	()
+CBlender_B::CBlender_B	()
 {
 	description.CLS			= B_B;
 	description.version		= 1;
 }
 
-CBlender_BmmD::~CBlender_BmmD	()
+CBlender_B::~CBlender_B	()
 {
 	
 }
 
-void	CBlender_BmmD::Save		(CFS_Base& FS )
+void	CBlender_B::Save		(CFS_Base& FS )
 {
 	CBlender::Save	(FS);
 }
 
-void	CBlender_BmmD::Load		(CStream& FS, WORD version )
+void	CBlender_B::Load		(CStream& FS, WORD version )
 {
 	CBlender::Load	(FS,version);
 
@@ -45,7 +45,7 @@ void	CBlender_BmmD::Load		(CStream& FS, WORD version )
 	}
 }
 
-void	CBlender_BmmD::Compile	(CBlender_Compile& C)
+void	CBlender_B::Compile	(CBlender_Compile& C)
 {
 	CBlender::Compile		(C);
 	if (C.bEditor)	{
