@@ -168,7 +168,6 @@ bool CLight::RayPick(float& distance, Fvector& start, Fvector& direction, SRayPi
 
 void CLight::OnFrame	(){
 	inherited::OnFrame	();
-	if (D3DLIGHT_DIRECTIONAL==m_D3D.type) m_LensFlare.OnMove();
 }
 //----------------------------------------------------
 
