@@ -180,6 +180,15 @@ force_grow_speed	= 25
 
 cost				= 0
 
+[bolt_hud]
+shell_point			= 0.0, 0.0, 0.0
+fire_point          = 0.05, 0.0, 0.1
+fire_bone           = bolt_0
+
+orientation         = 0,0,0
+position            = 0,0,0
+visual              = weapon\bolt\wpn_bolt_hud.ogf
+
 [medkit]
 ;GroupControlSection	= spawn_group
 ;discovery_dependency = 
@@ -203,15 +212,52 @@ eat_satiety = 0
 eat_power = 0.05
 eat_radiation = -0.01	
 
+[bread]
+;GroupControlSection	= spawn_group
+;discovery_dependency = 
+;$spawn 			= "food and drugs\bread"
+;$prefetch 		= 32
+class			= II_MEDKI
+cform           = skeleton
+visual          = items\geiger_01.ogf
 
-[bolt_hud]
-shell_point			= 0.0, 0.0, 0.0
-fire_point          = 0.05, 0.0, 0.1
-fire_bone           = bolt_0
+inv_name			= Bread
+inv_name_short		= Bread
+inv_weight			= 0.2
+inv_icon			= ui\ui_inv_medkit				; for inventory menu
+inv_grid_width		= 1
+inv_grid_height		= 1
+cost				= 50
 
-orientation         = 0,0,0
-position            = 0,0,0
-visual              = weapon\bolt\wpn_bolt_hud.ogf
+; eatable item
+eat_health = 0.01
+eat_satiety = 0.2
+eat_power = 0
+eat_radiation = 0	
+
+[antirad]
+;GroupControlSection	= spawn_group
+;discovery_dependency = 
+;$spawn 			= "food and drugs\antirad"
+;$prefetch 		= 32
+class			= II_ANTIR
+cform           = skeleton
+visual          = items\geiger_01.ogf
+
+inv_name			= Antirad
+inv_name_short		= Antirad
+inv_weight			= 0.2
+inv_icon			= ui\ui_inv_medkit				; for inventory menu
+inv_grid_width		= 1
+inv_grid_height		= 1
+cost				= 50
+
+; eatable item
+eat_health = 0										
+eat_satiety = 0
+eat_power = -0.01
+eat_radiation = 0.3
+
 
 [wpn_knife]
 GroupControlSection	= spawn_group
