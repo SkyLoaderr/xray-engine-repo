@@ -83,7 +83,13 @@ void CBaseMonster::Load(LPCSTR section)
 
 	// load parameters from ".ltx" file
 	inherited::Load					(section);
-	movement().Load			(section);
+
+	m_corpse_cover_evaluator		= xr_new<CMonsterCorpseCoverEvaluator>	(&movement().restrictions());
+	m_enemy_cover_evaluator			= xr_new<CCoverEvaluatorFarFromEnemy>	(&movement().restrictions());
+	m_cover_evaluator_close_point	= xr_new<CCoverEvaluatorCloseToEnemy>	(&movement().restrictions());
+
+	movement().Load					(section);
+
 	CStepManager::load				(section);
 
 	MeleeChecker.load				(section);
