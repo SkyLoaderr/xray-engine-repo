@@ -173,7 +173,7 @@ function action_commander:execute()
             repeat
                 if not self.drunk then
                     self.act = random_choice_weighted{
-                                   [walk_inside]  = 4000,
+                                   [walk_inside]  = 40,
                                    [walk_outside] = 20,
                                    [look_map]     = 10,
                                    [look_outside] = 10,
