@@ -7,6 +7,8 @@
 
 static const int money_x_offs = 785; 
 static const int money_y_offs = 485;
+static const int time_x_offs = 400; 
+static const int time_y_offs = 550;
 
 //--------------------------------------------------------------------
 CUIGameCS::CUIGameCS(CUI* parent):CUIGameCustom(parent)
@@ -19,6 +21,7 @@ CUIGameCS::CUIGameCS(CUI* parent):CUIGameCustom(parent)
 	BuyZone.Init			("ui\\ui_cs_buyzone",	"font", 5,210,	alLeft|alTop); BuyZone.SetColor		(0x8000FF00);
 	Artifact.Init			("ui\\ui_cs_artefact",	"font",	5,245,	alLeft|alTop); Artifact.SetColor	(0x80FF00A2);
 	m_Parent->m_Parent->ClientToScreen(vMoneyPlace, money_x_offs, money_y_offs, alRight|alBottom);
+	m_Parent->m_Parent->ClientToScreen(vTimePlace, time_x_offs, time_y_offs, alCenter);
 }
 //--------------------------------------------------------------------
 
@@ -49,6 +52,14 @@ void CUIGameCS::BuyItem(CCustomMenuItem* sender)
 }
 //--------------------------------------------------------------------
 
+LPCSTR make_time(string16 buf, DWORD sec)
+{
+	sprintf(buf,"%2.0d:%2.0d",(sec%3600)/60,sec%60);
+	int len = strlen(buf);
+	for (int i=0; i<len; i++) if (buf[i]==' ') buf[i]='0';
+	return buf;
+}
+
 void CUIGameCS::OnFrame()
 {
 	switch (Game().phase){
@@ -59,6 +70,13 @@ void CUIGameCS::OnFrame()
 		if(!CanBuy()) SetFlag(flShowBuyMenu,FALSE);
 		if (uFlags&flShowBuyMenu)		BuyMenu.OnFrame		();
 		else if (uFlags&flShowFragList) FragList.OnFrame	();
+		string16 buf;
+		game_cl_GameState::Player* P = Game().local_player;
+		m_Parent->m_Parent->pFontBigDigit->SetColor		(0xA0969678);
+		m_Parent->m_Parent->pFontBigDigit->SetAligment	(CGameFont::alRight);
+		m_Parent->m_Parent->pFontBigDigit->Out			((float)vMoneyPlace.x,(float)vMoneyPlace.y,"$%d",P->money_total);
+		m_Parent->m_Parent->pFontBigDigit->SetAligment	(CGameFont::alCenter);
+		m_Parent->m_Parent->pFontBigDigit->Out			((float)vTimePlace.x,(float)vTimePlace.y,"%s",make_time(buf,(Game().timelimit-(Level().timeServer()-Game().start_time))/1000));
 /*
 		map<u32,game_cl_GameState::Player>::iterator I=Game().players.begin();
 		map<u32,game_cl_GameState::Player>::iterator E=Game().players.end();
@@ -72,11 +90,6 @@ void CUIGameCS::OnFrame()
 */
 	break;
 	}
-	game_cl_GameState::Player* P = Game().local_player;
-	m_Parent->m_Parent->pFontBigDigit->SetColor	(0xA0969678);
-	m_Parent->m_Parent->pFontBigDigit->SetAligment(CGameFont::alRight);
-	m_Parent->m_Parent->pFontBigDigit->OutSet	((float)vMoneyPlace.x,(float)vMoneyPlace.y);
-	m_Parent->m_Parent->pFontBigDigit->OutNext	("$%d",P->money_total);
 }
 //--------------------------------------------------------------------
 
