@@ -1,4 +1,4 @@
-class stalker_script
+class "stalker_script"
 
 function stalker_script::__init() super()
 end
