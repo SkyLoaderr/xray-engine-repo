@@ -33,10 +33,10 @@ void CLevel::ClientReceive()
 			Objects.net_Import	(P);
 			break;
 		case M_PLIST_ADD:
-			Players.add			(P);
+			Players.add			(*P);
 			break;
 		case M_PLIST_REMOVE:
-			Players.remove		(P);
+			Players.remove		(*P);
 			break;
 		case M_EVENT:
 			{
