@@ -176,7 +176,7 @@ void __fastcall TfrmMain::D3DWindowChangeFocus(TObject *Sender)
      	paWindow->Color=TColor(0x090FFFF);
 		// если потеряли фокус, а до этого кликнули мышкой -> вызовим событие MouseUp
 //        if (UI.IsMouseInUse())
-            UI.OnMouseRelease(0);
+//            UI.OnMouseRelease(0);
         UI.iCapture();
 		UI.OnAppActivate();
     }else{
@@ -199,4 +199,19 @@ void __fastcall TfrmMain::FormDeactivate(TObject *Sender)
 }
 //---------------------------------------------------------------------------
 
+void __fastcall TfrmMain::D3DWindowMouseDown(TObject *Sender,
+      TMouseButton Button, TShiftState Shift, int X, int Y)
+{
+    UI.OnMousePress(Shift,X,Y);
+    UI.RedrawScene();
+}
+//---------------------------------------------------------------------------
+
+void __fastcall TfrmMain::D3DWindowMouseUp(TObject *Sender,
+      TMouseButton Button, TShiftState Shift, int X, int Y)
+{
+    UI.OnMouseRelease(Shift,X,Y);
+    UI.RedrawScene();
+}
+//---------------------------------------------------------------------------
 

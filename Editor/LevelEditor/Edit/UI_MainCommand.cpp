@@ -333,8 +333,8 @@ bool TUI::Command( int _Command, int p1, int p2 ){
 
 	case COMMAND_OPTIONS:
 		if( !Scene.locked() ){
-            frmScenePropertiesRun(&Scene.m_LevelOp.m_BuildParams,false);
-            Scene.UndoSave();
+            if (mrOk==frmScenePropertiesRun(&Scene.m_LevelOp.m_BuildParams,false))
+            	Scene.UndoSave();
 		} else {
 			ELog.DlgMsg( mtError, "Scene sharing violation" );
 			bRes = false;

@@ -293,7 +293,7 @@ void __fastcall TfrmSceneProperties::mcLMAmbientMouseDown(TObject *Sender,
 void __fastcall TfrmSceneProperties::ebChooseSkydomeClick(TObject *Sender)
 {
 #ifdef _LEVEL_EDITOR
-	LPCSTR N = TfrmChoseItem::SelectObject(false,0,0);
+	LPCSTR N = TfrmChoseItem::SelectObject(false,0,edSkydomeObjectName->Text.c_str());
 	if (!N) return;
 
 	CEditableObject* O = Lib.CreateEditObject(N);

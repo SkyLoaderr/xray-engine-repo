@@ -22,7 +22,7 @@ friend class CImageManager;
 	void 			DrawNormal		(HANDLE handle, RECT *rect);
 	void 			DrawStretch		(HANDLE handle, RECT *rect);
 public:
-					EImageThumbnail	(LPCSTR src_name, THMType type, bool bLoad=true);
+					EImageThumbnail	(LPCSTR src_name, THMType type, bool bLoad=true, bool bSync=false);
 	virtual			~EImageThumbnail();
 
     // thumbnail public routines

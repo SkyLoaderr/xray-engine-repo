@@ -258,7 +258,6 @@ object fraBottomBar: TfraBottomBar
       'N25.Checked'
       'N50.Checked'
       'N75.Checked'
-      'miDrawSectorFaces.Checked'
       'miDrawAnimateLight.Checked'
       'miDrawObjectBones.Checked'
       'miObjectLoopedAnimation.Checked'
@@ -438,15 +437,6 @@ object fraBottomBar: TfraBottomBar
     object miDrawSectors: TMenuItem
       Caption = 'Sectors'
       GroupIndex = 4
-      object miDrawSectorFaces: TMenuItem
-        Caption = 'Draw Sector Faces'
-        Checked = True
-        OnClick = ClickOptionsMenuItem
-      end
-      object N5: TMenuItem
-        Caption = '-'
-        GroupIndex = 1
-      end
       object miDrawSectorEdgedSFaces: TMenuItem
         Caption = 'Draw Edged Sector Faces'
         Checked = True

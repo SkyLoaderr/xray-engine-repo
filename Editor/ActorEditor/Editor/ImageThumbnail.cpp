@@ -53,13 +53,16 @@ void EImageThumbnail::VFlip()
 }
 //----------------------------------------------------
 
-EImageThumbnail::EImageThumbnail(LPCSTR src_name, THMType type, bool bLoad)
+EImageThumbnail::EImageThumbnail(LPCSTR src_name, THMType type, bool bLoad, bool bSync)
 {
 	m_Type	= type;
 	m_Name 	= ChangeFileExt(src_name,".thm");
     m_Age	= 0;
     if (bLoad)
 		if (!Load()&&IsTexture()) ImageManager.CreateThumbnail(this,src_name);
+    if (bSync){
+    	ImageManager.SynchronizeThumbnail(this,src_name);
+    }
 }
 
 EImageThumbnail::~EImageThumbnail()
@@ -74,6 +77,7 @@ void EImageThumbnail::CreateFromData(LPDWORD p, int w, int h){
 	imf_Process(m_Pixels.begin(),THUMB_WIDTH,THUMB_HEIGHT,p,w,h,imf_box);
     m_TexParams.width = w;
     m_TexParams.height= h;
+    m_TexParams.flag&=~STextureParams::flHasAlpha;
 }
 
 bool EImageThumbnail::Load()

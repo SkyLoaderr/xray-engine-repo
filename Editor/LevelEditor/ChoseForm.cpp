@@ -38,8 +38,7 @@ LPCSTR __fastcall TfrmChoseItem::SelectObject(bool bMulti, LPCSTR start_folder, 
 	form 							= new TfrmChoseItem(0);
 	form->Mode 						= smObject;
     form->bMultiSel 				= bMulti;
-    form->iMultiSelLimit 			= 8;
-    form->tvItems->ShowCheckboxes 	= bMulti;
+    form->iMultiSelLimit 			= 32;
 	// init
 	if (start_name) m_LastSelection[form->Mode] = start_name;
 	form->tvItems->IsUpdating		= true;
@@ -49,10 +48,13 @@ LPCSTR __fastcall TfrmChoseItem::SelectObject(bool bMulti, LPCSTR start_folder, 
 	AnsiString fld;
     FileMap& lst = Lib.Objects();
     FilePairIt it=lst.begin();
-    FilePairIt _E=lst.end();   // check without extension
+    FilePairIt _E=lst.end();   		// check without extension
     for (; it!=_E; it++)
-		if (!start_folder||(start_folder&&(stricmp(start_folder,FOLDER::GetFolderName(it->first.c_str(),fld))==0)))
-			FOLDER::AppendObject(form->tvItems,it->first.c_str());
+		if (!start_folder||(start_folder&&(stricmp(start_folder,FOLDER::GetFolderName(it->first.c_str(),fld))==0))){
+        	TElTreeItem* node=FOLDER::AppendObject(form->tvItems,it->first.c_str());
+            node->CheckBoxEnabled 	= bMulti;
+            node->ShowCheckBox 		= bMulti;
+        }
     // redraw
 	form->tvItems->IsUpdating		= false;
 	// show
@@ -134,7 +136,6 @@ LPCSTR __fastcall TfrmChoseItem::SelectTexture(bool msel, LPCSTR init_name){
 	form->Mode = smTexture;
     form->bMultiSel = msel;
     form->iMultiSelLimit = 8;
-    form->tvItems->ShowCheckboxes = msel;
 	// init
 	if (init_name) m_LastSelection[form->Mode] = init_name;
 	form->tvItems->IsUpdating	= true;
@@ -181,7 +182,7 @@ void __fastcall TfrmChoseItem::sbSelectClick(TObject *Sender)
     	    FOLDER::MakeName(node,0,nm,false);
             select_item += nm+AnsiString(",");
         }
-        select_item.Delete(select_item.Length()-1,2);
+        select_item.Delete(select_item.Length(),1);
 
         if (select_item.IsEmpty()){
             if (tvItems->Selected&&FOLDER::IsObject(tvItems->Selected)){
@@ -220,6 +221,7 @@ void __fastcall TfrmChoseItem::FormKeyDown(TObject *Sender, WORD &Key,
 
 void __fastcall TfrmChoseItem::FormShow(TObject *Sender)
 {
+    tvItems->ShowCheckboxes 	= bMultiSel;
 	int itm_cnt = _GetItemCount(m_LastSelection[form->Mode].c_str());
 	if (bMultiSel&&(itm_cnt>1)){
 	    char T[MAX_OBJ_NAME];
@@ -227,7 +229,7 @@ void __fastcall TfrmChoseItem::FormShow(TObject *Sender)
             TElTreeItem* itm_node = FOLDER::FindObject(tvItems,_GetItem(m_LastSelection[form->Mode].c_str(),i,T));
 	        TElTreeItem* fld_node = 0;
             if (itm_node){
-				tvMulti->Items->Add(0,_GetItem(m_LastSelection[form->Mode].c_str(),i,T));
+				tvMulti->Items->AddObject(0,_GetItem(m_LastSelection[form->Mode].c_str(),i,T),(void*)FOLDER::TYPE_OBJECT);
             	itm_node->Checked = true;
                 tvItems->EnsureVisible(itm_node);
                 fld_node=itm_node->Parent;
@@ -239,7 +241,7 @@ void __fastcall TfrmChoseItem::FormShow(TObject *Sender)
         TElTreeItem* fld_node = 0;
         if (itm_node){
         	if (bMultiSel){
-				tvMulti->Items->Add(0,itm_node->Text);
+				tvMulti->Items->AddObject(0,itm_node->Text,(void*)FOLDER::TYPE_OBJECT);
 //            	itm_node->Checked = true;
             }
             tvItems->Selected = itm_node;
@@ -300,13 +302,11 @@ void __fastcall TfrmChoseItem::tvItemsItemChange(TObject *Sender,
       TElTreeItem *Item, TItemChangeMode ItemChangeMode)
 {
 	if (Item&&(ItemChangeMode==icmCheckState)){
-	    TElTreeItem *node = tvMulti->Items->LookForItem(0,Item->Text,0,0,false,true,false,true,true);
+        AnsiString fn;
+        FOLDER::MakeName(Item,0,fn,false);
+	    TElTreeItem *node = tvMulti->Items->LookForItem(0,fn.c_str(),0,0,false,true,false,true,true);
         if (node&&!Item->Checked) node->Delete();
-        if (!node&&Item->Checked){
-        	AnsiString fn;
-            FOLDER::MakeName(Item,0,fn,false);
-        	tvMulti->Items->Add(0,fn);
-        }
+        if (!node&&Item->Checked) tvMulti->Items->AddObject(0,fn,(void*)FOLDER::TYPE_OBJECT);
     }
 }
 //---------------------------------------------------------------------------

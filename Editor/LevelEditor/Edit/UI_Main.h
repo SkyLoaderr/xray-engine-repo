@@ -145,6 +145,8 @@ public:
     bool __fastcall KeyDown     (WORD Key, TShiftState Shift);
     bool __fastcall KeyUp       (WORD Key, TShiftState Shift);
     bool __fastcall KeyPress    (WORD Key, TShiftState Shift);
+	void __fastcall OnMousePress	(TShiftState Shift, int X, int Y);
+	void __fastcall OnMouseRelease	(TShiftState Shift, int X, int Y);
 
     bool Command( int _Command, int p = 0, int p2 = 0 );
 
@@ -170,8 +172,8 @@ public:
     void SetStatus(LPSTR s);
 
 	// direct input
-	virtual void OnMousePress			(int btn);
-	virtual void OnMouseRelease			(int btn);
+//	virtual void OnMousePress			(int btn);
+//	virtual void OnMouseRelease			(int btn);
 	virtual void OnMouseMove			(int x, int y);
 
     void OnAppActivate					();

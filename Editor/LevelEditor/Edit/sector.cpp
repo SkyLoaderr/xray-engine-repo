@@ -116,14 +116,12 @@ void CSector::Render(int priority, bool strictB2F){
         Fcolor color;
         float k = Selected()?0.4f:0.2f;
 		color.set(sector_color.r,sector_color.g,sector_color.b,k);
-        if (fraBottomBar->miDrawSectorFaces->Checked){
-			Device.SetRS(D3DRS_CULLMODE,D3DCULL_NONE);
-            for (SItemIt it=sector_items.begin();it!=sector_items.end();it++){
-                it->object->GetFullTransformToWorld(matrix);
-                it->mesh->RenderSelection( matrix, color.get() );
-            }
-			Device.SetRS(D3DRS_CULLMODE,D3DCULL_CCW);
+        Device.SetRS(D3DRS_CULLMODE,D3DCULL_NONE);
+        for (SItemIt it=sector_items.begin();it!=sector_items.end();it++){
+            it->object->GetFullTransformToWorld(matrix);
+            it->mesh->RenderSelection( matrix, color.get() );
         }
+        Device.SetRS(D3DRS_CULLMODE,D3DCULL_CCW);
     }else if ((1==priority)&&(false==strictB2F)){
         Fmatrix matrix;
         Fcolor color;

@@ -169,11 +169,11 @@ void __fastcall TfrmImageLib::tvItemsItemFocused(TObject *Sender)
     	FOLDER::MakeName(Item,0,m_SelectedName,false);
 		_DELETE(m_Thm);
         // get new texture
-        m_Thm = new EImageThumbnail(m_SelectedName.c_str(),EImageThumbnail::EITTexture);
+        m_Thm = new EImageThumbnail(m_SelectedName.c_str(),EImageThumbnail::EITTexture,true,true);
         if (!m_Thm->Valid())	pbImage->Repaint();
         else	 				pbImagePaint(Sender);
         lbFileName->Caption 	= "\""+ChangeFileExt(m_SelectedName,"")+"\"";
-		AnsiString temp; 		temp.sprintf("%d x %d x %s",m_Thm->_Width(),m_Thm->_Height(),m_Thm->_Format().HasAlphaChannel()?"32b":"24b");
+		AnsiString temp; 		temp.sprintf("%d x %d x %s",m_Thm->_Width(),m_Thm->_Height(),m_Thm->_Format().HasAlpha()?"32b":"24b");
         lbInfo->Caption			= temp;
         // set UI
         STextureParams& fmt 	= m_Thm->_Format();

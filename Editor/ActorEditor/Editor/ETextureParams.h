@@ -40,7 +40,8 @@ struct STextureParams{
 		flDitherColor		= (1<<8),
 		flDitherEachMIPLevel= (1<<9),
 		flGreyScale			= (1<<10),
-		flImplicitLighted	= (1<<24)
+		flImplicitLighted	= (1<<24),
+		flHasAlpha			= (1<<25)
 	};
 
 	ETFormat		fmt;
@@ -60,7 +61,10 @@ struct STextureParams{
         width					= 0;
         height					= 0;
 	}
-	IC BOOL HasAlphaChannel()
+    IC BOOL HasAlpha(){ // исходная текстура содержит альфа канал
+    	return flag&flHasAlpha;
+    }
+	IC BOOL HasAlphaChannel() // игровая текстура содержит альфа канал
 	{
 		switch (fmt)
 		{

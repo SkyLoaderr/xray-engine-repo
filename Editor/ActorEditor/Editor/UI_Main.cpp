@@ -123,7 +123,8 @@ void TUI::UpdateSelectionRect( const Ipoint& from, const Ipoint& to ){
 bool __fastcall TUI::KeyDown (WORD Key, TShiftState Shift)
 {
 	if (!m_bReady) return false;
-	m_ShiftState = Shift;
+//	m_ShiftState = Shift;
+//	Log("Dn  ",Shift.Contains(ssShift)?"1":"0");
 	if (Device.m_Camera.KeyDown(Key,Shift)) return true;
     return Tools.KeyDown(Key, Shift);
 }
@@ -131,7 +132,7 @@ bool __fastcall TUI::KeyDown (WORD Key, TShiftState Shift)
 bool __fastcall TUI::KeyUp   (WORD Key, TShiftState Shift)
 {
 	if (!m_bReady) return false;
-	m_ShiftState = Shift;
+//	m_ShiftState = Shift;
 	if (Device.m_Camera.KeyUp(Key,Shift)) return true;
     return Tools.KeyUp(Key, Shift);
 }
@@ -141,23 +142,16 @@ bool __fastcall TUI::KeyPress(WORD Key, TShiftState Shift)
 	if (!m_bReady) return false;
     return Tools.KeyPress(Key, Shift);
 }
-
 //----------------------------------------------------
-void TUI::OnMousePress(int btn){
-	if (!m_bReady) return;
-    if (!frmMain->IsFocused()) return;
-    if (m_MouseCaptured) return;
 
-    // test owner
-    Ipoint pt;
-	iGetMousePosScreen(pt);
-    TWinControl* ctr 	= FindVCLWindow(*pt.d3d());
-    if (ctr!=m_D3DWindow) return;
+void TUI::OnMousePress(TShiftState Shift, int X, int Y)
+{
+	if (!m_bReady) return;
+    if (m_MouseCaptured) return;
 
     bMouseInUse = true;
 
-    if (iGetBtnState(0)) m_ShiftState << ssLeft; else m_ShiftState >> ssLeft;
-    if (iGetBtnState(1)) m_ShiftState << ssRight;else m_ShiftState >> ssRight;
+    m_ShiftState = Shift;
 
     // camera activate
     if(!Device.m_Camera.MoveStart(m_ShiftState)){
@@ -183,11 +177,11 @@ void TUI::OnMousePress(int btn){
     RedrawScene();
 }
 
-void TUI::OnMouseRelease(int btn){
+void TUI::OnMouseRelease(TShiftState Shift, int X, int Y)
+{
 	if (!m_bReady) return;
 
-    if (iGetBtnState(0)) m_ShiftState << ssLeft; else m_ShiftState >> ssLeft;
-    if (iGetBtnState(1)) m_ShiftState << ssRight;else m_ShiftState >> ssRight;
+    m_ShiftState = Shift;
 
     if( Device.m_Camera.IsMoving() ){
         if (Device.m_Camera.MoveEnd(m_ShiftState)) bMouseInUse = false;
@@ -211,12 +205,10 @@ void TUI::OnMouseRelease(int btn){
     Tools.Update();
     RedrawScene();
 }
+//----------------------------------------------------
 void TUI::OnMouseMove(int x, int y){
 	if (!m_bReady) return;
     bool bRayUpdated = false;
-
-    if (iGetBtnState(0)) m_ShiftState << ssLeft; else m_ShiftState >> ssLeft;
-    if (iGetBtnState(1)) m_ShiftState << ssRight;else m_ShiftState >> ssRight;
 
 	if (!Device.m_Camera.Process(m_ShiftState,x,y)){
         if( m_MouseCaptured || m_MouseMultiClickCaptured ){
@@ -318,4 +310,74 @@ void TUI::ShowObjectHint(){
     if (!ShowHint(SS)) HideHint();
 }
 //---------------------------------------------------------------------------
+/*
+void TUI::OnMousePress(int btn){
+	if (!m_bReady) return;
+    if (!frmMain->IsFocused()) return;
+    if (m_MouseCaptured) return;
+
+    // test owner
+    Ipoint pt;
+	iGetMousePosScreen(pt);
+    TWinControl* ctr 	= FindVCLWindow(*pt.d3d());
+    if (ctr!=m_D3DWindow) return;
+
+    bMouseInUse = true;
+
+    if (iGetBtnState(0)) m_ShiftState << ssLeft; else m_ShiftState >> ssLeft;
+    if (iGetBtnState(1)) m_ShiftState << ssRight;else m_ShiftState >> ssRight;
+
+    // camera activate
+    if(!Device.m_Camera.MoveStart(m_ShiftState)){
+    	if (Tools.Pick()) return;
+        if( !m_MouseCaptured ){
+            if( Tools.HiddenMode() ){
+				iGetMousePosScreen(m_StartCpH);
+                m_DeltaCpH.set(0,0);
+            }else{
+                iGetMousePosReal(Device.m_hRenderWnd, m_CurrentCp);
+                m_StartCp = m_CurrentCp;
+
+                Device.m_Camera.MouseRayFromPoint(m_StartRStart, m_StartRNorm, m_StartCp );
+                Device.m_Camera.MouseRayFromPoint(m_CurrentRStart, m_CurrentRNorm, m_CurrentCp );
+            }
+
+            if(Tools.MouseStart(m_ShiftState)){
+                if(Tools.HiddenMode()) ShowCursor( FALSE );
+                m_MouseCaptured = true;
+            }
+        }
+    }
+    RedrawScene();
+}
+
+void TUI::OnMouseRelease(int btn){
+	if (!m_bReady) return;
+
+    if (iGetBtnState(0)) m_ShiftState << ssLeft; else m_ShiftState >> ssLeft;
+    if (iGetBtnState(1)) m_ShiftState << ssRight;else m_ShiftState >> ssRight;
+
+    if( Device.m_Camera.IsMoving() ){
+        if (Device.m_Camera.MoveEnd(m_ShiftState)) bMouseInUse = false;
+    }else{
+	    bMouseInUse = false;
+        if( m_MouseCaptured ){
+            if( !Tools.HiddenMode() ){
+                iGetMousePosReal(Device.m_hRenderWnd, m_CurrentCp);
+                Device.m_Camera.MouseRayFromPoint(m_CurrentRStart,m_CurrentRNorm,m_CurrentCp );
+            }
+            if( Tools.MouseEnd(m_ShiftState) ){
+                if( Tools.HiddenMode() ){
+                    SetCursorPos(m_StartCpH.x,m_StartCpH.y);
+                    ShowCursor( TRUE );
+                }
+                m_MouseCaptured = false;
+            }
+        }
+    }
+    // update tools (change action)
+    Tools.Update();
+    RedrawScene();
+}
+*/
 

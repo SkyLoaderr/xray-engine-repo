@@ -40,12 +40,10 @@ __published:	// IDE-managed Components
 	TMenuItem *Portals1;
 	TMenuItem *miDrawPortalSimpleModel;
 	TPanel *paStatusLabel;
-	TMenuItem *miDrawSectorFaces;
 	TMenuItem *Animations1;
 	TMenuItem *miDrawAnimateLight;
 	TPanel *paCameraPos;
 	TMenuItem *Objects1;
-	TMenuItem *N5;
 	TPanel *paButtons;
 	TExtBtn *ebLog;
 	TExtBtn *ebStop;

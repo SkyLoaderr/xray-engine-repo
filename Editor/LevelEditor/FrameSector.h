@@ -34,6 +34,7 @@ __published:	// IDE-managed Components
 	TExtBtn *ebCaptureInside;
 	TExtBtn *ebCreateDefault;
 	TExtBtn *ebRemoveDefault;
+	TBevel *Bevel2;
     void __fastcall PanelMinClick(TObject *Sender);
     void __fastcall TopClick(TObject *Sender);
 	void __fastcall ebCaptureInsideVolumeClick(TObject *Sender);

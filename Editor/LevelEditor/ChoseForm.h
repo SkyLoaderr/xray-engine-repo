@@ -28,17 +28,7 @@ class TfrmChoseItem : public TForm
 {
 __published:	// IDE-managed Components
     TPanel *Panel1;
-    TExtBtn *sbSelect;
-    TExtBtn *sbCancel;
 	TElTree *tvItems;
-	TPanel *paImage;
-	TLabel *lbItemName;
-	TPaintBox *pbImage;
-	TLabel *lbFileName;
-	TLabel *mxLabel1;
-	TLabel *mxLabel2;
-	TLabel *mxLabel3;
-	TLabel *lbInfo;
 	TFormStorage *fsStorage;
 	TPanel *paMulti;
 	TElTree *tvMulti;
@@ -46,6 +36,18 @@ __published:	// IDE-managed Components
 	TExtBtn *ebMultiDown;
 	TExtBtn *ebMultiRemove;
 	TExtBtn *ebMultiClear;
+	TPanel *Panel2;
+	TExtBtn *sbSelect;
+	TExtBtn *sbCancel;
+	TPanel *Panel3;
+	TLabel *lbItemName;
+	TLabel *lbFileName;
+	TLabel *mxLabel1;
+	TLabel *mxLabel2;
+	TLabel *mxLabel3;
+	TLabel *lbInfo;
+	TPanel *paImage;
+	TPaintBox *pbImage;
     void __fastcall sbSelectClick(TObject *Sender);
     void __fastcall sbCancelClick(TObject *Sender);
     void __fastcall FormShow(TObject *Sender);

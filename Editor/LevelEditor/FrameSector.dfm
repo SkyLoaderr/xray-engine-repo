@@ -2,7 +2,7 @@ object fraSector: TfraSector
   Left = 0
   Top = 0
   Width = 123
-  Height = 264
+  Height = 277
   VertScrollBar.ButtonSize = 11
   VertScrollBar.Range = 257
   VertScrollBar.Smooth = True
@@ -23,7 +23,7 @@ object fraSector: TfraSector
   TabOrder = 0
   object paSectorActions: TPanel
     Left = 0
-    Top = 80
+    Top = 83
     Width = 123
     Height = 69
     Align = alTop
@@ -284,7 +284,7 @@ object fraSector: TfraSector
     Left = 0
     Top = 0
     Width = 123
-    Height = 80
+    Height = 83
     Align = alTop
     Color = 10528425
     TabOrder = 0
@@ -366,7 +366,7 @@ object fraSector: TfraSector
     end
     object ebCreateDefault: TExtBtn
       Left = 2
-      Top = 48
+      Top = 51
       Width = 119
       Height = 15
       Align = alNone
@@ -386,7 +386,7 @@ object fraSector: TfraSector
     end
     object ebRemoveDefault: TExtBtn
       Left = 2
-      Top = 63
+      Top = 66
       Width = 119
       Height = 15
       Align = alNone
@@ -403,6 +403,12 @@ object fraSector: TfraSector
       Margin = 13
       ParentFont = False
       OnClick = ebRemoveDefaultClick
+    end
+    object Bevel2: TBevel
+      Left = 1
+      Top = 48
+      Width = 121
+      Height = 2
     end
   end
 end

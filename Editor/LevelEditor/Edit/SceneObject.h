@@ -38,6 +38,7 @@ public:
 	IC CEditableObject*	GetReference		()	{return m_pRefs; }
 	CEditableObject*SetReference			(LPCSTR ref_name);
 	IC EditMeshVec& Meshes					() {VERIFY(m_pRefs); return m_pRefs->Meshes();}
+    IC LPCSTR		GetRefName				() {VERIFY(m_pRefs); return m_pRefs->GetName();}
 
     // statistics methods
 	IC bool 		IsDynamic     			()	{return (m_pRefs->IsDynamic()); }

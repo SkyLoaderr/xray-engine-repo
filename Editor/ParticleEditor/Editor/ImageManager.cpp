@@ -17,7 +17,7 @@ extern "C" __declspec(dllimport)
 bool DXTCompress(LPCSTR out_name, BYTE* raw_data, DWORD w, DWORD h, DWORD pitch,
 				 STextureParams* options, DWORD depth);
 
-bool Surface_Load(char* full_name, DWORDVec& data, int& w, int& h, int& a)
+bool Surface_Load(LPCSTR full_name, DWORDVec& data, int& w, int& h, int& a)
 {
     if (!FS.Exist(full_name,true)) return false;
 	AnsiString ext = ExtractFileExt(full_name).LowerCase();
@@ -31,7 +31,7 @@ bool Surface_Load(char* full_name, DWORDVec& data, int& w, int& h, int& a)
 		CopyMemory			(data.begin(),img.pData,sizeof(DWORD)*data.size());
         return true;
     }else{
-        FIBITMAP* bm 		= Surface_Load(full_name);
+        FIBITMAP* bm 		= Surface_Load((LPSTR)full_name);
         if (bm){
             w 				= FreeImage_GetWidth (bm);
             h 				= FreeImage_GetHeight(bm);
@@ -49,13 +49,15 @@ bool Surface_Load(char* full_name, DWORDVec& data, int& w, int& h, int& a)
 //------------------------------------------------------------------------------
 // создает тхм
 //------------------------------------------------------------------------------
-void CImageManager::MakeThumbnail(EImageThumbnail* THM, DWORD* data, int w, int h)
+void CImageManager::MakeThumbnail(EImageThumbnail* THM, DWORD* data, int w, int h, int a)
 {
 	R_ASSERT(THM);
 	// create thumbnail
     if (THM->m_Pixels.empty()) THM->m_Pixels.resize(THUMB_SIZE);
 	THM->m_TexParams.width = w;
 	THM->m_TexParams.height= h;
+    if (a) 	THM->m_TexParams.flag |= STextureParams::flHasAlpha;
+    else	THM->m_TexParams.flag &=~STextureParams::flHasAlpha;
 	imf_Process(THM->m_Pixels.begin(),THUMB_WIDTH,THUMB_HEIGHT,data,THM->_Width(),THM->_Height(),imf_box);
     THM->VFlip();
 }
@@ -71,7 +73,7 @@ void CImageManager::CreateThumbnail(EImageThumbnail* THM, const AnsiString& src_
     DWORDVec data;
     int w, h, a;
     if (!Surface_Load(base_name.c_str(),data,w,h,a)) return;
-    MakeThumbnail(THM,data.begin(),w,h);
+    MakeThumbnail(THM,data.begin(),w,h,a);
 	THM->m_Age = FS.GetFileAge(base_name);
 	THM->m_TexParams.fmt 	= (a)?STextureParams::tfDXT3:STextureParams::tfDXT1;
 }
@@ -124,6 +126,16 @@ bool CImageManager::LoadTextureData(const AnsiString& src_name, DWORDVec& data, 
     return true;
 }
 
+void CImageManager::SynchronizeThumbnail(EImageThumbnail* THM, LPCSTR src_name)
+{
+    DWORDVec data;
+    int w, h, a;
+	AnsiString fn = src_name;
+	FS.m_Textures.Update(fn);
+	R_ASSERT(FS.Exist(fn.c_str()));
+	bool bRes = Surface_Load(fn.c_str(),data,w,h,a); R_ASSERT(bRes);
+	MakeThumbnail(THM,data.begin(),w,h,a);
+}
 //------------------------------------------------------------------------------
 // возвращает список не синхронизированных (модифицированных) текстур
 // source_list - содержит список текстур с расширениями
@@ -170,7 +182,7 @@ void CImageManager::SynchronizeTextures(bool sync_thm, bool sync_game, bool bFor
     	if (sync_thm&&bThm){
         	THM = new EImageThumbnail(it->first.c_str(),EImageThumbnail::EITTexture);
 		    bool bRes = Surface_Load(fn.c_str(),data,w,h,a); R_ASSERT(bRes);
-            MakeThumbnail(THM,data.begin(),w,h);
+            MakeThumbnail(THM,data.begin(),w,h,a);
             THM->Save	(it->second);
         }
         // check game textures

@@ -186,7 +186,7 @@ object fraObject: TfraObject
       HotTrack = True
       HotColor = 15790320
       CloseButton = False
-      Caption = '...'
+      Caption = '<none>'
       Font.Charset = DEFAULT_CHARSET
       Font.Color = clWindowText
       Font.Height = -11
