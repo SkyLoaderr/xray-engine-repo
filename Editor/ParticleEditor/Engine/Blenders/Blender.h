@@ -32,6 +32,9 @@ public:
 };
 #pragma pack(push,4)
 
+const	DWORD	bcf_editor		= (1<<0);	// Compile for editor (diffuse only)
+const	DWORD	bcf_lighting	= (1<<1);	// Compile only lighting
+
 class ENGINE_API CBlender	: public CPropertyBase
 {
 protected:
@@ -54,7 +57,7 @@ public:
 	virtual		void		Save			(CFS_Base&  FS);
 	virtual		void		Load			(CStream&	FS, WORD version);
 	
-	virtual		void		Compile			(CBlender_Recorder& RS, sh_list& L_textures, sh_list& L_constants, sh_list& L_matrices, int param=0, BOOL bEditor, BOOL bLightOnly);
+	virtual		void		Compile			(CBlender_Recorder& RS, sh_list& L_textures, sh_list& L_constants, sh_list& L_matrices, DWORD flags);
 
 	CBlender();
 	virtual ~CBlender();
