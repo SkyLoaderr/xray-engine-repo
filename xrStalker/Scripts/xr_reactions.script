@@ -16,6 +16,10 @@ end
 function evaluator_new:evaluate()
 	-- если мы щас никого не обрабатываем и есть раздражители - нужно заполнить пробел
 
+	if self.object:best_enemy() ~= nil then 
+		return false
+	end
+
 	self.a.evn:calculate()
 --	self.a.evn:print()
 
