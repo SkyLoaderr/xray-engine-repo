@@ -87,3 +87,4 @@ extern vecPT	HASH[h_size][h_size];
 
 extern void		Jitter_Select(UVpoint* &Jitter, DWORD& Jcount);
 
+#define BORDER 2

@@ -4,8 +4,6 @@
 #include "xrIsect.h"
 #include "math.h"
 
-#define BORDER 2
-
 vecDefl					g_deflectors;
 CDeflector*				Deflector = 0;
 
@@ -41,21 +39,6 @@ CDeflector::~CDeflector()
 	DeleteObject(hPen);
 	DestroyWindow(hw);
 #endif
-}
-
-int		GetMapSize(float pix)
-{
-	pix *= g_params.m_lm_pixels_per_meter;
-
-	if (pix<2)		return 2;
-	if (pix<4)		return 4;		// smallest lightmap 4x4
-	if (pix<8)		return 8;
-	if (pix<16)		return 16;
-	if (pix<32)		return 32;
-	if (pix<64)		return 64;
-	if (pix<128)	return 128;
-	if (pix<256)	return 256;
-	return 512;						// largest - 512x512
 }
 
 VOID CDeflector::OA_Export()
@@ -113,7 +96,7 @@ VOID CDeflector::OA_Export()
 	lm.dwWidth  = iCeil(size.u*g_params.m_lm_pixels_per_meter*density+.5f); clamp(lm.dwWidth, 1ul,512ul-2*BORDER);
 	lm.dwHeight = iCeil(size.v*g_params.m_lm_pixels_per_meter*density+.5f); clamp(lm.dwHeight,1ul,512ul-2*BORDER);
 	lm.bHasAlpha= FALSE;
-	iArea		= lm.dwWidth*lm.dwHeight;
+	iArea		= (lm.dwWidth+2*BORDER)*(lm.dwHeight+2*BORDER);
 
 	// Setup variables
 	UVpoint		dim;
@@ -139,8 +122,8 @@ VOID CDeflector::OA_Export()
 	}
 	bb.getsphere(Center,Radius);
 
-	lm.dwWidth	+= 2*BORDER;	// border
-	lm.dwHeight	+= 2*BORDER;	// border
+//	lm.dwWidth	+= 2*BORDER;	// border
+//	lm.dwHeight	+= 2*BORDER;	// border
 }
 
 BOOL CDeflector::OA_Place(Face *owner)

@@ -234,9 +234,9 @@ void CBuild::MergeLM()
 				SEL.push_back(Deflector);
 				for (int K=0; K<(int)SEL.size(); K++)
 				{
-					_rect T; 
-					T.a.set(0,0);
-					T.b.set(SEL[K]->lm.dwWidth-1,SEL[K]->lm.dwHeight-1);
+					_rect	T; 
+					T.a.set	(0,0);
+					T.b.set	(SEL[K]->lm.dwWidth+2*BORDER-1, SEL[K]->lm.dwHeight+2*BORDER-1);
 					T.iArea = SEL[K]->iArea;
 					selected.push_back(T);
 					perturb.push_back(K);
