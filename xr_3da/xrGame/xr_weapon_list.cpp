@@ -216,10 +216,6 @@ void CWeaponList::LeaveWeapon(CLASS_ID cls)
 
 void CWeaponList::Update(float dt, BOOL bHUDView)
 {
-	// Update all needed weapons
-	for (DWORD it=0; it<m_Weapons.size(); it++)
-		if (m_Weapons[it]->IsUpdating())	m_Weapons[it]->Update(dt,bHUDView);
-
 	// Change weapon if needed and can be done
 	if (m_iSelectedWeapon>=0)	
 	{
@@ -229,6 +225,10 @@ void CWeaponList::Update(float dt, BOOL bHUDView)
 			m_Weapons[m_iActiveWeapon]->Show	();
 		}
 	}
+
+	// Update all needed weapons
+	for (DWORD it=0; it<m_Weapons.size(); it++)
+		if (m_Weapons[it]->IsUpdating())	m_Weapons[it]->Update(dt,bHUDView);
 }
 
 void CWeaponList::OnRender(BOOL bHUDView)
