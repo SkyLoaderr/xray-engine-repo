@@ -22,7 +22,8 @@ FHierrarhyVisual::FHierrarhyVisual()  : CVisual()
 FHierrarhyVisual::~FHierrarhyVisual()
 {
 	if (!bDontDelete) {
-		for (DWORD i=0; i<children.size(); i++)	_DELETE(children[i]);
+		for (DWORD i=0; i<children.size(); i++)	
+			::Render->model_Delete(children[i]);
 	}
 	children.clear();
 }

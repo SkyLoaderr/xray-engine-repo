@@ -193,24 +193,27 @@ void CEnvironment::SetGradient(float b)
 
 void CEnvironment::OnDeviceCreate()
 {
-	if (pCreator->pLevel->LineExists("environment","sky"))
+	if ((0==pSkydome) && (pCreator->pLevel->LineExists("environment","sky")))
 	{
-		LPCSTR S = pCreator->pLevel->ReadSTRING("environment","sky");
-		if (0==pSkydome)	pSkydome = Render->model_Create(S);
-	} else pSkydome			= NULL;
+		LPCSTR S			= pCreator->pLevel->ReadSTRING("environment","sky");
+		pSkydome			= Render->model_Create	(S);
+		Log("----------------------- CREATE");
+	} else {
+		pSkydome			= 0;
+	}
 	
 	c_Invalidate	();
 }
 
 void CEnvironment::OnDeviceDestroy()
 {
+	Log("----------------------- DESTROY");
 	Render->model_Delete	(pSkydome);
 }
 
 extern float psHUD_FOV;
 void CEnvironment::RenderFirst()
 {
-
 	if (pSkydome) {
 		::Render->rmFar				();
 
