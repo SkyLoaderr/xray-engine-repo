@@ -103,6 +103,7 @@ function main_menu:InitControls()
 	btn:Init("ui\\ui_button_01",btn_ok_rect.x, btn_ok_rect.y, btn_ok_rect.width, btn_ok_rect.height)
 --  btn:Init(10,10,100,100) --or without texture
     btn:SetText("OK")
+	btn:SetFont(GetFontLetterica25())
 	btn:SetTextAlign(CGameFont.alCenter) --horizontal align. possible values are [alCenter,alLeft,alRight]
 	btn:SetTextY(20) --vertical align(pixel). set value to -1 for center
 	self:Register(btn) --for event-handling
