@@ -10,4 +10,5 @@ struct CScriptClass0 {
 	virtual ~CScriptClass0(){}
 };
 add_to_type_list(CScriptClass0)
+#undef script_type_list
 #define script_type_list save_type_list(CScriptClass0)

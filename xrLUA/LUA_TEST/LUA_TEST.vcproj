@@ -445,6 +445,18 @@
 			</File>
 			<File
 				RelativePath=".\registry_test.cpp">
+				<FileConfiguration
+					Name="Debug|Win32"
+					ExcludedFromBuild="TRUE">
+					<Tool
+						Name="VCCLCompilerTool"/>
+				</FileConfiguration>
+				<FileConfiguration
+					Name="Release|Win32"
+					ExcludedFromBuild="TRUE">
+					<Tool
+						Name="VCCLCompilerTool"/>
+				</FileConfiguration>
 			</File>
 			<File
 				RelativePath=".\script_class.cpp">
@@ -484,6 +496,13 @@
 						Name="VCCLCompilerTool"
 						CallingConvention="2"/>
 				</FileConfiguration>
+			</File>
+		</Filter>
+		<Filter
+			Name="tests"
+			Filter="">
+			<File
+				RelativePath=".\abstract_registry.cpp">
 			</File>
 		</Filter>
 		<File

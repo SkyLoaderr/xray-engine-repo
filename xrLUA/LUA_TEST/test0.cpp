@@ -8,9 +8,11 @@
 
 #include "stdafx.h"
 
+#pragma warning(push)
+#pragma warning(disable:4995)
 #pragma warning(disable:4530)
 #include "xrCore.h"
-#pragma warning(default:4530)
+#pragma warning(pop)
 
 // Lua
 #include "lua.h"
@@ -912,40 +914,40 @@ void register_classB(lua_State *L)
 void print_local_variables(lua_State *L)
 {
 	return;
-//	lua_Debug ar = stack_levels[curr_stack_level];
+////	lua_Debug ar = stack_levels[curr_stack_level];
+////	int i;
+////	const char *name;
+////	i = 1;
+////	while ((name = lua_getlocal(L, &ar, i++)) != NULL) {
+////		printf("local %d %s\n", i-1, name);
+////		lua_pop(L, 1);  /* remove variable value */
+////	}
+//////	lua_getinfo(L, "f", &ar);  /* retrieves function */
+////	i = 1;
+////	while ((name = lua_getupvalue(L, -1, i++)) != NULL) {
+////		printf("upvalue %d %s\n", i-1, name);
+////		lua_pop(L, 1);  /* remove upvalue value */
+////	}
+//	if (!curr_stack_level)
+//		return;
+//	lua_Debug ar;
 //	int i;
 //	const char *name;
+//	if (lua_getstack(L, curr_stack_level-1, &ar) == 0)
+//		return ;  /* failure: no such level in the stack */
 //	i = 1;
 //	while ((name = lua_getlocal(L, &ar, i++)) != NULL) {
 //		printf("local %d %s\n", i-1, name);
+//		if (lua_istable(L,-1))
+//			print_local_table(L,"",true);
 //		lua_pop(L, 1);  /* remove variable value */
 //	}
-////	lua_getinfo(L, "f", &ar);  /* retrieves function */
+//	lua_getinfo(L, "f", &ar);  /* retrieves function */
 //	i = 1;
 //	while ((name = lua_getupvalue(L, -1, i++)) != NULL) {
 //		printf("upvalue %d %s\n", i-1, name);
 //		lua_pop(L, 1);  /* remove upvalue value */
 //	}
-	if (!curr_stack_level)
-		return;
-	lua_Debug ar;
-	int i;
-	const char *name;
-	if (lua_getstack(L, curr_stack_level-1, &ar) == 0)
-		return ;  /* failure: no such level in the stack */
-	i = 1;
-	while ((name = lua_getlocal(L, &ar, i++)) != NULL) {
-		printf("local %d %s\n", i-1, name);
-		if (lua_istable(L,-1))
-			print_local_table(L,"",true);
-		lua_pop(L, 1);  /* remove variable value */
-	}
-	lua_getinfo(L, "f", &ar);  /* retrieves function */
-	i = 1;
-	while ((name = lua_getupvalue(L, -1, i++)) != NULL) {
-		printf("upvalue %d %s\n", i-1, name);
-		lua_pop(L, 1);  /* remove upvalue value */
-	}
 }
 
 struct CInternal {
@@ -1055,11 +1057,13 @@ struct CMemCallbackHolder {
 extern void script_test();
 extern void delegate_test();
 extern void registry_test();
+extern void abstract_registry_test();
 
 void test1()
 {
 //	registry_test();
-	delegate_test();
+	abstract_registry_test();
+//	delegate_test();
 //	script_test();
 ////	printf	("%s\n",typeid(final::Head).name());
 ////	printf	("%s\n",typeid(final::Tail::Head).name());

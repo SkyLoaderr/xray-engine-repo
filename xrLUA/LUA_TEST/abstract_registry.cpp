@@ -1,8 +1,13 @@
 #include "stdafx.h"
+#pragma warning(push)
+#pragma warning(disable:4995)
 #include "xrCore.h"
+#pragma warning(pop)
 #undef STATIC_CHECK
 #include <typelist.h>
 #include <hierarchygenerators.h>
+#include <boost/function.hpp>
+#include <boost/bind.hpp>
 #include <boost/type_traits/is_base_and_derived.hpp>
 
 __interface IPureALifeLObject {
@@ -16,6 +21,10 @@ public:
 };
 
 __interface IPureALifeLSObject : public IPureALifeLObject, public IPureALifeSObject {
+};
+
+__interface IPureALifeXObject {
+	virtual void					foo(int a, int b)			= 0;
 };
 
 struct TestLoad : public IPureALifeLObject {
@@ -66,10 +75,15 @@ struct TestClear {
 	}
 };
 
-struct TestClear1 : public TestClear {
+struct TestClear1 : public TestClear, public IPureALifeXObject {
 	virtual ~TestClear1()
 	{
 		printf						("TestClear::~TestClear() called\n");
+	}
+
+	virtual void					foo(int a, int b)
+	{
+		printf						("TestClear1::foo(%d, %d) called\n",a,b);
 	}
 };
 
@@ -143,17 +157,8 @@ ADD(r128,relations1)
 #undef final
 #define final SAVE(r128)
 
-struct CStartType {
-//	template <typename T>
-//	IC		T			&registry(T *) const
-//	{
-//		NODEFAULT;
-//		return			(T());
-//	}
-};
-
 template <typename _type>
-class CLinearRegistryType1
+class CLinearRegistryTypeBase
 {
 public:
 	typedef _type		REGISTRY;
@@ -162,77 +167,39 @@ protected:
 	REGISTRY			*m_registry;
 
 public:
-	IC					CLinearRegistryType1	()
+	IC					CLinearRegistryTypeBase	()
 	{
 		m_registry		= new REGISTRY();
 	}
 
-	virtual				~CLinearRegistryType1	()
+	virtual				~CLinearRegistryTypeBase()
 	{
 		delete			(m_registry);
 	}
 
-	IC		REGISTRY	&registry			(REGISTRY *) const
+	IC		REGISTRY	&registry				(REGISTRY *) const
 	{
 		return			(*m_registry);
 	}
 };
 
 template <typename _type, typename _base>
-class CLinearRegistryType : public _base, public CLinearRegistryType1<_type>
+class CLinearRegistryType : public _base, public CLinearRegistryTypeBase<_type>
 {
 public:
-	using CLinearRegistryType1<_type>::registry;
+	using CLinearRegistryTypeBase<_type>::registry;
 	using _base::registry;
 };
 
 template <typename _type>
-class CLinearRegistryType<_type,Loki::EmptyType> : public Loki::EmptyType, public CLinearRegistryType1<_type>
+class CLinearRegistryType<_type,Loki::EmptyType> : public Loki::EmptyType, public CLinearRegistryTypeBase<_type>
 {
 public:
-	using CLinearRegistryType1<_type>::registry;
+	using CLinearRegistryTypeBase<_type>::registry;
 };
 
-template <typename T, typename Head>
-struct CRegistryHelperLoad {
-	template <bool loadable>
-	static void do_load(T *self)
-	{
-	}
-
-	template <>
-	static void do_load<true>(T *self)
-	{
-		self->registry((Head*)0).load();
-	}
-
-	static void process(T *self)
-	{
-		do_load<boost::is_base_and_derived<IPureALifeLObject,Head>::value>(self);
-	}
-};
-
-template <typename T, typename Head>
-struct CRegistryHelperSave {
-	template <bool loadable>
-	static void do_save(T *self)
-	{
-	}
-
-	template <>
-	static void do_save<true>(T *self)
-	{
-		self->registry((Head*)0).save();
-	}
-
-	static void process(T *self)
-	{
-		do_save<boost::is_base_and_derived<IPureALifeSObject,Head>::value>(self);
-	}
-};
-
-template <template <typename _1, typename _2> class helper, typename T, typename TList>
-class CRegistryHelperProcess
+template <typename T1, typename T2, typename T3, typename TList>
+class CRegistryHelper
 {
 private:
 	ASSERT_TYPELIST(TList);
@@ -240,52 +207,107 @@ private:
 	typedef typename TList::Head Head;
 	typedef typename TList::Tail Tail;
 
+	template <typename T1, typename T2, typename T3, typename Head>
+	struct CRegistryHelperCall {
+		template <bool is_callable>
+		static void do_call(T1 *self, const T2 &p2)
+		{
+		}
+
+		template <>
+		static void do_call<true>(T1 *self, const T2 &p2)
+		{
+			p2(self->registry((Head*)0));
+		}
+
+		static void process(T1 *self, const T2 &p2)
+		{
+			do_call<boost::is_base_and_derived<T3,Head>::value>(self,p2);
+		}
+	};
+
 public:
-	template <typename T1>
-	static void go_process(T *self)
+	template <typename T>
+	static void go_process(T1 *self, const T2 &p2)
 	{
-		CRegistryHelperProcess<helper,T,Tail>::process(self);
+		CRegistryHelper<T1,T2,T3,Tail>::process(self,p2);
 	}
 
 	template <>
-	static void go_process<Loki::NullType>(T *self)
+	static void go_process<Loki::NullType>(T1 *self, const T2 &p2)
 	{
 	}
 
-	static void process(T *self)
+	static void process(T1 *self, const T2 &p2 = T2())
 	{
-		go_process<Tail>(self);
-		helper<T,Head>::process(self);
+		go_process<Tail>(self,p2);
+		CRegistryHelperCall<T1,T2,T3,Head>::process(self,p2);
 	}
 };
+
+template <typename func_type>
+struct CCaller {
+	func_type f;
+
+	IC				CCaller		(const func_type &_f) 
+									: f(_f)
+	{
+	}
+
+	template <typename T1>
+	IC		void	operator()	(T1 &p1) const
+	{
+		f(&p1);
+	}
+};
+
+template <typename T0, typename T1, typename T2, typename T3>
+void hierarchy_call(T3 *self, const T2 &caller)
+{
+	typedef boost::function<T0 (T1*)> func_type;
+	CRegistryHelper<T3,CCaller<func_type>,T1,final>::process(self,CCaller<func_type>(func_type(caller)));
+}
 
 class CRegistryContainer : public Loki::GenLinearHierarchy<final,CLinearRegistryType>::LinBase
 {
 public:
-//	template <typename T>
-//	T &registry(const T*)
-//	{
-//		const int value = Loki::TL::IndexOf<final,T>::value;
-//		STATIC_CHECK(value != -1,There_is_no_specified_registry_in_the_registry_container);
-//		return	(*static_cast<T*>(this));
-//	}
-
+	
 	virtual void load()
 	{
-		CRegistryHelperProcess<CRegistryHelperLoad,CRegistryContainer,final>::process(this);
+		hierarchy_call<void,IPureALifeLObject>(
+			this,
+			IPureALifeLObject::load
+		);
 	}
 
 	virtual void save()
 	{
-		CRegistryHelperProcess<CRegistryHelperSave,CRegistryContainer,final>::process(this);
+		hierarchy_call<void,IPureALifeSObject>(
+			this,
+			IPureALifeSObject::save
+		);
+	}
+
+	virtual void foo(int a, int b)
+	{
+		hierarchy_call<void,IPureALifeXObject>(
+			this,
+			boost::bind(
+				IPureALifeXObject::foo,
+				_1,
+				a,
+				b
+			)
+		);
 	}
 };
 
-void registry_test()
+void abstract_registry_test()
 {
 	CRegistryContainer			registry_container;
 	registry_container.load		();
 	registry_container.save		();
+	registry_container.foo		(6,7);
 	registry_container.registry	((r8*)0);
 	registry_container.registry	((r16*)0);
 	registry_container.registry	((r32*)0);

@@ -3,10 +3,12 @@
 
 #include "stdafx.h"
 
+#pragma warning(push)
+#pragma warning(disable:4995)
 #pragma warning(disable:4530)
 #include "xrCore.h"
 #pragma comment(lib,"x:/xrCore.lib")
-#pragma warning(default:4530)
+#pragma warning(pop)
 
 // Lua
 #include "lua.h"
@@ -1500,70 +1502,71 @@ int __cdecl main(int argc, char* argv[])
 	test1();
 //	test0();
 	return 0;
-	printf	("xrLuaCompiler v0.1\n");
-//	if (argc < 2) {
-//		printf	("Syntax : xrLuaCompiler.exe <file1> <file2> ... <fileN>\nAll the files must be in the directory \"s:\\gamedata\\scripts\" \nwith \".script\" extension\n");
-//		return 0;
-//	}
-
-	string4096		SSS;
-	strcpy			(SSS,"");
-	g_ca_stdout		= SSS;
-
-	L = lua_open();
-
-	if (!L)
-		lua_error	(L);
-
-	luaopen_base	(L);
-	luaopen_string	(L);
-	luaopen_math	(L);
-	luaopen_table	(L);
-	luaopen_debug	(L);
-
-	lua_settop		(L,0);
-
-	lua_pushstring	(L,"_0");
-	lua_pushstring	(L,"_1");
-	lua_pushstring	(L,"_2");
-	lua_pushstring	(L,"_3");
-	lua_pushstring	(L,"_4");
-
-	open			(L);
-	
-	printf			("Stack level %d",lua_gettop(L));
-
-	vfPrintTable	(L,"_G",true);
-//	function		(L,"this",lua_this);
-//	for (int i=1; i<argc; i++) {
-//		string256	l_caScriptName;
-//		strconcat	(l_caScriptName,"s:\\gamedata\\scripts\\","test_this._1._2._3",".script");
-//		printf		("File %s : ",l_caScriptName);
-//		bool		b = load_file_into_namespace(L,l_caScriptName,xr_strlen(argv[i]) ? argv[i] : "_G",true);
-//		print_stack	(L);
-//		lua_dostring	(L,"test_this._1._2._3.main()");
-//		if (xr_strlen(SSS)) {
-//			printf		("\n%s\n",SSS);
-//			strcpy		(SSS,"");
-//		}
-//		else
-//			if (b)
-//				printf	("0 syntax errors\n");
-//	}
-
-	printf			("Stack level %d\n",lua_gettop(L));
-	
-	print_stack		(L);
-	
-	printf			("%s\n",lua_tostring(L,1));
-	printf			("%s\n",lua_tostring(L,2));
-	printf			("%s\n",lua_tostring(L,3));
-	printf			("%s\n",lua_tostring(L,4));
-	printf			("%s\n",lua_tostring(L,5));
-
-	lua_close		(L);
-
-//	check if we are yielded
-
-//	L->ci->state & CI_YIELD
+//
+//	printf	("xrLuaCompiler v0.1\n");
+////	if (argc < 2) {
+////		printf	("Syntax : xrLuaCompiler.exe <file1> <file2> ... <fileN>\nAll the files must be in the directory \"s:\\gamedata\\scripts\" \nwith \".script\" extension\n");
+////		return 0;
+////	}
+//
+//	string4096		SSS;
+//	strcpy			(SSS,"");
+//	g_ca_stdout		= SSS;
+//
+//	L = lua_open();
+//
+//	if (!L)
+//		lua_error	(L);
+//
+//	luaopen_base	(L);
+//	luaopen_string	(L);
+//	luaopen_math	(L);
+//	luaopen_table	(L);
+//	luaopen_debug	(L);
+//
+//	lua_settop		(L,0);
+//
+//	lua_pushstring	(L,"_0");
+//	lua_pushstring	(L,"_1");
+//	lua_pushstring	(L,"_2");
+//	lua_pushstring	(L,"_3");
+//	lua_pushstring	(L,"_4");
+//
+//	open			(L);
+//	
+//	printf			("Stack level %d",lua_gettop(L));
+//
+//	vfPrintTable	(L,"_G",true);
+////	function		(L,"this",lua_this);
+////	for (int i=1; i<argc; i++) {
+////		string256	l_caScriptName;
+////		strconcat	(l_caScriptName,"s:\\gamedata\\scripts\\","test_this._1._2._3",".script");
+////		printf		("File %s : ",l_caScriptName);
+////		bool		b = load_file_into_namespace(L,l_caScriptName,xr_strlen(argv[i]) ? argv[i] : "_G",true);
+////		print_stack	(L);
+////		lua_dostring	(L,"test_this._1._2._3.main()");
+////		if (xr_strlen(SSS)) {
+////			printf		("\n%s\n",SSS);
+////			strcpy		(SSS,"");
+////		}
+////		else
+////			if (b)
+////				printf	("0 syntax errors\n");
+////	}
+//
+//	printf			("Stack level %d\n",lua_gettop(L));
+//	
+//	print_stack		(L);
+//	
+//	printf			("%s\n",lua_tostring(L,1));
+//	printf			("%s\n",lua_tostring(L,2));
+//	printf			("%s\n",lua_tostring(L,3));
+//	printf			("%s\n",lua_tostring(L,4));
+//	printf			("%s\n",lua_tostring(L,5));
+//
+//	lua_close		(L);
+//
+////	check if we are yielded
+//
+////	L->ci->state & CI_YIELD
 }

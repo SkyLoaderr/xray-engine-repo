@@ -6,3 +6,5 @@
 #pragma once
 
 // TODO: reference additional headers your program requires here
+
+#pragma warning(disable:4100)
