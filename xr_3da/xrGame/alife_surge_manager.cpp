@@ -399,7 +399,7 @@ void CALifeSurgeManager::fill_redundant_objects		()
 	D_OBJECT_P_MAP::const_iterator	I = objects().objects().begin();
 	D_OBJECT_P_MAP::const_iterator	E = objects().objects().end();
 	for ( ; I != E; ++I)
-		if (redundant((*I).second))
+		if (redundant((*I).second) && ((*I).second->ID_Parent == 0xffff))
 			m_temp_objects.push_back((*I).second->ID);
 
 	if (m_temp_objects.empty())
