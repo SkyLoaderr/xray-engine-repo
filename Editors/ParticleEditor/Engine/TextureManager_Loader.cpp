@@ -202,11 +202,11 @@ void	CShaderManager::OnDeviceCreate	(CStream* FS)
 	}
 
 	// Load detail textures assotiation
-	LPCSTR		Iname		= "data\\textures\\textures.ltx";
+	LPCSTR		Iname		= "gamedata\\textures\\textures.ltx";
 	if (Engine.FS.Exist(Iname))	
 	{
 		CInifile	ini		(Iname);
-		CInifile::Sect& 	data = ini.ReadSection("assosiation");
+		CInifile::Sect& 	data = ini.ReadSection("association");
 		for (CInifile::SectIt I=data.begin(); I!=data.end(); I++)
 		{
 			texture_detail	D;

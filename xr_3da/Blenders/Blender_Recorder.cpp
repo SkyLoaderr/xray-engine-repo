@@ -73,8 +73,6 @@ void	CBlender_Compile::PassEnd			()
 
 void	CBlender_Compile::PassTemplate_Detail(LPCSTR Base)
 {
-	Log				("----------- 1");
-
 	// Parse texture
 	sh_list& lst=	L_textures;
 	int id		=	ParseName(Base);
@@ -84,12 +82,10 @@ void	CBlender_Compile::PassTemplate_Detail(LPCSTR Base)
 		N = lst [id];
 	}
 
-	Log				("----------- 2");
 	// 
 	LPCSTR		T,M;
 	if (!Device.Shader._GetDetailTexture(N,T,M))	return;
 
-	Log				("----------- 3");
 	// Detail
 	PassBegin		();
 	{
