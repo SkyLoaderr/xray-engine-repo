@@ -17,6 +17,7 @@ class	ENGINE_API	CTexture;
 class	ENGINE_API	CMatrix;
 class	ENGINE_API	CConstant;
 class	ENGINE_API	CRT;
+class	ENGINE_API	CRTC;
 
 struct	ENGINE_API	STextureList	: public svector<CTexture*,8>
 {
