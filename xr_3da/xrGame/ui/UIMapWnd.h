@@ -19,13 +19,14 @@
 #include "UIGlobalMapLocation.h"
 
 #include "UICharacterInfo.h"
-#include "UIScriptWnd.h"
+//#include "UIScriptWnd.h"
+#include "UIWndCallback.h"
 
 //////////////////////////////////////////////////////////////////////////
-class CUIGlobalMap: public CUIDialogWndEx{
+class CUIGlobalMap: public CUIWindow, public CUIWndCallback{
 	Frect			m_Box;
-	Irect			m_MinimizedRect;
-	Irect			m_NormalRect;
+	Ivector2		m_MinimizedSize;
+	Ivector2		m_NormalSize;
 	enum EState{
 		stNone,
 		stMinimized,
@@ -37,6 +38,8 @@ class CUIGlobalMap: public CUIDialogWndEx{
 	void			OnBtnMinimizedClick ();
 	void			OnBtnMaximizedClick ();
 public:
+	virtual void	SendMessage			(CUIWindow* pWnd, s16 msg, void* pData = NULL);
+
 					CUIGlobalMap		();
 	virtual			~CUIGlobalMap		();
 	
@@ -51,12 +54,19 @@ public:
 };
 DEFINE_MAP(shared_str,CUILocalMap*,GameMaps,GameMapsPairIt);
 
-class CUIMapWnd: public CUIDialogWndEx
+class CUIMapWnd: public CUIWindow
 {
-	typedef CUIDialogWndEx inherited;
+	typedef CUIWindow inherited;
 
 	CUIGlobalMap*	m_GlobalMap;
 	GameMaps		m_GameMaps;
+
+	CUIFrameWindow		m_UIMainFrame;
+	CUIScrollBar		m_UIMainScrollV,	m_UIMainScrollH;
+
+
+//	CUIFrameLineWnd		UIMainMapHeader;
+
 public:
 					CUIMapWnd				();
 	virtual			~CUIMapWnd				();
@@ -68,7 +78,8 @@ public:
 	void			InitLocalMapObjectives	(){}
 
 	void			SetActivePoint			(const Fvector &vNewPoint){}
-	virtual void	Draw					();
+	virtual void	OnMouse					(int x, int y, EUIMessages mouse_action);
+
 };
 
 /*

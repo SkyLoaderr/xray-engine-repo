@@ -9752,6 +9752,12 @@
 				<File
 					RelativePath=".\ui\UIMessages.h">
 				</File>
+				<File
+					RelativePath=".\ui\UIWndCallback.cpp">
+				</File>
+				<File
+					RelativePath=".\ui\UIWndCallback.h">
+				</File>
 				<Filter
 					Name="XML"
 					Filter="">

@@ -17,15 +17,18 @@
 #include "../alife_registry_wrappers.h"
 #include "../game_graph.h"
 
+const				SCROLLBARS_SHIFT			= 5;
+const				VSCROLLBAR_STEP				= 20; // В пикселях
+const				HSCROLLBAR_STEP				= 20; // В пикселях
 
 
 CUIGlobalMap::CUIGlobalMap()
 {
 	m_Box.set			(0,0,0,0);
-	m_MinimizedRect.set	(0,0,0,0);
-	m_NormalRect.set	(0,0,0,0);
+	m_MinimizedSize.set	(0,0);
+	m_NormalSize.set	(0,0);
 	m_State				= stNone;
-	Show				();
+	Show				(true);
 }
 
 CUIGlobalMap::~CUIGlobalMap()
@@ -47,18 +50,14 @@ void CUIGlobalMap::Init()
 	AttachChild				(background);
 	string256				path;
 	// load map state definition
-	strcpy					(path,"main_wnd:global_map:background:minimized_rect");
+	strcpy					(path,"main_wnd:global_map:background:minimized_size");
 	R_ASSERT3				(uiXml.NavigateToNode(path,0), "XML node not found", path);
-	m_MinimizedRect.x1		= uiXml.ReadAttribInt(path, 0, "x1", 0);
-	m_MinimizedRect.y1		= uiXml.ReadAttribInt(path, 0, "y1", 0);
-	m_MinimizedRect.x2		= uiXml.ReadAttribInt(path, 0, "x2", 0);
-	m_MinimizedRect.y2		= uiXml.ReadAttribInt(path, 0, "y2", 0);
-	strcpy					(path,"main_wnd:global_map:background:normal_rect");
+	m_MinimizedSize.x		= uiXml.ReadAttribInt(path, 0, "w", 0);
+	m_MinimizedSize.y		= uiXml.ReadAttribInt(path, 0, "h", 0);
+	strcpy					(path,"main_wnd:global_map:background:normal_size");
 	R_ASSERT3				(uiXml.NavigateToNode(path,0), "XML node not found", path);
-	m_NormalRect.x1			= uiXml.ReadAttribInt(path, 0, "x1", 0);
-	m_NormalRect.y1			= uiXml.ReadAttribInt(path, 0, "y1", 0);
-	m_NormalRect.x2			= uiXml.ReadAttribInt(path, 0, "x2", 0);
-	m_NormalRect.y2			= uiXml.ReadAttribInt(path, 0, "y2", 0);
+	m_NormalSize.x			= uiXml.ReadAttribInt(path, 0, "w", 0);
+	m_NormalSize.y			= uiXml.ReadAttribInt(path, 0, "h", 0);
 
 	// minimized button
 	strcpy						(path,"main_wnd:global_map:background:minimized_btn");
@@ -84,17 +83,27 @@ void CUIGlobalMap::Init()
 	AddCallback			("maximized_btn",BUTTON_CLICKED,boost::bind(&CUIGlobalMap::OnBtnMaximizedClick,this));
 }
 
+void	CUIGlobalMap::SendMessage			(CUIWindow* pWnd, s16 msg, void* pData)
+{
+	CUIWndCallback::OnEvent(pWnd, msg, pData);
+}
+
 
 void CUIGlobalMap::SwitchTo(CUIGlobalMap::EState new_state)
 {
 	if (new_state!=m_State){
-		CUIStatic* background	= GetControl<CUIStatic>("background"); VERIFY(background);
+		CUIWindow* background = FindChild("background");
+		VERIFY(background);
+
 		switch (new_state){
-		case stMinimized:		background->SetWndRect(m_MinimizedRect);			break;
-		case stNormal:			background->SetWndRect(m_NormalRect);				break;
-		case stMaximized:		background->SetWndRect(GetParent()->GetWndRect());	break;
+		case stMinimized:		SetWidth(m_MinimizedSize.x); SetHeight(m_MinimizedSize.y);	break;
+		case stNormal:			SetWidth(m_NormalSize.x); SetHeight(m_NormalSize.y);		break;
+		case stMaximized:		SetWidth(GetParent()->GetWidth()); SetHeight(GetParent()->GetHeight());	break;
 		}
 		m_State					= new_state;
+
+		background->SetWidth(	GetWidth()	);
+		background->SetHeight(	GetHeight()	);
 	}
 }
 
@@ -121,7 +130,7 @@ CUIMapWnd::CUIMapWnd()
 {
 	m_GlobalMap				= xr_new<CUIGlobalMap>();
 	m_GlobalMap->SetAutoDelete(true);
-	AttachChild				(m_GlobalMap);
+//	AttachChild				(m_GlobalMap);
 }
 
 CUIMapWnd::~CUIMapWnd()
@@ -138,7 +147,28 @@ void CUIMapWnd::Init()
 	CUIXmlInit xml_init;
 	xml_init.InitWindow		(uiXml, "main_wnd", 0, this);
 
-	m_GlobalMap->Init		();
+//	m_GlobalMap->Init		();
+
+
+	AttachChild(&m_UIMainFrame);
+	xml_init.InitFrameWindow(uiXml, "main_wnd:main_map_frame", 0, &m_UIMainFrame);
+	m_UIMainFrame.AttachChild(&m_UIMainScrollH);
+	m_UIMainFrame.AttachChild(&m_UIMainScrollV);
+
+
+	RECT r = m_UIMainFrame.GetWndRect();
+
+	m_UIMainScrollV.Init(r.right + SCROLLBARS_SHIFT, r.top, r.bottom - r.top, false);
+	m_UIMainScrollV.SetMessageTarget(this);
+	m_UIMainScrollV.Show(true);
+
+	m_UIMainScrollH.Init(r.left, r.bottom + SCROLLBARS_SHIFT, r.right - r.left, true);
+	m_UIMainScrollH.SetMessageTarget(this);
+	m_UIMainScrollH.Show(true);
+
+//	AttachChild(&UIMainMapHeader);
+//	xml_init.InitFrameLine(uiXml, "map_header_frame_line", 0, &UIMainMapHeader);
+
 }
 
 void CUIMapWnd::Show(bool status)
@@ -150,13 +180,14 @@ void CUIMapWnd::Show(bool status)
 //		SwitchMapMode					(emmLocal);
 //		SetLocalMap						(Level().name());
 	}
-	if (status)	inherited::Show();
-	else		inherited::Hide();
+	inherited::Show(status);
+//	if (status)	inherited::Show();
+//	else		inherited::Hide();
 }
 
-void CUIMapWnd::Draw()
+void CUIMapWnd::OnMouse	(int x, int y, EUIMessages mouse_action)
 {
-	inherited::Draw();
+	inherited::OnMouse(x, y, mouse_action);
 }
 /*
 using namespace InventoryUtilities;
