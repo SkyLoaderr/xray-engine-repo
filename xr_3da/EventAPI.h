@@ -21,9 +21,9 @@ class ENGINE_API CEventAPI
 		u32		P2;
 	};
 private:
-	vector<EVENT>		Events;
-	vector<Deferred>	Events_Deferred;
-	xrCriticalSection	CS;
+	xr_vector<EVENT>		Events;
+	xr_vector<Deferred>		Events_Deferred;
+	xrCriticalSection		CS;
 public:
 	EVENT	Create	(const char* N);
 	void	Destroy	(EVENT& E);

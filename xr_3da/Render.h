@@ -159,8 +159,8 @@ public:
 	virtual void					set_Object				(CObject*	O	)				= 0;
 	virtual void					add_Visual				(IVisual*	V	)				= 0;	// add visual leaf	(no culling performed at all)
 	virtual void					add_Geometry			(IVisual*	V	)				= 0;	// add visual(s)	(all culling performed)
-	virtual void					add_Lights				(vector<WORD> &V)				= 0;
-	virtual void					add_Glows				(vector<WORD> &V)				= 0;
+	virtual void					add_Lights				(xr_vector<u16> &V)				= 0;
+	virtual void					add_Glows				(xr_vector<u16> &V)				= 0;
 	virtual void					add_Patch				(Shader* S, const Fvector& P, float s, float a, BOOL bNearer)	= 0;
 	virtual void					add_Wallmark			(Shader* S, const Fvector& P, float s, CDB::TRI* T)				= 0;
 
@@ -171,7 +171,7 @@ public:
 	virtual void					ros_destroy				(IRender_ObjectSpecific* &)				= 0;
 
 	// Lighting
-	virtual void					L_select				(Fvector &pos, float fRadius, vector<xrLIGHT*>&	dest)			= 0;
+	virtual void					L_select				(Fvector &pos, float fRadius, xr_vector<xrLIGHT*>&	dest)			= 0;
 	virtual IRender_Light*			light_create			()										= 0;
 	virtual void					light_destroy			(IRender_Light* &)						= 0;
 

@@ -16,7 +16,7 @@ IC bool		p_sort			(CBlender* A, CBlender* B)
 	#define TYPES_EQUAL(A,B) (typeid(A).raw_name() == typeid(B).raw_name())
 #endif
 
-void		CBlender::CreatePalette(vector<CBlender*> &palette)
+void		CBlender::CreatePalette(xr_vector<CBlender*> &palette)
 {
 	// Create palette itself
 	R_ASSERT(palette.empty());

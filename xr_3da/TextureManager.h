@@ -44,20 +44,20 @@ private:
 	map_PS							m_ps;
 	map_TD							m_td;
 
-	vector<SState*>					v_states;
-	vector<SDeclaration*>			v_declarations;
-	vector<SGeometry*>				v_geoms;
-	vector<R_constant_table*>		v_constant_tables;
+	xr_vector<SState*>				v_states;
+	xr_vector<SDeclaration*>		v_declarations;
+	xr_vector<SGeometry*>			v_geoms;
+	xr_vector<R_constant_table*>	v_constant_tables;
 
 	// lists
-	vector<STextureList*>			lst_textures;
-	vector<SMatrixList*>			lst_matrices;
-	vector<SConstantList*>			lst_constants;
+	xr_vector<STextureList*>		lst_textures;
+	xr_vector<SMatrixList*>			lst_matrices;
+	xr_vector<SConstantList*>		lst_constants;
 
 	// main shader-array
-	vector<SPass*>					v_passes;
-	vector<ShaderElement*>			v_elements;
-	vector<Shader*>					v_shaders;
+	xr_vector<SPass*>				v_passes;
+	xr_vector<ShaderElement*>		v_elements;
+	xr_vector<Shader*>				v_shaders;
 
 	// misc
 	BOOL							bDeferredLoad;

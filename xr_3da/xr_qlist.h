@@ -6,7 +6,7 @@
 //-----------------------------------------------------------------------------------------------------------
 template <class TYPE> class		CQList
 {
-	vector<TYPE>	data;
+	xr_vector<TYPE>	data;
 public:
 	int				z_count, x_count;
 public:

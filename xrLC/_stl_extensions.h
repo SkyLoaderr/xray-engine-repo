@@ -1,6 +1,19 @@
 #ifndef _STL_EXT_internal
 #define _STL_EXT_internal
 
+#ifdef __BORLANDC__
+
+#define xr_vector vector
+#define xr_list list
+#define xr_deque deque
+#define xr_stack stack
+#define xr_set set
+#define xr_multiset multiset
+#define xr_map map
+#define xr_multimap multimap
+
+#else
+
 template <typename T>
 class	xr_allocator	: public std::allocator<T>	{
 public:
@@ -14,8 +27,10 @@ template	<typename T>							class	xr_deque 	: public std::deque<T,xr_allocator<T
 template	<typename T>							class	xr_stack 	: public std::stack<T,xr_deque<T> >				{};
 template	<typename K, class P=less<K> >			class	xr_set		: public std::set<K,P,xr_allocator<K> >			{};
 template	<typename K, class P=less<K> >			class	xr_multiset	: public std::multiset<K,P,xr_allocator<K> >	{};
-template	<typename K, class V, class P=less<K> >	class	xr_map 		: public std::map<K,V,P,xr_allocator<T> >		{};
-template	<typename K, class V, class P=less<K> >	class	xr_multimap : public std::multimap<K,V,P,xr_allocator<T> >	{};
+template	<typename K, class V, class P=less<K> >	class	xr_map 		: public std::map<K,V,P,xr_allocator<pair<const K,V> > >		{};
+template	<typename K, class V, class P=less<K> >	class	xr_multimap : public std::multimap<K,V,P,xr_allocator<pair<const K,V> > > 	{};
+
+#endif
 
 struct pred_str		: public std::binary_function<char*, char*, bool>	{	
 	IC bool operator()(const char* x, const char* y) const				{	return strcmp(x,y)<0;	}
@@ -25,19 +40,19 @@ struct pred_stri	: public std::binary_function<char*, char*, bool>	{
 };
 
 // STL extensions
-#define DEF_VECTOR(N,T)				typedef std::vector<T> N;	typedef N::iterator N##_it; typedef N::reference N##_ref
-#define DEF_LIST(N,T)				typedef std::list<T> N;		typedef N::iterator N##_it; typedef N::reference N##_ref
-#define DEF_DEQUE(N,T)				typedef std::deque<T> N;	typedef N::iterator N##_it; typedef N::reference N##_ref
-#define DEF_MAP(N,K,T)				typedef std::map<K,T> N;	typedef N::iterator N##_it; typedef N::reference N##_ref
+#define DEF_VECTOR(N,T)				typedef xr_vector<T> N;		typedef N::iterator N##_it;
+#define DEF_LIST(N,T)				typedef xr_list<T> N;		typedef N::iterator N##_it;
+#define DEF_DEQUE(N,T)				typedef xr_deque<T> N;		typedef N::iterator N##_it;
+#define DEF_MAP(N,K,T)				typedef xr_map<K,T> N;		typedef N::iterator N##_it;
 
-#define DEFINE_VECTOR(T,N,I)		typedef std::vector<T> N;	typedef N::iterator I;
-#define DEFINE_MAP(K,T,N,I)			typedef std::map<K,T> N;	typedef N::iterator I;
-#define DEFINE_MAP_PRED(K,T,N,I,P)	typedef std::map<K,T,P> N;	typedef N::iterator I;
-#define DEFINE_MMAP(K,T,N,I)		typedef std::multimap<K,T> N;typedef N::iterator I;
+#define DEFINE_VECTOR(T,N,I)		typedef xr_vector<T> N;		typedef N::iterator I;
+#define DEFINE_MAP(K,T,N,I)			typedef xr_map<K,T> N;		typedef N::iterator I;
+#define DEFINE_MAP_PRED(K,T,N,I,P)	typedef xr_map<K,T,P> N;	typedef N::iterator I;
+#define DEFINE_MMAP(K,T,N,I)		typedef xr_multimap<K,T> N;	typedef N::iterator I;
 #define DEFINE_SVECTOR(T,C,N,I)		typedef svector<T,C> N;		typedef N::iterator I;
-#define DEFINE_SET(T,N,I)			typedef std::set<T> N;		typedef N::iterator I;
-#define DEFINE_SET_PRED(T,N,I,P)	typedef std::set<T,P> N;	typedef N::iterator I;
-#define DEFINE_STACK(T,N)			typedef std::stack<T> N;
+#define DEFINE_SET(T,N,I)			typedef xr_set<T> N;		typedef N::iterator I;
+#define DEFINE_SET_PRED(T,N,I,P)	typedef xr_set<T,P> N;		typedef N::iterator I;
+#define DEFINE_STACK(T,N)			typedef xr_stack<T> N;
 
 #include "FixedVector.h"
 

@@ -414,9 +414,9 @@ namespace PAPI{
 	struct PAJet : public ParticleAction
 	{
 		pVector	centerL;	// Center of the fan (in local space)
-		pDomain accL;		// Acceleration vector domain  (in local space)
+		pDomain accL;		// Acceleration _vector domain  (in local space)
 		pVector	center;		// Center of the fan
-		pDomain acc;		// Acceleration vector domain
+		pDomain acc;		// Acceleration _vector domain
 		float magnitude;	// Scales acceleration
 		float epsilon;		// Softening parameter
 		float max_radius;	// Only influence particles within max_radius
@@ -596,7 +596,7 @@ namespace PAPI{
 		Methods
 	};
 
-	// Global state vector
+	// Global state _vector
 	struct _ParticleState
 	{
 		float	dt;

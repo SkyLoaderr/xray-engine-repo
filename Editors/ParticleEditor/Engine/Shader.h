@@ -57,7 +57,7 @@ struct	ENGINE_API	SDeclaration
 	u32								dwReference;
 
 	IDirect3DVertexDeclaration9*	dcl;		// in fact, may be a topper-level thing, but duplicated here for usability
-	vector<D3DVERTEXELEMENT9>		dcl_code;
+	xr_vector<D3DVERTEXELEMENT9>	dcl_code;
 };
 struct	ENGINE_API	SGeometry
 {

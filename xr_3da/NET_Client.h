@@ -4,9 +4,9 @@
 
 class ENGINE_API INetQueue
 {
-	xrCriticalSection	cs;
-	deque<NET_Packet*>	ready;
-	vector<NET_Packet*>	unused;
+	xrCriticalSection		cs;
+	xr_deque<NET_Packet*>	ready;
+	xr_vector<NET_Packet*>	unused;
 public:
 	INetQueue();
 	~INetQueue();
@@ -32,7 +32,7 @@ protected:
 	IDirectPlay8Address*	net_Address_server;
 	
 	xrCriticalSection		net_csEnumeration;
-	vector<HOST_NODE>		net_Hosts;
+	xr_vector<HOST_NODE>	net_Hosts;
 
 	NET_Compressor			net_Compressor;
 

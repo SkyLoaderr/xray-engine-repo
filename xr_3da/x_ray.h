@@ -31,7 +31,7 @@ public:
 	CGameFont*				pFontSystem;
 
 	// Levels
-	vector<sLevelInfo>		Levels;
+	xr_vector<sLevelInfo>	Levels;
 	u32						Level_Current;
 	void					Level_Scan			();
 	int						Level_ID			(LPCSTR name);

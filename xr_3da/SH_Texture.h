@@ -13,9 +13,9 @@ public:
 	u32								dwMemoryUsage;
 
 	// Sequence data
-	u32								seqMSPF;	// milliseconds per frame
-	vector<IDirect3DBaseTexture9*>	seqDATA;
-	BOOL							seqCycles;
+	u32									seqMSPF;	// milliseconds per frame
+	xr_vector<IDirect3DBaseTexture9*>	seqDATA;
+	BOOL								seqCycles;
 
 	// User-data
 	BOOL							bUser;

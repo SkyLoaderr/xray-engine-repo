@@ -36,8 +36,8 @@ private:
 		{	return dwTimeForExecute > I.dwTimeForExecute; }
 	};
 private:
-	vector<Item>	ItemsRT;
-	vector<Item>	Items;
+	xr_vector<Item>	ItemsRT;
+	xr_vector<Item>	Items;
 
 	IC void			Push	(Item& I);
 	IC void			Pop		();
