@@ -13,7 +13,8 @@ typedef TIItemSet::iterator		PSPIItem;
 typedef TIItemList::iterator	PPIItem;
 
 ///////////////////////////////////////////////////////////////////////////////////////////////////
-class CInventoryItem : public CGameObject {				// Предок объектов инвентаря
+class CInventoryItem : virtual public CGameObject 					// Предок объектов инвентаря
+{
 private:
 	typedef CGameObject	inherited;
 public:
@@ -37,6 +38,11 @@ public:
 	virtual s32		Sort(PIItem pIItem);						// !!! Переопределить. (см. в Inventory.cpp)
 	virtual bool	Merge(PIItem pIItem);						// !!! Переопределить. (см. в Inventory.cpp)
 
+	virtual void	OnH_B_Chield		();
+	virtual void	OnH_B_Independent	();
+
+	virtual void	UpdateCL	();
+
 	bool DetachAll();										// Разобрать иерархию объектов. Объект должен быть в рюкзаке
 	void Drop();											// Если объект в инвенторе, то он будет выброшен
 
@@ -54,15 +60,36 @@ public:
 	u32	Cost() {return m_cost;}
 
 
-	const char* m_sIconTexture;									//текстура с иконкой для меню
+	const char* m_sIconTexture;								//текстура с иконкой для меню
 	
 	int m_iGridWidth;										//ширина в сетке инвенторя
 	int m_iGridHeight;										//высота в сетке инвенторя
 
 };
 
+
 ///////////////////////////////////////////////////////////////////////////////////////////////////
-class CInventorySlot {									// Слот
+// Съедобная вещь
+class CEatableItem : public CInventoryItem 
+{
+private:
+	typedef CInventoryItem	inherited;
+public:
+	CEatableItem();
+	virtual ~CEatableItem();
+
+	virtual void Load(LPCSTR section);
+
+	//влияние при поедании вещи на параметры игрока
+	float m_fHealthInfluence;
+	float m_fPowerInfluence;
+	float m_fSatietyInfluence;
+	float m_fRadiationInfluence;
+};
+
+///////////////////////////////////////////////////////////////////////////////////////////////////
+class CInventorySlot					// Слот
+{									
 public:
 	CInventorySlot();
 	virtual ~CInventorySlot();
@@ -74,7 +101,9 @@ typedef xr_vector<CInventorySlot> TISlotArr;
 
 ///////////////////////////////////////////////////////////////////////////////////////////////////
 class CInventoryOwner;
-class CInventory {										// Инвентарь
+
+class CInventory						// Инвентарь 
+{				
 public:
 	CInventory();
 	virtual ~CInventory();
@@ -98,6 +127,8 @@ public:
 	void   Clear();											// clearing Inventory
 	virtual u32		dwfGetSameItemCount(LPCSTR caSection);	// get all the items with the same section name
 
+	bool Eat(PIItem pIItem);								// скушать предмет :)
+
 	TIItemSet m_all;										// Наборы объектов. m_all - все
 	TIItemList m_ruck, m_belt;								// Списки объектов. m_ruck - рюкзак, m_belt - пояс
 	TISlotArr m_slots;										// Слоты (фиксированное кол-во)
@@ -112,7 +143,8 @@ public:
 ///////////////////////////////////////////////////////////////////////////////////////////////////
 class CTrade;
 
-class CInventoryOwner {									// Примесь для актеров и неписей имеющих инвентарь
+class CInventoryOwner		// Примесь для актеров и неписей имеющих инвентарь 
+{							
 public:
 	CInventoryOwner();
 	virtual ~CInventoryOwner();

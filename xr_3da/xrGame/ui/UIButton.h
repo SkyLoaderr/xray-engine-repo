@@ -49,6 +49,8 @@ public:
 	void SetText(LPSTR str) {m_str = str;}
 	LPSTR GetText() {return m_str;}
 
+	//заново подготовить состояние
+    virtual void Reset();
 
 protected:
 	
@@ -77,7 +79,8 @@ protected:
 	///////////////////////////////////////	
 	//Графический интрефейс для рисования
 	///////////////////////////////////////
-	CUIStaticItem m_UIStaticItem;
+    CUIStaticItem m_UIStaticItem;
+	bool m_bAvailableTexture;
 	
 };
 

@@ -219,7 +219,7 @@ void CAI_Soldier::SelectAnimation(const Fvector& _view, const Fvector& _move, fl
 	CMotionDef*	tpTorsoAnimation=0;
 	CMotionDef*	tpGlobalAnimation=0;
 
-	if (fHealth <= 0) {
+	if (g_Health() <= 0) {
 		switch (m_cBodyState) {
 			case BODY_STATE_STAND : {
 				for (int i=0 ;i<5; i++)

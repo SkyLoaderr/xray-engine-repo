@@ -31,7 +31,7 @@
 
 #include "trade.h"
 
-#define	 WOUND_HIT	3  // todo: IF YOU SEE IT DELETE IT!!!
+#define	 eHitTypeWound	3  // todo: IF YOU SEE IT DELETE IT!!!
 
 ENGINE_API extern float		psHUD_FOV;
 extern	float				psSqueezeVelocity;
@@ -91,7 +91,7 @@ public:
 			P.w_s16			((s16)0);
 			P.w_vec3		(position_in_bone_space);
 			P.w_float		(.0f);
-//.			P.w_u16			(WOUND_HIT);	//hit type
+//.			P.w_u16			(eHitTypeWound);	//hit type
 			l_pActor->u_EventSend		(P);
 			//NET_Packet		P;
 			//l_pActor->u_EventGen		(P,GE_DIE,l_pActor->ID()	);
@@ -822,6 +822,7 @@ BOOL APIENTRY DllMain( HANDLE hModule,
 #include "customzone.h"
 #include "mosquitobald.h"
 #include "mincer.h"
+#include "radioactivezone.h"
 #include "level_changer.h"
 
 #include "simpledetector.h"
@@ -900,7 +901,7 @@ extern "C" {
 		case CLSID_Z_MINCER:			P = xr_new<CMincer>();				break;
 		case CLSID_Z_ACIDF:				P = xr_new<CMosquitoBald>();		break;
 		case CLSID_Z_GALANT:			P = xr_new<CMosquitoBald>();		break;
-		case CLSID_Z_RADIO:				P = xr_new<CMosquitoBald>();		break;
+		case CLSID_Z_RADIO:				P = xr_new<CRadioactiveZone>();		break;
 		case CLSID_Z_BFUZZ:				P = xr_new<CMosquitoBald>();		break;
 		case CLSID_Z_RUSTYH:			P = xr_new<CMosquitoBald>();		break;
 		case CLSID_Z_DEAD:				P = xr_new<CMosquitoBald>();		break;

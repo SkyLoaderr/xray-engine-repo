@@ -1,6 +1,8 @@
 #include "stdafx.h"
 #include "uigamesp.h"
 
+#include "actor.h"
+
 CUIGameSP::CUIGameSP(CUI* parent) : CUIGameCustom(parent) 
 {
 	m_bUserMenuShown = false;
@@ -65,7 +67,7 @@ bool CUIGameSP::IR_OnKeyboardPress(int dik)
 			}
 		}
 		break;
-	/*case DIK_T:
+	case DIK_T:
 		//start trade menu (just a test)
 		if(TradeMenu.IsShown())
 		{
@@ -89,8 +91,27 @@ bool CUIGameSP::IR_OnKeyboardPress(int dik)
 			}
 		}
 		return true;
-		break;*/
+		break;
 	}
+
+	
+	
+	CActor *l_pA = dynamic_cast<CActor*>(Level().CurrentEntity());
+	if(l_pA && l_pA->g_Alive() && !l_pA->GetPower())
+	{
+			if(!m_bUserMenuShown)
+			{
+				m_bUserMenuShown = true;
+
+				//start the inventory menu
+				InventoryMenu.Show();
+				m_Parent->ShowCursor();
+				m_Parent->HideIndicators();
+				InventoryMenu.Init();
+				return true;
+			}
+	}
+	
 
 	return false;
 }

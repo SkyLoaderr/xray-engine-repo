@@ -6,6 +6,8 @@
 #include "PSObject.h"
 #include "ParticlesObject.h"
 
+#pragma todo("Yura to Yura : add light when firing the missile")
+
 #define INVSQRT2 .70710678118654752440084436210485f
 static void GetBasis(const Fvector &n, Fvector &u, Fvector &v) {
 	if(_abs(n.z) > INVSQRT2) {
@@ -196,6 +198,7 @@ void CWeaponRPG7Grenade::Explode(const Fvector &pos, const Fvector &normal)
 			P.w_s16			(l_element);
 			P.w_vec3		(l_bs_pos);
 			P.w_float		(l_impuls);
+			P.w_u16			(eHitTypeWound);
 			u_EventSend		(P);
 			l_elsemnts.pop_front();
 			l_bs_positions.pop_front();
@@ -220,6 +223,7 @@ void CWeaponRPG7Grenade::Explode(const Fvector &pos, const Fvector &normal)
 				P.w_s16			((s16)RQ.element);
 				P.w_vec3		(l_bs_pos);
 				P.w_float		(l_hit/(E?E->HitScale(RQ.element):1.f));
+				P.w_u16			(eHitTypeWound);
 				u_EventSend		(P);
 			}
 			FragWallmark(l_dir, l_end, RQ);

@@ -96,7 +96,7 @@ void  CUI3dStatic::Draw()
 		FromScreenToItem(rect.right, rect.bottom, x2, y2);
 
 		float normal_size;
-		normal_size =abs(x2-x1)<abs(y2-y1)?abs(x2-x1):abs(y2-y1);
+		normal_size =_abs(x2-x1)<_abs(y2-y1)?_abs(x2-x1):_abs(y2-y1);
 		
 				
 		float radius = m_pCurrentItem->Visual()->vis.sphere.R;

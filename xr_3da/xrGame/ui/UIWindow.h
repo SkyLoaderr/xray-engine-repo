@@ -55,6 +55,7 @@ public:
 	//захватить/освободить мышь окном
 	//сообщение посылается дочерним окном родительскому
 	virtual void SetCapture(CUIWindow* pChildWindow, bool capture_status);
+	virtual CUIWindow* GetMouseCapturer(){return m_pMouseCapturer;}
 
 
 	//реакция на клавиатуру
@@ -64,7 +65,8 @@ public:
 
 	
 	//список перечисление, на которые должна быть предусмотрена реакция
-	typedef enum{} E_MESSAGE;
+	typedef enum{MOUSE_CAPTURE_LOST, 
+				 KEYBOARD_CAPTURE_LOST} E_MESSAGE;
 	
 	//обработка сообщений не предусмотреных стандартными обработчиками
 	//ф-ция должна переопределяться
@@ -144,6 +146,13 @@ protected:
 
 	//дочернее окно которое, захватило ввод мыши
 	CUIWindow* m_pMouseCapturer;
+	
+	//кто изначально иницировал
+	//захват фокуса, только он теперь
+	//может весь фокус и освободить
+	CUIWindow* m_pOrignMouseCapturer;
+
+
 	//дочернее окно которое, захватило ввод клавиатуры
 	CUIWindow* m_pKeyboardCapturer;
 

@@ -14,6 +14,7 @@
 #include "ai_sounds.h"
 #include "net_queue.h"
 
+
 class CHUDManager;
 class CParticlesObject;
 
@@ -182,6 +183,15 @@ public:
 	// C/D
 	CLevel();
 	virtual ~CLevel();
+
+
+	//by Dandy
+	//gets the time from the game simulation
+	//receive game time
+	IC	_TIME_ID CLevel::GetGameTime()
+	{
+		return(this->Server->game->GetGameTime());
+	}
 };
 
 IC CLevel&				Level()		{ return *((CLevel*) g_pGameLevel);			}

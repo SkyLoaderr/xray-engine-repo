@@ -10,6 +10,13 @@
 #include "UIXmlInit.h"
 
 
+#include "..\\actor.h"
+#include "..\\WeaponAmmo.h"
+#include "..\\hudmanager.h"
+
+
+
+
 
 
 //////////////////////////////////////////////////////////////////////
@@ -19,6 +26,7 @@
 CUIInventoryWnd::CUIInventoryWnd()
 {
 	m_pCurrentItem = NULL;
+	m_pCurrentDragDropItem = NULL;
 }
 
 CUIInventoryWnd::~CUIInventoryWnd()
@@ -80,17 +88,17 @@ void CUIInventoryWnd::Init()
 	UIPersonalWnd.InitLeftTop("ui\\ui_inv_personal_over_t", 5,10);
 
 	//Полосы прогресса
-	UIPersonalWnd.AttachChild(&UIProgressBar1);
-	xml_init.InitProgressBar(uiXml, "progress_bar", 0, &UIProgressBar1);
+	UIPersonalWnd.AttachChild(&UIProgressBarHealth);
+	xml_init.InitProgressBar(uiXml, "progress_bar", 0, &UIProgressBarHealth);
+	
+	UIPersonalWnd.AttachChild(&UIProgressBarSatiety);
+	xml_init.InitProgressBar(uiXml, "progress_bar", 1, &UIProgressBarSatiety);
 
-	UIPersonalWnd.AttachChild(&UIProgressBar2);
-	xml_init.InitProgressBar(uiXml, "progress_bar", 1, &UIProgressBar2);
+	UIPersonalWnd.AttachChild(&UIProgressBarPower);
+	xml_init.InitProgressBar(uiXml, "progress_bar", 2, &UIProgressBarPower);
 
-	UIPersonalWnd.AttachChild(&UIProgressBar3);
-	xml_init.InitProgressBar(uiXml, "progress_bar", 2, &UIProgressBar3);
-
-	UIPersonalWnd.AttachChild(&UIProgressBar4);
-	xml_init.InitProgressBar(uiXml, "progress_bar", 3, &UIProgressBar4);
+	UIPersonalWnd.AttachChild(&UIProgressBarRadiation);
+	xml_init.InitProgressBar(uiXml, "progress_bar", 3, &UIProgressBarRadiation);
 
 
 	UIPersonalWnd.AttachChild(&UIStaticPersonal);
@@ -101,9 +109,19 @@ void CUIInventoryWnd::Init()
 	//кнопки внизу
 	AttachChild(&UIButton1);
 	xml_init.InitButton(uiXml, "button", 0, &UIButton1);
-	
 	AttachChild(&UIButton2);
 	xml_init.InitButton(uiXml, "button", 1, &UIButton2);
+	AttachChild(&UIButton3);
+	xml_init.InitButton(uiXml, "button", 2, &UIButton3);
+	AttachChild(&UIButton4);
+	xml_init.InitButton(uiXml, "button", 3, &UIButton4);
+	AttachChild(&UIButton5);
+	xml_init.InitButton(uiXml, "button", 4, &UIButton5);
+	AttachChild(&UIButton6);
+	xml_init.InitButton(uiXml, "button", 5, &UIButton6);
+
+
+
 	
 
 	//Списки Drag&Drop
@@ -144,6 +162,13 @@ void CUIInventoryWnd::Init()
 	UIBagList.SetCheckProc(BagProc);
 
 
+	AttachChild(&UIPropertiesBox);
+	UIPropertiesBox.Init("ui\\ui_frame",0,0,300,300);
+	UIPropertiesBox.AddItem("Drop");
+	UIPropertiesBox.AddItem("Eat");
+	UIPropertiesBox.AddItem("Activate");
+	UIPropertiesBox.Hide();
+
 
 }
 
@@ -170,6 +195,7 @@ void CUIInventoryWnd::InitInventory(CInventory* pInv)
 	m_pCurrentItem = NULL;
 	UIStaticText.SetText(NULL);
 
+	UIPropertiesBox.Hide();
 
 	m_pInv = pInv;
 
@@ -202,11 +228,12 @@ void CUIInventoryWnd::InitInventory(CInventory* pInv)
 			{
 
 				CUIDragDropItem& UIDragDropItem = m_vDragDropItems[m_iUsedItems];		
-				UIDragDropItem.SetData(pInv->m_slots[i].m_pIItem);
-					
+				
 				UIDragDropItem.Init(pInv->m_slots[i].m_pIItem->m_sIconTexture, 0,0, 50,50);
 				UIDragDropItem.SetGridHeight(pInv->m_slots[i].m_pIItem->m_iGridHeight);
 				UIDragDropItem.SetGridWidth(pInv->m_slots[i].m_pIItem->m_iGridWidth);
+
+				UIDragDropItem.SetData(pInv->m_slots[i].m_pIItem);
 				
 				UITopList[i].AttachChild(&UIDragDropItem);
 				m_iUsedItems++;
@@ -221,11 +248,15 @@ void CUIInventoryWnd::InitInventory(CInventory* pInv)
 			{
 
 				CUIDragDropItem& UIDragDropItem = m_vDragDropItems[m_iUsedItems];		
-				UIDragDropItem.SetData((*it));
-
+				
 				UIDragDropItem.Init((*it)->m_sIconTexture, 0,0, 50,50);
 				UIDragDropItem.SetGridHeight((*it)->m_iGridHeight);
 				UIDragDropItem.SetGridWidth((*it)->m_iGridWidth);
+
+				UIDragDropItem.SetData((*it));
+
+				CWeaponAmmo* pWeaponAmmo  = dynamic_cast<CWeaponAmmo*>((*it));
+				if(pWeaponAmmo)	UIDragDropItem.SetCustomUpdate(AmmoUpdateProc);
 		
 				UIBeltList.AttachChild(&UIDragDropItem);
 				m_iUsedItems++;
@@ -242,11 +273,14 @@ void CUIInventoryWnd::InitInventory(CInventory* pInv)
 			if((*it)) 
 			{
 				CUIDragDropItem& UIDragDropItem = m_vDragDropItems[m_iUsedItems];		
-				UIDragDropItem.SetData((*it));
-
 				UIDragDropItem.Init((*it)->m_sIconTexture, 0,0, 50,50);
 				UIDragDropItem.SetGridHeight((*it)->m_iGridHeight);
 				UIDragDropItem.SetGridWidth((*it)->m_iGridWidth);
+
+				UIDragDropItem.SetData((*it));
+
+				CWeaponAmmo* pWeaponAmmo  = dynamic_cast<CWeaponAmmo*>((*it));
+				if(pWeaponAmmo)	UIDragDropItem.SetCustomUpdate(AmmoUpdateProc);
 
 		
 				UIBagList.AttachChild(&UIDragDropItem);
@@ -337,6 +371,7 @@ void CUIInventoryWnd::SendMessage(CUIWindow *pWnd, s16 msg, void *pData)
 		UIStaticText.SetText(pInvItem->NameComplex());
 		
 		m_pCurrentItem = pInvItem;
+		m_pCurrentDragDropItem = (CUIDragDropItem*)pWnd;
 	}
 	else if(msg == CUIDragDropItem::ITEM_DB_CLICK)
 	{
@@ -344,6 +379,7 @@ void CUIInventoryWnd::SendMessage(CUIWindow *pWnd, s16 msg, void *pData)
 		UIStaticText.SetText(pInvItem->NameComplex());
 
 		m_pCurrentItem = pInvItem;
+		m_pCurrentDragDropItem = (CUIDragDropItem*)pWnd;
 
 		//попытаться закинуть элемент в соответствующий слот
 		bool result = GetInventory()->Slot(pInvItem);
@@ -390,9 +426,112 @@ void CUIInventoryWnd::SendMessage(CUIWindow *pWnd, s16 msg, void *pData)
 			}
 		}
     }
+	//по нажатию правой кнопки 
+	else if(msg == CUIDragDropItem::ITEM_RBUTTON_CLICK)
+	{
+		PIItem pInvItem = (PIItem)((CUIDragDropItem*)pWnd)->GetData();
+		UIStaticText.SetText(pInvItem->NameComplex());
+		
+		m_pCurrentItem = pInvItem;
+		m_pCurrentDragDropItem = (CUIDragDropItem*)pWnd;
+
+		int x,y;
+		RECT rect = GetAbsoluteRect();
+		HUD().GetUI()->GetCursor()->GetPos(x,y);
+		
+		UIPropertiesBox.BringAllToTop();
+		UIPropertiesBox.Show(x-rect.left, y-rect.top);
+	}
+	//сообщение от меню вызываемого правой кнопкой
+	else if(pWnd == &UIPropertiesBox &&
+			msg == CUIPropertiesBox::PROPERTY_CLICKED)
+	{
+		switch(UIPropertiesBox.GetClickedIndex())
+		{
+		case 0:	//выкинуть объект
+			DropItem();
+			break;
+		case 1:
+			EatItem();
+			break;
+		}
+	}
+	else if(pWnd == &UIButton1 && msg == CUIButton::BUTTON_CLICKED)
+	{
+		CActor *l_pA = dynamic_cast<CActor*>(Level().CurrentEntity());
+		
+		if(l_pA)
+		{
+			l_pA->Sleep(1.f/6.f);
+		}
+	}
+	else if(pWnd == &UIButton2 && msg == CUIButton::BUTTON_CLICKED)
+	{
+		CActor *l_pA = dynamic_cast<CActor*>(Level().CurrentEntity());
+		
+		if(l_pA)
+		{
+			l_pA->Sleep(1.f);
+		}
+	}
+	else if(pWnd == &UIButton3 && msg == CUIButton::BUTTON_CLICKED)
+	{
+		CActor *l_pA = dynamic_cast<CActor*>(Level().CurrentEntity());
+		
+		if(l_pA)
+		{
+			l_pA->Sleep(1.f/60.f);
+		}
+	}
+	else if(pWnd == &UIButton4 && msg == CUIButton::BUTTON_CLICKED)
+	{
+		CActor *l_pA = dynamic_cast<CActor*>(Level().CurrentEntity());
+		
+		if(l_pA)
+		{
+			l_pA->ChangeHealth(l_pA->m_fMedkit);
+		}
+	}
+	else if(pWnd == &UIButton5 && msg == CUIButton::BUTTON_CLICKED)
+	{
+		CActor *l_pA = dynamic_cast<CActor*>(Level().CurrentEntity());
+		
+		if(l_pA)
+		{
+			l_pA->ChangeRadiation(-l_pA->m_fAntirad);
+		}
+	}
+	else if(pWnd == &UIButton6 && msg == CUIButton::BUTTON_CLICKED)
+	{
+		CActor *l_pA = dynamic_cast<CActor*>(Level().CurrentEntity());
+		
+		if(l_pA)
+		{
+			l_pA->ChangeSatiety(0.1f);
+		}
+	}
 
 
 	CUIWindow::SendMessage(pWnd, msg, pData);
+}
+
+
+void CUIInventoryWnd::OnMouse(int x, int y, E_MOUSEACTION mouse_action)
+{
+	//вызов дополнительного меню по правой кнопке
+	if(mouse_action == RBUTTON_DOWN)
+	{
+		if(UIPropertiesBox.IsShown())
+		/*{
+			UIPropertiesBox.Show(x,y);
+		}
+		else*/
+		{
+			UIPropertiesBox.Hide();
+		}
+	}
+
+	CUIWindow::OnMouse(x, y, mouse_action);
 }
 
 void CUIInventoryWnd::Draw()
@@ -407,3 +546,74 @@ void CUIInventoryWnd::Draw()
 	
 	CUIWindow::Draw();
 }
+
+
+//для надписей на иконках с оружием
+void CUIInventoryWnd::AmmoUpdateProc(CUIDragDropItem* pItem)
+{
+	CWeaponAmmo* pAmmoItem = (CWeaponAmmo*)(pItem->GetData());
+	RECT rect = pItem->GetAbsoluteRect();
+	
+		pItem->GetFont()->Out(float(rect.left), 
+							float(rect.bottom - pItem->GetFont()->CurrentHeight()- 2),
+							"%d",	pAmmoItem->m_boxCurr);
+}
+void CUIInventoryWnd::Update()
+{
+	CActor *l_pA = dynamic_cast<CActor*>(Level().CurrentEntity());
+
+	if(l_pA) 
+	{
+		UIProgressBarHealth.SetProgressPos(s16(l_pA->GetHealth()*1000));
+		UIProgressBarSatiety.SetProgressPos(s16(l_pA->GetSatiety()*1000));
+		UIProgressBarPower.SetProgressPos(s16(l_pA->GetPower()*1000));
+		UIProgressBarRadiation.SetProgressPos(s16(l_pA->GetRadiation()*1000));
+	}
+
+	CUIWindow::Update();
+}
+
+void CUIInventoryWnd::DropItem()
+{
+	CActor *l_pA = dynamic_cast<CActor*>(Level().CurrentEntity());
+	if(!l_pA) return;
+
+	m_pCurrentItem->Drop();
+	
+	/*NET_Packet P;
+	l_pA->u_EventGen(P,GE_OWNERSHIP_REJECT,l_pA->ID());
+	P.w_u16(u16(m_pCurrentItem->ID()));
+	l_pA->u_EventSend(P);*/
+
+	
+	m_pCurrentDragDropItem->GetParent()->DetachChild(m_pCurrentDragDropItem);
+
+	m_pCurrentItem = NULL;
+	m_pCurrentDragDropItem = NULL;
+}
+
+void CUIInventoryWnd::EatItem()
+{
+	CActor *l_pA = dynamic_cast<CActor*>(Level().CurrentEntity());
+	if(!l_pA) return;
+
+	if(l_pA->m_inventory.Eat(m_pCurrentItem))
+	{
+		m_pCurrentDragDropItem->GetParent()->DetachChild(m_pCurrentDragDropItem);
+		m_pCurrentItem = NULL;
+		m_pCurrentDragDropItem = NULL;
+	}
+
+	/*m_pCurrentItem->Drop();
+	
+	NET_Packet P;
+	l_pA->u_EventGen(P,GE_DESTROY,m_pCurrentItem->ID());
+	P.w_u16(u16(m_pCurrentItem->ID()));
+	l_pA->u_EventSend(P);*/
+
+	
+	
+
+}
+
+

@@ -107,3 +107,11 @@ void	game_sv_Single::OnPlayerKillPlayer	(u32 id_killer, u32 id_killed)
 	//	S->Perform_reject				(what,from);
 	//}
 }
+
+_TIME_ID game_sv_Single::GetGameTime		()
+{
+	if (m_tpALife && m_tpALife->m_bLoaded)
+		return(m_tpALife->tfGetGameTime());
+	else
+		return(inherited::GetGameTime());
+}

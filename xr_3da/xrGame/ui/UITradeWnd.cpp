@@ -40,7 +40,16 @@ void CUITradeWnd::Init()
 	UIFrameWnd.Init("ui\\ui_frame", 100,100, 600, 400);
 
 	UIFrameWnd.AttachChild(&UIEditBox);
-	UIEditBox.Init(10,10,500,300);
+	UIEditBox.Init(10,10,500,50);
+
+	UIFrameWnd.AttachChild(&UIEditBox1);
+	UIEditBox1.Init(10,200,500,150);
+
+	UIFrameWnd.AttachChild(&UIListWnd);
+	UIListWnd.Init(10,150, 333,333);
+	UIListWnd.AddItem("aaa");
+	UIListWnd.AddItem("bbb");
+
 	
 
 /*	CUIXml uiXml;

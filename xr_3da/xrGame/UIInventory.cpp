@@ -131,8 +131,10 @@ bool CUIInventory::IR_OnKeyboardPress(int dik)
 	{
 /*	
 		CInventory &l_inv = l_pA->m_inventory;
-		if(dik >= DIK_1 && dik <= DIK_9) {
-			if(m_deleteNext) {
+		if(dik >= DIK_1 && dik <= DIK_9) 
+		{
+			if(m_deleteNext) 
+			{
 				m_deleteNext = false;
 				if(!l_inv.m_slots[dik-DIK_1].m_pIItem) return true;
 				l_inv.m_slots[dik-DIK_1].m_pIItem->Drop();
@@ -140,7 +142,9 @@ bool CUIInventory::IR_OnKeyboardPress(int dik)
 				//l_pA->u_EventGen(P,GE_OWNERSHIP_REJECT,l_pA->ID());
 				//P.w_u16(u16(l_inv.m_slots[dik-DIK_1].m_pIItem->ID()));
 				//l_pA->u_EventSend(P);
-			} else if(dik-DIK_1 < (int)l_inv.m_slots.size()) l_inv.Ruck(l_inv.m_slots[dik-DIK_1].m_pIItem);
+			} 
+			else if(dik-DIK_1 < (int)l_inv.m_slots.size()) 
+					l_inv.Ruck(l_inv.m_slots[dik-DIK_1].m_pIItem);
 			return true;
 		} else if(gs_DIK2CHR[dik] >= 'a' && gs_DIK2CHR[dik] <= 'z') {
 			char l_c = 'a'; TIItemList l_tmpSet;
@@ -196,7 +200,13 @@ bool CUIInventory::IR_OnKeyboardPress(int dik)
 	if(dik==MOUSE_1)
 	{
 		UIInventoryWnd.OnMouse(m_pUICursor->GetPos().x,m_pUICursor->GetPos().y,
-			CUIWindow::LBUTTON_DOWN);
+								CUIWindow::LBUTTON_DOWN);
+		return true;
+	}
+	else if(dik==MOUSE_2)
+	{
+			UIInventoryWnd.OnMouse(m_pUICursor->GetPos().x,m_pUICursor->GetPos().y,
+									CUIWindow::RBUTTON_DOWN);
 		return true;
 	}
 
@@ -231,6 +241,12 @@ bool CUIInventory::IR_OnKeyboardRelease(int dik)
 	{
 		UIInventoryWnd.OnMouse(m_pUICursor->GetPos().x,m_pUICursor->GetPos().y,
 			CUIWindow::LBUTTON_UP);
+		return true;
+	}
+	else if(dik==MOUSE_2)
+	{
+			UIInventoryWnd.OnMouse(m_pUICursor->GetPos().x,m_pUICursor->GetPos().y,
+									CUIWindow::RBUTTON_UP);
 		return true;
 	}
 

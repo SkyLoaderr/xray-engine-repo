@@ -10,6 +10,10 @@
 
 #include "uibutton.h"
 
+class CUIDragDropItem;
+
+typedef void (*CUSTOM_UPDATE_PROC)(CUIDragDropItem* pItem);
+typedef void (*CUSTOM_DRAW_PROC)(CUIDragDropItem* pItem);
 
 
 class CUIDragDropItem : public CUIButton
@@ -32,7 +36,8 @@ public:
 					ITEM_DRAG = 0xFF0, 
 					ITEM_DROP, 
 					ITEM_MOVE,
-					ITEM_DB_CLICK} E_MESSAGE;
+					ITEM_DB_CLICK,
+					ITEM_RBUTTON_CLICK} E_MESSAGE;
 
 
 	virtual void Draw();
@@ -58,6 +63,11 @@ public:
 	void* GetData() {return m_pData;}
 	void SetData(void* pData) {m_pData = pData;}
 
+	void SetCustomUpdate(CUSTOM_UPDATE_PROC pCustomUpdateProc) 
+								{m_pCustomUpdateProc = pCustomUpdateProc;}
+	void SetCustomDraw(CUSTOM_DRAW_PROC pCustomDrawProc) 
+								{m_pCustomDrawProc = pCustomDrawProc;}
+
 
 protected:
 	
@@ -81,6 +91,9 @@ protected:
 	//указатель на произвольные данные которые могут быть
 	//присоеденены к элементу
 	void* m_pData; 
+
+	CUSTOM_UPDATE_PROC m_pCustomUpdateProc;
+	CUSTOM_DRAW_PROC m_pCustomDrawProc;
 };
 
 #endif // _UI_DRAG_DROP_ITEM_H_

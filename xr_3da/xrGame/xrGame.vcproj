@@ -543,16 +543,6 @@
 						</File>
 					</Filter>
 					<Filter
-						Name="ai_idol"
-						Filter="">
-						<File
-							RelativePath="AI\Idol\ai_idol.cpp">
-						</File>
-						<File
-							RelativePath="AI\Idol\ai_idol.h">
-						</File>
-					</Filter>
-					<Filter
 						Name="ai_rat"
 						Filter="">
 						<File
@@ -576,6 +566,16 @@
 						<File
 							RelativePath="AI\Rat\ai_rat_templates.cpp">
 						</File>
+						<Filter
+							Name="ai_idol"
+							Filter="">
+							<File
+								RelativePath="AI\Idol\ai_idol.cpp">
+							</File>
+							<File
+								RelativePath="AI\Idol\ai_idol.h">
+							</File>
+						</Filter>
 					</Filter>
 					<Filter
 						Name="ai_soldier"
@@ -641,16 +641,16 @@
 						<File
 							RelativePath="AI\Stalker\ai_stalker_space.h">
 						</File>
-					</Filter>
-					<Filter
-						Name="ai_trader"
-						Filter="">
-						<File
-							RelativePath="AI\Trader\ai_trader.cpp">
-						</File>
-						<File
-							RelativePath="AI\Trader\ai_trader.h">
-						</File>
+						<Filter
+							Name="ai_trader"
+							Filter="">
+							<File
+								RelativePath="AI\Trader\ai_trader.cpp">
+							</File>
+							<File
+								RelativePath="AI\Trader\ai_trader.h">
+							</File>
+						</Filter>
 					</Filter>
 					<Filter
 						Name="ai_crow"
@@ -755,6 +755,12 @@
 						RelativePath=".\ActorCameras.cpp">
 					</File>
 					<File
+						RelativePath=".\ActorCondition.cpp">
+					</File>
+					<File
+						RelativePath=".\ActorCondition.h">
+					</File>
+					<File
 						RelativePath=".\ActorInput.cpp">
 					</File>
 					<File
@@ -803,6 +809,12 @@
 					</File>
 					<File
 						RelativePath=".\Entity.h">
+					</File>
+					<File
+						RelativePath=".\EntityCondition.cpp">
+					</File>
+					<File
+						RelativePath=".\EntityCondition.h">
 					</File>
 					<File
 						RelativePath=".\GameObject.cpp">
@@ -1504,6 +1516,16 @@
 							RelativePath=".\level_changer.h">
 						</File>
 					</Filter>
+					<Filter
+						Name="RadioactiveZone"
+						Filter="">
+						<File
+							RelativePath=".\RadioactiveZone.cpp">
+						</File>
+						<File
+							RelativePath=".\RadioactiveZone.h">
+						</File>
+					</Filter>
 				</Filter>
 				<Filter
 					Name="_lamp"
@@ -1772,18 +1794,6 @@
 						RelativePath=".\ui\UICheckButton.h">
 					</File>
 					<File
-						RelativePath=".\ui\UIDragDropItem.cpp">
-					</File>
-					<File
-						RelativePath=".\ui\UIDragDropItem.h">
-					</File>
-					<File
-						RelativePath=".\ui\UIDragDropList.cpp">
-					</File>
-					<File
-						RelativePath=".\ui\UIDragDropList.h">
-					</File>
-					<File
 						RelativePath=".\ui\UIEditBox.cpp">
 					</File>
 					<File
@@ -1794,24 +1804,6 @@
 					</File>
 					<File
 						RelativePath=".\ui\UIFrameWindow.h">
-					</File>
-					<File
-						RelativePath=".\ui\UIInventoryWnd.cpp">
-					</File>
-					<File
-						RelativePath=".\ui\UIInventoryWnd.h">
-					</File>
-					<File
-						RelativePath=".\ui\UIMainIngameWnd.cpp">
-					</File>
-					<File
-						RelativePath=".\ui\UIMainIngameWnd.h">
-					</File>
-					<File
-						RelativePath=".\ui\UIMessageBox.cpp">
-					</File>
-					<File
-						RelativePath=".\ui\UIMessageBox.h">
 					</File>
 					<File
 						RelativePath=".\ui\UIProgressBar.cpp">
@@ -1832,28 +1824,10 @@
 						RelativePath=".\ui\UIRadioGroup.h">
 					</File>
 					<File
-						RelativePath=".\ui\UIScrollBar.cpp">
-					</File>
-					<File
-						RelativePath=".\ui\UIScrollBar.h">
-					</File>
-					<File
-						RelativePath=".\ui\UIScrollBox.cpp">
-					</File>
-					<File
-						RelativePath=".\ui\UIScrollBox.h">
-					</File>
-					<File
 						RelativePath=".\ui\UIStatic.cpp">
 					</File>
 					<File
 						RelativePath=".\ui\UIStatic.h">
-					</File>
-					<File
-						RelativePath=".\ui\UITradeWnd.cpp">
-					</File>
-					<File
-						RelativePath=".\ui\UITradeWnd.h">
 					</File>
 					<File
 						RelativePath=".\ui\UIWindow.cpp">
@@ -1881,6 +1855,104 @@
 						</File>
 						<File
 							RelativePath=".\ui\xrXMLParser.h">
+						</File>
+					</Filter>
+					<Filter
+						Name="InventoryWnd"
+						Filter="">
+						<File
+							RelativePath=".\ui\UIInventoryWnd.cpp">
+						</File>
+						<File
+							RelativePath=".\ui\UIInventoryWnd.h">
+						</File>
+					</Filter>
+					<Filter
+						Name="MainIngame"
+						Filter="">
+						<File
+							RelativePath=".\ui\UIMainIngameWnd.cpp">
+						</File>
+						<File
+							RelativePath=".\ui\UIMainIngameWnd.h">
+						</File>
+					</Filter>
+					<Filter
+						Name="MessageBox"
+						Filter="">
+						<File
+							RelativePath=".\ui\UIMessageBox.cpp">
+						</File>
+						<File
+							RelativePath=".\ui\UIMessageBox.h">
+						</File>
+					</Filter>
+					<Filter
+						Name="PropertiesBox"
+						Filter="">
+						<File
+							RelativePath=".\ui\UIPropertiesBox.cpp">
+						</File>
+						<File
+							RelativePath=".\ui\UIPropertiesBox.h">
+						</File>
+					</Filter>
+					<Filter
+						Name="ListBox"
+						Filter="">
+						<File
+							RelativePath=".\ui\UIListItem.cpp">
+						</File>
+						<File
+							RelativePath=".\ui\UIListItem.h">
+						</File>
+						<File
+							RelativePath=".\ui\UIListWnd.cpp">
+						</File>
+						<File
+							RelativePath=".\ui\UIListWnd.h">
+						</File>
+					</Filter>
+					<Filter
+						Name="ScrollBar"
+						Filter="">
+						<File
+							RelativePath=".\ui\UIScrollBar.cpp">
+						</File>
+						<File
+							RelativePath=".\ui\UIScrollBar.h">
+						</File>
+						<File
+							RelativePath=".\ui\UIScrollBox.cpp">
+						</File>
+						<File
+							RelativePath=".\ui\UIScrollBox.h">
+						</File>
+					</Filter>
+					<Filter
+						Name="DragDrop"
+						Filter="">
+						<File
+							RelativePath=".\ui\UIDragDropItem.cpp">
+						</File>
+						<File
+							RelativePath=".\ui\UIDragDropItem.h">
+						</File>
+						<File
+							RelativePath=".\ui\UIDragDropList.cpp">
+						</File>
+						<File
+							RelativePath=".\ui\UIDragDropList.h">
+						</File>
+					</Filter>
+					<Filter
+						Name="TradeWnd"
+						Filter="">
+						<File
+							RelativePath=".\ui\UITradeWnd.cpp">
+						</File>
+						<File
+							RelativePath=".\ui\UITradeWnd.h">
 						</File>
 					</Filter>
 				</Filter>

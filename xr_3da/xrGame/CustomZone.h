@@ -3,7 +3,8 @@
 #include "..\feel_touch.h"
 #include "actor.h"
 
-struct SZonePPInfo {
+struct SZonePPInfo 
+{
 	f32 duality_h, duality_v, blur, gray, noise, noise_scale;
 	u32 r, g, b, a;
 };
@@ -12,7 +13,8 @@ class CCustomZone :
 	public CGameObject,
 	public Feel::Touch
 {
-typedef	CGameObject	inherited;
+private:
+    typedef	CGameObject	inherited;
 public:
 	CCustomZone(void);
 	virtual ~CCustomZone(void);

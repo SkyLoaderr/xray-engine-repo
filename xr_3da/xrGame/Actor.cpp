@@ -59,6 +59,9 @@ static Fvector	vFootExt;
 
 Flags32			psActorFlags={0};
 
+
+
+
 //--------------------------------------------------------------------
 //////////////////////////////////////////////////////////////////////
 // Construction/Destruction
@@ -202,6 +205,12 @@ void CActor::Load		(LPCSTR section )
 	skel_fatal_impulse_factor	= pSettings->r_float(section,"ph_skel_fatal_impulse_factor");
 	ph_Movement.SetJumpUpVelocity(m_fJumpSpeed);
 
+
+
+	//actor condition variables
+	CActorCondition::Load(section);
+	
+
 	//Weapons				= xr_new<CWeaponList> (this);
 
 	// sounds
@@ -246,7 +255,7 @@ void CActor::net_Export	(NET_Packet& P)					// export to server
 	R_ASSERT			(Local());
 
 	u8					flags = 0;
-	P.w_float_q16		(fHealth,-1000,1000);
+	P.w_float_q16		(g_Health(),-1000,1000);
 
 	P.w_u32				(Level().timeServer());
 	P.w_u8				(flags);
@@ -279,7 +288,9 @@ void CActor::net_Import		(NET_Packet& P)					// import from server
 	u8					flags;
 	u16					tmp;
 
-	P.r_float_q16		(fHealth,-1000,1000);
+	float health;
+	P.r_float_q16 (health,-1000,1000);
+	fEntityHealth = health;
 
 	float				fDummy;
 	u32					dwDummy;
@@ -456,35 +467,54 @@ void CActor::net_Destroy	()
 
 }
 
-void CActor::Hit		(float iLost, Fvector &dir, CObject* who, s16 element, float impulse)
+void CActor::Hit		(float iLost, Fvector &dir, CObject* who, s16 element, float impulse, ALife::EHitType hit_type)
 {
 	if (g_Alive()<=0) return;
+	
 	Fvector position_in_bone_space;
 	position_in_bone_space.set(0.f,0.f,0.f);
 
-	if(g_pGameLevel->CurrentEntity() == this) {
+	if(g_pGameLevel->CurrentEntity() == this) 
+	{
 		Fvector l_d; l_d.set(dir); l_d.normalize();
 		Level().Cameras.AddEffector(xr_new<CEffectorPPHit>(XFORM().i.dotproduct(l_d), XFORM().j.dotproduct(l_d), .5f, .003f*iLost));
 		Level().Cameras.AddEffector(xr_new<CEffectorHit>(XFORM().i.dotproduct(l_d), XFORM().j.dotproduct(l_d), .8f, .003f*iLost));
 	}
+
+	//slow actor, only when he gets hit
+	if(hit_type == eHitTypeWound || hit_type == eHitTypeStrike)
+	{
+		hit_slowmo				= iLost/100.f;
+		if (hit_slowmo>1.f)		hit_slowmo = 1.f;
+	}
+	else
+		hit_slowmo = 0.f;
+
 	switch (GameID())
 	{
 	case GAME_SINGLE:		
 		{
-			if (psActorFlags.test(AF_GODMODE))	return;
-			else inherited::Hit		(iLost,dir,who,element,position_in_bone_space, impulse);
+			if (psActorFlags.test(AF_GODMODE))	
+			{
+				//by Dandy for debug reasons
+				//fEntityHealth += iLost;
+			//	inherited::Hit(iLost,dir,who,element,position_in_bone_space, impulse, hit_type);
+				return;
+			}
+			else inherited::Hit		(iLost,dir,who,element,position_in_bone_space, impulse, hit_type);
 		}
 		break;
 	default:
-		inherited::Hit	(iLost,dir,who,element,position_in_bone_space, impulse);
+		inherited::Hit	(iLost,dir,who,element,position_in_bone_space, impulse, hit_type);
 		break;
 	}
 }
 
 
-void CActor::Hit		(float iLost, Fvector &dir, CObject* who, s16 element,Fvector position_in_bone_space, float impulse)
+void CActor::Hit		(float iLost, Fvector &dir, CObject* who, s16 element,Fvector position_in_bone_space, float impulse, ALife::EHitType hit_type)
 {
-	if (g_Alive()>0){
+	if (g_Alive() && (hit_type == eHitTypeWound || hit_type == eHitTypeStrike))
+	{
 		ph_Movement.ApplyImpulse(dir,impulse);
 		m_saved_dir.set(dir);
 		m_saved_position.set(position_in_bone_space);
@@ -494,14 +524,18 @@ void CActor::Hit		(float iLost, Fvector &dir, CObject* who, s16 element,Fvector 
 	else if(m_pPhysicsShell) 
 		m_pPhysicsShell->applyImpulseTrace(position_in_bone_space,dir,impulse,element);
 	//m_phSkeleton->applyImpulseTrace(position_in_bone_space,dir,impulse);
-	else{
+	else
+	{
 		m_saved_dir.set(dir);
 		m_saved_impulse=impulse*skel_fatal_impulse_factor;
 		m_saved_element=element;
 		m_saved_position.set(position_in_bone_space);
 	}
 
-	if (g_Alive()<=0) return;
+
+	if (!g_Alive()) return;
+
+
 
 //	if(g_pGameLevel->CurrentEntity() == this) {
 //		Fvector l_d; l_d.set(dir); l_d.normalize();
@@ -509,16 +543,32 @@ void CActor::Hit		(float iLost, Fvector &dir, CObject* who, s16 element,Fvector 
 //		Level().Cameras.AddEffector(xr_new<CEffectorHit>(svTransform.i.dotproduct(l_d), svTransform.j.dotproduct(l_d), .8f, .003f*iLost));
 //	}
 
+	
+	//slow actor, only when he gets hit
+	if(hit_type == eHitTypeWound || hit_type == eHitTypeStrike)
+	{
+		hit_slowmo				= iLost/100.f;
+		if (hit_slowmo>1.f)		hit_slowmo = 1.f;
+	}
+	else
+		hit_slowmo = 0.f;
+
 	switch (GameID())
 	{
 	case GAME_SINGLE:		
 		{
-			if (psActorFlags.test(AF_GODMODE))	return;
-			else inherited::Hit		(iLost,dir,who,element,position_in_bone_space, impulse);
+			if (psActorFlags.test(AF_GODMODE))
+			{
+				//by Dandy for debug reasons
+				//fEntityHealth += iLost;
+			//	inherited::Hit(iLost,dir,who,element,position_in_bone_space, impulse, hit_type);
+				return;
+			}
+			else inherited::Hit		(iLost,dir,who,element,position_in_bone_space, impulse, hit_type);
 		}
 		break;
 	default:
-		inherited::Hit	(iLost,dir,who,element,position_in_bone_space, impulse);
+		inherited::Hit	(iLost,dir,who,element,position_in_bone_space, impulse, hit_type);
 		break;
 	}
 }
@@ -551,8 +601,14 @@ void CActor::HitSignal(float perc, Fvector& vLocalDir, CObject* who, s16 element
 			zeroV.set			(0,0,0);
 			ph_Movement.SetVelocity(zeroV);
 		}
-		hit_slowmo				= perc/100.f;
-		if (hit_slowmo>1.f)		hit_slowmo = 1.f;
+		
+		//slow actor, only when wound hit
+		/*if(hit_type == eHitTypeWound)
+		{
+			hit_slowmo				= perc/100.f;
+			if (hit_slowmo>1.f)		hit_slowmo = 1.f;
+		}
+		hit_slowmo = 0.f;*/
 
 		// check damage bone
 		Fvector D;
@@ -626,6 +682,7 @@ void CActor::g_Physics			(Fvector& _accel, float jump, float dt)
 	accel.set					(_accel);
 	hit_slowmo					-=	dt;
 	if (hit_slowmo<0)			hit_slowmo = 0.f;
+
 	accel.mul					(1.f-hit_slowmo);
 
 	// Calculate physics
@@ -803,16 +860,16 @@ void CActor::shedule_Update	(u32 DT)
 	cam_gray				= 0.f;
 
 	//********************** just for vitya's pleasure
-	//CRender_target*		T	= ::Render->getTarget();
-	////T->set_duality_h		(.015f*_sin(1.f*Device.fTimeGlobal));
-	////T->set_duality_v		(.017f*_cos(1.1f*Device.fTimeGlobal));
-	//T->set_duality_h		(.0f);
-	//T->set_duality_v		(.0f);
-	//T->set_noise			(.5f);//(.5f);
-	//T->set_noise_scale		(1.f);
-	//T->set_noise_color		(color_rgba(255,255,127,0));
-	//T->set_noise_fps		(10.f);
-
+/*	CRender_target*		T	= ::Render->getTarget();
+	T->set_duality_h		(.015f*_sin(1.f*Device.fTimeGlobal));
+	T->set_duality_v		(.017f*_cos(1.1f*Device.fTimeGlobal));
+	T->set_duality_h		(.0f);
+	T->set_duality_v		(.0f);
+	T->set_noise			(.5f);//(.5f);
+	T->set_noise_scale		(1.f);
+	T->set_noise_color		(color_rgba(255,255,127,0));
+	T->set_noise_fps		(10.f);
+*/
 	// 
 	clamp					(DT,0u,100u);
 	float	dt				= float(DT)/1000.f;
@@ -975,6 +1032,9 @@ void CActor::shedule_Update	(u32 DT)
 
 	m_inventory.Update(DT);
 	m_trade->UpdateTrade();
+
+	//update actor health condition
+	//m_actorCondition.Update();
 }
 
 void CActor::renderable_Render	()
@@ -1091,6 +1151,11 @@ void CActor::g_cl_CheckControls(u32 mstate_wf, Fvector &vControlAccel, float &Ju
 			m_bJumpKeyPressed	=	TRUE;
 			Jump				= m_fJumpSpeed;
 			m_fJumpTime			= s_fJumpTime;
+
+			
+			//уменьшить силу игрока из-за выполненого прыжка
+			ConditionJump((m_inventory.TotalWeight()+GetMass())/
+					  (m_inventory.m_maxWeight + GetMass()));
 		}
 
 		/*
@@ -1303,6 +1368,7 @@ void CActor::OnHUDDraw	(CCustomHUD* hud)
 	}
 
 
+#ifndef NDEBUG
 #ifdef DEBUG
 	string128 buf;
 	HUD().pFontSmall->SetColor(0xffffffff);
@@ -1318,6 +1384,7 @@ void CActor::OnHUDDraw	(CCustomHUD* hud)
 	case CPHMovementControl::peAtWall:	strcpy(buf,"wall");				break;
 	}
 	HUD().pFontSmall->OutNext	(buf);
+#endif
 #endif
 }
 
@@ -1364,4 +1431,20 @@ float CActor::Radius()const
 	if (W) R	+= W->Radius();
 	//	if (HUDview()) R *= 1.f/psHUD_FOV;
 	return R;
+}
+
+void CActor::ConditionHit(CObject* who, float hit_power, ALife::EHitType hit_type, s16 element)
+{
+	CActorCondition::ConditionHit(who, hit_power, hit_type, element);
+}
+
+void CActor::UpdateCondition()
+{
+	if(isAccelerated(mstate_real))
+	{
+		ConditionAccel((m_inventory.TotalWeight()+GetMass())/
+						(m_inventory.m_maxWeight+GetMass()));
+	}
+	
+	CActorCondition::UpdateCondition();
 }

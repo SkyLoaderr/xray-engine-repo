@@ -29,6 +29,10 @@ CUIDragDropItem:: CUIDragDropItem()
 
 	m_iGridCol = 0;
 	m_iGridRow = 0;
+
+	m_pData = NULL;
+	m_pCustomUpdateProc = NULL;
+	m_pCustomDrawProc = NULL;
 }
 
 CUIDragDropItem::~ CUIDragDropItem()
@@ -43,6 +47,9 @@ void CUIDragDropItem::Init(LPCSTR tex_name, int x, int y, int width, int height)
 	m_pParentWnd = NULL;
 	m_pMouseCapturer = NULL;
 
+	m_pData = NULL;
+	m_pCustomUpdateProc = NULL;
+	m_pCustomDrawProc = NULL;
 
 
 	m_iOldMouseX = x;
@@ -89,7 +96,10 @@ void  CUIDragDropItem::OnMouse(int x, int y, E_MOUSEACTION mouse_action)
 		GetTop()->SendMessage(this, ITEM_DB_CLICK);
 		GetParent()->SetCapture(this, false);
 	}
-
+	else if(mouse_action == RBUTTON_DOWN && m_bCursorOverButton)
+	{
+		GetTop()->SendMessage(this, ITEM_RBUTTON_CLICK);
+	}
 
 
 	if(m_eButtonState == BUTTON_NORMAL)
@@ -187,6 +197,9 @@ void CUIDragDropItem::Draw()
 
 	m_UIStaticItem.SetPos(rect.left + right_offset, rect.top + down_offset);
 	m_UIStaticItem.Render();
+
+	//вызвать дополнительную функцию рисования
+	if(m_pCustomDrawProc) (*m_pCustomDrawProc)(this);
 }
 
 void CUIDragDropItem::Update()
@@ -194,5 +207,11 @@ void CUIDragDropItem::Update()
 	RECT rect = GetAbsoluteRect();
 
 	GetFont()->SetColor(0xFFEEEEEE);
+	GetFont()->SetAligment(CGameFont::alLeft);
+	
 	GetFont()->Out((float)rect.left,(float)rect.top, m_str);
+
+	//вызвать дополнительную функцию обновления
+	if(m_pCustomUpdateProc) (*m_pCustomUpdateProc)(this);
+
 }

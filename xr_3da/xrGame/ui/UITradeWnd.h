@@ -14,6 +14,7 @@
 #include "UIProgressBar.h"
 
 #include "UIEditBox.h"
+#include "UIListWnd.h"
 
 
 class CUITradeWnd: public CUIWindow  
@@ -42,6 +43,8 @@ protected:
 
 	CUIFrameWindow		UIFrameWnd;
 	CUIEditBox			UIEditBox;
+	CUIEditBox			UIEditBox1;
+	CUIListWnd			UIListWnd;
 	/*CUIFrameWindow		UIDescWnd;
 	CUIFrameWindow		UIPersonalWnd;
 

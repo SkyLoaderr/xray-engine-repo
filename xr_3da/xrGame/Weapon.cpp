@@ -482,6 +482,7 @@ void CWeapon::shedule_Update	(u32 dT)
 void CWeapon::OnH_B_Independent	()
 {
 	inherited::OnH_B_Independent();
+
 	setVisible					(true);
 	setEnabled					(true);
 	CWeapon::FireEnd();
@@ -503,6 +504,7 @@ void CWeapon::OnH_B_Independent	()
 void CWeapon::OnH_B_Chield		()
 {
 	inherited::OnH_B_Chield		();
+
 	setVisible					(false);
 	setEnabled					(false);
 
@@ -519,6 +521,7 @@ void CWeapon::OnH_B_Chield		()
 		respawnPhantom	= 0xffff;
 	}
 	*/
+
 }
 
 int CWeapon::Ammo_eject		()
@@ -759,6 +762,7 @@ BOOL CWeapon::FireTrace		(const Fvector& P, const Fvector& Peff, Fvector& D)
 				P.w_s16			((s16)RQ.element);
 				P.w_vec3		(position_in_bone_space);
 				P.w_float		(impulse);
+				P.w_u16			(eHitTypeWound);
 				u_EventSend		(P);
 			}
 			FireShotmark(D, end_point, RQ);

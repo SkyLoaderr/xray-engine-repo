@@ -13,6 +13,7 @@
 #include "UIDragDropList.h"
 #include "UIProgressBar.h"
 #include "UI3dStatic.h"
+#include "UIPropertiesBox.h"
 
 
 
@@ -27,10 +28,12 @@ public:
 	void InitInventory(CInventory* pInv);
 
 	virtual void SendMessage(CUIWindow *pWnd, s16 msg, void *pData);
+	virtual void OnMouse(int x, int y, E_MOUSEACTION mouse_action);
 
 
 	CInventory* GetInventory() {return m_pInv;}
 
+	virtual void Update();
 	virtual void Draw();
 
 	void Show(bool status) {m_bIsShown =  status;}
@@ -43,6 +46,10 @@ protected:
 
 	CUIButton			UIButton1;
 	CUIButton			UIButton2;
+	CUIButton			UIButton3;
+	CUIButton			UIButton4;
+	CUIButton			UIButton5;
+	CUIButton			UIButton6;
 
 	CUIStatic			UIStaticTop;
 	CUIStatic			UIStaticBelt;
@@ -62,10 +69,13 @@ protected:
 	CUIDragDropList		UIBeltList;
 
 
-	CUIProgressBar UIProgressBar1;
-	CUIProgressBar UIProgressBar2;
-	CUIProgressBar UIProgressBar3;
-	CUIProgressBar UIProgressBar4;
+	CUIProgressBar UIProgressBarHealth;
+	CUIProgressBar UIProgressBarSatiety;
+	CUIProgressBar UIProgressBarPower;
+	CUIProgressBar UIProgressBarRadiation;
+
+	//pop-up меню вызываемое по нажатию правой кнопки
+	CUIPropertiesBox UIPropertiesBox;	
 
     
 	#define MAX_ITEMS 70
@@ -77,6 +87,7 @@ protected:
 
 	//элемент с которым работают в текущий момент
 	PIItem m_pCurrentItem;
+	CUIDragDropItem* m_pCurrentDragDropItem;
 
 	//сравнивает элементы по пространству занимаемому ими в рюкзаке
 	//для сортировки
@@ -93,5 +104,13 @@ protected:
 	
 	static bool BagProc(CUIDragDropItem* pItem, CUIDragDropList* pList);
 	static bool BeltProc(CUIDragDropItem* pItem, CUIDragDropList* pList);
-	
+
+	//для надписей на иконках с оружием
+	static void AmmoUpdateProc(CUIDragDropItem* pItem);
+
+
+	//выбросить элемент
+	void DropItem();
+	//съесть элемент
+	void EatItem();
 };

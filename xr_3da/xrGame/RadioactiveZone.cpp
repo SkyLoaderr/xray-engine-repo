@@ -1,22 +1,22 @@
 #include "stdafx.h"
-#include "mosquitobald.h"
+#include "radioactivezone.h"
 #include "hudmanager.h"
-#include "ParticlesObject.h"
+#include "PGObject.h"
 
 static f32 g_pp_fade = 2000.f;
 
-CMosquitoBald::CMosquitoBald(void) 
+CRadioactiveZone::CRadioactiveZone(void) 
 {
 	m_time = 0;
 	m_pp_time = 0;
 	m_hitImpulseScale = 1.f;
 }
 
-CMosquitoBald::~CMosquitoBald(void) 
+CRadioactiveZone::~CRadioactiveZone(void) 
 {
 }
 
-void CMosquitoBald::Load(LPCSTR section) 
+void CRadioactiveZone::Load(LPCSTR section) 
 {
 	inherited::Load(section);
 	m_hitImpulseScale = pSettings->r_float(section,"hit_impulse_scale");
@@ -32,11 +32,15 @@ void CMosquitoBald::Load(LPCSTR section)
 	sscanf(pSettings->r_string(l_PP,"noise_color"), "%d,%d,%d,%d", &m_pp.r, &m_pp.g, &m_pp.b, &m_pp.a);
 
 	m_pHitEffect = pSettings->r_string(section,"hit_effect");
+
+
+	m_hitImpulseScale = 0.01f;
 }
 
-void CMosquitoBald::Affect(CObject* O) 
+void CRadioactiveZone::Affect(CObject* O) 
 {
 	CGameObject *l_pO = dynamic_cast<CGameObject*>(O);
+	
 	if(l_pO) 
 	{
 		Fvector P; 
@@ -46,17 +50,19 @@ void CMosquitoBald::Affect(CObject* O)
 		if(bDebug) HUD().outMessage(0xffffffff,l_pO->cName(), l_pow);
 		
 		Fvector l_dir; 
-		l_dir.set(::Random.randF(-.5f,.5f), 
+		l_dir.set(0,0,0);
+		/*l_dir.set(::Random.randF(-.5f,.5f), 
 				  ::Random.randF(.0f,1.f), 
 				  ::Random.randF(-.5f,.5f)); 
-		l_dir.normalize();
+		l_dir.normalize();*/
 		
 		//Fvector l_dir; l_dir.sub(l_pO->Position(), P); l_dir.normalize();
 		//l_pO->ph_Movement.ApplyImpulse(l_dir, 50.f*Power(l_pO->Position().distance_to(P)));
 		
 		Fvector position_in_bone_space;
-		float power = Power(l_pO->Position().distance_to(P));
-		float impulse = m_hitImpulseScale*power*l_pO->GetMass();
+		float power = Power(l_pO->Position().distance_to(P))*m_hitImpulseScale;
+		//float impulse = m_hitImpulseScale*power*l_pO->GetMass();
+		float impulse = 0;
 		if(power > 0.01f) 
 		{
 			m_time = 0;
@@ -66,20 +72,23 @@ void CMosquitoBald::Affect(CObject* O)
 			l_P.w_u16			(u16(l_pO->ID()));
 			l_P.w_dir			(l_dir);
 			l_P.w_float			(power);
-			l_P.w_s16			((s16)0);
+			l_P.w_s16			((s16)-1);
 			l_P.w_vec3			(position_in_bone_space);
 			l_P.w_float			(impulse);
-			l_P.w_u16			(eHitTypeWound);
+			l_P.w_u16			(eHitTypeRadiation);
 			l_pO->u_EventSend	(l_P);
 
-			CParticlesObject* pStaticPG = xr_new<CParticlesObject>(m_pHitEffect,l_pO->Sector()); pStaticPG->play_at_pos(l_pO->Position());
+//			CPGObject* pStaticPG = xr_new<CPGObject>(m_pHitEffect,l_pO->Sector()); 
+//			pStaticPG->play_at_pos(l_pO->Position());
 		}
 	}
 }
 
-//void CMosquitoBald::Update(u32 dt) {
-void CMosquitoBald::UpdateCL() 
+//void CRadioactiveZone::Update(u32 dt) {
+void CRadioactiveZone::UpdateCL() 
 {
+//	m_period = 50;
+
 	u32 dt = Device.dwTimeDelta;
 	m_time += dt;
 
@@ -130,6 +139,6 @@ void CMosquitoBald::UpdateCL()
 	//inherited::Update(dt);
 }
 
-void CMosquitoBald::Postprocess(f32 val) 
+void CRadioactiveZone::Postprocess(f32 val) 
 {
 }

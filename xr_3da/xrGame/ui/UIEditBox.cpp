@@ -21,18 +21,47 @@ CUIEditBox::CUIEditBox(void)
 
 	m_bShift = false;
 	m_bInputFocus = false;
+
+	m_iKeyPressAndHold = 0;
+	m_bHoldWaitMode = false;
+
+	m_iCursorPos = 0;
+
+	m_sEdit.push_back('y');
+	m_sEdit.push_back('u');
+	m_sEdit.push_back('r');
+	m_sEdit.push_back('i');
+	m_sEdit.push_back(0);
 }
 
 CUIEditBox::~CUIEditBox(void)
 {
 }
 
+void CUIEditBox::SendMessage(CUIWindow* pWnd, s16 msg, void* pData)
+{
+	if(pWnd == GetParent())
+	{
+		//кто-то другой захватил клавиатуру
+		if(msg == CUIWindow::KEYBOARD_CAPTURE_LOST)
+		{
+			m_bInputFocus = false;
+			m_iKeyPressAndHold = 0;
+		}
+	}
+}
+
 void CUIEditBox::OnMouse(int x, int y, E_MOUSEACTION mouse_action)
 {
-	if(mouse_action == LBUTTON_DOWN)
+	if(mouse_action == LBUTTON_DOWN && !m_bInputFocus)
 	{
 		GetParent()->SetKeyboardCapture(this, true);
 		m_bInputFocus = true;
+		m_iKeyPressAndHold = 0;
+
+		//курсор в конец строки, перед символом
+		//окончания строки
+		m_iCursorPos = m_sEdit.size()-1;
 	}
 }
 
@@ -42,73 +71,114 @@ bool CUIEditBox::OnKeyboard(int dik, E_KEYBOARDACTION keyboard_action)
 	if(!m_bInputFocus) return false;
 
 
-	xr_map<u32, char>::iterator it;
-	bool str_updated = false; 
-		
-
 	if(keyboard_action == KEY_PRESSED)	
 	{
+		m_iKeyPressAndHold = dik;
+		m_bHoldWaitMode = true;
 
-		switch(dik)
-		{
-		case DIK_LSHIFT:
-		case DIK_RSHIFT:
-			m_bShift = true;
-			break;
-		case DIK_RETURN:
-		case DIK_NUMPADENTER:
-			GetParent()->SetKeyboardCapture(this, false);
-			m_bInputFocus = false;
-			return true;
-			break;
-
-		case DIK_BACKSPACE:
-			if(m_sEdit.size()>=2)
-			{
-				m_sEdit.pop_back();
-				m_sEdit.pop_back();
-				m_sEdit.push_back(0);
-			}
-
-			str_updated = true; 
-			break;
-
-		case DIK_SPACE:
-			AddChar(' ');
-			str_updated = true; 
-			break;
-
-		default:
-			it = gs_DIK2CHR.find(dik);
-			
-			//нажата клавиша с буквой 
-			if(it != gs_DIK2CHR.end())
-			{
-				AddLetter(gs_DIK2CHR[dik]);
-				str_updated = true; 
-			}
-			break;
-		}
-
-		if(str_updated)
-		{
-			m_str = &m_sEdit[0];
-			return true;
-		}
+		if(KeyPressed(dik))	return true;
 	}
 	else if(keyboard_action == KEY_RELEASED)	
 	{
-		switch(dik)
+		if(m_iKeyPressAndHold == dik)
 		{
-		case DIK_LSHIFT:
-		case DIK_RSHIFT:
-			m_bShift = false;
+			m_iKeyPressAndHold = 0;
+			m_bHoldWaitMode = false;
 		}
+
+		if(KeyReleased(dik)) return true;
 	}
 
 
 	return false;
 }
+
+bool CUIEditBox::KeyPressed(int dik)
+{
+	xr_map<u32, char>::iterator it;
+	bool str_updated = false; 
+
+
+	switch(dik)
+	{
+	//перемещение курсора
+	case DIK_LEFT:
+	case DIKEYBOARD_LEFT:
+		if(m_iCursorPos > 0) m_iCursorPos--;
+		return true;
+		break;
+	case DIK_RIGHT:
+	case DIKEYBOARD_RIGHT:
+		if(m_iCursorPos < m_sEdit.size()-1) m_iCursorPos++;
+		return true;
+		break;
+	case DIK_LSHIFT:
+	case DIK_RSHIFT:
+		m_bShift = true;
+		return true;
+		break;
+	case DIK_RETURN:
+	case DIK_NUMPADENTER:
+		GetParent()->SetKeyboardCapture(this, false);
+		m_bInputFocus = false;
+		m_iKeyPressAndHold = 0;
+		return true;
+		break;
+	case DIK_BACKSPACE:
+		if(m_iCursorPos > 0)
+		{
+			m_iCursorPos--;
+			m_sEdit.erase(&m_sEdit[m_iCursorPos]);
+		}
+		str_updated = true; 
+		break;
+	case DIK_DELETE:
+	case DIKEYBOARD_DELETE:
+		if(m_iCursorPos < m_sEdit.size()-1)
+		{
+			m_sEdit.erase(&m_sEdit[m_iCursorPos]);
+		}
+		str_updated = true; 
+		break;
+	case DIK_SPACE:
+		AddChar(' ');
+		str_updated = true; 
+		break;
+
+	default:
+		it = gs_DIK2CHR.find(dik);
+			
+		//нажата клавиша с буквой 
+		if(it != gs_DIK2CHR.end())
+		{
+			AddLetter(gs_DIK2CHR[dik]);
+			str_updated = true; 
+		}
+		break;
+	}
+
+	if(str_updated)
+	{
+		m_str = &m_sEdit[0];
+		return true;
+	}
+
+	return false;
+}
+bool CUIEditBox::KeyReleased(int dik)
+{
+	switch(dik)
+	{
+	case DIK_LSHIFT:
+	case DIK_RSHIFT:
+		m_bShift = false;
+		return true;
+	}
+
+	return false;
+}
+
+
 
 void CUIEditBox::AddChar(char c)
 {
@@ -116,19 +186,20 @@ void CUIEditBox::AddChar(char c)
 	buf[0]=c;
 	buf[1]=0;
 	
-	GetFont()->SizeOf(m_str);
-/*	
-	int text_length;
-	text_length = int(GetFont()->SizeOf(m_str) + 
-					GetFont()->SizeOf(buf));
-	//строка длинее полосы ввода
-	if(text_length>GetWidth()) return;*/
 	
- 
+	int text_length;
+	text_length = int(GetFont()->SizeOf(&m_sEdit.front()) + 
+					GetFont()->SizeOf(buf));
+	
+	//строка длинее полосы ввода
+	if(text_length>GetWidth()) return;
+	
+	m_sEdit.insert(&m_sEdit[m_iCursorPos], c);
+	m_iCursorPos++;
 
-	if(!m_sEdit.empty()) m_sEdit.pop_back();
+	/*if(!m_sEdit.empty()) m_sEdit.pop_back();
 	m_sEdit.push_back(c);
-	m_sEdit.push_back(0);
+	m_sEdit.push_back(0);*/
 }
 
 void CUIEditBox::AddLetter(char c)
@@ -140,4 +211,64 @@ void CUIEditBox::AddLetter(char c)
 	}
 	
 	AddChar(c);
+}
+
+//время для обеспечивания печатания
+//символа при удерживаемой кнопке
+#define HOLD_WAIT_TIME 400
+#define HOLD_REPEAT_TIME 100
+
+void CUIEditBox::Update()
+{
+	if(m_bInputFocus)
+	{	
+		static u32 last_time; 
+
+		u32 cur_time = Device.TimerAsync();
+
+		if(m_iKeyPressAndHold)
+		{
+			if(m_bHoldWaitMode)
+			{
+				if(cur_time - last_time>HOLD_WAIT_TIME)
+				{
+					m_bHoldWaitMode = false;
+					last_time = cur_time;
+				}
+			}
+			else
+			{
+				if(cur_time - last_time>HOLD_REPEAT_TIME)
+				{
+					last_time = cur_time;
+					KeyPressed(m_iKeyPressAndHold);
+				}
+			}
+		}
+		else
+			last_time = cur_time;
+
+
+	
+
+		//нарисовать курсор
+		RECT rect = GetAbsoluteRect();
+		float outX, outY;
+
+		STRING buf_str;
+		buf_str.assign(&m_sEdit.front(), 
+					   &m_sEdit[m_iCursorPos]);
+		buf_str.push_back(0);
+
+		outX = GetFont()->SizeOf(&buf_str.front());
+		outY = 0;
+
+		GetFont()->SetColor(0xAAFFFF00);
+	    GetFont()->Out((float)rect.left+outX, 
+					   (float)rect.top+outY,  "|");
+
+	}
+		
+	m_str = &m_sEdit[0];
+	CUIStatic::Update();
 }

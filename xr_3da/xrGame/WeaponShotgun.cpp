@@ -275,6 +275,7 @@ BOOL CWeaponShotgun::FireTrace2		(const Fvector& P, const Fvector& Peff, Fvector
 				P.w_s16			((s16)RQ.element);
 				P.w_vec3		(position_in_bone_space);
 				P.w_float		(impulse);
+				P.w_u16			(eHitTypeWound);
 				u_EventSend		(P);
 			}
 			FireShotmark		(D,end_point,RQ);

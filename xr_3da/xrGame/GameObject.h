@@ -9,6 +9,17 @@
 class CPhysicsShell;
 #include "PhysicsRefObject.h"
 
+//different types of hit that can affect gamesobjects
+/*enum EHitType {
+		eHitTypeBurn = u32(0),
+		eHitTypeShock,
+		eHitTypeStrike,
+		eHitTypeWound,
+		eHitTypeRadiation,
+		eHitTypeTelepatic,
+		eHitTypeMax
+};*/
+
 class CGameObject : 
 	public CObject, 
 	public CPhysicsRefObject
@@ -39,7 +50,9 @@ public:
 	virtual void			OnEvent				(NET_Packet& P, u16 type);
 	virtual void			UpdateCL			();
 	
-	virtual	void			Hit					(float P, Fvector &dir,	CObject* who, s16 element,Fvector p_in_object_space, float impulse);
+	virtual	void			Hit					(float P, Fvector &dir,	CObject* who, 
+												 s16 element,Fvector p_in_object_space, 
+												 float impulse, ALife::EHitType hit_type = eHitTypeWound);
 	//virtual void			OnH_A_Independent	();
 	virtual void			OnH_B_Chield		();
 	virtual void			OnH_B_Independent	();

@@ -1,13 +1,13 @@
 #pragma once
 #include "customzone.h"
 
-class CMosquitoBald : public CCustomZone
+class CRadioactiveZone : public CCustomZone
 {
 private:
     typedef	CCustomZone	inherited;
 public:
-	CMosquitoBald(void);
-	virtual ~CMosquitoBald(void);
+	CRadioactiveZone(void);
+	virtual ~CRadioactiveZone(void);
 
 	virtual void Load(LPCSTR section);
 	//virtual void Update(u32 dt);

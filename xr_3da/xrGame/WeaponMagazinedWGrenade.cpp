@@ -183,6 +183,7 @@ void CWeaponFakeGrenade::Explode(const Fvector &pos, const Fvector &normal)
 			P.w_s16			(l_element);
 			P.w_vec3		(l_bs_pos);
 			P.w_float		(l_impuls);
+			P.w_u16			(eHitTypeWound);
 			u_EventSend		(P);
 			l_elsemnts.pop_front();
 			l_bs_positions.pop_front();
@@ -207,6 +208,7 @@ void CWeaponFakeGrenade::Explode(const Fvector &pos, const Fvector &normal)
 				P.w_s16			((s16)RQ.element);
 				P.w_vec3		(l_bs_pos);
 				P.w_float		(l_hit/(E?E->HitScale(RQ.element):1.f));
+				P.w_u16			(eHitTypeWound);
 				u_EventSend		(P);
 			}
 			FragWallmark(l_dir, l_end, RQ);

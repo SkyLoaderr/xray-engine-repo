@@ -323,3 +323,8 @@ void game_sv_GameState::Update		()
 		C->ps.ping				= u16(C->stats.getPing());
 	}
 }
+
+_TIME_ID game_sv_GameState::GetGameTime()
+{
+	return			(u64(Device.TimerAsync()));
+}

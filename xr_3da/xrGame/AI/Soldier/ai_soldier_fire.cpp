@@ -104,7 +104,7 @@ void CAI_Soldier::HitSignal	(float amount, Fvector& vLocalDir, CObject* who, s16
 		}
 	}
 	
-	if (fHealth > 0) {
+	if (g_Health() > 0) {
 		CEntity *tpEntity = dynamic_cast<CEntity *>(who);
 		if (tpEntity)
 			vfAddHurtToList(tpEntity);

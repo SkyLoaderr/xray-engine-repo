@@ -29,7 +29,9 @@ void CAI_Trader::Load(LPCSTR section)
 	setEnabled						(false);
 	inherited::Load					(section);
 
-	fHealth							= pSettings->r_float	(section,"Health");
+	//fHealth							= pSettings->r_float	(section,"Health");
+	fEntityHealth = pSettings->r_float	(section,"Health");
+
 	m_inventory.m_maxWeight			= pSettings->r_float	(section,"max_item_mass");
 	m_inventory.m_maxRuck			= 10000;
 	

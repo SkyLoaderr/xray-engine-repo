@@ -153,7 +153,7 @@ void CCustomMonster::SelectAnimation(const Fvector& _view, const Fvector& _move,
 
 	CMotionDef*	S=0;
 
-	if (fHealth<=0) {
+	if (fEntityHealth<=0) {
 		// Die
 		S = m_death;
 	} else {
@@ -204,7 +204,7 @@ void CCustomMonster::net_Export(NET_Packet& P)					// export to server
 	// export last known packet
 	R_ASSERT				(!NET.empty());
 	net_update& N			= NET.back();
-	P.w_float_q16		(fHealth,-1000,1000);
+	P.w_float_q16		(fEntityHealth,-1000,1000);
 	P.w_u32					(N.dwTimeStamp);
 	P.w_u8					(0);
 	P.w_vec3				(N.p_pos);
@@ -219,7 +219,11 @@ void CCustomMonster::net_Import(NET_Packet& P)
 	net_update				N;
 
 	u8 flags;
-	P.r_float_q16		(fHealth,-1000,1000);
+	
+	float health;
+	P.r_float_q16		(health,-1000,1000);
+	fEntityHealth = health;
+
 	P.r_u32					(N.dwTimeStamp);
 	P.r_u8					(flags);
 	P.r_vec3				(N.p_pos);
@@ -256,7 +260,7 @@ void CCustomMonster::shedule_Update	( u32 DT )
 		return;
 
 	if (!Remote()) {
-		if ((fHealth>0) || bfExecMovement())
+		if ((fEntityHealth>0) || bfExecMovement())
 			// функция должна выполняться до inherited::shedule_Update, для smooth movement
 			Exec_Movement	(float(DT)/1000.f);  
 	}
@@ -278,7 +282,7 @@ void CCustomMonster::shedule_Update	( u32 DT )
 		Engine.Sheduler.Slice			();
 
 		// Look and action streams
-		if (fHealth>0) {
+		if (fEntityHealth>0) {
 			Exec_Action				(dt);
 			VERIFY				(_valid(Position()));
 			Exec_Look				(dt);
@@ -301,7 +305,7 @@ void CCustomMonster::shedule_Update	( u32 DT )
 			uNext.o_model			= r_torso_current.yaw;
 			uNext.o_torso			= r_torso_current;
 			uNext.p_pos				= Position();
-			uNext.fHealth			= fHealth;
+			uNext.fHealth			= fEntityHealth;
 			NET.push_back			(uNext);
 		}
 		else 
@@ -311,7 +315,7 @@ void CCustomMonster::shedule_Update	( u32 DT )
 			uNext.o_model		= r_torso_current.yaw;
 			uNext.o_torso		= r_torso_current;
 			uNext.p_pos			= Position();
-			uNext.fHealth		= fHealth;
+			uNext.fHealth		= fEntityHealth;
 			NET.push_back		(uNext);
 		}
 	}
@@ -324,7 +328,7 @@ void CCustomMonster::net_update::lerp(CCustomMonster::net_update& A, CCustomMons
 	o_torso.yaw		= angle_lerp	(A.o_torso.yaw,B.o_torso.yaw,		f);
 	o_torso.pitch	= angle_lerp	(A.o_torso.pitch,B.o_torso.pitch,	f);
 	p_pos.lerp		(A.p_pos,B.p_pos,f);
-	fHealth			= A.fHealth*(1.f - f) + B.fHealth*f;
+	fHealth	= A.fHealth*(1.f - f) + B.fHealth*f;
 }
 
 void CCustomMonster::UpdateCL	()

@@ -84,18 +84,22 @@ void CHUDCursor::Render()
 
 	if (psHUD_Flags.test(HUD_INFO))
 	{ 
-		if (RQ.O){
+		if (RQ.O)
+		{
 			CEntityAlive*	E = dynamic_cast<CEntityAlive*>(RQ.O);
-			if (E && (E->g_Health()>0)){
-				if (fuzzyShowInfo>0.5f){
+			PIItem	l_pI = dynamic_cast<PIItem>(RQ.O);
+
+			if (E && (E->g_Health()>0))
+			{
+				if (fuzzyShowInfo>0.5f)
+				{
 					F->SetColor	(subst_alpha(C,u8(iFloor(255.f*(fuzzyShowInfo-0.5f)*2.f))));
 					F->OutNext	("%s",RQ.O->cName());
 				}
 				fuzzyShowInfo += SHOW_INFO_SPEED*Device.fTimeDelta;
 			}
-			// @@@ WT
-			PIItem	l_pI = dynamic_cast<PIItem>(RQ.O);
-			if (l_pI){
+			else if (l_pI)
+			{
 				if (fuzzyShowInfo>0.5f){
 					F->SetColor	(subst_alpha(C,u8(iFloor(255.f*(fuzzyShowInfo-0.5f)*2.f))));
 					F->OutNext	("%s",l_pI->NameComplex());

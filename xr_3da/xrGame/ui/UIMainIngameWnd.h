@@ -36,7 +36,9 @@ protected:
 
 	CUIStatic	UIStaticHealth;
 	CUIStatic	UIStaticMapBack;
-	CUIStatic	UIStaticRadiation;
+	CUIStatic	UIStaticRadiationLow;
+	CUIStatic	UIStaticRadiationMedium;
+	CUIStatic	UIStaticRadiationHigh;
 	CUIStatic	UIStaticWound;
 	CUIStatic	UIStaticWeapon;
 

@@ -11,11 +11,17 @@ public:
 	CUIEditBox(void);
 	virtual ~CUIEditBox(void);
 
+	virtual void SendMessage(CUIWindow* pWnd, s16 msg, void* pData = NULL);
+
 	virtual void OnMouse(int x, int y, E_MOUSEACTION mouse_action);
 	virtual bool OnKeyboard(int dik, E_KEYBOARDACTION keyboard_action);
 
+	virtual void Update();
+
 protected:
-	bool m_bInputFocus;
+
+	bool KeyPressed(int dik);
+	bool KeyReleased(int dik);
 	
 	void AddLetter(char c);
 	void AddChar(char c);
@@ -23,5 +29,13 @@ protected:
 	DEFINE_VECTOR	(char, STRING, STRING_IT);
 	STRING m_sEdit;
 
+	bool m_bInputFocus;
 	bool m_bShift;
+
+	//DIK клавиши, кот. нажата и удерживается, 0 если такой нет
+	int m_iKeyPressAndHold;
+	bool m_bHoldWaitMode;
+
+	//положение текущее курсора при наборе текста
+	u32 m_iCursorPos;
 };

@@ -19,6 +19,8 @@ CUIButton:: CUIButton()
 
 	m_bButtonClicked = false;
 	m_bCursorOverButton = false;
+
+	m_bAvailableTexture = false;
 }
 
  CUIButton::~ CUIButton()
@@ -26,6 +28,12 @@ CUIButton:: CUIButton()
 
 }
 
+void CUIButton::Reset()
+{
+	m_eButtonState = BUTTON_NORMAL;
+	m_bButtonClicked = false;
+	m_bCursorOverButton = false;
+}
 
 
 void CUIButton::Init(LPCSTR tex_name, int x, int y, int width, int height)
@@ -36,7 +44,13 @@ void CUIButton::Init(LPCSTR tex_name, int x, int y, int width, int height)
 	m_bButtonClicked = false;
 	m_bCursorOverButton = false;
 
-	m_UIStaticItem.Init(tex_name,"hud\\default",x,y,alNone);
+	if(tex_name!=NULL)
+	{
+        m_UIStaticItem.Init(tex_name,"hud\\default",x,y,alNone);
+		m_bAvailableTexture = true;
+	}
+	else
+		m_bAvailableTexture = false;
 	
 	CUIWindow::Init(x, y, width, height);
 }
@@ -186,6 +200,8 @@ void  CUIButton::OnMouse(int x, int y, E_MOUSEACTION mouse_action)
 //прорисовка кнопки
 void  CUIButton::Draw()
 {
+	if(!m_bAvailableTexture) return;
+
 	RECT rect = GetAbsoluteRect();
 		
 
@@ -231,7 +247,8 @@ void  CUIButton::Update()
 	int right_offset;
 	int down_offset;
 
-	if(m_eButtonState == BUTTON_UP || m_eButtonState == BUTTON_NORMAL)
+	if(m_eButtonState == BUTTON_UP || m_eButtonState == BUTTON_NORMAL
+		|| !m_bAvailableTexture)
 	{
 			right_offset = 0;
 			down_offset = 0;

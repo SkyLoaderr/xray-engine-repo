@@ -14,7 +14,11 @@ CUIWindow::CUIWindow()
 	m_pFont = NULL;
 
 	m_pParentWnd =  NULL;
+	
 	m_pMouseCapturer =  NULL;
+	m_pOrignMouseCapturer = NULL;
+
+
 	m_pKeyboardCapturer =  NULL;
 	SetRect(&m_WndRect, 0,0,0,0);
 
@@ -220,10 +224,19 @@ void CUIWindow::OnMouse(int x, int y, E_MOUSEACTION mouse_action)
 void CUIWindow::SetCapture(CUIWindow *pChildWindow, bool capture_status)
 {
 	if(GetParent() != NULL)
-		GetParent()->SetCapture(this, capture_status);
+	{
+		if(m_pOrignMouseCapturer == NULL || m_pOrignMouseCapturer == pChildWindow)
+			GetParent()->SetCapture(this, capture_status);
+	}
 
 	if(capture_status)
+	{
+		//оповестить дочернее окно о потере фокуса мыши
+		if(m_pMouseCapturer!=NULL)
+			m_pMouseCapturer->SendMessage(this, MOUSE_CAPTURE_LOST);
+
 		m_pMouseCapturer = pChildWindow;
+	}
 	else
 		m_pMouseCapturer = NULL;
 }
@@ -265,7 +278,13 @@ void CUIWindow::SetKeyboardCapture(CUIWindow* pChildWindow, bool capture_status)
 		GetParent()->SetCapture(this, capture_status);
 
 	if(capture_status)
+	{
+		//оповестить дочернее окно о потере фокуса клавиатуры
+		if(m_pKeyboardCapturer!=NULL)
+			m_pKeyboardCapturer->SendMessage(this, KEYBOARD_CAPTURE_LOST);
+			
 		m_pKeyboardCapturer = pChildWindow;
+	}
 	else
 		m_pKeyboardCapturer = NULL;
 }
@@ -311,3 +330,46 @@ void CUIWindow::BringAllToTop()
 		GetParent()->BringAllToTop();
 	}
 }
+
+/*
+void CUIWindow::SetCapture(CUIWindow *pChildWindow, bool capture_status)
+{
+	if(GetParent() != NULL)
+	{
+		if(capture_status)
+		{
+			//запомнить то окно, которое изначально 
+			//захватило ввод
+			if(GetParent()->GetMouseCapturer() != this)
+				m_pOrignMouseCapturer = pChildWindow;
+
+			GetParent()->SetCapture(this, true);
+		}
+		else
+		{
+			//сообщить родителю о потере фокуса,
+			//только в случае если фокус теряет нужное окно,
+			//которое его и взяло
+			if(m_pOrignMouseCapturer == pChildWindow ||
+				m_pOrignMouseCapturer == NULL)
+				GetParent()->SetCapture(this, false);
+		}
+            
+		
+	}
+
+	if(capture_status)
+	{
+		//оповестить дочернее окно о потере фокуса мыши
+		if(m_pMouseCapturer!=NULL)
+			m_pMouseCapturer->SendMessage(this, MOUSE_CAPTURE_LOST);
+	
+		if(m_pOrignMouseCapturer == pChildWindow)
+			m_pOrignMouseCapturer == NULL;
+		
+
+		m_pMouseCapturer = pChildWindow;
+	}
+	else
+		m_pMouseCapturer = NULL;
+}*/

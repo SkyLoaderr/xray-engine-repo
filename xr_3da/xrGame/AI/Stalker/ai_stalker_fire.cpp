@@ -83,6 +83,7 @@ void CAI_Stalker::HitSignal(float amount, Fvector& vLocalDir, CObject* who, s16 
 	XFORM().transform_dir(D,vLocalDir);
 		
 	if (g_Alive()) {
+//	if (fEntityHealth>0) {
 		// Save event
 		m_dwHitTime = Level().timeServer();
 		m_tHitDir.set(D);

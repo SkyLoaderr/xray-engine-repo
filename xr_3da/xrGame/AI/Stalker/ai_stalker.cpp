@@ -237,7 +237,7 @@ BOOL CAI_Stalker::net_Spawn			(LPVOID DC)
 	r_current.yaw = r_target.yaw = r_torso_current.yaw = r_torso_target.yaw	= angle_normalize_signed(-tpHuman->o_Angle.y);
 	r_torso_current.pitch			= r_torso_target.pitch	= 0;
 
-	fHealth							= tpHuman->fHealth;
+	fEntityHealth							= tpHuman->fHealth;
 	m_tCurGP						= tpHuman->m_tGraphID;
 	m_tNextGP						= tpHuman->m_tNextGraphID;
 	m_dwBornTime					= Level().timeServer();
@@ -299,7 +299,7 @@ void CAI_Stalker::net_Export		(NET_Packet& P)
 	P.w_u32							(0);
 	P.w_u32							(0);
 
-	P.w_float_q16					(fHealth,-1000,1000);
+	P.w_float_q16					(fEntityHealth,-1000,1000);
 
 	P.w_u32							(N.dwTimeStamp);
 	P.w_u8							(0);
@@ -338,7 +338,10 @@ void CAI_Stalker::net_Import		(NET_Packet& P)
 	net_update						N;
 
 	u8 flags;
-	P.r_float_q16					(fHealth,-1000,1000);
+
+	float health;
+	P.r_float_q16		(health,-1000,1000);
+	fEntityHealth = health;
 
 	P.r_u32							(N.dwTimeStamp);
 	P.r_u8							(flags);
@@ -410,7 +413,7 @@ void CAI_Stalker::shedule_Update		( u32 DT )
 
 	VERIFY				(_valid(Position()));
 	if (!Remote()) {
-		if ((fHealth>0) || bfExecMovement())
+		if ((fEntityHealth>0) || bfExecMovement())
 			// функция должна выполняться до inherited::shedule_Update, для smooth movement
 			//Msg				("TIME DELTA : %d",DT);
 			Exec_Movement	(dt);  
@@ -433,7 +436,7 @@ void CAI_Stalker::shedule_Update		( u32 DT )
 		VERIFY				(_valid(Position()));
 
 		// Look and action streams
-		if (fHealth>0) {
+		if (fEntityHealth>0) {
 			VERIFY				(_valid(Position()));
 			Exec_Look				(dt);
 			VERIFY				(_valid(Position()));
@@ -455,7 +458,7 @@ void CAI_Stalker::shedule_Update		( u32 DT )
 			uNext.o_model			= r_torso_current.yaw;
 			uNext.o_torso			= r_current;
 			uNext.p_pos				= Position();
-			uNext.fHealth			= fHealth;
+			uNext.fHealth			= fEntityHealth;
 			NET.push_back			(uNext);
 		}
 		else 
@@ -465,7 +468,7 @@ void CAI_Stalker::shedule_Update		( u32 DT )
 			uNext.o_model		= r_torso_current.yaw;
 			uNext.o_torso		= r_current;
 			uNext.p_pos			= Position();
-			uNext.fHealth		= fHealth;
+			uNext.fHealth		= fEntityHealth;
 			NET.push_back		(uNext);
 		}
 	}

@@ -70,13 +70,17 @@ void CGameObject::OnEvent		(NET_Packet& P, u16 type)
 			float			power, impulse;
 			s16				element;
 			Fvector			position_in_bone_space;
+			u16		hit_type;
+
 			P.r_u16			(id);
 			P.r_dir			(dir);
 			P.r_float		(power);
 			P.r_s16			(element);
 			P.r_vec3		(position_in_bone_space);
 			P.r_float		(impulse);
-			Hit				(power,dir,Level().Objects.net_Find(id),element,position_in_bone_space, impulse);
+			P.r_u16			(hit_type);	//hit type
+			Hit				(power,dir,Level().Objects.net_Find(id),element,
+							 position_in_bone_space, impulse, (ALife::EHitType)hit_type);
 		}
 		break;
 	case GE_DESTROY:
@@ -284,9 +288,11 @@ void CGameObject::u_EventSend(NET_Packet& P, BOOL sync)
 	Level().Send(P,net_flags(TRUE,TRUE));
 }
 
-void CGameObject::Hit(float P, Fvector &dir,	CObject* who, s16 element,Fvector p_in_object_space, float impulse)
+void CGameObject::Hit(float P, Fvector &dir, CObject* who, s16 element,
+					  Fvector p_in_object_space, float impulse, ALife::EHitType hit_type)
 {
-	if(m_pPhysicsShell) m_pPhysicsShell->applyImpulseTrace(p_in_object_space,dir,impulse);
+	if(impulse>0)
+		if(m_pPhysicsShell) m_pPhysicsShell->applyImpulseTrace(p_in_object_space,dir,impulse);
 }
 
 f32 CGameObject::ExplosionEffect(const Fvector &expl_centre, const f32 expl_radius, xr_list<s16> &elements, xr_list<Fvector> &bs_positions) {

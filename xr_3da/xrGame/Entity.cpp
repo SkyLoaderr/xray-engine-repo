@@ -21,6 +21,8 @@ CEntity::CEntity()
 	fAccuracy			= 1.f;
 	fMAX_Health			= MAX_HEALTH;
 	fMAX_Armor			= MAX_ARMOR;
+
+	m_dwDeathTime = 0;
 }
 
 CEntity::~CEntity()
@@ -49,9 +51,41 @@ void CEntity::OnEvent		(NET_Packet& P, u16 type)
 	}
 }
 
-void CEntity::Hit			(float perc, Fvector &dir, CObject* who, s16 element,Fvector position_in_object_space, float impulse) 
+void CEntity::Die() 
 {
-	inherited::Hit(perc,dir,who,element,position_in_object_space,impulse);
+}
+
+//обновление состояния
+float CEntity::CalcCondition(float hit)
+{
+	// Calc amount (correct only on local player)
+	float	lost_health,		lost_armor;
+
+	if (fArmor>0)
+	{
+		lost_health		=	(fMAX_Armor-fArmor)/fMAX_Armor*hit;
+		lost_armor		=	(hit*9.f)/10.f;
+	} 
+	else 
+	{
+		lost_health		=	hit;
+		lost_armor		=	0;
+	}
+
+	// If Local() - perform some logic
+	if (Local() && g_Alive())
+	{
+		fEntityHealth		-=	lost_health; 
+		fEntityHealth		=	fEntityHealth<-1000?-1000:fEntityHealth;
+		fArmor				-=	lost_armor;
+	}
+
+	return lost_health;
+}
+
+void CEntity::Hit			(float perc, Fvector &dir, CObject* who, s16 element,Fvector position_in_object_space, float impulse, ALife::EHitType hit_type) 
+{
+	inherited::Hit(perc,dir,who,element,position_in_object_space,impulse, hit_type);
 	if (bDebug)				Log("Process HIT: ", cName());
 
 	// *** process hit calculations
@@ -70,33 +104,19 @@ void CEntity::Hit			(float perc, Fvector &dir, CObject* who, s16 element,Fvector
 	if(impulse) HitImpulse				(impulse,dir,vLocalDir); // @@@: WT
 	
 	// Calc amount (correct only on local player)
-	float	lost_health,		lost_armor;
-	if (fArmor>0)
-	{
-		lost_health		=	(fMAX_Armor-fArmor)/fMAX_Armor*perc;
-		lost_armor		=	(perc*9.f)/10.f;
-	} else {
-		lost_health		=	perc;
-		lost_armor		=	0;
-	}
+	float lost_health = CalcCondition(perc);
 
 	// Signal hit
-	HitSignal				(lost_health,vLocalDir,who,element);
+	if(element!=-1)	HitSignal(lost_health,vLocalDir,who,element);
 
 	// If Local() - perform some logic
-	if (Local() && (fHealth>0))
+	//if (Local() && (fEntityHealth>0))
+	if (Local() && g_Alive())
 	{
-		fHealth				-=	lost_health; fHealth=fHealth<-1000?-1000:fHealth;
-		fArmor				-=	lost_armor;
-
-		if (fHealth<=0)
+		//if (fEntityHealth<=0)
+		if(!g_Alive() && !AlreadyDie())
 		{
-			// die
-			NET_Packet		P;
-			u_EventGen		(P,GE_DIE,ID()	);
-			P.w_u16			(u16(who->ID())	);
-			P.w_u32			(0);
-			u_EventSend		(P);
+			KillEntity(who);
 		}
 	}
 }
@@ -108,8 +128,8 @@ void CEntity::Load		(LPCSTR section)
 	setVisible			(FALSE);
 	CLS_ID				= CLSID_ENTITY;
 	
-	m_fMaxHealthValue = fHealth = 100;
-	//fHealth				= fArmor = 100;
+	m_fMaxHealthValue = fEntityHealth = 100;
+	//GetEntityHealth()				= fArmor = 100;
 
 	// Team params
 	id_Team = -1; if (pSettings->line_exist(section,"team"))	id_Team		= pSettings->r_s32	(section,"team");
@@ -148,7 +168,7 @@ BOOL CEntity::net_Spawn		(LPVOID DC)
 	G.m_dwAliveCount		++;
 	
 	// Initialize variables
-	//fHealth					= 100;
+	fEntityHealth			= 100;
 	fArmor					= 0;
 	
 	Engine.Sheduler.Unregister	(this);
@@ -203,9 +223,43 @@ void CEntity::shedule_Update	(u32 dt)
 	inherited::shedule_Update	(dt);
 }
 
+void CEntity::KillEntity(CObject* who)
+{
+	NET_Packet		P;
+	u_EventGen		(P,GE_DIE,ID());
+	P.w_u16			(u16(who->ID()));
+	P.w_u32			(0);
+	u_EventSend		(P);
+
+	m_dwDeathTime = Level().timeServer();
+}
+
+
+
+/////////////////////////////////////////////
+// CEntityAlive
+/////////////////////////////////////////////
+void CEntityAlive::shedule_Update(u32 dt)
+{
+	inherited::shedule_Update	(dt);
+
+	//condition update with the game time pass
+	UpdateCondition();
+
+	//убить сущность
+	if(Local() && !g_Alive() && !AlreadyDie())
+	{
+		if(GetWhoHitLastTime())
+			KillEntity(GetWhoHitLastTime());
+		else
+			KillEntity(this);
+	}
+}
+
 void CEntityAlive::Load		(LPCSTR section)
 {
 	inherited::Load			(section);
+	CEntityCondition::Load	(section);
 
 	m_fFood					= 100*pSettings->r_float	(section,"ph_mass");
 
@@ -279,6 +333,15 @@ void CEntityAlive::HitImpulse	(float amount, Fvector& vWorldDir, Fvector& vLocal
 //	Movement.vExternalImpulse.mad	(vWorldDir,Q);
 }
 
+void CEntityAlive::Hit(float P, Fvector &dir,CObject* who, s16 element,Fvector position_in_object_space, float impulse, ALife::EHitType hit_type)
+{
+	//изменить состояние, перед тем как родительский класс обработае хит
+	ConditionHit(who, P, hit_type, element);
+
+
+	inherited::Hit(P,dir,who,element,position_in_object_space,impulse, hit_type);
+}
+
 CEntityAlive::CEntityAlive()
 {
 	m_dwDeathTime	= 0;
@@ -296,4 +359,13 @@ void CEntityAlive::BuyItem(LPCSTR buf)
 	u_EventGen	(P,GE_BUY,ID());
 	P.w_string	(buf);
 	u_EventSend	(P);
+}
+
+//вывзывает при подсчете хита
+float CEntityAlive::CalcCondition(float hit)
+{	
+	UpdateCondition();
+
+	//dont call inherited::CalcCondition it will be meaning less
+	return GetHealthLost()*100.f;
 }

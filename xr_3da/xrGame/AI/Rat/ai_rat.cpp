@@ -81,6 +81,8 @@ void CAI_Rat::Load(LPCSTR section)
 	// load parameters from ".ini" file
 	inherited::Load(section);
 
+	CEatableItem::Load(section);
+
 	/*
 	IRender_Visual*	temp;
 	temp = ::Render->model_Create("aaa");	::Render->model_Delete(temp);
@@ -181,7 +183,7 @@ BOOL CAI_Rat::net_Spawn	(LPVOID DC)
 
 	eye_fov							= tpSE_Rat->fEyeFov;
 	eye_range						= tpSE_Rat->fEyeRange;
-	fHealth							= tpSE_Rat->fHealth;
+	fEntityHealth							= tpSE_Rat->fHealth;
 	m_fMinSpeed						= tpSE_Rat->fMinSpeed;
 	m_fMaxSpeed						= tpSE_Rat->fMaxSpeed;
 	m_fAttackSpeed					= tpSE_Rat->fAttackSpeed;
@@ -248,7 +250,7 @@ void CAI_Rat::net_Export(NET_Packet& P)
 	// export last known packet
 	R_ASSERT				(!NET.empty());
 	net_update& N			= NET.back();
-	P.w_float_q16			(fHealth,-1000,1000);
+	P.w_float_q16			(fEntityHealth,-1000,1000);
 	P.w_u32					(N.dwTimeStamp);
 	P.w_u8					(0);
 	P.w_vec3				(N.p_pos);
@@ -273,7 +275,11 @@ void CAI_Rat::net_Import(NET_Packet& P)
 	net_update				N;
 
 	u8 flags;
-	P.r_float_q16		(fHealth,-1000,1000);
+
+	float health;
+	P.r_float_q16		(health,-1000,1000);
+	fEntityHealth = health;	
+	
 	P.r_u32					(N.dwTimeStamp);
 	P.r_u8					(flags);
 	P.r_vec3				(N.p_pos);
@@ -364,7 +370,7 @@ void CAI_Rat::UpdateCL(){
 
 	}
 	else
-		if (fHealth <= 0)
+		if (fEntityHealth <= 0)
 			CreateSkeleton();
 }
 
@@ -379,4 +385,45 @@ void CAI_Rat::Hit(float P, Fvector &dir, CObject *who,s16 element,Fvector p_in_o
 
 void CAI_Rat::feel_touch_new(CObject* O)
 {
+}
+
+/////////////////////////////////////
+// Rat as eatable item
+//
+void CAI_Rat::OnH_B_Chield		()
+{
+	inherited::OnH_B_Chield		();
+	setVisible					(false);
+	setEnabled					(false);
+	if(m_pPhysicsShell) m_pPhysicsShell->Deactivate();
+}
+void CAI_Rat::OnH_B_Independent	()
+{
+	inherited::OnH_B_Independent	();
+
+
+	setVisible(true);
+	setEnabled(true);
+	CObject* E = dynamic_cast<CObject*>(H_Parent()); R_ASSERT(E);
+	XFORM().set(E->XFORM());
+	Position().set(XFORM().c);
+	if(m_pPhysicsShell) {
+		Fmatrix trans;
+		Level().Cameras.unaffected_Matrix(trans);
+		Fvector l_fw; l_fw.set(trans.k);
+		Fvector l_up; l_up.set(XFORM().j); l_up.mul(2.f);
+		Fmatrix l_p1, l_p2;
+		l_p1.set(XFORM()); l_p1.c.add(l_up); l_up.mul(1.2f); 
+		l_p2.set(XFORM()); l_p2.c.add(l_up); l_fw.mul(3.f); l_p2.c.add(l_fw);
+		m_pPhysicsShell->Activate(l_p1, 0, l_p2);
+		XFORM().set(l_p1);
+		Position().set(XFORM().c);
+	}
+}
+bool CAI_Rat::Useful()
+{
+	//if(!g_Alive()) return true;
+	if(fEntityHealth<=0) return true;
+
+	return false;
 }

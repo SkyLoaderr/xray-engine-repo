@@ -13,6 +13,7 @@
 #include "PhysicsShell.h"
 #include "inventory.h"
 
+#include "ActorCondition.h"
 
 // refs
 class ENGINE_API CCameraBase;
@@ -28,7 +29,8 @@ class CCar;
 class CActor: 
 	public CEntityAlive, 
 	public Feel::Touch,
-	public CInventoryOwner
+	public CInventoryOwner,
+	public CActorCondition
 #ifdef DEBUG
 	,public pureRender
 #endif
@@ -299,8 +301,8 @@ public:
 	virtual void						net_Destroy			();
 
 	virtual void						Die					( );
-	virtual	void						Hit					(float P, Fvector &dir,			CObject* who, s16 element, float impulse);
-	virtual	void						Hit					(float P, Fvector &dir,			CObject* who, s16 element, Fvector position_in_bone_space, float impulse);
+	virtual	void						Hit					(float P, Fvector &dir,			CObject* who, s16 element, float impulse,  ALife::EHitType hit_type = eHitTypeWound);
+	virtual	void						Hit					(float P, Fvector &dir,			CObject* who, s16 element, Fvector position_in_bone_space, float impulse,  ALife::EHitType hit_type = eHitTypeWound);
 	virtual void						HitSignal			(float P, Fvector &vLocalDir,	CObject* who, s16 element);
 	virtual	float						HitScale			(int element);
 
@@ -354,6 +356,12 @@ public:
 #ifdef DEBUG
 	virtual void						OnRender			();
 #endif
+
+
+	//by Dandy
+	//Actor condition
+	virtual void ConditionHit(CObject* who, float hit_power, ALife::EHitType hit_type, s16 element = 0);
+	virtual void UpdateCondition();
 };
 
 #endif // !defined(AFX_ACTOR_H__C66583EA_EEA6_45F0_AC9F_918B5997F194__INCLUDED_)

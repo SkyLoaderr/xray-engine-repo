@@ -38,4 +38,5 @@ public:
 
 	// Main
 	virtual		void				Update					();
+	virtual		_TIME_ID			GetGameTime				();
 };

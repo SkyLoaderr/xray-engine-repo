@@ -127,7 +127,7 @@ void CAI_Zombie::Death()
 	else {
 		if (Level().timeServer() - m_dwDeathTime > m_dwTimeToLie) {
 			//m_fFood = Movement.GetMass()*100;
-			fHealth = m_fMaxHealthValue;
+			fEntityHealth = m_fMaxHealthValue;
 			m_tpSoundBeingPlayed = 0;
 			m_dwLastRangeSearch = Level().timeServer();
 			GO_TO_NEW_STATE(aiZombieResurrect);

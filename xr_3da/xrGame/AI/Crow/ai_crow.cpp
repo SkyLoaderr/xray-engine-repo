@@ -290,7 +290,7 @@ void CAI_Crow::net_Export	(NET_Packet& P)					// export to server
 	R_ASSERT			(Local());
 
 	u8					flags = 0;
-	P.w_float_q16		(fHealth,-1000,1000);
+	P.w_float_q16		(g_Health(),-1000,1000);
 
 	P.w_float			(0);
 	P.w_u32				(0);
@@ -312,7 +312,10 @@ void CAI_Crow::net_Import	(NET_Packet& P)
 	R_ASSERT			(Remote());
 
 	u8					flags;
-	P.r_float_q16		(fHealth,-1000,1000);
+	
+	float health;
+	P.r_float_q16		(health,-1000,1000);
+	fEntityHealth = health;
 
 	float fDummy;
 	u32 dwDummy;
@@ -334,7 +337,8 @@ void CAI_Crow::net_Import	(NET_Packet& P)
 //---------------------------------------------------------------------
 void CAI_Crow::HitSignal	(float HitAmount, Fvector& local_dir, CObject* who, s16 element)
 {
-	fHealth		= 0;
+	
+	fEntityHealth		= 0;
 	m_dwDeathTime = Level().timeServer();
 	if (st_current!=eDeathDead) 
 	{	

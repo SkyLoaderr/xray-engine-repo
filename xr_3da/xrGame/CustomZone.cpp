@@ -9,7 +9,7 @@ CCustomZone::CCustomZone(void)
 {
 	m_maxPower = 100.f;
 	m_attn = 1.f;
-	m_period = 1000;
+	m_period = 1100;
 	m_ready = false;
 	m_pLocalActor = NULL;
 #pragma todo("AlexMX to Oles : Can't dynamic cast ICollidable to ISpatial!!!")
@@ -18,7 +18,9 @@ CCustomZone::CCustomZone(void)
 	if (self)		self->spatial.type	|=	STYPE_COLLIDEABLE;
 }
 
-CCustomZone::~CCustomZone(void) {}
+CCustomZone::~CCustomZone(void) 
+{
+}
 
 BOOL CCustomZone::net_Spawn(LPVOID DC) 
 {
@@ -26,17 +28,21 @@ BOOL CCustomZone::net_Spawn(LPVOID DC)
 	collidable.model			= l_pShape;
 	CSE_Abstract				*e = (CSE_Abstract*)(DC);
 	CSE_ALifeAnomalousZone		*Z = dynamic_cast<CSE_ALifeAnomalousZone*>(e);
-	for (u32 i=0; i < Z->shapes.size(); i++) {
+	
+	for (u32 i=0; i < Z->shapes.size(); i++) 
+	{
 		CSE_Shape::shape_def	&S = Z->shapes[i];
-		switch (S.type) {
+		switch (S.type) 
+		{
 			case 0 : l_pShape->add_sphere(S.data.sphere); break;
 			case 1 : l_pShape->add_box(S.data.box); break;
 		}
 	}
 
-	BOOL							bOk = inherited::net_Spawn(DC);
-	if (bOk) {
-
+	BOOL bOk = inherited::net_Spawn(DC);
+	
+	if (bOk) 
+	{
 		l_pShape->ComputeBounds		();
 		m_maxPower					= Z->m_maxPower;
 		m_attn						= Z->m_attn;
@@ -64,7 +70,8 @@ BOOL CCustomZone::net_Spawn(LPVOID DC)
 	return bOk;
 }
 
-void CCustomZone::Load(LPCSTR section) {
+void CCustomZone::Load(LPCSTR section) 
+{
 	// verify class
 	LPCSTR Class = pSettings->r_string(section,"class");
 	CLASS_ID load_cls = TEXT2CLSID(Class);
@@ -76,12 +83,36 @@ void CCustomZone::Load(LPCSTR section) {
 	SoundCreate(m_ambient, l_PSnd);
 
 	strcpy(m_effectsSTR, pSettings->r_string(section,"effects"));
-	char* l_effectsSTR = m_effectsSTR; R_ASSERT(l_effectsSTR);
-	m_effects.clear(); m_effects.push_back(l_effectsSTR);
-	while(*l_effectsSTR) {
-		if(*l_effectsSTR == ',') {
-			*l_effectsSTR = 0; l_effectsSTR++;
-			while(*l_effectsSTR == ' ' || *l_effectsSTR == '\t') l_effectsSTR++;
+	
+	char* l_effectsSTR = m_effectsSTR; 
+	
+	R_ASSERT(l_effectsSTR);
+	
+
+	//no particles, that distinguish zone
+	if(l_effectsSTR[0] == 'n' &&
+		l_effectsSTR[1] == 'o' &&
+		l_effectsSTR[2] == 'n' &&
+		l_effectsSTR[3] == 'e')
+	{
+		m_effects.clear();
+		return;
+	}
+	
+	m_effects.clear(); 
+	m_effects.push_back(l_effectsSTR);
+
+	//parse the string
+	while(*l_effectsSTR)
+	{
+		if(*l_effectsSTR == ',')
+		{
+			*l_effectsSTR = 0;
+			l_effectsSTR++;
+
+			while(*l_effectsSTR == ' ' || *l_effectsSTR == '\t')
+				l_effectsSTR++;
+
 			m_effects.push_back(l_effectsSTR);
 		}
 		l_effectsSTR++;
@@ -96,15 +127,22 @@ void CCustomZone::Load(LPCSTR section) {
 
 }
 
-void CCustomZone::net_Destroy() {
+void CCustomZone::net_Destroy() 
+{
 	inherited::net_Destroy();
 	SoundDestroy(m_ambient);
-	while(m_effectsPSs.size()) { xr_delete(*(m_effectsPSs.begin())); m_effectsPSs.pop_front(); }
+	
+	while(m_effectsPSs.size()) 
+	{ 
+		xr_delete(*(m_effectsPSs.begin())); 
+		m_effectsPSs.pop_front(); 
+	}
 }
 
 //void CCustomZone::Update(u32 dt) {
 	//inherited::Update	(dt);
-void CCustomZone::UpdateCL() {
+void CCustomZone::UpdateCL() 
+{
 	//u32 dt = Device.dwTimeDelta;
 	inherited::UpdateCL();
 
@@ -114,9 +152,11 @@ void CCustomZone::UpdateCL() {
 	//feel_touch.clear(); m_inZone.clear();
 	feel_touch_update		(P,s.R);
 
-	if(m_ready) {
+	if(m_ready) 
+	{
 		xr_set<CObject*>::iterator l_it;
-		for(l_it = m_inZone.begin(); l_it != m_inZone.end(); l_it++) {
+		for(l_it = m_inZone.begin(); l_it != m_inZone.end(); l_it++) 
+		{
 			Affect(*l_it);
 		}
 		m_ready = false;
@@ -124,42 +164,54 @@ void CCustomZone::UpdateCL() {
 }
 
 
-void CCustomZone::feel_touch_new(CObject* O) {
+void CCustomZone::feel_touch_new(CObject* O) 
+{
 	if(bDebug) HUD().outMessage(0xffffffff,O->cName(),"entering a zone.");
 	m_inZone.insert(O);
-	if(dynamic_cast<CActor*>(O) && O == Level().CurrentEntity()) m_pLocalActor = dynamic_cast<CActor*>(O);
+	if(dynamic_cast<CActor*>(O) && O == Level().CurrentEntity()) 
+					m_pLocalActor = dynamic_cast<CActor*>(O);
 }
 
-void CCustomZone::feel_touch_delete(CObject* O) {
+void CCustomZone::feel_touch_delete(CObject* O) 
+{
 	if(bDebug) HUD().outMessage(0xffffffff,O->cName(),"leaving a zone.");
+	
 	m_inZone.erase(O);
+	
 	if(dynamic_cast<CActor*>(O)) m_pLocalActor = NULL;
 }
 
-BOOL CCustomZone::feel_touch_contact(CObject* O) {
+BOOL CCustomZone::feel_touch_contact(CObject* O) 
+{
 	if(O == this) return false;
 	if(!O->Local() || !((CGameObject*)O)->IsVisibleForZones()) return false;
+	
 	return ((CCF_Shape*)CFORM())->Contact(O);
 }
 
-f32 CCustomZone::Power(f32 dist) {
-	f32 l_r = CFORM()->getRadius();
+f32 CCustomZone::Power(f32 dist) 
+{
+	f32 l_r = CFORM()->getRadius()*3/4.f;
+//	f32 l_r = Visual()->vis.sphere.R;
 //	return l_r < dist ? 0 : m_maxPower * (1.f - m_attn*dist/l_r);
 	f32 l_pow = l_r < dist ? 0 : m_maxPower * (1.f - m_attn*(dist/l_r)*(dist/l_r));
 	return l_pow < 0 ? 0 : l_pow;
 }
 
-void CCustomZone::SoundCreate(ref_sound& dest, LPCSTR s_name, int iType, BOOL bCtrlFreq) {
+void CCustomZone::SoundCreate(ref_sound& dest, LPCSTR s_name, int iType, BOOL bCtrlFreq) 
+{
 	string256 temp;
-	if (FS.exist(temp,"$game_sounds$",s_name)) {
+	if (FS.exist(temp,"$game_sounds$",s_name))
+	{
 		Sound->create(dest,TRUE,s_name,iType);
 		return;
 	}
 	Debug.fatal	("Can't find ref_sound '%s'",s_name,cName());
 }
 
-void CCustomZone::SoundDestroy(ref_sound& dest) {
-	Sound->destroy		(dest);
+void CCustomZone::SoundDestroy(ref_sound& dest) 
+{
+	Sound->destroy(dest);
 }
 
 void CCustomZone::spatial_register()
@@ -189,17 +241,22 @@ void CCustomZone::spatial_move()
 
 
 //#ifdef DEBUG
-void CCustomZone::OnRender() {
+void CCustomZone::OnRender() 
+{
 	if(!bDebug) return;
 	RCache.OnFrameEnd();
 	Fvector l_half; l_half.set(.5f, .5f, .5f);
 	Fmatrix l_ball, l_box;
 	xr_vector<CCF_Shape::shape_def> &l_shapes = ((CCF_Shape*)CFORM())->Shapes();
 	xr_vector<CCF_Shape::shape_def>::iterator l_pShape;
-	for(l_pShape = l_shapes.begin(); l_pShape != l_shapes.end(); l_pShape++) {
-		switch(l_pShape->type) {
-			case 0 : {
-				Fsphere &l_sphere = l_pShape->data.sphere;
+	
+	for(l_pShape = l_shapes.begin(); l_pShape != l_shapes.end(); l_pShape++) 
+	{
+		switch(l_pShape->type)
+		{
+		case 0:
+			{
+                Fsphere &l_sphere = l_pShape->data.sphere;
 				l_ball.scale(l_sphere.R, l_sphere.R, l_sphere.R);
 				//l_ball.scale(1.f, 1.f, 1.f);
 				Fvector l_p; XFORM().transform(l_p, l_sphere.P);
@@ -207,11 +264,14 @@ void CCustomZone::OnRender() {
 				//l_ball.mul(XFORM(), l_ball);
 				//l_ball.mul(l_ball, XFORM());
 				RCache.dbg_DrawEllipse(l_ball, D3DCOLOR_XRGB(0,255,255));
-			} break;
-			case 1 : {
+			}
+			break;
+		case 1:
+			{
 				l_box.mul(XFORM(), l_pShape->data.box);
 				RCache.dbg_DrawOBB(l_box, l_half, D3DCOLOR_XRGB(0,255,255));
-			} break;
+			}
+			break;
 		}
 	}
 }

@@ -136,7 +136,7 @@ BOOL CAI_Zombie::net_Spawn	(LPVOID DC)
 
 	eye_fov							= tpSE_Zombie->fEyeFov;
 	eye_range						= tpSE_Zombie->fEyeRange;
-	fHealth							= tpSE_Zombie->fHealth;
+	fEntityHealth							= tpSE_Zombie->fHealth;
 	m_fMinSpeed						= tpSE_Zombie->fMinSpeed;
 	m_fMaxSpeed						= tpSE_Zombie->fMaxSpeed;
 	m_fAttackSpeed					= tpSE_Zombie->fAttackSpeed;
@@ -181,7 +181,7 @@ void CAI_Zombie::net_Export(NET_Packet& P)
 	// export last known packet
 	R_ASSERT				(!NET.empty());
 	net_update& N			= NET.back();
-	P.w_float_q16		(fHealth,-1000,1000);
+	P.w_float_q16		(fEntityHealth,-1000,1000);
 	P.w_u32					(N.dwTimeStamp);
 	P.w_u8					(0);
 	P.w_vec3				(N.p_pos);
@@ -197,7 +197,11 @@ void CAI_Zombie::net_Import(NET_Packet& P)
 	net_update				N;
 
 	u8 flags;
-	P.r_float_q16			(fHealth,-1000,1000);
+
+	float health;
+	P.r_float_q16		(health,-1000,1000);
+	fEntityHealth = health;
+
 	P.r_u32					(N.dwTimeStamp);
 	P.r_u8					(flags);
 	P.r_vec3				(N.p_pos);

@@ -11,9 +11,11 @@
 
 #include "..\\ai_selector_template.h"
 #include "..\\..\\CustomMonster.h"
+#include "..\\..\\Inventory.h"
 
-class CAI_Rat : public CCustomMonster  
+class CAI_Rat : public CCustomMonster, CEatableItem
 {
+	typedef	CCustomMonster inherited;
 	protected:
 		//////////////////////////
 		// STRUCTURES
@@ -43,8 +45,7 @@ class CAI_Rat : public CCustomMonster
 			aiRatEatCorpse,
 		};
 
-	
-		typedef	CCustomMonster inherited;
+
 
 		typedef struct tagSNormalGlobalAnimations{
 			CMotionDef *tpaDeath[2];
@@ -384,6 +385,22 @@ class CAI_Rat : public CCustomMonster
 		virtual void  UpdateCL();
 		virtual void  Hit(float P,Fvector &dir,CObject*who,s16 element,Fvector p_in_object_space,float impulse);
 		virtual BOOL  feel_vision_isRelevant(CObject*);
+
+		/////////////////////////////////////
+		//rat as eatable item
+		virtual void OnHUDDraw(CCustomHUD* hud) {inherited::OnHUDDraw(hud);}
+		virtual void OnH_B_Chield		();
+		virtual void OnH_B_Independent	();
+		virtual void OnEvent(NET_Packet& P, u16 type) {inherited::OnEvent(P,type);}
+		virtual	void Hit(float P, Fvector &dir,	CObject* who, s16 element,Fvector position_in_object_space, float impulse, ALife::EHitType hit_type = eHitTypeWound) 
+					{inherited::Hit(P,dir,who,element,position_in_object_space,impulse,hit_type);}
+		virtual void renderable_Render() {inherited::renderable_Render();}
+		virtual void OnRender() {inherited::OnRender();}
+		virtual bool Useful();		
+
+
+
+
 };
 		
 #endif

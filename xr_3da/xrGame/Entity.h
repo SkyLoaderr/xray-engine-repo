@@ -7,8 +7,14 @@
 #pragma once
 
 
+#define PropertyGP(a,b) __declspec( property( get=a, put=b ) )
+
 #include "gameobject.h"
 #include "phmovementcontrol.h"
+#include "entitycondition.h"
+
+
+
 // refs
 class	ENGINE_API CCameraBase;
 class	ENGINE_API C3DSound;
@@ -18,13 +24,22 @@ class	ENGINE_API CBoneInstance;
 class	CWeaponList;
 class   CPHMovementControl;
  
-class CEntity : public CGameObject
+class CEntity : public virtual  CGameObject
 {
 private:
 	typedef	CGameObject	inherited;			
+
+	float				fHealth;
 protected:
 	// health & shield
-	float				fHealth,	fMAX_Health;
+
+	virtual float GetfHealth() { return fHealth; }
+	virtual float SetfHealth(float value) {fHealth = value; return value;}
+	PropertyGP(GetfHealth,SetfHealth) float fEntityHealth;
+
+//	virtual float& GetEntityHealth() { return fHealth; }
+	
+	float				fMAX_Health;
 	float				fArmor,		fMAX_Armor;
 	float				fAccuracy;
 	float				m_fMaxHealthValue;
@@ -56,15 +71,18 @@ public:
 	virtual void			shedule_Update		(u32 dt);	
 	virtual void			renderable_Render	();
 
-	bool					IsFocused			()const	{ return ((const CEntity*)g_pGameLevel->CurrentEntity()==this);		}
-	bool					IsMyCamera			()const	{ return ((const CEntity*)g_pGameLevel->CurrentViewEntity()==this);	}
+	bool					IsFocused			()const	{ return (dynamic_cast<const CEntity*>(g_pGameLevel->CurrentEntity())==this);		}
+	bool					IsMyCamera			()const	{ return (dynamic_cast<const CEntity*>(g_pGameLevel->CurrentViewEntity())==this);	}
 
 	float					g_Armor				()	{ return fArmor;	}
-	float					g_Health			()	{ return fHealth;	}
-	float					g_MaxHealth			()	{ return m_fMaxHealthValue;	}
+	virtual float			g_Health			()	{ return fEntityHealth;}
+	virtual float			g_MaxHealth			()	{ return m_fMaxHealthValue;	}
 	float					g_Accuracy			()	{ return fAccuracy;	}
-	BOOL					g_Alive				()	{ return g_Health()>0; }
+	virtual BOOL			g_Alive				()	{ return fEntityHealth>0; }
 	virtual BOOL			g_State				(SEntityState& state)	{return FALSE;}
+	virtual bool			AlreadyDie()		{return  m_dwDeathTime!=0?true:false;}
+
+	virtual float			CalcCondition		(float hit);
 
 	int						g_Team				()	{ return id_Team;	}
 	int						g_Squad				()	{ return id_Squad;	}
@@ -74,27 +92,33 @@ public:
 	virtual CWeaponList*	GetItemList			()	{ return 0;			}
 
 	// Health calculations
-	virtual	void			Hit					(float P, Fvector &dir,			CObject* who, s16 element,Fvector position_in_object_space, float impulse);
+	virtual	void			Hit					(float P, Fvector &dir,			CObject* who, s16 element,Fvector position_in_object_space, float impulse, ALife::EHitType hit_type = eHitTypeWound);
 	virtual void			HitSignal			(float P, Fvector &local_dir,	CObject* who, s16 element)		= 0;
 	virtual void			HitImpulse			(float P, Fvector &vWorldDir, 	Fvector& vLocalDir)	= 0;
 	virtual	float			HitScale			(int element){return 1.f;}
-	virtual void			Die					()													= 0;
-	
+	virtual void			Die					() = 0;
+	virtual void			KillEntity(CObject* who);
+		
 	// Events
 	virtual void			OnEvent				( NET_Packet& P, u16 type		);
 
 	virtual BOOL			IsVisibleForHUD		()	{return g_Alive();	}
 	virtual void			g_fireParams			(Fvector &, Fvector &){}; 
+
+
+	//time of entity death
+	_TIME_ID				m_dwDeathTime;
 };
 
-class CEntityAlive			: public CEntity
+
+class CEntityAlive			: public CEntity, 
+							  virtual public CEntityCondition
 {
 private:
 	typedef	CEntity			inherited;			
 public:
 	EVENT					m_tpEventSay;
 	bool					m_bMobility;
-	u32						m_dwDeathTime;
 	float					m_fAccuracy;
 	float					m_fIntelligence;
 	//Movement
@@ -108,9 +132,24 @@ public:
 	virtual void			Load					(LPCSTR section);
 	virtual BOOL			net_Spawn				(LPVOID DC);
 	virtual void			net_Destroy				();
-	virtual void			HitImpulse				(float amount, Fvector& vWorldDir, Fvector& vLocalDir);
 
+	virtual void			shedule_Update			(u32 dt);
+
+	virtual void			HitImpulse				(float amount, Fvector& vWorldDir, Fvector& vLocalDir);
+	virtual	void			Hit						(float P, Fvector &dir,			CObject* who, s16 element,Fvector position_in_object_space, float impulse, ALife::EHitType hit_type = eHitTypeWound);
 	virtual void			g_WeaponBones			(int &L, int &R1, int &R2)										= 0;
+
+//	virtual float&			GetEntityHealth()		{ return m_fHealth; }
+	
+	virtual float GetfHealth() { return m_fHealth*100.f; }
+	virtual float SetfHealth(float value) {m_fHealth = value/100.f; return value;}
+	PropertyGP(GetfHealth,SetfHealth) float fEntityHealth;
+
+	virtual float			g_Health			()	{ return GetHealth()*100.f; }
+	virtual float			g_MaxHealth			()	{ return GetMaxHealth()*100.f; }
+
+	virtual float			CalcCondition		(float hit);
+
 
 	// Visibility related
 	virtual void			GetVisible				(objVisible& R)	{};

@@ -111,6 +111,7 @@ void CUI::OnFrame()
 	// out GAME-style depend information
 	if (pUIGame) pUIGame->OnFrame	();
 
+#ifdef DEBUG
 	if (!messages.empty()){
 		m_Parent->pFontSmall->OutSet(0,msgs_offs);
 		for (int i=messages.size()-1; i>=0; i--){
@@ -129,6 +130,7 @@ void CUI::OnFrame()
 			m_Parent->pFontSmall->OutPrev("%s: %s",messages[i]->sender,messages[i]->msg);
 		}
 	}
+#endif
 }
 //--------------------------------------------------------------------
 
