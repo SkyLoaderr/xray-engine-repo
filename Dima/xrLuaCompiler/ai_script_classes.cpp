@@ -639,3 +639,13 @@ int	CLuaGameObject::animation_count		() const
 	}
 	return				((int)stalker->m_script_animations.size());
 }
+
+CScriptBinderObject	*CLuaGameObject::binded_object	()
+{
+	CScriptBinder	*binder = dynamic_cast<CScriptBinder*>(m_tpGameObject);
+	if (!binder) {
+		ai().script_engine().script_log		(ScriptStorage::eLuaMessageTypeError,"CGameObject : cannot access class member binded_object!");
+		return		(0);
+	}
+	return			(binder->object());
+}

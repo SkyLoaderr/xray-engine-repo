@@ -549,6 +549,15 @@ public:
 		else
 			pInvOwner->set_info_callback(instance,method);
 	}
+
+	void SetInfoCallback(const luabind::object &instance, LPCSTR method)
+	{
+		CInventoryOwner* pInvOwner = dynamic_cast<CInventoryOwner*>(m_tpGameObject);
+		if (!pInvOwner)
+			ai().script_engine().script_log 	(ScriptStorage::eLuaMessageTypeError,"CInventoryOwner : cannot access class member set_info_callback!");
+		else
+			pInvOwner->set_info_callback(instance,method);
+	}
 	void ClearInfoCallback()
 	{
 		CInventoryOwner* pInvOwner = dynamic_cast<CInventoryOwner*>(m_tpGameObject);
@@ -659,4 +668,5 @@ public:
 			void				add_animation			(LPCSTR animation, bool hand_usage = true);
 			void				clear_animations		();
 			int					animation_count			() const;
+			CScriptBinderObject	*binded_object			();
 };
