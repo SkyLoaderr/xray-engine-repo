@@ -42,25 +42,9 @@ struct STextureParams{
 		flGreyScale			= (1<<10),
 		flImplicitLighted	= (1<<24)
 	};
-	struct Flags{
-		DWORD bGenerateMipMaps	: 1;
-		DWORD bBinaryAlpha		: 1;
-		DWORD bNormalMap		: 1;
-		DWORD bDuDvMap			: 1;
-		DWORD bAlphaBorder		: 1;
-		DWORD bColorBorder		: 1;
-		DWORD bFadeToColor		: 1;
-		DWORD bFadeToAlpha		: 1;
-		DWORD bDitherColor		: 1;
-		DWORD bDitherEachMIPLevel:1;
-		DWORD bGreyScale		: 1;
-		DWORD reserved0			: 15;
-
-		DWORD bImplicitLighted	: 1;
-	};
 
 	ETFormat		fmt;
-	Flags			flag;
+	DWORD			flag;
 	DWORD			border_color;
     DWORD			fade_color;
     DWORD			fade_amount;
@@ -70,8 +54,8 @@ struct STextureParams{
     STextureParams	()
 	{
 		ZeroMemory(this,sizeof(STextureParams));
-		flag.bGenerateMipMaps	= TRUE;
-		flag.bDitherColor		= TRUE;
+		flag	|=				flGenerateMipMaps;
+		flag	|=				flDitherColor;
 		mip_filter				= dMIPFilterBox;
         width					= 0;
         height					= 0;
@@ -98,7 +82,7 @@ struct xr_token;
 extern xr_token	tparam_token[];
 extern xr_token	tfmt_token[];
 
-	//----------------------------------------------------
+//----------------------------------------------------
 #define THM_CURRENT_VERSION				0x0012
 //----------------------------------------------------
 #define THM_CHUNK_VERSION				0x0810
