@@ -46,7 +46,7 @@ protected:
 
 	CKinematics*			Parent;			// setted up by parent
 	vertBoned1W*			Vertices1W;		// shared
-	vertBoned1W*			Vertices2W;		// shared
+	vertBoned2W*			Vertices2W;		// shared
 	DWORD					cache_DiscardID;
 	DWORD					cache_vCount;
 	DWORD					cache_vOffset;
@@ -61,7 +61,8 @@ public:
 	CSkeletonX()
 	{
 		Parent		= 0;
-		Vertices	= 0;
+		Vertices1W	= 0;
+		Vertices2W	= 0;
 	}
 };
 

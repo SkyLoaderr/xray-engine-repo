@@ -100,7 +100,8 @@ void CSkeletonX::_Render	(CVS* hVS, DWORD vCount, DWORD pCount, IDirect3DIndexBu
 //////////////////////////////////////////////////////////////////////
 void CSkeletonX::_Release()
 {
-	_DELETEARRAY(Vertices);
+	_FREE		(Vertices1W);
+	_FREE		(Vertices2W);
 }
 void CSkeletonX_PM::Release()
 {
@@ -111,7 +112,7 @@ void CSkeletonX_PM::Release()
 void CSkeletonX_ST::Release()
 {
 	inherited::Release();
-	_Release();
+	_Release	();
 }
 //////////////////////////////////////////////////////////////////////
 void CSkeletonX::_Load(const char* N, CStream *data, DWORD& dwVertCount) 
@@ -119,21 +120,23 @@ void CSkeletonX::_Load(const char* N, CStream *data, DWORD& dwVertCount)
 	// Load vertices
 	R_ASSERT(data->FindChunk(OGF_VERTICES));
 			
-	DWORD dwVertType;
+	DWORD dwVertType,size;
 	dwVertType	= data->Rdword(); 
 	dwVertCount	= data->Rdword();
 
 	switch		(dwVertType)
 	{
 	case 1*0x12071980:
-		Vertices1W	= new vertBoned1W[dwVertCount];
+		size		= dwVertCount*sizeof(vertBoned1W);
+		Vertices1W	= (vertBoned1W*) xr_malloc(size);
 		Vertices2W	= NULL;
-		data->Read	(Vertices1W,dwVertCount*sizeof(vertBoned1W));
+		data->Read	(Vertices1W,size);
 		break;
 	case 2*0x12071980:
+		size		= dwVertCount*sizeof(vertBoned2W);
 		Vertices1W	= NULL;
-		Vertices2W	= new vertBoned2W[dwVertCount];
-		data->Read	(Vertices2W,dwVertCount*sizeof(vertBoned2W));
+		Vertices2W	= (vertBoned2W*) xr_malloc(size);
+		data->Read	(Vertices2W,size);
 		break;
 	default:
 		Device.Fatal	("Invalid vertex type in skinned model '%s'",N);
