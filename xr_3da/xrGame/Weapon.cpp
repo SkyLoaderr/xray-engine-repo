@@ -418,13 +418,6 @@ void CWeapon::Update		(DWORD dT)
 	clamp					(fireDispersion_Current,0.f,1.f);
 	if (light_time>0)		light_time -= dt;
 
-	// svMatrix
-	if (0==H_Parent() && m_pPhysicsShell)		
-	{
-		svTransform.set		(m_pPhysicsShell->mXFORM);
-		vPosition.set		(svTransform.c);
-	}
-  
 	// Inherited
 	inherited::Update		(dT);
 }
@@ -484,12 +477,6 @@ void CWeapon::UpdateCL		()
 {
 	inherited::UpdateCL		();
 
-	if (0==H_Parent() && m_pPhysicsShell)		
-	{
-		m_pPhysicsShell->Update	();
-		clTransform.set			(m_pPhysicsShell->mXFORM);
-	}
-
 	if (Remote() && NET.size())
 	{
 		// distinguish interpolation/extrapolation
@@ -530,6 +517,14 @@ void CWeapon::UpdateCL		()
 				if (DWORD(NET_Last.state)!=STATE)	OnStateSwitch(NET_Last.state);
 			}
 		}
+	}
+
+	if (0==H_Parent() && m_pPhysicsShell)		
+	{
+		m_pPhysicsShell->Update	();
+		clTransform.set			(m_pPhysicsShell->mXFORM);
+		svTransform.set			(m_pPhysicsShell->mXFORM);
+		vPosition.set			(svTransform.c);
 	}
 }
 
