@@ -366,11 +366,6 @@ u32	 CLevelGraph::check_position_in_direction	(u32 start_vertex_id, const Fvecto
 	start					= start_position;
 	dest					= finish_position;
 	dir.sub					(dest,start);
-	static int a=0;
-	++a;
-	if (4 == a) {
-		a=a;
-	}
 	Fvector					temp = vertex_position(cur_vertex_id), t = temp;
 
 	{
