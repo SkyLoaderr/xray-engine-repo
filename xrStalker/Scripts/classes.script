@@ -413,7 +413,12 @@ function NPC:talk_dialogue(to_whom)
 	if self.dlg_fsm ~= nil then
 		printf("NPC:talk_dialogue:self.dlg_fsm ~= nil")
 		local snd, len, delay = self.dlg_fsm:next_phrase()
-		self:talk(to_whom, snd, nil)
+		if snd ~= nil then
+			self:talk(to_whom, snd, nil)
+		else
+			printf("NPC:talk_dialogue:snd is nil (POSSIBLY WRONG STATE???), starting the infinite pause")
+			delay = time_infinite
+		end
 		-- Сделать паузу перед следующей фразой:
 		action(self.npc,
 		       look(look.fire_point, to_whom),
