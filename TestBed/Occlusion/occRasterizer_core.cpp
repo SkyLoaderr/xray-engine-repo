@@ -178,10 +178,8 @@ void i_edge		( int x1, int y1, int x2, int y2)
 		i_test(x1,y1);
 		
         for  (int x = x1 + sx, y = y1, i = 1; i <= dx; i++, x += sx){
-            if ( d > 0){
-                d += d2; y += sy;
-            }else
-                d += d1;
+            if ( d > 0) { d += d2; y += sy; }
+			else        d += d1;
 			i_test(x,y);
         }
     }else{
@@ -191,10 +189,8 @@ void i_edge		( int x1, int y1, int x2, int y2)
 		
 		i_test(x1,y1);
         for  (int x = x1, y = y1 + sy, i = 1; i <= dy; i++, y += sy ){
-            if ( d > 0){
-                d += d2; x += sx;
-            }else
-                d += d1;
+            if ( d > 0) { d += d2; x += sx; }
+            else        d += d1;
 			i_test(x,y);
         }
     }
