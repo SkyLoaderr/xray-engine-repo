@@ -34,40 +34,48 @@ namespace CDB
 	class XRCDB_API TRI
 	{
 	public:
-		Fvector*	verts	[3];	// 3*4 = 12b
-		TRI*		adj		[3];	// 3*4 = 12b	(24b)
-		WORD		material;		// 2b			(26b)
-		WORD		sector;			// 2b			(28b)
-		DWORD		dummy;			// 4b			(32b)
+		Fvector*		verts	[3];	// 3*4 = 12b
+		TRI*			adj		[3];	// 3*4 = 12b	(24b)
+		WORD			material;		// 2b			(26b)
+		WORD			sector;			// 2b			(28b)
+		DWORD			dummy;			// 4b			(32b)
 
 	public:		
-		IC Fvector&	V(int id)		{ return *(verts[id]); }
+		IC Fvector&		V(int id)	{ return *(verts[id]); }
 		
-		IC DWORD*	IDverts()	{ return (DWORD*)	verts;	}
-		IC DWORD*	IDadj()		{ return (DWORD*)	adj;	}
-		void		convert_I2P	(Fvector* pBaseV, TRI* pBaseTri);
-		void		convert_P2I	(Fvector* pBaseV, TRI* pBaseTri);
+		IC DWORD*		IDverts()	{ return (DWORD*)	verts;	}
+		IC DWORD*		IDadj()		{ return (DWORD*)	adj;	}
+		void			convert_I2P	(Fvector* pBaseV, TRI* pBaseTri);
+		void			convert_P2I	(Fvector* pBaseV, TRI* pBaseTri);
 	};
 
 	// Model definition
 	class XRCDB_API MODEL
 	{
 		friend class COLLIDER;	
+	private:
 		OPCODE_Model*	tree;
+
+		// tris
+		TRI*			tris;
+		int				tris_count;
+		Fvector*		verts;
+		int				verts_count;
 	public:
 		MODEL();
 		~MODEL();
 
-		void		build	(Fvector* V, int Vcnt, TRI* T, int Tcnt);
+		void			build	(Fvector* V, int Vcnt, TRI* T, int Tcnt);
+		DWORD			memory	();
 	};
 
 	// Collider result
 	class XRCDB_API RESULT
 	{
 	public:
-		int			id;
-		float		range;
-		float		u,v;
+		int				id;
+		float			range;
+		float			u,v;
 	};
 
 	// Collider Options

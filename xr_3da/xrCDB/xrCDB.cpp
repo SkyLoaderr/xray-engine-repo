@@ -46,6 +46,56 @@ void	TRI::convert_P2I	(Fvector* pBaseV, TRI* pBaseTri)
 	pAdjID	[2]	= (adj[2])?adj[2]-pBaseTri:0xffffffff;
 }
 
+// Model building
+MODEL::MODEL()
+{
+	tree		= 0;
+	tris		= 0;
+	tris_count	= 0;
+	verts		= 0;
+	verts_count	= 0;
+}
+MODEL::~MODEL()
+{
+	delete		tree;	tree = 0;
+	if (tris)	{ cl_free(tris);	tris=0;		tris_count=0;	}
+	if (verts)	{ cl_free(verts);	verts=0;	verts_count=0;	}
+}
+
+void	MODEL::build(Fvector* V, int Vcnt, TRI* T, int Tcnt)
+{
+	// verts
+	verts_count	= Vcnt;
+	verts		= cl_alloc<Fvector>	(verts_count);
+	CopyMemory	(verts,V,verts_count*sizeof(Fvector));
+	
+	// tris
+	tris_count	= Tcnt;
+	tris		= cl_alloc<TRI>		(tris_count);
+	CopyMemory	(tris,T,tris_count*sizeof(TRI));
+	
+	// convert tris to 'pointer' form
+	for (int i=0; i<tris_count; i++)
+		tris[i].convert_I2P(verts,tris);
+	
+	// Build a non quantized no-leaf tree
+	OPCODECREATE	OPCC;
+	OPCC.NbTris		= tris_count;
+	OPCC.NbVerts	= verts_count;
+	OPCC.Tris		= tris;
+	OPCC.Verts		= verts;
+	OPCC.Rules		= SPLIT_COMPLETE | SPLIT_SPLATTERPOINTS;
+	OPCC.NoLeaf		= true;
+	OPCC.Quantized	= false;
+	tree			= new OPCODE_Model;
+	tree->Build		(OPCC);
+}
+DWORD MODEL::memory()
+{
+	DWORD V = verts_count*sizeof(Fvector);
+	DWORD T = tris_count *sizeof(TRI);
+	return tree->GetUsedBytes()+V+T+sizeof(*this)+sizeof(*tree);
+}
 
 
 // This is the constructor of a class that has been exported.
