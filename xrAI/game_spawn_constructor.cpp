@@ -168,7 +168,11 @@ void CGameSpawnConstructor::save_spawn		(LPCSTR name, LPCSTR output)
 	m_spawn_header.m_spawn_count	= spawn_graph().vertex_count();
 	
 	stream.open_chunk				(0);
-	stream.w						(&m_spawn_header,sizeof(m_spawn_header));
+	save_data						(m_spawn_header.m_version,stream);
+	save_data						(m_spawn_header.m_guid,stream);
+	save_data						(m_spawn_header.m_graph_guid,stream);
+	stream.w_u32					(m_spawn_header.m_count);
+	stream.w_u32					(m_spawn_header.m_level_count);
 	stream.close_chunk				();
 	
 	stream.open_chunk				(1);
