@@ -70,7 +70,24 @@ DWORD					xrIDirect3DTexture9::GetLevelCount			() 																		{ APIDEBUG("
 HRESULT					xrIDirect3DTexture9::SetAutoGenFilterType	( D3DTEXTUREFILTERTYPE iFilterType) 										{ APIDEBUG("xrIDirect3DTexture9::SetAutoGenFilterType	"); FilterType = iFilterType; return HRESULT_Proc(S_OK); };
 D3DTEXTUREFILTERTYPE	xrIDirect3DTexture9::GetAutoGenFilterType	() 																		{ APIDEBUG("xrIDirect3DTexture9::GetAutoGenFilterType	"); return D3DTEXTUREFILTERTYPE(FilterType); };
 void					xrIDirect3DTexture9::GenerateMipSubLevels	() 																		{ APIDEBUG("xrIDirect3DTexture9::GenerateMipSubLevels	"); return VOID_proc(); };
-HRESULT					xrIDirect3DTexture9::GetLevelDesc			( UINT Level,D3DSURFACE_DESC *pDesc) 									{ APIDEBUG("xrIDirect3DTexture9::GetLevelDesc			"); return HRESULT_Proc(S_OK); };
+
+HRESULT					xrIDirect3DTexture9::GetLevelDesc			( UINT Level,D3DSURFACE_DESC *pDesc) 									
+{ 
+	APIDEBUG("xrIDirect3DTexture9::GetLevelDesc			"); 
+	
+	pDesc->Format	= Format;
+	pDesc->Type		= D3DRTYPE_TEXTURE;
+	pDesc->Usage	= Usage;
+	pDesc->Pool		= Pool;
+
+	pDesc->MultiSampleType	= D3DMULTISAMPLE_TYPE(0);
+	pDesc->MultiSampleQuality = 0;
+	pDesc->Width	= Width;
+	pDesc->Height	= Height;
+
+	return HRESULT_Proc(S_OK); 
+};
+
 HRESULT					xrIDirect3DTexture9::GetSurfaceLevel		( UINT Level,IDirect3DSurface9** ppSurfaceLevel) 						
 { 
 	APIDEBUG("xrIDirect3DTexture9::GetSurfaceLevel		"); 
