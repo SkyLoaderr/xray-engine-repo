@@ -81,7 +81,7 @@
 			IntermediateDirectory="Release"
 			ConfigurationType="2"
 			CharacterSet="2"
-			WholeProgramOptimization="TRUE">
+			WholeProgramOptimization="FALSE">
 			<Tool
 				Name="VCCLCompilerTool"
 				Optimization="3"
