@@ -8,7 +8,7 @@ function fe(item, parent)
 	parent:drop_item(item,p)
 end
 
-function main()
+function  _main()
 	local news_id = "general_new_task"
     db.actor:give_game_news(news_id, "ui\\ui_icons_task", 0,100,50,50)
     db.actor:set_news_show_time(news_id, 0)
@@ -18,7 +18,7 @@ function main()
     db.actor:set_news_show_time(news_id, 0)	
 end
 
-function _______main ()
+function main ()
 	local info = "tutorial_artefact_start" 
 	if db.actor:has_info(info) then
 		db.actor:disable_info_portion(info)
