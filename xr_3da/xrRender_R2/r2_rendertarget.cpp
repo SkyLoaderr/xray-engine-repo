@@ -249,54 +249,12 @@ void	CRenderTarget::OnDeviceDestroy	()
 	t_material->surface_set		(NULL);
 	_RELEASE					(t_material_surf);
 
-	// COMBINE
-	Device.Shader.DeleteGeom	(g_aa_AA				);
-	Device.Shader.DeleteGeom	(g_aa_blur				);
-	Device.Shader.DeleteGeom	(g_combine				);
-	Device.Shader.Delete		(s_combine_dbg_DepthD	);
-	Device.Shader.Delete		(s_combine_dbg_Normal	);
-	Device.Shader.Delete		(s_combine_dbg_Accumulator);
-	Device.Shader.Delete		(s_combine				);
-
-	// BLOOM
-	Device.Shader._DeleteRT		(rt_Bloom_2				);
-	Device.Shader._DeleteRT		(rt_Bloom_1				);
-	Device.Shader.Delete		(s_bloom				);
-	Device.Shader.Delete		(s_bloom_dbg_2			);
-	Device.Shader.Delete		(s_bloom_dbg_1			);
-	Device.Shader.DeleteGeom	(g_bloom_filter			);
-	Device.Shader.DeleteGeom	(g_bloom_build			);
 	_RELEASE					(rt_Bloom_ZB			);
-
-	// SPOT
-	Device.Shader.DeleteGeom	(g_accum_spot			);
-	accum_spot_geom_destroy		();
-	Device.Shader.Delete		(s_accum_spot_s			);
-
-	// POINT
-	Device.Shader.DeleteGeom	(g_accum_point			);
-	accum_point_geom_destroy	();
-	Device.Shader.Delete		(s_accum_point_s		);
-	Device.Shader.Delete		(s_accum_point_uns		);
-	Device.Shader._DeleteRTC	(rt_smap_p				);
 	_RELEASE					(rt_smap_p_ZB			);
-
-	// DIRECT
-	Device.Shader.Delete		(s_accum_direct			);
-	Device.Shader.Delete		(s_accum_mask			);
-	Device.Shader._DeleteRT		(rt_smap_d_depth		);
-	Device.Shader._DeleteRT		(rt_smap_d_surf			);
 	_RELEASE					(rt_smap_d_ZB			);
 
-	// NORMAL
-	Device.Shader._DeleteRT		(rt_Generic				);
-	Device.Shader._DeleteRT		(rt_Accumulator			);
-
-	Device.Shader._DeleteRT		(rt_Color				);
-	Device.Shader._DeleteRT		(rt_Normal				);
-	Device.Shader._DeleteRT		(rt_Position			);
-	Device.Shader._DeleteRT		(rt_Deffer				);
-	Device.Shader.Delete		(s_decompress			);
+	accum_spot_geom_destroy		();
+	accum_point_geom_destroy	();
 
 	// Blenders
 	xr_delete					(b_decompress			);
