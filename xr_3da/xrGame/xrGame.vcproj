@@ -240,9 +240,6 @@
 				RelativePath=".\StdAfx.h">
 			</File>
 			<File
-				RelativePath=".\WayPointDef.h">
-			</File>
-			<File
 				RelativePath=".\clsid_game.h">
 			</File>
 			<File
@@ -263,6 +260,9 @@
 			</File>
 			<File
 				RelativePath=".\Level.h">
+			</File>
+			<File
+				RelativePath="LevelGameDef.h">
 			</File>
 			<File
 				RelativePath="Level_SLS_Default.cpp">
