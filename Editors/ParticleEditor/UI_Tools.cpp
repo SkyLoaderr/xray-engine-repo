@@ -151,8 +151,21 @@ void CParticleTools::Render()
 	// Draw the particles.
 	RCache.set_xform_world		(Fidentity);
     switch(m_EditMode){
-    case emEffect:	::Render->Models->RenderSingle(m_EditPE,Fidentity,1.f);	break;
-    case emGroup:	::Render->Models->RenderSingle(m_EditPG,Fidentity,1.f);	break;
+    case emEffect:{	
+		if (m_Flags.is(flDrawDomain)&&m_EditPE&&m_EditPE->GetDefinition())	m_EditPE->GetDefinition()->Render();
+    	::Render->Models->RenderSingle(m_EditPE,Fidentity,1.f);	
+    }break;
+    case emGroup:{
+    	if (m_Flags.is(flDrawDomain)&&m_EditPG){
+         	int cnt = m_EditPG->children.size();
+            for (int k=0; k<cnt; k++){
+                IRender_Visual*  V  = m_EditPG->children[k];
+                PS::CParticleEffect* E	= (PS::CParticleEffect*)V;
+				if (E&&E->GetDefinition())	E->GetDefinition()->Render();
+            }
+        }
+    	::Render->Models->RenderSingle(m_EditPG,Fidentity,1.f);	
+    }break;
     default: THROW;
     }
 }
@@ -472,7 +485,7 @@ void CParticleTools::SetCurrentPE(PS::CPEDef* P)
         m_EditPE->Compile(m_LibPED);
 		if (m_LibPED){ 
 			m_EditMode		= emEffect;
-//        	EditActionList	();
+		    if (m_EditText)	EditActionList();
         }else if (m_EditText) TfrmText::DestroyForm(m_EditText);
     }
 }
@@ -822,6 +835,7 @@ PS::CPEDef* CParticleTools::AppendPE(PS::CPEDef* src)
 	FHelper.MakeName	(m_PList->GetSelected(),0,folder_name,true);
     string64 pref		={0};
     if (src){ 			strcpy(pref,src->m_Name);folder_name="";}
+    else strconcat		(pref,folder_name.c_str(),"pe");
     AnsiString new_name	= FHelper.GenerateName(pref,2,::Render->PSLibrary.FindByName);
     PS::CPEDef* S 		= ::Render->PSLibrary.AppendPED(src);
     strcpy				(S->m_Name,new_name.c_str());
@@ -842,6 +856,7 @@ PS::CPGDef*	CParticleTools::AppendPG(PS::CPGDef* src)
 	FHelper.MakeName	(m_PList->GetSelected(),0,folder_name,true);
     string64 pref		={0};
     if (src){ 			strcpy(pref,src->m_Name);folder_name="";}
+    else strconcat		(pref,folder_name.c_str(),"pg");
     AnsiString new_name	= FHelper.GenerateName(pref,2,::Render->PSLibrary.FindByName);
     PS::CPGDef* S 		= ::Render->PSLibrary.AppendPGD(src);
     strcpy				(S->m_Name,new_name.c_str());

@@ -4,14 +4,7 @@
 
 #include "ParticleEffectActions.h"
 #include "D3DUtils.h"
-/*
-		pVector p1, p2;		// Box vertices, Sphere center, Cylinder/Cone ends
-		pVector u, v;		// Orthonormal basis vectors for Cylinder/Cone
-		float radius1;		// Outer radius
-		float radius2;		// Inner radius
-		float radius1Sqr;	// Used for fast Within test of spheres,
-		float radius2Sqr;	// and for mag. of u and v vectors for plane.
-*/
+
 void PS::CPEDef::Render()
 {
 	for (PAPI::PAVecIt it=m_ActionList.begin(); it!=m_ActionList.end(); it++)
@@ -101,10 +94,12 @@ void PAPI::pDomain::Render(u32 clr)
 
 void 	EPAAvoid::Render			()
 {
+	position.Render(0x6096FF96);
 }
 
 void 	EPABounce::Render			()
 {
+	position.Render(0x6096FEEC);
 }
 
 void 	EPACallActionList::Render	()
@@ -137,6 +132,7 @@ void 	EPAGravity::Render		()
 
 void 	EPAJet::Render			()
 {
+//.	0x600000ff
 }
 
 void 	EPAKillOld::Render		()
@@ -153,10 +149,12 @@ void 	EPAMove::Render			()
 
 void 	EPAOrbitLine::Render		()
 {
+//.	0x600000ff
 }
 
 void 	EPAOrbitPoint::Render		()
 {
+//.	0x600000ff
 }
 
 void 	EPARandomAccel::Render	()
@@ -177,6 +175,7 @@ void 	EPARestore::Render		()
 
 void 	EPASink::Render			()
 {
+	position.Render(0x60ff0000);
 }
 
 void 	EPASinkVelocity::Render	()
@@ -214,4 +213,5 @@ void 	EPAVelocityD::Render		()
 
 void 	EPAVortex::Render			()
 {
+//.	0x600000ff
 }

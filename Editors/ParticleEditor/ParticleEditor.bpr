@@ -122,8 +122,8 @@
       -IR:\Borland\Components6\Elpack\Code 
       -IR:\Borland\Components6\Elpack\Code\Source -IP:\xrCore -src_suffix cpp 
       -D_EDITOR -D_PARTICLE_EDITOR -DDEBUG -D_DEBUG -no_tie -boa"/>
-    <CFLAG1 value="-vGc -vGt -vGd -Od -H=$(BCB)\lib\vcl60.csm -Hc -Q -Vx -Ve -xf -xp -VF -ff 
-      -X- -r- -ps -a4 -6 -b- -k -y -v -vi- -He -c -tW -tWM"/>
+    <CFLAG1 value="-Od -H=$(BCB)\lib\vcl60.csm -Hc -Q -Vx -Ve -xf -xp -VF -ff -X- -r- -ps -a4 
+      -6 -b- -k -y -v -vi- -He -c -tW -tWM"/>
     <PFLAGS value="-N2Intermediate -N0Intermediate -$Y+ -$W -$Q -$O- -$A8 -v -JPHNE -M"/>
     <RFLAGS value=""/>
     <AFLAGS value="/mx /w2 /zi"/>
@@ -133,7 +133,7 @@
   <LINKER>
     <ALLOBJ value="c0w32.obj $(PACKAGES) Memmgr.Lib sysinit.obj $(OBJFILES)"/>
     <ALLRES value="$(RESFILES)"/>
-    <ALLLIB value="cg32.lib $(LIBFILES) $(LIBRARIES) import32.lib cp32mti.lib"/>
+    <ALLLIB value="$(LIBFILES) $(LIBRARIES) import32.lib cp32mti.lib"/>
     <OTHERFILES value=""/>
   </LINKER>
   <FILELIST>
@@ -454,7 +454,7 @@ RemoteDebug=0
 [Compiler]
 ShowInfoMsgs=0
 LinkDebugVcl=0
-LinkCGLIB=1
+LinkCGLIB=0
 
 [CORBA]
 AddServerUnit=1

@@ -31,6 +31,7 @@ void __fastcall CParticleTools::OnParticleItemFocused(ListItemsVec& items)
     ResetCurrent	();
     
 	if (!items.empty()){
+		PHelper.CreateFlag32		(props,"Tools\\Draw Domains",	&m_Flags, flDrawDomain);
 	    for (ListItemsIt it=items.begin(); it!=items.end(); it++){
             ListItem* item = *it;
             if (item){

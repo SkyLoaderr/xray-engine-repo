@@ -13,9 +13,8 @@ void PAPI::pDomain::FillProp	(PropItemVec& items, LPCSTR pref)
 
 void 	EPAAvoid::FillProp		(PropItemVec& items, LPCSTR pref)
 {
-	position.FillProp	(items,pref);
 /*	
-
+	position.FillProp	(items,pref);
     PHelper.CreateFloat	(items,FHelper.PrepareKey(pref,"Look ahead"),);
     look_ahead		= F.r_float();
     magnitude		= F.r_float();

@@ -619,9 +619,6 @@ void CParticleEffect::Render(float LOD)
             }
         }
     }
-#ifdef _PARTICLE_EDITOR
-	if (m_Def)		m_Def->Render();
-#endif
 }
 
 void CParticleEffect::ApplyExplosion()
