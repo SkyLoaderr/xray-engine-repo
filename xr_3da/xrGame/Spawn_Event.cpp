@@ -81,4 +81,5 @@ void CSpawn_Event::Load	(CStream& FS)
 		xrPREAD_PROP	(FS,xrPID_OBJECT,			P.OnLeave.target);
 		xrPREAD_PROP	(FS,xrPID_STRING,			P.OnLeave.custom);
 	}
+	R_ASSERT			(!Commands.empty());
 }
