@@ -172,8 +172,8 @@ void CGlowManager::Render()
 				pv->set(cx + size, cy + size, TL.p.z, TL.p.w, clr, 1, 1); pv++;
 				pv->set(cx + size, cy - size, TL.p.z, TL.p.w, clr, 1, 0); pv++;
 			}
-			int vCount				= pv-pvs;
-			RCache.Vertex.Unlock		(vCount,hGeom->vb_stride);
+			int vCount				= int(pv-pvs);
+			RCache.Vertex.Unlock	(vCount,hGeom->vb_stride);
 			if (vCount) {
 				RCache.set_Shader		(T);
 				RCache.set_Geometry		(hGeom);

@@ -62,7 +62,6 @@ void	CLightTrack::ltrack	(IRenderable* O)
 
 	CLightTrack* pROS		= dynamic_cast<CLightTrack*>	(O->renderable.ROS);
 	R_ASSERT				(pROS);
-	CLightTrack& dest		= *pROS;
 	if						(dwFrame==Device.dwFrame)	return;
 	dwFrame					= Device.dwFrame;
 	O->renderable.xform.transform_tiny	(pos,O->renderable.visual->vis.sphere.P);

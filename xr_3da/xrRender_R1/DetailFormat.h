@@ -110,7 +110,7 @@ public:
         case 1: return id1;
         case 2: return id2;
         case 3: return id3;
-        default: NODEFAULT;
+        default: NODEFAULT;	
         }
     }
     void			w_id		(u32 idx, u8 val) {	

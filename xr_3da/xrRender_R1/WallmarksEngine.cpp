@@ -273,7 +273,7 @@ void CWallmarksEngine::Render()
 			float ssa = W->bounds.R * W->bounds.R / dst;
 			if (ssa>=ssaCLIP)	
 			{
-				u32 w_count	= w_verts-w_start;
+				u32 w_count		= u32(w_verts-w_start);
 				if (((w_count+W->verts.size())>=(MAX_TRIS*3))||(w_S!=W->shader))
 				{
 					if (w_count)	
@@ -298,7 +298,7 @@ void CWallmarksEngine::Render()
 	}
 
 	// Flush stream
-	u32 w_count			= w_verts-w_start;
+	u32 w_count				= u32(w_verts-w_start);
 	RCache.Vertex.Unlock	(w_count,hGeom->vb_stride);
 	if (w_count)			
 	{
