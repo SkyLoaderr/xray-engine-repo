@@ -114,7 +114,7 @@ void i_scan		(int curY, float leftX, float lhx, float rightX, float rhx, float s
 	}
 
 	// compute the scanline 
-	limit			= i_base+maxX;
+	limit				= i_base+maxX;
 	for (; i<limit; i++, Z+=dZ) 
 	{
 		if (Z < pDepth[i])	{ pFrame[i]	= currentTri; pDepth[i] = Z; }
