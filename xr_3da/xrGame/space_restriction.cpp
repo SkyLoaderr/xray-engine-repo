@@ -165,7 +165,7 @@ void CSpaceRestriction::build_border	()
 	xr_vector<CCF_Shape::shape_def>::const_iterator	I = shape->Shapes().begin();
 	xr_vector<CCF_Shape::shape_def>::const_iterator	E = shape->Shapes().end();
 	for ( ; I != E; ++I) {
-		u32							vertex_id = ai().level_graph().vertex_id(Fvector().add(position(*I),m_restrictor->Position()));
+		u32							vertex_id = m_restrictor->level_vertex_id();//ai().level_graph().vertex_id(Fvector().add(position(*I),m_restrictor->Position()));
 		VERIFY						(ai().level_graph().valid_vertex_id(vertex_id));
 		ai().graph_engine().search	(
 			ai().level_graph(),

@@ -190,73 +190,49 @@ void CCustomZone::Load(LPCSTR section)
 
 BOOL CCustomZone::net_Spawn(LPVOID DC) 
 {
-	CCF_Shape *l_pShape			= xr_new<CCF_Shape>(this);
-	collidable.model			= l_pShape;
+	if (inherited::net_Spawn(DC))
+		return					(FALSE);
+
 	CSE_Abstract				*e = (CSE_Abstract*)(DC);
 	CSE_ALifeCustomZone			*Z = dynamic_cast<CSE_ALifeCustomZone*>(e);
 	
-	for (u32 i=0; i < Z->shapes.size(); ++i) 
-	{
-		CSE_Shape::shape_def	&S = Z->shapes[i];
-		switch (S.type) 
-		{
-			case 0 : l_pShape->add_sphere(S.data.sphere); break;
-			case 1 : l_pShape->add_box(S.data.box); break;
-		}
-	}
+	m_fMaxPower					= Z->m_maxPower;
+	m_fAttenuation				= Z->m_attn;
+	m_dwPeriod					= Z->m_period;
 
 	//добавить источники света
-	if(m_bIdleLight)
-	{
+	if (m_bIdleLight) {
 		m_pIdleLight = ::Render->light_create();
 		m_pIdleLight->set_shadow(true);
 	}
 	else
-	{
 		m_pIdleLight = NULL;
-	}
 
-	if(m_bBlowoutLight) 
-	{
+	if (m_bBlowoutLight) {
 		m_pLight = ::Render->light_create();
 		m_pLight->set_shadow(true);
 	}
 	else
-	{
 		m_pLight = NULL;
-	}
 
-	BOOL bOk = inherited::net_Spawn(DC);
-	
-	if (bOk)
-	{
-		l_pShape->ComputeBounds		();
-		m_fMaxPower					= Z->m_maxPower;
-		m_fAttenuation				= Z->m_attn;
-		m_dwPeriod					= Z->m_period;
+//	setVisible(true);
+	shedule_register			();
+	setEnabled					(true);
 
-		Fvector						P;
-		XFORM().transform_tiny		(P,CFORM()->getSphere().P);
-		
-		//	setVisible(true);
-		setEnabled(true);
+	PlayIdleParticles			();
 
-		PlayIdleParticles();
+	m_eZoneState				= eZoneStateIdle;
+	m_iPreviousStateTime		= m_iStateTime = 0;
 
-		m_eZoneState = eZoneStateIdle;
-		m_iPreviousStateTime = m_iStateTime = 0;
-	}
+	m_effector.SetRadius		(CFORM()->getSphere().R);
 
-	m_effector.SetRadius(CFORM()->getSphere().R);
-
-
-	m_dwLastTimeMoved = Device.dwTimeGlobal;
-	m_vPrevPos.set(Position());
+	m_dwLastTimeMoved			= Device.dwTimeGlobal;
+	m_vPrevPos.set				(Position());
 
 	if (Game().type != GAME_SINGLE)
-		OnStateSwitch(eZoneStateDisabled);
+		OnStateSwitch			(eZoneStateDisabled);
 
-	return bOk;
+	return						(TRUE);
 }
 
 void CCustomZone::net_Destroy() 

@@ -1,7 +1,7 @@
 ////////////////////////////////////////////////////////////////////////////
 //	Module 		: restricted_object.cpp
 //	Created 	: 18.08.2004
-//  Modified 	: 18.08.2004
+//  Modified 	: 23.08.2004
 //	Author		: Dmitriy Iassenev
 //	Description : Restricted object
 ////////////////////////////////////////////////////////////////////////////
@@ -12,6 +12,31 @@
 #include "level.h"
 #include "space_restrictor_manager.h"
 #include "xrServer_Objects_ALife_Monsters.h"
+#include "space_restrictor.h"
+#include "object_broker.h"
+
+bool RestrictedObject::CShapeRestriction::accessible	(const Fvector &position) const
+{
+	VERIFY							(m_restrictor);
+	return							(!m_restrictor->inside(position));
+}
+
+void RestrictedObject::CRestrictionContainer::add_restriction	(CSpaceRestrictor *restrictor)
+{
+	RESTRICTIONS::const_iterator	I = m_restrictions.find(restrictor->ID());
+	VERIFY							(I == m_restrictions.end());
+	m_restrictions.insert			(std::make_pair(restrictor->ID(),xr_new<RestrictedObject::CShapeRestriction>(restrictor)));
+}
+
+RestrictedObject::CRestrictionContainer::~CRestrictionContainer	()
+{
+	delete_data						(m_restrictions);
+}
+
+CRestrictedObject::~CRestrictedObject	()
+{
+	clear						();
+}
 
 BOOL CRestrictedObject::net_Spawn		(LPVOID data)
 {
@@ -22,9 +47,18 @@ BOOL CRestrictedObject::net_Spawn		(LPVOID data)
 	CSE_ALifeMonsterAbstract	*monster	= dynamic_cast<CSE_ALifeMonsterAbstract*>(abstract);
 	VERIFY						(monster);
 	
+	m_in_restrictions			= xr_new<RestrictedObject::CRestrictionContainer>();
+	m_out_restrictions			= xr_new<RestrictedObject::CRestrictionContainer>();
+
 	Level().space_restrictor_manager().associate		(ID(),monster->m_space_restrictors);
 
 	return						(TRUE);
+}
+
+void CRestrictedObject::net_Destroy		()
+{
+	inherited::net_Destroy		();
+	clear						();
 }
 
 void CRestrictedObject::add_border		() const
@@ -41,7 +75,14 @@ void CRestrictedObject::remove_border	() const
 
 bool CRestrictedObject::accessible		(const Fvector &position) const
 {
-	return	(Level().space_restrictor_manager().accessible(ID(),position));
+	return		(
+		Level().space_restrictor_manager().accessible(ID(),position) &&
+		!container(RestrictedObject::eRestrictionTypeIn).accessible(position) &&
+		(
+			container(RestrictedObject::eRestrictionTypeOut).empty() || 
+			container(RestrictedObject::eRestrictionTypeOut).accessible(position)
+		)
+	);
 }
 
 bool CRestrictedObject::accessible		(u32 vertex_id) const
@@ -49,16 +90,16 @@ bool CRestrictedObject::accessible		(u32 vertex_id) const
 	Fvector		position = ai().level_graph().vertex_position(vertex_id);
 	float		offset = ai().level_graph().header().cell_size()*.5f;
 	return		(
-		Level().space_restrictor_manager().accessible(ID(),Fvector().set(position.x + offset,position.y,position.z + offset)) || 
-		Level().space_restrictor_manager().accessible(ID(),Fvector().set(position.x + offset,position.y,position.z - offset)) || 
-		Level().space_restrictor_manager().accessible(ID(),Fvector().set(position.x - offset,position.y,position.z + offset)) || 
-		Level().space_restrictor_manager().accessible(ID(),Fvector().set(position.x - offset,position.y,position.z - offset))
+		accessible(Fvector().set(position.x + offset,position.y,position.z + offset)) || 
+		accessible(Fvector().set(position.x + offset,position.y,position.z - offset)) || 
+		accessible(Fvector().set(position.x - offset,position.y,position.z + offset)) || 
+		accessible(Fvector().set(position.x - offset,position.y,position.z - offset))
 	);
 }
 
 u32	CRestrictedObject::accessible_nearest	(const Fvector &position, Fvector &result) const
 {
-#pragma todo("Dima to Dima : Warning : this place can be optimized in case of a slowdown")
+#pragma todo("Dima to Dima : _Warning : this place can be optimized in case of a slowdown")
 	VERIFY	(!accessible(position));
 	const xr_vector<u32> &border = Level().space_restrictor_manager().restriction(ID())->border();
 
@@ -111,7 +152,7 @@ u32	CRestrictedObject::accessible_nearest	(const Fvector &position, Fvector &res
 			}
 			if (i < 4)
 				center.y = ai().level_graph().vertex_plane_y(selected,center.x,center.z);
-			if (!Level().space_restrictor_manager().accessible(ID(),current))
+			if (!accessible(current))
 				continue;
 			float	distance_sqr = current.distance_to(position);
 			if (distance_sqr < min_dist_sqr) {

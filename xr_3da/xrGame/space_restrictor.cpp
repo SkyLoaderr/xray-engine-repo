@@ -29,12 +29,6 @@ float CSpaceRestrictor::Radius		() const
 BOOL CSpaceRestrictor::net_Spawn	(LPVOID data)
 {
 	CSE_Abstract					*abstract = (CSE_Abstract*)data;
-	Position()						= abstract->o_Position;
-	cName_set						(abstract->s_name);
-	cNameSect_set					(abstract->s_name);
-	if (abstract->s_name_replace[0])
-		cName_set					(abstract->s_name_replace);
-		
 	CShapeData						*se_shape = dynamic_cast<CShapeData*>(abstract);
 	R_ASSERT						(se_shape);
 
@@ -57,11 +51,12 @@ BOOL CSpaceRestrictor::net_Spawn	(LPVOID data)
 
 	BOOL							result = inherited::net_Spawn(data);
 	
-	if (result) {
-		shape->ComputeBounds		();
-		Fvector						P;
-		XFORM().transform_tiny		(P,CFORM()->getSphere().P);
-	}
+	if (!result)
+		return						(FALSE);
+
+	shape->ComputeBounds			();
+	Fvector							P;
+	XFORM().transform_tiny			(P,CFORM()->getSphere().P);
 
 	shedule_unregister				();
 	setEnabled						(false);

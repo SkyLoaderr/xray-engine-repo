@@ -980,6 +980,9 @@
 						<File
 							RelativePath=".\restricted_object.h">
 						</File>
+						<File
+							RelativePath=".\restricted_object_inline.h">
+						</File>
 					</Filter>
 				</Filter>
 				<Filter
