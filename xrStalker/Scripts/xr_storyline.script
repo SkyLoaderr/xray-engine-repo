@@ -172,7 +172,7 @@ function set_storyline(object, char_ini)
                 xr_motivator.storage[object:id()].security.path     = patrol(char_ini:r_string("security", "path"))
             end
             xr_trivial.add_security    (object)
-            object:set_start_dialog    ("bar_security_dialog")            
+            object:set_start_dialog    ("bar_security_dialog")
      end
 
 
@@ -193,4 +193,14 @@ function set_storyline(object, char_ini)
     if char_ini:section_exist("barman") then
         barman.add_to_binder(object)
     end
+
+    --Снайпер-анархист
+     if( char_ini:section_exist ("sniper") == true ) then
+        xr_motivator.storage[object:id()].sniper =
+        								  {
+        									enabled = true,
+         								   }
+        xr_sniper.add_to_binder (object)
+     end
+
 end

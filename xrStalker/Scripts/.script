@@ -49,6 +49,9 @@ module ("escape_factory_bandits")
 --For Dark Laboratory
 module ("xr_scientist")
 
+--Хер знает где
+module ("xr_sniper")
+
 function printf(fmt,...)
     log(string.format(fmt,unpack(arg)))
 end
