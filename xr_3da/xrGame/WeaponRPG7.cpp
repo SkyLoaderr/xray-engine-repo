@@ -409,7 +409,9 @@ void CWeaponRPG7Grenade::UpdateCL() {
 			l_force = m_engine_u * Device.dwTimeDelta / 1000.f;
 			m_pPhysicsShell->applyImpulse(l_dir, l_force);
 			list<CPGObject*>::iterator l_it;
-			for(l_it = m_trailEffectsPSs.begin(); l_it != m_trailEffectsPSs.end(); l_it++) (*l_it)->SetTransform(svTransform);
+			Fvector vel;
+			m_pPhysicsShell->get_LinearVel(vel);
+			for(l_it = m_trailEffectsPSs.begin(); l_it != m_trailEffectsPSs.end(); l_it++) (*l_it)->UpdateParent(svTransform,vel);
 		} else {
 			list<CPGObject*>::iterator l_it;
 			for(l_it = m_trailEffectsPSs.begin(); l_it != m_trailEffectsPSs.end(); l_it++) (*l_it)->Stop();
