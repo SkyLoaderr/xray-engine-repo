@@ -14,6 +14,50 @@
 #include "Level.h"
 
 
+struct SBoneProtections{
+	typedef xr_map<s16,float>		storage_type;
+	typedef storage_type::iterator	storage_it;
+						SBoneProtections	()								{m_default = 1.0f;}
+	float				m_default;
+	storage_type		m_bones_koeff;
+	void				reload				(const shared_str& outfit_section, CKinematics* kinematics);
+	float				getBoneProtection	(s16 bone_id);
+};
+
+float SBoneProtections::getBoneProtection	(s16 bone_id)
+{
+	storage_it it = m_bones_koeff.find(bone_id);
+	if( it != m_bones_koeff.end() )
+		return it->second;
+	else
+		return m_default;
+}
+
+void SBoneProtections::reload(const shared_str& outfit_section, CKinematics* kinematics)
+{
+	VERIFY(kinematics);
+	m_bones_koeff.clear();
+
+
+	if(!pSettings->line_exist(outfit_section,"bones_koeff_protection")) return;
+	LPCSTR bone_sect = pSettings->r_string(outfit_section,"bones_koeff_protection");
+
+	CInifile::Sect	&protections = pSettings->r_section(bone_sect);
+	for (CInifile::SectIt i=protections.begin(); protections.end() != i; ++i) {
+		float k = (float)atof( *(*i).second );
+		if (!xr_strcmp(*(*i).first,"default"))
+		{
+			m_default	= k ;
+		}
+		else {
+			s16	bone_id				= kinematics->LL_BoneID(i->first);
+			R_ASSERT2				(BI_NONE != bone_id, *(*i).first);
+			m_bones_koeff.insert(mk_pair(bone_id,k));
+		}
+	}
+
+}
+
 CCustomOutfit::CCustomOutfit()
 {
 	m_slot = OUTFIT_SLOT;
@@ -25,10 +69,12 @@ CCustomOutfit::CCustomOutfit()
 	{
 		m_HitTypeProtection[i] = 1.0f;
 	}
+	m_boneProtection = xr_new<SBoneProtections>();
 }
 
 CCustomOutfit::~CCustomOutfit() 
 {
+	xr_delete(m_boneProtection);
 }
 
 
@@ -113,10 +159,16 @@ void CCustomOutfit::Hit(float hit_power, ALife::EHitType hit_type)
 	ChangeCondition(-hit_power);
 }
 
-
-float CCustomOutfit::GetHitTypeProtection(ALife::EHitType hit_type)
+float CCustomOutfit::GetDefHitTypeProtection(ALife::EHitType hit_type)
 {
 	return 1.0f - m_HitTypeProtection[hit_type]*GetCondition();
+}
+
+float CCustomOutfit::GetHitTypeProtection(ALife::EHitType hit_type, s16 element)
+{
+	float fBase = m_HitTypeProtection[hit_type]*GetCondition();
+	float bone = m_boneProtection->getBoneProtection(element);
+	return 1.0f - fBase*bone;
 }
 
 void	CCustomOutfit::OnMoveToSlot		()
@@ -148,6 +200,7 @@ void	CCustomOutfit::OnMoveToSlot		()
 
 				pActor->ChangeVisual(NewVisual);
 			}
+			m_boneProtection->reload( cNameSect(), smart_cast<CKinematics*>(pActor->Visual()) );
 		}
 	}
 };

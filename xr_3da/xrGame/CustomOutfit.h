@@ -8,6 +8,8 @@
 
 #include "inventory_item_object.h"
 
+struct SBoneProtections;
+
 class CCustomOutfit: public CInventoryItemObject {
 private:
     typedef	CInventoryItemObject inherited;
@@ -37,7 +39,8 @@ public:
 	//коэффициенты на которые домножается хит
 	//при соответствующем типе воздействия
 	//если на персонаже надет костюм
-	float GetHitTypeProtection(ALife::EHitType hit_type);
+	float GetHitTypeProtection(ALife::EHitType hit_type, s16 element);
+	float GetDefHitTypeProtection(ALife::EHitType hit_type);
 	//коэффициент на который домножается потеря силы
 	//если на персонаже надет костюм
 	float GetPowerLoss();
@@ -52,13 +55,13 @@ protected:
 	int m_iOutfitIconX;
 	int m_iOutfitIconY;
 
-	HitImmunity::HitTypeSVec m_HitTypeProtection;
-	float m_fPowerLoss;
+	HitImmunity::HitTypeSVec	m_HitTypeProtection;
+	float						m_fPowerLoss;
 
-	shared_str		m_ActorVisual;
-
+	shared_str					m_ActorVisual;
+	SBoneProtections*			m_boneProtection;
 protected:
-	u32				m_ef_equipment_type;
+	u32							m_ef_equipment_type;
 
 public:
 	virtual u32		ef_equipment_type	() const;
