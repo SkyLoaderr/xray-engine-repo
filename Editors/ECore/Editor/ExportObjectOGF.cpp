@@ -605,6 +605,7 @@ bool CExportObjectOGF::ExportAsWavefrontOBJ(IWriter& F, LPCSTR fn)
     }
     sprintf					(tmp,"mtllib %s",name);				 				F.w_string	(tmp);
     // write mtl
+    u32 v_offs				= 0;
     for (split_it=m_Splits.begin(); split_it!=m_Splits.end(); split_it++){
 	    _splitpath			((*split_it)->m_Surf->_Texture(), 0, 0, tex_name, 0 );
         sprintf				(tmp,"g %d",split_it-m_Splits.begin());				F.w_string	(tmp);
@@ -640,10 +641,11 @@ bool CExportObjectOGF::ExportAsWavefrontOBJ(IWriter& F, LPCSTR fn)
             OGFFaceVec& FACES	= part->getV_Faces();
             OGFFaceIt 			f_it;
             for (f_it=FACES.begin(); f_it!=FACES.end(); f_it++){
-                sprintf			(tmp,"f %d/%d/%d %d/%d/%d %d/%d/%d",f_it->v[2]+1,f_it->v[2]+1,f_it->v[2]+1,
-                                                                    f_it->v[1]+1,f_it->v[1]+1,f_it->v[1]+1,
-                                                                    f_it->v[0]+1,f_it->v[0]+1,f_it->v[0]+1); 	F.w_string	(tmp);
+                sprintf			(tmp,"f %d/%d/%d %d/%d/%d %d/%d/%d",v_offs+f_it->v[2]+1,v_offs+f_it->v[2]+1,v_offs+f_it->v[2]+1,
+                                                                    v_offs+f_it->v[1]+1,v_offs+f_it->v[1]+1,v_offs+f_it->v[1]+1,
+                                                                    v_offs+f_it->v[0]+1,v_offs+f_it->v[0]+1,v_offs+f_it->v[0]+1); 	F.w_string	(tmp);
             }
+	        v_offs  			+= VERTS.size();
         }
     }
 	return true;

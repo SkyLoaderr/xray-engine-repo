@@ -142,6 +142,7 @@ public:
     	flCBChecked		= (1<<2),
         flMixed			= (1<<3),
         flDrawThumbnail	= (1<<4),
+        flSorted		= (1<<5),
     };
     Flags32				m_Flags;
 public:

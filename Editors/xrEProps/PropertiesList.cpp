@@ -243,7 +243,7 @@ void TProperties::FillElItems(PropItemVec& items, LPCSTR startup_pref)
 	for (PropItemIt it=items.begin(); it!=items.end(); it++){
     	PropItem* prop		= *it;
         AnsiString 	key 	= *prop->key;
-	    if (m_Flags.is(plItemFolders)){
+	    if (m_Flags.is(plItemFolders)&&(startup_pref&&startup_pref[0])){
         	if (startup_pref&&startup_pref[0]){
                 AnsiString k	= key;		
                 LPCSTR k0		= k.c_str();
@@ -287,6 +287,12 @@ void TProperties::FillElItems(PropItemVec& items, LPCSTR startup_pref)
     	tvProperties->Sort			(true);
         tvProperties->SortMode 		= smAdd;
         tvProperties->ShowColumns	= true;
+    }else{
+        for (PropItemIt it=m_ViewItems.begin(); it!=m_ViewItems.end(); it++){
+            PropItem* prop = *it;
+            if (prop->m_Flags.is(PropItem::flSorted)) 
+            	((TElTreeItem*)prop->item)->Sort(true);
+        }
     }
 
     FolderRestore		();
@@ -326,8 +332,9 @@ void __fastcall TProperties::AssignItems(PropItemVec& items)
     }
 
     // create EL items
-    if (m_Flags.is(plItemFolders))	m_Folders->AssignItems	(folder_items,m_Flags.is(plFullExpand),m_Flags.is(plFullSort));
-    else							FillElItems				(m_Items);
+	if (m_Flags.is(plItemFolders))	m_Folders->AssignItems	(folder_items,m_Flags.is(plFullExpand),m_Flags.is(plFullSort));
+//	else							
+    FillElItems				(m_Items);
 
     // end fill mode
     bModified			= false;

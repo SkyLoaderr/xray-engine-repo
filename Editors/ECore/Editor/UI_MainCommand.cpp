@@ -298,10 +298,10 @@ void 	CommandZoomExtents(u32 p1, u32 p2, u32& res)
     Tools->ZoomObject	(p1);
     UI->RedrawScene		();
 }
-void 	CommandRenderWire(u32 p1, u32 p2, u32& res)
+void 	CommandToggleRenderWire(u32 p1, u32 p2, u32& res)
 {
-    if (p1)	Device.dwFillMode 	= D3DFILL_WIREFRAME;
-    else 	Device.dwFillMode 	= D3DFILL_SOLID;
+    if (Device.dwFillMode!=D3DFILL_WIREFRAME)	Device.dwFillMode 	= D3DFILL_WIREFRAME;
+    else 										Device.dwFillMode 	= D3DFILL_SOLID;
     UI->RedrawScene		();
 }
 void 	CommandToggleSafeRect(u32 p1, u32 p2, u32& res)
@@ -387,15 +387,18 @@ void TUI::RegisterCommands()
 	REGISTER_CMD_S	    (COMMAND_UPDATE_PROPERTIES,  	CommandUpdateProperties);
 	REGISTER_CMD_S	    (COMMAND_REFRESH_PROPERTIES, 	CommandRefreshProperties);
 	REGISTER_CMD_S	    (COMMAND_ZOOM_EXTENTS,       	CommandZoomExtents);
-    REGISTER_CMD_S	    (COMMAND_RENDER_WIRE,        	CommandRenderWire);
+    REGISTER_CMD_SE	    (COMMAND_TOGGLE_RENDER_WIRE,	"Toggle Wireframe",		CommandToggleRenderWire);
     REGISTER_CMD_C	    (COMMAND_RENDER_FOCUS,       	this,TUI::CommandRenderFocus);
-	REGISTER_CMD_C	    (COMMAND_BREAK_LAST_OPERATION,	this,TUI::CommandBreakLastOperation);
-    REGISTER_CMD_S	    (COMMAND_TOGGLE_SAFE_RECT,   	CommandToggleSafeRect);
+	REGISTER_CMD_CE	    (COMMAND_BREAK_LAST_OPERATION,	"Break Last Operation",	this,TUI::CommandBreakLastOperation);
+    REGISTER_CMD_SE	    (COMMAND_TOGGLE_SAFE_RECT,   	"Toggle Safe Rect",		CommandToggleSafeRect);
 	REGISTER_CMD_C	    (COMMAND_RENDER_RESIZE,      	this,TUI::CommandRenderResize);
-    REGISTER_CMD_S	    (COMMAND_TOGGLE_GRID,        	CommandToggleGrid);
+    REGISTER_CMD_SE	    (COMMAND_TOGGLE_GRID,        	"Toggle Grid",			CommandToggleGrid);
 	REGISTER_CMD_S	    (COMMAND_UPDATE_GRID,        	CommandUpdateGrid);
     REGISTER_CMD_S	    (COMMAND_GRID_NUMBER_OF_SLOTS,	CommandGridNumberOfSlots);
-    REGISTER_CMD_S	    (COMMAND_GRID_SLOT_SIZE,     	CommandGridSlotSize);
+    REGISTER_SUB_CMD_SE (COMMAND_GRID_SLOT_SIZE,     	"Change Grid Size",		CommandGridSlotSize);
+    	APPEND_SUB_CMD	("Decrease",					0,0);
+    	APPEND_SUB_CMD	("Increase",					1,0);
+    REGISTER_SUB_CMD_END;
     REGISTER_CMD_S	    (COMMAND_CREATE_SOUND_LIB,   	CommandCreateSoundLib);
     REGISTER_CMD_S	    (COMMAND_MUTE_SOUND,         	CommandMuteSound);
 }                                                                        
@@ -417,16 +420,6 @@ bool TUI::ApplyShortCut(WORD Key, TShiftState Shift)
 	bool bExec = false;
 
     if (Key==VK_ESCAPE)   			COMMAND1(COMMAND_CHANGE_ACTION, etaSelect)
-    if (Shift.Contains(ssCtrl)){
-    	if (Key==VK_CANCEL)			COMMAND0(COMMAND_BREAK_LAST_OPERATION);
-    }else{
-        if (Shift.Contains(ssAlt)){
-        }else{
-            if (Key==VK_OEM_4)		COMMAND1(COMMAND_GRID_SLOT_SIZE,false)
-            else if (Key==VK_OEM_6)	COMMAND1(COMMAND_GRID_SLOT_SIZE,true)
-        	else if (Key=='W')		COMMAND1(COMMAND_RENDER_WIRE, !(Device.dwFillMode==D3DFILL_WIREFRAME))
-        }
-    }
     return bExec;
 }
 //---------------------------------------------------------------------------
@@ -442,8 +435,6 @@ bool TUI::ApplyGlobalShortCut(WORD Key, TShiftState Shift)
         }
         else if (Key=='O')   			COMMAND0(COMMAND_LOAD)
         else if (Key=='N')   			COMMAND0(COMMAND_CLEAR)
-        else if (Key=='G')   			COMMAND0(COMMAND_TOGGLE_GRID)
-        else if (Key=='F')				COMMAND0(COMMAND_TOGGLE_SAFE_RECT)
     }
     if (Key==VK_OEM_3)					COMMAND0(COMMAND_RENDER_FOCUS)
     return bExec;
