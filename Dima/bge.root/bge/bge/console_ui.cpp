@@ -131,6 +131,7 @@ void CConsoleUI::execute	(char argc, char *argv[])
 		log					("bge>");
 		xr_strcpy			(s,"");
 		scanf				("%[^\n]s %c",s);
+		fprintf				(m_log,"%s\n",s);
 		script().run_string	(s);
 		scanf				("%c",s);
 	}
@@ -139,9 +140,7 @@ void CConsoleUI::execute	(char argc, char *argv[])
 void CConsoleUI::flush		()
 {
 	fflush					(stdout);
-
 	if (!m_log)
 		return;
-
 	fflush					(m_log);
 }
