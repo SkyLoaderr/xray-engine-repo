@@ -75,9 +75,9 @@ BOOL CTeamBaseZone::net_Spawn	(LPVOID DC)
 	return						(bOk);
 }
 
-void CTeamBaseZone::UpdateCL	()
+void CTeamBaseZone::shedule_Update(u32 dt)
 {
-	inherited::UpdateCL			();
+	inherited::shedule_Update	(dt);
 	
 	const Fsphere				&s = CFORM()->getSphere();
 	Fvector						P;

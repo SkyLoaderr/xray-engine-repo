@@ -134,11 +134,11 @@ void CWeaponHUD::animPlay			(CMotionDef* M,	BOOL bMixIn, CInventoryItem* W)
 
 	if(m_bCurrentEntityIsParent)
 	{
-		CSkeletonAnimated* pSkeletonAnimated = PSkeletonAnimated(Visual());
+		CSkeletonAnimated* pSkeletonAnimated			= PSkeletonAnimated(Visual());
 		VERIFY(pSkeletonAnimated);
-		pSkeletonAnimated->Update		();
-		pSkeletonAnimated->PlayCycle	(M,bMixIn);
-		pSkeletonAnimated->Invalidate	();
+		pSkeletonAnimated->Update						();
+		pSkeletonAnimated->PlayCycle					(M,bMixIn);
+		pSkeletonAnimated->CalculateBones_Invalidate	();
 	}
 
 	if(M->flags&esmStopAtEnd)

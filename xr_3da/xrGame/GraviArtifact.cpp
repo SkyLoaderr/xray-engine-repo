@@ -79,7 +79,7 @@ void CGraviArtifact::UpdateCL()
 				CKinematics* K	= PKinematics(H_Parent()->Visual());
 				if (K)
 				{
-					K->Calculate	();
+					K->CalculateBones	();
 					Fmatrix Ruck_MTX	= K->LL_GetTransform(m_CarringBoneID);
 					Fvector	x;
 					x.set(-0.1f, 0.f, -0.3f);

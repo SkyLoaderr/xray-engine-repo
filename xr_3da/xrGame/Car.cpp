@@ -479,8 +479,8 @@ void CCar::CreateSkeleton()
 	CSkeletonAnimated* K = PSkeletonAnimated(Visual());
 	if(K)
 	{
-		K->PlayCycle("idle");
-		K->Calculate();
+		K->PlayCycle		("idle");
+		K->CalculateBones	();
 	}
 
 

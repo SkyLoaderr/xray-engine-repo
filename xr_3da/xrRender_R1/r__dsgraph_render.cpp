@@ -551,8 +551,8 @@ void	R_dsgraph_structure::r_dsgraph_render_R1_box	(IRender_Sector* _S, Fbox& BB,
 		case MT_SKELETON_RIGID:
 			{
 				// Add all children	(s)
-				CKinematics * pV	= (CKinematics*)V;
-				pV->Calculate			();
+				CKinematics * pV		= (CKinematics*)V;
+				pV->CalculateBones		(TRUE);
 				I = pV->children.begin	();
 				E = pV->children.end		();
 				for (; I!=E; I++)		{

@@ -30,8 +30,8 @@ BOOL CPhysicsSkeletonObject::net_Spawn(LPVOID DC)
 	if(!CPHSkeleton::Spawn(po))
 	{
 		CreatePhysicsShell(e);
-		PKinematics(Visual())->Calculate();
-		CPHSkeleton::RestoreNetState(po);
+		PKinematics(Visual())->CalculateBones	();
+		CPHSkeleton::RestoreNetState			(po);
 	}
 	
 	return TRUE;
@@ -39,10 +39,10 @@ BOOL CPhysicsSkeletonObject::net_Spawn(LPVOID DC)
 
 void CPhysicsSkeletonObject::net_Destroy()
 {
-	CPHSkeleton::RespawnInit();
-	inherited::net_Destroy();
-	CKinematics* K=PKinematics(Visual());
-	if(K)	K->Calculate();
+	CPHSkeleton::RespawnInit	();
+	inherited::net_Destroy		();
+	CKinematics* K=PKinematics	(Visual());
+	if(K)	K->CalculateBones	();
 }
 
 void CPhysicsSkeletonObject::Load(LPCSTR section)

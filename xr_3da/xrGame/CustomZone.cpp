@@ -328,12 +328,6 @@ void CCustomZone::UpdateCL()
 
 	UpdateIdleLight		();
 
-
-	const Fsphere& s		= CFORM()->getSphere();
-	Fvector					P;
-	XFORM().transform_tiny(P,s.P);
-	feel_touch_update		(P,s.R);
-
 	m_iPreviousStateTime = m_iStateTime;
 	m_iStateTime += (int)Device.dwTimeDelta;
 	switch(m_eZoneState)
@@ -379,7 +373,12 @@ void CCustomZone::UpdateCL()
 
 void CCustomZone::shedule_Update(u32 dt)
 {
-	m_bZoneActive = false;
+	m_bZoneActive			= false;
+
+	const Fsphere& s		= CFORM()->getSphere();
+	Fvector					P;
+	XFORM().transform_tiny	(P,s.P);
+	feel_touch_update		(P,s.R);
 
 	//пройтись по всем объектам в зоне
 	//и проверить их состояние

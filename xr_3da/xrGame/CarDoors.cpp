@@ -316,13 +316,13 @@ void CCar::SDoor::ClosedToOpening()
 	joint->PSecond_element()->Activate(root_form,false);
 	pcar->m_pPhysicsShell->Enable();
 	joint->Activate();
-	pKinematics->Calculate();
+	pKinematics->CalculateBones();
 }
 
 void CCar::SDoor::ClosingToClosed()
 {
 	state =closed;
-	PKinematics(pcar->Visual())->Calculate();
+	PKinematics(pcar->Visual())->CalculateBones();
 
 //	Fmatrix door_form;
 	CKinematics* pKinematics=PKinematics(pcar->Visual());

@@ -25,7 +25,7 @@ public:
 	virtual void	Center				(Fvector &C)	const;
 	virtual float	Radius				() const;
 
-			void	UpdateCL			();
+	virtual void	shedule_Update		(u32 dt);
 	virtual void	feel_touch_new		(CObject* O);
 	virtual void	feel_touch_delete	(CObject* O);
 	virtual BOOL	feel_touch_contact	(CObject* O);

@@ -129,18 +129,17 @@ void	CWeaponMounted::UpdateCL()
 {
 	inherited::UpdateCL	();
 	if (Owner()){
-		CKinematics* K	= PKinematics(Visual());
-		K->Calculate	();
+		CKinematics* K		= PKinematics(Visual());
+		K->CalculateBones	();
 		// update fire pos & fire_dir
-		fire_bone_xform	= K->LL_GetTransform(fire_bone);
-		fire_bone_xform.mulA		(XFORM());
-		fire_pos.set	(0,0,0); 
+		fire_bone_xform		= K->LL_GetTransform(fire_bone);
+		fire_bone_xform.mulA(XFORM());
+		fire_pos.set		(0,0,0); 
 		fire_bone_xform.transform_tiny	(fire_pos);
-		fire_dir.set	(0,0,1); 
+		fire_dir.set		(0,0,1); 
 		fire_bone_xform.transform_dir	(fire_dir);
 
-
-		UpdateFire();
+		UpdateFire			();
 	}
 }
 
@@ -210,7 +209,7 @@ void	CWeaponMounted::cam_Update			(float dt)
 	if(Owner())	Owner()->setEnabled	(false);
 
 	CKinematics* K					= PKinematics(Visual());
-	K->Calculate					();
+	K->CalculateBones				();
 	const Fmatrix& C				= K->LL_GetTransform(camera_bone);
 	XFORM().transform_tiny			(P,C.c);
 

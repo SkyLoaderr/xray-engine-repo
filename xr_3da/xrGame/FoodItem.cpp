@@ -210,9 +210,9 @@ void CFoodItem::UpdateXForm	()
 
 		boneL = boneR2;
 
-		V->Calculate	();
-		Fmatrix& mL		= V->LL_GetTransform(u16(boneL));
-		Fmatrix& mR		= V->LL_GetTransform(u16(boneR));
+		V->CalculateBones	();
+		Fmatrix& mL			= V->LL_GetTransform(u16(boneL));
+		Fmatrix& mR			= V->LL_GetTransform(u16(boneR));
 
 		// Calculate
 		Fmatrix			mRes;

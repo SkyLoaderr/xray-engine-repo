@@ -241,9 +241,9 @@ void CRender::add_leafs_Dynamic(IRender_Visual *pVisual)
 	case MT_SKELETON_RIGID:
 		{
 			// Add all children, doesn't perform any tests
-			CKinematics * pV	= (CKinematics*)pVisual;
-			pV->Calculate			();
-			I = pV->children.begin	();
+			CKinematics * pV			= (CKinematics*)pVisual;
+			pV->CalculateBones			(TRUE);
+			I = pV->children.begin		();
 			E = pV->children.end		();
 			for (; I!=E; I++)	add_leafs_Dynamic	(*I);
 		}
@@ -293,8 +293,8 @@ void CRender::add_leafs_Static(IRender_Visual *pVisual)
 	case MT_SKELETON_RIGID:
 		{
 			// Add all children, doesn't perform any tests
-			CKinematics * pV = (CKinematics*)pVisual;
-			pV->Calculate			();
+			CKinematics * pV		= (CKinematics*)pVisual;
+			pV->CalculateBones		(TRUE);
 			I = pV->children.begin	();
 			E = pV->children.end	();
 			for (; I!=E; I++)	add_leafs_Static	(*I);
@@ -380,9 +380,9 @@ BOOL CRender::add_Dynamic(IRender_Visual *pVisual, u32 planes)
 	case MT_SKELETON_RIGID:
 		{
 			// Add all children, doesn't perform any tests
-			CKinematics * pV		= (CKinematics*)pVisual;
-			pV->Calculate			();
-			I = pV->children.begin	();
+			CKinematics * pV			= (CKinematics*)pVisual;
+			pV->CalculateBones			(TRUE);
+			I = pV->children.begin		();
 			E = pV->children.end		();
 			if (fcvPartial==VIS) {
 				for (; I!=E; I++)	add_Dynamic			(*I,planes);
@@ -448,8 +448,8 @@ void CRender::add_Static(IRender_Visual *pVisual, u32 planes)
 	case MT_SKELETON_RIGID:
 		{
 			// Add all children, doesn't perform any tests
-			CKinematics * pV	= (CKinematics*)pVisual;
-			pV->Calculate			();
+			CKinematics * pV		= (CKinematics*)pVisual;
+			pV->CalculateBones		(TRUE);
 			I = pV->children.begin	();
 			E = pV->children.end	();
 			if (fcvPartial==VIS) {

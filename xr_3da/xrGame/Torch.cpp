@@ -121,15 +121,19 @@ void CTorch::OnH_B_Independent()
 	Switch							(false);
 }
 
-void CTorch::UpdateCL() 
+void CTorch::UpdateCL	() 
 {
-	inherited::UpdateCL();
-	
+	inherited::UpdateCL	();
+
+	// Oles: no need to perform lighting-update for turned-off lights
+	// Oles: esp. the "CalculateBones" is slow
+	if (!light_render->get_active())	return;	
+
 	CBoneInstance& BI = PKinematics(Visual())->LL_GetBoneInstance(guid_bone);
 	Fmatrix M;
 
 	if (H_Parent()) {
-		PKinematics(H_Parent()->Visual())->Calculate();
+		PKinematics(H_Parent()->Visual())->CalculateBones	();
 		M.mul						(XFORM(),BI.mTransform);
 		light_render->set_rotation	(M.k,M.i);
 		light_render->set_position	(M.c);
@@ -137,6 +141,7 @@ void CTorch::UpdateCL()
 		glow_render->set_direction	(M.k);
 	}
 	else
+	{
 		if(getVisible() && m_pPhysicsShell) {
 			M.mul					(XFORM(),BI.mTransform);
 
@@ -145,7 +150,7 @@ void CTorch::UpdateCL()
 				light_render->set_position	(M.c);
 				glow_render->set_position	(M.c);
 				glow_render->set_direction	(M.k);
-				
+
 				time2hide			-= Device.fTimeDelta;
 				if (time2hide<0){
 					light_render->set_active(false);
@@ -153,21 +158,19 @@ void CTorch::UpdateCL()
 				}
 			}
 		} 
-	
-	// update light source
-	if (light_render->get_active()){
-		// calc color animator
-		if (lanim){
-			int frame;
-			// возвращает в формате BGR
-			u32 clr			= lanim->CalculateBGR(Device.fTimeGlobal,frame); 
-		
-			Fcolor			fclr;
-			fclr.set		((float)color_get_B(clr),(float)color_get_G(clr),(float)color_get_R(clr),1.f);
-			fclr.mul_rgb	(fBrightness/255.f);
-			light_render->set_color(fclr);
-			glow_render->set_color(fclr);
-		}
+	}
+
+	// calc color animator
+	if (lanim){
+		int frame;
+		// возвращает в формате BGR
+		u32 clr			= lanim->CalculateBGR(Device.fTimeGlobal,frame); 
+
+		Fcolor			fclr;
+		fclr.set		((float)color_get_B(clr),(float)color_get_G(clr),(float)color_get_R(clr),1.f);
+		fclr.mul_rgb	(fBrightness/255.f);
+		light_render->set_color(fclr);
+		glow_render->set_color(fclr);
 	}
 }
 

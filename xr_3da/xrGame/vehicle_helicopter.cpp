@@ -57,8 +57,8 @@ BOOL CVehicleHelicopter::net_Spawn			(LPVOID DC)
 	R_ASSERT			(Visual()&&PKinematics(Visual()));
 	CSkeletonAnimated	*A= PSkeletonAnimated(Visual());
 	if (A) {
-		A->PlayCycle	(*heli->startup_animation);
-		A->Calculate	();
+		A->PlayCycle		(*heli->startup_animation);
+		A->CalculateBones	();
 	}
 //	m_animator->Load	(heli->get_motion());
 //	m_animator->Play	(true);

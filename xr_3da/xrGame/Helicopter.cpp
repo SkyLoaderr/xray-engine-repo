@@ -211,8 +211,8 @@ BOOL CHelicopter::net_Spawn(LPVOID	DC)
 	
 	CSkeletonAnimated	*A	= PSkeletonAnimated(Visual());
 	if (A) {
-		A->PlayCycle	(*heli->startup_animation);
-		A->Calculate	();
+		A->PlayCycle		(*heli->startup_animation);
+		A->CalculateBones	();
 	}
 	m_engineSound.create(TRUE,*heli->engine_sound);
 	m_engineSound.play_at_pos(0,XFORM().c,sm_Looped);
@@ -271,7 +271,7 @@ void CHelicopter::UpdateCL()
 
 	if( m_curState==CHelicopter::eMovingByAttackTraj ){
 		CKinematics* K		= PKinematics(Visual());
-		K->Calculate		();
+		K->CalculateBones	();
 
 		m_fire_bone_xform	= K->LL_GetTransform(m_fire_bone);
 

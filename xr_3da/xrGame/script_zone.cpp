@@ -81,9 +81,10 @@ void CScriptZone::net_Destroy	()
 	m_tpOnExit.clear			();
 }
 
-void CScriptZone::UpdateCL	()
+void CScriptZone::shedule_Update(u32 dt)
 {
-	inherited::UpdateCL			();
+	inherited::shedule_Update	(dt);
+
 	const Fsphere				&s = CFORM()->getSphere();
 	Fvector						P;
 	XFORM().transform_tiny		(P,s.P);

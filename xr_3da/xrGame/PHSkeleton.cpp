@@ -251,7 +251,7 @@ void CPHSkeleton::UnsplitSingle(CPHSkeleton* SO)
 	m_unsplited_shels.erase(m_unsplited_shels.begin());
 	O->setVisible(true);
 	O->setEnabled(true);
-	newKinematics->Calculate();
+	newKinematics->CalculateBones	();
 
 
 	SO->CopySpawnInit		();

@@ -115,13 +115,13 @@ void CWeapon::UpdateXForm	()
 		if ((HandDependence() == hd1Hand) || (STATE == eReload) || (!E->g_Alive()))
 			boneL = boneR2;
 #pragma todo("TO ALL: serious performance problem")
-		V->Calculate	();
-		Fmatrix& mL		= V->LL_GetTransform(u16(boneL));
-		Fmatrix& mR		= V->LL_GetTransform(u16(boneR));
+		V->CalculateBones	();
+		Fmatrix& mL			= V->LL_GetTransform(u16(boneL));
+		Fmatrix& mR			= V->LL_GetTransform(u16(boneR));
 		// Calculate
-		Fmatrix			mRes;
-		Fvector			R,D,N;
-		D.sub			(mL.c,mR.c);	
+		Fmatrix				mRes;
+		Fvector				R,D,N;
+		D.sub				(mL.c,mR.c);	
 
 		if(fis_zero(D.magnitude()))
 		{
@@ -156,7 +156,7 @@ void CWeapon::UpdateFP		()
 		{
 			// 1st person view - skeletoned
 			CKinematics* V			= PKinematics(m_pHUD->Visual());
-			V->Calculate			();
+			V->CalculateBones		();
 
 			// fire point&direction
 			Fmatrix& fire_mat		= V->LL_GetTransform(u16(m_pHUD->FireBone()));

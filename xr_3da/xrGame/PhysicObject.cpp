@@ -48,15 +48,15 @@ BOOL CPhysicObject::net_Spawn(LPVOID DC)
 		if(Visual()&&PKinematics(Visual()))
 		{
 
-			CSkeletonAnimated* pSkeletonAnimated=NULL;
-			R_ASSERT(Visual()&&PKinematics(Visual()));
-			pSkeletonAnimated=PSkeletonAnimated(Visual());
+			CSkeletonAnimated*	pSkeletonAnimated=NULL;
+			R_ASSERT			(Visual()&&PKinematics(Visual()));
+			pSkeletonAnimated	=PSkeletonAnimated(Visual());
 			if(pSkeletonAnimated)
 			{
-				R_ASSERT2(*po->startup_animation,"no startup animation");
+				R_ASSERT2					(*po->startup_animation,"no startup animation");
 				pSkeletonAnimated->PlayCycle(*po->startup_animation);
 			}
-			PKinematics(Visual())->Calculate();
+			PKinematics(Visual())->CalculateBones	();
 		}
 
 		RestoreNetState(po);

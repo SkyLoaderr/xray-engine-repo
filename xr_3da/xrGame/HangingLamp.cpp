@@ -118,7 +118,7 @@ BOOL CHangingLamp::net_Spawn(LPVOID DC)
 
 	if (lamp->flags.is(CSE_ALifeObjectHangingLamp::flPhysic))		CreateBody(lamp);
 	if(PSkeletonAnimated(Visual()))	PSkeletonAnimated	(Visual())->PlayCycle("idle");
-	if(PKinematics(Visual()))		PKinematics			(Visual())->Calculate();
+	if(PKinematics(Visual()))		PKinematics			(Visual())->CalculateBones();
 	
 	if (Alive())			TurnOn	();
 	else					{

@@ -136,7 +136,7 @@ void CCarLights::SwitchHeadLights()
 {
 	LIGHTS_I i =m_lights.begin(),e=m_lights.end();
 	for(;i!=e;++i) (*i)->Switch();
-	PKinematics(PCar()->Visual())->Calculate(TRUE);
+	PKinematics(PCar()->Visual())->CalculateBones();	//. bForce = TRUE (???)
 }
 bool CCarLights::IsLight(u16 bone_id)
 {

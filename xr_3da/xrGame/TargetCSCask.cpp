@@ -28,13 +28,13 @@ void CTargetCSCask::OnEvent(NET_Packet& P, u16 type)
 			// Test for CS Target
 			CTargetCS* l_pBall = dynamic_cast<CTargetCS*>(l_pObj);
 			if(l_pBall) {
-				R_ASSERT(BE(Local(),l_pBall->Local()));	// remote can't take local
+				R_ASSERT		(BE(Local(),l_pBall->Local()));	// remote can't take local
 				l_pBall->H_SetParent(this);
 				CKinematics* l_V = PKinematics(Visual());
 				m_targets.push_back(l_pBall);
-				char l_num[2] = { char(0x30+m_targets.size()), 0 };
-				int l_boneID = l_V->LL_BoneID(l_num);
-				VERIFY(l_V); l_V->Calculate();
+				char l_num[2]	= { char(0x30+m_targets.size()), 0 };
+				int l_boneID	= l_V->LL_BoneID(l_num);
+				VERIFY			(l_V); l_V->CalculateBones();
 				Fmatrix& l_pos	= l_V->LL_GetTransform(u16(l_boneID));
 				l_pBall->SetPos(l_pos);
 				return;

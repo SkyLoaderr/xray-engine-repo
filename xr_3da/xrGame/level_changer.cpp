@@ -67,9 +67,10 @@ BOOL CLevelChanger::net_Spawn	(LPVOID DC)
 	return						(bOk);
 }
 
-void CLevelChanger::UpdateCL	()
+void CLevelChanger::shedule_Update(u32 dt)
 {
-	inherited::UpdateCL			();
+	inherited::shedule_Update	(dt);
+
 	const Fsphere				&s = CFORM()->getSphere();
 	Fvector						P;
 	XFORM().transform_tiny		(P,s.P);
