@@ -300,6 +300,12 @@ void CPHShell::get_LinearVel(Fvector& velocity)
 	(*elements.begin())->get_LinearVel(velocity);
 }
 
+void CPHShell::get_AngularVel(Fvector& velocity)
+{
+
+	(*elements.begin())->get_AngularVel(velocity);
+}
+
 void CPHShell::set_PushOut(u32 time,PushOutCallbackFun* push_out)
 {
 	xr_vector<CPHElement*>::iterator i;
@@ -340,9 +346,11 @@ void CPHShell::SmoothElementsInertia(float k)
 	}
 }
 
-void CPHShell::build_FromKinematics(CKinematics* K)
+static BONE_P_MAP* spGetingMap=NULL;
+void CPHShell::build_FromKinematics(CKinematics* K,BONE_P_MAP* p_geting_map)
 {
 	m_pKinematics=K;
+	spGetingMap=p_geting_map;
 	CBoneData& bone_data= m_pKinematics->LL_GetData(0);
 
 	AddElementRecursive(0,m_pKinematics->LL_BoneRoot(),bone_data);
@@ -357,7 +365,6 @@ void CPHShell::AddElementRecursive(CPhysicsElement* root_e, int id,const CBoneDa
 	CBoneData& bone_data= m_pKinematics->LL_GetData(id);
 	CPhysicsElement* E  = 0;
 	CPhysicsJoint* J	= 0;
-
 	if(bone_data.shape.type!=SBoneShape::stNone || !root_e)	//для BD.shape==stNone нет ни елемента ни колижена
 	{														
 		Fmatrix fm_position;
@@ -388,7 +395,7 @@ void CPHShell::AddElementRecursive(CPhysicsElement* root_e, int id,const CBoneDa
 			E->add_Shape(bone_data.shape);
 			E->setMassMC(bone_data.mass,bone_data.center_of_mass);
 			add_Element(E);
-		
+			
 			SJointIKData& joint_data=bone_data.IK_data;
 			
 			if(root_e)
@@ -574,12 +581,22 @@ void CPHShell::AddElementRecursive(CPhysicsElement* root_e, int id,const CBoneDa
 
 			}
 			add_Joint	(J);
+			if(spGetingMap)
+			{
+				const BONE_P_PAIR_IT c_iter= spGetingMap->find(id);
+				if(c_iter!=spGetingMap->end())
+				{
+				c_iter->second.joint=J;
+				c_iter->second.element=E;
+				}
+				
+			}
 		}
 
 	}
 	else
 	{	
-		B.set_callback(0,0);
+		B.set_callback(0,root_e);
 		//B.Callback_Param=root_e;
 		E=root_e;
 	}

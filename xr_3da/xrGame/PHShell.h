@@ -85,6 +85,11 @@ public:
 		if(!bActive) return;
 		(*elements.begin())->applyForce				( dir, val);
 	};
+	virtual void			applyForce				(float x,float y,float z)				
+	{
+		if(!bActive) return;
+		(*elements.begin())->applyForce				( x,y,z);
+	};
 	virtual void			applyImpulse			(const Fvector& dir, float val)				{
 		if(!bActive) return;
 		(*elements.begin())->applyImpulse			( dir, val);
@@ -104,6 +109,7 @@ public:
 	virtual void				set_PhysicsRefObject	  (CPhysicsRefObject* ref_object);
 	virtual void				set_PushOut				  (u32 time,PushOutCallbackFun* push_out=PushOutCallback);
 	virtual void				get_LinearVel			  (Fvector& velocity);
+	virtual void				get_AngularVel			  (Fvector& velocity);
 	virtual void				SetMaterial				  (u32 m);
 	virtual void				SetMaterial				  (LPCSTR m);
 	virtual CPhysicsElement*	get_Element				  (s16 bone_id);
@@ -114,7 +120,7 @@ public:
 	virtual	void				PhTune						(dReal step);
 	virtual void				InitContact					(dContact* c){};
 	virtual void				StepFrameUpdate				(dReal step){};
-	virtual void				build_FromKinematics		(CKinematics* K);
+	virtual void				build_FromKinematics		(CKinematics* K,BONE_P_MAP* p_geting_map=NULL);
 	
 
 	virtual void			SmoothElementsInertia(float k);

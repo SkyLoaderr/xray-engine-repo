@@ -105,9 +105,10 @@ public:
 	virtual void			set_PhysicsRefObject			(CPhysicsRefObject* ref_object);
 	virtual void			set_PushOut						(u32 time,PushOutCallbackFun* push_out=PushOutCallback);
 	virtual void			get_LinearVel					(Fvector& velocity);
+	virtual void			get_AngularVel					(Fvector& velocity);
 	virtual	void			set_BoxMass						(const Fobb& box, float mass);
 	virtual void			add_Mass						(const SBoneShape& shape,const Fmatrix& offset,const Fvector& mass_center,float mass);
-
+	virtual float			getRadius						();
 	void			SetShell								(CPHShell* p){m_shell=p;}
 	void			SetPhObjectInGeomData					(CPHObject* O);
 
@@ -145,10 +146,15 @@ public:
 		return &m_mass;
 	}
 
-	virtual void			applyForce				(const Fvector& dir, float val){
-		if( !dBodyIsEnabled(m_body)) dBodyEnable(m_body);
-		dBodyAddForce(m_body,dir.x*val,dir.y*val,dir.z*val);
+	virtual void			applyForce				(const Fvector& dir, float val)
+	{
+		applyForce				(dir.x*val,dir.y*val,dir.z*val);
 	};
+	virtual void			applyForce				(float x,float y,float z)
+	{
+		if( !dBodyIsEnabled(m_body)) dBodyEnable(m_body);
+		dBodyAddForce(m_body,x,y,z);
+	}
 	virtual void			applyImpulse			(const Fvector& dir, float val){
 		if( !dBodyIsEnabled(m_body)) dBodyEnable(m_body);
 		dBodyAddForce(m_body,dir.x*val/fixed_step,dir.y*val/fixed_step,dir.z*val/fixed_step);

@@ -82,7 +82,8 @@ public:
 	virtual void SetForceAndVelocity		(const float force,const float velocity=0.f,const int axis_num=-1);
 	virtual void SetForce					(const float force,const int axis_num=-1);
 	virtual void SetVelocity				(const float velocity=0.f,const int axis_num=-1);
-
+	virtual dJointID GetDJoint				(){return m_joint;}
+	virtual void GetLimits					(float& lo_limit,float& hi_limit,int axis_num);
 	CPHJoint(CPhysicsJoint::enumType type ,CPhysicsElement* first,CPhysicsElement* second);
 	virtual ~CPHJoint(){
 		if(bActive) Deactivate();

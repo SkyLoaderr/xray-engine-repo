@@ -1,7 +1,7 @@
 #pragma once
 #include "entity.h"
 #include "PHDynamicData.h"
-
+#include "PhysicsShell.h"
 #include "PHJeep.h"
 
 // refs
@@ -9,14 +9,64 @@ class ENGINE_API			CBoneInstance;
 class						CActor;
 
 // defs
-class CCar :				public CEntity,public CPHObject
+
+
+class CCar : public CEntity
 {
+static BONE_P_MAP bone_map; //interface for PhysicsShell
+
+
 public:
-	
+struct SWheel 
+{
+		int bone_id;
+		bool inited;
+		float radius;
+		dJointID joint;
+		CCar*	car;
+		void Init();//asumptions: bone_map is 1. ini parsed 2. filled in 3. bone_id is set 
+		void Neutral();
+		SWheel(CCar* acar)
+		{
+			car=acar;
+			joint=NULL;
+			inited=false;
+		}
+};
+struct SWheelDrive  
+{
+	SWheel* pwheel;
+	float gear_factor;
+	void Init();
+	void Drive();
+};
+struct SWheelSteer 
+{
+	SWheel* pwheel;
+	float lo_limit;
+	float hi_limit;
+	float steering_velocity;
+	float steering_torque;
+	float GetSteerAngle()
+	{
+		return dJointGetHinge2Angle1 (pwheel->joint);
+	}
+	void Init();
+	void Steer(int dir);
+	void Limit();
+};
+struct SWheelBreak 
+{
+	SWheel* pwheel;
+	float break_torque;
+	void Init();
+	void Break();
+};
+
 private:
 	typedef CEntity			inherited;
 private:
-	CPHJeep					m_jeep;
+
 	bool					m_repairing;
 	CCameraBase*			camera[3];
 	CCameraBase*			active_camera;
@@ -26,10 +76,20 @@ private:
 ////////////////////////////////////////////////////
 bool  Breaks;
 int   DriveDirection;
-float DriveVelocity;
-float DriveForce;
-float VelocityRate;
-CPhysicsJoint* weels[4];
+
+xr_map<int,SWheel>		m_wheels_map;
+xr_vector <SWheelDrive> m_driving_wheels;
+xr_vector <SWheelSteer> m_steering_wheels;
+xr_vector <SWheelBreak> m_breaking_wheels;
+xr_vector <float>		m_gear_ratious;
+float					m_power;
+float					m_axle_friction;
+float					m_max_rpm;
+float					m_min_rpm;
+float					m_idling_rpm;
+float					m_steering_speed;
+float					m_ref_radius;
+float					m_break_torque;
 int	  m_doors_ids[2];
 int	  m_exhaust_ids[2];
 CPGObject* m_pExhaustPG1;
@@ -38,15 +98,14 @@ CPGObject* m_pExhaustPG2;
 void Steer(const char& steering);
 float GetSteerAngle();
 void LimitWeels();
-void Drive(const char& velocity,dReal force=500.f);
 void Drive();
 void NeutralDrive();
-void JointTune(dReal step);
+void Steer(int steering);
 void Revert();
-void SetStartPosition(Fvector pos){}
-void SetPosition(Fvector pos){}
-void SetRotation(dReal* R){}
-
+void Break();
+void ParseDefinitions				();
+void CreateSkeleton					();//creates m_pPhysicsShell
+void InitWheels						();
 ////////////////////////////////////////////////////
 
 	void					OnCameraChange		(int type);
@@ -57,22 +116,10 @@ void SetRotation(dReal* R){}
 
 	bool					HUDview				( ) { return IsFocused(); }
 	
-	void					ActivateJeep		();
-	void					CreateShell			();
-
-	static void __stdcall	cb_WheelFL			(CBoneInstance* B);
-	static void __stdcall	cb_WheelFR			(CBoneInstance* B);
-	static void __stdcall	cb_WheelBL			(CBoneInstance* B);
-	static void __stdcall	cb_WheelBR			(CBoneInstance* B);
 	static void __stdcall	cb_Steer			(CBoneInstance* B);
 	virtual void Hit(float P,Fvector &dir,CObject *who,s16 element,Fvector p_in_object_space, float impulse);
-	virtual void PhDataUpdate(dReal step);
-	virtual void PhTune(dReal step);
-	virtual void InitContact(dContact*c){};
-	virtual void StepFrameUpdate(dReal step){};
-
 public:
-	void					GetVelocity			(Fvector& vel)	{vel.set(m_jeep.GetVelocity());}
+	void					GetVelocity			(Fvector& vel)	{m_pPhysicsShell->get_LinearVel(vel);}
 	void					cam_Update			(float dt);
 	void					detach_Actor		();
 	bool					attach_Actor		(CActor* actor);
@@ -80,6 +127,7 @@ public:
 	// Core events
 	virtual void			Load				( LPCSTR section );
 	virtual BOOL			net_Spawn			( LPVOID DC );
+	virtual void			net_Destroy			();
 	virtual void			Update				( u32 T ); 
 	virtual void			UpdateCL			( ); 
 	virtual void			renderable_Render			( ); 
@@ -106,4 +154,37 @@ public:
 public:
 	CCar(void);
 	virtual ~CCar(void);
+private:
+	template <class T> IC void feel_wheel_vector(LPCSTR S,xr_vector<T>& type_wheels)
+	{
+		CKinematics* pKinematics	=PKinematics(Visual());
+		string64					S1;
+		int count =					_GetItemCount(S);
+		for (int i=0 ;i<count; i++) 
+		{
+			_GetItem					(S,i,S1);
+
+			int bone_id	=				pKinematics->LL_BoneID(S1);
+
+			type_wheels.push_back		(T());
+			T& twheel				= type_wheels.back();
+
+
+			BONE_P_PAIR_IT J		= bone_map.find(bone_id);
+			if (J == bone_map.end()) 
+			{
+				bone_map.insert(mk_pair(bone_id,physicsBone()));
+
+				
+				SWheel& wheel			=	(m_wheels_map.insert(mk_pair(bone_id,SWheel(this)))).first->second;
+				wheel.bone_id			=	bone_id;
+				twheel.pwheel			=	&wheel;
+			}
+			else
+			{
+				twheel.pwheel			=	&(m_wheels_map.find(bone_id))->second;
+			}
+		}
+	}
 };
+

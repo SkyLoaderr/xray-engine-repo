@@ -54,7 +54,7 @@ void CPHElement::			create_Box	(const Fobb&		V){
 				PHDynamicData::FMX33toDMX(V.m_rotate,R);
 				dGeomSetRotation(geom,R);
 				trans=dCreateGeomTransform(0);
-
+				dGeomSetData(trans,0);
 				dGeomTransformSetGeom(trans,geom);
 				dGeomSetBody(trans,m_body);
 				m_trans.push_back(trans);
@@ -87,6 +87,7 @@ void CPHElement::			create_Box	(const Fobb&		V){
 
 
 			trans=dCreateGeomTransform(0);
+			dGeomSetData(trans,0);
 			dGeomTransformSetInfo(trans,1);
 			dGeomTransformSetGeom(trans,geom);
 			dGeomSetBody(trans,m_body);
@@ -118,6 +119,7 @@ void CPHElement::			create_Sphere	(const Fsphere&	V){
 			m_geoms.push_back(geom);
 			dGeomSetPosition(geom,local_position[0],local_position[1],local_position[2]);
 			trans=dCreateGeomTransform(0);
+			dGeomSetData(trans,0);
 			dGeomTransformSetGeom(trans,geom);
 			dGeomSetBody(trans,m_body);
 			m_trans.push_back(trans);
@@ -135,6 +137,7 @@ void CPHElement::			create_Sphere	(const Fsphere&	V){
 			m_geoms.push_back(geom);
 			dGeomSetPosition(geom,local_position[0],local_position[1],local_position[2]);
 			trans=dCreateGeomTransform(0);
+			dGeomSetData(trans,0);
 			dGeomTransformSetGeom(trans,geom);
 			dGeomSetBody(trans,m_body);
 			m_trans.push_back(trans);
@@ -180,7 +183,7 @@ void CPHElement::create_Cylinder(const Pcylinder& V)
 		PHDynamicData::FMX33toDMX(V.m_rotate,R);
 		dGeomSetRotation(geom,R);
 		trans=dCreateGeomTransform(0);
-
+		dGeomSetData(trans,0);
 		dGeomTransformSetGeom(trans,geom);
 		dGeomSetBody(trans,m_body);
 		m_trans.push_back(trans);
@@ -215,6 +218,7 @@ void CPHElement::create_Cylinder(const Pcylinder& V)
 
 
 		trans=dCreateGeomTransform(0);
+		dGeomSetData(trans,0);
 		dGeomTransformSetInfo(trans,1);
 		dGeomTransformSetGeom(trans,geom);
 		dGeomSetBody(trans,m_body);
@@ -295,18 +299,17 @@ void CPHElement::			destroy	(){
 	xr_vector<dGeomID>::iterator i;
 
 
-	for(i=m_geoms.begin();i!=m_geoms.end();i++){
+	for(i=m_geoms.begin();i!=m_geoms.end();i++)
+	{
 		dGeomDestroyUserData(*i);
 		dGeomDestroy(*i);
 	}
-	for(i=m_trans.begin();i!=m_trans.end();i++){
+	for(i=m_trans.begin();i!=m_trans.end();i++)
+	{
 		dGeomDestroyUserData(*i);
-
-
-		//if(!attached)
 		dGeomDestroy(*i);
 
-
+	}
 
 		if(m_body && !attached)
 		{
@@ -321,7 +324,7 @@ void CPHElement::			destroy	(){
 			dGeomDestroy(m_group);
 			m_group=NULL;
 		}
-	}
+	
 
 	m_geoms.clear();
 	m_trans.clear();
@@ -1263,6 +1266,8 @@ void CPHElement::CallBack1(CBoneInstance* B)
 		global_transform.set(m_shell->mXFORM);
 		global_transform.mulB(mXFORM);
 		SetTransform(global_transform);
+		if(!dBodyIsEnabled(m_body))
+			dBodyEnable(m_body);
 		bActivating=false;
 		return;
 	}
@@ -1364,7 +1369,15 @@ void CPHElement::get_LinearVel(Fvector& velocity)
 	}
 	Memory.mem_copy(&velocity,dBodyGetLinearVel(m_body),sizeof(Fvector));
 }
-
+void CPHElement::get_AngularVel	(Fvector& velocity)
+{
+	if(!bActive)
+	{
+		velocity.set(0,0,0);
+		return;
+	}
+	Memory.mem_copy(&velocity,dBodyGetAngularVel(m_body),sizeof(Fvector));
+}
 
 
 
@@ -1487,13 +1500,30 @@ dMassRotate(&m,DMatx);
 Fvector mc;
 offset.transform_tiny(mc,mass_center);
 //calculate new mass_center
-m_mass_center.mul(m_mass.mass);
-Fvector tmp;
-tmp.set(mc);
-tmp.mul(mass);
-m_mass_center.add(tmp);
-m_mass_center.mul(1.f/(mass+m_mass.mass));
-mc.sub(m_mass_center);
+Fvector tmp1;
+tmp1.set(m_mass_center);
+tmp1.mul(m_mass.mass);
+Fvector tmp2;
+tmp2.set(mc);
+tmp2.mul(mass);
+Fvector new_mc;
+new_mc.add(tmp1,tmp2);
+new_mc.mul(1.f/(mass+m_mass.mass));
+mc.sub(new_mc);
 dMassTranslate(&m,mc.x,mc.y,mc.z);
+m_mass_center.sub(new_mc);
+dMassTranslate(&m_mass,m_mass_center.x,m_mass_center.y,m_mass_center.z);
 dMassAdd(&m_mass,&m);
+m_mass_center.set(new_mc);
 }
+float CPHElement::getRadius()
+{
+if(m_spheras_data.size()!=0) return m_spheras_data.back().R;
+
+if(m_boxes_data.size()!=0) return m_boxes_data.back().m_halfsize.x;
+
+if(m_cylinders_data.size()!=0)return m_cylinders_data.back().m_radius;
+
+return 0.f;
+}
+

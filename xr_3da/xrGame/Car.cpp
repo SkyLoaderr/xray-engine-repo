@@ -9,16 +9,6 @@
 
 
 static float car_snd_volume=1.f;
-static float car_drive_force					= 1000.f;
-static float car_drive_speed_accel				= M_PI*15;
-static float car_drive_speed					= M_PI*5;
-
-extern dReal car_neutral_drive_resistance;
-extern dReal car_breaks_resistance;
-extern dReal steeringRate;
-extern dReal steeringLimit;
-extern dReal car_spring_factor;
-extern dReal car_damping_factor;
 
 enum ECarCamType{
 	ectFirst	= 0,
@@ -26,7 +16,7 @@ enum ECarCamType{
 	ectFree
 };
 
-
+BONE_P_MAP CCar::bone_map=BONE_P_MAP();
 
 extern CPHWorld*	ph_world;
 
@@ -47,9 +37,6 @@ CCar::CCar(void)
 	///////////////////////////////
 	//////////////////////////////
 	/////////////////////////////
-	VelocityRate=3.f;
-	DriveForce=0;
-	DriveVelocity=12.f * M_PI;
 	DriveDirection=0;
 	Breaks=false;
 	///////////////////////////////
@@ -65,95 +52,17 @@ CCar::~CCar(void)
 	xr_delete			(m_pExhaustPG1);
 	xr_delete			(m_pExhaustPG2);
 	snd_engine.destroy	();
-	m_jeep.Destroy();
 
 }
 
-void __stdcall CCar::cb_WheelFL	(CBoneInstance* B)
-{
-	CCar*	C			= dynamic_cast<CCar*>	(static_cast<CObject*>(B->Callback_Param));
 
-	Fmatrix		M,m,A,M2,m2,t;
-	M.rotateX			(deg2rad(-90.f));
-	m.rotateZ			(deg2rad(-90.f));	// ?	2
-	t.mul				(M,m);		// ?			2
-	/////////////
-	Fmatrix b_t;
-	C->m_jeep.DynamicData[2].InterpolateTransformVsParent(b_t);
-	A.mul(b_t,t);
-	/////////////////
-	//A.mul				(C->m_jeep.DynamicData[2].BoneTransform,t);
-	M2.rotateX			(deg2rad(90.f));
-	m2.rotateZ			(deg2rad(90.f));	// ?	2
-	t.mul				(m2,M2);	// ?			2
-	A.mulA				(t);
-	B->mTransform.mulB	(A);
-
-}
-
-void __stdcall CCar::cb_WheelFR	(CBoneInstance* B)
-{
-	CCar*	C			= dynamic_cast<CCar*>	(static_cast<CObject*>(B->Callback_Param));
-	Fmatrix		M,m,A,M2,m2,t;
-	M.rotateX			(deg2rad(90.f));
-	m.rotateZ			(deg2rad(-90.f));	
-	t.mul				(M,m);		
-	/////////////
-	Fmatrix b_t;
-	C->m_jeep.DynamicData[3].InterpolateTransformVsParent(b_t);
-	A.mul(b_t,t);
-	/////////////////
-	//A.mul				(C->m_jeep.DynamicData[3].BoneTransform,t);
-	M2.rotateX			(deg2rad(-90.f));
-	m2.rotateZ			(deg2rad(90.f));	
-	t.mul				(m2,M2);	
-	A.mulA				(t);
-	B->mTransform.mulB	(A);
-}
-void __stdcall CCar::cb_WheelBL	(CBoneInstance* B)
-{
-	CCar*	C			= dynamic_cast<CCar*>	(static_cast<CObject*>(B->Callback_Param));
-	Fmatrix		M,m,A,M2,m2,t;
-	M.rotateX			(deg2rad(-90.f));
-	m.rotateZ			(deg2rad(-90.f));	// ?	2
-	t.mul				(M,m);		// ?			2
-	/////////////
-	Fmatrix b_t;
-	C->m_jeep.DynamicData[0].InterpolateTransformVsParent(b_t);
-	A.mul(b_t,t);
-	/////////////////
-	//A.mul				(C->m_jeep.DynamicData[0].BoneTransform,t);
-	M2.rotateX			(deg2rad(90.f));
-	m2.rotateZ			(deg2rad(90.f));	// ?	2
-	t.mul				(m2,M2);	// ?			2
-	A.mulA				(t);
-	B->mTransform.mulB	(A);
-}
-void __stdcall CCar::cb_WheelBR	(CBoneInstance* B)
-{
-	CCar*	C			= dynamic_cast<CCar*>	(static_cast<CObject*>(B->Callback_Param));
-	Fmatrix		M,m,A,M2,m2,t;
-	M.rotateX			(deg2rad(90.f));
-	m.rotateZ			(deg2rad(-90.f));	// ?	2
-	t.mul				(M,m);		// ?			2
-	/////////////
-	Fmatrix b_t;
-	C->m_jeep.DynamicData[1].InterpolateTransformVsParent(b_t);
-	A.mul(b_t,t);
-	/////////////////
-	//A.mul				(C->m_jeep.DynamicData[1].BoneTransform,t);
-	M2.rotateX			(deg2rad(-90.f));
-	m2.rotateZ			(deg2rad(90.f));	// ?	2
-	t.mul				(m2,M2);	// ?			2
-	A.mulA				(t);
-	B->mTransform.mulB	(A);
-}
 
 void __stdcall  CCar::cb_Steer(CBoneInstance* B)
 {
 	CCar*	C			= dynamic_cast<CCar*>	(static_cast<CObject*>(B->Callback_Param));
 	Fmatrix m;
-	m.rotateZ(C->m_jeep.GetSteerAngle());
+	m.rotateZ(C->m_steering_wheels.begin()->GetSteerAngle());
+	
 	B->mTransform.mulB	(m);
 }
 
@@ -194,16 +103,6 @@ void	CCar::Load					( LPCSTR section )
 {
 	inherited::Load					(section);
 	car_snd_volume  				= pSettings->r_float(section,"snd_volume");
-	car_drive_force					= pSettings->r_float(section,"drive_force");
-	car_drive_speed_accel			= pSettings->r_float(section,"drive_speed_accel");
-	car_drive_speed					= pSettings->r_float(section,"drive_speed");
-	car_neutral_drive_resistance	=pSettings->r_float(section,"neutral_drive_resistance");
-	car_breaks_resistance			=pSettings->r_float(section,"breaks_resistance");
-	steeringRate					=pSettings->r_float(section,"steering_rate");
-	steeringLimit					=pSettings->r_float(section,"steering_limit");
-	m_jeep.MassShift				=pSettings->r_float(section,"mass_shift");
-	car_spring_factor				=pSettings->r_float(section,"car_wheels_spring_factor");;
-	car_damping_factor				=pSettings->r_float(section,"car_wheels_damping_factor");
 	snd_engine.create				(TRUE,"car\\car1");
 
 
@@ -218,8 +117,12 @@ BOOL	CCar::net_Spawn				(LPVOID DC)
 	setVisible						(TRUE);
 
 	Sound->play_at_pos				(snd_engine,this,Position(),true);
-	ActivateJeep();
+	//ActivateJeep();
 	//
+	ParseDefinitions				();//parse ini filling in m_driving_wheels,m_steering_wheels,m_breaking_wheels
+	CreateSkeleton					();//creates m_pPhysicsShell & fill in bone_map
+	InitWheels						();//inits m_driving_wheels,m_steering_wheels,m_breaking_wheels values using recieved in ParceDefinitions & from bone_map
+
 	m_pExhaustPG1					= xr_new<CPGObject>			("vehiclefx\\exhaust_1",Sector(),false);
 	m_pExhaustPG2					= xr_new<CPGObject>			("vehiclefx\\exhaust_1",Sector(),false);
 	m_pExhaustPG1->SetTransform		(XFORM());
@@ -229,40 +132,29 @@ BOOL	CCar::net_Spawn				(LPVOID DC)
 	return R;
 }
 
+void	CCar::net_Destroy()
+{
+	inherited::net_Destroy();
+	if(m_pPhysicsShell)m_pPhysicsShell->Deactivate();
+	xr_delete(m_pExhaustPG1);
+	xr_delete(m_pExhaustPG2);
+}
+
 void	CCar::Update				( u32 T )
 {
 	inherited::shedule_Update		(T);
 
-	//Position().set	(m_jeep.DynamicData.BoneTransform.c);
-
-	Fmatrix mY;
-	mY.rotateY		(deg2rad(90.f));
-	/////////////
-	Fmatrix b_t;
-	m_jeep.DynamicData.InterpolateTransform(b_t);
-	/////////////////
-	//mRotate.mul		(m_jeep.DynamicData.BoneTransform,mY);
-
-	//XFORM().mul	(m_jeep.DynamicData.BoneTransform,mY);
-	XFORM().mul		(b_t,mY);
+	XFORM().set(m_pPhysicsShell->mXFORM);
 	if	(m_owner)
 		m_owner->XFORM().mul	(XFORM(),fmPosDriver);
 }
 
 void	CCar::UpdateCL				( )
 {
-	// Transform
-	Fmatrix				mY;
-	mY.rotateY			(deg2rad(90.f));
+	XFORM().set(m_pPhysicsShell->mXFORM);
 
-	/////////////
-	Fmatrix b_t;
-	m_jeep.DynamicData.InterpolateTransform(b_t);
-	/////////////////
-	//XFORM().mul		(m_jeep.DynamicData.BoneTransform,mY);
-	XFORM().mul		(b_t,mY);
-
-	Fvector lin_vel=m_jeep.GetVelocity	();
+	Fvector lin_vel;
+	m_pPhysicsShell->get_LinearVel(lin_vel);
 	// Sound
 	Fvector		C,V;
 	Center	(C);
@@ -286,8 +178,8 @@ void	CCar::UpdateCL				( )
 
 	Fvector ang_vel,res_vel;
 	Fmatrix exhast,exhast_local;
-	lin_vel=m_jeep.GetVelocity();
-	ang_vel=m_jeep.GetAngularVelocity();
+	m_pPhysicsShell->get_AngularVel(ang_vel);
+
 
 	exhast_local.set	(PKinematics(Visual())->LL_GetTransform(m_exhaust_ids[0]));
 	exhast.mul			(XFORM(),exhast_local);
@@ -332,29 +224,25 @@ void	CCar::IR_OnKeyboardPress		(int cmd)
 	case kCAM_1:	OnCameraChange(ectFirst);	break;
 	case kCAM_2:	OnCameraChange(ectChase);	break;
 	case kCAM_3:	OnCameraChange(ectFree);	break;
-	case kACCEL:	m_jeep.DriveVelocity=car_drive_speed_accel;
-		m_jeep.Drive();
-		break;
-	case kRIGHT:	m_jeep.Steer(1);
+	case kACCEL:	break;
+	case kRIGHT:	Steer(1);
 		m_owner->steer_Vehicle(1);
 		break;
-	case kLEFT:		m_jeep.Steer(-1);
+	case kLEFT:		Steer(-1);
 		m_owner->steer_Vehicle(-1);
 		break;
-	case kUP:		m_jeep.DriveDirection=1;
-		m_jeep.DriveForce=car_drive_force;
-		m_jeep.Drive();
+	case kUP:		;
+		Drive();
 		m_pExhaustPG2->Play				();
 		m_pExhaustPG1->Play				();
 		break;
-	case kDOWN:		m_jeep.DriveDirection=-1;
-		m_jeep.DriveForce= car_drive_force;
-		m_jeep.Drive();
+	case kDOWN:		;
+		Drive();
 		m_pExhaustPG2->Play				();
 		m_pExhaustPG1->Play				();
 		break;
-	case kJUMP:		m_jeep.Breaks=true;
-		m_jeep.Drive();
+	case kJUMP:		
+		Break();
 		break;
 	case kUSE:
 		detach_Actor();
@@ -368,23 +256,20 @@ void	CCar::IR_OnKeyboardRelease		(int cmd)
 	if (Remote())					return;
 	switch (cmd)	
 	{
-	case kACCEL:	m_jeep.DriveVelocity=car_drive_speed;
-		m_jeep.Drive();
-		break;
+	case kACCEL:break;
 	case kLEFT:	
-	case kRIGHT:	m_jeep.Steer(0);
+	case kRIGHT:	Steer(0);
 		m_owner->steer_Vehicle(0);
 		break;
 	case kUP:	
-	case kDOWN:		m_jeep.DriveDirection=0;
-		m_jeep.DriveForce=0;
-		m_jeep.Drive();
+	case kDOWN:		;
+		NeutralDrive();
 		m_pExhaustPG1->Stop		();
 		m_pExhaustPG2->Stop		();
 		break;
 	case kREPAIR:	m_repairing=false; break;
-	case kJUMP:		m_jeep.Breaks=false;
-		m_jeep.Drive();
+	case kJUMP:		;
+		NeutralDrive();
 		break;
 	};
 }
@@ -434,36 +319,22 @@ void	CCar::IR_OnKeyboardHold		(int cmd)
 void	CCar::OnHUDDraw				(CCustomHUD* hud)
 {
 #ifdef DEBUG
+	Fvector velocity;
+	m_pPhysicsShell->get_LinearVel(velocity);
 	HUD().pFontSmall->SetColor		(0xffffffff);
 	HUD().pFontSmall->OutSet		(120,530);
 	HUD().pFontSmall->OutNext		("Position:      [%3.2f, %3.2f, %3.2f]",VPUSH(Position()));
-	HUD().pFontSmall->OutNext		("Velocity:      [%3.2f]",m_jeep.GetVelocity().magnitude());
+	HUD().pFontSmall->OutNext		("Velocity:      [%3.2f]",velocity.magnitude());
 #endif
 }
 
 
-void CCar::PhDataUpdate(dReal step){
-	//m_jeep.DynamicData.CalculateData();
-	m_jeep.DynamicData.UpdateInterpolationRecursive();
-	m_jeep.LimitWeels();
-	if(m_repairing) m_jeep.Revert();
 
 
-}
-void CCar:: PhTune(dReal step){
-	m_jeep.JointTune(step);
-}
 
-void CCar::Hit(float P,Fvector &dir,CObject *who,s16 element,Fvector p_in_object_space, float impulse){
-	switch(element){
-	case 0: m_jeep.applyImpulseTrace(0,p_in_object_space,dir,impulse); break;
-	case 1: m_jeep.applyImpulseTrace(2,p_in_object_space,dir,impulse); break;
-	case 2: m_jeep.applyImpulseTrace(1,p_in_object_space,dir,impulse); break;
-	case 3: m_jeep.applyImpulseTrace(4,p_in_object_space,dir,impulse); break;
-	case 4: m_jeep.applyImpulseTrace(3,p_in_object_space,dir,impulse); break;
-	default: m_jeep.applyImpulseTrace(0,p_in_object_space,dir,impulse); break;
-	}
-	inherited::Hit(P,dir,who,element,p_in_object_space, 0);
+void CCar::Hit(float P,Fvector &dir,CObject *who,s16 element,Fvector p_in_object_space, float impulse)
+{
+	if(m_pPhysicsShell)		m_pPhysicsShell->applyImpulseTrace(p_in_object_space,dir,impulse,element);
 }
 
 void CCar::detach_Actor()
@@ -490,47 +361,6 @@ bool CCar::attach_Actor(CActor* actor)
 	return true;
 }
 
-void CCar::ActivateJeep()
-{
-	m_jeep.Create	(ph_world->GetSpace(),phWorld);
-	m_jeep.SetPhRefObject(this);
-	ph_world->AddObject((CPHObject*)this);
-	m_jeep.SetPosition				(Position());
-	m_jeep.DriveVelocity			=car_drive_speed;
-	dMatrix3						Rot;
-	Fmatrix							ry,mr;
-	ry.rotateY						(deg2rad(90.f));
-	ry.invert						();
-	Fmatrix		mRotate;
-	mRotate.set						(XFORM());
-	mRotate.c.set					(0,0,0);
-	Fmatrix33	m33;
-	mr.mul							(ry,mRotate);
-	m33.set							(mr);
-
-	PHDynamicData::FMX33toDMX		(m33,Rot);
-	m_jeep.SetRotation				(Rot);
-
-	CKinematics*	M				= PKinematics(Visual());
-	R_ASSERT						(M);
-	M->PlayCycle					("idle");
-	M->LL_GetInstance				(M->LL_BoneID("phy_wheel_frontl")).set_callback	(cb_WheelFL,this);
-	M->LL_GetInstance				(M->LL_BoneID("phy_wheel_frontr")).set_callback	(cb_WheelFR,this);
-	M->LL_GetInstance				(M->LL_BoneID("phy_wheel_rearl")).set_callback	(cb_WheelBL,this);
-	M->LL_GetInstance				(M->LL_BoneID("phy_wheel_rearr")).set_callback	(cb_WheelBR,this);
-	M->LL_GetInstance				(M->LL_BoneID("steer")).set_callback			(cb_Steer,this);
-	m_doors_ids[1]					=M->LL_BoneID("phy_door_left");
-	m_doors_ids[0]					=M->LL_BoneID("phy_door_right");
-	m_exhaust_ids[0]				=M->LL_BoneID("pos_exhaust_1");
-	m_exhaust_ids[1]				=M->LL_BoneID("pos_exhaust_2");
-
-
-
-	//IRender_Sector* S=0;
-
-
-	///XFORM().set					( m_jeep.DynamicData.BoneTransform	);
-}
 
 bool CCar::is_Door(int id)
 {
@@ -539,168 +369,247 @@ bool CCar::is_Door(int id)
 	return false;
 }
 
-void CCar::CreateShell()
+
+
+void CCar::ParseDefinitions()
 {
-	m_pPhysicsShell=P_create_Shell();
-
-	static const dReal scaleParam=1.f;
-	static const dVector3 scaleBox={scaleParam, scaleParam, scaleParam};
-	Fobb jeepBox,cabinBox;
-	Pcylinder wheel;
-	jeepBox.m_halfsize.x =REAL(3.680)*scaleBox[0]/2.f;jeepBox.m_halfsize.y=REAL(0.612)*scaleBox[1]/2.f;jeepBox.m_halfsize.z=0.88f*2.f*scaleBox[2]/2.f;
-
-	cabinBox.m_halfsize.x=scaleBox[0]*1.7f/2.f;cabinBox.m_halfsize.y=scaleBox[1]*0.66f/2.f;cabinBox.m_halfsize.z=scaleBox[2]*2.f*0.76f/2.f;
-
-	static const dReal wheelRadius = 0.345f* scaleParam;
-
-	Fmatrix m;
-	m.identity();
-
-	jeepBox.m_rotate.set(m);
-	cabinBox.m_rotate.set(m);
-	jeepBox.m_translate.set(0,0,0);
-	cabinBox.m_translate.set(0,0,0);
-	cabinBox.m_translate.x+=-jeepBox.m_halfsize.x+cabinBox.m_halfsize.x+0.55f;
-	cabinBox.m_translate.y+=cabinBox.m_halfsize.y+jeepBox.m_halfsize.y;
-	/////////////////////////////////////////////////////////////////////////////////////////////////////////////////
-	//w_bl.m_radius=w_fr.m_radius=w_fl.m_radius=w_fr.m_radius=wheelRadius;
-	//w_bl.m_rotate.set(m);w_br.m_rotate.set(m);w_fl.m_rotate.set(m);w_fr.m_rotate.set(m);
-	//w_bl.m_translate.set(0,0,0);w_br.m_translate.set(0,0,0);w_fl.m_translate.set(0,0,0);w_fr.m_translate.set(0,0,0);
-	/////////////////////////////////////////////////////////////////////////////////////////////////////////////////
-	/////////////////////////////////////////////////////////////////////////////////////////////////////////////////
-	wheel.m_radius=wheelRadius;
-	wheel.m_halflength=0.19f/2.f;
-	wheel.m_rotate.identity();
-	wheel.m_translate.set(0,0,0);
-	/////////////////////////////////////////////////////////////////////
-	VelocityRate=3.f;
-	DriveForce=0;
-	DriveVelocity=12.f * M_PI;
-	DriveDirection=0;
-	Breaks=false;
-	///////////////////////////////////
-
-	static const dReal weelSepXF=scaleBox[0]*1.32f,weelSepXB=scaleBox[0]*1.155f,weelSepZ=scaleBox[2]*1.53f/2.f,weelSepY=scaleBox[1]*0.463f;
-	static const dReal cabinSepX=scaleBox[0]*0.61f,cabinSepY=scaleBox[1]*0.55f;
-	//dReal MassShift=0.25f;
-
-
-
-	CPhysicsElement* E,*R;
-	int id;
-	CKinematics* M		= PKinematics(Visual());			VERIFY(M);
-	m_pPhysicsShell->set_Kinematics(M);
-
-	/////////////////////////////////////////////////////////////////////////////////////////////
-	/////////////////////////////////////////////////////////////////////////////////////////////
-
-	E=	P_create_Element				();
-	E->mXFORM.set(m);
-	// (M->LL_GetInstance(id)).set_callback(m_pPhysicsShell->GetBonesCallback(),E);
-
-	id=M->LL_BoneID("phy_body");
-	//CBoneInstance& instance=M->LL_GetInstance				(id);
-
-	//E->add_Box(M->LL_GetBox(id));
-	E->add_Box(jeepBox);
-	E->add_Box(cabinBox);
-	E->setMass(800.f);
-	m_pPhysicsShell->add_Element(E);
-	E->SetMaterial("materials\\car_cabine");
-	R=E;
-
-	// car body
-	//dMass m;
-	//dMassSetBox(&m, 1.f, jeepBox[0], jeepBox[1]/4.f, jeepBox[2]); // density,lx,ly,lz
-	//dMassAdjust(&m, 800.f); // mass
-	//dMassTranslate(&m,0.f,-1.f,0.f);
-
-	//dBodySetPosition(Bodies[0], startPosition[0], startPosition[1]-MassShift, startPosition[2]); // x,y,z
-
-
-
-	//dGeomGetUserData(Geoms[0])->material=GMLib.GetMaterialIdx("materials\\car_cabine");
-	//dGeomGetUserData(Geoms[6])->material=GMLib.GetMaterialIdx("materials\\car_cabine");
-
-	//dGeomSetPosition(Geoms[0], 0.f, MassShift, 0.f); // x,y,z
-	//dGeomSetPosition(Geoms[6], -jeepBox[0]/2.f+cabinBox[0]/2.f+0.55f, cabinBox[1]/2.f+jeepBox[1]/2.f+MassShift, 0.f); // x,y,z
-	//dGeomSetPosition(Geoms[6], -cabinSepX, cabinSepY+MassShift, 0.f); // x,y,z
-
-	//dGeomSetPosition(Geoms[0], 0,0/*-jeepBox[1]-wheelRadius*/, 0); // x,y,z
-
-
-
-
-
-	// wheel bodies
-	//dMassSetSphere(&m, 1, wheelRadius); // density, radius
-	//dMassAdjust(&m, 20); // mass
-
-	//u32 i;
-	//for(i = 1; i <= 4; ++i)
-	//{
-
-	//dBodySetMass(Bodies[i], &m);
-
-	//	Geoms[i] = dCreateCylinder(0, wheelRadius,0.19f);
-
-	//	dGeomGetUserData(Geoms[i])->material=GMLib.GetMaterialIdx("materials\\rubber");
-
-	//}
-
-
-
-
-	//dBodySetPosition(Bodies[1], startPosition[0]-weelSepXB, startPosition[1]-weelSepY,  startPosition[2]+weelSepZ); // x,y,z
-	//dBodySetPosition(Bodies[2], startPosition[0]-weelSepXB, startPosition[1]-weelSepY,  startPosition[2]-weelSepZ); // x,y,z-0.9, 2.6,   9.3); // x,y,z
-	//dBodySetPosition(Bodies[3], startPosition[0]+weelSepXF, startPosition[1]-weelSepY,  startPosition[2]+weelSepZ); // x,y,z 0.9, 2.6,  10.7); // x,y,z
-	//dBodySetPosition(Bodies[4], startPosition[0]+weelSepXF, startPosition[1]-weelSepY,  startPosition[2]-weelSepZ); // x,y,z 0.9, 2.6,   9.3); // x,y,z
-
-
-
-	// wheel joints
-	for(int i = 0; i < 4; ++i)
+	bone_map.clear();
+	CKinematics* pKinematics=PKinematics(Visual());
+	CInifile* ini = pKinematics->LL_UserData();
+	if(! ini) return;
+	feel_wheel_vector			(ini->r_string	("car_definition","driving_wheels"),m_driving_wheels);
+	feel_wheel_vector			(ini->r_string	("car_definition","steering_wheels"),m_steering_wheels);
+	feel_wheel_vector			(ini->r_string	("car_definition","breaking_wheels"),m_breaking_wheels);
+	
+	m_power				=		ini->r_float("car_definition","engine_power");
+	m_max_rpm			=		ini->r_float("car_definition","max_engine_rpm");
+	m_min_rpm			=		ini->r_float("car_definition","min_engine_rpm");
+	m_idling_rpm		=		ini->r_float("car_definition","idling_engine_rpm");
+	m_axle_friction		=		ini->r_float("car_definition","axle_friction");
+	m_steering_speed	=		ini->r_float("car_definition","steering_speed");
+	m_break_torque		=		ini->r_float("car_definition","break_torque");
+	R_ASSERT2(ini->section_exist("transmission_gear_ratio"),"no section transmission_gear_ratio");
+	m_gear_ratious.push_back(ini->r_float("transmission_gear_ratio","R"));
+	string32 rat_num;
+	for(int i=1;true;i++)
 	{
-
-		//	dJointAttach(Joints[i], Bodies[0], Bodies[i+1]);
-		//	const dReal* const wPos = dBodyGetPosition(Bodies[i+1]);
-		//	dJointSetHinge2Anchor(Joints[i], wPos[0], wPos[1], wPos[2]);
-		//	dJointSetHinge2Axis1(Joints[i], 0.f, 1.f, 0.f);
-		//	dJointSetHinge2Axis2(Joints[i], 0.f, 0.f, ((i % 2) == 0) ? -1.f : 1.f);
-
-		//	dJointSetHinge2Param(Joints[i], dParamLoStop, 0.f);
-		//	dJointSetHinge2Param(Joints[i], dParamHiStop, 0.f);
-		//	dJointSetHinge2Param(Joints[i], dParamFMax, 10000.f );
-		//	dJointSetHinge2Param(Joints[i], dParamFudgeFactor, 0.001f);
-
-		//	dJointSetHinge2Param(Joints[i], dParamVel2, 0.f);
-		//	dJointSetHinge2Param(Joints[i], dParamFMax2, 500.f);
-		//	dReal k_p=20000000.f;//20000.f;
-		//	dReal k_d=10.f;//1000.f;
-		//	dReal h=0.02222f;
-
-
-		//	dJointSetHinge2Param(Joints[i], dParamSuspensionERP, h*k_p / (h*k_p + k_d));
-		//	dJointSetHinge2Param(Joints[i], dParamSuspensionCFM, 1.f / (h*k_p + k_d));
-
-		E=	P_create_Element				();
-		E->mXFORM.set(m);
-		(M->LL_GetInstance(id)).set_callback(m_pPhysicsShell->GetBonesCallback(),E);
-
-		id=M->LL_BoneID("phy_body");
-		//CBoneInstance& instance=M->LL_GetInstance				(id);
-
-		//E->add_Box(M->LL_GetBox(id));
-		E->add_Box(jeepBox);
-		E->add_Box(cabinBox);
-		E->setMass(800.f);
-		m_pPhysicsShell->add_Element(E);
-		E->SetMaterial("materials\\car_cabine");
+	sprintf(rat_num,"N%d",i);
+	if(!ini->line_exist("transmission_gear_ratio",rat_num)) break;
+	m_gear_ratious.push_back(ini->r_float("transmission_gear_ratio",rat_num));
 	}
-
-
-
-	//m_pPhysicsShell->
+	
+	
 }
 
-//void CCar::S
+void CCar::CreateSkeleton()
+{
+
+	if (!Visual()) return;
+	m_pPhysicsShell		= P_create_Shell();
+	m_pPhysicsShell->build_FromKinematics(PKinematics(Visual()),&bone_map);
+	m_pPhysicsShell->set_PhysicsRefObject(this);
+	m_pPhysicsShell->mXFORM.set(XFORM());
+	m_pPhysicsShell->Activate(true);
+}
+
+void CCar::InitWheels()
+{
+//get reference wheel radius
+CKinematics* pKinematics=PKinematics(Visual());
+CInifile* ini = pKinematics->LL_UserData();
+SWheel& ref_wheel=m_wheels_map.find(pKinematics->LL_BoneID(ini->r_string("car_definition","reference_wheel")))->second;
+ref_wheel.Init();
+m_ref_radius=ref_wheel.radius;
+m_power/=m_wheels_map.size();
+}
+
+
+void CCar::Revert()
+{
+	//if(!bActive) return;
+	//dBodyAddForce(Bodies[0], 0, 2*9000, 0);
+	//dBodyAddRelTorque(Bodies[0], 300, 0, 0);
+	m_pPhysicsShell->applyForce(0,2*9000,0);
+}
+
+void CCar::NeutralDrive(){
+//	for(u32 i = 0; i < 4; ++i){
+//		dJointSetHinge2Param(Joints[i], dParamFMax2, 10.f);
+//		dJointSetHinge2Param(Joints[i], dParamVel2, 0);
+//	}
+}
+
+void CCar::Drive()
+{
+
+	//	static const dReal wheelVelocity = 12.f * M_PI;//3*18.f * M_PI;
+	/*
+	ULONG i;
+
+	if(!Breaks)
+		switch(DriveDirection)
+	{
+		case 1:
+			for(i = 0; i < 4; ++i)
+				dJointSetHinge2Param(Joints[i], dParamVel2, ((i % 2) == 0) ? -DriveVelocity : DriveVelocity);
+			break;
+
+		case -1:
+			for(i = 0; i < 4; ++i)
+				dJointSetHinge2Param(Joints[i], dParamVel2, ((i % 2) == 0) ? DriveVelocity : -DriveVelocity);
+			break;
+		case 0:
+			for(i = 0; i < 4; ++i){
+				dJointSetHinge2Param(Joints[i], dParamVel2, 0.f);
+				dJointSetHinge2Param(Joints[i], dParamFMax2, car_neutral_drive_resistance);
+			}
+			return;
+	}
+	else {
+		for(i = 0; i < 2; ++i){
+
+			dJointSetHinge2Param(Joints[i], dParamFMax2,car_breaks_resistance);
+			dJointSetHinge2Param(Joints[i], dParamVel2, 0);
+		}
+		/////////////
+		switch(DriveDirection)
+		{
+		case 1:
+			for(i = 2; i < 4; ++i)
+				dJointSetHinge2Param(Joints[i], dParamVel2, ((i % 2) == 0) ? -DriveVelocity : DriveVelocity);
+			break;
+
+		case -1:
+			for(i = 2; i < 4; ++i)
+				dJointSetHinge2Param(Joints[i], dParamVel2, ((i % 2) == 0) ? DriveVelocity : -DriveVelocity);
+			break;
+		case 0:
+			for(i = 2; i < 4; ++i){
+				dJointSetHinge2Param(Joints[i], dParamVel2, 0.f);
+				dJointSetHinge2Param(Joints[i], dParamFMax2, 100);
+			}
+			return;
+		}
+		/////////////
+		for(i=2;i<4;i++)
+			dJointSetHinge2Param(Joints[i], dParamFMax2, DriveForce);
+		return;
+	}
+
+	for(i=0;i<4;i++)
+		dJointSetHinge2Param(Joints[i], dParamFMax2, DriveForce);
+		*/
+}
+
+void CCar::Steer(int steering)
+{
+
+/*
+
+
+	ULONG i;
+	switch(steering)
+	{
+	case 1:
+	case -1:
+		weels_limited=true;
+		for(i = 2; i < 4; ++i)
+		{
+			dJointSetHinge2Param(Joints[i], dParamHiStop, steeringLimit);
+			dJointSetHinge2Param(Joints[i], dParamLoStop, -steeringLimit);
+			dJointSetHinge2Param(Joints[i], dParamVel, ((i < 2) ? steering : -steering) * steeringRate);
+		}
+		break;
+
+	default: // case 0
+		weels_limited=false;
+		for(i = 2; i < 4; ++i)
+		{
+			dReal angle = dJointGetHinge2Angle1(Joints[i]);
+
+
+			if(angle < 0)
+			{
+				dJointSetHinge2Param(Joints[i], dParamHiStop, 0);
+
+				dJointSetHinge2Param(Joints[i], dParamVel, steeringRate);
+			}
+			else
+			{	
+
+				dJointSetHinge2Param(Joints[i], dParamLoStop, 0);
+				dJointSetHinge2Param(Joints[i], dParamVel, -steeringRate);
+			}
+
+		}
+		break;
+	}
+*/
+}
+
+void CCar::LimitWeels()
+{
+	/*
+	if(!bActive) return;
+	if(weels_limited) return;
+
+	for(int i = 2; i < 4; ++i)
+	{
+		dReal angle = dJointGetHinge2Angle1(Joints[i]);
+		if(dFabs(angle)<M_PI/180.f)
+		{
+
+			dJointSetHinge2Param(Joints[i], dParamHiStop, 0);
+			dJointSetHinge2Param(Joints[i], dParamLoStop, 0);///
+			dJointSetHinge2Param(Joints[i], dParamVel, 0);
+			weels_limited=true;
+		}
+	}
+*/
+}
+void CCar::Break()
+{
+}
+
+void CCar::SWheel::Init()
+{
+if(inited) return;
+radius=(bone_map.find(bone_id))->second.element->getRadius();
+joint=(bone_map.find(bone_id))->second.joint->GetDJoint();
+}
+
+void CCar::SWheel::Neutral()
+{
+}
+
+void CCar::SWheelDrive::Init()
+{
+pwheel->Init();
+gear_factor=pwheel->radius/pwheel->car->m_ref_radius;
+}
+void CCar::SWheelDrive::Drive()
+{
+
+}
+void CCar::SWheelSteer::Init()
+{
+pwheel->Init();
+(bone_map.find(pwheel->bone_id))->second.joint->GetLimits(lo_limit,hi_limit,0);
+}
+
+void CCar::SWheelSteer::Steer(int dir)
+{
+}
+
+void CCar::SWheelSteer::Limit()
+{
+}
+void CCar::SWheelBreak::Init()
+{
+pwheel->Init();
+break_torque=pwheel->car->m_break_torque*pwheel->radius/pwheel->car->m_ref_radius;
+}
+
+void CCar::SWheelBreak::Break()
+{
+}

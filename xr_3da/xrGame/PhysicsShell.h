@@ -2,8 +2,8 @@
 #define PhysicsShellH
 #pragma once
 typedef void __stdcall BoneCallbackFun(CBoneInstance* B);
-typedef  void __stdcall ContactCallbackFun(CDB::TRI* T,dContactGeom* c);
-typedef	 void __stdcall ObjectContactCallbackFun(bool& do_colide,dContact& c);
+typedef void __stdcall ContactCallbackFun(CDB::TRI* T,dContactGeom* c);
+typedef	void __stdcall ObjectContactCallbackFun(bool& do_colide,dContact& c);
 typedef void __stdcall PushOutCallbackFun(bool& do_colide,dContact& c);
 
 void __stdcall PushOutCallback(bool& do_colide,dContact& c);
@@ -23,6 +23,14 @@ IC float Cfm(float k_p,float k_d)		{return (1.f / (((fixed_step)*(k_p)) + (k_d))
 IC float Spring(float cfm,float erp)	{return ((erp)/(cfm)/fixed_step);}
 IC float Damping(float cfm,float erp)	{return ((1.f-(erp))/(cfm));}
 
+class CPhysicsJoint;
+class CPhysicsElement;
+struct physicsBone
+{
+	CPhysicsJoint* joint;
+	CPhysicsElement* element;
+};
+DEFINE_MAP	(int,	physicsBone,	BONE_P_MAP,	BONE_P_PAIR_IT);
 
 // ABSTRACT:
 class	CPhysicsBase
@@ -46,12 +54,14 @@ public:
 
 	
 	virtual void			applyForce				(const Fvector& dir, float val)							= 0;
+	virtual void			applyForce				(float x,float y,float z)								= 0;
 	virtual void			applyImpulse			(const Fvector& dir, float val)							= 0;
 	virtual void			SetAirResistance		(dReal linear=0.0002f, dReal angular=0.05f)				= 0;
 	virtual void			set_ContactCallback		(ContactCallbackFun* callback)							= 0;
 	virtual void			set_ObjectContactCallback(ObjectContactCallbackFun* callback)					= 0;
 	virtual void			set_PhysicsRefObject	(CPhysicsRefObject* ref_object)							= 0;
 	virtual void			get_LinearVel			(Fvector& velocity)										= 0;
+	virtual void			get_AngularVel			(Fvector& velocity)										= 0;
 	virtual void			set_PushOut				(u32 time,PushOutCallbackFun* push_out=PushOutCallback)	= 0;
 	virtual void			SetMaterial				(u32 m)													= 0;
 	virtual void			SetMaterial				(LPCSTR m)												= 0;
@@ -78,6 +88,7 @@ public:
 	virtual void			setMassMC				(float M,const Fvector& mass_center)			= 0;
 	virtual void			setDensityMC			(float M,const Fvector& mass_center)			= 0;
 	virtual	dBodyID			get_body				()												= 0;
+	virtual float			getRadius				()												= 0;
 	virtual ~CPhysicsElement	()																	{};
 };
 
@@ -144,7 +155,8 @@ public:
 	virtual void SetLimitsVsSecondElement	(const float low,const float high,const int axis_num)=0;
 
 	virtual void SetForceAndVelocity		(const float force,const float velocity=0.f,const int axis_num=-1)=0;
-
+	virtual dJointID GetDJoint				()																  =0;
+	virtual void GetLimits					(float& lo_limit,float& hi_limit,int axis_num)					  =0;
 };
 
 // ABSTRACT: 
@@ -167,7 +179,8 @@ public:
 	virtual void				SmoothElementsInertia	(float k)											= 0;
 	virtual CPhysicsElement*	get_Element				(s16 bone_id)										= 0;
 	virtual CPhysicsElement*	get_Element				(LPCSTR bone_name)									= 0;
-	virtual void				build_FromKinematics	(CKinematics* K)									= 0;
+	virtual void				build_FromKinematics	(CKinematics* K,BONE_P_MAP* p_geting_map=NULL)		= 0;
+	//build_FromKinematics		in returns elements  & joint pointers according bone IDs;
 	};
 
 

@@ -153,7 +153,7 @@ void CPhysicObject::CreateSkeleton(LPCSTR fixed_bone)
 	if (!Visual()) return;
 	m_pPhysicsShell		= P_create_Shell();
 	m_pPhysicsShell->build_FromKinematics(PKinematics(Visual()));
-
+	m_pPhysicsShell->set_PhysicsRefObject(this);
 	m_pPhysicsShell->mXFORM.set(XFORM());
 	m_pPhysicsShell->Activate(true);
 //	m_pPhysicsShell->SetAirResistance(0.0014f,
@@ -170,3 +170,27 @@ void CPhysicObject::net_Import(NET_Packet& P)
 {
 	R_ASSERT						(Remote());
 }
+
+//////////////////////////////////////////////////////////////////////////
+/*
+DEFINE_MAP_PRED	(LPCSTR,	CPhysicsJoint*,	JOINT_P_MAP,	JOINT_P_PAIR_IT,	pred_str);
+
+JOINT_P_MAP			*l_tpJointMap = xr_new<JOINT_P_MAP>();
+
+l_tpJointMap->insert(std::make_pair(bone_name,joint*));
+JOINT_P_PAIR_IT		I = l_tpJointMap->find(bone_name);
+if (I!=l_tpJointMap->end()){
+	//bone_name is found and is an pair_iterator
+	(*I).second
+}
+
+JOINT_P_PAIR_IT		I = l_tpJointMap->begin();
+JOINT_P_PAIR_IT		E = l_tpJointMap->end();
+for ( ; I != E; I++) {
+	(*I).second->joint_method();
+	Msg("%s",(*I).first);
+}
+
+*/
+
+//////////////////////////////////////////////////////////////////////////

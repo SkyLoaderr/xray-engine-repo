@@ -924,6 +924,13 @@ void CPHJoint::CalcAxis(int ax_num,Fvector& axis,float& lo,float& hi,const Fmatr
 
 }
 
+void CPHJoint::GetLimits					(float& lo_limit,float& hi_limit,int axis_num)
+{
+LimitAxisNum(axis_num);
+lo_limit=axes[axis_num].low;
+hi_limit=axes[axis_num].high;
+}
+
 CPHJoint::SPHAxis::SPHAxis(){
 	high=M_PI/15.f;
 	low=-M_PI/15.f;;
@@ -966,3 +973,4 @@ void CPHJoint::SPHAxis::set_sd_factors(float sf,float df,enumType jt)
 			break;
 	}
 }
+
