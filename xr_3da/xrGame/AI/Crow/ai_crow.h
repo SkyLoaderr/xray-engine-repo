@@ -132,6 +132,7 @@ public:
 	// optimization FAST/SLOW mode
 public:						
 	u32				o_workload_frame	;
+	u32				o_workload_rframe	;
 };
 
 #endif

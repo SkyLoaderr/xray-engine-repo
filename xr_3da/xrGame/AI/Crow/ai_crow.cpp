@@ -240,7 +240,7 @@ void CAI_Crow::state_DeathFall()
 	}
 }
 
-void CAI_Crow::Die	(CObject* who)
+void CAI_Crow::Die				(CObject* who)
 {
 	inherited::Die	(who)	;
 	CreateSkeleton	()		;
@@ -272,6 +272,7 @@ void CAI_Crow::renderable_Render	()
 {
 	UpdateWorkload					(Device.dwTimeDelta);
 	inherited::renderable_Render	();
+	o_workload_rframe				= Device.dwFrame	;
 }
 void CAI_Crow::shedule_Update		(u32 DT)
 {
@@ -316,7 +317,8 @@ void CAI_Crow::shedule_Update		(u32 DT)
 	m_Sounds.m_idle.SetPosition		(Position());
 
 	// work
-	UpdateWorkload					(DT);
+	if (o_workload_rframe	== (Device.dwFrame))	;
+	else					UpdateWorkload			(DT);
 }
 
 // Core events
