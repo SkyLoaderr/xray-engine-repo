@@ -385,7 +385,7 @@ CHelicopter::shedule_Update(u32	time_delta)
 	}else
 		FireEnd();
 
-	if(!getRocketCount()<4)
+	if(!(getRocketCount()<4))
 		for(u32 i=getRocketCount(); i<4; ++i)
 		{
 			CRocketLauncher::SpawnRocket(*m_sRocketSection, this);
